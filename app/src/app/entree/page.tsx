@@ -14,7 +14,6 @@ export default async function Entree({ searchParams }: { searchParams: Promise<{
   return (
     <EntreeIllustree
       titre="Entrée enseignant"
-      aide="Avec votre compte Google, ou avec votre adresse électronique et votre mot de passe."
       pied={
         <>
           Vous êtes élève ? <Link href="/classe">Ouvrir la classe</Link>
