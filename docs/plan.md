@@ -233,9 +233,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   - **Décidé avant de construire, le 9 octobre :** le compte de l'adulte
     (F01-AC27 à AC30), l'heure de la fermeture nocturne et les essais faux
     par adresse réseau (F06-AC82, AC83).
-  - **Tests automatiques :** 108 passent — 25 sur les règles et le
+  - **Ajouté le même jour, sur décision du porteur :** la connexion par
+    Google (F01-AC31, AC32), d'abord recommandée pour l'étape 9. Son
+    passage réel chez Google ne se teste pas en local : il se vérifie par le
+    porteur, une fois Google réglé dans Supabase.
+  - **Tests automatiques :** 110 passent — 25 sur les règles et le
     chiffrement, 50 contre une base PostgreSQL de Supabase lancée en local,
-    33 parcours joués dans un navigateur. Chacun porte l'identifiant de son
+    35 parcours joués dans un navigateur. Chacun porte l'identifiant de son
     critère. Le test « un élève ne lit rien d'une autre classe » en fait
     partie. Une revue de sécurité et une revue de code ont été faites, et
     leurs points corrigés.

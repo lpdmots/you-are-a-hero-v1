@@ -45,6 +45,21 @@ export async function choisirMotDePasse(_avant: EtatFormulaire, formulaire: Form
   redirect("/");
 }
 
+/**
+ * « Continuer avec Google » (F01-AC31) : l'adulte choisit son compte chez Google, puis
+ * revient par /entree/confirmer. Seul un compte déjà existant, à la même adresse, s'ouvre.
+ */
+export async function entrerAvecGoogle(): Promise<void> {
+  const supabase = await clientAdulte();
+  const site = adresseDuSite((await headers()).get("host"));
+  const { data, error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    // Sur un ordinateur partagé, Google demande toujours quel compte utiliser
+    options: { redirectTo: `${site}/entree/confirmer`, queryParams: { prompt: "select_account" } },
+  });
+  redirect(error || !data.url ? "/entree?refus=echec" : data.url);
+}
+
 export async function seDeconnecter(): Promise<void> {
   const supabase = await clientAdulte();
   await supabase.auth.signOut({ scope: "local" });

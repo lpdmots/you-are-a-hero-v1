@@ -1054,7 +1054,7 @@ restés sans retour du porteur :**
 
 | Écran | Disposition |
 | --- | --- |
-| Entrée enseignant | La disposition d'« Ouvrir la classe » : image à gauche, carte à droite. Adresse, mot de passe, « Entrer », « Mot de passe oublié », et un lien vers l'entrée des élèves. Aucune commande d'inscription. |
+| Entrée enseignant | La disposition d'« Ouvrir la classe » : image à gauche, carte à droite. En tête, « Continuer avec Google », bouton à contour avec le signe de Google (décision du porteur, 9 octobre 2026) ; « ou » ; puis adresse, mot de passe, « Entrer », seul bouton plein, « Mot de passe oublié », et un lien vers l'entrée des élèves. Aucune commande d'inscription. Un compte Google inconnu : « Aucun compte ne correspond à cette adresse Google. » |
 | Mot de passe oublié | La même carte : une adresse, « Recevoir le lien », puis une seule phrase, identique que l'adresse soit connue ou non. Le lien reçu mène à « Nouveau mot de passe ». |
 | Mon compte | Panneau ouvert depuis le nom de l'adulte, dans la barre du haut : le nom affiché aux élèves, avec la phrase qu'ils liront, et « Se déconnecter ». |
 | Projet à l'étape 1 | L'en-tête du projet et ses quatre onglets, trois en mode personnel. Chaque onglet dit en une phrase à quelle étape du plan il se construit : texte provisoire. |

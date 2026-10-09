@@ -82,6 +82,35 @@ test("F01-AC29 — mot de passe oublié : même phrase pour toute adresse, puis 
   await expect(page).toHaveURL(/\/projets$/);
 });
 
+test("F01-AC31 — « Continuer avec Google » envoie chez Google par Supabase, et revient par l'application", async ({ page }) => {
+  await aller(page, "/entree");
+  const depart = page.waitForRequest((r) => r.url().includes("/auth/v1/authorize"));
+  await page.getByRole("button", { name: "Continuer avec Google" }).click();
+  const demande = new URL((await depart).url());
+  expect(demande.searchParams.get("provider")).toBe("google");
+  expect(demande.searchParams.get("redirect_to")).toBe("http://localhost:3100/entree/confirmer");
+  // Le retour ne vaudra que sur ce navigateur, et Google demandera quel compte utiliser
+  expect(demande.searchParams.get("code_challenge")).toBeTruthy();
+  expect(demande.searchParams.get("prompt")).toBe("select_account");
+});
+
+test("F01-AC32 — un compte Google qui n'est celui d'aucun enseignant inscrit n'ouvre rien et ne crée rien", async ({ page }) => {
+  // Ce que Supabase renvoie quand les inscriptions sont fermées et que l'adresse n'a pas de compte
+  await aller(page, "/entree/confirmer?error=access_denied&error_code=signup_disabled&error_description=Signups+not+allowed+for+this+instance");
+  await expect(page).toHaveURL(/\/entree\?refus=inconnu$/);
+  await expect(page.getByRole("alert").filter({ hasText: "Aucun compte ne correspond à cette adresse Google." })).toBeVisible();
+  await page.goto("/projets");
+  await expect(page).toHaveURL(/\/entree$/);
+
+  // Un retour sans code, ou avec un code fabriqué, n'ouvre rien non plus
+  await aller(page, "/entree/confirmer");
+  await expect(page.getByRole("alert").filter({ hasText: "La connexion n’a pas abouti. Réessayez." })).toBeVisible();
+  await aller(page, "/entree/confirmer?code=un-code-fabrique");
+  await expect(page.getByRole("alert").filter({ hasText: "La connexion n’a pas abouti. Réessayez." })).toBeVisible();
+  await page.goto("/projets");
+  await expect(page).toHaveURL(/\/entree$/);
+});
+
 test("F01-AC30, F01-AC13 — « Mon compte » : le nom affiché se lit à l'entrée des élèves ; « Se déconnecter » ferme l'accès", async ({ page, browser }) => {
   await connecter(page, compte);
   await expect(page).toHaveURL(/\/projets$/);

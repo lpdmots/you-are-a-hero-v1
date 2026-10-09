@@ -1,0 +1,23 @@
+.google {
+  gap: 0.6rem;
+}
+.signe {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+/* « ou », entre les deux façons d'entrer */
+.ou {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--graphite-3);
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+.ou::before,
+.ou::after {
+  content: "";
+  flex: 1;
+  border-top: 1px solid var(--trait);
+}

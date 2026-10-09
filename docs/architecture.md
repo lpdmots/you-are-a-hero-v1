@@ -257,8 +257,16 @@ par minute, et après une absence : elle revient d'elle-même à l'écran qui
 convient. L'enregistrement du texte avant cette fermeture se branchera là, à
 l'étape 3.
 
-**Compte de l'adulte.** Supabase Auth, adresse et mot de passe, session dans des
-cookies que les scripts ne lisent pas. Les inscriptions publiques sont fermées
+**Compte de l'adulte.** Supabase Auth, adresse et mot de passe, ou compte
+Google (décision du porteur, 9 octobre 2026), session dans des cookies que
+les scripts ne lisent pas. Google est un fournisseur de Supabase Auth : ses
+identifiants se règlent dans la console de Supabase, non dans l'application.
+Supabase rattache seul le compte Google au compte existant de même adresse
+vérifiée ; les inscriptions étant fermées, une adresse inconnue est refusée.
+Le retour de Google passe par le même échange de code que « Mot de passe
+oublié », valable sur le seul navigateur qui l'a demandé. Sans nom de
+domaine, l'application reste non validée chez Google : l'écran de Google
+montre l'adresse du projet Supabase au lieu du nom du produit. Les inscriptions publiques sont fermées
 dans Supabase ; le compte du porteur se crée depuis sa console. « Mot de passe
 oublié » passe par le courriel intégré de Supabase, limité à deux envois par
 heure et aux adresses de l'organisation : suffisant pour un seul adulte, à

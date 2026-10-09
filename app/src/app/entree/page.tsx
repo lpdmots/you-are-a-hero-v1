@@ -8,19 +8,20 @@ import { FormulaireEntree } from "./FormulaireEntree";
 export const metadata: Metadata = { title: "Entrée enseignant" };
 
 /** Entrée de l'enseignant (F01-AC27, F01-AC28) : aucune commande ne crée de compte. */
-export default async function Entree() {
+export default async function Entree({ searchParams }: { searchParams: Promise<{ refus?: string }> }) {
   if (await enseignantCourant()) redirect("/");
+  const { refus } = await searchParams;
   return (
     <EntreeIllustree
       titre="Entrée enseignant"
-      aide="Avec votre adresse électronique et votre mot de passe."
+      aide="Avec votre compte Google, ou avec votre adresse électronique et votre mot de passe."
       pied={
         <>
           Vous êtes élève ? <Link href="/classe">Ouvrir la classe</Link>
         </>
       }
     >
-      <FormulaireEntree />
+      <FormulaireEntree refus={refus} />
     </EntreeIllustree>
   );
 }

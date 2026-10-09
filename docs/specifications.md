@@ -217,8 +217,42 @@ jusque-là :
   choisit « Se déconnecter », alors « Mes projets » redemande son adresse et
   son mot de passe sur ce poste.
 
+**Décision du porteur le 9 octobre 2026 — connexion par Google, dès
+maintenant.** L'adulte entre aussi par « Continuer avec Google ». La
+recommandation était de l'attendre jusqu'à l'ouverture (étape 9 du plan),
+avec le nom de domaine que la validation de l'application par Google
+demande ; le porteur la veut tout de suite et de toute façon. Facebook,
+déconseillé, n'est pas retenu.
+
+- **Elle s'ajoute, sans rien remplacer.** L'adresse et le mot de passe
+  restent ; les deux façons ouvrent le même compte.
+- **Elle n'ouvre qu'un compte existant.** Le compte Google doit porter la
+  même adresse que le compte de l'adulte. Avant l'ouverture, un compte
+  Google inconnu est refusé et ne crée rien : c'est F01-AC28.
+- **Google demande toujours quel compte utiliser,** pour un ordinateur
+  partagé où un autre compte Google serait resté ouvert.
+
+- **F01-AC31 — Entrer par Google :** étant donné Mme Laurent, dont le
+  compte porte l'adresse de son compte Google, lorsqu'elle choisit
+  « Continuer avec Google » et ce compte, alors elle arrive dans son
+  dernier projet ouvert, ou sur « Mes projets », comme avec son mot de
+  passe (F06-AC53).
+- **F01-AC32 — Compte Google inconnu :** étant donné une personne dont
+  l'adresse Google n'est celle d'aucun compte, lorsqu'elle choisit
+  « Continuer avec Google », alors elle revient à l'entrée enseignant, lit
+  « Aucun compte ne correspond à cette adresse Google. », et aucun compte
+  n'est créé.
+
+**Reste ouvert :** la validation de l'application par Google (nom affiché à
+la place de l'adresse de Supabase sur l'écran de Google), à traiter avec le
+nom de domaine, à l'étape 9 ; l'ouverture des comptes par Google à d'autres
+enseignants, avec F14.
+
 **Présentation proposée le 9 octobre 2026, sans retour du porteur :**
-l'entrée enseignant reprend la disposition d'« Ouvrir la classe », image à
+« Continuer avec Google » est en tête de la carte, en bouton à contour, puis
+« ou », puis l'adresse et le mot de passe, dont « Entrer » reste le seul
+bouton plein.
+L'entrée enseignant reprend la disposition d'« Ouvrir la classe », image à
 gauche et formulaire à droite ; le mot de passe a huit caractères au moins ;
 il ne se change que par le lien de « Mot de passe oublié », ouvert sur
 l'ordinateur d'où il a été demandé : une session laissée ouverte sur un
