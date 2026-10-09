@@ -21,3 +21,10 @@
   flex: 1;
   border-top: 1px solid var(--trait);
 }
+
+/* liens du pied de l'entrée enseignant : sur une ligne, à la ligne seulement si l'écran est étroit */
+.pied {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+}

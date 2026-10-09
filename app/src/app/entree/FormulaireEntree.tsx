@@ -54,9 +54,6 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
         Entrer
         <Icone nom="fleche" />
       </button>
-      <p>
-        <Link href="/entree/oubli">Mot de passe oublié</Link>
-      </p>
     </form>
     <p className={styles.ou}>
       <span>ou</span>

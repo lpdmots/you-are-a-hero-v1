@@ -1,3 +1,4 @@
+import styles from "./entree.module.css";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -15,9 +16,12 @@ export default async function Entree({ searchParams }: { searchParams: Promise<{
     <EntreeIllustree
       titre="Entrée enseignant"
       pied={
-        <>
-          Vous êtes élève ? <Link href="/classe">Ouvrir la classe</Link>
-        </>
+        <span className={styles.pied}>
+          <Link href="/entree/oubli">Mot de passe oublié</Link>
+          <span>
+            Vous êtes élève ? <Link href="/classe">Ouvrir la classe</Link>
+          </span>
+        </span>
       }
     >
       <FormulaireEntree refus={refus} />
