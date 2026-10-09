@@ -120,8 +120,8 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
               <Choix groupe="qui" valeur="personnel" choisi={qui === "personnel"} titre="Moi" texte="Vous écrivez votre histoire, sans élèves." onChoisir={setQui} />
             </div>
             <p className={styles.fixe}>
-              Ce choix ne se change pas ensuite. Avec une classe, vous préparez d’abord l’histoire sans les élèves : ils
-              n’entrent que quand vous le décidez.
+              Ce choix ne se change pas ensuite. Avec une classe, vous préparez l’histoire avec vos élèves (univers,
+              héros…) ; ils n’écrivent leurs scènes que lorsque vous leur en ouvrez l’accès.
             </p>
           </>
         ) : null}
@@ -177,7 +177,7 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
                 </fieldset>
               ) : (
                 <p className={styles.sansClasse}>
-                  Vous n’avez pas encore de classe. Vous la créerez quand vos élèves commenceront à écrire.
+                  Vous n’avez pas encore de classe. Vous pourrez en créer une et la rattacher à ce projet plus tard.
                 </p>
               )
             ) : null}
