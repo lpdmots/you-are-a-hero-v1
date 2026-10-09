@@ -68,12 +68,20 @@ export async function nommer(page: Page, compte: Compte, nom: string): Promise<v
 
 export type ClasseCreee = { id: string; identifiant: string; motDePasse: string };
 
-/** Crée une classe par l'écran et relit ses informations de connexion. */
-export async function creerClasse(page: Page, nom: string, annee?: string): Promise<ClasseCreee> {
+/** Un identifiant que personne n'a : la base locale garde les classes d'autres essais. */
+export const identifiantLibre = (): string => `essai${randomBytes(6).toString("hex")}`;
+
+/**
+ * Crée une classe par l'écran et relit ses informations de connexion. L'identifiant
+ * proposé, tiré du nom, peut être pris par une autre classe : on en écrit un qui est libre.
+ */
+export async function creerClasse(page: Page, nom: string, annee?: string, choisi: string | null = identifiantLibre()): Promise<ClasseCreee> {
   await aller(page, "/classes");
   await passerAide(page);
   await page.getByRole("button", { name: /Nouvelle classe|Créer ma classe/ }).click();
   await page.getByLabel("Nom de la classe").fill(nom);
+  // null : on garde l'identifiant proposé, pour une classe dont le nom est lui-même unique
+  if (choisi) await page.getByLabel("Identifiant", { exact: true }).fill(choisi);
   if (annee) await page.getByRole("radio", { name: annee }).check();
   await page.getByRole("button", { name: "Créer la classe" }).click();
   await page.waitForURL(/\/classes\/[0-9a-f-]{36}/);

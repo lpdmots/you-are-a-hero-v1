@@ -608,19 +608,11 @@ button.eleve:hover {
   }
 }
 
-/* « Changer aussi l'identifiant », dans « Renommer la classe » */
-.choixIdentifiant {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin-top: 14px;
-  font-size: var(--t-s);
-  cursor: pointer;
+/* L'identifiant s'écrit dans la police où les élèves le liront sur l'affiche */
+.champIdentifiant {
+  font-family: var(--f-code);
 }
-.choixIdentifiant :global(.case) {
-  flex: none;
-  margin-top: 2px;
-}
-.choixIdentifiant b {
+
+input.champIdentifiant {
   font-family: var(--f-code);
 }

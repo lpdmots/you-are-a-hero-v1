@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  ALERTE, aller, autrePoste, connecter, creerClasse, creerCompte, inscrire, lireCodes, nommer, ouvrirLaClasse, sql,
+  ALERTE, aller, autrePoste, connecter, creerClasse, creerCompte, identifiantLibre, inscrire, lireCodes, nommer, ouvrirLaClasse, sql,
   supprimerCompte, taperCode, type ClasseCreee, type Compte,
 } from "./outils";
 
@@ -195,7 +195,7 @@ test("F06-AC68, F06-AC77 — mot de passe remplacé : les postes ouverts redeman
   for (const poste of postes) await poste.contexte.close();
 });
 
-test("F06-AC84 — classe renommée avec son identifiant : l'ancien est refusé, le nouveau ouvre, les postes ouverts le restent", async ({ page, browser }) => {
+test("F06-AC84 — identifiant remplacé en renommant la classe : l'ancien est refusé, le nouveau ouvre, les postes ouverts le restent", async ({ page, browser }) => {
   const ouvert = await autrePoste(browser);
   await entrer(ouvert.page, "Alice");
 
@@ -203,25 +203,15 @@ test("F06-AC84 — classe renommée avec son identifiant : l'ancien est refusé,
   await page.getByLabel("Autres commandes de la classe").click();
   await page.getByRole("button", { name: "Renommer la classe" }).click();
   const dialogue = page.getByRole("alertdialog");
-  // Tant que le nom convient à l'identifiant, rien n'est proposé
-  await expect(dialogue.getByRole("checkbox")).toHaveCount(0);
   await dialogue.getByLabel("Nom de la classe").fill("CM2");
-  // La case est cochée d'office ; décochée, elle dit que l'identifiant reste
-  const choix = dialogue.getByRole("checkbox", { name: "Changer aussi l’identifiant : cm2" });
-  await expect(choix).toBeChecked();
+  const nouveau = identifiantLibre();
+  await dialogue.getByLabel("Identifiant", { exact: true }).fill(nouveau);
   await expect(dialogue).toContainText("L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.");
-  await choix.uncheck();
-  await expect(dialogue).toContainText(`L’identifiant reste « ${classe.identifiant} ».`);
-  await choix.check();
   await dialogue.getByRole("button", { name: "Enregistrer" }).click();
 
   await expect(page.getByRole("heading", { level: 1, name: "CM2", exact: true })).toBeVisible();
-  await expect(page.getByText(/L’identifiant de la classe est maintenant « cm2([a-z]{3,10}\d{0,2})? »\. Pensez à réimprimer l’affiche\./)).toBeVisible();
-  const fiche = page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" });
-  await expect(fiche.locator("dd").nth(1)).not.toHaveText(classe.identifiant);
-  const nouveau = (await fiche.locator("dd").nth(1).innerText()).trim();
-  expect(nouveau).toMatch(/^cm2([a-z]{3,10}\d{0,2})?$/);
-  expect(nouveau).not.toBe(classe.identifiant);
+  await expect(page.getByText(`L’identifiant de la classe est maintenant « ${nouveau} ». Pensez à réimprimer l’affiche.`)).toBeVisible();
+  await expect(page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" }).locator("dd").nth(1)).toHaveText(nouveau);
 
   // Sur un autre ordinateur : l'ancien identifiant est refusé, le nouveau ouvre avec le même mot de passe
   const neuf = await autrePoste(browser);

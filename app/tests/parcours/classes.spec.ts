@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
-  aller, collerEleves, connecter, creerClasse, creerCompte, ecrireEleves, inscrire, lireCodes, nommer, passerAide, supprimerCompte, type Compte,
+  aller, collerEleves, connecter, creerClasse, creerCompte, ecrireEleves, identifiantLibre, inscrire, lireCodes, nommer, passerAide, supprimerCompte, type Compte,
 } from "./outils";
 
 let compte: Compte;
@@ -35,9 +35,7 @@ test("Mes classes — l'écran d'aide s'affiche à l'ouverture, « Ne plus affic
 test("F06-AC67 — les informations de la classe sont proposées, se relisent, et l'affiche s'imprime", async ({ page }) => {
   await nommer(page, compte, "Mme Laurent");
   const classe = await creerClasse(page, "CM1-CM2");
-  // Forme décidée le 8 octobre 2026 : minuscules et chiffres ; deux mots simples et deux chiffres
-  // « cm1cm2 », le nom de la classe seul ; suivi d'un mot simple si une autre classe porte déjà cet identifiant
-  expect(classe.identifiant).toMatch(/^cm1cm2([a-z]{3,10}\d{0,2})?$/);
+  // Forme décidée le 8 octobre 2026 pour le mot de passe : deux mots simples et deux chiffres
   expect(classe.motDePasse).toMatch(/^[a-z]+ [a-z]+ [1-9][0-9]$/);
 
   // Plus tard, depuis la liste : on relit, et on imprime l'affiche
@@ -317,13 +315,77 @@ test("F06-AC72 — horaires : des jours cochés et une plage, puis d'autres hora
   void classe;
 });
 
+test("F06-AC85 — l'identifiant est proposé d'après le nom de la classe, et l'enseignant peut toujours écrire le sien ; déjà pris, il en choisit un autre", async ({ page }) => {
+  const premiere = await creerClasse(page, "CM1-CM2");
+  const fiche = page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" });
+
+  await aller(page, "/classes");
+  await page.getByRole("button", { name: "Nouvelle classe" }).click();
+  const identifiant = page.getByLabel("Identifiant", { exact: true });
+  // Proposé d'après le nom, au fil de la frappe : le nom de la classe seul
+  await page.getByLabel("Nom de la classe").fill("CE2 des Écureuils");
+  await expect(identifiant).toHaveValue("ce2desecureuils");
+  // L'enseignant écrit le sien : il prend sa forme, et le nom ne le remplace plus
+  await identifiant.fill(` ${premiere.identifiant.toUpperCase()} `);
+  await expect(identifiant).toHaveValue(premiere.identifiant);
+  await page.getByLabel("Nom de la classe").fill("CE2");
+  await expect(identifiant).toHaveValue(premiere.identifiant);
+
+  // Déjà pris : rien n'est créé, et c'est lui qui choisit
+  await page.getByRole("button", { name: "Créer la classe" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: new RegExp(`« ${premiere.identifiant} » est déjà pris\\. Écrivez-en un autre, par exemple « ${premiere.identifiant.slice(0, 20)}[a-z]+ »\\.`) })).toBeVisible();
+  await identifiant.fill("ab");
+  await page.getByRole("button", { name: "Créer la classe" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Un identifiant a de 3 à 30 lettres minuscules ou chiffres, sans espace." })).toBeVisible();
+  const choisi = identifiantLibre();
+  await identifiant.fill(choisi);
+  await page.getByRole("button", { name: "Créer la classe" }).click();
+  await page.waitForURL(/\/classes\/[0-9a-f-]{36}/);
+  await expect(fiche).toContainText(choisi);
+
+  // En renommant : le même identifiant pris est refusé de la même façon
+  await page.getByLabel("Autres commandes de la classe").click();
+  await page.getByRole("button", { name: "Renommer la classe" }).click();
+  const dialogue = page.getByRole("alertdialog");
+  await dialogue.getByLabel("Identifiant", { exact: true }).fill(premiere.identifiant);
+  await dialogue.getByRole("button", { name: "Enregistrer" }).click();
+  await expect(dialogue.getByRole("alert")).toContainText(`« ${premiere.identifiant} » est déjà pris.`);
+  await dialogue.getByRole("button", { name: `Garder « ${choisi} »` }).click();
+  await expect(dialogue).toContainText("L’identifiant de la classe ne change pas.");
+});
+
+test("F06-AC84 — un identifiant tiré du nom de la classe suit son nouveau nom, sauf si l'enseignant garde l'ancien", async ({ page }) => {
+  // Des noms que personne d'autre ne porte : l'identifiant proposé est libre
+  const [avant, apres] = [`Loups ${identifiantLibre().slice(5)}`, `Renards ${identifiantLibre().slice(5)}`];
+  const classe = await creerClasse(page, avant, undefined, null);
+  expect(classe.identifiant).toBe(avant.toLowerCase().replace(" ", ""));
+
+  await page.getByLabel("Autres commandes de la classe").click();
+  await page.getByRole("button", { name: "Renommer la classe" }).click();
+  const dialogue = page.getByRole("alertdialog");
+  const identifiant = dialogue.getByLabel("Identifiant", { exact: true });
+  await expect(identifiant).toHaveValue(classe.identifiant);
+  await dialogue.getByLabel("Nom de la classe").fill(apres);
+  const suivi = apres.toLowerCase().replace(" ", "");
+  await expect(identifiant).toHaveValue(suivi);
+  await expect(dialogue).toContainText("L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.");
+  // « Garder » rend l'ancien ; le nom ne le remplace plus
+  await dialogue.getByRole("button", { name: `Garder « ${classe.identifiant} »` }).click();
+  await expect(identifiant).toHaveValue(classe.identifiant);
+  await identifiant.fill(suivi);
+  await dialogue.getByRole("button", { name: "Enregistrer" }).click();
+  await expect(page.getByText(`L’identifiant de la classe est maintenant « ${suivi} ». Pensez à réimprimer l’affiche.`)).toBeVisible();
+  await expect(page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" })).toContainText(suivi);
+});
+
 test("F01.1 — une classe se renomme sans changer d'identifiant ; sans élève ni projet, elle se supprime", async ({ page }) => {
   const classe = await creerClasse(page, "CM1");
   await page.getByLabel("Autres commandes de la classe").click();
   await page.getByRole("button", { name: "Renommer la classe" }).click();
   await page.getByRole("alertdialog").getByLabel("Nom de la classe").fill("CM1-CM2");
-  // La case « Changer aussi l'identifiant » est cochée d'office : décochée, l'identifiant reste (F06-AC84)
-  await page.getByRole("alertdialog").getByRole("checkbox", { name: /Changer aussi l’identifiant/ }).uncheck();
+  // Un identifiant que l'enseignant a écrit lui-même ne suit pas le nouveau nom (F06-AC84)
+  await expect(page.getByRole("alertdialog").getByLabel("Identifiant", { exact: true })).toHaveValue(classe.identifiant);
+  await expect(page.getByRole("alertdialog")).toContainText("L’identifiant de la classe ne change pas.");
   await page.getByRole("alertdialog").getByRole("button", { name: "Enregistrer" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "CM1-CM2" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" })).toContainText(classe.identifiant);

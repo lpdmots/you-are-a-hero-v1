@@ -1059,7 +1059,8 @@ restés sans retour du porteur :**
 | Mon compte | Panneau ouvert depuis le nom de l'adulte, dans la barre du haut : le nom affiché aux élèves, avec la phrase qu'ils liront, et « Se déconnecter ». |
 | Projet à l'étape 1 | L'en-tête du projet et ses quatre onglets, trois en mode personnel. Chaque onglet dit en une phrase à quelle étape du plan il se construit : texte provisoire. |
 | Classe d'un projet | « Choisir une classe » comme dessiné ; quand une classe est choisie, « Changer de classe » à la même place, tant qu'aucun chapitre n'est attribué (F01-AC24). |
-| Renommer la classe | Un dialogue : le nom et « Enregistrer ». Quand l'identifiant ne va plus avec le nom, une case cochée d'office, « Changer aussi l'identifiant : cm2 », et une phrase : « L'affiche sera à réimprimer, et les étiquettes qui portent l'identifiant. », ou, case décochée, « L'identifiant reste « cm1cm2 ». » (F06-AC84, 9 octobre 2026). Sinon, « L'identifiant de la classe ne change pas. » |
+| Renommer la classe | Un dialogue : le nom, puis la case « Identifiant », qui suit le nouveau nom quand l'identifiant en était tiré, et « Enregistrer ». Dessous, une phrase : « L'identifiant de la classe ne change pas. », ou « L'affiche sera à réimprimer, et les étiquettes qui portent l'identifiant. » avec le lien « Garder « cm1cm2 » ». Un identifiant déjà pris est refusé sous la case (F06-AC84, AC85, 9 octobre 2026). |
+| Nouvelle classe | Le panneau dessiné, avec une case de plus sous le nom : « Identifiant », remplie d'après le nom au fil de la frappe, et « Les élèves le tapent pour ouvrir la classe. Vous pouvez en écrire un autre. » (F06-AC85). La phrase du bas ne parle plus que du mot de passe. |
 | Accueil de l'élève | « Bonjour Alice », « Mon travail », puis « Tu n'as pas encore de chapitre. Mme Laurent va t'en donner un. », ou « Le travail est fermé jusqu'à demain, 8 h 30. » hors des horaires. L'illustration est générique : celle du projet viendra avec « Mon travail », à l'étape 4. |
 | Erreurs à l'entrée de la classe | « Ce n'est pas le bon identifiant, ou pas le bon mot de passe. Regarde l'affiche, ou demande à ton enseignant(e). » et « Trop d'essais. Attends 5 minutes, ou demande à ton enseignant(e). » |
 
@@ -1092,8 +1093,9 @@ captures et faites le même jour :
 **Écarts avec la maquette, à juger à l'essai :**
 
 - l'identifiant et le mot de passe de la classe suivent la forme décidée le
-  8 octobre et revue le 9 pour l'identifiant, tiré du nom de la classe seul
-  (« cm1cm2 », « tigre nuage 42 »), sans les traits d'union de la maquette ;
+  8 octobre et revue le 9 pour l'identifiant, que l'enseignant choisit et
+  que l'application propose d'après le nom de la classe seul (« cm1cm2 »,
+  « tigre nuage 42 »), sans les traits d'union de la maquette ;
 - le mot de passe de la classe se tape en clair à l'entrée des élèves : il
   est sur l'affiche, un élève voit ses fautes de frappe, et le navigateur
   d'un poste partagé ne propose pas de le retenir ;

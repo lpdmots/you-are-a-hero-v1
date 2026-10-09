@@ -53,7 +53,7 @@ test("écrans de l'étape 1", async ({ page, browser }) => {
   await page.getByLabel("Autres commandes de la classe").click();
   await page.getByRole("button", { name: "Renommer la classe" }).click();
   await page.getByRole("alertdialog").getByLabel("Nom de la classe").fill("CM2");
-  await page.getByRole("alertdialog").getByRole("checkbox").check();
+  await page.getByRole("alertdialog").getByLabel("Identifiant", { exact: true }).fill("cm2");
   await capturer(page, "classe-renommer-identifiant", false);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Afficher les codes" }).click();

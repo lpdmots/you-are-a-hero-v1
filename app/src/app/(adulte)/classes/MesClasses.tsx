@@ -7,6 +7,7 @@ import { Gommette, PlacesVides } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { Panneau } from "@/composants/Panneau";
+import { formerIdentifiant, identifiantPourClasse } from "@/domaine/acces";
 import { libelleAnnee } from "@/domaine/annee";
 import { trier } from "@/domaine/eleves";
 import { textePlage } from "@/domaine/horaires";
@@ -35,7 +36,11 @@ export function MesClasses({
   const [panneau, setPanneau] = useState(nouvelle);
   const [nom, setNom] = useState("");
   const [annee, setAnnee] = useState(annees[0]);
+  // L'identifiant suit le nom tant que l'enseignant ne l'a pas écrit lui-même (F06-AC85)
+  const [identifiant, setIdentifiant] = useState("");
+  const [identifiantEcrit, setIdentifiantEcrit] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
+  const [erreurIdentifiant, setErreurIdentifiant] = useState<string | null>(null);
   const [enCours, lancer] = useTransition();
 
   if (aide) {
@@ -54,10 +59,12 @@ export function MesClasses({
       return;
     }
     setErreur(null);
+    setErreurIdentifiant(null);
     lancer(async () => {
-      const resultat = await creerClasse(nom, annee);
+      const resultat = await creerClasse(nom, annee, identifiant);
       if (!resultat.ok) {
-        setErreur(resultat.erreur);
+        if (resultat.champ === "identifiant") setErreurIdentifiant(resultat.erreur);
+        else setErreur(resultat.erreur);
         return;
       }
       // Proposé, jamais d'office : une classe d'une année antérieure encore en cours (F01-AC20)
@@ -188,7 +195,10 @@ export function MesClasses({
               maxLength={60}
               placeholder="CM1-CM2"
               aria-invalid={erreur ? true : undefined}
-              onChange={(e) => setNom(e.target.value)}
+              onChange={(e) => {
+                setNom(e.target.value);
+                if (!identifiantEcrit) setIdentifiant(e.target.value.trim() ? identifiantPourClasse(e.target.value) : "");
+              }}
               onKeyDown={(e) => { if (e.key === "Enter") creer(); }}
               data-focus
             />
@@ -198,6 +208,32 @@ export function MesClasses({
                 {erreur}
               </p>
             ) : null}
+          </section>
+          <section>
+            <h3>
+              <label htmlFor="classe-identifiant">Identifiant</label>
+            </h3>
+            <input
+              className={`pchamp ${styles.champIdentifiant}`}
+              id="classe-identifiant"
+              type="text"
+              value={identifiant}
+              maxLength={30}
+              autoComplete="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              aria-describedby="classe-identifiant-aide"
+              aria-invalid={erreurIdentifiant ? true : undefined}
+              onChange={(e) => { setIdentifiantEcrit(true); setErreurIdentifiant(null); setIdentifiant(formerIdentifiant(e.target.value)); }}
+              onKeyDown={(e) => { if (e.key === "Enter") creer(); }}
+            />
+            {erreurIdentifiant ? (
+              <p className="erreur" role="alert">
+                <Icone nom="alerte" />
+                <span>{erreurIdentifiant}</span>
+              </p>
+            ) : null}
+            <p id="classe-identifiant-aide">Les élèves le tapent pour ouvrir la classe. Vous pouvez en écrire un autre.</p>
           </section>
           <section>
             <h3 id="classe-annee">Année scolaire</h3>
@@ -211,7 +247,7 @@ export function MesClasses({
             </div>
           </section>
           <section>
-            <p>L’identifiant et le mot de passe de la classe sont proposés à la création. Vous pourrez les relire et les changer.</p>
+            <p>Le mot de passe de la classe est proposé à la création. Vous pourrez le relire et le changer.</p>
           </section>
         </Panneau>
       ) : null}

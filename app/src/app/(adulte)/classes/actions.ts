@@ -2,7 +2,7 @@
 
 import { randomInt, randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { codePropose, codeValide, identifiantConvient, identifiantsProposes, motDePassePropose } from "@/domaine/acces";
+import { autreIdentifiant, codePropose, codeValide, formerIdentifiant, identifiantValide, motDePassePropose } from "@/domaine/acces";
 import { memePrenom, prenomEnDouble, type Personne } from "@/domaine/eleves";
 import { plageValide, type Plage } from "@/domaine/horaires";
 import { MOTS } from "@/domaine/mots";
@@ -15,8 +15,10 @@ import { classeDe } from "@/serveur/lectures";
  * refuse de son côté ce qui touche la classe d'un autre ou une classe terminée.
  */
 
-type Fait<T = object> = ({ ok: true } & T) | { ok: false; erreur: string };
-const echec = (erreur: string): { ok: false; erreur: string } => ({ ok: false, erreur });
+// champ : la case que l'erreur concerne, quand ce n'est pas la première du formulaire
+type Echec = { ok: false; erreur: string; champ?: "identifiant" };
+type Fait<T = object> = ({ ok: true } & T) | Echec;
+const echec = (erreur: string, champ?: "identifiant"): Echec => ({ ok: false, erreur, champ });
 const tirer = (n: number): number => randomInt(n);
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const propre = (texte: string): string => texte.trim().replace(/\s+/g, " ");
@@ -31,58 +33,57 @@ const rafraichir = (classeId?: string) => {
   if (classeId) revalidatePath(`/classes/${classeId}`, "layout");
 };
 
-/** Une classe, c'est un nom et une année ; ses informations de connexion sont proposées. */
-export async function creerClasse(nom: string, anneeDebut: number): Promise<Fait<{ id: string }>> {
+const IDENTIFIANT_MAL_FORME = "Un identifiant a de 3 à 30 lettres minuscules ou chiffres, sans espace.";
+const dejaPris = (identifiant: string) =>
+  echec(`« ${identifiant} » est déjà pris. Écrivez-en un autre, par exemple « ${autreIdentifiant(identifiant, tirer)} ».`, "identifiant");
+
+/**
+ * Une classe, c'est un nom et une année. Son identifiant est celui que l'enseignant a
+ * gardé ou écrit (F06-AC85) : unique entre tous les enseignants, la base le dit. Son
+ * mot de passe est proposé.
+ */
+export async function creerClasse(nom: string, anneeDebut: number, identifiant: string): Promise<Fait<{ id: string }>> {
   const enseignant = await exigerEnseignant();
   const nomPropre = propre(nom).slice(0, 60);
   if (!nomPropre) return echec("Donnez un nom à la classe.");
   if (!Number.isInteger(anneeDebut) || anneeDebut < 2000 || anneeDebut > 2100) return echec("Choisissez une année scolaire.");
+  const choisi = formerIdentifiant(String(identifiant ?? ""));
+  if (!identifiantValide(choisi)) return echec(IDENTIFIANT_MAL_FORME, "identifiant");
 
   const id = randomUUID();
-  const chiffre = chiffrer(motDePassePropose(tirer), { sorte: "classe", id });
-  // L'identifiant est unique entre tous les enseignants : la base le dit, on essaie le suivant.
-  for (const identifiant of identifiantsProposes(nomPropre, tirer)) {
-    const { error } = await enseignant.supabase.rpc("creer_classe", {
-      p_id: id, p_nom: nomPropre, p_annee_debut: anneeDebut, p_identifiant: identifiant, p_mot_de_passe_chiffre: chiffre,
-    });
-    if (!error) {
-      rafraichir();
-      return { ok: true, id };
-    }
-    if (error.code !== "23505") break;
-  }
-  return echec("La classe n’a pas pu être créée. Réessayez.");
+  const { error } = await enseignant.supabase.rpc("creer_classe", {
+    p_id: id, p_nom: nomPropre, p_annee_debut: anneeDebut, p_identifiant: choisi,
+    p_mot_de_passe_chiffre: chiffrer(motDePassePropose(tirer), { sorte: "classe", id }),
+  });
+  if (error) return error.code === "23505" ? dejaPris(choisi) : echec("La classe n’a pas pu être créée. Réessayez.");
+  rafraichir();
+  return { ok: true, id };
 }
 
 /**
- * Renommer la classe. Son identifiant suit le nouveau nom si l'enseignant laisse la case
- * cochée (F06-AC84) : il est proposé comme à la création, jamais écrit librement. Le mot de
- * passe et les codes ne changent pas, et les postes où la classe est ouverte le restent.
+ * Le nom de la classe, et son identifiant si l'enseignant en donne un autre (F06-AC84,
+ * F06-AC85). Le mot de passe et les codes ne changent pas, et les postes où la classe
+ * est ouverte le restent.
  */
-export async function renommerClasse(classeId: string, nom: string, avecIdentifiant = false): Promise<Fait<{ identifiant: string | null }>> {
+export async function renommerClasse(classeId: string, nom: string, identifiant?: string): Promise<Fait<{ identifiant: string | null }>> {
   const enseignant = await exigerEnseignant();
   const nomPropre = propre(nom).slice(0, 60);
   if (!nomPropre) return echec("Donnez un nom à la classe.");
   const classe = await classeEnCours(enseignant, classeId);
   if (!classe) return echec("Cette classe ne se modifie plus.");
 
-  if (avecIdentifiant && !identifiantConvient(classe.identifiant, nomPropre)) {
-    // Unique entre tous les enseignants : la base le dit, on essaie le suivant
-    for (const identifiant of identifiantsProposes(nomPropre, tirer)) {
-      const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre, identifiant }).eq("id", classeId);
-      if (!error) {
-        rafraichir(classeId);
-        return { ok: true, identifiant };
-      }
-      if (error.code !== "23505") break;
-    }
-    return echec("Le nom et l’identifiant n’ont pas pu être changés. Réessayez.");
+  const choisi = identifiant === undefined ? classe.identifiant : formerIdentifiant(String(identifiant));
+  if (choisi === classe.identifiant) {
+    const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre }).eq("id", classeId);
+    if (error) return echec("Le nom n’a pas pu être changé.");
+    rafraichir(classeId);
+    return { ok: true, identifiant: null };
   }
-
-  const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre }).eq("id", classeId);
-  if (error) return echec("Le nom n’a pas pu être changé.");
+  if (!identifiantValide(choisi)) return echec(IDENTIFIANT_MAL_FORME, "identifiant");
+  const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre, identifiant: choisi }).eq("id", classeId);
+  if (error) return error.code === "23505" ? dejaPris(choisi) : echec("Le nom et l’identifiant n’ont pas pu être changés. Réessayez.");
   rafraichir(classeId);
-  return { ok: true, identifiant: null };
+  return { ok: true, identifiant: choisi };
 }
 
 /** Une classe sans élève ni projet se supprime ; les autres se terminent (F01.1). */

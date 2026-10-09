@@ -2857,21 +2857,31 @@ supports imprimés :**
 - **Proposées, consultables, remplaçables.** À la création d'une classe,
   l'application propose son identifiant et son mot de passe. L'enseignant
   les relit à tout moment depuis la classe et peut les remplacer, comme les
-  codes personnels. L'identifiant se remplace en renommant la classe
-  (décidé le 9 octobre 2026) : une case propose l'identifiant qui va avec
-  le nouveau nom (« cm2 »), suivi d'un mot simple s'il est déjà pris, ce
-  que l'application dit une fois le nom enregistré. Elle est cochée
-  d'office, à la demande du porteur ; la recommandation était de la laisser
-  décochée. Le mot de passe et les codes ne changent pas ; l'affiche et
-  les étiquettes qui portent l'identifiant sont à réimprimer ; les postes
-  où la classe est déjà ouverte le restent, puisque le mot de passe est le
-  même. Tant que l'identifiant convient au nom, rien n'est proposé.
-  Alternatives écartées : un identifiant et un mot de
-  passe écrits librement (mot de passe trop simple, identifiant déjà
-  pris) ; un mot de passe montré une seule fois, plus sûr, mais à ressaisir
-  sur tous les postes à chaque oubli. Le stockage qui permet cette
-  consultation suit la règle des codes, arbitrée le 8 octobre 2026
+  codes personnels. Le mot de passe reste proposé par l'application ;
+  l'écrire librement est écarté (trop simple). Un mot de passe montré une
+  seule fois, plus sûr, est écarté aussi : il serait à ressaisir sur tous
+  les postes à chaque oubli. Le stockage qui permet cette consultation suit
+  la règle des codes, arbitrée le 8 octobre 2026
   ([architecture](architecture.md#protection-des-accès-de-classe-et-des-codes-élèves)).
+- **L'identifiant se choisit.** Décidé par le porteur le 9 octobre 2026,
+  après l'essai de l'étape 1 : l'application propose le nom de la classe,
+  et l'enseignant peut toujours écrire le sien, à la création comme en
+  renommant la classe. La case « Identifiant » suit le nom au fil de la
+  frappe tant qu'il n'y a pas touché. Un identifiant déjà pris est refusé à
+  l'enregistrement, avec un voisin en exemple (« cm2tigre ») : c'est
+  l'enseignant qui choisit, l'application n'ajoute rien d'elle-même. Cette
+  règle révise l'alternative écartée le 6 octobre, « un identifiant écrit
+  librement », dont la seule objection était l'identifiant déjà pris ;
+  l'identifiant n'est pas un secret, il est sur l'affiche, et c'est le mot
+  de passe qui protège la classe. En renommant une classe, son identifiant
+  suit le nouveau nom s'il était tiré de l'ancien, et « Garder » rend
+  l'ancien ; celui que l'enseignant avait choisi autrement ne bouge pas.
+  Quand l'identifiant change, le mot de passe et les codes restent, l'affiche
+  et les étiquettes qui le portent sont à réimprimer, et les postes où la
+  classe est déjà ouverte le restent. Limite connue : « déjà pris » apprend
+  à un enseignant connecté qu'une classe porte cet identifiant ailleurs,
+  sans rien ouvrir. Proposé, non confirmé : la disponibilité n'est vérifiée
+  qu'à l'enregistrement, non pendant la frappe.
 - **Affiche de la classe.** Une feuille imprimable donne l'adresse de
   l'entrée des élèves, l'identifiant et le mot de passe de la classe, à
   afficher près des ordinateurs.
@@ -2956,17 +2966,13 @@ construire les accès :
 - **Heure de référence.** Les horaires se lisent à l'heure de Paris, heure
   d'été et heure d'hiver suivies sans réglage. Le fuseau est tenu par la
   classe sans être affiché.
-- **Forme des informations de la classe.** L'identifiant est fait de lettres
-  minuscules et de chiffres, sans accent, et il est unique. Il est tiré du
-  nom de la classe seul (« cm1cm2 »), décision du porteur du 9 octobre
-  2026 : le nom de l'enseignant, qui le suivait depuis le 8 octobre
-  (« cm1cm2laurent »), est retiré. Conséquence acceptée : un nom de classe
-  courant est vite pris par un autre enseignant ; l'identifiant est alors
-  suivi d'un mot simple de la liste des mots de passe (« cm1cm2tigre »), et
-  de deux chiffres en dernier recours. Des chiffres collés au nom se
-  liraient comme un autre nom de classe (« cm12 ») : ils sont écartés. Une
-  classe créée avant garde son identifiant, jusqu'à ce qu'on la renomme en
-  le changeant. Le mot de passe
+- **Forme des informations de la classe.** L'identifiant est fait de trois
+  à trente lettres minuscules et chiffres, sans accent ni espace, et il est
+  unique entre tous les enseignants. Celui que l'application propose est le
+  nom de la classe seul (« cm1cm2 ») : le nom de l'enseignant, qui le
+  suivait depuis le 8 octobre (« cm1cm2laurent »), est retiré le 9 octobre
+  2026 à la demande du porteur. Une classe créée avant garde son
+  identifiant tant qu'on ne le change pas. Le mot de passe
   est fait de deux mots simples et de deux chiffres, tirés d'une liste sans
   accent ni mot qui prête à confusion. À la saisie, les majuscules et les
   espaces en trop sont ignorés. Le code personnel reste à quatre chiffres ;
@@ -3034,13 +3040,21 @@ règles du 8 ne chiffraient pas :
   adresse réseau, quel que soit le navigateur, lorsqu'un essai de plus y
   est fait, même juste, alors il est refusé pendant cinq minutes ; depuis
   une autre adresse, la classe s'ouvre.
-- **F06-AC84 — Identifiant remplacé avec le nom :** étant donné la classe
-  « CM1-CM2 » de Mme Laurent, ouverte sur un poste, lorsque l'enseignante la
-  renomme « CM2 » en laissant cochée « Changer aussi l'identifiant », alors
-  l'identifiant devient « cm2 », l'ancien est refusé sur un autre
-  poste et le nouveau y ouvre la classe avec le même mot de passe et les
-  mêmes codes ; le poste déjà ouvert le reste. Si elle décoche la case,
-  l'identifiant ne change pas.
+- **F06-AC84 — Identifiant remplacé en renommant la classe :** étant donné
+  la classe « Loups », d'identifiant « loups », ouverte sur un poste,
+  lorsque l'enseignante écrit « Renards » comme nouveau nom, alors la case
+  « Identifiant » propose « renards » ; une fois enregistré, « loups » est
+  refusé sur un autre poste et « renards » y ouvre la classe avec le même
+  mot de passe et les mêmes codes, et le poste déjà ouvert le reste. Si
+  elle clique sur « Garder « loups » », ou si l'identifiant n'était pas
+  tiré du nom, il ne change pas.
+- **F06-AC85 — Identifiant choisi :** étant donné l'enseignant qui crée la
+  classe « CE2 des Écureuils », lorsqu'il regarde la case « Identifiant »,
+  alors elle propose « ce2desecureuils » ; il peut y écrire le sien, mis en
+  minuscules et sans espace à la frappe, et le nom ne le remplace plus.
+  S'il écrit un identifiant déjà pris, rien n'est créé et une phrase le
+  dit, avec un autre en exemple ; avec un identifiant libre, la classe est
+  créée et le porte. Il en va de même en renommant une classe.
 
 **Propositions de la maquette du 6 octobre 2026, sans retour du porteur :**
 la classe dit « Pas de limite d'horaire » tant qu'aucun horaire n'est réglé

@@ -9,7 +9,7 @@ import { Gommette, PlacesVides } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { useMessage } from "@/composants/Messages";
-import { identifiantConvient, identifiantsProposes } from "@/domaine/acces";
+import { formerIdentifiant, identifiantConvient, identifiantPourClasse } from "@/domaine/acces";
 import { libelleAnnee } from "@/domaine/annee";
 import { trier } from "@/domaine/eleves";
 import { libelleRecit } from "@/domaine/projets";
@@ -53,8 +53,10 @@ export function PageClasse({
   const [motDePasse, setMotDePasse] = useState<string | null>(null);
   const [proposition, setProposition] = useState(ancienne);
   const [nom, setNom] = useState(classe.nom);
-  // Cochée d'office : l'identifiant suit le nom, sauf si l'enseignant décoche (9 octobre 2026)
-  const [avecIdentifiant, setAvecIdentifiant] = useState(true);
+  // L'identifiant suit le nouveau nom tant que l'enseignant ne l'a pas écrit lui-même (F06-AC84, AC85)
+  const [identifiant, setIdentifiant] = useState(classe.identifiant);
+  const [identifiantEcrit, setIdentifiantEcrit] = useState(false);
+  const [erreurIdentifiant, setErreurIdentifiant] = useState<string | null>(null);
   const [erreur, setErreur] = useState<string | null>(null);
   const menu = useRef<HTMLDetailsElement>(null);
 
@@ -148,11 +150,28 @@ export function PageClasse({
       setMotDePasse(null);
       dire({ texte: "Le mot de passe de la classe est changé." });
     });
+  const ouvrirRenommer = () => {
+    setNom(classe.nom);
+    setIdentifiant(classe.identifiant);
+    setIdentifiantEcrit(false);
+    setErreur(null);
+    setErreurIdentifiant(null);
+    setOuvert({ sorte: "renommer" });
+  };
+  // L'identifiant suit le nom s'il en était tiré ; celui que l'enseignant a choisi autrement reste
+  const tireDuNom = classe.identifiant.startsWith(identifiantPourClasse(classe.nom));
+  const ecrireNom = (valeur: string) => {
+    setNom(valeur);
+    if (identifiantEcrit || !tireDuNom) return;
+    setErreurIdentifiant(null);
+    setIdentifiant(valeur.trim() && !identifiantConvient(classe.identifiant, valeur) ? identifiantPourClasse(valeur) : classe.identifiant);
+  };
   const renommer = () => {
     setErreur(null);
+    setErreurIdentifiant(null);
     lancer("renommer", async () => {
-      const r = await renommerClasse(classe.id, nom, avecIdentifiant && identifiantPropose !== null);
-      if (!r.ok) return setErreur(r.erreur);
+      const r = await renommerClasse(classe.id, nom, identifiant);
+      if (!r.ok) return r.champ === "identifiant" ? setErreurIdentifiant(r.erreur) : setErreur(r.erreur);
       setOuvert(null);
       routeur.refresh();
       if (r.identifiant) dire({ texte: `L’identifiant de la classe est maintenant « ${r.identifiant} ». Pensez à réimprimer l’affiche.` });
@@ -164,10 +183,6 @@ export function PageClasse({
       if (!r.ok) return echec(r.erreur);
       routeur.push("/classes?message=supprimee");
     });
-
-  // L'identifiant qui irait avec le nom en cours de saisie ; null s'il n'y a rien à changer
-  const identifiantPropose =
-    nom.trim() && !identifiantConvient(classe.identifiant, nom) ? identifiantsProposes(nom, () => 0)[0] : null;
 
   const eleveOuvert = ouvert?.sorte === "eleve" ? classe.eleves.find((e) => e.id === ouvert.id) : undefined;
 
@@ -199,7 +214,7 @@ export function PageClasse({
                 <Icone nom="points" />
               </summary>
               <div className="menu__liste">
-                <button type="button" onClick={() => { fermerMenu(); setNom(classe.nom); setAvecIdentifiant(true); setErreur(null); setOuvert({ sorte: "renommer" }); }}>
+                <button type="button" onClick={() => { fermerMenu(); ouvrirRenommer(); }}>
                   Renommer la classe
                 </button>
                 {!n && !classe.projets.length ? (
@@ -497,7 +512,7 @@ export function PageClasse({
         >
           <label className="champ champ--plein">
             <span>Nom de la classe</span>
-            <input type="text" value={nom} maxLength={60} onChange={(e) => setNom(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") renommer(); }} />
+            <input type="text" value={nom} maxLength={60} onChange={(e) => ecrireNom(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") renommer(); }} />
           </label>
           {erreur ? (
             <p className="erreur" role="alert">
@@ -505,23 +520,39 @@ export function PageClasse({
               {erreur}
             </p>
           ) : null}
-          {identifiantPropose ? (
-            <>
-              <label className={styles.choixIdentifiant}>
-                <input type="checkbox" className="case" checked={avecIdentifiant} onChange={(e) => setAvecIdentifiant(e.target.checked)} />
-                <span>
-                  Changer aussi l’identifiant : <b>{identifiantPropose}</b>
-                </span>
-              </label>
-              <p className={styles.ficheAide}>
-                {avecIdentifiant
-                  ? "L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant."
-                  : `L’identifiant reste « ${classe.identifiant} ».`}
-              </p>
-            </>
-          ) : (
-            <p className={styles.ficheAide}>L’identifiant de la classe ne change pas.</p>
-          )}
+          <label className={`champ champ--plein ${styles.champSuivant}`}>
+            <span>Identifiant</span>
+            <input
+              className={styles.champIdentifiant}
+              type="text"
+              value={identifiant}
+              maxLength={30}
+              autoComplete="off"
+              autoCapitalize="none"
+              spellCheck={false}
+              aria-invalid={erreurIdentifiant ? true : undefined}
+              onChange={(e) => { setIdentifiantEcrit(true); setErreurIdentifiant(null); setIdentifiant(formerIdentifiant(e.target.value)); }}
+              onKeyDown={(e) => { if (e.key === "Enter") renommer(); }}
+            />
+          </label>
+          {erreurIdentifiant ? (
+            <p className="erreur" role="alert">
+              <Icone nom="alerte" />
+              <span>{erreurIdentifiant}</span>
+            </p>
+          ) : null}
+          <p className={styles.ficheAide}>
+            {identifiant === classe.identifiant ? (
+              "L’identifiant de la classe ne change pas."
+            ) : (
+              <>
+                L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.{" "}
+                <button type="button" className="lien" onClick={() => { setIdentifiantEcrit(true); setErreurIdentifiant(null); setIdentifiant(classe.identifiant); }}>
+                  Garder « {classe.identifiant} »
+                </button>
+              </>
+            )}
+          </p>
         </Dialogue>
       ) : null}
     </div>

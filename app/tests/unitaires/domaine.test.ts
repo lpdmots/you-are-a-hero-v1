@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { anneeProposee, libelleAnnee } from "@/domaine/annee";
 import {
-  codePropose, codeValide, identifiantConvient, identifiantsProposes, identifiantValide, motDePassePropose,
+  autreIdentifiant, codePropose, codeValide, formerIdentifiant, identifiantConvient, identifiantPourClasse, identifiantValide, motDePassePropose,
   normaliserIdentifiant, normaliserMotDePasse,
 } from "@/domaine/acces";
 import { MOTS } from "@/domaine/mots";
@@ -97,23 +97,25 @@ describe("Informations de la classe et code (F06.4)", () => {
     expect(normaliserMotDePasse("Tigre  nuage 42 ")).toBe("tigre nuage 42");
   });
 
-  it("propose pour identifiant le nom de la classe seul, en minuscules et chiffres, sans accent ; s'il est pris, un mot le suit", () => {
-    const propositions = identifiantsProposes("CM1-CM2", suite([0, 1, 2]));
-    expect(propositions[0]).toBe("cm1cm2");
-    expect(propositions[1]).toBe(`cm1cm2${MOTS[0]}`);
-    expect(propositions[2]).toBe(`cm1cm2${MOTS[1]}`);
-    expect(propositions[propositions.length - 1]).toMatch(/^cm1cm2[a-z]+\d{2}$/);
-    expect(propositions.every(identifiantValide)).toBe(true);
-    expect(identifiantsProposes("É", suite([5]))[0]).toBe("classee");
-    expect(identifiantsProposes("La classe des grands explorateurs du monde", suite([5])).every(identifiantValide)).toBe(true);
+  it("propose pour identifiant le nom de la classe seul, en minuscules et chiffres, sans accent", () => {
+    expect(identifiantPourClasse("CM1-CM2")).toBe("cm1cm2");
+    expect(identifiantPourClasse("É")).toBe("classee");
+    expect(identifiantValide(identifiantPourClasse("La classe des grands explorateurs du monde"))).toBe(true);
   });
 
-  it("F06-AC84 — un identifiant convient au nom de la classe s'il est l'un de ceux qu'on proposerait", () => {
+  it("F06-AC85 — l'identifiant écrit par l'enseignant prend sa forme à la frappe ; pris, un voisin est suggéré", () => {
+    expect(formerIdentifiant(" Les Écureuils 2 ")).toBe("lesecureuils2");
+    expect(formerIdentifiant("a".repeat(40))).toHaveLength(30);
+    expect(identifiantValide(formerIdentifiant("CM"))).toBe(false);
+    expect(autreIdentifiant("cm2", suite([0]))).toBe(`cm2${MOTS[0]}`);
+    expect(identifiantValide(autreIdentifiant("a".repeat(30), suite([0])))).toBe(true);
+  });
+
+  it("F06-AC84 — un identifiant va déjà avec le nom de la classe s'il en est tiré, seul ou suivi d'un mot simple", () => {
     expect(identifiantConvient("cm1cm2", "CM1-CM2")).toBe(true);
     expect(identifiantConvient(`cm1cm2${MOTS[3]}`, "cm1 cm2")).toBe(true);
-    expect(identifiantConvient(`cm1cm2${MOTS[3]}42`, "CM1-CM2")).toBe(true);
     expect(identifiantConvient("cm1cm2", "CM2")).toBe(false);
-    // Un identifiant d'avant le 9 octobre, qui portait le nom de l'enseignant, ne convient plus
+    // Un identifiant d'avant le 9 octobre, qui portait le nom de l'enseignant, ne va plus avec le nom
     expect(identifiantConvient("cm2laurent", "CM2")).toBe(false);
   });
 

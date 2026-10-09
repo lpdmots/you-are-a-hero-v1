@@ -21,35 +21,35 @@ export const normaliserMotDePasse = (saisie: string): string => saisie.trim().to
 export const identifiantValide = (v: string): boolean => /^[a-z0-9]{3,30}$/.test(v);
 export const codeValide = (v: string): boolean => /^[0-9]{4}$/.test(v);
 
-/** Le nom de la classe, ramené à la forme d'un identifiant : « CM1-CM2 » donne « cm1cm2 ». */
-function baseIdentifiant(nomClasse: string): string {
-  const base = lettresEtChiffres(nomClasse).slice(0, 18);
+/**
+ * Ce que l'enseignant écrit pour l'identifiant, ramené à sa forme au fil de la frappe :
+ * minuscules et chiffres, sans accent ni espace, trente caractères au plus.
+ */
+export const formerIdentifiant = (saisie: string): string => lettresEtChiffres(saisie).slice(0, 30);
+
+/**
+ * L'identifiant proposé pour une classe : son nom seul, sans celui de l'enseignant
+ * (décisions du 9 octobre 2026). « CM1-CM2 » donne « cm1cm2 ». L'enseignant peut
+ * toujours en écrire un autre ; s'il est pris, c'est lui qui choisit.
+ */
+export function identifiantPourClasse(nomClasse: string): string {
+  const base = lettresEtChiffres(nomClasse).slice(0, 30);
   return base.length < 3 ? `classe${base}` : base;
 }
 
-/**
- * Identifiants proposés pour une classe, du plus simple au plus sûr d'être libre. Le nom
- * de la classe seul, sans celui de l'enseignant (décision du 9 octobre 2026) : « cm1cm2 ».
- * S'il est pris, un mot simple le suit, « cm1cm2tigre » : des chiffres collés au nom
- * d'une classe se liraient comme un autre nom (« cm12 »). En dernier, deux chiffres après le mot.
- */
-export function identifiantsProposes(nomClasse: string, tirer: Tirage): string[] {
-  const base = baseIdentifiant(nomClasse);
-  const propositions = [base];
-  for (let k = 0; k < 20; k += 1) propositions.push(`${base}${MOTS[tirer(MOTS.length)]}`);
-  for (let k = 0; k < 10; k += 1) propositions.push(`${base}${MOTS[tirer(MOTS.length)]}${10 + tirer(90)}`);
-  return propositions;
-}
+/** Un identifiant voisin à suggérer quand celui-ci est pris : « cm2tigre ». */
+export const autreIdentifiant = (identifiant: string, tirer: Tirage): string =>
+  `${identifiant.slice(0, 20)}${MOTS[tirer(MOTS.length)]}`;
 
 /**
- * Vrai si l'identifiant est déjà l'un de ceux que l'on proposerait pour ce nom de
- * classe : « cm2 », « cm2tigre », « cm2tigre42 ». Il n'y a alors rien à changer.
+ * Vrai si l'identifiant va déjà avec ce nom de classe : « cm2 », ou « cm2 » suivi d'un
+ * mot simple. Quand la classe change de nom, il n'y a alors rien à proposer d'autre.
  */
 export function identifiantConvient(identifiant: string, nomClasse: string): boolean {
-  const base = baseIdentifiant(nomClasse);
+  const base = identifiantPourClasse(nomClasse);
   if (!identifiant.startsWith(base)) return false;
   const suite = identifiant.slice(base.length);
-  return suite === "" || (MOTS as readonly string[]).includes(suite.replace(/\d{2}$/, ""));
+  return suite === "" || (MOTS as readonly string[]).includes(suite);
 }
 
 /** « tigre nuage 42 » : deux mots différents, deux chiffres de 10 à 99. */
