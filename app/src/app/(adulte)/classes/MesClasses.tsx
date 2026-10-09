@@ -48,6 +48,7 @@ export function MesClasses({
   }
 
   const creer = () => {
+    if (enCours) return;
     if (!nom.trim()) {
       setErreur("Donnez un nom à la classe.");
       return;

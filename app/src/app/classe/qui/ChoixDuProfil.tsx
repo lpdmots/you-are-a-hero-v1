@@ -136,6 +136,8 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
                   aria-label={`Chiffre ${i + 1}`}
                   aria-invalid={erreur ? true : undefined}
                   value={c}
+                  // Revenir sur une case la sélectionne : le chiffre tapé remplace l'ancien
+                  onFocus={(e) => e.target.select()}
                   onChange={(e) => taper(i, e.target.value)}
                   onKeyDown={(e) => {
                     if (e.key === "Backspace" && !chiffres[i] && i > 0) cases.current[i - 1]?.focus();

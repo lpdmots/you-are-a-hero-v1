@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { estOnglet } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
 
 export type CreationProjet = { organisation: "classe" | "personnel"; recit: "choix" | "classique"; titre: string; classeId: string | null };
@@ -50,4 +51,18 @@ export async function choisirClasseDuProjet(projetId: string, classeId: string):
   if (error || !data?.length) return { erreur: "La classe n’a pas pu être choisie." };
   revalidatePath("/", "layout");
   return {};
+}
+
+/**
+ * Le dernier projet ouvert et son dernier onglet, tenus par le compte et non par le
+ * navigateur (F06-AC53). La base ne laisse noter qu'un projet à soi.
+ */
+export async function noterProjetOuvert(projetId: string, onglet: string): Promise<void> {
+  const enseignant = await exigerEnseignant();
+  if (!/^[0-9a-f-]{36}$/i.test(projetId) || !estOnglet(onglet)) return;
+  const { data } = await enseignant.supabase.from("projets").update({ dernier_onglet: onglet }).eq("id", projetId).select("id");
+  if (!data?.length) return;
+  if (enseignant.dernierProjetId !== projetId) {
+    await enseignant.supabase.from("enseignants").update({ dernier_projet_id: projetId }).eq("id", enseignant.id);
+  }
 }

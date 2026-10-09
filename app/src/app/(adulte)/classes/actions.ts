@@ -3,7 +3,7 @@
 import { randomInt, randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { codePropose, codeValide, identifiantsProposes, motDePassePropose } from "@/domaine/acces";
-import { memePrenom, type Personne } from "@/domaine/eleves";
+import { memePrenom, prenomEnDouble, type Personne } from "@/domaine/eleves";
 import { plageValide, type Plage } from "@/domaine/horaires";
 import { MOTS } from "@/domaine/mots";
 import { exigerEnseignant, type Enseignant } from "@/serveur/adulte";
@@ -260,7 +260,12 @@ export async function reglerHoraires(classeId: string, limites: boolean, plages:
  * avec leur code, les nouveaux reçoivent un profil et un code proposé. Rien n'est
  * créé avant cette confirmation (F01-AC11).
  */
-export async function inscrireEleves(classeId: string, connus: string[], nouveaux: Personne[]): Promise<Fait<{ nombre: number }>> {
+export async function inscrireEleves(
+  classeId: string,
+  connus: string[],
+  nouveaux: Personne[],
+  nomsDonnes: { id: string; nom: string }[] = [],
+): Promise<Fait<{ nombre: number }>> {
   const enseignant = await exigerEnseignant();
   const classe = await classeEnCours(enseignant, classeId);
   if (!classe) return echec("Cette classe n’existe pas, ou son année est terminée.");
@@ -271,16 +276,22 @@ export async function inscrireEleves(classeId: string, connus: string[], nouveau
   const lignes = nouveaux.map((n) => ({ prenom: propre(n.prenom).slice(0, 40), nom: propre(n.nom ?? "").slice(0, 60) }));
   if (lignes.some((l) => !l.prenom)) return echec("Chaque élève a un prénom.");
 
-  // Deux fois le même prénom : un nouveau sans nom ne s'inscrit pas (F01-AC21)
+  // Deux fois le même prénom : sans nom pour les distinguer, on n'inscrit pas (F01-AC21).
+  // La règle vaut pour les nouveaux comme pour les profils connus que l'on réinscrit.
   const { data: profils } = connus.length
     ? await enseignant.supabase.from("eleves").select("id, prenom, nom").in("id", connus)
     : { data: [] as { id: string; prenom: string; nom: string | null }[] };
-  const presents: Personne[] = [...classe.eleves, ...(profils ?? [])];
-  for (const [rang, ligne] of lignes.entries()) {
-    if (ligne.nom) continue;
-    const autres = [...presents, ...lignes.filter((_, i) => i !== rang).map((l) => ({ prenom: l.prenom, nom: l.nom || null }))];
-    if (autres.some((a) => memePrenom(a, { prenom: ligne.prenom, nom: null }))) {
-      return echec(`Deux ${ligne.prenom} dans la classe : écrivez le nom du nouveau, ou son initiale.`);
+  const donnes = new Map(nomsDonnes.filter((n) => connus.includes(n.id)).map((n) => [n.id, propre(n.nom).slice(0, 60)]));
+  const reinscrits = (profils ?? []).map((p) => ({ id: p.id, prenom: p.prenom, nom: p.nom ?? (donnes.get(p.id) || null) }));
+  const double = prenomEnDouble(classe.eleves, [...reinscrits, ...lignes.map((l) => ({ prenom: l.prenom, nom: l.nom || null }))]);
+  if (double) return echec(`Deux ${double} dans la classe : écrivez le nom de l’un des deux, ou son initiale.`);
+
+  // Le nom donné pendant la vérification à un profil qui n'en avait pas est gardé avec lui
+  for (const p of profils ?? []) {
+    const nom = donnes.get(p.id);
+    if (!p.nom && nom) {
+      const { error } = await enseignant.supabase.from("eleves").update({ nom }).eq("id", p.id).is("nom", null);
+      if (error) return echec("Les élèves n’ont pas pu être inscrits. Réessayez.");
     }
   }
 

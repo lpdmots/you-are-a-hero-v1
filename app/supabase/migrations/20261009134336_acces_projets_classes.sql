@@ -250,6 +250,8 @@ $$;
 create trigger enseignant_a_la_creation
   after insert on auth.users
   for each row execute function prive.creer_enseignant();
+-- Les comptes créés avant cette migration reçoivent leur ligne eux aussi
+insert into public.enseignants (id) select u.id from auth.users u on conflict (id) do nothing;
 
 -- Classes : ce qui ne change pas, classe terminée en lecture, postes fermés à la fin d'année
 create function prive.classes_avant_maj() returns trigger

@@ -137,6 +137,9 @@ test("F06-AC53 — reprendre sans choisir : le dernier projet, à son dernier on
   await repondre(page, { qui: "Ma classe", recit: "À choix", titre: "Les passeurs de brume" });
   await page.getByRole("navigation", { name: "Sections du projet" }).getByRole("link", { name: "Suivi" }).click();
   await expect(page).toHaveURL(/\/suivi$/);
+  await expect(page.getByRole("link", { name: "Suivi", exact: true })).toHaveAttribute("aria-current", "page");
+  // L'onglet se note une fois la page affichée
+  await page.waitForLoadState("networkidle");
   const suivi = new URL(page.url()).pathname;
 
   // Le lendemain, depuis un autre ordinateur : la mémoire tient au compte, non au navigateur
@@ -156,7 +159,16 @@ test("F06-AC53 — reprendre sans choisir : le dernier projet, à son dernier on
   await ailleurs.page.getByRole("link", { name: "Ouvrir La cabane du bout du monde" }).click();
   await expect(ailleurs.page).toHaveURL(/\/preparation$/);
   await expect(ailleurs.page.getByRole("navigation", { name: "Espace adulte" }).getByRole("link", { name: "La cabane du bout du monde" })).toBeVisible();
+  await ailleurs.page.waitForLoadState("networkidle");
   await ailleurs.contexte.close();
+
+  // Avoir seulement vu la carte d'un projet dans « Mes projets » ne le fait pas devenir le dernier ouvert
+  await page.getByRole("link", { name: "Mes projets" }).click();
+  await expect(page.getByRole("link", { name: "Continuer La cabane du bout du monde" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Ouvrir Les passeurs de brume" })).toBeVisible();
+  await page.waitForLoadState("networkidle");
+  await page.reload();
+  await expect(page.getByRole("link", { name: "Continuer La cabane du bout du monde" })).toBeVisible();
 
   // Un projet qui n'est pas à soi n'existe pas
   const intrus = await creerCompte();

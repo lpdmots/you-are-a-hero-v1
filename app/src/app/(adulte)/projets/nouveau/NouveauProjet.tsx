@@ -97,7 +97,7 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
   }, [etape]);
 
   const creer = () => {
-    if (!qui || !recit) return;
+    if (!qui || !recit || enCours) return;
     setErreur(null);
     lancer(async () => {
       const resultat = await creerProjet({ organisation: qui, recit, titre, classeId: qui === "classe" && classe ? classe : null });

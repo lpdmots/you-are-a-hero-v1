@@ -37,9 +37,9 @@ const dateLongue = (iso: string): string =>
 
 /** Une classe : ses élèves à gauche, ses trois fiches à droite (F01.1, F06.4). */
 export function PageClasse({
-  classe, adresse, aideMasquee, aideVue, ancienne, message,
+  classe, adresse, aideMasquee, ancienne, message,
 }: {
-  classe: Classe; adresse: string; aideMasquee: boolean; aideVue: boolean; ancienne: Ancienne | null; message: string | null;
+  classe: Classe; adresse: string; aideMasquee: boolean; ancienne: Ancienne | null; message: string | null;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -67,7 +67,8 @@ export function PageClasse({
     return (
       <div className="page">
         <h1 className="vh">Mes classes</h1>
-        <AideClasses dejaVue={aideVue || true} masquee={aideMasquee} onCommencer={() => setAide(false)} />
+        {/* Rouverte par « Aide » : elle a déjà été vue */}
+        <AideClasses dejaVue masquee={aideMasquee} onCommencer={() => setAide(false)} />
       </div>
     );
   }

@@ -62,6 +62,7 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
         classeId,
         lignes.filter((l) => l.type === "connu").map((l) => (l.type === "connu" ? l.eleve.id : "")),
         lignes.filter((l) => l.type === "neuf").map((l) => ({ prenom: prenomDe(l), nom: nomDe(l) || null })),
+        lignes.flatMap((l) => (l.type === "connu" && l.nomDonne ? [{ id: l.eleve.id, nom: l.eleve.nom ?? "" }] : [])),
       );
       if (!r.ok) {
         setErreur(r.erreur);
@@ -180,22 +181,27 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
         );
       }
       if (p.sorte !== "double") return null;
+      const ligne = p.ligne;
+      const prenom = prenomDe(ligne);
+      const neuf = ligne.type === "neuf";
       const autre: Eleve = { id: "autre", prenom: p.autre.prenom, nom: p.autre.nom, couleur: 0 };
-      const lu = nomPourEleves(autre, [autre, { id: "neuf", prenom: p.ligne.prenom, nom: null, couleur: 0 }]);
+      const lu = nomPourEleves(autre, [autre, { id: "neuf", prenom, nom: null, couleur: 0 }]);
+      const donner = (nom: string) =>
+        remplacer(p.rang, ligne.type === "neuf" ? { ...ligne, nom } : { ...ligne, eleve: { ...ligne.eleve, nom }, nomDonne: true });
       return (
-        <li key={p.ligne.cle} className={styles.point}>
+        <li key={ligne.type === "neuf" ? ligne.cle : ligne.eleve.id} className={styles.point}>
           <p>
-            <b>Deux {p.ligne.prenom} dans la classe.</b> Écrivez le nom du nouveau, ou son initiale : les élèves liront « {lu} » et «{" "}
-            {p.ligne.prenom} D. ».
+            <b>Deux {prenom} dans la classe.</b> Écrivez le nom {neuf ? "du nouveau" : "de l’un des deux"}, ou son initiale : les
+            élèves liront « {lu} » et « {prenom} D. ».
           </p>
           <label className={styles.pointChamp}>
-            Nom du nouveau {p.ligne.prenom}
+            {neuf ? `Nom du nouveau ${prenom}` : `Nom de ${prenom}, déjà connu`}
             <input
               className="pchamp"
               type="text"
               placeholder="Durand, ou D."
               maxLength={60}
-              onBlur={(e) => { const v = e.target.value.trim(); if (v) remplacer(p.rang, { ...p.ligne, nom: v }); }}
+              onBlur={(e) => { const v = e.target.value.trim(); if (v) donner(v); }}
               onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
             />
           </label>

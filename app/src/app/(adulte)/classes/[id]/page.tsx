@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cookies, headers } from "next/headers";
+import { headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { libelleAnnee } from "@/domaine/annee";
 import { exigerEnseignant } from "@/serveur/adulte";
@@ -30,7 +30,6 @@ export default async function UneClasse({ params, searchParams }: Props) {
       classe={classe}
       adresse={`${site.replace(/^https?:\/\//, "")}/classe`}
       aideMasquee={enseignant.aidesMasquees.includes("classes")}
-      aideVue={(await cookies()).get("aide-classes")?.value === "vue"}
       ancienne={ancienne ? { id: ancienne.id, nom: ancienne.nom, annee: libelleAnnee(ancienne.anneeDebut), projets: ancienne.projets.length } : null}
       message={
         message === "creee"

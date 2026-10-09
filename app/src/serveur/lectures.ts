@@ -1,4 +1,5 @@
 import "server-only";
+import { cache } from "react";
 import type { Enseignant } from "./adulte";
 import type { Eleve, ProfilConnu } from "@/domaine/eleves";
 import type { Plage } from "@/domaine/horaires";
@@ -53,12 +54,15 @@ export async function mesProjets(e: Enseignant): Promise<Projet[]> {
   return (data ?? []).map(projetDepuis);
 }
 
-export async function projetDe(e: Enseignant, id: string): Promise<Projet | null> {
-  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+const UUID = /^[0-9a-f-]{36}$/i;
+
+/** Un projet de l'adulte ; lu une seule fois par page, quel que soit le nombre de demandes. */
+export const projetDe = cache(async (e: Enseignant, id: string): Promise<Projet | null> => {
+  if (!UUID.test(id)) return null;
   const { data, error } = await e.supabase.from("projets").select(SELECT_PROJET).eq("id", id).maybeSingle();
   if (error) throw new Error(error.message);
   return data ? projetDepuis(data) : null;
-}
+});
 
 export type EleveInscrit = Eleve & { inscriptionId: string };
 export type Classe = {
@@ -116,19 +120,19 @@ export async function mesClasses(e: Enseignant): Promise<Classe[]> {
   return ((data ?? []) as unknown as LigneClasse[]).map(classeDepuis);
 }
 
-export async function classeDe(e: Enseignant, id: string): Promise<Classe | null> {
-  if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
+export const classeDe = cache(async (e: Enseignant, id: string): Promise<Classe | null> => {
+  if (!UUID.test(id)) return null;
   const { data, error } = await e.supabase.from("classes").select(SELECT_CLASSE).eq("id", id).maybeSingle();
   if (error) throw new Error(error.message);
   return data ? classeDepuis(data as unknown as LigneClasse) : null;
-}
+});
 
 /**
  * Profils déjà connus (F01-AC06) : les élèves des autres classes de l'enseignant qui
  * ne sont pas inscrits dans celle-ci. Un élève retiré de toutes ses classes n'est
  * plus proposé (F01-AC23) ; à l'étape 4, celui qui a écrit le restera (F01-AC22).
  */
-export async function profilsConnus(e: Enseignant, classe: Classe, toutes: Classe[]): Promise<ProfilConnu[]> {
+export function profilsConnus(classe: Classe, toutes: Classe[]): ProfilConnu[] {
   const ici = new Set(classe.eleves.map((x) => x.id));
   const vus = new Set<string>();
   const connus: ProfilConnu[] = [];

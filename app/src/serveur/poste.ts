@@ -112,7 +112,9 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
   await service.rpc("noter_entree_juste", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
   const jeton = nouveauJeton();
   const { data: posteId, error } = await service.rpc("ouvrir_poste", { p_classe: classe.id, p_jeton_hash: empreinte(jeton) });
-  if (error || !posteId) return { ok: false, raison: "faux" };
+  if (error) throw new Error(`La classe n'a pas pu être ouverte sur ce poste : ${error.message}`);
+  // L'année a pu être terminée à l'instant : la classe ne s'ouvre plus (F01-AC18)
+  if (!posteId) return { ok: false, raison: "faux" };
   // Le cookie dure un peu plus que l'accès : c'est la base qui ferme la classe à 3 h.
   (await cookies()).set(COOKIE_POSTE, jeton, optionsCookie(60 * 60 * 26));
   return { ok: true };

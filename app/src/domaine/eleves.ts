@@ -56,12 +56,13 @@ export const lireLignes = (texte: string): Personne[] =>
 export type ProfilConnu = Eleve & { de: string };
 
 export type LigneLot =
-  | { type: "connu"; eleve: ProfilConnu }
+  // nomDonne : le nom, ou son initiale, écrit pendant la vérification pour un profil qui n'en avait pas
+  | { type: "connu"; eleve: ProfilConnu; nomDonne?: boolean }
   | { type: "neuf"; cle: string; prenom: string; nom: string; meme: ProfilConnu | null };
 
 export type PointARegler =
   | { sorte: "meme"; rang: number; ligne: Extract<LigneLot, { type: "neuf" }> }
-  | { sorte: "double"; rang: number; ligne: Extract<LigneLot, { type: "neuf" }>; autre: Personne };
+  | { sorte: "double"; rang: number; ligne: LigneLot; autre: Personne };
 
 /**
  * Récapitulatif d'un lot : les profils connus cochés, puis les nouvelles lignes.
@@ -90,20 +91,34 @@ const personneDe = (l: LigneLot): Personne =>
 
 /**
  * Ce qui reste à régler avant d'inscrire : un nom déjà connu, ou deux fois le même
- * prénom dans la classe sans nom pour les distinguer (F01-AC21).
+ * prénom dans la classe sans nom pour les distinguer (F01-AC21). La règle vaut pour un
+ * nouvel élève comme pour un profil connu que l'on réinscrit.
  */
 export function pointsARegler(inscrits: readonly Personne[], lignes: readonly LigneLot[]): PointARegler[] {
   const points: PointARegler[] = [];
   lignes.forEach((ligne, rang) => {
-    if (ligne.type !== "neuf") return;
-    if (ligne.meme) {
+    if (ligne.type === "neuf" && ligne.meme) {
       points.push({ sorte: "meme", rang, ligne });
       return;
     }
-    if (ligne.nom.trim()) return;
+    const personne = personneDe(ligne);
+    if (personne.nom?.trim()) return;
     const autres = [...inscrits, ...lignes.filter((_, i) => i !== rang).map(personneDe)];
-    const autre = autres.find((a) => memePrenom(a, ligne));
+    const autre = autres.find((a) => memePrenom(a, personne));
     if (autre) points.push({ sorte: "double", rang, ligne, autre });
   });
   return points;
+}
+
+/**
+ * Le prénom porté deux fois sans nom pour le distinguer, parmi ceux que l'on ajoute ;
+ * null si tout est en ordre. Le serveur refuse l'inscription sur cette même règle.
+ */
+export function prenomEnDouble(inscrits: readonly Personne[], ajoutes: readonly Personne[]): string | null {
+  for (const [rang, personne] of ajoutes.entries()) {
+    if (personne.nom?.trim()) continue;
+    const autres = [...inscrits, ...ajoutes.filter((_, i) => i !== rang)];
+    if (autres.some((a) => memePrenom(a, personne))) return personne.prenom;
+  }
+  return null;
 }

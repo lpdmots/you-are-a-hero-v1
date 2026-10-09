@@ -5,7 +5,7 @@ import {
   normaliserIdentifiant, normaliserMotDePasse,
 } from "@/domaine/acces";
 import { MOTS } from "@/domaine/mots";
-import { construireLot, lireLignes, nomPourEleves, pointsARegler, type ProfilConnu } from "@/domaine/eleves";
+import { construireLot, lireLignes, nomPourEleves, pointsARegler, prenomEnDouble, type ProfilConnu } from "@/domaine/eleves";
 import { ecrireHeure, finDePlage, lireHeure, prochaineOuverture, textePlage, travailOuvert, type Plage } from "@/domaine/horaires";
 import { ongletsDe } from "@/domaine/projets";
 import { de } from "@/domaine/texte";
@@ -51,6 +51,18 @@ describe("Prénoms et inscription en lot (F01.1)", () => {
     expect(points).toHaveLength(1);
     expect(points[0]).toMatchObject({ sorte: "double", rang: 0 });
     expect(pointsARegler([{ prenom: "Lucas", nom: "Bernard" }], construireLot([], new Set(), "Lucas Morel"))).toEqual([]);
+  });
+
+  it("F01-AC21 — la règle vaut aussi pour deux profils connus de même prénom, sans nom", () => {
+    const connus = [connu("p1", "Lucas", null), { ...connu("p2", "Lucas", null), de: "CE2 · 2024-2025" }, connu("p3", "Alice", null)];
+    const lignes = construireLot(connus, new Set(["p1", "p2", "p3"]), "");
+    expect(pointsARegler([], lignes).map((p) => [p.sorte, p.rang])).toEqual([["double", 0], ["double", 1]]);
+    // Un nom donné à l'un des deux suffit à les distinguer
+    const regle = lignes.map((l, i) => (i === 0 && l.type === "connu" ? { ...l, eleve: { ...l.eleve, nom: "B." }, nomDonne: true } : l));
+    expect(pointsARegler([], regle).map((p) => p.rang)).toEqual([1]);
+    expect(prenomEnDouble([], [{ prenom: "Lucas", nom: null }, { prenom: "Lucas", nom: null }])).toBe("Lucas");
+    expect(prenomEnDouble([{ prenom: "Lucas", nom: "Bernard" }], [{ prenom: "lucas", nom: null }])).toBe("lucas");
+    expect(prenomEnDouble([{ prenom: "Lucas", nom: null }], [{ prenom: "Lucas", nom: "Morel" }, { prenom: "Alice", nom: null }])).toBeNull();
   });
 
   it("F01-AC12 — un nom déjà connu est signalé, jamais fusionné d'office", () => {

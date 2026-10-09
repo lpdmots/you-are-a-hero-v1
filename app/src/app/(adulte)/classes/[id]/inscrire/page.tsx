@@ -16,7 +16,7 @@ export default async function PageInscrire({ params }: { params: Promise<{ id: s
   if (!classe) notFound();
   // Une classe dont l'année est terminée ne reçoit pas d'élève (F01-AC26)
   if (!classe.enCours) redirect(`/classes/${classe.id}`);
-  const connus = await profilsConnus(enseignant, classe, await mesClasses(enseignant));
+  const connus = profilsConnus(classe, await mesClasses(enseignant));
   return (
     <div className="page">
       <nav className="fil">

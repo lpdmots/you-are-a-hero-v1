@@ -35,14 +35,6 @@ export default async function PageProjet({ params, searchParams }: Props) {
   const projet = await projetDe(enseignant, id);
   if (!projet || !estOnglet(onglet) || !ongletsDe(projet.organisation).includes(onglet)) notFound();
 
-  // La mémoire du dernier projet et de son dernier onglet tient au compte, non au navigateur (F06-AC53)
-  if (projet.dernierOnglet !== onglet) {
-    await enseignant.supabase.from("projets").update({ dernier_onglet: onglet }).eq("id", projet.id);
-  }
-  if (enseignant.dernierProjetId !== projet.id) {
-    await enseignant.supabase.from("enseignants").update({ dernier_projet_id: projet.id }).eq("id", enseignant.id);
-  }
-
   const classes =
     projet.organisation === "classe"
       ? (await mesClasses(enseignant))

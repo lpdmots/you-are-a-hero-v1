@@ -42,7 +42,7 @@ async function principal() {
       process.exit(1);
     }
     console.log("Schéma de l'application…");
-    lancer("npx", ["supabase", "db", "push", "--db-url", adresse, "--include-all"]);
+    lancer("npx", ["supabase", "db", "push", "--db-url", adresse, "--include-all", "--yes"]);
   } else {
     const etat = execFileSync("npx", ["supabase", "status", "-o", "env"], { cwd: racine, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"], env });
     adresse = etat.match(/^DB_URL="?(.*?)"?$/m)?.[1] ?? "";
@@ -51,7 +51,7 @@ async function principal() {
       process.exit(1);
     }
     console.log("Base locale remise à zéro, au schéma de l'application…");
-    lancer("npx", ["supabase", "db", "reset", "--local"]);
+    lancer("npx", ["supabase", "db", "reset", "--local", "--yes"]);
   }
 
   console.log("Chargement des données…");
