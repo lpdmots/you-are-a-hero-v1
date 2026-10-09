@@ -5,7 +5,7 @@ import { EntreeIllustree } from "@/composants/EntreeIllustree";
 import { etatDuPoste } from "@/serveur/poste";
 import { OuvrirLaClasse } from "./OuvrirLaClasse";
 
-export const metadata: Metadata = { title: "Bienvenue dans la classe" };
+export const metadata: Metadata = { title: "Bienvenue dans ta classe" };
 
 /** Entrée des élèves, première étape : ouvrir la classe sur cet ordinateur (F06-AC43). */
 export default async function EntreeDesEleves() {
@@ -13,7 +13,7 @@ export default async function EntreeDesEleves() {
   if (poste) redirect(poste.inscriptionId ? "/travail" : "/classe/qui");
   return (
     <EntreeIllustree
-      titre="Bienvenue dans la classe"
+      titre="Bienvenue dans ta classe"
       pied={
         <>
           Vous enseignez dans cette classe ? <Link href="/entree">Entrée des enseignants</Link>
