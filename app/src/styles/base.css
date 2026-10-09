@@ -93,6 +93,10 @@ button {
 
 /* Impression : seules les feuilles marquées « a-imprimer » sortent */
 @media print {
+  html {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
   body {
     background: #fff;
   }
