@@ -52,7 +52,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
         </div>
         <div>
           <h1>{projet.titre}</h1>
-          <p className={styles.meta}>
+          <div className={styles.meta}>
             {projet.organisation === "personnel" ? (
               "Projet personnel"
             ) : (
@@ -70,7 +70,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
             )}
             {" · "}
             {libelleRecit(projet.recit)}
-          </p>
+          </div>
         </div>
         <nav className={styles.onglets} aria-label="Sections du projet">
           {ongletsDe(projet.organisation).map((o) => (
