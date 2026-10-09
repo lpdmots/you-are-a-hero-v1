@@ -1,0 +1,85 @@
+.barre {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  height: 58px;
+  padding: 0 24px;
+  background: var(--feuille);
+  border-bottom: 1px solid var(--trait);
+}
+.nav {
+  display: flex;
+  gap: 20px;
+  min-width: 0;
+}
+.nav a {
+  color: var(--graphite-2);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: var(--t-s);
+  padding: 18px 0 16px;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.nav a[aria-current] {
+  color: var(--graphite);
+  border-bottom-color: var(--canard);
+}
+.nav a.projet {
+  max-width: 30ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 800;
+  color: var(--graphite);
+}
+.droite {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.identite {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 99px;
+  background: none;
+  font-weight: 600;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.identite:hover {
+  background: var(--feuille-2);
+}
+.nom {
+  max-width: 24ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: 720px) {
+  .barre {
+    gap: 12px;
+    padding: 0 12px;
+  }
+  .nav {
+    gap: 14px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav a.projet {
+    max-width: 11ch;
+  }
+  .nom {
+    display: none;
+  }
+  .identite {
+    padding: 4px;
+  }
+}

@@ -1,0 +1,22 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--graphite);
+  text-decoration: none;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.logo:hover {
+  color: var(--graphite);
+}
+.logo svg {
+  width: 28px;
+  height: 28px;
+}
+@media (max-width: 720px) {
+  .logo span {
+    display: none;
+  }
+}

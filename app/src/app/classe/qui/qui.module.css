@@ -1,0 +1,190 @@
+.page {
+  padding-top: 0;
+}
+.tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 30px 0 20px;
+}
+.classe {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--graphite-2);
+  font-weight: 600;
+}
+.tete h1 {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-top: 4px;
+}
+.grille {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 24px;
+  align-items: start;
+}
+.porteManteaux {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.porteManteau {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 0;
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1px var(--trait),
+    0 1px 2px rgba(0, 0, 0, 0.04);
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+.porteManteau:hover {
+  box-shadow: inset 0 0 0 1.5px var(--graphite-3);
+}
+.porteManteau.choisi {
+  box-shadow: inset 0 0 0 2.5px var(--canard);
+  background: var(--canard-pale);
+}
+.nom {
+  font-family: var(--f-main);
+  font-size: 1.12rem;
+  line-height: 1.7;
+}
+.personne {
+  color: var(--graphite-2);
+}
+.code {
+  position: sticky;
+  top: 20px;
+  display: grid;
+  gap: 14px;
+  justify-items: center;
+  padding: 24px;
+  border-radius: 16px;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  text-align: center;
+}
+.qui {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.qui :global(.main) {
+  font-size: 1.5rem;
+  line-height: 1.7;
+}
+.code h2 {
+  font-size: var(--t-l);
+  font-weight: 800;
+}
+.cases {
+  display: flex;
+  gap: 10px;
+}
+/* Les chiffres que l'élève tape : un zéro sans barre (F06.4, 7 octobre 2026) */
+.cases input {
+  width: 52px;
+  height: 60px;
+  text-align: center;
+  font: inherit;
+  font-family: var(--f-chiffres);
+  font-size: 1.6rem;
+  font-weight: 800;
+  border-radius: 10px;
+  border: 1.5px solid var(--trait-fort);
+  background: var(--feuille-2);
+  color: var(--graphite);
+  /* Le code ne se lit pas par-dessus l'épaule, sans que le navigateur propose de le retenir */
+  -webkit-text-security: disc;
+}
+.cases input[aria-invalid="true"] {
+  border-color: #c9482e;
+  background: #fdecea;
+}
+.codeVide {
+  min-height: 236px;
+  align-content: center;
+  background: transparent;
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+  color: var(--graphite-2);
+}
+.codeVide p {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.erreur {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 280px;
+  text-align: left;
+  color: #8c2a14;
+  font-weight: 600;
+}
+.erreur :global(.ic) {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+}
+.quitter {
+  position: relative;
+}
+.bulle {
+  position: absolute;
+  z-index: 6;
+  right: 0;
+  top: calc(100% + 8px);
+  width: min(330px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow:
+    var(--ombre-panneau),
+    inset 0 0 0 1px var(--trait);
+  display: grid;
+  gap: 12px;
+  text-align: left;
+}
+.bulle div {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+@media (max-width: 1060px) {
+  .grille {
+    grid-template-columns: 1fr;
+  }
+  .code {
+    position: static;
+    order: -1;
+  }
+}
+@media (max-width: 720px) {
+  .tete h1 {
+    font-size: 1.6rem;
+  }
+  .porteManteaux {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .codeVide {
+    display: none;
+  }
+}

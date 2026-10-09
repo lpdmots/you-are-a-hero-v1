@@ -1,0 +1,52 @@
+/* Jetons du système « Cahiers d'aventure » (docs/design.md). Une couleur, un rôle. */
+:root {
+  --bureau: #f1f2ee; /* fond de l'espace adulte */
+  --feuille: #ffffff; /* surfaces de lecture et d'écriture */
+  --feuille-2: #f8f9f6;
+  --trait: #dcdfd8;
+  --trait-fort: #c2c7bf;
+  --graphite: #1e2226;
+  --graphite-2: #4a5157;
+  --graphite-3: #636b72;
+  --canard: #0b6a73; /* bouton principal, liens, ce qui est coché */
+  --canard-fonce: #07525a;
+  --canard-pale: #e1f0ef;
+  --bristol: #e8a0a9; /* filet rose des fiches */
+  --marge: #efa9a9; /* marge rouge de la copie */
+
+  /* États : bleu « En cours », ambre « attend », brique « à refaire ou bloque », vert « fait », violet « Prête » */
+  --e-cours: #34499a;
+  --e-cours-f: #e7ebfa;
+  --e-valider: #7e5200;
+  --e-valider-f: #ffefc2;
+  --e-reprendre: #a2331a;
+  --e-reprendre-f: #fce4db;
+  --e-valide: #2b6531;
+  --e-valide-f: #e1f0dd;
+  --e-prete: #643a8a;
+  --e-prete-f: #efe6f7;
+  --bloque: #a2331a;
+  --bloque-f: #fce4db;
+
+  /* Trois voix : l'outil, le récit, la main de l'élève */
+  --f-ui: var(--police-outil), "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-code: var(--police-code), ui-monospace, "SF Mono", monospace;
+  --f-main: var(--police-main), "Segoe Script", cursive;
+  --f-recit: var(--police-recit), Georgia, serif;
+  /* Chiffres que l'élève lit ou tape : un zéro sans barre (F06.4) */
+  --f-chiffres: var(--police-chiffres), var(--f-ui);
+
+  --t-xs: 0.78rem;
+  --t-s: 0.875rem;
+  --t-m: 1rem;
+  --t-l: 1.125rem;
+  --t-xl: 1.375rem;
+  --t-2xl: 1.75rem;
+  --t-3xl: 2.25rem;
+  --r-s: 6px;
+  --r-m: 10px;
+  --r-l: 14px;
+  --ombre-cahier: 0 1px 1px rgba(30, 40, 38, 0.06), 0 6px 16px -6px rgba(30, 40, 38, 0.18);
+  --ombre-panneau: 0 12px 40px -12px rgba(20, 30, 30, 0.28), 0 2px 6px rgba(20, 30, 30, 0.06);
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}

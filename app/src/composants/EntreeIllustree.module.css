@@ -1,0 +1,53 @@
+.entree {
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+}
+.image {
+  position: relative;
+  min-height: 240px;
+}
+.image img {
+  object-fit: cover;
+}
+.carte {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+  padding: 48px clamp(24px, 5vw, 72px);
+  background: var(--feuille);
+}
+.carte form {
+  display: grid;
+  gap: 14px;
+}
+.marque {
+  font-weight: 800;
+  color: var(--canard-fonce);
+}
+.carte h1 {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+.aide {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+@media (max-width: 720px) {
+  .entree {
+    grid-template-columns: minmax(0, 1fr);
+    min-height: 0;
+  }
+  .image {
+    aspect-ratio: 16 / 7;
+    min-height: 0;
+  }
+  .carte {
+    padding: 24px 16px 32px;
+  }
+  .carte h1 {
+    font-size: 1.6rem;
+  }
+}

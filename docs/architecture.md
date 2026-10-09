@@ -3,11 +3,14 @@
 Document de référence pour les comparaisons techniques approfondies.
 Le [brief](../BRIEF-V1.md#5-stack-de-travail) conserve la synthèse de la stack.
 Les [spécifications](specifications.md) définissent les besoins fonctionnels.
-Aucun développement de l'application, abonnement ou déploiement n'est lancé.
-Les seuls travaux techniques réalisés sont deux prototypes jetables : celui de
-l'éditeur, dont les [résultats](#résultats-du-prototype-de-léditeur-2-octobre-2026)
-figurent plus bas, et celui de la chaîne PDF, avec ses
-[résultats](#résultats-du-prototype-pdf-3-octobre-2026).
+Le développement suit le [plan de réalisation](plan.md), étape par étape, sur
+autorisation du porteur ; l'étape 1 est construite, et ses choix techniques sont
+dans [Réalisation de l'étape 1](#réalisation-de-létape-1-9-octobre-2026). Deux
+prototypes jetables l'ont précédé : celui de l'éditeur, dont les
+[résultats](#résultats-du-prototype-de-léditeur-2-octobre-2026) figurent plus
+bas, et celui de la chaîne PDF, avec ses
+[résultats](#résultats-du-prototype-pdf-3-octobre-2026). Aucun code n'en est
+repris.
 
 ## Statut au 27 septembre 2026
 
@@ -169,8 +172,113 @@ les contrôles ordinaires de droits et de conflits. Les seuils d'essais, la
 durée des accès, les postes déjà ouverts et l'heure de référence sont
 décidés le 8 octobre 2026 en F06.4 ; leur réalisation et la reprise après
 échec de sauvegarde restent à concevoir.
-Aucun algorithme ni mécanisme de stockage n'est figé par cette note ; aucun
+Cette note ne figeait aucun algorithme : la mise en œuvre retenue à l'étape 1
+est décrite dans
+[Réalisation de l'étape 1](#réalisation-de-létape-1-9-octobre-2026). Aucun
 niveau de sécurité n'est certifié.
+
+## Réalisation de l'étape 1 (9 octobre 2026)
+
+Choix techniques pris en construisant l'étape 1 du [plan](plan.md) : compte,
+projets, classes, accès des élèves. Les règles restent en F01, F01.1 et F06.4
+des [spécifications](specifications.md).
+
+**Où vit le code.** Un dépôt Git dans `V1/`, le code dans `V1/app/` : Next.js 16
+(App Router), React 19, TypeScript, `@supabase/supabase-js` et `@supabase/ssr`,
+toutes versions figées dans `package.json` et `package-lock.json`. Les règles
+sans base sont dans `src/domaine/` (année scolaire, prénoms, identifiant, mot
+de passe, code, horaires), ce qui parle à la base dans `src/serveur/`, les
+formes communes du système « Cahiers d'aventure » dans `src/styles/` et
+`src/composants/`, le schéma dans `supabase/migrations/`. Les mots du code sont
+ceux du [vocabulaire](../CONTEXT.md).
+
+**Pas de composants mis en cache.** Le gabarit de Next.js 16 active
+`cacheComponents` ; il est désactivé. Chaque page dépend de la personne
+connectée et de l'état de ses accès, qui doit se lire à l'instant (classe
+fermée, élève retiré) : un rendu à la demande, sans cache, est plus simple et
+plus sûr. À revoir si une page publique en a besoin (lecteur en ligne, étape 7).
+
+**Trois accès à la base, tenus par elle.** Toutes les tables ont leurs règles
+d'accès aux lignes (RLS), et aucun droit n'est donné par défaut : chaque table
+et chaque fonction reçoit ses droits un à un dans la migration.
+
+| Accès | Qui | Ce qu'il peut |
+| --- | --- | --- |
+| `authenticated` | L'adulte connecté par Supabase Auth. | Ses seules lignes, par `enseignant_id = auth.uid()` ; inscrire et régler les horaires dans une classe en cours seulement. |
+| `poste` | Un ordinateur où une classe est ouverte. | Lire, colonne par colonne, sa classe, ses élèves, ses horaires, le nom affiché de son enseignant. Rien écrire. |
+| `service_role` | Le serveur de l'application. | Ouvrir une classe sur un poste et vérifier un code, avant qu'aucun jeton n'existe. |
+
+**Accès de classe sans adresse électronique (V9).** L'accès de classe n'est pas
+un compte Supabase. Le serveur vérifie l'identifiant et le mot de passe, crée
+une ligne `postes` et pose sur le navigateur un jeton opaque, dans un cookie
+que les scripts ne lisent pas ; la base n'en garde que l'empreinte. Pour lire
+la base au nom du poste, le serveur signe à chaque demande un jeton de deux
+minutes (ES256), dont le « sub » est l'identifiant du poste et le rôle
+`poste`, un rôle PostgreSQL créé pour cela. Ce jeton ne quitte pas le
+serveur. Les règles d'accès ne se fient à aucune information portée par le
+jeton au-delà de cet identifiant : elles relisent la ligne `postes` à chaque
+requête (classe en cours, mot de passe inchangé, heure de fermeture, élève
+toujours inscrit et actif depuis moins de deux heures). Remplacer le mot de
+passe, terminer l'année ou retirer un élève ferme donc les postes à la requête
+suivante, sans attendre l'échéance d'un jeton.
+
+Supabase accepte un jeton signé par l'application à condition d'en connaître
+la clé publique : la clé privée est créée sur le poste du porteur
+(`npm run cles`), gardée dans l'environnement de Vercel, et importée une fois
+dans le projet Supabase comme clé de signature « en attente » (JWT Signing
+Keys). Alternatives écartées : les comptes anonymes de Supabase, ouverts à
+tout internet et limités à trente par heure et par adresse réseau, ce qu'une
+salle de classe atteint ; un accès des élèves par la seule clé secrète du
+serveur, où la base ne protégerait plus rien.
+
+**Chiffrement des codes et du mot de passe de classe.** AES-256-GCM, par
+l'application, avec une clé de 32 octets gardée hors de la base (`CLE_ACCES`,
+dans l'environnement de Vercel). Chaque texte chiffré est lié à la ligne qu'il
+protège : recopié sur une autre ligne, il ne se déchiffre pas. Les secrets sont
+dans deux tables à part (`classes_secrets`, `eleves_secrets`), qu'aucun poste
+ne lit. Le code tapé par un élève n'est comparé que sur le serveur, en temps
+constant. La page d'une classe ne contient ni codes ni mot de passe tant que
+l'enseignant ne les demande pas (F06-AC71). Perdre `CLE_ACCES` rend ces secrets
+illisibles : il faudrait redonner un code à chaque élève. Sa rotation n'est pas
+outillée ; la forme gardée porte un numéro de version (`v1.`) pour le permettre.
+
+**Essais faux, tenus par la base.** Les compteurs sont mis à jour par des
+fonctions SQL d'un seul tenant, que seul le serveur appelle : par profil pour
+les codes (cinq de suite, deux minutes), par navigateur et par adresse réseau
+pour l'entrée de la classe (dix de suite, cent en cinq minutes ; cinq minutes).
+Le navigateur est reconnu par un cookie, l'adresse réseau par l'en-tête que
+pose Vercel ; la base n'en garde que des empreintes.
+
+**Horaires et fermetures.** L'heure se lit dans le fuseau de la classe
+(`Europe/Paris`), par PostgreSQL comme par le serveur, qui suivent seuls
+l'heure d'été. La fermeture nocturne est une heure d'échéance écrite à
+l'ouverture du poste. La page d'un poste demande son état au serveur une fois
+par minute, et après une absence : elle revient d'elle-même à l'écran qui
+convient. L'enregistrement du texte avant cette fermeture se branchera là, à
+l'étape 3.
+
+**Compte de l'adulte.** Supabase Auth, adresse et mot de passe, session dans des
+cookies que les scripts ne lisent pas. Les inscriptions publiques sont fermées
+dans Supabase ; le compte du porteur se crée depuis sa console. « Mot de passe
+oublié » passe par le courriel intégré de Supabase, limité à deux envois par
+heure et aux adresses de l'organisation : suffisant pour un seul adulte, à
+remplacer par un service d'envoi à l'étape 9.
+
+**Tests.** Trois familles, nommées par critère d'acceptation : règles du
+domaine et chiffrement (`npm test`) ; droits, fonctions et règles d'accès
+contre une vraie base PostgreSQL de Supabase, lancée en local dans Docker
+(`npm run test:base`), dont le test « un élève ne lit rien d'une autre
+classe » ; parcours joués dans Chromium contre l'application compilée
+(`npm run test:parcours`). Aucun ne parle à la vraie base.
+
+**Sauvegarde (V18).** `npm run sauvegarder` écrit les rôles, le schéma et les
+données de la vraie base, comptes compris, par l'outil de Supabase, qui a
+besoin de Docker ; `npm run restaurer` remet une base au schéma de
+l'application puis y charge ces données. Les fichiers de Supabase Storage,
+utilisés à partir de l'étape 2, n'y sont pas. Le fichier des clés de la vraie
+application s'appelle `production.env`, et non `.env.production.local` : Next.js
+charge de lui-même ce second nom, et une application lancée en local parlerait
+alors à la vraie base.
 
 ## Vérifications avant décision technique
 

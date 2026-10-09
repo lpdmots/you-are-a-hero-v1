@@ -1,0 +1,920 @@
+/* Formes communes du système « Cahiers d'aventure » : bouton, gommette, fiche à filet,
+   panneau, dialogue, écran d'aide, bascule, messages. Les pages n'ajoutent que leur
+   disposition, dans leur propre feuille. */
+
+.ic {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+  vertical-align: -0.2em;
+}
+
+/* ——— Boutons : un seul bouton plein par écran, jamais sur ce qui supprime ——— */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 38px;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid var(--trait-fort);
+  background: var(--feuille);
+  font-weight: 600;
+  font-size: var(--t-s);
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--graphite);
+  transition:
+    background 0.15s var(--ease),
+    border-color 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+.btn:hover {
+  background: var(--feuille-2);
+  border-color: var(--graphite-3);
+  color: var(--graphite);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn--primaire {
+  background: var(--canard);
+  border-color: var(--canard);
+  color: #fff;
+}
+.btn--primaire:hover {
+  background: var(--canard-fonce);
+  border-color: var(--canard-fonce);
+  color: #fff;
+}
+.btn--discret {
+  border-color: transparent;
+  background: transparent;
+}
+.btn--discret:hover {
+  background: rgba(30, 34, 38, 0.06);
+  border-color: transparent;
+}
+.btn--danger {
+  color: var(--bloque);
+  border-color: color-mix(in srgb, var(--bloque) 45%, #fff);
+}
+.btn--danger:hover {
+  background: var(--bloque-f);
+  border-color: var(--bloque);
+  color: var(--bloque);
+}
+.btn--grand {
+  min-height: 46px;
+  padding: 0.6rem 1.15rem;
+  font-size: 1rem;
+  border-radius: 10px;
+}
+.btn--petit {
+  min-height: 32px;
+  padding: 0.3rem 0.7rem;
+  font-size: var(--t-xs);
+}
+.btn--large {
+  width: 100%;
+  justify-content: center;
+}
+.btn[disabled],
+.btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lien {
+  border: 0;
+  background: none;
+  padding: 0;
+  color: var(--canard);
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  font-size: inherit;
+}
+.lien:hover {
+  color: var(--canard-fonce);
+}
+
+/* ——— Gommette : l'élève, jamais un verrou ——— */
+.gommette {
+  --g: #888;
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--g) 17%, #fff);
+  color: var(--graphite);
+  font-weight: 800;
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  flex: none;
+  box-shadow:
+    inset 0 0 0 1.5px color-mix(in srgb, var(--g) 75%, #fff),
+    0 0 0 2px var(--feuille);
+}
+.gommette--s {
+  width: 24px;
+  height: 24px;
+  font-size: 11px;
+}
+.gommette--l {
+  width: 38px;
+  height: 38px;
+  font-size: 16px;
+}
+.gommette--libre {
+  background: transparent;
+  color: var(--graphite-3);
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+}
+
+/* ——— Repère ——— */
+.repere {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  padding: 0.05rem 0.45rem;
+  border-radius: 99px;
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+
+/* ——— Case à cocher dessinée ——— */
+.case {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  border-radius: 5px;
+  border: 1.5px solid var(--trait-fort);
+  background: var(--feuille);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.case:checked {
+  background: var(--canard);
+  border-color: var(--canard);
+}
+.case:checked::after {
+  content: "";
+  width: 10px;
+  height: 5px;
+  border: 2px solid #fff;
+  border-top: 0;
+  border-right: 0;
+  transform: translateY(-1px) rotate(-45deg);
+}
+.case:hover {
+  border-color: var(--canard);
+}
+
+/* ——— Fiche à filet : le filet sous l'en-tête dit sa nature ——— */
+.carnet-fiche {
+  --filet: var(--bristol);
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--trait);
+  overflow: hidden;
+  min-width: 0;
+}
+.carnet-fiche > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px 9px;
+  border-bottom: 2px solid var(--filet);
+}
+.carnet-fiche > header h2 {
+  font-size: var(--t-s);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.carnet-fiche__corps {
+  padding: 12px 16px 14px;
+  display: grid;
+  gap: 10px;
+}
+
+/* ——— Champs ——— */
+.pchamp {
+  width: 100%;
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--trait-fort);
+  background: var(--feuille);
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+}
+.pchamp:focus {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.pchamp[aria-invalid="true"] {
+  border-color: var(--e-reprendre);
+  box-shadow: 0 0 0 1px var(--e-reprendre);
+}
+.champ {
+  display: grid;
+  gap: 4px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.champ__select {
+  position: relative;
+  display: block;
+}
+.champ select,
+.champ input {
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite);
+  min-height: 38px;
+  padding: 6px 34px 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--trait-fort);
+  background: var(--feuille);
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 180px;
+}
+.champ input {
+  padding-right: 12px;
+}
+.champ__select .ic {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: var(--graphite-3);
+}
+.champ select:focus-visible,
+.champ input:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
+}
+.champ--plein input {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  font-size: 1rem;
+}
+.facultatif {
+  font-weight: 600;
+  color: var(--graphite-3);
+  margin-left: 4px;
+}
+.erreur {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--e-reprendre);
+}
+.erreur .ic {
+  margin-top: 0.15em;
+}
+
+/* ——— Interrupteur ——— */
+.inter {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+}
+.inter input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.inter__piste {
+  width: 38px;
+  height: 22px;
+  border-radius: 99px;
+  background: var(--trait-fort);
+  position: relative;
+  transition: background 0.15s var(--ease);
+  flex: none;
+}
+.inter__piste::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.15s var(--ease);
+}
+.inter input:checked + .inter__piste {
+  background: var(--canard);
+}
+.inter input:checked + .inter__piste::after {
+  transform: translateX(16px);
+}
+.inter input:focus-visible + .inter__piste {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+
+/* ——— Bascule : la vue choisie est une pilule graphite ——— */
+.bascule {
+  display: inline-flex;
+  padding: 3px;
+  gap: 3px;
+  border-radius: 11px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+}
+.bascule button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 0;
+  background: transparent;
+  color: var(--graphite-2);
+  font: inherit;
+  font-weight: 700;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.bascule button:hover {
+  color: var(--graphite);
+  background: var(--feuille-2);
+}
+.bascule button[aria-pressed="true"] {
+  background: var(--graphite);
+  color: #fff;
+}
+
+/* ——— Fil de retour et en-tête de page ——— */
+.fil {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 16px 0 14px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.fil a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.fil a:hover {
+  text-decoration: underline;
+}
+.page-tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 26px 0 0;
+}
+.page-tete h1 {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.page-tete__cmd {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.aide-bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 6px;
+  border: 0;
+  background: none;
+  color: var(--graphite-2);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.aide-bouton:hover {
+  color: var(--graphite);
+}
+
+/* ——— Notes et alertes ——— */
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.note > .ic {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  margin-top: 1px;
+}
+.note > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.note p {
+  max-width: 80ch;
+}
+.note--ok {
+  background: var(--e-valide-f);
+  box-shadow: inset 0 0 0 1px #a9d2a3;
+}
+.note--ok > .ic {
+  color: var(--e-valide);
+}
+.alerte {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  margin-top: 14px;
+  padding: 10px 12px 10px 16px;
+  border-radius: 12px;
+  background: var(--e-valider-f);
+  color: #5a3b00;
+  font-size: var(--t-s);
+}
+.alerte > .ic {
+  color: var(--e-valider);
+}
+.alerte .btn {
+  margin-left: auto;
+}
+.alerte .btn + .btn {
+  margin-left: 0;
+}
+
+/* ——— Panneau latéral ——— */
+.voile {
+  position: fixed;
+  inset: 0;
+  z-index: 49;
+  background: rgba(20, 25, 28, 0.2);
+}
+.panneau {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  right: 0;
+  height: 100dvh;
+  width: min(420px, 100vw);
+  background: var(--feuille);
+  box-shadow: var(--ombre-panneau);
+  display: flex;
+  flex-direction: column;
+  animation: panneau-entre 0.24s var(--ease);
+}
+@keyframes panneau-entre {
+  from {
+    transform: translateX(104%);
+  }
+}
+.panneau__tete {
+  position: relative;
+  padding: 22px 56px 16px 26px;
+  background: var(--feuille-2);
+}
+.panneau__fermer {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.85);
+  min-height: 36px;
+  padding: 0.4rem;
+  border-radius: 99px;
+}
+.panneau__tete h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: var(--t-2xl);
+  font-weight: 800;
+}
+.panneau__tete p {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+  margin-top: 2px;
+}
+.panneau__corps {
+  flex: 1;
+  overflow-y: auto;
+  padding: 6px 22px 20px;
+}
+.panneau__corps section {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--trait);
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.panneau__corps section:last-child {
+  border-bottom: 0;
+}
+.panneau__corps h3 {
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.panneau__corps p {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.panneau__pied {
+  padding: 14px 20px 18px;
+  border-top: 1px solid var(--trait);
+}
+.panneau__pied .btn {
+  width: 100%;
+  justify-content: center;
+}
+.enregistre {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--e-valide);
+}
+
+/* ——— Dialogue de confirmation : quelques faits, puis la décision ——— */
+.dialogue-voile {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  background: rgba(20, 25, 28, 0.38);
+}
+.dialogue {
+  width: min(480px, 100%);
+  display: grid;
+  gap: 12px;
+  padding: 24px 26px 22px;
+  border-radius: 16px;
+  background: var(--feuille);
+  box-shadow: var(--ombre-panneau);
+}
+.dialogue h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+  line-height: 1.25;
+}
+.dialogue h2:focus {
+  outline: none;
+}
+.dialogue__faits {
+  margin: 0;
+  padding-left: 1.2em;
+  display: grid;
+  gap: 6px;
+  color: var(--graphite-2);
+}
+.dialogue__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ——— Message : ce qui vient d'être fait, parfois avec « Annuler » ——— */
+.message {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  top: 72px;
+  transform: translateX(-50%);
+  max-width: min(560px, calc(100vw - 32px));
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: var(--graphite);
+  color: #fff;
+  font-size: var(--t-s);
+  box-shadow: var(--ombre-panneau);
+  animation: message-entre 0.2s var(--ease);
+}
+@keyframes message-entre {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -8px);
+  }
+}
+.message__act {
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  color: #bfe3e0;
+  font: inherit;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+/* ——— Menu à trois points ——— */
+.menu {
+  position: relative;
+  flex: none;
+}
+.menu > summary {
+  list-style: none;
+  cursor: pointer;
+  width: 36px;
+  min-height: 34px;
+  padding: 0;
+  justify-content: center;
+}
+.menu > summary::-webkit-details-marker {
+  display: none;
+}
+.menu > summary .ic {
+  width: 20px;
+  height: 20px;
+}
+.menu__liste {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--feuille);
+  box-shadow:
+    0 10px 26px rgba(30, 40, 38, 0.18),
+    inset 0 0 0 1px var(--trait);
+}
+.menu__liste button {
+  display: block;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.menu__liste button:hover,
+.menu__liste button:focus-visible {
+  background: var(--feuille-2);
+}
+
+/* ——— Écran d'aide à l'ouverture : quelques questions, « Commencer », « Ne plus afficher » ——— */
+.aide-etape {
+  max-width: 640px;
+  width: 100%;
+  margin: 26px auto 0;
+  padding: 30px 36px 34px;
+  background: var(--feuille);
+  border-radius: var(--r-l);
+  box-shadow:
+    inset 0 3px 0 var(--canard),
+    inset 0 0 0 1px var(--trait);
+}
+.aide-etape h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+.aide-etape h2:focus {
+  outline: none;
+}
+.aide-etape__q {
+  margin-top: 16px;
+}
+.aide-etape__q details {
+  border-top: 1px solid var(--trait);
+  padding: 12px 0;
+}
+.aide-etape__q summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-size: var(--t-m);
+}
+.aide-etape__q details p {
+  margin-top: 8px;
+  color: var(--graphite-2);
+  max-width: 60ch;
+}
+.aide-etape__taches {
+  margin: 10px 0 0;
+  padding-left: 1.4em;
+  display: grid;
+  gap: 4px;
+}
+.aide-etape__cmd {
+  margin-top: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+}
+.aide-etape__plus {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.aide-etape__plus input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--canard);
+}
+
+/* ——— Ligne d'étapes ——— */
+.etapes {
+  list-style: none;
+  margin: 20px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+.etapes li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.etapes li + li::before {
+  content: "";
+  width: 26px;
+  height: 1.5px;
+  margin-right: 2px;
+  background: var(--trait-fort);
+}
+.etapes__n {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+  font-size: var(--t-xs);
+}
+.etapes__n .ic {
+  width: 14px;
+  height: 14px;
+}
+.etapes .est-en-cours {
+  color: var(--graphite);
+}
+.etapes .est-en-cours .etapes__n {
+  background: var(--graphite);
+  color: #fff;
+  box-shadow: none;
+}
+.etapes .est-faite {
+  color: var(--graphite-2);
+}
+.etapes .est-faite .etapes__n {
+  background: var(--e-valide-f);
+  color: var(--e-valide);
+  box-shadow: inset 0 0 0 1.5px var(--e-valide);
+}
+
+/* ——— Colonne centrée des parcours en étapes ——— */
+.colonne {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.entete {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.entete h1 {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.entete p {
+  margin-top: 4px;
+  color: var(--graphite-2);
+}
+.etape {
+  margin-top: 22px;
+  padding: 30px 34px 28px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.etape > h2 {
+  font-size: var(--t-2xl);
+  font-weight: 800;
+  letter-spacing: -0.015em;
+}
+.etape > h2:focus {
+  outline: none;
+}
+
+/* ——— Feuille A4 : aperçu de ce qui s'imprime ——— */
+.feuille {
+  aspect-ratio: 210 / 297;
+  background: #fff;
+  border-radius: 4px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 16px 34px -14px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+@media (max-width: 720px) {
+  .page {
+    padding: 0 16px 72px;
+  }
+  .page-tete {
+    padding-top: 18px;
+  }
+  .entete h1,
+  .page-tete h1 {
+    font-size: 1.75rem;
+  }
+  .aide-etape {
+    padding: 22px 18px 24px;
+  }
+  .etapes {
+    gap: 6px;
+    font-size: var(--t-xs);
+  }
+  .etapes li + li::before {
+    width: 12px;
+    margin-right: 8px;
+  }
+  .etapes li:not(.est-en-cours) .etapes__nom {
+    display: none;
+  }
+  .etape {
+    margin-top: 16px;
+    padding: 22px 18px 20px;
+  }
+  .etape > h2 {
+    font-size: var(--t-xl);
+  }
+}
+
+@media print {
+  .feuille {
+    box-shadow: none;
+    border-radius: 0;
+  }
+}

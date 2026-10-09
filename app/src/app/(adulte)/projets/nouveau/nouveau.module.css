@@ -1,0 +1,265 @@
+.grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 22px;
+}
+.choix {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 18px 20px 20px;
+  border-radius: 14px;
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+  cursor: pointer;
+  transition:
+    box-shadow 0.15s var(--ease),
+    background 0.15s var(--ease);
+}
+.choix:hover {
+  box-shadow: inset 0 0 0 1.5px var(--graphite-3);
+}
+.choix input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.choix:has(input:checked) {
+  box-shadow: inset 0 0 0 2.5px var(--canard);
+  background: var(--canard-pale);
+}
+.choix:has(input:focus-visible) {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.dessin {
+  display: flex;
+  align-items: center;
+  height: 88px;
+}
+.texte {
+  display: grid;
+  gap: 4px;
+}
+.texte b {
+  font-size: var(--t-xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.texte span {
+  color: var(--graphite-2);
+  text-wrap: pretty;
+}
+.coche {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--canard);
+  color: #fff;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity 0.15s var(--ease),
+    transform 0.2s var(--ease);
+}
+.coche :global(.ic) {
+  width: 15px;
+  height: 15px;
+}
+.choix:has(input:checked) .coche {
+  opacity: 1;
+  transform: none;
+}
+.ronde {
+  display: flex;
+  align-items: center;
+}
+.ronde :global(.gommette) {
+  width: 40px;
+  height: 40px;
+  font-size: 14.5px;
+}
+.ronde :global(.gommette) + :global(.gommette) {
+  margin-left: -7px;
+}
+.ronde :global(.gommette .ic) {
+  width: 20px;
+  height: 20px;
+}
+.plan {
+  height: 84px;
+  width: auto;
+  max-width: 100%;
+}
+.plan rect {
+  fill: var(--feuille);
+  stroke: var(--graphite-2);
+  stroke-width: 1.5;
+}
+.filet {
+  stroke: var(--bristol);
+  stroke-width: 2;
+  stroke-linecap: round;
+  fill: none;
+}
+.trait {
+  stroke: var(--graphite-3);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  fill: none;
+}
+.fixe {
+  margin-top: 16px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.pied {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 26px;
+}
+.champ {
+  display: grid;
+  gap: 6px;
+  margin-top: 20px;
+}
+.titre {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1.5px solid var(--trait-fort);
+  border-radius: 10px;
+  background: var(--feuille);
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-xl);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.titre::placeholder {
+  color: var(--graphite-3);
+  font-weight: 400;
+}
+.titre:focus {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+  border-color: var(--canard);
+}
+.aide {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.classes {
+  margin: 24px 0 0;
+  padding: 0;
+  border: 0;
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+.classes legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.classe {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 56px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+  cursor: pointer;
+}
+.classe:hover {
+  box-shadow: inset 0 0 0 1.5px var(--graphite-3);
+}
+.classe:has(input:checked) {
+  box-shadow: inset 0 0 0 2px var(--canard);
+  background: var(--canard-pale);
+}
+.classe input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--canard);
+  flex: none;
+}
+.classe > span {
+  display: grid;
+  gap: 1px;
+}
+.classe > span span {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.sansClasse {
+  margin-top: 22px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+}
+.recap {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  padding-top: 18px;
+  border-top: 1px solid var(--trait);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.recap + :global(.erreur) {
+  margin-top: 12px;
+}
+
+@media (max-width: 720px) {
+  .grille {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .choix {
+    grid-template-columns: 96px minmax(0, 1fr);
+    align-items: center;
+    padding: 16px;
+  }
+  .dessin {
+    height: 64px;
+    overflow: hidden;
+  }
+  .ronde :global(.gommette) {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+  .ronde :global(.gommette):nth-child(n + 5) {
+    display: none;
+  }
+  .plan {
+    height: 56px;
+  }
+  .texte b {
+    font-size: var(--t-l);
+    padding-right: 30px;
+  }
+  .pied :global(.btn) {
+    flex: 1;
+    justify-content: center;
+  }
+  .pied > span {
+    display: none;
+  }
+  .titre {
+    font-size: var(--t-l);
+  }
+}

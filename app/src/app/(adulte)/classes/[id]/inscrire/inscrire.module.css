@@ -1,0 +1,231 @@
+.aide {
+  margin-top: 6px;
+  color: var(--graphite-2);
+}
+.pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--trait);
+}
+.pied p {
+  margin-right: auto;
+  color: var(--graphite-2);
+}
+.pied p b {
+  color: var(--graphite);
+}
+.connus {
+  margin-top: 20px;
+}
+.connus header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--trait);
+}
+.connus h3 {
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.connus ul {
+  list-style: none;
+  margin: 6px 0 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 20px;
+}
+.connus li {
+  break-inside: avoid;
+}
+.connu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 0 6px;
+  border-radius: 8px;
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.connu:hover {
+  background: var(--feuille-2);
+}
+.connu b {
+  color: var(--graphite);
+  font-weight: 700;
+}
+/* La liste se saisit sur une feuille lignée : une ligne, un élève */
+.saisie {
+  display: block;
+  width: 100%;
+  margin-top: 16px;
+  padding: 7px 16px 0 18px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 10px;
+  resize: vertical;
+  min-height: 220px;
+  font: inherit;
+  font-size: 1.06rem;
+  font-weight: 600;
+  line-height: 34px;
+  color: var(--graphite);
+  background: var(--feuille) repeating-linear-gradient(to bottom, transparent 0, transparent 33px, #d9e0f0 33px, #d9e0f0 34px) local 0 6px;
+  caret-color: var(--canard);
+}
+.saisie::placeholder {
+  color: var(--graphite-3);
+  font-weight: 400;
+}
+.saisie:focus {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+  border-color: var(--canard);
+}
+.regler {
+  margin-top: 18px;
+  padding: 14px 18px 16px;
+  border-radius: 12px;
+  background: var(--e-valider-f);
+  color: #5a3b00;
+}
+.regler h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-s);
+  font-weight: 800;
+  color: var(--e-valider);
+}
+.regler h3:focus {
+  outline: none;
+}
+.regler ul {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+}
+.point {
+  display: grid;
+  gap: 10px;
+  padding: 12px 0;
+}
+.point + .point {
+  border-top: 1px solid #ebd493;
+}
+.point p {
+  max-width: 62ch;
+}
+.pointChamp {
+  display: grid;
+  gap: 5px;
+  max-width: 260px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.rang {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.recap {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  columns: 2;
+  column-gap: 24px;
+}
+.recap li {
+  break-inside: avoid;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--trait);
+}
+.recapNom {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--graphite-2);
+}
+.recapNom b {
+  color: var(--graphite);
+  font-weight: 700;
+}
+.recapQuoi {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+  white-space: nowrap;
+}
+.recapCmd {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--graphite-3);
+}
+button.recapCmd {
+  cursor: pointer;
+}
+button.recapCmd:hover {
+  background: var(--feuille-2);
+  color: var(--graphite);
+}
+.recapCmd + .recapCmd {
+  margin-left: -8px;
+}
+.recap .recapEdition {
+  gap: 6px;
+  padding: 4px 0;
+}
+.recapEdition :global(.pchamp) {
+  min-width: 0;
+  padding: 7px 9px;
+}
+.erreur {
+  margin-top: 14px;
+}
+@media (max-width: 720px) {
+  .connus ul,
+  .recap {
+    columns: 1;
+  }
+  .recap li {
+    min-height: 48px;
+    flex-wrap: wrap;
+  }
+  .recapCmd {
+    width: 40px;
+    height: 44px;
+  }
+  .recapCmd + .recapCmd {
+    margin-left: 0;
+  }
+  .recapQuoi {
+    order: 5;
+    flex-basis: 100%;
+    margin-top: -10px;
+    padding: 0 0 8px 34px;
+  }
+  .pied p {
+    flex-basis: 100%;
+  }
+  .pied :global(.btn) {
+    flex: 1 1 auto;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}

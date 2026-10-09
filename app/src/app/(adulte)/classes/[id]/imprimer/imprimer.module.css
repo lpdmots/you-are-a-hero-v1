@@ -1,0 +1,254 @@
+.imprimer {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 32px;
+  margin-top: 22px;
+  align-items: start;
+}
+.reglages {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+  position: sticky;
+  top: 76px;
+}
+.champ {
+  width: 100%;
+}
+.champ select {
+  width: 100%;
+  min-width: 0;
+}
+.option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  cursor: pointer;
+}
+.option :global(.case) {
+  margin-top: 2px;
+}
+.option > span {
+  display: grid;
+  gap: 1px;
+  font-size: var(--t-s);
+}
+.option > span span {
+  color: var(--graphite-2);
+}
+.compte {
+  color: var(--graphite-2);
+}
+.compte b {
+  color: var(--graphite);
+}
+.bouton {
+  width: 100%;
+  justify-content: center;
+}
+.aide {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.apercu {
+  display: grid;
+  gap: 24px;
+  justify-items: center;
+}
+.cadre {
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  width: min(100%, 640px);
+}
+.cadre :global(.feuille) {
+  width: 100%;
+  container-type: inline-size;
+}
+
+/* Étiquettes à découper : 27 par feuille, 14 avec les informations de la classe */
+.planche {
+  padding: 4.5% 4%;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(9, minmax(0, 1fr));
+  gap: 0;
+}
+.plancheMaison {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(7, minmax(0, 1fr));
+}
+.etiquette {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0 1.6cqw;
+  padding: 0 2cqw;
+  outline: 1px dashed var(--trait-fort);
+  outline-offset: -0.5px;
+  min-width: 0;
+}
+.etiquette :global(.gommette) {
+  width: 4cqw;
+  height: 4cqw;
+  font-size: 1.6cqw;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--g) 75%, #fff);
+}
+.prenom {
+  font-family: var(--f-main);
+  font-size: 2.3cqw;
+  line-height: 1.5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Les chiffres que l'élève lit : un zéro sans barre (F06.4, 7 octobre 2026) */
+.code {
+  display: grid;
+  justify-items: end;
+  font-family: var(--f-chiffres);
+  font-size: 2.6cqw;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+.code span {
+  font-family: var(--f-ui);
+  font-size: 1.3cqw;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--graphite-2);
+}
+.classe {
+  grid-column: 1 / -1;
+  align-self: start;
+  font-size: 1.6cqw;
+  line-height: 1.4;
+  color: var(--graphite-2);
+  white-space: nowrap;
+  overflow: hidden;
+}
+.classe b {
+  font-family: var(--f-chiffres);
+  color: var(--graphite);
+}
+.plancheMaison .etiquette {
+  padding: 0 3cqw;
+  align-content: center;
+  row-gap: 0.8cqw;
+}
+.plancheMaison .etiquette :global(.gommette) {
+  width: 5cqw;
+  height: 5cqw;
+  font-size: 2cqw;
+}
+.plancheMaison .prenom {
+  font-size: 2.9cqw;
+}
+.plancheMaison .code {
+  font-size: 3cqw;
+}
+
+/* Affiche : quatre pas numérotés, écrits pour l'élève */
+.affiche {
+  padding: 11% 10% 8%;
+}
+.afficheClasse {
+  font-size: 2.6cqw;
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.affiche h2 {
+  margin-top: 1cqw;
+  font-size: 8cqw;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.affiche ol {
+  list-style: none;
+  counter-reset: pas;
+  margin: 9cqw 0 0;
+  padding: 0;
+  display: grid;
+  gap: 8cqw;
+}
+.affiche li {
+  counter-increment: pas;
+  display: grid;
+  grid-template-columns: 9cqw minmax(0, 1fr);
+  gap: 1cqw 3cqw;
+  font-size: 3.4cqw;
+}
+.affiche li::before {
+  content: counter(pas);
+  grid-row: span 2;
+  display: grid;
+  place-items: center;
+  width: 9cqw;
+  height: 9cqw;
+  border-radius: 50%;
+  background: var(--graphite);
+  color: #fff;
+  font-weight: 800;
+  font-size: 4.4cqw;
+}
+.affiche li b {
+  font-weight: 700;
+  align-self: end;
+}
+.affiche li span {
+  color: var(--graphite-2);
+}
+.affiche li .valeur {
+  font-family: var(--f-chiffres);
+  font-size: 5.4cqw;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--graphite);
+  overflow-wrap: anywhere;
+}
+.affichePied {
+  margin-top: auto;
+  padding-top: 3cqw;
+  border-top: 1px solid var(--trait-fort);
+  font-size: 2.8cqw;
+  color: var(--graphite-2);
+}
+
+@media (max-width: 1060px) {
+  .imprimer {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 22px;
+  }
+  .reglages {
+    position: static;
+  }
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+  .imprimer {
+    display: block;
+    margin: 0;
+  }
+  .apercu {
+    display: block;
+  }
+  .cadre {
+    display: block;
+    width: 210mm;
+    height: 297mm;
+    break-after: page;
+  }
+  .cadre:last-child {
+    break-after: auto;
+  }
+  .cadre :global(.feuille) {
+    width: 210mm;
+    height: 297mm;
+    aspect-ratio: auto;
+  }
+}

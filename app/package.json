@@ -1,0 +1,56 @@
+{
+  "name": "cahiers-d-aventure",
+  "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "types": "tsc --noEmit",
+    "test": "vitest run --project unitaires",
+    "test:base": "vitest run --project base",
+    "test:parcours": "playwright test",
+    "base:demarrer": "tsx scripts/supabase.ts start",
+    "base:arreter": "tsx scripts/supabase.ts stop",
+    "base:remettre-a-zero": "tsx scripts/supabase.ts db reset --local",
+    "cles": "tsx scripts/cles.ts",
+    "sauvegarder": "tsx scripts/sauvegarder.ts",
+    "restaurer": "tsx scripts/restaurer.ts",
+    "env:local": "tsx scripts/env-local.ts",
+    "verifier": "npm run types && npm run lint && npm run test",
+    "compte:local": "tsx scripts/compte-local.ts",
+    "captures": "playwright test --config playwright.captures.config.ts",
+    "verifier:production": "tsx scripts/verifier-production.ts",
+    "cle:copier": "tsx scripts/presse-papiers.ts",
+    "vercel:env": "tsx scripts/vercel-env.ts",
+    "production:schema": "tsx scripts/schema-production.ts"
+  },
+  "dependencies": {
+    "@supabase/ssr": "0.12.7",
+    "@supabase/supabase-js": "2.117.3",
+    "jose": "6.2.12",
+    "next": "16.4.0",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "server-only": "0.0.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.0",
+    "@types/node": "22.20.5",
+    "@types/pg": "8.23.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "dotenv": "18.0.6",
+    "eslint": "9.39.5",
+    "eslint-config-next": "16.4.0",
+    "pg": "8.23.1",
+    "supabase": "2.120.0",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3",
+    "vitest": "5.0.3"
+  }
+}

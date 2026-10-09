@@ -1,0 +1,204 @@
+.projets {
+  list-style: none;
+  margin: 24px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 460px), 1fr));
+  gap: 24px;
+}
+.projet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  transition:
+    box-shadow 0.15s var(--ease),
+    transform 0.15s var(--ease);
+}
+.projet:hover,
+.projet:focus-within {
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 1px rgba(30, 40, 38, 0.08),
+    0 14px 28px -10px rgba(30, 40, 38, 0.3);
+}
+.image {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+}
+.image img {
+  object-fit: cover;
+}
+.texte {
+  display: grid;
+  gap: 4px;
+  padding: 18px 22px 0;
+}
+.texte b {
+  font-size: var(--t-2xl);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+}
+.texte span {
+  color: var(--graphite-2);
+}
+.faits {
+  display: grid;
+  gap: 10px;
+  padding: 16px 22px 0;
+  font-size: var(--t-s);
+}
+.livre {
+  display: grid;
+  gap: 6px;
+  color: var(--graphite-2);
+}
+.livre b {
+  color: var(--e-prete);
+}
+.jauge {
+  display: block;
+  height: 8px;
+  border-radius: 99px;
+  background: var(--e-prete-f);
+  overflow: hidden;
+}
+.jauge span {
+  display: block;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--e-prete);
+}
+.pied {
+  display: flex;
+  margin-top: auto;
+  padding: 18px 22px 22px;
+}
+.pied :global(.btn) {
+  min-height: 42px;
+  padding: 0.5rem 1.2rem;
+}
+/* Toute la carte ouvre le projet */
+.ouvrir::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+}
+.ouvrir:active {
+  transform: none;
+}
+
+/* Sans projet : un cahier sans titre */
+.vide {
+  display: grid;
+  grid-template-columns: 260px minmax(0, 440px);
+  gap: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+}
+.cahier {
+  border-radius: var(--r-m);
+  overflow: hidden;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  transform: rotate(-2.5deg);
+}
+.couverture {
+  position: relative;
+  padding: 8px 8px 12px 14px;
+  background: #e6e9e2;
+}
+.couverture::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--trait-fort);
+}
+.vignette {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.vignette img {
+  object-fit: cover;
+}
+.etiquette {
+  position: relative;
+  margin: -22px 6px 0;
+  padding: 18px 16px;
+  background: var(--feuille);
+  border-radius: 7px;
+  display: grid;
+  gap: 9px;
+  justify-items: center;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--trait-fort) 55%, #fff),
+    inset 0 0 0 3px #fff,
+    inset 0 0 0 4px color-mix(in srgb, var(--trait-fort) 40%, #fff),
+    0 2px 6px -2px rgba(0, 0, 0, 0.15);
+}
+.etiquette span {
+  display: block;
+  width: 78%;
+  border-top: 2px dotted var(--trait-fort);
+}
+.etiquette span + span {
+  width: 46%;
+}
+.videTexte {
+  display: grid;
+  gap: 12px;
+  justify-items: start;
+}
+.videTexte h2 {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.videTexte p {
+  color: var(--graphite-2);
+  max-width: 46ch;
+  text-wrap: pretty;
+}
+.videTexte :global(.btn) {
+  margin-top: 8px;
+}
+.videPlus {
+  margin-top: 10px;
+  font-size: var(--t-s);
+}
+
+@media (max-width: 720px) {
+  .vide {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    margin-top: 28px;
+    justify-items: center;
+  }
+  .cahier {
+    width: 200px;
+  }
+  .videTexte {
+    justify-items: stretch;
+    text-align: center;
+  }
+  .videTexte h2 {
+    font-size: 1.75rem;
+  }
+  .videTexte :global(.btn) {
+    justify-content: center;
+  }
+}
