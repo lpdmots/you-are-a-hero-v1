@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cahiers d’aventure — planche d’ambiance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Mono:wght@400;700&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Playwrite+FR+Moderne:wght@300;400&family=Vollkorn:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/planche.css">
+</head>
+<body>
+<nav class="retour"><a href="index.html">← Sommaire des maquettes</a><a href="recit.html#/plan">Ouvrir la maquette interactive →</a></nav>
+
+<header class="ouverture">
+  <div class="ouverture__texte">
+    <h1>Cahiers d’aventure</h1>
+    <p class="these">Un carnet d’aventure illustré, habillé des objets que la classe connaît par cœur : chaque chapitre est un cahier, chaque scène une fiche, chaque texte une copie, chaque élève une gommette.</p>
+    <p class="statut">Synthèse du 30 septembre 2026 pour « Les passeurs de brume » : l’identité et l’organisation de la proposition Claude, les dispositions d’écriture, de relecture, de projection et de connexion de la proposition Codex, redessinées dans un seul système. Les décisions fonctionnelles acquises sont respectées ; les choix de design restent à examiner.</p>
+  </div>
+  <div class="pile" id="pile" aria-label="Cinq cahiers de chapitres"></div>
+</header>
+
+<section class="bloc">
+  <h2>Des objets de classe devenus repères</h2>
+  <p class="intro">L’interface emprunte au matériel scolaire plutôt qu’au grimoire : ces objets sont familiers aux élèves comme aux enseignants et portent chacun une information précise. L’illustration fait l’ambiance ; les objets font le travail.</p>
+  <div class="objets">
+    <article class="objet objet--protege">
+      <h3>Le protège-cahier</h3>
+      <p>Couleur du chapitre, attribuée une fois puis conservée. Elle habille le dos, le bandeau et le fond, jamais les surfaces d’écriture, et ne signale aucun état.</p>
+      <div class="nuancier" id="nuancier"></div>
+    </article>
+    <article class="objet objet--etiquette">
+      <h3>L’étiquette</h3>
+      <p>Le titre du chapitre, toujours sur fond blanc, jamais posé sur l’image.</p>
+      <div class="demo-etiquette" style="--edge:#1C9C98"><div class="etiquette"><h3>La lisière</h3><p>Chapitre 1</p></div></div>
+    </article>
+    <article class="objet objet--gommette">
+      <h3>La gommette</h3>
+      <p>Qui s’occupe d’une scène. Une marque de suivi, pas un cadenas : les camarades du chapitre peuvent toujours lire et écrire.</p>
+      <div class="demo-pec">
+        <span class="pec"><span class="gommette gommette--s" style="--g:#C43E28">Al</span><span><b>Alice</b> s’en occupe</span></span>
+        <span class="pec pec--toi"><span class="gommette gommette--s" style="--g:#C43E28">Al</span><b>Tu t’en occupes</b></span>
+        <span class="pec"><span class="gommette gommette--libre gommette--s"></span>Personne ne s’en occupe</span>
+      </div>
+    </article>
+    <article class="objet objet--tampon">
+      <h3>Le tampon</h3>
+      <p>L’état de travail de la scène, avec un mot et un pictogramme. Validation élève et « prête pour le livre » restent deux tampons distincts.</p>
+      <div class="demo-tampons" id="tampons"></div>
+    </article>
+    <article class="objet objet--fiche">
+      <h3>La fiche</h3>
+      <p>La carte d’une scène, et tout ce qui l’accompagne. Le filet sous l’en-tête dit de quoi il s’agit : rose pour la consigne, corail pour un retour, canard pour une décision.</p>
+      <div class="demo-fiche">
+        <div class="fiche">
+          <div class="fiche__tete"><span class="fiche__ref">S016</span><span class="tampon" data-e="valider"></span></div>
+          <p class="fiche__titre">Souche creuse — la lanterne de secours</p>
+          <div class="fiche__meta"><span class="choix-demo"></span></div>
+          <span class="pec"><span class="gommette gommette--s" style="--g:#2466AD">Bi</span><span><b>Bilal</b> s’en occupe</span></span>
+        </div>
+      </div>
+    </article>
+    <article class="objet objet--copie">
+      <div><h3>La copie</h3>
+      <p>La page où l’on écrit le récit, pour l’élève comme pour l’enseignante : feuille blanche, marge rouge d’écolier, texte en Vollkorn. Les phrases de choix y sont écrites comme dans le livre, avec leur renvoi ; enregistrement et remise ferment la page.</p></div>
+      <div class="demo-copie copie"><div class="copie__texte"><p>Le chant était si doux que Lou en oublia la barque. Il venait de derrière les fougères, là où la brume restait accrochée aux branches.</p><p class="curseur">Lou fit un pas, puis un autre</p></div>
+        <div class="copie__choix"><p class="phrase-choix"><span class="recit">Continuer vers la lumière : rends-toi au <span class="renvoi-copie">9</span>.</span><span class="copie__dest"><span class="code">S018</span> Clairière</span></p></div></div>
+    </article>
+    <article class="objet objet--sentier">
+      <div><h3>La carte de sentiers</h3>
+      <p>Le graphe se lit comme un livre-jeu : chaque lien part du choix qui le propose et arrive sur la référence de la scène. Les raccords avec un autre chapitre sont en pointillés.</p></div>
+      <div class="demo-sentier" id="sentier"></div>
+    </article>
+  </div>
+</section>
+
+<section class="bloc">
+  <h2>Quatre règles pour que chaque page parle la même langue</h2>
+  <ol class="regles">
+    <li><b>Trois objets papier, deux marques.</b> Cahier, fiche, copie ; tampon et gommette. Aucun autre conteneur décoratif.</li>
+    <li><b>Une couleur, un rôle.</b> Chapitre : dos et bandeaux. Ambre : cela attend, ou demande l’attention. Brique : à refaire, ou cela bloque. Vert : c’est fait. Bleu et violet : tampons seuls. Bleu canard : le bouton principal, les liens et ce qui est coché ; la vue choisie dans une bascule est en graphite. Élève : sa gommette, adoucie.</li>
+    <li><b>Trois voix.</b> Atkinson Hyperlegible pour l’outil, Vollkorn pour le récit, la cursive seulement pour le prénom de l’élève.</li>
+    <li><b>Une structure par niveau.</b> L’en-tête du projet porte Préparation, Parties et chapitres et Suivi ; le bandeau du chapitre porte le chapitre et ses scènes ; une seule page de scène sert à écrire et à relire.</li>
+  </ol>
+</section>
+
+<section class="bloc">
+  <h2>Illustrations : un dessin animé de plein jour</h2>
+  <p class="intro">Illustration 2D contemporaine, comme les décors d’un film d’animation : formes arrondies et nettes, lumière de jour, ciel bleu, peu de détails. Chaque lieu a son petit animal complice, placé dans les deux tiers supérieurs pour rester visible au-dessus de l’étiquette. Images générées par le porteur à partir des prompts de Claude.</p>
+  <div class="mondes" id="mondes"></div>
+  <div class="deux">
+    <div>
+      <h3>Visuels par défaut : une bibliothèque de mondes</h3>
+      <p>Sans image choisie, chaque chapitre reçoit une illustration générique de la bibliothèque, tirée une fois puis conservée. Pas de teinte : la couleur du chapitre reste sur le cahier, pas sur l’image.</p>
+      <div class="teintes" id="teintes"></div>
+    </div>
+    <div>
+      <h3>Image importée d’un autre style</h3>
+      <p>Une photographie à côté des illustrations : le cadre du cahier, l’étiquette blanche et la couleur du chapitre gardent l’ensemble cohérent.</p>
+      <div class="imports" id="imports"></div>
+    </div>
+  </div>
+</section>
+
+<section class="bloc bloc--couleur">
+  <h2>Couleurs</h2>
+  <div class="couleurs">
+    <div>
+      <h3>Surfaces et encre</h3>
+      <p>Un bureau gris-vert très clair, des feuilles blanches pour lire et écrire, un graphite pour le texte. Le bleu canard est réservé aux actions et à la sélection.</p>
+      <ul class="pastilles" id="neutres"></ul>
+    </div>
+    <div>
+      <h3>États de travail</h3>
+      <p>Encre foncée sur fond clair, rapports de contraste calculés entre 5,6 et 6,9:1. Jamais la seule indication : chaque état a son mot et son pictogramme.</p>
+      <ul class="pastilles" id="etats"></ul>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <h2>Typographie</h2>
+  <div class="typo">
+    <div class="typo__spec">
+      <p class="typo__nom">Atkinson Hyperlegible Next · l’outil</p>
+      <p class="typo__grand">Remettre à Mme Laurent</p>
+      <p class="typo__texte">Commandes, titres de travail, états, tableaux. Dessinée pour la lisibilité : formes distinctes (l, I, 1 ; b, d), utile aux jeunes lecteurs et à la projection. Chiffres tabulaires pour les comptes ; la version Mono sert uniquement aux références <span class="code">S014</span>.</p>
+    </div>
+    <div class="typo__recit">
+      <p class="typo__nom">Vollkorn · le récit</p>
+      <p class="typo__livre">Le passeur tend sa lanterne vers la brume.</p>
+      <p class="typo__texte">Le texte des scènes, les choix proposés au lecteur, les extraits et les fiches papier. Ce qui appartient au livre se reconnaît au premier regard.</p>
+    </div>
+    <div class="typo__main">
+      <p class="typo__nom">Playwrite FR Moderne · le prénom</p>
+      <p class="typo__cursive">Bonjour Alice</p>
+      <p class="typo__texte">L’écriture apprise à l’école, réservée à l’élève : son accueil, son prénom, son étiquette de porte-manteau. Jamais pour une commande.</p>
+    </div>
+  </div>
+</section>
+
+<section class="bloc">
+  <h2>Deux déclinaisons, les mêmes repères</h2>
+  <p class="intro">L’espace adulte reste un outil sobre ; l’espace élève agrandit l’illustration et le texte, et l’accueille par son prénom. Couleurs de chapitre, tampons, gommettes et commandes sont identiques dans les deux.</p>
+  <div class="declis">
+    <figure class="decli decli--adulte">
+      <div class="decli__ecran" id="decli-adulte"></div>
+      <figcaption>Enseignante : titre, informations de classe, ce qui reste à préparer.</figcaption>
+    </figure>
+    <figure class="decli decli--eleve">
+      <div class="decli__ecran" id="decli-eleve"></div>
+      <figcaption>Élève : « Mon travail », avec l’image du projet, ses scènes et leur prochaine action.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<footer class="pied">
+  <p>Illustrations générées par le porteur à partir des prompts de Claude (29 septembre 2026). La photographie de cabane, reprise de la proposition Codex à la demande du porteur, sert d’exemple d’image importée d’un autre style.</p>
+</footer>
+
+<script src="assets/icons.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/planche.js"></script>
+</body>
+</html>

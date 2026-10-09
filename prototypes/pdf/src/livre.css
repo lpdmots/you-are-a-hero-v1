@@ -1,0 +1,112 @@
+/* Feuille de style du livre, lue par Paged.js. A5 en vis-à-vis, marge
+   intérieure plus large (F11.3). Les valeurs sont celles de composer.mjs.
+   Essai jetable : polices et gabarit ne sont pas des choix de design. */
+
+:root { --entete: ''; --folio: ''; }
+
+@page {
+  size: 148mm 210mm;
+  margin: 16mm 15mm 20mm 20mm;
+  @top-center { content: var(--entete); font: 400 9pt/1 'Literata', serif; color: #333; vertical-align: bottom; padding-bottom: 5mm; }
+}
+@page :left {
+  margin-left: 15mm;
+  margin-right: 20mm;
+  @bottom-left { content: var(--folio); font: 400 9.5pt/1 'Literata', serif; vertical-align: top; padding-top: 7mm; }
+}
+@page :right {
+  margin-left: 20mm;
+  margin-right: 15mm;
+  @bottom-right { content: var(--folio); font: 400 9.5pt/1 'Literata', serif; vertical-align: top; padding-top: 7mm; }
+}
+
+.livre {
+  font-family: 'Literata', serif;
+  font-size: 12pt;
+  line-height: 17pt;
+  color: #111;
+  /* Césure : points de coupure posés à la composition (traits d'union
+     conditionnels), pas la césure propre à chaque navigateur. */
+  hyphens: manual;
+  hyphenate-character: '-';
+  text-rendering: geometricPrecision;
+  font-kerning: normal;
+}
+.livre h1, .livre h2, .livre h3, .livre p, .livre figure { margin: 0; padding: 0; }
+
+/* --- Récit ---------------------------------------------------------------- */
+p.r { text-align: justify; text-indent: 1.3em; }
+p.r.premier { text-indent: 0; }
+h1.partie { font: 700 20pt/25.5pt 'Literata', serif; text-align: center; padding-top: 34pt; margin-bottom: 8.5pt; }
+/* Paged.js reporte sur le parent le saut du premier enfant : le saut initial est porté par la section. */
+h1.partie:not(:first-child) { break-before: page; }
+h2.numero { font: 700 16pt/17pt 'Literata', serif; text-align: center; margin: 25.5pt 0 8.5pt; }
+h1.partie + h2.numero { margin-top: 17pt; }
+h2.numero .n { position: relative; }
+h2.numero.nouvelle-page:not(:first-child) { break-before: page; }
+section.recit { break-before: right; }
+
+p.action {
+  font: 400 10.5pt/14pt 'Atkinson', sans-serif;
+  margin: 8.5pt 0;
+  padding: 6pt 9pt;
+  border: 0.6pt solid #555;
+  border-radius: 3pt;
+  background: #f1efe9;
+}
+.choix-groupe { margin-top: 8.5pt; }
+p.choix { text-align: left; padding-left: 1.3em; text-indent: -1.3em; }
+.renvoi { font-weight: 700; }
+p.fin { text-align: center; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; font-size: 10.5pt; margin: 8.5pt 0; }
+
+/* --- Images (F10) ----------------------------------------------------------- */
+figure.image { width: var(--l); margin: 8.5pt auto; }
+figure.image img { display: block; width: 100%; height: auto; max-height: 160mm; object-fit: contain; }
+figure.image.page { width: 100%; height: 173mm; margin: 0; break-before: page; break-after: page; }
+figure.image.page img { height: 100%; max-height: none; }
+.image-manquante { width: 100%; max-height: 160mm; box-sizing: border-box; border: 0.8pt dashed #b23a48; color: #b23a48; display: flex; align-items: center; justify-content: center; font: 700 9pt/1 'Atkinson', sans-serif; }
+figure.image.page .image-manquante { height: 100%; max-height: none; }
+/* Image en ligne : hauteur du texte, sans réglage, sans effet sur l'interligne. */
+img.en-ligne { height: 1em; width: auto; vertical-align: -0.14em; }
+
+/* --- Pages de présentation (F11.4) ------------------------------------------ */
+.page-titre { break-before: right; text-align: center; padding-top: 52mm; }
+.page-titre h1 { font: 700 26pt/32pt 'Literata', serif; }
+.page-titre .sous-titre { font-style: italic; font-size: 14pt; line-height: 20pt; margin-top: 6mm; }
+.page-titre .signature { margin-top: 48mm; }
+.page-auteurs, .comment-lire, .feuille, .page-fin { break-before: page; }
+.page-auteurs h2, .comment-lire h2, .feuille h2 { font: 700 16pt/20pt 'Literata', serif; text-align: center; margin-bottom: 17pt; }
+.comment-lire h3 { font: 700 12pt/17pt 'Literata', serif; margin: 17pt 0 8.5pt; }
+.comment-lire p.r { text-indent: 0; margin-bottom: 8.5pt; }
+.page-auteurs .prenoms { text-align: center; line-height: 22pt; }
+.page-fin { padding-top: 60mm; text-align: center; }
+.page-fin p.r { text-align: center; text-indent: 0; margin-bottom: 8.5pt; }
+
+/* --- Feuille d'aventure (F04.2) --------------------------------------------- */
+.feuille { font-family: 'Atkinson', sans-serif; font-size: 10.5pt; line-height: 14pt; }
+.f-section { border: 0.8pt solid #333; border-radius: 3pt; padding: 3mm 4mm 4mm; margin-bottom: 5mm; }
+.f-section h3 { font: 700 10.5pt/14pt 'Atkinson', sans-serif; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2mm; }
+.f-compteur { display: flex; align-items: center; gap: 3mm; margin-top: 2.5mm; }
+.f-nom { width: 22mm; font-weight: 700; }
+.f-depart { width: 22mm; font-size: 9pt; }
+.f-cases { display: flex; gap: 1.2mm; }
+.f-cases i { display: block; width: 5.2mm; height: 5.2mm; border: 0.6pt solid #333; }
+.f-ligne { height: 7.5mm; border-bottom: 0.5pt solid #777; }
+.f-cadre { height: 34mm; }
+
+/* --- Page récapitulative du PDF de travail ----------------------------------- */
+.recap { font-family: 'Atkinson', sans-serif; font-size: 9pt; line-height: 12.5pt; }
+.recap-mention { font-weight: 700; color: #b23a48; text-transform: uppercase; letter-spacing: 0.08em; }
+.recap h1 { font: 700 16pt/20pt 'Atkinson', sans-serif; margin: 2mm 0; }
+.recap h3 { font: 700 9.5pt/13pt 'Atkinson', sans-serif; margin: 5mm 0 1.5mm; }
+.recap ul { margin: 0; padding-left: 4mm; }
+.recap .ou { color: #555; }
+
+/* --- Marques du PDF de travail : posées après la mise en page, hors du flux --- */
+.pagedjs_sheet { position: relative; }
+.marque { position: absolute; font: 400 5.5pt/6.5pt 'Atkinson', sans-serif; color: #b23a48; }
+.marque.ref { font-weight: 700; font-size: 6.5pt; white-space: nowrap; }
+.marque.signal { width: 12mm; }
+.marque.mention { top: 3.5mm; font-weight: 700; font-size: 6.5pt; letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap; }
+.pagedjs_right_page .marque.mention { right: 15mm; }
+.pagedjs_left_page .marque.mention { left: 15mm; }

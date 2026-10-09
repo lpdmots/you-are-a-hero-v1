@@ -1,0 +1,16 @@
+/* Règles de coupure, lues directement par le navigateur (Paged.js retire les
+   déclarations break-* des feuilles qu'il traite). Ce sont des propositions :
+   les spécifications ne fixent encore aucune règle de coupure. */
+
+/* Veuves et orphelines : jamais une ligne seule en haut ou en bas de page. */
+.livre p { widows: 2; orphans: 2; }
+
+/* Jamais coupés entre deux pages. */
+.choix-groupe, p.action, figure.image, p.fin, h1.partie, h2.numero, .f-section { break-inside: avoid; }
+
+/* Jamais seuls en bas de page : le titre de partie et le numéro de passage. */
+h1.partie, h2.numero { break-after: avoid; }
+
+/* Jamais isolés du texte qui les amène : avec les veuves, deux lignes au
+   moins du paragraphe précédent les accompagnent. */
+.choix-groupe, p.action, p.fin { break-before: avoid; }

@@ -1,0 +1,46 @@
+/* Présentation minimale : l'essai porte sur le comportement, pas sur l'allure. */
+* { box-sizing: border-box; }
+body { margin: 0; font: 15px/1.5 system-ui, sans-serif; color: #1d2433; background: #f4f2ec; }
+main { max-width: 1280px; margin: 0 auto; padding: 16px; }
+h1 { font-size: 18px; margin: 0 0 12px; }
+h2 { font-size: 15px; margin: 16px 0 6px; }
+h3 { font-size: 13px; margin: 0 0 6px; color: #5a6274; }
+button, select, input { font: inherit; }
+button { padding: 4px 10px; border: 1px solid #b9bfcc; border-radius: 6px; background: #fff; cursor: pointer; min-height: 32px; }
+button:focus-visible, select:focus-visible, input:focus-visible, .texte:focus-visible { outline: 2px solid #1f6f8b; outline-offset: 1px; }
+.reglages { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 12px; }
+.copies { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.copie { background: #fff; border: 1px solid #d9dbe1; border-radius: 10px; padding: 12px; }
+.barre { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0; }
+.texte { min-height: 220px; padding: 12px 150px 12px 16px; border: 1px solid #d9dbe1; border-radius: 8px; font: 17px/1.6 Georgia, serif; }
+.bloc { position: relative; margin: 0 0 10px; }
+.bloc[data-repere]::after { content: attr(data-repere); position: absolute; left: calc(100% + 8px); top: 2px; width: 134px; font: 11px/1.3 system-ui, sans-serif; color: #5a6274; }
+.bloc-choix { padding: 4px 8px; border-left: 3px solid #1f6f8b; background: #eef6f8; }
+.bloc-action { padding: 6px 10px; border: 1px dashed #a0672b; background: #fbf3e6; font-style: italic; }
+.bloc-note { padding: 4px 8px; background: #fff7c2; font: 14px/1.4 system-ui, sans-serif; }
+.bloc[data-protege] { border-right: 3px solid #8a8f9c; }
+.bloc.ferme { cursor: default; }
+.bloc.ferme .contenu { user-select: text; }
+.bloc.selectionne { outline: 2px solid #1f6f8b; outline-offset: 2px; }
+.numero { display: inline-block; min-width: 1.4em; padding: 0 4px; border-radius: 4px; background: #1f6f8b; color: #fff; text-align: center; font: 600 14px/1.5 system-ui, sans-serif; }
+.numero.vide { background: #fff; color: #a33; border: 1px dashed #a33; }
+.renvoi.selectionne .numero { outline: 2px solid #f0a020; }
+.ecrire-ici { display: block; width: 100%; height: 12px; min-height: 12px; margin: -6px 0 2px; padding: 0; border: 0; background: transparent; }
+.ecrire-ici::before { content: '+'; display: block; font: 12px/12px system-ui, sans-serif; color: #8a8f9c; text-align: left; }
+.ecrire-ici:hover::before, .ecrire-ici:focus-visible::before { color: #1f6f8b; font-weight: 700; }
+.ecrire-fin { margin-top: 6px; }
+.message { min-height: 34px; margin: 6px 0; padding: 4px 8px; background: #eef0f4; border-radius: 6px; }
+.saisie, .panneau, .confirmation { margin: 8px 0; padding: 10px; border: 1px solid #1f6f8b; border-radius: 8px; background: #f6fbfc; display: grid; gap: 6px; }
+.saisie ul { list-style: none; margin: 0; padding: 0; max-height: 180px; overflow: auto; border: 1px solid #d9dbe1; background: #fff; }
+.saisie li { padding: 4px 8px; cursor: pointer; }
+.saisie li.actif { background: #1f6f8b; color: #fff; }
+.panneau .actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.liaison { margin: 6px 0; padding: 4px 8px; border: 1px dashed #7a5aa6; border-radius: 6px; font-size: 13px; }
+.etat { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; font-size: 13px; color: #3c4353; }
+.etat[data-etat='conflit'], .etat[data-etat='refuse'] { color: #8a1f1f; }
+.discret { margin-left: auto; font-size: 12px; }
+.suite { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 16px; }
+.lectures { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.lecture { background: #fff; border: 1px solid #d9dbe1; border-radius: 8px; padding: 10px; font: 16px/1.6 Georgia, serif; }
+.lu-action { padding: 6px 10px; border: 1px dashed #a0672b; background: #fbf3e6; font-style: italic; }
+.lecture-livre .numero { background: transparent; color: inherit; font: inherit; font-weight: 700; padding: 0; min-width: 0; }

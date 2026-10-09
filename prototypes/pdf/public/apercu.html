@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Aperçu du livre — essai PDF</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/src/polices.css" data-pagedjs-ignore>
+<link rel="stylesheet" href="/src/coupures.css" data-pagedjs-ignore>
+<link rel="stylesheet" href="/public/outil.css" data-pagedjs-ignore>
+</head>
+<body>
+<header id="barre" class="outil">
+  <strong>Aperçu du livre</strong>
+  <span id="etat">Composition…</span>
+  <label><input type="checkbox" id="marques" checked> marques de travail</label>
+  <label>Taille <select id="taille"><option value="1">100 %</option><option value="0.75" selected>75 %</option><option value="0.5">50 %</option></select></label>
+  <button id="pdf-travail">PDF de travail</button>
+  <button id="pdf-definitif">PDF définitif</button>
+</header>
+<aside id="controles" class="outil"></aside>
+<main id="pages"></main>
+<form id="correction" class="outil" hidden>
+  <p id="correction-titre"></p>
+  <textarea id="correction-texte" rows="5"></textarea>
+  <p class="aide">**gras**, *italique* ; les repères entre accolades (renvoi, image en ligne) ne se modifient pas ici.</p>
+  <button type="submit">Corriger le texte de la scène</button>
+  <button type="button" id="correction-annuler">Annuler</button>
+</form>
+<script type="module" src="/public/apercu.js"></script>
+</body>
+</html>

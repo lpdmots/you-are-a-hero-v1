@@ -1,0 +1,28 @@
+/* Habillage minimal de l'outil d'essai. Rien ici ne touche à la mise en page
+   du livre : tout est limité à l'écran. */
+@media screen {
+  body { margin: 0; background: #e9e7e2; font: 14px/1.4 system-ui, sans-serif; }
+  .outil { font: 14px/1.4 system-ui, sans-serif; }
+  #barre { position: sticky; top: 0; z-index: 10; display: flex; gap: 16px; align-items: center; padding: 8px 14px; background: #fff; border-bottom: 1px solid #ccc; flex-wrap: wrap; }
+  #etat { flex: 1; color: #444; }
+  #controles { padding: 8px 14px; background: #fbfaf7; border-bottom: 1px solid #ddd; font-size: 13px; }
+  #controles ul { margin: 2px 0 6px; padding-left: 18px; }
+  #controles .bloquant { color: #a12a37; }
+  #pages { padding: 18px 0 60px; transform-origin: top center; }
+  .pagedjs_pages { display: flex; flex-wrap: wrap; width: calc(2 * 148mm); margin: 0 auto; row-gap: 6mm; }
+  .pagedjs_page { flex: none; background: #fff; box-shadow: 0 0 0 1px #c9c6bf; }
+  .pagedjs_first_page { margin-left: 148mm; }
+  body:not(.rendu) [data-bloc] { cursor: text; }
+  body:not(.rendu) [data-bloc]:hover { outline: 1px dashed #7a8; outline-offset: 2px; }
+  #correction { position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); width: min(640px, 92vw); background: #fff; border: 1px solid #888; border-radius: 6px; padding: 12px; box-shadow: 0 6px 24px #0003; z-index: 20; }
+  #correction textarea { width: 100%; box-sizing: border-box; font: 15px/1.5 Georgia, serif; }
+  #correction p { margin: 0 0 6px; }
+  #correction .aide { font-size: 12px; color: #555; margin-top: 4px; }
+  body.rendu .outil { display: none; }
+  body.rendu { background: #fff; }
+  body.rendu #pages { padding: 0; }
+  body.rendu .pagedjs_pages { display: block; width: auto; }
+  body.rendu .pagedjs_first_page { margin-left: 0; }
+  body.rendu .pagedjs_page { box-shadow: none; }
+}
+@media print { .outil { display: none !important; } }

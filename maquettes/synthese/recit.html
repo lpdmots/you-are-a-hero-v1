@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Les passeurs de brume — Parties et chapitres</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Atkinson+Hyperlegible+Mono:wght@400;700&family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Playwrite+FR+Moderne:wght@300;400&family=Vollkorn:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/base.css">
+<link rel="stylesheet" href="assets/recit.css">
+<link rel="stylesheet" href="assets/ecrans.css">
+<link rel="stylesheet" href="assets/livre.css">
+<link rel="stylesheet" href="assets/partage.css">
+<link rel="stylesheet" href="assets/choix.css">
+<link rel="stylesheet" href="assets/jeu.css">
+<link rel="stylesheet" href="assets/classes.css">
+</head>
+<body>
+<div class="maquette" role="region" aria-label="Commandes de présentation de la maquette">
+  <div class="maquette__int">
+    <a class="maquette__lien" href="index.html">Maquette de synthèse</a>
+    <div class="maquette__groupes">
+      <fieldset class="seg"><legend>Vue</legend>
+        <label><input type="radio" name="vue" value="enseignant" checked><span>Enseignante</span></label>
+        <label><input type="radio" name="vue" value="eleve:alice"><span>Alice</span></label>
+        <label><input type="radio" name="vue" value="eleve:bilal"><span>Bilal</span></label>
+      </fieldset>
+      <fieldset class="seg"><legend>Organisation</legend>
+        <label><input type="radio" name="mode" value="classe" checked><span>Classe</span></label>
+        <label><input type="radio" name="mode" value="perso"><span>Personnel</span></label>
+      </fieldset>
+      <fieldset class="seg"><legend>Récit</legend>
+        <label><input type="radio" name="recit" value="choix" checked><span>À choix</span></label>
+        <label><input type="radio" name="recit" value="classique"><span>Classique</span></label>
+      </fieldset>
+      <fieldset class="seg"><legend>Images</legend>
+        <label><input type="radio" name="img" value="choisies" checked><span>Images choisies</span></label>
+        <label><input type="radio" name="img" value="defaut"><span>Sans image</span></label>
+      </fieldset>
+      <div class="maquette__sim" id="maquette-sim" hidden>
+        <fieldset class="seg"><legend>Sauvegarde</legend>
+          <label><input type="radio" name="sauv" value="ok" checked><span>Normale</span></label>
+          <label><input type="radio" name="sauv" value="echec"><span>Échec</span></label>
+          <label><input type="radio" name="sauv" value="conflit"><span>Conflit</span></label>
+        </fieldset>
+        <fieldset class="seg"><legend>Horaires</legend>
+          <label><input type="radio" name="horaire" value="ouvert" checked><span>Ouvert</span></label>
+          <label><input type="radio" name="horaire" value="fin"><span>Fin proche</span></label>
+          <label><input type="radio" name="horaire" value="ferme"><span>Fermé</span></label>
+        </fieldset>
+        <fieldset class="seg"><legend>Pendant la relecture</legend>
+          <label><input type="radio" name="concurrent" value="non" checked><span>Rien</span></label>
+          <label><input type="radio" name="concurrent" value="oui"><span>Texte modifié</span></label>
+        </fieldset>
+      </div>
+      <div class="maquette__sim" id="maquette-colle" hidden>
+        <fieldset class="seg"><legend>Coller</legend>
+          <label><input type="radio" name="colle" value="non" checked><span>Rien</span></label>
+          <label><input type="radio" name="colle" value="coupe"><span>Choix coupé</span></label>
+          <label><input type="radio" name="colle" value="copie"><span>Choix copié</span></label>
+          <label><input type="radio" name="colle" value="action"><span>Action de jeu copiée</span></label>
+        </fieldset>
+      </div>
+      <div class="maquette__sim" id="maquette-livre" hidden>
+        <fieldset class="seg"><legend>Moment</legend>
+          <label><input type="radio" name="moment" value="sept"><span>Septembre</span></label>
+          <label><input type="radio" name="moment" value="juin" checked><span>Juin, à corriger</span></label>
+          <label><input type="radio" name="moment" value="pret"><span>Juin, prêt</span></label>
+        </fieldset>
+      </div>
+      <div class="maquette__sim" id="maquette-partage" hidden>
+        <fieldset class="seg"><legend>Partage</legend>
+          <label><input type="radio" name="partage" value="non" checked><span>Pas partagé</span></label>
+          <label><input type="radio" name="partage" value="partage"><span>Partagé</span></label>
+          <label><input type="radio" name="partage" value="modifie"><span>Livre modifié depuis</span></label>
+          <label><input type="radio" name="partage" value="rouverte"><span>Scène rouverte</span></label>
+          <label><input type="radio" name="partage" value="retire"><span>Retiré</span></label>
+        </fieldset>
+      </div>
+    </div>
+    <a class="maquette__lien maquette__lien--sec" href="#/lire?acces=lien">Lecteur en ligne</a>
+    <a class="maquette__lien maquette__lien--tiers" href="#/classe">Connexion élève</a>
+    <a class="maquette__lien" href="planche.html">Planche d’ambiance</a>
+  </div>
+</div>
+
+<header class="appbar" id="appbar"></header>
+<main id="vue" tabindex="-1"></main>
+
+<div class="voile" id="voile" hidden></div>
+<aside class="panneau" id="panneau" aria-labelledby="panneau-titre" hidden></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="assets/icons.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/recit.js"></script>
+<script src="assets/ecrans.js"></script>
+<script src="assets/livre-textes.js"></script>
+<script src="assets/livre.js"></script>
+<script src="assets/partage.js"></script>
+<script src="assets/choix.js"></script>
+<script src="assets/jeu.js"></script>
+<script src="assets/classes.js"></script>
+</body>
+</html>

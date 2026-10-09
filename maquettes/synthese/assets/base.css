@@ -1,0 +1,179 @@
+/* ——— Jetons ——————————————————————————————————————————————— */
+:root {
+  --bureau: #F1F2EE;          /* fond de l'espace adulte */
+  --feuille: #FFFFFF;         /* surfaces de lecture et d'écriture */
+  --feuille-2: #F8F9F6;
+  --trait: #DCDFD8;
+  --trait-fort: #C2C7BF;
+  --graphite: #1E2226;
+  --graphite-2: #4A5157;
+  --graphite-3: #636B72;
+  --canard: #0B6A73;
+  --canard-fonce: #07525A;
+  --canard-pale: #E1F0EF;
+  --bristol: #E8A0A9;         /* filet rose des fiches bristol */
+  --marge: #EFA9A9;           /* marge rouge de la copie d'écolier */
+
+  --e-cours: #34499A;    --e-cours-f: #E7EBFA;
+  --e-valider: #7E5200;  --e-valider-f: #FFEFC2;
+  --e-reprendre: #A2331A; --e-reprendre-f: #FCE4DB;
+  --e-valide: #2B6531;   --e-valide-f: #E1F0DD;
+  --e-prete: #643A8A;    --e-prete-f: #EFE6F7;
+
+  --f-ui: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
+  --f-code: "Atkinson Hyperlegible Mono", ui-monospace, "SF Mono", monospace;
+  --f-main: "Playwrite FR Moderne", "Segoe Script", cursive;
+  --f-recit: "Vollkorn", Georgia, serif;   /* texte du récit uniquement */
+
+  --t-xs: .78rem; --t-s: .875rem; --t-m: 1rem; --t-l: 1.125rem; --t-xl: 1.375rem; --t-2xl: 1.75rem; --t-3xl: 2.25rem;
+  --r-s: 6px; --r-m: 10px; --r-l: 14px;
+  --ombre-cahier: 0 1px 1px rgba(30, 40, 38, .06), 0 6px 16px -6px rgba(30, 40, 38, .18);
+  --ombre-panneau: 0 12px 40px -12px rgba(20, 30, 30, .28), 0 2px 6px rgba(20, 30, 30, .06);
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; font-family: var(--f-ui); font-size: 15.5px; line-height: 1.5; color: var(--graphite);
+  background: var(--bureau); font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: #BFE3E0; color: var(--graphite); }
+:focus-visible { outline: 3px solid var(--canard); outline-offset: 2px; border-radius: 4px; }
+a { color: var(--canard); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { color: var(--canard-fonce); }
+h1, h2, h3, h4 { margin: 0; line-height: 1.2; letter-spacing: -0.012em; text-wrap: balance; }
+p { margin: 0; }
+button { font: inherit; color: inherit; }
+.ic { width: 1.15em; height: 1.15em; flex: none; vertical-align: -.2em; }
+.vh { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.code { font-family: var(--f-code); font-size: .92em; letter-spacing: .01em; }
+html { scrollbar-color: var(--trait-fort) transparent; }
+
+/* ——— Boutons ——————————————————————————————————————————————— */
+.btn {
+  display: inline-flex; align-items: center; gap: .45rem; min-height: 38px; padding: .45rem .9rem;
+  border-radius: 8px; border: 1px solid var(--trait-fort); background: var(--feuille);
+  font-weight: 600; font-size: var(--t-s); cursor: pointer; text-decoration: none; color: var(--graphite);
+  transition: background .15s var(--ease), border-color .15s var(--ease), transform .15s var(--ease);
+}
+.btn:hover { background: var(--feuille-2); border-color: var(--graphite-3); }
+.btn:active { transform: translateY(1px); }
+.btn--primaire { background: var(--canard); border-color: var(--canard); color: #fff; }
+.btn--primaire:hover { background: var(--canard-fonce); border-color: var(--canard-fonce); color: #fff; }
+.btn--discret { border-color: transparent; background: transparent; }
+.btn--discret:hover { background: rgba(30, 34, 38, .06); border-color: transparent; }
+.btn[disabled] { opacity: .5; cursor: not-allowed; }
+
+/* ——— Tampons d'état : filet double comme un tampon encreur ———— */
+.tampon {
+  --c: var(--e-cours); --f: var(--e-cours-f);
+  display: inline-flex; align-items: center; gap: .3rem; padding: .12rem .5rem .12rem .38rem;
+  border-radius: 5px; color: var(--c); background: var(--f);
+  box-shadow: inset 0 0 0 1.5px var(--c), inset 0 0 0 3px var(--f), inset 0 0 0 3.8px color-mix(in srgb, var(--c) 35%, transparent);
+  font-size: var(--t-xs); font-weight: 700; letter-spacing: .01em; white-space: nowrap; line-height: 1.5;
+}
+.tampon .ic { width: 1.05em; height: 1.05em; }
+.tampon[data-e="cours"] { --c: var(--e-cours); --f: var(--e-cours-f); }
+.tampon[data-e="valider"] { --c: var(--e-valider); --f: var(--e-valider-f); }
+.tampon[data-e="reprendre"] { --c: var(--e-reprendre); --f: var(--e-reprendre-f); }
+.tampon[data-e="valide"] { --c: var(--e-valide); --f: var(--e-valide-f); }
+.tampon[data-e="prete"] { --c: var(--e-prete); --f: var(--e-prete-f); }
+
+/* ——— Gommettes : prise en charge, jamais un verrou ——————————— */
+.gommette {
+  /* Gommette adoucie : teinte claire de l'élève, initiales en graphite, liseré de sa couleur */
+  --g: #888; display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%;
+  background: color-mix(in srgb, var(--g) 17%, #fff); color: var(--graphite); font-weight: 800; font-size: 11.5px; letter-spacing: .02em; flex: none;
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--g) 75%, #fff), 0 0 0 2px var(--feuille);
+}
+.gommette--s { width: 24px; height: 24px; font-size: 11px; }
+.gommette--l { width: 38px; height: 38px; font-size: 16px; }
+.gommette--libre { background: transparent; color: var(--graphite-3); box-shadow: inset 0 0 0 1.5px var(--trait-fort); }
+.gommettes { display: flex; }
+.gommettes .gommette + .gommette { margin-left: -2px; }
+.pec { display: inline-flex; align-items: center; gap: .45rem; font-size: var(--t-s); color: var(--graphite-2); min-width: 0; }
+.pec b { color: var(--graphite); font-weight: 700; }
+.pec--toi .gommette { background: var(--g); color: #fff; box-shadow: 0 0 0 2px var(--feuille), 0 0 0 3.5px var(--g); }
+
+/* ——— Cahier : carte de chapitre (protège-cahier + étiquette) ——— */
+.cahier {
+  --edge: #999; --band: #ddd; --tint: #f6f6f6;
+  position: relative; display: flex; flex-direction: column; background: var(--feuille);
+  border-radius: var(--r-m); box-shadow: var(--ombre-cahier); overflow: hidden;
+  transition: transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.cahier__couv { position: relative; padding: 8px 8px 0 14px; background: var(--band); }
+.cahier__couv::before { /* dos du protège-cahier */
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: var(--edge);
+}
+.cahier__vignette { position: relative; aspect-ratio: 16 / 10; border-radius: 5px; overflow: hidden; background: var(--tint); }
+.cahier__vignette > img, .cahier__vignette > svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.etiquette {
+  position: relative; margin: -22px 6px 0; padding: .5rem .6rem .55rem; background: var(--feuille);
+  border-radius: 7px; text-align: center;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--edge) 55%, #fff), inset 0 0 0 3px #fff, inset 0 0 0 4px color-mix(in srgb, var(--edge) 40%, #fff), 0 2px 6px -2px rgba(0, 0, 0, .15);
+}
+.etiquette h3 { font-size: 1.12rem; font-weight: 800; line-height: 1.2; }
+.etiquette p { font-size: var(--t-xs); color: var(--graphite-2); margin-top: .1rem; }
+.cahier__couv-bas { height: 12px; }
+.cahier__pied { display: grid; gap: .55rem; padding: .75rem .9rem .9rem 1.2rem; font-size: var(--t-s); }
+.cahier__ligne { display: flex; align-items: center; gap: .5rem; color: var(--graphite-2); min-width: 0; }
+.cahier__ligne .ic { color: var(--graphite-3); }
+.cahier[aria-current="true"] { box-shadow: 0 0 0 3px var(--canard), var(--ombre-cahier); }
+.a-preparer { display: flex; gap: .4rem; align-items: flex-start; color: var(--e-valider); font-weight: 600; font-size: var(--t-xs); }
+.a-preparer .ic { color: var(--e-valider); margin-top: .1em; }
+
+/* ——— Fiche bristol : carte de scène compacte ———————————————— */
+.fiche {
+  position: relative; background: var(--feuille); border-radius: 8px; border: 1px solid var(--trait);
+  padding: .6rem .8rem .7rem; display: grid; gap: .4rem; min-width: 0;
+  transition: border-color .15s var(--ease), box-shadow .15s var(--ease);
+}
+.fiche:hover { border-color: var(--trait-fort); box-shadow: 0 6px 14px -8px rgba(20, 30, 30, .22); }
+.fiche__tete { display: flex; align-items: center; gap: .5rem; padding-bottom: .4rem; border-bottom: 1.5px solid var(--bristol); }
+.fiche__ref { font-family: var(--f-code); font-size: var(--t-s); font-weight: 700; color: var(--graphite-2); letter-spacing: .02em; }
+.fiche__tete .tampon { margin-left: auto; }
+.fiche__titre { font-size: 1rem; font-weight: 700; line-height: 1.3; }
+.fiche__meta { display: flex; flex-wrap: wrap; gap: .25rem .8rem; font-size: var(--t-xs); color: var(--graphite-2); }
+.fiche__meta:empty { display: none; }
+.fiche__meta span { display: inline-flex; align-items: center; gap: .3rem; }
+.fiche__meta .ic { color: var(--graphite-3); }
+.fiche__cible { position: absolute; inset: 0; border: 0; background: transparent; cursor: pointer; border-radius: 8px; z-index: 1; }
+.fiche .case { position: relative; z-index: 2; }
+.fiche[aria-selected="true"], .fiche.est-choisie { border-color: var(--canard); box-shadow: 0 0 0 2px var(--canard); }
+.repere { display: inline-flex; align-items: center; gap: .28rem; font-size: var(--t-xs); font-weight: 700; padding: .05rem .45rem; border-radius: 99px; background: var(--feuille-2); color: var(--graphite-2); box-shadow: inset 0 0 0 1px var(--trait); }
+.repere--depart { background: #E6F2F1; color: var(--canard-fonce); box-shadow: inset 0 0 0 1px #A7D2CF; }
+.repere--fin { background: #F3EEE6; color: #5E4A2A; box-shadow: inset 0 0 0 1px #D8CCB6; }
+
+/* case à cocher dessinée */
+.case { appearance: none; -webkit-appearance: none; width: 20px; height: 20px; margin: 0; border-radius: 5px; border: 1.5px solid var(--trait-fort); background: var(--feuille); cursor: pointer; display: grid; place-items: center; flex: none; }
+.case:checked { background: var(--canard); border-color: var(--canard); }
+.case:checked::after { content: ""; width: 10px; height: 5px; border: 2px solid #fff; border-top: 0; border-right: 0; transform: translateY(-1px) rotate(-45deg); }
+.case:hover { border-color: var(--canard); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+
+/* ——— Fiche à filet : consigne, retour, décision, relecture ———— */
+.carnet-fiche { --filet: var(--bristol); background: var(--feuille); border-radius: 12px; box-shadow: inset 0 0 0 1px var(--trait); overflow: hidden; min-width: 0; }
+.carnet-fiche > header { display: flex; align-items: center; gap: 8px; padding: 11px 16px 9px; border-bottom: 2px solid var(--filet); }
+.carnet-fiche > header h2 { font-size: var(--t-s); font-weight: 800; letter-spacing: .01em; }
+.carnet-fiche > header .tampon, .carnet-fiche > header .fiche-tete__fin { margin-left: auto; }
+.carnet-fiche__corps { padding: 12px 16px 14px; display: grid; gap: 10px; }
+.carnet-fiche--retour { --filet: var(--e-reprendre); }
+.carnet-fiche--decision { --filet: var(--canard); }
+.carnet-fiche--attente { --filet: #E9C877; }
+.carnet-fiche--valide { --filet: var(--e-valide); }
+
+/* ——— Copie : la page où l'on écrit le récit ——————————————— */
+.copie { position: relative; background: var(--feuille); border-radius: 14px; box-shadow: 0 1px 2px rgba(20, 30, 30, .05), inset 0 0 0 1px var(--trait); overflow: hidden; min-width: 0; }
+.copie__texte { position: relative; padding: 26px 34px 30px 64px; font-family: var(--f-recit); font-size: 1.2rem; line-height: 1.75; min-height: 260px; outline: none; display: grid; gap: .75em; align-content: start; caret-color: var(--canard); }
+.copie__texte::before { content: ""; position: absolute; left: 44px; top: 0; bottom: 0; width: 1.5px; background: var(--marge); }
+.copie__texte:empty::after { content: attr(data-placeholder); color: var(--graphite-3); font-family: var(--f-ui); font-size: 1rem; }
+.copie__texte:focus-visible { box-shadow: inset 0 0 0 2px var(--canard); }
+.copie__texte p { max-width: 62ch; }
+.recit { font-family: var(--f-recit); }

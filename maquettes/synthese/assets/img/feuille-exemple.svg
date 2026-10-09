@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1130 1740" role="img" aria-label="Exemple de feuille d'aventure préparée en image par l'adulte">
+  <!-- Exemple fabriqué pour la maquette : une feuille d'aventure dessinée hors de l'application, importée en image pleine page -->
+  <defs>
+    <pattern id="lignes" width="10" height="58" patternUnits="userSpaceOnUse"><path d="M0 57.5H10" stroke="#9AA3A0" stroke-width="1.6" stroke-dasharray="2 5"/></pattern>
+  </defs>
+  <rect width="1130" height="1740" fill="#fff"/>
+  <g fill="none" stroke="#1E2226">
+    <rect x="14" y="14" width="1102" height="1712" rx="34" stroke-width="5"/>
+    <rect x="34" y="34" width="1062" height="1672" rx="20" stroke-width="1.6"/>
+  </g>
+  <!-- Bandeau du titre -->
+  <path d="M250 96h630l34 52-34 52H250l-34-52z" fill="#1E2226"/>
+  <text x="565" y="168" text-anchor="middle" font-family="Vollkorn, Georgia, serif" font-size="58" font-weight="600" fill="#fff" letter-spacing="2">Feuille d’aventure</text>
+  <text x="565" y="262" text-anchor="middle" font-family="Vollkorn, Georgia, serif" font-size="30" font-style="italic" fill="#4A5157">Les passeurs de brume</text>
+  <!-- Lanterne : la volonté -->
+  <g transform="translate(96 320)">
+    <text x="0" y="0" font-family="Vollkorn, Georgia, serif" font-size="34" font-weight="600" fill="#1E2226" letter-spacing="3">VOLONTÉ</text>
+    <path d="M0 18h300" stroke="#1E2226" stroke-width="2.5"/>
+    <g fill="none" stroke="#1E2226" stroke-width="5" stroke-linejoin="round">
+      <path d="M88 86h124l22 34v178l-22 34H88l-22-34V120z"/>
+      <path d="M112 86V62h76v24M128 62c0-24 44-24 44 0"/>
+      <path d="M66 332h168M92 362h116"/>
+    </g>
+    <path d="M150 262c-34-20-36-62 0-104 36 42 34 84 0 104z" fill="none" stroke="#1E2226" stroke-width="3.5"/>
+    <text x="150" y="420" text-anchor="middle" font-family="Vollkorn, Georgia, serif" font-size="26" font-style="italic" fill="#4A5157">au départ : 5</text>
+  </g>
+  <!-- Sac : l'inventaire -->
+  <g transform="translate(470 320)">
+    <text x="0" y="0" font-family="Vollkorn, Georgia, serif" font-size="34" font-weight="600" fill="#1E2226" letter-spacing="3">INVENTAIRE</text>
+    <path d="M0 18h564" stroke="#1E2226" stroke-width="2.5"/>
+    <rect x="0" y="34" width="564" height="406" fill="url(#lignes)"/>
+    <g fill="none" stroke="#1E2226" stroke-width="3">
+      <circle cx="16" cy="78" r="9"/><circle cx="16" cy="136" r="9"/><circle cx="16" cy="194" r="9"/><circle cx="16" cy="252" r="9"/><circle cx="16" cy="310" r="9"/><circle cx="16" cy="368" r="9"/><circle cx="16" cy="426" r="9"/>
+    </g>
+  </g>
+  <!-- Notes -->
+  <g transform="translate(96 850)">
+    <text x="0" y="0" font-family="Vollkorn, Georgia, serif" font-size="34" font-weight="600" fill="#1E2226" letter-spacing="3">CE QUE TU DÉCOUVRES</text>
+    <path d="M0 18h938" stroke="#1E2226" stroke-width="2.5"/>
+    <rect x="0" y="44" width="938" height="640" rx="18" fill="url(#lignes)" stroke="#1E2226" stroke-width="3"/>
+    <!-- Rose des vents -->
+    <g transform="translate(838 584)" fill="none" stroke="#636B72" stroke-width="2.5">
+      <circle r="62"/><circle r="46" stroke-dasharray="3 6"/>
+      <path d="M0-78L14 0 0 78-14 0z" fill="#fff"/><path d="M-78 0L0-14 78 0 0 14z" fill="#fff"/>
+    </g>
+  </g>
+  <text x="565" y="1650" text-anchor="middle" font-family="Vollkorn, Georgia, serif" font-size="27" font-style="italic" fill="#4A5157">Écris au crayon : tu pourras gommer et rejouer.</text>
+</svg>

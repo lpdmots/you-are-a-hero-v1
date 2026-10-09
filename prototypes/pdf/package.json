@@ -1,0 +1,26 @@
+{
+  "name": "prototype-pdf",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "description": "Essai jetable : éprouver la chaîne aperçu + PDF (Paged.js, Chromium) sur les 15 points de V1/docs/architecture.md. Aucun code à reprendre.",
+  "scripts": {
+    "livre": "node outils/fabriquer-livre.mjs",
+    "apercu": "node serveur.mjs",
+    "pdf": "node exporter.mjs",
+    "test": "playwright test",
+    "pages": "node outils/voir-pages.mjs"
+  },
+  "dependencies": {
+    "@fontsource/atkinson-hyperlegible": "5.3.0",
+    "@fontsource/literata": "5.3.0",
+    "hyphenopoly": "6.1.0",
+    "pagedjs": "0.4.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@sparticuz/chromium": "153.0.0",
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.3.289"
+  }
+}

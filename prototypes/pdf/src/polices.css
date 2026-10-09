@@ -1,0 +1,7 @@
+/* Polices du livre d'essai (OFL-1.1), lues directement par le navigateur. */
+@font-face { font-family: 'Literata'; font-weight: 400; font-style: normal; src: url('/polices/literata-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Literata'; font-weight: 400; font-style: italic; src: url('/polices/literata-latin-400-italic.woff2') format('woff2'); }
+@font-face { font-family: 'Literata'; font-weight: 700; font-style: normal; src: url('/polices/literata-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Atkinson'; font-weight: 400; font-style: normal; src: url('/polices/atkinson-hyperlegible-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Atkinson'; font-weight: 700; font-style: normal; src: url('/polices/atkinson-hyperlegible-latin-700-normal.woff2') format('woff2'); }
+
