@@ -33,6 +33,10 @@ test("F01-AC27 — entrée de l'enseignant : une phrase qui ne dit pas ce qui es
   await connecter(page, compte);
   await expect(page).toHaveURL(/\/projets$/);
   await expect(page.getByRole("heading", { name: "Votre premier livre commence ici" })).toBeVisible();
+
+  // Une session ordinaire ne suffit pas à changer le mot de passe : il faut le lien reçu par courriel
+  await page.goto("/entree/nouveau-mot-de-passe");
+  await expect(page).toHaveURL(/\/projets$/);
 });
 
 test("F01-AC29 — mot de passe oublié : même phrase pour toute adresse, puis un nouveau mot de passe par le lien reçu", async ({ page }) => {

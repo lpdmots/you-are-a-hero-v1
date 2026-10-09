@@ -3,6 +3,7 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { adresseDuSite } from "@/serveur/env";
+import { sessionDeRecuperation } from "@/serveur/adulte";
 import { clientAdulte } from "@/serveur/supabase";
 
 export type EtatFormulaire = { erreur?: string; fait?: boolean };
@@ -35,9 +36,8 @@ export async function demanderNouveauMotDePasse(_avant: EtatFormulaire, formulai
 export async function choisirMotDePasse(_avant: EtatFormulaire, formulaire: FormData): Promise<EtatFormulaire> {
   const motDePasse = String(formulaire.get("mot-de-passe") ?? "");
   if (motDePasse.length < 8) return { erreur: "Choisissez un mot de passe d’au moins huit caractères." };
+  if (!(await sessionDeRecuperation())) return { erreur: "Ce lien n’est plus valable. Demandez-en un nouveau." };
   const supabase = await clientAdulte();
-  const { data } = await supabase.auth.getClaims();
-  if (!data?.claims?.sub) return { erreur: "Ce lien n’est plus valable. Demandez-en un nouveau." };
   const { error } = await supabase.auth.updateUser({ password: motDePasse });
   if (error) {
     return { erreur: error.code === "same_password" ? "Choisissez un mot de passe différent de l’ancien." : "Ce mot de passe n’a pas été accepté. Essayez-en un autre." };

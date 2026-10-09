@@ -45,3 +45,14 @@ export async function exigerEnseignant(): Promise<Enseignant> {
 /** Nom que lisent les élèves (F01-AC13). */
 export const nomPourLesEleves = (nomAffiche: string | null | undefined): string =>
   nomAffiche?.trim() || "ton enseignant(e)";
+
+/**
+ * La session vient-elle du lien « Mot de passe oublié » ? Le mot de passe ne se choisit
+ * que là : une session laissée ouverte sur un poste ne suffit pas à le changer.
+ */
+export async function sessionDeRecuperation(): Promise<boolean> {
+  const supabase = await clientAdulte();
+  const { data } = await supabase.auth.getClaims();
+  const methodes = (data?.claims?.amr ?? []) as ({ method?: string } | string)[];
+  return !!data?.claims?.sub && methodes.some((m) => (typeof m === "string" ? m : m.method) === "recovery");
+}

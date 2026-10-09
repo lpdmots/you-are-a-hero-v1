@@ -171,9 +171,11 @@ describe("Accès de classe, puis accès individuel (F06.4)", () => {
 });
 
 describe("Essais faux (F06.4, 8 et 9 octobre 2026)", () => {
-  const fautes = async (eleve: string, n: number) => {
-    let dernier: string | null = null;
-    for (let i = 0; i < n; i += 1) dernier = (await service().rpc("noter_code_faux", { p_eleve: eleve })).data as string | null;
+  // Un essai est pris avant d'être comparé ; un essai faux, c'est un essai pris et rien d'autre
+  type Essai = { autorise: boolean; attente_jusqua: string | null };
+  const fautes = async (eleve: string, n: number): Promise<Essai> => {
+    let dernier: Essai = { autorise: true, attente_jusqua: null };
+    for (let i = 0; i < n; i += 1) dernier = ((await service().rpc("prendre_essai_code", { p_eleve: eleve })).data as Essai[])[0];
     return dernier;
   };
   const blocage = async (eleve: string) =>
@@ -183,20 +185,23 @@ describe("Essais faux (F06.4, 8 et 9 octobre 2026)", () => {
     const c = await creerClasse(laurent, "CM1");
     const [b, a] = await inscrire(laurent, c.id, ["Bilal", "Alice"]);
 
-    expect(await fautes(b.id, 4)).toBeNull();
+    expect(await fautes(b.id, 4)).toEqual({ autorise: true, attente_jusqua: null });
     expect((await blocage(b.id)).bloque).toBe(false);
-    const jusqua = await fautes(b.id, 1);
-    expect(jusqua).not.toBeNull();
-    const attente = new Date(jusqua!).getTime() - Date.now();
+    const cinquieme = await fautes(b.id, 1);
+    expect(cinquieme.autorise).toBe(true);
+    const attente = new Date(cinquieme.attente_jusqua!).getTime() - Date.now();
     expect(attente).toBeGreaterThan(110_000);
     expect(attente).toBeLessThanOrEqual(120_000);
     expect((await blocage(b.id)).bloque).toBe(true);
+    // Le sixième essai, même avec le bon code, n'est pas comparé
+    expect((await fautes(b.id, 1)).autorise).toBe(false);
     // Alice, sur le poste voisin, n'attend pas
     expect(await blocage(a.id)).toEqual({ bloque: false, essais_faux: 0 });
 
     // Deux minutes plus tard : le bon code est accepté, et le compte repart de zéro
     await sql("update eleves_secrets set bloque_jusqua = now() - interval '1 second' where eleve_id = $1", [b.id]);
     expect((await blocage(b.id)).bloque).toBe(false);
+    expect((await fautes(b.id, 1)).autorise).toBe(true);
     const poste = (await ouvrirPoste(c.id))!;
     expect(await identifier(poste, b.inscriptionId)).toBe(true);
     expect(await blocage(b.id)).toEqual({ bloque: false, essais_faux: 0 });
@@ -207,9 +212,9 @@ describe("Essais faux (F06.4, 8 et 9 octobre 2026)", () => {
     const [b] = await inscrire(laurent, c.id, ["Bilal"]);
     await fautes(b.id, 5);
     await sql("update eleves_secrets set bloque_jusqua = now() - interval '1 second' where eleve_id = $1", [b.id]);
-    expect(await fautes(b.id, 4)).toBeNull();
-    const jusqua = await fautes(b.id, 1);
-    expect(new Date(jusqua!).getTime() - Date.now()).toBeLessThanOrEqual(120_000);
+    expect((await fautes(b.id, 4)).attente_jusqua).toBeNull();
+    const cinquieme = await fautes(b.id, 1);
+    expect(new Date(cinquieme.attente_jusqua!).getTime() - Date.now()).toBeLessThanOrEqual(120_000);
   });
 
   it("F06-AC73 — un bon code entre deux codes faux remet le compte à zéro", async () => {
@@ -217,19 +222,28 @@ describe("Essais faux (F06.4, 8 et 9 octobre 2026)", () => {
     const [b] = await inscrire(laurent, c.id, ["Bilal"]);
     await fautes(b.id, 4);
     await identifier((await ouvrirPoste(c.id))!, b.inscriptionId);
-    expect(await fautes(b.id, 4)).toBeNull();
+    expect((await fautes(b.id, 4)).attente_jusqua).toBeNull();
     expect((await blocage(b.id)).bloque).toBe(false);
   });
 
+  it("F06-AC73 — vingt essais partis ensemble ne font pas plus de cinq essais comparés", async () => {
+    const c = await creerClasse(laurent, "CM1");
+    const [b] = await inscrire(laurent, c.id, ["Bilal"]);
+    const reponses = await Promise.all(Array.from({ length: 20 }, () => service().rpc("prendre_essai_code", { p_eleve: b.id })));
+    const autorises = reponses.filter((r) => (r.data as Essai[])[0].autorise).length;
+    expect(autorises).toBe(5);
+    expect((await blocage(b.id)).bloque).toBe(true);
+  });
+
   const cles = () => ({ navigateur: `n:${randomBytes(8).toString("hex")}`, reseau: `r:${randomBytes(8).toString("hex")}` });
-  const entreeFausse = async (navigateur: string, reseau: string, n: number) => {
-    let dernier: string | null = null;
-    for (let i = 0; i < n; i += 1) dernier = (await service().rpc("noter_entree_fausse", { p_navigateur: navigateur, p_reseau: reseau })).data as string | null;
-    return dernier;
-  };
   const bloquee = async (navigateur: string, reseau: string) =>
     (await service().rpc("entree_bloquee_jusqua", { p_navigateur: navigateur, p_reseau: reseau })).data as string | null;
 
+  // Un essai pris et jamais suivi des bonnes informations est un essai faux ; renvoie l'attente en cours ensuite
+  const entreeFausse = async (navigateur: string, reseau: string, n: number) => {
+    for (let i = 0; i < n; i += 1) await service().rpc("prendre_essai_entree", { p_navigateur: navigateur, p_reseau: reseau });
+    return bloquee(navigateur, reseau);
+  };
   it("F06-AC74 — dix essais faux depuis un poste : cinq minutes d'attente sur ce poste, pas sur un autre", async () => {
     const poste = cles();
     const voisin = { navigateur: cles().navigateur, reseau: poste.reseau }; // même école, autre ordinateur
@@ -240,12 +254,15 @@ describe("Essais faux (F06.4, 8 et 9 octobre 2026)", () => {
     expect(attente).toBeGreaterThan(290_000);
     expect(attente).toBeLessThanOrEqual(300_000);
     expect(await bloquee(poste.navigateur, poste.reseau)).not.toBeNull();
+    // Le onzième essai, même avec les bonnes informations, est refusé avant d'être comparé
+    expect((await service().rpc("prendre_essai_entree", { p_navigateur: poste.navigateur, p_reseau: poste.reseau })).data).not.toBeNull();
     expect(await bloquee(voisin.navigateur, voisin.reseau)).toBeNull();
 
     // Cinq minutes plus tard, le poste peut réessayer ; les bonnes informations remettent son compte à zéro
     await sql("update essais_entree set bloque_jusqua = now() - interval '1 second' where cle = $1", [poste.navigateur]);
     expect(await bloquee(poste.navigateur, poste.reseau)).toBeNull();
-    await service().rpc("noter_entree_juste", { p_navigateur: poste.navigateur });
+    expect((await service().rpc("prendre_essai_entree", { p_navigateur: poste.navigateur, p_reseau: poste.reseau })).data).toBeNull();
+    await service().rpc("noter_entree_juste", { p_navigateur: poste.navigateur, p_reseau: poste.reseau });
     expect(await sql("select 1 from essais_entree where cle = $1", [poste.navigateur])).toEqual([]);
   });
 

@@ -26,7 +26,7 @@ const lien = (sujet: Sujet): Buffer => Buffer.from(`${sujet.sorte}:${sujet.id}`,
 
 export function chiffrer(clair: string, sujet: Sujet): string {
   const iv = randomBytes(12);
-  const chiffre = createCipheriv("aes-256-gcm", cle(), iv);
+  const chiffre = createCipheriv("aes-256-gcm", cle(), iv, { authTagLength: 16 });
   chiffre.setAAD(lien(sujet));
   const corps = Buffer.concat([chiffre.update(clair, "utf8"), chiffre.final()]);
   return [VERSION, iv.toString("base64url"), corps.toString("base64url"), chiffre.getAuthTag().toString("base64url")].join(".");
@@ -35,7 +35,7 @@ export function chiffrer(clair: string, sujet: Sujet): string {
 export function dechiffrer(garde: string, sujet: Sujet): string {
   const [version, iv, corps, sceau] = garde.split(".");
   if (version !== VERSION || !iv || corps === undefined || !sceau) throw new Error("Secret illisible.");
-  const dechiffre = createDecipheriv("aes-256-gcm", cle(), Buffer.from(iv, "base64url"));
+  const dechiffre = createDecipheriv("aes-256-gcm", cle(), Buffer.from(iv, "base64url"), { authTagLength: 16 });
   dechiffre.setAAD(lien(sujet));
   dechiffre.setAuthTag(Buffer.from(sceau, "base64url"));
   return Buffer.concat([dechiffre.update(Buffer.from(corps, "base64url")), dechiffre.final()]).toString("utf8");

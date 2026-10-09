@@ -103,7 +103,8 @@ describe("Un élève ne lit rien d'une autre classe", () => {
       ["identifier_eleve", { p_poste: posteA.id, p_inscription: elevesA[1].inscriptionId }],
       ["etat_poste", { p_jeton_hash: posteB.jetonHash }],
       ["ouvrir_poste", { p_classe: classeB.id, p_jeton_hash: "x" }],
-      ["noter_code_faux", { p_eleve: elevesA[1].id }],
+      ["prendre_essai_code", { p_eleve: elevesA[1].id }],
+      ["prendre_essai_entree", { p_navigateur: "n:x", p_reseau: "r:x" }],
       ["creer_classe", { p_id: classeA.id, p_nom: "x", p_annee_debut: 2026, p_identifiant: "xxxx", p_mot_de_passe_chiffre: "x" }],
       ["inscrire_eleves", { p_classe: classeA.id, p_connus: [], p_nouveaux: [] }],
     ] as const) {

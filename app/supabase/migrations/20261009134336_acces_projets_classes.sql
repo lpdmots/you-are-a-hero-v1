@@ -432,28 +432,38 @@ as $$
   where e.cle in (p_navigateur, p_reseau) and e.bloque_jusqua > now()
 $$;
 
--- Un essai faux à l'entrée. Dix de suite depuis un navigateur : cinq minutes d'attente
--- (F06-AC74). Cent en cinq minutes depuis une adresse réseau : cinq minutes (F06-AC83).
+-- Un essai à l'entrée de la classe, compté avant que le mot de passe ne soit comparé :
+-- des demandes simultanées ne passent pas à côté du compte. Renvoie l'heure jusqu'à
+-- laquelle attendre si l'essai est refusé, rien s'il peut être comparé.
+-- Dix essais faux de suite depuis un navigateur : cinq minutes d'attente (F06-AC74).
+-- Cent en cinq minutes depuis une adresse réseau : cinq minutes (F06-AC83).
 -- L'attente ne s'allonge pas d'une fois sur l'autre.
-create function public.noter_entree_fausse(p_navigateur text, p_reseau text) returns timestamptz
+create function public.prendre_essai_entree(p_navigateur text, p_reseau text) returns timestamptz
 language plpgsql security invoker set search_path = ''
 as $$
 declare
-  v_fin timestamptz;
-  v_bloque timestamptz;
+  v_attente timestamptz;
 begin
-  delete from public.essais_entree
-  where debut < now() - interval '1 day' and (bloque_jusqua is null or bloque_jusqua < now());
+  delete from public.essais_entree e
+  where e.debut < now() - interval '1 day' and (e.bloque_jusqua is null or e.bloque_jusqua < now());
 
-  insert into public.essais_entree as e (cle, essais) values (p_navigateur, 1)
-  on conflict (cle) do update set
+  insert into public.essais_entree (cle) values (p_navigateur), (p_reseau) on conflict (cle) do nothing;
+  -- Les deux lignes sont verrouillées, toujours dans le même ordre
+  perform 1 from public.essais_entree e where e.cle in (p_navigateur, p_reseau) order by e.cle for update;
+
+  select max(e.bloque_jusqua) into v_attente
+  from public.essais_entree e
+  where e.cle in (p_navigateur, p_reseau) and e.bloque_jusqua > now();
+  if v_attente is not null then
+    return v_attente;
+  end if;
+
+  update public.essais_entree e set
     essais = case when e.essais + 1 >= 10 then 0 else e.essais + 1 end,
-    bloque_jusqua = case when e.essais + 1 >= 10 then now() + interval '5 minutes' else e.bloque_jusqua end
-  returning e.bloque_jusqua into v_bloque;
-  if v_bloque > now() then v_fin := v_bloque; end if;
+    bloque_jusqua = case when e.essais + 1 >= 10 then now() + interval '5 minutes' else null end
+  where e.cle = p_navigateur;
 
-  insert into public.essais_entree as e (cle, essais) values (p_reseau, 1)
-  on conflict (cle) do update set
+  update public.essais_entree e set
     essais = case
       when e.debut < now() - interval '5 minutes' then 1
       when e.essais + 1 >= 100 then 0
@@ -461,19 +471,22 @@ begin
     debut = case when e.debut < now() - interval '5 minutes' or e.essais + 1 >= 100 then now() else e.debut end,
     bloque_jusqua = case
       when e.debut >= now() - interval '5 minutes' and e.essais + 1 >= 100 then now() + interval '5 minutes'
-      else e.bloque_jusqua end
-  returning e.bloque_jusqua into v_bloque;
-  if v_bloque > now() then v_fin := greatest(v_fin, v_bloque); end if;
+      else null end
+  where e.cle = p_reseau;
 
-  return v_fin;
+  return null;
 end
 $$;
 
--- Les bonnes informations remettent à zéro le compte du navigateur
-create function public.noter_entree_juste(p_navigateur text) returns void
-language sql security invoker set search_path = ''
+-- Les bonnes informations : le compte du navigateur repart de zéro, et cet essai n'est
+-- plus compté parmi les essais faux de l'adresse réseau
+create function public.noter_entree_juste(p_navigateur text, p_reseau text) returns void
+language plpgsql security invoker set search_path = ''
 as $$
-  delete from public.essais_entree where cle = p_navigateur
+begin
+  delete from public.essais_entree where cle = p_navigateur;
+  update public.essais_entree set essais = greatest(essais - 1, 0) where cle = p_reseau;
+end
 $$;
 
 -- Ouvrir la classe sur un poste : l'accès tient jusqu'à 3 h, heure de la classe
@@ -528,16 +541,41 @@ begin
 end
 $$;
 
--- Un code faux. Cinq de suite pour un même élève : deux minutes d'attente pour ce
--- profil seulement, sans allongement (F06-AC73).
-create function public.noter_code_faux(p_eleve uuid) returns timestamptz
-language sql security invoker set search_path = ''
+-- Un essai de code, compté avant que le code ne soit comparé : des demandes simultanées
+-- ne passent pas à côté du compte. « autorise » dit si l'essai peut être comparé ;
+-- « attente_jusqua », l'heure jusqu'à laquelle ce profil attend.
+-- Cinq codes faux de suite pour un même élève : deux minutes d'attente pour ce profil
+-- seulement, sans allongement (F06-AC73). Le bon code remet le compte à zéro.
+create function public.prendre_essai_code(p_eleve uuid)
+returns table (autorise boolean, attente_jusqua timestamptz)
+language plpgsql security invoker set search_path = ''
 as $$
-  update public.eleves_secrets s set
-    essais_faux = case when s.essais_faux + 1 >= 5 then 0 else s.essais_faux + 1 end,
-    bloque_jusqua = case when s.essais_faux + 1 >= 5 then now() + interval '2 minutes' else s.bloque_jusqua end
+declare
+  v_essais smallint;
+  v_bloque timestamptz;
+begin
+  select s.essais_faux, s.bloque_jusqua into v_essais, v_bloque
+  from public.eleves_secrets s
   where s.eleve_id = p_eleve
-  returning case when s.bloque_jusqua > now() then s.bloque_jusqua end
+  for update;
+  if not found then
+    return;
+  end if;
+
+  if v_bloque > now() then
+    return query select false, v_bloque;
+    return;
+  end if;
+
+  if v_essais + 1 >= 5 then
+    v_bloque := now() + interval '2 minutes';
+    update public.eleves_secrets s set essais_faux = 0, bloque_jusqua = v_bloque where s.eleve_id = p_eleve;
+    return query select true, v_bloque;
+  else
+    update public.eleves_secrets s set essais_faux = v_essais + 1, bloque_jusqua = null where s.eleve_id = p_eleve;
+    return query select true, null::timestamptz;
+  end if;
+end
 $$;
 
 -- Le bon code : l'élève est identifié sur ce poste, son compte d'essais repart de zéro
@@ -595,7 +633,11 @@ $$;
 -- ————————————————————————————————————————————————————————————————————————
 
 alter default privileges in schema public revoke all on tables from anon, authenticated;
-alter default privileges in schema public revoke execute on functions from public, anon, authenticated;
+alter default privileges in schema public revoke execute on functions from anon, authenticated;
+-- PostgreSQL donne par défaut à tous le droit d'exécuter une fonction neuve, et ce droit
+-- ne se retire pas schéma par schéma : il est retiré pour toutes les fonctions à venir.
+-- Chaque migration donne ensuite ses droits un à un.
+alter default privileges revoke execute on functions from public;
 revoke all on all tables in schema public from public, anon, authenticated, poste;
 revoke execute on all functions in schema public from public, anon, authenticated, poste;
 revoke execute on all functions in schema prive from public, anon, authenticated, poste;

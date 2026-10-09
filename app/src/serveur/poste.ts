@@ -80,8 +80,10 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
   const service = clientService();
   const cles = await clesEssais(true);
 
-  const { data: bloque } = await service.rpc("entree_bloquee_jusqua", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
-  if (bloque) return { ok: false, raison: "attente", minutes: minutesRestantes(bloque) };
+  // L'essai est compté avant toute comparaison : dix demandes parties ensemble font dix essais
+  const { data: attente, error: refus } = await service.rpc("prendre_essai_entree", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
+  if (refus) throw new Error(`Essais d'entrée illisibles : ${refus.message}`);
+  if (attente) return { ok: false, raison: "attente", minutes: minutesRestantes(attente) };
 
   const identifiant = normaliserIdentifiant(identifiantSaisi);
   const motDePasse = normaliserMotDePasse(motDePasseSaisi);
@@ -102,11 +104,12 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
   }
 
   if (!classe || !juste) {
-    const { data: attente } = await service.rpc("noter_entree_fausse", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
-    return attente ? { ok: false, raison: "attente", minutes: minutesRestantes(attente) } : { ok: false, raison: "faux" };
+    // Cet essai faux était peut-être le dixième : l'attente commence alors tout de suite
+    const { data: depuis } = await service.rpc("entree_bloquee_jusqua", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
+    return depuis ? { ok: false, raison: "attente", minutes: minutesRestantes(depuis) } : { ok: false, raison: "faux" };
   }
 
-  await service.rpc("noter_entree_juste", { p_navigateur: cles.navigateur });
+  await service.rpc("noter_entree_juste", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
   const jeton = nouveauJeton();
   const { data: posteId, error } = await service.rpc("ouvrir_poste", { p_classe: classe.id, p_jeton_hash: empreinte(jeton) });
   if (error || !posteId) return { ok: false, raison: "faux" };
@@ -134,21 +137,22 @@ export async function entrerLeCode(inscriptionId: string, codeSaisi: string): Pr
   if (!inscription) return { ok: false, raison: "inconnu" };
 
   const service = clientService();
-  const { data: secret } = await service
-    .from("eleves_secrets")
-    .select("code_chiffre, bloque_jusqua")
-    .eq("eleve_id", inscription.eleve_id)
-    .maybeSingle();
+  // L'essai est compté avant toute comparaison : des demandes parties ensemble ne font pas
+  // plus de cinq essais en deux minutes
+  const { data: essai, error: refus } = await service.rpc("prendre_essai_code", { p_eleve: inscription.eleve_id });
+  if (refus) throw new Error(`Essais de code illisibles : ${refus.message}`);
+  const pris = (Array.isArray(essai) ? essai[0] : essai) as { autorise: boolean; attente_jusqua: string | null } | null;
+  if (!pris) return { ok: false, raison: "inconnu" };
+  if (!pris.autorise) return { ok: false, raison: "attente", minutes: minutesRestantes(pris.attente_jusqua ?? new Date().toISOString()) };
+
+  const { data: secret } = await service.from("eleves_secrets").select("code_chiffre").eq("eleve_id", inscription.eleve_id).maybeSingle();
   if (!secret) return { ok: false, raison: "inconnu" };
-  if (secret.bloque_jusqua && new Date(secret.bloque_jusqua).getTime() > Date.now()) {
-    return { ok: false, raison: "attente", minutes: minutesRestantes(secret.bloque_jusqua) };
-  }
 
   const code = codeSaisi.trim();
   const attendu = dechiffrer(secret.code_chiffre, { sorte: "code", id: inscription.eleve_id });
   if (!codeValide(code) || !memeSecret(attendu, code)) {
-    const { data: attente } = await service.rpc("noter_code_faux", { p_eleve: inscription.eleve_id });
-    return attente ? { ok: false, raison: "attente", minutes: minutesRestantes(attente) } : { ok: false, raison: "faux" };
+    // Ce code faux était peut-être le cinquième : l'attente commence alors tout de suite
+    return pris.attente_jusqua ? { ok: false, raison: "attente", minutes: minutesRestantes(pris.attente_jusqua) } : { ok: false, raison: "faux" };
   }
 
   const { data: identifie } = await service.rpc("identifier_eleve", { p_poste: etat.posteId, p_inscription: inscription.id });
