@@ -24,7 +24,7 @@ test.afterEach(async () => {
 
 const codeFaux = (bon: string): string => (bon === "0001" ? "0002" : "0001");
 const choixDesProfils = (page: Page) => page.getByRole("heading", { level: 1, name: "Qui utilise cet ordinateur ?" });
-const entreeDeLaClasse = (page: Page) => page.getByRole("heading", { level: 1, name: /Ouvrir la classe/ });
+const entreeDeLaClasse = (page: Page) => page.getByRole("heading", { level: 1, name: /Bienvenue dans la classe/ });
 
 async function entrer(page: Page, prenom: string): Promise<void> {
   await ouvrirLaClasse(page, classe.identifiant, classe.motDePasse);
