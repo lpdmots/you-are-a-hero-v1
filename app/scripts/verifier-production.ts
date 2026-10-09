@@ -49,9 +49,12 @@ async function principal() {
   }
   dire(lues.length === 0, "Sans compte ni poste, aucune table ne se lit", lues.length ? `lisibles : ${lues.join(", ")}` : "");
 
-  const inscription = await inconnu.auth.signUp({ email: `verification-${randomUUID()}@exemple.invalid`, password: randomUUID() });
-  dire(!!inscription.error && !inscription.data.user, "Les inscriptions publiques sont fermées", inscription.error ? "" : "à fermer dans Supabase : Authentication > Sign In / Providers");
-  if (inscription.data.user) await service.auth.admin.deleteUser(inscription.data.user.id);
+  // Lu dans les réglages publics de Supabase Auth : aucun compte d'essai n'est créé
+  const reglages = await (await fetch(`${url}/auth/v1/settings`, { headers: { apikey: publiable } })).json().catch(() => null);
+  const fermees = reglages?.disable_signup === true;
+  dire(fermees, "Les inscriptions publiques sont fermées", fermees ? "" : "à fermer dans Supabase : Authentication > Sign In / Providers > « Allow new users to sign up »");
+  const comptes = await service.auth.admin.listUsers({ page: 1, perPage: 50 });
+  console.log(`    ${comptes.data?.users.length ?? "?"} compte(s) d'adulte dans la vraie base`);
 
   const jwk = JSON.parse(env.get("CLE_SIGNATURE_POSTES") ?? "{}");
   const cle = await importJWK({ kty: jwk.kty, crv: jwk.crv, x: jwk.x, y: jwk.y, d: jwk.d }, "ES256");
