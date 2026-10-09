@@ -3,17 +3,23 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
-## État de reprise au 8 octobre 2026
+## État de reprise au 9 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
 ensemble, chacun avec ses points différés. La
 [maquette de synthèse](maquettes/synthese/index.html) propose leurs écrans ;
-ses dispositions restent des propositions à examiner. Aucun développement de
-l'application ni achat n'est lancé ; les seuls travaux techniques sont deux
-prototypes jetables, celui de l'éditeur et celui de la chaîne PDF. Un
-[plan de réalisation](docs/plan.md) est validé le 8 octobre 2026 ; il
-n'autorise pas le développement. La V1
-repart de zéro ; la V0 reste une référence d'usage uniquement. Les
+ses dispositions restent des propositions à examiner. Un
+[plan de réalisation](docs/plan.md) est validé le 8 octobre 2026 ; chaque
+étape se construit sur instruction du porteur. **L'étape 1 est construite
+et en ligne le 9 octobre 2026** (compte, projets, classes, accès des
+élèves) : son code est dans [`app/`](app/README.md), son avancement et ce
+qui reste au porteur dans le
+[plan](docs/plan.md#étape-1--sinstaller--compte-projets-classes-accès-des-élèves),
+ses choix techniques dans
+[l'architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
+L'étape 2 n'est pas commencée ni autorisée. Aucun achat n'est lancé. La V1
+repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
+prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur
 statut explicite.
 

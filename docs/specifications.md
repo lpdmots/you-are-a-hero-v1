@@ -42,8 +42,12 @@ choix dans l'éditeur restent à vérifier techniquement.
 
 Scénario de référence : projet de classe à choix, de la préparation au PDF prêt
 à imprimer. Les quatre combinaisons personnel/classe et classique/choix sont
-retenues dès la première livraison selon F01. Aucun développement ni prototype
-n'est autorisé par ce document.
+retenues dès la première livraison selon F01. Ce document n'autorise par
+lui-même ni développement ni prototype : la réalisation suit le
+[plan](plan.md), étape par étape, sur instruction du porteur. Les mentions
+« n'autorise ni développement » des validations ci-dessus datent de ces
+validations ; depuis, deux prototypes ont été autorisés puis, le 8 octobre
+2026, l'étape 1 du plan.
 
 ## F01 — Projet et responsabilité de l'adulte
 
@@ -188,8 +192,8 @@ jusque-là :
   oublié » lui envoie un courriel, dont le lien lui fait choisir un nouveau
   mot de passe.
 - **Pas d'inscription publique avant l'ouverture.** Jusqu'à l'étape 9 du
-  plan, aucun écran ne crée de compte : le porteur s'invite lui-même depuis
-  la console de Supabase, et choisit son mot de passe par le lien reçu.
+  plan, aucun écran ne crée de compte : le porteur crée le sien depuis la
+  console de Supabase, avec son adresse et son mot de passe.
   L'inscription d'autres enseignants s'écrira avec F14.
 - **« Mon compte ».** Un panneau ouvert depuis le nom de l'adulte, dans la
   barre du haut : le nom affiché aux élèves de F01.1 et « Se déconnecter ».
@@ -215,7 +219,10 @@ jusque-là :
 
 **Présentation proposée le 9 octobre 2026, sans retour du porteur :**
 l'entrée enseignant reprend la disposition d'« Ouvrir la classe », image à
-gauche et formulaire à droite ; le mot de passe a huit caractères au moins.
+gauche et formulaire à droite ; le mot de passe a huit caractères au moins ;
+il ne se change que par le lien de « Mot de passe oublié », ouvert sur
+l'ordinateur d'où il a été demandé : une session laissée ouverte sur un
+poste ne suffit pas à le changer.
 
 **Propositions de la maquette du 6 octobre 2026, sans retour du porteur :**
 

@@ -3,3 +3,5 @@ node_modules/
 # prototypes jetables : sources gardées, sorties et dépendances écartées
 prototypes/*/test-results/
 prototypes/pdf/sorties/
+.vercel
+.env*

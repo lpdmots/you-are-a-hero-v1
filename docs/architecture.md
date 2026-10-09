@@ -271,6 +271,19 @@ contre une vraie base PostgreSQL de Supabase, lancée en local dans Docker
 classe » ; parcours joués dans Chromium contre l'application compilée
 (`npm run test:parcours`). Aucun ne parle à la vraie base.
 
+**En ligne.** L'application est déployée chez Vercel, projet
+`you-are-a-hero-v1`, à `https://you-are-a-hero-v1.vercel.app` ; ses fonctions
+s'exécutent à Paris (`cdg1`). La base est un projet Supabase en offre
+gratuite, région de Paris (`eu-west-3`). Le code est dans le dépôt GitHub
+privé `lpdmots/you-are-a-hero-v1`. Le projet Vercel de la V0,
+`you-are-a-hero`, n'est pas touché. Vérifié en ligne le 9 octobre 2026 : le
+schéma est en place, rien ne se lit sans compte ni poste, la sauvegarde
+fonctionne. **Non vérifié en ligne :** l'acceptation par Supabase du jeton
+d'un poste, qui attend l'import de la clé de signature ; elle est vérifiée
+sur la base locale, qui est le même logiciel. Si la clé « en attente » ne
+suffisait pas, il faudrait la faire tourner en clé courante, ou revenir sur
+la conception des accès (V9).
+
 **Sauvegarde (V18).** `npm run sauvegarder` écrit les rôles, le schéma et les
 données de la vraie base, comptes compris, par l'outil de Supabase, qui a
 besoin de Docker ; `npm run restaurer` remet une base au schéma de

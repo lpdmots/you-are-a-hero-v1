@@ -1,0 +1,5 @@
+# Vercel ne construit que l'application : le reste du dépôt n'y est pas envoyé
+/docs
+/maquettes
+/prototypes
+/*.md

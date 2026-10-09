@@ -183,7 +183,7 @@ serveur. Les exports lourds sont traités en arrière-plan.
 | --- | --- |
 | Application | **Next.js + React + TypeScript**, serveur Node.js — accord de principe. |
 | Données | **PostgreSQL** via **Supabase**, en souscription directe — retenu le 8 octobre 2026 ; offre gratuite jusqu'à l'ouverture. |
-| Comptes et fichiers | **Supabase Auth + Storage** — retenus le 8 octobre 2026 ; mise en œuvre technique des accès scolaires à concevoir. |
+| Comptes et fichiers | **Supabase Auth + Storage** — retenus le 8 octobre 2026 ; accès scolaires mis en œuvre à l'étape 1 du plan, le 9 octobre 2026 ([architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026)). |
 | Permissions | Contrôles serveur et règles **RLS PostgreSQL** à écrire et tester. |
 | Interface | **Tailwind CSS + shadcn/ui** — proposés. |
 | Éditeur | **Plate** — retenu le 2 octobre 2026 après prototype ; essais sur tablettes réelles mis de côté le 3 octobre 2026, non vérifiés. |

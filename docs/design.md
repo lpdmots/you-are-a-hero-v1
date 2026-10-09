@@ -11,10 +11,12 @@ des propositions à examiner.
 
 Le cadrage fonctionnel reste celui des [spécifications](specifications.md).
 Ce document conserve les recommandations de design, pas de nouvelles règles
-métier. Aucun développement de l'application ni achat n'est lancé ; deux
-prototypes techniques jetables, celui de l'éditeur et celui de la chaîne
-PDF, ont été réalisés (voir [l'architecture](architecture.md)). Les
-maquettes locales sont autorisées dans le périmètre ci-dessous.
+métier. Aucun achat n'est lancé. L'application se construit d'après le
+[plan](plan.md) : elle reprend de la maquette ses valeurs de design et ses
+textes d'écran, réécrits en composants, non son code. L'étape 1 est
+construite le 9 octobre 2026 : voir
+[Étape 1 construite](#étape-1-construite-9-octobre-2026). Les maquettes
+locales restent la référence des écrans.
 
 **Méthode confirmée le 27 septembre 2026 :** associer l'approfondissement du
 parcours « préparer un projet de classe et ouvrir la première séance
@@ -1035,6 +1037,48 @@ oublié, code changé, retrait, horaires, mot de passe, fin d'année, année
 passée, rentrée, inscription en cinq vues, étiquettes en trois vues,
 affiche, « Mes projets » vide, création en cinq vues, projet sans classe en
 quatre vues), 305 à 314 en 390 px.
+
+### Étape 1 construite (9 octobre 2026)
+
+Les écrans de [Mes classes et Nouveau projet](#mes-classes-et-nouveau-projet-6-octobre-2026),
+la barre du haut, « Mes projets » et la connexion de l'élève sont construits
+dans l'application tels que dessinés, à partir des jetons, des formes et des
+textes de la maquette. Le système « Cahiers d'aventure » y est en place :
+jetons dans `app/src/styles/jetons.css`, formes communes dans
+`app/src/styles/formes.css` et `app/src/composants/`. Les polices sont
+hébergées avec l'application. `npm run captures`, dans `app/`, refait les
+captures des écrans construits.
+
+**Écrans que la maquette ne dessinait pas, construits dans le système et
+restés sans retour du porteur :**
+
+| Écran | Disposition |
+| --- | --- |
+| Entrée enseignant | La disposition d'« Ouvrir la classe » : image à gauche, carte à droite. Adresse, mot de passe, « Entrer », « Mot de passe oublié », et un lien vers l'entrée des élèves. Aucune commande d'inscription. |
+| Mot de passe oublié | La même carte : une adresse, « Recevoir le lien », puis une seule phrase, identique que l'adresse soit connue ou non. Le lien reçu mène à « Nouveau mot de passe ». |
+| Mon compte | Panneau ouvert depuis le nom de l'adulte, dans la barre du haut : le nom affiché aux élèves, avec la phrase qu'ils liront, et « Se déconnecter ». |
+| Projet à l'étape 1 | L'en-tête du projet et ses quatre onglets, trois en mode personnel. Chaque onglet dit en une phrase à quelle étape du plan il se construit : texte provisoire. |
+| Classe d'un projet | « Choisir une classe » comme dessiné ; quand une classe est choisie, « Changer de classe » à la même place, tant qu'aucun chapitre n'est attribué (F01-AC24). |
+| Renommer la classe | Un dialogue : le nom, « Enregistrer », et « L'identifiant de la classe ne change pas. » |
+| Accueil de l'élève | « Bonjour Alice », « Mon travail », puis « Tu n'as pas encore de chapitre. Mme Laurent va t'en donner un. », ou « Le travail est fermé jusqu'à demain, 8 h 30. » hors des horaires. L'illustration est générique : celle du projet viendra avec « Mon travail », à l'étape 4. |
+| Erreurs à l'entrée de la classe | « Ce n'est pas le bon identifiant, ou pas le bon mot de passe. Regarde l'affiche, ou demande à ton enseignant(e). » et « Trop d'essais. Attends 5 minutes, ou demande à ton enseignant(e). » |
+
+**Écarts avec la maquette, à juger à l'essai :**
+
+- l'identifiant et le mot de passe de la classe suivent la forme décidée le
+  8 octobre (« cm1cm2laurent », « tigre nuage 42 »), sans les traits d'union
+  de la maquette ;
+- le mot de passe de la classe se tape en clair à l'entrée des élèves : il
+  est sur l'affiche, un élève voit ses fautes de frappe, et le navigateur
+  d'un poste partagé ne propose pas de le retenir ;
+- l'aperçu des étiquettes montre toutes les feuilles, et non la première
+  seule : ce qu'on voit est ce qui s'imprime ;
+- un message dit « Le code d'Alice est changé » et non « de Alice » ;
+- le retrait d'un élève se fait toujours d'un geste, avec « Annuler » :
+  personne n'a encore de texte. Le dialogue de trois faits viendra avec les
+  scènes, à l'étape 4 ;
+- « Mes projets » montre « 0 % des scènes prêtes pour le livre » et pas de
+  scènes à valider : ces comptes arrivent avec les scènes.
 
 ### Conflit de sauvegarde : écrans de F08.1 (7 octobre 2026)
 

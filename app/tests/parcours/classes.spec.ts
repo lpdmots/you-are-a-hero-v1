@@ -287,3 +287,25 @@ test("F01.1 — une classe se renomme sans changer d'identifiant ; sans élève 
   await page.getByLabel("Autres commandes de la classe").click();
   await expect(page.getByRole("button", { name: "Supprimer la classe" })).toHaveCount(0);
 });
+
+test("F06-AC70 — à l'impression : une feuille A4 par planche d'étiquettes, une pour l'affiche, sans le reste de l'écran", async ({ page }) => {
+  const classe = await creerClasse(page, "CM1-CM2");
+  await inscrire(page, classe.id, Array.from({ length: 30 }, (_, i) => `Eleve${String.fromCharCode(65 + (i % 26))}${i}`));
+  const pages = async (): Promise<number> => {
+    const pdf = await page.pdf({ preferCSSPageSize: true, printBackground: true });
+    return (pdf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+  };
+  await aller(page, `/classes/${classe.id}/imprimer`);
+  await expect(page.getByText("30 étiquettes sur 2 feuilles")).toBeVisible();
+  expect(await pages()).toBe(2);
+  await page.getByRole("checkbox", { name: /Avec l’identifiant/ }).check();
+  await expect(page.getByText("30 étiquettes sur 3 feuilles")).toBeVisible();
+  expect(await pages()).toBe(3);
+  await page.getByRole("button", { name: "Affiche de la classe" }).click();
+  expect(await pages()).toBe(1);
+  // À l'impression, ni la barre du haut ni les réglages ne sortent
+  await page.emulateMedia({ media: "print" });
+  await expect(page.getByRole("banner")).toBeHidden();
+  await expect(page.getByRole("button", { name: "Imprimer l’affiche" })).toBeHidden();
+  await expect(page.getByRole("img", { name: "Aperçu de l’affiche de la classe" })).toBeVisible();
+});

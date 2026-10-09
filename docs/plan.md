@@ -12,7 +12,14 @@ deux seuils, l'ordre et le périmètre des neuf étapes ; elle ne tranche
 aucune des questions listées « à régler avant de commencer », qui gardent
 leur statut.
 
-Écrire ce plan n'autorise ni développement, ni prototype, ni achat. La V1
+**Avancement au 9 octobre 2026 :** l'étape 1 est construite et en ligne,
+sur autorisation du porteur du 8 octobre 2026 pour cette étape seule ; il
+lui reste l'essai du porteur et trois réglages dans Supabase (voir
+[Étape 1](#étape-1--sinstaller--compte-projets-classes-accès-des-élèves)).
+L'étape 2 n'est pas commencée.
+
+Ce plan n'autorise par lui-même ni développement, ni prototype, ni achat :
+chaque étape demande une instruction du porteur. La V1
 repart de zéro : aucun code de la V0 ni des deux prototypes n'est repris,
 leurs verdicts seuls servent. La maquette de synthèse montre les écrans, qui
 restent des propositions. Les règles validées ne sont pas rouvertes : un trou
@@ -134,7 +141,7 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
 | Hébergement de l'application | **Vercel**, à son adresse par défaut et sans nom de domaine, décidé le 8 octobre 2026, sur un forfait Pro déclaré par le porteur et non vérifié. | Décidé. |
 | Base, comptes et fichiers | **Supabase**, en souscription directe, décidé le 8 octobre 2026 ([ADR 0004](adr/0004-vercel-et-supabase.md)). | Décidé. |
 | Offre de la base | **Offre gratuite jusqu'à l'ouverture**, décidé le 8 octobre 2026 : aucune sauvegarde automatique, mise en sommeil après une semaine sans activité, à relancer à la main. Le porteur fait lui-même une sauvegarde de temps en temps. | Décidé ; à revoir à l'étape 9. |
-| Région des données | Union européenne, pour la base comme pour les fonctions ; régions disponibles à vérifier à la création. | À la création du projet Supabase, étape 1. |
+| Région des données | Paris, pour la base (Supabase, `eu-west-3`) comme pour les fonctions (Vercel, `cdg1`), depuis le 9 octobre 2026. | Fait. |
 | Production du PDF et de l'aperçu | Chaîne retenue (ADR 0003), exécutée chez Vercel par hypothèse ; Render si V2 échoue. | Étape 6. |
 | Imprimeur | epubli sert de premier cas de vérification, sans exclusivité. | Étape 6 (V6). |
 | IA | Fournisseur et modèle non choisis. | Étape 8. |
@@ -185,7 +192,7 @@ cité à deux étapes se ferme à la seconde.
 ### Avant la première ligne
 
 Rien ne se construit ici. Le développement demande une instruction du
-porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026 :
+porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 
 - **Où vit le code :** un dépôt Git créé dans `V1/`, qui contient les
   documents, la maquette et le code, celui-ci dans `V1/app/`. Le dépôt est
@@ -220,6 +227,43 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026 :
 - **Terminée quand :** le porteur a créé son vrai projet et sa vraie classe,
   et s'est connecté comme élève depuis un second poste ; un code faux est
   refusé ; un élève ne voit rien d'une autre classe.
+- **Avancement au 9 octobre 2026 :** construite, en ligne à
+  `https://you-are-a-hero-v1.vercel.app`, **non terminée** : l'essai du
+  porteur reste à faire.
+  - **Décidé avant de construire, le 9 octobre :** le compte de l'adulte
+    (F01-AC27 à AC30), l'heure de la fermeture nocturne et les essais faux
+    par adresse réseau (F06-AC82, AC83).
+  - **Tests automatiques :** 108 passent — 25 sur les règles et le
+    chiffrement, 50 contre une base PostgreSQL de Supabase lancée en local,
+    33 parcours joués dans un navigateur. Chacun porte l'identifiant de son
+    critère. Le test « un élève ne lit rien d'une autre classe » en fait
+    partie. Une revue de sécurité et une revue de code ont été faites, et
+    leurs points corrigés.
+  - **Vérifié seulement en local, à confirmer en ligne (V9) :** que Supabase
+    accepte l'accès de classe signé par l'application. Cela demande
+    d'importer la clé de signature dans le projet Supabase ;
+    `npm run verifier:production` le contrôle ensuite.
+  - **Critères qui ne se ferment qu'à une étape suivante,** faute de
+    chapitres, de textes ou de livre : F01-AC03, AC05, AC08, AC09, AC24
+    (seconde moitié), F06-AC16 et AC28 (chapitres attribués) à l'étape 2 ;
+    F01-AC01, AC13 (paragraphe protégé), F06-AC26, AC27 (contenu de
+    travail) et le texte enregistré de F06-AC76 à AC78 à l'étape 3 ; F01-AC02
+    (jusqu'au PDF), AC18, AC19 (textes, livre) et F06-AC31 (version
+    partagée) aux étapes 6 et 7. L'étape 1 teste ce qu'ils disent des accès.
+  - **Vérifications :** V8 levée pour les accès, en local ; V9 levée en
+    local, à confirmer en ligne ; V10 levée pour l'heure de Paris et les
+    changements d'heure, par des instants choisis et non par une vraie
+    horloge ; V18 : sauvegarde essayée sur la vraie base, restauration
+    essayée sur la base locale seulement.
+  - **Construit sans écran dessiné,** à juger à l'essai : l'entrée
+    enseignant, « Mot de passe oublié », « Mon compte », « Changer de
+    classe » sous le titre d'un projet, « Renommer la classe », les quatre
+    onglets vides du projet, l'accueil de l'élève sans chapitre
+    ([design](design.md#étape-1-construite-9-octobre-2026)).
+  - **Reste au porteur :** dans Supabase, fermer les inscriptions
+    publiques, importer la clé de signature, créer son compte et déclarer
+    l'adresse du site ; donner à Vercel l'accès au dépôt GitHub pour que
+    chaque envoi de code se déploie ; faire l'essai.
 
 ### Étape 2 — Préparer et organiser le récit
 
