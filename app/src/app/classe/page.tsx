@@ -20,7 +20,6 @@ export default async function EntreeDesEleves() {
           sur cet ordinateur
         </>
       }
-      aide="Les informations de la classe sont données par l’enseignant(e). Elles ne donnent accès qu’au choix des élèves."
       pied={
         <>
           Vous enseignez dans cette classe ? <Link href="/entree">Entrée des enseignants</Link>
