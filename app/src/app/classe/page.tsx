@@ -16,7 +16,7 @@ export default async function EntreeDesEleves() {
       titre="Bienvenue dans ta classe"
       pied={
         <>
-          Vous enseignez dans cette classe ? <Link href="/entree">Entrée des enseignants</Link>
+          Tu es enseignant(e) ? <Link href="/entree">Entrée des enseignants</Link>
         </>
       }
     >

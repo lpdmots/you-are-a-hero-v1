@@ -19,7 +19,7 @@ export default async function Entree({ searchParams }: { searchParams: Promise<{
         <span className={styles.pied}>
           <Link href="/entree/oubli">Mot de passe oublié</Link>
           <span>
-            Tu es un élève ? <Link href="/classe">Entrer dans la classe</Link>
+            Élève ? <Link href="/classe">Entre dans ta classe</Link>
           </span>
         </span>
       }

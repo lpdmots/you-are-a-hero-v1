@@ -126,7 +126,7 @@ export async function ouvrirLaClasse(page: Page, identifiant: string, motDePasse
   await aller(page, "/classe");
   await page.getByLabel("Identifiant de la classe").fill(identifiant);
   await page.getByLabel("Mot de passe de la classe").fill(motDePasse);
-  await page.getByRole("button", { name: "Ouvrir la classe" }).click();
+  await page.getByRole("button", { name: "Entrer", exact: true }).click();
 }
 
 export async function taperCode(page: Page, prenom: string, code: string): Promise<void> {

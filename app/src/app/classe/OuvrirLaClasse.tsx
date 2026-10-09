@@ -27,7 +27,7 @@ export function OuvrirLaClasse() {
         </p>
       ) : null}
       <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret}>
-        Ouvrir la classe
+        Entrer
         <Icone nom="fleche" />
       </button>
     </form>
