@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
-import { aller, connecter, creerClasse, creerCompte, inscrire, lireCodes, nommer, passerAide, supprimerCompte, type Compte } from "./outils";
+import {
+  aller, collerEleves, connecter, creerClasse, creerCompte, ecrireEleves, inscrire, lireCodes, nommer, passerAide, supprimerCompte, type Compte,
+} from "./outils";
 
 let compte: Compte;
 test.beforeEach(async ({ page }) => {
@@ -58,7 +60,7 @@ test("F06-AC67 — les informations de la classe sont proposées, se relisent, e
 test("F01-AC11 — une ligne corrigée avant de confirmer ; quitter sans confirmer ne crée rien", async ({ page }) => {
   const classe = await creerClasse(page, "CM1-CM2");
   await aller(page, `/classes/${classe.id}/inscrire`);
-  await page.getByRole("textbox").fill("Noé Garnie\nOcéane");
+  await ecrireEleves(page, ["Noé Garnie", "Océane"]);
   await page.getByRole("button", { name: "Continuer" }).click();
   await expect(page.getByRole("heading", { name: "Vérifiez la liste" })).toBeVisible();
 
@@ -67,7 +69,7 @@ test("F01-AC11 — une ligne corrigée avant de confirmer ; quitter sans confirm
   await expect(page.getByText("Aucun élève pour l’instant.")).toBeVisible();
 
   await aller(page, `/classes/${classe.id}/inscrire`);
-  await page.getByRole("textbox").fill("Noé Garnie\nOcéane");
+  await ecrireEleves(page, ["Noé Garnie", "Océane"]);
   await page.getByRole("button", { name: "Continuer" }).click();
   await page.getByRole("button", { name: "Corriger Noé" }).click();
   await page.getByLabel("Nom, facultatif").fill("Garnier");
@@ -80,12 +82,61 @@ test("F01-AC11 — une ligne corrigée avant de confirmer ; quitter sans confirm
   await expect(eleves.getByRole("listitem")).toHaveCount(2);
 });
 
+test("F01-AC33 — prénom et nom en deux cases : un prénom composé et un nom à particule s'inscrivent comme ils sont écrits", async ({ page }) => {
+  const classe = await creerClasse(page, "CM1-CM2");
+  await aller(page, `/classes/${classe.id}/inscrire`);
+  await page.getByLabel("Prénom, ligne 1", { exact: true }).fill("jean Marie");
+  await page.getByLabel("Nom, ligne 1", { exact: true }).fill("de la Batellerie");
+  // « Entrée » passe à la ligne suivante, et la feuille garde toujours une ligne vide
+  await page.getByLabel("Nom, ligne 1", { exact: true }).press("Enter");
+  await expect(page.getByLabel("Prénom, ligne 2", { exact: true })).toBeFocused();
+  for (const [i, prenom] of ["Océane", "Noé", "Lina", "Paul"].entries()) await page.getByLabel(`Prénom, ligne ${i + 2}`, { exact: true }).fill(prenom);
+  await expect(page.getByLabel("Prénom, ligne 6", { exact: true })).toBeVisible();
+  await expect(page.getByText("5 élèves", { exact: true })).toBeVisible();
+
+  // Un nom sans prénom : la ligne est montrée, rien ne passe
+  await page.getByLabel("Nom, ligne 6", { exact: true }).fill("Girard");
+  await page.getByRole("button", { name: "Continuer" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: "Ligne 6 : écrivez le prénom." })).toBeVisible();
+  await page.getByRole("button", { name: "Effacer la ligne 6" }).click();
+
+  await page.getByRole("button", { name: "Continuer" }).click();
+  await page.getByRole("button", { name: "Inscrire 5 élèves" }).click();
+  const eleves = page.getByRole("region", { name: "Élèves" });
+  await expect(eleves.getByRole("listitem").filter({ hasText: "de la Batellerie" }).locator("b")).toHaveText("Jean Marie");
+  await expect(eleves.getByRole("listitem")).toHaveCount(5);
+});
+
+test("F01-AC34 — une liste collée remplit les cases, coupée au premier espace ou aux colonnes d'un tableur, et se corrige sur place", async ({ page }) => {
+  const classe = await creerClasse(page, "CM1-CM2");
+  await aller(page, `/classes/${classe.id}/inscrire`);
+  await collerEleves(page, "Jean Marie de la Batellerie\nOcéane\n\nNoé Garnier");
+  await expect(page.getByLabel("Prénom, ligne 1", { exact: true })).toHaveValue("Jean");
+  await expect(page.getByLabel("Nom, ligne 1", { exact: true })).toHaveValue("Marie de la Batellerie");
+  await expect(page.getByLabel("Prénom, ligne 3", { exact: true })).toHaveValue("Noé");
+  // Ce qui est mal tombé se corrige dans les cases
+  await page.getByLabel("Prénom, ligne 1", { exact: true }).fill("Jean Marie");
+  await page.getByLabel("Nom, ligne 1", { exact: true }).fill("de la Batellerie");
+
+  // Depuis un tableur, à la suite : une colonne pour le prénom, une pour le nom
+  await collerEleves(page, "Anne Sophie\tLe Gall\nLina\t", 4);
+  await expect(page.getByLabel("Prénom, ligne 4", { exact: true })).toHaveValue("Anne Sophie");
+  await expect(page.getByLabel("Nom, ligne 4", { exact: true })).toHaveValue("Le Gall");
+  await expect(page.getByText("5 élèves", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Continuer" }).click();
+  await page.getByRole("button", { name: "Inscrire 5 élèves" }).click();
+  const eleves = page.getByRole("region", { name: "Élèves" });
+  await expect(eleves.getByRole("listitem").filter({ hasText: "de la Batellerie" }).locator("b")).toHaveText("Jean Marie");
+  await expect(eleves.getByRole("listitem").filter({ hasText: "Le Gall" }).locator("b")).toHaveText("Anne Sophie");
+});
+
 test("F01-AC21 — deux fois le même prénom : le nom ou son initiale est demandé avant d'inscrire", async ({ page }) => {
   const classe = await creerClasse(page, "CM1-CM2");
   await inscrire(page, classe.id, ["Lucas Bernard", "Alice"]);
 
   await aller(page, `/classes/${classe.id}/inscrire`);
-  await page.getByRole("textbox").fill("Lucas");
+  await ecrireEleves(page, ["Lucas"]);
   await page.getByRole("button", { name: "Continuer" }).click();
   await expect(page.getByRole("heading", { name: "À régler avant d’inscrire" })).toBeVisible();
   await expect(page.getByText("Deux Lucas dans la classe.")).toBeVisible();
@@ -123,7 +174,7 @@ test("F01-AC10, F01-AC12, F01-AC06, F01-AC20 — nouvelle année : profils connu
   await expect(page.getByText("15 élèves cochés")).toBeVisible();
   await page.getByRole("button", { name: "Continuer" }).click();
   const dix = [...Array.from({ length: 9 }, (_, i) => `Nouveau${String.fromCharCode(65 + i)}`), "Adam Morel"];
-  await page.getByRole("textbox").fill(dix.join("\n"));
+  await collerEleves(page, dix.join("\n"));
   await expect(page.getByText("10 nouveaux élèves")).toBeVisible();
   await page.getByRole("button", { name: "Continuer" }).click();
 
@@ -271,6 +322,8 @@ test("F01.1 — une classe se renomme sans changer d'identifiant ; sans élève 
   await page.getByLabel("Autres commandes de la classe").click();
   await page.getByRole("button", { name: "Renommer la classe" }).click();
   await page.getByRole("alertdialog").getByLabel("Nom de la classe").fill("CM1-CM2");
+  // Changer l'identifiant est proposé, jamais fait d'office (F06-AC84)
+  await expect(page.getByRole("alertdialog").getByRole("checkbox", { name: /Changer aussi l’identifiant/ })).not.toBeChecked();
   await page.getByRole("alertdialog").getByRole("button", { name: "Enregistrer" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "CM1-CM2" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" })).toContainText(classe.identifiant);

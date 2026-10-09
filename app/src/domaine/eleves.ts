@@ -41,17 +41,35 @@ export function trier<T extends Personne>(liste: readonly T[]): T[] {
   );
 }
 
-/** Une ligne de la saisie en lot : « Prénom » ou « Prénom Nom ». */
-export function lireLigne(ligne: string): Personne | null {
-  const propre = ligne.trim().replace(/\s+/g, " ");
-  if (!propre) return null;
-  const [prenom, ...reste] = propre.split(" ");
-  const nom = reste.join(" ");
-  return { prenom: majuscule(prenom), nom: nom || null };
+const propre = (texte: string): string => texte.trim().replace(/\s+/g, " ");
+
+/**
+ * Un élève écrit dans ses deux cases, prénom et nom (décision du 9 octobre 2026) : le
+ * prénom peut avoir plusieurs mots (« Jean Marie »), le nom aussi (« de la Batellerie »).
+ * null si le prénom manque.
+ */
+export function lirePersonne(prenom: string, nom: string): Personne | null {
+  const p = propre(prenom);
+  return p ? { prenom: majuscule(p), nom: propre(nom) || null } : null;
 }
 
+/**
+ * Une ligne d'une liste collée. Venue d'un tableur, ses cases sont séparées par une
+ * tabulation : la première est le prénom, la suite le nom. Sinon, elle est coupée au
+ * premier espace, et l'enseignant corrige dans les cases ce qui est mal tombé.
+ */
+export function lireLigne(ligne: string): Personne | null {
+  if (ligne.includes("\t")) {
+    const [prenom, ...reste] = ligne.split("\t");
+    return lirePersonne(prenom, reste.join(" "));
+  }
+  const [prenom, ...reste] = propre(ligne).split(" ");
+  return lirePersonne(prenom, reste.join(" "));
+}
+
+/** Une liste collée, une ligne par élève ; les lignes vides sont passées. */
 export const lireLignes = (texte: string): Personne[] =>
-  texte.split("\n").map(lireLigne).filter((p): p is Personne => p !== null);
+  texte.split(/\r?\n/).map(lireLigne).filter((p): p is Personne => p !== null);
 
 export type ProfilConnu = Eleve & { de: string };
 
@@ -65,17 +83,17 @@ export type PointARegler =
   | { sorte: "double"; rang: number; ligne: LigneLot; autre: Personne };
 
 /**
- * Récapitulatif d'un lot : les profils connus cochés, puis les nouvelles lignes.
+ * Récapitulatif d'un lot : les profils connus cochés, puis les nouveaux élèves.
  * Une nouvelle ligne qui porte le prénom et le nom d'un profil connu non coché est
  * signalée, jamais fusionnée d'office (F01-AC12).
  */
 export function construireLot(
   connus: readonly ProfilConnu[],
   coches: ReadonlySet<string>,
-  texte: string,
+  nouveaux: readonly Personne[],
 ): LigneLot[] {
   const lignes: LigneLot[] = connus.filter((e) => coches.has(e.id)).map((eleve) => ({ type: "connu", eleve }));
-  lireLignes(texte).forEach((p, rang) => {
+  nouveaux.forEach((p, rang) => {
     const meme = p.nom
       ? (connus.find(
           (e) => !coches.has(e.id) && cle(e.prenom) === cle(p.prenom) && cle(e.nom ?? "") === cle(p.nom ?? ""),

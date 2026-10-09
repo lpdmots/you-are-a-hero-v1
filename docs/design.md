@@ -1059,9 +1059,35 @@ restés sans retour du porteur :**
 | Mon compte | Panneau ouvert depuis le nom de l'adulte, dans la barre du haut : le nom affiché aux élèves, avec la phrase qu'ils liront, et « Se déconnecter ». |
 | Projet à l'étape 1 | L'en-tête du projet et ses quatre onglets, trois en mode personnel. Chaque onglet dit en une phrase à quelle étape du plan il se construit : texte provisoire. |
 | Classe d'un projet | « Choisir une classe » comme dessiné ; quand une classe est choisie, « Changer de classe » à la même place, tant qu'aucun chapitre n'est attribué (F01-AC24). |
-| Renommer la classe | Un dialogue : le nom, « Enregistrer », et « L'identifiant de la classe ne change pas. » |
+| Renommer la classe | Un dialogue : le nom et « Enregistrer ». Quand l'identifiant ne va plus avec le nom, une case décochée, « Changer aussi l'identifiant : cm2laurent », et une phrase : « L'identifiant reste « cm1cm2laurent ». », ou, case cochée, « L'affiche sera à réimprimer, et les étiquettes qui portent l'identifiant. » (F06-AC84, 9 octobre 2026). Sinon, « L'identifiant de la classe ne change pas. » |
 | Accueil de l'élève | « Bonjour Alice », « Mon travail », puis « Tu n'as pas encore de chapitre. Mme Laurent va t'en donner un. », ou « Le travail est fermé jusqu'à demain, 8 h 30. » hors des horaires. L'illustration est générique : celle du projet viendra avec « Mon travail », à l'étape 4. |
 | Erreurs à l'entrée de la classe | « Ce n'est pas le bon identifiant, ou pas le bon mot de passe. Regarde l'affiche, ou demande à ton enseignant(e). » et « Trop d'essais. Attends 5 minutes, ou demande à ton enseignant(e). » |
+
+**Retouches de l'essai du porteur, 9 octobre 2026.** Demandées sur
+captures et faites le même jour :
+
+- le nom affiché, « Il était une fois la classe », dans le logo, l'entrée et
+  le titre de l'onglet ;
+- entrée enseignant : adresse et mot de passe d'abord, « ou », puis
+  « Continuer avec Google » ; plus de phrase sous le titre ; au pied, sur
+  une ligne, « Mot de passe oublié » et « Élève ? Entre dans ta classe » ;
+- entrée des élèves : « Bienvenue dans ta classe », sans phrase sous le
+  titre, bouton « Entrer », et au pied « Tu es enseignant(e) ? Entrée des
+  enseignants » : l'écran tutoie de bout en bout ;
+- un bouton qui attend une réponse garde sa taille et montre un cercle qui
+  tourne à la place de son texte ; il ne s'envoie pas deux fois. Les
+  panneaux qui enregistrent seuls disent « Enregistrement… » puis
+  « Enregistré » ;
+- après un refus, ce qui était écrit reste dans le formulaire : l'adresse de
+  l'enseignant ; l'identifiant et le mot de passe de la classe pour l'élève ;
+- inscription : une feuille de lignes numérotées à deux cases, « Prénom » et
+  « Nom, facultatif », cinq lignes au départ, une ligne vide toujours
+  prête, « Entrée » pour passer à la suivante, une croix pour effacer une
+  ligne, et la phrase « Un élève par ligne. Vous pouvez aussi coller une
+  liste. » (F01-AC33, AC34). Elle remplace la zone de texte lignée de la
+  maquette ;
+- à l'inscription, un envoi qui n'arrive pas laisse la liste à l'écran avec
+  une phrase, au lieu de l'écran « Quelque chose n'a pas marché ».
 
 **Écarts avec la maquette, à juger à l'essai :**
 

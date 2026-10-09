@@ -1,6 +1,6 @@
 import { test, type Page } from "@playwright/test";
 import {
-  aller, autrePoste, connecter, creerClasse, creerCompte, inscrire, lireCodes, nommer, ouvrirLaClasse, passerAide, sql, supprimerCompte, taperCode,
+  aller, autrePoste, connecter, creerClasse, creerCompte, ecrireEleves, inscrire, lireCodes, nommer, ouvrirLaClasse, passerAide, sql, supprimerCompte, taperCode,
 } from "../parcours/outils";
 
 /**
@@ -44,12 +44,18 @@ test("écrans de l'étape 1", async ({ page, browser }) => {
   await capturer(page, "classe-premiere-sans-eleve");
 
   await aller(page, `/classes/${classe.id}/inscrire`);
-  await page.getByRole("textbox").fill([...ELEVES.slice(0, 6), "Alice", "Lucas Bernard", "Lucas"].join("\n"));
+  await ecrireEleves(page, [...ELEVES.slice(0, 6), "Alice", "Lucas Bernard", "Lucas"]);
   await capturer(page, "inscrire-prenoms");
   await page.getByRole("button", { name: "Continuer" }).click();
   await capturer(page, "inscrire-verifier-a-regler");
   await inscrire(page, classe.id, ELEVES);
   await capturer(page, "classe");
+  await page.getByLabel("Autres commandes de la classe").click();
+  await page.getByRole("button", { name: "Renommer la classe" }).click();
+  await page.getByRole("alertdialog").getByLabel("Nom de la classe").fill("CM2");
+  await page.getByRole("alertdialog").getByRole("checkbox").check();
+  await capturer(page, "classe-renommer-identifiant", false);
+  await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Afficher les codes" }).click();
   await capturer(page, "classe-codes-affiches");
   await page.getByRole("button", { name: "Masquer les codes" }).click();

@@ -607,3 +607,20 @@ button.eleve:hover {
     grid-template-columns: 84px minmax(0, 1fr);
   }
 }
+
+/* « Changer aussi l'identifiant », dans « Renommer la classe » */
+.choixIdentifiant {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.choixIdentifiant :global(.case) {
+  flex: none;
+  margin-top: 2px;
+}
+.choixIdentifiant b {
+  font-family: var(--f-code);
+}

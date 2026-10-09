@@ -9,6 +9,7 @@ import { Gommette, PlacesVides } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { useMessage } from "@/composants/Messages";
+import { identifiantConvient, identifiantsProposes } from "@/domaine/acces";
 import { libelleAnnee } from "@/domaine/annee";
 import { trier } from "@/domaine/eleves";
 import { libelleRecit } from "@/domaine/projets";
@@ -38,9 +39,9 @@ const dateLongue = (iso: string): string =>
 
 /** Une classe : ses élèves à gauche, ses trois fiches à droite (F01.1, F06.4). */
 export function PageClasse({
-  classe, adresse, aideMasquee, ancienne, message,
+  classe, adresse, nomAffiche, aideMasquee, ancienne, message,
 }: {
-  classe: Classe; adresse: string; aideMasquee: boolean; ancienne: Ancienne | null; message: string | null;
+  classe: Classe; adresse: string; nomAffiche: string | null; aideMasquee: boolean; ancienne: Ancienne | null; message: string | null;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -52,6 +53,7 @@ export function PageClasse({
   const [motDePasse, setMotDePasse] = useState<string | null>(null);
   const [proposition, setProposition] = useState(ancienne);
   const [nom, setNom] = useState(classe.nom);
+  const [avecIdentifiant, setAvecIdentifiant] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const menu = useRef<HTMLDetailsElement>(null);
 
@@ -148,10 +150,11 @@ export function PageClasse({
   const renommer = () => {
     setErreur(null);
     lancer("renommer", async () => {
-      const r = await renommerClasse(classe.id, nom);
+      const r = await renommerClasse(classe.id, nom, avecIdentifiant && identifiantPropose !== null);
       if (!r.ok) return setErreur(r.erreur);
       setOuvert(null);
       routeur.refresh();
+      if (r.identifiant) dire({ texte: `L’identifiant de la classe est maintenant « ${r.identifiant} ». Pensez à réimprimer l’affiche.` });
     });
   };
   const supprimer = () =>
@@ -160,6 +163,10 @@ export function PageClasse({
       if (!r.ok) return echec(r.erreur);
       routeur.push("/classes?message=supprimee");
     });
+
+  // L'identifiant qui irait avec le nom en cours de saisie ; null s'il n'y a rien à changer
+  const identifiantPropose =
+    nom.trim() && !identifiantConvient(classe.identifiant, nom, nomAffiche) ? identifiantsProposes(nom, nomAffiche, () => 0)[0] : null;
 
   const eleveOuvert = ouvert?.sorte === "eleve" ? classe.eleves.find((e) => e.id === ouvert.id) : undefined;
 
@@ -191,7 +198,7 @@ export function PageClasse({
                 <Icone nom="points" />
               </summary>
               <div className="menu__liste">
-                <button type="button" onClick={() => { fermerMenu(); setNom(classe.nom); setErreur(null); setOuvert({ sorte: "renommer" }); }}>
+                <button type="button" onClick={() => { fermerMenu(); setNom(classe.nom); setAvecIdentifiant(false); setErreur(null); setOuvert({ sorte: "renommer" }); }}>
                   Renommer la classe
                 </button>
                 {!n && !classe.projets.length ? (
@@ -497,7 +504,23 @@ export function PageClasse({
               {erreur}
             </p>
           ) : null}
-          <p className={styles.ficheAide}>L’identifiant de la classe ne change pas.</p>
+          {identifiantPropose ? (
+            <>
+              <label className={styles.choixIdentifiant}>
+                <input type="checkbox" className="case" checked={avecIdentifiant} onChange={(e) => setAvecIdentifiant(e.target.checked)} />
+                <span>
+                  Changer aussi l’identifiant : <b>{identifiantPropose}</b>
+                </span>
+              </label>
+              <p className={styles.ficheAide}>
+                {avecIdentifiant
+                  ? "L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant."
+                  : `L’identifiant reste « ${classe.identifiant} ».`}
+              </p>
+            </>
+          ) : (
+            <p className={styles.ficheAide}>L’identifiant de la classe ne change pas.</p>
+          )}
         </Dialogue>
       ) : null}
     </div>

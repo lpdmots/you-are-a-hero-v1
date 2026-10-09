@@ -195,6 +195,51 @@ test("F06-AC68, F06-AC77 — mot de passe remplacé : les postes ouverts redeman
   for (const poste of postes) await poste.contexte.close();
 });
 
+test("F06-AC84 — classe renommée avec son identifiant : l'ancien est refusé, le nouveau ouvre, les postes ouverts le restent", async ({ page, browser }) => {
+  const ouvert = await autrePoste(browser);
+  await entrer(ouvert.page, "Alice");
+
+  await aller(page, `/classes/${classe.id}`);
+  await page.getByLabel("Autres commandes de la classe").click();
+  await page.getByRole("button", { name: "Renommer la classe" }).click();
+  const dialogue = page.getByRole("alertdialog");
+  // Tant que le nom convient à l'identifiant, rien n'est proposé
+  await expect(dialogue.getByRole("checkbox")).toHaveCount(0);
+  await dialogue.getByLabel("Nom de la classe").fill("CM2");
+  // Proposé, jamais d'office : la case est décochée
+  const choix = dialogue.getByRole("checkbox", { name: "Changer aussi l’identifiant : cm2laurent" });
+  await expect(choix).not.toBeChecked();
+  await expect(dialogue).toContainText(`L’identifiant reste « ${classe.identifiant} ».`);
+  await choix.check();
+  await expect(dialogue).toContainText("L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.");
+  await dialogue.getByRole("button", { name: "Enregistrer" }).click();
+
+  await expect(page.getByRole("heading", { level: 1, name: "CM2" })).toBeVisible();
+  await expect(page.getByText(/L’identifiant de la classe est maintenant « cm2laurent\d{0,3} »\. Pensez à réimprimer l’affiche\./)).toBeVisible();
+  const fiche = page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" });
+  const nouveau = (await fiche.locator("dd").nth(1).innerText()).trim();
+  expect(nouveau).toMatch(/^cm2laurent\d{0,3}$/);
+  expect(nouveau).not.toBe(classe.identifiant);
+
+  // Sur un autre ordinateur : l'ancien identifiant est refusé, le nouveau ouvre avec le même mot de passe
+  const neuf = await autrePoste(browser);
+  await ouvrirLaClasse(neuf.page, classe.identifiant, classe.motDePasse);
+  await expect(neuf.page.getByText(/Ce n’est pas le bon identifiant, ou pas le bon mot de passe\./)).toBeVisible();
+  await ouvrirLaClasse(neuf.page, nouveau, classe.motDePasse);
+  await expect(choixDesProfils(neuf.page)).toBeVisible();
+  await expect(neuf.page.getByText("Classe CM2 de Mme Laurent")).toBeVisible();
+  // Les codes n'ont pas changé
+  await taperCode(neuf.page, "Bilal", codes.Bilal);
+  await expect(neuf.page).toHaveURL(/\/travail$/);
+
+  // Le poste où la classe était ouverte le reste : Alice continue
+  await ouvert.page.reload();
+  await expect(ouvert.page).toHaveURL(/\/travail$/);
+  await expect(ouvert.page.getByText("Bonjour Alice")).toBeVisible();
+  await ouvert.contexte.close();
+  await neuf.contexte.close();
+});
+
 test("F06-AC78 — élève retiré : son poste revient au choix des profils, sans lui ; année terminée : tous les postes se ferment", async ({ page, browser }) => {
   const bilal = await autrePoste(browser);
   const alice = await autrePoste(browser);

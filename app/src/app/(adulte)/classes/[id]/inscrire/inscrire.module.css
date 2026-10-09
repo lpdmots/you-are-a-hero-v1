@@ -60,32 +60,39 @@
   color: var(--graphite);
   font-weight: 700;
 }
-/* La liste se saisit sur une feuille lignée : une ligne, un élève */
+/* La feuille de saisie : une ligne par élève, deux cases, prénom et nom */
 .saisie {
-  display: block;
-  width: 100%;
   margin-top: 16px;
-  padding: 7px 16px 0 18px;
-  border: 1px solid var(--trait-fort);
-  border-radius: 10px;
-  resize: vertical;
-  min-height: 220px;
-  font: inherit;
-  font-size: 1.06rem;
-  font-weight: 600;
-  line-height: 34px;
-  color: var(--graphite);
-  background: var(--feuille) repeating-linear-gradient(to bottom, transparent 0, transparent 33px, #d9e0f0 33px, #d9e0f0 34px) local 0 6px;
-  caret-color: var(--canard);
 }
-.saisie::placeholder {
+.saisie ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+.saisie li,
+.saisieTete {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) minmax(0, 1fr) 32px;
+  align-items: center;
+  gap: 8px;
+}
+.saisieTete {
+  margin-bottom: 6px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.saisieRang {
+  text-align: right;
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
   color: var(--graphite-3);
-  font-weight: 400;
 }
-.saisie:focus {
-  outline: 2px solid var(--canard);
-  outline-offset: 1px;
-  border-color: var(--canard);
+.saisie :global(.pchamp) {
+  font-size: 1rem;
+  font-weight: 600;
 }
 .regler {
   margin-top: 18px;

@@ -37,6 +37,15 @@ export function identifiantsProposes(nomClasse: string, nomAffiche: string | nul
   return propositions;
 }
 
+/**
+ * Vrai si l'identifiant est déjà celui que l'on proposerait pour ce nom de classe :
+ * « cm2laurent », ou le même suivi de chiffres. Il n'y a alors rien à changer.
+ */
+export function identifiantConvient(identifiant: string, nomClasse: string, nomAffiche: string | null): boolean {
+  const [base] = identifiantsProposes(nomClasse, nomAffiche, () => 0);
+  return identifiant.startsWith(base) && /^\d{0,3}$/.test(identifiant.slice(base.length));
+}
+
 /** « tigre nuage 42 » : deux mots différents, deux chiffres de 10 à 99. */
 export function motDePassePropose(tirer: Tirage): string {
   const premier = MOTS[tirer(MOTS.length)];

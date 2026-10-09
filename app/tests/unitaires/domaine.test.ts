@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
 import { anneeProposee, libelleAnnee } from "@/domaine/annee";
 import {
-  codePropose, codeValide, identifiantsProposes, identifiantValide, motDePassePropose,
+  codePropose, codeValide, identifiantConvient, identifiantsProposes, identifiantValide, motDePassePropose,
   normaliserIdentifiant, normaliserMotDePasse,
 } from "@/domaine/acces";
 import { MOTS } from "@/domaine/mots";
-import { construireLot, lireLignes, nomPourEleves, pointsARegler, prenomEnDouble, type ProfilConnu } from "@/domaine/eleves";
+import { construireLot, lireLignes, lirePersonne, nomPourEleves, pointsARegler, prenomEnDouble, type ProfilConnu } from "@/domaine/eleves";
 import { ecrireHeure, finDePlage, lireHeure, prochaineOuverture, textePlage, travailOuvert, type Plage } from "@/domaine/horaires";
 import { ongletsDe } from "@/domaine/projets";
 import { de } from "@/domaine/texte";
@@ -26,11 +26,21 @@ describe("Année scolaire d'une classe (F01.1)", () => {
 describe("Prénoms et inscription en lot (F01.1)", () => {
   const connu = (id: string, prenom: string, nom: string | null): ProfilConnu => ({ id, prenom, nom, couleur: 0, de: "CM1-CM2 · 2025-2026" });
 
-  it("lit une ligne « Prénom » ou « Prénom Nom », le nom restant facultatif", () => {
-    expect(lireLignes("Noé\n  océane   Girard \n\nMalo Le Gall")).toEqual([
+  it("un élève s'écrit en deux cases : le prénom et le nom peuvent avoir plusieurs mots, le nom reste facultatif", () => {
+    expect(lirePersonne(" jean  Marie ", "de la Batellerie ")).toEqual({ prenom: "Jean Marie", nom: "de la Batellerie" });
+    expect(lirePersonne("Océane", "  ")).toEqual({ prenom: "Océane", nom: null });
+    expect(lirePersonne("  ", "Girard")).toBeNull();
+  });
+
+  it("une liste collée remplit les cases : coupée au premier espace, ou aux tabulations d'un tableur", () => {
+    expect(lireLignes("Noé\n  océane   Girard \r\n\nMalo Le Gall")).toEqual([
       { prenom: "Noé", nom: null },
       { prenom: "Océane", nom: "Girard" },
       { prenom: "Malo", nom: "Le Gall" },
+    ]);
+    expect(lireLignes("Jean Marie\tde la Batellerie\nLina\t")).toEqual([
+      { prenom: "Jean Marie", nom: "de la Batellerie" },
+      { prenom: "Lina", nom: null },
     ]);
   });
 
@@ -46,16 +56,16 @@ describe("Prénoms et inscription en lot (F01.1)", () => {
   });
 
   it("F01-AC21 — une ligne « Lucas » sans nom, avec un Lucas déjà inscrit, est à régler", () => {
-    const lignes = construireLot([], new Set(), "Lucas\nAlice");
+    const lignes = construireLot([], new Set(), lireLignes("Lucas\nAlice"));
     const points = pointsARegler([{ prenom: "Lucas", nom: "Bernard" }], lignes);
     expect(points).toHaveLength(1);
     expect(points[0]).toMatchObject({ sorte: "double", rang: 0 });
-    expect(pointsARegler([{ prenom: "Lucas", nom: "Bernard" }], construireLot([], new Set(), "Lucas Morel"))).toEqual([]);
+    expect(pointsARegler([{ prenom: "Lucas", nom: "Bernard" }], construireLot([], new Set(), lireLignes("Lucas Morel")))).toEqual([]);
   });
 
   it("F01-AC21 — la règle vaut aussi pour deux profils connus de même prénom, sans nom", () => {
     const connus = [connu("p1", "Lucas", null), { ...connu("p2", "Lucas", null), de: "CE2 · 2024-2025" }, connu("p3", "Alice", null)];
-    const lignes = construireLot(connus, new Set(["p1", "p2", "p3"]), "");
+    const lignes = construireLot(connus, new Set(["p1", "p2", "p3"]), lireLignes(""));
     expect(pointsARegler([], lignes).map((p) => [p.sorte, p.rang])).toEqual([["double", 0], ["double", 1]]);
     // Un nom donné à l'un des deux suffit à les distinguer
     const regle = lignes.map((l, i) => (i === 0 && l.type === "connu" ? { ...l, eleve: { ...l.eleve, nom: "B." }, nomDonne: true } : l));
@@ -67,7 +77,7 @@ describe("Prénoms et inscription en lot (F01.1)", () => {
 
   it("F01-AC12 — un nom déjà connu est signalé, jamais fusionné d'office", () => {
     const connus = [connu("p1", "Adam", "Morel"), connu("p2", "Inès", "Garcia")];
-    const lignes = construireLot(connus, new Set(["p2"]), "adam morel\nNoé");
+    const lignes = construireLot(connus, new Set(["p2"]), lireLignes("adam morel\nNoé"));
     expect(lignes[0]).toMatchObject({ type: "connu" });
     expect(lignes[1]).toMatchObject({ type: "neuf", prenom: "Adam", meme: { id: "p1" } });
     expect(pointsARegler([], lignes).map((p) => p.sorte)).toEqual(["meme"]);
@@ -75,7 +85,7 @@ describe("Prénoms et inscription en lot (F01.1)", () => {
 
   it("F01-AC07 — un homonyme d'un profil déjà coché reste un autre élève", () => {
     const connus = [connu("p1", "Adam", "Morel")];
-    const lignes = construireLot(connus, new Set(["p1"]), "Adam Morel");
+    const lignes = construireLot(connus, new Set(["p1"]), lireLignes("Adam Morel"));
     expect(lignes).toHaveLength(2);
     expect(lignes[1]).toMatchObject({ type: "neuf", meme: null });
   });
@@ -93,6 +103,13 @@ describe("Informations de la classe et code (F06.4)", () => {
     expect(propositions[1]).toBe("cm1cm2laurent2");
     expect(propositions.every(identifiantValide)).toBe(true);
     expect(identifiantsProposes("É", null, suite([5]))[0]).toBe("classee");
+  });
+
+  it("F06-AC84 — un identifiant convient au nom de la classe s'il est celui qu'on proposerait, chiffres compris", () => {
+    expect(identifiantConvient("cm1cm2laurent", "CM1-CM2", "Mme Laurent")).toBe(true);
+    expect(identifiantConvient("cm1cm2laurent247", "cm1 cm2", "Mme Laurent")).toBe(true);
+    expect(identifiantConvient("cm1cm2laurent", "CM2", "Mme Laurent")).toBe(false);
+    expect(identifiantConvient("cm2laurent", "CM2", "M. Petit")).toBe(false);
   });
 
   it("propose un mot de passe de deux mots simples et de deux chiffres", () => {

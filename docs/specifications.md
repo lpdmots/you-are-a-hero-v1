@@ -345,7 +345,9 @@ conservation reste à approfondir avec F14.
 
 **Décision confirmée — inscription initiale en lot :** depuis la classe
 annuelle, l'enseignant sélectionne les profils déjà connus à réinscrire,
-puis saisit ou colle les noms des nouveaux élèves, un par ligne. Il vérifie
+puis écrit les nouveaux élèves, un par ligne, le prénom et le nom dans deux
+cases ; il peut aussi coller une liste, qui remplit ces lignes (forme
+révisée le 9 octobre 2026, voir plus bas). Il vérifie
 une liste récapitulative et corrige les erreurs avant confirmation. Les
 homonymes sont signalés sans fusion automatique. L'ajout individuel reste
 possible. La première livraison n'inclut pas d'import complexe avec
@@ -376,6 +378,17 @@ ne demande aucune inscription d'élève.
   vérifie le récapitulatif, alors cette correspondance est signalée et il
   peut vérifier s'il s'agit du profil à réutiliser ou d'un autre élève ;
   le système ne décide pas d'une fusion sur le seul nom.
+- **F01-AC33 — Prénom et nom en deux cases :** étant donné l'enseignant
+  qui écrit « Jean Marie » dans la case du prénom et « de la Batellerie »
+  dans celle du nom, lorsqu'il confirme le récapitulatif, alors l'élève est
+  inscrit avec ce prénom et ce nom ; une ligne qui n'a qu'un nom est
+  signalée avant le récapitulatif.
+- **F01-AC34 — Liste collée :** étant donné une liste de quatre lignes
+  collée dans la première ligne, dont « Jean Marie de la Batellerie »,
+  lorsque l'enseignant regarde les cases, alors chaque ligne non vide a
+  rempli une ligne, « Jean » dans le prénom et le reste dans le nom, et il
+  corrige ces deux cases avant de continuer ; collée depuis un tableur, une
+  ligne met sa première colonne dans le prénom et la suivante dans le nom.
 
 **Décisions confirmées le 6 octobre 2026 — la classe, son année et ses
 élèves :**
@@ -398,9 +411,21 @@ ne demande aucune inscription d'élève.
   seule, ni à une date. Alternatives écartées : la bascule automatique en
   fin d'année scolaire, qui tombe mal (pays d'usage non fixé, livre fini
   pendant l'été) ; aucun terme, qui laissait valables les anciens accès.
-- **Prénom obligatoire, nom facultatif.** Une ligne de la saisie en lot
-  est « Prénom » ou « Prénom Nom » ; le récapitulatif les montre séparés et
-  les laisse corriger. Les élèves ne voient que des prénoms. Lorsque deux
+- **Prénom obligatoire, nom facultatif, dans deux cases.** Décidé le
+  9 octobre 2026, après l'essai de l'étape 1 : chaque ligne de la saisie en
+  lot a une case pour le prénom et une pour le nom, et une ligne vide
+  s'ajoute d'elle-même. Un prénom composé (« Jean Marie ») et un nom à
+  particule (« de la Batellerie ») s'écrivent ainsi sans ambiguïté. Une
+  liste collée remplit les lignes à partir de celle où l'on colle : chaque
+  ligne est coupée au premier espace, ou aux colonnes si elle vient d'un
+  tableur (la première pour le prénom), et l'enseignant corrige dans les
+  cases ce qui est mal tombé. Une ligne qui a un nom sans prénom est
+  montrée et rien ne passe. Le récapitulatif laisse encore corriger une
+  ligne. Cette forme remplace la règle du 6 octobre, « une ligne de texte,
+  "Prénom" ou "Prénom Nom" », qui coupait mal ces prénoms et ces noms.
+  Alternative écartée : garder la zone de texte avec un séparateur entre le
+  prénom et le nom, plus rapide à faire mais moins claire. Les élèves ne
+  voient que des prénoms. Lorsque deux
   élèves d'une même classe portent le même prénom, l'initiale du nom
   s'ajoute pour eux (« Lucas B. », « Lucas M. ») ; si elle manque, la
   classe la demande. Le nom sert à l'enseignant, notamment pour reconnaître
@@ -2832,7 +2857,15 @@ supports imprimés :**
 - **Proposées, consultables, remplaçables.** À la création d'une classe,
   l'application propose son identifiant et son mot de passe. L'enseignant
   les relit à tout moment depuis la classe et peut les remplacer, comme les
-  codes personnels. Alternatives écartées : un identifiant et un mot de
+  codes personnels. L'identifiant se remplace en renommant la classe
+  (décidé le 9 octobre 2026) : une case, décochée d'office, propose
+  l'identifiant qui va avec le nouveau nom (« cm2laurent »), suivi de
+  chiffres s'il est déjà pris, ce que l'application dit une fois le nom
+  enregistré. Le mot de passe et les codes ne changent pas ; l'affiche et
+  les étiquettes qui portent l'identifiant sont à réimprimer ; les postes
+  où la classe est déjà ouverte le restent, puisque le mot de passe est le
+  même. Tant que l'identifiant convient au nom, rien n'est proposé.
+  Alternatives écartées : un identifiant et un mot de
   passe écrits librement (mot de passe trop simple, identifiant déjà
   pris) ; un mot de passe montré une seule fois, plus sûr, mais à ressaisir
   sur tous les postes à chaque oubli. Le stockage qui permet cette
@@ -2991,6 +3024,13 @@ règles du 8 ne chiffraient pas :
   adresse réseau, quel que soit le navigateur, lorsqu'un essai de plus y
   est fait, même juste, alors il est refusé pendant cinq minutes ; depuis
   une autre adresse, la classe s'ouvre.
+- **F06-AC84 — Identifiant remplacé avec le nom :** étant donné la classe
+  « CM1-CM2 » de Mme Laurent, ouverte sur un poste, lorsque l'enseignante la
+  renomme « CM2 » en cochant « Changer aussi l'identifiant », alors
+  l'identifiant devient « cm2laurent », l'ancien est refusé sur un autre
+  poste et le nouveau y ouvre la classe avec le même mot de passe et les
+  mêmes codes ; le poste déjà ouvert le reste. Sans cocher la case,
+  l'identifiant ne change pas.
 
 **Propositions de la maquette du 6 octobre 2026, sans retour du porteur :**
 la classe dit « Pas de limite d'horaire » tant qu'aucun horaire n'est réglé

@@ -2,7 +2,7 @@
 
 import { randomInt, randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
-import { codePropose, codeValide, identifiantsProposes, motDePassePropose } from "@/domaine/acces";
+import { codePropose, codeValide, identifiantConvient, identifiantsProposes, motDePassePropose } from "@/domaine/acces";
 import { memePrenom, prenomEnDouble, type Personne } from "@/domaine/eleves";
 import { plageValide, type Plage } from "@/domaine/horaires";
 import { MOTS } from "@/domaine/mots";
@@ -54,15 +54,35 @@ export async function creerClasse(nom: string, anneeDebut: number): Promise<Fait
   return echec("La classe n’a pas pu être créée. Réessayez.");
 }
 
-export async function renommerClasse(classeId: string, nom: string): Promise<Fait> {
+/**
+ * Renommer la classe. Sur demande seulement, son identifiant suit le nouveau nom
+ * (F06-AC84) : il est proposé comme à la création, jamais écrit librement. Le mot de
+ * passe et les codes ne changent pas, et les postes où la classe est ouverte le restent.
+ */
+export async function renommerClasse(classeId: string, nom: string, avecIdentifiant = false): Promise<Fait<{ identifiant: string | null }>> {
   const enseignant = await exigerEnseignant();
   const nomPropre = propre(nom).slice(0, 60);
   if (!nomPropre) return echec("Donnez un nom à la classe.");
-  if (!(await classeEnCours(enseignant, classeId))) return echec("Cette classe ne se modifie plus.");
+  const classe = await classeEnCours(enseignant, classeId);
+  if (!classe) return echec("Cette classe ne se modifie plus.");
+
+  if (avecIdentifiant && !identifiantConvient(classe.identifiant, nomPropre, enseignant.nomAffiche)) {
+    // Unique entre tous les enseignants : la base le dit, on essaie le suivant
+    for (const identifiant of identifiantsProposes(nomPropre, enseignant.nomAffiche, tirer)) {
+      const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre, identifiant }).eq("id", classeId);
+      if (!error) {
+        rafraichir(classeId);
+        return { ok: true, identifiant };
+      }
+      if (error.code !== "23505") break;
+    }
+    return echec("Le nom et l’identifiant n’ont pas pu être changés. Réessayez.");
+  }
+
   const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre }).eq("id", classeId);
   if (error) return echec("Le nom n’a pas pu être changé.");
   rafraichir(classeId);
-  return { ok: true };
+  return { ok: true, identifiant: null };
 }
 
 /** Une classe sans élève ni projet se supprime ; les autres se terminent (F01.1). */

@@ -1,13 +1,13 @@
 "use client";
 
 import { unstable_rethrow, useRouter } from "next/navigation";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition, type ClipboardEvent, type KeyboardEvent } from "react";
 import { Etapes } from "@/composants/Etapes";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import {
-  construireLot, lireLignes, nomPourEleves, pointsARegler, trier,
-  type Eleve, type LigneLot, type PointARegler, type ProfilConnu,
+  construireLot, lireLignes, lirePersonne, nomPourEleves, pointsARegler, trier,
+  type Eleve, type LigneLot, type Personne, type PointARegler, type ProfilConnu,
 } from "@/domaine/eleves";
 import { majuscule, pluriel } from "@/domaine/texte";
 import { inscrireEleves } from "../../actions";
@@ -16,12 +16,20 @@ import styles from "./inscrire.module.css";
 const prenomDe = (l: LigneLot): string => (l.type === "connu" ? l.eleve.prenom : l.prenom);
 const nomDe = (l: LigneLot): string => (l.type === "connu" ? (l.eleve.nom ?? "") : l.nom);
 
+/** Une ligne de la feuille de saisie : deux cases, prénom et nom (décision du 9 octobre 2026). */
+type Rang = { cle: number; prenom: string; nom: string };
+const LIGNES_AU_DEPART = 5;
+const ecrit = (r: Rang): boolean => !!(r.prenom.trim() || r.nom.trim());
+let numero = 0;
+const ligne = (prenom = "", nom = ""): Rang => ({ cle: (numero += 1), prenom, nom });
+
 export function Inscrire({ classeId, inscrits, connus }: { classeId: string; inscrits: Eleve[]; connus: ProfilConnu[] }) {
   const routeur = useRouter();
   const avecConnus = connus.length > 0;
   const [etape, setEtape] = useState(avecConnus ? 1 : 2);
   const [coches, setCoches] = useState<Set<string>>(new Set());
-  const [texte, setTexte] = useState("");
+  const [rangs, setRangs] = useState<Rang[]>(() => Array.from({ length: LIGNES_AU_DEPART }, () => ligne()));
+  const [oubli, setOubli] = useState<number | null>(null);
   const [lignes, setLignes] = useState<LigneLot[]>([]);
   const [edition, setEdition] = useState<{ rang: number; prenom: string; nom: string } | null>(null);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -33,13 +41,55 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
     titre.current?.focus();
   }, [etape]);
 
-  const noms = avecConnus ? ["Élèves déjà connus", "Nouveaux élèves", "Vérifier"] : ["Les prénoms", "Vérifier"];
+  const noms = avecConnus ? ["Élèves déjà connus", "Nouveaux élèves", "Vérifier"] : ["Vos élèves", "Vérifier"];
   const rang = avecConnus ? etape : etape - 1;
-  const nb = lireLignes(texte).length;
+  const nb = rangs.filter((r) => r.prenom.trim()).length;
+
+  // La feuille finit toujours par une ligne vide : écrire dans la dernière en ajoute une
+  const ranger = (suivants: Rang[]): Rang[] => {
+    const garde = [...suivants];
+    while (garde.length && !ecrit(garde[garde.length - 1])) garde.pop();
+    garde.push(ligne());
+    while (garde.length < LIGNES_AU_DEPART) garde.push(ligne());
+    return garde;
+  };
+  const ecrire = (i: number, morceau: Partial<Rang>) => {
+    setOubli(null);
+    setRangs((r) => ranger(r.map((x, k) => (k === i ? { ...x, ...morceau } : x))));
+  };
+  // Une liste collée remplit les lignes à partir de celle où l'on colle
+  const coller = (i: number, e: ClipboardEvent<HTMLInputElement>) => {
+    const colle = e.clipboardData.getData("text");
+    if (!/[\n\t]/.test(colle)) return;
+    e.preventDefault();
+    const personnes: Personne[] = lireLignes(colle);
+    if (!personnes.length) return;
+    setOubli(null);
+    setRangs((r) =>
+      ranger([
+        ...r.slice(0, i),
+        ...(ecrit(r[i]) ? [r[i]] : []),
+        ...personnes.map((p) => ligne(p.prenom, p.nom ?? "")),
+        ...r.slice(i + 1),
+      ]),
+    );
+  };
+  const ligneSuivante = (i: number, e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    document.getElementById(`eleve-prenom-${i + 1}`)?.focus();
+  };
 
   const suite = () => {
     if (etape === 2) {
-      setLignes(construireLot(connus, coches, texte));
+      const sansPrenom = rangs.findIndex((r) => !r.prenom.trim() && r.nom.trim());
+      if (sansPrenom >= 0) {
+        setOubli(sansPrenom);
+        document.getElementById(`eleve-prenom-${sansPrenom}`)?.focus();
+        return;
+      }
+      const nouveaux = rangs.map((r) => lirePersonne(r.prenom, r.nom)).filter((x): x is Personne => x !== null);
+      setLignes(construireLot(connus, coches, nouveaux));
       setEdition(null);
       setErreur(null);
     }
@@ -131,18 +181,66 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
     corps = (
       <>
         <h2 id="lot-t" tabIndex={-1} ref={titre}>
-          {avecConnus ? "Les nouveaux élèves" : "Les prénoms de vos élèves"}
+          {avecConnus ? "Les nouveaux élèves" : "Vos élèves"}
         </h2>
-        <p className={styles.aide}>Un élève par ligne : son prénom, puis son nom si vous voulez.</p>
-        <textarea
-          className={styles.saisie}
-          rows={12}
-          value={texte}
-          onChange={(e) => setTexte(e.target.value)}
-          aria-labelledby="lot-t"
-          placeholder={"Noé Garnier\nOcéane\nPaul Lefèvre"}
-          spellCheck={false}
-        />
+        <p className={styles.aide}>Un élève par ligne. Vous pouvez aussi coller une liste.</p>
+        <div className={styles.saisie} role="group" aria-labelledby="lot-t">
+          <p className={styles.saisieTete} aria-hidden="true">
+            <span />
+            <span>Prénom</span>
+            <span>
+              Nom <span className="facultatif">facultatif</span>
+            </span>
+          </p>
+          <ol>
+            {rangs.map((r, i) => (
+              <li key={r.cle}>
+                <span className={styles.saisieRang} aria-hidden="true">
+                  {i + 1}
+                </span>
+                <input
+                  className="pchamp"
+                  id={`eleve-prenom-${i}`}
+                  type="text"
+                  value={r.prenom}
+                  aria-label={`Prénom, ligne ${i + 1}`}
+                  aria-invalid={oubli === i ? true : undefined}
+                  maxLength={40}
+                  autoComplete="off"
+                  spellCheck={false}
+                  onChange={(e) => ecrire(i, { prenom: e.target.value })}
+                  onPaste={(e) => coller(i, e)}
+                  onKeyDown={(e) => ligneSuivante(i, e)}
+                />
+                <input
+                  className="pchamp"
+                  type="text"
+                  value={r.nom}
+                  aria-label={`Nom, ligne ${i + 1}`}
+                  maxLength={60}
+                  autoComplete="off"
+                  spellCheck={false}
+                  onChange={(e) => ecrire(i, { nom: e.target.value })}
+                  onPaste={(e) => coller(i, e)}
+                  onKeyDown={(e) => ligneSuivante(i, e)}
+                />
+                {ecrit(r) ? (
+                  <button type="button" className={styles.recapCmd} aria-label={`Effacer la ligne ${i + 1}`} onClick={() => { setOubli(null); setRangs((x) => ranger(x.filter((_, k) => k !== i))); }}>
+                    <Icone nom="fermer" />
+                  </button>
+                ) : (
+                  <span className={styles.recapCmd} aria-hidden="true" />
+                )}
+              </li>
+            ))}
+          </ol>
+        </div>
+        {oubli !== null ? (
+          <p className={`erreur ${styles.erreur}`} role="alert">
+            <Icone nom="alerte" />
+            <span>Ligne {oubli + 1} : écrivez le prénom.</span>
+          </p>
+        ) : null}
         <footer className={styles.pied}>
           <p>
             <b>{nb}</b> <span>{avecConnus ? (nb > 1 ? "nouveaux élèves" : "nouvel élève") : `élève${pluriel(nb)}`}</span>

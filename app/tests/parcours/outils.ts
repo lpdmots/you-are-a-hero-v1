@@ -88,12 +88,33 @@ export async function creerClasse(page: Page, nom: string, annee?: string): Prom
   return { id, identifiant, motDePasse };
 }
 
+/**
+ * Écrit des élèves dans la feuille de saisie, une ligne chacun : « Prénom » ou « Prénom Nom »,
+ * le premier mot allant dans la case du prénom, la suite dans celle du nom.
+ */
+export async function ecrireEleves(page: Page, lignes: string[]): Promise<void> {
+  for (const [i, ligne] of lignes.entries()) {
+    const [prenom, ...nom] = ligne.trim().split(/\s+/);
+    await page.getByLabel(`Prénom, ligne ${i + 1}`, { exact: true }).fill(prenom);
+    if (nom.length) await page.getByLabel(`Nom, ligne ${i + 1}`, { exact: true }).fill(nom.join(" "));
+  }
+}
+
+/** Colle une liste dans la feuille de saisie, comme depuis un traitement de texte ou un tableur. */
+export async function collerEleves(page: Page, texte: string, ligne = 1): Promise<void> {
+  await page.getByLabel(`Prénom, ligne ${ligne}`, { exact: true }).evaluate((champ, colle) => {
+    const donnees = new DataTransfer();
+    donnees.setData("text/plain", colle);
+    champ.dispatchEvent(new ClipboardEvent("paste", { clipboardData: donnees, bubbles: true, cancelable: true }));
+  }, texte);
+}
+
 /** Inscrit de nouveaux élèves par l'écran (classe sans profil connu à cocher). */
 export async function inscrire(page: Page, classeId: string, lignes: string[]): Promise<void> {
   await aller(page, `/classes/${classeId}/inscrire`);
   const connus = page.getByRole("heading", { name: "Qui retrouvez-vous cette année ?" });
   if (await connus.isVisible().catch(() => false)) await page.getByRole("button", { name: "Continuer" }).click();
-  await page.getByRole("textbox").fill(lignes.join("\n"));
+  await ecrireEleves(page, lignes);
   await page.getByRole("button", { name: "Continuer" }).click();
   await page.getByRole("button", { name: new RegExp(`^Inscrire ${lignes.length} élève`) }).click();
   await page.waitForURL(new RegExp(`/classes/${classeId}(\\?|$)`));
