@@ -43,7 +43,7 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
     <form action={action}>
       <label className="champ champ--plein">
         <span>Adresse électronique</span>
-        <input type="email" name="adresse" autoComplete="username" required />
+        <input type="email" name="adresse" autoComplete="username" defaultValue={etat.adresse} required />
       </label>
       <label className="champ champ--plein">
         <span>Mot de passe</span>

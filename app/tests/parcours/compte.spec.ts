@@ -39,6 +39,21 @@ test("F01-AC27 — entrée de l'enseignant : une phrase qui ne dit pas ce qui es
   await expect(page).toHaveURL(/\/projets$/);
 });
 
+test("F01-AC27 — au clavier : la touche Entrée envoie le formulaire ; après un refus, l'adresse reste écrite", async ({ page }) => {
+  await aller(page, "/entree");
+  await page.getByLabel("Adresse électronique").fill(compte.courriel);
+  await page.getByLabel("Mot de passe").fill("pas-le-bon-mot-de-passe");
+  await page.getByLabel("Adresse électronique").press("Enter");
+  await expect(page.getByRole("alert").filter({ hasText: "L’adresse ou le mot de passe n’est pas le bon." })).toBeVisible();
+
+  // Après un refus, l'adresse reste écrite : seul le mot de passe se retape
+  await expect(page.getByLabel("Adresse électronique")).toHaveValue(compte.courriel);
+  await expect(page.getByLabel("Mot de passe")).toHaveValue("");
+  await page.getByLabel("Mot de passe").fill(compte.motDePasse);
+  await page.getByLabel("Mot de passe").press("Enter");
+  await expect(page).toHaveURL(/\/projets$/);
+});
+
 test("F01-AC29 — mot de passe oublié : même phrase pour toute adresse, puis un nouveau mot de passe par le lien reçu", async ({ page }) => {
   const phrase = "Si cette adresse a un compte, un courriel vient de partir. Ouvrez son lien sur cet ordinateur.";
   await aller(page, "/entree/oubli");

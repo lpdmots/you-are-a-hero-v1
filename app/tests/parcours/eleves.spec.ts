@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  aller, autrePoste, connecter, creerClasse, creerCompte, inscrire, lireCodes, nommer, ouvrirLaClasse, sql,
+  ALERTE, aller, autrePoste, connecter, creerClasse, creerCompte, inscrire, lireCodes, nommer, ouvrirLaClasse, sql,
   supprimerCompte, taperCode, type ClasseCreee, type Compte,
 } from "./outils";
 
@@ -62,6 +62,19 @@ test("F06-AC43, F06-AC81 — connexion en deux étapes, saisie tolérante aux ma
   await expect(poste.page.getByText("Bonjour Alice")).toBeVisible();
   await expect(poste.page.getByRole("banner")).toContainText("Alice");
   await expect(poste.page.getByText("Mme Laurent va t’en donner un.")).toBeVisible();
+  await poste.contexte.close();
+});
+
+test("F06-AC43 — après un refus, l'identifiant et le mot de passe restent écrits : l'élève corrige sans tout retaper", async ({ browser }) => {
+  const poste = await autrePoste(browser);
+  await ouvrirLaClasse(poste.page, classe.identifiant, "pas le bon 12");
+  await expect(ALERTE(poste.page)).toContainText("Ce n’est pas le bon identifiant, ou pas le bon mot de passe.");
+  await expect(poste.page.getByLabel("Identifiant de la classe")).toHaveValue(classe.identifiant);
+  await expect(poste.page.getByLabel("Mot de passe de la classe")).toHaveValue("pas le bon 12");
+
+  await poste.page.getByLabel("Mot de passe de la classe").fill(classe.motDePasse);
+  await poste.page.getByLabel("Mot de passe de la classe").press("Enter");
+  await expect(choixDesProfils(poste.page)).toBeVisible();
   await poste.contexte.close();
 });
 

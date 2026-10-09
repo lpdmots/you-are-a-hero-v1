@@ -6,7 +6,8 @@ import { adresseDuSite } from "@/serveur/env";
 import { sessionDeRecuperation } from "@/serveur/adulte";
 import { clientAdulte } from "@/serveur/supabase";
 
-export type EtatFormulaire = { erreur?: string; fait?: boolean };
+// adresse : ce qui était écrit, rendu au formulaire après un refus pour ne pas le retaper
+export type EtatFormulaire = { erreur?: string; fait?: boolean; adresse?: string };
 
 /** Entrée de l'enseignant (F01-AC27) : la phrase ne dit pas lequel des deux est faux. */
 export async function seConnecter(_avant: EtatFormulaire, formulaire: FormData): Promise<EtatFormulaire> {
@@ -16,8 +17,8 @@ export async function seConnecter(_avant: EtatFormulaire, formulaire: FormData):
   const supabase = await clientAdulte();
   const { error } = await supabase.auth.signInWithPassword({ email: adresse, password: motDePasse });
   if (error) {
-    if (error.status === 429) return { erreur: "Trop d’essais. Attendez quelques minutes." };
-    return { erreur: "L’adresse ou le mot de passe n’est pas le bon." };
+    if (error.status === 429) return { erreur: "Trop d’essais. Attendez quelques minutes.", adresse };
+    return { erreur: "L’adresse ou le mot de passe n’est pas le bon.", adresse };
   }
   redirect("/");
 }

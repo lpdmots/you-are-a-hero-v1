@@ -14,11 +14,11 @@ export function OuvrirLaClasse() {
     <form action={action}>
       <label className="champ champ--plein">
         <span>Identifiant de la classe</span>
-        <input type="text" name="identifiant" autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} required />
+        <input type="text" name="identifiant" defaultValue={etat.saisie?.identifiant} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} required />
       </label>
       <label className="champ champ--plein">
         <span>Mot de passe de la classe</span>
-        <input type="text" name="mot-de-passe" autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} required />
+        <input type="text" name="mot-de-passe" defaultValue={etat.saisie?.motDePasse} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} required />
       </label>
       {etat.erreur ? (
         <p className="erreur" role="alert">

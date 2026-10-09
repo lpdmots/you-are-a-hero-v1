@@ -10,7 +10,8 @@ import {
  * l'état du poste est relu dans la base à chaque fois.
  */
 
-export type EtatOuverture = { erreur?: string };
+// saisie : ce qui était écrit, rendu au formulaire après un refus pour corriger sans tout retaper
+export type EtatOuverture = { erreur?: string; saisie?: { identifiant: string; motDePasse: string } };
 
 export async function ouvrir(_avant: EtatOuverture, formulaire: FormData): Promise<EtatOuverture> {
   const identifiant = String(formulaire.get("identifiant") ?? "");
@@ -18,10 +19,11 @@ export async function ouvrir(_avant: EtatOuverture, formulaire: FormData): Promi
   if (!identifiant.trim() || !motDePasse.trim()) return { erreur: "Écris l’identifiant et le mot de passe de la classe." };
   const resultat = await ouvrirLaClasse(identifiant.slice(0, 100), motDePasse.slice(0, 100));
   if (resultat.ok) redirect("/classe/qui");
+  const saisie = { identifiant: identifiant.slice(0, 100), motDePasse: motDePasse.slice(0, 100) };
   if (resultat.raison === "attente") {
-    return { erreur: `Trop d’essais. Attends ${resultat.minutes > 1 ? `${resultat.minutes} minutes` : "une minute"}, ou demande à ton enseignant(e).` };
+    return { erreur: `Trop d’essais. Attends ${resultat.minutes > 1 ? `${resultat.minutes} minutes` : "une minute"}, ou demande à ton enseignant(e).`, saisie };
   }
-  return { erreur: "Ce n’est pas le bon identifiant, ou pas le bon mot de passe. Regarde l’affiche, ou demande à ton enseignant(e)." };
+  return { erreur: "Ce n’est pas le bon identifiant, ou pas le bon mot de passe. Regarde l’affiche, ou demande à ton enseignant(e).", saisie };
 }
 
 export async function entrer(inscriptionId: string, code: string): Promise<ResultatCode> {
