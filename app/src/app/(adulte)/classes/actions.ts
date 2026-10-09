@@ -41,7 +41,7 @@ export async function creerClasse(nom: string, anneeDebut: number): Promise<Fait
   const id = randomUUID();
   const chiffre = chiffrer(motDePassePropose(tirer), { sorte: "classe", id });
   // L'identifiant est unique entre tous les enseignants : la base le dit, on essaie le suivant.
-  for (const identifiant of identifiantsProposes(nomPropre, enseignant.nomAffiche, tirer)) {
+  for (const identifiant of identifiantsProposes(nomPropre, tirer)) {
     const { error } = await enseignant.supabase.rpc("creer_classe", {
       p_id: id, p_nom: nomPropre, p_annee_debut: anneeDebut, p_identifiant: identifiant, p_mot_de_passe_chiffre: chiffre,
     });
@@ -66,9 +66,9 @@ export async function renommerClasse(classeId: string, nom: string, avecIdentifi
   const classe = await classeEnCours(enseignant, classeId);
   if (!classe) return echec("Cette classe ne se modifie plus.");
 
-  if (avecIdentifiant && !identifiantConvient(classe.identifiant, nomPropre, enseignant.nomAffiche)) {
+  if (avecIdentifiant && !identifiantConvient(classe.identifiant, nomPropre)) {
     // Unique entre tous les enseignants : la base le dit, on essaie le suivant
-    for (const identifiant of identifiantsProposes(nomPropre, enseignant.nomAffiche, tirer)) {
+    for (const identifiant of identifiantsProposes(nomPropre, tirer)) {
       const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre, identifiant }).eq("id", classeId);
       if (!error) {
         rafraichir(classeId);

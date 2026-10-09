@@ -29,7 +29,6 @@ export default async function UneClasse({ params, searchParams }: Props) {
     <PageClasse
       classe={classe}
       adresse={`${site.replace(/^https?:\/\//, "")}/classe`}
-      nomAffiche={enseignant.nomAffiche}
       aideMasquee={enseignant.aidesMasquees.includes("classes")}
       ancienne={ancienne ? { id: ancienne.id, nom: ancienne.nom, annee: libelleAnnee(ancienne.anneeDebut), projets: ancienne.projets.length } : null}
       message={

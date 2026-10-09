@@ -2859,7 +2859,7 @@ supports imprimés :**
   les relit à tout moment depuis la classe et peut les remplacer, comme les
   codes personnels. L'identifiant se remplace en renommant la classe
   (décidé le 9 octobre 2026) : une case propose l'identifiant qui va avec
-  le nouveau nom (« cm2laurent »), suivi de chiffres s'il est déjà pris, ce
+  le nouveau nom (« cm2 »), suivi d'un mot simple s'il est déjà pris, ce
   que l'application dit une fois le nom enregistré. Elle est cochée
   d'office, à la demande du porteur ; la recommandation était de la laisser
   décochée. Le mot de passe et les codes ne changent pas ; l'affiche et
@@ -2957,7 +2957,16 @@ construire les accès :
   d'été et heure d'hiver suivies sans réglage. Le fuseau est tenu par la
   classe sans être affiché.
 - **Forme des informations de la classe.** L'identifiant est fait de lettres
-  minuscules et de chiffres, sans accent, et il est unique ; le mot de passe
+  minuscules et de chiffres, sans accent, et il est unique. Il est tiré du
+  nom de la classe seul (« cm1cm2 »), décision du porteur du 9 octobre
+  2026 : le nom de l'enseignant, qui le suivait depuis le 8 octobre
+  (« cm1cm2laurent »), est retiré. Conséquence acceptée : un nom de classe
+  courant est vite pris par un autre enseignant ; l'identifiant est alors
+  suivi d'un mot simple de la liste des mots de passe (« cm1cm2tigre »), et
+  de deux chiffres en dernier recours. Des chiffres collés au nom se
+  liraient comme un autre nom de classe (« cm12 ») : ils sont écartés. Une
+  classe créée avant garde son identifiant, jusqu'à ce qu'on la renomme en
+  le changeant. Le mot de passe
   est fait de deux mots simples et de deux chiffres, tirés d'une liste sans
   accent ni mot qui prête à confusion. À la saisie, les majuscules et les
   espaces en trop sont ignorés. Le code personnel reste à quatre chiffres ;
@@ -3001,8 +3010,8 @@ construire les accès :
   ouvre et ferme aux mêmes heures affichées à l'horloge de la classe, sans
   réglage de l'enseignant.
 - **F06-AC81 — Saisie tolérante :** étant donné l'identifiant
-  « cm1laurent » et le mot de passe « tigre nuage 42 », lorsqu'un élève tape
-  « CM1Laurent » et « Tigre  nuage 42 », alors la classe s'ouvre.
+  « cm1cm2 » et le mot de passe « tigre nuage 42 », lorsqu'un élève tape
+  « CM1CM2 » et « Tigre  nuage 42 », alors la classe s'ouvre.
 
 **Décisions confirmées le 9 octobre 2026**, pour deux valeurs que les
 règles du 8 ne chiffraient pas :
@@ -3028,7 +3037,7 @@ règles du 8 ne chiffraient pas :
 - **F06-AC84 — Identifiant remplacé avec le nom :** étant donné la classe
   « CM1-CM2 » de Mme Laurent, ouverte sur un poste, lorsque l'enseignante la
   renomme « CM2 » en laissant cochée « Changer aussi l'identifiant », alors
-  l'identifiant devient « cm2laurent », l'ancien est refusé sur un autre
+  l'identifiant devient « cm2 », l'ancien est refusé sur un autre
   poste et le nouveau y ouvre la classe avec le même mot de passe et les
   mêmes codes ; le poste déjà ouvert le reste. Si elle décoche la case,
   l'identifiant ne change pas.

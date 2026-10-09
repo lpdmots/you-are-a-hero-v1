@@ -39,9 +39,9 @@ const dateLongue = (iso: string): string =>
 
 /** Une classe : ses élèves à gauche, ses trois fiches à droite (F01.1, F06.4). */
 export function PageClasse({
-  classe, adresse, nomAffiche, aideMasquee, ancienne, message,
+  classe, adresse, aideMasquee, ancienne, message,
 }: {
-  classe: Classe; adresse: string; nomAffiche: string | null; aideMasquee: boolean; ancienne: Ancienne | null; message: string | null;
+  classe: Classe; adresse: string; aideMasquee: boolean; ancienne: Ancienne | null; message: string | null;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -167,7 +167,7 @@ export function PageClasse({
 
   // L'identifiant qui irait avec le nom en cours de saisie ; null s'il n'y a rien à changer
   const identifiantPropose =
-    nom.trim() && !identifiantConvient(classe.identifiant, nom, nomAffiche) ? identifiantsProposes(nom, nomAffiche, () => 0)[0] : null;
+    nom.trim() && !identifiantConvient(classe.identifiant, nom) ? identifiantsProposes(nom, () => 0)[0] : null;
 
   const eleveOuvert = ouvert?.sorte === "eleve" ? classe.eleves.find((e) => e.id === ouvert.id) : undefined;
 

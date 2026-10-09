@@ -36,8 +36,8 @@ test("F06-AC67 — les informations de la classe sont proposées, se relisent, e
   await nommer(page, compte, "Mme Laurent");
   const classe = await creerClasse(page, "CM1-CM2");
   // Forme décidée le 8 octobre 2026 : minuscules et chiffres ; deux mots simples et deux chiffres
-  // « cm1cm2laurent », suivi de chiffres si une autre classe porte déjà cet identifiant
-  expect(classe.identifiant).toMatch(/^cm1cm2laurent\d{0,3}$/);
+  // « cm1cm2 », le nom de la classe seul ; suivi d'un mot simple si une autre classe porte déjà cet identifiant
+  expect(classe.identifiant).toMatch(/^cm1cm2([a-z]{3,10}\d{0,2})?$/);
   expect(classe.motDePasse).toMatch(/^[a-z]+ [a-z]+ [1-9][0-9]$/);
 
   // Plus tard, depuis la liste : on relit, et on imprime l'affiche

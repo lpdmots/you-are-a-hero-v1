@@ -97,19 +97,24 @@ describe("Informations de la classe et code (F06.4)", () => {
     expect(normaliserMotDePasse("Tigre  nuage 42 ")).toBe("tigre nuage 42");
   });
 
-  it("propose un identifiant fait de minuscules et de chiffres, sans accent", () => {
-    const propositions = identifiantsProposes("CM1-CM2", "Mme Laurent", suite([5]));
-    expect(propositions[0]).toBe("cm1cm2laurent");
-    expect(propositions[1]).toBe("cm1cm2laurent2");
+  it("propose pour identifiant le nom de la classe seul, en minuscules et chiffres, sans accent ; s'il est pris, un mot le suit", () => {
+    const propositions = identifiantsProposes("CM1-CM2", suite([0, 1, 2]));
+    expect(propositions[0]).toBe("cm1cm2");
+    expect(propositions[1]).toBe(`cm1cm2${MOTS[0]}`);
+    expect(propositions[2]).toBe(`cm1cm2${MOTS[1]}`);
+    expect(propositions[propositions.length - 1]).toMatch(/^cm1cm2[a-z]+\d{2}$/);
     expect(propositions.every(identifiantValide)).toBe(true);
-    expect(identifiantsProposes("É", null, suite([5]))[0]).toBe("classee");
+    expect(identifiantsProposes("É", suite([5]))[0]).toBe("classee");
+    expect(identifiantsProposes("La classe des grands explorateurs du monde", suite([5])).every(identifiantValide)).toBe(true);
   });
 
-  it("F06-AC84 — un identifiant convient au nom de la classe s'il est celui qu'on proposerait, chiffres compris", () => {
-    expect(identifiantConvient("cm1cm2laurent", "CM1-CM2", "Mme Laurent")).toBe(true);
-    expect(identifiantConvient("cm1cm2laurent247", "cm1 cm2", "Mme Laurent")).toBe(true);
-    expect(identifiantConvient("cm1cm2laurent", "CM2", "Mme Laurent")).toBe(false);
-    expect(identifiantConvient("cm2laurent", "CM2", "M. Petit")).toBe(false);
+  it("F06-AC84 — un identifiant convient au nom de la classe s'il est l'un de ceux qu'on proposerait", () => {
+    expect(identifiantConvient("cm1cm2", "CM1-CM2")).toBe(true);
+    expect(identifiantConvient(`cm1cm2${MOTS[3]}`, "cm1 cm2")).toBe(true);
+    expect(identifiantConvient(`cm1cm2${MOTS[3]}42`, "CM1-CM2")).toBe(true);
+    expect(identifiantConvient("cm1cm2", "CM2")).toBe(false);
+    // Un identifiant d'avant le 9 octobre, qui portait le nom de l'enseignant, ne convient plus
+    expect(identifiantConvient("cm2laurent", "CM2")).toBe(false);
   });
 
   it("propose un mot de passe de deux mots simples et de deux chiffres", () => {

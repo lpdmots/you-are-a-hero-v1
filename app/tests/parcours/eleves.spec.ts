@@ -207,7 +207,7 @@ test("F06-AC84 — classe renommée avec son identifiant : l'ancien est refusé,
   await expect(dialogue.getByRole("checkbox")).toHaveCount(0);
   await dialogue.getByLabel("Nom de la classe").fill("CM2");
   // La case est cochée d'office ; décochée, elle dit que l'identifiant reste
-  const choix = dialogue.getByRole("checkbox", { name: "Changer aussi l’identifiant : cm2laurent" });
+  const choix = dialogue.getByRole("checkbox", { name: "Changer aussi l’identifiant : cm2" });
   await expect(choix).toBeChecked();
   await expect(dialogue).toContainText("L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.");
   await choix.uncheck();
@@ -215,11 +215,12 @@ test("F06-AC84 — classe renommée avec son identifiant : l'ancien est refusé,
   await choix.check();
   await dialogue.getByRole("button", { name: "Enregistrer" }).click();
 
-  await expect(page.getByRole("heading", { level: 1, name: "CM2" })).toBeVisible();
-  await expect(page.getByText(/L’identifiant de la classe est maintenant « cm2laurent\d{0,3} »\. Pensez à réimprimer l’affiche\./)).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "CM2", exact: true })).toBeVisible();
+  await expect(page.getByText(/L’identifiant de la classe est maintenant « cm2([a-z]{3,10}\d{0,2})? »\. Pensez à réimprimer l’affiche\./)).toBeVisible();
   const fiche = page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" });
+  await expect(fiche.locator("dd").nth(1)).not.toHaveText(classe.identifiant);
   const nouveau = (await fiche.locator("dd").nth(1).innerText()).trim();
-  expect(nouveau).toMatch(/^cm2laurent\d{0,3}$/);
+  expect(nouveau).toMatch(/^cm2([a-z]{3,10}\d{0,2})?$/);
   expect(nouveau).not.toBe(classe.identifiant);
 
   // Sur un autre ordinateur : l'ancien identifiant est refusé, le nouveau ouvre avec le même mot de passe
