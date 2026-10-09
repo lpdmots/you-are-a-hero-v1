@@ -15,7 +15,7 @@ const main = Playwrite_FR_Moderne({ weight: ["300", "400"], variable: "--police-
 const chiffres = Andika({ subsets: ["latin", "latin-ext"], weight: ["400", "700"], variable: "--police-chiffres", display: "swap" });
 
 export const metadata: Metadata = {
-  title: { default: "You Are a Hero", template: "%s — You Are a Hero" },
+  title: { default: "Il était une fois la classe", template: "%s — Il était une fois la classe" },
   description: "Écrire un livre avec sa classe.",
   robots: { index: false, follow: false },
 };
