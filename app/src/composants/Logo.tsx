@@ -10,7 +10,7 @@ export function Logo({ href }: { href: string }) {
         <path d="M13 23c3-1 2-5 5-6s4-3 3-6" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeDasharray=".1 3.6" />
         <circle cx="21" cy="10" r="2.2" fill="#E6A33D" />
       </svg>
-      <span>Il était une fois la classe</span>
+      <span>Il était une classe</span>
     </Link>
   );
 }

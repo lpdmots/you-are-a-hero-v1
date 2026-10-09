@@ -1066,7 +1066,7 @@ restés sans retour du porteur :**
 **Retouches de l'essai du porteur, 9 octobre 2026.** Demandées sur
 captures et faites le même jour :
 
-- le nom affiché, « Il était une fois la classe », dans le logo, l'entrée et
+- le nom affiché, « Il était une classe », dans le logo, l'entrée et
   le titre de l'onglet ;
 - entrée enseignant : adresse et mot de passe d'abord, « ou », puis
   « Continuer avec Google » ; plus de phrase sous le titre ; au pied, sur
