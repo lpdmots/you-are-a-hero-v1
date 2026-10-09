@@ -2858,10 +2858,11 @@ supports imprimés :**
   l'application propose son identifiant et son mot de passe. L'enseignant
   les relit à tout moment depuis la classe et peut les remplacer, comme les
   codes personnels. L'identifiant se remplace en renommant la classe
-  (décidé le 9 octobre 2026) : une case, décochée d'office, propose
-  l'identifiant qui va avec le nouveau nom (« cm2laurent »), suivi de
-  chiffres s'il est déjà pris, ce que l'application dit une fois le nom
-  enregistré. Le mot de passe et les codes ne changent pas ; l'affiche et
+  (décidé le 9 octobre 2026) : une case propose l'identifiant qui va avec
+  le nouveau nom (« cm2laurent »), suivi de chiffres s'il est déjà pris, ce
+  que l'application dit une fois le nom enregistré. Elle est cochée
+  d'office, à la demande du porteur ; la recommandation était de la laisser
+  décochée. Le mot de passe et les codes ne changent pas ; l'affiche et
   les étiquettes qui portent l'identifiant sont à réimprimer ; les postes
   où la classe est déjà ouverte le restent, puisque le mot de passe est le
   même. Tant que l'identifiant convient au nom, rien n'est proposé.
@@ -3026,10 +3027,10 @@ règles du 8 ne chiffraient pas :
   une autre adresse, la classe s'ouvre.
 - **F06-AC84 — Identifiant remplacé avec le nom :** étant donné la classe
   « CM1-CM2 » de Mme Laurent, ouverte sur un poste, lorsque l'enseignante la
-  renomme « CM2 » en cochant « Changer aussi l'identifiant », alors
+  renomme « CM2 » en laissant cochée « Changer aussi l'identifiant », alors
   l'identifiant devient « cm2laurent », l'ancien est refusé sur un autre
   poste et le nouveau y ouvre la classe avec le même mot de passe et les
-  mêmes codes ; le poste déjà ouvert le reste. Sans cocher la case,
+  mêmes codes ; le poste déjà ouvert le reste. Si elle décoche la case,
   l'identifiant ne change pas.
 
 **Propositions de la maquette du 6 octobre 2026, sans retour du porteur :**

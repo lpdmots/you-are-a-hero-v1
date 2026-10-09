@@ -55,8 +55,8 @@ export async function creerClasse(nom: string, anneeDebut: number): Promise<Fait
 }
 
 /**
- * Renommer la classe. Sur demande seulement, son identifiant suit le nouveau nom
- * (F06-AC84) : il est proposé comme à la création, jamais écrit librement. Le mot de
+ * Renommer la classe. Son identifiant suit le nouveau nom si l'enseignant laisse la case
+ * cochée (F06-AC84) : il est proposé comme à la création, jamais écrit librement. Le mot de
  * passe et les codes ne changent pas, et les postes où la classe est ouverte le restent.
  */
 export async function renommerClasse(classeId: string, nom: string, avecIdentifiant = false): Promise<Fait<{ identifiant: string | null }>> {

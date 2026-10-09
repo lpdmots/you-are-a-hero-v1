@@ -322,8 +322,8 @@ test("F01.1 — une classe se renomme sans changer d'identifiant ; sans élève 
   await page.getByLabel("Autres commandes de la classe").click();
   await page.getByRole("button", { name: "Renommer la classe" }).click();
   await page.getByRole("alertdialog").getByLabel("Nom de la classe").fill("CM1-CM2");
-  // Changer l'identifiant est proposé, jamais fait d'office (F06-AC84)
-  await expect(page.getByRole("alertdialog").getByRole("checkbox", { name: /Changer aussi l’identifiant/ })).not.toBeChecked();
+  // La case « Changer aussi l'identifiant » est cochée d'office : décochée, l'identifiant reste (F06-AC84)
+  await page.getByRole("alertdialog").getByRole("checkbox", { name: /Changer aussi l’identifiant/ }).uncheck();
   await page.getByRole("alertdialog").getByRole("button", { name: "Enregistrer" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "CM1-CM2" })).toBeVisible();
   await expect(page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" })).toContainText(classe.identifiant);

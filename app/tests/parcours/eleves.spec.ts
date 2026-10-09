@@ -206,12 +206,13 @@ test("F06-AC84 — classe renommée avec son identifiant : l'ancien est refusé,
   // Tant que le nom convient à l'identifiant, rien n'est proposé
   await expect(dialogue.getByRole("checkbox")).toHaveCount(0);
   await dialogue.getByLabel("Nom de la classe").fill("CM2");
-  // Proposé, jamais d'office : la case est décochée
+  // La case est cochée d'office ; décochée, elle dit que l'identifiant reste
   const choix = dialogue.getByRole("checkbox", { name: "Changer aussi l’identifiant : cm2laurent" });
-  await expect(choix).not.toBeChecked();
+  await expect(choix).toBeChecked();
+  await expect(dialogue).toContainText("L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.");
+  await choix.uncheck();
   await expect(dialogue).toContainText(`L’identifiant reste « ${classe.identifiant} ».`);
   await choix.check();
-  await expect(dialogue).toContainText("L’affiche sera à réimprimer, et les étiquettes qui portent l’identifiant.");
   await dialogue.getByRole("button", { name: "Enregistrer" }).click();
 
   await expect(page.getByRole("heading", { level: 1, name: "CM2" })).toBeVisible();

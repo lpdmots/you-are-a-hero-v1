@@ -53,7 +53,8 @@ export function PageClasse({
   const [motDePasse, setMotDePasse] = useState<string | null>(null);
   const [proposition, setProposition] = useState(ancienne);
   const [nom, setNom] = useState(classe.nom);
-  const [avecIdentifiant, setAvecIdentifiant] = useState(false);
+  // Cochée d'office : l'identifiant suit le nom, sauf si l'enseignant décoche (9 octobre 2026)
+  const [avecIdentifiant, setAvecIdentifiant] = useState(true);
   const [erreur, setErreur] = useState<string | null>(null);
   const menu = useRef<HTMLDetailsElement>(null);
 
@@ -198,7 +199,7 @@ export function PageClasse({
                 <Icone nom="points" />
               </summary>
               <div className="menu__liste">
-                <button type="button" onClick={() => { fermerMenu(); setNom(classe.nom); setAvecIdentifiant(false); setErreur(null); setOuvert({ sorte: "renommer" }); }}>
+                <button type="button" onClick={() => { fermerMenu(); setNom(classe.nom); setAvecIdentifiant(true); setErreur(null); setOuvert({ sorte: "renommer" }); }}>
                   Renommer la classe
                 </button>
                 {!n && !classe.projets.length ? (
