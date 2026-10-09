@@ -14,7 +14,7 @@ leur statut.
 
 **Avancement au 9 octobre 2026 :** l'étape 1 est construite et en ligne,
 sur autorisation du porteur du 8 octobre 2026 pour cette étape seule ; il
-lui reste l'essai du porteur et trois réglages dans Supabase (voir
+lui reste l'essai du porteur (voir
 [Étape 1](#étape-1--sinstaller--compte-projets-classes-accès-des-élèves)).
 L'étape 2 n'est pas commencée.
 
@@ -239,10 +239,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     critère. Le test « un élève ne lit rien d'une autre classe » en fait
     partie. Une revue de sécurité et une revue de code ont été faites, et
     leurs points corrigés.
-  - **Vérifié seulement en local, à confirmer en ligne (V9) :** que Supabase
-    accepte l'accès de classe signé par l'application. Cela demande
-    d'importer la clé de signature dans le projet Supabase ;
-    `npm run verifier:production` le contrôle ensuite.
+  - **Vérifié en ligne le 9 octobre 2026 (V9) :** le porteur a importé la
+    clé de signature, fermé les inscriptions publiques et créé son compte ;
+    `npm run verifier:production` confirme que Supabase accepte l'accès de
+    classe signé par l'application, qu'un poste sans classe ouverte ne lit
+    rien et qu'il ne lit pas les codes.
   - **Critères qui ne se ferment qu'à une étape suivante,** faute de
     chapitres, de textes ou de livre : F01-AC03, AC05, AC08, AC09, AC24
     (seconde moitié), F06-AC16 et AC28 (chapitres attribués) à l'étape 2 ;
@@ -250,8 +251,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     travail) et le texte enregistré de F06-AC76 à AC78 à l'étape 3 ; F01-AC02
     (jusqu'au PDF), AC18, AC19 (textes, livre) et F06-AC31 (version
     partagée) aux étapes 6 et 7. L'étape 1 teste ce qu'ils disent des accès.
-  - **Vérifications :** V8 levée pour les accès, en local ; V9 levée en
-    local, à confirmer en ligne ; V10 levée pour l'heure de Paris et les
+  - **Vérifications :** V8 levée pour les accès, en local ; V9 levée, en
+    local pour le parcours entier et en ligne pour l'acceptation du jeton ;
+    V10 levée pour l'heure de Paris et les
     changements d'heure, par des instants choisis et non par une vraie
     horloge ; V18 : sauvegarde essayée sur la vraie base, restauration
     essayée sur la base locale seulement.
@@ -260,10 +262,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     classe » sous le titre d'un projet, « Renommer la classe », les quatre
     onglets vides du projet, l'accueil de l'élève sans chapitre
     ([design](design.md#étape-1-construite-9-octobre-2026)).
-  - **Reste au porteur :** dans Supabase, fermer les inscriptions
-    publiques, importer la clé de signature, créer son compte et déclarer
-    l'adresse du site ; donner à Vercel l'accès au dépôt GitHub pour que
-    chaque envoi de code se déploie ; faire l'essai.
+  - **Reste au porteur :** faire l'essai ; donner à Vercel l'accès au
+    dépôt GitHub pour que chaque envoi de code se déploie ; vérifier que
+    l'adresse du site est déclarée dans Supabase, ce que « Mot de passe
+    oublié » demande.
 
 ### Étape 2 — Préparer et organiser le récit
 
