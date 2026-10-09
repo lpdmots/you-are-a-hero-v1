@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition, type CSSProperties } from "react";
 import { enregistrerNomAffiche } from "@/app/(adulte)/actions-compte";
 import { seDeconnecter } from "@/app/entree/actions";
+import { BoutonEnvoi } from "./Attente";
 import { Logo } from "./Logo";
 import { Panneau, PiedFermer } from "./Panneau";
 import { useProjetCourant } from "./ProjetCourant";
@@ -34,7 +35,7 @@ export function BarreAdulte({ nomAffiche, courriel }: Props) {
   const [compte, setCompte] = useState(false);
   const [nom, setNom] = useState(nomAffiche ?? "");
   const [enregistre, setEnregistre] = useState(false);
-  const [, lancer] = useTransition();
+  const [enCours, lancer] = useTransition();
 
   const reprise = projet ? `/projet/${projet.id}/${projet.onglet}` : "/projets";
   const ici = (debut: string) => (chemin.startsWith(debut) ? "page" : undefined);
@@ -79,7 +80,7 @@ export function BarreAdulte({ nomAffiche, courriel }: Props) {
           titre="Mon compte"
           sous={courriel ?? undefined}
           onFermer={() => setCompte(false)}
-          pied={<PiedFermer enregistre={enregistre} onFermer={() => setCompte(false)} />}
+          pied={<PiedFermer enregistre={enregistre} enCours={enCours} onFermer={() => setCompte(false)} />}
         >
           <section>
             <h3>
@@ -104,9 +105,7 @@ export function BarreAdulte({ nomAffiche, courriel }: Props) {
           </section>
           <section>
             <form action={seDeconnecter}>
-              <button type="submit" className="btn">
-                Se déconnecter
-              </button>
+              <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>
             </form>
           </section>
         </Panneau>

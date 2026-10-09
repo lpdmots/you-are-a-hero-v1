@@ -18,7 +18,7 @@ const enSaisie = (p: Plage): Saisie => ({ jours: p.jours, de: ecrireHeure(p.de),
 /** Horaires : un interrupteur, des jours en pastilles, « De … à … » (F06.4, 7 octobre 2026). */
 export function PanneauHoraires({ classe, onFermer }: { classe: Classe; onFermer: () => void }) {
   const routeur = useRouter();
-  const [, lancer] = useTransition();
+  const [enCours, lancer] = useTransition();
   const [limites, setLimites] = useState(classe.horairesLimites);
   const [plages, setPlages] = useState<Saisie[]>((classe.plages.length ? classe.plages : [PLAGE_PAR_DEFAUT]).map(enSaisie));
   const [enregistre, setEnregistre] = useState(false);
@@ -60,7 +60,7 @@ export function PanneauHoraires({ classe, onFermer }: { classe: Classe; onFermer
       titre="Horaires"
       sous={`${classe.nom} · ${libelleAnnee(classe.anneeDebut)}`}
       onFermer={onFermer}
-      pied={<PiedFermer enregistre={enregistre} onFermer={onFermer} />}
+      pied={<PiedFermer enregistre={enregistre} enCours={enCours} onFermer={onFermer} />}
     >
       <section>
         <label className="inter">

@@ -209,7 +209,7 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
               <Icone nom="fleche" />
             </button>
           ) : (
-            <button type="button" className="btn btn--primaire btn--grand" disabled={!titre.trim() || enCours} onClick={creer}>
+            <button type="button" className="btn btn--primaire btn--grand" disabled={!titre.trim() || enCours} aria-busy={enCours || undefined} onClick={creer}>
               Créer le projet
             </button>
           )}

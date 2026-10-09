@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import { BoutonEnvoi } from "@/composants/Attente";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { entrer, quitter } from "../actions";
@@ -83,9 +84,7 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
               </p>
               <div>
                 <form action={quitter}>
-                  <button type="submit" className="btn btn--petit">
-                    Quitter
-                  </button>
+                  <BoutonEnvoi className="btn btn--petit">Quitter</BoutonEnvoi>
                 </form>
                 <button type="button" className="btn btn--petit btn--primaire" ref={rester} onClick={() => setQuitterOuvert(false)}>
                   Rester
@@ -152,7 +151,7 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
                 <span>{erreur}</span>
               </p>
             ) : null}
-            <button type="button" className="btn btn--primaire btn--grand btn--large" disabled={enCours || chiffres.some((c) => !c)} onClick={() => valider(chiffres.join(""))}>
+            <button type="button" className="btn btn--primaire btn--grand btn--large" disabled={enCours || chiffres.some((c) => !c)} aria-busy={enCours || undefined} onClick={() => valider(chiffres.join(""))}>
               Entrer
               <Icone nom="fleche" />
             </button>

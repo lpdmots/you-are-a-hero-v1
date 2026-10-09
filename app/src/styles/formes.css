@@ -84,6 +84,51 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+/* Attente d'une réponse : le bouton garde sa taille, un cercle tourne à la place de son texte */
+.btn[aria-busy="true"],
+.btn[aria-busy="true"]:hover {
+  position: relative;
+  color: transparent;
+  opacity: 1;
+  cursor: progress;
+}
+.btn[aria-busy="true"] > * {
+  visibility: hidden;
+}
+.btn[aria-busy="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 1.15em;
+  height: 1.15em;
+  border-radius: 50%;
+  border: 2px solid var(--graphite-2);
+  border-right-color: transparent;
+  animation: attente 0.7s linear infinite;
+}
+.btn--primaire[aria-busy="true"]::after {
+  border-color: #fff;
+  border-right-color: transparent;
+}
+.btn--danger[aria-busy="true"]::after {
+  border-color: var(--bloque);
+  border-right-color: transparent;
+}
+.lien[aria-busy="true"] {
+  opacity: 0.5;
+  cursor: progress;
+}
+@keyframes attente {
+  to {
+    transform: rotate(1turn);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn[aria-busy="true"]::after {
+    animation: none;
+  }
+}
 .lien {
   border: 0;
   background: none;
@@ -574,6 +619,9 @@
   font-size: var(--t-s);
   font-weight: 700;
   color: var(--e-valide);
+}
+.enregistre--attente {
+  color: var(--graphite-2);
 }
 
 /* ——— Dialogue de confirmation : quelques faits, puis la décision ——— */

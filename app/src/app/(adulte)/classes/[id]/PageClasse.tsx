@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState, useTransition } from "react";
+import { useRef, useState } from "react";
+import { useAttente } from "@/composants/Attente";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette, PlacesVides } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -43,7 +44,7 @@ export function PageClasse({
 }) {
   const routeur = useRouter();
   const dire = useMessage();
-  const [, lancer] = useTransition();
+  const { attente, lancer } = useAttente();
   const [aide, setAide] = useState(false);
   const [ouvert, setOuvert] = useState<Ouvert>(null);
   // Codes et mot de passe masqués à l'ouverture : l'écran est souvent projeté (F06-AC71)
@@ -78,7 +79,7 @@ export function PageClasse({
       setCodes(null);
       return;
     }
-    lancer(async () => {
+    lancer("codes", async () => {
       const r = await voirCodes(classe.id);
       if (r.ok) setCodes(r.codes);
       else echec(r.erreur);
@@ -89,7 +90,7 @@ export function PageClasse({
       setMotDePasse(null);
       return;
     }
-    lancer(async () => {
+    lancer("voir", async () => {
       const r = await voirMotDePasse(classe.id);
       if (r.ok) setMotDePasse(r.motDePasse);
       else echec(r.erreur);
@@ -97,7 +98,7 @@ export function PageClasse({
   };
   const retirer = (inscriptionId: string, prenom: string) => {
     // Personne n'a encore écrit : le retrait se fait d'un geste, avec « Annuler » (F01.1)
-    lancer(async () => {
+    lancer("retirer", async () => {
       const r = await retirerEleve(classe.id, inscriptionId);
       if (!r.ok) return echec(r.erreur);
       setOuvert(null);
@@ -105,7 +106,7 @@ export function PageClasse({
       dire({
         texte: `${prenom} n’est plus dans la classe.`,
         annuler: () =>
-          lancer(async () => {
+          lancer("annuler", async () => {
             const a = await annulerRetrait(classe.id, inscriptionId);
             if (!a.ok) return echec(a.erreur);
             routeur.refresh();
@@ -115,7 +116,7 @@ export function PageClasse({
     });
   };
   const terminer = (id: string, nomClasse: string, anneeClasse: string) =>
-    lancer(async () => {
+    lancer("terminer", async () => {
       const r = await terminerAnnee(id);
       if (!r.ok) return echec(r.erreur);
       setOuvert(null);
@@ -126,18 +127,18 @@ export function PageClasse({
       dire({ texte: `L’année de ${nomClasse} ${anneeClasse} est terminée. La classe est sous « Années passées ».` });
     });
   const rouvrir = () =>
-    lancer(async () => {
+    lancer("rouvrir", async () => {
       const r = await rouvrirClasse(classe.id);
       if (!r.ok) return echec(r.erreur);
       routeur.refresh();
       dire({ texte: `${classe.nom} ${annee} est rouverte : mêmes informations de classe, mêmes codes.` });
     });
   const demanderMotDePasse = () =>
-    lancer(async () => {
+    lancer("proposer", async () => {
       setOuvert({ sorte: "motDePasse", neuf: await proposerMotDePasse() });
     });
   const confirmerMotDePasse = (neuf: string) =>
-    lancer(async () => {
+    lancer("motDePasse", async () => {
       const r = await changerMotDePasse(classe.id, neuf);
       if (!r.ok) return echec(r.erreur);
       setOuvert(null);
@@ -146,7 +147,7 @@ export function PageClasse({
     });
   const renommer = () => {
     setErreur(null);
-    lancer(async () => {
+    lancer("renommer", async () => {
       const r = await renommerClasse(classe.id, nom);
       if (!r.ok) return setErreur(r.erreur);
       setOuvert(null);
@@ -154,7 +155,7 @@ export function PageClasse({
     });
   };
   const supprimer = () =>
-    lancer(async () => {
+    lancer("supprimer", async () => {
       const r = await supprimerClasse(classe.id);
       if (!r.ok) return echec(r.erreur);
       routeur.push("/classes?message=supprimee");
@@ -213,7 +214,7 @@ export function PageClasse({
               n’est supprimé.
             </p>
           </div>
-          <button type="button" className="btn" onClick={rouvrir}>
+          <button type="button" className="btn" disabled={attente === "rouvrir"} aria-busy={attente === "rouvrir" || undefined} onClick={rouvrir}>
             Rouvrir la classe
           </button>
         </div>
@@ -246,7 +247,7 @@ export function PageClasse({
             <h2 id="titre-eleves">Élèves</h2>
             {enCours && n ? (
               <div className={styles.listeCmd}>
-                <button type="button" className="btn btn--discret" aria-pressed={!!codes} onClick={basculerCodes}>
+                <button type="button" className="btn btn--discret" aria-pressed={!!codes} disabled={attente === "codes"} aria-busy={attente === "codes" || undefined} onClick={basculerCodes}>
                   <Icone nom="oeil" />
                   {codes ? "Masquer les codes" : "Afficher les codes"}
                 </button>
@@ -341,6 +342,8 @@ export function PageClasse({
                         className={styles.oeil}
                         aria-pressed={!!motDePasse}
                         aria-label={`${motDePasse ? "Masquer" : "Afficher"} le mot de passe`}
+                        disabled={attente === "voir"}
+                        aria-busy={attente === "voir" || undefined}
                         onClick={basculerMotDePasse}
                       >
                         <Icone nom="oeil" />
@@ -353,7 +356,7 @@ export function PageClasse({
                     <Icone nom="imprimer" />
                     Imprimer l’affiche
                   </Link>
-                  <button type="button" className="lien" onClick={demanderMotDePasse}>
+                  <button type="button" className="lien" disabled={attente === "proposer"} aria-busy={attente === "proposer" || undefined} onClick={demanderMotDePasse}>
                     Changer le mot de passe
                   </button>
                 </div>
@@ -427,6 +430,7 @@ export function PageClasse({
           onFermer={() => setOuvert(null)}
           onCodeChange={(code) => setCodes((c) => (c ? { ...c, [eleveOuvert.id]: code } : c))}
           onRetirer={() => retirer(eleveOuvert.inscriptionId, eleveOuvert.prenom)}
+          retraitEnCours={attente === "retirer"}
         />
       ) : null}
       {ouvert?.sorte === "horaires" ? <PanneauHoraires classe={classe} onFermer={() => setOuvert(null)} /> : null}
@@ -436,7 +440,7 @@ export function PageClasse({
           titre={`Terminer l’année de ${ouvert.nom} ${ouvert.annee} ?`}
           onFermer={() => setOuvert(null)}
           boutons={
-            <button type="button" className="btn btn--primaire" onClick={() => terminer(ouvert.id, ouvert.nom, ouvert.annee)}>
+            <button type="button" className="btn btn--primaire" disabled={attente === "terminer"} aria-busy={attente === "terminer" || undefined} onClick={() => terminer(ouvert.id, ouvert.nom, ouvert.annee)}>
               Terminer l’année
             </button>
           }
@@ -457,7 +461,7 @@ export function PageClasse({
           titre="Changer le mot de passe de la classe ?"
           onFermer={() => setOuvert(null)}
           boutons={
-            <button type="button" className="btn btn--primaire" onClick={() => confirmerMotDePasse(ouvert.neuf)}>
+            <button type="button" className="btn btn--primaire" disabled={attente === "motDePasse"} aria-busy={attente === "motDePasse" || undefined} onClick={() => confirmerMotDePasse(ouvert.neuf)}>
               Changer le mot de passe
             </button>
           }
@@ -478,7 +482,7 @@ export function PageClasse({
           titre="Renommer la classe"
           onFermer={() => setOuvert(null)}
           boutons={
-            <button type="button" className="btn btn--primaire" onClick={renommer}>
+            <button type="button" className="btn btn--primaire" disabled={attente === "renommer"} aria-busy={attente === "renommer" || undefined} onClick={renommer}>
               Enregistrer
             </button>
           }

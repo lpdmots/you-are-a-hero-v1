@@ -171,7 +171,7 @@ export function MesClasses({
           titre="Nouvelle classe"
           onFermer={() => setPanneau(false)}
           pied={
-            <button type="button" className="btn btn--primaire btn--grand" disabled={enCours} onClick={creer}>
+            <button type="button" className="btn btn--primaire btn--grand" disabled={enCours} aria-busy={enCours || undefined} onClick={creer}>
               Créer la classe
             </button>
           }

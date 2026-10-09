@@ -55,7 +55,7 @@ export function ClasseDuProjet({
           onFermer={() => setOuvert(false)}
           pied={
             classes.length ? (
-              <button type="button" className="btn btn--primaire btn--grand" disabled={!choix || choix === classeId || enCours} onClick={choisir}>
+              <button type="button" className="btn btn--primaire btn--grand" disabled={!choix || choix === classeId || enCours} aria-busy={enCours || undefined} onClick={choisir}>
                 Choisir cette classe
               </button>
             ) : (

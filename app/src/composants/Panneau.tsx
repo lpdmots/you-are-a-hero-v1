@@ -49,11 +49,15 @@ export function Panneau({
   );
 }
 
-/** Pied ordinaire d'un panneau : « Enregistré » après un changement, puis « Fermer ». */
-export function PiedFermer({ enregistre, onFermer }: { enregistre: boolean; onFermer: () => void }) {
+/** Pied ordinaire d'un panneau : « Enregistrement… », « Enregistré » après un changement, puis « Fermer ». */
+export function PiedFermer({ enregistre, enCours, onFermer }: { enregistre: boolean; enCours?: boolean; onFermer: () => void }) {
   return (
     <>
-      {enregistre ? (
+      {enCours ? (
+        <p className="enregistre enregistre--attente" role="status">
+          Enregistrement…
+        </p>
+      ) : enregistre ? (
         <p className="enregistre" role="status">
           <Icone nom="coche" />
           Enregistré

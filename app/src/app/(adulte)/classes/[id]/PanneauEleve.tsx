@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
+import { useAttente } from "@/composants/Attente";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
@@ -19,17 +20,18 @@ import styles from "../classes.module.css";
  * code, pas ceux des autres (F06-AC71).
  */
 export function PanneauEleve({
-  classe, eleve, onFermer, onCodeChange, onRetirer,
+  classe, eleve, onFermer, onCodeChange, onRetirer, retraitEnCours,
 }: {
   classe: Classe;
   eleve: EleveInscrit;
   onFermer: () => void;
   onCodeChange: (code: string) => void;
   onRetirer: () => void;
+  retraitEnCours: boolean;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
-  const [, lancer] = useTransition();
+  const { attente, lancer } = useAttente();
   const [code, setCode] = useState<string | null>(null);
   const [neuf, setNeuf] = useState<string | null>(null);
   const [erreurCode, setErreurCode] = useState(false);
@@ -49,7 +51,7 @@ export function PanneauEleve({
   }, [classe.id, eleve.id]);
 
   const proposer = () =>
-    lancer(async () => {
+    lancer("proposer", async () => {
       setErreurCode(false);
       setNeuf(await proposerCode());
     });
@@ -59,7 +61,7 @@ export function PanneauEleve({
       setErreurCode(true);
       return;
     }
-    lancer(async () => {
+    lancer("code", async () => {
       const r = await changerCode(classe.id, eleve.id, neuf);
       if (!r.ok) {
         setErreurCode(true);
@@ -75,7 +77,7 @@ export function PanneauEleve({
 
   const enregistrerNom = () => {
     if (prenom.trim() === eleve.prenom && nom.trim() === (eleve.nom ?? "")) return;
-    lancer(async () => {
+    lancer("nom", async () => {
       const r = await modifierEleve(classe.id, eleve.id, prenom, nom);
       if (!r.ok) {
         setErreurNom(r.erreur);
@@ -97,7 +99,7 @@ export function PanneauEleve({
       }
       sous={`${classe.nom} · ${libelleAnnee(classe.anneeDebut)}`}
       onFermer={onFermer}
-      pied={<PiedFermer enregistre={enregistre} onFermer={onFermer} />}
+      pied={<PiedFermer enregistre={enregistre} enCours={attente === "nom"} onFermer={onFermer} />}
     >
       <section>
         <h3>{neuf !== null ? <label htmlFor="code-neuf">Nouveau code</label> : "Son code"}</h3>
@@ -125,7 +127,7 @@ export function PanneauEleve({
               </p>
             ) : null}
             <div className={styles.rang}>
-              <button type="button" className="btn btn--primaire" onClick={enregistrerCode}>
+              <button type="button" className="btn btn--primaire" disabled={attente === "code"} aria-busy={attente === "code" || undefined} onClick={enregistrerCode}>
                 Enregistrer ce code
               </button>
               <button type="button" className="btn" onClick={() => setNeuf(null)}>
@@ -139,7 +141,7 @@ export function PanneauEleve({
               {code ? chiffresEspaces(code) : "· · · ·"}
             </p>
             <div className={styles.rang}>
-              <button type="button" className="btn" onClick={proposer}>
+              <button type="button" className="btn" disabled={attente === "proposer"} aria-busy={attente === "proposer" || undefined} onClick={proposer}>
                 Changer le code
               </button>
               <Link className="btn" href={`/classes/${classe.id}/imprimer?qui=${eleve.id}`}>
@@ -168,7 +170,7 @@ export function PanneauEleve({
         <p>Les élèves ne voient que le prénom, et l’initiale du nom si deux élèves portent le même.</p>
       </section>
       <section>
-        <button type="button" className="btn btn--danger" onClick={onRetirer}>
+        <button type="button" className="btn btn--danger" disabled={retraitEnCours} aria-busy={retraitEnCours || undefined} onClick={onRetirer}>
           Retirer de la classe
         </button>
       </section>

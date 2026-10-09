@@ -1,7 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { useActionState } from "react";
+import { BoutonEnvoi } from "@/composants/Attente";
 import { Icone } from "@/composants/Icone";
 import { usePret } from "@/composants/Pret";
 import { choisirMotDePasse, demanderNouveauMotDePasse, entrerAvecGoogle, seConnecter, type EtatFormulaire } from "./actions";
@@ -50,7 +50,7 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
         <input type="password" name="mot-de-passe" autoComplete="current-password" required />
       </label>
       <Erreur texte={etat.erreur} />
-      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret}>
+      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
         Entrer
         <Icone nom="fleche" />
       </button>
@@ -60,10 +60,10 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
     </p>
     <form action={entrerAvecGoogle}>
       <Erreur texte={etat.erreur ? undefined : refus ? (REFUS[refus] ?? REFUS.echec) : undefined} />
-      <button type="submit" className={`btn btn--grand btn--large ${styles.google}`} disabled={!pret}>
+      <BoutonEnvoi className={`btn btn--grand btn--large ${styles.google}`} disabled={!pret}>
         <SigneGoogle />
         Continuer avec Google
-      </button>
+      </BoutonEnvoi>
     </form>
     </>
   );
@@ -86,7 +86,7 @@ export function FormulaireOubli() {
         <input type="email" name="adresse" autoComplete="username" required />
       </label>
       <Erreur texte={etat.erreur} />
-      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret}>
+      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
         Recevoir le lien
       </button>
     </form>
@@ -103,7 +103,7 @@ export function FormulaireNouveauMotDePasse() {
         <input type="password" name="mot-de-passe" autoComplete="new-password" minLength={8} required />
       </label>
       <Erreur texte={etat.erreur} />
-      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret}>
+      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
         Enregistrer ce mot de passe
       </button>
     </form>

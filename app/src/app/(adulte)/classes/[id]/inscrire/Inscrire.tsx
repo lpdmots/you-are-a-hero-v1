@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { unstable_rethrow, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { Etapes } from "@/composants/Etapes";
 import { Gommette } from "@/composants/Gommette";
@@ -58,12 +58,20 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
   const inscrire = () => {
     setErreur(null);
     lancer(async () => {
-      const r = await inscrireEleves(
-        classeId,
-        lignes.filter((l) => l.type === "connu").map((l) => (l.type === "connu" ? l.eleve.id : "")),
-        lignes.filter((l) => l.type === "neuf").map((l) => ({ prenom: prenomDe(l), nom: nomDe(l) || null })),
-        lignes.flatMap((l) => (l.type === "connu" && l.nomDonne ? [{ id: l.eleve.id, nom: l.eleve.nom ?? "" }] : [])),
-      );
+      let r: Awaited<ReturnType<typeof inscrireEleves>>;
+      try {
+        r = await inscrireEleves(
+          classeId,
+          lignes.filter((l) => l.type === "connu").map((l) => (l.type === "connu" ? l.eleve.id : "")),
+          lignes.filter((l) => l.type === "neuf").map((l) => ({ prenom: prenomDe(l), nom: nomDe(l) || null })),
+          lignes.flatMap((l) => (l.type === "connu" && l.nomDonne ? [{ id: l.eleve.id, nom: l.eleve.nom ?? "" }] : [])),
+        );
+      } catch (incident) {
+        // L'envoi n'est pas arrivé : la liste préparée reste à l'écran, au lieu de l'écran d'incident
+        unstable_rethrow(incident);
+        setErreur("L’envoi n’a pas abouti. Votre liste est gardée : vérifiez la connexion à internet, puis réessayez.");
+        return;
+      }
       if (!r.ok) {
         setErreur(r.erreur);
         return;
@@ -289,7 +297,7 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
           <button type="button" className="btn btn--grand" onClick={retour}>
             Retour
           </button>
-          <button type="button" className="btn btn--primaire btn--grand" disabled={!!points.length || !n || enCours} onClick={inscrire}>
+          <button type="button" className="btn btn--primaire btn--grand" disabled={!!points.length || !n || enCours} aria-busy={enCours || undefined} onClick={inscrire}>
             Inscrire {n} élève{pluriel(n)}
           </button>
         </footer>

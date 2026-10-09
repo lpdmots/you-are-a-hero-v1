@@ -26,7 +26,7 @@ export function OuvrirLaClasse() {
           <span>{etat.erreur}</span>
         </p>
       ) : null}
-      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret}>
+      <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
         Entrer
         <Icone nom="fleche" />
       </button>
