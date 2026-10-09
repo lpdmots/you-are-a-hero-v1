@@ -40,16 +40,6 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
   const pret = usePret();
   return (
     <>
-    <form action={entrerAvecGoogle}>
-      <Erreur texte={etat.erreur ? undefined : refus ? (REFUS[refus] ?? REFUS.echec) : undefined} />
-      <button type="submit" className={`btn btn--grand btn--large ${styles.google}`} disabled={!pret}>
-        <SigneGoogle />
-        Continuer avec Google
-      </button>
-    </form>
-    <p className={styles.ou}>
-      <span>ou</span>
-    </p>
     <form action={action}>
       <label className="champ champ--plein">
         <span>Adresse électronique</span>
@@ -67,6 +57,16 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
       <p>
         <Link href="/entree/oubli">Mot de passe oublié</Link>
       </p>
+    </form>
+    <p className={styles.ou}>
+      <span>ou</span>
+    </p>
+    <form action={entrerAvecGoogle}>
+      <Erreur texte={etat.erreur ? undefined : refus ? (REFUS[refus] ?? REFUS.echec) : undefined} />
+      <button type="submit" className={`btn btn--grand btn--large ${styles.google}`} disabled={!pret}>
+        <SigneGoogle />
+        Continuer avec Google
+      </button>
     </form>
     </>
   );
