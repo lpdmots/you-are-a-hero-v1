@@ -1,6 +1,6 @@
 # V1 — Brief produit et technique
 
-Mis à jour le 8 octobre 2026 pour l'hébergement, la base et le plan, le reste au 3 octobre · Nom provisoire : **You Are a Hero**.
+Mis à jour le 8 octobre 2026 pour l'hébergement, la base et le plan, le reste au 3 octobre · Nom : **Il était une classe**, décidé le 9 octobre 2026.
 
 **Synthèse produit et technique pour reprendre le projet.** Les décisions de
 l'entretien `grill-with-docs` sont consolidées et le cadrage d'ensemble est
@@ -74,6 +74,15 @@ et l'ordre de lancement restent à préciser. Le cas de classe retenu pour conce
 les [spécifications](docs/specifications.md#f064--classe-de-référence-et-postes-partagés).
 Il ne constitue pas une limite d'effectif ou de niveau. Prévoir l’anglais sans
 imposer un lancement bilingue immédiat.
+
+**Nom du produit : « Il était une classe »**, décidé par le porteur le
+9 octobre 2026. Il remplace « You Are a Hero », nom provisoire écarté parce
+qu'il est en anglais et enferme dans le livre-jeu ; ce nom reste celui des
+dossiers, des dépôts et du projet Vercel, et la maquette l'affiche encore ;
+l'application affiche le nouveau nom depuis le 9 octobre 2026. Le nom assume la classe, que le porteur tient pour la
+particularité du produit ; le mode personnel reste proposé, en second. Le nom
+anglais n'est pas décidé. Les adresses, la marque et les pages publiques
+relèvent de [l'étape 9 du plan](docs/plan.md#étape-9--ouverture-à-dautres-enseignants).
 
 Deux axes indépendants, dans le même outil :
 

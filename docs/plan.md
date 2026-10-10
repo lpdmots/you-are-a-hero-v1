@@ -227,9 +227,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **Terminée quand :** le porteur a créé son vrai projet et sa vraie classe,
   et s'est connecté comme élève depuis un second poste ; un code faux est
   refusé ; un élève ne voit rien d'une autre classe.
-- **Avancement au 9 octobre 2026 :** construite, en ligne à
-  `https://you-are-a-hero-v1.vercel.app`, **non terminée** : l'essai du
-  porteur reste à faire.
+- **Terminée le 10 octobre 2026 :** construite et mise en ligne le
+  9 octobre à `https://you-are-a-hero-v1.vercel.app` ; le porteur a fait son
+  essai, créé en ligne son vrai projet et sa vraie classe, et déclare l'étape
+  terminée.
   - **Décidé avant de construire, le 9 octobre :** le compte de l'adulte
     (F01-AC27 à AC30), l'heure de la fermeture nocturne et les essais faux
     par adresse réseau (F06-AC82, AC83).
@@ -266,10 +267,19 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     classe » sous le titre d'un projet, « Renommer la classe », les quatre
     onglets vides du projet, l'accueil de l'élève sans chapitre
     ([design](design.md#étape-1-construite-9-octobre-2026)).
-  - **Reste au porteur :** faire l'essai ; donner à Vercel l'accès au
-    dépôt GitHub pour que chaque envoi de code se déploie ; vérifier que
-    l'adresse du site est déclarée dans Supabase, ce que « Mot de passe
-    oublié » demande.
+  - **Essai du porteur, 9 et 10 octobre 2026 :** ses retouches sont faites
+    au fur et à mesure, sur le serveur local, puis mises en ligne, et
+    listées dans le [design](design.md#étape-1-construite-9-octobre-2026).
+    Trois règles en sortent : le prénom et le nom en deux cases à
+    l'inscription (F01-AC33, AC34) ; l'identifiant de la classe que
+    l'enseignant choisit, proposé d'après le nom de la classe seul
+    (F06-AC85), et qui suit ce nom quand on la renomme (F06-AC84) ; l'image
+    de repérage choisie dès la création d'un projet ou d'un chapitre, sans
+    obligation, à construire à l'étape 2 (F10.1).
+  - **Resté sans explication :** un incident à l'inscription, « Quelque
+    chose n'a pas marché », vu une fois en ligne et jamais reproduit ;
+    aucune trace côté serveur. Un incident d'écran est désormais noté au
+    journal du serveur, et un envoi manqué à l'inscription garde la liste.
 
 ### Étape 2 — Préparer et organiser le récit
 
@@ -291,7 +301,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   rend, liens et attributions (F03.1) ; suppression de la scène de départ
   (F03.2) ; opérations du profil « écriture et organisation » et définition
   d'une scène « contenant du travail » (F06.1, F06-AC14) ; page du chapitre
-  en mode personnel (F03.1) ; textes du guidage de la préparation (F02).
+  en mode personnel (F03.1) ; textes du guidage de la préparation (F02) ;
+  place du choix facultatif d'une image à la création d'un projet et d'un
+  chapitre, décidé le 10 octobre 2026, et commandes pour la choisir, la
+  remplacer et la réutiliser (F10.1).
 - **Terminée quand :** le porteur a préparé son vrai projet jusqu'aux
   consignes et aux attributions, et a refait le même parcours dans un projet
   personnel et dans un récit classique.
@@ -437,6 +450,27 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   conservation et suppression des données, durée d'hébergement des livres
   partagés, support ; inscription publique et pages publiques ; examen des
   obligations envers d'autres écoles ; nom de domaine.
+- **Nom et adresses, état au 9 octobre 2026 :** le produit s'appelle
+  « Il était une classe », décidé par le porteur. Aucune adresse n'est
+  réservée. Sont libres ce jour-là, d'après les registres :
+  `iletaituneclasse` en `.fr`, `.com`, `.org` et `.net`, et
+  `il-etait-une-classe` en `.fr` et `.com`. La marque n'est pas vérifiée à
+  l'INPI. Le porteur souhaite passer assez vite à l'anglais, avec un `.com`
+  en anglais ; le nom anglais n'est pas décidé. `onceuponaclass.com` est pris
+  (enregistré le 12 mai 2026 pour un an, sans site), `onceuponaclass.org` est
+  libre, et l'usage de « Once upon a class » par un autre produit n'est pas
+  vérifié. Recommandé, non décidé : un nom par langue, deux adresses pour la
+  même application, sans passer par un courtier.
+- **Pages publiques, recommandé le 9 octobre 2026, non décidé :** une seule
+  page d'accueil tournée vers l'enseignant et sa classe (la promesse et le
+  livre montré, le chemin en quelques temps, les deux sortes de récits en une
+  section, qui fait quoi, l'origine du projet, l'offre) ; des pages
+  secondaires, dont une pour le livre dont vous êtes le héros en classe et
+  une pour écrire seul ; pas de tableau des quatre combinaisons. Dit par le
+  porteur : la classe est sa particularité ; toucher des auteurs hors de
+  l'école élargirait la cible, sans qu'il en fasse un objectif ; le livre de
+  sa classe pourra servir d'exemple à feuilleter, les règles de diffusion de
+  F12.2 restant différées.
 - **Dépend de :** toutes les étapes précédentes, et d'un entretien dédié.
 - **Terminée quand :** à définir par cet entretien.
 

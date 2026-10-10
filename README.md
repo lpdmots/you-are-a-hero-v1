@@ -10,10 +10,10 @@ ensemble, chacun avec ses points différés. La
 [maquette de synthèse](maquettes/synthese/index.html) propose leurs écrans ;
 ses dispositions restent des propositions à examiner. Un
 [plan de réalisation](docs/plan.md) est validé le 8 octobre 2026 ; chaque
-étape se construit sur instruction du porteur. **L'étape 1 est construite
-et en ligne le 9 octobre 2026** (compte, projets, classes, accès des
-élèves) : son code est dans [`app/`](app/README.md), son avancement et ce
-qui reste au porteur dans le
+étape se construit sur instruction du porteur. **L'étape 1 est terminée le
+10 octobre 2026** (compte, projets, classes, accès des élèves), après
+l'essai du porteur : son code est dans [`app/`](app/README.md), son
+avancement et les règles sorties de l'essai dans le
 [plan](docs/plan.md#étape-1--sinstaller--compte-projets-classes-accès-des-élèves),
 ses choix techniques dans
 [l'architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
@@ -467,6 +467,14 @@ avant de commencer » soient tranchées.
   `V1/`, le code dans `V1/app/`, la V0 restant à part ; l'application
   reprend de la maquette ses valeurs de design et ses textes, non son code ;
   les questions de l'étape 1 sont arbitrées en F06.4.
+- **Nom du produit, décidé le 9 octobre 2026 :** « Il était une classe »
+  ([brief](BRIEF-V1.md#2-publics-et-fonctionnement-envisagé)). Aucune adresse
+  n'est réservée, la marque n'est pas vérifiée et le nom anglais n'est pas
+  décidé ; l'application affiche ce nom depuis le 9 octobre 2026, la maquette
+  affiche encore « You Are a Hero ».
+  L'état des adresses et une recommandation pour les pages publiques, non
+  décidée, sont à
+  [l'étape 9 du plan](docs/plan.md#étape-9--ouverture-à-dautres-enseignants).
 - **Restent à décider :** les questions qui bloquent chaque
   étape, à arbitrer par un entretien court avant elle ; F14, avant
   l'ouverture. Le développement demande une instruction que le plan ne

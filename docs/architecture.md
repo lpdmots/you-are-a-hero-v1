@@ -289,8 +289,8 @@ schéma est en place, rien ne se lit sans compte ni poste, la sauvegarde
 fonctionne, et Supabase accepte le jeton d'un poste signé par l'application
 une fois la clé de signature importée comme clé « en attente », sans la
 faire tourner en clé courante (V9). Le parcours entier d'un élève n'a été
-joué que sur la base locale, qui est le même logiciel ; il se joue en ligne
-à l'essai du porteur.
+joué par les tests que sur la base locale, qui est le même logiciel ; le
+porteur l'a joué en ligne à son essai, les 9 et 10 octobre 2026.
 
 **Sauvegarde (V18).** `npm run sauvegarder` écrit les rôles, le schéma et les
 données de la vraie base, comptes compris, par l'outil de Supabase, qui a
