@@ -57,6 +57,15 @@ export async function supprimerComptesDEssai(ids: string[]): Promise<void> {
     return aSupprimer;
   });
   const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false, autoRefreshToken: false } });
+  // Les images importées par ces comptes : rangées sous <compte>/<projet>/ dans le stockage
+  const stockage = admin.storage.from("images");
+  for (const id of comptes) {
+    const { data: projets } = await stockage.list(id);
+    for (const projet of projets ?? []) {
+      const { data: fichiers } = await stockage.list(`${id}/${projet.name}`);
+      if (fichiers?.length) await stockage.remove(fichiers.map((f) => `${id}/${projet.name}/${f.name}`));
+    }
+  }
   const echecs: string[] = [];
   for (const id of comptes) {
     const { error } = await admin.auth.admin.deleteUser(id);

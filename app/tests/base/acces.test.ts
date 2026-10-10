@@ -26,8 +26,12 @@ describe("Accès de classe, puis accès individuel (F06.4)", () => {
     const base = await poste.base();
     expect((await base.from("eleves").select("prenom").order("prenom")).data?.map((e) => e.prenom)).toEqual(["Alice", "Bilal"]);
     expect(await inscriptionDuPoste(poste.id)).toBeNull();
-    // Les informations de classe ne donnent aucun accès enseignant
-    expect((await base.from("projets").select("id")).error?.code).toBe("42501");
+    // Les informations de classe ne donnent aucun accès enseignant : tant qu'aucun élève n'est
+    // identifié, le poste ne lit aucun projet ; il n'en lit jamais les réglages, et n'écrit rien
+    expect((await base.from("projets").select("id")).data).toEqual([]);
+    expect((await base.from("projets").select("dernier_onglet")).error?.code).toBe("42501");
+    expect((await base.from("projets").update({ titre: "Piraté" }).neq("titre", "")).error?.code).toBe("42501");
+    expect((await base.from("preparations").select("projet_id")).error?.code).toBe("42501");
   });
 
   it("F06-AC15 — changer d'élève termine l'accès individuel et garde la classe ; F06-AC16 — l'identité est celle du nouvel élève", async () => {
