@@ -100,7 +100,7 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
               <p>
                 {projet.lectureOuverte
                   ? "Chaque élève lit les scènes de tous les chapitres. Il n’écrit que dans les siens."
-                  : "Chaque élève lit les scènes de ses chapitres seulement, pour garder la surprise du livre."}
+                  : "Tant que le livre n’est pas terminé, chaque élève lit les scènes de ses chapitres seulement, pour garder la surprise."}
               </p>
             </section>
           ) : null}
