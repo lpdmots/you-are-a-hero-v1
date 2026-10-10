@@ -1182,8 +1182,8 @@ maquette et les dispositions ci-dessus ; `npm run captures -- etape2`, dans
   scènes : validées, prêtes, à valider et à reprendre arrivent avec les
   états, à l'étape 4 ; toute scène porte « Texte vide » ;
 - la page du chapitre n'a pas la bascule « Scènes / Chemins » ni « Voir dans
-  le Suivi » (étapes 3 et 4), ni « qui s'en occupe » sur les cartes
-  (étape 4) ; sa recherche n'apparaît qu'à partir de quatre scènes ;
+  le Suivi » (étapes 3 et 4) ; sa recherche n'apparaît qu'à partir de quatre
+  scènes ;
 - le carnet montre les relances sous la question, l'exemple seul étant
   replié ; les pistes se notent aussi dans le carnet, et pas seulement dans
   l'atelier.
@@ -1208,6 +1208,30 @@ temple, étang, bibliothèque, lagon, neige, rivière, village, château,
 grotte. Chacun a sa vignette (480 × 320), que montrent les cartes et le
 sélecteur « Choisir une image » ; le visuel entier sert aux grandes images
 (« Mes projets », accueil de l'élève, carte de la création).
+
+**Ajouts demandés par le porteur le 10 octobre 2026, après la mise en
+ligne :**
+
+- **« Qui s'en occupe » sur la carte de scène** (F06.3), comme dessiné le
+  6 octobre : au pied de la carte, à gauche d'« Ouvrir », un bouton en mots,
+  « Alice s'en occupe » avec sa gommette, « Vous vous en occupez », « Pas
+  encore prise » ou « Aucun élève ». Il ouvre la liste des élèves du
+  chapitre, puis « Moi » et le mot de la scène sans élève, le choix en cours
+  coché. Un message dit ce qui vient d'être fait, avec « Annuler » ; pour
+  « Moi », il ajoute que les élèves la lisent sans pouvoir l'écrire. Le même
+  bouton est sous le bandeau de la page de la scène. Dans un chapitre sans
+  élève, la liste le dit et renvoie à l'attribution. Un chapitre dont
+  l'enseignant s'occupe de toutes les scènes porte « Vous l'écrivez
+  vous-même » sur sa carte. L'élève lit « Tu t'en occupes », « Bilal s'en
+  occupe » ou « Mme Laurent s'en occupe » sur la fiche, sans menu.
+- **Écran d'aide de la Préparation** (F02) : « Que fait-on ici ? » — « On
+  note ce que la classe décide avant d'écrire. Rien n'est obligatoire :
+  remplissez ce qui vous sert, et commencez à écrire quand vous voulez. »,
+  suivi des quatre choses à noter ; « Faut-il tout remplir avant
+  d'écrire ? » — « Non. Une ligne suffit, ou rien du tout… » ; en projet de
+  classe, « Comment le faire avec la classe ? » ; en récit à choix, « À quoi
+  servent les rubriques du bas ? ». Un bouton « Aide » à côté de « Projeter
+  l'atelier ».
 
 **Écrans que la maquette ne dessinait pas :**
 

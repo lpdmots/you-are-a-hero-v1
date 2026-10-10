@@ -193,6 +193,23 @@ test("F06-AC18, F06-AC19, F01-AC09 — sans chapitre, l'élève n'ouvre aucune s
   await dylan.contexte.close();
 });
 
+test("F06-AC04 — l'élève lit qui s'occupe de chaque scène de son chapitre : lui, un camarade, son enseignante", async ({ page, browser }) => {
+  const s = await classeAuTravail(page);
+  const troisieme = (await s.base.rpc("creer_scene", { p_chapitre: s.lisiere.id })).data as { scene_id: string }[];
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Alice.id }).eq("id", s.lisiere.scenes[0]);
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Bilal.id }).eq("id", s.lisiere.scenes[1]);
+  await s.base.from("scenes").update({ prise_par_enseignant: true }).eq("id", troisieme[0].scene_id);
+  const alice = await poste(browser, s, "Alice");
+  await alice.page.getByRole("link", { name: "Ouvrir La lisière" }).click();
+  const fiche = (ref: string) => alice.page.locator(".fiche", { hasText: ref });
+  await expect(fiche("S001")).toContainText("Tu t’en occupes");
+  await expect(fiche("S002")).toContainText("Bilal s’en occupe");
+  await expect(fiche("S004")).toContainText("Mme Laurent s’en occupe");
+  // Lire qui s'en occupe n'est pas pouvoir le changer : aucun menu pour le profil par défaut
+  await expect(alice.page.getByLabel(/^Qui s’occupe/)).toHaveCount(0);
+  await alice.contexte.close();
+});
+
 test("F03-AC28 — un chapitre supprimé disparaît pour ses élèves, et revient avec la restauration", async ({ page, browser }) => {
   const s = await classeAuTravail(page);
   const chloe = await poste(browser, s, "Chloé");

@@ -379,6 +379,103 @@ describe("Attribution et profils (F06.1)", () => {
   });
 });
 
+describe("Qui s'occupe d'une scène (F06.3)", () => {
+  const prise = async (sceneId: string) => (await laurent.base.from("scenes").select("prise_par_eleve, prise_par_enseignant").eq("id", sceneId).single()).data;
+  const confier = (sceneId: string, valeurs: { prise_par_eleve?: string | null; prise_par_enseignant?: boolean }) =>
+    laurent.base.from("scenes").update(valeurs).eq("id", sceneId);
+
+  it("F06-AC07 — l'enseignant désigne un élève du chapitre, le change et le retire, sans toucher à la scène", async () => {
+    const projet = await projetDeClasse();
+    const { chapitreId } = await creerPartie(laurent, projet.id, "La forêt", "La lisière");
+    const scene = await creerScene(laurent.base, chapitreId);
+    await laurent.base.from("scenes").update({ titre: "L’entrée du bois", consigne: "Décris la forêt." }).eq("id", scene.id);
+    await attribuer(laurent, chapitreId, [{ eleve: alice.id }, { eleve: bilal.id }]);
+
+    expect((await confier(scene.id, { prise_par_eleve: alice.id })).error).toBeNull();
+    expect(await prise(scene.id)).toEqual({ prise_par_eleve: alice.id, prise_par_enseignant: false });
+    expect((await confier(scene.id, { prise_par_eleve: bilal.id })).error).toBeNull();
+    expect((await confier(scene.id, { prise_par_eleve: null })).error).toBeNull();
+    expect(await prise(scene.id)).toEqual({ prise_par_eleve: null, prise_par_enseignant: false });
+    expect((await laurent.base.from("scenes").select("titre, consigne").eq("id", scene.id).single()).data).toEqual({ titre: "L’entrée du bois", consigne: "Décris la forêt." });
+
+    // Seul un élève du chapitre : Chloé est dans la classe, pas dans « La lisière »
+    expect((await confier(scene.id, { prise_par_eleve: chloe.id })).error?.message).toMatch(/pas attribué au chapitre/);
+    // L'enseignant d'un autre compte ne désigne personne
+    expect((await martin.base.from("scenes").update({ prise_par_enseignant: true }).eq("id", scene.id).select("id")).data).toEqual([]);
+  });
+
+  it("F06-AC62 — l'enseignant s'attribue une scène : ni élève en même temps, ni dans un projet personnel", async () => {
+    const projet = await projetDeClasse();
+    const { chapitreId } = await creerPartie(laurent, projet.id, "La forêt", "La lisière");
+    const scene = await creerScene(laurent.base, chapitreId);
+    await attribuer(laurent, chapitreId, [{ eleve: alice.id }]);
+    expect((await confier(scene.id, { prise_par_enseignant: true, prise_par_eleve: null })).error).toBeNull();
+    expect((await confier(scene.id, { prise_par_eleve: alice.id })).error).not.toBeNull(); // une seule prise en charge à la fois
+    // Il la rend en désignant un élève du chapitre
+    expect((await confier(scene.id, { prise_par_enseignant: false, prise_par_eleve: alice.id })).error).toBeNull();
+    expect(await prise(scene.id)).toEqual({ prise_par_eleve: alice.id, prise_par_enseignant: false });
+
+    const personnel = await creerProjet(laurent, "personnel", "choix", "Mon histoire");
+    const seule = await creerScene(laurent.base, (await creerPartie(laurent, personnel.id, "Partie")).chapitreId);
+    expect((await confier(seule.id, { prise_par_enseignant: true })).error?.message).toMatch(/toutes les scènes sont les vôtres/);
+  });
+
+  it("F06-AC04, F06-AC06 — les élèves du chapitre lisent qui s'en occupe, d'une séance à l'autre, sans pouvoir le changer", async () => {
+    const projet = await projetDeClasse();
+    const { chapitreId } = await creerPartie(laurent, projet.id, "La forêt", "La lisière");
+    const [s1, s2] = [await creerScene(laurent.base, chapitreId), await creerScene(laurent.base, chapitreId)];
+    await attribuer(laurent, chapitreId, [{ eleve: alice.id }, { eleve: bilal.id, profil: "organisation" }]);
+    await confier(s1.id, { prise_par_eleve: alice.id });
+    await confier(s2.id, { prise_par_enseignant: true });
+
+    for (const eleve of [alice, bilal]) {
+      // Un poste neuf à chaque fois : la prise en charge ne tient pas à une session
+      const base = await (await posteDe(classe.id, eleve.inscriptionId)).base();
+      const { data } = await base.from("scenes").select("id, prise_par_eleve, prise_par_enseignant").eq("projet_id", projet.id).order("reference");
+      expect(data, eleve.prenom).toEqual([
+        { id: s1.id, prise_par_eleve: alice.id, prise_par_enseignant: false },
+        { id: s2.id, prise_par_eleve: null, prise_par_enseignant: true },
+      ]);
+      expect((await base.from("scenes").update({ prise_par_eleve: eleve.id }).eq("id", s2.id)).error, eleve.prenom).not.toBeNull();
+    }
+    // Chloé, hors du chapitre, ne lit ni la scène ni qui s'en occupe
+    const dehors = await (await posteDe(classe.id, chloe.inscriptionId)).base();
+    expect((await dehors.from("scenes").select("prise_par_eleve").eq("projet_id", projet.id)).data).toEqual([]);
+  });
+
+  it("F06.3 — un élève retiré du chapitre ne s'occupe plus de ses scènes ; le chapitre supprimé puis restauré les lui rend", async () => {
+    const projet = await projetDeClasse();
+    const foret = await creerPartie(laurent, projet.id, "La forêt", "La lisière");
+    const sanctuaire = await creerChapitre(laurent, foret.partieId, "Le sanctuaire");
+    const scene = await creerScene(laurent.base, sanctuaire);
+    await attribuer(laurent, sanctuaire, [{ eleve: alice.id }, { eleve: bilal.id }]);
+    await confier(scene.id, { prise_par_eleve: alice.id });
+
+    // Supprimer puis restaurer le chapitre ne touche pas à « qui s'en occupe » (F03-AC27)
+    await laurent.base.rpc("supprimer_element", { p_sorte: "chapitre", p_id: sanctuaire });
+    await laurent.base.rpc("restaurer_element", { p_sorte: "chapitre", p_id: sanctuaire });
+    expect((await prise(scene.id))?.prise_par_eleve).toBe(alice.id);
+
+    await attribuer(laurent, sanctuaire, [{ eleve: bilal.id }]);
+    expect(await prise(scene.id)).toEqual({ prise_par_eleve: null, prise_par_enseignant: false });
+  });
+
+  it("F06-AC86 — l'élève ne supprime pas la scène qu'il a créée si quelqu'un d'autre s'en occupe", async () => {
+    const projet = await projetDeClasse();
+    const { chapitreId } = await creerPartie(laurent, projet.id, "La forêt", "La lisière");
+    await attribuer(laurent, chapitreId, [{ eleve: bilal.id, profil: "organisation" }, { eleve: alice.id }]);
+    const base = await (await posteDe(classe.id, bilal.inscriptionId)).base();
+    const [a, b, c] = [await creerScene(base, chapitreId, "eleve_creer_scene"), await creerScene(base, chapitreId, "eleve_creer_scene"), await creerScene(base, chapitreId, "eleve_creer_scene")];
+    await confier(a.id, { prise_par_eleve: alice.id });
+    await confier(b.id, { prise_par_enseignant: true });
+    await confier(c.id, { prise_par_eleve: bilal.id });
+    expect((await base.rpc("eleve_supprimer_scene", { p_scene: a.id })).error?.message).toMatch(/ne peux pas supprimer/);
+    expect((await base.rpc("eleve_supprimer_scene", { p_scene: b.id })).error?.message).toMatch(/ne peux pas supprimer/);
+    // Celle dont il s'occupe lui-même reste la sienne
+    expect((await base.rpc("eleve_supprimer_scene", { p_scene: c.id })).error).toBeNull();
+  });
+});
+
 describe("Ce que lit un élève (F06.2, F02, F07.1)", () => {
   it("F06-AC18 — l'attribution suffit, sans seconde ouverture ; F06-AC19, F01-AC09 — sans chapitre, aucune scène", async () => {
     const projet = await projetDeClasse();

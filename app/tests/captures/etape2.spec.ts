@@ -84,6 +84,9 @@ test("écrans de l'étape 2 : le plan du récit", async ({ page }) => {
   await page.getByRole("link", { name: "Ouvrir La lisière" }).click();
   await page.waitForURL(/\/chapitre\//);
   await capturer(page, "chapitre");
+  await page.getByLabel(/^Qui s’occupe de S003/).click();
+  await capturer(page, "chapitre-qui-s-en-occupe", false);
+  await page.getByRole("button", { name: "Bilal" }).click();
   await page.getByLabel("Autres commandes de la scène S002").click();
   await capturer(page, "chapitre-menu-scene", false);
   await page.getByRole("button", { name: "Départ du livre" }).click();
@@ -120,6 +123,8 @@ test("écrans de l'étape 2 : préparation, création, élève", async ({ page, 
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
   const projet = page.url().match(/\/projet\/([0-9a-f-]{36})/)![1];
+  await capturer(page, "preparation-aide");
+  await page.getByRole("button", { name: "Commencer" }).click();
   await capturer(page, "preparation-vide");
 
   const base = await baseDe(compte);

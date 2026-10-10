@@ -13,6 +13,7 @@ import { chapitresDe, couleurDeChapitre, type Plan } from "@/domaine/recit";
 import { ecrireRubrique } from "../../actions-preparation";
 import { choisirRepere, creerPartie, restaurer, supprimer } from "../../actions-recit";
 import { ReglagesChapitre, ReglagesPartie } from "../_plan/Panneaux";
+import { AidePreparation } from "./AidePreparation";
 import { Pistes } from "./Pistes";
 import { RubriqueJeu } from "./RubriqueJeu";
 import { RubriquePhrases } from "./RubriquePhrases";
@@ -29,13 +30,34 @@ type Ouvert =
  * Carnet de préparation (F02) : quatre rubriques souples, remplies dans l'ordre qu'on veut.
  * « Grandes étapes » montre le plan commun avec « Parties et chapitres » (F02-AC08).
  */
-export function Carnet({ projet, preparation, plan }: { projet: ProjetDuCarnet; preparation: Preparation; plan: Plan }) {
+export function Carnet({
+  projet, preparation, plan, aideMasquee, aideVue,
+}: {
+  projet: ProjetDuCarnet; preparation: Preparation; plan: Plan; aideMasquee: boolean; aideVue: boolean;
+}) {
   const dire = useMessage();
   const deClasse = projet.organisation === "classe";
   const aChoix = projet.recit === "choix";
+  const [aide, setAide] = useState(!aideMasquee && !aideVue);
+  const [vue, setVue] = useState(aideVue);
   const [ouvert, setOuvert] = useState<Ouvert>(null);
   const [ajout, setAjout] = useState(false);
   const etapes = guidage("etapes", projet.organisation, projet.recit);
+
+  if (aide) {
+    return (
+      <AidePreparation
+        deClasse={deClasse}
+        aChoix={aChoix}
+        dejaVue={vue}
+        masquee={aideMasquee}
+        onCommencer={() => {
+          setVue(true);
+          setAide(false);
+        }}
+      />
+    );
+  }
 
   const ajouterPartie = async () => {
     setAjout(true);
@@ -65,12 +87,27 @@ export function Carnet({ projet, preparation, plan }: { projet: ProjetDuCarnet; 
     <>
       <div className={styles.intro}>
         <p>{introCarnet(projet.organisation)}</p>
-        {deClasse ? (
-          <Link className="btn btn--primaire btn--grand" href={`/atelier/${projet.id}/univers`}>
-            <Icone nom="oeil" />
-            Projeter l’atelier
-          </Link>
-        ) : null}
+        <div className={styles.actions}>
+          <button
+            type="button"
+            className="aide-bouton"
+            title="Que fait-on ici ?"
+            onClick={() => {
+              // Rouverte par « Aide », elle se referme par « Fermer l'aide »
+              setVue(true);
+              setAide(true);
+            }}
+          >
+            <Icone nom="aide" />
+            Aide
+          </button>
+          {deClasse ? (
+            <Link className="btn btn--primaire btn--grand" href={`/atelier/${projet.id}/univers`}>
+              <Icone nom="oeil" />
+              Projeter l’atelier
+            </Link>
+          ) : null}
+        </div>
       </div>
 
       <div className={styles.carnet}>

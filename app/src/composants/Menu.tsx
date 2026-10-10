@@ -8,11 +8,15 @@ import { Icone } from "./Icone";
  * ferme quand on choisit, quand on clique ailleurs et par « Échap ».
  */
 export function Menu({
-  libelle, discret, children,
+  libelle, discret, bouton, agauche, children,
 }: {
   /** Ce que le menu commande, pour qui ne voit pas l'écran : « Autres commandes du chapitre La lisière » */
   libelle: string;
   discret?: boolean;
+  /** Ce que montre le bouton à la place des trois points : « Alice s'en occupe » */
+  bouton?: ReactNode;
+  /** La liste s'ouvre sous le bord gauche du bouton, et non sous le droit */
+  agauche?: boolean;
   children: (fermer: () => void) => ReactNode;
 }) {
   const [ouvert, setOuvert] = useState(false);
@@ -37,9 +41,14 @@ export function Menu({
   }, [ouvert]);
 
   return (
-    <details className={`menu${discret ? " menu--discret" : ""}`} ref={ref} open={ouvert} onToggle={(e) => setOuvert(e.currentTarget.open)}>
-      <summary className="btn" aria-label={libelle} title={libelle}>
-        <Icone nom="points" />
+    <details
+      className={`menu${discret ? " menu--discret" : ""}${bouton ? " menu--mots" : ""}${agauche ? " menu--gauche" : ""}`}
+      ref={ref}
+      open={ouvert}
+      onToggle={(e) => setOuvert(e.currentTarget.open)}
+    >
+      <summary className="btn" aria-label={libelle} title={bouton ? undefined : libelle}>
+        {bouton ?? <Icone nom="points" />}
       </summary>
       {ouvert ? <div className="menu__liste">{children(() => setOuvert(false))}</div> : null}
     </details>

@@ -4,7 +4,7 @@ import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { nomScene, scenesDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
-import { planDe } from "@/serveur/recit";
+import { elevesDeLaClasse, planDe } from "@/serveur/recit";
 import { PageScene } from "./PageScene";
 
 type Props = { params: Promise<{ id: string; scene: string }> };
@@ -18,7 +18,7 @@ async function lire({ params }: Props) {
   const scene = scenesDe(plan).find((s) => s.id === sceneId);
   // Une scène partie dans la corbeille n'a plus de page : on revient au plan, où elle se restaure
   if (!scene && plan.corbeille.some((x) => x.id === sceneId)) redirect(`/projet/${projet.id}/plan`);
-  return scene ? { projet, plan, scene } : null;
+  return scene ? { enseignant, projet, plan, scene } : null;
 }
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
@@ -30,11 +30,12 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 export default async function Page(props: Props) {
   const lu = await lire(props);
   if (!lu) notFound();
-  const { projet, plan, scene } = lu;
+  const { enseignant, projet, plan, scene } = lu;
+  const eleves = await elevesDeLaClasse(enseignant, projet.classe?.id ?? null);
   return (
     <div className="page">
       <ProjetOuvert id={projet.id} titre={projet.titre} onglet="plan" />
-      <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} />
+      <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} eleves={eleves} />
     </div>
   );
 }

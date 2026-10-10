@@ -119,6 +119,12 @@ export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapi
         <p className={`fiche__titre${s.titre ? "" : " fiche__titre--vide"}`}>{s.titre ?? "sans titre"}</p>
       )}
       {s.consigne ? <p className="fiche__consigne">{s.consigne}</p> : null}
+      {s.prise ? (
+        <p className="fiche__qui">
+          {s.prise.par === "eleve" ? <Gommette prenom={s.prise.eleve.prenom} couleur={s.prise.eleve.couleur} taille="s" /> : null}
+          <b>{s.prise.par === "eleve" ? `${nomPourEleves(s.prise.eleve, eleves)} s’en occupe` : s.prise.par === "moi" ? "Tu t’en occupes" : `${majuscule(prof)} s’en occupe`}</b>
+        </p>
+      ) : null}
     </article>
   );
 

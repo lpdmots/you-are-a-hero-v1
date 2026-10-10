@@ -651,6 +651,12 @@ avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
   à l'écran tant que F13 n'est pas construit (étape 8 du plan) ; aucun
   bouton inactif ne les annonce. L'explication d'ouverture de F02-AC02 ne
   parle de l'aide IA qu'à partir de ce moment.
+- **Écran d'aide à l'ouverture (demande du porteur, 10 octobre 2026).** La
+  Préparation s'ouvre la première fois sur un écran d'aide, comme « Parties
+  et chapitres », le Suivi et le Livre, avec « Commencer », « Ne plus
+  afficher » et un bouton « Aide ». Le carnet peut impressionner : l'aide dit
+  d'abord que rien n'y est obligatoire et qu'on commence à écrire sans
+  l'avoir rempli. Son texte est dans le [design](design.md).
 
 - **F02-AC18 — Guidage et exemple :** étant donné la rubrique
   « Personnages » vide, lorsque l'enseignant l'ouvre, alors il lit sa
@@ -2770,6 +2776,20 @@ donne. La prise en charge reste informative et non exclusive entre élèves.
   la lit, voit que Mme Laurent s'en occupe et ne peut ni y écrire ni la
   reprendre à son nom ; lorsque Mme Laurent désigne Alice à sa place, alors
   Alice peut y écrire, comme pour toute prise en charge.
+
+**Décision du porteur, 10 octobre 2026 — l'enseignant dit qui s'occupe des
+scènes dès la préparation :** s'il le souhaite, l'enseignant désigne
+lui-même, scène par scène, l'élève du chapitre qui s'en occupe, sans attendre
+que les élèves prennent leurs scènes. Le menu « qui s'en occupe » est sur la
+carte de la scène, dans la page de son chapitre, et dans la page de la
+scène : les élèves du chapitre, « Moi », puis « Pas encore prise » ou « Aucun
+élève » (F06.5). Rien n'y oblige : une scène sans élève reste à prendre.
+Cette partie de F06.3 se construit à l'étape 2 du
+[plan](plan.md#étape-2--préparer-et-organiser-le-récit) ; ce que les élèves
+font eux-mêmes — prendre, rendre, reprendre à un camarade — reste à
+l'étape 4. Précision proposée, sans retour du porteur : un élève retiré d'un
+chapitre ne s'occupe plus de ses scènes, qui redeviennent « Pas encore
+prise » avec tout ce qu'elles contiennent.
 
 **Scène déjà remise (confirmé le 4 octobre 2026) :** une scène qu'un élève
 a remise et que l'enseignant s'attribue garde son état et ses remises ;

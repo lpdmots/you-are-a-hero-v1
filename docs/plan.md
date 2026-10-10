@@ -297,7 +297,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   attribution et profils de F06.1 (dont F06-AC86 à AC90) ; lecture des
   chapitres de F06.2 (F06-AC20 à AC22, AC48, AC49) ; consigne d'écriture de
   F07.1 ; rubriques de la feuille d'aventure, du dé, des règles du jeu et
-  des phrases de choix dans la préparation (F02, F04.2). Les critères qui
+  des phrases de choix dans la préparation (F02, F04.2) ; depuis le
+  10 octobre 2026, à la demande du porteur, la part de l'enseignant dans
+  F06.3 : dire qui s'occupe d'une scène, ou s'en occuper lui-même (F06-AC04,
+  AC06, AC07, et AC62 pour ce qui n'est pas l'écriture). Les critères qui
   parlent d'un texte écrit (dialogue de suppression d'une scène écrite,
   scène « contenant du travail », lecture d'une scène) testent ici les
   droits et le plan ; ils se ferment à l'étape 3, quand l'éditeur existe.
@@ -323,10 +326,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     base locale, 85 parcours joués dans un navigateur —, chacun au nom de
     son critère. Choix techniques :
     [architecture](architecture.md#réalisation-de-létape-2-10-octobre-2026).
-  - **Schéma de la base :** une migration de plus,
-    `20261010150000_preparer_organiser.sql`, appliquée à la vraie base le
-    10 octobre 2026 à la demande du porteur, après une sauvegarde, puis le
-    code mis en ligne ; `npm run verifier:production` trouve tout en ordre.
+  - **Schéma de la base :** `20261010150000_preparer_organiser.sql`,
+    appliquée à la vraie base le 10 octobre 2026 à la demande du porteur,
+    après une sauvegarde, puis le code mis en ligne ;
+    `npm run verifier:production` trouve tout en ordre. Une seconde,
+    `20261010170000_qui_s_occupe.sql`, écrite le même jour pour « qui s'en
+    occupe », n'est appliquée qu'à la base locale : elle s'applique à la
+    vraie base avant la prochaine mise en ligne, sur décision du porteur.
   - **Critères qui ne se ferment qu'à l'étape 3,** faute de texte : le
     dialogue de suppression d'un élément qui a du texte (F03-AC13, AC22 pour
     sa confirmation), la scène « contenant du travail » (F06-AC14, AC88), la

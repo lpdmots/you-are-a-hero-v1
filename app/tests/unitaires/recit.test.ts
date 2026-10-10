@@ -5,13 +5,15 @@ import {
   constructionsUtiles, feuillePropre, guidage, introCarnet, phraseDeChoix, resumeFeuille, titreSynthese,
 } from "@/domaine/preparation";
 import {
-  aCompleter, chercherScenes, couleurNouvelle, departDe, deplacer, libelleManque, nomScene, referenceScene, type Chapitre, type Plan, type Scene,
+  aCompleter, chercherScenes, couleurNouvelle, departDe, deplacer, ecritParLEnseignant, libelleManque, motSansEleve, nomScene, referenceScene,
+  type Chapitre, type Plan, type Scene,
 } from "@/domaine/recit";
 import { adresseRepere, tirerVisuel, VISUELS } from "@/domaine/visuels";
 import { dimensionsJpeg } from "@/serveur/images";
 
 const scene = (reference: number, titre: string | null = null, consigne = ""): Scene => ({
   id: `s${reference}`, chapitreId: "c", reference, titre, consigne, fin: false, horsLivre: false, creeParEleve: null,
+  priseParEleve: null, priseParEnseignant: false,
 });
 const chapitre = (id: string, titre: string, scenes: Scene[] = [], eleves: string[] = []): Chapitre => ({
   id, partieId: "p", titre, couleur: 0, resume: "", horsLivre: false, imageId: null, visuelChoisi: null, visuelDefaut: "foret",
@@ -43,6 +45,23 @@ describe("Plan du récit (F03)", () => {
     expect(manques[1]).toMatchObject({ chapitreId: "racines" });
     // Rien ne manque : la phrase disparaît
     expect(aCompleter(plan([chapitre("a", "A", [scene(1)], ["alice"])], "s1"), { deClasse: true, aChoix: true, eleves: [eleve("alice")] })).toEqual([]);
+  });
+
+  it("F03.1 — un chapitre dont l'enseignant s'occupe de toutes les scènes ne compte pas parmi les chapitres sans élève", () => {
+    const moi = (s: Scene): Scene => ({ ...s, priseParEnseignant: true });
+    const liaison = chapitre("liaison", "Les passages", [moi(scene(1)), moi(scene(2))]);
+    const mixte = chapitre("mixte", "La lisière", [moi(scene(3)), scene(4)]);
+    expect(ecritParLEnseignant(liaison)).toBe(true);
+    expect(ecritParLEnseignant(mixte)).toBe(false);
+    expect(ecritParLEnseignant(chapitre("vide", "Vide"))).toBe(false);
+    const manques = aCompleter(plan([liaison, mixte], "s1"), { deClasse: true, aChoix: true, eleves: [] });
+    expect(manques.map(libelleManque)).toEqual(["1 chapitre sans élève"]);
+    expect(manques[0]).toMatchObject({ chapitreId: "mixte" });
+  });
+
+  it("F06.5 — une scène sans élève dit « Pas encore prise » dans un chapitre attribué, « Aucun élève » sinon", () => {
+    expect(motSansEleve(chapitre("a", "A", [scene(1)], ["alice"]))).toBe("Pas encore prise");
+    expect(motSansEleve(chapitre("b", "B", [scene(2)]))).toBe("Aucun élève");
   });
 
   it("F03-AC41 — en projet personnel, ni chapitre sans élève ni élève sans chapitre", () => {

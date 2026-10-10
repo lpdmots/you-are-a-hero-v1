@@ -46,6 +46,10 @@ export type Scene = {
   fin: boolean;
   horsLivre: boolean;
   creeParEleve: string | null;
+  /** L'élève qui s'occupe de la scène (F06.3) : un seul, attribué à son chapitre */
+  priseParEleve: string | null;
+  /** L'enseignant s'en occupe lui-même : un élève ne peut ni y écrire ni la reprendre (F06-AC62) */
+  priseParEnseignant: boolean;
 };
 
 export type ElevePlan = { id: string; prenom: string; nom: string | null; couleur: number };
@@ -79,6 +83,19 @@ export type Supprime = {
 export type Plan = { parties: Partie[]; corbeille: Supprime[]; departSceneId: string | null };
 
 export const chapitresDe = (plan: Plan): Chapitre[] => plan.parties.flatMap((p) => p.chapitres);
+
+/** Un chapitre que l'enseignant écrit seul : il s'occupe de toutes ses scènes (F03.1). */
+export const ecritParLEnseignant = (c: Chapitre): boolean => c.scenes.length > 0 && c.scenes.every((s) => s.priseParEnseignant);
+
+/** Le chapitre attend-il des élèves ? Pas celui que l'enseignant écrit seul. */
+export const sansEleve = (c: Chapitre): boolean => c.attributions.length === 0 && !ecritParLEnseignant(c);
+
+/**
+ * Ce que dit une scène dont aucun élève ne s'occupe (F06.5) : « Pas encore prise » dans un
+ * chapitre attribué, où les élèves prennent leurs scènes ; « Aucun élève » dans un chapitre
+ * qui n'en a pas.
+ */
+export const motSansEleve = (c: Chapitre): string => (c.attributions.length ? "Pas encore prise" : "Aucun élève");
 export const scenesDe = (plan: Plan): Scene[] => chapitresDe(plan).flatMap((c) => c.scenes);
 
 /**
@@ -103,8 +120,8 @@ export function aCompleter(plan: Plan, situation: { deClasse: boolean; aChoix: b
   const sansScene = chapitres.filter((c) => c.scenes.length === 0);
   if (sansScene.length) manques.push({ sorte: "sans-scene", nombre: sansScene.length, chapitreId: sansScene[0].id });
   if (situation.deClasse) {
-    const sansEleve = chapitres.filter((c) => c.attributions.length === 0);
-    if (sansEleve.length) manques.push({ sorte: "sans-eleve", nombre: sansEleve.length, chapitreId: sansEleve[0].id });
+    const attendent = chapitres.filter(sansEleve);
+    if (attendent.length) manques.push({ sorte: "sans-eleve", nombre: attendent.length, chapitreId: attendent[0].id });
     const occupes = new Set(chapitres.flatMap((c) => c.attributions.map((a) => a.eleveId)));
     const libres = situation.eleves.filter((e) => !occupes.has(e.id)).length;
     if (libres && chapitres.length) manques.push({ sorte: "eleves-sans-chapitre", nombre: libres });

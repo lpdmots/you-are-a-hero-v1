@@ -15,11 +15,12 @@ import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
 import { nomPourEleves } from "@/domaine/eleves";
-import { chapitresDe, compteScenes, departDe, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
+import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
 import { choisirRepere, creerScene, exclureDuLivre, placerScene, restaurer, supprimer } from "../../../actions-recit";
 import { useCommandesScene } from "../../_plan/commandes";
 import { AttribuerEleves, ChoisirDepart, ReglagesChapitre } from "../../_plan/Panneaux";
+import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur, type ProjetDuPlan } from "../../_plan/Plan";
 
 type Ouvert = "reglages" | "image" | "attribuer" | "exclure" | "depart" | null;
@@ -175,7 +176,7 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
               ))}
             </ul>
           ) : projet.deClasse ? (
-            <p className="chap-meta">Aucun élève n’écrit encore dans ce chapitre.</p>
+            <p className="chap-meta">{ecritParLEnseignant(chapitre) ? "Vous écrivez ce chapitre vous-même." : "Aucun élève n’écrit encore dans ce chapitre."}</p>
           ) : null}
         </div>
         <div className="chap-actions">
@@ -270,6 +271,7 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
                           lien={`/projet/${projet.id}/scene/${s.id}`}
                           prise={prise}
                           menu={menuScene(s)}
+                          qui={projet.deClasse ? <QuiSenOccupe scene={s} chapitre={chapitre} eleves={eleves} /> : null}
                         />
                       )}
                     </FicheTiree>
@@ -341,9 +343,11 @@ function FicheTiree({ id, fixe, nom, children }: { id: string; fixe: boolean; no
 
 /** La fiche d'une scène dans son chapitre : référence, repères, titre, « Ouvrir ». */
 export function FicheScene({
-  scene, depart, montree, lien, prise, menu,
+  scene, depart, montree, lien, prise, menu, qui,
 }: {
   scene: Scene; depart: boolean; montree?: boolean; lien?: string; prise?: ReactNode; menu?: ReactNode;
+  /** « Qui s'en occupe », en projet de classe */
+  qui?: ReactNode;
 }) {
   const ref = referenceScene(scene.reference);
   return (
@@ -376,13 +380,13 @@ export function FicheScene({
         {scene.consigne ? null : <span className="sans-consigne">sans consigne</span>}
       </p>
       {lien ? (
-        <p className="fiche__pied">
-          <span />
+        <div className="fiche__pied">
+          {qui ?? <span />}
           <span className="fiche__ouvrir" aria-hidden="true">
             Ouvrir
             <Icone nom="fleche" />
           </span>
-        </p>
+        </div>
       ) : null}
     </article>
   );

@@ -344,6 +344,12 @@ horaires, l'attribution et le profil. La fonction qui dit si une scène
 répondre d'après le texte, les images et les remises, sans toucher aux
 appelants.
 
+**Qui s'occupe d'une scène.** Deux colonnes de `scenes` : l'élève de
+référence, qui doit être attribué au chapitre, ou l'enseignant lui-même,
+jamais les deux. L'adulte les écrit ; le poste les lit avec la scène. Retirer
+un élève d'un chapitre efface ses prises en charge dans ce chapitre. Ce que
+les élèves font eux-mêmes se construira à l'étape 4 sur ces mêmes colonnes.
+
 **Images de repérage.** Un seau privé de Supabase Storage, `images`. Le
 navigateur vérifie le fichier (JPEG, PNG ou WebP, 20 Mo), le redessine en
 JPEG à deux tailles — 2 600 points au plus grand côté, de quoi imprimer en

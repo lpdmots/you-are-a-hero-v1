@@ -579,6 +579,65 @@
   white-space: pre-line;
 }
 
+/* « Qui s'en occupe » : un bouton en mots, qui ouvre la liste des élèves du chapitre */
+.menu--mots > summary {
+  width: auto;
+  min-height: 32px;
+  padding: 3px 10px 3px 4px;
+  gap: 6px;
+  border-color: transparent;
+  border-radius: 99px;
+  background: transparent;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite);
+}
+.menu--mots > summary:hover,
+.menu--mots[open] > summary {
+  background: var(--feuille-2);
+}
+.menu--mots > summary .ic {
+  width: 14px;
+  height: 14px;
+  color: var(--graphite-3);
+}
+.menu--gauche .menu__liste {
+  left: 0;
+  right: auto;
+}
+.qui__libre {
+  padding-left: 6px;
+  color: var(--graphite-2);
+  font-weight: 600;
+}
+.menu__liste button.qui__choix {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+}
+.qui__choix .ic {
+  width: 16px;
+  height: 16px;
+  color: var(--canard);
+}
+.fiche .menu--mots {
+  position: relative;
+  z-index: 2;
+  margin-left: -4px;
+}
+.fiche__qui {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.fiche__qui b {
+  color: var(--graphite);
+}
+
 /* ——— Scènes trouvées par la recherche du livre ——— */
 .trouves {
   margin-top: 26px;

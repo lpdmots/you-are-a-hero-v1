@@ -16,7 +16,7 @@ import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
 import {
-  aCompleter, chercherScenes, compteScenes, couleurDeChapitre, departDe, libelleManque, referenceScene, scenesDe,
+  aCompleter, chercherScenes, compteScenes, couleurDeChapitre, departDe, ecritParLEnseignant, libelleManque, referenceScene, sansEleve, scenesDe,
   type Chapitre, type ElevePlan, type Manque, type Partie, type Plan as PlanDuRecit, type Supprime,
 } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
@@ -25,6 +25,7 @@ import {
 } from "../../actions-recit";
 import { AidePlan } from "./AidePlan";
 import { AttribuerEleves, ChoisirDepart, Corbeille, ReglagesChapitre, ReglagesPartie } from "./Panneaux";
+import { libelleQui } from "./QuiSenOccupe";
 
 export type ProjetDuPlan = {
   id: string; titre: string; deClasse: boolean; aChoix: boolean; classe: { id: string; nom: string } | null;
@@ -388,6 +389,7 @@ export function Plan({
                         <Icone nom="vide" />
                         Texte vide
                       </span>
+                      {projet.deClasse ? <span className="fiche__qui">{libelleQui(s, chapitre, eleves)}</span> : null}
                       <span className="trouve__ouvrir" aria-hidden="true">
                         Ouvrir
                         <Icone nom="fleche" />
@@ -656,7 +658,8 @@ export function Cahier({
 }: {
   chapitre: Chapitre; deClasse: boolean; eleves: ElevePlan[]; montree?: boolean; lien?: string; prise?: React.ReactNode; menu?: React.ReactNode;
 }) {
-  const manques = [chapitre.scenes.length === 0 ? "Aucune scène" : null, deClasse && chapitre.attributions.length === 0 ? "aucun élève" : null].filter(Boolean);
+  // Un chapitre que l'enseignant écrit seul n'attend pas d'élève (F03.1)
+  const manques = [chapitre.scenes.length === 0 ? "Aucune scène" : null, deClasse && sansEleve(chapitre) ? "aucun élève" : null].filter(Boolean);
   return (
     <article className={`cahier${lien ? " cahier--ouvrable se-tire" : ""}${montree ? " est-montree" : ""}`} style={varsCouleur(chapitre.couleur)}>
       {lien ? <Link className="cahier__cible" href={lien} aria-label={`Ouvrir ${chapitre.titre}`} draggable={false} /> : null}
@@ -672,6 +675,7 @@ export function Cahier({
       </div>
       <div className="cahier__pied">
         {chapitre.scenes.length ? <p className="cahier__ligne cahier__ligne--compte">{compteScenes(chapitre.scenes.length)}</p> : null}
+        {deClasse && ecritParLEnseignant(chapitre) && !eleves.length ? <p className="cahier__ligne">Vous l’écrivez vous-même</p> : null}
         {eleves.length ? (
           <p className="cahier__ligne">
             <span className="gommettes">

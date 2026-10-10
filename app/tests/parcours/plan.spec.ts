@@ -375,6 +375,52 @@ test("F06-AC01, F06-AC11, F06-AC18 — attribuer un chapitre : les élèves coch
   await expect(page.locator(".reste__manques")).toContainText("2 élèves sans chapitre");
 });
 
+test("F06-AC07, F06-AC62 — l'enseignant dit qui s'occupe d'une scène, sur sa carte comme dans sa page ; un chapitre qu'il écrit seul n'attend pas d'élève", async ({ page }) => {
+  const { base, classe, projet, foret } = await passeursDeBrume(page);
+  await semerAttribution(base, foret.chapitres[0].id, [{ eleve: classe.eleves.Alice.id }, { eleve: classe.eleves.Bilal.id }]);
+  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}`);
+  const fiche = (ref: string) => page.locator(".fiches > li", { hasText: ref });
+  // Dans un chapitre attribué, une scène sans élève est « Pas encore prise »
+  await expect(fiche("S001")).toContainText("Pas encore prise");
+
+  await fiche("S001").getByLabel(/^Qui s’occupe de S001/).click();
+  // Les élèves du chapitre, « Moi », « Pas encore prise » : Chloé, hors du chapitre, n'y est pas
+  await expect(fiche("S001").getByRole("button", { name: "Chloé" })).toHaveCount(0);
+  await fiche("S001").getByRole("button", { name: "Alice" }).click();
+  await expect(MESSAGE(page)).toContainText("Alice s’occupe de S001 « L’entrée du bois ».");
+  await expect(fiche("S001")).toContainText("Alice s’en occupe");
+
+  await fiche("S002").getByLabel(/^Qui s’occupe de S002/).click();
+  await fiche("S002").getByRole("button", { name: "Moi", exact: true }).click();
+  await expect(MESSAGE(page)).toContainText("Vous vous occupez de S002");
+  await expect(MESSAGE(page)).toContainText("les élèves la lisent, sans pouvoir l’écrire");
+  await expect(fiche("S002")).toContainText("Vous vous en occupez");
+  // « Annuler » remet la scène comme elle était
+  await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
+  await expect(fiche("S002")).toContainText("Pas encore prise");
+
+  // Le même menu dans la page de la scène ; retirer ne touche pas à ce qu'elle contient
+  await page.getByRole("link", { name: /Ouvrir S001/ }).click();
+  await page.getByLabel(/^Qui s’occupe de S001 : Alice s’en occupe/).click();
+  await page.getByRole("button", { name: "Pas encore prise" }).click();
+  await expect(MESSAGE(page)).toContainText("Plus personne ne s’occupe de S001");
+  await expect(page.getByLabel("Titre de la scène")).toHaveValue("L’entrée du bois");
+
+  // « Le col » n'a aucun élève : ses scènes disent « Aucun élève ». L'enseignant les prend toutes :
+  // le chapitre ne compte plus parmi les chapitres sans élève
+  const col = (await base.from("chapitres").select("id").eq("projet_id", projet).eq("titre", "Le col").single()).data!.id;
+  await aller(page, `/projet/${projet}/chapitre/${col}`);
+  await expect(fiche("S006")).toContainText("Aucun élève");
+  await fiche("S006").getByLabel(/^Qui s’occupe de S006/).click();
+  await expect(fiche("S006")).toContainText("Ce chapitre n’a pas encore d’élève");
+  await fiche("S006").getByRole("button", { name: "Moi", exact: true }).click();
+  await expect(page.getByText("Vous écrivez ce chapitre vous-même.")).toBeVisible();
+  await aller(page, `/projet/${projet}/plan`);
+  await expect(carte(page, "Le col")).toContainText("Vous l’écrivez vous-même");
+  await expect(carte(page, "Le col")).not.toContainText("aucun élève");
+  await expect(page.locator(".reste__manques")).toContainText("2 chapitres sans élève");
+});
+
 test("F11.2 — exclure un chapitre du livre se confirme, se lit sur sa carte et se défait depuis le même menu", async ({ page }) => {
   const { projet } = await passeursDeBrume(page);
   await aller(page, `/projet/${projet}/plan`);

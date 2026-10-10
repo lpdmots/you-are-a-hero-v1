@@ -5,10 +5,11 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icone } from "@/composants/Icone";
 import { Menu } from "@/composants/Menu";
-import { chapitresDe, departDe, referenceScene, scenesDe, type Plan } from "@/domaine/recit";
+import { chapitresDe, departDe, referenceScene, scenesDe, type ElevePlan, type Plan } from "@/domaine/recit";
 import { reglerScene } from "../../../actions-recit";
 import { useCommandesScene } from "../../_plan/commandes";
 import { ChoisirDepart } from "../../_plan/Panneaux";
+import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import styles from "./scene.module.css";
 
@@ -17,7 +18,11 @@ import styles from "./scene.module.css";
  * scène : son titre, sa consigne (F07.1), ses repères de départ et de fin (F03.2). Le
  * texte s'y écrira à l'étape 3.
  */
-export function PageScene({ projet, plan, sceneId }: { projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string }) {
+export function PageScene({
+  projet, plan, sceneId, eleves,
+}: {
+  projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
+}) {
   const routeur = useRouter();
   const scene = scenesDe(plan).find((s) => s.id === sceneId)!;
   const chapitre = chapitresDe(plan).find((c) => c.id === scene.chapitreId)!;
@@ -117,7 +122,8 @@ export function PageScene({ projet, plan, sceneId }: { projet: { id: string; deC
           )}
         </Menu>
       </header>
-      <p className={styles.reperes}>
+      <div className={styles.reperes}>
+        {projet.deClasse ? <QuiSenOccupe scene={scene} chapitre={chapitre} eleves={eleves} /> : null}
         {depart?.id === scene.id ? (
           <span className="repere repere--depart">
             <Icone nom="drapeau" />
@@ -134,7 +140,7 @@ export function PageScene({ projet, plan, sceneId }: { projet: { id: string; deC
         <span className={styles.etat} role="status">
           {etat === "attente" ? "Enregistrement…" : etat === "enregistre" ? "Enregistré" : etat === "erreur" ? "Cela n’a pas pu être enregistré." : ""}
         </span>
-      </p>
+      </div>
 
       <div className={styles.colonnes}>
         <section className={styles.copie} aria-labelledby="scene-texte">

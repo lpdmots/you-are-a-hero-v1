@@ -228,6 +228,24 @@ export async function exclureDuLivre(sorte: "chapitre" | "scene", id: string, ex
   return { ok: true };
 }
 
+/**
+ * « Qui s'en occupe » (F06.3) : l'enseignant désigne un élève du chapitre, s'attribue la
+ * scène (« moi »), ou retire la prise en charge (null). Rien de ce que la scène contient
+ * n'est touché (F06-AC07).
+ */
+export async function confierScene(sceneId: string, a: string | null): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(sceneId) || (a !== null && a !== "moi" && !estUuid(a))) return echec("Scène inconnue.");
+  const { data, error } = await e.supabase
+    .from("scenes")
+    .update({ prise_par_enseignant: a === "moi", prise_par_eleve: a === null || a === "moi" ? null : a })
+    .eq("id", sceneId)
+    .select("projet_id");
+  if (error || !data?.length) return refus(error, "Cela n’a pas pu être enregistré.");
+  rafraichir(data[0].projet_id);
+  return { ok: true };
+}
+
 /** « Attribuer des élèves » : un élève coché lit et écrit dans ce chapitre, tout de suite (F06-AC18). */
 export async function attribuerChapitre(chapitreId: string, eleves: { eleve: string; profil: Profil }[]): Promise<Fait> {
   const e = await exigerEnseignant();

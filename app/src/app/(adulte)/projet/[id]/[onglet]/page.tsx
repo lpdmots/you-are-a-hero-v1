@@ -47,9 +47,17 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else if (onglet === "preparation") {
-    const [preparation, plan] = await Promise.all([preparationDe(enseignant, projet.id), planDe(enseignant, projet.id)]);
+    const [preparation, plan, magasin] = await Promise.all([preparationDe(enseignant, projet.id), planDe(enseignant, projet.id), cookies()]);
     if (!preparation) notFound();
-    contenu = <Carnet projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit }} preparation={preparation} plan={plan} />;
+    contenu = (
+      <Carnet
+        projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit }}
+        preparation={preparation}
+        plan={plan}
+        aideMasquee={enseignant.aidesMasquees.includes("preparation")}
+        aideVue={magasin.get("aide-preparation")?.value === "vue"}
+      />
+    );
   } else {
     contenu = (
       <section className={styles.aVenir} aria-labelledby="a-venir">

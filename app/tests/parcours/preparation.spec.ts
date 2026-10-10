@@ -51,6 +51,39 @@ test("F02-AC02, F02-AC18 — le carnet dit à quoi il sert ; chaque rubrique a s
   await expect(page.getByText(/M’aider à développer|Idées de parties/)).toHaveCount(0);
 });
 
+test("F02-AC02, F02-AC07 — l'écran d'aide ouvre la Préparation : rien n'est obligatoire, on écrit sans avoir tout rempli", async ({ page }) => {
+  const { compte, base } = await adultePret(page);
+  await base.from("enseignants").update({ aides_masquees: [] }).eq("id", compte.id);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume");
+  await aller(page, `/projet/${projet}/preparation`);
+  await expect(page.getByRole("heading", { level: 2, name: "Préparation" })).toBeVisible();
+  // La première réponse, déjà dépliée, rassure d'emblée
+  await expect(page.getByText(/Rien n’est obligatoire : remplissez ce qui vous sert, et commencez à écrire quand vous voulez\./)).toBeVisible();
+  await page.getByText("Faut-il tout remplir avant d’écrire ?").click();
+  await expect(page.getByText(/Non\. Une ligne suffit, ou rien du tout\./)).toBeVisible();
+  await expect(page.getByText("Comment le faire avec la classe ?")).toBeVisible();
+  await expect(page.getByText("À quoi servent les rubriques du bas ?")).toBeVisible();
+  // Le carnet n'est pas encore à l'écran : l'aide tient seule
+  await expect(page.getByLabel("Nous retenons…")).toHaveCount(0);
+
+  await page.getByLabel("Ne plus afficher").check();
+  await page.getByRole("button", { name: "Commencer" }).click();
+  await expect(rubrique(page, "Univers")).toBeVisible();
+  await page.context().clearCookies({ name: "aide-preparation" });
+  await page.reload();
+  await expect(page.getByRole("button", { name: "Commencer" })).toHaveCount(0);
+  await page.getByRole("button", { name: "Aide" }).click();
+  await expect(page.getByRole("button", { name: "Fermer l’aide" })).toBeVisible();
+
+  // Projet personnel en récit classique : ni atelier, ni rubriques du jeu dans l'aide
+  const seul = await semerProjet(base, compte, "personnel", "classique", "Carnet de voyage");
+  await aller(page, `/projet/${seul}/preparation`);
+  await page.getByRole("button", { name: "Aide" }).click();
+  await expect(page.getByText(/On note ce que vous décidez avant d’écrire\./)).toBeVisible();
+  await expect(page.getByText("Comment le faire avec la classe ?")).toHaveCount(0);
+  await expect(page.getByText("À quoi servent les rubriques du bas ?")).toHaveCount(0);
+});
+
 test("F02-AC08, F02-AC09, F02-AC10 — le plan est le même dans la préparation et dans « Parties et chapitres »", async ({ page }) => {
   const { projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation`);

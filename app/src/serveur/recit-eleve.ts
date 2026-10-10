@@ -102,7 +102,11 @@ export async function histoiresDuPoste(c: ContexteEleve): Promise<HistoireEleve[
   }));
 }
 
-export type SceneEleve = { id: string; reference: number; titre: string | null; consigne: string | null; creeParMoi: boolean };
+export type SceneEleve = {
+  id: string; reference: number; titre: string | null; consigne: string | null; creeParMoi: boolean;
+  /** Qui s'occupe de la scène (F06-AC04) : l'élève lui-même, un camarade, l'enseignant, ou personne */
+  prise: { par: "moi" | "enseignant" } | { par: "eleve"; eleve: Eleve } | null;
+};
 export type ChapitreEleve = Repere & {
   id: string; titre: string; couleur: number; partie: string; projetId: string;
   profil: Profil | null;
@@ -129,7 +133,7 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("projets").select("lecture_ouverte").eq("id", chapitre.projet_id).maybeSingle(),
     base.from("attributions").select("eleve_id, profil").eq("chapitre_id", chapitreId),
-    base.from("scenes").select("id, reference, titre, rang, cree_par_eleve").eq("chapitre_id", chapitreId).order("rang"),
+    base.from("scenes").select("id, reference, titre, rang, cree_par_eleve, prise_par_eleve, prise_par_enseignant").eq("chapitre_id", chapitreId).order("rang"),
     base.rpc("consignes_du_chapitre", { p_chapitre: chapitreId }),
     base.rpc("resume_du_chapitre", { p_chapitre: chapitreId }),
   ]);
@@ -144,10 +148,24 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     profil,
     resume: typeof resume.data === "string" ? resume.data : "",
     camarades: c.eleves.filter((e) => lesAttributions.some((a) => a.eleve_id === e.id)),
-    scenes: ((scenes.data ?? []) as { id: string; reference: number; titre: string | null; cree_par_eleve: string | null }[]).map((s) => ({
-      id: s.id, reference: s.reference, titre: s.titre,
-      consigne: profil ? (consigneDe.get(s.id) ?? "") : null,
-      creeParMoi: s.cree_par_eleve === c.moi.id,
-    })),
+    scenes: (
+      (scenes.data ?? []) as {
+        id: string; reference: number; titre: string | null; cree_par_eleve: string | null; prise_par_eleve: string | null; prise_par_enseignant: boolean;
+      }[]
+    ).map((s) => {
+      const camarade = c.eleves.find((e) => e.id === s.prise_par_eleve);
+      return {
+        id: s.id, reference: s.reference, titre: s.titre,
+        consigne: profil ? (consigneDe.get(s.id) ?? "") : null,
+        creeParMoi: s.cree_par_eleve === c.moi.id,
+        prise: s.prise_par_enseignant
+          ? { par: "enseignant" as const }
+          : s.prise_par_eleve === c.moi.id
+            ? { par: "moi" as const }
+            : camarade
+              ? { par: "eleve" as const, eleve: camarade }
+              : null,
+      };
+    }),
   };
 }
