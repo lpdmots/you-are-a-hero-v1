@@ -83,7 +83,7 @@ test("F01-AC29 — mot de passe oublié : même phrase pour toute adresse, puis 
   await page.goto(lien);
   await expect(page.getByRole("heading", { level: 1, name: "Nouveau mot de passe" })).toBeVisible();
   const nouveau = "un-nouveau-mot-de-passe-42";
-  await page.locator('input[name="mot-de-passe"]').fill(nouveau);
+  await page.locator('input[name="password"]').fill(nouveau);
   await page.getByRole("button", { name: "Enregistrer ce mot de passe" }).click();
   await expect(page).toHaveURL(/\/projets$/);
 

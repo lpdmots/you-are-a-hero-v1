@@ -11,8 +11,8 @@ export type EtatFormulaire = { erreur?: string; fait?: boolean; adresse?: string
 
 /** Entrée de l'enseignant (F01-AC27) : la phrase ne dit pas lequel des deux est faux. */
 export async function seConnecter(_avant: EtatFormulaire, formulaire: FormData): Promise<EtatFormulaire> {
-  const adresse = String(formulaire.get("adresse") ?? "").trim();
-  const motDePasse = String(formulaire.get("mot-de-passe") ?? "");
+  const adresse = String(formulaire.get("email") ?? "").trim();
+  const motDePasse = String(formulaire.get("password") ?? "");
   if (!adresse || !motDePasse) return { erreur: "Écrivez votre adresse et votre mot de passe." };
   const supabase = await clientAdulte();
   const { error } = await supabase.auth.signInWithPassword({ email: adresse, password: motDePasse });
@@ -25,7 +25,7 @@ export async function seConnecter(_avant: EtatFormulaire, formulaire: FormData):
 
 /** « Mot de passe oublié » (F01-AC29) : la même phrase, que l'adresse soit connue ou non. */
 export async function demanderNouveauMotDePasse(_avant: EtatFormulaire, formulaire: FormData): Promise<EtatFormulaire> {
-  const adresse = String(formulaire.get("adresse") ?? "").trim();
+  const adresse = String(formulaire.get("email") ?? "").trim();
   if (!adresse.includes("@")) return { erreur: "Écrivez votre adresse électronique." };
   const supabase = await clientAdulte();
   const site = adresseDuSite((await headers()).get("host"));
@@ -35,7 +35,7 @@ export async function demanderNouveauMotDePasse(_avant: EtatFormulaire, formulai
 
 /** Le nouveau mot de passe, choisi après le lien reçu par courriel. */
 export async function choisirMotDePasse(_avant: EtatFormulaire, formulaire: FormData): Promise<EtatFormulaire> {
-  const motDePasse = String(formulaire.get("mot-de-passe") ?? "");
+  const motDePasse = String(formulaire.get("password") ?? "");
   if (motDePasse.length < 8) return { erreur: "Choisissez un mot de passe d’au moins huit caractères." };
   if (!(await sessionDeRecuperation())) return { erreur: "Ce lien n’est plus valable. Demandez-en un nouveau." };
   const supabase = await clientAdulte();

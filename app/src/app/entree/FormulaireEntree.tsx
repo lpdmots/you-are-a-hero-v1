@@ -43,11 +43,11 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
     <form action={action}>
       <label className="champ champ--plein">
         <span>Adresse électronique</span>
-        <input type="email" name="adresse" autoComplete="username" defaultValue={etat.adresse} required />
+        <input type="email" id="email" name="email" autoComplete="username" defaultValue={etat.adresse} required />
       </label>
       <label className="champ champ--plein">
         <span>Mot de passe</span>
-        <input type="password" name="mot-de-passe" autoComplete="current-password" required />
+        <input type="password" id="password" name="password" autoComplete="current-password" required />
       </label>
       <Erreur texte={etat.erreur} />
       <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
@@ -83,7 +83,7 @@ export function FormulaireOubli() {
     <form action={action}>
       <label className="champ champ--plein">
         <span>Adresse électronique</span>
-        <input type="email" name="adresse" autoComplete="username" required />
+        <input type="email" id="email" name="email" autoComplete="username" required />
       </label>
       <Erreur texte={etat.erreur} />
       <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
@@ -100,7 +100,7 @@ export function FormulaireNouveauMotDePasse() {
     <form action={action}>
       <label className="champ champ--plein">
         <span>Nouveau mot de passe</span>
-        <input type="password" name="mot-de-passe" autoComplete="new-password" minLength={8} required />
+        <input type="password" id="password" name="password" autoComplete="new-password" minLength={8} required />
       </label>
       <Erreur texte={etat.erreur} />
       <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
