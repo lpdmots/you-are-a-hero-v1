@@ -2787,7 +2787,7 @@ scène : les élèves du chapitre, « Moi », puis « Pas encore prise » ou « 
 Cette partie de F06.3 se construit à l'étape 2 du
 [plan](plan.md#étape-2--préparer-et-organiser-le-récit) ; ce que les élèves
 font eux-mêmes — prendre, rendre, reprendre à un camarade — reste à
-l'étape 4. Précision proposée, sans retour du porteur : un élève retiré d'un
+l'étape 4. Confirmé par le porteur le même jour : un élève retiré d'un
 chapitre ne s'occupe plus de ses scènes, qui redeviennent « Pas encore
 prise » avec tout ce qu'elles contiennent.
 

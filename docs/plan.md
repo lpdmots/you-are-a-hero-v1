@@ -14,12 +14,10 @@ leur statut.
 
 **Avancement au 10 octobre 2026 :** l'étape 1 est terminée (voir
 [Étape 1](#étape-1--sinstaller--compte-projets-classes-accès-des-élèves)).
-L'étape 2 est autorisée par le porteur le 10 octobre 2026, pour cette étape
-seule et en deux temps : un entretien, fait et validé dans son ensemble le
-même jour, puis la construction, faite et mise en ligne le même jour ; il
-lui reste l'essai du porteur (voir
-[Étape 2](#étape-2--préparer-et-organiser-le-récit)). L'étape 3 n'est pas
-autorisée.
+L'étape 2, autorisée par le porteur le 10 octobre 2026 pour elle seule, est
+terminée le même jour : entretien, construction, mise en ligne, essai du
+porteur (voir [Étape 2](#étape-2--préparer-et-organiser-le-récit)).
+L'étape 3 n'est ni autorisée ni commencée.
 
 Ce plan n'autorise par lui-même ni développement, ni prototype, ni achat :
 chaque étape demande une instruction du porteur. La V1
@@ -320,10 +318,24 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **Terminée quand :** le porteur a préparé son vrai projet jusqu'aux
   consignes et aux attributions, et a refait le même parcours dans un projet
   personnel et dans un récit classique.
-- **Construite et mise en ligne le 10 octobre 2026,** sur autorisation du
-  porteur du même jour ; il lui reste son essai.
-  - **Tests automatiques :** 213 passent — 44 sur les règles, 84 contre la
-    base locale, 85 parcours joués dans un navigateur —, chacun au nom de
+- **Terminée le 10 octobre 2026 :** construite et mise en ligne le jour
+  même, sur autorisation du porteur ; il fait son essai, demande ses
+  retouches, puis déclare l'étape terminée (« pour moi tout est bon »).
+  Il ne dit pas s'il a refait le parcours dans un projet personnel et dans
+  un récit classique, que demande le « Terminée quand » : ces deux variantes
+  sont jouées par les tests automatiques.
+  - **Sorti de l'essai, le 10 octobre, et mis en ligne :** « Phrases de
+    choix » en une seule liste à cocher, et la flèche qui ne garde que la
+    première phrase (F05-AC43) ; dix-huit visuels de plus et leurs
+    vignettes ; l'enseignant qui dit qui s'occupe d'une scène dès la
+    préparation (F06.3), avec la règle confirmée qu'un élève retiré d'un
+    chapitre ne s'occupe plus de ses scènes ; un écran d'aide à l'ouverture
+    de la Préparation (F02) ; sur la carte de chapitre, le repère de prise
+    sur l'image et le menu à trois points au pied ; côté élève, les
+    chapitres des autres en cahiers fermés. Détail :
+    [design](design.md#étape-2-construite-10-octobre-2026).
+  - **Tests automatiques :** 225 passent — 48 sur les règles, 89 contre la
+    base locale, 88 parcours joués dans un navigateur —, chacun au nom de
     son critère. Choix techniques :
     [architecture](architecture.md#réalisation-de-létape-2-10-octobre-2026).
   - **Schéma de la base :** `20261010150000_preparer_organiser.sql`,

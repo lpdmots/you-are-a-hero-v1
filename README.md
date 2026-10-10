@@ -17,15 +17,15 @@ avancement et les règles sorties de l'essai dans le
 [plan](docs/plan.md#étape-1--sinstaller--compte-projets-classes-accès-des-élèves),
 ses choix techniques dans
 [l'architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
-**L'étape 2 est autorisée le 10 octobre 2026**, pour elle seule : son
-entretien est fait et validé dans son ensemble le même jour, et elle est
-construite puis mise en ligne le même jour (préparation et atelier projeté,
-parties, chapitres et scènes, attribution, corbeille, départ et fins, images
-de repérage, côté élève) ; il lui reste l'essai du porteur ;
-voir le
-[plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit) et
-[l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026).
-L'étape 3 n'est pas autorisée. Aucun achat n'est lancé. La V1
+**L'étape 2 est terminée le 10 octobre 2026** (préparation et atelier
+projeté, parties, chapitres et scènes, attribution, « qui s'en occupe »,
+corbeille, départ et fins, images de repérage, côté élève) : autorisée,
+cadrée par un entretien, construite, mise en ligne et essayée par le porteur
+le même jour ; voir le
+[plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit),
+[l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026)
+et le [design](docs/design.md#étape-2-construite-10-octobre-2026).
+L'étape 3 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur

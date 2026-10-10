@@ -376,8 +376,8 @@ une pause de frappe et à la sortie du champ, chaque champ sous sa propre
 clé : ce qui attend pour l'un n'est pas chassé par un changement dans un
 autre.
 
-**Tests.** 213 passent — 44 sur les règles, 84 contre la base locale, 85
-parcours joués dans Chromium. Les deux migrations ont été rejouées ensemble
+**Tests.** 225 passent à la fin de l'étape — 48 sur les règles, 89 contre la
+base locale, 88 parcours joués dans Chromium. Les deux migrations ont été rejouées ensemble
 dans une base vide, à part, et donnent le schéma de la base locale.
 
 ## Vérifications avant décision technique
