@@ -2,7 +2,8 @@
 
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 
-type Message = { texte: string; annuler?: () => void };
+/** « autre » : une suite proposée avec le message, par exemple « Choisir un autre départ ». */
+type Message = { texte: string; annuler?: () => void; autre?: { libelle: string; faire: () => void } };
 const Contexte = createContext<(m: Message) => void>(() => {});
 
 /** Dit ce qui vient d'être fait, en une phrase, parfois avec « Annuler ». */
@@ -15,7 +16,7 @@ export function Messages({ children }: { children: ReactNode }) {
   const dire = useCallback((m: Message) => {
     if (minuteur.current) clearTimeout(minuteur.current);
     setMessage(m);
-    minuteur.current = setTimeout(() => setMessage(null), m.annuler ? 8000 : 5000);
+    minuteur.current = setTimeout(() => setMessage(null), m.autre ? 12000 : m.annuler ? 8000 : 5000);
   }, []);
 
   useEffect(() => () => {
@@ -29,6 +30,18 @@ export function Messages({ children }: { children: ReactNode }) {
         {message ? (
           <div className="message hors-impression">
             <span>{message.texte}</span>
+            {message.autre ? (
+              <button
+                type="button"
+                className="message__act"
+                onClick={() => {
+                  message.autre?.faire();
+                  setMessage(null);
+                }}
+              >
+                {message.autre.libelle}
+              </button>
+            ) : null}
             {message.annuler ? (
               <button
                 type="button"

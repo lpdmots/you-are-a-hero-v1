@@ -19,6 +19,12 @@ export type Projet = {
   recit: Recit;
   dernierOnglet: Onglet;
   classe: ClasseCourte | null;
+  /** Image de repérage (F10.1) */
+  imageId: string | null;
+  visuelChoisi: string | null;
+  visuelDefaut: string | null;
+  /** Lecture ouverte de l'histoire aux élèves (F06-AC48) */
+  lectureOuverte: boolean;
 };
 
 type LigneClasseCourte = { id: string; nom: string; annee_debut: number; terminee_le: string | null; inscriptions?: { retire_le: string | null }[] };
@@ -34,7 +40,8 @@ const classeCourte = (c: LigneClasseCourte | null | undefined): ClasseCourte | n
     : null;
 
 const SELECT_PROJET =
-  "id, titre, organisation, recit, dernier_onglet, classes(id, nom, annee_debut, terminee_le, inscriptions(retire_le))";
+  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, " +
+  "classes(id, nom, annee_debut, terminee_le, inscriptions(retire_le))";
 
 function projetDepuis(l: Record<string, unknown>): Projet {
   const classe = l.classes as LigneClasseCourte | LigneClasseCourte[] | null;
@@ -45,13 +52,17 @@ function projetDepuis(l: Record<string, unknown>): Projet {
     recit: l.recit as Recit,
     dernierOnglet: l.dernier_onglet as Onglet,
     classe: classeCourte(Array.isArray(classe) ? classe[0] : classe),
+    imageId: (l.image_id as string | null) ?? null,
+    visuelChoisi: (l.visuel_choisi as string | null) ?? null,
+    visuelDefaut: (l.visuel_defaut as string | null) ?? null,
+    lectureOuverte: l.lecture_ouverte === true,
   };
 }
 
 export async function mesProjets(e: Enseignant): Promise<Projet[]> {
   const { data, error } = await e.supabase.from("projets").select(SELECT_PROJET).order("cree_le", { ascending: false });
   if (error) throw new Error(error.message);
-  return (data ?? []).map(projetDepuis);
+  return ((data ?? []) as unknown as Record<string, unknown>[]).map(projetDepuis);
 }
 
 const UUID = /^[0-9a-f-]{36}$/i;
@@ -61,7 +72,7 @@ export const projetDe = cache(async (e: Enseignant, id: string): Promise<Projet 
   if (!UUID.test(id)) return null;
   const { data, error } = await e.supabase.from("projets").select(SELECT_PROJET).eq("id", id).maybeSingle();
   if (error) throw new Error(error.message);
-  return data ? projetDepuis(data) : null;
+  return data ? projetDepuis(data as unknown as Record<string, unknown>) : null;
 });
 
 export type EleveInscrit = Eleve & { inscriptionId: string };

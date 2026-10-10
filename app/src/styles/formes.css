@@ -610,6 +610,9 @@
   width: 100%;
   justify-content: center;
 }
+.panneau__pied .btn + .btn {
+  margin-top: 8px;
+}
 .enregistre {
   display: flex;
   align-items: center;

@@ -13,12 +13,14 @@ type ClasseOfferte = { id: string; nom: string; annee: string; eleves: number };
 
 /**
  * La classe d'un projet de classe, sous son titre. Elle se choisit et se change tant
- * qu'aucun chapitre n'est attribué (F01-AC24) ; l'attribution arrive à l'étape 2.
+ * qu'aucun chapitre n'est attribué (F01-AC24).
  */
 export function ClasseDuProjet({
-  projetId, titre, classeId, libelle, classes,
+  projetId, titre, classeId, libelle, classes, attribue,
 }: {
   projetId: string; titre: string; classeId: string | null; libelle: string; classes: ClasseOfferte[];
+  /** Un chapitre au moins est attribué : la classe ne se change plus (F01-AC24) */
+  attribue: boolean;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -44,10 +46,15 @@ export function ClasseDuProjet({
 
   return (
     <>
-      {libelle} ·{" "}
-      <button type="button" className="lien" onClick={() => setOuvert(true)}>
-        {classeId ? "Changer de classe" : "Choisir une classe"}
-      </button>
+      {libelle}
+      {attribue ? null : (
+        <>
+          {" · "}
+          <button type="button" className="lien" onClick={() => setOuvert(true)}>
+            {classeId ? "Changer de classe" : "Choisir une classe"}
+          </button>
+        </>
+      )}
       {ouvert ? (
         <Panneau
           titre="Classe du projet"

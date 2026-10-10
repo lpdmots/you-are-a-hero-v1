@@ -25,6 +25,13 @@
   color: var(--graphite-2);
   margin-top: 4px;
 }
+.titre {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
 .onglets {
   display: flex;
   gap: 22px;

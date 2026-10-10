@@ -74,6 +74,76 @@ const TRACES = {
   main: (
     <path d="M8 12.5V6.8a1.5 1.5 0 0 1 3 0v4.7M11 11.5V5.3a1.5 1.5 0 0 1 3 0v6.2M14 11.5V6.8a1.5 1.5 0 0 1 3 0V14c0 3.6-2.4 6.5-5.8 6.5-2.1 0-3.4-.9-4.6-2.6L4.3 13.6a1.5 1.5 0 0 1 2.4-1.8L8 13.4" />
   ),
+  vide: <circle cx="12" cy="12" r="7.5" strokeDasharray="2.6 2.6" />,
+  drapeau: (
+    <>
+      <path d="M6 21V4" />
+      <path d="M6 4.5h10.5l-2.4 3.7 2.4 3.8H6" />
+    </>
+  ),
+  fin: (
+    <>
+      <path d="M6 21V4" />
+      <path d="M6 4.5h12v7.5H6" />
+      <path d="M10 4.5v7.5M14 4.5v7.5M6 8.2h12" />
+    </>
+  ),
+  image: (
+    <>
+      <rect x="3.5" y="5" width="17" height="14" rx="2" />
+      <circle cx="9" cy="10" r="1.8" />
+      <path d="M4 17.5l5-4.5 3.5 3 3-2.5 4.5 4" />
+    </>
+  ),
+  corbeille: (
+    <>
+      <path d="M4.5 7h15" />
+      <path d="M9.5 7V4.5h5V7" />
+      <path d="M6.5 7l.8 12.5h9.4L17.5 7" />
+      <path d="M10 11v5M14 11v5" />
+    </>
+  ),
+  loupe: (
+    <>
+      <circle cx="10.5" cy="10.5" r="6" />
+      <path d="M15 15l5 5" />
+    </>
+  ),
+  // Repère de prise : la carte se déplace en la tirant (F03.1, 10 octobre 2026)
+  prise: (
+    <>
+      {[6, 12, 18].flatMap((y) => [9, 15].map((x) => <circle key={`${x}-${y}`} cx={x} cy={y} r="1.5" fill="currentColor" stroke="none" />))}
+    </>
+  ),
+  "chevron-haut": <path d="M5.5 15l6.5-6.5L18.5 15" />,
+  sac: (
+    <>
+      <path d="M5.5 9.5h13l1 9.2a1.6 1.6 0 0 1-1.6 1.8H6.1a1.6 1.6 0 0 1-1.6-1.8z" />
+      <path d="M9 9.5V7.2a3 3 0 0 1 6 0v2.3" />
+      <path d="M9.5 14h5" />
+    </>
+  ),
+  noter: (
+    <>
+      <path d="M9.5 15.5l.8-3.4 7.2-7.2a1.7 1.7 0 0 1 2.4 0l.2.2a1.7 1.7 0 0 1 0 2.4l-7.2 7.2z" />
+      <path d="M4 19.5h8.5" />
+      <path d="M16 6.5l2.6 2.6" />
+    </>
+  ),
+  feuille: (
+    <>
+      <path d="M5.5 3.5h13v17h-13z" />
+      <path d="M9 8h6" />
+      <rect x="8.6" y="11.3" width="3" height="3" rx=".7" />
+      <path d="M14 12.8h1.5M8.8 17.5h6.4" />
+    </>
+  ),
+  importer: (
+    <>
+      <path d="M12 15.5V5M7.5 9.5L12 5l4.5 4.5" />
+      <path d="M5 19.5h14" />
+    </>
+  ),
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

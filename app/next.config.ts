@@ -20,8 +20,9 @@ const nextConfig: NextConfig = {
       },
       {
         // Des pages propres à chacun : ni le navigateur d'un poste partagé ni un relais ne
-        // les gardent. Les fichiers de l'application et les illustrations, eux, se gardent.
-        source: "/((?!_next/static|_next/image|illustrations/).*)",
+        // les gardent. Les fichiers de l'application et les illustrations, eux, se gardent ; les
+        // images de repérage disent elles-mêmes qu'elles ne se gardent que chez la personne.
+        source: "/((?!_next/static|_next/image|illustrations/|images/).*)",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
       },
     ];
