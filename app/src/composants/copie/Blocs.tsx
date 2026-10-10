@@ -4,7 +4,7 @@ import { PlateElement, useSelected, type PlateElementProps } from "platejs/react
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import {
-  estAuto, estReserve, estVide, morceauxDe, renvoisDe, type Choix, type Lettres, type Liaison, type Note, type Paragraphe as ParagrapheDeRecit,
+  estAuto, estReserve, estVide, lettresDe, morceauxDe, renvoisDe, type Action, type Choix, type Lettres, type Liaison, type Note, type Paragraphe as ParagrapheDeRecit,
   type Renvoi, type Texte,
 } from "@/domaine/copie";
 import type { FormuleRenvoi } from "@/domaine/preparation";
@@ -149,6 +149,91 @@ export function Paragraphe(props: PlateElementProps) {
       <span className="repere-prepare" contentEditable={false}>
         {preparePar(c.enseignant)}
       </span>
+    </PlateElement>
+  );
+}
+
+/**
+ * Action de jeu (F04.2) : un paragraphe encadré d'un filet fin et précédé d'un crayon, la même
+ * mise en valeur que dans le livre. Qui peut l'écrire y écrit sur place ; pour les autres,
+ * c'est un bloc préparé, pris comme un tout (F04-AC25).
+ */
+export function ActionDeJeu(props: PlateElementProps) {
+  const bloc = props.element as unknown as Action;
+  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const selectionne = useSelected();
+  const tire = c.tire?.bloc === bloc.id;
+  if (estReserve(bloc, c.droits)) {
+    return (
+      <PlateElement
+        {...props}
+        as="div"
+        className={`action-jeu est-prepare${selectionne ? " est-choisi" : ""}${pose}`}
+        style={style}
+        attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
+      >
+        <Plus bloc={bloc.id} />
+        <span className="marge" contentEditable={false}>
+          <Icone nom="cadenas" />
+        </span>
+        <span className="action-jeu__cadre" contentEditable={false}>
+          <Icone nom="crayon" />
+          <span className="action-jeu__texte">{lettresDe(bloc)}</span>
+        </span>
+        {props.children}
+        <span className="repere-prepare" contentEditable={false}>
+          {bloc.protege ? preparePar(c.enseignant) : "Action de jeu préparée : tu écris autour"}
+        </span>
+      </PlateElement>
+    );
+  }
+  const ouvert = c.fiche?.sorte === "formules" && c.fiche.bloc === bloc.id;
+  return (
+    <PlateElement
+      {...props}
+      as="div"
+      className={`action-jeu${selectionne || ouvert ? " est-active" : ""}${bloc.protege ? " est-protege" : ""}${tire ? " est-tire" : ""}${pose}`}
+      style={style}
+      attributes={{ ...props.attributes, ...attributs }}
+    >
+      <span className="marge" contentEditable={false}>
+        <button
+          type="button"
+          className="prise prise--bloc"
+          title="Tirer pour déplacer"
+          aria-label="Déplacer cette action de jeu"
+          aria-roledescription="élément à déplacer"
+          onPointerDown={(ev) => c.commencerATirer(bloc.id, ev)}
+        >
+          <Icone nom="prise" />
+        </button>
+      </span>
+      <span className="action-jeu__legende" contentEditable={false}>
+        Action de jeu
+        {bloc.protege ? (
+          <span className="action-jeu__protegee">
+            <Icone nom="cadenas" />
+            protégée
+          </span>
+        ) : null}
+      </span>
+      <span className="action-jeu__cadre">
+        <span contentEditable={false} className="action-jeu__crayon">
+          <Icone nom="crayon" />
+        </span>
+        <span className="action-jeu__texte">{props.children}</span>
+      </span>
+      {selectionne || ouvert ? (
+        <span className="action-jeu__cmd" contentEditable={false}>
+          <button type="button" className="btn btn--petit" aria-expanded={ouvert} onMouseDown={(ev) => ev.preventDefault()} onClick={(ev) => { ev.stopPropagation(); c.ouvrirFormules(bloc.id); }}>
+            Formules…
+          </button>
+          <button type="button" className="btn btn--petit" onMouseDown={(ev) => ev.preventDefault()} onClick={(ev) => { ev.stopPropagation(); c.supprimerBloc(bloc.id); }}>
+            <Icone nom="corbeille" />
+            Supprimer
+          </button>
+        </span>
+      ) : null}
     </PlateElement>
   );
 }
@@ -316,6 +401,13 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
             <p key={bloc.id} className="lien-cache lien-cache--lu">
               <RepereDeLiaison liaison={bloc} livre={livre} pourEleve={pourEleve} />
             </p>
+          ) : bloc.type === "action" ? (
+            <div key={bloc.id} className="action-jeu">
+              <span className="action-jeu__cadre">
+                <Icone nom="crayon" />
+                <span className="action-jeu__texte">{lettresDe(bloc)}</span>
+              </span>
+            </div>
           ) : bloc.type === "note" ? (
             <div key={bloc.id} className="note-prof">
               <span className="note-prof__legende">Note · pour vous seul, jamais imprimée</span>

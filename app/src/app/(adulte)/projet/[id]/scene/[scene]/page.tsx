@@ -63,6 +63,7 @@ export default async function Page(props: Props) {
       <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} eleves={eleves}
         texte={texte}
         livre={livre}
+        jeu={{ objets: preparation?.objets ?? [], formules: projet.recit === "choix" ? (preparation?.formules ?? []) : [] }}
         ouvrir={typeof demande.texte === "string" ? demande.texte : undefined}
         venuDuSuivi={demande.de === "suivi"}
         venuDesChemins={demande.de === "chemins"}

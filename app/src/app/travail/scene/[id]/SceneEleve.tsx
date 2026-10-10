@@ -71,6 +71,7 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
         lieu={{ projetId: scene.projetId, sceneId: scene.id, chapitreId: scene.chapitre.id }}
         pourEleve
         enseignant={prof}
+        jeu={scene.jeu}
         services={services}
         marques={scene.marques}
         libelle={`Ton texte, scène ${ref}`}

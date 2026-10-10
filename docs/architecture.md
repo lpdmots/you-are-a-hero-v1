@@ -563,6 +563,22 @@ copie réessaie, d'abord au plus vite, puis au rythme de l'écran
 (`reprendreLeTexte`). Un clic sur une commande dessinée dans un bloc fermé
 ne remonte pas à l'éditeur, qui reposerait sa sélection sur ce bloc.
 
+**Objets et actions de jeu (lot 4).** L'action de jeu est un bloc `action`
+du texte, à texte libre et sans mise en forme ; l'objet n'est rien de
+particulier, son nom s'écrit comme du texte. Les deux listes viennent de la
+préparation. Un poste d'élève ne lit pas leurs tables : une fonction de la
+base lui donne les objets, dans le chapitre où il écrit, et les formules s'il
+a le profil qui écrit des actions. Les droits sur l'action passent par la
+règle commune des blocs réservés — fermés dans l'éditeur, contrôlés par le
+serveur.
+
+**Identité du paragraphe d'une scène vide.** Une scène sans texte s'ouvre
+sur un paragraphe où écrire, qui n'est pas dans la base. Son identité se
+déduit de celle de la scène, pour être la même dans la page dessinée par le
+serveur et dans celle que reprend le navigateur : tirée au hasard des deux
+côtés, la page gardait celle du serveur, l'éditeur celle du navigateur, et
+une fiche ne retrouvait pas le bloc sous lequel se poser.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

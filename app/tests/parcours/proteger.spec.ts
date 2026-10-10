@@ -341,7 +341,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     await expect(barre.getByRole("button", { name: "Note" })).toHaveCount(0);
     await expect(barre.getByRole("button", { name: /Protéger/ })).toHaveCount(0);
     await ecrire(bilal.page, " /");
-    await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Choix/]);
+    await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Choix/, /Action de jeu/, /Objet/]);
     await bilal.page.keyboard.type("note");
     await expect(bilal.page.locator(".slash")).toHaveCount(0);
     await bilal.page.keyboard.press("Enter");

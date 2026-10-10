@@ -7,6 +7,7 @@ import {
   assurerOrdre, chercherDansLesTextes, numerosDuProjet, texteDeScene, versionsPrecedentes, type TexteDeScene, type Trouvee, type VersionPrecedente,
 } from "@/serveur/copie";
 import { estUuid } from "@/serveur/recit";
+import { enregistrerFormule, enregistrerObjet } from "./actions-preparation";
 
 /**
  * Ce que l'adulte fait des textes d'une scène (F08.1, F08.2) : ne plus garder un texte
@@ -182,6 +183,25 @@ export async function fixerPourLiaison(sceneId: string, numero: number | null): 
   if (voulu === null) return { ok: true, numero: null };
   const fait = await fixerNumero(sceneId, voulu);
   return fait.ok ? { ok: true, numero: voulu } : echec(fait.erreur);
+}
+
+/**
+ * Ajouter un objet ou une formule depuis la scène, sans la quitter (F04-AC29). La rubrique
+ * « Objets et formules » de la préparation s'ouvre du même coup : l'objet y figure.
+ */
+export async function ajouterObjetDepuisLaScene(projetId: string, nom: string, description: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return echec("Projet inconnu.");
+  const fait = await enregistrerObjet(projetId, null, nom, description);
+  if (fait.ok) await e.supabase.from("preparations").update({ rubrique_jeu: true }).eq("projet_id", projetId);
+  return fait;
+}
+export async function ajouterFormuleDepuisLaScene(projetId: string, texte: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return echec("Projet inconnu.");
+  const fait = await enregistrerFormule(projetId, null, texte);
+  if (fait.ok) await e.supabase.from("preparations").update({ rubrique_jeu: true }).eq("projet_id", projetId);
+  return fait;
 }
 
 /** « Libérer le numéro » : le passage prend place à la suite de son groupe (F11-AC97). */

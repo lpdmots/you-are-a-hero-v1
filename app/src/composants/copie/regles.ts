@@ -22,8 +22,8 @@ type Point = { path: number[]; offset: number };
 
 /** Ce que la copie dit à la personne, au pied du texte, avec de quoi revenir en arrière. */
 export type Signal =
-  | { sorte: "supprime"; choix: number; renvois?: number }
-  | { sorte: "colle"; deplaces: number; copies: number; ecartes: number; images?: boolean }
+  | { sorte: "supprime"; choix: number; renvois?: number; actions?: number }
+  | { sorte: "colle"; deplaces: number; copies: number; ecartes: number; actionsEcartees?: number }
   | { sorte: "image" };
 
 export type Regles = {
@@ -37,6 +37,8 @@ export type Regles = {
   numeros: Record<string, number>;
   /** Les scènes où un choix peut mener : un choix collé vers une autre est écarté */
   scenes: string[];
+  /** Le récit a-t-il des actions de jeu ? Pas le récit classique (F04-AC26) */
+  actions: boolean;
   signaler: (signal: Signal) => void;
   /** Retour arrière contre le dernier renvoi d'une phrase : la fiche demande confirmation */
   confirmerDernierRenvoi: (bloc: string) => void;
@@ -84,7 +86,7 @@ const echapper = (t: string): string => t.replace(/&/g, "&amp;").replace(/</g, "
 export const ReglesPlugin = createPlatePlugin({
   key: "regles",
   options: {
-    marques: true, droits: { role: "adulte" }, projetId: "", sceneId: "", formule: "rends", numeros: {}, scenes: [],
+    marques: true, droits: { role: "adulte" }, projetId: "", sceneId: "", formule: "rends", numeros: {}, scenes: [], actions: true,
     signaler: () => {}, confirmerDernierRenvoi: () => {},
   } as Regles,
 // Les surcharges parlent à Slate plus largement que les types de Plate ne le décrivent
@@ -119,6 +121,7 @@ export const ReglesPlugin = createPlatePlugin({
     const avant = blocsDe(e);
     const { droits } = o();
     let choix = 0;
+    let actions = 0;
 
     // Dans une seule phrase personnalisée : son texte se supprime, sauf si tous ses renvois partent avec
     if (i0 === i1 && avant[i0].type === "choix") {
@@ -136,7 +139,7 @@ export const ReglesPlugin = createPlatePlugin({
     }
 
     // Récit et note de l'enseignant : du texte, dont une partie seulement peut partir
-    const textuel = (b: Bloc) => b.type === "p" || b.type === "note";
+    const textuel = (b: Bloc) => b.type === "p" || b.type === "note" || b.type === "action";
     const retire = (k: number): boolean => {
       const b = avant[k];
       if (b.type === "choix") return peutModifier(b, droits);
@@ -154,6 +157,7 @@ export const ReglesPlugin = createPlatePlugin({
         for (let k = i1; k >= i0; k -= 1) {
           if (retire(k)) {
             if (avant[k].type === "choix") choix += 1;
+            if (avant[k].type === "action") actions += 1;
             e.tf.removeNodes({ at: [k] });
           } else if (k > i0 && k < i1) gardesEntre += 1;
         }
@@ -166,7 +170,7 @@ export const ReglesPlugin = createPlatePlugin({
       if (teteGardee) e.tf.select(debut);
       else allerA(Math.min(i0, reste.length - 1), i0 > reste.length - 1);
     });
-    if (choix) o().signaler({ sorte: "supprime", choix });
+    if (choix || actions) o().signaler({ sorte: "supprime", choix, actions });
     return true;
   };
 
@@ -174,18 +178,20 @@ export const ReglesPlugin = createPlatePlugin({
   const supprimerBlocs = (ids: string[]): number => {
     let faits = 0;
     let choix = 0;
+    let actions = 0;
     e.tf.withoutNormalizing(() => {
       for (let k = blocsDe(e).length - 1; k >= 0; k -= 1) {
         const b = blocsDe(e)[k];
         if (!ids.includes(b.id) || !peutModifier(b, o().droits)) continue;
         if (b.type === "choix") choix += 1;
+        if (b.type === "action") actions += 1;
         e.tf.removeNodes({ at: [k] });
         faits += 1;
         if (blocsDe(e).length === 0) e.tf.insertNodes(paragrapheVide(), { at: [0] });
         allerA(Math.min(k, blocsDe(e).length - 1), k > blocsDe(e).length - 1);
       }
     });
-    if (choix) o().signaler({ sorte: "supprime", choix });
+    if (choix || actions) o().signaler({ sorte: "supprime", choix, actions });
     return faits;
   };
 
@@ -233,7 +239,7 @@ export const ReglesPlugin = createPlatePlugin({
     api: {
       isVoid(element: { type?: string }) {
         if (element.type === "renvoi") return true;
-        if (element.type === "choix" || element.type === "p") return ferme(element as Bloc);
+        if (element.type === "choix" || element.type === "p" || element.type === "action") return ferme(element as Bloc);
         return isVoid(element as never);
       },
       isInline(element: { type?: string }) {
@@ -286,7 +292,7 @@ export const ReglesPlugin = createPlatePlugin({
           // Deux paragraphes de récit se rejoignent ; récit et phrase de choix, note ou bloc préparé, jamais (F05-AC15)
           if (ici.bloc.type === "p" && avant.type === "p" && !ferme(avant)) return deleteBackward(unite as never);
           // Une ligne vide, ou une note vidée, s'efface
-          if ((ici.bloc.type === "p" || ici.bloc.type === "note") && lettresDe(ici.bloc) === "") e.tf.removeNodes({ at: [ici.index] });
+          if (["p", "note", "action"].includes(ici.bloc.type) && lettresDe(ici.bloc) === "") e.tf.removeNodes({ at: [ici.index] });
           allerA(ici.index - 1, true);
           return;
         }
@@ -356,7 +362,7 @@ export const ReglesPlugin = createPlatePlugin({
         if (interne?.length) {
           // Coupé : le même choix se déplace ; copié : c'en est un autre (F05-AC30, AC31)
           const deplace = deplace0(origine, projetId);
-          let [deplaces, copies, ecartes] = [0, 0, 0];
+          let [deplaces, copies, ecartes, actionsEcartees] = [0, 0, 0, 0];
           const admis: Texte = [];
           for (const bloc of interne) {
             if (bloc.type === "p") {
@@ -367,6 +373,13 @@ export const ReglesPlugin = createPlatePlugin({
               if (droits.role === "adulte") admis.push(deplace0(origine, projetId) ? bloc : { ...bloc, id: nouvelId() });
             } else if (bloc.type === "liaison") {
               // Hors du récit : une liaison cachée ne se colle pas
+            } else if (bloc.type === "action") {
+              // Qui ne peut pas écrire d'action de jeu ne la colle pas non plus : elle est écartée,
+              // sans devenir du texte ordinaire (F04-AC30)
+              const permis = o().actions && !(droits.role !== "adulte" && droits.profil === "propositions");
+              if (!permis) actionsEcartees += 1;
+              else if (deplace && droits.role === "adulte") admis.push(bloc);
+              else admis.push({ type: "action", id: deplace ? bloc.id : nouvelId(), children: bloc.children });
             } else if (estReserve(bloc, droits) || renvoisDe(bloc).some((r) => r.cible !== null && !o().scenes.includes(r.cible))) {
               // Créer ou déplacer ce choix n'est pas permis à cette personne, ou il vise une scène
               // qu'elle ne connaît pas : il est écarté (F05-AC32)
@@ -384,7 +397,7 @@ export const ReglesPlugin = createPlatePlugin({
             }
           }
           insererBlocs(admis);
-          if (deplaces || copies || ecartes) o().signaler({ sorte: "colle", deplaces, copies, ecartes });
+          if (deplaces || copies || ecartes || actionsEcartees) o().signaler({ sorte: "colle", deplaces, copies, ecartes, actionsEcartees });
           return;
         }
         const images = [...(data.files ?? [])].filter((f) => f.type.startsWith("image/")).length;
@@ -442,10 +455,21 @@ export const ReglesPlugin = createPlatePlugin({
         if (chemin.length === 1) {
           const enfants = (noeud.children ?? []) as unknown[];
           // Un renvoi n'existe que dans une phrase de choix (F05-AC15)
-          if (noeud.type === "p" || noeud.type === "note") {
+          if (noeud.type === "p" || noeud.type === "note" || noeud.type === "action") {
             const k = enfants.findIndex(estRenvoi);
             if (k !== -1) {
               e.tf.removeNodes({ at: [...chemin, k] });
+              return;
+            }
+          }
+          // Ni phrase de choix ni action de jeu ne portent de mise en forme : le livre les met en valeur lui-même
+          if (noeud.type === "action" || noeud.type === "choix") {
+            const k = enfants.findIndex((x) => {
+              const l = x as { text?: string; bold?: boolean; italic?: boolean; underline?: boolean };
+              return typeof l.text === "string" && (l.bold || l.italic || l.underline);
+            });
+            if (k !== -1) {
+              e.tf.unsetNodes(["bold", "italic", "underline"], { at: [...chemin, k] });
               return;
             }
           }

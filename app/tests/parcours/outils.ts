@@ -403,6 +403,20 @@ export const choixPerso = (libelle: string, enfants: (string | ReturnType<typeof
 /** Un paragraphe protégé par l'enseignant, une note de l'enseignant, une liaison cachée (étape 3, lot 3). */
 export const protege = (texte: string, id = randomUUID()): BlocSeme => ({ type: "p", id, protege: true, children: [{ text: texte }] });
 export const note = (texte: string, id = randomUUID()): BlocSeme => ({ type: "note", id, children: [{ text: texte }] });
+/** Une action de jeu (étape 3, lot 4). */
+export const action = (texte: string, id = randomUUID()): BlocSeme => ({ type: "action", id, children: [{ text: texte }] });
+/** Les deux listes du projet : objets de l'histoire et formules d'action, tenues par l'adulte. */
+export async function semerJeu(base: SupabaseClient, compte: Compte, projetId: string, objets: [string, string][], formules: string[] = []): Promise<void> {
+  // Un par un : chaque liste se lit dans l'ordre où elle a été écrite
+  for (const [nom, description] of objets) {
+    const { error } = await base.from("objets").insert({ projet_id: projetId, enseignant_id: compte.id, nom, description });
+    if (error) throw new Error(error.message);
+  }
+  for (const texte of formules) {
+    const { error } = await base.from("formules").insert({ projet_id: projetId, enseignant_id: compte.id, texte });
+    if (error) throw new Error(error.message);
+  }
+}
 export const liaison = (cible: string, libelle?: string, id = randomUUID()): BlocSeme => ({ type: "liaison", id, cible, ...(libelle ? { libelle } : {}), children: [{ text: "" }] });
 
 /** Écrit les blocs d'une scène sans passer par l'écran, au nom de l'adulte. */

@@ -42,7 +42,13 @@ export type Choix = ChoixAuto | ChoixPerso;
  */
 export type Liaison = { type: "liaison"; id: string; cible: string | null; libelle?: string; children: [{ text: "" }] };
 
-export type Bloc = Paragraphe | Choix | Note | Liaison;
+/**
+ * Action de jeu (F04.2) : un paragraphe d'un type propre, qui dit au lecteur quoi faire sur sa
+ * feuille d'aventure. Son texte est libre ; l'application n'en connaît pas le sens.
+ */
+export type Action = { type: "action"; id: string; protege?: true; children: [{ text: string }] };
+
+export type Bloc = Paragraphe | Choix | Note | Liaison | Action;
 export type Texte = Bloc[];
 
 export const estChoix = (b: { type?: string }): b is Choix => b.type === "choix";
@@ -63,8 +69,13 @@ export const nouvelId = (): string => crypto.randomUUID();
 
 export const paragrapheVide = (): Paragraphe => ({ type: "p", id: nouvelId(), children: [{ text: "" }] });
 
-/** Une scène sans texte s'ouvre sur un paragraphe où écrire. */
-export const texteOuvert = (texte: Texte): Texte => (texte.length ? texte : [paragrapheVide()]);
+/**
+ * Une scène sans texte s'ouvre sur un paragraphe où écrire. Son identité se déduit de celle
+ * de la scène : la page dessinée par le serveur et celle que reprend le navigateur doivent
+ * porter la même, sans quoi une fiche ne retrouve pas le bloc sous lequel se poser.
+ */
+export const texteOuvert = <T extends Bloc>(texte: T[], sceneId: string): (T | Paragraphe)[] =>
+  texte.length ? texte : [{ type: "p", id: UUID.test(sceneId) ? `00000000${sceneId.slice(8).toLowerCase()}` : nouvelId(), children: [{ text: "" }] }];
 
 // Les caractères de commande n'ont rien à faire dans un récit ; tabulation et retour restent
 const sansCommandes = (t: string): string => t.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, "");
@@ -119,6 +130,11 @@ export function nettoyerTexte(brut: unknown): Texte | null {
       const children = ligne(bloc.children);
       compte += children.reduce((n, l) => n + l.text.length, 0);
       texte.push(bloc.protege === true ? { type: "p", id: identite(bloc.id), protege: true, children } : { type: "p", id: identite(bloc.id), children });
+    } else if (bloc.type === "action") {
+      // Texte libre, sans mise en forme : le livre la met en valeur lui-même
+      const text = ligne(bloc.children).map((l) => l.text).join("");
+      compte += text.length;
+      texte.push(bloc.protege === true ? { type: "action", id: identite(bloc.id), protege: true, children: [{ text }] } : { type: "action", id: identite(bloc.id), children: [{ text }] });
     } else if (bloc.type === "note") {
       const children = ligne(bloc.children);
       compte += children.reduce((n, l) => n + l.text.length, 0);
@@ -177,7 +193,7 @@ export const enMots = (texte: Texte): string => recitDe(texte).map(lettresDe).jo
  * même règle.
  */
 export const estVide = (texte: Texte): boolean =>
-  texte.every((b) => b.type === "note" || b.type === "liaison" || (b.type === "p" && lettresDe(b).trim() === ""));
+  texte.every((b) => b.type === "note" || b.type === "liaison" || ((b.type === "p" || b.type === "action") && lettresDe(b).trim() === ""));
 
 /** Les renvois d'un bloc : celui d'une phrase automatique, ou ceux d'une phrase personnalisée. */
 export function renvoisDe(bloc: Bloc): { id: string; cible: string | null; libelle: string }[] {
@@ -236,6 +252,8 @@ export function estReserve(bloc: Bloc, droits: Droits): boolean {
   // Liaison cachée et note sont à l'adulte seul ; un paragraphe protégé vaut pour tous les élèves (F06-AC50)
   if (bloc.type === "liaison" || bloc.type === "note") return true;
   if (bloc.type === "p") return bloc.protege === true;
+  // Action de jeu : préparée d'office pour « écriture et propositions » ; protégée par l'enseignant, pour tous (F04-AC25)
+  if (bloc.type === "action") return droits.profil === "propositions" || bloc.protege === true;
   // Profil « écriture et propositions » : toute phrase de choix est préparée (F06-AC45)
   if (droits.profil === "propositions") return true;
   // Profil « écriture et organisation » : la phrase qui porte un raccord reste entière (F06-AC52)

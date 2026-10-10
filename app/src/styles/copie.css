@@ -862,6 +862,117 @@
   }
 }
 
+/* ——— Action de jeu et objets de l'histoire (F04.2) ———
+   L'action de jeu garde la mise en valeur du livre : un filet fin, un crayon, le texte du
+   récit en demi-gras et droit. Sans couleur, lisible en noir et blanc. */
+.action-jeu {
+  position: relative;
+  margin: 0 0 0.9em;
+}
+.action-jeu__legende {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3px;
+  color: var(--graphite-2);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  user-select: none;
+}
+.action-jeu__protegee {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 400;
+}
+.action-jeu__protegee .ic {
+  width: 0.95em;
+  height: 0.95em;
+}
+.action-jeu__cadre {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 62ch;
+  padding: 8px 12px;
+  border: 1px solid var(--graphite-3);
+  border-radius: 4px;
+  background: var(--feuille);
+}
+.action-jeu__cadre > .ic,
+.action-jeu__crayon .ic {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  margin-top: 0.28em;
+  color: var(--graphite-2);
+}
+.action-jeu__crayon {
+  display: inline-flex;
+  user-select: none;
+}
+.action-jeu__texte {
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  font-family: var(--f-recit);
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.action-jeu.est-active .action-jeu__cadre {
+  border-color: var(--canard);
+  box-shadow: 0 0 0 1px var(--canard);
+}
+.action-jeu.est-prepare.est-choisi .action-jeu__cadre {
+  box-shadow: 0 0 0 2px var(--graphite-3);
+}
+.action-jeu.est-tire {
+  opacity: 0.4;
+}
+.action-jeu__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  user-select: none;
+}
+.copie__texte--lu > .action-jeu {
+  font-size: 1.1rem;
+}
+.cx-liste--objets button,
+.cx-liste--formules button {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1px;
+}
+.cx-liste--formules:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.cx-objet__nom {
+  font-family: var(--f-recit);
+  font-size: 1.05rem;
+}
+.cx-objet__desc {
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.cx-formule {
+  font-family: var(--f-recit);
+  font-weight: 600;
+}
+.cx-formule--vide {
+  color: var(--graphite-2);
+  font-family: var(--f-ui);
+  font-weight: 400;
+  font-style: italic;
+}
+.cx-ajout {
+  display: grid;
+  gap: 8px;
+}
+
 /* Là où se poserait le bloc qu'on tire : un trait */
 .se-pose-avant::before,
 .copie__texte.se-pose-fin::after {

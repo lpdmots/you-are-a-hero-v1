@@ -496,7 +496,35 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       n'est pas protégée ; Entrée à la fin d'un paragraphe protégé ouvre un
       paragraphe qui ne l'est pas ; une note glissée par un poste dans un
       texte par ailleurs inchangé est écartée sans rien garder à part.
-  - **Lots 4 à 6 :** à faire, dans l'ordre.
+  - **Lot 4 — objets et actions de jeu : construit le 10 octobre 2026.**
+    « /objet » et le bouton « Objets », pour toute personne qui écrit, récit
+    classique compris : la liste, la recherche, le nom écrit au curseur comme
+    du texte ordinaire ; l'adulte ajoute un objet sans quitter la scène,
+    l'élève lit « Liste tenue par Mme Laurent ». « /action » et le bouton
+    « Action de jeu », pour l'adulte et l'élève « écriture et
+    organisation » : paragraphe vide ou formule de la liste, « … »
+    sélectionné dans une formule à compléter, « Formules… » et « Supprimer »
+    sous l'action où l'on écrit ; bloc préparé pour l'élève « écriture et
+    propositions », protégeable par l'enseignant ; presse-papiers et
+    suppression selon les règles des choix. Schéma :
+    `20261010240000_objets_et_actions.sql`.
+    - **Scénario 14 du prototype** réécrit dans `tests/parcours/jeu.spec.ts`.
+    - **Critères qui attendent :** la mise en valeur de l'action dans le
+      livre et le lecteur (F04-AC17, AC18), la liste cachée au lecteur
+      (F04-AC20), la feuille, le dé et les règles (F04-AC19, AC21 à AC24,
+      AC31 à AC33) aux étapes 6 et 7.
+    - **Défaut corrigé au passage,** qui datait du lot 2 : dans une scène
+      vide, la fiche d'un choix ne se posait pas sous le bon bloc, le
+      paragraphe vide n'ayant pas la même identité côté serveur et côté
+      navigateur.
+    - **Précisions prises en construisant, à confirmer par le porteur :**
+      une action de jeu n'a pas de mise en forme (le livre la met en valeur
+      lui-même) ; coupée en entier, elle part avec son bloc ; ajouter un
+      objet ou une formule depuis la scène ouvre la rubrique « Objets et
+      formules » de la préparation ; l'objet ajouté n'est pas écrit d'office
+      dans le texte, il se retient ensuite dans la liste ; hors de son
+      chapitre, un élève ne reçoit pas la liste des objets.
+  - **Lots 5 et 6 :** à faire, dans l'ordre.
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du

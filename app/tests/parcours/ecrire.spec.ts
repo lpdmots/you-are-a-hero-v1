@@ -167,7 +167,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
     // Par défaut, Alice a les trois commandes (F04-AC02)
-    await expect(alice.page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button")).toHaveCount(3);
+    await expect(alice.page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: /^(Gras|Italique|Souligné)$/ })).toHaveCount(3);
     await ecrire(alice.page, "Trois ");
     await alice.page.keyboard.press("ControlOrMeta+b");
     await alice.page.keyboard.type("mots en gras");
@@ -183,7 +183,8 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     await expect(page.getByText("Les élèves n’ont plus les trois boutons.")).toBeVisible();
 
     await alice.page.reload();
-    await expect(alice.page.getByRole("toolbar", { name: "Outils de la copie" })).toHaveCount(0);
+    // Il lui reste « Objets » (F04.2) : plus aucun bouton de mise en forme
+    await expect(alice.page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: /^(Gras|Italique|Souligné)$/ })).toHaveCount(0);
     // Ce qui existe reste en gras
     await expect(copie(alice.page).locator("strong")).toHaveText("mots en gras");
     await ecrire(alice.page, " puis ");

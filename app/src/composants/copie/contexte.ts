@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from "react";
 import type { Droits } from "@/domaine/copie";
-import type { Construction, FormuleRenvoi } from "@/domaine/preparation";
+import type { Construction, Formule, FormuleRenvoi, Objet } from "@/domaine/preparation";
 
 /**
  * Ce que la copie sait du livre autour de la scène ouverte : les numéros, les scènes que la
@@ -39,6 +39,10 @@ export type Livre = {
   depart: string | null;
 };
 
+/** Les deux listes du projet que la copie propose : objets de l'histoire et formules d'action (F04.2). */
+export type Jeu = { objets: Objet[]; formules: Formule[] };
+export const SANS_JEU: Jeu = { objets: [], formules: [] };
+
 export type Trouvee = { id: string; extrait: string };
 export type SceneCreee = { id: string; reference: number; titre: string | null; chapitreId: string };
 
@@ -55,6 +59,9 @@ export type Services = {
   /** Fixer le numéro de la destination d'une liaison cachée : celui qu'elle porte, ou celui de l'énigme (F05.1) */
   fixerNumero?: (sceneId: string, numero: number | null) => Promise<{ ok: true; numero: number | null } | { ok: false; erreur: string }>;
   libererNumero?: (sceneId: string) => Promise<{ ok: boolean; erreur?: string }>;
+  /** Ajouter un objet ou une formule à la liste sans quitter la scène : pour l'adulte seul (F04-AC29) */
+  ajouterObjet?: (nom: string, description: string) => Promise<{ ok: boolean; erreur?: string }>;
+  ajouterFormule?: (texte: string) => Promise<{ ok: boolean; erreur?: string }>;
 };
 
 export type Lieu = { projetId: string; sceneId: string; chapitreId: string };
@@ -63,6 +70,11 @@ export type Lieu = { projetId: string; sceneId: string; chapitreId: string };
 export type FicheOuverte =
   /** Création : la phrase prendra place après ce bloc, ou le remplacera s'il est vide */
   | { sorte: "creation"; apres: string | null; remplace: boolean }
+  /** Une action de jeu à créer après ce bloc, ou les formules pour le texte d'une action qui existe */
+  | { sorte: "action"; apres: string; remplace: boolean }
+  | { sorte: "formules"; bloc: string }
+  /** Les objets de l'histoire, sous le bloc du curseur */
+  | { sorte: "objets"; bloc: string }
   | { sorte: "reglages"; bloc: string; confirmer?: "dernier-renvoi"; auClavier?: boolean };
 
 export type ContexteDeCopie = {
@@ -75,6 +87,9 @@ export type ContexteDeCopie = {
   enseignant: string | null;
   /** Ouvrir un paragraphe au-dessus d'un bloc fermé : le « + » de la marge (F06.1) */
   ecrireAvant: (bloc: string) => void;
+  /** Les commandes d'une action de jeu où l'on écrit : ses formules, sa suppression (F04.2) */
+  ouvrirFormules: (bloc: string) => void;
+  supprimerBloc: (bloc: string) => void;
   fiche: FicheOuverte | null;
   /** Place gardée sous un bloc pour la fiche qui s'y pose */
   espace: { bloc: string; hauteur: number } | null;

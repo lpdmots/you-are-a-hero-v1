@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { TexteLu } from "@/composants/copie/Blocs";
 import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
-import type { Livre, Services } from "@/composants/copie/contexte";
+import type { Jeu, Livre, Services } from "@/composants/copie/contexte";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
 import { avantDePartir } from "@/composants/copie/sortie";
 import type { EtatTexte } from "@/composants/copie/useEnregistrementTexte";
@@ -21,7 +21,7 @@ import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
 import { reglerScene, supprimer } from "../../../actions-recit";
 import {
-  chercherDestinations, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
+  ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
   relireNumeros, relireTexte,
 } from "../../../actions-texte";
 import { useCommandesScene } from "../../_plan/commandes";
@@ -46,12 +46,13 @@ const PAS_ENREGISTRE = "Vos dernières corrections ne sont pas encore enregistr�
  * part s'y lit dans son onglet, avec ses deux gestes (F08.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, livre, ouvrir, venuDuSuivi, venuDesChemins,
+  projet, plan, sceneId, eleves, texte: recu, livre, jeu, ouvrir, venuDuSuivi, venuDesChemins,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
   /** Le livre autour de la scène : numéros, scènes, façon d'annoncer un numéro */
   livre: Livre;
+  jeu: Jeu;
   /** Le texte gardé à part à montrer en arrivant, depuis la ligne de rappel du Suivi */
   ouvrir?: string;
   venuDuSuivi?: boolean;
@@ -122,6 +123,8 @@ export function PageScene({
     numeroDe: (id) => numeroDeLaScene(id),
     fixerNumero: (id, n) => fixerPourLiaison(id, n),
     libererNumero: (id) => libererNumero(id),
+    ajouterObjet: (nom, description) => ajouterObjetDepuisLaScene(projet.id, nom, description),
+    ajouterFormule: (formule) => ajouterFormuleDepuisLaScene(projet.id, formule),
   };
 
   const remplacer = (suite: TexteDeScene) => {
@@ -450,6 +453,7 @@ export function PageScene({
             lieu={{ projetId: projet.id, sceneId: scene.id, chapitreId: chapitre.id }}
             services={services}
             protection={projet.deClasse}
+            jeu={jeu}
             marques
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}

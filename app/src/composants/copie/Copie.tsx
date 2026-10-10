@@ -11,8 +11,11 @@ import {
 import { constructionsUtiles } from "@/domaine/preparation";
 import { nomScene } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
-import { NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
-import { Contexte, type ContexteDeCopie, type FicheOuverte, type Lieu, type Livre, type SceneConnue, type SceneCreee, type Services } from "./contexte";
+import { ActionDeJeu, NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
+import {
+  Contexte, SANS_JEU, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee, type Services,
+} from "./contexte";
+import { FicheAction, FicheObjets } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
 import { HorsRecit, type GestesDeLiaison } from "./Liaisons";
 import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, type Editeur, type Signal } from "./regles";
@@ -52,7 +55,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide,
-  livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null,
+  livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -81,6 +84,8 @@ export function Copie({
   protection?: boolean;
   /** Le nom que l'enseignant affiche aux élèves (F01-AC13) */
   enseignant?: string | null;
+  /** Objets de l'histoire et formules d'action du projet (F04.2) */
+  jeu?: Jeu;
 }) {
   // Ce que la copie a appris depuis que la page lui a donné le livre : numéros relus, scènes créées
   // depuis un choix. Quand la page relit le livre, c'est elle qui fait foi.
@@ -109,7 +114,7 @@ export function Copie({
   const [vide, setVide] = useState(() => estVide(texte));
   // Le texte reçu à l'ouverture : ensuite, c'est l'éditeur qui tient le récit, et la copie
   // ses liaisons cachées, qui sont hors du récit (F05.1)
-  const [initial] = useState(() => texteOuvert(recitDe(texte)));
+  const [initial] = useState(() => texteOuvert(recitDe(texte), lieu.sceneId));
   const [liaisons, setLiaisons] = useState<Liaison[]>(() => liaisonsDe(texte));
   const liaisonsTenues = useRef(liaisons);
   const [fiche, setFiche] = useState<FicheOuverte | null>(null);
@@ -144,8 +149,13 @@ export function Copie({
     (s: Signal) => {
       if (s.sorte === "image") return setBandeau({ texte: "L’image n’a pas été collée : une image s’ajoute avec le bouton « Image »." });
       if (s.sorte === "supprime") {
-        const quoi = s.choix ? `${s.choix} choix supprimé${pluriel(s.choix)}` : `${s.renvois} renvoi${pluriel(s.renvois ?? 1)} retiré${pluriel(s.renvois ?? 1)}`;
-        return setBandeau({ texte: `${quoi}. ${(s.choix || s.renvois || 1) > 1 ? "Les scènes où ils menaient sont toujours là." : "La scène où il menait est toujours là."}`, annuler: true });
+        const dit: string[] = [];
+        if (s.choix || s.renvois) {
+          const quoi = s.choix ? `${s.choix} choix supprimé${pluriel(s.choix)}` : `${s.renvois} renvoi${pluriel(s.renvois ?? 1)} retiré${pluriel(s.renvois ?? 1)}`;
+          dit.push(`${quoi}. ${(s.choix || s.renvois || 1) > 1 ? "Les scènes où ils menaient sont toujours là." : "La scène où il menait est toujours là."}`);
+        }
+        if (s.actions) dit.push(`${s.actions} action${pluriel(s.actions)} de jeu supprimée${pluriel(s.actions)}.`);
+        return setBandeau({ texte: dit.join(" "), annuler: true });
       }
       const dit: string[] = [];
       if (s.deplaces) dit.push(`${s.deplaces} choix déplacé${pluriel(s.deplaces)}.`);
@@ -155,6 +165,13 @@ export function Copie({
           s.ecartes > 1
             ? `${s.ecartes} phrases de choix n’ont pas été collées : ${vous ? "vous ne pouvez" : "tu ne peux"} pas créer ces choix ici.`
             : `La phrase de choix n’a pas été collée : ${vous ? "vous ne pouvez" : "tu ne peux"} pas créer ce choix ici.`,
+        );
+      }
+      if (s.actionsEcartees) {
+        dit.push(
+          s.actionsEcartees > 1
+            ? `${s.actionsEcartees} actions de jeu n’ont pas été collées : ${vous ? "vous ne pouvez" : "tu ne peux"} pas en écrire ici.`
+            : `L’action de jeu n’a pas été collée : ${vous ? "vous ne pouvez" : "tu ne peux"} pas en écrire ici.`,
         );
       }
       setBandeau({ texte: dit.join(" "), annuler: s.deplaces + s.copies > 0 });
@@ -168,6 +185,7 @@ export function Copie({
       createPlatePlugin({ key: "choix", node: { isElement: true, component: PhraseDeChoix } }),
       createPlatePlugin({ key: "renvoi", node: { isElement: true, isInline: true, isVoid: true, component: RenvoiEnLigne } }),
       createPlatePlugin({ key: "note", node: { isElement: true, component: NoteDeLEnseignant } }),
+      createPlatePlugin({ key: "action", node: { isElement: true, component: ActionDeJeu } }),
       // Les raccourcis sont tenus par la copie : ils disparaissent avec les boutons (F04-AC34)
       BoldPlugin.configure({ shortcuts: { toggle: null } }),
       ItalicPlugin.configure({ shortcuts: { toggle: null } }),
@@ -176,7 +194,7 @@ export function Copie({
       ReglesPlugin.configure({
         options: {
           marques, droits, projetId: lieu.projetId, sceneId: lieu.sceneId, formule: livreRecu.formule, numeros: livreRecu.numeros,
-          scenes: livreRecu.scenes.map((s) => s.id),
+          scenes: livreRecu.scenes.map((s) => s.id), actions: livreRecu.aChoix,
           signaler, confirmerDernierRenvoi: (bloc: string) => setFiche({ sorte: "reglages", bloc, confirmer: "dernier-renvoi" }),
         },
       }),
@@ -435,9 +453,64 @@ export function Copie({
     e.tf.allerA(remplace ? i : i + 1);
     reprendreLeTexte();
   };
+  // Se protègent : un paragraphe de récit, une action de jeu (F04.2, F06.1)
   const paragrapheCourant = () => {
     const ici = blocCourant(e);
-    return ici && ici.bloc.type === "p" ? { index: ici.index, bloc: ici.bloc } : null;
+    return ici && (ici.bloc.type === "p" || ici.bloc.type === "action") ? { index: ici.index, bloc: ici.bloc } : null;
+  };
+
+  // ——— Action de jeu et objets de l'histoire (F04.2) ———
+  const ouvrirAction = () => {
+    const blocs = blocsDe(e);
+    const ici = blocCourant(e)?.bloc ?? blocs[blocs.length - 1];
+    if (!ici) return;
+    setBarre(null);
+    setBandeau(null);
+    lacherLeTexte();
+    setFiche({ sorte: "action", apres: ici.id, remplace: ici.type === "p" && lettresDe(ici) === "" });
+  };
+  /** La formule retenue devient un paragraphe d'action ; dans une formule à compléter, « … » est sélectionné. */
+  const poserAction = (texte: string) => {
+    if (fiche?.sorte !== "action" && fiche?.sorte !== "formules") return;
+    let k: number;
+    if (fiche.sorte === "formules") {
+      k = indexDe(fiche.bloc);
+      const actuel = blocsDe(e)[k];
+      if (!actuel || actuel.type !== "action") return;
+      e.tf.withoutNormalizing(() => {
+        e.tf.removeNodes({ at: [k] });
+        e.tf.insertNodes({ ...actuel, children: [{ text: texte }] }, { at: [k] });
+      });
+    } else {
+      const i = Math.max(0, indexDe(fiche.apres));
+      e.tf.withoutNormalizing(() => {
+        e.tf.insertNodes({ type: "action", id: nouvelId(), children: [{ text: texte }] }, { at: [i + 1] });
+        if (fiche.remplace) e.tf.removeNodes({ at: [i] });
+      });
+      k = fiche.remplace ? i : i + 1;
+    }
+    const trou = texte.indexOf("…");
+    e.tf.select(trou === -1 ? e.api.end([k]) : { anchor: { path: [k, 0], offset: trou }, focus: { path: [k, 0], offset: trou + 1 } });
+    setFiche(null);
+    setEspace(null);
+    reprendreLeTexte();
+  };
+  const ouvrirObjets = () => {
+    const blocs = blocsDe(e);
+    const ici = blocCourant(e)?.bloc ?? blocs[blocs.length - 1];
+    if (!ici) return;
+    setBarre(null);
+    setBandeau(null);
+    lacherLeTexte();
+    setFiche({ sorte: "objets", bloc: ici.id });
+  };
+  /** Le nom de l'objet s'écrit à l'endroit du curseur, comme du texte ordinaire (F04-AC15). */
+  const ecrireObjet = (nom: string) => {
+    setFiche(null);
+    setEspace(null);
+    if (!e.selection) e.tf.select(e.api.end([]));
+    e.tf.insertText(nom);
+    reprendreLeTexte();
   };
   const basculerProtection = () => {
     const ici = paragrapheCourant();
@@ -498,6 +571,9 @@ export function Copie({
   const commandes: Commande[] = [
     ...(peutChoisir ? [{ cle: "choix", nom: "Choix", aide: "Une phrase qui mène à une autre scène", icone: "choix", faire: () => ouvrirCreation() } as Commande] : []),
     // La note est à l'adulte seul, dans les quatre combinaisons (F05-AC52)
+    ...(peutChoisir ? [{ cle: "action", nom: "Action de jeu", aide: `Ce que le lecteur fait sur sa feuille`, icone: "crayon", faire: ouvrirAction } as Commande] : []),
+    // Les objets servent à la cohérence de tout récit, classique compris (F04-AC26)
+    { cle: "objet", nom: "Objet", aide: "Un nom de la liste des objets de l’histoire", icone: "sac", faire: ouvrirObjets },
     ...(adulte ? [{ cle: "note", nom: "Note", aide: "Pour vous seul, jamais imprimée", icone: "noter", faire: ajouterNote } as Commande] : []),
   ];
   const proposees = barre ? commandes.filter((c) => c.cle.startsWith(barre.demande)) : [];
@@ -519,7 +595,8 @@ export function Copie({
   };
 
   // La fiche se pose sous son bloc, dans la copie : la place lui est gardée dessous
-  const ancre = fiche ? (fiche.sorte === "creation" ? fiche.apres : fiche.bloc) : barre && proposees.length ? (blocCourant(e)?.bloc.id ?? null) : null;
+  const ancreDe = (f: FicheOuverte): string | null => (f.sorte === "creation" || f.sorte === "action" ? f.apres : f.bloc);
+  const ancre = fiche ? ancreDe(fiche) : barre && proposees.length ? (blocCourant(e)?.bloc.id ?? null) : null;
   const avecFiche = !!fiche;
   useLayoutEffect(() => {
     if (!ancre || !zone.current) return;
@@ -541,6 +618,15 @@ export function Copie({
 
   const contexte: ContexteDeCopie = {
     livre, droits, lieu, pourEleve, fiche, espace, tire, enseignant, ecrireAvant,
+    ouvrirFormules: (bloc) => {
+      setBandeau(null);
+      lacherLeTexte();
+      setFiche(fiche?.sorte === "formules" && fiche.bloc === bloc ? null : { sorte: "formules", bloc });
+    },
+    supprimerBloc: (bloc) => {
+      e.tf.supprimerBlocs([bloc]);
+      reprendreLeTexte();
+    },
     ouvrir: (bloc) => {
       setBandeau(null);
       lacherLeTexte();
@@ -551,7 +637,8 @@ export function Copie({
   const blocRegle = fiche?.sorte === "reglages" ? (blocsDe(e).find((b) => b.id === fiche.bloc) as Choix | undefined) : undefined;
 
   const basculer = (marque: Marque) => {
-    if (!marques || arrete) return;
+    // La mise en forme vaut pour le récit et la note : ni phrase de choix ni action de jeu
+    if (!marques || arrete || !["p", "note"].includes(blocCourant(e)?.bloc.type ?? "")) return;
     e.tf.toggleMark(marque);
     reprendreLeTexte();
   };
@@ -646,7 +733,7 @@ export function Copie({
           {tete}
           {autre ? (
             autre.barre
-          ) : arrete || (!peutChoisir && !marques && !adulte) ? null : (
+          ) : arrete ? null : (
             <div className="copie__outils" role="toolbar" aria-label="Outils de la copie">
               {peutChoisir ? (
                 <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={() => ouvrirCreation()}>
@@ -654,6 +741,16 @@ export function Copie({
                   Choix
                 </button>
               ) : null}
+              {peutChoisir ? (
+                <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ouvrirAction}>
+                  <Icone nom="crayon" />
+                  Action de jeu
+                </button>
+              ) : null}
+              <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ouvrirObjets}>
+                <Icone nom="sac" />
+                Objets
+              </button>
               {adulte ? (
                 <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ajouterNote}>
                   <Icone nom="noter" />
@@ -678,7 +775,7 @@ export function Copie({
                   </span>
                 </button>
               ) : null}
-              {(peutChoisir || adulte) && marques ? <span className="outil-sep" aria-hidden="true" /> : null}
+              {marques ? <span className="outil-sep" aria-hidden="true" /> : null}
               {marques
                 ? MARQUES.map((m) => (
                     <button
@@ -717,7 +814,7 @@ export function Copie({
               const suite = value as unknown as Texte;
               suivre(entier(suite));
               // La fiche d'un bloc qui n'est plus là se referme
-              if (fiche && !suite.some((b) => b.id === (fiche.sorte === "creation" ? fiche.apres : fiche.bloc))) {
+              if (fiche && !suite.some((b) => b.id === ancreDe(fiche))) {
                 setFiche(null);
                 setEspace(null);
               }
@@ -757,7 +854,12 @@ export function Copie({
                 ev.preventDefault();
                 e.tf.setFragmentData(ev.clipboardData, "cut");
                 const ici = blocCourant(e);
-                if (e.selection && e.api.isCollapsed() && ici && estFerme(ici.bloc, droits)) e.tf.supprimerBlocs([ici.bloc.id]);
+                const s = e.selection;
+                // Une action de jeu ou une note coupée en entier part avec son bloc : c'est elle qu'on déplace
+                const entier =
+                  !!s && !!ici && (ici.bloc.type === "action" || ici.bloc.type === "note") && s.anchor.path[0] === s.focus.path[0] && !e.api.isCollapsed() &&
+                  lettresDe(ici.bloc) !== "" && e.api.string(s) === lettresDe(ici.bloc);
+                if ((s && e.api.isCollapsed() && ici && estFerme(ici.bloc, droits)) || entier) e.tf.supprimerBlocs([ici!.bloc.id]);
                 else e.tf.supprimerSelection();
                 return true;
               }}
@@ -792,6 +894,10 @@ export function Copie({
             <div className="copie__fiche" style={{ top: haut }} ref={ficheRef}>
               {fiche.sorte === "creation" ? (
                 <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onFermer={fermer} />
+              ) : fiche.sorte === "action" || fiche.sorte === "formules" ? (
+                <FicheAction jeu={jeu} services={services} pourUneAction={fiche.sorte === "formules"} onChoisir={poserAction} onFermer={fermer} />
+              ) : fiche.sorte === "objets" ? (
+                <FicheObjets jeu={jeu} services={services} onChoisir={ecrireObjet} onFermer={fermer} />
               ) : blocRegle ? (
                 <FicheReglagesChoix key={`${blocRegle.id}-${estAuto(blocRegle)}`} bloc={blocRegle} services={services} gestes={gestes(blocRegle)} confirmer={fiche.confirmer} auClavier={fiche.auClavier} onFermer={fermer} />
               ) : null}

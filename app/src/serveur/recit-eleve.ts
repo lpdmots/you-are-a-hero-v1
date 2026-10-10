@@ -3,7 +3,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import type { Eleve } from "@/domaine/eleves";
 import type { Plage } from "@/domaine/horaires";
-import type { Livre, SceneConnue } from "@/composants/copie/contexte";
+import type { Jeu, Livre, SceneConnue } from "@/composants/copie/contexte";
 import { ciblesDe, type Droits, type Motif, type Texte } from "@/domaine/copie";
 import { numeroter, type PlanNumerote } from "@/domaine/numeros";
 import { estConstruction, estFormuleRenvoi, type Construction } from "@/domaine/preparation";
@@ -219,6 +219,8 @@ export type SceneOuverte = {
   projetId: string;
   /** Le livre autour de la scène, réduit à ce que l'élève peut lire (F05-AC03, AC42) */
   livre: Livre;
+  /** Les objets de l'histoire, et les formules d'action pour qui peut en écrire (F04.2) */
+  jeu: Jeu;
   /** Ce qu'il a le droit de changer dans le texte (F06.1) */
   droits: Droits;
 };
@@ -265,11 +267,12 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   if (!chapitre) return null;
   const aChoix = s.recit === "choix";
   // Ce qu'il peut nommer : les scènes de son chapitre ; ailleurs, le seul titre public du chapitre
-  const [partie, voisines, destinations, numeros] = await Promise.all([
+  const [partie, voisines, destinations, numeros, jeu] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
     aChoix ? numerosDuPoste(c, s.projet) : Promise.resolve({} as Record<string, number>),
+    base.rpc("jeu_de_la_scene", { p_scene: sceneId }).then((r) => (r.data as Jeu | null) ?? { objets: [], formules: [] }),
   ]);
   const scenes = new Map<string, SceneConnue>(
     ((voisines.data ?? []) as { id: string; reference: number; titre: string | null; texte_vide: boolean }[]).map((v) => [
@@ -313,7 +316,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     chapitre: { id: chapitre.id, titre: chapitre.titre, couleur: chapitre.couleur },
     consigne: s.consigne, profil: s.profil, prise,
     texte: s.texte ?? [], version: s.version, vide: s.vide, marques: s.marques !== false,
-    refus: s.refus, ecriture, projetId: s.projet, livre, droits,
+    refus: s.refus, ecriture, projetId: s.projet, livre, droits, jeu,
   };
 }
 
