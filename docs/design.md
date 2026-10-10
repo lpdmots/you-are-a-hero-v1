@@ -1188,6 +1188,17 @@ maquette et les dispositions ci-dessus ; `npm run captures -- etape2`, dans
   replié ; les pistes se notent aussi dans le carnet, et pas seulement dans
   l'atelier.
 
+**Retouche du porteur, 10 octobre 2026 — « Phrases de choix ».** Les deux
+colonnes « Formule de renvoi » et « Constructions » ne se distinguaient pas :
+elles montraient deux fois presque la même phrase. Elles deviennent une
+seule partie. Une liste de quatre phrases écrites en entier, à cocher, la
+première « toujours proposée » ; au-dessus, « Le numéro s'annonce par », en
+trois pilules (« rends-toi au 12 », « va au 12 », « → 12 »), qui récrit
+aussitôt les quatre phrases. Les noms des constructions (« Pour… », « Si tu
+veux… ») quittent l'écran : la phrase d'exemple en tient lieu. Les règles de
+F05 et F11.5 ne changent pas : une seule façon d'annoncer le numéro pour
+tout le livre, une phrase tirée parmi celles qui sont cochées.
+
 **Écrans que la maquette ne dessinait pas :**
 
 | Écran | Disposition |

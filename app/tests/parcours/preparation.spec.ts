@@ -248,17 +248,21 @@ test("F04.2 — la rubrique facultative réunit les objets, les formules d'actio
   expect((await base.from("objets").select("nom, description").eq("projet_id", projet)).data).toEqual([{ nom: "la lanterne d’argent", description: "Éclaire sans être vue." }]);
 });
 
-test("F05, F11.5 — la rubrique « Phrases de choix » règle la formule de renvoi, les constructions et la marque de fin, avec leur exemple", async ({ page }) => {
+test("F05, F11.5 — la rubrique « Phrases de choix » : une seule liste de phrases à cocher, la façon d'annoncer le numéro, la marque de fin", async ({ page }) => {
   const { base, projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation`);
   const phrases = rubrique(page, "Phrases de choix");
-  await expect(phrases.getByRole("radio", { name: /rends-toi au 12/ })).toBeChecked();
-  await expect(phrases.getByRole("checkbox", { name: /Le libellé, puis le renvoi/ })).toBeDisabled();
-  await expect(phrases).toContainText("Plonger la main : rends-toi au 17.");
+  await expect(phrases.getByRole("radio", { name: "« rends-toi au 12 »" })).toBeChecked();
+  // Les phrases s'écrivent en entier ; la première est toujours proposée
+  const cases = phrases.getByRole("checkbox");
+  await expect(cases).toHaveCount(4);
+  await expect(phrases.getByRole("checkbox", { name: /Plonger la main : rends-toi au 17\./ })).toBeDisabled();
+  await expect(phrases.getByRole("checkbox", { name: /Plonger la main : rends-toi au 17\./ })).toBeChecked();
 
-  await phrases.getByRole("radio", { name: /« va au 12 »/ }).check();
-  await expect(phrases).toContainText("Pour plonger la main, va au 17.");
-  await phrases.getByRole("checkbox", { name: /« Pour… »/ }).check();
+  // Changer la façon d'annoncer le numéro récrit toutes les phrases
+  await phrases.getByRole("radio", { name: "« va au 12 »" }).check();
+  await expect(phrases.getByRole("checkbox", { name: /Plonger la main : va au 17\./ })).toBeChecked();
+  await phrases.getByRole("checkbox", { name: "Pour plonger la main, va au 17." }).check();
   await phrases.getByLabel("Marque de fin").fill("FIN");
   await phrases.getByLabel("Marque de fin").blur();
   await expect.poll(async () => (await base.from("preparations").select("formule_renvoi, constructions, marque_fin").eq("projet_id", projet).single()).data).toEqual({
