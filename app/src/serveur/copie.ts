@@ -9,6 +9,7 @@ import {
   ciblesDe, controlerTexte, enMots, estAuto, estRenvoi, nettoyerTexte, renvoisDe, type Droits, type Enregistrement, type Motif, type Texte,
 } from "@/domaine/copie";
 import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
+import type { Voisines } from "@/composants/copie/contexte";
 
 /**
  * Le texte d'une scène : ce qu'on en lit et comment il s'enregistre (F08.1, F08.2). Le
@@ -193,6 +194,29 @@ async function assurerOrdreDeLaScene(base: SupabaseClient, sceneId: string): Pro
 export async function numerosDuProjet(base: SupabaseClient, projetId: string): Promise<Numeros | null> {
   const lu = await structure(base, projetId);
   return lu?.aChoix ? numeroter(lu.plan) : null;
+}
+
+/**
+ * Les scènes voisines d'une scène (F04.3), pour l'adulte comme pour le poste d'un élève :
+ * la base ne rend de chacune que ce que la personne peut lire.
+ */
+export async function voisinesDe(base: SupabaseClient, sceneId: string): Promise<Voisines> {
+  const { data, error } = await base.rpc("voisines_de_la_scene", { p_scene: sceneId });
+  if (error) throw new Error(`Scènes voisines illisibles : ${error.message}`);
+  const voisines: Voisines = { avant: [], apres: [] };
+  type Ligne = {
+    sens: "avant" | "apres"; scene_id: string; reference: number | null; titre: string | null; chapitre: string; lisible: boolean; vide: boolean; cache: boolean;
+    libelle: string; extrait: unknown; phrase: unknown; suite: boolean;
+  };
+  for (const l of (data ?? []) as Ligne[]) {
+    const [extrait] = l.extrait ? (nettoyerTexte([l.extrait]) ?? []) : [];
+    const [phrase] = l.phrase ? (nettoyerTexte([l.phrase]) ?? []) : [];
+    voisines[l.sens === "avant" ? "avant" : "apres"].push({
+      id: l.scene_id, reference: l.reference, titre: l.titre, chapitre: l.chapitre, lisible: l.lisible, vide: l.vide, cache: l.cache, libelle: l.libelle ?? "",
+      extrait: extrait?.type === "p" ? extrait : null, phrase: phrase?.type === "choix" ? phrase : null, suite: !!l.suite,
+    });
+  }
+  return voisines;
 }
 
 export type Trouvee = { id: string; extrait: string };

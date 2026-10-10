@@ -6,7 +6,7 @@ import { exigerEnseignant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
 import type { Livre } from "@/composants/copie/contexte";
 import { numerosDuPlan } from "@/domaine/numeros";
-import { texteDeScene } from "@/serveur/copie";
+import { texteDeScene, voisinesDe } from "@/serveur/copie";
 import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
 import { PageScene } from "./PageScene";
 
@@ -34,11 +34,13 @@ export default async function Page(props: Props) {
   const lu = await lire(props);
   if (!lu) notFound();
   const { enseignant, projet, plan, scene } = lu;
-  const [eleves, texte, demande, preparation] = await Promise.all([
+  const [eleves, texte, demande, preparation, voisines, preference] = await Promise.all([
     elevesDeLaClasse(enseignant, projet.classe?.id ?? null),
     texteDeScene(enseignant, scene.id),
     props.searchParams,
     preparationDe(enseignant, projet.id),
+    voisinesDe(enseignant.supabase, scene.id),
+    enseignant.supabase.from("enseignants").select("voisines").eq("id", enseignant.id).maybeSingle(),
   ]);
   if (!texte) notFound();
   // Le livre autour de la scène : numéros des passages, scènes où peut mener un choix (F05, F11.5)
@@ -64,6 +66,8 @@ export default async function Page(props: Props) {
         texte={texte}
         livre={livre}
         jeu={{ objets: preparation?.objets ?? [], formules: projet.recit === "choix" ? (preparation?.formules ?? []) : [] }}
+        voisines={voisines}
+        voisinesAffichees={preference.data?.voisines !== false}
         ouvrir={typeof demande.texte === "string" ? demande.texte : undefined}
         venuDuSuivi={demande.de === "suivi"}
         venuDesChemins={demande.de === "chemins"}

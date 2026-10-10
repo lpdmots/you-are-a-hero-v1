@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { Droits } from "@/domaine/copie";
+import type { Choix, Droits, Paragraphe } from "@/domaine/copie";
 import type { Construction, Formule, FormuleRenvoi, Objet } from "@/domaine/preparation";
 
 /**
@@ -43,6 +43,32 @@ export type Livre = {
 export type Jeu = { objets: Objet[]; formules: Formule[] };
 export const SANS_JEU: Jeu = { objets: [], formules: [] };
 
+/**
+ * Une scène voisine (F04.3) : celle d'où arrive le lecteur, ou celle où il repart. La
+ * personne n'en reçoit que ce qu'elle a le droit de lire : hors de son périmètre, le seul
+ * titre public du chapitre.
+ */
+export type Voisine = {
+  id: string;
+  reference: number | null;
+  titre: string | null;
+  chapitre: string;
+  lisible: boolean;
+  vide: boolean;
+  /** Reliée par une liaison cachée, et non par un choix */
+  cache: boolean;
+  /** Le libellé du choix qui relie les deux scènes */
+  libelle: string;
+  /** Le dernier paragraphe de récit de la scène d'avant, ou le premier de la scène d'après */
+  extrait: Paragraphe | null;
+  /** La phrase de choix qui mène ici, telle que le livre l'affiche (F04-AC14) */
+  phrase: Choix | null;
+  /** La scène voisine a d'autres paragraphes que celui de l'extrait */
+  suite: boolean;
+};
+export type Voisines = { avant: Voisine[]; apres: Voisine[] };
+export const SANS_VOISINES: Voisines = { avant: [], apres: [] };
+
 export type Trouvee = { id: string; extrait: string };
 export type SceneCreee = { id: string; reference: number; titre: string | null; chapitreId: string };
 
@@ -65,6 +91,8 @@ export type Services = {
   /** Importer une image dans le projet, et retrouver celles qui y sont déjà : pour l'adulte seul (F10-AC27) */
   importerImage?: (fichier: File) => Promise<{ ok: true; id: string } | { ok: false; erreur: string }>;
   imagesDuProjet?: () => Promise<string[]>;
+  /** « Scènes voisines » : la préférence de la personne, pour toutes ses scènes (F04-AC08) */
+  reglerVoisines?: (affiche: boolean) => Promise<unknown>;
 };
 
 export type Lieu = { projetId: string; sceneId: string; chapitreId: string };

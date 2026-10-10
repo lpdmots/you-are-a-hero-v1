@@ -25,11 +25,16 @@ le même jour ; voir le
 [plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit),
 [l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026)
 et le [design](docs/design.md#étape-2-construite-10-octobre-2026).
-**L'étape 3 est autorisée le 10 octobre 2026**, pour elle seule (écrire une
-scène et relier les choix) : son entretien est fait et validé dans son
-ensemble le même jour, sa construction n'est pas commencée ; voir le
-[plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix) et le
-[design](docs/design.md#étape-3--écrans-arrêtés-avant-de-construire-10-octobre-2026).
+**L'étape 3 est construite en local le 10 octobre 2026**, pour elle seule
+(écrire une scène et relier les choix) : autorisée, cadrée par un entretien
+validé dans son ensemble, puis construite le même jour en six lots, un commit
+local par lot. Elle n'est ni poussée ni en ligne, ses six migrations ne sont
+pas appliquées à la vraie base, et le porteur ne l'a pas encore essayée :
+elle n'est pas terminée. Voir le
+[plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix), qui dit
+ce qui reste et dans quel ordre,
+[l'architecture](docs/architecture.md#réalisation-de-létape-3-10-octobre-2026)
+et le [design](docs/design.md#étape-3-construite-10-octobre-2026).
 L'étape 4 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les

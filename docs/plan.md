@@ -404,13 +404,32 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   périmètre de l'étape. Écrans :
   [design](design.md#étape-3--écrans-arrêtés-avant-de-construire-10-octobre-2026).
 - **Autorisée le 10 octobre 2026,** pour elle seule, en deux temps :
-  l'entretien, fait et validé ; la construction, commencée le même jour.
-  Le schéma de la base change : la migration s'applique à la vraie base
-  sur accord du porteur, après une sauvegarde.
-- **Construction, où elle en est.** Tout est en local, dans `app/`, par
-  commits locaux ; rien n'est poussé et aucune migration de l'étape n'est
-  appliquée à la vraie base. Pour reprendre : lire le lot en cours ci-dessous,
-  puis `git log`.
+  l'entretien, fait et validé ; la construction, faite le même jour, en
+  local. Le schéma de la base change : les migrations s'appliquent à la
+  vraie base sur accord du porteur, après une sauvegarde.
+- **Construction : les six lots sont construits, en local, le 10 octobre
+  2026.** Un commit local par lot ; rien n'est poussé, rien n'est en ligne,
+  et aucune migration de l'étape n'est appliquée à la vraie base.
+  - **Ce qui reste, dans cet ordre, sur l'accord du porteur :** sauvegarder
+    la vraie base (`npm run sauvegarder`), relire puis appliquer les six
+    migrations de l'étape (`npm run production:schema`, puis `-- --oui`),
+    pousser le code, qui a besoin de ce schéma et ne doit donc pas partir
+    avant, vérifier (`npm run verifier:production`) ; puis son essai, d'après
+    « Terminée quand ». L'étape n'est pas terminée tant qu'il ne l'a pas dit.
+  - **V13, à faire à la main par le porteur :** coller dans une scène un
+    texte venu de Word, de LibreOffice et de Google Docs réels, avec du gras,
+    de l'italique, du souligné, une liste, un titre et un tableau ; refaire
+    l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
+    le contenu que ces logiciels mettent dans le presse-papiers, dans
+    Chromium seulement.
+  - **Tests automatiques :** 440 passent — 104 sur les règles, 155 contre
+    la base locale, 181 parcours joués dans un navigateur —, chacun au
+    nom de son critère. Les neuf migrations se rejouent depuis une base vide
+    et donnent le schéma de la base locale.
+  - **V19 :** les versions de Plate et de Slate sont figées dans
+    `package.json` ; les quatorze scénarios du prototype de l'éditeur sont
+    réécrits dans `tests/parcours/` (`choix`, `proteger`, `jeu`) et servent
+    de filet à toute montée de version.
   - **Lot 1 — enregistrement et texte simple : construit le 10 octobre
     2026.** L'éditeur Plate (paragraphes, gras, italique, souligné, collage
     nettoyé) ; l'enregistrement deux secondes après la frappe et quinze au
@@ -549,7 +568,24 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       scène a déjà portées, si bien qu'il peut y recopier un symbole déjà
       présent ; l'image en bloc d'une phrase copiée par un élève est écartée
       avec un message, comme l'action de jeu.
-  - **Lot 6 :** à faire.
+  - **Lot 6 — scènes voisines : construit le 10 octobre 2026.** Avant le
+    texte, la fin de la scène d'où arrive le lecteur, avec la phrase de choix
+    qui mène ici ; après, le début de celle où il repart, avec le libellé du
+    choix ; une voisine à la fois, des onglets, « Ouvrir » ; une ligne pour
+    une voisine sans texte ou d'un autre chapitre ; « lien caché » ; l'ordre
+    du plan en récit classique. La case « Scènes voisines », cochée par
+    défaut, tenue par le compte de l'adulte et par le profil de l'élève.
+    Schéma : `20261010260000_scenes_voisines.sql`.
+    - **Critères qui attendent :** la moitié de F04-AC10 qui parle de la
+      remise et du livre (étapes 4 et 6) ; l'affichage pendant la relecture
+      d'un texte remis, question ouverte de F04.3.
+    - **Précisions prises en construisant, à confirmer par le porteur :**
+      la case est à droite du titre de la copie, et non parmi les outils,
+      trop nombreux ; les extraits ne s'affichent pas pendant qu'on lit un
+      texte gardé à part ; une liaison cachée ne se montre à un élève que si
+      l'autre scène est dans un chapitre qui lui est attribué, lecture
+      ouverte ou non ; un extrait ne montre que du récit, ni action de jeu
+      ni image en bloc.
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du

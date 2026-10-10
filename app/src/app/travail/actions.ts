@@ -63,6 +63,12 @@ export async function supprimerScene(sceneId: string): Promise<Fait> {
   return { ok: true };
 }
 
+/** « Scènes voisines » : la préférence de l'élève, qui le suit d'un poste à l'autre (F04-AC08). */
+export async function reglerVoisines(affiche: boolean): Promise<void> {
+  const poste = await base();
+  if (poste) await poste.rpc("regler_voisines", { p_affiche: affiche === true });
+}
+
 /** Les numéros du livre, relus : après un choix créé ou une scène ajoutée (F05-AC34). */
 export async function relireNumeros(projetId: string): Promise<Record<string, number>> {
   if (!(await base())) return {};

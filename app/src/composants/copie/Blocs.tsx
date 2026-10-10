@@ -54,7 +54,7 @@ function Destinations({ bloc, livre, pourEleve }: { bloc: Choix; livre: Livre; p
 }
 
 /** La phrase telle qu'elle se lira : son texte, et à la place de chaque renvoi le numéro de sa destination. */
-function Phrase({ bloc, livre, formule }: { bloc: Choix; livre: Livre; formule: FormuleRenvoi }) {
+export function Phrase({ bloc, livre, formule }: { bloc: Choix; livre: Livre; formule: FormuleRenvoi }) {
   return (
     <span className="recit">
       {morceauxDe(bloc, formule).map((m, i) =>
@@ -95,7 +95,7 @@ function Figure({ bloc }: { bloc: ImageBloc }) {
   );
 }
 
-const lettresLues = (l: Lettres | ImageLigne | { text: string }, i: number): ReactNode => {
+export const lettresLues = (l: Lettres | ImageLigne | { text: string }, i: number): ReactNode => {
   if (estImageLigne(l)) return <Symbole key={i} image={l.image} alt={l.alt} />;
   let mots: ReactNode = l.text;
   const m = l as Lettres;

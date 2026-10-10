@@ -204,6 +204,12 @@ export async function ajouterFormuleDepuisLaScene(projetId: string, texte: strin
   return fait;
 }
 
+/** « Scènes voisines » : la préférence de l'adulte, conservée avec son compte (F04-AC08). */
+export async function reglerVoisines(affiche: boolean): Promise<void> {
+  const e = await exigerEnseignant();
+  await e.supabase.from("enseignants").update({ voisines: affiche === true }).eq("id", e.id);
+}
+
 /** « Libérer le numéro » : le passage prend place à la suite de son groupe (F11-AC97). */
 export async function libererNumero(sceneId: string): Promise<Fait> {
   const e = await exigerEnseignant();

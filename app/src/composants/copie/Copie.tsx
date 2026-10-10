@@ -13,13 +13,15 @@ import { nomScene } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
 import { ActionDeJeu, ImageEnBloc, ImageSurLaLigne, NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
 import {
-  Contexte, SANS_JEU, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee, type Services,
+  Contexte, SANS_JEU, SANS_VOISINES, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee,
+  type Services, type Voisines,
 } from "./contexte";
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
 import { FicheAction, FicheObjets } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
 import { HorsRecit, type GestesDeLiaison } from "./Liaisons";
 import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, type Editeur, type Signal } from "./regles";
+import { ScenesVoisines } from "./ScenesVoisines";
 import { SortieGardee } from "./SortieGardee";
 import { useEnregistrementTexte, type Cible, type EtatTexte } from "./useEnregistrementTexte";
 
@@ -57,6 +59,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
+  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -87,6 +90,10 @@ export function Copie({
   enseignant?: string | null;
   /** Objets de l'histoire et formules d'action du projet (F04.2) */
   jeu?: Jeu;
+  /** Les scènes d'où arrive le lecteur et celles où il repart, et la préférence de la personne (F04.3) */
+  voisines?: Voisines;
+  voisinesAffichees?: boolean;
+  lienDeScene?: (id: string) => string;
 }) {
   // Ce que la copie a appris depuis que la page lui a donné le livre : numéros relus, scènes créées
   // depuis un choix. Quand la page relit le livre, c'est elle qui fait foi.
@@ -119,6 +126,8 @@ export function Copie({
   const [liaisons, setLiaisons] = useState<Liaison[]>(() => liaisonsDe(texte));
   const liaisonsTenues = useRef(liaisons);
   const [fiche, setFiche] = useState<FicheOuverte | null>(null);
+  const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
+  const aDesVoisines = voisines.avant.length + voisines.apres.length > 0;
   const [espace, setEspace] = useState<{ bloc: string; hauteur: number } | null>(null);
   const [haut, setHaut] = useState(0);
   const [bandeau, setBandeau] = useState<Bandeau | null>(null);
@@ -813,6 +822,25 @@ export function Copie({
       <div className={`copie${arrete ? " copie--lecture" : ""}`}>
         <div className="copie__barre">
           {tete}
+          {aDesVoisines && !autre ? (
+                <label className="outil-case" title={vous ? "Ce réglage vaut pour toutes vos scènes" : "Ce réglage vaut pour toutes tes scènes"}>
+                  <input
+                    type="checkbox"
+                    checked={avecVoisines}
+                    onChange={(ev) => {
+                      const affiche = ev.target.checked;
+                      setAvecVoisines(affiche);
+                      void services.reglerVoisines?.(affiche);
+                      setBandeau({
+                        texte: affiche
+                          ? `Les scènes voisines s’affichent, dans toutes ${vous ? "vos" : "tes"} scènes.`
+                          : `Les scènes voisines ne s’affichent plus, dans aucune de ${vous ? "vos" : "tes"} scènes. ${vous ? "Vous pouvez" : "Tu peux"} recocher la case.`,
+                      });
+                    }}
+                  />
+                  <span>Scènes voisines</span>
+                </label>
+          ) : null}
           {autre ? (
             autre.barre
           ) : arrete ? null : (
@@ -884,6 +912,7 @@ export function Copie({
             </div>
           )}
         </div>
+        {avecVoisines && !autre && lienDeScene ? <ScenesVoisines sens="avant" voisines={voisines.avant} livre={livre} pourEleve={pourEleve} lienDeScene={lienDeScene} /> : null}
         <div hidden={!!autre} className="copie__zone" ref={zone}>
           <Plate
             editor={editor}
@@ -1016,6 +1045,7 @@ export function Copie({
           ) : null}
           <HorsRecit liaisons={liaisons} services={services} gestes={gestesDeLiaison} lecture={arrete} />
         </div>
+        {avecVoisines && !autre && lienDeScene ? <ScenesVoisines sens="apres" voisines={voisines.apres} livre={livre} pourEleve={pourEleve} lienDeScene={lienDeScene} /> : null}
         {autre ? autre.corps : null}
         {bandeau && !autre ? (
           <div className="copie__message" role="status">

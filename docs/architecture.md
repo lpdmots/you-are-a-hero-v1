@@ -596,6 +596,20 @@ collage et arrêté l'élève. La scène retient donc les images qu'elle a
 portées (`images_vues`, tenue par un déclencheur), et le contrôle du serveur
 s'y réfère.
 
+**Scènes voisines (lot 6).** Une seule fonction de la base sert l'adulte et
+le poste d'un élève (`voisines_de_la_scene`) : elle reconnaît qui l'appelle
+et ne rend d'une scène voisine que ce que cette personne peut en lire —
+l'extrait, ou le seul titre public du chapitre. Les extraits se dessinent
+autour de l'éditeur, jamais dedans : ils ne peuvent ni se modifier ni
+s'enregistrer avec la scène. La préférence « Scènes voisines » est une
+colonne du compte de l'adulte et une colonne du profil de l'élève.
+
+**Montées de version (V19).** Plate, Slate et leurs greffons sont figés dans
+`package.json`. Tout ce que la copie fait contre Slate est dans `regles.ts`,
+et les scénarios du prototype de l'éditeur, réécrits pour l'application,
+sont le filet d'une montée de version : `tests/parcours/choix.spec.ts`,
+`proteger.spec.ts` et `jeu.spec.ts`.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

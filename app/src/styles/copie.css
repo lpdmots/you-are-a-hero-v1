@@ -1112,6 +1112,136 @@
   }
 }
 
+/* ——— Scènes voisines (F04.3) ———
+   Les extraits prolongent la copie : même feuille, même marge rouge, mais sur le papier
+   grisé des surfaces secondaires, en plus petit, séparés du texte par un pointillé. */
+.voisine {
+  position: relative;
+  padding: 10px 20px 12px var(--gout);
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+}
+.voisine::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--axe);
+  width: 2px;
+  background: var(--marge);
+  opacity: 0.55;
+}
+.voisine--avant {
+  border-bottom: 1.5px dashed var(--trait-fort);
+}
+.voisine--apres {
+  border-top: 1.5px dashed var(--trait-fort);
+}
+.voisine__outil {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: var(--t-xs);
+}
+.voisine--avant .voisine__outil {
+  margin-bottom: 8px;
+}
+.voisine--apres .voisine__outil {
+  margin-top: 8px;
+}
+.voisine__sens {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.voisine__nom {
+  color: var(--graphite);
+  font-weight: 700;
+}
+.voisine__onglets {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.voisine__onglets button {
+  padding: 3px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  color: var(--graphite-2);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.voisine__onglets button[aria-selected="true"] {
+  background: var(--graphite);
+  box-shadow: none;
+  color: var(--feuille);
+}
+.voisine__ailleurs,
+.voisine__choix {
+  font-style: italic;
+}
+.voisine__ouvrir {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  color: var(--canard);
+  font-weight: 700;
+}
+.voisine__ouvrir .ic {
+  width: 1em;
+  height: 1em;
+}
+.voisine__extrait {
+  max-width: 62ch;
+  font-size: 0.98rem;
+  line-height: 1.55;
+}
+.voisine__extrait p {
+  margin: 0 0 0.45em;
+}
+.voisine__extrait p:last-child {
+  margin-bottom: 0;
+}
+.voisine__coupe {
+  color: var(--graphite-3);
+  font-family: var(--f-ui);
+}
+.voisine__phrase {
+  font-style: italic;
+}
+.outil--texte {
+  white-space: nowrap;
+}
+.outil-case {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  white-space: nowrap;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  cursor: pointer;
+}
+.outil-case input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--canard);
+}
+@media (max-width: 700px) {
+  .voisine {
+    padding-inline: 14px;
+  }
+  .voisine::before {
+    display: none;
+  }
+}
+
 /* Là où se poserait le bloc qu'on tire : un trait */
 .se-pose-avant::before,
 .copie__texte.se-pose-fin::after {

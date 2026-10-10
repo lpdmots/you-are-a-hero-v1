@@ -14,7 +14,7 @@ import { nomPourEleves, type Eleve } from "@/domaine/eleves";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
 import type { SceneOuverte } from "@/serveur/recit-eleve";
-import { creerSceneDepuisChoix, relireNumeros, supprimerScene } from "../../actions";
+import { creerSceneDepuisChoix, reglerVoisines, relireNumeros, supprimerScene } from "../../actions";
 import styles from "../../travail.module.css";
 
 /**
@@ -57,6 +57,7 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
     creerScene: (chapitreId, titre) => creerSceneDepuisChoix(chapitreId, titre, scene.projetId),
     supprimerScene: (id) => supprimerScene(id),
     relireNumeros: () => relireNumeros(scene.projetId),
+    reglerVoisines: (affiche) => reglerVoisines(affiche),
   };
 
   let copie: ReactNode;
@@ -72,6 +73,9 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
         pourEleve
         enseignant={prof}
         jeu={scene.jeu}
+        voisines={scene.voisines}
+        voisinesAffichees={scene.voisinesAffichees}
+        lienDeScene={(id) => `/travail/scene/${id}`}
         services={services}
         marques={scene.marques}
         libelle={`Ton texte, scène ${ref}`}

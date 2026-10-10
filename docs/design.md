@@ -1187,6 +1187,59 @@ Ces formes sont proposées, à juger à l'essai de l'étape.
 | Mise en forme des élèves | Un interrupteur de plus dans les réglages du projet, sous la lecture ouverte, en mode classe seulement. |
 | Rappel d'un texte gardé à part | La ligne de rappel de F08.1 se pose dans l'onglet Suivi, seule, en attendant le Suivi de l'étape 4. |
 
+### Étape 3 construite (10 octobre 2026)
+
+Les écrans de l'étape 3 sont construits dans l'application, en local, d'après
+la maquette et les dispositions ci-dessus : la copie et son pied, le texte
+gardé à part, les versions précédentes, les choix dans la scène, le lien
+caché, la note, les blocs préparés, les objets et l'action de jeu, les
+images, les scènes voisines, la vue « Chemins », la recherche de l'élève.
+Sans retour du porteur à ce stade ; leurs captures ne sont pas faites.
+
+**Écarts avec ce qui était dessiné ou arrêté, à juger à l'essai :**
+
+- **Barre de la copie :** elle porte, selon les droits, « Choix », « Action
+  de jeu », « Objets », « Image », « Note », « Protéger », puis gras,
+  italique et souligné. Sur un écran étroit elle passe sous le titre de la
+  copie, sur une ligne à elle. « Protéger » devient « Retirer la
+  protection » sans changer de largeur : la barre ne bouge pas quand le
+  curseur change de paragraphe.
+- **Case « Scènes voisines » :** à droite du titre de la copie, et non dans
+  la barre, déjà chargée ; son changement est dit dans le bandeau.
+- **Déplacer un bloc :** le repère de prise est dans la marge rouge, à
+  gauche du bloc ; le bloc tiré pâlit sur place et un trait montre où il se
+  posera. Il ne se soulève pas pour suivre le pointeur.
+- **Fiches :** toutes se posent sous le bloc concerné, dans la copie ; les
+  fiches « Objets » et « Action de jeu », dessinées volantes près du
+  curseur, aussi. La fiche ouverte au clavier prend le curseur.
+- **Action de jeu :** sous l'action où l'on écrit, « Formules… » et
+  « Supprimer » seulement ; elle se déplace par son repère et se protège par
+  le bouton de la barre.
+- **Paragraphe protégé :** pour l'enseignant, un crochet et un cadenas dans
+  la marge ; pour l'élève, un cadenas et la légende « Préparé par Mme
+  Laurent » sous le bloc. Le « + » qui ouvre un paragraphe est un petit rond
+  dans la marge, au-dessus du premier bloc fermé et entre deux blocs fermés.
+- **Lien caché :** la zone « Hors du récit · jamais imprimé » est sous le
+  texte, hors du cadre où l'on écrit ; chaque lien y est une ligne en
+  pointillé, avec « Régler ce lien ». Dans la fiche de création, la forme se
+  choisit en deux segments, « Phrase de choix » et « Lien caché (énigme) ».
+- **Image :** les segments « Petite », « Moyenne », « Pleine largeur » et
+  « Pleine page », puis le pourcentage ; « Légende » avant « Ce que montre
+  l'image », parce qu'elle se voit ; une image en pleine page porte dans la
+  copie le repère « pleine page dans le livre ».
+- **Scènes voisines :** les onglets sont des pastilles ; pour un élève, une
+  voisine se nomme par son titre, sans référence.
+- **Chemins :** une colonne par pas depuis l'entrée du chapitre, « Tout
+  voir » et deux boutons de taille ; sur téléphone, une liste verticale.
+- **Côté élève :** « Rechercher une scène » montre la référence des scènes,
+  comme ses autres listes ; la scène d'un camarade se lit sans s'écrire, la
+  prise en charge venant à l'étape 4.
+
+**Construit sans écran dessiné,** d'après les dispositions de l'entretien :
+les versions précédentes, la note de l'enseignant, « Fixer son numéro… », la
+fiche « Image » et ses réglages, la fiche d'une image sur la ligne, la
+recherche de l'élève, l'interrupteur de mise en forme.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

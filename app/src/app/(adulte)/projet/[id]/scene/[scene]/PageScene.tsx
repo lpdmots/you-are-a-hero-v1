@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { TexteLu } from "@/composants/copie/Blocs";
 import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
-import type { Jeu, Livre, Services } from "@/composants/copie/contexte";
+import type { Jeu, Livre, Services, Voisines } from "@/composants/copie/contexte";
 import { deposer, reduire, REFUS_IMPORT } from "@/composants/importer";
 import { listerImages } from "../../../actions-images";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
@@ -23,7 +23,7 @@ import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
 import { reglerScene, supprimer } from "../../../actions-recit";
 import {
-  ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
+  ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, reglerVoisines, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
   relireNumeros, relireTexte,
 } from "../../../actions-texte";
 import { useCommandesScene } from "../../_plan/commandes";
@@ -48,13 +48,15 @@ const PAS_ENREGISTRE = "Vos dernières corrections ne sont pas encore enregistr�
  * part s'y lit dans son onglet, avec ses deux gestes (F08.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, livre, jeu, ouvrir, venuDuSuivi, venuDesChemins,
+  projet, plan, sceneId, eleves, texte: recu, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, venuDesChemins,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
   /** Le livre autour de la scène : numéros, scènes, façon d'annoncer un numéro */
   livre: Livre;
   jeu: Jeu;
+  voisines: Voisines;
+  voisinesAffichees: boolean;
   /** Le texte gardé à part à montrer en arrivant, depuis la ligne de rappel du Suivi */
   ouvrir?: string;
   venuDuSuivi?: boolean;
@@ -136,6 +138,7 @@ export function PageScene({
       return depot;
     },
     imagesDuProjet: () => listerImages(projet.id),
+    reglerVoisines: (affiche) => reglerVoisines(affiche),
   };
 
   const remplacer = (suite: TexteDeScene) => {
@@ -465,6 +468,9 @@ export function PageScene({
             services={services}
             protection={projet.deClasse}
             jeu={jeu}
+            voisines={voisines}
+            voisinesAffichees={voisinesAffichees}
+            lienDeScene={(id) => `/projet/${projet.id}/scene/${id}`}
             marques
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}
