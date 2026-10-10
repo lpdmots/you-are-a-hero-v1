@@ -136,6 +136,8 @@ export function Copie({
   const [, setTic] = useState(0);
   const zone = useRef<HTMLDivElement>(null);
   const ficheRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [rallonge, setRallonge] = useState(0);
   // La scène créée avec le dernier choix : si ce choix est annulé, elle reste, et la copie le dit (F05-AC44)
   const creation = useRef<{ choix: string; scene: SceneCreee } | null>(null);
   const ciblesRelues = useRef(ciblesDe(texte).sort().join());
@@ -666,6 +668,8 @@ export function Copie({
   const ancreDe = (f: FicheOuverte): string | null => (f.sorte === "creation" || f.sorte === "action" ? f.apres : f.bloc);
   const ancre = fiche ? ancreDe(fiche) : barre && proposees.length ? (blocCourant(e)?.bloc.id ?? null) : null;
   const avecFiche = !!fiche;
+  // Le menu des commandes refermé, la copie reprend sa hauteur
+  const menuOuvert = !!barre && proposees.length > 0 && !fiche;
   useLayoutEffect(() => {
     if (!ancre || !zone.current) return;
     const bloc = zone.current.querySelector<HTMLElement>(`[data-bloc="${ancre}"]`);
@@ -674,6 +678,16 @@ export function Copie({
       if (!zone.current) return;
       const h = bloc.getBoundingClientRect().bottom - zone.current.getBoundingClientRect().top;
       setHaut((avant) => (Math.abs(avant - h) < 1 ? avant : h));
+      // Sur les dernières lignes, le menu des commandes dépasserait du cadre : la copie s'allonge
+      // de ce qui manque, sans rien déplacer du texte
+      const menu = menuRef.current;
+      if (menu) {
+        const sansRallonge = zone.current.clientHeight - (Number.parseFloat(zone.current.style.getPropertyValue("--rallonge")) || 0);
+        const horsRecit = zone.current.querySelector<HTMLElement>(".hors-recit");
+        const cadre = sansRallonge - (horsRecit ? horsRecit.offsetHeight + 20 : 0);
+        const manque = Math.max(0, Math.ceil(h + menu.offsetHeight + 16 - cadre));
+        setRallonge((avant) => (avant === manque ? avant : manque));
+      }
       const hauteur = (ficheRef.current?.offsetHeight ?? 0) + 14;
       if (avecFiche) setEspace((avant) => (avant?.bloc === ancre && Math.abs(avant.hauteur - hauteur) < 1 ? avant : { bloc: ancre, hauteur }));
     };
@@ -681,6 +695,7 @@ export function Copie({
     const veille = new ResizeObserver(mesurer);
     veille.observe(bloc);
     if (ficheRef.current) veille.observe(ficheRef.current);
+    if (menuRef.current) veille.observe(menuRef.current);
     return () => veille.disconnect();
   });
 
@@ -913,7 +928,7 @@ export function Copie({
           )}
         </div>
         {avecVoisines && !autre && lienDeScene ? <ScenesVoisines sens="avant" voisines={voisines.avant} livre={livre} pourEleve={pourEleve} lienDeScene={lienDeScene} /> : null}
-        <div hidden={!!autre} className="copie__zone" ref={zone}>
+        <div hidden={!!autre} className="copie__zone" ref={zone} style={menuOuvert && rallonge ? ({ "--rallonge": `${rallonge}px` } as React.CSSProperties) : undefined}>
           <Plate
             editor={editor}
             readOnly={arrete}
@@ -993,8 +1008,8 @@ export function Copie({
               }}
             />
           </Plate>
-          {barre && proposees.length && !fiche ? (
-            <div className="slash" style={{ top: haut }} role="listbox" aria-label="Commandes">
+          {menuOuvert ? (
+            <div className="slash" style={{ top: haut }} role="listbox" aria-label="Commandes" ref={menuRef}>
               {proposees.map((c, i) => (
                 <button key={c.cle} type="button" role="option" aria-selected={i === barre.choisie} onMouseDown={(ev) => ev.preventDefault()} onClick={() => lancerCommande(c)}>
                   <Icone nom={c.icone} />

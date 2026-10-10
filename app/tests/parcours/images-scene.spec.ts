@@ -359,7 +359,7 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await BARRE(page).getByRole("button", { name: "Image" }).click();
     await FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button").click();
     await expect(FICHE(page).getByRole("button", { name: "Sur la ligne" })).toBeDisabled();
-    await expect(FICHE(page)).toContainText("Placez d’abord le curseur dans un paragraphe.");
+    await expect(FICHE(page)).toContainText("Pour la mettre sur la ligne, placez d’abord le curseur dans un paragraphe.");
   });
 
   test("F10-AC33 — Alice coupe une phrase qui porte une image sur la ligne et la colle plus bas dans la même scène : l'image suit ; collée dans une autre scène, le texte arrive sans l'image, et un message le lui dit ; elle peut la retirer d'un paragraphe qu'elle modifie", async ({ page, browser }) => {

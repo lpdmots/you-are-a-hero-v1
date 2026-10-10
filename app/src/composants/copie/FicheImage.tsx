@@ -120,20 +120,39 @@ export function FichePoserImage({
         <div className="cx-poser">
           {/* eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir */}
           <img className="cx-poser__apercu" src={adresseImage(image)} alt="" />
-          <div>
+          <div className="cx-ou">
             <p className="cx-titre">Où mettre cette image ?</p>
-            <p className="cx__cmd">
-              <button type="button" className="btn btn--primaire" autoFocus onClick={() => onPoser(image, "bloc")}>
-                Dans le texte
+            {/* Chaque choix se montre : l'image entre deux paragraphes, ou petite dans une phrase */}
+            <div className="cx-ou__choix" role="group" aria-label="Où mettre cette image ?">
+              <button type="button" className="cx-ou__carte" autoFocus onClick={() => onPoser(image, "bloc")}>
+                <span className="cx-ou__schema" aria-hidden="true">
+                  <i />
+                  <i className="cx-ou__court" />
+                  {/* eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir */}
+                  <img src={adresseImage(image)} alt="" />
+                  <i />
+                  <i className="cx-ou__court" />
+                </span>
+                <span className="cx-ou__nom">Dans le texte</span>
+                <span className="cx-ou__aide">Entre deux paragraphes, comme une illustration.</span>
               </button>
-              <button type="button" className="btn" disabled={!surLaLigne} onClick={() => onPoser(image, "ligne")}>
-                Sur la ligne
+              <button type="button" className="cx-ou__carte" disabled={!surLaLigne} onClick={() => onPoser(image, "ligne")}>
+                <span className="cx-ou__schema cx-ou__schema--ligne" aria-hidden="true">
+                  <i />
+                  <span>
+                    <i />
+                    {/* eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir */}
+                    <img src={adresseImage(image)} alt="" />
+                    <i />
+                  </span>
+                  <i />
+                  <i className="cx-ou__court" />
+                </span>
+                <span className="cx-ou__nom">Sur la ligne</span>
+                <span className="cx-ou__aide">Dans une phrase, à la hauteur des lettres, comme un symbole.</span>
               </button>
-            </p>
-            <p className="cx-aide">
-              « Dans le texte » : entre deux paragraphes, à la largeur que vous choisirez. « Sur la ligne » : à la hauteur du texte, à l’endroit du curseur, pour
-              un symbole à repérer.{surLaLigne ? "" : " Placez d’abord le curseur dans un paragraphe."}
-            </p>
+            </div>
+            {surLaLigne ? null : <p className="cx-aide">Pour la mettre sur la ligne, placez d’abord le curseur dans un paragraphe.</p>}
             <button type="button" className="lien" onClick={() => setImage(null)}>
               Changer d’image
             </button>

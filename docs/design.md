@@ -1223,7 +1223,16 @@ Sans retour du porteur à ce stade ; leurs captures ne sont pas faites.
   texte, hors du cadre où l'on écrit ; chaque lien y est une ligne en
   pointillé, avec « Régler ce lien ». Dans la fiche de création, la forme se
   choisit en deux segments, « Phrase de choix » et « Lien caché (énigme) ».
-- **Image :** les segments « Petite », « Moyenne », « Pleine largeur » et
+- **Image, « Où mettre cette image ? » :** retouché le 10 octobre 2026 à
+  la demande du porteur, qui ne trouvait pas clairs deux boutons suivis
+  d'une phrase. Deux cartes côte à côte, chacune avec un petit schéma où
+  l'image choisie se voit à sa place — entre des lignes de texte pour « Dans
+  le texte », petite dans une ligne pour « Sur la ligne » —, son nom et une
+  ligne d'explication.
+- **Menu des commandes (« / ») :** sur les dernières lignes, le cadre du
+  texte s'allonge pour le contenir, sans déplacer ce qui est écrit ; le
+  porteur l'avait vu sortir du cadre.
+- **Image, réglages :** les segments « Petite », « Moyenne », « Pleine largeur » et
   « Pleine page », puis le pourcentage ; « Légende » avant « Ce que montre
   l'image », parce qu'elle se voit ; une image en pleine page porte dans la
   copie le repère « pleine page dans le livre ».

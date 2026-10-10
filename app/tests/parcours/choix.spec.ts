@@ -83,6 +83,27 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     expect((await sql<{ o: boolean }>("select ordre_etabli_le is not null as o from projets where id = $1", [l.projet]))[0].o).toBe(true);
   });
 
+  test("le menu des commandes, ouvert sur la dernière ligne, tient dans le cadre du texte, qui s'allonge sans déplacer ce qui est écrit ; refermé, le cadre reprend sa hauteur", async ({ page }) => {
+    const l = await auteur(page);
+    await deuxParagraphes(page, l);
+    const cadre = copie(page);
+    const avant = (await cadre.boundingBox())!;
+    const premier = (await cadre.locator("p").first().boundingBox())!;
+    await selectionner(page, { bloc: 1, offset: 38 });
+    await page.keyboard.type(" /");
+    const menu = page.locator(".slash");
+    await expect(menu.getByRole("option")).toHaveCount(5);
+    await expect.poll(async () => {
+      const [m, c] = [(await menu.boundingBox())!, (await cadre.boundingBox())!];
+      return m.y >= c.y && m.y + m.height <= c.y + c.height && m.x >= c.x && m.x + m.width <= c.x + c.width;
+    }).toBe(true);
+    // Le texte n'a pas bougé
+    expect((await cadre.locator("p").first().boundingBox())!.y).toBeCloseTo(premier.y, 0);
+    await page.keyboard.press("Escape");
+    await expect(menu).toHaveCount(0);
+    await expect.poll(async () => Math.round((await cadre.boundingBox())!.height)).toBe(Math.round(avant.height));
+  });
+
   test("F05-AC14 — par le bouton, sans curseur dans le texte, la phrase s'ajoute après le dernier paragraphe", async ({ page }) => {
     const l = await auteur(page);
     await deuxParagraphes(page, l);

@@ -422,8 +422,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
     le contenu que ces logiciels mettent dans le presse-papiers, dans
     Chromium seulement.
-  - **Tests automatiques :** 440 passent — 104 sur les règles, 155 contre
-    la base locale, 181 parcours joués dans un navigateur —, chacun au
+  - **Tests automatiques :** 441 passent — 104 sur les règles, 155 contre
+    la base locale, 182 parcours joués dans un navigateur —, chacun au
     nom de son critère. Les neuf migrations se rejouent depuis une base vide
     et donnent le schéma de la base locale.
   - **V19 :** les versions de Plate et de Slate sont figées dans
