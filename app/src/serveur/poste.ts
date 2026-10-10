@@ -68,8 +68,11 @@ async function clesEssais(creerNavigateur: boolean): Promise<{ navigateur: strin
 
 export type ResultatEntree = { ok: true } | { ok: false; raison: "faux" } | { ok: false; raison: "attente"; minutes: number };
 
+// L'horloge de la base et celle de l'application ne sont pas à la seconde près : sans cette
+// marge, une attente de deux minutes tout juste commencée se lirait « 3 minutes ».
+const ECART_HORLOGES_MS = 5000;
 const minutesRestantes = (jusqua: string): number =>
-  Math.max(1, Math.ceil((new Date(jusqua).getTime() - Date.now()) / 60000));
+  Math.max(1, Math.ceil((new Date(jusqua).getTime() - Date.now() - ECART_HORLOGES_MS) / 60000));
 
 /**
  * Ouvrir la classe sur ce poste (F06-AC43). Dix essais faux depuis ce navigateur, ou

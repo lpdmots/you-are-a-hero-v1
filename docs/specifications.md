@@ -5040,6 +5040,16 @@ un chapitre de la même partie. Le choix d'une image
 n'est pas nécessaire pour préparer ou écrire. Cette possibilité concerne les
 modes personnel et classe, en récit classique comme à choix.
 
+**Décidé par le porteur le 10 octobre 2026, après l'essai de l'étape 1 :**
+l'image de repérage se choisit dès la création d'un projet et dès celle d'un
+chapitre, et ce choix reste facultatif : on peut créer sans image, le
+visuel par défaut s'applique, et l'image se choisit ou se remplace ensuite.
+La création d'un projet garde ses trois questions de
+[F01](#f01--projet-et-responsabilité-de-ladulte) ; la place exacte de ce choix
+dans la création, et le cas des parties, restent à arrêter avant l'étape 2
+du [plan](plan.md#étape-2--préparer-et-organiser-le-récit), où ces images
+se construisent.
+
 **Distinctions confirmées :** réutiliser un fichier ne confond pas ses usages.
 Choisir une image pour l'interface ne l'ajoute pas au texte, à la couverture
 ou au PDF ; une illustration du livre ne devient pas automatiquement un
