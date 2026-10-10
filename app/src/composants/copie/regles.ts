@@ -44,9 +44,12 @@ export type Regles = {
 
 export const blocsDe = (e: Editeur): Bloc[] => e.children as Bloc[];
 
-/** Un bloc fermé : pris comme un tout, le curseur n'y entre pas. */
-export const estFerme = (bloc: Bloc | undefined, droits: Droits): boolean =>
-  !!bloc && bloc.type === "choix" && (estAuto(bloc) || estReserve(bloc, droits));
+/**
+ * Un bloc fermé : pris comme un tout, le curseur n'y entre pas. C'est la phrase de choix
+ * automatique, et tout bloc réservé à l'adulte pour cette personne — phrase préparée,
+ * paragraphe protégé (F06.1).
+ */
+export const estFerme = (bloc: Bloc | undefined, droits: Droits): boolean => !!bloc && (estAuto(bloc) || estReserve(bloc, droits));
 
 /** La personne peut-elle modifier, déplacer ou supprimer ce bloc ? */
 export const peutModifier = (bloc: Bloc, droits: Droits): boolean => !estReserve(bloc, droits);
@@ -74,6 +77,7 @@ const fragmentInterne = (data: DataTransfer): { blocs: unknown; origine: { mode?
   }
 };
 
+const deplace0 = (origine: { mode?: string; projet?: string }, projetId: string): boolean => origine.mode === "coupe" && origine.projet === projetId;
 const enBlocs = (paragraphes: Lettres[][]): Texte => paragraphes.map((children) => ({ type: "p", id: nouvelId(), children }));
 const echapper = (t: string): string => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -131,7 +135,8 @@ export const ReglesPlugin = createPlatePlugin({
       return true;
     }
 
-    const textuel = (b: Bloc) => b.type === "p";
+    // Récit et note de l'enseignant : du texte, dont une partie seulement peut partir
+    const textuel = (b: Bloc) => b.type === "p" || b.type === "note";
     const retire = (k: number): boolean => {
       const b = avant[k];
       if (b.type === "choix") return peutModifier(b, droits);
@@ -154,7 +159,7 @@ export const ReglesPlugin = createPlatePlugin({
         }
         if (teteGardee) e.tf.delete({ at: { anchor: debut, focus: e.api.end([i0]) } });
         // Les deux bouts d'un même récit se rejoignent, comme dans tout traitement de texte
-        if (teteGardee && queueGardee && gardesEntre === 0) e.tf.mergeNodes({ at: [i0 + 1] });
+        if (teteGardee && queueGardee && gardesEntre === 0 && avant[i0].type === avant[i1].type) e.tf.mergeNodes({ at: [i0 + 1] });
       }
       if (blocsDe(e).length === 0) e.tf.insertNodes(paragrapheVide(), { at: [0] });
       const reste = blocsDe(e);
@@ -228,7 +233,7 @@ export const ReglesPlugin = createPlatePlugin({
     api: {
       isVoid(element: { type?: string }) {
         if (element.type === "renvoi") return true;
-        if (element.type === "choix") return ferme(element as Bloc);
+        if (element.type === "choix" || element.type === "p") return ferme(element as Bloc);
         return isVoid(element as never);
       },
       isInline(element: { type?: string }) {
@@ -243,7 +248,7 @@ export const ReglesPlugin = createPlatePlugin({
         }
         const fragment = getFragment(at as never) as unknown as Bloc[];
         const entiers = new Map(blocsDe(e).map((b) => [b.id, b]));
-        return fragment.map((b) => (b.type === "choix" && ferme(entiers.get(b.id)) ? entiers.get(b.id)! : b));
+        return fragment.map((b) => (ferme(entiers.get(b.id)) ? entiers.get(b.id)! : b));
       },
     },
     transforms: {
@@ -278,9 +283,10 @@ export const ReglesPlugin = createPlatePlugin({
         if (e.api.isStart(point, [ici.index])) {
           if (ici.index === 0) return;
           const avant = blocsDe(e)[ici.index - 1];
-          // Deux paragraphes de récit se rejoignent ; récit et phrase de choix, jamais (F05-AC15)
-          if (ici.bloc.type === "p" && avant.type === "p") return deleteBackward(unite as never);
-          if (ici.bloc.type === "p" && lettresDe(ici.bloc) === "") e.tf.removeNodes({ at: [ici.index] });
+          // Deux paragraphes de récit se rejoignent ; récit et phrase de choix, note ou bloc préparé, jamais (F05-AC15)
+          if (ici.bloc.type === "p" && avant.type === "p" && !ferme(avant)) return deleteBackward(unite as never);
+          // Une ligne vide, ou une note vidée, s'efface
+          if ((ici.bloc.type === "p" || ici.bloc.type === "note") && lettresDe(ici.bloc) === "") e.tf.removeNodes({ at: [ici.index] });
           allerA(ici.index - 1, true);
           return;
         }
@@ -308,7 +314,7 @@ export const ReglesPlugin = createPlatePlugin({
         if (e.api.isEnd(point, [ici.index])) {
           const apres = blocsDe(e)[ici.index + 1];
           if (!apres) return;
-          if (ici.bloc.type === "p" && apres.type === "p") return deleteForward(unite as never);
+          if (ici.bloc.type === "p" && apres.type === "p" && !ferme(apres)) return deleteForward(unite as never);
           if (ici.bloc.type === "p" && lettresDe(ici.bloc) === "") {
             e.tf.removeNodes({ at: [ici.index] });
             allerA(ici.index);
@@ -328,8 +334,10 @@ export const ReglesPlugin = createPlatePlugin({
         supprimerSelection();
         const ici = blocCourant(e);
         if (!ici || ferme(ici.bloc)) return;
-        // Une phrase de choix tient en un paragraphe : Entrée en ouvre un dessous
-        if (ici.bloc.type !== "p") {
+        // Une phrase de choix ou une note tient en un paragraphe : Entrée en ouvre un dessous.
+        // Après un paragraphe protégé, la suite ne l'est pas : on protège ce qu'on a choisi
+        const point = e.selection?.anchor as Point | undefined;
+        if (ici.bloc.type !== "p" || (ici.bloc.protege && point && e.api.isEnd(point, [ici.index]))) {
           e.tf.insertNodes(paragrapheVide(), { at: [ici.index + 1] });
           allerA(ici.index + 1);
           return;
@@ -347,12 +355,18 @@ export const ReglesPlugin = createPlatePlugin({
         const interne = nettoyerTexte(bruts);
         if (interne?.length) {
           // Coupé : le même choix se déplace ; copié : c'en est un autre (F05-AC30, AC31)
-          const deplace = origine.mode === "coupe" && origine.projet === projetId;
+          const deplace = deplace0(origine, projetId);
           let [deplaces, copies, ecartes] = [0, 0, 0];
           const admis: Texte = [];
           for (const bloc of interne) {
             if (bloc.type === "p") {
+              // Du récit, sans la protection qu'il portait : on protège un paragraphe, pas sa copie
               admis.push({ type: "p", id: nouvelId(), children: marques ? bloc.children : bloc.children.map((l) => ({ text: l.text })) });
+            } else if (bloc.type === "note") {
+              // La note se déplace ou se duplique pour l'adulte ; personne d'autre n'en a (F05.2)
+              if (droits.role === "adulte") admis.push(deplace0(origine, projetId) ? bloc : { ...bloc, id: nouvelId() });
+            } else if (bloc.type === "liaison") {
+              // Hors du récit : une liaison cachée ne se colle pas
             } else if (estReserve(bloc, droits) || renvoisDe(bloc).some((r) => r.cible !== null && !o().scenes.includes(r.cible))) {
               // Créer ou déplacer ce choix n'est pas permis à cette personne, ou il vise une scène
               // qu'elle ne connaît pas : il est écarté (F05-AC32)
@@ -428,7 +442,7 @@ export const ReglesPlugin = createPlatePlugin({
         if (chemin.length === 1) {
           const enfants = (noeud.children ?? []) as unknown[];
           // Un renvoi n'existe que dans une phrase de choix (F05-AC15)
-          if (noeud.type === "p") {
+          if (noeud.type === "p" || noeud.type === "note") {
             const k = enfants.findIndex(estRenvoi);
             if (k !== -1) {
               e.tf.removeNodes({ at: [...chemin, k] });

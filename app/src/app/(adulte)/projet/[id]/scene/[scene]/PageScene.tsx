@@ -21,7 +21,8 @@ import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
 import { reglerScene, supprimer } from "../../../actions-recit";
 import {
-  chercherDestinations, creerSceneDepuisChoix, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, relireNumeros, relireTexte,
+  chercherDestinations, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
+  relireNumeros, relireTexte,
 } from "../../../actions-texte";
 import { useCommandesScene } from "../../_plan/commandes";
 import { ChoisirDepart } from "../../_plan/Panneaux";
@@ -118,6 +119,9 @@ export function PageScene({
       return reponse.ok ? { ok: true } : { ok: false, erreur: reponse.erreur };
     },
     relireNumeros: async () => (await relireNumeros(projet.id)).numeros,
+    numeroDe: (id) => numeroDeLaScene(id),
+    fixerNumero: (id, n) => fixerPourLiaison(id, n),
+    libererNumero: (id) => libererNumero(id),
   };
 
   const remplacer = (suite: TexteDeScene) => {
@@ -445,6 +449,7 @@ export function PageScene({
             droits={DROITS_ADULTE}
             lieu={{ projetId: projet.id, sceneId: scene.id, chapitreId: chapitre.id }}
             services={services}
+            protection={projet.deClasse}
             marques
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}

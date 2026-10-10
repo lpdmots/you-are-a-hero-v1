@@ -9,8 +9,17 @@ import { CONSTRUCTIONS, estConstruction, phraseDeChoix, type Construction, type 
 export type Marques = { bold?: true; italic?: true; underline?: true };
 export type Lettres = { text: string } & Marques;
 
-/** Paragraphe de récit */
-export type Paragraphe = { type: "p"; id: string; children: Lettres[] };
+/**
+ * Paragraphe de récit. Protégé par l'enseignant, un élève ne peut ni le modifier ni le
+ * supprimer : il écrit autour (F06.1).
+ */
+export type Paragraphe = { type: "p"; id: string; protege?: true; children: Lettres[] };
+
+/**
+ * Note de l'enseignant : un paragraphe visible de l'adulte seul, jamais imprimé ni partagé.
+ * Ce n'est pas du texte de la scène, et un élève n'en reçoit rien (F05.2).
+ */
+export type Note = { type: "note"; id: string; children: Lettres[] };
 
 /**
  * Renvoi : relié à une scène de destination, il affiche son numéro, calculé ailleurs et
@@ -27,12 +36,19 @@ export type ChoixAuto = { type: "choix"; id: string; auto: true; libelle: string
 export type ChoixPerso = { type: "choix"; id: string; auto?: undefined; libelle: string; children: (Lettres | Renvoi)[] };
 export type Choix = ChoixAuto | ChoixPerso;
 
-export type Bloc = Paragraphe | Choix;
+/**
+ * Liaison cachée par énigme (F05.1) : un lien vers une scène, sans phrase dans le récit. Le
+ * lecteur trouve lui-même où poursuivre. Hors du récit : rangée à la fin du texte.
+ */
+export type Liaison = { type: "liaison"; id: string; cible: string | null; libelle?: string; children: [{ text: "" }] };
+
+export type Bloc = Paragraphe | Choix | Note | Liaison;
 export type Texte = Bloc[];
 
 export const estChoix = (b: { type?: string }): b is Choix => b.type === "choix";
 export const estAuto = (b: Bloc): b is ChoixAuto => b.type === "choix" && b.auto === true;
 export const estRenvoi = (n: unknown): n is Renvoi => estObjet(n) && n.type === "renvoi";
+export const estLiaison = (b: { type?: string }): b is Liaison => b.type === "liaison";
 export const LIBELLE_MAX = 200;
 
 /** Limites d'une scène : de quoi écrire un chapitre entier, pas de quoi encombrer la base */
@@ -95,13 +111,23 @@ export function nettoyerTexte(brut: unknown): Texte | null {
   const scene = (v: unknown): string | null => (typeof v === "string" && UUID.test(v) ? v.toLowerCase() : null);
   const libelle = (v: unknown): string => (typeof v === "string" ? sansCommandes(v).replace(/\s+/g, " ").trim().slice(0, LIBELLE_MAX) : "");
   const texte: Texte = [];
+  const liaisons: Liaison[] = [];
   let compte = 0;
   for (const bloc of brut) {
     if (!estObjet(bloc)) return null;
     if (bloc.type === "p") {
       const children = ligne(bloc.children);
       compte += children.reduce((n, l) => n + l.text.length, 0);
-      texte.push({ type: "p", id: identite(bloc.id), children });
+      texte.push(bloc.protege === true ? { type: "p", id: identite(bloc.id), protege: true, children } : { type: "p", id: identite(bloc.id), children });
+    } else if (bloc.type === "note") {
+      const children = ligne(bloc.children);
+      compte += children.reduce((n, l) => n + l.text.length, 0);
+      texte.push({ type: "note", id: identite(bloc.id), children });
+    } else if (bloc.type === "liaison") {
+      const liaison: Liaison = { type: "liaison", id: identite(bloc.id), cible: scene(bloc.cible), children: [{ text: "" }] };
+      const l = libelle(bloc.libelle);
+      if (l) liaison.libelle = l;
+      liaisons.push(liaison);
     } else if (bloc.type === "choix" && bloc.auto === true) {
       texte.push({
         type: "choix", id: identite(bloc.id), auto: true, libelle: libelle(bloc.libelle),
@@ -130,18 +156,28 @@ export function nettoyerTexte(brut: unknown): Texte | null {
       else texte.push({ type: "choix", id: identite(bloc.id), libelle: libelle(bloc.libelle), children });
     } else return null;
   }
-  return compte > LETTRES_MAX ? null : texte;
+  // Les liaisons cachées sont hors du récit : toujours à la fin du texte
+  return compte > LETTRES_MAX ? null : [...texte, ...liaisons];
 }
+
+/** Le récit d'un texte, et ses liaisons cachées, que la copie tient à part (F05.1). */
+export const recitDe = (texte: Texte): Exclude<Bloc, Liaison>[] => texte.filter((b): b is Exclude<Bloc, Liaison> => b.type !== "liaison");
+export const liaisonsDe = (texte: Texte): Liaison[] => texte.filter(estLiaison);
 
 /** Les mots d'un bloc, sans mise en forme ni numéro : pour une phrase automatique, son libellé. */
 export const lettresDe = (bloc: Bloc): string =>
-  estAuto(bloc) ? bloc.libelle : (bloc.children as (Lettres | Renvoi)[]).map((e) => ("text" in e ? e.text : "")).join("");
+  estAuto(bloc) ? bloc.libelle : bloc.type === "liaison" ? "" : (bloc.children as (Lettres | Renvoi)[]).map((e) => ("text" in e ? e.text : "")).join("");
 
 /** Le texte d'une scène en mots seuls, un paragraphe par ligne. */
-export const enMots = (texte: Texte): string => texte.map(lettresDe).join("\n");
+export const enMots = (texte: Texte): string => recitDe(texte).map(lettresDe).join("\n");
 
-/** Une scène sans mot, sans choix ni image (F07.1) : « Texte vide ». La base tient la même règle. */
-export const estVide = (texte: Texte): boolean => texte.every((b) => b.type === "p" && lettresDe(b).trim() === "");
+/**
+ * Une scène sans mot, sans choix ni image (F07.1) : « Texte vide ». Une note de l'enseignant
+ * n'est pas du texte de la scène (F05-AC51), une liaison cachée non plus. La base tient la
+ * même règle.
+ */
+export const estVide = (texte: Texte): boolean =>
+  texte.every((b) => b.type === "note" || b.type === "liaison" || (b.type === "p" && lettresDe(b).trim() === ""));
 
 /** Les renvois d'un bloc : celui d'une phrase automatique, ou ceux d'une phrase personnalisée. */
 export function renvoisDe(bloc: Bloc): { id: string; cible: string | null; libelle: string }[] {
@@ -151,7 +187,8 @@ export function renvoisDe(bloc: Bloc): { id: string; cible: string | null; libel
 }
 
 /** Toutes les destinations d'un texte, dans l'ordre. */
-export const ciblesDe = (texte: Texte): string[] => texte.flatMap((b) => renvoisDe(b).flatMap((r) => (r.cible ? [r.cible] : [])));
+export const ciblesDe = (texte: Texte): string[] =>
+  texte.flatMap((b) => (b.type === "liaison" ? (b.cible ? [b.cible] : []) : renvoisDe(b).flatMap((r) => (r.cible ? [r.cible] : []))));
 
 /** Ce qu'affiche un renvoi : le numéro de sa destination, ou un vide visible comme tel. */
 export const NUMERO_VIDE = "…";
@@ -196,7 +233,9 @@ export type Droits =
 /** Ce bloc est-il réservé à l'adulte pour cette personne ? Elle écrit autour, sans y toucher. */
 export function estReserve(bloc: Bloc, droits: Droits): boolean {
   if (droits.role === "adulte") return false;
-  if (bloc.type !== "choix") return false;
+  // Liaison cachée et note sont à l'adulte seul ; un paragraphe protégé vaut pour tous les élèves (F06-AC50)
+  if (bloc.type === "liaison" || bloc.type === "note") return true;
+  if (bloc.type === "p") return bloc.protege === true;
   // Profil « écriture et propositions » : toute phrase de choix est préparée (F06-AC45)
   if (droits.profil === "propositions") return true;
   // Profil « écriture et organisation » : la phrase qui porte un raccord reste entière (F06-AC52)

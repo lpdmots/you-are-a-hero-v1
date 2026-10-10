@@ -54,6 +54,8 @@ export default async function Page(props: Props) {
     ),
     ailleurs: {},
     chapitres: plan.parties.flatMap((p) => p.chapitres.map((c) => ({ id: c.id, titre: c.titre, partie: p.titre }))),
+    fixes: Object.fromEntries(scenesDe(plan).flatMap((s) => (s.numeroFixe ? [[s.id, s.numeroFixe]] : []))),
+    depart: plan.departSceneId,
   };
   return (
     <div className="page">

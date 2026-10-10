@@ -530,6 +530,39 @@ d'arrivée. Un chapitre de quarante scènes dans un livre de deux cents
 s'affiche en moins de trois secondes ; « Tout voir » le ramène à la largeur
 de l'écran.
 
+**Liaison cachée (lot 3).** Un bloc `liaison` du texte, rangé à la fin : la
+table des liens, les numéros, l'enregistrement, les versions et les conflits
+valent pour elle sans rien de plus. Mais elle n'est pas dans l'éditeur : la
+copie la tient à part, dans la zone « Hors du récit », et l'ajoute au texte
+qu'elle envoie. Une sélection « tout » ne l'emporte donc pas, et le curseur
+n'y entre jamais. Le numéro de sa destination se fixe par la fonction de
+« Fixer son numéro… », avant que la liaison n'entre dans le texte ; il
+appartient à la scène, pas à la liaison.
+
+**Note de l'enseignant.** Un bloc `note` du texte, que la base n'envoie
+jamais à un poste : ni dans la scène qu'il ouvre, ni dans sa recherche, ni
+dans les destinations qu'il choisit. Le texte qu'un élève renvoie n'en porte
+donc aucune ; c'est la fonction d'enregistrement qui les remet, sous le
+verrou de la scène (`prive.remettre_les_notes`) : chaque note après le bloc
+qui la précédait et qui existe encore, sinon en tête. Le texte gardé à part
+après un refus reste celui de l'élève, sans note ; mis dans la scène, il
+reprend celles de la scène. Alternative écartée : faire cette remise dans le
+serveur de l'application, hors du verrou, où une note posée entre la lecture
+et l'écriture aurait pu se perdre.
+
+**Paragraphe protégé.** Une propriété du paragraphe, `protege`. Pour un
+élève, c'est un bloc réservé comme une phrase de choix préparée : fermé dans
+l'éditeur, gardé par les opérations, contrôlé par le serveur. Le « + » qui
+ouvre un paragraphe au-dessus d'un bloc fermé est dans chaque bloc fermé, et
+la feuille de style ne le montre qu'au-dessus du premier bloc ou entre deux
+blocs fermés : aucun calcul de voisinage, donc aucun affichage en retard.
+
+**Rendre le curseur au texte.** Après un changement, le bloc où le curseur
+doit aller n'est pas encore à l'écran, et l'éditeur échoue à s'y poser : la
+copie réessaie, d'abord au plus vite, puis au rythme de l'écran
+(`reprendreLeTexte`). Un clic sur une commande dessinée dans un bloc fermé
+ne remonte pas à l'éditeur, qui reposerait sa sélection sur ce bloc.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

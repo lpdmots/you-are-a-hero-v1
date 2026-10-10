@@ -468,7 +468,35 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       ponctuation ; sur téléphone, « Chemins » est une liste verticale ; la
       recherche de l'élève montre la référence des scènes, comme ses autres
       écrans.
-  - **Lots 3 à 6 :** à faire, dans l'ordre.
+  - **Lot 3 — liaison cachée, note de l'enseignant et protections :
+    construit le 10 octobre 2026.** « Lien caché (énigme) » dans la fiche de
+    création, pour l'adulte seul, avec le numéro gardé ou saisi ; la zone
+    « Hors du récit · jamais imprimé » sous le texte, ses réglages (numéro,
+    « Proposer comme choix », retrait) ; « Cacher ce choix (énigme) » ; pour
+    l'élève, « Ton énigme doit conduire au numéro 38 ». La note de
+    l'enseignant, par « /note » ou le bouton « Note », dont l'élève ne
+    reçoit rien et que la base remet à sa place quand il enregistre. Le
+    paragraphe protégé (« Protéger », « Retirer la protection »), fermé pour
+    les élèves avec « Préparé par Mme Laurent », et le « + » qui ouvre un
+    paragraphe au-dessus d'un bloc fermé. Schéma :
+    `20261010230000_notes_de_l_enseignant.sql`.
+    - **Vérifications levées :** V8 pour les notes (ni la page, ni les
+      réponses, ni la recherche d'un poste ne les contiennent). Les
+      scénarios 8 à 11 du prototype de l'éditeur sont réécrits dans
+      `tests/parcours/proteger.spec.ts`.
+    - **Critères qui attendent :** F05-AC05, AC08 et AC38 (contrôles des
+      chemins, blocage du PDF, scène « à vérifier ») à l'étape 6 ; la moitié
+      de F05-AC51 qui parle de « Remettre » à l'étape 4, et de la lecture
+      d'essai à l'étape 6.
+    - **Précisions prises en construisant, à confirmer par le porteur :**
+      une liaison cachée ne mène qu'à une scène existante, et se crée sans
+      libellé ; « Proposer comme choix » pose la phrase à la fin du texte ;
+      un lien retiré peut se rétablir par « Annuler », le numéro restant
+      fixé dans tous les cas ; une copie collée d'un paragraphe protégé
+      n'est pas protégée ; Entrée à la fin d'un paragraphe protégé ouvre un
+      paragraphe qui ne l'est pas ; une note glissée par un poste dans un
+      texte par ailleurs inchangé est écartée sans rien garder à part.
+  - **Lots 4 à 6 :** à faire, dans l'ordre.
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du

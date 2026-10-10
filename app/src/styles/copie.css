@@ -650,6 +650,218 @@
   font-size: var(--t-s);
 }
 
+/* ——— Blocs préparés, note de l'enseignant, lien caché (F05.1, F05.2, F06.1) ——— */
+
+.outil__deux {
+  display: inline-grid;
+  justify-items: start;
+}
+.outil__deux > span {
+  grid-area: 1 / 1;
+}
+.outil__deux > .est-cache {
+  visibility: hidden;
+}
+
+/* Paragraphe protégé, vu par l'enseignant : un crochet et un cadenas dans la marge */
+.copie__texte > p.est-protege,
+.copie__texte--lu > p.est-protege {
+  position: relative;
+}
+.marge--crochet {
+  top: 0;
+  bottom: 0;
+  align-content: start;
+  padding-top: 4px;
+}
+.marge--crochet::after {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: -14px;
+  bottom: 2px;
+  width: 7px;
+  border: 2px solid var(--graphite-3);
+  border-right: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+/* Le même paragraphe, vu par un élève : un bloc pris comme un tout */
+.bloc-prepare {
+  margin: 0 0 0.75em;
+  border-radius: 6px;
+}
+.bloc-prepare__texte {
+  display: block;
+  max-width: 62ch;
+  white-space: pre-wrap;
+}
+.bloc-prepare.est-choisi {
+  box-shadow: 0 0 0 2px var(--graphite-3);
+  outline: 6px solid transparent;
+}
+
+/* « + » : écrire au-dessus d'un bloc fermé. Montré là où le curseur n'a pas d'autre accès */
+.plus-avant {
+  position: absolute;
+  top: -15px;
+  left: calc(var(--axe) - var(--gout) - 14px);
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.plus-avant .ic {
+  width: 14px;
+  height: 14px;
+}
+.plus-avant:hover {
+  box-shadow: inset 0 0 0 2px var(--canard);
+  color: var(--canard);
+}
+.copie__texte > [data-ferme]:first-child > .plus-avant,
+.copie__texte > [data-ferme] + [data-ferme] > .plus-avant {
+  display: inline-flex;
+}
+.copie--lecture .plus-avant {
+  display: none !important;
+}
+
+/* Note de l'enseignant : le papier grisé des surfaces secondaires, la voix de l'outil */
+.note-prof {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  margin: 0 0 0.9em;
+  padding: 8px 12px 10px;
+  border-radius: 8px;
+  background: var(--feuille-2);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  line-height: 1.5;
+}
+.note-prof__legende {
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  user-select: none;
+}
+.note-prof__texte {
+  display: block;
+  min-height: 1.5em;
+  outline: none;
+  white-space: pre-wrap;
+}
+.note-prof.est-tire {
+  opacity: 0.4;
+}
+
+/* Hors du récit : les liens cachés, en pointillé, avec la clé de l'énigme */
+.hors-recit {
+  margin: 4px 20px 16px calc(var(--gout) - 10px);
+  padding-top: 12px;
+  border-top: 1px dashed var(--trait-fort);
+}
+.hors-recit__titre {
+  margin: 0 0 8px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.lien-cache {
+  margin: 0 0 8px;
+}
+.lien-cache__corps,
+.lien-cache--lu {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 14px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px dashed var(--graphite-3);
+  border-radius: 8px;
+  background: none;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  text-align: left;
+}
+.lien-cache__corps {
+  cursor: pointer;
+}
+.lien-cache__corps:hover,
+.lien-cache.est-ouvert > .lien-cache__corps {
+  border-color: var(--canard);
+  background: var(--canard-pale);
+}
+.lien-cache__mots {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+.lien-cache__mots > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.lien-cache__mots .ic {
+  width: 1.05em;
+  height: 1.05em;
+  color: var(--graphite-2);
+}
+.lien-cache__n {
+  padding: 0 0.35em;
+  border-radius: 5px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+}
+.lien-cache__regler {
+  margin-left: auto;
+  color: var(--canard);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.lien-cache > .cx {
+  margin-top: 8px;
+}
+.copie__texte--lu > .lien-cache--lu {
+  max-width: none;
+  font-family: var(--f-ui);
+}
+.cx-seg--forme {
+  margin-bottom: 4px;
+}
+.cx-numero {
+  display: grid;
+  gap: 8px;
+}
+.cx-numero p {
+  margin: 0;
+}
+.page--eleve .lien-cache--lu {
+  font-size: var(--t-m);
+}
+@media (max-width: 700px) {
+  .hors-recit {
+    margin-inline: 8px;
+  }
+}
+
 /* Là où se poserait le bloc qu'on tire : un trait */
 .se-pose-avant::before,
 .copie__texte.se-pose-fin::after {

@@ -160,6 +160,30 @@ export async function fixerNumero(sceneId: string, numero: number): Promise<Fait
   return { ok: true, numeros: lus ? enTable(lus.de) : {}, total: lus?.total ?? 0 };
 }
 
+/**
+ * Le numéro de la destination d'une liaison cachée (F05.1) : celui que donne l'énigme, ou
+ * celui que le passage porte. Une scène déjà fixée garde son numéro (F11.5), et le départ
+ * porte toujours le n° 1 : rien à fixer pour eux.
+ */
+export async function fixerPourLiaison(sceneId: string, numero: number | null): Promise<Fait<{ numero: number | null }>> {
+  const e = await exigerEnseignant();
+  const lieu = await projetDeLaScene(sceneId);
+  if (!lieu) return echec("Cette scène n’existe plus.");
+  await assurerOrdre(e.supabase, lieu.projetId);
+  const [{ data: scene }, { data: projet }] = await Promise.all([
+    e.supabase.from("scenes").select("numero_fixe").eq("id", sceneId).maybeSingle(),
+    e.supabase.from("projets").select("depart_scene_id").eq("id", lieu.projetId).maybeSingle(),
+  ]);
+  if (projet?.depart_scene_id === sceneId) return numero === null || numero === 1 ? { ok: true, numero: 1 } : echec("Le départ du livre porte toujours le n° 1.");
+  const deja = (scene?.numero_fixe as number | null) ?? null;
+  if (numero === null && deja !== null) return { ok: true, numero: deja };
+  const voulu = numero ?? (await numerosDuProjet(e.supabase, lieu.projetId))?.de.get(sceneId) ?? null;
+  // Une scène hors du livre n'a pas de numéro : la liaison existe, le contrôle du livre le dira
+  if (voulu === null) return { ok: true, numero: null };
+  const fait = await fixerNumero(sceneId, voulu);
+  return fait.ok ? { ok: true, numero: voulu } : echec(fait.erreur);
+}
+
 /** « Libérer le numéro » : le passage prend place à la suite de son groupe (F11-AC97). */
 export async function libererNumero(sceneId: string): Promise<Fait> {
   const e = await exigerEnseignant();

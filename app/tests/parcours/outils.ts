@@ -400,6 +400,11 @@ export const choixPerso = (libelle: string, enfants: (string | ReturnType<typeof
   type: "choix", id, libelle, children: enfants.map((x) => (typeof x === "string" ? { text: x } : x)),
 });
 
+/** Un paragraphe protégé par l'enseignant, une note de l'enseignant, une liaison cachée (étape 3, lot 3). */
+export const protege = (texte: string, id = randomUUID()): BlocSeme => ({ type: "p", id, protege: true, children: [{ text: texte }] });
+export const note = (texte: string, id = randomUUID()): BlocSeme => ({ type: "note", id, children: [{ text: texte }] });
+export const liaison = (cible: string, libelle?: string, id = randomUUID()): BlocSeme => ({ type: "liaison", id, cible, ...(libelle ? { libelle } : {}), children: [{ text: "" }] });
+
 /** Écrit les blocs d'une scène sans passer par l'écran, au nom de l'adulte. */
 export async function semerBlocs(base: SupabaseClient, sceneId: string, blocs: BlocSeme[]): Promise<void> {
   const { version } = await sceneEnBase(sceneId);

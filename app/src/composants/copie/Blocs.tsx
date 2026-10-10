@@ -3,7 +3,10 @@
 import { PlateElement, useSelected, type PlateElementProps } from "platejs/react";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
-import { estAuto, estReserve, estVide, morceauxDe, renvoisDe, type Bloc, type Choix, type Lettres, type Renvoi, type Texte } from "@/domaine/copie";
+import {
+  estAuto, estReserve, estVide, morceauxDe, renvoisDe, type Choix, type Lettres, type Liaison, type Note, type Paragraphe as ParagrapheDeRecit,
+  type Renvoi, type Texte,
+} from "@/domaine/copie";
 import type { FormuleRenvoi } from "@/domaine/preparation";
 import { useCopie, type Livre } from "./contexte";
 import { nomDeDestination } from "./FicheChoix";
@@ -70,9 +73,111 @@ function useBloc(id: string) {
   };
 }
 
+const lettresLues = (l: Lettres, i: number): ReactNode => {
+  let mots: ReactNode = l.text;
+  if (l.bold) mots = <strong>{mots}</strong>;
+  if (l.italic) mots = <em>{mots}</em>;
+  if (l.underline) mots = <u>{mots}</u>;
+  return <span key={i}>{mots}</span>;
+};
+
+/**
+ * Le « + » de la marge : il ouvre un paragraphe au-dessus d'un bloc fermé. La feuille de
+ * style ne le montre que là où l'on ne peut pas poser le curseur autrement — au-dessus du
+ * premier bloc, ou entre deux blocs fermés (F06.1).
+ */
+function Plus({ bloc }: { bloc: string }) {
+  const c = useCopie();
+  return (
+    <button
+      type="button"
+      className="plus-avant"
+      contentEditable={false}
+      title="Écrire au-dessus"
+      aria-label="Écrire un paragraphe au-dessus"
+      onMouseDown={(ev) => ev.preventDefault()}
+      onClick={(ev) => {
+        // Le clic ne remonte pas à l'éditeur, qui reposerait sa sélection sur le bloc fermé
+        ev.stopPropagation();
+        c.ecrireAvant(bloc);
+      }}
+    >
+      <Icone nom="plus" />
+    </button>
+  );
+}
+
+/** « Préparé par M. Dupont », ou « ton enseignant(e) » tant qu'aucun nom n'est affiché (F01-AC13). */
+const preparePar = (enseignant: string | null): string => `Préparé par ${enseignant ?? "ton enseignant(e)"}`;
+
+/**
+ * Paragraphe de récit. Protégé par l'enseignant, il garde pour lui son crochet et son
+ * cadenas dans la marge et reste modifiable ; pour un élève, c'est un bloc fermé, pris
+ * comme un tout, autour duquel il écrit (F06-AC50, AC51).
+ */
 export function Paragraphe(props: PlateElementProps) {
-  const { attributs, style, pose } = useBloc((props.element as unknown as Bloc).id);
-  return <PlateElement {...props} as="p" className={pose.trim() || undefined} style={style} attributes={{ ...props.attributes, ...attributs }} />;
+  const bloc = props.element as unknown as ParagrapheDeRecit;
+  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const selectionne = useSelected();
+  if (!bloc.protege) return <PlateElement {...props} as="p" className={pose.trim() || undefined} style={style} attributes={{ ...props.attributes, ...attributs }} />;
+  if (!estReserve(bloc, c.droits)) {
+    return (
+      <PlateElement {...props} as="p" className={`est-protege${pose}`} style={style} attributes={{ ...props.attributes, ...attributs }}>
+        <span className="marge marge--crochet" contentEditable={false} title="Paragraphe protégé : les élèves écrivent autour">
+          <Icone nom="cadenas" />
+        </span>
+        {props.children}
+      </PlateElement>
+    );
+  }
+  return (
+    <PlateElement
+      {...props}
+      as="div"
+      className={`bloc-prepare${selectionne ? " est-choisi" : ""}${pose}`}
+      style={style}
+      attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
+    >
+      <Plus bloc={bloc.id} />
+      <span className="marge" contentEditable={false}>
+        <Icone nom="cadenas" />
+      </span>
+      <span className="bloc-prepare__texte recit" contentEditable={false}>
+        {bloc.children.map(lettresLues)}
+      </span>
+      {props.children}
+      <span className="repere-prepare" contentEditable={false}>
+        {preparePar(c.enseignant)}
+      </span>
+    </PlateElement>
+  );
+}
+
+/** Note de l'enseignant : un paragraphe à part, sur papier grisé, que l'adulte seul lit (F05.2). */
+export function NoteDeLEnseignant(props: PlateElementProps) {
+  const bloc = props.element as unknown as Note;
+  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const tire = c.tire?.bloc === bloc.id;
+  return (
+    <PlateElement {...props} as="div" className={`note-prof${tire ? " est-tire" : ""}${pose}`} style={style} attributes={{ ...props.attributes, ...attributs }}>
+      <span className="marge" contentEditable={false}>
+        <button
+          type="button"
+          className="prise prise--bloc"
+          title="Tirer pour déplacer"
+          aria-label="Déplacer cette note"
+          aria-roledescription="élément à déplacer"
+          onPointerDown={(ev) => c.commencerATirer(bloc.id, ev)}
+        >
+          <Icone nom="prise" />
+        </button>
+      </span>
+      <span className="note-prof__legende" contentEditable={false}>
+        Note · pour vous seul, jamais imprimée
+      </span>
+      <span className="note-prof__texte">{props.children}</span>
+    </PlateElement>
+  );
 }
 
 export function PhraseDeChoix(props: PlateElementProps) {
@@ -89,8 +194,9 @@ export function PhraseDeChoix(props: PlateElementProps) {
       as="div"
       className={`phrase-choix${ouvert ? " est-ouvert" : ""}${selectionne && ferme ? " est-choisi" : ""}${reserve ? " est-prepare" : ""}${tire ? " est-tire" : ""}${pose}`}
       style={style}
-      attributes={{ ...props.attributes, ...attributs }}
+      attributes={{ ...props.attributes, ...attributs, ...(ferme ? { "data-ferme": "" } : {}) } as never}
     >
+      {ferme ? <Plus bloc={bloc.id} /> : null}
       <span className="marge" contentEditable={false}>
         {reserve ? (
           <Icone nom="cadenas" />
@@ -152,13 +258,48 @@ export function RenvoiEnLigne(props: PlateElementProps) {
   );
 }
 
-const lettresLues = (l: Lettres, i: number): ReactNode => {
-  let mots: ReactNode = l.text;
-  if (l.bold) mots = <strong>{mots}</strong>;
-  if (l.italic) mots = <em>{mots}</em>;
-  if (l.underline) mots = <u>{mots}</u>;
-  return <span key={i}>{mots}</span>;
-};
+/**
+ * Le repère d'une liaison cachée (F05.1), hors du récit et jamais imprimé. L'adulte y lit
+ * la destination et son numéro ; l'élève, le seul numéro que son énigme doit donner, sans
+ * titre ni référence (F05-AC37).
+ */
+export function RepereDeLiaison({ liaison, livre, pourEleve }: { liaison: Liaison; livre: Livre; pourEleve: boolean }) {
+  const numero = liaison.cible ? livre.numeros[liaison.cible] : undefined;
+  if (pourEleve) {
+    return (
+      <span className="lien-cache__mots">
+        <Icone nom="cle" />
+        {numero ? (
+          <>
+            Ton énigme doit conduire au numéro <b className="lien-cache__n">{numero}</b>
+          </>
+        ) : (
+          "Ton énigme doit conduire à un passage qui n’a pas encore de numéro."
+        )}
+      </span>
+    );
+  }
+  const scene = livre.scenes.find((s) => s.id === liaison.cible);
+  return (
+    <span className="lien-cache__mots">
+      <Icone nom="cle" />
+      <b>Lien caché</b>
+      {scene ? (
+        <span>
+          <Icone nom="fleche" />
+          {nomDeDestination(scene, false)}
+        </span>
+      ) : (
+        <span className="copie__dest-vide">{liaison.cible ? "scène supprimée" : "Sans destination"}</span>
+      )}
+      {numero ? (
+        <span className="repere">
+          {liaison.cible === livre.depart ? "n° 1 · départ du livre" : liaison.cible && livre.fixes[liaison.cible] ? `n° ${numero} fixé` : `n° ${numero}, non fixé`}
+        </span>
+      ) : null}
+    </span>
+  );
+}
 
 /**
  * Un texte en lecture : un texte gardé à part, une version précédente, la scène d'un
@@ -171,7 +312,16 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
         <p className="copie__vide">Ce texte est vide.</p>
       ) : (
         texte.map((bloc) =>
-          bloc.type === "choix" ? (
+          bloc.type === "liaison" ? (
+            <p key={bloc.id} className="lien-cache lien-cache--lu">
+              <RepereDeLiaison liaison={bloc} livre={livre} pourEleve={pourEleve} />
+            </p>
+          ) : bloc.type === "note" ? (
+            <div key={bloc.id} className="note-prof">
+              <span className="note-prof__legende">Note · pour vous seul, jamais imprimée</span>
+              <span className="note-prof__texte">{bloc.children.map(lettresLues)}</span>
+            </div>
+          ) : bloc.type === "choix" ? (
             <div key={bloc.id} className="phrase-choix">
               <span className="marge">
                 <Icone nom="choix" />
@@ -182,7 +332,12 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
               </span>
             </div>
           ) : (
-            <p key={bloc.id}>
+            <p key={bloc.id} className={bloc.protege ? "est-protege" : undefined}>
+              {bloc.protege ? (
+                <span className="marge marge--crochet">
+                  <Icone nom="cadenas" />
+                </span>
+              ) : null}
               {bloc.children.map(lettresLues)}
               {bloc.children.every((l) => l.text === "") ? <br /> : null}
             </p>

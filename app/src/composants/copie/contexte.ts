@@ -33,6 +33,10 @@ export type Livre = {
   ailleurs: Record<string, string>;
   /** Les chapitres où l'adulte peut créer une scène depuis un choix */
   chapitres: { id: string; titre: string; partie: string }[];
+  /** Scène → numéro fixé, pour l'adulte : « n° 38 fixé » (F11.5) */
+  fixes: Record<string, number>;
+  /** Le départ du livre, qui porte toujours le n° 1 et ne se fixe pas */
+  depart: string | null;
 };
 
 export type Trouvee = { id: string; extrait: string };
@@ -46,6 +50,11 @@ export type Services = {
   /** « Supprimer aussi la scène », après l'annulation d'un choix qui l'avait créée (F05-AC44) */
   supprimerScene: (sceneId: string) => Promise<{ ok: boolean; erreur?: string }>;
   relireNumeros: () => Promise<Record<string, number>>;
+  /** Le numéro que porte un passage, l'ordre du livre établi s'il ne l'était pas : pour l'adulte seul */
+  numeroDe?: (sceneId: string) => Promise<{ ok: true; numero: number | null; total: number } | { ok: false; erreur: string }>;
+  /** Fixer le numéro de la destination d'une liaison cachée : celui qu'elle porte, ou celui de l'énigme (F05.1) */
+  fixerNumero?: (sceneId: string, numero: number | null) => Promise<{ ok: true; numero: number | null } | { ok: false; erreur: string }>;
+  libererNumero?: (sceneId: string) => Promise<{ ok: boolean; erreur?: string }>;
 };
 
 export type Lieu = { projetId: string; sceneId: string; chapitreId: string };
@@ -62,6 +71,10 @@ export type ContexteDeCopie = {
   lieu: Lieu;
   /** L'élève ne lit que le lieu, sans la référence, à côté d'une phrase de choix (F05-AC42) */
   pourEleve: boolean;
+  /** Le nom que l'enseignant affiche aux élèves, pour « Préparé par M. Dupont » (F01-AC13) */
+  enseignant: string | null;
+  /** Ouvrir un paragraphe au-dessus d'un bloc fermé : le « + » de la marge (F06.1) */
+  ecrireAvant: (bloc: string) => void;
   fiche: FicheOuverte | null;
   /** Place gardée sous un bloc pour la fiche qui s'y pose */
   espace: { bloc: string; hauteur: number } | null;
@@ -80,4 +93,6 @@ export function useCopie(): ContexteDeCopie {
 }
 
 /** Sans récit à choix ni livre autour : une copie de récit classique, ou un texte en lecture. */
-export const LIVRE_SANS_CHOIX: Livre = { aChoix: false, formule: "rends", constructions: ["neutre"], numeros: {}, scenes: [], ailleurs: {}, chapitres: [] };
+export const LIVRE_SANS_CHOIX: Livre = {
+  aChoix: false, formule: "rends", constructions: ["neutre"], numeros: {}, scenes: [], ailleurs: {}, chapitres: [], fixes: {}, depart: null,
+};

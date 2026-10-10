@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
-import { estAuto, estRenvoi, renvoisDe, tirerConstruction, nouvelId, type Choix, type Renvoi } from "@/domaine/copie";
+import { estAuto, estRenvoi, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Renvoi } from "@/domaine/copie";
 import { constructionsUtiles, phraseDeChoix } from "@/domaine/preparation";
 import { referenceScene } from "@/domaine/recit";
 import { cle } from "@/domaine/texte";
@@ -29,8 +29,8 @@ export function nomDeDestination(s: SceneConnue | undefined, pourEleve: boolean)
  * nouvelle scène ; ou une destination à décider plus tard (F05.2). Au clavier : les flèches
  * parcourent la liste, Entrée valide (F05-AC39).
  */
-function ChoisirDestination({
-  libelle, services, valider, actuelle, deplus, focus,
+export function ChoisirDestination({
+  libelle, services, valider, actuelle, deplus, focus, seulementExistante = false,
 }: {
   libelle: string; services: Services;
   /** Reçoit la destination retenue ; rend faux si elle n'a pas pu l'être */
@@ -39,6 +39,8 @@ function ChoisirDestination({
   /** Le bouton qui valide dit ce qu'il fera : « Créer le choix », « Changer la destination » */
   deplus: { verbe: string; sansScene: boolean };
   focus?: boolean;
+  /** Un lien caché ne mène qu'à une scène qui existe : ni « nouvelle scène » ni « plus tard » */
+  seulementExistante?: boolean;
 }) {
   const { livre, droits, lieu, pourEleve } = useCopie();
   const [issue, setIssue] = useState<Issue>("existante");
@@ -101,21 +103,23 @@ function ChoisirDestination({
 
   return (
     <fieldset className="cx-issues">
-      <legend>Où mène ce choix ?</legend>
-      <div className="cx-seg" role="radiogroup" aria-label="Où mène ce choix ?">
-        {(
-          [
-            ["existante", "Scène existante"],
-            ["nouvelle", "Nouvelle scène"],
-            ["plus-tard", "À décider plus tard"],
-          ] as [Issue, string][]
-        ).map(([valeur, nom]) => (
-          <label key={valeur}>
-            <input type="radio" name="issue" checked={issue === valeur} onChange={() => setIssue(valeur)} />
-            <span>{nom}</span>
-          </label>
-        ))}
-      </div>
+      <legend>{seulementExistante ? "Où mène ce lien caché ?" : "Où mène ce choix ?"}</legend>
+      {seulementExistante ? null : (
+        <div className="cx-seg" role="radiogroup" aria-label="Où mène ce choix ?">
+          {(
+            [
+              ["existante", "Scène existante"],
+              ["nouvelle", "Nouvelle scène"],
+              ["plus-tard", "À décider plus tard"],
+            ] as [Issue, string][]
+          ).map(([valeur, nom]) => (
+            <label key={valeur}>
+              <input type="radio" name="issue" checked={issue === valeur} onChange={() => setIssue(valeur)} />
+              <span>{nom}</span>
+            </label>
+          ))}
+        </div>
+      )}
 
       {issue === "existante" ? (
         <>
@@ -167,7 +171,7 @@ function ChoisirDestination({
           </div>
           {droits.role !== "adulte" ? <p className="cx-aide">Tu choisis parmi les scènes de ton chapitre.</p> : null}
           {resultats.length === 0 ? (
-            <p className="cx-aide">Aucune scène trouvée. {pourEleve ? "Tu peux" : "Vous pouvez"} en créer une : « Nouvelle scène ».</p>
+            <p className="cx-aide">Aucune scène trouvée.{seulementExistante ? "" : ` ${pourEleve ? "Tu peux" : "Vous pouvez"} en créer une : « Nouvelle scène ».`}</p>
           ) : (
             <ul className="cx-liste" role="listbox" aria-label="Scènes">
               {resultats.slice(0, 40).map((s, i) => (
@@ -282,8 +286,17 @@ function Cadre({ titre, onFermer, children, pied }: { titre: string; onFermer: (
 }
 
 /** Créer un choix : libellé, puis destination. La phrase se compose au-dessus pendant la saisie. */
-export function FicheNouveauChoix({ services, onCreer, onFermer }: { services: Services; onCreer: (choix: Choix, creee?: SceneCreee) => void; onFermer: () => void }) {
-  const { livre, pourEleve } = useCopie();
+export function FicheNouveauChoix({
+  services, onCreer, onCreerLiaison, onFermer,
+}: {
+  services: Services; onCreer: (choix: Choix, creee?: SceneCreee) => void;
+  /** Créer une liaison cachée, son numéro déjà fixé (F05.1) */
+  onCreerLiaison: (liaison: Liaison, numero: number | null) => void;
+  onFermer: () => void;
+}) {
+  const { livre, pourEleve, droits } = useCopie();
+  // « Lien caché (énigme) » : une forme de plus, pour l'adulte seul (F05-AC27)
+  const [forme, setForme] = useState<"phrase" | "cache">("phrase");
   const [libelle, setLibelle] = useState("");
   const [construction] = useState(() => tirerConstruction(constructionsUtiles(livre.formule, livre.constructions)));
   const champ = useRef<HTMLInputElement>(null);
@@ -294,6 +307,22 @@ export function FicheNouveauChoix({ services, onCreer, onFermer }: { services: S
 
   return (
     <Cadre titre="Nouveau choix" onFermer={onFermer} pied={<span className="cx-clavier"><kbd>Entrée</kbd> valide · <kbd>Échap</kbd> ferme</span>}>
+      {droits.role === "adulte" && services.fixerNumero ? (
+        <div className="cx-seg cx-seg--forme" role="radiogroup" aria-label="Forme du choix">
+          {(
+            [
+              ["phrase", "Phrase de choix"],
+              ["cache", "Lien caché (énigme)"],
+            ] as const
+          ).map(([valeur, nom]) => (
+            <label key={valeur}>
+              <input type="radio" name="forme" checked={forme === valeur} onChange={() => setForme(valeur)} />
+              <span>{nom}</span>
+            </label>
+          ))}
+        </div>
+      ) : null}
+      {forme === "cache" ? <CreerLienCache services={services} onCreer={onCreerLiaison} /> : <>
       <p className="phrase-choix phrase-choix--apercu" aria-hidden="true">
         <span className="recit">{libelle.trim() ? phraseDeChoix(libelle.trim(), "…", livre.formule, construction) : <span className="cx-fantome">La phrase du choix se compose ici.</span>}</span>
       </p>
@@ -328,7 +357,110 @@ export function FicheNouveauChoix({ services, onCreer, onFermer }: { services: S
         }}
       />
       {pourEleve ? null : <p className="cx-aide">La phrase s’écrit toute seule ; vous pourrez la personnaliser ensuite.</p>}
+      </>}
     </Cadre>
+  );
+}
+
+/**
+ * Créer une liaison cachée (F05.1) : la scène où mène l'énigme, puis le numéro qu'elle doit
+ * garder — celui qu'elle porte, ou celui que donne l'énigme. Rien ne s'ajoute au récit.
+ */
+function CreerLienCache({ services, onCreer }: { services: Services; onCreer: (liaison: Liaison, numero: number | null) => void }) {
+  const { livre } = useCopie();
+  const [cible, setCible] = useState<string | null>(null);
+  const [lu, setLu] = useState<{ pour: string; numero: number | null; total: number } | null>(null);
+  const [saisie, setSaisie] = useState("");
+  const [erreur, setErreur] = useState<string | null>(null);
+  const [attente, setAttente] = useState(false);
+  const scene = livre.scenes.find((s) => s.id === cible);
+  const nom = nomDeDestination(scene, false);
+  const estDepart = cible !== null && cible === livre.depart;
+  const dejaFixe = cible ? livre.fixes[cible] : undefined;
+
+  useEffect(() => {
+    if (!cible || !services.numeroDe) return;
+    let actif = true;
+    void services.numeroDe(cible).then((fait) => {
+      if (!actif) return;
+      if (fait.ok) setLu({ pour: cible, numero: fait.numero, total: fait.total });
+      else setErreur(fait.erreur);
+    });
+    return () => {
+      actif = false;
+    };
+  }, [cible, services]);
+
+  if (!cible) {
+    return (
+      <>
+        <p className="cx-aide">Le lecteur trouve lui-même où poursuivre, en résolvant une énigme : aucune phrase ne s’ajoute au texte.</p>
+        <ChoisirDestination libelle="" services={services} seulementExistante focus deplus={{ verbe: "Choisir cette scène", sansScene: false }} valider={({ cible: choisie }) => setCible(choisie)} />
+      </>
+    );
+  }
+  const numero = lu?.pour === cible ? lu.numero : null;
+  const voulu = Number.parseInt(saisie, 10);
+  const creer = async (n: number | null) => {
+    setAttente(true);
+    setErreur(null);
+    const fait = await services.fixerNumero!(cible, n);
+    setAttente(false);
+    if (!fait.ok) return setErreur(fait.erreur);
+    onCreer({ type: "liaison", id: nouvelId(), cible, children: [{ text: "" }] }, fait.numero);
+  };
+  return (
+    <div className="cx-numero">
+      <p className="cx-titre">Le numéro que doit donner l’énigme</p>
+      {lu?.pour !== cible && !erreur ? <p role="status">Un instant…</p> : null}
+      {lu?.pour === cible ? (
+        <>
+          <p>
+            {numero ? `${nom} porte le n° ${numero}.` : `${nom} n’a pas encore de numéro : elle est hors du livre.`}{" "}
+            {estDepart ? "C’est le départ du livre : il porte toujours le n° 1." : dejaFixe ? "Ce numéro est déjà fixé." : numero ? "Il sera fixé : le passage le gardera, même si d’autres changent de place." : ""}
+          </p>
+          <p className="cx__cmd">
+            <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void creer(null)}>
+              Créer le lien caché
+            </button>
+            <button type="button" className="lien" onClick={() => { setCible(null); setErreur(null); setSaisie(""); }}>
+              Changer de scène
+            </button>
+          </p>
+          {estDepart ? null : (
+            <form
+              className="fiche-numero__autre"
+              onSubmit={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (Number.isInteger(voulu) && voulu >= 1) void creer(voulu);
+              }}
+            >
+              <label className="champ">
+                <span>Ou le numéro que donne votre énigme</span>
+                <input className="pchamp" type="text" inputMode="numeric" pattern="[0-9]*" maxLength={4} value={saisie} onChange={(e) => setSaisie(e.target.value.replace(/\D/g, ""))} />
+              </label>
+              <button type="submit" className="btn" disabled={attente || !Number.isInteger(voulu) || voulu < 1}>
+                Créer avec ce numéro
+              </button>
+            </form>
+          )}
+          {Number.isInteger(voulu) && voulu > lu.total ? (
+            <p className="cx-note cx-note--avert">
+              <Icone nom="alerte" />
+              <span>
+                Le livre ne compte que {lu.total} passage{lu.total > 1 ? "s" : ""} pour l’instant : il faudra qu’il atteigne {voulu} passages avant le PDF définitif.
+              </span>
+            </p>
+          ) : null}
+        </>
+      ) : null}
+      {erreur ? (
+        <p className="erreur" role="alert">
+          {erreur}
+        </p>
+      ) : null}
+    </div>
   );
 }
 
@@ -341,6 +473,8 @@ export type GestesDeChoix = {
   insererRenvoi: (destination: Destination) => void;
   retirerRenvoi: (renvoi: string) => void;
   supprimer: () => void;
+  /** « Cacher ce choix (énigme) » : la phrase part, le lien reste, le numéro est fixé. Adulte seul (F05-AC26) */
+  cacher?: () => void;
 };
 
 /** Les réglages d'un choix existant : libellé, destination, forme de la phrase, suppression. */
@@ -387,10 +521,18 @@ export function FicheReglagesChoix({
       titre="Choix"
       onFermer={onFermer}
       pied={
-        <button type="button" className="btn btn--danger cx__suppr" onClick={gestes.supprimer}>
-          <Icone nom="corbeille" />
-          Supprimer ce choix
-        </button>
+        <>
+          {gestes.cacher && renvois.length === 1 && renvois[0].cible ? (
+            <button type="button" className="btn btn--petit" onClick={gestes.cacher}>
+              <Icone nom="cle" />
+              Cacher ce choix (énigme)
+            </button>
+          ) : null}
+          <button type="button" className="btn btn--danger cx__suppr" onClick={gestes.supprimer}>
+            <Icone nom="corbeille" />
+            Supprimer ce choix
+          </button>
+        </>
       }
     >
       <label className="champ champ--plein">

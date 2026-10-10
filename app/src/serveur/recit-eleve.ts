@@ -294,6 +294,9 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     scenes: s.profil ? [...scenes.values()] : [],
     ailleurs,
     chapitres: [{ id: chapitre.id, titre: chapitre.titre, partie: partie.data?.titre ?? "" }],
+    // Un élève ne lit que le numéro : ni ce qui le fixe, ni le départ
+    fixes: {},
+    depart: null,
   };
   const droits: Droits = { role: "eleve", profil: s.profil ?? "propositions", scenesDuChapitre: new Set(scenes.keys()) };
   const prise = priseDe(c, s.prise_par_eleve, s.prise_par_enseignant);
