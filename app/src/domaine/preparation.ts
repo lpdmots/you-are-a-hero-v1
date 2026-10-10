@@ -154,10 +154,18 @@ export const estConstruction = (v: string): v is Construction => v in CONSTRUCTI
 const majuscule = (t: string): string => t.charAt(0).toLocaleUpperCase("fr") + t.slice(1);
 const minuscule = (t: string): string => t.charAt(0).toLocaleLowerCase("fr") + t.slice(1);
 
+/**
+ * Les constructions qui servent avec cette façon d'annoncer le numéro. Avec la flèche,
+ * seule la première : « Pour plonger la main, → 17. » ne se lit pas (F05-AC43). Les
+ * autres restent cochées dans les réglages, et servent de nouveau si la formule change.
+ */
+export const constructionsUtiles = (formule: FormuleRenvoi, cochees: Construction[]): Construction[] =>
+  formule === "fleche" ? ["neutre"] : cochees.includes("neutre") ? cochees : ["neutre", ...cochees];
+
 /** Phrase de choix automatique : « Prendre la clé : rends-toi au 12. » (F05). */
 export function phraseDeChoix(libelle: string, numero: number | string, formule: FormuleRenvoi, construction: Construction): string {
   const renvoi = `${FORMULES_RENVOI[formule].avant}${numero}`;
-  const gabarit = formule === "fleche" && construction === "neutre" ? "{L} {r}" : CONSTRUCTIONS[construction].gabarit;
+  const gabarit = formule === "fleche" ? "{L} {r}" : CONSTRUCTIONS[construction].gabarit;
   return gabarit
     .replace("{L}", majuscule(libelle))
     .replace("{l}", minuscule(libelle))

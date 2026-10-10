@@ -163,7 +163,8 @@
   align-items: stretch;
 }
 .cahier-ajout {
-  align-self: start;
+  /* même hauteur que les cartes de chapitre voisines */
+  height: 100%;
   min-height: 140px;
   border: 1.5px dashed var(--trait-fort);
   border-radius: var(--r-m);

@@ -475,6 +475,10 @@
   box-shadow: inset 0 0 0 1px var(--trait);
   cursor: pointer;
 }
+.formule:has(input:disabled:not(:checked)) {
+  opacity: 0.5;
+  cursor: default;
+}
 .formule:has(input:checked) {
   box-shadow: inset 0 0 0 2px var(--canard);
 }

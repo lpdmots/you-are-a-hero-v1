@@ -68,7 +68,7 @@ export default async function MesProjets() {
             <li key={p.id}>
               <div className={styles.projet}>
                 <span className={styles.image}>
-                  <ImageRepere repere={p} graine={p.id} />
+                  <ImageRepere repere={p} graine={p.id} grande />
                 </span>
                 <span className={styles.texte}>
                   <b>{p.titre}</b>

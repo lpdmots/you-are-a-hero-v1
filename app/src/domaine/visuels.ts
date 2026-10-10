@@ -3,7 +3,8 @@
  * ou un chapitre reçoit l'un d'eux, une fois, puis le garde : c'est son visuel par défaut.
  * L'adulte peut aussi en choisir un lui-même : c'est un visuel proposé.
  *
- * Les fichiers sont dans public/illustrations/defaut-<clé>.jpg, au format 3:2.
+ * Les fichiers sont dans public/illustrations/, au format 3:2 : defaut-<clé>.jpg
+ * (1 200 × 800) et sa vignette defaut-<clé>-v.jpg (480 × 320), pour les cartes et le sélecteur.
  */
 export const VISUELS = [
   { cle: "foret", nom: "Forêt" },
@@ -34,7 +35,9 @@ export const VISUELS = [
 const CLES: readonly string[] = VISUELS.map((v) => v.cle);
 export const estVisuel = (cle: string | null | undefined): cle is string => !!cle && CLES.includes(cle);
 
-export const adresseVisuel = (cle: string): string => `/illustrations/defaut-${estVisuel(cle) ? cle : VISUELS[0].cle}.jpg`;
+/** Adresse d'un visuel ; « petite » : sa vignette, pour une carte ou le sélecteur d'image. */
+export const adresseVisuel = (cle: string, petite = false): string =>
+  `/illustrations/defaut-${estVisuel(cle) ? cle : VISUELS[0].cle}${petite ? "-v" : ""}.jpg`;
 export const nomVisuel = (cle: string): string => VISUELS.find((v) => v.cle === cle)?.nom ?? "Visuel";
 
 function hacher(texte: string): number {
@@ -62,6 +65,6 @@ export function adresseRepere(
   vignette = true,
 ): string {
   if (repere.imageId) return `/images/${repere.imageId}${vignette ? "?v=1" : ""}`;
-  if (estVisuel(repere.visuelChoisi)) return adresseVisuel(repere.visuelChoisi);
-  return adresseVisuel(estVisuel(repere.visuelDefaut) ? repere.visuelDefaut : tirerVisuel(graine));
+  if (estVisuel(repere.visuelChoisi)) return adresseVisuel(repere.visuelChoisi, vignette);
+  return adresseVisuel(estVisuel(repere.visuelDefaut) ? repere.visuelDefaut : tirerVisuel(graine), vignette);
 }

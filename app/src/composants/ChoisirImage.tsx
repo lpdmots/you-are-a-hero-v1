@@ -151,7 +151,7 @@ export function ChoisirImage({
                 onClick={() => choisir({ visuel: v.cle })}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- visuels livrés avec l'application */}
-                <img className="image-couvrante" src={adresseVisuel(v.cle)} alt="" loading="lazy" />
+                <img className="image-couvrante" src={adresseVisuel(v.cle, true)} alt="" loading="lazy" />
               </button>
             </li>
           ))}

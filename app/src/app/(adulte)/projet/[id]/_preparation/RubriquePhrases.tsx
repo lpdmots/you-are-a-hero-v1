@@ -55,19 +55,24 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
                   <input
                     type="checkbox"
                     className="case"
-                    checked={constructions.includes(k)}
-                    disabled={k === "neutre"}
+                    checked={constructions.includes(k) && (formule !== "fleche" || k === "neutre")}
+                    disabled={k === "neutre" || formule === "fleche"}
                     onChange={(ev) => {
                       const suite = ev.target.checked ? [...constructions, k] : constructions.filter((c) => c !== k);
                       setConstructions(suite);
                       e.prevoir(() => reglerPhrases(projetId, { constructions: suite }), 0, "constructions");
                     }}
                   />
-                  <span className={`recit ${styles.formule__ex}`}>{phraseDeChoix(EXEMPLE.libelle, EXEMPLE.numero, formule, k)}</span>
+                  {/* Avec la flèche, les trois autres phrases gardent leur forme en mots, grisée : elles ne servent pas */}
+                  <span className={`recit ${styles.formule__ex}`}>{phraseDeChoix(EXEMPLE.libelle, EXEMPLE.numero, formule === "fleche" && k !== "neutre" ? "rends" : formule, k)}</span>
                   {k === "neutre" ? <em className={styles.formule__note}>toujours proposée</em> : null}
                 </label>
               ))}
-              <p className={styles.aide}>Avec plusieurs phrases cochées, l’une est tirée au hasard à chaque nouveau choix, puis gardée.</p>
+              <p className={styles.aide}>
+                {formule === "fleche"
+                  ? "Avec « → 12 », seule la première phrase sert : les autres ne se lisent pas avec une flèche."
+                  : "Avec plusieurs phrases cochées, l’une est tirée au hasard à chaque nouveau choix, puis gardée."}
+              </p>
             </fieldset>
           </div>
           <div className={styles.formules}>
