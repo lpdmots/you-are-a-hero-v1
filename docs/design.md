@@ -1121,7 +1121,7 @@ sont proposées, à juger à l'essai de l'étape.
 | Élément | Disposition |
 | --- | --- |
 | Déplacer une carte | La carte entière se tire : partie par son titre, chapitre et scène par leur carte. Le pointeur devient une main ; la carte tirée se soulève, les autres s'écartent pour montrer où elle se posera. Après le geste, un message : « « Le sanctuaire » est placé avant « La lisière ». Annuler ». « Monter » et « Descendre » quittent le menu de la scène. |
-| Repère de prise | Demandé par le porteur : six petits points gris, en deux colonnes, discrets mais toujours présents ; avant la référence sur la carte de scène, au pied de la carte de chapitre, devant l'image de la partie. Pas de bande sur toute la longueur. S'il alourdit l'écran, il est retiré et l'écran d'aide reste seul à dire que les cartes se déplacent. |
+| Repère de prise | Demandé par le porteur : six petits points gris, en deux colonnes, discrets mais toujours présents ; avant la référence sur la carte de scène, en haut à gauche de l'image sur la carte de chapitre, devant l'image de la partie. Pas de bande sur toute la longueur. S'il alourdit l'écran, il est retiré et l'écran d'aide reste seul à dire que les cartes se déplacent. |
 | Écran d'aide de « Parties et chapitres » | Une question de plus : « Comment changer l'ordre ? — Tirez une carte pour la déplacer. Un chapitre se pose aussi dans une autre partie. » |
 | Corbeille du projet | Sous une scène ou un chapitre dont le parent est aussi supprimé, à la place de « Restaurer » : « Restaurez d'abord « La lisière ». » Après une restauration : « « Le sanctuaire » est restauré, avec ses 3 élèves. » |
 | Départ supprimé | Dans le dialogue ou le message : « Le livre n'aura plus de départ. », suivi du lien « Choisir un autre départ ». Dans « À compléter » : « pas de départ du livre ». |
@@ -1168,9 +1168,13 @@ maquette et les dispositions ci-dessus ; `npm run captures -- etape2`, dans
 
 **Écarts avec ce qui était dessiné ou arrêté, à juger à l'essai :**
 
-- le repère de prise est au pied de la carte de chapitre, en face
-  d'« Ouvrir », et non dans un coin de l'étiquette, qu'il encombrait ; sur
-  la carte de scène, avant la référence ; devant l'image de la partie ;
+- sur la carte de chapitre, depuis le 10 octobre 2026 à la demande du
+  porteur, qui ne voyait pas assez les trois points sur l'image : le repère
+  de prise est sur l'image, en haut à gauche, sur une pastille claire, et
+  le menu à trois points au pied de la carte, à gauche, dans un bouton
+  cerné, en face d'« Ouvrir ». D'abord construits à l'inverse. Le repère de
+  prise est avant la référence sur la carte de scène, devant l'image de la
+  partie ;
 - une partie seule dans le plan, ou une scène seule dans son chapitre, n'a
   pas de repère de prise : il n'y a nulle part où la poser ;
 - tant qu'aucune scène n'a de texte, « Supprimer » part toujours sans

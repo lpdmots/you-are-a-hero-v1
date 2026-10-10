@@ -624,7 +624,7 @@ function CarteChapitre({
         lien={`/projet/${projetId}/chapitre/${chapitre.id}`}
         prise={<Prise nom={`le chapitre ${chapitre.titre}`} ref={setActivatorNodeRef} {...attributes} />}
         menu={
-          <Menu libelle={`Autres commandes du chapitre ${chapitre.titre}`}>
+          <Menu libelle={`Autres commandes du chapitre ${chapitre.titre}`} agauche>
             {(fermer) => (
               <>
                 <button type="button" onClick={() => { fermer(); onReglages(); }}>
@@ -663,7 +663,8 @@ export function Cahier({
   return (
     <article className={`cahier${lien ? " cahier--ouvrable se-tire" : ""}${montree ? " est-montree" : ""}`} style={varsCouleur(chapitre.couleur)}>
       {lien ? <Link className="cahier__cible" href={lien} aria-label={`Ouvrir ${chapitre.titre}`} draggable={false} /> : null}
-      {menu}
+      {/* Le repère de prise sur l'image, en haut à gauche ; le menu au pied, à gauche, en face d'« Ouvrir » */}
+      {prise}
       <div className="cahier__couv">
         <div className="cahier__vignette">
           <ImageRepere repere={chapitre} graine={chapitre.id} />
@@ -697,13 +698,13 @@ export function Cahier({
             <span className="repere">hors du livre</span>
           </p>
         ) : null}
-        <p className="cahier__actions">
-          {prise}
+        <div className="cahier__actions">
+          {menu}
           <span className="cahier__ouvrir" aria-hidden="true">
             Ouvrir
             <Icone nom="fleche" />
           </span>
-        </p>
+        </div>
       </div>
     </article>
   );

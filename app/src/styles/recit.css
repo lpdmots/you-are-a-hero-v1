@@ -350,36 +350,41 @@
   outline: 3px solid var(--canard);
   outline-offset: 2px;
 }
-/* Menu à trois points : un petit signe sur l'image, qui ne prend sa forme qu'au survol */
-.cahier > .menu {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+/* Menu à trois points : au pied de la carte, à gauche, dans un bouton cerné, en face d'« Ouvrir » */
+.cahier__actions .menu {
+  position: relative;
   z-index: 3;
 }
-.cahier > .menu > summary {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  min-height: 0;
-  border-color: transparent;
-  border-radius: 99px;
-  background: rgba(255, 255, 255, 0.72);
+.cahier__actions .menu > summary {
+  width: 40px;
+  min-height: 32px;
+  border-radius: 8px;
   color: var(--graphite-2);
-  box-shadow: none;
 }
-.cahier > .menu > summary::before {
-  content: "";
+.cahier__actions .menu > summary:hover,
+.cahier__actions .menu[open] > summary {
+  color: var(--graphite);
+  border-color: var(--graphite-3);
+}
+/* Repère de prise : sur l'image, en haut à gauche, sur une pastille claire */
+.cahier > .prise {
   position: absolute;
-  inset: -8px;
+  top: 14px;
+  left: 20px;
+  width: 26px;
+  height: 26px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.78);
+  color: var(--graphite-2);
+  opacity: 1;
 }
-.cahier > .menu > summary .ic {
-  width: 15px;
-  height: 15px;
+.cahier > .prise .ic {
+  width: 16px;
+  height: 16px;
 }
-.cahier > .menu > summary:hover,
-.cahier > .menu[open] > summary,
-.cahier > .menu > summary:focus-visible {
+.cahier > .prise:hover,
+.cahier > .prise:focus-visible,
+.se-tire:hover > .prise {
   background: #fff;
   color: var(--graphite);
   box-shadow: 0 1px 3px rgba(20, 30, 30, 0.25);
