@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
+import { envoyerParEntree } from "@/composants/Attente";
 import { Icone } from "@/composants/Icone";
 import { usePret } from "@/composants/Pret";
 import { ouvrir, type EtatOuverture } from "./actions";
@@ -14,11 +15,11 @@ export function OuvrirLaClasse() {
     <form action={action}>
       <label className="champ champ--plein">
         <span>Identifiant de la classe</span>
-        <input type="text" name="identifiant" defaultValue={etat.saisie?.identifiant} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} required />
+        <input type="text" name="identifiant" defaultValue={etat.saisie?.identifiant} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} onKeyDown={envoyerParEntree} required />
       </label>
       <label className="champ champ--plein">
         <span>Mot de passe de la classe</span>
-        <input type="text" name="mot-de-passe" defaultValue={etat.saisie?.motDePasse} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} required />
+        <input type="text" name="mot-de-passe" defaultValue={etat.saisie?.motDePasse} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} onKeyDown={envoyerParEntree} required />
       </label>
       {etat.erreur ? (
         <p className="erreur" role="alert">

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition, type ComponentProps } from "react";
+import { useState, useTransition, type ComponentProps, type KeyboardEvent } from "react";
 import { useFormStatus } from "react-dom";
 
 /**
@@ -21,4 +21,19 @@ export function useAttente(): { attente: string | null; lancer: (nom: string, su
 export function BoutonEnvoi({ disabled, ...reste }: ComponentProps<"button">) {
   const { pending } = useFormStatus();
   return <button type="submit" {...reste} disabled={disabled || pending} aria-busy={pending || undefined} />;
+}
+
+/**
+ * « Entrée », dans une case d'un formulaire, l'envoie. Le navigateur le fait déjà de
+ * lui-même, mais pas toujours quand un gestionnaire de mots de passe a rempli la case
+ * ou y affiche son menu : on le demande donc expressément. Rien ne part si le bouton
+ * d'envoi attend déjà une réponse.
+ */
+export function envoyerParEntree(e: KeyboardEvent<HTMLInputElement>): void {
+  if (e.key !== "Enter" || e.nativeEvent.isComposing) return;
+  const formulaire = e.currentTarget.form;
+  const bouton = formulaire?.querySelector<HTMLButtonElement>('button[type="submit"]');
+  if (!formulaire || !bouton) return;
+  e.preventDefault();
+  if (!bouton.disabled) formulaire.requestSubmit(bouton);
 }
