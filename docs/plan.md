@@ -404,9 +404,43 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   périmètre de l'étape. Écrans :
   [design](design.md#étape-3--écrans-arrêtés-avant-de-construire-10-octobre-2026).
 - **Autorisée le 10 octobre 2026,** pour elle seule, en deux temps :
-  l'entretien, fait et validé ; la construction, qui n'est pas commencée.
-  Le schéma de la base changera : la migration s'applique à la vraie base
+  l'entretien, fait et validé ; la construction, commencée le même jour.
+  Le schéma de la base change : la migration s'applique à la vraie base
   sur accord du porteur, après une sauvegarde.
+- **Construction, où elle en est.** Tout est en local, dans `app/`, par
+  commits locaux ; rien n'est poussé et aucune migration de l'étape n'est
+  appliquée à la vraie base. Pour reprendre : lire le lot en cours ci-dessous,
+  puis `git log`.
+  - **Lot 1 — enregistrement et texte simple : construit le 10 octobre
+    2026.** L'éditeur Plate (paragraphes, gras, italique, souligné, collage
+    nettoyé) ; l'enregistrement deux secondes après la frappe et quinze au
+    plus, avant toute sortie par l'application et à la fermeture de la page ;
+    le texte gardé à part, son onglet et ses deux gestes, l'élève arrêté ; les
+    versions précédentes ; la ligne de rappel dans l'onglet Suivi ; le dernier
+    enregistrement à la fermeture d'un poste ; le réglage « mise en forme des
+    élèves » ; « Texte vide » et « En cours » partout ; le dialogue de
+    suppression d'un élément qui a du texte ; la page de scène de l'élève.
+    Schéma : `20261010210000_ecrire_enregistrer.sql`. Choix techniques :
+    [architecture](architecture.md#réalisation-de-létape-3-10-octobre-2026).
+    - **Vérifications levées :** V7 (dix enregistrements partis ensemble de
+      la même version : un seul devient le texte, les neuf autres sont gardés
+      à part ; deux échanges demandés ensemble ne perdent rien ; l'arrêt tient
+      d'un poste à l'autre), V11 (frappe non interrompue, envoi à la
+      fermeture de la page), V10 pour l'enregistrement final, V8 pour le
+      texte que lit et écrit un poste.
+    - **Critères qui attendent une étape suivante,** faute d'états, de
+      remises ou de livre : F08-AC19, AC20 et AC25 (scène remise, état
+      choisi), la seconde moitié de F08-AC21 (validation suspendue),
+      F08-AC31 (prise en charge par l'élève) et F07-AC26, AC28, AC29 à
+      l'étape 4 ; F08-AC27 à l'étape 6. F08-AC26 se ferme au lot 2, avec les
+      choix.
+    - **Lectures de règles à confirmer par le porteur :** un élève retiré de
+      la classe pendant qu'il tape voit sa dernière phrase gardée à part sur
+      la scène, comme le dit F08.2, et non écrite dans la scène, comme le
+      laissait entendre F06-AC78 ; la scène dont un camarade s'occupe se lit
+      sans s'écrire depuis sa page, comme dans la maquette, « M'occuper de
+      cette scène » venant à l'étape 4, la base ne refusant pas l'écriture
+      puisque la prise en charge reste informative (F06.3).
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du

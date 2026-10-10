@@ -50,6 +50,10 @@ export type Scene = {
   priseParEleve: string | null;
   /** L'enseignant s'en occupe lui-même : un élève ne peut ni y écrire ni la reprendre (F06-AC62) */
   priseParEnseignant: boolean;
+  /** La scène n'a ni mot ni image : « Texte vide » (F06.5) */
+  texteVide: boolean;
+  /** Les élèves qui y ont enregistré un texte : le dialogue de suppression les nomme (F03.1) */
+  ecritPar: string[];
 };
 
 export type ElevePlan = { id: string; prenom: string; nom: string | null; couleur: number };
@@ -170,4 +174,27 @@ export function chercherScenes(plan: Plan, demande: string): { chapitre: Chapitr
       }),
     }))
     .filter((r) => r.scenes.length > 0);
+}
+
+/**
+ * Ce qu'une suppression emporterait (F03.1) : les scènes de l'élément, celles qui ont un
+ * texte, et les élèves qui y ont écrit. Un élément sans texte se supprime sans confirmation.
+ */
+export type Travail = { chapitres: number; scenes: number; ecrites: number; auteurs: string[] };
+
+export function travailDans(plan: Plan, sorte: "partie" | "chapitre" | "scene", id: string): Travail {
+  const chapitres =
+    sorte === "partie"
+      ? (plan.parties.find((p) => p.id === id)?.chapitres ?? [])
+      : sorte === "chapitre"
+        ? chapitresDe(plan).filter((c) => c.id === id)
+        : [];
+  const scenes = sorte === "scene" ? scenesDe(plan).filter((s) => s.id === id) : chapitres.flatMap((c) => c.scenes);
+  const ecrites = scenes.filter((s) => !s.texteVide);
+  return {
+    chapitres: chapitres.length,
+    scenes: scenes.length,
+    ecrites: ecrites.length,
+    auteurs: [...new Set(ecrites.flatMap((s) => s.ecritPar))],
+  };
 }

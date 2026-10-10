@@ -260,8 +260,13 @@ export async function attribuerChapitre(chapitreId: string, eleves: { eleve: str
   return { ok: true };
 }
 
-/** Réglages du projet : son titre, et la lecture ouverte de l'histoire aux élèves (F06-AC48). */
-export async function reglerProjet(projetId: string, valeurs: { titre?: string; lectureOuverte?: boolean }): Promise<Fait> {
+/**
+ * Réglages du projet : son titre, la lecture ouverte de l'histoire aux élèves (F06-AC48),
+ * leur mise en forme (F04-AC03).
+ */
+export async function reglerProjet(
+  projetId: string, valeurs: { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean },
+): Promise<Fait> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId)) return echec("Projet inconnu.");
   const maj: Record<string, unknown> = {};
@@ -271,6 +276,7 @@ export async function reglerProjet(projetId: string, valeurs: { titre?: string; 
     maj.titre = titre;
   }
   if (valeurs.lectureOuverte !== undefined) maj.lecture_ouverte = valeurs.lectureOuverte === true;
+  if (valeurs.miseEnFormeEleves !== undefined) maj.mise_en_forme_eleves = valeurs.miseEnFormeEleves === true;
   if (Object.keys(maj).length === 0) return { ok: true };
   const { data, error } = await e.supabase.from("projets").update(maj).eq("id", projetId).select("id");
   if (error || !data?.length) return echec("Ce réglage n’a pas pu être enregistré.");

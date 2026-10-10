@@ -10,6 +10,7 @@ import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
+import { TamponScene } from "@/composants/TamponScene";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
@@ -19,6 +20,7 @@ import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, referenceScen
 import { cle, pluriel } from "@/domaine/texte";
 import { choisirRepere, creerScene, exclureDuLivre, placerScene, restaurer, supprimer } from "../../../actions-recit";
 import { useCommandesScene } from "../../_plan/commandes";
+import { useConfirmerSuppression } from "../../_plan/suppression";
 import { AttribuerEleves, ChoisirDepart, ReglagesChapitre } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur, type ProjetDuPlan } from "../../_plan/Plan";
@@ -39,7 +41,7 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
   const [montree, setMontree] = useState<string | null>(null);
   const [local, setLocal] = useState<{ base: Plan; scenes: Scene[] } | null>(null);
   const [tiree, setTiree] = useState<string | null>(null);
-  const commandes = useCommandesScene({ projetId: projet.id, plan, onChoisirDepart: () => setOuvert("depart") });
+  const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setOuvert("depart") });
 
   const chapitre = chapitresDe(plan).find((c) => c.id === chapitreId)!;
   const partie = plan.parties.find((p) => p.id === chapitre.partieId)!;
@@ -63,7 +65,9 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
     dire({ texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.` });
   };
 
-  const supprimerChapitre = async () => {
+  const suppression = useConfirmerSuppression({ plan, eleves });
+  const supprimerChapitre = () => suppression.demander("chapitre", chapitre.id, `« ${chapitre.titre} »`, () => void retirerChapitre());
+  const retirerChapitre = async () => {
     const emporteLeDepart = depart?.chapitreId === chapitre.id;
     const fait = await supprimer("chapitre", chapitre.id);
     if (!fait.ok) return dire({ texte: fait.erreur });
@@ -328,6 +332,7 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
         </Dialogue>
       ) : null}
       {commandes.dialogue}
+      {suppression.dialogue}
     </div>
   );
 }
@@ -356,10 +361,7 @@ export function FicheScene({
       <div className="fiche__tete">
         {prise}
         <span className="fiche__ref">{ref}</span>
-        <span className="tampon" data-e="vide">
-          <Icone nom="vide" />
-          Texte vide
-        </span>
+        <TamponScene vide={scene.texteVide} />
         {menu}
       </div>
       <p className={`fiche__titre${scene.titre ? "" : " fiche__titre--vide"}`}>{scene.titre ?? "sans titre"}</p>

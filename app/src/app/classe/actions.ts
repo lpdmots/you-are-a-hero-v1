@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import {
-  changerDEleve, entrerLeCode, etatDuPoste, noterActivite, ouvrirLaClasse, quitterLaClasse, type ResultatCode,
+  changerDEleve, clientDuPoste, entrerLeCode, etatDuPoste, noterActivite, ouvrirLaClasse, quitterLaClasse, type ResultatCode,
 } from "@/serveur/poste";
 
 /**
@@ -47,9 +47,21 @@ export async function quitter(): Promise<void> {
  * fermée (nuit, mot de passe remplacé, année terminée), l'élève retiré ou resté deux
  * heures sans rien faire (F06-AC75 à AC78). « actif » dit que l'élève vient d'agir.
  */
-export async function veiller(actif: boolean): Promise<"eleve" | "classe" | "ferme"> {
+export type EtatVeille =
+  /** Un élève est identifié et le travail est ouvert */
+  | "eleve"
+  /** Un élève est identifié, hors des horaires : il ne lit rien du récit (F06-AC27) */
+  | "pause"
+  /** La classe est ouverte, personne n'est identifié */
+  | "classe"
+  /** La classe n'est plus ouverte sur ce poste */
+  | "ferme";
+
+export async function veiller(actif: boolean): Promise<EtatVeille> {
   if (actif) await noterActivite();
   const etat = await etatDuPoste();
   if (!etat) return "ferme";
-  return etat.inscriptionId ? "eleve" : "classe";
+  if (!etat.inscriptionId) return "classe";
+  const { data: ouvert } = await (await clientDuPoste(etat)).rpc("travail_ouvert");
+  return ouvert === true ? "eleve" : "pause";
 }

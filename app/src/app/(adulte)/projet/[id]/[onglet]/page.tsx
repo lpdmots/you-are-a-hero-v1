@@ -4,9 +4,11 @@ import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { textesGardesDuProjet } from "@/serveur/copie";
 import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
 import { EnteteProjet } from "../_commun/EnteteProjet";
+import { RappelTextes } from "../_commun/RappelTextes";
 import { Plan } from "../_plan/Plan";
 import { Carnet } from "../_preparation/Carnet";
 import styles from "./projet.module.css";
@@ -59,11 +61,16 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else {
+    // La ligne de rappel des textes gardés à part se pose ici, seule, en attendant le Suivi (F08.2)
+    const gardes = onglet === "suivi" ? await textesGardesDuProjet(enseignant, projet.id) : [];
     contenu = (
-      <section className={styles.aVenir} aria-labelledby="a-venir">
-        <h2 id="a-venir">{NOM_ONGLET[onglet]}</h2>
-        <p>{A_VENIR[onglet]}</p>
-      </section>
+      <>
+        <RappelTextes projetId={projet.id} scenes={gardes} />
+        <section className={styles.aVenir} aria-labelledby="a-venir">
+          <h2 id="a-venir">{NOM_ONGLET[onglet]}</h2>
+          <p>{A_VENIR[onglet]}</p>
+        </section>
+      </>
     );
   }
 

@@ -1,0 +1,462 @@
+/* La copie : la page où l'on écrit le récit (docs/design.md, « Cahiers d'aventure »). La
+   marge rouge est celle d'une copie d'écolier ; ce qui s'y pose n'est jamais imprimé. */
+
+.copie {
+  position: relative;
+  min-width: 0;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow:
+    0 1px 2px rgba(20, 30, 30, 0.05),
+    inset 0 0 0 1px var(--trait);
+  overflow: clip;
+}
+.copie__barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 14px;
+  min-height: 52px;
+  padding: 8px 14px 8px 18px;
+  border-bottom: 1px solid var(--trait);
+}
+.copie__titre {
+  font-size: var(--t-s);
+  font-weight: 800;
+  color: var(--graphite-2);
+}
+.copie__outils {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+}
+.outil {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.outil:hover {
+  background: var(--feuille-2);
+  border-color: var(--trait);
+}
+.outil[aria-pressed="true"] {
+  background: var(--graphite);
+  color: var(--feuille);
+}
+.outil--bold {
+  font-weight: 800;
+}
+.outil--italic {
+  font-family: var(--f-recit);
+  font-style: italic;
+}
+.outil--underline {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.copie__lecture {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: auto;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
+.copie__texte {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.75em;
+  /* Slate pose sa propre hauteur tant que la copie est vide */
+  min-height: 260px !important;
+  padding: 26px 34px 30px 64px;
+  outline: none;
+  font-family: var(--f-recit);
+  font-size: 1.2rem;
+  line-height: 1.75;
+  caret-color: var(--canard);
+}
+.copie__texte::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 44px;
+  width: 1.5px;
+  background: var(--marge);
+}
+.copie__texte:focus-visible {
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.copie__texte p {
+  max-width: 62ch;
+  min-width: 0;
+}
+.copie__texte u {
+  text-underline-offset: 3px;
+}
+/* L'invite de Slate, dans la voix de l'outil */
+.copie__texte [data-slate-placeholder] {
+  font-family: var(--f-ui);
+  font-size: 1rem;
+  font-style: normal;
+  color: var(--graphite-3);
+  opacity: 1 !important;
+}
+.copie--lecture .copie__texte,
+.copie__texte--lu {
+  background: #fcfcfb;
+}
+.copie__vide {
+  font-family: var(--f-ui);
+  font-size: 1rem;
+  color: var(--graphite-3);
+}
+.page--eleve .copie__texte {
+  font-size: 1.28rem;
+}
+.copie__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  padding: 12px 16px 12px 18px;
+  border-top: 1px solid var(--trait);
+  background: var(--feuille-2);
+}
+.copie__pied > .btn {
+  margin-left: auto;
+}
+
+/* État de l'enregistrement : « Enregistré » ou « Pas encore enregistré », sans bouton */
+.sauv {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: var(--e-valide);
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+.sauv--attente {
+  color: var(--graphite-2);
+}
+.sauv--echec {
+  color: var(--bloque);
+}
+
+/* Onglets de la copie : le texte de la scène, les textes gardés à part */
+.copie__onglets {
+  display: flex;
+  flex-wrap: wrap;
+  align-self: stretch;
+  gap: 2px;
+  min-width: 0;
+  margin: -8px 0 -9px -4px;
+}
+.copie__onglets button {
+  min-height: 52px;
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  box-shadow: inset 0 -3px 0 transparent;
+  color: var(--graphite-2);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+}
+.copie__onglets button:hover {
+  color: var(--graphite);
+}
+.copie__onglets button[aria-selected="true"] {
+  color: var(--graphite);
+  box-shadow: inset 0 -3px 0 var(--canard);
+}
+.ga-onglet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+.ga-onglet .ic {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--e-valider);
+}
+.ga-onglet__t {
+  display: grid;
+  line-height: 1.25;
+}
+.ga-onglet__t small {
+  color: var(--e-valider);
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
+.ga-pied {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.ga-cmd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+.ga-tant {
+  align-self: center;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+
+/* Messages au-dessus de la copie : ambre quand cela attend, brique quand cela bloque */
+.note--attend {
+  background: var(--e-valider-f);
+  box-shadow: inset 0 0 0 1px #e9c877;
+  color: #5a3b00;
+}
+.note--attend > .ic {
+  color: var(--e-valider);
+}
+.note--bloque {
+  background: var(--bloque-f);
+  box-shadow: inset 0 0 0 1px #e7a69c;
+  color: #6f2010;
+}
+.note--bloque > .ic {
+  color: var(--bloque);
+}
+.note .lien + .lien {
+  margin-left: 12px;
+}
+.note__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-left: auto;
+}
+
+/* Côté élève : le pied reste à l'écran, là où l'élève regarde */
+.page--eleve .copie__pied {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  min-height: 70px;
+  border-radius: 0 0 var(--r-l) var(--r-l);
+  box-shadow:
+    0 -10px 18px -14px rgba(20, 30, 30, 0.35),
+    inset 0 0 0 1px var(--trait);
+}
+.page--eleve .sauv {
+  font-size: 1rem;
+}
+.pied-alerte {
+  display: flex;
+  flex: 1 1 320px;
+  align-items: flex-start;
+  gap: 10px;
+  max-width: 62ch;
+  margin: 0;
+  color: #8c2a14;
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.pied-alerte .ic {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  margin-top: 1px;
+}
+.pied-alerte--attend {
+  color: #6b4a00;
+}
+.pied-alerte--ok {
+  color: var(--e-valide);
+}
+.copie__pied:has(.pied-alerte) {
+  background: #fdecea;
+  box-shadow:
+    0 -10px 18px -14px rgba(20, 30, 30, 0.35),
+    inset 0 0 0 1.5px #e7a69c;
+}
+.copie__pied:has(.pied-alerte--attend) {
+  background: #fff3dc;
+  box-shadow:
+    0 -10px 18px -14px rgba(20, 30, 30, 0.35),
+    inset 0 0 0 1.5px #e9c877;
+}
+.copie__pied:has(.pied-alerte--ok) {
+  background: var(--e-valide-f);
+  box-shadow:
+    0 -10px 18px -14px rgba(20, 30, 30, 0.35),
+    inset 0 0 0 1.5px #a9d2a3;
+}
+
+/* Ligne de rappel du Suivi : un texte gardé à part, en lien et non en filtre */
+.rappel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 14px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  background: var(--e-valider-f);
+  color: #5a3b00;
+  font-size: var(--t-s);
+}
+.rappel > .ic {
+  flex: none;
+  color: var(--e-valider);
+}
+
+/* Versions précédentes : la liste, puis le texte choisi en lecture */
+.versions {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.versions button {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--trait);
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  color: var(--graphite);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.versions button[aria-pressed="true"] {
+  border-color: var(--canard);
+  box-shadow: inset 0 0 0 1px var(--canard);
+}
+.version-lue {
+  margin-top: 14px;
+  border-radius: var(--r-m);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  overflow: clip;
+}
+.version-lue .copie__texte {
+  min-height: 0 !important;
+  padding: 16px 18px 18px 40px;
+  font-size: 1.05rem;
+}
+.version-lue .copie__texte::before {
+  left: 24px;
+}
+
+@media (max-width: 720px) {
+  .copie__texte,
+  .page--eleve .copie__texte {
+    padding: 18px 18px 22px 40px;
+    font-size: 1.12rem;
+  }
+  .copie__texte::before {
+    left: 26px;
+  }
+  .copie__outils {
+    margin-left: 0;
+  }
+  .copie__pied {
+    position: sticky;
+    bottom: 0;
+    z-index: 5;
+    box-shadow: 0 -8px 16px -12px rgba(0, 0, 0, 0.25);
+  }
+  .page--eleve .copie__pied {
+    border-radius: 0;
+  }
+  .copie__onglets {
+    margin: -4px 0 -4px -6px;
+  }
+  .copie__onglets button {
+    min-height: 42px;
+  }
+  .ga-cmd {
+    width: 100%;
+    margin-left: 0;
+  }
+  .ga-cmd .btn {
+    flex: 1 1 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+}
+
+/* Bulle d'information : le « i » en bleu canard, nommé par une question */
+.bulle {
+  position: relative;
+  display: inline-flex;
+}
+.bulle__i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--canard);
+  cursor: pointer;
+}
+.bulle__i:hover {
+  background: var(--canard-pale);
+}
+.bulle__texte {
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  z-index: 20;
+  display: grid;
+  gap: 6px;
+  width: min(340px, 78vw);
+  padding: 12px 14px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: var(--ombre-panneau);
+  color: var(--graphite);
+  font-size: var(--t-s);
+  font-weight: 400;
+  line-height: 1.45;
+}
+
+/* Fiche d'une scène où l'élève est arrêté : la même phrase que sur la scène */
+.fiche__arret {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 8px;
+  color: #6b4a00;
+  font-size: var(--t-s);
+}
+.fiche__arret .ic {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+}

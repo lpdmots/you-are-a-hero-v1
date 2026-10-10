@@ -34,6 +34,7 @@ export default defineConfig({
     url: "http://localhost:3100/entree",
     reuseExistingServer: false,
     timeout: 240_000,
-    env: local,
+    // NEXT_PUBLIC_ESSAIS : la copie expose son éditeur aux parcours, pour y poser le curseur
+    env: { ...local, NEXT_PUBLIC_ESSAIS: "1" },
   },
 });

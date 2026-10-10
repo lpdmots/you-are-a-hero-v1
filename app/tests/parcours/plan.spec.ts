@@ -401,6 +401,7 @@ test("F06-AC07, F06-AC62 — l'enseignant dit qui s'occupe d'une scène, sur sa 
 
   // Le même menu dans la page de la scène ; retirer ne touche pas à ce qu'elle contient
   await page.getByRole("link", { name: /Ouvrir S001/ }).click();
+  await page.waitForURL(/\/scene\//);
   await page.getByLabel(/^Qui s’occupe de S001 : Alice s’en occupe/).click();
   await page.getByRole("button", { name: "Pas encore prise" }).click();
   await expect(MESSAGE(page)).toContainText("Plus personne ne s’occupe de S001");

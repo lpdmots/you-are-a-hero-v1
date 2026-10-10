@@ -58,20 +58,14 @@
   align-items: start;
   margin-top: 8px;
 }
-.copie {
-  min-height: 320px;
-  padding: 28px 32px;
-  border-radius: var(--r-l);
-  background: var(--feuille);
-  box-shadow: inset 0 0 0 1px var(--trait);
+.texte {
+  min-width: 0;
 }
-.copie h2 {
-  font-size: var(--t-l);
-  font-weight: 800;
+.texte > :global(.note):first-child {
+  margin-top: 0;
 }
-.copie p {
-  margin-top: 8px;
-  color: var(--graphite-2);
+.texte > :global(.note) {
+  margin-bottom: 12px;
 }
 .aide {
   margin-top: 8px;

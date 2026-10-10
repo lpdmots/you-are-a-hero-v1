@@ -18,7 +18,7 @@ export const estUuid = (v: unknown): v is string => typeof v === "string" && UUI
 type LigneScene = {
   id: string; chapitre_id: string; reference: number; titre: string | null; consigne: string; rang: number;
   fin: boolean; hors_livre: boolean; cree_par_eleve: string | null; supprime_le: string | null; cree_le: string;
-  prise_par_eleve: string | null; prise_par_enseignant: boolean;
+  prise_par_eleve: string | null; prise_par_enseignant: boolean; texte_vide: boolean; ecrit_par: string[] | null;
 };
 type LigneChapitre = {
   id: string; partie_id: string; titre: string; rang: number; couleur: number; resume: string; image_id: string | null;
@@ -34,6 +34,7 @@ const parRang = <T extends { rang: number; cree_le: string }>(a: T, b: T): numbe
 const sceneDepuis = (s: LigneScene): Scene => ({
   id: s.id, chapitreId: s.chapitre_id, reference: s.reference, titre: s.titre, consigne: s.consigne, fin: s.fin,
   horsLivre: s.hors_livre, creeParEleve: s.cree_par_eleve, priseParEleve: s.prise_par_eleve, priseParEnseignant: s.prise_par_enseignant,
+  texteVide: s.texte_vide !== false, ecritPar: s.ecrit_par ?? [],
 });
 
 /** Le plan du récit et sa corbeille, lus une seule fois par page. */
@@ -47,7 +48,7 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
       .eq("projet_id", projetId),
     e.supabase
       .from("scenes")
-      .select("id, chapitre_id, reference, titre, consigne, rang, fin, hors_livre, cree_par_eleve, prise_par_eleve, prise_par_enseignant, supprime_le, cree_le")
+      .select("id, chapitre_id, reference, titre, consigne, rang, fin, hors_livre, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide, ecrit_par, supprime_le, cree_le")
       .eq("projet_id", projetId),
     e.supabase.from("attributions").select("chapitre_id, eleve_id, profil, cree_le").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("projets").select("depart_scene_id").eq("id", projetId).maybeSingle(),

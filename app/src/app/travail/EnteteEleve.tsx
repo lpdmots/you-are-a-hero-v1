@@ -10,10 +10,14 @@ import { changer } from "../classe/actions";
 import styles from "./travail.module.css";
 
 /** La barre de l'espace élève : sa classe, son prénom, « Changer d'élève ». */
-export function EnteteEleve({ contexte }: { contexte: ContexteEleve }) {
+export function EnteteEleve({ contexte, auTravail }: {
+  contexte: ContexteEleve;
+  /** La page montre le récit : elle se quitte quand la plage horaire se termine */
+  auTravail?: boolean;
+}) {
   return (
     <>
-      <VeillePoste attendu="eleve" />
+      <VeillePoste attendu="eleve" auTravail={auTravail} />
       <header className={styles.barre}>
         <Logo href="/travail" />
         <nav className={styles.nav} aria-label="Espace élève">

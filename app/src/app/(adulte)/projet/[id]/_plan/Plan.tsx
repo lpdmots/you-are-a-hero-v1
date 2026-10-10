@@ -11,6 +11,7 @@ import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
+import { TamponScene } from "@/composants/TamponScene";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
@@ -26,6 +27,7 @@ import {
 import { AidePlan } from "./AidePlan";
 import { AttribuerEleves, ChoisirDepart, Corbeille, ReglagesChapitre, ReglagesPartie } from "./Panneaux";
 import { libelleQui } from "./QuiSenOccupe";
+import { useConfirmerSuppression } from "./suppression";
 
 export type ProjetDuPlan = {
   id: string; titre: string; deClasse: boolean; aChoix: boolean; classe: { id: string; nom: string } | null;
@@ -68,6 +70,7 @@ export function Plan({
   projet: ProjetDuPlan; plan: PlanDuRecit; eleves: ElevePlan[]; aideMasquee: boolean; aideVue: boolean;
 }) {
   const dire = useMessage();
+  const suppression = useConfirmerSuppression({ plan, eleves });
   const capteurs = useCapteurs();
   const [aide, setAide] = useState(!aideMasquee && !aideVue);
   const [vue, setVue] = useState(aideVue);
@@ -132,7 +135,9 @@ export function Plan({
     });
 
   // ——— Supprimer, restaurer (F03-AC22, F03-AC27) ———
-  const supprimerElement = async (sorte: "partie" | "chapitre", id: string, titre: string) => {
+  const supprimerElement = (sorte: "partie" | "chapitre", id: string, titre: string) =>
+    suppression.demander(sorte, id, `« ${titre} »`, () => void retirerElement(sorte, id, titre));
+  const retirerElement = async (sorte: "partie" | "chapitre", id: string, titre: string) => {
     const dedans = sorte === "partie" ? (parties.find((p) => p.id === id)?.chapitres ?? []) : chapitres.filter((c) => c.id === id);
     const emporteLeDepart = !!depart && dedans.some((c) => c.id === depart.chapitreId);
     const fait = await supprimer(sorte, id);
@@ -385,10 +390,7 @@ export function Plan({
                     <li key={s.id} className="trouve">
                       <span className="fiche__ref">{referenceScene(s.reference)}</span>
                       <span className="trouve__titre">{s.titre ?? <span className="sans-consigne">sans titre</span>}</span>
-                      <span className="tampon" data-e="vide">
-                        <Icone nom="vide" />
-                        Texte vide
-                      </span>
+                      <TamponScene vide={s.texteVide} />
                       {projet.deClasse ? <span className="fiche__qui">{libelleQui(s, chapitre, eleves)}</span> : null}
                       <span className="trouve__ouvrir" aria-hidden="true">
                         Ouvrir
@@ -523,6 +525,7 @@ export function Plan({
         <Corbeille corbeille={plan.corbeille} attente={attente} onRestaurer={restaurerElement} onFermer={() => setOuvert(null)} />
       ) : null}
       {ouvert?.sorte === "depart" ? <ChoisirDepart plan={plan} onChoisir={(id) => void choisirDepart(id)} onFermer={() => setOuvert(null)} /> : null}
+      {suppression.dialogue}
       {ouvert?.sorte === "exclure" && chapitreOuvert ? (
         <Dialogue
           titre={`Exclure « ${chapitreOuvert.titre} » du livre ?`}

@@ -4,10 +4,11 @@ import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { nomScene, scenesDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
+import { texteDeScene } from "@/serveur/copie";
 import { elevesDeLaClasse, planDe } from "@/serveur/recit";
 import { PageScene } from "./PageScene";
 
-type Props = { params: Promise<{ id: string; scene: string }> };
+type Props = { params: Promise<{ id: string; scene: string }>; searchParams: Promise<{ texte?: string; de?: string }> };
 
 async function lire({ params }: Props) {
   const { id, scene: sceneId } = await params;
@@ -26,16 +27,25 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
   return { title: lu ? `${nomScene(lu.scene)} — ${lu.projet.titre}` : "Scène" };
 }
 
-/** La page d'une scène. À l'étape 2 : son titre, sa consigne, ses repères ; le texte arrive à l'étape 3. */
+/** La page d'une scène : son titre, sa consigne, ses repères et son texte (F04, F08). */
 export default async function Page(props: Props) {
   const lu = await lire(props);
   if (!lu) notFound();
   const { enseignant, projet, plan, scene } = lu;
-  const eleves = await elevesDeLaClasse(enseignant, projet.classe?.id ?? null);
+  const [eleves, texte, demande] = await Promise.all([
+    elevesDeLaClasse(enseignant, projet.classe?.id ?? null),
+    texteDeScene(enseignant, scene.id),
+    props.searchParams,
+  ]);
+  if (!texte) notFound();
   return (
     <div className="page">
       <ProjetOuvert id={projet.id} titre={projet.titre} onglet="plan" />
-      <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} eleves={eleves} />
+      <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} eleves={eleves}
+        texte={texte}
+        ouvrir={typeof demande.texte === "string" ? demande.texte : undefined}
+        venuDuSuivi={demande.de === "suivi"}
+      />
     </div>
   );
 }

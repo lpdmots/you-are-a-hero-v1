@@ -380,6 +380,91 @@ autre.
 base locale, 88 parcours joués dans Chromium. Les deux migrations ont été rejouées ensemble
 dans une base vide, à part, et donnent le schéma de la base locale.
 
+## Réalisation de l'étape 3 (10 octobre 2026)
+
+Choix techniques pris en construisant l'étape 3 du [plan](plan.md) : écrire
+une scène et relier les choix. Les règles restent en F04, F05, F08, F10 et
+F11.5 des [spécifications](specifications.md). Cette section s'écrit lot par
+lot ; l'avancement est dans le plan.
+
+**L'éditeur.** Plate 53 sur Slate (ADR 0002), versions figées dans
+`package.json` et son fichier de verrouillage : `platejs` 53.3.14,
+`@platejs/basic-nodes` 53.0.0, `slate` 0.126.2, `slate-react` 0.127.1,
+`slate-dom` 0.126.0. Aucun code du prototype n'est repris. Plate apporte les
+greffons, les trois mises en forme et l'historique d'annulation ; les règles
+de la copie s'écrivent contre Slate, dans `src/composants/copie/`. Les
+identités des blocs sont tenues par la copie, le greffon d'identité de Plate
+étant désactivé : un paragraphe coupé en deux garde la sienne d'un côté et en
+reçoit une de l'autre. L'éditeur est rendu par le serveur puis repris par le
+navigateur, sans avertissement.
+
+**Le texte dans la base.** Deux colonnes de `scenes` : `texte`, la suite des
+blocs telle que l'éditeur la tient, en JSON, et `version`, qui augmente d'un
+à chaque enregistrement. `texte_vide` est une colonne calculée par la base
+d'après le texte, pour que les listes disent « Texte vide » sans lire les
+textes ; une note de l'enseignant n'y compte pas. Personne n'écrit ces
+colonnes directement, pas même l'adulte : elles ne se changent que par des
+fonctions, et un poste d'élève n'a pas le droit de lire la colonne du texte,
+où sont les notes.
+
+**Enregistrer, d'un seul tenant (V7).** La page envoie le texte et la
+version qu'elle connaît. Le serveur de l'application ne laisse passer que ce
+qu'il reconnaît (`nettoyerTexte`), puis une fonction de la base verrouille la
+ligne de la scène, compare les versions et, dans la même opération, écrit le
+texte ou le garde à part dans `copies_recuperation`. Il n'y a donc aucun
+instant où un texte refusé n'est gardé nulle part. Un texte identique à
+celui de la scène n'est ni écrit ni gardé : c'est le cas d'une réponse
+perdue en route, que la page renvoie, et qui ne doit pas faire un conflit
+avec soi-même. L'échange (« Mettre ce texte dans la scène ») verrouille la
+scène puis relit le texte gardé à part sous ce verrou : deux échanges
+demandés ensemble se suivent sans rien perdre. L'arrêt d'un élève n'est pas
+un état de plus : il est arrêté tant qu'un texte né d'un refus, à son nom,
+est gardé pour cette scène, ce que la base relit à chaque demande, d'où
+qu'elle vienne.
+
+**Une adresse plutôt qu'une action.** Le texte s'enregistre par `POST
+/copie`, et non par une action du serveur, pour que la page puisse encore y
+envoyer ce qui attend au moment où elle se ferme (`keepalive`). Le navigateur
+peut abandonner cet envoi : la page ne dit « Enregistré » qu'après la
+réponse. Un seul envoi part à la fois, le suivant avec la version que le
+précédent a rendue ; rien de l'enregistrement ne touche à l'éditeur ni à son
+curseur.
+
+**Quitter une scène.** Une copie ouverte s'inscrit dans un registre
+(`sortie.ts`). Tant qu'elle l'est, un clic sur un lien de l'application ou
+l'envoi d'un formulaire (« Changer d'élève ») est retenu, le texte en attente
+est enregistré, puis la commande est rejouée ; si l'enregistrement échoue, la
+page reste et le dit. La veille du poste passe par le même registre avant de
+ramener la page à l'écran qui convient.
+
+**Dernier enregistrement d'un poste qui se ferme (V10).** Quand un élève
+ouvre une scène pour écrire, la base crée une ligne `ecritures` (scène,
+élève, poste) et la page en reçoit l'identité. Chaque enregistrement la
+présente avec le cookie du poste. Tant que l'accès tient, la base contrôle
+tout comme d'habitude ; quand il vient de se fermer — fin de plage, deux
+heures sans activité, mot de passe remplacé, année terminée —, elle accepte
+un dernier enregistrement, soumis aux mêmes protections, puis clôt la ligne.
+Alternative écartée : un jeton signé sans ligne en base, qui ne permettait
+pas de dire « une seule fois ».
+
+**Versions précédentes.** Une table à part, `versions_precedentes`, remplie
+par la fonction d'enregistrement : le texte d'avant, s'il n'est pas vide, à
+la première modification d'une personne un jour donné, ce que tient un index
+unique. Le jour se compte au fuseau de la classe.
+
+**Collage.** Un collage venu d'ailleurs est relu par la copie elle-même
+(`lireCollage`), et non par le désérialiseur de Plate : chaque bloc du
+document collé donne un paragraphe, seuls le gras, l'italique et le souligné
+passent, lus dans les balises comme dans les styles (Google Docs écrit le
+gras en style, dans une balise `<b>` qui n'est pas grasse). Un fragment copié
+depuis une scène de l'application repasse par `nettoyerTexte`.
+
+**Tests.** Les parcours tournent dans un Chromium qui se présente comme un
+Chrome de Windows sur un Mac : l'éditeur y attend Ctrl+Y pour rétablir. Pour
+poser le curseur par programme, la copie expose son éditeur à la page quand
+`NEXT_PUBLIC_ESSAIS` vaut 1, ce que seule la configuration des parcours
+règle ; l'application en ligne ne l'expose pas.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

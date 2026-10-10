@@ -15,8 +15,10 @@ export const metadata: Metadata = { title: "Mon travail" };
  * toute l'histoire en cartes — les siennes s'ouvrent, les autres montrent leur titre et
  * leur image (F03-AC15). « Mon travail » et ses scènes à écrire se construisent à l'étape 4.
  */
-export default async function MonTravail() {
+export default async function MonTravail({ searchParams }: { searchParams: Promise<{ texte?: string }> }) {
   const contexte = await contexteEleve();
+  // Ce que la page d'une scène vient de faire du texte en la quittant (F06-AC29, F08-AC28)
+  const { texte } = await searchParams;
   // Hors des horaires, la base ne rend rien du récit : la page dit seulement quand il rouvre
   const histoires = contexte.ouvert ? await histoiresDuPoste(contexte) : [];
   const miens = histoires.flatMap((h) => h.parties.flatMap((p) => p.chapitres.filter((c) => c.profil).map((c) => ({ chapitre: c, partie: p.titre }))));
@@ -74,6 +76,17 @@ export default async function MonTravail() {
                 )}
               </p>
             )}
+            {texte === "garde" ? (
+              <p className={styles.acces}>
+                <Icone nom="apart" />
+                Ton texte est gardé à part. {majuscule(contexte.prof)} doit le regarder.
+              </p>
+            ) : texte === "enregistre" && !contexte.ouvert ? (
+              <p className={styles.acces}>
+                <Icone nom="coche" />
+                Ton texte a été enregistré. Tu le retrouveras à la prochaine séance.
+              </p>
+            ) : null}
           </div>
         </section>
         {histoires.filter((h) => h.parties.length).map((h) => (

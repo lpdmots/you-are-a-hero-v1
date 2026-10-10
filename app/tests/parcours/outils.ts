@@ -281,3 +281,109 @@ export const chapitresDeLaPartie = (page: Page, partie: string): Promise<string[
 export const scenesDuChapitre = (page: Page): Promise<string[]> => page.locator(".fiches .fiche__ref").allTextContents();
 
 export const MESSAGE = (page: Page) => page.locator(".message");
+
+// ——— Étape 3 : la copie d'une scène ———
+
+export type Situation = {
+  compte: Compte; base: SupabaseClient; classe: ClasseCreee; codes: Record<string, string>;
+  eleves: Record<string, { id: string; inscriptionId: string }>; projet: string;
+  lisiere: { id: string; scenes: string[] }; sanctuaire: { id: string; scenes: string[] };
+};
+
+/**
+ * Mme Laurent, sa classe et « Les passeurs de brume » : Alice et Bilal dans « La lisière »
+ * (S001 « Le sentier », S002 « Le pont »), Chloé dans « Le sanctuaire » (S003 « L'autel »).
+ */
+export async function classeQuiEcrit(page: Page, prenoms = ["Alice", "Bilal", "Chloé"]): Promise<Situation> {
+  const compte = await creerCompte();
+  const base = await baseDe(compte);
+  await masquerAides(base, compte);
+  await connecter(page, compte);
+  await page.waitForURL(/\/projets$/);
+  await nommer(page, compte, "Mme Laurent");
+  const classe = await creerClasse(page, "CM1-CM2");
+  await inscrire(page, classe.id, prenoms);
+  const codes = await lireCodes(page, classe.id);
+  const eleves = await elevesDe(base, classe.id);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  const foret = await semerPartie(base, projet, "La forêt", [
+    { titre: "La lisière", scenes: ["Le sentier", "Le pont"] },
+    { titre: "Le sanctuaire", scenes: ["L’autel"] },
+  ]);
+  const [lisiere, sanctuaire] = foret.chapitres;
+  await semerAttribution(base, lisiere.id, [{ eleve: eleves.Alice.id }, { eleve: eleves.Bilal.id, profil: "organisation" }]);
+  if (eleves.Chloé) await semerAttribution(base, sanctuaire.id, [{ eleve: eleves.Chloé.id }]);
+  return { compte, base, classe, codes, eleves, projet, lisiere, sanctuaire };
+}
+
+/** Un poste de la salle où un élève s'est identifié. */
+export async function posteDe(browser: Browser, s: Situation, prenom: string): Promise<{ contexte: BrowserContext; page: Page }> {
+  const p = await autrePoste(browser);
+  await ouvrirLaClasse(p.page, s.classe.identifiant, s.classe.motDePasse);
+  await taperCode(p.page, prenom, s.codes[prenom]);
+  await p.page.waitForURL(/\/travail$/);
+  return p;
+}
+
+/** La copie où l'on écrit : le texte de la scène, dans l'éditeur. */
+export const copie = (page: Page): Locator => page.locator('.copie__texte[contenteditable="true"]');
+export const pied = (page: Page): Locator => page.locator(".copie__pied");
+
+/** Pose le curseur à la fin du texte et tape, comme au clavier. */
+export async function ecrire(page: Page, texte: string, delai = 0): Promise<void> {
+  await copie(page).click();
+  await page.keyboard.press("ControlOrMeta+End");
+  // Slate reporte la sélection du navigateur avec un léger retard
+  await page.waitForTimeout(150);
+  await page.keyboard.type(texte, { delay: delai });
+}
+
+type BlocEnBase = { type: string; id: string; children: { text?: string; bold?: boolean; italic?: boolean; underline?: boolean }[] };
+export type SceneEnBase = { texte: BlocEnBase[]; version: number; texte_vide: boolean };
+
+export async function sceneEnBase(sceneId: string): Promise<SceneEnBase> {
+  return (await sql<SceneEnBase>("select texte, version, texte_vide from scenes where id = $1", [sceneId]))[0];
+}
+
+/** Les paragraphes enregistrés d'une scène, mise en forme entre signes : *gras*, /italique/, _souligné_. */
+export const enClair = (texte: BlocEnBase[]): string[] =>
+  texte.map((b) => b.children.map((l) => `${l.bold ? "*" : ""}${l.italic ? "/" : ""}${l.underline ? "_" : ""}${l.text ?? ""}${l.underline ? "_" : ""}${l.italic ? "/" : ""}${l.bold ? "*" : ""}`).join(""));
+
+export const motsEnBase = async (sceneId: string): Promise<string> => enClair((await sceneEnBase(sceneId)).texte).join(" / ");
+
+/** Attend que le texte de la scène contienne ces mots dans la base : l'enregistrement est arrivé. */
+export async function attendreEnBase(sceneId: string, mots: string | RegExp): Promise<void> {
+  await expect.poll(() => motsEnBase(sceneId), { timeout: 15_000 }).toMatch(typeof mots === "string" ? new RegExp(mots.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")) : mots);
+}
+
+/** Écrit le texte d'une scène sans passer par l'écran, au nom de l'adulte. */
+export async function semerTexte(base: SupabaseClient, sceneId: string, paragraphes: string[]): Promise<void> {
+  const { version } = await sceneEnBase(sceneId);
+  const { data, error } = await base.rpc("enregistrer_texte", {
+    p_scene: sceneId, p_version: version,
+    p_texte: paragraphes.map((t) => ({ type: "p", id: randomUUID(), children: [{ text: t }] })),
+  });
+  if (error || (data as { etat: string }).etat !== "enregistre") throw new Error(error?.message ?? "Texte non enregistré");
+}
+
+/** Les textes gardés à part d'une scène, tels que la base les tient. */
+export const copiesGardees = (sceneId: string) =>
+  sql<{ id: string; sorte: string; eleve_id: string | null; texte: BlocEnBase[] }>(
+    "select id, sorte, eleve_id, texte from copies_recuperation where scene_id = $1 and retire_le is null order by garde_le, id",
+    [sceneId],
+  );
+
+/** Met dans le presse-papiers ce qu'un autre logiciel y aurait mis, puis colle au clavier. */
+export async function collerDepuisAilleurs(page: Page, html: string, brut: string): Promise<void> {
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  await page.evaluate(
+    async ([h, t]) => {
+      await navigator.clipboard.write([new ClipboardItem({ "text/html": new Blob([h], { type: "text/html" }), "text/plain": new Blob([t], { type: "text/plain" }) })]);
+    },
+    [html, brut] as const,
+  );
+  await page.keyboard.press("ControlOrMeta+v");
+}
+
+/** La page d'un poste vérifie ses accès tout de suite, sans attendre la minute. */
+export const veiller = (page: Page): Promise<void> => page.evaluate(() => void window.dispatchEvent(new Event("veille-poste")));

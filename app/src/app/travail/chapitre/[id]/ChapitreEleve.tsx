@@ -4,12 +4,13 @@ import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
-import { useState, type CSSProperties, type ReactNode } from "react";
+import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
+import { TamponScene } from "@/composants/TamponScene";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
 import { nomPourEleves, type Eleve } from "@/domaine/eleves";
@@ -27,6 +28,8 @@ export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapi
   const [attente, setAttente] = useState(false);
   const [renomme, setRenomme] = useState<{ id: string; titre: string } | null>(null);
   const [aSupprimer, setASupprimer] = useState<SceneEleve | null>(null);
+  // La fiche qu'on vient de poser ne s'ouvre pas : le relâchement de la souris n'est pas un clic
+  const vientDeTirer = useRef(false);
   const scenes = local?.base === chapitre ? local.scenes : chapitre.scenes;
   const c = couleurDeChapitre(chapitre.couleur);
 
@@ -69,15 +72,21 @@ export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapi
     });
   };
 
+  // Ce que l'élève fera en ouvrant la scène : écrire s'il le peut, lire sinon (F03-AC17, F06-AC20)
+  const ouvrir = (s: SceneEleve): string =>
+    !chapitre.profil || s.arrete || s.prise?.par === "enseignant" || s.prise?.par === "eleve" ? "Lire" : s.texteVide ? "Écrire" : "Continuer";
   const fiche = (s: SceneEleve, prise: ReactNode) => (
-    <article className={`fiche${prise ? " se-tire" : ""}`}>
+    <article className={`fiche fiche--ouvrable${prise ? " se-tire" : ""}`}>
+      <Link
+        className="fiche__cible"
+        href={`/travail/scene/${s.id}`}
+        aria-label={`${ouvrir(s)} ${referenceScene(s.reference)}${s.titre ? ` — ${s.titre}` : ""}`}
+        draggable={false}
+      />
       <div className="fiche__tete">
         {prise}
         <span className="fiche__ref">{referenceScene(s.reference)}</span>
-        <span className="tampon" data-e="vide">
-          <Icone nom="vide" />
-          Texte vide
-        </span>
+        <TamponScene vide={s.texteVide} />
         {organise ? (
           <Menu libelle={`Autres commandes de la scène ${referenceScene(s.reference)}`} discret>
             {(fermer) => (
@@ -119,12 +128,26 @@ export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapi
         <p className={`fiche__titre${s.titre ? "" : " fiche__titre--vide"}`}>{s.titre ?? "sans titre"}</p>
       )}
       {s.consigne ? <p className="fiche__consigne">{s.consigne}</p> : null}
-      {s.prise ? (
-        <p className="fiche__qui">
-          {s.prise.par === "eleve" ? <Gommette prenom={s.prise.eleve.prenom} couleur={s.prise.eleve.couleur} taille="s" /> : null}
-          <b>{s.prise.par === "eleve" ? `${nomPourEleves(s.prise.eleve, eleves)} s’en occupe` : s.prise.par === "moi" ? "Tu t’en occupes" : `${majuscule(prof)} s’en occupe`}</b>
+      {s.arrete ? (
+        <p className="fiche__arret">
+          <Icone nom="apart" />
+          Ton texte est gardé à part. {majuscule(prof)} doit le regarder avant que tu écrives ici.
         </p>
       ) : null}
+      <div className="fiche__pied">
+        {s.prise ? (
+          <p className="fiche__qui">
+            {s.prise.par === "eleve" ? <Gommette prenom={s.prise.eleve.prenom} couleur={s.prise.eleve.couleur} taille="s" /> : null}
+            <b>{s.prise.par === "eleve" ? `${nomPourEleves(s.prise.eleve, eleves)} s’en occupe` : s.prise.par === "moi" ? "Tu t’en occupes" : `${majuscule(prof)} s’en occupe`}</b>
+          </p>
+        ) : (
+          <span />
+        )}
+        <span className="fiche__ouvrir" aria-hidden="true">
+          {ouvrir(s)}
+          <Icone nom="fleche" />
+        </span>
+      </div>
     </article>
   );
 
@@ -194,10 +217,27 @@ export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapi
             }),
             screenReaderInstructions: CONSIGNES_CLAVIER,
           }}
-          onDragEnd={finDeplacement}
+          onDragStart={() => {
+            vientDeTirer.current = true;
+          }}
+          onDragCancel={() => {
+            setTimeout(() => (vientDeTirer.current = false), 80);
+          }}
+          onDragEnd={(e) => {
+            setTimeout(() => (vientDeTirer.current = false), 80);
+            finDeplacement(e);
+          }}
         >
           <SortableContext items={scenes.map((s) => s.id)} strategy={rectSortingStrategy}>
-            <ul className="fiches" style={{ marginTop: 22 }}>
+            <ul
+              className="fiches"
+              style={{ marginTop: 22 }}
+              onClickCapture={(e) => {
+                if (!vientDeTirer.current) return;
+                e.preventDefault();
+                e.stopPropagation();
+              }}
+            >
               {scenes.map((s) => (
                 <FicheTiree key={s.id} id={s.id} nom={referenceScene(s.reference)}>
                   {(prise) => fiche(s, prise)}

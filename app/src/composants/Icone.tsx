@@ -144,6 +144,94 @@ const TRACES = {
       <path d="M5 19.5h14" />
     </>
   ),
+  // Bannette : un texte gardé à part (F08.1)
+  apart: (
+    <>
+      <path d="M8 12V4.5h8V12" />
+      <path d="M10.5 7.5h3M10.5 10h3" />
+      <path d="M3.5 12h5l1 2.6h5l1-2.6h5v6.5a1 1 0 0 1-1 1h-15a1 1 0 0 1-1-1z" />
+    </>
+  ),
+  info: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M12 11v5" />
+      <circle cx="12" cy="8.1" r=".4" fill="currentColor" />
+    </>
+  ),
+  bloque: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M8.5 8.5l7 7" />
+    </>
+  ),
+  sablier: (
+    <>
+      <path d="M7 4h10M7 20h10" />
+      <path d="M8 4c0 4 8 4.5 8 8s-8 4-8 8" />
+      <path d="M16 4c0 4-8 4.5-8 8s8 4 8 8" />
+    </>
+  ),
+  // Une phrase de choix : les chemins qui partent d'une scène (F05)
+  choix: (
+    <>
+      <circle cx="6" cy="6" r="2" />
+      <circle cx="18" cy="6" r="2" />
+      <circle cx="12" cy="19" r="2" />
+      <path d="M12 17v-3.5c0-2-6-2.5-6-6M12 13.5c0-2 6-2.5 6-6" />
+    </>
+  ),
+  chemins: (
+    <>
+      <rect x="3" y="9.5" width="6" height="5" rx="1.2" />
+      <rect x="15" y="3.5" width="6" height="5" rx="1.2" />
+      <rect x="15" y="15.5" width="6" height="5" rx="1.2" />
+      <path d="M9 12h2.5c1.5 0 1.5-6 3.5-6M11.5 12c1.5 0 1.5 6 3.5 6" />
+    </>
+  ),
+  entree: (
+    <>
+      <path d="M13 4.5h5.5v15H13" />
+      <path d="M3.5 12H13" />
+      <path d="M9.5 8l4 4-4 4" />
+    </>
+  ),
+  sortie: (
+    <>
+      <path d="M11 4.5H5.5v15H11" />
+      <path d="M10 12h10.5" />
+      <path d="M16.5 8l4 4-4 4" />
+    </>
+  ),
+  // Liaison cachée : le lecteur trouve lui-même le numéro (F05.1)
+  cle: (
+    <>
+      <circle cx="8" cy="15" r="3.8" />
+      <path d="M10.8 12.3L19 4.5M16 7.5l2.5 2.5M13.8 9.7l1.8 1.8" />
+    </>
+  ),
+  cadenas: (
+    <>
+      <rect x="5.5" y="10.5" width="13" height="9.5" rx="2" />
+      <path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" />
+      <path d="M12 14.2v2.2" />
+    </>
+  ),
+  "cadenas-ouvert": (
+    <>
+      <rect x="5.5" y="10.5" width="13" height="9.5" rx="2" />
+      <path d="M8.5 10.5V8a3.5 3.5 0 0 1 6.6-1.6" />
+      <path d="M12 14.2v2.2" />
+    </>
+  ),
+  de: (
+    <>
+      <rect x="4" y="4" width="16" height="16" rx="3.5" />
+      {[[8.6, 8.6], [15.4, 8.6], [12, 12], [8.6, 15.4], [15.4, 15.4]].map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r=".7" fill="currentColor" />
+      ))}
+    </>
+  ),
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

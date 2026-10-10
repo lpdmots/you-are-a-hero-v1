@@ -45,6 +45,15 @@ export const etatDuPoste = cache(async (): Promise<EtatPoste | null> => {
   };
 });
 
+/**
+ * Empreinte du jeton de ce poste, que sa classe y soit encore ouverte ou non : elle fait
+ * reconnaître le dernier enregistrement d'un élève dont l'accès vient de se fermer (F06-AC29).
+ */
+export async function empreinteDuPoste(): Promise<string | null> {
+  const jeton = (await cookies()).get(COOKIE_POSTE)?.value;
+  return jeton ? empreinte(jeton) : null;
+}
+
 /** Client de lecture au nom du poste : la base n'y montre que sa classe. */
 export async function clientDuPoste(etat: EtatPoste): Promise<SupabaseClient> {
   return clientPoste(await signerJetonDePoste(etat.posteId));

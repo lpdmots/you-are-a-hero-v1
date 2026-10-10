@@ -195,3 +195,50 @@
     padding: 22px 18px 24px;
   }
 }
+
+/* ——— La scène ouverte par un élève ——— */
+.sceneTete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px 14px 22px;
+  background: var(--bandeau);
+  border-radius: 14px;
+  box-shadow: inset 8px 0 0 var(--dos);
+}
+.sceneTete h1 {
+  flex: 1;
+  min-width: 0;
+  font-size: var(--t-2xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.sceneQui {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: var(--t-s);
+}
+.sceneColonnes {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  gap: 22px;
+  align-items: start;
+  margin-top: 14px;
+}
+.sceneColonnes > section:only-child {
+  grid-column: 1 / -1;
+}
+.consigne {
+  white-space: pre-wrap;
+}
+@media (max-width: 860px) {
+  .sceneColonnes {
+    grid-template-columns: 1fr;
+  }
+  .sceneTete h1 {
+    font-size: var(--t-xl);
+  }
+}

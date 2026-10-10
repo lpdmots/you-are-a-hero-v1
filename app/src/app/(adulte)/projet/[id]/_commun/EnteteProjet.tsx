@@ -49,7 +49,7 @@ export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant:
         </div>
         <MenuProjet
           projet={{
-            id: projet.id, titre: projet.titre, deClasse, lectureOuverte: projet.lectureOuverte,
+            id: projet.id, titre: projet.titre, deClasse, lectureOuverte: projet.lectureOuverte, miseEnFormeEleves: projet.miseEnFormeEleves,
             imageId: projet.imageId, visuelChoisi: projet.visuelChoisi, visuelDefaut: projet.visuelDefaut,
           }}
         />

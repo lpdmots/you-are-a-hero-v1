@@ -25,6 +25,8 @@ export type Projet = {
   visuelDefaut: string | null;
   /** Lecture ouverte de l'histoire aux élèves (F06-AC48) */
   lectureOuverte: boolean;
+  /** Gras, italique et souligné permis aux élèves (F04-AC02) */
+  miseEnFormeEleves: boolean;
 };
 
 type LigneClasseCourte = { id: string; nom: string; annee_debut: number; terminee_le: string | null; inscriptions?: { retire_le: string | null }[] };
@@ -40,7 +42,7 @@ const classeCourte = (c: LigneClasseCourte | null | undefined): ClasseCourte | n
     : null;
 
 const SELECT_PROJET =
-  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, " +
+  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, mise_en_forme_eleves, " +
   "classes(id, nom, annee_debut, terminee_le, inscriptions(retire_le))";
 
 function projetDepuis(l: Record<string, unknown>): Projet {
@@ -56,6 +58,7 @@ function projetDepuis(l: Record<string, unknown>): Projet {
     visuelChoisi: (l.visuel_choisi as string | null) ?? null,
     visuelDefaut: (l.visuel_defaut as string | null) ?? null,
     lectureOuverte: l.lecture_ouverte === true,
+    miseEnFormeEleves: l.mise_en_forme_eleves !== false,
   };
 }
 

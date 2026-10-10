@@ -3,6 +3,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import type { Eleve } from "@/domaine/eleves";
 import type { Plage } from "@/domaine/horaires";
+import type { Motif, Texte } from "@/domaine/copie";
 import type { Profil, Repere } from "@/domaine/recit";
 import { nomPourLesEleves } from "./adulte";
 import { clientDuPoste, etatDuPoste, type EtatPoste } from "./poste";
@@ -105,8 +106,13 @@ export async function histoiresDuPoste(c: ContexteEleve): Promise<HistoireEleve[
 export type SceneEleve = {
   id: string; reference: number; titre: string | null; consigne: string | null; creeParMoi: boolean;
   /** Qui s'occupe de la scène (F06-AC04) : l'élève lui-même, un camarade, l'enseignant, ou personne */
-  prise: { par: "moi" | "enseignant" } | { par: "eleve"; eleve: Eleve } | null;
+  prise: Prise;
+  /** La scène n'a ni mot ni image : « Texte vide » */
+  texteVide: boolean;
+  /** Un texte de l'élève est gardé à part pour cette scène : il n'y écrit plus (F08-AC17) */
+  arrete: boolean;
 };
+export type Prise = { par: "moi" | "enseignant" } | { par: "eleve"; eleve: Eleve } | null;
 export type ChapitreEleve = Repere & {
   id: string; titre: string; couleur: number; partie: string; projetId: string;
   profil: Profil | null;
@@ -129,14 +135,20 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     .eq("id", chapitreId)
     .maybeSingle();
   if (!chapitre) return null;
-  const [partie, projet, attributions, scenes, consignes, resume] = await Promise.all([
+  const [partie, projet, attributions, scenes, consignes, resume, arrets] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("projets").select("lecture_ouverte").eq("id", chapitre.projet_id).maybeSingle(),
     base.from("attributions").select("eleve_id, profil").eq("chapitre_id", chapitreId),
-    base.from("scenes").select("id, reference, titre, rang, cree_par_eleve, prise_par_eleve, prise_par_enseignant").eq("chapitre_id", chapitreId).order("rang"),
+    base
+      .from("scenes")
+      .select("id, reference, titre, rang, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide")
+      .eq("chapitre_id", chapitreId)
+      .order("rang"),
     base.rpc("consignes_du_chapitre", { p_chapitre: chapitreId }),
     base.rpc("resume_du_chapitre", { p_chapitre: chapitreId }),
+    base.rpc("scenes_ou_je_suis_arrete", { p_chapitre: chapitreId }),
   ]);
+  const arrete = new Set(((arrets.data ?? []) as unknown[]).map((x) => (typeof x === "string" ? x : String((x as { scenes_ou_je_suis_arrete?: string })?.scenes_ou_je_suis_arrete ?? ""))));
   if (scenes.error) throw new Error(`Scènes illisibles : ${scenes.error.message}`);
   const lesAttributions = (attributions.data ?? []) as { eleve_id: string; profil: Profil }[];
   const profil = lesAttributions.find((a) => a.eleve_id === c.moi.id)?.profil ?? null;
@@ -151,21 +163,78 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     scenes: (
       (scenes.data ?? []) as {
         id: string; reference: number; titre: string | null; cree_par_eleve: string | null; prise_par_eleve: string | null; prise_par_enseignant: boolean;
+        texte_vide: boolean;
       }[]
     ).map((s) => {
-      const camarade = c.eleves.find((e) => e.id === s.prise_par_eleve);
       return {
         id: s.id, reference: s.reference, titre: s.titre,
         consigne: profil ? (consigneDe.get(s.id) ?? "") : null,
         creeParMoi: s.cree_par_eleve === c.moi.id,
-        prise: s.prise_par_enseignant
-          ? { par: "enseignant" as const }
-          : s.prise_par_eleve === c.moi.id
-            ? { par: "moi" as const }
-            : camarade
-              ? { par: "eleve" as const, eleve: camarade }
-              : null,
+        prise: priseDe(c, s.prise_par_eleve, s.prise_par_enseignant),
+        texteVide: s.texte_vide !== false,
+        arrete: arrete.has(s.id),
       };
     }),
+  };
+}
+
+const priseDe = (c: ContexteEleve, parEleve: string | null, parEnseignant: boolean): Prise => {
+  if (parEnseignant) return { par: "enseignant" };
+  if (parEleve === c.moi.id) return { par: "moi" };
+  const camarade = c.eleves.find((e) => e.id === parEleve);
+  return camarade ? { par: "eleve", eleve: camarade } : null;
+};
+
+export type SceneOuverte = {
+  id: string; reference: number; titre: string | null;
+  chapitre: { id: string; titre: string; couleur: number };
+  /** Rien quand l'élève lit hors de son chapitre : la lecture ouverte n'ouvre pas les consignes (F06-AC48) */
+  consigne: string | null;
+  profil: Profil | null;
+  prise: Prise;
+  /** Le texte de la scène, sans les notes de l'enseignant */
+  texte: Texte;
+  version: number;
+  vide: boolean;
+  /** Gras, italique et souligné permis aux élèves de ce projet (F04-AC03) */
+  marques: boolean;
+  /** Pourquoi l'élève ne peut pas écrire ici ; rien s'il le peut */
+  refus: Motif | null;
+  /** De quoi faire accepter ses enregistrements : rien quand il lit seulement */
+  ecriture: string | null;
+};
+
+/**
+ * Une scène ouverte par un élève (F06-AC20, AC21). La base ne rend que ce qu'il peut lire,
+ * et jamais les notes de l'enseignant, ni les textes gardés à part, ni les versions
+ * précédentes (F08-AC17, AC43).
+ */
+export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<SceneOuverte | null> {
+  if (!estUuid(sceneId)) return null;
+  const base = await clientDuPoste(c.poste);
+  const { data, error } = await base.rpc("scene_du_poste", { p_scene: sceneId });
+  if (error) throw new Error(`Scène illisible : ${error.message}`);
+  const s = data as {
+    id: string; chapitre: string; reference: number; titre: string | null; consigne: string | null; texte: Texte; version: number; vide: boolean;
+    profil: Profil | null; prise_par_eleve: string | null; prise_par_enseignant: boolean; marques: boolean | null; refus: Motif | null;
+  } | null;
+  if (!s) return null;
+  const { data: chapitre } = await base.from("chapitres").select("id, titre, couleur").eq("id", s.chapitre).maybeSingle();
+  if (!chapitre) return null;
+  const prise = priseDe(c, s.prise_par_eleve, s.prise_par_enseignant);
+  // La scène dont un camarade s'occupe se lit : la prendre à son nom se fera à l'étape 4 (F06.3)
+  const ecrit = s.refus === null && prise?.par !== "eleve";
+  let ecriture: string | null = null;
+  if (ecrit) {
+    const { data: ouverte, error: refusee } = await base.rpc("eleve_ouvrir_ecriture", { p_scene: sceneId });
+    if (refusee) throw new Error(`Scène illisible : ${refusee.message}`);
+    ecriture = typeof ouverte === "string" ? ouverte : null;
+  }
+  return {
+    id: s.id, reference: s.reference, titre: s.titre,
+    chapitre: { id: chapitre.id, titre: chapitre.titre, couleur: chapitre.couleur },
+    consigne: s.consigne, profil: s.profil, prise,
+    texte: s.texte ?? [], version: s.version, vide: s.vide, marques: s.marques !== false,
+    refus: s.refus, ecriture,
   };
 }

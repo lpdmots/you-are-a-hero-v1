@@ -8,11 +8,11 @@ import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
 
 type ProjetRegle = {
-  id: string; titre: string; deClasse: boolean; lectureOuverte: boolean;
+  id: string; titre: string; deClasse: boolean; lectureOuverte: boolean; miseEnFormeEleves: boolean;
   imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null;
 };
 
-/** Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves (F06-AC48, F10.1). */
+/** Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur mise en forme (F06-AC48, F10.1, F04.1). */
 export function MenuProjet({ projet }: { projet: ProjetRegle }) {
   const [ouvert, setOuvert] = useState<"reglages" | "image" | null>(null);
   const [titre, setTitre] = useState(projet.titre);
@@ -20,7 +20,7 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
 
-  const regler = async (valeurs: { titre?: string; lectureOuverte?: boolean }) => {
+  const regler = async (valeurs: { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean }) => {
     setErreur(null);
     setEnCours(true);
     const fait = await reglerProjet(projet.id, valeurs);
@@ -101,6 +101,21 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
                 {projet.lectureOuverte
                   ? "Chaque élève lit les scènes de tous les chapitres. Il n’écrit que dans les siens."
                   : "Tant que le livre n’est pas terminé, chaque élève lit les scènes de ses chapitres seulement, pour garder la surprise."}
+              </p>
+            </section>
+          ) : null}
+          {projet.deClasse ? (
+            <section>
+              <h3>Mise en forme des élèves</h3>
+              <label className="inter">
+                <input type="checkbox" role="switch" checked={projet.miseEnFormeEleves} disabled={enCours} onChange={(e) => void regler({ miseEnFormeEleves: e.target.checked })} />
+                <span className="inter__piste" aria-hidden="true" />
+                <span>Les élèves mettent en gras, en italique, soulignent</span>
+              </label>
+              <p>
+                {projet.miseEnFormeEleves
+                  ? "Les élèves ont les trois boutons dans leurs scènes."
+                  : "Les élèves n’ont plus les trois boutons. Ce qui est déjà mis en forme le reste ; vous pouvez le retirer vous-même."}
               </p>
             </section>
           ) : null}

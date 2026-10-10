@@ -3,17 +3,18 @@
 import { useState, type ReactNode } from "react";
 import { Dialogue } from "@/composants/Dialogue";
 import { useMessage } from "@/composants/Messages";
-import { departDe, nomScene, type Plan, type Scene } from "@/domaine/recit";
+import { departDe, nomScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { designerDepart, exclureDuLivre, marquerFin, restaurer, supprimer } from "../../actions-recit";
+import { useConfirmerSuppression } from "./suppression";
 
 /**
  * Commandes du menu d'une scène, les mêmes depuis sa carte dans le chapitre et depuis sa
  * page (F03.2) : départ du livre, fin de l'histoire, hors du livre, supprimer.
  */
 export function useCommandesScene({
-  projetId, plan, onChoisirDepart, apresSuppression,
+  projetId, plan, eleves = [], onChoisirDepart, apresSuppression,
 }: {
-  projetId: string; plan: Plan; onChoisirDepart: () => void; apresSuppression?: () => void;
+  projetId: string; plan: Plan; eleves?: ElevePlan[]; onChoisirDepart: () => void; apresSuppression?: () => void;
 }): {
   designer: (scene: Scene) => void;
   retirerDepart: () => void;
@@ -26,6 +27,7 @@ export function useCommandesScene({
   const [aConfirmer, setAConfirmer] = useState<Scene | null>(null);
   const [enCours, setEnCours] = useState(false);
   const depart = departDe(plan);
+  const suppression = useConfirmerSuppression({ plan, eleves });
 
   const poserDepart = async (scene: Scene) => {
     setEnCours(true);
@@ -66,8 +68,9 @@ export function useCommandesScene({
         ),
       );
     },
-    // Une scène sans texte se supprime sans confirmation, avec « Annuler » (F03.1)
-    supprimerScene: (scene) => {
+    // Une scène sans texte se supprime sans confirmation, avec « Annuler » ; celle qui a un
+    // texte demande d'abord confirmation (F03.1)
+    supprimerScene: (scene) => suppression.demander("scene", scene.id, nomScene(scene), () => {
       const etaitDepart = depart?.id === scene.id;
       void supprimer("scene", scene.id).then((fait) => {
         if (!fait.ok) return dire({ texte: fait.erreur });
@@ -80,8 +83,8 @@ export function useCommandesScene({
         });
         apresSuppression?.();
       });
-    },
-    dialogue: aConfirmer ? (
+    }),
+    dialogue: suppression.dialogue ?? (aConfirmer ? (
       <Dialogue
         titre="Changer le départ du livre ?"
         onFermer={() => setAConfirmer(null)}
@@ -96,6 +99,6 @@ export function useCommandesScene({
           {depart ? <li>{nomScene(depart)} ne l’est plus : un livre n’a qu’un départ.</li> : null}
         </ul>
       </Dialogue>
-    ) : null,
+    ) : null),
   };
 }

@@ -20,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (!chapitre) notFound();
   return (
     <Messages>
-      <EnteteEleve contexte={contexte} />
+      <EnteteEleve contexte={contexte} auTravail />
       <main className="page page--eleve">
         <ChapitreEleve chapitre={chapitre} prof={contexte.prof} moi={contexte.moi.id} eleves={contexte.eleves} />
       </main>
