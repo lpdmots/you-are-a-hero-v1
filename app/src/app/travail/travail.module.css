@@ -124,6 +124,16 @@
 .pied {
   min-height: 0 !important;
 }
+/* Chaque carte a sa hauteur : un cahier fermé s'arrête à sa couverture */
+.cahiers {
+  align-items: start;
+}
+.cahiers :global(.cahier) {
+  height: auto;
+}
+.cahiers :global(.cahier__couv:last-child) {
+  border-radius: var(--r-m);
+}
 .cible {
   border: 0;
   padding: 0;

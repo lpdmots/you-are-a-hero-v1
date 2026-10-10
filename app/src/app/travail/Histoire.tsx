@@ -35,7 +35,7 @@ export function Histoire({ histoire, avecTitre }: { histoire: HistoireEleve; ave
                 <h3 id={`partie-${p.id}`}>{p.titre}</h3>
               </div>
             </header>
-            <ul className="cahiers">
+            <ul className={`cahiers ${styles.cahiers}`}>
               {p.chapitres.map((c) => (
                 <li key={c.id}>
                   <article className={`cahier cahier--ouvrable${c.profil ? " cahier--mien" : ""}`} style={vars(c.couleur)}>
@@ -53,6 +53,8 @@ export function Histoire({ histoire, avecTitre }: { histoire: HistoireEleve; ave
                       </div>
                       <div className="cahier__couv-bas" />
                     </div>
+                    {/* Un chapitre qui n'est pas le sien est un cahier fermé : sa couverture, sans pied vide */}
+                    {c.lisible ? (
                     <div className={`cahier__pied ${styles.pied}`}>
                       {c.profil ? (
                         <>
@@ -67,15 +69,16 @@ export function Histoire({ histoire, avecTitre }: { histoire: HistoireEleve; ave
                             </span>
                           </p>
                         </>
-                      ) : c.lisible ? (
+                      ) : (
                         <p className="cahier__actions">
                           <span className="cahier__ouvrir" aria-hidden="true">
                             Lire
                             <Icone nom="fleche" />
                           </span>
                         </p>
-                      ) : null}
+                      )}
                     </div>
+                    ) : null}
                   </article>
                 </li>
               ))}
