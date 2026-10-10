@@ -524,7 +524,32 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       formules » de la préparation ; l'objet ajouté n'est pas écrit d'office
       dans le texte, il se retient ensuite dans la liste ; hors de son
       chapitre, un élève ne reçoit pas la liste des objets.
-  - **Lots 5 et 6 :** à faire, dans l'ordre.
+  - **Lot 5 — images, en bloc et sur la ligne : construit le 10 octobre
+    2026.** « /image » et le bouton « Image », pour l'adulte seul : importer
+    ou reprendre une image du projet, puis « Dans le texte » ou « Sur la
+    ligne ». L'image en bloc : largeur en segments et en pourcentage, pleine
+    page, « Remplacer l'image », « Ce que montre l'image », légende,
+    « Supprimer », repère de prise ; préparée pour tous les élèves. L'image
+    sur la ligne, à la hauteur du texte, dans un paragraphe de récit, une
+    action de jeu ou une phrase personnalisée ; « [lune] » en texte simple.
+    Fond transparent gardé, formats refusés nommés, import interrompu sans
+    rien poser. Schéma : `20261010250000_images_dans_la_scene.sql`.
+    - **Vérification levée :** V12 (images dans l'éditeur, en bloc et sur la
+      ligne, que le prototype n'avait pas éprouvées) ; V8 pour les images
+      qu'un poste peut lire. Parcours : `tests/parcours/images-scene.spec.ts`.
+    - **Critères qui attendent :** l'image dans le livre, l'aperçu, le PDF
+      et le lecteur (F10-AC16 pour l'impression, AC17 à AC19, la seconde
+      moitié de AC20) aux étapes 6 et 7.
+    - **Précisions prises en construisant, à confirmer par le porteur :**
+      « petite » vaut 40 % de la page, « moyenne » 65 %, et le pourcentage
+      libre va de 15 à 100 ; une image à fond transparent est gardée en
+      WebP, ou en PNG si le navigateur ne sait pas l'écrire ; une image
+      supprimée du texte reste parmi les images du projet ; pour un élève,
+      « une image qui n'y était pas » se juge d'après les images que la
+      scène a déjà portées, si bien qu'il peut y recopier un symbole déjà
+      présent ; l'image en bloc d'une phrase copiée par un élève est écartée
+      avec un message, comme l'action de jeu.
+  - **Lot 6 :** à faire.
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du

@@ -119,7 +119,7 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     await expect(BARRE(page).getByRole("button", { name: "Objets" })).toBeVisible();
     await expect(BARRE(page).getByRole("button", { name: /Action de jeu|Choix/ })).toHaveCount(0);
     await ecrire(page, "Sur le quai, /");
-    await expect(page.locator(".slash [role=option]")).toHaveText([/Objet/, /Note/]);
+    await expect(page.locator(".slash [role=option]")).toHaveText([/Objet/, /Image/, /Note/]);
     await page.keyboard.type("action");
     await expect(page.locator(".slash")).toHaveCount(0);
     for (let i = 0; i < 6; i += 1) await page.keyboard.press("Backspace");

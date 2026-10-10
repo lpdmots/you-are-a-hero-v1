@@ -2,7 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { exigerEnseignant } from "@/serveur/adulte";
-import { cheminImage, cheminVignette, dimensionsJpeg, POIDS_MAX_IMAGE, POIDS_MAX_VIGNETTE, SEAU } from "@/serveur/images";
+import { cheminImage, cheminVignette, lireImage, POIDS_MAX_IMAGE, POIDS_MAX_VIGNETTE, SEAU } from "@/serveur/images";
 import { projetDe } from "@/serveur/lectures";
 import { estUuid, imagesDuProjet } from "@/serveur/recit";
 import { clientService } from "@/serveur/supabase";
@@ -45,11 +45,14 @@ export async function enregistrerImage(projetId: string, id: string): Promise<{ 
   const [image, vignette] = await Promise.all(chemins.map((c) => stockage.download(c)));
   if (image.error || vignette.error || !image.data || !vignette.data) return jeter();
   if (image.data.size > POIDS_MAX_IMAGE || vignette.data.size > POIDS_MAX_VIGNETTE) return jeter();
-  const taille = dimensionsJpeg(new Uint8Array(await image.data.arrayBuffer()));
-  if (!taille || !dimensionsJpeg(new Uint8Array(await vignette.data.arrayBuffer()))) return jeter();
+  // L'image et sa réduction d'écran sont du même format : JPEG, ou PNG et WebP quand le fond est transparent
+  const taille = lireImage(new Uint8Array(await image.data.arrayBuffer()));
+  const reduite = lireImage(new Uint8Array(await vignette.data.arrayBuffer()));
+  if (!taille || !reduite || reduite.format !== taille.format) return jeter();
 
   const { error } = await e.supabase.from("images").insert({
     id, projet_id: projetId, enseignant_id: e.id, chemin: chemins[0], chemin_vignette: chemins[1], largeur: taille.largeur, hauteur: taille.hauteur,
+    format: taille.format,
   });
   if (error) return jeter();
   return { ok: true, id };

@@ -403,6 +403,23 @@ export const choixPerso = (libelle: string, enfants: (string | ReturnType<typeof
 /** Un paragraphe protégé par l'enseignant, une note de l'enseignant, une liaison cachée (étape 3, lot 3). */
 export const protege = (texte: string, id = randomUUID()): BlocSeme => ({ type: "p", id, protege: true, children: [{ text: texte }] });
 export const note = (texte: string, id = randomUUID()): BlocSeme => ({ type: "note", id, children: [{ text: texte }] });
+/** Une image en bloc, une image sur la ligne (étape 3, lot 5). */
+export const figure = (image: string, largeur = 65, id = randomUUID()): BlocSeme => ({ type: "image", id, image, largeur, children: [{ text: "" }] });
+export const symbole = (image: string, alt?: string, id = randomUUID()) => ({ type: "image-ligne", id, image, ...(alt ? { alt } : {}), children: [{ text: "" }] });
+/** Un paragraphe de récit qui porte des images sur la ligne, entre ses textes. */
+export const recitAvec = (enfants: (string | ReturnType<typeof symbole>)[], id = randomUUID()): BlocSeme => ({
+  type: "p", id, children: enfants.map((x) => (typeof x === "string" ? { text: x } : x)),
+});
+/** Une image inscrite dans le projet sans fichier derrière elle : pour les parcours qui ne portent pas sur l'affichage. */
+export async function semerImage(base: SupabaseClient, compte: Compte, projetId: string): Promise<string> {
+  const id = randomUUID();
+  const { error } = await base.from("images").insert({
+    id, projet_id: projetId, enseignant_id: compte.id, chemin: `${compte.id}/${projetId}/${id}.jpg`, chemin_vignette: `${compte.id}/${projetId}/${id}-v.jpg`, largeur: 1200, hauteur: 800,
+  });
+  if (error) throw new Error(error.message);
+  return id;
+}
+
 /** Une action de jeu (étape 3, lot 4). */
 export const action = (texte: string, id = randomUUID()): BlocSeme => ({ type: "action", id, children: [{ text: texte }] });
 /** Les deux listes du projet : objets de l'histoire et formules d'action, tenues par l'adulte. */

@@ -7,6 +7,8 @@ import { Bulle } from "@/composants/Bulle";
 import { TexteLu } from "@/composants/copie/Blocs";
 import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
 import type { Jeu, Livre, Services } from "@/composants/copie/contexte";
+import { deposer, reduire, REFUS_IMPORT } from "@/composants/importer";
+import { listerImages } from "../../../actions-images";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
 import { avantDePartir } from "@/composants/copie/sortie";
 import type { EtatTexte } from "@/composants/copie/useEnregistrementTexte";
@@ -125,6 +127,15 @@ export function PageScene({
     libererNumero: (id) => libererNumero(id),
     ajouterObjet: (nom, description) => ajouterObjetDepuisLaScene(projet.id, nom, description),
     ajouterFormule: (formule) => ajouterFormuleDepuisLaScene(projet.id, formule),
+    // Une image posée dans une scène garde son fond transparent (F10-AC31)
+    importerImage: async (fichier) => {
+      const reduite = await reduire(fichier, true);
+      if (!reduite) return { ok: false, erreur: REFUS_IMPORT };
+      const depot = await deposer(projet.id, reduite);
+      URL.revokeObjectURL(reduite.apercu);
+      return depot;
+    },
+    imagesDuProjet: () => listerImages(projet.id),
   };
 
   const remplacer = (suite: TexteDeScene) => {

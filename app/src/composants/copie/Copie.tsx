@@ -5,16 +5,17 @@ import { createPlatePlugin, ParagraphPlugin, Plate, PlateContent, usePlateEditor
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import {
-  ciblesDe, estAuto, estRenvoi, estVide, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, texteOuvert, tirerConstruction, type Choix, type Droits,
-  type Liaison, type Texte,
+  ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, texteOuvert, tirerConstruction,
+  type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type Texte,
 } from "@/domaine/copie";
 import { constructionsUtiles } from "@/domaine/preparation";
 import { nomScene } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
-import { ActionDeJeu, NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
+import { ActionDeJeu, ImageEnBloc, ImageSurLaLigne, NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
 import {
   Contexte, SANS_JEU, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee, type Services,
 } from "./contexte";
+import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
 import { FicheAction, FicheObjets } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
 import { HorsRecit, type GestesDeLiaison } from "./Liaisons";
@@ -155,6 +156,7 @@ export function Copie({
           dit.push(`${quoi}. ${(s.choix || s.renvois || 1) > 1 ? "Les scènes où ils menaient sont toujours là." : "La scène où il menait est toujours là."}`);
         }
         if (s.actions) dit.push(`${s.actions} action${pluriel(s.actions)} de jeu supprimée${pluriel(s.actions)}.`);
+        if (s.images) dit.push(`${s.images} image${pluriel(s.images)} supprimée${pluriel(s.images)}. ${s.images > 1 ? "Elles restent" : "Elle reste"} parmi les images du projet.`);
         return setBandeau({ texte: dit.join(" "), annuler: true });
       }
       const dit: string[] = [];
@@ -174,6 +176,13 @@ export function Copie({
             : `L’action de jeu n’a pas été collée : ${vous ? "vous ne pouvez" : "tu ne peux"} pas en écrire ici.`,
         );
       }
+      if (s.imagesEcartees) {
+        dit.push(
+          s.imagesEcartees > 1
+            ? `${s.imagesEcartees} images n’ont pas été collées : ${vous ? "une image se pose avec le bouton « Image »" : "tu ne peux pas ajouter d’image ici"}.`
+            : `L’image n’a pas été collée : ${vous ? "une image se pose avec le bouton « Image »" : "tu ne peux pas ajouter d’image ici"}.`,
+        );
+      }
       setBandeau({ texte: dit.join(" "), annuler: s.deplaces + s.copies > 0 });
     },
     [vous],
@@ -186,6 +195,8 @@ export function Copie({
       createPlatePlugin({ key: "renvoi", node: { isElement: true, isInline: true, isVoid: true, component: RenvoiEnLigne } }),
       createPlatePlugin({ key: "note", node: { isElement: true, component: NoteDeLEnseignant } }),
       createPlatePlugin({ key: "action", node: { isElement: true, component: ActionDeJeu } }),
+      createPlatePlugin({ key: "image", node: { isElement: true, isVoid: true, component: ImageEnBloc } }),
+      createPlatePlugin({ key: "image-ligne", node: { isElement: true, isInline: true, isVoid: true, component: ImageSurLaLigne } }),
       // Les raccourcis sont tenus par la copie : ils disparaissent avec les boutons (F04-AC34)
       BoldPlugin.configure({ shortcuts: { toggle: null } }),
       ItalicPlugin.configure({ shortcuts: { toggle: null } }),
@@ -504,6 +515,52 @@ export function Copie({
     lacherLeTexte();
     setFiche({ sorte: "objets", bloc: ici.id });
   };
+  // ——— Images (F10) ———
+  const ouvrirPoserImage = () => {
+    const blocs = blocsDe(e);
+    const ici = blocCourant(e)?.bloc ?? blocs[blocs.length - 1];
+    if (!ici) return;
+    setBarre(null);
+    setBandeau(null);
+    lacherLeTexte();
+    setFiche({ sorte: "poser-image", bloc: ici.id });
+  };
+  /** Une image sur la ligne se pose dans un paragraphe de récit, une action de jeu ou une phrase personnalisée (F10). */
+  const admetUneImage = (): boolean => {
+    const ici = blocCourant(e);
+    return !!ici && !estFerme(ici.bloc, droits) && (ici.bloc.type === "p" || ici.bloc.type === "action" || ici.bloc.type === "choix");
+  };
+  const poserImage = (image: string, ou: "bloc" | "ligne") => {
+    if (fiche?.sorte !== "poser-image") return;
+    setFiche(null);
+    setEspace(null);
+    if (ou === "ligne" && admetUneImage() && e.selection) {
+      const symbole: ImageLigne = { type: "image-ligne", id: nouvelId(), image, children: [{ text: "" }] };
+      e.tf.insertNodes(symbole, { at: e.selection, select: true });
+      e.tf.move({ distance: 1, unit: "offset" });
+    } else {
+      const i = Math.max(0, indexDe(fiche.bloc));
+      const ici = blocsDe(e)[i];
+      const remplace = ici?.type === "p" && lettresDe(ici) === "";
+      // En bloc, après le paragraphe du curseur, en largeur moyenne (F10-AC27)
+      const figure: ImageBloc = { type: "image", id: nouvelId(), image, largeur: LARGEURS.moyenne, children: [{ text: "" }] };
+      e.tf.withoutNormalizing(() => {
+        e.tf.insertNodes(figure, { at: [i + 1] });
+        if (remplace) e.tf.removeNodes({ at: [i] });
+      });
+      e.tf.allerA(remplace ? i : i + 1);
+    }
+    reprendreLeTexte();
+  };
+  /** Le chemin d'une image sur la ligne dans le texte, d'après son identité. */
+  const cheminDuSymbole = (id: string): [number, number] | null => {
+    for (const [i, b] of blocsDe(e).entries()) {
+      const k = (b.children as unknown[]).findIndex((x) => estImageLigne(x) && x.id === id);
+      if (k !== -1) return [i, k];
+    }
+    return null;
+  };
+
   /** Le nom de l'objet s'écrit à l'endroit du curseur, comme du texte ordinaire (F04-AC15). */
   const ecrireObjet = (nom: string) => {
     setFiche(null);
@@ -574,6 +631,8 @@ export function Copie({
     ...(peutChoisir ? [{ cle: "action", nom: "Action de jeu", aide: `Ce que le lecteur fait sur sa feuille`, icone: "crayon", faire: ouvrirAction } as Commande] : []),
     // Les objets servent à la cohérence de tout récit, classique compris (F04-AC26)
     { cle: "objet", nom: "Objet", aide: "Un nom de la liste des objets de l’histoire", icone: "sac", faire: ouvrirObjets },
+    // L'enseignant importe et place les images (F10)
+    ...(adulte ? [{ cle: "image", nom: "Image", aide: "Dans le texte, ou sur la ligne", icone: "image", faire: ouvrirPoserImage } as Commande] : []),
     ...(adulte ? [{ cle: "note", nom: "Note", aide: "Pour vous seul, jamais imprimée", icone: "noter", faire: ajouterNote } as Commande] : []),
   ];
   const proposees = barre ? commandes.filter((c) => c.cle.startsWith(barre.demande)) : [];
@@ -627,6 +686,18 @@ export function Copie({
       e.tf.supprimerBlocs([bloc]);
       reprendreLeTexte();
     },
+    ouvrirImage: (bloc) => {
+      setBandeau(null);
+      lacherLeTexte();
+      setFiche(fiche?.sorte === "image" && fiche.bloc === bloc ? null : { sorte: "image", bloc });
+    },
+    ouvrirSymbole: (symbole) => {
+      const chemin = cheminDuSymbole(symbole);
+      if (!chemin) return;
+      setBandeau(null);
+      lacherLeTexte();
+      setFiche({ sorte: "symbole", bloc: blocsDe(e)[chemin[0]].id, symbole });
+    },
     ouvrir: (bloc) => {
       setBandeau(null);
       lacherLeTexte();
@@ -635,6 +706,12 @@ export function Copie({
     commencerATirer,
   };
   const blocRegle = fiche?.sorte === "reglages" ? (blocsDe(e).find((b) => b.id === fiche.bloc) as Choix | undefined) : undefined;
+  const imageReglee = fiche?.sorte === "image" ? (blocsDe(e).find((b) => b.id === fiche.bloc && b.type === "image") as ImageBloc | undefined) : undefined;
+  const symboleRegle = (() => {
+    if (fiche?.sorte !== "symbole") return undefined;
+    const chemin = cheminDuSymbole(fiche.symbole);
+    return chemin ? { chemin, image: (blocsDe(e)[chemin[0]].children as unknown[])[chemin[1]] as ImageLigne } : undefined;
+  })();
 
   const basculer = (marque: Marque) => {
     // La mise en forme vaut pour le récit et la note : ni phrase de choix ni action de jeu
@@ -713,6 +790,11 @@ export function Copie({
         lacherLeTexte();
         return setFiche({ sorte: "reglages", bloc: ici.bloc.id, auClavier: true });
       }
+      if (ici.bloc.type === "image" && peutModifier(ici.bloc, droits)) {
+        setBandeau(null);
+        lacherLeTexte();
+        return setFiche({ sorte: "image", bloc: ici.bloc.id });
+      }
       e.tf.insertNodes(paragrapheVide(), { at: [ici.index + 1] });
       return e.tf.allerA(ici.index + 1);
     }
@@ -751,6 +833,12 @@ export function Copie({
                 <Icone nom="sac" />
                 Objets
               </button>
+              {adulte ? (
+                <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ouvrirPoserImage}>
+                  <Icone nom="image" />
+                  Image
+                </button>
+              ) : null}
               {adulte ? (
                 <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ajouterNote}>
                   <Icone nom="noter" />
@@ -898,7 +986,30 @@ export function Copie({
                 <FicheAction jeu={jeu} services={services} pourUneAction={fiche.sorte === "formules"} onChoisir={poserAction} onFermer={fermer} />
               ) : fiche.sorte === "objets" ? (
                 <FicheObjets jeu={jeu} services={services} onChoisir={ecrireObjet} onFermer={fermer} />
-              ) : blocRegle ? (
+              ) : fiche.sorte === "poser-image" ? (
+                <FichePoserImage services={services} surLaLigne={admetUneImage()} onPoser={poserImage} onFermer={fermer} />
+              ) : fiche.sorte === "image" && imageReglee ? (
+                <FicheImageBloc
+                  bloc={imageReglee}
+                  services={services}
+                  regler={(valeurs) => e.tf.setNodes(valeurs, { at: [indexDe(imageReglee.id)] })}
+                  supprimer={() => {
+                    e.tf.supprimerBlocs([imageReglee.id]);
+                    fermer();
+                  }}
+                  onFermer={fermer}
+                />
+              ) : fiche.sorte === "symbole" && symboleRegle ? (
+                <FicheSymbole
+                  image={symboleRegle.image}
+                  regler={(valeurs) => e.tf.setNodes(valeurs, { at: symboleRegle.chemin })}
+                  supprimer={() => {
+                    e.tf.removeNodes({ at: symboleRegle.chemin });
+                    fermer();
+                  }}
+                  onFermer={fermer}
+                />
+              ) : fiche.sorte === "reglages" && blocRegle ? (
                 <FicheReglagesChoix key={`${blocRegle.id}-${estAuto(blocRegle)}`} bloc={blocRegle} services={services} gestes={gestes(blocRegle)} confirmer={fiche.confirmer} auClavier={fiche.auClavier} onFermer={fermer} />
               ) : null}
             </div>

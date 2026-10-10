@@ -579,6 +579,23 @@ serveur et dans celle que reprend le navigateur : tirée au hasard des deux
 côtés, la page gardait celle du serveur, l'éditeur celle du navigateur, et
 une fiche ne retrouvait pas le bloc sous lequel se poser.
 
+**Images dans la scène (lot 5, V12).** Deux éléments du texte : `image`, un
+bloc fermé qui porte sa largeur, sa légende et son texte de remplacement, et
+`image-ligne`, un élément d'un seul bloc dans la ligne, comme le renvoi. Tous
+deux désignent une image du projet par son identité : le fichier n'est jamais
+dans le texte. L'import reprend celui des images de repérage — le navigateur
+réduit à 2 600 points et dépose, le serveur relit — avec une différence : une
+image à fond transparent garde sa transparence, en WebP ou en PNG, et la base
+retient son format pour la servir. L'adresse `/images/…` vérifie dans la base
+qui peut voir l'image : un poste, celles des scènes qu'il peut lire.
+
+**« Une image qui n'y était pas ».** Un élève déplace une phrase qui porte
+une image, mais n'en fait entrer aucune. Entre couper et coller, le texte
+s'enregistre sans l'image : comparer au seul texte courant aurait refusé le
+collage et arrêté l'élève. La scène retient donc les images qu'elle a
+portées (`images_vues`, tenue par un déclencheur), et le contrôle du serveur
+s'y réfère.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

@@ -62,6 +62,9 @@ export type Services = {
   /** Ajouter un objet ou une formule à la liste sans quitter la scène : pour l'adulte seul (F04-AC29) */
   ajouterObjet?: (nom: string, description: string) => Promise<{ ok: boolean; erreur?: string }>;
   ajouterFormule?: (texte: string) => Promise<{ ok: boolean; erreur?: string }>;
+  /** Importer une image dans le projet, et retrouver celles qui y sont déjà : pour l'adulte seul (F10-AC27) */
+  importerImage?: (fichier: File) => Promise<{ ok: true; id: string } | { ok: false; erreur: string }>;
+  imagesDuProjet?: () => Promise<string[]>;
 };
 
 export type Lieu = { projetId: string; sceneId: string; chapitreId: string };
@@ -75,6 +78,10 @@ export type FicheOuverte =
   | { sorte: "formules"; bloc: string }
   /** Les objets de l'histoire, sous le bloc du curseur */
   | { sorte: "objets"; bloc: string }
+  /** Poser une image (F10) : sous le bloc du curseur. Régler une image en bloc, ou une image sur la ligne */
+  | { sorte: "poser-image"; bloc: string }
+  | { sorte: "image"; bloc: string }
+  | { sorte: "symbole"; bloc: string; symbole: string }
   | { sorte: "reglages"; bloc: string; confirmer?: "dernier-renvoi"; auClavier?: boolean };
 
 export type ContexteDeCopie = {
@@ -90,6 +97,9 @@ export type ContexteDeCopie = {
   /** Les commandes d'une action de jeu où l'on écrit : ses formules, sa suppression (F04.2) */
   ouvrirFormules: (bloc: string) => void;
   supprimerBloc: (bloc: string) => void;
+  /** Régler une image en bloc, ou une image sur la ligne : pour l'adulte seul (F10) */
+  ouvrirImage: (bloc: string) => void;
+  ouvrirSymbole: (symbole: string) => void;
   fiche: FicheOuverte | null;
   /** Place gardée sous un bloc pour la fiche qui s'y pose */
   espace: { bloc: string; hauteur: number } | null;

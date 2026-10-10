@@ -116,9 +116,9 @@ export async function enregistrerPourEleve(ecritureId: string, version: number, 
   const texte = await sansIdentitePrise(service, (ouverte as { scene: string }).scene, propre);
   // Ce que l'élève a le droit de changer se contrôle ici, sur le texte enregistré : choix,
   // raccords, blocs préparés (F05-AC32, F06-AC13). Un texte refusé est gardé à part (F08.2).
-  const o = ouverte as { scene: string; texte: Texte; profil: "propositions" | "organisation" | null; scenes_du_chapitre: string[] };
+  const o = ouverte as { scene: string; texte: Texte; profil: "propositions" | "organisation" | null; scenes_du_chapitre: string[]; images_vues: string[] | null };
   const droits: Droits = { role: "eleve", profil: o.profil ?? "propositions", scenesDuChapitre: new Set(o.scenes_du_chapitre ?? []) };
-  const refus = controlerTexte(vuParUnEleve(o.texte ?? []), texte, droits);
+  const refus = controlerTexte(vuParUnEleve(o.texte ?? []), texte, droits, o.images_vues ?? []);
   const { data, error } = await service.rpc("ecriture_enregistrer", {
     p_ecriture: ecritureId, p_jeton_hash: jeton, p_version: version, p_texte: texte, p_refus: refus ? "controle" : null,
   });

@@ -4,8 +4,8 @@ import { PlateElement, useSelected, type PlateElementProps } from "platejs/react
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import {
-  estAuto, estReserve, estVide, lettresDe, morceauxDe, renvoisDe, type Action, type Choix, type Lettres, type Liaison, type Note, type Paragraphe as ParagrapheDeRecit,
-  type Renvoi, type Texte,
+  estAuto, estImageLigne, estReserve, estVide, morceauxDe, renvoisDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
+  type Note, type Paragraphe as ParagrapheDeRecit, type Renvoi, type Texte,
 } from "@/domaine/copie";
 import type { FormuleRenvoi } from "@/domaine/preparation";
 import { useCopie, type Livre } from "./contexte";
@@ -57,7 +57,9 @@ function Destinations({ bloc, livre, pourEleve }: { bloc: Choix; livre: Livre; p
 function Phrase({ bloc, livre, formule }: { bloc: Choix; livre: Livre; formule: FormuleRenvoi }) {
   return (
     <span className="recit">
-      {morceauxDe(bloc, formule).map((m, i) => ("texte" in m ? <span key={i}>{m.texte}</span> : <Numero key={i} cible={m.cible} livre={livre} />))}
+      {morceauxDe(bloc, formule).map((m, i) =>
+        "texte" in m ? <span key={i}>{m.texte}</span> : "image" in m ? <Symbole key={i} image={m.image} alt={m.alt} /> : <Numero key={i} cible={m.cible} livre={livre} />,
+      )}
     </span>
   );
 }
@@ -73,11 +75,33 @@ function useBloc(id: string) {
   };
 }
 
-const lettresLues = (l: Lettres, i: number): ReactNode => {
+/** L'adresse d'une image du projet : sa réduction d'écran, qui suffit à la copie. */
+export const adresseImage = (image: string): string => `/images/${image}?v=1`;
+
+/** Une image sur la ligne, à la hauteur du texte (F10). */
+function Symbole({ image, alt }: { image: string; alt?: string }) {
+  // eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir
+  return <img className="symbole" src={adresseImage(image)} alt={alt ?? ""} draggable={false} />;
+}
+
+/** Une image en bloc et sa légende, telles qu'elles se lisent dans la copie comme dans le livre. */
+function Figure({ bloc }: { bloc: ImageBloc }) {
+  return (
+    <span className={`figure${bloc.page ? " figure--page" : ""}`} style={{ width: `${bloc.largeur}%` }}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir */}
+      <img src={adresseImage(bloc.image)} alt={bloc.alt ?? bloc.legende ?? ""} draggable={false} />
+      {bloc.legende ? <span className="figure__legende">{bloc.legende}</span> : null}
+    </span>
+  );
+}
+
+const lettresLues = (l: Lettres | ImageLigne | { text: string }, i: number): ReactNode => {
+  if (estImageLigne(l)) return <Symbole key={i} image={l.image} alt={l.alt} />;
   let mots: ReactNode = l.text;
-  if (l.bold) mots = <strong>{mots}</strong>;
-  if (l.italic) mots = <em>{mots}</em>;
-  if (l.underline) mots = <u>{mots}</u>;
+  const m = l as Lettres;
+  if (m.bold) mots = <strong>{mots}</strong>;
+  if (m.italic) mots = <em>{mots}</em>;
+  if (m.underline) mots = <u>{mots}</u>;
   return <span key={i}>{mots}</span>;
 };
 
@@ -178,7 +202,7 @@ export function ActionDeJeu(props: PlateElementProps) {
         </span>
         <span className="action-jeu__cadre" contentEditable={false}>
           <Icone nom="crayon" />
-          <span className="action-jeu__texte">{lettresDe(bloc)}</span>
+          <span className="action-jeu__texte">{bloc.children.map(lettresLues)}</span>
         </span>
         {props.children}
         <span className="repere-prepare" contentEditable={false}>
@@ -234,6 +258,73 @@ export function ActionDeJeu(props: PlateElementProps) {
           </button>
         </span>
       ) : null}
+    </PlateElement>
+  );
+}
+
+/**
+ * Image en bloc (F10) : prise comme un tout. L'adulte l'active pour la régler et la déplace
+ * par son repère ; pour un élève, quel que soit son profil, c'est un bloc préparé (F10-AC28).
+ */
+export function ImageEnBloc(props: PlateElementProps) {
+  const bloc = props.element as unknown as ImageBloc;
+  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const selectionne = useSelected();
+  const reserve = estReserve(bloc, c.droits);
+  const ouvert = c.fiche?.sorte === "image" && c.fiche.bloc === bloc.id;
+  const tire = c.tire?.bloc === bloc.id;
+  return (
+    <PlateElement
+      {...props}
+      as="div"
+      className={`image-bloc${selectionne ? " est-choisi" : ""}${ouvert ? " est-ouvert" : ""}${reserve ? " est-prepare" : ""}${tire ? " est-tire" : ""}${pose}`}
+      style={style}
+      attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
+    >
+      <Plus bloc={bloc.id} />
+      <span className="marge" contentEditable={false}>
+        {reserve ? (
+          <Icone nom="cadenas" />
+        ) : (
+          <button
+            type="button"
+            className="prise prise--bloc"
+            title="Tirer pour déplacer"
+            aria-label="Déplacer cette image"
+            aria-roledescription="élément à déplacer"
+            onPointerDown={(ev) => c.commencerATirer(bloc.id, ev)}
+          >
+            <Icone nom="prise" />
+          </button>
+        )}
+      </span>
+      <span
+        className="image-bloc__corps"
+        contentEditable={false}
+        role={reserve ? undefined : "button"}
+        aria-label={reserve ? undefined : "Régler cette image"}
+        onClick={reserve ? undefined : () => c.ouvrirImage(bloc.id)}
+      >
+        <Figure bloc={bloc} />
+        {bloc.page ? <span className="repere image-bloc__page">pleine page dans le livre</span> : null}
+      </span>
+      {props.children}
+    </PlateElement>
+  );
+}
+
+/** Image sur la ligne : un élément d'un seul bloc, à la hauteur du texte ; l'adulte l'active pour dire ce qu'elle montre. */
+export function ImageSurLaLigne(props: PlateElementProps) {
+  const c = useCopie();
+  const image = props.element as unknown as ImageLigne;
+  const selectionne = useSelected();
+  const adulte = c.droits.role === "adulte";
+  return (
+    <PlateElement {...props} as="span" className={`symbole-en-ligne${selectionne ? " est-choisi" : ""}`} attributes={{ ...props.attributes, contentEditable: false }}>
+      <span role={adulte ? "button" : undefined} aria-label={adulte ? `Régler l’image ${image.alt ?? "sur la ligne"}` : undefined} onClick={adulte ? () => c.ouvrirSymbole(image.id) : undefined}>
+        <Symbole image={image.image} alt={image.alt} />
+      </span>
+      {props.children}
     </PlateElement>
   );
 }
@@ -405,8 +496,12 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
             <div key={bloc.id} className="action-jeu">
               <span className="action-jeu__cadre">
                 <Icone nom="crayon" />
-                <span className="action-jeu__texte">{lettresDe(bloc)}</span>
+                <span className="action-jeu__texte">{bloc.children.map(lettresLues)}</span>
               </span>
+            </div>
+          ) : bloc.type === "image" ? (
+            <div key={bloc.id} className="image-bloc">
+              <Figure bloc={bloc} />
             </div>
           ) : bloc.type === "note" ? (
             <div key={bloc.id} className="note-prof">
@@ -431,7 +526,7 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
                 </span>
               ) : null}
               {bloc.children.map(lettresLues)}
-              {bloc.children.every((l) => l.text === "") ? <br /> : null}
+              {bloc.children.every((l) => "text" in l && l.text === "") ? <br /> : null}
             </p>
           ),
         )

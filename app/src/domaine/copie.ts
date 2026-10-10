@@ -13,7 +13,21 @@ export type Lettres = { text: string } & Marques;
  * Paragraphe de récit. Protégé par l'enseignant, un élève ne peut ni le modifier ni le
  * supprimer : il écrit autour (F06.1).
  */
-export type Paragraphe = { type: "p"; id: string; protege?: true; children: Lettres[] };
+export type Paragraphe = { type: "p"; id: string; protege?: true; children: (Lettres | ImageLigne)[] };
+
+/**
+ * Image sur la ligne (F10) : à la hauteur du texte, pour un symbole à repérer. Admise dans un
+ * paragraphe de récit, une action de jeu et une phrase de choix personnalisée.
+ */
+export type ImageLigne = { type: "image-ligne"; id: string; image: string; alt?: string; children: [{ text: "" }] };
+
+/**
+ * Image en bloc (F10) : entre deux paragraphes, à la largeur que l'adulte choisit, en
+ * pourcentage de la page, ou en pleine page. Sa légende, facultative, se lit dessous.
+ */
+export type ImageBloc = { type: "image"; id: string; image: string; largeur: number; page?: true; alt?: string; legende?: string; children: [{ text: "" }] };
+export const LARGEURS = { petite: 40, moyenne: 65, pleine: 100 } as const;
+export const LARGEUR_MIN = 15;
 
 /**
  * Note de l'enseignant : un paragraphe visible de l'adulte seul, jamais imprimé ni partagé.
@@ -33,7 +47,7 @@ export type Renvoi = { type: "renvoi"; id: string; cible: string | null; libelle
  * personnalisée, son texte est libre et porte un ou plusieurs renvois.
  */
 export type ChoixAuto = { type: "choix"; id: string; auto: true; libelle: string; construction: Construction; cible: string | null; children: [{ text: "" }] };
-export type ChoixPerso = { type: "choix"; id: string; auto?: undefined; libelle: string; children: (Lettres | Renvoi)[] };
+export type ChoixPerso = { type: "choix"; id: string; auto?: undefined; libelle: string; children: (Lettres | Renvoi | ImageLigne)[] };
 export type Choix = ChoixAuto | ChoixPerso;
 
 /**
@@ -46,15 +60,18 @@ export type Liaison = { type: "liaison"; id: string; cible: string | null; libel
  * Action de jeu (F04.2) : un paragraphe d'un type propre, qui dit au lecteur quoi faire sur sa
  * feuille d'aventure. Son texte est libre ; l'application n'en connaît pas le sens.
  */
-export type Action = { type: "action"; id: string; protege?: true; children: [{ text: string }] };
+export type Action = { type: "action"; id: string; protege?: true; children: ({ text: string } | ImageLigne)[] };
 
-export type Bloc = Paragraphe | Choix | Note | Liaison | Action;
+export type Bloc = Paragraphe | Choix | Note | Liaison | Action | ImageBloc;
 export type Texte = Bloc[];
 
 export const estChoix = (b: { type?: string }): b is Choix => b.type === "choix";
 export const estAuto = (b: Bloc): b is ChoixAuto => b.type === "choix" && b.auto === true;
 export const estRenvoi = (n: unknown): n is Renvoi => estObjet(n) && n.type === "renvoi";
 export const estLiaison = (b: { type?: string }): b is Liaison => b.type === "liaison";
+export const estImageLigne = (n: unknown): n is ImageLigne => estObjet(n) && n.type === "image-ligne";
+export const ALT_MAX = 200;
+export const LEGENDE_MAX = 300;
 export const LIBELLE_MAX = 200;
 
 /** Limites d'une scène : de quoi écrire un chapitre entier, pas de quoi encombrer la base */
@@ -107,6 +124,31 @@ function ligne(brut: unknown): Lettres[] {
 }
 
 /**
+ * Les lettres d'un paragraphe qui peut porter des images sur la ligne : chaque image se
+ * trouve entre deux textes, comme l'éditeur les tient. `marques` : garder la mise en forme.
+ */
+function ligneAvecImages(brut: unknown, image: (v: unknown) => ImageLigne | null, marques: boolean): (Lettres | ImageLigne)[] {
+  const suite: (Lettres | ImageLigne)[] = [];
+  let plage: unknown[] = [];
+  const vider = () => {
+    const lues = ligne(plage);
+    suite.push(...(marques ? lues : [{ text: lues.map((l) => l.text).join("") }]));
+    plage = [];
+  };
+  for (const enfant of Array.isArray(brut) ? brut : []) {
+    const posee = estImageLigne(enfant) ? image(enfant) : null;
+    if (!posee) {
+      plage.push(enfant);
+      continue;
+    }
+    vider();
+    suite.push(posee);
+  }
+  vider();
+  return suite;
+}
+
+/**
  * Le texte reçu d'un navigateur, réduit à ce que l'application connaît. Rend null s'il
  * n'est pas un texte de scène ou s'il dépasse les limites. Chaque bloc garde ou reçoit une
  * identité, unique dans la scène.
@@ -120,21 +162,46 @@ export function nettoyerTexte(brut: unknown): Texte | null {
     return id;
   };
   const scene = (v: unknown): string | null => (typeof v === "string" && UUID.test(v) ? v.toLowerCase() : null);
-  const libelle = (v: unknown): string => (typeof v === "string" ? sansCommandes(v).replace(/\s+/g, " ").trim().slice(0, LIBELLE_MAX) : "");
+  const libelle = (v: unknown, max = LIBELLE_MAX): string => (typeof v === "string" ? sansCommandes(v).replace(/\s+/g, " ").trim().slice(0, max) : "");
+  const imageLigne = (v: unknown): ImageLigne | null => {
+    if (!estObjet(v)) return null;
+    const fichier = scene(v.image);
+    if (!fichier) return null;
+    const posee: ImageLigne = { type: "image-ligne", id: identite(v.id), image: fichier, children: [{ text: "" }] };
+    const alt = libelle(v.alt, ALT_MAX);
+    if (alt) posee.alt = alt;
+    return posee;
+  };
+  const longueur = (enfants: (Lettres | ImageLigne | Renvoi)[]): number => enfants.reduce((n, e) => n + ("text" in e ? e.text.length : 0), 0);
   const texte: Texte = [];
   const liaisons: Liaison[] = [];
   let compte = 0;
   for (const bloc of brut) {
     if (!estObjet(bloc)) return null;
     if (bloc.type === "p") {
-      const children = ligne(bloc.children);
-      compte += children.reduce((n, l) => n + l.text.length, 0);
-      texte.push(bloc.protege === true ? { type: "p", id: identite(bloc.id), protege: true, children } : { type: "p", id: identite(bloc.id), children });
+      const id = identite(bloc.id);
+      const children = ligneAvecImages(bloc.children, imageLigne, true);
+      compte += longueur(children);
+      texte.push(bloc.protege === true ? { type: "p", id, protege: true, children } : { type: "p", id, children });
     } else if (bloc.type === "action") {
       // Texte libre, sans mise en forme : le livre la met en valeur lui-même
-      const text = ligne(bloc.children).map((l) => l.text).join("");
-      compte += text.length;
-      texte.push(bloc.protege === true ? { type: "action", id: identite(bloc.id), protege: true, children: [{ text }] } : { type: "action", id: identite(bloc.id), children: [{ text }] });
+      const id = identite(bloc.id);
+      const children = ligneAvecImages(bloc.children, imageLigne, false);
+      compte += longueur(children);
+      texte.push(bloc.protege === true ? { type: "action", id, protege: true, children } : { type: "action", id, children });
+    } else if (bloc.type === "image") {
+      // Une image en bloc sans fichier reconnaissable n'existe pas : elle est écartée
+      const fichier = scene(bloc.image);
+      if (!fichier) continue;
+      const largeur = typeof bloc.largeur === "number" && Number.isFinite(bloc.largeur) ? Math.min(100, Math.max(LARGEUR_MIN, Math.round(bloc.largeur))) : LARGEURS.moyenne;
+      const posee: ImageBloc = { type: "image", id: identite(bloc.id), image: fichier, largeur, children: [{ text: "" }] };
+      if (bloc.page === true) posee.page = true;
+      const alt = libelle(bloc.alt, ALT_MAX);
+      if (alt) posee.alt = alt;
+      const legende = libelle(bloc.legende, LEGENDE_MAX);
+      if (legende) posee.legende = legende;
+      compte += legende.length;
+      texte.push(posee);
     } else if (bloc.type === "note") {
       const children = ligne(bloc.children);
       compte += children.reduce((n, l) => n + l.text.length, 0);
@@ -152,10 +219,13 @@ export function nettoyerTexte(brut: unknown): Texte | null {
       });
     } else if (bloc.type === "choix") {
       // Phrase personnalisée : du texte sans mise en forme, et ses renvois, chacun entre deux textes
-      const children: (Lettres | Renvoi)[] = [{ text: "" }];
+      const children: (Lettres | Renvoi | ImageLigne)[] = [{ text: "" }];
       let renvois = 0;
       for (const enfant of Array.isArray(bloc.children) ? bloc.children : []) {
-        if (estRenvoi(enfant)) {
+        const posee = estImageLigne(enfant) ? imageLigne(enfant) : null;
+        if (posee) {
+          children.push(posee, { text: "" });
+        } else if (estRenvoi(enfant)) {
           const r: Renvoi = { type: "renvoi", id: identite(enfant.id), cible: scene(enfant.cible), children: [{ text: "" }] };
           const l = libelle(enfant.libelle);
           if (l) r.libelle = l;
@@ -166,9 +236,9 @@ export function nettoyerTexte(brut: unknown): Texte | null {
           if (l) (children[children.length - 1] as Lettres).text += l.text;
         }
       }
-      compte += children.reduce((n, e) => n + ("text" in e ? e.text.length : 0), 0);
+      compte += longueur(children);
       // Pas de phrase de choix sans renvoi : ce qu'il en reste est du récit (F05.2)
-      if (renvois === 0) texte.push({ type: "p", id: identite(bloc.id), children: [{ text: (children[0] as Lettres).text }] });
+      if (renvois === 0) texte.push({ type: "p", id: identite(bloc.id), children: children.filter((e): e is Lettres | ImageLigne => !estRenvoi(e)) });
       else texte.push({ type: "choix", id: identite(bloc.id), libelle: libelle(bloc.libelle), children });
     } else return null;
   }
@@ -182,10 +252,17 @@ export const liaisonsDe = (texte: Texte): Liaison[] => texte.filter(estLiaison);
 
 /** Les mots d'un bloc, sans mise en forme ni numéro : pour une phrase automatique, son libellé. */
 export const lettresDe = (bloc: Bloc): string =>
-  estAuto(bloc) ? bloc.libelle : bloc.type === "liaison" ? "" : (bloc.children as (Lettres | Renvoi)[]).map((e) => ("text" in e ? e.text : "")).join("");
+  estAuto(bloc)
+    ? bloc.libelle
+    : bloc.type === "liaison" || bloc.type === "image"
+      ? ""
+      : (bloc.children as (Lettres | Renvoi | ImageLigne)[]).map((e) => ("text" in e ? e.text : estImageLigne(e) ? motsDImage(e) : "")).join("");
+
+/** Une image sur la ligne, en texte simple : « [lune] », ou « [image] » sans texte de remplacement (F10-AC32). */
+export const motsDImage = (image: { alt?: string }): string => `[${image.alt || "image"}]`;
 
 /** Le texte d'une scène en mots seuls, un paragraphe par ligne. */
-export const enMots = (texte: Texte): string => recitDe(texte).map(lettresDe).join("\n");
+export const enMots = (texte: Texte): string => recitDe(texte).map((b) => (b.type === "image" ? (b.legende ?? "") : lettresDe(b))).join("\n");
 
 /**
  * Une scène sans mot, sans choix ni image (F07.1) : « Texte vide ». Une note de l'enseignant
@@ -195,11 +272,15 @@ export const enMots = (texte: Texte): string => recitDe(texte).map(lettresDe).jo
 export const estVide = (texte: Texte): boolean =>
   texte.every((b) => b.type === "note" || b.type === "liaison" || ((b.type === "p" || b.type === "action") && lettresDe(b).trim() === ""));
 
+/** Les fichiers d'image qu'un texte emploie, en bloc ou sur la ligne. */
+export const imagesDe = (texte: Texte): string[] =>
+  texte.flatMap((b) => (b.type === "image" ? [b.image] : b.type === "liaison" ? [] : (b.children as unknown[]).filter(estImageLigne).map((i) => i.image)));
+
 /** Les renvois d'un bloc : celui d'une phrase automatique, ou ceux d'une phrase personnalisée. */
 export function renvoisDe(bloc: Bloc): { id: string; cible: string | null; libelle: string }[] {
   if (bloc.type !== "choix") return [];
   if (estAuto(bloc)) return [{ id: bloc.id, cible: bloc.cible, libelle: bloc.libelle }];
-  return bloc.children.filter(estRenvoi).map((r) => ({ id: r.id, cible: r.cible, libelle: r.libelle || bloc.libelle }));
+  return (bloc.children as unknown[]).filter(estRenvoi).map((r) => ({ id: r.id, cible: r.cible, libelle: r.libelle || bloc.libelle }));
 }
 
 /** Toutes les destinations d'un texte, dans l'ordre. */
@@ -214,9 +295,11 @@ export const NUMERO_VIDE = "…";
  * seule fonction la compose pour l'éditeur, la lecture, le presse-papiers et, plus tard, le
  * livre : le même contenu partout (F05-AC09).
  */
-export type Morceau = { texte: string } | { renvoi: string; cible: string | null };
+export type Morceau = { texte: string } | { renvoi: string; cible: string | null } | { image: string; alt?: string };
 export function morceauxDe(bloc: Choix, formule: FormuleRenvoi): Morceau[] {
-  if (!estAuto(bloc)) return bloc.children.map((e) => ("text" in e ? { texte: e.text } : { renvoi: e.id, cible: e.cible }));
+  if (!estAuto(bloc)) {
+    return bloc.children.map((e) => ("text" in e ? { texte: e.text } : estImageLigne(e) ? { image: e.image, alt: e.alt } : { renvoi: e.id, cible: e.cible }));
+  }
   const MARQUE = "\u0001";
   const [avant, apres = ""] = phraseDeChoix(bloc.libelle || "…", MARQUE, formule, bloc.construction).split(MARQUE);
   return [{ texte: avant }, { renvoi: bloc.id, cible: bloc.cible }, { texte: apres }];
@@ -224,7 +307,7 @@ export function morceauxDe(bloc: Choix, formule: FormuleRenvoi): Morceau[] {
 
 /** La phrase en texte simple, avec les numéros affichés : ce qui sort vers un autre logiciel (F05.2). */
 export const phraseEnMots = (bloc: Choix, formule: FormuleRenvoi, numero: (cible: string | null) => string): string =>
-  morceauxDe(bloc, formule).map((m) => ("texte" in m ? m.texte : numero(m.cible))).join("");
+  morceauxDe(bloc, formule).map((m) => ("texte" in m ? m.texte : "image" in m ? motsDImage(m) : numero(m.cible))).join("");
 
 /** Une construction tirée parmi celles qui servent, à la création d'un choix, puis gardée (F05-AC11). */
 export const tirerConstruction = (utiles: Construction[], tirage: () => number = Math.random): Construction =>
@@ -251,6 +334,8 @@ export function estReserve(bloc: Bloc, droits: Droits): boolean {
   if (droits.role === "adulte") return false;
   // Liaison cachée et note sont à l'adulte seul ; un paragraphe protégé vaut pour tous les élèves (F06-AC50)
   if (bloc.type === "liaison" || bloc.type === "note") return true;
+  // L'enseignant importe et place les images : l'image en bloc est préparée pour tous les élèves (F10-AC28)
+  if (bloc.type === "image") return true;
   if (bloc.type === "p") return bloc.protege === true;
   // Action de jeu : préparée d'office pour « écriture et propositions » ; protégée par l'enseignant, pour tous (F04-AC25)
   if (bloc.type === "action") return droits.profil === "propositions" || bloc.protege === true;
@@ -265,7 +350,7 @@ export function estReserve(bloc: Bloc, droits: Droits): boolean {
  * si tout est permis : les blocs réservés sont tous là, inchangés, dans le même ordre, et
  * aucun n'a été ajouté.
  */
-export function controlerTexte(avant: Texte, apres: Texte, droits: Droits): string | null {
+export function controlerTexte(avant: Texte, apres: Texte, droits: Droits, imagesVues: readonly string[] = []): string | null {
   if (droits.role === "adulte") return null;
   const reservesAvant = avant.filter((b) => estReserve(b, droits));
   const reservesApres = apres.filter((b) => estReserve(b, droits));
@@ -274,6 +359,11 @@ export function controlerTexte(avant: Texte, apres: Texte, droits: Droits): stri
   for (let i = 0; i < reservesAvant.length; i += 1) {
     if (!memeTexte(reservesAvant[i], reservesApres[i])) return "Un bloc préparé a été modifié ou déplacé.";
   }
+  // Un élève ne fait pas entrer dans une scène une image qui n'y était pas (F10-AC33) ; il
+  // déplace ou retire celles qui sont sur la ligne, dans les paragraphes qu'il modifie
+  // « Qui y était » : dans le texte, ou retenue par la scène — entre couper et coller, le texte s'enregistre sans elle
+  const dejaLa = new Set([...imagesDe(avant), ...imagesVues]);
+  if (imagesDe(apres).some((i) => !dejaLa.has(i))) return "Une image a été ajoutée.";
   return null;
 }
 

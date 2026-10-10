@@ -3,8 +3,8 @@
 import { NodeApi, RangeApi } from "platejs";
 import { createPlatePlugin } from "platejs/react";
 import {
-  estAuto, estRenvoi, estReserve, lettresDe, lireCollage, lireTexteSimple, nettoyerTexte, nouvelId, paragrapheVide, phraseEnMots, renvoisDe,
-  NUMERO_VIDE, type Bloc, type Choix, type Droits, type Lettres, type Texte,
+  estAuto, estImageLigne, estRenvoi, estReserve, imagesDe, lettresDe, lireCollage, lireTexteSimple, nettoyerTexte, nouvelId, paragrapheVide,
+  phraseEnMots, renvoisDe, NUMERO_VIDE, type Bloc, type Choix, type Droits, type ImageLigne, type Lettres, type Renvoi, type Texte,
 } from "@/domaine/copie";
 import type { FormuleRenvoi } from "@/domaine/preparation";
 
@@ -22,8 +22,8 @@ type Point = { path: number[]; offset: number };
 
 /** Ce que la copie dit à la personne, au pied du texte, avec de quoi revenir en arrière. */
 export type Signal =
-  | { sorte: "supprime"; choix: number; renvois?: number; actions?: number }
-  | { sorte: "colle"; deplaces: number; copies: number; ecartes: number; actionsEcartees?: number }
+  | { sorte: "supprime"; choix: number; renvois?: number; actions?: number; images?: number }
+  | { sorte: "colle"; deplaces: number; copies: number; ecartes: number; actionsEcartees?: number; imagesEcartees?: number }
   | { sorte: "image" };
 
 export type Regles = {
@@ -51,7 +51,7 @@ export const blocsDe = (e: Editeur): Bloc[] => e.children as Bloc[];
  * automatique, et tout bloc réservé à l'adulte pour cette personne — phrase préparée,
  * paragraphe protégé (F06.1).
  */
-export const estFerme = (bloc: Bloc | undefined, droits: Droits): boolean => !!bloc && (estAuto(bloc) || estReserve(bloc, droits));
+export const estFerme = (bloc: Bloc | undefined, droits: Droits): boolean => !!bloc && (estAuto(bloc) || bloc.type === "image" || estReserve(bloc, droits));
 
 /** La personne peut-elle modifier, déplacer ou supprimer ce bloc ? */
 export const peutModifier = (bloc: Bloc, droits: Droits): boolean => !estReserve(bloc, droits);
@@ -63,7 +63,7 @@ export function blocCourant(e: Editeur): { index: number; bloc: Bloc } | null {
   return bloc ? { index: index as number, bloc } : null;
 }
 
-const fragmentInterne = (data: DataTransfer): { blocs: unknown; origine: { mode?: string; projet?: string } } => {
+const fragmentInterne = (data: DataTransfer): { blocs: unknown; origine: { mode?: string; projet?: string; scene?: string } } => {
   let origine = {};
   try {
     origine = JSON.parse(data.getData("application/x-copie-origine") || "{}");
@@ -122,6 +122,7 @@ export const ReglesPlugin = createPlatePlugin({
     const { droits } = o();
     let choix = 0;
     let actions = 0;
+    let images = 0;
 
     // Dans une seule phrase personnalisée : son texte se supprime, sauf si tous ses renvois partent avec
     if (i0 === i1 && avant[i0].type === "choix") {
@@ -142,7 +143,8 @@ export const ReglesPlugin = createPlatePlugin({
     const textuel = (b: Bloc) => b.type === "p" || b.type === "note" || b.type === "action";
     const retire = (k: number): boolean => {
       const b = avant[k];
-      if (b.type === "choix") return peutModifier(b, droits);
+      // Phrase de choix et image en bloc : en entier, ou pas du tout
+      if (b.type === "choix" || b.type === "image") return peutModifier(b, droits);
       // Un paragraphe entièrement couvert part ; aux deux bouts, seule la partie sélectionnée
       return k > i0 && k < i1 && peutModifier(b, droits);
     };
@@ -158,6 +160,7 @@ export const ReglesPlugin = createPlatePlugin({
           if (retire(k)) {
             if (avant[k].type === "choix") choix += 1;
             if (avant[k].type === "action") actions += 1;
+            if (avant[k].type === "image") images += 1;
             e.tf.removeNodes({ at: [k] });
           } else if (k > i0 && k < i1) gardesEntre += 1;
         }
@@ -170,7 +173,7 @@ export const ReglesPlugin = createPlatePlugin({
       if (teteGardee) e.tf.select(debut);
       else allerA(Math.min(i0, reste.length - 1), i0 > reste.length - 1);
     });
-    if (choix || actions) o().signaler({ sorte: "supprime", choix, actions });
+    if (choix || actions || images) o().signaler({ sorte: "supprime", choix, actions, images });
     return true;
   };
 
@@ -179,19 +182,21 @@ export const ReglesPlugin = createPlatePlugin({
     let faits = 0;
     let choix = 0;
     let actions = 0;
+    let images = 0;
     e.tf.withoutNormalizing(() => {
       for (let k = blocsDe(e).length - 1; k >= 0; k -= 1) {
         const b = blocsDe(e)[k];
         if (!ids.includes(b.id) || !peutModifier(b, o().droits)) continue;
         if (b.type === "choix") choix += 1;
         if (b.type === "action") actions += 1;
+        if (b.type === "image") images += 1;
         e.tf.removeNodes({ at: [k] });
         faits += 1;
         if (blocsDe(e).length === 0) e.tf.insertNodes(paragrapheVide(), { at: [0] });
         allerA(Math.min(k, blocsDe(e).length - 1), k > blocsDe(e).length - 1);
       }
     });
-    if (choix || actions) o().signaler({ sorte: "supprime", choix, actions });
+    if (choix || actions || images) o().signaler({ sorte: "supprime", choix, actions, images });
     return faits;
   };
 
@@ -238,12 +243,12 @@ export const ReglesPlugin = createPlatePlugin({
   return {
     api: {
       isVoid(element: { type?: string }) {
-        if (element.type === "renvoi") return true;
+        if (element.type === "renvoi" || element.type === "image" || element.type === "image-ligne") return true;
         if (element.type === "choix" || element.type === "p" || element.type === "action") return ferme(element as Bloc);
         return isVoid(element as never);
       },
       isInline(element: { type?: string }) {
-        return element.type === "renvoi" || isInline(element as never);
+        return element.type === "renvoi" || element.type === "image-ligne" || isInline(element as never);
       },
       /** Ce qu'on copie : un bloc fermé part entier, et une phrase de choix n'est jamais prise à moitié (F05.2). */
       getFragment(at?: unknown) {
@@ -362,12 +367,29 @@ export const ReglesPlugin = createPlatePlugin({
         if (interne?.length) {
           // Coupé : le même choix se déplace ; copié : c'en est un autre (F05-AC30, AC31)
           const deplace = deplace0(origine, projetId);
-          let [deplaces, copies, ecartes, actionsEcartees] = [0, 0, 0, 0];
+          let [deplaces, copies, ecartes, actionsEcartees, imagesEcartees] = [0, 0, 0, 0, 0];
           const admis: Texte = [];
+          // Une image sur la ligne suit son texte pour l'adulte ; un élève ne fait pas entrer dans
+          // une scène une image qui n'y était pas : elle suit dans la même scène, pas ailleurs (F10-AC33)
+          const dejaLa = new Set(imagesDe(blocsDe(e)));
+          const imagePermise = (i: ImageLigne): boolean => droits.role === "adulte" || origine.scene === o().sceneId || dejaLa.has(i.image);
+          const ligne = <T extends { text: string } | ImageLigne | Renvoi>(enfants: T[], forme: boolean): T[] =>
+            enfants.flatMap((x) => {
+              if (!estImageLigne(x)) return [forme || estRenvoi(x) ? x : ({ text: (x as Lettres).text } as T)];
+              if (!imagePermise(x)) {
+                imagesEcartees += 1;
+                return [];
+              }
+              return [deplace ? x : { ...x, id: nouvelId() }];
+            });
           for (const bloc of interne) {
             if (bloc.type === "p") {
               // Du récit, sans la protection qu'il portait : on protège un paragraphe, pas sa copie
-              admis.push({ type: "p", id: nouvelId(), children: marques ? bloc.children : bloc.children.map((l) => ({ text: l.text })) });
+              admis.push({ type: "p", id: nouvelId(), children: ligne(bloc.children, marques) });
+            } else if (bloc.type === "image") {
+              // L'enseignant importe et place les images : pour un élève, l'image en bloc est écartée
+              if (droits.role !== "adulte") imagesEcartees += 1;
+              else admis.push(deplace ? bloc : { ...bloc, id: nouvelId() });
             } else if (bloc.type === "note") {
               // La note se déplace ou se duplique pour l'adulte ; personne d'autre n'en a (F05.2)
               if (droits.role === "adulte") admis.push(deplace0(origine, projetId) ? bloc : { ...bloc, id: nouvelId() });
@@ -379,25 +401,25 @@ export const ReglesPlugin = createPlatePlugin({
               const permis = o().actions && !(droits.role !== "adulte" && droits.profil === "propositions");
               if (!permis) actionsEcartees += 1;
               else if (deplace && droits.role === "adulte") admis.push(bloc);
-              else admis.push({ type: "action", id: deplace ? bloc.id : nouvelId(), children: bloc.children });
+              else admis.push({ type: "action", id: deplace ? bloc.id : nouvelId(), children: ligne(bloc.children, false) });
             } else if (estReserve(bloc, droits) || renvoisDe(bloc).some((r) => r.cible !== null && !o().scenes.includes(r.cible))) {
               // Créer ou déplacer ce choix n'est pas permis à cette personne, ou il vise une scène
               // qu'elle ne connaît pas : il est écarté (F05-AC32)
               ecartes += 1;
             } else if (deplace) {
               deplaces += 1;
-              admis.push(bloc);
+              admis.push(estAuto(bloc) ? bloc : { ...bloc, children: ligne(bloc.children, true) });
             } else {
               copies += 1;
               admis.push(
                 estAuto(bloc)
                   ? { ...bloc, id: nouvelId() }
-                  : { ...bloc, id: nouvelId(), children: bloc.children.map((enfant) => (estRenvoi(enfant) ? { ...enfant, id: nouvelId() } : enfant)) },
+                  : { ...bloc, id: nouvelId(), children: ligne(bloc.children, true).map((enfant) => (estRenvoi(enfant) ? { ...enfant, id: nouvelId() } : enfant)) },
               );
             }
           }
           insererBlocs(admis);
-          if (deplaces || copies || ecartes || actionsEcartees) o().signaler({ sorte: "colle", deplaces, copies, ecartes, actionsEcartees });
+          if (deplaces || copies || ecartes || actionsEcartees || imagesEcartees) o().signaler({ sorte: "colle", deplaces, copies, ecartes, actionsEcartees, imagesEcartees });
           return;
         }
         const images = [...(data.files ?? [])].filter((f) => f.type.startsWith("image/")).length;
@@ -443,7 +465,8 @@ export const ReglesPlugin = createPlatePlugin({
             }
             vus.add(id);
             for (const [k, enfant] of (blocs[i].children as unknown[]).entries()) {
-              if (!estRenvoi(enfant)) continue;
+              // Renvois et images sur la ligne : chacun son identité
+              if (!estRenvoi(enfant) && !estImageLigne(enfant)) continue;
               if (!enfant.id || vus.has(enfant.id)) {
                 e.tf.setNodes({ id: nouvelId() }, { at: [i, k] });
                 return;
@@ -454,6 +477,14 @@ export const ReglesPlugin = createPlatePlugin({
         }
         if (chemin.length === 1) {
           const enfants = (noeud.children ?? []) as unknown[];
+          // Une note ne porte pas d'image (F05.2), une phrase de choix automatique non plus (F10)
+          if (noeud.type === "note" || (noeud.type === "choix" && estAuto(noeud as Bloc))) {
+            const k = enfants.findIndex(estImageLigne);
+            if (k !== -1) {
+              e.tf.removeNodes({ at: [...chemin, k] });
+              return;
+            }
+          }
           // Un renvoi n'existe que dans une phrase de choix (F05-AC15)
           if (noeud.type === "p" || noeud.type === "note" || noeud.type === "action") {
             const k = enfants.findIndex(estRenvoi);
@@ -488,7 +519,7 @@ export const ReglesPlugin = createPlatePlugin({
         if (droits.role !== "adulte" && op.path) {
           const bloc = blocsDe(e)[op.path[0]];
           const dedans = op.path.length > 1 && ["insert_text", "remove_text", "insert_node", "remove_node", "set_node", "split_node", "merge_node"].includes(op.type);
-          const dessus = op.path.length === 1 && ["remove_node", "set_node", "split_node"].includes(op.type);
+          const dessus = op.path.length === 1 && ["remove_node", "set_node", "split_node", "move_node"].includes(op.type);
           const fusion = op.path.length === 1 && op.type === "merge_node" && (estReserve(bloc, droits) || estReserve(blocsDe(e)[op.path[0] - 1] ?? bloc, droits));
           if (bloc && ((estReserve(bloc, droits) && (dedans || dessus)) || fusion)) return;
         }

@@ -1,9 +1,10 @@
 import "server-only";
 
 /**
- * Images de repérage (F10.1). Le navigateur réduit l'image et la dépose lui-même dans le
- * stockage, par une adresse à usage unique ; le serveur relit ensuite ce qui a été déposé
- * avant de l'inscrire dans le projet. Rien ne se lit du stockage sans passer par lui.
+ * Images du projet : repères du récit (F10.1) et images posées dans les scènes (F10). Le
+ * navigateur réduit l'image et la dépose lui-même dans le stockage, par une adresse à usage
+ * unique ; le serveur relit ensuite ce qui a été déposé avant de l'inscrire dans le projet.
+ * Rien ne se lit du stockage sans passer par lui.
  */
 
 export const SEAU = "images";
@@ -42,6 +43,41 @@ export function dimensionsJpeg(octets: Uint8Array): { largeur: number; hauteur: 
       return largeur > 0 && hauteur > 0 ? { largeur, hauteur } : null;
     }
     i += 2 + longueur;
+  }
+  return null;
+}
+
+export type FormatImage = "jpeg" | "png" | "webp";
+export const TYPE_MIME: Record<FormatImage, string> = { jpeg: "image/jpeg", png: "image/png", webp: "image/webp" };
+
+const entier32 = (o: Uint8Array, i: number): number => ((o[i] << 24) | (o[i + 1] << 16) | (o[i + 2] << 8) | o[i + 3]) >>> 0;
+const lettres = (o: Uint8Array, i: number, n: number): string => String.fromCharCode(...o.subarray(i, i + n));
+
+/**
+ * Format et dimensions de ce que le navigateur a déposé, lus dans ses en-têtes ; null si ce
+ * n'est ni du JPEG, ni du PNG, ni du WebP. Une image à fond transparent reste en PNG ou en
+ * WebP, pour garder sa transparence (F10-AC31).
+ */
+export function lireImage(octets: Uint8Array): { format: FormatImage; largeur: number; hauteur: number } | null {
+  const jpeg = dimensionsJpeg(octets);
+  if (jpeg) return { format: "jpeg", ...jpeg };
+  const valide = (largeur: number, hauteur: number, format: FormatImage) =>
+    largeur > 0 && hauteur > 0 && largeur <= 20000 && hauteur <= 20000 ? { format, largeur, hauteur } : null;
+  // PNG : signature, puis le bloc IHDR, largeur et hauteur sur quatre octets
+  if (octets.length >= 24 && entier32(octets, 0) === 0x89504e47 && entier32(octets, 4) === 0x0d0a1a0a && lettres(octets, 12, 4) === "IHDR") {
+    return valide(entier32(octets, 16), entier32(octets, 20), "png");
+  }
+  // WebP : conteneur RIFF, puis l'un de ses trois blocs d'image
+  if (octets.length >= 30 && lettres(octets, 0, 4) === "RIFF" && lettres(octets, 8, 4) === "WEBP") {
+    const bloc = lettres(octets, 12, 4);
+    if (bloc === "VP8X") return valide(1 + (octets[24] | (octets[25] << 8) | (octets[26] << 16)), 1 + (octets[27] | (octets[28] << 8) | (octets[29] << 16)), "webp");
+    if (bloc === "VP8L" && octets[20] === 0x2f) {
+      const b = octets[21] | (octets[22] << 8) | (octets[23] << 16) | (octets[24] << 24);
+      return valide(1 + (b & 0x3fff), 1 + ((b >>> 14) & 0x3fff), "webp");
+    }
+    if (bloc === "VP8 " && octets[23] === 0x9d && octets[24] === 0x01 && octets[25] === 0x2a) {
+      return valide((octets[26] | (octets[27] << 8)) & 0x3fff, (octets[28] | (octets[29] << 8)) & 0x3fff, "webp");
+    }
   }
   return null;
 }

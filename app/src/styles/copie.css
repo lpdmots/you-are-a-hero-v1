@@ -973,6 +973,145 @@
   gap: 8px;
 }
 
+/* ——— Images (F10) ———
+   En bloc : entre deux paragraphes, à sa largeur dans la page, sa légende dessous. Sur la
+   ligne : à la hauteur du texte, sans rectangle autour d'un symbole détouré. */
+.image-bloc {
+  position: relative;
+  margin: 0 0 0.9em;
+}
+.image-bloc__corps {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  max-width: 62ch;
+  padding: 6px;
+  border-radius: 8px;
+}
+.image-bloc__corps[role="button"] {
+  cursor: pointer;
+}
+.image-bloc__corps[role="button"]:hover {
+  background: var(--feuille-2);
+}
+.image-bloc.est-choisi > .image-bloc__corps,
+.image-bloc.est-ouvert > .image-bloc__corps {
+  box-shadow: 0 0 0 2px var(--canard);
+}
+.image-bloc.est-ouvert > .image-bloc__corps {
+  background: var(--canard-pale);
+}
+.image-bloc.est-prepare.est-choisi > .image-bloc__corps {
+  box-shadow: 0 0 0 2px var(--graphite-3);
+}
+.image-bloc.est-tire {
+  opacity: 0.4;
+}
+.figure {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  min-width: 60px;
+}
+.figure img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+.figure__legende {
+  font-family: var(--f-recit);
+  font-size: 0.92em;
+  font-style: italic;
+  line-height: 1.4;
+  text-align: center;
+}
+.image-bloc__page {
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+}
+.copie__texte--lu > .image-bloc {
+  display: grid;
+  justify-items: center;
+  max-width: 62ch;
+}
+.symbole {
+  display: inline-block;
+  height: 1.15em;
+  width: auto;
+  vertical-align: -0.2em;
+}
+.symbole-en-ligne {
+  border-radius: 3px;
+}
+.symbole-en-ligne [role="button"] {
+  cursor: pointer;
+}
+.symbole-en-ligne.est-choisi {
+  box-shadow: 0 0 0 2px var(--canard);
+}
+.cx-images,
+.cx-poser {
+  display: grid;
+  gap: 10px;
+}
+.cx-poser {
+  grid-template-columns: minmax(0, 150px) minmax(0, 1fr);
+  align-items: start;
+  gap: 14px;
+}
+.cx-poser__apercu {
+  display: block;
+  max-width: 100%;
+  max-height: 150px;
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px var(--trait);
+  /* Le damier discret laisse voir un fond transparent */
+  background: repeating-conic-gradient(var(--feuille-2) 0 25%, var(--feuille) 0 50%) 0 0 / 14px 14px;
+}
+.cx-vignettes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  max-height: 176px;
+  margin: 0;
+  padding: 2px;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.cx-vignettes button {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: var(--feuille-2);
+  box-shadow: 0 0 0 1px var(--trait);
+  cursor: pointer;
+  overflow: hidden;
+}
+.cx-vignettes button:hover,
+.cx-vignettes button:focus-visible {
+  box-shadow: 0 0 0 2px var(--canard);
+}
+.cx-vignettes img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.cx-pourcent {
+  max-width: 260px;
+  margin-top: 8px;
+}
+@media (max-width: 700px) {
+  .cx-poser {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* Là où se poserait le bloc qu'on tire : un trait */
 .se-pose-avant::before,
 .copie__texte.se-pose-fin::after {
