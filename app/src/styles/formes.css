@@ -231,7 +231,7 @@
   background: var(--feuille);
   border-radius: 12px;
   box-shadow: inset 0 0 0 1px var(--trait);
-  overflow: hidden;
+  /* pas de overflow: hidden : un menu ouvert dans la fiche doit passer devant */
   min-width: 0;
 }
 .carnet-fiche > header {
