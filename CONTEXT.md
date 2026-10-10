@@ -38,8 +38,10 @@ _Éviter_ : scène validée, sélection de texte libre.
 
 **Note de l'enseignant** :
 Paragraphe d'une scène visible de l'adulte seul et absent du livre, servant
-de rappel pour son propre travail.
-_Éviter_ : consigne d'écriture, retour de révision, passage caché du récit.
+de rappel pour son propre travail. L'élève n'en reçoit rien, pas même
+l'existence ; elle ne compte pas comme texte de la scène.
+_Éviter_ : consigne d'écriture, retour de révision, passage caché du récit,
+bloc protégé (que l'élève voit).
 
 **Feuille d'aventure** :
 Page propre à une histoire, composée de sections par l'adulte, que le lecteur
@@ -314,6 +316,13 @@ sort de la scène par un échange s'y nomme « Ancien texte de la scène » et
 n'arrête aucun élève.
 _Éviter_ : texte final, scène supplémentaire, fusion automatique, remise,
 corbeille du projet.
+
+**Version précédente** :
+Texte d'une scène tel qu'il était avant qu'une personne commence à le
+modifier, gardé une fois par personne et par jour, que l'adulte seul peut
+relire et remettre dans la scène.
+_Éviter_ : copie de récupération (née d'un enregistrement refusé, elle
+arrête l'élève), remise, historique de chaque enregistrement.
 
 **Soumission d'une scène** :
 Remise explicite du texte d'une scène à l'enseignant pour relecture. À

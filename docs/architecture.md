@@ -660,7 +660,8 @@ Tiptap n'a pas été essayé, et rien ici ne dit qu'il ferait moins bien.
 - Tenue des contournements aux montées de version de Plate et de Slate : les
   figer, et conserver les scénarios de test comme filet, non le code.
 - Scène créée depuis un choix puis annulée, morceau de phrase collé, sélection
-  couvrant tous les renvois : comportements à confirmer avant réalisation.
+  couvrant tous les renvois : confirmés le 10 octobre 2026 en
+  [F05.2](specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène).
 - Collage depuis Word, LibreOffice et Google Docs réels ; Firefox.
 - Images dans l'éditeur : hors de la liste, donc non éprouvées. L'image en
   bloc de F10 relève du même mécanisme que les blocs fermés ; l'image en

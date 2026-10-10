@@ -25,7 +25,12 @@ le même jour ; voir le
 [plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit),
 [l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026)
 et le [design](docs/design.md#étape-2-construite-10-octobre-2026).
-L'étape 3 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
+**L'étape 3 est autorisée le 10 octobre 2026**, pour elle seule (écrire une
+scène et relier les choix) : son entretien est fait et validé dans son
+ensemble le même jour, sa construction n'est pas commencée ; voir le
+[plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix) et le
+[design](docs/design.md#étape-3--écrans-arrêtés-avant-de-construire-10-octobre-2026).
+L'étape 4 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur
@@ -507,6 +512,34 @@ avant de commencer » soient tranchées.
   ([F10.1](docs/specifications.md#f101--images-de-repérage-du-projet)).
   Écrans arrêtés et textes du guidage :
   [design](docs/design.md#étape-2--écrans-arrêtés-avant-de-construire-10-octobre-2026).
+- **Étape 3, entretien du 10 octobre 2026,** validé dans son ensemble par
+  le porteur le même jour : le texte s'enregistre deux secondes après la
+  frappe et quinze au plus, avant toute sortie par l'application, et à la
+  fermeture de la page sans garantie ; un enregistrement refusé, quel qu'en
+  soit le motif, est gardé à part sur la scène ; des versions précédentes,
+  une par personne et par jour, se relisent et se remettent dans la scène
+  par l'adulte seul
+  ([F08.2](docs/specifications.md#f082--enregistrement-automatique-et-versions-précédentes)) ;
+  « Fixer son numéro… » dans le menu de la scène, le numéro restant fixé
+  quand un lien caché est retiré
+  ([F11.5](docs/specifications.md#f115--ordre-imprimé-et-numérotation-du-récit-à-choix)) ;
+  la note de l'enseignant, dont l'élève ne reçoit rien, les trois
+  comportements laissés par le prototype, et le glisser-déposer des blocs
+  de la copie, demandé par le porteur, à la place de « Monter » et
+  « Descendre »
+  ([F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène)) ;
+  la recherche de l'élève, bornée à ce qu'il peut lire
+  ([F05](docs/specifications.md#f05--retrouver-les-scènes-et-relier-les-choix)) ;
+  une mise en forme désactivée qui ne nettoie rien, et les collages
+  complexes ramenés à des paragraphes
+  ([F04.1](docs/specifications.md#f041--mise-en-forme-légère-pour-les-élèves)) ;
+  dans les scènes voisines, le lien caché hors périmètre absent et la
+  lecture ouverte qui montre les extraits
+  ([F04.3](docs/specifications.md#f043--aperçu-des-scènes-voisines-pendant-lécriture)) ;
+  `/image`, l'image en bloc protégée pour les élèves, une légende
+  facultative demandée par le porteur, JPEG, PNG et WebP avec leur
+  transparence
+  ([F10](docs/specifications.md#f10--illustrations)).
 - **Restent à décider :** les questions qui bloquent chaque
   étape, à arbitrer par un entretien court avant elle ; F14, avant
   l'ouverture. Le développement demande une instruction que le plan ne
@@ -518,7 +551,7 @@ avant de commencer » soient tranchées.
 | --- | --- |
 | [Brief](BRIEF-V1.md) | Synthèse du produit, modes, F01–F14, orientations techniques et périmètre. |
 | [Spécifications fonctionnelles](docs/specifications.md) | Règles, permissions, parcours, critères d'acceptation ; décisions distinguées des propositions et questions ouvertes. |
-| [Vocabulaire métier](CONTEXT.md) | Définitions canoniques, notamment histoire → partie → chapitre → scène, corbeille du projet, classe et année terminée, inscription, retrait de la classe, accès de classe, affiche de la classe, étiquette de l'élève, attribution, prise en charge, état de la scène, répartition des scènes sans élève, renvoi et phrase de choix, fiche de rédaction, note de l'enseignant, objet de l'histoire, feuille d'aventure, compteur, action de jeu, liaison cachée, numéro imprimé, numéro de page, page de présentation, dé imprimé, page peu remplie, agencement, temps du livre, étape d'arrivée, tâche, scène à finir, doute sur l'ordre, avertissement accepté et aperçu du livre. |
+| [Vocabulaire métier](CONTEXT.md) | Définitions canoniques, notamment histoire → partie → chapitre → scène, corbeille du projet, classe et année terminée, inscription, retrait de la classe, accès de classe, affiche de la classe, étiquette de l'élève, attribution, prise en charge, état de la scène, copie de récupération, version précédente, répartition des scènes sans élève, renvoi et phrase de choix, fiche de rédaction, note de l'enseignant, objet de l'histoire, feuille d'aventure, compteur, action de jeu, liaison cachée, numéro imprimé, numéro de page, page de présentation, dé imprimé, page peu remplie, agencement, temps du livre, étape d'arrivée, tâche, scène à finir, doute sur l'ordre, avertissement accepté et aperçu du livre. |
 | [Design](docs/design.md) | Carnet d'aventure illustré, système « Cahiers d'aventure » de la maquette de synthèse, images et couleurs de repérage, situations retenues, vues Scènes/Chemins, dispositions à éprouver et outillage de conception. |
 | [Maquette de synthèse](maquettes/synthese/index.html) | Système « Cahiers d'aventure », planche d'ambiance, parties et chapitres (carte qui ouvre le chapitre, menus à trois points, « À compléter », aide à l'ouverture, réglages, attribution des élèves, suppression et corbeille), Scènes/Chemins, barre du haut globale et page « Mes projets », « Nouveau projet » en trois questions, « Mes classes » (aide à l'ouverture, classe et ses élèves, codes, informations de la classe, horaires, fin d'année, inscription en lot, étiquettes et affiche), Suivi d'un projet (rappel des élèves sans chapitre, tampons d'état en filtres et leur légende, écran d'aide à l'ouverture, sélections par élève, vue Élèves, retour depuis la scène) et fiches de rédaction en feuille par chapitre ou par élève, un élève choisi n'imprimant que la sienne, et les scènes sans élève pouvant être réparties à l'impression, préparation et atelier projeté, connexion élève (place du code réservée, code refusé, confirmation de « Quitter la classe »), Mon travail (scènes rangées par urgence, fermé hors des horaires), écriture et reprise de l'élève (pied de la copie collé au bas de l'écran, incidents dans ce pied, scène prise ou rendue avec « Annuler », retour de l'enseignante seul à la première ouverture, à l'essai) et relecture (état de la scène choisi sur son tampon, « qui s'en occupe » et menu à trois points dans l'en-tête, un seul retour, scène suivante à valider, fiche de décision réduite à l'étape suivante, incidents au-dessus de la copie), conflit de sauvegarde (texte gardé à part dans un onglet de la page de scène, « Ne plus garder ce texte » et « Mettre ce texte dans la scène », ligne de rappel du Suivi, élève arrêté sur la scène et dans « Mon travail »), choix dans la scène et blocs protégés, objets et actions de jeu dans la copie, destination Livre en parcours guidé (relire, vérifier les chemins, mettre en page, imprimer et partager ; ligne d'étapes à marques, étapes fermées, tâches sans accordéon aux deux premières étapes, aide à l'ouverture d'une étape, bulles d'information, avertissements acceptés, aperçu avec la scène ouverte à côté, scène déclarée prête ou exclue depuis son menu, image dans l'éditeur, « Mettre en page » en deux volets — réglages de texte et de pages, ordre des passages et ordre à confirmer, pages de début et de fin ; aperçu du livre entier, pages peu remplies et passages suggérés —, PDF définitif, partage), rubriques « Phrases de choix », feuille d'aventure et règles du jeu dans la préparation, Suivi filtré sur les scènes à finir, lecture d'essai, lecteur en ligne avec feuille d'aventure et dé, et lectures de l'élève. HTML local, variantes et interactions simulées sans persistance ; propositions à examiner. |
 | [Architecture](docs/architecture.md) | Orientations techniques, comparaison d'hébergement et décision du 8 octobre 2026, protection des accès, vérifications restantes, liste du prototype de l'éditeur et ses résultats point par point, liste du prototype PDF, moteurs candidats, limites Vercel, résultats et mesures du prototype PDF. |

@@ -17,7 +17,10 @@ leur statut.
 L'étape 2, autorisée par le porteur le 10 octobre 2026 pour elle seule, est
 terminée le même jour : entretien, construction, mise en ligne, essai du
 porteur (voir [Étape 2](#étape-2--préparer-et-organiser-le-récit)).
-L'étape 3 n'est ni autorisée ni commencée.
+L'étape 3 est autorisée le 10 octobre 2026, pour elle seule : son entretien
+est fait et validé dans son ensemble le même jour, sa construction n'est pas
+commencée (voir [Étape 3](#étape-3--écrire-une-scène-et-relier-les-choix)).
+L'étape 4 n'est ni autorisée ni commencée.
 
 Ce plan n'autorise par lui-même ni développement, ni prototype, ni achat :
 chaque étape demande une instruction du porteur. La V1
@@ -122,7 +125,7 @@ le plan s'organise autour. Le détail est dans
 | V8 | Contrôle des droits côté serveur (comparaison de deux documents, chapitre de chaque destination) et règles RLS. | L'écriture des élèves : F06.1, F05.2. | 1 pour les accès, 3 pour le texte | Aucun repli. |
 | V9 | Accès de classe sans adresse électronique : session de classe puis profil, codes et mot de passe chiffrés par l'application, limitation des essais, durée des accès, postes déjà ouverts ; règles décidées le 8 octobre 2026 (F06-AC73 à AC81). | La connexion des élèves (F06.4). | 1 | La conception des accès revient en entretien ([architecture](architecture.md#protection-des-accès-de-classe-et-des-codes-élèves)). |
 | V10 | Horaires : heure de Paris et changements d'heure (F06-AC80), enregistrement final après l'échéance. | F06-AC27 à AC31. | 1, puis 3 pour l'enregistrement final | — |
-| V11 | Cadence de l'enregistrement automatique, fixée nulle part ; historique des versions, non spécifié. | F08. | 3 | Règles à écrire avant l'étape. |
+| V11 | Cadence de l'enregistrement automatique et versions précédentes, décidées le 10 octobre 2026 en F08.2 : leur tenue dans l'application (frappe non interrompue, envoi à la fermeture de la page). | F08. | 3 | La cadence revient en entretien. |
 | V12 | Images dans l'éditeur, en bloc et en ligne, non éprouvées par le prototype. | F10 dans l'éditeur. | 3 | — |
 | V13 | Collage depuis Word, LibreOffice et Google Docs réels ; Firefox. | F04-AC04. | 3, à la main | — |
 | V14 | Tablettes réelles, clavier virtuel, lecteur d'écran. | L'usage sur tablette ; pourrait rouvrir l'[ADR 0002](adr/0002-plate-pour-l-editeur.md). | Mis de côté par le porteur le 3 octobre 2026. | — |
@@ -383,16 +386,27 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   actions de jeu ; images ; scènes voisines.
 - **Dépend de :** étape 2.
 - **Vérifications levées :** V7, V8 pour le texte, V11, V12, V13, V15, V19.
-- **À régler avant de commencer :** cadence de l'enregistrement automatique
-  et historique des versions, que le brief annonce en F08 sans règle ; note
-  de l'enseignant, retenue dans son principe et non spécifiée (F05.2) ;
-  commande qui fixe un numéro de passage (F05.1, F11.5) ; commande de pose
-  de l'image en ligne, formats et limites d'import (F10) ; effet d'une
-  désactivation de la mise en forme (F04.1) ; qui renomme une scène et ce que
-  la recherche montre à un élève (F05) ; liaison cachée hors périmètre et
-  lecture ouverte dans les scènes voisines (F04.3) ; trois comportements que
-  le prototype laisse à confirmer — scène créée depuis un choix puis annulée,
-  morceau de phrase collé, sélection couvrant tous les renvois.
+- **À régler avant de commencer :** rien. Arbitré en entretien le
+  10 octobre 2026 et validé dans son ensemble par le porteur le même jour :
+  la cadence de l'enregistrement, les refus hors conflit et les versions
+  précédentes (F08.2, F08-AC32 à AC43) ; la commande qui fixe un numéro de
+  passage (F11.5, F11-AC96 à AC98) ; les trois comportements laissés par le
+  prototype (F05.2, F05-AC44 à AC46) ; ce que la recherche montre à un
+  élève (F05, F05-AC47, AC48) ; la note de l'enseignant (F05.2, F05-AC49 à
+  AC52) ; l'effet d'une désactivation de la mise en forme et les collages
+  complexes (F04.1, F04-AC34 à AC36) ; la liaison cachée hors périmètre et
+  la lecture ouverte dans les scènes voisines (F04.3, F04-AC37, AC38) ; la
+  pose d'une image, les formats, le texte de remplacement et le collage par
+  un élève (F10, F10-AC27 à AC33). Décidé par le porteur au même entretien :
+  une légende facultative sous l'image en bloc (F10-AC34), et le
+  glisser-déposer des blocs de la copie à la place de « Monter » et
+  « Descendre » (F05.2, F05-AC40 révisé). Ces critères s'ajoutent au
+  périmètre de l'étape. Écrans :
+  [design](design.md#étape-3--écrans-arrêtés-avant-de-construire-10-octobre-2026).
+- **Autorisée le 10 octobre 2026,** pour elle seule, en deux temps :
+  l'entretien, fait et validé ; la construction, qui n'est pas commencée.
+  Le schéma de la base changera : la migration s'applique à la vraie base
+  sur accord du porteur, après une sauvegarde.
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du
@@ -618,12 +632,14 @@ de commencer ». Celles-ci n'en bloquent aucune.
 - **F06.3 :** changements simultanés de prise en charge ; durée pendant
   laquelle une reprise reste annulable.
 - **F06.4 :** exceptions ponctuelles aux horaires ; raccourcis par lien ou
-  QR ; sauvegarde inachevée au changement d'élève, à traiter avec F08 à
-  l'étape 3.
+  QR. La sauvegarde inachevée au changement d'élève est décidée le
+  10 octobre 2026 en F08.2.
 - **F07.3 :** le verbe de la remise, « remettre » ou « donner », à entendre
   auprès d'élèves ; « J'ai lu, j'écris », à l'essai.
 - **F08.1 :** texte gardé sur le poste après une coupure, proposition non
   décidée ; nombre de textes gardés à part par scène.
+- **F10 :** conversion d'un PDF de scanner ou d'une photo HEIC dans
+  l'application ; images dans les consignes.
 - **F10.2 :** langue du prompt ; personnages récurrents autres que le héros.
 - **F11 :** marge maximale ; parties regroupées non consécutives ; pages
   supplémentaires.

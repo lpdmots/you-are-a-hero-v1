@@ -1160,6 +1160,33 @@ montagne, cité, désert) s'ajoutent ceux que le porteur génère d'après des
 prompts de lieux variés, dans le même style, format 3:2, l'animal et le
 sujet dans les deux tiers supérieurs.
 
+### Étape 3 : écrans arrêtés avant de construire (10 octobre 2026)
+
+L'entretien du 10 octobre 2026, avant l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix), change ou
+ajoute les dispositions suivantes ; les règles sont en F04.1, F04.3, F05,
+F05.2, F08.2, F10 et F11.5 des [spécifications](specifications.md). Le reste
+des écrans de l'étape se construit tel que dessiné dans
+[Choix dans la scène et blocs protégés](#choix-dans-la-scène-et-blocs-protégés),
+[Scènes voisines](#scènes-voisines-dans-la-page-de-scène),
+[Objets, feuille d'aventure, actions de jeu et dé](#objets-feuille-daventure-actions-de-jeu-et-dé),
+[Conflit de sauvegarde](#conflit-de-sauvegarde--écrans-de-f081-7-octobre-2026),
+[Page de scène reprise après critique](#page-de-scène-reprise-après-critique-4-octobre-2026)
+et [Côté élève repris après critique](#côté-élève-repris-après-critique-5-octobre-2026).
+Ces formes sont proposées, à juger à l'essai de l'étape.
+
+| Élément | Disposition |
+| --- | --- |
+| Déplacer un bloc | Demandé par le porteur : la phrase de choix, l'action de jeu, l'image en bloc et la note de l'enseignant portent dans la marge rouge le repère de prise des cartes (six petits points gris). Le bloc tiré se soulève, un trait montre où il se posera. « Monter » et « Descendre » quittent la fiche d'un choix et la rangée de commandes d'une action de jeu. Aucun repère devant un paragraphe de récit, ni pour l'élève « écriture et propositions ». |
+| État de l'enregistrement | Dans le pied de la copie, pour l'élève comme pour l'adulte : « Enregistré » ou « Pas encore enregistré », sans bouton et sans clignoter à chaque enregistrement. |
+| Versions précédentes | Sans écran dans la maquette. « Versions précédentes » dans le menu à trois points de la scène ouvre un panneau : la liste, nommée par la personne et le jour (« Avant les modifications d'Alice, mardi 6 octobre »), le texte de la version choisie en lecture, et « Mettre ce texte dans la scène ». Un seul bouton plein. |
+| Note de l'enseignant | Sans écran dans la maquette. Un paragraphe sur le papier grisé des surfaces secondaires, dans la voix de l'outil, précédé de la légende « Note · pour vous seul, jamais imprimée » ; la marge rouge garde son rôle (ce qui n'est jamais imprimé). `/note` et bouton « Note » de la barre de la copie. |
+| Fixer un numéro | Sans écran dans la maquette. « Fixer son numéro… » dans le menu de la scène ouvre une fiche à filet canard : « Ce passage porte le n° 41 », « Garder ce numéro » ou un champ pour en saisir un autre ; la phrase d'un numéro plus grand que le livre, le refus qui nomme la scène. Près de la référence : « n° 100 fixé ». |
+| Image dans la copie | `/image` et bouton « Image » ouvrent une fiche : « Importer une image » ou les vignettes des images du projet, puis « Dans le texte » ou « Sur la ligne ». L'image en bloc activée s'entoure de canard et ouvre sa fiche dessous : largeur en segments (petite, moyenne, pleine largeur, pleine page) et pourcentage, « Remplacer l'image », « Ce que montre l'image », « Légende », « Supprimer ». La légende se lit sous l'image, centrée, en Vollkorn italique plus petit. |
+| Recherche de l'élève | Le champ « Rechercher une scène » de « Parties et chapitres », repris sur la page d'histoire de l'élève ; résultats sous leur chapitre. |
+| Mise en forme des élèves | Un interrupteur de plus dans les réglages du projet, sous la lecture ouverte, en mode classe seulement. |
+| Rappel d'un texte gardé à part | La ligne de rappel de F08.1 se pose dans l'onglet Suivi, seule, en attendant le Suivi de l'étape 4. |
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la
@@ -1916,8 +1943,10 @@ phrase de choix dit « Choix préparé : tu écris autour » plutôt que « pré
 par ta maîtresse », car un camarade au profil d'organisation peut en être
 l'auteur ; la création d'un lien caché ne propose que des scènes existantes ;
 « Proposer comme choix » reprend le libellé que portait le choix avant d'être
-caché et, à défaut, en demande un ; un renvoi effacé au clavier dans une
-phrase personnalisée est rétabli, le retrait passant par « Retirer ».
+caché et, à défaut, en demande un. Abandonné le 10 octobre 2026 (F05.2) :
+un renvoi effacé au clavier dans une phrase personnalisée n'est pas
+rétabli ; il s'efface avec le message d'annulation, la confirmation restant
+pour le dernier renvoi.
 
 **Vérifications et limites :** vues contrôlées en 1 440 et 390 px, sans
 erreur de console ; le seul débordement horizontal relevé vient de la barre

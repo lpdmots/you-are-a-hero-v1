@@ -1118,9 +1118,10 @@ indépendante (25/40) :**
   la scène. C'est la recherche de F05 (titres, consignes et textes), sans
   création de choix. La recherche de la page d'un chapitre reste bornée à
   ce chapitre. Alternative écartée : chercher les parties et les chapitres
-  par leur nom, alors qu'on les voit tous à l'écran. Non traités : ce
-  champ côté élève, et un accès à cette recherche depuis les autres
-  onglets.
+  par leur nom, alors qu'on les voit tous à l'écran. Ce champ côté élève
+  est décidé le 10 octobre 2026 en
+  [F05](#f05--retrouver-les-scènes-et-relier-les-choix). Non traité : un
+  accès à cette recherche depuis les autres onglets.
 - **F03-AC26 — Scène retrouvée sans connaître son chapitre :** étant donné
   un livre de neuf chapitres dont « La lisière » contient S016 « Souche
   creuse — la lanterne de secours » et S017 « Souche — la chouette
@@ -1454,10 +1455,45 @@ permet de récupérer un brouillon en conservant une présentation cohérente.
 assure rédaction et composition ; le réglage d'autorisation élève n'y a pas
 lieu d'être. Le réglage s'applique aux projets de classe classiques comme à
 choix et aux deux profils de participation. Le nettoyage des textes collés
-s'applique aussi à l'auteur adulte selon ses droits. L'effet d'une
-désactivation sur les mises en forme déjà présentes et le traitement des
-contenus complexes, comme les tableaux, restent à préciser ; les droits
+s'applique aussi à l'auteur adulte selon ses droits. Les droits
 d'import et de placement des images sont définis en F10.
+
+**Décision confirmée le 10 octobre 2026 — désactivation et contenus
+complexes :** arbitré à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix).
+
+- **Où se trouve le réglage :** dans les réglages du projet, en mode classe
+  seulement, à côté de la lecture ouverte de l'histoire.
+- **Ce qui existe reste :** désactiver ne retire rien des textes, qui
+  s'impriment comme avant. Un nettoyage d'office détruirait un travail sans
+  que personne l'ait décidé scène par scène.
+- **Ce qui change pour l'élève :** les trois boutons et leurs raccourcis
+  disparaissent, et ses collages arrivent sans mise en forme (F04-AC05).
+  Ce qu'il tape au milieu d'un mot déjà mis en forme en garde la forme ; il
+  peut effacer ce mot, pas lui retirer sa mise en forme.
+- **L'adulte garde toujours les trois commandes,** et peut retirer lui-même
+  une mise en forme d'élève.
+- **Pas de contrôle côté serveur pour ce réglage :** c'est un réglage
+  pédagogique, non une protection. Le contrôle côté serveur reste celui des
+  choix, des blocs protégés, des actions de jeu et des images.
+- **Contenus complexes collés,** pour tous : tableau, liste, titre et lien
+  deviennent des paragraphes de texte — une cellule ou une puce par
+  paragraphe, un titre en paragraphe ordinaire, un lien réduit à son texte.
+  Une image collée est écartée avec un message : les images passent par
+  l'import de F10.
+
+- **F04-AC34 — Désactivation sans nettoyage :** étant donné S015 où Alice a
+  mis trois mots en gras, lorsque l'enseignant désactive la mise en forme
+  des élèves, alors ces trois mots restent en gras dans la scène, Alice n'a
+  plus les trois boutons ni leurs raccourcis, et l'enseignant, qui les
+  garde, peut retirer ce gras.
+- **F04-AC35 — Tableau et liste collés :** étant donné un texte Word
+  contenant un titre, une liste de trois puces et un tableau de deux
+  cellules, lorsqu'il est collé dans une scène, alors la scène reçoit six
+  paragraphes de texte ordinaire, sans tableau, puce ni titre.
+- **F04-AC36 — Image collée écartée :** étant donné un texte copié d'une
+  page web avec une photographie, lorsqu'il est collé dans une scène, alors
+  le texte est collé, l'image ne l'est pas et un message le dit.
 Les choix intégrés au texte sont régis par
 [F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène) et F06.1, notamment
 la protection des phrases de choix selon le profil.
@@ -1810,15 +1846,28 @@ classique et récit à choix.
   « autre chapitre » et son titre public sinon, comme le repère de destination
   de [F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène).
 
-**Propositions non arbitrées :**
+**Décisions confirmées le 10 octobre 2026,** à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix) ; les trois
+premières étaient des propositions du 2 octobre :
 
-- **Lire davantage :** un lien ouvre la scène voisine dans sa propre page,
-  selon les droits de la personne ; pas de texte complet déplié sur place.
-- **Ordre :** scènes suivantes dans l'ordre des choix de la scène ; scènes
-  précédentes dans l'ordre du plan.
-- **Liaison cachée vue par un élève :** une destination de liaison cachée
-  hors de son périmètre n'est pas mentionnée du tout, puisque F05.2 ne lui en
-  donne que le numéro.
+- **Lire davantage :** le lien « Ouvrir » mène à la page de la scène
+  voisine, selon les droits de la personne ; aucun texte entier n'est déplié
+  sur place.
+- **Ordre des onglets :** scènes suivantes dans l'ordre des choix de la
+  scène ; scènes précédentes dans l'ordre du plan.
+- **Liaison cachée dont l'autre bout est hors du périmètre de l'élève :**
+  elle n'apparaît pas dans les scènes voisines, ni avant ni après, puisque
+  F05.2 ne lui en donne que le numéro. Il garde le repère « Ton énigme doit
+  conduire au numéro 38 ».
+- **Liaison cachée dans le périmètre de la personne :** la voisine s'affiche
+  comme les autres, avec la mention « lien caché » ; l'extrait de la scène
+  précédente s'arrête à son dernier paragraphe de récit, sans phrase de
+  choix.
+- **Lecture de l'histoire ouverte (F06.2) :** l'élève reçoit les extraits
+  des voisines des autres chapitres, en lecture seule, avec référence, titre
+  et « Ouvrir ». Le réglage refermé, il retrouve la ligne « Autre
+  chapitre ».
+- **Note de l'enseignant :** elle ne figure dans aucun extrait (F05.2).
 
 **Critères d'acceptation sur les éléments confirmés :**
 
@@ -1856,8 +1905,19 @@ classique et récit à choix.
   l'aperçu activé, alors il lit la fin de S014 avant son texte et le début de
   S016 après.
 
-**Questions ouvertes :** effet de la lecture ouverte de F06.2 sur les
-extraits ; affichage pendant la relecture d'une remise ; présentation sur
+- **F04-AC37 — Liaison cachée hors périmètre :** étant donné Sacha chargé
+  de S055, dont une liaison cachée mène à S062 dans un chapitre qui ne lui
+  est pas attribué, lorsqu'il ouvre S055 avec l'aperçu activé, alors rien
+  ne mentionne S062 parmi les scènes voisines ; l'enseignante y lit le
+  début de S062 avec la mention « lien caché ».
+- **F04-AC38 — Lecture ouverte :** étant donné Bilal chargé de S017, dont
+  le choix mène à S021 dans un chapitre qui ne lui est pas attribué, et la
+  lecture de l'histoire ouverte, lorsqu'il ouvre S017, alors il lit le
+  début de S021 sans pouvoir l'écrire ; le réglage refermé, il lit « Autre
+  chapitre » et le titre de ce chapitre, sans extrait.
+
+**Questions ouvertes :** affichage pendant la relecture d'une remise
+(étape 4 du plan) ; présentation sur
 téléphone ; emploi éventuel de ces extraits comme contexte des aides IA de
 F13, qui n'est pas décidé ici.
 
@@ -1995,9 +2055,40 @@ justifié. Le coût réel et la qualité restent à mesurer ultérieurement.
 - **F05-AC04 — Refus du titre proposé :** étant donné un titre proposé par l'IA, lorsque l'adulte refuse la proposition,
   alors le titre courant, le texte et les relations du récit restent inchangés.
 
-**Approfondissements différés :** présentation des résultats et de leurs
-aperçus, contenus réellement visibles selon le
-profil et droits de renommage. Aucune recherche sémantique, génération globale
+**Décision confirmée le 10 octobre 2026 — ce que la recherche montre à un
+élève :** arbitré à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix). Le renommage
+est décidé le même jour en
+[F06.1](#f061--attribution-des-chapitres-et-profils-de-participation) :
+l'adulte, et l'élève « écriture et organisation » dans son chapitre.
+
+- **Destination d'un choix :** l'élève « écriture et organisation » ne se
+  voit proposer que les scènes du chapitre où il écrit, même si la lecture
+  de l'histoire est ouverte (F06.2) : un lien vers un autre chapitre est un
+  raccord, réservé à l'enseignant. Chaque résultat donne la référence, le
+  titre, l'extrait trouvé et l'état.
+- **Champ « Rechercher une scène » de l'élève :** sur sa page d'histoire, le
+  même champ que celui de l'adulte dans « Parties et chapitres » (F03.1). Il
+  cherche dans les titres et les textes des chapitres que l'élève peut
+  lire : les siens, ou tous quand la lecture est ouverte. Les consignes ne
+  sont cherchées que dans ses chapitres. Rien d'un chapitre fermé
+  n'apparaît, pas même un titre de scène (F05-AC03).
+- **Alternative écartée :** aucune recherche générale côté élève, qui
+  l'obligerait à ouvrir les scènes une à une pour retrouver un passage.
+
+- **F05-AC47 — Destinations de son chapitre seulement :** étant donné
+  Bilal, profil « écriture et organisation » dans « La lisière », et la
+  lecture de l'histoire ouverte, lorsqu'il cherche la destination d'un
+  choix, alors seules des scènes de « La lisière » lui sont proposées.
+- **F05-AC48 — Recherche de l'élève :** étant donné Alice attribuée à « La
+  lisière », lorsqu'elle écrit « lanterne » dans « Rechercher une scène »,
+  alors les scènes de « La lisière » dont le titre, le texte ou la consigne
+  contient ce mot s'affichent sous leur chapitre ; la lecture ouverte y
+  ajoute les scènes des autres chapitres trouvées par leur titre ou leur
+  texte, jamais par leur consigne.
+
+**Approfondissements différés :** présentation des aperçus. Aucune
+recherche sémantique, génération globale
 de résumés ni réorganisation automatique du graphe n'est décidée.
 
 ### F05.1 — Liaisons cachées par énigme
@@ -2058,6 +2149,12 @@ Le récit classique n'est pas concerné : il n'a ni choix ni renvois.
   au n° 40 fixé, lorsque l'adulte exclut deux scènes et que le livre ne compte
   plus que 38 passages, alors le PDF définitif est bloqué et le problème désigne
   la liaison ; le PDF de travail le signale à sa place.
+
+**Précisé le 10 octobre 2026 en
+[F11.5](#f115--ordre-imprimé-et-numérotation-du-récit-à-choix) :** le numéro
+fixé appartient à la scène de destination, qui le garde quand sa dernière
+liaison cachée est retirée, jusqu'à « Libérer le numéro » ; la même fiche
+fixe le numéro d'une scène où ne mène aucune liaison.
 
 **Questions ouvertes :** passage piège en cas de mauvaise réponse, laissé à
 l'auteur ; information de l'élève qui rédige lui-même une énigme sur le numéro
@@ -2328,6 +2425,49 @@ choix seulement.
   Word contenant « rends-toi au 12 », lorsque le collage réussit, alors ce
   passage est du texte ordinaire : aucun choix ni lien n'est créé.
 
+**Décisions confirmées le 10 octobre 2026 — trois comportements laissés à
+confirmer par le prototype :** arbitrés à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix).
+
+- **Choix créé avec « nouvelle scène », puis annulé :** l'annulation retire
+  le choix et ne touche pas à la scène. Le bandeau le dit (« Choix retiré.
+  La scène S064 Traverser le pont de brume reste dans le chapitre. ») et
+  propose « Supprimer aussi la scène » tant qu'elle ne contient pas de
+  travail ; elle va alors à la corbeille du projet (F03.1). L'élève au
+  profil « écriture et organisation » a le même bouton pour une scène qu'il
+  vient de créer (F06-AC86). Lier l'annulation du texte à la corbeille est
+  écarté : un seul geste explicite suffit.
+- **Morceau de phrase de choix collé dans un paragraphe de récit :** s'il
+  contient un renvoi, il devient une nouvelle phrase de choix personnalisée,
+  dans son propre paragraphe, sous celui du curseur ; le bandeau dit
+  « 1 choix copié » ou « 1 choix déplacé ». Sans le droit requis, il est
+  écarté avec le message du collage sans droit. Un morceau sans renvoi est
+  du texte ordinaire.
+- **Sélection qui couvre tous les renvois d'une phrase personnalisée :** la
+  supprimer supprime la phrase entière, sans confirmation préalable, avec le
+  message et « Annuler », comme toute suppression qui contient une phrase de
+  choix. La confirmation reste réservée à « Retirer ce renvoi » et au retour
+  arrière contre le dernier renvoi. Un renvoi qui n'est pas le dernier
+  s'efface au clavier, avec le même message : le rétablissement d'office
+  proposé par la maquette le 2 octobre est abandonné.
+
+- **F05-AC44 — Nouvelle scène, choix annulé :** étant donné le choix
+  « Traverser le pont de brume » créé à l'instant avec la nouvelle scène
+  S064, lorsque l'auteur annule, alors la phrase disparaît, S064 est
+  toujours dans le chapitre et le bandeau propose « Supprimer aussi la
+  scène » ; ce bouton l'envoie à la corbeille du projet.
+- **F05-AC45 — Morceau collé dans le récit :** étant donné « suis la lumière
+  au 21 » copié dans une phrase personnalisée, lorsque l'enseignante le
+  colle au milieu de « Lou fit un pas, puis un autre. », alors ce
+  paragraphe reste entier et sans renvoi, et une phrase de choix « suis la
+  lumière au 21 » forme un paragraphe juste en dessous, vers la même
+  destination.
+- **F05-AC46 — Tous les renvois sélectionnés :** étant donné la phrase de
+  S051 vers S053 et S055, lorsque l'enseignante sélectionne d'un renvoi à
+  l'autre et supprime, alors la phrase entière disparaît avec ses deux
+  liens, le bandeau dit « 1 choix supprimé » et l'annulation rétablit le
+  tout.
+
 **Variantes confirmées le 1er octobre 2026 :**
 
 - **Mode personnel :** l'auteur adulte dispose de toutes les commandes de
@@ -2336,22 +2476,53 @@ choix seulement.
 - **Récit classique :** pas de choix (F05-AC19). En mode classe, le paragraphe
   protégé de F06.1 y reste disponible.
 - **Tablette :** tout passe par le bouton « Choix » et par un appui sur la
-  phrase, qui ouvre le panneau. Aucune action ne dépend du survol, du clic
-  droit ou du glisser-déposer. Une phrase se déplace par couper-coller ou par
-  « Monter » et « Descendre » dans le panneau.
+  phrase, qui ouvre le panneau. Aucune action ne dépend du survol ni du clic
+  droit. Une phrase se déplace par couper-coller ou par son repère de prise,
+  saisi d'un appui long (révisé le 10 octobre 2026, plus bas).
 - **Clavier seul :** `/choix` ouvre la saisie ; les flèches parcourent la liste
   des destinations, Entrée valide, Échap referme sans rien créer. Une phrase de
   choix se sélectionne aux flèches comme un bloc ; Entrée ouvre son panneau,
-  Suppr. la supprime avec le message d'annulation.
+  Suppr. la supprime avec le message d'annulation, Alt et une flèche la
+  déplacent.
+
+**Décision du porteur, 10 octobre 2026 — déplacer un bloc de la copie par
+glisser-déposer :** à sa demande, à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix), pour suivre
+la règle prise le même jour pour les parties, les chapitres et les scènes
+(F03.1) et limiter les boutons. « Monter » et « Descendre », décidés le
+1er octobre pour le panneau d'un choix, sont retirés, ainsi que la règle
+selon laquelle aucune action ne dépend du glisser-déposer. Ne pas reproposer
+de boutons pour l'ordre des blocs.
+
+- **Blocs concernés :** la phrase de choix, l'action de jeu (F04.2), l'image
+  en bloc (F10) et la note de l'enseignant. Chacun porte dans la marge de la
+  copie le repère de prise des cartes du plan.
+- **Paragraphes de récit :** sans repère ; ils se déplacent par
+  couper-coller. Un repère devant chaque paragraphe chargerait la marge, et
+  un élève qui recopie son texte réordonne rarement ses paragraphes.
+- **Qui déplace :** la personne qui a le droit de modifier le bloc. L'élève
+  « écriture et propositions » n'a aucun repère ; l'élève « écriture et
+  organisation » déplace ses choix internes et ses actions de jeu, jamais
+  une image ni un bloc protégé. Le contrôle côté serveur de l'ordre des
+  blocs protégés ne change pas.
+- **Au clavier :** bloc sélectionné, puis Alt et flèche haut ou bas.
+- **Au doigt :** appui long sur le repère, comme pour les cartes ; non
+  vérifié sur une tablette réelle, mise de côté le 3 octobre 2026.
+- **Non éprouvé par le prototype :** ce geste doit cohabiter avec la
+  sélection de texte et les blocs fermés de l'éditeur. S'il ne tient pas, la
+  règle revient en entretien avant tout retour à des boutons.
 
 - **F05-AC39 — Création au clavier seul :** étant donné l'enseignante sans
   souris dans S015, lorsqu'elle saisit `/choix`, un libellé, choisit S018 aux
   flèches et valide par Entrée, alors le choix est créé ; lorsqu'elle appuie
   sur Échap pendant la saisie, alors rien n'est créé et le curseur revient
   dans le texte.
-- **F05-AC40 — Déplacement sans glisser :** étant donné deux phrases de choix
-  consécutives sur tablette, lorsque l'auteur utilise « Monter » sur la
-  seconde, alors elle passe au-dessus de la première, liens inchangés.
+- **F05-AC40 — Bloc déplacé (révisé le 10 octobre 2026) :** étant donné deux
+  phrases de choix consécutives, lorsque l'auteur tire la seconde par son
+  repère au-dessus de la première, ou la sélectionne et appuie sur Alt et
+  flèche haut, alors elle passe au-dessus de la première, liens inchangés ;
+  un paragraphe de récit n'a pas de repère, et Alice, profil « écriture et
+  propositions », n'en voit aucun. Le critère portait sur « Monter ».
 - **F05-AC42 — Un seul numéro pour l'élève :** étant donné S015 dont le
   choix mène à S018, numéro 21 du livre, lorsqu'Alice ouvre S015, alors la
   phrase de choix affiche 21 et son repère « Clairière », sans « S018 » ;
@@ -2360,9 +2531,56 @@ choix seulement.
   personnel à choix, lorsque l'auteur ouvre une scène, alors aucune commande de
   protection ni repère de bloc protégé ne lui est présenté.
 
-**Proposition retenue dans son principe, à spécifier — note de l'enseignant :**
-un paragraphe de la scène visible de l'adulte seul, jamais imprimé ni partagé,
-pour un rappel ou la solution d'une énigme. **Différé :** un passage du livre
+**Décision confirmée le 10 octobre 2026 — note de l'enseignant :** retenue
+dans son principe le 1er octobre, spécifiée à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix). C'est un
+paragraphe de la scène visible de l'adulte seul, jamais imprimé ni partagé,
+pour un rappel ou la solution d'une énigme.
+
+- **Commande :** `/note` et le bouton « Note », pour l'adulte seul, dans les
+  quatre combinaisons ; en mode personnel, c'est un pense-bête qui ne
+  s'imprime pas.
+- **Forme :** un paragraphe à part dans la copie, là où l'adulte le pose,
+  visiblement distinct du récit. Texte libre, avec gras, italique et
+  souligné ; ni renvoi ni image.
+- **L'élève n'en reçoit rien, pas même l'existence :** il voit les
+  paragraphes voisins se suivre. Quand il enregistre, la note est remise
+  après le paragraphe qui la précédait ; s'il a supprimé ce paragraphe, elle
+  remonte après le précédent, ou en tête de la scène.
+- **Nulle part ailleurs :** ni dans le livre, son aperçu et ses PDF, ni dans
+  la lecture d'essai, ni dans une version partagée, ni dans les extraits des
+  scènes voisines (F04.3), ni dans les fiches de rédaction, ni dans la
+  recherche d'un élève. La recherche de l'adulte la trouve. Un texte gardé à
+  part pour un élève n'en contient pas ; une version précédente (F08.2), que
+  l'adulte seul lit, les garde.
+- **Ce n'est pas du texte de la scène :** une scène qui ne porte qu'une note
+  reste « Texte vide », ne se remet pas et ne « contient pas de travail »
+  (F06.1). Conséquence acceptée : l'élève « écriture et organisation » peut
+  supprimer une scène vide qu'il a créée même si l'adulte y a mis une note ;
+  elle va à la corbeille du projet avec sa note.
+- **Presse-papiers :** pour l'adulte, couper-coller la déplace et
+  copier-coller la duplique ; vers l'extérieur, elle sort en texte simple.
+- **Alternative écartée :** montrer à l'élève un bloc fermé « Note de Mme
+  Laurent » sans son contenu ; un enfant demanderait ce qu'il contient.
+
+- **F05-AC49 — Note invisible pour l'élève :** étant donné S055 où Mme
+  Laurent a noté « Solution : 38 » entre deux paragraphes, lorsque Sacha
+  ouvre S055, alors il voit les deux paragraphes se suivre, sans note ni
+  repère, et ce que son poste reçoit ne contient pas ce texte.
+- **F05-AC50 — Note conservée quand l'élève enregistre :** dans la même
+  scène, lorsque Sacha ajoute une phrase au premier paragraphe et que son
+  texte s'enregistre, alors Mme Laurent retrouve sa note à la même place ;
+  s'il supprime le premier paragraphe, elle la retrouve en tête de la scène.
+- **F05-AC51 — Note hors du texte de la scène :** étant donné S064 qui ne
+  porte qu'une note, lorsque son état se lit, alors elle est « Texte vide »,
+  « Remettre » n'est pas proposé à un élève, et sa lecture d'essai ne montre
+  aucun texte.
+- **F05-AC52 — Note réservée à l'adulte :** étant donné Bilal, profil
+  « écriture et organisation », lorsqu'il tape « / » ou regarde la barre de
+  la copie, alors ni `/note` ni « Note » ne lui sont proposés ; l'auteur
+  d'un projet personnel en dispose.
+
+**Différé :** un passage du livre
 caché aux élèves pendant l'écriture. L'enseignant obtient déjà cet effet en
 plaçant le passage dans une scène d'un chapitre non attribué, reliée par un
 raccord ; F06.2 cache alors la scène entière.
@@ -2469,7 +2687,8 @@ du travail quand sa copie porte un texte ou une image, quand un texte est
 gardé à part pour elle (F08.1) ou quand elle a déjà été remise. Un texte
 entièrement effacé, jamais remis, ne compte plus ; un titre ou une consigne
 seuls n'en font pas une scène contenant du travail, ce que couvre la limite
-aux scènes créées par l'élève.
+aux scènes créées par l'élève. Une note de l'enseignant n'est pas du texte
+de la scène et ne compte pas non plus (F05.2, 10 octobre 2026).
 
 - **F06-AC86 — Scène créée par erreur :** étant donné Bilal, profil
   « écriture et organisation » dans « La lisière », qui vient de créer S064,
@@ -4888,11 +5107,11 @@ leur conception.
 
 **Questions ouvertes :**
 
-- Scène supprimée ou déplacée, attribution du chapitre retirée, élève
-  retiré de la classe, pendant qu'il tape ou alors qu'un texte est gardé à
-  part : voir aussi F03.1.
-- « Ne plus garder ce texte » annulé alors que l'élève a déjà recommencé
-  d'écrire dans la scène.
+- Scène supprimée, attribution du chapitre retirée, élève retiré de la
+  classe pendant qu'il tape, et « Ne plus garder ce texte » annulé alors que
+  l'élève a recommencé d'écrire : décidés le 10 octobre 2026 en
+  [F08.2](#f082--enregistrement-automatique-et-versions-précédentes). Le
+  déplacement d'une scène vers un autre chapitre reste différé (F03.1).
 - Phrase de choix copiée depuis un texte gardé à part et collée dans la
   scène, au regard des règles de copier-coller de F05.2.
 - Nombre de textes gardés à part qu'une scène peut porter : les écrans en
@@ -4911,14 +5130,15 @@ leur conception.
   demain », pour ne rien promettre (F08-AC03, F08-AC28) ; la validation
   suspendue après le conflit de l'enseignant se lève au second choix de
   l'état.
-- Cadence de l'enregistrement automatique, qui n'est fixée nulle part : elle
-  décide de ce qu'un texte gardé à part contient d'ordinaire.
+- Cadence de l'enregistrement automatique : décidée le 10 octobre 2026 en
+  [F08.2](#f082--enregistrement-automatique-et-versions-précédentes).
 - À vérifier techniquement, sans prototype autorisé : la conservation du
   texte gardé à part au moment même du refus et ce qui se passe si elle
   échoue ; l'échange fait d'un seul tenant alors que la scène change ; la
   garde sur le poste proposée ci-dessus.
-- Historique des versions et autres incidents sans conflit, qui restent à
-  spécifier pour F08.
+- Historique des versions : décidé le 10 octobre 2026 en
+  [F08.2](#f082--enregistrement-automatique-et-versions-précédentes), sous
+  la forme des versions précédentes.
 
 **Variante personnelle :** l'auteur adulte règle lui-même son conflit,
 notamment entre deux de ses sessions : le texte refusé est gardé à part
@@ -4935,6 +5155,154 @@ a pas de ligne de rappel décidée pour ce mode, dont le suivi reste ouvert
 Les règles du 7 octobre 2026 sont validées dans leur ensemble par le porteur
 le même jour, avec leurs points différés. Aucun choix de bibliothèque ou de
 protocole ne découle de ces décisions fonctionnelles. La soumission attend un enregistrement réussi selon F07.1.
+
+### F08.2 — Enregistrement automatique et versions précédentes
+
+**Objectif :** dire quand le texte d'une scène s'enregistre, ce qui se perd
+quand une page se ferme, et comment retrouver un texte effacé par erreur.
+Arbitré le 10 octobre 2026, à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix). Ces règles
+valent pour l'adulte comme pour l'élève, dans les quatre combinaisons.
+
+**Décision confirmée le 10 octobre 2026 — quand le texte s'enregistre :**
+
+- **Pendant la frappe :** deux secondes après la dernière frappe, et au plus
+  tard toutes les quinze secondes si la frappe ne s'arrête pas. Un élève qui
+  tape lentement est enregistré après presque chaque mot ; l'enregistrement
+  ne l'interrompt pas, ne déplace pas son curseur et ne bloque aucune
+  touche.
+- **Avant de partir :** une commande de l'application qui fait quitter la
+  scène (« Retour à… », « Remettre », « Changer d'élève », « Quitter la
+  classe », ouverture d'une autre scène) enregistre d'abord, puis agit.
+  Toute fermeture d'un poste par l'application (fin de plage, deux heures
+  sans activité, mot de passe remplacé, année terminée, élève retiré, selon
+  [F06.4](#f064--classe-de-référence-et-postes-partagés)) fait de même.
+- **Page fermée par le navigateur** (onglet ou fenêtre fermés, page
+  rechargée, bouton de retour) : la page envoie ce qui attend au moment où
+  elle se ferme. Cet envoi aboutit presque toujours, sans garantie : le
+  navigateur peut l'abandonner. L'application ne dit donc jamais
+  « enregistré » avant d'en avoir reçu la confirmation, et la scène rouverte
+  montre le dernier texte réellement enregistré (F08-AC24).
+- **Poste éteint, navigateur planté, réseau coupé :** ce qui n'était pas
+  enregistré est perdu, soit quinze secondes de frappe au plus quand le
+  réseau fonctionnait.
+- **Pas de bouton « Enregistrer » :** le pied de la copie dit l'état,
+  « Enregistré » ou « Pas encore enregistré », sans clignoter à chaque
+  enregistrement.
+- **Alternative écartée :** cinq secondes et trente secondes, qui font moins
+  d'appels mais montrent un conflit plus tard et perdent davantage.
+
+- **F08-AC32 — Pause de frappe :** étant donné Bilal écrivant dans S015,
+  lorsqu'il s'arrête deux secondes, alors son texte est enregistré et le
+  pied de la copie dit « Enregistré », sans qu'il ait rien cliqué.
+- **F08-AC33 — Frappe continue :** étant donné Bilal qui tape sans s'arrêter
+  plus d'une seconde, lorsque quinze secondes ont passé depuis le dernier
+  enregistrement, alors son texte est enregistré pendant qu'il tape, et sa
+  frappe n'est ni interrompue ni déplacée.
+- **F08-AC34 — Quitter aussitôt par l'application :** étant donné Alice qui
+  tape un mot puis clique « Retour à Mon travail » dans la seconde, lorsque
+  la page suivante s'affiche, alors ce mot est dans le texte enregistré de
+  la scène.
+- **F08-AC35 — Onglet fermé aussitôt :** étant donné Alice qui tape un mot
+  puis ferme l'onglet dans la seconde, réseau disponible, lorsqu'elle rouvre
+  la scène, alors la scène montre le dernier texte enregistré, que ce mot y
+  soit ou non, et rien n'annonce qu'un texte est gardé ailleurs.
+
+**Décision confirmée le 10 octobre 2026 — enregistrement refusé pour une
+autre raison qu'un texte devenu ancien :** la règle de
+[F08.1](#f081--écritures-concurrentes) s'applique sans cas particulier. Quel
+que soit le motif du refus, ce que la personne n'avait pas enregistré est
+gardé à part sur la scène, à son nom.
+
+- **Scène supprimée pendant la frappe :** le texte gardé à part reste
+  attaché à la scène dans la corbeille du projet et revient avec elle à la
+  restauration.
+- **Chapitre retiré à l'élève, ou élève retiré de la classe, pendant la
+  frappe :** l'enseignant trouve le texte dans l'onglet de la scène ; l'écran
+  de l'élève revient à ce qu'il a encore le droit de voir.
+- **« Changer d'élève » et « Quitter la classe » avec un texte en attente :**
+  si l'enregistrement échoue, l'écran reste sur la scène et dit que le texte
+  n'est pas encore enregistré, sans sortie forcée. L'adulte qui veut libérer
+  le poste ferme l'onglet ; le texte non enregistré est alors perdu, selon
+  F08-AC24. F06-AC17 est ainsi complété.
+- **« Ne plus garder ce texte » annulé alors que l'élève a recommencé
+  d'écrire :** l'annulation rétablit le texte gardé à part et l'arrêt de
+  l'élève ; ce qu'il tape encore est gardé à part à son tour à
+  l'enregistrement suivant. Rien n'est perdu ; la scène porte deux textes
+  gardés à part.
+
+- **F08-AC36 — Scène supprimée pendant la frappe :** étant donné Bilal
+  tapant dans S064, lorsque Mme Laurent supprime S064 puis la restaure, alors
+  ce que Bilal n'avait pas enregistré est dans un onglet « Texte de Bilal,
+  gardé à part… » de S064.
+- **F08-AC37 — Chapitre retiré pendant la frappe :** étant donné Bilal
+  tapant dans S015, lorsque Mme Laurent lui retire « La lisière », alors sa
+  dernière phrase est gardée à part sur S015, et l'écran de Bilal ne montre
+  plus le texte de la scène.
+- **F08-AC38 — Changement d'élève sans réseau :** étant donné Alice dont la
+  dernière phrase n'est pas enregistrée et le réseau coupé, lorsqu'elle
+  clique « Changer d'élève », alors l'écran reste sur sa scène, dit que son
+  texte n'est pas encore enregistré, et le choix des profils ne s'affiche
+  pas.
+- **F08-AC39 — Annulation après reprise de l'écriture :** étant donné « Ne
+  plus garder ce texte » choisi pour le texte de Bilal, qui recommence
+  aussitôt d'écrire dans S015, lorsque Mme Laurent annule, alors le texte de
+  Bilal est de nouveau gardé à part, Bilal est arrêté, et ce qu'il venait de
+  taper est gardé à part dans un second onglet.
+
+**Décision confirmée le 10 octobre 2026 — versions précédentes :** le brief
+annonçait « récupérer des versions » sans règle. La première livraison en
+retient une forme courte, pour le cas d'un texte effacé par erreur puis
+enregistré : l'annulation ne survit pas à la fermeture de la page.
+
+- **Ce qui est gardé :** le texte de la scène tel qu'il était avant qu'une
+  personne commence à le modifier, une fois par personne et par jour. Un
+  texte vide n'est pas gardé.
+- **Qui les voit :** l'adulte seul, par « Versions précédentes » dans le
+  menu à trois points de la scène. Chaque version est nommée par la personne
+  et le jour : « Avant les modifications d'Alice, mardi 6 octobre ».
+- **Ce qu'il peut faire :** la lire, en copier un passage, ou « Mettre ce
+  texte dans la scène ». C'est l'échange de F08.1 : le texte remplacé
+  devient à son tour une version précédente, et l'état de la scène, l'élève
+  qui s'en occupe et les remises ne changent pas.
+- **Ce qu'elle n'est pas :** une version précédente n'arrête personne, ne
+  compte pas dans la ligne de rappel du Suivi et n'entre ni dans le livre,
+  ni dans la lecture d'essai, ni dans une version partagée. L'élève ne la
+  voit pas : il appelle l'enseignant, comme pour toute demande (F07.2).
+- **Durée :** sans limite, comme la corbeille du projet ; la règle générale
+  de conservation s'écrira en F14.
+- **Alternatives écartées :** aucun historique, qui laisse irrécupérable un
+  texte effacé par erreur ; une version à chaque enregistrement, dont la
+  liste serait illisible et appellerait un écran de comparaison.
+
+- **F08-AC40 — Texte effacé par erreur :** étant donné S015 où Alice avait
+  écrit dix lignes lundi, lorsque mardi elle sélectionne tout, tape une
+  lettre et ferme la page, puis que Mme Laurent ouvre « Versions
+  précédentes », alors elle y lit « Avant les modifications d'Alice, mardi
+  … » avec les dix lignes, et « Mettre ce texte dans la scène » les rend à
+  S015.
+- **F08-AC41 — Une version par personne et par jour :** étant donné Alice
+  qui modifie S015 à 9 h, à 10 h et à 14 h le même jour, lorsque Mme Laurent
+  ouvre « Versions précédentes », alors une seule version porte le nom
+  d'Alice pour ce jour, celle d'avant 9 h.
+- **F08-AC42 — Échange sans perte ni autre effet :** étant donné S015
+  « À valider », dont Alice s'occupe, lorsque Mme Laurent met une version
+  précédente dans la scène, alors le texte remplacé figure à son tour parmi
+  les versions précédentes, la scène reste « À valider » et Alice reste
+  indiquée.
+- **F08-AC43 — Réservé à l'adulte :** étant donné Alice dans S015, lorsqu'elle
+  ouvre la scène, alors rien ne lui propose les versions précédentes, et
+  les demander directement ne lui rend rien.
+
+**Variante personnelle :** l'auteur adulte dispose des versions précédentes
+de ses scènes, nommées par le jour seul.
+
+**Ligne de rappel avant le Suivi :** la ligne « 1 texte gardé à part » de
+F08.1 se construit à l'étape 3 du plan, dans l'onglet Suivi encore vide ; le
+reste du Suivi vient autour d'elle à l'étape 4.
+
+**Reste ouvert :** le texte gardé sur le poste après une coupure,
+proposition non décidée de F08.1, qui ne bloque aucune étape.
 
 ## F09 — Test de lecture et cohérence du récit
 
@@ -5233,10 +5601,10 @@ Retour d'usage : cette possibilité lui a manqué dans ses livres.
   de modifier la phrase peut supprimer l'image, l'adulte seul la pose.
   Les pages de présentation, par exemple une légende de symboles dans les
   règles du jeu, restent à décider.
-- **À spécifier :** commande de pose, effet d'un collage par un élève,
-  sortie en texte simple et texte de remplacement. Elle étend la
-  règle de F05.2 selon laquelle seule une phrase de choix porte un élément
-  insécable.
+- **Spécifié le 10 octobre 2026,** plus bas : commande de pose, effet d'un
+  collage par un élève, sortie en texte simple et texte de remplacement.
+  L'image en ligne étend la règle de F05.2 selon laquelle seule une phrase
+  de choix porte un élément insécable.
 - **Éprouvé le 3 octobre 2026 par le prototype PDF :** interlignage inchangé
   dans le livre, dans l'aperçu comme dans le PDF, pour une image haute de
   4,2 mm dans un texte en corps 12 ; voir
@@ -5311,10 +5679,115 @@ Ces règles valent pour les quatre combinaisons de modes.
   symbole figure dans la phrase, dans le PDF comme dans le lecteur en ligne,
   et le graphe désigne ce choix par son libellé, sans image.
 
-**Questions ouvertes :** image importée pour un emploi en ligne puis placée
-en bloc. Images utilisées pour les consignes et pour le livre. Formats, dimensions,
-limites d'import et incidents
-seront détaillés avant réalisation. L'import concerne aussi le mode personnel
+**Décisions confirmées le 10 octobre 2026 — poser une image dans la
+scène :** arbitré à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix). Ces règles
+valent pour les quatre combinaisons.
+
+- **Une seule commande :** `/image` et le bouton « Image », pour l'adulte
+  seul. La fiche propose d'importer un fichier ou de reprendre une image
+  déjà importée dans le projet, puis demande où la mettre : « Dans le
+  texte », en bloc (petite, moyenne, pleine largeur, pourcentage, pleine
+  page), ou « Sur la ligne », à la hauteur du texte, à l'endroit du curseur.
+- **Réglages d'une image en bloc :** l'activer ouvre sa fiche sur place,
+  comme pour un choix : largeur, « Remplacer l'image », « Ce que montre
+  l'image », légende, « Supprimer ». Elle se déplace comme les autres blocs
+  de la copie ([F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène)).
+- **Image en bloc protégée d'office pour tous les élèves,** quel que soit
+  leur profil : ils ne la modifient, ne la déplacent ni ne la suppriment, et
+  écrivent avant et après. C'est la conséquence de « l'enseignant importe et
+  place ». L'image en ligne reste supprimable par l'élève dans un paragraphe
+  qu'il modifie (3 octobre 2026).
+- **Une image, deux emplois :** la même image importée sert en bloc ou en
+  ligne, et passe de l'un à l'autre sans nouvel import ; elle est gardée à
+  la définition de son plus grand emploi. La réduction plus forte permise
+  le 3 octobre pour un emploi en ligne n'est pas appliquée.
+
+**Décision du porteur, 10 octobre 2026 — légende d'une image en bloc :**
+une image en bloc peut porter une légende, écrite par l'adulte dans la fiche
+de l'image. Non remplie, il n'y en a pas : ni ligne vide, ni espace réservé.
+
+- **Où elle se lit :** sous l'image, dans la copie, l'aperçu, les PDF, la
+  lecture d'essai et le lecteur en ligne, avec le même texte. Elle ne se
+  sépare pas de son image d'une page à l'autre.
+- **Ce qu'elle est :** une ligne de texte simple, sans mise en forme, renvoi
+  ni image. Elle est protégée avec l'image pour les élèves. La recherche de
+  F05 la trouve.
+- **Légende et « Ce que montre l'image » :** la légende s'imprime, le texte
+  de remplacement non. Sans texte de remplacement, la légende en tient lieu
+  pour un lecteur d'écran.
+- **Image en ligne :** pas de légende.
+- **À régler à l'étape 6 du plan :** sa présentation dans le livre, et la
+  place qu'elle prend sous une image en pleine page.
+
+**Décisions confirmées le 10 octobre 2026 — formats et limites d'import :**
+
+- **Formats et poids :** JPEG, PNG et WebP, 20 Mo au plus par fichier,
+  comme les images de repérage de F10.1. L'image est ramenée à 2 600 points
+  sur son plus grand côté, de quoi l'imprimer en pleine page.
+- **Fond transparent conservé :** une image qui a de la transparence la
+  garde ; un symbole détouré posé sur la ligne ne s'entoure pas d'un
+  rectangle blanc sur le papier de la copie ou dans le lecteur en ligne.
+- **Autres formats** (HEIC, PDF de scanner, GIF, SVG) : refusés avec un
+  message qui nomme les trois formats acceptés.
+- **Aucun plafond** sur le nombre d'images par scène ou par projet.
+- **Import interrompu :** rien n'est posé dans le texte et le message le
+  dit ; aucune image à moitié arrivée ne reste dans la scène.
+
+**Décisions confirmées le 10 octobre 2026 — texte de remplacement, texte
+simple et collage :**
+
+- **« Ce que montre l'image » :** champ facultatif, pour l'image en bloc
+  comme en ligne (« lune »), lu par un lecteur d'écran.
+- **Sortie en texte simple** (copie vers l'extérieur, recherche, libellé du
+  graphe quand la phrase en tient lieu) : l'image en ligne devient
+  « [lune] », ou « [image] » sans ce texte ; l'image en bloc ne sort pas.
+- **Collage par un élève :** un élève ne fait pas entrer dans une scène une
+  image qui n'y était pas ; le contrôle est fait côté serveur. Il déplace
+  dans la même scène une phrase qui porte une image en ligne, et l'image
+  suit. Collée dans une autre scène, la phrase arrive sans l'image, avec un
+  message, comme une action de jeu collée sans droit (F04-AC30).
+
+- **F10-AC27 — Poser depuis la scène :** étant donné l'enseignante dans
+  S015, lorsqu'elle saisit `/image`, importe un dessin et choisit « Dans le
+  texte », alors l'image forme un bloc après le paragraphe du curseur, en
+  largeur moyenne, sans qu'elle ait quitté la scène ; la même fiche lui
+  propose ensuite cette image parmi celles du projet.
+- **F10-AC28 — Image en bloc protégée :** étant donné ce dessin dans S015,
+  lorsqu'Alice sélectionne tout le texte et le supprime, alors l'image
+  demeure ; Bilal, profil « écriture et organisation », ne peut ni la
+  déplacer ni la supprimer, que la commande lui soit proposée ou qu'il
+  l'appelle directement.
+- **F10-AC29 — Du bloc à la ligne :** étant donné une image posée en bloc
+  dans S015, lorsque l'enseignante la reprend « Sur la ligne » dans S051,
+  alors elle s'y affiche à la hauteur du texte sans nouvel import, et celle
+  de S015 n'a pas changé.
+- **F10-AC30 — Format refusé, import interrompu :** étant donné un PDF de
+  scanner, lorsque l'enseignante l'importe, alors il est refusé avec un
+  message qui nomme JPEG, PNG et WebP ; étant donné un import coupé en
+  route, alors la scène ne contient aucune image de plus et le message le
+  dit.
+- **F10-AC31 — Transparence gardée :** étant donné un symbole PNG détouré,
+  lorsqu'il est posé sur la ligne, alors le papier de la copie se voit
+  autour du symbole.
+- **F10-AC32 — Texte simple :** étant donné « Si tu choisis la porte ☾ »,
+  où ☾ porte « lune » pour texte de remplacement, lorsque la phrase est
+  copiée vers un autre logiciel, alors il reçoit « Si tu choisis la porte
+  [lune] » ; sans texte de remplacement, « [image] ».
+- **F10-AC33 — Image suivie ou écartée :** étant donné Alice dans S015,
+  lorsqu'elle coupe une phrase qui porte une image en ligne et la colle plus
+  bas dans S015, alors l'image suit ; lorsqu'elle la colle dans S016, alors
+  le texte est collé, l'image ne l'est pas et un message le lui dit.
+- **F10-AC34 — Légende facultative :** étant donné le dessin de S015,
+  lorsque l'enseignante écrit « Le pont, dessiné par Chloé » dans sa fiche,
+  alors cette légende se lit sous l'image dans la copie, pour elle comme
+  pour Alice, qui ne peut pas la modifier ; la légende effacée, rien ne
+  figure sous l'image.
+
+**Questions ouvertes :** images utilisées pour les consignes ; conversion
+d'un PDF de scanner ou d'une photo HEIC dans l'application ; image en ligne
+dans les pages de présentation, par exemple une légende de symboles
+(étape 6 du plan). L'import concerne aussi le mode personnel
 et le récit classique ; l'absence d'image ne bloque pas à elle seule une scène.
 
 ### F10.1 — Images de repérage du projet
@@ -6725,6 +7198,49 @@ porteur, pour simplifier les retouches. À l'écran, la commande s'appelle
   l'adulte réordonne les passages le 20 juin puis demande un nouveau PDF
   définitif, alors le fichier du 18 juin est inchangé et conservé, et le
   nouveau porte les nouveaux numéros.
+
+**Décision confirmée le 10 octobre 2026 — fixer le numéro d'un passage :**
+arbitré à l'entretien de l'étape 3 du
+[plan](plan.md#étape-3--écrire-une-scène-et-relier-les-choix). Les règles
+parlaient d'un numéro fixé par l'adulte sans en donner la commande. Usage
+visé : une scène atteinte par une règle du jeu (« Si tu n'as plus de points
+de vie, rends-toi au 100 »), où ne mène ni choix ni liaison cachée.
+
+- **Commande :** « Fixer son numéro… », dans le menu à trois points de la
+  scène, pour l'adulte seul, récit à choix seulement. La fiche montre le
+  numéro actuel et propose de le garder ou d'en saisir un autre.
+- **Une scène, un numéro fixé :** déclarer une liaison cachée vers une scène
+  fixe son numéro par cette même règle (F05.1) ; il n'y a pas deux
+  mécanismes. Une scène déjà fixée garde son numéro quand une liaison
+  cachée y mène.
+- **Numéro déjà fixé ailleurs :** refusé à la saisie, la scène concernée
+  étant nommée (F05-AC36).
+- **Numéro plus grand que le nombre de passages :** accepté, une phrase de
+  la fiche le dit. Le livre grandit encore ; le blocage du PDF définitif de
+  F05-AC08 couvre le cas où il ne grandit pas assez.
+- **Repère :** la scène affiche « n° 100 fixé » près de sa référence ;
+  « Libérer le numéro » est dans le même menu. Le passage reprend alors sa
+  place dans son groupe de mélange, comme une scène réintégrée.
+- **Départ :** la commande n'est pas proposée ; il porte toujours le n° 1.
+- **Dernière liaison cachée retirée :** la scène garde son numéro fixé, une
+  énigme pouvant rester dans un texte ; le message le dit et propose
+  « Libérer le numéro ». Libérer d'office est écarté : le numéro changerait
+  sans que l'adulte l'ait décidé.
+
+- **F11-AC96 — Numéro fixé depuis la scène :** étant donné S090 « Plus de
+  points de vie », qui porte le n° 41, lorsque l'adulte choisit « Fixer son
+  numéro… » et saisit 100 dans un livre de 60 passages, alors la fiche dit
+  que le livre ne compte que 60 passages, le numéro est fixé, S090 affiche
+  « n° 100 fixé » et S062, déjà fixée au n° 38, aurait été refusée pour 38
+  en étant nommée.
+- **F11-AC97 — Numéro libéré :** étant donné S090 fixée au n° 12, lorsque
+  l'adulte choisit « Libérer le numéro », alors le repère disparaît et S090
+  prend place à la suite de son groupe de mélange ; le départ ne propose
+  aucune de ces deux commandes.
+- **F11-AC98 — Liaison cachée retirée, numéro gardé :** étant donné la
+  liaison cachée S055 → S062, qui a fixé S062 au n° 38, lorsque l'adulte
+  retire cette liaison, alors S062 porte toujours « n° 38 fixé » et le
+  message propose « Libérer le numéro ».
 
 **Questions ouvertes :** parties regroupables non consécutives ; présentation
 de l'insertion d'une nouvelle scène ; commande de choix de la scène d'ouverture ;
