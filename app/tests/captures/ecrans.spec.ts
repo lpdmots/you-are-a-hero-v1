@@ -1,6 +1,6 @@
 import { test, type Page } from "@playwright/test";
 import {
-  aller, autrePoste, connecter, creerClasse, creerCompte, ecrireEleves, inscrire, lireCodes, nommer, ouvrirLaClasse, passerAide, sql, supprimerCompte, taperCode,
+  aller, autrePoste, connecter, creerClasse, creerCompte, ecrireEleves, inscrire, lireCodes, nommer, ouvrirLaClasse, passerAide, sql, supprimerComptes, taperCode,
 } from "../parcours/outils";
 
 /**
@@ -21,6 +21,10 @@ const ELEVES = [
   "Inès Garcia", "Jade Moreau", "Kenza Cherif", "Léo Fournier", "Lina Robin", "Maëlys Colin", "Malo Le Gall", "Nahel Diallo", "Noé", "Océane Girard",
   "Paul", "Rayan Mansouri", "Sacha", "Tom Leroy", "Yasmine Belkacem", "Zoé Henry",
 ];
+
+test.afterEach(async () => {
+  await supprimerComptes();
+});
 
 test("écrans de l'étape 1", async ({ page, browser }) => {
   test.setTimeout(300_000);
@@ -141,5 +145,4 @@ test("écrans de l'étape 1", async ({ page, browser }) => {
   await ouvrirLaClasse(pp, classe.identifiant, classe.motDePasse);
   await pp.getByRole("button", { name: "Bilal", exact: true }).click();
   await capturer(pp, "mobile-eleve-code");
-  await supprimerCompte(compte);
 });

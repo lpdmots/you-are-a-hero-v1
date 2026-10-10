@@ -49,6 +49,15 @@ Chaque test porte l'identifiant du critère d'acceptation qu'il vérifie
 (`F06-AC73 — …`). Aucun ne parle à la vraie base : ils refusent de démarrer si
 `.env.local` ne désigne pas la base locale.
 
+Chaque test supprime les comptes qu'il a créés, avec leurs classes, leurs élèves
+et leurs projets, et échoue s'il n'y parvient pas. Un lancement interrompu peut
+en laisser dans la base locale, dont les identifiants de classe restent alors
+pris :
+
+```bash
+npm run base:purger-essais   # supprime les comptes des tests, pas le compte local
+```
+
 ## Clés et secrets
 
 Rien de secret n'est dans Git ni ne s'écrit dans une conversation.

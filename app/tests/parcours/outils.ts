@@ -4,6 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { Client } from "pg";
 import { expect, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { supprimerComptesDEssai } from "../comptes-d-essai";
 
 config({ path: resolve(__dirname, "../../.env.local"), quiet: true });
 
@@ -14,6 +15,7 @@ if (!/^http:\/\/(127\.0\.0\.1|localhost)[:/]/.test(url)) {
 const service = () => createClient(url, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false, autoRefreshToken: false } });
 
 export type Compte = { id: string; courriel: string; motDePasse: string };
+const crees: string[] = [];
 
 /** Avant l'ouverture, un compte ne se crée que depuis Supabase (F01-AC28). */
 export async function creerCompte(): Promise<Compte> {
@@ -21,11 +23,13 @@ export async function creerCompte(): Promise<Compte> {
   const motDePasse = `parcours-${randomBytes(9).toString("base64url")}`;
   const { data, error } = await service().auth.admin.createUser({ email: courriel, password: motDePasse, email_confirm: true });
   if (error || !data.user) throw new Error(error?.message);
+  crees.push(data.user.id);
   return { id: data.user.id, courriel, motDePasse };
 }
 
-export async function supprimerCompte(compte: Compte | undefined): Promise<void> {
-  if (compte) await service().auth.admin.deleteUser(compte.id);
+/** Supprime les comptes que le test a créés, avec leurs classes, élèves et projets ; un reste fait échouer le test. */
+export async function supprimerComptes(): Promise<void> {
+  await supprimerComptesDEssai(crees.splice(0));
 }
 
 export async function sql<T extends Record<string, unknown> = Record<string, unknown>>(requete: string, valeurs: unknown[] = []): Promise<T[]> {
@@ -68,7 +72,7 @@ export async function nommer(page: Page, compte: Compte, nom: string): Promise<v
 
 export type ClasseCreee = { id: string; identifiant: string; motDePasse: string };
 
-/** Un identifiant que personne n'a : la base locale garde les classes d'autres essais. */
+/** Un identifiant que personne n'a : la base locale garde les classes créées à la main. */
 export const identifiantLibre = (): string => `essai${randomBytes(6).toString("hex")}`;
 
 /**

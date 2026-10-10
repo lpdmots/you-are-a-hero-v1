@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
   ALERTE, aller, autrePoste, connecter, creerClasse, creerCompte, identifiantLibre, inscrire, lireCodes, nommer, ouvrirLaClasse, sql,
-  supprimerCompte, taperCode, type ClasseCreee, type Compte,
+  supprimerComptes, taperCode, type ClasseCreee, type Compte,
 } from "./outils";
 
 let compte: Compte;
@@ -19,7 +19,7 @@ test.beforeEach(async ({ page }) => {
   codes = await lireCodes(page, classe.id);
 });
 test.afterEach(async () => {
-  await supprimerCompte(compte);
+  await supprimerComptes();
 });
 
 const codeFaux = (bon: string): string => (bon === "0001" ? "0002" : "0001");

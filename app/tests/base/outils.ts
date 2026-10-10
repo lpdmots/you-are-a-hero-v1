@@ -3,6 +3,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { Client } from "pg";
 import { chiffrer } from "@/serveur/chiffrement";
 import { signerJetonDePoste } from "@/serveur/jetons";
+import { supprimerComptesDEssai } from "../comptes-d-essai";
 
 /** Outils des essais contre la base locale : comptes, classes, élèves, postes. */
 
@@ -56,10 +57,9 @@ export async function creerEnseignant(nomAffiche?: string): Promise<Adulte> {
   return { id: data.user.id, courriel, motDePasse, base };
 }
 
-/** Supprime les comptes d'essai : leurs classes, élèves et projets partent avec eux. */
+/** Supprime les comptes d'essai, avec leurs classes, élèves et projets ; un reste fait échouer les essais. */
 export async function nettoyer(): Promise<void> {
-  const admin = service();
-  for (const id of crees.splice(0)) await admin.auth.admin.deleteUser(id);
+  await supprimerComptesDEssai(crees.splice(0));
 }
 
 export type ClasseEssai = { id: string; identifiant: string; motDePasse: string };

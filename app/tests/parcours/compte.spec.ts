@@ -1,12 +1,12 @@
 import { expect, test } from "@playwright/test";
-import { aller, connecter, creerClasse, creerCompte, nommer, ouvrirLaClasse, supprimerCompte, autrePoste, type Compte } from "./outils";
+import { aller, connecter, creerClasse, creerCompte, nommer, ouvrirLaClasse, supprimerComptes, autrePoste, type Compte } from "./outils";
 
 let compte: Compte;
 test.beforeEach(async () => {
   compte = await creerCompte();
 });
 test.afterEach(async () => {
-  await supprimerCompte(compte);
+  await supprimerComptes();
 });
 
 test("F01-AC28 — aucun compte ne se crée depuis l'application, et l'espace adulte demande d'entrer", async ({ page }) => {

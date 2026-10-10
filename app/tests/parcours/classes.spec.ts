@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import {
-  aller, collerEleves, connecter, creerClasse, creerCompte, ecrireEleves, identifiantLibre, inscrire, lireCodes, nommer, passerAide, supprimerCompte, type Compte,
+  aller, collerEleves, connecter, creerClasse, creerCompte, ecrireEleves, identifiantLibre, inscrire, lireCodes, nommer, passerAide, supprimerComptes, type Compte,
 } from "./outils";
 
 let compte: Compte;
@@ -10,7 +10,7 @@ test.beforeEach(async ({ page }) => {
   await expect(page).toHaveURL(/\/projets$/);
 });
 test.afterEach(async () => {
-  await supprimerCompte(compte);
+  await supprimerComptes();
 });
 
 test("Mes classes — l'écran d'aide s'affiche à l'ouverture, « Ne plus afficher » le retire, « Aide » le rouvre", async ({ page }) => {
@@ -203,15 +203,18 @@ test("F06-AC71, F06-AC69, F06-AC23 — codes masqués à l'ouverture ; code oubl
   await aller(page, `/classes/${classe.id}`);
   const eleves = page.getByRole("region", { name: "Élèves" });
   await expect(eleves.getByRole("listitem")).toHaveCount(3);
-  for (const code of Object.values(codes)) await expect(page.locator("body")).not.toContainText(code);
+  // Dans la liste et non dans toute la page : l'année ou l'adresse du compte peuvent porter les mêmes chiffres
+  for (const code of Object.values(codes)) await expect(eleves).not.toContainText(code);
   await expect(page.locator("body")).not.toContainText(classe.motDePasse);
 
   // La fiche de Bilal ne montre que son code
   await eleves.getByRole("button", { name: /Bilal/ }).click();
   const fiche = page.getByRole("complementary").filter({ hasText: "Retirer de la classe" });
   await expect(fiche.getByLabel(new RegExp(`Code : ${codes.Bilal.split("").join(" ")}`))).toBeVisible();
-  await expect(page.locator("body")).not.toContainText(codes.Alice);
-  await expect(page.locator("body")).not.toContainText(codes["Chloé"]);
+  for (const autre of [codes.Alice, codes["Chloé"]]) {
+    await expect(eleves).not.toContainText(autre);
+    await expect(fiche).not.toContainText(autre);
+  }
 
   // Le remplacer : un code proposé, que l'on peut écrire soi-même
   await fiche.getByRole("button", { name: "Changer le code" }).click();

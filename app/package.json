@@ -17,6 +17,7 @@
     "base:demarrer": "tsx scripts/supabase.ts start",
     "base:arreter": "tsx scripts/supabase.ts stop",
     "base:remettre-a-zero": "tsx scripts/supabase.ts db reset --local",
+    "base:purger-essais": "tsx scripts/purger-essais.ts",
     "cles": "tsx scripts/cles.ts",
     "sauvegarder": "tsx scripts/sauvegarder.ts",
     "restaurer": "tsx scripts/restaurer.ts",

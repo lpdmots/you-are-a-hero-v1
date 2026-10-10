@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { aller, autrePoste, connecter, creerClasse, creerCompte, supprimerCompte, type Compte } from "./outils";
+import { aller, autrePoste, connecter, creerClasse, creerCompte, supprimerComptes, type Compte } from "./outils";
 
 let compte: Compte;
 test.beforeEach(async ({ page }) => {
@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
   await expect(page).toHaveURL(/\/projets$/);
 });
 test.afterEach(async () => {
-  await supprimerCompte(compte);
+  await supprimerComptes();
 });
 
 type Reponses = { qui: "Ma classe" | "Moi"; recit: "À choix" | "Classique"; titre: string; classe?: string };
@@ -178,5 +178,4 @@ test("F06-AC53 — reprendre sans choisir : le dernier projet, à son dernier on
   const reponse = await autre.page.goto(suivi);
   expect(reponse?.status()).toBe(404);
   await autre.contexte.close();
-  await supprimerCompte(intrus);
 });
