@@ -78,7 +78,7 @@ export function ReglagesChapitre({
                 value={i}
                 checked={chapitre.couleur === i}
                 aria-label={c.nom}
-                onChange={() => e.prevoir(() => reglerChapitre(chapitre.id, { couleur: i }), 0)}
+                onChange={() => e.prevoir(() => reglerChapitre(chapitre.id, { couleur: i }), 0, "couleur")}
               />
               <span style={{ "--c": c.dos } as CSSProperties} />
             </label>
@@ -97,7 +97,7 @@ export function ReglagesChapitre({
           value={resume}
           onChange={(ev) => {
             setResume(ev.target.value);
-            e.prevoir(() => reglerChapitre(chapitre.id, { resume: ev.target.value }));
+            e.prevoir(() => reglerChapitre(chapitre.id, { resume: ev.target.value }), 700, "resume");
           }}
           onBlur={() => void e.partir()}
         />

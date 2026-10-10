@@ -38,7 +38,7 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
                   checked={formule === k}
                   onChange={() => {
                     setFormule(k);
-                    e.prevoir(() => reglerPhrases(projetId, { formuleRenvoi: k }), 0);
+                    e.prevoir(() => reglerPhrases(projetId, { formuleRenvoi: k }), 0, "formule");
                   }}
                 />
                 <span className={styles.formule__nom}>
@@ -61,7 +61,7 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
                   onChange={(ev) => {
                     const suite = ev.target.checked ? [...constructions, k] : constructions.filter((c) => c !== k);
                     setConstructions(suite);
-                    e.prevoir(() => reglerPhrases(projetId, { constructions: suite }), 0);
+                    e.prevoir(() => reglerPhrases(projetId, { constructions: suite }), 0, "constructions");
                   }}
                 />
                 <span className={styles.formule__nom}>
@@ -85,7 +85,7 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
               value={fin}
               onChange={(ev) => {
                 setFin(ev.target.value);
-                e.prevoir(() => reglerPhrases(projetId, { marqueFin: ev.target.value }));
+                e.prevoir(() => reglerPhrases(projetId, { marqueFin: ev.target.value }), 700, "fin");
               }}
               onBlur={() => void e.partir()}
             />
