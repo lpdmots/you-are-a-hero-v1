@@ -124,3 +124,65 @@ export async function lire(base: SupabaseClient, table: string, colonnes = "*"):
   const { data, error } = await base.from(table).select(colonnes);
   return { lignes: (data as unknown as Record<string, unknown>[] | null) ?? [], refus: error ? `${error.code} ${error.message}` : null };
 }
+
+// ——— Étape 2 : projets, plan du récit, attributions ———
+
+export type ProjetEssai = { id: string };
+
+export async function creerProjet(
+  adulte: Adulte, organisation: "classe" | "personnel" = "classe", recit: "choix" | "classique" = "choix",
+  titre = "Les passeurs de brume", classeId: string | null = null,
+): Promise<ProjetEssai> {
+  const { data, error } = await adulte.base
+    .from("projets")
+    .insert({ enseignant_id: adulte.id, organisation, recit, titre, classe_id: organisation === "classe" ? classeId : null })
+    .select("id")
+    .single();
+  if (error || !data) throw new Error(`Projet d'essai : ${error?.message}`);
+  return { id: data.id };
+}
+
+/** Une partie et son premier chapitre, comme le fait l'application. */
+export async function creerPartie(adulte: Adulte, projetId: string, titre: string, titreChapitre = "Nouveau chapitre"): Promise<{ partieId: string; chapitreId: string }> {
+  const { data, error } = await adulte.base.rpc("creer_partie", {
+    p_projet: projetId, p_titre: titre, p_visuel: "foret", p_titre_chapitre: titreChapitre, p_couleur: 0, p_visuel_chapitre: "mer",
+  });
+  const ligne = (Array.isArray(data) ? data[0] : data) as { partie_id: string; chapitre_id: string } | null;
+  if (error || !ligne) throw new Error(`Partie d'essai : ${error?.message}`);
+  return { partieId: ligne.partie_id, chapitreId: ligne.chapitre_id };
+}
+
+export async function creerChapitre(adulte: Adulte, partieId: string, titre: string): Promise<string> {
+  const { data, error } = await adulte.base.rpc("creer_chapitre", { p_partie: partieId, p_titre: titre, p_couleur: 1, p_visuel: "montagne" });
+  if (error || !data) throw new Error(`Chapitre d'essai : ${error?.message}`);
+  return data as string;
+}
+
+export type SceneEssai = { id: string; reference: number };
+
+export async function creerScene(base: SupabaseClient, chapitreId: string, fonction = "creer_scene"): Promise<SceneEssai> {
+  const { data, error } = await base.rpc(fonction, { p_chapitre: chapitreId });
+  const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string; reference: number } | null;
+  if (error || !ligne) throw new Error(`Scène d'essai : ${error?.message}`);
+  return { id: ligne.scene_id, reference: ligne.reference };
+}
+
+export async function attribuer(adulte: Adulte, chapitreId: string, eleves: { eleve: string; profil?: "propositions" | "organisation" }[]): Promise<void> {
+  const { error } = await adulte.base.rpc("attribuer_chapitre", { p_chapitre: chapitreId, p_eleves: eleves });
+  if (error) throw new Error(`Attribution d'essai : ${error.message}`);
+}
+
+/** Un poste où la classe est ouverte et l'élève identifié. */
+export async function posteDe(classeId: string, inscriptionId: string): Promise<PosteEssai> {
+  const poste = await ouvrirPoste(classeId);
+  if (!poste || !(await identifier(poste, inscriptionId))) throw new Error("Poste d'essai : l'élève n'a pas pu être identifié.");
+  return poste;
+}
+
+/** Titres dans l'ordre du plan, hors corbeille. */
+export async function ordre(base: SupabaseClient, table: "parties" | "chapitres" | "scenes", colonne: string, parent: string): Promise<string[]> {
+  const cle = table === "scenes" ? "reference" : "titre";
+  const { data, error } = await base.from(table).select(`${cle}, rang`).eq(colonne, parent).is("supprime_le", null).order("rang");
+  if (error) throw new Error(error.message);
+  return ((data ?? []) as unknown as Record<string, unknown>[]).map((l) => String(l[cle]));
+}
