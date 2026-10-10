@@ -331,8 +331,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     après une sauvegarde, puis le code mis en ligne ;
     `npm run verifier:production` trouve tout en ordre. Une seconde,
     `20261010170000_qui_s_occupe.sql`, écrite le même jour pour « qui s'en
-    occupe », n'est appliquée qu'à la base locale : elle s'applique à la
-    vraie base avant la prochaine mise en ligne, sur décision du porteur.
+    occupe », est appliquée à la vraie base le soir même, après une
+    sauvegarde, à la demande du porteur, avec la mise en ligne du lot du
+    jour (visuels, « Phrases de choix », « qui s'en occupe », aide de la
+    Préparation).
   - **Critères qui ne se ferment qu'à l'étape 3,** faute de texte : le
     dialogue de suppression d'un élément qui a du texte (F03-AC13, AC22 pour
     sa confirmation), la scène « contenant du travail » (F06-AC14, AC88), la
