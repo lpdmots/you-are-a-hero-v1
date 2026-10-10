@@ -3,7 +3,7 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
-## État de reprise au 9 octobre 2026
+## État de reprise au 10 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
 ensemble, chacun avec ses points différés. La
@@ -17,7 +17,10 @@ avancement et les règles sorties de l'essai dans le
 [plan](docs/plan.md#étape-1--sinstaller--compte-projets-classes-accès-des-élèves),
 ses choix techniques dans
 [l'architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
-L'étape 2 n'est pas commencée ni autorisée. Aucun achat n'est lancé. La V1
+**L'étape 2 est autorisée le 10 octobre 2026**, pour elle seule : son
+entretien est fait et validé dans son ensemble le même jour, sa construction
+est en cours (voir « Plan de réalisation », plus bas). L'étape 3 n'est pas
+autorisée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur
@@ -215,7 +218,8 @@ le détail ; elle ne raconte pas les séances.
   chapitre est le plan et le Suivi le travail, si bien que les filtres et la
   sélection de scènes quittent la page du chapitre ; « Supprimer » et
   « Corbeille du projet » nomment le retrait récupérable ; « Monter » et
-  « Descendre » règlent l'ordre dans le chapitre ; le déplacement entre
+  « Descendre » règlent l'ordre dans le chapitre, jusqu'au 10 octobre, où le
+  glisser-déposer les remplace ; le déplacement entre
   chapitres est différé ; « À compléter » informe par des liens, sans
   filtre ni décompte des consignes ; la vue Graphe s'appelle « Chemins » à
   l'écran, et un choix s'y suit d'un chapitre à l'autre ; un écran d'aide
@@ -475,6 +479,29 @@ avant de commencer » soient tranchées.
   L'état des adresses et une recommandation pour les pages publiques, non
   décidée, sont à
   [l'étape 9 du plan](docs/plan.md#étape-9--ouverture-à-dautres-enseignants).
+- **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
+  le porteur le même jour : le glisser-déposer change l'ordre des parties,
+  des chapitres et des scènes, et pose un chapitre dans une autre partie,
+  « Monter » et « Descendre » étant retirés ; « Restaurer » rend l'élément à
+  sa place, avec ses liens et ses élèves, et tout passe par la corbeille
+  ([F03.1](docs/specifications.md#f031--histoire-parties-chapitres-et-scènes)) ;
+  la scène de départ se supprime, le livre le dit, et un sélecteur
+  « Choisir le départ du livre » s'ouvre depuis « À compléter »
+  ([F03.2](docs/specifications.md#f032--départ-du-récit-à-choix-et-fins-explicites)) ;
+  le profil « écriture et organisation » crée, titre, ordonne et supprime
+  une scène qu'il a créée, et la scène « contenant du travail » est définie
+  ([F06.1](docs/specifications.md#f061--attribution-des-chapitres-et-profils-de-participation)) ;
+  la page du chapitre est la même pour tous, sans filtres en mode personnel
+  (F03.1) ; le guidage de la préparation part des textes de la maquette,
+  sans atelier projeté en mode personnel ni aide IA à l'écran avant
+  l'étape 8
+  ([F02](docs/specifications.md#f02--préparer-le-récit-et-les-décisions-communes)) ;
+  l'image se choisit sur la carte du projet à sa création, sous le titre
+  d'un chapitre ou d'une partie ajoutés, par un seul sélecteur « Choisir une
+  image »
+  ([F10.1](docs/specifications.md#f101--images-de-repérage-du-projet)).
+  Écrans arrêtés et textes du guidage :
+  [design](docs/design.md#étape-2--écrans-arrêtés-avant-de-construire-10-octobre-2026).
 - **Restent à décider :** les questions qui bloquent chaque
   étape, à arbitrer par un entretien court avant elle ; F14, avant
   l'ouverture. Le développement demande une instruction que le plan ne

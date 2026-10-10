@@ -1108,6 +1108,58 @@ captures et faites le même jour :
 - « Mes projets » montre « 0 % des scènes prêtes pour le livre » et pas de
   scènes à valider : ces comptes arrivent avec les scènes.
 
+### Étape 2 : écrans arrêtés avant de construire (10 octobre 2026)
+
+L'entretien du 10 octobre 2026, avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit),
+change ou ajoute les dispositions suivantes ; les règles sont en F02,
+F03.1, F03.2, F06.1 et F10.1 des [spécifications](specifications.md). Le
+reste des écrans de l'étape se construit tel que dessiné dans
+[Organisation du récit reprise après critique](#organisation-du-récit-reprise-après-critique-6-octobre-2026)
+et dans la ligne « Préparation » des dispositions par situation. Ces formes
+sont proposées, à juger à l'essai de l'étape.
+
+| Élément | Disposition |
+| --- | --- |
+| Déplacer une carte | La carte entière se tire : partie par son titre, chapitre et scène par leur carte. Le pointeur devient une main ; la carte tirée se soulève, les autres s'écartent pour montrer où elle se posera. Après le geste, un message : « « Le sanctuaire » est placé avant « La lisière ». Annuler ». « Monter » et « Descendre » quittent le menu de la scène. |
+| Repère de prise | Demandé par le porteur : six petits points gris, en deux colonnes, discrets mais toujours présents ; sur le bord gauche de la carte de scène, dans un coin de l'étiquette de la carte de chapitre, devant le titre de la partie. Pas de bande sur toute la longueur. S'il alourdit l'écran, il est retiré et l'écran d'aide reste seul à dire que les cartes se déplacent. |
+| Écran d'aide de « Parties et chapitres » | Une question de plus : « Comment changer l'ordre ? — Tirez une carte pour la déplacer. Un chapitre se pose aussi dans une autre partie. » |
+| Corbeille du projet | Sous une scène ou un chapitre dont le parent est aussi supprimé, à la place de « Restaurer » : « Restaurez d'abord « La lisière ». » Après une restauration : « « Le sanctuaire » est restauré, avec ses 3 élèves. » |
+| Départ supprimé | Dans le dialogue ou le message : « Le livre n'aura plus de départ. », suivi du lien « Choisir un autre départ ». Dans « À compléter » : « pas de départ du livre ». |
+| Choisir le départ du livre | Un panneau : le champ « Rechercher une scène », puis les scènes trouvées sous leur chapitre, à sa couleur ; en choisir une ferme le panneau et dit « S002 « Le quai des brumes » est le départ du livre. Annuler ». |
+| Carte du projet à la création | À la troisième question, à droite du titre et de la classe : la carte de « Mes projets », le titre s'y écrivant au fil de la frappe sur un visuel par défaut ; dessous, le lien « Choisir une image ». Sur téléphone, la carte passe au-dessus des cases. |
+| Réglages à la création | Un chapitre ou une partie ajoutés s'ouvrent sur leur panneau, titre sélectionné ; l'image vient juste dessous, avec « Choisir une image » ; puis, pour un chapitre, la couleur et le résumé. |
+| Choisir une image | Un panneau, le même partout : « Importer une image », seul bouton plein ; « Images du projet », en vignettes, absent tant que le projet n'en a pas ; « Visuels proposés », en vignettes, celui en place coché ; au pied, « Revenir au visuel par défaut » quand une image est choisie. Refus : « Cette image n'a pas pu être importée. Choisissez un fichier JPEG, PNG ou WebP de moins de 20 Mo. » |
+| Page du chapitre, mode personnel | La page de l'enseignant sans « Attribuer des élèves », « qui s'en occupe » ni « Voir dans le Suivi » ; ni filtres, ni cases. |
+| Page du chapitre, élève | La même page en lecture, sans menu ni ajout. Le profil « écriture et organisation » y a « Ajouter une scène », le déplacement et « Supprimer » sur une scène qu'il a créée. |
+| Chapitre qui n'est pas le sien | La carte s'ouvre sur une fiche courte : l'image, le titre, « Ce chapitre n'est pas le tien. » et « Fermer ». |
+| Aides IA | « M'aider à développer » et « Idées de parties » ne sont pas à l'écran avant l'étape 8. |
+
+**Textes du guidage de la préparation,** repris de la maquette, à corriger
+par le porteur à l'essai. En projet de classe, les questions disent
+« notre » et la synthèse « Nous retenons… » ; en projet personnel, elles
+disent « votre » et la synthèse « Je retiens… », sans atelier projeté.
+
+| Rubrique | Question | Relances |
+| --- | --- | --- |
+| Univers | Où se passe notre histoire, et qu'a-t-elle d'étrange ? | À quelle époque ? · Qu'est-ce qui est dangereux, qu'est-ce qui est beau ? · Une règle magique ou mystérieuse ? |
+| Personnages | Qui est notre héros, et qu'est-ce qui le rend unique ? | Quel âge a-t-il ? Que sait-il faire ? · De quoi a-t-il peur ? · Qui va l'aider, qui va le gêner ? |
+| Enjeu | Que doit réussir notre héros, et que se passe-t-il s'il échoue ? | Qu'est-ce qui l'oblige à partir ? · Qu'est-ce qu'il risque de perdre ? |
+| Grandes étapes, récit à choix | Par quels lieux passe notre aventure ? | Où commence-t-elle ? · Où le héros peut-il se perdre ? · Où se termine-t-elle ? |
+| Grandes étapes, récit classique | Que se passe-t-il, du début à la fin ? | Comment l'histoire commence-t-elle ? · Qu'est-ce qui complique tout ? · Comment se termine-t-elle ? |
+
+L'exemple de chaque rubrique, derrière « Voir un exemple », vient de
+l'histoire de la maquette, « Les passeurs de brume » : un pays de lacs noyé
+dans la brume ; Lou, dix ans, fils du dernier passeur, qui a peur de l'eau ;
+retrouver son père avant que la dernière lanterne ne s'éteigne ; le port, la
+forêt, la montagne. L'introduction du carnet, sans la mention de l'aide IA :
+« Le carnet garde les décisions de la classe. Il sert de repère pendant
+l'écriture. Remplissez seulement ce qui vous sert. »
+
+**Bibliothèque de visuels :** aux cinq visuels du 30 septembre (forêt, mer,
+montagne, cité, désert) s'ajoutent ceux que le porteur génère d'après des
+prompts de lieux variés, dans le même style, format 3:2, l'animal et le
+sujet dans les deux tiers supérieurs.
+
 ### Conflit de sauvegarde : écrans de F08.1 (7 octobre 2026)
 
 **Objet :** les règles de la récupération d'un conflit sont décidées et

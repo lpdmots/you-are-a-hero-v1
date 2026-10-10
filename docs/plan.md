@@ -12,11 +12,13 @@ deux seuils, l'ordre et le périmètre des neuf étapes ; elle ne tranche
 aucune des questions listées « à régler avant de commencer », qui gardent
 leur statut.
 
-**Avancement au 9 octobre 2026 :** l'étape 1 est construite et en ligne,
-sur autorisation du porteur du 8 octobre 2026 pour cette étape seule ; il
-lui reste l'essai du porteur (voir
+**Avancement au 10 octobre 2026 :** l'étape 1 est terminée (voir
 [Étape 1](#étape-1--sinstaller--compte-projets-classes-accès-des-élèves)).
-L'étape 2 n'est pas commencée.
+L'étape 2 est autorisée par le porteur le 10 octobre 2026, pour cette étape
+seule et en deux temps : un entretien, fait et validé dans son ensemble le
+même jour, puis la construction, en cours (voir
+[Étape 2](#étape-2--préparer-et-organiser-le-récit)). L'étape 3 n'est pas
+autorisée.
 
 Ce plan n'autorise par lui-même ni développement, ni prototype, ni achat :
 chaque étape demande une instruction du porteur. La V1
@@ -288,23 +290,29 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   départ et les fins, attribuer les élèves aux chapitres, supprimer et
   restaurer ; un élève voit les cartes des chapitres et ce qui lui est
   attribué.
-- **Périmètre :** F02-AC01 à AC17, hors aides IA ; F03.1 (F03-AC01, AC07 à
-  AC17, AC21 à AC24, AC26) ; F03.2 (F03-AC03 à AC06) ; F10.1 (F10-AC03 à
-  AC06) ; attribution et profils de F06.1 ; lecture des chapitres de F06.2
-  (F06-AC20 à AC22, AC48, AC49) ; consigne d'écriture de F07.1 ; rubriques
-  de la feuille d'aventure, du dé, des règles du jeu et des phrases de choix
-  dans la préparation (F02, F04.2).
+- **Périmètre :** F02-AC01 à AC20, hors aides IA ; F03.1 (F03-AC01, AC07 à
+  AC17, AC21 à AC24, AC26 à AC31, AC34 à AC39, AC41, AC42) ; F03.2 (F03-AC03
+  à AC06, AC32, AC33, AC40) ; F10.1 (F10-AC03 à AC06, AC21 à AC26) ;
+  attribution et profils de F06.1 (dont F06-AC86 à AC90) ; lecture des
+  chapitres de F06.2 (F06-AC20 à AC22, AC48, AC49) ; consigne d'écriture de
+  F07.1 ; rubriques de la feuille d'aventure, du dé, des règles du jeu et
+  des phrases de choix dans la préparation (F02, F04.2). Les critères qui
+  parlent d'un texte écrit (dialogue de suppression d'une scène écrite,
+  scène « contenant du travail », lecture d'une scène) testent ici les
+  droits et le plan ; ils se ferment à l'étape 3, quand l'éditeur existe.
 - **Dépend de :** étape 1. Les images de repérage par défaut sont générées
   par le porteur d'après des prompts, avant la fin de l'étape.
-- **À régler avant de commencer :** commande qui change l'ordre des parties
-  et des chapitres, et qui peut réorganiser (F03.1) ; ce que « Restaurer »
-  rend, liens et attributions (F03.1) ; suppression de la scène de départ
-  (F03.2) ; opérations du profil « écriture et organisation » et définition
-  d'une scène « contenant du travail » (F06.1, F06-AC14) ; page du chapitre
-  en mode personnel (F03.1) ; textes du guidage de la préparation (F02) ;
-  place du choix facultatif d'une image à la création d'un projet et d'un
-  chapitre, décidé le 10 octobre 2026, et commandes pour la choisir, la
-  remplacer et la réutiliser (F10.1).
+- **À régler avant de commencer :** rien. Arbitré en entretien le
+  10 octobre 2026 : le glisser-déposer pour l'ordre des parties, des
+  chapitres et des scènes, qui remplace « Monter » et « Descendre », et le
+  chapitre posé dans une autre partie (F03.1) ; ce que « Restaurer » rend,
+  liens et élèves compris (F03.1) ; la suppression de la scène de départ et
+  le sélecteur « Choisir le départ du livre » (F03.2) ; les opérations du
+  profil « écriture et organisation » et la scène « contenant du travail »
+  (F06.1) ; une seule page du chapitre, avec ses variantes du mode personnel
+  et de l'élève (F03.1) ; les textes du guidage de la préparation (F02) ;
+  l'image choisie à la création d'un projet, d'une partie et d'un chapitre,
+  et le sélecteur « Choisir une image » (F10.1).
 - **Terminée quand :** le porteur a préparé son vrai projet jusqu'aux
   consignes et aux attributions, et a refait le même parcours dans un projet
   personnel et dans un récit classique.
@@ -481,8 +489,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **F01.1 :** espace partagé entre enseignants d'une école ; import avec
   correspondance de colonnes et synchronisation avec un annuaire.
 - **F02 :** outil de collecte d'idées ou de vote.
-- **F03.1 :** glisser-déposer ; déplacement d'une scène vers un autre
-  chapitre ; ajout de scènes en lot.
+- **F03.1 :** déplacement d'une scène vers un autre chapitre ; ajout de
+  scènes en lot.
 - **F04.2 :** action de jeu à effet déclaré ; lancer de dé à l'endroit du
   passage ; objet suivi dans le texte ; autres dés ; conditions vérifiées,
   calculs, combats et moteur de jeu, écartés.
@@ -595,9 +603,6 @@ Signalés sans être tranchés ; à accorder avant l'étape qui s'appuie dessus.
   acquise (étape 6).
 - **F11.2, F11.6 et F12.1 :** ce qui bloque le PDF définitif et le partage
   n'est pas dit de la même façon (étapes 6 et 7).
-- **F06.1 et F07.2 :** F06.1 parle encore d'une « proposition » de l'élève
-  pour faire évoluer la structure ; F07.2 décide que tout se demande à
-  l'oral (étapes 2 et 4).
 - **F07.1 :** « Demander une nouvelle reprise » figure encore dans le
   tableau et dans F07-AC27, alors que ce n'est plus une commande à part ;
   « En cours d'écriture » et « Travail élève validé » y côtoient « En cours »
@@ -606,8 +611,6 @@ Signalés sans être tranchés ; à accorder avant l'étape qui s'appuie dessus.
   côté, classement optionnel décidé de l'autre (étape 4).
 - **F01.1 :** la règle du 6 octobre sur les scènes d'un élève retiré n'est
   pas réécrite après la précision du 7 (étape 4).
-- **F03.1 :** la liste des questions ouvertes garde des points tranchés le
-  6 octobre (étape 2).
 - **Textes en retard sur les décisions :** « Statut et périmètre » des
   spécifications (choix et fidélité de l'aperçu « à vérifier », aucun
   prototype autorisé) ; brief, dont le fond date du 3 octobre (demandes de changements

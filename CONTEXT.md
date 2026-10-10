@@ -82,6 +82,16 @@ dans l'espace de travail.
 _Éviter_ : illustration automatiquement insérée dans le livre, couverture,
 décor renouvelé à chaque visite.
 
+**Visuel par défaut** :
+Image de la bibliothèque de l'application qui tient lieu d'image de repérage
+tant que l'adulte n'en a pas choisi ; attribué une fois, puis conservé.
+_Éviter_ : image aléatoire, visuel générique masquant un chapitre non attribué.
+
+**Visuel proposé** :
+Image de la bibliothèque de l'application que l'adulte choisit lui-même
+comme image de repérage, au lieu du visuel par défaut tiré d'office.
+_Éviter_ : image du projet, illustration du livre.
+
 **Style d'illustration** :
 Style prédéfini choisi par l'adulte pour l'ensemble d'un projet, repris par
 chaque prompt d'illustration afin de garder des images cohérentes.
@@ -134,8 +144,9 @@ et de lecture des élèves.
 _Éviter_ : simple filtre visuel, groupe imbriqué à profondeur variable, scène.
 
 **Corbeille du projet** :
-Lieu où se retrouvent une partie, un chapitre ou une scène supprimés par
-l'adulte, avec leurs textes, et d'où il les restaure à leur place.
+Lieu où se retrouvent une partie, un chapitre ou une scène supprimés, avec
+leurs textes, et d'où l'adulte seul les restaure à leur place, avec leurs
+élèves ; les choix qui y menaient y mènent de nouveau.
 _Éviter_ : archive, exclusion du livre (une scène hors du livre reste dans
 le projet).
 
@@ -263,6 +274,11 @@ _Éviter_ : auteur du texte, prise en charge d'une scène.
 Ensemble des droits d'un élève dans un chapitre attribué : « écriture et
 propositions » ou « écriture et organisation ».
 _Éviter_ : droits globaux de l'élève, statut de validation.
+
+**Scène contenant du travail** :
+Scène dont la copie porte un texte ou une image, pour laquelle un texte est
+gardé à part, ou qui a déjà été remise ; un élève ne la supprime pas.
+_Éviter_ : scène prise en charge, scène qui n'a qu'un titre ou une consigne.
 
 **Suivi du travail** :
 Consultation de l'avancement et du travail restant à effectuer, globalement

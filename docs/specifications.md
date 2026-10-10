@@ -133,8 +133,11 @@ pas implicitement. Le choix d'une classe est un préalable à l'attribution.
 - **Trois questions, l'une après l'autre, et rien d'autre.** « Qui
   écrit ? » : ma classe, ou moi (projet de classe ou projet personnel).
   « Quel récit ? » : à choix, ou classique. Puis le titre et, pour un projet
-  de classe, la classe, avec « Choisir plus tard ». L'image, le style
-  d'illustration et le reste se règlent ensuite, dans le projet.
+  de classe, la classe, avec « Choisir plus tard ». Depuis le 10 octobre
+  2026, la troisième question montre aussi la carte du projet et permet d'y
+  choisir une image, sans obligation
+  ([F10.1](#f101--images-de-repérage-du-projet)) ; le style d'illustration
+  et le reste se règlent ensuite, dans le projet.
 - **Deux choix définitifs, dits deux fois.** L'écran dit, au moment de
   chaque choix, qu'il ne se change pas ensuite, et le rappelle avant « Créer
   le projet » : c'est la règle des modes fixes ci-dessus, rendue visible là
@@ -628,9 +631,43 @@ progressivement selon les règles ci-dessus.
   rubriques univers et grandes étapes encore vides ni par l'absence de fiches
   individuelles détaillées.
 
-**Approfondissements différés :** exemples et champs détaillés,
-présentation du guidage, informations requises pour chaque aide et sélection
-du contexte transmis ; présentation de la préparation enseignant et protection
+**Décision confirmée le 10 octobre 2026 — textes du guidage :** arbitré
+avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
+
+- **Une question et des relances par rubrique.** Chaque rubrique porte une
+  question principale et deux ou trois relances. Les textes de départ sont
+  ceux de la maquette de synthèse ; le porteur, qui mène cet atelier depuis
+  quatre ans, les corrige à l'essai comme des retouches d'écran, sans nouvel
+  entretien. Leur texte en vigueur est dans le [design](design.md).
+- **Un exemple par rubrique,** replié derrière « Voir un exemple », tiré
+  d'une même histoire inventée ; rien d'autre n'est à lire.
+- **Récit classique.** La rubrique « Grandes étapes » demande ce qui se
+  passe du début à la fin, et non par quels lieux passe l'aventure. Les
+  rubriques du jeu et des phrases de choix n'y figurent pas (F04.2, F11.6).
+- **Mode personnel.** Les questions s'adressent à l'auteur (« votre
+  histoire »), la synthèse se lit « Je retiens… », et il n'y a pas d'atelier
+  projeté : le carnet seul.
+- **Aides IA.** « M'aider à développer » et « Idées de parties » ne sont pas
+  à l'écran tant que F13 n'est pas construit (étape 8 du plan) ; aucun
+  bouton inactif ne les annonce. L'explication d'ouverture de F02-AC02 ne
+  parle de l'aide IA qu'à partir de ce moment.
+
+- **F02-AC18 — Guidage et exemple :** étant donné la rubrique
+  « Personnages » vide, lorsque l'enseignant l'ouvre, alors il lit sa
+  question et ses relances, et « Voir un exemple » montre un exemple sans
+  rien écrire dans la rubrique.
+- **F02-AC19 — Préparation d'un projet personnel :** étant donné un projet
+  personnel, lorsque l'auteur ouvre la Préparation, alors le carnet lui
+  parle de son histoire, la synthèse se lit « Je retiens… » et aucune
+  commande ne propose de projeter.
+- **F02-AC20 — Préparation d'un récit classique :** étant donné un projet de
+  classe en récit classique, lorsque l'enseignant ouvre la Préparation,
+  alors « Grandes étapes » demande ce qui se passe du début à la fin, et le
+  carnet ne montre ni feuille d'aventure, ni dé, ni règles du jeu, ni
+  phrases de choix.
+
+**Approfondissements différés :** champs détaillés, informations requises
+pour chaque aide et sélection du contexte transmis ; protection
 des détails locaux selon les attributions de F06.
 En mode personnel, la préparation concerne l'auteur adulte ; en récit classique,
 les bifurcations ne sont pas un élément de préparation nécessaire.
@@ -813,9 +850,9 @@ un élève ne découvre pas des scènes réservées en ouvrant une vue plus larg
 La présentation des blocs, de leurs images et des raccords reste à concevoir.
 La lisibilité et les performances d'un graphe chargé resteront à éprouver.
 
-**Propositions conservées :** déplacement par glisser-déposer avec une autre
-commande accessible au clavier ; signalement d'un ensemble sans entrée narrative
-sans bloquer sa préparation. Un ensemble contenant le départ peut légitimement
+**Propositions conservées :** signalement d'un ensemble sans entrée narrative
+sans bloquer sa préparation. Le déplacement par glisser-déposer, d'abord
+proposé ici, est décidé le 10 octobre 2026, plus bas. Un ensemble contenant le départ peut légitimement
 ne recevoir aucun lien entrant. Ces commandes et signaux restent à détailler.
 
 **Décision confirmée — récit classique :** l'ordre des parties, puis des
@@ -903,15 +940,15 @@ chapitre. L'ajout en lot et les commandes de présentation restent à examiner.
   l'adulte y ajoute une scène, alors l'élève peut la retrouver et y écrire
   selon F06/F07, sans acquérir le droit de créer lui-même une scène.
 
-**Questions ouvertes :** noms initiaux, commandes de création des scènes et
-rangement ; présentation du repérage du parent ; modalités et durée de récupération,
-restauration des liens et des attributions, traitement des saisies en cours lors
-d'un retrait, allègement possible pour un ensemble vide ; passage de deux chapitres à un ;
-effets d'un déplacement sur attributions, prises en charge, consignes et texte
-commencé. Les raccords suivent F06.1 ; le périmètre du playtest reste à
-arbitrer en F09.1. Tranchés le 6 octobre 2026, plus bas : le mot et le lieu
-de la récupération (« Supprimer », « Corbeille du projet »), l'ordre dans le
-chapitre, et le déplacement entre chapitres, différé.
+**Questions ouvertes :** traitement des saisies en cours lors d'une
+suppression (étape 3 du plan) ; effets d'un déplacement vers un autre
+chapitre sur attributions, prises en charge, consignes et texte commencé,
+ce déplacement étant différé. Les raccords suivent F06.1. Tranchés plus
+bas : le 6 octobre 2026, le mot et le lieu de la récupération
+(« Supprimer », « Corbeille du projet »), sa durée, la suppression d'un
+élément vide, celle du seul chapitre d'une partie ; le 10 octobre 2026, ce
+que « Restaurer » rend, l'ordre et le déplacement des parties, des chapitres
+et des scènes, la place des nouveaux éléments.
 
 **Décision confirmée — page commune aux parties et chapitres :**
 une seule page présente les cartes des chapitres regroupées par partie.
@@ -1009,10 +1046,11 @@ le porteur décide :
   s'appelle « Supprimer » à l'écran. Ce qui est supprimé se retrouve dans la
   « Corbeille du projet », d'où il se restaure. Les protections de F03-AC13
   et F03-AC14 ne changent pas.
-- **Ordre dans le chapitre.** « Monter » et « Descendre », dans le menu de la
-  scène, changent son rang dans le chapitre ; en récit classique, c'est
-  l'ordre de lecture. Le glisser-déposer, proposé plus haut, n'est pas dans
-  la première livraison.
+- **Ordre dans le chapitre.** Le rang d'une scène dans son chapitre se
+  change ; en récit classique, c'est l'ordre de lecture. Le geste est le
+  glisser-déposer depuis le 10 octobre 2026 (voir « Déplacer une partie, un
+  chapitre ou une scène », plus bas) ; il remplace « Monter » et
+  « Descendre », décidés ce jour-là dans le menu de la scène.
 - **Déplacement vers un autre chapitre : différé.** Le porteur l'a rarement
   fait en quatre ans, et il change qui peut écrire la scène.
 - **« À compléter ».** En tête de « Parties et chapitres », une phrase dit ce
@@ -1084,12 +1122,151 @@ indépendante (25/40) :**
   « Parties et chapitres », alors ces deux scènes s'affichent sous « La
   lisière », et activer l'une d'elles ouvre sa page.
 
-**Propositions de la maquette, sans retour du porteur :** « Restaurer »
-remet l'élément à sa place, avec ses textes et ses attributions ; un livre à
-choix sans départ désigné le dit dans « À compléter » (F03.2).
+**Décision confirmée le 10 octobre 2026 — ce que « Restaurer » rend :**
+arbitré avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit) ;
+la proposition de la maquette est retenue et précisée.
 
-**Mode personnel :** la page du chapitre y garde ses filtres et sa sélection
-de scènes, faute de Suivi ; le suivi en mode personnel reste ouvert en F06.5.
+- **Tout passe par la corbeille.** Une partie, un chapitre ou une scène
+  supprimés s'y retrouvent, y compris un élément sans texte parti sans
+  confirmation : « Annuler », dans le message, n'est pas la seule façon de
+  le reprendre.
+- **Ce qui revient.** « Restaurer » remet l'élément dans sa partie ou son
+  chapitre, à son ancien rang, ou à la fin si ce rang n'existe plus, avec
+  ses textes, ses consignes, son image, sa couleur, ses états et ses
+  références. La référence d'une scène supprimée n'est jamais donnée à une
+  autre scène.
+- **Liens.** Supprimer ne modifie aucun choix : celui qui menait à une scène
+  supprimée se lit « S017 supprimée » et mène de nouveau à elle dès qu'elle
+  est restaurée, sans rien refaire. Un choix que l'adulte a dirigé ailleurs
+  entre-temps reste où il l'a mis.
+- **Élèves.** Les attributions, les profils et « qui s'en occupe »
+  reviennent pour les élèves encore inscrits dans la classe ; le message le
+  dit (« Le sanctuaire est restauré, avec ses 3 élèves. »). Tant que le
+  chapitre est dans la corbeille, ces élèves ne le voient plus et n'y
+  écrivent plus ; celui qui n'a pas d'autre chapitre compte parmi les
+  élèves sans chapitre. Alternative écartée : restaurer sans les élèves,
+  plus prudent contre un accès rouvert par surprise, mais restaurer sert
+  d'abord à défaire une erreur et il faudrait tout recocher.
+- **Élément dont le parent est aussi supprimé.** Une scène dont le chapitre
+  est dans la corbeille, ou un chapitre dont la partie y est, se restaure
+  après son parent : la corbeille le dit à la place de la commande.
+- **Pas de suppression définitive.** La corbeille ne propose pas de vider ni
+  d'effacer pour de bon ; la suppression définitive relève de F14.
+
+- **F03-AC27 — Restaurer rend les élèves et les liens :** étant donné « Le
+  sanctuaire » supprimé, que lisaient Alice, Bilal et Chloé, et le choix de
+  S019 qui se lit « S060 supprimée », lorsque l'enseignant choisit
+  « Restaurer », alors le chapitre reprend son rang dans « La forêt », les
+  trois élèves y lisent et y écrivent de nouveau avec leur profil, et le
+  choix de S019 mène à S060 sans avoir été retouché.
+- **F03-AC28 — Chapitre supprimé, élèves sans accès :** étant donné Alice
+  attribuée au seul « Sanctuaire », lorsque l'enseignant le supprime, alors
+  Alice n'y accède plus, y compris par un lien direct, et compte parmi les
+  élèves sans chapitre jusqu'à la restauration.
+- **F03-AC29 — Élément vide retrouvé dans la corbeille :** étant donné « Les
+  racines », chapitre sans scène supprimé sans confirmation, lorsque le
+  message « Annuler » a disparu, alors le chapitre figure dans la corbeille
+  du projet et s'y restaure.
+- **F03-AC30 — Référence jamais redonnée :** étant donné S017 supprimée,
+  lorsque l'adulte ajoute une scène au même chapitre, alors la nouvelle
+  scène reçoit une autre référence, et S017 restaurée garde la sienne.
+- **F03-AC31 — Restaurer après son parent :** étant donné S017 supprimée
+  puis son chapitre « La lisière » supprimé à son tour, lorsque l'adulte
+  ouvre la corbeille, alors S017 ne se restaure pas avant « La lisière »,
+  et la corbeille le dit ; restaurer « La lisière » ne restaure pas S017.
+
+**Décision confirmée le 10 octobre 2026 — déplacer une partie, un chapitre
+ou une scène :** arbitré avant l'étape 2 du plan. Le porteur préfère le
+glisser-déposer aux commandes de menu d'abord recommandées (« Monter »,
+« Descendre », « Placer avant », « Placer après », « Changer de partie ») :
+des cartes posées côte à côte s'attrapent plus naturellement qu'elles ne se
+commandent.
+
+- **Un seul geste.** Une partie, un chapitre et une scène se déplacent en
+  les tirant, dans « Parties et chapitres » et dans la page d'un chapitre.
+  Aucune commande de menu ne double ce geste : « Monter » et « Descendre »
+  quittent le menu de la scène. À rétablir si un essai montre que l'on ne
+  pense pas à tirer.
+- **Ce qui se déplace où.** Une partie change de rang parmi les parties. Un
+  chapitre change de rang dans sa partie, ou se pose dans une autre partie,
+  avec ses scènes, ses textes et ses élèves : aucun droit ni aucun choix ne
+  change, la partie ne donnant pas de droits. Le seul chapitre d'une partie
+  n'en sort pas. Une scène change de rang dans son chapitre ; elle ne se
+  pose pas dans un autre chapitre, déplacement différé.
+- **Qui.** L'adulte, dans les quatre combinaisons. Un élève du profil
+  « écriture et organisation » ne déplace que les scènes de son chapitre
+  (F06.1) ; le profil par défaut ne déplace rien.
+- **Clic et déplacement.** Un clic ouvre toujours la carte ; elle ne se
+  déplace qu'une fois tirée. Au clavier, la carte se saisit, se déplace aux
+  flèches et se repose. Sur un écran tactile, un appui long la saisit.
+- **Annuler.** Chaque déplacement affiche un message qui dit ce qui a
+  bougé, avec « Annuler » : un glissement involontaire, qui change l'ordre
+  de lecture d'un récit classique, se défait d'un geste.
+- **Repère de prise.** À la demande du porteur, la carte porte un repère
+  discret qui dit qu'elle se déplace, les petits points habituels, sans
+  bande sur toute sa longueur. S'il alourdit l'écran, il est retiré et
+  l'écran d'aide reste seul à le dire ; sa forme est dans le
+  [design](design.md).
+- **Nouveaux éléments.** Une partie se crée à la fin du plan, un chapitre à
+  la fin de sa partie, une scène à la fin de son chapitre.
+- **Hors de ce geste.** La vue « Chemins », placée par l'application ; la
+  liste « Grandes étapes » de la préparation (F02), qui suit l'ordre sans se
+  réordonner sur place ; les phrases de choix dans l'éditeur, qui gardent
+  leurs commandes de F05.2.
+
+- **F03-AC34 — Chapitre changé de rang :** étant donné « La forêt » avec
+  « La lisière » puis « Le sanctuaire », lorsque l'enseignant tire « Le
+  sanctuaire » avant « La lisière », alors l'ordre est inversé dans
+  « Parties et chapitres » comme dans la préparation, et un message propose
+  « Annuler », qui remet l'ordre d'avant.
+- **F03-AC35 — Chapitre posé dans une autre partie :** étant donné « Le
+  gué », attribué à Alice, dans « La forêt », lorsque l'enseignant le pose
+  dans « La montagne », alors il y figure avec ses scènes ; Alice y lit et y
+  écrit comme avant, et les choix qui y mènent sont inchangés.
+- **F03-AC36 — Le seul chapitre reste dans sa partie :** étant donné « Le
+  port », seul chapitre de « Le départ », lorsque l'enseignant tente de le
+  poser dans une autre partie, alors il reste à sa place et une phrase dit
+  pourquoi.
+- **F03-AC37 — Partie changée de rang :** étant donné les parties A puis B
+  d'un récit classique, lorsque l'adulte tire B avant A, alors les scènes de
+  B précèdent celles de A dans l'ordre de lecture.
+- **F03-AC38 — Cliquer n'est pas déplacer :** étant donné la carte de « La
+  lisière », lorsque l'enseignant la clique sans la tirer, alors la page du
+  chapitre s'ouvre et l'ordre ne change pas.
+- **F03-AC39 — Déplacement au clavier :** étant donné la carte de S016
+  saisie au clavier, lorsque l'adulte la descend d'un rang aux flèches et la
+  repose, alors elle a changé de rang comme à la souris.
+
+**Décision confirmée le 10 octobre 2026 — une seule page du chapitre, et
+ses variantes :** arbitré avant l'étape 2 du plan. La page d'un chapitre est
+la même pour tous ; on en retire ce qui ne concerne pas la personne.
+
+- **Mode personnel.** La page de l'enseignant, sans « Attribuer des
+  élèves », sans « qui s'en occupe » et sans « Voir dans le Suivi ». Elle
+  n'a ni filtres ni cases à cocher : la maquette les y avait gardés faute de
+  Suivi, mais un chapitre se lit d'un coup d'œil et l'auteur seul n'imprime
+  pas de fiches. Alternative écartée : garder des filtres, soit une seconde
+  version de la page à tenir. Reste ouvert, pour l'étape 4 du plan : où
+  l'auteur retrouve ses scènes à finir dans tout le livre (F06.5).
+- **Élève, chapitre attribué.** La même page en lecture : les scènes, leur
+  état et qui s'en occupe, sans menu, sans ajout et sans filtres. Un élève
+  du profil « écriture et organisation » y trouve « Ajouter une scène », le
+  déplacement des scènes et la suppression d'une scène qu'il a créée
+  (F06.1). Prendre une scène relève de F06.3.
+- **Élève, chapitre non attribué.** La carte s'ouvre sur une fiche courte :
+  l'image, le titre et une phrase (« Ce chapitre n'est pas le tien. »).
+  Rien d'autre n'est transmis au poste : ni scènes, ni consignes, ni résumé
+  (F06-AC22). La lecture ouverte de F06.2 change ce que cette carte ouvre.
+
+- **F03-AC41 — Page du chapitre en mode personnel :** étant donné un projet
+  personnel et « La lisière », six scènes, lorsque l'auteur ouvre le
+  chapitre, alors il voit ses six scènes avec leur état, « Ajouter une
+  scène » et le menu du chapitre, sans commande d'attribution, sans « qui
+  s'en occupe », sans lien vers un Suivi, sans filtre ni case à cocher.
+- **F03-AC42 — Page du chapitre lue par un élève :** étant donné Alice,
+  profil par défaut dans « La lisière », lorsqu'elle ouvre ce chapitre,
+  alors elle voit ses scènes, leur état et qui s'en occupe, sans « Ajouter
+  une scène », sans menu et sans pouvoir déplacer une carte.
 
 **Usage rapporté par le porteur — scènes communes à plusieurs chapitres :**
 certaines scènes ne relèvent d'aucun chapitre en particulier, par exemple
@@ -1113,9 +1290,11 @@ de nombreux chapitres.
   l'enseignant choisit « Supprimer » et confirme, alors le chapitre quitte
   le plan et figure dans la « Corbeille du projet » ; le choix de S019 n'est
   redirigé nulle part. « Restaurer » remet le chapitre et ses textes.
-- **F03-AC23 — Ordre par le menu :** étant donné un chapitre classique dont
-  l'ordre est A, B, C, lorsque l'adulte choisit « Monter » sur C, alors
-  l'ordre est A, C, B, à l'écran, dans le lecteur et dans le PDF.
+- **F03-AC23 — Ordre des scènes par glisser-déposer :** étant donné un
+  chapitre classique dont l'ordre est A, B, C, lorsque l'adulte tire la
+  carte de C et la pose avant B, alors l'ordre est A, C, B, à l'écran, dans
+  le lecteur et dans le PDF. (Révisé le 10 octobre 2026 : le critère portait
+  sur « Monter ».)
 - **F03-AC24 — « À compléter » sans filtre :** étant donné « Les racines »
   sans scène et deux chapitres sans élève, lorsque l'enseignant clique
   « 2 chapitres sans élève », alors la page se place sur la première de ces
@@ -1170,11 +1349,49 @@ du livre » et « Fin de l'histoire » se posent et se retirent dans le menu à
 trois points de la scène, depuis sa carte dans le chapitre comme depuis sa
 page. Désigner un nouveau départ nomme celui qu'il remplace.
 
-**Questions ouvertes :**
+**Décision confirmée le 10 octobre 2026 — départ supprimé ou manquant :**
+arbitré avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
 
-- Moment où le départ doit être renseigné et traitement de sa suppression ;
-  son absence ou son exclusion bloque le PDF définitif selon F09.2. Proposé
-  en F03.1 : son absence se lit dans « À compléter ».
+- **La suppression est permise.** La scène de départ se supprime comme une
+  autre, de même que le chapitre ou la partie qui la contient ; le dialogue,
+  ou le message d'un élément sans texte, dit : « Le livre n'aura plus de
+  départ. » Alternative écartée : refuser tant qu'un autre départ n'est pas
+  désigné, ce qui bloquerait la suppression d'un chapitre entier par une
+  scène à aller chercher, alors qu'un livre sans départ est l'état de tout
+  projet neuf.
+- **Le manque se lit, sans bloquer.** Dès que le livre a au moins une scène
+  et pas de départ, « À compléter » (F03.1) porte « pas de départ du
+  livre », en lien. Le départ n'est exigé à aucun moment de la préparation
+  ni de l'écriture ; seul le PDF définitif l'attend (F09.2).
+- **Restauration.** La scène restaurée retrouve son repère de départ, sauf
+  si l'adulte en a désigné un autre entre-temps.
+- **Choisir un autre départ.** Un sélecteur « Choisir le départ du livre »
+  cherche les scènes du livre entier, comme la recherche de F03.1 ; en
+  choisir une la désigne. Il s'ouvre par le lien « pas de départ du livre »
+  de « À compléter » et par « Choisir un autre départ », dans le message qui
+  suit la suppression. Rien n'oblige à choisir sur le moment, et le
+  sélecteur ne crée pas de scène : elle se crée dans son chapitre, puis se
+  désigne. « Départ du livre » reste dans le menu de chaque scène.
+  Alternatives écartées : imposer le choix au moment de supprimer, qui
+  arrête l'adulte au milieu d'un autre geste, parfois avant que la scène
+  qui servira de départ existe ; un bouton de départ sur chaque carte, qui
+  charge l'écran pour un geste fait une fois.
+
+- **F03-AC32 — Départ supprimé :** étant donné S001, départ du livre, dans
+  « Le port », lorsque l'enseignant supprime « Le port » et confirme, alors
+  le dialogue a dit que le livre n'aurait plus de départ, « À compléter »
+  porte « pas de départ du livre » et les élèves des autres chapitres
+  écrivent sans changement.
+- **F03-AC33 — Départ rendu à la restauration :** étant donné ce chapitre
+  dans la corbeille, lorsque l'enseignant le restaure sans avoir désigné
+  d'autre départ, alors S001 est de nouveau le départ du livre ; s'il avait
+  désigné S014 entre-temps, S014 reste le seul départ.
+- **F03-AC40 — Départ choisi depuis le rappel :** étant donné un livre sans
+  départ, lorsque l'enseignant clique « pas de départ du livre », écrit
+  « quai » et choisit S002 « Le quai des brumes », alors S002 est le départ
+  du livre et le rappel disparaît de « À compléter ».
+
+**Questions ouvertes :**
 - Décidés en F11.5 le 30 septembre 2026 : seul l'adulte pose le repère de
   fin dans la première livraison ; une fin peut porter des choix ; la marque
   de fin imprimée et le retrait du repère y sont précisés.
@@ -2168,7 +2385,8 @@ raccord ; F06.2 cache alors la scène entière.
   modifier les choix internes au chapitre, libellés et liens compris.
   Tous les raccords entre chapitres restent réservés à l'enseignant, qu'ils appartiennent à la même
   partie ou à des parties différentes, même si l'élève intervient
-  des deux côtés. Les autres opérations d'organisation restent à délimiter.
+  des deux côtés. Les autres opérations d'organisation sont délimitées le
+  10 octobre 2026, plus bas.
 - **Paragraphe protégé (décision du 1er octobre 2026) :** l'enseignant peut
   protéger un paragraphe entier d'une scène ; un élève ne peut alors ni le
   modifier ni le supprimer, et écrit autour. La protection porte sur le
@@ -2210,11 +2428,59 @@ raccord ; F06.2 cache alors la scène entière.
   Les élèves peuvent demander les changements protégés selon F07.2, à
   l'oral en première livraison (5 octobre 2026).
 
+**Décision confirmée le 10 octobre 2026 — opérations du profil « écriture
+et organisation » :** arbitré avant l'étape 2 du
+[plan](plan.md#étape-2--préparer-et-organiser-le-récit). Dans le chapitre où
+il a ce profil, et là seulement, l'élève :
+
+- **peut** créer une scène, lui donner ou changer son titre, et changer
+  l'ordre des scènes par glisser-déposer (F03.1), récit classique compris :
+  l'enseignant lui a confié l'organisation de ce chapitre ;
+- **peut supprimer une scène qu'il a créée lui-même**, tant qu'elle ne
+  contient pas de travail et que personne d'autre ne s'en occupe. Elle va à
+  la corbeille du projet, que seul l'adulte voit et d'où seul il restaure ;
+- **ne peut pas** écrire ou modifier une consigne, poser le départ ou une
+  fin, exclure du livre, restaurer, supprimer une scène créée par un autre,
+  ni rien organiser hors de ce chapitre. Il en parle à l'enseignant (F07.2).
+
+Le profil « écriture et propositions » ne fait aucune de ces opérations.
+Limiter la suppression aux scènes que l'élève a créées protège le plan
+préparé par l'enseignant sans règle de plus : un élève défait sa propre
+erreur, il ne retire pas ce qui lui a été donné à écrire.
+
+**Scène « contenant du travail » (10 octobre 2026) :** une scène contient
+du travail quand sa copie porte un texte ou une image, quand un texte est
+gardé à part pour elle (F08.1) ou quand elle a déjà été remise. Un texte
+entièrement effacé, jamais remis, ne compte plus ; un titre ou une consigne
+seuls n'en font pas une scène contenant du travail, ce que couvre la limite
+aux scènes créées par l'élève.
+
+- **F06-AC86 — Scène créée par erreur :** étant donné Bilal, profil
+  « écriture et organisation » dans « La lisière », qui vient de créer S064,
+  encore vide, lorsqu'il la supprime, alors elle quitte le chapitre et
+  figure dans la corbeille du projet de l'enseignant ; Bilal ne voit pas
+  cette corbeille.
+- **F06-AC87 — Scène préparée par l'enseignant :** étant donné S016, créée
+  par l'enseignant et encore vide, lorsque Bilal tente de la supprimer,
+  alors elle est conservée, que la commande lui soit proposée ou qu'il
+  l'appelle directement.
+- **F06-AC88 — Scène qui contient du travail :** étant donné S064, créée par
+  Bilal, où Alice a écrit trois lignes, lorsque Bilal tente de la supprimer,
+  alors la scène et son texte sont conservés.
+- **F06-AC89 — Ordre et titre dans son chapitre :** étant donné ce même
+  profil, lorsque Bilal renomme S064 et la tire avant S016, alors le titre
+  et l'ordre changent dans « La lisière » ; les mêmes gestes dans « Le
+  sanctuaire », où il a le profil par défaut, ne changent rien.
+- **F06-AC90 — Consigne et repères réservés :** étant donné ce même profil,
+  lorsque Bilal tente d'écrire la consigne de S064, de la désigner comme
+  départ ou de l'exclure du livre, alors rien n'est modifié.
+
 **Parcours nominal acquis :** l'enseignant attribue un chapitre à plusieurs
 élèves ; chacun y choisit une scène encore non écrite et signale qu'il s'en
 occupe ; les élèves préparent puis saisissent leurs textes dans des scènes
-distinctes, depuis plusieurs postes. Le premier profil passe par une
-proposition pour faire évoluer la structure.
+distinctes, depuis plusieurs postes. Avec le premier profil, l'élève qui
+veut faire évoluer la structure en parle à l'enseignant, à l'oral en
+première livraison (F07.2).
 
 **Conséquence métier :** l'attribution définit le chapitre dans lequel l'élève
 peut participer. La prise en charge indique la scène dont il s'occupe. Elle ne
@@ -2262,9 +2528,9 @@ de chapitre ni déléguer l'approbation finale de leurs textes.
 **Questions ouvertes :**
 
 - Changement de profil pendant une séance.
-- Opérations restantes d'organisation : renommer, réordonner, déplacer entre
-  chapitres et supprimer une scène vide. Définition d'une scène « contenant du
-  travail », notamment lorsque son texte a été effacé ou qu'elle a des images.
+- Déplacement d'une scène vers un autre chapitre, différé en F03.1. Les
+  autres opérations d'organisation et la scène « contenant du travail » sont
+  décidées le 10 octobre 2026, plus haut.
 - Portée des modifications internes si une scène reçoit un raccord d'un autre
   chapitre ; protection de ce raccord et effets sur la cohérence globale.
 - Forme de la proposition et décision de l'enseignant : voir F07.
@@ -5045,10 +5311,51 @@ l'image de repérage se choisit dès la création d'un projet et dès celle d'un
 chapitre, et ce choix reste facultatif : on peut créer sans image, le
 visuel par défaut s'applique, et l'image se choisit ou se remplace ensuite.
 La création d'un projet garde ses trois questions de
-[F01](#f01--projet-et-responsabilité-de-ladulte) ; la place exacte de ce choix
-dans la création, et le cas des parties, restent à arrêter avant l'étape 2
-du [plan](plan.md#étape-2--préparer-et-organiser-le-récit), où ces images
-se construisent.
+[F01](#f01--projet-et-responsabilité-de-ladulte).
+
+**Décisions confirmées le 10 octobre 2026 — où et comment l'image se
+choisit :** arbitré avant l'étape 2 du
+[plan](plan.md#étape-2--préparer-et-organiser-le-récit), où ces images se
+construisent.
+
+- **À la création d'un projet.** La troisième question, celle du titre et
+  de la classe, montre la carte du projet telle qu'elle sera dans « Mes
+  projets » : le titre s'y écrit au fil de la frappe, sur un visuel par
+  défaut. Un seul lien, « Choisir une image », permet d'en mettre une autre.
+  Il n'y a pas de quatrième question, et le projet se crée sans y toucher.
+  Alternative écartée : une étape « Image » à part, un écran de plus pour un
+  choix facultatif.
+- **À la création d'un chapitre ou d'une partie.** L'élément ajouté s'ouvre
+  sur son panneau de réglages, titre sélectionné (F03.1) ; l'image y vient
+  juste sous le titre, le visuel par défaut déjà en place, avec « Choisir
+  une image ». Pour un chapitre, la couleur et le résumé suivent.
+- **La même règle aux trois niveaux.** Projet, partie et chapitre ont une
+  image choisie ou, à défaut, un visuel par défaut, attribué une fois puis
+  conservé. Celui d'une partie évite, tant que la bibliothèque le permet,
+  ceux de ses chapitres. Alternative écartée : ne rien montrer pour une
+  partie sans image choisie, écran plus léger mais exception à retenir.
+- **Un seul sélecteur, « Choisir une image »,** le même pour le projet, la
+  partie et le chapitre, à la création comme ensuite. Il propose :
+  « Importer une image », depuis l'ordinateur ; « Images du projet », celles
+  déjà importées dans ce projet, à réutiliser d'un clic ; « Visuels
+  proposés », la bibliothèque de l'application, pour choisir soi-même un
+  visuel au lieu de celui tiré d'office ; « Revenir au visuel par défaut »,
+  qui retire l'image choisie.
+- **Remplacer** passe par ce même sélecteur. Une image qui sert à deux
+  endroits reste deux usages séparés : en changer un ne change pas l'autre.
+- **Import.** JPEG, PNG ou WebP, 20 Mo au plus par fichier. Un autre
+  format, dont le HEIC des téléphones, est refusé par une phrase qui dit
+  quoi faire. Ces valeurs valent pour l'image de repérage ; celles de
+  l'import dans une scène s'arrêtent avant l'étape 3 du plan.
+- **Cadrage.** L'image remplit le cadre de la carte, centrée, sans outil de
+  recadrage en première livraison ; à juger à l'essai.
+- **Bibliothèque de visuels.** Elle n'a pas de taille fixée : le porteur
+  génère des visuels de lieux variés, dans le style du
+  [design](design.md), d'après des prompts ; plus elle est fournie, moins un
+  visuel se répète.
+- **Hors de cette étape :** supprimer une image du projet ; réutiliser une
+  image d'un projet à l'autre. À partir de l'étape 3, « Images du projet »
+  montre aussi les illustrations importées dans les scènes.
 
 **Distinctions confirmées :** réutiliser un fichier ne confond pas ses usages.
 Choisir une image pour l'interface ne l'ajoute pas au texte, à la couverture
@@ -5076,8 +5383,34 @@ illustration dans une scène.
   une autre illustration dans une scène, lorsqu'elle consulte sa carte,
   alors elle voit le repère choisi mais ne reçoit pas l'illustration de scène.
 
-**Approfondissements différés :** commandes de sélection et de remplacement,
-réutilisation explicite d'une même image à plusieurs niveaux, suppression et
+- **F10-AC21 — Projet créé avec ou sans image :** étant donné la troisième
+  question de la création, lorsque l'adulte écrit « Les passeurs de brume »,
+  alors la carte montre ce titre sur un visuel par défaut ; s'il crée le
+  projet sans choisir d'image, « Mes projets » montre la même carte ; s'il
+  importe une image avant de créer, c'est elle que la carte porte.
+- **F10-AC22 — Chapitre et partie créés avec le choix de l'image :** étant
+  donné un chapitre ou une partie que l'adulte vient d'ajouter, lorsque son
+  panneau de réglages s'ouvre, alors l'image y figure sous le titre, avec le
+  visuel par défaut et « Choisir une image » ; fermer sans choisir garde le
+  visuel par défaut.
+- **F10-AC23 — Visuel proposé choisi :** étant donné « La lisière » sur un
+  visuel par défaut, lorsque l'adulte ouvre « Choisir une image » et retient
+  un autre visuel proposé, alors la carte le porte et le garde aux visites
+  suivantes ; « Revenir au visuel par défaut » retire ce choix.
+- **F10-AC24 — Format ou poids refusé :** étant donné une photographie au
+  format HEIC, ou un fichier de plus de 20 Mo, lorsque l'adulte tente de
+  l'importer, alors rien n'est importé, l'image en place est conservée et
+  une phrase dit quels formats et quel poids sont acceptés.
+- **F10-AC25 — Deux usages séparés :** étant donné une même image choisie
+  pour « La forêt » et pour « La lisière », lorsque l'adulte remplace celle
+  de « La lisière », alors « La forêt » garde la sienne.
+- **F10-AC26 — Visuel par défaut d'une partie :** étant donné « La forêt »
+  sans image choisie, dont les deux chapitres portent des visuels par
+  défaut, lorsque la bibliothèque compte plus de trois visuels, alors celui
+  de la partie diffère des deux leurs et reste le même aux visites
+  suivantes.
+
+**Approfondissements différés :** suppression d'une image du projet et
 récupération si une image manque. Les cartes sans image utilisent le visuel
 par défaut ; l'attribution n'influence pas ce choix. La présentation et la
 couleur du chapitre sont dans [le design](design.md#images-du-projet-et-repérage).
