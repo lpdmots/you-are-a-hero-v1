@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { chapitresDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
@@ -16,6 +16,8 @@ async function lire({ params }: Props) {
   if (!projet) return null;
   const plan = await planDe(enseignant, projet.id);
   const chapitre = chapitresDe(plan).find((c) => c.id === chapitreId);
+  // Un chapitre parti dans la corbeille n'a plus de page : on revient au plan, où il se restaure
+  if (!chapitre && plan.corbeille.some((x) => x.id === chapitreId)) redirect(`/projet/${projet.id}/plan`);
   if (!chapitre) return null;
   return { enseignant, projet, plan, chapitre };
 }

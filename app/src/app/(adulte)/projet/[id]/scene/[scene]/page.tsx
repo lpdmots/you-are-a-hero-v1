@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { nomScene, scenesDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
@@ -16,6 +16,8 @@ async function lire({ params }: Props) {
   if (!projet) return null;
   const plan = await planDe(enseignant, projet.id);
   const scene = scenesDe(plan).find((s) => s.id === sceneId);
+  // Une scène partie dans la corbeille n'a plus de page : on revient au plan, où elle se restaure
+  if (!scene && plan.corbeille.some((x) => x.id === sceneId)) redirect(`/projet/${projet.id}/plan`);
   return scene ? { projet, plan, scene } : null;
 }
 

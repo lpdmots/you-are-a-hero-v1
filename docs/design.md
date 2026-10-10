@@ -1121,7 +1121,7 @@ sont proposées, à juger à l'essai de l'étape.
 | Élément | Disposition |
 | --- | --- |
 | Déplacer une carte | La carte entière se tire : partie par son titre, chapitre et scène par leur carte. Le pointeur devient une main ; la carte tirée se soulève, les autres s'écartent pour montrer où elle se posera. Après le geste, un message : « « Le sanctuaire » est placé avant « La lisière ». Annuler ». « Monter » et « Descendre » quittent le menu de la scène. |
-| Repère de prise | Demandé par le porteur : six petits points gris, en deux colonnes, discrets mais toujours présents ; sur le bord gauche de la carte de scène, dans un coin de l'étiquette de la carte de chapitre, devant le titre de la partie. Pas de bande sur toute la longueur. S'il alourdit l'écran, il est retiré et l'écran d'aide reste seul à dire que les cartes se déplacent. |
+| Repère de prise | Demandé par le porteur : six petits points gris, en deux colonnes, discrets mais toujours présents ; avant la référence sur la carte de scène, au pied de la carte de chapitre, devant l'image de la partie. Pas de bande sur toute la longueur. S'il alourdit l'écran, il est retiré et l'écran d'aide reste seul à dire que les cartes se déplacent. |
 | Écran d'aide de « Parties et chapitres » | Une question de plus : « Comment changer l'ordre ? — Tirez une carte pour la déplacer. Un chapitre se pose aussi dans une autre partie. » |
 | Corbeille du projet | Sous une scène ou un chapitre dont le parent est aussi supprimé, à la place de « Restaurer » : « Restaurez d'abord « La lisière ». » Après une restauration : « « Le sanctuaire » est restauré, avec ses 3 élèves. » |
 | Départ supprimé | Dans le dialogue ou le message : « Le livre n'aura plus de départ. », suivi du lien « Choisir un autre départ ». Dans « À compléter » : « pas de départ du livre ». |
@@ -1159,6 +1159,45 @@ l'écriture. Remplissez seulement ce qui vous sert. »
 montagne, cité, désert) s'ajoutent ceux que le porteur génère d'après des
 prompts de lieux variés, dans le même style, format 3:2, l'animal et le
 sujet dans les deux tiers supérieurs.
+
+### Étape 2 construite (10 octobre 2026)
+
+Les écrans de l'étape 2 sont construits dans l'application d'après la
+maquette et les dispositions ci-dessus ; `npm run captures -- etape2`, dans
+`app/`, refait leurs captures. Sans retour du porteur à ce stade.
+
+**Écarts avec ce qui était dessiné ou arrêté, à juger à l'essai :**
+
+- le repère de prise est au pied de la carte de chapitre, en face
+  d'« Ouvrir », et non dans un coin de l'étiquette, qu'il encombrait ; sur
+  la carte de scène, avant la référence ; devant l'image de la partie ;
+- une partie seule dans le plan, ou une scène seule dans son chapitre, n'a
+  pas de repère de prise : il n'y a nulle part où la poser ;
+- tant qu'aucune scène n'a de texte, « Supprimer » part toujours sans
+  dialogue, avec « Annuler » dans le message ; le dialogue de trois faits
+  viendra avec les textes, à l'étape 3 ;
+- « élèves sans chapitre », dans « À compléter », n'a pas son lien « Voir » :
+  il mène à la vue Élèves du Suivi, construite à l'étape 4 ;
+- la carte de chapitre et l'en-tête d'une partie ne comptent que les
+  scènes : validées, prêtes, à valider et à reprendre arrivent avec les
+  états, à l'étape 4 ; toute scène porte « Texte vide » ;
+- la page du chapitre n'a pas la bascule « Scènes / Chemins » ni « Voir dans
+  le Suivi » (étapes 3 et 4), ni « qui s'en occupe » sur les cartes
+  (étape 4) ; sa recherche n'apparaît qu'à partir de quatre scènes ;
+- le carnet montre les relances sous la question, l'exemple seul étant
+  replié ; les pistes se notent aussi dans le carnet, et pas seulement dans
+  l'atelier.
+
+**Écrans que la maquette ne dessinait pas :**
+
+| Écran | Disposition |
+| --- | --- |
+| Réglages du projet | Trois points au bout de l'en-tête du projet : un panneau avec le titre, l'image (« Choisir une image ») et, en projet de classe, l'interrupteur « Les élèves lisent toute l'histoire », suivi d'une phrase qui dit ce que cela change. |
+| Page d'une scène | Fil « Retour à La lisière » ; un bandeau à la couleur du chapitre avec la référence, le titre à écrire sur place, le tampon et le menu ; dessous, les repères de départ et de fin. À gauche, la place du texte, vide jusqu'à l'étape 3 ; à droite, la fiche « Consigne », facultative. Texte provisoire. |
+| Toute l'histoire, pour l'élève | Sous l'accueil : les parties et leurs cartes. La sienne est cernée de bleu canard et porte « Ton chapitre » et « Ouvrir » ; les autres n'ont que l'image et le titre. Avec la lecture ouverte, elles portent « Lire ». |
+| Chapitre qui n'est pas le sien | Un dialogue : le titre, l'image, « Ce chapitre n'est pas le tien. », « Fermer ». |
+| Chapitre ouvert par un élève | Le bandeau du chapitre, ses élèves (« Toi » pour lui), « Ce qui se passe dans ce chapitre » replié, puis les fiches des scènes, leur consigne dessous. Profil « écriture et organisation » : « Ajouter une scène », repère de prise, et un menu par scène (« Donner un titre », « Supprimer » pour celle qu'il a créée, avec confirmation : il ne peut pas la retrouver lui-même). |
+| Atelier, « Grandes étapes » | À droite, la liste des parties retenues en grand, et une ligne pour en ajouter une : elle entre aussitôt dans le plan. |
 
 ### Conflit de sauvegarde : écrans de F08.1 (7 octobre 2026)
 

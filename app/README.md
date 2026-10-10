@@ -12,9 +12,9 @@ Next.js, React, TypeScript, Supabase (base, comptes). Versions figées dans
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires. |
-| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement. |
-| `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves. |
+| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation. |
+| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images. |
+| `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre, scène ; histoire et chapitre de l'élève. |
 | `src/composants/`, `src/styles/` | Formes communes du système « Cahiers d'aventure ». |
 | `supabase/migrations/` | Schéma, droits et règles d'accès de la base. |
 | `tests/` | `unitaires`, `base` (contre une vraie base locale), `parcours` (dans un navigateur). |
@@ -57,6 +57,12 @@ pris :
 ```bash
 npm run base:purger-essais   # supprime les comptes des tests, pas le compte local
 ```
+
+## Visuels de l'application
+
+Sans image choisie, un projet, une partie ou un chapitre porte un visuel de la
+bibliothèque. Pour en ajouter un : déposer `public/illustrations/defaut-<clé>.jpg`
+(format 3:2, 1 200 × 800) et ajouter sa ligne dans `src/domaine/visuels.ts`.
 
 ## Clés et secrets
 
@@ -102,8 +108,8 @@ npm run restaurer -- sauvegardes/<date> --production   # après un accident : da
 - Les secrets restaurés se relisent avec la même `CLE_ACCES` qu'à la sauvegarde.
 - Un projet Supabase gratuit s'endort après une semaine sans activité : il se
   relance depuis sa console avant de sauvegarder.
-- Les images (Supabase Storage, à partir de l'étape 2) ne sont pas dans cette
-  sauvegarde.
+- Les images de repérage importées (Supabase Storage, seau `images`) ne sont pas
+  dans cette sauvegarde : gardez vos originaux.
 
 Essayé le 9 octobre 2026 sur la base locale : sauvegarde, remise à zéro,
 restauration, puis connexion du compte, relecture d'un code et d'un mot de passe

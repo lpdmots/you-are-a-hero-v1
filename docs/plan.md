@@ -16,7 +16,8 @@ leur statut.
 [Étape 1](#étape-1--sinstaller--compte-projets-classes-accès-des-élèves)).
 L'étape 2 est autorisée par le porteur le 10 octobre 2026, pour cette étape
 seule et en deux temps : un entretien, fait et validé dans son ensemble le
-même jour, puis la construction, en cours (voir
+même jour, puis la construction, faite en local le même jour ; il lui reste
+la mise en ligne, sur décision du porteur, et son essai (voir
 [Étape 2](#étape-2--préparer-et-organiser-le-récit)). L'étape 3 n'est pas
 autorisée.
 
@@ -316,6 +317,30 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **Terminée quand :** le porteur a préparé son vrai projet jusqu'aux
   consignes et aux attributions, et a refait le même parcours dans un projet
   personnel et dans un récit classique.
+- **Construite le 10 octobre 2026, en local,** sur autorisation du porteur
+  du même jour ; elle n'est ni mise en ligne ni essayée par lui.
+  - **Tests automatiques :** 213 passent — 44 sur les règles, 84 contre la
+    base locale, 85 parcours joués dans un navigateur —, chacun au nom de
+    son critère. Choix techniques :
+    [architecture](architecture.md#réalisation-de-létape-2-10-octobre-2026).
+  - **Schéma de la base :** une migration de plus,
+    `20261010150000_preparer_organiser.sql`. Elle ne s'applique à la vraie
+    base que sur décision du porteur, par `npm run production:schema`, avant
+    la mise en ligne du code qui s'en sert.
+  - **Critères qui ne se ferment qu'à l'étape 3,** faute de texte : le
+    dialogue de suppression d'un élément qui a du texte (F03-AC13, AC22 pour
+    sa confirmation), la scène « contenant du travail » (F06-AC14, AC88), la
+    lecture du texte d'un camarade (F06-AC20) et l'écriture d'un élève
+    (F03-AC17, F07-AC19). L'étape 2 teste ce qu'ils disent du plan et des
+    droits. F03-AC08, AC09 et AC12 se ferment avec le lecteur et le PDF.
+  - **Construit sans écran dessiné,** à juger à l'essai : les réglages du
+    projet (titre, image, lecture ouverte), la page d'une scène réduite à
+    son titre et à sa consigne, le chapitre ouvert par un élève, la fiche
+    d'un chapitre qui n'est pas le sien
+    ([design](design.md#étape-2-construite-10-octobre-2026)).
+  - **Visuels par défaut :** les cinq du 30 septembre ; les nouveaux
+    s'ajoutent quand le porteur les fournit, d'après les prompts donnés le
+    10 octobre.
 
 ### Étape 3 — Écrire une scène et relier les choix
 

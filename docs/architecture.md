@@ -301,6 +301,79 @@ application s'appelle `production.env`, et non `.env.production.local` : Next.js
 charge de lui-même ce second nom, et une application lancée en local parlerait
 alors à la vraie base.
 
+## Réalisation de l'étape 2 (10 octobre 2026)
+
+Choix techniques pris en construisant l'étape 2 du [plan](plan.md) : préparer
+et organiser le récit. Les règles restent en F02, F03, F06.1, F06.2 et F10.1
+des [spécifications](specifications.md).
+
+**Le plan du récit dans la base.** Quatre tables, `parties`, `chapitres`,
+`scenes` et `attributions`, chacune rattachée à son projet et à son
+enseignant par des clés composées : une ligne ne peut pas désigner le parent
+d'un autre projet. L'ordre est un rang par parent, resserré de 0 à n − 1 par
+les fonctions qui déplacent (`placer_partie`, `placer_chapitre`,
+`placer_scene`) ; la position qu'elles reçoivent se compte parmi les autres
+éléments, ce qui est aussi ce que rend le glisser-déposer. La référence d'une
+scène vient d'un compteur du projet, incrémenté dans la même opération que
+l'insertion : deux scènes créées ensemble n'ont jamais la même, et une
+référence supprimée n'est pas redonnée.
+
+**Corbeille : une date, rien d'autre.** Supprimer pose `supprime_le` sur
+l'élément ; ni ses enfants, ni ses attributions, ni les choix qui y mènent ne
+sont touchés. Un élément est « dans le plan » tant que ni lui ni ses parents
+ne portent cette date : c'est ce que relisent les règles d'accès des élèves,
+si bien qu'un chapitre supprimé leur est fermé à la requête suivante et
+rouvert à la restauration, sans rien recopier. Le départ du livre est une
+colonne du projet qui continue de désigner une scène supprimée : le livre
+n'a alors plus de départ, et le retrouve si elle est restaurée sans qu'un
+autre ait été désigné. Alternative écartée : déplacer les lignes dans des
+tables d'archive, qui aurait demandé de reconstruire liens et attributions.
+
+**Ce qu'un poste d'élève lit, et par où.** Le rôle `poste` reçoit des
+colonnes choisies de `projets`, `parties`, `chapitres`, `scenes` et
+`attributions`. Les cartes (titres, images) se lisent pour tout élève
+identifié de la classe, pendant les horaires ; les scènes, pour les chapitres
+attribués, ou pour tous quand la lecture de l'histoire est ouverte. Le résumé
+d'un chapitre et les consignes ne sont pas des colonnes que le poste peut
+demander : deux fonctions les rendent après avoir vérifié l'attribution, ce
+qui garde la lecture ouverte sans consigne. Le poste n'écrit dans aucune
+table : les quatre gestes du profil « écriture et organisation » passent par
+des fonctions `eleve_…` qui relisent à chaque appel l'élève identifié, les
+horaires, l'attribution et le profil. La fonction qui dit si une scène
+« contient du travail » existe déjà et répond « non » : l'étape 3 la fera
+répondre d'après le texte, les images et les remises, sans toucher aux
+appelants.
+
+**Images de repérage.** Un seau privé de Supabase Storage, `images`. Le
+navigateur vérifie le fichier (JPEG, PNG ou WebP, 20 Mo), le redessine en
+JPEG à deux tailles — 2 600 points au plus grand côté, de quoi imprimer en
+pleine page, et 900 pour l'écran —, puis dépose les deux fichiers lui-même
+par des adresses à usage unique que le serveur lui donne. Le serveur relit
+ensuite ce qui a été déposé, refuse ce qui n'est pas un JPEG, et inscrit
+l'image dans le projet. Ce détour évite la limite de 4,5 Mo des fonctions de
+Vercel. Aucune image ne se lit directement dans le stockage : l'adresse
+`/images/<identifiant>` demande d'abord à la base si la personne peut la
+voir (l'adulte, ses images ; un poste, celles qui servent de repère dans le
+récit de sa classe), puis rend le fichier. Les visuels de l'application sont
+des fichiers livrés avec elle (`public/illustrations/`), listés dans
+`src/domaine/visuels.ts`.
+
+**Glisser-déposer.** `@dnd-kit/core` et `@dnd-kit/sortable`, versions figées.
+Un clic ouvre la carte, elle ne se déplace qu'une fois tirée de huit points ;
+au clavier, le repère de prise se saisit par Espace ; sur un écran tactile,
+par un appui long. L'ordre montré pendant et juste après le geste est tenu
+par la page jusqu'à ce que le plan enregistré revienne, puis abandonné : il
+n'y a pas de second état à réconcilier.
+
+**Enregistrement des champs.** Les panneaux et le carnet enregistrent après
+une pause de frappe et à la sortie du champ, chaque champ sous sa propre
+clé : ce qui attend pour l'un n'est pas chassé par un changement dans un
+autre.
+
+**Tests.** 213 passent — 44 sur les règles, 84 contre la base locale, 85
+parcours joués dans Chromium. Les deux migrations ont été rejouées ensemble
+dans une base vide, à part, et donnent le schéma de la base locale.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

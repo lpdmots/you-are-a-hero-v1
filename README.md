@@ -18,9 +18,14 @@ avancement et les règles sorties de l'essai dans le
 ses choix techniques dans
 [l'architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
 **L'étape 2 est autorisée le 10 octobre 2026**, pour elle seule : son
-entretien est fait et validé dans son ensemble le même jour, sa construction
-est en cours (voir « Plan de réalisation », plus bas). L'étape 3 n'est pas
-autorisée. Aucun achat n'est lancé. La V1
+entretien est fait et validé dans son ensemble le même jour, et elle est
+construite en local le même jour (préparation et atelier projeté, parties,
+chapitres et scènes, attribution, corbeille, départ et fins, images de
+repérage, côté élève), sans être mise en ligne ni essayée par le porteur ;
+voir le
+[plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit) et
+[l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026).
+L'étape 3 n'est pas autorisée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur

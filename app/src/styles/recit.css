@@ -70,6 +70,10 @@
   color: var(--graphite-2);
 }
 .reste__manques {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 4px;
   font-size: var(--t-s);
   color: var(--graphite);
 }
