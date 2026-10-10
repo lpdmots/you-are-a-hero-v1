@@ -19,9 +19,9 @@ ses choix techniques dans
 [l'architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
 **L'étape 2 est autorisée le 10 octobre 2026**, pour elle seule : son
 entretien est fait et validé dans son ensemble le même jour, et elle est
-construite en local le même jour (préparation et atelier projeté, parties,
-chapitres et scènes, attribution, corbeille, départ et fins, images de
-repérage, côté élève), sans être mise en ligne ni essayée par le porteur ;
+construite puis mise en ligne le même jour (préparation et atelier projeté,
+parties, chapitres et scènes, attribution, corbeille, départ et fins, images
+de repérage, côté élève) ; il lui reste l'essai du porteur ;
 voir le
 [plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit) et
 [l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026).
