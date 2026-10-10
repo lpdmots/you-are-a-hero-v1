@@ -4,7 +4,9 @@ import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Chemins, type LienDeChemin } from "@/composants/Chemins";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -20,8 +22,15 @@ import type { ChapitreEleve as Chapitre, SceneEleve } from "@/serveur/recit-elev
 import { ajouterScene, placerScene, supprimerScene, titrerScene } from "../../actions";
 import styles from "../../travail.module.css";
 
-export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapitre; prof: string; moi: string; eleves: Eleve[] }) {
+export function ChapitreEleve({
+  chapitre, prof, moi, eleves, vue = "scenes",
+}: {
+  chapitre: Chapitre; prof: string; moi: string; eleves: Eleve[];
+  /** Deux vues du même chapitre, en récit à choix : ses fiches, ou ses chemins (F03-AC18) */
+  vue?: "scenes" | "chemins";
+}) {
   const dire = useMessage();
+  const routeur = useRouter();
   const capteurs = useCapteurs();
   const organise = chapitre.profil === "organisation";
   const [local, setLocal] = useState<{ base: Chapitre; scenes: SceneEleve[] } | null>(null);
@@ -201,7 +210,35 @@ export function ChapitreEleve({ chapitre, prof, moi, eleves }: { chapitre: Chapi
         </div>
       ) : null}
 
-      {scenes.length === 0 ? (
+      {chapitre.aChoix && scenes.length > 0 ? (
+        <div className="chap-outils">
+          <div className="bascule" role="group" aria-label="Vue du chapitre">
+            <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}`, { scroll: false })}>
+              <Icone nom="feuille" />
+              Scènes
+            </button>
+            <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}?vue=chemins`, { scroll: false })}>
+              <Icone nom="chemins" />
+              Chemins
+            </button>
+          </div>
+        </div>
+      ) : null}
+
+      {vue === "chemins" && chapitre.aChoix && scenes.length > 0 ? (
+        <Chemins
+          pourEleve
+          noeuds={scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, vide: s.texteVide, depart: false, fin: false, lien: `/travail/scene/${s.id}` }))}
+          liens={chapitre.liens.map(
+            (l): LienDeChemin => ({
+              id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: false, vers: l.cibleId,
+              ailleurs: l.chapitreCible ? { chapitre: l.chapitreCible } : undefined,
+              manque: l.manque ?? undefined,
+            }),
+          )}
+          entrees={[]}
+        />
+      ) : scenes.length === 0 ? (
         <div className="vide-chap">
           <p>{organise ? "Ce chapitre n’a pas encore de scène. Ajoute la première." : `Ce chapitre n’a pas encore de scène. ${majuscule(prof)} va en ajouter.`}</p>
         </div>

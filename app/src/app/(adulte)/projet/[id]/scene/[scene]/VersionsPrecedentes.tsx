@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TexteLu } from "@/composants/copie/Copie";
+import { TexteLu } from "@/composants/copie/Blocs";
+import type { Livre } from "@/composants/copie/contexte";
 import { avantDePartir } from "@/composants/copie/sortie";
 import { Panneau } from "@/composants/Panneau";
 import { heureEnMots, jourEnMots } from "@/domaine/dates";
@@ -28,9 +29,9 @@ export function nomDeVersion(v: VersionPrecedente, eleves: readonly ElevePlan[],
  * à part (F08-AC40 à AC43).
  */
 export function VersionsPrecedentes({
-  sceneId, eleves, deClasse, onFermer, onRemis,
+  sceneId, eleves, deClasse, livre, onFermer, onRemis,
 }: {
-  sceneId: string; eleves: ElevePlan[]; deClasse: boolean; onFermer: () => void; onRemis: (scene: TexteDeScene) => void;
+  sceneId: string; eleves: ElevePlan[]; deClasse: boolean; livre: Livre; onFermer: () => void; onRemis: (scene: TexteDeScene) => void;
 }) {
   const [versions, setVersions] = useState<VersionPrecedente[] | null>(null);
   const [choisie, setChoisie] = useState<string | null>(null);
@@ -106,7 +107,7 @@ export function VersionsPrecedentes({
           </ul>
           {lue ? (
             <div className="version-lue">
-              <TexteLu texte={lue.texte} libelle={nomDeVersion(lue, eleves, deClasse)} />
+              <TexteLu texte={lue.texte} libelle={nomDeVersion(lue, eleves, deClasse)} livre={livre} />
             </div>
           ) : null}
         </>

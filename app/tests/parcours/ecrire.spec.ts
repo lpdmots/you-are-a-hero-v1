@@ -154,7 +154,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     await aller(page, sceneAdulte(a.projet, a.scenes[1]));
     await copie(page).click();
     await collerDepuisAilleurs(page, '<p>Un phare au bout de la jetée.</p><img src="https://exemple.test/phare.jpg" alt="Un phare">', "Un phare au bout de la jetée.");
-    await expect(MESSAGE(page)).toContainText("L’image n’a pas été collée");
+    await expect(page.locator(".copie__message")).toContainText("L’image n’a pas été collée");
     await attendreEnBase(a.scenes[1], "Un phare");
     expect(enClair((await sceneEnBase(a.scenes[1])).texte)).toEqual(["Un phare au bout de la jetée."]);
     await expect(copie(page).locator("img")).toHaveCount(0);
@@ -167,7 +167,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
     // Par défaut, Alice a les trois commandes (F04-AC02)
-    await expect(alice.page.getByRole("toolbar", { name: "Mise en forme" }).getByRole("button")).toHaveCount(3);
+    await expect(alice.page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button")).toHaveCount(3);
     await ecrire(alice.page, "Trois ");
     await alice.page.keyboard.press("ControlOrMeta+b");
     await alice.page.keyboard.type("mots en gras");
@@ -183,7 +183,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     await expect(page.getByText("Les élèves n’ont plus les trois boutons.")).toBeVisible();
 
     await alice.page.reload();
-    await expect(alice.page.getByRole("toolbar", { name: "Mise en forme" })).toHaveCount(0);
+    await expect(alice.page.getByRole("toolbar", { name: "Outils de la copie" })).toHaveCount(0);
     // Ce qui existe reste en gras
     await expect(copie(alice.page).locator("strong")).toHaveText("mots en gras");
     await ecrire(alice.page, " puis ");
@@ -200,7 +200,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
 
     // L'enseignante garde les trois commandes et retire elle-même ce gras
     await aller(page, sceneAdulte(s.projet, s15));
-    await expect(page.getByRole("toolbar", { name: "Mise en forme" }).getByRole("button")).toHaveCount(3);
+    await expect(page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: /^(Gras|Italique|Souligné)$/ })).toHaveCount(3);
     await copie(page).click();
     await page.keyboard.press("ControlOrMeta+a");
     await page.waitForTimeout(150);

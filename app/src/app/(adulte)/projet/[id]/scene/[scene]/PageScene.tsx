@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Bulle } from "@/composants/Bulle";
-import { Copie, TexteLu, type AutreTexte } from "@/composants/copie/Copie";
+import { TexteLu } from "@/composants/copie/Blocs";
+import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
+import type { Livre, Services } from "@/composants/copie/contexte";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
 import { avantDePartir } from "@/composants/copie/sortie";
 import type { EtatTexte } from "@/composants/copie/useEnregistrementTexte";
@@ -17,12 +19,15 @@ import { jourEnMots } from "@/domaine/dates";
 import { chapitresDe, departDe, referenceScene, scenesDe, type ElevePlan, type Plan } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
-import { reglerScene } from "../../../actions-recit";
-import { garderDeNouveau, mettreDansLaScene, nePlusGarder, relireTexte } from "../../../actions-texte";
+import { reglerScene, supprimer } from "../../../actions-recit";
+import {
+  chercherDestinations, creerSceneDepuisChoix, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, relireNumeros, relireTexte,
+} from "../../../actions-texte";
 import { useCommandesScene } from "../../_plan/commandes";
 import { ChoisirDepart } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
+import { FicheNumero } from "./FicheNumero";
 import { VersionsPrecedentes } from "./VersionsPrecedentes";
 import styles from "./scene.module.css";
 
@@ -40,13 +45,17 @@ const PAS_ENREGISTRE = "Vos dernières corrections ne sont pas encore enregistr�
  * part s'y lit dans son onglet, avec ses deux gestes (F08.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, ouvrir, venuDuSuivi,
+  projet, plan, sceneId, eleves, texte: recu, livre, ouvrir, venuDuSuivi, venuDesChemins,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
+  /** Le livre autour de la scène : numéros, scènes, façon d'annoncer un numéro */
+  livre: Livre;
   /** Le texte gardé à part à montrer en arrivant, depuis la ligne de rappel du Suivi */
   ouvrir?: string;
   venuDuSuivi?: boolean;
+  /** Ouverte depuis la vue « Chemins » du chapitre : on y revient (F03.1) */
+  venuDesChemins?: boolean;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -60,7 +69,7 @@ export function PageScene({
   const minuteur = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Ce qui attend d'être enregistré : le titre et la consigne partent ensemble, aucun ne chasse l'autre
   const enAttente = useRef<{ titre?: string; consigne?: string }>({});
-  const retour = venuDuSuivi ? `/projet/${projet.id}/suivi` : `/projet/${projet.id}/chapitre/${chapitre.id}`;
+  const retour = venuDuSuivi ? `/projet/${projet.id}/suivi` : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => routeur.push(retour) });
 
   // Le texte : la page le reçoit à l'ouverture, puis ne le remplace que par un geste (échange, conflit)
@@ -71,6 +80,7 @@ export function PageScene({
   const [fait, setFait] = useState<Fait | null>(null);
   const [geste, setGeste] = useState(false);
   const [versions, setVersions] = useState(false);
+  const [numero, setNumero] = useState(false);
   const montree = copies.find((c) => c.id === onglet) ?? null;
   const nom = (c: CopieGardee) => nomDeTexte(c, eleves, projet.deClasse);
 
@@ -98,6 +108,17 @@ export function PageScene({
     },
     [scene.id],
   );
+
+  // Ce que la copie demande au serveur : chercher une destination, créer une scène depuis un choix
+  const services: Services = {
+    chercher: (demande) => chercherDestinations(projet.id, demande),
+    creerScene: (chapitreId, titreScene) => creerSceneDepuisChoix(chapitreId, titreScene),
+    supprimerScene: async (id) => {
+      const reponse = await supprimer("scene", id);
+      return reponse.ok ? { ok: true } : { ok: false, erreur: reponse.erreur };
+    },
+    relireNumeros: async () => (await relireNumeros(projet.id)).numeros,
+  };
 
   const remplacer = (suite: TexteDeScene) => {
     setCopie((avant) => ({ texte: suite.texte, version: suite.version, generation: avant.generation + 1 }));
@@ -203,7 +224,7 @@ export function PageScene({
             En lecture · {nom(montree).mention}
           </span>
         ),
-        corps: <TexteLu texte={montree.texte} libelle={`${nom(montree).titre}, ${nom(montree).sous}`} />,
+        corps: <TexteLu texte={montree.texte} libelle={`${nom(montree).titre}, ${nom(montree).sous}`} livre={livre} />,
         pied: (
           <>
             <p className="ga-pied">
@@ -270,6 +291,24 @@ export function PageScene({
                   <button type="button" onClick={() => { fermer(); commandes.basculerFin(scene); }}>
                     {scene.fin ? "Retirer le repère de fin" : "Fin de l’histoire"}
                   </button>
+                  {/* Le départ porte toujours le n° 1 : il ne se fixe pas (F11-AC97) */}
+                  {depart?.id === scene.id ? null : scene.numeroFixe ? (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        fermer();
+                        void libererNumero(scene.id).then((fait) =>
+                          dire({ texte: fait.ok ? `${ref} n’a plus de numéro fixé : le passage prend place à la suite des autres.` : fait.erreur }),
+                        );
+                      }}
+                    >
+                      Libérer le numéro
+                    </button>
+                  ) : (
+                    <button type="button" onClick={() => { fermer(); setNumero(true); }}>
+                      Fixer son numéro…
+                    </button>
+                  )}
                   <hr />
                 </>
               ) : null}
@@ -301,10 +340,28 @@ export function PageScene({
           </span>
         ) : null}
         {scene.horsLivre ? <span className="repere">hors du livre</span> : null}
+        {projet.aChoix && scene.numeroFixe ? (
+          <span className="repere">
+            <Icone nom="cadenas" />
+            n° {scene.numeroFixe} fixé
+          </span>
+        ) : null}
         <span className={styles.etat} role="status">
           {etat === "attente" ? "Enregistrement…" : etat === "enregistre" ? "Enregistré" : etat === "erreur" ? "Cela n’a pas pu être enregistré." : ""}
         </span>
       </div>
+
+      {numero ? (
+        <FicheNumero
+          sceneId={scene.id}
+          nom={ref}
+          onFermer={() => setNumero(false)}
+          onFixe={(n) => {
+            setNumero(false);
+            dire({ texte: `${ref} garde le n° ${n}.` });
+          }}
+        />
+      ) : null}
 
       <div className={styles.colonnes}>
         <section className={styles.texte} aria-label="Texte de la scène">
@@ -384,6 +441,10 @@ export function PageScene({
             texte={copie.texte}
             version={copie.version}
             cible={{ scene: scene.id }}
+            livre={livre}
+            droits={DROITS_ADULTE}
+            lieu={{ projetId: projet.id, sceneId: scene.id, chapitreId: chapitre.id }}
+            services={services}
             marques
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}
@@ -452,6 +513,7 @@ export function PageScene({
           sceneId={scene.id}
           eleves={eleves}
           deClasse={projet.deClasse}
+          livre={livre}
           onFermer={() => setVersions(false)}
           onRemis={(suite) => {
             remplacer(suite);

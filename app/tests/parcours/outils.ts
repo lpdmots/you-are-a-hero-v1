@@ -387,3 +387,101 @@ export async function collerDepuisAilleurs(page: Page, html: string, brut: strin
 
 /** La page d'un poste vérifie ses accès tout de suite, sans attendre la minute. */
 export const veiller = (page: Page): Promise<void> => page.evaluate(() => void window.dispatchEvent(new Event("veille-poste")));
+
+// ——— Étape 3, lot 2 : phrases de choix ———
+
+export type BlocSeme = Record<string, unknown> & { id: string; type: string };
+export const recit = (texte: string, id = randomUUID()): BlocSeme => ({ type: "p", id, children: [{ text: texte }] });
+export const choixAuto = (libelle: string, cible: string | null, construction = "neutre", id = randomUUID()): BlocSeme => ({
+  type: "choix", id, auto: true, libelle, construction, cible, children: [{ text: "" }],
+});
+export const renvoi = (cible: string | null, id = randomUUID()) => ({ type: "renvoi", id, cible, children: [{ text: "" }] });
+export const choixPerso = (libelle: string, enfants: (string | ReturnType<typeof renvoi>)[], id = randomUUID()): BlocSeme => ({
+  type: "choix", id, libelle, children: enfants.map((x) => (typeof x === "string" ? { text: x } : x)),
+});
+
+/** Écrit les blocs d'une scène sans passer par l'écran, au nom de l'adulte. */
+export async function semerBlocs(base: SupabaseClient, sceneId: string, blocs: BlocSeme[]): Promise<void> {
+  const { version } = await sceneEnBase(sceneId);
+  const { data, error } = await base.rpc("enregistrer_texte", { p_scene: sceneId, p_version: version, p_texte: blocs });
+  if (error || (data as { etat: string }).etat !== "enregistre") throw new Error(error?.message ?? "Texte non enregistré");
+}
+
+type PointDeCopie = { bloc: number; enfant?: number; offset: number };
+
+/** Pose le curseur, ou une sélection, par programme ; les frappes qui suivent sont réelles. */
+export async function selectionner(page: Page, debut: PointDeCopie, fin: PointDeCopie = debut): Promise<void> {
+  await page.evaluate(
+    ([d, f]) => {
+      const e = (window as unknown as { __copie: { tf: { focus: () => void; select: (s: unknown) => void } } }).__copie;
+      const point = (p: PointDeCopie) => ({ path: [p.bloc, p.enfant ?? 0], offset: p.offset });
+      e.tf.focus();
+      e.tf.select({ anchor: point(d), focus: point(f) });
+    },
+    [debut, fin] as const,
+  );
+  await copie(page).focus();
+  await page.waitForTimeout(120);
+}
+
+/** Les blocs que tient l'éditeur, avant tout enregistrement. */
+export const blocsEditeur = (page: Page): Promise<BlocSeme[]> =>
+  page.evaluate(() => JSON.parse(JSON.stringify((window as unknown as { __copie: { children: unknown } }).__copie.children)) as BlocSeme[]);
+
+/** Les types des blocs enregistrés d'une scène, dans l'ordre. */
+export const typesEnBase = async (sceneId: string): Promise<string[]> => (await sceneEnBase(sceneId)).texte.map((b) => b.type);
+
+/** Les liens du projet : « S001 > S003 », ou « S001 > ? » sans destination. */
+export async function liensEnBase(projetId: string): Promise<string[]> {
+  const lignes = await sql<{ de: number; vers: number | null }>(
+    "select o.reference as de, c.reference as vers from liens l join scenes o on o.id = l.scene_id left join scenes c on c.id = l.cible_id where l.projet_id = $1 order by o.reference, l.rang",
+    [projetId],
+  );
+  return lignes.map((l) => `S${String(l.de).padStart(3, "0")} > ${l.vers === null ? "?" : `S${String(l.vers).padStart(3, "0")}`}`);
+}
+
+export const BANDEAU = (page: Page): Locator => page.locator(".copie__message");
+export const FICHE = (page: Page): Locator => page.locator(".cx").first();
+export const PHRASES = (page: Page): Locator => copie(page).locator(".phrase-choix");
+
+/** Attend que le pied de la copie dise « Enregistré », après le geste qui vient d'être fait. */
+export async function attendreEnregistre(page: Page): Promise<void> {
+  // Le temps que la copie note le changement : « Enregistré » d'avant le geste ne compte pas
+  await page.waitForTimeout(250);
+  await expect(pied(page)).toHaveText("Enregistré", { timeout: 8_000 });
+}
+
+/** Ce que contient le presse-papiers, en texte simple. */
+export async function presseTexte(page: Page): Promise<string> {
+  await page.context().grantPermissions(["clipboard-read", "clipboard-write"]);
+  return page.evaluate(() => navigator.clipboard.readText());
+}
+
+/** Les numéros du livre tels que l'application les calcule, d'après la base : scène → numéro. */
+export async function numerosEnBase(projetId: string): Promise<Record<string, number>> {
+  const { numeroter } = await import("../../src/domaine/numeros");
+  const [{ depart }] = await sql<{ depart: string | null }>("select depart_scene_id as depart from projets where id = $1", [projetId]);
+  const parties = await sql<{ id: string; groupe: boolean; ouverture: string | null }>(
+    "select id, groupe_avec_precedente as groupe, ouverture_scene_id as ouverture from parties where projet_id = $1 and supprime_le is null order by rang, cree_le",
+    [projetId],
+  );
+  const chapitres = await sql<{ id: string; partie_id: string; hors: boolean }>(
+    "select id, partie_id, hors_livre as hors from chapitres where projet_id = $1 and supprime_le is null order by rang, cree_le",
+    [projetId],
+  );
+  const scenes = await sql<{ id: string; chapitre_id: string; hors: boolean; rang_livre: number | null; numero_fixe: number | null }>(
+    "select id, chapitre_id, hors_livre as hors, rang_livre, numero_fixe from scenes where projet_id = $1 and supprime_le is null order by rang, cree_le",
+    [projetId],
+  );
+  const n = numeroter({
+    departSceneId: depart,
+    parties: parties.map((p) => ({
+      id: p.id, groupeAvecPrecedente: p.groupe, ouvertureSceneId: p.ouverture,
+      chapitres: chapitres.filter((c) => c.partie_id === p.id).map((c) => ({
+        horsLivre: c.hors,
+        scenes: scenes.filter((s) => s.chapitre_id === c.id).map((s) => ({ id: s.id, horsLivre: s.hors, rangLivre: s.rang_livre, numeroFixe: s.numero_fixe })),
+      })),
+    })),
+  });
+  return Object.fromEntries(n.de);
+}

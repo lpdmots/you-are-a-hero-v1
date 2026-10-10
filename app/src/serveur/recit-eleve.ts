@@ -3,7 +3,10 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import type { Eleve } from "@/domaine/eleves";
 import type { Plage } from "@/domaine/horaires";
-import type { Motif, Texte } from "@/domaine/copie";
+import type { Livre, SceneConnue } from "@/composants/copie/contexte";
+import { ciblesDe, type Droits, type Motif, type Texte } from "@/domaine/copie";
+import { numeroter, type PlanNumerote } from "@/domaine/numeros";
+import { estConstruction, estFormuleRenvoi, type Construction } from "@/domaine/preparation";
 import type { Profil, Repere } from "@/domaine/recit";
 import { nomPourLesEleves } from "./adulte";
 import { clientDuPoste, etatDuPoste, type EtatPoste } from "./poste";
@@ -113,8 +116,14 @@ export type SceneEleve = {
   arrete: boolean;
 };
 export type Prise = { par: "moi" | "enseignant" } | { par: "eleve"; eleve: Eleve } | null;
+/** Un lien du chapitre tel que l'élève le lit : hors du chapitre, le seul titre public du chapitre d'arrivée */
+export type LienEleve = { sceneId: string; renvoiId: string; cibleId: string | null; libelle: string; chapitreCible: string | null; manque: "sans" | "supprimee" | null };
+
 export type ChapitreEleve = Repere & {
   id: string; titre: string; couleur: number; partie: string; projetId: string;
+  /** Récit à choix : le chapitre a sa vue « Chemins » (F03-AC18) */
+  aChoix: boolean;
+  liens: LienEleve[];
   profil: Profil | null;
   resume: string;
   camarades: Eleve[];
@@ -135,9 +144,9 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     .eq("id", chapitreId)
     .maybeSingle();
   if (!chapitre) return null;
-  const [partie, projet, attributions, scenes, consignes, resume, arrets] = await Promise.all([
+  const [partie, projet, attributions, scenes, consignes, resume, arrets, liens] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
-    base.from("projets").select("lecture_ouverte").eq("id", chapitre.projet_id).maybeSingle(),
+    base.from("projets").select("lecture_ouverte, recit").eq("id", chapitre.projet_id).maybeSingle(),
     base.from("attributions").select("eleve_id, profil").eq("chapitre_id", chapitreId),
     base
       .from("scenes")
@@ -147,6 +156,7 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     base.rpc("consignes_du_chapitre", { p_chapitre: chapitreId }),
     base.rpc("resume_du_chapitre", { p_chapitre: chapitreId }),
     base.rpc("scenes_ou_je_suis_arrete", { p_chapitre: chapitreId }),
+    base.rpc("liens_du_chapitre", { p_chapitre: chapitreId }),
   ]);
   const arrete = new Set(((arrets.data ?? []) as unknown[]).map((x) => (typeof x === "string" ? x : String((x as { scenes_ou_je_suis_arrete?: string })?.scenes_ou_je_suis_arrete ?? ""))));
   if (scenes.error) throw new Error(`Scènes illisibles : ${scenes.error.message}`);
@@ -157,6 +167,10 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
   return {
     id: chapitre.id, titre: chapitre.titre, couleur: chapitre.couleur, partie: partie.data?.titre ?? "", projetId: chapitre.projet_id,
     ...repere(chapitre),
+    aChoix: projet.data?.recit === "choix",
+    liens: ((liens.data ?? []) as { scene_id: string; renvoi_id: string; cible_id: string | null; libelle: string; chapitre_cible: string | null; manque: "sans" | "supprimee" | null }[]).map(
+      (l) => ({ sceneId: l.scene_id, renvoiId: l.renvoi_id, cibleId: l.cible_id, libelle: l.libelle, chapitreCible: l.chapitre_cible, manque: l.manque }),
+    ),
     profil,
     resume: typeof resume.data === "string" ? resume.data : "",
     camarades: c.eleves.filter((e) => lesAttributions.some((a) => a.eleve_id === e.id)),
@@ -202,7 +216,34 @@ export type SceneOuverte = {
   refus: Motif | null;
   /** De quoi faire accepter ses enregistrements : rien quand il lit seulement */
   ecriture: string | null;
+  projetId: string;
+  /** Le livre autour de la scène, réduit à ce que l'élève peut lire (F05-AC03, AC42) */
+  livre: Livre;
+  /** Ce qu'il a le droit de changer dans le texte (F06.1) */
+  droits: Droits;
 };
+
+type StructureLue = {
+  depart: string | null;
+  parties: { id: string; groupe: boolean; ouverture: string | null; chapitres: { hors: boolean; scenes: { id: string; hors: boolean; rang: number | null; fixe: number | null }[] }[] }[];
+};
+
+/** Les numéros du livre, calculés d'après la structure que la base rend au poste : ni titre ni texte. */
+export async function numerosDuPoste(c: ContexteEleve, projetId: string): Promise<Record<string, number>> {
+  if (!estUuid(projetId)) return {};
+  const { data, error } = await (await clientDuPoste(c.poste)).rpc("numerotation_du_projet", { p_projet: projetId });
+  if (error) throw new Error(`Numéros illisibles : ${error.message}`);
+  const lu = data as StructureLue | null;
+  if (!lu) return {};
+  const plan: PlanNumerote = {
+    departSceneId: lu.depart,
+    parties: lu.parties.map((p) => ({
+      id: p.id, groupeAvecPrecedente: p.groupe, ouvertureSceneId: p.ouverture,
+      chapitres: p.chapitres.map((ch) => ({ horsLivre: ch.hors, scenes: ch.scenes.map((s) => ({ id: s.id, horsLivre: s.hors, rangLivre: s.rang, numeroFixe: s.fixe })) })),
+    })),
+  };
+  return Object.fromEntries(numeroter(plan).de);
+}
 
 /**
  * Une scène ouverte par un élève (F06-AC20, AC21). La base ne rend que ce qu'il peut lire,
@@ -215,12 +256,46 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   const { data, error } = await base.rpc("scene_du_poste", { p_scene: sceneId });
   if (error) throw new Error(`Scène illisible : ${error.message}`);
   const s = data as {
-    id: string; chapitre: string; reference: number; titre: string | null; consigne: string | null; texte: Texte; version: number; vide: boolean;
+    id: string; chapitre: string; projet: string; reference: number; titre: string | null; consigne: string | null; texte: Texte; version: number; vide: boolean;
     profil: Profil | null; prise_par_eleve: string | null; prise_par_enseignant: boolean; marques: boolean | null; refus: Motif | null;
+    recit: string | null; formule: string | null; constructions: string[] | null;
   } | null;
   if (!s) return null;
-  const { data: chapitre } = await base.from("chapitres").select("id, titre, couleur").eq("id", s.chapitre).maybeSingle();
+  const { data: chapitre } = await base.from("chapitres").select("id, partie_id, titre, couleur").eq("id", s.chapitre).maybeSingle();
   if (!chapitre) return null;
+  const aChoix = s.recit === "choix";
+  // Ce qu'il peut nommer : les scènes de son chapitre ; ailleurs, le seul titre public du chapitre
+  const [partie, voisines, destinations, numeros] = await Promise.all([
+    base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
+    base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
+    aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
+    aChoix ? numerosDuPoste(c, s.projet) : Promise.resolve({} as Record<string, number>),
+  ]);
+  const scenes = new Map<string, SceneConnue>(
+    ((voisines.data ?? []) as { id: string; reference: number; titre: string | null; texte_vide: boolean }[]).map((v) => [
+      v.id,
+      { id: v.id, reference: v.reference, titre: v.titre, chapitreId: chapitre.id, chapitre: chapitre.titre, partie: partie.data?.titre ?? "", vide: v.texte_vide !== false },
+    ]),
+  );
+  const ailleurs: Record<string, string> = {};
+  for (const d of (destinations.data ?? []) as { cible_id: string; lisible: boolean; reference: number | null; titre: string | null; chapitre: string }[]) {
+    if (scenes.has(d.cible_id)) continue;
+    // Lecture ouverte : une scène d'un autre chapitre se nomme, sans devenir une destination à choisir
+    if (d.lisible && d.reference !== null) ailleurs[d.cible_id] = `${d.chapitre}${d.titre ? ` — ${d.titre}` : ""}`;
+    else ailleurs[d.cible_id] = d.chapitre;
+  }
+  const cibles = new Set(ciblesDe(s.texte ?? []));
+  const livre: Livre = {
+    aChoix,
+    formule: s.formule && estFormuleRenvoi(s.formule) ? s.formule : "rends",
+    constructions: ((s.constructions ?? []).filter(estConstruction) as Construction[]).length ? ((s.constructions ?? []).filter(estConstruction) as Construction[]) : ["neutre"],
+    // Les numéros des scènes de son chapitre, et de celles où mènent les choix qu'il lit
+    numeros: Object.fromEntries(Object.entries(numeros).filter(([id]) => scenes.has(id) || cibles.has(id))),
+    scenes: s.profil ? [...scenes.values()] : [],
+    ailleurs,
+    chapitres: [{ id: chapitre.id, titre: chapitre.titre, partie: partie.data?.titre ?? "" }],
+  };
+  const droits: Droits = { role: "eleve", profil: s.profil ?? "propositions", scenesDuChapitre: new Set(scenes.keys()) };
   const prise = priseDe(c, s.prise_par_eleve, s.prise_par_enseignant);
   // La scène dont un camarade s'occupe se lit : la prendre à son nom se fera à l'étape 4 (F06.3)
   const ecrit = s.refus === null && prise?.par !== "eleve";
@@ -235,6 +310,36 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     chapitre: { id: chapitre.id, titre: chapitre.titre, couleur: chapitre.couleur },
     consigne: s.consigne, profil: s.profil, prise,
     texte: s.texte ?? [], version: s.version, vide: s.vide, marques: s.marques !== false,
-    refus: s.refus, ecriture,
+    refus: s.refus, ecriture, projetId: s.projet, livre, droits,
   };
+}
+
+export type SceneTrouvee = { id: string; reference: number; titre: string | null; extrait: string | null };
+export type ChapitreTrouve = { id: string; titre: string; couleur: number; scenes: SceneTrouvee[] };
+
+/**
+ * « Rechercher une scène », pour l'élève (F05-AC48) : dans les titres et les textes des
+ * chapitres qu'il peut lire, et dans les consignes de ses chapitres seulement. Rien d'un
+ * chapitre fermé n'apparaît (F05-AC03).
+ */
+export async function chercherPourLePoste(c: ContexteEleve, demande: string): Promise<ChapitreTrouve[]> {
+  const sansAccent = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const mots = sansAccent(demande).split(/\s+/).filter(Boolean).slice(0, 8);
+  if (mots.length === 0) return [];
+  const { data, error } = await (await clientDuPoste(c.poste)).rpc("scenes_a_chercher");
+  if (error) throw new Error(`Recherche impossible : ${error.message}`);
+  const trouves = new Map<string, ChapitreTrouve>();
+  for (const s of (data ?? []) as { id: string; reference: number; titre: string | null; chapitre_id: string; chapitre: string; couleur: number; consigne: string | null; mots: string }[]) {
+    const texte = s.mots.replace(/\s+/g, " ").trim();
+    const partout = sansAccent(`${s.titre ?? ""} ${texte} ${s.consigne ?? ""}`);
+    if (!mots.every((m) => partout.includes(m))) continue;
+    // L'extrait trouvé : dans le texte, sinon dans la consigne
+    const ou = [texte, s.consigne ?? ""].find((t) => sansAccent(t).includes(mots[0])) ?? "";
+    const place = Math.max(0, sansAccent(ou).indexOf(mots[0]) - 40);
+    const extrait = ou ? `${place > 0 ? "… " : ""}${ou.slice(place, place + 140).trim()}${place + 140 < ou.length ? " …" : ""}` : null;
+    const chapitre = trouves.get(s.chapitre_id) ?? { id: s.chapitre_id, titre: s.chapitre, couleur: s.couleur, scenes: [] };
+    chapitre.scenes.push({ id: s.id, reference: s.reference, titre: s.titre, extrait });
+    trouves.set(s.chapitre_id, chapitre);
+  }
+  return [...trouves.values()];
 }

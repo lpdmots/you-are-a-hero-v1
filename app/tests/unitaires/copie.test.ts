@@ -163,13 +163,13 @@ describe("Nommer un texte gardé à part (F08.1)", () => {
 describe("Ce qu'une suppression emporterait (F03.1)", () => {
   const scene = (id: string, chapitreId: string, texteVide: boolean, ecritPar: string[] = []): Scene => ({
     id, chapitreId, reference: Number(id.slice(1)), titre: null, consigne: "", fin: false, horsLivre: false, creeParEleve: null,
-    priseParEleve: null, priseParEnseignant: false, texteVide, ecritPar,
+    priseParEleve: null, priseParEnseignant: false, texteVide, ecritPar, rangLivre: null, numeroFixe: null,
   });
   const repere = { imageId: null, visuelChoisi: null, visuelDefaut: null };
   const plan: Plan = {
-    departSceneId: null, corbeille: [],
+    departSceneId: null, corbeille: [], liens: [],
     parties: [{
-      id: "p1", titre: "La forêt", ...repere,
+      id: "p1", titre: "La forêt", groupeAvecPrecedente: false, ouvertureSceneId: null, ...repere,
       chapitres: [
         { id: "c1", partieId: "p1", titre: "Le sanctuaire", couleur: 0, resume: "", horsLivre: false, attributions: [], ...repere,
           scenes: [scene("s1", "c1", false, ["a"]), scene("s2", "c1", false, ["a", "b"]), scene("s3", "c1", true), scene("s4", "c1", false), scene("s5", "c1", true), scene("s6", "c1", false, ["b"])] },
@@ -179,9 +179,24 @@ describe("Ce qu'une suppression emporterait (F03.1)", () => {
   };
 
   it("F03-AC13, AC22 — « Le sanctuaire », six scènes dont quatre écrites, et les élèves qui y ont écrit", () => {
-    expect(travailDans(plan, "chapitre", "c1")).toEqual({ chapitres: 1, scenes: 6, ecrites: 4, auteurs: ["a", "b"] });
-    expect(travailDans(plan, "partie", "p1")).toEqual({ chapitres: 2, scenes: 7, ecrites: 4, auteurs: ["a", "b"] });
-    expect(travailDans(plan, "scene", "s2")).toEqual({ chapitres: 0, scenes: 1, ecrites: 1, auteurs: ["a", "b"] });
+    expect(travailDans(plan, "chapitre", "c1")).toMatchObject({ chapitres: 1, scenes: 6, ecrites: 4, auteurs: ["a", "b"] });
+    expect(travailDans(plan, "partie", "p1")).toMatchObject({ chapitres: 2, scenes: 7, ecrites: 4, auteurs: ["a", "b"] });
+    expect(travailDans(plan, "scene", "s2")).toMatchObject({ chapitres: 0, scenes: 1, ecrites: 1, auteurs: ["a", "b"] });
+  });
+
+  it("F03-AC13, AC14 — le choix qui mène à ce qu'on supprime est annoncé : celui de S007 vers « Le sanctuaire », pas ceux du chapitre lui-même", () => {
+    const relie: Plan = {
+      ...plan,
+      liens: [
+        { sceneId: "s7", renvoiId: "r1", cibleId: "s2", libelle: "Entrer dans le sanctuaire", cache: false },
+        { sceneId: "s1", renvoiId: "r2", cibleId: "s2", libelle: "Avancer", cache: false },
+        { sceneId: "s2", renvoiId: "r3", cibleId: "s7", libelle: "Ressortir", cache: false },
+      ],
+    };
+    expect(travailDans(relie, "chapitre", "c1").menentIci.map((s) => s.id)).toEqual(["s7"]);
+    expect(travailDans(relie, "scene", "s2").menentIci.map((s) => s.id)).toEqual(["s1", "s7"]);
+    // Supprimer toute la partie emporte aussi S007 : plus aucun choix du plan n'y mène
+    expect(travailDans(relie, "partie", "p1").menentIci).toEqual([]);
   });
 
   it("un chapitre ou une scène sans texte n'emporte aucun travail : il se supprime sans confirmation", () => {

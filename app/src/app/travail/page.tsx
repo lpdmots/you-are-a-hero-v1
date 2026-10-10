@@ -6,6 +6,7 @@ import { majuscule } from "@/domaine/texte";
 import { contexteEleve, histoiresDuPoste } from "@/serveur/recit-eleve";
 import { EnteteEleve } from "./EnteteEleve";
 import { Histoire } from "./Histoire";
+import { RechercheEleve } from "./RechercheEleve";
 import styles from "./travail.module.css";
 
 export const metadata: Metadata = { title: "Mon travail" };
@@ -89,6 +90,11 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
             ) : null}
           </div>
         </section>
+        {histoires.some((h) => h.parties.length) ? (
+          <div className={styles.recherche}>
+            <RechercheEleve />
+          </div>
+        ) : null}
         {histoires.filter((h) => h.parties.length).map((h) => (
           <Histoire key={h.id} histoire={h} avecTitre={histoires.length > 1} />
         ))}

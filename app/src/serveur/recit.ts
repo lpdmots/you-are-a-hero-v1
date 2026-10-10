@@ -19,6 +19,7 @@ type LigneScene = {
   id: string; chapitre_id: string; reference: number; titre: string | null; consigne: string; rang: number;
   fin: boolean; hors_livre: boolean; cree_par_eleve: string | null; supprime_le: string | null; cree_le: string;
   prise_par_eleve: string | null; prise_par_enseignant: boolean; texte_vide: boolean; ecrit_par: string[] | null;
+  rang_livre: number | null; numero_fixe: number | null;
 };
 type LigneChapitre = {
   id: string; partie_id: string; titre: string; rang: number; couleur: number; resume: string; image_id: string | null;
@@ -26,7 +27,7 @@ type LigneChapitre = {
 };
 type LignePartie = {
   id: string; titre: string; rang: number; image_id: string | null; visuel_choisi: string | null; visuel_defaut: string | null;
-  supprime_le: string | null; cree_le: string;
+  supprime_le: string | null; cree_le: string; groupe_avec_precedente: boolean; ouverture_scene_id: string | null;
 };
 
 const parRang = <T extends { rang: number; cree_le: string }>(a: T, b: T): number => a.rang - b.rang || a.cree_le.localeCompare(b.cree_le);
@@ -35,25 +36,30 @@ const sceneDepuis = (s: LigneScene): Scene => ({
   id: s.id, chapitreId: s.chapitre_id, reference: s.reference, titre: s.titre, consigne: s.consigne, fin: s.fin,
   horsLivre: s.hors_livre, creeParEleve: s.cree_par_eleve, priseParEleve: s.prise_par_eleve, priseParEnseignant: s.prise_par_enseignant,
   texteVide: s.texte_vide !== false, ecritPar: s.ecrit_par ?? [],
+  rangLivre: s.rang_livre ?? null, numeroFixe: s.numero_fixe ?? null,
 });
 
 /** Le plan du récit et sa corbeille, lus une seule fois par page. */
 export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Plan> => {
-  if (!estUuid(projetId)) return { parties: [], corbeille: [], departSceneId: null };
-  const [parties, chapitres, scenes, attributions, projet] = await Promise.all([
-    e.supabase.from("parties").select("id, titre, rang, image_id, visuel_choisi, visuel_defaut, supprime_le, cree_le").eq("projet_id", projetId),
+  if (!estUuid(projetId)) return { parties: [], corbeille: [], departSceneId: null, liens: [] };
+  const [parties, chapitres, scenes, attributions, projet, liens] = await Promise.all([
+    e.supabase
+      .from("parties")
+      .select("id, titre, rang, image_id, visuel_choisi, visuel_defaut, supprime_le, cree_le, groupe_avec_precedente, ouverture_scene_id")
+      .eq("projet_id", projetId),
     e.supabase
       .from("chapitres")
       .select("id, partie_id, titre, rang, couleur, resume, image_id, visuel_choisi, visuel_defaut, hors_livre, supprime_le, cree_le")
       .eq("projet_id", projetId),
     e.supabase
       .from("scenes")
-      .select("id, chapitre_id, reference, titre, consigne, rang, fin, hors_livre, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide, ecrit_par, supprime_le, cree_le")
+      .select("id, chapitre_id, reference, titre, consigne, rang, fin, hors_livre, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide, ecrit_par, rang_livre, numero_fixe, supprime_le, cree_le")
       .eq("projet_id", projetId),
     e.supabase.from("attributions").select("chapitre_id, eleve_id, profil, cree_le").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("projets").select("depart_scene_id").eq("id", projetId).maybeSingle(),
+    e.supabase.from("liens").select("scene_id, renvoi_id, cible_id, libelle, cache, rang").eq("projet_id", projetId).order("rang"),
   ]);
-  const erreur = parties.error ?? chapitres.error ?? scenes.error ?? attributions.error ?? projet.error;
+  const erreur = parties.error ?? chapitres.error ?? scenes.error ?? attributions.error ?? projet.error ?? liens.error;
   if (erreur) throw new Error(`Plan du récit illisible : ${erreur.message}`);
 
   const lesParties = ((parties.data ?? []) as LignePartie[]).sort(parRang);
@@ -71,6 +77,7 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
     .filter((p) => p.supprime_le === null)
     .map((p) => ({
       id: p.id, titre: p.titre, imageId: p.image_id, visuelChoisi: p.visuel_choisi, visuelDefaut: p.visuel_defaut,
+      groupeAvecPrecedente: p.groupe_avec_precedente === true, ouvertureSceneId: p.ouverture_scene_id ?? null,
       chapitres: lesChapitres
         .filter((c) => c.partie_id === p.id && c.supprime_le === null)
         .map((c): Chapitre => ({
@@ -96,7 +103,12 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
     }),
   ].sort((a, b) => b.supprimeLe.localeCompare(a.supprimeLe));
 
-  return { parties: plan, corbeille, departSceneId: (projet.data?.depart_scene_id as string | null) ?? null };
+  return {
+    parties: plan, corbeille, departSceneId: (projet.data?.depart_scene_id as string | null) ?? null,
+    liens: ((liens.data ?? []) as { scene_id: string; renvoi_id: string; cible_id: string | null; libelle: string; cache: boolean }[]).map((l) => ({
+      sceneId: l.scene_id, renvoiId: l.renvoi_id, cibleId: l.cible_id, libelle: l.libelle, cache: l.cache,
+    })),
+  };
 });
 
 /** Les élèves inscrits dans la classe du projet, par prénom. */

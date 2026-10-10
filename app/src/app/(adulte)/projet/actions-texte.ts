@@ -2,7 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { exigerEnseignant } from "@/serveur/adulte";
-import { texteDeScene, versionsPrecedentes, type TexteDeScene, type VersionPrecedente } from "@/serveur/copie";
+import { nomScene } from "@/domaine/recit";
+import {
+  assurerOrdre, chercherDansLesTextes, numerosDuProjet, texteDeScene, versionsPrecedentes, type TexteDeScene, type Trouvee, type VersionPrecedente,
+} from "@/serveur/copie";
 import { estUuid } from "@/serveur/recit";
 
 /**
@@ -87,4 +90,83 @@ export async function remettreVersion(versionId: string, sceneId: string): Promi
   rafraichir(lieu.projetId);
   const scene = await texteDeScene(e, sceneId);
   return scene ? { ok: true, scene } : echec("Cette scène n’existe plus.");
+}
+
+// ——— Choix, destinations et numéros (F05, F05.2, F11.5) ———
+
+const enTable = (numeros: Map<string, number>): Record<string, number> => Object.fromEntries(numeros);
+
+/** Les numéros du livre, relus : après un choix créé, une scène ajoutée, un numéro fixé. */
+export async function relireNumeros(projetId: string): Promise<{ numeros: Record<string, number>; total: number }> {
+  const e = await exigerEnseignant();
+  const lus = await numerosDuProjet(e.supabase, projetId);
+  return { numeros: lus ? enTable(lus.de) : {}, total: lus?.total ?? 0 };
+}
+
+/** Chercher une destination dans les textes du projet (F05-AC01). Aucune IA : une simple recherche de mots. */
+export async function chercherDestinations(projetId: string, demande: string): Promise<Trouvee[]> {
+  const e = await exigerEnseignant();
+  return chercherDansLesTextes(e, projetId, String(demande ?? "").slice(0, 200));
+}
+
+export type SceneCreee = { id: string; reference: number; titre: string | null; chapitreId: string };
+
+/**
+ * « Nouvelle scène », depuis un choix (F05-AC16) : une scène vide, dans le chapitre voulu,
+ * avec le libellé pour titre proposé (F05-AC12). L'auteur reste dans la scène où il écrit.
+ */
+export async function creerSceneDepuisChoix(chapitreId: string, titre: string): Promise<Fait<{ scene: SceneCreee; numeros: Record<string, number> }>> {
+  const e = await exigerEnseignant();
+  if (!estUuid(chapitreId)) return echec("Ce chapitre n’existe pas.");
+  const { data, error } = await e.supabase.rpc("creer_scene", { p_chapitre: chapitreId });
+  const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string; reference: number } | null;
+  if (error || !ligne) return refus(error, "La scène n’a pas pu être créée. Réessayez.");
+  const propre = String(titre ?? "").trim().replace(/\s+/g, " ").slice(0, 120) || null;
+  const { data: scene } = await e.supabase.from("scenes").update({ titre: propre }).eq("id", ligne.scene_id).select("projet_id").maybeSingle();
+  const projetId = scene?.projet_id as string | undefined;
+  if (projetId) rafraichir(projetId);
+  const lus = projetId ? await numerosDuProjet(e.supabase, projetId) : null;
+  return { ok: true, scene: { id: ligne.scene_id, reference: ligne.reference, titre: propre, chapitreId }, numeros: lus ? enTable(lus.de) : {} };
+}
+
+/** Le numéro que porte un passage, l'ordre du livre étant établi s'il ne l'était pas (F11-AC96). */
+export async function numeroDeLaScene(sceneId: string): Promise<Fait<{ numero: number | null; total: number }>> {
+  const e = await exigerEnseignant();
+  const lieu = await projetDeLaScene(sceneId);
+  if (!lieu) return echec("Cette scène n’existe plus.");
+  await assurerOrdre(e.supabase, lieu.projetId);
+  const lus = await numerosDuProjet(e.supabase, lieu.projetId);
+  return { ok: true, numero: lus?.de.get(sceneId) ?? null, total: lus?.total ?? 0 };
+}
+
+/**
+ * « Fixer son numéro… » (F11-AC96). Un numéro déjà fixé pour une autre scène est refusé,
+ * et cette scène est nommée (F05-AC36).
+ */
+export async function fixerNumero(sceneId: string, numero: number): Promise<Fait<{ numeros: Record<string, number>; total: number }> | { ok: false; erreur: string; prise: string }> {
+  const e = await exigerEnseignant();
+  const lieu = await projetDeLaScene(sceneId);
+  if (!lieu || !Number.isInteger(numero)) return echec("Écrivez un numéro entre 1 et 9999.");
+  await assurerOrdre(e.supabase, lieu.projetId);
+  const { data, error } = await e.supabase.rpc("fixer_numero", { p_scene: sceneId, p_numero: numero });
+  if (error) return refus(error, "Le numéro n’a pas pu être fixé. Réessayez.");
+  const fait = data as { fixe: boolean; prise?: { reference: number; titre: string | null } };
+  if (!fait.fixe && fait.prise) {
+    const nom = nomScene(fait.prise);
+    return { ok: false, prise: nom, erreur: `Le n° ${numero} est déjà celui de ${nom}.` };
+  }
+  rafraichir(lieu.projetId);
+  const lus = await numerosDuProjet(e.supabase, lieu.projetId);
+  return { ok: true, numeros: lus ? enTable(lus.de) : {}, total: lus?.total ?? 0 };
+}
+
+/** « Libérer le numéro » : le passage prend place à la suite de son groupe (F11-AC97). */
+export async function libererNumero(sceneId: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const lieu = await projetDeLaScene(sceneId);
+  if (!lieu) return echec("Cette scène n’existe plus.");
+  const { error } = await e.supabase.rpc("liberer_numero", { p_scene: sceneId });
+  if (error) return refus(error, "Le numéro n’a pas pu être libéré. Réessayez.");
+  rafraichir(lieu.projetId);
+  return { ok: true };
 }

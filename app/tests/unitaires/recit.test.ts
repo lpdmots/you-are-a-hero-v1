@@ -13,14 +13,14 @@ import { dimensionsJpeg } from "@/serveur/images";
 
 const scene = (reference: number, titre: string | null = null, consigne = ""): Scene => ({
   id: `s${reference}`, chapitreId: "c", reference, titre, consigne, fin: false, horsLivre: false, creeParEleve: null,
-  priseParEleve: null, priseParEnseignant: false, texteVide: true, ecritPar: [],
+  priseParEleve: null, priseParEnseignant: false, texteVide: true, ecritPar: [], rangLivre: null, numeroFixe: null,
 });
 const chapitre = (id: string, titre: string, scenes: Scene[] = [], eleves: string[] = []): Chapitre => ({
   id, partieId: "p", titre, couleur: 0, resume: "", horsLivre: false, imageId: null, visuelChoisi: null, visuelDefaut: "foret",
   scenes: scenes.map((s) => ({ ...s, chapitreId: id })), attributions: eleves.map((eleveId) => ({ eleveId, profil: "propositions" })),
 });
 const plan = (chapitres: Chapitre[], departSceneId: string | null = null): Plan => ({
-  parties: [{ id: "p", titre: "La forêt", imageId: null, visuelChoisi: null, visuelDefaut: "mer", chapitres }], corbeille: [], departSceneId,
+  parties: [{ id: "p", titre: "La forêt", imageId: null, visuelChoisi: null, visuelDefaut: "mer", groupeAvecPrecedente: false, ouvertureSceneId: null, chapitres }], corbeille: [], departSceneId, liens: [],
 });
 const eleve = (id: string) => ({ id, prenom: id, nom: null, couleur: 0 });
 
@@ -83,12 +83,12 @@ describe("Plan du récit (F03)", () => {
 
   it("F03-AC26 — la recherche trouve les scènes de tout le livre, sans accents ni majuscules, dans les titres et les consignes", () => {
     const p: Plan = {
-      departSceneId: null, corbeille: [],
+      departSceneId: null, corbeille: [], liens: [],
       parties: [
-        { id: "p1", titre: "La forêt", imageId: null, visuelChoisi: null, visuelDefaut: null, chapitres: [
+        { id: "p1", titre: "La forêt", imageId: null, visuelChoisi: null, visuelDefaut: null, groupeAvecPrecedente: false, ouvertureSceneId: null, chapitres: [
           chapitre("lisiere", "La lisière", [scene(16, "Souche creuse — la lanterne de secours"), scene(17, "Souche — la chouette messagère"), scene(18, "Le sentier")]),
         ] },
-        { id: "p2", titre: "La montagne", imageId: null, visuelChoisi: null, visuelDefaut: null, chapitres: [chapitre("col", "Le col", [scene(40, "Le sommet", "Décris la vieille SOUCHE gelée.")])] },
+        { id: "p2", titre: "La montagne", imageId: null, visuelChoisi: null, visuelDefaut: null, groupeAvecPrecedente: false, ouvertureSceneId: null, chapitres: [chapitre("col", "Le col", [scene(40, "Le sommet", "Décris la vieille SOUCHE gelée.")])] },
       ],
     };
     const trouvees = chercherScenes(p, "souche");

@@ -1,9 +1,14 @@
 import "server-only";
+import { createHash } from "node:crypto";
+import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Enseignant } from "./adulte";
 import { empreinteDuPoste } from "./poste";
 import { estUuid } from "./recit";
 import { clientService } from "./supabase";
-import { nettoyerTexte, type Enregistrement, type Motif, type Texte } from "@/domaine/copie";
+import {
+  ciblesDe, controlerTexte, enMots, estAuto, estRenvoi, nettoyerTexte, renvoisDe, type Droits, type Enregistrement, type Motif, type Texte,
+} from "@/domaine/copie";
+import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
 
 /**
  * Le texte d'une scène : ce qu'on en lit et comment il s'enregistre (F08.1, F08.2). Le
@@ -55,13 +60,42 @@ export async function texteDeScene(e: Enseignant, sceneId: string): Promise<Text
   };
 }
 
+/** Une identité tirée d'une autre, toujours la même pour une scène donnée : le texte ne change pas d'un enregistrement à l'autre. */
+const identiteDerivee = (id: string, sceneId: string): string => {
+  const h = createHash("sha256").update(`${sceneId}:${id}`).digest("hex");
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-4${h.slice(13, 16)}-8${h.slice(17, 20)}-${h.slice(20, 32)}`;
+};
+
+/**
+ * Un même choix ne figure jamais dans deux scènes (F05.2). Coupé ici, collé ailleurs, puis
+ * le couper annulé : le choix revenu porte une identité déjà prise par l'autre scène. Il
+ * devient alors un autre choix, de même contenu.
+ */
+export async function sansIdentitePrise(base: SupabaseClient, sceneId: string, texte: Texte): Promise<Texte> {
+  const ids = texte.flatMap((b) => renvoisDe(b).map((r) => r.id));
+  if (ids.length === 0) return texte;
+  const { data, error } = await base.from("liens").select("renvoi_id").in("renvoi_id", ids).neq("scene_id", sceneId);
+  if (error) throw new Error(`Enregistrement impossible : ${error.message}`);
+  const prises = new Set(((data ?? []) as { renvoi_id: string }[]).map((l) => l.renvoi_id));
+  if (prises.size === 0) return texte;
+  return texte.map((b) => {
+    if (b.type !== "choix") return b;
+    if (estAuto(b)) return prises.has(b.id) ? { ...b, id: identiteDerivee(b.id, sceneId) } : b;
+    return { ...b, children: b.children.map((x) => (estRenvoi(x) && prises.has(x.id) ? { ...x, id: identiteDerivee(x.id, sceneId) } : x)) };
+  });
+}
+
 /** L'adulte enregistre le texte d'une de ses scènes. */
 export async function enregistrerPourAdulte(e: Enseignant, sceneId: string, version: number, brut: unknown): Promise<Enregistrement> {
-  const texte = nettoyerTexte(brut);
-  if (!estUuid(sceneId) || !Number.isInteger(version) || !texte) return { etat: "refuse", motif: "controle" };
+  const propre = nettoyerTexte(brut);
+  if (!estUuid(sceneId) || !Number.isInteger(version) || !propre) return { etat: "refuse", motif: "controle" };
+  const texte = await sansIdentitePrise(e.supabase, sceneId, propre);
   const { data, error } = await e.supabase.rpc("enregistrer_texte", { p_scene: sceneId, p_version: version, p_texte: texte });
   if (error) throw new Error(`Enregistrement impossible : ${error.message}`);
-  return resultat(data);
+  const fait = resultat(data);
+  // Un premier renvoi vient d'être enregistré : son numéro doit s'afficher, l'ordre du livre s'établit (F05-AC34)
+  if (fait.etat === "enregistre" && ciblesDe(texte).length) await assurerOrdreDeLaScene(e.supabase, sceneId);
+  return fait;
 }
 
 /**
@@ -76,14 +110,111 @@ export async function enregistrerPourEleve(ecritureId: string, version: number, 
   const { data: ouverte, error: illisible } = await service.rpc("ecriture_lire", { p_ecriture: ecritureId, p_jeton_hash: jeton });
   if (illisible) throw new Error(`Enregistrement impossible : ${illisible.message}`);
   if (!ouverte) return { etat: "ferme" };
-  const texte = nettoyerTexte(brut);
+  const propre = nettoyerTexte(brut);
   // Un texte que l'application ne reconnaît pas n'entre pas dans la scène ; rien ne s'en garde
-  if (!texte) return { etat: "refuse", motif: "controle" };
+  if (!propre) return { etat: "refuse", motif: "controle" };
+  const texte = await sansIdentitePrise(service, (ouverte as { scene: string }).scene, propre);
+  // Ce que l'élève a le droit de changer se contrôle ici, sur le texte enregistré : choix,
+  // raccords, blocs préparés (F05-AC32, F06-AC13). Un texte refusé est gardé à part (F08.2).
+  const o = ouverte as { scene: string; texte: Texte; profil: "propositions" | "organisation" | null; scenes_du_chapitre: string[] };
+  const droits: Droits = { role: "eleve", profil: o.profil ?? "propositions", scenesDuChapitre: new Set(o.scenes_du_chapitre ?? []) };
+  const refus = controlerTexte(vuParUnEleve(o.texte ?? []), texte, droits);
   const { data, error } = await service.rpc("ecriture_enregistrer", {
-    p_ecriture: ecritureId, p_jeton_hash: jeton, p_version: version, p_texte: texte, p_refus: null,
+    p_ecriture: ecritureId, p_jeton_hash: jeton, p_version: version, p_texte: texte, p_refus: refus ? "controle" : null,
   });
   if (error) throw new Error(`Enregistrement impossible : ${error.message}`);
-  return resultat(data);
+  const fait = resultat(data);
+  if (fait.etat === "enregistre" && ciblesDe(texte).length) await assurerOrdreDeLaScene(service, o.scene);
+  return fait;
+}
+
+/** Le texte tel qu'un élève le reçoit : sans les notes de l'enseignant, que la base ne lui envoie pas. */
+export const vuParUnEleve = (texte: Texte): Texte => texte.filter((b) => (b as { type: string }).type !== "note");
+
+// ——— Ordre du livre et numéros (F11.5) ———
+
+type LigneOrdre = { id: string; chapitre_id: string; hors_livre: boolean; rang: number; rang_livre: number | null; numero_fixe: number | null; cree_le: string };
+
+/** La structure que lit la numérotation, pour l'adulte ou pour le serveur. */
+async function structure(base: SupabaseClient, projetId: string): Promise<{ plan: PlanNumerote; etabli: boolean; aChoix: boolean } | null> {
+  const [projet, parties, chapitres, scenes] = await Promise.all([
+    base.from("projets").select("recit, depart_scene_id, ordre_etabli_le").eq("id", projetId).maybeSingle(),
+    base.from("parties").select("id, rang, cree_le, groupe_avec_precedente, ouverture_scene_id").eq("projet_id", projetId).is("supprime_le", null),
+    base.from("chapitres").select("id, partie_id, rang, cree_le, hors_livre").eq("projet_id", projetId).is("supprime_le", null),
+    base.from("scenes").select("id, chapitre_id, hors_livre, rang, rang_livre, numero_fixe, cree_le").eq("projet_id", projetId).is("supprime_le", null),
+  ]);
+  const erreur = projet.error ?? parties.error ?? chapitres.error ?? scenes.error;
+  if (erreur) throw new Error(`Ordre du livre illisible : ${erreur.message}`);
+  if (!projet.data) return null;
+  const parRang = <T extends { rang: number; cree_le: string }>(a: T, b: T) => a.rang - b.rang || a.cree_le.localeCompare(b.cree_le);
+  const lesScenes = ((scenes.data ?? []) as LigneOrdre[]).sort(parRang);
+  const lesChapitres = ((chapitres.data ?? []) as { id: string; partie_id: string; rang: number; cree_le: string; hors_livre: boolean }[]).sort(parRang);
+  const lesParties = ((parties.data ?? []) as { id: string; rang: number; cree_le: string; groupe_avec_precedente: boolean; ouverture_scene_id: string | null }[]).sort(parRang);
+  return {
+    etabli: projet.data.ordre_etabli_le !== null,
+    aChoix: projet.data.recit === "choix",
+    plan: {
+      departSceneId: projet.data.depart_scene_id as string | null,
+      parties: lesParties.map((p) => ({
+        id: p.id, groupeAvecPrecedente: p.groupe_avec_precedente, ouvertureSceneId: p.ouverture_scene_id,
+        chapitres: lesChapitres.filter((c) => c.partie_id === p.id).map((c) => ({
+          horsLivre: c.hors_livre,
+          scenes: lesScenes.filter((s) => s.chapitre_id === c.id).map((s) => ({ id: s.id, horsLivre: s.hors_livre, rangLivre: s.rang_livre, numeroFixe: s.numero_fixe })),
+        })),
+      })),
+    },
+  };
+}
+
+/**
+ * Établit l'ordre du livre s'il ne l'est pas encore : les scènes de chaque partie sont
+ * mélangées, une fois, puis l'ordre est gardé (F11-AC16, AC19). Les destinations d'un même
+ * choix ne sont pas mises côte à côte, autant que possible.
+ */
+export async function assurerOrdre(base: SupabaseClient, projetId: string): Promise<void> {
+  const lu = await structure(base, projetId);
+  if (!lu || lu.etabli || !lu.aChoix) return;
+  const { data: liens } = await base.from("liens").select("scene_id, cible_id").eq("projet_id", projetId);
+  const parOrigine = new Map<string, string[]>();
+  for (const l of (liens ?? []) as { scene_id: string; cible_id: string | null }[]) {
+    if (l.cible_id) parOrigine.set(l.scene_id, [...(parOrigine.get(l.scene_id) ?? []), l.cible_id]);
+  }
+  const rangs = melangeInitial(lu.plan, [...parOrigine.values()]);
+  const { error } = await base.rpc("etablir_ordre", { p_projet: projetId, p_rangs: Object.fromEntries(rangs) });
+  if (error) throw new Error(`L'ordre du livre n'a pas pu être établi : ${error.message}`);
+}
+
+async function assurerOrdreDeLaScene(base: SupabaseClient, sceneId: string): Promise<void> {
+  const { data } = await base.from("scenes").select("projet_id").eq("id", sceneId).maybeSingle();
+  if (data?.projet_id) await assurerOrdre(base, data.projet_id as string);
+}
+
+/** Les numéros du livre, relus dans la base. */
+export async function numerosDuProjet(base: SupabaseClient, projetId: string): Promise<Numeros | null> {
+  const lu = await structure(base, projetId);
+  return lu?.aChoix ? numeroter(lu.plan) : null;
+}
+
+export type Trouvee = { id: string; extrait: string };
+
+/**
+ * Recherche d'une destination dans les textes du projet (F05-AC01) : les scènes dont le
+ * texte contient tous les mots, avec le passage trouvé. Les notes de l'adulte en font partie.
+ */
+export async function chercherDansLesTextes(e: Enseignant, projetId: string, demande: string): Promise<Trouvee[]> {
+  if (!estUuid(projetId)) return [];
+  const sansAccent = (t: string) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+  const mots = sansAccent(demande).split(/\s+/).filter(Boolean).slice(0, 8);
+  if (mots.length === 0) return [];
+  const { data, error } = await e.supabase.from("scenes").select("id, texte").eq("projet_id", projetId).is("supprime_le", null);
+  if (error) throw new Error(`Recherche impossible : ${error.message}`);
+  return ((data ?? []) as { id: string; texte: Texte }[]).flatMap((s) => {
+    const clair = enMots(s.texte ?? []).replace(/\s+/g, " ");
+    const cle = sansAccent(clair);
+    if (!mots.every((m) => cle.includes(m))) return [];
+    const ou = Math.max(0, cle.indexOf(mots[0]) - 40);
+    return [{ id: s.id, extrait: `${ou > 0 ? "… " : ""}${clair.slice(ou, ou + 140).trim()}${ou + 140 < clair.length ? " …" : ""}` }];
+  });
 }
 
 export type VersionPrecedente = {

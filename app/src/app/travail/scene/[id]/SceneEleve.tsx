@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type CSSProperties, type ReactNode } from "react";
-import { Copie, TexteLu } from "@/composants/copie/Copie";
+import { TexteLu } from "@/composants/copie/Blocs";
+import { Copie } from "@/composants/copie/Copie";
+import type { Services } from "@/composants/copie/contexte";
 import type { EtatTexte } from "@/composants/copie/useEnregistrementTexte";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -12,6 +14,7 @@ import { nomPourEleves, type Eleve } from "@/domaine/eleves";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
 import type { SceneOuverte } from "@/serveur/recit-eleve";
+import { creerSceneDepuisChoix, relireNumeros, supprimerScene } from "../../actions";
 import styles from "../../travail.module.css";
 
 /**
@@ -50,6 +53,12 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
         ? `Tu peux lire, pas écrire : ${prof} s’en occupe`
         : "Tu peux lire, pas écrire";
 
+  const services: Services = {
+    creerScene: (chapitreId, titre) => creerSceneDepuisChoix(chapitreId, titre, scene.projetId),
+    supprimerScene: (id) => supprimerScene(id),
+    relireNumeros: () => relireNumeros(scene.projetId),
+  };
+
   let copie: ReactNode;
   if (scene.ecriture) {
     copie = (
@@ -57,6 +66,11 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
         texte={scene.texte}
         version={scene.version}
         cible={{ ecriture: scene.ecriture }}
+        livre={scene.livre}
+        droits={scene.droits}
+        lieu={{ projetId: scene.projetId, sceneId: scene.id, chapitreId: scene.chapitre.id }}
+        pourEleve
+        services={services}
         marques={scene.marques}
         libelle={`Ton texte, scène ${ref}`}
         invite="Écris ici."
@@ -123,7 +137,7 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
             {lecture}
           </span>
         </div>
-        <TexteLu texte={scene.texte} libelle={`Texte de la scène ${ref}`} />
+        <TexteLu texte={scene.texte} libelle={`Texte de la scène ${ref}`} livre={scene.livre} pourEleve />
         {scene.refus === "arrete" ? (
           <div className="copie__pied">
             <p className="pied-alerte pied-alerte--attend">

@@ -54,6 +54,10 @@ export type Scene = {
   texteVide: boolean;
   /** Les élèves qui y ont enregistré un texte : le dialogue de suppression les nomme (F03.1) */
   ecritPar: string[];
+  /** Rang gardé dans l'ordre du livre ; rien tant qu'il n'est pas établi (F11.5) */
+  rangLivre: number | null;
+  /** Numéro que la scène doit garder (F11-AC96) */
+  numeroFixe: number | null;
 };
 
 export type ElevePlan = { id: string; prenom: string; nom: string | null; couleur: number };
@@ -70,7 +74,13 @@ export type Chapitre = Repere & {
   attributions: Attribution[];
 };
 
-export type Partie = Repere & { id: string; titre: string; chapitres: Chapitre[] };
+export type Partie = Repere & {
+  id: string; titre: string; chapitres: Chapitre[];
+  /** Ses scènes sont mélangées avec celles de la partie précédente (F11-AC17) */
+  groupeAvecPrecedente: boolean;
+  /** Scène d'ouverture choisie par l'adulte ; sinon la première de la partie (F11.5) */
+  ouvertureSceneId: string | null;
+};
 
 /** Ce que la corbeille du projet contient (F03.1) : l'élément supprimé le plus haut, et ce qui attend dessous. */
 export type Supprime = {
@@ -84,7 +94,14 @@ export type Supprime = {
   supprimeLe: string;
 };
 
-export type Plan = { parties: Partie[]; corbeille: Supprime[]; departSceneId: string | null };
+/** Un lien du récit, déduit du texte d'une scène : un renvoi vers une destination, ou une liaison cachée (F05). */
+export type Lien = { sceneId: string; renvoiId: string; cibleId: string | null; libelle: string; cache: boolean };
+
+export type Plan = {
+  parties: Partie[]; corbeille: Supprime[]; departSceneId: string | null;
+  /** Les chemins du récit, d'une scène à l'autre, dans l'ordre où ils se lisent */
+  liens: Lien[];
+};
 
 export const chapitresDe = (plan: Plan): Chapitre[] => plan.parties.flatMap((p) => p.chapitres);
 
@@ -180,7 +197,11 @@ export function chercherScenes(plan: Plan, demande: string): { chapitre: Chapitr
  * Ce qu'une suppression emporterait (F03.1) : les scènes de l'élément, celles qui ont un
  * texte, et les élèves qui y ont écrit. Un élément sans texte se supprime sans confirmation.
  */
-export type Travail = { chapitres: number; scenes: number; ecrites: number; auteurs: string[] };
+export type Travail = {
+  chapitres: number; scenes: number; ecrites: number; auteurs: string[];
+  /** Les scènes restées dans le plan d'où un choix mène à ce qu'on supprime : il ne sera redirigé nulle part (F03-AC14) */
+  menentIci: Scene[];
+};
 
 export function travailDans(plan: Plan, sorte: "partie" | "chapitre" | "scene", id: string): Travail {
   const chapitres =
@@ -191,10 +212,13 @@ export function travailDans(plan: Plan, sorte: "partie" | "chapitre" | "scene", 
         : [];
   const scenes = sorte === "scene" ? scenesDe(plan).filter((s) => s.id === id) : chapitres.flatMap((c) => c.scenes);
   const ecrites = scenes.filter((s) => !s.texteVide);
+  const dedans = new Set(scenes.map((s) => s.id));
+  const origines = new Set(plan.liens.filter((l) => l.cibleId && dedans.has(l.cibleId) && !dedans.has(l.sceneId)).map((l) => l.sceneId));
   return {
     chapitres: chapitres.length,
     scenes: scenes.length,
     ecrites: ecrites.length,
     auteurs: [...new Set(ecrites.flatMap((s) => s.ecritPar))],
+    menentIci: scenesDe(plan).filter((s) => origines.has(s.id)),
   };
 }

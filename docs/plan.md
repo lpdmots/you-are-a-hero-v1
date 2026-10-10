@@ -441,6 +441,34 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       sans s'écrire depuis sa page, comme dans la maquette, « M'occuper de
       cette scène » venant à l'étape 4, la base ne refusant pas l'écriture
       puisque la prise en charge reste informative (F06.3).
+  - **Lot 2 — phrase de choix, renvoi, numéros et chemins : construit le
+    10 octobre 2026.** Créer un choix par « /choix » ou le bouton « Choix »
+    (scène existante, nouvelle scène, à décider plus tard) ; le régler
+    (libellé, destination, « Régénérer », « Personnaliser » et retour à
+    l'automatique, renvoi de plus ou de moins) ; les règles de suppression,
+    de fusion et de presse-papiers ; le glisser-déposer des phrases par leur
+    repère et Alt avec une flèche ; les droits des deux profils d'élève,
+    contrôlés aussi par le serveur ; les numéros du livre, « Fixer son
+    numéro… » et « Libérer le numéro » ; la vue « Chemins » de l'adulte et de
+    l'élève ; « Rechercher une scène » de l'élève ; le lien annoncé avant de
+    supprimer une scène. Schéma : `20261010220000_choix_numeros.sql`.
+    - **Vérifications levées :** V15 (quarante scènes dans un livre de deux
+      cents : « Chemins » en moins de trois secondes) ; V8 pour ce qu'un
+      poste lit des destinations, des liens et des numéros. Les scénarios 1
+      à 7, 12 et 13 du prototype de l'éditeur sont réécrits dans
+      `tests/parcours/choix.spec.ts`. Le glisser-déposer des blocs tient
+      avec l'éditeur.
+    - **Critères qui attendent :** F05-AC05 à AC08, AC26, AC27, AC37 et
+      F11-AC98 au lot 3 (liaison cachée) ; F05-AC38 et le blocage du PDF à
+      l'étape 6 ; F05-AC04 (titre proposé par l'IA) à l'étape 8 ; F03-AC19
+      (prises en charge) à l'étape 4.
+    - **Choix d'écran sans dessin, à voir à l'essai :** la fiche ouverte au
+      clavier prend le curseur, celle ouverte à la souris non ; « / » ouvre
+      les commandes au début d'une ligne, après une espace ou une
+      ponctuation ; sur téléphone, « Chemins » est une liste verticale ; la
+      recherche de l'élève montre la référence des scènes, comme ses autres
+      écrans.
+  - **Lots 3 à 6 :** à faire, dans l'ordre.
 - **Terminée quand :** sur deux postes, le porteur et un compte d'élève ont
   écrit des scènes reliées, avec images, objets et action de jeu ; un conflit
   provoqué exprès a été récupéré sans perte ; les scénarios des tests du

@@ -4,8 +4,10 @@ import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { nomScene, scenesDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
+import type { Livre } from "@/composants/copie/contexte";
+import { numerosDuPlan } from "@/domaine/numeros";
 import { texteDeScene } from "@/serveur/copie";
-import { elevesDeLaClasse, planDe } from "@/serveur/recit";
+import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
 import { PageScene } from "./PageScene";
 
 type Props = { params: Promise<{ id: string; scene: string }>; searchParams: Promise<{ texte?: string; de?: string }> };
@@ -32,19 +34,36 @@ export default async function Page(props: Props) {
   const lu = await lire(props);
   if (!lu) notFound();
   const { enseignant, projet, plan, scene } = lu;
-  const [eleves, texte, demande] = await Promise.all([
+  const [eleves, texte, demande, preparation] = await Promise.all([
     elevesDeLaClasse(enseignant, projet.classe?.id ?? null),
     texteDeScene(enseignant, scene.id),
     props.searchParams,
+    preparationDe(enseignant, projet.id),
   ]);
   if (!texte) notFound();
+  // Le livre autour de la scène : numéros des passages, scènes où peut mener un choix (F05, F11.5)
+  const livre: Livre = {
+    aChoix: projet.recit === "choix",
+    formule: preparation?.formuleRenvoi ?? "rends",
+    constructions: preparation?.constructions ?? ["neutre"],
+    numeros: projet.recit === "choix" ? Object.fromEntries(numerosDuPlan(plan).de) : {},
+    scenes: plan.parties.flatMap((p) =>
+      p.chapitres.flatMap((c) =>
+        c.scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, chapitreId: c.id, chapitre: c.titre, partie: p.titre, vide: s.texteVide })),
+      ),
+    ),
+    ailleurs: {},
+    chapitres: plan.parties.flatMap((p) => p.chapitres.map((c) => ({ id: c.id, titre: c.titre, partie: p.titre }))),
+  };
   return (
     <div className="page">
       <ProjetOuvert id={projet.id} titre={projet.titre} onglet="plan" />
       <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} eleves={eleves}
         texte={texte}
+        livre={livre}
         ouvrir={typeof demande.texte === "string" ? demande.texte : undefined}
         venuDuSuivi={demande.de === "suivi"}
+        venuDesChemins={demande.de === "chemins"}
       />
     </div>
   );

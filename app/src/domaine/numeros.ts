@@ -4,6 +4,8 @@
  * projet et les numéros fixés. Le récit classique n'a ni numéros ni mélange.
  */
 
+import type { Plan } from "./recit";
+
 export type SceneNumerotee = {
   id: string;
   horsLivre: boolean;
@@ -154,3 +156,18 @@ export function melangeInitial(plan: PlanNumerote, fratries: string[][], tirage:
   }
   return rangs;
 }
+
+/** Ce que la numérotation lit du plan du récit. */
+export const planNumerote = (plan: Plan): PlanNumerote => ({
+  departSceneId: plan.departSceneId,
+  parties: plan.parties.map((p) => ({
+    id: p.id, groupeAvecPrecedente: p.groupeAvecPrecedente, ouvertureSceneId: p.ouvertureSceneId,
+    chapitres: p.chapitres.map((c) => ({
+      horsLivre: c.horsLivre,
+      scenes: c.scenes.map((s) => ({ id: s.id, horsLivre: s.horsLivre, rangLivre: s.rangLivre, numeroFixe: s.numeroFixe })),
+    })),
+  })),
+});
+
+/** Les numéros du livre d'après le plan : scène → numéro imprimé. */
+export const numerosDuPlan = (plan: Plan): Numeros => numeroter(planNumerote(plan));

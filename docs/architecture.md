@@ -465,6 +465,71 @@ poser le curseur par programme, la copie expose son éditeur à la page quand
 `NEXT_PUBLIC_ESSAIS` vaut 1, ce que seule la configuration des parcours
 règle ; l'application en ligne ne l'expose pas.
 
+**Phrase de choix et renvoi (lot 2).** Un choix est un bloc du texte, de type
+`choix`. Automatique, il ne porte que son libellé, sa construction et sa
+destination : la phrase se compose à l'affichage, avec la formule du livre,
+et rien ne s'y tape. Personnalisé, il porte son texte et un ou plusieurs
+`renvoi`, éléments d'un seul bloc placés dans la ligne. Aucun numéro n'est
+écrit dans un texte. Slate ne connaît de bloc fermé que sans contenu : la
+phrase automatique, et tout bloc que la personne n'a pas le droit de
+modifier, sont déclarés tels à Slate, et les règles de `regles.ts` tiennent
+ce que Slate ne tient pas — suppression d'une sélection à cheval, fusion,
+frappe, collage, identités uniques, renvoi interdit dans un paragraphe de
+récit, phrase sans renvoi rendue au récit.
+
+**Deux pièges de l'éditeur, trouvés par les parcours au clavier.** Plate ne
+tient une touche pour traitée que si le gestionnaire le lui dit en rendant
+vrai : l'empêcher par `preventDefault` ne suffit pas, et Slate traitait la
+touche une seconde fois (deux phrases supprimées d'un seul « Suppr. »). Et
+l'éditeur qui vient de poser sa sélection ignore un instant qu'il a perdu le
+curseur : il le reprenait à la fiche qui s'ouvrait, si bien que le libellé
+tapé partait dans le texte. La copie lui fait donc lâcher le curseur avant
+d'ouvrir une fiche.
+
+**Fiche posée dans la copie.** La fiche d'un choix n'est pas dans le texte :
+elle est dessinée par-dessus, sous le bloc concerné, et la place lui est
+gardée par une marge sous ce bloc, mesurée à l'écran. Le texte ne contient
+donc que du texte, et une fiche ouverte ne s'enregistre jamais.
+
+**Presse-papiers.** Ce qui part porte trois formes : les blocs de la copie,
+l'origine (scène, projet, coupé ou copié) et un texte simple où chaque phrase
+montre le numéro affiché. Au retour, un choix coupé garde son identité, un
+choix copié en reçoit une ; un choix que la personne n'a pas le droit de
+créer ici, ou qui vise une scène que sa page ne connaît pas, est écarté.
+
+**Liens.** La table `liens` se déduit du texte : un déclencheur la refait à
+chaque enregistrement d'une scène, d'après ses renvois. Rien d'autre n'y
+écrit, et les chemins, les recherches et le dialogue de suppression la
+lisent. Un texte gardé à part n'y entre pas tant qu'il n'est pas le texte de
+la scène. Le serveur redonne une identité à un bloc ou à un renvoi dont
+l'identité existe déjà dans une autre scène, de façon reproductible, pour
+qu'un envoi rejoué donne le même texte.
+
+**Droits sur les choix, contrôlés deux fois.** L'éditeur d'un élève ferme
+les blocs qui lui sont réservés, et refuse toute opération qui les
+toucherait, d'où qu'elle vienne. Le serveur ne s'y fie pas : à chaque
+enregistrement d'un élève, il compare le texte reçu au texte de la scène
+(`controlerTexte`) — les blocs réservés doivent tous être là, identiques et
+dans le même ordre, sans aucun de plus. Un texte refusé est gardé à part,
+comme tout refus.
+
+**Numéros (F11.5).** Deux colonnes des scènes, `rang_livre` et
+`numero_fixe`, et la date `ordre_etabli_le` du projet. L'ordre du livre
+s'établit une fois, au premier renvoi enregistré ou à l'ouverture de « Fixer
+son numéro… » : les scènes de chaque groupe sont mélangées en évitant de
+placer côte à côte les destinations d'un même choix, et le rang est gardé ;
+une scène créée ensuite se range à la suite. Les numéros se calculent à
+chaque lecture (`numeroter`), d'après le plan, ces rangs et les numéros
+fixés ; un poste d'élève reçoit de la base de quoi faire le même calcul,
+sans les titres des scènes qu'il ne peut pas lire.
+
+**Chemins (V15).** La vue se déduit du plan et des liens, sans bibliothèque
+de graphe : une colonne par pas depuis l'entrée du chapitre, les traits
+tracés d'après la place réelle des cartes, de la ligne du choix à la scène
+d'arrivée. Un chapitre de quarante scènes dans un livre de deux cents
+s'affiche en moins de trois secondes ; « Tout voir » le ramène à la largeur
+de l'écran.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

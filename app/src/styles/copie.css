@@ -82,7 +82,7 @@
   gap: 0.75em;
   /* Slate pose sa propre hauteur tant que la copie est vide */
   min-height: 260px !important;
-  padding: 26px 34px 30px 64px;
+  padding: 26px 34px 30px var(--gout, 64px);
   outline: none;
   font-family: var(--f-recit);
   font-size: 1.2rem;
@@ -459,4 +459,612 @@
   width: 20px;
   height: 20px;
   margin-top: 1px;
+}
+
+/* ——— Choix dans la scène (F05.2) ———
+   La marge rouge reçoit ce qui n'est jamais imprimé : la nature du bloc, son repère de
+   prise, son cadenas. La fiche d'un choix porte le filet canard, celui de la décision. */
+.copie {
+  --gout: 64px;
+  --axe: 22px;
+}
+.copie__zone {
+  position: relative;
+}
+.copie__texte > [data-bloc] {
+  position: relative;
+}
+.marge {
+  position: absolute;
+  top: 10px;
+  left: calc(var(--axe) - var(--gout) - 11px);
+  display: grid;
+  color: var(--graphite-3);
+  user-select: none;
+}
+.marge .ic {
+  width: 18px;
+  height: 18px;
+}
+.marge .prise--bloc {
+  width: 22px;
+  height: 26px;
+  margin: -4px 0 0 -2px;
+  border-radius: 5px;
+}
+.marge .prise--bloc:hover {
+  background: var(--feuille-2);
+}
+
+/* Phrase de choix : un paragraphe du récit, pris en entier, en italique entre deux filets */
+.phrase-choix {
+  border-block: 1px solid var(--trait);
+  max-width: none;
+}
+.phrase-choix + .phrase-choix {
+  margin-top: calc(-0.75em - 1px);
+}
+.phrase-choix__corps {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+  padding: 9px 8px 9px 0;
+  border-radius: 4px;
+}
+.phrase-choix__corps[role="button"] {
+  cursor: pointer;
+}
+.phrase-choix__corps[role="button"]:hover {
+  background: var(--feuille-2);
+}
+.phrase-choix .recit {
+  max-width: 62ch;
+  font-style: italic;
+  line-height: 1.6;
+}
+.phrase-choix__texte {
+  flex: 1 1 100%;
+  min-width: 0;
+  padding: 2px 6px;
+  margin: -2px -6px;
+  border-radius: 4px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  outline: none;
+}
+.phrase-choix:focus-within .phrase-choix__texte {
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.phrase-choix__regler {
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--canard);
+  font: inherit;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.phrase-choix.est-choisi,
+.phrase-choix.est-ouvert {
+  border-color: transparent;
+}
+.phrase-choix.est-choisi > .phrase-choix__corps,
+.phrase-choix.est-ouvert > .phrase-choix__corps {
+  margin-inline: -10px;
+  padding-inline: 10px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 2px var(--canard);
+}
+.phrase-choix.est-ouvert > .phrase-choix__corps {
+  background: var(--canard-pale);
+}
+.phrase-choix.est-prepare.est-choisi > .phrase-choix__corps {
+  box-shadow: 0 0 0 2px var(--graphite-3);
+}
+.phrase-choix.est-tire {
+  opacity: 0.4;
+}
+.phrase-choix--apercu {
+  padding: 8px 0;
+  border-block-style: dashed;
+  border-color: var(--canard);
+  font-family: var(--f-recit);
+  font-size: 1.1rem;
+}
+.cx-fantome {
+  color: var(--graphite-3);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  font-style: normal;
+}
+.renvoi-copie {
+  padding: 0 0.3em;
+  border-radius: 5px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  font-style: normal;
+  font-weight: 700;
+}
+.renvoi-copie--vide {
+  display: inline-block;
+  min-width: 1.7em;
+  height: 1.25em;
+  vertical-align: -0.22em;
+  background-color: var(--bloque-f);
+  background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--bloque) 22%, transparent) 4px 5px);
+  box-shadow: inset 0 0 0 1.5px var(--bloque);
+}
+.renvoi-en-ligne.est-choisi .renvoi-copie {
+  box-shadow: 0 0 0 2px var(--canard);
+}
+.copie__dest {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 12px;
+  color: var(--graphite-2);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-style: normal;
+  line-height: 1.5;
+  user-select: none;
+}
+.copie__dest > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.copie__dest .ic {
+  width: 0.95em;
+  height: 0.95em;
+  color: var(--graphite-3);
+}
+.copie__dest-vide {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--bloque);
+  font-weight: 700;
+}
+.copie__dest .copie__dest-vide .ic {
+  color: var(--bloque);
+}
+.repere-prepare {
+  display: block;
+  padding-bottom: 6px;
+  color: var(--graphite-2);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-style: normal;
+  user-select: none;
+}
+.page--eleve .repere-prepare,
+.page--eleve .copie__dest {
+  font-size: var(--t-s);
+}
+
+/* Là où se poserait le bloc qu'on tire : un trait */
+.se-pose-avant::before,
+.copie__texte.se-pose-fin::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--canard);
+}
+.se-pose-avant::before {
+  top: -0.45em;
+}
+.copie__texte.se-pose-fin::after {
+  right: 34px;
+  bottom: 18px;
+  left: var(--gout);
+}
+
+/* « / » : les commandes du texte */
+.slash {
+  position: absolute;
+  left: var(--gout);
+  z-index: 40;
+  width: min(340px, calc(100% - var(--gout) - 12px));
+  margin-top: 4px;
+  padding: 4px;
+  border-radius: 10px;
+  background: var(--feuille);
+  box-shadow:
+    var(--ombre-panneau),
+    inset 0 0 0 1px var(--trait-fort);
+}
+.slash button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  text-align: left;
+  cursor: pointer;
+}
+.slash button[aria-selected="true"] {
+  background: var(--canard-pale);
+}
+.slash button > span {
+  flex: 1;
+  color: var(--graphite-2);
+}
+.slash button b {
+  margin-right: 6px;
+  color: var(--graphite);
+}
+.slash .ic {
+  color: var(--canard);
+}
+kbd {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  font-family: var(--f-code);
+  font-size: 0.85em;
+}
+
+/* La fiche d'un choix, posée dans la copie sous son bloc */
+.copie__fiche {
+  position: absolute;
+  right: 20px;
+  left: calc(var(--gout) - 10px);
+  z-index: 6;
+  margin-top: 6px;
+}
+.cx {
+  min-width: 0;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1.5px var(--canard),
+    0 14px 26px -18px rgba(11, 60, 66, 0.5);
+  font-family: var(--f-ui);
+  font-size: 15.5px;
+  font-style: normal;
+  line-height: 1.5;
+}
+.cx__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 9px 8px 8px 14px;
+  border-bottom: 2px solid var(--canard);
+}
+.cx__tete > .ic {
+  color: var(--canard);
+}
+.cx__tete h3 {
+  margin-right: auto;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.cx__fermer {
+  min-height: 32px;
+  padding: 0.3rem 0.45rem;
+}
+.cx__corps {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+.cx__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--trait);
+  border-radius: 0 0 12px 12px;
+  background: var(--feuille-2);
+  box-shadow:
+    inset 1.5px 0 0 var(--canard),
+    inset -1.5px 0 0 var(--canard),
+    inset 0 -1.5px 0 var(--canard);
+}
+.cx__suppr {
+  margin-left: auto;
+}
+.cx__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 0;
+}
+.cx-clavier {
+  margin-left: auto;
+  color: var(--graphite-3);
+  font-size: var(--t-xs);
+}
+.cx .champ--plein input,
+.cx .champ--plein select {
+  width: 100%;
+}
+.cx .champ em {
+  color: var(--graphite-3);
+  font-style: normal;
+  font-weight: 400;
+}
+.cx-aide {
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 400;
+}
+.cx-titre {
+  margin: 0 0 6px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.cx-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.cx-note > .ic {
+  flex: none;
+  margin-top: 0.15em;
+  color: var(--graphite-3);
+}
+.cx-note > div {
+  display: grid;
+  gap: 8px;
+}
+.cx-note p {
+  margin: 0;
+}
+.cx-note--bloque {
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: var(--bloque-f);
+  color: #5a1d0e;
+}
+.cx-note--bloque > .ic,
+.cx-note--bloque b {
+  color: var(--bloque);
+}
+.cx-note--avert {
+  padding: 10px 12px;
+  border-radius: 9px;
+  background: var(--e-valider-f);
+  color: #5a3b00;
+}
+.cx-note--avert > .ic {
+  color: var(--e-valider);
+}
+.cx-issues {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.cx-issues > legend {
+  margin-bottom: 6px;
+  padding: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.cx-seg {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  justify-self: start;
+  padding: 3px;
+  border-radius: 10px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+}
+.cx-seg label {
+  position: relative;
+  cursor: pointer;
+}
+.cx-seg input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.cx-seg span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 4px 12px;
+  border-radius: 7px;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.cx-seg input:checked + span {
+  background: var(--graphite);
+  color: #fff;
+}
+.cx-seg input:focus-visible + span {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.cx-recherche {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.cx-recherche input {
+  flex: 1 1 220px;
+}
+.cx-recherche select {
+  flex: 0 1 220px;
+}
+.cx-liste {
+  max-height: 236px;
+  margin: 0;
+  padding: 4px;
+  border-radius: 9px;
+  box-shadow: inset 0 0 0 1px var(--trait);
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.cx-liste button {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 2px 10px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  text-align: left;
+  cursor: pointer;
+}
+.cx-liste button.est-choisie {
+  background: var(--canard-pale);
+  box-shadow: inset 0 0 0 1.5px var(--canard);
+}
+.cx-liste__titre {
+  min-width: 0;
+  font-weight: 600;
+}
+.cx-liste__titre small {
+  color: var(--graphite-2);
+  font-weight: 400;
+}
+.cx-liste__extrait {
+  display: block;
+  overflow: hidden;
+  font-family: var(--f-recit);
+  font-size: 0.95em;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cx-liste__ou {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+.cx-liste__n {
+  color: var(--graphite-3);
+  font-size: var(--t-xs);
+}
+.cx-nouvelle {
+  display: grid;
+  gap: 10px;
+}
+.cx-renvois ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cx-renvois li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: var(--t-s);
+}
+.cx-renvois__n {
+  color: var(--graphite-2);
+  font-weight: 700;
+}
+.cx-renvois__ou {
+  flex: 1;
+  min-width: 0;
+}
+.cx-renvois .cx-issues {
+  margin-top: 12px;
+}
+
+/* Bandeau au pied de la copie : ce qui vient d'être fait, et « Annuler » */
+.copie__message {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  padding: 10px 12px 10px 18px;
+  border-top: 1px solid var(--trait);
+  background: var(--canard-pale);
+  font-size: var(--t-s);
+}
+.copie__message > .ic {
+  flex: none;
+  color: var(--canard);
+}
+.copie__message p {
+  flex: 1;
+  min-width: 0;
+  max-width: 78ch;
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .copie {
+    --gout: 40px;
+    --axe: 14px;
+  }
+  .copie__fiche {
+    right: 8px;
+    left: 8px;
+  }
+  .copie__outils {
+    flex-wrap: wrap;
+  }
+  .copie__message p {
+    flex-basis: calc(100% - 40px);
+  }
+  .copie__texte.se-pose-fin::after {
+    right: 18px;
+  }
+}
+
+/* « Fixer son numéro… » : une fiche courte, sous l'en-tête de la scène */
+.fiche-numero {
+  max-width: 560px;
+  margin-top: 12px;
+}
+.fiche-numero p {
+  margin: 0;
+}
+.fiche-numero__autre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 8px 10px;
+}
+.fiche-numero__autre input {
+  width: 110px;
+  min-width: 0;
 }

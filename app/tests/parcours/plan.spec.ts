@@ -473,7 +473,8 @@ test("F03-AC41 — en projet personnel, la page du chapitre n'a ni élèves, ni 
   await expect(page.getByRole("button", { name: "Attribuer des élèves" })).toHaveCount(0);
   await expect(page.getByText(/s’en occupe|Suivi/)).toHaveCount(0);
   await expect(page.locator("main input[type=checkbox]")).toHaveCount(0);
-  await expect(page.locator("[aria-pressed]")).toHaveCount(0);
+  // Aucun filtre : la seule bascule est celle des vues « Scènes » et « Chemins » (F03-AC18)
+  await expect(page.locator(":not(.bascule) > [aria-pressed]")).toHaveCount(0);
 
   // Un récit classique n'a ni départ ni fin à désigner : l'ordre du plan est celui de la lecture (F03-AC20)
   const classique = await semerProjet(base, compte, "personnel", "classique", "Carnet de voyage");

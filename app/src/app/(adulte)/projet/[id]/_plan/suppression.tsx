@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { enumerer } from "@/composants/copie/noms";
 import { Dialogue } from "@/composants/Dialogue";
 import { nomPourEleves } from "@/domaine/eleves";
-import { travailDans, type ElevePlan, type Plan } from "@/domaine/recit";
+import { referenceScene, travailDans, type ElevePlan, type Plan } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
 
 type Sorte = "partie" | "chapitre" | "scene";
@@ -25,18 +25,25 @@ export function useConfirmerSuppression({ plan, eleves }: { plan: Plan; eleves: 
   return {
     demander: (sorte, id, nom, faire) => {
       const t = travailDans(plan, sorte, id);
-      if (t.ecrites === 0) return faire();
+      // Sans texte et sans choix qui y mène, rien à annoncer : la suppression part tout de suite
+      if (t.ecrites === 0 && t.menentIci.length === 0) return faire();
       const auteurs = t.auteurs.flatMap((a) => {
         const e = eleves.find((x) => x.id === a);
         return e ? [nomPourEleves(e, eleves)] : [];
       });
       const faits: string[] = [];
-      if (sorte === "scene") faits.push("Cette scène a un texte.");
-      else {
+      if (sorte === "scene") {
+        if (t.ecrites) faits.push("Cette scène a un texte.");
+      } else if (t.ecrites) {
         const contenu = sorte === "partie" ? `${t.chapitres} chapitre${pluriel(t.chapitres)} et ${t.scenes} scène${pluriel(t.scenes)}` : `${t.scenes} scène${pluriel(t.scenes)}`;
         faits.push(`${contenu}, dont ${t.ecrites} ${t.ecrites > 1 ? "ont un texte" : "a un texte"}.`);
       }
       if (auteurs.length) faits.push(`${enumerer(auteurs)} y ${auteurs.length > 1 ? "ont" : "a"} écrit.`);
+      // Le lien affecté est annoncé, et ne sera redirigé vers aucune autre scène (F03-AC13, AC14)
+      if (t.menentIci.length) {
+        const depuis = enumerer(t.menentIci.map((s) => referenceScene(s.reference)));
+        faits.push(`${t.menentIci.length > 1 ? "Des choix y mènent" : "Un choix y mène"}, depuis ${depuis} : ${t.menentIci.length > 1 ? "ils ne seront redirigés" : "il ne sera redirigé"} nulle part.`);
+      }
       faits.push("Rien n’est effacé : vous retrouvez tout dans la corbeille du projet.");
       setDemande({ nom, faits, faire });
     },

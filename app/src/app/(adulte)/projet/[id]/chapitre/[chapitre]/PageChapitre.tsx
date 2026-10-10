@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, type ReactNode } from "react";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
+import { Chemins, cheminsDuPlan } from "@/composants/Chemins";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -31,7 +32,15 @@ type Ouvert = "reglages" | "image" | "attribuer" | "exclure" | "depart" | null;
  * La page d'un chapitre (F03.1) : quelles scènes existent, dans quel ordre. Le chapitre
  * est le plan, le Suivi est le travail : ni filtres d'état ni sélection ici.
  */
-export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: ProjetDuPlan; plan: Plan; chapitreId: string; eleves: ElevePlan[] }) {
+export function PageChapitre({
+  projet, plan, chapitreId, eleves, vue = "scenes", designee,
+}: {
+  projet: ProjetDuPlan; plan: Plan; chapitreId: string; eleves: ElevePlan[];
+  /** Deux vues du même chapitre, en récit à choix : ses cartes, ou ses chemins (F03-AC18) */
+  vue?: "scenes" | "chemins";
+  /** La scène où mène le choix qu'on vient de suivre depuis un autre chapitre (F03-AC25) */
+  designee?: string;
+}) {
   const dire = useMessage();
   const routeur = useRouter();
   const capteurs = useCapteurs();
@@ -227,12 +236,26 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
       ) : (
         <>
           <div className="chap-outils">
+            {projet.aChoix ? (
+              <div className="bascule" role="group" aria-label="Vue du chapitre">
+                <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}`, { scroll: false })}>
+                  <Icone nom="feuille" />
+                  Scènes
+                </button>
+                <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins`, { scroll: false })}>
+                  <Icone nom="chemins" />
+                  Chemins
+                </button>
+              </div>
+            ) : null}
             <p>
-              {projet.aChoix
-                ? "L’ordre des cartes range le chapitre : ce sont les choix qui relient les scènes."
-                : "Les scènes se lisent dans cet ordre."}
+              {vue === "chemins"
+                ? "Les chemins viennent des choix écrits dans les scènes : rien ne se règle ici."
+                : projet.aChoix
+                  ? "L’ordre des cartes range le chapitre : ce sont les choix qui relient les scènes."
+                  : "Les scènes se lisent dans cet ordre."}
             </p>
-            {chapitre.scenes.length > 3 ? (
+            {vue === "scenes" && chapitre.scenes.length > 3 ? (
               <label className="recherche" style={{ marginLeft: "auto" }}>
                 <span className="vh">Rechercher une scène dans ce chapitre</span>
                 <Icone nom="loupe" />
@@ -240,7 +263,9 @@ export function PageChapitre({ projet, plan, chapitreId, eleves }: { projet: Pro
               </label>
             ) : null}
           </div>
-          {montrees.length === 0 ? (
+          {vue === "chemins" ? (
+            <Chemins {...cheminsDuPlan(plan, chapitre.id, projet.id)} designee={designee} />
+          ) : montrees.length === 0 ? (
             <p className="aucun" aria-live="polite">
               Aucun titre de scène ne contient « {demande.trim()} » dans ce chapitre.{" "}
               <button type="button" className="lien" onClick={() => setDemande("")}>

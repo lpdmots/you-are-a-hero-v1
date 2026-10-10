@@ -12,8 +12,9 @@ export const metadata: Metadata = { title: "Mon chapitre" };
  * l'enseignant, en lecture. Le profil « écriture et organisation » y ajoute, déplace et
  * supprime ses scènes (F06.1). Un chapitre qui n'est pas le sien ne s'ouvre pas (F06-AC22).
  */
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ vue?: string }> }) {
   const { id } = await params;
+  const { vue } = await searchParams;
   const contexte = await contexteEleve();
   if (!contexte.ouvert) redirect("/travail");
   const chapitre = await chapitreDuPoste(contexte, id);
@@ -22,7 +23,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     <Messages>
       <EnteteEleve contexte={contexte} auTravail />
       <main className="page page--eleve">
-        <ChapitreEleve chapitre={chapitre} prof={contexte.prof} moi={contexte.moi.id} eleves={contexte.eleves} />
+        <ChapitreEleve chapitre={chapitre} prof={contexte.prof} moi={contexte.moi.id} eleves={contexte.eleves} vue={vue === "chemins" ? "chemins" : "scenes"} />
       </main>
     </Messages>
   );

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { clientDuPoste, etatDuPoste, noterActivite } from "@/serveur/poste";
 import { estUuid } from "@/serveur/recit";
+import { chercherPourLePoste, contexteEleve, numerosDuPoste, type ChapitreTrouve } from "@/serveur/recit-eleve";
 
 /**
  * Ce qu'un élève du profil « écriture et organisation » peut changer dans son chapitre
@@ -60,4 +61,30 @@ export async function supprimerScene(sceneId: string): Promise<Fait> {
   if (error) return refus(error);
   rafraichir();
   return { ok: true };
+}
+
+/** Les numéros du livre, relus : après un choix créé ou une scène ajoutée (F05-AC34). */
+export async function relireNumeros(projetId: string): Promise<Record<string, number>> {
+  if (!(await base())) return {};
+  return numerosDuPoste(await contexteEleve(), projetId);
+}
+
+/**
+ * « Nouvelle scène », depuis un choix : le profil « écriture et organisation » la crée dans
+ * son chapitre, avec le libellé pour titre proposé (F05-AC16, F06-AC12).
+ */
+export async function creerSceneDepuisChoix(
+  chapitreId: string, titre: string, projetId: string,
+): Promise<Fait<{ scene: { id: string; reference: number; titre: string | null; chapitreId: string }; numeros: Record<string, number> }>> {
+  const creee = await ajouterScene(chapitreId);
+  if (!creee.ok) return creee;
+  const propre = String(titre ?? "").replace(/\s+/g, " ").trim().slice(0, 120);
+  if (propre) await titrerScene(creee.id, propre);
+  return { ok: true, scene: { id: creee.id, reference: creee.reference, titre: propre || null, chapitreId }, numeros: await relireNumeros(projetId) };
+}
+
+/** « Rechercher une scène » : ce que l'élève peut lire, et rien d'autre (F05-AC48). */
+export async function chercherScenes(demande: string): Promise<ChapitreTrouve[]> {
+  if (!(await base())) return [];
+  return chercherPourLePoste(await contexteEleve(), String(demande ?? "").slice(0, 200));
 }
