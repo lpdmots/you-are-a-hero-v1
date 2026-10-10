@@ -1891,6 +1891,11 @@ phrase incomplète à l'écran lorsque le renvoi en portait le verbe.
   commande permet de régénérer la phrase d'un choix. L'application ne contrôle
   pas la grammaire ; les constructions autres que la première supposent un
   libellé commençant par un verbe.
+- **Flèche (décision du 10 octobre 2026) :** avec la formule « → 12 », seule
+  la première construction sert : « Prendre la clé → 12 ». Les autres ne se
+  lisent pas avec une flèche (« Pour prendre la clé, → 12. ») ; elles sont
+  grisées dans la rubrique « Phrases de choix », qui le dit, et restent
+  cochées pour le jour où la formule redevient une formule en mots.
 - **Phrase personnalisée :** l'auteur peut modifier la phrase automatique ou
   écrire lui-même une phrase et y insérer un ou plusieurs renvois, chacun avec
   sa destination : « Si tu as la clé, va au 12 ; sinon, va au 31. » La formule
@@ -1925,6 +1930,11 @@ verdicts et réserves sont dans
   la phrase « Suivre le chant : rends-toi au 9. » figure dans le texte ; s'il
   choisit ensuite la formule « va au », elle devient « Suivre le chant : va
   au 9. ».
+- **F05-AC43 — Flèche et constructions :** étant donné un livre dont la
+  formule est « → 12 » et où « Pour… » est cochée, lorsqu'un choix est créé,
+  alors sa phrase est « Prendre la clé → 12 », jamais « Pour prendre la clé,
+  → 12. » ; lorsque l'adulte revient à « rends-toi au 12 », alors « Pour… »
+  est de nouveau cochée et sert aux choix suivants.
 - **F05-AC11 — Construction conservée :** étant donné trois constructions
   cochées et un choix créé avec « Si tu veux suivre le chant, rends-toi au 9. »,
   lorsque le livre est réexporté ou qu'une construction est décochée, alors

@@ -58,13 +58,17 @@ export function tirerVisuel(graine: string, aEviter: (string | null | undefined)
   return parmi[hacher(graine) % parmi.length];
 }
 
-/** Adresse de l'image de repérage à montrer : image importée, visuel choisi, ou visuel par défaut. */
+/**
+ * Adresse de l'image de repérage à montrer : image importée, visuel choisi, ou visuel par
+ * défaut. « grande » : pour une image large à l'écran, le visuel entier plutôt que sa
+ * vignette ; une image importée se montre toujours par sa réduction d'écran, qui y suffit.
+ */
 export function adresseRepere(
   repere: { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null },
   graine: string,
-  vignette = true,
+  grande = false,
 ): string {
-  if (repere.imageId) return `/images/${repere.imageId}${vignette ? "?v=1" : ""}`;
-  if (estVisuel(repere.visuelChoisi)) return adresseVisuel(repere.visuelChoisi, vignette);
-  return adresseVisuel(estVisuel(repere.visuelDefaut) ? repere.visuelDefaut : tirerVisuel(graine), vignette);
+  if (repere.imageId) return `/images/${repere.imageId}?v=1`;
+  if (estVisuel(repere.visuelChoisi)) return adresseVisuel(repere.visuelChoisi, !grande);
+  return adresseVisuel(estVisuel(repere.visuelDefaut) ? repere.visuelDefaut : tirerVisuel(graine), !grande);
 }

@@ -38,11 +38,13 @@ test("F10-AC21 — à la création, la carte montre le titre sur un visuel par d
   await expect(carte).toContainText("Les passeurs de brume");
   const visuel = await carte.locator("img").getAttribute("src");
   expect(visuel).toMatch(/^\/illustrations\/defaut-[a-z]+\.jpg$/);
+  // Le même visuel, en vignette, dans l'en-tête du projet
+  const vignette = visuel!.replace(".jpg", "-v.jpg");
   // Le choix reste facultatif : toujours trois questions, et « Créer le projet » sans y toucher
   await expect(carte.getByRole("button", { name: "Choisir une image" })).toBeVisible();
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
-  await expect(page.locator("main section img").first()).toHaveAttribute("src", visuel!);
+  await expect(page.locator("main section img").first()).toHaveAttribute("src", vignette);
   await aller(page, "/projets");
   await expect(page.locator("main li img").first()).toHaveAttribute("src", visuel!);
 });
@@ -79,18 +81,18 @@ test("F10-AC03, F10-AC04, F10-AC23 — sans image, un visuel par défaut ; un vi
   await aller(page, `/projet/${projet}/plan`);
   const carte = "li:has(a[aria-label='Ouvrir La lisière'])";
   const defaut = await image(page, carte).getAttribute("src");
-  expect(defaut).toMatch(/^\/illustrations\/defaut-[a-z]+\.jpg$/);
+  expect(defaut).toMatch(/^\/illustrations\/defaut-[a-z]+-v\.jpg$/);
 
   await ouvrirReglages(page, "chapitre", "La lisière");
   await page.getByRole("button", { name: "Désert", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Réglages du chapitre" })).toBeVisible();
   await fermer(page);
-  await expect(image(page, carte)).toHaveAttribute("src", "/illustrations/defaut-desert.jpg");
+  await expect(image(page, carte)).toHaveAttribute("src", "/illustrations/defaut-desert-v.jpg");
   await page.reload();
-  await expect(image(page, carte)).toHaveAttribute("src", "/illustrations/defaut-desert.jpg");
+  await expect(image(page, carte)).toHaveAttribute("src", "/illustrations/defaut-desert-v.jpg");
   // Le repère est le même dans la page du chapitre
   await page.getByRole("link", { name: "Ouvrir La lisière", exact: true }).click();
-  await expect(page.locator(".chap-bandeau__image img")).toHaveAttribute("src", "/illustrations/defaut-desert.jpg");
+  await expect(page.locator(".chap-bandeau__image img")).toHaveAttribute("src", "/illustrations/defaut-desert-v.jpg");
 
   await page.getByRole("link", { name: "Parties et chapitres" }).click();
   await ouvrirReglages(page, "chapitre", "La lisière");
@@ -128,7 +130,7 @@ test("F10-AC05, F10-AC25 — une image importée se réutilise sans nouvel impor
   await ouvrirReglages(page, "chapitre", "La lisière");
   await page.getByRole("button", { name: "Mer", exact: true }).click();
   await fermer(page);
-  await expect(image(page, chapitre)).toHaveAttribute("src", "/illustrations/defaut-mer.jpg");
+  await expect(image(page, chapitre)).toHaveAttribute("src", "/illustrations/defaut-mer-v.jpg");
   await expect(image(page, partie)).toHaveAttribute("src", importee);
 });
 

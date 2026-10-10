@@ -268,6 +268,18 @@ test("F05, F11.5 — la rubrique « Phrases de choix » : une seule liste de phr
   await expect.poll(async () => (await base.from("preparations").select("formule_renvoi, constructions, marque_fin").eq("projet_id", projet).single()).data).toEqual({
     formule_renvoi: "va", constructions: ["neutre", "pour"], marque_fin: "FIN",
   });
+
+  // F05-AC43 — avec la flèche, seule la première phrase sert ; les autres sont grisées, et l'écran le dit
+  await phrases.getByRole("radio", { name: "« → 12 »" }).check();
+  await expect(phrases.getByRole("checkbox", { name: /Plonger la main → 17/ })).toBeChecked();
+  for (const autre of [/^Pour plonger la main/, /^Si tu veux plonger la main/, /^Plonger la main \? /]) {
+    await expect(phrases.getByRole("checkbox", { name: autre })).toBeDisabled();
+    await expect(phrases.getByRole("checkbox", { name: autre })).not.toBeChecked();
+  }
+  await expect(phrases).toContainText("Avec « → 12 », seule la première phrase sert");
+  // Revenu à une formule en mots, ce qui était coché l'est de nouveau
+  await phrases.getByRole("radio", { name: "« rends-toi au 12 »" }).check();
+  await expect(phrases.getByRole("checkbox", { name: "Pour plonger la main, rends-toi au 17." })).toBeChecked();
 });
 
 test("F02-AC04 — un élève n'ouvre pas la préparation, même par son adresse", async ({ page, browser }) => {

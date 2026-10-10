@@ -10,7 +10,7 @@ export function ImageRepere({
   repere: { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null };
   /** Ce qui tient lieu de visuel par défaut tant qu'aucun n'est gardé : l'identifiant de l'élément */
   graine: string;
-  /** L'image entière, et non sa réduction d'écran */
+  /** Pour une image large à l'écran : le visuel entier, et non sa vignette */
   grande?: boolean;
   prioritaire?: boolean;
 }) {
@@ -18,7 +18,7 @@ export function ImageRepere({
     // eslint-disable-next-line @next/next/no-img-element -- images servies par l'application, déjà réduites à l'import
     <img
       className="image-couvrante"
-      src={adresseRepere(repere, graine, !grande)}
+      src={adresseRepere(repere, graine, grande)}
       alt=""
       loading={prioritaire ? "eager" : "lazy"}
       decoding="async"

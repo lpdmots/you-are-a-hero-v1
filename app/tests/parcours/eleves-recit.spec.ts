@@ -166,7 +166,7 @@ test("F06-AC48, F06-AC49 — la lecture ouverte laisse lire les autres chapitres
   await expect(bilal.page.getByLabel(/Autres commandes/)).toHaveCount(0);
 
   await page.getByText("Les élèves lisent toute l’histoire").click();
-  await expect(page.getByText(/pour garder la surprise du livre/)).toBeVisible();
+  await expect(page.getByText(/chaque élève lit les scènes de ses chapitres seulement, pour garder la surprise/)).toBeVisible();
   const reponse = await bilal.page.reload();
   expect(reponse?.status()).toBe(404);
   await bilal.contexte.close();

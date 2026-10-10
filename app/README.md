@@ -62,7 +62,9 @@ npm run base:purger-essais   # supprime les comptes des tests, pas le compte loc
 
 Sans image choisie, un projet, une partie ou un chapitre porte un visuel de la
 bibliothèque. Pour en ajouter un : déposer `public/illustrations/defaut-<clé>.jpg`
-(format 3:2, 1 200 × 800) et ajouter sa ligne dans `src/domaine/visuels.ts`.
+(format 3:2, 1 200 × 800) et sa vignette `defaut-<clé>-v.jpg` (480 × 320, par
+`sips -z 320 480`), puis ajouter sa ligne dans `src/domaine/visuels.ts`. Un test
+vérifie que chaque visuel de la liste a ses deux fichiers.
 
 ## Clés et secrets
 

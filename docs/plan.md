@@ -338,9 +338,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     son titre et à sa consigne, le chapitre ouvert par un élève, la fiche
     d'un chapitre qui n'est pas le sien
     ([design](design.md#étape-2-construite-10-octobre-2026)).
-  - **Visuels par défaut :** les cinq du 30 septembre ; les nouveaux
-    s'ajoutent quand le porteur les fournit, d'après les prompts donnés le
-    10 octobre.
+  - **Visuels par défaut :** vingt-trois — les cinq du 30 septembre et
+    dix-huit fournis par le porteur le 10 octobre 2026, d'après les prompts
+    du jour.
 
 ### Étape 3 — Écrire une scène et relier les choix
 

@@ -1197,7 +1197,17 @@ trois pilules (« rends-toi au 12 », « va au 12 », « → 12 »), qui récrit
 aussitôt les quatre phrases. Les noms des constructions (« Pour… », « Si tu
 veux… ») quittent l'écran : la phrase d'exemple en tient lieu. Les règles de
 F05 et F11.5 ne changent pas : une seule façon d'annoncer le numéro pour
-tout le livre, une phrase tirée parmi celles qui sont cochées.
+tout le livre, une phrase tirée parmi celles qui sont cochées. Avec
+« → 12 », les trois dernières phrases sont grisées et une phrase dit que
+seule la première sert (F05-AC43, décidé le même jour).
+
+**Bibliothèque de visuels, 10 octobre 2026.** Dix-huit visuels générés par
+le porteur d'après les prompts du jour s'ajoutent aux cinq premiers : mine,
+bateau, savane, volcan, jardin, port, îles du ciel, fond marin, moulin,
+temple, étang, bibliothèque, lagon, neige, rivière, village, château,
+grotte. Chacun a sa vignette (480 × 320), que montrent les cartes et le
+sélecteur « Choisir une image » ; le visuel entier sert aux grandes images
+(« Mes projets », accueil de l'élève, carte de la création).
 
 **Écrans que la maquette ne dessinait pas :**
 

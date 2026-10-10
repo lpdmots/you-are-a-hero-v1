@@ -1,6 +1,8 @@
+import { existsSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  feuillePropre, guidage, introCarnet, phraseDeChoix, resumeFeuille, titreSynthese,
+  constructionsUtiles, feuillePropre, guidage, introCarnet, phraseDeChoix, resumeFeuille, titreSynthese,
 } from "@/domaine/preparation";
 import {
   aCompleter, chercherScenes, couleurNouvelle, departDe, deplacer, libelleManque, nomScene, referenceScene, type Chapitre, type Plan, type Scene,
@@ -108,12 +110,24 @@ describe("Images de repérage (F10.1)", () => {
   });
 
   it("F10-AC23 — l'image choisie passe avant le visuel proposé, qui passe avant le visuel par défaut", () => {
-    expect(adresseRepere({ imageId: null, visuelChoisi: null, visuelDefaut: "mer" }, "x")).toBe("/illustrations/defaut-mer.jpg");
-    expect(adresseRepere({ imageId: null, visuelChoisi: "desert", visuelDefaut: "mer" }, "x")).toBe("/illustrations/defaut-desert.jpg");
+    expect(adresseRepere({ imageId: null, visuelChoisi: null, visuelDefaut: "mer" }, "x")).toBe("/illustrations/defaut-mer-v.jpg");
+    expect(adresseRepere({ imageId: null, visuelChoisi: "desert", visuelDefaut: "mer" }, "x")).toBe("/illustrations/defaut-desert-v.jpg");
+    // En grand, le visuel entier, et non sa vignette
+    expect(adresseRepere({ imageId: null, visuelChoisi: "desert", visuelDefaut: "mer" }, "x", true)).toBe("/illustrations/defaut-desert.jpg");
     expect(adresseRepere({ imageId: "abc", visuelChoisi: "desert", visuelDefaut: "mer" }, "x")).toBe("/images/abc?v=1");
-    expect(adresseRepere({ imageId: "abc", visuelChoisi: null, visuelDefaut: "mer" }, "x", false)).toBe("/images/abc");
+    // Une image importée se montre toujours par sa réduction d'écran
+    expect(adresseRepere({ imageId: "abc", visuelChoisi: null, visuelDefaut: "mer" }, "x", true)).toBe("/images/abc?v=1");
     // Un visuel retiré de la bibliothèque ne casse rien : un autre le remplace
-    expect(adresseRepere({ imageId: null, visuelChoisi: "disparu", visuelDefaut: "disparu" }, "x")).toMatch(/^\/illustrations\/defaut-[a-z]+\.jpg$/);
+    expect(adresseRepere({ imageId: null, visuelChoisi: "disparu", visuelDefaut: "disparu" }, "x")).toMatch(/^\/illustrations\/defaut-[a-z]+-v\.jpg$/);
+  });
+
+  it("F10.1 — chaque visuel de la bibliothèque a son fichier et sa vignette", () => {
+    for (const { cle } of VISUELS) {
+      for (const fichier of [`defaut-${cle}.jpg`, `defaut-${cle}-v.jpg`]) {
+        expect(existsSync(resolve(__dirname, "../../public/illustrations", fichier)), fichier).toBe(true);
+      }
+    }
+    expect(new Set(VISUELS.map((v) => v.cle)).size).toBe(VISUELS.length);
   });
 
   it("F10-AC24 — seul un vrai fichier JPEG est gardé, avec ses dimensions", () => {
@@ -161,6 +175,14 @@ describe("Préparation (F02)", () => {
     expect(phraseDeChoix("Prendre la clé", 12, "rends", "si")).toBe("Si tu veux prendre la clé, rends-toi au 12.");
     expect(phraseDeChoix("Prendre la clé", 12, "rends", "question")).toBe("Prendre la clé ? Rends-toi au 12.");
     expect(phraseDeChoix("Prendre la clé", 12, "fleche", "neutre")).toBe("Prendre la clé → 12");
+  });
+
+  it("F05-AC43 — avec la flèche, seule la première construction sert, et les autres restent cochées pour plus tard", () => {
+    expect(constructionsUtiles("fleche", ["neutre", "pour", "si"])).toEqual(["neutre"]);
+    expect(constructionsUtiles("rends", ["neutre", "pour", "si"])).toEqual(["neutre", "pour", "si"]);
+    expect(constructionsUtiles("va", ["pour"])).toEqual(["neutre", "pour"]);
+    // Une phrase à flèche ne prend jamais la forme « Pour…, → 12. »
+    expect(phraseDeChoix("Prendre la clé", 12, "fleche", "pour")).toBe("Prendre la clé → 12");
   });
 
   it("F04.2 — la feuille d'aventure ne garde que des sections connues, aux tailles bornées", () => {
