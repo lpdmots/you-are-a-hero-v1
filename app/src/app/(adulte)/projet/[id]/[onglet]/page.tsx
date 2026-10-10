@@ -62,6 +62,9 @@ export default async function PageProjet({ params, searchParams }: Props) {
   return (
     <div className="page">
       {message === "cree" ? <MessageAuChargement texte={`« ${projet.titre} » est créé. Commencez par la préparation.`} /> : null}
+      {message === "cree-sans-image" ? (
+        <MessageAuChargement texte={`« ${projet.titre} » est créé, mais son image n’a pas pu être importée. Choisissez-la depuis les réglages du projet.`} />
+      ) : null}
       <EnteteProjet enseignant={enseignant} projet={projet} onglet={onglet} />
       {contenu}
     </div>

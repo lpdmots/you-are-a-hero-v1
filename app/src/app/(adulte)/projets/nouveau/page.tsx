@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Icone } from "@/composants/Icone";
+import { randomUUID } from "node:crypto";
 import { libelleAnnee } from "@/domaine/annee";
+import { tirerVisuel } from "@/domaine/visuels";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { mesClasses } from "@/serveur/lectures";
 import { NouveauProjet } from "./NouveauProjet";
@@ -27,7 +29,8 @@ export default async function PageNouveauProjet() {
         <header className="entete">
           <h1>Nouveau projet</h1>
         </header>
-        <NouveauProjet classes={classes} />
+        {/* Le visuel par défaut de la carte est tiré ici, une fois : la carte le montre, le projet le garde (F10-AC21) */}
+        <NouveauProjet classes={classes} visuelDefaut={tirerVisuel(randomUUID())} />
       </div>
     </div>
   );

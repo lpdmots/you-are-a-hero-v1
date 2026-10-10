@@ -1,6 +1,6 @@
 import { randomBytes, randomUUID } from "node:crypto";
 import { resolve } from "node:path";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { Client } from "pg";
 import { expect, type Browser, type BrowserContext, type Page } from "@playwright/test";
@@ -168,3 +168,70 @@ export async function taperCode(page: Page, prenom: string, code: string): Promi
 }
 
 export const ALERTE = (page: Page) => page.getByRole("alert").filter({ hasText: /\S/ });
+
+// ——— Étape 2 : préparer une situation sans passer par les écrans ———
+
+/** L'accès de l'adulte à la base, avec ses seuls droits, comme depuis son navigateur. */
+export async function baseDe(compte: Compte): Promise<SupabaseClient> {
+  const base = createClient(url, process.env.NEXT_PUBLIC_SUPABASE_CLE_PUBLIABLE!, { auth: { persistSession: false, autoRefreshToken: false } });
+  const { error } = await base.auth.signInWithPassword({ email: compte.courriel, password: compte.motDePasse });
+  if (error) throw new Error(error.message);
+  return base;
+}
+
+export async function semerProjet(
+  base: SupabaseClient, compte: Compte, organisation: "classe" | "personnel", recit: "choix" | "classique", titre: string, classeId: string | null = null,
+): Promise<string> {
+  const { data, error } = await base.from("projets").insert({ enseignant_id: compte.id, organisation, recit, titre, classe_id: classeId, visuel_defaut: "montagne" }).select("id").single();
+  if (error || !data) throw new Error(error?.message);
+  await base.from("enseignants").update({ dernier_projet_id: data.id }).eq("id", compte.id);
+  return data.id;
+}
+
+/** Une partie et ses chapitres, chacun avec ses scènes titrées. Rend les identifiants des chapitres et des scènes, dans l'ordre. */
+export async function semerPartie(
+  base: SupabaseClient, projetId: string, titre: string, chapitres: { titre: string; scenes?: string[] }[], visuel = "foret",
+): Promise<{ partieId: string; chapitres: { id: string; scenes: string[] }[] }> {
+  const visuels = ["mer", "montagne", "cite", "desert", "foret"];
+  const { data, error } = await base.rpc("creer_partie", {
+    p_projet: projetId, p_titre: titre, p_visuel: visuel, p_titre_chapitre: chapitres[0].titre, p_couleur: Math.floor(Math.random() * 8), p_visuel_chapitre: visuels[0],
+  });
+  const ligne = (Array.isArray(data) ? data[0] : data) as { partie_id: string; chapitre_id: string } | null;
+  if (error || !ligne) throw new Error(error?.message);
+  const crees: { id: string; scenes: string[] }[] = [];
+  for (const [i, chapitre] of chapitres.entries()) {
+    let id = ligne.chapitre_id;
+    if (i > 0) {
+      const cree = await base.rpc("creer_chapitre", { p_partie: ligne.partie_id, p_titre: chapitre.titre, p_couleur: (i * 3) % 8, p_visuel: visuels[i % visuels.length] });
+      if (cree.error) throw new Error(cree.error.message);
+      id = cree.data as string;
+    }
+    const scenes: string[] = [];
+    for (const titreScene of chapitre.scenes ?? []) {
+      const scene = await base.rpc("creer_scene", { p_chapitre: id });
+      const s = (Array.isArray(scene.data) ? scene.data[0] : scene.data) as { scene_id: string } | null;
+      if (scene.error || !s) throw new Error(scene.error?.message);
+      if (titreScene) await base.from("scenes").update({ titre: titreScene }).eq("id", s.scene_id);
+      scenes.push(s.scene_id);
+    }
+    crees.push({ id, scenes });
+  }
+  return { partieId: ligne.partie_id, chapitres: crees };
+}
+
+/** Les élèves d'une classe, par prénom : leur profil et leur inscription. */
+export async function elevesDe(base: SupabaseClient, classeId: string): Promise<Record<string, { id: string; inscriptionId: string }>> {
+  const { data, error } = await base.from("inscriptions").select("id, eleves(id, prenom)").eq("classe_id", classeId).is("retire_le", null);
+  if (error) throw new Error(error.message);
+  return Object.fromEntries(((data ?? []) as unknown as { id: string; eleves: { id: string; prenom: string } }[]).map((i) => [i.eleves.prenom, { id: i.eleves.id, inscriptionId: i.id }]));
+}
+
+export async function semerAttribution(base: SupabaseClient, chapitreId: string, eleves: { eleve: string; profil?: "propositions" | "organisation" }[]): Promise<void> {
+  const { error } = await base.rpc("attribuer_chapitre", { p_chapitre: chapitreId, p_eleves: eleves });
+  if (error) throw new Error(error.message);
+}
+
+/** Ne plus afficher les écrans d'aide de ce compte : un parcours qui ne porte pas sur l'aide n'a pas à la fermer. */
+export async function masquerAides(base: SupabaseClient, compte: Compte): Promise<void> {
+  await base.from("enseignants").update({ aides_masquees: ["classes", "plan", "preparation"] }).eq("id", compte.id);
+}

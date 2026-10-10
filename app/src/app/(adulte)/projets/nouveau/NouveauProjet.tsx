@@ -1,9 +1,15 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition, type CSSProperties, type ReactNode } from "react";
+import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Etapes } from "@/composants/Etapes";
 import { Icone } from "@/composants/Icone";
+import { deposer, type ImageReduite } from "@/composants/importer";
 import { couleurDe, initiales } from "@/domaine/eleves";
+import { libelleRecit } from "@/domaine/projets";
+import { adresseVisuel } from "@/domaine/visuels";
+import { choisirRepere } from "../../projet/actions-recit";
 import { creerProjet } from "../actions";
 import styles from "./nouveau.module.css";
 
@@ -81,8 +87,12 @@ function Choix<T extends Qui | Recit>({
   );
 }
 
-export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
+export function NouveauProjet({ classes, visuelDefaut }: { classes: ClasseOfferte[]; visuelDefaut: string }) {
+  const routeur = useRouter();
   const [etape, setEtape] = useState(1);
+  // L'image de la carte (F10-AC21) : rien de choisi, un visuel proposé, ou une image qui attend le projet
+  const [image, setImage] = useState<{ visuel: string } | { locale: ImageReduite } | null>(null);
+  const [choixImage, setChoixImage] = useState(false);
   const [qui, setQui] = useState<Qui | null>(null);
   const [recit, setRecit] = useState<Recit | null>(null);
   const [titre, setTitre] = useState("");
@@ -100,10 +110,30 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
     if (!qui || !recit || enCours) return;
     setErreur(null);
     lancer(async () => {
-      const resultat = await creerProjet({ organisation: qui, recit, titre, classeId: qui === "classe" && classe ? classe : null });
-      if (resultat?.erreur) setErreur(resultat.erreur);
+      const locale = image && "locale" in image ? image.locale : null;
+      const resultat = await creerProjet({
+        organisation: qui, recit, titre, classeId: qui === "classe" && classe ? classe : null,
+        visuelDefaut, visuelChoisi: image && "visuel" in image ? image.visuel : null, avecImage: !!locale,
+      });
+      if (!resultat) return;
+      if ("erreur" in resultat) return setErreur(resultat.erreur);
+      // Le projet existe : l'image choisie pendant la création y est maintenant déposée
+      let message = "cree";
+      if (locale) {
+        const depot = await deposer(resultat.id, locale);
+        const pose = depot.ok ? await choisirRepere("projet", resultat.id, { image: depot.id }) : depot;
+        if (!pose.ok) message = "cree-sans-image";
+      }
+      routeur.push(`/projet/${resultat.id}/preparation?message=${message}`);
     });
   };
+
+  const retenirImage = (choix: ChoixImage): string | null => {
+    if (image && "locale" in image) URL.revokeObjectURL(image.locale.apercu);
+    setImage("locale" in choix ? { locale: choix.locale } : "visuel" in choix ? { visuel: choix.visuel } : null);
+    return null;
+  };
+  const adresseImage = image ? ("locale" in image ? image.locale.apercu : adresseVisuel(image.visuel)) : adresseVisuel(visuelDefaut);
 
   return (
     <>
@@ -137,7 +167,8 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
         ) : null}
 
         {etape === 3 ? (
-          <>
+          <div className={styles.avecCarte}>
+           <div>
             <label className={styles.champ}>
               <span className="vh">Titre du projet</span>
               <input
@@ -192,7 +223,26 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
                 <span>{erreur}</span>
               </p>
             ) : null}
-          </>
+           </div>
+            <aside className={styles.apercu} aria-label="La carte du projet">
+              <div className={styles.carte}>
+                <span className={styles.carte__image}>
+                  {/* eslint-disable-next-line @next/next/no-img-element -- visuel livré avec l'application, ou image qui attend le projet */}
+                  <img className="image-couvrante" src={adresseImage} alt="" />
+                </span>
+                <span className={styles.carte__texte}>
+                  <b className={titre.trim() ? undefined : styles.carte__vide}>{titre.trim() || "Le titre de votre histoire"}</b>
+                  <span>
+                    {qui === "personnel" ? "Projet personnel" : (classes.find((c) => c.id === classe)?.nom ?? "Sans classe")} · {libelleRecit(recit ?? "choix")}
+                  </span>
+                </span>
+              </div>
+              <button type="button" className="lien" onClick={() => setChoixImage(true)}>
+                Choisir une image
+              </button>
+              <span className={styles.aide}>Facultatif : vous pourrez la changer.</span>
+            </aside>
+          </div>
         ) : null}
 
         <footer className={styles.pied}>
@@ -215,6 +265,15 @@ export function NouveauProjet({ classes }: { classes: ClasseOfferte[] }) {
           )}
         </footer>
       </section>
+      {choixImage ? (
+        <ChoisirImage
+          projetId={null}
+          actuel={{ imageId: null, visuelChoisi: image && "visuel" in image ? image.visuel : null, locale: !!image && "locale" in image }}
+          pour="du projet"
+          onChoisir={retenirImage}
+          onFermer={() => setChoixImage(false)}
+        />
+      ) : null}
     </>
   );
 }

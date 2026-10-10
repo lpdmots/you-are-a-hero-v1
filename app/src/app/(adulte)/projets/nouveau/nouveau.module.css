@@ -263,3 +263,57 @@
     font-size: var(--t-l);
   }
 }
+
+/* Troisième question : la carte du projet se montre telle qu'elle sera dans « Mes projets » (F10.1) */
+.avecCarte {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 28px;
+  align-items: start;
+}
+.apercu {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.carte {
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+}
+.carte__image {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+}
+.carte__texte {
+  display: grid;
+  gap: 3px;
+  padding: 12px 16px 16px;
+}
+.carte__texte b {
+  font-size: var(--t-l);
+  font-weight: 800;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+.carte__texte span {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.carte__vide {
+  color: var(--graphite-3);
+  font-style: italic;
+  font-weight: 600 !important;
+}
+@media (max-width: 720px) {
+  .avecCarte {
+    grid-template-columns: 1fr;
+  }
+  .apercu {
+    order: -1;
+    max-width: 320px;
+  }
+}

@@ -98,6 +98,71 @@
   font-weight: 700;
   color: var(--e-valider);
 }
+/* Toute l'histoire en cartes */
+.histoire {
+  margin-top: 34px;
+}
+.histoire > h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+}
+.histoire :global(.partie) {
+  padding-top: 22px;
+}
+.partie {
+  grid-template-columns: 96px 1fr !important;
+}
+.histoire h3 {
+  font-size: var(--t-l);
+  font-weight: 800;
+}
+.histoire h4 {
+  font-size: 1.12rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.pied {
+  min-height: 0 !important;
+}
+.cible {
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+}
+.fiche__image {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px 0;
+}
+/* Chapitre ouvert par un élève */
+.resume {
+  margin-top: 10px;
+}
+.outils {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 22px 0 16px;
+}
+.outils p {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.renommer {
+  display: flex;
+  gap: 6px;
+  position: relative;
+  z-index: 2;
+}
+.renommer input {
+  flex: 1;
+  min-width: 0;
+}
+
 @media (max-width: 900px) {
   .classe {
     display: none;

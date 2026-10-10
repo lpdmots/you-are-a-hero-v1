@@ -21,7 +21,10 @@ const texteLong = (texte: unknown, max: number): string => String(texte ?? "").r
 const refus = (erreur: { code?: string; message: string } | null, parDefaut: string): Echec =>
   echec(erreur?.code && /^P000\d$/.test(erreur.code) ? erreur.message : parDefaut);
 
-const rafraichir = (projetId: string) => revalidatePath(`/projet/${projetId}`, "layout");
+const rafraichir = (projetId: string) => {
+  revalidatePath(`/projet/${projetId}`, "layout");
+  revalidatePath(`/atelier/${projetId}`, "layout");
+};
 
 type Sorte = "partie" | "chapitre" | "scene";
 const TABLE: Record<Sorte, "parties" | "chapitres" | "scenes"> = { partie: "parties", chapitre: "chapitres", scene: "scenes" };
@@ -34,14 +37,17 @@ async function projetDeLElement(e: Enseignant, sorte: Sorte, id: string): Promis
 }
 
 /** Une partie se crée à la fin du plan, avec son premier chapitre vide (F03-AC10). */
-export async function creerPartie(projetId: string): Promise<Fait<{ partieId: string; chapitreId: string }>> {
+export async function creerPartie(projetId: string, titre?: string): Promise<Fait<{ partieId: string; chapitreId: string }>> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId)) return echec("Projet inconnu.");
+  // Depuis la préparation, la partie retenue arrive avec son titre (F02-AC08)
+  const titrePartie = titre === undefined ? TITRE_PARTIE : propre(titre, 120);
+  if (!titrePartie) return echec("Donnez un titre à la partie.");
   const plan = await planDe(e, projetId);
   const graine = `${projetId}:${plan.parties.length}:${plan.corbeille.length}`;
   const visuelPartie = tirerVisuel(`p:${graine}`, plan.parties.map((p) => p.visuelDefaut));
   const { data, error } = await e.supabase.rpc("creer_partie", {
-    p_projet: projetId, p_titre: TITRE_PARTIE, p_visuel: visuelPartie, p_titre_chapitre: TITRE_CHAPITRE,
+    p_projet: projetId, p_titre: titrePartie, p_visuel: visuelPartie, p_titre_chapitre: TITRE_CHAPITRE,
     p_couleur: couleurNouvelle(chapitresDe(plan).map((c) => c.couleur)), p_visuel_chapitre: tirerVisuel(`c:${graine}`, [visuelPartie]),
   });
   const ligne = (Array.isArray(data) ? data[0] : data) as { partie_id: string; chapitre_id: string } | null;

@@ -23,11 +23,3 @@ export const libelleOrganisation = (o: Organisation): string =>
   o === "classe" ? "Projet de classe" : "Projet personnel";
 
 export const libelleRecit = (r: Recit): string => (r === "choix" ? "Récit à choix" : "Récit classique");
-
-/** Illustration générique d'un projet sans image, toujours la même pour un projet. */
-const DEFAUTS = ["montagne", "foret", "mer", "cite", "desert"] as const;
-export function illustrationParDefaut(idProjet: string): string {
-  let h = 7;
-  for (const c of idProjet) h = (h * 31 + c.charCodeAt(0)) >>> 0;
-  return `/illustrations/defaut-${DEFAUTS[h % DEFAUTS.length]}.jpg`;
-}

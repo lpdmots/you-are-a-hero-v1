@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icone } from "@/composants/Icone";
-import { illustrationParDefaut, libelleRecit } from "@/domaine/projets";
+import { ImageRepere } from "@/composants/ImageRepere";
+import { libelleRecit } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { mesProjets, type Projet } from "@/serveur/lectures";
 import styles from "./projets.module.css";
@@ -67,7 +68,7 @@ export default async function MesProjets() {
             <li key={p.id}>
               <div className={styles.projet}>
                 <span className={styles.image}>
-                  <Image src={illustrationParDefaut(p.id)} alt="" fill sizes="(max-width: 720px) 100vw, 620px" />
+                  <ImageRepere repere={p} graine={p.id} />
                 </span>
                 <span className={styles.texte}>
                   <b>{p.titre}</b>

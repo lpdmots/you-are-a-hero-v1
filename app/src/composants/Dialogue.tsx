@@ -4,12 +4,14 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 
 /** Dialogue de confirmation : quelques faits, la décision, « Annuler ». */
 export function Dialogue({
-  titre, children, boutons, onFermer,
+  titre, children, boutons, onFermer, fermer = "Annuler",
 }: {
   titre: string;
   children: ReactNode;
   boutons: ReactNode;
   onFermer: () => void;
+  /** Le mot du bouton qui referme : « Annuler » devant une décision, « Fermer » devant une simple information */
+  fermer?: string;
 }) {
   const id = useId();
   const ref = useRef<HTMLHeadingElement>(null);
@@ -38,7 +40,7 @@ export function Dialogue({
         <p className="dialogue__cmd">
           {boutons}
           <button type="button" className="btn" onClick={onFermer}>
-            Annuler
+            {fermer}
           </button>
         </p>
       </div>
