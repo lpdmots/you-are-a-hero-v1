@@ -3,7 +3,7 @@ import { resolve } from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { Client } from "pg";
-import { expect, type Browser, type BrowserContext, type Page } from "@playwright/test";
+import { expect, type Browser, type BrowserContext, type Locator, type Page } from "@playwright/test";
 import { supprimerComptesDEssai } from "../comptes-d-essai";
 
 config({ path: resolve(__dirname, "../../.env.local"), quiet: true });
@@ -235,3 +235,49 @@ export async function semerAttribution(base: SupabaseClient, chapitreId: string,
 export async function masquerAides(base: SupabaseClient, compte: Compte): Promise<void> {
   await base.from("enseignants").update({ aides_masquees: ["classes", "plan", "preparation"] }).eq("id", compte.id);
 }
+
+/** Une classe et ses élèves, créés sans passer par les écrans : pour les parcours où aucun élève ne se connecte. */
+export async function semerClasse(base: SupabaseClient, nom: string, prenoms: string[]): Promise<{ id: string; eleves: Record<string, { id: string; inscriptionId: string }> }> {
+  const id = randomUUID();
+  const creee = await base.rpc("creer_classe", { p_id: id, p_nom: nom, p_annee_debut: 2026, p_identifiant: identifiantLibre(), p_mot_de_passe_chiffre: "non-lu-par-ce-parcours" });
+  if (creee.error) throw new Error(creee.error.message);
+  const inscrits = await base.rpc("inscrire_eleves", {
+    p_classe: id, p_connus: [],
+    p_nouveaux: prenoms.map((prenom, i) => ({ id: randomUUID(), prenom, nom: null, couleur: i % 10, code_chiffre: "non-lu-par-ce-parcours" })),
+  });
+  if (inscrits.error) throw new Error(inscrits.error.message);
+  return { id, eleves: await elevesDe(base, id) };
+}
+
+/** Un adulte connecté, ses écrans d'aide déjà masqués, et son accès à la base pour préparer la situation. */
+export async function adultePret(page: Page): Promise<{ compte: Compte; base: SupabaseClient }> {
+  const compte = await creerCompte();
+  const base = await baseDe(compte);
+  await masquerAides(base, compte);
+  await connecter(page, compte);
+  await page.waitForURL(/\/projets$/);
+  return { compte, base };
+}
+
+/** Tire un élément à la souris et le pose sur un autre : le glisser-déposer du plan (F03.1). */
+export async function tirer(page: Page, source: Locator, cible: Locator): Promise<void> {
+  await source.scrollIntoViewIfNeeded();
+  const a = (await source.boundingBox())!;
+  await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(a.x + a.width / 2 + 14, a.y + a.height / 2 + 14, { steps: 4 });
+  const b = (await cible.boundingBox())!;
+  await page.mouse.move(b.x + b.width / 2, b.y + b.height / 2, { steps: 16 });
+  await page.mouse.move(b.x + b.width / 2 + 2, b.y + b.height / 2 + 2, { steps: 2 });
+  await page.waitForTimeout(200);
+  await page.mouse.up();
+}
+
+/** Les titres des chapitres d'une partie, dans l'ordre de l'écran. */
+export const chapitresDeLaPartie = (page: Page, partie: string): Promise<string[]> =>
+  page.getByRole("region", { name: partie, exact: true }).locator(".etiquette h3").allTextContents();
+
+/** Les références des scènes du chapitre ouvert, dans l'ordre de l'écran. */
+export const scenesDuChapitre = (page: Page): Promise<string[]> => page.locator(".fiches .fiche__ref").allTextContents();
+
+export const MESSAGE = (page: Page) => page.locator(".message");

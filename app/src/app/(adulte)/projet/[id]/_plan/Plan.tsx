@@ -332,7 +332,16 @@ export function Plan({
               <input type="search" placeholder="Rechercher une scène" value={demande} onChange={(e) => setDemande(e.target.value)} />
             </label>
           ) : null}
-          <button type="button" className="aide-bouton" onClick={() => setAide(true)} title="Que fait-on ici ?">
+          <button
+            type="button"
+            className="aide-bouton"
+            title="Que fait-on ici ?"
+            onClick={() => {
+              // Rouverte par « Aide », elle se referme par « Fermer l'aide »
+              setVue(true);
+              setAide(true);
+            }}
+          >
             <Icone nom="aide" />
             Aide
           </button>

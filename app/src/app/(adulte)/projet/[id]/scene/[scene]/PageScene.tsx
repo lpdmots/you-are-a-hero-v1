@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Icone } from "@/composants/Icone";
 import { Menu } from "@/composants/Menu";
 import { chapitresDe, departDe, referenceScene, scenesDe, type Plan } from "@/domaine/recit";
@@ -27,17 +27,35 @@ export function PageScene({ projet, plan, sceneId }: { projet: { id: string; deC
   const [etat, setEtat] = useState<"" | "attente" | "enregistre" | "erreur">("");
   const [choixDepart, setChoixDepart] = useState(false);
   const minuteur = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Ce qui attend d'être enregistré : le titre et la consigne partent ensemble, aucun ne chasse l'autre
+  const enAttente = useRef<{ titre?: string; consigne?: string }>({});
   const retour = `/projet/${projet.id}/chapitre/${chapitre.id}`;
   const commandes = useCommandesScene({ projetId: projet.id, plan, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => routeur.push(retour) });
 
-  const enregistrer = (valeurs: { titre?: string; consigne?: string }, delai = 700) => {
-    setEtat("attente");
+  const envoyer = async () => {
     if (minuteur.current) clearTimeout(minuteur.current);
-    minuteur.current = setTimeout(async () => {
-      const fait = await reglerScene(scene.id, valeurs);
-      setEtat(fait.ok ? "enregistre" : "erreur");
-    }, delai);
+    minuteur.current = null;
+    const valeurs = enAttente.current;
+    enAttente.current = {};
+    if (Object.keys(valeurs).length === 0) return;
+    const fait = await reglerScene(scene.id, valeurs);
+    // Une frappe arrivée entre-temps garde « Enregistrement… » jusqu'à son propre envoi
+    if (Object.keys(enAttente.current).length === 0) setEtat(fait.ok ? "enregistre" : "erreur");
   };
+  const enregistrer = (valeurs: { titre?: string; consigne?: string }) => {
+    setEtat("attente");
+    enAttente.current = { ...enAttente.current, ...valeurs };
+    if (minuteur.current) clearTimeout(minuteur.current);
+    minuteur.current = setTimeout(() => void envoyer(), 700);
+  };
+  // Quitter la page n'abandonne pas ce qui attendait
+  useEffect(
+    () => () => {
+      if (minuteur.current) clearTimeout(minuteur.current);
+      if (Object.keys(enAttente.current).length) void reglerScene(scene.id, enAttente.current);
+    },
+    [scene.id],
+  );
 
   const ref = referenceScene(scene.reference);
   return (
@@ -68,6 +86,7 @@ export function PageScene({ projet, plan, sceneId }: { projet: { id: string; deC
               setTitre(e.target.value);
               enregistrer({ titre: e.target.value });
             }}
+            onBlur={() => void envoyer()}
           />
         </h1>
         <span className="tampon" data-e="vide">
@@ -140,6 +159,7 @@ export function PageScene({ projet, plan, sceneId }: { projet: { id: string; deC
                 setConsigne(e.target.value);
                 enregistrer({ consigne: e.target.value });
               }}
+              onBlur={() => void envoyer()}
             />
             <p className={styles.aide}>
               {projet.deClasse
