@@ -624,6 +624,47 @@
 .note-prof > .choix-attendu {
   margin: 10px -12px -10px;
 }
+/* L'action de jeu qu'on est en train de créer : le même cadre, en pointillé canard */
+.action-attendue {
+  position: relative;
+  display: block;
+  margin-top: 0.75em;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.75;
+  text-align: left;
+  cursor: default;
+  user-select: none;
+}
+.page--eleve .action-attendue {
+  font-size: 1.28rem;
+}
+.action-attendue__mot {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--canard);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  line-height: 1.5;
+}
+.action-attendue .action-jeu__cadre {
+  border: 1.5px dashed var(--canard);
+  background: var(--canard-pale);
+}
+.action-attendue .action-jeu__cadre > .ic {
+  color: var(--canard);
+}
+.action-attendue--vide .action-jeu__texte {
+  color: var(--graphite-3);
+  font-weight: 400;
+}
+.action-attendue--remplace {
+  margin-top: -1.75em;
+}
+.note-prof > .action-attendue {
+  margin: 10px 0 0;
+}
 .renvoi-copie--attendu {
   color: var(--graphite-3);
   background: var(--feuille);

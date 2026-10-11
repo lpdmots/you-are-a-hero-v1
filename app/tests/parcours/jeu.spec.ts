@@ -140,7 +140,7 @@ test.describe("Objets de l'histoire (F04.2)", () => {
 });
 
 test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
-  test("F04-AC27 — l'enseignante tape « /action » et retient une formule : un paragraphe d'action de jeu porte ce texte, qu'elle modifie sur place ; dans une formule à compléter, « … » est sélectionné", async ({ page }) => {
+  test("F04-AC27, AC39 — l'enseignante tape « /action » et retient une formule : un paragraphe d'action de jeu porte ce texte, qu'elle modifie sur place ; dans une formule à compléter, « … » est sélectionné", async ({ page }) => {
     test.setTimeout(120_000);
     const s = await classeQuiEcrit(page);
     const [s15] = s.lisiere.scenes;
@@ -153,8 +153,13 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await expect(page.locator(".slash [role=option]")).toHaveText([/Action de jeu/]);
     await page.keyboard.press("Enter");
     await expect(LISTE(page).getByRole("option")).toHaveText(["Paragraphe vide, à écrire", ...FORMULES]);
+    // F04-AC39 — l'action se lit en attente sous le paragraphe du curseur : l'invite, puis la formule surlignée
+    const attendue = copie(page).locator("p").first().locator(".action-attendue");
+    await expect(attendue).toContainText("Ce que le lecteur fait sur sa feuille d’aventure");
     await page.keyboard.press("ArrowDown");
+    await expect(attendue).toContainText(FORMULES[0]);
     await page.keyboard.press("Enter");
+    await expect(copie(page).locator(".action-attendue")).toHaveCount(0);
     await expect(ACTIONS(page)).toHaveCount(1);
     await expect(copie(page)).toBeFocused();
     await expect(ACTIONS(page).locator(".action-jeu__legende")).toContainText("Action de jeu");

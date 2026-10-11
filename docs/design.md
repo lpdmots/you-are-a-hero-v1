@@ -1370,6 +1370,13 @@ règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-
   puis le libellé tapé, lettre après lettre. Sur une ligne vide, elle en
   prend la place. Rien pour un lien caché, qui n'ajoute pas de phrase.
 
+- **L'action de jeu en attente,** demandée ensuite par le porteur : quand
+  la liste des formules est ouverte, le cadre de l'action se lit à sa
+  place, en pointillé canard, sous « Nouvelle action de jeu ». Il porte
+  « Ce que le lecteur fait sur sa feuille d'aventure » en gris, puis la
+  formule surlignée dans la liste, ou celle qu'on saisit dans « Nouvelle
+  formule ». La liste s'ouvre contre lui.
+
 **Avis donné au porteur, qui demandait si la destination ne devrait pas
 venir avant la phrase :** non. Le libellé est ce que l'auteur a en tête en
 finissant sa scène, il sert de titre à une scène qui n'existe pas encore,

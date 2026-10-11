@@ -120,11 +120,13 @@ export function ListeObjets({ jeu, onChoisir, onCreer, onFermer }: { jeu: Jeu; o
  * La formule retenue devient du texte libre, modifiable sur place.
  */
 export function ListeFormules({
-  jeu, pourUneAction, onChoisir, onAjouter, onFermer,
+  jeu, pourUneAction, onApercu, onChoisir, onAjouter, onFermer,
 }: {
   jeu: Jeu;
   /** Les formules pour le texte d'une action qui existe déjà : pas de paragraphe vide à proposer */
   pourUneAction: boolean;
+  /** La formule surlignée : la copie la montre à sa place dans le texte, en attente */
+  onApercu?: (texte: string) => void;
   onChoisir: (texte: string) => void;
   onAjouter?: () => void;
   onFermer: () => void;
@@ -136,6 +138,10 @@ export function ListeFormules({
   useEffect(() => {
     (liste.current ?? bouton.current)?.focus();
   }, []);
+  const vue = lignes[choisi]?.texte ?? "";
+  useEffect(() => {
+    onApercu?.(vue);
+  }, [onApercu, vue]);
   const titre = pourUneAction ? "Formules d’action" : "Action de jeu";
   return (
     <div className="pop" role="dialog" aria-label={titre} onKeyDown={auClavierDeLaListe(onFermer)}>
@@ -239,8 +245,13 @@ export function FicheNouvelObjet({ nom: propose, services, onCree, onFermer }: {
 }
 
 /** Une nouvelle formule d'action, ajoutée à la liste puis employée aussitôt. */
-export function FicheNouvelleFormule({ services, onCree, onFermer }: { services: Services; onCree: (texte: string) => void; onFermer: () => void }) {
+export function FicheNouvelleFormule({
+  services, onApercu, onCree, onFermer,
+}: { services: Services; onApercu?: (texte: string) => void; onCree: (texte: string) => void; onFermer: () => void }) {
   const [texte, setTexte] = useState("");
+  useEffect(() => {
+    onApercu?.(texte.trim());
+  }, [onApercu, texte]);
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const creer = async () => {

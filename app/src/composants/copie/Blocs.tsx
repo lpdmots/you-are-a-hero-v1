@@ -89,17 +89,37 @@ function ChoixEnAttente({ remplace }: { remplace: boolean }) {
   );
 }
 
-/** Ce que portent tous les blocs : leur identité, pour s'y poser, et la phrase de choix en attente après eux. */
+/**
+ * L'action de jeu qu'on est en train de créer, à la place qu'elle prendra : elle montre la
+ * formule surlignée dans la liste, ou celle qu'on saisit. Comme la phrase de choix en attente,
+ * elle n'est pas dans le texte.
+ */
+function ActionEnAttente({ remplace }: { remplace: boolean }) {
+  const { formuleVue } = useCopie();
+  return (
+    <span className={`action-attendue${formuleVue ? "" : " action-attendue--vide"}${remplace ? " action-attendue--remplace" : ""}`} contentEditable={false} aria-hidden="true">
+      <span className="action-attendue__mot">Nouvelle action de jeu</span>
+      <span className="action-jeu__cadre">
+        <Icone nom="crayon" />
+        <span className="action-jeu__texte">{formuleVue || "Ce que le lecteur fait sur sa feuille d’aventure"}</span>
+      </span>
+    </span>
+  );
+}
+
+/** Ce que portent tous les blocs : leur identité, pour s'y poser, et ce qu'on est en train de créer après eux. */
 function useBloc(id: string) {
   const c = useCopie();
-  const attendu = c.fiche?.sorte === "creation" && c.fiche.apres === id;
+  const f = c.fiche;
+  // Le choix, ou l'action de jeu, qu'on est en train de créer se lit à sa place, en attente
+  const choix = f?.sorte === "creation" && f.apres === id ? f : null;
+  const action = f?.sorte === "action" ? f : f?.sorte === "formule-nouvelle" && f.pour.sorte === "action" ? f.pour : null;
   return {
     c,
     attributs: { "data-bloc": id } as Record<string, string>,
     // Là où se poserait le bloc qu'on tire
     pose: c.tire && c.tire.avant === id ? " se-pose-avant" : "",
-    // Là où se posera le choix qu'on est en train de créer
-    attente: attendu ? <ChoixEnAttente remplace={c.fiche?.sorte === "creation" && c.fiche.remplace} /> : null,
+    attente: choix ? <ChoixEnAttente remplace={choix.remplace} /> : action?.apres === id ? <ActionEnAttente remplace={action.remplace} /> : null,
   };
 }
 

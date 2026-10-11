@@ -143,6 +143,8 @@ export type ContexteDeCopie = {
   ouvrirLiaison: (liaison: string) => void;
   fiche: FicheOuverte | null;
   apercu: ApercuDeChoix | null;
+  /** L'action de jeu qu'on est en train de créer : la formule surlignée dans la liste, ou rien encore */
+  formuleVue: string;
   ouvrir: (bloc: string) => void;
   /** Le bloc qu'on tire par son repère, et l'endroit où il se poserait */
   tire: { bloc: string; avant: string | null } | null;

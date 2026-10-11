@@ -1688,7 +1688,9 @@ presse-papiers :**
   curseur, celle des objets avec un champ pour la filtrer, et l'ajout se
   fait dans le panneau à droite du texte ([F05.2](#f05-panneau)) : l'objet
   créé s'écrit aussitôt dans le texte, la formule ajoutée est aussitôt
-  employée.
+  employée. Pendant qu'on choisit la formule, l'action de jeu se lit en
+  attente à la place qu'elle prendra, comme la phrase d'un choix (demandé
+  par le porteur le même jour, F04-AC39).
 - **Place de la feuille et des règles (révisé le 3 octobre 2026) :** la
   feuille d'aventure, le dé et la partie « Règles du jeu » se règlent dans
   cette même rubrique de la préparation : ils servent aux actions de jeu et
@@ -1721,6 +1723,13 @@ presse-papiers :**
 - **F04-AC29 — Objet ajouté depuis la scène :** étant donné l'enseignante
   dans S051, lorsqu'elle ajoute « la lanterne sourde » par `/objet`, alors
   l'objet figure dans la liste de la préparation et elle n'a pas quitté S051.
+- **F04-AC39 — Action en attente :** étant donné le curseur dans le premier
+  paragraphe de S015, lorsque l'enseignante saisit `/action`, alors une
+  action de jeu en attente se lit sous ce paragraphe, avec l'invite « Ce que
+  le lecteur fait sur sa feuille d'aventure » ; lorsqu'elle surligne
+  « Retire un point de volonté à ton héros. », alors l'action en attente
+  porte cette formule ; lorsqu'elle la retient, alors l'action de jeu prend
+  cette place et plus rien n'est en attente.
 - **F04-AC30 — Collage sans droit :** étant donné Alice, profil « écriture et
   propositions », ayant copié un paragraphe de récit et une action de jeu,
   lorsqu'elle les colle dans sa scène, alors le paragraphe de récit est
@@ -2551,7 +2560,8 @@ recommandation, qu'il retient, sépare deux cas.
   prendra, en attente, avec un libellé d'exemple tant que rien n'est saisi,
   puis celui qu'on tape (demandé par le porteur le 11 octobre 2026, à la
   place d'un simple trait). Elle n'est pas dans le texte : rien d'elle ne
-  s'enregistre.
+  s'enregistre. Il en va de même d'une action de jeu en cours de création
+  (F04-AC39).
 - **Une liste ouverte au curseur ne change ni le cadre ni le texte :** elle
   s'ouvre sous la ligne, ou au-dessus quand la fenêtre n'a pas la place
   dessous, et sort du cadre du texte s'il le faut (demandé le même jour).

@@ -140,6 +140,7 @@ export function Copie({
   const liaisonsTenues = useRef(liaisons);
   const [fiche, setFiche] = useState<FicheOuverte | null>(null);
   const [apercu, setApercu] = useState<ApercuDeChoix | null>(null);
+  const [formuleVue, setFormuleVue] = useState("");
   const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
   const aDesVoisines = voisines.avant.length + voisines.apres.length > 0;
   const [bandeau, setBandeau] = useState<Bandeau | null>(null);
@@ -701,7 +702,9 @@ export function Copie({
   const sorte = menuOuvert ? "commandes" : (liste?.sorte ?? null);
   useLayoutEffect(() => {
     const menu = menuRef.current;
-    const bloc = ancre ? zone.current?.querySelector<HTMLElement>(`[data-bloc="${ancre}"]`) : null;
+    const porteur = ancre ? zone.current?.querySelector<HTMLElement>(`[data-bloc="${ancre}"]`) : null;
+    // L'action de jeu en attente : la liste s'ouvre contre elle, et non contre le bloc qui la précède
+    const bloc = porteur?.querySelector<HTMLElement>(".action-attendue") ?? porteur;
     if (!menu || !bloc) return;
     const ligne = (): DOMRect | null => {
       try {
@@ -728,7 +731,7 @@ export function Copie({
   }, [ancre, sorte]);
 
   const contexte: ContexteDeCopie = {
-    livre, droits, lieu, pourEleve, fiche, apercu, tire, enseignant, ecrireAvant,
+    livre, droits, lieu, pourEleve, fiche, apercu, formuleVue, tire, enseignant, ecrireAvant,
     ouvrirLiaison: (liaison) => {
       setBandeau(null);
       lacherLeTexte();
@@ -1077,6 +1080,7 @@ export function Copie({
                 <ListeFormules
                   jeu={jeu}
                   pourUneAction={liste.sorte === "formules"}
+                  onApercu={setFormuleVue}
                   onChoisir={poserAction}
                   onAjouter={adulte && services.ajouterFormule ? () => setFiche({ sorte: "formule-nouvelle", pour: liste }) : undefined}
                   onFermer={fermer}
@@ -1120,7 +1124,7 @@ export function Copie({
             ) : dansLePanneau.sorte === "objet-nouveau" ? (
               <FicheNouvelObjet nom={dansLePanneau.nom} services={services} onCree={ecrireObjet} onFermer={fermer} />
             ) : dansLePanneau.sorte === "formule-nouvelle" ? (
-              <FicheNouvelleFormule services={services} onCree={poserAction} onFermer={fermer} />
+              <FicheNouvelleFormule services={services} onApercu={setFormuleVue} onCree={poserAction} onFermer={fermer} />
             ) : dansLePanneau.sorte === "reglages" && blocRegle ? (
               <FicheReglagesChoix
                 key={`${blocRegle.id}-${estAuto(blocRegle)}`}
