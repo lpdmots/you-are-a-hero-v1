@@ -27,6 +27,9 @@ import { ScenesVoisines } from "./ScenesVoisines";
 import { SortieGardee } from "./SortieGardee";
 import { useEnregistrementTexte, type Cible, type EtatTexte } from "./useEnregistrementTexte";
 
+/** Les éditeurs dont le texte a changé sans que l'écran l'ait encore redessiné : l'éditeur ne sait pas s'y poser. */
+const A_REDESSINER = new WeakSet<object>();
+
 /** Les réglages : dans le panneau que la page fournit, à droite du texte ; sans lui, sous la copie. */
 function Reglages({ panneau, children }: { panneau: HTMLElement | null; children: ReactNode }) {
   return panneau ? createPortal(<div className="panneau-copie">{children}</div>, panneau) : <div className="panneau-copie panneau-copie--dessous">{children}</div>;
@@ -258,15 +261,20 @@ export function Copie({
   // Une fiche qui s'ouvre prend le curseur. L'éditeur doit le lâcher pour de bon : sinon il
   // se croit encore actif et le reprend en reposant sa sélection, et la frappe part dans le texte
   const lacherLeTexte = () => e.tf.blur();
+  // Une fois l'écran redessiné, l'éditeur sait de nouveau où poser le curseur
+  useEffect(() => {
+    A_REDESSINER.delete(e);
+  });
   /**
    * Rendre le curseur au texte. Juste après un changement, le bloc où il doit aller n'est pas
-   * encore à l'écran, et l'éditeur échoue à s'y poser : on réessaie aux images suivantes.
+   * encore à l'écran : on attend qu'il y soit, sans laisser l'éditeur essayer, échouer et le
+   * dire dans la console.
    */
   const reprendreLeTexte = () => {
     const tenter = (reste: number) => {
       try {
         if (document.activeElement === e.api.toDOMNode(e)) return;
-        if (e.operations.length === 0) e.tf.focus();
+        if (e.operations.length === 0 && !A_REDESSINER.has(e)) e.tf.focus();
       } catch {
         // Le texte n'est pas encore redessiné
       }
@@ -984,6 +992,7 @@ export function Copie({
             editor={editor}
             readOnly={arrete}
             onChange={() => {
+              A_REDESSINER.add(e);
               const m = (e.api.marks() ?? {}) as Partial<Record<Marque, boolean>>;
               setActives((avant) =>
                 avant.bold === !!m.bold && avant.italic === !!m.italic && avant.underline === !!m.underline
