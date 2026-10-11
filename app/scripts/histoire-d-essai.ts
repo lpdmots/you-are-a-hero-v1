@@ -1,23 +1,28 @@
 /**
- * Charge dans la base LOCALE l'histoire d'essai « Les passeurs de brume », celle de la
- * maquette : sa classe et ses vingt-cinq élèves fictifs, le carnet de préparation, le plan,
- * les consignes, les textes et les choix. De quoi essayer l'application sur un vrai récit.
+ * Charge l'histoire d'essai « Les passeurs de brume », celle de la maquette : sa classe et
+ * ses vingt-cinq élèves fictifs, le carnet de préparation, le plan, les consignes, les textes
+ * et les choix. De quoi essayer l'application sur un vrai récit.
  *
- *   npm run histoire:essai                  pour le compte de « npm run compte:local »
+ *   npm run histoire:essai                  dans la base locale, pour le compte de « npm run compte:local »
  *   npm run histoire:essai -- adresse       pour un autre compte de la base locale
  *   npm run histoire:essai -- --complet     toutes les scènes écrites, comme le livre fini
  *   npm run histoire:essai -- --refaire     retire l'histoire d'essai déjà chargée, puis la recharge
  *
+ *   npm run histoire:essai -- --production adresse         dit ce qui serait fait dans la vraie base
+ *   npm run histoire:essai -- --production adresse --oui   le fait
+ *
  * Rien d'autre n'est touché : les projets et les classes du compte restent. « --refaire » ne
  * retire que la classe d'essai, ses élèves et ses projets, avec ce qui y a été écrit depuis.
- * Le contenu est dans passeurs-de-brume.ts.
+ * Dans la vraie base, le mot de passe de la classe et les codes des élèves sont tirés au
+ * hasard ; en local, ce sont ceux de passeurs-de-brume.ts, où est aussi le contenu.
  */
-import { randomUUID } from "node:crypto";
+import { randomInt, randomUUID } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { Client } from "pg";
+import { codePropose, motDePassePropose } from "@/domaine/acces";
 import { ciblesDe, estVide, nettoyerTexte, type Texte } from "@/domaine/copie";
 import { hasard, melangeInitial, type PlanNumerote } from "@/domaine/numeros";
 import { chiffrer } from "@/serveur/chiffrement";
@@ -25,9 +30,7 @@ import {
   ACTIONS, CLASSE, CONSIGNES, DEBUTS_PROTEGES, DEPART, ELEVES, FEUILLE, FORMULES, NOTES, OBJETS, PARTIES, PISTES, PREPARATION,
   RESUMES, TEXTES, TEXTES_EN_COURS, TITRE, VISUELS, codeDe, type SceneEssai,
 } from "./passeurs-de-brume";
-
-const racine = resolve(__dirname, "..");
-config({ path: resolve(racine, ".env.local"), quiet: true });
+import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
 
 const locale = (adresse: string): boolean => {
   try {
@@ -36,19 +39,55 @@ const locale = (adresse: string): boolean => {
     return false;
   }
 };
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const adresseBase = process.env.BASE_LOCALE_URL ?? "";
-if (!locale(url) || !locale(adresseBase)) {
-  console.error("Cette commande ne parle qu'à la base locale : lancez « npm run base:demarrer » puis « npm run env:local ».");
-  process.exit(1);
-}
 
 const options = process.argv.slice(2);
 const complet = options.includes("--complet");
 const refaire = options.includes("--refaire");
+const production = options.includes("--production");
+const oui = options.includes("--oui");
+
+// La base visée, et les clés qui vont avec : jamais celles de l'une pour l'autre
+let url: string;
+let adresseBase: string;
+let cleSecrete: string;
+if (production) {
+  const env = lireEnv("production.env");
+  url = env.get("NEXT_PUBLIC_SUPABASE_URL") ?? "";
+  cleSecrete = env.get("SUPABASE_CLE_SECRETE") ?? "";
+  const cleAcces = env.get("CLE_ACCES") ?? "";
+  if (!url || !cleSecrete || !cleAcces || locale(url)) {
+    console.error("Il manque NEXT_PUBLIC_SUPABASE_URL, SUPABASE_CLE_SECRETE ou CLE_ACCES dans production.env.");
+    process.exit(1);
+  }
+  adresseBase = adresseDeProduction();
+  // Les codes et le mot de passe de la classe sont chiffrés avec la clé de la vraie application
+  process.env.CLE_ACCES = cleAcces;
+} else {
+  config({ path: resolve(racine, ".env.local"), quiet: true });
+  url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  adresseBase = process.env.BASE_LOCALE_URL ?? "";
+  cleSecrete = process.env.SUPABASE_CLE_SECRETE ?? "";
+  if (!locale(url) || !locale(adresseBase)) {
+    console.error("Sans « --production », cette commande ne parle qu'à la base locale : lancez « npm run base:demarrer » puis « npm run env:local ».");
+    process.exit(1);
+  }
+}
+const ou = production ? "la vraie base" : "la base locale";
+
 const compteLocal = resolve(racine, ".compte-local");
-// La première ligne de .compte-local est l'adresse du compte ; la seconde, son mot de passe, n'est pas lue
-const courriel = options.find((o) => !o.startsWith("--")) ?? (existsSync(compteLocal) ? readFileSync(compteLocal, "utf8").split("\n")[0].trim() : "");
+// La première ligne de .compte-local est l'adresse du compte ; la seconde, son mot de passe, n'est pas lue.
+// Dans la vraie base, le compte se nomme : aucun n'est pris par défaut.
+const courriel = options.find((o) => !o.startsWith("--")) ?? (!production && existsSync(compteLocal) ? readFileSync(compteLocal, "utf8").split("\n")[0].trim() : "");
+
+// En local, les secrets du fichier de contenu ; dans la vraie base, tirés au hasard, hors de Git
+const tirer = (n: number): number => randomInt(n);
+const motDePasseClasse = production ? motDePassePropose(tirer) : CLASSE.motDePasse;
+const codes: string[] = [];
+for (const i of ELEVES.keys()) {
+  let code = production ? codePropose(tirer) : codeDe(i);
+  while (codes.includes(code)) code = codePropose(tirer);
+  codes.push(code);
+}
 
 // ——— Le texte d'une scène, en blocs ———
 
@@ -109,7 +148,7 @@ function texteDe(scene: SceneEssai): Texte {
 async function retirer(base: Client, enseignant: string, classeId: string): Promise<void> {
   const { rows: projets } = await base.query<{ id: string }>("select id from public.projets where classe_id = $1", [classeId]);
   // Les images importées dans ces projets : rangées sous <compte>/<projet>/ dans le stockage
-  const stockage = createClient(url, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false, autoRefreshToken: false } }).storage.from("images");
+  const stockage = createClient(url, cleSecrete, { auth: { persistSession: false, autoRefreshToken: false } }).storage.from("images");
   for (const projet of projets) {
     const { data: fichiers } = await stockage.list(`${enseignant}/${projet.id}`);
     if (fichiers?.length) await stockage.remove(fichiers.map((f) => `${enseignant}/${projet.id}/${f.name}`));
@@ -143,7 +182,7 @@ async function charger(base: Client, enseignant: string): Promise<{ ecrites: num
     classeId, enseignant, CLASSE.nom, CLASSE.anneeDebut, CLASSE.identifiant,
   ]);
   await base.query("insert into public.classes_secrets (classe_id, enseignant_id, mot_de_passe_chiffre) values ($1, $2, $3)", [
-    classeId, enseignant, chiffrer(CLASSE.motDePasse, { sorte: "classe", id: classeId }),
+    classeId, enseignant, chiffrer(motDePasseClasse, { sorte: "classe", id: classeId }),
   ]);
 
   const idEleve = new Map<string, string>();
@@ -151,7 +190,7 @@ async function charger(base: Client, enseignant: string): Promise<{ ecrites: num
     const id = randomUUID();
     idEleve.set(prenom, id);
     await base.query("insert into public.eleves (id, enseignant_id, prenom, couleur, cree_le) values ($1, $2, $3, $4, now() + $5::interval)", [id, enseignant, prenom, i % 10, instant(i)]);
-    await base.query("insert into public.eleves_secrets (eleve_id, enseignant_id, code_chiffre) values ($1, $2, $3)", [id, enseignant, chiffrer(codeDe(i), { sorte: "code", id })]);
+    await base.query("insert into public.eleves_secrets (eleve_id, enseignant_id, code_chiffre) values ($1, $2, $3)", [id, enseignant, chiffrer(codes[i], { sorte: "code", id })]);
     await base.query("insert into public.inscriptions (classe_id, eleve_id, enseignant_id) values ($1, $2, $3)", [classeId, id, enseignant]);
   }
   const eleve = (prenom: string): string => {
@@ -247,29 +286,37 @@ async function charger(base: Client, enseignant: string): Promise<{ ecrites: num
 
 async function principal(): Promise<void> {
   if (!courriel) {
-    console.error("Aucun compte : lancez « npm run compte:local », ou donnez l'adresse du compte.");
+    console.error(production ? "Donnez l'adresse du compte : npm run histoire:essai -- --production adresse" : "Aucun compte : lancez « npm run compte:local », ou donnez l'adresse du compte.");
     process.exit(1);
   }
   const base = new Client({ connectionString: adresseBase });
   await base.connect();
   try {
     const { rows: comptes } = await base.query<{ id: string }>("select e.id from public.enseignants e join auth.users u on u.id = e.id where u.email = $1", [courriel]);
-    if (!comptes.length) throw new Error(`Aucun compte ${courriel} dans la base locale.`);
+    if (!comptes.length) throw new Error(`Aucun compte ${courriel} dans ${ou}.`);
     const enseignant = comptes[0].id;
+    // L'histoire a besoin du schéma de l'étape 3 : textes, liens, numéros
+    const { rows: schema } = await base.query<{ pret: boolean }>("select to_regclass('public.liens') is not null and to_regprocedure('public.voisines_de_la_scene(uuid)') is not null as pret");
+    if (!schema[0]?.pret) throw new Error(`Le schéma de ${ou} n'est pas à jour : appliquez d'abord les migrations.`);
 
     const { rows: deja } = await base.query<{ id: string; enseignant_id: string }>("select id, enseignant_id from public.classes where identifiant = $1", [CLASSE.identifiant]);
     if (deja.length) {
       if (deja[0].enseignant_id !== enseignant) throw new Error(`La classe « ${CLASSE.identifiant} » existe déjà, pour un autre compte.`);
-      if (!refaire) throw new Error("L'histoire d'essai est déjà chargée. Pour la remettre à neuf : npm run histoire:essai -- --refaire");
-      await retirer(base, enseignant, deja[0].id);
+      if (!refaire) throw new Error(`L'histoire d'essai est déjà chargée dans ${ou}. Pour la remettre à neuf, ajoutez « --refaire ».`);
     }
+    if (production && !oui) {
+      console.log(`Dans la vraie base, pour ${courriel} : ${deja.length ? "l'histoire d'essai serait retirée, avec ce qui y a été écrit, puis rechargée" : "l'histoire d'essai serait chargée"}${complet ? ", toutes scènes écrites" : ""}.`);
+      console.log("Rien n'est fait. Pour le faire, ajoutez « --oui ».");
+      return;
+    }
+    if (deja.length) await retirer(base, enseignant, deja[0].id);
 
     await base.query("begin");
     try {
       const { ecrites } = await charger(base, enseignant);
       await base.query("commit");
       const chapitres = PARTIES.reduce((n, p) => n + p.chapitres.length, 0);
-      console.log(`« ${TITRE} » chargée pour ${courriel} : ${PARTIES.length} parties, ${chapitres} chapitres, ${scenes.length} scènes dont ${ecrites} écrites.`);
+      console.log(`« ${TITRE} » chargée dans ${ou} pour ${courriel} : ${PARTIES.length} parties, ${chapitres} chapitres, ${scenes.length} scènes dont ${ecrites} écrites.`);
       console.log(`Classe « ${CLASSE.nom} », ${ELEVES.length} élèves : son identifiant, son mot de passe et les codes se lisent dans « Mes classes ».`);
     } catch (erreur) {
       await base.query("rollback");
@@ -281,6 +328,6 @@ async function principal(): Promise<void> {
 }
 
 principal().catch((erreur: Error) => {
-  console.error(erreur.message);
+  console.error(masquer(erreur.message));
   process.exit(1);
 });
