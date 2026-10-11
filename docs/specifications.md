@@ -1076,6 +1076,23 @@ le porteur décide :
   repère neutre qui ne signale pas une faute (F03.2). Suivre un choix vers
   un autre chapitre ouvre ce chapitre dans la même vue et y désigne la scène
   d'arrivée ; revenir d'une scène ramène à la vue quittée.
+- **Vue Chemins à reprendre (décidé par le porteur le 11 octobre 2026, à
+  la revue de l'étape 3 ; non construit).** La vue construite à l'étape 3,
+  sans bibliothèque de graphe, ne le convainc pas : il ne l'a vue que sur
+  des chemins très simples, et rien n'y évite les croisements. Elle est
+  refaite avec React Flow et dagre, que la V0 employait à sa satisfaction.
+  Ses demandes : toute la largeur de l'écran ; une disposition de haut en
+  bas, que l'on parcourt en faisant défiler la page plutôt que de côté ; des
+  cartes de scène petites, réduites à l'essentiel ; les choix notés sur les
+  flèches plutôt que dans les cartes ; une vue d'ensemble seulement, où rien
+  ne se modifie, à la différence de la V0, mais agréable ; les problèmes
+  visibles rapidement. Restent à arrêter avant de construire : quels
+  problèmes y figurent, et sous quel nom, la décision du 4 octobre
+  ([F09.2](#f092--contrôles-des-chemins-avant-le-pdf-définitif)) ne
+  présentant pas comme des problèmes les défauts d'une scène à finir ; ce
+  que porte une carte ; l'affichage des libellés sur les flèches d'un
+  chapitre chargé. Sa tenue se juge sur un chapitre composé d'une trentaine
+  de scènes.
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut

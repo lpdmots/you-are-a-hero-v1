@@ -487,8 +487,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     bon de son côté (« pour l'éditeur c'est bon ») ; les précisions des lots
     ne lui ont pas été présentées une à une. Il n'est pas convaincu par la
     vue « Chemins », jugée sur des chemins très simples : sa tenue sur un
-    chapitre d'une trentaine de scènes est à éprouver, et le recours à une
-    bibliothèque de graphe, comme dans la V0, est en discussion.
+    chapitre d'une trentaine de scènes n'est pas éprouvée (V15 n'a mesuré
+    que le temps d'affichage). Décidé le même jour : la vue est refaite
+    avec React Flow et dagre, de haut en bas, sur toute la largeur, cartes
+    réduites à l'essentiel et choix sur les flèches
+    ([F03.1](specifications.md#f031--histoire-parties-chapitres-et-scènes)) ;
+    à construire, dans une conversation à part.
     La revue continue écran par écran ; les précisions des six lots restent
     à lui présenter.
   - **V19 :** les versions de Plate et de Slate sont figées dans
