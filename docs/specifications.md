@@ -1684,7 +1684,11 @@ presse-papiers :**
   les objets depuis la page de la scène par `/objet` et un bouton « Objets »,
   en lecture seule ; les formules sont proposées par `/action` à qui en a le
   droit. L'adulte peut ajouter un objet ou une formule depuis la scène, sans
-  la quitter.
+  la quitter. Depuis le 11 octobre 2026, ces deux listes s'ouvrent au
+  curseur, celle des objets avec un champ pour la filtrer, et l'ajout se
+  fait dans le panneau à droite du texte ([F05.2](#f05-panneau)) : l'objet
+  créé s'écrit aussitôt dans le texte, la formule ajoutée est aussitôt
+  employée.
 - **Place de la feuille et des règles (révisé le 3 octobre 2026) :** la
   feuille d'aventure, le dé et la partie « Règles du jeu » se règlent dans
   cette même rubrique de la préparation : ils servent aux actions de jeu et
@@ -2180,7 +2184,9 @@ choix seulement.
   Une phrase mêlant récit et renvoi dans un même paragraphe n'est pas possible
   dans la première livraison.
 - **Commande :** `/choix` dans le texte ou le bouton « Choix » visible ouvrent
-  sur place la même saisie : libellé, puis destination.
+  la même saisie, libellé puis destination, sans quitter la scène ; depuis le
+  11 octobre 2026, dans le panneau à droite du texte
+  ([où s'ouvrent les réglages](#f05-panneau)).
 - **Trois issues pour la destination :**
   1. *scène existante*, avec la recherche et l'aperçu de F05, dans le
      périmètre de la personne ;
@@ -2235,9 +2241,10 @@ choix seulement.
 
 **Décisions confirmées le 1er octobre 2026 — modifier un choix :**
 
-- **Panneau « Choix » :** activer une phrase de choix ouvre sur place ses
-  réglages : libellé, destination, forme de la phrase, suppression. Les droits
-  sont ceux de F06.1.
+- **Panneau « Choix » :** activer une phrase de choix ouvre ses réglages,
+  sans quitter la scène : libellé, destination, forme de la phrase,
+  suppression. Depuis le 11 octobre 2026, dans le panneau à droite du texte
+  ([où s'ouvrent les réglages](#f05-panneau)). Les droits sont ceux de F06.1.
 - **Phrase automatique :** son texte ne se saisit pas directement. Corriger le
   libellé ou changer la destination dans le panneau recompose la phrase.
   Changer la destination propose les trois issues de la création.
@@ -2511,6 +2518,51 @@ de boutons pour l'ordre des blocs.
 - **Non éprouvé par le prototype :** ce geste doit cohabiter avec la
   sélection de texte et les blocs fermés de l'éditeur. S'il ne tient pas, la
   règle revient en entretien avant tout retour à des boutons.
+
+<a id="f05-panneau"></a>
+**Décision du porteur, 11 octobre 2026 — où s'ouvrent les réglages d'un
+bloc :** à l'essai de l'étape 3, la fiche posée dans le texte, sous son
+bloc, comme la dessinait la maquette, ne le convainc pas : elle prend de la
+place, crée du défilement, déforme le paragraphe et se cherche, parce que
+toute la mise en page bouge. Il propose un panneau à droite ; la
+recommandation, qu'il retient, sépare deux cas.
+
+- **Ce qui a des champs s'ouvre à droite du texte :** créer un choix ou un
+  lien caché, régler un choix, un lien caché, une image en bloc ou sur la
+  ligne, poser une image, créer un objet ou une formule, fixer le numéro de
+  la scène. Le panneau prend la place de la consigne, qui revient quand il
+  se referme ; il reste à l'écran quand le texte défile. Il n'arrête rien :
+  on continue de lire, de sélectionner et de déplacer dans le texte, qui ne
+  bouge pas à son ouverture.
+- **Ce qui se choisit dans une liste courte s'ouvre au curseur,** par-dessus
+  le texte : le menu « / », la liste des objets, celle des formules d'action.
+  La liste des objets porte un champ pour la filtrer et, pour l'adulte,
+  « Créer un nouvel objet », qui ouvre le panneau de droite ; l'objet créé
+  s'écrit aussitôt dans le texte. Il en va de même d'une formule ajoutée.
+- **Le bloc réglé reste repéré dans le texte** par son entourage ; pour un
+  choix en cours de création, un trait montre où la phrase se posera.
+- **Fermeture :** la croix, Échap, ou le fait de se remettre à écrire dans
+  le texte. Déplacer un bloc ne referme pas le panneau, pour qu'on puisse
+  replacer un choix ou une image en continuant de le régler ; écrire dans la
+  phrase personnalisée qu'on règle non plus.
+- **Écran étroit :** sans colonne de droite, le panneau monte du bas de
+  l'écran, par-dessus le texte.
+- **Alternatives écartées :** la fiche dans le texte, pour les raisons
+  ci-dessus ; une bulle accrochée au bloc pour tous les réglages, qui
+  masquerait le texte autour d'un bloc qu'on règle en le relisant, et dont
+  la fiche d'un choix dépasse la taille.
+
+- **F05-AC53 — Réglages à droite, texte immobile :** étant donné S015 qui
+  porte un paragraphe, deux phrases de choix et un paragraphe, lorsque
+  l'enseignante active la seconde phrase, alors ses réglages s'ouvrent à
+  droite du texte, à la place de la consigne, et aucun bloc du texte ne
+  change de place ; lorsqu'elle tire cette phrase au-dessus de la première,
+  alors le panneau reste ouvert sur elle ; lorsqu'elle se remet à écrire
+  dans le dernier paragraphe, alors le panneau se referme et la consigne
+  revient.
+- **F05-AC54 — Écran étroit :** étant donné la même scène sur un écran de
+  390 px de large, lorsque l'enseignante active une phrase de choix, alors
+  ses réglages montent du bas de l'écran sans déplacer le texte.
 
 - **F05-AC39 — Création au clavier seul :** étant donné l'enseignante sans
   souris dans S015, lorsqu'elle saisit `/choix`, un libellé, choisit S018 aux
@@ -5689,8 +5741,9 @@ valent pour les quatre combinaisons.
   déjà importée dans le projet, puis demande où la mettre : « Dans le
   texte », en bloc (petite, moyenne, pleine largeur, pourcentage, pleine
   page), ou « Sur la ligne », à la hauteur du texte, à l'endroit du curseur.
-- **Réglages d'une image en bloc :** l'activer ouvre sa fiche sur place,
-  comme pour un choix : largeur, « Remplacer l'image », « Ce que montre
+- **Réglages d'une image en bloc :** l'activer ouvre sa fiche dans le
+  panneau à droite du texte, comme pour un choix
+  ([F05.2](#f05-panneau)) : largeur, « Remplacer l'image », « Ce que montre
   l'image », légende, « Supprimer ». Elle se déplace comme les autres blocs
   de la copie ([F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène)).
 - **Image en bloc protégée d'office pour tous les élèves,** quel que soit

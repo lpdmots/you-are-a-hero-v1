@@ -29,6 +29,9 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
   const [vide, setVide] = useState(scene.vide);
   const [revenu, setRevenu] = useState(false);
   const [etat, setEtat] = useState<EtatTexte>({ etat: "enregistre" });
+  // Le panneau de droite : les réglages de la copie s'y ouvrent, à la place de la consigne
+  const [panneau, setPanneau] = useState<HTMLElement | null>(null);
+  const [reglages, setReglages] = useState(false);
   const retour = `/travail/chapitre/${scene.chapitre.id}`;
   const laProf = majuscule(prof);
 
@@ -76,6 +79,8 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
         voisines={scene.voisines}
         voisinesAffichees={scene.voisinesAffichees}
         lienDeScene={(id) => `/travail/scene/${id}`}
+        panneau={panneau}
+        onPanneau={setReglages}
         services={services}
         marques={scene.marques}
         libelle={`Ton texte, scène ${ref}`}
@@ -195,15 +200,22 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
 
       <div className={styles.sceneColonnes}>
         <section aria-label="Texte de la scène">{copie}</section>
-        {scene.consigne !== null ? (
-          <section className="carnet-fiche" aria-labelledby="consigne-t">
-            <header>
-              <h2 id="consigne-t">La consigne</h2>
-            </header>
-            <div className="carnet-fiche__corps">
-              {scene.consigne.trim() ? <p className={styles.consigne}>{scene.consigne}</p> : <p className="sans-consigne">Pas de consigne écrite. Suis celle que {prof} t’a donnée.</p>}
+        {scene.consigne !== null || scene.ecriture ? (
+          <aside className="cote-copie">
+            <div className="cote-copie__colle">
+              <div ref={setPanneau} />
+              {scene.consigne !== null ? (
+                <section className="carnet-fiche" aria-labelledby="consigne-t" hidden={reglages}>
+                  <header>
+                    <h2 id="consigne-t">La consigne</h2>
+                  </header>
+                  <div className="carnet-fiche__corps">
+                    {scene.consigne.trim() ? <p className={styles.consigne}>{scene.consigne}</p> : <p className="sans-consigne">Pas de consigne écrite. Suis celle que {prof} t’a donnée.</p>}
+                  </div>
+                </section>
+              ) : null}
             </div>
-          </section>
+          </aside>
         ) : null}
       </div>
     </div>

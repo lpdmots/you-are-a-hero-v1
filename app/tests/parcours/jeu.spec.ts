@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  action, adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, ecrire, enClair, FICHE, pied,
+  action, adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, ecrire, enClair, FICHE, LISTE, pied,
   posteDe, presseTexte, recit, sceneEnBase, selectionner, semerBlocs, semerJeu, semerPartie, semerProjet, sql, supprimerComptes, typesEnBase,
 } from "./outils";
 
@@ -20,6 +20,7 @@ const MOD = "ControlOrMeta";
 const BARRE = (page: Page) => page.getByRole("toolbar", { name: "Outils de la copie" });
 const ACTIONS = (page: Page) => copie(page).locator(".action-jeu");
 const OBJETS: [string, string][] = [["la clé d’argent", "Ouvre la porte du sanctuaire"], ["le couteau", ""], ["la lanterne", "Éclaire la grotte"]];
+const PANNEAU = (page: Page) => page.locator(".cote-copie .panneau-copie");
 const FORMULES = ["Retire un point de volonté à ton héros.", "Ajoute … à ton inventaire."];
 
 test.describe("Objets de l'histoire (F04.2)", () => {
@@ -34,11 +35,12 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     await ecrire(bilal.page, "/obj");
     await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Objet/]);
     await bilal.page.keyboard.press("Enter");
-    // La fiche prend le curseur : il cherche, les flèches parcourent, Entrée retient
+    // La liste s'ouvre au curseur, sur son filtre : il cherche, les flèches parcourent, Entrée retient
+    await expect(LISTE(bilal.page).getByLabel("Chercher un objet")).toBeFocused();
     await bilal.page.keyboard.type("clé");
-    await expect(FICHE(bilal.page).getByRole("option")).toHaveText([/la clé d’argent.*Ouvre la porte du sanctuaire/]);
+    await expect(LISTE(bilal.page).getByRole("option")).toHaveText([/la clé d’argent.*Ouvre la porte du sanctuaire/]);
     await bilal.page.keyboard.press("Enter");
-    await expect(FICHE(bilal.page)).toHaveCount(0);
+    await expect(LISTE(bilal.page)).toHaveCount(0);
     await expect(copie(bilal.page)).toBeFocused();
     await bilal.page.keyboard.type(" dans sa poche.");
     await attendreEnBase(s15, "dans sa poche.");
@@ -72,10 +74,10 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
     await BARRE(alice.page).getByRole("button", { name: "Objets" }).click();
-    const fiche = FICHE(alice.page);
+    const fiche = LISTE(alice.page);
     await expect(fiche.getByRole("option")).toHaveText([/la clé d’argent.*Ouvre la porte du sanctuaire/, /le couteau/, /la lanterne.*Éclaire la grotte/]);
     await expect(fiche).toContainText("Liste tenue par Mme Laurent");
-    await expect(fiche.getByRole("button", { name: /Ajouter|Modifier|Supprimer/ })).toHaveCount(0);
+    await expect(fiche.getByRole("button", { name: /Créer|Ajouter|Modifier|Supprimer/ })).toHaveCount(0);
     await expect(fiche.getByRole("link")).toHaveCount(0);
     await expect(fiche.locator("input:not([type=search])")).toHaveCount(0);
     // Elle retient un objet au clavier : il s'écrit dans son texte
@@ -95,15 +97,21 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     const adresse = page.url();
     await ecrire(page, "Lou lève /objet");
     await page.keyboard.press("Enter");
-    await expect(FICHE(page)).toContainText("Aucun objet dans la liste pour l’instant.");
-    await FICHE(page).getByRole("button", { name: "Ajouter un objet à la liste" }).click();
+    await expect(LISTE(page)).toContainText("Aucun objet dans la liste pour l’instant.");
+    // « Créer un nouvel objet » ouvre le panneau de droite ; créé, l'objet s'écrit aussitôt dans le texte
+    await LISTE(page).getByRole("button", { name: "Créer un nouvel objet" }).click();
+    await expect(LISTE(page)).toHaveCount(0);
+    await expect(PANNEAU(page).getByRole("heading", { name: "Nouvel objet" })).toBeVisible();
     await FICHE(page).getByLabel("Nom, tel qu’il s’écrit dans une phrase").fill("la lanterne sourde");
     await FICHE(page).getByLabel("Description, facultative").fill("Éclaire sans être vue");
-    await FICHE(page).getByRole("button", { name: "Ajouter à la liste" }).click();
-    await expect(FICHE(page).getByRole("option")).toHaveText([/la lanterne sourde.*Éclaire sans être vue/]);
+    await FICHE(page).getByRole("button", { name: "Créer et écrire dans le texte" }).click();
+    await expect(FICHE(page)).toHaveCount(0);
     expect(page.url()).toBe(adresse);
-    await FICHE(page).getByRole("option").getByRole("button").click();
     await attendreEnBase(s15, "Lou lève la lanterne sourde");
+    // Le nouvel objet figure dans la liste, à la prochaine ouverture
+    await BARRE(page).getByRole("button", { name: "Objets" }).click();
+    await expect(LISTE(page).getByRole("option")).toHaveText([/la lanterne sourde.*Éclaire sans être vue/]);
+    await page.keyboard.press("Escape");
     // Dans la préparation, la rubrique « Objets et formules » la montre
     await aller(page, `/projet/${s.projet}/preparation`);
     await expect(page.getByText("la lanterne sourde")).toBeVisible();
@@ -125,7 +133,7 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     for (let i = 0; i < 6; i += 1) await page.keyboard.press("Backspace");
     await page.keyboard.type("objet");
     await page.keyboard.press("Enter");
-    await expect(FICHE(page).getByRole("option")).toHaveCount(3);
+    await expect(LISTE(page).getByRole("option")).toHaveCount(3);
     await page.keyboard.press("Enter");
     await attendreEnBase(chapitres[0].scenes[0], "Sur le quai, la clé d’argent");
   });
@@ -144,7 +152,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await page.keyboard.type(" /act");
     await expect(page.locator(".slash [role=option]")).toHaveText([/Action de jeu/]);
     await page.keyboard.press("Enter");
-    await expect(FICHE(page).getByRole("option")).toHaveText(["Paragraphe vide, à écrire", ...FORMULES]);
+    await expect(LISTE(page).getByRole("option")).toHaveText(["Paragraphe vide, à écrire", ...FORMULES]);
     await page.keyboard.press("ArrowDown");
     await page.keyboard.press("Enter");
     await expect(ACTIONS(page)).toHaveCount(1);
@@ -163,7 +171,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
 
     // Une formule à compléter : « … » est sélectionné, ce qu'on tape le remplace
     await BARRE(page).getByRole("button", { name: "Action de jeu" }).click();
-    await FICHE(page).getByRole("option").nth(2).getByRole("button").click();
+    await LISTE(page).getByRole("option").nth(2).getByRole("button").click();
     await expect(copie(page)).toBeFocused();
     await page.keyboard.type("le couteau");
     await attendreEnBase(s15, "Ajoute le couteau à ton inventaire.");
@@ -190,13 +198,15 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await expect(ACTIONS(page).getByRole("button", { name: "Formules…" })).toHaveCount(0);
     await selectionner(page, { bloc: 1, offset: 4 });
     await ACTIONS(page).getByRole("button", { name: "Formules…" }).click();
-    await expect(FICHE(page).getByRole("option")).toHaveText(FORMULES);
-    await FICHE(page).getByRole("button", { name: "Ajouter une formule à la liste" }).click();
+    await expect(LISTE(page).getByRole("option")).toHaveText(FORMULES);
+    // « Ajouter une formule à la liste » ouvre le panneau de droite ; ajoutée, la formule est employée aussitôt
+    await LISTE(page).getByRole("button", { name: "Ajouter une formule à la liste" }).click();
+    await expect(PANNEAU(page).getByRole("heading", { name: "Nouvelle formule" })).toBeVisible();
     await FICHE(page).getByRole("textbox", { name: "Formule" }).fill("Lance le dé.");
-    await FICHE(page).getByRole("button", { name: "Ajouter à la liste" }).click();
-    await expect(FICHE(page).getByRole("option")).toHaveText([...FORMULES, "Lance le dé."]);
-    await FICHE(page).getByRole("option").nth(2).getByRole("button").click();
+    await FICHE(page).getByRole("button", { name: "Ajouter et utiliser" }).click();
+    await expect(FICHE(page)).toHaveCount(0);
     await attendreEnBase(s15, "Lance le dé.");
+    expect((await sql<{ texte: string }>("select texte from formules where projet_id = $1", [s.projet])).map((f) => f.texte).sort()).toEqual([...FORMULES, "Lance le dé."].sort());
     // La même action, son texte remplacé
     expect((await sceneEnBase(s15)).texte[1]).toEqual({ ...posee, children: [{ text: "Lance le dé." }] });
 
@@ -222,8 +232,8 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await aller(bilal.page, sceneEleve(s15));
     await BARRE(bilal.page).getByRole("button", { name: "Action de jeu" }).click();
     // Les formules lui sont proposées ; la liste reste tenue par l'enseignante
-    await expect(FICHE(bilal.page).getByRole("option")).toHaveText(["Paragraphe vide, à écrire", ...FORMULES]);
-    await expect(FICHE(bilal.page).getByRole("button", { name: /Ajouter une formule/ })).toHaveCount(0);
+    await expect(LISTE(bilal.page).getByRole("option")).toHaveText(["Paragraphe vide, à écrire", ...FORMULES]);
+    await expect(LISTE(bilal.page).getByRole("button", { name: /Ajouter une formule/ })).toHaveCount(0);
     await bilal.page.keyboard.press("Enter");
     await expect(copie(bilal.page)).toBeFocused();
     await bilal.page.keyboard.type("Ajoute le couteau à ton inventaire.");

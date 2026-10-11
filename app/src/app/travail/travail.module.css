@@ -228,6 +228,9 @@
   align-items: start;
   margin-top: 14px;
 }
+.sceneColonnes > section {
+  min-width: 0;
+}
 .sceneColonnes > section:only-child {
   grid-column: 1 / -1;
 }

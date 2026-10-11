@@ -254,7 +254,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
 
     // « Proposer comme choix » : le libellé que portait le choix revient, sans le redemander
     await HORS_RECIT(page).getByRole("button", { name: /Régler ce lien/ }).click();
-    await HORS_RECIT(page).getByRole("button", { name: "Proposer comme choix" }).click();
+    await FICHE(page).getByRole("button", { name: "Proposer comme choix" }).click();
     await expect(HORS_RECIT(page)).toHaveCount(0);
     await expect(PHRASES(page)).toContainText(`Déchiffrer les symboles : rends-toi au ${numero}.`);
     await attendreEnregistre(page);
@@ -303,16 +303,16 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
 
     // Le lien n'a pas de libellé : « Proposer comme choix » le demande
     await HORS_RECIT(page).getByRole("button", { name: /Régler ce lien/ }).click();
-    await HORS_RECIT(page).getByRole("button", { name: "Proposer comme choix" }).click();
-    await HORS_RECIT(page).getByLabel("Ce que fait le lecteur").fill("Déchiffrer les symboles");
-    await HORS_RECIT(page).getByRole("button", { name: "Proposer comme choix" }).click();
+    await FICHE(page).getByRole("button", { name: "Proposer comme choix" }).click();
+    await FICHE(page).getByLabel("Ce que fait le lecteur").fill("Déchiffrer les symboles");
+    await FICHE(page).getByRole("button", { name: "Proposer comme choix" }).click();
     await expect(PHRASES(page)).toContainText("Déchiffrer les symboles : rends-toi au 31.");
     await BANDEAU(page).getByRole("button", { name: "Annuler" }).click();
     await expect(PHRASES(page)).toHaveCount(0);
 
     // Retiré : la scène garde son numéro, une énigme pouvant rester dans un texte
     await HORS_RECIT(page).getByRole("button", { name: /Régler ce lien/ }).click();
-    await HORS_RECIT(page).getByRole("button", { name: "Retirer ce lien caché" }).click();
+    await FICHE(page).getByRole("button", { name: "Retirer ce lien caché" }).click();
     await expect(HORS_RECIT(page)).toHaveCount(0);
     await expect(BANDEAU(page)).toContainText("Lien caché retiré. S003 « La souche » garde le n° 31 fixé.");
     await attendreEnregistre(page);
@@ -322,7 +322,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     await BANDEAU(page).getByRole("button", { name: "Annuler" }).click();
     await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText("n° 31 fixé");
     await HORS_RECIT(page).getByRole("button", { name: /Régler ce lien/ }).click();
-    await HORS_RECIT(page).getByRole("button", { name: "Retirer ce lien caché" }).click();
+    await FICHE(page).getByRole("button", { name: "Retirer ce lien caché" }).click();
     await BANDEAU(page).getByRole("button", { name: "Libérer le numéro" }).click();
     await expect(BANDEAU(page)).toContainText("S003 « La souche » n’a plus de numéro fixé.");
     expect(await numeroFixe(a.scenes[2])).toBeNull();

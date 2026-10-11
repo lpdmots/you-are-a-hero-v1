@@ -83,7 +83,7 @@
   gap: 0.75em;
   /* Slate pose sa propre hauteur tant que la copie est vide */
   min-height: 260px !important;
-  /* « --rallonge » : la place que prend le menu des commandes ouvert sur les dernières lignes */
+  /* « --rallonge » : la place que prend une liste ouverte au curseur sur les dernières lignes */
   padding: 26px 34px calc(30px + var(--rallonge, 0px)) var(--gout, 64px);
   outline: none;
   font-family: var(--f-recit);
@@ -838,9 +838,6 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.lien-cache > .cx {
-  margin-top: 8px;
-}
 .copie__texte--lu > .lien-cache--lu {
   max-width: none;
   font-family: var(--f-ui);
@@ -942,33 +939,6 @@
 }
 .copie__texte--lu > .action-jeu {
   font-size: 1.1rem;
-}
-.cx-liste--objets button,
-.cx-liste--formules button {
-  grid-template-columns: minmax(0, 1fr);
-  gap: 1px;
-}
-.cx-liste--formules:focus-visible {
-  outline: 2px solid var(--canard);
-  outline-offset: 2px;
-}
-.cx-objet__nom {
-  font-family: var(--f-recit);
-  font-size: 1.05rem;
-}
-.cx-objet__desc {
-  color: var(--graphite-2);
-  font-size: var(--t-xs);
-}
-.cx-formule {
-  font-family: var(--f-recit);
-  font-weight: 600;
-}
-.cx-formule--vide {
-  color: var(--graphite-2);
-  font-family: var(--f-ui);
-  font-weight: 400;
-  font-style: italic;
 }
 .cx-ajout {
   display: grid;
@@ -1417,13 +1387,193 @@ kbd {
   font-size: 0.85em;
 }
 
-/* La fiche d'un choix, posée dans la copie sous son bloc */
-.copie__fiche {
+/* Une liste courte, ouverte au curseur comme le menu des commandes : les objets, les formules */
+.copie__liste {
   position: absolute;
-  right: 20px;
-  left: calc(var(--gout) - 10px);
-  z-index: 6;
-  margin-top: 6px;
+  left: var(--gout);
+  z-index: 40;
+  width: min(360px, calc(100% - var(--gout) - 12px));
+  margin-top: 4px;
+}
+.pop {
+  display: grid;
+  gap: 4px;
+  padding: 6px;
+  border-radius: 10px;
+  background: var(--feuille);
+  box-shadow:
+    var(--ombre-panneau),
+    inset 0 0 0 1px var(--trait-fort);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  font-style: normal;
+  line-height: 1.45;
+}
+.pop__filtre {
+  width: 100%;
+  box-sizing: border-box;
+}
+.pop__liste {
+  max-height: 218px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  border-radius: 7px;
+}
+.pop__liste:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.pop__liste button {
+  display: grid;
+  gap: 1px;
+  width: 100%;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.pop__liste li[aria-selected="true"] button {
+  background: var(--canard-pale);
+}
+.pop__nom {
+  font-family: var(--f-recit);
+  font-size: 1.05rem;
+}
+.pop__desc {
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.pop__formule {
+  font-family: var(--f-recit);
+  font-weight: 600;
+}
+.pop__vide {
+  margin: 0;
+  padding: 8px 10px;
+  color: var(--graphite-2);
+}
+.pop__pied {
+  margin: 0;
+  padding: 4px 2px 0;
+  border-top: 1px solid var(--trait);
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.pop__pied > span {
+  display: block;
+  padding: 5px 8px 3px;
+}
+.pop__plus {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 7px 8px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  color: var(--canard);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.pop__plus:hover,
+.pop__plus:focus-visible {
+  background: var(--canard-pale);
+  outline: none;
+}
+.pop__plus .ic {
+  width: 1em;
+  height: 1em;
+}
+.page--eleve .pop {
+  font-size: var(--t-m);
+}
+
+/* Les réglages : le panneau que la page tient à droite du texte, à la place de la consigne.
+   Le texte ne bouge pas quand il s'ouvre ; il reste à l'écran quand on fait défiler. */
+.cote-copie {
+  align-self: stretch;
+  min-width: 0;
+}
+.cote-copie__colle {
+  /* Sous la barre du haut, qui reste à l'écran */
+  position: sticky;
+  top: 70px;
+  display: grid;
+  gap: 14px;
+  max-height: calc(100vh - 82px);
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.panneau-copie {
+  container: panneau / inline-size;
+}
+.panneau-copie--dessous {
+  margin: 4px 20px 16px calc(var(--gout) - 10px);
+}
+@container panneau (max-width: 470px) {
+  .panneau-copie .cx-poser {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Quatre largeurs ne tiennent pas sur une ligne : deux par deux, à largeur égale */
+  .panneau-copie .cx-seg {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-self: stretch;
+  }
+  .panneau-copie .cx-seg span {
+    box-sizing: border-box;
+    width: 100%;
+    justify-content: center;
+    padding-inline: 8px;
+  }
+}
+@container panneau (max-width: 330px) {
+  .panneau-copie .cx-ou__choix {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+/* Là où se posera la phrase de choix qu'on est en train de créer */
+.attend-un-choix {
+  position: relative;
+}
+.attend-un-choix::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -0.45em;
+  left: 0;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--canard);
+}
+/* Écran étroit : pas de colonne de droite, le panneau monte du bas de l'écran */
+@media (max-width: 860px) {
+  .cote-copie__colle {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .cote-copie .panneau-copie {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 70;
+    max-height: 62vh;
+    padding: 8px;
+    overflow-y: auto;
+  }
 }
 .cx {
   min-width: 0;
@@ -1745,11 +1895,7 @@ kbd {
   }
 }
 
-/* « Fixer son numéro… » : une fiche courte, sous l'en-tête de la scène */
-.fiche-numero {
-  max-width: 560px;
-  margin-top: 12px;
-}
+/* « Fixer son numéro… » : une fiche courte, dans le panneau de droite */
 .fiche-numero p {
   margin: 0;
 }

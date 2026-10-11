@@ -3,6 +3,7 @@
 import { BoldPlugin, ItalicPlugin, UnderlinePlugin } from "@platejs/basic-nodes/react";
 import { createPlatePlugin, ParagraphPlugin, Plate, PlateContent, usePlateEditor } from "platejs/react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import {
   ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, texteOuvert, tirerConstruction,
@@ -13,17 +14,22 @@ import { nomScene } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
 import { ActionDeJeu, ImageEnBloc, ImageSurLaLigne, NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
 import {
-  Contexte, SANS_JEU, SANS_VOISINES, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee,
+  Contexte, estAuCurseur, SANS_JEU, SANS_VOISINES, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee,
   type Services, type Voisines,
 } from "./contexte";
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
-import { FicheAction, FicheObjets } from "./FicheJeu";
+import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
-import { HorsRecit, type GestesDeLiaison } from "./Liaisons";
+import { FicheLiaison, HorsRecit, type GestesDeLiaison } from "./Liaisons";
 import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, type Editeur, type Signal } from "./regles";
 import { ScenesVoisines } from "./ScenesVoisines";
 import { SortieGardee } from "./SortieGardee";
 import { useEnregistrementTexte, type Cible, type EtatTexte } from "./useEnregistrementTexte";
+
+/** Les réglages : dans le panneau que la page fournit, à droite du texte ; sans lui, sous la copie. */
+function Reglages({ panneau, children }: { panneau: HTMLElement | null; children: ReactNode }) {
+  return panneau ? createPortal(<div className="panneau-copie">{children}</div>, panneau) : <div className="panneau-copie panneau-copie--dessous">{children}</div>;
+}
 
 /**
  * La copie : la page où l'on écrit le récit d'une scène (F04, F05.2, F08.2). L'éditeur est
@@ -59,7 +65,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
-  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene,
+  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -94,6 +100,12 @@ export function Copie({
   voisines?: Voisines;
   voisinesAffichees?: boolean;
   lienDeScene?: (id: string) => string;
+  /**
+   * Le panneau de droite, que la page fournit à la place de la consigne : les réglages s'y
+   * ouvrent, et le texte ne bouge pas. La page est prévenue quand il s'ouvre et se referme.
+   */
+  panneau?: HTMLElement | null;
+  onPanneau?: (ouvert: boolean) => void;
 }) {
   // Ce que la copie a appris depuis que la page lui a donné le livre : numéros relus, scènes créées
   // depuis un choix. Quand la page relit le livre, c'est elle qui fait foi.
@@ -128,14 +140,12 @@ export function Copie({
   const [fiche, setFiche] = useState<FicheOuverte | null>(null);
   const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
   const aDesVoisines = voisines.avant.length + voisines.apres.length > 0;
-  const [espace, setEspace] = useState<{ bloc: string; hauteur: number } | null>(null);
   const [haut, setHaut] = useState(0);
   const [bandeau, setBandeau] = useState<Bandeau | null>(null);
   const [barre, setBarre] = useState<{ demande: string; choisie: number } | null>(null);
   const [tire, setTire] = useState<{ bloc: string; avant: string | null } | null>(null);
   const [, setTic] = useState(0);
   const zone = useRef<HTMLDivElement>(null);
-  const ficheRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
   const [rallonge, setRallonge] = useState(0);
   // La scène créée avec le dernier choix : si ce choix est annulé, elle reste, et la copie le dit (F05-AC44)
@@ -292,7 +302,6 @@ export function Copie({
   };
   const fermer = () => {
     setFiche(null);
-    setEspace(null);
     reprendreLeTexte();
   };
 
@@ -316,7 +325,6 @@ export function Copie({
     });
     e.tf.allerA(fiche.remplace ? i : i + 1);
     setFiche(null);
-    setEspace(null);
     reprendreLeTexte();
     if (creee) {
       creation.current = { choix: choix.id, scene: creee };
@@ -375,7 +383,6 @@ export function Copie({
       supprimer: () => {
         e.tf.supprimerBlocs([bloc.id]);
         setFiche(null);
-        setEspace(null);
         reprendreLeTexte();
       },
       // eslint-disable-next-line react-hooks/refs -- appelée au clic, jamais pendant le rendu
@@ -387,7 +394,6 @@ export function Copie({
   const creerLiaison = (liaison: Liaison, numero: number | null) => {
     changerLiaisons([...liaisonsTenues.current, liaison]);
     setFiche(null);
-    setEspace(null);
     reprendreLeTexte();
     setBandeau({
       texte: `Le lien caché est créé, vers ${nomDe(liaison.cible)}${numero ? `, n° ${numero}` : ""}. Il ne s’imprime pas : l’énigme s’écrit dans le texte.`,
@@ -406,7 +412,6 @@ export function Copie({
     const i = indexDe(bloc.id);
     if (i !== -1) e.tf.removeNodes({ at: [i] });
     setFiche(null);
-    setEspace(null);
     setBandeau({
       texte: `Le choix est caché : c’est maintenant un lien caché, hors du récit. ${nomDe(cible)} garde le n° ${fait.numero ?? "…"}.`,
       annuler: () => {
@@ -493,10 +498,11 @@ export function Copie({
   };
   /** La formule retenue devient un paragraphe d'action ; dans une formule à compléter, « … » est sélectionné. */
   const poserAction = (texte: string) => {
-    if (fiche?.sorte !== "action" && fiche?.sorte !== "formules") return;
+    const pour = fiche?.sorte === "formule-nouvelle" ? fiche.pour : fiche;
+    if (pour?.sorte !== "action" && pour?.sorte !== "formules") return;
     let k: number;
-    if (fiche.sorte === "formules") {
-      k = indexDe(fiche.bloc);
+    if (pour.sorte === "formules") {
+      k = indexDe(pour.bloc);
       const actuel = blocsDe(e)[k];
       if (!actuel || actuel.type !== "action") return;
       e.tf.withoutNormalizing(() => {
@@ -504,17 +510,16 @@ export function Copie({
         e.tf.insertNodes({ ...actuel, children: [{ text: texte }] }, { at: [k] });
       });
     } else {
-      const i = Math.max(0, indexDe(fiche.apres));
+      const i = Math.max(0, indexDe(pour.apres));
       e.tf.withoutNormalizing(() => {
         e.tf.insertNodes({ type: "action", id: nouvelId(), children: [{ text: texte }] }, { at: [i + 1] });
-        if (fiche.remplace) e.tf.removeNodes({ at: [i] });
+        if (pour.remplace) e.tf.removeNodes({ at: [i] });
       });
-      k = fiche.remplace ? i : i + 1;
+      k = pour.remplace ? i : i + 1;
     }
     const trou = texte.indexOf("…");
     e.tf.select(trou === -1 ? e.api.end([k]) : { anchor: { path: [k, 0], offset: trou }, focus: { path: [k, 0], offset: trou + 1 } });
     setFiche(null);
-    setEspace(null);
     reprendreLeTexte();
   };
   const ouvrirObjets = () => {
@@ -544,7 +549,6 @@ export function Copie({
   const poserImage = (image: string, ou: "bloc" | "ligne") => {
     if (fiche?.sorte !== "poser-image") return;
     setFiche(null);
-    setEspace(null);
     if (ou === "ligne" && admetUneImage() && e.selection) {
       const symbole: ImageLigne = { type: "image-ligne", id: nouvelId(), image, children: [{ text: "" }] };
       e.tf.insertNodes(symbole, { at: e.selection, select: true });
@@ -575,7 +579,6 @@ export function Copie({
   /** Le nom de l'objet s'écrit à l'endroit du curseur, comme du texte ordinaire (F04-AC15). */
   const ecrireObjet = (nom: string) => {
     setFiche(null);
-    setEspace(null);
     if (!e.selection) e.tf.select(e.api.end([]));
     e.tf.insertText(nom);
     reprendreLeTexte();
@@ -664,12 +667,32 @@ export function Copie({
     setBarre((avant) => (trouve ? { demande: trouve[1], choisie: avant?.demande === trouve[1] ? avant.choisie : 0 } : null));
   };
 
-  // La fiche se pose sous son bloc, dans la copie : la place lui est gardée dessous
-  const ancreDe = (f: FicheOuverte): string | null => (f.sorte === "creation" || f.sorte === "action" ? f.apres : f.bloc);
-  const ancre = fiche ? ancreDe(fiche) : barre && proposees.length ? (blocCourant(e)?.bloc.id ?? null) : null;
-  const avecFiche = !!fiche;
-  // Le menu des commandes refermé, la copie reprend sa hauteur
+  /** Le bloc qu'une fiche concerne : s'il disparaît du texte, elle se referme. */
+  const blocDe = (f: FicheOuverte): string | null => {
+    if (f.sorte === "creation" || f.sorte === "action") return f.apres;
+    if (f.sorte === "liaison" || f.sorte === "objet-nouveau" || f.sorte === "formule-nouvelle") return null;
+    return f.bloc;
+  };
+  // Les listes courtes — commandes, objets, formules — s'ouvrent au curseur, sous son bloc et
+  // par-dessus le texte. Tout ce qui a des champs s'ouvre dans le panneau de droite : le texte ne bouge pas
+  const liste = fiche && estAuCurseur(fiche) ? fiche : null;
+  const dansLePanneau = fiche && !estAuCurseur(fiche) ? fiche : null;
   const menuOuvert = !!barre && proposees.length > 0 && !fiche;
+  const ancre = liste ? blocDe(liste) : menuOuvert ? (blocCourant(e)?.bloc.id ?? null) : null;
+  const auCurseur = menuOuvert || !!liste;
+  const panneauOuvert = !!dansLePanneau;
+  useEffect(() => {
+    onPanneau?.(panneauOuvert);
+  }, [onPanneau, panneauOuvert]);
+  // Une liste ouverte au curseur se referme quand on clique ailleurs
+  useEffect(() => {
+    if (!liste) return;
+    const dehors = (ev: PointerEvent) => {
+      if (menuRef.current && !menuRef.current.contains(ev.target as Node)) setFiche(null);
+    };
+    document.addEventListener("pointerdown", dehors);
+    return () => document.removeEventListener("pointerdown", dehors);
+  }, [liste]);
   useLayoutEffect(() => {
     if (!ancre || !zone.current) return;
     const bloc = zone.current.querySelector<HTMLElement>(`[data-bloc="${ancre}"]`);
@@ -678,8 +701,8 @@ export function Copie({
       if (!zone.current) return;
       const h = bloc.getBoundingClientRect().bottom - zone.current.getBoundingClientRect().top;
       setHaut((avant) => (Math.abs(avant - h) < 1 ? avant : h));
-      // Sur les dernières lignes, le menu des commandes dépasserait du cadre : la copie s'allonge
-      // de ce qui manque, sans rien déplacer du texte
+      // Sur les dernières lignes, la liste ouverte au curseur dépasserait du cadre : la copie
+      // s'allonge de ce qui manque, sans rien déplacer du texte
       const menu = menuRef.current;
       if (menu) {
         const sansRallonge = zone.current.clientHeight - (Number.parseFloat(zone.current.style.getPropertyValue("--rallonge")) || 0);
@@ -688,19 +711,21 @@ export function Copie({
         const manque = Math.max(0, Math.ceil(h + menu.offsetHeight + 16 - cadre));
         setRallonge((avant) => (avant === manque ? avant : manque));
       }
-      const hauteur = (ficheRef.current?.offsetHeight ?? 0) + 14;
-      if (avecFiche) setEspace((avant) => (avant?.bloc === ancre && Math.abs(avant.hauteur - hauteur) < 1 ? avant : { bloc: ancre, hauteur }));
     };
     mesurer();
     const veille = new ResizeObserver(mesurer);
     veille.observe(bloc);
-    if (ficheRef.current) veille.observe(ficheRef.current);
     if (menuRef.current) veille.observe(menuRef.current);
     return () => veille.disconnect();
   });
 
   const contexte: ContexteDeCopie = {
-    livre, droits, lieu, pourEleve, fiche, espace, tire, enseignant, ecrireAvant,
+    livre, droits, lieu, pourEleve, fiche, tire, enseignant, ecrireAvant,
+    ouvrirLiaison: (liaison) => {
+      setBandeau(null);
+      lacherLeTexte();
+      setFiche(fiche?.sorte === "liaison" && fiche.liaison === liaison ? null : { sorte: "liaison", liaison });
+    },
     ouvrirFormules: (bloc) => {
       setBandeau(null);
       lacherLeTexte();
@@ -731,6 +756,7 @@ export function Copie({
   };
   const blocRegle = fiche?.sorte === "reglages" ? (blocsDe(e).find((b) => b.id === fiche.bloc) as Choix | undefined) : undefined;
   const imageReglee = fiche?.sorte === "image" ? (blocsDe(e).find((b) => b.id === fiche.bloc && b.type === "image") as ImageBloc | undefined) : undefined;
+  const liaisonReglee = fiche?.sorte === "liaison" ? liaisons.find((l) => l.id === fiche.liaison) : undefined;
   const symboleRegle = (() => {
     if (fiche?.sorte !== "symbole") return undefined;
     const chemin = cheminDuSymbole(fiche.symbole);
@@ -928,7 +954,7 @@ export function Copie({
           )}
         </div>
         {avecVoisines && !autre && lienDeScene ? <ScenesVoisines sens="avant" voisines={voisines.avant} livre={livre} pourEleve={pourEleve} lienDeScene={lienDeScene} /> : null}
-        <div hidden={!!autre} className="copie__zone" ref={zone} style={menuOuvert && rallonge ? ({ "--rallonge": `${rallonge}px` } as React.CSSProperties) : undefined}>
+        <div hidden={!!autre} className="copie__zone" ref={zone} style={auCurseur && rallonge ? ({ "--rallonge": `${rallonge}px` } as React.CSSProperties) : undefined}>
           <Plate
             editor={editor}
             readOnly={arrete}
@@ -946,9 +972,17 @@ export function Copie({
               const suite = value as unknown as Texte;
               suivre(entier(suite));
               // La fiche d'un bloc qui n'est plus là se referme
-              if (fiche && !suite.some((b) => b.id === ancreDe(fiche))) {
-                setFiche(null);
-                setEspace(null);
+              const concerne = fiche ? blocDe(fiche) : null;
+              if (fiche && concerne && !suite.some((b) => b.id === concerne)) setFiche(null);
+              // On se remet à écrire : la fiche se referme. Pas quand on déplace un bloc, ni quand
+              // on écrit dans la phrase de choix qu'on est en train de régler. Le curseur est alors
+              // dans le texte : ce que la fiche change elle-même, ou la commande qui l'ouvre, ne compte pas
+              else if (fiche && zone.current?.querySelector("[data-slate-editor]")?.contains(document.activeElement)) {
+                const regle = fiche.sorte === "reglages" ? suite.findIndex((b) => b.id === fiche.bloc) : -1;
+                const ecrit = (e.operations as { type: string; path?: number[] }[]).some(
+                  (op) => ["insert_text", "remove_text", "split_node", "merge_node"].includes(op.type) && op.path?.[0] !== regle,
+                );
+                if (ecrit) setFiche(null);
               }
               // Le choix qui venait de créer une scène a été annulé : la scène reste, et la copie le dit (F05-AC44)
               const cree = creation.current;
@@ -1022,46 +1056,76 @@ export function Copie({
               ))}
             </div>
           ) : null}
-          {fiche ? (
-            <div className="copie__fiche" style={{ top: haut }} ref={ficheRef}>
-              {fiche.sorte === "creation" ? (
-                <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onFermer={fermer} />
-              ) : fiche.sorte === "action" || fiche.sorte === "formules" ? (
-                <FicheAction jeu={jeu} services={services} pourUneAction={fiche.sorte === "formules"} onChoisir={poserAction} onFermer={fermer} />
-              ) : fiche.sorte === "objets" ? (
-                <FicheObjets jeu={jeu} services={services} onChoisir={ecrireObjet} onFermer={fermer} />
-              ) : fiche.sorte === "poser-image" ? (
-                <FichePoserImage services={services} surLaLigne={admetUneImage()} onPoser={poserImage} onFermer={fermer} />
-              ) : fiche.sorte === "image" && imageReglee ? (
-                <FicheImageBloc
-                  bloc={imageReglee}
-                  services={services}
-                  regler={(valeurs) => e.tf.setNodes(valeurs, { at: [indexDe(imageReglee.id)] })}
-                  supprimer={() => {
-                    e.tf.supprimerBlocs([imageReglee.id]);
-                    fermer();
-                  }}
+          {liste ? (
+            <div className="copie__liste" style={{ top: haut }} ref={menuRef}>
+              {liste.sorte === "objets" ? (
+                <ListeObjets
+                  jeu={jeu}
+                  onChoisir={ecrireObjet}
+                  onCreer={adulte && services.ajouterObjet ? (nom) => setFiche({ sorte: "objet-nouveau", nom }) : undefined}
                   onFermer={fermer}
                 />
-              ) : fiche.sorte === "symbole" && symboleRegle ? (
-                <FicheSymbole
-                  image={symboleRegle.image}
-                  regler={(valeurs) => e.tf.setNodes(valeurs, { at: symboleRegle.chemin })}
-                  supprimer={() => {
-                    e.tf.removeNodes({ at: symboleRegle.chemin });
-                    fermer();
-                  }}
+              ) : (
+                <ListeFormules
+                  jeu={jeu}
+                  pourUneAction={liste.sorte === "formules"}
+                  onChoisir={poserAction}
+                  onAjouter={adulte && services.ajouterFormule ? () => setFiche({ sorte: "formule-nouvelle", pour: liste }) : undefined}
                   onFermer={fermer}
                 />
-              ) : fiche.sorte === "reglages" && blocRegle ? (
-                <FicheReglagesChoix key={`${blocRegle.id}-${estAuto(blocRegle)}`} bloc={blocRegle} services={services} gestes={gestes(blocRegle)} confirmer={fiche.confirmer} auClavier={fiche.auClavier} onFermer={fermer} />
-              ) : null}
+              )}
             </div>
           ) : null}
-          <HorsRecit liaisons={liaisons} services={services} gestes={gestesDeLiaison} lecture={arrete} />
+          <HorsRecit liaisons={liaisons} lecture={arrete} />
         </div>
         {avecVoisines && !autre && lienDeScene ? <ScenesVoisines sens="apres" voisines={voisines.apres} livre={livre} pourEleve={pourEleve} lienDeScene={lienDeScene} /> : null}
         {autre ? autre.corps : null}
+        {dansLePanneau && !autre ? (
+          <Reglages panneau={panneau}>
+            {dansLePanneau.sorte === "creation" ? (
+              <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onFermer={fermer} />
+            ) : dansLePanneau.sorte === "poser-image" ? (
+              <FichePoserImage services={services} surLaLigne={admetUneImage()} onPoser={poserImage} onFermer={fermer} />
+            ) : dansLePanneau.sorte === "image" && imageReglee ? (
+              <FicheImageBloc
+                bloc={imageReglee}
+                services={services}
+                regler={(valeurs) => e.tf.setNodes(valeurs, { at: [indexDe(imageReglee.id)] })}
+                supprimer={() => {
+                  e.tf.supprimerBlocs([imageReglee.id]);
+                  fermer();
+                }}
+                onFermer={fermer}
+              />
+            ) : dansLePanneau.sorte === "symbole" && symboleRegle ? (
+              <FicheSymbole
+                image={symboleRegle.image}
+                regler={(valeurs) => e.tf.setNodes(valeurs, { at: symboleRegle.chemin })}
+                supprimer={() => {
+                  e.tf.removeNodes({ at: symboleRegle.chemin });
+                  fermer();
+                }}
+                onFermer={fermer}
+              />
+            ) : dansLePanneau.sorte === "liaison" && liaisonReglee ? (
+              <FicheLiaison key={liaisonReglee.id} liaison={liaisonReglee} services={services} gestes={gestesDeLiaison} onFermer={fermer} />
+            ) : dansLePanneau.sorte === "objet-nouveau" ? (
+              <FicheNouvelObjet nom={dansLePanneau.nom} services={services} onCree={ecrireObjet} onFermer={fermer} />
+            ) : dansLePanneau.sorte === "formule-nouvelle" ? (
+              <FicheNouvelleFormule services={services} onCree={poserAction} onFermer={fermer} />
+            ) : dansLePanneau.sorte === "reglages" && blocRegle ? (
+              <FicheReglagesChoix
+                key={`${blocRegle.id}-${estAuto(blocRegle)}`}
+                bloc={blocRegle}
+                services={services}
+                gestes={gestes(blocRegle)}
+                confirmer={dansLePanneau.confirmer}
+                auClavier={dansLePanneau.auClavier}
+                onFermer={fermer}
+              />
+            ) : null}
+          </Reglages>
+        ) : null}
         {bandeau && !autre ? (
           <div className="copie__message" role="status">
             <Icone nom="info" />

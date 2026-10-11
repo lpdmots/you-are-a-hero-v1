@@ -486,10 +486,18 @@ curseur : il le reprenait à la fiche qui s'ouvrait, si bien que le libellé
 tapé partait dans le texte. La copie lui fait donc lâcher le curseur avant
 d'ouvrir une fiche.
 
-**Fiche posée dans la copie.** La fiche d'un choix n'est pas dans le texte :
-elle est dessinée par-dessus, sous le bloc concerné, et la place lui est
-gardée par une marge sous ce bloc, mesurée à l'écran. Le texte ne contient
-donc que du texte, et une fiche ouverte ne s'enregistre jamais.
+**Réglages hors du texte.** Depuis le 11 octobre 2026, une fiche ne se pose
+plus dans la copie : ce qui a des champs s'ouvre dans un panneau que la page
+tient à droite du texte, et que la copie remplit par un portail React
+(`panneau`, `onPanneau`) ; sans panneau fourni, la fiche se rend sous la
+copie. Les listes courtes (commandes, objets, formules) sont dessinées
+par-dessus le texte, sous le bloc du curseur, et le cadre du texte s'allonge
+si elles dépassent. Le texte ne contient donc que du texte, une fiche
+ouverte ne s'enregistre jamais, et rien n'est mesuré pour lui garder une
+place. La fiche se referme quand une opération d'écriture arrive alors que
+le curseur est dans le texte : ce que la fiche change elle-même, ou la
+commande qui l'ouvre, se fait curseur lâché et ne compte pas ; un bloc
+déplacé n'est pas une écriture.
 
 **Presse-papiers.** Ce qui part porte trois formes : les blocs de la copie,
 l'origine (scène, projet, coupé ou copié) et un texte simple où chaque phrase

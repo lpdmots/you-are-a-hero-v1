@@ -588,6 +588,74 @@ test.describe("Robustesse du texte (F05.2) — points 1, 5 et 6 du prototype", (
   });
 });
 
+test.describe("Panneau des réglages, à droite du texte (F05.2)", () => {
+  test("F05-AC53 — les réglages d'un choix s'ouvrent à droite, à la place de la consigne, sans déplacer le texte ; écrire ailleurs referme le panneau ; déplacer la phrase, ou écrire dans la phrase qu'on règle, le laisse ouvert", async ({ page }) => {
+    const l = await auteur(page);
+    await semerBlocs(l.base, l.lisiere.scenes[0], [recit("Lou hésita."), choixAuto("Prendre à gauche", l.lisiere.scenes[1]), choixAuto("Prendre à droite", l.lisiere.scenes[2]), recit("Fin.")]);
+    await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
+    const panneau = page.locator(".cote-copie .panneau-copie");
+    const consigne = page.getByRole("textbox", { name: "Consigne" });
+    const places = async () => Promise.all([copie(page).locator("p").first(), PHRASES(page).nth(0), PHRASES(page).nth(1), copie(page).locator("p").last()].map(async (b) => (await b.boundingBox())!.y));
+    await expect(consigne).toBeVisible();
+    const avant = await places();
+
+    // La fiche s'ouvre à droite : la consigne lui laisse la place, aucun bloc du texte ne bouge
+    await PHRASES(page).nth(1).locator(".phrase-choix__corps").click();
+    await expect(panneau.getByLabel("Ce que fait le lecteur")).toHaveValue("Prendre à droite");
+    await expect(consigne).toBeHidden();
+    await expect(copie(page).locator(".cx")).toHaveCount(0);
+    expect(await places()).toEqual(avant);
+    const fiche = (await panneau.boundingBox())!;
+    const texte = (await copie(page).boundingBox())!;
+    expect(fiche.x).toBeGreaterThan(texte.x + texte.width);
+
+    // Déplacer la phrase par son repère de prise : le panneau reste ouvert, sur la même phrase
+    const prise = (await PHRASES(page).nth(1).locator(".prise").boundingBox())!;
+    const cible = (await PHRASES(page).nth(0).boundingBox())!;
+    await page.mouse.move(prise.x + prise.width / 2, prise.y + prise.height / 2);
+    await page.mouse.down();
+    await page.mouse.move(prise.x + 4, cible.y + 4, { steps: 8 });
+    await expect(PHRASES(page).nth(0)).toHaveClass(/se-pose-avant/);
+    await page.mouse.up();
+    await expect(PHRASES(page).nth(0)).toContainText("Prendre à droite");
+    await expect(panneau.getByLabel("Ce que fait le lecteur")).toHaveValue("Prendre à droite");
+    await expect(PHRASES(page).nth(0)).toHaveClass(/est-ouvert/);
+
+    // On se remet à écrire dans le récit : le panneau se referme, la consigne revient
+    await selectionner(page, { bloc: 3, offset: 4 });
+    await page.keyboard.type(" Vraiment.");
+    await expect(panneau).toHaveCount(0);
+    await expect(consigne).toBeVisible();
+    await attendreEnBase(l.lisiere.scenes[0], "Fin. Vraiment.");
+
+    // Une phrase personnalisée : on écrit dedans, panneau ouvert, sans le refermer
+    await PHRASES(page).nth(1).locator(".phrase-choix__corps").click();
+    await panneau.getByRole("button", { name: "Personnaliser", exact: true }).click();
+    await expect(copie(page)).toBeFocused();
+    await page.keyboard.type(" Vite");
+    await expect(PHRASES(page).nth(1)).toContainText("Vite");
+    await expect(panneau.locator(".cx")).toBeVisible();
+    // La croix du panneau le referme
+    await panneau.locator(".cx__fermer").click();
+    await expect(panneau).toHaveCount(0);
+  });
+
+  test("F05-AC54 — écran étroit : le panneau monte du bas de l'écran, par-dessus le texte, sans le déplacer", async ({ page }) => {
+    const l = await auteur(page);
+    await semerBlocs(l.base, l.lisiere.scenes[0], [recit("Lou hésita."), choixAuto("Prendre à gauche", l.lisiere.scenes[1])]);
+    await page.setViewportSize({ width: 390, height: 800 });
+    await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
+    const avant = (await PHRASES(page).boundingBox())!.y;
+    await PHRASES(page).locator(".phrase-choix__corps").click();
+    const panneau = page.locator(".cote-copie .panneau-copie");
+    await expect(panneau.getByLabel("Ce que fait le lecteur")).toBeVisible();
+    expect((await PHRASES(page).boundingBox())!.y).toBe(avant);
+    const boite = (await panneau.boundingBox())!;
+    expect(Math.round(boite.y + boite.height)).toBe(800);
+    expect(boite.height).toBeLessThanOrEqual(800 * 0.62 + 1);
+  });
+});
+
 test.describe("Presse-papiers (F05.2) — point 7 du prototype", () => {
   test("F05-AC30, AC31 — couper-coller vers une autre scène déplace le même choix ; copier-coller en crée un autre, que l'on modifie sans toucher au premier", async ({ page, context }) => {
     test.setTimeout(120_000);

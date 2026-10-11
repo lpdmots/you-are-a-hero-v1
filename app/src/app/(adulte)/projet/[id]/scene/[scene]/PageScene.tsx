@@ -87,6 +87,9 @@ export function PageScene({
   const [geste, setGeste] = useState(false);
   const [versions, setVersions] = useState(false);
   const [numero, setNumero] = useState(false);
+  // Le panneau de droite : les réglages de la copie s'y ouvrent, à la place de la consigne
+  const [panneau, setPanneau] = useState<HTMLElement | null>(null);
+  const [reglages, setReglages] = useState(false);
   const montree = copies.find((c) => c.id === onglet) ?? null;
   const nom = (c: CopieGardee) => nomDeTexte(c, eleves, projet.deClasse);
 
@@ -372,18 +375,6 @@ export function PageScene({
         </span>
       </div>
 
-      {numero ? (
-        <FicheNumero
-          sceneId={scene.id}
-          nom={ref}
-          onFermer={() => setNumero(false)}
-          onFixe={(n) => {
-            setNumero(false);
-            dire({ texte: `${ref} garde le n° ${n}.` });
-          }}
-        />
-      ) : null}
-
       <div className={styles.colonnes}>
         <section className={styles.texte} aria-label="Texte de la scène">
           {fait?.sorte === "conflit" ? (
@@ -471,6 +462,8 @@ export function PageScene({
             voisines={voisines}
             voisinesAffichees={voisinesAffichees}
             lienDeScene={(id) => `/projet/${projet.id}/scene/${id}`}
+            panneau={panneau}
+            onPanneau={setReglages}
             marques
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}
@@ -505,33 +498,49 @@ export function PageScene({
             }
           />
         </section>
-        <section className="carnet-fiche" aria-labelledby="scene-consigne-t">
-          <header>
-            <h2 id="scene-consigne-t">
-              <label htmlFor="scene-consigne">Consigne</label> <span className="facultatif">facultative</span>
-            </h2>
-          </header>
-          <div className="carnet-fiche__corps">
-            <textarea
-              id="scene-consigne"
-              className="pchamp"
-              rows={7}
-              maxLength={4000}
-              value={consigne}
-              placeholder="Ce que la scène doit raconter."
-              onChange={(e) => {
-                setConsigne(e.target.value);
-                enregistrer({ consigne: e.target.value });
-              }}
-              onBlur={() => void envoyer()}
-            />
-            <p className={styles.aide}>
-              {projet.deClasse
-                ? "Les élèves du chapitre la lisent en ouvrant la scène. Sans consigne écrite, ils suivent celle que vous leur avez donnée."
-                : "Un rappel de ce que la scène doit raconter."}
-            </p>
+        <aside className="cote-copie">
+          <div className="cote-copie__colle">
+            {numero ? (
+              <FicheNumero
+                sceneId={scene.id}
+                nom={ref}
+                onFermer={() => setNumero(false)}
+                onFixe={(n) => {
+                  setNumero(false);
+                  dire({ texte: `${ref} garde le n° ${n}.` });
+                }}
+              />
+            ) : null}
+            <div ref={setPanneau} />
+            <section className="carnet-fiche" aria-labelledby="scene-consigne-t" hidden={reglages || numero}>
+              <header>
+                <h2 id="scene-consigne-t">
+                  <label htmlFor="scene-consigne">Consigne</label> <span className="facultatif">facultative</span>
+                </h2>
+              </header>
+              <div className="carnet-fiche__corps">
+                <textarea
+                  id="scene-consigne"
+                  className="pchamp"
+                  rows={7}
+                  maxLength={4000}
+                  value={consigne}
+                  placeholder="Ce que la scène doit raconter."
+                  onChange={(e) => {
+                    setConsigne(e.target.value);
+                    enregistrer({ consigne: e.target.value });
+                  }}
+                  onBlur={() => void envoyer()}
+                />
+                <p className={styles.aide}>
+                  {projet.deClasse
+                    ? "Les élèves du chapitre la lisent en ouvrant la scène. Sans consigne écrite, ils suivent celle que vous leur avez donnée."
+                    : "Un rappel de ce que la scène doit raconter."}
+                </p>
+              </div>
+            </section>
           </div>
-        </section>
+        </aside>
       </div>
 
       {versions ? (

@@ -70,8 +70,8 @@ function useBloc(id: string) {
   return {
     c,
     attributs: { "data-bloc": id } as Record<string, string>,
-    style: c.espace?.bloc === id ? { marginBottom: c.espace.hauteur } : undefined,
-    pose: c.tire && c.tire.avant === id ? " se-pose-avant" : "",
+    // Là où se poserait le bloc qu'on tire ; là où se posera le choix qu'on est en train de créer
+    pose: `${c.tire && c.tire.avant === id ? " se-pose-avant" : ""}${c.fiche?.sorte === "creation" && c.fiche.apres === id ? " attend-un-choix" : ""}`,
   };
 }
 
@@ -141,12 +141,12 @@ const preparePar = (enseignant: string | null): string => `Préparé par ${ensei
  */
 export function Paragraphe(props: PlateElementProps) {
   const bloc = props.element as unknown as ParagrapheDeRecit;
-  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const { c, attributs, pose } = useBloc(bloc.id);
   const selectionne = useSelected();
-  if (!bloc.protege) return <PlateElement {...props} as="p" className={pose.trim() || undefined} style={style} attributes={{ ...props.attributes, ...attributs }} />;
+  if (!bloc.protege) return <PlateElement {...props} as="p" className={pose.trim() || undefined} attributes={{ ...props.attributes, ...attributs }} />;
   if (!estReserve(bloc, c.droits)) {
     return (
-      <PlateElement {...props} as="p" className={`est-protege${pose}`} style={style} attributes={{ ...props.attributes, ...attributs }}>
+      <PlateElement {...props} as="p" className={`est-protege${pose}`} attributes={{ ...props.attributes, ...attributs }}>
         <span className="marge marge--crochet" contentEditable={false} title="Paragraphe protégé : les élèves écrivent autour">
           <Icone nom="cadenas" />
         </span>
@@ -159,7 +159,7 @@ export function Paragraphe(props: PlateElementProps) {
       {...props}
       as="div"
       className={`bloc-prepare${selectionne ? " est-choisi" : ""}${pose}`}
-      style={style}
+     
       attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
     >
       <Plus bloc={bloc.id} />
@@ -184,7 +184,7 @@ export function Paragraphe(props: PlateElementProps) {
  */
 export function ActionDeJeu(props: PlateElementProps) {
   const bloc = props.element as unknown as Action;
-  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const { c, attributs, pose } = useBloc(bloc.id);
   const selectionne = useSelected();
   const tire = c.tire?.bloc === bloc.id;
   if (estReserve(bloc, c.droits)) {
@@ -193,7 +193,7 @@ export function ActionDeJeu(props: PlateElementProps) {
         {...props}
         as="div"
         className={`action-jeu est-prepare${selectionne ? " est-choisi" : ""}${pose}`}
-        style={style}
+       
         attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
       >
         <Plus bloc={bloc.id} />
@@ -217,7 +217,7 @@ export function ActionDeJeu(props: PlateElementProps) {
       {...props}
       as="div"
       className={`action-jeu${selectionne || ouvert ? " est-active" : ""}${bloc.protege ? " est-protege" : ""}${tire ? " est-tire" : ""}${pose}`}
-      style={style}
+     
       attributes={{ ...props.attributes, ...attributs }}
     >
       <span className="marge" contentEditable={false}>
@@ -268,7 +268,7 @@ export function ActionDeJeu(props: PlateElementProps) {
  */
 export function ImageEnBloc(props: PlateElementProps) {
   const bloc = props.element as unknown as ImageBloc;
-  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const { c, attributs, pose } = useBloc(bloc.id);
   const selectionne = useSelected();
   const reserve = estReserve(bloc, c.droits);
   const ouvert = c.fiche?.sorte === "image" && c.fiche.bloc === bloc.id;
@@ -278,7 +278,7 @@ export function ImageEnBloc(props: PlateElementProps) {
       {...props}
       as="div"
       className={`image-bloc${selectionne ? " est-choisi" : ""}${ouvert ? " est-ouvert" : ""}${reserve ? " est-prepare" : ""}${tire ? " est-tire" : ""}${pose}`}
-      style={style}
+     
       attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
     >
       <Plus bloc={bloc.id} />
@@ -332,10 +332,10 @@ export function ImageSurLaLigne(props: PlateElementProps) {
 /** Note de l'enseignant : un paragraphe à part, sur papier grisé, que l'adulte seul lit (F05.2). */
 export function NoteDeLEnseignant(props: PlateElementProps) {
   const bloc = props.element as unknown as Note;
-  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const { c, attributs, pose } = useBloc(bloc.id);
   const tire = c.tire?.bloc === bloc.id;
   return (
-    <PlateElement {...props} as="div" className={`note-prof${tire ? " est-tire" : ""}${pose}`} style={style} attributes={{ ...props.attributes, ...attributs }}>
+    <PlateElement {...props} as="div" className={`note-prof${tire ? " est-tire" : ""}${pose}`} attributes={{ ...props.attributes, ...attributs }}>
       <span className="marge" contentEditable={false}>
         <button
           type="button"
@@ -358,7 +358,7 @@ export function NoteDeLEnseignant(props: PlateElementProps) {
 
 export function PhraseDeChoix(props: PlateElementProps) {
   const bloc = props.element as unknown as Choix;
-  const { c, attributs, style, pose } = useBloc(bloc.id);
+  const { c, attributs, pose } = useBloc(bloc.id);
   const selectionne = useSelected();
   const reserve = estReserve(bloc, c.droits);
   const ferme = estAuto(bloc) || reserve;
@@ -369,7 +369,7 @@ export function PhraseDeChoix(props: PlateElementProps) {
       {...props}
       as="div"
       className={`phrase-choix${ouvert ? " est-ouvert" : ""}${selectionne && ferme ? " est-choisi" : ""}${reserve ? " est-prepare" : ""}${tire ? " est-tire" : ""}${pose}`}
-      style={style}
+     
       attributes={{ ...props.attributes, ...attributs, ...(ferme ? { "data-ferme": "" } : {}) } as never}
     >
       {ferme ? <Plus bloc={bloc.id} /> : null}

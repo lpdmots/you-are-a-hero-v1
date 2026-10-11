@@ -1190,7 +1190,8 @@ Ces formes sont proposées, à juger à l'essai de l'étape.
 ### Étape 3 construite (10 octobre 2026)
 
 Les écrans de l'étape 3 sont construits dans l'application, en local, d'après
-la maquette et les dispositions ci-dessus : la copie et son pied, le texte
+la maquette et les dispositions ci-dessus, puis repris le 11 octobre pour
+les réglages des blocs : la copie et son pied, le texte
 gardé à part, les versions précédentes, les choix dans la scène, le lien
 caché, la note, les blocs préparés, les objets et l'action de jeu, les
 images, les scènes voisines, la vue « Chemins », la recherche de l'élève.
@@ -1209,9 +1210,11 @@ Sans retour du porteur à ce stade ; leurs captures ne sont pas faites.
 - **Déplacer un bloc :** le repère de prise est dans la marge rouge, à
   gauche du bloc ; le bloc tiré pâlit sur place et un trait montre où il se
   posera. Il ne se soulève pas pour suivre le pointeur.
-- **Fiches :** toutes se posent sous le bloc concerné, dans la copie ; les
-  fiches « Objets » et « Action de jeu », dessinées volantes près du
-  curseur, aussi. La fiche ouverte au clavier prend le curseur.
+- **Fiches :** d'abord construites comme la maquette les dessinait, posées
+  dans la copie sous le bloc concerné. Le porteur les écarte à l'essai, le
+  11 octobre 2026 : voir
+  [Panneau des réglages](#panneau-des-réglages-à-droite-du-texte-11-octobre-2026),
+  plus bas. La fiche ouverte au clavier prend le curseur.
 - **Action de jeu :** sous l'action où l'on écrit, « Formules… » et
   « Supprimer » seulement ; elle se déplace par son repère et se protège par
   le bouton de la barre.
@@ -1248,6 +1251,54 @@ Sans retour du porteur à ce stade ; leurs captures ne sont pas faites.
 les versions précédentes, la note de l'enseignant, « Fixer son numéro… », la
 fiche « Image » et ses réglages, la fiche d'une image sur la ligne, la
 recherche de l'élève, l'interrupteur de mise en forme.
+
+#### Panneau des réglages, à droite du texte (11 octobre 2026)
+
+La maquette posait la fiche d'un choix dans le texte, sous sa phrase
+([Choix dans la scène et blocs protégés](#choix-dans-la-scène-et-blocs-protégés)),
+et l'application l'avait reprise pour tous les blocs. À l'essai, le porteur
+n'en veut pas : elle prend de la place, crée du défilement, déforme le
+paragraphe, et il faut la chercher parce que toute la page bouge. Il propose
+un panneau à droite et demande aussi de ne plus tenir la maquette pour seule
+vérité. La règle est en
+[F05.2](specifications.md#f05-panneau) ; sa forme, construite le même jour,
+sans retour du porteur à ce stade :
+
+- **Panneau de droite :** la fiche à filet canard, inchangée, dans la
+  colonne de la consigne, qu'elle remplace le temps des réglages. Elle reste
+  à l'écran quand le texte défile, sous la barre du haut, et défile en
+  elle-même si elle dépasse l'écran. Aucun voile sur le texte : ce n'est pas
+  une fenêtre. S'y ouvrent « Nouveau choix », les réglages d'un choix, d'un
+  lien caché, d'une image, « Image » (importer ou reprendre, puis « Où
+  mettre cette image ? »), « Nouvel objet », « Nouvelle formule » et « Fixer
+  son numéro… », qui était sous l'en-tête de la scène.
+- **Dans une colonne étroite,** les segments d'une fiche se rangent deux par
+  deux, à largeur égale, et l'aperçu d'une image passe au-dessus de ses
+  commandes.
+- **Repère dans le texte :** le bloc réglé garde son entourage canard ; un
+  trait canard montre où se posera la phrase d'un choix en cours de
+  création, le même que pour un bloc qu'on tire.
+- **Listes au curseur :** les objets et les formules d'action s'ouvrent sous
+  la ligne du curseur, par-dessus le texte, dans le cadre du menu « / ». Les
+  objets : un champ « Chercher un objet », la liste (nom dans la voix du
+  récit, description en petit), puis « Créer un nouvel objet » pour l'adulte
+  ou « Liste tenue par Mme Laurent » pour l'élève. Les formules :
+  « Paragraphe vide, à écrire », les formules, puis « Ajouter une formule à
+  la liste ». Flèches, Entrée, Échap ; un clic ailleurs referme.
+- **Lien caché :** sa ligne en pointillé, sous le texte, ouvre le panneau
+  « Lien caché · S003 La souche » au lieu de se déplier.
+- **Écran étroit (moins de 860 px) :** le panneau monte du bas de l'écran,
+  sur 62 % de sa hauteur au plus, par-dessus le texte.
+- **Côté élève :** même panneau, à la place de « La consigne ».
+
+**À confirmer par le porteur :** un objet créé depuis la scène s'écrit
+aussitôt dans le texte (« Créer et écrire dans le texte ») et une formule
+ajoutée est aussitôt employée (« Ajouter et utiliser »), au lieu de revenir
+à la liste ; écrire dans la phrase personnalisée qu'on règle ne referme pas
+le panneau ; panneau ouvert, un bloc se déplace par son repère de prise, Alt
+et une flèche demandant le curseur dans le texte ; l'aide sur l'accord d'un
+nom d'objet (« de la clé », « sa clé »), qui figurait dans l'ancienne fiche,
+n'est plus affichée.
 
 ### Étape 2 construite (10 octobre 2026)
 

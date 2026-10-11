@@ -20,41 +20,34 @@ export type GestesDeLiaison = {
   retirer: (liaison: Liaison) => void;
 };
 
-export function HorsRecit({
-  liaisons, services, gestes, lecture,
-}: {
-  liaisons: Liaison[]; services: Services; gestes: GestesDeLiaison;
-  /** La copie ne s'écrit plus : les liens se lisent, sans réglage */
-  lecture: boolean;
-}) {
-  const { livre, pourEleve, droits } = useCopie();
-  const [ouverte, setOuverte] = useState<string | null>(null);
+export function HorsRecit({ liaisons, lecture }: { liaisons: Liaison[]; /** La copie ne s'écrit plus : les liens se lisent, sans réglage */ lecture: boolean }) {
+  const { livre, pourEleve, droits, fiche, ouvrirLiaison } = useCopie();
   if (liaisons.length === 0) return null;
   const regle = droits.role === "adulte" && !lecture;
   return (
     <section className="hors-recit" aria-label="Hors du récit">
       <p className="hors-recit__titre">Hors du récit · jamais imprimé</p>
-      {liaisons.map((liaison) =>
-        regle ? (
-          <div key={liaison.id} className={`lien-cache${ouverte === liaison.id ? " est-ouvert" : ""}`}>
-            <button type="button" className="lien-cache__corps" aria-expanded={ouverte === liaison.id} onClick={() => setOuverte(ouverte === liaison.id ? null : liaison.id)}>
+      {liaisons.map((liaison) => {
+        const ouverte = fiche?.sorte === "liaison" && fiche.liaison === liaison.id;
+        return regle ? (
+          <div key={liaison.id} className={`lien-cache${ouverte ? " est-ouvert" : ""}`}>
+            <button type="button" className="lien-cache__corps" aria-expanded={ouverte} onClick={() => ouvrirLiaison(liaison.id)}>
               <RepereDeLiaison liaison={liaison} livre={livre} pourEleve={false} />
               <span className="lien-cache__regler">Régler ce lien</span>
             </button>
-            {ouverte === liaison.id ? <FicheLiaison liaison={liaison} services={services} gestes={gestes} onFermer={() => setOuverte(null)} /> : null}
           </div>
         ) : (
           <p key={liaison.id} className="lien-cache lien-cache--lu">
             <RepereDeLiaison liaison={liaison} livre={livre} pourEleve={pourEleve} />
           </p>
-        ),
-      )}
+        );
+      })}
     </section>
   );
 }
 
 /** Les réglages d'une liaison cachée : son numéro, « Proposer comme choix », son retrait. */
-function FicheLiaison({ liaison, services, gestes, onFermer }: { liaison: Liaison; services: Services; gestes: GestesDeLiaison; onFermer: () => void }) {
+export function FicheLiaison({ liaison, services, gestes, onFermer }: { liaison: Liaison; services: Services; gestes: GestesDeLiaison; onFermer: () => void }) {
   const { livre } = useCopie();
   const [saisie, setSaisie] = useState("");
   const [erreur, setErreur] = useState<string | null>(null);
@@ -80,7 +73,7 @@ function FicheLiaison({ liaison, services, gestes, onFermer }: { liaison: Liaiso
   return (
     <section
       className="cx"
-      aria-label="Lien caché"
+      aria-label={scene ? `Lien caché · ${nom}` : "Lien caché"}
       onKeyDown={(e) => {
         if (e.key !== "Escape") return;
         e.preventDefault();
@@ -89,7 +82,7 @@ function FicheLiaison({ liaison, services, gestes, onFermer }: { liaison: Liaiso
     >
       <header className="cx__tete">
         <Icone nom="cle" />
-        <h3>Lien caché</h3>
+        <h3>Lien caché{scene ? ` · ${nom}` : ""}</h3>
         <button type="button" className="btn btn--discret cx__fermer" onClick={onFermer} aria-label="Fermer la fiche">
           <Icone nom="fermer" />
         </button>

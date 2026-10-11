@@ -9,8 +9,8 @@ import { cle } from "@/domaine/texte";
 import { useCopie, type SceneConnue, type SceneCreee, type Services } from "./contexte";
 
 /**
- * La fiche d'un choix, posée dans la copie à l'endroit concerné (F05.2 ; docs/design.md,
- * « Choix dans la scène ») : filet canard, celui de la décision. Elle sert à créer un choix
+ * La fiche d'un choix, ouverte dans le panneau à droite du texte (F05.2 ; docs/design.md,
+ * « Panneau des réglages ») : filet canard, celui de la décision. Elle sert à créer un choix
  * — « Ce que fait le lecteur », puis « Où mène ce choix ? » — et à régler un choix existant.
  */
 

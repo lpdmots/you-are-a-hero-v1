@@ -97,19 +97,28 @@ export type Services = {
 
 export type Lieu = { projetId: string; sceneId: string; chapitreId: string };
 
-/** La fiche ouverte dans la copie : un choix qu'on crée, ou les réglages d'un bloc. */
+/**
+ * La fiche ouverte. Tout ce qui a des champs s'ouvre dans le panneau de droite, à la place
+ * de la consigne : le texte ne bouge pas. Les listes courtes — objets, formules — s'ouvrent
+ * au curseur, comme le menu des commandes.
+ */
 export type FicheOuverte =
   /** Création : la phrase prendra place après ce bloc, ou le remplacera s'il est vide */
   | { sorte: "creation"; apres: string | null; remplace: boolean }
   /** Une action de jeu à créer après ce bloc, ou les formules pour le texte d'une action qui existe */
   | { sorte: "action"; apres: string; remplace: boolean }
   | { sorte: "formules"; bloc: string }
-  /** Les objets de l'histoire, sous le bloc du curseur */
+  /** Les objets de l'histoire : la liste s'ouvre sous le bloc du curseur */
   | { sorte: "objets"; bloc: string }
-  /** Poser une image (F10) : sous le bloc du curseur. Régler une image en bloc, ou une image sur la ligne */
+  /** Poser une image (F10), après le bloc du curseur. Régler une image en bloc, ou une image sur la ligne */
   | { sorte: "poser-image"; bloc: string }
   | { sorte: "image"; bloc: string }
   | { sorte: "symbole"; bloc: string; symbole: string }
+  /** Régler une liaison cachée (F05.1) */
+  | { sorte: "liaison"; liaison: string }
+  /** Un nouvel objet, une nouvelle formule : ce qui se saisit s'ouvre dans le panneau */
+  | { sorte: "objet-nouveau"; nom: string }
+  | { sorte: "formule-nouvelle"; pour: { sorte: "action"; apres: string; remplace: boolean } | { sorte: "formules"; bloc: string } }
   | { sorte: "reglages"; bloc: string; confirmer?: "dernier-renvoi"; auClavier?: boolean };
 
 export type ContexteDeCopie = {
@@ -128,9 +137,8 @@ export type ContexteDeCopie = {
   /** Régler une image en bloc, ou une image sur la ligne : pour l'adulte seul (F10) */
   ouvrirImage: (bloc: string) => void;
   ouvrirSymbole: (symbole: string) => void;
+  ouvrirLiaison: (liaison: string) => void;
   fiche: FicheOuverte | null;
-  /** Place gardée sous un bloc pour la fiche qui s'y pose */
-  espace: { bloc: string; hauteur: number } | null;
   ouvrir: (bloc: string) => void;
   /** Le bloc qu'on tire par son repère, et l'endroit où il se poserait */
   tire: { bloc: string; avant: string | null } | null;
@@ -149,3 +157,7 @@ export function useCopie(): ContexteDeCopie {
 export const LIVRE_SANS_CHOIX: Livre = {
   aChoix: false, formule: "rends", constructions: ["neutre"], numeros: {}, scenes: [], ailleurs: {}, chapitres: [], fixes: {}, depart: null,
 };
+
+/** Les listes courtes, qui s'ouvrent au curseur ; toute autre fiche va dans le panneau. */
+export const estAuCurseur = (f: FicheOuverte): f is Extract<FicheOuverte, { sorte: "objets" | "action" | "formules" }> =>
+  f.sorte === "objets" || f.sorte === "action" || f.sorte === "formules";

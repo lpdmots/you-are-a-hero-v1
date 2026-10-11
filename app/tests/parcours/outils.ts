@@ -478,6 +478,8 @@ export async function liensEnBase(projetId: string): Promise<string[]> {
 
 export const BANDEAU = (page: Page): Locator => page.locator(".copie__message");
 export const FICHE = (page: Page): Locator => page.locator(".cx").first();
+/** Une liste courte ouverte au curseur, par-dessus le texte : les objets, les formules d'action. */
+export const LISTE = (page: Page) => page.locator(".pop");
 export const PHRASES = (page: Page): Locator => copie(page).locator(".phrase-choix");
 
 /** Attend que le pied de la copie dise « Enregistré », après le geste qui vient d'être fait. */
