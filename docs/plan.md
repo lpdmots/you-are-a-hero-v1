@@ -474,7 +474,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     existante » reprise sur ses trois décisions : scènes proposées d'après
     l'action en tête d'une seule liste, y compris quelques scènes d'autres
     chapitres avec leur repère, filtre sur tout le livre, bouton des
-    chapitres (F05-AC56).
+    chapitres (F05-AC56). Enfin, sur décision du porteur après discussion,
+    les réglages d'un choix sont repris : la phrase s'écrit dans le panneau
+    et non plus dans le texte, où toute phrase de choix devient un bloc ;
+    plus de « Personnaliser », une flèche ronde pour l'automatique ; les
+    destinations en liste, avec un « + » et un ordre qui se change
+    (F05-AC22, AC23, AC25, AC45 révisés, AC46 retiré, AC57) ; pas d'image
+    sur la ligne dans une phrase de choix pour cette livraison (F10) ; le
+    titre d'une scène sans sa référence près d'un choix. Dix-huit parcours
+    réécrits. Reste à part : la même passe sur la référence dans le reste
+    de l'outil.
     La revue continue écran par écran ; les précisions des six lots restent
     à lui présenter.
   - **V19 :** les versions de Plate et de Slate sont figées dans

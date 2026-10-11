@@ -1409,6 +1409,30 @@ règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-
   la liste défilant jusqu'à elle (formules, objets, scènes d'un choix) ;
   rien ne défile quand c'est la souris qui surligne.
 
+- **Les réglages d'un choix, repris sur décision du porteur** (F05.2 ;
+  F05-AC22, AC23, AC25, AC57). Sa capture montrait un nom de scène coupé sur
+  quatre lignes entre un numéro et deux boutons, et une phrase qu'il fallait
+  aller lire à gauche. Le panneau porte maintenant trois rubriques :
+  - « Ce que fait le lecteur », le libellé ; un « i » dit à quoi il sert
+    encore quand la phrase est modifiée.
+  - « Destination » ou « Destinations », avec un « + » rond à droite
+    (« Ajouter une destination » au survol). Chaque destination est une
+    ligne : son numéro et son titre, sans référence, puis « Changer… »
+    dessous, et « Retirer » à partir de deux. À partir de deux aussi, le
+    repère de prise habituel, pour l'ordre. Survoler une destination fait
+    ressortir son numéro dans la phrase.
+  - « La phrase », un « i », la mention « modifiée » quand elle l'est, et à
+    droite une flèche ronde. La phrase s'écrit dans un cadre, dans la voix
+    du récit, ses numéros en pastilles qui ne s'effacent pas au clavier ;
+    les flèches passent d'un côté à l'autre d'un numéro.
+  - Au pied : « Cacher ce choix (énigme) » en lien discret, « Supprimer ce
+    choix ».
+  Après la création d'un choix, le panneau ne se referme plus : il passe à
+  ces réglages. Dans le texte, la phrase est un bloc qu'on clique ; le
+  bouton « Régler ce choix » et le cadre d'écriture qu'elle portait
+  disparaissent. Le repère à côté d'elle donne le titre de la scène, sans
+  référence.
+
 **Avis donné au porteur, qui demandait si la destination ne devrait pas
 venir avant la phrase :** non. Le libellé est ce que l'auteur a en tête en
 finissant sa scène, il sert de titre à une scène qui n'existe pas encore,
@@ -1418,12 +1442,15 @@ et le titre d'une scène existante (« Le pont ») ne donne pas une phrase
 **À confirmer par le porteur :** la destination demandée seulement après
 le libellé ; les quatre signes retenus (crayon, dé, sac, cœur) et leurs
 phrases au survol ; les deux petits titres de la liste et le signe du
-cahier pour les chapitres ; cinq scènes proposées au plus ; « Décider plus
+cahier pour les chapitres ; cinq scènes proposées au plus ; dans les
+réglages d'un choix, le numéro ajouté à la fin de la phrase, la flèche ronde
+grisée avec plusieurs destinations, le titre « scène, sans titre » précédé
+de la référence quand la scène n'en a pas ; « Décider plus
 tard » qui crée sans avertir avant ; le texte des deux bulles ; le numéro
 laissé à « … » dans la phrase en attente tant que le choix n'est pas créé ;
 sur un écran étroit, où le panneau monte du bas, la phrase en attente peut
-se trouver dessous. Les réglages d'un choix existant gardent leur forme :
-ils n'ont pas été repris.
+se trouver dessous. La passe sur la référence des scènes dans le reste de
+l'outil (messages, scènes voisines, chemins, plan) n'est pas faite.
 
 ### Étape 2 construite (10 octobre 2026)
 

@@ -314,6 +314,14 @@ export function Copie({
     reprendreLeTexte();
   };
 
+  /** Une scène créée depuis un choix : la copie la connaît aussitôt, sans attendre que la page relise le livre. */
+  const connaitre = (creee: SceneCreee) => {
+    const chapitre = livre.chapitres.find((c) => c.id === creee.chapitreId);
+    apprendre({
+      scene: { id: creee.id, reference: creee.reference, titre: creee.titre, chapitreId: creee.chapitreId, chapitre: chapitre?.titre ?? "", partie: chapitre?.partie ?? "", vide: true },
+    });
+  };
+
   // ——— Créer un choix (F05-AC13 à AC18) ———
   const ouvrirCreation = (apres?: string) => {
     const blocs = blocsDe(e);
@@ -333,14 +341,12 @@ export function Copie({
       if (fiche.remplace) e.tf.removeNodes({ at: [i] });
     });
     e.tf.allerA(fiche.remplace ? i : i + 1);
-    setFiche(null);
+    // Le choix créé, le panneau reste ouvert sur ses réglages : sa destination, sa phrase
+    setFiche({ sorte: "reglages", bloc: choix.id });
     reprendreLeTexte();
     if (creee) {
       creation.current = { choix: choix.id, scene: creee };
-      const chapitre = livre.chapitres.find((c) => c.id === creee.chapitreId);
-      apprendre({
-        scene: { id: creee.id, reference: creee.reference, titre: creee.titre, chapitreId: creee.chapitreId, chapitre: chapitre?.titre ?? "", partie: chapitre?.partie ?? "", vide: true },
-      });
+      connaitre(creee);
     }
     setBandeau({
       texte: creee
@@ -366,30 +372,48 @@ export function Copie({
       regler: (valeurs) => e.tf.setNodes(valeurs, { at: [i] }),
       reglerRenvoi: (renvoi, valeurs) => {
         const k = (bloc.children as unknown[]).findIndex((x) => estRenvoi(x) && x.id === renvoi);
-        if (k !== -1) e.tf.setNodes(valeurs, { at: [i, k] });
+        // La phrase est un bloc fermé : on y entre exprès
+        if (k !== -1) e.tf.setNodes(valeurs, { at: [i, k], voids: true });
       },
-      personnaliser: () => {
-        remplacer(enPersonnalisee(bloc, livre.formule));
-        e.tf.select(e.api.end([i]));
-        reprendreLeTexte();
+      // La phrase s'écrit dans le panneau : le texte autour de ses numéros, qui restent à leur place
+      ecrire: (textes) => {
+        const perso = enPersonnalisee(bloc, livre.formule);
+        const puces = (perso.children as Choix["children"]).filter((x) => !("text" in x));
+        const children = [...puces.flatMap((puce, k) => [{ text: textes[k] ?? "" }, puce]), { text: textes[puces.length] ?? "" }];
+        remplacer({ ...perso, children } as Choix);
       },
+      // La flèche ronde : une autre tournure pour la phrase automatique ; sinon, le retour à l'automatique
       automatiser: () => {
+        const utiles = constructionsUtiles(livre.formule, livre.constructions);
+        if (estAuto(bloc)) {
+          const autres = utiles.filter((u) => u !== bloc.construction);
+          if (autres.length) e.tf.setNodes({ construction: tirerConstruction(autres) }, { at: [i] });
+          return;
+        }
         const renvoi = seulRenvoi(bloc);
         if (!renvoi) return;
-        remplacer({ type: "choix", id: bloc.id, auto: true, libelle: bloc.libelle, construction: "neutre", cible: renvoi.cible, children: [{ text: "" }] });
-        e.tf.allerA(i);
-        setBandeau({ texte: "La phrase est de nouveau automatique.", annuler: true });
+        remplacer({ type: "choix", id: bloc.id, auto: true, libelle: bloc.libelle, construction: tirerConstruction(utiles), cible: renvoi.cible, children: [{ text: "" }] });
       },
-      insererRenvoi: ({ cible }) => {
-        const ici = e.selection?.anchor.path[0] === i ? e.selection : e.api.end([i]);
-        e.tf.insertNodes(nouveauRenvoi(cible), { at: ici });
-        reprendreLeTexte();
+      // Une destination de plus : son numéro s'ajoute à la fin de la phrase, qui s'écrit dès lors à la main
+      ajouterDestination: ({ cible, creee }) => {
+        const perso = enPersonnalisee(bloc, livre.formule);
+        const enfants = perso.children as Choix["children"];
+        const dernier = enfants[enfants.length - 1];
+        const fin = "text" in dernier ? dernier.text : "";
+        const children = [...enfants.slice(0, "text" in dernier ? -1 : undefined), { text: fin && !/\s$/.test(fin) ? `${fin} ` : fin }, nouveauRenvoi(cible), { text: "" }];
+        remplacer({ ...perso, children } as Choix);
+        if (creee) connaitre(creee);
       },
       retirerRenvoi: (renvoi) => {
         const k = (bloc.children as unknown[]).findIndex((x) => estRenvoi(x) && x.id === renvoi);
         if (k === -1) return;
-        e.tf.removeNodes({ at: [i, k] });
+        e.tf.removeNodes({ at: [i, k], voids: true });
         signaler({ sorte: "supprime", choix: 0, renvois: 1 });
+      },
+      // Les numéros de la phrase restent à leur place et prennent les destinations dans le nouvel ordre
+      ordonner: (cibles) => {
+        const places = (bloc.children as unknown[]).flatMap((x, k) => (estRenvoi(x) ? [k] : []));
+        e.tf.withoutNormalizing(() => places.forEach((k, n) => e.tf.setNodes({ cible: cibles[n] ?? null }, { at: [i, k], voids: true })));
       },
       supprimer: () => {
         e.tf.supprimerBlocs([bloc.id]);
@@ -1153,11 +1177,11 @@ export function Copie({
               <FicheNouvelleFormule services={services} onApercu={setFormuleVue} onCree={poserAction} onFermer={fermer} />
             ) : dansLePanneau.sorte === "reglages" && blocRegle ? (
               <FicheReglagesChoix
-                key={`${blocRegle.id}-${estAuto(blocRegle)}`}
+                // La même fiche quand la phrase, modifiée, cesse d'être automatique : on y est en train d'écrire
+                key={blocRegle.id}
                 bloc={blocRegle}
                 services={services}
                 gestes={gestes(blocRegle)}
-                confirmer={dansLePanneau.confirmer}
                 auClavier={dansLePanneau.auClavier}
                 onFermer={fermer}
               />

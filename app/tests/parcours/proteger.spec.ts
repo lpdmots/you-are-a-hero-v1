@@ -244,7 +244,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     await expect(BANDEAU(page)).toContainText(`Le choix est caché : c’est maintenant un lien caché, hors du récit. S003 « La souche » garde le n° ${numero}.`);
     await expect(HORS_RECIT(page)).toContainText("Hors du récit · jamais imprimé");
     await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText("Lien caché");
-    await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText("S003 La souche");
+    await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText("La souche");
     await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText(`n° ${numero} fixé`);
     await attendreEnregistre(page);
     expect(await typesEnBase(a.scenes[0])).toEqual(["p", "liaison"]);
@@ -263,7 +263,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     // « Annuler » : le lien caché revient, la phrase repart
     await BANDEAU(page).getByRole("button", { name: "Annuler" }).click();
     await expect(PHRASES(page)).toHaveCount(0);
-    await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText("S003 La souche");
+    await expect(HORS_RECIT(page).locator(".lien-cache")).toContainText("La souche");
     await attendreEnregistre(page);
     expect(await liensCaches(a.projet)).toEqual([{ cache: true }]);
   });
@@ -281,7 +281,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     await expect(FICHE(page).getByRole("button", { name: "Décider plus tard" })).toHaveCount(0);
     await FICHE(page).getByLabel("Chercher une scène").fill("souche");
     await FICHE(page).getByLabel("Chercher une scène").press("Enter");
-    await expect(FICHE(page)).toContainText(/S003 La souche porte le n° \d+\. Il sera fixé/);
+    await expect(FICHE(page)).toContainText(/La souche porte le n° \d+\. Il sera fixé/);
     await FICHE(page).getByLabel("Ou le numéro que donne votre énigme").fill("38");
     await FICHE(page).getByRole("button", { name: "Créer avec ce numéro" }).click();
     await expect(FICHE(page).getByRole("alert")).toContainText("Le n° 38 est déjà celui de S004 « Le pont ».");

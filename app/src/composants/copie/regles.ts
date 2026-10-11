@@ -47,11 +47,11 @@ export type Regles = {
 export const blocsDe = (e: Editeur): Bloc[] => e.children as Bloc[];
 
 /**
- * Un bloc fermé : pris comme un tout, le curseur n'y entre pas. C'est la phrase de choix
- * automatique, et tout bloc réservé à l'adulte pour cette personne — phrase préparée,
- * paragraphe protégé (F06.1).
+ * Un bloc fermé : pris comme un tout, le curseur n'y entre pas. C'est toute phrase de choix
+ * — elle s'écrit dans le panneau, depuis le 11 octobre 2026 —, l'image en bloc, et tout bloc
+ * réservé à l'adulte pour cette personne : paragraphe protégé, action préparée (F06.1).
  */
-export const estFerme = (bloc: Bloc | undefined, droits: Droits): boolean => !!bloc && (estAuto(bloc) || bloc.type === "image" || estReserve(bloc, droits));
+export const estFerme = (bloc: Bloc | undefined, droits: Droits): boolean => !!bloc && (bloc.type === "choix" || bloc.type === "image" || estReserve(bloc, droits));
 
 /** La personne peut-elle modifier, déplacer ou supprimer ce bloc ? */
 export const peutModifier = (bloc: Bloc, droits: Droits): boolean => !estReserve(bloc, droits);

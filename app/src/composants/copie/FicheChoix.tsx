@@ -1,9 +1,13 @@
 "use client";
 
-import { Fragment, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { closestCenter, DndContext, type DragEndEvent } from "@dnd-kit/core";
+import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+import { Fragment, useEffect, useId, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { Icone, type NomIcone } from "@/composants/Icone";
-import { estAuto, estRenvoi, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Renvoi } from "@/domaine/copie";
+import { Prise, useCapteurs } from "@/composants/Tirer";
+import { estAuto, estRenvoi, morceauxDe, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Morceau, type Renvoi } from "@/domaine/copie";
 import { constructionsUtiles, phraseDeChoix } from "@/domaine/preparation";
 import { scenesProposees } from "@/domaine/proposer";
 import { referenceScene } from "@/domaine/recit";
@@ -23,11 +27,14 @@ export const LIBELLE_EXEMPLE = "Traverser le pont";
 type Issue = "existante" | "nouvelle";
 export type Destination = { cible: string | null; creee?: SceneCreee };
 
-/** Le nom d'une scène tel que la personne le lit : « S018 Clairière » pour l'adulte, « Clairière » pour l'élève. */
+/**
+ * Le nom d'une destination tel qu'on le lit près d'un choix : le titre de la scène, sans sa
+ * référence, que personne ne retient (décidé le 11 octobre 2026). Sans titre, la référence
+ * sert de nom à l'adulte.
+ */
 export function nomDeDestination(s: SceneConnue | undefined, pourEleve: boolean): string {
   if (!s) return "";
-  if (pourEleve) return s.titre ?? "scène sans titre";
-  return `${referenceScene(s.reference)}${s.titre ? ` ${s.titre}` : ""}`;
+  return s.titre ?? (pourEleve ? "scène sans titre" : `${referenceScene(s.reference)}, sans titre`);
 }
 
 /** Combien de scènes le libellé fait remonter au plus, dont combien d'un autre chapitre. */
@@ -213,9 +220,8 @@ export function ChoisirDestination({
                 ) : null}
                 <li role="option" aria-selected={s.id === choisie?.id}>
                   <button type="button" tabIndex={-1} className={s.id === choisie?.id ? "est-choisie" : undefined} onClick={() => { setSurligne(i); valider({ cible: s.id }); }} onMouseEnter={() => setSurligne(i)}>
-                    <span className="fiche__ref">{referenceScene(s.reference)}</span>
                     <span className="cx-liste__titre">
-                      {s.titre ?? <span className="sans-consigne">sans titre</span>}
+                      {s.titre ?? <span className="sans-consigne">{adulte ? `${referenceScene(s.reference)}, sans titre` : "sans titre"}</span>}
                       {s.id === actuelle ? <small> · destination actuelle</small> : null}
                       {extraits[s.id] && mots.length ? <small className="cx-liste__extrait">{extraits[s.id]}</small> : null}
                       {/* Hors du chapitre : une flèche qui sort, et le nom du chapitre */}
@@ -523,33 +529,209 @@ export type GestesDeChoix = {
   /** Change des propriétés du bloc, en un seul geste annulable */
   regler: (valeurs: Record<string, unknown>) => void;
   reglerRenvoi: (renvoi: string, valeurs: Record<string, unknown>) => void;
-  personnaliser: () => void;
+  /** Écrire la phrase : le texte autour de ses numéros. Une phrase automatique devient une phrase modifiée */
+  ecrire: (textes: string[]) => void;
+  /** La flèche ronde : une autre tournure pour une phrase automatique ; pour une phrase modifiée, le retour à l'automatique */
   automatiser: () => void;
-  insererRenvoi: (destination: Destination) => void;
+  /** Une destination de plus : son numéro s'ajoute à la fin de la phrase */
+  ajouterDestination: (destination: Destination) => void;
   retirerRenvoi: (renvoi: string) => void;
+  /** Les destinations dans un nouvel ordre : les numéros de la phrase, de gauche à droite, les prennent une à une */
+  ordonner: (cibles: (string | null)[]) => void;
   supprimer: () => void;
   /** « Cacher ce choix (énigme) » : la phrase part, le lien reste, le numéro est fixé. Adulte seul (F05-AC26) */
   cacher?: () => void;
 };
 
-/** Les réglages d'un choix existant : libellé, destination, forme de la phrase, suppression. */
-export function FicheReglagesChoix({
-  bloc, services, gestes, confirmer, auClavier, onFermer,
+/** Le texte d'un champ où l'on écrit : sans retour à la ligne ni espace insécable posée par le navigateur. */
+const lu = (el: Element): string => (el.textContent ?? "").replace(/[\n\r ]/g, " ");
+
+/**
+ * La phrase d'un choix, écrite dans le panneau (F05.2, 11 octobre 2026) : du texte autour de
+ * ses numéros, qui sont d'un seul bloc et ne s'effacent pas d'ici — une destination se retire
+ * dans la liste. Ce qu'on tape se lit aussitôt dans le texte de la scène.
+ */
+function ChampDePhrase({
+  bloc, survol, lecture, onEcrire,
+}: { bloc: Choix; survol: string | null; lecture?: boolean; onEcrire: (textes: string[]) => void }) {
+  const { livre } = useCopie();
+  const boite = useRef<HTMLDivElement>(null);
+  // Le texte, puis un numéro, puis le texte… : toujours un texte de plus que de numéros
+  const { textes, puces } = useMemo(() => {
+    const t: string[] = [""];
+    const p: Exclude<Morceau, { texte: string }>[] = [];
+    for (const m of morceauxDe(bloc, livre.formule)) {
+      if ("texte" in m) t[t.length - 1] += m.texte;
+      else {
+        p.push(m);
+        t.push("");
+      }
+    }
+    return { textes: t, puces: p };
+  }, [bloc, livre.formule]);
+  const champs = (): HTMLElement[] => [...(boite.current?.querySelectorAll<HTMLElement>("[data-texte]") ?? [])];
+
+  // Le texte ne se réécrit à l'écran que s'il a changé ailleurs : le curseur de qui tape ne bouge pas
+  useLayoutEffect(() => {
+    champs().forEach((c, k) => {
+      if (lu(c) !== (textes[k] ?? "")) c.textContent = textes[k] ?? "";
+    });
+  });
+
+  const poser = (champ: HTMLElement | undefined, fin: boolean) => {
+    if (!champ) return;
+    champ.focus();
+    const selection = window.getSelection();
+    const plage = document.createRange();
+    plage.selectNodeContents(champ);
+    plage.collapse(!fin);
+    selection?.removeAllRanges();
+    selection?.addRange(plage);
+  };
+  const dire = () => {
+    const suite = champs().map(lu);
+    if (suite.some((t, k) => t !== textes[k])) onEcrire(suite);
+  };
+
+  return (
+    <div
+      className={`cx-phrase${lecture ? " cx-phrase--lue" : ""}`}
+      ref={boite}
+      role="group"
+      aria-label="La phrase"
+      lang="fr"
+      // Un clic à côté du texte pose le curseur à la fin de la phrase
+      onMouseDown={(ev) => {
+        if (ev.target !== ev.currentTarget || lecture) return;
+        ev.preventDefault();
+        const tous = champs();
+        poser(tous[tous.length - 1], true);
+      }}
+    >
+      {textes.map((_, k) => (
+        <Fragment key={k}>
+          <span
+            data-texte={k}
+            className="cx-phrase__texte recit"
+            role="textbox"
+            aria-label={textes.length > 1 ? `La phrase, partie ${k + 1} sur ${textes.length}` : "La phrase"}
+            contentEditable={!lecture}
+            suppressContentEditableWarning
+            spellCheck
+            onInput={dire}
+            onKeyDown={(ev) => {
+              const selection = window.getSelection();
+              const tous = champs();
+              const debut = !!selection && selection.isCollapsed && selection.anchorOffset === 0 && (selection.anchorNode === ev.currentTarget || selection.anchorNode === ev.currentTarget.firstChild);
+              const longueur = lu(ev.currentTarget).length;
+              const bout = !!selection && selection.isCollapsed && (longueur === 0 || (selection.anchorNode !== ev.currentTarget && selection.anchorOffset === (selection.anchorNode?.textContent ?? "").length && selection.anchorNode === ev.currentTarget.lastChild));
+              // Une seule ligne ; ni gras ni italique dans une phrase de choix
+              if (ev.key === "Enter" || ((ev.metaKey || ev.ctrlKey) && ["b", "i", "u"].includes(ev.key.toLowerCase()))) return ev.preventDefault();
+              // Les flèches passent d'un texte à l'autre par-dessus le numéro, qui ne s'efface pas d'ici
+              if ((ev.key === "ArrowLeft" || ev.key === "Backspace") && debut && (longueur === 0 || selection?.anchorOffset === 0) && k > 0) {
+                ev.preventDefault();
+                poser(tous[k - 1], true);
+              } else if ((ev.key === "ArrowRight" || ev.key === "Delete") && bout && k < tous.length - 1) {
+                ev.preventDefault();
+                poser(tous[k + 1], false);
+              }
+            }}
+            onPaste={(ev) => {
+              // Du texte simple, sur une ligne
+              ev.preventDefault();
+              const colle = ev.clipboardData.getData("text/plain").replace(/\s+/g, " ");
+              const selection = window.getSelection();
+              if (!colle || !selection?.rangeCount) return;
+              selection.deleteFromDocument();
+              selection.getRangeAt(0).insertNode(document.createTextNode(colle));
+              selection.collapseToEnd();
+              ev.currentTarget.normalize();
+              dire();
+            }}
+            onDrop={(ev) => ev.preventDefault()}
+          />
+          {k < puces.length ? (
+            "image" in puces[k] ? (
+              // eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir
+              <img className="symbole" src={`/images/${(puces[k] as { image: string }).image}?v=1`} alt={(puces[k] as { alt?: string }).alt ?? ""} draggable={false} />
+            ) : (
+              <NumeroDePhrase renvoi={puces[k] as { renvoi: string; cible: string | null }} survole={survol === (puces[k] as { renvoi: string }).renvoi} />
+            )
+          ) : null}
+        </Fragment>
+      ))}
+    </div>
+  );
+}
+
+function NumeroDePhrase({ renvoi, survole }: { renvoi: { renvoi: string; cible: string | null }; survole: boolean }) {
+  const { livre } = useCopie();
+  const n = renvoi.cible ? livre.numeros[renvoi.cible] : undefined;
+  return (
+    <span className={`renvoi-copie${n ? "" : " renvoi-copie--vide"}${survole ? " est-survole" : ""}`} contentEditable={false} aria-label={n ? `numéro ${n}` : "numéro à venir"} role="img">
+      {n ?? null}
+    </span>
+  );
+}
+
+/** Une destination dans la liste : son numéro, son nom sur une ligne, ses commandes dessous. */
+function LigneDeDestination({
+  renvoi, plusieurs, nom, ouverte, onSurvol, onChanger, onRetirer,
 }: {
-  bloc: Choix; services: Services; gestes: GestesDeChoix; confirmer?: "dernier-renvoi";
+  renvoi: { id: string; cible: string | null }; plusieurs: boolean; nom: ReactNode; ouverte: boolean;
+  onSurvol: (id: string | null) => void; onChanger: () => void; onRetirer: () => void;
+}) {
+  const { livre } = useCopie();
+  const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({ id: renvoi.id, disabled: !plusieurs });
+  return (
+    <li
+      ref={setNodeRef}
+      className={`cx-dest${isDragging ? " est-tiree" : ""}`}
+      style={{ transform: CSS.Translate.toString(transform), transition }}
+      onMouseEnter={() => onSurvol(renvoi.id)}
+      onMouseLeave={() => onSurvol(null)}
+    >
+      {plusieurs ? <Prise nom="cette destination" ref={setActivatorNodeRef} {...attributes} {...listeners} /> : null}
+      <span className="cx-dest__n">{renvoi.cible && livre.numeros[renvoi.cible] ? `n° ${livre.numeros[renvoi.cible]}` : "n° …"}</span>
+      <span className="cx-dest__nom">{nom}</span>
+      <span className="cx-dest__cmd">
+        <button type="button" className="btn btn--petit" aria-expanded={ouverte} onClick={onChanger}>
+          {renvoi.cible ? "Changer…" : "Choisir…"}
+        </button>
+        {plusieurs ? (
+          <button type="button" className="btn btn--petit" onClick={onRetirer}>
+            Retirer
+          </button>
+        ) : null}
+      </span>
+    </li>
+  );
+}
+
+/**
+ * Les réglages d'un choix : ce que fait le lecteur, ses destinations, sa phrase. Tout se lit
+ * et s'écrit ici ; la phrase du texte suit.
+ */
+export function FicheReglagesChoix({
+  bloc, services, gestes, auClavier, onFermer,
+}: {
+  bloc: Choix; services: Services; gestes: GestesDeChoix;
   /** Ouverte au clavier : elle prend le curseur, pour se régler et se refermer sans souris (F05-AC39) */
   auClavier?: boolean;
   onFermer: () => void;
 }) {
   const { livre, pourEleve } = useCopie();
+  const idLibelle = useId();
   const auto = estAuto(bloc);
   const renvois = renvoisDe(bloc);
+  const plusieurs = renvois.length > 1;
   const [libelle, setLibelle] = useState(bloc.libelle);
-  // « Changer… » : la destination d'un renvoi, ou un renvoi de plus à insérer
-  const [change, setChange] = useState<string | "nouveau" | null>(null);
-  const [aConfirmer, setAConfirmer] = useState<"dernier-renvoi" | "automatique" | null>(confirmer ?? null);
+  // « Changer… » : la destination d'un renvoi ; « + » : une destination de plus
+  const [change, setChange] = useState<string | "nouvelle" | null>(null);
+  const [survol, setSurvol] = useState<string | null>(null);
   const utiles = constructionsUtiles(livre.formule, livre.constructions);
   const champ = useRef<HTMLInputElement>(null);
+  const capteurs = useCapteurs();
   useEffect(() => {
     if (auClavier) champ.current?.focus();
   }, [auClavier]);
@@ -561,14 +743,21 @@ export function FicheReglagesChoix({
         Sans destination
       </span>
     ) : scene(cible) ? (
-      <b>{nomDeDestination(scene(cible), pourEleve)}</b>
+      nomDeDestination(scene(cible), pourEleve)
     ) : (
-      <b>autre chapitre{livre.ailleurs[cible] ? ` · ${livre.ailleurs[cible]}` : ""}</b>
+      `autre chapitre${livre.ailleurs[cible] ? ` · ${livre.ailleurs[cible]}` : ""}`
     );
   const validerLibelle = () => {
     const propre = libelle.trim();
     if (propre && propre !== bloc.libelle) gestes.regler({ libelle: propre });
     else setLibelle(bloc.libelle);
+  };
+  // La flèche ronde : une autre tournure, ou le retour à l'automatique ; rien à faire avec plusieurs destinations
+  const refaire = auto ? (utiles.length > 1 ? "Autre tournure" : null) : plusieurs ? null : "Remettre la phrase automatique";
+  const deplacer = ({ active, over }: DragEndEvent) => {
+    const [de, vers] = [renvois.findIndex((r) => r.id === active.id), renvois.findIndex((r) => r.id === over?.id)];
+    if (de === -1 || vers === -1 || de === vers) return;
+    gestes.ordonner(arrayMove(renvois, de, vers).map((r) => r.cible));
   };
 
   return (
@@ -578,21 +767,29 @@ export function FicheReglagesChoix({
       pied={
         <>
           {gestes.cacher && renvois.length === 1 && renvois[0].cible ? (
-            <button type="button" className="btn btn--petit" onClick={gestes.cacher}>
+            <button type="button" className="lien cx-discret" onClick={gestes.cacher}>
               <Icone nom="cle" />
               Cacher ce choix (énigme)
             </button>
           ) : null}
-          <button type="button" className="btn btn--danger cx__suppr" onClick={gestes.supprimer}>
+          <button type="button" className="btn btn--danger btn--petit cx__suppr" onClick={gestes.supprimer}>
             <Icone nom="corbeille" />
             Supprimer ce choix
           </button>
         </>
       }
     >
-      <label className="champ champ--plein">
-        <span>Ce que fait le lecteur{auto ? "" : <em> · sert aux chemins et à la recherche</em>}</span>
+      <div className="champ champ--plein">
+        <span className="cx-question">
+          <label htmlFor={idLibelle}>Ce que fait le lecteur</label>
+          {auto ? null : (
+            <Bulle question="À quoi sert ce libellé ?">
+              La phrase est modifiée : elle ne le reprend plus. Il sert à nommer ce choix dans les chemins et dans la recherche.
+            </Bulle>
+          )}
+        </span>
         <input
+          id={idLibelle}
           ref={champ}
           className="pchamp"
           type="text"
@@ -607,57 +804,55 @@ export function FicheReglagesChoix({
             validerLibelle();
           }}
         />
-      </label>
+      </div>
 
-      {aConfirmer === "dernier-renvoi" ? (
-        <div className="cx-note cx-note--avert" role="alert">
-          <Icone nom="alerte" />
-          <div>
-            <p>C’est le dernier renvoi de cette phrase : sans renvoi, il n’y a plus de choix. Supprimer la phrase entière ?</p>
-            <p className="cx__cmd">
-              <button type="button" className="btn btn--danger" onClick={gestes.supprimer}>
-                Supprimer la phrase
-              </button>
-              <button type="button" className="btn" onClick={() => setAConfirmer(null)}>
-                Garder la phrase
-              </button>
-            </p>
-          </div>
-        </div>
-      ) : null}
-
-      <div className="cx-renvois">
-        <p className="cx-titre">{renvois.length > 1 ? "Destinations" : "Destination"}</p>
-        <ul>
-          {renvois.map((r) => (
-            <li key={r.id}>
-              <span className="cx-renvois__n">{r.cible && livre.numeros[r.cible] ? `n° ${livre.numeros[r.cible]}` : "n° …"}</span>
-              <span className="cx-renvois__ou">{nommer(r.cible)}</span>
-              <button type="button" className="btn btn--petit" aria-expanded={change === r.id} onClick={() => setChange(change === r.id ? null : r.id)}>
-                Changer…
-              </button>
-              {auto ? null : (
-                <button
-                  type="button"
-                  className="btn btn--petit"
-                  onClick={() => (renvois.length === 1 ? setAConfirmer("dernier-renvoi") : gestes.retirerRenvoi(r.id))}
-                >
-                  Retirer ce renvoi
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-        {change && change !== "nouveau" ? (
+      <div className="cx-dests">
+        <p className="cx-titre cx-entete">
+          {plusieurs ? "Destinations" : "Destination"}
+          <button
+            type="button"
+            className="cx-rond"
+            aria-label="Ajouter une destination"
+            title="Ajouter une destination"
+            aria-expanded={change === "nouvelle"}
+            onClick={() => setChange(change === "nouvelle" ? null : "nouvelle")}
+          >
+            <Icone nom="plus" />
+          </button>
+        </p>
+        <DndContext sensors={capteurs} collisionDetection={closestCenter} onDragEnd={deplacer}>
+          <SortableContext items={renvois.map((r) => r.id)} strategy={verticalListSortingStrategy}>
+            <ul>
+              {renvois.map((r) => (
+                <LigneDeDestination
+                  key={r.id}
+                  renvoi={r}
+                  plusieurs={plusieurs}
+                  nom={nommer(r.cible)}
+                  ouverte={change === r.id}
+                  onSurvol={setSurvol}
+                  onChanger={() => setChange(change === r.id ? null : r.id)}
+                  onRetirer={() => {
+                    setChange(null);
+                    gestes.retirerRenvoi(r.id);
+                  }}
+                />
+              ))}
+            </ul>
+          </SortableContext>
+        </DndContext>
+        {change ? (
           <ChoisirDestination
+            key={change}
             libelle={bloc.libelle}
             services={services}
             focus
-            actuelle={renvois.find((r) => r.id === change)?.cible}
-            creer="Créer la scène et y mener"
-            valider={({ cible }) => {
-              if (auto) gestes.regler({ cible });
-              else gestes.reglerRenvoi(change, { cible });
+            actuelle={change === "nouvelle" ? undefined : renvois.find((r) => r.id === change)?.cible}
+            creer={change === "nouvelle" ? "Créer la scène et l’ajouter" : "Créer la scène et y mener"}
+            valider={(destination) => {
+              if (change === "nouvelle") gestes.ajouterDestination(destination);
+              else if (auto) gestes.regler({ cible: destination.cible });
+              else gestes.reglerRenvoi(change, { cible: destination.cible });
               setChange(null);
             }}
           />
@@ -665,80 +860,20 @@ export function FicheReglagesChoix({
       </div>
 
       <div className="cx-forme">
-        <p className="cx-titre">Phrase</p>
-        {auto ? (
-          <p className="cx__cmd">
-            <span className="cx-aide">Elle s’écrit toute seule, avec la façon d’annoncer un numéro choisie pour le livre.</span>
-            {utiles.length > 1 ? (
-              <button
-                type="button"
-                className="btn btn--petit"
-                onClick={() => {
-                  const autres = utiles.filter((u) => u !== bloc.construction);
-                  gestes.regler({ construction: tirerConstruction(autres.length ? autres : utiles) });
-                }}
-              >
-                Régénérer
-              </button>
-            ) : null}
-            <button type="button" className="btn btn--petit" onClick={gestes.personnaliser}>
-              Personnaliser
-            </button>
-          </p>
-        ) : (
-          <>
-            <p className="cx-aide">
-              {pourEleve ? "Tu écris" : "Vous écrivez"} la phrase dans le texte, autour de {renvois.length > 1 ? "ses numéros" : "son numéro"}. La formule du livre ne s’y applique plus.
-            </p>
-            <p className="cx__cmd">
-              <button type="button" className="btn btn--petit" aria-expanded={change === "nouveau"} onClick={() => setChange(change === "nouveau" ? null : "nouveau")}>
-                Insérer un renvoi à l’endroit du curseur
-              </button>
-              {renvois.length === 1 ? (
-                <button type="button" className="btn btn--petit" onClick={() => setAConfirmer("automatique")}>
-                  Revenir à la phrase automatique
-                </button>
-              ) : null}
-            </p>
-            {change === "nouveau" ? (
-              <ChoisirDestination
-                libelle={bloc.libelle}
-                services={services}
-                focus
-                creer="Créer la scène et insérer le renvoi"
-                valider={(destination) => {
-                  gestes.insererRenvoi(destination);
-                  setChange(null);
-                }}
-              />
-            ) : null}
-            {aConfirmer === "automatique" ? (
-              <div className="cx-note cx-note--avert" role="alert">
-                <Icone nom="alerte" />
-                <div>
-                  <p>
-                    Le texte écrit à la main sera remplacé par « {phraseDeChoix(bloc.libelle || "…", "…", livre.formule, "neutre")} ».
-                  </p>
-                  <p className="cx__cmd">
-                    <button
-                      type="button"
-                      className="btn"
-                      onClick={() => {
-                        gestes.automatiser();
-                        setAConfirmer(null);
-                      }}
-                    >
-                      Revenir à la phrase automatique
-                    </button>
-                    <button type="button" className="btn" onClick={() => setAConfirmer(null)}>
-                      Garder mon texte
-                    </button>
-                  </p>
-                </div>
-              </div>
-            ) : null}
-          </>
-        )}
+        <p className="cx-titre cx-entete">
+          <span className="cx-question">
+            La phrase
+            <Bulle question="Comment s’écrit la phrase ?">
+              Elle s’écrit toute seule, d’après ce que fait le lecteur et la façon d’annoncer un numéro choisie pour le livre.{" "}
+              {pourEleve ? "Tu peux" : "Vous pouvez"} la modifier ici : elle ne suivra plus la formule du livre. La flèche ronde la remet en automatique.
+            </Bulle>
+            {auto ? null : <span className="cx-etat">modifiée</span>}
+          </span>
+          <button type="button" className="cx-rond" disabled={!refaire} aria-label={refaire ?? "Phrase automatique"} title={refaire ?? (plusieurs ? "Avec plusieurs destinations, la phrase s’écrit à la main" : undefined)} onClick={gestes.automatiser}>
+            <Icone nom="refaire" />
+          </button>
+        </p>
+        <ChampDePhrase bloc={bloc} survol={survol} onEcrire={gestes.ecrire} />
       </div>
     </Cadre>
   );

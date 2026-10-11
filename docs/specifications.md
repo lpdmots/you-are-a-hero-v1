@@ -2079,8 +2079,8 @@ justifié. Le coût réel et la qualité restent à mesurer ultérieurement.
 
 - **F05-AC01 — Destinations distinctes :** étant donné deux choix « Faire demi-tour » menant respectivement à la cour
   et au carrefour, lorsque l'adulte choisit la destination, alors il distingue
-  les passages par leur partie, chapitre, référence, titre et
-  aperçu, sans appel IA.
+  les passages par leur chapitre, leur titre et leur aperçu, sans appel IA
+  (la référence n'y figure plus depuis le 11 octobre 2026, voir F05.2).
 - **F05-AC02 — Renommage sans rupture :** étant donné une scène renommée, lorsque ses choix entrants sont suivis,
   alors ils conduisent toujours à cette même scène, sans duplication.
 - **F05-AC03 — Recherche autorisée :** étant donné un élève sans accès au chapitre du dénouement et la lecture ouverte de F06.2 désactivée, lorsqu'il cherche
@@ -2216,7 +2216,9 @@ choix seulement.
   Une phrase mêlant récit et renvoi dans un même paragraphe n'est pas possible
   dans la première livraison.
 - **Commande :** `/choix` dans le texte ou le bouton « Choix » visible ouvrent
-  la même saisie, libellé puis destination, sans quitter la scène ; depuis le
+  la même saisie, libellé puis destination, sans quitter la scène ; le choix
+  est créé dès la destination retenue, et le panneau reste ouvert sur ses
+  réglages, où sa phrase se lit (11 octobre 2026) ; depuis le
   11 octobre 2026, dans le panneau à droite du texte
   ([où s'ouvrent les réglages](#f05-panneau)). Le même jour, le porteur juge
   cette saisie trop chargée : elle ne demande d'abord que le libellé, et la
@@ -2296,25 +2298,52 @@ choix seulement.
   sans quitter la scène : libellé, destination, forme de la phrase,
   suppression. Depuis le 11 octobre 2026, dans le panneau à droite du texte
   ([où s'ouvrent les réglages](#f05-panneau)). Les droits sont ceux de F06.1.
-- **Phrase automatique :** son texte ne se saisit pas directement. Corriger le
-  libellé ou changer la destination dans le panneau recompose la phrase.
-  Changer la destination propose les trois issues de la création.
-- **Régénérer :** tire de nouveau une construction parmi celles cochées dans
-  les réglages du projet. La commande n'est pas proposée lorsqu'une seule
-  construction est cochée.
-- **Personnaliser :** le texte de la phrase devient libre ; chaque renvoi reste
-  un élément insécable. La formule du livre ne s'applique plus à cette phrase ;
-  le libellé est conservé pour le graphe et la recherche.
-- **Revenir à la phrase automatique :** possible seulement pour une phrase à un
-  seul renvoi. Le texte écrit à la main est remplacé après avertissement ;
-  l'action est annulable.
-- **Second renvoi :** dans une phrase personnalisée, « Insérer un renvoi »
-  ajoute un renvoi à l'endroit du curseur, avec sa destination et un libellé
-  facultatif.
-- **Retirer un renvoi :** le lien correspondant disparaît du récit et du
-  graphe ; le texte qui l'entourait reste, à réécrire par l'auteur.
-- **Pas de phrase de choix sans renvoi :** retirer le dernier renvoi revient à
-  supprimer la phrase entière, après confirmation.
+- **La phrase s'écrit dans le panneau (révisé par le porteur le 11 octobre
+  2026) :** à l'essai, régler à droite et écrire à gauche ne lui convient
+  pas : on ne pense pas à regarder le texte. La phrase se lit et s'écrit
+  donc dans les réglages du choix, sous ses destinations ; dans le texte de
+  la scène, toute phrase de choix est un bloc pris comme un tout, qu'on
+  active pour le régler et qui suit ce qu'on tape à droite. Remplace
+  l'écriture sur place d'une phrase personnalisée, décidée le 1er octobre
+  et éprouvée par le prototype.
+- **Phrase automatique, phrase modifiée :** la phrase est d'abord
+  automatique ; corriger le libellé ou changer la destination la recompose.
+  La modifier dans le panneau suffit à la détacher de la formule du livre,
+  sans commande « Personnaliser » : elle porte alors la mention
+  « modifiée », et le libellé ne sert plus qu'au graphe et à la recherche.
+  Chaque numéro reste d'un seul bloc : on écrit autour, il ne s'efface pas
+  au clavier.
+- **Une flèche ronde, deux gestes :** sur une phrase automatique, elle tire
+  une autre construction parmi celles cochées dans les réglages du projet ;
+  sur une phrase modifiée à une destination, elle remet la phrase
+  automatique, sans avertissement ni message d'annulation (« on réécrit si
+  on s'est trompé »). Elle ne sert pas avec une seule construction cochée,
+  ni avec plusieurs destinations. Remplace « Régénérer » et « Revenir à la
+  phrase automatique ».
+- **Destinations :** elles sont listées par leur numéro et leur titre.
+  Changer une destination propose les issues de la création. Un « + »
+  ajoute une destination : son numéro se pose à la fin de la phrase, qui
+  s'écrit dès lors à la main. Remplace « Insérer un renvoi à l'endroit du
+  curseur ».
+- **Ordre des destinations (F05-AC57) :** à partir de deux, elles se
+  déplacent par leur repère de prise ; les numéros de la phrase restent à
+  leur place et prennent les destinations dans le nouvel ordre. Qui a choisi
+  ses destinations dans le mauvais ordre n'a pas à réécrire la phrase.
+  D'abord déconseillé, parce que l'échange ne se verrait pas ; retenu une
+  fois la phrase écrite sous la liste, où les numéros s'échangent à vue.
+  Écartés : une couleur par destination, chaque couleur ayant déjà un rôle ;
+  le déplacement des numéros dans la phrase.
+- **Retirer une destination :** proposé à partir de deux ; le lien
+  correspondant disparaît du récit et du graphe, le texte qui l'entourait
+  reste, à réécrire par l'auteur.
+- **Pas de phrase de choix sans renvoi :** la dernière destination ne se
+  retire pas ; on supprime le choix, ce que le message permet d'annuler.
+- **Le titre plutôt que la référence (11 octobre 2026) :** près d'un choix
+  — destinations, liste des scènes à choisir, repère à côté de la phrase,
+  lien caché —, une scène se nomme par son titre seul. Le porteur juge la
+  référence « S005 » peu utile, personne ne la retenant, et elle double le
+  numéro du livre. Elle reste le nom d'une scène sans titre. Les autres
+  écrans gardent la règle du 6 octobre en attendant une passe à part.
 - **Scène de destination conservée :** supprimer un renvoi ou une phrase ne
   supprime jamais la scène visée. Si elle devient inaccessible, les contrôles
   de F09.2 le signalent.
@@ -2347,24 +2376,34 @@ choix seulement.
 - **F05-AC21 — Destination changée :** étant donné ce choix vers S018,
   lorsque l'enseignante choisit S016 pour destination, alors la phrase affiche
   le numéro de S016, le graphe montre S015 → S016 et S018 n'est pas supprimée.
-- **F05-AC22 — Personnalisation explicite :** étant donné une phrase
-  automatique, lorsque l'auteur tente de taper dans son texte sans avoir
-  choisi « Personnaliser », alors la phrase reste inchangée ; après
-  « Personnaliser », il peut écrire « Si le chant t'attire, suis la lumière
-  au 21. », et un changement de formule du livre ne modifie plus cette phrase.
-- **F05-AC23 — Retour à l'automatique :** étant donné cette phrase
-  personnalisée à un renvoi, lorsque l'auteur confirme « Revenir à la phrase
-  automatique », alors elle est recomposée depuis le libellé ; annuler rétablit
-  le texte personnalisé. Pour la phrase à deux renvois de S051, ce retour
-  n'est pas proposé.
-- **F05-AC24 — Renvoi retiré :** étant donné la phrase de S051 vers S053 et
-  S055, lorsque l'enseignante retire le renvoi vers S055, alors le lien
-  S051 → S055 disparaît du graphe, S055 existe toujours et le renvoi vers S053
-  est intact.
-- **F05-AC25 — Dernier renvoi :** étant donné une phrase à un seul renvoi,
-  lorsque l'auteur retire ce renvoi et confirme, alors la phrase entière est
-  supprimée ; lorsqu'il annule l'opération, alors la phrase, son renvoi et son
-  lien sont rétablis.
+- **F05-AC22 — Phrase écrite dans le panneau (révisé le 11 octobre 2026) :**
+  étant donné une phrase automatique, lorsque l'auteur tente de taper dans
+  son texte, dans la scène, alors la phrase reste inchangée ; lorsqu'il
+  écrit « Si le chant t'attire : » au début de la phrase, dans le panneau,
+  alors elle porte la mention « modifiée », le texte de la scène la montre
+  aussitôt, et un changement de formule du livre ne modifie plus cette
+  phrase. Le critère portait sur « Personnaliser ».
+- **F05-AC23 — Retour à l'automatique (révisé le 11 octobre 2026) :** étant
+  donné cette phrase modifiée à une destination, lorsque l'auteur actionne
+  la flèche ronde, alors elle est recomposée depuis le libellé, sans
+  avertissement. Pour la phrase à deux destinations de S051, la flèche ne
+  sert pas.
+- **F05-AC24 — Destination retirée :** étant donné la phrase de S051 vers
+  S053 et S055, lorsque l'enseignante retire la destination S055, alors le
+  lien S051 → S055 disparaît du graphe, S055 existe toujours et le renvoi
+  vers S053 est intact.
+- **F05-AC25 — Dernière destination (révisé le 11 octobre 2026) :** étant
+  donné une phrase à une seule destination, alors rien ne propose de la
+  retirer ; lorsque l'auteur supprime le choix, alors la phrase entière est
+  supprimée ; lorsqu'il annule l'opération, alors la phrase, son renvoi et
+  son lien sont rétablis.
+- **F05-AC57 — Destination ajoutée, ordre changé :** étant donné la phrase
+  modifiée « Si tu as la clé d'argent, ouvre la porte au 2 ; sinon,
+  déchiffre les symboles au », lorsque l'enseignante ajoute par « + » la
+  destination « La souche », n° 3, alors le 3 se pose à la fin de la phrase
+  et elle écrit le point après lui ; lorsqu'elle tire « La souche »
+  au-dessus de « Clairière », alors la phrase devient « …ouvre la porte au
+  3 ; sinon, déchiffre les symboles au 2. », sans autre réécriture.
 - **F05-AC26 — Choix caché puis proposé :** étant donné le choix « Déchiffrer
   les symboles » de S055 vers S062, qui porte le n° 38, lorsque l'enseignante
   utilise « Cacher ce choix (énigme) », alors la phrase disparaît du texte, la
@@ -2427,9 +2466,9 @@ choix seulement.
 **Décisions confirmées le 1er octobre 2026 — robustesse du texte :**
 
 - **Bloc entier :** dans une sélection, une phrase de choix est prise en
-  entier ou pas du tout ; elle ne peut pas être supprimée à moitié. Le texte
-  d'une phrase personnalisée reste modifiable par qui en a le droit, chaque
-  renvoi demeurant insécable.
+  entier ou pas du tout ; elle ne peut pas être supprimée à moitié. Depuis le
+  11 octobre 2026, c'est aussi le cas du curseur : il se pose sur la phrase,
+  jamais dedans, et son texte s'écrit dans le panneau.
 - **Suppression par une personne autorisée :** une suppression qui contient une
   phrase de choix l'emporte avec ses liens, sans confirmation préalable ; un
   message le signale et propose d'annuler.
@@ -2497,36 +2536,28 @@ confirmer par le prototype :** arbitrés à l'entretien de l'étape 3 du
   profil « écriture et organisation » a le même bouton pour une scène qu'il
   vient de créer (F06-AC86). Lier l'annulation du texte à la corbeille est
   écarté : un seul geste explicite suffit.
-- **Morceau de phrase de choix collé dans un paragraphe de récit :** s'il
-  contient un renvoi, il devient une nouvelle phrase de choix personnalisée,
-  dans son propre paragraphe, sous celui du curseur ; le bandeau dit
-  « 1 choix copié » ou « 1 choix déplacé ». Sans le droit requis, il est
-  écarté avec le message du collage sans droit. Un morceau sans renvoi est
-  du texte ordinaire.
-- **Sélection qui couvre tous les renvois d'une phrase personnalisée :** la
-  supprimer supprime la phrase entière, sans confirmation préalable, avec le
-  message et « Annuler », comme toute suppression qui contient une phrase de
-  choix. La confirmation reste réservée à « Retirer ce renvoi » et au retour
-  arrière contre le dernier renvoi. Un renvoi qui n'est pas le dernier
-  s'efface au clavier, avec le même message : le rétablissement d'office
-  proposé par la maquette le 2 octobre est abandonné.
+- **Phrase de choix collée dans un paragraphe de récit :** copiée ou coupée,
+  elle part entière ; collée au milieu d'un paragraphe, elle forme une
+  phrase de choix dans son propre paragraphe, sous celui du curseur ; le
+  bandeau dit « 1 choix copié » ou « 1 choix déplacé ». Sans le droit
+  requis, elle est écartée avec le message du collage sans droit. Jusqu'au
+  11 octobre 2026, un morceau de phrase personnalisée se copiait aussi.
+- **Sans objet depuis le 11 octobre 2026 :** la sélection qui couvrait tous
+  les renvois d'une phrase personnalisée, le retour arrière contre son
+  dernier renvoi et la confirmation qui l'accompagnait. La phrase étant un
+  bloc dans le texte, ces gestes n'existent plus ; F05-AC46 est retiré.
 
 - **F05-AC44 — Nouvelle scène, choix annulé :** étant donné le choix
   « Traverser le pont de brume » créé à l'instant avec la nouvelle scène
   S064, lorsque l'auteur annule, alors la phrase disparaît, S064 est
   toujours dans le chapitre et le bandeau propose « Supprimer aussi la
   scène » ; ce bouton l'envoie à la corbeille du projet.
-- **F05-AC45 — Morceau collé dans le récit :** étant donné « suis la lumière
-  au 21 » copié dans une phrase personnalisée, lorsque l'enseignante le
-  colle au milieu de « Lou fit un pas, puis un autre. », alors ce
-  paragraphe reste entier et sans renvoi, et une phrase de choix « suis la
-  lumière au 21 » forme un paragraphe juste en dessous, vers la même
+- **F05-AC45 — Phrase collée dans le récit (révisé le 11 octobre 2026) :**
+  étant donné la phrase « Si le chant t'attire, suis la lumière au 21. »
+  copiée, lorsque l'enseignante la colle au milieu de « Lou fit un pas, puis
+  un autre. », alors ce paragraphe reste entier et sans renvoi, et la même
+  phrase de choix forme un paragraphe juste en dessous, vers la même
   destination.
-- **F05-AC46 — Tous les renvois sélectionnés :** étant donné la phrase de
-  S051 vers S053 et S055, lorsque l'enseignante sélectionne d'un renvoi à
-  l'autre et supprime, alors la phrase entière disparaît avec ses deux
-  liens, le bandeau dit « 1 choix supprimé » et l'annulation rétablit le
-  tout.
 
 **Variantes confirmées le 1er octobre 2026 :**
 
@@ -2606,8 +2637,8 @@ recommandation, qu'il retient, sépare deux cas.
   ([design](design.md#menus-qui-tiennent-dans-la-fenêtre-11-octobre-2026)).
 - **Fermeture :** la croix, Échap, ou le fait de se remettre à écrire dans
   le texte. Déplacer un bloc ne referme pas le panneau, pour qu'on puisse
-  replacer un choix ou une image en continuant de le régler ; écrire dans la
-  phrase personnalisée qu'on règle non plus.
+  replacer un choix ou une image en continuant de le régler ; écrire la
+  phrase d'un choix, qui se fait dans le panneau, non plus.
 - **Écran étroit :** sans colonne de droite, le panneau monte du bas de
   l'écran, par-dessus le texte.
 - **Alternatives écartées :** la fiche dans le texte, pour les raisons
@@ -5721,6 +5752,14 @@ Retour d'usage : cette possibilité lui a manqué dans ses livres.
   ligne a la hauteur du texte, sans réglage de taille ; une image plus grande
   se place en bloc. Usages cités par le porteur : accompagner un objet obtenu,
   montrer un symbole à repérer dans une énigme.
+- **Révisé par le porteur le 11 octobre 2026 — pas dans une phrase de
+  choix, pour cette livraison :** la phrase s'écrivant désormais dans le
+  panneau ([F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène)), y
+  poser un symbole demanderait une commande de plus ; le porteur y renonce
+  (« on laisse tomber pour cette livraison »). L'image en ligne se pose dans
+  un paragraphe de récit ou une action de jeu. Une phrase qui en portait
+  déjà une la garde, dans le texte, le panneau et le livre ; la règle
+  ci-dessous reste celle de ces phrases.
 - **Décision confirmée le 3 octobre 2026 — paragraphes admis :** l'image en
   ligne est admise dans les paragraphes de récit, dans l'action de jeu et
   dans une phrase de choix personnalisée (« Si tu choisis la porte ☾,
@@ -5810,7 +5849,10 @@ Ces règles valent pour les quatre combinaisons de modes.
   phrase personnalisée « Si tu choisis la porte ☾, rends-toi au [B] », où ☾
   est une image en ligne, lorsque le livre est composé puis partagé, alors le
   symbole figure dans la phrase, dans le PDF comme dans le lecteur en ligne,
-  et le graphe désigne ce choix par son libellé, sans image.
+  et le graphe désigne ce choix par son libellé, sans image. Depuis le
+  11 octobre 2026, une telle phrase ne se crée plus : le critère vaut pour
+  celles qui existent, et « Sur la ligne » n'est pas proposé quand le
+  curseur est sur une phrase de choix.
 
 **Décisions confirmées le 10 octobre 2026 — poser une image dans la
 scène :** arbitré à l'entretien de l'étape 3 du

@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { Signes } from "@/composants/Signes";
 import {
-  estAuto, estImageLigne, estReserve, estVide, morceauxDe, renvoisDe, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
+  estImageLigne, estReserve, estVide, morceauxDe, renvoisDe, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
   type Note, type Paragraphe as ParagrapheDeRecit, type Renvoi, type Texte,
 } from "@/domaine/copie";
 import { phraseDeChoix, type FormuleRenvoi } from "@/domaine/preparation";
@@ -420,23 +420,25 @@ export function NoteDeLEnseignant(props: PlateElementProps) {
   );
 }
 
+/**
+ * Phrase de choix : un bloc pris comme un tout, automatique ou modifiée. On l'active pour la
+ * régler dans le panneau, où sa phrase s'écrit ; elle se lit ici telle que le livre l'imprimera.
+ */
 export function PhraseDeChoix(props: PlateElementProps) {
   const bloc = props.element as unknown as Choix;
   const { c, attributs, pose, attente } = useBloc(bloc.id);
   const selectionne = useSelected();
   const reserve = estReserve(bloc, c.droits);
-  const ferme = estAuto(bloc) || reserve;
   const ouvert = c.fiche?.sorte === "reglages" && c.fiche.bloc === bloc.id;
   const tire = c.tire?.bloc === bloc.id;
   return (
     <PlateElement
       {...props}
       as="div"
-      className={`phrase-choix${ouvert ? " est-ouvert" : ""}${selectionne && ferme ? " est-choisi" : ""}${reserve ? " est-prepare" : ""}${tire ? " est-tire" : ""}${pose}`}
-     
-      attributes={{ ...props.attributes, ...attributs, ...(ferme ? { "data-ferme": "" } : {}) } as never}
+      className={`phrase-choix${ouvert ? " est-ouvert" : ""}${selectionne ? " est-choisi" : ""}${reserve ? " est-prepare" : ""}${tire ? " est-tire" : ""}${pose}`}
+      attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
     >
-      {ferme ? <Plus bloc={bloc.id} /> : null}
+      <Plus bloc={bloc.id} />
       <span className="marge" contentEditable={false}>
         {reserve ? (
           <Icone nom="cadenas" />
@@ -453,29 +455,17 @@ export function PhraseDeChoix(props: PlateElementProps) {
           </button>
         )}
       </span>
-      {ferme ? (
-        <span
-          className="phrase-choix__corps"
-          contentEditable={false}
-          role={reserve ? undefined : "button"}
-          aria-label={reserve ? undefined : "Régler ce choix"}
-          onClick={reserve ? undefined : () => c.ouvrir(bloc.id)}
-        >
-          <Phrase bloc={bloc} livre={c.livre} formule={c.livre.formule} />
-          <Destinations bloc={bloc} livre={c.livre} pourEleve={c.pourEleve} />
-        </span>
-      ) : null}
-      {ferme ? (
-        props.children
-      ) : (
-        <span className="phrase-choix__corps phrase-choix__corps--libre">
-          <span className="recit phrase-choix__texte">{props.children}</span>
-          <Destinations bloc={bloc} livre={c.livre} pourEleve={c.pourEleve} />
-          <button type="button" className="phrase-choix__regler" contentEditable={false} onClick={() => c.ouvrir(bloc.id)}>
-            Régler ce choix
-          </button>
-        </span>
-      )}
+      <span
+        className="phrase-choix__corps"
+        contentEditable={false}
+        role={reserve ? undefined : "button"}
+        aria-label={reserve ? undefined : "Régler ce choix"}
+        onClick={reserve ? undefined : () => c.ouvrir(bloc.id)}
+      >
+        <Phrase bloc={bloc} livre={c.livre} formule={c.livre.formule} />
+        <Destinations bloc={bloc} livre={c.livre} pourEleve={c.pourEleve} />
+      </span>
+      {props.children}
       {reserve ? (
         <span className="repere-prepare" contentEditable={false}>
           Choix préparé : tu écris autour

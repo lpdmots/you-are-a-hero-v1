@@ -2,7 +2,7 @@ import { expect, test, type Locator, type Page } from "@playwright/test";
 import {
   adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, choixAuto, choixPerso, classeQuiEcrit, collerDepuisAilleurs, copie,
   ecrire, enClair, FICHE, liensEnBase, MESSAGE, motsEnBase, numerosEnBase, PHRASES, pied, posteDe, presseTexte, recit, renvoi, sceneEnBase, selectionner,
-  semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, typesEnBase, type BlocSeme,
+  semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, tirer, typesEnBase, type BlocSeme,
 } from "./outils";
 
 /**
@@ -47,6 +47,25 @@ const lue = (phrase: Locator): Promise<string> => phrase.evaluate((n) => (n.text
 /** Les scènes que la fiche propose pour destination. */
 const PROPOSEES = (page: Page): Locator => FICHE(page).locator(".cx-liste > li[role=option]");
 
+/** La phrase telle qu'elle s'écrit dans le panneau : ses textes, autour de ses numéros. */
+const TEXTES = (page: Page): Locator => FICHE(page).locator(".cx-phrase [data-texte]");
+/** Les destinations d'un choix, dans ses réglages. */
+const DESTINATIONS = (page: Page): Locator => FICHE(page).locator(".cx-dest");
+
+/** Écrit dans la phrase du panneau : au début ou à la fin de l'un de ses textes. */
+async function ecrireDansLaPhrase(page: Page, texte: number, mots: string, ou: "début" | "fin"): Promise<void> {
+  await TEXTES(page).nth(texte).evaluate((champ: HTMLElement, fin: boolean) => {
+    champ.focus();
+    const plage = document.createRange();
+    plage.selectNodeContents(champ);
+    plage.collapse(!fin);
+    const selection = window.getSelection();
+    selection?.removeAllRanges();
+    selection?.addRange(plage);
+  }, ou === "fin");
+  if (mots) await page.keyboard.type(mots);
+}
+
 /** Saisit un choix dans la fiche ouverte : le libellé, puis une scène cherchée par son titre. */
 async function saisirChoix(page: Page, libelle: string, destination: string): Promise<void> {
   await FICHE(page).getByLabel("Ce que fait le lecteur").fill(libelle);
@@ -78,7 +97,7 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     // Le numéro est celui du livre, établi dès ce premier choix ; il n'est écrit nulle part dans le texte
     const numeros = await numerosEnBase(l.projet);
     await expect(PHRASES(page)).toContainText(`Continuer vers la lumière : rends-toi au ${numeros[l.lisiere.scenes[1]]}.`);
-    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("S002 Clairière");
+    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Clairière");
     expect(JSON.stringify(enBase.texte[1])).not.toContain("rends-toi");
     expect((await sql<{ o: boolean }>("select ordre_etabli_le is not null as o from projets where id = $1", [l.projet]))[0].o).toBe(true);
   });
@@ -163,25 +182,25 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     const groupes = FICHE(page).locator(".cx-liste__groupe");
     // Sans mot commun : les scènes du chapitre, dans l'ordre du plan, sans repère
     await libelle.fill("Continuer vers la lumière");
-    await expect(PROPOSEES(page)).toHaveText([/S002\s*Clairière/, /S003\s*La souche/, /S004\s*Le pont/]);
+    await expect(PROPOSEES(page)).toHaveText([/^Clairière/, /^La souche/, /^Le pont(?!on)/]);
     await expect(groupes).toHaveCount(0);
     // « Traverser le pont » fait remonter « Le pont », surlignée : Entrée la retiendrait
     await libelle.fill("Traverser le pont");
-    await expect(PROPOSEES(page)).toHaveText([/S004\s*Le pont/, /S002\s*Clairière/, /S003\s*La souche/]);
+    await expect(PROPOSEES(page)).toHaveText([/^Le pont(?!on)/, /^Clairière/, /^La souche/]);
     await expect(groupes).toHaveText(["Proposées d’après l’action", "Ce chapitre"]);
     await expect(PROPOSEES(page).first()).toHaveAttribute("aria-selected", "true");
     // Une scène d'un autre chapitre remonte aussi, avec son repère
     await libelle.fill("Sauter sur le ponton");
-    await expect(PROPOSEES(page)).toHaveText([/S005\s*Le ponton/, /S002\s*Clairière/, /S003\s*La souche/, /S004\s*Le pont/]);
+    await expect(PROPOSEES(page)).toHaveText([/^Le ponton/, /^Clairière/, /^La souche/, /^Le pont(?!on)/]);
     await expect(PROPOSEES(page).first().locator(".cx-liste__ailleurs")).toHaveText("Le marais");
     await expect(PROPOSEES(page).nth(1).locator(".cx-liste__ailleurs")).toHaveCount(0);
     // Le bouton des chapitres ouvre « Le marais » : ses scènes seules
     await FICHE(page).getByLabel("Chapitre").selectOption({ label: "Le marais" });
-    await expect(PROPOSEES(page)).toHaveText([/S005\s*Le ponton/]);
+    await expect(PROPOSEES(page)).toHaveText([/^Le ponton/]);
     await expect(groupes).toHaveText(["Le marais"]);
     // Le filtre cherche dans tout le livre, sans proposition
     await FICHE(page).getByLabel("Chercher une scène").fill("souche");
-    await expect(PROPOSEES(page)).toHaveText([/S003\s*La souche/]);
+    await expect(PROPOSEES(page)).toHaveText([/^La souche/]);
     await expect(groupes).toHaveCount(0);
     await FICHE(page).getByLabel("Chercher une scène").press("Enter");
     await attendreEnregistre(page);
@@ -231,7 +250,7 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     const [creee] = await sql<{ id: string; titre: string; chapitre_id: string; texte_vide: boolean }>("select id, titre, chapitre_id, texte_vide from scenes where projet_id = $1 and reference = 6", [l.projet]);
     expect(creee).toMatchObject({ titre: "Traverser le pont de brume", chapitre_id: l.lisiere.id, texte_vide: true });
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S006"]);
-    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("S006 Traverser le pont de brume");
+    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Traverser le pont de brume");
     // Le titre et le libellé vivent ensuite chacun leur vie
     await sql("update scenes set titre = 'Pont — la brume' where id = $1", [creee.id]);
     expect(((await sceneEnBase(l.lisiere.scenes[0])).texte[2] as { libelle?: string }).libelle).toBe("Traverser le pont de brume");
@@ -260,9 +279,10 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     expect(await liensEnBase(l.projet)).toEqual(["S001 > ?"]);
     expect((await sql("select 1 from scenes where projet_id = $1", [l.projet])).length).toBe(5);
 
-    await PHRASES(page).locator(".phrase-choix__corps").click();
+    // Le panneau est resté ouvert sur les réglages du choix créé
+    await expect(FICHE(page).getByRole("heading", { name: "Choix", exact: true })).toBeVisible();
     await expect(FICHE(page).getByLabel("Ce que fait le lecteur")).toHaveValue("Faire demi-tour");
-    await FICHE(page).getByRole("button", { name: "Changer…" }).click();
+    await FICHE(page).getByRole("button", { name: "Choisir…" }).click();
     await FICHE(page).getByLabel("Chercher une scène").fill("pont");
     await FICHE(page).getByLabel("Chercher une scène").press("Enter");
     await attendreEnregistre(page);
@@ -316,7 +336,7 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     expect(await typesEnBase(l.lisiere.scenes[0])).toEqual(["p", "p", "choix"]);
   });
 
-  test("F05-AC01 — deux destinations au même titre se distinguent par leur chapitre, leur référence et le passage trouvé ; la recherche lit aussi les textes", async ({ page }) => {
+  test("F05-AC01 — deux destinations au même titre se distinguent par leur chapitre et le passage trouvé ; la recherche lit aussi les textes", async ({ page }) => {
     const l = await auteur(page);
     await sql("update scenes set titre = 'Faire demi-tour' where id = any($1::uuid[])", [[l.lisiere.scenes[2], l.marais.scenes[0]]]);
     await semerBlocs(l.base, l.lisiere.scenes[2], [recit("Lou revient vers la cour, devant la porte condamnée.")]);
@@ -327,9 +347,9 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     await FICHE(page).getByLabel("Chercher une scène").fill("demi-tour");
     const options = PROPOSEES(page);
     await expect(options).toHaveCount(2);
-    await expect(options.nth(0)).toContainText("S003");
-    await expect(options.nth(1)).toContainText("S005");
-    await expect(options.nth(1)).toContainText("Le marais");
+    // Même titre : seule celle d'un autre chapitre porte le repère de son chapitre
+    await expect(options.nth(0).locator(".cx-liste__ailleurs")).toHaveCount(0);
+    await expect(options.nth(1).locator(".cx-liste__ailleurs")).toHaveText("Le marais");
     // Par le texte : seul le carrefour
     await FICHE(page).getByLabel("Chercher une scène").fill("carrefour");
     await expect(options).toHaveCount(1);
@@ -337,7 +357,7 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     await FICHE(page).getByLabel("Chercher une scène").press("Enter");
     await attendreEnregistre(page);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S005"]);
-    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("S005 Faire demi-tour");
+    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Faire demi-tour");
   });
 });
 
@@ -367,11 +387,11 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
     const numeros = await numerosEnBase(l.projet);
     await expect(PHRASES(page)).toContainText(`Suivre la lumière : rends-toi au ${numeros[l.lisiere.scenes[2]]}.`);
-    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("S003 La souche");
+    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("La souche");
     expect((await sql("select 1 from scenes where id = $1 and supprime_le is null", [l.lisiere.scenes[1]])).length).toBe(1);
   });
 
-  test("F05-AC10, AC22 — rien ne se tape dans une phrase automatique ; après « Personnaliser », le texte est libre, et un changement de formule du livre ne change plus que les phrases automatiques", async ({ page }) => {
+  test("F05-AC10, AC22 — rien ne se tape dans une phrase de choix, dans le texte ; elle s'écrit dans le panneau, où la modifier la détache de la formule du livre : un changement de formule ne change plus que les phrases automatiques", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [choixAuto("Continuer vers la lumière", l.lisiere.scenes[1]), choixAuto("Faire demi-tour", l.lisiere.scenes[2])]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
@@ -381,18 +401,21 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     expect((await blocsEditeur(page))[0]).toMatchObject({ auto: true, libelle: "Continuer vers la lumière" });
     await expect(PHRASES(page).nth(0)).toContainText("Continuer vers la lumière : rends-toi au");
 
+    // Dans le panneau, la phrase automatique se lit et se modifie, autour de son numéro
     await PHRASES(page).nth(0).locator(".phrase-choix__corps").click();
-    await FICHE(page).getByRole("button", { name: "Personnaliser" }).click();
-    // Le texte de la phrase est maintenant saisissable sur place, son numéro d'un seul bloc
-    await selectionner(page, { bloc: 0, offset: 0 });
-    await page.keyboard.type("Si le chant t’attire : ");
+    await expect(TEXTES(page)).toHaveText(["Continuer vers la lumière : rends-toi au ", "."]);
+    await expect(FICHE(page).locator(".cx-etat")).toHaveCount(0);
+    await ecrireDansLaPhrase(page, 0, "Si le chant t’attire : ", "début");
+    await expect(FICHE(page).locator(".cx-etat")).toHaveText("modifiée");
+    // Ce qu'on tape se lit aussitôt dans le texte de la scène
+    await expect(PHRASES(page).nth(0)).toContainText("Si le chant t’attire : Continuer vers la lumière : rends-toi au");
     await attendreEnBase(l.lisiere.scenes[0], "Si le chant t’attire");
     const perso = (await sceneEnBase(l.lisiere.scenes[0])).texte[0];
     expect(perso).not.toHaveProperty("auto");
     expect(enClair([perso])).toEqual(["Si le chant t’attire : Continuer vers la lumière : rends-toi au ."]);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S003"]);
 
-    // Le livre passe à « va au » : la phrase automatique suit, la phrase personnalisée non
+    // Le livre passe à « va au » : la phrase automatique suit, la phrase modifiée non
     await sql("update preparations set formule_renvoi = 'va' where projet_id = $1", [l.projet]);
     await page.reload();
     await expect(PHRASES(page).nth(0)).toContainText("Si le chant t’attire : Continuer vers la lumière : rends-toi au");
@@ -401,7 +424,7 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     expect(JSON.stringify((await sceneEnBase(l.lisiere.scenes[0])).texte[1])).not.toMatch(/va au|rends-toi/);
   });
 
-  test("F05-AC23 — « Revenir à la phrase automatique » remplace le texte écrit à la main, après avertissement ; « Annuler » le rétablit ; la phrase à deux renvois ne le propose pas", async ({ page }) => {
+  test("F05-AC23 — la flèche ronde remet la phrase automatique, sans avertissement ; la phrase à deux destinations ne le propose pas", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [
       choixPerso("Suivre la lumière", ["Si le chant t’attire, suis la lumière au ", renvoi(l.lisiere.scenes[1]), "."]),
@@ -409,67 +432,79 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     ]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
     await PHRASES(page).nth(1).getByRole("button", { name: "Régler ce choix" }).click();
-    await expect(FICHE(page).getByRole("button", { name: "Revenir à la phrase automatique" })).toHaveCount(0);
+    await expect(FICHE(page).getByRole("button", { name: "Phrase automatique" })).toBeDisabled();
     await FICHE(page).getByRole("button", { name: "Fermer la fiche" }).click();
 
     await PHRASES(page).nth(0).getByRole("button", { name: "Régler ce choix" }).click();
-    await FICHE(page).getByRole("button", { name: "Revenir à la phrase automatique" }).click();
-    await expect(FICHE(page).getByRole("alert")).toContainText("Le texte écrit à la main sera remplacé par « Suivre la lumière : rends-toi au …. »");
-    await FICHE(page).getByRole("alert").getByRole("button", { name: "Revenir à la phrase automatique" }).click();
+    await expect(FICHE(page).locator(".cx-etat")).toHaveText("modifiée");
+    await FICHE(page).getByRole("button", { name: "Remettre la phrase automatique" }).click();
+    await expect(FICHE(page).getByRole("alert")).toHaveCount(0);
+    await expect(FICHE(page).locator(".cx-etat")).toHaveCount(0);
+    await expect(TEXTES(page)).toHaveText(["Suivre la lumière : rends-toi au ", "."]);
     await expect(PHRASES(page).nth(0)).toContainText("Suivre la lumière : rends-toi au");
     await attendreEnregistre(page);
     expect((await sceneEnBase(l.lisiere.scenes[0])).texte[0]).toMatchObject({ auto: true, libelle: "Suivre la lumière", cible: l.lisiere.scenes[1] });
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S003", "S001 > S004"]);
-
-    await BANDEAU(page).getByRole("button", { name: "Annuler" }).click();
-    await expect(PHRASES(page).nth(0)).toContainText("Si le chant t’attire, suis la lumière au");
-    await attendreEnregistre(page);
-    expect(enClair([(await sceneEnBase(l.lisiere.scenes[0])).texte[0]])).toEqual(["Si le chant t’attire, suis la lumière au ."]);
   });
 
-  test("F05-AC09, AC11 — un second renvoi s'insère au curseur d'une phrase personnalisée, avec sa destination ; « Régénérer » tire une autre construction, qui reste enregistrée", async ({ page }) => {
+  test("F05-AC09, AC57 — « + » ajoute une destination : son numéro se pose à la fin de la phrase, où l'on écrit autour ; tirer une destination au-dessus de l'autre échange les numéros de la phrase", async ({ page }) => {
     const l = await auteur(page);
-    await sql("update preparations set constructions = '{neutre,pour,si}' where projet_id = $1", [l.projet]);
-    await semerBlocs(l.base, l.lisiere.scenes[0], [
-      choixPerso("La porte", ["Si tu as la clé d’argent, ouvre la porte au ", renvoi(l.lisiere.scenes[1]), " ; sinon, déchiffre les symboles au ."]),
-      choixAuto("Suivre le chant", l.lisiere.scenes[3]),
-    ]);
+    await semerBlocs(l.base, l.lisiere.scenes[0], [choixPerso("La porte", ["Si tu as la clé d’argent, ouvre la porte au ", renvoi(l.lisiere.scenes[1]), " ; sinon, déchiffre les symboles au"])]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
-    await PHRASES(page).nth(0).getByRole("button", { name: "Régler ce choix" }).click();
-    // Le curseur juste avant le point final
-    await selectionner(page, { bloc: 0, enfant: 2, offset: 36 });
-    await FICHE(page).getByRole("button", { name: "Insérer un renvoi à l’endroit du curseur" }).click();
+    await PHRASES(page).getByRole("button", { name: "Régler ce choix" }).click();
+    await expect(DESTINATIONS(page)).toHaveCount(1);
+    await expect(DESTINATIONS(page).getByRole("button", { name: "Retirer" })).toHaveCount(0);
+    await FICHE(page).getByRole("button", { name: "Ajouter une destination" }).click();
     await FICHE(page).getByLabel("Chercher une scène").fill("souche");
     await FICHE(page).getByLabel("Chercher une scène").press("Enter");
+    await expect(DESTINATIONS(page)).toHaveCount(2);
+    await expect(DESTINATIONS(page).locator(".cx-dest__nom")).toHaveText(["Clairière", "La souche"]);
+    // Le numéro est à la fin de la phrase : on écrit le point après lui
+    await expect(TEXTES(page)).toHaveCount(3);
+    await ecrireDansLaPhrase(page, 2, ".", "fin");
     await attendreEnregistre(page);
-    expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S003", "S001 > S004"]);
+    expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S003"]);
     const numeros = await numerosEnBase(l.projet);
-    await expect.poll(() => lue(PHRASES(page).nth(0).locator(".recit"))).toBe(
+    await expect.poll(() => lue(PHRASES(page).locator(".recit"))).toBe(
       `Si tu as la clé d’argent, ouvre la porte au ${numeros[l.lisiere.scenes[1]]} ; sinon, déchiffre les symboles au ${numeros[l.lisiere.scenes[2]]}.`,
     );
 
-    // « Régénérer » : une autre construction que la première, gardée d'un enregistrement à l'autre
-    await FICHE(page).getByRole("button", { name: "Fermer la fiche" }).click();
-    await PHRASES(page).nth(1).locator(".phrase-choix__corps").click();
-    await FICHE(page).getByRole("button", { name: "Régénérer" }).click();
-    await expect(PHRASES(page).nth(1)).toContainText(/^(Pour suivre le chant, rends-toi au|Si tu veux suivre le chant, rends-toi au)/);
+    // F05-AC57 — l'ordre des destinations : la seconde tirée au-dessus de la première, les numéros s'échangent dans la phrase
+    await tirer(page, DESTINATIONS(page).nth(1).locator(".prise"), DESTINATIONS(page).nth(0));
+    await expect(DESTINATIONS(page).locator(".cx-dest__nom")).toHaveText(["La souche", "Clairière"]);
+    await expect.poll(() => lue(PHRASES(page).locator(".recit"))).toBe(
+      `Si tu as la clé d’argent, ouvre la porte au ${numeros[l.lisiere.scenes[2]]} ; sinon, déchiffre les symboles au ${numeros[l.lisiere.scenes[1]]}.`,
+    );
+    await attendreEnregistre(page);
+    const phrase = (await sceneEnBase(l.lisiere.scenes[0])).texte[0];
+    expect(phrase.children.filter((x) => (x as { type?: string }).type === "renvoi").map((x) => (x as { cible?: string }).cible)).toEqual([l.lisiere.scenes[2], l.lisiere.scenes[1]]);
+  });
+
+  test("F05-AC11 — la flèche ronde tire une autre tournure pour une phrase automatique, qui reste enregistrée ; avec une seule tournure cochée, elle ne sert pas", async ({ page }) => {
+    const l = await auteur(page);
+    await sql("update preparations set constructions = '{neutre,pour,si}' where projet_id = $1", [l.projet]);
+    await semerBlocs(l.base, l.lisiere.scenes[0], [recit("Lou écoute."), choixAuto("Suivre le chant", l.lisiere.scenes[3])]);
+    await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
+    await PHRASES(page).locator(".phrase-choix__corps").click();
+    await FICHE(page).getByRole("button", { name: "Autre tournure" }).click();
+    await expect(PHRASES(page)).toContainText(/^(Pour suivre le chant, rends-toi au|Si tu veux suivre le chant, rends-toi au)/);
     await attendreEnregistre(page);
     const construction = ((await sceneEnBase(l.lisiere.scenes[0])).texte[1] as { construction?: string }).construction;
     expect(["pour", "si"]).toContain(construction);
     // Décocher cette construction dans la préparation ne récrit pas la phrase
     await sql("update preparations set constructions = '{neutre}' where projet_id = $1", [l.projet]);
     await page.reload();
-    await expect(PHRASES(page).nth(1)).toContainText(construction === "pour" ? "Pour suivre le chant, rends-toi au" : "Si tu veux suivre le chant, rends-toi au");
-    await PHRASES(page).nth(1).locator(".phrase-choix__corps").click();
-    await expect(FICHE(page).getByRole("button", { name: "Régénérer" })).toHaveCount(0);
+    await expect(PHRASES(page)).toContainText(construction === "pour" ? "Pour suivre le chant, rends-toi au" : "Si tu veux suivre le chant, rends-toi au");
+    await PHRASES(page).locator(".phrase-choix__corps").click();
+    await expect(FICHE(page).getByRole("button", { name: "Phrase automatique" })).toBeDisabled();
   });
 
-  test("F05-AC24, AC25 — retirer un renvoi sur deux : son lien disparaît, l'autre reste ; retirer le dernier demande confirmation, supprime la phrase, et « Annuler » rétablit phrase, renvoi et lien", async ({ page }) => {
+  test("F05-AC24, AC25 — retirer une destination sur deux : son lien disparaît, l'autre reste ; avec une seule destination, rien ne la retire : on supprime le choix, et « Annuler » rétablit phrase, renvoi et lien", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [recit("Devant la porte."), choixPerso("La porte", ["Va au ", renvoi(l.lisiere.scenes[2]), " ou au ", renvoi(l.lisiere.scenes[3]), "."])]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
     await PHRASES(page).getByRole("button", { name: "Régler ce choix" }).click();
-    await FICHE(page).getByRole("button", { name: "Retirer ce renvoi" }).nth(1).click();
+    await DESTINATIONS(page).nth(1).getByRole("button", { name: "Retirer" }).click();
     await expect(BANDEAU(page)).toContainText("1 renvoi retiré.");
     await attendreEnregistre(page);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
@@ -477,10 +512,10 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     // Le texte qui entourait le renvoi reste, à réécrire
     expect(enClair([(await sceneEnBase(l.lisiere.scenes[0])).texte[1]])).toEqual(["Va au  ou au ."]);
 
-    await FICHE(page).getByRole("button", { name: "Retirer ce renvoi" }).click();
-    await expect(FICHE(page).getByRole("alert")).toContainText("C’est le dernier renvoi de cette phrase");
-    expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
-    await FICHE(page).getByRole("button", { name: "Supprimer la phrase" }).click();
+    // Une seule destination : pas de « Retirer », un choix sans destination n'en serait plus un
+    await expect(DESTINATIONS(page)).toHaveCount(1);
+    await expect(DESTINATIONS(page).getByRole("button", { name: "Retirer" })).toHaveCount(0);
+    await FICHE(page).getByRole("button", { name: "Supprimer ce choix" }).click();
     await expect(PHRASES(page)).toHaveCount(0);
     await expect(BANDEAU(page)).toContainText("1 choix supprimé.");
     await attendreEnregistre(page);
@@ -491,25 +526,27 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
   });
 
-  test("le renvoi est d'un seul bloc : on écrit autour, jamais dedans ; le retour arrière contre le dernier renvoi demande confirmation au lieu de l'effacer", async ({ page }) => {
+  test("le numéro est d'un seul bloc : dans le panneau on écrit autour, jamais dedans, et le retour arrière contre lui ne l'efface pas", async ({ page }) => {
     const l = await auteur(page);
     const r = renvoi(l.lisiere.scenes[1]);
     await semerBlocs(l.base, l.lisiere.scenes[0], [choixPerso("Suivre la lumière", ["Suis la lumière au ", r, "."])]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
-    await selectionner(page, { bloc: 0, enfant: 0, offset: 19 });
-    await page.keyboard.type("n° ");
-    await selectionner(page, { bloc: 0, enfant: 2, offset: 0 });
-    await page.keyboard.type(" exactement");
+    await PHRASES(page).getByRole("button", { name: "Régler ce choix" }).click();
+    await ecrireDansLaPhrase(page, 0, "n° ", "fin");
+    await ecrireDansLaPhrase(page, 1, " exactement", "début");
     await attendreEnBase(l.lisiere.scenes[0], "exactement");
-    const phrase = (await sceneEnBase(l.lisiere.scenes[0])).texte[0];
+    let phrase = (await sceneEnBase(l.lisiere.scenes[0])).texte[0];
     expect(enClair([phrase])).toEqual(["Suis la lumière au n°  exactement."]);
     expect(phrase.children[1]).toMatchObject({ type: "renvoi", id: r.id, cible: l.lisiere.scenes[1] });
 
-    await selectionner(page, { bloc: 0, enfant: 2, offset: 0 });
+    // Le retour arrière au début du second texte passe par-dessus le numéro et efface la fin du premier
+    await ecrireDansLaPhrase(page, 1, "", "début");
     await page.keyboard.press("Backspace");
-    await expect(FICHE(page).getByRole("alert")).toContainText("C’est le dernier renvoi de cette phrase");
-    expect((await blocsEditeur(page))[0].children).toHaveLength(3);
-    await FICHE(page).getByRole("button", { name: "Garder la phrase" }).click();
+    await page.keyboard.press("Backspace");
+    await attendreEnBase(l.lisiere.scenes[0], "au n°");
+    await expect.poll(async () => enClair([(await sceneEnBase(l.lisiere.scenes[0])).texte[0]])).toEqual(["Suis la lumière au n° exactement."]);
+    phrase = (await sceneEnBase(l.lisiere.scenes[0])).texte[0];
+    expect(phrase.children[1]).toMatchObject({ type: "renvoi", id: r.id, cible: l.lisiere.scenes[1] });
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002"]);
   });
 });
@@ -556,21 +593,6 @@ test.describe("Robustesse du texte (F05.2) — points 1, 5 et 6 du prototype", (
     await expect(PHRASES(page)).toHaveCount(2);
     await attendreEnregistre(page);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S003"]);
-  });
-
-  test("F05-AC46 — une sélection qui couvre tous les renvois d'une phrase personnalisée supprime la phrase entière, sans confirmation, avec le message et « Annuler »", async ({ page }) => {
-    const l = await auteur(page);
-    await semerBlocs(l.base, l.lisiere.scenes[0], [recit("Devant la porte."), choixPerso("La porte", ["Va au ", renvoi(l.lisiere.scenes[2]), " ou au ", renvoi(l.lisiere.scenes[3]), "."])]);
-    await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
-    await selectionner(page, { bloc: 1, enfant: 0, offset: 3 }, { bloc: 1, enfant: 4, offset: 0 });
-    await page.keyboard.press("Backspace");
-    await expect(PHRASES(page)).toHaveCount(0);
-    await expect(BANDEAU(page)).toContainText("1 choix supprimé.");
-    await attendreEnregistre(page);
-    expect(await liensEnBase(l.projet)).toEqual([]);
-    await BANDEAU(page).getByRole("button", { name: "Annuler" }).click();
-    await attendreEnregistre(page);
-    expect(await liensEnBase(l.projet)).toEqual(["S001 > S003", "S001 > S004"]);
   });
 
   test("fusion : le retour arrière au début d'un paragraphe et « Suppr. » à la fin du précédent ne mêlent jamais récit et phrase de choix", async ({ page }) => {
@@ -672,7 +694,7 @@ test.describe("Robustesse du texte (F05.2) — points 1, 5 et 6 du prototype", (
 });
 
 test.describe("Panneau des réglages, à droite du texte (F05.2)", () => {
-  test("F05-AC53 — les réglages d'un choix s'ouvrent à droite, à la place de la consigne, sans déplacer le texte ; écrire ailleurs referme le panneau ; déplacer la phrase, ou écrire dans la phrase qu'on règle, le laisse ouvert", async ({ page }) => {
+  test("F05-AC53 — les réglages d'un choix s'ouvrent à droite, à la place de la consigne, sans déplacer le texte ; écrire ailleurs referme le panneau ; déplacer la phrase, ou écrire sa phrase dans le panneau, le laisse ouvert", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [recit("Lou hésita."), choixAuto("Prendre à gauche", l.lisiere.scenes[1]), choixAuto("Prendre à droite", l.lisiere.scenes[2]), recit("Fin.")]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
@@ -711,11 +733,9 @@ test.describe("Panneau des réglages, à droite du texte (F05.2)", () => {
     await expect(consigne).toBeVisible();
     await attendreEnBase(l.lisiere.scenes[0], "Fin. Vraiment.");
 
-    // Une phrase personnalisée : on écrit dedans, panneau ouvert, sans le refermer
+    // La phrase s'écrit dans le panneau : le texte de la scène la suit, le panneau reste ouvert
     await PHRASES(page).nth(1).locator(".phrase-choix__corps").click();
-    await panneau.getByRole("button", { name: "Personnaliser", exact: true }).click();
-    await expect(copie(page)).toBeFocused();
-    await page.keyboard.type(" Vite");
+    await ecrireDansLaPhrase(page, 1, " Vite", "fin");
     await expect(PHRASES(page).nth(1)).toContainText("Vite");
     await expect(panneau.locator(".cx")).toBeVisible();
     // La croix du panneau le referme
@@ -805,7 +825,7 @@ test.describe("Presse-papiers (F05.2) — point 7 du prototype", () => {
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002"]);
   });
 
-  test("F05-AC45 — un morceau de phrase personnalisée, collé au milieu d'un paragraphe de récit, forme une phrase de choix juste en dessous ; le paragraphe reste entier et sans renvoi", async ({ page, context }) => {
+  test("F05-AC45 — une phrase de choix copiée, collée au milieu d'un paragraphe de récit, forme une phrase de choix juste en dessous ; le paragraphe reste entier et sans renvoi", async ({ page, context }) => {
     const l = await auteur(page);
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await semerBlocs(l.base, l.lisiere.scenes[0], [
@@ -813,8 +833,8 @@ test.describe("Presse-papiers (F05.2) — point 7 du prototype", () => {
       choixPerso("Suivre la lumière", ["Si le chant t’attire, suis la lumière au ", renvoi(l.lisiere.scenes[1]), "."]),
     ]);
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
-    // « suis la lumière au 21 » : de « suis » jusqu'après le renvoi
-    await selectionner(page, { bloc: 1, enfant: 0, offset: 22 }, { bloc: 1, enfant: 2, offset: 0 });
+    // La phrase est un bloc : le curseur posé sur elle, elle se copie entière
+    await selectionner(page, { bloc: 1, offset: 0 });
     await page.keyboard.press(`${MOD}+c`);
     await selectionner(page, { bloc: 0, offset: 15 });
     await page.keyboard.press(`${MOD}+v`);
@@ -823,7 +843,7 @@ test.describe("Presse-papiers (F05.2) — point 7 du prototype", () => {
     const enBase = await sceneEnBase(l.lisiere.scenes[0]);
     expect(enBase.texte.map((x) => x.type)).toEqual(["p", "choix", "choix"]);
     expect(enClair([enBase.texte[0]])).toEqual(["Lou fit un pas, puis un autre."]);
-    expect(enClair([enBase.texte[1]])).toEqual(["suis la lumière au "]);
+    expect(enClair([enBase.texte[1]])).toEqual(["Si le chant t’attire, suis la lumière au ."]);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S002"]);
   });
 
@@ -892,9 +912,9 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
     expect(enBase.texte[1]).toEqual(choix);
     expect(await liensEnBase(s.projet)).toEqual(["S001 > S002"]);
     await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
-    // L'enseignante, elle, lit la référence
+    // L'enseignante lit le même lieu, sans référence non plus
     await aller(page, sceneAdulte(s.projet, s15));
-    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("S002 Clairière");
+    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Clairière");
     await alice.contexte.close();
   });
 
@@ -1034,7 +1054,7 @@ test.describe("Numéros, chemins et suppression (F11.5, F03.1)", () => {
     // La phrase qui y mène affiche 100 ; son repère dit toujours S002
     await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
     await expect(PHRASES(page)).toContainText("Continuer vers la lumière : rends-toi au 100.");
-    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("S002 Clairière");
+    await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Clairière");
     // Le départ porte toujours le n° 1 : ni l'une ni l'autre commande
     await menu("S001").click();
     await expect(page.getByRole("button", { name: "Départ du livre" }).or(page.getByRole("button", { name: "Retirer le départ du livre" }))).toBeVisible();

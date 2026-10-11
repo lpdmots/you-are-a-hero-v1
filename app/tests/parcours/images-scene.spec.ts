@@ -1,8 +1,9 @@
+import { randomUUID } from "node:crypto";
 import { resolve } from "node:path";
 import { deflateSync } from "node:zlib";
 import { expect, test, type Page } from "@playwright/test";
 import {
-  aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, choixPerso, classeQuiEcrit, copie, copiesGardees, enClair, FICHE, figure, presseTexte, posteDe,
+  aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, enClair, FICHE, figure, presseTexte, posteDe,
   recit, recitAvec, renvoi, sceneEnBase, selectionner, semerBlocs, semerImage, sql, supprimerComptes, symbole, typesEnBase,
 } from "./outils";
 
@@ -336,22 +337,39 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await expect(img).toHaveAttribute("alt", "lune");
   });
 
-  test("F10-AC20 — un symbole se pose dans une phrase de choix personnalisée ; son libellé reste du texte, sans image, pour les chemins ; rien de tel dans une note ni dans une phrase automatique", async ({ page }) => {
+  test("F10-AC20 — un symbole ne se pose plus dans une phrase de choix : « Sur la ligne » n'y est pas proposé ; la phrase qui en portait déjà un le garde, dans le texte comme dans le panneau, et son libellé reste du texte pour les chemins ; rien de tel dans une note", async ({ page }) => {
     test.setTimeout(150_000);
     const s = await classeQuiEcrit(page);
     const [s15, s16] = s.lisiere.scenes;
-    await semerImage(s.base, s.compte, s.projet);
-    await semerBlocs(s.base, s15, [choixPerso("Pousser la porte de la lune", ["Si tu choisis la porte , rends-toi au ", renvoi(s16), "."])]);
+    const lune = await semerImage(s.base, s.compte, s.projet);
+    await semerBlocs(s.base, s15, [
+      { type: "choix", id: randomUUID(), libelle: "Pousser la porte de la lune", children: [{ text: "Si tu choisis la porte " }, symbole(lune, "lune"), { text: ", rends-toi au " }, renvoi(s16), { text: "." }] } as never,
+    ]);
     await aller(page, sceneAdulte(s.projet, s15));
-    await selectionner(page, { bloc: 0, enfant: 0, offset: 23 });
+    // Le curseur sur la phrase : l'image n'irait pas sur sa ligne
+    await selectionner(page, { bloc: 0, offset: 0 });
     await BARRE(page).getByRole("button", { name: "Image" }).click();
     await FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button").click();
-    await FICHE(page).getByRole("button", { name: "Sur la ligne" }).click();
+    await expect(FICHE(page).getByRole("button", { name: "Sur la ligne" })).toBeDisabled();
+    await FICHE(page).getByRole("button", { name: "Fermer la fiche" }).click();
+    // Le symbole déjà là se lit dans le texte et dans le panneau, et la phrase s'écrit toujours autour
+    await expect(copie(page).locator(".phrase-choix img.symbole")).toHaveCount(1);
+    await copie(page).locator(".phrase-choix__corps").click();
+    await expect(FICHE(page).locator(".cx-phrase img.symbole")).toHaveCount(1);
+    await FICHE(page).locator(".cx-phrase [data-texte]").last().evaluate((champ: HTMLElement) => {
+      champ.focus();
+      const plage = document.createRange();
+      plage.selectNodeContents(champ);
+      plage.collapse(false);
+      window.getSelection()?.removeAllRanges();
+      window.getSelection()?.addRange(plage);
+    });
+    await page.keyboard.type(" Vite !");
     await attendreEnregistre(page);
     const phrase = (await sceneEnBase(s15)).texte[0];
     expect(phrase).toMatchObject({ type: "choix", libelle: "Pousser la porte de la lune" });
     expect(phrase.children.map((x) => (x as { type?: string }).type ?? "texte")).toEqual(["texte", "image-ligne", "texte", "renvoi", "texte"]);
-    await expect(copie(page).locator(".phrase-choix img.symbole")).toHaveCount(1);
+    expect((phrase.children[4] as { text: string }).text).toBe(". Vite !");
     // Les chemins désignent ce choix par son libellé, sans image
     await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}?vue=chemins`);
     const suite = page.locator(".noeud__suites li").first();

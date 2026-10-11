@@ -224,6 +224,13 @@ const TRACES = {
       <path d="M12 14.2v2.2" />
     </>
   ),
+  // Refaire la phrase automatiquement : une flèche ronde
+  refaire: (
+    <>
+      <path d="M19.5 12a7.5 7.5 0 1 1-2.4-5.5" />
+      <path d="M19.8 4.5v4.2h-4.2" />
+    </>
+  ),
   // Un chapitre : le cahier du plan
   cahier: (
     <>

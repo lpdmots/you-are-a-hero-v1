@@ -1909,6 +1909,129 @@ kbd {
   padding-inline: 8px;
   text-align: center;
 }
+/* Un titre de rubrique et, à sa droite, son seul bouton : un « + », une flèche ronde */
+.cx-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 28px;
+  margin-bottom: 4px;
+}
+.cx-rond {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--trait-fort);
+  border-radius: 50%;
+  background: var(--feuille);
+  color: var(--canard);
+  cursor: pointer;
+}
+.cx-rond:hover:not(:disabled) {
+  background: var(--canard-pale);
+  border-color: var(--canard);
+}
+.cx-rond:disabled {
+  color: var(--graphite-3);
+  opacity: 0.5;
+  cursor: default;
+}
+.cx-rond .ic {
+  width: 16px;
+  height: 16px;
+}
+.cx-etat {
+  margin-left: 4px;
+  padding: 0 7px;
+  border-radius: 999px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  color: var(--graphite-2);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+/* Les destinations d'un choix : le numéro et le nom sur une ligne, les commandes dessous */
+.cx-dests ul {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cx-dest {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr);
+  align-items: baseline;
+  gap: 4px 8px;
+  padding: 8px 10px;
+  border-radius: 9px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  font-size: var(--t-s);
+}
+.cx-dest > .prise {
+  align-self: center;
+  grid-row: 1;
+  margin: -4px 0 -4px -6px;
+}
+.cx-dest__n {
+  grid-column: 2;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.cx-dest__nom {
+  grid-column: 3;
+  min-width: 0;
+  font-weight: 700;
+}
+.cx-dest__cmd {
+  grid-column: 2 / 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.cx-dests > .cx-issues {
+  margin-top: 10px;
+}
+/* La phrase, écrite dans le panneau : la voix du récit, les numéros d'un seul bloc */
+.cx-phrase {
+  padding: 9px 11px;
+  border-radius: 8px;
+  border: 1px solid var(--trait-fort);
+  background: var(--feuille);
+  font-size: 1.08rem;
+  line-height: 1.75;
+  cursor: text;
+}
+.cx-phrase:focus-within {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.cx-phrase__texte {
+  font-style: italic;
+  outline: none;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+/* Un texte vide garde une place où poser le curseur */
+.cx-phrase__texte:empty::before {
+  content: "\200b";
+}
+.cx-phrase .renvoi-copie {
+  margin-inline: 1px;
+  user-select: none;
+}
+.cx-phrase .renvoi-copie.est-survole {
+  box-shadow: 0 0 0 2px var(--canard);
+  background: var(--canard-pale);
+}
 /* Ce qui sert rarement : un lien discret, sous le reste */
 .cx-autre {
   display: flex;
@@ -1959,7 +2082,7 @@ kbd {
 }
 .cx-liste button {
   display: grid;
-  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: baseline;
   gap: 2px 10px;
   width: 100%;

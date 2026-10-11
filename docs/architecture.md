@@ -515,6 +515,23 @@ ou Radix, qui amènent leurs composants et, pour le premier, Tailwind, à côté
 des styles de l'application ; un calcul maison, que la demande d'une règle
 pour tous les menus ne justifiait plus.
 
+**La phrase d'un choix, écrite dans le panneau (11 octobre 2026).** Le
+contenu ne change pas : un bloc `choix`, automatique ou fait de textes et de
+`renvoi`. Ce qui change est l'endroit où il s'écrit. Dans l'éditeur, tout
+bloc `choix` est déclaré fermé à Slate, comme l'était la seule phrase
+automatique : le curseur se pose dessus, jamais dedans, et les règles de la
+copie écrites pour une phrase ouverte (frappe, fusion, sélection d'un
+morceau) ne trouvent plus rien à faire. Dans le panneau, la phrase est une
+suite de petits champs de texte séparés par ses numéros, sans second
+éditeur : un numéro ne peut pas s'effacer puisqu'il n'est dans aucun champ,
+et chaque frappe remplace le bloc dans le texte de la scène, où la phrase
+se relit aussitôt. Un geste fait dans un bloc fermé — changer la
+destination d'un renvoi, en retirer un — doit le dire à Slate (`voids`),
+qui sinon n'y entre pas. L'ordre des destinations échange les cibles des
+renvois sans les déplacer. Alternatives écartées : un second éditeur Plate
+dans le panneau, avec ses propres règles de protection des numéros ; garder
+l'écriture dans le texte et n'ajouter qu'un aperçu à droite.
+
 **Signe d'une action et d'une formule.** Le signe d'une action est une
 propriété de son bloc dans le texte, `signe`, absente pour le crayon ; le
 serveur n'en laisse passer que les quatre connus. Celui d'une formule est
