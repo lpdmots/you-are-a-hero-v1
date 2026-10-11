@@ -1563,6 +1563,13 @@ dans la première livraison, sous une forme sans vérification par l'application
   un objet ou à un compteur, ni effet automatique. Conséquence acceptée : en
   ligne, le lecteur reporte lui-même l'action sur sa feuille et peut se
   tromper, comme sur papier.
+- **Signe devant l'action (décidé par le porteur le 11 octobre 2026) :** le
+  paragraphe d'action porte un signe, le crayon par défaut. Qui a le droit
+  d'écrire l'action peut le changer d'un clic pour le dé, le sac ou le
+  cœur, par exemple le dé quand on demande un lancer. Le signe ne dit rien
+  à l'application, pas plus que le texte : c'est un repère pour le lecteur,
+  le même dans la copie, le livre et le lecteur en ligne. Une formule de la
+  liste ne porte pas de signe : il se choisit sur l'action (F04-AC40).
 - **Dé :** outil de la feuille d'aventure du lecteur en ligne, activé par
   l'adulte pour le livre. Le résultat est affiché, jamais interprété : le
   lecteur lit la règle dans le passage et choisit lui-même la suite.
@@ -1730,6 +1737,12 @@ presse-papiers :**
   « Retire un point de volonté à ton héros. », alors l'action en attente
   porte cette formule ; lorsqu'elle la retient, alors l'action de jeu prend
   cette place et plus rien n'est en attente.
+- **F04-AC40 — Signe devant l'action :** étant donné l'action « Lance le
+  dé. » dans S015, précédée du crayon, lorsque l'enseignante choisit le dé
+  parmi les quatre signes proposés sous l'action, alors le dé la précède et
+  le reste après enregistrement ; lorsqu'elle revient au crayon, alors
+  l'action est de nouveau précédée du crayon ; Alice, profil « écriture et
+  propositions », ne peut pas changer le signe d'une action.
 - **F04-AC30 — Collage sans droit :** étant donné Alice, profil « écriture et
   propositions », ayant copié un paragraphe de récit et une action de jeu,
   lorsqu'elle les colle dans sa scène, alors le paragraphe de récit est

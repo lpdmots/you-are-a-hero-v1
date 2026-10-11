@@ -1377,6 +1377,21 @@ règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-
   formule surlignée dans la liste, ou celle qu'on saisit dans « Nouvelle
   formule ». La liste s'ouvre contre lui.
 
+- **Le signe devant une action de jeu,** demandé par le porteur
+  ([F04.2](specifications.md#f042--objets-de-lhistoire),
+  F04-AC40) : sous l'action où l'on écrit, avant « Formules… » et
+  « Supprimer », quatre petits boutons côte à côte — crayon, dé, sac,
+  cœur —, celui qui sert en graphite, comme une bascule ; chacun dit son
+  usage au survol (« Dé : à lancer »). Le signe choisi remplace le crayon
+  dans le cadre de l'action.
+- **Image posée :** la fiche « Image » ne se referme plus sur la pose ; les
+  réglages de l'image s'ouvrent à sa place (largeur, légende, « Ce que
+  montre l'image »), en bloc comme sur la ligne. Se remettre à écrire les
+  referme, comme toujours. Demandé par le porteur.
+- **Listes au clavier :** la ligne surlignée aux flèches reste à l'écran,
+  la liste défilant jusqu'à elle (formules, objets, scènes d'un choix) ;
+  rien ne défile quand c'est la souris qui surligne.
+
 **Avis donné au porteur, qui demandait si la destination ne devrait pas
 venir avant la phrase :** non. Le libellé est ce que l'auteur a en tête en
 finissant sa scène, il sert de titre à une scène qui n'existe pas encore,

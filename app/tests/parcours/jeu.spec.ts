@@ -191,7 +191,28 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     expect(JSON.stringify((await blocsEditeur(page)).filter((b) => b.type === "action"))).not.toContain("bold");
   });
 
-  test("« Formules… » remplace le texte d'une action ; « Supprimer » passe par le bandeau d'annulation ; l'enseignante ajoute une formule à la liste sans quitter la scène", async ({ page }) => {
+  test("au clavier, la formule surlignée reste à l'écran : la liste défile jusqu'à elle", async ({ page }) => {
+    const s = await classeQuiEcrit(page);
+    const [s15] = s.lisiere.scenes;
+    const douze = Array.from({ length: 12 }, (_, i) => `Formule d’essai numéro ${i + 1}.`);
+    await semerJeu(s.base, s.compte, s.projet, OBJETS, douze);
+    await semerBlocs(s.base, s15, [recit("La lame brille.")]);
+    await aller(page, sceneAdulte(s.projet, s15));
+    await BARRE(page).getByRole("button", { name: "Action de jeu" }).click();
+    const liste = LISTE(page).getByRole("listbox");
+    await expect(liste.getByRole("option")).toHaveCount(13);
+    for (let i = 0; i < 12; i += 1) await page.keyboard.press("ArrowDown");
+    const surlignee = liste.locator('[aria-selected="true"]');
+    await expect(surlignee).toHaveText(douze[11]);
+    await expect.poll(async () => {
+      const [l, o] = [(await liste.boundingBox())!, (await surlignee.boundingBox())!];
+      return o.y >= l.y - 1 && o.y + o.height <= l.y + l.height + 1;
+    }).toBe(true);
+    // Et l'action en attente la montre
+    await expect(copie(page).locator(".action-attendue")).toContainText(douze[11]);
+  });
+
+  test("F04-AC40 — « Formules… » remplace le texte d'une action ; « Supprimer » passe par le bandeau d'annulation ; l'enseignante ajoute une formule à la liste sans quitter la scène", async ({ page }) => {
     test.setTimeout(120_000);
     const s = await classeQuiEcrit(page);
     const [s15] = s.lisiere.scenes;
@@ -216,6 +237,16 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     expect((await sceneEnBase(s15)).texte[1]).toEqual({ ...posee, children: [{ text: "Lance le dé." }] });
 
     await selectionner(page, { bloc: 1, offset: 2 });
+    // F04-AC40 — le signe devant l'action : le crayon par défaut, un autre d'un clic, et retour
+    const signes = ACTIONS(page).getByRole("radiogroup", { name: "Signe devant l’action" });
+    await expect(signes.getByRole("radio")).toHaveCount(4);
+    await expect(signes.getByRole("radio", { name: /^Crayon/ })).toBeChecked();
+    await signes.getByRole("radio", { name: /^Dé/ }).click();
+    await expect(signes.getByRole("radio", { name: /^Dé/ })).toBeChecked();
+    await expect.poll(async () => ((await sceneEnBase(s15)).texte[1] as { signe?: string }).signe, { timeout: 15_000 }).toBe("de");
+    await signes.getByRole("radio", { name: /^Crayon/ }).click();
+    await expect.poll(async () => "signe" in (await sceneEnBase(s15)).texte[1], { timeout: 15_000 }).toBe(false);
+
     await ACTIONS(page).getByRole("button", { name: "Supprimer" }).click();
     await expect(ACTIONS(page)).toHaveCount(0);
     await expect(BANDEAU(page)).toContainText("1 action de jeu supprimée.");

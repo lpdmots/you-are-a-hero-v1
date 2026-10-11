@@ -22,6 +22,15 @@ describe("Action de jeu (F04.2)", () => {
     expect(nettoyerTexte(recu)).toEqual([{ type: "action", id: A, protege: true, children: [{ text: "Retire un point." }] }]);
   });
 
+  it("F04-AC40 — le signe devant l'action : le dé, le sac et le cœur sont gardés, le crayon ne s'écrit pas, un signe inconnu est écarté ; Alice ne le change pas", () => {
+    const recu = (signe: unknown) => [{ type: "action", id: A, signe, children: [{ text: "Lance le dé." }] }];
+    for (const signe of ["de", "sac", "coeur"]) expect(nettoyerTexte(recu(signe))).toEqual([{ type: "action", id: A, signe, children: [{ text: "Lance le dé." }] }]);
+    for (const signe of ["crayon", "epee", 3, undefined]) expect(nettoyerTexte(recu(signe))).toEqual([{ type: "action", id: A, children: [{ text: "Lance le dé." }] }]);
+    const posee = action("Lance le dé.");
+    expect(controlerTexte([posee], [{ ...posee, signe: "de" }], ALICE)).toMatch(/modifié/);
+    expect(controlerTexte([posee], [{ ...posee, signe: "de" }], BILAL)).toBeNull();
+  });
+
   it("une action de jeu qui a des mots est du texte de la scène ; vide, elle ne compte pas", () => {
     expect(estVide([action("Ajoute le couteau à ton inventaire.")])).toBe(false);
     expect(estVide([action("  ")])).toBe(true);

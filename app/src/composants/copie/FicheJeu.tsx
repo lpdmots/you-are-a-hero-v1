@@ -13,19 +13,38 @@ import { useCopie, type Jeu, type Services } from "./contexte";
  * s'ouvre dans le panneau de droite, comme tout ce qui a des champs.
  */
 
+/**
+ * La ligne surlignée au clavier reste à l'écran : la liste défile jusqu'à elle. Pas quand
+ * c'est la souris qui surligne : la liste bougerait sous le pointeur.
+ */
+export function useLigneVisible(liste: React.RefObject<HTMLElement | null>, choisi: number) {
+  const auClavier = useRef(false);
+  useEffect(() => {
+    if (!auClavier.current) return;
+    auClavier.current = false;
+    liste.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: "nearest" });
+  }, [liste, choisi]);
+  return () => {
+    auClavier.current = true;
+  };
+}
+
 /** Les flèches parcourent la liste, Entrée retient la ligne surlignée. */
-function useListe(nombre: number, retenir: (i: number) => void) {
+function useListe(nombre: number, retenir: (i: number) => void, liste: React.RefObject<HTMLElement | null>) {
   const [surligne, setSurligne] = useState(0);
   const choisi = Math.min(surligne, Math.max(0, nombre - 1));
+  const suivre = useLigneVisible(liste, choisi);
   return {
     choisi,
     setSurligne,
     auClavier: (e: React.KeyboardEvent) => {
       if (e.key === "ArrowDown") {
         e.preventDefault();
+        suivre();
         setSurligne(Math.min(choisi + 1, nombre - 1));
       } else if (e.key === "ArrowUp") {
         e.preventDefault();
+        suivre();
         setSurligne(Math.max(choisi - 1, 0));
       } else if (e.key === "Enter" && nombre > 0) {
         e.preventDefault();
@@ -61,7 +80,8 @@ export function ListeObjets({ jeu, onChoisir, onCreer, onFermer }: { jeu: Jeu; o
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [jeu.objets, demande],
   );
-  const liste = useListe(trouves.length, (i) => onChoisir(trouves[i].nom));
+  const lignes = useRef<HTMLUListElement>(null);
+  const liste = useListe(trouves.length, (i) => onChoisir(trouves[i].nom), lignes);
   return (
     <div className="pop" role="dialog" aria-label="Objets de l’histoire" onKeyDown={auClavierDeLaListe(onFermer)}>
       {jeu.objets.length === 0 ? (
@@ -88,7 +108,7 @@ export function ListeObjets({ jeu, onChoisir, onCreer, onFermer }: { jeu: Jeu; o
           {trouves.length === 0 ? (
             <p className="pop__vide">Aucun objet ne porte ce nom.</p>
           ) : (
-            <ul className="pop__liste" role="listbox" aria-label="Objets">
+            <ul className="pop__liste" role="listbox" aria-label="Objets" ref={lignes}>
               {trouves.map((o, i) => (
                 <li key={o.id} role="option" aria-selected={i === liste.choisi}>
                   <button type="button" tabIndex={-1} onClick={() => onChoisir(o.nom)} onMouseEnter={() => liste.setSurligne(i)}>
@@ -134,7 +154,7 @@ export function ListeFormules({
   const liste = useRef<HTMLUListElement>(null);
   const bouton = useRef<HTMLButtonElement>(null);
   const lignes = [...(pourUneAction ? [] : [{ id: "vide", texte: "" }]), ...jeu.formules];
-  const { choisi, setSurligne, auClavier } = useListe(lignes.length, (i) => onChoisir(lignes[i].texte));
+  const { choisi, setSurligne, auClavier } = useListe(lignes.length, (i) => onChoisir(lignes[i].texte), liste);
   useEffect(() => {
     (liste.current ?? bouton.current)?.focus();
   }, []);

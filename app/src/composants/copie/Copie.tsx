@@ -551,11 +551,13 @@ export function Copie({
   };
   const poserImage = (image: string, ou: "bloc" | "ligne") => {
     if (fiche?.sorte !== "poser-image") return;
-    setFiche(null);
-    if (ou === "ligne" && admetUneImage() && e.selection) {
+    // L'image posée, ses réglages s'ouvrent à la place : largeur, légende, ce qu'elle montre
+    const ici = blocCourant(e);
+    if (ou === "ligne" && admetUneImage() && e.selection && ici) {
       const symbole: ImageLigne = { type: "image-ligne", id: nouvelId(), image, children: [{ text: "" }] };
       e.tf.insertNodes(symbole, { at: e.selection, select: true });
       e.tf.move({ distance: 1, unit: "offset" });
+      setFiche({ sorte: "symbole", bloc: ici.bloc.id, symbole: symbole.id });
     } else {
       const i = Math.max(0, indexDe(fiche.bloc));
       const ici = blocsDe(e)[i];
@@ -567,6 +569,7 @@ export function Copie({
         if (remplace) e.tf.removeNodes({ at: [i] });
       });
       e.tf.allerA(remplace ? i : i + 1);
+      setFiche({ sorte: "image", bloc: figure.id });
     }
     reprendreLeTexte();
   };
@@ -741,6 +744,12 @@ export function Copie({
       setBandeau(null);
       lacherLeTexte();
       setFiche(fiche?.sorte === "formules" && fiche.bloc === bloc ? null : { sorte: "formules", bloc });
+    },
+    reglerSigne: (bloc, signe) => {
+      const i = indexDe(bloc);
+      if (i === -1) return;
+      if (signe === "crayon") e.tf.unsetNodes(["signe"], { at: [i] });
+      else e.tf.setNodes({ signe }, { at: [i] });
     },
     supprimerBloc: (bloc) => {
       e.tf.supprimerBlocs([bloc]);
@@ -982,9 +991,12 @@ export function Copie({
             onValueChange={({ value }) => {
               const suite = value as unknown as Texte;
               suivre(entier(suite));
-              // La fiche d'un bloc qui n'est plus là se referme
-              const concerne = fiche ? blocDe(fiche) : null;
-              if (fiche && concerne && !suite.some((b) => b.id === concerne)) setFiche(null);
+              // La fiche d'un bloc qui n'est plus là se referme ; pas celle qui vient de s'ouvrir sur un autre bloc
+              const parti = (f: FicheOuverte | null): boolean => {
+                const concerne = f ? blocDe(f) : null;
+                return !!concerne && !suite.some((b) => b.id === concerne);
+              };
+              if (parti(fiche)) setFiche((f) => (parti(f) ? null : f));
               // On se remet à écrire : la fiche se referme. Pas quand on déplace un bloc, ni quand
               // on écrit dans la phrase de choix qu'on est en train de régler. Le curseur est alors
               // dans le texte : ce que la fiche change elle-même, ou la commande qui l'ouvre, ne compte pas

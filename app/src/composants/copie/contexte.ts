@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import type { Choix, Droits, Paragraphe } from "@/domaine/copie";
+import type { Choix, Droits, Paragraphe, SigneAction } from "@/domaine/copie";
 import type { Construction, Formule, FormuleRenvoi, Objet } from "@/domaine/preparation";
 
 /**
@@ -136,6 +136,8 @@ export type ContexteDeCopie = {
   ecrireAvant: (bloc: string) => void;
   /** Les commandes d'une action de jeu où l'on écrit : ses formules, sa suppression (F04.2) */
   ouvrirFormules: (bloc: string) => void;
+  /** Le signe placé devant une action de jeu : crayon, dé, sac ou cœur (F04-AC40) */
+  reglerSigne: (bloc: string, signe: SigneAction) => void;
   supprimerBloc: (bloc: string) => void;
   /** Régler une image en bloc, ou une image sur la ligne : pour l'adulte seul (F10) */
   ouvrirImage: (bloc: string) => void;

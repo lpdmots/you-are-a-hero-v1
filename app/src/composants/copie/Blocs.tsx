@@ -4,7 +4,7 @@ import { PlateElement, useSelected, type PlateElementProps } from "platejs/react
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import {
-  estAuto, estImageLigne, estReserve, estVide, morceauxDe, renvoisDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
+  estAuto, estImageLigne, estReserve, estVide, morceauxDe, NOMS_DES_SIGNES, renvoisDe, SIGNES_ACTION, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
   type Note, type Paragraphe as ParagrapheDeRecit, type Renvoi, type Texte,
 } from "@/domaine/copie";
 import { phraseDeChoix, type FormuleRenvoi } from "@/domaine/preparation";
@@ -258,7 +258,7 @@ export function ActionDeJeu(props: PlateElementProps) {
           <Icone nom="cadenas" />
         </span>
         <span className="action-jeu__cadre" contentEditable={false}>
-          <Icone nom="crayon" />
+          <Icone nom={signeDe(bloc)} />
           <span className="action-jeu__texte">{bloc.children.map(lettresLues)}</span>
         </span>
         {props.children}
@@ -301,12 +301,32 @@ export function ActionDeJeu(props: PlateElementProps) {
       </span>
       <span className="action-jeu__cadre">
         <span contentEditable={false} className="action-jeu__crayon">
-          <Icone nom="crayon" />
+          <Icone nom={signeDe(bloc)} />
         </span>
         <span className="action-jeu__texte">{props.children}</span>
       </span>
       {selectionne || ouvert ? (
         <span className="action-jeu__cmd" contentEditable={false}>
+          {/* Le signe devant l'action : le crayon par défaut, un autre d'un clic */}
+          <span className="action-jeu__signes" role="radiogroup" aria-label="Signe devant l’action">
+            {SIGNES_ACTION.map((signe) => (
+              <button
+                key={signe}
+                type="button"
+                role="radio"
+                aria-checked={signeDe(bloc) === signe}
+                aria-label={NOMS_DES_SIGNES[signe]}
+                title={NOMS_DES_SIGNES[signe]}
+                onMouseDown={(ev) => ev.preventDefault()}
+                onClick={(ev) => {
+                  ev.stopPropagation();
+                  c.reglerSigne(bloc.id, signe);
+                }}
+              >
+                <Icone nom={signe} />
+              </button>
+            ))}
+          </span>
           <button type="button" className="btn btn--petit" aria-expanded={ouvert} onMouseDown={(ev) => ev.preventDefault()} onClick={(ev) => { ev.stopPropagation(); c.ouvrirFormules(bloc.id); }}>
             Formules…
           </button>
@@ -557,7 +577,7 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
           ) : bloc.type === "action" ? (
             <div key={bloc.id} className="action-jeu">
               <span className="action-jeu__cadre">
-                <Icone nom="crayon" />
+                <Icone nom={signeDe(bloc)} />
                 <span className="action-jeu__texte">{bloc.children.map(lettresLues)}</span>
               </span>
             </div>

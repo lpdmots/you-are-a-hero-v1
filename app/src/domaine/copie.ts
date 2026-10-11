@@ -60,7 +60,22 @@ export type Liaison = { type: "liaison"; id: string; cible: string | null; libel
  * Action de jeu (F04.2) : un paragraphe d'un type propre, qui dit au lecteur quoi faire sur sa
  * feuille d'aventure. Son texte est libre ; l'application n'en connaît pas le sens.
  */
-export type Action = { type: "action"; id: string; protege?: true; children: ({ text: string } | ImageLigne)[] };
+export type Action = { type: "action"; id: string; protege?: true; signe?: Exclude<SigneAction, "crayon">; children: ({ text: string } | ImageLigne)[] };
+
+/**
+ * Le signe placé devant une action de jeu, dans la copie comme dans le livre : le crayon
+ * par défaut, pour ce qui se note ; le dé, le sac, le cœur (F04-AC40).
+ */
+export const SIGNES_ACTION = ["crayon", "de", "sac", "coeur"] as const;
+export type SigneAction = (typeof SIGNES_ACTION)[number];
+export const NOMS_DES_SIGNES: Record<SigneAction, string> = {
+  crayon: "Crayon : à noter sur la feuille",
+  de: "Dé : à lancer",
+  sac: "Sac : un objet à prendre ou à rayer",
+  coeur: "Cœur : des points gagnés ou perdus",
+};
+export const signeDe = (bloc: { signe?: unknown }): SigneAction =>
+  SIGNES_ACTION.includes(bloc.signe as SigneAction) ? (bloc.signe as SigneAction) : "crayon";
 
 export type Bloc = Paragraphe | Choix | Note | Liaison | Action | ImageBloc;
 export type Texte = Bloc[];
@@ -188,7 +203,11 @@ export function nettoyerTexte(brut: unknown): Texte | null {
       const id = identite(bloc.id);
       const children = ligneAvecImages(bloc.children, imageLigne, false);
       compte += longueur(children);
-      texte.push(bloc.protege === true ? { type: "action", id, protege: true, children } : { type: "action", id, children });
+      const action: Action = bloc.protege === true ? { type: "action", id, protege: true, children } : { type: "action", id, children };
+      // Le crayon ne s'écrit pas : c'est le signe d'une action qui n'en dit rien
+      const signe = signeDe(bloc);
+      if (signe !== "crayon") action.signe = signe;
+      texte.push(action);
     } else if (bloc.type === "image") {
       // Une image en bloc sans fichier reconnaissable n'existe pas : elle est écartée
       const fichier = scene(bloc.image);

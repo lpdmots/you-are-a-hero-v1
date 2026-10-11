@@ -422,8 +422,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
     le contenu que ces logiciels mettent dans le presse-papiers, dans
     Chromium seulement.
-  - **Tests automatiques :** 445 passent — 104 sur les règles, 155 contre
-    la base locale, 186 parcours joués dans un navigateur —, chacun au
+  - **Tests automatiques :** 447 passent — 105 sur les règles, 155 contre
+    la base locale, 187 parcours joués dans un navigateur —, chacun au
     nom de son critère. Les neuf migrations se rejouent depuis une base vide
     et donnent le schéma de la base locale.
   - **Reprise du 11 octobre 2026 — panneau des réglages :** sur le premier
@@ -446,6 +446,15 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     Formes et précisions à lui faire confirmer :
     [design](design.md#menus-qui-tiennent-dans-la-fenêtre-11-octobre-2026)
     et [Nouveau choix](design.md#nouveau-choix-en-étapes-11-octobre-2026).
+    Ensuite, le même jour : l'action de jeu en attente dans le texte
+    pendant qu'on choisit sa formule (F04-AC39) ; un signe devant l'action,
+    crayon par défaut, dé, sac ou cœur au choix (F04-AC40), gardé dans le
+    texte de la scène, sans changement de schéma, et que le livre devra
+    imprimer à l'étape 6 ; la ligne surlignée au clavier qui reste à
+    l'écran dans les listes ; les réglages d'une image ouverts dès qu'elle
+    est posée. La forme de « Nouveau choix » reste en discussion : le
+    libellé d'abord est confirmé par le porteur, la recherche de la scène
+    existante ne l'est pas encore.
     La revue continue écran par écran ; les précisions des six lots restent
     à lui présenter.
   - **V19 :** les versions de Plate et de Slate sont figées dans

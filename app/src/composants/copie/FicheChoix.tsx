@@ -8,6 +8,7 @@ import { constructionsUtiles, phraseDeChoix } from "@/domaine/preparation";
 import { referenceScene } from "@/domaine/recit";
 import { cle } from "@/domaine/texte";
 import { useCopie, type ApercuDeChoix, type SceneConnue, type SceneCreee, type Services } from "./contexte";
+import { useLigneVisible } from "./FicheJeu";
 
 /**
  * La fiche d'un choix, ouverte dans le panneau à droite du texte (F05.2 ; docs/design.md,
@@ -61,6 +62,8 @@ export function ChoisirDestination({
   const [erreur, setErreur] = useState<string | null>(null);
   const champ = useRef<HTMLInputElement>(null);
   const champTitre = useRef<HTMLInputElement>(null);
+  const lignes = useRef<HTMLUListElement>(null);
+  const suivre = useLigneVisible(lignes, surligne);
 
   useEffect(() => {
     if (focus) (champ.current ?? champTitre.current)?.focus();
@@ -142,9 +145,11 @@ export function ChoisirDestination({
             onKeyDown={(e) => {
               if (e.key === "ArrowDown") {
                 e.preventDefault();
+                suivre();
                 setSurligne((n) => Math.min(n + 1, resultats.length - 1));
               } else if (e.key === "ArrowUp") {
                 e.preventDefault();
+                suivre();
                 setSurligne((n) => Math.max(n - 1, 0));
               } else if (e.key === "Enter") {
                 e.preventDefault();
@@ -156,7 +161,7 @@ export function ChoisirDestination({
           {resultats.length === 0 ? (
             <p className="cx-aide">Aucune scène trouvée.</p>
           ) : (
-            <ul className="cx-liste" role="listbox" aria-label="Scènes">
+            <ul className="cx-liste" role="listbox" aria-label="Scènes" ref={lignes}>
               {resultats.slice(0, 40).map((s, i) => (
                 <li key={s.id} role="option" aria-selected={s.id === choisie?.id}>
                   <button type="button" tabIndex={-1} className={s.id === choisie?.id ? "est-choisie" : undefined} onClick={() => { setSurligne(i); valider({ cible: s.id }); }} onMouseEnter={() => setSurligne(i)}>

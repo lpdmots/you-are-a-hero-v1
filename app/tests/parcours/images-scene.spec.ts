@@ -72,6 +72,10 @@ test.describe("Image en bloc (F10) — V12", () => {
     await importer(page, PHOTO);
     await FICHE(page).getByRole("button", { name: "Dans le texte" }).click();
     await expect(FIGURES(page)).toHaveCount(1);
+    // L'image posée, ses réglages s'ouvrent aussitôt à la place de la fiche
+    await expect(FICHE(page).getByRole("radio", { name: "Moyenne" })).toBeChecked();
+    await expect(FICHE(page).getByLabel("Légende")).toBeVisible();
+    await expect(FIGURES(page)).toHaveClass(/est-ouvert/);
     await attendreEnregistre(page);
     expect(page.url()).toBe(adresse);
     const [importee] = await imagesDuProjet(s.projet);
@@ -283,7 +287,10 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button").click();
     await FICHE(page).getByRole("button", { name: "Sur la ligne" }).click();
     await expect(copie(page)).toBeFocused();
+    // Ses réglages s'ouvrent aussi ; se remettre à écrire les referme
+    await expect(FICHE(page).getByLabel(/Ce que montre/)).toBeVisible();
     await page.keyboard.type(", pousse-la.");
+    await expect(FICHE(page)).toHaveCount(0);
     await attendreEnBase(s16, "pousse-la.");
     // Sans nouvel import, et la scène d'origine n'a pas changé
     expect(await imagesDuProjet(s.projet)).toHaveLength(1);
