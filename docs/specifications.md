@@ -2186,7 +2186,12 @@ choix seulement.
 - **Commande :** `/choix` dans le texte ou le bouton « Choix » visible ouvrent
   la même saisie, libellé puis destination, sans quitter la scène ; depuis le
   11 octobre 2026, dans le panneau à droite du texte
-  ([où s'ouvrent les réglages](#f05-panneau)).
+  ([où s'ouvrent les réglages](#f05-panneau)). Le même jour, le porteur juge
+  cette saisie trop chargée : elle ne demande d'abord que le libellé, et la
+  destination dès qu'il y en a un ; pendant la saisie, la phrase se lit à sa
+  place dans le texte (F05-AC55). L'ordre inverse, la destination d'abord,
+  qu'il évoque, n'est pas retenu : le libellé sert de titre à une nouvelle
+  scène, et le titre d'une scène existante ne donne pas une phrase de choix.
 - **Trois issues pour la destination :**
   1. *scène existante*, avec la recherche et l'aperçu de F05, dans le
      périmètre de la personne ;
@@ -2275,7 +2280,9 @@ choix seulement.
 - **Déclaration :** la saisie ouverte par `/choix` ou le bouton propose à
   l'adulte seul une forme supplémentaire, « Lien caché (énigme) », qui crée la
   liaison cachée de [F05.1](#f051--liaisons-cachées-par-énigme) sans ajouter
-  de phrase au texte.
+  de phrase au texte. Depuis le 11 octobre 2026, à la demande du porteur,
+  pour qui cette forme est exceptionnelle, c'est un lien discret au bas de
+  la saisie, et non un choix à faire d'abord.
 - **Repère dans la scène :** la liaison est rappelée dans la page de la scène
   par un repère extérieur au récit, jamais imprimé, avec le numéro fixé de sa
   destination.
@@ -2540,7 +2547,16 @@ recommandation, qu'il retient, sépare deux cas.
   « Créer un nouvel objet », qui ouvre le panneau de droite ; l'objet créé
   s'écrit aussitôt dans le texte. Il en va de même d'une formule ajoutée.
 - **Le bloc réglé reste repéré dans le texte** par son entourage ; pour un
-  choix en cours de création, un trait montre où la phrase se posera.
+  choix en cours de création, la phrase elle-même se lit à la place qu'elle
+  prendra, en attente, avec un libellé d'exemple tant que rien n'est saisi,
+  puis celui qu'on tape (demandé par le porteur le 11 octobre 2026, à la
+  place d'un simple trait). Elle n'est pas dans le texte : rien d'elle ne
+  s'enregistre.
+- **Une liste ouverte au curseur ne change ni le cadre ni le texte :** elle
+  s'ouvre sous la ligne, ou au-dessus quand la fenêtre n'a pas la place
+  dessous, et sort du cadre du texte s'il le faut (demandé le même jour).
+  La règle vaut pour tous les menus de l'application
+  ([design](design.md#menus-qui-tiennent-dans-la-fenêtre-11-octobre-2026)).
 - **Fermeture :** la croix, Échap, ou le fait de se remettre à écrire dans
   le texte. Déplacer un bloc ne referme pas le panneau, pour qu'on puisse
   replacer un choix ou une image en continuant de le régler ; écrire dans la
@@ -2563,6 +2579,14 @@ recommandation, qu'il retient, sépare deux cas.
 - **F05-AC54 — Écran étroit :** étant donné la même scène sur un écran de
   390 px de large, lorsque l'enseignante active une phrase de choix, alors
   ses réglages montent du bas de l'écran sans déplacer le texte.
+- **F05-AC55 — Phrase en attente :** étant donné S001 et le curseur dans son
+  premier paragraphe, lorsque l'enseignante saisit `/choix`, alors « Traverser
+  le pont : rends-toi au … » se lit en attente sous ce paragraphe, et le
+  panneau ne demande que « Ce que fait le lecteur » ; lorsqu'elle tape
+  « Suivre la lumière », alors la phrase en attente devient « Suivre la
+  lumière : rends-toi au … » et le panneau demande où mène le choix, scène
+  existante ou nouvelle scène ; lorsqu'elle appuie sur Échap, alors la
+  phrase disparaît et le texte enregistré n'en porte rien.
 
 - **F05-AC39 — Création au clavier seul :** étant donné l'enseignante sans
   souris dans S015, lorsqu'elle saisit `/choix`, un libellé, choisit S018 aux

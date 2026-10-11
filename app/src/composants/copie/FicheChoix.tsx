@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { Icone } from "@/composants/Icone";
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { Bulle } from "@/composants/Bulle";
+import { Icone, type NomIcone } from "@/composants/Icone";
 import { estAuto, estRenvoi, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Renvoi } from "@/domaine/copie";
 import { constructionsUtiles, phraseDeChoix } from "@/domaine/preparation";
 import { referenceScene } from "@/domaine/recit";
 import { cle } from "@/domaine/texte";
-import { useCopie, type SceneConnue, type SceneCreee, type Services } from "./contexte";
+import { useCopie, type ApercuDeChoix, type SceneConnue, type SceneCreee, type Services } from "./contexte";
 
 /**
  * La fiche d'un choix, ouverte dans le panneau à droite du texte (F05.2 ; docs/design.md,
@@ -14,7 +15,10 @@ import { useCopie, type SceneConnue, type SceneCreee, type Services } from "./co
  * — « Ce que fait le lecteur », puis « Où mène ce choix ? » — et à régler un choix existant.
  */
 
-type Issue = "existante" | "nouvelle" | "plus-tard";
+/** Le libellé donné en exemple, dans le champ et dans la phrase en attente du texte. */
+export const LIBELLE_EXEMPLE = "Traverser le pont";
+
+type Issue = "existante" | "nouvelle";
 export type Destination = { cible: string | null; creee?: SceneCreee };
 
 /** Le nom d'une scène tel que la personne le lit : « S018 Clairière » pour l'adulte, « Clairière » pour l'élève. */
@@ -25,37 +29,41 @@ export function nomDeDestination(s: SceneConnue | undefined, pourEleve: boolean)
 }
 
 /**
- * « Où mène ce choix ? » : une scène existante, cherchée par son titre ou son texte ; une
- * nouvelle scène ; ou une destination à décider plus tard (F05.2). Au clavier : les flèches
- * parcourent la liste, Entrée valide (F05-AC39).
+ * « Où mène ce choix ? » (F05.2) : une scène existante ou une nouvelle scène, et rien d'autre
+ * à l'écran que ce que l'issue choisie demande. La scène existante se retient d'un clic dans
+ * la liste, ou aux flèches puis Entrée (F05-AC39) ; « Décider plus tard » laisse le choix
+ * sans destination.
  */
 export function ChoisirDestination({
-  libelle, services, valider, actuelle, deplus, focus, seulementExistante = false,
+  libelle, services, valider, actuelle, creer, focus, seulementExistante = false,
 }: {
   libelle: string; services: Services;
-  /** Reçoit la destination retenue ; rend faux si elle n'a pas pu l'être */
   valider: (destination: Destination) => void;
   actuelle?: string | null;
-  /** Le bouton qui valide dit ce qu'il fera : « Créer le choix », « Changer la destination » */
-  deplus: { verbe: string; sansScene: boolean };
+  /** Ce que dit le bouton d'une nouvelle scène : « Créer le choix et la scène » */
+  creer?: string;
   focus?: boolean;
   /** Un lien caché ne mène qu'à une scène qui existe : ni « nouvelle scène » ni « plus tard » */
   seulementExistante?: boolean;
 }) {
-  const { livre, droits, lieu, pourEleve } = useCopie();
-  const [issue, setIssue] = useState<Issue>("existante");
+  const { livre, droits, lieu } = useCopie();
+  const adulte = droits.role === "adulte";
+  const autres = useMemo(() => livre.scenes.filter((s) => s.id !== lieu.sceneId), [livre.scenes, lieu.sceneId]);
+  // Sans autre scène à choisir, il ne reste qu'à en créer une
+  const [issue, setIssue] = useState<Issue>(seulementExistante || autres.length > 0 ? "existante" : "nouvelle");
   const [demande, setDemande] = useState("");
-  const [chapitre, setChapitre] = useState<string>("");
   const [surligne, setSurligne] = useState(0);
   const [extraits, setExtraits] = useState<Record<string, string>>({});
   const [titre, setTitre] = useState<string | null>(null);
   const [ou, setOu] = useState(lieu.chapitreId);
+  const [ailleurs, setAilleurs] = useState(false);
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const champ = useRef<HTMLInputElement>(null);
+  const champTitre = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (focus) champ.current?.focus();
+    if (focus) (champ.current ?? champTitre.current)?.focus();
   }, [focus]);
 
   // Les textes se cherchent sur le serveur, après une courte pause ; les titres, sur place
@@ -75,19 +83,18 @@ export function ChoisirDestination({
 
   const mots = cle(demande).split(" ").filter(Boolean);
   const resultats = useMemo(() => {
+    // Sans demande : les scènes de ce chapitre, ou tout le livre s'il n'en a pas d'autre
+    if (mots.length === 0) {
+      const ici = autres.filter((s) => s.chapitreId === lieu.chapitreId);
+      return ici.length ? ici : autres;
+    }
     const parTexte = demande.trim().length >= 2 ? extraits : {};
-    return livre.scenes.filter((s) => {
-      if (s.id === lieu.sceneId) return false;
-      if (chapitre && s.chapitreId !== chapitre) return false;
-      if (mots.length === 0) return chapitre ? true : s.chapitreId === lieu.chapitreId;
-      const ou = cle(`${referenceScene(s.reference)} ${s.titre ?? ""}`);
-      return mots.every((m) => ou.includes(m)) || s.id in parTexte;
-    });
+    return autres.filter((s) => mots.every((m) => cle(`${referenceScene(s.reference)} ${s.titre ?? ""}`).includes(m)) || s.id in parTexte);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [livre.scenes, demande, chapitre, extraits, lieu.sceneId, lieu.chapitreId]);
+  }, [autres, demande, extraits, lieu.chapitreId]);
   const choisie = resultats[Math.min(surligne, resultats.length - 1)];
 
-  const creer = async () => {
+  const creerLaScene = async () => {
     setAttente(true);
     setErreur(null);
     const fait = await services.creerScene(ou, (titre ?? libelle).trim());
@@ -95,22 +102,16 @@ export function ChoisirDestination({
     if (!fait.ok) return setErreur(fait.erreur);
     valider({ cible: fait.scene.id, creee: fait.scene });
   };
-  const confirmer = () => {
-    if (issue === "plus-tard") return valider({ cible: null });
-    if (issue === "nouvelle") return void creer();
-    if (choisie) valider({ cible: choisie.id });
-  };
 
   return (
     <fieldset className="cx-issues">
       <legend>{seulementExistante ? "Où mène ce lien caché ?" : "Où mène ce choix ?"}</legend>
-      {seulementExistante ? null : (
-        <div className="cx-seg" role="radiogroup" aria-label="Où mène ce choix ?">
+      {seulementExistante || autres.length === 0 ? null : (
+        <div className="cx-seg cx-seg--deux" role="radiogroup" aria-label="Où mène ce choix ?">
           {(
             [
               ["existante", "Scène existante"],
               ["nouvelle", "Nouvelle scène"],
-              ["plus-tard", "À décider plus tard"],
             ] as [Issue, string][]
           ).map(([valeur, nom]) => (
             <label key={valeur}>
@@ -123,55 +124,37 @@ export function ChoisirDestination({
 
       {issue === "existante" ? (
         <>
-          <div className="cx-recherche">
-            <label className="vh" htmlFor="cx-demande">
-              Chercher une scène
-            </label>
-            <input
-              id="cx-demande"
-              ref={champ}
-              className="pchamp"
-              type="search"
-              value={demande}
-              autoComplete="off"
-              placeholder={droits.role === "adulte" ? "Chercher dans les titres et les textes" : "Chercher dans ton chapitre"}
-              onChange={(e) => {
-                setDemande(e.target.value);
-                setSurligne(0);
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "ArrowDown") {
-                  e.preventDefault();
-                  setSurligne((n) => Math.min(n + 1, resultats.length - 1));
-                } else if (e.key === "ArrowUp") {
-                  e.preventDefault();
-                  setSurligne((n) => Math.max(n - 1, 0));
-                } else if (e.key === "Enter") {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  confirmer();
-                }
-              }}
-            />
-            {droits.role === "adulte" && livre.chapitres.length > 1 ? (
-              <>
-                <label className="vh" htmlFor="cx-chapitre">
-                  Chapitre
-                </label>
-                <select id="cx-chapitre" className="pchamp" value={chapitre} onChange={(e) => { setChapitre(e.target.value); setSurligne(0); }}>
-                  <option value="">{mots.length ? "Tous les chapitres" : "Ce chapitre"}</option>
-                  {livre.chapitres.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.titre}
-                    </option>
-                  ))}
-                </select>
-              </>
-            ) : null}
-          </div>
-          {droits.role !== "adulte" ? <p className="cx-aide">Tu choisis parmi les scènes de ton chapitre.</p> : null}
+          <label className="vh" htmlFor="cx-demande">
+            Chercher une scène
+          </label>
+          <input
+            id="cx-demande"
+            ref={champ}
+            className="pchamp cx-demande"
+            type="search"
+            value={demande}
+            autoComplete="off"
+            placeholder={adulte ? "Chercher une scène du livre" : "Chercher dans ton chapitre"}
+            onChange={(e) => {
+              setDemande(e.target.value);
+              setSurligne(0);
+            }}
+            onKeyDown={(e) => {
+              if (e.key === "ArrowDown") {
+                e.preventDefault();
+                setSurligne((n) => Math.min(n + 1, resultats.length - 1));
+              } else if (e.key === "ArrowUp") {
+                e.preventDefault();
+                setSurligne((n) => Math.max(n - 1, 0));
+              } else if (e.key === "Enter") {
+                e.preventDefault();
+                e.stopPropagation();
+                if (choisie) valider({ cible: choisie.id });
+              }
+            }}
+          />
           {resultats.length === 0 ? (
-            <p className="cx-aide">Aucune scène trouvée.{seulementExistante ? "" : ` ${pourEleve ? "Tu peux" : "Vous pouvez"} en créer une : « Nouvelle scène ».`}</p>
+            <p className="cx-aide">Aucune scène trouvée.</p>
           ) : (
             <ul className="cx-liste" role="listbox" aria-label="Scènes">
               {resultats.slice(0, 40).map((s, i) => (
@@ -193,13 +176,12 @@ export function ChoisirDestination({
             </ul>
           )}
         </>
-      ) : null}
-
-      {issue === "nouvelle" ? (
+      ) : (
         <div className="cx-nouvelle">
           <label className="champ champ--plein">
             <span>Titre de la nouvelle scène</span>
             <input
+              ref={champTitre}
               className="pchamp"
               type="text"
               maxLength={120}
@@ -209,11 +191,12 @@ export function ChoisirDestination({
                 if (e.key !== "Enter") return;
                 e.preventDefault();
                 e.stopPropagation();
-                confirmer();
+                void creerLaScene();
               }}
             />
           </label>
-          {droits.role === "adulte" && livre.chapitres.length > 1 ? (
+          {/* Un raccord vers un autre chapitre est l'exception : il ne se montre que demandé (F06.1) */}
+          {adulte && livre.chapitres.length > 1 && ailleurs ? (
             <label className="champ champ--plein">
               <span>Dans le chapitre</span>
               <select className="pchamp" value={ou} onChange={(e) => setOu(e.target.value)}>
@@ -226,41 +209,35 @@ export function ChoisirDestination({
               </select>
             </label>
           ) : null}
-          <p className="cx-aide">
-            La scène est créée vide{ou !== lieu.chapitreId ? ", dans un autre chapitre : c’est un raccord" : ""}. {pourEleve ? "Tu restes" : "Vous restez"} dans cette scène.
+          <p className="cx__cmd">
+            <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void creerLaScene()}>
+              {creer ?? "Créer la scène"}
+            </button>
+            {adulte && livre.chapitres.length > 1 && !ailleurs ? (
+              <button type="button" className="lien cx-discret" onClick={() => setAilleurs(true)}>
+                Dans un autre chapitre…
+              </button>
+            ) : null}
           </p>
         </div>
-      ) : null}
-
-      {issue === "plus-tard" ? (
-        <p className="cx-note cx-note--bloque">
-          <Icone nom="bloque" />
-          <span>
-            Sans destination, ce choix <b>bloquera le PDF définitif</b>. {pourEleve ? "Tu pourras" : "Vous pourrez"} la choisir plus tard, depuis la phrase.
-          </span>
-        </p>
-      ) : null}
+      )}
       {erreur ? (
         <p className="erreur" role="alert">
           {erreur}
         </p>
       ) : null}
-      <p className="cx__cmd">
-        <button
-          type="button"
-          className="btn btn--primaire"
-          disabled={attente || (issue === "existante" && !choisie)}
-          aria-busy={attente || undefined}
-          onClick={confirmer}
-        >
-          {issue === "nouvelle" ? `${deplus.verbe} et la scène` : issue === "plus-tard" && deplus.sansScene ? `${deplus.verbe} sans destination` : deplus.verbe}
-        </button>
-      </p>
+      {seulementExistante ? null : (
+        <p className="cx-autre">
+          <button type="button" className="lien cx-discret" onClick={() => valider({ cible: null })}>
+            Décider plus tard
+          </button>
+        </p>
+      )}
     </fieldset>
   );
 }
 
-function Cadre({ titre, onFermer, children, pied }: { titre: string; onFermer: () => void; children: ReactNode; pied?: ReactNode }) {
+function Cadre({ titre, icone = "choix", onFermer, children, pied }: { titre: string; icone?: NomIcone; onFermer: () => void; children: ReactNode; pied?: ReactNode }) {
   return (
     <section
       className="cx"
@@ -273,7 +250,7 @@ function Cadre({ titre, onFermer, children, pied }: { titre: string; onFermer: (
       }}
     >
       <header className="cx__tete">
-        <Icone nom="choix" />
+        <Icone nom={icone} />
         <h3>{titre}</h3>
         <button type="button" className="btn btn--discret cx__fermer" onClick={onFermer} aria-label="Fermer la fiche">
           <Icone nom="fermer" />
@@ -285,79 +262,97 @@ function Cadre({ titre, onFermer, children, pied }: { titre: string; onFermer: (
   );
 }
 
-/** Créer un choix : libellé, puis destination. La phrase se compose au-dessus pendant la saisie. */
+/**
+ * Créer un choix : une seule question d'abord, « Ce que fait le lecteur » ; la destination se
+ * demande dès qu'il y a un libellé. La phrase se compose pendant la saisie, à sa place dans le
+ * texte. Le lien caché, rare, est un lien discret au bas de la fiche, pour l'adulte seul (F05-AC27).
+ */
 export function FicheNouveauChoix({
-  services, onCreer, onCreerLiaison, onFermer,
+  services, onCreer, onCreerLiaison, onApercu, onFermer,
 }: {
   services: Services; onCreer: (choix: Choix, creee?: SceneCreee) => void;
   /** Créer une liaison cachée, son numéro déjà fixé (F05.1) */
   onCreerLiaison: (liaison: Liaison, numero: number | null) => void;
+  /** Ce que la copie montre dans le texte ; rien pour un lien caché, qui n'y ajoute pas de phrase */
+  onApercu: (apercu: ApercuDeChoix | null) => void;
   onFermer: () => void;
 }) {
-  const { livre, pourEleve, droits } = useCopie();
-  // « Lien caché (énigme) » : une forme de plus, pour l'adulte seul (F05-AC27)
+  const { livre, droits, pourEleve } = useCopie();
+  const idLibelle = useId();
   const [forme, setForme] = useState<"phrase" | "cache">("phrase");
   const [libelle, setLibelle] = useState("");
   const [construction] = useState(() => tirerConstruction(constructionsUtiles(livre.formule, livre.constructions)));
   const champ = useRef<HTMLInputElement>(null);
   const [versDestination, setVersDestination] = useState(false);
+  const propre = libelle.trim();
   useEffect(() => {
-    champ.current?.focus();
-  }, []);
+    if (forme === "phrase") champ.current?.focus();
+  }, [forme]);
+  useEffect(() => {
+    onApercu(forme === "cache" ? null : { libelle: propre, construction });
+  }, [onApercu, forme, propre, construction]);
+  useEffect(() => () => onApercu(null), [onApercu]);
 
+  if (forme === "cache") {
+    return (
+      <Cadre titre="Nouveau lien caché" icone="cle" onFermer={onFermer}>
+        <CreerLienCache services={services} onCreer={onCreerLiaison} />
+        <p className="cx-autre">
+          <button type="button" className="lien cx-discret" onClick={() => setForme("phrase")}>
+            Retour au choix
+          </button>
+        </p>
+      </Cadre>
+    );
+  }
   return (
-    <Cadre titre="Nouveau choix" onFermer={onFermer} pied={<span className="cx-clavier"><kbd>Entrée</kbd> valide · <kbd>Échap</kbd> ferme</span>}>
-      {droits.role === "adulte" && services.fixerNumero ? (
-        <div className="cx-seg cx-seg--forme" role="radiogroup" aria-label="Forme du choix">
-          {(
-            [
-              ["phrase", "Phrase de choix"],
-              ["cache", "Lien caché (énigme)"],
-            ] as const
-          ).map(([valeur, nom]) => (
-            <label key={valeur}>
-              <input type="radio" name="forme" checked={forme === valeur} onChange={() => setForme(valeur)} />
-              <span>{nom}</span>
-            </label>
-          ))}
-        </div>
-      ) : null}
-      {forme === "cache" ? <CreerLienCache services={services} onCreer={onCreerLiaison} /> : <>
-      <p className="phrase-choix phrase-choix--apercu" aria-hidden="true">
-        <span className="recit">{libelle.trim() ? phraseDeChoix(libelle.trim(), "…", livre.formule, construction) : <span className="cx-fantome">La phrase du choix se compose ici.</span>}</span>
-      </p>
-      <label className="champ champ--plein">
-        <span>Ce que fait le lecteur</span>
+    <Cadre titre="Nouveau choix" onFermer={onFermer}>
+      <div className="champ champ--plein">
+        <span className="cx-question">
+          <label htmlFor={idLibelle}>Ce que fait le lecteur</label>
+          <Bulle question="Que faut-il écrire ici ?">
+            Une action, de préférence : « Prendre la clé », « Faire demi-tour ». La phrase du choix s’écrit toute seule dans le texte ;{" "}
+            {pourEleve ? "tu pourras" : "vous pourrez"} la personnaliser ensuite.
+          </Bulle>
+        </span>
         <input
+          id={idLibelle}
           ref={champ}
           className="pchamp"
           type="text"
           maxLength={200}
           value={libelle}
-          placeholder="Par exemple : Traverser le pont"
+          placeholder={`Par exemple : ${LIBELLE_EXEMPLE}`}
           onChange={(e) => setLibelle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
             e.stopPropagation();
-            if (libelle.trim()) setVersDestination(true);
+            if (propre) setVersDestination(true);
           }}
         />
-        <span className="cx-aide">De préférence une action : « Prendre la clé », « Faire demi-tour ».</span>
-      </label>
-      <ChoisirDestination
-        key={String(versDestination)}
-        libelle={libelle}
-        services={services}
-        focus={versDestination}
-        deplus={{ verbe: "Créer le choix", sansScene: true }}
-        valider={({ cible, creee }) => {
-          if (!libelle.trim()) return champ.current?.focus();
-          onCreer({ type: "choix", id: nouvelId(), auto: true, libelle: libelle.trim(), construction, cible, children: [{ text: "" }] }, creee);
-        }}
-      />
-      {pourEleve ? null : <p className="cx-aide">La phrase s’écrit toute seule ; vous pourrez la personnaliser ensuite.</p>}
-      </>}
+      </div>
+      {propre ? (
+        <ChoisirDestination
+          key={String(versDestination)}
+          libelle={libelle}
+          services={services}
+          focus={versDestination}
+          creer="Créer le choix et la scène"
+          valider={({ cible, creee }) => onCreer({ type: "choix", id: nouvelId(), auto: true, libelle: propre, construction, cible, children: [{ text: "" }] }, creee)}
+        />
+      ) : null}
+      {droits.role === "adulte" && services.fixerNumero ? (
+        <p className="cx-autre">
+          <button type="button" className="lien cx-discret" onClick={() => setForme("cache")}>
+            <Icone nom="cle" />
+            Lien caché (énigme)…
+          </button>
+          <Bulle question="Qu’est-ce qu’un lien caché ?">
+            Le lecteur trouve lui-même où poursuivre, en résolvant une énigme que vous écrivez dans le texte. Aucune phrase de choix ne s’y ajoute.
+          </Bulle>
+        </p>
+      ) : null}
     </Cadre>
   );
 }
@@ -394,8 +389,7 @@ function CreerLienCache({ services, onCreer }: { services: Services; onCreer: (l
   if (!cible) {
     return (
       <>
-        <p className="cx-aide">Le lecteur trouve lui-même où poursuivre, en résolvant une énigme : aucune phrase ne s’ajoute au texte.</p>
-        <ChoisirDestination libelle="" services={services} seulementExistante focus deplus={{ verbe: "Choisir cette scène", sansScene: false }} valider={({ cible: choisie }) => setCible(choisie)} />
+        <ChoisirDestination libelle="" services={services} seulementExistante focus valider={({ cible: choisie }) => setCible(choisie)} />
       </>
     );
   }
@@ -599,7 +593,7 @@ export function FicheReglagesChoix({
             services={services}
             focus
             actuelle={renvois.find((r) => r.id === change)?.cible}
-            deplus={{ verbe: "Changer la destination", sansScene: false }}
+            creer="Créer la scène et y mener"
             valider={({ cible }) => {
               if (auto) gestes.regler({ cible });
               else gestes.reglerRenvoi(change, { cible });
@@ -650,7 +644,7 @@ export function FicheReglagesChoix({
                 libelle={bloc.libelle}
                 services={services}
                 focus
-                deplus={{ verbe: "Insérer le renvoi", sansScene: true }}
+                creer="Créer la scène et insérer le renvoi"
                 valider={(destination) => {
                   gestes.insererRenvoi(destination);
                   setChange(null);

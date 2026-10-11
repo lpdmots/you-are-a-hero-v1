@@ -1225,16 +1225,22 @@ Sans retour du porteur à ce stade ; leurs captures ne sont pas faites.
 - **Lien caché :** la zone « Hors du récit · jamais imprimé » est sous le
   texte, hors du cadre où l'on écrit ; chaque lien y est une ligne en
   pointillé, avec « Régler ce lien ». Dans la fiche de création, la forme se
-  choisit en deux segments, « Phrase de choix » et « Lien caché (énigme) ».
+  choisissait en deux segments, « Phrase de choix » et « Lien caché
+  (énigme) » ; depuis le 11 octobre, c'est un lien discret au bas de la
+  fiche ([Nouveau choix](#nouveau-choix-en-étapes-11-octobre-2026)).
 - **Image, « Où mettre cette image ? » :** retouché le 10 octobre 2026 à
   la demande du porteur, qui ne trouvait pas clairs deux boutons suivis
   d'une phrase. Deux cartes côte à côte, chacune avec un petit schéma où
   l'image choisie se voit à sa place — entre des lignes de texte pour « Dans
   le texte », petite dans une ligne pour « Sur la ligne » —, son nom et une
   ligne d'explication.
-- **Menu des commandes (« / ») :** sur les dernières lignes, le cadre du
-  texte s'allonge pour le contenir, sans déplacer ce qui est écrit ; le
-  porteur l'avait vu sortir du cadre.
+- **Menu des commandes (« / ») :** d'abord coupé par le cadre du texte sur
+  les dernières lignes, puis, le 10 octobre, contenu dans un cadre qui
+  s'allongeait. Le porteur n'en veut pas : depuis le 11 octobre il sort du
+  cadre et s'ouvre du côté où la fenêtre a la place
+  ([Menus qui tiennent dans la fenêtre](#menus-qui-tiennent-dans-la-fenêtre-11-octobre-2026)).
+  « Action de jeu » y dit « Ce que le lecteur fait sur sa feuille
+  d'aventure », le nom de la feuille dans tout l'outil.
 - **Image, réglages :** les segments « Petite », « Moyenne », « Pleine largeur » et
   « Pleine page », puis le pourcentage ; « Légende » avant « Ce que montre
   l'image », parce qu'elle se voit ; une image en pleine page porte dans la
@@ -1275,11 +1281,13 @@ sans retour du porteur à ce stade :
 - **Dans une colonne étroite,** les segments d'une fiche se rangent deux par
   deux, à largeur égale, et l'aperçu d'une image passe au-dessus de ses
   commandes.
-- **Repère dans le texte :** le bloc réglé garde son entourage canard ; un
-  trait canard montre où se posera la phrase d'un choix en cours de
-  création, le même que pour un bloc qu'on tire.
+- **Repère dans le texte :** le bloc réglé garde son entourage canard ; la
+  phrase d'un choix en cours de création se lit à sa place, en attente
+  ([Nouveau choix](#nouveau-choix-en-étapes-11-octobre-2026)) ; d'abord un
+  simple trait canard, le même que pour un bloc qu'on tire.
 - **Listes au curseur :** les objets et les formules d'action s'ouvrent sous
-  la ligne du curseur, par-dessus le texte, dans le cadre du menu « / ». Les
+  la ligne du curseur, ou au-dessus quand la fenêtre n'a pas la place
+  dessous, par-dessus le texte, dans le cadre du menu « / ». Les
   objets : un champ « Chercher un objet », la liste (nom dans la voix du
   récit, description en petit), puis « Créer un nouvel objet » pour l'adulte
   ou « Liste tenue par Mme Laurent » pour l'élève. Les formules :
@@ -1299,6 +1307,82 @@ le panneau ; panneau ouvert, un bloc se déplace par son repère de prise, Alt
 et une flèche demandant le curseur dans le texte ; l'aide sur l'accord d'un
 nom d'objet (« de la clé », « sa clé »), qui figurait dans l'ancienne fiche,
 n'est plus affichée.
+
+#### Menus qui tiennent dans la fenêtre (11 octobre 2026)
+
+Demandé par le porteur, d'abord pour le menu « / » et la liste des objets,
+puis pour tous les menus, capture du menu d'une carte de chapitre coupé par
+le bas de la fenêtre à l'appui : un menu s'ouvre vers le bas ou vers le
+haut selon la place que laisse la fenêtre ; il ne sort pas de l'écran et ne
+demande pas de faire défiler la page pour le lire. Il suggère un paquet
+(« shadcn ? »). Retenu : Floating UI, le moteur de placement de shadcn, sans
+shadcn lui-même, qui amènerait Tailwind et ses propres composants à côté des
+styles de l'application ([architecture](architecture.md#réalisation-de-létape-3-10-octobre-2026)).
+
+- **Règle de forme, pour tout ce qui s'ouvre près d'un repère** — menu à
+  trois points, menu « qui s'en occupe », menu « / », listes d'objets et de
+  formules, bulle d'un « i » : du côté habituel s'il y a la place, sinon de
+  l'autre ; ramené dans la fenêtre s'il dépasse sur un côté ; jamais sous la
+  barre du haut. Si ni le dessus ni le dessous n'ont la place, la liste
+  défile en elle-même, pas la page.
+- **Le côté retenu à l'ouverture est gardé** tant que le menu reste ouvert :
+  il ne saute pas quand la liste raccourcit pendant qu'on y cherche.
+- **Dans la copie,** le menu « / » et la liste des objets s'ouvrent sous la
+  ligne du curseur, et non sous le paragraphe entier ; ils sortent du cadre
+  du texte s'il le faut, sans l'allonger. Le menu « / » tient sur une ligne
+  par commande, « Entrée » ne se lisant que sur la ligne qu'elle lancera.
+- **À faire quand ils se construisent :** tout nouveau menu passe par le
+  même placement (`src/composants/flottant.ts`).
+
+#### Nouveau choix, en étapes (11 octobre 2026)
+
+À l'essai, le porteur trouve la fiche « Nouveau choix » trop compliquée :
+trop de texte, tout à l'écran d'un coup, le lien caché mis en avant alors
+qu'il est exceptionnel, trois segments qui passent sur deux lignes
+(« moche »). Il demande que les informations viennent au fur et à mesure,
+et suggère des « i » pour alléger. Reprise le même jour, en local ; les
+règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène).
+
+- **Une question d'abord :** la fiche s'ouvre sur « Ce que fait le
+  lecteur », seul, avec son exemple dans le champ. « Où mène ce choix ? »
+  n'apparaît qu'une fois un libellé saisi.
+- **Deux issues, sur une ligne :** « Scène existante » et « Nouvelle
+  scène », à largeur égale. Scène existante : un champ de recherche et la
+  liste, sans menu des chapitres (sans recherche, les scènes du chapitre ;
+  avec, tout le livre) ; un clic sur une scène, ou Entrée, crée le choix,
+  sans bouton de plus. Nouvelle scène : le titre, prérempli du libellé, et
+  « Créer le choix et la scène » ; « Dans un autre chapitre… » ne montre le
+  choix du chapitre que demandé. Sans autre scène à choisir, les segments
+  ne s'affichent pas.
+- **« Décider plus tard »** est un lien discret sous les issues ; il crée le
+  choix aussitôt, et c'est le message qui dit qu'il bloquera le PDF
+  définitif, avec « Annuler ».
+- **« Lien caché (énigme)… »** est un lien discret au bas de la fiche, pour
+  l'adulte seul ; il ouvre « Nouveau lien caché », d'où « Retour au choix »
+  ramène au libellé déjà saisi.
+- **Deux « i » :** « Que faut-il écrire ici ? » à côté de « Ce que fait le
+  lecteur », « Qu'est-ce qu'un lien caché ? » à côté du lien. Les phrases
+  d'aide, le rappel des touches et l'aperçu de la phrase quittent la fiche.
+- **La phrase en attente, dans le texte :** à la place qu'elle prendra,
+  entre deux filets en pointillé canard, sur fond canard pâle, le signe du
+  choix dans la marge et « Nouveau choix » à droite. Elle montre
+  « Traverser le pont : rends-toi au … » en gris tant que rien n'est saisi,
+  puis le libellé tapé, lettre après lettre. Sur une ligne vide, elle en
+  prend la place. Rien pour un lien caché, qui n'ajoute pas de phrase.
+
+**Avis donné au porteur, qui demandait si la destination ne devrait pas
+venir avant la phrase :** non. Le libellé est ce que l'auteur a en tête en
+finissant sa scène, il sert de titre à une scène qui n'existe pas encore,
+et le titre d'une scène existante (« Le pont ») ne donne pas une phrase
+(« Traverser le pont »). Ce qui pesait était l'empilement, pas l'ordre.
+
+**À confirmer par le porteur :** la destination demandée seulement après
+le libellé ; le menu des chapitres retiré de la recherche ; « Décider plus
+tard » qui crée sans avertir avant ; le texte des deux bulles ; le numéro
+laissé à « … » dans la phrase en attente tant que le choix n'est pas créé ;
+sur un écran étroit, où le panneau monte du bas, la phrase en attente peut
+se trouver dessous. Les réglages d'un choix existant gardent leur forme :
+ils n'ont pas été repris.
 
 ### Étape 2 construite (10 octobre 2026)
 

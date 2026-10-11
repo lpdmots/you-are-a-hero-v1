@@ -227,7 +227,7 @@ test.describe("Paragraphe protégé (F06.1) — point 8 du prototype", () => {
     await expect(barre.getByRole("button", { name: /Protéger|Retirer la protection/ })).toHaveCount(0);
     await expect(copie(page).locator(".est-protege, .bloc-prepare, .marge--crochet")).toHaveCount(0);
     await barre.getByRole("button", { name: "Choix", exact: true }).click();
-    await expect(FICHE(page).getByRole("radio", { name: "Lien caché (énigme)" })).toBeVisible();
+    await expect(FICHE(page).getByRole("button", { name: "Lien caché (énigme)…" })).toBeVisible();
   });
 });
 
@@ -275,9 +275,10 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     expect((await a.base.rpc("fixer_numero", { p_scene: a.scenes[3], p_numero: 38 })).error).toBeNull();
     await aller(page, sceneAdulte(a.projet, a.scenes[0]));
     await page.getByRole("button", { name: "Choix", exact: true }).click();
-    await FICHE(page).getByRole("radio", { name: "Lien caché (énigme)" }).check();
+    await FICHE(page).getByRole("button", { name: "Lien caché (énigme)…" }).click();
     // Un lien caché ne mène qu'à une scène qui existe
-    await expect(FICHE(page).getByRole("radio", { name: /Nouvelle scène|À décider plus tard/ })).toHaveCount(0);
+    await expect(FICHE(page).getByRole("radio", { name: "Nouvelle scène" })).toHaveCount(0);
+    await expect(FICHE(page).getByRole("button", { name: "Décider plus tard" })).toHaveCount(0);
     await FICHE(page).getByLabel("Chercher une scène").fill("souche");
     await FICHE(page).getByLabel("Chercher une scène").press("Enter");
     await expect(FICHE(page)).toContainText(/S003 La souche porte le n° \d+\. Il sera fixé/);
@@ -348,12 +349,12 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     await expect(copie(bilal.page).locator(".note-prof")).toHaveCount(0);
     await barre.getByRole("button", { name: "Choix", exact: true }).click();
     await expect(FICHE(bilal.page).getByLabel("Ce que fait le lecteur")).toBeVisible();
-    await expect(FICHE(bilal.page).getByRole("radio", { name: "Lien caché (énigme)" })).toHaveCount(0);
+    await expect(FICHE(bilal.page).getByRole("button", { name: "Lien caché (énigme)…" })).toHaveCount(0);
     // L'enseignante, elle, a les deux
     await aller(page, sceneAdulte(s.projet, s15));
     await expect(page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Note" })).toBeVisible();
     await page.getByRole("button", { name: "Choix", exact: true }).click();
-    await expect(FICHE(page).getByRole("radio", { name: "Lien caché (énigme)" })).toBeVisible();
+    await expect(FICHE(page).getByRole("button", { name: "Lien caché (énigme)…" })).toBeVisible();
     await bilal.contexte.close();
   });
 

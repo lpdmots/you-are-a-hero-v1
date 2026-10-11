@@ -4,6 +4,7 @@ import { BoldPlugin, ItalicPlugin, UnderlinePlugin } from "@platejs/basic-nodes/
 import { createPlatePlugin, ParagraphPlugin, Plate, PlateContent, usePlateEditor } from "platejs/react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
+import { poser } from "@/composants/flottant";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import {
   ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, texteOuvert, tirerConstruction,
@@ -14,7 +15,7 @@ import { nomScene } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
 import { ActionDeJeu, ImageEnBloc, ImageSurLaLigne, NoteDeLEnseignant, Paragraphe, PhraseDeChoix, RenvoiEnLigne } from "./Blocs";
 import {
-  Contexte, estAuCurseur, SANS_JEU, SANS_VOISINES, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee,
+  Contexte, estAuCurseur, SANS_JEU, SANS_VOISINES, type ApercuDeChoix, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee,
   type Services, type Voisines,
 } from "./contexte";
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
@@ -138,16 +139,15 @@ export function Copie({
   const [liaisons, setLiaisons] = useState<Liaison[]>(() => liaisonsDe(texte));
   const liaisonsTenues = useRef(liaisons);
   const [fiche, setFiche] = useState<FicheOuverte | null>(null);
+  const [apercu, setApercu] = useState<ApercuDeChoix | null>(null);
   const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
   const aDesVoisines = voisines.avant.length + voisines.apres.length > 0;
-  const [haut, setHaut] = useState(0);
   const [bandeau, setBandeau] = useState<Bandeau | null>(null);
   const [barre, setBarre] = useState<{ demande: string; choisie: number } | null>(null);
   const [tire, setTire] = useState<{ bloc: string; avant: string | null } | null>(null);
   const [, setTic] = useState(0);
   const zone = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
-  const [rallonge, setRallonge] = useState(0);
   // La scène créée avec le dernier choix : si ce choix est annulé, elle reste, et la copie le dit (F05-AC44)
   const creation = useRef<{ choix: string; scene: SceneCreee } | null>(null);
   const ciblesRelues = useRef(ciblesDe(texte).sort().join());
@@ -336,7 +336,9 @@ export function Copie({
     setBandeau({
       texte: creee
         ? `${nomScene(creee)} est créée${creee.chapitreId !== lieu.chapitreId ? " dans un autre chapitre" : ""}. ${vous ? "Vous restez" : "Tu restes"} dans cette scène.`
-        : "Le choix est ajouté.",
+        : choix.auto && choix.cible === null
+          ? "Le choix est ajouté, sans destination : il bloquera le PDF définitif tant qu’il n’en a pas."
+          : "Le choix est ajouté.",
       annuler: true,
       actions: [{ libelle: "Ajouter un autre choix", faire: () => ouvrirCreation(choix.id) }],
     });
@@ -642,7 +644,7 @@ export function Copie({
   const commandes: Commande[] = [
     ...(peutChoisir ? [{ cle: "choix", nom: "Choix", aide: "Une phrase qui mène à une autre scène", icone: "choix", faire: () => ouvrirCreation() } as Commande] : []),
     // La note est à l'adulte seul, dans les quatre combinaisons (F05-AC52)
-    ...(peutChoisir ? [{ cle: "action", nom: "Action de jeu", aide: `Ce que le lecteur fait sur sa feuille`, icone: "crayon", faire: ouvrirAction } as Commande] : []),
+    ...(peutChoisir ? [{ cle: "action", nom: "Action de jeu", aide: "Ce que le lecteur fait sur sa feuille d’aventure", icone: "crayon", faire: ouvrirAction } as Commande] : []),
     // Les objets servent à la cohérence de tout récit, classique compris (F04-AC26)
     { cle: "objet", nom: "Objet", aide: "Un nom de la liste des objets de l’histoire", icone: "sac", faire: ouvrirObjets },
     // L'enseignant importe et place les images (F10)
@@ -679,7 +681,6 @@ export function Copie({
   const dansLePanneau = fiche && !estAuCurseur(fiche) ? fiche : null;
   const menuOuvert = !!barre && proposees.length > 0 && !fiche;
   const ancre = liste ? blocDe(liste) : menuOuvert ? (blocCourant(e)?.bloc.id ?? null) : null;
-  const auCurseur = menuOuvert || !!liste;
   const panneauOuvert = !!dansLePanneau;
   useEffect(() => {
     onPanneau?.(panneauOuvert);
@@ -693,34 +694,41 @@ export function Copie({
     document.addEventListener("pointerdown", dehors);
     return () => document.removeEventListener("pointerdown", dehors);
   }, [liste]);
+  // La liste se pose sous la ligne du curseur quand elle y écrit — commandes, objets —, sinon
+  // sous son bloc ; au-dessus quand la fenêtre n'a pas la place dessous. Elle sort du cadre du
+  // texte s'il le faut : ni le cadre ni le texte ne bougent
+  const surLaLigne = menuOuvert || liste?.sorte === "objets";
+  const sorte = menuOuvert ? "commandes" : (liste?.sorte ?? null);
   useLayoutEffect(() => {
-    if (!ancre || !zone.current) return;
-    const bloc = zone.current.querySelector<HTMLElement>(`[data-bloc="${ancre}"]`);
-    if (!bloc) return;
-    const mesurer = () => {
-      if (!zone.current) return;
-      const h = bloc.getBoundingClientRect().bottom - zone.current.getBoundingClientRect().top;
-      setHaut((avant) => (Math.abs(avant - h) < 1 ? avant : h));
-      // Sur les dernières lignes, la liste ouverte au curseur dépasserait du cadre : la copie
-      // s'allonge de ce qui manque, sans rien déplacer du texte
-      const menu = menuRef.current;
-      if (menu) {
-        const sansRallonge = zone.current.clientHeight - (Number.parseFloat(zone.current.style.getPropertyValue("--rallonge")) || 0);
-        const horsRecit = zone.current.querySelector<HTMLElement>(".hors-recit");
-        const cadre = sansRallonge - (horsRecit ? horsRecit.offsetHeight + 20 : 0);
-        const manque = Math.max(0, Math.ceil(h + menu.offsetHeight + 16 - cadre));
-        setRallonge((avant) => (avant === manque ? avant : manque));
+    const menu = menuRef.current;
+    const bloc = ancre ? zone.current?.querySelector<HTMLElement>(`[data-bloc="${ancre}"]`) : null;
+    if (!menu || !bloc) return;
+    const ligne = (): DOMRect | null => {
+      try {
+        const r = surLaLigne && e.selection ? e.api.toDOMRange(e.selection)?.getClientRects()[0] : null;
+        return r && r.height > 0 ? r : null;
+      } catch {
+        return null;
       }
     };
-    mesurer();
-    const veille = new ResizeObserver(mesurer);
-    veille.observe(bloc);
-    if (menuRef.current) veille.observe(menuRef.current);
-    return () => veille.disconnect();
-  });
+    return poser(
+      {
+        contextElement: bloc,
+        getBoundingClientRect: () => {
+          const b = bloc.getBoundingClientRect();
+          const l = ligne();
+          const [top, bottom] = l ? [l.top, l.bottom] : [b.top, b.bottom];
+          return { x: b.left, y: top, top, bottom, left: b.left, right: b.right, width: b.width, height: bottom - top };
+        },
+      },
+      menu,
+      { fixe: true, ecart: 4 },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ancre, sorte]);
 
   const contexte: ContexteDeCopie = {
-    livre, droits, lieu, pourEleve, fiche, tire, enseignant, ecrireAvant,
+    livre, droits, lieu, pourEleve, fiche, apercu, tire, enseignant, ecrireAvant,
     ouvrirLiaison: (liaison) => {
       setBandeau(null);
       lacherLeTexte();
@@ -954,7 +962,7 @@ export function Copie({
           )}
         </div>
         {avecVoisines && !autre && lienDeScene ? <ScenesVoisines sens="avant" voisines={voisines.avant} livre={livre} pourEleve={pourEleve} lienDeScene={lienDeScene} /> : null}
-        <div hidden={!!autre} className="copie__zone" ref={zone} style={auCurseur && rallonge ? ({ "--rallonge": `${rallonge}px` } as React.CSSProperties) : undefined}>
+        <div hidden={!!autre} className="copie__zone" ref={zone}>
           <Plate
             editor={editor}
             readOnly={arrete}
@@ -1043,7 +1051,7 @@ export function Copie({
             />
           </Plate>
           {menuOuvert ? (
-            <div className="slash" style={{ top: haut }} role="listbox" aria-label="Commandes" ref={menuRef}>
+            <div className="slash flottant" role="listbox" aria-label="Commandes" ref={menuRef}>
               {proposees.map((c, i) => (
                 <button key={c.cle} type="button" role="option" aria-selected={i === barre.choisie} onMouseDown={(ev) => ev.preventDefault()} onClick={() => lancerCommande(c)}>
                   <Icone nom={c.icone} />
@@ -1057,7 +1065,7 @@ export function Copie({
             </div>
           ) : null}
           {liste ? (
-            <div className="copie__liste" style={{ top: haut }} ref={menuRef}>
+            <div className="copie__liste flottant" ref={menuRef}>
               {liste.sorte === "objets" ? (
                 <ListeObjets
                   jeu={jeu}
@@ -1083,7 +1091,7 @@ export function Copie({
         {dansLePanneau && !autre ? (
           <Reglages panneau={panneau}>
             {dansLePanneau.sorte === "creation" ? (
-              <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onFermer={fermer} />
+              <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onApercu={setApercu} onFermer={fermer} />
             ) : dansLePanneau.sorte === "poser-image" ? (
               <FichePoserImage services={services} surLaLigne={admetUneImage()} onPoser={poserImage} onFermer={fermer} />
             ) : dansLePanneau.sorte === "image" && imageReglee ? (

@@ -74,6 +74,33 @@ test("F03-AC21 — la carte ouvre le chapitre ; son menu et celui du bandeau por
   }
 });
 
+test("un menu à trois points s'ouvre sous son bouton, ou au-dessus quand la fenêtre n'a pas la place dessous : il reste entier à l'écran, sans défilement", async ({ page }) => {
+  const { projet } = await passeursDeBrume(page);
+  await aller(page, `/projet/${projet}/plan`);
+  const bouton = menuChapitre(page, "La lisière");
+  const liste = carte(page, "La lisière").locator(".menu__liste");
+  await bouton.scrollIntoViewIfNeeded();
+  const b = (await bouton.boundingBox())!;
+  // La fenêtre s'arrête juste sous le bouton
+  await page.setViewportSize({ width: 1366, height: Math.round(b.y + b.height + 30) });
+  await bouton.click();
+  await expect(liste).toHaveAttribute("data-cote", "top");
+  const dessus = (await liste.boundingBox())!;
+  const bas = (await bouton.boundingBox())!;
+  expect(dessus.y + dessus.height).toBeLessThanOrEqual(bas.y);
+  expect(dessus.y).toBeGreaterThanOrEqual(0);
+  await page.keyboard.press("Escape");
+  await expect(liste).toHaveCount(0);
+
+  // Avec la place dessous, il s'ouvre dessous
+  await page.setViewportSize({ width: 1366, height: 1400 });
+  await bouton.click();
+  await expect(liste).toHaveAttribute("data-cote", "bottom");
+  const dessous = (await liste.boundingBox())!;
+  expect(dessous.y).toBeGreaterThanOrEqual((await bouton.boundingBox())!.y);
+  expect(dessous.y + dessous.height).toBeLessThanOrEqual(1400);
+});
+
 test("F03-AC16 — « Ajouter une scène » donne une scène vide munie de sa référence, sans titre ni consigne", async ({ page }) => {
   const { projet } = await passeursDeBrume(page);
   await aller(page, `/projet/${projet}/plan`);

@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+import { poser } from "./flottant";
 import { Icone } from "./Icone";
 
 /**
  * Menu à trois points : les commandes d'une partie, d'un chapitre, d'une scène. Il se
- * ferme quand on choisit, quand on clique ailleurs et par « Échap ».
+ * ferme quand on choisit, quand on clique ailleurs et par « Échap ». Sa liste s'ouvre sous
+ * le bouton, ou au-dessus quand la fenêtre n'a pas la place dessous.
  */
 export function Menu({
   libelle, discret, bouton, agauche, children,
@@ -21,6 +23,13 @@ export function Menu({
 }) {
   const [ouvert, setOuvert] = useState(false);
   const ref = useRef<HTMLDetailsElement>(null);
+  const liste = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const bouton = ref.current?.querySelector("summary");
+    if (!ouvert || !bouton || !liste.current) return;
+    return poser(bouton, liste.current, { cote: agauche ? "bottom-start" : "bottom-end" });
+  }, [ouvert, agauche]);
 
   useEffect(() => {
     if (!ouvert) return;
@@ -42,7 +51,7 @@ export function Menu({
 
   return (
     <details
-      className={`menu${discret ? " menu--discret" : ""}${bouton ? " menu--mots" : ""}${agauche ? " menu--gauche" : ""}`}
+      className={`menu${discret ? " menu--discret" : ""}${bouton ? " menu--mots" : ""}`}
       ref={ref}
       open={ouvert}
       onToggle={(e) => setOuvert(e.currentTarget.open)}
@@ -50,7 +59,7 @@ export function Menu({
       <summary className="btn" aria-label={libelle} title={bouton ? undefined : libelle}>
         {bouton ?? <Icone nom="points" />}
       </summary>
-      {ouvert ? <div className="menu__liste">{children(() => setOuvert(false))}</div> : null}
+      {ouvert ? <div className="menu__liste flottant" ref={liste}>{children(() => setOuvert(false))}</div> : null}
     </details>
   );
 }

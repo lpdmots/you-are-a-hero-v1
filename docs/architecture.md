@@ -491,13 +491,29 @@ plus dans la copie : ce qui a des champs s'ouvre dans un panneau que la page
 tient à droite du texte, et que la copie remplit par un portail React
 (`panneau`, `onPanneau`) ; sans panneau fourni, la fiche se rend sous la
 copie. Les listes courtes (commandes, objets, formules) sont dessinées
-par-dessus le texte, sous le bloc du curseur, et le cadre du texte s'allonge
-si elles dépassent. Le texte ne contient donc que du texte, une fiche
-ouverte ne s'enregistre jamais, et rien n'est mesuré pour lui garder une
-place. La fiche se referme quand une opération d'écriture arrive alors que
+par-dessus le texte, sous la ligne du curseur ou sous le bloc, hors du
+cadre de la copie s'il le faut. Le texte ne contient donc que du texte, une
+fiche ouverte ne s'enregistre jamais, et rien n'est mesuré pour lui garder
+une place. La phrase de choix en attente, pendant qu'on la crée, n'est pas
+dans le texte non plus : le bloc après lequel elle se posera la dessine à
+sa suite, d'après ce que la fiche lui dit de la saisie. La fiche se referme quand une opération d'écriture arrive alors que
 le curseur est dans le texte : ce que la fiche change elle-même, ou la
 commande qui l'ouvre, se fait curseur lâché et ne compte pas ; un bloc
 déplacé n'est pas une écriture.
+
+**Placement des menus.** `@floating-ui/dom`, version figée, derrière une
+seule fonction, `poser` (`src/composants/flottant.ts`) : elle place un menu,
+une liste ou une bulle près de son repère, du côté où la fenêtre a la place,
+le ramène dans la fenêtre, limite sa hauteur en dernier recours, et garde le
+côté retenu tant qu'il reste ouvert. Le menu à trois points et la bulle se
+placent dans leur parent ; les listes de la copie en position fixe, parce
+que le cadre de la copie coupe ce qui en dépasse, avec pour repère la ligne
+du curseur, que l'éditeur sait situer même après avoir lâché le curseur.
+Rien n'est déplacé hors de son parent dans la page : les styles et les
+parcours retrouvent un menu là où il était. Alternatives écartées : shadcn
+ou Radix, qui amènent leurs composants et, pour le premier, Tailwind, à côté
+des styles de l'application ; un calcul maison, que la demande d'une règle
+pour tous les menus ne justifiait plus.
 
 **Presse-papiers.** Ce qui part porte trois formes : les blocs de la copie,
 l'origine (scène, projet, coupé ou copié) et un texte simple où chaque phrase

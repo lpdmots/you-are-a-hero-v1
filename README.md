@@ -34,6 +34,12 @@ entier : elle n'est pas terminée. Le 11 octobre 2026, sur son premier
 retour, les réglages d'un bloc quittent le texte pour un panneau à droite
 ([F05.2](docs/specifications.md#f05-panneau),
 [design](docs/design.md#panneau-des-réglages-à-droite-du-texte-11-octobre-2026)).
+Le même jour commence sa revue écran par écran : les menus s'ouvrent du
+côté où la fenêtre a la place, dans toute l'application
+([design](docs/design.md#menus-qui-tiennent-dans-la-fenêtre-11-octobre-2026)),
+et « Nouveau choix » se remplit en étapes, la phrase se lisant en attente
+dans le texte
+([design](docs/design.md#nouveau-choix-en-étapes-11-octobre-2026)).
 Voir le
 [plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix), qui dit
 ce qui reste et dans quel ordre,

@@ -606,10 +606,6 @@
   height: 14px;
   color: var(--graphite-3);
 }
-.menu--gauche .menu__liste {
-  left: 0;
-  right: auto;
-}
 .qui__libre {
   padding-left: 6px;
   color: var(--graphite-2);

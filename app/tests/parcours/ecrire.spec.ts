@@ -130,7 +130,8 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     await attendreEnBase(a.scenes[0], "Il entend un cri.");
     const enBase = await sceneEnBase(a.scenes[0]);
     expect(enClair(enBase.texte)).toEqual(["Le héros entre dans la *forêt sombre*.", "Il entend un cri."]);
-    expect(JSON.stringify(enBase.texte)).not.toMatch(/color|font|Comic|22/);
+    // Hors identités des blocs, tirées au hasard : l'une d'elles peut contenir « 22 »
+    expect(JSON.stringify(enBase.texte.map((b) => b.children))).not.toMatch(/color|font|Comic|22/);
     // À l'écran non plus : la copie garde sa propre police et sa couleur
     const style = await copie(page).locator("p").first().evaluate((p) => [...p.querySelectorAll("*")].map((n) => (n as HTMLElement).style.color + (n as HTMLElement).style.fontSize).join(""));
     expect(style).toBe("");

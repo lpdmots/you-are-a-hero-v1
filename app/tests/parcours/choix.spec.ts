@@ -83,25 +83,76 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     expect((await sql<{ o: boolean }>("select ordre_etabli_le is not null as o from projets where id = $1", [l.projet]))[0].o).toBe(true);
   });
 
-  test("le menu des commandes, ouvert sur la dernière ligne, tient dans le cadre du texte, qui s'allonge sans déplacer ce qui est écrit ; refermé, le cadre reprend sa hauteur", async ({ page }) => {
+  test("le menu des commandes s'ouvre sous la ligne du curseur, sans allonger le cadre du texte ni déplacer ce qui est écrit ; quand la fenêtre n'a pas la place dessous, il s'ouvre au-dessus, et reste entier à l'écran", async ({ page }) => {
     const l = await auteur(page);
     await deuxParagraphes(page, l);
     const cadre = copie(page);
     const avant = (await cadre.boundingBox())!;
-    const premier = (await cadre.locator("p").first().boundingBox())!;
+    const ligne = (await cadre.locator("p").nth(1).boundingBox())!;
     await selectionner(page, { bloc: 1, offset: 38 });
     await page.keyboard.type(" /");
     const menu = page.locator(".slash");
     await expect(menu.getByRole("option")).toHaveCount(5);
-    await expect.poll(async () => {
-      const [m, c] = [(await menu.boundingBox())!, (await cadre.boundingBox())!];
-      return m.y >= c.y && m.y + m.height <= c.y + c.height && m.x >= c.x && m.x + m.width <= c.x + c.width;
-    }).toBe(true);
-    // Le texte n'a pas bougé
-    expect((await cadre.locator("p").first().boundingBox())!.y).toBeCloseTo(premier.y, 0);
+    await expect(menu).toHaveAttribute("data-cote", "bottom");
+    const dessous = (await menu.boundingBox())!;
+    expect(dessous.y).toBeGreaterThanOrEqual(ligne.y + ligne.height - 2);
+    expect(dessous.y + dessous.height).toBeLessThanOrEqual(768);
+    // Ni le cadre ni le texte n'ont bougé
+    expect(Math.round((await cadre.boundingBox())!.height)).toBe(Math.round(avant.height));
+    expect((await cadre.locator("p").nth(1).boundingBox())!.y).toBeCloseTo(ligne.y, 0);
     await page.keyboard.press("Escape");
     await expect(menu).toHaveCount(0);
-    await expect.poll(async () => Math.round((await cadre.boundingBox())!.height)).toBe(Math.round(avant.height));
+
+    // Une fenêtre trop basse pour le montrer sous la ligne : il s'ouvre au-dessus
+    const hauteur = Math.round(ligne.y + ligne.height + dessous.height / 2);
+    await page.setViewportSize({ width: 1366, height: hauteur });
+    await page.keyboard.press("Backspace");
+    await page.keyboard.type("/");
+    await expect(menu).toHaveAttribute("data-cote", "top");
+    const dessus = (await menu.boundingBox())!;
+    expect(dessus.y + dessus.height).toBeLessThanOrEqual(ligne.y + 2);
+    expect(dessus.y).toBeGreaterThanOrEqual(0);
+    expect(Math.round((await cadre.boundingBox())!.height)).toBe(Math.round(avant.height));
+  });
+
+  test("F05-AC55 — la phrase en attente : pendant la saisie d'un choix, elle se lit à sa place dans le texte, avec un libellé d'exemple puis celui qu'on tape ; le panneau ne demande la destination qu'une fois le libellé saisi ; rien d'elle ne s'enregistre", async ({ page }) => {
+    const l = await auteur(page);
+    await deuxParagraphes(page, l);
+    await selectionner(page, { bloc: 0, offset: 5 });
+    await page.keyboard.press("End");
+    await page.keyboard.type(" /cho");
+    await page.keyboard.press("Enter");
+    const attendue = copie(page).locator(".choix-attendu");
+    // Après le paragraphe du curseur, avant le suivant
+    await expect(copie(page).locator("p").first().locator(".choix-attendu")).toHaveCount(1);
+    await expect(attendue).toContainText("Traverser le pont : rends-toi au ….");
+    await expect(FICHE(page).getByText("Où mène ce choix ?")).toHaveCount(0);
+    await expect(FICHE(page).getByRole("radio")).toHaveCount(0);
+    await FICHE(page).getByLabel("Ce que fait le lecteur").fill("Suivre la lumière");
+    await expect(attendue).toContainText("Suivre la lumière : rends-toi au ….");
+    await expect(FICHE(page).getByRole("radio", { name: "Scène existante" })).toBeChecked();
+    await expect(FICHE(page).getByRole("radio", { name: "Nouvelle scène" })).toBeVisible();
+    await expect(PROPOSEES(page)).toHaveCount(3);
+    await expect(PHRASES(page)).toHaveCount(0);
+    // L'aide ne se lit que demandée : un « i » à côté de la question
+    await expect(FICHE(page)).not.toContainText("De préférence");
+    await FICHE(page).getByRole("button", { name: "Que faut-il écrire ici ?" }).click();
+    await expect(FICHE(page).getByRole("note")).toContainText("La phrase du choix s’écrit toute seule dans le texte ; vous pourrez la personnaliser ensuite.");
+    await page.keyboard.press("Escape");
+    await expect(FICHE(page).getByRole("note")).toHaveCount(0);
+    await expect(FICHE(page).getByRole("button", { name: "Qu’est-ce qu’un lien caché ?" })).toBeVisible();
+    // Le lien caché : une forme rare, dans un lien discret ; il n'ajoute pas de phrase au texte
+    await FICHE(page).getByRole("button", { name: "Lien caché (énigme)…" }).click();
+    await expect(attendue).toHaveCount(0);
+    await FICHE(page).getByRole("button", { name: "Retour au choix" }).click();
+    await expect(FICHE(page).getByLabel("Ce que fait le lecteur")).toHaveValue("Suivre la lumière");
+    await expect(attendue).toHaveCount(1);
+    await page.keyboard.press("Escape");
+    await expect(attendue).toHaveCount(0);
+    await attendreEnregistre(page);
+    const apres = await sceneEnBase(l.lisiere.scenes[0]);
+    expect(apres.texte.map((b) => b.type)).toEqual(["p", "p"]);
+    expect(JSON.stringify(apres.texte)).not.toMatch(/Suivre la lumière|Traverser le pont/);
   });
 
   test("F05-AC14 — par le bouton, sans curseur dans le texte, la phrase s'ajoute après le dernier paragraphe", async ({ page }) => {
@@ -168,9 +219,8 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     await deuxParagraphes(page, l);
     await page.getByRole("button", { name: "Choix", exact: true }).click();
     await FICHE(page).getByLabel("Ce que fait le lecteur").fill("Faire demi-tour");
-    await FICHE(page).getByRole("radio", { name: "À décider plus tard" }).check();
-    await expect(FICHE(page)).toContainText("bloquera le PDF définitif");
-    await FICHE(page).getByRole("button", { name: "Créer le choix sans destination" }).click();
+    await FICHE(page).getByRole("button", { name: "Décider plus tard" }).click();
+    await expect(BANDEAU(page)).toContainText("Le choix est ajouté, sans destination : il bloquera le PDF définitif tant qu’il n’en a pas.");
     await attendreEnregistre(page);
     await expect(PHRASES(page).locator(".renvoi-copie--vide")).toHaveCount(1);
     await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Sans destination");
@@ -837,7 +887,7 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
     await FICHE(bilal.page).getByLabel("Ce que fait le lecteur").press("Enter");
     // Même avec la lecture ouverte, seules les scènes de « La lisière » sont proposées
     await FICHE(bilal.page).getByRole("button", { name: "Changer…" }).click();
-    await expect(FICHE(bilal.page)).toContainText("Tu choisis parmi les scènes de ton chapitre.");
+    await expect(FICHE(bilal.page).getByPlaceholder("Chercher dans ton chapitre")).toBeVisible();
     await FICHE(bilal.page).getByLabel("Chercher une scène").fill("autel");
     await expect(PROPOSEES(bilal.page)).toHaveCount(0);
     await FICHE(bilal.page).getByRole("button", { name: "Fermer la fiche" }).click();

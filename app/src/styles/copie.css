@@ -83,8 +83,7 @@
   gap: 0.75em;
   /* Slate pose sa propre hauteur tant que la copie est vide */
   min-height: 260px !important;
-  /* « --rallonge » : la place que prend une liste ouverte au curseur sur les dernières lignes */
-  padding: 26px 34px calc(30px + var(--rallonge, 0px)) var(--gout, 64px);
+  padding: 26px 34px 30px var(--gout, 64px);
   outline: none;
   font-family: var(--f-recit);
   font-size: 1.2rem;
@@ -373,7 +372,7 @@
 @media (max-width: 720px) {
   .copie__texte,
   .page--eleve .copie__texte {
-    padding: 18px 18px calc(22px + var(--rallonge, 0px)) 40px;
+    padding: 18px 18px 22px 40px;
     font-size: 1.12rem;
   }
   .copie__texte::before {
@@ -431,7 +430,7 @@
 }
 .bulle__texte {
   position: absolute;
-  bottom: calc(100% + 6px);
+  top: 0;
   left: 0;
   z-index: 20;
   display: grid;
@@ -573,18 +572,61 @@
 .phrase-choix.est-tire {
   opacity: 0.4;
 }
-.phrase-choix--apercu {
-  padding: 8px 0;
-  border-block-style: dashed;
-  border-color: var(--canard);
+/* La phrase de choix qu'on est en train de créer, à sa place dans le texte : entre deux filets
+   en pointillé canard, elle se compose pendant la saisie dans le panneau */
+.choix-attendu {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 16px;
+  margin: 0.75em -10px 0;
+  padding: 9px 10px;
+  border-block: 1.5px dashed var(--canard);
+  background: var(--canard-pale);
   font-family: var(--f-recit);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 400;
+  line-height: 1.6;
+  text-align: left;
+  cursor: default;
+  user-select: none;
 }
-.cx-fantome {
+.page--eleve .choix-attendu {
+  font-size: 1.28rem;
+}
+.choix-attendu .recit {
+  max-width: 62ch;
+  font-style: italic;
+}
+.choix-attendu--exemple .recit {
   color: var(--graphite-3);
+}
+.choix-attendu .marge {
+  top: 12px;
+  left: calc(var(--axe) - var(--gout) - 1px);
+  color: var(--canard);
+}
+.choix-attendu__mot {
+  margin-left: auto;
+  color: var(--canard);
   font-family: var(--f-ui);
-  font-size: var(--t-s);
-  font-style: normal;
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+/* Sur une ligne vide, la phrase la remplacera : elle en prend déjà la place */
+.choix-attendu--remplace {
+  margin-top: -1.75em;
+}
+.phrase-choix > .choix-attendu {
+  margin-block: 0 -1px;
+}
+.note-prof > .choix-attendu {
+  margin: 10px -12px -10px;
+}
+.renvoi-copie--attendu {
+  color: var(--graphite-3);
+  background: var(--feuille);
 }
 .renvoi-copie {
   padding: 0 0.3em;
@@ -841,9 +883,6 @@
 .copie__texte--lu > .lien-cache--lu {
   max-width: none;
   font-family: var(--f-ui);
-}
-.cx-seg--forme {
-  margin-bottom: 4px;
 }
 .cx-numero {
   display: grid;
@@ -1337,12 +1376,15 @@
 
 /* « / » : les commandes du texte */
 .slash {
-  position: absolute;
-  left: var(--gout);
-  z-index: 40;
-  width: min(340px, calc(100% - var(--gout) - 12px));
-  margin-top: 4px;
+  /* Hors du cadre du texte s'il le faut : sous la ligne du curseur, ou au-dessus (flottant.ts) */
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 25;
+  width: min(520px, calc(100vw - 16px));
   padding: 4px;
+  overflow-y: auto;
+  scrollbar-width: thin;
   border-radius: 10px;
   background: var(--feuille);
   box-shadow:
@@ -1378,6 +1420,10 @@
 .slash .ic {
   color: var(--canard);
 }
+/* « Entrée » ne se lit que sur la ligne qu'elle lancera */
+.slash button:not([aria-selected="true"]) kbd {
+  visibility: hidden;
+}
 kbd {
   padding: 1px 5px;
   border-radius: 4px;
@@ -1389,11 +1435,11 @@ kbd {
 
 /* Une liste courte, ouverte au curseur comme le menu des commandes : les objets, les formules */
 .copie__liste {
-  position: absolute;
-  left: var(--gout);
-  z-index: 40;
-  width: min(360px, calc(100% - var(--gout) - 12px));
-  margin-top: 4px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 25;
+  width: min(360px, calc(100vw - 16px));
 }
 .pop {
   display: grid;
@@ -1543,20 +1589,6 @@ kbd {
     grid-template-columns: minmax(0, 1fr);
   }
 }
-/* Là où se posera la phrase de choix qu'on est en train de créer */
-.attend-un-choix {
-  position: relative;
-}
-.attend-un-choix::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: -0.45em;
-  left: 0;
-  height: 3px;
-  border-radius: 2px;
-  background: var(--canard);
-}
 /* Écran étroit : pas de colonne de droite, le panneau monte du bas de l'écran */
 @media (max-width: 860px) {
   .cote-copie__colle {
@@ -1635,11 +1667,6 @@ kbd {
   align-items: center;
   gap: 8px 10px;
   margin: 0;
-}
-.cx-clavier {
-  margin-left: auto;
-  color: var(--graphite-3);
-  font-size: var(--t-xs);
 }
 .cx .champ--plein input,
 .cx .champ--plein select {
@@ -1756,16 +1783,60 @@ kbd {
   outline: 3px solid var(--canard);
   outline-offset: 2px;
 }
-.cx-recherche {
+.cx-demande {
+  width: 100%;
+  box-sizing: border-box;
+}
+/* Deux issues, à largeur égale, sur une seule ligne */
+.cx-seg--deux {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: stretch;
+}
+.cx-seg--deux span {
+  box-sizing: border-box;
+  width: 100%;
+  justify-content: center;
+  padding-inline: 8px;
+  text-align: center;
+}
+/* Ce qui sert rarement : un lien discret, sous le reste */
+.cx-autre {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  gap: 2px;
+  margin: 0;
 }
-.cx-recherche input {
-  flex: 1 1 220px;
+/* La question d'un champ et son « i » : l'aide ne se lit que demandée */
+.cx-question {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 24px;
 }
-.cx-recherche select {
-  flex: 0 1 220px;
+.cx .bulle__i {
+  width: 24px;
+  height: 24px;
+}
+.cx .bulle__i .ic {
+  width: 16px;
+  height: 16px;
+}
+.cx-discret {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
+.cx-discret:hover,
+.cx-discret:focus-visible {
+  color: var(--canard);
+}
+.cx-discret .ic {
+  width: 1.1em;
+  height: 1.1em;
 }
 .cx-liste {
   max-height: 236px;

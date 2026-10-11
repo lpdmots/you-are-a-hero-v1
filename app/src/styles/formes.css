@@ -725,12 +725,21 @@
   width: 20px;
   height: 20px;
 }
+/* Ce qui s'ouvre près d'un repère — menu, liste, bulle — est placé par « poser » : du côté où
+   la fenêtre a la place. Rien ne se montre avant d'être à sa place. */
+.flottant:not([data-cote]) {
+  opacity: 0;
+}
 .menu__liste {
   position: absolute;
-  right: 0;
-  top: calc(100% + 6px);
+  top: 0;
+  left: 0;
   z-index: 20;
+  width: max-content;
   min-width: 220px;
+  max-width: min(320px, calc(100vw - 16px));
+  overflow-y: auto;
+  scrollbar-width: thin;
   padding: 6px;
   border-radius: 10px;
   background: var(--feuille);

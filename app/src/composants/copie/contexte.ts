@@ -121,6 +121,9 @@ export type FicheOuverte =
   | { sorte: "formule-nouvelle"; pour: { sorte: "action"; apres: string; remplace: boolean } | { sorte: "formules"; bloc: string } }
   | { sorte: "reglages"; bloc: string; confirmer?: "dernier-renvoi"; auClavier?: boolean };
 
+/** La phrase de choix qu'on est en train de créer : la copie la montre à sa place, en attente, pendant la saisie. */
+export type ApercuDeChoix = { libelle: string; construction: Construction };
+
 export type ContexteDeCopie = {
   livre: Livre;
   droits: Droits;
@@ -139,6 +142,7 @@ export type ContexteDeCopie = {
   ouvrirSymbole: (symbole: string) => void;
   ouvrirLiaison: (liaison: string) => void;
   fiche: FicheOuverte | null;
+  apercu: ApercuDeChoix | null;
   ouvrir: (bloc: string) => void;
   /** Le bloc qu'on tire par son repère, et l'endroit où il se poserait */
   tire: { bloc: string; avant: string | null } | null;

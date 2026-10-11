@@ -422,8 +422,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
     le contenu que ces logiciels mettent dans le presse-papiers, dans
     Chromium seulement.
-  - **Tests automatiques :** 443 passent — 104 sur les règles, 155 contre
-    la base locale, 184 parcours joués dans un navigateur —, chacun au
+  - **Tests automatiques :** 445 passent — 104 sur les règles, 155 contre
+    la base locale, 186 parcours joués dans un navigateur —, chacun au
     nom de son critère. Les neuf migrations se rejouent depuis une base vide
     et donnent le schéma de la base locale.
   - **Reprise du 11 octobre 2026 — panneau des réglages :** sur le premier
@@ -434,6 +434,20 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     changement de schéma. Précisions prises en construisant, à lui faire
     confirmer : celles listées dans le
     [design](design.md#panneau-des-réglages-à-droite-du-texte-11-octobre-2026).
+  - **Revue du 11 octobre 2026, première série de retours :** les menus
+    s'ouvrent du côté où la fenêtre a la place, sans sortir de l'écran ni
+    allonger le cadre du texte, règle étendue par le porteur à tous les
+    menus de l'application ; « Nouveau choix » ne demande d'abord que le
+    libellé, puis la destination, le lien caché devenant un lien discret et
+    l'aide passant dans deux « i » ; la phrase du choix se lit en attente à
+    sa place dans le texte pendant la saisie (F05-AC55) ; « feuille
+    d'aventure » dans le menu « / ». Construit en local le même jour, sans
+    changement de schéma ; une dépendance de plus, `@floating-ui/dom`.
+    Formes et précisions à lui faire confirmer :
+    [design](design.md#menus-qui-tiennent-dans-la-fenêtre-11-octobre-2026)
+    et [Nouveau choix](design.md#nouveau-choix-en-étapes-11-octobre-2026).
+    La revue continue écran par écran ; les précisions des six lots restent
+    à lui présenter.
   - **V19 :** les versions de Plate et de Slate sont figées dans
     `package.json` ; les quatorze scénarios du prototype de l'éditeur sont
     réécrits dans `tests/parcours/` (`choix`, `proteger`, `jeu`) et servent
