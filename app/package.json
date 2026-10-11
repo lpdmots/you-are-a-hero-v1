@@ -24,6 +24,7 @@
     "env:local": "tsx scripts/env-local.ts",
     "verifier": "npm run types && npm run lint && npm run test",
     "compte:local": "tsx scripts/compte-local.ts",
+    "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
     "captures": "playwright test --config playwright.captures.config.ts",
     "verifier:production": "tsx scripts/verifier-production.ts",
     "cle:copier": "tsx scripts/presse-papiers.ts",

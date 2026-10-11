@@ -37,6 +37,17 @@ npm run dev             # http://localhost:3000
 Les courriels de la base locale (« Mot de passe oublié ») arrivent dans
 http://127.0.0.1:54324.
 
+Pour essayer l'application sur un vrai récit, « Les passeurs de brume », l'histoire
+de la maquette, se charge dans la base locale pour le compte local : sa classe
+d'essai et ses vingt-cinq élèves fictifs, le carnet de préparation, le plan, les
+consignes, les textes et les choix (contenu dans `scripts/passeurs-de-brume.ts`).
+
+```bash
+npm run histoire:essai                # 40 scènes, dont 15 attendent leur texte
+npm run histoire:essai -- --complet   # toutes les scènes écrites
+npm run histoire:essai -- --refaire   # la retire, avec ce qui y a été écrit, puis la recharge
+```
+
 ## Vérifier
 
 ```bash
