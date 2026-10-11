@@ -1000,44 +1000,6 @@
   line-height: 1.5;
   white-space: pre-wrap;
 }
-/* Le signe devant l'action : quatre petits boutons, celui qui sert en graphite, comme une bascule */
-.action-jeu__signes {
-  display: inline-flex;
-  gap: 2px;
-  padding: 2px;
-  border-radius: 8px;
-  background: var(--feuille-2);
-  box-shadow: inset 0 0 0 1px var(--trait-fort);
-}
-.action-jeu__signes button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  height: 28px;
-  padding: 0;
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--graphite-2);
-  cursor: pointer;
-}
-.action-jeu__signes button:hover {
-  background: var(--feuille);
-  color: var(--graphite);
-}
-.action-jeu__signes button[aria-checked="true"] {
-  background: var(--graphite);
-  color: #fff;
-}
-.action-jeu__signes button:focus-visible {
-  outline: 2px solid var(--canard);
-  outline-offset: 1px;
-}
-.action-jeu__signes .ic {
-  width: 17px;
-  height: 17px;
-}
 .action-jeu.est-active .action-jeu__cadre {
   border-color: var(--canard);
   box-shadow: 0 0 0 1px var(--canard);
@@ -1534,6 +1496,17 @@ kbd {
   font-style: normal;
   line-height: 1.45;
 }
+.pop__ligne {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 8px;
+}
+.pop__ligne .ic {
+  width: 1em;
+  height: 1em;
+  align-self: center;
+  color: var(--graphite-2);
+}
 .pop__filtre {
   width: 100%;
   box-sizing: border-box;
@@ -1862,9 +1835,66 @@ kbd {
   outline: 3px solid var(--canard);
   outline-offset: 2px;
 }
+.cx-chercher {
+  display: flex;
+  gap: 6px;
+}
 .cx-demande {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
   box-sizing: border-box;
+}
+/* Le bouton des chapitres : un cahier, sur lequel repose le menu du système */
+.cx-chapitres {
+  position: relative;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  border-radius: 8px;
+  border: 1px solid var(--trait-fort);
+  background: var(--feuille);
+  color: var(--graphite-2);
+}
+.cx-chapitres:hover {
+  background: var(--feuille-2);
+  color: var(--graphite);
+}
+.cx-chapitres.est-ailleurs {
+  border-color: var(--canard);
+  background: var(--canard-pale);
+  color: var(--canard);
+}
+.cx-chapitres:focus-within {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.cx-chapitres select {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.cx-liste__groupe {
+  padding: 6px 10px 2px;
+  color: var(--graphite-3);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+/* Hors du chapitre : une flèche qui sort, et le nom du chapitre */
+.cx-liste__ailleurs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--t-xs);
+}
+.cx-liste__ailleurs .ic {
+  flex: none;
+  width: 14px;
+  height: 14px;
 }
 /* Deux issues, à largeur égale, sur une seule ligne */
 .cx-seg--deux {

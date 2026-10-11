@@ -196,10 +196,10 @@ export async function ajouterObjetDepuisLaScene(projetId: string, nom: string, d
   if (fait.ok) await e.supabase.from("preparations").update({ rubrique_jeu: true }).eq("projet_id", projetId);
   return fait;
 }
-export async function ajouterFormuleDepuisLaScene(projetId: string, texte: string): Promise<Fait> {
+export async function ajouterFormuleDepuisLaScene(projetId: string, texte: string, signe: string = "crayon"): Promise<Fait> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId)) return echec("Projet inconnu.");
-  const fait = await enregistrerFormule(projetId, null, texte);
+  const fait = await enregistrerFormule(projetId, null, texte, signe);
   if (fait.ok) await e.supabase.from("preparations").update({ rubrique_jeu: true }).eq("projet_id", projetId);
   return fait;
 }

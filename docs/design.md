@@ -1384,6 +1384,23 @@ règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-
   cœur —, celui qui sert en graphite, comme une bascule ; chacun dit son
   usage au survol (« Dé : à lancer »). Le signe choisi remplace le crayon
   dans le cadre de l'action.
+- **Le signe d'une formule,** demandé ensuite (F04-AC41) : dans la
+  préparation, chaque formule se lit précédée de son signe ; les quatre
+  boutons se retrouvent à côté de « Nouvelle formule », dans la correction
+  d'une formule et dans le panneau « Nouvelle formule » de la scène. La
+  liste des formules, dans la scène, montre le signe devant chaque ligne,
+  et l'action en attente le porte.
+- **Scène existante, la liste proposée** (F05-AC56, décidé par le porteur
+  après discussion) : le filtre et, à sa droite, un bouton au signe du
+  cahier qui ouvre un autre chapitre, rangé sous sa partie — le menu du
+  système, posé sur le bouton, qui se teinte de canard quand on n'est plus
+  dans le chapitre de la scène. Dessous, une seule liste : « Proposées
+  d'après l'action », cinq scènes au plus dont trois d'autres chapitres,
+  puis « Ce chapitre ». Ces deux petits titres ne se montrent que s'il y a
+  des propositions, ou si un autre chapitre est ouvert, dont le nom
+  remplace alors « Ce chapitre ». Hors du chapitre : sous le titre de la
+  scène, une flèche qui sort et le nom du chapitre, à la place de
+  « raccord · », qui reste dans la bulle au survol.
 - **Image posée :** la fiche « Image » ne se referme plus sur la pose ; les
   réglages de l'image s'ouvrent à sa place (largeur, légende, « Ce que
   montre l'image »), en bloc comme sur la ligne. Se remettre à écrire les
@@ -1399,7 +1416,9 @@ et le titre d'une scène existante (« Le pont ») ne donne pas une phrase
 (« Traverser le pont »). Ce qui pesait était l'empilement, pas l'ordre.
 
 **À confirmer par le porteur :** la destination demandée seulement après
-le libellé ; le menu des chapitres retiré de la recherche ; « Décider plus
+le libellé ; les quatre signes retenus (crayon, dé, sac, cœur) et leurs
+phrases au survol ; les deux petits titres de la liste et le signe du
+cahier pour les chapitres ; cinq scènes proposées au plus ; « Décider plus
 tard » qui crée sans avertir avant ; le texte des deux bulles ; le numéro
 laissé à « … » dans la phrase en attente tant que le choix n'est pas créé ;
 sur un écran étroit, où le panneau monte du bas, la phrase en attente peut

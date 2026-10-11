@@ -4,7 +4,7 @@ import type { Enseignant } from "./adulte";
 import type { Attribution, Chapitre, ElevePlan, Partie, Plan, Profil, Scene, Supprime } from "@/domaine/recit";
 import { nomScene } from "@/domaine/recit";
 import {
-  estConstruction, estFormuleRenvoi, estRubrique, feuillePropre, type Construction, type EtatPiste, type Preparation,
+  estConstruction, estFormuleRenvoi, estRubrique, feuillePropre, type Construction, type EtatPiste, type Preparation, signeDe,
 } from "@/domaine/preparation";
 
 /**
@@ -144,7 +144,7 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
       .maybeSingle(),
     e.supabase.from("pistes").select("id, rubrique, texte, etat").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("objets").select("id, nom, description").eq("projet_id", projetId).order("cree_le"),
-    e.supabase.from("formules").select("id, texte").eq("projet_id", projetId).order("cree_le"),
+    e.supabase.from("formules").select("id, texte, signe").eq("projet_id", projetId).order("cree_le"),
   ]);
   const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error;
   if (erreur) throw new Error(`Préparation illisible : ${erreur.message}`);
@@ -161,6 +161,6 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
       estRubrique(p.rubrique) ? [{ id: p.id, rubrique: p.rubrique, texte: p.texte, etat: p.etat }] : [],
     ),
     objets: (objets.data ?? []) as { id: string; nom: string; description: string }[],
-    formules: (formules.data ?? []) as { id: string; texte: string }[],
+    formules: ((formules.data ?? []) as { id: string; texte: string; signe: string }[]).map((f) => ({ id: f.id, texte: f.texte, signe: signeDe(f) })),
   };
 });

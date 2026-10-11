@@ -515,6 +515,22 @@ ou Radix, qui amènent leurs composants et, pour le premier, Tailwind, à côté
 des styles de l'application ; un calcul maison, que la demande d'une règle
 pour tous les menus ne justifiait plus.
 
+**Signe d'une action et d'une formule.** Le signe d'une action est une
+propriété de son bloc dans le texte, `signe`, absente pour le crayon ; le
+serveur n'en laisse passer que les quatre connus. Celui d'une formule est
+une colonne de `formules`, `signe`, « crayon » par défaut, que la fonction
+des postes rend avec la formule (`20261011100000_signe_des_formules.sql`).
+Cette migration est appliquée à la vraie base depuis le 11 octobre 2026 :
+elle ne se modifie plus.
+
+**Scènes proposées.** Une fonction du domaine, `scenesProposees`
+(`src/domaine/proposer.ts`), compare les mots du libellé aux titres et aux
+consignes, sans accents ni petits mots, au pluriel près ; un mot que
+portent plus de quatre scènes sur dix est laissé de côté. Elle tourne dans
+la page, sur les scènes que la personne connaît déjà : la consigne des
+scènes est donnée à la page de l'adulte, pas à un poste d'élève, où seuls
+les titres comptent. Aucune demande au serveur, aucune IA.
+
 **Presse-papiers.** Ce qui part porte trois formes : les blocs de la copie,
 l'origine (scène, projet, coupé ou copié) et un texte simple où chaque phrase
 montre le numéro affiché. Au retour, un choix coupé garde son identité, un

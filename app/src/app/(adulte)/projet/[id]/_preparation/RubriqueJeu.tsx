@@ -4,7 +4,10 @@ import { useState } from "react";
 import { useEnregistrement } from "@/composants/Enregistrement";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
-import { nouvelleSection, resumeFeuille, TYPES_SECTION, type Feuille, type Formule, type Objet, type Preparation, type Section, type TypeSection } from "@/domaine/preparation";
+import {
+  nouvelleSection, resumeFeuille, TYPES_SECTION, type Feuille, type Formule, type Objet, type Preparation, type Section, type SigneAction, type TypeSection,
+} from "@/domaine/preparation";
+import { Signes } from "@/composants/Signes";
 import { activerRubriqueJeu, enregistrerFormule, enregistrerObjet, reglerJeu, supprimerFormule, supprimerObjet } from "../../actions-preparation";
 import type { ProjetDuCarnet } from "./Carnet";
 import styles from "./preparation.module.css";
@@ -207,7 +210,9 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
   const dire = useMessage();
   const [edite, setEdite] = useState<string | null>(null);
   const [texte, setTexte] = useState("");
+  const [signe, setSigne] = useState<SigneAction>("crayon");
   const [neuf, setNeuf] = useState("");
+  const [signeNeuf, setSigneNeuf] = useState<SigneAction>("crayon");
   return (
     <section className={styles.col} aria-labelledby="jeu-formules">
       <h3 id="jeu-formules">
@@ -223,13 +228,17 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
                 <span>Formule</span>
                 <input className="pchamp" type="text" maxLength={140} value={texte} onChange={(e) => setTexte(e.target.value)} />
               </label>
+              <div className={styles.champ}>
+                <span>Signe devant la formule</span>
+                <Signes valeur={signe} onChange={setSigne} libelle="Signe devant la formule" />
+              </div>
               <p className={styles.aide}>Corriger une formule ne modifie pas les paragraphes déjà écrits.</p>
               <div className={styles.actions}>
                 <button
                   type="button"
                   className="btn btn--petit btn--primaire"
                   onClick={async () => {
-                    const fait = await enregistrerFormule(projetId, f.id, texte);
+                    const fait = await enregistrerFormule(projetId, f.id, texte, signe);
                     if (fait.ok) setEdite(null);
                     else dire({ texte: fait.erreur });
                   }}
@@ -245,7 +254,7 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
                   onClick={async () => {
                     const fait = await supprimerFormule(projetId, f.id);
                     setEdite(null);
-                    dire(fait.ok ? { texte: "La formule est supprimée de la liste.", annuler: () => void enregistrerFormule(projetId, null, f.texte) } : { texte: fait.erreur });
+                    dire(fait.ok ? { texte: "La formule est supprimée de la liste.", annuler: () => void enregistrerFormule(projetId, null, f.texte, f.signe) } : { texte: fait.erreur });
                   }}
                 >
                   <Icone nom="corbeille" />
@@ -255,13 +264,17 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
             </li>
           ) : (
             <li key={f.id}>
-              <span className={`recit ${styles.formule_action}`}>{f.texte}</span>
+              <span className={`recit ${styles.formule_action}`}>
+                <Icone nom={f.signe} />
+                {f.texte}
+              </span>
               <button
                 type="button"
                 className="lien"
                 aria-label={`Modifier la formule « ${f.texte} »`}
                 onClick={() => {
                   setTexte(f.texte);
+                  setSigne(f.signe);
                   setEdite(f.id);
                 }}
               >
@@ -275,8 +288,11 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
         className={`${styles.ajout} ${styles.ajout_une}`}
         onSubmit={async (e) => {
           e.preventDefault();
-          const fait = await enregistrerFormule(projetId, null, neuf);
-          if (fait.ok) setNeuf("");
+          const fait = await enregistrerFormule(projetId, null, neuf, signeNeuf);
+          if (fait.ok) {
+            setNeuf("");
+            setSigneNeuf("crayon");
+          }
           else dire({ texte: fait.erreur });
         }}
       >
@@ -284,6 +300,7 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
           <span>Nouvelle formule</span>
           <input className="pchamp" type="text" maxLength={140} placeholder="Ajoute un point de courage à ton héros." value={neuf} onChange={(e) => setNeuf(e.target.value)} />
         </label>
+        <Signes valeur={signeNeuf} onChange={setSigneNeuf} libelle="Signe de la formule à ajouter" />
         <button type="submit" className="btn" disabled={!neuf.trim()}>
           <Icone nom="plus" />
           Ajouter

@@ -7,7 +7,7 @@ import type { Jeu, Livre, SceneConnue, Voisines } from "@/composants/copie/conte
 import { voisinesDe } from "./copie";
 import { ciblesDe, type Droits, type Motif, type Texte } from "@/domaine/copie";
 import { numeroter, type PlanNumerote } from "@/domaine/numeros";
-import { estConstruction, estFormuleRenvoi, type Construction } from "@/domaine/preparation";
+import { estConstruction, estFormuleRenvoi, signeDe, type Construction } from "@/domaine/preparation";
 import type { Profil, Repere } from "@/domaine/recit";
 import { nomPourLesEleves } from "./adulte";
 import { clientDuPoste, etatDuPoste, type EtatPoste } from "./poste";
@@ -276,7 +276,10 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
     aChoix ? numerosDuPoste(c, s.projet) : Promise.resolve({} as Record<string, number>),
-    base.rpc("jeu_de_la_scene", { p_scene: sceneId }).then((r) => (r.data as Jeu | null) ?? { objets: [], formules: [] }),
+    base.rpc("jeu_de_la_scene", { p_scene: sceneId }).then((r): Jeu => {
+      const lu = (r.data as Jeu | null) ?? { objets: [], formules: [] };
+      return { objets: lu.objets, formules: lu.formules.map((f) => ({ ...f, signe: signeDe(f) })) };
+    }),
     voisinesDe(base, sceneId),
     base.rpc("voisines_affichees").then((r) => r.data !== false),
   ]);

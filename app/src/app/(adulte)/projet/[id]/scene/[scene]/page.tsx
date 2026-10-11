@@ -51,7 +51,9 @@ export default async function Page(props: Props) {
     numeros: projet.recit === "choix" ? Object.fromEntries(numerosDuPlan(plan).de) : {},
     scenes: plan.parties.flatMap((p) =>
       p.chapitres.flatMap((c) =>
-        c.scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, chapitreId: c.id, chapitre: c.titre, partie: p.titre, vide: s.texteVide })),
+        c.scenes.map((s) => ({
+          id: s.id, reference: s.reference, titre: s.titre, chapitreId: c.id, chapitre: c.titre, partie: p.titre, vide: s.texteVide, consigne: s.consigne,
+        })),
       ),
     ),
     ailleurs: {},

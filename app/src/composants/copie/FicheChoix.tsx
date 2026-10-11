@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useId, useMemo, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import { estAuto, estRenvoi, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Renvoi } from "@/domaine/copie";
 import { constructionsUtiles, phraseDeChoix } from "@/domaine/preparation";
+import { scenesProposees } from "@/domaine/proposer";
 import { referenceScene } from "@/domaine/recit";
 import { cle } from "@/domaine/texte";
 import { useCopie, type ApercuDeChoix, type SceneConnue, type SceneCreee, type Services } from "./contexte";
@@ -29,11 +30,16 @@ export function nomDeDestination(s: SceneConnue | undefined, pourEleve: boolean)
   return `${referenceScene(s.reference)}${s.titre ? ` ${s.titre}` : ""}`;
 }
 
+/** Combien de scènes le libellé fait remonter au plus, dont combien d'un autre chapitre. */
+const PROPOSEES_MAX = 5;
+const D_AILLEURS_MAX = 3;
+
 /**
  * « Où mène ce choix ? » (F05.2) : une scène existante ou une nouvelle scène, et rien d'autre
  * à l'écran que ce que l'issue choisie demande. La scène existante se retient d'un clic dans
- * la liste, ou aux flèches puis Entrée (F05-AC39) ; « Décider plus tard » laisse le choix
- * sans destination.
+ * la liste, ou aux flèches puis Entrée (F05-AC39) : les scènes du chapitre, celles qui
+ * ressemblent au libellé en tête (F05-AC56) ; le filtre cherche dans tout le livre, et le
+ * bouton des chapitres en ouvre un autre. « Décider plus tard » laisse le choix sans destination.
  */
 export function ChoisirDestination({
   libelle, services, valider, actuelle, creer, focus, seulementExistante = false,
@@ -53,6 +59,7 @@ export function ChoisirDestination({
   // Sans autre scène à choisir, il ne reste qu'à en créer une
   const [issue, setIssue] = useState<Issue>(seulementExistante || autres.length > 0 ? "existante" : "nouvelle");
   const [demande, setDemande] = useState("");
+  const [chapitre, setChapitre] = useState(lieu.chapitreId);
   const [surligne, setSurligne] = useState(0);
   const [extraits, setExtraits] = useState<Record<string, string>>({});
   const [titre, setTitre] = useState<string | null>(null);
@@ -85,16 +92,21 @@ export function ChoisirDestination({
   }, [demande, services]);
 
   const mots = cle(demande).split(" ").filter(Boolean);
+  // Sans filtre : d'abord les scènes qui ressemblent au libellé, du chapitre et, pour l'adulte,
+  // de quelques autres ; puis le reste du chapitre. Un autre chapitre ouvert se lit tel quel
+  const proposees = useMemo(() => {
+    if (mots.length > 0 || chapitre !== lieu.chapitreId) return [];
+    const trouvees = scenesProposees(libelle, autres);
+    let ailleurs = 0;
+    return trouvees.filter((s) => s.chapitreId === lieu.chapitreId || (ailleurs += 1) <= D_AILLEURS_MAX).slice(0, PROPOSEES_MAX);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autres, libelle, demande, chapitre, lieu.chapitreId]);
   const resultats = useMemo(() => {
-    // Sans demande : les scènes de ce chapitre, ou tout le livre s'il n'en a pas d'autre
-    if (mots.length === 0) {
-      const ici = autres.filter((s) => s.chapitreId === lieu.chapitreId);
-      return ici.length ? ici : autres;
-    }
+    if (mots.length === 0) return [...proposees, ...autres.filter((s) => s.chapitreId === chapitre && !proposees.includes(s))];
     const parTexte = demande.trim().length >= 2 ? extraits : {};
     return autres.filter((s) => mots.every((m) => cle(`${referenceScene(s.reference)} ${s.titre ?? ""}`).includes(m)) || s.id in parTexte);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autres, demande, extraits, lieu.chapitreId]);
+  }, [autres, proposees, demande, extraits, chapitre]);
   const choisie = resultats[Math.min(surligne, resultats.length - 1)];
 
   const creerLaScene = async () => {
@@ -130,6 +142,7 @@ export function ChoisirDestination({
           <label className="vh" htmlFor="cx-demande">
             Chercher une scène
           </label>
+          <div className="cx-chercher">
           <input
             id="cx-demande"
             ref={champ}
@@ -158,25 +171,68 @@ export function ChoisirDestination({
               }
             }}
           />
+          {/* Les autres chapitres, rangés par parties : pour l'adulte, qui peut seul créer un raccord (F06.1) */}
+          {adulte && livre.chapitres.length > 1 ? (
+            <span className={`cx-chapitres${chapitre === lieu.chapitreId ? "" : " est-ailleurs"}`} title="Voir les scènes d’un autre chapitre">
+              <Icone nom="cahier" />
+              <select
+                aria-label="Chapitre"
+                value={chapitre}
+                onChange={(e) => {
+                  setChapitre(e.target.value);
+                  setDemande("");
+                  setSurligne(0);
+                }}
+              >
+                {[...new Set(livre.chapitres.map((c) => c.partie))].map((partie) => (
+                  <optgroup key={partie} label={partie}>
+                    {livre.chapitres.filter((c) => c.partie === partie).map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.titre}
+                        {c.id === lieu.chapitreId ? " (ce chapitre)" : ""}
+                      </option>
+                    ))}
+                  </optgroup>
+                ))}
+              </select>
+            </span>
+          ) : null}
+          </div>
           {resultats.length === 0 ? (
-            <p className="cx-aide">Aucune scène trouvée.</p>
+            <p className="cx-aide">{mots.length ? "Aucune scène trouvée." : chapitre === lieu.chapitreId ? "Aucune autre scène dans ce chapitre." : "Aucune scène dans ce chapitre."}</p>
           ) : (
             <ul className="cx-liste" role="listbox" aria-label="Scènes" ref={lignes}>
               {resultats.slice(0, 40).map((s, i) => (
-                <li key={s.id} role="option" aria-selected={s.id === choisie?.id}>
+                <Fragment key={s.id}>
+                {/* Deux courts repères quand le libellé a fait remonter des scènes, ou qu'un autre chapitre est ouvert */}
+                {mots.length === 0 && i === 0 && proposees.length > 0 ? <li role="presentation" className="cx-liste__groupe">Proposées d’après l’action</li> : null}
+                {mots.length === 0 && i === proposees.length && (proposees.length > 0 || chapitre !== lieu.chapitreId) ? (
+                  <li role="presentation" className="cx-liste__groupe">
+                    {chapitre === lieu.chapitreId ? "Ce chapitre" : livre.chapitres.find((c) => c.id === chapitre)?.titre}
+                  </li>
+                ) : null}
+                <li role="option" aria-selected={s.id === choisie?.id}>
                   <button type="button" tabIndex={-1} className={s.id === choisie?.id ? "est-choisie" : undefined} onClick={() => { setSurligne(i); valider({ cible: s.id }); }} onMouseEnter={() => setSurligne(i)}>
                     <span className="fiche__ref">{referenceScene(s.reference)}</span>
                     <span className="cx-liste__titre">
                       {s.titre ?? <span className="sans-consigne">sans titre</span>}
                       {s.id === actuelle ? <small> · destination actuelle</small> : null}
                       {extraits[s.id] && mots.length ? <small className="cx-liste__extrait">{extraits[s.id]}</small> : null}
+                      {/* Hors du chapitre : une flèche qui sort, et le nom du chapitre */}
+                      {s.chapitreId === lieu.chapitreId ? null : (
+                        <small className="cx-liste__ailleurs" title={`Dans un autre chapitre : ${s.chapitre}. Le choix sera un raccord.`}>
+                          <Icone nom="sortie" />
+                          {s.chapitre}
+                        </small>
+                      )}
                     </span>
                     <span className="cx-liste__ou">
-                      {s.chapitreId === lieu.chapitreId ? null : <span className="repere">raccord · {s.chapitre}</span>}
+
                       {livre.numeros[s.id] ? <span className="cx-liste__n">n° {livre.numeros[s.id]}</span> : null}
                     </span>
                   </button>
                 </li>
+                </Fragment>
               ))}
             </ul>
           )}

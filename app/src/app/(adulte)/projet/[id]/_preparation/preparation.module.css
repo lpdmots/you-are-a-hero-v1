@@ -306,6 +306,16 @@
   background: var(--canard-pale);
   border-radius: 0 6px 6px 0;
   font-size: 1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.formule_action :global(.ic) {
+  flex: none;
+  width: 1em;
+  height: 1em;
+  align-self: center;
+  color: var(--graphite-2);
 }
 .liste > li.edition {
   grid-template-columns: 1fr;
@@ -345,7 +355,7 @@
   border-top: 1px solid var(--trait);
 }
 .ajout_une {
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto auto;
 }
 .pli {
   border-top: 1px solid var(--trait);

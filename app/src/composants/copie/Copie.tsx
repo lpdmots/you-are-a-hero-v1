@@ -8,7 +8,7 @@ import { poser } from "@/composants/flottant";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import {
   ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, texteOuvert, tirerConstruction,
-  type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type Texte,
+  type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
 } from "@/domaine/copie";
 import { constructionsUtiles } from "@/domaine/preparation";
 import { nomScene } from "@/domaine/recit";
@@ -140,7 +140,7 @@ export function Copie({
   const liaisonsTenues = useRef(liaisons);
   const [fiche, setFiche] = useState<FicheOuverte | null>(null);
   const [apercu, setApercu] = useState<ApercuDeChoix | null>(null);
-  const [formuleVue, setFormuleVue] = useState("");
+  const [formuleVue, setFormuleVue] = useState<{ texte: string; signe: SigneAction }>({ texte: "", signe: "crayon" });
   const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
   const aDesVoisines = voisines.avant.length + voisines.apres.length > 0;
   const [bandeau, setBandeau] = useState<Bandeau | null>(null);
@@ -499,8 +499,12 @@ export function Copie({
     lacherLeTexte();
     setFiche({ sorte: "action", apres: ici.id, remplace: ici.type === "p" && lettresDe(ici) === "" });
   };
-  /** La formule retenue devient un paragraphe d'action ; dans une formule à compléter, « … » est sélectionné. */
-  const poserAction = (texte: string) => {
+  /**
+   * La formule retenue devient un paragraphe d'action, précédé de son signe ; dans une formule
+   * à compléter, « … » est sélectionné.
+   */
+  const poserAction = (texte: string, signe: SigneAction = "crayon") => {
+    const porte = signe === "crayon" ? {} : { signe };
     const pour = fiche?.sorte === "formule-nouvelle" ? fiche.pour : fiche;
     if (pour?.sorte !== "action" && pour?.sorte !== "formules") return;
     let k: number;
@@ -510,12 +514,13 @@ export function Copie({
       if (!actuel || actuel.type !== "action") return;
       e.tf.withoutNormalizing(() => {
         e.tf.removeNodes({ at: [k] });
-        e.tf.insertNodes({ ...actuel, children: [{ text: texte }] }, { at: [k] });
+        // L'action prend le signe de la formule qui la remplit
+        e.tf.insertNodes({ ...actuel, signe: undefined, ...porte, children: [{ text: texte }] }, { at: [k] });
       });
     } else {
       const i = Math.max(0, indexDe(pour.apres));
       e.tf.withoutNormalizing(() => {
-        e.tf.insertNodes({ type: "action", id: nouvelId(), children: [{ text: texte }] }, { at: [i + 1] });
+        e.tf.insertNodes({ type: "action", id: nouvelId(), ...porte, children: [{ text: texte }] }, { at: [i + 1] });
         if (pour.remplace) e.tf.removeNodes({ at: [i] });
       });
       k = pour.remplace ? i : i + 1;

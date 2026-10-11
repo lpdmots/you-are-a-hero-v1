@@ -257,6 +257,19 @@ test("F04.2 — la rubrique facultative réunit les objets, les formules d'actio
   await jeu.getByLabel("Nouvelle formule").fill("Retire un point de volonté à ton héros.");
   await jeu.getByRole("button", { name: "Ajouter" }).nth(1).click();
   await expect(jeu.getByText("Retire un point de volonté à ton héros.")).toBeVisible();
+  // F04-AC41 — une formule porte son signe : le crayon par défaut, le dé choisi à l'ajout, changé ensuite
+  await jeu.getByLabel("Nouvelle formule").fill("Lance le dé.");
+  await jeu.getByRole("radiogroup", { name: "Signe de la formule à ajouter" }).getByRole("radio", { name: /^Dé/ }).click();
+  await jeu.getByRole("button", { name: "Ajouter" }).nth(1).click();
+  await expect(jeu.getByText("Lance le dé.")).toBeVisible();
+  const signes = async () => (await base.from("formules").select("texte, signe").eq("projet_id", projet).order("cree_le")).data;
+  await expect.poll(signes).toEqual([{ texte: "Retire un point de volonté à ton héros.", signe: "crayon" }, { texte: "Lance le dé.", signe: "de" }]);
+  // Le signe de la formule suivante revient au crayon
+  await expect(jeu.getByRole("radiogroup", { name: "Signe de la formule à ajouter" }).getByRole("radio", { name: /^Crayon/ })).toBeChecked();
+  await jeu.getByRole("button", { name: "Modifier la formule « Retire un point de volonté à ton héros. »" }).click();
+  await jeu.getByRole("radiogroup", { name: "Signe devant la formule" }).getByRole("radio", { name: /^Cœur/ }).click();
+  await jeu.getByRole("button", { name: "Enregistrer" }).click();
+  await expect.poll(signes).toEqual([{ texte: "Retire un point de volonté à ton héros.", signe: "coeur" }, { texte: "Lance le dé.", signe: "de" }]);
 
   // Renommer un objet ne touche pas aux textes : l'écran le dit
   await jeu.getByRole("button", { name: "Modifier la lanterne sourde" }).click();

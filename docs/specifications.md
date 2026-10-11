@@ -1568,8 +1568,12 @@ dans la première livraison, sous une forme sans vérification par l'application
   d'écrire l'action peut le changer d'un clic pour le dé, le sac ou le
   cœur, par exemple le dé quand on demande un lancer. Le signe ne dit rien
   à l'application, pas plus que le texte : c'est un repère pour le lecteur,
-  le même dans la copie, le livre et le lecteur en ligne. Une formule de la
-  liste ne porte pas de signe : il se choisit sur l'action (F04-AC40).
+  le même dans la copie, le livre et le lecteur en ligne (F04-AC40). Une
+  formule de la liste porte aussi le sien, choisi avec elle dans la
+  préparation ou depuis la scène : l'action née de la formule le reprend,
+  et se change ensuite comme toute action (demandé par le porteur le même
+  jour, F04-AC41). Changer le signe d'une formule ne touche pas aux actions
+  déjà écrites, comme pour son texte.
 - **Dé :** outil de la feuille d'aventure du lecteur en ligne, activé par
   l'adulte pour le livre. Le résultat est affiché, jamais interprété : le
   lecteur lit la règle dans le passage et choisit lui-même la suite.
@@ -1743,6 +1747,12 @@ presse-papiers :**
   le reste après enregistrement ; lorsqu'elle revient au crayon, alors
   l'action est de nouveau précédée du crayon ; Alice, profil « écriture et
   propositions », ne peut pas changer le signe d'une action.
+- **F04-AC41 — Signe d'une formule :** étant donné la formule « Lance le
+  dé. » ajoutée à la liste avec le dé pour signe, lorsque Bilal, profil
+  « écriture et organisation », la retient par `/action`, alors l'action de
+  jeu est précédée du dé ; lorsque l'enseignante change ensuite le signe de
+  la formule pour le cœur, alors l'action déjà écrite garde le dé ; une
+  formule ajoutée sans signe choisi porte le crayon.
 - **F04-AC30 — Collage sans droit :** étant donné Alice, profil « écriture et
   propositions », ayant copié un paragraphe de récit et une action de jeu,
   lorsqu'elle les colle dans sa scène, alors le paragraphe de récit est
@@ -2214,6 +2224,20 @@ choix seulement.
   place dans le texte (F05-AC55). L'ordre inverse, la destination d'abord,
   qu'il évoque, n'est pas retenu : le libellé sert de titre à une nouvelle
   scène, et le titre d'une scène existante ne donne pas une phrase de choix.
+  Il le confirme ensuite (« on reste sur l'action d'abord »).
+- **Scène existante, décidé par le porteur le 11 octobre 2026 (F05-AC56) :**
+  une seule liste. Sans filtre, elle montre les scènes du chapitre ; celles
+  dont le titre ou la consigne reprennent un mot du libellé remontent en
+  tête, la première surlignée, sans qu'aucune soit choisie d'office. Pour
+  l'adulte, quelques scènes d'autres chapitres qui ressemblent au libellé
+  remontent aussi, avec un repère simple de leur chapitre : le choix sera un
+  raccord. Le filtre cherche dans tout le livre, titres et textes ; un
+  bouton, à sa droite, ouvre un autre chapitre, rangé sous sa partie. Un
+  élève ne choisit que dans son chapitre (F05-AC47) et n'a pas ce bouton.
+  On ne rapproche que des mots, pas le sens : « Fuir » ne propose pas « La
+  sortie » ; un rapprochement par le sens relèverait des aides IA de F13.
+  Écartés : la proposition seule d'abord, puis le filtre ; partie et
+  chapitre en deux menus suivis d'un bouton de recherche.
 - **Trois issues pour la destination :**
   1. *scène existante*, avec la recherche et l'aperçu de F05, dans le
      périmètre de la personne ;
@@ -2610,6 +2634,16 @@ recommandation, qu'il retient, sépare deux cas.
   lumière : rends-toi au … » et le panneau demande où mène le choix, scène
   existante ou nouvelle scène ; lorsqu'elle appuie sur Échap, alors la
   phrase disparaît et le texte enregistré n'en porte rien.
+- **F05-AC56 — Scènes proposées d'après l'action :** étant donné S001 dans
+  « La lisière », qui compte aussi S002 « Clairière », S003 « La souche » et
+  S004 « Le pont », et S005 « Le ponton » dans « Le marais », lorsque
+  l'enseignante saisit le libellé « Traverser le pont », alors « Le pont »
+  est proposée en tête de la liste, surlignée, avant les autres scènes du
+  chapitre ; lorsqu'elle saisit « Sauter sur le ponton », alors « Le
+  ponton » est proposée en tête avec le repère de son chapitre, « Le
+  marais » ; lorsqu'elle ouvre « Le marais » par le bouton des chapitres,
+  alors seules ses scènes sont listées ; lorsqu'elle filtre sur « souche »,
+  alors la recherche porte sur tout le livre, sans proposition.
 
 - **F05-AC39 — Création au clavier seul :** étant donné l'enseignante sans
   souris dans S015, lorsqu'elle saisit `/choix`, un libellé, choisit S018 aux

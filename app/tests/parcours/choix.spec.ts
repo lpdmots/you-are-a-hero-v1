@@ -45,7 +45,7 @@ async function deuxParagraphes(page: Page, l: Livre): Promise<[BlocSeme, BlocSem
 const lue = (phrase: Locator): Promise<string> => phrase.evaluate((n) => (n.textContent ?? "").replace(/[\uFEFF\u200B]/g, ""));
 
 /** Les scènes que la fiche propose pour destination. */
-const PROPOSEES = (page: Page): Locator => FICHE(page).locator(".cx-liste > li");
+const PROPOSEES = (page: Page): Locator => FICHE(page).locator(".cx-liste > li[role=option]");
 
 /** Saisit un choix dans la fiche ouverte : le libellé, puis une scène cherchée par son titre. */
 async function saisirChoix(page: Page, libelle: string, destination: string): Promise<void> {
@@ -153,6 +153,39 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     const apres = await sceneEnBase(l.lisiere.scenes[0]);
     expect(apres.texte.map((b) => b.type)).toEqual(["p", "p"]);
     expect(JSON.stringify(apres.texte)).not.toMatch(/Suivre la lumière|Traverser le pont/);
+  });
+
+  test("F05-AC56 — scène existante : les scènes qui ressemblent à l'action remontent en tête, celles d'un autre chapitre avec leur repère ; le bouton des chapitres en ouvre un autre ; le filtre cherche dans tout le livre", async ({ page }) => {
+    const l = await auteur(page);
+    await deuxParagraphes(page, l);
+    await page.getByRole("button", { name: "Choix", exact: true }).click();
+    const libelle = FICHE(page).getByLabel("Ce que fait le lecteur");
+    const groupes = FICHE(page).locator(".cx-liste__groupe");
+    // Sans mot commun : les scènes du chapitre, dans l'ordre du plan, sans repère
+    await libelle.fill("Continuer vers la lumière");
+    await expect(PROPOSEES(page)).toHaveText([/S002\s*Clairière/, /S003\s*La souche/, /S004\s*Le pont/]);
+    await expect(groupes).toHaveCount(0);
+    // « Traverser le pont » fait remonter « Le pont », surlignée : Entrée la retiendrait
+    await libelle.fill("Traverser le pont");
+    await expect(PROPOSEES(page)).toHaveText([/S004\s*Le pont/, /S002\s*Clairière/, /S003\s*La souche/]);
+    await expect(groupes).toHaveText(["Proposées d’après l’action", "Ce chapitre"]);
+    await expect(PROPOSEES(page).first()).toHaveAttribute("aria-selected", "true");
+    // Une scène d'un autre chapitre remonte aussi, avec son repère
+    await libelle.fill("Sauter sur le ponton");
+    await expect(PROPOSEES(page)).toHaveText([/S005\s*Le ponton/, /S002\s*Clairière/, /S003\s*La souche/, /S004\s*Le pont/]);
+    await expect(PROPOSEES(page).first().locator(".cx-liste__ailleurs")).toHaveText("Le marais");
+    await expect(PROPOSEES(page).nth(1).locator(".cx-liste__ailleurs")).toHaveCount(0);
+    // Le bouton des chapitres ouvre « Le marais » : ses scènes seules
+    await FICHE(page).getByLabel("Chapitre").selectOption({ label: "Le marais" });
+    await expect(PROPOSEES(page)).toHaveText([/S005\s*Le ponton/]);
+    await expect(groupes).toHaveText(["Le marais"]);
+    // Le filtre cherche dans tout le livre, sans proposition
+    await FICHE(page).getByLabel("Chercher une scène").fill("souche");
+    await expect(PROPOSEES(page)).toHaveText([/S003\s*La souche/]);
+    await expect(groupes).toHaveCount(0);
+    await FICHE(page).getByLabel("Chercher une scène").press("Enter");
+    await attendreEnregistre(page);
+    expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
   });
 
   test("F05-AC14 — par le bouton, sans curseur dans le texte, la phrase s'ajoute après le dernier paragraphe", async ({ page }) => {

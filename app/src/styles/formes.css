@@ -978,3 +978,43 @@
     border-radius: 0;
   }
 }
+
+/* Le signe d'une action de jeu ou d'une formule : quatre petits boutons, celui qui sert en
+   graphite, comme une bascule (F04.2) */
+.signes {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 8px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+}
+.signes button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.signes button:hover {
+  background: var(--feuille);
+  color: var(--graphite);
+}
+.signes button[aria-checked="true"] {
+  background: var(--graphite);
+  color: #fff;
+}
+.signes button:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.signes .ic {
+  width: 17px;
+  height: 17px;
+}

@@ -3,8 +3,9 @@
 import { PlateElement, useSelected, type PlateElementProps } from "platejs/react";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
+import { Signes } from "@/composants/Signes";
 import {
-  estAuto, estImageLigne, estReserve, estVide, morceauxDe, NOMS_DES_SIGNES, renvoisDe, SIGNES_ACTION, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
+  estAuto, estImageLigne, estReserve, estVide, morceauxDe, renvoisDe, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
   type Note, type Paragraphe as ParagrapheDeRecit, type Renvoi, type Texte,
 } from "@/domaine/copie";
 import { phraseDeChoix, type FormuleRenvoi } from "@/domaine/preparation";
@@ -97,11 +98,11 @@ function ChoixEnAttente({ remplace }: { remplace: boolean }) {
 function ActionEnAttente({ remplace }: { remplace: boolean }) {
   const { formuleVue } = useCopie();
   return (
-    <span className={`action-attendue${formuleVue ? "" : " action-attendue--vide"}${remplace ? " action-attendue--remplace" : ""}`} contentEditable={false} aria-hidden="true">
+    <span className={`action-attendue${formuleVue.texte ? "" : " action-attendue--vide"}${remplace ? " action-attendue--remplace" : ""}`} contentEditable={false} aria-hidden="true">
       <span className="action-attendue__mot">Nouvelle action de jeu</span>
       <span className="action-jeu__cadre">
-        <Icone nom="crayon" />
-        <span className="action-jeu__texte">{formuleVue || "Ce que le lecteur fait sur sa feuille d’aventure"}</span>
+        <Icone nom={formuleVue.signe} />
+        <span className="action-jeu__texte">{formuleVue.texte || "Ce que le lecteur fait sur sa feuille d’aventure"}</span>
       </span>
     </span>
   );
@@ -308,25 +309,7 @@ export function ActionDeJeu(props: PlateElementProps) {
       {selectionne || ouvert ? (
         <span className="action-jeu__cmd" contentEditable={false}>
           {/* Le signe devant l'action : le crayon par défaut, un autre d'un clic */}
-          <span className="action-jeu__signes" role="radiogroup" aria-label="Signe devant l’action">
-            {SIGNES_ACTION.map((signe) => (
-              <button
-                key={signe}
-                type="button"
-                role="radio"
-                aria-checked={signeDe(bloc) === signe}
-                aria-label={NOMS_DES_SIGNES[signe]}
-                title={NOMS_DES_SIGNES[signe]}
-                onMouseDown={(ev) => ev.preventDefault()}
-                onClick={(ev) => {
-                  ev.stopPropagation();
-                  c.reglerSigne(bloc.id, signe);
-                }}
-              >
-                <Icone nom={signe} />
-              </button>
-            ))}
-          </span>
+          <Signes valeur={signeDe(bloc)} gardeLeCurseur onChange={(signe) => c.reglerSigne(bloc.id, signe)} />
           <button type="button" className="btn btn--petit" aria-expanded={ouvert} onMouseDown={(ev) => ev.preventDefault()} onClick={(ev) => { ev.stopPropagation(); c.ouvrirFormules(bloc.id); }}>
             Formules…
           </button>

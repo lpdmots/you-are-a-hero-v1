@@ -23,7 +23,7 @@ beforeAll(async () => {
 });
 afterAll(nettoyer);
 
-type Jeu = { objets: { nom: string; description: string }[]; formules: { texte: string }[] } | null;
+type Jeu = { objets: { nom: string; description: string }[]; formules: { texte: string; signe: string }[] } | null;
 
 async function recit(sorte: "choix" | "classique" = "choix") {
   const projet = await creerProjet(laurent, "classe", sorte, "Les passeurs de brume", classe.id);
@@ -56,6 +56,16 @@ describe("Objets et formules lus par un poste (F04.2)", () => {
   it("F04-AC25 — Bilal, « écriture et organisation », reçoit aussi les formules d'action", async () => {
     const r = await recit();
     expect((await jeuDe(bilal, r.scene))?.formules.map((f) => f.texte)).toEqual(["Retire un point de volonté à ton héros."]);
+  });
+
+  it("F04-AC41 — une formule porte son signe : le crayon quand rien n'est dit, le dé si l'enseignante le choisit ; Bilal le reçoit avec la formule ; un signe inconnu est refusé", async () => {
+    const r = await recit();
+    expect((await laurent.base.from("formules").insert({ projet_id: r.projet, enseignant_id: laurent.id, texte: "Lance le dé.", signe: "de" })).error).toBeNull();
+    expect((await laurent.base.from("formules").insert({ projet_id: r.projet, enseignant_id: laurent.id, texte: "Frappe.", signe: "epee" })).error).not.toBeNull();
+    expect((await jeuDe(bilal, r.scene))?.formules).toMatchObject([
+      { texte: "Retire un point de volonté à ton héros.", signe: "crayon" },
+      { texte: "Lance le dé.", signe: "de" },
+    ]);
   });
 
   it("F04-AC26 — en récit classique, les objets servent toujours, les formules jamais", async () => {

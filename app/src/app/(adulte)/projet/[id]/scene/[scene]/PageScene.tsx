@@ -131,7 +131,7 @@ export function PageScene({
     fixerNumero: (id, n) => fixerPourLiaison(id, n),
     libererNumero: (id) => libererNumero(id),
     ajouterObjet: (nom, description) => ajouterObjetDepuisLaScene(projet.id, nom, description),
-    ajouterFormule: (formule) => ajouterFormuleDepuisLaScene(projet.id, formule),
+    ajouterFormule: (formule, signe) => ajouterFormuleDepuisLaScene(projet.id, formule, signe),
     // Une image posée dans une scène garde son fond transparent (F10-AC31)
     importerImage: async (fichier) => {
       const reduite = await reduire(fichier, true);

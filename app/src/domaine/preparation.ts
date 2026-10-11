@@ -74,7 +74,23 @@ export type Piste = { id: string; rubrique: Rubrique; texte: string; etat: EtatP
 // ——— Rubrique « Objets et formules » (F04.2), feuille d'aventure, dé, règles du jeu ———
 
 export type Objet = { id: string; nom: string; description: string };
-export type Formule = { id: string; texte: string };
+/**
+ * Le signe placé devant une action de jeu, dans la copie comme dans le livre : le crayon
+ * par défaut, pour ce qui se note ; le dé, le sac, le cœur (F04-AC40). Une formule porte le
+ * sien, que l'action née d'elle reprend (F04-AC41).
+ */
+export const SIGNES_ACTION = ["crayon", "de", "sac", "coeur"] as const;
+export type SigneAction = (typeof SIGNES_ACTION)[number];
+export const NOMS_DES_SIGNES: Record<SigneAction, string> = {
+  crayon: "Crayon : à noter sur la feuille",
+  de: "Dé : à lancer",
+  sac: "Sac : un objet à prendre ou à rayer",
+  coeur: "Cœur : des points gagnés ou perdus",
+};
+export const signeDe = (porteur: { signe?: unknown }): SigneAction =>
+  SIGNES_ACTION.includes(porteur.signe as SigneAction) ? (porteur.signe as SigneAction) : "crayon";
+
+export type Formule = { id: string; texte: string; signe: SigneAction };
 
 export type Compteur = { id: string; nom: string; depart: number };
 export type Section =

@@ -435,10 +435,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
     le contenu que ces logiciels mettent dans le presse-papiers, dans
     Chromium seulement.
-  - **Tests automatiques :** 447 passent — 105 sur les règles, 155 contre
-    la base locale, 187 parcours joués dans un navigateur —, chacun au
-    nom de son critère. Les neuf migrations se rejouent depuis une base vide
-    et donnent le schéma de la base locale.
+  - **Tests automatiques :** 453 passent — 109 sur les règles, 156 contre
+    la base locale, 188 parcours joués dans un navigateur —, chacun au
+    nom de son critère. Les neuf premières migrations se rejouent depuis
+    une base vide et donnent le schéma de la base locale ; la dixième,
+    `signe_des_formules`, a été ajoutée à la base locale sans la remettre à
+    zéro.
   - **Reprise du 11 octobre 2026 — panneau des réglages :** sur le premier
     retour du porteur, qui écarte la fiche posée dans le texte, tout ce qui
     a des champs s'ouvre dans un panneau à droite du texte, à la place de la
@@ -465,9 +467,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     texte de la scène, sans changement de schéma, et que le livre devra
     imprimer à l'étape 6 ; la ligne surlignée au clavier qui reste à
     l'écran dans les listes ; les réglages d'une image ouverts dès qu'elle
-    est posée. La forme de « Nouveau choix » reste en discussion : le
-    libellé d'abord est confirmé par le porteur, la recherche de la scène
-    existante ne l'est pas encore.
+    est posée. Puis : un signe par formule, choisi dans la préparation ou
+    depuis la scène, que l'action reprend (F04-AC41 ; migration
+    `signe_des_formules`, déjà appliquée à la vraie base) ; pour « Nouveau
+    choix », le libellé d'abord confirmé par le porteur, et « Scène
+    existante » reprise sur ses trois décisions : scènes proposées d'après
+    l'action en tête d'une seule liste, y compris quelques scènes d'autres
+    chapitres avec leur repère, filtre sur tout le livre, bouton des
+    chapitres (F05-AC56).
     La revue continue écran par écran ; les précisions des six lots restent
     à lui présenter.
   - **V19 :** les versions de Plate et de Slate sont figées dans

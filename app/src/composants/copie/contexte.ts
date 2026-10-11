@@ -18,6 +18,8 @@ export type SceneConnue = {
   chapitre: string;
   partie: string;
   vide: boolean;
+  /** La consigne de la scène, pour l'adulte : elle aide à proposer une destination (F05-AC56) */
+  consigne?: string;
 };
 
 export type Livre = {
@@ -87,7 +89,7 @@ export type Services = {
   libererNumero?: (sceneId: string) => Promise<{ ok: boolean; erreur?: string }>;
   /** Ajouter un objet ou une formule à la liste sans quitter la scène : pour l'adulte seul (F04-AC29) */
   ajouterObjet?: (nom: string, description: string) => Promise<{ ok: boolean; erreur?: string }>;
-  ajouterFormule?: (texte: string) => Promise<{ ok: boolean; erreur?: string }>;
+  ajouterFormule?: (texte: string, signe: SigneAction) => Promise<{ ok: boolean; erreur?: string }>;
   /** Importer une image dans le projet, et retrouver celles qui y sont déjà : pour l'adulte seul (F10-AC27) */
   importerImage?: (fichier: File) => Promise<{ ok: true; id: string } | { ok: false; erreur: string }>;
   imagesDuProjet?: () => Promise<string[]>;
@@ -145,8 +147,8 @@ export type ContexteDeCopie = {
   ouvrirLiaison: (liaison: string) => void;
   fiche: FicheOuverte | null;
   apercu: ApercuDeChoix | null;
-  /** L'action de jeu qu'on est en train de créer : la formule surlignée dans la liste, ou rien encore */
-  formuleVue: string;
+  /** L'action de jeu qu'on est en train de créer : la formule surlignée dans la liste, et son signe */
+  formuleVue: { texte: string; signe: SigneAction };
   ouvrir: (bloc: string) => void;
   /** Le bloc qu'on tire par son repère, et l'endroit où il se poserait */
   tire: { bloc: string; avant: string | null } | null;

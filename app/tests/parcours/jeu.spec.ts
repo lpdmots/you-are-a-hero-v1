@@ -62,7 +62,7 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     await BARRE(page).getByRole("button", { name: "Choix", exact: true }).click();
     await FICHE(page).getByLabel("Ce que fait le lecteur").fill("Revenir");
     await FICHE(page).getByLabel("Chercher une scène").fill("clé d’argent");
-    await expect(FICHE(page).locator(".cx-liste > li")).toContainText(["Lou serre sa clé d’argent dans sa poche."]);
+    await expect(FICHE(page).locator(".cx-liste > li[role=option]")).toContainText(["Lou serre sa clé d’argent dans sa poche."]);
     await bilal.contexte.close();
   });
 
@@ -212,7 +212,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await expect(copie(page).locator(".action-attendue")).toContainText(douze[11]);
   });
 
-  test("F04-AC40 — « Formules… » remplace le texte d'une action ; « Supprimer » passe par le bandeau d'annulation ; l'enseignante ajoute une formule à la liste sans quitter la scène", async ({ page }) => {
+  test("F04-AC40, AC41 — « Formules… » remplace le texte d'une action ; « Supprimer » passe par le bandeau d'annulation ; l'enseignante ajoute une formule à la liste sans quitter la scène", async ({ page }) => {
     test.setTimeout(120_000);
     const s = await classeQuiEcrit(page);
     const [s15] = s.lisiere.scenes;
@@ -229,23 +229,31 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await LISTE(page).getByRole("button", { name: "Ajouter une formule à la liste" }).click();
     await expect(PANNEAU(page).getByRole("heading", { name: "Nouvelle formule" })).toBeVisible();
     await FICHE(page).getByRole("textbox", { name: "Formule" }).fill("Lance le dé.");
+    // F04-AC41 — la formule est ajoutée avec son signe, que l'action reprend
+    await FICHE(page).getByRole("radiogroup", { name: "Signe devant la formule" }).getByRole("radio", { name: /^Dé/ }).click();
     await FICHE(page).getByRole("button", { name: "Ajouter et utiliser" }).click();
     await expect(FICHE(page)).toHaveCount(0);
     await attendreEnBase(s15, "Lance le dé.");
     expect((await sql<{ texte: string }>("select texte from formules where projet_id = $1", [s.projet])).map((f) => f.texte).sort()).toEqual([...FORMULES, "Lance le dé."].sort());
-    // La même action, son texte remplacé
-    expect((await sceneEnBase(s15)).texte[1]).toEqual({ ...posee, children: [{ text: "Lance le dé." }] });
+    expect(await sql("select signe from formules where projet_id = $1 and texte = 'Lance le dé.'", [s.projet])).toEqual([{ signe: "de" }]);
+    // La même action, son texte remplacé, précédée du dé
+    expect((await sceneEnBase(s15)).texte[1]).toEqual({ ...posee, signe: "de", children: [{ text: "Lance le dé." }] });
 
     await selectionner(page, { bloc: 1, offset: 2 });
     // F04-AC40 — le signe devant l'action : le crayon par défaut, un autre d'un clic, et retour
     const signes = ACTIONS(page).getByRole("radiogroup", { name: "Signe devant l’action" });
     await expect(signes.getByRole("radio")).toHaveCount(4);
-    await expect(signes.getByRole("radio", { name: /^Crayon/ })).toBeChecked();
-    await signes.getByRole("radio", { name: /^Dé/ }).click();
     await expect(signes.getByRole("radio", { name: /^Dé/ })).toBeChecked();
-    await expect.poll(async () => ((await sceneEnBase(s15)).texte[1] as { signe?: string }).signe, { timeout: 15_000 }).toBe("de");
+    await signes.getByRole("radio", { name: /^Cœur/ }).click();
+    await expect(signes.getByRole("radio", { name: /^Cœur/ })).toBeChecked();
+    await expect.poll(async () => ((await sceneEnBase(s15)).texte[1] as { signe?: string }).signe, { timeout: 15_000 }).toBe("coeur");
     await signes.getByRole("radio", { name: /^Crayon/ }).click();
     await expect.poll(async () => "signe" in (await sceneEnBase(s15)).texte[1], { timeout: 15_000 }).toBe(false);
+    // La liste montre la formule avec son signe ; retenue, elle le rend à l'action
+    await ACTIONS(page).getByRole("button", { name: "Formules…" }).click();
+    await LISTE(page).getByRole("option", { name: "Lance le dé." }).getByRole("button").click();
+    await expect.poll(async () => ((await sceneEnBase(s15)).texte[1] as { signe?: string }).signe, { timeout: 15_000 }).toBe("de");
+    await selectionner(page, { bloc: 1, offset: 2 });
 
     await ACTIONS(page).getByRole("button", { name: "Supprimer" }).click();
     await expect(ACTIONS(page)).toHaveCount(0);

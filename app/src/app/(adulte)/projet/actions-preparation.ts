@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import {
-  estConstruction, estFormuleRenvoi, estRubrique, ETATS_PISTE, feuillePropre, type Construction, type EtatPiste, type Feuille, type RubriqueTexte,
+  estConstruction, estFormuleRenvoi, estRubrique, ETATS_PISTE, feuillePropre, type Construction, type EtatPiste, type Feuille, type RubriqueTexte, signeDe,
 } from "@/domaine/preparation";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { estUuid } from "@/serveur/recit";
@@ -100,15 +100,15 @@ export async function supprimerObjet(projetId: string, objetId: string): Promise
   return { ok: true };
 }
 
-/** Une formule d'action : une demande au lecteur qui revient souvent (F04.2). */
-export async function enregistrerFormule(projetId: string, formuleId: string | null, texte: string): Promise<Fait> {
+/** Une formule d'action : une demande au lecteur qui revient souvent, et le signe qui la précède (F04.2). */
+export async function enregistrerFormule(projetId: string, formuleId: string | null, texte: string, signe: string = "crayon"): Promise<Fait> {
   const e = await exigerEnseignant();
   const propre = ligne(texte, 140);
   if (!estUuid(projetId) || (formuleId !== null && !estUuid(formuleId))) return echec("Formule inconnue.");
   if (!propre) return echec("Écrivez la formule.");
   const { data, error } = formuleId
-    ? await e.supabase.from("formules").update({ texte: propre }).eq("id", formuleId).eq("projet_id", projetId).select("id")
-    : await e.supabase.from("formules").insert({ texte: propre, projet_id: projetId, enseignant_id: e.id }).select("id");
+    ? await e.supabase.from("formules").update({ texte: propre, signe: signeDe({ signe }) }).eq("id", formuleId).eq("projet_id", projetId).select("id")
+    : await e.supabase.from("formules").insert({ texte: propre, signe: signeDe({ signe }), projet_id: projetId, enseignant_id: e.id }).select("id");
   if (error || !data?.length) return echec(NON_ENREGISTRE);
   rafraichir(projetId);
   return { ok: true };

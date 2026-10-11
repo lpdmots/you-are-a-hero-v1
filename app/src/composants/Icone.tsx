@@ -224,6 +224,13 @@ const TRACES = {
       <path d="M12 14.2v2.2" />
     </>
   ),
+  // Un chapitre : le cahier du plan
+  cahier: (
+    <>
+      <rect x="5" y="3.5" width="14" height="17" rx="2" />
+      <path d="M9 3.5v17M12.5 8h3.5M12.5 11.5h3.5" />
+    </>
+  ),
   coeur: <path d="M12 19.5s-7-4.3-7-9.4A3.9 3.9 0 0 1 12 7.8a3.9 3.9 0 0 1 7 2.3c0 5.1-7 9.4-7 9.4z" />,
   de: (
     <>

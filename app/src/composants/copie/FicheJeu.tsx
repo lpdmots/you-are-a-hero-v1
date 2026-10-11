@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Icone } from "@/composants/Icone";
+import { Signes } from "@/composants/Signes";
+import type { Formule, SigneAction } from "@/domaine/preparation";
 import { cle } from "@/domaine/texte";
 import { useCopie, type Jeu, type Services } from "./contexte";
 
@@ -145,23 +147,23 @@ export function ListeFormules({
   jeu: Jeu;
   /** Les formules pour le texte d'une action qui existe déjà : pas de paragraphe vide à proposer */
   pourUneAction: boolean;
-  /** La formule surlignée : la copie la montre à sa place dans le texte, en attente */
-  onApercu?: (texte: string) => void;
-  onChoisir: (texte: string) => void;
+  /** La formule surlignée : la copie la montre à sa place dans le texte, en attente, avec son signe */
+  onApercu?: (vue: { texte: string; signe: SigneAction }) => void;
+  onChoisir: (texte: string, signe: SigneAction) => void;
   onAjouter?: () => void;
   onFermer: () => void;
 }) {
   const liste = useRef<HTMLUListElement>(null);
   const bouton = useRef<HTMLButtonElement>(null);
-  const lignes = [...(pourUneAction ? [] : [{ id: "vide", texte: "" }]), ...jeu.formules];
-  const { choisi, setSurligne, auClavier } = useListe(lignes.length, (i) => onChoisir(lignes[i].texte), liste);
+  const lignes: Formule[] = [...(pourUneAction ? [] : [{ id: "vide", texte: "", signe: "crayon" as const }]), ...jeu.formules];
+  const { choisi, setSurligne, auClavier } = useListe(lignes.length, (i) => onChoisir(lignes[i].texte, lignes[i].signe), liste);
   useEffect(() => {
     (liste.current ?? bouton.current)?.focus();
   }, []);
-  const vue = lignes[choisi]?.texte ?? "";
+  const vue = lignes[choisi];
   useEffect(() => {
-    onApercu?.(vue);
-  }, [onApercu, vue]);
+    onApercu?.({ texte: vue?.texte ?? "", signe: vue?.signe ?? "crayon" });
+  }, [onApercu, vue?.texte, vue?.signe]);
   const titre = pourUneAction ? "Formules d’action" : "Action de jeu";
   return (
     <div className="pop" role="dialog" aria-label={titre} onKeyDown={auClavierDeLaListe(onFermer)}>
@@ -171,7 +173,8 @@ export function ListeFormules({
         <ul className="pop__liste" role="listbox" aria-label={titre} tabIndex={0} ref={liste} onKeyDown={auClavier}>
           {lignes.map((f, i) => (
             <li key={f.id} role="option" aria-selected={i === choisi}>
-              <button type="button" tabIndex={-1} onClick={() => onChoisir(f.texte)} onMouseEnter={() => setSurligne(i)}>
+              <button type="button" tabIndex={-1} className="pop__ligne" onClick={() => onChoisir(f.texte, f.signe)} onMouseEnter={() => setSurligne(i)}>
+                <Icone nom={f.signe} />
                 {f.texte ? <span className="pop__formule">{f.texte}</span> : <span className="pop__desc">Paragraphe vide, à écrire</span>}
               </button>
             </li>
@@ -267,21 +270,25 @@ export function FicheNouvelObjet({ nom: propose, services, onCree, onFermer }: {
 /** Une nouvelle formule d'action, ajoutée à la liste puis employée aussitôt. */
 export function FicheNouvelleFormule({
   services, onApercu, onCree, onFermer,
-}: { services: Services; onApercu?: (texte: string) => void; onCree: (texte: string) => void; onFermer: () => void }) {
+}: {
+  services: Services; onApercu?: (vue: { texte: string; signe: SigneAction }) => void;
+  onCree: (texte: string, signe: SigneAction) => void; onFermer: () => void;
+}) {
   const [texte, setTexte] = useState("");
+  const [signe, setSigne] = useState<SigneAction>("crayon");
   useEffect(() => {
-    onApercu?.(texte.trim());
-  }, [onApercu, texte]);
+    onApercu?.({ texte: texte.trim(), signe });
+  }, [onApercu, texte, signe]);
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const creer = async () => {
     if (!services.ajouterFormule || !texte.trim()) return;
     setAttente(true);
     setErreur(null);
-    const fait = await services.ajouterFormule(texte);
+    const fait = await services.ajouterFormule(texte, signe);
     setAttente(false);
     if (!fait.ok) return setErreur(fait.erreur ?? "La formule n’a pas pu être ajoutée.");
-    onCree(texte.replace(/\s+/g, " ").trim());
+    onCree(texte.replace(/\s+/g, " ").trim(), signe);
   };
   return (
     <Cadre titre="Nouvelle formule" icone="crayon" onFermer={onFermer}>
@@ -298,6 +305,10 @@ export function FicheNouvelleFormule({
           <input className="pchamp" type="text" maxLength={140} autoFocus value={texte} placeholder="Retire un point de volonté à ton héros." onChange={(e) => setTexte(e.target.value)} />
           <span className="cx-aide">Une demande au lecteur qui revient souvent. « … » marque ce qu’on complétera à chaque fois.</span>
         </label>
+        <div className="champ champ--plein">
+          <span>Signe devant la formule</span>
+          <Signes valeur={signe} onChange={setSigne} libelle="Signe devant la formule" />
+        </div>
         <p className="cx__cmd">
           <button type="submit" className="btn btn--primaire" disabled={attente || !texte.trim()} aria-busy={attente || undefined}>
             Ajouter et utiliser

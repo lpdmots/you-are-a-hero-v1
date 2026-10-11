@@ -4,7 +4,9 @@
  * `nettoyerTexte` ne laisse passer que ce qu'il connaît.
  */
 
-import { CONSTRUCTIONS, estConstruction, phraseDeChoix, type Construction, type FormuleRenvoi } from "./preparation";
+import {
+  CONSTRUCTIONS, estConstruction, NOMS_DES_SIGNES, phraseDeChoix, SIGNES_ACTION, signeDe, type Construction, type FormuleRenvoi, type SigneAction,
+} from "./preparation";
 
 export type Marques = { bold?: true; italic?: true; underline?: true };
 export type Lettres = { text: string } & Marques;
@@ -62,20 +64,7 @@ export type Liaison = { type: "liaison"; id: string; cible: string | null; libel
  */
 export type Action = { type: "action"; id: string; protege?: true; signe?: Exclude<SigneAction, "crayon">; children: ({ text: string } | ImageLigne)[] };
 
-/**
- * Le signe placé devant une action de jeu, dans la copie comme dans le livre : le crayon
- * par défaut, pour ce qui se note ; le dé, le sac, le cœur (F04-AC40).
- */
-export const SIGNES_ACTION = ["crayon", "de", "sac", "coeur"] as const;
-export type SigneAction = (typeof SIGNES_ACTION)[number];
-export const NOMS_DES_SIGNES: Record<SigneAction, string> = {
-  crayon: "Crayon : à noter sur la feuille",
-  de: "Dé : à lancer",
-  sac: "Sac : un objet à prendre ou à rayer",
-  coeur: "Cœur : des points gagnés ou perdus",
-};
-export const signeDe = (bloc: { signe?: unknown }): SigneAction =>
-  SIGNES_ACTION.includes(bloc.signe as SigneAction) ? (bloc.signe as SigneAction) : "crayon";
+export { NOMS_DES_SIGNES, SIGNES_ACTION, signeDe, type SigneAction };
 
 export type Bloc = Paragraphe | Choix | Note | Liaison | Action | ImageBloc;
 export type Texte = Bloc[];
