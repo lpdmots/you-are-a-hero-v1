@@ -2378,7 +2378,8 @@ choix seulement.
   lien caché —, une scène se nomme par son titre seul. Le porteur juge la
   référence « S005 » peu utile, personne ne la retenant, et elle double le
   numéro du livre. Elle reste le nom d'une scène sans titre. Les autres
-  écrans gardent la règle du 6 octobre en attendant une passe à part.
+  écrans gardent la règle du 6 octobre : le porteur décide le même jour de
+  s'en tenir là (« on garde comme actuellement »).
 - **Scène de destination conservée :** supprimer un renvoi ou une phrase ne
   supprime jamais la scène visée. Si elle devient inaccessible, les contrôles
   de F09.2 le signalent.

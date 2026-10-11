@@ -482,10 +482,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     (F05-AC22, AC23, AC25, AC45 révisés, AC46 retiré, AC57) ; pas d'image
     sur la ligne dans une phrase de choix pour cette livraison (F10) ; le
     titre d'une scène sans sa référence près d'un choix. Dix-huit parcours
-    réécrits. Reste à part : la même passe sur la référence dans le reste
-    de l'outil. Le même jour, après ces reprises, le porteur dit l'éditeur
-    bon de son côté (« pour l'éditeur c'est bon ») ; les précisions des lots
-    ne lui ont pas été présentées une à une. Il n'est pas convaincu par la
+    réécrits. Le même jour, après ces reprises, le porteur dit l'éditeur
+    bon de son côté (« pour l'éditeur c'est bon ») ; les précisions des six
+    lots, non présentées une à une, sont confirmées en bloc (« ok pour tes
+    décisions »), et il garde la référence des scènes telle qu'elle est
+    hors des choix. Il n'est pas convaincu par la
     vue « Chemins », jugée sur des chemins très simples : sa tenue sur un
     chapitre d'une trentaine de scènes n'est pas éprouvée (V15 n'a mesuré
     que le temps d'affichage). Décidé le même jour : la vue est refaite
@@ -493,8 +494,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     réduites à l'essentiel et choix sur les flèches
     ([F03.1](specifications.md#f031--histoire-parties-chapitres-et-scènes)) ;
     à construire, dans une conversation à part.
-    La revue continue écran par écran ; les précisions des six lots restent
-    à lui présenter.
+    Restent à juger à l'essai les formes des reprises de ce jour, listées
+    dans le design.
   - **V19 :** les versions de Plate et de Slate sont figées dans
     `package.json` ; les quatorze scénarios du prototype de l'éditeur sont
     réécrits dans `tests/parcours/` (`choix`, `proteger`, `jeu`) et servent
@@ -522,7 +523,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       F08-AC31 (prise en charge par l'élève) et F07-AC26, AC28, AC29 à
       l'étape 4 ; F08-AC27 à l'étape 6. F08-AC26 se ferme au lot 2, avec les
       choix.
-    - **Lectures de règles à confirmer par le porteur :** un élève retiré de
+    - **Lectures de règles, confirmées par le porteur le 11 octobre 2026**
+      (la première, selon lui, n'arrivera jamais) **:** un élève retiré de
       la classe pendant qu'il tape voit sa dernière phrase gardée à part sur
       la scène, comme le dit F08.2, et non écrite dans la scène, comme le
       laissait entendre F06-AC78 ; la scène dont un camarade s'occupe se lit
@@ -550,7 +552,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       F11-AC98 au lot 3 (liaison cachée) ; F05-AC38 et le blocage du PDF à
       l'étape 6 ; F05-AC04 (titre proposé par l'IA) à l'étape 8 ; F03-AC19
       (prises en charge) à l'étape 4.
-    - **Choix d'écran sans dessin, à voir à l'essai :** la fiche ouverte au
+    - **Choix d'écran sans dessin, confirmés en bloc le 11 octobre 2026,**
+      la règle du « / » l'étant expressément **:** la fiche ouverte au
       clavier prend le curseur, celle ouverte à la souris non ; « / » ouvre
       les commandes au début d'une ligne, après une espace ou une
       ponctuation ; sur téléphone, « Chemins » est une liste verticale ; la
@@ -576,7 +579,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       chemins, blocage du PDF, scène « à vérifier ») à l'étape 6 ; la moitié
       de F05-AC51 qui parle de « Remettre » à l'étape 4, et de la lecture
       d'essai à l'étape 6.
-    - **Précisions prises en construisant, à confirmer par le porteur :**
+    - **Précisions prises en construisant, confirmées en bloc par le porteur
+      le 11 octobre 2026 :**
       une liaison cachée ne mène qu'à une scène existante, et se crée sans
       libellé ; « Proposer comme choix » pose la phrase à la fin du texte ;
       un lien retiré peut se rétablir par « Annuler », le numéro restant
@@ -605,7 +609,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       vide, la fiche d'un choix ne se posait pas sous le bon bloc, le
       paragraphe vide n'ayant pas la même identité côté serveur et côté
       navigateur.
-    - **Précisions prises en construisant, à confirmer par le porteur :**
+    - **Précisions prises en construisant, confirmées en bloc par le porteur
+      le 11 octobre 2026 :**
       une action de jeu n'a pas de mise en forme (le livre la met en valeur
       lui-même) ; coupée en entier, elle part avec son bloc ; ajouter un
       objet ou une formule depuis la scène ouvre la rubrique « Objets et
@@ -628,7 +633,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Critères qui attendent :** l'image dans le livre, l'aperçu, le PDF
       et le lecteur (F10-AC16 pour l'impression, AC17 à AC19, la seconde
       moitié de AC20) aux étapes 6 et 7.
-    - **Précisions prises en construisant, à confirmer par le porteur :**
+    - **Précisions prises en construisant, confirmées en bloc par le porteur
+      le 11 octobre 2026 :**
       « petite » vaut 40 % de la page, « moyenne » 65 %, et le pourcentage
       libre va de 15 à 100 ; une image à fond transparent est gardée en
       WebP, ou en PNG si le navigateur ne sait pas l'écrire ; une image
@@ -648,7 +654,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Critères qui attendent :** la moitié de F04-AC10 qui parle de la
       remise et du livre (étapes 4 et 6) ; l'affichage pendant la relecture
       d'un texte remis, question ouverte de F04.3.
-    - **Précisions prises en construisant, à confirmer par le porteur :**
+    - **Précisions prises en construisant, confirmées en bloc par le porteur
+      le 11 octobre 2026 :**
       la case est à droite du titre de la copie, et non parmi les outils,
       trop nombreux ; les extraits ne s'affichent pas pendant qu'on lit un
       texte gardé à part ; une liaison cachée ne se montre à un élève que si

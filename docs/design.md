@@ -1299,7 +1299,8 @@ sans retour du porteur à ce stade :
   sur 62 % de sa hauteur au plus, par-dessus le texte.
 - **Côté élève :** même panneau, à la place de « La consigne ».
 
-**À confirmer par le porteur :** un objet créé depuis la scène s'écrit
+**Confirmé en bloc par le porteur le 11 octobre 2026,** avec les précisions
+des six lots (« ok pour tes décisions ») **:** un objet créé depuis la scène s'écrit
 aussitôt dans le texte (« Créer et écrire dans le texte ») et une formule
 ajoutée est aussitôt employée (« Ajouter et utiliser »), au lieu de revenir
 à la liste ; écrire dans la phrase personnalisée qu'on règle ne referme pas
@@ -1455,8 +1456,9 @@ de la référence quand la scène n'en a pas ; « Décider plus
 tard » qui crée sans avertir avant ; le texte des deux bulles ; le numéro
 laissé à « … » dans la phrase en attente tant que le choix n'est pas créé ;
 sur un écran étroit, où le panneau monte du bas, la phrase en attente peut
-se trouver dessous. La passe sur la référence des scènes dans le reste de
-l'outil (messages, scènes voisines, chemins, plan) n'est pas faite.
+se trouver dessous. La référence des scènes reste affichée dans le reste
+de l'outil (messages, scènes voisines, plan) : le porteur décide le
+11 octobre de garder cela « comme actuellement ».
 
 ### Étape 2 construite (10 octobre 2026)
 
