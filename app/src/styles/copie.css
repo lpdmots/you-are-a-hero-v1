@@ -2020,7 +2020,11 @@ kbd {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
-/* Un texte vide garde une place où poser le curseur */
+/* Un texte vide — après le dernier numéro, entre deux numéros — garde une place où le curseur se voit */
+.cx-phrase__texte:empty {
+  display: inline-block;
+  min-width: 0.45em;
+}
 .cx-phrase__texte:empty::before {
   content: "\200b";
 }

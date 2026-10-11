@@ -461,6 +461,8 @@ test.describe("Modifier un choix (F05.2) — points 2 et 3 du prototype", () => 
     await expect(DESTINATIONS(page).locator(".cx-dest__nom")).toHaveText(["Clairière", "La souche"]);
     // Le numéro est à la fin de la phrase : on écrit le point après lui
     await expect(TEXTES(page)).toHaveCount(3);
+    // Le texte vide qui suit le numéro garde une place : le curseur s'y voit
+    expect((await TEXTES(page).nth(2).boundingBox())!.width).toBeGreaterThan(3);
     await ecrireDansLaPhrase(page, 2, ".", "fin");
     await attendreEnregistre(page);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002", "S001 > S003"]);
