@@ -1401,6 +1401,12 @@ règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-
   remplace alors « Ce chapitre ». Hors du chapitre : sous le titre de la
   scène, une flèche qui sort et le nom du chapitre, à la place de
   « raccord · », qui reste dans la bulle au survol.
+- **« Où mettre cette image ? », les deux cartes :** au survol, la carte se
+  teintait de canard, comme une case cochée ; le pointeur étant déjà dessus
+  quand elles apparaissent, le porteur croyait « Dans le texte » déjà
+  choisie et ne voyait pas qu'il fallait cliquer. Le survol soulève
+  maintenant la carte sans la teinter, et une flèche suit son nom, comme sur
+  « Ouvrir ».
 - **Image posée :** la fiche « Image » ne se referme plus sur la pose ; les
   réglages de l'image s'ouvrent à sa place (largeur, légende, « Ce que
   montre l'image »), en bloc comme sur la ligne. Se remettre à écrire les

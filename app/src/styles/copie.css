@@ -1151,19 +1151,41 @@
   text-align: left;
   cursor: pointer;
 }
-.cx-ou__carte:hover:not(:disabled),
+/* Au survol, la carte se soulève sans se teinter : le canard plein dirait « déjà choisie » */
+.cx-ou__carte:hover:not(:disabled) {
+  box-shadow:
+    inset 0 0 0 1.5px var(--graphite-3),
+    0 6px 14px -8px rgba(20, 30, 30, 0.45);
+}
+.cx-ou__carte:hover:not(:disabled) .cx-ou__nom .ic {
+  transform: translateX(3px);
+}
 .cx-ou__carte:focus-visible {
-  box-shadow: inset 0 0 0 2px var(--canard);
-  background: var(--canard-pale);
-  outline: none;
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
 }
 .cx-ou__carte:disabled {
   opacity: 0.5;
   cursor: default;
 }
 .cx-ou__nom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   font-size: var(--t-s);
   font-weight: 800;
+}
+/* Une flèche, comme sur « Ouvrir » : la carte se clique */
+.cx-ou__nom .ic {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  color: var(--canard);
+  transition: transform 0.15s var(--ease);
+}
+.cx-ou__carte:disabled .cx-ou__nom .ic {
+  display: none;
 }
 .cx-ou__aide {
   color: var(--graphite-2);

@@ -133,7 +133,10 @@ export function FichePoserImage({
                   <i />
                   <i className="cx-ou__court" />
                 </span>
-                <span className="cx-ou__nom">Dans le texte</span>
+                <span className="cx-ou__nom">
+                  Dans le texte
+                  <Icone nom="fleche" />
+                </span>
                 <span className="cx-ou__aide">Entre deux paragraphes, comme une illustration.</span>
               </button>
               <button type="button" className="cx-ou__carte" disabled={!surLaLigne} onClick={() => onPoser(image, "ligne")}>
@@ -148,7 +151,10 @@ export function FichePoserImage({
                   <i />
                   <i className="cx-ou__court" />
                 </span>
-                <span className="cx-ou__nom">Sur la ligne</span>
+                <span className="cx-ou__nom">
+                  Sur la ligne
+                  <Icone nom="fleche" />
+                </span>
                 <span className="cx-ou__aide">Dans une phrase, à la hauteur des lettres, comme un symbole.</span>
               </button>
             </div>
