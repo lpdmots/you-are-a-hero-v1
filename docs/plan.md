@@ -483,7 +483,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     sur la ligne dans une phrase de choix pour cette livraison (F10) ; le
     titre d'une scène sans sa référence près d'un choix. Dix-huit parcours
     réécrits. Reste à part : la même passe sur la référence dans le reste
-    de l'outil.
+    de l'outil. Le même jour, après ces reprises, le porteur dit l'éditeur
+    bon de son côté (« pour l'éditeur c'est bon ») ; les précisions des lots
+    ne lui ont pas été présentées une à une. Il n'est pas convaincu par la
+    vue « Chemins », jugée sur des chemins très simples : sa tenue sur un
+    chapitre d'une trentaine de scènes est à éprouver, et le recours à une
+    bibliothèque de graphe, comme dans la V0, est en discussion.
     La revue continue écran par écran ; les précisions des six lots restent
     à lui présenter.
   - **V19 :** les versions de Plate et de Slate sont figées dans
