@@ -1086,13 +1086,31 @@ le porteur décide :
   cartes de scène petites, réduites à l'essentiel ; les choix notés sur les
   flèches plutôt que dans les cartes ; une vue d'ensemble seulement, où rien
   ne se modifie, à la différence de la V0, mais agréable ; les problèmes
-  visibles rapidement. Restent à arrêter avant de construire : quels
-  problèmes y figurent, et sous quel nom, la décision du 4 octobre
-  ([F09.2](#f092--contrôles-des-chemins-avant-le-pdf-définitif)) ne
-  présentant pas comme des problèmes les défauts d'une scène à finir ; ce
-  que porte une carte ; l'affichage des libellés sur les flèches d'un
-  chapitre chargé. Sa tenue se juge sur un chapitre composé d'une trentaine
-  de scènes.
+  visibles rapidement. Sa tenue se juge sur un chapitre composé d'une
+  trentaine de scènes. Arrêté le même jour, sur recommandation :
+  - **« À regarder », et non « problèmes ».** La décision du 4 octobre
+    ([F09.2](#f092--contrôles-des-chemins-avant-le-pdf-définitif)) ne
+    présente pas comme des problèmes les défauts d'une scène à finir. La
+    vue marque donc, sans les dire fautifs, ce qui touche les chemins : un
+    choix sans destination, un choix vers une scène supprimée, une scène où
+    rien ne mène hors le départ, une scène sans suite ni fin. Une ligne en
+    tête les compte (« À regarder : 2 choix sans destination · 1 scène où
+    rien ne mène ») et un clic y conduit. Le contrôle complet, avec sa
+    gravité, reste celui de F09.2, à l'étape 5.
+  - **La carte.** Le titre, sans référence ; l'état de la scène ; le repère
+    de départ ou de fin ; la marque « à regarder ». Ni consigne ni liste de
+    choix. Un clic met en valeur les chemins qui y arrivent et en partent ;
+    « Ouvrir » mène à la scène. Un chemin vers un autre chapitre, ou qui en
+    vient, est une petite étiquette au nom de ce chapitre, qui s'y rend
+    (F03-AC25).
+  - **Les libellés sur les flèches.** Écrits sur la flèche, raccourcis s'ils
+    sont longs ; en entier pour la scène survolée ou cliquée ; masqués quand
+    on dézoome pour tout voir. Tous les libellés toujours en entier est
+    écarté : sur trente scènes ils se recouvriraient.
+  - **Défilement et zoom.** Le schéma prend sa hauteur dans la page, que
+    l'on fait défiler normalement ; le zoom passe par des boutons et par
+    « Tout voir » ; une mini-carte ne s'affiche que si le chapitre dépasse
+    deux écrans. Sur téléphone, la liste verticale reste.
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
