@@ -48,6 +48,16 @@ npm run histoire:essai -- --complet   # toutes les scènes écrites
 npm run histoire:essai -- --refaire   # la retire, avec ce qui y a été écrit, puis la recharge
 ```
 
+La même histoire se charge dans la vraie base, pour un compte nommé, une fois son
+schéma à jour. Sans `--oui`, la commande dit seulement ce qu'elle ferait. Le mot de
+passe de la classe d'essai et les codes des élèves y sont tirés au hasard : ils se
+lisent dans « Mes classes ».
+
+```bash
+npm run histoire:essai -- --production adresse@du.compte         # dit ce qui serait fait
+npm run histoire:essai -- --production adresse@du.compte --oui   # le fait
+```
+
 ## Vérifier
 
 ```bash
