@@ -18,8 +18,10 @@ L'étape 2, autorisée par le porteur le 10 octobre 2026 pour elle seule, est
 terminée le même jour : entretien, construction, mise en ligne, essai du
 porteur (voir [Étape 2](#étape-2--préparer-et-organiser-le-récit)).
 L'étape 3 est autorisée le 10 octobre 2026, pour elle seule : son entretien
-est fait et validé dans son ensemble le même jour, sa construction n'est pas
-commencée (voir [Étape 3](#étape-3--écrire-une-scène-et-relier-les-choix)).
+est fait et validé dans son ensemble le même jour, sa construction est faite
+en local le même jour et mise en ligne le 11 octobre 2026, sa revue par le
+porteur étant en cours (voir
+[Étape 3](#étape-3--écrire-une-scène-et-relier-les-choix)).
 L'étape 4 n'est ni autorisée ni commencée.
 
 Ce plan n'autorise par lui-même ni développement, ni prototype, ni achat :
@@ -408,13 +410,24 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   local. Le schéma de la base change : les migrations s'appliquent à la
   vraie base sur accord du porteur, après une sauvegarde.
 - **Construction : les six lots sont construits, en local, le 10 octobre
-  2026.** Un commit local par lot ; rien n'est poussé, rien n'est en ligne,
-  et aucune migration de l'étape n'est appliquée à la vraie base.
-  - **Ce qui reste, dans cet ordre, sur l'accord du porteur :** sauvegarder
-    la vraie base (`npm run sauvegarder`), relire puis appliquer les six
-    migrations de l'étape (`npm run production:schema`, puis `-- --oui`),
-    pousser le code, qui a besoin de ce schéma et ne doit donc pas partir
-    avant, vérifier (`npm run verifier:production`) ; puis son essai, d'après
+  2026.** Un commit local par lot.
+  - **Mise en ligne le 11 octobre 2026, à la demande du porteur, avant la
+    fin de sa revue,** pour essayer l'étape en ligne sur l'histoire d'essai :
+    vraie base sauvegardée (`npm run sauvegarder`), migrations appliquées
+    (`npm run production:schema -- --oui`), code poussé jusqu'au commit
+    `7ce4c96`, vérification passée (`npm run verifier:production`). Sept
+    migrations sont appliquées, et non six : `signe_des_formules`, née de la
+    revue le même jour, se trouvait dans le dossier. Elle ne se modifie donc
+    plus ; un changement demande une nouvelle migration. Les retouches
+    faites ensuite restent locales jusqu'à ce que le porteur demande de
+    pousser.
+  - **Histoire d'essai :** « Les passeurs de brume », l'histoire de la
+    maquette, se charge par `npm run histoire:essai`
+    ([commandes](../app/README.md)) : sa classe d'essai et ses vingt-cinq
+    élèves fictifs, la préparation, le plan, les consignes, les textes et
+    les choix. Chargée le 11 octobre 2026 dans la base locale et dans la
+    vraie base, sur le compte du porteur, à côté de ses projets.
+  - **Ce qui reste :** la fin de la revue et l'essai du porteur, d'après
     « Terminée quand ». L'étape n'est pas terminée tant qu'il ne l'a pas dit.
   - **V13, à faire à la main par le porteur :** coller dans une scène un
     texte venu de Word, de LibreOffice et de Google Docs réels, avec du gras,

@@ -28,9 +28,12 @@ et le [design](docs/design.md#étape-2-construite-10-octobre-2026).
 **L'étape 3 est construite en local le 10 octobre 2026**, pour elle seule
 (écrire une scène et relier les choix) : autorisée, cadrée par un entretien
 validé dans son ensemble, puis construite le même jour en six lots, un commit
-local par lot. Elle n'est ni poussée ni en ligne, ses six migrations ne sont
-pas appliquées à la vraie base, et le porteur ne l'a pas encore essayée en
-entier : elle n'est pas terminée. Le 11 octobre 2026, sur son premier
+local par lot. Elle est mise en ligne le 11 octobre 2026, à la demande du
+porteur et avant la fin de sa revue, avec ses migrations et une histoire
+d'essai, « Les passeurs de brume »
+([plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix)) ; le
+porteur ne l'a pas encore essayée en entier : elle n'est pas terminée. Le
+11 octobre 2026, sur son premier
 retour, les réglages d'un bloc quittent le texte pour un panneau à droite
 ([F05.2](docs/specifications.md#f05-panneau),
 [design](docs/design.md#panneau-des-réglages-à-droite-du-texte-11-octobre-2026)).
