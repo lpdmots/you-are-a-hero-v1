@@ -708,6 +708,7 @@ tous les mots et signes recommandés, repris dans le tableau. La forme des
 | D'un chapitre à l'autre | Le choix vers un autre chapitre montre le chapitre et la scène visée ; l'activer ouvre ce chapitre dans la vue Chemins, la scène d'arrivée entourée de bleu canard. Revenir d'une scène ouverte depuis les chemins y ramène. |
 | Taille des chemins | Par défaut, une taille lisible : si le chapitre est large, on fait défiler. « Tout voir » le réduit à la largeur de l'écran ; « − » et « + ». |
 | Chemins sur téléphone | La scène touchée garde un cadre sombre, la page ne bouge pas, et ses choix se lisent dans un encart collé au bas de l'écran, avec « Ouvrir la scène ». |
+| Chemins dans l'application | Les quatre lignes ci-dessus décrivent la maquette. La vue de l'application est refaite le 12 octobre 2026 : [Vue « Chemins » reprise](#vue--chemins--reprise-12-octobre-2026). |
 | Suivi | L'en-tête d'un chapitre reprend la ligne de la carte : « 6 scènes · 1 validée · 1 prête · 1 à valider · 1 à reprendre ». |
 | Page de scène | Son menu à trois points reçoit « Départ du livre » et « Fin de l'histoire ». |
 
@@ -1247,8 +1248,10 @@ Sans retour du porteur à ce stade ; leurs captures ne sont pas faites.
   copie le repère « pleine page dans le livre ».
 - **Scènes voisines :** les onglets sont des pastilles ; pour un élève, une
   voisine se nomme par son titre, sans référence.
-- **Chemins :** une colonne par pas depuis l'entrée du chapitre, « Tout
-  voir » et deux boutons de taille ; sur téléphone, une liste verticale.
+- **Chemins :** d'abord une colonne par pas depuis l'entrée du chapitre ;
+  refaite le 12 octobre 2026 en schéma de haut en bas
+  ([Vue « Chemins » reprise](#vue--chemins--reprise-12-octobre-2026)) ; sur
+  téléphone, une liste verticale.
 - **Côté élève :** « Rechercher une scène » montre la référence des scènes,
   comme ses autres listes ; la scène d'un camarade se lit sans s'écrire, la
   prise en charge venant à l'étape 4.
@@ -1459,6 +1462,69 @@ sur un écran étroit, où le panneau monte du bas, la phrase en attente peut
 se trouver dessous. La référence des scènes reste affichée dans le reste
 de l'outil (messages, scènes voisines, plan) : le porteur décide le
 11 octobre de garder cela « comme actuellement ».
+
+#### Vue « Chemins » reprise (12 octobre 2026)
+
+La vue construite à l'étape 3 rangeait les scènes en colonnes, de gauche à
+droite, les choix écrits dans les cartes. Le porteur, qui ne l'avait vue que
+sur des chemins très simples, ne s'en disait pas convaincu ; il décide le
+11 octobre de la refaire avec React Flow et dagre
+([F03.1](specifications.md#f031--histoire-parties-chapitres-et-scènes),
+« Vue Chemins à reprendre »). Elle est refaite le 12 octobre, en local, et
+jugée sur un chapitre d'essai de trente-deux scènes et quarante-neuf choix,
+« Le marais des feux follets » (`npm run chemins:essai`). Dans l'application,
+elle remplace les dispositions que la maquette propose pour « Chemins » ; la
+maquette, elle, garde l'ancienne.
+
+| Élément | Forme retenue |
+| --- | --- |
+| Sens et place | De haut en bas, sur toute la largeur de la fenêtre, d'un bord à l'autre, sur un fond de feuille. La page défile normalement : le schéma prend sa hauteur, la molette ne s'y arrête pas. |
+| Carte | Petite (178 points) : le titre sur deux lignes au plus, sans référence ; le tampon d'état ; le dos à la couleur du chapitre. En tête, une bande « Départ du livre » ou « Fin de l'histoire » ; au pied, en ambre, « Rien n'y mène », « Sans suite ». « Ouvrir » ne se montre qu'au survol, au clavier ou sur la carte cliquée. |
+| Flèches | À angles droits arrondis. Un trait descend tout droit entre les cartes et ne se déplace de côté qu'entre deux rangs, chacun sur sa propre ligne : il ne passe jamais sous une carte, et deux traits ne se confondent pas. Un retour en arrière remonte et arrive par le bas de la carte. Un lien caché est en pointillé. |
+| Libellés | Sur la flèche, dans une petite pastille, deux lignes au plus ; « Lien caché » avec la clé. En entier, sur fond canard, pour la scène survolée ou cliquée. Masqués après « Tout voir ». |
+| Scène cliquée | Cadre graphite ; ses flèches en canard, les autres effacées, les cartes voisines gardées nettes. « Échap » ou un clic à côté n'en montre plus aucune. |
+| Autres chapitres | Une pastille au nom du chapitre, avec la flèche qui sort ; « depuis… », avec la flèche qui entre, au-dessus de la scène où l'on arrive. Elle se clique et ouvre ce chapitre dans la même vue, la scène d'arrivée entourée de canard. |
+| Choix qui n'arrive nulle part | Une pastille ambre au bout de la flèche : « Sans destination », « Scène supprimée ». |
+| « À regarder » | Une ligne en tête, point ambre, chaque compte en lien : « 1 choix sans destination », « 2 scènes où rien ne mène »… Un clic y conduit et entoure un instant ce qu'il désigne ; le clic suivant passe au cas suivant. Absente quand rien n'est à regarder. |
+| Taille | « Tout voir », « − », « + », à droite de la ligne « À regarder », qui reste collée sous la barre du haut. « Taille lisible » apparaît dès qu'on a changé la taille. Une bulle « Comment lire ces chemins ? ». |
+| Tout voir | Le chapitre entier dans la fenêtre. Les cartes ne se lisent plus : au survol, une bulle sombre dit le titre ; au clic, elle ajoute « Ouvrir ». |
+| Mini-carte | En bas à droite, quand le schéma dépasse deux écrans : les cartes en gris, le départ en canard, les fins en brun, ce qui est à regarder en ambre, et le cadre de ce qu'on voit. Un clic y conduit. |
+| Scènes que rien ne relie | Rangées en lignes sous le schéma, dans l'ordre du plan. |
+| Élève | Le même schéma, sans référence, sans marque sur les scènes, les autres chapitres nommés sans lien. |
+| Téléphone | La liste d'avant, les scènes l'une sous l'autre, avec la ligne « À regarder » et les marques en ambre. |
+
+**Mesuré sur le chapitre d'essai, en 1 366 × 768** (V15) : la vue d'avant
+faisait 2 648 points de large, soit deux écrans à faire défiler de côté,
+avec 30 croisements et 3 traits passant sous 10 cartes ; la nouvelle tient
+dans la largeur à 85 % environ de sa taille, sur deux écrans et demi de
+haut, avec 9 croisements et aucun trait sous une carte.
+
+**À confirmer par le porteur :** les précisions listées en F03.1, « Vue
+Chemins reprise » ; l'ambre pour tout ce qui est à regarder ; « Ouvrir »
+montré au survol seulement ; la bulle « Comment lire ces chemins ? » et son
+texte ; la place de la mini-carte ; les scènes sans chemin rangées sous le
+schéma plutôt qu'au-dessus.
+
+**Ce qui reste perfectible,** dit au porteur :
+
+- **La hauteur.** Écrire les choix sur les flèches demande un rang de
+  libellés entre deux rangs de cartes : trente-deux scènes font plus de
+  deux écrans. C'est le prix de cartes sans liste de choix.
+- **« Tout voir » sur un long chapitre.** Le schéma entier tient dans la
+  fenêtre, mais à un quart de sa taille : on voit la forme du récit et ce
+  qui est à regarder, on ne lit plus rien sans la bulle.
+- **La mini-carte** recouvre le coin bas droit du schéma.
+- **Un chapitre très serré.** Quarante scènes à deux ou trois choix
+  chacune, toutes reliées de près, restent lisibles carte par carte mais
+  comptent une centaine de croisements, et dépassent la largeur d'un écran
+  de 1 024 points à la taille lisible : il faut alors défiler de côté ou
+  « Tout voir ».
+- **« Sans destination »** est en ambre ici et en brique dans l'éditeur,
+  où il bloquera le PDF : deux couleurs pour une même chose. Non touché.
+- **Non vérifié :** une tablette réelle (le doigt qui fait défiler la page
+  et le toucher d'une carte sont essayés en tactile simulé, dans Chromium),
+  Firefox et Safari, un lecteur d'écran au-delà du clavier (Tab, Entrée,
+  Échap, « Ouvrir »).
 
 ### Étape 2 construite (10 octobre 2026)
 

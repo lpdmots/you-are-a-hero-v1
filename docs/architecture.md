@@ -580,12 +580,79 @@ chaque lecture (`numeroter`), d'après le plan, ces rangs et les numéros
 fixés ; un poste d'élève reçoit de la base de quoi faire le même calcul,
 sans les titres des scènes qu'il ne peut pas lire.
 
-**Chemins (V15).** La vue se déduit du plan et des liens, sans bibliothèque
-de graphe : une colonne par pas depuis l'entrée du chapitre, les traits
-tracés d'après la place réelle des cartes, de la ligne du choix à la scène
-d'arrivée. Un chapitre de quarante scènes dans un livre de deux cents
-s'affiche en moins de trois secondes ; « Tout voir » le ramène à la largeur
-de l'écran.
+**Chemins (V15), refaits le 12 octobre 2026.** La vue se déduit toujours du
+plan et des liens, sans rien de plus dans la base ; elle est dessinée avec
+React Flow (`@xyflow/react` 12.12.0) et dagre (`@dagrejs/dagre` 3.1.1),
+versions figées, sur décision du porteur
+([F03.1](specifications.md#f031--histoire-parties-chapitres-et-scènes)). La
+première vue, sans bibliothèque, rangeait les scènes en colonnes par pas
+depuis l'entrée et traçait ses traits d'une carte à l'autre : rien n'y
+évitait les croisements, ni les traits sous les cartes.
+
+- **Trois fichiers.** `src/domaine/chemins.ts` : les chemins d'un chapitre
+  d'après le plan, l'ordre de lecture, ce qui est « à regarder » — sans
+  bibliothèque ni écran. `src/composants/chemins/disposer.ts` : la place de
+  chaque carte et le tracé de chaque trait, par une fonction qui ne dépend
+  pas du navigateur et se teste seule. `src/composants/chemins/Schema.tsx` :
+  le dessin, avec React Flow. `src/composants/Chemins.tsx` choisit entre le
+  schéma et la liste du téléphone.
+- **Chargées à l'ouverture seulement.** Le schéma est importé par
+  `next/dynamic`, sans rendu côté serveur, et seulement sur un écran de plus
+  de 720 points : les deux bibliothèques (240 Ko, 78 Ko compressés) ne
+  partent qu'à l'ouverture de « Chemins », jamais sur téléphone ni dans la
+  vue « Scènes ». La feuille de style de React Flow (2 Ko compressés) suit
+  le même chemin.
+- **Ce que fait dagre.** Il range les scènes par rangs, de haut en bas,
+  réserve entre deux rangs la place des libellés — chaque libellé lui est
+  donné avec sa largeur, mesurée avec la police de l'outil —, ordonne chaque
+  rang pour réduire les croisements et garde une place aux traits longs
+  entre les cartes. Les scènes lui sont données dans l'ordre où on les
+  rencontre depuis l'entrée du chapitre : les choix qu'il retourne pour
+  ranger un récit qui boucle sont alors de vrais retours en arrière.
+- **Ce qui est fait ici.** Les tracés de dagre, des lignes brisées d'un
+  centre de rang à l'autre, passaient sous les coins des cartes dès qu'un
+  trait se déplaçait de côté ; adoucis en courbes, ils se confondaient entre
+  deux rangs. `disposer` reprend donc ses points et mène les traits à angles
+  droits : tout droit dans la hauteur d'un rang, à la place que dagre a
+  gardée ; de côté seulement entre deux rangs, chaque trait sur sa propre
+  ligne, celui qui part le plus loin passant au-dessus pour ne pas croiser
+  son voisin. La hauteur entre deux rangs suit le nombre de ces lignes. Les
+  traits d'une même carte s'attachent à des points écartés, dans l'ordre où
+  ils partent. Les morceaux du chapitre que rien ne relie sont disposés à
+  part et rangés en lignes.
+- **Ce que fait React Flow.** Il dessine les cartes et les traits, tient la
+  taille, la scène choisie, le parcours au clavier et les bulles à taille
+  réelle. Son déplacement à la souris, son zoom à la molette et sa
+  mini-carte sont coupés : le porteur veut une page qui défile normalement,
+  et le schéma prend donc toute sa hauteur dans la page. La mini-carte est
+  écrite ici, parce qu'elle suit le défilement de la page, que React Flow ne
+  connaît pas. Les tailles sont données à chaque carte : rien n'est mesuré
+  après coup, et le schéma ne se montre qu'une fois à sa place.
+- **Mention « React Flow ».** La bibliothèque, sous licence MIT, affiche son
+  nom dans un coin du schéma, avec un lien vers son site ; elle est masquée,
+  ce que ses auteurs admettent pour un projet personnel et demandent de
+  compenser par un abonnement dans un produit qui rapporte. À trancher à
+  l'ouverture commerciale ([plan](plan.md), étape 9) : afficher la mention,
+  ou soutenir la bibliothèque. Côté élève, un lien qui sort de l'outil
+  n'est de toute façon pas souhaitable.
+- **Mesures (V15).** Quarante scènes à deux ou trois choix chacune, dans un
+  livre de deux cents, s'affichent en moins d'une seconde dans l'application
+  compilée (la limite fixée est de trois) ; la disposition seule prend
+  quelques dizaines de millisecondes. Sur le chapitre d'essai de trente-deux
+  scènes, en 1 366 points de large : 9 croisements au lieu de 30, aucun
+  trait sous une carte au lieu de 3 traits sous 10 cartes, plus de
+  défilement de côté. Les parcours comptent les croisements et les traits
+  sous une carte d'après ce qui est dessiné ; les tests de `disposer`
+  vérifient que deux traits ne suivent jamais la même ligne. Le chapitre de
+  quarante scènes, plus serré qu'un vrai livre, garde 125 croisements.
+- **Alternatives écartées.** Les tracés de React Flow entre deux poignées,
+  qui ignorent les cartes placées entre elles ; les courbes passant par les
+  points de dagre ; elkjs, qui sait tracer à angles droits mais n'est pas la
+  bibliothèque que le porteur a retenue, et n'a pas été essayé.
+- **Écran tactile.** React Flow retient le doigt pour déplacer son schéma
+  (`touch-action: none`) ; la feuille de style de l'application le lui rend,
+  pour qu'il fasse défiler la page. Essayé en tactile simulé dans Chromium.
+- **Non vérifié :** une tablette réelle, Firefox et Safari.
 
 **Liaison cachée (lot 3).** Un bloc `liaison` du texte, rangé à la fin : la
 table des liens, les numéros, l'enregistrement, les versions et les conflits
@@ -662,7 +729,9 @@ s'enregistrer avec la scène. La préférence « Scènes voisines » est une
 colonne du compte de l'adulte et une colonne du profil de l'élève.
 
 **Montées de version (V19).** Plate, Slate et leurs greffons sont figés dans
-`package.json`. Tout ce que la copie fait contre Slate est dans `regles.ts`,
+`package.json`, comme React Flow et dagre, dont le filet est fait des tests
+de la vue « Chemins » (`tests/unitaires/chemins.test.ts`,
+`tests/parcours/chemins.spec.ts`). Tout ce que la copie fait contre Slate est dans `regles.ts`,
 et les scénarios du prototype de l'éditeur, réécrits pour l'application,
 sont le filet d'une montée de version : `tests/parcours/choix.spec.ts`,
 `proteger.spec.ts` et `jeu.spec.ts`.

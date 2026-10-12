@@ -435,9 +435,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
     le contenu que ces logiciels mettent dans le presse-papiers, dans
     Chromium seulement.
-  - **Tests automatiques :** 453 passent — 109 sur les règles, 156 contre
-    la base locale, 188 parcours joués dans un navigateur —, chacun au
-    nom de son critère. Les neuf premières migrations se rejouent depuis
+  - **Tests automatiques :** 468 passent — 119 sur les règles, 156 contre
+    la base locale, 193 parcours joués dans un navigateur —, chacun au
+    nom de son critère (453 avant la reprise de la vue « Chemins »). Les neuf premières migrations se rejouent depuis
     une base vide et donnent le schéma de la base locale ; la dixième,
     `signe_des_formules`, a été ajoutée à la base locale sans la remettre à
     zéro.
@@ -493,9 +493,34 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     avec React Flow et dagre, de haut en bas, sur toute la largeur, cartes
     réduites à l'essentiel et choix sur les flèches
     ([F03.1](specifications.md#f031--histoire-parties-chapitres-et-scènes)) ;
-    à construire, dans une conversation à part.
+    construite le 12 octobre 2026, voir la reprise qui suit.
     Restent à juger à l'essai les formes des reprises de ce jour, listées
     dans le design.
+  - **Reprise du 12 octobre 2026 — vue « Chemins » :** refaite en local
+    avec React Flow et dagre, versions figées, chargés seulement à
+    l'ouverture de « Chemins » sur un écran large (F03.1, F03-AC43 à AC51).
+    Un schéma de haut en bas sur toute la largeur, la page défilant
+    normalement ; des cartes réduites au titre et à l'état ; les choix sur
+    les flèches ; la ligne « À regarder » ; « Tout voir », la taille en
+    boutons et une mini-carte au-delà de deux écrans ; la même vue pour
+    l'élève, la liste sur téléphone. Sans changement de schéma ; deux
+    dépendances de plus. Un chapitre d'essai de trente-deux scènes et
+    quarante-neuf choix, « Le marais des feux follets », s'ajoute à
+    l'histoire d'essai de la base locale par `npm run chemins:essai`
+    ([commandes](../app/README.md)) ; il n'est pas dans la vraie base.
+    - **V15, refaite avec la lisibilité :** sur ce chapitre, en 1 366 points
+      de large, 9 croisements au lieu de 30, aucun trait sous une carte au
+      lieu de 3 traits sous 10 cartes, plus de défilement de côté ; quarante
+      scènes dans un livre de deux cents s'affichent en moins d'une seconde.
+      Détail et limites :
+      [architecture](architecture.md#réalisation-de-létape-3-10-octobre-2026).
+    - **À confirmer par le porteur :** les précisions prises en
+      construisant, listées en F03.1, « Vue Chemins reprise », et les formes
+      listées dans le
+      [design](design.md#vue--chemins--reprise-12-octobre-2026), qui dit
+      aussi ce qui reste perfectible.
+    - **Non vérifié :** une tablette réelle (le tactile est seulement
+      simulé), Firefox et Safari.
   - **V19 :** les versions de Plate et de Slate sont figées dans
     `package.json` ; les quatorze scénarios du prototype de l'éditeur sont
     réécrits dans `tests/parcours/` (`choix`, `proteger`, `jeu`) et servent
@@ -543,7 +568,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'élève ; « Rechercher une scène » de l'élève ; le lien annoncé avant de
     supprimer une scène. Schéma : `20261010220000_choix_numeros.sql`.
     - **Vérifications levées :** V15 (quarante scènes dans un livre de deux
-      cents : « Chemins » en moins de trois secondes) ; V8 pour ce qu'un
+      cents : « Chemins » en moins de trois secondes ; mesure refaite le
+      12 octobre 2026 avec la lisibilité, que celle-ci ne regardait pas) ;
+      V8 pour ce qu'un
       poste lit des destinations, des liens et des numéros. Les scénarios 1
       à 7, 12 et 13 du prototype de l'éditeur sont réécrits dans
       `tests/parcours/choix.spec.ts`. Le glisser-déposer des blocs tient
@@ -793,6 +820,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   l'école élargirait la cible, sans qu'il en fasse un objectif ; le livre de
   sa classe pourra servir d'exemple à feuilleter, les règles de diffusion de
   F12.2 restant différées.
+- **Mention « React Flow », à trancher avant l'ouverture :** la
+  bibliothèque de la vue « Chemins » affiche d'ordinaire son nom dans un coin
+  du schéma ; elle est masquée depuis le 12 octobre 2026. Sa licence le
+  permet ; ses auteurs le demandent compensé par un abonnement de soutien
+  dans un produit qui rapporte. À l'ouverture : afficher la mention pour
+  l'adulte, ou soutenir la bibliothèque
+  ([architecture](architecture.md#réalisation-de-létape-3-10-octobre-2026)).
+  Aucun achat n'est engagé.
 - **Dépend de :** toutes les étapes précédentes, et d'un entretien dédié.
 - **Terminée quand :** à définir par cet entretien.
 

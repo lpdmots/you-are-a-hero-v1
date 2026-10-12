@@ -1077,7 +1077,8 @@ le porteur décide :
   un autre chapitre ouvre ce chapitre dans la même vue et y désigne la scène
   d'arrivée ; revenir d'une scène ramène à la vue quittée.
 - **Vue Chemins à reprendre (décidé par le porteur le 11 octobre 2026, à
-  la revue de l'étape 3 ; non construit).** La vue construite à l'étape 3,
+  la revue de l'étape 3 ; construite en local le 12 octobre 2026, voir
+  « Vue Chemins reprise », plus bas).** La vue construite à l'étape 3,
   sans bibliothèque de graphe, ne le convainc pas : il ne l'a vue que sur
   des chemins très simples, et rien n'y évite les croisements. Elle est
   refaite avec React Flow et dagre, que la V0 employait à sa satisfaction.
@@ -1111,6 +1112,100 @@ le porteur décide :
     l'on fait défiler normalement ; le zoom passe par des boutons et par
     « Tout voir » ; une mini-carte ne s'affiche que si le chapitre dépasse
     deux écrans. Sur téléphone, la liste verticale reste.
+- **Vue Chemins reprise (construite en local le 12 octobre 2026).** Les
+  demandes et les quatre points arrêtés ci-dessus sont construits ; la vue
+  est jugée sur « Le marais des feux follets », chapitre d'essai de
+  trente-deux scènes et quarante-neuf choix. Précisions prises en
+  construisant, **à confirmer par le porteur** :
+  - **Deux lignes pour un libellé.** Un libellé long tient sur deux lignes
+    avant d'être coupé : coupé à une seule ligne, un choix sur deux ne se
+    lisait plus.
+  - **Où se lit ce qui est « à regarder ».** Une scène où rien ne mène, ou
+    sans suite ni fin, porte ces mots au pied de sa carte (« Rien n'y
+    mène », « Sans suite »). Un choix sans destination, ou vers une scène
+    supprimée, finit sur une petite étiquette qui le dit, au bout de sa
+    flèche. Tout est en ambre, la couleur de ce qui attend, sans le mot
+    « problème ». Cliquer un élément de la ligne conduit au premier cas ;
+    le clic suivant, au cas suivant ; rien n'est masqué.
+  - **Ce qui ne compte pas.** Le départ du livre, une scène où mène un
+    choix d'un autre chapitre et une scène atteinte par un lien caché ne
+    sont pas des scènes où rien ne mène. Une scène qui n'a qu'un lien caché
+    pour suite n'est pas sans suite.
+  - **Autres chapitres.** Les choix qui mènent à la même scène d'un autre
+    chapitre se rejoignent sur une seule étiquette au nom de ce chapitre ;
+    les chemins qui viennent d'un même chapitre ont une seule étiquette
+    au-dessus de la scène, « depuis… ». Regrouper les arrivées de nombreux
+    chapitres reste à dessiner.
+  - **Scènes que rien ne relie.** Elles se rangent en lignes sous le
+    schéma, dans l'ordre du plan, au lieu de l'étirer sur un seul rang : un
+    chapitre préparé avant tout choix reste lisible.
+  - **Taille.** Par défaut le schéma tient dans la largeur de la fenêtre,
+    sans descendre sous 70 % de sa taille réelle ; un chapitre plus large
+    que cela se fait alors défiler de côté, ou se voit entier par « Tout
+    voir ». « Deux écrans », pour la mini-carte, se compte en hauteur de
+    fenêtre sous la barre du haut. La ligne « À regarder » et les boutons de
+    taille restent à l'écran pendant le défilement.
+  - **De loin.** Après « Tout voir », les titres ne se lisent plus sur les
+    cartes : survoler une carte dit son titre dans une bulle, la cliquer y
+    ajoute « Ouvrir ».
+  - **Pour un élève.** Le même schéma, sans référence. La base ne lui dit
+    ni les chemins venus d'autres chapitres, ni les liens cachés, ni le
+    départ, ni les fins : « rien n'y mène » et « sans suite » seraient
+    souvent faux, et ne lui sont pas montrés. « À regarder » ne lui dit que
+    les choix sans destination ou vers une scène supprimée. Un autre
+    chapitre est nommé sans qu'il puisse s'y rendre. Lui montrer le départ
+    et les fins demanderait de les lui transmettre : un changement de
+    schéma, non fait.
+  - **Sur téléphone.** En dessous de 720 points de large, la liste des
+    scènes, dans l'ordre où on les rencontre, avec la même ligne « À
+    regarder ».
+- **F03-AC43 — De haut en bas, sans défiler de côté :** étant donné « Le
+  marais des feux follets », trente-deux scènes et quarante-neuf choix, sur
+  un écran de 1 366 points, lorsque l'enseignant ouvre « Chemins », alors
+  chaque choix mène à une scène placée plus bas, sauf les quatre retours en
+  arrière, qui remontent ; le schéma tient dans la largeur de la fenêtre et
+  la page défile de haut en bas.
+- **F03-AC44 — La carte dit l'essentiel :** étant donné « Île — le saule
+  aux lanternes », en cours, lorsque l'enseignant lit sa carte, alors il y
+  lit son titre et son état, sans référence, sans consigne ni liste de
+  choix ; la scène de départ porte « Départ du livre », une fin « Fin de
+  l'histoire ».
+- **F03-AC45 — Les choix sur les flèches :** étant donné le choix
+  « Échanger la plume argentée contre une barque », lorsque l'enseignant
+  regarde le schéma, alors ce libellé est écrit sur sa flèche, coupé après
+  deux lignes ; survoler ou cliquer la scène d'où il part le donne en
+  entier ; après « Tout voir », les libellés ne s'affichent plus.
+- **F03-AC46 — « À regarder » :** étant donné un choix sans destination, un
+  choix vers une scène supprimée, deux scènes où rien ne mène et deux scènes
+  sans suite ni fin, lorsque l'enseignant ouvre « Chemins », alors une ligne
+  dit « À regarder : 1 choix sans destination · 1 choix vers une scène
+  supprimée · 2 scènes où rien ne mène · 2 scènes sans suite » ; cliquer
+  « 2 scènes où rien ne mène » conduit à la première, puis à la seconde,
+  sans rien masquer. Le départ du livre, une scène où mène un autre chapitre
+  et une scène atteinte par un lien caché n'y comptent pas. Sans rien à
+  regarder, la ligne n'existe pas.
+- **F03-AC47 — Cliquer une scène montre ses chemins :** étant donné la
+  carte de « Clairière », où arrivent deux choix et d'où part un troisième,
+  lorsque l'enseignant la clique, alors ces trois flèches ressortent et les
+  autres s'effacent ; « Ouvrir » mène à la page de la scène ; « Échap » ne
+  montre plus rien ; rien n'est modifié.
+- **F03-AC48 — Tout voir, taille lisible, mini-carte :** étant donné le
+  marais, plus haut que deux écrans, lorsque l'enseignant ouvre « Chemins »,
+  alors une mini-carte dit où il est et un clic y conduit ; « Tout voir »
+  montre le chapitre entier dans la fenêtre ; « Taille lisible » y ramène.
+  Un chapitre de quatre scènes n'a pas de mini-carte.
+- **F03-AC49 — Sur téléphone, la liste :** étant donné un écran de
+  390 points de large, lorsque l'enseignant ouvre « Chemins », alors les
+  scènes se lisent l'une sous l'autre, chaque choix disant où il mène, avec
+  la même ligne « À regarder » ; le schéma ne s'y charge pas.
+- **F03-AC50 — Chemins lus par un élève :** étant donné Alice, attribuée à
+  « La lisière », lorsqu'elle ouvre « Chemins », alors elle voit le même
+  schéma sans référence ni lien caché ; « Le sanctuaire », où mène un choix,
+  est nommé sans lien ; « À regarder » ne lui dit que « 1 choix sans
+  destination ».
+- **F03-AC51 — Scènes que rien ne relie :** étant donné un chapitre de
+  vingt scènes sans aucun choix, lorsque l'adulte ouvre « Chemins », alors
+  les cartes se rangent en lignes dans l'ordre du plan, sans étirer la page.
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
@@ -1319,8 +1414,9 @@ ordinaire, nommé par l'adulte, sans niveau ni statut de plus. Atteinte par
 une règle du jeu, une telle scène reçoit un numéro fixé (F11.3) et le
 contrôle « inaccessible depuis le départ » avertit sans bloquer (F09.2) ;
 atteinte par des choix, ce sont des raccords, réservés à l'enseignant
-(F06.1). Reste à dessiner : les arrivées regroupées d'un chapitre où mènent
-de nombreux chapitres.
+(F06.1). Dans la vue Chemins reprise le 12 octobre 2026, chaque chapitre
+d'origine a son étiquette au-dessus de la scène ; reste à dessiner : les
+arrivées regroupées d'un chapitre où mènent de nombreux chapitres.
 
 - **F03-AC21 — La carte ouvre le chapitre :** étant donné la page « Parties
   et chapitres », lorsque l'enseignant clique l'image ou le titre de « La

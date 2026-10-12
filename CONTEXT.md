@@ -157,6 +157,12 @@ Nom à l'écran de la vue qui montre, dans un chapitre, où mène chaque choix ;
 « graphe » reste le mot de travail des documents.
 _Éviter_ : plan, ordre de lecture.
 
+**À regarder** :
+Ce que la vue Chemins signale sans le dire fautif : un choix sans
+destination, un choix vers une scène supprimée, une scène où rien ne mène,
+une scène sans suite ni fin.
+_Éviter_ : problème, erreur, qui sont les mots des contrôles du Livre.
+
 **Histoire** :
 Récit organisé en parties, chapitres et scènes, de type classique ou à choix.
 

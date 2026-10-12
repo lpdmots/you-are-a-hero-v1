@@ -3,7 +3,7 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
-## État de reprise au 10 octobre 2026
+## État de reprise au 12 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
 ensemble, chacun avec ses points différés. La
@@ -43,6 +43,13 @@ côté où la fenêtre a la place, dans toute l'application
 et « Nouveau choix » se remplit en étapes, la phrase se lisant en attente
 dans le texte
 ([design](docs/design.md#nouveau-choix-en-étapes-11-octobre-2026)).
+Le 12 octobre 2026, la vue « Chemins », qui ne le convainquait pas, est
+refaite en local avec React Flow et dagre, comme il l'a décidé : un schéma
+de haut en bas, les choix sur les flèches, une ligne « À regarder », jugé
+sur un chapitre d'essai de trente-deux scènes
+([F03.1](docs/specifications.md#f031--histoire-parties-chapitres-et-scènes),
+[design](docs/design.md#vue--chemins--reprise-12-octobre-2026)) ; ses
+précisions restent à lui faire confirmer.
 Voir le
 [plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix), qui dit
 ce qui reste et dans quel ordre,
@@ -388,7 +395,9 @@ proposés et les retours du porteur sont décrits dans le
   d'attribution, dialogue de suppression et corbeille, page du chapitre sur
   une ligne d'outils, « qui s'en occupe » changé sur la carte, vue
   « Chemins » avec le départ, les fins et « sans suite » en mots, choix
-  suivi d'un chapitre à l'autre, encart collé en bas sur téléphone ;
+  suivi d'un chapitre à l'autre, encart collé en bas sur téléphone (dans
+  l'application, cette vue est refaite le 12 octobre 2026 : voir le
+  [design](docs/design.md#vue--chemins--reprise-12-octobre-2026)) ;
   « 10 ordinateurs » retiré de l'en-tête du projet. Le porteur accepte les
   mots et signes recommandés, confirme les précisions de la reprise et fait
   réduire le bouton à trois points des cartes, qui ont désormais toutes la
@@ -569,10 +578,10 @@ avant de commencer » soient tranchées.
 | --- | --- |
 | [Brief](BRIEF-V1.md) | Synthèse du produit, modes, F01–F14, orientations techniques et périmètre. |
 | [Spécifications fonctionnelles](docs/specifications.md) | Règles, permissions, parcours, critères d'acceptation ; décisions distinguées des propositions et questions ouvertes. |
-| [Vocabulaire métier](CONTEXT.md) | Définitions canoniques, notamment histoire → partie → chapitre → scène, corbeille du projet, classe et année terminée, inscription, retrait de la classe, accès de classe, affiche de la classe, étiquette de l'élève, attribution, prise en charge, état de la scène, copie de récupération, version précédente, répartition des scènes sans élève, renvoi et phrase de choix, fiche de rédaction, note de l'enseignant, objet de l'histoire, feuille d'aventure, compteur, action de jeu, liaison cachée, numéro imprimé, numéro de page, page de présentation, dé imprimé, page peu remplie, agencement, temps du livre, étape d'arrivée, tâche, scène à finir, doute sur l'ordre, avertissement accepté et aperçu du livre. |
-| [Design](docs/design.md) | Carnet d'aventure illustré, système « Cahiers d'aventure » de la maquette de synthèse, images et couleurs de repérage, situations retenues, vues Scènes/Chemins, dispositions à éprouver et outillage de conception. |
+| [Vocabulaire métier](CONTEXT.md) | Définitions canoniques, notamment histoire → partie → chapitre → scène, corbeille du projet, chemins et « à regarder », classe et année terminée, inscription, retrait de la classe, accès de classe, affiche de la classe, étiquette de l'élève, attribution, prise en charge, état de la scène, copie de récupération, version précédente, répartition des scènes sans élève, renvoi et phrase de choix, fiche de rédaction, note de l'enseignant, objet de l'histoire, feuille d'aventure, compteur, action de jeu, liaison cachée, numéro imprimé, numéro de page, page de présentation, dé imprimé, page peu remplie, agencement, temps du livre, étape d'arrivée, tâche, scène à finir, doute sur l'ordre, avertissement accepté et aperçu du livre. |
+| [Design](docs/design.md) | Carnet d'aventure illustré, système « Cahiers d'aventure » de la maquette de synthèse, images et couleurs de repérage, situations retenues, vues Scènes/Chemins, vue « Chemins » de l'application reprise le 12 octobre 2026, dispositions à éprouver et outillage de conception. |
 | [Maquette de synthèse](maquettes/synthese/index.html) | Système « Cahiers d'aventure », planche d'ambiance, parties et chapitres (carte qui ouvre le chapitre, menus à trois points, « À compléter », aide à l'ouverture, réglages, attribution des élèves, suppression et corbeille), Scènes/Chemins, barre du haut globale et page « Mes projets », « Nouveau projet » en trois questions, « Mes classes » (aide à l'ouverture, classe et ses élèves, codes, informations de la classe, horaires, fin d'année, inscription en lot, étiquettes et affiche), Suivi d'un projet (rappel des élèves sans chapitre, tampons d'état en filtres et leur légende, écran d'aide à l'ouverture, sélections par élève, vue Élèves, retour depuis la scène) et fiches de rédaction en feuille par chapitre ou par élève, un élève choisi n'imprimant que la sienne, et les scènes sans élève pouvant être réparties à l'impression, préparation et atelier projeté, connexion élève (place du code réservée, code refusé, confirmation de « Quitter la classe »), Mon travail (scènes rangées par urgence, fermé hors des horaires), écriture et reprise de l'élève (pied de la copie collé au bas de l'écran, incidents dans ce pied, scène prise ou rendue avec « Annuler », retour de l'enseignante seul à la première ouverture, à l'essai) et relecture (état de la scène choisi sur son tampon, « qui s'en occupe » et menu à trois points dans l'en-tête, un seul retour, scène suivante à valider, fiche de décision réduite à l'étape suivante, incidents au-dessus de la copie), conflit de sauvegarde (texte gardé à part dans un onglet de la page de scène, « Ne plus garder ce texte » et « Mettre ce texte dans la scène », ligne de rappel du Suivi, élève arrêté sur la scène et dans « Mon travail »), choix dans la scène et blocs protégés, objets et actions de jeu dans la copie, destination Livre en parcours guidé (relire, vérifier les chemins, mettre en page, imprimer et partager ; ligne d'étapes à marques, étapes fermées, tâches sans accordéon aux deux premières étapes, aide à l'ouverture d'une étape, bulles d'information, avertissements acceptés, aperçu avec la scène ouverte à côté, scène déclarée prête ou exclue depuis son menu, image dans l'éditeur, « Mettre en page » en deux volets — réglages de texte et de pages, ordre des passages et ordre à confirmer, pages de début et de fin ; aperçu du livre entier, pages peu remplies et passages suggérés —, PDF définitif, partage), rubriques « Phrases de choix », feuille d'aventure et règles du jeu dans la préparation, Suivi filtré sur les scènes à finir, lecture d'essai, lecteur en ligne avec feuille d'aventure et dé, et lectures de l'élève. HTML local, variantes et interactions simulées sans persistance ; propositions à examiner. |
-| [Architecture](docs/architecture.md) | Orientations techniques, comparaison d'hébergement et décision du 8 octobre 2026, protection des accès, vérifications restantes, liste du prototype de l'éditeur et ses résultats point par point, liste du prototype PDF, moteurs candidats, limites Vercel, résultats et mesures du prototype PDF. |
+| [Architecture](docs/architecture.md) | Orientations techniques, comparaison d'hébergement et décision du 8 octobre 2026, protection des accès, vérifications restantes, liste du prototype de l'éditeur et ses résultats point par point, liste du prototype PDF, moteurs candidats, limites Vercel, résultats et mesures du prototype PDF ; vue « Chemins » refaite avec React Flow et dagre, son tracé et sa mesure. |
 | [Plan de réalisation](docs/plan.md) | Validé le 8 octobre 2026 : cadre décidé par le porteur, seuils « ma classe » et « ouverture », périmètre de la première livraison par identifiant, vérifications techniques avec l'étape qui les lève, décisions de fournisseur, préalables aux prénoms d'élèves réels, neuf étapes avec leurs critères et ce qui est à régler avant chacune, sujets hors première livraison, coûts, risques, questions ouvertes et écarts entre documents. Il n'autorise ni développement ni prototype. |
 | [Prototype de l'éditeur](prototypes/editeur/README.md) | Essai jetable Plate du 2 octobre 2026 et ses tests ; lancement et organisation du dossier. Aucun code à reprendre ; les verdicts sont dans l'architecture. |
 | [Prototype de la chaîne PDF](prototypes/pdf/README.md) | Essai jetable Paged.js et Chromium du 3 octobre 2026 : livre d'essai, aperçu, commande d'export et tests ; lancement et organisation du dossier. Aucun code à reprendre ; les verdicts sont dans l'architecture. |
