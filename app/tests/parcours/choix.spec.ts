@@ -1034,7 +1034,7 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
   });
 });
 
-test.describe("Numéros, chemins et suppression (F11.5, F03.1)", () => {
+test.describe("Numéros et suppression (F11.5, F03.1) — la vue « Chemins » a ses parcours dans chemins.spec.ts", () => {
   test("F05-AC35, F11-AC96, AC97, F05-AC36 — « Fixer son numéro… » : la scène garde le numéro écrit, la phrase qui y mène le suit, la référence ne change pas ; un numéro déjà fixé est refusé en nommant la scène ; « Libérer le numéro » ; le départ n'a pas ces commandes", async ({ page }) => {
     test.setTimeout(120_000);
     const l = await auteur(page);
@@ -1080,47 +1080,6 @@ test.describe("Numéros, chemins et suppression (F11.5, F03.1)", () => {
     expect((await numerosEnBase(l.projet))[l.lisiere.scenes[1]]).toBeLessThanOrEqual(5);
   });
 
-  test("F03-AC18, AC25, point 13 — la vue « Chemins » montre les mêmes scènes, reliées par les choix enregistrés, sans rien modifier ; suivre un choix vers un autre chapitre ouvre ce chapitre dans la même vue, la scène d'arrivée désignée", async ({ page }) => {
-    test.setTimeout(120_000);
-    const l = await auteur(page);
-    await l.base.from("projets").update({ depart_scene_id: l.lisiere.scenes[0] }).eq("id", l.projet);
-    await l.base.from("scenes").update({ fin: true }).eq("id", l.lisiere.scenes[3]);
-    await semerBlocs(l.base, l.lisiere.scenes[0], [choixAuto("Continuer vers la lumière", l.lisiere.scenes[1]), choixAuto("Longer la souche", l.lisiere.scenes[2]), choixAuto("Plus tard", null)]);
-    await semerBlocs(l.base, l.lisiere.scenes[1], [choixAuto("Descendre au marais", l.marais.scenes[0])]);
-    await semerBlocs(l.base, l.lisiere.scenes[2], [choixAuto("Rejoindre la clairière", l.lisiere.scenes[1])]);
-    const avant = await sql("select id, version, rang from scenes where projet_id = $1 order by reference", [l.projet]);
-
-    await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}`);
-    await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002", "S003", "S004"]);
-    await page.getByRole("button", { name: "Chemins" }).click();
-    await page.waitForURL(/vue=chemins/);
-    const noeud = (ref: string) => page.locator(".noeud").filter({ has: page.locator(".noeud__tete .fiche__ref", { hasText: ref }) });
-    // Une colonne par pas depuis l'entrée du chapitre : S001 et S004, où rien ne mène, puis S002 et S003
-    await expect(page.locator(".noeud .fiche__ref")).toHaveText(["S001", "S004", "S002", "S003"]);
-    await expect(noeud("S001")).toContainText("Départ du livre");
-    await expect(noeud("S001").locator(".noeud__suites li")).toHaveText([/Continuer vers la lumière.*S002 Clairière/, /Longer la souche.*S003 La souche/, /Plus tard.*Sans destination/]);
-    await expect(noeud("S002")).toContainText("2 chemins se rejoignent");
-    await expect(noeud("S004")).toContainText("Fin de l’histoire");
-    await expect(noeud("S004")).not.toContainText("Sans suite");
-    // Un trait par lien interne au chapitre
-    await expect(page.locator(".chemins__traits path[marker-end]")).toHaveCount(3);
-
-    // Le choix vers « Le marais » ouvre ce chapitre dans la même vue, S005 désignée
-    await noeud("S002").getByRole("link", { name: /Le marais · S005/ }).click();
-    await page.waitForURL(new RegExp(`/chapitre/${l.marais.id}\\?vue=chemins&scene=${l.marais.scenes[0]}`));
-    await expect(page.locator(".noeud.est-designe")).toContainText("S005");
-    await expect(page.locator(".noeud.est-designe")).toContainText("depuis La lisière");
-    await expect(page.locator(".noeud.est-designe")).toContainText("Sans suite");
-    // Ouvrir une scène depuis les chemins, puis revenir : on retrouve la vue quittée
-    await page.locator(".noeud.est-designe").getByRole("link", { name: "Ouvrir S005" }).click();
-    await page.waitForURL(/\/scene\/.*de=chemins/);
-    await page.getByRole("link", { name: "Retour à Le marais" }).click();
-    await page.waitForURL(/vue=chemins/);
-    await expect(page.getByRole("button", { name: "Chemins" })).toHaveAttribute("aria-pressed", "true");
-    // Rien n'a été modifié en regardant les chemins
-    expect(await sql("select id, version, rang from scenes where projet_id = $1 order by reference", [l.projet])).toEqual(avant);
-  });
-
   test("F03-AC13, AC14 — supprimer une scène où mène un choix annonce d'abord ce lien, qui n'est redirigé nulle part ; la carte du choix dit ensuite « scène supprimée »", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [choixAuto("Continuer vers la lumière", l.lisiere.scenes[1])]);
@@ -1134,42 +1093,8 @@ test.describe("Numéros, chemins et suppression (F11.5, F03.1)", () => {
     await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S003", "S004"]);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002"]);
     await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
-    await expect(page.locator(".noeud").filter({ has: page.locator(".noeud__tete .fiche__ref", { hasText: "S001" }) }).locator(".noeud__suites li")).toContainText("scène supprimée");
-  });
-
-  test("V15 — un chapitre de quarante scènes dans un livre de deux cents : la vue « Chemins » s'affiche en moins de trois secondes et reste lisible", async ({ page }) => {
-    test.setTimeout(180_000);
-    await page.setViewportSize({ width: 1024, height: 768 });
-    const l = await auteur(page);
-    // Cent quatre-vingt-quinze scènes de plus, par la base : quarante dans « La lisière », le reste dans « Le marais »
-    await sql(
-      `insert into scenes (chapitre_id, projet_id, enseignant_id, reference, rang, titre)
-       select case when n <= 36 then $1::uuid else $2::uuid end, $3::uuid, (select enseignant_id from projets where id = $3), 5 + n, 10 + n, 'Scène ' || (5 + n)
-       from generate_series(1, 195) n`,
-      [l.lisiere.id, l.marais.id, l.projet],
-    );
-    await sql("update projets set reference_suivante = 201 where id = $1", [l.projet]);
-    const scenes = await sql<{ id: string; reference: number }>("select id, reference from scenes where chapitre_id = $1 order by reference", [l.lisiere.id]);
-    expect(scenes).toHaveLength(40);
-    // Chaque scène propose deux ou trois choix : un arbre qui se rejoint, comme dans un vrai livre
-    for (const [i, s] of scenes.entries()) {
-      const suites = [scenes[2 * i + 1], scenes[2 * i + 2], scenes[i + 7]].filter(Boolean);
-      if (suites.length) await semerBlocs(l.base, s.id, suites.map((d) => choixAuto(`Aller vers ${d.reference}`, d.id)));
-    }
-    const debut = Date.now();
-    await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
-    await expect(page.locator(".noeud")).toHaveCount(40);
-    await expect(page.locator(".chemins__traits path[marker-end]").first()).toBeVisible();
-    expect(Date.now() - debut).toBeLessThan(3_000);
-    const traits = await page.locator(".chemins__traits path[marker-end]").count();
-    expect(traits).toBeGreaterThan(60);
-    // « Tout voir » ramène le chapitre à la largeur de l'écran, sans défilement horizontal
-    await page.getByRole("button", { name: "Tout voir" }).click();
-    const largeur = await page.locator(".chemins__toile").evaluate((t) => t.getBoundingClientRect().width);
-    const place = await page.locator(".chemins__cadre").evaluate((c) => c.clientWidth);
-    expect(largeur).toBeLessThanOrEqual(place);
-    await page.getByRole("button", { name: "Taille lisible" }).click();
-    await expect(page.locator(".noeud").first().getByRole("link", { name: /Ouvrir/ })).toBeVisible();
+    await expect(page.locator(".etiquette-chemin--manque")).toHaveText("Scène supprimée");
+    await expect(page.locator(".chemins__regarder")).toContainText("1 choix vers une scène supprimée");
   });
 });
 
@@ -1190,7 +1115,9 @@ test("F08-AC26 — le choix d'un texte gardé à part n'apparaît dans « Chemin
   await page.waitForTimeout(500);
   expect(await liensEnBase(l.projet)).toEqual([]);
   await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
-  await expect(page.locator(".noeud").filter({ has: page.locator(".noeud__tete .fiche__ref", { hasText: "S001" }) })).toContainText("Sans suite");
+  const sentier = page.locator(".carte-chemin").filter({ hasText: "Le sentier" });
+  await expect(sentier).toContainText(/sans suite/i);
+  await expect(page.locator(".libelle-chemin")).toHaveCount(0);
 
   await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
   await page.getByRole("tab", { name: /^Votre texte, gardé à part/ }).click();
@@ -1200,6 +1127,7 @@ test("F08-AC26 — le choix d'un texte gardé à part n'apparaît dans « Chemin
   await expect(PHRASES(page)).toHaveCount(1);
   expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
   await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
-  await expect(page.locator(".noeud").filter({ has: page.locator(".noeud__tete .fiche__ref", { hasText: "S001" }) }).locator(".noeud__suites li")).toContainText("Suivre la lumière");
+  await expect(page.locator(".libelle-chemin")).toHaveText("Suivre la lumière");
+  await expect(sentier).not.toContainText(/sans suite/i);
   expect(await motsEnBase(l.lisiere.scenes[0])).toContain("Le texte de départ.");
 });

@@ -1084,48 +1084,442 @@
   }
 }
 
-/* ——— Vue « Chemins » d'un chapitre : les scènes en colonnes, reliées par leurs choix ——— */
+/* ——— Vue « Chemins » d'un chapitre (F03.1, docs/design.md « Vue Chemins reprise ») : un schéma
+   de haut en bas sur un écran large, la liste des scènes sur téléphone ——— */
+.chemins {
+  /* La barre du haut reste à l'écran : l'en-tête des chemins se colle dessous */
+  --sous-la-barre: 58px;
+}
+.chemins__tete {
+  position: sticky;
+  top: var(--sous-la-barre);
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  min-height: 46px;
+  padding: 6px 0;
+  background: var(--bureau);
+  /* Le fond va d'un bord à l'autre de la fenêtre, comme le schéma qui passe dessous */
+  box-shadow: 0 0 0 100vmax var(--bureau);
+  clip-path: inset(0 -100vmax);
+  font-size: var(--t-s);
+}
+.chemins__regarder {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin: 0;
+  color: var(--graphite-2);
+}
+.chemins__regarder-mot {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--e-valider);
+  font-weight: 700;
+}
+/* « À regarder » : ambre, ce qui attend qu'on y jette un œil, sans être une faute */
+.point-regarder {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #e2a200;
+  box-shadow: 0 0 0 2px var(--e-valider-f);
+}
 .chemins__outils {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 10px;
+  margin-left: auto;
+}
+.chemins__outils .lien {
+  margin-right: 8px;
+}
+.chemins__outils .btn--petit {
+  min-width: 34px;
+  justify-content: center;
 }
 .chemins__cadre {
+  position: relative;
   overflow-x: auto;
-  padding: 6px 2px 18px;
+  overflow-y: hidden;
   scrollbar-width: thin;
+  background: var(--feuille-2);
+  border-block: 1px solid var(--trait);
+  scroll-margin-top: calc(var(--sous-la-barre) + 54px);
+}
+.chemins__fleches {
+  position: absolute;
+}
+.fleche-chemin {
+  color: var(--graphite-3);
+}
+.fleche-chemin-active {
+  color: var(--canard-fonce);
+}
+.chemins__attente {
+  margin: 0;
+  padding: 56px 24px;
+  color: var(--graphite-3);
+  text-align: center;
 }
 .chemins__toile {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  gap: 72px;
-  width: max-content;
-  min-width: 100%;
+  opacity: 0;
+  transition: opacity 0.16s var(--ease);
 }
-.chemins__traits {
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: 1;
-  color: var(--graphite-3);
+.chemins__toile[data-dessine] {
+  opacity: 1;
+}
+.chemins__toile .react-flow {
+  background: transparent;
+}
+.chemins__toile .react-flow__pane {
+  cursor: default;
+  /* React Flow retient le doigt pour déplacer son schéma ; ici il fait défiler la page */
+  touch-action: auto;
+}
+.chemins__toile .react-flow__node {
+  cursor: default;
+  border-radius: var(--r-m);
+}
+.chemins__toile .react-flow__node:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 3px;
+}
+.chemins__toile .react-flow__handle {
+  opacity: 0;
   pointer-events: none;
-  overflow: visible;
 }
-.chemins__traits path {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.6;
+
+/* La carte d'une scène : son titre, son état ; en tête le départ ou la fin, au pied ce qui est à regarder */
+.carte-chemin {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    inset 0 0 0 1px var(--trait-fort),
+    var(--ombre-cahier);
+  cursor: pointer;
+  transition:
+    opacity 0.18s var(--ease),
+    box-shadow 0.18s var(--ease);
 }
-.chemins__traits path.est-cache {
+.carte-chemin:hover {
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    inset 0 0 0 1px var(--graphite-3),
+    var(--ombre-cahier);
+}
+.carte-chemin.est-choisie {
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    0 0 0 2.5px var(--graphite),
+    var(--ombre-panneau);
+}
+.carte-chemin.est-designee {
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    0 0 0 3px var(--canard),
+    var(--ombre-cahier);
+}
+.carte-chemin.est-en-retrait,
+.etiquette-chemin.est-en-retrait {
+  opacity: 0.55;
+}
+.carte-chemin__titre {
+  display: -webkit-box;
+  flex: 1;
+  margin: 9px 10px 0 15px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.26;
+}
+.carte-chemin__titre--vide {
+  color: var(--graphite-3);
+  font-weight: 600;
+  font-style: italic;
+}
+.carte-chemin__pied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 22px;
+  margin: 4px 9px 8px 14px;
+}
+.carte-chemin__pied .tampon {
+  padding: 0.06rem 0.42rem 0.06rem 0.32rem;
+  font-size: 11.5px;
+}
+.carte-chemin__ouvrir {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: var(--canard);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  opacity: 0;
+}
+.carte-chemin__ouvrir .ic {
+  width: 1em;
+  height: 1em;
+}
+.carte-chemin:hover .carte-chemin__ouvrir,
+.carte-chemin.est-choisie .carte-chemin__ouvrir,
+.carte-chemin__ouvrir:focus-visible {
+  opacity: 1;
+}
+.carte-chemin__ouvrir:hover {
+  text-decoration: underline;
+}
+.carte-chemin__bande {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  margin: 0;
+  padding: 0 10px 0 15px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.carte-chemin__bande .ic {
+  width: 1.05em;
+  height: 1.05em;
+}
+.carte-chemin__bande--depart {
+  background: #e6f2f1;
+  color: var(--canard-fonce);
+  box-shadow: inset 0 -1px 0 #a7d2cf;
+}
+.carte-chemin__bande--fin {
+  background: #f3eee6;
+  color: #5e4a2a;
+  box-shadow: inset 0 -1px 0 #d8ccb6;
+}
+.carte-chemin__bande--regarder {
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+  box-shadow: inset 0 1px 0 #ecd28a;
+}
+
+/* L'étiquette : un autre chapitre où l'on va, d'où l'on vient ; ou le bout d'un choix qui n'arrive nulle part */
+.etiquette-chemin {
+  height: 100%;
+  border-radius: 99px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  color: var(--graphite-2);
+  font-size: 12px;
+  font-weight: 700;
+}
+.etiquette-chemin > a,
+.etiquette-chemin > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 100%;
+  padding: 0 11px;
+  color: inherit;
+  text-decoration: none;
+}
+.etiquette-chemin > * > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.etiquette-chemin .ic {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+}
+.etiquette-chemin > a {
+  color: var(--canard);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.etiquette-chemin > a:hover {
+  color: var(--canard-fonce);
+}
+.etiquette-chemin--manque {
+  background: var(--e-valider-f);
+  box-shadow: inset 0 0 0 1px #ecd28a;
+  color: var(--e-valider);
+}
+.carte-chemin.est-montree,
+.etiquette-chemin.est-montree {
+  animation: montree 2.6s var(--ease) both;
+}
+
+/* Les traits : un choix, un lien caché en pointillé ; ceux de la scène regardée ressortent */
+.chemins__toile .trait-chemin {
+  stroke: var(--graphite-3);
+  stroke-width: 1.5;
+  transition:
+    stroke 0.18s var(--ease),
+    opacity 0.18s var(--ease);
+}
+.chemins__toile .trait-chemin.est-cache {
   stroke-dasharray: 5 5;
 }
-.chemins__colonne {
+.chemins__toile .trait-chemin.est-actif {
+  stroke: var(--canard-fonce);
+  stroke-width: 2.4;
+}
+.chemins__toile .trait-chemin.est-efface {
+  opacity: 0.22;
+}
+/* De loin, les traits gardent une épaisseur qui se voit */
+.chemins__cadre[data-loin] .trait-chemin {
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+.chemins__cadre[data-loin] .trait-chemin.est-actif {
+  stroke-width: 2;
+}
+.libelle-chemin {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  box-sizing: border-box;
+  min-height: 20px;
+  padding: 0 7px;
+  border-radius: 9px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  color: var(--graphite-2);
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 13.5px;
+  text-align: center;
+  pointer-events: all;
+  transition: opacity 0.18s var(--ease);
+}
+/* Un libellé long tient sur deux lignes, puis se coupe ; il se lit en entier pour la scène regardée */
+.libelle-chemin > span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+}
+.libelle-chemin .ic {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+}
+.libelle-chemin.est-cache {
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  font-style: italic;
+}
+.libelle-chemin.est-entier {
+  z-index: 5;
+  width: max-content;
+  max-width: 230px;
+  padding: 3px 9px;
+  background: var(--canard-fonce);
+  box-shadow: var(--ombre-cahier);
+  color: #fff;
+}
+.libelle-chemin.est-entier > span {
+  display: block;
+}
+.libelle-chemin.est-efface {
+  opacity: 0.25;
+}
+/* De loin, la carte ne se lit plus : une bulle à taille réelle dit son titre */
+.bulle-chemin {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 300px;
+  padding: 6px 10px;
+  border-radius: var(--r-s);
+  background: var(--graphite);
+  box-shadow: var(--ombre-panneau);
+  color: #fff;
+  font-size: var(--t-xs);
+  line-height: 1.3;
+}
+.bulle-chemin a {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  color: #bfe7e3;
+  font-weight: 700;
+}
+.bulle-chemin .ic {
+  width: 1em;
+  height: 1em;
+}
+
+/* La mini-carte, au-delà de deux écrans : où l'on est, et un clic pour s'y rendre */
+.chemins__carte {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 8;
+  box-sizing: content-box;
+  padding: 6px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1px var(--trait-fort),
+    var(--ombre-panneau);
+  cursor: pointer;
+  opacity: 0.9;
+  touch-action: none;
+  transition: opacity 0.18s var(--ease);
+}
+.chemins__carte:hover {
+  opacity: 1;
+}
+.chemins__carte rect {
+  fill: var(--trait-fort);
+}
+.chemins__carte .chemins__carte-etiquette {
+  fill: var(--trait);
+}
+.chemins__carte .chemins__carte-depart {
+  fill: var(--canard);
+}
+.chemins__carte .chemins__carte-fin {
+  fill: #9a8257;
+}
+.chemins__carte .chemins__carte-regarder {
+  fill: #e2a200;
+}
+.chemins__carte .chemins__carte-vu {
+  fill: color-mix(in srgb, var(--canard) 12%, transparent);
+  stroke: var(--canard);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* Sur téléphone : les scènes l'une sous l'autre, chaque choix disant où il mène */
+.chemins__liste {
   display: grid;
-  gap: 22px;
-  width: 268px;
-  margin: 0;
+  gap: 18px;
+  margin: 6px 0 0;
   padding: 0;
   list-style: none;
 }
@@ -1141,9 +1535,12 @@
   text-decoration: underline;
   text-underline-offset: 3px;
 }
+.repere--regarder {
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+  box-shadow: inset 0 0 0 1px #ecd28a;
+}
 .noeud__carte {
-  position: relative;
-  z-index: 2;
   display: grid;
   gap: 8px;
   padding: 12px 14px;
@@ -1192,7 +1589,8 @@
   font-weight: 600;
 }
 .noeud__vers,
-.noeud__ailleurs {
+.noeud__ailleurs,
+.noeud__manque {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1202,12 +1600,20 @@
 a.noeud__ailleurs {
   color: var(--canard);
 }
+.noeud__manque {
+  gap: 7px;
+  color: var(--e-valider);
+  font-weight: 700;
+}
 .noeud__vers .ic,
 .noeud__ailleurs .ic {
   width: 0.95em;
   height: 0.95em;
 }
 .noeud__suites .noeud__sans-suite {
+  display: flex;
+  align-items: center;
+  gap: 7px;
   background: transparent;
   color: var(--graphite-3);
   font-style: italic;
@@ -1227,18 +1633,8 @@ a.noeud__ailleurs {
   text-decoration: underline;
 }
 @media (max-width: 720px) {
-  /* Sur téléphone : les scènes l'une sous l'autre, chaque choix disant où il mène */
-  .chemins__toile {
-    flex-direction: column;
-    gap: 18px;
-    width: auto;
-  }
-  .chemins__colonne {
-    width: 100%;
-  }
-  .chemins__traits,
-  .chemins__outils {
-    display: none;
+  .chemins__tete {
+    position: static;
   }
 }
 .trouve__extrait {

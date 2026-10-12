@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { colonnesDe, type LienDeChemin, type NoeudDeChemin } from "@/composants/Chemins";
 import {
   ciblesDe, controlerTexte, estReserve, estVide, morceauxDe, nettoyerTexte, phraseEnMots, renvoisDe, tirerConstruction, NUMERO_VIDE,
   type Choix, type Droits, type Texte,
@@ -7,7 +6,7 @@ import {
 import { groupesDeMelange, hasard, melangeInitial, numeroter, ouvertureDe, type PartieNumerotee, type PlanNumerote } from "@/domaine/numeros";
 import { constructionsUtiles, type Construction } from "@/domaine/preparation";
 
-/** Étape 3, lot 2 : phrases de choix, renvois, numéros et chemins — les règles sans base ni navigateur. */
+/** Étape 3, lot 2 : phrases de choix, renvois et numéros — les règles sans base ni navigateur. La vue « Chemins » a ses tests dans chemins.test.ts. */
 
 const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
 const [S15, S16, S18, S40, S53, S55] = [15, 16, 18, 40, 53, 55].map(id);
@@ -224,24 +223,5 @@ describe("Ordre imprimé et numéros (F11.5)", () => {
     // Sur vingt graines, l'ordre du plan n'est pas la règle
     const ordres = new Set(Array.from({ length: 20 }, (_, g) => [1, 2, 3, 4, 5, 6].map((k) => melangeInitial(plan, [], hasard(g)).get(id(k))).join()));
     expect(ordres.size).toBeGreaterThan(10);
-  });
-});
-
-describe("Vue « Chemins » (F03.1)", () => {
-  const noeud = (n: number, extra: Partial<NoeudDeChemin> = {}): NoeudDeChemin => ({ id: id(n), reference: n, titre: null, vide: true, depart: false, fin: false, lien: "", ...extra });
-  const lien = (de: number, vers: number | null, k = 0): LienDeChemin => ({ id: id(5000 + de * 10 + k), de: id(de), vers: vers === null ? null : id(vers), libelle: "", cache: false });
-
-  it("F03-AC18 — les mêmes scènes, rangées par pas depuis l'entrée du chapitre ; deux chemins qui se rejoignent partagent une colonne", () => {
-    const noeuds = [1, 2, 3, 4, 5, 6].map((n) => noeud(n));
-    const colonnes = colonnesDe(noeuds, [lien(1, 2), lien(1, 3, 1), lien(2, 4), lien(3, 4), lien(4, 1)]);
-    expect(colonnes.map((c) => c.map((n) => n.reference))).toEqual([[1, 5, 6], [2, 3], [4]]);
-    // Toutes les scènes y sont, une fois
-    expect(colonnes.flat().map((n) => n.reference).sort()).toEqual([1, 2, 3, 4, 5, 6]);
-  });
-
-  it("le départ ouvre la première colonne ; un lien vers un autre chapitre ou sans destination ne déplace rien", () => {
-    const noeuds = [noeud(1), noeud(2, { depart: true }), noeud(3)];
-    expect(colonnesDe(noeuds, [lien(2, 1), lien(1, null), { ...lien(3, null), ailleurs: { chapitre: "Le marais" } }]).map((c) => c.map((n) => n.reference))).toEqual([[2, 3], [1]]);
-    expect(colonnesDe([], [])).toEqual([]);
   });
 });

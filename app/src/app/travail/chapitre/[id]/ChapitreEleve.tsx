@@ -5,8 +5,8 @@ import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from "@d
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Chemins, type LienDeChemin } from "@/composants/Chemins";
+import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { Chemins } from "@/composants/Chemins";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -15,6 +15,7 @@ import { Menu } from "@/composants/Menu";
 import { TamponScene } from "@/composants/TamponScene";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
+import type { LienDeChemin } from "@/domaine/chemins";
 import { nomPourEleves, type Eleve } from "@/domaine/eleves";
 import { compteScenes, couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { majuscule } from "@/domaine/texte";
@@ -41,6 +42,21 @@ export function ChapitreEleve({
   const vientDeTirer = useRef(false);
   const scenes = local?.base === chapitre ? local.scenes : chapitre.scenes;
   const c = couleurDeChapitre(chapitre.couleur);
+  // Les chemins tels que l'élève les lit : ni départ, ni fin, ni lien caché, ni chemin venu d'ailleurs
+  const chemins = useMemo(
+    () => ({
+      noeuds: scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, vide: s.texteVide, depart: false, fin: false, lien: `/travail/scene/${s.id}` })),
+      liens: chapitre.liens.map(
+        (l): LienDeChemin => ({
+          id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: false, vers: l.cibleId,
+          ailleurs: l.chapitreCible ? { chapitre: l.chapitreCible } : undefined,
+          manque: l.manque ?? undefined,
+        }),
+      ),
+      entrees: [],
+    }),
+    [scenes, chapitre.liens],
+  );
 
   const ajouter = async () => {
     setAttente(true);
@@ -226,18 +242,7 @@ export function ChapitreEleve({
       ) : null}
 
       {vue === "chemins" && chapitre.aChoix && scenes.length > 0 ? (
-        <Chemins
-          pourEleve
-          noeuds={scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, vide: s.texteVide, depart: false, fin: false, lien: `/travail/scene/${s.id}` }))}
-          liens={chapitre.liens.map(
-            (l): LienDeChemin => ({
-              id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: false, vers: l.cibleId,
-              ailleurs: l.chapitreCible ? { chapitre: l.chapitreCible } : undefined,
-              manque: l.manque ?? undefined,
-            }),
-          )}
-          entrees={[]}
-        />
+        <Chemins pourEleve {...chemins} />
       ) : scenes.length === 0 ? (
         <div className="vide-chap">
           <p>{organise ? "Ce chapitre n’a pas encore de scène. Ajoute la première." : `Ce chapitre n’a pas encore de scène. ${majuscule(prof)} va en ajouter.`}</p>

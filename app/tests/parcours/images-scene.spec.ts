@@ -372,9 +372,9 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     expect((phrase.children[4] as { text: string }).text).toBe(". Vite !");
     // Les chemins désignent ce choix par son libellé, sans image
     await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}?vue=chemins`);
-    const suite = page.locator(".noeud__suites li").first();
-    await expect(suite).toContainText("Pousser la porte de la lune");
-    await expect(suite.locator("img")).toHaveCount(0);
+    const libelle = page.locator(".libelle-chemin").first();
+    await expect(libelle).toHaveText("Pousser la porte de la lune");
+    await expect(libelle.locator("img")).toHaveCount(0);
 
     // Dans une note, « Sur la ligne » n'est pas proposé : l'image irait en bloc
     await aller(page, sceneAdulte(s.projet, s16));

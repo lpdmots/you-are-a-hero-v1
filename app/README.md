@@ -5,17 +5,19 @@ Code de l'application, construit étape par étape d'après le
 [spécifications](../docs/specifications.md), les choix techniques dans
 [l'architecture](../docs/architecture.md#réalisation-de-létape-1-9-octobre-2026).
 
-Next.js, React, TypeScript, Supabase (base, comptes). Versions figées dans
+Next.js, React, TypeScript, Supabase (base, comptes) ; Plate pour l'éditeur,
+React Flow et dagre pour la vue « Chemins ». Versions figées dans
 `package.json` ; `npm ci` les installe telles quelles.
 
 ## Où est quoi
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`). |
+| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`). |
 | `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`). |
 | `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre et ses chemins, scène ; histoire, chapitre et scène de l'élève. `copie/` : l'adresse où le texte s'enregistre. `images/` : celle qui sert une image à qui peut la voir. |
 | `src/composants/copie/` | La copie d'une scène : l'éditeur (Plate, sur Slate), ses blocs, ses fiches, l'enregistrement automatique. `regles.ts` réunit tout ce qui s'écrit contre Slate. |
+| `src/composants/chemins/` | Le schéma de la vue « Chemins » : la place des cartes et le tracé des traits (`disposer.ts`, avec dagre), leur dessin (`Schema.tsx`, avec React Flow). Chargé seulement à l'ouverture de la vue, sur un écran large. |
 | `src/composants/`, `src/styles/` | Formes communes du système « Cahiers d'aventure ». |
 | `supabase/migrations/` | Schéma, droits et règles d'accès de la base. |
 | `tests/` | `unitaires`, `base` (contre une vraie base locale), `parcours` (dans un navigateur). |
@@ -46,6 +48,20 @@ consignes, les textes et les choix (contenu dans `scripts/passeurs-de-brume.ts`)
 npm run histoire:essai                # 40 scènes, dont 15 attendent leur texte
 npm run histoire:essai -- --complet   # toutes les scènes écrites
 npm run histoire:essai -- --refaire   # la retire, avec ce qui y a été écrit, puis la recharge
+```
+
+Pour juger la vue « Chemins » sur autre chose que des chemins très simples, un
+chapitre d'essai s'ajoute à cette histoire, dans la base locale seulement : « Le
+marais des feux follets », trente-deux scènes et quarante-neuf choix — chemins qui
+se rejoignent, retours en arrière, deux fins, un lien caché, deux sorties vers
+d'autres chapitres, et chaque cas « à regarder » (contenu dans
+`scripts/marais-des-feux-follets.ts`). Il ajoute un choix à la fin de S025, pour
+qu'un chemin y arrive.
+
+```bash
+npm run chemins:essai                # l'ajoute à « Les passeurs de brume »
+npm run chemins:essai -- --refaire   # le retire, avec ce qui y a été écrit, puis le recharge
+npm run chemins:essai -- --retirer   # le retire seulement
 ```
 
 La même histoire se charge dans la vraie base, pour un compte nommé, une fois son

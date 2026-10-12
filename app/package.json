@@ -25,6 +25,7 @@
     "verifier": "npm run types && npm run lint && npm run test",
     "compte:local": "tsx scripts/compte-local.ts",
     "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
+    "chemins:essai": "tsx scripts/chapitre-chemins.ts",
     "captures": "playwright test --config playwright.captures.config.ts",
     "verifier:production": "tsx scripts/verifier-production.ts",
     "cle:copier": "tsx scripts/presse-papiers.ts",
@@ -32,6 +33,7 @@
     "production:schema": "tsx scripts/schema-production.ts"
   },
   "dependencies": {
+    "@dagrejs/dagre": "3.1.1",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
     "@dnd-kit/utilities": "3.2.2",
@@ -39,6 +41,7 @@
     "@platejs/basic-nodes": "53.0.0",
     "@supabase/ssr": "0.12.7",
     "@supabase/supabase-js": "2.117.3",
+    "@xyflow/react": "12.12.0",
     "jose": "6.2.12",
     "next": "16.4.0",
     "platejs": "53.3.14",

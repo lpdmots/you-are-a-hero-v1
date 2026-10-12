@@ -5,9 +5,9 @@ import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from "@d
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
-import { Chemins, cheminsDuPlan } from "@/composants/Chemins";
+import { Chemins } from "@/composants/Chemins";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -16,6 +16,7 @@ import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
+import { cheminsDuPlan } from "@/domaine/chemins";
 import { nomPourEleves } from "@/domaine/eleves";
 import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
@@ -51,6 +52,8 @@ export function PageChapitre({
   const [local, setLocal] = useState<{ base: Plan; scenes: Scene[] } | null>(null);
   const [tiree, setTiree] = useState<string | null>(null);
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setOuvert("depart") });
+  // Les chemins ne se recalculent pas à chaque geste : le schéma se redessinerait
+  const chemins = useMemo(() => (vue === "chemins" ? cheminsDuPlan(plan, chapitreId, projet.id) : null), [vue, plan, chapitreId, projet.id]);
 
   const chapitre = chapitresDe(plan).find((c) => c.id === chapitreId)!;
   const partie = plan.parties.find((p) => p.id === chapitre.partieId)!;
@@ -263,8 +266,8 @@ export function PageChapitre({
               </label>
             ) : null}
           </div>
-          {vue === "chemins" ? (
-            <Chemins {...cheminsDuPlan(plan, chapitre.id, projet.id)} designee={designee} />
+          {chemins ? (
+            <Chemins {...chemins} designee={designee} />
           ) : montrees.length === 0 ? (
             <p className="aucun" aria-live="polite">
               Aucun titre de scène ne contient « {demande.trim()} » dans ce chapitre.{" "}
