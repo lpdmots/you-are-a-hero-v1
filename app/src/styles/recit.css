@@ -1115,6 +1115,29 @@
   margin: 0;
   color: var(--graphite-2);
 }
+.chemins__regarder .lien.est-courant {
+  color: var(--graphite);
+  text-decoration-thickness: 2px;
+}
+/* Le parcours : précédent, « 2 / 6 », suivant — comme les occurrences d'un mot dans un texte */
+.chemins__pas {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.chemins__pas .btn--petit {
+  min-width: 30px;
+  min-height: 30px;
+  padding: 0;
+  justify-content: center;
+}
+.chemins__compte {
+  min-width: 3.4em;
+  color: var(--graphite);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
 .chemins__regarder-mot {
   display: inline-flex;
   align-items: center;
@@ -1362,9 +1385,19 @@
   box-shadow: inset 0 0 0 1px #ecd28a;
   color: var(--e-valider);
 }
-.carte-chemin.est-montree,
+/* Ce que le parcours de « À regarder » désigne garde son cadre tant qu'on n'est pas passé au suivant */
 .etiquette-chemin.est-montree {
-  animation: montree 2.6s var(--ease) both;
+  box-shadow: 0 0 0 2.5px var(--graphite);
+}
+.chemins__liste .est-montree {
+  animation: none;
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    0 0 0 2.5px var(--graphite),
+    var(--ombre-cahier);
+}
+.chemins__liste .noeud__suites li.est-montree {
+  box-shadow: 0 0 0 2.5px var(--graphite);
 }
 
 /* Les traits : un choix, un lien caché en pointillé ; ceux de la scène regardée ressortent */
@@ -1432,12 +1465,11 @@
 }
 .libelle-chemin.est-entier {
   z-index: 5;
-  width: max-content;
-  max-width: 230px;
-  padding: 3px 9px;
+  padding: 3px 7px;
   background: var(--canard-fonce);
   box-shadow: var(--ombre-cahier);
   color: #fff;
+  overflow-wrap: anywhere;
 }
 .libelle-chemin.est-entier > span {
   display: block;

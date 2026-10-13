@@ -44,52 +44,54 @@ export function Chemins({
   const chemins = useMemo<DonneesDesChemins>(() => ({ noeuds, liens, entrees }), [noeuds, liens, entrees]);
   // Un élève ne connaît ni les chemins venus d'autres chapitres ni les liens cachés : on ne lui dit que ses choix
   const regard = useMemo(() => aRegarder(chemins, { scenes: !pourEleve }), [chemins, pourEleve]);
-  const racine = useRef<HTMLDivElement>(null);
-  const tour = useRef<Partial<Record<SorteARegarder, number>>>({});
-  const [montre, setMontre] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!montre) return;
-    const fin = setTimeout(() => setMontre(null), 2700);
-    return () => clearTimeout(fin);
-  }, [montre]);
-
-  // Un clic conduit à ce qui est à regarder, l'un après l'autre, sans rien filtrer
-  const conduire = (sorte: SorteARegarder, ou: string[]) => {
-    const rang = (tour.current[sorte] ?? 0) % ou.length;
-    tour.current[sorte] = rang + 1;
-    const id = ou[rang];
-    setMontre(null);
-    requestAnimationFrame(() => {
-      setMontre(id);
-      const doux = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      racine.current?.querySelector(`[data-chemin="${CSS.escape(id)}"]`)?.scrollIntoView({ block: "center", inline: "center", behavior: doux ? "smooth" : "auto" });
-    });
+  // Tout ce qui est à regarder, à la suite : on le parcourt comme les occurrences d'un mot dans un texte
+  const aVoir = useMemo(() => regard.sortes.flatMap(({ sorte, ou }) => ou.map((id) => ({ sorte, id }))), [regard]);
+  const [pas, setPas] = useState<{ rang: number; fois: number } | null>(null);
+  const courant = pas ? (aVoir[pas.rang] ?? null) : null;
+  const aller = (rang: number) => setPas((avant) => ({ rang: ((rang % aVoir.length) + aVoir.length) % aVoir.length, fois: (avant?.fois ?? 0) + 1 }));
+  // Un compte cliqué mène au premier de sa sorte ; cliqué de nouveau, au suivant de la même sorte
+  const allerA = (sorte: SorteARegarder) => {
+    const rangs = aVoir.flatMap((x, i) => (x.sorte === sorte ? [i] : []));
+    const ici = courant?.sorte === sorte && pas ? rangs.indexOf(pas.rang) : -1;
+    aller(rangs[(ici + 1) % rangs.length]);
   };
 
   const tete = regard.sortes.length ? (
-    <p className="chemins__regarder">
+    <div className="chemins__regarder">
       <span className="chemins__regarder-mot">
         <span className="point-regarder" aria-hidden="true" />À regarder :
       </span>
       {regard.sortes.map(({ sorte, ou }) => (
-        <button key={sorte} type="button" className="lien" onClick={() => conduire(sorte, ou)}>
+        <button key={sorte} type="button" className={`lien${courant?.sorte === sorte ? " est-courant" : ""}`} aria-current={courant?.sorte === sorte || undefined} onClick={() => allerA(sorte)}>
           {compteARegarder(sorte, ou.length)}
         </button>
       ))}
-    </p>
+      <span className="chemins__pas" role="group" aria-label="Parcourir ce qui est à regarder">
+        <button type="button" className="btn btn--petit" aria-label="Précédent" onClick={() => aller(pas ? pas.rang - 1 : aVoir.length - 1)}>
+          <Icone nom="chevron-haut" />
+        </button>
+        <span className="chemins__compte" aria-live="polite">
+          {courant && pas ? `${pas.rang + 1} / ${aVoir.length}` : `– / ${aVoir.length}`}
+        </span>
+        <button type="button" className="btn btn--petit" aria-label="Suivant" onClick={() => aller(pas ? pas.rang + 1 : 0)}>
+          <Icone nom="chevron-bas" />
+        </button>
+      </span>
+    </div>
   ) : (
     <span />
   );
+  const montre = courant?.id ?? null;
+  const fois = pas?.fois ?? 0;
 
   return (
-    <div className="chemins" ref={racine}>
+    <div className="chemins">
       {etroit === null ? (
         ATTENTE
       ) : etroit ? (
-        <Liste chemins={chemins} regard={regard} designee={designee} montre={montre} pourEleve={pourEleve} tete={tete} />
+        <Liste chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete} />
       ) : (
-        <Schema chemins={chemins} regard={regard} designee={designee} montre={montre} pourEleve={pourEleve} tete={tete} />
+        <Schema chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete} />
       )}
     </div>
   );
@@ -97,9 +99,12 @@ export function Chemins({
 
 /** Sur téléphone : les scènes l'une sous l'autre, dans l'ordre où on les rencontre, chaque choix disant où il mène. */
 function Liste({
-  chemins, regard, designee, montre, pourEleve, tete,
+  chemins, regard, designee, montre, fois, pourEleve, tete,
 }: {
-  chemins: DonneesDesChemins; regard: ARegarder; designee?: string; montre: string | null; pourEleve: boolean; tete: ReactNode;
+  chemins: DonneesDesChemins; regard: ARegarder; designee?: string;
+  /** Ce que le parcours de « À regarder » désigne, et le nombre de pas faits : le même élément peut être désigné deux fois */
+  montre: string | null; fois: number;
+  pourEleve: boolean; tete: ReactNode;
 }) {
   const { noeuds, liens, entrees } = chemins;
   const ordre = useMemo(() => ordreDeLecture(noeuds, liens), [noeuds, liens]);
@@ -114,6 +119,10 @@ function Liste({
     if (!designee) return;
     liste.current?.querySelector<HTMLElement>(`[data-chemin="${CSS.escape(designee)}"]`)?.scrollIntoView({ block: "center" });
   }, [designee]);
+  useEffect(() => {
+    if (!montre) return;
+    liste.current?.querySelector<HTMLElement>(`[data-chemin="${CSS.escape(montre)}"]`)?.scrollIntoView({ block: "center" });
+  }, [montre, fois]);
 
   return (
     <>

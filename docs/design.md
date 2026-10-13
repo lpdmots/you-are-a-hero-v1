@@ -1481,11 +1481,11 @@ maquette, elle, garde l'ancienne.
 | Sens et place | De haut en bas, sur toute la largeur de la fenêtre, d'un bord à l'autre, sur un fond de feuille. La page défile normalement : le schéma prend sa hauteur, la molette ne s'y arrête pas. |
 | Carte | Petite (178 points) : le titre sur deux lignes au plus, sans référence ; le tampon d'état ; le dos à la couleur du chapitre. En tête, une bande « Départ du livre » ou « Fin de l'histoire » ; au pied, en ambre, « Rien n'y mène », « Sans suite ». « Ouvrir » ne se montre qu'au survol, au clavier ou sur la carte cliquée. |
 | Flèches | À angles droits arrondis. Un trait descend tout droit entre les cartes et ne se déplace de côté qu'entre deux rangs, chacun sur sa propre ligne : il ne passe jamais sous une carte, et deux traits ne se confondent pas. Un retour en arrière remonte et arrive par le bas de la carte. Un lien caché est en pointillé. |
-| Libellés | Sur la flèche, dans une petite pastille, deux lignes au plus ; « Lien caché » avec la clé. En entier, sur fond canard, pour la scène survolée ou cliquée. Masqués après « Tout voir ». |
+| Libellés | Sur la flèche, dans une petite pastille, deux lignes au plus ; « Lien caché » avec la clé. En entier, sur fond canard, pour la scène survolée ou cliquée : la pastille garde sa largeur et gagne en hauteur, sans recouvrir ses voisines (corrigé le 13 octobre 2026 : elle s'élargissait sur une ligne). Masqués après « Tout voir ». |
 | Scène cliquée | Cadre graphite ; ses flèches en canard, les autres effacées, les cartes voisines gardées nettes. « Échap » ou un clic à côté n'en montre plus aucune. |
 | Autres chapitres | Une pastille au nom du chapitre, avec la flèche qui sort ; « depuis… », avec la flèche qui entre, au-dessus de la scène où l'on arrive. Elle se clique et ouvre ce chapitre dans la même vue, la scène d'arrivée entourée de canard. |
 | Choix qui n'arrive nulle part | Une pastille ambre au bout de la flèche : « Sans destination », « Scène supprimée ». |
-| « À regarder » | Une ligne en tête, point ambre, chaque compte en lien : « 1 choix sans destination », « 2 scènes où rien ne mène »… Un clic y conduit et entoure un instant ce qu'il désigne ; le clic suivant passe au cas suivant. Absente quand rien n'est à regarder. |
+| « À regarder » | Une ligne en tête, point ambre, chaque compte en lien : « 1 choix sans destination », « 2 scènes où rien ne mène »… Puis deux petits boutons à chevron, vers le haut et vers le bas, autour d'un compteur : « – / 6 », puis « 3 / 6 ». Le cas désigné vient au milieu de l'écran, choisi comme par un clic (cadre graphite, ses flèches en canard, le reste effacé) ; pour un choix, la pastille au bout de sa flèche est encadrée. Le compte de la sorte en cours passe en graphite. Demandé par le porteur le 13 octobre 2026, à la place d'un clic qui entourait un instant. Absente quand rien n'est à regarder. |
 | Taille | « Tout voir », « − », « + », à droite de la ligne « À regarder », qui reste collée sous la barre du haut. « Taille lisible » apparaît dès qu'on a changé la taille. Une bulle « Comment lire ces chemins ? ». |
 | Tout voir | Le chapitre entier dans la fenêtre. Les cartes ne se lisent plus : au survol, une bulle sombre dit le titre ; au clic, elle ajoute « Ouvrir ». |
 | Mini-carte | En bas à droite, quand le schéma dépasse deux écrans : les cartes en gris, le départ en canard, les fins en brun, ce qui est à regarder en ambre, et le cadre de ce qu'on voit. Un clic y conduit. |
@@ -1498,6 +1498,13 @@ faisait 2 648 points de large, soit deux écrans à faire défiler de côté,
 avec 30 croisements et 3 traits passant sous 10 cartes ; la nouvelle tient
 dans la largeur à 85 % environ de sa taille, sur deux écrans et demi de
 haut, avec 9 croisements et aucun trait sous une carte.
+
+**Premier retour du porteur, le 13 octobre 2026 :** « pas mal du tout » ;
+deux reprises demandées et faites le même jour, les libellés entiers et le
+parcours de « À regarder ». Il propose aussi de pouvoir déplacer les cartes
+le temps de la visite, par leur bord coloré, pour y voir plus clair :
+recommandé de juger d'abord les libellés corrigés, le déplacement défaisant
+le tracé des flèches autour de la carte déplacée ; non décidé.
 
 **À confirmer par le porteur :** les précisions listées en F03.1, « Vue
 Chemins reprise » ; l'ambre pour tout ce qui est à regarder ; « Ouvrir »

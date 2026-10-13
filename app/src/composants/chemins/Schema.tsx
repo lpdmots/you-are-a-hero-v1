@@ -3,7 +3,7 @@
 import "@xyflow/react/dist/base.css";
 import { applyNodeChanges, BaseEdge, EdgeLabelRenderer, Handle, NodeToolbar, Position, ReactFlow, type Edge, type EdgeProps, type Node, type NodeChange, type NodeProps } from "@xyflow/react";
 import Link from "next/link";
-import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode, type RefObject } from "react";
+import { createContext, useCallback, useContext, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState, type PointerEvent, type ReactNode, type RefObject } from "react";
 import { MOT_DE_MARQUE, type ARegarder, type Chemins, type NoeudDeChemin } from "@/domaine/chemins";
 import { Bulle } from "../Bulle";
 import { Icone } from "../Icone";
@@ -47,7 +47,7 @@ function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
   const titre = data.titre ?? "sans titre";
   return (
     <div
-      className={classes("carte-chemin", selected && "est-choisie", vue.designee === id && "est-designee", vue.montre === id && "est-montree", vue.choisie && vue.choisie !== id && !vue.voisines.has(id) && "est-en-retrait")}
+      className={classes("carte-chemin", selected && "est-choisie", vue.designee === id && "est-designee", vue.choisie && vue.choisie !== id && !vue.voisines.has(id) && "est-en-retrait")}
       data-chemin={id}
     >
       <Handle type="target" position={Position.Top} isConnectable={false} />
@@ -140,7 +140,8 @@ function TraitDeChemin({ source, target, data }: EdgeProps<Trait>) {
         <EdgeLabelRenderer>
           <span
             className={classes("libelle-chemin", data.cache && "est-cache", touche && "est-entier", efface && "est-efface")}
-            style={{ transform: `translate(-50%, -50%) translate(${data.libelle.x}px, ${data.libelle.y}px)`, ...(touche ? {} : { width: data.libelle.l, height: data.libelle.h }) }}
+            // En entier, le libellé garde sa largeur et gagne en hauteur : il ne recouvre pas ses voisins
+            style={{ transform: `translate(-50%, -50%) translate(${data.libelle.x}px, ${data.libelle.y}px)`, width: data.libelle.l, ...(touche ? { minHeight: data.libelle.h } : { height: data.libelle.h }) }}
             title={touche ? undefined : data.texte}
           >
             {data.cache ? <Icone nom="cle" /> : null}
@@ -169,11 +170,11 @@ function mesureur(): Mesure {
 }
 
 export default function Schema({
-  chemins, regard, designee, montre, pourEleve, tete,
+  chemins, regard, designee, montre, fois, pourEleve, tete,
 }: {
   chemins: Chemins; regard: ARegarder; designee?: string;
-  /** La scène ou le choix que la ligne « À regarder » vient de désigner */
-  montre: string | null;
+  /** La scène ou le choix que le parcours de « À regarder » désigne, et le nombre de pas faits */
+  montre: string | null; fois: number;
   /** Un élève ne lit pas les liens cachés : on ne lui en parle pas */
   pourEleve: boolean;
   /** La ligne « À regarder », que l'en-tête du schéma place à côté de ses boutons */
@@ -277,6 +278,29 @@ export default function Schema({
     const attente = requestAnimationFrame(() => cadre.current?.querySelector(`[data-chemin="${CSS.escape(designee)}"]`)?.scrollIntoView({ block: "center", inline: "center" }));
     return () => cancelAnimationFrame(attente);
   }, [pret, designee]);
+
+  // Ce que « À regarder » désigne est choisi comme par un clic, et vient au milieu de l'écran.
+  // Pour un choix : la scène d'où il part est choisie, et l'on se place entre elle et le bout de sa flèche.
+  const montrer = useEffectEvent((id: string) => {
+    const c = cadre.current;
+    if (!c || !disposition) return;
+    const trait = disposition.traits.find((t) => t.id === id);
+    const carte = trait ? trait.de : id;
+    setNoeuds((avant) => avant.map((n) => (!!n.selected === (n.id === carte) ? n : { ...n, selected: n.id === carte })));
+    const places = [disposition.places.get(carte), trait ? disposition.places.get(trait.vers) : undefined].filter((p) => p !== undefined);
+    if (!places.length) return;
+    const x = places.reduce((somme, p) => somme + p.x + p.l / 2, 0) / places.length;
+    const y = places.reduce((somme, p) => somme + p.y + p.h / 2, 0) / places.length;
+    const enTete = c.previousElementSibling?.getBoundingClientRect().height ?? 0;
+    const doux = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    window.scrollTo({ top: c.getBoundingClientRect().top + window.scrollY + MARGE + y * zoom - (window.innerHeight + BARRE + enTete) / 2, behavior: doux });
+    c.scrollTo({ left: (largeurToile - l * zoom) / 2 + x * zoom - c.clientWidth / 2, behavior: doux });
+  });
+  useEffect(() => {
+    if (!pret || !montre) return;
+    const attente = setTimeout(() => montrer(montre), 0);
+    return () => clearTimeout(attente);
+  }, [pret, montre, fois]);
 
   const changerNoeuds = useCallback((changements: NodeChange<NoeudScene | NoeudEtiquette>[]) => setNoeuds((avant) => applyNodeChanges(changements, avant)), []);
   const choisie = noeuds.find((n) => n.selected)?.id ?? null;

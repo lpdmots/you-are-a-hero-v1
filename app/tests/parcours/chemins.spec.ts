@@ -184,7 +184,7 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     const l = await avecLeMarais(page);
     await aller(page, vueChemins(l, l.feuxFollets));
     await schemaPret(page, ATTENDU.scenes);
-    await expect(REGARDER(page).locator("button")).toHaveText(["1 choix sans destination", "1 choix vers une scène supprimée", "2 scènes où rien ne mène", "2 scènes sans suite"]);
+    await expect(REGARDER(page).locator("button.lien")).toHaveText(["1 choix sans destination", "1 choix vers une scène supprimée", "2 scènes où rien ne mène", "2 scènes sans suite"]);
     await expect(REGARDER(page)).toContainText("À regarder :");
     // La carte porte sa marque ; la scène où mène un autre chapitre et celle qu'atteint un lien caché n'en ont pas
     await expect(carte(page, "Marais — le crapaud qui parle").locator(".carte-chemin__bande--regarder")).toHaveText("Rien n’y mène");
@@ -194,24 +194,46 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     await expect(carte(page, "Marais — la barque s’enlise").locator(".carte-chemin__bande")).toHaveCount(0);
     await expect(carte(page, "Sous le cercle — la salle des feux follets").locator(".carte-chemin__bande")).toHaveCount(0);
 
-    // Un clic conduit à la première scène, le suivant à la seconde ; toutes les cartes restent là
+    // Un compte cliqué choisit la première scène de sa sorte, comme un clic sur sa carte, et l'amène à l'écran ;
+    // cliqué de nouveau, la suivante. Le compteur dit où l'on en est parmi les six.
+    const compte = page.locator(".chemins__compte");
+    const choisie = page.locator(".carte-chemin.est-choisie");
+    await expect(compte).toHaveText("– / 6");
     await REGARDER(page).getByRole("button", { name: "2 scènes où rien ne mène" }).click();
-    await expect(page.locator(".carte-chemin.est-montree")).toContainText("Marais — le crapaud qui parle");
-    await expect(page.locator(".carte-chemin.est-montree")).toBeInViewport();
+    await expect(choisie).toContainText("Marais — le crapaud qui parle");
+    await expect(choisie).toBeInViewport();
+    await expect(compte).toHaveText("3 / 6");
+    await expect(REGARDER(page).getByRole("button", { name: "2 scènes où rien ne mène" })).toHaveAttribute("aria-current", "true");
     await REGARDER(page).getByRole("button", { name: "2 scènes où rien ne mène" }).click();
-    await expect(page.locator(".carte-chemin.est-montree")).toContainText("sans titre");
-    await expect(page.locator(".carte-chemin.est-montree")).toBeInViewport();
+    await expect(choisie).toContainText("sans titre");
+    await expect(choisie).toBeInViewport();
+    await expect(compte).toHaveText("4 / 6");
+    // « Suivant » et « Précédent » passent de l'un à l'autre, toutes sortes à la suite, et font le tour
+    await REGARDER(page).getByRole("button", { name: "Suivant" }).click();
+    await expect(choisie).toContainText("Saule — la lanterne s’allume seule");
+    await expect(choisie).toBeInViewport();
+    await expect(compte).toHaveText("5 / 6");
+    await expect(page.locator(".trait-chemin.est-actif")).toHaveCount(1);
+    // Pour un choix : la scène d'où il part est choisie, et le bout de sa flèche est encadré
     await REGARDER(page).getByRole("button", { name: "1 choix sans destination" }).click();
+    await expect(choisie).toContainText("Île — le cercle de pierres");
     await expect(page.locator(".etiquette-chemin.est-montree")).toHaveText("Sans destination");
     await expect(page.locator(".etiquette-chemin.est-montree")).toBeInViewport();
-    await REGARDER(page).getByRole("button", { name: "1 choix vers une scène supprimée" }).click();
+    await expect(compte).toHaveText("1 / 6");
+    await REGARDER(page).getByRole("button", { name: "Suivant" }).click();
+    await expect(choisie).toContainText("Cabane — le coffre de la passeuse");
     await expect(page.locator(".etiquette-chemin.est-montree")).toHaveText("Scène supprimée");
+    await REGARDER(page).getByRole("button", { name: "Précédent" }).click();
+    await REGARDER(page).getByRole("button", { name: "Précédent" }).click();
+    await expect(compte).toHaveText("6 / 6");
+    await expect(choisie).toContainText("sans titre");
+    // Rien n'est masqué
     await expect(CARTES(page)).toHaveCount(ATTENDU.scenes);
 
     // « Le marais », une seule scène où mènent deux choix d'autres chapitres : elle n'a pas de suite, c'est tout
     await aller(page, vueChemins(l, l.marais.id));
     await schemaPret(page, 1);
-    await expect(REGARDER(page).locator("button")).toHaveText(["1 scène sans suite"]);
+    await expect(REGARDER(page).locator("button.lien")).toHaveText(["1 scène sans suite"]);
     await l.base.from("scenes").update({ fin: true }).eq("id", l.marais.scenes[0]);
     await aller(page, vueChemins(l, l.marais.id));
     await schemaPret(page, 1);
@@ -344,10 +366,14 @@ test("F03-AC49 — sur téléphone, « Chemins » est la liste des scènes, dans
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
   expect(fichiers).toEqual([]);
   // La même ligne « À regarder », qui conduit au choix
-  await expect(REGARDER(page).locator("button")).toHaveText(["1 choix sans destination", "1 scène où rien ne mène"]);
+  await expect(REGARDER(page).locator("button.lien")).toHaveText(["1 choix sans destination", "1 scène où rien ne mène"]);
   await REGARDER(page).getByRole("button", { name: "1 scène où rien ne mène" }).click();
   await expect(noeud("S004").locator(".noeud__carte")).toHaveClass(/est-montree/);
   await expect(noeud("S004").locator(".noeud__carte")).toBeInViewport();
+  await expect(page.locator(".chemins__compte")).toHaveText("2 / 2");
+  await REGARDER(page).getByRole("button", { name: "Suivant" }).click();
+  await expect(noeud("S001").locator(".noeud__suites li.est-montree")).toContainText("Plus tard");
+  await expect(page.locator(".chemins__compte")).toHaveText("1 / 2");
 });
 
 test("F03-AC50, AC18 — les chemins lus par un élève : le même schéma, sans référence ni lien caché, un autre chapitre nommé sans qu'il puisse s'y rendre ; « À regarder » ne lui dit que ses choix", async ({ page, browser }) => {
@@ -372,7 +398,7 @@ test("F03-AC50, AC18 — les chemins lus par un élève : le même schéma, sans
   expect((await LIBELLES(alice.page).allInnerTexts()).sort()).toEqual(["Aller au sanctuaire", "Plus tard", "Traverser le pont"]);
   await expect(alice.page.locator(".libelle-chemin.est-cache, .trait-chemin.est-cache")).toHaveCount(0);
   await expect(alice.page.locator(".carte-chemin__bande")).toHaveCount(0);
-  await expect(REGARDER(alice.page).locator("button")).toHaveText(["1 choix sans destination"]);
+  await expect(REGARDER(alice.page).locator("button.lien")).toHaveText(["1 choix sans destination"]);
   // L'autre chapitre est nommé, sans lien : ce n'est pas le sien
   await expect(alice.page.locator(".etiquette-chemin--sortie")).toHaveText("Le sanctuaire");
   await expect(alice.page.locator(".etiquette-chemin--sortie a")).toHaveCount(0);

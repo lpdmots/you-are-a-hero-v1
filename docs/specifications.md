@@ -1125,8 +1125,23 @@ le porteur décide :
     mène », « Sans suite »). Un choix sans destination, ou vers une scène
     supprimée, finit sur une petite étiquette qui le dit, au bout de sa
     flèche. Tout est en ambre, la couleur de ce qui attend, sans le mot
-    « problème ». Cliquer un élément de la ligne conduit au premier cas ;
-    le clic suivant, au cas suivant ; rien n'est masqué.
+    « problème ».
+  - **Parcourir ce qui est à regarder (demandé par le porteur le
+    13 octobre 2026).** Le premier essai — un clic menait près du cas, qui
+    s'entourait un instant — obligeait à chercher, et rien ne disait qu'un
+    second clic passait au cas suivant. À sa demande, la ligne se parcourt
+    comme les occurrences d'un mot dans un traitement de texte : deux
+    flèches, « précédent » et « suivant », et un compteur (« 3 / 6 ») font
+    passer d'un cas à l'autre, toutes sortes à la suite, en faisant le
+    tour. Le cas désigné vient au milieu de l'écran et reste mis en valeur
+    comme une scène cliquée ; pour un choix, c'est la scène d'où il part
+    qui est choisie, le bout de sa flèche étant encadré. Un compte cliqué
+    mène au premier cas de sa sorte, puis au suivant de la même sorte. Rien
+    n'est masqué.
+  - **Libellé en entier (corrigé le 13 octobre 2026, sur son retour).** Pour
+    la scène survolée ou cliquée, un libellé long garde sa largeur et gagne
+    en hauteur. Il s'élargissait d'abord sur une ligne et recouvrait ses
+    voisins.
   - **Ce qui ne compte pas.** Le départ du livre, une scène où mène un
     choix d'un autre chapitre et une scène atteinte par un lien caché ne
     sont pas des scènes où rien ne mène. Une scène qui n'a qu'un lien caché
@@ -1174,14 +1189,17 @@ le porteur décide :
   « Échanger la plume argentée contre une barque », lorsque l'enseignant
   regarde le schéma, alors ce libellé est écrit sur sa flèche, coupé après
   deux lignes ; survoler ou cliquer la scène d'où il part le donne en
-  entier ; après « Tout voir », les libellés ne s'affichent plus.
+  entier, sans l'élargir ; après « Tout voir », les libellés ne s'affichent
+  plus.
 - **F03-AC46 — « À regarder » :** étant donné un choix sans destination, un
   choix vers une scène supprimée, deux scènes où rien ne mène et deux scènes
   sans suite ni fin, lorsque l'enseignant ouvre « Chemins », alors une ligne
   dit « À regarder : 1 choix sans destination · 1 choix vers une scène
-  supprimée · 2 scènes où rien ne mène · 2 scènes sans suite » ; cliquer
-  « 2 scènes où rien ne mène » conduit à la première, puis à la seconde,
-  sans rien masquer. Le départ du livre, une scène où mène un autre chapitre
+  supprimée · 2 scènes où rien ne mène · 2 scènes sans suite », suivie d'un
+  compteur « – / 6 » entre deux flèches ; cliquer « 2 scènes où rien ne
+  mène » choisit la première et l'amène à l'écran (« 3 / 6 »), puis la
+  seconde (« 4 / 6 ») ; « suivant » et « précédent » passent d'un cas à
+  l'autre et font le tour, sans rien masquer. Le départ du livre, une scène où mène un autre chapitre
   et une scène atteinte par un lien caché n'y comptent pas. Sans rien à
   regarder, la ligne n'existe pas.
 - **F03-AC47 — Cliquer une scène montre ses chemins :** étant donné la
