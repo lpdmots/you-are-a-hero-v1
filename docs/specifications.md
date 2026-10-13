@@ -1116,7 +1116,9 @@ le porteur décide :
   demandes et les quatre points arrêtés ci-dessus sont construits ; la vue
   est jugée sur « Le marais des feux follets », chapitre d'essai de
   trente-deux scènes et quarante-neuf choix. Précisions prises en
-  construisant, **à confirmer par le porteur** :
+  construisant. Le porteur confirme le 13 octobre 2026 les deux lignes d'un
+  libellé, les scènes que rien ne relie rangées sous le schéma et ce que
+  voit un élève ; les autres restent **à confirmer** :
   - **Deux lignes pour un libellé.** Un libellé long tient sur deux lignes
     avant d'être coupé : coupé à une seule ligne, un choix sur deux ne se
     lisait plus.

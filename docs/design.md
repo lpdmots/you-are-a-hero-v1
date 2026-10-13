@@ -1506,11 +1506,14 @@ le temps de la visite, par leur bord coloré, pour y voir plus clair :
 recommandé de juger d'abord les libellés corrigés, le déplacement défaisant
 le tracé des flèches autour de la carte déplacée ; non décidé.
 
-**À confirmer par le porteur :** les précisions listées en F03.1, « Vue
-Chemins reprise » ; l'ambre pour tout ce qui est à regarder ; « Ouvrir »
-montré au survol seulement ; la bulle « Comment lire ces chemins ? » et son
-texte ; la place de la mini-carte ; les scènes sans chemin rangées sous le
-schéma plutôt qu'au-dessus.
+**Confirmé par le porteur le 13 octobre 2026 :** les libellés sur deux
+lignes, les scènes sans chemin rangées sous le schéma plutôt qu'au-dessus,
+la vue de l'élève sans marque sur les scènes.
+
+**Sans retour du porteur :** les autres précisions de F03.1, « Vue Chemins
+reprise » ; l'ambre pour tout ce qui est à regarder ; « Ouvrir » montré au
+survol seulement ; la bulle « Comment lire ces chemins ? » et son texte ; la
+place de la mini-carte.
 
 **Ce qui reste perfectible,** dit au porteur :
 

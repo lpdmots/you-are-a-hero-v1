@@ -3,7 +3,7 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
-## État de reprise au 12 octobre 2026
+## État de reprise au 13 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
 ensemble, chacun avec ses points différés. La
@@ -25,14 +25,14 @@ le même jour ; voir le
 [plan](docs/plan.md#étape-2--préparer-et-organiser-le-récit),
 [l'architecture](docs/architecture.md#réalisation-de-létape-2-10-octobre-2026)
 et le [design](docs/design.md#étape-2-construite-10-octobre-2026).
-**L'étape 3 est construite en local le 10 octobre 2026**, pour elle seule
+**L'étape 3 est terminée le 13 octobre 2026**, sur la validation du porteur ;
+construite en local le 10 octobre, pour elle seule
 (écrire une scène et relier les choix) : autorisée, cadrée par un entretien
 validé dans son ensemble, puis construite le même jour en six lots, un commit
 local par lot. Elle est mise en ligne le 11 octobre 2026, à la demande du
 porteur et avant la fin de sa revue, avec ses migrations et une histoire
 d'essai, « Les passeurs de brume »
-([plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix)) ; le
-porteur ne l'a pas encore essayée en entier : elle n'est pas terminée. Le
+([plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix)). Le
 11 octobre 2026, sur son premier
 retour, les réglages d'un bloc quittent le texte pour un panneau à droite
 ([F05.2](docs/specifications.md#f05-panneau),
@@ -48,8 +48,10 @@ refaite en local avec React Flow et dagre, comme il l'a décidé : un schéma
 de haut en bas, les choix sur les flèches, une ligne « À regarder », jugé
 sur un chapitre d'essai de trente-deux scènes
 ([F03.1](docs/specifications.md#f031--histoire-parties-chapitres-et-scènes),
-[design](docs/design.md#vue--chemins--reprise-12-octobre-2026)) ; ses
-précisions restent à lui faire confirmer.
+[design](docs/design.md#vue--chemins--reprise-12-octobre-2026)). Le
+13 octobre, il la trouve « pas mal du tout », fait reprendre les libellés
+entiers et le parcours de « À regarder », confirme trois précisions, valide
+l'étape et fait pousser le lot, qu'il essaie en ligne.
 Voir le
 [plan](docs/plan.md#étape-3--écrire-une-scène-et-relier-les-choix), qui dit
 ce qui reste et dans quel ordre,

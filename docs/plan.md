@@ -419,17 +419,21 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     migrations sont appliquées, et non six : `signe_des_formules`, née de la
     revue le même jour, se trouvait dans le dossier. Elle ne se modifie donc
     plus ; un changement demande une nouvelle migration. Les retouches
-    faites ensuite restent locales jusqu'à ce que le porteur demande de
-    pousser.
+    faites ensuite, la vue « Chemins » refaite comprise, sont poussées le
+    13 octobre 2026 à la demande du porteur, sans migration, après une
+    série complète des tests ; il les essaie en ligne.
   - **Histoire d'essai :** « Les passeurs de brume », l'histoire de la
     maquette, se charge par `npm run histoire:essai`
     ([commandes](../app/README.md)) : sa classe d'essai et ses vingt-cinq
     élèves fictifs, la préparation, le plan, les consignes, les textes et
     les choix. Chargée le 11 octobre 2026 dans la base locale et dans la
     vraie base, sur le compte du porteur, à côté de ses projets.
-  - **Ce qui reste :** la fin de la revue et l'essai du porteur, d'après
-    « Terminée quand ». L'étape n'est pas terminée tant qu'il ne l'a pas dit.
-  - **V13, à faire à la main par le porteur :** coller dans une scène un
+  - **Terminée le 13 octobre 2026 :** le porteur valide l'étape (« c'est ok
+    on valide ») après sa revue, dit V13 fait de son côté et demande de
+    pousser le lot ; il poursuit ses essais en ligne. Ce qu'ils feraient
+    apparaître se reprend en retouches, sans rouvrir l'étape.
+  - **V13, faite à la main par le porteur, qui le dit le 13 octobre 2026 :**
+    coller dans une scène un
     texte venu de Word, de LibreOffice et de Google Docs réels, avec du gras,
     de l'italique, du souligné, une liste, un titre et un tableau ; refaire
     l'essai dans Firefox. Les parcours automatiques jouent ces collages avec
@@ -514,11 +518,15 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       scènes dans un livre de deux cents s'affichent en moins d'une seconde.
       Détail et limites :
       [architecture](architecture.md#réalisation-de-létape-3-10-octobre-2026).
-    - **À confirmer par le porteur :** les précisions prises en
-      construisant, listées en F03.1, « Vue Chemins reprise », et les formes
-      listées dans le
+    - **Retour du porteur le 13 octobre 2026 :** « pas mal du tout » ; deux
+      reprises faites le même jour (libellé entier qui garde sa largeur,
+      « À regarder » parcouru avec un compteur, F03-AC45 et AC46). Il
+      confirme trois précisions : ce que voit un élève, les libellés sur
+      deux lignes, les scènes que rien ne relie rangées sous le schéma. Les
+      autres précisions de F03.1, « Vue Chemins reprise », et les formes du
       [design](design.md#vue--chemins--reprise-12-octobre-2026), qui dit
-      aussi ce qui reste perfectible.
+      aussi ce qui reste perfectible, restent sans retour. Déplacer les
+      cartes le temps de la visite, qu'il propose : non décidé.
     - **Non vérifié :** une tablette réelle (le tactile est seulement
       simulé), Firefox et Safari.
   - **V19 :** les versions de Plate et de Slate sont figées dans
