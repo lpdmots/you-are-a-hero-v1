@@ -1407,8 +1407,10 @@ la même pour tous ; on en retire ce qui ne concerne pas la personne.
   n'a ni filtres ni cases à cocher : la maquette les y avait gardés faute de
   Suivi, mais un chapitre se lit d'un coup d'œil et l'auteur seul n'imprime
   pas de fiches. Alternative écartée : garder des filtres, soit une seconde
-  version de la page à tenir. Reste ouvert, pour l'étape 4 du plan : où
-  l'auteur retrouve ses scènes à finir dans tout le livre (F06.5).
+  version de la page à tenir. L'auteur retrouve ses scènes à finir dans
+  tout le livre par l'onglet Suivi de son projet, décidé le 13 octobre 2026
+  ([F06.5](#f065--suivi-du-travail-et-accès-aux-scènes)) ; la page du
+  chapitre n'y renvoie pas par un lien, l'onglet suffit.
 - **Élève, chapitre attribué.** La même page en lecture : les scènes, leur
   état et qui s'en occupe, sans menu, sans ajout et sans filtres. Un élève
   du profil « écriture et organisation » y trouve « Ajouter une scène », le
@@ -3308,7 +3310,8 @@ donne. La prise en charge reste informative et non exclusive entre élèves.
   désignant un élève du chapitre ; le texte et les remises sont conservés.
 - **Fiches de rédaction :** elle n'est pas une scène sans élève et n'entre
   donc pas dans la répartition de
-  [F07.4](#f074--fiches-de-rédaction-pour-le-travail-sur-papier).
+  [F07.4](#f074--fiches-de-rédaction-pour-le-travail-sur-papier) ; depuis
+  le 13 octobre 2026, elle ne figure sur aucune fiche (plus bas).
 
 - **F06-AC62 — Scène de l'enseignant :** étant donné S018 que Mme Laurent
   s'est attribuée dans le chapitre d'Alice, lorsqu'Alice l'ouvre, alors elle
@@ -3334,9 +3337,43 @@ prise » avec tout ce qu'elles contiennent.
 a remise et que l'enseignant s'attribue garde son état et ses remises ;
 l'enseignant choisit ensuite l'état qu'il veut.
 
-Restent à préciser : l'élève alors indiqué pour le suivi et les
-encouragements de F07.5 ; la place de cette scène dans le Suivi et ses
-filtres.
+**Décision du 13 octobre 2026 — la scène de l'enseignant au Suivi, et
+l'élève indiqué :** arbitré avant l'étape 4 du plan.
+
+- **Au Suivi :** la colonne « Qui s'en occupe » porte « Vous ». La liste du
+  filtre Élève se termine par « Moi », après les élèves, comme le menu « qui
+  s'en occupe » ; ce choix liste les scènes au nom de l'enseignant, sans
+  les deux sélections de
+  [F06.5](#f065--suivi-du-travail-et-accès-aux-scènes). La vue « Élèves »
+  n'a pas de ligne pour lui.
+- **Hors des fiches :** cette scène ne figure sur aucune fiche de rédaction
+  et ne peut pas y être choisie, puisque les fiches vont aux élèves
+  ([F07.4](#f074--fiches-de-rédaction-pour-le-travail-sur-papier)).
+- **Un seul nom à la fois :** quand l'enseignant prend une scène qu'un
+  élève avait remise, cet élève n'est plus indiqué ; ses textes remis
+  restent à son prénom, dans leur onglet. Quand l'enseignant rend la scène
+  à un élève, c'est lui qui est indiqué.
+- **Ce que « Moi » ne retrouve pas :** les scènes « Aucun élève » d'un
+  chapitre non attribué, que l'enseignant écrit aussi ; elles se retrouvent
+  par le filtre Chapitre.
+- **Rappel :** pour finir le texte d'un élève absent sans lui retirer la
+  scène, l'enseignant n'a pas à la prendre (F07-AC61) ; « Moi » sert à
+  empêcher les élèves d'y écrire.
+- **Alternative écartée :** pas d'entrée « Moi » dans le filtre, ces scènes
+  se repérant à « Vous » dans la colonne ; sur quarante scènes, on les
+  cherche.
+
+- **F06-AC93 — Scène de l'enseignant au Suivi :** étant donné S018 et S031
+  que Mme Laurent s'est attribuées, lorsqu'elle ouvre le Suivi, alors ces
+  deux scènes portent « Vous » dans « Qui s'en occupe » ; lorsqu'elle
+  choisit « Moi » dans le filtre Élève, alors seules S018 et S031 sont
+  listées, sans « Dont … s'occupe » ni « Tout son chapitre » ; la vue
+  « Élèves » ne compte aucune ligne à son nom.
+- **F06-AC94 — Scène remise puis prise par l'enseignant :** étant donné
+  S016 « À valider », remise par Bilal, lorsque Mme Laurent se l'attribue,
+  alors la scène reste « À valider », porte « Vous », et ne figure plus
+  dans « Dont Bilal s'occupe » ; l'onglet du texte remis porte toujours le
+  prénom de Bilal.
 
 **Décision confirmée le 5 octobre 2026 — l'élève retire son propre
 signalement :** l'élève qui s'occupe d'une scène peut cesser de s'en occuper,
@@ -4235,18 +4272,103 @@ Il ne mesure pas automatiquement cet avancement hors de l'application.
   travail élève selon F07, alors elle ne satisfait plus ce filtre, sans
   action supplémentaire pour clôturer une tâche de suivi.
 
-**Recommandation côté élève :** une entrée « Mon travail » qui met en avant
-ses reprises et prises en charge, tout en permettant de retrouver toutes
-les scènes de ses chapitres autorisés et de choisir un passage disponible.
-Une liste de prises en charge vide ne doit pas faire croire qu'il n'a aucun
-accès. Les sélections exactes et leur présentation restent à arbitrer.
+**Décision du 13 octobre 2026 — ce que liste « Mon travail » :** arbitré
+avant l'étape 4 du plan, d'après la recommandation d'une entrée qui met en
+avant les reprises et les prises en charge de l'élève sans lui faire croire
+qu'il n'a aucun accès.
+
+- **Ses scènes, et elles seules :** « Mon travail » liste les scènes dont
+  l'élève s'occupe, rangées par urgence — à reprendre, en cours, texte
+  vide, remises (« Mme Laurent relit »), puis validées et prêtes —, et dans
+  l'ordre du plan à urgence égale. Les scènes validées restent visibles :
+  c'est son travail fini.
+- **Un seul bouton plein :** sur la première scène qui attend l'élève (à
+  reprendre, en cours ou texte vide).
+- **Scènes à prendre :** sous la liste, une ligne par chapitre qui en a :
+  « 3 scènes ne sont pas encore prises dans ton chapitre », et le lien
+  « Voir », qui ouvre la page du chapitre. Ne comptent que les scènes sans
+  élève qui s'écrivent encore. La page du chapitre est le seul endroit où
+  l'on prend une scène, une ou plusieurs
+  ([F06.3](#f063--prise-en-charge-et-signalement-du-travail), F06-AC38).
+- **Aucune scène :** une phrase le dit, et le bouton plein devient « Choisir
+  une scène », vers son chapitre. Il l'est aussi quand aucune de ses scènes
+  ne l'attend plus et qu'il en reste à prendre.
+- **Scènes des camarades :** elles ne sont pas dans « Mon travail » ;
+  l'élève les lit dans le chapitre.
+- **Scène reçue par le partage des fiches**
+  ([F07.4](#f074--fiches-de-rédaction-pour-le-travail-sur-papier)) : elle
+  arrive dans sa liste comme les autres, sans mention.
+- **Ce qui ne change pas :** hors des horaires, « Mon travail » ne liste
+  rien (F06.4) ; une scène où l'élève est arrêté porte sa phrase, sans
+  bouton pour écrire (F08-AC17) ; toute l'histoire en cartes reste sous la
+  liste.
+- **Alternative écartée :** lister aussi les scènes libres dans « Mon
+  travail », chacune avec « Je m'en occupe » : un clic de moins, mais deux
+  endroits pour le même geste et une liste plus longue pour un enfant.
+
+- **F06-AC95 — Mon travail, par urgence :** étant donné Bilal, qui s'occupe
+  de S017 à reprendre, S021 en cours, S022 sans texte, S016 à valider et
+  S012 validée, lorsqu'il ouvre « Mon travail », alors il lit ces cinq
+  scènes dans cet ordre, S017 seule portant le bouton plein ; S015, dont
+  Alice s'occupe dans le même chapitre, n'y figure pas.
+- **F06-AC96 — Scènes à prendre :** étant donné trois scènes de « La
+  lisière » sans élève et encore à écrire, lorsque Bilal ouvre « Mon
+  travail », alors il lit sous sa liste « 3 scènes ne sont pas encore
+  prises dans ton chapitre » et « Voir », qui ouvre la page du chapitre ;
+  lorsqu'elles sont toutes prises, alors la ligne n'est plus affichée.
+- **F06-AC97 — Aucune scène à son nom :** étant donné Chloé, attribuée à
+  « La lisière » et qui ne s'occupe d'aucune scène, lorsqu'elle ouvre « Mon
+  travail », alors une phrase le lui dit et « Choisir une scène » ouvre son
+  chapitre ; rien ne lui dit qu'elle n'a pas de chapitre.
 
 **Variantes :** les récits classiques et à choix utilisent les mêmes états
 de travail. En mode personnel, le suivi de l'auteur porte sur ses scènes et
 la préparation du livre selon F11.1 ; il ne crée pas de remise d'élève à
-valider. Les filtres de classe et d'élève y sont sans objet. La maquette ne
-montre pas de suivi en mode personnel : l'onglet n'y figure pas et le Livre
-y renvoie au plan. Cet écart avec la phrase précédente reste à trancher.
+valider. Les filtres de classe et d'élève y sont sans objet.
+
+**Décision du 13 octobre 2026 — le Suivi d'un projet personnel :** arbitré
+avant l'étape 4 du [plan](plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre).
+Un projet personnel a son onglet Suivi : le même écran, dont on retire ce
+qui ne concerne pas l'auteur seul.
+
+- **Ce qu'il montre :** les scènes de tout le livre, par partie et
+  chapitre, avec leur état ; le filtre Chapitre et la rangée des tampons
+  « Toutes », « Texte vide », « En cours », « Prête », les deux états du
+  mode personnel selon
+  [F11.1](#f111--distinguer-travail-élève-terminé-et-scène-prête-pour-le-livre).
+- **Ce qu'il n'a pas :** la bascule Scènes / Élèves et la vue « Élèves », le
+  filtre Élève et ses deux sélections, la colonne « Qui s'en occupe », le
+  rappel des élèves sans chapitre, le bouton des fiches de rédaction
+  ([F07.4](#f074--fiches-de-rédaction-pour-le-travail-sur-papier)), la
+  scène suivante à valider et les encouragements (F07.5).
+- **Ce qu'il garde :** « Retour au Suivi » depuis la scène, avec le filtre
+  et l'endroit quittés ; la ligne de rappel des textes gardés à part
+  ([F08.1](#f081--écritures-concurrentes)) ; l'écran d'aide à l'ouverture,
+  réduit à ce qu'on fait ici et au sens des états.
+- **Scènes à finir :** le décompte du temps « Relire », au Livre, ouvre ce
+  Suivi filtré sur les scènes à finir, comme en mode classe (F11-AC78). La
+  question laissée en [F03.1](#f031--histoire-parties-chapitres-et-scènes),
+  « où l'auteur retrouve ses scènes à finir dans tout le livre », est
+  réglée ; la page du chapitre reste sans filtre (F03-AC41).
+- **Motif :** depuis le 6 octobre 2026, le chapitre est le plan et le Suivi
+  est le travail ; sans Suivi, l'auteur n'avait aucun endroit où voir d'un
+  coup ce qui reste à écrire. C'est le même écran avec des colonnes en
+  moins.
+- **Alternative écartée :** pas d'onglet, le Livre renvoyant au plan, comme
+  dans la maquette ; il aurait fallu rendre un filtre d'état à « Parties et
+  chapitres », d'où le porteur l'a retiré.
+
+- **F06-AC91 — Suivi d'un projet personnel :** étant donné un projet
+  personnel de douze scènes, dont trois sans texte, sept en cours et deux
+  prêtes, lorsque l'auteur ouvre l'onglet Suivi, alors il voit ses douze
+  scènes par chapitre, les tampons « Toutes 12 », « Texte vide 3 », « En
+  cours 7 » et « Prête 2 », et le filtre Chapitre ; il n'y trouve ni vue
+  « Élèves », ni filtre Élève, ni colonne « Qui s'en occupe », ni bouton
+  des fiches. Lorsqu'il choisit « Texte vide », alors seules les trois
+  scènes sans texte restent listées.
+- **F06-AC92 — Retour au Suivi en mode personnel :** étant donné ce Suivi
+  filtré sur « En cours », lorsque l'auteur ouvre une scène puis choisit
+  « Retour au Suivi », alors il retrouve ce filtre et l'endroit quitté.
 
 **Erreurs et approfondissements différés :** distinguer aucun résultat pour
 les filtres choisis, aucun travail attribué, fermeture horaire et échec de
@@ -4256,8 +4378,9 @@ pas montrée : l'état des accès n'est plus rappelé dans le projet. La présen
 comptes et le calcul d'éventuels indicateurs restent à concevoir. La deuxième critique relevait
 l'absence de toute date dans le Suivi : montrer l'ancienneté d'une remise,
 ou trier les scènes « À valider » par la plus ancienne, est écarté par le
-porteur le 4 octobre 2026, comme une complexité sans grand gain. Aucun classement des élèves ni autre indicateur que le pourcentage des scènes prêtes, sur la carte du projet,
-n'est décidé. Les règles existantes de correction et de validation restent
+porteur le 4 octobre 2026, comme une complexité sans grand gain. Aucun autre indicateur que le pourcentage des scènes prêtes, sur la carte
+du projet, n'est décidé ; le classement des encouragements, lui, est décidé
+en [F07.5](#f075--encouragements-de-lenseignant). Les règles existantes de correction et de validation restent
 en F07/F11 ; cette liste n'introduit pas une validation automatique ou en lot.
 
 ## F07 — Révision et validation
@@ -4462,7 +4585,11 @@ ajoute.
 - Afficher l'avancement du chapitre à partir de celui de ses scènes, sans
   imposer une seconde validation des textes au niveau du chapitre.
 
-**Principales transitions acquises :**
+**Principales transitions acquises :** dans cette section, « En cours
+d'écriture » et « travail élève validé » désignent les états que l'écran
+nomme « En cours » et « Validé » (F11.1, 4 octobre 2026) ; « demander une
+nouvelle reprise » est, depuis la même date, le choix de l'état
+« À reprendre », sans commande à part.
 
 | État de départ | Action | Résultat |
 | --- | --- | --- |
@@ -4471,7 +4598,7 @@ ajoute.
 | À valider | L'enseignant demande une révision. | La scène passe à reprendre ; les élèves autorisés peuvent écrire et le retour s'adresse au responsable du suivi. |
 | À reprendre | Un élève soumet le texte retravaillé. | La scène repasse à valider ; une nouvelle remise est conservée et le soumetteur prend en charge le suivi. |
 | À valider | L'enseignant valide le travail élève, après vérification du texte et de l'état examinés. | Le travail de rédaction de l'élève est terminé et il ne peut plus reprendre seul ; la préparation de la scène pour le livre reste distincte. Une modification intervenue depuis la relecture suspend la validation. |
-| Travail élève validé | L'enseignant demande explicitement une nouvelle reprise. | La scène revient à reprendre depuis son texte courant ; une nouvelle soumission puis une nouvelle validation sont nécessaires. Les remises antérieures restent conservées. |
+| Validé ou Prête | L'enseignant choisit l'état « À reprendre ». | La scène revient à reprendre depuis son texte courant ; une nouvelle soumission puis une nouvelle validation sont nécessaires. Les remises antérieures restent conservées. |
 | N'importe quel état | L'enseignant choisit un autre état (4 octobre 2026). | La scène prend cet état, avec ses effets pour les élèves ; aucune remise n'est créée ni supprimée, la prise en charge ne change pas. Si le texte a changé depuis sa relecture, le choix de « Validé » ou de « Prête » est suspendu. |
 
 Le retrait volontaire avant validation et le retour pour révision demandé
@@ -4549,8 +4676,8 @@ exigences de sauvegarde.
   est présenté avant une nouvelle décision de l'enseignante.
 - **F07-AC27 — Nouvelle reprise après validation :** étant donné une scène
   dont le travail élève est validé et dont le texte courant comprend des
-  retouches enseignantes, lorsque Mme Laurent demande une nouvelle reprise,
-  alors la scène revient « À reprendre » avec ces retouches conservées.
+  retouches enseignantes, lorsque Mme Laurent choisit l'état
+  « À reprendre », alors la scène y revient avec ces retouches conservées.
   Une nouvelle remise passe « À valider » et exige une nouvelle validation ;
   les remises antérieures restent consultables.
 - **F07-AC28 — Dernière saisie incluse dans la remise :** étant donné Alice
@@ -4955,11 +5082,123 @@ proposées par la maquette :
   scène d'un chapitre non attribué, qui reste sur aucune feuille ; la page
   réduite à un élève, où le partage n'est pas proposé.
 
+**Décisions du 13 octobre 2026 — partage qui ne tombe pas juste, élève de
+plusieurs chapitres, partage à défaire, plafond :** arbitré avant l'étape 4
+du plan.
+
+- **À égalité :** quand plusieurs élèves ont le même nombre de scènes à
+  leur nom, on sert d'abord celui à qui il reste le moins de scènes à
+  écrire (en cours, à reprendre ou sans texte). S'ils sont encore à
+  égalité, on sert celui qui a le plus de scènes validées ou prêtes : choix
+  du porteur, les élèves n'écrivant pas à la même vitesse, celui qui en a
+  déjà fait valider le plus finira le plus tôt et peut en recevoir une de
+  plus. Ce second critère ne joue que si l'un d'eux a une scène encore « À
+  valider » : à total égal et reste égal, c'est la seule différence
+  possible. En dernier recours, l'ordre alphabétique des prénoms, pour que
+  la proposition ne change pas d'un affichage à l'autre. Alternatives
+  écartées : l'ordre alphabétique seul, qui donnerait toujours la scène de
+  trop au même élève ; un tirage au sort, qui changerait à chaque ouverture
+  de la page.
+- **Des scènes qui se suivent :** on calcule d'abord combien chaque élève
+  reçoit, puis les scènes sont données dans l'ordre du chapitre, part après
+  part, en commençant par l'élève servi le premier. Donner une scène à
+  l'un, la suivante à l'autre, aurait séparé les scènes voisines que la
+  précision du 4 octobre voulait garder ensemble.
+- **Élève de plusieurs chapitres :** on compte ses scènes dans tout le
+  projet, et non dans le seul chapitre réparti, ce qui précise « dans le
+  chapitre » de la règle du 4 octobre. Compté chapitre par chapitre, il
+  aurait reçu une part entière dans chacun. Les chapitres sont répartis
+  dans l'ordre du plan ; un élève déjà bien servi dans son premier chapitre
+  peut ne rien recevoir dans le second. En « par élève », il a une seule
+  feuille, ses scènes rangées par chapitre ; en « par chapitre », il reçoit
+  la feuille de chacun de ses chapitres.
+- **Partage fait à la confirmation :** les scènes passent au nom de leurs
+  élèves dès que l'enseignant confirme le message, avant la fenêtre
+  d'impression du navigateur. S'il ferme cette fenêtre sans imprimer, le
+  partage reste fait : l'application ne sait pas si la feuille est sortie.
+- **Annuler sur place :** tant que l'enseignant reste sur la page des
+  fiches, une ligne dit « 6 scènes réparties » et propose « Annuler la
+  répartition », qui rend « Pas encore prise » les scènes encore au nom de
+  l'élève proposé. La page quittée, l'élève se change scène par scène, par
+  « qui s'en occupe ». C'est la forme de « Ne plus garder ce texte »
+  ([F08.1](#f081--écritures-concurrentes)). Alternative écartée : ne
+  partager qu'après l'impression, que le navigateur ne signale pas de façon
+  fiable.
+- **Plafond, demandé par le porteur :** en « par élève », l'enseignant peut
+  fixer un nombre de scènes à écrire par élève, « Au plus 4 scènes à écrire
+  par élève », pour ne pas répartir d'un coup toutes les scènes d'un long
+  livre — donner quatre textes en devoir, par exemple. Sans nombre, il n'y
+  a pas de limite. Le nombre compte ce qu'il reste à écrire à l'élève dans
+  le projet, scènes déjà à son nom comprises (lecture confirmée par le
+  porteur) : un élève qui en a déjà autant ou plus ne reçoit rien, et garde
+  sur sa feuille toutes ses scènes cochées. L'ordre de service ne change
+  pas. Les scènes non données restent « Pas encore prise », sur aucune
+  feuille, et la page dit combien ; comme elles sont données dans l'ordre
+  du chapitre, ce sont les dernières du chapitre qui attendent. Alternative
+  écartée : ne compter que les scènes nouvellement données, sans regarder
+  ce que l'élève a déjà à écrire.
+- **Le nombre ne donne rien à lui seul, demande du porteur :** des scènes
+  libres ne sont ajoutées à tous que si l'enseignant a choisi « Les répartir
+  entre les élèves du chapitre ». Sinon, la page signale seulement les
+  élèves qui ont moins de scènes à écrire que le nombre fixé, et permet de
+  compléter l'un d'eux : des scènes libres cochées de ses chapitres lui
+  sont proposées, dans l'ordre du chapitre, jusqu'au nombre. Ce sont des
+  propositions comme celles du partage : montrées sur la page, données à
+  l'impression après le même message, annulables sur place de la même
+  façon. Répartir avec un nombre revient à compléter tout le monde.
+  Précisions prises en rédigeant, à confirmer : le signalement nomme les
+  élèves et leur compte (« Emma (2), Dylan (3) et Jade (0) ont moins de 4
+  scènes à écrire »), chaque prénom complétant cet élève ; « Ne pas
+  compléter » retire sa proposition ; de deux élèves complétés l'un après
+  l'autre, le premier reçoit les premières scènes libres ; sans nombre
+  fixé, rien n'est signalé.
+- **Sans répartition :** en « par élève », le tirage par défaut ne porte
+  que les scènes que les élèves ont déjà prises (décision du 4 octobre) ;
+  le partage ne vient que sur demande.
+- **Dans « Mon travail » :** une scène reçue par le partage est une prise
+  en charge comme les autres, sans mention
+  ([F06.5](#f065--suivi-du-travail-et-accès-aux-scènes)).
+
+- **F07-AC71 — Scène de trop :** étant donné « La lisière », attribuée à
+  Chloé, Dylan et Emma, qui ont chacun deux scènes à leur nom — Chloé deux
+  en cours, Dylan une en cours et une validée, Emma une en cours et une à
+  valider —, et quatre scènes sans élève cochées, lorsque l'enseignant les
+  fait répartir, alors Dylan en reçoit deux, Emma une et Chloé une : Dylan
+  et Emma, à qui il reste une scène à écrire, passent avant Chloé, et
+  Dylan, qui en a une validée, avant Emma. Les deux scènes de Dylan se
+  suivent dans le chapitre. Rouverte, la page propose le même partage.
+- **F07-AC72 — Élève de deux chapitres :** étant donné Alice, attribuée à
+  « La lisière » et au « Sanctuaire », qui s'occupe de trois scènes de « La
+  lisière », et Jade, attribuée au seul « Sanctuaire », sans scène, lorsque
+  l'enseignant fait répartir trois scènes sans élève du « Sanctuaire »,
+  alors les trois sont proposées à Jade ; en « par élève », Alice a une
+  seule feuille.
+- **F07-AC73 — Annuler la répartition :** étant donné six scènes réparties
+  par « Répartir et imprimer » et la fenêtre d'impression fermée sans
+  imprimer, lorsque l'enseignant regarde la page, alors il lit « 6 scènes
+  réparties » et les six scènes sont au nom de leurs élèves ; lorsqu'il
+  choisit « Annuler la répartition », alors elles redeviennent « Pas encore
+  prise », sauf celle qu'un autre élève a prise entre-temps ; la page
+  quittée puis rouverte, « Annuler la répartition » n'est plus proposé.
+- **F07-AC74 — Plafond :** étant donné Marie, à qui il reste une scène à
+  écrire, Mohamed, à qui il n'en reste aucune, et dix scènes sans élève
+  cochées, lorsque l'enseignant fait répartir avec « Au plus 4 scènes à
+  écrire par élève », alors quatre sont proposées à Mohamed et trois à
+  Marie, les sept premières du chapitre, et la page indique que trois
+  scènes restent sans élève, sur aucune feuille ; sans nombre, les dix sont
+  réparties.
+- **F07-AC75 — Compléter un élève :** étant donné « Au plus 4 scènes à
+  écrire par élève », Emma, à qui il en reste deux, Dylan, à qui il en
+  reste quatre, et cinq scènes sans élève cochées dans leur chapitre, sans
+  répartition demandée, lorsque l'enseignant regarde la page, alors elle
+  signale qu'Emma a moins de quatre scènes à écrire, sans rien lui
+  proposer, et ne signale pas Dylan ; lorsqu'il complète Emma, alors les
+  deux premières scènes libres du chapitre lui sont proposées et sa feuille
+  en liste quatre ; elles ne passent à son nom qu'à l'impression, après le
+  message de demande.
+
 Restent proposés par la maquette : l'élève proposé montré dans la liste, en
-pointillé ; « par chapitre », qui ne change pas. Questions ouvertes : à qui va la scène de trop quand le partage ne
-tombe pas juste ; l'élève inscrit à plusieurs chapitres ; l'impression
-abandonnée après la confirmation ; l'annulation d'un partage confirmé ; ce
-que l'élève en voit dans « Mon travail ».
+pointillé ; « par chapitre », qui ne change pas.
 
 **Propositions de la maquette du 4 octobre 2026, sans retour du porteur :**
 le bouton d'impression à côté du décompte, toujours en vue, et non sous
@@ -4986,8 +5225,29 @@ pagination et présentation des images ; partie trop longue pour une page
 lorsque les fiches sont à la suite.
 L'aide IA à la formulation des consignes relève de F13.2 ; la présentation
 de la liste de points pour rédiger sur les fiches reste à préciser.
-L'accès aux fiches en mode personnel reste à préciser ; le travail papier
-en classe concerne aussi bien le récit classique que le récit à choix.
+Le travail papier en classe concerne aussi bien le récit classique que le
+récit à choix.
+
+**Décision du 13 octobre 2026 — pas de fiches en mode personnel :** un
+projet personnel n'a ni bouton « Imprimer les fiches de rédaction » ni page
+des fiches. La fiche sert à distribuer des consignes à des élèves ; l'auteur
+seul n'en distribue à personne. Conséquence à connaître : pour travailler
+sur papier, il n'a que le PDF de travail du livre (F11.2), qui porte les
+textes et non les consignes. Alternative écartée : une feuille « par
+chapitre » de ses propres consignes, usage trop rare pour un écran de plus.
+
+- **F07-AC70 — Scène de l'enseignant hors des fiches :** étant donné S018,
+  avec consigne, que Mme Laurent s'est attribuée dans « La lisière »,
+  lorsqu'elle prépare les fiches, alors S018 ne peut pas être choisie et ne
+  figure sur aucune feuille, « par chapitre » comme « par élève »
+  ([F06.3](#f063--prise-en-charge-et-signalement-du-travail), 13 octobre
+  2026) ; rendue à Alice, elle peut l'être.
+- **F07-AC69 — Pas de fiches en mode personnel :** étant donné un projet
+  personnel dont trois scènes ont une consigne, lorsque l'auteur ouvre son
+  Suivi, alors aucune commande d'impression des fiches ne lui est proposée ;
+  l'adresse de la page des fiches, tapée à la main, ne montre aucune fiche.
+
+
 L'absence de consigne numérique ne bloque pas l'écriture selon F07.1 ; elle
 écarte la scène des fiches, selon la décision ci-dessus.
 
@@ -5010,7 +5270,9 @@ de retenir une solution technique ; aucune technologie V0 n'est reprise.
 **Idée du porteur, décidée le 2 octobre 2026 pour la première livraison.**
 Retour d'usage du porteur : il a déjà encouragé ainsi les textes de ses
 élèves en classe et y voit une bonne source de motivation. Le parcours
-détaillé et ses écrans restent à préciser avant réalisation.
+détaillé est arbitré en entretien le 13 octobre 2026, plus bas ; ses écrans
+se dessinent à la construction de l'étape 4 du plan, la maquette n'en
+montrant aucun.
 
 **Décisions confirmées le 2 octobre 2026 :**
 
@@ -5026,7 +5288,8 @@ détaillé et ses écrans restent à préciser avant réalisation.
   plusieurs auteurs n'est prévue.
 - **Classement optionnel :** un classement de la classe peut être affiché, au
   choix de l'enseignant. Le porteur y voit une motivation possible, notamment
-  pour mettre en avant un élève en difficulté qui fait des efforts.
+  pour mettre en avant un élève en difficulté qui fait des efforts. Ce
+  qu'il montre, et à qui, est décidé le 13 octobre 2026, plus bas.
 
 **Critères d'acceptation :**
 
@@ -5034,21 +5297,162 @@ détaillé et ses écrans restent à préciser avant réalisation.
   charge de S017, lorsque l'enseignante donne à cette scène un encouragement
   « effort », alors Bilal le retrouve sur sa scène et son total « effort »
   augmente de un.
-- **F07-AC51 — Classement au choix :** étant donné une classe dont
-  l'enseignant n'a pas activé le classement, lorsqu'Alice consulte ses
-  encouragements, alors elle voit les siens et aucun total d'un camarade ;
-  lorsque l'enseignant l'active, alors le classement de la classe est visible.
+- **F07-AC51 — Classement au choix (précisé le 13 octobre 2026) :** étant
+  donné une classe dont l'enseignant n'a pas allumé « Montrer le classement
+  aux élèves », lorsqu'Alice consulte ses encouragements, alors elle voit
+  les siens et aucun total d'un camarade ; lorsque l'enseignant l'allume,
+  alors « Mon travail » lui montre, pour chaque catégorie, les trois
+  premiers et son propre total (F07-AC86).
 
-**Propositions non arbitrées :** classement désactivé par défaut ;
-encouragement donné pendant la relecture de F07.1 et conservé avec la remise,
-comme le retour de F07.3 ; aucun effet sur les états de travail, le livre ni
-la version partagée.
+**Décisions du 13 octobre 2026 — donner un encouragement :** arbitré en
+entretien avant l'étape 4 du
+[plan](plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre).
 
-**Questions ouvertes :** nom et dessin de la marque ; nombre d'encouragements
-possibles par scène et par catégorie ; scène sans prise en charge ; retrait
-d'un encouragement ; ce que montre le classement (total, par catégorie) et à
-qui ; place dans le suivi de F06.5 ; conservation d'une année à l'autre avec
-le profil de F01.1. Sans objet en mode personnel.
+- **Où :** sur la page de la scène, une petite fiche « Encouragements pour
+  Bilal » porte les trois tampons, « Effort », « Fine plume » et
+  « Créativité ».
+- **Un clic donne, un second retire,** sans confirmation ; le total de
+  l'élève suit.
+- **Combien :** une scène porte au plus un tampon de chaque catégorie pour
+  un même élève, donc de zéro à trois. Un texte peut mériter à la fois
+  l'effort et la créativité.
+- **Quand :** à tout moment, dès que la scène a un élève et un texte, et
+  pas seulement pendant la relecture d'une remise : l'effort se voit
+  souvent sur un brouillon. L'encouragement tient à la scène, non à une
+  remise ; il n'y a donc pas de cas à part pour la scène que l'enseignant
+  valide sans remise (F07-AC61).
+- **Sans effet ailleurs :** ni sur l'état de la scène, ni sur le livre, ni
+  sur la version partagée ; il ne s'imprime pas sur les fiches de
+  rédaction.
+- **À qui :** à l'élève qui s'occupe de la scène au moment où l'enseignant
+  le donne, et il le garde : si un camarade reprend ensuite la scène, le
+  tampon reste compté pour le premier. Sur une scène passée d'Alice à
+  Bilal, l'enseignant lit « Effort, pour Alice » et peut donner « Effort »
+  à Bilal ; le cas est rare.
+- **Sans élève :** une scène sans élève, ou que l'enseignant s'est
+  attribuée, ne propose pas les tampons ; la fiche dit qu'aucun élève ne
+  s'en occupe. Une scène au texte vide non plus.
+- **Élève retiré de la classe :** il garde ses tampons sur ses scènes et
+  sort des totaux affichés.
+- **Ce que l'élève voit sur la scène, demande du porteur :** le tampon
+  qu'il a reçu, et rien quand il n'en a pas — ni emplacement vide, ni les
+  trois catégories en attente.
+- **Alternatives écartées :** un seul encouragement par scène, dont on
+  choisit la catégorie, plus rare donc plus précieux ; aucun plafond, où le
+  compteur perd son sens ; l'encouragement donné pendant la seule relecture
+  et gardé avec la remise, comme la remarque de F07.3, proposition d'abord
+  notée ici ; le tampon qui suit la scène et passe au nouvel élève, plus
+  simple à tenir, mais qui retirerait à Alice un encouragement mérité.
+
+- **F07-AC76 — Donner et retirer :** étant donné S017 « En cours », avec un
+  texte, dont Bilal s'occupe, lorsque Mme Laurent clique « Effort » puis
+  « Créativité », alors la scène porte les deux tampons et les totaux de
+  Bilal augmentent chacun de un ; lorsqu'elle clique de nouveau « Effort »,
+  alors ce tampon est retiré et son total « effort » diminue de un ; la
+  scène est toujours « En cours ».
+- **F07-AC77 — Un par catégorie :** étant donné S017 portant déjà
+  « Effort » pour Bilal, lorsque Mme Laurent regarde la fiche, alors
+  « Effort » y est montré donné et ne peut pas l'être une seconde fois pour
+  lui.
+- **F07-AC78 — L'encouragement reste à son élève :** étant donné S015 où
+  Alice a reçu « Effort », lorsque Bilal reprend la scène à son nom, alors
+  le total d'Alice ne change pas, la fiche montre « Effort, pour Alice », et
+  Mme Laurent peut donner « Effort » à Bilal.
+- **F07-AC79 — Personne à encourager :** étant donné S060 sans élève, S018
+  que Mme Laurent s'est attribuée et S022 sans texte, dont Bilal s'occupe,
+  lorsqu'elle ouvre chacune, alors aucun tampon ne peut y être donné.
+- **F07-AC80 — Rien tant qu'il n'y a rien :** étant donné S021, dont Bilal
+  s'occupe, sans encouragement, lorsqu'il l'ouvre, alors rien n'y parle
+  d'encouragement ; lorsque Mme Laurent lui a donné « Fine plume », alors
+  il y voit ce tampon, sans les deux autres catégories.
+
+**Décisions du 13 octobre 2026 — ce que voient les élèves, le classement,
+le Suivi :**
+
+- **L'élève et ses encouragements :** dans « Mon travail », la ligne d'une
+  scène encouragée porte son tampon, et une ligne donne ses totaux, « Tes
+  encouragements : Effort 3 · Fine plume 1 », seulement s'il en a au moins
+  un. Aucune annonce quand un tampon arrive : il le découvre en ouvrant
+  « Mon travail » ou sa scène.
+- **Les camarades ne voient rien :** les tampons d'un élève ne se montrent
+  qu'à lui et à l'enseignant, même quand un camarade du chapitre lit sa
+  scène. Alternative écartée : le tampon visible de tous ceux qui lisent la
+  scène, comme un bon point sur une copie, qui aurait ouvert les
+  comparaisons sans que l'enseignant l'ait choisi.
+- **Le classement, par catégorie :** pour chaque catégorie, les trois
+  meilleurs totaux de la classe du projet, ex æquo compris, avec les
+  prénoms. Aucun total toutes catégories ; un élève sans tampon n'apparaît
+  nulle part. Tous les élèves de la classe comptent, quel que soit leur
+  chapitre.
+- **Ce que les élèves en voient, si l'enseignant le montre :** le classement
+  est éteint par défaut. Un interrupteur du projet, « Montrer le classement
+  aux élèves », dans la vue « Élèves » du Suivi, l'allume. « Mon travail »
+  montre alors à chaque élève, pour chaque catégorie, les trois premiers et
+  son propre total, rien d'autre : ni la suite du classement, ni le total
+  d'un camarade hors des trois premiers.
+- **Ce que l'enseignant en voit :** depuis la vue « Élèves » du Suivi, les
+  trois premiers de chaque catégorie, que le classement soit montré aux
+  élèves ou non ; « Voir la suite » déroule le classement entier, sans les
+  élèves qui n'ont aucun tampon. Le classement entier ne se voit que depuis
+  le compte de l'enseignant.
+- **Motif :** un classement complet affiche un dernier, souvent le même,
+  quand le but du porteur est de mettre en avant un élève en difficulté qui
+  fait des efforts ; par catégorie, cet élève peut être premier en
+  « Effort » sans que personne soit montré en queue aux élèves. Un total
+  général récompenserait surtout ceux qui écrivent vite. Décidé par le
+  porteur en deux temps le 13 octobre 2026 : d'abord le classement chez
+  l'enseignant seul, puis les trois premiers et son propre total pour
+  l'élève. Alternative écartée : la liste complète montrée aux élèves.
+- **Au Suivi :** la vue « Élèves » gagne une colonne « Encouragements »,
+  avec les trois totaux de l'élève. La vue « Scènes » ne montre pas les
+  tampons et n'a pas de filtre de plus : elle sert à agir, et les tampons
+  se lisent sur la page de la scène. Alternative écartée : trois colonnes
+  triables, sur un écran déjà jugé dense.
+- **D'une année à l'autre :** les encouragements appartiennent au projet.
+  Un nouveau projet repart de zéro et rien ne suit le profil de l'élève
+  ([F01.1](#f011--classes-années-et-éventuel-espace-école)) ; le projet
+  d'une année passée garde ses tampons, que l'enseignant relit. Un total
+  sur plusieurs années comparerait des élèves qui n'ont pas eu le même
+  nombre de projets.
+
+- **F07-AC81 — Totaux dans « Mon travail » :** étant donné Bilal, qui a
+  reçu « Effort » sur S017 et S021 et « Fine plume » sur S017, lorsqu'il
+  ouvre « Mon travail », alors il lit « Effort 2 · Fine plume 1 », sans
+  « Créativité », et les lignes de S017 et S021 portent leurs tampons ;
+  Chloé, qui n'en a reçu aucun, ne lit rien sur les encouragements.
+- **F07-AC82 — Rien pour les camarades :** étant donné S017 de Bilal, qui
+  porte « Effort », lorsqu'Alice, du même chapitre, l'ouvre pour la lire,
+  alors elle n'y voit aucun tampon, et rien de ce que son poste reçoit ne
+  dit les encouragements de Bilal.
+- **F07-AC83 — Trois meilleurs totaux par catégorie :** étant donné, en
+  « Effort », Lina 4, Bilal 3, Alice 3, Jade 2, Chloé 1 et vingt élèves
+  sans tampon, lorsque Mme Laurent ouvre le classement, alors « Effort »
+  montre Lina, puis Bilal et Alice ex æquo, puis Jade, et aucun total
+  toutes catégories n'est affiché ; lorsqu'elle choisit « Voir la suite »,
+  alors Chloé s'y ajoute, et les vingt élèves sans tampon n'y figurent
+  toujours pas.
+- **F07-AC86 — Ce que l'élève voit du classement :** étant donné les mêmes
+  totaux et le classement montré aux élèves, lorsque Chloé ouvre « Mon
+  travail », alors elle lit en « Effort » Lina, Bilal et Alice, Jade, puis
+  son propre total, 1, sans « Voir la suite » ni rien qui dise son rang ;
+  rien de ce que son poste reçoit ne contient le total d'un élève hors de
+  ces trois premiers.
+- **F07-AC84 — Colonne de la vue « Élèves » :** étant donné les mêmes
+  totaux, lorsque Mme Laurent ouvre la vue « Élèves » du Suivi, alors la
+  ligne de Bilal porte ses trois totaux dans « Encouragements » ; la vue
+  « Scènes » ne montre aucun tampon.
+- **F07-AC85 — Par projet :** étant donné Bilal, trois tampons dans « Les
+  passeurs de brume », lorsque Mme Laurent crée un second projet pour la
+  même classe, alors Bilal y part de zéro, et ses trois tampons restent
+  dans le premier.
+
+**Précisions à confirmer :** la forme du classement dans la vue « Élèves »
+et dans « Mon travail » ; le total de l'élève n'y est montré, dans une
+catégorie, que s'il y a au moins un tampon ; le dessin des trois tampons,
+qui ne reprend aucune couleur d'état. Sans objet en mode personnel.
+
+Ces règles sont validées dans leur ensemble par le porteur le 13 octobre
+2026, avec celles du même entretien en F06.3, F06.5, F07.4 et F11.1.
 
 ## F08 — Sauvegarde et récupération
 
@@ -5462,9 +5866,10 @@ leur conception.
 
 **Variante personnelle :** l'auteur adulte règle lui-même son conflit,
 notamment entre deux de ses sessions : le texte refusé est gardé à part
-dans son onglet, avec les deux mêmes gestes, et il n'est pas arrêté. Il n'y
-a pas de ligne de rappel décidée pour ce mode, dont le suivi reste ouvert
-(F06.5).
+dans son onglet, avec les deux mêmes gestes, et il n'est pas arrêté. La
+ligne de rappel s'affiche en tête du Suivi de son projet, comme en mode
+classe, depuis la décision du 13 octobre 2026 sur ce Suivi
+([F06.5](#f065--suivi-du-travail-et-accès-aux-scènes)).
 
 - **F08-AC29 — Deux onglets du même auteur :** étant donné un auteur en
   mode personnel qui a ouvert S004 dans deux onglets et enregistré dans le
@@ -6439,7 +6844,13 @@ scène :**
   « prête ». L'enseignant peut aussi s'attribuer une scène :
   [F06.3](#f063--prise-en-charge-et-signalement-du-travail). Le mode
   personnel garde ses deux états, « En cours » et « Prête » (confirmé le
-  4 octobre 2026) ; « Validé » n'y est pas décidé.
+  4 octobre 2026). Décidé le 13 octobre 2026, avant l'étape 4 du plan :
+  « Validé » n'y existe pas dans cette livraison. Il dit qu'un enseignant a
+  accepté le travail d'un élève, et l'auteur seul n'a personne à valider ;
+  une scène dont le texte est fini et l'image à faire y reste « En cours ».
+  Alternative écartée : trois états, comme la scène sans élève d'un projet
+  de classe, soit un jalon de plus et une seule règle pour toute scène
+  écrite par l'adulte ; l'ajouter plus tard ne changerait pas le schéma.
 
 La distinction et le filtrage des deux jalons restent acquis ; cela n'impose
 pas deux circuits indépendants de validation ni une organisation technique
@@ -6488,6 +6899,10 @@ particulière.
 - **F11-AC95 — Un seul geste, deux endroits :** étant donné S060 ouverte à
   côté de l'aperçu du livre, lorsque l'adulte veut la déclarer prête, alors
   il le fait par la même commande d'état que dans la page de la scène.
+- **F11-AC99 — Deux états en mode personnel :** étant donné S004 d'un
+  projet personnel, dont le texte est fini et l'image à faire, lorsque
+  l'auteur ouvre la commande d'état, alors « En cours » et « Prête » lui
+  sont proposés, sans « Validé », « À valider » ni « À reprendre ».
 
 **Limite à conserver :** une approbation locale de scène ne garantit pas à
 elle seule la pagination, les renvois et le résultat visuel du livre assemblé.
@@ -6499,8 +6914,8 @@ La prévisualisation et les vérifications du PDF complet restent à spécifier.
   ci-dessus. Le bouton V0 « Valider tel quel », dont la conception était
   différée, n'est pas repris ; le choix direct de l'état permet de passer
   d'un geste de « À valider » à « Prête ».
-- « Validé » pour une scène écrite par l'auteur en mode personnel : non
-  décidé ; le mode personnel garde deux états pour l'instant.
+- « Validé » pour une scène écrite par l'auteur en mode personnel : décidé
+  le 13 octobre 2026, ci-dessus ; le mode personnel a deux états.
 - La déclaration « prête » reste une appréciation de l'adulte ; le texte vide
   et les images manquantes sont contrôlés pour le livre entier (F09.2, F10).
   Depuis le 4 octobre 2026, la déclaration rappelle les défauts d'écriture

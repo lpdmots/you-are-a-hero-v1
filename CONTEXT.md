@@ -353,7 +353,9 @@ _Éviter_ : consigne initiale, réponse de l'élève, correction directe du text
 **Encouragement** :
 Marque donnée par l'enseignant au texte d'une scène, dans l'une des trois
 catégories effort, fine plume ou créativité, et comptée pour l'élève qui a
-la prise en charge de cette scène.
+la prise en charge de cette scène au moment où elle est donnée ; il la
+garde si la scène change d'élève. Les encouragements appartiennent au
+projet.
 _Éviter_ : « j'aime », note, validation du travail élève, retour de révision.
 
 **Texte final** :

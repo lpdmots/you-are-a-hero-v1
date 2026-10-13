@@ -57,7 +57,12 @@ Voir le
 ce qui reste et dans quel ordre,
 [l'architecture](docs/architecture.md#réalisation-de-létape-3-10-octobre-2026)
 et le [design](docs/design.md#étape-3-construite-10-octobre-2026).
-L'étape 4 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
+**L'étape 4 est autorisée le 13 octobre 2026**, pour elle seule, en deux
+temps (faire travailler la classe : prendre, remettre, relire, valider,
+suivre). Son entretien est fait et validé dans son ensemble le même jour ;
+sa construction, en sept lots, n'est pas commencée
+([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre)).
+L'étape 5 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur
@@ -160,7 +165,9 @@ le détail ; elle ne raconte pas les séances.
 - **Encouragements de l'enseignant** (trois catégories, classement
   optionnel) : décidés le 2 octobre 2026 pour la première livraison en
   [F07.5](docs/specifications.md#f075--encouragements-de-lenseignant) ; leur
-  parcours détaillé et leurs écrans restent à préciser.
+  parcours est arbitré le 13 octobre 2026, à l'entretien de l'étape 4
+  (plus bas, « Plan de réalisation »). Leurs écrans, absents de la
+  maquette, se dessinent à la construction.
 - **Suivi du travail et navigation de l'adulte :** besoins et deux
   sélections par élève confirmés en
   [F06.5](docs/specifications.md#f065--suivi-du-travail-et-accès-aux-scènes).
@@ -180,8 +187,9 @@ le détail ; elle ne raconte pas les séances.
   l'ancienneté des remises et le tri par la plus ancienne. Une troisième
   critique, qu'il demande ensuite, donne 29/40 et 28/40 ; il décide que
   « Voir », sur la carte du projet, n'ouvre pas l'écran d'aide.
-  Restent ouverts : le suivi en mode personnel, les propositions de la
-  maquette listées en F06.5.
+  Le suivi en mode personnel et ce que liste « Mon travail » sont décidés le
+  13 octobre 2026, à l'entretien de l'étape 4. Restent ouvertes les
+  propositions de la maquette listées en F06.5.
 - **Fiches de rédaction :** le 4 octobre 2026, une feuille compacte qui
   liste les scènes choisies remplace une feuille par scène ; l'élève écrit
   sur son cahier. Un réglage fait une feuille par chapitre ou par élève, un
@@ -193,6 +201,9 @@ le détail ; elle ne raconte pas les séances.
   l'impression, après un message de demande
   ([F07.4](docs/specifications.md#f074--fiches-de-rédaction-pour-le-travail-sur-papier),
   [F06.3](docs/specifications.md#f063--prise-en-charge-et-signalement-du-travail)).
+  Le partage qui ne tombe pas juste, l'élève de plusieurs chapitres, le
+  partage à défaire et un plafond de scènes par élève sont décidés le
+  13 octobre 2026, à l'entretien de l'étape 4.
 - **État de la scène et page de scène :** après une critique d'ergonomie
   de la page de scène ouverte par l'enseignant (23/40 pour chacune des deux
   lectures), le porteur décide le 4 octobre 2026 : l'enseignant met la scène
@@ -220,9 +231,9 @@ le détail ; elle ne raconte pas les séances.
   l'élève arrêté ne peut ni prendre ni rendre la scène ; voir
   [Conflit de sauvegarde : écrans de F08.1](docs/design.md#conflit-de-sauvegarde--écrans-de-f081-7-octobre-2026).
   Captures 315 à 337.
-  Restent ouverts : « Validé » en mode personnel, qui garde deux
-  états pour l'instant ; la place au Suivi d'une scène que l'enseignant
-  s'attribue. Le rappel avant « prête », affiché sur place, et le maintien
+  Décidés le 13 octobre 2026, à l'entretien de l'étape 4 : le mode
+  personnel a deux états, sans « Validé » ; la scène que l'enseignant
+  s'attribue porte « Vous » au Suivi et se retrouve par « Moi ». Le rappel avant « prête », affiché sur place, et le maintien
   de l'état d'une scène déjà remise que l'enseignant s'attribue sont
   confirmés le même jour.
 - **Côté élève :** après une critique d'ergonomie de ce que fait un élève
@@ -569,6 +580,32 @@ avant de commencer » soient tranchées.
   facultative demandée par le porteur, JPEG, PNG et WebP avec leur
   transparence
   ([F10](docs/specifications.md#f10--illustrations)).
+- **Étape 4, entretien du 13 octobre 2026,** validé dans son ensemble par
+  le porteur le même jour : un projet personnel a son onglet Suivi, le même
+  écran sans ce qui concerne les élèves, où mènent les « scènes à finir »
+  du Livre ; « Mon travail » ne liste que les scènes dont l'élève s'occupe,
+  par urgence, avec une ligne vers les scènes encore à prendre, qui se
+  prennent dans le chapitre
+  ([F06.5](docs/specifications.md#f065--suivi-du-travail-et-accès-aux-scènes)) ;
+  deux états en mode personnel, sans « Validé »
+  ([F11.1](docs/specifications.md#f111--distinguer-travail-élève-terminé-et-scène-prête-pour-le-livre)) ;
+  la scène de l'enseignant porte « Vous », se retrouve par « Moi » dans le
+  filtre Élève et ne figure sur aucune fiche
+  ([F06.3](docs/specifications.md#f063--prise-en-charge-et-signalement-du-travail)) ;
+  pas de fiches en mode personnel ; à égalité, le partage sert l'élève à
+  qui il reste le moins à écrire, puis celui qui a le plus de scènes
+  validées, choix du porteur ; on compte les scènes d'un élève dans tout le
+  projet ; le partage est fait à la confirmation et s'annule sur place ; un
+  plafond « Au plus n scènes à écrire par élève », demandé par le porteur,
+  avec le signalement des élèves en dessous et leur complément un à un
+  ([F07.4](docs/specifications.md#f074--fiches-de-rédaction-pour-le-travail-sur-papier)) ;
+  les encouragements se donnent d'un clic sur la page de la scène, un par
+  catégorie, à tout moment, à l'élève qui s'en occupe et qui les garde ;
+  l'élève ne voit que les siens, ses camarades rien ; le classement montre
+  les trois premiers par catégorie, aux élèves avec leur propre total si
+  l'enseignant l'allume, et en entier à l'enseignant seul ; ils restent
+  dans leur projet
+  ([F07.5](docs/specifications.md#f075--encouragements-de-lenseignant)).
 - **Restent à décider :** les questions qui bloquent chaque
   étape, à arbitrer par un entretien court avant elle ; F14, avant
   l'ouverture. Le développement demande une instruction que le plan ne

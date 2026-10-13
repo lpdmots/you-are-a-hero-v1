@@ -22,7 +22,11 @@ est fait et validé dans son ensemble le même jour, sa construction est faite
 en local le même jour et mise en ligne le 11 octobre 2026, sa revue par le
 porteur étant en cours (voir
 [Étape 3](#étape-3--écrire-une-scène-et-relier-les-choix)).
-L'étape 4 n'est ni autorisée ni commencée.
+L'étape 4 est autorisée le 13 octobre 2026, pour elle seule : son entretien
+est fait et validé dans son ensemble le même jour, sa construction n'est pas
+commencée (voir
+[Étape 4](#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre)).
+L'étape 5 n'est ni autorisée ni commencée.
 
 Ce plan n'autorise par lui-même ni développement, ni prototype, ni achat :
 chaque étape demande une instruction du porteur. La V1
@@ -86,7 +90,7 @@ décidée dans un parcours validé sans que ces mots y soient.
 | [F04](specifications.md#f04--rédaction-dans-léditeur) | Mise en forme légère et collage nettoyé ; objets, feuille d'aventure, actions de jeu et dé, sans vérification par l'application ; scènes voisines. | Écrit pour F04.2 ; F04.1 et F04.3 décidés. |
 | [F05](specifications.md#f05--retrouver-les-scènes-et-relier-les-choix) | Référence et recherche des scènes, phrase de choix et renvoi, choix créés et modifiés dans la scène, liaison cachée. | Écrit pour le socle ; F05.1 et F05.2 décidés. |
 | [F06](specifications.md#f06--attributions-accès-et-organisation-de-lécriture) | Attribution par chapitre, deux profils, paragraphe protégé, prise en charge, accès de classe et code personnel, affiche et étiquettes, horaires, Suivi par projet. | Écrit pour F06.1 ; le reste décidé. |
-| [F07](specifications.md#f07--révision-et-validation) | États de la scène, remarques liées à la scène, demandes de l'élève à l'oral, fiches de rédaction, encouragements. | Écrit pour F07.2, F07.3 et F07.5 ; parcours et écrans de F07.5 à préciser avant réalisation. |
+| [F07](specifications.md#f07--révision-et-validation) | États de la scène, remarques liées à la scène, demandes de l'élève à l'oral, fiches de rédaction, encouragements. | Écrit pour F07.2, F07.3 et F07.5 ; parcours de F07.5 arbitré le 13 octobre 2026. |
 | [F08](specifications.md#f08--sauvegarde-et-récupération) | Détection d'un conflit, texte gardé à part, récupération par l'enseignant. | Écrit. Historique des versions et incidents sans conflit non spécifiés. |
 | [F09](specifications.md#f09--test-de-lecture-et-cohérence-du-récit) | Lecture d'essai, contrôles des chemins et leur gravité. | Décidé. |
 | [F10](specifications.md#f10--illustrations) | Import et placement par l'adulte, image en ligne, images de repérage, aide à l'illustration par prompts. | Écrit. |
@@ -718,12 +722,43 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   et ses scènes (F01-AC22, AC23, AC25).
 - **Dépend de :** étape 3.
 - **Vérifications levées :** V18, par une restauration réussie.
-- **À régler avant de commencer :** parcours et écrans des encouragements,
-  que F07.5 renvoie à un entretien ; suivi en mode personnel (F06.5) et
-  « Validé » en mode personnel (F11.1) ; fiches en mode personnel (F07.4) ;
-  place au Suivi d'une scène que l'enseignant s'attribue (F06.3) ; sélections
-  exactes de « Mon travail » (F06.5) ; scène de trop quand le partage ne
-  tombe pas juste, et élève inscrit à plusieurs chapitres (F07.4).
+- **À régler avant de commencer :** rien. Arbitré en entretien le
+  13 octobre 2026 et validé dans son ensemble par le porteur le même jour :
+  le Suivi d'un projet personnel et ce que liste « Mon travail » (F06.5,
+  F06-AC91, AC92, AC95 à AC97) ; les deux états du mode personnel (F11.1,
+  F11-AC99) ; la scène de l'enseignant au Suivi (F06.3, F06-AC93, AC94) ;
+  pas de fiches en mode personnel ni pour la scène de l'enseignant, la
+  scène de trop, l'élève de plusieurs chapitres, le partage à défaire
+  (F07.4, F07-AC69 à AC73) ; le parcours des encouragements (F07.5,
+  F07-AC51 précisé, AC76 à AC86). Demandé par le porteur au même
+  entretien : un plafond de scènes à écrire par élève, avec le complément
+  d'un élève (F07.4, F07-AC74, AC75) ; l'élève ne voit un tampon que s'il
+  en a un ; le classement entier chez l'enseignant seul. Ces critères
+  s'ajoutent au périmètre de l'étape.
+- **Autorisée le 13 octobre 2026,** pour elle seule, en deux temps :
+  l'entretien, fait et validé ; la construction, sur cette validation, en
+  local. Le schéma de la base change : les migrations s'appliquent à la
+  vraie base sur accord du porteur, après une sauvegarde.
+- **Construction : pas commencée.** Sept lots, un commit local par lot,
+  découpage proposé au porteur le 13 octobre 2026 :
+  1. états et relecture, côté enseignant — état sur le tampon, fiche de
+     décision, remarque, validation suspendue, « Prête », scènes sans élève
+     et mode personnel (schéma : état, remises, remarques) ;
+  2. côté élève — remettre, modifier encore, lire selon l'état, la
+     remarque ; prendre, rendre, reprendre à un camarade, annuler ; les
+     critères de F08.1 reportés de l'étape 3 (schéma : gestes de l'élève) ;
+  3. « Mon travail » et retrait d'un élève ;
+  4. Suivi — vues « Scènes » et « Élèves », aide, retour au Suivi, scène
+     suivante à valider, carte du projet, Suivi personnel ;
+  5. fiches de rédaction — page, feuilles, partage, plafond, complément ;
+  6. encouragements (schéma) ;
+  7. essai de séance et restauration (V18).
+- **Lectures prises pour construire, annoncées au porteur, sans objection
+  à la validation :** de plusieurs scènes cochées dont une vient d'être
+  prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;
+  « Annuler », après avoir pris ou rendu une scène, tient tant qu'il reste
+  sur la page ; la remarque montrée seule à la première ouverture (« J'ai
+  lu, j'écris ») se construit comme dans la maquette et se juge en séance.
 - **Terminée quand :** le porteur a joué une séance entière avec plusieurs
   comptes d'élèves, de la prise d'une scène à sa validation, puis restauré la
   base depuis une sauvegarde. **C'est le seuil « ma classe ».**
@@ -964,14 +999,6 @@ Signalés sans être tranchés ; à accorder avant l'étape qui s'appuie dessus.
   acquise (étape 6).
 - **F11.2, F11.6 et F12.1 :** ce qui bloque le PDF définitif et le partage
   n'est pas dit de la même façon (étapes 6 et 7).
-- **F07.1 :** « Demander une nouvelle reprise » figure encore dans le
-  tableau et dans F07-AC27, alors que ce n'est plus une commande à part ;
-  « En cours d'écriture » et « Travail élève validé » y côtoient « En cours »
-  et « Validé » (étape 4).
-- **F06.5 et F07.5 :** « aucun classement des élèves n'est décidé » d'un
-  côté, classement optionnel décidé de l'autre (étape 4).
-- **F01.1 :** la règle du 6 octobre sur les scènes d'un élève retiré n'est
-  pas réécrite après la précision du 7 (étape 4).
 - **Textes en retard sur les décisions :** « Statut et périmètre » des
   spécifications (choix et fidélité de l'aperçu « à vérifier », aucun
   prototype autorisé) ; brief, dont le fond date du 3 octobre (demandes de changements
