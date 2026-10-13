@@ -1750,6 +1750,11 @@ kbd {
   overflow-y: auto;
   scrollbar-width: thin;
 }
+/* La place du panneau des réglages, tant qu'il est fermé, ne compte pas : sans cela, son
+   intervalle décale la première fiche sous le haut du texte */
+.cote-copie__colle > div:empty {
+  display: none;
+}
 /* Les fiches de la colonne : décision, remarque, consigne, remises */
 .cote-copie__fiches {
   display: grid;
