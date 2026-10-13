@@ -1003,7 +1003,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       et restaurer la vraie base au moment de mettre l'étape 4 en ligne,
       après une sauvegarde.
     - **Tests automatiques :** 640 passent — 164 sur les règles, 219 contre
-      la base locale, 257 parcours —, dont 1 pour ce lot.
+      la base locale, 257 parcours —, dont 1 pour ce lot ; 641 avec le
+      parcours des cases « Toutes les scènes » et de chapitre, ajouté le
+      même jour à la page des fiches.
   - **Mise en ligne, le 13 octobre 2026, à la demande du porteur, qui
     veut essayer en ligne :** vraie base sauvegardée par lui
     (`sauvegardes/2026-10-13-19-46`), les quatre migrations de l'étape

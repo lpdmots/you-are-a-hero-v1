@@ -94,6 +94,43 @@ test.describe("Du Suivi aux fiches (F06.5, F07.4)", () => {
     await expect(caseDe(page, "S010")).toBeChecked();
   });
 
+  test("F06-AC57 — corriger le choix d'un geste : tout décocher, recocher un chapitre entier, puis ajouter les scènes en cours ; chaque raccourci dit ce qu'il ajouterait, et s'éteint quand il n'ajouterait rien", async ({ page }) => {
+    const c = await classeEtFiches(page);
+    await semerTexte(c.base, c.bac.scenes[0], ["Un texte commencé."]);
+    await semerTexte(c.base, c.lisiere.scenes[0], ["Un autre texte commencé."]);
+    await aller(page, fiches(c.projet));
+    const toutes = page.getByRole("checkbox", { name: "Toutes les scènes", exact: true });
+    const combien = page.locator(".lot-tout").getByRole("status");
+    const ajouter = (sorte: RegExp) => page.locator(".lot-raccourcis").getByRole("button", { name: sorte });
+    // Dix scènes peuvent être choisies : S010 n'a pas de consigne
+    await expect(toutes).toBeChecked();
+    await expect(combien).toHaveText("10 cochées sur 10");
+    await expect(ajouter(/^en cours/)).toBeDisabled();
+    await toutes.uncheck();
+    await expect(combien).toHaveText("0 cochée sur 10");
+    await expect(decompte(page)).toHaveText("Aucune feuille");
+    await expect(ajouter(/^en cours/)).toHaveText("en cours +2");
+    await expect(ajouter(/^les textes vides/)).toHaveText("les textes vides +8");
+    await expect(ajouter(/^à reprendre/)).toBeDisabled();
+    // Un chapitre entier, d'un geste ; une scène retirée, sa case le dit
+    const bac = page.getByRole("checkbox", { name: "Toutes les scènes de Le dernier bac" });
+    await bac.check();
+    await expect(combien).toHaveText("6 cochées sur 10");
+    await expect(decompte(page)).toHaveText("6 scènes sur 1 feuille");
+    await caseDe(page, "S003").uncheck();
+    await expect(bac).not.toBeChecked();
+    expect(await bac.evaluate((el: HTMLInputElement) => el.indeterminate)).toBe(true);
+    await expect(page.locator(".lot-chap").filter({ hasText: "Le dernier bac" }).locator("legend small")).toHaveText("5 sur 6");
+    // Les scènes en cours des autres chapitres s'ajoutent sans rien décocher
+    await ajouter(/^en cours/).click();
+    await expect(combien).toHaveText("6 cochées sur 10");
+    await expect(caseDe(page, "S007")).toBeChecked();
+    await expect(caseDe(page, "S003")).not.toBeChecked();
+    await expect(ajouter(/^en cours/)).toBeDisabled();
+    await toutes.check();
+    await expect(combien).toHaveText("10 cochées sur 10");
+  });
+
   test("F06.5 — un élève choisi au Suivi : « Dont Alice s'occupe » ouvre sa feuille, « Tout son chapitre » celle du chapitre, camarades compris", async ({ page }) => {
     const c = await classeEtFiches(page);
     await aller(page, fiches(c.projet, `eleve=${c.eleves.Alice.id}`));

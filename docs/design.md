@@ -1699,6 +1699,15 @@ stade.
   « Imprimer » perd son aplat, pour que l'écran garde un seul bouton
   plein ; le message nomme la scène par sa référence et son titre, se
   referme par « Échap », et le clavier revient à « Imprimer ».
+- **Choisir les scènes, repris le 13 octobre 2026 sur un retour du
+  porteur** (« dur de s'y retrouver », et plus moyen de recocher les scènes
+  « En cours » après « Tout décocher ») : chaque colonne a son titre, « Les
+  scènes » et « Les feuilles » ; « Tout décocher » laisse place à une case
+  « Toutes les scènes », avec « 5 cochées sur 50 », cochée, vide ou en
+  partie ; le bandeau de chaque chapitre porte la même case et « 5 sur
+  6 » ; « Ajouter : » gagne « en cours », et chaque raccourci dit ce qu'il
+  ajouterait (« en cours +44 »), éteint quand il n'ajouterait rien. Le
+  reste de l'analyse de la page est en recommandations, non construit.
 - **Le nombre fixé (sans maquette) :** en « par élève », tous élèves
   affichés, un lien discret sous le réglage, « Fixer un nombre de scènes
   par élève ». Cliqué, il devient une phrase dont le nombre s'écrit, « Au

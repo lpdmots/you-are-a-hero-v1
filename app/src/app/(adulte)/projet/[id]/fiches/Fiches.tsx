@@ -26,6 +26,30 @@ const POURQUOI: Record<HorsFiche, string> = {
   "ne-s-ecrit-plus": "plus rien à écrire",
 };
 const SANS_PARTAGE: Partage = { propositions: new Map(), sansEleve: [] };
+/** Ce qui s'ajoute d'un geste à la sélection : chaque scène qui peut être choisie est dans une de ces trois sortes. */
+const SORTES: { nom: string; de: (s: Scene) => boolean }[] = [
+  { nom: "en cours", de: (s) => s.etat === "cours" && !s.texteVide },
+  { nom: "les textes vides", de: (s) => s.etat === "cours" && s.texteVide },
+  { nom: "à reprendre", de: (s) => s.etat === "reprendre" },
+];
+
+/** La case d'un groupe de scènes — tout le livre, ou un chapitre : cochée, vide, ou en partie. Un clic coche tout, le suivant décoche tout. */
+function CaseDeGroupe({ scenes, choisies, nom, onCocher }: { scenes: Scene[]; choisies: ReadonlySet<string>; nom: string; onCocher: (ids: string[], oui: boolean) => void }) {
+  const n = scenes.filter((s) => choisies.has(s.id)).length;
+  return (
+    <input
+      type="checkbox"
+      className="case"
+      aria-label={nom}
+      checked={n > 0 && n === scenes.length}
+      ref={(el) => {
+        if (el) el.indeterminate = n > 0 && n < scenes.length;
+      }}
+      disabled={scenes.length === 0}
+      onChange={(e) => onCocher(scenes.map((s) => s.id), e.target.checked)}
+    />
+  );
+}
 
 /**
  * Fiches de rédaction (F07.4 ; docs/design.md, « Suivi repris après critique », « Page des
@@ -115,7 +139,9 @@ export function Fiches({
       return suivant;
     });
   };
-  const ajouter = (lesquelles: (s: Scene) => boolean) => cocher(toutes.filter((s) => montree(s) && horsFiche(s) === null && lesquelles(s)).map((s) => s.id), true);
+  // Ce qui peut être choisi, parmi ce que la liste montre
+  const cochables = toutes.filter((s) => montree(s) && horsFiche(s) === null);
+  const nCochees = cochables.filter((s) => choisies.has(s.id)).length;
   const changerDeTirage = (suivant: "chapitre" | "eleve") => {
     setPar(suivant);
     setVue(0);
@@ -196,10 +222,21 @@ export function Fiches({
     return lesChapitres.length
       ? [
           <section key={p.id} className="lot-partie">
-            <h2>{p.titre}</h2>
+            <h3>{p.titre}</h3>
             {lesChapitres.map((c) => (
               <fieldset key={c.id} className="lot-chap" style={vars(c.couleur)}>
-                <legend>{c.titre}</legend>
+                <legend>
+                  {/* Le chapitre se coche d'un geste : c'est souvent lui qu'on travaille pendant une séance */}
+                  <label>
+                    <CaseDeGroupe scenes={cochables.filter((x) => x.chapitreId === c.id)} choisies={choisies} nom={`Toutes les scènes de ${c.titre}`} onCocher={cocher} />
+                    {c.titre}
+                  </label>
+                  {cochables.some((x) => x.chapitreId === c.id) ? (
+                    <small>
+                      {cochables.filter((x) => x.chapitreId === c.id && choisies.has(x.id)).length} sur {cochables.filter((x) => x.chapitreId === c.id).length}
+                    </small>
+                  ) : null}
+                </legend>
                 {c.scenes.filter(montree).map(ligne)}
               </fieldset>
             ))}
@@ -326,6 +363,7 @@ export function Fiches({
 
       <div className="lot">
         <div className="lot-liste hors-impression">
+          <h2 className="lot-titre">Les scènes</h2>
           <div className="lot-filtres">
             <label className="suivi-champ">
               <span>Élève</span>
@@ -349,18 +387,27 @@ export function Fiches({
                 <Icone nom="chevron-bas" />
               </span>
             </label>
+          </div>
+          {/* Tout cocher, tout décocher, ou ajouter une sorte de scènes : chaque geste dit ce qu'il ajouterait */}
+          <div className="lot-choix">
+            <label className="lot-tout">
+              <CaseDeGroupe scenes={cochables} choisies={choisies} nom="Toutes les scènes" onCocher={cocher} />
+              <span>Toutes les scènes</span>
+              <small role="status">
+                {nCochees} cochée{pluriel(nCochees)} sur {cochables.length}
+              </small>
+            </label>
             <p className="lot-raccourcis">
-              Ajouter :{" "}
-              <button type="button" className="lien" onClick={() => ajouter((s) => s.texteVide && s.etat === "cours")}>
-                les textes vides
-              </button>{" "}
-              ·{" "}
-              <button type="button" className="lien" onClick={() => ajouter((s) => s.etat === "reprendre")}>
-                à reprendre
-              </button>
-              <button type="button" className="lien lot-raccourcis__vider" onClick={() => cocher(toutes.filter(montree).map((s) => s.id), false)}>
-                Tout décocher
-              </button>
+              Ajouter :
+              {SORTES.map(({ nom: sorte, de }) => {
+                const aAjouter = cochables.filter((x) => !choisies.has(x.id) && de(x));
+                return (
+                  <button key={sorte} type="button" className="lien" disabled={aAjouter.length === 0} onClick={() => cocher(aAjouter.map((x) => x.id), true)}>
+                    {sorte}
+                    {aAjouter.length ? <b> +{aAjouter.length}</b> : null}
+                  </button>
+                );
+              })}
             </p>
           </div>
           {liste.length ? (
@@ -378,6 +425,7 @@ export function Fiches({
         </div>
 
         <div className="lot-apercu">
+          <h2 className="lot-titre hors-impression">Les feuilles</h2>
           <div className="lot-reglage hors-impression">
             <span id="lot-reglage">Une feuille</span>
             <div className="seg-mini" role="group" aria-labelledby="lot-reglage">

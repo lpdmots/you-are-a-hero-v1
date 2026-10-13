@@ -221,6 +221,18 @@
   border-right: 0;
   transform: translateY(-1px) rotate(-45deg);
 }
+/* En partie cochée : la case d'un groupe dont quelques éléments seulement sont choisis */
+.case:indeterminate {
+  background: var(--canard);
+  border-color: var(--canard);
+}
+.case:indeterminate::after {
+  content: "";
+  width: 10px;
+  height: 2px;
+  border-radius: 1px;
+  background: #fff;
+}
 .case:hover {
   border-color: var(--canard);
 }
