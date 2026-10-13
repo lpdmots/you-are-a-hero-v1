@@ -17,18 +17,20 @@
 }
 
 /* ——— À gauche : les scènes, par partie et chapitre ——— */
-.lot-filtres {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 10px 20px;
-  margin-bottom: 12px;
-}
 /* Les deux colonnes disent ce qu'on y règle : quelles scènes, quelles feuilles */
 .lot-titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 16px;
   margin-bottom: 10px;
   font-size: var(--t-l);
   font-weight: 800;
+}
+/* La liste réduite aux scènes d'un élève : le lien qui la rend entière */
+.lot-titre .lien {
+  font-size: var(--t-s);
+  font-weight: 600;
 }
 /* Tout cocher ou décocher d'un geste, puis ce qui peut s'ajouter, avec le nombre que cela ajouterait */
 .lot-choix {
@@ -136,6 +138,23 @@
 .lot-scene .tampon {
   font-size: 0.7rem;
 }
+/* Ce qui ne se choisit pas se replie au pied du chapitre, sous une ligne qui dit pourquoi */
+.lot-hors {
+  clear: both;
+  color: var(--graphite-3);
+  font-size: var(--t-s);
+}
+.lot-hors summary {
+  padding: 7px 14px 7px 16px;
+  cursor: pointer;
+}
+.lot-hors summary:hover {
+  color: var(--graphite-2);
+}
+.lot-hors summary:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: -3px;
+}
 /* Ce qui ne se choisit pas reste dans la liste, en retrait, avec sa raison */
 .lot-scene--hors {
   color: var(--graphite-3);
@@ -176,6 +195,24 @@
   color: var(--graphite-2);
   font-size: var(--t-s);
   font-weight: 700;
+}
+/* Tous les élèves, ou un seul : le choix n'existe qu'en « par élève », à côté de lui */
+.lot-qui select {
+  min-height: 36px;
+  padding: 0 32px 0 12px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 99px;
+  background: var(--feuille);
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  appearance: none;
+  cursor: pointer;
+}
+.lot-qui select:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
 }
 .lot-suite {
   display: inline-flex;
@@ -297,6 +334,19 @@
   gap: 8px;
   font-size: var(--t-s);
   font-variant-numeric: tabular-nums;
+}
+/* Entre les flèches, la feuille montrée : son élève ou son chapitre, puis son rang */
+.lot-pager__ou {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+}
+.lot-pager__ou b {
+  max-width: 13ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 700;
 }
 .lot-imprimer {
   justify-content: center;
@@ -491,14 +541,44 @@
   text-align: center;
 }
 
-@media (max-width: 900px) {
+/* Petit écran seulement : une page A4 est assez étroite pour y tomber, et la feuille imprimée perdrait son image */
+@media screen and (max-width: 900px) {
   .lot {
     grid-template-columns: minmax(0, 1fr);
   }
-  /* Ce qui va sortir d'abord, la liste ensuite */
+  /* On choisit d'abord, on voit ensuite : la liste, puis les feuilles, toutes à la suite */
   .lot-apercu {
     position: static;
-    order: -1;
+  }
+  .lot-pager {
+    display: none;
+  }
+  .fr-feuille[data-vue="non"] {
+    display: flex;
+  }
+  /* Ce qui sortira et le bouton d'impression restent au bas de l'écran, pendant qu'on fait défiler la liste */
+  .lot-apercu__barre {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+    background: var(--feuille);
+    box-shadow: 0 -1px 0 var(--trait), 0 -8px 20px -12px rgba(20, 30, 30, 0.25);
+  }
+  /* Une seule ligne : ce qui sortira à gauche, le bouton à droite */
+  .lot-apercu__barre {
+    flex-wrap: nowrap;
+  }
+  .lot-apercu__barre > p {
+    font-size: var(--t-s);
+  }
+  .lot-apercu__barre .lot-imprimer {
+    flex: none;
+  }
+  .page--fiches {
+    padding-bottom: 76px;
   }
   .fr-scene {
     grid-template-columns: 40px minmax(0, 1fr);

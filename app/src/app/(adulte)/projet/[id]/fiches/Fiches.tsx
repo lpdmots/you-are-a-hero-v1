@@ -12,7 +12,7 @@ import {
   completer, decompte, elevesACompleter, feuilles, horsFiche, repartir, surAucuneFeuille, type Feuille, type HorsFiche, type Partage,
 } from "@/domaine/fiches";
 import { couleurDeChapitre, nomScene, referenceScene, type Chapitre, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
-import { pluriel } from "@/domaine/texte";
+import { de, pluriel } from "@/domaine/texte";
 import type { ContenuDeFiche } from "@/serveur/fiches";
 import { annulerRepartition, repartirScenes, type SceneDonnee } from "../../actions-fiches";
 
@@ -117,10 +117,13 @@ export function Fiches({
     plafond !== null && [...completer(plan, eleves, choisies, plafond, [...completes, id]).propositions.values()].includes(id);
   const nProp = partage.propositions.size;
   const feuille = lesFeuilles[Math.min(vue, Math.max(0, lesFeuilles.length - 1))] ?? null;
+  const nomDeFeuille = (f: Feuille): string => (f.eleve ? nom(f.eleve) : f.chapitres[0].chapitre.titre);
   const nScenes = lesFeuilles.reduce((n, f) => n + f.chapitres.reduce((m, c) => m + c.scenes.length, 0), 0);
 
   useEffect(() => {
-    if (confirme) titreMessage.current?.focus({ preventScroll: true });
+    if (!confirme) return;
+    titreMessage.current?.scrollIntoView({ block: "center" });
+    titreMessage.current?.focus({ preventScroll: true });
   }, [confirme]);
   // Le message refermé sans rien donner : le clavier revient au bouton qui l'avait ouvert
   const refermer = () => {
@@ -144,6 +147,13 @@ export function Fiches({
   const nCochees = cochables.filter((s) => choisies.has(s.id)).length;
   const changerDeTirage = (suivant: "chapitre" | "eleve") => {
     setPar(suivant);
+    // Une feuille par chapitre : plus d'élève choisi, la liste redevient entière
+    if (suivant === "chapitre") setEleveId(null);
+    setVue(0);
+    setConfirme(false);
+  };
+  const choisirEleve = (id: string | null) => {
+    setEleveId(id);
     setVue(0);
     setConfirme(false);
   };
@@ -217,6 +227,20 @@ export function Fiches({
       </label>
     );
   };
+  // Les scènes d'un chapitre qui ne peuvent pas être choisies : repliées sous une ligne, qui dit pourquoi
+  const horsDe = (c: Chapitre): Scene[] => c.scenes.filter((x) => montree(x) && horsFiche(x) !== null);
+  const phraseHors = (scenes: Scene[]): string => {
+    const n = scenes.length;
+    const raisons = new Set(scenes.map((x) => horsFiche(x)));
+    const une = raisons.size === 1 ? [...raisons][0] : null;
+    return une === "sans-consigne"
+      ? `${n} scène${pluriel(n)} sans consigne : pas imprimée${pluriel(n)}`
+      : une === "enseignant"
+        ? `${n} scène${pluriel(n)} à votre nom : pas de fiche`
+        : une === "ne-s-ecrit-plus"
+          ? `${n} scène${pluriel(n)} où il ne reste rien à écrire`
+          : `${n} scènes sans fiche`;
+  };
   const liste = plan.parties.flatMap((p) => {
     const lesChapitres = p.chapitres.filter((c) => c.scenes.some(montree));
     return lesChapitres.length
@@ -237,7 +261,13 @@ export function Fiches({
                     </small>
                   ) : null}
                 </legend>
-                {c.scenes.filter(montree).map(ligne)}
+                {c.scenes.filter((x) => montree(x) && horsFiche(x) === null).map(ligne)}
+                {horsDe(c).length ? (
+                  <details className="lot-hors">
+                    <summary>{phraseHors(horsDe(c))}</summary>
+                    {horsDe(c).map(ligne)}
+                  </details>
+                ) : null}
               </fieldset>
             ))}
           </section>,
@@ -363,31 +393,15 @@ export function Fiches({
 
       <div className="lot">
         <div className="lot-liste hors-impression">
-          <h2 className="lot-titre">Les scènes</h2>
-          <div className="lot-filtres">
-            <label className="suivi-champ">
-              <span>Élève</span>
-              <span className="suivi-champ__select">
-                <select
-                  aria-label="Élève"
-                  value={eleveId ?? ""}
-                  onChange={(e) => {
-                    setEleveId(e.target.value || null);
-                    setVue(0);
-                    setConfirme(false);
-                  }}
-                >
-                  <option value="">Tous les élèves</option>
-                  {eleves.map((e) => (
-                    <option key={e.id} value={e.id}>
-                      {nom(e)}
-                    </option>
-                  ))}
-                </select>
-                <Icone nom="chevron-bas" />
-              </span>
-            </label>
-          </div>
+          <h2 className="lot-titre">
+            {eleve ? `Les scènes ${de(nom(eleve))}` : "Les scènes"}
+            {/* La liste est réduite à l'élève choisi dans le tirage : elle le dit, et s'en défait ici */}
+            {eleve ? (
+              <button type="button" className="lien" onClick={() => choisirEleve(null)}>
+                Toutes les scènes du livre
+              </button>
+            ) : null}
+          </h2>
           {/* Tout cocher, tout décocher, ou ajouter une sorte de scènes : chaque geste dit ce qu'il ajouterait */}
           <div className="lot-choix">
             <label className="lot-tout">
@@ -415,7 +429,7 @@ export function Fiches({
           ) : eleve ? (
             <p className="suivi-aucun">
               {nom(eleve)} {chapitres.some((c) => c.attributions.some((a) => a.eleveId === eleve.id)) ? "ne s’occupe d’aucune scène" : "n’a aucun chapitre"}.{" "}
-              <button type="button" className="lien" onClick={() => setEleveId(null)}>
+              <button type="button" className="lien" onClick={() => choisirEleve(null)}>
                 Tous les élèves
               </button>
             </p>
@@ -436,15 +450,54 @@ export function Fiches({
                 par élève
               </button>
             </div>
+            {/* Tous les élèves, ou un seul : sa feuille, et ses scènes dans la liste (F07-AC56) */}
+            {parEleve ? (
+              <span className="suivi-champ__select lot-qui">
+                <select aria-label="Élève" value={eleveId ?? ""} onChange={(e) => choisirEleve(e.target.value || null)}>
+                  <option value="">Tous les élèves</option>
+                  {eleves.map((e) => (
+                    <option key={e.id} value={e.id}>
+                      {nom(e)}
+                    </option>
+                  ))}
+                </select>
+                <Icone nom="chevron-bas" />
+              </span>
+            ) : null}
             <label className="lot-suite">
               <input type="checkbox" className="case" checked={suite} onChange={(e) => setSuite(e.target.checked)} />
               À la suite, à découper
             </label>
           </div>
 
-          {/* Le nombre de scènes à écrire par élève : une commande qui ne s'affiche que là où elle sert, en « par élève » (F07-AC74) */}
-          {partageable ? (
-            <div className="lot-plafond hors-impression">
+          <div className="lot-apercu__barre hors-impression">
+            <p role="status">{decompte(lesFeuilles, suite, null)}</p>
+            {lesFeuilles.length > 1 && !suite ? (
+              <div className="lot-pager">
+                <button type="button" className="btn btn--petit" aria-label="Feuille précédente" disabled={vue === 0} onClick={() => setVue((v) => Math.max(0, v - 1))}>
+                  <Icone nom="fleche-g" />
+                </button>
+                <span className="lot-pager__ou">
+                  {feuille ? <b title={nomDeFeuille(feuille)}>{nomDeFeuille(feuille)}</b> : null}
+                  {Math.min(vue, lesFeuilles.length - 1) + 1} / {lesFeuilles.length}
+                </span>
+                <button type="button" className="btn btn--petit" aria-label="Feuille suivante" disabled={vue >= lesFeuilles.length - 1} onClick={() => setVue((v) => Math.min(lesFeuilles.length - 1, v + 1))}>
+                  <Icone nom="fleche" />
+                </button>
+              </div>
+            ) : null}
+            {/* Le message de demande porte alors le seul bouton plein de l'écran */}
+            <button type="button" ref={boutonImprimer} className={`btn${confirme ? "" : " btn--primaire"} lot-imprimer`} disabled={!lesFeuilles.length || confirme || occupe} onClick={imprimer}>
+              <Icone nom="imprimer" />
+              {!lesFeuilles.length ? "Imprimer" : suite && lesFeuilles.length > 1 ? "Imprimer à la suite" : `Imprimer ${lesFeuilles.length} feuille${pluriel(lesFeuilles.length)}`}
+            </button>
+          </div>
+
+          <div className="lot-notes hors-impression">
+            {note}
+            {/* Le nombre de scènes à écrire par élève : il ne sert qu'à répartir ou à compléter, et se règle donc ici (F07-AC74) */}
+            {partageable && (aRepartir > 0 || nProp > 0 || plafondOuvert) && !confirme ? (
+            <div className="lot-plafond">
               {plafondOuvert ? (
                 <>
                   <label className="lot-plafond__phrase">
@@ -491,30 +544,6 @@ export function Fiches({
             </div>
           ) : null}
 
-          <div className="lot-apercu__barre hors-impression">
-            <p role="status">{decompte(lesFeuilles, suite, !suite && feuille?.eleve ? feuille.eleve : null)}</p>
-            {lesFeuilles.length > 1 && !suite ? (
-              <div className="lot-pager">
-                <button type="button" className="btn btn--petit" aria-label="Feuille précédente" disabled={vue === 0} onClick={() => setVue((v) => Math.max(0, v - 1))}>
-                  <Icone nom="fleche-g" />
-                </button>
-                <span>
-                  {Math.min(vue, lesFeuilles.length - 1) + 1} / {lesFeuilles.length}
-                </span>
-                <button type="button" className="btn btn--petit" aria-label="Feuille suivante" disabled={vue >= lesFeuilles.length - 1} onClick={() => setVue((v) => Math.min(lesFeuilles.length - 1, v + 1))}>
-                  <Icone nom="fleche" />
-                </button>
-              </div>
-            ) : null}
-            {/* Le message de demande porte alors le seul bouton plein de l'écran */}
-            <button type="button" ref={boutonImprimer} className={`btn${confirme ? "" : " btn--primaire"} lot-imprimer`} disabled={!lesFeuilles.length || confirme || occupe} onClick={imprimer}>
-              <Icone nom="imprimer" />
-              {!lesFeuilles.length ? "Imprimer" : suite && lesFeuilles.length > 1 ? "Imprimer à la suite" : `Imprimer ${lesFeuilles.length} feuille${pluriel(lesFeuilles.length)}`}
-            </button>
-          </div>
-
-          <div className="lot-notes hors-impression">
-            {note}
             {/* Compléter un élève, à la suite de « répartir » : la même question, les scènes sans élève (F07-AC75) */}
             {plafond !== null && aCompleter.length ? (
               <div className="lot-completer" role="group" aria-labelledby="lot-completer-t">

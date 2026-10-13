@@ -1699,21 +1699,47 @@ stade.
   « Imprimer » perd son aplat, pour que l'écran garde un seul bouton
   plein ; le message nomme la scène par sa référence et son titre, se
   referme par « Échap », et le clavier revient à « Imprimer ».
-- **Choisir les scènes, repris le 13 octobre 2026 sur un retour du
-  porteur** (« dur de s'y retrouver », et plus moyen de recocher les scènes
-  « En cours » après « Tout décocher ») : chaque colonne a son titre, « Les
-  scènes » et « Les feuilles » ; « Tout décocher » laisse place à une case
-  « Toutes les scènes », avec « 5 cochées sur 50 », cochée, vide ou en
-  partie ; le bandeau de chaque chapitre porte la même case et « 5 sur
-  6 » ; « Ajouter : » gagne « en cours », et chaque raccourci dit ce qu'il
-  ajouterait (« en cours +44 »), éteint quand il n'ajouterait rien. Le
-  reste de l'analyse de la page est en recommandations, non construit.
+- **Page reprise le 13 octobre 2026, sur un retour du porteur** (« ces
+  réglages assez mal faits », « dur de s'y retrouver », et plus moyen de
+  recocher les scènes « En cours » après « Tout décocher »), après une
+  analyse sur l'histoire d'essai entière — 72 scènes, 25 élèves. Il
+  retient toutes les recommandations (« tout, fais ») ; elles remplacent ce
+  que la maquette montrait :
+  - *Deux colonnes titrées,* « Les scènes » et « Les feuilles » : ce qu'on
+    imprime, puis comment.
+  - *Cocher :* « Tout décocher » laisse place à une case « Toutes les
+    scènes », avec « 5 cochées sur 50 », cochée, vide ou en partie ; le
+    bandeau de chaque chapitre porte la même case et « 5 sur 6 » ;
+    « Ajouter : » gagne « en cours », et chaque raccourci dit ce qu'il
+    ajouterait (« en cours +44 »), éteint quand il n'ajouterait rien.
+  - *Un seul endroit pour « élève » :* la liste « Élève » quitte le haut de
+    la liste des scènes. Elle n'existe plus qu'en « par élève », à côté de
+    lui : « Tous les élèves », ou un seul. Un élève choisi, la colonne de
+    gauche s'intitule « Les scènes de Chloé », avec « Toutes les scènes du
+    livre » pour s'en défaire ; « par chapitre » s'en défait aussi.
+  - *Ce qui ne se coche pas se replie* au pied de son chapitre, sous une
+    ligne qui dit pourquoi : « 16 scènes sans consigne : pas imprimées » ;
+    dépliée, chaque scène garde sa raison. La liste d'essai passe de 3 266
+    à 2 607 points de haut.
+  - *Les scènes sans élève ont leur bloc,* sous le décompte : la note,
+    « Les répartir », puis le nombre fixé, puis « ou compléter ». Le lien
+    « Fixer un nombre de scènes par élève » n'apparaît que lorsqu'il sert :
+    des scènes cochées sont sans élève.
+  - *Le décompte dit ce qui sortira* (« 41 scènes sur 22 feuilles ») ; le
+    nom de la feuille montrée, élève ou chapitre, est entre les flèches
+    (« Alice 1 / 22 »).
+  - *Petit écran :* la liste, puis les feuilles, toutes à la suite, sans
+    flèches ; le décompte et « Imprimer » restent au bas de l'écran.
+  - *Défaut trouvé en passant, corrigé :* à l'impression, une page A4 est
+    assez étroite pour tomber dans les règles du petit écran, qui
+    masquaient l'image de la scène sur la feuille.
 - **Le nombre fixé (sans maquette) :** en « par élève », tous élèves
-  affichés, un lien discret sous le réglage, « Fixer un nombre de scènes
-  par élève ». Cliqué, il devient une phrase dont le nombre s'écrit, « Au
+  affichés, un lien discret, « Fixer un nombre de scènes par élève »,
+  d'abord sous le réglage, puis, à la reprise du 13 octobre, sous la note
+  des scènes sans élève. Cliqué, il devient une phrase dont le nombre s'écrit, « Au
   plus [4] scènes à écrire par élève », suivie d'un « i » (« Que compte ce
-  nombre ? ») et de « Retirer ». Le nombre ne donne rien à lui seul : la
-  phrase reste à la hauteur du lien, et « Imprimer » ne bouge pas.
+  nombre ? ») et de « Retirer ». Le nombre ne donne rien à lui seul ;
+  placé sous le décompte, il ne déplace pas « Imprimer ».
 - **Compléter un élève (sans maquette) :** sous la note des scènes sans
   élève, à la suite de « La répartir entre les élèves du chapitre », une
   ligne « ou compléter jusqu'à 4 scènes : » et une puce par élève à qui il
