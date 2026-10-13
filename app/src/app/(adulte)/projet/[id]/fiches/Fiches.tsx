@@ -405,8 +405,9 @@ export function Fiches({
           {/* Tout cocher, tout décocher, ou ajouter une sorte de scènes : chaque geste dit ce qu'il ajouterait */}
           <div className="lot-choix">
             <label className="lot-tout">
-              <CaseDeGroupe scenes={cochables} choisies={choisies} nom="Toutes les scènes" onCocher={cocher} />
-              <span>Toutes les scènes</span>
+              {/* La liste réduite à un élève : la case ne coche que les siennes, et le dit */}
+              <CaseDeGroupe scenes={cochables} choisies={choisies} nom={eleve ? "Toutes ses scènes" : "Toutes les scènes"} onCocher={cocher} />
+              <span>{eleve ? "Toutes ses scènes" : "Toutes les scènes"}</span>
               <small role="status">
                 {nCochees} cochée{pluriel(nCochees)} sur {cochables.length}
               </small>
