@@ -421,7 +421,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     plus ; un changement demande une nouvelle migration. Les retouches
     faites ensuite, la vue « Chemins » refaite comprise, sont poussées le
     13 octobre 2026 à la demande du porteur, sans migration, après une
-    série complète des tests ; il les essaie en ligne.
+    série complète des tests ; il les essaie en ligne. Le même jour suivent
+    le sens des flèches de « Chemins » et Node fixé à `22.x` : en ligne
+    jusqu'au commit `2d98c4e`.
   - **Histoire d'essai :** « Les passeurs de brume », l'histoire de la
     maquette, se charge par `npm run histoire:essai`
     ([commandes](../app/README.md)) : sa classe d'essai et ses vingt-cinq
