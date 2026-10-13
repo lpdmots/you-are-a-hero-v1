@@ -5,7 +5,8 @@ import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { libelleRecit } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
-import { mesProjets, type Projet } from "@/serveur/lectures";
+import { pluriel } from "@/domaine/texte";
+import { avancementDesProjets, mesProjets, type Projet } from "@/serveur/lectures";
 import styles from "./projets.module.css";
 
 export const metadata: Metadata = { title: "Mes projets" };
@@ -16,7 +17,7 @@ const meta = (p: Projet): string =>
 /** « Mes projets » : peu de projets, donc de grandes cartes (F06.5). */
 export default async function MesProjets() {
   const enseignant = await exigerEnseignant();
-  const projets = await mesProjets(enseignant);
+  const [projets, avancements] = await Promise.all([mesProjets(enseignant), avancementDesProjets(enseignant)]);
 
   if (!projets.length) {
     return (
@@ -64,6 +65,7 @@ export default async function MesProjets() {
       <ul className={styles.projets}>
         {projets.map((p) => {
           const dernier = p.id === enseignant.dernierProjetId;
+          const { aValider, pourCent } = avancements.get(p.id) ?? { aValider: 0, pourCent: 0 };
           return (
             <li key={p.id}>
               <div className={styles.projet}>
@@ -75,13 +77,24 @@ export default async function MesProjets() {
                   <span>{meta(p)}</span>
                 </span>
                 <span className={styles.faits}>
-                  {/* Les scènes à valider et les scènes prêtes se comptent à partir de l'étape 4 (F06-AC58). */}
+                  {/* L'information d'un côté, le lien de l'autre : « Voir » ouvre le Suivi sur ces scènes, sans son écran d'aide (F06-AC58, AC60) */}
+                  {aValider ? (
+                    <span className={styles.aValider}>
+                      <Icone nom="sablier" />
+                      <span>
+                        {aValider} scène{pluriel(aValider)} à valider
+                      </span>
+                      <Link className="lien" href={`/projet/${p.id}/suivi?etat=valider&direct=1`} aria-label={`Voir les scènes à valider de ${p.titre}`}>
+                        Voir
+                      </Link>
+                    </span>
+                  ) : null}
                   <span className={styles.livre}>
-                    <span className={styles.jauge} role="img" aria-label="0 % des scènes prêtes pour le livre">
-                      <span style={{ width: "0%" }} />
+                    <span className={styles.jauge} role="img" aria-label={`${pourCent} % des scènes prêtes pour le livre`}>
+                      <span style={{ width: `${pourCent}%` }} />
                     </span>
                     <span>
-                      <b>0 %</b> des scènes prêtes pour le livre
+                      <b>{pourCent} %</b> des scènes prêtes pour le livre
                     </span>
                   </span>
                 </span>

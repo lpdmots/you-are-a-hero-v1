@@ -233,7 +233,7 @@ export async function semerAttribution(base: SupabaseClient, chapitreId: string,
 
 /** Ne plus afficher les écrans d'aide de ce compte : un parcours qui ne porte pas sur l'aide n'a pas à la fermer. */
 export async function masquerAides(base: SupabaseClient, compte: Compte): Promise<void> {
-  await base.from("enseignants").update({ aides_masquees: ["classes", "plan", "preparation"] }).eq("id", compte.id);
+  await base.from("enseignants").update({ aides_masquees: ["classes", "plan", "preparation", "suivi"] }).eq("id", compte.id);
 }
 
 /** Une classe et ses élèves, créés sans passer par les écrans : pour les parcours où aucun élève ne se connecte. */

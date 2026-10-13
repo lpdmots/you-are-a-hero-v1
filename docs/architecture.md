@@ -830,6 +830,20 @@ chapitre se reconnaît à cela seul — elle porte un élève qui n'y est pas
 attribué — sans colonne de plus ; le plan relit alors son prénom
 (`Scene.ancien`), que la liste des élèves de la classe ne donne plus.
 
+**Le Suivi (lot 4).** Aucune table, aucune fonction de plus : le Suivi est
+une lecture du plan, que la page de l'onglet charge déjà. Tout ce qu'il
+liste, compte et propose est calculé par des fonctions sans base
+(`src/domaine/suivi.ts`) : la liste selon ses filtres, les nombres des
+tampons, le bilan par élève, la scène suivante à valider, l'avancement que
+porte la carte du projet. Les filtres sont dans l'adresse de la page, écrite
+sans la recharger : « Retour au Suivi » les retrouve parce que la scène
+garde cette adresse (`?de=suivi&suivi=…`), et une entrée par l'onglet, qui
+n'en porte aucune, repart de « Toutes ». L'endroit quitté est gardé par le
+navigateur le temps de la visite (`sessionStorage`), puis remis une fois
+que la page a fini de se placer en haut. L'écran d'aide suit le motif du
+plan : « Ne plus afficher » tient au compte (`aides_masquees`), « déjà vue
+pendant cette visite » à un témoin de navigation.
+
 **Rappel avant « prête ».** Calculé par le serveur au moment du choix,
 d'après le texte que la page vient d'enregistrer et les liens que la base en
 a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait

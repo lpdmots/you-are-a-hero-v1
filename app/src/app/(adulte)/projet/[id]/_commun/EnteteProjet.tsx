@@ -55,7 +55,7 @@ export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant:
         />
       </div>
       <nav className={styles.onglets} aria-label="Sections du projet">
-        {ongletsDe(projet.organisation).map((o) => (
+        {ongletsDe().map((o) => (
           <Link key={o} href={`/projet/${projet.id}/${o}`} aria-current={o === onglet ? "page" : undefined}>
             {NOM_ONGLET[o]}
           </Link>

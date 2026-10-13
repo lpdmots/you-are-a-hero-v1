@@ -55,6 +55,26 @@
   padding: 16px 22px 0;
   font-size: var(--t-s);
 }
+/* « 5 scènes à valider » et son lien « Voir », au-dessus du reste de la carte, qui ouvre le projet */
+.aValider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--e-valider);
+  font-weight: 700;
+}
+.aValider :global(.ic) {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.aValider :global(.lien) {
+  position: relative;
+  z-index: 1;
+  margin: -10px -8px;
+  padding: 10px 8px;
+  font-weight: 700;
+}
 .livre {
   display: grid;
   gap: 6px;

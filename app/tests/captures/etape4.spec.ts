@@ -261,3 +261,84 @@ test("lot 3 : Mon travail, et un élève retiré de la classe", async ({ page, b
   await aller(page, `/classes/${s.classe.id}/inscrire`);
   await capturer(page, "inscrire-profil-retire");
 });
+
+test("lot 4 : le Suivi", async ({ page }) => {
+  test.setTimeout(300_000);
+  n = 460;
+  const { compte, base } = await adultePret(page);
+  await base.from("enseignants").update({ nom_affiche: "Mme Laurent", aides_masquees: ["classes", "plan", "preparation"] }).eq("id", compte.id);
+  const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal", "Chloé", "Dylan", "Emma", "Adam", "Maëlys"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  const { chapitres } = await semerPartie(base, projet, "La forêt des lanternes", [
+    { titre: "Le dernier bac", scenes: ["Quai — la sirène du dernier bac", "Passerelle — le bac s’éloigne", "Quai — la lanterne qui clignote", "Cabane du passeur — la carte oubliée"] },
+    { titre: "La lisière", scenes: ["Lisière — les lanternes s’éteignent", "Sentier — le chant dans les fougères", "Souche creuse — la lanterne de secours", "Souche — la chouette messagère", "Clairière — les deux chemins se rejoignent"] },
+    { titre: "Le sommet", scenes: ["Sommet — la brume se lève"] },
+  ]);
+  const [bac, lisiere, sommet] = chapitres;
+  const e = classe.eleves;
+  await semerAttribution(base, bac.id, [{ eleve: e.Chloé.id }, { eleve: e.Dylan.id }, { eleve: e.Emma.id }]);
+  await semerAttribution(base, lisiere.id, [{ eleve: e.Alice.id }, { eleve: e.Bilal.id }]);
+  const toutes = [...bac.scenes, ...lisiere.scenes, ...sommet.scenes];
+  await base.from("scenes").update({ consigne: "Ce que la scène doit raconter." }).in("id", toutes.filter((_, i) => i !== 3 && i !== 8));
+  const donner = (scenes: string[], prenom: string) => base.from("scenes").update({ prise_par_eleve: e[prenom].id }).in("id", scenes);
+  await donner([bac.scenes[0], bac.scenes[3]], "Chloé");
+  await donner([bac.scenes[1]], "Dylan");
+  await donner([bac.scenes[2]], "Emma");
+  await donner([lisiere.scenes[0], lisiere.scenes[1]], "Alice");
+  await donner([lisiere.scenes[2], lisiere.scenes[3]], "Bilal");
+  for (const scene of [bac.scenes[0], bac.scenes[1], bac.scenes[2], lisiere.scenes[0], lisiere.scenes[1], lisiere.scenes[2], lisiere.scenes[3]]) await semerTexte(base, scene, ["Un texte."]);
+  const etat = (scene: string, voulu: string) => sql("update scenes set etat = $2 where id = $1", [scene, voulu]);
+  await etat(bac.scenes[0], "prete");
+  await etat(bac.scenes[1], "valider");
+  await etat(lisiere.scenes[0], "valide");
+  await etat(lisiere.scenes[1], "valider");
+  await etat(lisiere.scenes[2], "valider");
+  await etat(lisiere.scenes[3], "reprendre");
+  await sql("update scenes set fin = true where id = any($1::uuid[])", [toutes]);
+
+  await aller(page, "/projets");
+  await capturer(page, "mes-projets-carte");
+  await aller(page, `/projet/${projet}/suivi`);
+  await capturer(page, "suivi-aide");
+  await page.getByRole("button", { name: "Commencer" }).click();
+  await capturer(page, "suivi-scenes", true);
+  await page.getByRole("button", { name: "Que veulent dire ces états ?" }).click();
+  await capturer(page, "suivi-legende");
+  await page.keyboard.press("Escape");
+  await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Bilal" });
+  await capturer(page, "suivi-eleve-choisi");
+  await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Tous les élèves" });
+  await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "Le sommet" });
+  await page.getByRole("group", { name: "Filtrer par état" }).getByRole("button", { name: /^Texte vide/ }).click();
+  await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "Le dernier bac" });
+  await page.getByRole("group", { name: "Filtrer par état" }).getByRole("button", { name: /^Toutes/ }).click();
+  await page.getByRole("group", { name: "Vue du suivi" }).getByRole("button", { name: "Élèves" }).click();
+  await capturer(page, "suivi-eleves", true);
+  await aller(page, `/projet/${projet}/suivi?etat=valider&direct=1`);
+  await capturer(page, "suivi-a-valider");
+  await page.getByRole("link", { name: "Relire S002" }).click();
+  await page.waitForURL(/\/scene\//);
+  await page.locator(".carnet-fiche--decision").getByRole("button", { name: "Valider le travail élève" }).click();
+  await page.getByRole("link", { name: /^Suivante à valider/ }).waitFor();
+  await capturer(page, "scene-suivante-a-valider");
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/suivi?direct=1`);
+  await capturer(page, "suivi-scenes-390", true);
+  await aller(page, `/projet/${projet}/suivi?vue=eleves&direct=1`);
+  await capturer(page, "suivi-eleves-390", true);
+});
+
+test("lot 4 : le Suivi d'un projet personnel", async ({ page }) => {
+  n = 475;
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "classique", "Mon roman");
+  const { chapitres } = await semerPartie(base, projet, "Le début", [
+    { titre: "Chapitre un", scenes: ["La gare", "Le quai", "Le train"] },
+    { titre: "Chapitre deux", scenes: ["La ville", "Le port"] },
+  ]);
+  for (const scene of [chapitres[0].scenes[0], chapitres[0].scenes[1], chapitres[1].scenes[0]]) await semerTexte(base, scene, ["Un texte."]);
+  await sql("update scenes set etat = 'prete' where id = $1", [chapitres[0].scenes[0]]);
+  await aller(page, `/projet/${projet}/suivi`);
+  await capturer(page, "suivi-personnel");
+});

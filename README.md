@@ -61,8 +61,8 @@ et le [design](docs/design.md#étape-3-construite-10-octobre-2026).
 temps (faire travailler la classe : prendre, remettre, relire, valider,
 suivre). Son entretien est fait et validé dans son ensemble le même jour ;
 sa construction, en sept lots, commence le même jour, en local : les lots 1
-(états et relecture, côté enseignant), 2 (côté élève) et 3 (« Mon travail »,
-retrait d'un élève) sont construits
+(états et relecture, côté enseignant), 2 (côté élève), 3 (« Mon travail »,
+retrait d'un élève) et 4 (Suivi) sont construits
 ([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre),
 [architecture](docs/architecture.md#réalisation-de-létape-4-13-octobre-2026),
 [design](docs/design.md#étape-4-construite-13-octobre-2026)).

@@ -21,6 +21,7 @@ import { heureEnMots, jourEnMots } from "@/domaine/dates";
 import { nomPourEleves } from "@/domaine/eleves";
 import { messageEtat, NOM_ETAT, sEcrit, sorteDeScene, type Etat } from "@/domaine/etats";
 import { chapitresDe, departDe, referenceScene, scenesDe, type ElevePlan, type Plan } from "@/domaine/recit";
+import { filtrerHorsEtat, filtresDepuis, lignesDuPlan, SANS_FILTRE, suivanteAValider } from "@/domaine/suivi";
 import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
 import type { Relecture } from "@/serveur/relecture";
@@ -58,7 +59,7 @@ const instant = (): number => Date.now();
  * tampon ; la fiche de décision porte l'étape suivante (F07.1, F11.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, venuDesChemins,
+  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
@@ -72,6 +73,8 @@ export function PageScene({
   /** Le texte gardé à part à montrer en arrivant, depuis la ligne de rappel du Suivi */
   ouvrir?: string;
   venuDuSuivi?: boolean;
+  /** Les filtres du Suivi d'où l'on vient : « Retour au Suivi » les retrouve (F06-AC54) */
+  suivi?: string;
   /** Ouverte depuis la vue « Chemins » du chapitre : on y revient (F03.1) */
   venuDesChemins?: boolean;
 }) {
@@ -87,7 +90,9 @@ export function PageScene({
   const minuteur = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Ce qui attend d'être enregistré : le titre et la consigne partent ensemble, aucun ne chasse l'autre
   const enAttente = useRef<{ titre?: string; consigne?: string }>({});
-  const retour = venuDuSuivi ? `/projet/${projet.id}/suivi` : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
+  const retour = venuDuSuivi
+    ? `/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`
+    : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => routeur.push(retour) });
 
   // Le texte : la page le reçoit à l'ouverture, puis ne le remplace que par un geste (échange, conflit)
@@ -113,6 +118,8 @@ export function PageScene({
   const [reprise, setReprise] = useState(false);
   const [rappel, setRappel] = useState<string[] | null>(null);
   const [suspendue, setSuspendue] = useState<string | null>(null);
+  // Une décision vient d'être prise sur une scène à valider : la fiche propose la suivante (F06-AC63)
+  const [decidee, setDecidee] = useState(false);
   // La version du texte que la page montre : la base la compare avant « Validé » ou « Prête » (F07-AC26)
   const versionLue = useRef(recu.version);
   // Après un conflit de l'adulte, la page montre un texte qu'il n'a pas relu (F08-AC21)
@@ -247,6 +254,11 @@ export function PageScene({
   };
 
   const ref = referenceScene(scene.reference);
+  // La scène « À valider » qui suit : dans la liste du Suivi quand on en vient, avec ses filtres de chapitre et d'élève ;
+  // sinon dans l'ordre du projet
+  const suivante = decidee
+    ? suivanteAValider(filtrerHorsEtat(lignesDuPlan(plan), venuDuSuivi ? filtresDepuis(Object.fromEntries(new URLSearchParams(suivi))) : SANS_FILTRE), scene.id)
+    : null;
 
   /**
    * Mettre la scène dans l'état choisi, depuis le tampon ou depuis la fiche (F07.1). Ce que
@@ -304,6 +316,7 @@ export function PageScene({
     setReprise(false);
     setRappel(null);
     setSuspendue(null);
+    setDecidee(etatScene === "valider");
     dire({
       texte:
         // L'élève indiqué n'est plus dans le chapitre : la scène renvoyée n'est plus à personne (F01-AC25)
@@ -681,6 +694,18 @@ export function PageScene({
                 onAnnulerReprise={() => setReprise(false)}
                 onPasMaintenant={() => setRappel(null)}
                 onTexteDeLaScene={() => setOnglet("scene")}
+                suite={
+                  decidee && projet.deClasse ? (
+                    suivante ? (
+                      <Link className="btn btn--large decision__suite" href={`/projet/${projet.id}/scene/${suivante.scene.id}${venuDuSuivi ? `?de=suivi${suivi ? `&suivi=${encodeURIComponent(suivi)}` : ""}` : ""}`}>
+                        Suivante à valider : {referenceScene(suivante.scene.reference)}
+                        <Icone nom="fleche" />
+                      </Link>
+                    ) : (
+                      <p className="decision__aide">Plus de scène à valider{venuDuSuivi ? " dans cette liste" : ""}.</p>
+                    )
+                  ) : null
+                }
               />
               {etatScene === "reprendre" && remarques.length ? <FicheRemarque remarque={remarques[remarques.length - 1]} qui={qui} /> : null}
             <details className="carnet-fiche carnet-fiche--pli" open={consigneOuverte} onToggle={(e) => setConsigneOuverte(e.currentTarget.open)}>

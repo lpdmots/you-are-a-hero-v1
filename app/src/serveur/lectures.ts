@@ -1,3 +1,4 @@
+import { avancement } from "@/domaine/suivi";
 import "server-only";
 import { cache } from "react";
 import type { Enseignant } from "./adulte";
@@ -66,6 +67,27 @@ export async function mesProjets(e: Enseignant): Promise<Projet[]> {
   const { data, error } = await e.supabase.from("projets").select(SELECT_PROJET).order("cree_le", { ascending: false });
   if (error) throw new Error(error.message);
   return ((data ?? []) as unknown as Record<string, unknown>[]).map(projetDepuis);
+}
+
+/**
+ * Ce que la carte de chaque projet dit de son avancement (F06-AC58) : les scènes à valider,
+ * et la part des scènes du livre qui sont prêtes. Les scènes de la corbeille ne comptent pas.
+ */
+export async function avancementDesProjets(e: Enseignant): Promise<Map<string, { aValider: number; pourCent: number }>> {
+  const { data, error } = await e.supabase
+    .from("scenes")
+    .select("projet_id, etat, hors_livre, chapitres(hors_livre, supprime_le, parties(supprime_le))")
+    .is("supprime_le", null);
+  if (error) throw new Error(error.message);
+  const unSeul = <T,>(v: T | T[] | null | undefined): T | null => (Array.isArray(v) ? (v[0] ?? null) : (v ?? null));
+  const parProjet = new Map<string, { etat: string; horsLivre: boolean }[]>();
+  for (const s of (data ?? []) as unknown as { projet_id: string; etat: string; hors_livre: boolean; chapitres: unknown }[]) {
+    const chapitre = unSeul(s.chapitres as { hors_livre: boolean; supprime_le: string | null; parties: unknown } | null);
+    const partie = unSeul(chapitre?.parties as { supprime_le: string | null } | null);
+    if (!chapitre || chapitre.supprime_le || partie?.supprime_le) continue;
+    parProjet.set(s.projet_id, [...(parProjet.get(s.projet_id) ?? []), { etat: s.etat, horsLivre: s.hors_livre || chapitre.hors_livre }]);
+  }
+  return new Map([...parProjet].map(([id, scenes]) => [id, avancement(scenes)]));
 }
 
 const UUID = /^[0-9a-f-]{36}$/i;

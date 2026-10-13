@@ -3,17 +3,18 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
+import { filtresDepuis } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { textesGardesDuProjet } from "@/serveur/copie";
 import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
 import { EnteteProjet } from "../_commun/EnteteProjet";
-import { RappelTextes } from "../_commun/RappelTextes";
 import { Plan } from "../_plan/Plan";
+import { Suivi } from "../_suivi/Suivi";
 import { Carnet } from "../_preparation/Carnet";
 import styles from "./projet.module.css";
 
-type Props = { params: Promise<{ id: string; onglet: string }>; searchParams: Promise<{ message?: string }> };
+type Props = { params: Promise<{ id: string; onglet: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id, onglet } = await params;
@@ -21,18 +22,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return { title: projet && estOnglet(onglet) ? `${NOM_ONGLET[onglet]} — ${projet.titre}` : "Projet" };
 }
 
-// Ce que ces onglets deviendront, et à quelle étape du plan de réalisation.
+// Ce que cet onglet deviendra, et à quelle étape du plan de réalisation.
 const A_VENIR: Partial<Record<Onglet, string>> = {
-  suivi: "Le suivi du travail des élèves se construit à l’étape 4 du plan.",
   livre: "La lecture d’essai et le livre se construisent aux étapes 5 et 6 du plan.",
 };
 
 export default async function PageProjet({ params, searchParams }: Props) {
   const { id, onglet } = await params;
-  const { message } = await searchParams;
+  const { message } = (await searchParams) as { message?: string };
   const enseignant = await exigerEnseignant();
   const projet = await projetDe(enseignant, id);
-  if (!projet || !estOnglet(onglet) || !ongletsDe(projet.organisation).includes(onglet)) notFound();
+  if (!projet || !estOnglet(onglet) || !ongletsDe().includes(onglet)) notFound();
   const deClasse = projet.organisation === "classe";
   const aChoix = projet.recit === "choix";
 
@@ -60,12 +60,27 @@ export default async function PageProjet({ params, searchParams }: Props) {
         aideVue={magasin.get("aide-preparation")?.value === "vue"}
       />
     );
+  } else if (onglet === "suivi") {
+    const [plan, eleves, gardes, magasin, demande] = await Promise.all([
+      planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), textesGardesDuProjet(enseignant, projet.id), cookies(), searchParams,
+    ]);
+    contenu = (
+      <Suivi
+        projet={{ id: projet.id, deClasse }}
+        plan={plan}
+        eleves={eleves}
+        gardes={gardes}
+        filtres={filtresDepuis(demande)}
+        vue={demande.vue === "eleves" ? "eleves" : "scenes"}
+        aideMasquee={enseignant.aidesMasquees.includes("suivi")}
+        aideVue={magasin.get("aide-suivi")?.value === "vue"}
+        direct={demande.direct === "1"}
+        revenu={demande.revenu === "1"}
+      />
+    );
   } else {
-    // La ligne de rappel des textes gardés à part se pose ici, seule, en attendant le Suivi (F08.2)
-    const gardes = onglet === "suivi" ? await textesGardesDuProjet(enseignant, projet.id) : [];
     contenu = (
       <>
-        <RappelTextes projetId={projet.id} scenes={gardes} />
         <section className={styles.aVenir} aria-labelledby="a-venir">
           <h2 id="a-venir">{NOM_ONGLET[onglet]}</h2>
           <p>{A_VENIR[onglet]}</p>

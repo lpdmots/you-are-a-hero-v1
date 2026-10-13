@@ -741,7 +741,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   vraie base sur accord du porteur, après une sauvegarde.
 - **Construction : commencée le 13 octobre 2026, en local,** sur
   l'instruction du porteur, qui retient le découpage proposé. Sept lots, un
-  commit local par lot ; les lots 1 à 3 sont construits, les quatre autres
+  commit local par lot ; les lots 1 à 4 sont construits, les trois autres
   restent à faire. Rien n'est poussé ni appliqué à la vraie base.
   1. états et relecture, côté enseignant — état sur le tampon, fiche de
      décision, remarque, validation suspendue, « Prête », scènes sans élève
@@ -878,6 +878,42 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 570 passent — 133 sur les règles, 210 contre
       la base locale, 227 parcours —, dont 18 pour ce lot (6, 6 et 6).
       Captures 441 à 447.
+  - **Lot 4 — Suivi : construit le 13 octobre 2026.** L'onglet Suivi d'un
+    projet : l'écran d'aide à l'ouverture, « Ne plus afficher » et le bouton
+    « Aide » ; le rappel des élèves sans chapitre et celui des textes gardés
+    à part ; la vue « Scènes », par chapitre, avec les filtres Chapitre et
+    Élève (« Moi » compris), les deux sélections par élève, les tampons
+    d'état en filtres et leur légende ; la vue « Élèves » ; l'aucun-résultat
+    qui nomme les filtres ; « Retour au Suivi », qui rend les filtres et
+    l'endroit quitté ; la scène suivante à valider ; sur la carte du projet,
+    les scènes à valider avec « Voir » et la part des scènes prêtes ; le
+    Suivi d'un projet personnel, le même écran sans ce qui concerne les
+    élèves. Sans changement de schéma.
+    - **Critères fermés :** F06-AC32, AC34 à AC37, AC54 à AC56, AC58 à
+      AC60, AC63, AC91 à AC93.
+    - **Critères qui attendent :** le bouton des fiches de rédaction et les
+      fiches des scènes listées (F06-AC57), au lot 5 ; la colonne
+      « Encouragements » et le classement de la vue « Élèves », au lot 6 ; le
+      Suivi filtré sur les scènes à finir, ouvert depuis le Livre
+      (F11-AC78), à l'étape 6.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      les filtres vivent dans l'adresse de la page, si bien qu'ils tiennent
+      d'eux-mêmes pendant la visite et repartent de « Toutes » à chaque
+      entrée par l'onglet ; l'endroit quitté est retenu par l'onglet du
+      navigateur, non par le compte ; dans la vue « Élèves », les élèves
+      sans chapitre viennent en tête, puis l'ordre des prénoms ; « Aucune
+      scène modifiable » se dit d'un élève dont aucun chapitre n'a de scène
+      « En cours » ou « À reprendre » que l'enseignant ne s'est pas
+      attribuée ; la part des scènes prêtes, sur la carte du projet, ne
+      compte pas les scènes hors du livre ; la scène suivante à valider
+      n'est proposée qu'après une décision prise sur une scène « À
+      valider » ; une scène dont l'élève a quitté le chapitre porte « Bilal
+      s'en occupait » dans « Qui s'en occupe » ; la légende dit « L'élève
+      écrit, ou vous écrivez » pour « En cours », la critique ayant relevé
+      que l'adulte écrit aussi.
+    - **Tests automatiques :** 589 passent — 144 sur les règles, 210 contre
+      la base locale, 235 parcours —, dont 19 pour ce lot (11 et 8).
+      Captures 461 à 476.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

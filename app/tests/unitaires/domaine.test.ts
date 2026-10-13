@@ -189,9 +189,8 @@ describe("Horaires (F06.4)", () => {
 });
 
 describe("Projets (F01)", () => {
-  it("le mode personnel n'a pas d'onglet Suivi", () => {
-    expect(ongletsDe("classe")).toEqual(["preparation", "plan", "suivi", "livre"]);
-    expect(ongletsDe("personnel")).toEqual(["preparation", "plan", "livre"]);
+  it("F06-AC91 — les quatre onglets de l'histoire, pour un projet de classe comme pour un projet personnel, qui a aussi son Suivi", () => {
+    expect(ongletsDe()).toEqual(["preparation", "plan", "suivi", "livre"]);
   });
 });
 

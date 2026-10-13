@@ -15,9 +15,11 @@ export const NOM_ONGLET: Record<Onglet, string> = {
 
 export const estOnglet = (v: string): v is Onglet => (ONGLETS as readonly string[]).includes(v);
 
-/** Le mode personnel n'a pas de suivi d'élèves. */
-export const ongletsDe = (organisation: Organisation): Onglet[] =>
-  ONGLETS.filter((o) => organisation === "classe" || o !== "suivi");
+/**
+ * Les onglets d'un projet. Un projet personnel a aussi son Suivi : le même écran, sans ce
+ * qui concerne les élèves (F06.5, 13 octobre 2026).
+ */
+export const ongletsDe = (): Onglet[] => [...ONGLETS];
 
 export const libelleOrganisation = (o: Organisation): string =>
   o === "classe" ? "Projet de classe" : "Projet personnel";

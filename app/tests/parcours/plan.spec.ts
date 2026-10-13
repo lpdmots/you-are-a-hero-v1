@@ -482,12 +482,11 @@ test("F03.1 — l'écran d'aide s'affiche à la première ouverture, dit comment
   await expect(page.getByRole("button", { name: "Fermer l’aide" })).toBeVisible();
 });
 
-test("F03-AC41 — en projet personnel, la page du chapitre n'a ni élèves, ni Suivi, ni filtre ; F01-AC02 — les quatre combinaisons se préparent", async ({ page }) => {
+test("F03-AC41 — en projet personnel, la page du chapitre n'a ni élèves, ni filtre ; F01-AC02 — les quatre combinaisons se préparent", async ({ page }) => {
   const { compte, base } = await adultePret(page);
   const projet = await semerProjet(base, compte, "personnel", "choix", "Mon histoire");
   const partie = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["Un", "Deux", "Trois", "Quatre", "Cinq", "Six"] }]);
   await aller(page, `/projet/${projet}/plan`);
-  await expect(page.getByRole("link", { name: "Suivi" })).toHaveCount(0);
   await expect(page.locator(".reste")).not.toContainText("élève");
   await menuChapitre(page, "La lisière").click();
   await expect(page.getByRole("button", { name: "Attribuer des élèves" })).toHaveCount(0);
@@ -498,7 +497,7 @@ test("F03-AC41 — en projet personnel, la page du chapitre n'a ni élèves, ni 
   await expect(page.getByRole("button", { name: "Ajouter une scène" })).toBeVisible();
   await expect(menuChapitre(page, "La lisière")).toBeVisible();
   await expect(page.getByRole("button", { name: "Attribuer des élèves" })).toHaveCount(0);
-  await expect(page.getByText(/s’en occupe|Suivi/)).toHaveCount(0);
+  await expect(page.getByText(/s’en occupe/)).toHaveCount(0);
   await expect(page.locator("main input[type=checkbox]")).toHaveCount(0);
   // Aucun filtre : la seule bascule est celle des vues « Scènes » et « Chemins » (F03-AC18)
   await expect(page.locator(":not(.bascule) > [aria-pressed]")).toHaveCount(0);

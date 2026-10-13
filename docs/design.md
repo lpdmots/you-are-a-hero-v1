@@ -1654,6 +1654,34 @@ stade.
   (étape 5) ; « Dans ton chapitre », la liste des scènes des camarades,
   retirée par la décision du 13 octobre 2026.
 
+**Lot 4 — Suivi.** Construit d'après « Suivi repris après critique » : la
+barre d'outils, les tampons en filtres, la liste par chapitre, la vue
+« Élèves », l'aide, les rappels, « Mes projets ». Sans retour du porteur à
+ce stade. Écarts, à juger à l'essai :
+
+- **Groupes de chapitre :** ouverts à l'arrivée, repliables ; leur état
+  replié n'est pas retenu d'une visite à l'autre.
+- **Colonne « Qui s'en occupe » :** 190 points et non 170, pour « Bilal
+  s'en occupait », que porte la scène d'un élève qui a quitté le chapitre.
+- **Vue « Élèves » :** le signal « À régler » porte le triangle d'alerte,
+  l'application n'ayant pas le signe « consigne » de la maquette.
+- **Projet personnel :** le même écran, sans bascule, sans liste Élève,
+  sans colonne « Qui s'en occupe » ; trois tampons après « Toutes » ; une
+  aide de deux questions.
+- **Carte du projet :** « 2 scènes à valider » et « Voir » au-dessus de la
+  barre des scènes prêtes ; rien quand aucune scène n'attend.
+- **Scène suivante à valider :** bouton secondaire sous l'étape suivante de
+  la fiche de décision, avec sa flèche.
+- **Non construit :** le bouton des fiches (lot 5), la colonne
+  « Encouragements » (lot 6), le bandeau « scènes à finir » venu du Livre
+  (étape 6), l'écran d'échec de chargement, que l'application rend par sa
+  page d'erreur commune.
+
+Relevé par les critiques et toujours vrai dans l'application : le tampon
+d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
+cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
+colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

@@ -1,0 +1,639 @@
+/* Formes du Suivi (docs/design.md, « Suivi repris après critique ») : le rappel des élèves
+   sans chapitre, les filtres, les tampons d'état en filtres, la liste des scènes par
+   chapitre, la vue « Élèves ». */
+
+/* ——— Rappel en tête : une information et son lien, jamais un filtre ——— */
+.suivi-rappel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin-top: 18px;
+  color: var(--e-valider);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.suivi-rappel .ic {
+  flex: none;
+}
+.suivi-rappel .lien {
+  margin: -11px -8px;
+  padding: 11px 8px;
+  font-weight: 700;
+}
+
+/* ——— Outils : la bascule, les deux listes, le bouton « Aide » ——— */
+.suivi-outils {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 18px;
+  margin: 22px 0 12px;
+}
+.suivi-rappel + .suivi-outils,
+.rappel + .suivi-outils {
+  margin-top: 14px;
+}
+.suivi-champs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+.suivi-champ {
+  display: grid;
+  gap: 4px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.suivi-champ__select {
+  position: relative;
+  display: block;
+}
+.suivi-champ select {
+  min-width: 190px;
+  min-height: 38px;
+  padding: 0 34px 0 12px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 9px;
+  background: var(--feuille);
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  appearance: none;
+  cursor: pointer;
+}
+.suivi-champ select:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
+}
+.suivi-champ__select .ic {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 16px;
+  height: 16px;
+  transform: translateY(-50%);
+  color: var(--graphite-3);
+  pointer-events: none;
+}
+.suivi-selections {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+}
+/* « Dont Alice s'occupe » / « Tout son chapitre » : deux sélections, la choisie en graphite */
+.seg-mini {
+  display: inline-flex;
+  gap: 3px;
+  padding: 3px;
+  border-radius: 99px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+}
+.seg-mini button {
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 99px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  cursor: pointer;
+}
+.seg-mini button span {
+  margin-left: 2px;
+  font-weight: 700;
+  opacity: 0.75;
+}
+.seg-mini button[aria-pressed="true"] {
+  background: var(--graphite);
+  color: #fff;
+}
+.suivi-outils > .aide-bouton {
+  align-self: flex-end;
+  min-height: 38px;
+  margin-left: auto;
+}
+
+/* ——— Les tampons d'état en filtres : le choisi est plein, celui qui ne compte rien est éteint ——— */
+.suivi-etats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.suivi-etats__lib {
+  display: none;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.suivi-etats__tampons {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.tampon--filtre {
+  min-height: 34px;
+  padding: 0.25rem 0.7rem 0.25rem 0.55rem;
+  gap: 0.4rem;
+  border: 0;
+  font-family: inherit;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.tampon--filtre b {
+  font-weight: 800;
+}
+.tampon--filtre:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--c) 14%, var(--f));
+}
+.tampon--filtre[aria-pressed="true"],
+.tampon--filtre[aria-pressed="true"]:hover {
+  background: var(--c);
+  color: #fff;
+  box-shadow:
+    inset 0 0 0 1.5px var(--c),
+    inset 0 0 0 3px var(--c),
+    inset 0 0 0 3.8px rgba(255, 255, 255, 0.55);
+}
+.tampon--filtre:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.tampon--filtre:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.tampon--filtre[data-e="tous"] {
+  --c: var(--graphite-2);
+  --f: var(--feuille);
+  padding-left: 0.7rem;
+}
+.suivi-fiches {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* ——— Légende des états : chaque tampon et à qui est le tour ——— */
+.legende-etats {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.legende-etats li {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: start;
+  gap: 10px;
+}
+.legende-etats .tampon {
+  justify-self: start;
+}
+.aide-etape .legende-etats {
+  margin-top: 10px;
+}
+.aide-etape .legende-etats li > span:not(.tampon) {
+  color: var(--graphite-2);
+}
+.aide-etape .legende-etats b {
+  color: var(--graphite);
+}
+.bulle__texte:has(.legende-etats) {
+  width: min(440px, calc(100vw - 24px));
+  max-width: none;
+}
+
+/* ——— La liste des scènes : une ligne d'en-têtes, puis un groupe par chapitre ——— */
+.suivi-colonnes {
+  display: grid;
+  grid-template-columns: 70px minmax(0, 1fr) 140px 190px 92px;
+  align-items: center;
+  padding: 0 0 6px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.suivi-colonnes > span {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 14px;
+}
+.suivi-colonnes--seul {
+  grid-template-columns: 70px minmax(0, 1fr) 140px 92px;
+}
+.suivi-liste {
+  display: grid;
+  gap: 10px;
+}
+.suivi-groupe {
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--trait);
+  overflow: hidden;
+}
+.suivi-groupe > summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px 10px 0;
+  list-style: none;
+  cursor: pointer;
+}
+.suivi-groupe > summary::-webkit-details-marker {
+  display: none;
+}
+.suivi-groupe > summary:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: -3px;
+}
+.suivi-groupe[open] > summary {
+  background: var(--feuille-2);
+}
+/* Le dos garde la couleur du chapitre ; l'en-tête reste neutre, pour ne pas la confondre avec un état */
+.suivi-groupe__dos {
+  align-self: stretch;
+  width: 6px;
+  margin: -10px 4px -10px 0;
+  background: var(--dos, var(--trait-fort));
+}
+.suivi-groupe__titre {
+  display: grid;
+  flex: 1;
+  min-width: 0;
+}
+.suivi-groupe__titre b {
+  font-size: 1rem;
+}
+.suivi-groupe__titre span {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.suivi-groupe__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.suivi-groupe__eleves {
+  display: inline-flex;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.suivi-groupe__eleves .gommette + .gommette {
+  margin-left: -5px;
+}
+.suivi-groupe__eleves .gommette {
+  box-shadow: 0 0 0 1.5px var(--feuille-2);
+}
+.suivi-groupe__compte {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.suivi-groupe__compte b {
+  color: var(--e-valider);
+}
+.suivi-groupe__chevron {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--graphite-3);
+  transition: transform 0.15s var(--ease);
+}
+.suivi-groupe:not([open]) .suivi-groupe__chevron {
+  transform: rotate(-90deg);
+}
+.table-suivi {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-s);
+}
+.table-suivi th,
+.table-suivi td {
+  padding: 7px 14px;
+  border-top: 1px solid var(--trait);
+  text-align: left;
+  vertical-align: middle;
+}
+.table-suivi thead th {
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.table-suivi td:last-child {
+  text-align: right;
+}
+.table-suivi tbody tr:hover {
+  background: var(--feuille-2);
+}
+.table-suivi__titre {
+  font-weight: 600;
+}
+.table-suivi__lien {
+  color: inherit;
+  text-decoration: none;
+}
+.table-suivi__lien:hover {
+  color: var(--canard);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.table-suivi__titre .sans-consigne {
+  margin-left: 8px;
+  font-size: var(--t-xs);
+  font-weight: 400;
+}
+.table-scenes {
+  table-layout: fixed;
+}
+.table-scenes col:nth-child(1) {
+  width: 70px;
+}
+.table-scenes col.col-etat {
+  width: 140px;
+}
+.table-scenes col.col-qui {
+  width: 190px;
+}
+.table-scenes col.col-action {
+  width: 92px;
+}
+/* Les en-têtes sont dits une fois, au-dessus de la liste : ceux de chaque table restent pour qui ne voit pas l'écran */
+.table-scenes thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+.suivi-qui {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  font-weight: 600;
+}
+.suivi-qui--libre {
+  color: var(--graphite-2);
+  font-weight: 400;
+}
+.suivi-aucun {
+  margin-top: 8px;
+  padding: 18px 20px;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  color: var(--graphite-2);
+}
+.suivi-aucun .lien {
+  font-size: inherit;
+}
+
+/* ——— Vue « Élèves » : la répartition, et ce qui reste à régler ——— */
+.table-defile {
+  overflow-x: auto;
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.table-eleves th[scope="row"] {
+  font-weight: 400;
+}
+.table-eleves tbody tr:first-child th,
+.table-eleves tbody tr:first-child td {
+  border-top-color: var(--trait);
+}
+.table-eleves .suivi-qui b {
+  font-weight: 700;
+}
+.ligne--alerte {
+  background: #fffaec;
+}
+.chap-puce {
+  display: inline-flex;
+  align-items: center;
+  margin: 2px 4px 2px 0;
+  padding: 1px 9px 1px 10px;
+  border-radius: 99px;
+  background: var(--bandeau);
+  box-shadow: inset 4px 0 0 var(--dos);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.mini-etat {
+  margin-left: 4px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.signal-ligne {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+}
+.signal-ligne .lien {
+  font-size: var(--t-xs);
+}
+.signal {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--e-valider);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.signal .ic {
+  width: 14px;
+  height: 14px;
+}
+
+/* ——— Téléphone : la bascule d'abord, les tampons sur une rangée qui défile, une fiche par ligne ——— */
+@media (max-width: 720px) {
+  .suivi-outils {
+    margin-top: 16px;
+  }
+  .suivi-outils > .bascule {
+    flex: 1 1 0;
+    width: auto;
+  }
+  .suivi-outils > .aide-bouton {
+    order: 1;
+    align-self: center;
+    min-height: 40px;
+    margin-left: 0;
+  }
+  .suivi-champs {
+    order: 2;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    width: 100%;
+  }
+  .suivi-champ select {
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+  }
+  .suivi-selections {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+  }
+  .seg-mini button {
+    min-height: 40px;
+  }
+  .suivi-etats {
+    gap: 6px;
+  }
+  .suivi-etats__lib {
+    display: inline;
+    order: 0;
+  }
+  .suivi-etats > .bulle {
+    order: 1;
+  }
+  .suivi-etats__tampons {
+    order: 2;
+    flex: 1 1 100%;
+    flex-wrap: nowrap;
+    gap: 6px;
+    min-width: 0;
+    margin: -6px -2px -2px;
+    padding: 2px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .suivi-etats__tampons::-webkit-scrollbar {
+    display: none;
+  }
+  /* Le bord ne s'estompe que du côté où il reste des tampons */
+  .suivi-etats__tampons[data-plus="d"] {
+    mask-image: linear-gradient(to right, #000 calc(100% - 16px), transparent);
+  }
+  .suivi-etats__tampons[data-plus="g"] {
+    mask-image: linear-gradient(to left, #000 calc(100% - 16px), transparent);
+  }
+  .suivi-etats__tampons[data-plus="gd"] {
+    mask-image: linear-gradient(to right, transparent, #000 16px, #000 calc(100% - 16px), transparent);
+  }
+  .tampon--filtre {
+    flex: none;
+    min-height: 40px;
+    padding: 0.2rem 0.5rem 0.2rem 0.42rem;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+  }
+  .suivi-fiches {
+    order: 3;
+    width: 100%;
+    margin-left: 0;
+  }
+  .suivi-fiches .btn {
+    flex: 1;
+    justify-content: center;
+  }
+  .suivi-colonnes,
+  .table-scenes colgroup {
+    display: none;
+  }
+  .suivi-groupe > summary {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: 4px 12px;
+  }
+  .suivi-groupe__dos {
+    grid-row: 1 / 3;
+    margin-right: 0;
+  }
+  .suivi-groupe__meta {
+    grid-column: 2;
+    grid-row: 2;
+    justify-content: space-between;
+  }
+  .suivi-groupe__chevron {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+  .suivi-groupe__plus {
+    display: none;
+  }
+  .suivi-groupe .table-suivi,
+  .suivi-groupe .table-suivi tbody {
+    display: block;
+  }
+  .suivi-groupe .table-suivi tr {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 10px;
+    padding: 10px 14px;
+    border-top: 1px solid var(--trait);
+  }
+  .suivi-groupe .table-suivi td {
+    padding: 0;
+    border: 0;
+  }
+  .suivi-groupe .table-suivi td:nth-child(2) {
+    flex: 1 1 calc(100% - 70px);
+  }
+  .suivi-groupe .table-suivi td:last-child {
+    margin-left: auto;
+  }
+  .table-suivi .btn--petit {
+    min-height: 40px;
+    padding: 0.45rem 0.9rem;
+  }
+  .table-defile {
+    overflow: visible;
+    background: none;
+    box-shadow: none;
+  }
+  .table-eleves,
+  .table-eleves tbody {
+    display: block;
+  }
+  .table-eleves thead {
+    display: none;
+  }
+  .table-eleves tr {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    background: var(--feuille);
+    box-shadow: inset 0 0 0 1px var(--trait);
+  }
+  .table-eleves tr.ligne--alerte {
+    background: #fffaec;
+  }
+  .table-eleves th,
+  .table-eleves td {
+    display: block;
+    padding: 0;
+    border: 0;
+    text-align: left !important;
+  }
+  .table-eleves td:empty {
+    display: none;
+  }
+  .table-eleves td[data-lib]::before {
+    content: attr(data-lib) " : ";
+    color: var(--graphite-2);
+  }
+  .legende-etats li {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+}

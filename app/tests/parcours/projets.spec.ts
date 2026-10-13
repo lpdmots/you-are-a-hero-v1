@@ -69,8 +69,8 @@ test("F01-AC16 — pour un projet personnel, aucune classe n'est demandée", asy
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
   await expect(page.getByText(/Projet personnel · Récit classique/)).toBeVisible();
-  // Le mode personnel n'a pas d'onglet Suivi
-  await expect(page.getByRole("navigation", { name: "Sections du projet" }).getByRole("link")).toHaveText(["Préparation", "Parties et chapitres", "Livre"]);
+  // Un projet personnel a les mêmes onglets, Suivi compris (F06-AC91)
+  await expect(page.getByRole("navigation", { name: "Sections du projet" }).getByRole("link")).toHaveText(["Préparation", "Parties et chapitres", "Suivi", "Livre"]);
 });
 
 test("F01-AC17 — quitter avant « Créer le projet » ne crée rien", async ({ page }) => {
