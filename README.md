@@ -60,8 +60,8 @@ et le [design](docs/design.md#étape-3-construite-10-octobre-2026).
 **L'étape 4 est autorisée le 13 octobre 2026**, pour elle seule, en deux
 temps (faire travailler la classe : prendre, remettre, relire, valider,
 suivre). Son entretien est fait et validé dans son ensemble le même jour ;
-sa construction, en sept lots, commence le même jour, en local : le lot 1
-(états et relecture, côté enseignant) est construit
+sa construction, en sept lots, commence le même jour, en local : les lots 1
+(états et relecture, côté enseignant) et 2 (côté élève) sont construits
 ([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre),
 [architecture](docs/architecture.md#réalisation-de-létape-4-13-octobre-2026),
 [design](docs/design.md#étape-4-construite-13-octobre-2026)).

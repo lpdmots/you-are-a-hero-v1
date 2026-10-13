@@ -94,3 +94,88 @@ export async function chercherScenes(demande: string): Promise<ChapitreTrouve[]>
   if (!(await base())) return [];
   return chercherPourLePoste(await contexteEleve(), String(demande ?? "").slice(0, 200));
 }
+
+// ——— Étape 4 : ce que l'élève fait de ses scènes (F06.3, F07.1, F07.3) ———
+
+export type SceneChangee = { scene: string; par: string | null; enseignant: boolean; etat: string };
+
+/**
+ * « Je m'en occupe », sur une ou plusieurs scènes de son chapitre, et « M'occuper de cette
+ * scène », sur celle d'un camarade (F06-AC38, AC42). « vu » : l'élève que la page montrait
+ * sur la scène. Une scène qui a changé de main entre-temps n'est pas prise : la réponse la
+ * nomme, et l'élève reçoit les autres.
+ */
+export async function prendreScenes(scenes: { scene: string; vu: string | null }[]): Promise<Fait<{ prises: string[]; changees: SceneChangee[] }>> {
+  const poste = await base();
+  if (!poste || !Array.isArray(scenes) || scenes.length === 0 || scenes.length > 60 || scenes.some((s) => !estUuid(s?.scene) || (s.vu !== null && !estUuid(s.vu)))) {
+    return refus(null);
+  }
+  const { data, error } = await poste.rpc("eleve_prendre", { p_scenes: scenes.map((s) => ({ scene: s.scene, vu: s.vu })) });
+  if (error) return refus(error);
+  rafraichir();
+  const fait = (data ?? {}) as { prises?: string[]; changees?: SceneChangee[] };
+  return { ok: true, prises: fait.prises ?? [], changees: fait.changees ?? [] };
+}
+
+/** « Je ne m'en occupe plus », tant que la scène s'écrit : son texte reste dedans (F06-AC64). */
+export async function rendreScene(sceneId: string): Promise<Fait> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId)) return refus(null);
+  const { error } = await poste.rpc("eleve_rendre", { p_scene: sceneId });
+  if (error) return refus(error);
+  rafraichir();
+  return { ok: true };
+}
+
+/** « Annuler », juste après avoir pris ou rendu une scène : qui s'en occupait est rétabli (F06-AC66). */
+export async function annulerGeste(sceneId: string): Promise<Fait> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId)) return refus(null);
+  const { error } = await poste.rpc("eleve_annuler_geste", { p_scene: sceneId });
+  if (error) return refus(error);
+  rafraichir();
+  return { ok: true };
+}
+
+export type RemiseFaite =
+  /** Le texte est remis ; « avant » : l'élève qui s'occupait de la scène, si ce n'était pas lui (F07-AC10) */
+  | { ok: true; avant: string | null }
+  /** Rien n'est remis : le texte montré n'est plus celui de la scène, il est vide, ou la scène ne s'écrit plus */
+  | { ok: false; motif: "conflit" | "vide" | "scene" | "arrete" | "acces" };
+
+/**
+ * « Remettre à Mme Laurent » (F07.1). La page a d'abord enregistré la dernière saisie ; la
+ * base vérifie que c'est bien ce texte qu'elle conserve, et ne confirme rien sinon
+ * (F07-AC28, AC29).
+ */
+export async function remettreScene(sceneId: string, version: number): Promise<RemiseFaite> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId) || !Number.isInteger(version)) return { ok: false, motif: "acces" };
+  const { data, error } = await poste.rpc("eleve_remettre", { p_scene: sceneId, p_version: version });
+  const fait = data as { fait?: boolean; motif?: string; avant?: string | null } | null;
+  if (error || !fait) return { ok: false, motif: "acces" };
+  if (!fait.fait) {
+    const motif = fait.motif;
+    return { ok: false, motif: motif === "conflit" || motif === "vide" || motif === "scene" || motif === "arrete" ? motif : "acces" };
+  }
+  rafraichir();
+  return { ok: true, avant: fait.avant ?? null };
+}
+
+/** « Modifier encore mon texte » : la remise est retirée, la scène s'écrit de nouveau (F07-AC09, AC12). */
+export async function retirerRemise(sceneId: string): Promise<Fait> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId)) return refus(null);
+  const { error } = await poste.rpc("eleve_retirer_remise", { p_scene: sceneId });
+  if (error) return refus(error);
+  rafraichir();
+  return { ok: true };
+}
+
+/** « J'ai lu, j'écris » : la remarque ne sera plus montrée seule à l'ouverture de la scène (F07.3). */
+export async function remarqueLue(sceneId: string): Promise<void> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId)) return;
+  await poste.rpc("eleve_lire_remarque", { p_scene: sceneId });
+  rafraichir();
+}

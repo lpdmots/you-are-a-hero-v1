@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  action, adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, ecrire, enClair, FICHE, LISTE, pied,
+  action, adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, ecrire, enClair, FICHE, LISTE, sauv,
   posteDe, presseTexte, recit, sceneEnBase, selectionner, semerBlocs, semerJeu, semerPartie, semerProjet, sql, supprimerComptes, typesEnBase,
 } from "./outils";
 
@@ -282,7 +282,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await expect(copie(bilal.page)).toBeFocused();
     await bilal.page.keyboard.type("Ajoute le couteau à ton inventaire.");
     await attendreEnBase(s15, "Ajoute le couteau à ton inventaire.");
-    await expect(pied(bilal.page)).toHaveText("Enregistré", { timeout: 8_000 });
+    await expect(sauv(bilal.page)).toHaveText("Enregistré", { timeout: 8_000 });
     const posee = (await sceneEnBase(s15)).texte[1];
     expect(posee).toMatchObject({ type: "action", children: [{ text: "Ajoute le couteau à ton inventaire." }] });
     await bilal.contexte.close();

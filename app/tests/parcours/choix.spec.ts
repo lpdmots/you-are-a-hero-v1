@@ -1,7 +1,7 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import {
   adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, choixAuto, choixPerso, classeQuiEcrit, collerDepuisAilleurs, copie,
-  ecrire, enClair, FICHE, liensEnBase, MESSAGE, motsEnBase, numerosEnBase, PHRASES, pied, posteDe, presseTexte, recit, renvoi, sceneEnBase, selectionner,
+  ecrire, enClair, FICHE, liensEnBase, MESSAGE, motsEnBase, numerosEnBase, PHRASES, sauv, posteDe, presseTexte, recit, renvoi, sceneEnBase, selectionner,
   semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, tirer, typesEnBase, type BlocSeme,
 } from "./outils";
 
@@ -913,7 +913,7 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
     expect(enClair(enBase.texte)).toEqual(["Tout mon texte.", "", ""]);
     expect(enBase.texte[1]).toEqual(choix);
     expect(await liensEnBase(s.projet)).toEqual(["S001 > S002"]);
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
     // L'enseignante lit le même lieu, sans référence non plus
     await aller(page, sceneAdulte(s.projet, s15));
     await expect(PHRASES(page).locator(".copie__dest")).toHaveText("Clairière");
@@ -955,7 +955,7 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
     await FICHE(bilal.page).getByLabel("Ce que fait le lecteur").press("Enter");
     await FICHE(bilal.page).getByLabel("Chercher une scène").fill("pont");
     await FICHE(bilal.page).getByLabel("Chercher une scène").press("Enter");
-    await expect(pied(bilal.page)).toHaveText("Enregistré", { timeout: 8_000 });
+    await expect(sauv(bilal.page)).toHaveText("Enregistré", { timeout: 8_000 });
     expect((await liensEnBase(s.projet)).sort()).toEqual(["S001 > S002", "S001 > S002", "S001 > S002", "S001 > S003"]);
     expect((await sceneEnBase(s15)).texte.find((b) => b.id === mixte.id)).toEqual(mixte);
     await bilal.contexte.close();

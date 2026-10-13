@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import type { Eleve } from "@/domaine/eleves";
 import type { Plage } from "@/domaine/horaires";
 import type { Jeu, Livre, SceneConnue, Voisines } from "@/composants/copie/contexte";
-import { voisinesDe } from "./copie";
+import { voisinesDe, vuParUnEleve } from "./copie";
 import { ciblesDe, type Droits, type Motif, type Texte } from "@/domaine/copie";
 import { numeroter, type PlanNumerote } from "@/domaine/numeros";
 import { estConstruction, estFormuleRenvoi, signeDe, type Construction } from "@/domaine/preparation";
@@ -217,6 +217,12 @@ export type SceneOuverte = {
   vide: boolean;
   /** Où en est la scène : « À valider », « Validé » et « Prête » se lisent sans s'écrire (F07.1) */
   etat: Etat;
+  /** Un texte de l'élève est gardé à part pour cette scène : il n'y écrit plus, et n'y prend ni ne rend rien (F08-AC17, AC31) */
+  arrete: boolean;
+  /** La dernière remise, pour un élève du chapitre : qui l'a faite, et son texte (F07.1) */
+  remise: { par: Eleve | null; deMoi: boolean; le: string; texte: Texte } | null;
+  /** La dernière remarque de l'enseignant, pendant la reprise et après la remise qui la suit (F07.3) */
+  remarque: { texte: string; le: string; lue: boolean } | null;
   /** Gras, italique et souligné permis aux élèves de ce projet (F04-AC03) */
   marques: boolean;
   /** Pourquoi l'élève ne peut pas écrire ici ; rien s'il le peut */
@@ -277,7 +283,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   if (!chapitre) return null;
   const aChoix = s.recit === "choix";
   // Ce qu'il peut nommer : les scènes de son chapitre ; ailleurs, le seul titre public du chapitre
-  const [partie, voisines, destinations, numeros, jeu, autour, affichees, etatLu] = await Promise.all([
+  const [partie, voisines, destinations, numeros, jeu, autour, affichees, etatLu, relecture] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
@@ -289,6 +295,11 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     voisinesDe(base, sceneId),
     base.rpc("voisines_affichees").then((r) => r.data !== false),
     base.from("scenes").select("etat").eq("id", sceneId).maybeSingle().then((r) => r.data?.etat as string | undefined),
+    // La relecture ne se lit que dans son chapitre : la remise et la remarque n'en sortent pas
+    base.rpc("relecture_du_poste", { p_scene: sceneId }).then((r) => {
+      if (r.error) throw new Error(`Scène illisible : ${r.error.message}`);
+      return r.data as { remise: { par: string | null; le: string; texte: Texte } | null; remarque: { texte: string; le: string; lue: boolean } | null } | null;
+    }),
   ]);
   const scenes = new Map<string, SceneConnue>(
     ((voisines.data ?? []) as { id: string; reference: number; titre: string | null; texte_vide: boolean }[]).map((v) => [
@@ -321,6 +332,8 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   const prise = priseDe(c, s.prise_par_eleve, s.prise_par_enseignant);
   // La scène dont un camarade s'occupe se lit : la prendre à son nom se fera à l'étape 4 (F06.3)
   const ecrit = s.refus === null && prise?.par !== "eleve";
+  // « arrêté » se lit à part du refus : une scène remise ou validée répond « scene » d'abord
+  const { data: arrete } = s.profil ? await base.rpc("suis_je_arrete", { p_scene: sceneId }) : { data: false };
   let ecriture: string | null = null;
   if (ecrit) {
     const { data: ouverte, error: refusee } = await base.rpc("eleve_ouvrir_ecriture", { p_scene: sceneId });
@@ -333,6 +346,14 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     consigne: s.consigne, profil: s.profil, prise,
     texte: s.texte ?? [], version: s.version, vide: s.vide, etat: estEtat(etatLu) ? etatLu : "cours", marques: s.marques !== false,
     refus: s.refus, ecriture, projetId: s.projet, livre, droits, jeu, voisines: autour, voisinesAffichees: affichees,
+    arrete: arrete === true,
+    remise: relecture?.remise
+      ? {
+          par: c.eleves.find((e) => e.id === relecture.remise!.par) ?? null, deMoi: relecture.remise.par === c.moi.id,
+          le: relecture.remise.le, texte: vuParUnEleve(relecture.remise.texte ?? []),
+        }
+      : null,
+    remarque: relecture?.remarque ?? null,
   };
 }
 

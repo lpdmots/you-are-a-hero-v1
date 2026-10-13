@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
   adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, choixAuto, classeQuiEcrit, copie, ecrire, enClair, FICHE, liaison,
-  liensEnBase, note, numerosEnBase, PHRASES, pied, posteDe, presseTexte, protege, recit, sceneEnBase, selectionner, semerBlocs, semerPartie, semerProjet,
+  liensEnBase, note, numerosEnBase, PHRASES, sauv, posteDe, presseTexte, protege, recit, sceneEnBase, selectionner, semerBlocs, semerPartie, semerProjet,
   sql, supprimerComptes, typesEnBase, copiesGardees,
 } from "./outils";
 
@@ -66,7 +66,7 @@ test.describe("Paragraphe protégé (F06.1) — point 8 du prototype", () => {
       const enBase = await sceneEnBase(s15);
       expect(enClair(enBase.texte)).toEqual(["Tout au début.", "Il était une fois un pont de brume.", "Et après."]);
       expect(enBase.texte[1]).toEqual(prepare);
-      await expect(pied(poste.page)).toHaveText("Enregistré", { timeout: 8_000 });
+      await expect(sauv(poste.page)).toHaveText("Enregistré", { timeout: 8_000 });
       await poste.contexte.close();
     });
   }
@@ -414,7 +414,7 @@ test.describe("Note de l'enseignant (F05.2) — point 11 du prototype", () => {
     let enBase = await sceneEnBase(s15);
     expect(enBase.texte.map((b) => b.type)).toEqual(["p", "note", "p"]);
     expect(enBase.texte[1]).toEqual(solution);
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
 
     // Elle vide puis supprime le premier paragraphe : la note remonte en tête
     await selectionner(alice.page, { bloc: 0, offset: 0 }, { bloc: 0, offset: 28 });
@@ -426,7 +426,7 @@ test.describe("Note de l'enseignant (F05.2) — point 11 du prototype", () => {
     enBase = await sceneEnBase(s15);
     expect(enBase.texte.map((b) => b.type)).toEqual(["note", "p"]);
     expect(enBase.texte[0]).toEqual(solution);
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 8_000 });
     // Rien de ce que le poste a reçu, pages et réponses, ne contenait la note
     expect(recu.join("\n")).not.toContain("Solution");
 

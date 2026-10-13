@@ -741,8 +741,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   vraie base sur accord du porteur, après une sauvegarde.
 - **Construction : commencée le 13 octobre 2026, en local,** sur
   l'instruction du porteur, qui retient le découpage proposé. Sept lots, un
-  commit local par lot ; le lot 1 est construit, les six autres restent à
-  faire. Rien n'est poussé ni appliqué à la vraie base.
+  commit local par lot ; les lots 1 et 2 sont construits, les cinq autres
+  restent à faire. Rien n'est poussé ni appliqué à la vraie base.
   1. états et relecture, côté enseignant — état sur le tampon, fiche de
      décision, remarque, validation suspendue, « Prête », scènes sans élève
      et mode personnel (schéma : état, remises, remarques) ;
@@ -801,6 +801,47 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       la base locale, 206 parcours joués dans un navigateur —, dont 44 pour
       ce lot (8, 23 et 13), chacun au nom de son critère. Captures :
       `npm run captures -- etape4` (401 à 417).
+  - **Lot 2 — côté élève : construit le 13 octobre 2026.** Dans la scène :
+    « Remettre à Mme Laurent » dans le pied de la copie, inactif tant que
+    le texte est vide, la dernière phrase enregistrée d'abord ; « Modifier
+    encore mon texte » ; ce que l'élève lit selon l'état (« Mme Laurent
+    relit ce texte », « Validé par Mme Laurent », « Pour changer quelque
+    chose, demande à Mme Laurent ») ; la remarque, seule et en grand à la
+    première ouverture d'une reprise (« J'ai lu, j'écris »), puis à côté du
+    texte, et repliée après la remise suivante ; « M'occuper de cette
+    scène » sur celle d'un camarade, « Je ne m'en occupe plus », et
+    « Annuler » sur place. Dans le chapitre : une case sur chaque scène
+    qui peut se prendre, et la barre « Je m'en occupe », qui annonce celles
+    d'un camarade. Schéma : `20261013110000_gestes_de_l_eleve.sql`, appliqué
+    à la base locale seulement.
+    - **Critères fermés :** F06-AC04, AC06, AC07, AC10, AC38 à AC42, AC62,
+      AC64 à AC66 ; F07-AC01, AC07 à AC13, AC16, AC19, AC24, AC28 à AC30,
+      AC66 à AC68 ; F08-AC19 et AC31 ; F03-AC19 ; la moitié de F05-AC51
+      qui parle de « Remettre ».
+    - **Critères qui attendent :** la répartition des fiches, non
+      exclusive (F06-AC61), au lot 5.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      dans une scène que personne n'a prise, l'élève écrit sans s'en
+      occuper, et c'est la remise qui la met à son nom ; la page de la
+      scène ne propose donc de prendre que la scène d'un camarade, le
+      chapitre restant l'endroit où l'on prend une scène libre ; une case
+      n'apparaît que sur les scènes qu'on peut prendre (ni la sienne, ni
+      celle de l'enseignant, ni une scène remise ou validée) ; « Annuler »
+      est proposé tant qu'on reste sur la page, la base le refusant après
+      une demi-heure ou si la scène a changé de main entre-temps ; le
+      texte remis est conservé sans les notes de l'enseignant ; la
+      remarque se lit pendant la reprise et après la remise qui la suit,
+      plus une fois la scène validée, et par les seuls élèves du chapitre,
+      lecture ouverte ou non ; « J'ai lu, j'écris » est retenu par la base,
+      si bien que la fiche ne revient pas sur un autre poste ; « Modifier
+      encore ce texte » n'est proposé ni à l'élève arrêté ni sur la scène
+      de l'enseignant ; sur la carte d'une scène à reprendre, le bouton dit
+      « Reprendre » ; sans remarque écrite, la fiche dit « Pas de remarque
+      écrite. Si tu ne sais pas quoi changer, demande à Mme Laurent. »,
+      sans « Elle ».
+    - **Tests automatiques :** 552 passent — 127 sur les règles, 204 contre
+      la base locale, 221 parcours —, dont 40 pour ce lot (25 et 15).
+      Captures 421 à 432.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

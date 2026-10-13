@@ -1,11 +1,13 @@
 import { test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, choixAuto, ecrire, recit, semerAttribution, semerBlocs, semerClasse, semerPartie, semerProjet, semerTexte, sql, supprimerComptes,
+  adultePret, aller, choixAuto, classeQuiEcrit, ecrire, posteDe, recit, semerAttribution, semerBlocs, semerClasse, semerPartie, semerProjet, semerTexte, sql,
+  supprimerComptes,
 } from "../parcours/outils";
 
 /**
  * Captures des écrans de l'étape 4 : npm run captures -- etape4
  * Elles s'écrivent dans test-results/captures/. Ce n'est pas un test : rien n'y est vérifié.
+ * Chaque lot a sa tranche de numéros, pour qu'un lot rejoué seul ne recouvre pas les autres.
  */
 const dossier = "test-results/captures";
 let n = 400;
@@ -35,6 +37,7 @@ const remettre = (scene: string, eleve: string, ilYA = "0 minutes") =>
 
 test("lot 1 : état et relecture, côté enseignant", async ({ page }) => {
   test.setTimeout(300_000);
+  n = 400;
   const { compte, base } = await adultePret(page);
   await base.from("enseignants").update({ nom_affiche: "Mme Laurent" }).eq("id", compte.id);
   const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal", "Chloé"]);
@@ -133,6 +136,7 @@ test("lot 1 : état et relecture, côté enseignant", async ({ page }) => {
 });
 
 test("lot 1 : projet personnel, deux états", async ({ page }) => {
+  n = 415;
   const { compte, base } = await adultePret(page);
   const projet = await semerProjet(base, compte, "personnel", "classique", "Mon roman");
   const { chapitres } = await semerPartie(base, projet, "Le début", [{ titre: "Chapitre un", scenes: ["La gare"] }]);
@@ -142,4 +146,74 @@ test("lot 1 : projet personnel, deux états", async ({ page }) => {
   await page.keyboard.press("Escape");
   await fiche(page).getByRole("button", { name: "Prête pour le livre" }).click();
   await capturer(page, "personnel-rappel-texte-vide");
+});
+
+test("lot 2 : côté élève", async ({ page, browser }) => {
+  test.setTimeout(300_000);
+  n = 420;
+  const s = await classeQuiEcrit(page);
+  const [sentier, pont] = s.lisiere.scenes;
+  const plus: string[] = [];
+  for (const titre of ["La souche creuse", "La clairière", "Le pont de brume"]) {
+    const { data } = await s.base.rpc("creer_scene", { p_chapitre: s.lisiere.id });
+    const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string };
+    await s.base.from("scenes").update({ titre }).eq("id", ligne.scene_id);
+    plus.push(ligne.scene_id);
+  }
+  const [souche, clairiere] = plus;
+  await s.base.from("scenes").update({ consigne: "Lou suit le sentier jusqu’à la souche. Décris ce qu’il entend." }).eq("id", sentier);
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Bilal.id }).in("id", [sentier, clairiere]);
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Alice.id }).eq("id", pont);
+  await semerTexte(s.base, pont, ["Le pont de bois craquait sous les pas de Lou."]);
+  const etat = async (scene: string, voulu: string, remarque: string | null = null) => {
+    const [vu] = await sql<{ version: number; tour: number }>("select version, tour from scenes where id = $1", [scene]);
+    await s.base.rpc("changer_etat", { p_scene: scene, p_etat: voulu, p_version: vu.version, p_tour: vu.tour, p_remarque: remarque });
+  };
+
+  const bilal = await posteDe(browser, s, "Bilal");
+  const p = bilal.page;
+  await aller(p, `/travail/scene/${sentier}`);
+  await capturer(p, "eleve-texte-vide");
+  await ecrire(p, "Lou suivit le sentier. Un chant montait des fougères, si doux qu’il s’arrêta pour l’écouter.");
+  await p.waitForTimeout(2_600);
+  await capturer(p, "eleve-ecrit");
+  await p.getByRole("button", { name: "Remettre à Mme Laurent" }).click();
+  await p.getByRole("status").filter({ hasText: "C’est remis !" }).waitFor();
+  await capturer(p, "eleve-remis");
+  await etat(sentier, "reprendre", "Dis d’où vient le chant, et ce que Lou ressent en l’entendant.");
+  await p.reload();
+  await capturer(p, "eleve-remarque-seule");
+  await p.getByRole("button", { name: "J’ai lu, j’écris" }).click();
+  await p.getByRole("button", { name: /^Voir mon texte du/ }).click();
+  await capturer(p, "eleve-a-reprendre");
+  await p.getByLabel("Tu t’en occupes. Changer").click();
+  await capturer(p, "eleve-je-ne-m-en-occupe-plus");
+  await p.keyboard.press("Escape");
+
+  // La scène d'une camarade : la lire, puis s'en occuper
+  await aller(p, `/travail/scene/${pont}`);
+  await capturer(p, "eleve-scene-d-un-camarade");
+  await p.getByRole("button", { name: "M’occuper de cette scène" }).click();
+  await p.getByRole("status").filter({ hasText: "Tu t’occupes maintenant" }).waitFor();
+  await capturer(p, "eleve-scene-prise");
+  await p.getByRole("status").filter({ hasText: "Tu t’occupes maintenant" }).getByRole("button", { name: "Annuler" }).click();
+
+  // Validé, puis le chapitre et sa sélection
+  await semerTexte(s.base, clairiere, ["Les deux chemins se rejoignaient dans la clairière."]);
+  await etat(clairiere, "valider");
+  await etat(clairiere, "valide");
+  await aller(p, `/travail/scene/${clairiere}`);
+  await capturer(p, "eleve-valide");
+  await aller(p, `/travail/chapitre/${s.lisiere.id}`);
+  await p.getByLabel("Choisir S002 pour m’en occuper").check();
+  await p.getByLabel(`Choisir S004 pour m’en occuper`).check().catch(() => {});
+  await p.getByLabel("Choisir S006 pour m’en occuper").check().catch(() => {});
+  await capturer(p, "eleve-chapitre-selection", true);
+  void souche;
+
+  await p.setViewportSize({ width: 390, height: 844 });
+  await capturer(p, "eleve-chapitre-selection-390");
+  await aller(p, `/travail/scene/${sentier}`);
+  await capturer(p, "eleve-a-reprendre-390");
+  await bilal.contexte.close();
 });

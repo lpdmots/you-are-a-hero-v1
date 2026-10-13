@@ -228,8 +228,15 @@
   align-items: start;
   margin-top: 14px;
 }
+.sceneColonnes[hidden] {
+  display: none;
+}
 .sceneColonnes > section {
   min-width: 0;
+}
+/* « Tu t'en occupes » : le bouton en mots ouvre « Je ne m'en occupe plus » */
+.sceneQui :global(.menu--mots > summary) {
+  padding-left: 10px;
 }
 .sceneColonnes > section:only-child {
   grid-column: 1 / -1;

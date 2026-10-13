@@ -783,6 +783,37 @@ ouverture et à chaque enregistrement, refuse l'écriture en « À valider »,
 d'état voit donc sa phrase gardée à part, comme tout refus (F08-AC19). Le
 poste lit la colonne `etat` des scènes qu'il lit déjà.
 
+**Les gestes de l'élève (lot 2).** Un poste ne change rien directement :
+prendre, rendre, annuler, remettre, retirer la remise et lire la remarque
+sont des fonctions de la base, que seul le rôle du poste peut appeler.
+Chacune verrouille la scène, puis relit qui est l'élève, s'il est du
+chapitre, s'il est arrêté et où en est la scène : deux élèves qui prennent
+la même scène au même instant ne peuvent pas tous deux la recevoir. « Je
+m'en occupe » envoie, pour chaque scène, l'élève que la page y montrait ;
+une scène qui a changé de main entre-temps n'est pas prise, et la réponse
+la nomme. Les scènes d'une sélection sont verrouillées dans le même ordre
+pour tous, afin que deux sélections croisées ne se bloquent pas.
+
+**Remettre.** La page enregistre d'abord la dernière saisie, puis présente
+la version obtenue : la base ne conserve le texte que si c'est encore celui
+de la scène, d'un seul tenant avec le passage à « À valider » (F07-AC28,
+AC29). Après un conflit, la version présentée n'est plus la bonne : rien
+n'est remis.
+
+**Annuler un geste.** Trois colonnes de la scène retiennent le dernier
+geste d'un élève sur « qui s'en occupe » — qui, qui s'en occupait avant,
+quand. Un déclencheur les efface dès que la scène change de main
+autrement : l'enseignant, une remise, un autre élève. L'annulation n'est
+donc possible que si rien n'a changé depuis, et la base la borne à une
+demi-heure, la page ne la proposant que tant qu'on y reste.
+
+**Ce que le poste lit de la relecture.** `relecture_du_poste` rend à un
+élève du chapitre la dernière remise et la dernière remarque, et rien hors
+de son chapitre ; les tables restent fermées au poste. L'arrêt de l'élève
+se lit à part (`suis_je_arrete`) : une scène remise ou validée répond
+d'abord qu'elle ne s'écrit plus, et la page doit pourtant savoir qu'il n'y
+retire pas la remise.
+
 **Rappel avant « prête ».** Calculé par le serveur au moment du choix,
 d'après le texte que la page vient d'enregistrer et les liens que la base en
 a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait

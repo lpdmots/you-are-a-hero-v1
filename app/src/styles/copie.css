@@ -313,6 +313,121 @@
     inset 0 0 0 1.5px #a9d2a3;
 }
 
+/* ——— Ce que l'élève lit sous une scène qui ne s'écrit plus : relue, ou validée ——— */
+.copie__etat {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0;
+  color: var(--e-valider);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.copie__etat--valide {
+  color: var(--e-valide);
+}
+.copie__apres {
+  margin: 0 0 0 auto;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+
+/* Qui s'occupe de la scène, dit sur place : la note reste, « Annuler » compris */
+.note--pec {
+  background: #fff8e6;
+  box-shadow: inset 0 0 0 1.5px #e9c877;
+}
+.note--pec > .ic {
+  color: var(--e-valider);
+}
+.note--pec > p {
+  flex: 1;
+}
+
+/* ——— La remarque de l'enseignant, montrée seule à la première ouverture d'une reprise ——— */
+.retour-grand {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+  max-width: 720px;
+  margin: 26px auto 40px;
+  padding: 26px 32px 30px;
+  border-radius: 16px;
+  background: #fffbf8;
+  box-shadow:
+    var(--ombre-cahier),
+    inset 0 0 0 1px #efd9d1;
+}
+.retour-grand header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding-bottom: 14px;
+  border-bottom: 2px solid var(--e-reprendre);
+}
+.retour-grand header .ic {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  color: var(--e-reprendre);
+}
+.retour-grand h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.retour-grand__texte {
+  max-width: 34em;
+  font-size: 1.35rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+.retour-grand__texte--sans {
+  color: var(--graphite-2);
+}
+.retour-grand .btn {
+  margin-top: 4px;
+}
+.retour__meta {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.remise-apercu {
+  display: grid;
+  gap: 8px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.remise-apercu__tete {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.remise-apercu .copie__texte--lu {
+  padding: 0;
+  font-size: 1rem;
+}
+@media (max-width: 720px) {
+  .copie__apres {
+    margin-left: 0;
+  }
+  .retour-grand {
+    margin-top: 16px;
+    padding: 20px 18px 22px;
+  }
+  .retour-grand__texte {
+    font-size: 1.2rem;
+  }
+  .retour-grand .btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 /* Ligne de rappel du Suivi : un texte gardé à part, en lien et non en filtre */
 .rappel {
   display: flex;

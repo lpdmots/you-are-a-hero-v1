@@ -328,6 +328,8 @@ export async function posteDe(browser: Browser, s: Situation, prenom: string): P
 /** La copie où l'on écrit : le texte de la scène, dans l'éditeur. */
 export const copie = (page: Page): Locator => page.locator('.copie__texte[contenteditable="true"]');
 export const pied = (page: Page): Locator => page.locator(".copie__pied");
+/** Ce que le pied dit de l'enregistrement, à côté de « Remettre » sur la copie d'un élève. */
+export const sauv = (page: Page): Locator => page.locator(".copie__pied").locator(".sauv, .pied-alerte");
 
 /** Pose le curseur à la fin du texte et tape, comme au clavier. */
 export async function ecrire(page: Page, texte: string, delai = 0): Promise<void> {

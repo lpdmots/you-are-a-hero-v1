@@ -1791,3 +1791,93 @@ a.noeud__ailleurs {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ——— Prendre des scènes, côté élève : une case sur chaque scène qui peut se prendre, et la
+   barre de sélection collée au bas de l'écran (F06.3) ——— */
+.fiche__choisir {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  margin: -4px 0 -4px -6px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.fiche__choisir:hover {
+  background: rgba(30, 34, 38, 0.06);
+}
+.fiche__choisir input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--canard);
+  cursor: pointer;
+}
+.selection {
+  position: sticky;
+  bottom: 14px;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 22px;
+  padding: 12px 14px 12px 18px;
+  border-radius: 14px;
+  background: var(--graphite);
+  color: #fff;
+  box-shadow: var(--ombre-panneau);
+}
+.selection__compte {
+  font-size: var(--t-s);
+}
+.selection__avert {
+  flex-basis: 100%;
+  order: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-s);
+  color: #ffe3a3;
+}
+.selection__avert .ic {
+  flex: none;
+}
+.selection__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+.selection .btn {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+.selection .btn:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+.selection .btn--primaire {
+  border-color: #fff;
+  background: #fff;
+  color: var(--graphite);
+}
+.selection .btn--primaire:hover {
+  background: #e1f0ef;
+  color: var(--graphite);
+}
+.selection :focus-visible {
+  outline-color: #9fd6d1;
+}
+@media (max-width: 620px) {
+  .selection {
+    bottom: 8px;
+    padding: 12px;
+  }
+  .selection__actions {
+    width: 100%;
+    margin-left: 0;
+  }
+}

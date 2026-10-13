@@ -1593,6 +1593,45 @@ Autres écarts, à juger à l'essai :
 retour au Suivi (lot 4) ; la même commande d'état à côté de l'aperçu du
 livre (étape 6).
 
+**Lot 2 — côté élève.** Construits d'après « Côté élève repris après
+critique » : le pied de la copie avec « Remettre à Mme Laurent » ; la
+scène remise, validée ou prête, en lecture, avec sa raison ; « Modifier
+encore mon texte » ; la remarque seule à la première ouverture d'une
+reprise, puis sa fiche à côté du texte ; « M'occuper de cette scène »,
+« Je ne m'en occupe plus », et la note qui reste sur place avec
+« Annuler » ; la sélection de scènes dans le chapitre. Sans retour du
+porteur à ce stade.
+
+Annoncé au porteur avant de construire, comme perfectible dans la maquette :
+
+- **Cases à cocher du chapitre,** relevées par la critique (sans nom, sur
+  toutes les cartes). Une case seulement sur les scènes qu'on peut prendre,
+  nommée « Choisir S015 pour m'en occuper » ; ni sur la sienne, ni sur celle
+  de l'enseignant, ni sur une scène remise ou validée. La barre de
+  sélection, sombre, reste collée au bas de l'écran.
+- **« Elle n'a pas écrit de remarque »** suppose une enseignante : « Pas de
+  remarque écrite. Si tu ne sais pas quoi changer, demande à Mme Laurent. »
+
+Autres écarts, à juger à l'essai :
+
+- **Pied de la copie :** une indication à gauche, « Remettre » à droite,
+  qui ne bouge pas. Texte vide : « Écris d'abord ton texte. », à la place
+  de « Ton texte s'enregistre tout seul. », construit à l'étape 3.
+- **Scène que personne n'a prise :** l'élève y écrit, intitulée « Ton
+  texte » ; rien ne lui propose de s'en occuper depuis la scène, la remise
+  la mettant à son nom.
+- **Remarque de l'enseignant :** un signe de demi-tour à la place de la
+  gommette « ML » de la maquette, l'application n'ayant pas de gommette
+  pour l'adulte.
+- **Carte d'une scène à reprendre :** le bouton dit « Reprendre ».
+- **Message après « Je m'en occupe » :** il porte « Annuler » ; une scène
+  qui a changé de main pendant le choix y est nommée (« S002 vient de
+  changer : elle n'est pas à toi. »).
+- **Nom de l'enseignant :** les phrases reprennent le nom affiché aux
+  élèves tel quel ; un nom comme « Le maître » donne « Remettre à Le
+  maître ». À reprendre si le porteur le souhaite, par une tournure qui ne
+  dépend pas du nom.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

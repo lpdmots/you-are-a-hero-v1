@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, ALERTE, attendreEnBase, classeQuiEcrit, collerDepuisAilleurs, copie, copiesGardees, ecrire, enClair, MESSAGE, motsEnBase, pied,
+  adultePret, aller, ALERTE, attendreEnBase, classeQuiEcrit, collerDepuisAilleurs, copie, copiesGardees, ecrire, enClair, MESSAGE, motsEnBase, pied, sauv,
   posteDe, sceneEnBase, semerPartie, semerProjet, semerTexte, sql, supprimerComptes, veiller,
 } from "./outils";
 
@@ -227,7 +227,7 @@ test.describe("Conflit de sauvegarde, à deux postes (F08.1) — V7", () => {
     await aller(bilal.page, sceneEleve(s15));
 
     await ecrire(alice.page, "Alice recopie son texte.");
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
     await ecrire(bilal.page, "Bilal écrit en même temps.");
     await expect(pied(bilal.page)).toContainText("Quelqu’un d’autre a écrit dans cette scène en même temps que toi. Ton texte est gardé. Arrête d’écrire et appelle Mme Laurent.", { timeout: 6_000 });
     // Le travail d'Alice n'est pas remplacé ; rien ne dit « enregistré » à Bilal ; sa saisie reste affichée, sans pouvoir être modifiée
@@ -426,9 +426,9 @@ test.describe("Côté élève : écrire, lire, perdre le réseau (F03, F06, F08.
     await alice.page.getByRole("link", { name: /^Écrire S001/ }).click();
     await alice.page.waitForURL(/\/travail\/scene\//);
     await expect(alice.page.getByText("Pas de consigne écrite. Suis celle que Mme Laurent t’a donnée.")).toBeVisible();
-    await expect(pied(alice.page)).toHaveText("Ton texte s’enregistre tout seul.");
+    await expect(sauv(alice.page)).toHaveText("Écris d’abord ton texte.");
     await ecrire(alice.page, "Lou entre dans la forêt.");
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
     // Aucune commande pour créer une scène : elle écrit, c'est tout
     await expect(alice.page.getByRole("button", { name: /Ajouter une scène/ })).toHaveCount(0);
 
@@ -453,7 +453,7 @@ test.describe("Côté élève : écrire, lire, perdre le réseau (F03, F06, F08.
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
     await ecrire(alice.page, "Avant la coupure.");
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
 
     await alice.contexte.setOffline(true);
     await ecrire(alice.page, " Pendant la coupure.");
@@ -569,7 +569,7 @@ test.describe("Fermeture d'un poste pendant l'écriture (F06.4, F08.2)", () => {
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
     await ecrire(alice.page, "Avant.");
-    await expect(pied(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
+    await expect(sauv(alice.page)).toHaveText("Enregistré", { timeout: 6_000 });
     // Le serveur d'enregistrement ne répond plus, alors que la plage vient de se terminer
     await alice.page.route("**/copie", (route) => route.abort());
     const hier = ((new Date().getDay() + 6) % 7) || 7;

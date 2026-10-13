@@ -17,10 +17,11 @@ import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
 import type { LienDeChemin } from "@/domaine/chemins";
 import { nomPourEleves, type Eleve } from "@/domaine/eleves";
+import { sEcrit } from "@/domaine/etats";
 import { compteScenes, couleurDeChapitre, referenceScene } from "@/domaine/recit";
-import { majuscule } from "@/domaine/texte";
+import { majuscule, pluriel } from "@/domaine/texte";
 import type { ChapitreEleve as Chapitre, SceneEleve } from "@/serveur/recit-eleve";
-import { ajouterScene, placerScene, supprimerScene, titrerScene } from "../../actions";
+import { ajouterScene, annulerGeste, placerScene, prendreScenes, supprimerScene, titrerScene } from "../../actions";
 import styles from "../../travail.module.css";
 
 export function ChapitreEleve({
@@ -38,6 +39,8 @@ export function ChapitreEleve({
   const [attente, setAttente] = useState(false);
   const [renomme, setRenomme] = useState<{ id: string; titre: string } | null>(null);
   const [aSupprimer, setASupprimer] = useState<SceneEleve | null>(null);
+  // Les scènes cochées pour s'en occuper : une ou plusieurs, sans que les suivantes s'y ajoutent (F06-AC38, AC39)
+  const [choisies, setChoisies] = useState<string[]>([]);
   // La fiche qu'on vient de poser ne s'ouvre pas : le relâchement de la souris n'est pas un clic
   const vientDeTirer = useRef(false);
   const scenes = local?.base === chapitre ? local.scenes : chapitre.scenes;
@@ -97,9 +100,46 @@ export function ChapitreEleve({
     });
   };
 
-  // Ce que l'élève fera en ouvrant la scène : écrire s'il le peut, lire sinon (F03-AC17, F06-AC20)
+  // Ce que l'élève fera en ouvrant la scène : écrire s'il le peut, lire sinon (F03-AC17, F06-AC20).
+  // « Reprendre » ne désigne que la correction après une remarque de l'enseignant.
   const ouvrir = (s: SceneEleve): string =>
-    !chapitre.profil || s.arrete || s.prise?.par === "enseignant" || s.prise?.par === "eleve" ? "Lire" : s.texteVide ? "Écrire" : "Continuer";
+    !chapitre.profil || s.arrete || s.prise?.par === "enseignant" || s.prise?.par === "eleve" || !sEcrit(s.etat)
+      ? "Lire"
+      : s.etat === "reprendre"
+        ? "Reprendre"
+        : s.texteVide
+          ? "Écrire"
+          : "Continuer";
+
+  // Une scène se prend tant qu'elle s'écrit : libre, ou celle d'un camarade, après l'avoir prévenu (F06.3).
+  // Ni la sienne, ni celle de l'enseignant, ni celle où l'élève est arrêté (F06-AC62, F08-AC31).
+  const prenable = (s: SceneEleve): boolean => !!chapitre.profil && sEcrit(s.etat) && !s.arrete && s.prise?.par !== "moi" && s.prise?.par !== "enseignant";
+  const cochees = scenes.filter((s) => choisies.includes(s.id) && prenable(s));
+  const dejaPrises = cochees.filter((s) => s.prise?.par === "eleve");
+  const nomDe = (s: SceneEleve): string => (s.prise?.par === "eleve" ? nomPourEleves(s.prise.eleve, eleves) : "");
+  const prendre = async (lesquelles: SceneEleve[]) => {
+    if (lesquelles.length === 0) return;
+    setAttente(true);
+    const fait = await prendreScenes(lesquelles.map((s) => ({ scene: s.id, vu: s.prise?.par === "eleve" ? s.prise.eleve.id : null })));
+    setAttente(false);
+    setChoisies([]);
+    if (!fait.ok) return dire({ texte: fait.erreur });
+    const prises = lesquelles.filter((s) => fait.prises.includes(s.id));
+    const reprises = prises.filter((s) => s.prise?.par === "eleve");
+    // Une scène qui a changé de main pendant qu'il choisissait : il reçoit les autres, et lit laquelle ne l'était plus
+    const changees = lesquelles.filter((s) => fait.changees.some((x) => x.scene === s.id));
+    const phrases = [
+      prises.length ? `Tu t’occupes maintenant de ${prises.map((s) => referenceScene(s.reference)).join(", ")}.` : "",
+      reprises.length ? `À la place de : ${reprises.map((s) => `${referenceScene(s.reference)} (${nomDe(s)})`).join(", ")}. Les textes ne changent pas.` : "",
+      changees.length
+        ? `${changees.map((s) => referenceScene(s.reference)).join(", ")} ${changees.length > 1 ? "viennent de changer : elles ne sont pas à toi" : "vient de changer : elle n’est pas à toi"}.`
+        : "",
+    ];
+    dire({
+      texte: phrases.filter(Boolean).join(" "),
+      annuler: prises.length ? () => void Promise.all(prises.map((s) => annulerGeste(s.id))) : undefined,
+    });
+  };
   const fiche = (s: SceneEleve, prise: ReactNode) => (
     <article className={`fiche fiche--ouvrable${prise ? " se-tire" : ""}`}>
       <Link
@@ -110,6 +150,16 @@ export function ChapitreEleve({
       />
       <div className="fiche__tete">
         {prise}
+        {prenable(s) ? (
+          <label className="fiche__choisir">
+            <input
+              type="checkbox"
+              aria-label={`Choisir ${referenceScene(s.reference)} pour m’en occuper`}
+              checked={choisies.includes(s.id)}
+              onChange={(e) => setChoisies((avant) => (e.target.checked ? [...avant, s.id] : avant.filter((id) => id !== s.id)))}
+            />
+          </label>
+        ) : null}
         <span className="fiche__ref">{referenceScene(s.reference)}</span>
         <TamponScene etat={s.etat} vide={s.texteVide} />
         {organise ? (
@@ -295,6 +345,38 @@ export function ChapitreEleve({
           ))}
         </ul>
       )}
+
+      {/* La sélection : ce qu'on vient de cocher, qui s'en occupe déjà, et le geste (F06-AC38, AC41) */}
+      {cochees.length && vue !== "chemins" ? (
+        <div className="selection" role="region" aria-label="Sélection">
+          <p className="selection__compte">
+            <b>{cochees.length}</b> scène{pluriel(cochees.length)} : {cochees.map((s) => referenceScene(s.reference)).join(", ")}
+          </p>
+          {dejaPrises.length ? (
+            <p className="selection__avert">
+              <Icone nom="main" />
+              <span>
+                {dejaPrises.map((s) => `${referenceScene(s.reference)} : ${nomDe(s)} s’en occupe`).join(" · ")}.{" "}
+                {new Set(dejaPrises.map(nomDe)).size > 1 ? "Parle-leur" : "Parle-lui"} d’abord, ou à {prof}.
+              </span>
+            </p>
+          ) : null}
+          <div className="selection__actions">
+            {dejaPrises.length && dejaPrises.length < cochees.length ? (
+              <button type="button" className="btn" disabled={attente} onClick={() => void prendre(cochees.filter((s) => !s.prise))}>
+                Seulement les libres
+              </button>
+            ) : null}
+            <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void prendre(cochees)}>
+              <Icone nom="main" />
+              Je m’en occupe
+            </button>
+            <button type="button" className="btn btn--discret" onClick={() => setChoisies([])}>
+              Annuler
+            </button>
+          </div>
+        </div>
+      ) : null}
 
       {aSupprimer ? (
         <Dialogue
