@@ -1672,8 +1672,9 @@ ce stade. Écarts, à juger à l'essai :
   barre des scènes prêtes ; rien quand aucune scène n'attend.
 - **Scène suivante à valider :** bouton secondaire sous l'étape suivante de
   la fiche de décision, avec sa flèche.
-- **Non construit :** le bouton des fiches (lot 5), la colonne
-  « Encouragements » (lot 6), le bandeau « scènes à finir » venu du Livre
+- **Construit depuis :** le bouton des fiches (lot 5), la colonne
+  « Encouragements » et le classement (lot 6).
+- **Non construit :** le bandeau « scènes à finir » venu du Livre
   (étape 6), l'écran d'échec de chargement, que l'application rend par sa
   page d'erreur commune.
 
