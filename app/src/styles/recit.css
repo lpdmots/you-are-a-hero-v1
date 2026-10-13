@@ -1180,7 +1180,10 @@
   position: absolute;
 }
 .fleche-chemin {
-  color: var(--graphite-3);
+  color: var(--graphite-2);
+}
+.fleche-chemin-retour {
+  color: var(--graphite);
 }
 .fleche-chemin-active {
   color: var(--canard-fonce);
@@ -1411,6 +1414,11 @@
 .chemins__toile .trait-chemin.est-cache {
   stroke-dasharray: 5 5;
 }
+/* Un retour en arrière : plus sombre et un peu plus épais, sans couleur de plus — chacune a déjà son rôle */
+.chemins__toile .trait-chemin.remonte {
+  stroke: var(--graphite);
+  stroke-width: 2;
+}
 .chemins__toile .trait-chemin.est-actif {
   stroke: var(--canard-fonce);
   stroke-width: 2.4;
@@ -1458,6 +1466,32 @@
   flex: none;
   width: 1.05em;
   height: 1.05em;
+}
+.libelle-chemin.remonte {
+  box-shadow: inset 0 0 0 1.5px var(--graphite);
+  color: var(--graphite);
+}
+.libelle-chemin__retour {
+  position: absolute;
+  top: 50%;
+  left: -9px;
+  display: grid;
+  place-items: center;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--graphite);
+  color: #fff;
+  transform: translateY(-50%);
+}
+.libelle-chemin__retour .ic {
+  width: 11px;
+  height: 11px;
+  stroke-width: 2.6;
+}
+.libelle-chemin.est-entier .libelle-chemin__retour {
+  background: #fff;
+  color: var(--canard-fonce);
 }
 .libelle-chemin.est-cache {
   box-shadow: inset 0 0 0 1px var(--trait-fort);

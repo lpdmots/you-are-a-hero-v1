@@ -1140,6 +1140,10 @@ le porteur décide :
     qui est choisie, le bout de sa flèche étant encadré. Un compte cliqué
     mène au premier cas de sa sorte, puis au suivant de la même sorte. Rien
     n'est masqué.
+  - **Sens des flèches (repris le 13 octobre 2026, sur son retour).** Les
+    pointes de flèche sont plus grandes ; un retour en arrière se
+    distingue des autres choix par un trait plus sombre et une petite
+    flèche vers le haut sur son libellé, sans couleur de plus.
   - **Libellé en entier (corrigé le 13 octobre 2026, sur son retour).** Pour
     la scène survolée ou cliquée, un libellé long garde sa largeur et gagne
     en hauteur. Il s'élargissait d'abord sur une ligne et recouvrait ses
@@ -1180,7 +1184,7 @@ le porteur décide :
   marais des feux follets », trente-deux scènes et quarante-neuf choix, sur
   un écran de 1 366 points, lorsque l'enseignant ouvre « Chemins », alors
   chaque choix mène à une scène placée plus bas, sauf les quatre retours en
-  arrière, qui remontent ; le schéma tient dans la largeur de la fenêtre et
+  arrière, qui remontent et se distinguent des autres ; le schéma tient dans la largeur de la fenêtre et
   la page défile de haut en bas.
 - **F03-AC44 — La carte dit l'essentiel :** étant donné « Île — le saule
   aux lanternes », en cours, lorsque l'enseignant lit sa carte, alors il y

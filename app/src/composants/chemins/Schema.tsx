@@ -27,7 +27,7 @@ const LOIN = 0.62;
 const ZOOM = { toutVoir: 0.05, min: 0.2, lisible: 0.7, max: 1, pas: 0.1 };
 
 type DonneesScene = NoeudDeChemin & { marques: string[] };
-type DonneesTrait = { d: string; texte: string; cache: boolean; libelle: Disposition["traits"][number]["libelle"] };
+type DonneesTrait = { d: string; texte: string; cache: boolean; remonte: boolean; libelle: Disposition["traits"][number]["libelle"] };
 type NoeudScene = Node<DonneesScene, "scene">;
 type NoeudEtiquette = Node<{ element: Element }, "etiquette">;
 type Trait = Edge<DonneesTrait, "chemin">;
@@ -133,17 +133,23 @@ function TraitDeChemin({ source, target, data }: EdgeProps<Trait>) {
       <BaseEdge
         path={data.d}
         interactionWidth={0}
-        className={classes("trait-chemin", data.cache && "est-cache", touche && "est-actif", efface && "est-efface")}
-        markerEnd={`url(#${touche ? "fleche-chemin-active" : "fleche-chemin"})`}
+        className={classes("trait-chemin", data.cache && "est-cache", data.remonte && "remonte", touche && "est-actif", efface && "est-efface")}
+        markerEnd={`url(#${touche ? "fleche-chemin-active" : data.remonte ? "fleche-chemin-retour" : "fleche-chemin"})`}
       />
       {data.libelle && !vue.loin ? (
         <EdgeLabelRenderer>
           <span
-            className={classes("libelle-chemin", data.cache && "est-cache", touche && "est-entier", efface && "est-efface")}
+            className={classes("libelle-chemin", data.cache && "est-cache", data.remonte && "remonte", touche && "est-entier", efface && "est-efface")}
             // En entier, le libellé garde sa largeur et gagne en hauteur : il ne recouvre pas ses voisins
             style={{ transform: `translate(-50%, -50%) translate(${data.libelle.x}px, ${data.libelle.y}px)`, width: data.libelle.l, ...(touche ? { minHeight: data.libelle.h } : { height: data.libelle.h }) }}
-            title={touche ? undefined : data.texte}
+            title={touche ? undefined : data.remonte ? `Retour en arrière : ${data.texte}` : data.texte}
           >
+            {/* Un retour en arrière porte une petite flèche vers le haut, posée sur le bord : elle ne prend pas la place du texte */}
+            {data.remonte ? (
+              <b className="libelle-chemin__retour" aria-hidden="true">
+                <Icone nom="fleche-haut" />
+              </b>
+            ) : null}
             {data.cache ? <Icone nom="cle" /> : null}
             <span>{data.texte}</span>
           </span>
@@ -219,7 +225,7 @@ export default function Schema({
       const lien = parId.get(t.id);
       return {
         id: t.id, source: t.de, target: t.vers, type: "chemin" as const, focusable: false, selectable: false, reconnectable: false,
-        data: { d: t.d, libelle: t.libelle, texte: lien ? texteDuLibelle(lien) : "", cache: lien?.cache ?? false },
+        data: { d: t.d, libelle: t.libelle, texte: lien ? texteDuLibelle(lien) : "", cache: lien?.cache ?? false, remonte: t.remonte },
       };
     });
   }, [disposition, chemins.liens]);
@@ -327,17 +333,17 @@ export default function Schema({
             +
           </button>
           <Bulle question="Comment lire ces chemins ?">
-            Chaque flèche est un choix : elle part de la scène où il s’écrit et porte son libellé. {pourEleve ? "" : "Une flèche en pointillé est un lien caché. "}Une flèche qui remonte ramène le lecteur en
-            arrière. Une étiquette nomme un autre chapitre. Cliquer une scène montre ses chemins.
+            Chaque flèche est un choix : elle part de la scène où il s’écrit et porte son libellé. {pourEleve ? "" : "Une flèche en pointillé est un lien caché. "}Une flèche plus sombre, marquée
+            d’une petite flèche vers le haut, ramène le lecteur en arrière. Une étiquette nomme un autre chapitre. Cliquer une scène montre ses chemins.
           </Bulle>
         </div>
       </div>
       <div className="chemins__cadre" ref={cadre} style={place.largeur ? { width: place.largeur, marginLeft: -place.gauche } : undefined} data-zoom={zoom} data-loin={loin || undefined}>
         <svg className="chemins__fleches" width="0" height="0" aria-hidden="true">
           <defs>
-            {["fleche-chemin", "fleche-chemin-active"].map((id) => (
-              <marker key={id} id={id} className={id} viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="9" markerHeight="9" markerUnits="userSpaceOnUse" orient="auto">
-                <path d="M1,1.4 L9.4,5 L1,8.6 L3,5 z" fill="currentColor" />
+            {["fleche-chemin", "fleche-chemin-retour", "fleche-chemin-active"].map((id) => (
+              <marker key={id} id={id} className={id} viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+                <path d="M0.6,0.8 L9.6,5 L0.6,9.2 L2.8,5 z" fill="currentColor" />
               </marker>
             ))}
           </defs>

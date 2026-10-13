@@ -165,6 +165,10 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     const mesure = await mesurer(page);
     // Trente-deux scènes et cinq étiquettes : deux sorties, une entrée, deux choix qui n'arrivent nulle part
     expect(mesure).toMatchObject({ cartes: ATTENDU.scenes + 5, traits: ATTENDU.liens + 1, sousUneCarte: 0, defileDeCote: false, remontent: 4 });
+    // Les quatre retours en arrière se distinguent : trait plus sombre, petite flèche vers le haut sur leur libellé
+    await expect(page.locator(".trait-chemin.remonte")).toHaveCount(4);
+    await expect(page.locator(".libelle-chemin.remonte .libelle-chemin__retour")).toHaveCount(4);
+    await expect(LIBELLES(page).filter({ hasText: "Revenir vers le ponton" })).toHaveClass(/remonte/);
     // La vue sans bibliothèque en comptait 30 sur ce chapitre, et 3 traits sous 10 cartes
     expect(mesure.croisements).toBeLessThanOrEqual(12);
     // Les cartes gardent une taille où le titre se lit, et le chapitre dépasse l'écran : on fait défiler la page

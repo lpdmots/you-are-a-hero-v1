@@ -116,6 +116,13 @@ const TRACES = {
     </>
   ),
   "chevron-haut": <path d="M5.5 15l6.5-6.5L18.5 15" />,
+  // Un retour en arrière, dans les chemins : la flèche qui remonte
+  "fleche-haut": (
+    <>
+      <path d="M12 19.5v-14" />
+      <path d="M7 10.5l5-5 5 5" />
+    </>
+  ),
   sac: (
     <>
       <path d="M5.5 9.5h13l1 9.2a1.6 1.6 0 0 1-1.6 1.8H6.1a1.6 1.6 0 0 1-1.6-1.8z" />
