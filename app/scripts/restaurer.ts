@@ -8,6 +8,10 @@
  * données de la sauvegarde y sont chargées, comptes compris. Tout ce qui s'y trouvait
  * est remplacé. Docker doit être ouvert.
  *
+ * En local, la remise à zéro efface aussi le registre des fichiers importés (images de
+ * repérage, images des scènes), alors que les fichiers restent sur le disque : il est mis
+ * de côté avant, et remis après. Dans la vraie base, rien n'y touche.
+ *
  * Vers la vraie base, la commande demande de retaper le nom du dossier : elle sert
  * après un accident, sur un projet Supabase neuf ou à remettre en état.
  */
@@ -20,7 +24,12 @@ import { envDocker } from "./docker";
 
 const env = envDocker();
 
-const TABLES = ["auth.users", "public.enseignants", "public.classes", "public.classes_secrets", "public.horaires", "public.eleves", "public.eleves_secrets", "public.inscriptions", "public.projets"];
+// Ce que la commande compte après avoir restauré : les comptes, les classes, le récit, le travail de la classe
+const TABLES = [
+  "auth.users", "public.enseignants", "public.classes", "public.classes_secrets", "public.horaires", "public.eleves", "public.eleves_secrets", "public.inscriptions",
+  "public.projets", "public.preparations", "public.parties", "public.chapitres", "public.attributions", "public.scenes", "public.liens", "public.images",
+  "public.remises", "public.remarques", "public.encouragements", "public.copies_recuperation", "public.versions_precedentes",
+];
 
 async function principal() {
   const dossier = process.argv.slice(2).find((a) => !a.startsWith("--"));
@@ -32,6 +41,7 @@ async function principal() {
   const donnees = resolve(dossier, "donnees.sql");
 
   let adresse: string;
+  let fichiers = "";
   if (production) {
     adresse = adresseDeProduction();
     const lecture = createInterface({ input: process.stdin, output: process.stdout });
@@ -50,6 +60,7 @@ async function principal() {
       console.error("La base locale ne répond pas : lancez « npm run base:demarrer ».");
       process.exit(1);
     }
+    fichiers = registreDesFichiers(adresse);
     console.log("Base locale remise à zéro, au schéma de l'application…");
     lancer("npx", ["supabase", "db", "reset", "--local", "--yes"]);
   }
@@ -72,6 +83,12 @@ async function principal() {
     process.exit(1);
   }
 
+  if (fichiers.trim()) {
+    const remis = psql(vers, ["--single-transaction", "--variable", "ON_ERROR_STOP=1", "--quiet"], `copy storage.objects (${COLONNES_FICHIERS}) from stdin;\n${fichiers}\\.\n`);
+    if (remis.status !== 0) console.error(`Le registre des fichiers importés n'a pas pu être remis : les images importées ne s'afficheront plus. ${masquer(remis.stderr ?? "").trim().split("\n").slice(-2).join(" ")}`);
+    else console.log(`Fichiers importés : ${fichiers.trim().split("\n").length} réinscrits.`);
+  }
+
   const comptes = spawnSync(
     "docker",
     ["run", "--rm", "-i", "--add-host", "host.docker.internal:host-gateway", "postgres:17-alpine", "psql", "--tuples-only", "--no-align", "--dbname", vers,
@@ -81,6 +98,23 @@ async function principal() {
   console.log("\nLignes restaurées :");
   console.log((comptes.stdout ?? "").trim().split("\n").map((l) => `  ${l.replace("|", " : ")}`).join("\n"));
   console.log("\nRestauration terminée. Les codes et les mots de passe de classe se relisent avec la même CLE_ACCES qu'à la sauvegarde.");
+}
+
+const COLONNES_FICHIERS = "bucket_id, name, owner, owner_id, version, metadata, user_metadata, created_at, updated_at";
+
+function psql(vers: string, options: string[], entree?: string) {
+  return spawnSync(
+    "docker",
+    ["run", "--rm", "-i", "--add-host", "host.docker.internal:host-gateway", "postgres:17-alpine", "psql", ...options, "--dbname", vers],
+    { input: entree, encoding: "utf8", maxBuffer: 1024 * 1024 * 64, env },
+  );
+}
+
+/** Le registre des fichiers importés de la base locale, tel que « copy » l'écrit ; rien s'il ne se lit pas. */
+function registreDesFichiers(adresse: string): string {
+  const vers = adresse.replace("127.0.0.1", "host.docker.internal").replace("localhost", "host.docker.internal");
+  const lu = psql(vers, ["--quiet", "--command", `copy (select ${COLONNES_FICHIERS} from storage.objects) to stdout`]);
+  return lu.status === 0 ? (lu.stdout ?? "") : "";
 }
 
 function lancer(commande: string, options: string[]) {

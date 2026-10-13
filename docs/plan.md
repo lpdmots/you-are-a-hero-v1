@@ -978,6 +978,32 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 639 passent — 164 sur les règles, 219 contre
       la base locale, 256 parcours —, dont 23 pour ce lot (7, 8 et 8).
       Captures 501 à 513.
+  - **Lot 7 — essai de séance et restauration : préparé le 13 octobre
+    2026, l'essai du porteur restant à faire.** Un parcours joue une séance
+    entière à trois postes, sans rien semer en cours de route : deux élèves
+    prennent chacun une scène, écrivent, remettent ; l'enseignante relit
+    depuis le Suivi, demande une reprise, valide, encourage, déclare prête
+    (`tests/parcours/seance.spec.ts`). Le mode d'emploi de la séance d'essai
+    et de la restauration est dans `app/README.md`, « Jouer une séance
+    d'essai, puis restaurer ». Sans changement de schéma.
+    - **V18, en local :** sauvegarde de la base locale au schéma de
+      l'étape 4, écritures d'une séance, restauration : la base revient à
+      l'identique (comptes, classes, récit, textes, remises, remarques,
+      encouragements), le compte reste connecté, le mot de passe et les
+      codes de la classe d'essai se relisent, les tests contre la base
+      passent sur la base restaurée. Défaut trouvé et corrigé : la remise
+      à zéro de la base locale effaçait la liste des fichiers importés,
+      les fichiers restant sur le disque ; la restauration locale la met
+      de côté et la remet. Les fichiers eux-mêmes ne sont toujours pas dans
+      la sauvegarde : le porteur garde ses originaux.
+    - **À dire au porteur :** la restauration vers la vraie base porte
+      d'abord le schéma de l'application dans cette base, donc les quatre
+      migrations de l'étape 4 tant qu'elles n'y sont pas ; elle n'a jamais
+      été jouée. Recommandé : jouer l'essai et la restauration en local,
+      et restaurer la vraie base au moment de mettre l'étape 4 en ligne,
+      après une sauvegarde.
+    - **Tests automatiques :** 640 passent — 164 sur les règles, 219 contre
+      la base locale, 257 parcours —, dont 1 pour ce lot.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

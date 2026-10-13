@@ -148,10 +148,85 @@ npm run restaurer -- sauvegardes/<date> --production   # après un accident : da
 - Les secrets restaurés se relisent avec la même `CLE_ACCES` qu'à la sauvegarde.
 - Un projet Supabase gratuit s'endort après une semaine sans activité : il se
   relance depuis sa console avant de sauvegarder.
-- Les images de repérage importées (Supabase Storage, seau `images`) ne sont pas
-  dans cette sauvegarde : gardez vos originaux.
+- Les images importées (Supabase Storage, seau `images`) ne sont pas dans cette
+  sauvegarde : gardez vos originaux. La base n'en garde que la liste. En local, où
+  la restauration remet la base à zéro, la commande met cette liste de côté avant
+  et la remet après, les fichiers restant sur le disque ; dans la vraie base,
+  elle n'y touche pas.
 
 Essayé le 9 octobre 2026 sur la base locale : sauvegarde, remise à zéro,
 restauration, puis connexion du compte, relecture d'un code et d'un mot de passe
-de classe, ouverture de la classe sur un poste. La restauration vers la vraie
-base reste à essayer avant la première séance (étape 4 du plan).
+de classe, ouverture de la classe sur un poste. Essayé de nouveau le 13 octobre
+2026, avec le schéma de l'étape 4 (plan du récit, textes, remises, remarques,
+encouragements) : la base locale revient à l'identique, et les codes et le mot
+de passe de la classe d'essai se relisent. La restauration vers la vraie base n'a
+jamais été jouée : voir « La vraie base », plus bas.
+
+## Jouer une séance d'essai, puis restaurer (fin de l'étape 4)
+
+L'étape 4 du plan se termine quand une séance entière a été jouée avec plusieurs
+comptes d'élèves, de la prise d'une scène à sa validation, puis que la base a été
+restaurée depuis une sauvegarde. Tout se joue en local, sur « Les passeurs de
+brume » et sa classe d'essai ; la vraie base n'est pas touchée.
+
+**1. Avant la séance : une sauvegarde.**
+
+```bash
+npm run sauvegarder -- --local    # écrit sauvegardes/<date>-locale/
+```
+
+**2. Les postes.** Un poste est un navigateur : il garde la classe ouverte et
+l'élève identifié.
+
+- L'enseignant : le navigateur habituel, sur http://localhost:4840, avec le compte
+  local. « Mes classes » > « CM1-CM2 d'essai » donne l'identifiant et le mot de
+  passe de la classe, et le code de chaque élève (« Afficher »).
+- Chaque élève : un autre navigateur (Safari, Firefox), ou une fenêtre de
+  navigation privée, sur http://localhost:4840/classe. Toutes les fenêtres
+  privées d'un même navigateur comptent pour un seul poste. Sur un même poste,
+  « Changer d'élève » passe au suivant, comme en salle informatique.
+
+**3. La séance,** de la prise d'une scène à sa validation. Deux élèves d'un même
+chapitre suffisent : Chloé, Dylan et Emma écrivent « Le dernier bac », où S006
+n'est pas encore prise ; Farah, Gabin, Hugo et Jade, « Le gué des saules », où il
+en reste une aussi.
+
+| Qui | Geste | Ce qui doit se voir |
+|---|---|---|
+| Élève A | « Mon travail » > son chapitre : coche une scène « Pas encore prise », « Je m'en occupe » | La scène est à son nom, chez lui, chez son camarade et au Suivi |
+| Élève B | Ouvre la scène que A vient de prendre | Il la lit, sans pouvoir y écrire ; il peut la reprendre à son nom, et A en est averti |
+| Élève A | Écrit, puis « Remettre à … » | « À valider » ; il ne peut plus écrire, sauf « Modifier encore mon texte » |
+| Enseignant | Suivi > « À valider » > « Relire » | Le texte remis, la fiche « Votre relecture » |
+| Enseignant | « Demander une reprise… », avec une remarque | « À reprendre » ; la scène suivante à valider est proposée |
+| Élève A | « Mon travail » : la scène est en tête ; « Reprendre mon texte » | La remarque seule, en grand, puis « J'ai lu, j'écris » |
+| Élève A | Corrige, remet | « À valider » de nouveau ; les deux remises se lisent chez l'enseignant |
+| Enseignant | « Valider le travail élève », puis un tampon d'encouragement | « Validé » ; chez l'élève, « Validé. Bravo ! » et son tampon |
+| Enseignant | « Prête pour le livre » | Le rappel de ce qui manque, puis « Prête » |
+| Enseignant | Suivi > « Imprimer les fiches de rédaction », « par élève » | Une feuille par élève ; les scènes sans élève à répartir |
+| Enseignant | Suivi > « Élèves » : « Montrer le classement aux élèves » | Chez les élèves, les trois premiers et leur propre total |
+
+`npx playwright test seance` joue le même enchaînement à trois postes, sans rien
+semer en cours de route.
+
+**4. Après la séance : la restauration.**
+
+```bash
+npm run restaurer -- sauvegardes/<date>-locale
+```
+
+La base locale est remise à zéro, puis rechargée : le compte local, la classe
+d'essai et l'histoire reviennent comme ils étaient à la sauvegarde, et ce que la
+séance a écrit n'y est plus. À vérifier ensuite : le compte local se connecte,
+la classe s'ouvre sur un poste avec son mot de passe, un élève entre avec son
+code, et la scène prise pendant la séance est de nouveau « Pas encore prise ».
+Les images importées s'affichent toujours ; une image importée pendant la séance
+n'est plus dans l'histoire.
+
+**La vraie base.** `npm run restaurer -- sauvegardes/<date> --production`
+commence par porter dans la vraie base le schéma de l'application, donc toute
+migration qui n'y est pas encore : tant que l'étape 4 n'est pas en ligne, la
+restaurer y appliquerait ses quatre migrations avant le code qui s'en sert. La
+restauration de la vraie base se fait donc au moment de mettre l'étape 4 en
+ligne, dans cet ordre : `npm run sauvegarder`, `npm run production:schema --
+--oui`, mise en ligne du code, puis, pour l'essai, `npm run restaurer --
+sauvegardes/<date> --production`.

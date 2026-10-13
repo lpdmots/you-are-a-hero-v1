@@ -296,7 +296,11 @@ porteur l'a joué en ligne à son essai, les 9 et 10 octobre 2026.
 données de la vraie base, comptes compris, par l'outil de Supabase, qui a
 besoin de Docker ; `npm run restaurer` remet une base au schéma de
 l'application puis y charge ces données. Les fichiers de Supabase Storage,
-utilisés à partir de l'étape 2, n'y sont pas. Le fichier des clés de la vraie
+utilisés à partir de l'étape 2, n'y sont pas ; la base n'en tient que la liste
+(`storage.objects`), hors de la sauvegarde elle aussi. Une restauration locale
+remet la base à zéro, liste comprise, alors que les fichiers restent sur le
+disque : la commande la lit avant et la réécrit après (13 octobre 2026). Vers
+la vraie base, où rien n'est remis à zéro, elle n'y touche pas. Le fichier des clés de la vraie
 application s'appelle `production.env`, et non `.env.production.local` : Next.js
 charge de lui-même ce second nom, et une application lancée en local parlerait
 alors à la vraie base.
