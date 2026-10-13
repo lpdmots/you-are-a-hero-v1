@@ -1004,6 +1004,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       après une sauvegarde.
     - **Tests automatiques :** 640 passent — 164 sur les règles, 219 contre
       la base locale, 257 parcours —, dont 1 pour ce lot.
+  - **Mise en ligne, le 13 octobre 2026, à la demande du porteur, qui
+    veut essayer en ligne :** vraie base sauvegardée par lui
+    (`sauvegardes/2026-10-13-19-46`), les quatre migrations de l'étape
+    (`etats_et_relecture`, `gestes_de_l_eleve`, `retrait_d_un_eleve`,
+    `encouragements`) appliquées par lui, puis le code poussé : en ligne
+    jusqu'au commit `fa166df`. Ne plus modifier ces migrations : toute
+    reprise du schéma passe par une nouvelle. La restauration de la vraie
+    base n'a pas été jouée.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;
