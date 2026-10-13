@@ -342,3 +342,76 @@ test("lot 4 : le Suivi d'un projet personnel", async ({ page }) => {
   await aller(page, `/projet/${projet}/suivi`);
   await capturer(page, "suivi-personnel");
 });
+
+test("lot 5 : les fiches de rédaction", async ({ page }) => {
+  test.setTimeout(300_000);
+  n = 480;
+  await page.addInitScript(() => {
+    window.print = () => {};
+  });
+  const { compte, base } = await adultePret(page);
+  await base.from("enseignants").update({ nom_affiche: "Mme Laurent", aides_masquees: ["classes", "plan", "preparation", "suivi"] }).eq("id", compte.id);
+  const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal", "Chloé", "Dylan", "Emma"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  const { chapitres } = await semerPartie(base, projet, "La forêt des lanternes", [
+    { titre: "Le dernier bac", scenes: ["Quai — la sirène du dernier bac", "Passerelle — le bac s’éloigne", "Quai — la lanterne qui clignote", "Cabane du passeur — la carte oubliée", "Cabane — la carte s’anime", "Quai — la barque sans rameur", "Rive — le phare éteint"] },
+    { titre: "La lisière", scenes: ["Lisière — les lanternes s’éteignent", "Sentier — le chant dans les fougères", "Souche — la chouette messagère", "Clairière — les deux chemins se rejoignent"] },
+  ]);
+  const [bac, lisiere] = chapitres;
+  const e = classe.eleves;
+  await semerAttribution(base, bac.id, [{ eleve: e.Chloé.id }, { eleve: e.Dylan.id }, { eleve: e.Emma.id }]);
+  await semerAttribution(base, lisiere.id, [{ eleve: e.Alice.id }, { eleve: e.Bilal.id }]);
+  const consigne = "Raconte ce que Lou entend et ressent quand le chant l’attire vers les fougères.\n– Décris le chant : doux, triste, joyeux ?\n– Utilise au moins deux sens";
+  await base.from("scenes").update({ consigne }).in("id", [...bac.scenes, ...lisiere.scenes.slice(0, 3)]);
+  const donner = (scenes: string[], prenom: string) => base.from("scenes").update({ prise_par_eleve: e[prenom].id }).in("id", scenes);
+  await donner(bac.scenes.slice(0, 2), "Chloé");
+  await donner(bac.scenes.slice(2, 4), "Dylan");
+  await donner([bac.scenes[4]], "Emma");
+  await donner(lisiere.scenes.slice(0, 2), "Alice");
+  await donner([lisiere.scenes[2]], "Bilal");
+  await semerBlocs(base, lisiere.scenes[1], [recit("Le chant était si doux que Lou en oublia la barque."), choixAuto("Continuer vers la lumière", lisiere.scenes[3])]);
+  await semerTexte(base, lisiere.scenes[2], ["La chouette tenait un message."]);
+  await sql("update scenes set etat = 'reprendre', tour = tour + 1 where id = $1", [lisiere.scenes[2]]);
+  await sql(
+    "insert into remarques (scene_id, projet_id, enseignant_id, eleve_id, texte) select id, projet_id, enseignant_id, prise_par_eleve, 'Dis ce que dit le message, et à qui il est adressé.' from scenes where id = $1",
+    [lisiere.scenes[2]],
+  );
+
+  // Du Suivi aux fiches
+  await aller(page, `/projet/${projet}/suivi?direct=1`);
+  await capturer(page, "suivi-bouton-des-fiches");
+  await aller(page, `/projet/${projet}/fiches`);
+  await capturer(page, "fiches-par-chapitre", true);
+  const tirage = page.getByRole("group", { name: "Une feuille" });
+  await tirage.getByRole("button", { name: "par élève" }).click();
+  await capturer(page, "fiches-par-eleve-scenes-sans-eleve");
+  await page.getByRole("checkbox", { name: "À la suite, à découper" }).check();
+  await capturer(page, "fiches-a-la-suite", true);
+  await page.getByRole("checkbox", { name: "À la suite, à découper" }).uncheck();
+  // Le partage des scènes sans élève
+  await page.getByRole("button", { name: /répartir entre les élèves du chapitre/ }).click();
+  await capturer(page, "fiches-partage-propose");
+  await page.locator(".lot-imprimer").click();
+  await capturer(page, "fiches-message-de-demande");
+  await page.getByRole("alertdialog").getByRole("button", { name: "Annuler" }).click();
+  await page.getByRole("button", { name: "Ne pas répartir" }).click();
+  // Le plafond et le complément : sans maquette
+  await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
+  await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
+  await capturer(page, "fiches-plafond-eleve-a-completer");
+  await page.getByRole("button", { name: /^Emma/ }).click();
+  await capturer(page, "fiches-eleve-complete");
+  await page.locator(".lot-imprimer").click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Répartir et imprimer" }).click();
+  await page.locator(".lot-note--fait").waitFor();
+  await capturer(page, "fiches-repartition-faite");
+  // Un seul élève : sa feuille
+  await aller(page, `/projet/${projet}/fiches?suivi=${encodeURIComponent(`eleve=${e.Bilal.id}`)}`);
+  await capturer(page, "fiches-un-eleve");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/fiches`);
+  await tirage.getByRole("button", { name: "par élève" }).click();
+  await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
+  await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
+  await capturer(page, "fiches-390", true);
+});

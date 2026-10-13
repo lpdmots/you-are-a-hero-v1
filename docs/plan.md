@@ -914,6 +914,40 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 589 passent — 144 sur les règles, 210 contre
       la base locale, 235 parcours —, dont 19 pour ce lot (11 et 8).
       Captures 461 à 476.
+  - **Lot 5 — fiches de rédaction : construit le 13 octobre 2026.** Le
+    bouton « Imprimer les fiches de rédaction » du Suivi, ouvert sur les
+    scènes listées ; la page des fiches, avec sa liste à cocher, « Ajouter
+    les textes vides », « à reprendre », « Tout décocher » ; la feuille
+    compacte (consigne, texte déjà écrit, image, reprise demandée, choix de
+    fin, aucune place pour écrire) ; une feuille par chapitre ou par élève,
+    la seule feuille d'un élève choisi, « À la suite, à découper » ; le
+    partage des scènes sans élève entre les élèves de leur chapitre, donné à
+    « Répartir et imprimer » après un message, annulable sur place ; « Au
+    plus n scènes à écrire par élève » et le complément d'un élève. Sans
+    changement de schéma.
+    - **Critères fermés :** F06-AC57, AC61 ; F07-AC17, AC18, AC21, AC22,
+      AC52 à AC60, AC69 à AC75.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      une scène remise, validée ou prête ne se choisit pas (« plus rien à
+      écrire »), comme la scène sans consigne et celle de l'enseignant ; la
+      page s'ouvre en « par élève » quand le Suivi était réduit aux scènes
+      dont un élève s'occupe, en « par chapitre » sinon ; sans filtre au
+      Suivi, toutes les scènes qui peuvent l'être sont cochées ; les scènes
+      d'un partage sont données dans l'ordre du chapitre, part après part,
+      pour que chacun garde des scènes voisines ; à égalité complète,
+      l'ordre des prénoms départage ; le nombre fixé se règle derrière un
+      lien, « Limiter le nombre de scènes par élève », et ne s'affiche qu'en
+      « par élève », tous élèves affichés ; ne sont signalés à compléter que
+      les élèves d'un chapitre où une scène cochée est encore libre ;
+      plusieurs élèves complétés sont servis dans l'ordre où on les clique ;
+      répartir et compléter ne se cumulent pas, le dernier demandé
+      l'emporte ; la feuille d'un élève de plusieurs chapitres range ses
+      scènes par chapitre ; l'image imprimée est la première posée dans la
+      scène ; la fenêtre d'impression est celle du navigateur, et
+      l'application ne sait pas si la feuille est sortie.
+    - **Tests automatiques :** 616 passent — 157 sur les règles, 211 contre
+      la base locale, 248 parcours —, dont 27 pour ce lot (13, 1 et 13).
+      Captures 481 à 491.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

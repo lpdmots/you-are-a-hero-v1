@@ -142,6 +142,29 @@ describe("Prendre une scène, la rendre, la reprendre à un camarade (F06.3)", (
     expect((await lire(pAlice, s[0].id))?.refus).toBeNull();
   });
 
+  it("F06-AC61 — répartition non exclusive : la scène donnée à Alice par le partage des fiches se reprend comme toute prise en charge ; Bilal, du même chapitre, est averti qu'Alice s'en occupe et la reprend à son nom ; l'enseignante peut retirer l'élève", async () => {
+    const { s } = await recit(1);
+    // Ce que fait « Répartir et imprimer » : la scène restée libre passe au nom de l'élève proposé
+    const { data } = await laurent.base.from("scenes").update({ prise_par_eleve: alice.id }).eq("id", s[0].id).is("prise_par_eleve", null).select("id");
+    expect(data).toHaveLength(1);
+    // Bilal la croyait libre : il est averti, et rien ne change
+    const averti = await prendre(pBilal, [{ scene: s[0].id }]);
+    expect(averti.fait?.prises).toEqual([]);
+    expect(averti.fait?.changees).toEqual([expect.objectContaining({ scene: s[0].id, par: alice.id })]);
+    expect(await qui(s[0].id)).toBe(alice.id);
+    // Il confirme : il remplace Alice, sans l'enseignante
+    const repris = await prendre(pBilal, [{ scene: s[0].id, vu: alice.id }]);
+    expect(repris.fait?.prises).toEqual([s[0].id]);
+    expect(await qui(s[0].id)).toBe(bilal.id);
+    // L'enseignante retire l'élève : « Pas encore prise »
+    await confier(s[0].id, null);
+    expect(await qui(s[0].id)).toBeNull();
+    // Un partage ne donne pas une scène à un élève d'un autre chapitre
+    const hors = await laurent.base.from("scenes").update({ prise_par_eleve: chloe.id }).eq("id", s[0].id).is("prise_par_eleve", null).select("id");
+    expect(hors.error).not.toBeNull();
+    expect(await qui(s[0].id)).toBeNull();
+  });
+
   it("F06.3 — scène qui vient de changer de main : de plusieurs scènes cochées, l'élève reçoit celles qui sont restées comme sa page les montrait, et la réponse nomme l'autre", async () => {
     const { s } = await recit(3);
     // La page d'Alice montrait trois scènes libres ; Bilal vient d'en prendre une

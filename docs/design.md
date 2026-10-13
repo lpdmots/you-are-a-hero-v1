@@ -1677,6 +1677,62 @@ ce stade. Écarts, à juger à l'essai :
   (étape 6), l'écran d'échec de chargement, que l'application rend par sa
   page d'erreur commune.
 
+**Lot 5 — fiches de rédaction.** La page et la feuille sont construites
+d'après « Suivi repris après critique », « Page des fiches » ; « Au plus n
+scènes à écrire par élève » et le complément d'un élève, que la maquette ne
+montre pas, sont dessinés à la construction. Sans retour du porteur à ce
+stade.
+
+- **Repris de la maquette :** la liste à gauche, par partie et chapitre,
+  avec la gommette de l'élève et le tampon d'état ; à droite, « Une
+  feuille par chapitre / par élève », « À la suite, à découper », le
+  décompte, les flèches d'une feuille à l'autre, « Imprimer n feuilles »,
+  puis la feuille ; la note ambre des scènes sans élève et ses deux liens ;
+  l'élève proposé en gommette pointillée ; le message de demande à la place
+  de la note. En 390 px, ce qui va sortir vient avant la liste.
+- **Écarts :** une scène qui ne peut pas être choisie dit pourquoi sur sa
+  ligne (« sans consigne : pas imprimée », « à votre nom : pas de fiche »,
+  « plus rien à écrire ») ; après « Répartir et imprimer », une ligne verte
+  « 1 scène répartie » porte « Annuler la répartition », avec « tant que
+  vous restez sur cette page » ; pendant le message de demande,
+  « Imprimer » perd son aplat, pour que l'écran garde un seul bouton
+  plein ; le message nomme la scène par sa référence et son titre, se
+  referme par « Échap », et le clavier revient à « Imprimer ».
+- **Le nombre fixé (sans maquette) :** en « par élève », tous élèves
+  affichés, un lien discret sous le réglage, « Fixer un nombre de scènes
+  par élève ». Cliqué, il devient une phrase dont le nombre s'écrit, « Au
+  plus [4] scènes à écrire par élève », suivie d'un « i » (« Que compte ce
+  nombre ? ») et de « Retirer ». Le nombre ne donne rien à lui seul : la
+  phrase reste à la hauteur du lien, et « Imprimer » ne bouge pas.
+- **Compléter un élève (sans maquette) :** sous la note des scènes sans
+  élève, à la suite de « La répartir entre les élèves du chapitre », une
+  ligne « ou compléter jusqu'à 4 scènes : » et une puce par élève à qui il
+  en reste moins — gommette, prénom, ce qu'il lui reste à écrire. Cliquée,
+  la puce passe en graphite, comme une bascule choisie, et dit ce qu'il
+  recevrait (« 1 + 1 ») ; un second clic la rend. Quand il ne reste plus
+  de scène libre cochée, les autres puces s'éteignent et la ligne le dit.
+  La place de « + 1 » est réservée dans la puce, qui ne change pas de
+  largeur.
+- **Après un partage sous le nombre fixé :** la note dit pourquoi des
+  scènes restent sans élève, en ambre : « 2 restent sans élève, sur aucune
+  feuille : chaque élève du chapitre a déjà 2 scènes à écrire. »
+- **Critique avant de le montrer (skill impeccable, deux lectures
+  séparées) :** le détecteur ne relève rien ; la revue de design donne
+  23/40 au premier dessin. Corrigé aussitôt : le cadre des élèves à
+  compléter, d'abord posé au-dessus de la barre d'impression, loin de « La
+  répartir », alors que les deux commandes portent sur les mêmes scènes et
+  s'excluent ; un prénom qui se cliquait sans rien recevoir ; « Imprimer »
+  qui descendait puis remontait ; « Limiter » et « Ils ont moins de »,
+  remplacés par « Fixer un nombre » et « compléter jusqu'à » ; « Au plus 1
+  scènes » ; le clavier perdu après « Annuler ». La reprise n'a pas été
+  mesurée de nouveau.
+- **Laissé en l'état, à juger à l'essai :** le champ du nombre s'ouvre
+  vide ; répartir et compléter ne se cumulent pas ; avec une classe
+  entière et beaucoup de scènes libres, la ligne des puces peut passer sur
+  deux ou trois lignes ; en 390 px, « Retirer » passe sous la phrase.
+- **Non construit :** rien d'autre qu'une fenêtre d'impression du
+  navigateur — ni PDF, ni mise en page réglable.
+
 Relevé par les critiques et toujours vrai dans l'application : le tampon
 d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de

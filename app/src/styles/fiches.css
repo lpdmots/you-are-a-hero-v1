@@ -1,0 +1,487 @@
+/* Fiches de rédaction (docs/design.md, « Suivi repris après critique », « Page des fiches »
+   et « Feuille de rédaction ») : la liste des scènes, les réglages du tirage, la feuille. */
+
+.lot-intro {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  color: var(--graphite-2);
+}
+.lot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+  margin-top: 20px;
+}
+
+/* ——— À gauche : les scènes, par partie et chapitre ——— */
+.lot-filtres {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 20px;
+  margin-bottom: 12px;
+}
+.lot-raccourcis {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.lot-raccourcis__vider {
+  margin-left: 18px;
+}
+.lot-partie h2 {
+  margin: 14px 0 8px;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.lot-chap {
+  margin: 0 0 10px;
+  padding: 0 0 6px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  overflow: hidden;
+}
+.lot-chap legend {
+  float: left;
+  width: 100%;
+  padding: 8px 14px 8px 20px;
+  background: var(--bandeau);
+  box-shadow: inset 6px 0 0 var(--dos);
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.lot-scene {
+  clear: both;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 14px;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.lot-scene:hover {
+  background: var(--feuille-2);
+}
+.lot-scene__titre {
+  flex: 1;
+  min-width: 0;
+}
+.lot-scene__titre .sans-consigne {
+  margin-left: 8px;
+  font-size: var(--t-xs);
+}
+.lot-scene .tampon {
+  font-size: 0.7rem;
+}
+/* Ce qui ne se choisit pas reste dans la liste, en retrait, avec sa raison */
+.lot-scene--hors {
+  color: var(--graphite-3);
+  cursor: default;
+}
+.lot-scene--hors:hover {
+  background: none;
+}
+.lot-scene .case:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.lot-scene__qui {
+  display: inline-flex;
+  flex: none;
+  margin-block: -2px;
+}
+/* L'élève proposé : sa gommette en pointillé, tant que rien ne lui est donné */
+.lot-scene__qui--propose .gommette {
+  background: var(--feuille);
+  box-shadow: none;
+  outline: 1.5px dashed var(--g);
+  outline-offset: -1.5px;
+}
+
+/* ——— À droite : le tirage, ce qui va sortir, la feuille ——— */
+.lot-apercu {
+  position: sticky;
+  top: 76px;
+  display: grid;
+  gap: 12px;
+}
+.lot-reglage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.lot-suite {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 6px;
+  color: var(--graphite);
+  font-weight: 600;
+  cursor: pointer;
+}
+/* « Au plus n scènes à écrire par élève » : une phrase dont le nombre s'écrit */
+.lot-plafond {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  min-height: 38px;
+  font-size: var(--t-s);
+}
+.lot-plafond__phrase {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+.lot-plafond input {
+  width: 3.4em;
+  min-height: 36px;
+  padding: 0 6px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 8px;
+  background: var(--feuille);
+  color: var(--graphite);
+  font: inherit;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+.lot-plafond input:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
+}
+/* Les élèves à compléter, à la suite de « répartir » : une ligne, un prénom, ce qu'il lui reste à écrire */
+.lot-notes {
+  display: grid;
+  gap: 8px;
+}
+.lot-completer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.lot-completer small {
+  font-size: var(--t-s);
+  color: var(--graphite-3);
+}
+.lot-eleve {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 38px;
+  padding: 4px 12px 4px 5px;
+  border: 0;
+  border-radius: 99px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  cursor: pointer;
+}
+.lot-eleve b {
+  font-variant-numeric: tabular-nums;
+  font-weight: 800;
+}
+/* « + 1 » a sa place dès le départ : la puce ne change pas de largeur quand on la clique */
+.lot-eleve i {
+  font-style: normal;
+}
+.lot-eleve i[data-vu="non"] {
+  visibility: hidden;
+}
+.lot-eleve:disabled {
+  opacity: 0.5;
+  cursor: default;
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.lot-eleve:not(:disabled):hover {
+  box-shadow: inset 0 0 0 1.5px var(--canard);
+}
+.lot-eleve:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+/* Complété : en graphite, comme une bascule choisie */
+.lot-eleve[aria-pressed="true"] {
+  background: var(--graphite);
+  box-shadow: none;
+  color: #fff;
+}
+.lot-apercu__barre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+.lot-apercu__barre > p {
+  margin-right: auto;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.lot-pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-s);
+  font-variant-numeric: tabular-nums;
+}
+.lot-imprimer {
+  justify-content: center;
+  min-height: 40px;
+}
+.lot-note {
+  color: var(--e-valider);
+  font-size: var(--t-s);
+}
+.lot-note--prop {
+  color: var(--graphite-2);
+}
+/* Ce qui reste sans élève attend encore : en ambre, dans la note grise */
+.lot-note__reste {
+  color: var(--e-valider);
+}
+.lot-note--fait {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  color: var(--e-valide);
+  font-weight: 700;
+}
+.lot-note--fait .ic {
+  flex: none;
+  width: 18px;
+  height: 18px;
+}
+.lot-note--fait small {
+  color: var(--graphite-2);
+  font-weight: 400;
+}
+/* Le message de demande : rien n'est donné aux élèves avant « Répartir et imprimer » */
+.lot-confirme {
+  display: grid;
+  gap: 8px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow:
+    var(--ombre-cahier),
+    inset 0 0 0 1.5px var(--canard);
+  font-size: var(--t-s);
+}
+.lot-confirme p:first-child {
+  font-size: 1rem;
+  outline: none;
+}
+.lot-confirme > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* ——— La feuille : compacte, sans place pour écrire ——— */
+.fr-feuille {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  padding: 7% 8%;
+  border-radius: 4px;
+  background: #fff;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 16px 34px -14px rgba(0, 0, 0, 0.3);
+  color: #1e2226;
+  font-size: 12.5px;
+}
+.fr-feuille[data-vue="non"] {
+  display: none;
+}
+.fr-partie {
+  display: grid;
+  gap: 9px;
+}
+.fr-tete {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 3px solid var(--dos);
+  color: var(--graphite-2);
+  font-size: 11px;
+}
+.fr-tete b {
+  color: var(--graphite);
+}
+.fr-mode {
+  color: var(--graphite-2);
+  font-size: 11px;
+  font-style: italic;
+}
+.fr-chapitre {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 800;
+}
+.fr-liste {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-scene {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 9px 0;
+  border-top: 1px solid var(--trait-fort);
+  break-inside: avoid;
+}
+.fr-scene:first-child {
+  padding-top: 2px;
+  border-top: 0;
+}
+.fr-num {
+  font-family: var(--f-code);
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+.fr-corps {
+  display: grid;
+  gap: 3px;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+.fr-corps h3 {
+  font-size: 13px;
+  font-weight: 800;
+}
+.fr-consigne {
+  white-space: pre-wrap;
+}
+.fr-lib {
+  margin-top: 3px;
+  color: var(--graphite-2);
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.fr-texte {
+  padding-left: 8px;
+  border-left: 2px solid var(--trait-fort);
+  font-family: var(--f-recit);
+  font-size: 12px;
+}
+.fr-reprise {
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  white-space: pre-wrap;
+}
+.fr-choix {
+  color: var(--graphite-2);
+  font-family: var(--f-recit);
+  font-style: italic;
+}
+.fr-image {
+  width: 66px;
+  aspect-ratio: 1;
+  border-radius: 5px;
+  overflow: hidden;
+}
+.fr-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.fr-coupe {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 10px -4% 12px;
+  color: var(--graphite-2);
+  font-size: 10px;
+}
+.fr-coupe::before,
+.fr-coupe::after {
+  content: "";
+  flex: 1;
+  border-top: 1.5px dashed var(--graphite-3);
+}
+.fr-pied {
+  margin-top: 4px;
+  color: var(--graphite-3);
+  font-size: 9.5px;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .lot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  /* Ce qui va sortir d'abord, la liste ensuite */
+  .lot-apercu {
+    position: static;
+    order: -1;
+  }
+  .fr-scene {
+    grid-template-columns: 40px minmax(0, 1fr);
+  }
+  .fr-image {
+    display: none;
+  }
+  /* Au doigt : des cibles de 44 points */
+  .lot-eleve,
+  .lot-plafond .lien,
+  .lot-plafond input {
+    min-height: 44px;
+  }
+}
+
+/* À l'impression : les feuilles, et elles seules ; une par page, sauf « à la suite » */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 15mm;
+  }
+  .hors-impression {
+    display: none !important;
+  }
+  .page--fiches .lot,
+  .page--fiches .lot-apercu {
+    display: block;
+    position: static;
+    margin: 0;
+  }
+  .fr-feuille,
+  .fr-feuille[data-vue="non"] {
+    display: flex;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+    break-after: page;
+  }
+  .fr-feuille:last-of-type {
+    break-after: auto;
+  }
+  .fr-coupe {
+    margin-inline: 0;
+  }
+}

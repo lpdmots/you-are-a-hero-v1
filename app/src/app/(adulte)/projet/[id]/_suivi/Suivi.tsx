@@ -211,6 +211,21 @@ export function Suivi({
         <Bulle question="Que veulent dire ces états ?">
           <LegendeDesEtats deClasse={projet.deClasse} />
         </Bulle>
+        {/* Les fiches des scènes listées à ce moment-là ; un projet personnel n'en a pas (F06-AC57, F07-AC69) */}
+        {projet.deClasse ? (
+          <div className="suivi-fiches">
+            <Link className="btn" href={`/projet/${projet.id}/fiches${adresse ? `?suivi=${encodeURIComponent(adresse)}` : ""}`}>
+              <Icone nom="imprimer" />
+              Imprimer les fiches de rédaction
+            </Link>
+            <Bulle question="Que sont les fiches de rédaction ?">
+              <span>
+                Une feuille par chapitre ou par élève : les scènes à écrire ou à reprendre, sous leur référence, avec leur consigne. Les élèves écrivent sur leur
+                cahier, puis recopient. Une scène sans consigne n’est pas imprimée. Vous choisirez les scènes avant d’imprimer.
+              </span>
+            </Bulle>
+          </div>
+        ) : null}
       </div>
       {listees.length === 0 ? (
         aucune()

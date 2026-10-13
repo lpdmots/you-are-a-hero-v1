@@ -844,6 +844,20 @@ que la page a fini de se placer en haut. L'écran d'aide suit le motif du
 plan : « Ne plus afficher » tient au compte (`aides_masquees`), « déjà vue
 pendant cette visite » à un témoin de navigation.
 
+**Les fiches de rédaction (lot 5).** Aucune table, aucune fonction de base
+de plus. Tout ce que la page propose est calculé sans base
+(`src/domaine/fiches.ts`) : ce qui se choisit, les feuilles, le partage des
+scènes sans élève, le nombre fixé, le complément ; la page ne fait que
+l'afficher, et ce qui est affiché est ce qui s'imprime. La feuille est du
+HTML ordinaire, imprimé par le navigateur (`window.print`) avec une feuille
+de style d'impression qui masque tout le reste : pas de PDF, la chaîne du
+livre (Paged.js, Chromium) n'y sert pas. Le partage n'est écrit qu'à la
+confirmation, par une mise à jour qui ne touche que les scènes restées
+libres ; la base vérifie, comme pour toute prise en charge, que l'élève est
+du chapitre. « Annuler la répartition » tient à l'état de la page et non à
+la base : la page quittée, rien ne distingue plus une scène donnée par le
+partage d'une scène prise autrement, ce qui est la règle (F07-AC73).
+
 **Rappel avant « prête ».** Calculé par le serveur au moment du choix,
 d'après le texte que la page vient d'enregistrer et les liens que la base en
 a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait
