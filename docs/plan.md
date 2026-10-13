@@ -948,6 +948,36 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 616 passent — 157 sur les règles, 211 contre
       la base locale, 248 parcours —, dont 27 pour ce lot (13, 1 et 13).
       Captures 481 à 491.
+  - **Lot 6 — encouragements et classement : construit le 13 octobre
+    2026.** Sur la page d'une scène, la fiche « Encouragements pour
+    Bilal » et ses trois tampons, « Effort », « Fine plume »,
+    « Créativité » : un clic donne, un second retire ; le tampon d'un élève
+    d'avant, « Effort, pour Alice » ; rien à donner sans élève, sur la scène
+    de l'enseignant ou sur un texte vide. Côté élève, le tampon reçu sur sa
+    scène et sur sa ligne de « Mon travail », ses totaux, et, si
+    l'enseignant le montre, les trois premiers de chaque catégorie et son
+    propre total. Au Suivi, vue « Élèves », la colonne « Encouragements »,
+    le classement, « Montrer le classement aux élèves » et « Voir la
+    suite ». Migration `encouragements`, appliquée à la base locale
+    seulement : la table des tampons, le réglage du projet, la fonction de
+    l'enseignant et celle du poste.
+    - **Critères fermés :** F07-AC50, AC51, AC76 à AC86.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      le tampon d'un élève d'avant se lit sur la fiche et ne s'y retire
+      pas ; un tampon déjà donné se retire toujours, même si le texte a été
+      vidé depuis ; un tampon reste compté quand sa scène est dans la
+      corbeille, et disparaît avec elle si elle est supprimée pour de bon ;
+      l'élève qui ne s'occupe plus d'une scène y voit encore le tampon
+      qu'il y a reçu ; une ligne du classement commence par le nombre de
+      tampons, non par un rang ; l'élève qui est parmi les trois premiers y
+      lit son prénom en gras, sans ligne « Toi » ; une catégorie où
+      personne n'a de tampon n'a pas de colonne ; quand la classe a plusieurs
+      histoires, « Mon travail » range les encouragements par histoire ; la colonne du
+      Suivi reste vide pour l'élève sans aucun tampon ; les trois
+      signes sont des marches, une plume et une ampoule, à l'encre graphite.
+    - **Tests automatiques :** 639 passent — 164 sur les règles, 219 contre
+      la base locale, 256 parcours —, dont 23 pour ce lot (7, 8 et 8).
+      Captures 501 à 513.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

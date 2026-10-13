@@ -6,6 +6,7 @@ import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets
 import { filtresDepuis } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { textesGardesDuProjet } from "@/serveur/copie";
+import { encouragementsDuProjet } from "@/serveur/encouragements";
 import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
 import { EnteteProjet } from "../_commun/EnteteProjet";
@@ -61,8 +62,10 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else if (onglet === "suivi") {
-    const [plan, eleves, gardes, magasin, demande] = await Promise.all([
+    const [plan, eleves, gardes, magasin, demande, encouragements] = await Promise.all([
       planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), textesGardesDuProjet(enseignant, projet.id), cookies(), searchParams,
+      // Un projet personnel n'a ni encouragements ni classement (F07.5)
+      deClasse ? encouragementsDuProjet(enseignant, projet.id) : undefined,
     ]);
     contenu = (
       <Suivi
@@ -70,6 +73,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
         plan={plan}
         eleves={eleves}
         gardes={gardes}
+        encouragements={encouragements}
         filtres={filtresDepuis(demande)}
         vue={demande.vue === "eleves" ? "eleves" : "scenes"}
         aideMasquee={enseignant.aidesMasquees.includes("suivi")}

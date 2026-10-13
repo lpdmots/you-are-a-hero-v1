@@ -415,3 +415,77 @@ test("lot 5 : les fiches de rédaction", async ({ page }) => {
   await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
   await capturer(page, "fiches-390", true);
 });
+
+test("lot 6 : encouragements et classement", async ({ page, browser }) => {
+  test.setTimeout(300_000);
+  n = 500;
+  const prenoms = ["Alice", "Bilal", "Chloé", "Jade", "Lina", "Noé", "Adam", "Maëlys"];
+  const s = await classeQuiEcrit(page, prenoms);
+  await s.base.rpc("attribuer_chapitre", { p_chapitre: s.lisiere.id, p_eleves: prenoms.map((p) => ({ eleve: s.eleves[p].id })) });
+  const [sentier, pont] = s.lisiere.scenes;
+  const donner = async (scene: string, categorie: string) => {
+    const { error } = await s.base.rpc("encourager", { p_scene: scene, p_categorie: categorie, p_donner: true });
+    if (error) throw new Error(error.message);
+  };
+  const scenesDe = async (prenom: string, combien: number, categories: string[]) => {
+    for (let i = 0; i < combien; i += 1) {
+      const { data } = await s.base.rpc("creer_scene", { p_chapitre: s.lisiere.id });
+      const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string };
+      await s.base.from("scenes").update({ titre: `Fougères — le pas ${i + 1} de ${prenom}`, prise_par_eleve: s.eleves[prenom].id }).eq("id", ligne.scene_id);
+      await semerTexte(s.base, ligne.scene_id, ["Un texte."]);
+      for (const c of categories) await donner(ligne.scene_id, c);
+    }
+  };
+  await s.base.from("scenes").update({ titre: "Sentier — le chant dans les fougères", consigne: "Raconte ce que Lou entend quand le chant l’attire vers les fougères.", prise_par_eleve: s.eleves.Bilal.id }).eq("id", sentier);
+  await semerTexte(s.base, sentier, ["Le chant était si doux que Lou en oublia la barque. Il venait de derrière les fougères, là où la brume restait accrochée aux branches comme de la laine mouillée.", "Lou fit un pas, puis un autre. Les feuilles lui chatouillaient les joues."]);
+  await s.base.from("scenes").update({ titre: "Pont — la corde qui chante", prise_par_eleve: s.eleves.Alice.id }).eq("id", pont);
+  await semerTexte(s.base, pont, ["Le pont grinçait sous les pas de Lou."]);
+  await donner(pont, "effort");
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Bilal.id }).eq("id", pont);
+
+  // La page de la scène, côté enseignant
+  await aller(page, `/projet/${s.projet}/scene/${sentier}`);
+  await capturer(page, "encouragements-fiche-rien-donne");
+  const fiche = page.getByRole("region", { name: /^Encouragements/ });
+  await fiche.getByRole("button", { name: "Effort", exact: true }).click();
+  await fiche.getByRole("button", { name: "Créativité", exact: true }).click();
+  await page.waitForTimeout(400);
+  await capturer(page, "encouragements-fiche-deux-donnes");
+  await fiche.scrollIntoViewIfNeeded();
+  await fiche.screenshot({ path: `${dossier}/${(n += 1)}-encouragements-fiche-de-pres.png` });
+  await aller(page, `/projet/${s.projet}/scene/${pont}`);
+  await page.getByRole("region", { name: /^Encouragements/ }).screenshot({ path: `${dossier}/${(n += 1)}-encouragements-fiche-eleve-d-avant.png` });
+  await aller(page, `/projet/${s.projet}/scene/${s.sanctuaire.scenes[0]}`);
+  await page.getByRole("region", { name: /^Encouragements/ }).screenshot({ path: `${dossier}/${(n += 1)}-encouragements-fiche-sans-eleve.png` });
+
+  // Le classement : Lina 4, Alice et Bilal 3, Jade 2, Chloé 1 en « Effort » ; d'autres en « Fine plume » et « Créativité »
+  await scenesDe("Lina", 4, ["effort"]);
+  await scenesDe("Bilal", 2, ["effort", "plume"]);
+  await scenesDe("Alice", 2, ["effort"]);
+  await scenesDe("Jade", 2, ["effort", "creativite"]);
+  await scenesDe("Chloé", 1, ["effort", "plume", "creativite"]);
+  await scenesDe("Adam", 1, ["plume"]);
+  await aller(page, `/projet/${s.projet}/suivi?vue=eleves&direct=1`);
+  await capturer(page, "suivi-eleves-encouragements", true);
+  await page.getByText("Montrer le classement aux élèves").click();
+  await page.getByRole("button", { name: "Voir la suite" }).click();
+  await page.getByRole("region", { name: "Classement des encouragements" }).scrollIntoViewIfNeeded();
+  await capturer(page, "suivi-classement-la-suite");
+
+  // Côté élève
+  const bilal = await posteDe(browser, s, "Bilal");
+  await capturer(bilal.page, "eleve-mon-travail-encouragements", true);
+  await aller(bilal.page, `/travail/scene/${sentier}`);
+  await capturer(bilal.page, "eleve-scene-tampons-recus");
+  const chloe = await posteDe(browser, s, "Chloé");
+  await chloe.page.getByRole("region", { name: "Tes encouragements" }).scrollIntoViewIfNeeded();
+  await capturer(chloe.page, "eleve-classement-et-son-total");
+  await chloe.page.setViewportSize({ width: 390, height: 844 });
+  await capturer(chloe.page, "eleve-mon-travail-390", true);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${s.projet}/suivi?vue=eleves&direct=1`);
+  await capturer(page, "suivi-eleves-encouragements-390", true);
+  await aller(page, `/projet/${s.projet}/scene/${sentier}`);
+  await capturer(page, "encouragements-scene-390", true);
+});

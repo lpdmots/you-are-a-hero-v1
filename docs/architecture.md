@@ -858,6 +858,22 @@ du chapitre. « Annuler la répartition » tient à l'état de la page et non à
 la base : la page quittée, rien ne distingue plus une scène donnée par le
 partage d'une scène prise autrement, ce qui est la règle (F07-AC73).
 
+**Encouragements et classement (lot 6).** Une table `encouragements` :
+une ligne par scène, élève et catégorie, l'élève étant celui qui s'occupait
+de la scène quand le tampon a été donné, ce qui suffit à le lui laisser
+quand la scène change de main. L'adulte la lit par son accès et ne l'écrit
+que par `encourager(scène, catégorie, donner)`, qui dit ce qu'on veut et non
+« l'inverse de ce qui est » : deux clics partis ensemble ne se contredisent
+pas. Le poste ne lit jamais la table. `mes_encouragements(projet)` lui rend
+les tampons de l'élève identifié et, quand `projets.classement_montre` est
+vrai, les trois meilleurs totaux de chaque catégorie, calculés dans la base
+(`dense_rank`) parmi les élèves encore inscrits : le total d'un camarade
+hors de ces trois ne quitte pas le serveur, ce qu'un tri fait dans la page
+n'aurait pas garanti (F07-AC86). Le classement de l'enseignant, entier, est
+calculé sans base (`src/domaine/encouragements.ts`) d'après les tampons du
+projet. Rien n'est écrit sur la scène : ni son état, ni son texte, ni le
+livre ne changent.
+
 **Rappel avant « prête ».** Calculé par le serveur au moment du choix,
 d'après le texte que la page vient d'enregistrer et les liens que la base en
 a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait

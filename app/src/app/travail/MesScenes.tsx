@@ -1,6 +1,8 @@
 import Link from "next/link";
+import { TamponsRecus } from "@/composants/Encouragements";
 import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
+import type { Categorie } from "@/domaine/encouragements";
 import { referenceScene } from "@/domaine/recit";
 import { attendLEleve, ceQueDitLaScene, phraseAPrendre, sceneSuivante } from "@/domaine/travail";
 import type { MonTravail } from "@/serveur/travail-eleve";
@@ -10,9 +12,10 @@ import styles from "./travail.module.css";
  * « Les scènes dont tu t'occupes » (F06.5, 13 octobre 2026) : une ligne par scène, la plus
  * urgente en tête, une seule avec le bouton plein. Sous la liste, ce qu'il reste à prendre
  * dans son chapitre, qui est le seul endroit où l'on prend une scène. Les scènes des
- * camarades n'y sont pas : elles se lisent dans le chapitre.
+ * camarades n'y sont pas : elles se lisent dans le chapitre. La ligne d'une scène encouragée
+ * porte son tampon ; les autres n'ont rien, ni emplacement vide (F07-AC81).
  */
-export function MesScenes({ travail, prof }: { travail: MonTravail; prof: string }) {
+export function MesScenes({ travail, prof, tampons = {} }: { travail: MonTravail; prof: string; tampons?: Record<string, Categorie[]> }) {
   const { scenes, aPrendre, chapitres } = travail;
   const suivante = sceneSuivante(scenes);
   const plusieurs = chapitres.length > 1;
@@ -45,7 +48,10 @@ export function MesScenes({ travail, prof }: { travail: MonTravail; prof: string
                     {phrase}
                   </p>
                 </div>
-                <TamponScene etat={s.etat} vide={s.vide} />
+                <span className={styles.sceneMarques}>
+                  <TamponsRecus categories={tampons[s.id] ?? []} />
+                  <TamponScene etat={s.etat} vide={s.vide} />
+                </span>
                 <Link className={`btn${s === suivante ? " btn--primaire" : ""}`} href={`/travail/scene/${s.id}`} aria-label={`${bouton} : ${ref}${s.titre ? ` — ${s.titre}` : ""}`}>
                   {bouton}
                   <Icone nom="fleche" />

@@ -24,8 +24,10 @@ import { chapitresDe, departDe, referenceScene, scenesDe, type ElevePlan, type P
 import { filtrerHorsEtat, filtresDepuis, lignesDuPlan, SANS_FILTRE, suivanteAValider } from "@/domaine/suivi";
 import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
+import { pourquoiSansTampon, type Categorie, type Encouragement } from "@/domaine/encouragements";
 import type { Relecture } from "@/serveur/relecture";
 import { reglerScene, supprimer } from "../../../actions-recit";
+import { encourager } from "../../../actions-encouragements";
 import { changerEtat, relireRelecture } from "../../../actions-relecture";
 import {
   ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, reglerVoisines, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
@@ -36,6 +38,7 @@ import { ChoisirDepart } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import { FicheNumero } from "./FicheNumero";
+import { FicheEncouragements } from "./Encouragements";
 import { FicheDecision, FicheRemarque, FicheRemises, nomDeRemise } from "./Relecture";
 import { VersionsPrecedentes } from "./VersionsPrecedentes";
 import styles from "./scene.module.css";
@@ -59,12 +62,14 @@ const instant = (): number => Date.now();
  * tampon ; la fiche de décision porte l'étape suivante (F07.1, F11.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins,
+  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
   /** L'état de la scène, ce que les élèves ont remis, les reprises demandées (F07.1, F07.3) */
   relecture: Relecture;
+  /** Les tampons d'encouragement donnés sur cette scène (F07.5) ; aucun en projet personnel */
+  encouragements: Encouragement[];
   /** Le livre autour de la scène : numéros, scènes, façon d'annoncer un numéro */
   livre: Livre;
   jeu: Jeu;
@@ -120,6 +125,8 @@ export function PageScene({
   const [suspendue, setSuspendue] = useState<string | null>(null);
   // Une décision vient d'être prise sur une scène à valider : la fiche propose la suivante (F06-AC63)
   const [decidee, setDecidee] = useState(false);
+  const [encouragements, setEncouragements] = useState(encouragementsRecus);
+  const [tamponEnCours, setTamponEnCours] = useState<Categorie | null>(null);
   // La version du texte que la page montre : la base la compare avant « Validé » ou « Prête » (F07-AC26)
   const versionLue = useRef(recu.version);
   // Après un conflit de l'adulte, la page montre un texte qu'il n'a pas relu (F08-AC21)
@@ -264,6 +271,15 @@ export function PageScene({
    * Mettre la scène dans l'état choisi, depuis le tampon ou depuis la fiche (F07.1). Ce que
    * l'adulte vient de corriger s'enregistre d'abord : sans cela, l'état attend (F07-AC65).
    */
+  // Un clic donne, un second retire (F07-AC76) : la fiche montre ce que la base a gardé
+  const encouragerScene = async (categorie: Categorie, donner: boolean) => {
+    setTamponEnCours(categorie);
+    const fait = await encourager(scene.id, categorie, donner);
+    setTamponEnCours(null);
+    if (fait.ok) setEncouragements(fait.donnes);
+    else dire({ texte: fait.erreur });
+  };
+
   const choisirEtat = async (voulu: Etat, depuis: "tampon" | "fiche", options: { confirme?: boolean; remarque?: string } = {}) => {
     if (depuis === "fiche" && instant() - dernierePose.current < DOUBLE_CLIC_MS) return;
     if (voulu === etatScene && !rappel) return;
@@ -708,6 +724,16 @@ export function PageScene({
                 }
               />
               {etatScene === "reprendre" && remarques.length ? <FicheRemarque remarque={remarques[remarques.length - 1]} qui={qui} /> : null}
+              {projet.deClasse ? (
+                <FicheEncouragements
+                  eleve={scene.priseParEleve && qui ? { id: scene.priseParEleve, nom: qui } : null}
+                  raison={pourquoiSansTampon({ priseParEleve: scene.priseParEleve, priseParEnseignant: scene.priseParEnseignant, texteVide: vide })}
+                  donnes={encouragements}
+                  nomEleve={nomEleve}
+                  enCours={tamponEnCours}
+                  onEncourager={(categorie, donner) => void encouragerScene(categorie, donner)}
+                />
+              ) : null}
             <details className="carnet-fiche carnet-fiche--pli" open={consigneOuverte} onToggle={(e) => setConsigneOuverte(e.currentTarget.open)}>
               <summary>
                 <header>

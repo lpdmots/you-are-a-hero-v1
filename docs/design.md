@@ -1733,6 +1733,69 @@ stade.
 - **Non construit :** rien d'autre qu'une fenêtre d'impression du
   navigateur — ni PDF, ni mise en page réglable.
 
+**Lot 6 — encouragements et classement.** Aucun écran dans la maquette :
+tout est dessiné à la construction, dans le système « Cahiers
+d'aventure ». Sans retour du porteur à ce stade.
+
+- **Le tampon :** un rond à l'encre graphite, à double filet, posé un peu
+  de travers, comme le tampon du maître sur une copie. Aucune couleur
+  d'état : la catégorie se lit à son signe et à son mot — des marches pour
+  « Effort », une plume pour « Fine plume », une ampoule pour
+  « Créativité ». Pas encore donné, c'est sa place, en pointillé, droite,
+  que l'enseignant seul voit. Dans une ligne dense (table du Suivi,
+  en-tête d'une colonne du classement), le signe s'écrit sans son rond :
+  un rond de plus s'y confondrait avec une gommette.
+- **Page de scène, enseignant :** la fiche « Encouragements pour Bilal »,
+  au filet graphite, sous la fiche de décision et avant la consigne. Trois
+  boutons côte à côte, le tampon de 42 points et son mot dessous ; donné,
+  le tampon s'encre et le mot passe en gras ; un appui bref quand on vient
+  de le poser, sauf mouvement réduit. Sous les boutons, le tampon d'un
+  élève d'avant, en ligne : « Effort, pour Alice ». Sans personne à
+  encourager, la fiche tient en une phrase.
+- **Scène de l'élève :** une fiche « Mme Laurent t'encourage », les
+  tampons reçus en grand (56 points) avec leur mot ; rien quand il n'en a
+  pas, et jamais ceux d'un camarade.
+- **« Mon travail » :** le tampon reçu sur la ligne de la scène, avant
+  l'état ; sous la liste, « Tes encouragements », d'un titre plus petit
+  que celui des scènes, avec ses totaux (« Effort 3 »). Quand l'enseignant
+  montre le classement, les totaux passent dans l'en-tête des colonnes
+  (« Effort … toi 1 ») et la carte porte « Ceux qui en ont le plus, dans
+  la classe ». Sous 720 points, les tampons et l'état d'une scène passent
+  sous son titre, sur leur rangée, pour toutes les lignes.
+- **Le classement :** une colonne par catégorie, sur trois places fixes ;
+  chaque ligne donne des prénoms, puis leur nombre de tampons à droite.
+  Aucun numéro ne précède un prénom, ni podium, ni médaille. L'élève y lit
+  son prénom en gras s'il y est ; son propre total est dans l'en-tête, hors
+  de la liste.
+- **Suivi, vue « Élèves » :** une colonne « Encouragements » — les trois
+  signes une fois dans l'en-tête, trois nombres alignés dessous, un zéro
+  laissé vide ; en fiches, sur petit écran, chaque nombre reprend son
+  signe. Sous la table, le bloc « Classement des encouragements », avec
+  l'interrupteur « Montrer le classement aux élèves », une bulle « Que
+  voient les élèves ? », et « Voir la suite », qui ajoute les lignes
+  suivantes en gris, légendées « La suite, en gris, n'est montrée qu'à
+  vous ».
+- **Critique avant de le montrer (skill impeccable, deux lectures
+  séparées) :** le détecteur ne relève rien ; la revue de design donne
+  23/36 au premier dessin. Corrigé aussitôt : « Toi : 1 », posé sous la
+  troisième ligne, se lisait comme un rang, que la règle interdit ; les
+  signes étaient illisibles dans un rond de 24 points (le sommet d'abord
+  dessiné pour « Effort » est remplacé par des marches) ; la colonne du
+  Suivi portait vingt-quatre ronds et des zéros barrés ; le bloc pesait
+  autant que la liste des scènes dans « Mon travail » ; la fiche de
+  l'enseignant, avec des tampons de 56 points, poussait la consigne sous
+  le pli ; la ligne d'une scène s'écrasait en 390 points ; l'appui du
+  tampon se rejouait à chaque ouverture de la page. La reprise n'a pas été
+  mesurée de nouveau.
+- **À dire au porteur, relevé par la critique :** dans une petite classe,
+  en début de projet, trois paliers ex æquo compris peuvent couvrir
+  presque tous les élèves encouragés (quatre sur cinq dans l'exemple de
+  F07-AC83) : celui qui n'y est pas se déduit. La règle n'est pas changée.
+- **Laissé en l'état, à juger à l'essai :** le tampon d'un élève d'avant
+  ne se retire pas depuis la fiche ; le classement est déployé d'office
+  chez l'élève quand l'enseignant le montre ; le titre « Tes
+  encouragements » coiffe aussi le classement.
+
 Relevé par les critiques et toujours vrai dans l'application : le tampon
 d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de

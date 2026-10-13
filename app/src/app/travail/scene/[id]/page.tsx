@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Messages } from "@/composants/Messages";
+import { mesEncouragements } from "@/serveur/encouragements";
 import { contexteEleve, sceneDuPoste } from "@/serveur/recit-eleve";
 import { EnteteEleve } from "../../EnteteEleve";
 import { SceneEleve } from "./SceneEleve";
@@ -18,11 +19,13 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
   if (!contexte.ouvert) redirect("/travail");
   const scene = await sceneDuPoste(contexte, id);
   if (!scene) notFound();
+  // Les tampons que cet élève a reçus sur cette scène, et eux seuls (F07-AC80, AC82)
+  const encouragements = (await mesEncouragements(contexte, scene.projetId)).tampons.filter((t) => t.sceneId === scene.id).map((t) => t.categorie);
   return (
     <Messages>
       <EnteteEleve contexte={contexte} auTravail />
       <main className="page page--eleve">
-        <SceneEleve scene={scene} prof={contexte.prof} eleves={contexte.eleves} />
+        <SceneEleve scene={scene} prof={contexte.prof} eleves={contexte.eleves} encouragements={encouragements} />
       </main>
     </Messages>
   );

@@ -1,0 +1,316 @@
+/* Encouragements de l'enseignant (F07.5 ; docs/design.md, « Étape 4 construite », lot 6).
+   Un tampon est un rond à l'encre graphite, posé un peu de travers : la marque du maître sur
+   une copie. Aucune couleur d'état — ambre, brique, vert, bleu, violet disent où en est une
+   scène, et le canard ce qui se clique. La catégorie se lit au signe et au mot. */
+
+.encre {
+  --penche: 0deg;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--feuille);
+  color: var(--graphite);
+  /* Double filet d'un tampon encreur : un trait plein, un blanc, un trait fin */
+  box-shadow:
+    inset 0 0 0 2px var(--graphite),
+    inset 0 0 0 4px var(--feuille),
+    inset 0 0 0 5px var(--graphite);
+  transform: rotate(var(--penche));
+}
+.encre .ic {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2;
+}
+.encre--effort {
+  --penche: -8deg;
+}
+.encre--plume {
+  --penche: 6deg;
+}
+.encre--creativite {
+  --penche: -4deg;
+}
+/* Le signe seul, sans rond : dans une ligne dense, un rond de plus se confondrait avec une gommette */
+.signe-encre {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  color: var(--graphite);
+  stroke-width: 2;
+}
+.encre--m {
+  width: 42px;
+  height: 42px;
+}
+.encre--m .ic {
+  width: 20px;
+  height: 20px;
+}
+.encre--g {
+  width: 56px;
+  height: 56px;
+  box-shadow:
+    inset 0 0 0 2.5px var(--graphite),
+    inset 0 0 0 5px var(--feuille),
+    inset 0 0 0 6px var(--graphite);
+}
+.encre--g .ic {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.8;
+}
+/* Pas encore donné : la place du tampon, en pointillé, droite */
+.encre--pale {
+  --penche: 0deg;
+  background: transparent;
+  color: var(--graphite-3);
+  box-shadow: none;
+  outline: 1.5px dashed var(--graphite-3);
+  outline-offset: -2px;
+}
+.encres {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+}
+
+/* ——— La fiche « Encouragements pour Bilal », sur la page de la scène ——— */
+.carnet-fiche--encre {
+  --filet: var(--graphite);
+}
+.encourager {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+}
+.encourager button {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 6px 4px 5px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--graphite-2);
+  font: inherit;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+}
+.encourager button:hover {
+  background: var(--feuille-2);
+}
+.encourager button:hover .encre--pale {
+  outline-color: var(--canard);
+  color: var(--canard);
+}
+.encourager button:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
+}
+.encourager button[aria-pressed="true"] {
+  color: var(--graphite);
+  font-weight: 800;
+}
+.encourager button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+.carnet-fiche--encre > .carnet-fiche__corps {
+  padding-block: 8px 10px;
+}
+/* Le tampon qu'on vient de poser : un appui bref, comme sur l'encreur */
+@media (prefers-reduced-motion: no-preference) {
+  .encourager button[data-pose] .encre {
+    animation: tamponner 180ms var(--ease);
+  }
+}
+@keyframes tamponner {
+  from {
+    transform: rotate(var(--penche)) scale(1.25);
+    opacity: 0.4;
+  }
+  to {
+    transform: rotate(var(--penche)) scale(1);
+    opacity: 1;
+  }
+}
+.encres-anciennes {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 8px 0 0;
+  border-top: 1px solid var(--trait);
+  list-style: none;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.encres-anciennes li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.encres-anciennes .signe-encre {
+  width: 16px;
+  height: 16px;
+  color: var(--graphite-2);
+}
+
+/* Côté élève : les tampons reçus sur sa scène, nommés */
+.encres-recues {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin: 0;
+  list-style: none;
+}
+.encres-recues li {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+
+/* ——— Le classement, une colonne par catégorie ——— */
+/* Trois places, qu'il y ait une, deux ou trois catégories : une colonne ne s'étale pas sur toute la largeur */
+.classement {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 28px;
+}
+@media (max-width: 720px) {
+  .classement {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+.classement__col h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 7px;
+  border-bottom: 2px solid var(--graphite);
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+/* Le total de l'élève qui regarde : dans l'en-tête, hors de la liste, pour ne pas s'y lire comme un rang */
+.classement__toi {
+  margin-left: auto;
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.classement__toi b {
+  color: var(--graphite);
+  font-weight: 800;
+}
+.classement__col ul {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.classement__col li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--trait);
+  font-size: var(--t-s);
+}
+.classement__col li b {
+  font-weight: 800;
+}
+.classement__moi {
+  font-weight: 800;
+}
+/* Chez l'enseignant, ce que « Voir la suite » ajoute, et que les élèves ne voient jamais */
+.classement__suite {
+  color: var(--graphite-3);
+}
+.classement__suite b {
+  font-weight: 600;
+}
+
+/* ——— Au Suivi, vue « Élèves » : la colonne des trois totaux, et le classement sous la table ——— */
+.enc-totaux {
+  display: inline-grid;
+  grid-template-columns: repeat(3, 30px);
+  justify-items: center;
+  align-items: center;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.enc-totaux > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.enc-totaux > span[data-zero] {
+  visibility: hidden;
+}
+/* Dans la table, les signes sont dits une fois, dans l'en-tête */
+td .enc-totaux .signe-encre {
+  display: none;
+}
+.enc-totaux--tete {
+  display: grid;
+  margin-top: 4px;
+}
+.enc-totaux--tete .signe-encre {
+  width: 16px;
+  height: 16px;
+  color: var(--graphite-2);
+}
+/* En fiches, sur petit écran : plus d'en-tête, chaque nombre reprend son signe, et un zéro ne s'écrit pas */
+@media (max-width: 720px) {
+  .enc-totaux {
+    display: inline-flex;
+    gap: 14px;
+    vertical-align: middle;
+  }
+  .enc-totaux > span[data-zero] {
+    display: none;
+  }
+  td .enc-totaux .signe-encre {
+    display: block;
+  }
+}
+.suivi-classement {
+  display: grid;
+  gap: 14px;
+  margin-top: 28px;
+  padding: 18px 20px 20px;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.suivi-classement__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+}
+.suivi-classement__tete h2 {
+  margin-right: auto;
+  font-size: var(--t-m);
+  font-weight: 800;
+}
+.suivi-classement__vide {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.suivi-classement__suite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 14px;
+  font-size: var(--t-s);
+  color: var(--graphite-3);
+}

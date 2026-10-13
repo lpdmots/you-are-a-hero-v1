@@ -3,10 +3,12 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
+import { SigneEncouragement } from "@/composants/Encouragements";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
 import { nomPourEleves } from "@/domaine/eleves";
+import { CATEGORIES, NOM_CATEGORIE, totauxParEleve, type Encouragement } from "@/domaine/encouragements";
 import { NOM_TAMPON, SIGNE_TAMPON, type Tampon } from "@/domaine/etats";
 import { couleurDeChapitre, motSansEleve, referenceScene, type Chapitre, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import {
@@ -17,6 +19,7 @@ import { de, pluriel } from "@/domaine/texte";
 import type { RappelTextes as Rappel } from "@/serveur/copie";
 import { RappelTextes } from "../_commun/RappelTextes";
 import { AideSuivi, LegendeDesEtats, QUI_S_EN_OCCUPE } from "./AideSuivi";
+import { ClassementDuSuivi } from "./ClassementSuivi";
 
 const vars = (rang: number): CSSProperties => {
   const c = couleurDeChapitre(rang);
@@ -33,12 +36,14 @@ const MINI: Record<Tampon, string> = { valider: "à valider", reprendre: "à rep
  * élèves (F06-AC91).
  */
 export function Suivi({
-  projet, plan, eleves, gardes, filtres: recus, vue: vueRecue, aideMasquee, aideVue, direct, revenu,
+  projet, plan, eleves, gardes, encouragements, filtres: recus, vue: vueRecue, aideMasquee, aideVue, direct, revenu,
 }: {
   projet: { id: string; deClasse: boolean };
   plan: Plan; eleves: ElevePlan[];
   /** Les scènes où un texte est gardé à part : seconde ligne de rappel (F08-AC11) */
   gardes: Rappel[];
+  /** Les tampons donnés dans le projet, et si le classement est montré aux élèves (F07.5) ; rien en projet personnel */
+  encouragements?: { donnes: Encouragement[]; classementMontre: boolean };
   filtres: FiltresSuivi;
   vue: "scenes" | "eleves";
   aideMasquee: boolean; aideVue: boolean;
@@ -339,7 +344,10 @@ export function Suivi({
     </>
   );
 
+  // Les totaux des élèves de la classe : un élève retiré garde ses tampons et sort des totaux affichés
+  const totaux = totauxParEleve(encouragements?.donnes ?? [], new Set(eleves.map((e) => e.id)));
   const vueEleves = (
+    <>
     <div className="table-defile">
       <table className="table-suivi table-eleves">
         <thead>
@@ -348,6 +356,18 @@ export function Suivi({
             <th scope="col">Chapitres</th>
             <th scope="col">Tout son chapitre</th>
             <th scope="col">S’en occupe</th>
+            <th scope="col">
+              Encouragements
+              {encouragements ? (
+                <span className="enc-totaux enc-totaux--tete" aria-hidden="true">
+                  {CATEGORIES.map((c) => (
+                    <span key={c} title={NOM_CATEGORIE[c]}>
+                      <SigneEncouragement categorie={c} />
+                    </span>
+                  ))}
+                </span>
+              ) : null}
+            </th>
             <th scope="col">À régler</th>
           </tr>
         </thead>
@@ -394,6 +414,18 @@ export function Suivi({
                   </span>
                 ))}
               </td>
+              <td data-lib="Encouragements">
+                {totaux.has(b.eleve.id) ? (
+                  <span className="enc-totaux" role="img" aria-label={CATEGORIES.map((c) => `${NOM_CATEGORIE[c]} ${totaux.get(b.eleve.id)![c]}`).join(", ")}>
+                    {CATEGORIES.map((c) => (
+                      <span key={c} data-zero={totaux.get(b.eleve.id)![c] ? undefined : ""}>
+                        <SigneEncouragement categorie={c} />
+                        {totaux.get(b.eleve.id)![c]}
+                      </span>
+                    ))}
+                  </span>
+                ) : null}
+              </td>
               <td>
                 {b.aRegler === "sans-chapitre" ? (
                   <span className="signal-ligne">
@@ -417,6 +449,8 @@ export function Suivi({
         </tbody>
       </table>
     </div>
+    {encouragements ? <ClassementDuSuivi projetId={projet.id} eleves={eleves} totaux={totaux} montre={encouragements.classementMontre} /> : null}
+    </>
   );
 
   return (

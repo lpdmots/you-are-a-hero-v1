@@ -276,6 +276,21 @@ const TRACES = {
       <path d="M9.5 12h5M9.5 15h5M9.5 18h3" />
     </>
   ),
+  // Encouragements (F07.5) : l'effort, des marches montées ; la fine plume ; la créativité, une idée
+  escalier: <path d="M3.5 19.5H8V15h4.5v-4.5H17V6h3.5" />,
+  plume: (
+    <>
+      <path d="M19.5 4.5C12 4.5 7 9 7 17c8 0 12.5-5 12.5-12.5z" />
+      <path d="M4.5 19.5L13 11" />
+    </>
+  ),
+  ampoule: (
+    <>
+      <path d="M12 3.5a6 6 0 0 0-3.6 10.8c.6.5 1 1.2 1 2v.2h5.2v-.2c0-.8.4-1.5 1-2A6 6 0 0 0 12 3.5z" />
+      <path d="M9.8 19.5h4.4" />
+      <path d="M12 16.5v-4" />
+    </>
+  ),
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

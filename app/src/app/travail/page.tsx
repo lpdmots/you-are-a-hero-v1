@@ -3,8 +3,11 @@ import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { ecrireHeure, finDePlage, prochaineOuverture } from "@/domaine/horaires";
 import { majuscule } from "@/domaine/texte";
+import type { Categorie } from "@/domaine/encouragements";
+import { mesEncouragements } from "@/serveur/encouragements";
 import { contexteEleve, histoiresDuPoste } from "@/serveur/recit-eleve";
 import { monTravail } from "@/serveur/travail-eleve";
+import { Encouragements } from "./Encouragements";
 import { EnteteEleve } from "./EnteteEleve";
 import { Histoire } from "./Histoire";
 import { MesScenes } from "./MesScenes";
@@ -24,6 +27,10 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
   const { texte } = await searchParams;
   // Hors des horaires, la base ne rend rien du récit : la page dit seulement quand il rouvre
   const [histoires, travail] = contexte.ouvert ? await Promise.all([histoiresDuPoste(contexte), monTravail(contexte)]) : [[], null];
+  // Ses encouragements, histoire par histoire ; ceux d'un camarade n'arrivent jamais jusqu'ici (F07-AC82)
+  const encouragements = await Promise.all(histoires.map(async (h) => ({ id: h.id, titre: h.titre, recu: await mesEncouragements(contexte, h.id) })));
+  const tampons: Record<string, Categorie[]> = {};
+  for (const t of encouragements.flatMap((h) => h.recu.tampons)) tampons[t.sceneId] = [...(tampons[t.sceneId] ?? []), t.categorie];
   const miens = histoires.flatMap((h) => h.parties.flatMap((p) => p.chapitres.filter((c) => c.profil).map((c) => ({ chapitre: c, partie: p.titre }))));
   const maintenant = new Date();
   const rouvre = contexte.ouvert ? null : prochaineOuverture(contexte.plages, maintenant);
@@ -93,7 +100,8 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
           </div>
         </section>
         {/* Hors des horaires, « Mon travail » ne liste rien (F06.4) ; sans chapitre, rien non plus à lister */}
-        {travail && miens.length > 0 ? <MesScenes travail={travail} prof={contexte.prof} /> : null}
+        {travail && miens.length > 0 ? <MesScenes travail={travail} prof={contexte.prof} tampons={tampons} /> : null}
+        <Encouragements histoires={encouragements} eleves={contexte.eleves} moi={contexte.moi} />
         {histoires.some((h) => h.parties.length) ? (
           <div className={styles.recherche}>
             <RechercheEleve />

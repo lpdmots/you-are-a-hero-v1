@@ -8,12 +8,14 @@ import { Copie } from "@/composants/copie/Copie";
 import type { Services } from "@/composants/copie/contexte";
 import { avantDePartir } from "@/composants/copie/sortie";
 import type { EtatTexte } from "@/composants/copie/useEnregistrementTexte";
+import { TamponEncouragement } from "@/composants/Encouragements";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { TamponScene } from "@/composants/TamponScene";
 import { nomPourEleves, type Eleve } from "@/domaine/eleves";
+import { NOM_CATEGORIE, type Categorie } from "@/domaine/encouragements";
 import { sEcrit } from "@/domaine/etats";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
@@ -33,7 +35,13 @@ type Geste = { sorte: "pris"; avant: Eleve | null } | { sorte: "rendu" };
  * l'enregistrement, porte « Remettre », et dit quoi faire quand rien ne s'enregistre
  * (F07.1, F08-AC04, AC05). Selon l'état, la scène s'écrit ou se lit, et l'écran dit pourquoi.
  */
-export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof: string; eleves: Eleve[] }) {
+export function SceneEleve({
+  scene, prof, eleves, encouragements = [],
+}: {
+  scene: SceneOuverte; prof: string; eleves: Eleve[];
+  /** Les tampons que cet élève a reçus sur cette scène ; ceux d'un camarade n'arrivent jamais ici (F07-AC80, AC82) */
+  encouragements?: Categorie[];
+}) {
   const routeur = useRouter();
   const dire = useMessage();
   const c = couleurDeChapitre(scene.chapitre.couleur);
@@ -426,7 +434,7 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
       {/* La copie reste montée sous la remarque montrée seule : rien ne s'ouvre deux fois pour écrire */}
       <div className={styles.sceneColonnes} hidden={!!remarqueSeule}>
         <section aria-label="Texte de la scène">{copie}</section>
-        {scene.consigne !== null || scene.ecriture ? (
+        {scene.consigne !== null || scene.ecriture || encouragements.length ? (
           <aside className="cote-copie">
             <div className="cote-copie__colle">
               <div ref={setPanneau} />
@@ -459,6 +467,24 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
                       <div className="carnet-fiche__corps">{consigne(scene.consigne, prof)}</div>
                     </section>
                   )
+                ) : null}
+                {/* Le tampon reçu, et rien quand il n'y en a pas : ni emplacement vide, ni les trois catégories en attente */}
+                {encouragements.length ? (
+                  <section className="carnet-fiche carnet-fiche--encre" aria-labelledby="encouragements-t">
+                    <header>
+                      <h2 id="encouragements-t">
+                        {majuscule(prof)} t’encourage
+                      </h2>
+                    </header>
+                    <ul className="carnet-fiche__corps encres-recues">
+                      {encouragements.map((c) => (
+                        <li key={c}>
+                          <TamponEncouragement categorie={c} taille="g" />
+                          {NOM_CATEGORIE[c]}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
                 ) : null}
                 {/* Après une nouvelle remise, la dernière remarque reste lisible, repliée (F07.3) */}
                 {scene.etat === "valider" && scene.remarque ? (
