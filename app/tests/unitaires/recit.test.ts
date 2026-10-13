@@ -13,7 +13,7 @@ import { dimensionsJpeg } from "@/serveur/images";
 
 const scene = (reference: number, titre: string | null = null, consigne = ""): Scene => ({
   id: `s${reference}`, chapitreId: "c", reference, titre, consigne, fin: false, horsLivre: false, creeParEleve: null,
-  priseParEleve: null, priseParEnseignant: false, etat: "cours", texteVide: true, ecritPar: [], rangLivre: null, numeroFixe: null,
+  priseParEleve: null, priseParEnseignant: false, ancien: null, etat: "cours", texteVide: true, ecritPar: [], rangLivre: null, numeroFixe: null,
 });
 const chapitre = (id: string, titre: string, scenes: Scene[] = [], eleves: string[] = []): Chapitre => ({
   id, partieId: "p", titre, couleur: 0, resume: "", horsLivre: false, imageId: null, visuelChoisi: null, visuelDefaut: "foret",

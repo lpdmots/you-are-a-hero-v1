@@ -217,3 +217,47 @@ test("lot 2 : côté élève", async ({ page, browser }) => {
   await capturer(p, "eleve-a-reprendre-390");
   await bilal.contexte.close();
 });
+
+test("lot 3 : Mon travail, et un élève retiré de la classe", async ({ page, browser }) => {
+  test.setTimeout(300_000);
+  n = 440;
+  const s = await classeQuiEcrit(page);
+  const [sentier, pont] = s.lisiere.scenes;
+  const plus: string[] = [];
+  for (const titre of ["La souche creuse", "La clairière", "Le gué", "Le pont de brume", "La lanterne"]) {
+    const { data } = await s.base.rpc("creer_scene", { p_chapitre: s.lisiere.id });
+    const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string };
+    await s.base.from("scenes").update({ titre }).eq("id", ligne.scene_id);
+    plus.push(ligne.scene_id);
+  }
+  const [souche, clairiere, gue] = plus;
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Bilal.id }).in("id", [sentier, pont, souche, clairiere, gue]);
+  for (const scene of [sentier, pont, clairiere, gue]) await semerTexte(s.base, scene, ["Un texte de Bilal."]);
+  await sql("update scenes set ecrit_par = array[$1::uuid] where id = any($2::uuid[])", [s.eleves.Bilal.id, [sentier, pont, clairiere, gue]]);
+  await sql("update scenes set etat = 'valide' where id = $1", [sentier]);
+  await sql("update scenes set etat = 'valider' where id = $1", [pont]);
+  await sql("update scenes set etat = 'reprendre' where id = $1", [clairiere]);
+
+  const bilal = await posteDe(browser, s, "Bilal");
+  await bilal.page.getByRole("region", { name: "Les scènes dont tu t’occupes" }).scrollIntoViewIfNeeded();
+  await capturer(bilal.page, "mon-travail", true);
+  await bilal.page.setViewportSize({ width: 390, height: 844 });
+  await capturer(bilal.page, "mon-travail-390", true);
+  await bilal.contexte.close();
+  const alice = await posteDe(browser, s, "Alice");
+  await capturer(alice.page, "mon-travail-aucune-scene");
+  await alice.contexte.close();
+
+  // Bilal retiré de la classe : ce que devient son travail
+  await aller(page, `/classes/${s.classe.id}`);
+  await page.getByRole("region", { name: "Élèves" }).getByRole("button", { name: /Bilal/ }).click();
+  await page.getByRole("complementary").filter({ hasText: "Retirer de la classe" }).getByRole("button", { name: "Retirer de la classe" }).click();
+  await page.locator(".message").waitFor();
+  await capturer(page, "classe-eleve-retire");
+  await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
+  await capturer(page, "chapitre-apres-retrait", true);
+  await aller(page, `/projet/${s.projet}/scene/${pont}`);
+  await capturer(page, "scene-a-valider-d-un-eleve-retire");
+  await aller(page, `/classes/${s.classe.id}/inscrire`);
+  await capturer(page, "inscrire-profil-retire");
+});

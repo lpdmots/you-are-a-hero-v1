@@ -36,7 +36,7 @@ const parRang = <T extends { rang: number; cree_le: string }>(a: T, b: T): numbe
 const sceneDepuis = (s: LigneScene): Scene => ({
   id: s.id, chapitreId: s.chapitre_id, reference: s.reference, titre: s.titre, consigne: s.consigne, fin: s.fin,
   horsLivre: s.hors_livre, creeParEleve: s.cree_par_eleve, priseParEleve: s.prise_par_eleve, priseParEnseignant: s.prise_par_enseignant,
-  etat: estEtat(s.etat) ? s.etat : "cours", texteVide: s.texte_vide !== false, ecritPar: s.ecrit_par ?? [],
+  ancien: null, etat: estEtat(s.etat) ? s.etat : "cours", texteVide: s.texte_vide !== false, ecritPar: s.ecrit_par ?? [],
   rangLivre: s.rang_livre ?? null, numeroFixe: s.numero_fixe ?? null,
 });
 
@@ -74,6 +74,22 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
     attribuesA.set(a.chapitre_id, [...(attribuesA.get(a.chapitre_id) ?? []), { eleveId: a.eleve_id, profil: a.profil }]);
   }
 
+  // Les élèves indiqués sur une scène sans plus être de son chapitre : leur prénom se relit à part
+  const partis = [
+    ...new Set(
+      lesScenes.flatMap((s) =>
+        s.prise_par_eleve && s.supprime_le === null && !(attribuesA.get(s.chapitre_id) ?? []).some((a) => a.eleveId === s.prise_par_eleve) ? [s.prise_par_eleve] : [],
+      ),
+    ),
+  ];
+  const anciens = new Map<string, ElevePlan>();
+  if (partis.length) {
+    const { data: lus, error: illisible } = await e.supabase.from("eleves").select("id, prenom, nom, couleur").in("id", partis);
+    if (illisible) throw new Error(`Plan du récit illisible : ${illisible.message}`);
+    for (const eleve of (lus ?? []) as ElevePlan[]) anciens.set(eleve.id, eleve);
+  }
+  const avecAncien = (s: LigneScene): Scene => ({ ...sceneDepuis(s), ancien: (s.prise_par_eleve && anciens.get(s.prise_par_eleve)) || null });
+
   const plan: Partie[] = lesParties
     .filter((p) => p.supprime_le === null)
     .map((p) => ({
@@ -84,7 +100,7 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
         .map((c): Chapitre => ({
           id: c.id, partieId: c.partie_id, titre: c.titre, couleur: c.couleur, resume: c.resume, horsLivre: c.hors_livre,
           imageId: c.image_id, visuelChoisi: c.visuel_choisi, visuelDefaut: c.visuel_defaut,
-          scenes: lesScenes.filter((s) => s.chapitre_id === c.id && s.supprime_le === null).map(sceneDepuis),
+          scenes: lesScenes.filter((s) => s.chapitre_id === c.id && s.supprime_le === null).map(avecAncien),
           attributions: attribuesA.get(c.id) ?? [],
         })),
     }));

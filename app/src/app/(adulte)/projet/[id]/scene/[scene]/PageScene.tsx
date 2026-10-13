@@ -48,6 +48,8 @@ type Fait =
 const PAS_ENREGISTRE = "Vos dernières corrections ne sont pas encore enregistrées : réessayez dans un instant.";
 /** Un second clic au même endroit, juste après une décision, est ignoré : valider puis déclarer prête d'un double-clic (F11.1) */
 const DOUBLE_CLIC_MS = 700;
+/** L'heure d'un geste : lue dans les gestionnaires de clic, jamais pendant l'affichage */
+const instant = (): number => Date.now();
 
 /**
  * La page d'une scène, pour l'adulte : son titre, sa consigne (F07.1), ses repères de
@@ -119,10 +121,10 @@ export function PageScene({
   const { etat: etatScene, remises, remarques } = relecture;
   const sorte = sorteDeScene(scene, projet.deClasse);
   const eleveDeLaScene = eleves.find((e) => e.id === scene.priseParEleve);
-  const qui = eleveDeLaScene ? nomPourEleves(eleveDeLaScene, eleves) : null;
+  const qui = scene.ancien ? scene.ancien.prenom : eleveDeLaScene ? nomPourEleves(eleveDeLaScene, eleves) : null;
   const nomEleve = (id: string | null): string => {
     const eleve = eleves.find((e) => e.id === id);
-    return eleve ? nomPourEleves(eleve, eleves) : "Un élève";
+    return eleve ? nomPourEleves(eleve, eleves) : scene.ancien?.id === id ? scene.ancien.prenom : "Un élève";
   };
   const remiseMontree = onglet.startsWith("r:") ? (remises.find((r) => `r:${r.id}` === onglet) ?? null) : null;
   const derniereRemise = remises[remises.length - 1] ?? null;
@@ -251,7 +253,7 @@ export function PageScene({
    * l'adulte vient de corriger s'enregistre d'abord : sans cela, l'état attend (F07-AC65).
    */
   const choisirEtat = async (voulu: Etat, depuis: "tampon" | "fiche", options: { confirme?: boolean; remarque?: string } = {}) => {
-    if (depuis === "fiche" && Date.now() - dernierePose.current < DOUBLE_CLIC_MS) return;
+    if (depuis === "fiche" && instant() - dernierePose.current < DOUBLE_CLIC_MS) return;
     if (voulu === etatScene && !rappel) return;
     if (sauvegarde === "echec") return dire({ texte: "Vos corrections ne sont pas encore enregistrées : l’état changera ensuite." });
     // Demander une reprise ouvre d'abord la remarque, facultative (F07.3)
@@ -297,14 +299,17 @@ export function PageScene({
       return;
     }
     // Sur la fiche, le bouton suivant prend la place de celui qu'on vient de cliquer
-    if (depuis === "fiche") dernierePose.current = Date.now();
+    if (depuis === "fiche") dernierePose.current = instant();
     setRelecture(suite.relecture);
     setReprise(false);
     setRappel(null);
     setSuspendue(null);
     dire({
       texte:
-        voulu === "reprendre"
+        // L'élève indiqué n'est plus dans le chapitre : la scène renvoyée n'est plus à personne (F01-AC25)
+        suite.relecture.etat === "cours" && scene.ancien
+          ? `${ref} est de nouveau en cours, sans élève : ${scene.ancien.prenom} n’est plus dans ce chapitre.`
+          : voulu === "reprendre"
           ? `Reprise demandée${qui ? ` : ${qui} la retrouvera dans « Mon travail »` : ""}.${options.remarque?.trim() ? " Les élèves du chapitre peuvent lire la remarque." : ""}`
           : messageEtat(voulu, ref, sorte),
     });

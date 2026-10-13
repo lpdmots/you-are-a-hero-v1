@@ -226,36 +226,28 @@ export async function modifierEleve(classeId: string, eleveId: string, prenom: s
 
 /**
  * « Retirer de la classe » : fin de l'inscription (F01.1). L'élève ne figure plus au
- * choix des prénoms et son poste revient à ce choix (F06-AC78). Le sort de ses scènes
- * s'ajoute à l'étape 4 (F01-AC22, F01-AC25).
+ * choix des prénoms et son poste revient à ce choix (F06-AC78). Il perd ses chapitres dans
+ * les projets de la classe ; ce qu'il écrivait encore redevient « En cours », « Pas encore
+ * prise », ce qu'il a remis ou fini garde son prénom (F01-AC22, AC25).
  */
 export async function retirerEleve(classeId: string, inscriptionId: string): Promise<Fait> {
   const enseignant = await exigerEnseignant();
   if (!UUID.test(inscriptionId)) return echec("Élève inconnu.");
-  const { data, error } = await enseignant.supabase
-    .from("inscriptions")
-    .update({ retire_le: new Date().toISOString() })
-    .eq("id", inscriptionId)
-    .eq("classe_id", classeId)
-    .is("retire_le", null)
-    .select("id");
-  if (error || !data?.length) return echec("L’élève n’a pas pu être retiré.");
+  const { error } = await enseignant.supabase.rpc("retirer_eleve", { p_inscription: inscriptionId });
+  if (error) return echec(error.code === "P0001" ? error.message : "L’élève n’a pas pu être retiré.");
   rafraichir(classeId);
+  revalidatePath("/projet/[id]", "layout");
   return { ok: true };
 }
 
-/** « Annuler », juste après un retrait. */
+/** « Annuler », juste après un retrait : l'élève retrouve ses chapitres, et les scènes qu'il écrivait si elles sont restées libres. */
 export async function annulerRetrait(classeId: string, inscriptionId: string): Promise<Fait> {
   const enseignant = await exigerEnseignant();
   if (!UUID.test(inscriptionId)) return echec("Élève inconnu.");
-  const { data, error } = await enseignant.supabase
-    .from("inscriptions")
-    .update({ retire_le: null })
-    .eq("id", inscriptionId)
-    .eq("classe_id", classeId)
-    .select("id");
-  if (error || !data?.length) return echec("Le retrait n’a pas pu être annulé.");
+  const { error } = await enseignant.supabase.rpc("annuler_retrait", { p_inscription: inscriptionId });
+  if (error) return echec(error.code === "P0001" ? error.message : "Le retrait n’a pas pu être annulé.");
   rafraichir(classeId);
+  revalidatePath("/projet/[id]", "layout");
   return { ok: true };
 }
 

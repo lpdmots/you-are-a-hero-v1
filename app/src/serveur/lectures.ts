@@ -89,6 +89,8 @@ export type Classe = {
   horairesLimites: boolean;
   plages: Plage[];
   eleves: EleveInscrit[];
+  /** Les élèves retirés de la classe : leur profil reste connu s'ils ont écrit (F01-AC22) */
+  retires: Eleve[];
   projets: { id: string; titre: string; recit: Recit }[];
 };
 
@@ -120,6 +122,7 @@ function classeDepuis(c: LigneClasse): Classe {
     eleves: (c.inscriptions ?? [])
       .filter((i) => i.retire_le === null && i.eleves)
       .map((i) => ({ ...i.eleves!, inscriptionId: i.id })),
+    retires: (c.inscriptions ?? []).filter((i) => i.retire_le !== null && i.eleves).map((i) => i.eleves!),
     projets: [...(c.projets ?? [])].sort((x, y) => x.cree_le.localeCompare(y.cree_le)).map(({ id, titre, recit }) => ({ id, titre, recit })),
   };
 }
@@ -143,10 +146,11 @@ export const classeDe = cache(async (e: Enseignant, id: string): Promise<Classe 
 
 /**
  * Profils déjà connus (F01-AC06) : les élèves des autres classes de l'enseignant qui
- * ne sont pas inscrits dans celle-ci. Un élève retiré de toutes ses classes n'est
- * plus proposé (F01-AC23) ; à l'étape 4, celui qui a écrit le restera (F01-AC22).
+ * ne sont pas inscrits dans celle-ci, et ceux qui ont été retirés d'une classe après y
+ * avoir écrit, qu'on réinscrit avec le même code (F01-AC22). Un élève inscrit par erreur,
+ * retiré sans texte ni remise, n'est plus proposé (F01-AC23).
  */
-export function profilsConnus(classe: Classe, toutes: Classe[]): ProfilConnu[] {
+export function profilsConnus(classe: Classe, toutes: Classe[], ontEcrit: ReadonlySet<string> = new Set()): ProfilConnu[] {
   const ici = new Set(classe.eleves.map((x) => x.id));
   const vus = new Set<string>();
   const connus: ProfilConnu[] = [];
@@ -158,5 +162,28 @@ export function profilsConnus(classe: Classe, toutes: Classe[]): ProfilConnu[] {
       connus.push({ id: eleve.id, prenom: eleve.prenom, nom: eleve.nom, couleur: eleve.couleur, de: `${autre.nom} · ${libelleAnnee(autre.anneeDebut)}` });
     }
   }
+  // Retirés, de cette classe d'abord : celui qui a écrit garde son profil
+  for (const autre of [classe, ...toutes.filter((c) => c.id !== classe.id)]) {
+    for (const eleve of autre.retires) {
+      if (ici.has(eleve.id) || vus.has(eleve.id) || !ontEcrit.has(eleve.id)) continue;
+      vus.add(eleve.id);
+      connus.push({ id: eleve.id, prenom: eleve.prenom, nom: eleve.nom, couleur: eleve.couleur, de: `retiré de ${autre.nom} · ${libelleAnnee(autre.anneeDebut)}` });
+    }
+  }
   return connus;
+}
+
+/** Parmi ces élèves, ceux qui ont enregistré ou remis un texte : leur profil reste connu après un retrait (F01-AC22). */
+export async function elevesAyantEcrit(e: Enseignant, ids: string[]): Promise<Set<string>> {
+  if (ids.length === 0) return new Set();
+  const [ecrit, remis] = await Promise.all([
+    e.supabase.from("scenes").select("ecrit_par").overlaps("ecrit_par", ids),
+    e.supabase.from("remises").select("eleve_id").in("eleve_id", ids),
+  ]);
+  if (ecrit.error || remis.error) throw new Error((ecrit.error ?? remis.error)!.message);
+  const voulus = new Set(ids);
+  return new Set([
+    ...((ecrit.data ?? []) as { ecrit_par: string[] | null }[]).flatMap((s) => (s.ecrit_par ?? []).filter((id) => voulus.has(id))),
+    ...((remis.data ?? []) as { eleve_id: string | null }[]).flatMap((r) => (r.eleve_id ? [r.eleve_id] : [])),
+  ]);
 }

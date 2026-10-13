@@ -741,7 +741,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   vraie base sur accord du porteur, après une sauvegarde.
 - **Construction : commencée le 13 octobre 2026, en local,** sur
   l'instruction du porteur, qui retient le découpage proposé. Sept lots, un
-  commit local par lot ; les lots 1 et 2 sont construits, les cinq autres
+  commit local par lot ; les lots 1 à 3 sont construits, les quatre autres
   restent à faire. Rien n'est poussé ni appliqué à la vraie base.
   1. états et relecture, côté enseignant — état sur le tampon, fiche de
      décision, remarque, validation suspendue, « Prête », scènes sans élève
@@ -842,6 +842,42 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 552 passent — 127 sur les règles, 204 contre
       la base locale, 221 parcours —, dont 40 pour ce lot (25 et 15).
       Captures 421 à 432.
+  - **Lot 3 — « Mon travail » et retrait d'un élève : construit le
+    13 octobre 2026.** « Mon travail » liste les scènes dont l'élève
+    s'occupe, par urgence — à reprendre, en cours, texte vide, remises,
+    validées —, une seule portant le bouton plein ; sous la liste, les
+    scènes qui restent à prendre dans son chapitre, et « Choisir une
+    scène » quand rien ne l'attend. « Retirer de la classe » retire l'élève
+    de ses chapitres : ce qu'il écrivait redevient « En cours », « Pas
+    encore prise » ; ce qu'il a remis ou fini garde son prénom (« Bilal
+    s'en occupait ») ; sa scène « À valider », renvoyée, devient « En
+    cours », sans élève ; son profil reste proposé à l'inscription s'il a
+    écrit. Schéma : `20261013120000_retrait_d_un_eleve.sql`, appliqué à la
+    base locale seulement.
+    - **Critères fermés :** F06-AC95 à AC97, AC33 pour « Mon travail » ;
+      F01-AC22, AC23, AC25 ; F08-AC17 pour la ligne de « Mon travail ».
+    - **Changement de règle, dit au porteur avant de poursuivre, sans
+      réponse à ce stade :** un élève retiré d'un chapitre, et non de la
+      classe, garde lui aussi son prénom sur les scènes qu'il a remises ou
+      finies. La règle du 10 octobre 2026 lui retirait toutes ses scènes ;
+      elle date d'avant les états. S'il préfère l'ancienne règle, le
+      déclencheur des attributions se reprend dans une migration de plus.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      « Mon travail » est une liste, une ligne par scène, et non la grille
+      de cartes de la maquette ; une scène où l'élève est arrêté s'y range
+      après ce qu'il peut écrire, avant ce qu'il a remis ; la ligne d'une
+      scène à reprendre dit « Mme Laurent te demande de reprendre ton
+      texte. », qu'une remarque soit écrite ou non ; une scène validée sans
+      élève ne compte pas parmi les scènes à prendre ; « Annuler », après un
+      retrait, rend à l'élève ses chapitres et les scènes qu'il écrivait si
+      personne ne les a prises, pendant une heure au plus ; réinscrit plus
+      tard, il retrouve son code, pas ses chapitres ; un profil retiré
+      n'est proposé à l'inscription que s'il a enregistré ou remis un
+      texte ; l'entrée « Tester la lecture » de la maquette attend
+      l'étape 5.
+    - **Tests automatiques :** 570 passent — 133 sur les règles, 210 contre
+      la base locale, 227 parcours —, dont 18 pour ce lot (6, 6 et 6).
+      Captures 441 à 447.
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

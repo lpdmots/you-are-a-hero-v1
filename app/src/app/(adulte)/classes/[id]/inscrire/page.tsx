@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation";
 import { Icone } from "@/composants/Icone";
 import { libelleAnnee } from "@/domaine/annee";
 import { exigerEnseignant } from "@/serveur/adulte";
-import { classeDe, mesClasses, profilsConnus } from "@/serveur/lectures";
+import { classeDe, elevesAyantEcrit, mesClasses, profilsConnus } from "@/serveur/lectures";
 import { Inscrire } from "./Inscrire";
 
 export const metadata: Metadata = { title: "Inscrire des élèves" };
@@ -16,7 +16,8 @@ export default async function PageInscrire({ params }: { params: Promise<{ id: s
   if (!classe) notFound();
   // Une classe dont l'année est terminée ne reçoit pas d'élève (F01-AC26)
   if (!classe.enCours) redirect(`/classes/${classe.id}`);
-  const connus = profilsConnus(classe, await mesClasses(enseignant));
+  const toutes = await mesClasses(enseignant);
+  const connus = profilsConnus(classe, toutes, await elevesAyantEcrit(enseignant, [...new Set(toutes.flatMap((c) => c.retires.map((x) => x.id)))]));
   return (
     <div className="page">
       <nav className="fil">

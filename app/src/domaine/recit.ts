@@ -51,6 +51,11 @@ export type Scene = {
   priseParEleve: string | null;
   /** L'enseignant s'en occupe lui-même : un élève ne peut ni y écrire ni la reprendre (F06-AC62) */
   priseParEnseignant: boolean;
+  /**
+   * L'élève indiqué n'est plus dans le chapitre — retiré de la classe, ou du chapitre : la
+   * scène qu'il a remise ou finie garde son prénom comme repère (F01-AC22, AC25)
+   */
+  ancien: ElevePlan | null;
   /** Où en est la scène (F07.1, F11.1) */
   etat: Etat;
   /** La scène n'a ni mot ni image : « Texte vide » (F06.5) */

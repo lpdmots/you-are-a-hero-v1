@@ -4,24 +4,26 @@ import { ImageRepere } from "@/composants/ImageRepere";
 import { ecrireHeure, finDePlage, prochaineOuverture } from "@/domaine/horaires";
 import { majuscule } from "@/domaine/texte";
 import { contexteEleve, histoiresDuPoste } from "@/serveur/recit-eleve";
+import { monTravail } from "@/serveur/travail-eleve";
 import { EnteteEleve } from "./EnteteEleve";
 import { Histoire } from "./Histoire";
+import { MesScenes } from "./MesScenes";
 import { RechercheEleve } from "./RechercheEleve";
 import styles from "./travail.module.css";
 
 export const metadata: Metadata = { title: "Mon travail" };
 
 /**
- * Accueil de l'élève identifié : où il en est, si le travail est ouvert (F06-AC27), puis
- * toute l'histoire en cartes — les siennes s'ouvrent, les autres montrent leur titre et
- * leur image (F03-AC15). « Mon travail » et ses scènes à écrire se construisent à l'étape 4.
+ * Accueil de l'élève identifié : où il en est, si le travail est ouvert (F06-AC27), les
+ * scènes dont il s'occupe, par urgence (F06-AC95), puis toute l'histoire en cartes — les
+ * siennes s'ouvrent, les autres montrent leur titre et leur image (F03-AC15).
  */
 export default async function MonTravail({ searchParams }: { searchParams: Promise<{ texte?: string }> }) {
   const contexte = await contexteEleve();
   // Ce que la page d'une scène vient de faire du texte en la quittant (F06-AC29, F08-AC28)
   const { texte } = await searchParams;
   // Hors des horaires, la base ne rend rien du récit : la page dit seulement quand il rouvre
-  const histoires = contexte.ouvert ? await histoiresDuPoste(contexte) : [];
+  const [histoires, travail] = contexte.ouvert ? await Promise.all([histoiresDuPoste(contexte), monTravail(contexte)]) : [[], null];
   const miens = histoires.flatMap((h) => h.parties.flatMap((p) => p.chapitres.filter((c) => c.profil).map((c) => ({ chapitre: c, partie: p.titre }))));
   const maintenant = new Date();
   const rouvre = contexte.ouvert ? null : prochaineOuverture(contexte.plages, maintenant);
@@ -90,6 +92,8 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
             ) : null}
           </div>
         </section>
+        {/* Hors des horaires, « Mon travail » ne liste rien (F06.4) ; sans chapitre, rien non plus à lister */}
+        {travail && miens.length > 0 ? <MesScenes travail={travail} prof={contexte.prof} /> : null}
         {histoires.some((h) => h.parties.length) ? (
           <div className={styles.recherche}>
             <RechercheEleve />

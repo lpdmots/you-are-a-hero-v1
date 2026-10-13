@@ -11,6 +11,8 @@ import { confierScene } from "../../actions-recit";
 /** Ce qu'une scène dit de qui s'en occupe, pour l'enseignant : « Alice s'en occupe », « Vous vous en occupez », « Pas encore prise ». */
 export function libelleQui(scene: Scene, chapitre: Chapitre, eleves: ElevePlan[]): string {
   if (scene.priseParEnseignant) return "Vous vous en occupez";
+  // Parti du chapitre ou de la classe : la scène qu'il a remise ou finie garde son prénom (F01-AC22)
+  if (scene.ancien) return `${scene.ancien.prenom} s’en occupait`;
   const eleve = eleves.find((e) => e.id === scene.priseParEleve);
   return eleve ? `${nomPourEleves(eleve, eleves)} s’en occupe` : motSansEleve(chapitre);
 }
@@ -51,7 +53,8 @@ export function QuiSenOccupe({ scene, chapitre, eleves }: { scene: Scene; chapit
       bouton={
         <>
           {eleve ? <Gommette prenom={eleve.prenom} couleur={eleve.couleur} taille="s" /> : null}
-          <span className={actuel ? undefined : "qui__libre"}>{libelleQui(scene, chapitre, eleves)}</span>
+          {scene.ancien ? <Gommette prenom={scene.ancien.prenom} couleur={scene.ancien.couleur} taille="s" /> : null}
+          <span className={actuel || scene.ancien ? undefined : "qui__libre"}>{libelleQui(scene, chapitre, eleves)}</span>
           <Icone nom="chevron-bas" />
         </>
       }

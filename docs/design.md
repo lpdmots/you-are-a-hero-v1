@@ -1632,6 +1632,28 @@ Autres écarts, à juger à l'essai :
   maître ». À reprendre si le porteur le souhaite, par une tournure qui ne
   dépend pas du nom.
 
+**Lot 3 — « Mon travail », et l'élève retiré.** Sans retour du porteur à ce
+stade.
+
+- **« Mon travail » : une liste, non une grille.** La maquette range les
+  scènes de l'élève en cartes, plusieurs par ligne ; sur huit scènes,
+  l'ordre d'urgence ne s'y lit plus. Une ligne par scène, la plus urgente
+  en tête : la référence, le titre, une phrase, le tampon, le bouton. Une
+  seule ligne porte le bouton plein. Les scènes remises ou finies restent
+  visibles, leur titre en moins gras. En 390 px, le bouton passe sous la
+  ligne, sur toute la largeur.
+- **Sous la liste :** « 3 scènes ne sont pas encore prises dans ton
+  chapitre » et « Voir », au motif du rappel du Suivi : l'information d'un
+  côté, le lien de l'autre. « Choisir une scène », bouton plein, seulement
+  quand aucune scène n'attend l'élève.
+- **Élève retiré, côté adulte :** sur la carte et dans la page d'une scène
+  qu'il a remise ou finie, « Bilal s'en occupait », avec sa gommette, à la
+  place de « Bilal s'en occupe ». Le menu « qui s'en occupe » y reste, pour
+  la confier à un autre.
+- **Non construit :** l'entrée « Tester la lecture » de « Mon travail »
+  (étape 5) ; « Dans ton chapitre », la liste des scènes des camarades,
+  retirée par la décision du 13 octobre 2026.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

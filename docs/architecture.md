@@ -814,6 +814,22 @@ se lit à part (`suis_je_arrete`) : une scène remise ou validée répond
 d'abord qu'elle ne s'écrit plus, et la page doit pourtant savoir qu'il n'y
 retire pas la remise.
 
+**« Mon travail » (lot 3).** Aucune fonction de plus : le poste lit déjà
+les scènes de ses chapitres, avec leur état et qui s'en occupe. Le serveur
+ne garde que celles de l'élève et les range (`src/domaine/travail.ts`) :
+l'urgence d'abord, puis la place dans le plan.
+
+**Retrait d'un élève.** Une fonction, `retirer_eleve`, met fin à
+l'inscription et supprime ses attributions dans les projets de la classe ;
+c'est le déclencheur des attributions, le même que pour un élève retiré
+d'un seul chapitre, qui décide du sort de ses scènes : celles qui
+s'écrivaient encore n'ont plus d'élève, les autres gardent son prénom. Ce
+que le retrait a défait est gardé sur l'inscription (`retrait`), de quoi
+l'annuler pendant une heure. Une scène dont l'élève n'est plus dans le
+chapitre se reconnaît à cela seul — elle porte un élève qui n'y est pas
+attribué — sans colonne de plus ; le plan relit alors son prénom
+(`Scene.ancien`), que la liste des élèves de la classe ne donne plus.
+
 **Rappel avant « prête ».** Calculé par le serveur au moment du choix,
 d'après le texte que la page vient d'enregistrer et les liens que la base en
 a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait
