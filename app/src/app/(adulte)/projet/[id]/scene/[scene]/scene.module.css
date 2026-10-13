@@ -80,3 +80,16 @@
     font-size: var(--t-xl);
   }
 }
+/* Téléphone : le titre garde sa ligne, le tampon d'état et le menu passent dessous */
+@media (max-width: 520px) {
+  .tete {
+    flex-wrap: wrap;
+    row-gap: 8px;
+  }
+  .tete h1 {
+    flex-basis: calc(100% - 70px);
+  }
+  .tete :global(.menu--tampon) {
+    margin-left: auto;
+  }
+}

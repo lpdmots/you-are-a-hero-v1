@@ -14,14 +14,18 @@ import { avantDePartir } from "@/composants/copie/sortie";
 import type { EtatTexte } from "@/composants/copie/useEnregistrementTexte";
 import { Icone } from "@/composants/Icone";
 import { Menu } from "@/composants/Menu";
-import { TamponScene } from "@/composants/TamponScene";
+import { EtatScene } from "@/composants/EtatScene";
 import { useMessage } from "@/composants/Messages";
 import { estVide } from "@/domaine/copie";
-import { jourEnMots } from "@/domaine/dates";
+import { heureEnMots, jourEnMots } from "@/domaine/dates";
+import { nomPourEleves } from "@/domaine/eleves";
+import { messageEtat, NOM_ETAT, sEcrit, sorteDeScene, type Etat } from "@/domaine/etats";
 import { chapitresDe, departDe, referenceScene, scenesDe, type ElevePlan, type Plan } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
 import type { CopieGardee, TexteDeScene } from "@/serveur/copie";
+import type { Relecture } from "@/serveur/relecture";
 import { reglerScene, supprimer } from "../../../actions-recit";
+import { changerEtat, relireRelecture } from "../../../actions-relecture";
 import {
   ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, reglerVoisines, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
   relireNumeros, relireTexte,
@@ -31,6 +35,7 @@ import { ChoisirDepart } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import { FicheNumero } from "./FicheNumero";
+import { FicheDecision, FicheRemarque, FicheRemises, nomDeRemise } from "./Relecture";
 import { VersionsPrecedentes } from "./VersionsPrecedentes";
 import styles from "./scene.module.css";
 
@@ -41,17 +46,22 @@ type Fait =
   | { sorte: "echange"; phrase: string; ancienId: string | null };
 
 const PAS_ENREGISTRE = "Vos dernières corrections ne sont pas encore enregistrées : réessayez dans un instant.";
+/** Un second clic au même endroit, juste après une décision, est ignoré : valider puis déclarer prête d'un double-clic (F11.1) */
+const DOUBLE_CLIC_MS = 700;
 
 /**
  * La page d'une scène, pour l'adulte : son titre, sa consigne (F07.1), ses repères de
  * départ et de fin (F03.2), et son texte, qui s'enregistre seul (F08.2). Un texte gardé à
- * part s'y lit dans son onglet, avec ses deux gestes (F08.1).
+ * part s'y lit dans son onglet, avec ses deux gestes (F08.1). L'état se change sur son
+ * tampon ; la fiche de décision porte l'étape suivante (F07.1, F11.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, venuDesChemins,
+  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, venuDesChemins,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
+  /** L'état de la scène, ce que les élèves ont remis, les reprises demandées (F07.1, F07.3) */
+  relecture: Relecture;
   /** Le livre autour de la scène : numéros, scènes, façon d'annoncer un numéro */
   livre: Livre;
   jeu: Jeu;
@@ -90,8 +100,32 @@ export function PageScene({
   // Le panneau de droite : les réglages de la copie s'y ouvrent, à la place de la consigne
   const [panneau, setPanneau] = useState<HTMLElement | null>(null);
   const [reglages, setReglages] = useState(false);
+  // La consigne se replie quand la scène ne s'écrit plus : la décision passe devant
+  const [consigneOuverte, setConsigneOuverte] = useState(() => sEcrit(relectureRecue.etat));
   const montree = copies.find((c) => c.id === onglet) ?? null;
   const nom = (c: CopieGardee) => nomDeTexte(c, eleves, projet.deClasse);
+
+  // L'état de la scène et sa relecture (F07.1) : la page les tient à jour d'après ce que le serveur répond
+  const [relecture, setRelecture] = useState(relectureRecue);
+  const [sauvegarde, setSauvegarde] = useState<EtatTexte["etat"]>("enregistre");
+  const [reprise, setReprise] = useState(false);
+  const [rappel, setRappel] = useState<string[] | null>(null);
+  const [suspendue, setSuspendue] = useState<string | null>(null);
+  // La version du texte que la page montre : la base la compare avant « Validé » ou « Prête » (F07-AC26)
+  const versionLue = useRef(recu.version);
+  // Après un conflit de l'adulte, la page montre un texte qu'il n'a pas relu (F08-AC21)
+  const aRelire = useRef(false);
+  const dernierePose = useRef(0);
+  const { etat: etatScene, remises, remarques } = relecture;
+  const sorte = sorteDeScene(scene, projet.deClasse);
+  const eleveDeLaScene = eleves.find((e) => e.id === scene.priseParEleve);
+  const qui = eleveDeLaScene ? nomPourEleves(eleveDeLaScene, eleves) : null;
+  const nomEleve = (id: string | null): string => {
+    const eleve = eleves.find((e) => e.id === id);
+    return eleve ? nomPourEleves(eleve, eleves) : "Un élève";
+  };
+  const remiseMontree = onglet.startsWith("r:") ? (remises.find((r) => `r:${r.id}` === onglet) ?? null) : null;
+  const derniereRemise = remises[remises.length - 1] ?? null;
 
   const envoyer = async () => {
     if (minuteur.current) clearTimeout(minuteur.current);
@@ -145,6 +179,7 @@ export function PageScene({
   };
 
   const remplacer = (suite: TexteDeScene) => {
+    versionLue.current = suite.version;
     setCopie((avant) => ({ texte: suite.texte, version: suite.version, generation: avant.generation + 1 }));
     setCopies(suite.copies);
     setVide(estVide(suite.texte));
@@ -158,6 +193,9 @@ export function PageScene({
       if (!lu.ok) return routeur.push(retour);
       const miennes = lu.scene.copies.filter((c) => c.sorte === "refus" && !c.eleveId);
       remplacer(lu.scene);
+      // Le texte montré n'est plus celui que l'adulte corrigeait : « Validé » lui demandera de le relire
+      aRelire.current = suite.etat === "garde";
+      void relireRelecture(scene.id).then((r) => r && setRelecture(r));
       setOnglet("scene");
       setFait(suite.etat === "garde" ? { sorte: "conflit", copieId: miennes[miennes.length - 1]?.id ?? null } : null);
     });
@@ -207,6 +245,71 @@ export function PageScene({
   };
 
   const ref = referenceScene(scene.reference);
+
+  /**
+   * Mettre la scène dans l'état choisi, depuis le tampon ou depuis la fiche (F07.1). Ce que
+   * l'adulte vient de corriger s'enregistre d'abord : sans cela, l'état attend (F07-AC65).
+   */
+  const choisirEtat = async (voulu: Etat, depuis: "tampon" | "fiche", options: { confirme?: boolean; remarque?: string } = {}) => {
+    if (depuis === "fiche" && Date.now() - dernierePose.current < DOUBLE_CLIC_MS) return;
+    if (voulu === etatScene && !rappel) return;
+    if (sauvegarde === "echec") return dire({ texte: "Vos corrections ne sont pas encore enregistrées : l’état changera ensuite." });
+    // Demander une reprise ouvre d'abord la remarque, facultative (F07.3)
+    if (voulu === "reprendre" && options.remarque === undefined) {
+      setRappel(null);
+      setOnglet("scene");
+      setReprise(true);
+      return;
+    }
+    if ((voulu === "valide" || voulu === "prete") && aRelire.current) {
+      aRelire.current = false;
+      setRappel(null);
+      setOnglet("scene");
+      setSuspendue("Validation suspendue : le texte a changé pendant que vous le corrigiez. Relisez-le avant de choisir l’état.");
+      window.scrollTo(0, 0);
+      return;
+    }
+    setGeste(true);
+    if (!(await avantDePartir())) {
+      setGeste(false);
+      return dire({ texte: "Vos corrections ne sont pas encore enregistrées : l’état changera ensuite." });
+    }
+    const suite = await changerEtat(scene.id, voulu, { version: versionLue.current, tour: relecture.tour }, options);
+    setGeste(false);
+    if (!suite.ok) return dire({ texte: suite.erreur });
+    if (!suite.fait && "rappel" in suite) {
+      setReprise(false);
+      setRappel(suite.rappel);
+      return;
+    }
+    if (!suite.fait) {
+      // Un retrait, une nouvelle remise ou une modification sont arrivés depuis la lecture (F07-AC26)
+      const change = suite.relecture.etat !== etatScene;
+      aRelire.current = false;
+      remplacer(suite.scene);
+      setRelecture(suite.relecture);
+      setRappel(null);
+      setOnglet("scene");
+      setSuspendue(
+        `Validation suspendue : ${change ? `la scène est maintenant « ${NOM_ETAT[suite.relecture.etat]} »` : "le texte a changé"} depuis votre lecture. Relisez le texte avant de choisir l’état.`,
+      );
+      window.scrollTo(0, 0);
+      return;
+    }
+    // Sur la fiche, le bouton suivant prend la place de celui qu'on vient de cliquer
+    if (depuis === "fiche") dernierePose.current = Date.now();
+    setRelecture(suite.relecture);
+    setReprise(false);
+    setRappel(null);
+    setSuspendue(null);
+    dire({
+      texte:
+        voulu === "reprendre"
+          ? `Reprise demandée${qui ? ` : ${qui} la retrouvera dans « Mon travail »` : ""}.${options.remarque?.trim() ? " Les élèves du chapitre peuvent lire la remarque." : ""}`
+          : messageEtat(voulu, ref, sorte),
+    });
+  };
+
   // Ce qui est gardé à part, dit au-dessus de la copie, d'où qu'on vienne (F08-AC06)
   const aDire = copies.filter((c) => !(fait?.sorte === "conflit" && fait.copieId === c.id));
   const arretes = aDire.flatMap((c) => nom(c).arrete ?? []);
@@ -217,12 +320,19 @@ export function PageScene({
       </button>
     );
 
+  // La dernière remise a son onglet ; une plus ancienne, ouverte depuis « Remises », aussi
+  const remisesEnOnglet = remises.filter((r) => r === derniereRemise || r === remiseMontree);
   const onglets =
-    copies.length > 0 ? (
+    copies.length > 0 || remisesEnOnglet.length > 0 ? (
       <div className="copie__onglets" role="tablist" aria-label="Textes de la scène">
         <button type="button" role="tab" aria-selected={onglet === "scene"} onClick={() => setOnglet("scene")}>
           Texte de la scène
         </button>
+        {remisesEnOnglet.map((r) => (
+          <button key={r.id} type="button" role="tab" aria-selected={onglet === `r:${r.id}`} onClick={() => setOnglet(`r:${r.id}`)}>
+            {nomDeRemise(r, remises)}
+          </button>
+        ))}
         {copies.map((c) => {
           const n = nom(c);
           return (
@@ -235,12 +345,29 @@ export function PageScene({
             </button>
           );
         })}
+        <Bulle question="Que montrent ces onglets ?">
+          <span>
+            {projet.deClasse ? "Vous corrigez" : "Vous écrivez dans"} le texte de la scène.
+            {remises.length ? " Ce que l’élève a remis reste conservé tel quel, dans son onglet." : ""}
+            {copies.length ? " Un texte gardé à part attend votre décision dans le sien." : ""}
+          </span>
+        </Bulle>
       </div>
     ) : (
       <span className="copie__titre">Texte de la scène</span>
     );
 
-  const autre: AutreTexte | null = montree
+  const autre: AutreTexte | null = remiseMontree
+    ? {
+        barre: (
+          <span className="copie__lecture">
+            <Icone nom="oeil" />
+            Remis par {nomEleve(remiseMontree.eleveId)} · {jourEnMots(remiseMontree.remisLe)}, {heureEnMots(remiseMontree.remisLe)} · conservé tel quel
+          </span>
+        ),
+        corps: <TexteLu texte={remiseMontree.texte} libelle={`Texte remis le ${jourEnMots(remiseMontree.remisLe)}`} livre={livre} />,
+      }
+    : montree
     ? {
         barre: (
           <span className="copie__lecture">
@@ -303,7 +430,7 @@ export function PageScene({
             onBlur={() => void envoyer()}
           />
         </h1>
-        <TamponScene vide={vide} />
+        <EtatScene etat={etatScene} vide={vide} sorte={sorte} nom={ref} onChoisir={(e) => void choisirEtat(e, "tampon")} />
         <Menu libelle={`Autres commandes de la scène ${ref}`} discret>
           {(fermer) => (
             <>
@@ -377,6 +504,12 @@ export function PageScene({
 
       <div className={styles.colonnes}>
         <section className={styles.texte} aria-label="Texte de la scène">
+          {suspendue ? (
+            <div className="note note--bloque" role="alert">
+              <Icone nom="horloge" />
+              <p>{suspendue}</p>
+            </div>
+          ) : null}
           {fait?.sorte === "conflit" ? (
             <div className="note note--attend" role="status">
               <Icone nom="apart" />
@@ -468,8 +601,14 @@ export function PageScene({
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}
             autre={autre}
-            onEtat={apresEtat}
+            onEtat={(suite) => {
+              setSauvegarde(suite.etat);
+              apresEtat(suite);
+            }}
             onVide={setVide}
+            onVersion={(v) => {
+              versionLue.current = v;
+            }}
             apresRetour={() => dire({ texte: "Vos corrections sont enregistrées." })}
             dessus={({ etat: e, reessayer }) =>
               e.etat === "echec" ? (
@@ -512,15 +651,46 @@ export function PageScene({
               />
             ) : null}
             <div ref={setPanneau} />
-            <section className="carnet-fiche" aria-labelledby="scene-consigne-t" hidden={reglages || numero}>
-              <header>
-                <h2 id="scene-consigne-t">
-                  <label htmlFor="scene-consigne">Consigne</label> <span className="facultatif">facultative</span>
-                </h2>
-              </header>
+            {/* Les fiches laissent la place au panneau des réglages, le temps qu'il est ouvert (F05.2) */}
+            <div className="cote-copie__fiches" hidden={reglages || numero}>
+              <FicheDecision
+                sorte={sorte}
+                etat={etatScene}
+                vide={vide}
+                aChoix={projet.aChoix}
+                qui={qui}
+                derniere={derniereRemise ? { par: derniereRemise.eleveId ? nomEleve(derniereRemise.eleveId) : null, le: derniereRemise.remisLe } : null}
+                echec={sauvegarde === "echec"}
+                ailleurs={
+                  remiseMontree
+                    ? { phrase: `Vous lisez le texte ${nomDeRemise(remiseMontree, remises).toLowerCase()}.` }
+                    : montree
+                      ? { phrase: `Vous lisez ${nom(montree).enPhrase}, ${nom(montree).sous}.` }
+                      : null
+                }
+                rappel={rappel}
+                reprise={reprise}
+                occupe={geste}
+                onEtat={(e, options) => void choisirEtat(e, "fiche", options)}
+                onReprise={(remarque) => void choisirEtat("reprendre", "tampon", { remarque })}
+                onAnnulerReprise={() => setReprise(false)}
+                onPasMaintenant={() => setRappel(null)}
+                onTexteDeLaScene={() => setOnglet("scene")}
+              />
+              {etatScene === "reprendre" && remarques.length ? <FicheRemarque remarque={remarques[remarques.length - 1]} qui={qui} /> : null}
+            <details className="carnet-fiche carnet-fiche--pli" open={consigneOuverte} onToggle={(e) => setConsigneOuverte(e.currentTarget.open)}>
+              <summary>
+                <header>
+                  <h2 id="scene-consigne-t">
+                    Consigne <span className="facultatif">facultative</span>
+                  </h2>
+                  {!consigneOuverte && !consigne.trim() ? <span className="fiche-tete__fin">sans consigne</span> : null}
+                </header>
+              </summary>
               <div className="carnet-fiche__corps">
                 <textarea
                   id="scene-consigne"
+                  aria-label="Consigne"
                   className="pchamp"
                   rows={7}
                   maxLength={4000}
@@ -538,7 +708,15 @@ export function PageScene({
                     : "Un rappel de ce que la scène doit raconter."}
                 </p>
               </div>
-            </section>
+            </details>
+              <FicheRemises
+                remises={remises}
+                remarques={remarques}
+                nomEleve={nomEleve}
+                montree={remiseMontree?.id ?? null}
+                onVoir={(id) => setOnglet(`r:${id}`)}
+              />
+            </div>
           </div>
         </aside>
       </div>

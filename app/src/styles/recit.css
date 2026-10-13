@@ -31,6 +31,85 @@
   --c: var(--graphite-3);
   --f: var(--feuille-2);
 }
+.tampon[data-e="reprendre"] {
+  --c: var(--e-reprendre);
+  --f: var(--e-reprendre-f);
+}
+.tampon[data-e="valider"] {
+  --c: var(--e-valider);
+  --f: var(--e-valider-f);
+}
+.tampon[data-e="valide"] {
+  --c: var(--e-valide);
+  --f: var(--e-valide-f);
+}
+.tampon[data-e="prete"] {
+  --c: var(--e-prete);
+  --f: var(--e-prete-f);
+}
+
+/* ——— Le tampon qui se clique : plus grand, avec un chevron. Il ouvre « État de la scène » ——— */
+.menu--tampon > summary.tampon--menu {
+  width: auto;
+  min-height: 34px;
+  padding: 0.25rem 0.5rem 0.25rem 0.55rem;
+  gap: 0.4rem;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.menu--tampon > summary .ic {
+  width: 1.05em;
+  height: 1.05em;
+}
+.menu--tampon > summary .tampon__chevron {
+  width: 1em;
+  height: 1em;
+  margin-left: 1px;
+}
+.tampon--menu:hover,
+.menu--tampon[open] > .tampon--menu {
+  background: color-mix(in srgb, var(--c) 14%, var(--f));
+}
+.tampon--menu:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.menu__titre {
+  margin: 4px 10px 6px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+.menu--tampon .menu__liste {
+  min-width: 348px;
+  max-width: min(400px, calc(100vw - 16px));
+}
+.menu__liste button.etat__choix {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.etat__choix .tampon {
+  justify-self: start;
+}
+.etat__choix > .ic {
+  width: 16px;
+  height: 16px;
+  color: var(--canard);
+}
+@media (max-width: 520px) {
+  .menu--tampon .menu__liste {
+    min-width: 0;
+    width: calc(100vw - 16px);
+  }
+  .menu__liste button.etat__choix {
+    grid-template-columns: 108px minmax(0, 1fr) 18px;
+  }
+}
 
 /* ——— Repères : départ, fin, hors du livre ——— */
 .repere--depart {

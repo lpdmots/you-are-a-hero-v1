@@ -67,7 +67,7 @@ export type AutreTexte = { barre?: ReactNode; corps: ReactNode; pied?: ReactNode
 export const DROITS_ADULTE: Droits = { role: "adulte" };
 
 export function Copie({
-  texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide,
+  texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide, onVersion,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
   voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau,
 }: {
@@ -88,6 +88,8 @@ export function Copie({
   apresRetour?: () => void;
   onEtat?: (etat: EtatTexte) => void;
   onVide?: (vide: boolean) => void;
+  /** La version du texte, à chaque enregistrement réussi */
+  onVersion?: (version: number) => void;
   /** Le livre autour de la scène : numéros, scènes, façon d'annoncer un numéro */
   livre: Livre;
   droits: Droits;
@@ -156,7 +158,7 @@ export function Copie({
   const creation = useRef<{ choix: string; scene: SceneCreee } | null>(null);
   const ciblesRelues = useRef(ciblesDe(texte).sort().join());
   const [ouvert] = useState<Texte>(() => [...initial, ...liaisons]);
-  const sauvegarde = useEnregistrementTexte({ cible, version, texte: ouvert, apresRetour });
+  const sauvegarde = useEnregistrementTexte({ cible, version, texte: ouvert, apresRetour, onVersion });
   const arrete = sauvegarde.etat.etat === "garde" || sauvegarde.etat.etat === "refuse" || sauvegarde.etat.etat === "ferme";
   const adulte = droits.role === "adulte";
   const peutChoisir = livre.aChoix && (adulte || droits.profil === "organisation");

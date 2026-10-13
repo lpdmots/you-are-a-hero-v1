@@ -23,8 +23,8 @@ en local le même jour et mise en ligne le 11 octobre 2026, sa revue par le
 porteur étant en cours (voir
 [Étape 3](#étape-3--écrire-une-scène-et-relier-les-choix)).
 L'étape 4 est autorisée le 13 octobre 2026, pour elle seule : son entretien
-est fait et validé dans son ensemble le même jour, sa construction n'est pas
-commencée (voir
+est fait et validé dans son ensemble le même jour, sa construction commence
+le même jour, en local, lot par lot (voir
 [Étape 4](#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre)).
 L'étape 5 n'est ni autorisée ni commencée.
 
@@ -739,8 +739,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   l'entretien, fait et validé ; la construction, sur cette validation, en
   local. Le schéma de la base change : les migrations s'appliquent à la
   vraie base sur accord du porteur, après une sauvegarde.
-- **Construction : pas commencée.** Sept lots, un commit local par lot,
-  découpage proposé au porteur le 13 octobre 2026 :
+- **Construction : commencée le 13 octobre 2026, en local,** sur
+  l'instruction du porteur, qui retient le découpage proposé. Sept lots, un
+  commit local par lot ; le lot 1 est construit, les six autres restent à
+  faire. Rien n'est poussé ni appliqué à la vraie base.
   1. états et relecture, côté enseignant — état sur le tampon, fiche de
      décision, remarque, validation suspendue, « Prête », scènes sans élève
      et mode personnel (schéma : état, remises, remarques) ;
@@ -753,6 +755,52 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   5. fiches de rédaction — page, feuilles, partage, plafond, complément ;
   6. encouragements (schéma) ;
   7. essai de séance et restauration (V18).
+  - **Lot 1 — états et relecture, côté enseignant : construit le
+    13 octobre 2026.** Le tampon de l'en-tête ouvre « État de la scène » :
+    cinq états quand un élève s'occupe de la scène, trois sans élève, deux
+    dans un projet personnel, chacun avec ce qu'il change. La fiche « Votre
+    relecture » ou « Pour le livre » porte l'étape suivante : valider,
+    demander une reprise avec sa remarque facultative, « Prête pour le
+    livre », le rappel des défauts d'écriture avant « prête », le second
+    clic ignoré. La validation suspendue quand le texte ou l'état a changé
+    depuis la lecture ; l'état qui attend l'enregistrement des
+    corrections ; les onglets « Remis le… » et la fiche « Remises » ; les
+    cinq tampons dans le chapitre, la recherche, les chemins et les scènes
+    voisines. Schéma : `20261013100000_etats_et_relecture.sql`, appliqué à
+    la base locale seulement. Choix techniques :
+    [architecture](architecture.md#réalisation-de-létape-4-13-octobre-2026) ;
+    écrans et écarts :
+    [design](design.md#étape-4-construite-13-octobre-2026).
+    - **Critères fermés :** F07-AC02 à AC05, AC08, AC14, AC15, AC23, AC25
+      à AC27, AC31, AC61 à AC65 ; F11-AC01, AC02, AC13, AC14, AC93, AC94,
+      AC99, et la première moitié de AC24 ; F06-AC47, AC55 pour les cinq
+      états, AC94 pour l'état gardé ; F08-AC20, AC25 et la seconde moitié
+      de AC21.
+    - **Critères qui attendent :** ce que l'élève lit et fait d'une scène
+      remise, relue ou validée, et la remise elle-même (F07-AC07, AC09 à
+      AC13, AC16, AC24, AC28 à AC30, F08-AC19, AC31), au lot 2 — ici, une
+      remise est posée dans la base telle que le lot 2 la posera ; la scène
+      suivante à valider (F06-AC63) et la scène de l'enseignant au Suivi
+      (F06-AC93), au lot 4 ; la même commande d'état à côté de l'aperçu
+      (F11-AC95), le PDF définitif bloqué (seconde moitié de F11-AC24) et
+      le changement de police (F11-AC25), à l'étape 6.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      la consigne se replie d'elle-même quand la scène ne s'écrit plus ;
+      seule la dernière remise a son onglet, les précédentes s'ouvrant
+      depuis « Remises », et deux remises du même jour portent l'heure ;
+      « citez la sélection » n'est pas construit ; une scène sans élève ne
+      peut être mise ni « À valider » ni « À reprendre », mais garde l'un
+      de ces états si elle le portait quand l'enseignant se l'est
+      attribuée ; chaque reprise demandée est gardée, même sans remarque
+      écrite ; le rappel avant « prête » se fait d'après le texte qui vient
+      d'être enregistré ; le message d'une validation suspendue dit ce qui
+      a changé, sans nommer l'élève ni l'heure ; un élève qui tapait encore
+      quand la scène est passée « À valider » ou « Validé » voit sa phrase
+      gardée à part et est arrêté, comme pour tout refus (F08-AC19).
+    - **Tests automatiques :** 512 passent — 127 sur les règles, 179 contre
+      la base locale, 206 parcours joués dans un navigateur —, dont 44 pour
+      ce lot (8, 23 et 13), chacun au nom de son critère. Captures :
+      `npm run captures -- etape4` (401 à 417).
 - **Lectures prises pour construire, annoncées au porteur, sans objection
   à la validation :** de plusieurs scènes cochées dont une vient d'être
   prise, l'élève reçoit les libres et lit laquelle ne l'était plus ;

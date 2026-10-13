@@ -59,7 +59,7 @@ function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
       ) : null}
       <p className={classes("carte-chemin__titre", !data.titre && "carte-chemin__titre--vide")}>{titre}</p>
       <div className="carte-chemin__pied">
-        <TamponScene vide={data.vide} />
+        <TamponScene etat={data.etat} vide={data.vide} />
         <Link className="carte-chemin__ouvrir nodrag nopan" href={data.lien} aria-label={`Ouvrir ${titre}`}>
           Ouvrir
           <Icone nom="fleche" />

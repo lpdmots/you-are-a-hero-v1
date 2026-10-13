@@ -45,9 +45,11 @@ const envoi = async (cible: Cible, version: number, texte: Texte, enPartant = fa
  * curseur (F08-AC33).
  */
 export function useEnregistrementTexte({
-  cible, version: versionInitiale, texte: texteInitial, apresRetour,
+  cible, version: versionInitiale, texte: texteInitial, apresRetour, onVersion,
 }: {
   cible: Cible; version: number; texte: Texte;
+  /** La version que la base vient de rendre : la page la présente pour changer l'état (F07-AC26) */
+  onVersion?: (version: number) => void;
   /** Un échec vient d'être rattrapé : le texte est enregistré (F08-AC22) */
   apresRetour?: () => void;
 }) {
@@ -64,8 +66,10 @@ export function useEnregistrementTexte({
   const enEchec = useRef(false);
   const gardeAPart = useRef(false);
   const retour = useRef(apresRetour);
+  const direVersion = useRef(onVersion);
   useEffect(() => {
     retour.current = apresRetour;
+    direVersion.current = onVersion;
     cibleRef.current = cible;
   });
 
@@ -98,6 +102,7 @@ export function useEnregistrementTexte({
       }
       if (fait.etat === "enregistre") {
         version.current = fait.version;
+        direVersion.current?.(fait.version);
         enregistre.current = parti;
         if (enEchec.current) {
           enEchec.current = false;

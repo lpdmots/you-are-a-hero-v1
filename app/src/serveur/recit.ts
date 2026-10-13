@@ -3,6 +3,7 @@ import { cache } from "react";
 import type { Enseignant } from "./adulte";
 import type { Attribution, Chapitre, ElevePlan, Partie, Plan, Profil, Scene, Supprime } from "@/domaine/recit";
 import { nomScene } from "@/domaine/recit";
+import { estEtat } from "@/domaine/etats";
 import {
   estConstruction, estFormuleRenvoi, estRubrique, feuillePropre, type Construction, type EtatPiste, type Preparation, signeDe,
 } from "@/domaine/preparation";
@@ -18,7 +19,7 @@ export const estUuid = (v: unknown): v is string => typeof v === "string" && UUI
 type LigneScene = {
   id: string; chapitre_id: string; reference: number; titre: string | null; consigne: string; rang: number;
   fin: boolean; hors_livre: boolean; cree_par_eleve: string | null; supprime_le: string | null; cree_le: string;
-  prise_par_eleve: string | null; prise_par_enseignant: boolean; texte_vide: boolean; ecrit_par: string[] | null;
+  prise_par_eleve: string | null; prise_par_enseignant: boolean; texte_vide: boolean; ecrit_par: string[] | null; etat: string | null;
   rang_livre: number | null; numero_fixe: number | null;
 };
 type LigneChapitre = {
@@ -35,7 +36,7 @@ const parRang = <T extends { rang: number; cree_le: string }>(a: T, b: T): numbe
 const sceneDepuis = (s: LigneScene): Scene => ({
   id: s.id, chapitreId: s.chapitre_id, reference: s.reference, titre: s.titre, consigne: s.consigne, fin: s.fin,
   horsLivre: s.hors_livre, creeParEleve: s.cree_par_eleve, priseParEleve: s.prise_par_eleve, priseParEnseignant: s.prise_par_enseignant,
-  texteVide: s.texte_vide !== false, ecritPar: s.ecrit_par ?? [],
+  etat: estEtat(s.etat) ? s.etat : "cours", texteVide: s.texte_vide !== false, ecritPar: s.ecrit_par ?? [],
   rangLivre: s.rang_livre ?? null, numeroFixe: s.numero_fixe ?? null,
 });
 
@@ -53,7 +54,7 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
       .eq("projet_id", projetId),
     e.supabase
       .from("scenes")
-      .select("id, chapitre_id, reference, titre, consigne, rang, fin, hors_livre, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide, ecrit_par, rang_livre, numero_fixe, supprime_le, cree_le")
+      .select("id, chapitre_id, reference, titre, consigne, rang, fin, hors_livre, cree_par_eleve, prise_par_eleve, prise_par_enseignant, etat, texte_vide, ecrit_par, rang_livre, numero_fixe, supprime_le, cree_le")
       .eq("projet_id", projetId),
     e.supabase.from("attributions").select("chapitre_id, eleve_id, profil, cree_le").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("projets").select("depart_scene_id").eq("id", projetId).maybeSingle(),

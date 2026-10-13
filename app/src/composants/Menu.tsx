@@ -10,7 +10,7 @@ import { Icone } from "./Icone";
  * le bouton, ou au-dessus quand la fenêtre n'a pas la place dessous.
  */
 export function Menu({
-  libelle, discret, bouton, agauche, children,
+  libelle, discret, bouton, agauche, tampon, children,
 }: {
   /** Ce que le menu commande, pour qui ne voit pas l'écran : « Autres commandes du chapitre La lisière » */
   libelle: string;
@@ -19,6 +19,8 @@ export function Menu({
   bouton?: ReactNode;
   /** La liste s'ouvre sous le bord gauche du bouton, et non sous le droit */
   agauche?: boolean;
+  /** Le bouton est un tampon d'état, qui porte un chevron : celui-là se clique (F11.1) */
+  tampon?: string;
   children: (fermer: () => void) => ReactNode;
 }) {
   const [ouvert, setOuvert] = useState(false);
@@ -51,12 +53,12 @@ export function Menu({
 
   return (
     <details
-      className={`menu${discret ? " menu--discret" : ""}${bouton ? " menu--mots" : ""}`}
+      className={`menu${discret ? " menu--discret" : ""}${tampon ? " menu--tampon" : bouton ? " menu--mots" : ""}`}
       ref={ref}
       open={ouvert}
       onToggle={(e) => setOuvert(e.currentTarget.open)}
     >
-      <summary className="btn" aria-label={libelle} title={bouton ? undefined : libelle}>
+      <summary className={tampon ? "tampon tampon--menu" : "btn"} data-e={tampon} aria-label={libelle} title={bouton ? undefined : libelle}>
         {bouton ?? <Icone nom="points" />}
       </summary>
       {ouvert ? <div className="menu__liste flottant" ref={liste}>{children(() => setOuvert(false))}</div> : null}

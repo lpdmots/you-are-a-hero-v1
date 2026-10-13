@@ -52,9 +52,13 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
     ? null
     : scene.refus === "arrete"
       ? "Tu ne peux pas écrire ici pour l’instant"
-      : scene.refus === "scene"
+      : scene.prise?.par === "enseignant"
         ? `Tu peux lire, pas écrire : ${prof} s’en occupe`
-        : "Tu peux lire, pas écrire";
+        : scene.etat === "valider"
+          ? `Tu ne peux plus écrire : ${prof} relit`
+          : scene.etat === "valide" || scene.etat === "prete"
+            ? "Tu ne peux plus écrire : c’est validé"
+            : "Tu peux lire, pas écrire";
 
   const services: Services = {
     creerScene: (chapitreId, titre) => creerSceneDepuisChoix(chapitreId, titre, scene.projetId),
@@ -175,7 +179,7 @@ export function SceneEleve({ scene, prof, eleves }: { scene: SceneOuverte; prof:
       <header className={styles.sceneTete}>
         <span className="fiche__ref">{ref}</span>
         <h1>{scene.titre ?? "Scène sans titre"}</h1>
-        <TamponScene vide={vide} />
+        <TamponScene etat={scene.etat} vide={vide} />
       </header>
       {qui ? (
         <p className={styles.sceneQui}>

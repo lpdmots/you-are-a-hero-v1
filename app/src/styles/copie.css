@@ -1635,6 +1635,18 @@ kbd {
   overflow-y: auto;
   scrollbar-width: thin;
 }
+/* Les fiches de la colonne : décision, remarque, consigne, remises */
+.cote-copie__fiches {
+  display: grid;
+  gap: 14px;
+}
+.cote-copie__fiches[hidden] {
+  display: none;
+}
+.copie__onglets .bulle {
+  align-self: center;
+  margin-left: 4px;
+}
 .panneau-copie {
   container: panneau / inline-size;
 }

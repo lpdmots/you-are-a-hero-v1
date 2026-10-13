@@ -163,7 +163,7 @@ describe("Nommer un texte gardé à part (F08.1)", () => {
 describe("Ce qu'une suppression emporterait (F03.1)", () => {
   const scene = (id: string, chapitreId: string, texteVide: boolean, ecritPar: string[] = []): Scene => ({
     id, chapitreId, reference: Number(id.slice(1)), titre: null, consigne: "", fin: false, horsLivre: false, creeParEleve: null,
-    priseParEleve: null, priseParEnseignant: false, texteVide, ecritPar, rangLivre: null, numeroFixe: null,
+    priseParEleve: null, priseParEnseignant: false, etat: "cours", texteVide, ecritPar, rangLivre: null, numeroFixe: null,
   });
   const repere = { imageId: null, visuelChoisi: null, visuelDefaut: null };
   const plan: Plan = {

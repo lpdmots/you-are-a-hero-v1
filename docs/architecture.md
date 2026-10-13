@@ -736,6 +736,58 @@ et les scénarios du prototype de l'éditeur, réécrits pour l'application,
 sont le filet d'une montée de version : `tests/parcours/choix.spec.ts`,
 `proteger.spec.ts` et `jeu.spec.ts`.
 
+## Réalisation de l'étape 4 (13 octobre 2026)
+
+Choix techniques pris en construisant l'étape 4 du [plan](plan.md) : faire
+travailler la classe. Les règles restent en F06.3, F06.5, F07 et F11.1 des
+[spécifications](specifications.md). Cette section s'écrit lot par lot ;
+l'avancement est dans le plan.
+
+**L'état, une colonne (lot 1).** `scenes.etat` porte l'un des cinq états ;
+« Prête » en est un, et non un repère à côté de « Validé » : la retirer est
+le choix d'un autre état (F11-AC93). « Texte vide » n'est pas dans la base :
+c'est « En cours » sans texte, calculé à l'affichage d'après `texte_vide`
+(`tamponDe`, dans `src/domaine/etats.ts`, qui réunit les noms, les signes,
+les phrases et les états permis). Personne n'écrit cette colonne
+directement, pas même l'adulte : elle ne change que par `changer_etat`, qui
+vérifie à qui est la scène et quels états elle peut prendre — cinq quand un
+élève s'en occupe, trois sans élève, deux dans un projet personnel.
+
+**Validation suspendue, d'un seul tenant.** La page présente la version du
+texte qu'elle montre et un second compteur, `scenes.tour`, qui avance à
+chaque changement d'état, remise ou retrait. Pour « Validé » et « Prête »,
+la fonction verrouille la scène, compare les deux et, s'ils ne sont plus
+ceux de la base, ne change rien et le dit (F07-AC26) : il n'y a pas
+d'instant où une validation passerait sur un texte que l'enseignant n'a pas
+lu. Un compteur à part, parce que la version du texte ne doit pas bouger
+quand l'état change : la page d'un élève qui écrit y verrait un conflit.
+L'enregistrement dit à la page la version qu'il obtient (`onVersion`), sans
+passer par l'affichage : elle est juste dès que l'envoi est revenu.
+
+**Ce qui attend avant de changer l'état.** La page enregistre d'abord ce que
+l'adulte vient de corriger (`avantDePartir`, comme pour quitter la scène) ;
+si l'envoi échoue, l'état ne change pas (F07-AC65). Après un conflit de
+l'adulte, la page montre un texte qu'il n'a pas relu : elle le retient, et
+le premier choix de « Validé » ou de « Prête » le lui dit au lieu de passer
+(F08-AC21).
+
+**Remises et remarques.** Deux tables, `remises` (le texte tel qu'il a été
+remis, sans les notes de l'enseignant) et `remarques` (une ligne par reprise
+demandée, même sans remarque écrite, liée à la dernière remise et à l'élève
+qui s'occupait de la scène). L'adulte les lit ; un poste ne lit ni l'une ni
+l'autre directement. Changer l'état ne crée ni ne supprime de remise.
+
+**L'état pour les élèves.** `refus_d_ecrire`, que la base consulte à chaque
+ouverture et à chaque enregistrement, refuse l'écriture en « À valider »,
+« Validé » et « Prête ». Un élève qui tapait encore quand la scène a changé
+d'état voit donc sa phrase gardée à part, comme tout refus (F08-AC19). Le
+poste lit la colonne `etat` des scènes qu'il lit déjà.
+
+**Rappel avant « prête ».** Calculé par le serveur au moment du choix,
+d'après le texte que la page vient d'enregistrer et les liens que la base en
+a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait
+pas.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

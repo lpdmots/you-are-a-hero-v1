@@ -390,7 +390,7 @@ export function Plan({
                     <li key={s.id} className="trouve">
                       <span className="fiche__ref">{referenceScene(s.reference)}</span>
                       <span className="trouve__titre">{s.titre ?? <span className="sans-consigne">sans titre</span>}</span>
-                      <TamponScene vide={s.texteVide} />
+                      <TamponScene etat={s.etat} vide={s.texteVide} />
                       {projet.deClasse ? <span className="fiche__qui">{libelleQui(s, chapitre, eleves)}</span> : null}
                       <span className="trouve__ouvrir" aria-hidden="true">
                         Ouvrir

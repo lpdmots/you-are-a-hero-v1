@@ -12,6 +12,7 @@ import type { Profil, Repere } from "@/domaine/recit";
 import { nomPourLesEleves } from "./adulte";
 import { clientDuPoste, etatDuPoste, type EtatPoste } from "./poste";
 import { estUuid } from "./recit";
+import { estEtat, type Etat } from "@/domaine/etats";
 
 /**
  * Ce que lit un élève depuis son poste. Toutes ces lectures passent par l'accès du poste :
@@ -111,6 +112,8 @@ export type SceneEleve = {
   id: string; reference: number; titre: string | null; consigne: string | null; creeParMoi: boolean;
   /** Qui s'occupe de la scène (F06-AC04) : l'élève lui-même, un camarade, l'enseignant, ou personne */
   prise: Prise;
+  /** Où en est la scène (F07.1) */
+  etat: Etat;
   /** La scène n'a ni mot ni image : « Texte vide » */
   texteVide: boolean;
   /** Un texte de l'élève est gardé à part pour cette scène : il n'y écrit plus (F08-AC17) */
@@ -151,7 +154,7 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     base.from("attributions").select("eleve_id, profil").eq("chapitre_id", chapitreId),
     base
       .from("scenes")
-      .select("id, reference, titre, rang, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide")
+      .select("id, reference, titre, rang, cree_par_eleve, prise_par_eleve, prise_par_enseignant, texte_vide, etat")
       .eq("chapitre_id", chapitreId)
       .order("rang"),
     base.rpc("consignes_du_chapitre", { p_chapitre: chapitreId }),
@@ -178,7 +181,7 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
     scenes: (
       (scenes.data ?? []) as {
         id: string; reference: number; titre: string | null; cree_par_eleve: string | null; prise_par_eleve: string | null; prise_par_enseignant: boolean;
-        texte_vide: boolean;
+        texte_vide: boolean; etat: string;
       }[]
     ).map((s) => {
       return {
@@ -186,6 +189,7 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
         consigne: profil ? (consigneDe.get(s.id) ?? "") : null,
         creeParMoi: s.cree_par_eleve === c.moi.id,
         prise: priseDe(c, s.prise_par_eleve, s.prise_par_enseignant),
+        etat: estEtat(s.etat) ? s.etat : "cours",
         texteVide: s.texte_vide !== false,
         arrete: arrete.has(s.id),
       };
@@ -211,6 +215,8 @@ export type SceneOuverte = {
   texte: Texte;
   version: number;
   vide: boolean;
+  /** Où en est la scène : « À valider », « Validé » et « Prête » se lisent sans s'écrire (F07.1) */
+  etat: Etat;
   /** Gras, italique et souligné permis aux élèves de ce projet (F04-AC03) */
   marques: boolean;
   /** Pourquoi l'élève ne peut pas écrire ici ; rien s'il le peut */
@@ -271,7 +277,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   if (!chapitre) return null;
   const aChoix = s.recit === "choix";
   // Ce qu'il peut nommer : les scènes de son chapitre ; ailleurs, le seul titre public du chapitre
-  const [partie, voisines, destinations, numeros, jeu, autour, affichees] = await Promise.all([
+  const [partie, voisines, destinations, numeros, jeu, autour, affichees, etatLu] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
@@ -282,6 +288,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     }),
     voisinesDe(base, sceneId),
     base.rpc("voisines_affichees").then((r) => r.data !== false),
+    base.from("scenes").select("etat").eq("id", sceneId).maybeSingle().then((r) => r.data?.etat as string | undefined),
   ]);
   const scenes = new Map<string, SceneConnue>(
     ((voisines.data ?? []) as { id: string; reference: number; titre: string | null; texte_vide: boolean }[]).map((v) => [
@@ -324,7 +331,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     id: s.id, reference: s.reference, titre: s.titre,
     chapitre: { id: chapitre.id, titre: chapitre.titre, couleur: chapitre.couleur },
     consigne: s.consigne, profil: s.profil, prise,
-    texte: s.texte ?? [], version: s.version, vide: s.vide, marques: s.marques !== false,
+    texte: s.texte ?? [], version: s.version, vide: s.vide, etat: estEtat(etatLu) ? etatLu : "cours", marques: s.marques !== false,
     refus: s.refus, ecriture, projetId: s.projet, livre, droits, jeu, voisines: autour, voisinesAffichees: affichees,
   };
 }

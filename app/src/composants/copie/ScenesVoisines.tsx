@@ -44,7 +44,7 @@ export function ScenesVoisines({
       ) : (
         <span className="voisine__nom">{nom(v)}</span>
       )}
-      {v.lisible ? <TamponScene vide={v.vide} /> : <span className="voisine__ailleurs">{v.chapitre}</span>}
+      {v.lisible ? <TamponScene etat={v.etat} vide={v.vide} /> : <span className="voisine__ailleurs">{v.chapitre}</span>}
       {v.cache ? (
         <span className="repere">
           <Icone nom="cle" />

@@ -8,6 +8,7 @@ import type { Livre } from "@/composants/copie/contexte";
 import { numerosDuPlan } from "@/domaine/numeros";
 import { texteDeScene, voisinesDe } from "@/serveur/copie";
 import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
+import { relectureDe } from "@/serveur/relecture";
 import { PageScene } from "./PageScene";
 
 type Props = { params: Promise<{ id: string; scene: string }>; searchParams: Promise<{ texte?: string; de?: string }> };
@@ -34,15 +35,16 @@ export default async function Page(props: Props) {
   const lu = await lire(props);
   if (!lu) notFound();
   const { enseignant, projet, plan, scene } = lu;
-  const [eleves, texte, demande, preparation, voisines, preference] = await Promise.all([
+  const [eleves, texte, demande, preparation, voisines, preference, relecture] = await Promise.all([
     elevesDeLaClasse(enseignant, projet.classe?.id ?? null),
     texteDeScene(enseignant, scene.id),
     props.searchParams,
     preparationDe(enseignant, projet.id),
     voisinesDe(enseignant.supabase, scene.id),
     enseignant.supabase.from("enseignants").select("voisines").eq("id", enseignant.id).maybeSingle(),
+    relectureDe(enseignant, scene.id),
   ]);
-  if (!texte) notFound();
+  if (!texte || !relecture) notFound();
   // Le livre autour de la scène : numéros des passages, scènes où peut mener un choix (F05, F11.5)
   const livre: Livre = {
     aChoix: projet.recit === "choix",
@@ -66,6 +68,7 @@ export default async function Page(props: Props) {
       <ProjetOuvert id={projet.id} titre={projet.titre} onglet="plan" />
       <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id} eleves={eleves}
         texte={texte}
+        relecture={relecture}
         livre={livre}
         jeu={{ objets: preparation?.objets ?? [], formules: projet.recit === "choix" ? (preparation?.formules ?? []) : [] }}
         voisines={voisines}

@@ -254,6 +254,28 @@ const TRACES = {
       ))}
     </>
   ),
+  // « À reprendre » : le demi-tour, pour la seule reprise demandée par l'enseignant
+  "demi-tour": (
+    <>
+      <path d="M9 7L4.5 11.5 9 16" />
+      <path d="M5 11.5h9.5a4.5 4.5 0 0 1 0 9H12" />
+    </>
+  ),
+  // « Prête » : la scène entre dans le livre
+  livre: (
+    <>
+      <path d="M4.5 5.5c2.8-.9 5.3-.5 7.5 1.2v12.8c-2.2-1.7-4.7-2.1-7.5-1.2z" />
+      <path d="M19.5 5.5c-2.8-.9-5.3-.5-7.5 1.2v12.8c2.2-1.7 4.7-2.1 7.5-1.2z" />
+    </>
+  ),
+  // Une remise : la feuille que l'élève a rendue
+  papier: (
+    <>
+      <path d="M6.5 3.5h7.5l4 4v13h-11.5z" />
+      <path d="M14 3.5v4h4" />
+      <path d="M9.5 12h5M9.5 15h5M9.5 18h3" />
+    </>
+  ),
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

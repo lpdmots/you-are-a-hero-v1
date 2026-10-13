@@ -1,5 +1,6 @@
 "use client";
 
+import type { Etat } from "@/domaine/etats";
 import { createContext, useContext } from "react";
 import type { Choix, Droits, Paragraphe, SigneAction } from "@/domaine/copie";
 import type { Construction, Formule, FormuleRenvoi, Objet } from "@/domaine/preparation";
@@ -57,6 +58,8 @@ export type Voisine = {
   chapitre: string;
   lisible: boolean;
   vide: boolean;
+  /** Où en est la scène voisine, quand la personne peut la lire (F11.1) */
+  etat: Etat;
   /** Reliée par une liaison cachée, et non par un choix */
   cache: boolean;
   /** Le libellé du choix qui relie les deux scènes */

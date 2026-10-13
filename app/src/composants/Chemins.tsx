@@ -171,7 +171,7 @@ function Liste({
               <div className={`noeud__carte${montre === n.id ? " est-montree" : ""}`}>
                 <div className="noeud__tete">
                   {pourEleve ? null : <span className="fiche__ref">{referenceScene(n.reference)}</span>}
-                  <TamponScene vide={n.vide} />
+                  <TamponScene etat={n.etat} vide={n.vide} />
                 </div>
                 <p className={`fiche__titre${n.titre ? "" : " fiche__titre--vide"}`}>{n.titre ?? "sans titre"}</p>
                 <ul className="noeud__suites">

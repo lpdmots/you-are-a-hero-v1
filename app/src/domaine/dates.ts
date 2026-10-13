@@ -16,3 +16,6 @@ export function heureEnMots(date: string): string {
   const heure = Number(parts.find((p) => p.type === "hour")?.value ?? 0) % 24;
   return `${heure} h ${parts.find((p) => p.type === "minute")?.value ?? "00"}`;
 }
+
+/** « 29 septembre », « 1er octobre » : le jour sans son nom, pour un onglet. */
+export const jourCourt = (date: string): string => jourEnMots(date).replace(/^\S+ /, "");

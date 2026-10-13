@@ -45,7 +45,7 @@ export function ChapitreEleve({
   // Les chemins tels que l'élève les lit : ni départ, ni fin, ni lien caché, ni chemin venu d'ailleurs
   const chemins = useMemo(
     () => ({
-      noeuds: scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, vide: s.texteVide, depart: false, fin: false, lien: `/travail/scene/${s.id}` })),
+      noeuds: scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, depart: false, fin: false, lien: `/travail/scene/${s.id}` })),
       liens: chapitre.liens.map(
         (l): LienDeChemin => ({
           id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: false, vers: l.cibleId,
@@ -111,7 +111,7 @@ export function ChapitreEleve({
       <div className="fiche__tete">
         {prise}
         <span className="fiche__ref">{referenceScene(s.reference)}</span>
-        <TamponScene vide={s.texteVide} />
+        <TamponScene etat={s.etat} vide={s.texteVide} />
         {organise ? (
           <Menu libelle={`Autres commandes de la scène ${referenceScene(s.reference)}`} discret>
             {(fermer) => (

@@ -13,8 +13,8 @@ React Flow et dagre pour la vue « Chemins ». Versions figées dans
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`). |
-| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`). |
+| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`). |
+| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`) ; état, remises et remarques d'une scène (`relecture.ts`). |
 | `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre et ses chemins, scène ; histoire, chapitre et scène de l'élève. `copie/` : l'adresse où le texte s'enregistre. `images/` : celle qui sert une image à qui peut la voir. |
 | `src/composants/copie/` | La copie d'une scène : l'éditeur (Plate, sur Slate), ses blocs, ses fiches, l'enregistrement automatique. `regles.ts` réunit tout ce qui s'écrit contre Slate. |
 | `src/composants/chemins/` | Le schéma de la vue « Chemins » : la place des cartes et le tracé des traits (`disposer.ts`, avec dagre), leur dessin (`Schema.tsx`, avec React Flow). Chargé seulement à l'ouverture de la vue, sur un écran large. |

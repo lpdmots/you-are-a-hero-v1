@@ -389,7 +389,7 @@ export function FicheScene({
       <div className="fiche__tete">
         {prise}
         <span className="fiche__ref">{ref}</span>
-        <TamponScene vide={scene.texteVide} />
+        <TamponScene etat={scene.etat} vide={scene.texteVide} />
         {menu}
       </div>
       <p className={`fiche__titre${scene.titre ? "" : " fiche__titre--vide"}`}>{scene.titre ?? "sans titre"}</p>

@@ -3,11 +3,12 @@
  * et ce qu'il y a « à regarder ». Rien ne s'y saisit : tout se déduit des textes.
  */
 
+import type { Etat } from "./etats";
 import { chapitresDe, departDe, nomScene, type Plan } from "./recit";
 import { pluriel } from "./texte";
 
 export type NoeudDeChemin = {
-  id: string; reference: number; titre: string | null; vide: boolean; depart: boolean; fin: boolean;
+  id: string; reference: number; titre: string | null; etat: Etat; vide: boolean; depart: boolean; fin: boolean;
   /** La page de la scène */
   lien: string;
 };
@@ -37,7 +38,7 @@ export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string):
   const vueChemins = (c: string, scene?: string) => `/projet/${projetId}/chapitre/${c}?vue=chemins${scene ? `&scene=${scene}` : ""}`;
   return {
     noeuds: chapitre.scenes.map((s) => ({
-      id: s.id, reference: s.reference, titre: s.titre, vide: s.texteVide, depart: depart?.id === s.id, fin: s.fin,
+      id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, depart: depart?.id === s.id, fin: s.fin,
       lien: `/projet/${projetId}/scene/${s.id}?de=chemins`,
     })),
     liens: plan.liens

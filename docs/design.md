@@ -1536,6 +1536,63 @@ place de la mini-carte.
   Firefox et Safari, un lecteur d'écran au-delà du clavier (Tab, Entrée,
   Échap, « Ouvrir »).
 
+### Étape 4 construite (13 octobre 2026)
+
+Les écrans de l'étape 4 se construisent lot par lot dans l'application, en
+local, d'après la maquette et les sections « reprises après critique »
+ci-dessus. Cette section dit ce qui s'en écarte et ce qui reste à juger à
+l'essai ; les règles sont dans les spécifications.
+
+**Lot 1 — page de scène de l'adulte : état et relecture.** Construits : le
+tampon à chevron de l'en-tête et sa liste « État de la scène » ; la fiche
+« Votre relecture » / « Pour le livre » ; la remarque de reprise ; le rappel
+avant « prête » ; la validation suspendue ; l'état qui attend
+l'enregistrement ; les onglets « Remis le… » et la fiche « Remises » ; les
+cinq tampons dans le chapitre, la recherche, les chemins et les scènes
+voisines. Sans retour du porteur à ce stade.
+
+Annoncé au porteur avant de construire, comme perfectible dans la maquette :
+
+- **Colonne de droite.** Décision, remarque, consigne et remises ne
+  tiennent pas dans 768 px de haut, et le panneau des réglages s'y ouvre
+  aussi. La consigne est donc une fiche qui se replie : ouverte quand la
+  scène s'écrit (« En cours », « À reprendre »), repliée à l'ouverture
+  d'une scène « À valider », « Validé » ou « Prête », où la décision passe
+  devant. Repliée et vide, elle dit « sans consigne ». Le panneau des
+  réglages prend la place de toutes les fiches, le temps qu'il est ouvert.
+- **Onglets.** Seule la dernière remise a son onglet ; les précédentes
+  s'ouvrent depuis la fiche « Remises », où chacune porte la remarque qui a
+  suivi, et prennent alors un onglet. Deux remises du même jour portent
+  l'heure (« Remis le 29 septembre, 10 h 40 »).
+- **« Citez la sélection »,** sous la remarque : non construit. Un
+  copier-coller suffit, et F07.3 ne demande pas de commande.
+
+Autres écarts, à juger à l'essai :
+
+- **Liste des états d'une scène sans élève.** Trois états, plus celui que
+  la scène porte s'il en est un autre : une scène remise que l'enseignant
+  s'attribue montre « À valider » coché, sans « À reprendre » (F06-AC94).
+- **Message d'une reprise demandée :** « Bilal la retrouvera dans “Mon
+  travail” », et non « dans son chapitre », depuis que « Mon travail »
+  liste ses scènes (F06.5, 13 octobre 2026).
+- **Validation suspendue :** le message dit ce qui a changé — le texte, ou
+  le nouvel état de la scène — sans nommer l'élève ni l'heure, que la
+  maquette donnait en exemple.
+- **Second clic ignoré :** pendant 0,7 seconde, sur la fiche seulement, là
+  où « Prête pour le livre » prend la place de « Valider ». Un état choisi
+  sur le tampon n'arrête pas le geste suivant.
+- **Fiche « Votre remarque pour Bilal » :** la dernière reprise demandée,
+  tant que la scène est « À reprendre », au filet brique ; c'est ce que les
+  élèves du chapitre liront (lot 2).
+- **390 px :** le titre garde sa ligne, le tampon d'état et le menu à trois
+  points passent dessous ; la liste des états prend toute la largeur ;
+  l'icône d'information des onglets reste seule sur sa ligne, déjà relevé
+  par la critique.
+
+**Reste à construire aux lots suivants :** la scène suivante à valider et le
+retour au Suivi (lot 4) ; la même commande d'état à côté de l'aperçu du
+livre (étape 6).
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

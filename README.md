@@ -60,8 +60,11 @@ et le [design](docs/design.md#étape-3-construite-10-octobre-2026).
 **L'étape 4 est autorisée le 13 octobre 2026**, pour elle seule, en deux
 temps (faire travailler la classe : prendre, remettre, relire, valider,
 suivre). Son entretien est fait et validé dans son ensemble le même jour ;
-sa construction, en sept lots, n'est pas commencée
-([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre)).
+sa construction, en sept lots, commence le même jour, en local : le lot 1
+(états et relecture, côté enseignant) est construit
+([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre),
+[architecture](docs/architecture.md#réalisation-de-létape-4-13-octobre-2026),
+[design](docs/design.md#étape-4-construite-13-octobre-2026)).
 L'étape 5 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les

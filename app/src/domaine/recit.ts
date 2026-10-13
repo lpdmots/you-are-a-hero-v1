@@ -1,5 +1,6 @@
 /** Plan du récit : parties, chapitres, scènes (F03), attributions (F06.1), repères du livre à choix (F03.2). */
 
+import type { Etat } from "./etats";
 import { cle, pluriel } from "./texte";
 
 /** Les huit couleurs de chapitre du design : le dos, le bandeau, la teinte de fond. */
@@ -50,6 +51,8 @@ export type Scene = {
   priseParEleve: string | null;
   /** L'enseignant s'en occupe lui-même : un élève ne peut ni y écrire ni la reprendre (F06-AC62) */
   priseParEnseignant: boolean;
+  /** Où en est la scène (F07.1, F11.1) */
+  etat: Etat;
   /** La scène n'a ni mot ni image : « Texte vide » (F06.5) */
   texteVide: boolean;
   /** Les élèves qui y ont enregistré un texte : le dialogue de suppression les nomme (F03.1) */

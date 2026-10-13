@@ -10,6 +10,7 @@ import {
 } from "@/domaine/copie";
 import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
 import type { Voisines } from "@/composants/copie/contexte";
+import { estEtat } from "@/domaine/etats";
 
 /**
  * Le texte d'une scène : ce qu'on en lit et comment il s'enregistre (F08.1, F08.2). Le
@@ -208,11 +209,16 @@ export async function voisinesDe(base: SupabaseClient, sceneId: string): Promise
     sens: "avant" | "apres"; scene_id: string; reference: number | null; titre: string | null; chapitre: string; lisible: boolean; vide: boolean; cache: boolean;
     libelle: string; extrait: unknown; phrase: unknown; suite: boolean;
   };
-  for (const l of (data ?? []) as Ligne[]) {
+  const lignes = (data ?? []) as Ligne[];
+  const lisibles = lignes.filter((l) => l.lisible).map((l) => l.scene_id);
+  const { data: etats } = lisibles.length ? await base.from("scenes").select("id, etat").in("id", lisibles) : { data: [] };
+  const etatDe = new Map(((etats ?? []) as { id: string; etat: string }[]).map((s) => [s.id, s.etat]));
+  for (const l of lignes) {
+    const etat = etatDe.get(l.scene_id);
     const [extrait] = l.extrait ? (nettoyerTexte([l.extrait]) ?? []) : [];
     const [phrase] = l.phrase ? (nettoyerTexte([l.phrase]) ?? []) : [];
     voisines[l.sens === "avant" ? "avant" : "apres"].push({
-      id: l.scene_id, reference: l.reference, titre: l.titre, chapitre: l.chapitre, lisible: l.lisible, vide: l.vide, cache: l.cache, libelle: l.libelle ?? "",
+      id: l.scene_id, reference: l.reference, titre: l.titre, chapitre: l.chapitre, lisible: l.lisible, vide: l.vide, etat: estEtat(etat) ? etat : "cours", cache: l.cache, libelle: l.libelle ?? "",
       extrait: extrait?.type === "p" ? extrait : null, phrase: phrase?.type === "choix" ? phrase : null, suite: !!l.suite,
     });
   }

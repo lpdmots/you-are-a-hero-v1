@@ -251,6 +251,177 @@
   display: grid;
   gap: 10px;
 }
+.carnet-fiche > header > .ic,
+.carnet-fiche--pli > summary header > .ic {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--graphite-2);
+}
+/* Le filet dit la nature de la fiche : une décision à prendre, une reprise demandée */
+.carnet-fiche--decision {
+  --filet: var(--canard);
+}
+.carnet-fiche--retour {
+  --filet: var(--e-reprendre);
+}
+.fiche-tete__fin {
+  margin-left: auto;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--graphite-3);
+}
+/* Fiche qui se replie : son en-tête la rouvre */
+.carnet-fiche--pli > summary {
+  list-style: none;
+  cursor: pointer;
+  border-radius: 12px;
+}
+.carnet-fiche--pli > summary::-webkit-details-marker {
+  display: none;
+}
+.carnet-fiche--pli > summary:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.carnet-fiche--pli > summary header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 16px 10px;
+}
+.carnet-fiche--pli > summary header h2 {
+  font-size: var(--t-s);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.carnet-fiche--pli > summary header::after {
+  content: "";
+  width: 8px;
+  height: 8px;
+  margin-left: auto;
+  border-right: 2px solid var(--graphite-3);
+  border-bottom: 2px solid var(--graphite-3);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 0.15s var(--ease);
+}
+.carnet-fiche--pli > summary header .fiche-tete__fin {
+  margin-right: 6px;
+}
+.carnet-fiche--pli > summary header .fiche-tete__fin + *,
+.carnet-fiche--pli > summary header:has(.fiche-tete__fin)::after {
+  margin-left: 0;
+}
+.carnet-fiche--pli[open] > summary header {
+  border-bottom: 2px solid var(--filet);
+}
+.carnet-fiche--pli[open] > summary header::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+
+/* ——— Fiche de décision : l'étape suivante, et elle seule ——— */
+.decision {
+  gap: 8px;
+}
+.decision p {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.decision p b {
+  color: var(--graphite);
+}
+.decision p > .ic {
+  width: 1.15em;
+  height: 1.15em;
+  margin-right: 6px;
+  vertical-align: -3px;
+}
+.decision .btn--large {
+  justify-content: center;
+}
+.decision__fait {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 700;
+  color: var(--e-prete) !important;
+}
+.decision__fait + p {
+  margin-top: -4px;
+}
+.decision__label {
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.decision__label span {
+  display: block;
+  font-weight: 400;
+  color: var(--graphite-3);
+  font-size: var(--t-xs);
+}
+.decision textarea {
+  resize: vertical;
+  font-size: var(--t-s);
+  cursor: text;
+}
+.decision__aide {
+  font-size: var(--t-xs) !important;
+}
+.decision__rappel {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 9px 11px;
+  border-radius: 9px;
+  background: #fff8e6;
+  box-shadow: inset 0 0 0 1.5px #e9c877;
+}
+.decision__rappel > .ic {
+  flex: none;
+  margin: 2px 0 0 !important;
+  color: var(--e-valider);
+}
+.remarque__texte {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+}
+
+/* ——— Remises : ce que les élèves ont remis, la plus récente d'abord ——— */
+.historique {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.historique li {
+  padding-left: 12px;
+  box-shadow: inset 2px 0 0 var(--trait-fort);
+  font-size: var(--t-s);
+}
+.historique .lien[aria-current="true"] {
+  font-weight: 800;
+  text-decoration: none;
+  color: var(--graphite);
+}
+.historique__date {
+  color: var(--graphite-3);
+  font-size: var(--t-xs);
+}
+.historique__retour {
+  display: flex;
+  gap: 6px;
+  color: var(--e-reprendre);
+  font-size: var(--t-xs);
+  margin-top: 3px;
+}
+.historique__retour .ic {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin-top: 2px;
+}
 
 /* ——— Champs ——— */
 .pchamp {

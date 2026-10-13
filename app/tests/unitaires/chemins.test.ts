@@ -10,7 +10,7 @@ import { ATTENDU, SCENES } from "../../scripts/marais-des-feux-follets";
  */
 
 const id = (n: number) => `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`;
-const noeud = (n: number, extra: Partial<NoeudDeChemin> = {}): NoeudDeChemin => ({ id: id(n), reference: n, titre: `Scène ${n}`, vide: true, depart: false, fin: false, lien: "", ...extra });
+const noeud = (n: number, extra: Partial<NoeudDeChemin> = {}): NoeudDeChemin => ({ id: id(n), reference: n, titre: `Scène ${n}`, etat: "cours", vide: true, depart: false, fin: false, lien: "", ...extra });
 const lien = (de: number, vers: number | null, k = 0, extra: Partial<LienDeChemin> = {}): LienDeChemin => ({
   id: id(5000 + de * 10 + k), de: id(de), vers: vers === null ? null : id(vers), libelle: `Aller en ${vers}`, cache: false, ...extra,
 });
