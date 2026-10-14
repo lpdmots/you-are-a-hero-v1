@@ -930,8 +930,11 @@
     0 10px 26px rgba(30, 40, 38, 0.18),
     inset 0 0 0 1px var(--trait);
 }
-.menu__liste button {
+.menu__liste button,
+.menu__liste > a {
   display: block;
+  box-sizing: border-box;
+  text-decoration: none;
   width: 100%;
   min-height: 40px;
   padding: 8px 10px;
@@ -946,7 +949,9 @@
   cursor: pointer;
 }
 .menu__liste button:hover,
-.menu__liste button:focus-visible {
+.menu__liste button:focus-visible,
+.menu__liste > a:hover,
+.menu__liste > a:focus-visible {
   background: var(--feuille-2);
 }
 

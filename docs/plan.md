@@ -1208,6 +1208,38 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 30 de plus, chacun au nom de son critère —
       8 sur les règles, 4 contre la base locale, 5 parcours, et la mise à
       jour de ceux du lot 1.
+  - **Lot 3 — lecture d'essai de l'adulte : construit le 14 octobre 2026.**
+    La lecture commune, construite une fois pour l'essai et le futur lecteur
+    en ligne (`app/src/composants/lecture/`, règles dans
+    `app/src/domaine/lecture.ts`) : le passage sur la page blanche du livre,
+    les phrases de choix du livre activables, l'encadré d'énigme, la feuille
+    d'aventure et le dé, « Parcours · n » qui ouvre la liste, « Passage
+    précédent », « Recommencer », « Quitter ». La lecture d'essai y ajoute
+    son bandeau, sur le fond à la teinte du chapitre. Entrées : « Par où
+    commencer ? » (départ, ou scène trouvée par la recherche), « Tester la
+    lecture » à la dernière tâche de « Vérifier les chemins », « Lire à
+    l'essai d'ici » dans le menu ⋯ de la scène. Sans schéma.
+    - **Critères fermés :** F09-AC03, AC13, AC14, AC20, AC21 ; la part de
+      l'adulte de F09-AC17, AC18, AC19 ; F05-AC09 pour la lecture ;
+      F04-AC21, AC31, AC32.
+    - **Critères qui attendent :** la part de l'élève de F09-AC17, AC18,
+      AC19, au lot 4 ; le lecteur en ligne, qui reprendra la même lecture, à
+      l'étape 7.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      l'encadré d'énigme porte « Énigme », le champ « Numéro trouvé », « Y
+      aller », puis « Passer l'énigme » avec, pour l'adulte, le numéro
+      attendu ; « Ouvrir la scène » puis « Retour à la lecture d'essai »
+      retrouve le parcours, les « déjà lu » et la feuille, que « Quitter »
+      efface ; « Quitter » ramène au Livre ou à la scène d'où l'on est parti ;
+      une fin qui porte des choix les montre, puis la marque de fin et
+      « Recommencer » ; un choix vers une scène hors du livre se lit avec
+      « … » à la place du numéro et se suit ; le parcours nomme chaque
+      passage par son numéro, sa référence et son titre ; la feuille est à
+      droite du texte à partir de 1 100 points, en barre basse en dessous ;
+      en récit classique, « Scène suivante » suit l'ordre du plan, sans marque
+      de fin.
+    - **Tests automatiques :** 14 de plus, chacun au nom de son critère —
+      8 sur les règles, 6 parcours.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 

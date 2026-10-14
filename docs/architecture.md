@@ -976,6 +976,33 @@ scène.
   réglages dès son premier rendu, d'après le texte reçu, et l'amène sous les
   yeux.
 
+**La lecture, construite une fois (lot 3).** Une forme commune de ce
+qu'une page de lecture reçoit (`LivreLu`, `src/domaine/lecture.ts`) : pour
+chaque passage, ses blocs tels que le livre les imprime — paragraphes,
+images, actions de jeu, phrases de choix en morceaux avec leurs numéros
+(`morceauxDe`, la fonction de l'étape 3) —, ses énigmes et leur numéro
+attendu, ses repères. Les notes de l'enseignant et les liaisons cachées n'y
+sont pas des blocs. Chaque renvoi dit où il mène : un passage lisible, rien
+(sans destination, scène supprimée), ou, pour l'élève au lot 4, une suite
+hors de ses chapitres. La lecture ne sait rien de la base ni des droits :
+l'adulte la reçoit du plan et des textes (`livrePourLAdulte`), l'élève la
+recevra d'une fonction de la base, et le lecteur en ligne de l'instantané
+partagé. Les composants (`src/composants/lecture/`) ne chargent ni Plate ni
+l'éditeur.
+
+- **Tout le livre en une fois.** La page de l'adulte lit les textes de
+  toutes les scènes du projet en une demande ; un livre de deux cents scènes
+  reste de l'ordre de quelques centaines de kilo-octets, et chaque passage
+  s'ouvre ensuite sans attendre.
+- **Ce qui tient le temps de la page.** Le parcours, les « déjà lu », la
+  feuille et le dernier lancer sont gardés par le navigateur
+  (`sessionStorage`, une clé par projet), pour qu'un aller-retour vers une
+  scène les retrouve ; « Quitter » les efface. La lecture n'est donc dessinée
+  que dans le navigateur (`next/dynamic`, sans rendu serveur) : le serveur
+  ne sait pas ce qu'elle avait gardé.
+- **Dé et compteurs.** Calculés sans base (`lancer`, `changerCompteur`) ;
+  rien n'est envoyé au serveur.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

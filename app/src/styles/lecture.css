@@ -1,0 +1,761 @@
+/* Lecture (F09.1, F12.1) : la lecture d'essai, et plus tard le lecteur en ligne. La page
+   blanche du livre, en Vollkorn, sur le bureau à la teinte du chapitre du passage lu ; les
+   phrases de choix du livre, en italique entre deux filets ; la feuille d'aventure à côté. */
+
+.lecture {
+  --lecture-page: 680px;
+  /* La page entière, à la teinte du chapitre du passage lu : on voit qu'on change de chapitre */
+  min-height: calc(100vh - 64px);
+  padding: 22px 24px 64px;
+  background: var(--teinte, var(--bureau));
+  transition: background 0.3s var(--ease);
+}
+.lecture > * {
+  max-width: 1232px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.lecture--accueil {
+  background: var(--bureau);
+}
+.lecture__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--trait);
+}
+.lecture__tete h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--t-2xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.lecture__tete h1 .ic {
+  width: 26px;
+  height: 26px;
+  color: var(--canard);
+}
+.lecture__tete p {
+  margin-top: 2px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.lecture__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.lecture__attente {
+  padding: 40px 0;
+  color: var(--graphite-2);
+}
+
+.lecture__corps {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+  margin-top: 18px;
+}
+@media (min-width: 1100px) {
+  .lecture--feuille .lecture__corps {
+    grid-template-columns: minmax(0, 1fr) 320px;
+    align-items: start;
+  }
+}
+.lecture__colonne {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: var(--lecture-page);
+  justify-self: center;
+}
+.lecture__ancre {
+  scroll-margin-top: 90px;
+}
+.lecture__ancre:focus {
+  outline: none;
+}
+
+/* « Parcours · 16 », en une ligne qui ouvre la liste */
+.lecture__parcours {
+  position: relative;
+}
+.lecture__parcours-b {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 99px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+}
+.lecture__parcours-b .ic {
+  width: 1em;
+  height: 1em;
+  color: var(--graphite-2);
+}
+.lecture__etapes {
+  display: grid;
+  gap: 2px;
+  max-height: 340px;
+  overflow-y: auto;
+  margin: 8px 0 0;
+  padding: 8px;
+  list-style: none;
+  background: var(--feuille);
+  border-radius: var(--r-m);
+  box-shadow:
+    0 10px 26px rgba(30, 40, 38, 0.14),
+    inset 0 0 0 1px var(--trait);
+}
+.lecture__etapes button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+  text-align: left;
+  cursor: pointer;
+}
+.lecture__etapes button:hover {
+  background: var(--feuille-2);
+}
+.lecture__etapes button[aria-current] {
+  background: var(--canard-pale);
+  font-weight: 700;
+}
+.lecture__etape-n {
+  min-width: 1.6em;
+  text-align: right;
+  color: var(--graphite-3);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Le bandeau de l'essai : ce que l'adulte sait de la scène, au-dessus de la page */
+.lu-bandeau {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: var(--t-s);
+}
+.lu-bandeau__chapitre {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.lu-bandeau__pastille {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--dos);
+}
+.lu-bandeau__scene {
+  font-weight: 700;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.lu-bandeau__scene .code {
+  font-family: var(--f-code);
+  color: var(--graphite-2);
+}
+.lu-bandeau__hors {
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  font-weight: 700;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.lu-bandeau .lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 700;
+}
+.lu-bandeau .lien .ic {
+  width: 1em;
+  height: 1em;
+}
+
+/* La page du livre */
+.lu-page {
+  display: grid;
+  gap: 18px;
+  padding: 34px 44px 38px;
+  background: var(--feuille);
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(30, 40, 38, 0.08), 0 8px 24px rgba(30, 40, 38, 0.08);
+}
+.lu-numero-passage {
+  font-variant-numeric: lining-nums;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-family: var(--f-recit);
+  font-size: var(--t-m);
+  color: var(--graphite-2);
+}
+.lu-numero-passage::before,
+.lu-numero-passage::after {
+  content: "";
+  width: 38px;
+  height: 1px;
+  background: var(--trait-fort);
+}
+.lu-texte {
+  display: grid;
+  gap: 0.9em;
+  font-size: 1.18rem;
+  line-height: 1.75;
+}
+.lu-action {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 18px;
+  border: 1px solid var(--graphite);
+  border-radius: 2px;
+  font-weight: 600;
+}
+.lu-action .ic {
+  flex: none;
+  margin-top: 0.3em;
+}
+.lu-image {
+  max-width: 100%;
+  margin: 0.4em auto;
+  display: grid;
+  gap: 6px;
+}
+.lu-image img {
+  width: 100%;
+  height: auto;
+}
+.lu-image figcaption {
+  font-size: 0.95rem;
+  font-style: italic;
+  text-align: center;
+  color: var(--graphite-2);
+}
+.lu-texte .symbole,
+.lu-choix .symbole {
+  height: 1.2em;
+  width: auto;
+  vertical-align: -0.2em;
+}
+
+/* Les phrases de choix du livre, en italique entre deux filets, activables */
+.lu-choix-liste {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--trait-fort);
+}
+.lu-choix-liste > li {
+  border-bottom: 1px solid var(--trait-fort);
+}
+.lu-choix {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 0;
+  padding: 14px 4px;
+  border: 0;
+  background: none;
+  color: var(--graphite);
+  font: inherit;
+  font-size: 1.12rem;
+  font-style: italic;
+  line-height: 1.55;
+  text-align: left;
+}
+button.lu-choix {
+  cursor: pointer;
+}
+button.lu-choix:hover {
+  background: var(--feuille-2);
+}
+.lu-choix > .ic {
+  flex: none;
+  margin-left: auto;
+  color: var(--canard);
+}
+.lu-choix__phrase {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.lu-choix__phrase b {
+  font-weight: 700;
+}
+.lu-numero {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2em;
+  margin: 0 2px;
+  padding: 0 6px;
+  border: 1px solid var(--canard);
+  border-radius: 99px;
+  background: var(--feuille);
+  color: var(--canard);
+  font: inherit;
+  font-style: normal;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lu-numero:hover {
+  background: var(--canard-pale);
+}
+/* Un renvoi sans suite lisible : ambre, cela attend, sans être une faute (F09-AC17) */
+.lu-manque {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 1px 8px;
+  border-radius: 4px;
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-style: normal;
+  font-weight: 700;
+  white-space: nowrap;
+  vertical-align: 0.1em;
+}
+.lu-manque .ic {
+  width: 1em;
+  height: 1em;
+}
+.lu-deja {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  flex: none;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-style: normal;
+  font-weight: 600;
+  color: var(--e-valide);
+}
+.lu-deja .ic {
+  width: 1em;
+  height: 1em;
+}
+
+/* L'encadré d'une énigme */
+.lu-enigme {
+  display: grid;
+  gap: 10px;
+  padding: 14px 16px;
+  border: 1.5px dashed var(--canard);
+  border-radius: 10px;
+  font-family: var(--f-ui);
+}
+.lu-enigme__titre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  color: var(--canard);
+}
+.lu-enigme__saisie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.lu-enigme__saisie input {
+  width: 9em;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--trait-fort);
+  border-radius: 8px;
+  font-size: var(--t-l);
+}
+.lu-enigme__saisie input[aria-invalid] {
+  border-color: var(--e-valider);
+}
+.lu-enigme__faux {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+  font-weight: 700;
+  font-size: var(--t-s);
+}
+.lu-enigme__passer {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: var(--t-s);
+}
+.lu-enigme__numero {
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+
+/* Ce que la lecture rencontre en fin de passage */
+.lu-issue,
+.lu-sortie {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--feuille-2);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.lu-issue .ic {
+  flex: none;
+  margin-top: 0.15em;
+  color: var(--e-valider);
+}
+.lu-sortie {
+  font-family: var(--f-recit);
+  font-size: 1.12rem;
+  font-style: italic;
+  background: none;
+  justify-content: center;
+  text-align: center;
+  padding: 18px 0;
+}
+.lu-fin {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding-top: 8px;
+}
+.lu-fin__marque {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--f-recit);
+  font-size: var(--t-xl);
+  font-style: italic;
+}
+.lu-fin__marque::before,
+.lu-fin__marque::after {
+  content: "";
+  width: 48px;
+  height: 1px;
+  background: var(--graphite-3);
+}
+.lu-suite {
+  display: flex;
+  justify-content: flex-end;
+}
+.lecture__precedent .lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+}
+
+/* La feuille d'aventure, à côté du texte */
+.lecture__feuille {
+  position: sticky;
+  top: 84px;
+  display: none;
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  background: var(--feuille);
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 1px var(--trait), 0 6px 18px rgba(30, 40, 38, 0.08);
+}
+.lecture__feuille > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 12px;
+  border-bottom: 1px solid var(--trait);
+}
+.lecture__feuille h2 {
+  font-size: var(--t-l);
+  font-weight: 700;
+}
+.lecture__ranger {
+  display: none;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--t-s);
+}
+@media (min-width: 1100px) {
+  .lecture__feuille {
+    display: block;
+  }
+  .lecture__barre {
+    display: none !important;
+  }
+}
+.feuille-aventure {
+  display: grid;
+  padding: 4px 18px 16px;
+}
+.fa-section {
+  display: grid;
+  gap: 8px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--trait);
+}
+.fa-section:last-of-type {
+  border-bottom: 0;
+}
+.fa-section__titre {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  font-size: var(--t-m);
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.fa-compteur {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 44px 3ch 44px;
+  align-items: center;
+  gap: 10px;
+}
+.fa-compteur__nom {
+  display: grid;
+  font-size: 1.12rem;
+  font-weight: 700;
+}
+.fa-compteur__nom small {
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.fa-compteur__valeur {
+  font-variant-numeric: lining-nums;
+  font-size: var(--t-2xl);
+  text-align: center;
+}
+.fa-rond {
+  width: 44px;
+  height: 44px;
+  border: 1.5px solid var(--canard);
+  border-radius: 50%;
+  background: var(--feuille);
+  color: var(--canard);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.fa-rond:disabled {
+  border-color: var(--trait-fort);
+  color: var(--graphite-3);
+  cursor: default;
+}
+.fa-liste {
+  display: grid;
+}
+.fa-liste input {
+  min-height: 38px;
+  padding: 0 2px;
+  border: 0;
+  border-bottom: 1px dotted var(--graphite-3);
+  background: none;
+  font: inherit;
+  font-size: 1.05rem;
+}
+.fa-notes {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 4px 2px;
+  border: 0;
+  background: repeating-linear-gradient(transparent 0 31px, var(--trait-fort) 31px 32px);
+  font: inherit;
+  font-size: 1.05rem;
+  line-height: 32px;
+  resize: vertical;
+}
+.fa-de {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.de-face {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3px;
+  width: 44px;
+  height: 44px;
+  padding: 6px;
+  box-sizing: border-box;
+  border: 2px solid var(--graphite);
+  border-radius: 9px;
+}
+.de-face__point {
+  border-radius: 50%;
+  background: var(--graphite);
+}
+.fa-de__resultat {
+  font-style: italic;
+  font-size: 1.05rem;
+}
+.fa-de__aide {
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.fa-regles {
+  font-family: var(--f-ui);
+  padding-top: 12px;
+  font-size: var(--t-s);
+}
+.fa-regles summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--canard);
+}
+.fa-regles .recit {
+  display: grid;
+  gap: 0.6em;
+  margin-top: 8px;
+  font-size: 1rem;
+}
+
+/* Sur téléphone : « Ma feuille » dans une barre basse, la feuille en panneau bas */
+.lecture__barre {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  background: var(--feuille);
+  box-shadow: 0 -1px 0 var(--trait), 0 -6px 18px rgba(30, 40, 38, 0.08);
+}
+.lecture__resume {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+@media (max-width: 1099px) {
+  .lecture--feuille {
+    padding-bottom: 96px;
+  }
+  .lecture__feuille.est-ouverte {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 40;
+    max-height: 80vh;
+    border-radius: 14px 14px 0 0;
+  }
+  .lecture__feuille.est-ouverte .lecture__ranger {
+    display: inline-flex;
+  }
+}
+@media (max-width: 720px) {
+  .lecture {
+    padding: 16px 16px 64px;
+  }
+  .lu-page {
+    padding: 22px 18px 26px;
+  }
+  .lu-texte {
+    font-size: 1.08rem;
+  }
+  .lecture__tete h1 {
+    font-size: var(--t-xl);
+  }
+}
+
+/* « Par où commencer ? » */
+.lecture__accueil {
+  max-width: 880px;
+  margin: 28px auto 0;
+  display: grid;
+  gap: 14px;
+}
+.lecture__accueil h2 {
+  font-size: var(--t-2xl);
+  font-weight: 800;
+}
+.lecture__chapo {
+  color: var(--graphite-2);
+}
+.lecture__departs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  align-items: start;
+}
+.lecture__departs .carnet-fiche__corps {
+  gap: 12px;
+}
+.lecture__trouvees {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.lecture__trouvees ul {
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
+}
+.lecture__trouvees-chap {
+  font-size: var(--t-xs);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--graphite-2);
+}
+.lecture__trouvees a {
+  display: block;
+  padding: 6px 8px;
+  border-radius: 6px;
+  color: var(--graphite);
+  text-decoration: none;
+  font-size: var(--t-s);
+}
+.lecture__trouvees a:hover {
+  background: var(--feuille-2);
+}
+.lecture__trouvees .code {
+  font-family: var(--f-code);
+  color: var(--graphite-2);
+}

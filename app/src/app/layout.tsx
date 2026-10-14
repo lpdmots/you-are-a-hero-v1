@@ -11,6 +11,7 @@ import "@/styles/suivi.css";
 import "@/styles/fiches.css";
 import "@/styles/encouragements.css";
 import "@/styles/livre.css";
+import "@/styles/lecture.css";
 
 // Les trois voix du système « Cahiers d'aventure », hébergées avec l'application :
 // l'outil, le récit, la main de l'élève ; Andika pour les chiffres que l'élève lit.

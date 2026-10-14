@@ -62,7 +62,7 @@ const instant = (): number => Date.now();
  * tampon ; la fiche de décision porte l'étape suivante (F07.1, F11.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins, venuDuLivre, ouvrirChoix,
+  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins, venuDuLivre, ouvrirChoix, lecture,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
@@ -86,6 +86,8 @@ export function PageScene({
   venuDuLivre?: boolean;
   /** Le choix à désigner en arrivant, son panneau ouvert (F09.2) */
   ouvrirChoix?: string;
+  /** Ouverte depuis la lecture d'essai : on y revient, où l'on en était (F09.1) ; ce que l'adresse de la lecture garde */
+  lecture?: string;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -99,7 +101,9 @@ export function PageScene({
   const minuteur = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Ce qui attend d'être enregistré : le titre et la consigne partent ensemble, aucun ne chasse l'autre
   const enAttente = useRef<{ titre?: string; consigne?: string }>({});
-  const retour = venuDuLivre
+  const retour = lecture
+    ? `/projet/${projet.id}/lecture?reprendre=1&${lecture}`
+    : venuDuLivre
     ? `/projet/${projet.id}/livre`
     : venuDuSuivi
       ? `/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`
@@ -444,7 +448,7 @@ export function PageScene({
       <nav className="fil" aria-label="Fil d’Ariane">
         <Link href={retour}>
           <Icone nom="fleche-g" />
-          {venuDuLivre ? "Retour au Livre" : venuDuSuivi ? "Retour au Suivi" : `Retour à ${chapitre.titre}`}
+          {lecture ? "Retour à la lecture d’essai" : venuDuLivre ? "Retour au Livre" : venuDuSuivi ? "Retour au Suivi" : `Retour à ${chapitre.titre}`}
         </Link>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{ref}</span>
@@ -503,6 +507,9 @@ export function PageScene({
                   <hr />
                 </>
               ) : null}
+              <Link href={`/projet/${projet.id}/lecture?depart=${scene.id}&de=scene&scene=${scene.id}`} onClick={() => fermer()}>
+                Lire à l’essai d’ici
+              </Link>
               <button type="button" onClick={() => { fermer(); setVersions(true); }}>
                 Versions précédentes
               </button>

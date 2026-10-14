@@ -1921,6 +1921,36 @@ replié au pied ; la ligne au sablier des scènes à finir.
   scènes où figure chaque cas des contrôles, se charge dans la base locale
   par `npm run livre:essai` ([app/README.md](../app/README.md)).
 
+**Lot 3 — lecture d'essai de l'adulte.** Reprise de la maquette (captures
+31, 46, 94, 253) selon les reprises du 14 octobre : la page blanche du livre
+en Vollkorn, son numéro entre deux filets, sur le fond à la teinte du
+chapitre ; les phrases du livre en italique entre deux filets, une flèche au
+bout, la phrase entière activable, et à plusieurs renvois chaque numéro en
+pastille ; l'action de jeu encadrée, son signe devant ; « Parcours · n » en
+une ligne qui ouvre la liste ; le bandeau de l'essai au-dessus de la page
+(pastille et titre du chapitre, référence et titre, « Hors du livre », le
+tampon d'état, « Ouvrir la scène ») ; « Recommencer » et « Quitter » en haut,
+« Passage précédent » sous la page ; la feuille à droite, comme dans le
+lecteur en ligne (capture 94) ; en dessous de 1 100 points, « Ma feuille »
+et son résumé dans une barre basse, qui ouvre la feuille aux quatre
+cinquièmes de l'écran, avec « Ranger ».
+
+- **Écarts, dits au porteur avant de construire :** l'encadré d'énigme
+  porte « Énigme », sans la phrase « Aucun choix n'est écrit ici… », fausse
+  quand la scène a aussi des choix ; la mauvaise réponse dit « Ce n'est pas
+  ce numéro. », en ambre, et le champ reste rempli ; « Retour à la lecture
+  d'essai », depuis une scène ouverte, retrouve le parcours.
+- **Pris en construisant :** un choix à relier ou vers une scène supprimée
+  porte à la place du numéro une marque ambre, « à relier » ou « scène
+  supprimée », qui ne se clique pas ; un choix suivi porte « déjà lu »,
+  coche verte, au bout de sa phrase ; une fin montre la marque de fin de la
+  préparation entre deux filets, puis « Recommencer » ; « Par où
+  commencer ? » met côte à côte « Depuis le départ », son bouton plein, et
+  « Depuis une scène », un champ de recherche dont les résultats se rangent
+  sous leur chapitre ; « Lire à l'essai d'ici » est dans le menu ⋯ de la
+  scène, avant « Versions précédentes ». Le chiffre « 1 » de Vollkorn se lisait « I » : les
+  numéros de passage et les compteurs prennent les chiffres alignés.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

@@ -372,6 +372,12 @@ function Declaration({ projetId, chemins }: { projetId: string; chemins: Chemins
   return (
     <>
       <p className="tache__aide">Lisez le livre comme un lecteur, en suivant ses choix : c’est facultatif.</p>
+      <p className="tache__cmd">
+        <Link className="btn btn--petit" href={`/projet/${projetId}/lecture?de=livre`}>
+          <Icone nom="livre" />
+          Tester la lecture
+        </Link>
+      </p>
       {chemins.terminee ? (
         <>
           <p className="tache__ok">

@@ -76,7 +76,7 @@ temps — un entretien court, puis, après sa validation, la construction —,
 à mener dans une nouvelle conversation. Son entretien est fait le
 14 octobre 2026, ses réponses reportées en F09.1, F09.2, F03.1 et F11.6,
 validé dans son ensemble le même jour ; sa construction, en cinq lots,
-se fait en local dans une nouvelle conversation ; les lots 1 (contrôles du livre) et 2 (destination Livre et « Vérifier les chemins », migration `verifier_les_chemins`, base locale seulement) sont construits le 14 octobre 2026 ([plan](docs/plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)). Aucun achat n'est lancé. La V1
+se fait en local dans une nouvelle conversation ; les lots 1 (contrôles du livre), 2 (destination Livre et « Vérifier les chemins », migration `verifier_les_chemins`, base locale seulement) et 3 (lecture d'essai de l'adulte) sont construits le 14 octobre 2026 ([plan](docs/plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)). Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur
