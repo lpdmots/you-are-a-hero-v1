@@ -36,7 +36,7 @@ function Manque({ cible, pourEleve }: { cible: CibleLue; pourEleve: boolean }) {
   const mot = pourEleve ? "pas encore de suite" : cible.sorte === "supprimee" ? "scène supprimée" : "à relier";
   return (
     <span className="lu-manque">
-      <Icone nom="alerte" />
+      <Icone nom="sablier" />
       {mot}
     </span>
   );

@@ -1,0 +1,237 @@
+/* « Lire à l'essai », côté élève (F09.1) : où commencer. Ses chapitres sont ses cahiers, tels
+   qu'il les connaît sur « Mon travail » ; le départ du livre, quand la lecture est ouverte, est
+   une bande à l'image du projet ; la recherche est celle de « Mon travail ». */
+
+.page {
+  display: grid;
+  gap: 34px;
+  padding-top: 30px;
+}
+.tete {
+  display: grid;
+  gap: 8px;
+}
+.titre {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 2.1rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.titre :global(.ic) {
+  width: 32px;
+  height: 32px;
+  color: var(--canard);
+}
+.chapo {
+  max-width: 60ch;
+  font-size: 1.08rem;
+  color: var(--graphite-2);
+}
+.chapo b {
+  color: var(--graphite);
+}
+
+/* Le départ du livre : une bande, l'image du projet à gauche */
+.livre {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  min-height: 220px;
+  background: var(--feuille);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--ombre-cahier);
+}
+.livre__image {
+  position: relative;
+  min-height: 200px;
+}
+.livre__image :global(img) {
+  object-fit: cover;
+}
+.livre__texte {
+  display: grid;
+  align-content: center;
+  gap: 12px;
+  padding: 28px 32px;
+}
+.livre__texte h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+}
+.livre__texte p {
+  color: var(--graphite-2);
+}
+
+.bloc {
+  display: grid;
+  gap: 16px;
+}
+.bloc > h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+}
+
+/* Les cahiers : une couverture et un pied qui dit ce que fait le clic */
+.cahiers {
+  grid-template-columns: repeat(auto-fill, minmax(232px, 280px)) !important;
+  align-items: start;
+}
+.cahiers :global(.cahier) {
+  height: auto;
+}
+.pied {
+  min-height: 0 !important;
+  justify-content: flex-end;
+}
+.commencer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--canard);
+}
+.commencer :global(.ic) {
+  width: 1.1em;
+  height: 1.1em;
+  transition: transform 0.18s var(--ease);
+}
+.cahiers :global(.cahier:hover) .commencer :global(.ic) {
+  transform: translateX(3px);
+}
+
+/* Une scène, par la recherche de « Mon travail » */
+.recherche {
+  min-height: 48px !important;
+  max-width: 420px;
+  padding: 0 16px !important;
+}
+.recherche input {
+  width: 100% !important;
+  font-size: 1.05rem !important;
+}
+.trouves {
+  display: grid;
+  gap: 16px;
+  max-width: 680px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.trouves__chap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.pastille {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  background: var(--dos);
+}
+.trouves ul {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.trouves a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 48px;
+  padding: 8px 16px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  color: var(--graphite);
+  text-decoration: none;
+  font-family: var(--f-recit);
+  font-size: 1.08rem;
+}
+.trouves a:hover {
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.trouve {
+  display: grid;
+  gap: 2px;
+}
+.trouve small {
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.lire {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: none;
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  font-weight: 800;
+  color: var(--canard);
+}
+.vide {
+  display: grid;
+  justify-items: start;
+  gap: 12px;
+  max-width: 560px;
+  padding: 26px 28px;
+  background: var(--feuille);
+  border-radius: 18px;
+  box-shadow: var(--ombre-cahier);
+  font-size: 1.08rem;
+}
+.vide__aide {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--canard-fonce);
+}
+.aucune,
+.rien {
+  font-size: 1.05rem;
+  color: var(--graphite-2);
+}
+.histoires {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 720px) {
+  .page {
+    gap: 26px;
+    padding-top: 20px;
+  }
+  .titre {
+    font-size: 1.7rem;
+  }
+  .livre {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .livre__image {
+    min-height: 150px;
+    aspect-ratio: 16 / 7;
+  }
+  .livre__texte {
+    padding: 20px 20px 24px;
+  }
+  .cahiers {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .recherche {
+    max-width: none;
+  }
+}

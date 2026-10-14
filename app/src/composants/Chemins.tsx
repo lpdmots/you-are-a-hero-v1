@@ -43,7 +43,7 @@ export function Chemins({
   const etroit = useSyncExternalStore(suivreLaLargeur, estEtroit, pasEncoreSu);
   const chemins = useMemo<DonneesDesChemins>(() => ({ noeuds, liens, entrees }), [noeuds, liens, entrees]);
   // Un élève ne connaît ni les chemins venus d'autres chapitres ni les liens cachés : on ne lui dit que ses choix
-  const regard = useMemo(() => aRegarder(chemins, { scenes: !pourEleve }), [chemins, pourEleve]);
+  const regard = useMemo(() => aRegarder(chemins, { rienNyMene: !pourEleve }), [chemins, pourEleve]);
   // Tout ce qui est à regarder, à la suite : on le parcourt comme les occurrences d'un mot dans un texte
   const aVoir = useMemo(() => regard.sortes.flatMap(({ sorte, ou }) => ou.map((id) => ({ sorte, id }))), [regard]);
   const [pas, setPas] = useState<{ rang: number; fois: number } | null>(null);

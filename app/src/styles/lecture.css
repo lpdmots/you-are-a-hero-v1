@@ -436,13 +436,18 @@ button.lu-choix:hover {
   color: var(--e-valider);
 }
 .lu-sortie {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
   font-family: var(--f-recit);
   font-size: 1.12rem;
   font-style: italic;
   background: none;
-  justify-content: center;
   text-align: center;
   padding: 18px 0;
+}
+.lu-sortie .btn {
+  font-style: normal;
 }
 .lu-fin {
   display: grid;

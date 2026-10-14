@@ -1003,6 +1003,25 @@ l'éditeur.
 - **Dé et compteurs.** Calculés sans base (`lancer`, `changerCompteur`) ;
   rien n'est envoyé au serveur.
 
+**Ce que reçoit le poste d'un élève (lot 4,
+`20261014120000_lecture_du_poste.sql`).** Une fonction, `lecture_du_poste`,
+que seul le rôle du poste appelle : elle relit l'élève au travail et le
+projet de sa classe, puis rend les chapitres qu'il lit (`scenes_lisibles`,
+la règle de l'étape 2 : les siens, ou tous avec la lecture ouverte), et
+pour chacune de leurs scènes le titre, le texte sans les notes, le repère de
+fin et l'ordre du plan ; ni consigne, ni état, ni « hors du livre ». Pour un
+chemin qui sort de ces chapitres, elle dit seulement que la scène visée
+existe encore (`ailleurs`, une liste d'identités) : c'est ce qui sépare
+« pas encore de suite » d'une suite à découvrir. Le départ n'est rendu que
+si la lecture est ouverte. De la préparation : la feuille en service, les
+règles du jeu, la formule de renvoi, la marque de fin. Les numéros viennent
+de `numerotation_du_projet`, de l'étape 3 ; le serveur de l'application les
+applique et n'envoie à la page que le livre qu'il en tire
+(`livrePourLEleve`) : une scène exclue du livre y est un passage sans
+numéro, rien de plus. La même fonction donne à la vue « Chemins » de
+l'élève le départ, les fins et les scènes à lien caché de son chapitre
+(F03-AC50 révisé), lue seulement quand il ouvre cette vue.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

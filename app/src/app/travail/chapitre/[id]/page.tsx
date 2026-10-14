@@ -17,7 +17,7 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const { vue } = await searchParams;
   const contexte = await contexteEleve();
   if (!contexte.ouvert) redirect("/travail");
-  const chapitre = await chapitreDuPoste(contexte, id);
+  const chapitre = await chapitreDuPoste(contexte, id, { chemins: vue === "chemins" });
   if (!chapitre) notFound();
   return (
     <Messages>

@@ -45,10 +45,15 @@ export function ChapitreEleve({
   const vientDeTirer = useRef(false);
   const scenes = local?.base === chapitre ? local.scenes : chapitre.scenes;
   const c = couleurDeChapitre(chapitre.couleur);
-  // Les chemins tels que l'élève les lit : ni départ, ni fin, ni lien caché, ni chemin venu d'ailleurs
+  // Les chemins tels que l'élève les lit : le départ quand la lecture est ouverte, les fins, sans lien caché tracé
+  // ni chemin venu d'ailleurs (F03-AC50 révisé)
   const chemins = useMemo(
     () => ({
-      noeuds: scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, depart: false, fin: false, lien: `/travail/scene/${s.id}` })),
+      noeuds: scenes.map((s) => ({
+        id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, lien: `/travail/scene/${s.id}`,
+        depart: chapitre.reperes?.depart === s.id, fin: chapitre.reperes?.fins.includes(s.id) ?? false,
+        suiteCachee: chapitre.reperes?.suitesCachees.includes(s.id) ?? false,
+      })),
       liens: chapitre.liens.map(
         (l): LienDeChemin => ({
           id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: false, vers: l.cibleId,
@@ -58,7 +63,7 @@ export function ChapitreEleve({
       ),
       entrees: [],
     }),
-    [scenes, chapitre.liens],
+    [scenes, chapitre.liens, chapitre.reperes],
   );
 
   const ajouter = async () => {

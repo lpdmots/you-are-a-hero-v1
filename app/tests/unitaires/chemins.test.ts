@@ -17,7 +17,8 @@ const lien = (de: number, vers: number | null, k = 0, extra: Partial<LienDeChemi
 
 /** Le marais tel que l'adulte le lit : ses deux sorties vers d'autres chapitres, et le chemin qui y arrive. */
 function marais({ pourEleve = false } = {}): Chemins {
-  const noeuds = SCENES.map((s, i) => noeud(100 + i, { id: s.cle, titre: s.titre, vide: !s.texte, fin: !pourEleve && s.fin === true }));
+  // L'élève connaît les fins de son chapitre et sait qu'une scène a un lien caché, sans le voir (F03-AC50 révisé)
+  const noeuds = SCENES.map((s, i) => noeud(100 + i, { id: s.cle, titre: s.titre, vide: !s.texte, fin: s.fin === true, ...(pourEleve && s.cachee ? { suiteCachee: true } : {}) }));
   const liens = SCENES.flatMap((s) => [
     ...(s.choix ?? []).map(([libelle, vers], k): LienDeChemin => {
       const base = { id: `${s.cle}>${k}`, de: s.cle, libelle, cache: false };
@@ -104,10 +105,14 @@ describe("Ce qu'il y a « à regarder » (F03.1)", () => {
     expect(aRegarder({ noeuds: [noeud(1, { depart: true }), noeud(2, { fin: true })], liens: [lien(2, 2)], entrees: [] }).marques.get(id(2))).toEqual(["rien-n-y-mene"]);
   });
 
-  it("F03-AC50 — pour un élève, seuls ses choix sont à regarder : il ne connaît ni les chemins venus d'ailleurs, ni les liens cachés, ni le départ, ni les fins", () => {
-    const regard = aRegarder(marais({ pourEleve: true }), { scenes: false });
-    expect(regard.sortes.map((s) => compteARegarder(s.sorte, s.ou.length))).toEqual(["1 choix sans destination", "1 choix vers une scène supprimée"]);
-    expect(regard.marques.size).toBe(0);
+  it("F03-AC50 — pour un élève (révisé le 14 octobre 2026) : ses choix et les scènes sans suite sont à regarder ; « rien n'y mène » ne lui est jamais dit, et une scène à lien caché a une suite", () => {
+    const regard = aRegarder(marais({ pourEleve: true }), { rienNyMene: false });
+    expect(regard.sortes.map((s) => compteARegarder(s.sorte, s.ou.length))).toEqual([
+      "1 choix sans destination", "1 choix vers une scène supprimée", `${ATTENDU.scenesSansSuite} scènes sans suite`,
+    ]);
+    expect([...regard.marques.values()].flat()).not.toContain("rien-n-y-mene");
+    // Le même chapitre pour l'adulte compte les mêmes scènes sans suite
+    expect(aRegarder(marais()).sortes.find((s) => s.sorte === "sans-suite")?.ou).toEqual(regard.sortes.find((s) => s.sorte === "sans-suite")?.ou);
   });
 });
 

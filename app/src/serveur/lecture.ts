@@ -3,7 +3,10 @@ import type { Enseignant } from "./adulte";
 import { projetDe } from "./lectures";
 import { estUuid, planDe, preparationDe } from "./recit";
 import type { Texte } from "@/domaine/copie";
-import { livrePourLAdulte, type LivreLu } from "@/domaine/lecture";
+import { livrePourLAdulte, livrePourLEleve, type DonneesDuPoste, type LivreDeLEleve, type LivreLu } from "@/domaine/lecture";
+import { feuillePropre } from "@/domaine/preparation";
+import { clientDuPoste } from "./poste";
+import { numerosDuPoste, type ContexteEleve } from "./recit-eleve";
 import type { Plan } from "@/domaine/recit";
 
 /**
@@ -26,4 +29,23 @@ export async function livreALirePourLAdulte(e: Enseignant, projetId: string): Pr
     feuille: preparation?.feuille ?? null, regles: preparation?.regles ?? "",
   });
   return { livre, plan, titre: projet.titre, aChoix };
+}
+
+/**
+ * La lecture d'essai d'un élève (F09.1) : la base ne rend au poste que ce qu'il peut lire
+ * (`lecture_du_poste`), et le serveur n'envoie à la page que le livre qu'il en tire — ni le
+ * titre ni le texte d'un chapitre fermé, ni ce qu'une scène est hors du livre (F09-AC23).
+ */
+export async function livreALirePourLEleve(c: ContexteEleve, projetId: string): Promise<{ livre: LivreDeLEleve; titre: string } | null> {
+  if (!estUuid(projetId) || !c.ouvert) return null;
+  const base = await clientDuPoste(c.poste);
+  const [lu, projet, numeros] = await Promise.all([
+    base.rpc("lecture_du_poste", { p_projet: projetId }),
+    base.from("projets").select("titre").eq("id", projetId).maybeSingle(),
+    numerosDuPoste(c, projetId),
+  ]);
+  if (lu.error) throw new Error(`Lecture illisible : ${lu.error.message}`);
+  const donnees = lu.data as DonneesDuPoste | null;
+  if (!donnees || !projet.data) return null;
+  return { livre: livrePourLEleve(donnees, numeros, donnees.feuille ? feuillePropre(donnees.feuille) : null), titre: projet.data.titre as string };
 }

@@ -132,6 +132,11 @@ export type ChapitreEleve = Repere & {
   resume: string;
   camarades: Eleve[];
   scenes: SceneEleve[];
+  /**
+   * Pour sa vue « Chemins » : le départ du livre quand la lecture est ouverte, les fins et les
+   * scènes à lien caché du chapitre (F03-AC50 révisé), tirés de ce que la lecture d'essai reçoit
+   */
+  reperes: { depart: string | null; fins: string[]; suitesCachees: string[] } | null;
 };
 
 /**
@@ -139,7 +144,7 @@ export type ChapitreEleve = Repere & {
  * autre quand la lecture est ouverte, sans consigne (F06-AC48). Sinon, rien : la base ne
  * lui en rend pas les scènes (F06-AC21, F06-AC22).
  */
-export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Promise<ChapitreEleve | null> {
+export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string, { chemins = false }: { chemins?: boolean } = {}): Promise<ChapitreEleve | null> {
   if (!estUuid(chapitreId)) return null;
   const base = await clientDuPoste(c.poste);
   const { data: chapitre } = await base
@@ -168,7 +173,20 @@ export async function chapitreDuPoste(c: ContexteEleve, chapitreId: string): Pro
   const profil = lesAttributions.find((a) => a.eleve_id === c.moi.id)?.profil ?? null;
   if (!profil && projet.data?.lecture_ouverte !== true) return null;
   const consigneDe = new Map(((consignes.data ?? []) as { scene_id: string; consigne: string }[]).map((x) => [x.scene_id, x.consigne]));
+  // Les repères du chemin ne se lisent qu'à l'ouverture de la vue « Chemins » : ils viennent avec les textes du livre
+  let reperes: ChapitreEleve["reperes"] = null;
+  if (chemins && projet.data?.recit === "choix") {
+    const { data: lu, error: illisible } = await base.rpc("lecture_du_poste", { p_projet: chapitre.projet_id });
+    if (illisible) throw new Error(`Repères du chapitre illisibles : ${illisible.message}`);
+    const ici = ((lu as { scenes?: { id: string; chapitre: string; fin: boolean; texte: { type: string }[] | null }[] } | null)?.scenes ?? []).filter((s) => s.chapitre === chapitreId);
+    reperes = {
+      depart: ((lu as { depart?: string | null } | null)?.depart as string | null) ?? null,
+      fins: ici.filter((s) => s.fin).map((s) => s.id),
+      suitesCachees: ici.filter((s) => (s.texte ?? []).some((b) => b.type === "liaison")).map((s) => s.id),
+    };
+  }
   return {
+    reperes,
     id: chapitre.id, titre: chapitre.titre, couleur: chapitre.couleur, partie: partie.data?.titre ?? "", projetId: chapitre.projet_id,
     ...repere(chapitre),
     aChoix: projet.data?.recit === "choix",

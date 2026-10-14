@@ -1951,6 +1951,43 @@ cinquièmes de l'écran, avec « Ranger ».
   scène, avant « Versions précédentes ». Le chiffre « 1 » de Vollkorn se lisait « I » : les
   numéros de passage et les compteurs prennent les chiffres alignés.
 
+**Lot 4 — lecture d'essai de l'élève.** L'écran de départ n'a pas de
+maquette : conçu avec impeccable dans le système « Cahiers d'aventure »,
+critiqué ensuite en deux lectures séparées sur treize captures Playwright du
+serveur local (501 à 513, `npm run captures -- etape5`) — 28/40 pour la
+lecture informée, 25/40 pour la lecture indépendante, sans constat du
+détecteur —, puis corrigé aussitôt, sans nouvelle mesure.
+
+- **Composition :** « Lire à l'essai » dans la barre de l'élève, à côté
+  de « Mon travail » ; un titre, une phrase (« lis l'histoire comme un
+  lecteur, en suivant les choix ») ; quand la lecture est ouverte, une bande
+  à l'image du projet, « Depuis le départ du livre », seul bouton plein,
+  « Commencer le livre » ; ses chapitres en cahiers, ceux de « Mon
+  travail », la couverture entière cliquable, « Commencer au début » au pied ;
+  « Depuis une scène », la recherche de « Mon travail » nommée « Chercher
+  une scène à lire », chaque résultat avec son extrait et « Lire d'ici ».
+  Pendant la lecture, le bandeau ne porte que le chapitre ; le parcours et
+  les passages se nomment par numéro et titre.
+- **Repris après la critique :** la sortie vers un chapitre fermé prenait
+  la couleur du premier chapitre, rose, lue comme une alerte ou comme un
+  indice : elle garde la teinte du passage d'où l'on vient, avec « Revenir
+  au passage précédent » en bouton ; « Au début de… » et « À une scène »
+  deviennent « Depuis… », et le départ du livre « Commencer le livre »,
+  pour ne plus confondre « début » et « départ » ; « Parcours · 2 » se
+  lisait comme le numéro du passage : « Parcours · 2 passages » ;
+  « Recommencer », le bouton le plus visible, effaçait tout d'un clic :
+  discret, absent au premier passage, suivi d'un message avec « Annuler » ;
+  « pas encore de suite » portait un triangle d'alerte : un sablier, l'ambre
+  disant « cela attend » ; l'élève sans chapitre restait devant une phrase :
+  « Demande à Mme Laurent de t'en donner un. » et « Retour à Mon travail » ;
+  l'introduction tient sur une ligne. Ces reprises de la lecture commune
+  valent aussi pour l'adulte.
+- **Relevé par la critique et laissé en l'état :** les choix en italique de
+  Vollkorn, moins lisibles pour un lecteur fragile, que la phrase du livre
+  impose ; un mode plus grand pour projeter la lecture en classe ; les mots
+  « à l'essai » et « parcours », gardés comme mots du produit ; deux
+  chapitres qui partagent le même visuel par défaut, sans image choisie.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

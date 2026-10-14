@@ -1240,6 +1240,48 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       de fin.
     - **Tests automatiques :** 14 de plus, chacun au nom de son critère —
       8 sur les règles, 6 parcours.
+  - **Lot 4 — lecture d'essai de l'élève : construit le 14 octobre 2026.**
+    Migration acceptée par le porteur le même jour : une seule fonction,
+    `lecture_du_poste(projet)`, que seul le poste d'un élève appelle — les
+    chapitres qu'il lit (les siens, ou tous quand la lecture est ouverte),
+    pour chacune de leurs scènes le titre, le texte sans les notes, le repère
+    de fin et la place dans le plan, ni consigne, ni état, ni « hors du
+    livre » ; pour les choix qui sortent de ses chapitres, seulement si la
+    scène visée existe ; le départ du livre quand la lecture est ouverte ; de
+    la préparation, la feuille, le dé, les règles du jeu, la formule de
+    renvoi et la marque de fin. Les numéros viennent de la fonction qui
+    existe déjà ; une scène exclue du livre se lit sans numéro.
+    **Construit le 14 octobre 2026.** « Lire à l'essai » dans la barre de
+    l'élève, à côté de « Mon travail » ; l'écran de départ, conçu avec
+    impeccable puis critiqué en deux lectures séparées sur captures
+    (28/40 informée, 25/40 indépendante ; corrigé aussitôt, sans nouvelle
+    mesure) ; la lecture commune, sans référence, ni état, ni « Hors du
+    livre », avec la sortie de périmètre ; la lecture ouverte ; dans ses
+    chemins, « Départ du livre », « Fin de l'histoire » et « Sans suite ».
+    Schéma : `20261014120000_lecture_du_poste.sql`, base locale seulement.
+    - **Critères fermés :** F09-AC01, AC02, AC11, AC12, AC22, AC23 ; la
+      part de l'élève de F09-AC17, AC18, AC19 ; F06-AC48 pour la lecture ;
+      F03-AC50 révisé.
+    - **Critères qui attendent :** aucun de ce lot.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      l'entrée est un lien de la barre, « Lire à l'essai », qui va droit à
+      l'histoire quand l'élève n'en a qu'une ; les titres disent tous
+      « Depuis… » — « Depuis le départ du livre » (« Commencer le livre »),
+      « Depuis le début de ton chapitre » (le cahier, « Commencer au
+      début »), « Depuis une scène » (« Chercher une scène à lire », qui
+      montre l'extrait trouvé) ; le départ d'un chapitre est sa première
+      scène, dans l'ordre du plan, où aucun choix du chapitre ne mène ;
+      l'élève sans chapitre lit « Demande à Mme Laurent de t'en donner un. »
+      et « Retour à Mon travail » ; la sortie garde la teinte du passage
+      d'où l'on vient et porte « Revenir au passage précédent » en bouton ;
+      pour tous, adulte compris : « Parcours · 2 passages », « Recommencer »
+      discret, absent au premier passage, suivi d'un message « Annuler »,
+      et « pas encore de suite » ou « à relier » avec un sablier plutôt
+      qu'un triangle ; sur téléphone, la barre de l'élève tient sur une
+      ligne et, sous 480 points, sa gommette remplace son prénom.
+    - **Tests automatiques :** 9 de plus — 3 contre la base locale, 5
+      parcours, et F03-AC50 révisé sur la règle des chemins. Captures :
+      `npm run captures -- etape5` (501 à 513).
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 

@@ -9,6 +9,8 @@ import { pluriel } from "./texte";
 
 export type NoeudDeChemin = {
   id: string; reference: number; titre: string | null; etat: Etat; vide: boolean; depart: boolean; fin: boolean;
+  /** La scène a une liaison cachée que la vue ne trace pas — celle d'un élève : elle a une suite */
+  suiteCachee?: boolean;
   /** La page de la scène */
   lien: string;
 };
@@ -108,18 +110,19 @@ export type ARegarder = {
  * hors le départ, une scène sans suite ni fin. Le contrôle complet, avec sa gravité, reste
  * celui du Livre (F09.2).
  *
- * « scenes » à faux : seuls les choix sont regardés. C'est la vue d'un élève, à qui la base
- * ne dit ni les chemins venus d'autres chapitres, ni les liens cachés, ni le départ, ni les
- * fins : « rien n'y mène » et « sans suite » y seraient souvent faux.
+ * « rienNyMene » à faux : c'est la vue d'un élève, à qui la base ne dit pas les chemins venus
+ * des chapitres qu'il ne lit pas ; « rien n'y mène » y serait souvent faux, et ne lui est jamais
+ * dit. Il connaît, depuis le 14 octobre 2026, les fins et les liens cachés de son chapitre :
+ * « sans suite » lui est dit (F03-AC50 révisé).
  */
-export function aRegarder({ noeuds, liens, entrees }: Chemins, { scenes = true }: { scenes?: boolean } = {}): ARegarder {
+export function aRegarder({ noeuds, liens, entrees }: Chemins, { scenes = true, rienNyMene = scenes }: { scenes?: boolean; rienNyMene?: boolean } = {}): ARegarder {
   const atteintes = new Set([...liens.filter((l) => l.vers && l.vers !== l.de).map((l) => l.vers!), ...entrees.map((e) => e.vers)]);
   const quittees = new Set(liens.map((l) => l.de));
   const marques = new Map<string, Marque[]>();
   for (const n of scenes ? noeuds : []) {
     const m: Marque[] = [];
-    if (!n.depart && !atteintes.has(n.id)) m.push("rien-n-y-mene");
-    if (!n.fin && !quittees.has(n.id)) m.push("sans-suite");
+    if (rienNyMene && !n.depart && !atteintes.has(n.id)) m.push("rien-n-y-mene");
+    if (!n.fin && !n.suiteCachee && !quittees.has(n.id)) m.push("sans-suite");
     if (m.length) marques.set(n.id, m);
   }
   const avec = (marque: Marque) => noeuds.filter((n) => marques.get(n.id)?.includes(marque)).map((n) => n.id);

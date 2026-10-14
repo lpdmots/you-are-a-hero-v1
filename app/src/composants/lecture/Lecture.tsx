@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
+import { useMessage } from "@/composants/Messages";
 import {
   commencer, feuilleDeDepart, issueDe, revenir, SORTIE, suivantDansLOrdre, suivre, type EtatFeuille, type LivreLu, type Parcours, type PassageLu,
 } from "@/domaine/lecture";
@@ -79,15 +80,23 @@ export default function Lecture({
     haut.current?.focus({ preventScroll: true });
   }, [montre]);
 
+  const dire = useMessage();
   const id = g.parcours.etapes[g.parcours.position];
   const passage = id === SORTIE ? null : livre.passages[id];
+  // La sortie garde la teinte du passage d'où l'on vient : elle ne laisse rien deviner de la suite
+  const dernierLu = g.parcours.etapes.slice(0, g.parcours.position + 1).reverse().map((e) => livre.passages[e]).find(Boolean);
   const aller = (vers: string, renvoi?: string) =>
     setG((x) => ({ ...x, parcours: suivre(x.parcours, vers), deja: renvoi && !x.deja.includes(renvoi) ? [...x.deja, renvoi] : x.deja }));
   const versCible = (cible: { sorte: string; id?: string }, renvoi: string) => {
     if (cible.sorte === "passage" && cible.id) aller(cible.id, renvoi);
     else if (cible.sorte === "ailleurs") aller(SORTIE, renvoi);
   };
-  const recommencer = () => setG((x) => ({ ...x, parcours: commencer(x.debut), feuille: feuilleDeDepart(livre.feuille), des: null }));
+  // « Recommencer » efface le parcours et la feuille : un message propose de revenir en arrière, le temps de le lire
+  const recommencer = () => {
+    const avant = g;
+    setG((x) => ({ ...x, parcours: commencer(x.debut), feuille: feuilleDeDepart(livre.feuille), des: null }));
+    if (avant.parcours.etapes.length > 1) dire({ texte: "La lecture reprend au début.", annuler: () => setG(avant) });
+  };
   const precedent = () => setG((x) => ({ ...x, parcours: revenir(x.parcours, x.parcours.position - 1) }));
   const issue = passage ? issueDe(passage, livre.aChoix) : null;
   const suivant = passage && !livre.aChoix ? suivantDansLOrdre(livre, passage.id) : null;
@@ -105,7 +114,7 @@ export default function Lecture({
   ) : null;
 
   return (
-    <div className={`lecture sur-chapitre${livre.feuille ? " lecture--feuille" : ""}`} style={teinte(passage?.chapitre.couleur ?? 0)}>
+    <div className={`lecture sur-chapitre${livre.feuille ? " lecture--feuille" : ""}`} style={teinte(dernierLu?.chapitre.couleur ?? 0)}>
       <header className="lecture__tete">
         <div>
           <h1>
@@ -115,10 +124,12 @@ export default function Lecture({
           <p>{sousTitre}</p>
         </div>
         <p className="lecture__cmd">
-          <button type="button" className="btn btn--petit" onClick={recommencer}>
-            <Icone nom="refaire" />
-            Recommencer
-          </button>
+          {g.parcours.etapes.length > 1 ? (
+            <button type="button" className="btn btn--petit btn--discret" onClick={recommencer}>
+              <Icone nom="refaire" />
+              Recommencer
+            </button>
+          ) : null}
           <Link
             className="btn btn--petit btn--discret"
             href={quitter}
@@ -141,7 +152,7 @@ export default function Lecture({
           <div className="lecture__parcours">
             <button type="button" className="lecture__parcours-b" aria-expanded={parcoursOuvert} onClick={() => setParcoursOuvert((o) => !o)}>
               <Icone nom="chemins" />
-              Parcours · {g.parcours.etapes.length}
+              Parcours · {g.parcours.etapes.length} passage{g.parcours.etapes.length > 1 ? "s" : ""}
               <Icone nom={parcoursOuvert ? "chevron-haut" : "chevron-bas"} />
             </button>
             {parcoursOuvert ? (
@@ -208,10 +219,16 @@ export default function Lecture({
                 ) : null}
               </>
             ) : (
-              <p className="lu-sortie">La suite se trouve dans un chapitre que tu découvriras plus tard.</p>
+              <div className="lu-sortie">
+                <p>La suite se trouve dans un chapitre que tu découvriras plus tard.</p>
+                <button type="button" className="btn" onClick={precedent}>
+                  <Icone nom="fleche-g" />
+                  Revenir au passage précédent
+                </button>
+              </div>
             )}
           </article>
-          {g.parcours.position > 0 ? (
+          {g.parcours.position > 0 && passage ? (
             <p className="lecture__precedent">
               <button type="button" className="lien" onClick={precedent}>
                 <Icone nom="fleche-g" />

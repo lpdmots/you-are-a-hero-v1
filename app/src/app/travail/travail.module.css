@@ -183,6 +183,27 @@
     gap: 12px;
     padding: 0 12px;
   }
+  /* Deux liens, le prénom et « Changer d'élève » tiennent sur une ligne */
+  .nav {
+    gap: 12px;
+  }
+  .nav a,
+  .droite :global(.btn) {
+    white-space: nowrap;
+  }
+}
+@media (max-width: 480px) {
+  .nav a {
+    font-size: var(--t-xs);
+  }
+  .droite :global(.btn) {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: var(--t-xs);
+  }
+  .identite :global(.main) {
+    display: none;
+  }
   .accueil {
     grid-template-columns: minmax(0, 1fr);
     max-height: none;

@@ -189,3 +189,78 @@ export const changerCompteur = (valeur: number, pas: 1 | -1): number => Math.max
 /** Un lancer : une ou deux faces, et leur total (F04-AC31). */
 export const lancer = (des: 1 | 2, tirage: () => number = Math.random): number[] => Array.from({ length: des }, () => 1 + Math.floor(tirage() * 6));
 
+
+// ——— Ce que reçoit le poste d'un élève (lot 4) ———
+
+/** Ce que la base rend au poste d'un élève (`lecture_du_poste`) : seulement ce qu'il peut lire. */
+export type DonneesDuPoste = {
+  recit: "choix" | "classique";
+  lecture_ouverte: boolean;
+  depart: string | null;
+  chapitres: { id: string; titre: string; couleur: number; mien: boolean }[];
+  scenes: { id: string; chapitre: string; titre: string | null; fin: boolean; vide: boolean; texte: Texte | null }[];
+  ailleurs: string[];
+  formule: FormuleRenvoi;
+  marque_fin: string;
+  feuille: Feuille | null;
+  regles: string;
+};
+
+export type LivreDeLEleve = LivreLu & {
+  lectureOuverte: boolean;
+  /** Ses chapitres, et ceux que la lecture ouverte lui donne à lire, dans l'ordre du plan */
+  chapitres: { id: string; titre: string; couleur: number; mien: boolean }[];
+};
+
+/**
+ * Le livre tel que l'élève le lit (F09.1) : ses chapitres, ou tous quand la lecture est
+ * ouverte ; sans référence, ni état, ni « hors du livre ». Un chemin vers une scène qu'il ne
+ * lit pas est une suite à découvrir ; vers une scène qui n'existe plus, ou nulle part, il n'a
+ * « pas encore de suite » (F09-AC12, AC17).
+ */
+export function livrePourLEleve(d: DonneesDuPoste, numeros: Readonly<Record<string, number>>, feuille: Feuille | null): LivreDeLEleve {
+  const aChoix = d.recit === "choix";
+  const lisibles = new Set(d.scenes.map((s) => s.id));
+  const ailleurs = new Set(d.ailleurs);
+  const chapitres = new Map(d.chapitres.map((c) => [c.id, c]));
+  const cible = (id: string | null): CibleLue =>
+    !id ? { sorte: "sans" } : lisibles.has(id) ? { sorte: "passage", id } : ailleurs.has(id) ? { sorte: "ailleurs" } : { sorte: "supprimee" };
+  const numero = (id: string | null): string => (id && numeros[id] ? String(numeros[id]) : NUMERO_VIDE);
+  const passages: Record<string, PassageLu> = {};
+  for (const s of d.scenes) {
+    const texte = s.texte ?? [];
+    const c = chapitres.get(s.chapitre);
+    passages[s.id] = {
+      id: s.id, numero: aChoix ? (numeros[s.id] ?? null) : null, titre: s.titre, reference: null,
+      chapitre: { id: s.chapitre, titre: c?.titre ?? "", couleur: c?.couleur ?? 0 },
+      etat: null, horsLivre: false, vide: s.vide, fin: aChoix && s.fin,
+      blocs: blocsLus(texte, d.formule, cible, numero),
+      enigmes: aChoix
+        ? texte.flatMap((b) => (b.type === "liaison" ? [{ id: b.id, numero: b.cible && numeros[b.cible] ? numeros[b.cible] : null, cible: cible(b.cible) }] : []))
+        : [],
+    };
+  }
+  return {
+    aChoix, marqueFin: d.marque_fin?.trim() || "Fin", departId: d.lecture_ouverte ? (aChoix ? d.depart : (d.scenes[0]?.id ?? null)) : null,
+    passages, ordre: d.scenes.map((s) => s.id),
+    feuille: aChoix && feuille?.on && feuille.sections.length ? feuille : null,
+    regles: aChoix ? (d.regles ?? "") : "",
+    lectureOuverte: d.lecture_ouverte, chapitres: d.chapitres,
+  };
+}
+
+/**
+ * Le début d'un chapitre, pour « Commencer au début de La lisière » (F09-AC22) : la première
+ * scène, dans l'ordre du plan, où aucun choix du chapitre ne mène ; à défaut, sa première scène.
+ */
+export function debutDuChapitre(livre: LivreLu, chapitreId: string): string | null {
+  const ids = livre.ordre.filter((id) => livre.passages[id].chapitre.id === chapitreId);
+  const ici = new Set(ids);
+  const atteintes = new Set(
+    ids.flatMap((id) => [
+      ...livre.passages[id].blocs.flatMap((b) => (b.type === "choix" ? b.morceaux : [])).flatMap((m) => ("renvoi" in m && m.cible.sorte === "passage" && m.cible.id !== id ? [m.cible.id] : [])),
+      ...livre.passages[id].enigmes.flatMap((e) => (e.cible.sorte === "passage" ? [e.cible.id] : [])),
+    ]).filter((id) => ici.has(id)),
+  );
+  return ids.find((id) => !atteintes.has(id)) ?? ids[0] ?? null;
+}
