@@ -71,7 +71,9 @@ restauration de la vraie base reste due avant la première séance réelle
 ([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre),
 [architecture](docs/architecture.md#réalisation-de-létape-4-13-octobre-2026),
 [design](docs/design.md#étape-4-construite-13-octobre-2026)).
-L'étape 5 n'est ni autorisée ni commencée. Aucun achat n'est lancé. La V1
+L'étape 5 est autorisée le 14 octobre 2026, pour elle seule, en deux
+temps — un entretien court, puis, après sa validation, la construction —,
+à mener dans une nouvelle conversation ; elle n'est pas commencée. Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur

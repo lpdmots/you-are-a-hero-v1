@@ -1050,6 +1050,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   feuille et dé à l'écran (F04-AC21, AC31, AC32).
 - **Dépend de :** étape 3 ; indépendante de l'étape 4.
 - **À régler avant de commencer :** rien de bloquant.
+- **Autorisée le 14 octobre 2026,** pour elle seule, en deux temps : un
+  entretien court sur les points ouverts de F09 (destination absente,
+  branches déjà parcourues, articulation entre lecture d'essai, contrôles et
+  PDF, deux propositions non arbitrées), puis la construction, après sa
+  validation. Pas commencée.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 
