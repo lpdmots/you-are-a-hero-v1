@@ -739,7 +739,7 @@ export function FicheReglagesChoix({
   const nommer = (cible: string | null): ReactNode =>
     cible === null ? (
       <span className="copie__dest-vide">
-        <Icone nom="bloque" />
+        <span className="point-regarder" aria-hidden="true" />
         Sans destination
       </span>
     ) : scene(cible) ? (

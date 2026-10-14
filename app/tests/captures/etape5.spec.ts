@@ -1,5 +1,6 @@
 import { test, type Page } from "@playwright/test";
-import { aller, choixAuto, classeQuiEcrit, posteDe, recit, semerAttribution, semerBlocs, semerPartie, supprimerComptes } from "../parcours/outils";
+import { poserLeMarais, type Requete } from "../../scripts/marais-des-feux-follets";
+import { adultePret, aller, choixAuto, classeQuiEcrit, posteDe, recit, semerAttribution, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
 
 /**
  * Captures des écrans de l'étape 5 : npm run captures -- etape5
@@ -89,4 +90,25 @@ test("lot 4 : départ de la lecture d'essai de l'élève", async ({ page, browse
   await aller(adam.page, "/travail/lecture");
   await capturer(adam.page, "eleve-lecture-sans-chapitre");
   await adam.contexte.close();
+});
+
+test("lot 5 : mini-carte repliable, « Sans destination » en ambre", async ({ page }) => {
+  test.setTimeout(240_000);
+  n = 520;
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Les passeurs de brume");
+  const { partieId, chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["Le sentier", "Le pont"] }]);
+  const [sentier, pont] = chapitres[0].scenes;
+  await base.from("projets").update({ depart_scene_id: sentier }).eq("id", projet);
+  await semerBlocs(base, sentier, [recit("Un chant montait des fougères."), choixAuto("Traverser le pont", pont), choixAuto("Suivre le héron", null)]);
+  const pose = await poserLeMarais(sql as Requete, { projetId: projet, partieId, enseignantId: compte.id, ailleurs: { moulin: pont, sanctuaire: pont }, entreeDepuis: sentier });
+  await page.setViewportSize({ width: 1366, height: 860 });
+  await aller(page, `/projet/${projet}/chapitre/${pose.chapitreId}?vue=chemins`);
+  await page.locator(".chemins__toile[data-dessine]").waitFor();
+  await page.evaluate(() => window.scrollTo(0, 1100));
+  await capturer(page, "chemins-mini-carte", false);
+  await page.getByRole("button", { name: "Replier la mini-carte" }).click();
+  await capturer(page, "chemins-mini-carte-repliee", false);
+  await aller(page, `/projet/${projet}/scene/${sentier}`);
+  await capturer(page, "scene-sans-destination-ambre", false);
 });

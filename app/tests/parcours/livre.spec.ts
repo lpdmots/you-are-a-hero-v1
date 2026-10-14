@@ -143,6 +143,9 @@ test.describe("Destination Livre (F11.6)", () => {
     await points(page).first().getByRole("link", { name: "Voir dans les chemins" }).click();
     await expect(page).toHaveURL(new RegExp(`vue=chemins&scene=${l.s[2]}`));
     await expect(page.getByRole("link", { name: "Retour au Livre" })).toBeVisible();
+    // La scène du point y est désignée, comme une scène d'arrivée (F09.2, 14 octobre 2026)
+    await expect(page.locator(".carte-chemin.est-designee")).toContainText("La crique");
+    await expect(page.locator(".carte-chemin.est-designee")).toBeInViewport();
   });
 
   test("F04-AC33 — actions de jeu sans feuille : le rappel « à savoir » est replié au pied de la fiche, et nulle part dans la page de scène", async ({ page }) => {

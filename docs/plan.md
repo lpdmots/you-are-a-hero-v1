@@ -1282,6 +1282,30 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 9 de plus — 3 contre la base locale, 5
       parcours, et F03-AC50 révisé sur la règle des chemins. Captures :
       `npm run captures -- etape5` (501 à 513).
+  - **Lot 5 — Chemins, retouches et essai : construit le 14 octobre 2026.**
+    La mini-carte de « Chemins » se replie d'une croix dans son coin, en un
+    bouton « Mini-carte » qui la rouvre, et reste repliée sur ce poste ;
+    « Sans destination » est en ambre dans l'éditeur — le point ambre de
+    « Chemins », et la case du numéro vide hachurée d'ambre ; la scène d'un
+    point ouvert par « Voir dans les chemins » est désignée et amenée à
+    l'écran, par le mécanisme de F03-AC25 que le Livre emploie. Un parcours
+    joue l'essai de bout en bout (`tests/parcours/essai-etape5.spec.ts`) ;
+    le mode d'emploi de l'essai du porteur est dans `app/README.md`,
+    « Essayer l'étape 5 ». Sans schéma.
+    - **Critères fermés :** les reprises du 14 octobre en F03.1 (mini-carte
+      repliable, « Sans destination » en ambre) ; la scène désignée de
+      F09.2, « Récupération ».
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      la mini-carte repliée le reste sur ce navigateur, d'un chapitre et
+      d'une visite à l'autre, et non avec le compte ; la case du numéro
+      d'un choix sans destination passe aussi à l'ambre.
+    - **Tests automatiques :** le repli de la mini-carte et la scène
+      désignée s'ajoutent aux parcours existants ; un parcours de plus, de
+      bout en bout. Captures : `npm run captures -- etape5` (521 à 523).
+- **Construite le 14 octobre 2026,** en local, ses cinq lots commités, deux
+  migrations (`verifier_les_chemins`, `lecture_du_poste`) dans la base
+  locale seulement ; rien n'est poussé. Reste l'essai du porteur, qui la
+  termine.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 

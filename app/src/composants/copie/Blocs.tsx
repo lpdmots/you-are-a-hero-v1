@@ -38,7 +38,7 @@ function Destinations({ bloc, livre, pourEleve }: { bloc: Choix; livre: Livre; p
           <span key={r.id}>
             {r.cible === null ? (
               <span className="copie__dest-vide">
-                <Icone nom="bloque" />
+                <span className="point-regarder" aria-hidden="true" />
                 Sans destination
               </span>
             ) : (

@@ -397,9 +397,20 @@ export default function Schema({
   );
 }
 
+/** La mini-carte repliée le reste sur ce poste, d'un chapitre à l'autre (F03.1, 14 octobre 2026). */
+const CLE_REPLIEE = "chemins-mini-carte-repliee";
+const lireRepliee = (): boolean => {
+  try {
+    return localStorage.getItem(CLE_REPLIEE) === "1";
+  } catch {
+    return false;
+  }
+};
+
 /**
  * La mini-carte, quand le chapitre dépasse deux écrans : où l'on est dans le schéma, et un
- * clic pour s'y rendre. Elle suit le défilement de la page, que le schéma ne retient pas.
+ * clic pour s'y rendre. Elle suit le défilement de la page, que le schéma ne retient pas. Elle
+ * se replie d'un clic, en un petit bouton qui la rouvre : dépliée, elle couvrait un coin du schéma.
  */
 function MiniCarte({
   disposition, zoom, cadre, regard, noeuds,
@@ -407,6 +418,15 @@ function MiniCarte({
   disposition: Disposition; zoom: number; cadre: RefObject<HTMLDivElement | null>; regard: ARegarder; noeuds: NoeudDeChemin[];
 }) {
   const [vu, setVu] = useState<{ x: number; y: number; l: number; h: number } | null>(null);
+  const [repliee, setRepliee] = useState(lireRepliee);
+  const plier = (oui: boolean) => {
+    setRepliee(oui);
+    try {
+      localStorage.setItem(CLE_REPLIEE, oui ? "1" : "0");
+    } catch {
+      // Sans stockage, le repli tient le temps de la page
+    }
+  };
   const echelle = Math.min(118 / disposition.largeur, 190 / disposition.hauteur);
   useEffect(() => {
     const suivre = () => {
@@ -433,6 +453,14 @@ function MiniCarte({
     };
   }, [cadre, disposition, zoom]);
   if (!vu) return null;
+  if (repliee) {
+    return (
+      <button type="button" className="chemins__carte-ouvrir" onClick={() => plier(false)}>
+        <Icone nom="chemins" />
+        Mini-carte
+      </button>
+    );
+  }
 
   const aller = (e: PointerEvent<SVGSVGElement>) => {
     const c = cadre.current;
@@ -451,8 +479,11 @@ function MiniCarte({
   const x2 = borne(vu.x + vu.l, disposition.largeur);
   const y2 = borne(vu.y + vu.h, disposition.hauteur);
   return (
+    <div className="chemins__carte">
+    <button type="button" className="chemins__carte-replier" aria-label="Replier la mini-carte" title="Replier la mini-carte" onClick={() => plier(true)}>
+      <Icone nom="fermer" />
+    </button>
     <svg
-      className="chemins__carte"
       role="img"
       aria-label="Mini-carte du chapitre : cliquer pour s’y rendre"
       width={Math.ceil(disposition.largeur * echelle)}
@@ -474,5 +505,6 @@ function MiniCarte({
       })}
       <rect className="chemins__carte-vu" x={x1} y={y1} width={Math.max(0, x2 - x1)} height={Math.max(0, y2 - y1)} rx={12} />
     </svg>
+    </div>
   );
 }

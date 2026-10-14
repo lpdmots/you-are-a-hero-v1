@@ -1988,6 +1988,15 @@ détecteur —, puis corrigé aussitôt, sans nouvelle mesure.
   « à l'essai » et « parcours », gardés comme mots du produit ; deux
   chapitres qui partagent le même visuel par défaut, sans image choisie.
 
+**Lot 5 — retouches de « Chemins » et de l'éditeur.** La mini-carte porte
+une croix ronde à son coin supérieur gauche, « Replier la mini-carte » ;
+repliée, elle laisse au même coin un bouton « Mini-carte », signe des
+chemins, qui la rouvre ; elle le reste sur ce navigateur. Dans l'éditeur,
+« Sans destination » prend le point ambre de « Chemins », et la case du
+numéro vide, dans la phrase, est hachurée d'ambre et non plus de brique :
+pendant l'écriture, un choix qui attend sa destination n'est pas une faute
+(F03.1, 14 octobre 2026). Captures 521 à 523.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

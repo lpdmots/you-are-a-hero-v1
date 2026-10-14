@@ -1022,6 +1022,11 @@ numéro, rien de plus. La même fonction donne à la vue « Chemins » de
 l'élève le départ, les fins et les scènes à lien caché de son chapitre
 (F03-AC50 révisé), lue seulement quand il ouvre cette vue.
 
+**Mini-carte repliée (lot 5).** Une préférence du navigateur
+(`localStorage`), lue à l'ouverture du schéma, qui n'est dessiné que dans le
+navigateur : elle tient d'un chapitre et d'une visite à l'autre sur ce
+poste, sans colonne de plus au compte.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

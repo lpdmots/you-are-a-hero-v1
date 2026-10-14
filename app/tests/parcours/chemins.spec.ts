@@ -272,6 +272,17 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     const boite = (await miniCarte.boundingBox())!;
     await page.mouse.click(boite.x + boite.width / 2, boite.y + boite.height * 0.8);
     await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(600);
+    // Elle se replie d'un clic et reste repliée, même en rouvrant le chapitre (F03.1, 14 octobre 2026)
+    await page.getByRole("button", { name: "Replier la mini-carte" }).click();
+    await expect(miniCarte).toHaveCount(0);
+    await page.reload();
+    await schemaPret(page, ATTENDU.scenes);
+    await page.evaluate(() => window.scrollTo(0, 900));
+    await expect(page.getByRole("button", { name: "Mini-carte" })).toBeVisible();
+    await expect(miniCarte).toHaveCount(0);
+    await page.getByRole("button", { name: "Mini-carte" }).click();
+    await expect(miniCarte).toBeVisible();
+    await page.evaluate(() => window.scrollTo(0, 0));
 
     // « Tout voir » : le chapitre entier dans la fenêtre, sans libellés ; la carte se nomme dans une bulle
     await page.getByRole("button", { name: "Tout voir" }).click();

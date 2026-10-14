@@ -243,3 +243,63 @@ restauration de la vraie base se fait donc au moment de mettre l'étape 4 en
 ligne, dans cet ordre : `npm run sauvegarder`, `npm run production:schema --
 --oui`, mise en ligne du code, puis, pour l'essai, `npm run restaurer --
 sauvegardes/<date> --production`.
+
+## Essayer l'étape 5 : vérifier les chemins et lire à l'essai
+
+L'étape 5 du plan se termine quand le porteur a lu son récit de bout en bout et
+corrigé ce que les contrôles signalaient, et qu'un élève a lu ses chapitres. Tout
+se joue en local, sur http://localhost:4840, avec le compte local ; la vraie base
+n'est pas touchée.
+
+**1. Les livres d'essai.** Les deux migrations de l'étape
+(`verifier_les_chemins`, `lecture_du_poste`) doivent être dans la base locale :
+`npx tsx scripts/supabase.ts migration up --local` les applique sans rien effacer.
+
+```bash
+npm run livre:essai -- --refaire        # « Le phare aux énigmes » : chaque cas des contrôles
+npm run histoire:essai -- --refaire     # « Les passeurs de brume », sa classe et ses élèves
+npm run chemins:essai -- --refaire      # le marais, trente-deux scènes, dans ce même livre
+```
+
+**2. Côté enseignant, dans « Le phare aux énigmes ».** Onglet « Livre » : l'aide
+s'ouvre sur « Vérifier les chemins » (« Ne plus afficher » la range, « Aide » la
+rouvre).
+
+| Tâche | Ce qui doit se voir | Ce qu'on y fait |
+|---|---|---|
+| Départ et fins | « Cette scène est une impasse. » (S010) | « Marquer comme fin », ou « Ouvrir la scène » pour y ajouter un choix |
+| Choix à relier | un choix sans destination (S002), vers une scène supprimée et vers une scène hors du livre (S003), une énigme au numéro impossible (S004) | « Ouvrir la scène » : la scène s'ouvre sur le choix, son panneau ouvert ; « Retour au Livre » |
+| Passages à confirmer | S011, où rien ne mène, « et 1 scène qui n'a pas d'autre accès » ; une boucle sans fin (S008) ; une énigme sans autre issue (S004) | « C'est voulu », puis « 3 acceptés · Revoir » ; « Voir dans les chemins » ouvre le chapitre, la scène désignée |
+| Tester la lecture | « Tester la lecture », puis « J'ai vérifié les chemins » | la déclaration attend qu'il ne reste ni point à traiter ni scène à finir (S014, « En cours ») |
+
+Le rappel « à savoir », replié au pied de la fiche, dit que des passages demandent
+d'agir sur une feuille d'aventure que le livre n'a pas. « Relire » montre ses
+scènes à finir et la scène prête mais vide (S013) ; « Mettre en page » et
+« Imprimer et partager » restent fermées jusqu'à l'étape 6.
+
+La lecture d'essai : « Tester la lecture » ouvre « Par où commencer ? » ; le menu ⋯
+d'une scène propose « Lire à l'essai d'ici ». À vérifier : les phrases du livre,
+« à relier » sur un choix sans destination, « Hors du livre » sur S005,
+l'énigme de S004 qui refuse un autre numéro que le sien (« Passer l'énigme » donne
+le bon), « Cette scène n'a ni choix ni fin. » sur S010, « déjà lu » sur un choix
+suivi, « Recommencer » et son « Annuler », « Ouvrir la scène » puis « Retour à la
+lecture d'essai », qui retrouve le parcours. Dans « Les passeurs de brume », qui a
+une feuille d'aventure, le compteur de volonté s'arrête à zéro et le dé se lance ;
+en dessous de 1 100 points, « Ma feuille » s'ouvre en bas de l'écran.
+
+**3. Côté élève, dans « Les passeurs de brume ».** Un autre navigateur, sur
+http://localhost:4840/classe ; « Mes classes » > « CM1-CM2 d'essai » donne
+l'identifiant, le mot de passe et les codes. « Lire à l'essai », dans la barre :
+
+| Qui | Geste | Ce qui doit se voir |
+|---|---|---|
+| Un élève de « La lisière » | « Commencer au début » de son chapitre, puis les choix | ni référence, ni état, ni « Hors du livre » ; un choix vers un autre chapitre : « La suite se trouve dans un chapitre que tu découvriras plus tard », et rien de la destination |
+| Le même | « Depuis une scène » : un mot du texte | les scènes de ses chapitres qui le contiennent, avec l'extrait |
+| L'enseignant | Réglages du projet : « Les élèves lisent toute l'histoire » | chez l'élève, « Depuis le départ du livre » en premier, et les autres chapitres se lisent |
+| L'élève | « Chemins » de son chapitre | « Fin de l'histoire », « Sans suite », et, la lecture ouverte, « Départ du livre » ; jamais « rien n'y mène » |
+
+`npx playwright test essai-etape5` joue le même enchaînement, en raccourci.
+
+**4. En ligne, à la demande seulement.** Avant de pousser l'étape : `npm run
+sauvegarder`, puis `npm run production:schema -- --oui`, qui applique les deux
+migrations à la vraie base, puis la mise en ligne du code.

@@ -797,9 +797,10 @@
   min-width: 1.7em;
   height: 1.25em;
   vertical-align: -0.22em;
-  background-color: var(--bloque-f);
-  background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--bloque) 22%, transparent) 4px 5px);
-  box-shadow: inset 0 0 0 1.5px var(--bloque);
+  /* Ambre : le numéro attend sa destination, sans être une faute (F03.1, 14 octobre 2026) */
+  background-color: var(--e-valider-f);
+  background-image: repeating-linear-gradient(135deg, transparent 0 4px, color-mix(in srgb, var(--e-valider) 22%, transparent) 4px 5px);
+  box-shadow: inset 0 0 0 1.5px var(--e-valider);
 }
 .renvoi-en-ligne.est-choisi .renvoi-copie {
   box-shadow: 0 0 0 2px var(--canard);
@@ -826,15 +827,13 @@
   height: 0.95em;
   color: var(--graphite-3);
 }
+/* « Sans destination » : ambre, cela attend, comme dans « Chemins » ; le brique reste au Livre (F03.1, 14 octobre 2026) */
 .copie__dest-vide {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-  color: var(--bloque);
+  gap: 6px;
+  color: var(--e-valider);
   font-weight: 700;
-}
-.copie__dest .copie__dest-vide .ic {
-  color: var(--bloque);
 }
 .repere-prepare {
   display: block;
