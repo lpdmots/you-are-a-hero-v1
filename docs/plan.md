@@ -1031,6 +1031,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **Terminée quand :** le porteur a joué une séance entière avec plusieurs
   comptes d'élèves, de la prise d'une scène à sa validation, puis restauré la
   base depuis une sauvegarde. **C'est le seuil « ma classe ».**
+- **Terminée le 14 octobre 2026, sur décision du porteur :** il tient les
+  essais côté élève pour bons et ne veut pas jouer la séance maintenant ; le
+  parcours automatique d'une séance entière à trois postes en tient lieu
+  (`tests/parcours/seance.spec.ts`). V18 est levée en local (restauration
+  réussie à l'identique, le 13 octobre). Reste dû avant la première séance
+  avec de vrais élèves, au titre de « Avant de saisir des prénoms d'élèves
+  réels » : une restauration réussie de la vraie base.
 
 ### Étape 5 — Lire le récit à l'essai et contrôler les chemins
 

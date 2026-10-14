@@ -64,9 +64,10 @@ sa construction, en sept lots, commence le même jour, en local : les lots 1
 (états et relecture, côté enseignant), 2 (côté élève), 3 (« Mon travail »,
 retrait d'un élève), 4 (Suivi), 5 (fiches de rédaction) et 6
 (encouragements et classement) sont construits, le lot 7 (essai de séance et
-restauration) est préparé et attend l'essai du porteur ; l'étape est en ligne
-depuis le 13 octobre 2026, ses quatre migrations appliquées à la vraie base,
-pour qu'il l'essaie
+restauration) est préparé ; l'étape est en ligne depuis le 13 octobre 2026,
+ses quatre migrations appliquées à la vraie base, et terminée le 14 octobre
+sur décision du porteur, qui tient les essais côté élève pour bons ; une
+restauration de la vraie base reste due avant la première séance réelle
 ([plan](docs/plan.md#étape-4--faire-travailler-la-classe--prendre-remettre-relire-valider-suivre),
 [architecture](docs/architecture.md#réalisation-de-létape-4-13-octobre-2026),
 [design](docs/design.md#étape-4-construite-13-octobre-2026)).
