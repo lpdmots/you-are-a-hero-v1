@@ -1011,9 +1011,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Réglages gardés, le 14 octobre 2026, à sa demande :** ils sont
       gardés avec le compte (F07.4). Migration
       `20261014100000_reglages_des_fiches` : une colonne `reglages_fiches`
-      au compte de l'enseignant, que lui seul modifie ; appliquée à la base
-      locale seulement, à porter dans la vraie base avant le code qui s'en
-      sert, sur son accord, après une sauvegarde.
+      au compte de l'enseignant, que lui seul modifie. Appliquée à la vraie
+      base par le porteur le 14 octobre 2026, après sa sauvegarde
+      (`sauvegardes/2026-10-14-13-24`), puis le code poussé : en ligne
+      jusqu'au commit `d1c89b0`.
   - **Mise en ligne, le 13 octobre 2026, à la demande du porteur, qui
     veut essayer en ligne :** vraie base sauvegardée par lui
     (`sauvegardes/2026-10-13-19-46`), les quatre migrations de l'étape
