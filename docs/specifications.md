@@ -3331,7 +3331,13 @@ Cette partie de F06.3 se construit à l'étape 2 du
 font eux-mêmes — prendre, rendre, reprendre à un camarade — reste à
 l'étape 4. Confirmé par le porteur le même jour : un élève retiré d'un
 chapitre ne s'occupe plus de ses scènes, qui redeviennent « Pas encore
-prise » avec tout ce qu'elles contiennent.
+prise » avec tout ce qu'elles contiennent. Révisé le 14 octobre 2026, sur
+sa réponse au changement proposé à l'étape 4 : cela ne vaut que pour les
+scènes qu'il écrivait (« En cours », « À reprendre », celle-ci redevenant
+« En cours ») ; celles qu'il a remises ou qui sont finies (« À valider »,
+« Validé », « Prête ») gardent son prénom, comme pour un élève retiré de la
+classe (F01.1), et se confient à un autre élève depuis « Qui s'en
+occupe ».
 
 **Scène déjà remise (confirmé le 4 octobre 2026) :** une scène qu'un élève
 a remise et que l'enseignant s'attribue garde son état et ses remises ;

@@ -856,12 +856,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     base locale seulement.
     - **Critères fermés :** F06-AC95 à AC97, AC33 pour « Mon travail » ;
       F01-AC22, AC23, AC25 ; F08-AC17 pour la ligne de « Mon travail ».
-    - **Changement de règle, dit au porteur avant de poursuivre, sans
-      réponse à ce stade :** un élève retiré d'un chapitre, et non de la
-      classe, garde lui aussi son prénom sur les scènes qu'il a remises ou
-      finies. La règle du 10 octobre 2026 lui retirait toutes ses scènes ;
-      elle date d'avant les états. S'il préfère l'ancienne règle, le
-      déclencheur des attributions se reprend dans une migration de plus.
+    - **Changement de règle, dit au porteur avant de poursuivre, confirmé
+      par lui le 14 octobre 2026 :** un élève retiré d'un chapitre, et non
+      de la classe, garde lui aussi son prénom sur les scènes qu'il a
+      remises ou finies. La règle du 10 octobre 2026 lui retirait toutes
+      ses scènes ; elle date d'avant les états. F06.3 accordée.
     - **Précisions prises en construisant, à faire confirmer au porteur :**
       « Mon travail » est une liste, une ligne par scène, et non la grille
       de cartes de la maquette ; une scène où l'élève est arrêté s'y range
