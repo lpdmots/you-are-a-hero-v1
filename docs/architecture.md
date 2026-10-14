@@ -862,6 +862,14 @@ du chapitre. « Annuler la répartition » tient à l'état de la page et non à
 la base : la page quittée, rien ne distingue plus une scène donnée par le
 partage d'une scène prise autrement, ce qui est la règle (F07-AC73).
 
+**Réglages des fiches gardés (14 octobre 2026).** Une colonne `jsonb`
+au compte de l'enseignant, `reglages_fiches` (par chapitre ou par élève, à
+la suite, nombre de scènes), qu'il est seul à modifier, comme ses autres
+préférences (`voisines`, `aides_masquees`). La page la relit sans confiance
+(`lireReglages`, qui rend les valeurs habituelles pour ce qui manque ou est
+abîmé) et l'écrit 400 ms après le dernier changement ; ce que la page choisit
+pour une seule fois (par chapitre faute d'élève) n'y est pas écrit.
+
 **Encouragements et classement (lot 6).** Une table `encouragements` :
 une ligne par scène, élève et catégorie, l'élève étant celui qui s'occupait
 de la scène quand le tampon a été donné, ce qui suffit à le lui laisser

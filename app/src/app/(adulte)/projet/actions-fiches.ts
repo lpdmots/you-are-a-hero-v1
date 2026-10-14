@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { lireReglages, type ReglagesFiches } from "@/domaine/fiches";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { estUuid } from "@/serveur/recit";
 
@@ -66,4 +67,11 @@ export async function annulerRepartition(projetId: string, donnees: SceneDonnee[
   }
   revalidatePath(`/projet/${projetId}`, "layout");
   return { ok: true, rendues };
+}
+
+/** Les réglages des fiches, gardés pour le compte dès qu'ils changent : ils servent la fois suivante, dans tous ses projets. */
+export async function reglerFiches(reglages: ReglagesFiches): Promise<{ ok: boolean }> {
+  const e = await exigerEnseignant();
+  const { error } = await e.supabase.from("enseignants").update({ reglages_fiches: lireReglages(reglages) }).eq("id", e.id);
+  return { ok: !error };
 }

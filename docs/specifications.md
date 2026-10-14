@@ -5185,6 +5185,19 @@ du plan.
   en croyant avoir tout ; quand le nombre empêche un partage, la note le
   dit (« chaque élève du chapitre a déjà 4 scènes à écrire »), à côté de la
   case où il se change.
+- **Réglages gardés, décidé par le porteur le 14 octobre 2026 :** « on a
+  généralement des habitudes » ; un réglage changé vaut dès la fois
+  suivante. Les trois réglages — par chapitre ou par élève, « À la suite, à
+  découper », le nombre de scènes par élève (vide compris) — sont gardés
+  avec le compte de l'enseignant, dès qu'ils changent, sans bouton
+  « Enregistrer », et servent dans tous ses projets, l'année suivante
+  comprise (son choix, recommandé, contre des réglages par projet). Ne sont
+  pas gardés : l'élève choisi, le partage et le complément, qui tiennent au
+  moment. Quand aucune scène cochée n'a d'élève, ou que le Suivi demande
+  « Tout son chapitre », la page s'ouvre par chapitre pour cette fois, sans
+  effacer l'habitude. Un réglage changé pour une seule fois reste donc pour
+  la suivante ; la barre le laisse voir (« en 5 parties à découper »,
+  « Imprimer à la suite »).
 
 - **F07-AC71 — Scène de trop :** étant donné « La lisière », attribuée à
   Chloé, Dylan et Emma, qui ont chacun deux scènes à leur nom — Chloé deux

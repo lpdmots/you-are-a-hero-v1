@@ -10,12 +10,12 @@ import { useMessage } from "@/composants/Messages";
 import { TamponScene } from "@/composants/TamponScene";
 import { nomPourEleves } from "@/domaine/eleves";
 import {
-  completer, decompte, elevesACompleter, feuilles, horsFiche, repartir, surAucuneFeuille, type Feuille, type HorsFiche, type Partage,
+  completer, decompte, elevesACompleter, feuilles, horsFiche, repartir, surAucuneFeuille, type Feuille, type HorsFiche, type Partage, type ReglagesFiches,
 } from "@/domaine/fiches";
 import { couleurDeChapitre, nomScene, referenceScene, type Chapitre, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { de, pluriel } from "@/domaine/texte";
 import type { ContenuDeFiche } from "@/serveur/fiches";
-import { annulerRepartition, repartirScenes, type SceneDonnee } from "../../actions-fiches";
+import { annulerRepartition, reglerFiches, repartirScenes, type SceneDonnee } from "../../actions-fiches";
 
 const vars = (rang: number): CSSProperties => {
   const c = couleurDeChapitre(rang);
@@ -27,8 +27,6 @@ const POURQUOI: Record<HorsFiche, string> = {
   "ne-s-ecrit-plus": "plus rien à écrire",
 };
 const SANS_PARTAGE: Partage = { propositions: new Map(), sansEleve: [] };
-/** Au plus quatre scènes à écrire par élève, tant que l'enseignant ne règle pas autre chose (13 octobre 2026). */
-const PLAFOND_HABITUEL = 4;
 /** Ce qui s'ajoute d'un geste à la sélection : chaque scène qui peut être choisie est dans une de ces trois sortes. */
 const SORTES: { nom: string; de: (s: Scene) => boolean }[] = [
   { nom: "en cours", de: (s) => s.etat === "cours" && !s.texteVide },
@@ -62,11 +60,13 @@ function CaseDeGroupe({ scenes, choisies, nom, onCocher }: { scenes: Scene[]; ch
  * de leur chapitre : ce n'est qu'une proposition, donnée à l'impression, après un message.
  */
 export function Fiches({
-  projet, plan, eleves, contenus, depart, retour,
+  projet, plan, eleves, contenus, reglages: habitude, depart, retour,
 }: {
   projet: { id: string; titre: string };
   plan: Plan; eleves: ElevePlan[];
   contenus: Record<string, ContenuDeFiche>;
+  /** Les réglages gardés avec le compte : l'habitude de l'enseignant (F07.4) */
+  reglages: ReglagesFiches;
   /** Ce que le Suivi listait en ouvrant les fiches : les scènes cochées, l'élève choisi (F06-AC57) ; « Tout son chapitre » demande la feuille du chapitre */
   depart: { choisies: string[]; eleve: string | null; par?: "chapitre" | null };
   /** L'adresse du Suivi d'où l'on vient, avec ses filtres */
@@ -75,15 +75,26 @@ export function Fiches({
   const dire = useMessage();
   const [choisies, setChoisies] = useState(() => new Set(depart.choisies));
   const [eleveId, setEleveId] = useState(depart.eleve);
-  // Une feuille par élève dès qu'une scène cochée a un élève ; par chapitre sinon, où « par élève » ne donnerait aucune feuille
+  // L'habitude gardée avec le compte ; par chapitre pour cette fois, sans l'effacer, quand le Suivi demande « Tout son chapitre »
+  // ou qu'aucune scène cochée n'a d'élève, où « par élève » ne donnerait aucune feuille
   const [par, setPar] = useState<"chapitre" | "eleve">(() => {
     if (depart.par) return depart.par;
+    if (depart.eleve) return "eleve";
     const cochees = new Set(depart.choisies);
-    return depart.eleve || plan.parties.some((p) => p.chapitres.some((c) => c.scenes.some((x) => cochees.has(x.id) && x.priseParEleve))) ? "eleve" : "chapitre";
+    const unEleve = plan.parties.some((p) => p.chapitres.some((c) => c.scenes.some((x) => cochees.has(x.id) && x.priseParEleve)));
+    return unEleve ? habitude.par : "chapitre";
   });
-  const [suite, setSuite] = useState(false);
+  const [suite, setSuite] = useState(habitude.suite);
   const [repartit, setRepartit] = useState(false);
-  const [plafond, setPlafond] = useState<number | null>(PLAFOND_HABITUEL);
+  const [plafond, setPlafond] = useState<number | null>(habitude.plafond);
+  // Ce qui est gardé pour la fois suivante : ce que l'enseignant a réglé, non ce que la page a choisi pour cette fois
+  const garde = useRef(habitude);
+  const minuterie = useRef<number | null>(null);
+  const garder = (changes: Partial<ReglagesFiches>) => {
+    garde.current = { ...garde.current, ...changes };
+    if (minuterie.current) window.clearTimeout(minuterie.current);
+    minuterie.current = window.setTimeout(() => void reglerFiches(garde.current), 400);
+  };
   const [reglages, setReglages] = useState(false);
   const [completes, setCompletes] = useState<string[]>([]);
   const [vue, setVue] = useState(0);
@@ -94,6 +105,7 @@ export function Fiches({
   const titreMessage = useRef<HTMLParagraphElement>(null);
   const boutonImprimer = useRef<HTMLButtonElement>(null);
   const barre = useRef<HTMLDivElement>(null);
+  const fleches = useRef<HTMLDivElement>(null);
   const cadreReglages = useRef<HTMLSpanElement>(null);
   const panneauReglages = useRef<HTMLDivElement>(null);
 
@@ -137,9 +149,11 @@ export function Fiches({
   }, [confirme]);
   // Les réglages s'ouvrent sous la barre, sur la feuille, sans rien déplacer : le décompte et « Imprimer » restent
   // en vue pendant qu'on règle. Un clic ailleurs ou « Échap » les referme
+  // Sous les flèches de la feuille quand il y en a, pour ne pas les cacher
   useLayoutEffect(() => {
-    if (!reglages || !barre.current || !panneauReglages.current) return;
-    return poser(barre.current, panneauReglages.current, { cote: "bottom-end", ecart: 8 });
+    const repere = fleches.current ?? barre.current;
+    if (!reglages || !repere || !panneauReglages.current) return;
+    return poser(repere, panneauReglages.current, { cote: "bottom-end", ecart: 8 });
   }, [reglages]);
   useEffect(() => {
     if (!reglages) return;
@@ -182,6 +196,7 @@ export function Fiches({
   const nCochees = cochables.filter((s) => choisies.has(s.id)).length;
   const changerDeTirage = (suivant: "chapitre" | "eleve") => {
     setPar(suivant);
+    garder({ par: suivant });
     // Une feuille par chapitre : plus d'élève choisi, la liste redevient entière
     if (suivant === "chapitre") setEleveId(null);
     setVue(0);
@@ -529,7 +544,15 @@ export function Fiches({
                     </label>
                   ) : null}
                   <label className="lot-suite">
-                    <input type="checkbox" className="case" checked={suite} onChange={(e) => setSuite(e.target.checked)} />
+                    <input
+                      type="checkbox"
+                      className="case"
+                      checked={suite}
+                      onChange={(e) => {
+                        setSuite(e.target.checked);
+                        garder({ suite: e.target.checked });
+                      }}
+                    />
                     À la suite, à découper
                   </label>
                   {/* Les scènes cochées que personne n'a prises : les répartir, sous un nombre, ou compléter un élève (F07-AC74, AC75) */}
@@ -549,7 +572,9 @@ export function Fiches({
                             value={plafond ?? ""}
                             onChange={(e) => {
                               const n = Math.floor(Number(e.target.value));
-                              setPlafond(e.target.value !== "" && Number.isFinite(n) && n >= 1 ? Math.min(n, 99) : null);
+                              const nombre = e.target.value !== "" && Number.isFinite(n) && n >= 1 ? Math.min(n, 99) : null;
+                              setPlafond(nombre);
+                              garder({ plafond: nombre });
                               setCompletes([]);
                               setConfirme(false);
                             }}
@@ -621,20 +646,6 @@ export function Fiches({
                 </button>
               ) : null}
             </div>
-            {lesFeuilles.length > 1 && !suite ? (
-              <div className="lot-pager">
-                <button type="button" className="btn btn--petit" aria-label="Feuille précédente" disabled={vue === 0} onClick={() => setVue((v) => Math.max(0, v - 1))}>
-                  <Icone nom="fleche-g" />
-                </button>
-                <span className="lot-pager__ou">
-                  {feuille ? <b title={nomDeFeuille(feuille)}>{nomDeFeuille(feuille)}</b> : null}
-                  {Math.min(vue, lesFeuilles.length - 1) + 1} / {lesFeuilles.length}
-                </span>
-                <button type="button" className="btn btn--petit" aria-label="Feuille suivante" disabled={vue >= lesFeuilles.length - 1} onClick={() => setVue((v) => Math.min(lesFeuilles.length - 1, v + 1))}>
-                  <Icone nom="fleche" />
-                </button>
-              </div>
-            ) : null}
             {/* Le message de demande porte alors le seul bouton plein de l'écran */}
             <button type="button" ref={boutonImprimer} className={`btn${confirme ? "" : " btn--primaire"} lot-imprimer`} disabled={!lesFeuilles.length || confirme || occupe} onClick={imprimer}>
               <Icone nom="imprimer" />
@@ -658,6 +669,22 @@ export function Fiches({
             ) : null}
           </div>
 
+          {/* Les flèches tiennent à l'aperçu, et non à la barre : leur place ne dépend pas de la longueur d'un titre */}
+          {lesFeuilles.length > 1 && !suite ? (
+            <div className="lot-pager hors-impression" ref={fleches}>
+              <button type="button" className="btn btn--petit" aria-label="Feuille précédente" disabled={vue === 0} onClick={() => setVue((v) => Math.max(0, v - 1))}>
+                <Icone nom="fleche-g" />
+              </button>
+              <span className="lot-pager__ou" title={feuille ? nomDeFeuille(feuille) : undefined}>
+                {feuille ? <b>{nomDeFeuille(feuille)}</b> : null}
+                {feuille ? " · " : ""}
+                {Math.min(vue, lesFeuilles.length - 1) + 1} / {lesFeuilles.length}
+              </span>
+              <button type="button" className="btn btn--petit" aria-label="Feuille suivante" disabled={vue >= lesFeuilles.length - 1} onClick={() => setVue((v) => Math.min(lesFeuilles.length - 1, v + 1))}>
+                <Icone nom="fleche" />
+              </button>
+            </div>
+          ) : null}
           {!feuille ? (
             rien ? <p className="suivi-aucun hors-impression">{rien}</p> : null
           ) : suite ? (

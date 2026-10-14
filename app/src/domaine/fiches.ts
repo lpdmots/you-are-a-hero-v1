@@ -192,3 +192,30 @@ export function decompte(lesFeuilles: Feuille[], aLaSuite: boolean, eleve: Eleve
   const ou = aLaSuite && n > 1 ? `en ${n} parties à découper` : `sur ${n} feuille${n > 1 ? "s" : ""}`;
   return `${combien} ${ou}${eleve ? ` · ${eleve.prenom}` : ""}`;
 }
+
+/**
+ * Les réglages des fiches, gardés avec le compte de l'enseignant et repris d'une fois sur
+ * l'autre, dans tous ses projets (F07.4, 14 octobre 2026). L'élève choisi et le partage n'en
+ * sont pas : ils tiennent au moment.
+ */
+export type ReglagesFiches = {
+  par: "chapitre" | "eleve";
+  /** « À la suite, à découper » */
+  suite: boolean;
+  /** Au plus n scènes à écrire par élève ; rien : aucun nombre */
+  plafond: number | null;
+};
+
+/** Sans rien régler : une feuille par élève, une par page, au plus 4 scènes à écrire par élève. */
+export const REGLAGES_HABITUELS: ReglagesFiches = { par: "eleve", suite: false, plafond: 4 };
+
+/** Ce que la base garde, relu sans confiance : un réglage absent ou abîmé reprend sa valeur habituelle. */
+export function lireReglages(v: unknown): ReglagesFiches {
+  const o = v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+  const plafond = o.plafond === null ? null : typeof o.plafond === "number" && Number.isInteger(o.plafond) && o.plafond >= 1 && o.plafond <= 99 ? o.plafond : REGLAGES_HABITUELS.plafond;
+  return {
+    par: o.par === "chapitre" || o.par === "eleve" ? o.par : REGLAGES_HABITUELS.par,
+    suite: typeof o.suite === "boolean" ? o.suite : REGLAGES_HABITUELS.suite,
+    plafond,
+  };
+}

@@ -411,24 +411,27 @@
   font-size: var(--t-s);
   font-weight: 800;
 }
+/* Au-dessus de la feuille montrée : une flèche à chaque bout, le nom de la feuille au milieu ; les flèches ne bougent pas
+   d'une feuille à l'autre, quelle que soit la longueur du titre */
 .lot-pager {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  margin-bottom: -4px;
   font-size: var(--t-s);
   font-variant-numeric: tabular-nums;
 }
-/* Entre les flèches, la feuille montrée : son élève ou son chapitre, puis son rang */
 .lot-pager__ou {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 8px;
-  white-space: nowrap;
-}
-.lot-pager__ou b {
-  max-width: 13ch;
+  justify-self: center;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--graphite-2);
+}
+.lot-pager__ou b {
+  color: var(--graphite);
   font-weight: 700;
 }
 .lot-imprimer {

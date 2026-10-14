@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ProjetOuvert } from "@/composants/ProjetCourant";
-import { horsFiche } from "@/domaine/fiches";
+import { horsFiche, lireReglages } from "@/domaine/fiches";
 import { filtrer, filtresDepuis, lignesDuPlan } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { contenusDesFiches } from "@/serveur/fiches";
@@ -26,8 +26,9 @@ export default async function Page({ params, searchParams }: Props) {
   const enseignant = await exigerEnseignant();
   const projet = await projetDe(enseignant, id);
   if (!projet || projet.organisation !== "classe") notFound();
-  const [plan, eleves, contenus, demande] = await Promise.all([
+  const [plan, eleves, contenus, demande, compte] = await Promise.all([
     planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), contenusDesFiches(enseignant, projet.id), searchParams,
+    enseignant.supabase.from("enseignants").select("reglages_fiches").eq("id", enseignant.id).maybeSingle(),
   ]);
   const suivi = requeteDuSuivi(demande.suivi);
   const filtres = filtresDepuis(Object.fromEntries(new URLSearchParams(suivi)));
@@ -44,6 +45,7 @@ export default async function Page({ params, searchParams }: Props) {
         plan={plan}
         eleves={eleves}
         contenus={contenus}
+        reglages={lireReglages(compte.data?.reglages_fiches)}
         depart={{ choisies, eleve, par: filtres.eleve && filtres.eleve !== "moi" && filtres.mode === "chapitre" ? "chapitre" : null }}
         retour={`/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`}
       />

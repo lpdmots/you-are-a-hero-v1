@@ -1755,6 +1755,16 @@ stade.
     commentaire du porteur).
   - *Ce qui reste sous la barre :* le message de demande avant « Répartir
     et imprimer », puis « n scènes réparties · Annuler la répartition ».
+  - *Les flèches de la feuille, reprises le 14 octobre 2026 sur sa
+    remarque* (la barre passait parfois sur deux lignes selon la longueur
+    du titre du chapitre, et les boutons changeaient de place d'une feuille
+    à l'autre) : elles quittent la barre et se posent au-dessus de la
+    feuille montrée, une à chaque bout, le nom de la feuille et son rang au
+    milieu (« La lisière · 2 / 9 »), coupé s'il est trop long. La barre ne
+    porte plus que le décompte et « Imprimer », toujours sur une ligne ; le
+    panneau des réglages s'ouvre sous les flèches.
+  - *Réglages gardés avec le compte* (14 octobre 2026, F07.4) : rien ne
+    change à l'écran.
   - *Petit écran :* la barre du bas garde le décompte et « Imprimer » ;
     « Réglages » est à côté du titre, après la liste, et les deux mots
     sous le décompte l'ouvrent, au-dessus de la barre.

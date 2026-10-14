@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Etat } from "@/domaine/etats";
-import { completer, decompte, elevesACompleter, feuilles, horsFiche, repartir, surAucuneFeuille } from "@/domaine/fiches";
+import { completer, decompte, elevesACompleter, feuilles, horsFiche, lireReglages, REGLAGES_HABITUELS, repartir, surAucuneFeuille } from "@/domaine/fiches";
 import type { Chapitre, ElevePlan, Partie, Plan, Scene } from "@/domaine/recit";
 
 /** Étape 4 du plan, lot 5 : les fiches de rédaction, leurs feuilles et le partage des scènes sans élève (F07.4), sans base ni navigateur. */
@@ -151,5 +151,16 @@ describe("Partage des scènes sans élève (F07.4)", () => {
     const [emma2, jade] = [eleve("Emma"), eleve("Jade")];
     const p = plan(chapitre("lisiere", [emma2, jade], libres(4)));
     expect(parts(p, completer(p, [emma2, jade], toutes(p), 2, ["jade", "emma"]).propositions)).toEqual({ jade: [0, 1], emma: [2, 3] });
+  });
+});
+
+describe("Réglages gardés (F07.4)", () => {
+  it("F07.4 — sans rien de gardé, ou abîmé : par élève, une par page, au plus 4 ; « aucun nombre » est gardé comme tel", () => {
+    expect(lireReglages({})).toEqual({ par: "eleve", suite: false, plafond: 4 });
+    expect(lireReglages(null)).toEqual(REGLAGES_HABITUELS);
+    expect(lireReglages({ par: "chapitre", suite: true, plafond: 6 })).toEqual({ par: "chapitre", suite: true, plafond: 6 });
+    expect(lireReglages({ plafond: null })).toEqual({ par: "eleve", suite: false, plafond: null });
+    expect(lireReglages({ par: "page", suite: "oui", plafond: 0 })).toEqual(REGLAGES_HABITUELS);
+    expect(lireReglages({ plafond: 2.5 })).toEqual(REGLAGES_HABITUELS);
   });
 });

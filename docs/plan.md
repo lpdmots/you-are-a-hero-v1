@@ -1008,6 +1008,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       même jour à la page des fiches, reprise sur deux retours du porteur
       (`docs/design.md`, « Étape 4 construite », lot 5) : le second range
       tous les réglages derrière un bouton.
+    - **Réglages gardés, le 14 octobre 2026, à sa demande :** ils sont
+      gardés avec le compte (F07.4). Migration
+      `20261014100000_reglages_des_fiches` : une colonne `reglages_fiches`
+      au compte de l'enseignant, que lui seul modifie ; appliquée à la base
+      locale seulement, à porter dans la vraie base avant le code qui s'en
+      sert, sur son accord, après une sauvegarde.
   - **Mise en ligne, le 13 octobre 2026, à la demande du porteur, qui
     veut essayer en ligne :** vraie base sauvegardée par lui
     (`sauvegardes/2026-10-13-19-46`), les quatre migrations de l'étape

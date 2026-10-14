@@ -96,7 +96,7 @@ test.describe("Du Suivi aux fiches (F06.5, F07.4)", () => {
     await expect(page.locator(".lot-scene").filter({ hasText: "S010" })).toContainText("sans consigne : pas imprimée");
     // Elles ont un élève : une feuille par élève, sans rien régler — Alice, puis Bilal
     await expect(decompte(page)).toHaveText("3 scènes sur 2 feuilles");
-    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Alice\s*1 \/ 2$/);
+    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Alice · 1 \/ 2$/);
     // Ce choix se corrige avant d'imprimer
     await caseDe(page, "S009").uncheck();
     await expect(decompte(page)).toHaveText("2 scènes sur 1 feuille");
@@ -234,10 +234,10 @@ test.describe("La feuille de rédaction (F07.4)", () => {
     await expect(feuille(page)).toContainText("Prénom : Chloé");
     await expect(feuille(page).locator(".fr-num")).toHaveText(["S001", "S002"]);
     // Entre les flèches, la feuille montrée : son élève, puis son rang
-    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Chloé\s*1 \/ 3$/);
+    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Chloé · 1 \/ 3$/);
     await page.getByRole("button", { name: "Feuille suivante" }).click();
     await expect(feuille(page)).toContainText("Prénom : Dylan");
-    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Dylan\s*2 \/ 3$/);
+    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Dylan · 2 \/ 3$/);
     await expect(imprimer(page)).toHaveText("Imprimer 3 feuilles");
     // Un élève choisi : sa seule feuille, et les autres ne s'impriment pas (AC56)
     await (await eleveDuTirage(page)).selectOption({ label: "Dylan" });
@@ -297,6 +297,56 @@ test.describe("La feuille de rédaction (F07.4)", () => {
     await c.base.from("scenes").update({ prise_par_enseignant: false, prise_par_eleve: c.eleves.Alice.id }).eq("id", c.lisiere.scenes[0]);
     await page.reload();
     await expect(caseDe(page, "S007")).toBeEnabled();
+  });
+});
+
+test.describe("Réglages gardés (F07.4)", () => {
+  test("F07.4 — réglages gardés avec le compte : au plus 6 scènes, par chapitre, à la suite ; la page rouverte, puis celle d'un autre projet, les reprend ; l'élève choisi, lui, ne reste pas", async ({ page }) => {
+    const c = await classeEtFiches(page);
+    await aller(page, fiches(c.projet));
+    await expect(await nombre(page)).toHaveValue("4");
+    await (await nombre(page)).fill("6");
+    await tirer(page, "par chapitre");
+    await (await reglages(page)).getByRole("checkbox", { name: "À la suite, à découper" }).check();
+    const garde = async () => (await sql<{ r: Record<string, unknown> }>("select reglages_fiches as r from enseignants where id = $1", [c.compte.id]))[0].r;
+    await expect.poll(garde).toEqual({ par: "chapitre", suite: true, plafond: 6 });
+    // Rouverte : les mêmes réglages, sans rien refaire
+    await page.reload();
+    await expect(decompte(page)).toHaveText("10 scènes en 3 parties à découper");
+    await expect(imprimer(page)).toHaveText("Imprimer à la suite");
+    await expect((await reglages(page)).getByRole("group", { name: "Une feuille" }).getByRole("button", { name: "par chapitre" })).toHaveAttribute("aria-pressed", "true");
+    await tirer(page, "par élève");
+    await expect(await nombre(page)).toHaveValue("6");
+    // Un élève choisi ne reste pas : la fois suivante, tous les élèves
+    await (await eleveDuTirage(page)).selectOption({ label: "Alice" });
+    await expect.poll(garde).toEqual({ par: "eleve", suite: true, plafond: 6 });
+    await page.reload();
+    await expect(await eleveDuTirage(page)).toHaveValue("");
+    // Un autre projet du même compte : la même habitude
+    const second = await semerProjet(c.base, c.compte, "classe", "choix", "Le second livre", null);
+    const { chapitres } = await semerPartie(c.base, second, "Le début", [{ titre: "Le port", scenes: ["Le quai"] }]);
+    await c.base.from("scenes").update({ consigne: "Ce que la scène doit raconter." }).eq("id", chapitres[0].scenes[0]);
+    await aller(page, fiches(second));
+    // Sans élève, la page s'ouvre par chapitre pour cette fois ; l'habitude, elle, reste « par élève »
+    await expect((await reglages(page)).getByRole("group", { name: "Une feuille" }).getByRole("button", { name: "par chapitre" })).toHaveAttribute("aria-pressed", "true");
+    await expect((await reglages(page)).getByRole("checkbox", { name: "À la suite, à découper" })).toBeChecked();
+    await page.keyboard.press("Escape");
+    await page.waitForTimeout(600);
+    expect(await garde()).toEqual({ par: "eleve", suite: true, plafond: 6 });
+  });
+
+  test("F07.4 — les flèches de la feuille ne bougent pas d'une feuille à l'autre, quelle que soit la longueur du titre", async ({ page }) => {
+    const c = await classeEtFiches(page);
+    await c.base.from("chapitres").update({ titre: "Le très long chemin des lanternes qui s'éteignent une à une" }).eq("id", c.lisiere.id);
+    await aller(page, fiches(c.projet));
+    await tirer(page, "par chapitre");
+    await page.keyboard.press("Escape");
+    const places = async () =>
+      page.evaluate(() => ["Feuille précédente", "Feuille suivante"].map((n) => Math.round(document.querySelector(`[aria-label="${n}"]`)!.getBoundingClientRect().x)).concat(Math.round(document.querySelector(".lot-imprimer")!.getBoundingClientRect().x)));
+    const avant = await places();
+    await page.getByRole("button", { name: "Feuille suivante" }).click();
+    await expect(page.locator(".lot-pager__ou")).toContainText("Le très long chemin");
+    expect(await places()).toEqual(avant);
   });
 });
 
