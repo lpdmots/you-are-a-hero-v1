@@ -64,7 +64,7 @@ describe("Contrôles du livre (F09.2)", () => {
     const p = controle(plan);
     const exclue = p.find((x) => x.sorte === "exclue");
     expect(exclue).toMatchObject({ sceneId: id(1), renvoiId: "1>1", cibleId: id(3), gravite: "bloque", tache: "choix", etape: "chemins" });
-    expect(phraseDe(exclue!)).toEqual({ quoi: "Un choix mène hors du livre.", detail: "« Choix 2 » mène à S003 « Scène 3 », qui est hors du livre." });
+    expect(phraseDe(exclue!)).toEqual({ quoi: "« Choix 2 » mène hors du livre.", detail: "« Choix 2 » mène à S003 « Scène 3 », qui est hors du livre." });
     expect(pdfDefinitifRefuse(p)).toBe(true);
     // Le choix est resté tel quel
     expect(plan.liens.find((l) => l.renvoiId === "1>1")?.cibleId).toBe(id(3));
@@ -99,6 +99,27 @@ describe("Contrôles du livre (F09.2)", () => {
     expect(pdfDefinitifRefuse(p)).toBe(false);
   });
 
+  it("F09-AC24 — un point par cause : la scène où aucun chemin ne mène compte celles qu'on n'atteint qu'à travers elle", () => {
+    // S025 n'est reliée à rien ; S064 à S066 ne s'atteignent qu'à travers elle, S066 revenant à S064
+    const p = controle(livre([...sain, { ref: 25, choix: [64], fin: true }, { ref: 64, choix: [65, 66] }, { ref: 65, fin: true }, { ref: 66, choix: [64] }]));
+    expect(presentes(p)).toEqual([["inaccessible", 25]]);
+    const point = p[0];
+    expect(point).toMatchObject({ scenes: [id(25), id(64), id(65), id(66)], cle: `inaccessible:${id(25)}` });
+    expect(phraseDe(point)).toMatchObject({ quoi: "Aucun chemin n’y mène.", suite: "Et 3 scènes qui n’ont pas d’autre accès." });
+    // Deux scènes où rien ne mène, qui mènent toutes deux à S070 : deux points, S070 comptée dans le premier
+    const deux = controle(livre([...sain, { ref: 30, choix: [70] }, { ref: 40, choix: [70] }, { ref: 70, fin: true }]));
+    expect(deux.filter((x) => x.sorte === "inaccessible").map((x) => (x as { scenes: string[] }).scenes)).toEqual([[id(30), id(70)], [id(40)]]);
+    // Une boucle où rien ne mène : un seul point, sur sa première scène du plan
+    const boucle = controle(livre([...sain, { ref: 80, choix: [81] }, { ref: 81, choix: [80, 82] }, { ref: 82, fin: true }]));
+    expect(presentes(boucle)).toEqual([["inaccessible", 80]]);
+    expect(phraseDe(aTraiter(boucle)[0]).suite).toBe("Et 2 scènes qui n’ont pas d’autre accès.");
+  });
+
+  it("F09.2 — trois choix sans destination dans une scène : chaque point nomme son choix", () => {
+    const p = controle(livre([{ ref: 1, choix: [2, null, null] }, { ref: 2, fin: true }]));
+    expect(aTraiter(p).map((x) => phraseDe(x).quoi)).toEqual(["« Choix 2 » ne mène nulle part.", "« Choix 3 » ne mène nulle part."]);
+  });
+
   it("F09-AC08 — deux scènes qui se renvoient l'une à l'autre, l'une menant aussi à une fin : rien n'est signalé", () => {
     expect(controle(livre([{ ref: 1, choix: [2] }, { ref: 2, choix: [1, 3] }, { ref: 3, fin: true }]))).toEqual([]);
   });
@@ -107,7 +128,7 @@ describe("Contrôles du livre (F09.2)", () => {
     const p = controle(livre([{ ref: 1, choix: [2, 5] }, { ref: 2, choix: [3] }, { ref: 3, choix: [4] }, { ref: 4, choix: [2] }, { ref: 5, fin: true }]));
     expect(presentes(p)).toEqual([["sans-fin", 2]]);
     expect(p[0]).toMatchObject({ gravite: "avert", tache: "passages", scenes: [id(2), id(3), id(4)] });
-    expect(phraseDe(p[0])).toEqual({ quoi: "Aucune fin ne s’atteint d’ici.", detail: "Ces 3 scènes se renvoient l’une à l’autre : le lecteur n’en sort plus." });
+    expect(phraseDe(p[0])).toEqual({ quoi: "Aucune fin ne s’atteint d’ici.", detail: "Ces 3 scènes se renvoient l’une à l’autre : le lecteur n’en sort plus.", suite: "Elle et 2 autres scènes se renvoient l’une à l’autre." });
     expect(pdfDefinitifRefuse(p)).toBe(false);
     // Une scène qui ne mène qu'à elle-même est enfermée aussi
     expect(presentes(controle(livre([{ ref: 1, choix: [2, 3] }, { ref: 2, choix: [2] }, { ref: 3, fin: true }])))).toEqual([["sans-fin", 2]]);
@@ -132,8 +153,8 @@ describe("Contrôles du livre (F09.2)", () => {
     const p = controle(livre([{ ref: 1, choix: [2, null, "corbeille"] }, { ref: 2, fin: true }]));
     expect(presentes(p)).toEqual([["sans-destination", 1], ["supprimee", 1]]);
     expect(p.every((x) => x.gravite === "bloque" && x.tache === "choix")).toBe(true);
-    expect(phraseDe(p[0])).toEqual({ quoi: "Un choix ne mène nulle part.", detail: "« Choix 2 » n’a pas encore de destination." });
-    expect(phraseDe(p[1]).quoi).toBe("Un choix mène à une scène supprimée.");
+    expect(phraseDe(p[0])).toEqual({ quoi: "« Choix 2 » ne mène nulle part.", detail: "« Choix 2 » n’a pas encore de destination." });
+    expect(phraseDe(p[1]).quoi).toBe("« Choix 3 » mène à une scène supprimée.");
   });
 
   it("F09-AC15 — énigme sans issue de secours : « sortie non assurée » avertit sans bloquer ; un choix écrit à côté la fait disparaître", () => {

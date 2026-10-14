@@ -26,6 +26,7 @@
     "compte:local": "tsx scripts/compte-local.ts",
     "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
+    "livre:essai": "tsx scripts/livre-d-essai.ts",
     "captures": "playwright test --config playwright.captures.config.ts",
     "verifier:production": "tsx scripts/verifier-production.ts",
     "cle:copier": "tsx scripts/presse-papiers.ts",

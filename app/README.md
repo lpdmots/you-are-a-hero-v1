@@ -13,9 +13,9 @@ React Flow et dagre pour la vue « Chemins ». Versions figées dans
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`) ; « Mon travail », par urgence (`travail.ts`) ; ce que le Suivi liste, compte et propose (`suivi.ts`) ; fiches de rédaction : ce qui se choisit, les feuilles, le partage, le nombre fixé (`fiches.ts`) ; encouragements : totaux et classement par catégorie (`encouragements.ts`) ; contrôles du livre : chaque point, sa gravité, son étape et sa phrase (`controles.ts`). |
-| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`) ; état, remises et remarques d'une scène (`relecture.ts`) ; ce qu'une fiche de rédaction imprime d'une scène (`fiches.ts`) ; encouragements de l'adulte, et ce que le poste d'un élève en reçoit (`encouragements.ts`) ; ce que les contrôles du livre lisent (`controles.ts`). |
-| `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre et ses chemins, scène, Suivi (`_suivi/`), fiches de rédaction (`fiches/`) ; histoire, chapitre et scène de l'élève. `travail/actions.ts` : ce que fait un élève (prendre, rendre, remettre, retirer sa remise). `copie/` : l'adresse où le texte s'enregistre. `images/` : celle qui sert une image à qui peut la voir. |
+| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`) ; « Mon travail », par urgence (`travail.ts`) ; ce que le Suivi liste, compte et propose (`suivi.ts`) ; fiches de rédaction : ce qui se choisit, les feuilles, le partage, le nombre fixé (`fiches.ts`) ; encouragements : totaux et classement par catégorie (`encouragements.ts`) ; contrôles du livre : chaque point, sa gravité, son étape et sa phrase (`controles.ts`) ; la destination Livre : marques des étapes, tâches, avertissements acceptés (`livre.ts`). |
+| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`) ; état, remises et remarques d'une scène (`relecture.ts`) ; ce qu'une fiche de rédaction imprime d'une scène (`fiches.ts`) ; encouragements de l'adulte, et ce que le poste d'un élève en reçoit (`encouragements.ts`) ; ce que les contrôles du livre et la destination Livre lisent (`controles.ts`). |
+| `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre et ses chemins, scène, Suivi (`_suivi/`), fiches de rédaction (`fiches/`), destination Livre (`_livre/`) ; histoire, chapitre et scène de l'élève. `travail/actions.ts` : ce que fait un élève (prendre, rendre, remettre, retirer sa remise). `copie/` : l'adresse où le texte s'enregistre. `images/` : celle qui sert une image à qui peut la voir. |
 | `src/composants/copie/` | La copie d'une scène : l'éditeur (Plate, sur Slate), ses blocs, ses fiches, l'enregistrement automatique. `regles.ts` réunit tout ce qui s'écrit contre Slate. |
 | `src/composants/chemins/` | Le schéma de la vue « Chemins » : la place des cartes et le tracé des traits (`disposer.ts`, avec dagre), leur dessin (`Schema.tsx`, avec React Flow). Chargé seulement à l'ouverture de la vue, sur un écran large. |
 | `src/composants/`, `src/styles/` | Formes communes du système « Cahiers d'aventure ». |
@@ -62,6 +62,18 @@ qu'un chemin y arrive.
 npm run chemins:essai                # l'ajoute à « Les passeurs de brume »
 npm run chemins:essai -- --refaire   # le retire, avec ce qui y a été écrit, puis le recharge
 npm run chemins:essai -- --retirer   # le retire seulement
+```
+
+Pour juger « Vérifier les chemins » (destination Livre), un petit livre où figure
+chaque cas des contrôles se charge dans la base locale, pour le compte local : « Le
+phare aux énigmes », projet personnel de quinze scènes — impasse, choix sans
+destination, vers une scène supprimée ou exclue, scène prête mais vide, énigme sans
+autre issue au numéro impossible, boucle sans fin, scène où rien ne mène, scène à
+finir, actions de jeu sans feuille (contenu dans `scripts/livre-d-essai.ts`).
+
+```bash
+npm run livre:essai                # le charge
+npm run livre:essai -- --refaire   # le retire, avec ce qui y a été écrit, puis le recharge
 ```
 
 La même histoire se charge dans la vraie base, pour un compte nommé, une fois son

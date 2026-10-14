@@ -1140,8 +1140,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       définitif (F04-AC33), à l'étape 6 ; le rappel au partage (F09-AC15),
       à l'étape 7. Les contrôles d'images et de marges (F10, F11.2)
       s'ajouteront à la même règle à l'étape 6.
-    - **Précisions prises en construisant, à faire confirmer au porteur :**
-      la fin hors d'atteinte est un groupe de scènes accessibles qui se
+    - **Précisions prises en construisant, confirmées par le porteur le
+      14 octobre 2026 :** la fin hors d'atteinte est un groupe de scènes accessibles qui se
       renvoient l'une à l'autre sans chemin vers une fin ni vers une autre
       scène — une boucle fermée, ou une scène qui ne mène qu'à elle-même —,
       signalé une fois, sur la première scène qu'on y rencontre ; une scène
@@ -1157,12 +1157,57 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       un numéro fixé sans énigme qui y mène se dit « Un numéro fixé
       n'existe plus. », et deux scènes fixées au même numéro « Deux scènes
       doivent porter le même numéro. ».
-    - **À trancher avant le lot 2 :** sur l'histoire d'essai, une scène
-      que rien ne relie (S025, au gué) rend inaccessibles les trente-deux
-      scènes du marais qui en dépendent : trente-trois avertissements pour
-      une seule cause, chacun à accepter.
+    - **Décidé par le porteur le 14 octobre 2026, sur recommandation :**
+      sur l'histoire d'essai, une scène que rien ne relie (S025, au gué)
+      rendait inaccessibles les trente-deux scènes du marais qui en
+      dépendent, trente-trois avertissements pour une seule cause. Une
+      seule carte par scène où aucun chemin ne mène, qui dit le nombre de
+      scènes qui n'ont pas d'autre accès ; un seul « C'est voulu » pour le
+      groupe (F09.2, « Passage inaccessible, un seul point par cause »).
+      Migration du lot 2 acceptée le même jour.
     - **Tests automatiques :** 21 de plus, chacun au nom de son critère —
       19 sur la règle, 2 contre la base locale.
+  - **Lot 2 — destination Livre et « Vérifier les chemins » : construit le
+    14 octobre 2026.** La ligne d'étapes et ses marques, l'aide à
+    l'ouverture, les quatre tâches et leurs points, « Marquer comme fin »,
+    « C'est voulu » et « 2 acceptés · Revoir », « Voir dans les chemins »,
+    « Ouvrir la scène » sur le choix à relier, son panneau ouvert, « Retour
+    au Livre » depuis la scène et le chapitre, le rappel « à savoir »,
+    « J'ai vérifié les chemins ». « Relire » montre ses scènes à finir et
+    ses erreurs graves, l'étape 6 lui donnant l'aperçu ; « Mettre en page »
+    et « Imprimer et partager » sont fermées. Schéma :
+    `20261014110000_verifier_les_chemins.sql`, appliqué à la base locale
+    seulement — un journal daté des changements de chemins plutôt que deux
+    compteurs par scène, pour qu'aucun enregistrement ne verrouille une
+    autre scène
+    ([architecture](architecture.md#réalisation-de-létape-5-14-octobre-2026)).
+    Écrans et écarts :
+    [design](design.md#étape-5-construite-14-octobre-2026). Livre d'essai
+    où figure chaque cas : `npm run livre:essai`.
+    - **Critères fermés :** F11-AC73, AC75, AC79, AC89 ; F09-AC24 ;
+      l'affichage de F09-AC05 à AC08, AC15, AC16 ; F04-AC33 pour les
+      contrôles ; F09-AC10 pour ce qui ne dépend pas du PDF (aucune commande
+      ne passe outre un point bloquant).
+    - **Critères qui attendent :** « Tester la lecture », au lot 3 ; la
+      scène désignée à l'arrivée par « Voir dans les chemins », au lot 5 ;
+      le PDF définitif refusé et la dernière étape quittée, retrouvée à
+      l'ouverture du Livre, à l'étape 6.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      « J'ai vérifié les chemins » attend que toutes les scènes soient
+      prêtes, comme « J'ai relu le livre » (F11-AC88) — la maquette la
+      laissait poser en septembre ; posée, elle est gardée quand une scène
+      est rouverte, avec une ligne qui le dit ; « Relire » s'ouvre, avec sa
+      marque, sur une ligne qui dit qu'elle arrive avec l'aperçu, sans
+      cadenas ; la phrase d'un point nomme le choix ; l'action propre d'une
+      carte en petit bouton, sur la même ligne que les deux liens ; sans
+      départ, « Choisir le départ » mène à « Parties et chapitres » ; une
+      acceptation tient tant que les chemins de ses propres scènes n'ont pas
+      changé, un changement plus haut dans le récit ne la rouvrant pas ; le
+      Livre s'ouvre sur « Vérifier les chemins » tant que l'étape 6 n'est
+      pas construite ; sur téléphone, la ligne ne garde que les pastilles.
+    - **Tests automatiques :** 30 de plus, chacun au nom de son critère —
+      8 sur les règles, 4 contre la base locale, 5 parcours, et la mise à
+      jour de ceux du lot 1.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 

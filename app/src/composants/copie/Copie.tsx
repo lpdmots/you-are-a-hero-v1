@@ -7,7 +7,7 @@ import { createPortal } from "react-dom";
 import { poser } from "@/composants/flottant";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import {
-  ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, texteOuvert, tirerConstruction,
+  ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, renvoisDe, texteOuvert, tirerConstruction,
   type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
 } from "@/domaine/copie";
 import { constructionsUtiles } from "@/domaine/preparation";
@@ -69,7 +69,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide, onVersion,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
-  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau,
+  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -112,6 +112,11 @@ export function Copie({
    */
   panneau?: HTMLElement | null;
   onPanneau?: (ouvert: boolean) => void;
+  /**
+   * Ouverte depuis un point du Livre : le choix, ou la liaison cachée, à désigner en arrivant,
+   * ses réglages ouverts dans le panneau (F09.2, « Récupération »)
+   */
+  ouvrirChoix?: string;
 }) {
   // Ce que la copie a appris depuis que la page lui a donné le livre : numéros relus, scènes créées
   // depuis un choix. Quand la page relit le livre, c'est elle qui fait foi.
@@ -143,7 +148,13 @@ export function Copie({
   const [initial] = useState(() => texteOuvert(recitDe(texte), lieu.sceneId));
   const [liaisons, setLiaisons] = useState<Liaison[]>(() => liaisonsDe(texte));
   const liaisonsTenues = useRef(liaisons);
-  const [fiche, setFiche] = useState<FicheOuverte | null>(null);
+  // Arrivée depuis un point du Livre : le choix, ou la liaison cachée, désigné, ses réglages ouverts
+  const [fiche, setFiche] = useState<FicheOuverte | null>(() => {
+    if (!ouvrirChoix) return null;
+    if (liaisonsDe(texte).some((l) => l.id === ouvrirChoix)) return { sorte: "liaison", liaison: ouvrirChoix };
+    const bloc = texte.find((b) => b.id === ouvrirChoix || renvoisDe(b).some((r) => r.id === ouvrirChoix));
+    return bloc ? { sorte: "reglages", bloc: bloc.id } : null;
+  });
   const [apercu, setApercu] = useState<ApercuDeChoix | null>(null);
   const [formuleVue, setFormuleVue] = useState<{ texte: string; signe: SigneAction }>({ texte: "", signe: "crayon" });
   const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
@@ -728,6 +739,12 @@ export function Copie({
   useEffect(() => {
     onPanneau?.(panneauOuvert);
   }, [onPanneau, panneauOuvert]);
+  // Arrivée depuis un point du Livre : le choix désigné vient sous les yeux, une seule fois
+  useEffect(() => {
+    if (!ouvrirChoix || fiche?.sorte !== "reglages") return;
+    zone.current?.querySelector(`[data-bloc="${fiche.bloc}"]`)?.scrollIntoView({ block: "center" });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   // Une liste ouverte au curseur se referme quand on clique ailleurs
   useEffect(() => {
     if (!liste) return;

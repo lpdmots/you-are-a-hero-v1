@@ -5,6 +5,7 @@ import type { Enseignant } from "./adulte";
 import { projetDe } from "./lectures";
 import { estUuid, planDe, preparationDe } from "./recit";
 import { controler, type Probleme } from "@/domaine/controles";
+import type { Acceptation, Changement } from "@/domaine/livre";
 
 /**
  * Les contrôles du livre (F09.2), tels que l'adulte les lit : la règle est celle du domaine,
@@ -26,4 +27,36 @@ export const controlesDuLivre = cache(async (e: Enseignant, projetId: string): P
   const [plan, preparation, actions] = await Promise.all([planDe(e, projetId), preparationDe(e, projetId), scenesAvecActions(e.supabase, projetId)]);
   const feuille = preparation?.feuille;
   return controler({ plan, aChoix: projet.recit === "choix", scenesAvecActions: actions, feuille: Boolean(feuille?.on && feuille.sections.length) });
+});
+
+/** Ce que la destination Livre lit, en plus des contrôles : les « C'est voulu », les changements de chemins depuis, la déclaration. */
+export type EtatDuLivre = {
+  problemes: Probleme[];
+  acceptations: Acceptation[];
+  changements: Changement[];
+  /** « J'ai vérifié les chemins » est posée */
+  cheminsVerifies: boolean;
+};
+
+export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promise<EtatDuLivre | null> => {
+  const problemes = await controlesDuLivre(e, projetId);
+  if (!problemes) return null;
+  const [acceptees, projet] = await Promise.all([
+    e.supabase.from("avertissements_acceptes").select("cle, empreinte, accepte_le").eq("projet_id", projetId),
+    e.supabase.from("projets").select("chemins_verifies_le").eq("id", projetId).maybeSingle(),
+  ]);
+  const erreur = acceptees.error ?? projet.error;
+  if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
+  const acceptations: Acceptation[] = ((acceptees.data ?? []) as { cle: string; empreinte: string; accepte_le: string }[]).map((a) => ({
+    cle: a.cle, empreinte: a.empreinte, accepteLe: a.accepte_le,
+  }));
+  // Seuls comptent les changements venus après la plus ancienne acceptation
+  let changements: Changement[] = [];
+  if (acceptations.length) {
+    const depuis = acceptations.map((a) => a.accepteLe).sort()[0];
+    const { data, error } = await e.supabase.from("chemins_changes").select("scene_id, sens, le").eq("projet_id", projetId).gt("le", depuis);
+    if (error) throw new Error(`Livre illisible : ${error.message}`);
+    changements = ((data ?? []) as { scene_id: string; sens: "entree" | "sortie"; le: string }[]).map((c) => ({ sceneId: c.scene_id, sens: c.sens, le: c.le }));
+  }
+  return { problemes, acceptations, changements, cheminsVerifies: Boolean(projet.data?.chemins_verifies_le) };
 });

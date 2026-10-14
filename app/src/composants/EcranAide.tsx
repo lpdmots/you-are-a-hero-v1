@@ -9,9 +9,11 @@ export type QuestionAide = { question: string; reponse: ReactNode };
  * quelques questions repliées, « Commencer », « Ne plus afficher ».
  */
 export function EcranAide({
-  titre, questions, dejaVue, masquee, onCommencer, onMasquer,
+  titre, rang, questions, dejaVue, masquee, onCommencer, onMasquer,
 }: {
   titre: string;
+  /** Au-dessus du titre, pour une étape du Livre : « Étape 2 » */
+  rang?: string;
   questions: QuestionAide[];
   dejaVue: boolean;
   masquee: boolean;
@@ -24,6 +26,7 @@ export function EcranAide({
   }, []);
   return (
     <section className="aide-etape" aria-labelledby="aide-t">
+      {rang ? <p className="aide-etape__rang">{rang}</p> : null}
       <h2 id="aide-t" tabIndex={-1} ref={ref}>
         {titre}
       </h2>

@@ -34,13 +34,15 @@ type Ouvert = "reglages" | "image" | "attribuer" | "exclure" | "depart" | null;
  * est le plan, le Suivi est le travail : ni filtres d'état ni sélection ici.
  */
 export function PageChapitre({
-  projet, plan, chapitreId, eleves, vue = "scenes", designee,
+  projet, plan, chapitreId, eleves, vue = "scenes", designee, venuDuLivre,
 }: {
   projet: ProjetDuPlan; plan: Plan; chapitreId: string; eleves: ElevePlan[];
   /** Deux vues du même chapitre, en récit à choix : ses cartes, ou ses chemins (F03-AC18) */
   vue?: "scenes" | "chemins";
   /** La scène où mène le choix qu'on vient de suivre depuis un autre chapitre (F03-AC25) */
   designee?: string;
+  /** Arrivé par « Voir dans les chemins », depuis un point du Livre : on y revient (F09.2) */
+  venuDuLivre?: boolean;
 }) {
   const dire = useMessage();
   const routeur = useRouter();
@@ -164,9 +166,9 @@ export function PageChapitre({
   return (
     <div className="sur-chapitre" style={varsCouleur(chapitre.couleur)}>
       <nav className="fil" aria-label="Fil d’Ariane">
-        <Link href={`/projet/${projet.id}/plan`}>
+        <Link href={venuDuLivre ? `/projet/${projet.id}/livre` : `/projet/${projet.id}/plan`}>
           <Icone nom="fleche-g" />
-          Parties et chapitres
+          {venuDuLivre ? "Retour au Livre" : "Parties et chapitres"}
         </Link>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{chapitre.titre}</span>

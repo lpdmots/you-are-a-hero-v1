@@ -12,7 +12,7 @@ import { encouragementsDeScene } from "@/serveur/encouragements";
 import { relectureDe } from "@/serveur/relecture";
 import { PageScene } from "./PageScene";
 
-type Props = { params: Promise<{ id: string; scene: string }>; searchParams: Promise<{ texte?: string; de?: string; suivi?: string }> };
+type Props = { params: Promise<{ id: string; scene: string }>; searchParams: Promise<{ texte?: string; de?: string; suivi?: string; choix?: string }> };
 
 /** Les filtres du Suivi, tels que l'adresse les porte : rien d'autre qu'une suite de « nom=valeur ». */
 const requeteDuSuivi = (v: unknown): string => (typeof v === "string" && /^[\w=&%.~-]{0,400}$/.test(v) ? v : "");
@@ -84,6 +84,8 @@ export default async function Page(props: Props) {
         venuDuSuivi={demande.de === "suivi"}
         suivi={requeteDuSuivi(demande.suivi)}
         venuDesChemins={demande.de === "chemins"}
+        venuDuLivre={demande.de === "livre"}
+        ouvrirChoix={typeof demande.choix === "string" && /^[\w-]{1,64}$/.test(demande.choix) ? demande.choix : undefined}
       />
     </div>
   );

@@ -7,7 +7,7 @@ import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe } from "@/serveur/recit";
 import { PageChapitre } from "./PageChapitre";
 
-type Props = { params: Promise<{ id: string; chapitre: string }>; searchParams: Promise<{ vue?: string; scene?: string }> };
+type Props = { params: Promise<{ id: string; chapitre: string }>; searchParams: Promise<{ vue?: string; scene?: string; de?: string }> };
 
 async function lire({ params }: Props) {
   const { id, chapitre: chapitreId } = await params;
@@ -46,6 +46,7 @@ export default async function Page(props: Props) {
         eleves={eleves}
         vue={demande.vue === "chemins" && projet.recit === "choix" ? "chemins" : "scenes"}
         designee={typeof demande.scene === "string" ? demande.scene : undefined}
+        venuDuLivre={demande.de === "livre"}
       />
     </div>
   );

@@ -6384,6 +6384,39 @@ contrôles du livre entier ne se lisent qu'ici ; « À regarder », dans la vue
 Chemins, reste l'aide d'un chapitre pendant l'écriture, sans gravité
 ([F03.1](#f031--histoire-parties-chapitres-et-scènes)).
 
+**Décidé par le porteur le 14 octobre 2026 (étape 5 du plan, lot 1) —
+passage inaccessible, un seul point par cause :** sur l'histoire d'essai,
+une scène que rien ne relie rendait inaccessibles les trente-deux scènes qui
+n'étaient atteignables qu'à travers elle : trente-trois avertissements, à
+accepter un à un, pour une seule cause. Un passage inaccessible se signale
+désormais sur la scène où aucun chemin ne mène — ni depuis le départ, ni
+depuis une autre scène inaccessible —, avec le nombre des scènes qui n'ont
+pas d'autre accès qu'à travers elle (« et 32 scènes qui n'ont pas d'autre
+accès »). Un seul « C'est voulu » vaut pour ce groupe ; il tombe si les
+chemins qui mènent à l'une de ses scènes changent, ou si le groupe change.
+Une boucle de scènes inaccessibles où rien ne mène se signale sur sa
+première scène dans l'ordre du plan ; une scène atteignable depuis deux
+groupes est comptée dans le premier. *Alternative écartée :* un
+avertissement et une acceptation par scène.
+
+**Précisions confirmées le 14 octobre 2026 (lot 1) :** la fin hors
+d'atteinte est un groupe de scènes accessibles qui se renvoient l'une à
+l'autre sans chemin vers une fin ni vers une autre scène, signalé une fois,
+sur la première scène qu'on y rencontre ; une scène seule sans suite reste
+une impasse ; une telle boucle dont un chemin reste à relier n'est pas
+signalée ; sans départ, ou un départ hors du livre, seul le départ manquant
+se dit ; une scène vide n'est contrôlée que comme vide ; une fin dont la
+seule suite est une énigme n'est pas une sortie non assurée ; un choix vers
+une scène supprimée ou exclue est, comme le choix sans destination, un
+défaut d'écriture reporté tant que sa scène est à finir.
+
+- **F09-AC24 — Un point par cause :** étant donné S025, où aucun chemin ne
+  mène, et trente-deux scènes du marais atteignables seulement depuis
+  S025, lorsque l'adulte ouvre « Passages à confirmer », alors il lit un
+  seul point, sur S025, « Aucun chemin n'y mène. », qui compte les
+  trente-deux autres ; lorsqu'il répond « C'est voulu », alors aucune des
+  trente-trois n'est plus à traiter.
+
 **Critères d'acceptation :**
 
 - **F09-AC04 — Destination exclue :** étant donné une scène incluse A dont

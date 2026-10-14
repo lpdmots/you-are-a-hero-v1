@@ -62,7 +62,7 @@ const instant = (): number => Date.now();
  * tampon ; la fiche de décision porte l'étape suivante (F07.1, F11.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins,
+  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins, venuDuLivre, ouvrirChoix,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
@@ -82,6 +82,10 @@ export function PageScene({
   suivi?: string;
   /** Ouverte depuis la vue « Chemins » du chapitre : on y revient (F03.1) */
   venuDesChemins?: boolean;
+  /** Ouverte depuis un point de « Vérifier les chemins » : « Retour au Livre » (F11.6) */
+  venuDuLivre?: boolean;
+  /** Le choix à désigner en arrivant, son panneau ouvert (F09.2) */
+  ouvrirChoix?: string;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -95,9 +99,11 @@ export function PageScene({
   const minuteur = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Ce qui attend d'être enregistré : le titre et la consigne partent ensemble, aucun ne chasse l'autre
   const enAttente = useRef<{ titre?: string; consigne?: string }>({});
-  const retour = venuDuSuivi
-    ? `/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`
-    : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
+  const retour = venuDuLivre
+    ? `/projet/${projet.id}/livre`
+    : venuDuSuivi
+      ? `/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`
+      : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => routeur.push(retour) });
 
   // Le texte : la page le reçoit à l'ouverture, puis ne le remplace que par un geste (échange, conflit)
@@ -438,7 +444,7 @@ export function PageScene({
       <nav className="fil" aria-label="Fil d’Ariane">
         <Link href={retour}>
           <Icone nom="fleche-g" />
-          {venuDuSuivi ? "Retour au Suivi" : `Retour à ${chapitre.titre}`}
+          {venuDuLivre ? "Retour au Livre" : venuDuSuivi ? "Retour au Suivi" : `Retour à ${chapitre.titre}`}
         </Link>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{ref}</span>
@@ -631,6 +637,7 @@ export function PageScene({
             lienDeScene={(id) => `/projet/${projet.id}/scene/${id}`}
             panneau={panneau}
             onPanneau={setReglages}
+            ouvrirChoix={ouvrirChoix}
             marques
             libelle={`Texte de la scène ${ref}`}
             tete={onglets}

@@ -930,6 +930,52 @@ les relevait déjà.
   boucle. C'est à elle que s'attachera l'acceptation d'un avertissement, au
   lot 2.
 
+**Passages inaccessibles groupés (décidé le 14 octobre 2026, F09-AC24).**
+Les scènes que le départ n'atteint pas sont rangées en composantes fortement
+connexes ; chaque composante où rien ne mène depuis une autre scène
+inaccessible ouvre un groupe, que complète un parcours en largeur parmi les
+scènes inaccessibles. Un point par groupe, sa clé étant celle de sa première
+scène.
+
+**Ce que la base tient de « Vérifier les chemins » (lot 2,
+`20261014110000_verifier_les_chemins.sql`).**
+
+- **Avertissements acceptés.** Une table, `avertissements_acceptes` : le
+  projet, la clé du point, son empreinte (ses scènes, triées) et le moment.
+  L'adulte la lit et en retire des lignes ; il n'en pose que par
+  `accepter_avertissement`, qui date l'acceptation dans la base. Le serveur
+  recalcule les contrôles avant d'accepter : il ne pose rien sur un point qui
+  n'est plus un avertissement.
+- **Durée d'une acceptation : un journal plutôt que des compteurs.**
+  Annoncé au porteur comme deux compteurs sur chaque scène, le moyen retenu
+  en construisant est un journal, `chemins_changes` : une ligne, datée, quand
+  les chemins qui partent d'une scène changent (« sortie »), et une pour
+  chaque scène qu'un chemin vise désormais ou ne vise plus (« entree »).
+  Faire avancer un compteur aurait demandé, pendant l'enregistrement d'une
+  scène, de verrouiller aussi les scènes visées : deux élèves qui relient
+  leurs scènes l'une à l'autre au même instant pouvaient s'attendre l'un
+  l'autre. Un journal ne fait qu'ajouter des lignes. Une acceptation tient
+  tant qu'aucune ligne de ses scènes, du sens qui compte pour elle, n'est
+  venue après elle (`avertissementsAcceptes`, dans `src/domaine/livre.ts`) :
+  les entrées pour un passage inaccessible, les sorties pour une boucle sans
+  fin ou une sortie non assurée. La fonction qui refait les liens
+  (`prive.relier`) est remplacée dans la nouvelle migration : elle compare
+  les liens de la scène avant et après, et n'écrit rien quand ils sont les
+  mêmes — une coquille ne rouvre rien. Le repère de fin, qui compte parmi les
+  chemins qui partent, est noté par un déclencheur à part. Limite acceptée :
+  un changement plus haut dans le récit, qui ne touche pas les chemins des
+  scènes du point, ne rouvre pas l'acceptation.
+- **Déclaration.** Une colonne, `projets.chemins_verifies_le`, que l'adulte
+  pose et retire ; le serveur ne la pose que quand l'étape ne garde rien.
+- **Lecture.** `etatDuLivre` (`src/serveur/controles.ts`) lit les contrôles,
+  les acceptations, la déclaration, et les seules lignes du journal venues
+  après la plus ancienne acceptation. Les marques, les tâches et ce qui se
+  déclare sont calculés sans base (`etatChemins`, `etatRelire`).
+- **Choix désigné à l'arrivée.** « Ouvrir la scène » d'un choix à relier
+  passe le renvoi dans l'adresse (`?de=livre&choix=…`) ; la copie ouvre ses
+  réglages dès son premier rendu, d'après le texte reçu, et l'amène sous les
+  yeux.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

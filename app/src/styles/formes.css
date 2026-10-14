@@ -1201,3 +1201,10 @@
   width: 17px;
   height: 17px;
 }
+.aide-etape__rang {
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--canard);
+}

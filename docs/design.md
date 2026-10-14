@@ -1879,6 +1879,48 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 5 construite (14 octobre 2026)
+
+Ce que l'étape 5 du [plan](plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)
+a construit, lot par lot, et ses écarts avec la maquette (« Destination Livre
+et lecture d'essai », plus bas). Les règles restent en F09.1, F09.2 et F11.6.
+
+**Lot 2 — destination Livre et « Vérifier les chemins ».** Repris de la
+maquette (captures 123, 137, 138) : la ligne d'étapes, ses pastilles reliées
+par le pointillé, ses marques (triangle ambre, sablier gris, coche, cadenas
+et pastille en pointillé) ; l'aide à l'ouverture, avec son rang « Étape 2 » ;
+la fiche à filet canard, ses quatre tâches toujours à leur place, la tâche en
+cours seule dessous, « Continuer », puis « Étape suivante » avec cadenas ;
+les points en cartes ; « 2 acceptés · Revoir » ; le rappel « à savoir »
+replié au pied ; la ligne au sablier des scènes à finir.
+
+- **Écarts, dits au porteur avant de construire :**
+  - « Relire », que l'étape 6 construira avec l'aperçu, n'est pas fermée
+    d'un cadenas, qui voudrait dire « fermée par la règle » : elle garde sa
+    marque calculée (sablier en septembre) et s'ouvre sur une ligne, « Cette
+    étape arrive avec l'aperçu du livre. », le nombre de scènes à finir avec
+    « Voir dans le Suivi », et ses erreurs graves.
+  - La phrase d'un point nomme le choix : « « Suivre le héron » ne mène
+    nulle part. » ; trois choix d'une scène faisaient trois cartes pareilles.
+  - Les gestes d'une carte tiennent sur une ligne : l'action propre en petit
+    bouton (« C'est voulu », « Marquer comme fin »), puis « Ouvrir la scène »
+    et « Voir dans les chemins » en liens.
+  - Sans aperçu, la fiche est centrée à largeur de lecture (680 points) ;
+    elle passera en colonne à l'étape 6.
+- **Pris en construisant :** un passage inaccessible porte sous sa phrase
+  « Et 32 scènes qui n'ont pas d'autre accès. » (F09-AC24), une boucle
+  sans fin « Elle et 2 autres scènes se renvoient l'une à l'autre. » ; le
+  départ manquant mène à « Parties et chapitres » par « Choisir le
+  départ » ; une étape fermée dit quand elle s'ouvre et ce qui reste dans
+  chaque temps, avec un lien ; une aide rouverte par « Aide » se ferme par
+  « Fermer l'aide » ; sous 980 points, seule l'étape en cours garde son
+  nom, et sur téléphone les pastilles seules, le titre de la fiche disant
+  l'étape. La page d'une scène ou d'un chapitre ouverte depuis un point
+  porte « Retour au Livre ».
+- **Livre d'essai :** « Le phare aux énigmes », projet personnel de quinze
+  scènes où figure chaque cas des contrôles, se charge dans la base locale
+  par `npm run livre:essai` ([app/README.md](../app/README.md)).
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

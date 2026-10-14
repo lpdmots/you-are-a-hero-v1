@@ -38,7 +38,11 @@ export type Point =
    * autre scène. Le point désigne la scène dont l'énigme y mène, sinon la scène elle-même.
    */
   | { sorte: "numero"; sceneId: string; cibleId: string; cible: string; numero: number; total: number; avec: string | null; parEnigme: boolean }
-  | { sorte: "inaccessible"; sceneId: string }
+  /**
+   * Passage inaccessible, un point par cause (F09-AC24) : la scène où aucun chemin ne mène, en
+   * tête, et les scènes qu'on n'atteint qu'à travers elle.
+   */
+  | { sorte: "inaccessible"; sceneId: string; scenes: string[] }
   /**
    * Fin hors d'atteinte : des scènes accessibles qui se renvoient l'une à l'autre sans mener
    * à une fin. Le point désigne la première qu'on y rencontre, et les nomme toutes.
@@ -165,8 +169,11 @@ export function controler({ plan, aChoix, scenesAvecActions, feuille }: LivreACo
     // Sans départ, chaque scène serait inaccessible : seul le départ manquant se dit
     if (departOk) {
       const atteintes = parcourir(departOk.id, suites);
-      for (const s of livre) if (!atteintes.has(s.id)) points.push({ sorte: "inaccessible", sceneId: s.id });
-      for (const groupe of sansFin([...atteintes.keys()], suites)) {
+      const rangDuPlan = new Map(livre.map((s, i) => [s.id, i]));
+      for (const groupe of inaccessibles(livre.map((s) => s.id).filter((id) => !atteintes.has(id)), suites, rangDuPlan)) {
+        points.push({ sorte: "inaccessible", sceneId: groupe[0], scenes: groupe });
+      }
+      for (const groupe of composantes([...atteintes.keys()], suites, atteintes).filter((c) => fermee(c, suites))) {
         // Une scène du groupe garde un chemin à relier : sa sortie est sans doute ce chemin
         if (groupe.some((id) => scene.get(id)!.fin || cheminsDe.get(id)!.some(casse))) continue;
         points.push({ sorte: "sans-fin", sceneId: groupe[0], scenes: groupe });
@@ -228,21 +235,20 @@ function parcourir(depart: string, suites: (id: string) => string[]): Map<string
 }
 
 /**
- * Les groupes d'où l'on ne sort plus : parmi les scènes atteintes, des scènes qui se
- * renvoient l'une à l'autre (une boucle, ou une scène qui mène à elle-même) sans chemin vers
- * une scène hors du groupe. Chaque groupe est rendu dans l'ordre où on le rencontre. Une
- * scène seule sans suite n'en est pas un : c'est une impasse, contrôlée à part.
+ * Les composantes fortement connexes des scènes données (Tarjan, sans récursion), chacune
+ * rangée selon « rang », et rangées entre elles par leur première scène. Seuls comptent les
+ * chemins qui restent parmi ces scènes.
  */
-function sansFin(atteintes: string[], suites: (id: string) => string[]): string[][] {
-  // Composantes fortement connexes (Tarjan), sans récursion
-  const rang = new Map(atteintes.map((id, i) => [id, i]));
+function composantes(ids: string[], suites: (id: string) => string[], rang: ReadonlyMap<string, number>): string[][] {
+  const dedans = new Set(ids);
+  const suivantes = (id: string) => suites(id).filter((s) => dedans.has(s));
   const index = new Map<string, number>();
   const bas = new Map<string, number>();
   const pile: string[] = [];
   const surPile = new Set<string>();
-  const composantes: string[][] = [];
+  const trouvees: string[][] = [];
   let compteur = 0;
-  for (const racine of atteintes) {
+  for (const racine of ids) {
     if (index.has(racine)) continue;
     const travail: { id: string; suivantes: string[]; k: number }[] = [];
     const entrer = (id: string) => {
@@ -251,7 +257,7 @@ function sansFin(atteintes: string[], suites: (id: string) => string[]): string[
       compteur += 1;
       pile.push(id);
       surPile.add(id);
-      travail.push({ id, suivantes: suites(id), k: 0 });
+      travail.push({ id, suivantes: suivantes(id), k: 0 });
     };
     entrer(racine);
     while (travail.length) {
@@ -275,19 +281,56 @@ function sansFin(atteintes: string[], suites: (id: string) => string[]): string[
           surPile.delete(id);
           composante.push(id);
         } while (id !== haut.id);
-        composantes.push(composante);
+        trouvees.push(composante);
       }
     }
   }
-  return composantes
-    .filter((c) => {
-      const dedans = new Set(c);
-      const sortent = c.some((id) => suites(id).some((s) => !dedans.has(s)));
-      const boucle = c.length > 1 || suites(c[0]).includes(c[0]);
-      return boucle && !sortent;
-    })
-    .map((c) => c.sort((a, b) => rang.get(a)! - rang.get(b)!))
-    .sort((a, b) => rang.get(a[0])! - rang.get(b[0])!);
+  return trouvees.map((c) => c.sort((a, b) => rang.get(a)! - rang.get(b)!)).sort((a, b) => rang.get(a[0])! - rang.get(b[0])!);
+}
+
+/**
+ * Un groupe d'où l'on ne sort plus : une boucle, ou une scène qui mène à elle-même, sans
+ * chemin vers une scène hors du groupe. Une scène seule sans suite n'en est pas un : c'est
+ * une impasse, contrôlée à part.
+ */
+function fermee(c: string[], suites: (id: string) => string[]): boolean {
+  const dedans = new Set(c);
+  const sortent = c.some((id) => suites(id).some((s) => !dedans.has(s)));
+  return !sortent && (c.length > 1 || suites(c[0]).includes(c[0]));
+}
+
+/**
+ * Les passages inaccessibles, groupés par cause (F09-AC24) : chaque groupe part d'une scène
+ * où aucun chemin ne mène, ni du départ ni d'une autre scène inaccessible — d'une boucle où
+ * rien ne mène, sa première scène du plan —, et compte les scènes qu'on n'atteint qu'à
+ * travers elle. Une scène atteinte depuis deux groupes va au premier.
+ */
+function inaccessibles(ids: string[], suites: (id: string) => string[], rangDuPlan: ReadonlyMap<string, number>): string[][] {
+  const dedans = new Set(ids);
+  const comps = composantes(ids, suites, rangDuPlan);
+  const compDe = new Map(comps.flatMap((c, i) => c.map((id) => [id, i] as const)));
+  const atteintes = new Set<number>();
+  for (const id of ids) for (const s of suites(id)) if (dedans.has(s) && compDe.get(s) !== compDe.get(id)) atteintes.add(compDe.get(s)!);
+  const pris = new Set<string>();
+  const groupes: string[][] = [];
+  comps.forEach((c, i) => {
+    if (atteintes.has(i)) return;
+    const groupe: string[] = [];
+    const file = [...c];
+    for (const id of c) pris.add(id);
+    while (file.length) {
+      const id = file.shift()!;
+      groupe.push(id);
+      for (const s of suites(id)) {
+        if (!dedans.has(s) || pris.has(s)) continue;
+        pris.add(s);
+        file.push(s);
+      }
+    }
+    // La scène où rien ne mène en tête, les autres dans l'ordre du plan
+    groupes.push([c[0], ...groupe.filter((id) => id !== c[0]).sort((a, b) => rangDuPlan.get(a)! - rangDuPlan.get(b)!)]);
+  });
+  return groupes;
 }
 
 /**
@@ -309,8 +352,9 @@ export const pdfDefinitifRefuse = (problemes: Probleme[]): boolean => problemes.
  * Ce qu'un point dit (F11.6, « Messages courts ») : une phrase simple dans la liste, le
  * détail quand l'adulte traite la scène.
  */
-export function phraseDe(p: Point): { quoi: string; detail: string } {
-  const lequel = (c: Chemin) => (c.cache ? "Le lien caché" : `« ${c.libelle} »`);
+export function phraseDe(p: Point): { quoi: string; detail: string; suite?: string } {
+  // Le choix se nomme par son libellé : trois choix d'une même scène ne font pas trois cartes pareilles
+  const lequel = (c: Chemin) => (c.cache ? "Le lien caché" : c.libelle.trim() ? `« ${c.libelle.trim()} »` : "Un choix");
   switch (p.sorte) {
     case "a-finir":
       return { quoi: "À finir.", detail: "La scène n’est pas encore déclarée prête pour le livre." };
@@ -325,23 +369,32 @@ export function phraseDe(p: Point): { quoi: string; detail: string } {
     case "impasse":
       return { quoi: "Cette scène est une impasse.", detail: "Elle n’a ni choix, ni énigme, ni repère de fin : le lecteur ne peut ni continuer ni finir." };
     case "sans-destination":
-      return { quoi: p.cache ? "Un lien caché ne mène nulle part." : "Un choix ne mène nulle part.", detail: `${lequel(p)} n’a pas encore de destination.` };
+      return { quoi: `${lequel(p)} ne mène nulle part.`, detail: `${lequel(p)} n’a pas encore de destination.` };
     case "supprimee":
-      return { quoi: "Un choix mène à une scène supprimée.", detail: `${lequel(p)} mène à une scène qui est dans la corbeille.` };
+      return { quoi: `${lequel(p)} mène à une scène supprimée.`, detail: `${lequel(p)} mène à une scène qui est dans la corbeille.` };
     case "exclue":
-      return { quoi: "Un choix mène hors du livre.", detail: `${lequel(p)} mène à ${p.cible}, qui est hors du livre.` };
+      return { quoi: `${lequel(p)} mène hors du livre.`, detail: `${lequel(p)} mène à ${p.cible}, qui est hors du livre.` };
     case "numero":
       if (p.avec) return { quoi: "Deux scènes doivent porter le même numéro.", detail: `${p.cible} et ${p.avec} doivent toutes deux porter le n° ${p.numero}.` };
       return p.parEnigme
         ? { quoi: "Une énigme mène à un numéro qui n’existe pas.", detail: `L’énigme mène au n° ${p.numero}, mais le livre n’en compte que ${p.total}.` }
         : { quoi: "Un numéro fixé n’existe plus.", detail: `${p.cible} doit porter le n° ${p.numero}, mais le livre n’en compte que ${p.total}.` };
-    case "inaccessible":
-      return { quoi: "Aucun chemin n’y mène.", detail: "Aucun choix n’y mène depuis le départ : passage caché voulu, ou choix oublié ?" };
-    case "sans-fin":
+    case "inaccessible": {
+      const n = p.scenes.length - 1;
+      return {
+        quoi: "Aucun chemin n’y mène.",
+        detail: "Aucun choix n’y mène depuis le départ : passage caché voulu, ou choix oublié ?",
+        ...(n ? { suite: `Et ${n} scène${pluriel(n)} qui n’${n > 1 ? "ont" : "a"} pas d’autre accès.` } : {}),
+      };
+    }
+    case "sans-fin": {
+      const n = p.scenes.length - 1;
       return {
         quoi: "Aucune fin ne s’atteint d’ici.",
-        detail: `${p.scenes.length > 1 ? `Ces ${p.scenes.length} scènes se renvoient l’une à l’autre` : "Cette scène ne mène qu’à elle-même"} : le lecteur n’en sort plus.`,
+        detail: `${n ? `Ces ${n + 1} scènes se renvoient l’une à l’autre` : "Cette scène ne mène qu’à elle-même"} : le lecteur n’en sort plus.`,
+        ...(n ? { suite: `Elle et ${n} autre${pluriel(n)} scène${pluriel(n)} se renvoient l’une à l’autre.` } : {}),
       };
+    }
     case "sortie":
       return { quoi: "Sa seule suite est une énigme.", detail: "Le lecteur qui ne résout pas l’énigme reste bloqué." };
     case "jeu-sans-feuille": {

@@ -3,9 +3,12 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
+import { aTraiter } from "@/domaine/controles";
+import { avertissementsAcceptes, estEtapeLivre, etatChemins, etatRelire, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
 import { filtresDepuis } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { textesGardesDuProjet } from "@/serveur/copie";
+import { etatDuLivre } from "@/serveur/controles";
 import { encouragementsDuProjet } from "@/serveur/encouragements";
 import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
@@ -13,6 +16,8 @@ import { EnteteProjet } from "../_commun/EnteteProjet";
 import { Plan } from "../_plan/Plan";
 import { Suivi } from "../_suivi/Suivi";
 import { Carnet } from "../_preparation/Carnet";
+import { Livre } from "../_livre/Livre";
+import { afficherChemins, afficherPoint } from "../_livre/points";
 import styles from "./projet.module.css";
 
 type Props = { params: Promise<{ id: string; onglet: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -24,9 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // Ce que cet onglet deviendra, et à quelle étape du plan de réalisation.
-const A_VENIR: Partial<Record<Onglet, string>> = {
-  livre: "La lecture d’essai et le livre se construisent aux étapes 5 et 6 du plan.",
-};
+const A_VENIR: Partial<Record<Onglet, string>> = {};
 
 export default async function PageProjet({ params, searchParams }: Props) {
   const { id, onglet } = await params;
@@ -80,6 +83,27 @@ export default async function PageProjet({ params, searchParams }: Props) {
         aideVue={magasin.get("aide-suivi")?.value === "vue"}
         direct={demande.direct === "1"}
         revenu={demande.revenu === "1"}
+      />
+    );
+  } else if (onglet === "livre") {
+    const [livre, plan, magasin, demande] = await Promise.all([etatDuLivre(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams]);
+    if (!livre) notFound();
+    const acceptes = avertissementsAcceptes(livre.problemes, livre.acceptations, livre.changements);
+    const chemins = aChoix ? etatChemins(livre.problemes, acceptes, livre.cheminsVerifies) : null;
+    const relire = etatRelire(livre.problemes);
+    // « Mettre en page » et « Imprimer et partager » se construisent à l'étape 6 du plan ; leurs règles les fermeraient de toute façon
+    const marques: Record<EtapeLivre, MarqueEtape> = { relire: relire.marque, chemins: chemins?.marque ?? null, page: "fermee", sortie: "fermee" };
+    // À l'étape 5 du plan, le Livre s'ouvre sur « Vérifier les chemins », seule étape construite
+    const etape: EtapeLivre = estEtapeLivre(demande.etape) && (aChoix || demande.etape !== "chemins") ? demande.etape : aChoix ? "chemins" : "relire";
+    contenu = (
+      <Livre
+        projet={{ id: projet.id, aChoix, deClasse }}
+        etape={etape}
+        marques={marques}
+        chemins={chemins ? afficherChemins(chemins, plan, projet.id) : null}
+        relire={{ finir: relire.finir, graves: aTraiter(livre.problemes).filter((p) => p.etape === "relire").map((p) => afficherPoint(p, plan, projet.id)) }}
+        aideMasquee={enseignant.aidesMasquees.includes("livre-chemins")}
+        aideVue={magasin.get("aide-livre")?.value === "vue"}
       />
     );
   } else {
