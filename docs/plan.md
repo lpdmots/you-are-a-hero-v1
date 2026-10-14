@@ -1302,6 +1302,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** le repli de la mini-carte et la scène
       désignée s'ajoutent aux parcours existants ; un parcours de plus, de
       bout en bout. Captures : `npm run captures -- etape5` (521 à 523).
+  - **Repris sur décision du porteur, le 14 octobre 2026, après avoir vu la
+    lecture :** la feuille d'aventure est fermée au départ, ouverte par
+    « Ma feuille » (avec le résumé de ses compteurs) ou par une action de
+    jeu, dans la marge droite sur grand écran, sans déplacer le texte ;
+    pour l'adulte, l'élève et le futur lecteur en ligne
+    ([design](design.md#étape-5-construite-14-octobre-2026)).
 - **Construite le 14 octobre 2026,** en local, ses cinq lots commités, deux
   migrations (`verifier_les_chemins`, `lecture_du_poste`) dans la base
   locale seulement ; rien n'est poussé. Reste l'essai du porteur, qui la

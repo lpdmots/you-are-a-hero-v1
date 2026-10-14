@@ -8,7 +8,7 @@ import {
   commencer, feuilleDeDepart, issueDe, revenir, SORTIE, suivantDansLOrdre, suivre, type EtatFeuille, type LivreLu, type Parcours, type PassageLu,
 } from "@/domaine/lecture";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
-import { Feuille, resumeFeuille } from "./Feuille";
+import { Feuille, resumeCompteurs, resumeFeuille } from "./Feuille";
 import { Passage } from "./Passage";
 
 /**
@@ -59,7 +59,25 @@ export default function Lecture({
   const neuve = (): Garde => ({ debut: depart, parcours: commencer(depart), deja: [], feuille: feuilleDeDepart(livre.feuille), des: null });
   const [g, setG] = useState<Garde>(() => (reprendre && lireGarde(cle)) || neuve());
   const [parcoursOuvert, setParcoursOuvert] = useState(false);
+  // La feuille est fermée au départ : elle sert à quelques passages seulement (décidé par le porteur le 14 octobre 2026)
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
+  const aside = useRef<HTMLElement>(null);
+  const ouvrirFeuille = (versLeDe = false) => {
+    setFeuilleOuverte(true);
+    requestAnimationFrame(() => {
+      const cible = versLeDe ? aside.current?.querySelector<HTMLElement>("#feuille-de") : null;
+      if (cible) cible.scrollIntoView({ block: "nearest" });
+      else aside.current?.scrollTo({ top: 0 });
+    });
+  };
+  useEffect(() => {
+    if (!feuilleOuverte) return;
+    const fermer = (ev: KeyboardEvent) => {
+      if (ev.key === "Escape") setFeuilleOuverte(false);
+    };
+    window.addEventListener("keydown", fermer);
+    return () => window.removeEventListener("keydown", fermer);
+  }, [feuilleOuverte]);
   const haut = useRef<HTMLDivElement>(null);
   const deja = new Set(g.deja);
 
@@ -149,6 +167,7 @@ export default function Lecture({
 
       <div className="lecture__corps">
         <div className="lecture__colonne">
+          <div className="lecture__outils">
           <div className="lecture__parcours">
             <button type="button" className="lecture__parcours-b" aria-expanded={parcoursOuvert} onClick={() => setParcoursOuvert((o) => !o)}>
               <Icone nom="chemins" />
@@ -175,6 +194,20 @@ export default function Lecture({
               </ol>
             ) : null}
           </div>
+          {livre.feuille ? (
+            <button
+              type="button"
+              className="lecture__parcours-b lecture__feuille-b"
+              aria-expanded={feuilleOuverte}
+              aria-controls="feuille-aventure"
+              onClick={() => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille())}
+            >
+              <Icone nom="feuille" />
+              Ma feuille
+              {resumeCompteurs(livre.feuille, g.feuille) ? <span className="lecture__feuille-resume">· {resumeCompteurs(livre.feuille, g.feuille)}</span> : null}
+            </button>
+          ) : null}
+          </div>
 
           <div ref={haut} tabIndex={-1} className="lecture__ancre" aria-label={passage ? nomDuPassage(passage, pourEleve) : "Suite à découvrir"} />
           {passage && bandeau ? bandeau(passage) : null}
@@ -193,6 +226,7 @@ export default function Lecture({
                   pourEleve={pourEleve}
                   onSuivre={(r) => versCible(r.cible as { sorte: string; id?: string }, r.renvoi)}
                   onEnigme={(e) => versCible(e.cible as { sorte: string; id?: string }, e.id)}
+                  onAction={livre.feuille ? (signe) => ouvrirFeuille(signe === "de" && livre.feuille!.des > 0) : undefined}
                 />
                 {issue === "rien" ? (
                   <p className="lu-issue">
@@ -239,7 +273,7 @@ export default function Lecture({
         </div>
 
         {feuille ? (
-          <aside className={`lecture__feuille${feuilleOuverte ? " est-ouverte" : ""}`} aria-label="Feuille d’aventure">
+          <aside ref={aside} id="feuille-aventure" className={`lecture__feuille${feuilleOuverte ? " est-ouverte" : ""}`} aria-label="Feuille d’aventure">
             <header>
               <h2 className="recit">Feuille d’aventure</h2>
               <button type="button" className="lien lecture__ranger" onClick={() => setFeuilleOuverte(false)}>

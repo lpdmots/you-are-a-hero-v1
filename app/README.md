@@ -284,8 +284,9 @@ l'énigme de S004 qui refuse un autre numéro que le sien (« Passer l'énigme �
 le bon), « Cette scène n'a ni choix ni fin. » sur S010, « déjà lu » sur un choix
 suivi, « Recommencer » et son « Annuler », « Ouvrir la scène » puis « Retour à la
 lecture d'essai », qui retrouve le parcours. Dans « Les passeurs de brume », qui a
-une feuille d'aventure, le compteur de volonté s'arrête à zéro et le dé se lance ;
-en dessous de 1 100 points, « Ma feuille » s'ouvre en bas de l'écran.
+une feuille d'aventure, « Ma feuille » l'ouvre, une action de jeu aussi ; le
+compteur de volonté s'arrête à zéro et le dé se lance ; en dessous de 1 100 points,
+« Ma feuille » est dans une barre en bas de l'écran.
 
 **3. Côté élève, dans « Les passeurs de brume ».** Un autre navigateur, sur
 http://localhost:4840/classe ; « Mes classes » > « CM1-CM2 d'essai » donne

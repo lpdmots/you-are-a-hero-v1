@@ -33,6 +33,13 @@ export function resumeFeuille(feuille: FeuilleDuLivre, etat: EtatFeuille): strin
     .join(" · ");
 }
 
+/** « Volonté 4 » : les compteurs seuls, sur le bouton qui ouvre la feuille ; rien sans compteur. */
+export function resumeCompteurs(feuille: FeuilleDuLivre, etat: EtatFeuille): string {
+  return feuille.sections
+    .flatMap((s) => (s.type === "compteurs" ? s.compteurs.map((c) => `${c.nom || "Compteur"} ${etat.compteurs[`${s.id}/${c.id}`] ?? c.depart}`) : []))
+    .join(" · ");
+}
+
 export function Feuille({
   feuille, etat, onChange, des, onDes, regles,
 }: {
@@ -111,7 +118,7 @@ export function Feuille({
         </section>
       ))}
       {feuille.des ? (
-        <section className="fa-section" aria-label="Dé">
+        <section className="fa-section" id="feuille-de" aria-label="Dé">
           <h3 className="fa-section__titre">{feuille.des === 2 ? "Dés" : "Dé"}</h3>
           <div className="fa-de">
             {(des ?? Array.from({ length: feuille.des }, () => null)).map((v, i) => (

@@ -129,6 +129,10 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     const l = await phare(page);
     await aller(page, `/projet/${l.projet}/lecture?depart=${l.s.depart}&de=livre`);
     const feuille = page.getByRole("complementary", { name: "Feuille d’aventure" });
+    // Fermée au départ, la feuille s'ouvre par « Ma feuille », qui résume ses compteurs (décidé le 14 octobre 2026)
+    await expect(feuille).toBeHidden();
+    await expect(page.getByRole("button", { name: /Ma feuille · Volonté 1/ })).toBeVisible();
+    await page.getByRole("button", { name: /Ma feuille/ }).click();
     await feuille.getByRole("button", { name: "Retirer un point : Volonté" }).click();
     await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("0");
     await expect(feuille.getByRole("button", { name: "Retirer un point : Volonté" })).toBeDisabled();
@@ -136,10 +140,28 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     await expect(feuille.locator(".fa-de__resultat")).toHaveText(/^Tu as fait [1-6]$/);
     await choix(page, "Monter au phare").click();
     await expect(page_(page)).toContainText("Deux chemins s’ouvrent.");
-    // La feuille tient d'un passage à l'autre ; « Recommencer » la remet à ses valeurs de départ
+    // La feuille tient d'un passage à l'autre, refermée ou non ; « Recommencer » la remet à ses valeurs de départ
+    await page.keyboard.press("Escape");
+    await expect(feuille).toBeHidden();
+    await expect(page.getByRole("button", { name: /Ma feuille · Volonté 0/ })).toBeVisible();
+    await page.getByRole("button", { name: /Ma feuille/ }).click();
     await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("0");
     await page.getByRole("button", { name: "Recommencer" }).first().click();
     await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("1");
+  });
+
+  test("F04.2 — une action de jeu ouvre la feuille, sans rien y écrire ; « Ranger » la referme ; le texte reste centré", async ({ page }) => {
+    const l = await phare(page);
+    await aller(page, `/projet/${l.projet}/lecture?depart=${l.s.depart}&de=livre`);
+    const feuille = page.getByRole("complementary", { name: "Feuille d’aventure" });
+    const texteAvant = (await page_(page).boundingBox())!;
+    await page_(page).getByRole("button", { name: /Ajoute la corde à ton inventaire/ }).click();
+    await expect(feuille).toBeVisible();
+    await expect(feuille.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("");
+    // La feuille s'ouvre par-dessus, dans la marge : le texte n'a pas bougé
+    expect((await page_(page).boundingBox())!.x).toBe(texteAvant.x);
+    await feuille.getByRole("button", { name: "Ranger" }).click();
+    await expect(feuille).toBeHidden();
   });
 
   test("F09.1 — « Lire à l'essai d'ici », depuis le menu de la scène ; « Ouvrir la scène » puis « Retour à la lecture d'essai » retrouve le parcours ; « Quitter » ramène à la scène", async ({ page }) => {

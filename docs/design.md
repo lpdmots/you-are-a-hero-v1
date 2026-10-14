@@ -1997,6 +1997,21 @@ numéro vide, dans la phrase, est hachurée d'ambre et non plus de brique :
 pendant l'écriture, un choix qui attend sa destination n'est pas une faute
 (F03.1, 14 octobre 2026). Captures 521 à 523.
 
+**Feuille d'aventure fermée au départ (décidé par le porteur le 14 octobre
+2026, après avoir vu la lecture).** La feuille servant à quelques passages
+seulement, la colonne ouverte à côté du texte le décentrait. Elle est
+fermée au départ et s'ouvre par un bouton « Ma feuille », à côté de
+« Parcours », qui résume ses compteurs (« Ma feuille · Volonté 4 ») ; sur
+grand écran, elle s'ouvre dans la marge droite, par-dessus, sous l'en-tête
+de la lecture, sans déplacer le texte ; « Ranger » ou Échap la referment, et
+ce qu'on y a noté reste jusqu'à « Recommencer ». Une action de jeu ouvre
+aussi la feuille — sur le dé quand elle porte le dé —, une bulle disant
+« Ouvrir ma feuille d'aventure » ; elle ne fait rien d'autre, le lecteur
+note lui-même (F04-AC18). Sur téléphone, rien ne change : « Ma feuille »
+dans la barre basse. Cela remplace « la feuille à côté du texte » de la
+lecture d'essai et, pour le lecteur en ligne, la feuille « ouverte par
+défaut et rangeable » : la lecture est commune. Captures 531 à 533.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

@@ -1,6 +1,6 @@
 import { test, type Page } from "@playwright/test";
 import { poserLeMarais, type Requete } from "../../scripts/marais-des-feux-follets";
-import { adultePret, aller, choixAuto, classeQuiEcrit, posteDe, recit, semerAttribution, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
+import { action, adultePret, aller, choixAuto, classeQuiEcrit, posteDe, recit, semerAttribution, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
 
 /**
  * Captures des écrans de l'étape 5 : npm run captures -- etape5
@@ -111,4 +111,29 @@ test("lot 5 : mini-carte repliable, « Sans destination » en ambre", async ({ p
   await capturer(page, "chemins-mini-carte-repliee", false);
   await aller(page, `/projet/${projet}/scene/${sentier}`);
   await capturer(page, "scene-sans-destination-ambre", false);
+});
+
+test("feuille d'aventure fermée au départ, ouverte par « Ma feuille » ou une action", async ({ page }) => {
+  test.setTimeout(120_000);
+  n = 530;
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Les passeurs de brume");
+  const { chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["La souche creuse", "La clairière"] }]);
+  const [souche, clairiere] = chapitres[0].scenes;
+  await semerBlocs(base, souche, [
+    recit("Lou se glissa dans la souche creuse. Il faisait noir comme dans un four. Il sortit la lanterne de secours de son sac et frotta l’allumette."),
+    recit("Au fond, sous les feuilles, brillait une petite clé d’argent."),
+    action("Ajoute la clé d’argent à ton inventaire."),
+    choixAuto("Sortir de la souche", clairiere),
+  ]);
+  const feuille = { on: true, des: 1, sections: [{ id: "heros", type: "compteurs", titre: "Ton héros", compteurs: [{ id: "vol", nom: "Volonté", depart: 5 }] }, { id: "inv", type: "liste", titre: "Inventaire", lignes: 6 }, { id: "dec", type: "notes", titre: "Ce que tu découvres" }] };
+  await base.from("preparations").update({ feuille, rubrique_jeu: true }).eq("projet_id", projet);
+  await page.setViewportSize({ width: 1366, height: 860 });
+  await aller(page, `/projet/${projet}/lecture?depart=${souche}&de=livre`);
+  await capturer(page, "lecture-feuille-fermee", false);
+  await page.locator(".lu-page").getByRole("button", { name: /Ajoute la clé d’argent/ }).click();
+  await capturer(page, "lecture-feuille-ouverte-par-l-action", false);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.keyboard.press("Escape");
+  await capturer(page, "lecture-feuille-390", false);
 });
