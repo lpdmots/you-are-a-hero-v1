@@ -1083,7 +1083,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   PDF, deux propositions non arbitrées), puis la construction, après sa
   validation. Entretien fait et validé le 14 octobre 2026 ; la
   construction, autorisée par cette validation, se fait en local dans une
-  nouvelle conversation et n'est pas commencée.
+  nouvelle conversation, commencée le 14 octobre 2026 (plus bas).
 - **Découpage retenu par le porteur le 14 octobre 2026 :** cinq lots, un
   commit local par lot.
   Le schéma change deux fois ; le contenu de chaque migration est dit au
@@ -1119,6 +1119,50 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      destination » en ambre dans l'éditeur, scène désignée à l'arrivée par
      « Voir dans les chemins » ; un parcours joué de bout en bout et le mode
      d'emploi de l'essai du porteur dans `app/README.md`.
+- **Construction, commencée le 14 octobre 2026,** en local, un commit par
+  lot ; rien n'est poussé ni appliqué à la vraie base.
+  - **Lot 1 — contrôles du livre : construit le 14 octobre 2026.** Une
+    seule règle, `controler` (`app/src/domaine/controles.ts`), sur le livre
+    entier : chaque point avec sa gravité, son étape, sa tâche, sa clé et
+    sa phrase courte ; le serveur lui donne le plan, la feuille et les
+    scènes qui portent une action de jeu (`app/src/serveur/controles.ts`).
+    Ni écran ni schéma. Choix techniques :
+    [architecture](architecture.md#réalisation-de-létape-5-14-octobre-2026).
+    Essayée sur « Les passeurs de brume » chargé en local, marais compris.
+    - **Critères fermés pour la règle,** leur affichage attendant le
+      lot 2 : F09-AC05 à AC08, AC15 pour l'avertissement, AC16 pour ce qui
+      est présenté, la moitié de AC04 (le point désigne le choix, rien
+      n'est redirigé) ; F05-AC05 ; F05-AC08 pour le point bloquant ;
+      F04-AC33 pour le rappel, qui ne paraît que dans les contrôles.
+    - **Critères qui attendent :** l'affichage de ces points, au lot 2 ;
+      le PDF définitif refusé, le PDF de travail et sa page des problèmes
+      (F09-AC04, AC09, AC10, F05-AC08), le rappel à la demande du PDF
+      définitif (F04-AC33), à l'étape 6 ; le rappel au partage (F09-AC15),
+      à l'étape 7. Les contrôles d'images et de marges (F10, F11.2)
+      s'ajouteront à la même règle à l'étape 6.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      la fin hors d'atteinte est un groupe de scènes accessibles qui se
+      renvoient l'une à l'autre sans chemin vers une fin ni vers une autre
+      scène — une boucle fermée, ou une scène qui ne mène qu'à elle-même —,
+      signalé une fois, sur la première scène qu'on y rencontre ; une scène
+      seule sans suite reste une impasse ; une telle boucle dont un chemin
+      reste à relier n'est pas signalée, sa sortie étant sans doute ce
+      chemin ; sans départ, ou un départ hors du livre, seul le départ
+      manquant se dit, chaque scène étant sinon inaccessible ; une scène
+      vide n'est contrôlée que comme vide, sans être dite impasse ; une fin
+      dont la seule suite est une énigme n'est pas une sortie non assurée ;
+      un choix vers une scène supprimée ou exclue est, comme le choix sans
+      destination, un défaut d'écriture reporté tant que sa scène est à
+      finir ; la sortie non assurée et le numéro impossible ne le sont pas ;
+      un numéro fixé sans énigme qui y mène se dit « Un numéro fixé
+      n'existe plus. », et deux scènes fixées au même numéro « Deux scènes
+      doivent porter le même numéro. ».
+    - **À trancher avant le lot 2 :** sur l'histoire d'essai, une scène
+      que rien ne relie (S025, au gué) rend inaccessibles les trente-deux
+      scènes du marais qui en dépendent : trente-trois avertissements pour
+      une seule cause, chacun à accepter.
+    - **Tests automatiques :** 21 de plus, chacun au nom de son critère —
+      19 sur la règle, 2 contre la base locale.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 

@@ -891,6 +891,45 @@ d'après le texte que la page vient d'enregistrer et les liens que la base en
 a tirés : il suit ce qu'on vient de taper, ce que la maquette ne faisait
 pas.
 
+## Réalisation de l'étape 5 (14 octobre 2026)
+
+Choix techniques pris en construisant l'étape 5 du [plan](plan.md) : lire
+le récit à l'essai et contrôler les chemins. Les règles restent en F09,
+F11.6, F04.2, F05.1 et F03.1 des [spécifications](specifications.md).
+Cette section s'écrit lot par lot ; l'avancement est dans le plan.
+
+**Une seule règle pour les contrôles (lot 1).** `controler`
+(`src/domaine/controles.ts`), sans base : elle reçoit le plan et ses liens,
+le type de récit, la présence d'une feuille d'aventure et les scènes dont le
+texte porte une action de jeu, et rend chaque point avec sa gravité
+(bloquant, avertissement, « à savoir »), l'étape et la tâche de F11.6 où il
+se traite, une clé stable et, pour un défaut d'écriture d'une scène à finir,
+la marque « reporté ». La destination Livre l'affichera ; le PDF définitif
+de l'étape 6 la reprendra telle quelle, avec les contrôles d'images et de
+marges ajoutés au même endroit (`pdfDefinitifRefuse`). Les numéros
+impossibles viennent du calcul des numéros de l'étape 3 (`numeroter`), qui
+les relevait déjà.
+
+- **Chemins et accessibilité.** Seules comptent les scènes du livre : dans
+  le plan, ni exclues ni dans un chapitre exclu. Un chemin vers une scène
+  hors du livre n'en est pas un pour l'accessibilité ; il est signalé à part.
+  Les scènes accessibles se trouvent par un parcours en largeur depuis le
+  départ, qui donne aussi l'ordre de rencontre.
+- **Fin hors d'atteinte.** Les composantes fortement connexes des scènes
+  accessibles (algorithme de Tarjan, écrit sans récursion pour un long
+  livre) : une composante d'où aucun chemin ne sort, qui forme une boucle et
+  ne contient aucune fin, est un groupe dont le lecteur ne sort plus. Une
+  scène seule sans suite n'en est pas une : c'est une impasse.
+- **Actions de jeu.** Le serveur demande à la base les seules identités des
+  scènes dont le texte contient un bloc `action` (`texte @> '[{"type":
+  "action"}]'`), sans lire les textes ; supabase-js demande que ce filtre
+  lui soit donné en JSON écrit, un tableau étant pris pour un tableau de
+  Postgres.
+- **Clés.** Un point se désigne par sa sorte et ce qu'il vise : la scène, le
+  renvoi d'un choix, la scène numérotée, ou l'ensemble trié des scènes d'une
+  boucle. C'est à elle que s'attachera l'acceptation d'un avertissement, au
+  lot 2.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

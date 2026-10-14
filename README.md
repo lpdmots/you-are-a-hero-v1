@@ -3,7 +3,7 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
-## État de reprise au 13 octobre 2026
+## État de reprise au 14 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
 ensemble, chacun avec ses points différés. La
@@ -76,7 +76,7 @@ temps — un entretien court, puis, après sa validation, la construction —,
 à mener dans une nouvelle conversation. Son entretien est fait le
 14 octobre 2026, ses réponses reportées en F09.1, F09.2, F03.1 et F11.6,
 validé dans son ensemble le même jour ; sa construction, en cinq lots,
-se fait en local dans une nouvelle conversation et n'est pas commencée ([plan](docs/plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)). Aucun achat n'est lancé. La V1
+se fait en local dans une nouvelle conversation ; le lot 1 (contrôles du livre) est construit le 14 octobre 2026 ([plan](docs/plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)). Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur
