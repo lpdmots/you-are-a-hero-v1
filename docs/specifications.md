@@ -1118,7 +1118,8 @@ le porteur décide :
   trente-deux scènes et quarante-neuf choix. Précisions prises en
   construisant. Le porteur confirme le 13 octobre 2026 les deux lignes d'un
   libellé, les scènes que rien ne relie rangées sous le schéma et ce que
-  voit un élève ; les autres restent **à confirmer** :
+  voit un élève, puis les autres en bloc le 14 octobre 2026, à l'entretien
+  de l'étape 5, avec les reprises dites à la fin de cette liste :
   - **Deux lignes pour un libellé.** Un libellé long tient sur deux lignes
     avant d'être coupé : coupé à une seule ligne, un choix sur deux ne se
     lisait plus.
@@ -1180,6 +1181,29 @@ le porteur décide :
   - **Sur téléphone.** En dessous de 720 points de large, la liste des
     scènes, dans l'ordre où on les rencontre, avec la même ligne « À
     regarder ».
+  - **Reprises décidées le 14 octobre 2026 (entretien de l'étape 5).**
+    - *Mini-carte repliable :* elle s'affiche toujours d'elle-même au-delà
+      de deux écrans, mais se replie d'un clic et reste repliée ensuite ;
+      elle recouvrait un coin du schéma.
+    - *« Tout voir » inchangé :* sur un long chapitre, il montre la forme
+      du récit et ce qui est à regarder, les titres passant par la bulle.
+    - *Cartes non déplaçables :* l'idée du porteur de déplacer les cartes
+      le temps de la visite n'est pas retenue pour l'instant ; les flèches
+      ne sont tracées que pour la disposition calculée, et une carte
+      déplacée ferait passer des traits sous les cartes. À reprendre sur un
+      chapitre réel s'il y manque.
+    - *Ce que voit l'élève :* depuis que son poste reçoit les fins, et le
+      départ quand la lecture est ouverte, pour la lecture d'essai
+      ([F09.1](#f091--playtest)), sa vue montre « Départ du livre », « Fin
+      de l'histoire » et « Sans suite ». « Rien n'y mène » lui reste caché :
+      il ne connaît pas les chemins venus des chapitres fermés. Cela révise
+      la précision « Pour un élève » ci-dessus.
+    - *Avec le Livre :* « À regarder » reste l'aide d'un chapitre pendant
+      l'écriture, sans gravité ; les contrôles du livre entier se lisent à
+      « Vérifier les chemins », dont chaque point mène ici par « Voir dans
+      les chemins » ([F09.2](#f092--contrôles-des-chemins-avant-le-pdf-définitif)).
+    - *Une couleur :* « Sans destination » est en ambre dans l'éditeur
+      comme ici ; le brique reste au Livre, quand le point bloque.
 - **F03-AC43 — De haut en bas, sans défiler de côté :** étant donné « Le
   marais des feux follets », trente-deux scènes et quarante-neuf choix, sur
   un écran de 1 366 points, lorsque l'enseignant ouvre « Chemins », alors
@@ -1226,7 +1250,11 @@ le porteur décide :
   « La lisière », lorsqu'elle ouvre « Chemins », alors elle voit le même
   schéma sans référence ni lien caché ; « Le sanctuaire », où mène un choix,
   est nommé sans lien ; « À regarder » ne lui dit que « 1 choix sans
-  destination ».
+  destination ». Révisé le 14 octobre 2026 : la scène de départ, quand la
+  lecture est ouverte, porte « Départ du livre », une fin « Fin de
+  l'histoire », et une scène sans choix, sans fin ni lien caché porte
+  « Sans suite », que « À regarder » compte aussi ; « rien n'y mène » ne lui
+  est jamais dit.
 - **F03-AC51 — Scènes que rien ne relie :** étant donné un chapitre de
   vingt scènes sans aucun choix, lorsque l'adulte ouvre « Chemins », alors
   les cartes se rangent en lignes dans l'ordre du plan, sans étirer la page.
@@ -1949,8 +1977,9 @@ valeur ; la relecture de F07 le rattrape.
 - **Contrôle de F09.2 (décision du 2 octobre 2026) :** aucun contrôle ne
   porte sur les actions de jeu ni sur la feuille. Un simple rappel « à
   savoir », jamais bloquant, signale un livre contenant des actions de jeu
-  sans feuille d'aventure. Il figure dans les contrôles du livre et il est
-  répété dans la demande du PDF définitif et du partage ; il n'apparaît ni
+  sans feuille d'aventure. Il figure dans les contrôles du livre, replié au
+  pied de la fiche de « Vérifier les chemins » (précisé le 14 octobre 2026),
+  et il est répété dans la demande du PDF définitif et du partage ; il n'apparaît ni
   dans la page de scène ni dans le suivi, car la feuille peut être composée
   à la fin de l'écriture. Les commandes d'action de jeu restent disponibles
   sans feuille.
@@ -2319,7 +2348,8 @@ F09.1, le graphe et la composition de F11.
   comme les autres raccords réservés à l'enseignant en F06.1. En mode personnel,
   l'auteur adulte en dispose.
 - **Playtest :** la liaison est jouable par une action distincte des choix,
-  selon [F09.1](#f091--playtest).
+  selon [F09.1](#f091--playtest) : depuis le 14 octobre 2026, le numéro
+  trouvé s'y saisit, comme dans le lecteur en ligne.
 - **Lecture en ligne :** le lecteur de F12 permet de rejoindre la suite d'une
   énigme en saisissant le numéro trouvé, selon les règles de
   [F12.1](#f121--partager-une-version-du-récit).
@@ -6104,14 +6134,93 @@ suivant les choix comme un lecteur, dans le périmètre de la personne qui teste
 - **Liaisons cachées :** une liaison cachée de [F05.1](#f051--liaisons-cachées-par-énigme)
   est proposée sous le texte par une action distincte des choix, par exemple
   « Énigme — aller à la suite prévue ». Elle suit la même borne de périmètre
-  que les choix pour l'élève.
+  que les choix pour l'élève. Depuis le 14 octobre 2026, cette action est un
+  numéro à saisir, avec « Passer l'énigme » (plus bas).
 - **Commandes de base :** revenir au passage précédent, consulter l'historique
   du parcours et y revenir à une étape, recommencer.
 
-**Propositions non arbitrées :** lorsque la numérotation imprimée existe,
-permettre aussi de saisir le numéro trouvé pour une énigme, comme le ferait
-un lecteur. Permettre à l'adulte d'ouvrir une scène exclue du livre dans le
-test, avec son statut signalé.
+**Décisions du 14 octobre 2026 (entretien de l'étape 5 du
+[plan](plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)) —
+ce que la lecture rencontre :** elles tranchent les deux propositions
+jusque-là non arbitrées (saisir le numéro d'une énigme, ouvrir une scène
+exclue) et la présentation d'une destination absente.
+
+- **Choix sans destination, ou vers une scène supprimée :** la phrase se lit
+  comme dans le livre ; à la place du renvoi, une marque ambre qui ne se
+  clique pas dit « à relier » ou « scène supprimée » à l'adulte, « pas
+  encore de suite » à l'élève. *Alternative écartée :* un renvoi qui mène à
+  une page « ne mène nulle part », un clic et une fausse étape de parcours
+  de plus.
+- **Scène vide :** le choix s'ouvre ; la scène dit « Cette scène n'a pas
+  encore de texte. »
+- **Scène exclue du livre :** l'adulte la lit, avec la mention « Hors du
+  livre » en tête ; le choix de la scène de départ la propose avec la même
+  mention. L'élève la lit sans mention : la composition du livre ne le
+  concerne pas.
+- **Scène sans choix ni fin :** l'adulte lit « Cette scène n'a ni choix ni
+  fin. », avec « Passage précédent ». Une fin montre la marque de fin de la
+  préparation (F05) et « Recommencer ».
+- **Énigme :** un seul encadré, pour l'adulte comme pour l'élève : un champ
+  « Numéro trouvé » et « Y aller ». Seuls les numéros des liaisons cachées
+  de la scène sont acceptés, comme dans le lecteur en ligne de
+  [F12.1](#f121--partager-une-version-du-récit) ; un autre dit « Ce n'est
+  pas ce numéro. », sans limite d'essais. Un lien discret « Passer
+  l'énigme » rejoint la suite prévue, dont l'adulte seul lit le numéro. Pour
+  l'élève, un numéro qui mène hors de son périmètre donne l'indication de
+  suite à découvrir. *Motif :* la saisie vérifie que l'énigme donne le bon
+  numéro, ce que le bouton seul ne vérifiait pas, et c'est le même encadré
+  que le lecteur en ligne. Le bouton « Énigme — aller à la suite prévue »
+  du 30 septembre devient « Passer l'énigme ».
+
+**Décision du 14 octobre 2026 — lecture d'essai, contrôles et PDF :** la
+lecture d'essai est une page à part, ouverte notamment par la tâche
+« Tester la lecture » de « Vérifier les chemins »
+([F11.6](#f116--trois-temps-pour-préparer-le-livre)). Les contrôles de
+[F09.2](#f092--contrôles-des-chemins-avant-le-pdf-définitif) se lisent dans
+cette étape de la destination Livre, et nulle part en double ; le PDF
+définitif (F11.2) applique la même gravité, calculée par une seule règle.
+Pour la réalisation : la destination Livre, sa ligne d'étapes et « Vérifier
+les chemins » entière, avec « C'est voulu » et la déclaration, se
+construisent à l'étape 5 ; l'aperçu, « Relire », « Mettre en page » et
+« Imprimer et partager » à l'étape 6. D'ici là, « Ouvrir la scène » mène à
+la page de la scène, avec « Retour au Livre ».
+
+**Décisions du 14 octobre 2026 — branches, élève, page de lecture :**
+
+- **Branches déjà parcourues :** un choix déjà suivi porte une petite coche
+  « déjà lu ». Elle tient tant que la page de lecture reste ouverte, après
+  « Recommencer » compris, et s'efface à « Quitter ». *Différé :* une
+  couverture gardée avec le compte d'une séance à l'autre (« 31 scènes lues
+  sur 40 », choix jamais suivis), qui ferait double emploi avec les
+  contrôles de F09.2 ; la lecture d'essai reste un moyen, non une
+  obligation (F11.6).
+- **Entrées :** pour l'adulte, la tâche « Tester la lecture » de
+  « Vérifier les chemins » (F11.6), qui ouvre « Par où commencer ? », et
+  « Lire à l'essai d'ici » dans le menu ⋯ de la scène, qui ouvre la lecture
+  sur cette scène. Pour l'élève, « Lire à l'essai » sur sa page d'histoire,
+  près de « Mon travail ».
+- **Point de départ de l'élève :** une carte par chapitre attribué,
+  « Commencer au début de *La lisière* », qui ouvre la première scène dans
+  l'ordre de lecture du chapitre, et « Depuis une scène », par sa recherche
+  de [F05](#f05--retrouver-les-scènes-et-relier-les-choix). La lecture
+  ouverte ajoute en premier « Depuis le départ du livre ». « Depuis une
+  scène » passe aussi, pour l'adulte, par la recherche des scènes, et non
+  par une liste.
+- **Ce que reçoit le poste d'un élève :** pour chaque scène qu'il peut lire,
+  le texte sans les notes, ses choix et ses liaisons cachées, ses repères de
+  fin ; une destination qu'il ne peut pas lire n'est qu'une suite « hors de
+  tes chapitres », sans titre ni texte ; le départ du livre si la lecture
+  est ouverte ; la feuille d'aventure, le dé et les règles du jeu. Rien ne
+  lui dit qu'une scène est exclue du livre. C'est le serveur qui décide de
+  ce qui part.
+- **Même lecture que le lecteur en ligne :** le passage, les phrases de
+  choix telles que le livre les imprime, activables comme en F05, l'encadré
+  de l'énigme, la feuille, le dé et le parcours sont ceux du lecteur de
+  [F12.1](#f121--partager-une-version-du-récit), construits une fois. La
+  lecture d'essai y ajoute son bandeau : teinte du chapitre et, pour
+  l'adulte, référence, état de la scène, « Ouvrir la scène » et « Hors du
+  livre ». Le parcours et les passages se nomment par leur numéro et leur
+  titre, sans référence pour l'élève.
 
 **Limites :** un parcours joué ne prouve pas que tous les chemins ont été
 parcourus. Le playtest ne remplace pas les contrôles globaux de F09.2 ni la
@@ -6148,8 +6257,45 @@ pas : l'élève lit dans l'ordre du récit, borné à ses chapitres attribués.
   lorsque l'adulte teste A, alors une action distincte des choix lui permet
   de rejoindre B.
 
-**Questions ouvertes :** présentation d'une destination absente ; repérage
-des branches déjà parcourues ; articulation visuelle entre test, contrôles et PDF.
+- **F09-AC17 — Choix encore à relier :** étant donné S029 dont le choix
+  « Suivre le héron » n'a pas de destination, lorsque l'enseignant la lit à
+  l'essai, alors la phrase se lit avec « à relier » à la place du renvoi,
+  qui ne se clique pas ; Alice, qui lit la même scène, y lit « pas encore de
+  suite ».
+- **F09-AC18 — Scène exclue lue :** étant donné un choix de A vers B, B
+  exclue du livre, lorsque l'enseignant l'active, alors il lit B avec
+  « Hors du livre » en tête ; lorsqu'Alice, attribuée à leur chapitre,
+  l'active, alors elle lit B sans mention.
+- **F09-AC19 — Numéro d'une énigme :** étant donné « La porte aux
+  symboles » et sa liaison cachée vers « La salle des brumes », n° 38,
+  lorsqu'Alice saisit 36, alors « Ce n'est pas ce numéro. » s'affiche et
+  elle reste sur la scène ; lorsqu'elle saisit 38, alors elle lit « La salle
+  des brumes » ; un numéro d'une autre scène du livre n'y mène pas ;
+  l'enseignant lit le numéro 38 à côté de « Passer l'énigme », Alice non.
+- **F09-AC20 — Ni choix ni fin :** étant donné une scène sans choix ni
+  repère de fin, lorsque l'enseignant y arrive, alors il lit « Cette scène
+  n'a ni choix ni fin. » et peut revenir au passage précédent ; arrivé à une
+  fin, il lit la marque de fin du livre et peut recommencer.
+
+- **F09-AC21 — Déjà lu :** étant donné S018, « Les deux chemins », dont
+  l'enseignant a suivi le premier choix, lorsqu'il revient à S018 par son
+  parcours ou après « Recommencer », alors ce choix porte « déjà lu » et
+  l'autre non ; lorsqu'il quitte la lecture puis la rouvre, alors aucun
+  choix ne porte la marque.
+- **F09-AC22 — Départ de l'élève :** étant donné Alice attribuée à « La
+  lisière » et la lecture ouverte désactivée, lorsqu'elle choisit « Lire à
+  l'essai », alors elle peut commencer au début de « La lisière » ou à une
+  scène trouvée par sa recherche, et « Depuis le départ du livre » ne lui
+  est pas proposé ; la lecture ouverte activée, il lui est proposé en
+  premier.
+- **F09-AC23 — Rien d'un chapitre fermé :** étant donné un choix de « La
+  lisière » vers « Le sanctuaire », non attribué à Alice, lorsque son poste
+  reçoit la scène, alors il ne reçoit ni le titre ni le texte de la
+  destination, seulement son numéro, que la phrase imprime de toute façon ;
+  il ne sait pas qu'une scène est exclue du livre.
+
+**Questions ouvertes :** aucune pour la lecture d'essai elle-même ; la
+couverture des chemins d'une séance à l'autre est différée.
 
 ### F09.2 — Contrôles des chemins avant le PDF définitif
 
@@ -6228,7 +6374,15 @@ selon [F11.2](#f112--pdf-de-travail-et-pdf-définitif), afin de ne pas servir
 de contournement au PDF définitif.
 
 **Récupération :** présenter les scènes et les choix concernés, avec un accès
-direct à chacun, pour permettre à l'adulte de les corriger.
+direct à chacun, pour permettre à l'adulte de les corriger. Décidé le
+14 octobre 2026 : chaque point porte aussi « Voir dans les chemins », qui
+ouvre la vue Chemins de son chapitre, la scène désignée comme une scène
+d'arrivée ; pour un choix à relier, « Ouvrir la scène » l'ouvre ce choix
+sélectionné, son panneau de réglages ouvert ([F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène)).
+Les avertissements acceptés se replient sous « 2 acceptés · Revoir ». Les
+contrôles du livre entier ne se lisent qu'ici ; « À regarder », dans la vue
+Chemins, reste l'aide d'un chapitre pendant l'écriture, sans gravité
+([F03.1](#f031--histoire-parties-chapitres-et-scènes)).
 
 **Critères d'acceptation :**
 
@@ -8140,9 +8294,10 @@ l'ordre. L'écran montre la tâche en cours ; les autres tiennent en une
 ligne, faite ou à faire. Une tâche qui n'existe pas pour ce type de récit
 est absente ; une tâche où il n'y a rien à faire reste affichée, cochée, à
 sa place. À l'intérieur d'une étape ouverte, l'adulte peut revenir à une
-tâche précédente. Proposition de la maquette, à confirmer : tant qu'il
-reste des scènes à finir, dont les défauts ne sont pas encore contrôlés, la
-tâche vide ne porte pas de coche et dit « Rien pour l'instant ».
+tâche précédente. Tant qu'il reste des scènes à finir, dont les défauts ne
+sont pas encore contrôlés, la tâche vide ne porte pas de coche et dit « Rien
+pour l'instant » (proposition de la maquette, confirmée le 14 octobre 2026
+à l'entretien de l'étape 5).
 
 - **Relire.** Ce temps sert à voir d'un coup d'œil ce qui reste, à corriger
   les erreurs graves et à lire le livre d'une traite en corrigeant les
@@ -8301,8 +8456,9 @@ rouvre cet écran à tout moment. La mascotte envisagée n'est pas retenue à
 ce stade ; un personnage pourra illustrer cet écran plus tard sans en
 changer le rôle.
 
-**Proposition à confirmer :** une aide qui, refermée par « Commencer », ne
-revient pas avant la visite suivante de la destination Livre.
+**Confirmé le 14 octobre 2026 (entretien de l'étape 5) :** une aide
+refermée par « Commencer » ne revient pas avant la visite suivante de la
+destination Livre.
 
 **Variantes (3 octobre 2026) :**
 

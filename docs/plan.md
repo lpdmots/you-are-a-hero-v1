@@ -1049,12 +1049,76 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   AC10, AC15, AC16), le blocage du PDF définitif se fermant à l'étape 6 ;
   feuille et dé à l'écran (F04-AC21, AC31, AC32).
 - **Dépend de :** étape 3 ; indépendante de l'étape 4.
-- **À régler avant de commencer :** rien de bloquant.
+- **À régler avant de commencer :** rien de bloquant. Arbitré en entretien
+  le 14 octobre 2026, réponse par réponse, en trois séries, et validé dans
+  son ensemble par le porteur le même jour (« ok ») :
+  - ce que la lecture rencontre — choix sans destination ou vers une scène
+    supprimée, scène vide, scène exclue lue par l'adulte avec « Hors du
+    livre », scène sans choix ni fin ; le numéro d'une énigme saisi, avec
+    « Passer l'énigme » (F09.1, F09-AC17 à AC20, F05.1) ;
+  - lecture d'essai, contrôles et PDF : la destination Livre, sa ligne
+    d'étapes et « Vérifier les chemins » entière se construisent ici,
+    l'aperçu et les trois autres étapes à l'étape 6, la gravité calculée
+    par une seule règle que le PDF reprendra (F09.1) ;
+  - les branches déjà lues, marquées le temps de la page ; les entrées de
+    l'adulte et de l'élève ; le départ de l'élève ; ce que reçoit son
+    poste ; une seule lecture avec le lecteur en ligne, construite ici pour
+    l'étape 7 (F09.1, F09-AC21 à AC23) ;
+  - « À regarder » de Chemins gardé pour l'écriture, relié au Livre par
+    « Voir dans les chemins » ; « Sans destination » en ambre dans
+    l'éditeur ; départ, fins et « Sans suite » montrés à l'élève (F09.2,
+    F03.1, F03-AC50 révisé) ; précisions de « Vue Chemins reprise »
+    confirmées en bloc, mini-carte repliable, cartes non déplaçables
+    (F03.1) ;
+  - dans « Vérifier les chemins », la tâche vide sans coche tant qu'il
+    reste des scènes à finir, l'aide qui ne revient pas avant la visite
+    suivante, le rappel « à savoir » replié (F11.6, F04.2).
+
+  Ces critères s'ajoutent au périmètre de l'étape, avec ceux de F11.6 qui
+  portent sur « Vérifier les chemins » : F11-AC73, AC75, AC79 et, pour ce
+  qui touche cette étape, AC89.
 - **Autorisée le 14 octobre 2026,** pour elle seule, en deux temps : un
   entretien court sur les points ouverts de F09 (destination absente,
   branches déjà parcourues, articulation entre lecture d'essai, contrôles et
   PDF, deux propositions non arbitrées), puis la construction, après sa
-  validation. Pas commencée.
+  validation. Entretien fait et validé le 14 octobre 2026 ; la
+  construction, autorisée par cette validation, se fait en local dans une
+  nouvelle conversation et n'est pas commencée.
+- **Découpage retenu par le porteur le 14 octobre 2026 :** cinq lots, un
+  commit local par lot.
+  Le schéma change deux fois ; le contenu de chaque migration est dit au
+  porteur avant d'être écrit, et rien ne s'applique à la vraie base sans
+  son accord, après une sauvegarde.
+  1. **Contrôles du livre** — la règle unique de F09.2 sur le livre entier :
+     départ, scène sans issue, choix sans destination, vers une scène
+     supprimée ou exclue, scène prête vide, passage inaccessible, fin hors
+     d'atteinte, sortie non assurée, numéro fixé devenu impossible, rappel
+     « actions de jeu sans feuille » ; gravité ; défauts d'écriture d'une
+     scène à finir reportés. Sans écran ni schéma (F09-AC04 à AC08, AC15,
+     AC16 ; F05-AC05).
+  2. **Destination Livre et « Vérifier les chemins »** — ligne d'étapes,
+     trois étapes fermées jusqu'à l'étape 6, aide à l'ouverture, quatre
+     tâches, points avec « Ouvrir la scène » (sur le choix, panneau
+     ouvert), « Marquer comme fin », « C'est voulu » et sa durée, « Voir
+     dans les chemins » ; acceptés repliés ; « J'ai vérifié les chemins »,
+     gardée quand une scène est rouverte ; « Retour au Livre » depuis la
+     scène. Schéma : avertissements acceptés et déclaration de l'étape
+     (F11-AC73, AC75, AC79, AC89 pour cette étape ; F09-AC10 pour ce qui
+     ne dépend pas du PDF).
+  3. **Lecture d'essai de l'adulte** — la lecture commune avec le futur
+     lecteur en ligne (passage, phrases du livre, énigme, feuille, dé,
+     parcours), « Par où commencer ? », bandeau de l'essai, « déjà lu »,
+     « Lire à l'essai d'ici », 390 px (F09-AC03, AC13, AC14, AC17 à AC21 ;
+     F05-AC09 pour la lecture ; F04-AC21, AC31, AC32).
+  4. **Lecture d'essai de l'élève** — la fonction de la base qui lui donne
+     ce qu'il peut lire, son entrée, son départ, la sortie de périmètre, la
+     lecture ouverte ; départ, fins et « Sans suite » dans ses chemins.
+     Schéma : cette fonction, sans table (F09-AC01, AC02, AC11, AC12, AC22,
+     AC23 ; F06-AC48 pour la lecture ; F03-AC50 révisé).
+  5. **Chemins, retouches et essai** — mini-carte repliable, « Sans
+     destination » en ambre dans l'éditeur, scène désignée à l'arrivée par
+     « Voir dans les chemins » ; un parcours joué de bout en bout et le mode
+     d'emploi de l'essai du porteur dans `app/README.md`.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 

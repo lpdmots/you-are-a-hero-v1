@@ -1510,10 +1510,15 @@ le tracé des flèches autour de la carte déplacée ; non décidé.
 lignes, les scènes sans chemin rangées sous le schéma plutôt qu'au-dessus,
 la vue de l'élève sans marque sur les scènes.
 
-**Sans retour du porteur :** les autres précisions de F03.1, « Vue Chemins
-reprise » ; l'ambre pour tout ce qui est à regarder ; « Ouvrir » montré au
-survol seulement ; la bulle « Comment lire ces chemins ? » et son texte ; la
-place de la mini-carte.
+**Confirmé par le porteur le 14 octobre 2026,** à l'entretien de l'étape 5,
+en bloc : les autres précisions de F03.1, « Vue Chemins reprise » ; l'ambre
+pour tout ce qui est à regarder ; « Ouvrir » montré au survol seulement ; la
+bulle « Comment lire ces chemins ? ». Décidé le même jour, à construire à
+l'étape 5 : la mini-carte, toujours automatique, se replie d'un clic et
+reste repliée ; « Tout voir » ne change pas ; les cartes ne se déplacent
+pas ; l'élève voit le départ, les fins et « Sans suite » ; « Sans
+destination » passe en ambre dans l'éditeur ; chaque point de « Vérifier
+les chemins » mène ici par « Voir dans les chemins ».
 
 **Ce qui reste perfectible,** dit au porteur :
 
@@ -1530,7 +1535,9 @@ place de la mini-carte.
   de 1 024 points à la taille lisible : il faut alors défiler de côté ou
   « Tout voir ».
 - **« Sans destination »** est en ambre ici et en brique dans l'éditeur,
-  où il bloquera le PDF : deux couleurs pour une même chose. Non touché.
+  où il bloquera le PDF : deux couleurs pour une même chose. Décidé le
+  14 octobre 2026 : l'ambre partout, le brique au Livre seulement, quand le
+  point bloque.
 - **Non vérifié :** une tablette réelle (le doigt qui fait défiler la page
   et le toucher d'une carte sont essayés en tactile simulé, dans Chromium),
   Firefox et Safari, un lecteur d'écran au-delà du clavier (Tab, Entrée,
@@ -2168,7 +2175,7 @@ court pour être lu.
 | Page de scène venue du livre | Ouverte depuis le Suivi filtré ou depuis la scène à côté de l'aperçu, elle porte « Retour aux scènes à finir » ou « Retour au Livre » dans la pastille de son en-tête ; au retour, la liste et son décompte ne comptent plus la scène déclarée prête ou exclue. |
 | Déclarer prête | Par la commande d'état : le tampon de la scène, dans sa page comme à côté de l'aperçu, ouvre la liste des états, dont « Prête » (F11.1, 4 octobre 2026). Le bouton « Déclarer prête » de l'en-tête est retiré. Si la scène est vide, sans choix ni fin, ou garde un choix sans destination, un rappel le dit avant de déclarer, sans l'empêcher. À côté de l'aperçu, « À reprendre » ouvre la remarque au-dessus de la copie. |
 | Menu de la scène | Le bouton à trois points, « Plus » jusqu'au 4 octobre, dans l'en-tête de la scène : « Exclure du livre », ou « Réintégrer dans le livre ». |
-| Vérifier les chemins | Dans la colonne, à côté de l'aperçu. « Départ et fins », « Choix à relier », « Passages à confirmer », « Tester la lecture ». Chaque point est une carte : la scène, une phrase, « Ouvrir la scène » et son action propre (« Marquer comme fin », « C'est voulu », « Voir le graphe »). Les passages acceptés se replient sous « 2 acceptés », avec « Revoir ». Une ligne rappelle que les choix des scènes à finir seront vérifiés ensuite. « Tester la lecture » reste proposé, facultatif ; les renvois se suivent aussi d'un clic dans l'aperçu. Sur la page du livre comme au rappel du partage, l'énigme sans autre issue se dit « seule suite : une énigme ». |
+| Vérifier les chemins | Dans la colonne, à côté de l'aperçu. « Départ et fins », « Choix à relier », « Passages à confirmer », « Tester la lecture ». Chaque point est une carte : la scène, une phrase, « Ouvrir la scène » et son action propre (« Marquer comme fin », « C'est voulu », « Voir le graphe »). Les passages acceptés se replient sous « 2 acceptés », avec « Revoir ». Une ligne rappelle que les choix des scènes à finir seront vérifiés ensuite. « Tester la lecture » reste proposé, facultatif ; les renvois se suivent aussi d'un clic dans l'aperçu. Sur la page du livre comme au rappel du partage, l'énigme sans autre issue se dit « seule suite : une énigme ». Repris le 14 octobre 2026, à l'entretien de l'étape 5 : « Voir le graphe » devient « Voir dans les chemins » ; « Ouvrir la scène » d'un choix à relier l'ouvre sur ce choix, panneau ouvert ; le rappel « à savoir » se replie au pied de la fiche ; à l'étape 5, sans aperçu, la fiche se centre à largeur de lecture et passera en colonne à l'étape 6. |
 | Scène ouverte depuis un point | À côté de l'aperçu placé sur son passage, avec le détail du point au-dessus de la copie. « Fermer » ramène à la liste de l'étape. |
 | Aperçu | Pages A5 en vis-à-vis ou agrandies, avec les marques du PDF de travail : « Version de travail », référence à côté du numéro, « p. 12 » dans la marge, problèmes à leur place, énigme et numéro fixé signalés. Un clic sur un passage ouvre sa scène à côté ; un clic sur un renvoi suit le choix. Le détail est dans les lignes qui suivent. |
 | Aperçu limité au récit | À « Relire » et à « Vérifier les chemins », l'aperçu commence au premier passage, en page de droite ; les pages gardent leur numéro. À « Mettre en page », il montre le livre entier. |
@@ -2197,7 +2204,7 @@ court pour être lu.
 | Exports | Demandes de PDF dans une feuille latérale. PDF de travail, demandé depuis « Relire » : contenu décrit, miniatures de la page récapitulative et d'une page marquée, instantané daté. PDF définitif refusé : liste des problèmes par nature avec accès direct, aucune commande d'ignorance, repli vers un PDF de travail. PDF définitif possible : vérifications cochées, avertissements rappelés, puis fichier daté et inchangeable. Volet « Imprimer » de l'étape d'arrivée : état du PDF définitif, PDF définitifs conservés, aide à la couverture chez l'imprimeur. |
 | Préparation | Rubrique « Phrases de choix », en pleine largeur : formule de renvoi, constructions, marque de fin, chacune avec son exemple. Dans « Objets et formules », deux parties repliées : « Feuille d'aventure du lecteur » et « Règles du jeu ». |
 | Récit classique | Deux temps et l'arrivée, numérotés 1 à 3. « Tester la lecture » est à « Relire ». Ni rubrique « Phrases de choix », ni réorganisation des passages, ni passage suggéré. |
-| Lecture d'essai | Page dédiée, fond à la teinte du chapitre du passage lu (on voit qu'on change de chapitre). Texte courant en Vollkorn sur une page blanche ; choix en boutons Vollkorn ; énigme par un bouton pointillé distinct, en Atkinson. Parcours numéroté à droite, chaque étape permettant d'y revenir ; Passage précédent, Recommencer, Quitter. Adulte : départ ou scène au choix, état et accès à la scène. Élève : départ parmi ses chapitres ; une sortie de périmètre affiche « La suite se trouve dans un chapitre que tu découvriras plus tard », sans titre ni marque de fin. Entrée depuis Mon travail. |
+| Lecture d'essai | Page dédiée, fond à la teinte du chapitre du passage lu (on voit qu'on change de chapitre). Texte courant en Vollkorn sur une page blanche ; choix en boutons Vollkorn ; énigme par un bouton pointillé distinct, en Atkinson. Parcours numéroté à droite, chaque étape permettant d'y revenir ; Passage précédent, Recommencer, Quitter. Adulte : départ ou scène au choix, état et accès à la scène. Élève : départ parmi ses chapitres ; une sortie de périmètre affiche « La suite se trouve dans un chapitre que tu découvriras plus tard », sans titre ni marque de fin. Entrée depuis Mon travail. Repris le 14 octobre 2026, à l'entretien de l'étape 5 ([F09.1](specifications.md#f091--playtest)) : mêmes passage, phrases de choix, encadré d'énigme, feuille, dé et parcours que le lecteur en ligne ; « Parcours · 16 » en une ligne qui ouvre la liste, la feuille à côté du texte ; partout la phrase du livre, jamais des boutons au libellé ; « Passage précédent » sous le passage, « Recommencer » et « Quitter » en haut ; numéro et titre sans référence pour l'élève ; « Depuis une scène » par la recherche des scènes ; « Lire à l'essai d'ici » dans le menu ⋯ de la scène ; en 390 px, « Ma feuille » dans une barre basse ; coche « déjà lu » sur un choix suivi. |
 | 390 px | Les pastilles tiennent sur une ligne ; seule l'étape en cours garde son nom, la marque des autres se pose sur leur pastille. Aux deux premières étapes, les tâches se lisent en liste, la tâche en cours dessous. À « Mettre en page », la déclaration tient sur une ligne au-dessus des deux onglets ; au défilement, seuls les onglets restent en vue. Les réglages reviennent à une colonne. L'écran d'étape fermée garde ses marges. |
 | 390 px, scène ouverte | La scène et le livre ne tiennent pas côte à côte : deux onglets, « Scène S014 » et « Dans le livre », passent de l'une à l'autre ; l'aperçu reste composé pendant qu'on écrit. Les réglages passent sur une colonne. |
 
