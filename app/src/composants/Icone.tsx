@@ -291,6 +291,14 @@ const TRACES = {
       <path d="M12 16.5v-4" />
     </>
   ),
+  // Réglages : deux curseurs
+  reglages: (
+    <>
+      <path d="M4 8h8.5M16.5 8H20M4 16h3.5M11.5 16H20" />
+      <circle cx="14.5" cy="8" r="2" />
+      <circle cx="9.5" cy="16" r="2" />
+    </>
+  ),
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

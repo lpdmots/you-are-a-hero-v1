@@ -380,26 +380,37 @@ test("lot 5 : les fiches de rédaction", async ({ page }) => {
   // Du Suivi aux fiches
   await aller(page, `/projet/${projet}/suivi?direct=1`);
   await capturer(page, "suivi-bouton-des-fiches");
+  // La page telle qu'elle s'ouvre : une feuille par élève, le décompte, la feuille montrée, « Imprimer »
   await aller(page, `/projet/${projet}/fiches`);
-  await capturer(page, "fiches-par-chapitre", true);
-  const tirage = page.getByRole("group", { name: "Une feuille" });
-  await tirage.getByRole("button", { name: "par élève" }).click();
-  await capturer(page, "fiches-par-eleve-scenes-sans-eleve");
-  await page.getByRole("checkbox", { name: "À la suite, à découper" }).check();
+  await capturer(page, "fiches-arrivee", true);
+  const reglages = page.getByRole("dialog", { name: "Réglages des feuilles" });
+  const ouvrir = async () => {
+    if (!(await reglages.isVisible())) await page.getByRole("button", { name: "Réglages", exact: true }).click();
+    await reglages.waitFor();
+  };
+  // Tout le reste est derrière « Réglages »
+  await ouvrir();
+  await capturer(page, "fiches-reglages");
+  await reglages.getByRole("button", { name: "par chapitre" }).click();
+  await capturer(page, "fiches-par-chapitre");
+  await reglages.getByRole("button", { name: "par élève" }).click();
+  await reglages.getByRole("checkbox", { name: "À la suite, à découper" }).check();
+  await page.keyboard.press("Escape");
   await capturer(page, "fiches-a-la-suite", true);
-  await page.getByRole("checkbox", { name: "À la suite, à découper" }).uncheck();
+  await ouvrir();
+  await reglages.getByRole("checkbox", { name: "À la suite, à découper" }).uncheck();
   // Le partage des scènes sans élève
-  await page.getByRole("button", { name: /répartir entre les élèves du chapitre/ }).click();
+  await reglages.getByRole("button", { name: /répartir entre les élèves du chapitre/ }).click();
   await capturer(page, "fiches-partage-propose");
   await page.locator(".lot-imprimer").click();
   await capturer(page, "fiches-message-de-demande");
   await page.getByRole("alertdialog").getByRole("button", { name: "Annuler" }).click();
-  await page.getByRole("button", { name: "Ne pas répartir" }).click();
-  // Le plafond et le complément : sans maquette
-  await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
-  await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
-  await capturer(page, "fiches-plafond-eleve-a-completer");
-  await page.getByRole("button", { name: /^Emma/ }).click();
+  await ouvrir();
+  await reglages.getByRole("button", { name: "Ne pas répartir" }).click();
+  // Le nombre et le complément
+  await reglages.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
+  await capturer(page, "fiches-nombre-eleve-a-completer");
+  await reglages.getByRole("button", { name: /^Emma/ }).click();
   await capturer(page, "fiches-eleve-complete");
   await page.locator(".lot-imprimer").click();
   await page.getByRole("alertdialog").getByRole("button", { name: "Répartir et imprimer" }).click();
@@ -410,10 +421,10 @@ test("lot 5 : les fiches de rédaction", async ({ page }) => {
   await capturer(page, "fiches-un-eleve");
   await page.setViewportSize({ width: 390, height: 844 });
   await aller(page, `/projet/${projet}/fiches`);
-  await tirage.getByRole("button", { name: "par élève" }).click();
-  await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
-  await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
-  await capturer(page, "fiches-390", true);
+  await capturer(page, "fiches-390");
+  await page.locator(".lot-mention").click();
+  await reglages.waitFor();
+  await capturer(page, "fiches-390-reglages");
 });
 
 test("lot 6 : encouragements et classement", async ({ page, browser }) => {

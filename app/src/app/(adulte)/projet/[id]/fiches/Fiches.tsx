@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { Bulle } from "@/composants/Bulle";
+import { poser } from "@/composants/flottant";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
@@ -26,6 +27,8 @@ const POURQUOI: Record<HorsFiche, string> = {
   "ne-s-ecrit-plus": "plus rien à écrire",
 };
 const SANS_PARTAGE: Partage = { propositions: new Map(), sansEleve: [] };
+/** Au plus quatre scènes à écrire par élève, tant que l'enseignant ne règle pas autre chose (13 octobre 2026). */
+const PLAFOND_HABITUEL = 4;
 /** Ce qui s'ajoute d'un geste à la sélection : chaque scène qui peut être choisie est dans une de ces trois sortes. */
 const SORTES: { nom: string; de: (s: Scene) => boolean }[] = [
   { nom: "en cours", de: (s) => s.etat === "cours" && !s.texteVide },
@@ -64,19 +67,24 @@ export function Fiches({
   projet: { id: string; titre: string };
   plan: Plan; eleves: ElevePlan[];
   contenus: Record<string, ContenuDeFiche>;
-  /** Ce que le Suivi listait en ouvrant les fiches : les scènes cochées, l'élève choisi (F06-AC57) */
-  depart: { choisies: string[]; eleve: string | null };
+  /** Ce que le Suivi listait en ouvrant les fiches : les scènes cochées, l'élève choisi (F06-AC57) ; « Tout son chapitre » demande la feuille du chapitre */
+  depart: { choisies: string[]; eleve: string | null; par?: "chapitre" | null };
   /** L'adresse du Suivi d'où l'on vient, avec ses filtres */
   retour: string;
 }) {
   const dire = useMessage();
   const [choisies, setChoisies] = useState(() => new Set(depart.choisies));
   const [eleveId, setEleveId] = useState(depart.eleve);
-  const [par, setPar] = useState<"chapitre" | "eleve">(depart.eleve ? "eleve" : "chapitre");
+  // Une feuille par élève dès qu'une scène cochée a un élève ; par chapitre sinon, où « par élève » ne donnerait aucune feuille
+  const [par, setPar] = useState<"chapitre" | "eleve">(() => {
+    if (depart.par) return depart.par;
+    const cochees = new Set(depart.choisies);
+    return depart.eleve || plan.parties.some((p) => p.chapitres.some((c) => c.scenes.some((x) => cochees.has(x.id) && x.priseParEleve))) ? "eleve" : "chapitre";
+  });
   const [suite, setSuite] = useState(false);
   const [repartit, setRepartit] = useState(false);
-  const [plafondOuvert, setPlafondOuvert] = useState(false);
-  const [plafond, setPlafond] = useState<number | null>(null);
+  const [plafond, setPlafond] = useState<number | null>(PLAFOND_HABITUEL);
+  const [reglages, setReglages] = useState(false);
   const [completes, setCompletes] = useState<string[]>([]);
   const [vue, setVue] = useState(0);
   const [confirme, setConfirme] = useState(false);
@@ -85,7 +93,9 @@ export function Fiches({
   const [occupe, setOccupe] = useState(false);
   const titreMessage = useRef<HTMLParagraphElement>(null);
   const boutonImprimer = useRef<HTMLButtonElement>(null);
-  const lienDuNombre = useRef<HTMLButtonElement>(null);
+  const barre = useRef<HTMLDivElement>(null);
+  const cadreReglages = useRef<HTMLSpanElement>(null);
+  const panneauReglages = useRef<HTMLDivElement>(null);
 
   const nom = (e: ElevePlan) => nomPourEleves(e, eleves);
   const eleve = eleves.find((e) => e.id === eleveId) ?? null;
@@ -125,6 +135,31 @@ export function Fiches({
     titreMessage.current?.scrollIntoView({ block: "center" });
     titreMessage.current?.focus({ preventScroll: true });
   }, [confirme]);
+  // Les réglages s'ouvrent sous la barre, sur la feuille, sans rien déplacer : le décompte et « Imprimer » restent
+  // en vue pendant qu'on règle. Un clic ailleurs ou « Échap » les referme
+  useLayoutEffect(() => {
+    if (!reglages || !barre.current || !panneauReglages.current) return;
+    return poser(barre.current, panneauReglages.current, { cote: "bottom-end", ecart: 8 });
+  }, [reglages]);
+  useEffect(() => {
+    if (!reglages) return;
+    // Au moment où l'on appuie, et non au clic : un bouton du panneau que le clic fait disparaître (« Ne pas répartir »)
+    // ne serait plus dans le panneau quand le clic arrive, et le refermerait
+    const dehors = (e: PointerEvent) => {
+      if (!cadreReglages.current?.contains(e.target as Node) && !(e.target as Element).closest?.("[data-ouvre-reglages]")) setReglages(false);
+    };
+    const touche = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setReglages(false);
+      cadreReglages.current?.querySelector("button")?.focus({ preventScroll: true });
+    };
+    document.addEventListener("pointerdown", dehors);
+    document.addEventListener("keydown", touche);
+    return () => {
+      document.removeEventListener("pointerdown", dehors);
+      document.removeEventListener("keydown", touche);
+    };
+  }, [reglages]);
   // Le message refermé sans rien donner : le clavier revient au bouton qui l'avait ouvert
   const refermer = () => {
     setConfirme(false);
@@ -285,8 +320,7 @@ export function Fiches({
     <>
       <button type="button" className="lien" onClick={() => { setRepartit(true); setCompletes([]); setVue(0); }}>
         {aRepartir > 1 ? "Les répartir" : "La répartir"} entre les élèves du chapitre
-      </button>{" "}
-      ·{" "}
+      </button>
     </>
   ) : null;
   const une = nProp === 1 ? [...partage.propositions][0] : null;
@@ -302,9 +336,8 @@ export function Fiches({
   // Pourquoi des scènes restent sans élève après un partage : le nombre fixé, quand leur chapitre a des élèves
   const aucunePlafond = repartit && plafond !== null && aucune.length > 0 && aucune.every(attribuable);
 
-  let note = null;
-  if (confirme && nProp) {
-    note = (
+  const demande =
+    confirme && nProp ? (
       <div
         className="lot-confirme"
         role="alertdialog"
@@ -326,8 +359,15 @@ export function Fiches({
           </button>
         </div>
       </div>
-    );
-  } else if (nProp) {
+    ) : null;
+
+  const nePasRepartir = repartit ? (
+    <button type="button" className="lien" onClick={() => { setRepartit(false); setVue(0); }}>
+      Ne pas répartir
+    </button>
+  ) : null;
+  let note = null;
+  if (nProp) {
     note = (
       <p className="lot-note lot-note--prop" role="status">
         {une
@@ -340,21 +380,30 @@ export function Fiches({
             {aucunePlafond ? ` : chaque élève du chapitre a déjà ${plafond} scène${pluriel(plafond ?? 0)} à écrire.` : "."}
           </span>
         ) : null}{" "}
-        {repartit ? (
-          <button type="button" className="lien" onClick={() => { setRepartit(false); setVue(0); }}>
-            Ne pas répartir
-          </button>
-        ) : null}
+        {nePasRepartir}
       </p>
     );
-  } else if (aucune.length && lesFeuilles.length) {
+  } else if (aucune.length && repartit) {
+    // Le partage demandé ne donne rien : le nombre fixé, ou un chapitre sans élève
+    note = (
+      <p className="lot-note">
+        {aucunePlafond
+          ? `Aucune scène n’a pu être répartie : chaque élève du chapitre a déjà ${plafond} scène${pluriel(plafond ?? 0)} à écrire.`
+          : "Aucune scène n’a pu être répartie."}{" "}
+        {nePasRepartir}
+      </p>
+    );
+  } else if (aucune.length) {
     note = (
       <p className="lot-note">
         {aucune.length} des {nScenes + aucune.length} scènes choisies {aucune.length > 1 ? "n’ont" : "n’a"} pas d’élève : sur aucune feuille. {lesRepartir}
-        {versChapitre}
       </p>
     );
   }
+  // Ce que la barre en dit, en deux mots, et qui mène aux réglages
+  const mention = !partageable
+    ? ""
+    : [nProp ? `${nProp} proposée${pluriel(nProp)}` : "", aucune.length && lesFeuilles.length ? `${aucune.length} sans élève` : ""].filter(Boolean).join(" · ");
 
   const rien = eleve && liste.length === 0
     ? null
@@ -362,6 +411,7 @@ export function Fiches({
       ? (
         <>
           Aucune scène choisie n’a encore d’élève : rien à imprimer par élève. {lesRepartir}
+          {lesRepartir ? " · " : ""}
           {versChapitre}
         </>
       )
@@ -440,39 +490,137 @@ export function Fiches({
         </div>
 
         <div className="lot-apercu">
-          <h2 className="lot-titre hors-impression">Les feuilles</h2>
-          <div className="lot-reglage hors-impression">
-            <span id="lot-reglage">Une feuille</span>
-            <div className="seg-mini" role="group" aria-labelledby="lot-reglage">
-              <button type="button" aria-pressed={!parEleve} onClick={() => changerDeTirage("chapitre")}>
-                par chapitre
+          {/* Ce qui sortira, la feuille montrée, « Imprimer » : le cas courant n'a rien à régler. Le reste est derrière « Réglages », à côté du titre */}
+          <div className="lot-entete hors-impression">
+            <h2 className="lot-titre">Les feuilles</h2>
+            <span className="lot-reglages" ref={cadreReglages}>
+              <button type="button" className="btn" aria-expanded={reglages} aria-controls="lot-reglages" onClick={() => setReglages((o) => !o)}>
+                <Icone nom="reglages" />
+                <span>Réglages</span>
               </button>
-              <button type="button" aria-pressed={parEleve} onClick={() => changerDeTirage("eleve")}>
-                par élève
-              </button>
-            </div>
-            {/* Tous les élèves, ou un seul : sa feuille, et ses scènes dans la liste (F07-AC56) */}
-            {parEleve ? (
-              <span className="suivi-champ__select lot-qui">
-                <select aria-label="Élève" value={eleveId ?? ""} onChange={(e) => choisirEleve(e.target.value || null)}>
-                  <option value="">Tous les élèves</option>
-                  {eleves.map((e) => (
-                    <option key={e.id} value={e.id}>
-                      {nom(e)}
-                    </option>
-                  ))}
-                </select>
-                <Icone nom="chevron-bas" />
-              </span>
-            ) : null}
-            <label className="lot-suite">
-              <input type="checkbox" className="case" checked={suite} onChange={(e) => setSuite(e.target.checked)} />
-              À la suite, à découper
-            </label>
+              {reglages ? (
+                <div id="lot-reglages" className="lot-reglages__panneau flottant" role="dialog" aria-label="Réglages des feuilles" ref={panneauReglages}>
+                  <div className="lot-reglage">
+                    <span id="lot-reglage">Une feuille</span>
+                    <div className="seg-mini" role="group" aria-labelledby="lot-reglage">
+                      <button type="button" aria-pressed={!parEleve} onClick={() => changerDeTirage("chapitre")}>
+                        par chapitre
+                      </button>
+                      <button type="button" aria-pressed={parEleve} onClick={() => changerDeTirage("eleve")}>
+                        par élève
+                      </button>
+                    </div>
+                  </div>
+                  {/* Tous les élèves, ou un seul : sa feuille, et ses scènes dans la liste (F07-AC56) */}
+                  {parEleve ? (
+                    <label className="lot-reglage">
+                      <span>Pour</span>
+                      <span className="suivi-champ__select lot-qui">
+                        <select aria-label="Élève" value={eleveId ?? ""} onChange={(e) => choisirEleve(e.target.value || null)}>
+                          <option value="">Tous les élèves</option>
+                          {eleves.map((e) => (
+                            <option key={e.id} value={e.id}>
+                              {nom(e)}
+                            </option>
+                          ))}
+                        </select>
+                        <Icone nom="chevron-bas" />
+                      </span>
+                    </label>
+                  ) : null}
+                  <label className="lot-suite">
+                    <input type="checkbox" className="case" checked={suite} onChange={(e) => setSuite(e.target.checked)} />
+                    À la suite, à découper
+                  </label>
+                  {/* Les scènes cochées que personne n'a prises : les répartir, sous un nombre, ou compléter un élève (F07-AC74, AC75) */}
+                  {partageable && (aucune.length > 0 || nProp > 0) ? (
+                    <div className="lot-sans-eleve">
+                      <p className="lot-reglages__st">Scènes sans élève</p>
+                      {note}
+                      <div className="lot-plafond">
+                        <label className="lot-plafond__phrase">
+                          Au plus
+                          <input
+                            type="number"
+                            inputMode="numeric"
+                            min={1}
+                            max={99}
+                            aria-label="Nombre de scènes à écrire par élève, au plus"
+                            value={plafond ?? ""}
+                            onChange={(e) => {
+                              const n = Math.floor(Number(e.target.value));
+                              setPlafond(e.target.value !== "" && Number.isFinite(n) && n >= 1 ? Math.min(n, 99) : null);
+                              setCompletes([]);
+                              setConfirme(false);
+                            }}
+                          />
+                          scène{pluriel(plafond ?? 2)} à écrire par élève
+                        </label>
+                        <Bulle question="Que compte ce nombre ?">
+                          <span>Ce qu’il reste à écrire à l’élève dans tout le projet, scènes déjà à son nom comprises. Un élève qui en a déjà autant ne reçoit rien de plus.</span>
+                          <span>Il sert quand vous répartissez les scènes ou complétez un élève. Videz la case pour ne fixer aucun nombre.</span>
+                        </Bulle>
+                      </div>
+            {/* Compléter un élève, à la suite de « répartir » : la même question, les scènes sans élève (F07-AC75) */}
+                      {plafond !== null && aCompleter.length ? (
+                        <div className="lot-completer" role="group" aria-labelledby="lot-completer-t">
+                          <span id="lot-completer-t">
+                            {aRepartir && !nProp ? "ou compléter" : "Compléter"} jusqu’à {plafond} scène{pluriel(plafond)} :
+                          </span>
+                          {aCompleter.map(({ eleve: e, reste }) => {
+                            const complete = completes.includes(e.id);
+                            const recu = [...partage.propositions.values()].filter((id) => id === e.id).length;
+                            const possible = complete || recevrait(e.id);
+                            return (
+                              <button
+                                key={e.id}
+                                type="button"
+                                className="lot-eleve"
+                                aria-pressed={complete}
+                                aria-label={`${nom(e)} : ${reste} scène${pluriel(reste)} à écrire${complete ? `, ${recu} de plus proposée${pluriel(recu)}` : ""}`}
+                                disabled={!possible || confirme}
+                                onClick={() => {
+                                  setCompletes((avant) => (complete ? avant.filter((id) => id !== e.id) : [...avant, e.id]));
+                                  setVue(0);
+                                }}
+                              >
+                                <Gommette prenom={e.prenom} couleur={e.couleur} taille="s" />
+                                <span>{nom(e)}</span>
+                                <b>
+                                  {reste}
+                                  <i data-vu={complete && recu ? "oui" : "non"}> + {recu || 1}</i>
+                                </b>
+                              </button>
+                            );
+                          })}
+                          {aCompleter.some(({ eleve: e }) => !completes.includes(e.id) && !recevrait(e.id)) ? <small>Plus de scène libre cochée.</small> : null}
+                        </div>
+                      ) : null}
+                    </div>
+                  ) : null}
+                </div>
+              ) : null}
+            </span>
           </div>
-
-          <div className="lot-apercu__barre hors-impression">
-            <p role="status">{decompte(lesFeuilles, suite, null)}</p>
+          <div className="lot-apercu__barre hors-impression" ref={barre}>
+            <div className="lot-apercu__quoi">
+              <p role="status">{decompte(lesFeuilles, suite, null)}</p>
+              {mention ? (
+                <button
+                  type="button"
+                  className="lot-mention"
+                  data-ouvre-reglages
+                  data-attend={aucune.length ? "" : undefined}
+                  onClick={() => {
+                    setReglages(true);
+                    // Sur petit écran, le bouton des réglages est plus bas que la barre : il vient à l'écran avec son panneau
+                    cadreReglages.current?.scrollIntoView({ block: "nearest" });
+                  }}
+                >
+                  {mention}
+                </button>
+              ) : null}
+            </div>
             {lesFeuilles.length > 1 && !suite ? (
               <div className="lot-pager">
                 <button type="button" className="btn btn--petit" aria-label="Feuille précédente" disabled={vue === 0} onClick={() => setVue((v) => Math.max(0, v - 1))}>
@@ -495,91 +643,7 @@ export function Fiches({
           </div>
 
           <div className="lot-notes hors-impression">
-            {note}
-            {/* Le nombre de scènes à écrire par élève : il ne sert qu'à répartir ou à compléter, et se règle donc ici (F07-AC74) */}
-            {partageable && (aRepartir > 0 || nProp > 0 || plafondOuvert) && !confirme ? (
-            <div className="lot-plafond">
-              {plafondOuvert ? (
-                <>
-                  <label className="lot-plafond__phrase">
-                    Au plus
-                    <input
-                      type="number"
-                      inputMode="numeric"
-                      min={1}
-                      max={99}
-                      aria-label="Nombre de scènes à écrire par élève, au plus"
-                      value={plafond ?? ""}
-                      autoFocus
-                      onChange={(e) => {
-                        const n = Math.floor(Number(e.target.value));
-                        setPlafond(e.target.value !== "" && Number.isFinite(n) && n >= 1 ? Math.min(n, 99) : null);
-                        setCompletes([]);
-                        setConfirme(false);
-                      }}
-                    />
-                    scène{pluriel(plafond ?? 2)} à écrire par élève
-                  </label>
-                  <Bulle question="Que compte ce nombre ?">
-                    <span>Ce qu’il reste à écrire à l’élève dans tout le projet, scènes déjà à son nom comprises. Un élève qui en a déjà autant ne reçoit rien de plus.</span>
-                    <span>Le nombre ne donne rien à lui seul : il sert quand vous répartissez les scènes, ou quand vous complétez un élève.</span>
-                  </Bulle>
-                  <button
-                    type="button"
-                    className="lien"
-                    onClick={() => {
-                      setPlafond(null);
-                      setPlafondOuvert(false);
-                      setCompletes([]);
-                      window.requestAnimationFrame(() => lienDuNombre.current?.focus({ preventScroll: true }));
-                    }}
-                  >
-                    Retirer
-                  </button>
-                </>
-              ) : (
-                <button type="button" className="lien" ref={lienDuNombre} onClick={() => setPlafondOuvert(true)}>
-                  Fixer un nombre de scènes par élève
-                </button>
-              )}
-            </div>
-          ) : null}
-
-            {/* Compléter un élève, à la suite de « répartir » : la même question, les scènes sans élève (F07-AC75) */}
-            {plafond !== null && aCompleter.length ? (
-              <div className="lot-completer" role="group" aria-labelledby="lot-completer-t">
-                <span id="lot-completer-t">
-                  {aRepartir && !nProp && lesFeuilles.length ? "ou compléter" : "Compléter"} jusqu’à {plafond} scène{pluriel(plafond)} :
-                </span>
-                {aCompleter.map(({ eleve: e, reste }) => {
-                  const complete = completes.includes(e.id);
-                  const recu = [...partage.propositions.values()].filter((id) => id === e.id).length;
-                  const possible = complete || recevrait(e.id);
-                  return (
-                    <button
-                      key={e.id}
-                      type="button"
-                      className="lot-eleve"
-                      aria-pressed={complete}
-                      aria-label={`${nom(e)} : ${reste} scène${pluriel(reste)} à écrire${complete ? `, ${recu} de plus proposée${pluriel(recu)}` : ""}`}
-                      disabled={!possible || confirme}
-                      onClick={() => {
-                        setCompletes((avant) => (complete ? avant.filter((id) => id !== e.id) : [...avant, e.id]));
-                        setVue(0);
-                      }}
-                    >
-                      <Gommette prenom={e.prenom} couleur={e.couleur} taille="s" />
-                      <span>{nom(e)}</span>
-                      <b>
-                        {reste}
-                        <i data-vu={complete && recu ? "oui" : "non"}> + {recu || 1}</i>
-                      </b>
-                    </button>
-                  );
-                })}
-                {aCompleter.some(({ eleve: e }) => !completes.includes(e.id) && !recevrait(e.id)) ? <small>Plus de scène libre cochée.</small> : null}
-              </div>
-            ) : null}
+            {demande}
             {faites.length && !confirme ? (
               <p className="lot-note lot-note--fait" role="status">
                 <Icone nom="coche" />

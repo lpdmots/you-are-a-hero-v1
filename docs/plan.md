@@ -935,10 +935,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       Suivi, toutes les scènes qui peuvent l'être sont cochées ; les scènes
       d'un partage sont données dans l'ordre du chapitre, part après part,
       pour que chacun garde des scènes voisines ; à égalité complète,
-      l'ordre des prénoms départage ; le nombre fixé se règle derrière un
-      lien, « Fixer un nombre de scènes par élève », et ne s'affiche qu'en
-      « par élève », tous élèves affichés, quand des scènes cochées sont
-      sans élève ; ne sont signalés à compléter que
+      l'ordre des prénoms départage ; le nombre se règle dans le panneau
+      « Réglages », en « par élève », tous élèves affichés, quand des
+      scènes cochées sont sans élève ; il vaut 4 sans rien régler (F07.4,
+      « Réglages par défaut », décidé par le porteur le 13 octobre) ; ne sont signalés à compléter que
       les élèves d'un chapitre où une scène cochée est encore libre ;
       plusieurs élèves complétés sont servis dans l'ordre où on les clique ;
       répartir et compléter ne se cumulent pas, le dernier demandé
@@ -1006,8 +1006,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 640 passent — 164 sur les règles, 219 contre
       la base locale, 257 parcours —, dont 1 pour ce lot ; 641 avec le
       parcours des cases « Toutes les scènes » et de chapitre, ajouté le
-      même jour à la page des fiches, reprise sur un retour du porteur
-      (`docs/design.md`, « Étape 4 construite », lot 5).
+      même jour à la page des fiches, reprise sur deux retours du porteur
+      (`docs/design.md`, « Étape 4 construite », lot 5) : le second range
+      tous les réglages derrière un bouton.
   - **Mise en ligne, le 13 octobre 2026, à la demande du porteur, qui
     veut essayer en ligne :** vraie base sauvegardée par lui
     (`sauvegardes/2026-10-13-19-46`), les quatre migrations de l'étape

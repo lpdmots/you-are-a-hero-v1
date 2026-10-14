@@ -31,7 +31,19 @@ const decompte = (page: Page) => page.locator(".lot-apercu__barre").getByRole("s
 const imprimer = (page: Page) => page.locator(".lot-imprimer");
 const caseDe = (page: Page, ref: string) => page.getByRole("checkbox", { name: new RegExp(`^${ref}\\b`) });
 const feuille = (page: Page) => page.locator(".fr-feuille:visible");
-const tirage = (page: Page, par: "par chapitre" | "par élève") => page.getByRole("group", { name: "Une feuille" }).getByRole("button", { name: par });
+/** « Réglages » : tout ce qui n'est pas le cas courant. Ouvre le panneau s'il ne l'est pas, et le rend. */
+const reglages = async (page: Page) => {
+  const panneau = page.getByRole("dialog", { name: "Réglages des feuilles" });
+  if (!(await panneau.isVisible())) await page.getByRole("button", { name: "Réglages", exact: true }).click();
+  await expect(panneau).toBeVisible();
+  return panneau;
+};
+const tirer = async (page: Page, par: "par chapitre" | "par élève") => (await reglages(page)).getByRole("group", { name: "Une feuille" }).getByRole("button", { name: par }).click();
+const eleveDuTirage = async (page: Page) => (await reglages(page)).getByRole("combobox", { name: "Élève", exact: true });
+const note = async (page: Page) => (await reglages(page)).locator(".lot-note");
+const repartir = async (page: Page) => (await reglages(page)).getByRole("button", { name: /^L(a|es) répartir entre les élèves du chapitre$/ }).click();
+const nombre = async (page: Page) => (await reglages(page)).getByLabel("Nombre de scènes à écrire par élève, au plus");
+const mention = (page: Page) => page.locator(".lot-mention");
 const qui = async (scene: string): Promise<string | null> => (await sql<{ p: string | null }>("select prise_par_eleve as p from scenes where id = $1", [scene]))[0].p;
 
 type Classe = {
@@ -82,7 +94,9 @@ test.describe("Du Suivi aux fiches (F06.5, F07.4)", () => {
     await page.locator(".lot-hors summary", { hasText: "1 scène sans consigne : pas imprimée" }).click();
     await expect(caseDe(page, "S010")).toBeDisabled();
     await expect(page.locator(".lot-scene").filter({ hasText: "S010" })).toContainText("sans consigne : pas imprimée");
-    await expect(decompte(page)).toHaveText("3 scènes sur 1 feuille");
+    // Elles ont un élève : une feuille par élève, sans rien régler — Alice, puis Bilal
+    await expect(decompte(page)).toHaveText("3 scènes sur 2 feuilles");
+    await expect(page.locator(".lot-pager__ou")).toHaveText(/^Alice\s*1 \/ 2$/);
     // Ce choix se corrige avant d'imprimer
     await caseDe(page, "S009").uncheck();
     await expect(decompte(page)).toHaveText("2 scènes sur 1 feuille");
@@ -105,6 +119,7 @@ test.describe("Du Suivi aux fiches (F06.5, F07.4)", () => {
     const toutes = page.getByRole("checkbox", { name: "Toutes les scènes", exact: true });
     const combien = page.locator(".lot-tout").getByRole("status");
     const ajouter = (sorte: RegExp) => page.locator(".lot-raccourcis").getByRole("button", { name: sorte });
+    await tirer(page, "par chapitre");
     // Dix scènes peuvent être choisies : S010 n'a pas de consigne
     await expect(toutes).toBeChecked();
     await expect(combien).toHaveText("10 cochées sur 10");
@@ -172,6 +187,7 @@ test.describe("La feuille de rédaction (F07.4)", () => {
       [chouette],
     );
     await aller(page, fiches(c.projet, `chapitre=${c.lisiere.id}`));
+    await tirer(page, "par chapitre");
     const f = feuille(page);
     await expect(f.locator(".fr-tete")).toContainText("Les passeurs de brume · La lisière");
     await expect(f).toContainText("Sur ton cahier, recopie le repère de la scène (S007), puis écris ton texte.");
@@ -199,11 +215,22 @@ test.describe("La feuille de rédaction (F07.4)", () => {
   test("F07-AC53, AC56, AC55 — une feuille par élève ; un élève choisi, sa seule feuille ; à la suite, les parties s'enchaînent sous le prénom de chacun, séparées par un trait de coupe", async ({ page }) => {
     const c = await classeEtFiches(page);
     await aller(page, fiches(c.projet, `chapitre=${c.bac.id}`));
-    await expect(decompte(page)).toHaveText("6 scènes sur 1 feuille");
-    await tirage(page, "par élève").click();
-    // S006, sans élève, n'est sur aucune feuille, et la page le dit (AC53)
+    // Une feuille par élève, d'office : à l'écran, le décompte, la feuille montrée, « Réglages » et « Imprimer »
     await expect(decompte(page)).toHaveText("5 scènes sur 3 feuilles");
-    await expect(page.locator(".lot-note")).toContainText("1 des 6 scènes choisies n’a pas d’élève : sur aucune feuille.");
+    await expect(page.getByRole("dialog", { name: "Réglages des feuilles" })).toHaveCount(0);
+    await expect(page.locator(".lot-apercu").getByRole("checkbox")).toHaveCount(0);
+    // S006, sans élève, n'est sur aucune feuille : la barre le dit en deux mots, les réglages en entier (AC53)
+    await expect(mention(page)).toHaveText("1 sans élève");
+    await mention(page).click();
+    await expect(await note(page)).toContainText("1 des 6 scènes choisies n’a pas d’élève : sur aucune feuille.");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog", { name: "Réglages des feuilles" })).toHaveCount(0);
+    // Par chapitre : une seule feuille, les six scènes
+    await tirer(page, "par chapitre");
+    await expect(decompte(page)).toHaveText("6 scènes sur 1 feuille");
+    await expect(mention(page)).toHaveCount(0);
+    await tirer(page, "par élève");
+    await expect(decompte(page)).toHaveText("5 scènes sur 3 feuilles");
     await expect(feuille(page)).toContainText("Prénom : Chloé");
     await expect(feuille(page).locator(".fr-num")).toHaveText(["S001", "S002"]);
     // Entre les flèches, la feuille montrée : son élève, puis son rang
@@ -213,21 +240,21 @@ test.describe("La feuille de rédaction (F07.4)", () => {
     await expect(page.locator(".lot-pager__ou")).toHaveText(/^Dylan\s*2 \/ 3$/);
     await expect(imprimer(page)).toHaveText("Imprimer 3 feuilles");
     // Un élève choisi : sa seule feuille, et les autres ne s'impriment pas (AC56)
-    await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Dylan" });
+    await (await eleveDuTirage(page)).selectOption({ label: "Dylan" });
     await expect(decompte(page)).toHaveText("2 scènes sur 1 feuille");
     await expect(page.getByRole("heading", { name: /^Les scènes de Dylan/ })).toBeVisible();
     await expect(page.locator(".lot-scene")).toHaveCount(2);
     await expect(imprimer(page)).toHaveText("Imprimer 1 feuille");
     await expect(page.locator(".fr-feuille")).toHaveCount(1);
     await page.getByRole("button", { name: "Toutes les scènes du livre" }).click();
-    await expect(page.getByRole("combobox", { name: "Élève", exact: true })).toHaveValue("");
+    await expect(await eleveDuTirage(page)).toHaveValue("");
     await expect(decompte(page)).toHaveText("5 scènes sur 3 feuilles");
     // « par chapitre » : plus de choix d'élève ; il revient avec « par élève », sur tous
-    await tirage(page, "par chapitre").click();
+    await tirer(page, "par chapitre");
     await expect(page.getByRole("combobox", { name: "Élève", exact: true })).toHaveCount(0);
-    await tirage(page, "par élève").click();
+    await tirer(page, "par élève");
     // À la suite, à découper (AC55)
-    await page.getByRole("checkbox", { name: "À la suite, à découper" }).check();
+    await (await reglages(page)).getByRole("checkbox", { name: "À la suite, à découper" }).check();
     await expect(decompte(page)).toHaveText("5 scènes en 3 parties à découper");
     await expect(imprimer(page)).toHaveText("Imprimer à la suite");
     await expect(page.locator(".fr-feuille")).toHaveCount(1);
@@ -263,8 +290,9 @@ test.describe("La feuille de rédaction (F07.4)", () => {
     await page.locator(".lot-hors summary", { hasText: "2 scènes sans fiche" }).click();
     await expect(caseDe(page, "S007")).toBeDisabled();
     await expect(page.locator(".lot-scene").filter({ hasText: "S007" })).toContainText("à votre nom : pas de fiche");
+    await tirer(page, "par chapitre");
     await expect(feuille(page).locator(".fr-num")).toHaveText(["S008", "S009"]);
-    await tirage(page, "par élève").click();
+    await tirer(page, "par élève");
     await expect(page.locator(".fr-num", { hasText: "S007" })).toHaveCount(0);
     await c.base.from("scenes").update({ prise_par_enseignant: false, prise_par_eleve: c.eleves.Alice.id }).eq("id", c.lisiere.scenes[0]);
     await page.reload();
@@ -277,10 +305,10 @@ test.describe("Partage des scènes sans élève (F07.4)", () => {
     const c = await classeEtFiches(page);
     const barque = c.bac.scenes[5];
     await aller(page, fiches(c.projet, `chapitre=${c.bac.id}`));
-    await tirage(page, "par élève").click();
-    await page.getByRole("button", { name: "La répartir entre les élèves du chapitre" }).click();
+    await repartir(page);
     // Emma a une scène à son nom quand Chloé et Dylan en ont deux (AC57)
-    await expect(page.locator(".lot-note")).toContainText("S006 est proposée à Emma : elle sera à son nom à l’impression.");
+    await expect(await note(page)).toContainText("S006 est proposée à Emma : elle sera à son nom à l’impression.");
+    await expect(mention(page)).toHaveText("1 proposée");
     await expect(decompte(page)).toHaveText("6 scènes sur 3 feuilles");
     await expect(page.locator(".lot-scene").filter({ hasText: "S006" }).locator(".lot-scene__qui--propose")).toContainText("proposée à Emma");
     expect(await qui(barque)).toBeNull();
@@ -310,7 +338,7 @@ test.describe("Partage des scènes sans élève (F07.4)", () => {
     await expect(MESSAGE(page)).toContainText("1 scène est de nouveau « Pas encore prise ».");
     expect(await qui(barque)).toBeNull();
     // Redonnée, puis la page quittée et rouverte : « Annuler la répartition » n'est plus proposé
-    await page.getByRole("button", { name: "La répartir entre les élèves du chapitre" }).click();
+    await repartir(page);
     await imprimer(page).click();
     await page.getByRole("alertdialog").getByRole("button", { name: "Répartir et imprimer" }).click();
     await expect.poll(() => qui(barque)).toBe(c.eleves.Emma.id);
@@ -323,9 +351,12 @@ test.describe("Partage des scènes sans élève (F07.4)", () => {
     const c = await classeEtFiches(page);
     await c.base.from("scenes").update({ prise_par_eleve: null }).in("id", c.bac.scenes);
     await aller(page, fiches(c.projet, `chapitre=${c.bac.id}`));
-    await tirage(page, "par élève").click();
-    await page.getByRole("button", { name: "Les répartir entre les élèves du chapitre" }).click();
-    await expect(page.locator(".lot-note")).toContainText("6 scènes sans élève sont réparties entre les élèves de leur chapitre : elles seront à leur nom à l’impression.");
+    // Aucune scène cochée n'a d'élève : la page s'ouvre par chapitre, où « par élève » ne donnerait aucune feuille
+    await expect(decompte(page)).toHaveText("6 scènes sur 1 feuille");
+    await tirer(page, "par élève");
+    await expect(decompte(page)).toHaveText("Aucune feuille");
+    await repartir(page);
+    await expect(await note(page)).toContainText("6 scènes sans élève sont réparties entre les élèves de leur chapitre : elles seront à leur nom à l’impression.");
     await imprimer(page).click();
     await expect(page.getByRole("alertdialog")).toContainText("Les élèves proposés s’occupent de ces 6 scènes ?");
     await page.getByRole("alertdialog").getByRole("button", { name: "Répartir et imprimer" }).click();
@@ -342,16 +373,21 @@ test.describe("Partage des scènes sans élève (F07.4)", () => {
   test("F07-AC60 — hors partage : la scène d'un chapitre non attribué reste sur aucune feuille ; la liste réduite à un élève, le partage n'est plus proposé", async ({ page }) => {
     const c = await classeEtFiches(page);
     await aller(page, fiches(c.projet));
-    await tirage(page, "par élève").click();
-    await expect(page.locator(".lot-note")).toContainText("2 des 10 scènes choisies n’ont pas d’élève : sur aucune feuille.");
-    await page.getByRole("button", { name: "La répartir entre les élèves du chapitre" }).click();
+    await expect(mention(page)).toHaveText("2 sans élève");
+    await expect(await note(page)).toContainText("2 des 10 scènes choisies n’ont pas d’élève : sur aucune feuille.");
+    await repartir(page);
     // S006 est proposée ; S011, du « Sommet », n'a personne à qui aller
-    await expect(page.locator(".lot-note")).toContainText("S006 est proposée à Emma");
-    await expect(page.locator(".lot-note")).toContainText("1 reste sans élève, sur aucune feuille.");
-    await page.getByRole("button", { name: "Ne pas répartir" }).click();
-    await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Alice" });
+    await expect(await note(page)).toContainText("S006 est proposée à Emma");
+    await expect(await note(page)).toContainText("1 reste sans élève, sur aucune feuille.");
+    await expect(mention(page)).toHaveText("1 proposée · 1 sans élève");
+    await (await reglages(page)).getByRole("button", { name: "Ne pas répartir" }).click();
+    // Le bouton disparaît sous le clic : le panneau, lui, reste ouvert
+    await expect(page.getByRole("dialog", { name: "Réglages des feuilles" })).toBeVisible();
+    await (await eleveDuTirage(page)).selectOption({ label: "Alice" });
+    // Un seul élève : ni partage, ni nombre, ni mention
     await expect(page.getByRole("button", { name: /répartir entre les élèves/ })).toHaveCount(0);
-    await expect(page.getByRole("button", { name: "Fixer un nombre de scènes par élève" })).toHaveCount(0);
+    await expect(page.getByLabel("Nombre de scènes à écrire par élève, au plus")).toHaveCount(0);
+    await expect(mention(page)).toHaveCount(0);
   });
 });
 
@@ -362,17 +398,18 @@ test.describe("Plafond et complément (F07.4)", () => {
     await c.base.from("scenes").update({ prise_par_eleve: null, consigne: "Ce que la scène doit raconter." }).in("id", c.lisiere.scenes);
     await sql("update scenes set prise_par_eleve = $2 where id = $1", [c.lisiere.scenes[0], c.eleves.Alice.id]);
     await aller(page, fiches(c.projet, `chapitre=${c.lisiere.id}`));
-    await tirage(page, "par élève").click();
-    await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
-    await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
-    await page.getByRole("button", { name: "Les répartir entre les élèves du chapitre" }).click();
+    // Au plus quatre scènes par élève, d'office ; le nombre se change dans les réglages
+    await expect(await nombre(page)).toHaveValue("4");
+    await (await nombre(page)).fill("2");
+    await repartir(page);
     // Bilal, qui n'en a aucune, en reçoit deux ; Alice, qui en a une, une ; aucune ne reste
-    await expect(page.locator(".lot-note")).toContainText("3 scènes sans élève sont réparties entre les élèves de leur chapitre");
-    await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("1");
-    await expect(page.locator(".lot-note")).toContainText("S008 est proposée à Bilal : elle sera à son nom à l’impression. 2 restent sans élève, sur aucune feuille : chaque élève du chapitre a déjà 1 scène à écrire.");
-    // Sans nombre, tout est réparti
-    await page.locator(".lot-plafond").getByRole("button", { name: "Retirer", exact: true }).click();
-    await expect(page.locator(".lot-note")).toContainText("3 scènes sans élève sont réparties");
+    await expect(await note(page)).toContainText("3 scènes sans élève sont réparties entre les élèves de leur chapitre");
+    await (await nombre(page)).fill("1");
+    await expect(await note(page)).toContainText("S008 est proposée à Bilal : elle sera à son nom à l’impression. 2 restent sans élève, sur aucune feuille : chaque élève du chapitre a déjà 1 scène à écrire.");
+    await expect(mention(page)).toHaveText("1 proposée · 2 sans élève");
+    // La case vidée : aucun nombre, tout est réparti
+    await (await nombre(page)).fill("");
+    await expect(await note(page)).toContainText("3 scènes sans élève sont réparties");
   });
 
   test("F07-AC75 — compléter un élève : le nombre fixé, la page signale Emma, à qui il reste moins de scènes à écrire, sans rien lui proposer ; complétée, les premières scènes libres lui sont proposées, à son nom à l'impression seulement", async ({ page }) => {
@@ -386,13 +423,13 @@ test.describe("Plafond et complément (F07.4)", () => {
       plus.push(ligne.scene_id);
     }
     await aller(page, fiches(c.projet, `chapitre=${c.bac.id}`));
-    await tirage(page, "par élève").click();
-    // Sans nombre fixé, rien n'est signalé
-    await expect(page.locator(".lot-completer")).toHaveCount(0);
-    await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
-    await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("2");
+    // Avec quatre, d'office, les trois élèves du chapitre sont à compléter ; sans nombre, personne
+    const completer = (await reglages(page)).locator(".lot-completer");
+    await expect(completer.getByRole("button")).toHaveCount(3);
+    await (await nombre(page)).fill("");
+    await expect(completer).toHaveCount(0);
+    await (await nombre(page)).fill("2");
     // Chloé et Dylan en ont déjà deux : seule Emma est signalée, et rien ne lui est encore proposé
-    const completer = page.locator(".lot-completer");
     await expect(completer).toContainText("ou compléter jusqu’à 2 scènes :");
     await expect(completer.getByRole("button")).toHaveCount(1);
     await expect(page.locator(".lot-scene__qui--propose")).toHaveCount(0);
@@ -405,7 +442,8 @@ test.describe("Plafond et complément (F07.4)", () => {
     await expect(feuille(page)).toContainText("Prénom : Emma");
     await expect(feuille(page).locator(".fr-num")).toHaveText(["S005", "S006"]);
     expect(await qui(c.bac.scenes[5])).toBeNull();
-    // « Ne pas compléter » : le même prénom, cliqué de nouveau
+    // « Ne pas compléter » : le même prénom, cliqué de nouveau, dans les réglages
+    await reglages(page);
     await completer.getByRole("button", { pressed: true }).click();
     await expect(page.locator(".lot-scene__qui--propose")).toHaveCount(0);
     await completer.getByRole("button", { name: /^Emma : 1 scène à écrire/ }).click();
@@ -420,10 +458,7 @@ test.describe("Plafond et complément (F07.4)", () => {
   test("F07-AC75 — plus de scène libre : une seule scène sans élève pour trois élèves à compléter ; Emma complétée, les deux autres prénoms ne se cliquent plus, et la page le dit", async ({ page }) => {
     const c = await classeEtFiches(page);
     await aller(page, fiches(c.projet, `chapitre=${c.bac.id}`));
-    await tirage(page, "par élève").click();
-    await page.getByRole("button", { name: "Fixer un nombre de scènes par élève" }).click();
-    await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("4");
-    const completer = page.locator(".lot-completer");
+    const completer = (await reglages(page)).locator(".lot-completer");
     await expect(completer.getByRole("button")).toHaveCount(3);
     await expect(completer.locator("small")).toHaveCount(0);
     await completer.getByRole("button", { name: /^Emma/ }).click();
@@ -434,7 +469,7 @@ test.describe("Plafond et complément (F07.4)", () => {
     await completer.getByRole("button", { name: /^Emma/ }).click();
     await expect(completer.getByRole("button", { name: /^Chloé/ })).toBeEnabled();
     // Un nombre de 1 s'accorde
-    await page.getByLabel("Nombre de scènes à écrire par élève, au plus").fill("1");
+    await (await nombre(page)).fill("1");
     await expect(page.locator(".lot-plafond__phrase")).toContainText("scène à écrire par élève");
     await expect(page.locator(".lot-plafond__phrase")).not.toContainText("scènes");
   });

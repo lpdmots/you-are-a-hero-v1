@@ -323,10 +323,93 @@
   align-items: center;
   gap: 8px 14px;
 }
-.lot-apercu__barre > p {
+/* « Les feuilles », et à droite le bouton des réglages : la barre du dessous garde ses trois éléments */
+.lot-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: -2px;
+}
+.lot-entete .lot-titre {
+  margin-bottom: 0;
+}
+.lot-apercu__quoi {
+  display: grid;
+  justify-items: start;
+  gap: 1px;
   margin-right: auto;
+  min-width: 0;
+}
+.lot-apercu__quoi > p {
   font-weight: 700;
   font-variant-numeric: tabular-nums;
+}
+/* Deux mots sur les scènes sans élève, qui mènent aux réglages : en ambre tant qu'il en reste hors des feuilles */
+.lot-mention {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--graphite-2);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.lot-mention[data-attend] {
+  color: var(--e-valider);
+}
+.lot-mention:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* « Réglages » : tout ce qui n'est pas le cas courant, sous son bouton, sans rien déplacer */
+.lot-reglages {
+  position: relative;
+  display: inline-flex;
+}
+.lot-reglages > .btn {
+  min-height: 36px;
+  font-size: var(--t-s);
+}
+.lot-reglages__panneau {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 30;
+  display: grid;
+  gap: 14px;
+  width: min(430px, calc(100vw - 32px));
+  padding: 16px 18px 18px;
+  border-radius: 14px;
+  background: var(--feuille);
+  box-shadow:
+    var(--ombre-panneau),
+    inset 0 0 0 1px var(--trait);
+  overflow-y: auto;
+}
+.lot-reglages__panneau label.lot-reglage {
+  cursor: default;
+}
+.lot-reglages__panneau .lot-suite {
+  margin-left: 0;
+}
+/* Dans le panneau, « ou compléter… » garde sa ligne, les prénoms dessous */
+.lot-reglages__panneau .lot-completer > span:first-child {
+  flex-basis: 100%;
+}
+.lot-sans-eleve {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+}
+.lot-reglages__st {
+  font-size: var(--t-s);
+  font-weight: 800;
 }
 .lot-pager {
   display: flex;
@@ -571,7 +654,7 @@
   .lot-apercu__barre {
     flex-wrap: nowrap;
   }
-  .lot-apercu__barre > p {
+  .lot-apercu__quoi > p {
     font-size: var(--t-s);
   }
   .lot-apercu__barre .lot-imprimer {

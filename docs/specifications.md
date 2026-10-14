@@ -5158,6 +5158,27 @@ du plan.
 - **Dans « Mon travail » :** une scène reçue par le partage est une prise
   en charge comme les autres, sans mention
   ([F06.5](#f065--suivi-du-travail-et-accès-aux-scènes)).
+- **Réglages par défaut et bouton « Réglages », décidés par le porteur le
+  13 octobre 2026,** à l'essai de la page, qu'il juge « toujours trop
+  compliquée » : à l'écran, le décompte, la feuille montrée et
+  « Imprimer » ; tout le reste — par chapitre ou par élève, un seul élève,
+  « À la suite, à découper », les scènes sans élève, le nombre, le
+  complément — est derrière un bouton « Réglages ». Sans rien régler :
+  une feuille par élève, une par page, et au plus 4 scènes à écrire par
+  élève. Ce qui révise deux points plus haut : le nombre n'est plus absent
+  par défaut, il vaut 4 et se change ou se vide dans les réglages ; et les
+  élèves à compléter ne sont plus signalés sur la page, mais dans les
+  réglages. Le nombre ne donne toujours rien à lui seul, et le partage ne
+  vient toujours que sur demande. Précisions arrêtées avec lui ou prises en
+  construisant : la page s'ouvre « par élève » dès qu'une scène cochée a un
+  élève, « par chapitre » sinon, où « par élève » ne donnerait aucune
+  feuille, et quand le Suivi demandait « Tout son chapitre » ; à côté du
+  décompte, deux mots disent les scènes qui ne sortiront pas (« 9 sans
+  élève », « 2 proposées ») et ouvrent les réglages, recommandation qu'il
+  n'a pas commentée : cachée, cette information ferait imprimer 22 feuilles
+  en croyant avoir tout ; quand le nombre empêche un partage, la note le
+  dit (« chaque élève du chapitre a déjà 4 scènes à écrire »), à côté de la
+  case où il se change.
 
 - **F07-AC71 — Scène de trop :** étant donné « La lisière », attribuée à
   Chloé, Dylan et Emma, qui ont chacun deux scènes à leur nom — Chloé deux

@@ -1733,6 +1733,31 @@ stade.
   - *Défaut trouvé en passant, corrigé :* à l'impression, une page A4 est
     assez étroite pour tomber dans les règles du petit écran, qui
     masquaient l'image de la scène sur la feuille.
+- **Second retour du porteur, le même jour** (« toujours trop compliqué ») :
+  à l'écran, seulement la barre — le décompte, la feuille montrée entre ses
+  flèches, « Imprimer » — et un bouton « Réglages », son idée. Sans rien
+  régler : une feuille par élève, une par page, au plus 4 scènes par élève
+  (F07.4, « Réglages par défaut »). Ce qui remplace le point précédent sur
+  la colonne « Les feuilles » :
+  - *« Réglages »,* bouton cerné au signe de deux curseurs, à droite du
+    titre « Les feuilles », pour que la barre garde ses trois éléments sur
+    une ligne. Il ouvre un panneau flottant sous la barre, sur la feuille :
+    le décompte et « Imprimer » restent en vue et suivent les réglages. Le
+    panneau porte « Une feuille : par chapitre / par élève », « Pour : Tous
+    les élèves ▾ » en « par élève », « À la suite, à découper », puis, s'il
+    y a des scènes cochées sans élève, un bloc « Scènes sans élève » : la
+    note et « Les répartir », « Au plus [4] scènes à écrire par élève »
+    (vider la case : aucun nombre), « ou compléter jusqu'à 4 scènes » et
+    les prénoms. Il se referme à l'appui hors de lui ou par « Échap ».
+  - *Deux mots sous le décompte,* « 9 sans élève » en ambre ou « 2
+    proposées », soulignés en pointillé, ouvrent les réglages : ce qui ne
+    sortira pas reste dit sans ouvrir le panneau (recommandation, sans
+    commentaire du porteur).
+  - *Ce qui reste sous la barre :* le message de demande avant « Répartir
+    et imprimer », puis « n scènes réparties · Annuler la répartition ».
+  - *Petit écran :* la barre du bas garde le décompte et « Imprimer » ;
+    « Réglages » est à côté du titre, après la liste, et les deux mots
+    sous le décompte l'ouvrent, au-dessus de la barre.
 - **Le nombre fixé (sans maquette) :** en « par élève », tous élèves
   affichés, un lien discret, « Fixer un nombre de scènes par élève »,
   d'abord sous le réglage, puis, à la reprise du 13 octobre, sous la note

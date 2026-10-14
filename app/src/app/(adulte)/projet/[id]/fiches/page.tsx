@@ -44,7 +44,7 @@ export default async function Page({ params, searchParams }: Props) {
         plan={plan}
         eleves={eleves}
         contenus={contenus}
-        depart={{ choisies, eleve }}
+        depart={{ choisies, eleve, par: filtres.eleve && filtres.eleve !== "moi" && filtres.mode === "chapitre" ? "chapitre" : null }}
         retour={`/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`}
       />
     </div>
