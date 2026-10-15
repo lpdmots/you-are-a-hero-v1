@@ -18,7 +18,7 @@ import type { CheminsAffiches, PointAffiche, TacheAffichee } from "./points";
  * et les deux dernières étapes sont fermées par leurs propres règles.
  */
 export function Livre({
-  projet, etape, marques, chemins, relire, aideMasquee, aideVue,
+  projet, etape, marques, chemins, relire, pdfDeTravail, aideMasquee, aideVue,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   etape: EtapeLivre;
@@ -26,6 +26,8 @@ export function Livre({
   /** « Vérifier les chemins » ; rien en récit classique, qui n'a pas cette étape */
   chemins: CheminsAffiches | null;
   relire: { finir: number; graves: PointAffiche[] };
+  /** Le dernier PDF de travail, s'il y en a un (F11.2) */
+  pdfDeTravail: PdfAffiche | null;
   aideMasquee: boolean;
   aideVue: boolean;
 }) {
@@ -89,7 +91,7 @@ export function Livre({
       ) : etape === "chemins" && chemins ? (
         <FicheChemins projetId={projet.id} chemins={chemins} fermee={marques.page === "fermee"} />
       ) : etape === "relire" ? (
-        <RelireAVenir projet={projet} relire={relire} />
+        <RelireAVenir projet={projet} relire={relire} pdfDeTravail={pdfDeTravail} />
       ) : (
         <EtapeFermee projet={projet} etape={etape} chemins={chemins} relire={relire} />
       )}
@@ -424,7 +426,7 @@ function Declaration({ projetId, chemins }: { projetId: string; chemins: Chemins
 // ——— Les autres étapes, à l'étape 5 du plan ———
 
 /** « Relire » arrive avec l'aperçu du livre (étape 6 du plan) ; on y voit déjà ce qui reste à écrire. */
-function RelireAVenir({ projet, relire }: { projet: { id: string; deClasse: boolean }; relire: { finir: number; graves: PointAffiche[] } }) {
+function RelireAVenir({ projet, relire, pdfDeTravail }: { projet: { id: string; deClasse: boolean }; relire: { finir: number; graves: PointAffiche[] }; pdfDeTravail: PdfAffiche | null }) {
   return (
     <section className="porte" aria-labelledby="relire-t">
       <h2 id="relire-t" tabIndex={-1}>
@@ -448,7 +450,59 @@ function RelireAVenir({ projet, relire }: { projet: { id: string; deClasse: bool
           ))}
         </ul>
       ) : null}
+      <PdfDeTravail projetId={projet.id} dernier={pdfDeTravail} />
     </section>
+  );
+}
+
+/** Un PDF du livre tel que l'écran le nomme. */
+export type PdfAffiche = { id: string; etat: string; pages: number };
+
+/**
+ * Le PDF de travail (F11.2), pour relire sur papier : composé sur le serveur en quelques
+ * secondes, puis téléchargé. Seul le dernier est gardé.
+ */
+function PdfDeTravail({ projetId, dernier }: { projetId: string; dernier: PdfAffiche | null }) {
+  const [pdf, setPdf] = useState(dernier);
+  const [calcul, setCalcul] = useState(false);
+  const [erreur, setErreur] = useState<string | null>(null);
+  async function creer() {
+    setCalcul(true);
+    setErreur(null);
+    try {
+      const reponse = await fetch(`/livre/${projetId}/pdf`, { method: "POST" });
+      const r = (await reponse.json()) as { ok: true; id: string; etat: string; pages: number; adresse: string } | { ok: false; erreur: string };
+      if (!r.ok) {
+        setErreur(r.erreur);
+        return;
+      }
+      setPdf({ id: r.id, etat: r.etat, pages: r.pages });
+      window.location.assign(r.adresse);
+    } catch {
+      setErreur("Le PDF n’a pas pu être créé. Réessayez dans un instant.");
+    } finally {
+      setCalcul(false);
+    }
+  }
+  return (
+    <div className="pdf-travail">
+      <h3 className="pdf-travail__titre">PDF de travail</h3>
+      <p className="pdf-travail__phrase">Pour relire sur papier, avec les références des scènes et les points à corriger.</p>
+      <p className="pdf-travail__cmd">
+        <button type="button" className="btn" onClick={creer} disabled={calcul} aria-describedby={calcul ? "pdf-travail-etat" : undefined}>
+          <Icone nom="papier" />
+          {calcul ? "Création du PDF…" : "Créer le PDF de travail"}
+        </button>
+        {pdf && !calcul ? (
+          <a className="lien" href={`/livre/pdf/${pdf.id}`}>
+            Télécharger celui du {pdf.etat.replace(/^état du /, "")}
+          </a>
+        ) : null}
+      </p>
+      <p id="pdf-travail-etat" className="pdf-travail__etat" role="status">
+        {calcul ? "Quelques secondes : le livre est mis en pages sur le serveur." : erreur ?? ""}
+      </p>
+    </div>
   );
 }
 

@@ -1441,6 +1441,56 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      définitif ; mesures chez Vercel (V1 à V3, V5) ; captures ; mode
      d'emploi de son essai dans `app/README.md`. L'envoi à l'imprimeur (V6)
      et l'exemplaire reçu reviennent au porteur.
+- **Construction, commencée le 15 octobre 2026,** en local, un commit par
+  lot ; rien n'est poussé sur `main` ni appliqué à la vraie base.
+  - **Lot 1 — composition et PDF de travail : construit le 15 octobre
+    2026.** Le livre composé d'après un instantané de la base
+    (`app/src/domaine/composition.ts` : ce qu'il imprime, dans quel ordre,
+    en HTML, la césure posée d'avance), mis en pages par Paged.js 0.4.3 dans
+    Chromium (`app/src/serveur/livre/`) ; les marques du PDF de travail
+    posées après la mise en page ; la page récapitulative ; la carte des
+    blocs ; « Créer le PDF de travail » à « Relire », déposé dans un seau
+    privé, téléchargé par une adresse signée ; le dernier seul gardé. Le
+    récit classique est composé dès ce lot (filet, titres de chapitre,
+    en-tête). Migration `20261015100000_pdf_du_livre.sql` (la table des PDF
+    et le seau `livres`), base locale seulement. Choix techniques et
+    mesures : [architecture](architecture.md#réalisation-de-létape-6-15-octobre-2026).
+    - **Critères fermés :** F11-AC03, AC09, AC15, AC16 à AC20, AC22, AC23,
+      AC33, AC34, AC58 ; F09-AC09 ; F05-AC08 et F10-AC14 pour le PDF de
+      travail ; F04-AC17 pour le PDF ; F11-AC26 pour l'instantané et son
+      empreinte. Fermés plus tôt que prévu, la composition les portant
+      déjà : F11-AC54, AC55, AC102 à AC104 (récit classique), F10-AC13, et
+      la part de F11-AC40, AC41 qui tient à la césure posée d'avance.
+    - **Critères qui attendent :** l'aperçu, qui reprendra cette
+      composition, et F11-AC30 entre l'aperçu et le PDF, au lot 2 (le PDF
+      de travail et le PDF définitif ont déjà les mêmes lignes aux mêmes
+      places) ; le signalement « le livre a changé depuis » de F11-AC26, au
+      lot 5 ; F04-AC17 dans le lecteur en ligne, à l'étape 7.
+    - **Vérifications levées :** V1 — le Chromium de Vercel
+      (`@sparticuz/chromium` 153, Linux, essayé sous Docker dans l'image
+      Lambda d'Amazon) donne, sur un livre de 107 pages, les mêmes 3 035
+      lignes aux mêmes places, au centième de point, que le Chromium 156
+      de macOS ; V19 en partie (versions figées). V2 et V3 attendent la
+      préversion de la branche `essai-vercel`.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      les marques du PDF de travail — « Version de travail · état du
+      15 octobre, 10 h 02 » en haut, côté reliure ; la référence « S042 » à
+      gauche du numéro, et dessous « énigme → 38 » ou « n° fixé » ; chaque
+      point des contrôles en marge extérieure, dans sa phrase courte et sa
+      couleur ; « À finir » en gris à côté d'une scène pas encore prête ;
+      « p. 12 » en bas, côté extérieur ; la page récapitulative dit le
+      nombre de scènes à finir, puis les points par gravité, chacun avec son
+      numéro, sa référence et sa page. Le livre : Vollkorn en 12 points ;
+      numéro de passage centré, en gras ; phrase de choix en italique
+      derrière un tiret, son numéro en gras ; action de jeu encadrée, son
+      signe devant ; « Fin » en petites capitales entre deux filets. Récit
+      classique : en-tête centré, numéro de page en bas, côté extérieur. Le
+      fichier téléchargé perd ses accents (« Les passeurs de brume - version
+      de travail.pdf ») : le stockage n'écrit le nom qu'en caractères
+      simples.
+    - **Tests automatiques :** 16 unitaires, 13 de composition par Chromium
+      (`npm run test:livre`, nouveau projet de tests), 4 contre la base,
+      1 parcours.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

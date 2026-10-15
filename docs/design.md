@@ -1879,6 +1879,27 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 6 construite (15 octobre 2026)
+
+Ce que l'étape 6 du [plan](plan.md#étape-6--composer-et-imprimer-le-livre)
+construit, lot par lot, et ses écarts avec la maquette (« Destination Livre et
+lecture d'essai », plus bas). Les règles restent en F10, F11 et F12.1.
+
+**Lot 1 — composition et PDF de travail.** Sur l'écran provisoire de
+« Relire » (l'aperçu et les quatre tâches arrivent au lot 2), une partie « PDF
+de travail » : une phrase (« Pour relire sur papier, avec les références des
+scènes et les points à corriger. »), le bouton « Créer le PDF de travail »,
+qui devient « Création du PDF… » le temps du calcul, avec une ligne d'état ; le
+fichier se télécharge dès qu'il est prêt, et « Télécharger celui du
+15 octobre, 17 h 27 » le propose de nouveau. Écart avec la maquette, dit au
+porteur au début du lot : sa feuille latérale (contenu décrit, deux
+miniatures, instantané daté) est réduite à cette phrase et au bouton. Le
+livre imprimé reprend la page A5 de la maquette — Vollkorn, numéro centré,
+choix en italique derrière un tiret, action encadrée avec son signe, « Fin »
+entre deux filets — et ses marques de travail en Atkinson, dans les couleurs
+des trois gravités ; précisions à confirmer dans le
+[plan](plan.md#étape-6--composer-et-imprimer-le-livre), lot 1.
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans

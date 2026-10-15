@@ -3,8 +3,25 @@ import type { NextConfig } from "next";
 // Chaque page dépend de la personne connectée et de l'état de ses accès, qui
 // doivent se lire à l'instant : pas de composants mis en cache (voir
 // docs/architecture.md, « Réalisation de l'étape 1 »).
+// Le livre est composé par Chromium sur le serveur (ADR 0003) : Playwright et le Chromium de
+// Vercel restent hors du paquet, et les fichiers que la composition lit sur le disque — Paged.js
+// et les polices du livre — partent avec les fonctions qui composent.
+const FICHIERS_DU_LIVRE = [
+  "./node_modules/pagedjs/dist/paged.js",
+  "./node_modules/@fontsource/vollkorn/latin*.css",
+  "./node_modules/@fontsource/vollkorn/files/vollkorn-latin*.woff2",
+  "./node_modules/@fontsource/atkinson-hyperlegible-next/latin*.css",
+  "./node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin*.woff2",
+  "./node_modules/@sparticuz/chromium/bin/**",
+];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  serverExternalPackages: ["playwright-core", "@sparticuz/chromium"],
+  outputFileTracingIncludes: {
+    "/livre/**": FICHIERS_DU_LIVRE,
+    "/diagnostic/**": FICHIERS_DU_LIVRE,
+  },
   async headers() {
     return [
       {

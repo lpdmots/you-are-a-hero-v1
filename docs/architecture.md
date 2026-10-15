@@ -1060,6 +1060,73 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
 - **Hauteurs de l'agencement (V4) :** prises sur la vraie composition, par
   la carte des blocs, plutôt que sur un modèle approché.
 
+**Lot 1 — composition et PDF de travail (15 octobre 2026) :**
+
+- **Deux couches.** `src/domaine/composition.ts`, sans navigateur : le livre
+  à composer d'après le plan, les textes et les contrôles (ordre imprimé de
+  `numeros.ts`, titres de partie et de chapitre, filets du récit classique,
+  marques de travail) et son HTML, en reprenant les blocs de la lecture
+  commune (`lecture.ts`). `src/serveur/livre/` : la page du serveur, les
+  feuilles de style, le lancement de Chromium, l'instantané et le dépôt.
+- **Le document servi à Chromium.** Une adresse fictive
+  (`https://livre.invalid/`) que Playwright intercepte : le document, ses
+  deux feuilles, Paged.js, les polices et les images, lues dans le stockage
+  au moment où Chromium les demande. Rien ne passe par le réseau.
+- **Deux feuilles de style.** Paged.js retire les déclarations `break-*` des
+  feuilles qu'il lit : la sienne ne porte que la page A5, ses marges
+  alternées et les sauts forcés ; la typographie et les règles de coupure
+  (veuves, orphelines, blocs insécables) sont dans une feuille que Chromium
+  lit seul et tient en remplissant chaque page.
+- **Le script de la page est un texte** (`dans-la-page.ts`) : une fonction
+  passée à Playwright serait réécrite par la compilation (Vite y ajoute ses
+  propres appels). Il enregistre le contournement du défaut de Paged.js
+  relevé par le prototype (une coupure de mot en fin de page reprise une
+  lettre trop loin ; 11 corrections sur le livre de diagnostic), puis pose
+  après la mise en page ce qui n'est pas dans le fil du texte : en-tête,
+  numéro de page, marques du PDF de travail, numéros de page du
+  récapitulatif ; il rend la carte des blocs, les débordements et une
+  signature de chaque page. Les attributs de l'application ne s'appellent
+  pas `data-ref`, que Paged.js pose sur chaque élément.
+- **Page récapitulative paire** : le récit commence sur une page de droite
+  (`break-before: right`), ce qui ajoute la blanche quand le récapitulatif
+  tient en une page ; le numéro de page du livre est son rang moins ces
+  pages.
+- **Polices** : Vollkorn et Atkinson Hyperlegible Next, des paquets
+  `@fontsource` (licence OFL), alphabets latin et latin étendu, en woff2 ;
+  aucune police du système. **Césure** : le paquet `hyphen` (motifs du
+  français, licence ISC), en JavaScript seul, plutôt que hyphenopoly du
+  prototype, dont les motifs sont un fichier à charger ; restreinte comme le
+  veut F11.3.
+- **Versions figées** : `pagedjs` 0.4.3, `playwright-core` 1.64.0 (celle des
+  parcours), `@sparticuz/chromium` 153.0.0, `hyphen` 1.14.1. En local,
+  Chromium 156 de Playwright ; chez Vercel, Chromium 153. Les deux restent
+  hors du paquet de Next (`serverExternalPackages`) ; Paged.js, les polices
+  et le Chromium de Vercel partent avec les fonctions par
+  `outputFileTracingIncludes`.
+- **Instantané et empreinte** : l'heure est notée, puis tout est lu ;
+  l'empreinte (SHA-256 du livre à composer) est gardée avec le PDF : le
+  livre a changé depuis quand elle diffère (F11-AC26, signalé au lot 5).
+- **Dépôt** : table `pdf_du_livre` et seau privé `livres` (50 Mo par
+  fichier) ; le fichier se donne par une adresse signée valable cinq
+  minutes, après lecture de la ligne par l'adulte (règles d'accès de la
+  base). Le stockage n'écrit le nom du fichier qu'en caractères simples :
+  les accents tombent. Les demandes passent par deux routes,
+  `POST /livre/[projet]/pdf` (origine vérifiée, 60 s au plus) et
+  `GET /livre/pdf/[pdf]`.
+- **Diagnostic** : `/diagnostic/livre`, fermé en production, compose un livre
+  fabriqué dans le code (60 passages, 107 pages) et rend durées, mémoire,
+  version de Chromium et l'empreinte des pages ; `scripts/diagnostic-livre.ts`
+  en est la version hors de Next, pour Docker.
+- **Mesures** (livre de diagnostic, 107 pages, 0,86 Mo) : 2,1 s sur le Mac
+  du porteur (mise en page 1,9 s) ; 4,1 à 5,0 s sous Docker, Chromium de
+  Vercel émulé en x86 (lancement 1,0 à 1,9 s, mise en page 2,8 s). Le PDF
+  de travail de « Les passeurs de brume » local (24 pages) : 2,2 s, bouton
+  compris.
+- **V1 levée** : mêmes 107 pages, mêmes 3 035 lignes aux mêmes places au
+  centième de point, entre le Chromium 153 de Linux et le 156 de macOS. Une
+  fidélité d'un hébergement à l'autre n'était pas requise ; elle est
+  constatée.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

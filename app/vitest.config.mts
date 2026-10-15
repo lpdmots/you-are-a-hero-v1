@@ -22,6 +22,11 @@ export default defineConfig({
           hookTimeout: 30000,
         },
       },
+      {
+        // Le livre composé par Chromium (ADR 0003) : sans base, mais avec un navigateur
+        resolve: { alias },
+        test: { name: "livre", include: ["tests/livre/**/*.test.ts"], environment: "node", fileParallelism: false, testTimeout: 120000, hookTimeout: 120000 },
+      },
     ],
   },
 });

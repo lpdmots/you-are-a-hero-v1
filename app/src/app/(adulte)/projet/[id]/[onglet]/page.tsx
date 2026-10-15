@@ -18,6 +18,7 @@ import { Suivi } from "../_suivi/Suivi";
 import { Carnet } from "../_preparation/Carnet";
 import { Livre } from "../_livre/Livre";
 import { afficherChemins, afficherPoint } from "../_livre/points";
+import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
 import styles from "./projet.module.css";
 
 type Props = { params: Promise<{ id: string; onglet: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -86,7 +87,8 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else if (onglet === "livre") {
-    const [livre, plan, magasin, demande] = await Promise.all([etatDuLivre(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams]);
+    const [livre, plan, magasin, demande, pdf] = await Promise.all([etatDuLivre(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams, pdfDuProjet(enseignant, projet.id)]);
+    const travail = pdf.find((x) => x.sorte === "travail");
     if (!livre) notFound();
     const acceptes = avertissementsAcceptes(livre.problemes, livre.acceptations, livre.changements);
     const chemins = aChoix ? etatChemins(livre.problemes, acceptes, livre.cheminsVerifies) : null;
@@ -102,6 +104,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
         marques={marques}
         chemins={chemins ? afficherChemins(chemins, plan, projet.id) : null}
         relire={{ finir: relire.finir, graves: aTraiter(livre.problemes).filter((p) => p.etape === "relire").map((p) => afficherPoint(p, plan, projet.id)) }}
+        pdfDeTravail={travail ? { id: travail.id, etat: etatEnMots(travail.etatDu), pages: travail.pages } : null}
         aideMasquee={enseignant.aidesMasquees.includes("livre-chemins")}
         aideVue={magasin.get("aide-livre")?.value === "vue"}
       />

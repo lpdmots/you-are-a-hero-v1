@@ -475,3 +475,34 @@
     padding: 22px 18px 24px;
   }
 }
+
+/* ——— PDF de travail, à « Relire » (F11.2) ——— */
+.pdf-travail {
+  display: grid;
+  gap: 6px;
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--trait);
+}
+.pdf-travail__titre {
+  font-size: var(--t-m);
+  font-weight: 800;
+}
+.pdf-travail__phrase {
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.pdf-travail__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 4px 0 0;
+}
+.pdf-travail__etat {
+  min-height: 1.4em;
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}

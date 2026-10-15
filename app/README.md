@@ -92,6 +92,7 @@ npm run histoire:essai -- --production adresse@du.compte --oui   # le fait
 ```bash
 npm run verifier        # types, règles de code, tests du domaine et du chiffrement
 npm run test:base       # droits et règles d'accès, contre la base locale
+npm run test:livre      # le livre composé par Chromium, relu dans le PDF produit, sans base
 npm run test:parcours   # parcours joués dans Chromium, contre l'application compilée
 npm run captures        # captures des écrans, dans test-results/captures/
 ```
@@ -107,6 +108,22 @@ pris :
 
 ```bash
 npm run base:purger-essais   # supprime les comptes des tests, pas le compte local
+```
+
+### Composer le livre ailleurs (étape 6)
+
+Le livre est composé par Chromium sur le serveur (Paged.js, ADR 0003). La page
+`/diagnostic/livre`, fermée en production, compose un livre fabriqué dans le
+code — sans la base ni aucune donnée d'élève — et rend ses durées, sa mémoire,
+la version de Chromium et l'empreinte de ses pages ; `?pdf=1` rend le PDF.
+Deux Chromium donnent les mêmes pages quand l'empreinte est la même.
+
+Pour essayer le Chromium de Vercel sous Linux, dans l'image Lambda d'Amazon
+(Docker Desktop lancé) :
+
+```bash
+npx esbuild scripts/diagnostic-livre.ts --bundle --platform=node --format=cjs --target=node22 --tsconfig=tsconfig.json --external:playwright-core --external:@sparticuz/chromium --outfile=/tmp/diagnostic-livre.cjs
+docker run --rm --platform linux/amd64 -v "$PWD":/app:ro -v /tmp:/sortie -w /app -e NODE_PATH=/app/node_modules -e CHROMIUM_SERVEUR=1 -e AWS_EXECUTION_ENV=AWS_Lambda_nodejs22.x --entrypoint node public.ecr.aws/lambda/nodejs:22 /sortie/diagnostic-livre.cjs /sortie/linux.pdf
 ```
 
 ## Visuels de l'application
