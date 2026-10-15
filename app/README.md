@@ -172,8 +172,9 @@ restauration, puis connexion du compte, relecture d'un code et d'un mot de passe
 de classe, ouverture de la classe sur un poste. Essayé de nouveau le 13 octobre
 2026, avec le schéma de l'étape 4 (plan du récit, textes, remises, remarques,
 encouragements) : la base locale revient à l'identique, et les codes et le mot
-de passe de la classe d'essai se relisent. La restauration vers la vraie base n'a
-jamais été jouée : voir « La vraie base », plus bas.
+de passe de la classe d'essai se relisent. Restauration de la vraie base jouée
+le 15 octobre 2026, en mettant l'étape 5 en ligne : chaque table revient avec le
+même nombre de lignes, et `npm run verifier:production` passe.
 
 ## Jouer une séance d'essai, puis restaurer (fin de l'étape 4)
 
@@ -238,11 +239,13 @@ n'est plus dans l'histoire.
 **La vraie base.** `npm run restaurer -- sauvegardes/<date> --production`
 commence par porter dans la vraie base le schéma de l'application, donc toute
 migration qui n'y est pas encore : tant que l'étape 4 n'est pas en ligne, la
-restaurer y appliquerait ses quatre migrations avant le code qui s'en sert. La
-restauration de la vraie base se fait donc au moment de mettre l'étape 4 en
-ligne, dans cet ordre : `npm run sauvegarder`, `npm run production:schema --
---oui`, mise en ligne du code, puis, pour l'essai, `npm run restaurer --
-sauvegardes/<date> --production`.
+restaurer y appliquerait ses migrations avant le code qui s'en sert. Un essai
+de restauration de la vraie base se fait donc en mettant une étape en ligne,
+dans cet ordre : `npm run sauvegarder`, `npm run production:schema -- --oui`,
+mise en ligne du code, une nouvelle sauvegarde, puis `npm run restaurer --
+sauvegardes/<date> --production` depuis celle-ci. La commande demande de
+retaper le nom du dossier : elle se lance dans un vrai terminal, ou en donnant
+la réponse d'avance (`echo <date> | npm run restaurer -- …`).
 
 ## Essayer l'étape 5 : vérifier les chemins et lire à l'essai
 

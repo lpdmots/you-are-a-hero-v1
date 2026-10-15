@@ -1038,7 +1038,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   (`tests/parcours/seance.spec.ts`). V18 est levée en local (restauration
   réussie à l'identique, le 13 octobre). Reste dû avant la première séance
   avec de vrais élèves, au titre de « Avant de saisir des prénoms d'élèves
-  réels » : une restauration réussie de la vraie base.
+  réels » : une restauration réussie de la vraie base. **Faite le
+  15 octobre 2026,** en mettant l'étape 5 en ligne : la vraie base restaurée
+  depuis la sauvegarde `2026-10-15-14-18`, prise après les migrations, revient
+  avec le même nombre de lignes dans chaque table, et `npm run
+  verifier:production` passe. V18 est levée pour la vraie base.
 
 ### Étape 5 — Lire le récit à l'essai et contrôler les chemins
 
@@ -1309,9 +1313,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     pour l'adulte, l'élève et le futur lecteur en ligne
     ([design](design.md#étape-5-construite-14-octobre-2026)).
 - **Construite le 14 octobre 2026,** en local, ses cinq lots commités, deux
-  migrations (`verifier_les_chemins`, `lecture_du_poste`) dans la base
-  locale seulement ; rien n'est poussé. Reste l'essai du porteur, qui la
-  termine.
+  migrations (`verifier_les_chemins`, `lecture_du_poste`). **En ligne le
+  15 octobre 2026,** à la demande du porteur, jusqu'au commit `6ed2816` : vraie
+  base sauvegardée, les deux migrations appliquées, 200 tests unitaires,
+  228 contre la base et 278 parcours passés avant de pousser, puis la vraie
+  base restaurée depuis une sauvegarde (étape 4, « Reste dû »). Ne plus
+  modifier ces migrations. Reste l'essai du porteur, qui la termine.
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 
