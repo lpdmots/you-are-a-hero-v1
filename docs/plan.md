@@ -1716,6 +1716,35 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 8 unitaires, 5 parcours. Un parcours du lot 2
       (F11-AC27) a échoué une fois dans une série complète et passé seul :
       instable, à surveiller.
+  - **Lot 7 — essai de bout en bout : fait en local le 15 octobre 2026.**
+    `npm run livres:essai` charge deux livres finis pour le compte local :
+    « La lanterne du passeur », récit à choix de la classe d'essai
+    (quatorze passages en deux parties, une énigme au numéro fixé, un passage
+    atteint par la règle du jeu, des actions de jeu, la feuille d'aventure et
+    son dé, une image pleine page en tête d'un passage, un dessin peu défini,
+    une image réglée trop large, des pages peu remplies), et « Le grand
+    voyage », récit classique (deux parties, trois chapitres, une image).
+    Deux parcours mènent un livre de « Relire » au PDF définitif, à l'écran
+    seulement. Le mode d'emploi de l'essai est dans `app/README.md`,
+    « Essayer l'étape 6 ». Captures 601 à 609 (lot 3), 621 à 625 (lot 5),
+    641 à 644 (lot 6).
+    - **Mesures locales :** « La lanterne du passeur », 18 pages ; l'aperçu
+      repris du stockage en 0,05 à 0,12 s ; le PDF de travail (20 pages,
+      images entières) en 1,2 s ; sur « Les passeurs de brume » (72 passages,
+      28 pages), « Réordonner les passages » rend environ 46 mm de blanc en
+      moins et une page de moins, vérifié par une composition.
+    - **Vérifications :** V4 levée en partie — le modèle approché annonçait
+      95 mm de blanc en moins là où la composition en donne 46 : l'ordre
+      proposé est donc vérifié par une composition avant d'être appliqué, et
+      le passage suggéré, lu sur les mesures réelles de la page, tient
+      (F11-AC67, AC68). V5 levée par les tests de composition (césure
+      restreinte, aligné à gauche, folio absent, dés imprimés, feuille de
+      plusieurs pages, page de présentation en image, marges modifiées,
+      contenu hors des marges, page peu remplie). Restent au porteur, à sa
+      demande : la mise en ligne de l'étape, V2 pour le dépôt dans le
+      stockage et V3 (l'aperçu ressenti en ligne), puis V6, l'envoi d'un PDF
+      définitif à l'imprimeur et l'exemplaire reçu.
+    - **Tests automatiques :** 2 parcours ; la série complète passe.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

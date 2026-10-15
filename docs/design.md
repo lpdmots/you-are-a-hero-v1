@@ -2005,8 +2005,9 @@ en moins. », « Réordonner à nouveau » et « Annuler ». Le doute : un trian
 ambre sur l'onglet « Réglages » et sur l'étape, « Le livre a changé. » dans
 la section, et à la place de la déclaration « Ordre des passages à
 confirmer », qui mène à la section, à côté du bouton inactif. Sur une page
-peu remplie visée, sous la barre de l'aperçu : « Page 16 · 47 mm de blanc ·
-3 passages peuvent le combler », puis une ligne par passage.
+peu remplie visée, dans la barre de l'aperçu, qui reste en haut de l'écran :
+« Page 16 · 47 mm de blanc · 3 passages peuvent le combler », puis une
+ligne par passage. Captures 641 à 644.
 
 - **Écarts, dits au début du lot :** les deux blocs de la section l'un sous
   l'autre ; les passages suggérés en lignes simples, sans page miniature.

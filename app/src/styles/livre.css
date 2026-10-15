@@ -1814,3 +1814,7 @@
   font-size: var(--t-s);
   color: var(--graphite-2);
 }
+/* Le passage suggéré se tient dans la barre de l'aperçu, au-dessus de la page visée */
+.apercu__barre .suggestion {
+  flex-basis: 100%;
+}

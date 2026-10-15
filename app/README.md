@@ -324,3 +324,45 @@ l'identifiant, le mot de passe et les codes. « Lire à l'essai », dans la barr
 **4. En ligne, à la demande seulement.** Avant de pousser l'étape : `npm run
 sauvegarder`, puis `npm run production:schema -- --oui`, qui applique les deux
 migrations à la vraie base, puis la mise en ligne du code.
+
+## Essayer l'étape 6 : composer et imprimer le livre
+
+L'étape 6 du plan se termine quand le PDF définitif du livre de la classe sort de
+Vercel, identique à son aperçu, et qu'un exemplaire imprimé a été reçu. L'essai se
+joue d'abord en local, sur http://localhost:4840, avec le compte local ; la vraie
+base n'est pas touchée.
+
+**1. Les livres d'essai.** Les cinq migrations de l'étape (`pdf_du_livre`,
+`relire`, `mise_en_page`, `mettre_en_page`, `ordre_des_passages`) doivent être dans
+la base locale : `npx tsx scripts/supabase.ts migration up --local` les applique
+sans rien effacer. La classe d'essai vient de « Les passeurs de brume ».
+
+```bash
+npm run histoire:essai -- --refaire     # la classe d'essai, si elle n'est pas chargée
+npm run livres:essai -- --refaire       # « La lanterne du passeur » et « Le grand voyage »
+```
+
+**2. « La lanterne du passeur », récit à choix de la classe.** Onglet « Livre » :
+
+| Étape | Ce qui doit se voir | Ce qu'on y fait |
+|---|---|---|
+| Relire | l'aperçu du livre, page par page ; « À confirmer » : le dessin peu défini de S004 | « Garder ainsi » ; un clic sur un passage ouvre sa scène à côté, on corrige, l'aperçu suit ; « Créer le PDF de travail » ; puis « J'ai relu le livre » |
+| Vérifier les chemins | S014 « Plus de volonté », où ne mène que la règle du jeu | « C'est voulu », « Tester la lecture », puis « J'ai vérifié les chemins » |
+| Mettre en page, « Réglages » | la police, la taille, l'alignement, les marges et leur schéma, les pages de début et de fin, la petite double page qui suit chaque réglage | une page des auteurs avec les prénoms de la classe, la page de titre, une marge sous 10 mm (refusée) |
+| Mettre en page, « Aperçu » | le livre entier, « Pages peu remplies » ; le n° de « Barque — l'eau noire », dont l'image pleine page laisse un blanc en lui | parcourir les pages peu remplies, « Placer ici » un passage suggéré, « Annuler » ; ouvrir un passage, « Monter », « Placer après le n° … », « Commencer sur une nouvelle page » |
+| Ordre des passages | « Moins de blanc » | « Réordonner les passages » (il ne change rien s'il ne fait pas mieux), « Annuler » ; puis une scène allongée : « Le livre a changé. », « Garder cet ordre » |
+| Mettre en page | « La mise en page me convient » | la déclarer ; « Reprendre » la retire |
+| Imprimer et partager | « Le livre est prêt. », la couverture à préparer | « Créer le PDF définitif… » : le dessin gardé est rappelé, le fichier se télécharge ; une coquille corrigée ensuite : « Le livre a changé depuis le PDF définitif » ; « Nouveau PDF définitif… », puis supprimer l'ancien |
+
+**3. « Le grand voyage », récit classique.** Trois étapes seulement : « Relire »,
+« Mettre en page » sans ordre des passages, avec les titres de chapitre, puis le
+PDF définitif.
+
+`npx playwright test livre-de-bout-en-bout` joue les deux, en raccourci ; les
+captures de l'étape se refont par `npm run captures -- etape6`.
+
+**4. En ligne, à la demande seulement.** Avant de pousser l'étape : `npm run
+sauvegarder`, puis `npm run production:schema -- --oui`, qui applique les cinq
+migrations à la vraie base, puis la mise en ligne du code. Le PDF définitif du
+livre de la classe se crée alors en ligne (V2, V3), puis s'envoie à l'imprimeur
+par le porteur (V6).

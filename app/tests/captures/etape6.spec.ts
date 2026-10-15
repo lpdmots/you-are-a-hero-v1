@@ -118,3 +118,39 @@ test("lot 5 : « Imprimer et partager »", async ({ page }) => {
   await aller(page, `/projet/${projet}/livre?etape=sortie`);
   await capturer(page, "mobile-imprimer");
 });
+
+test("lot 6 : ordre des passages, doute et passage suggéré", async ({ page }) => {
+  test.setTimeout(300_000);
+  n = 640;
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Le phare");
+  const { chapitres } = await semerPartie(base, projet, "La côte", [{ titre: "La plage", scenes: ["Le long quai", "L’hésitation", "La barque", "Le ponton", "La digue", "Le phare"] }]);
+  const s = chapitres[0].scenes;
+  const PHRASE = "La brume montait du lac et recouvrait déjà les barques amarrées, tandis que Lou cherchait la lanterne. ";
+  await base.from("projets").update({ depart_scene_id: s[0] }).eq("id", projet);
+  await semerBlocs(base, s[0], [recit(PHRASE.repeat(8)), choixAuto("Continuer", s[1])]);
+  await semerBlocs(base, s[1], [recit("Lou hésite."), ...Array.from({ length: 6 }, (_, k) => choixAuto(`Option ${k + 1}`, s[2 + (k % 3)]))]);
+  for (const i of [2, 3, 4]) await semerBlocs(base, s[i], [recit("Court."), choixAuto("Suite", s[5])]);
+  await semerBlocs(base, s[5], [recit(PHRASE.repeat(4))]);
+  await base.from("scenes").update({ fin: true }).eq("id", s[5]);
+  await sql("update scenes set etat = 'prete' where projet_id = $1", [projet]);
+  for (let i = 0; i < s.length; i += 1) await sql("update scenes set rang_livre = $2 where id = $1", [s[i], i]);
+  await sql("update projets set ordre_etabli_le = now(), mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now() where id = $1", [projet]);
+  await page.setViewportSize({ width: 1366, height: 860 });
+
+  await aller(page, `/projet/${projet}/livre?etape=page`);
+  await page.locator("#moins-de-blanc").scrollIntoViewIfNeeded();
+  await capturer(page, "ordre-des-passages", false);
+  await page.getByRole("tab", { name: "Aperçu" }).click();
+  await page.locator(".apercu__etat").filter({ hasText: "passages" }).waitFor({ timeout: 60_000 });
+  await page.getByRole("button", { name: "Page peu remplie suivante" }).click();
+  await capturer(page, "passage-suggere", false);
+  await page.getByRole("button", { name: /^Ouvrir n° 1 ·/ }).evaluate((b: HTMLButtonElement) => b.click());
+  await page.getByRole("region", { name: "Ce passage dans le livre" }).waitFor();
+  await capturer(page, "ce-passage-dans-le-livre", false);
+  await sql("update projets set ordre_decision = 'garde', ordre_pages = $2 where id = $1", [projet, JSON.stringify({ [s[5]]: 40 })]);
+  await aller(page, `/projet/${projet}/livre?etape=page`);
+  await page.locator("#moins-de-blanc").filter({ hasText: "Le livre a changé." }).waitFor({ timeout: 60_000 });
+  await page.locator("#moins-de-blanc").scrollIntoViewIfNeeded();
+  await capturer(page, "doute-sur-l-ordre", false);
+});

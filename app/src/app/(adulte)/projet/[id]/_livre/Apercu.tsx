@@ -206,57 +206,57 @@ export function Apercu({
             Double page
           </button>
         </span>
+        {blancVise && suggerer && suggestion ? (
+          <section className="suggestion" aria-label={`Page ${blancVise.page}, ${blancVise.mm} mm de blanc`}>
+            <p className="suggestion__tete">
+              <b>Page {blancVise.page}</b> · {blancVise.mm} mm de blanc
+              {suggestion.candidats.length ? ` · ${suggestion.candidats.length} passage${suggestion.candidats.length > 1 ? "s peuvent" : " peut"} le combler` : ""}
+            </p>
+            {suggestion.candidats.length ? (
+              <ul className="suggestion__liste">
+                {suggestion.candidats.map((c) => (
+                  <li key={c.sceneId} className="suggestion__candidat">
+                    <span className="suggestion__numero">{c.numero}</span>
+                    <span className="suggestion__texte">
+                      <b>{suggerer.titres[c.sceneId] || nommer(c.sceneId)}</b>
+                      <small>
+                        {c.h} mm · reste {c.reste} mm
+                      </small>
+                    </span>
+                    <button
+                      type="button"
+                      className="btn btn--petit"
+                      disabled={place !== null}
+                      aria-busy={place === c.sceneId || undefined}
+                      onClick={async () => {
+                        const apres = suggerer.ordre.find((x) => x.sceneId === blancVise.apres)?.numero;
+                        if (!apres) return;
+                        setPlace(c.sceneId);
+                        await suggerer.placer(c.sceneId, apres);
+                        setPlace(null);
+                      }}
+                    >
+                      Placer ici
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="suggestion__aucun">
+                {suggestion.raison === "dedans"
+                  ? `Ce blanc est dans le ${nommer(blancVise.apres ?? "").split(" · ")[0]} : aucun passage ne peut s’y glisser. Réduisez son image, ou laissez-le.`
+                  : "Aucun passage plus loin dans sa partie ne tient dans ce blanc."}
+                {blancVise.apres ? (
+                  <button type="button" className="lien" onClick={() => onPassage(blancVise.apres!)}>
+                    Ouvrir le {nommer(blancVise.apres).split(" · ")[0]}
+                  </button>
+                ) : null}
+              </p>
+            )}
+          </section>
+        ) : null}
       </div>
       {bandeau}
-      {blancVise && suggerer && suggestion ? (
-        <section className="suggestion" aria-label={`Page ${blancVise.page}, ${blancVise.mm} mm de blanc`}>
-          <p className="suggestion__tete">
-            <b>Page {blancVise.page}</b> · {blancVise.mm} mm de blanc
-            {suggestion.candidats.length ? ` · ${suggestion.candidats.length} passage${suggestion.candidats.length > 1 ? "s peuvent" : " peut"} le combler` : ""}
-          </p>
-          {suggestion.candidats.length ? (
-            <ul className="suggestion__liste">
-              {suggestion.candidats.map((c) => (
-                <li key={c.sceneId} className="suggestion__candidat">
-                  <span className="suggestion__numero">{c.numero}</span>
-                  <span className="suggestion__texte">
-                    <b>{suggerer.titres[c.sceneId] || nommer(c.sceneId)}</b>
-                    <small>
-                      {c.h} mm · reste {c.reste} mm
-                    </small>
-                  </span>
-                  <button
-                    type="button"
-                    className="btn btn--petit"
-                    disabled={place !== null}
-                    aria-busy={place === c.sceneId || undefined}
-                    onClick={async () => {
-                      const apres = suggerer.ordre.find((x) => x.sceneId === blancVise.apres)?.numero;
-                      if (!apres) return;
-                      setPlace(c.sceneId);
-                      await suggerer.placer(c.sceneId, apres);
-                      setPlace(null);
-                    }}
-                  >
-                    Placer ici
-                  </button>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p className="suggestion__aucun">
-              {suggestion.raison === "dedans"
-                ? `Ce blanc est dans le ${nommer(blancVise.apres ?? "").split(" · ")[0]} : aucun passage ne peut s’y glisser. Réduisez son image, ou laissez-le.`
-                : "Aucun passage plus loin dans sa partie ne tient dans ce blanc."}
-              {blancVise.apres ? (
-                <button type="button" className="lien" onClick={() => onPassage(blancVise.apres!)}>
-                  Ouvrir le {nommer(blancVise.apres).split(" · ")[0]}
-                </button>
-              ) : null}
-            </p>
-          )}
-        </section>
-      ) : null}
       <div className="apercu__pages" ref={conteneur}>
         {!charge ? <p className="apercu__attente">{erreur ?? "Le livre est mis en pages sur le serveur…"}</p> : null}
         {charge
