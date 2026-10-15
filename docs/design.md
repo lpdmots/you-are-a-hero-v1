@@ -1953,6 +1953,30 @@ champs ; l'état « Enregistré » est dessous.
   feuille en paysage n'est pas recadrée ; le chiffre zéro barré est celui
   d'Atkinson, la police de l'outil.
 
+**Lot 4 — « Mettre en page », volet « Aperçu ».** Repris de la maquette
+(captures 111, 126, 140, 152) : au-dessus de l'aperçu, « Cliquez sur un passage
+pour régler sa place dans le livre. » ; dans sa barre, « Pages peu remplies »
+avec son compteur (« 1 / 3 · page 16 »), ses flèches et un « i » ; la page
+visée entourée de canard, son blanc hachuré et « 47 mm de blanc » ; sous la
+barre, la dernière action et « Annuler », sur fond canard pâle ; au bout de la
+barre des volets, « La mise en page me convient » en bouton principal, sa
+suite derrière un « i », puis « Mise en page terminée », « Reprendre » et
+« Imprimer et partager ». Dans « Réglages », « Ordre des passages » : la
+phrase du mélange, une ligne par partie avec ses numéros, et entre deux
+parties l'interrupteur « Mélanger les parties 1 et 2 » ; deux parties réunies
+dans un cadre canard, « n° 1 à 6, mélangés ensemble ».
+
+- **Écarts, dits au début du lot :** la fiche « Ce passage dans le livre »
+  tient en une ligne au-dessus de la scène ouverte, au lieu d'une fiche
+  repliable : numéro et page, « Monter », « Descendre », « Placer après le
+  n° » et son champ, les numéros possibles derrière un « i », l'interrupteur
+  « Commencer sur une nouvelle page » ; la confirmation est raccourcie
+  (« Passé du n° 6 au n° 5 · les renvois suivent. »). « Moins de blanc »
+  (« Réordonner les passages ») et les passages suggérés viennent au lot 6.
+- **Pris en construisant :** sur téléphone, la barre des volets ne garde en
+  haut de l'écran que les deux onglets, comme la maquette le prévoyait ; la
+  barre de l'aperçu se range sous elle à cette étape.
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans

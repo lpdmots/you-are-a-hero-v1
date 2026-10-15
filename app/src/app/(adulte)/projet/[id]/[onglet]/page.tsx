@@ -101,8 +101,16 @@ export default async function PageProjet({ params, searchParams }: Props) {
     // « Mettre en page » s'ouvre quand les deux premières étapes sont terminées, déclarations comprises, puis ne se referme plus (F11.6)
     const pageOuverte = livre.miseEnPageOuverte || (relire.terminee && (chemins?.terminee ?? true));
     if (pageOuverte && !livre.miseEnPageOuverte) await enseignant.supabase.from("projets").update({ mise_en_page_ouverte_le: new Date().toISOString() }).eq("id", projet.id);
-    // « Imprimer et partager » se construit au lot 5 ; sa règle la fermerait de toute façon
-    const marques: Record<EtapeLivre, MarqueEtape> = { relire: relire.marque, chemins: chemins?.marque ?? null, page: pageOuverte ? null : "fermee", sortie: "fermee" };
+    // « Mettre en page » est cochée par sa déclaration ; « Imprimer et partager » s'ouvre à la
+    // première, ne se referme plus, et dit « il reste à faire » si une étape d'avant le dit (F11-AC62, AC77)
+    const sortieOuverte = livre.imprimerOuvert || livre.miseEnPageConvient;
+    const avantTermine = relire.terminee && (chemins?.terminee ?? true);
+    const marques: Record<EtapeLivre, MarqueEtape> = {
+      relire: relire.marque,
+      chemins: chemins?.marque ?? null,
+      page: !pageOuverte ? "fermee" : livre.miseEnPageConvient ? "coche" : null,
+      sortie: !sortieOuverte ? "fermee" : avantTermine ? null : "reste",
+    };
     const contenuLivre = await contenuDuLivre(enseignant, projet.id);
     const eleves = await elevesDeLaClasse(enseignant, projet.classe?.id ?? null);
     // L'étape demandée, sinon la dernière quittée, sinon « Relire » la première fois (F11.6)
@@ -124,6 +132,8 @@ export default async function PageProjet({ params, searchParams }: Props) {
         pdfDeTravail={travail ? { id: travail.id, etat: etatEnMots(travail.etatDu), pages: travail.pages } : null}
         empreinte={instantane.empreinte}
         noms={noms}
+        numeros={Object.fromEntries(instantane.livre.passages.flatMap((x) => (x.numero ? [[x.sceneId, x.numero]] : [])))}
+        convient={livre.miseEnPageConvient}
         miseEnPage={
           pageOuverte && contenuLivre
             ? {
@@ -133,6 +143,13 @@ export default async function PageProjet({ params, searchParams }: Props) {
                 prenoms: eleves.map((x) => nomPourEleves(x, eleves)),
                 aDesEnigmes: plan.liens.some((l) => l.cache),
                 avecRegles: Boolean(contenuLivre.preparation?.regles.trim()),
+                parties: aChoix
+                  ? plan.parties.map((p) => {
+                      const ids = new Set(p.chapitres.flatMap((c) => c.scenes.map((x) => x.id)));
+                      const lesNumeros = instantane.livre.passages.filter((x) => ids.has(x.sceneId) && x.numero && !x.numeroFixe).map((x) => x.numero!);
+                      return { id: p.id, titre: p.titre, avecPrecedente: p.groupeAvecPrecedente, numeros: lesNumeros.length ? ([Math.min(...lesNumeros), Math.max(...lesNumeros)] as [number, number]) : null };
+                    })
+                  : null,
               }
             : null
         }

@@ -11,6 +11,8 @@ import { scenesDe, type Plan } from "@/domaine/recit";
 import { MARGE_MINIMALE, reglagesPropres } from "@/domaine/mise-en-page";
 import { pagesPropres } from "@/domaine/pages";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
+import { assurerOrdre, structure } from "@/serveur/copie";
+import { deplacer, rangsActuels, type Deplacement } from "@/domaine/ordre";
 
 /**
  * Les deux jugements de « Vérifier les chemins » (F11.6) : « C'est voulu » sur un
@@ -134,6 +136,87 @@ export async function reglerPagesDuLivre(projetId: string, brut: unknown): Promi
   if (images.some((id) => !contenu.images.has(id))) return { ok: false, erreur: "Cette image n’est pas dans le projet." };
   const { data, error } = await e.supabase.from("projets").update({ pages_du_livre: pages }).eq("id", projetId).select("id");
   if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+// ——— « Mettre en page », volet « Aperçu » (étape 6, lot 4) ———
+
+export type Place = { ok: true; avant: number; apres: number; annuler: Record<string, number> } | { ok: false; erreur: string };
+
+/**
+ * « Monter d'un rang », « Descendre d'un rang », « Placer après le n° … » (F11.3) : les rangs
+ * gardés du groupe sont récrits ; les anciens reviennent à l'appelant, pour « Annuler ».
+ */
+export async function deplacerPassage(projetId: string, sceneId: string, d: Deplacement): Promise<Place> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId) || !estUuid(sceneId)) return { ok: false, erreur: "Passage inconnu." };
+  if (!d || (d.sorte !== "monter" && d.sorte !== "descendre" && !(d.sorte === "apres" && Number.isInteger(d.numero)))) return { ok: false, erreur: "Déplacement inconnu." };
+  await assurerOrdre(e.supabase, projetId);
+  const lu = await structure(e.supabase, projetId);
+  if (!lu?.aChoix) return { ok: false, erreur: "Seul un récit à choix numérote ses passages." };
+  const r = deplacer(lu.plan, sceneId, d);
+  if (!r.ok) return { ok: false, erreur: r.refus };
+  const annuler = rangsActuels(lu.plan, Object.keys(r.rangs));
+  const { error } = await e.supabase.rpc("placer_passages", { p_projet: projetId, p_rangs: r.rangs });
+  if (error) return { ok: false, erreur: "Le passage n’a pas pu être déplacé." };
+  rafraichir(projetId);
+  return { ok: true, avant: r.avant, apres: r.apres, annuler };
+}
+
+/** « Annuler » : les rangs d'avant la dernière action reviennent (F11-AC45). */
+export async function annulerPlacement(projetId: string, rangs: Record<string, number>): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const propres = rangs && typeof rangs === "object" && Object.entries(rangs).every(([id, n]) => estUuid(id) && Number.isInteger(n));
+  if (!estUuid(projetId) || !propres) return { ok: false, erreur: "Rien à annuler." };
+  const { error } = await e.supabase.rpc("placer_passages", { p_projet: projetId, p_rangs: rangs });
+  if (error) return { ok: false, erreur: "L’annulation n’a pas pu se faire." };
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+/** « Commencer sur une nouvelle page » (F11.3) : un ajustement gardé d'un export à l'autre (F11-AC10). */
+export async function reglerNouvellePage(sceneId: string, oui: boolean): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(sceneId)) return { ok: false, erreur: "Passage inconnu." };
+  const { data, error } = await e.supabase.from("scenes").update({ nouvelle_page: oui === true }).eq("id", sceneId).select("projet_id");
+  if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(data[0].projet_id as string);
+  return { ok: true };
+}
+
+/**
+ * « Mélanger les parties 1 et 2 » (F11.5, F11-AC17) : la partie rejoint le groupe de mélange de
+ * la précédente, ou le quitte. Les rangs gardés ne changent pas : ses passages se mêlent à
+ * ceux du groupe selon eux, et les renvois suivent.
+ */
+export async function melangerAvecPrecedente(projetId: string, partieId: string, oui: boolean): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId) || !estUuid(partieId)) return { ok: false, erreur: "Partie inconnue." };
+  const plan = await planDe(e, projetId);
+  if (plan.parties[0]?.id === partieId || !plan.parties.some((p) => p.id === partieId)) return { ok: false, erreur: "La première partie n’a pas de partie avant elle." };
+  const { error } = await e.supabase.from("parties").update({ groupe_avec_precedente: oui === true }).eq("id", partieId).eq("projet_id", projetId);
+  if (error) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+/**
+ * « La mise en page me convient » (F11.6, F11-AC77), et « Reprendre », qui la retire.
+ * La première déclaration ouvre « Imprimer et partager », qui ne se referme plus.
+ */
+export async function declarerMiseEnPage(projetId: string, convient: boolean): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
+  const { data: projet } = await e.supabase.from("projets").select("mise_en_page_ouverte_le, imprimer_ouvert_le").eq("id", projetId).maybeSingle();
+  if (!projet) return { ok: false, erreur: "Projet inconnu." };
+  if (convient && !projet.mise_en_page_ouverte_le) return { ok: false, erreur: "« Mettre en page » n’est pas encore ouverte." };
+  const maintenant = new Date().toISOString();
+  const { error } = await e.supabase
+    .from("projets")
+    .update(convient ? { mise_en_page_convient_le: maintenant, imprimer_ouvert_le: projet.imprimer_ouvert_le ?? maintenant } : { mise_en_page_convient_le: null })
+    .eq("id", projetId);
+  if (error) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
   rafraichir(projetId);
   return { ok: true };
 }

@@ -61,8 +61,10 @@ export function useCommandesScene({
         dire(
           fait.ok
             ? {
-                texte: scene.horsLivre ? `${nomScene(scene)} est de nouveau dans le livre.` : `${nomScene(scene)} est hors du livre. Elle reste dans le projet.`,
-                annuler: () => void exclureDuLivre("scene", scene.id, scene.horsLivre),
+                texte: scene.horsLivre
+                  ? `${nomScene(scene)} est de nouveau dans le livre${fait.numero ? `, à la suite de sa partie : n° ${fait.numero}` : ""}.`
+                  : `${nomScene(scene)} est hors du livre. Elle reste dans le projet.`,
+                annuler: () => void exclureDuLivre("scene", scene.id, scene.horsLivre, true),
               }
             : { texte: fait.erreur },
         ),

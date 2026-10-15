@@ -3,6 +3,9 @@
    Brique : cela bloque le livre ; ambre : à confirmer ; graphite : à savoir. */
 
 .livre {
+  /* Ce qui reste collé en haut de la fenêtre passe sous la barre du site, et sous les volets de « Mettre en page » */
+  --entete: 58px;
+  --volets: 57px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   gap: 22px;
@@ -529,8 +532,8 @@
 }
 .livre-plan__gauche {
   position: sticky;
-  top: 12px;
-  max-height: calc(100dvh - 24px);
+  top: calc(var(--entete) + 12px);
+  max-height: calc(100dvh - var(--entete) - 24px);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -542,7 +545,7 @@
 /* Les réglages d'un bloc s'ouvrent à droite du texte, par-dessus l'aperçu (F05.2) */
 .livre-plan__panneau {
   position: sticky;
-  top: 12px;
+  top: calc(var(--entete) + 12px);
   z-index: 5;
   height: 0;
 }
@@ -600,7 +603,7 @@
 }
 .apercu__barre {
   position: sticky;
-  top: 0;
+  top: var(--entete);
   z-index: 4;
   display: flex;
   flex-wrap: wrap;
@@ -807,7 +810,7 @@
 /* ——— « Mettre en page » : deux volets, puis les réglages (F11.6) ——— */
 .volets {
   position: sticky;
-  top: 0;
+  top: var(--entete);
   z-index: 6;
   display: flex;
   align-items: center;
@@ -888,10 +891,10 @@
 }
 .reglages__cote {
   position: sticky;
-  top: 64px;
+  top: calc(var(--entete) + var(--volets) + 8px);
   display: grid;
   gap: 6px;
-  max-height: calc(100dvh - 76px);
+  max-height: calc(100dvh - var(--entete) - var(--volets) - 20px);
   overflow-y: auto;
   overscroll-behavior: contain;
 }
@@ -1239,4 +1242,219 @@
   .reglages__section {
     padding: 18px 16px;
   }
+}
+
+/* ——— « Mettre en page », volet « Aperçu » (étape 6, lot 4) ——— */
+.parcours--pages .parcours__nom .ic {
+  color: var(--canard);
+}
+.parcours__compte {
+  font-weight: 600;
+  color: var(--graphite-2);
+  font-variant-numeric: tabular-nums;
+}
+.parcours__b:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.parcours .bulle-i,
+.parcours > :last-child {
+  margin-left: 2px;
+}
+.apercu__consigne {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.apercu__fait {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 8px 10px 8px 14px;
+  border-radius: var(--r-m);
+  background: var(--canard-pale);
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite);
+}
+.apercu__fait > .ic {
+  color: var(--canard);
+}
+.apercu__fait .btn {
+  margin-left: auto;
+}
+.apercu__page--visee {
+  box-shadow: 0 0 0 2px var(--canard), var(--ombre-cahier);
+}
+.apercu__blanc {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1.5px dashed var(--canard);
+  border-radius: 3px;
+  background: repeating-linear-gradient(135deg, rgba(11, 106, 115, 0.08) 0 6px, transparent 6px 12px);
+  pointer-events: none;
+}
+.apercu__blanc span {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--feuille);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--canard-fonce);
+}
+.ce-passage {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.ce-passage__ou {
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.ce-passage__ou b {
+  font-size: var(--t-m);
+  color: var(--graphite);
+  font-variant-numeric: tabular-nums;
+}
+.ce-passage__garde {
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.ce-passage__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.ce-passage__apres {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.ce-passage__apres label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+.ce-passage__apres .pchamp {
+  width: 4.2em;
+  padding: 6px 8px;
+  font-variant-numeric: tabular-nums;
+}
+.ce-passage__page {
+  font-size: var(--t-s);
+}
+.ce-passage .erreur {
+  flex-basis: 100%;
+  margin: 0;
+}
+.volets__fait {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px 14px;
+  margin: 0 0 0 auto;
+}
+.volets__coche {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--e-valide);
+}
+.volets__fait .btn .ic {
+  width: 1.05em;
+  height: 1.05em;
+}
+.reglages__titre-section {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.reglages__phrase {
+  margin: -8px 0 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.melange {
+  display: grid;
+  gap: 4px;
+}
+.melange__bloc {
+  display: grid;
+  gap: 4px;
+}
+.melange__groupe {
+  display: grid;
+  gap: 4px;
+  padding: 8px 12px;
+  border-radius: var(--r-m);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.melange__groupe.est-reuni {
+  box-shadow: inset 0 0 0 1.5px var(--canard);
+}
+.melange__partie-bloc {
+  display: grid;
+  gap: 4px;
+}
+.melange__partie {
+  margin: 0;
+  font-size: var(--t-s);
+}
+.melange__numeros {
+  color: var(--graphite-2);
+  font-variant-numeric: tabular-nums;
+}
+.melange__inter {
+  padding: 4px 12px;
+  font-size: var(--t-s);
+}
+.melange__ensemble {
+  margin: 0;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--canard-fonce);
+}
+/* Sur téléphone, seuls les deux onglets restent en vue ; la déclaration défile avec la page */
+@media (max-width: 720px) {
+  .volets {
+    display: contents;
+  }
+  .volets .bascule {
+    position: sticky;
+    top: var(--entete);
+    z-index: 6;
+    justify-self: start;
+    box-shadow: 0 0 0 8px var(--bureau);
+  }
+  .volets__fait {
+    flex-wrap: wrap;
+    margin: 0;
+  }
+  .livre {
+    --volets: 52px;
+  }
+}
+
+/* À « Mettre en page », la barre de l'aperçu reste sous celle des volets */
+.livre-plan--page .apercu__barre {
+  top: calc(var(--entete) + var(--volets));
+}
+.livre-plan--page .livre-plan__gauche,
+.livre-plan--page .livre-plan__panneau {
+  top: calc(var(--entete) + var(--volets) + 12px);
 }

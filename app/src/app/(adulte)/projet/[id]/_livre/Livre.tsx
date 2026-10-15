@@ -12,10 +12,12 @@ import { useMessage } from "@/composants/Messages";
 import { ETAPES_DU_LIVRE, MOT_DE_MARQUE, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
 import { pluriel } from "@/domaine/texte";
 import { reglerAide } from "../../../actions-compte";
-import { accepterAvertissement, declarerChemins, declarerRelu, noterEtapeDuLivre, ouvrirSceneDuLivre, retirerAcceptation } from "../../actions-livre";
+import { accepterAvertissement, declarerChemins, declarerMiseEnPage, declarerRelu, noterEtapeDuLivre, ouvrirSceneDuLivre, retirerAcceptation } from "../../actions-livre";
 import { marquerFin } from "../../actions-recit";
 import { PageScene } from "../scene/[scene]/PageScene";
 import { Apercu, useApercu } from "./Apercu";
+import { CePassage } from "./CePassage";
+import { Bulle } from "@/composants/Bulle";
 import { VoletReglages } from "./Reglages";
 import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, TacheRelireAffichee } from "./points";
 
@@ -25,7 +27,7 @@ import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, Tache
  * livre (F11.2) ; « Mettre en page » et « Imprimer et partager » se construisent ensuite.
  */
 export function Livre({
-  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, miseEnPage, aideMasquee, aideVue,
+  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, numeros, miseEnPage, convient, aideMasquee, aideVue,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   etape: EtapeLivre;
@@ -39,6 +41,10 @@ export function Livre({
   empreinte: string;
   /** « n° 12 · S042 » : le nom de chaque passage */
   noms: Record<string, string>;
+  /** Le numéro imprimé de chaque passage (récit à choix) */
+  numeros: Record<string, number>;
+  /** « La mise en page me convient » est déclarée (F11.6) */
+  convient: boolean;
   /** « Mettre en page », quand l'étape est ouverte : ses réglages et ses pages de présentation */
   miseEnPage: Omit<Parameters<typeof VoletReglages>[0], "projet" | "apercu" | "onVoirApercu"> | null;
   aideMasquee: { relire: boolean; chemins: boolean };
@@ -105,6 +111,27 @@ export function Livre({
   // « Mettre en page » en deux volets, toujours visibles (F11.6) ; « Réglages » d'abord
   const [volet, setVolet] = useState<"reglages" | "apercu">("reglages");
   const enPage = etape === "page" && miseEnPage !== null;
+  // Chaque volet retrouve l'endroit qu'on y avait quitté (F11-AC92)
+  const defilement = useRef<Record<"reglages" | "apercu", number | null>>({ reglages: null, apercu: null });
+  const changerDeVolet = (v: "reglages" | "apercu") => {
+    if (v === volet) return;
+    defilement.current[volet] = window.scrollY;
+    setVolet(v);
+    const garde = defilement.current[v];
+    requestAnimationFrame(() => {
+      if (garde !== null) window.scrollTo({ top: garde });
+      else document.querySelector(".volets")?.scrollIntoView({ block: "start" });
+    });
+  };
+  // La dernière action faite dans l'aperçu, et « Annuler » (F11-AC45)
+  const [derniere, setDerniere] = useState<{ texte: string; annuler: () => Promise<{ ok: boolean }>; jeton: number } | null>(null);
+  const [declaration, setDeclaration] = useState(false);
+  const declarer = async (oui: boolean) => {
+    setDeclaration(true);
+    const r = await declarerMiseEnPage(projet.id, oui);
+    setDeclaration(false);
+    if (!r.ok) dire({ texte: r.erreur });
+  };
   const avecApercu = ((etape === "relire" || (etape === "chemins" && chemins)) && !aide) || (enPage && volet === "apercu");
   // L'aperçu reste composé au volet « Réglages », pour la petite double page (étape 6, lot 3)
   const source = useApercu(projet.id, empreinte, avecApercu || enPage);
@@ -164,18 +191,47 @@ export function Livre({
           <div className="volets" role="tablist" aria-label="Mettre en page">
             <div className="bascule">
               {(["reglages", "apercu"] as const).map((v) => (
-                <button key={v} type="button" role="tab" aria-selected={volet === v} data-choisi={volet === v || undefined} onClick={() => setVolet(v)}>
+                <button key={v} type="button" role="tab" aria-selected={volet === v} data-choisi={volet === v || undefined} onClick={() => changerDeVolet(v)}>
                   <Icone nom={v === "reglages" ? "reglages" : "livre"} />
                   {v === "reglages" ? "Réglages" : "Aperçu"}
                 </button>
               ))}
             </div>
+            {convient ? (
+              <p className="volets__fait">
+                <span className="volets__coche">
+                  <Icone nom="coche" />
+                  Mise en page terminée
+                </span>
+                <button type="button" className="lien" disabled={declaration} onClick={() => void declarer(false)}>
+                  Reprendre
+                </button>
+                <Link className="btn btn--primaire" href={`/projet/${projet.id}/livre?etape=sortie`} scroll={false}>
+                  Imprimer et partager
+                  <Icone nom="fleche" />
+                </Link>
+              </p>
+            ) : (
+              <p className="volets__fait">
+                <Bulle question="Que se passe-t-il ensuite ?">
+                  <span>« Imprimer et partager » s’ouvre : le PDF définitif pourra être créé. Vous pourrez reprendre la mise en page.</span>
+                </Bulle>
+                <button type="button" className="btn btn--primaire" disabled={declaration} aria-busy={declaration || undefined} onClick={() => void declarer(true)}>
+                  <Icone nom="coche" />
+                  La mise en page me convient
+                </button>
+              </p>
+            )}
           </div>
         ) : null}
 
-        {enPage && volet === "reglages" ? (
-          <VoletReglages projet={projet} {...miseEnPage} apercu={source} onVoirApercu={() => setVolet("apercu")} />
-        ) : aide && avecAide ? (
+        {/* Le volet « Réglages » reste monté : il retrouve ses panneaux et son état (F11-AC92) */}
+        {enPage ? (
+          <div hidden={volet !== "reglages"}>
+            <VoletReglages projet={projet} {...miseEnPage} apercu={source} onVoirApercu={() => changerDeVolet("apercu")} />
+          </div>
+        ) : null}
+        {enPage && volet === "reglages" ? null : aide && avecAide ? (
           <AideEtape
             etape={etape === "relire" ? "relire" : "chemins"}
             aChoix={projet.aChoix}
@@ -188,7 +244,7 @@ export function Livre({
             }}
           />
         ) : avecApercu ? (
-          <div className={`livre-plan${ouverte ? " livre-plan--scene" : enPage ? " livre-plan--seul" : ""} livre-plan--vue-${vue}`}>
+          <div className={`livre-plan${ouverte ? " livre-plan--scene" : enPage ? " livre-plan--seul" : ""}${enPage ? " livre-plan--page" : ""} livre-plan--vue-${vue}`}>
             {ouverte ? (
               <div className="livre-plan__onglets" role="tablist" aria-label="Scène et livre">
                 <button type="button" role="tab" aria-selected={vue === "scene"} onClick={() => setVue("scene")}>
@@ -214,6 +270,18 @@ export function Livre({
                     onModifie: modifie,
                     dessus: (
                       <>
+                        {enPage ? (
+                          <CePassage
+                            key={ouverte.sceneId}
+                            projetId={projet.id}
+                            aChoix={projet.aChoix}
+                            plan={ouverte.plan}
+                            sceneId={ouverte.sceneId}
+                            numero={numeros[ouverte.sceneId] ?? null}
+                            page={source.charge?.apercu.pageDe[ouverte.sceneId] ?? null}
+                            onFait={(f) => setDerniere({ ...f, jeton: Date.now() })}
+                          />
+                        ) : null}
                         {ouverte.depuis.length ? (
                           <p className="a-cote__venu">
                             <button
@@ -252,6 +320,35 @@ export function Livre({
                 choisie={ouverte?.sceneId ?? null}
                 aller={aller}
                 nommer={(id) => noms[id] ?? "ce passage"}
+                peuRemplies={enPage}
+                consigne={
+                  enPage ? (
+                    <p className="apercu__consigne">
+                      <Icone nom="main" />
+                      Cliquez sur un passage pour régler sa place dans le livre.
+                    </p>
+                  ) : null
+                }
+                bandeau={
+                  enPage && derniere ? (
+                    <div className="apercu__fait" role="status">
+                      <Icone nom="coche" />
+                      <span>{derniere.texte}</span>
+                      <button
+                        type="button"
+                        className="btn btn--petit"
+                        onClick={async () => {
+                          const r = await derniere.annuler();
+                          if (!r.ok) return dire({ texte: "L’annulation n’a pas pu se faire." });
+                          setDerniere(null);
+                          routeur.refresh();
+                        }}
+                      >
+                        Annuler
+                      </button>
+                    </div>
+                  ) : null
+                }
                 onPassage={(id) => void ouvrir(id)}
                 onRenvoi={(cible, depuis) => void ouvrir(cible, { depuis: [...(ouverte?.depuis ?? []), depuis] })}
                 barre={
@@ -274,6 +371,14 @@ export function Livre({
               />
             </div>
           </div>
+        ) : etape === "sortie" && marques.sortie !== "fermee" ? (
+          // Le PDF définitif et ses PDF conservés : lot 5 de l'étape 6
+          <section className="porte" aria-labelledby="sortie-t">
+            <h2 id="sortie-t" tabIndex={-1}>
+              Imprimer et partager
+            </h2>
+            <p className="porte__phrase">Le PDF définitif se créera ici.</p>
+          </section>
         ) : (
           <EtapeFermee projet={projet} etape={etape} chemins={chemins} relire={relire} />
         )}

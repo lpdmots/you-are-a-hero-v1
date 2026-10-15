@@ -88,6 +88,7 @@ export function livreDuContenu(c: Omit<ContenuDuLivre, "empreinte">, problemes: 
     titre: c.projet.titre, aChoix: c.aChoix, plan: c.plan, textes: c.textes,
     formule: c.preparation?.formuleRenvoi ?? "rends", marqueFin: c.preparation?.marqueFin ?? "Fin", feuille,
     reglages: c.reglages, problemes,
+    nouvellesPages: new Set(c.plan.parties.flatMap((p) => p.chapitres.flatMap((ch) => ch.scenes.filter((s) => s.nouvellePage).map((s) => s.id)))),
     images: Object.fromEntries([...c.images].map(([id, i]) => [id, { largeur: i.largeur, hauteur: i.hauteur }])),
     presentation: presentationDe(c.pages, {
       titre: c.projet.titre, aChoix: c.aChoix, feuille, regles: c.preparation?.regles ?? "",

@@ -44,6 +44,10 @@ export type EtatDuLivre = {
   derniereEtape: EtapeLivre | null;
   /** « Mettre en page » a été ouverte une fois : elle ne se referme plus (F11.6) */
   miseEnPageOuverte: boolean;
+  /** « La mise en page me convient » est déclarée (F11.6) */
+  miseEnPageConvient: boolean;
+  /** « Imprimer et partager » a été ouverte : elle ne se referme plus */
+  imprimerOuvert: boolean;
 };
 
 export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promise<EtatDuLivre | null> => {
@@ -51,7 +55,7 @@ export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promis
   if (!problemes) return null;
   const [acceptees, projet] = await Promise.all([
     e.supabase.from("avertissements_acceptes").select("cle, empreinte, accepte_le").eq("projet_id", projetId),
-    e.supabase.from("projets").select("chemins_verifies_le, livre_relu_le, derniere_etape_livre, mise_en_page_ouverte_le").eq("id", projetId).maybeSingle(),
+    e.supabase.from("projets").select("chemins_verifies_le, livre_relu_le, derniere_etape_livre, mise_en_page_ouverte_le, mise_en_page_convient_le, imprimer_ouvert_le").eq("id", projetId).maybeSingle(),
   ]);
   const erreur = acceptees.error ?? projet.error;
   if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
@@ -73,5 +77,7 @@ export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promis
     livreRelu: Boolean(projet.data?.livre_relu_le),
     derniereEtape: estEtapeLivre(derniere) ? derniere : null,
     miseEnPageOuverte: Boolean(projet.data?.mise_en_page_ouverte_le),
+    miseEnPageConvient: Boolean(projet.data?.mise_en_page_convient_le),
+    imprimerOuvert: Boolean(projet.data?.imprimer_ouvert_le),
   };
 });

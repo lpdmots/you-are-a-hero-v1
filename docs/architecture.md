@@ -1204,6 +1204,32 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   changement d'empreinte quand des pages sont déjà montrées, et la petite
   double page en dessine deux pages avec pdf.js.
 
+**Lot 4 — « Mettre en page », volet « Aperçu » (15 octobre 2026) :**
+
+- **Déplacer un passage** (`domaine/ordre.ts`) : dans son groupe de mélange,
+  les passages qui se déplacent (ni départ, ni numéro fixé, ni ouverture en
+  tête) sont rangés par numéro ; monter, descendre ou placer après un
+  numéro change leur suite, puis les rangs gardés du groupe sont récrits
+  d'un seul appel (`placer_passages`), à partir du plus petit. Les numéros
+  fixés gardent leur numéro où qu'ils soient, les autres se recalculent :
+  les renvois suivent sans qu'aucun texte change. Les anciens rangs
+  reviennent à l'écran, qui les rend pour « Annuler ».
+- **Réintégrer** : une scène sans numéro fixé reçoit le rang qui suit le plus
+  grand du projet, donc la fin de son groupe ; l'« Annuler » d'une exclusion
+  garde sa place.
+- **Pages peu remplies** : mesurées par la page de Chromium après la mise en
+  page, pour chaque page du récit — le bas du dernier élément posé contre
+  celui de la zone de texte. Une page compte au-delà d'un quart de la
+  hauteur utile, sauf la dernière du récit et celle que suit une page
+  ouverte par un saut demandé (nouvelle partie, nouveau chapitre ou
+  nouvelle page). L'aperçu garde ces blancs avec ses pages ; un aperçu gardé
+  avant ce lot se recompose.
+- **Nouvelle page** : `scenes.nouvelle_page`, lue avec le plan, imprimée par
+  la classe `nouvelle-page` que la composition portait déjà (F11-AC10).
+- **Éléments collés** : la barre des volets, celle de l'aperçu et les
+  colonnes collées du Livre passent sous la barre du site (58 points),
+  qu'elles recouvraient.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

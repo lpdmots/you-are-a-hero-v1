@@ -99,11 +99,11 @@ export function PageChapitre({
     const fait = await exclureDuLivre("chapitre", chapitre.id, true);
     setAttente(null);
     setOuvert(null);
-    dire(fait.ok ? { texte: `« ${chapitre.titre} » est hors du livre.`, annuler: () => void exclureDuLivre("chapitre", chapitre.id, false) } : { texte: fait.erreur });
+    dire(fait.ok ? { texte: `« ${chapitre.titre} » est hors du livre.`, annuler: () => void exclureDuLivre("chapitre", chapitre.id, false, true) } : { texte: fait.erreur });
   };
   const reintegrer = async () => {
     const fait = await exclureDuLivre("chapitre", chapitre.id, false);
-    dire({ texte: fait.ok ? `« ${chapitre.titre} » est de nouveau dans le livre.` : fait.erreur });
+    dire({ texte: fait.ok ? `« ${chapitre.titre} » est de nouveau dans le livre${fait.aLaSuite ? " ; ses passages prennent la suite de leur partie" : ""}.` : fait.erreur });
   };
 
   const choisirImage = async (choix: ChoixImage): Promise<string | null> => {

@@ -163,14 +163,14 @@ export function Plan({
   // ——— Exclure du livre (F11.2) ———
   const reintegrer = async (c: Chapitre) => {
     const fait = await exclureDuLivre("chapitre", c.id, false);
-    dire({ texte: fait.ok ? `« ${c.titre} » est de nouveau dans le livre.` : fait.erreur });
+    dire({ texte: fait.ok ? `« ${c.titre} » est de nouveau dans le livre${fait.aLaSuite ? " ; ses passages prennent la suite de leur partie" : ""}.` : fait.erreur });
   };
   const exclure = (c: Chapitre) =>
     lancer("exclure", async () => {
       const fait = await exclureDuLivre("chapitre", c.id, true);
       setOuvert(null);
       if (!fait.ok) return dire({ texte: fait.erreur });
-      dire({ texte: `« ${c.titre} » est hors du livre.`, annuler: () => void exclureDuLivre("chapitre", c.id, false) });
+      dire({ texte: `« ${c.titre} » est hors du livre.`, annuler: () => void exclureDuLivre("chapitre", c.id, false, true) });
     });
 
   // ——— Départ du livre (F03-AC40) ———

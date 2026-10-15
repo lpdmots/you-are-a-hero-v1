@@ -1594,6 +1594,54 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       projet ; deux colonnes de réglages seulement au-delà de 1 400 points.
     - **Tests automatiques :** 12 unitaires, 16 de composition, 4 parcours ;
       captures `npm run captures -- etape6`.
+  - **Lot 4 — « Mettre en page », volet « Aperçu » : construit le
+    15 octobre 2026.** Le volet « Aperçu » montre le livre entier ; un clic
+    sur un passage ouvre sa scène à côté, au-dessus de laquelle la fiche « Ce
+    passage dans le livre » donne son numéro, sa page, « Monter »,
+    « Descendre », « Placer après le n° … » et « Commencer sur une nouvelle
+    page » ; chaque action se dit au-dessus de l'aperçu, avec « Annuler ».
+    Les pages peu remplies se parcourent depuis la barre de l'aperçu, la
+    page entourée et son blanc hachuré, sa hauteur dite en millimètres. Le
+    volet « Réglages » reçoit « Ordre des passages » : le mélange par partie
+    et « Mélanger les parties 1 et 2 ». « La mise en page me convient », au
+    bout de la barre des volets, coche l'étape et ouvre « Imprimer et
+    partager », qui ne se referme plus ; « Reprendre » la retire. Une scène
+    réintégrée prend la suite de sa partie, et le message dit son numéro.
+    Migration `20261015130000_mettre_en_page.sql`, base locale seulement :
+    `scenes.nouvelle_page`, le droit de modifier `rang_livre` et
+    `nouvelle_page` (l'adulte seul, par la politique des scènes),
+    `projets.mise_en_page_convient_le` et `imprimer_ouvert_le`, et la
+    fonction `placer_passages`, qui récrit des rangs gardés d'un coup.
+    - **Critères fermés :** F11-AC10, AC17 (à l'écran), AC32, AC42, AC43,
+      AC44, AC45, AC61, AC62, AC77, AC80 pour « Mettre en page », AC92 ;
+      F11-AC63 l'était au lot 3. F11-AC11 tient par les points qui disent
+      un ajustement devenu impossible : la largeur d'image réduite
+      (« à savoir », lot 3) et le numéro fixé plus grand que le livre
+      (bloquant) ; une nouvelle page reste toujours applicable.
+    - **Critères qui attendent :** F11-AC76 (scène rouverte après la mise
+      en page : « Relire » perd sa coche, « Mettre en page » reste
+      accessible ; le refus du PDF définitif, au lot 5) ; le doute sur
+      l'ordre et son effet sur la déclaration (AC86), au lot 6 ;
+      « Imprimer et partager » n'a encore qu'une phrase, jusqu'au lot 5.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      la fiche du passage tient en une ligne (« n° 22 · page 17 »,
+      « Monter », « Descendre », « Placer après le n° » et son champ, un
+      « i » qui dit les numéros possibles, l'interrupteur de la nouvelle
+      page) ; un passage qui ne bouge pas le dit d'une phrase (« Il ouvre
+      sa partie : il reste en tête. ») ; un refus se dit sous la fiche
+      (« Choisissez un numéro de sa partie, du 4 au 6. ») ; la
+      confirmation : « Passé du n° 6 au n° 5 · les renvois suivent. »,
+      avec « Annuler », gardée tant qu'on reste dans le Livre et qu'aucune
+      autre action ne la remplace ; « Monter » saute un numéro fixé ;
+      « Placer après » un numéro fixé place le passage juste après les
+      numéros qui le précèdent ; les plages de numéros des parties ne
+      comptent pas les numéros fixés ; les parties se réunissent sans
+      confirmation, les numéros changeant et les renvois suivant ; l'«
+      Annuler » d'une exclusion qui vient d'être faite rend sa place au
+      passage ; sur téléphone, seuls les deux onglets restent en haut de
+      l'écran, la déclaration défile.
+    - **Tests automatiques :** 5 unitaires, 3 de composition, 3 contre la
+      base, 4 parcours.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

@@ -13,7 +13,7 @@ import { colonnesDesNoms, nomsTries, texteSimple, type FormePage, type PagesDuLi
 import { pluriel } from "@/domaine/texte";
 import { listerImages } from "../../actions-images";
 import { PetiteDoublePage, type SourceApercu } from "./Apercu";
-import { reglerMiseEnPage, reglerPagesDuLivre } from "../../actions-livre";
+import { melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre } from "../../actions-livre";
 
 /**
  * Le volet « Réglages » de « Mettre en page » (F11.6) : « Texte et pages », puis « Pages de début
@@ -34,7 +34,7 @@ const PAGE_COMPOSEE: Record<CleDePage, string> = { titre: "titre", auteurs: "aut
 const EXEMPLE = "Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.";
 
 export function VoletReglages({
-  projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, avecRegles, ordre, apercu, onVoirApercu,
+  projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, avecRegles, parties, apercu, onVoirApercu,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   titre: string;
@@ -48,8 +48,8 @@ export function VoletReglages({
   prenoms: string[];
   aDesEnigmes: boolean;
   avecRegles: boolean;
-  /** La section « Ordre des passages », construite au lot suivant */
-  ordre?: ReactNode;
+  /** Les parties du livre à choix, pour « Ordre des passages » ; rien en récit classique */
+  parties: PartieDuLivre[] | null;
   /** L'aperçu composé, pour la petite double page qui suit les réglages */
   apercu: SourceApercu;
   onVoirApercu: () => void;
@@ -149,7 +149,7 @@ export function VoletReglages({
           </div>
         </section>
 
-        {ordre}
+        {parties ? <OrdreDesPassages projetId={projet.id} parties={parties} /> : null}
 
         <section className="reglages__section" aria-labelledby="pages-t">
           <h2 id="pages-t">Pages de début et de fin</h2>
@@ -216,6 +216,81 @@ export function VoletReglages({
         </p>
       </aside>
     </div>
+  );
+}
+
+export type PartieDuLivre = { id: string; titre: string; avecPrecedente: boolean; numeros: [number, number] | null };
+
+/**
+ * « Ordre des passages » (F11.5, F11.6) : le mélange par partie, et les parties que l'adulte
+ * réunit pour que leurs passages se mélangent ensemble (F11-AC17). « Réordonner les passages »
+ * s'y ajoutera (lot 6).
+ */
+function OrdreDesPassages({ projetId, parties }: { projetId: string; parties: PartieDuLivre[] }) {
+  const [enCours, setEnCours] = useState<string | null>(null);
+  const [erreur, setErreur] = useState<string | null>(null);
+  const groupes: { partie: PartieDuLivre; rang: number }[][] = [];
+  parties.forEach((partie, i) => {
+    if (partie.avecPrecedente && groupes.length) groupes[groupes.length - 1].push({ partie, rang: i + 1 });
+    else groupes.push([{ partie, rang: i + 1 }]);
+  });
+  const reunir = async (partie: PartieDuLivre, oui: boolean) => {
+    setEnCours(partie.id);
+    setErreur(null);
+    const r = await melangerAvecPrecedente(projetId, partie.id, oui);
+    setEnCours(null);
+    if (!r.ok) setErreur(r.erreur);
+  };
+  const numeros = (n: [number, number] | null) => (!n ? "hors du livre" : n[0] === n[1] ? `n° ${n[0]}` : `n° ${n[0]} à ${n[1]}`);
+  const interrupteur = (partie: PartieDuLivre, rang: number) => (
+    <label className="inter melange__inter">
+      <input type="checkbox" role="switch" checked={partie.avecPrecedente} disabled={enCours !== null} onChange={(e) => void reunir(partie, e.target.checked)} />
+      <span className="inter__piste" aria-hidden="true" />
+      <span>
+        Mélanger les parties {rang - 1} et {rang}
+      </span>
+    </label>
+  );
+  return (
+    <section className="reglages__section" aria-labelledby="ordre-t">
+      <h2 id="ordre-t" className="reglages__titre-section">
+        Ordre des passages
+        <Bulle question="Pourquoi mélanger des parties ensemble ?">
+          <span>Quand des parties sont très courtes, leurs passages se cachent mieux mélangés ensemble. Les numéros changent, les renvois suivent.</span>
+        </Bulle>
+      </h2>
+      <p className="reglages__phrase">Les passages sont mélangés dans chaque partie : la suite d’un choix n’est pas à côté de lui.</p>
+      <div className="melange">
+        {groupes.map((groupe, gi) => {
+          const bornes = groupe.flatMap((x) => x.partie.numeros ?? []);
+          return (
+            <div key={groupe[0].partie.id} className="melange__bloc">
+              {gi > 0 ? interrupteur(groupe[0].partie, groupe[0].rang) : null}
+              <div className={`melange__groupe${groupe.length > 1 ? " est-reuni" : ""}`}>
+                {groupe.map(({ partie, rang }, j) => (
+                  <div key={partie.id} className="melange__partie-bloc">
+                    {j > 0 ? interrupteur(partie, rang) : null}
+                    <p className="melange__partie">
+                      <b>Partie {rang}</b> · {partie.titre} · <span className="melange__numeros">{numeros(partie.numeros)}</span>
+                    </p>
+                  </div>
+                ))}
+                {groupe.length > 1 && bornes.length ? (
+                  <p className="melange__ensemble">
+                    n° {Math.min(...bornes)} à {Math.max(...bornes)}, mélangés ensemble
+                  </p>
+                ) : null}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      {erreur ? (
+        <p className="erreur" role="alert">
+          {erreur}
+        </p>
+      ) : null}
+    </section>
   );
 }
 

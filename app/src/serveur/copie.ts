@@ -138,7 +138,7 @@ export const vuParUnEleve = (texte: Texte): Texte => texte.filter((b) => (b as {
 type LigneOrdre = { id: string; chapitre_id: string; hors_livre: boolean; rang: number; rang_livre: number | null; numero_fixe: number | null; cree_le: string };
 
 /** La structure que lit la numérotation, pour l'adulte ou pour le serveur. */
-async function structure(base: SupabaseClient, projetId: string): Promise<{ plan: PlanNumerote; etabli: boolean; aChoix: boolean } | null> {
+export async function structure(base: SupabaseClient, projetId: string): Promise<{ plan: PlanNumerote; etabli: boolean; aChoix: boolean } | null> {
   const [projet, parties, chapitres, scenes] = await Promise.all([
     base.from("projets").select("recit, depart_scene_id, ordre_etabli_le").eq("id", projetId).maybeSingle(),
     base.from("parties").select("id, rang, cree_le, groupe_avec_precedente, ouverture_scene_id").eq("projet_id", projetId).is("supprime_le", null),

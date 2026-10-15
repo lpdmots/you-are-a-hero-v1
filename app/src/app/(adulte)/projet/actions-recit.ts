@@ -5,6 +5,7 @@ import { chapitresDe, couleurNouvelle, departDe, nomScene, TITRE_CHAPITRE, TITRE
 import { estVisuel, tirerVisuel } from "@/domaine/visuels";
 import { exigerEnseignant, type Enseignant } from "@/serveur/adulte";
 import { elevesDeLaClasse, estUuid, planDe } from "@/serveur/recit";
+import { numerosDuProjet } from "@/serveur/copie";
 
 /**
  * Commandes du plan du récit (F03.1, F03.2, F06.1, F10.1). Chacune revérifie qui demande ;
@@ -218,14 +219,39 @@ export async function marquerFin(sceneId: string, fin: boolean): Promise<Fait> {
   return { ok: true };
 }
 
-/** « Exclure du livre » ou « Réintégrer dans le livre » (F11.2) : l'écriture continue. */
-export async function exclureDuLivre(sorte: "chapitre" | "scene", id: string, exclu: boolean): Promise<Fait> {
+/**
+ * « Exclure du livre » ou « Réintégrer dans le livre » (F11.2) : l'écriture continue. Une fois
+ * l'ordre du livre établi, un passage réintégré sans numéro fixé prend place à la suite de son
+ * groupe de mélange, et son numéro est rendu pour le dire (F11-AC32). « Annuler » une exclusion
+ * qui vient d'être faite lui rend sa place (`garderLaPlace`).
+ */
+export async function exclureDuLivre(sorte: "chapitre" | "scene", id: string, exclu: boolean, garderLaPlace = false): Promise<Fait<{ numero?: number; aLaSuite?: boolean }>> {
   const e = await exigerEnseignant();
   if ((sorte !== "chapitre" && sorte !== "scene") || !estUuid(id)) return echec("Élément inconnu.");
   const { data, error } = await e.supabase.from(TABLE[sorte]).update({ hors_livre: exclu === true }).eq("id", id).select("projet_id");
   if (error || !data?.length) return echec("Cela n’a pas pu être enregistré.");
-  rafraichir(data[0].projet_id);
-  return { ok: true };
+  const projetId = data[0].projet_id as string;
+  let numero: number | undefined;
+  let aLaSuite = false;
+  if (!exclu && !garderLaPlace) {
+    const { data: projet } = await e.supabase.from("projets").select("ordre_etabli_le").eq("id", projetId).maybeSingle();
+    if (projet?.ordre_etabli_le) {
+      const colonne = sorte === "scene" ? "id" : "chapitre_id";
+      const [{ data: scenes }, { data: dernier }] = await Promise.all([
+        e.supabase.from("scenes").select("id, numero_fixe, hors_livre").eq(colonne, id).is("supprime_le", null).order("rang"),
+        e.supabase.from("scenes").select("rang_livre").eq("projet_id", projetId).not("rang_livre", "is", null).order("rang_livre", { ascending: false }).limit(1),
+      ]);
+      const aPlacer = ((scenes ?? []) as { id: string; numero_fixe: number | null; hors_livre: boolean }[]).filter((x) => x.numero_fixe === null && (sorte === "scene" || !x.hors_livre));
+      const depart = ((dernier?.[0]?.rang_livre as number | undefined) ?? -1) + 1;
+      if (aPlacer.length) {
+        await e.supabase.rpc("placer_passages", { p_projet: projetId, p_rangs: Object.fromEntries(aPlacer.map((x, i) => [x.id, depart + i])) });
+        aLaSuite = true;
+        if (sorte === "scene") numero = (await numerosDuProjet(e.supabase, projetId))?.de.get(id);
+      }
+    }
+  }
+  rafraichir(projetId);
+  return { ok: true, aLaSuite, ...(numero ? { numero } : {}) };
 }
 
 /**

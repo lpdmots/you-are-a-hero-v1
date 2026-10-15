@@ -59,6 +59,12 @@ export type RapportDeLaPage = {
   lignesDeListes: number[];
   /** La hauteur de l'illustration de la page de titre, en millimètres, et la hauteur utile de la page */
   illustration: { mm: number; page: number } | null;
+  /**
+   * Les pages du récit dont plus d'un quart de la hauteur utile reste blanc (F11.3, F11-AC44) :
+   * le blanc, en millimètres sur la feuille. Ni la dernière page du récit, ni une page suivie
+   * d'une nouvelle partie, d'un nouveau chapitre ou d'une nouvelle page demandée (F11.5).
+   */
+  peuRemplies: { page: number; mm: number; x: number; y: number; l: number; h: number }[];
 };
 
 export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
@@ -168,8 +174,10 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
   const enMm = (v) => Math.round((v / MM) * 10) / 10;
   const rapport = {
     pages: pages.length - horsPagination, horsPagination, pageDe: {}, premierePageDuRecit: 0, carte: [], debordements: [], introuvables: [], signature: [],
-    coupuresCorrigees, dureeMiseEnPage, des: [], presentation: [], lignesDeListes: [], illustration: null,
+    coupuresCorrigees, dureeMiseEnPage, des: [], presentation: [], lignesDeListes: [], illustration: null, peuRemplies: [],
   };
+  // Le blanc au bas de chaque page du récit, pour repérer les pages peu remplies
+  const blancs = [];
   const pageDeElement = new Map();
   const m = o.marges;
   let chapitreCourant = null;
@@ -287,6 +295,24 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     }
     const texte = contenu.textContent.replace(/[\s­]+/g, " ").trim();
     rapport.signature.push(n + ":" + lignes + ":" + texte.slice(0, 24) + "…" + texte.slice(-24));
+
+    if (!presentation && !blanche && contenu.querySelector(".recit, section.passage")) {
+      const zone = contenu.getBoundingClientRect();
+      let fond = zone.top;
+      for (const el of contenu.querySelectorAll("p, h1, h2, li, figure, img, svg, .choix-groupe")) {
+        const r = el.getBoundingClientRect();
+        if (r.height > 0 && r.bottom > fond) fond = r.bottom;
+      }
+      // La page s'ouvre sur un saut demandé : nouvelle partie, nouveau chapitre ou nouvelle page
+      const premier = contenu.querySelector("h1, h2, p, figure, li, .debut-scene");
+      const force = Boolean(premier && premier.classList.contains("nouvelle-page") && !premier.dataset.splitFrom);
+      blancs.push({ page: n, ouvreForce: force, hauteur: zone.height, x: enMm(zone.left - f.left), y: enMm(fond - f.top), l: enMm(zone.width), h: enMm(zone.bottom - fond) });
+    }
+  });
+  blancs.forEach((b, i) => {
+    const suivante = blancs[i + 1];
+    if (!suivante || suivante.page !== b.page + 1 || suivante.ouvreForce) return;
+    if (b.h * MM > b.hauteur / 4) rapport.peuRemplies.push({ page: b.page, mm: Math.round(b.h), x: b.x, y: b.y, l: b.l, h: b.h });
   });
 
   for (const img of document.querySelectorAll("img")) {

@@ -85,6 +85,8 @@ export function livreDe(
     aChoix?: boolean; parties?: string[]; groupes?: number[]; reglages?: Partial<ReglagesDuLivre>; images?: Record<string, { largeur: number; hauteur: number }>; feuille?: Feuille | null; titre?: string;
     /** Les pages de présentation : celles proposées par défaut, modifiées */
     pages?: (p: PagesDuLivre) => PagesDuLivre; regles?: string;
+    /** Les passages qui commencent sur une nouvelle page (F11.3), par référence */
+    nouvellesPages?: number[];
   } = {},
 ): LivreACompose {
   const aChoix = o.aChoix ?? true;
@@ -103,6 +105,7 @@ export function livreDe(
   return livreACompose({
     titre, aChoix, plan, textes, formule: "rends", marqueFin: "Fin", feuille: o.feuille ?? null,
     reglages, problemes, images: o.images ?? {},
+    nouvellesPages: new Set((o.nouvellesPages ?? []).map(id)),
     presentation: pages
       ? presentationDe(pages, { titre, aChoix, feuille: o.feuille ?? null, regles: o.regles ?? "", aDesEnigmes: plan.liens.some((l) => l.cache), desImprimes: reglages.basDePage === "des" })
       : null,

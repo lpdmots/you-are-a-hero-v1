@@ -66,6 +66,8 @@ export type Scene = {
   rangLivre: number | null;
   /** Numéro que la scène doit garder (F11-AC96) */
   numeroFixe: number | null;
+  /** Ajustement de l'adulte : le passage commence sur une nouvelle page (F11.3) */
+  nouvellePage?: boolean;
 };
 
 export type ElevePlan = { id: string; prenom: string; nom: string | null; couleur: number };

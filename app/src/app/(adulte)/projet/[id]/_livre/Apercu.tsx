@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
+import { Bulle } from "@/composants/Bulle";
+import { Icone } from "@/composants/Icone";
 import type { Apercu as DonneesApercu } from "@/serveur/livre/apercu";
 import type { BlocPlace } from "@/serveur/livre/dans-la-page";
 
@@ -71,7 +73,7 @@ export function useApercu(projetId: string, empreinte: string, actif: boolean): 
 }
 
 export function Apercu({
-  source, limiteAuRecit, modeParDefaut, choisie, aller, onPassage, onRenvoi, nommer, barre,
+  source, limiteAuRecit, modeParDefaut, choisie, aller, onPassage, onRenvoi, nommer, barre, peuRemplies, bandeau, consigne,
 }: {
   /** L'aperçu composé, tenu par le Livre */
   source: SourceApercu;
@@ -88,6 +90,12 @@ export function Apercu({
   nommer: (sceneId: string) => string;
   /** Ce que l'étape ajoute à la barre : le parcours des problèmes */
   barre?: ReactNode;
+  /** « Mettre en page » : le parcours des pages peu remplies (F11.3, F11-AC44) */
+  peuRemplies?: boolean;
+  /** Sous la barre : ce qui vient d'être fait, avec « Annuler » */
+  bandeau?: ReactNode;
+  /** Au-dessus de la barre : ce qu'on fait ici */
+  consigne?: ReactNode;
 }) {
   const { charge, calcul, erreur, calculer } = source;
   const [mode, setMode] = useState<ModeApercu>(() => {
@@ -128,10 +136,41 @@ export function Apercu({
 
   const etalees = mode === "double" ? doublesPages(folios) : folios.map((f) => [f]);
 
+  // Les pages peu remplies, de l'une à la suivante : l'aperçu se place sur la page, entourée
+  const blancs = useMemo(() => (peuRemplies ? (apercu?.peuRemplies ?? []) : []), [peuRemplies, apercu]);
+  const [visee, setVisee] = useState<number | null>(null);
+  const rangVise = visee !== null && visee < blancs.length ? visee : null;
+  const viser = (pas: 1 | -1) => {
+    if (!blancs.length) return;
+    const i = rangVise === null ? (pas > 0 ? 0 : blancs.length - 1) : (rangVise + pas + blancs.length) % blancs.length;
+    setVisee(i);
+    conteneur.current?.querySelector<HTMLElement>(`[data-folio="${blancs[i].page}"]`)?.scrollIntoView({ block: "center", behavior: "smooth" });
+  };
+  const blancVise = rangVise !== null ? blancs[rangVise] : null;
+
   return (
     <section className={`apercu apercu--${mode}${calcul && charge ? " apercu--calcul" : ""}`} aria-label="Aperçu du livre">
+      {consigne}
       <div className="apercu__barre">
         {barre}
+        {peuRemplies ? (
+          <span className="parcours parcours--pages" role="group" aria-label="Pages peu remplies">
+            <span className="parcours__nom">
+              <Icone nom="livre" />
+              Pages peu remplies{" "}
+              <span className="parcours__compte">{!apercu ? "" : !blancs.length ? "aucune" : rangVise !== null ? `${rangVise + 1} / ${blancs.length} · page ${blancs[rangVise].page}` : blancs.length}</span>
+            </span>
+            <button type="button" className="parcours__b" aria-label="Page peu remplie précédente" disabled={!blancs.length} onClick={() => viser(-1)}>
+              <Icone nom="chevron-haut" />
+            </button>
+            <button type="button" className="parcours__b" aria-label="Page peu remplie suivante" disabled={!blancs.length} onClick={() => viser(1)}>
+              <Icone nom="chevron-bas" />
+            </button>
+            <Bulle question="Qu’est-ce qu’une page peu remplie ?">
+              <span>Une page du récit dont plus d’un quart reste blanc. Pour la combler, déplacez un passage ; ce n’est pas un défaut.</span>
+            </Bulle>
+          </span>
+        ) : null}
         <span className="apercu__etat" role="status">
           {calcul ? "Mise à jour…" : erreur ? erreur : apercu ? `${apercu.passages} passage${apercu.passages > 1 ? "s" : ""} · ${apercu.pages} pages · ${apercu.etat}` : ""}
           {erreur && !calcul ? (
@@ -149,6 +188,7 @@ export function Apercu({
           </button>
         </span>
       </div>
+      {bandeau}
       <div className="apercu__pages" ref={conteneur}>
         {!charge ? <p className="apercu__attente">{erreur ?? "Le livre est mis en pages sur le serveur…"}</p> : null}
         {charge
@@ -165,6 +205,7 @@ export function Apercu({
                       rang={charge.apercu.horsPagination + folio}
                       blocs={parPage.get(folio) ?? []}
                       choisie={choisie}
+                      blanc={blancVise && blancVise.page === folio ? blancVise : null}
                       onPassage={onPassage}
                       onRenvoi={onRenvoi}
                       nommer={nommer}
@@ -193,13 +234,15 @@ function doublesPages(folios: number[]): number[][] {
 const dedans = (b: BlocPlace, x: number, y: number, marge = 0) => x >= b.x - marge && x <= b.x + b.l + marge && y >= b.y - marge && y <= b.y + b.h + marge;
 
 function PageDuLivre({
-  folio, doc, rang, blocs, choisie, onPassage, onRenvoi, nommer,
+  folio, doc, rang, blocs, choisie, blanc, onPassage, onRenvoi, nommer,
 }: {
   folio: number;
   doc: PDFDocumentProxy;
   rang: number;
   blocs: BlocPlace[];
   choisie: string | null;
+  /** La page peu remplie visée : son blanc se voit, à l'écran seulement */
+  blanc: { mm: number; x: number; y: number; l: number; h: number } | null;
   onPassage: (sceneId: string) => void;
   onRenvoi: (cible: string, depuis: string) => void;
   nommer: (sceneId: string) => string;
@@ -243,7 +286,7 @@ function PageDuLivre({
   return (
     <div
       ref={boite}
-      className={`apercu__page${survol ? " apercu__page--survol" : ""}`}
+      className={`apercu__page${survol ? " apercu__page--survol" : ""}${blanc ? " apercu__page--visee" : ""}`}
       data-folio={folio}
       onClick={(ev) => {
         const touche = sous(ev);
@@ -268,6 +311,11 @@ function PageDuLivre({
           </button>
         ))}
       </span>
+      {blanc ? (
+        <span className="apercu__blanc" style={{ left: pc(blanc.x, LARGEUR_MM), top: pc(blanc.y, HAUTEUR_MM), width: pc(blanc.l, LARGEUR_MM), height: pc(blanc.h, HAUTEUR_MM) }}>
+          <span>{blanc.mm} mm de blanc</span>
+        </span>
+      ) : null}
       <span className="apercu__folio">p. {folio}</span>
     </div>
   );
