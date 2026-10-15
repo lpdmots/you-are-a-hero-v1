@@ -154,3 +154,31 @@ test("lot 6 : ordre des passages, doute et passage suggéré", async ({ page }) 
   await page.locator("#moins-de-blanc").scrollIntoViewIfNeeded();
   await capturer(page, "doute-sur-l-ordre", false);
 });
+
+test("F10-AC36 : image pleine page en tête de passage", async ({ page }) => {
+  test.setTimeout(300_000);
+  n = 650;
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Le phare");
+  const { chapitres } = await semerPartie(base, projet, "La côte", [{ titre: "La plage", scenes: ["Le quai", "La barque", "L’autre rive"] }]);
+  const s = chapitres[0].scenes;
+  const service = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false } });
+  const image = await semerImage(base, compte, projet);
+  for (const [suffixe, fichier] of [["", "defaut-montagne.jpg"], ["-v", "defaut-montagne-v.jpg"]]) {
+    await service.storage.from("images").upload(`${compte.id}/${projet}/${image}${suffixe}.jpg`, readFileSync(`public/illustrations/${fichier}`), { contentType: "image/jpeg", upsert: true });
+  }
+  await base.from("projets").update({ depart_scene_id: s[0] }).eq("id", projet);
+  await semerBlocs(base, s[0], [recit("Le quai est désert. ".repeat(30)), choixAuto("Monter dans la barque", s[1])]);
+  await semerBlocs(base, s[1], [{ type: "image", id: crypto.randomUUID(), image, largeur: 100, page: true, children: [{ text: "" }] }, recit("La barque glisse sur l’eau noire. ".repeat(6)), choixAuto("Accoster", s[2])]);
+  await semerBlocs(base, s[2], [recit("L’autre rive est silencieuse.")]);
+  await base.from("scenes").update({ fin: true }).eq("id", s[2]);
+  await sql("update scenes set etat = 'prete' where projet_id = $1", [projet]);
+  await page.setViewportSize({ width: 1366, height: 1000 });
+  await aller(page, `/projet/${projet}/livre?etape=relire`);
+  await page.locator(".apercu__etat").filter({ hasText: "passages" }).waitFor({ timeout: 60_000 });
+  await page.getByRole("button", { name: "Double page" }).click();
+  const folio = await page.getByRole("button", { name: /^Ouvrir n° 2 ·/ }).first().evaluate((b) => b.closest<HTMLElement>("[data-folio]")!.dataset.folio);
+  await page.locator(`[data-folio="${folio}"]`).scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1500);
+  await capturer(page, "image-en-tete-de-passage", false);
+});

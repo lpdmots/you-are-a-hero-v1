@@ -64,6 +64,9 @@ export function feuilleDesPages(r: ReglagesDuLivre): string {
 .pres--apres-le-recit { break-before: page; }
 .nouvelle-page { break-before: page; }
 figure.image.page { break-before: page; break-after: page; }
+/* Une image pleine page en tête de passage : sa page porte aussi le numéro (F10-AC36) */
+.page-image--coupe { break-before: page; }
+.page-image { break-after: page; }
 `;
 }
 
@@ -112,6 +115,12 @@ figure.image figcaption { font-style: italic; font-size: 0.84em; line-height: 1.
 figure.image.page { margin: 0 auto; height: var(--hauteur-utile); display: flex; flex-direction: column; justify-content: center; align-items: center; }
 figure.image.page img { width: auto; max-width: 100%; height: auto; max-height: calc(100% - 9mm); object-fit: contain; }
 figure.image.page:not(:has(figcaption)) img { max-height: 100%; }
+.page-image { height: var(--hauteur-utile); display: flex; flex-direction: column; break-inside: avoid; }
+.page-image h2.numero, .page-image h1.partie, .page-image h2.chapitre { margin-top: 0; flex: none; }
+.page-image h1.partie.nouvelle-page { padding-top: 0; }
+figure.image.en-tete { flex: 1 1 auto; min-height: 0; margin: 2mm auto 0; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+figure.image.en-tete img { width: auto; max-width: 100%; height: auto; max-height: calc(100% - 9mm); object-fit: contain; }
+figure.image.en-tete:not(:has(figcaption)) img { max-height: 100%; }
 img.symbole { height: 1em; width: auto; vertical-align: -0.15em; }
 figure.introuvable .manque, .recit p.vide { display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; border: 0.3mm dashed #a5432e; color: #a5432e; font: 600 8.5pt 'Atkinson Hyperlegible Next', sans-serif; }
 .recit p.vide { aspect-ratio: auto; padding: 5mm; border-color: #8a8a8a; color: #6b6b6b; }

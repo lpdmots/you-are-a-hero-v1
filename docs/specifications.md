@@ -6621,6 +6621,12 @@ arbitré à l'entretien de l'étape 6 du
   800 points de large, lorsqu'elle est placée en pleine largeur dans un
   livre aux marges de départ, alors un avertissement la désigne (180 points
   par pouce) ; placée à 40 %, elle ne l'est pas.
+- **F10-AC36 — Image pleine page en tête de passage :** étant donné le
+  passage 20 qui s'ouvre sur une image pleine page, et 40 mm libres au bas
+  de la page 13 après le passage 19, lorsque le livre est composé, alors la
+  page 14 porte en haut le numéro 20 et dessous l'image, réduite pour tenir ;
+  le texte du passage 20 commence en haut de la page 15 ; la page 13 ne
+  porte pas le numéro 20.
 
 - **F10-AC16 — Largeur modifiable sans perte :** étant donné une photographie
   de 4 000 points de large importée puis placée en petite largeur, lorsque
@@ -6648,6 +6654,19 @@ sa scène et ne la réduit pas pour la faire tenir en bas d'une page.
 - **Image pleine page :** elle occupe seule la page qui suit l'endroit où
   elle est posée ; le texte reprend sur la page d'après. La page qui la
   précède garde le blanc qui lui reste.
+- **Image pleine page en tête d'un passage (décidé le 15 octobre 2026) :**
+  posée avant tout texte du passage, elle partage sa page avec le numéro du
+  passage, imprimé au-dessus d'elle, et avec le titre de partie qui
+  l'ouvre, le cas échéant ; elle est réduite d'autant. Le lecteur qui cherche
+  le numéro trouve l'image dessous, puis tourne la page pour le texte. En
+  récit classique, la scène s'ouvre de même sur cette page, avec le titre de
+  chapitre qui la précède.
+  Motif : sinon le numéro restait seul en bas de la page précédente, contre
+  F11-AC37. Alternatives écartées : le numéro en tête de la page qui suit
+  l'image, avec le texte — le lecteur qui le trouve lit et manque l'image,
+  remarque du porteur ; le numéro laissé seul en bas de page, facile à
+  manquer et pris pour une erreur. L'auteur qui ne veut pas de blanc avant
+  l'image la pose après le premier paragraphe.
 - **Image en bloc qui ne tient pas en bas de page :** elle passe entière en
   tête de la page suivante ; le texte qui la suit dans la scène ne remonte
   pas avant elle.
@@ -7838,10 +7857,12 @@ aucun candidat, le dit, et renvoie à la scène pour réduire l'image ou
 récrire.
 
 - **F11-AC74 — Blanc dans un passage :** étant donné le passage 20 dont
-  l'image pleine page ouvre la page 14 et laisse 59 mm de blanc au bas de la
-  page 13, lorsque l'adulte arrive sur cette page peu remplie, alors aucun
-  passage ne lui est suggéré, l'application en donne la raison et lui
-  propose d'ouvrir la scène.
+  l'image pleine page, posée après son premier paragraphe, ouvre la page 14
+  et laisse 59 mm de blanc au bas de la page 13, lorsque l'adulte arrive sur
+  cette page peu remplie, alors aucun passage ne lui est suggéré,
+  l'application en donne la raison et lui propose d'ouvrir la scène (révisé
+  le 15 octobre 2026 : une image en tête de passage partage sa page avec le
+  numéro, selon F10-AC36, et le blanc d'avant n'est plus dans le passage).
 
 ### F11.4 — Intérieur du livre, pages de présentation et couverture
 

@@ -1706,13 +1706,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       les passages suggérés tiennent en une ligne (numéro, titre, hauteur et
       blanc restant, « Placer ici »), le plus haut d'abord ; les deux blocs
       de la section l'un sous l'autre.
-    - **Question à trancher :** une image pleine page posée en tête d'un
-      passage laisse son numéro seul en bas de la page qui précède
-      l'image : la règle de F10 (l'image reste où l'auteur l'a posée, seule
-      sur sa page) l'emporte aujourd'hui sur F11-AC37 (numéro jamais seul).
-      Recommandation : que le numéro passe alors en tête de la page d'après
-      l'image, avec le texte qui suit, ou, à défaut, l'imprimer seul en haut
-      de la page qui précède l'image.
+    - **Question tranchée le 15 octobre 2026 :** une image pleine page posée
+      en tête d'un passage laissait son numéro seul en bas de la page
+      d'avant. Décidé par le porteur : le numéro s'imprime en haut de la
+      page de l'image, au-dessus d'elle, l'image réduite d'autant (F10,
+      F10-AC36) ; le numéro en tête de la page qui suit l'image, d'abord
+      recommandé, est écarté sur sa remarque — le lecteur qui le trouve lit
+      et manque l'image. F11-AC74 est révisé en conséquence.
     - **Tests automatiques :** 8 unitaires, 5 parcours. Un parcours du lot 2
       (F11-AC27) a échoué une fois dans une série complète et passé seul :
       instable, à surveiller.
@@ -1745,6 +1745,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       stockage et V3 (l'aperçu ressenti en ligne), puis V6, l'envoi d'un PDF
       définitif à l'imprimeur et l'exemplaire reçu.
     - **Tests automatiques :** 2 parcours ; la série complète passe.
+  - **Retouches du 15 octobre 2026, après le lot 7 :** l'image pleine page
+    en tête de passage partage sa page avec le numéro (F10-AC36, ci-dessus) ;
+    sur une page de droite qui porte les dés, la marque « p. 12 » du PDF de
+    travail et de l'aperçu passe côté reliure, où elle ne se cache plus
+    derrière eux (retour du porteur). Un aperçu gardé avant ces retouches
+    se recompose. Tests : 2 de composition ; F11-AC74 rejoué sur une image
+    posée après le premier paragraphe.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

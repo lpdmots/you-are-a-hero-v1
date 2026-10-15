@@ -2017,6 +2017,11 @@ ligne par passage. Captures 641 à 644.
   « Annuler ») ; « Aucun autre ordre ne laisse moins de blanc » se dit en
   gris, sans couleur d'erreur.
 
+**Retouches après le lot 7.** Une image pleine page en tête de passage :
+le numéro en haut de la page, l'image centrée dessous (capture 651). Sur une
+page de droite qui porte les dés, la marque « p. 12 » du PDF de travail et
+de l'aperçu, en bas côté reliure.
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans

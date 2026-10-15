@@ -149,6 +149,22 @@ describe("Les images à leur place (F10)", () => {
     expect(entrees(apres, "ch")[0].page).toBe(entrees(apres, "t1")[0].page);
   });
 
+  it("F10-AC36 — une image pleine page en tête du passage 2 : sa page porte en haut le numéro 2, l'image dessous ; le texte commence à la page suivante, et la page d'avant n'a pas le numéro", async () => {
+    const images = { [imageId(1)]: { largeur: 1200, hauteur: 1800 } };
+    const c = await compose(
+      livreDe([{ ref: 1, texte: [p("Le quai est désert.", "t1"), choix("Monter à bord", id(2), "ch1")] }, { ref: 2, texte: [image(1, 100, "pp", true), p("La barque glisse sur l’eau noire.", "t2")], fin: true }], { images }),
+      lire,
+    );
+    const numero = c.rapport.carte.find((b) => b.scene === id(2) && !b.bloc && !b.cible)!;
+    const [img] = entrees(c, "pp");
+    expect(numero.page).toBe(img.page);
+    expect(numero.y).toBeLessThan(img.y);
+    expect(numero.page).toBe(c.rapport.pageDe[id(1)] + 1);
+    expect(entrees(c, "t2")[0].page).toBe(img.page + 1);
+    // L'image tient sous le numéro, dans la zone de texte
+    expect(img.y + img.h).toBeLessThanOrEqual(210 - 20 + 0.5);
+  });
+
   it("F11-AC57 — une adresse de quatre-vingts caractères sans espace, que la césure laisse entière, dépasse de la marge : la composition le voit, à sa page", async () => {
     const c = await compose(livreDe([{ ref: 1, fin: true, texte: [p("Voir Wwwuneadressebeaucouptroplonguepourtenirsurunelignedulivreetquinesecoupenullepart.fr")] }]));
     expect(c.rapport.debordements).toContainEqual({ page: 1, scene: id(1) });
@@ -217,6 +233,18 @@ describe("Pages de présentation, bas de page, présentation commune (F11.4, F11
       expect(d.page).toBeGreaterThanOrEqual(c.rapport.premierePageDuRecit);
       expect(d.faces).toHaveLength(2);
     }
+  });
+
+  it("PDF de travail avec dés : sur une page de droite qui porte les dés, « p. N » passe côté reliure, loin d'eux", async () => {
+    const c = await composer(livreDe(scenes, { feuille: feuille(0), pages: (x) => x, reglages: { basDePage: "des" } }), { travail: true, etatDu: ETAT, lireImage: sansImage });
+    const pages = await lirePdf(c.pdf);
+    const d = c.rapport.des[0];
+    const page = pages[c.rapport.horsPagination + d.page - 1];
+    const bas = page.elements.filter((e) => e.y > page.hauteur - 40);
+    const marque = bas.find((e) => /^p\.?\s*\d+$/.test(e.texte.trim()) || e.texte.trim() === "p.")!;
+    expect(marque).toBeDefined();
+    // Page de droite : la reliure est à gauche, les dés à droite
+    expect(marque.x).toBeLessThan(page.largeur / 2);
   });
 
   it("F11-AC51, F11-AC106 — une feuille en image s'imprime dans les marges, ses sections restent pour le lecteur en ligne ; l'illustration du titre ne dépasse pas la moitié de la page", async () => {

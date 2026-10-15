@@ -24,8 +24,9 @@ async function phare(page: Page, o: { pleinePage?: boolean } = {}): Promise<Livr
   const longueurs = [1, 14, 2, 1, 12, 1, 2, 1];
   const image = o.pleinePage ? await semerImage(base, compte, projet) : null;
   for (let i = 0; i < s.length; i += 1) {
-    const blocs = [recit(PHRASE.repeat(longueurs[i]))];
-    if (image && i === 1) blocs.unshift({ type: "image", id: crypto.randomUUID(), image, largeur: 100, page: true, children: [{ text: "" }] });
+    // Avec l'image : le passage 2 tient en une phrase, puis son image pleine page (F11-AC74)
+    const blocs = [recit(PHRASE.repeat(image && i === 1 ? 1 : longueurs[i]))];
+    if (image && i === 1) blocs.push({ type: "image", id: crypto.randomUUID(), image, largeur: 100, page: true, children: [{ text: "" }] });
     await semerBlocs(base, s[i], [...blocs, ...(i < s.length - 1 ? [choixAuto(`Continuer vers ${i + 2}`, s[i + 1])] : [])]);
   }
   await base.from("scenes").update({ fin: true }).eq("id", s[s.length - 1]);
@@ -133,7 +134,7 @@ test("F11-AC67, F11-AC68 — sur une page peu remplie, les passages courts plus 
   expect((await sql<{ rang_livre: number }>("select rang_livre from scenes where id = $1", [l.s[4]]))[0].rang_livre).toBe(4);
 });
 
-test("F11-AC74 — un blanc à l'intérieur d'un passage, avant son image pleine page : aucun passage suggéré, la raison, et la scène à ouvrir", async ({ page }) => {
+test("F11-AC74 — un blanc à l'intérieur d'un passage, avant l'image pleine page posée après son premier paragraphe : aucun passage suggéré, la raison, et la scène à ouvrir", async ({ page }) => {
   const l = await phare(page, { pleinePage: true });
   await aller(page, `/projet/${l.projet}/livre?etape=page`);
   await versLesBlancs(page);

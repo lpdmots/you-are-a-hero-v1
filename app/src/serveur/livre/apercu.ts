@@ -44,7 +44,7 @@ export type Apercu = {
 type Garde = Omit<Apercu, "adresse" | "empreinte"> & { version?: number };
 
 /** La façon de mesurer le livre : un aperçu gardé d'une autre version se recompose */
-export const VERSION_DE_LA_MESURE = 4;
+export const VERSION_DE_LA_MESURE = 6;
 
 export async function apercuDuLivre(e: Enseignant, projetId: string): Promise<Apercu | null> {
   const instantane = await instantaneDuLivre(e, projetId);

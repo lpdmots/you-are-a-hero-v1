@@ -314,18 +314,18 @@ function phrase(b: Extract<BlocLu, { type: "choix" }>, o: Options, livre: LivreA
   return `<p class="choix"${attributs({ "data-bloc": b.id })}>${corps}</p>`;
 }
 
-function image(b: Extract<BlocLu, { type: "image" }>, o: Options, livre: LivreACompose, sceneId: string): string {
+function image(b: Extract<BlocLu, { type: "image" }>, o: Options, livre: LivreACompose, sceneId: string, enTete = false): string {
   const connue = livre.images[b.image];
   const legende = b.legende ? `<figcaption>${html(b.legende)}</figcaption>` : "";
   const a = attributs({ "data-bloc": b.id, "data-scene": sceneId, "data-image": b.image, "data-pourcent": b.page ? 100 : b.largeur, "data-pleine-page": b.page ? "1" : null });
   if (!connue) {
     // L'indication à la place de l'image (F10-AC14) : le PDF définitif, lui, est refusé
-    return `<figure class="image introuvable${b.page ? " page" : ""}"${a} style="width:${b.page ? 100 : b.largeur}%"><div class="manque">Image introuvable</div>${legende}</figure>`;
+    return `<figure class="image introuvable${enTete ? " en-tete" : b.page ? " page" : ""}"${a} style="width:${b.page ? 100 : b.largeur}%"><div class="manque">Image introuvable</div>${legende}</figure>`;
   }
   const ratio = connue.largeur / connue.hauteur;
   // Une image trop haute pour la page est réduite, proportions gardées (F10) ; les contrôles le disent si sa largeur a été réglée à la main
   const largeur = b.page ? 100 : largeurImprimee(b, connue, livre.reglages).pourcent;
-  return `<figure class="image${b.page ? " page" : ""}"${a} style="width:${largeur}%"><img src="${html(o.image(b.image))}" alt="${html(b.alt ?? "")}" style="aspect-ratio:${ratio.toFixed(5)}">${legende}</figure>`;
+  return `<figure class="image${enTete ? " en-tete" : b.page ? " page" : ""}"${a} style="width:${largeur}%"><img src="${html(o.image(b.image))}" alt="${html(b.alt ?? "")}" style="aspect-ratio:${ratio.toFixed(5)}">${legende}</figure>`;
 }
 
 function passageHtml(p: PassageACompose, livre: LivreACompose, o: Options): string {
@@ -347,6 +347,15 @@ function passageHtml(p: PassageACompose, livre: LivreACompose, o: Options): stri
     morceaux.push(`<span class="debut-scene${p.nouvellePage && !p.partie && !p.chapitre ? " nouvelle-page" : ""}"${debut}></span>`);
   }
 
+  // Une image pleine page posée avant tout texte partage sa page avec le numéro et les titres
+  // qui ouvrent le passage, imprimés au-dessus d'elle ; elle est réduite d'autant (F10-AC36)
+  const tete = p.blocs[0]?.type === "image" && p.blocs[0].page ? p.blocs[0] : null;
+  if (tete && tete.type === "image") {
+    const saut = morceaux.some((m) => m.includes("nouvelle-page"));
+    const titres = morceaux.splice(0).filter((m) => !m.startsWith('<div class="separateur"'));
+    morceaux.push(`<div class="page-image${saut ? "" : " page-image--coupe"}">${titres.join("")}${image(tete, o, livre, p.sceneId, true)}</div>`);
+  }
+
   // La marque de fin s'imprime après le texte, et avant les choix d'une fin qui en garde (F11.5)
   const premierChoix = p.blocs.findIndex((b) => b.type === "choix");
   const avantLesChoixDeFin = p.fin && premierChoix >= 0 && p.blocs.slice(premierChoix).every((b) => b.type === "choix" || b.type === "image") ? premierChoix : -1;
@@ -358,6 +367,7 @@ function passageHtml(p: PassageACompose, livre: LivreACompose, o: Options): stri
     groupe = [];
   };
   p.blocs.forEach((b, i) => {
+    if (i === 0 && tete) return;
     if (i === avantLesChoixDeFin) morceaux.push(fin);
     if (b.type === "choix") {
       groupe.push(phrase(b, o, livre));

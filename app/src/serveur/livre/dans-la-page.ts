@@ -253,7 +253,8 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     const bas = Math.max(5, m.bas / 2 - 2) + "mm";
     if (folio) poser("folio", String(n), { bottom: bas, [exterieur]: m.exterieur + "mm" });
     // Les dés, sur chaque page de droite du récit : ouvrir le livre au hasard tient lieu de lancer
-    if (o.des && droite && !blanche && !presentation) {
+    const avecDes = Boolean(o.des && droite && !blanche && !presentation);
+    if (avecDes) {
       const faces = o.des[pagesDeDroite % o.des.length];
       pagesDeDroite += 1;
       const des = document.createElement("div");
@@ -275,7 +276,8 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     if (illustration) rapport.illustration = { mm: enMm(illustration.getBoundingClientRect().height), page: enMm(contenu.getBoundingClientRect().height) };
     if (o.travail) {
       poser("marque mention", "Version de travail · " + o.etatDu, { top: Math.max(4, m.haut - 9) + "mm", [droite ? "left" : "right"]: m.interieur + "mm" });
-      if (!folio) poser("marque page", "p. " + n, { bottom: bas, [exterieur]: m.exterieur + "mm" });
+      // Sur une page qui porte les dés, côté extérieur, la marque passe côté reliure
+      if (!folio) poser("marque page", "p. " + n, avecDes ? { bottom: bas, [droite ? "left" : "right"]: m.interieur + "mm" } : { bottom: bas, [exterieur]: m.exterieur + "mm" });
     }
 
     // La carte des blocs : où se trouve chaque bloc, pour retrouver la scène sous un clic
@@ -339,7 +341,7 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     if (numero && !section.dataset.splitFrom) h += parseFloat(getComputedStyle(numero).marginTop) || 0;
     m.h = Math.round((m.h + h / MM) * 10) / 10;
     for (const g of section.querySelectorAll(".choix-groupe")) m.choix = Math.round((m.choix + g.getBoundingClientRect().height / MM) * 10) / 10;
-    if (section.querySelector("figure.image.page")) m.pleinePage = true;
+    if (section.querySelector("figure.image.page, .page-image")) m.pleinePage = true;
   }
 
   for (const img of document.querySelectorAll("img")) {
