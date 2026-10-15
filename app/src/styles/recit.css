@@ -718,6 +718,16 @@
   color: var(--graphite);
 }
 
+/* La scène dont l'élève s'occupe : le liseré canard de son cahier sur « Mon travail » */
+.fiche--mienne {
+  border-color: var(--canard);
+  box-shadow: 0 0 0 1px var(--canard);
+}
+.fiche--mienne .cahier__ruban .ic {
+  width: 1em;
+  height: 1em;
+}
+
 /* ——— Scènes trouvées par la recherche du livre ——— */
 .trouves {
   margin-top: 26px;

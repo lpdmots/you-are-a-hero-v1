@@ -146,7 +146,7 @@ export function ChapitreEleve({
     });
   };
   const fiche = (s: SceneEleve, prise: ReactNode) => (
-    <article className={`fiche fiche--ouvrable${prise ? " se-tire" : ""}`}>
+    <article className={`fiche fiche--ouvrable${prise ? " se-tire" : ""}${s.prise?.par === "moi" ? " fiche--mienne" : ""}`}>
       <Link
         className="fiche__cible"
         href={`/travail/scene/${s.id}`}
@@ -216,10 +216,20 @@ export function ChapitreEleve({
       ) : null}
       <div className="fiche__pied">
         {s.prise ? (
-          <p className="fiche__qui">
-            {s.prise.par === "eleve" ? <Gommette prenom={s.prise.eleve.prenom} couleur={s.prise.eleve.couleur} taille="s" /> : null}
-            <b>{s.prise.par === "eleve" ? `${nomPourEleves(s.prise.eleve, eleves)} s’en occupe` : s.prise.par === "moi" ? "Tu t’en occupes" : `${majuscule(prof)} s’en occupe`}</b>
-          </p>
+          s.prise.par === "moi" ? (
+            // Sa scène se repère d'un coup d'œil : le liseré et le ruban de « Ton chapitre », sur « Mon travail »
+            <p className="fiche__qui">
+              <span className="cahier__ruban">
+                <Icone nom="crayon" />
+                Tu t’en occupes
+              </span>
+            </p>
+          ) : (
+            <p className="fiche__qui">
+              {s.prise.par === "eleve" ? <Gommette prenom={s.prise.eleve.prenom} couleur={s.prise.eleve.couleur} taille="s" /> : null}
+              <b>{s.prise.par === "eleve" ? `${nomPourEleves(s.prise.eleve, eleves)} s’en occupe` : `${majuscule(prof)} s’en occupe`}</b>
+            </p>
+          )
         ) : (
           <span />
         )}

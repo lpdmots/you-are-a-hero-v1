@@ -137,3 +137,23 @@ test("feuille d'aventure fermée au départ, ouverte par « Ma feuille » ou une
   await page.keyboard.press("Escape");
   await capturer(page, "lecture-feuille-390", false);
 });
+
+test("retouche : les scènes dont l'élève s'occupe, repérées dans son chapitre", async ({ page, browser }) => {
+  test.setTimeout(180_000);
+  n = 540;
+  const s = await classeQuiEcrit(page);
+  const plus: string[] = [];
+  for (const titre of ["La souche creuse", "La clairière", "Le pont de brume", "Le gué"]) {
+    const { data } = await s.base.rpc("creer_scene", { p_chapitre: s.lisiere.id });
+    const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string };
+    await s.base.from("scenes").update({ titre, consigne: "Lou avance dans la brume. Décris ce qu’il voit." }).eq("id", ligne.scene_id);
+    plus.push(ligne.scene_id);
+  }
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Alice.id }).in("id", [s.lisiere.scenes[0], plus[1]]);
+  await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Bilal.id }).in("id", [s.lisiere.scenes[1], plus[2]]);
+  const alice = await posteDe(browser, s, "Alice");
+  await alice.page.setViewportSize({ width: 1366, height: 860 });
+  await aller(alice.page, `/travail/chapitre/${s.lisiere.id}`);
+  await capturer(alice.page, "eleve-chapitre-mes-scenes", false);
+  await alice.contexte.close();
+});

@@ -2012,6 +2012,13 @@ dans la barre basse. Cela remplace « la feuille à côté du texte » de la
 lecture d'essai et, pour le lecteur en ligne, la feuille « ouverte par
 défaut et rangeable » : la lecture est commune. Captures 531 à 533.
 
+**Les scènes de l'élève, repérées dans son chapitre (retouche demandée par
+le porteur le 15 octobre 2026, pendant son essai).** « Tu t'en occupes »
+se voyait mal au pied de la carte. La carte d'une scène dont l'élève
+s'occupe prend le liseré canard de son cahier sur « Mon travail », et
+« Tu t'en occupes » devient le même ruban que « Ton chapitre », crayon
+compris : un seul repère pour « ce qui est à toi ». Capture 541.
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la
