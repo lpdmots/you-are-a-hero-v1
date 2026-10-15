@@ -15,7 +15,8 @@ import { reglerAide } from "../../../actions-compte";
 import { accepterAvertissement, declarerChemins, declarerRelu, noterEtapeDuLivre, ouvrirSceneDuLivre, retirerAcceptation } from "../../actions-livre";
 import { marquerFin } from "../../actions-recit";
 import { PageScene } from "../scene/[scene]/PageScene";
-import { Apercu } from "./Apercu";
+import { Apercu, useApercu } from "./Apercu";
+import { VoletReglages } from "./Reglages";
 import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, TacheRelireAffichee } from "./points";
 
 /**
@@ -24,7 +25,7 @@ import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, Tache
  * livre (F11.2) ; « Mettre en page » et « Imprimer et partager » se construisent ensuite.
  */
 export function Livre({
-  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, aideMasquee, aideVue,
+  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, miseEnPage, aideMasquee, aideVue,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   etape: EtapeLivre;
@@ -38,6 +39,8 @@ export function Livre({
   empreinte: string;
   /** « n° 12 · S042 » : le nom de chaque passage */
   noms: Record<string, string>;
+  /** « Mettre en page », quand l'étape est ouverte : ses réglages et ses pages de présentation */
+  miseEnPage: Omit<Parameters<typeof VoletReglages>[0], "projet" | "apercu" | "onVoirApercu"> | null;
   aideMasquee: { relire: boolean; chemins: boolean };
   aideVue: boolean;
 }) {
@@ -90,7 +93,8 @@ export function Livre({
   }, []);
 
   // Le parcours des problèmes de l'étape (F11-AC59) : l'aperçu se place sur le passage, sa scène s'ouvre
-  const aParcourir = (etape === "relire" ? relire.taches : (chemins?.taches ?? [])).flatMap((t) => t.points).filter((p) => p.sceneId);
+  // À « Mettre en page », aucun défaut ne se traite (F11.6) : pas de parcours des problèmes
+  const aParcourir = (etape === "relire" ? relire.taches : etape === "chemins" ? (chemins?.taches ?? []) : []).flatMap((t) => t.points).filter((p) => p.sceneId);
   const rangProbleme = ouverte?.point ? aParcourir.findIndex((p) => p.cle === ouverte.point!.cle) : -1;
   const parcourir = (pas: 1 | -1) => {
     if (!aParcourir.length) return;
@@ -98,7 +102,12 @@ export function Livre({
     void ouvrir(suivant.sceneId!, { choix: suivant.choix, point: suivant });
   };
 
-  const avecApercu = (etape === "relire" || (etape === "chemins" && chemins)) && !aide;
+  // « Mettre en page » en deux volets, toujours visibles (F11.6) ; « Réglages » d'abord
+  const [volet, setVolet] = useState<"reglages" | "apercu">("reglages");
+  const enPage = etape === "page" && miseEnPage !== null;
+  const avecApercu = ((etape === "relire" || (etape === "chemins" && chemins)) && !aide) || (enPage && volet === "apercu");
+  // L'aperçu reste composé au volet « Réglages », pour la petite double page (étape 6, lot 3)
+  const source = useApercu(projet.id, empreinte, avecApercu || enPage);
   const fiche =
     etape === "chemins" && chemins ? (
       <FicheChemins projetId={projet.id} chemins={chemins} fermee={marques.page === "fermee"} />
@@ -151,7 +160,22 @@ export function Livre({
           ) : null}
         </nav>
 
-        {aide && avecAide ? (
+        {enPage ? (
+          <div className="volets" role="tablist" aria-label="Mettre en page">
+            <div className="bascule">
+              {(["reglages", "apercu"] as const).map((v) => (
+                <button key={v} type="button" role="tab" aria-selected={volet === v} data-choisi={volet === v || undefined} onClick={() => setVolet(v)}>
+                  <Icone nom={v === "reglages" ? "reglages" : "livre"} />
+                  {v === "reglages" ? "Réglages" : "Aperçu"}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        {enPage && volet === "reglages" ? (
+          <VoletReglages projet={projet} {...miseEnPage} apercu={source} onVoirApercu={() => setVolet("apercu")} />
+        ) : aide && avecAide ? (
           <AideEtape
             etape={etape === "relire" ? "relire" : "chemins"}
             aChoix={projet.aChoix}
@@ -164,7 +188,7 @@ export function Livre({
             }}
           />
         ) : avecApercu ? (
-          <div className={`livre-plan${ouverte ? " livre-plan--scene" : ""} livre-plan--vue-${vue}`}>
+          <div className={`livre-plan${ouverte ? " livre-plan--scene" : enPage ? " livre-plan--seul" : ""} livre-plan--vue-${vue}`}>
             {ouverte ? (
               <div className="livre-plan__onglets" role="tablist" aria-label="Scène et livre">
                 <button type="button" role="tab" aria-selected={vue === "scene"} onClick={() => setVue("scene")}>
@@ -222,10 +246,9 @@ export function Livre({
             <div className="livre-plan__droite">
               <div ref={setPanneau} className="livre-plan__panneau" />
               <Apercu
-                projetId={projet.id}
-                empreinte={empreinte}
-                limiteAuRecit
-                modeParDefaut="agrandie"
+                source={source}
+                limiteAuRecit={!enPage}
+                modeParDefaut={enPage ? "double" : "agrandie"}
                 choisie={ouverte?.sceneId ?? null}
                 aller={aller}
                 nommer={(id) => noms[id] ?? "ce passage"}
@@ -497,7 +520,7 @@ function CartePoint({ projetId, point, sansOuvrir }: { projetId: string; point: 
   const accepter = () =>
     lancer(async () => {
       const r = await accepterAvertissement(projetId, point.cle);
-      dire({ texte: r.ok ? "C’est noté : ce passage reste tel quel." : r.erreur });
+      dire({ texte: r.ok ? (point.accepterLibelle ? "C’est noté : l’image reste telle quelle." : "C’est noté : ce passage reste tel quel.") : r.erreur });
     });
   const fin = (sceneId: string) =>
     lancer(async () => {
@@ -517,7 +540,7 @@ function CartePoint({ projetId, point, sansOuvrir }: { projetId: string; point: 
         {point.accepter ? (
           <button type="button" className="btn btn--petit" aria-busy={occupe || undefined} disabled={occupe} onClick={accepter}>
             <Icone nom="coche" />
-            C’est voulu
+            {point.accepterLibelle ?? "C’est voulu"}
           </button>
         ) : null}
         {point.fin ? (

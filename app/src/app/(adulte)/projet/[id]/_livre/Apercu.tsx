@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type { Apercu as DonneesApercu } from "@/serveur/livre/apercu";
 import type { BlocPlace } from "@/serveur/livre/dans-la-page";
@@ -18,40 +18,18 @@ const HAUTEUR_MM = 210;
 const CLE_MODE = "apercu-mode";
 
 type Charge = { apercu: DonneesApercu; doc: PDFDocumentProxy };
+export type SourceApercu = { charge: Charge | null; calcul: boolean; erreur: string | null; calculer: () => Promise<void> };
 
-export function Apercu({
-  projetId, empreinte, limiteAuRecit, modeParDefaut, choisie, aller, onPassage, onRenvoi, nommer, barre,
-}: {
-  projetId: string;
-  /** L'empreinte du contenu que la page vient de lire : un aperçu d'une autre empreinte se recalcule */
-  empreinte: string;
-  /** « Relire » et « Vérifier les chemins » : l'aperçu commence au premier passage (F11-AC80) */
-  limiteAuRecit: boolean;
-  modeParDefaut: ModeApercu;
-  /** Le passage dont la scène est ouverte : entouré de canard */
-  choisie: string | null;
-  /** Placer l'aperçu sur un passage ; le jeton change à chaque demande */
-  aller: { sceneId: string; jeton: number } | null;
-  onPassage: (sceneId: string) => void;
-  onRenvoi: (cible: string, depuis: string) => void;
-  /** « n° 12 · S042 » : le nom d'un passage pour un lecteur d'écran */
-  nommer: (sceneId: string) => string;
-  /** Ce que l'étape ajoute à la barre : le parcours des problèmes */
-  barre?: ReactNode;
-}) {
+/**
+ * L'aperçu composé, tenu par le Livre : le volet « Aperçu » et la petite double page des
+ * réglages lisent le même (étape 6, lot 3). Il se recalcule quand l'empreinte du contenu change ;
+ * pendant une saisie, après un court répit, pour ne pas composer à chaque mot.
+ */
+export function useApercu(projetId: string, empreinte: string, actif: boolean): SourceApercu {
   const [charge, setCharge] = useState<Charge | null>(null);
   const [calcul, setCalcul] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
-  const [mode, setMode] = useState<ModeApercu>(() => {
-    try {
-      const garde = window.localStorage.getItem(`${CLE_MODE}-${modeParDefaut}`);
-      return garde === "agrandie" || garde === "double" ? garde : modeParDefaut;
-    } catch {
-      return modeParDefaut;
-    }
-  });
   const demande = useRef(0);
-  const conteneur = useRef<HTMLDivElement>(null);
 
   const calculer = useCallback(async () => {
     const n = ++demande.current;
@@ -82,11 +60,45 @@ export function Apercu({
 
   // Le contenu a changé depuis l'aperçu montré : il se recalcule, les pages précédentes restant lisibles
   const empreinteMontree = charge?.apercu.empreinte;
+  const dejaCharge = charge !== null;
   useEffect(() => {
-    if (empreinteMontree === empreinte) return;
-    const minuteur = setTimeout(() => void calculer(), 0);
+    if (!actif || empreinteMontree === empreinte) return;
+    const minuteur = setTimeout(() => void calculer(), dejaCharge ? 1200 : 0);
     return () => clearTimeout(minuteur);
-  }, [empreinte, empreinteMontree, calculer]);
+  }, [actif, empreinte, empreinteMontree, dejaCharge, calculer]);
+
+  return { charge, calcul, erreur, calculer };
+}
+
+export function Apercu({
+  source, limiteAuRecit, modeParDefaut, choisie, aller, onPassage, onRenvoi, nommer, barre,
+}: {
+  /** L'aperçu composé, tenu par le Livre */
+  source: SourceApercu;
+  /** « Relire » et « Vérifier les chemins » : l'aperçu commence au premier passage (F11-AC80) */
+  limiteAuRecit: boolean;
+  modeParDefaut: ModeApercu;
+  /** Le passage dont la scène est ouverte : entouré de canard */
+  choisie: string | null;
+  /** Placer l'aperçu sur un passage ; le jeton change à chaque demande */
+  aller: { sceneId: string; jeton: number } | null;
+  onPassage: (sceneId: string) => void;
+  onRenvoi: (cible: string, depuis: string) => void;
+  /** « n° 12 · S042 » : le nom d'un passage pour un lecteur d'écran */
+  nommer: (sceneId: string) => string;
+  /** Ce que l'étape ajoute à la barre : le parcours des problèmes */
+  barre?: ReactNode;
+}) {
+  const { charge, calcul, erreur, calculer } = source;
+  const [mode, setMode] = useState<ModeApercu>(() => {
+    try {
+      const garde = window.localStorage.getItem(`${CLE_MODE}-${modeParDefaut}`);
+      return garde === "agrandie" || garde === "double" ? garde : modeParDefaut;
+    } catch {
+      return modeParDefaut;
+    }
+  });
+  const conteneur = useRef<HTMLDivElement>(null);
 
   const choisirMode = (m: ModeApercu) => {
     setMode(m);
@@ -192,10 +204,9 @@ function PageDuLivre({
   onRenvoi: (cible: string, depuis: string) => void;
   nommer: (sceneId: string) => string;
 }) {
-  const boite = useRef<HTMLDivElement>(null);
-  const toile = useRef<HTMLCanvasElement>(null);
   const [visible, setVisible] = useState(false);
   const [survol, setSurvol] = useState(false);
+  const { boite, toile } = useToile<HTMLDivElement>(doc, rang, visible);
 
   useEffect(() => {
     const el = boite.current;
@@ -203,29 +214,7 @@ function PageDuLivre({
     const obs = new IntersectionObserver(([x]) => x.isIntersecting && setVisible(true), { rootMargin: "800px 0px" });
     obs.observe(el);
     return () => obs.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (!visible || !toile.current || !boite.current) return;
-    let annule = false;
-    let tache: { cancel: () => void } | null = null;
-    void (async () => {
-      const page = await doc.getPage(rang);
-      if (annule || !toile.current || !boite.current) return;
-      const largeur = boite.current.clientWidth * (window.devicePixelRatio || 1);
-      const vue = page.getViewport({ scale: largeur / page.getViewport({ scale: 1 }).width });
-      const t = toile.current;
-      t.width = Math.round(vue.width);
-      t.height = Math.round(vue.height);
-      const rendu = page.render({ canvasContext: t.getContext("2d")!, viewport: vue, canvas: t });
-      tache = rendu;
-      await rendu.promise.catch(() => undefined);
-    })();
-    return () => {
-      annule = true;
-      tache?.cancel();
-    };
-  }, [visible, doc, rang]);
+  }, [boite]);
 
   const enMm = (ev: { clientX: number; clientY: number }) => {
     const r = boite.current!.getBoundingClientRect();
@@ -281,5 +270,67 @@ function PageDuLivre({
       </span>
       <span className="apercu__folio">p. {folio}</span>
     </div>
+  );
+}
+
+/** Dessine une page du PDF dans une toile, à la largeur de sa boîte. */
+function useToile<B extends HTMLElement>(doc: PDFDocumentProxy, rang: number, visible: boolean): { boite: RefObject<B | null>; toile: RefObject<HTMLCanvasElement | null> } {
+  const boite = useRef<B>(null);
+  const toile = useRef<HTMLCanvasElement>(null);
+  useEffect(() => {
+    if (!visible || !toile.current || !boite.current) return;
+    let annule = false;
+    let tache: { cancel: () => void } | null = null;
+    void (async () => {
+      const page = await doc.getPage(rang);
+      if (annule || !toile.current || !boite.current) return;
+      const largeur = boite.current.clientWidth * (window.devicePixelRatio || 1);
+      const vue = page.getViewport({ scale: largeur / page.getViewport({ scale: 1 }).width });
+      const t = toile.current;
+      t.width = Math.round(vue.width);
+      t.height = Math.round(vue.height);
+      const rendu = page.render({ canvasContext: t.getContext("2d")!, viewport: vue, canvas: t });
+      tache = rendu;
+      await rendu.promise.catch(() => undefined);
+    })();
+    return () => {
+      annule = true;
+      tache?.cancel();
+    };
+  }, [visible, doc, rang]);
+  return { boite, toile };
+}
+
+/**
+ * La petite double page des réglages (étape 6, 15 octobre 2026) : les deux pages en vis-à-vis
+ * autour d'une page du livre, telles que l'aperçu les a composées. Elle suit la saisie : chaque
+ * enregistrement change l'empreinte, et l'aperçu se recompose.
+ */
+export function PetiteDoublePage({ source, folio, legende }: { source: SourceApercu; folio: number | null; legende: string }) {
+  const { charge, calcul, erreur } = source;
+  const apercu = charge?.apercu ?? null;
+  const etalee = apercu && folio ? (folio % 2 === 0 ? [folio, folio + 1] : [folio - 1, folio]).map((f) => (f >= 1 && f <= apercu.pages ? f : 0)) : null;
+  return (
+    <figure className={`petite-double${calcul && charge ? " petite-double--calcul" : ""}`}>
+      <div className="petite-double__pages" aria-hidden={!etalee || undefined}>
+        {charge && etalee
+          ? etalee.map((f, i) =>
+              f ? <PetitePage key={`${f}-${charge.apercu.empreinte}`} doc={charge.doc} rang={charge.apercu.horsPagination + f} folio={f} /> : <span key={`vide-${i}`} className="petite-double__page petite-double__page--absente" />,
+            )
+          : [0, 1].map((i) => <span key={i} className="petite-double__page petite-double__page--attente" />)}
+      </div>
+      <figcaption className="petite-double__legende" role="status">
+        {calcul ? "Mise à jour…" : erreur ? erreur : !charge ? "Mise en pages sur le serveur…" : folio ? legende : "Page absente du livre"}
+      </figcaption>
+    </figure>
+  );
+}
+
+function PetitePage({ doc, rang, folio }: { doc: PDFDocumentProxy; rang: number; folio: number }) {
+  const { boite, toile } = useToile<HTMLSpanElement>(doc, rang, true);
+  return (
+    <span ref={boite} className="petite-double__page">
+      <canvas ref={toile} role="img" aria-label={`Page ${folio}`} />
+    </span>
   );
 }

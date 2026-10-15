@@ -1165,6 +1165,45 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   modifiables par l'adulte (droit par colonne) ; le seau `livres` accepte
   `application/json`.
 
+**Lot 3 — règles de composition, réglages, pages de présentation (15 octobre
+2026) :**
+
+- **Veuves et orphelines** : les règles CSS seules n'étaient pas tenues par
+  Paged.js. Un crochet `onOverflow` (`dans-la-page.ts`) les fait respecter :
+  si un paragraphe garde trois lignes au moins et qu'une seule passerait,
+  une ligne recule ; sinon le paragraphe passe à la page suivante, avec ce
+  qui doit l'accompagner (numéro, titre de partie ou de chapitre, filet,
+  début de scène), sauf s'il est seul sur sa page. Le groupe de choix porte
+  `break-inside: avoid`.
+- **Césure** : le paquet `hyphen` (motifs `fr`, licence ISC) pose des tirets
+  conditionnels à la composition, jamais dans un mot à majuscule ni dans le
+  dernier mot d'un paragraphe, trois lettres au moins de chaque côté ;
+  aucune en « aligné à gauche ».
+- **Réglages** (`domaine/mise-en-page.ts`) : objet JSON dans
+  `projets.mise_en_page`, relu par `reglagesPropres`, qui complète ce qui
+  manque et refuse une marge sous 10 mm ou un bas de page « dés » sans dé.
+  Les pages de présentation (`domaine/pages.ts`) sont dans
+  `projets.pages_du_livre`, complétées par celles proposées
+  (`pagesParDefaut`) ; leur texte à mise en forme légère s'écrit dans un
+  petit éditeur Plate (`composants/EditeurLeger.tsx`). Andika rejoint les
+  polices embarquées.
+- **Contrôles des images et des marges** : `controler()` reçoit le contenu
+  (textes, dimensions des images, réglages, débordements, images des pages)
+  et en tire quatre sortes de points, chacune avec son étape ;
+  l'acceptation d'un avertissement tient par sa clé, qui porte la largeur
+  ou une empreinte du texte. Les débordements viennent de la carte JSON du
+  dernier aperçu (`contenu.ts`).
+- **Contenu du livre** (`serveur/livre/contenu.ts`) : un seul chargement par
+  requête sert l'instantané, les contrôles et l'empreinte.
+- **Dés imprimés** (`domaine/des.ts`) : suites équilibrées, déterministes,
+  sans le même tirage sur deux pages de droite qui se suivent.
+- **Petite double page** : l'aperçu gardé dit aussi la page de chaque page
+  de présentation ; un aperçu gardé avant ce lot, qui ne le dit pas, se
+  recompose. Le Livre tient l'aperçu (`useApercu`) pour ses deux volets :
+  il reste composé au volet « Réglages », se recompose 1,2 s après le
+  changement d'empreinte quand des pages sont déjà montrées, et la petite
+  double page en dessine deux pages avec pdf.js.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

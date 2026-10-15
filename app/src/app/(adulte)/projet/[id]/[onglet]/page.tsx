@@ -19,6 +19,8 @@ import { Carnet } from "../_preparation/Carnet";
 import { Livre } from "../_livre/Livre";
 import { afficherChemins, afficherRelire } from "../_livre/points";
 import { instantaneDuLivre } from "@/serveur/livre/livre";
+import { contenuDuLivre } from "@/serveur/livre/contenu";
+import { nomPourEleves } from "@/domaine/eleves";
 import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
 import styles from "./projet.module.css";
 
@@ -96,8 +98,13 @@ export default async function PageProjet({ params, searchParams }: Props) {
     const acceptes = avertissementsAcceptes(livre.problemes, livre.acceptations, livre.changements);
     const chemins = aChoix ? etatChemins(livre.problemes, acceptes, livre.cheminsVerifies) : null;
     const relire = etatRelire(livre.problemes, acceptes, livre.livreRelu);
-    // « Mettre en page » et « Imprimer et partager » se construisent aux lots suivants de l'étape 6 ; leurs règles les fermeraient de toute façon
-    const marques: Record<EtapeLivre, MarqueEtape> = { relire: relire.marque, chemins: chemins?.marque ?? null, page: "fermee", sortie: "fermee" };
+    // « Mettre en page » s'ouvre quand les deux premières étapes sont terminées, déclarations comprises, puis ne se referme plus (F11.6)
+    const pageOuverte = livre.miseEnPageOuverte || (relire.terminee && (chemins?.terminee ?? true));
+    if (pageOuverte && !livre.miseEnPageOuverte) await enseignant.supabase.from("projets").update({ mise_en_page_ouverte_le: new Date().toISOString() }).eq("id", projet.id);
+    // « Imprimer et partager » se construit au lot 5 ; sa règle la fermerait de toute façon
+    const marques: Record<EtapeLivre, MarqueEtape> = { relire: relire.marque, chemins: chemins?.marque ?? null, page: pageOuverte ? null : "fermee", sortie: "fermee" };
+    const contenuLivre = await contenuDuLivre(enseignant, projet.id);
+    const eleves = await elevesDeLaClasse(enseignant, projet.classe?.id ?? null);
     // L'étape demandée, sinon la dernière quittée, sinon « Relire » la première fois (F11.6)
     const valide = (x: unknown): x is EtapeLivre => estEtapeLivre(x) && (aChoix || x !== "chemins");
     const etape: EtapeLivre = valide(demande.etape) ? demande.etape : valide(livre.derniereEtape) ? livre.derniereEtape : "relire";
@@ -117,6 +124,18 @@ export default async function PageProjet({ params, searchParams }: Props) {
         pdfDeTravail={travail ? { id: travail.id, etat: etatEnMots(travail.etatDu), pages: travail.pages } : null}
         empreinte={instantane.empreinte}
         noms={noms}
+        miseEnPage={
+          pageOuverte && contenuLivre
+            ? {
+                titre: projet.titre, reglages: contenuLivre.reglages, pages: contenuLivre.pages,
+                des: contenuLivre.preparation?.feuille?.on ? contenuLivre.preparation.feuille.des : 0,
+                feuille: aChoix && contenuLivre.preparation?.feuille?.on && contenuLivre.preparation.feuille.sections.length ? contenuLivre.preparation.feuille.sections.map((x) => x.titre) : null,
+                prenoms: eleves.map((x) => nomPourEleves(x, eleves)),
+                aDesEnigmes: plan.liens.some((l) => l.cache),
+                avecRegles: Boolean(contenuLivre.preparation?.regles.trim()),
+              }
+            : null
+        }
         aideMasquee={{ relire: enseignant.aidesMasquees.includes("livre-relire"), chemins: enseignant.aidesMasquees.includes("livre-chemins") }}
         aideVue={magasin.get("aide-livre")?.value === "vue"}
       />

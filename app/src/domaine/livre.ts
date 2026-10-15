@@ -45,8 +45,9 @@ export const empreinteDe = (p: Probleme): string => [...(porteeDe(p)?.scenes ?? 
 
 /**
  * Les avertissements acceptés et toujours valables : l'acceptation vise ce point, sur les
- * mêmes scènes, et leurs chemins n'ont pas changé depuis (F11-AC75). Un problème bloquant ne
- * s'accepte pas.
+ * mêmes scènes, et leurs chemins n'ont pas changé depuis (F11-AC75). Pour une image ou un texte
+ * qui dépasse, la clé du point porte déjà ce qui a été jugé (F11.6, « Durée de l'acceptation »).
+ * Un problème bloquant ne s'accepte pas.
  */
 export function avertissementsAcceptes(problemes: Probleme[], acceptations: Acceptation[], changements: Changement[]): Set<string> {
   const parCle = new Map(acceptations.map((a) => [a.cle, a]));
@@ -54,7 +55,12 @@ export function avertissementsAcceptes(problemes: Probleme[], acceptations: Acce
   for (const p of problemes) {
     const a = parCle.get(p.cle);
     const portee = porteeDe(p);
-    if (!a || !portee || p.gravite !== "avert" || a.empreinte !== empreinteDe(p)) continue;
+    if (!a || p.gravite !== "avert" || a.empreinte !== empreinteDe(p)) continue;
+    // Une image ou un texte qui dépasse : ce qui a été jugé est dans la clé même (largeur, contenu, marges)
+    if (!portee) {
+      acceptes.add(p.cle);
+      continue;
+    }
     const scenes = new Set(portee.scenes);
     const depuis = Date.parse(a.accepteLe);
     if (changements.some((c) => c.sens === portee.sens && scenes.has(c.sceneId) && Date.parse(c.le) > depuis)) continue;

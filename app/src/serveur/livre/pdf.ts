@@ -9,6 +9,9 @@ import { heureEnMots, jourCourt } from "@/domaine/dates";
 
 export const SEAU = "livres";
 
+/** Où l'aperçu d'un contenu est gardé dans le seau, sans son extension : `.pdf` et `.json` (carte des blocs). */
+export const cheminDeLApercu = (enseignantId: string, projetId: string, empreinte: string): string => `${enseignantId}/${projetId}/apercu-${empreinte}`;
+
 /** « état du 15 octobre, 10 h 02 » : la date que porte la mention « Version de travail ». */
 export const etatEnMots = (etatDu: string): string => `état du ${jourCourt(etatDu)}, ${heureEnMots(etatDu)}`;
 

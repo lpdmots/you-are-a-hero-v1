@@ -62,10 +62,12 @@ export default function Lecture({
   // La feuille est fermée au départ : elle sert à quelques passages seulement (décidé par le porteur le 14 octobre 2026)
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const aside = useRef<HTMLElement>(null);
-  const ouvrirFeuille = (versLeDe = false) => {
+  const ouvrirFeuille = (versLeDe = false, versLesRegles = false) => {
     setFeuilleOuverte(true);
     requestAnimationFrame(() => {
-      const cible = versLeDe ? aside.current?.querySelector<HTMLElement>("#feuille-de") : null;
+      const regles = versLesRegles ? aside.current?.querySelector<HTMLDetailsElement>("details.fa-regles") : null;
+      if (regles) regles.open = true;
+      const cible = versLeDe ? aside.current?.querySelector<HTMLElement>("#feuille-de") : regles;
       if (cible) cible.scrollIntoView({ block: "nearest" });
       else aside.current?.scrollTo({ top: 0 });
     });
@@ -205,6 +207,13 @@ export default function Lecture({
               <Icone nom="feuille" />
               Ma feuille
               {resumeCompteurs(livre.feuille, g.feuille) ? <span className="lecture__feuille-resume">· {resumeCompteurs(livre.feuille, g.feuille)}</span> : null}
+            </button>
+          ) : null}
+          {/* Les règles du jeu à portée de main, hors de la feuille aussi : on les referme sans quitter le passage (F04-AC24) */}
+          {livre.feuille && livre.regles.trim() ? (
+            <button type="button" className="lecture__parcours-b" aria-controls="feuille-aventure" onClick={() => ouvrirFeuille(false, true)}>
+              <Icone nom="cahier" />
+              Règles du jeu
             </button>
           ) : null}
           </div>

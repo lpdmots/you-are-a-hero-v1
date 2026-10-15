@@ -12,6 +12,8 @@ const FICHIERS_DU_LIVRE = [
   "./node_modules/@fontsource/vollkorn/files/vollkorn-latin*.woff2",
   "./node_modules/@fontsource/atkinson-hyperlegible-next/latin*.css",
   "./node_modules/@fontsource/atkinson-hyperlegible-next/files/atkinson-hyperlegible-next-latin*.woff2",
+  "./node_modules/@fontsource/andika/latin*.css",
+  "./node_modules/@fontsource/andika/files/andika-latin*.woff2",
   "./node_modules/@sparticuz/chromium/bin/**",
   // Playwright lit ses propres fichiers à l'exécution (browsers.json…), que le traçage ne voit pas
   "./node_modules/playwright-core/**",

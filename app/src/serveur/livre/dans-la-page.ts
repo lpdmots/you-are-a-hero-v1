@@ -14,6 +14,10 @@ export type OptionsDeLaPage = {
   titre: string;
   marges: { haut: number; bas: number; exterieur: number; interieur: number };
   basDePage: "rien" | "numero" | "des";
+  /** Les faces imprimées sur les pages de droite du récit, dans l'ordre (F11.4) ; rien sans dés */
+  des: number[][] | null;
+  /** Pour les essais : sans le contournement du défaut de Paged.js */
+  sansGreffe?: boolean;
 };
 
 /** Un bloc à sa place sur une page, en millimètres depuis le coin de la page (la carte des blocs). */
@@ -36,6 +40,8 @@ export type RapportDeLaPage = {
   horsPagination: number;
   /** La page où commence chaque passage */
   pageDe: Record<string, number>;
+  /** La première page du récit, après les pages de présentation */
+  premierePageDuRecit: number;
   carte: BlocPlace[];
   /** Ce qui dépasse de la zone de texte : un mot insécable trop long (F11-AC57) */
   debordements: { page: number; scene: string | null }[];
@@ -45,6 +51,14 @@ export type RapportDeLaPage = {
   signature: string[];
   coupuresCorrigees: number;
   dureeMiseEnPage: number;
+  /** Les dés imprimés, page par page (F11.4) */
+  des: { page: number; faces: number[] }[];
+  /** Les pages de présentation : leur nom et leur page */
+  presentation: { nom: string; page: number }[];
+  /** Le nombre de lignes à écrire de chaque liste de la feuille d'aventure (F04-AC42) */
+  lignesDeListes: number[];
+  /** La hauteur de l'illustration de la page de titre, en millimètres, et la hauteur utile de la page */
+  illustration: { mm: number; page: number } | null;
 };
 
 export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
@@ -57,7 +71,66 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
   // Le premier caractère reporté porte aussi le rectangle du trait d'union de la ligne d'avant,
   // ce qui trompe Paged.js. On recule le début du report jusqu'au premier caractère qui est
   // vraiment hors de la page.
+  // Ni veuve ni orpheline (F11.3) : Chromium ne tient pas toujours la règle quand Paged.js remplit
+  // une page. Avant chaque coupure, on la vérifie sur le paragraphe coupé : s'il laisse moins de
+  // deux lignes d'un côté, la coupure recule d'une ligne, ou le paragraphe entier passe à la page
+  // suivante, avec le numéro ou le titre qui le précède.
+  const DEBUT_DE_PASSAGE = "h2.numero, h1.partie, h2.chapitre, .separateur, .debut-scene";
+  const lignesDe = (el, bord) => {
+    const plage = document.createRange();
+    plage.selectNodeContents(el);
+    const avant = new Set();
+    const apres = new Set();
+    for (const r of plage.getClientRects()) {
+      if (r.width < 0.5) continue;
+      if (r.left < bord - 1) avant.add(Math.round(r.top));
+      else apres.add(Math.round(r.left) + ":" + Math.round(r.top));
+    }
+    return { avant: [...avant].sort((x, y) => x - y), apres: apres.size };
+  };
+  // Le premier caractère du paragraphe posé sur la ligne de cette hauteur
+  const debutDeLigne = (el, haut) => {
+    const marcheur = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    const plage = document.createRange();
+    for (let n = marcheur.nextNode(); n; n = marcheur.nextNode()) {
+      for (let i = 0; i < n.data.length; i += 1) {
+        plage.setStart(n, i);
+        plage.setEnd(n, i + 1);
+        const r = [...plage.getClientRects()].filter((x) => x.width > 0).pop();
+        if (r && Math.round(r.top) >= haut) return { noeud: n, offset: i };
+      }
+    }
+    return null;
+  };
   class Greffe extends Handler {
+    onOverflow(overflow, rendered, bounds) {
+      if (!overflow || !overflow.startContainer) return;
+      const depart = overflow.startContainer.nodeType === 3 ? overflow.startContainer.parentElement : overflow.startContainer.childNodes[overflow.startOffset] || overflow.startContainer;
+      const p = depart && depart.closest ? depart.closest("p.r") : null;
+      if (!p || !rendered.contains(p)) return;
+      const { avant, apres } = lignesDe(p, bounds.right);
+      if (avant.length === 0 || (avant.length >= 2 && apres >= 2)) return;
+      const nouvelle = document.createRange();
+      nouvelle.setEnd(overflow.endContainer, overflow.endOffset);
+      if (avant.length >= 3 && apres === 1) {
+        // Une veuve : la dernière ligne de la page part avec elle
+        const ici = debutDeLigne(p, avant[avant.length - 1]);
+        if (!ici) return;
+        nouvelle.setStart(ici.noeud, ici.offset);
+        return nouvelle;
+      }
+      // Une orpheline, ou un paragraphe trop court pour être coupé : il passe entier à la page suivante
+      let cible = p;
+      while (cible.previousElementSibling && cible.previousElementSibling.matches(DEBUT_DE_PASSAGE)) cible = cible.previousElementSibling;
+      // Rien ne le précède sur la page : la coupure reste où elle est, plutôt qu'une page vide
+      const avantLui = document.createRange();
+      avantLui.setStart(rendered, 0);
+      avantLui.setEndBefore(cible);
+      if (!avantLui.toString().trim() && !avantLui.cloneContents().querySelector("img, figure")) return;
+      nouvelle.setStartBefore(cible);
+      return nouvelle;
+    }
+
     onBreakToken(breakToken, overflow, rendered, layout) {
       if (!breakToken || !overflow || !overflow.startContainer || overflow.startContainer.nodeType !== 3) return;
       const noeud = overflow.startContainer;
@@ -79,7 +152,7 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
       coupuresCorrigees += 1;
     }
   }
-  registerHandlers(Greffe);
+  if (!o.sansGreffe) registerHandlers(Greffe);
 
   await document.fonts.ready;
   const t0 = performance.now();
@@ -88,18 +161,19 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
   await Promise.all([...document.images].map((img) => (img.complete ? null : new Promise((ok) => { img.onload = ok; img.onerror = ok; }))));
 
   const pages = [...document.querySelectorAll(".pagedjs_page")];
-  const premiere = pages.findIndex((p) => p.querySelector(".recit"));
+  const premiere = pages.findIndex((p) => p.querySelector("[data-debut-livre]"));
   const horsPagination = Math.max(0, premiere);
   const numeroDe = {};
   for (const h of document.querySelectorAll("h2.numero[data-scene]")) numeroDe[h.dataset.scene] = Number(h.dataset.numero);
   const enMm = (v) => Math.round((v / MM) * 10) / 10;
   const rapport = {
-    pages: pages.length - horsPagination, horsPagination, pageDe: {}, carte: [], debordements: [], introuvables: [], signature: [],
-    coupuresCorrigees, dureeMiseEnPage,
+    pages: pages.length - horsPagination, horsPagination, pageDe: {}, premierePageDuRecit: 0, carte: [], debordements: [], introuvables: [], signature: [],
+    coupuresCorrigees, dureeMiseEnPage, des: [], presentation: [], lignesDeListes: [], illustration: null,
   };
   const pageDeElement = new Map();
   const m = o.marges;
   let chapitreCourant = null;
+  let pagesDeDroite = 0;
 
   pages.forEach((page, i) => {
     const feuille = page.querySelector(".pagedjs_sheet");
@@ -110,6 +184,9 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     const f = feuille.getBoundingClientRect();
     const droite = page.classList.contains("pagedjs_right_page");
     const blanche = page.classList.contains("pagedjs_blank_page") || !contenu.textContent.trim() && !contenu.querySelector("img, figure");
+    // Les pages de présentation n'ont ni en-tête, ni numéro, ni dés (F11.4)
+    const presentation = Boolean(contenu.querySelector(".pres"));
+    if (!presentation && !rapport.premierePageDuRecit && contenu.querySelector(".recit [data-reference]")) rapport.premierePageDuRecit = n;
     const exterieur = droite ? "right" : "left";
     const poser = (classe, texte, style) => {
       const el = document.createElement("div");
@@ -133,7 +210,7 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     // titre du livre à gauche et celui du chapitre à droite ; aucun sur une page qui ouvre une
     // partie ou un chapitre (F11-AC104)
     const ouvre = contenu.querySelector("h1.partie, h2.chapitre");
-    if (!blanche && !ouvre) {
+    if (!blanche && !ouvre && !presentation) {
       let texte = null;
       if (o.aChoix) {
         const numeros = scenes.map((s) => numeroDe[s]).filter((x) => x);
@@ -154,9 +231,30 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     }
 
     // Le numéro de page, côté extérieur (F11.4) ; le PDF de travail l'imprime toujours
-    const folio = !blanche && o.basDePage === "numero";
+    const folio = !blanche && !presentation && o.basDePage === "numero";
     const bas = Math.max(5, m.bas / 2 - 2) + "mm";
     if (folio) poser("folio", String(n), { bottom: bas, [exterieur]: m.exterieur + "mm" });
+    // Les dés, sur chaque page de droite du récit : ouvrir le livre au hasard tient lieu de lancer
+    if (o.des && droite && !blanche && !presentation) {
+      const faces = o.des[pagesDeDroite % o.des.length];
+      pagesDeDroite += 1;
+      const des = document.createElement("div");
+      des.className = "des-imprimes";
+      des.setAttribute("aria-label", "Dés : " + faces.join(" et "));
+      des.style.bottom = Math.max(4, m.bas / 2 - 4.5) + "mm";
+      des.style.right = m.exterieur + "mm";
+      const POINTS = { 1: [[12, 12]], 2: [[7, 7], [17, 17]], 3: [[7, 7], [12, 12], [17, 17]], 4: [[7, 7], [17, 7], [7, 17], [17, 17]], 5: [[7, 7], [17, 7], [12, 12], [7, 17], [17, 17]], 6: [[7, 7], [17, 7], [7, 12], [17, 12], [7, 17], [17, 17]] };
+      des.innerHTML = faces.map((f) => '<svg viewBox="0 0 24 24"><rect x="1.5" y="1.5" width="21" height="21" rx="4.5"/>' + POINTS[f].map(([x, y]) => '<circle cx="' + x + '" cy="' + y + '" r="2.1"/>').join("") + "</svg>").join("");
+      feuille.appendChild(des);
+      rapport.des.push({ page: n, faces });
+    }
+    for (const pres of contenu.querySelectorAll(".pres[data-page]:not([data-split-from])")) rapport.presentation.push({ nom: pres.dataset.page, page: n });
+    for (const lignes of contenu.querySelectorAll(".feuille__lignes")) {
+      const bas = lignes.getBoundingClientRect().bottom + 0.5;
+      rapport.lignesDeListes.push([...lignes.children].filter((l) => l.getBoundingClientRect().bottom <= bas).length);
+    }
+    const illustration = contenu.querySelector(".pres__illustration img");
+    if (illustration) rapport.illustration = { mm: enMm(illustration.getBoundingClientRect().height), page: enMm(contenu.getBoundingClientRect().height) };
     if (o.travail) {
       poser("marque mention", "Version de travail · " + o.etatDu, { top: Math.max(4, m.haut - 9) + "mm", [droite ? "left" : "right"]: m.interieur + "mm" });
       if (!folio) poser("marque page", "p. " + n, { bottom: bas, [exterieur]: m.exterieur + "mm" });

@@ -2,8 +2,8 @@ import "server-only";
 import { cache } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Enseignant } from "./adulte";
-import { projetDe } from "./lectures";
-import { estUuid, planDe, preparationDe } from "./recit";
+import { estUuid } from "./recit";
+import { contenuAControler, contenuDuLivre } from "./livre/contenu";
 import { controler, type Probleme } from "@/domaine/controles";
 import { estEtapeLivre, type Acceptation, type Changement, type EtapeLivre } from "@/domaine/livre";
 
@@ -22,11 +22,13 @@ export async function scenesAvecActions(base: SupabaseClient, projetId: string):
 }
 
 export const controlesDuLivre = cache(async (e: Enseignant, projetId: string): Promise<Probleme[] | null> => {
-  const projet = await projetDe(e, projetId);
-  if (!projet) return null;
-  const [plan, preparation, actions] = await Promise.all([planDe(e, projetId), preparationDe(e, projetId), scenesAvecActions(e.supabase, projetId)]);
-  const feuille = preparation?.feuille;
-  return controler({ plan, aChoix: projet.recit === "choix", scenesAvecActions: actions, feuille: Boolean(feuille?.on && feuille.sections.length) });
+  const contenu = await contenuDuLivre(e, projetId);
+  if (!contenu) return null;
+  const feuille = contenu.preparation?.feuille;
+  return controler({
+    plan: contenu.plan, aChoix: contenu.aChoix, scenesAvecActions: contenu.scenesAvecActions, feuille: Boolean(feuille?.on && feuille.sections.length),
+    contenu: await contenuAControler(e, contenu),
+  });
 });
 
 /** Ce que la destination Livre lit, en plus des contrôles : les « C'est voulu », les changements de chemins depuis, la déclaration. */
@@ -40,6 +42,8 @@ export type EtatDuLivre = {
   livreRelu: boolean;
   /** La dernière étape quittée, où le Livre se rouvre */
   derniereEtape: EtapeLivre | null;
+  /** « Mettre en page » a été ouverte une fois : elle ne se referme plus (F11.6) */
+  miseEnPageOuverte: boolean;
 };
 
 export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promise<EtatDuLivre | null> => {
@@ -47,7 +51,7 @@ export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promis
   if (!problemes) return null;
   const [acceptees, projet] = await Promise.all([
     e.supabase.from("avertissements_acceptes").select("cle, empreinte, accepte_le").eq("projet_id", projetId),
-    e.supabase.from("projets").select("chemins_verifies_le, livre_relu_le, derniere_etape_livre").eq("id", projetId).maybeSingle(),
+    e.supabase.from("projets").select("chemins_verifies_le, livre_relu_le, derniere_etape_livre, mise_en_page_ouverte_le").eq("id", projetId).maybeSingle(),
   ]);
   const erreur = acceptees.error ?? projet.error;
   if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
@@ -68,5 +72,6 @@ export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promis
     cheminsVerifies: Boolean(projet.data?.chemins_verifies_le),
     livreRelu: Boolean(projet.data?.livre_relu_le),
     derniereEtape: estEtapeLivre(derniere) ? derniere : null,
+    miseEnPageOuverte: Boolean(projet.data?.mise_en_page_ouverte_le),
   };
 });

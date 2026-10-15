@@ -12,11 +12,13 @@
 import { numerosDuPlan } from "./numeros";
 import { chapitresDe, departDe, nomScene, scenesDe, type Lien, type Plan, type Scene } from "./recit";
 import { pluriel } from "./texte";
+import type { Texte } from "./copie";
+import { LARGEURS_PROPOSEES, SEUIL_PPP, hauteurDeLigne, largeurImprimee, pointsParPouce, zoneDeTexte, type ReglagesDuLivre } from "./mise-en-page";
 
 export type Gravite = "bloque" | "avert" | "info";
 export type EtapeDuLivre = "relire" | "chemins";
 /** Les tâches de « Relire » et de « Vérifier les chemins » où un point se traite (F11.6) */
-export type Tache = "ecrire" | "graves" | "depart-fins" | "choix" | "passages" | "a-savoir";
+export type Tache = "ecrire" | "graves" | "confirmer" | "depart-fins" | "choix" | "passages" | "a-savoir";
 
 /** Un chemin d'une scène, désigné par son renvoi : un choix, ou une liaison cachée */
 type Chemin = { renvoiId: string; libelle: string; cache: boolean };
@@ -51,7 +53,24 @@ export type Point =
   /** Sortie non assurée : la seule suite est une liaison cachée (F09-AC15) */
   | { sorte: "sortie"; sceneId: string }
   /** Des actions de jeu, et pas de feuille d'aventure (F04-AC33) : le nombre de passages qui en ont */
-  | { sorte: "jeu-sans-feuille"; passages: number };
+  | { sorte: "jeu-sans-feuille"; passages: number }
+  /**
+   * Une image d'une scène incluse, ou d'une page de présentation, que le livre ne peut pas
+   * imprimer (F10-AC14) : elle n'est plus dans le projet, ou son fichier est illisible.
+   */
+  | ({ sorte: "image-manquante" } & OuEstLImage)
+  /** Une image qui s'imprime à moins de 200 points par pouce (F10-AC15, AC35) */
+  | ({ sorte: "image-floue"; ppp: number; largeur: number } & OuEstLImage)
+  /** Une largeur réglée à la main que la page ne permet pas (F10-AC17) : « à savoir » */
+  | { sorte: "largeur-reduite"; sceneId: string; bloc: string; demandee: number; obtenue: number }
+  /**
+   * Un texte qui dépasse de la marge, à la page dite (F11-AC57). L'empreinte est celle du
+   * contenu de la scène et des marges : l'acceptation tient tant qu'elles n'ont pas changé.
+   */
+  | { sorte: "hors-marges"; sceneId: string | null; page: number; empreinte: string };
+
+/** Où se trouve une image : dans une scène, son bloc ; ou sur une page de présentation, son nom. */
+type OuEstLImage = { sceneId: string | null; image: string; bloc: string | null; pageDuLivre?: string };
 
 export type Sorte = Point["sorte"];
 
@@ -82,6 +101,10 @@ export const GRAVITE: Record<Sorte, Gravite> = {
   "sans-fin": "avert",
   sortie: "avert",
   "jeu-sans-feuille": "info",
+  "image-manquante": "bloque",
+  "image-floue": "avert",
+  "largeur-reduite": "info",
+  "hors-marges": "avert",
 };
 
 /** La tâche où chaque point se traite (F11.6) ; l'étape s'en déduit. */
@@ -98,9 +121,18 @@ export const TACHE: Record<Sorte, Tache> = {
   "sans-fin": "passages",
   sortie: "passages",
   "jeu-sans-feuille": "a-savoir",
+  "image-manquante": "graves",
+  "image-floue": "confirmer",
+  "largeur-reduite": "a-savoir",
+  "hors-marges": "confirmer",
 };
 
-export const etapeDe = (t: Tache): EtapeDuLivre => (t === "ecrire" || t === "graves" ? "relire" : "chemins");
+/**
+ * L'étape où se traite un point (F11.6) : les défauts du texte et des images à « Relire », les
+ * chemins à « Vérifier les chemins ». Un rappel « à savoir » va à l'étape de ce qu'il concerne.
+ */
+export const etapeDe = (sorte: Sorte): EtapeDuLivre =>
+  ["ecrire", "graves", "confirmer"].includes(TACHE[sorte]) || sorte === "largeur-reduite" ? "relire" : "chemins";
 
 /** Ce que les contrôles lisent du livre. */
 export type LivreAControler = {
@@ -110,6 +142,19 @@ export type LivreAControler = {
   scenesAvecActions: ReadonlySet<string>;
   /** Le livre a-t-il une feuille d'aventure ? (F04.2) */
   feuille: boolean;
+  /** Ce qu'il faut pour contrôler les images et les marges (F10, F11.2) ; sans lui, elles ne le sont pas */
+  contenu?: ContenuAControler;
+};
+
+export type ContenuAControler = {
+  textes: ReadonlyMap<string, Texte>;
+  /** Les images du projet, avec leurs dimensions ; une image absente d'ici est introuvable */
+  images: Readonly<Record<string, { largeur: number; hauteur: number }>>;
+  reglages: ReglagesDuLivre;
+  /** Ce que la dernière composition a vu dépasser des marges (F11-AC57) */
+  debordements: { sceneId: string | null; page: number }[];
+  /** Les images des pages de présentation : leur nom et leur image (F11.4) */
+  imagesDesPages: { page: string; image: string }[];
 };
 
 /** Les scènes du livre : dans le plan, ni exclues, ni dans un chapitre exclu. */
@@ -122,7 +167,7 @@ const ECRITURE: ReadonlySet<Sorte> = new Set(["vide", "impasse", "sans-destinati
  * Les contrôles du livre, dans l'ordre des tâches puis du plan. Le récit classique n'a que la
  * scène à finir et la scène vide : il n'a ni départ, ni chemins, ni numéros.
  */
-export function controler({ plan, aChoix, scenesAvecActions, feuille }: LivreAControler): Probleme[] {
+export function controler({ plan, aChoix, scenesAvecActions, feuille, contenu }: LivreAControler): Probleme[] {
   const livre = scenesDuLivre(plan);
   const dansLeLivre = new Set(livre.map((s) => s.id));
   const dansLePlan = new Map(scenesDe(plan).map((s) => [s.id, s]));
@@ -189,14 +234,16 @@ export function controler({ plan, aChoix, scenesAvecActions, feuille }: LivreACo
     if (passages && !feuille) points.push({ sorte: "jeu-sans-feuille", passages });
   }
 
-  const ordreTache: Tache[] = ["ecrire", "graves", "depart-fins", "choix", "passages", "a-savoir"];
+  if (contenu) points.push(...controlerLesImages(livre, contenu));
+
+  const ordreTache: Tache[] = ["ecrire", "graves", "confirmer", "depart-fins", "choix", "passages", "a-savoir"];
   return points
     .map((p, i) => ({ p, i }))
     .sort((a, b) => ordreTache.indexOf(TACHE[a.p.sorte]) - ordreTache.indexOf(TACHE[b.p.sorte]) || a.i - b.i)
     .map(({ p }): Probleme => {
       const sceneId = "sceneId" in p ? p.sceneId : null;
       const aFinir = sceneId !== null && scene.get(sceneId)?.etat !== "prete";
-      return { ...p, cle: cleDe(p), gravite: GRAVITE[p.sorte], tache: TACHE[p.sorte], etape: etapeDe(TACHE[p.sorte]), reporte: ECRITURE.has(p.sorte) && aFinir };
+      return { ...p, cle: cleDe(p), gravite: GRAVITE[p.sorte], tache: TACHE[p.sorte], etape: etapeDe(p.sorte), reporte: ECRITURE.has(p.sorte) && aFinir };
     });
 }
 
@@ -214,6 +261,15 @@ function cleDe(p: Point): string {
       return `numero:${p.cibleId}`;
     case "sans-fin":
       return `sans-fin:${[...p.scenes].sort().join(",")}`;
+    // Une image jugée l'est à sa largeur : la changer pose de nouveau la question (F11.6, « Durée de l'acceptation »)
+    case "image-manquante":
+      return `image-manquante:${p.sceneId ?? p.pageDuLivre}:${p.bloc ?? p.image}`;
+    case "image-floue":
+      return `image-floue:${p.sceneId ?? p.pageDuLivre}:${p.bloc ?? p.image}:${p.image}:${p.largeur}`;
+    case "largeur-reduite":
+      return `largeur-reduite:${p.bloc}`;
+    case "hors-marges":
+      return `hors-marges:${p.sceneId ?? "pages"}:${p.empreinte}`;
     default:
       return `${p.sorte}:${p.sceneId}`;
   }
@@ -353,6 +409,10 @@ export const pdfDefinitifRefuse = (problemes: Probleme[]): boolean => problemes.
  * détail quand l'adulte traite la scène.
  */
 export function phraseDe(p: Point): { quoi: string; detail: string; suite?: string } {
+  if (p.sorte === "image-manquante") return { quoi: "Image introuvable.", detail: "Le fichier de cette image n’est plus dans le projet : remplacez-la, ou retirez-la." };
+  if (p.sorte === "image-floue") return { quoi: "Image peu définie.", detail: `Elle s’imprime à ${p.ppp} points par pouce : à moins de ${SEUIL_PPP}, elle peut paraître floue sur papier.` };
+  if (p.sorte === "largeur-reduite") return { quoi: "Image réduite pour tenir dans la page.", detail: `Demandée à ${p.demandee} %, elle s’imprime à ${p.obtenue} %.` };
+  if (p.sorte === "hors-marges") return { quoi: `Le texte dépasse de la marge, page ${p.page}.`, detail: "Un mot trop long pour la ligne déborde dans la marge : coupez-le, ou acceptez-le." };
   // Le choix se nomme par son libellé : trois choix d'une même scène ne font pas trois cartes pareilles
   const lequel = (c: Chemin) => (c.cache ? "Le lien caché" : c.libelle.trim() ? `« ${c.libelle.trim()} »` : "Un choix");
   switch (p.sorte) {
@@ -403,4 +463,77 @@ export function phraseDe(p: Point): { quoi: string; detail: string; suite?: stri
       return { quoi: phrase, detail: phrase };
     }
   }
+}
+
+/**
+ * Les images et les marges (F10, F11.2), contrôlées sur les seules scènes du livre et les pages
+ * de présentation : image introuvable, image peu définie à la taille où elle s'imprime, largeur
+ * réglée à la main que la page ne permet pas, texte qui dépassait de la marge à la dernière
+ * composition.
+ */
+function controlerLesImages(livre: Scene[], c: ContenuAControler): Point[] {
+  const points: Point[] = [];
+  const z = zoneDeTexte(c.reglages);
+  for (const s of livre) {
+    for (const b of c.textes.get(s.id) ?? []) {
+      const enLigne: { image: string; bloc: string }[] = [];
+      if (b.type === "image") {
+        const image = c.images[b.image];
+        if (!image) {
+          points.push({ sorte: "image-manquante", sceneId: s.id, image: b.image, bloc: b.id });
+          continue;
+        }
+        const l = largeurImprimee(b, image, c.reglages);
+        const ppp = pointsParPouce(image.largeur, l.mm);
+        if (ppp < SEUIL_PPP) points.push({ sorte: "image-floue", sceneId: s.id, image: b.image, bloc: b.id, ppp, largeur: b.page ? 100 : b.largeur });
+        // Seule une largeur réglée à la main se dit réduite (F10-AC17)
+        if (!b.page && !LARGEURS_PROPOSEES.includes(b.largeur) && l.pourcent < b.largeur - 0.5) {
+          points.push({ sorte: "largeur-reduite", sceneId: s.id, bloc: b.id, demandee: b.largeur, obtenue: Math.round(l.pourcent) });
+        }
+      } else if (b.type === "p" || b.type === "action" || b.type === "choix") {
+        for (const m of b.children) if ("type" in m && m.type === "image-ligne") enLigne.push({ image: m.image, bloc: b.id });
+      }
+      // Une image sur la ligne s'imprime à la hauteur du texte
+      for (const x of enLigne) {
+        const image = c.images[x.image];
+        if (!image) {
+          points.push({ sorte: "image-manquante", sceneId: s.id, image: x.image, bloc: x.bloc });
+          continue;
+        }
+        const ppp = pointsParPouce(image.hauteur, hauteurDeLigne(c.reglages));
+        if (ppp < SEUIL_PPP) points.push({ sorte: "image-floue", sceneId: s.id, image: x.image, bloc: x.bloc, ppp, largeur: 0 });
+      }
+    }
+  }
+  for (const { page, image: id } of c.imagesDesPages) {
+    const image = c.images[id];
+    if (!image) {
+      points.push({ sorte: "image-manquante", sceneId: null, image: id, bloc: null, pageDuLivre: page });
+      continue;
+    }
+    const mm = Math.min(z.largeur, z.hauteur * (image.largeur / image.hauteur));
+    const ppp = pointsParPouce(image.largeur, mm);
+    if (ppp < SEUIL_PPP) points.push({ sorte: "image-floue", sceneId: null, image: id, bloc: null, pageDuLivre: page, ppp, largeur: 100 });
+  }
+  const dansLeLivre = new Set(livre.map((s) => s.id));
+  const marges = JSON.stringify(c.reglages.marges);
+  const vus = new Set<string>();
+  for (const d of c.debordements) {
+    if (d.sceneId && !dansLeLivre.has(d.sceneId)) continue;
+    const cle = `${d.sceneId}:${d.page}`;
+    if (vus.has(cle)) continue;
+    vus.add(cle);
+    points.push({ sorte: "hors-marges", sceneId: d.sceneId, page: d.page, empreinte: empreinteCourte(JSON.stringify(d.sceneId ? c.textes.get(d.sceneId) ?? [] : []) + marges) });
+  }
+  return points;
+}
+
+/** Une empreinte courte d'un texte (FNV-1a, 32 bits) : de quoi voir qu'il a changé. */
+function empreinteCourte(t: string): string {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < t.length; i += 1) {
+    h ^= t.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, "0");
 }

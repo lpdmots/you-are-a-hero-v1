@@ -1,7 +1,9 @@
 import { crc32, deflateSync } from "node:zlib";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import type { Texte } from "@/domaine/copie";
-import { livreACompose, reglagesDeDepart, type LivreACompose, type ReglagesDuLivre } from "@/domaine/composition";
+import { livreACompose, presentationDe, type LivreACompose } from "@/domaine/composition";
+import { reglagesDeDepart, type ReglagesDuLivre } from "@/domaine/mise-en-page";
+import { pagesParDefaut, type PagesDuLivre } from "@/domaine/pages";
 import { controler } from "@/domaine/controles";
 import type { Etat } from "@/domaine/etats";
 import { hasard } from "@/domaine/numeros";
@@ -79,7 +81,11 @@ export function planDe(scenes: Decrite[], o: { parties?: string[]; depart?: numb
 /** Le livre à composer d'un plan et de ses textes, avec les points des contrôles. */
 export function livreDe(
   scenes: Decrite[],
-  o: { aChoix?: boolean; parties?: string[]; groupes?: number[]; reglages?: Partial<ReglagesDuLivre>; images?: Record<string, { largeur: number; hauteur: number }>; feuille?: Feuille | null; titre?: string } = {},
+  o: {
+    aChoix?: boolean; parties?: string[]; groupes?: number[]; reglages?: Partial<ReglagesDuLivre>; images?: Record<string, { largeur: number; hauteur: number }>; feuille?: Feuille | null; titre?: string;
+    /** Les pages de présentation : celles proposées par défaut, modifiées */
+    pages?: (p: PagesDuLivre) => PagesDuLivre; regles?: string;
+  } = {},
 ): LivreACompose {
   const aChoix = o.aChoix ?? true;
   const plan = planDe(scenes, o);
@@ -91,9 +97,15 @@ export function livreDe(
     return [];
   }));
   const problemes = controler({ plan, aChoix, scenesAvecActions: new Set(), feuille: true });
+  const titre = o.titre ?? "Les passeurs de brume";
+  const reglages = { ...reglagesDeDepart(aChoix), ...o.reglages };
+  const pages = o.pages?.(pagesParDefaut({ aChoix, deClasse: true, adulte: "Mme Laurent", classe: { nom: "CM1-CM2", anneeDebut: 2026 }, prenoms: ["Inès", "Bilal", "Alice"], annee: 2026 }));
   return livreACompose({
-    titre: o.titre ?? "Les passeurs de brume", aChoix, plan, textes, formule: "rends", marqueFin: "Fin", feuille: o.feuille ?? null,
-    reglages: { ...reglagesDeDepart(aChoix), ...o.reglages }, problemes, images: o.images ?? {},
+    titre, aChoix, plan, textes, formule: "rends", marqueFin: "Fin", feuille: o.feuille ?? null,
+    reglages, problemes, images: o.images ?? {},
+    presentation: pages
+      ? presentationDe(pages, { titre, aChoix, feuille: o.feuille ?? null, regles: o.regles ?? "", aDesEnigmes: plan.liens.some((l) => l.cache), desImprimes: reglages.basDePage === "des" })
+      : null,
   });
 }
 

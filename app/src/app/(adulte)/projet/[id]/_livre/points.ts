@@ -26,8 +26,9 @@ export type PointAffiche = {
   chemins?: string;
   /** « Marquer comme fin » : la scène */
   fin?: string;
-  /** « C'est voulu » : un avertissement */
+  /** « C'est voulu » : un avertissement ; « Garder ainsi » pour une image peu définie (F11.6) */
   accepter: boolean;
+  accepterLibelle?: string;
   /** Un lien propre au point : choisir le départ, composer la feuille d'aventure */
   lien?: { href: string; texte: string };
 };
@@ -66,6 +67,12 @@ export function afficherPoint(p: Probleme, plan: Plan, projetId: string): PointA
   }
   if (p.sorte === "impasse") point.fin = p.sceneId;
   if (p.sorte === "depart" && !lu) point.lien = { href: `/projet/${projetId}/plan`, texte: "Choisir le départ" };
+  if (p.sorte === "image-floue") point.accepterLibelle = "Garder ainsi";
+  // Une image d'une page de présentation se règle dans « Mettre en page »
+  if ((p.sorte === "image-manquante" || p.sorte === "image-floue") && p.pageDuLivre) {
+    point.titre = p.pageDuLivre;
+    point.lien = { href: `/projet/${projetId}/livre?etape=page`, texte: "Ouvrir les pages de début et de fin" };
+  }
   if (p.sorte === "jeu-sans-feuille") point.lien = { href: `/projet/${projetId}/preparation`, texte: "Composer la feuille d’aventure" };
   return point;
 }

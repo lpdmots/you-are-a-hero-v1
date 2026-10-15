@@ -8,6 +8,9 @@ import { estUuid, planDe } from "@/serveur/recit";
 import { projetDe } from "@/serveur/lectures";
 import { donneesDeLaScene, type DonneesDeLaScene } from "@/serveur/scene";
 import { scenesDe, type Plan } from "@/domaine/recit";
+import { MARGE_MINIMALE, reglagesPropres } from "@/domaine/mise-en-page";
+import { pagesPropres } from "@/domaine/pages";
+import { contenuDuLivre } from "@/serveur/livre/contenu";
 
 /**
  * Les deux jugements de « Vérifier les chemins » (F11.6) : « C'est voulu » sur un
@@ -98,4 +101,39 @@ export async function ouvrirSceneDuLivre(projetId: string, sceneId: string): Pro
   if (!scenesDe(plan).some((s) => s.id === sceneId)) return { ok: false, erreur: "Cette scène n’est plus dans le plan." };
   const donnees = await donneesDeLaScene(e, projet, plan, sceneId);
   return donnees ? { ok: true, plan, donnees } : { ok: false, erreur: "Scène introuvable." };
+}
+
+/**
+ * Les réglages de « Texte et pages » (F11.3, F11.4) : ce qui ne convient pas prend la valeur
+ * de départ ; une marge sous 10 mm est refusée (F11-AC60), la page dit laquelle.
+ */
+export async function reglerMiseEnPage(projetId: string, brut: unknown): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
+  const contenu = await contenuDuLivre(e, projetId);
+  if (!contenu) return { ok: false, erreur: "Projet inconnu." };
+  const feuille = contenu.preparation?.feuille;
+  const marges = (brut as { marges?: Record<string, unknown> } | null)?.marges ?? {};
+  if (Object.values(marges).some((m) => typeof m === "number" && m < MARGE_MINIMALE)) return { ok: false, erreur: `Aucune marge sous ${MARGE_MINIMALE} mm, pour qu’un texte ne soit pas rogné.` };
+  const reglages = reglagesPropres(brut, { aChoix: contenu.aChoix, des: feuille?.on ? feuille.des : 0 });
+  const { data, error } = await e.supabase.from("projets").update({ mise_en_page: reglages }).eq("id", projetId).select("id");
+  if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+/** Les pages de présentation (F11.4) : leurs formes et leurs textes. */
+export async function reglerPagesDuLivre(projetId: string, brut: unknown): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
+  const contenu = await contenuDuLivre(e, projetId);
+  if (!contenu) return { ok: false, erreur: "Projet inconnu." };
+  const pages = pagesPropres(brut, contenu.pages);
+  // Une image de page doit être une image du projet
+  const images = [pages.titre.imageId, pages.titre.illustration, pages.auteurs.imageId, pages.commentLire.imageId, pages.feuille.imageId, pages.fin.imageId].filter((x): x is string => Boolean(x));
+  if (images.some((id) => !contenu.images.has(id))) return { ok: false, erreur: "Cette image n’est pas dans le projet." };
+  const { data, error } = await e.supabase.from("projets").update({ pages_du_livre: pages }).eq("id", projetId).select("id");
+  if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(projetId);
+  return { ok: true };
 }

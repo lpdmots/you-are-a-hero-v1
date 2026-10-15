@@ -14,52 +14,11 @@ import type { Lettres } from "./copie";
 import { phraseDe, type Gravite, type Probleme } from "./controles";
 import { livrePourLAdulte, type BlocLu, type MotLu } from "./lecture";
 import { groupesDeMelange, numerosDuPlan, ouvertureDe, planNumerote } from "./numeros";
-import type { Feuille, FormuleRenvoi, SigneAction } from "./preparation";
+import type { Feuille, FormuleRenvoi, Section, SigneAction } from "./preparation";
+import { colonnesDesNoms, nomsTries, TEXTE_DES, TEXTE_ENIGMES, type PagesDuLivre, type TexteLeger } from "./pages";
 import { referenceScene, type Plan } from "./recit";
+import { largeurImprimee, zoneDeTexte, type ReglagesDuLivre } from "./mise-en-page";
 import type { Texte } from "./copie";
-
-// ——— Réglages du livre (F11.3, F11.4, F11.5) ———
-
-export type Police = "vollkorn" | "andika";
-export type Taille = "petite" | "moyenne" | "grande";
-/** En millimètres ; l'intérieur est du côté de la reliure, alterné entre pages de gauche et de droite */
-export type Marges = { haut: number; bas: number; exterieur: number; interieur: number };
-export type BasDePage = "rien" | "numero" | "des";
-
-export type ReglagesDuLivre = {
-  police: Police;
-  taille: Taille;
-  alignement: "justifie" | "gauche";
-  marges: Marges;
-  basDePage: BasDePage;
-  titresDePartie: boolean;
-  /** Récit classique seulement */
-  titresDeChapitre: boolean;
-  partieNouvellePage: boolean;
-  /** Récit classique seulement */
-  chapitreNouvellePage: boolean;
-};
-
-/** Format unique de la première livraison : A5 portrait, 420 × 595 points une fois imprimé (F11.3). */
-export const PAGE = { largeur: 148, hauteur: 210 } as const;
-export const MARGES_DE_DEPART: Marges = { haut: 16, bas: 20, exterieur: 15, interieur: 20 };
-/** Aucune marge sous 10 mm, pour qu'un texte ne soit pas rogné (F11-AC60) */
-export const MARGE_MINIMALE = 10;
-/** Corps du récit, en points */
-export const CORPS: Record<Taille, number> = { petite: 11, moyenne: 12, grande: 13.5 };
-
-export const reglagesDeDepart = (aChoix: boolean): ReglagesDuLivre => ({
-  police: "vollkorn",
-  taille: "moyenne",
-  alignement: "justifie",
-  marges: { ...MARGES_DE_DEPART },
-  // Folio désactivé pour le récit à choix, où il se confondrait avec un numéro de passage (F11.4)
-  basDePage: aChoix ? "rien" : "numero",
-  titresDePartie: true,
-  titresDeChapitre: true,
-  partieNouvellePage: true,
-  chapitreNouvellePage: false,
-});
 
 // ——— Ce que le livre contient ———
 
@@ -104,9 +63,42 @@ export type LivreACompose = {
   /** Le nombre de scènes du livre qui ne sont pas encore prêtes */
   aFinir: number;
   feuille: Feuille | null;
+  /** Le dé du livre (F04.2) : ce que les dés imprimés en bas de page reprennent (F11.4) */
+  des: 0 | 1 | 2;
+  /** Les pages de présentation, dans l'ordre fixe de F11.4 ; rien pour un livre composé sans elles */
+  presentation: PresentationACompose | null;
 };
 
+/** Une page de présentation : son modèle, ou son image pleine page (F11.4). */
+export type PresentationACompose = {
+  titre: { image: string | null; titre: string; sousTitre: string; ligne: string; annee: string; illustration: string | null };
+  auteurs: { image: string | null; place: "debut" | "fin"; introduction: string; noms: string[]; conclusion: string } | null;
+  commentLire: { image: string | null; texte: TexteLeger; enigmes: boolean; regles: string; des: boolean } | null;
+  feuille: { image: string | null; sections: Section[] } | null;
+  fin: { image: string | null; texte: TexteLeger } | null;
+};
+
+/** Les pages de présentation à composer, d'après celles du projet et ce que le livre contient. */
+export function presentationDe(
+  pages: PagesDuLivre,
+  o: { titre: string; aChoix: boolean; feuille: Feuille | null; regles: string; aDesEnigmes: boolean; desImprimes: boolean },
+): PresentationACompose {
+  const image = (p: { forme: string; imageId: string | null }) => (p.forme === "image" ? p.imageId : null);
+  const t = pages.titre;
+  return {
+    titre: { image: image(t), titre: o.titre, sousTitre: t.sousTitre, ligne: t.ligne, annee: t.annee, illustration: t.illustration },
+    auteurs: pages.auteurs.presente ? { image: image(pages.auteurs), place: pages.auteurs.place, introduction: pages.auteurs.introduction, noms: nomsTries(pages.auteurs.noms), conclusion: pages.auteurs.conclusion } : null,
+    commentLire: o.aChoix && pages.commentLire.presente
+      ? { image: image(pages.commentLire), texte: pages.commentLire.texte, enigmes: pages.commentLire.enigmes ?? o.aDesEnigmes, regles: o.regles.trim(), des: o.desImprimes }
+      : null,
+    feuille: o.aChoix && o.feuille?.on && o.feuille.sections.length ? { image: image(pages.feuille), sections: o.feuille.sections } : null,
+    fin: pages.fin.presente ? { image: image(pages.fin), texte: pages.fin.texte } : null,
+  };
+}
+
 export type EntreeDuLivre = {
+  /** Les pages de présentation, déjà résolues ; rien : le livre est composé sans elles */
+  presentation?: PresentationACompose | null;
   titre: string;
   aChoix: boolean;
   plan: Plan;
@@ -211,6 +203,8 @@ export function livreACompose(e: EntreeDuLivre): LivreACompose {
     titre: e.titre, aChoix: e.aChoix, marqueFin: lu.marqueFin, reglages: r, passages, images: e.images, recapitulatif,
     aFinir: e.problemes.filter((p) => p.sorte === "a-finir").length,
     feuille: lu.feuille,
+    des: e.aChoix && e.feuille?.on ? e.feuille.des : 0,
+    presentation: e.presentation ?? null,
   };
 }
 
@@ -291,12 +285,12 @@ export type Options = {
 const attributs = (a: Record<string, string | number | null | undefined | false>): string =>
   Object.entries(a).filter(([, v]) => v !== null && v !== undefined && v !== false).map(([k, v]) => ` ${k}="${html(String(v))}"`).join("");
 
-function mots(liste: MotLu[], o: Options, livre: LivreACompose, cesure: boolean): string {
+function mots(liste: MotLu[], o: Options, livre: LivreACompose | null, cesure: boolean): string {
   // Le dernier mot d'un paragraphe n'est pas coupé (F11.3) : on le cherche dans le dernier texte
   const dernierTexte = liste.map((m, i) => ("text" in m && m.text.trim() ? i : -1)).reduce((a, b) => Math.max(a, b), -1);
   return liste.map((m, i) => {
     if (!("text" in m)) {
-      const connue = livre.images[m.image];
+      const connue = livre?.images[m.image];
       return connue
         ? `<img class="symbole" src="${html(o.image(m.image))}" alt="${html(m.alt ?? "")}">`
         : `<span class="introuvable-ligne"${attributs({ "data-image-introuvable": m.image })}>[image]</span>`;
@@ -329,7 +323,9 @@ function image(b: Extract<BlocLu, { type: "image" }>, o: Options, livre: LivreAC
     return `<figure class="image introuvable${b.page ? " page" : ""}"${a} style="width:${b.page ? 100 : b.largeur}%"><div class="manque">Image introuvable</div>${legende}</figure>`;
   }
   const ratio = connue.largeur / connue.hauteur;
-  return `<figure class="image${b.page ? " page" : ""}"${a} style="width:${b.page ? 100 : b.largeur}%"><img src="${html(o.image(b.image))}" alt="${html(b.alt ?? "")}" style="aspect-ratio:${ratio.toFixed(5)}">${legende}</figure>`;
+  // Une image trop haute pour la page est réduite, proportions gardées (F10) ; les contrôles le disent si sa largeur a été réglée à la main
+  const largeur = b.page ? 100 : largeurImprimee(b, connue, livre.reglages).pourcent;
+  return `<figure class="image${b.page ? " page" : ""}"${a} style="width:${largeur}%"><img src="${html(o.image(b.image))}" alt="${html(b.alt ?? "")}" style="aspect-ratio:${ratio.toFixed(5)}">${legende}</figure>`;
 }
 
 function passageHtml(p: PassageACompose, livre: LivreACompose, o: Options): string {
@@ -405,8 +401,79 @@ function recapitulatifHtml(livre: LivreACompose, o: Options): string {
   return `<section class="recap" data-recap><p class="recap__mention">Version de travail · ${html(o.etatDu)}</p><h1 class="recap__titre">${html(livre.titre)}</h1>${finir}${rien}${lignes.join("")}</section>`;
 }
 
-/** Le corps du document : la page récapitulative du PDF de travail, puis le récit. */
+// ——— Les pages de présentation (F11.4) ———
+
+const leger = (t: TexteLeger, cesure = false): string =>
+  t.map((p) => `<p>${mots(p as MotLu[], { travail: false, etatDu: "", image: () => "" }, null, cesure) || "&nbsp;"}</p>`).join("");
+
+/** Une page de présentation en image pleine page : à l'intérieur des marges, réduite si elle a été dessinée bord à bord. */
+const pageEnImage = (classe: string, nom: string, image: string, livre: LivreACompose, o: Options): string =>
+  livre.images[image]
+    ? `<section class="pres ${classe} pres--image" data-page="${nom}"><figure class="image page"><img src="${html(o.image(image))}" alt=""></figure></section>`
+    : `<section class="pres ${classe} pres--image" data-page="${nom}"><figure class="image page introuvable"><div class="manque">Image introuvable</div></figure></section>`;
+
+/**
+ * La feuille d'aventure imprimée tient-elle sur une page ? Alors ses listes et ses notes se
+ * partagent la place qui reste, cinq lignes au moins chacune ; sinon elle continue sur la page
+ * suivante, chaque liste gardant huit lignes (F04.2, 15 octobre 2026). Une estimation par excès.
+ */
+export function feuilleSurUnePage(sections: Section[], r: ReglagesDuLivre): boolean {
+  const LIGNE = 8;
+  const TITRE = 11;
+  let hauteur = 18; // titre de la page
+  for (const s of sections) hauteur += TITRE + (s.type === "compteurs" ? s.compteurs.length * LIGNE : 5 * LIGNE) + 4;
+  return hauteur <= zoneDeTexte(r).hauteur;
+}
+
+function feuilleHtml(f: NonNullable<PresentationACompose["feuille"]>, livre: LivreACompose): string {
+  const unePage = feuilleSurUnePage(f.sections, livre.reglages);
+  const sections = f.sections.map((s) => {
+    const titre = `<h3 class="feuille__titre">${html(s.titre)}</h3>`;
+    if (s.type === "compteurs") {
+      const lignes = s.compteurs.map((c) => `<li><span class="feuille__nom">${html(c.nom)}</span><span class="feuille__depart">départ ${c.depart}</span><span class="feuille__case"></span></li>`).join("");
+      return `<section class="feuille__section feuille__section--compteurs">${titre}<ul>${lignes}</ul></section>`;
+    }
+    // Une liste : des lignes de 8 mm, autant que la page en laisse sur une feuille d'une page, huit sinon
+    const corps = s.type === "liste" ? `<div class="feuille__lignes">${"<span></span>".repeat(unePage ? 30 : 8)}</div>` : `<div class="feuille__cadre"></div>`;
+    return `<section class="feuille__section feuille__section--${s.type} feuille__section--remplit">${titre}${corps}</section>`;
+  }).join("");
+  return `<section class="pres pres--feuille${unePage ? " pres--une-page" : ""}" data-page="feuille"><h2 class="pres__titre">Feuille d’aventure</h2>${sections}</section>`;
+}
+
+function presentationHtml(livre: LivreACompose, o: Options): { debut: string; fin: string } {
+  const p = livre.presentation;
+  if (!p) return { debut: "", fin: "" };
+  const t = p.titre;
+  const titre = t.image
+    ? pageEnImage("pres--titre", "titre", t.image, livre, o)
+    : `<section class="pres pres--titre" data-page="titre"><div class="pres__haut"><h1 class="pres__livre">${html(t.titre)}</h1>${t.sousTitre ? `<p class="pres__sous-titre">${html(t.sousTitre)}</p>` : ""}${FILET}</div>${
+        t.illustration && livre.images[t.illustration] ? `<figure class="pres__illustration"><img src="${html(o.image(t.illustration))}" alt=""></figure>` : ""
+      }<div class="pres__bas">${t.ligne ? `<p class="pres__ligne">${html(t.ligne)}</p>` : ""}${t.annee ? `<p class="pres__annee">${html(t.annee)}</p>` : ""}</div></section>`;
+  const a = p.auteurs;
+  const auteurs = !a
+    ? ""
+    : a.image
+      ? pageEnImage(`pres--auteurs${a.place === "fin" ? " pres--apres-le-recit" : ""}`, "auteurs", a.image, livre, o)
+      : `<section class="pres pres--auteurs${a.place === "fin" ? " pres--apres-le-recit" : ""}" data-page="auteurs"><h2 class="pres__titre">${html(a.introduction)}</h2><ul class="pres__noms pres__noms--${colonnesDesNoms(a.noms.length)}">${a.noms.map((n) => `<li>${html(n)}</li>`).join("")}</ul>${a.conclusion ? `<p class="pres__conclusion">${html(a.conclusion)}</p>` : ""}</section>`;
+  const c = p.commentLire;
+  const regles = c?.regles ? `<h3 class="pres__sous-titre-section">Règles du jeu</h3>${c.regles.split(/\n\s*\n|\n/).filter((l) => l.trim()).map((l) => `<p>${html(l.trim())}</p>`).join("")}` : "";
+  const commentLire = !c
+    ? ""
+    : c.image
+      ? pageEnImage("pres--comment", "comment-lire", c.image, livre, o)
+      : `<section class="pres pres--comment" data-page="comment-lire"><h2 class="pres__titre">Comment lire ce livre</h2>${leger(c.texte)}${c.enigmes ? `<p>${html(TEXTE_ENIGMES)}</p>` : ""}${c.des ? `<p>${html(TEXTE_DES)}</p>` : ""}${regles}</section>`;
+  const feuille = !p.feuille ? "" : p.feuille.image ? pageEnImage("pres--feuille", "feuille", p.feuille.image, livre, o) : feuilleHtml(p.feuille, livre);
+  const f = p.fin;
+  const fin = !f ? "" : f.image ? pageEnImage("pres--apres-le-recit pres--fin", "fin", f.image, livre, o) : `<section class="pres pres--apres-le-recit pres--fin" data-page="fin">${leger(f.texte)}</section>`;
+  return {
+    debut: `${titre}${a && a.place === "debut" ? auteurs : ""}${commentLire}${feuille}`,
+    fin: `${a && a.place === "fin" ? auteurs : ""}${fin}`,
+  };
+}
+
+/** Le corps du document : la page récapitulative du PDF de travail, les pages de début, le récit, les pages de fin. */
 export function corpsDuLivre(livre: LivreACompose, o: Options): string {
   const recit = livre.passages.map((p) => passageHtml(p, livre, o)).join("");
-  return `${o.travail ? recapitulatifHtml(livre, o) : ""}<div class="recit${livre.aChoix ? " a-choix" : " classique"}" data-debut-livre>${recit}</div>`;
+  const pages = presentationHtml(livre, o);
+  return `${o.travail ? recapitulatifHtml(livre, o) : ""}${pages.debut ? `<div class="presentation" data-debut-livre>${pages.debut}</div>` : ""}<div class="recit${livre.aChoix ? " a-choix" : " classique"}"${pages.debut ? "" : " data-debut-livre"}>${recit}</div>${pages.fin}`;
 }

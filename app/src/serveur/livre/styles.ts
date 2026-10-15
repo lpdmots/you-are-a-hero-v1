@@ -1,6 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
-import { CORPS, PAGE, type ReglagesDuLivre } from "@/domaine/composition";
+import { CORPS, PAGE, type ReglagesDuLivre } from "@/domaine/mise-en-page";
 
 /**
  * Les feuilles de style du livre composé. Deux feuilles, parce que Paged.js retire les
@@ -14,6 +14,8 @@ export const DOSSIER_PAGEDJS = join(RACINE, "node_modules", "pagedjs", "dist");
 const POLICES = {
   vollkorn: { dossier: join(RACINE, "node_modules", "@fontsource", "vollkorn"), graisses: ["400", "400-italic", "600", "600-italic", "700", "700-italic"] },
   atkinson: { dossier: join(RACINE, "node_modules", "@fontsource", "atkinson-hyperlegible-next"), graisses: ["400", "600", "700"] },
+  // Andika, la police des premiers lecteurs, au choix pour le livre (F11.3)
+  andika: { dossier: join(RACINE, "node_modules", "@fontsource", "andika"), graisses: ["400", "400-italic", "700", "700-italic"] },
 } as const;
 export type NomPolice = keyof typeof POLICES;
 
@@ -56,8 +58,10 @@ export function feuilleDesPages(r: ReglagesDuLivre): string {
 @page :right { margin-left: ${mm(interieur)}; margin-right: ${mm(exterieur)}; }
 @page :left { margin-left: ${mm(exterieur)}; margin-right: ${mm(interieur)}; }
 @page :blank { margin: ${mm(haut)} ${mm(exterieur)} ${mm(bas)} ${mm(interieur)}; }
-/* Le récit commence sur une page de droite (F11.4), après la page récapitulative du PDF de travail */
-.recit { break-before: right; }
+/* Le livre commence sur une page de droite, après la page récapitulative du PDF de travail ; le récit aussi, après les pages de présentation (F11.4) */
+.presentation, .recit { break-before: right; }
+.pres { break-after: page; }
+.pres--apres-le-recit { break-before: page; }
 .nouvelle-page { break-before: page; }
 figure.image.page { break-before: page; break-after: page; }
 `;
@@ -92,7 +96,7 @@ svg.filet { width: 24mm; height: 2mm; fill: none; stroke: #2a2a2a; stroke-width:
 svg.filet path:last-child { fill: #2a2a2a; stroke: none; }
 
 /* Choix, action et fin : jamais coupés, jamais séparés du texte qui les amène (F11.3) */
-.choix-groupe { margin: 0.7em 0 0.2em; break-before: avoid; }
+.choix-groupe { margin: 0.7em 0 0.2em; break-before: avoid; break-inside: avoid; }
 .recit p.choix { text-align: left; font-style: italic; padding-left: 1.1em; text-indent: -1.1em; margin: 0 0 0.3em; break-inside: avoid; }
 .recit p.choix::before { content: "— "; font-style: normal; }
 .recit p.choix b.renvoi { font-style: normal; font-weight: 700; }
@@ -112,6 +116,52 @@ img.symbole { height: 1em; width: auto; vertical-align: -0.15em; }
 figure.introuvable .manque, .recit p.vide { display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; border: 0.3mm dashed #a5432e; color: #a5432e; font: 600 8.5pt 'Atkinson Hyperlegible Next', sans-serif; }
 .recit p.vide { aspect-ratio: auto; padding: 5mm; border-color: #8a8a8a; color: #6b6b6b; }
 .introuvable-ligne { font: 600 0.7em 'Atkinson Hyperlegible Next', sans-serif; color: #a5432e; }
+
+/* ——— Pages de présentation (F11.4) ——— */
+.pres { min-height: 0; }
+.pres p { margin: 0 0 0.7em; text-align: ${r.alignement === "justifie" ? "justify" : "left"}; }
+.pres__titre { font-size: 1.5em; line-height: 1.2; font-weight: 600; text-align: center; margin: 0 0 1em; }
+.pres__sous-titre-section { font-size: 1.1em; font-weight: 600; margin: 1.2em 0 0.5em; }
+.pres--titre { height: var(--hauteur-utile); display: flex; flex-direction: column; align-items: center; justify-content: space-between; text-align: center; }
+.pres__haut { padding-top: 18mm; display: grid; justify-items: center; gap: 4mm; }
+.pres__livre { font-size: 2.2em; line-height: 1.12; font-weight: 600; margin: 0; }
+.pres__sous-titre { font-style: italic; font-size: 1.1em; margin: 0 !important; text-align: center !important; }
+.pres__illustration { margin: 6mm 0; max-height: 50%; display: flex; justify-content: center; }
+.pres__illustration img { max-width: 100%; max-height: calc(var(--hauteur-utile) * 0.5); object-fit: contain; }
+.pres__bas { display: grid; gap: 1.5mm; padding-bottom: 6mm; }
+.pres__ligne, .pres__annee { margin: 0 !important; text-align: center !important; }
+.pres__annee { font-size: 0.9em; letter-spacing: 0.06em; }
+.pres--auteurs { padding-top: 14mm; }
+.pres__noms { list-style: none; margin: 0 auto 1.4em; padding: 0; text-align: center; line-height: 1.55; }
+.pres__noms--2 { columns: 2; column-gap: 8mm; }
+.pres__noms--3 { columns: 3; column-gap: 6mm; }
+.pres__noms li { break-inside: avoid; }
+.pres__conclusion { text-align: center !important; font-style: italic; }
+.pres--fin { height: var(--hauteur-utile); display: flex; flex-direction: column; justify-content: center; text-align: center; }
+.pres--fin p { text-align: center; }
+.pres--image .image.page { height: var(--hauteur-utile); }
+
+/* La feuille d'aventure : ses listes et ses notes remplissent la page (F04.2, 15 octobre 2026) */
+.pres--feuille { display: grid; gap: 5mm; align-content: start; }
+.pres--feuille .pres__titre { margin-bottom: 1mm; }
+.pres--une-page { height: var(--hauteur-utile); display: flex; flex-direction: column; gap: 5mm; }
+.feuille__section { break-inside: avoid; display: flex; flex-direction: column; }
+.feuille__titre { font-size: 1em; font-weight: 600; margin: 0 0 2mm; padding-bottom: 1mm; border-bottom: 0.25mm solid #262626; }
+.feuille__section ul { list-style: none; margin: 0; padding: 0; }
+.feuille__section li { display: flex; align-items: center; gap: 3mm; height: 8mm; border-bottom: 0.15mm solid #9a9a9a; }
+.feuille__nom { flex: 1; }
+.feuille__depart { font-size: 0.8em; color: #4a4a4a; }
+.feuille__case { width: 22mm; height: 6mm; border: 0.25mm solid #262626; border-radius: 1mm; }
+.feuille__lignes { display: flex; flex-direction: column; overflow: hidden; }
+.feuille__lignes span { flex: none; height: 8mm; box-sizing: border-box; border-bottom: 0.25mm solid #8f8f8f; }
+.feuille__cadre { min-height: 40mm; height: 64mm; border: 0.25mm solid #262626; border-radius: 1.6mm; }
+.pres--une-page .feuille__section--remplit { flex: 1 1 0; min-height: 51mm; }
+.pres--une-page .feuille__lignes, .pres--une-page .feuille__cadre { flex: 1 1 auto; height: auto; }
+
+/* Les dés imprimés en bas des pages de droite du récit (F11.4) */
+.des-imprimes { position: absolute; display: flex; gap: 1.6mm; }
+.des-imprimes svg { width: 6.5mm; height: 6.5mm; fill: none; stroke: #222; stroke-width: 1.5; }
+.des-imprimes circle { fill: #222; stroke: none; }
 
 /* ——— Page récapitulative du PDF de travail (F11.2) ——— */
 .recap { font-family: 'Atkinson Hyperlegible Next', sans-serif; font-size: 8.6pt; line-height: 1.35; color: #222; }

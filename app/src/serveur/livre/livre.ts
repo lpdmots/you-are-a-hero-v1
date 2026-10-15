@@ -1,14 +1,13 @@
 import "server-only";
-import { createHash, randomUUID } from "node:crypto";
+import { randomUUID } from "node:crypto";
 import type { Enseignant } from "../adulte";
 import { controlesDuLivre } from "../controles";
-import { projetDe } from "../lectures";
-import { estUuid, planDe, preparationDe } from "../recit";
+import { estUuid } from "../recit";
 import { clientService } from "../supabase";
 import { SEAU as SEAU_DES_IMAGES, TYPE_MIME } from "../images";
-import type { Texte } from "@/domaine/copie";
-import { livreACompose, reglagesDeDepart, type LivreACompose } from "@/domaine/composition";
+import type { LivreACompose } from "@/domaine/composition";
 import { composer, type Composition } from "./composer";
+import { contenuDuLivre, livreDuContenu, type ImageDuProjet } from "./contenu";
 import { etatEnMots, pdfDe, SEAU, type PdfDuLivre } from "./pdf";
 
 /**
@@ -17,12 +16,11 @@ import { etatEnMots, pdfDe, SEAU, type PdfDuLivre } from "./pdf";
  * se voit à l'empreinte, qui diffère alors de celle du PDF.
  */
 
-type ImageDuProjet = { chemin: string; vignette: string; format: "jpeg" | "png" | "webp" };
-
 export type Instantane = {
   livre: LivreACompose;
   /** L'heure de l'état composé */
   etatDu: string;
+  /** L'empreinte du contenu, sans les marques du PDF de travail */
   empreinte: string;
   /** Pour lire une image dans le stockage : seulement celles du projet */
   images: Map<string, ImageDuProjet>;
@@ -31,32 +29,9 @@ export type Instantane = {
 export async function instantaneDuLivre(e: Enseignant, projetId: string): Promise<Instantane | null> {
   if (!estUuid(projetId)) return null;
   const etatDu = new Date().toISOString();
-  const projet = await projetDe(e, projetId);
-  if (!projet) return null;
-  const aChoix = projet.recit === "choix";
-  const [plan, preparation, textes, images, problemes] = await Promise.all([
-    planDe(e, projetId),
-    preparationDe(e, projetId),
-    e.supabase.from("scenes").select("id, texte").eq("projet_id", projetId).is("supprime_le", null),
-    e.supabase.from("images").select("id, chemin, chemin_vignette, format, largeur, hauteur").eq("projet_id", projetId),
-    controlesDuLivre(e, projetId),
-  ]);
-  const erreur = textes.error ?? images.error;
-  if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
-  const lignes = (images.data ?? []) as { id: string; chemin: string; chemin_vignette: string; format: ImageDuProjet["format"]; largeur: number; hauteur: number }[];
-  const livre = livreACompose({
-    titre: projet.titre, aChoix, plan,
-    textes: new Map(((textes.data ?? []) as { id: string; texte: Texte | null }[]).map((s) => [s.id, s.texte ?? []])),
-    formule: preparation?.formuleRenvoi ?? "rends", marqueFin: preparation?.marqueFin ?? "Fin", feuille: preparation?.feuille ?? null,
-    reglages: reglagesDeDepart(aChoix),
-    problemes: problemes ?? [],
-    images: Object.fromEntries(lignes.map((i) => [i.id, { largeur: i.largeur, hauteur: i.hauteur }])),
-  });
-  return {
-    livre, etatDu,
-    empreinte: createHash("sha256").update(JSON.stringify(livre)).digest("hex"),
-    images: new Map(lignes.map((i) => [i.id, { chemin: i.chemin, vignette: i.chemin_vignette, format: i.format }])),
-  };
+  const [contenu, problemes] = await Promise.all([contenuDuLivre(e, projetId), controlesDuLivre(e, projetId)]);
+  if (!contenu) return null;
+  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images };
 }
 
 /**

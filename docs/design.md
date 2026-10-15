@@ -1924,6 +1924,35 @@ canard pâle, « Retour au Livre » et « Tout afficher ».
   « Relire » à l'ouverture de l'étape, comme celle de « Vérifier les
   chemins », avec quatre questions.
 
+**Lot 3 — « Mettre en page », volet « Réglages ».** Sans maquette pour le
+panneau des pages de présentation ; le reste reprend « Texte et pages » de la
+maquette avec les formes arrêtées à l'entretien. Un cadre « Texte et pages »
+(police et alignement en cartes avec une phrase d'exemple, taille, bas de
+page, titres et nouvelles pages, marges en une ligne), puis « Pages de début
+et de fin » : une ligne par page, son schéma ou son image, ce qu'elle porte,
+« Dans le livre » et « Modifier ». La colonne de droite est réservée : le
+livre en petit (double page du début du récit, nombre de pages, « Voir
+l'aperçu »), ou le panneau de la page ouverte, qui commence par sa petite
+double page, puis sa forme (« Modèle » ou « Image pleine page ») et ses
+champs ; l'état « Enregistré » est dessous.
+
+- **Critique en deux lectures** (captures 601 à 609, Playwright contre le
+  serveur local) : 27/40 en lecture informée, 23/40 en lecture
+  indépendante. Corrigé aussitôt, sans nouvelle mesure : la petite double
+  page et le schéma des marges, arrêtés à l'entretien et absents ; la
+  colonne réservée, pour que l'ouverture d'un panneau ne resserre plus la
+  page ; les champs de marge qui se chevauchaient ; un refus de marge en une
+  ligne, la raison passant dans le « i » ; les valeurs des marges nommées ;
+  les « Modifier » alignés ; une page hors du livre lisible, « Modifier »
+  actif ; la page des auteurs vide signalée ; le « i » du titre ; deux
+  phrases reprises (« Comment lire », feuille en image) ; les espaces
+  insécables du texte proposé.
+- **Laissés en l'état** : sur téléphone, le ruban d'étapes ne montre que
+  des numéros (écran de l'étape 5, à reprendre avec le reste du Livre) ;
+  l'aperçu entier reste dans son volet, comme arrêté ; l'image d'une
+  feuille en paysage n'est pas recadrée ; le chiffre zéro barré est celui
+  d'Atkinson, la police de l'outil.
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans

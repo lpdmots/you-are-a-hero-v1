@@ -3,7 +3,7 @@ import type { Enseignant } from "../adulte";
 import { clientService } from "../supabase";
 import type { BlocPlace } from "./dans-la-page";
 import { composerLInstantane, instantaneDuLivre } from "./livre";
-import { etatEnMots, SEAU } from "./pdf";
+import { cheminDeLApercu, etatEnMots, SEAU } from "./pdf";
 
 /**
  * L'aperçu du livre (F11.2) : la composition du PDF de travail, avec les mêmes marques, ses
@@ -27,6 +27,12 @@ export type Apercu = {
   /** Le numéro de chaque passage (récit à choix) */
   numeros: Record<string, number | null>;
   passages: number;
+  /** Ce qui dépasse des marges : les contrôles le lisent ici (F11-AC57) */
+  debordements: { page: number; sceneId: string | null }[];
+  /** La première page du récit, après les pages de présentation */
+  premierePageDuRecit: number;
+  /** La page de chaque page de présentation (« titre », « comment-lire »…), pour la petite double page des réglages */
+  presentation: Record<string, number>;
 };
 
 type Garde = Omit<Apercu, "adresse" | "empreinte">;
@@ -36,15 +42,20 @@ export async function apercuDuLivre(e: Enseignant, projetId: string): Promise<Ap
   if (!instantane) return null;
   const seau = clientService().storage.from(SEAU);
   const dossier = `${e.id}/${projetId}`;
-  const base = `${dossier}/apercu-${instantane.empreinte}`;
+  const base = cheminDeLApercu(e.id, projetId, instantane.empreinte);
   let garde: Garde | null = null;
   const lu = await seau.download(`${base}.json`);
   if (!lu.error && lu.data) garde = JSON.parse(await lu.data.text()) as Garde;
+  // Un aperçu gardé avant le lot 3 de l'étape 6 ne dit pas où sont les pages de présentation
+  if (garde && !garde.presentation) garde = null;
   if (!garde) {
     const c = await composerLInstantane(instantane, true, true);
     garde = {
       etat: etatEnMots(instantane.etatDu), pages: c.rapport.pages, horsPagination: c.rapport.horsPagination, carte: c.rapport.carte, pageDe: c.rapport.pageDe,
       numeros: Object.fromEntries(instantane.livre.passages.map((p) => [p.sceneId, p.numero])), passages: instantane.livre.passages.length,
+      debordements: c.rapport.debordements.map((d) => ({ page: d.page, sceneId: d.scene })),
+      premierePageDuRecit: c.rapport.premierePageDuRecit,
+      presentation: Object.fromEntries(c.rapport.presentation.map((x) => [x.nom, x.page])),
     };
     const depot = await seau.upload(`${base}.pdf`, c.pdf, { contentType: "application/pdf", upsert: true });
     if (depot.error) throw new Error(`Aperçu non déposé : ${depot.error.message}`);

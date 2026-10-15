@@ -1550,6 +1550,50 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       onglets.
     - **Tests automatiques :** 5 unitaires, 1 de composition (F11-AC30),
       7 parcours.
+  - **Lot 3 — règles de composition, réglages et pages de présentation :
+    construit le 15 octobre 2026.** Les règles de coupure tenues par la
+    composition (veuves et orphelines, numéro jamais seul en bas de page,
+    groupe de choix gardé avec la fin de son passage, césure du français
+    avec ses exceptions) ; les images à leur largeur imprimée, contrôlées
+    (introuvable, peu définie sous 200 points par pouce, réduite pour tenir
+    dans la page) ; ce qui dépasse des marges, lu dans le dernier aperçu ;
+    la tâche « À confirmer » de « Relire » et « Garder ainsi » ; l'ouverture
+    de « Mettre en page » selon la règle de F11.6, avancée du lot 4 et dite
+    au porteur au début du lot, avec ses deux volets ; le volet
+    « Réglages » (police, Andika comprise, taille, alignement, bas de page,
+    titres et nouvelles pages, marges) et les cinq pages de présentation,
+    chacune en modèle ou en image pleine page, modifiées dans le panneau à
+    droite ; les dés imprimés ; « Règles du jeu » dans la lecture. Migration
+    `20261015120000_mise_en_page.sql`, base locale seulement : trois
+    colonnes du projet, `mise_en_page` et `pages_du_livre` (objets JSON,
+    lus et complétés par l'application) et `mise_en_page_ouverte_le`,
+    modifiables par l'adulte.
+    - **Critères fermés :** F11-AC08, AC12, AC28, AC29, AC35 à AC41, AC48
+      à AC53, AC57, AC60, AC84, AC105 à AC107 ; F10-AC15 à AC19, AC35 ;
+      F04-AC19, AC24, AC42 ; F11-AC69 pour l'image introuvable, qui
+      attendait du lot 2 (F10-AC14) ; F11-AC63, prévu au lot 4, avec
+      l'ouverture de l'étape.
+    - **Critères qui attendent :** au lot 4, AC61 et AC80 pour « Mettre en
+      page » et le reste de son volet « Aperçu » ; le texte qui dépasse des
+      marges se signale d'après le dernier aperçu composé, donc après lui.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      les marges repliées en une ligne « Haut 16 · Bas 20 · Extérieur 15 ·
+      Intérieur 20 mm », dépliées en quatre champs à côté d'un schéma de
+      double page où la marge qu'on modifie se colore ; une marge refusée
+      garde dans son champ la valeur précédente, avec « 8 mm refusé : 10 mm
+      au moins. » dessous ; la colonne de droite est réservée : sans page
+      ouverte, la petite double page du début du récit, le nombre de pages
+      et « Voir l'aperçu » ; une page ouverte y met son panneau, avec la
+      petite double page de cette page, recomposée un peu plus d'une seconde
+      après chaque enregistrement ; une page mise « Dans le livre » s'ouvre
+      aussitôt dans le panneau, et « Modifier » reste actif sur une page
+      hors du livre ; une page des auteurs sans prénom se signale en ambre
+      (« Aucun prénom ») ; sans nom affiché de l'adulte, sa dernière ligne
+      est vide plutôt que « avec » seul ; le titre se lit dans le panneau de
+      la page de titre, un « i » disant qu'il se change par le menu ⋯ du
+      projet ; deux colonnes de réglages seulement au-delà de 1 400 points.
+    - **Tests automatiques :** 12 unitaires, 16 de composition, 4 parcours ;
+      captures `npm run captures -- etape6`.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

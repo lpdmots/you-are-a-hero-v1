@@ -1,4 +1,5 @@
-import { livreACompose, reglagesDeDepart, type LivreACompose } from "@/domaine/composition";
+import { livreACompose, type LivreACompose } from "@/domaine/composition";
+import { reglagesDeDepart } from "@/domaine/mise-en-page";
 import type { Texte } from "@/domaine/copie";
 import { controler } from "@/domaine/controles";
 import { hasard } from "@/domaine/numeros";

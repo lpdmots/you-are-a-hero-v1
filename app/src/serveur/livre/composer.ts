@@ -1,6 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { corpsDuLivre, html, type LivreACompose } from "@/domaine/composition";
+import { desImprimes } from "@/domaine/des";
 import { lancerChromium, versionDe } from "./chromium";
 import { SCRIPT_DE_LA_PAGE, type OptionsDeLaPage, type RapportDeLaPage } from "./dans-la-page";
 import { DOSSIER_PAGEDJS, feuilleDesPages, feuilleDesPolices, feuilleDuDocument, fichierDePolice } from "./styles";
@@ -35,7 +36,7 @@ export async function composer(
   const [script, polices] = await Promise.all([pagedjs, feuilleDesPolices()]);
   const corps = corpsDuLivre(livre, { travail: o.travail, etatDu: o.etatDu, image: (id) => `/images/${id}` });
   const document = `<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>${html(livre.titre)}</title>
-<style>${polices}</style><link rel="stylesheet" href="/document.css"><script src="/paged.js"></script></head>
+<style data-pagedjs-ignore>${polices}</style><link rel="stylesheet" href="/document.css" data-pagedjs-ignore><script src="/paged.js"></script></head>
 <body><div id="livre"></div><template id="contenu">${corps}</template></body></html>`;
 
   const navigateur = await lancerChromium();
@@ -66,6 +67,8 @@ export async function composer(
     await page.goto(`${ORIGINE}/`);
     const options: OptionsDeLaPage = {
       travail: o.travail, etatDu: o.etatDu, aChoix: livre.aChoix, titre: livre.titre, marges: livre.reglages.marges, basDePage: livre.reglages.basDePage,
+      des: livre.reglages.basDePage === "des" && livre.des ? desImprimes(400, livre.des) : null,
+      sansGreffe: process.env.LIVRE_SANS_GREFFE === "1",
     };
     const rapport = (await page.evaluate(`(${SCRIPT_DE_LA_PAGE})(${JSON.stringify(options)})`)) as RapportDeLaPage;
     if (erreurs.length) throw new Error(`Mise en page échouée : ${erreurs.join(" ; ")}`);
