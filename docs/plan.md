@@ -1675,6 +1675,47 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       « Le phare - livre.pdf ».
     - **Tests automatiques :** 5 unitaires, 3 contre la base, 3 parcours ;
       captures 621 à 625.
+  - **Lot 6 — ordre des passages : construit le 15 octobre 2026.** Dans
+    « Ordre des passages », sous le mélange par partie, « Moins de blanc » :
+    « Réordonner les passages » et « Garder cet ordre », puis « Annuler » et
+    « Réordonner à nouveau », qui avertit avant d'abandonner les
+    déplacements faits à la main. L'agencement est calculé sur les hauteurs
+    mesurées par la dernière composition (`domaine/agencement.ts`), puis
+    l'ordre proposé est composé une fois : il n'est gardé que s'il laisse
+    moins de blanc, sinon l'écran le dit et rien ne change. Le doute sur
+    l'ordre naît quand un passage change de page depuis la décision ; il
+    marque la section, l'onglet « Réglages » et l'étape, rend la déclaration
+    inactive (« Ordre des passages à confirmer ») et refuse le PDF
+    définitif. Sur une page peu remplie, trois passages au plus sont
+    suggérés, avec « Placer ici » ; un blanc à l'intérieur d'un passage le
+    dit et propose d'ouvrir la scène. Migration
+    `20261015140000_ordre_des_passages.sql`, base locale seulement : quatre
+    colonnes du projet (`ordre_decision`, `ordre_pages`,
+    `ordre_retouche_le`, `ordre_agence_le`), modifiables par l'adulte.
+    - **Critères fermés :** F11-AC21, AC64, AC65 (les rangs gardés ne
+      bougent pas avec le texte), AC66, AC67, AC68, AC74, AC81, AC82 (un PDF
+      définitif ne change plus, lot 5), AC86, AC99.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      l'ordre proposé n'est appliqué que s'il laisse moins de blanc, une fois
+      composé (« Aucun autre ordre ne laisse moins de blanc : l'ordre actuel
+      est gardé tel quel. ») ; le gain se dit (« Passages réordonnés :
+      environ 46 mm de blanc en moins. ») ; « Réordonner » retire la
+      déclaration « La mise en page me convient », « Garder cet ordre » la
+      garde ; un déplacement fait à la main, une nouvelle page ou un mélange
+      de parties relèvent de nouveau les pages, sans faire naître de doute ;
+      les passages suggérés tiennent en une ligne (numéro, titre, hauteur et
+      blanc restant, « Placer ici »), le plus haut d'abord ; les deux blocs
+      de la section l'un sous l'autre.
+    - **Question à trancher :** une image pleine page posée en tête d'un
+      passage laisse son numéro seul en bas de la page qui précède
+      l'image : la règle de F10 (l'image reste où l'auteur l'a posée, seule
+      sur sa page) l'emporte aujourd'hui sur F11-AC37 (numéro jamais seul).
+      Recommandation : que le numéro passe alors en tête de la page d'après
+      l'image, avec le texte qui suit, ou, à défaut, l'imprimer seul en haut
+      de la page qui précède l'image.
+    - **Tests automatiques :** 8 unitaires, 5 parcours. Un parcours du lot 2
+      (F11-AC27) a échoué une fois dans une série complète et passé seul :
+      instable, à surveiller.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

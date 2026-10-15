@@ -20,6 +20,7 @@ import { Carnet } from "../_preparation/Carnet";
 import { Livre } from "../_livre/Livre";
 import { afficherChemins, afficherRelire } from "../_livre/points";
 import { instantaneDuLivre } from "@/serveur/livre/livre";
+import { etatDeLOrdre, ordreDuContenu } from "@/serveur/livre/ordre";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { nomPourEleves } from "@/domaine/eleves";
 import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
@@ -106,14 +107,17 @@ export default async function PageProjet({ params, searchParams }: Props) {
     // première, ne se referme plus, et dit « il reste à faire » si une étape d'avant le dit (F11-AC62, AC77)
     const sortieOuverte = livre.imprimerOuvert || livre.miseEnPageConvient;
     const avantTermine = relire.terminee && (chemins?.terminee ?? true);
+    // L'ordre des passages et son doute (F11.6) : seulement une fois « Mettre en page » ouverte
+    const ordre = aChoix && pageOuverte ? await etatDeLOrdre(enseignant, projet.id, instantane.empreinte) : null;
+    const douteOrdre = Boolean(ordre?.doute);
     // La règle unique du PDF définitif (F11.2) ; l'étape d'arrivée est cochée quand il est à jour
-    const conditions = conditionsDuLivre(livre.problemes, { aChoix, convient: livre.miseEnPageConvient, doute: false, imprimerOuvert: sortieOuverte });
+    const conditions = conditionsDuLivre(livre.problemes, { aChoix, convient: livre.miseEnPageConvient, doute: douteOrdre, imprimerOuvert: sortieOuverte });
     const definitifs = pdf.filter((x) => x.sorte === "definitif");
     const aJour = conditions.pdf.possible && definitifs[0]?.empreinte === instantane.empreinte;
     const marques: Record<EtapeLivre, MarqueEtape> = {
       relire: relire.marque,
       chemins: chemins?.marque ?? null,
-      page: !pageOuverte ? "fermee" : livre.miseEnPageConvient ? "coche" : null,
+      page: !pageOuverte ? "fermee" : douteOrdre ? "reste" : livre.miseEnPageConvient ? "coche" : null,
       sortie: !sortieOuverte ? "fermee" : !avantTermine ? "reste" : aJour ? "coche" : null,
     };
     const contenuLivre = await contenuDuLivre(enseignant, projet.id);
@@ -139,6 +143,16 @@ export default async function PageProjet({ params, searchParams }: Props) {
         noms={noms}
         numeros={Object.fromEntries(instantane.livre.passages.flatMap((x) => (x.numero ? [[x.sceneId, x.numero]] : [])))}
         convient={livre.miseEnPageConvient}
+        douteOrdre={douteOrdre}
+        passages={
+          aChoix && pageOuverte && contenuLivre
+            ? {
+                ...ordreDuContenu(contenuLivre),
+                titres: Object.fromEntries(plan.parties.flatMap((p) => p.chapitres.flatMap((c) => c.scenes.map((x) => [x.id, x.titre ?? ""])))),
+                nouvellesPages: plan.parties.flatMap((p) => p.chapitres.flatMap((c) => c.scenes.filter((x) => x.nouvellePage).map((x) => x.id))),
+              }
+            : null
+        }
         imprimer={
           sortieOuverte
             ? {
@@ -162,6 +176,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
                 prenoms: eleves.map((x) => nomPourEleves(x, eleves)),
                 aDesEnigmes: plan.liens.some((l) => l.cache),
                 avecRegles: Boolean(contenuLivre.preparation?.regles.trim()),
+                ordre,
                 parties: aChoix
                   ? plan.parties.map((p) => {
                       const ids = new Set(p.chapitres.flatMap((c) => c.scenes.map((x) => x.id)));

@@ -1246,6 +1246,32 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   contenu à l'instant ; une coquille corrigée suffit à la changer.
 - **Suppression** : la ligne puis le fichier, par l'adulte du projet.
 
+**Lot 6 — ordre des passages (15 octobre 2026) :**
+
+- **Mesures** : la page de Chromium mesure chaque passage après la mise en
+  page — hauteur de tous ses morceaux, espace du numéro compris, hauteur de
+  son groupe de choix, image pleine page —, le dernier passage de chaque
+  page peu remplie et s'il continue (`data-split-to` de Paged.js, un morceau
+  vide laissé en bas de page ne comptant pas), et le blanc total des pages
+  du récit. L'aperçu les garde avec une version de la mesure : un aperçu
+  d'une autre version se recompose.
+- **Agencement** (`domaine/agencement.ts`) : les places du livre restent
+  (départ, numéros fixés, ouverture, nouvelles pages) ; à chaque place
+  libre, le passage du groupe qui laisse le moins de blanc selon un modèle
+  de page (tête de trois lignes qui doit tenir, corps qui s'écoule, groupe
+  de choix qui ne se coupe pas), en évitant la double page d'un passage qui
+  y mène. L'ordre obtenu est composé une fois avec les images allégées ; il
+  n'est écrit (`placer_passages`) que si son blanc total et son nombre de
+  pages ne sont pas pires.
+- **Doute** : la page de chaque passage se relève à la première composition
+  après une décision ou un déplacement (`ordre_pages`, écrite par la page
+  du Livre quand elle est vide) ; ensuite, une page différente ou un passage
+  en plus ou en moins fait le doute. À « Mettre en page », la page se relit
+  après chaque composition de l'aperçu pour le calculer.
+- **Passage suggéré** : calculé à l'écran d'après l'aperçu (mesures, page
+  de chaque passage) et l'ordre imprimé que la page donne ; « Placer ici »
+  est « Placer après le n° » du lot 4.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

@@ -12,6 +12,8 @@ import { MARGE_MINIMALE, reglagesPropres } from "@/domaine/mise-en-page";
 import { pagesPropres } from "@/domaine/pages";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { supprimerPdfDefinitif } from "@/serveur/livre/livre";
+import { reordonnerLeLivre, type Reordonne } from "@/serveur/livre/ordre";
+import type { Enseignant } from "@/serveur/adulte";
 import { assurerOrdre, structure } from "@/serveur/copie";
 import { deplacer, rangsActuels, type Deplacement } from "@/domaine/ordre";
 
@@ -143,6 +145,15 @@ export async function reglerPagesDuLivre(projetId: string, brut: unknown): Promi
 
 // ——— « Mettre en page », volet « Aperçu » (étape 6, lot 4) ———
 
+/**
+ * Un passage déplacé à la main : la page de chaque passage se relèvera à la prochaine
+ * composition, sans faire naître de doute, et « Réordonner à nouveau » saura qu'il y a des
+ * déplacements à abandonner (F11-AC81). Un réglage du mélange ne compte pas comme déplacement.
+ */
+async function retouche(e: Enseignant, projetId: string, deplacement = true): Promise<void> {
+  await e.supabase.from("projets").update(deplacement ? { ordre_pages: null, ordre_retouche_le: new Date().toISOString() } : { ordre_pages: null }).eq("id", projetId);
+}
+
 export type Place = { ok: true; avant: number; apres: number; annuler: Record<string, number> } | { ok: false; erreur: string };
 
 /**
@@ -161,6 +172,7 @@ export async function deplacerPassage(projetId: string, sceneId: string, d: Depl
   const annuler = rangsActuels(lu.plan, Object.keys(r.rangs));
   const { error } = await e.supabase.rpc("placer_passages", { p_projet: projetId, p_rangs: r.rangs });
   if (error) return { ok: false, erreur: "Le passage n’a pas pu être déplacé." };
+  await retouche(e, projetId);
   rafraichir(projetId);
   return { ok: true, avant: r.avant, apres: r.apres, annuler };
 }
@@ -172,6 +184,7 @@ export async function annulerPlacement(projetId: string, rangs: Record<string, n
   if (!estUuid(projetId) || !propres) return { ok: false, erreur: "Rien à annuler." };
   const { error } = await e.supabase.rpc("placer_passages", { p_projet: projetId, p_rangs: rangs });
   if (error) return { ok: false, erreur: "L’annulation n’a pas pu se faire." };
+  await retouche(e, projetId);
   rafraichir(projetId);
   return { ok: true };
 }
@@ -182,6 +195,7 @@ export async function reglerNouvellePage(sceneId: string, oui: boolean): Promise
   if (!estUuid(sceneId)) return { ok: false, erreur: "Passage inconnu." };
   const { data, error } = await e.supabase.from("scenes").update({ nouvelle_page: oui === true }).eq("id", sceneId).select("projet_id");
   if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  await retouche(e, data[0].projet_id as string);
   rafraichir(data[0].projet_id as string);
   return { ok: true };
 }
@@ -198,6 +212,7 @@ export async function melangerAvecPrecedente(projetId: string, partieId: string,
   if (plan.parties[0]?.id === partieId || !plan.parties.some((p) => p.id === partieId)) return { ok: false, erreur: "La première partie n’a pas de partie avant elle." };
   const { error } = await e.supabase.from("parties").update({ groupe_avec_precedente: oui === true }).eq("id", partieId).eq("projet_id", projetId);
   if (error) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  await retouche(e, projetId, false);
   rafraichir(projetId);
   return { ok: true };
 }
@@ -228,5 +243,38 @@ export async function supprimerPdf(pdfId: string): Promise<Fait> {
   const fait = await supprimerPdfDefinitif(e, pdfId);
   if (!fait.ok) return fait;
   rafraichir(fait.projetId);
+  return { ok: true };
+}
+
+// ——— Ordre des passages (étape 6, lot 6) ———
+
+/** « Réordonner les passages » (F11.5, F11-AC64) ; les anciens rangs reviennent, pour « Annuler ». */
+export async function reordonnerPassages(projetId: string): Promise<Reordonne> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
+  const r = await reordonnerLeLivre(e, projetId);
+  if (r.ok) rafraichir(projetId);
+  return r;
+}
+
+/** « Annuler » un agencement : les rangs d'avant, et la décision d'avant. */
+export async function annulerAgencement(projetId: string, rangs: Record<string, number>, decision: string | null): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const propres = rangs && typeof rangs === "object" && Object.entries(rangs).every(([id, n]) => estUuid(id) && Number.isInteger(n));
+  if (!estUuid(projetId) || !propres || (decision !== null && decision !== "reordonne" && decision !== "garde")) return { ok: false, erreur: "Rien à annuler." };
+  const { error } = await e.supabase.rpc("placer_passages", { p_projet: projetId, p_rangs: rangs });
+  if (error) return { ok: false, erreur: "L’annulation n’a pas pu se faire." };
+  await e.supabase.from("projets").update({ ordre_decision: decision, ordre_pages: null }).eq("id", projetId);
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+/** « Garder cet ordre » (F11-AC64, AC86) : la décision est prise, le doute levé, aucun numéro ne change. */
+export async function garderOrdre(projetId: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
+  const { error } = await e.supabase.from("projets").update({ ordre_decision: "garde", ordre_pages: null }).eq("id", projetId);
+  if (error) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(projetId);
   return { ok: true };
 }

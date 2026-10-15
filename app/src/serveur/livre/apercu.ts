@@ -34,10 +34,17 @@ export type Apercu = {
   /** La page de chaque page de présentation (« titre », « comment-lire »…), pour la petite double page des réglages */
   presentation: Record<string, number>;
   /** Les pages peu remplies et leur blanc, en millimètres sur la page (F11.3) */
-  peuRemplies: { page: number; mm: number; x: number; y: number; l: number; h: number }[];
+  peuRemplies: { page: number; mm: number; x: number; y: number; l: number; h: number; apres: string | null; dedans: boolean }[];
+  /** Ce que mesure chaque passage, pour l'ordre des passages (F11.5) */
+  mesures: Record<string, { h: number; choix: number; pleinePage: boolean }>;
+  hauteurUtile: number;
+  blancTotal: number;
 };
 
-type Garde = Omit<Apercu, "adresse" | "empreinte">;
+type Garde = Omit<Apercu, "adresse" | "empreinte"> & { version?: number };
+
+/** La façon de mesurer le livre : un aperçu gardé d'une autre version se recompose */
+export const VERSION_DE_LA_MESURE = 4;
 
 export async function apercuDuLivre(e: Enseignant, projetId: string): Promise<Apercu | null> {
   const instantane = await instantaneDuLivre(e, projetId);
@@ -48,17 +55,21 @@ export async function apercuDuLivre(e: Enseignant, projetId: string): Promise<Ap
   let garde: Garde | null = null;
   const lu = await seau.download(`${base}.json`);
   if (!lu.error && lu.data) garde = JSON.parse(await lu.data.text()) as Garde;
-  // Un aperçu gardé avant les lots 3 et 4 de l'étape 6 ne dit ni où sont les pages de présentation, ni les blancs
-  if (garde && (!garde.presentation || !garde.peuRemplies)) garde = null;
+  // Un aperçu gardé avec une autre façon de mesurer se recompose
+  if (garde && garde.version !== VERSION_DE_LA_MESURE) garde = null;
   if (!garde) {
     const c = await composerLInstantane(instantane, true, true);
     garde = {
+      version: VERSION_DE_LA_MESURE,
       etat: etatEnMots(instantane.etatDu), pages: c.rapport.pages, horsPagination: c.rapport.horsPagination, carte: c.rapport.carte, pageDe: c.rapport.pageDe,
       numeros: Object.fromEntries(instantane.livre.passages.map((p) => [p.sceneId, p.numero])), passages: instantane.livre.passages.length,
       debordements: c.rapport.debordements.map((d) => ({ page: d.page, sceneId: d.scene })),
       premierePageDuRecit: c.rapport.premierePageDuRecit,
       presentation: Object.fromEntries(c.rapport.presentation.map((x) => [x.nom, x.page])),
       peuRemplies: c.rapport.peuRemplies,
+      mesures: c.rapport.mesures,
+      hauteurUtile: c.rapport.hauteurUtile,
+      blancTotal: c.rapport.blancTotal,
     };
     const depot = await seau.upload(`${base}.pdf`, c.pdf, { contentType: "application/pdf", upsert: true });
     if (depot.error) throw new Error(`Aperçu non déposé : ${depot.error.message}`);

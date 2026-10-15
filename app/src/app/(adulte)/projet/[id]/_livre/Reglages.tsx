@@ -13,7 +13,8 @@ import { colonnesDesNoms, nomsTries, texteSimple, type FormePage, type PagesDuLi
 import { pluriel } from "@/domaine/texte";
 import { listerImages } from "../../actions-images";
 import { PetiteDoublePage, type SourceApercu } from "./Apercu";
-import { melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre } from "../../actions-livre";
+import { annulerAgencement, garderOrdre, melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre, reordonnerPassages } from "../../actions-livre";
+import type { EtatDeLOrdre } from "@/serveur/livre/ordre";
 
 /**
  * Le volet « Réglages » de « Mettre en page » (F11.6) : « Texte et pages », puis « Pages de début
@@ -34,7 +35,7 @@ const PAGE_COMPOSEE: Record<CleDePage, string> = { titre: "titre", auteurs: "aut
 const EXEMPLE = "Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.";
 
 export function VoletReglages({
-  projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, avecRegles, parties, apercu, onVoirApercu,
+  projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, avecRegles, parties, ordre, apercu, onVoirApercu,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   titre: string;
@@ -50,6 +51,8 @@ export function VoletReglages({
   avecRegles: boolean;
   /** Les parties du livre à choix, pour « Ordre des passages » ; rien en récit classique */
   parties: PartieDuLivre[] | null;
+  /** Ce que l'adulte a décidé de l'ordre, et le doute (F11.6) */
+  ordre: EtatDeLOrdre | null;
   /** L'aperçu composé, pour la petite double page qui suit les réglages */
   apercu: SourceApercu;
   onVoirApercu: () => void;
@@ -149,7 +152,7 @@ export function VoletReglages({
           </div>
         </section>
 
-        {parties ? <OrdreDesPassages projetId={projet.id} parties={parties} /> : null}
+        {parties ? <OrdreDesPassages projetId={projet.id} parties={parties} ordre={ordre} /> : null}
 
         <section className="reglages__section" aria-labelledby="pages-t">
           <h2 id="pages-t">Pages de début et de fin</h2>
@@ -223,10 +226,10 @@ export type PartieDuLivre = { id: string; titre: string; avecPrecedente: boolean
 
 /**
  * « Ordre des passages » (F11.5, F11.6) : le mélange par partie, et les parties que l'adulte
- * réunit pour que leurs passages se mélangent ensemble (F11-AC17). « Réordonner les passages »
- * s'y ajoutera (lot 6).
+ * réunit pour que leurs passages se mélangent ensemble (F11-AC17) ; puis « Moins de blanc » :
+ * « Réordonner les passages » ou « Garder cet ordre », et le doute quand le livre a changé.
  */
-function OrdreDesPassages({ projetId, parties }: { projetId: string; parties: PartieDuLivre[] }) {
+function OrdreDesPassages({ projetId, parties, ordre }: { projetId: string; parties: PartieDuLivre[]; ordre: EtatDeLOrdre | null }) {
   const [enCours, setEnCours] = useState<string | null>(null);
   const [erreur, setErreur] = useState<string | null>(null);
   const groupes: { partie: PartieDuLivre; rang: number }[][] = [];
@@ -290,7 +293,113 @@ function OrdreDesPassages({ projetId, parties }: { projetId: string; parties: Pa
           {erreur}
         </p>
       ) : null}
+      <MoinsDeBlanc projetId={projetId} ordre={ordre} />
     </section>
+  );
+}
+
+/**
+ * « Moins de blanc » (F11.5, F11.6) : l'agencement proposé, jamais imposé. Fait, il s'annule ;
+ * relancé après des déplacements faits à la main, il les abandonne après un avertissement
+ * (F11-AC81). Le doute se dit ici, avec ses deux réponses (F11-AC86).
+ */
+function MoinsDeBlanc({ projetId, ordre }: { projetId: string; ordre: EtatDeLOrdre | null }) {
+  const [enCours, setEnCours] = useState(false);
+  const [erreur, setErreur] = useState<string | null>(null);
+  const [avertir, setAvertir] = useState(false);
+  const [fait, setFait] = useState<{ annuler: Record<string, number>; decision: string | null; gain: number } | null>(null);
+  const [rien, setRien] = useState<string | null>(null);
+  const reordonner = async () => {
+    setEnCours(true);
+    setErreur(null);
+    setRien(null);
+    setAvertir(false);
+    const r = await reordonnerPassages(projetId);
+    setEnCours(false);
+    if (!r.ok) return r.rien ? setRien(r.erreur) : setErreur(r.erreur);
+    setFait({ annuler: r.annuler, decision: r.decision, gain: Math.max(0, r.avant - r.apres) });
+  };
+  const demander = () => (ordre?.retouche ? setAvertir(true) : void reordonner());
+  const garder = async () => {
+    setEnCours(true);
+    setErreur(null);
+    const r = await garderOrdre(projetId);
+    setEnCours(false);
+    if (!r.ok) setErreur(r.erreur);
+  };
+  const annuler = async () => {
+    if (!fait) return;
+    setEnCours(true);
+    const r = await annulerAgencement(projetId, fait.annuler, fait.decision);
+    setEnCours(false);
+    if (!r.ok) return setErreur(r.erreur);
+    setFait(null);
+  };
+  const decision = ordre?.decision ?? null;
+  return (
+    <div className={`blanc${ordre?.doute ? " blanc--doute" : ""}`} id="moins-de-blanc">
+      <h3 className="reglages__titre">
+        {ordre?.doute ? <Icone nom="alerte" /> : null}
+        {ordre?.doute ? "Le livre a changé." : "Moins de blanc"}
+      </h3>
+      <p className="reglages__phrase">
+        {ordre?.doute
+          ? "Des passages ont changé de page depuis que l’ordre a été décidé. Gardez-le, ou réordonnez à nouveau."
+          : "Les passages de chaque partie sont rangés pour laisser moins de blanc au bas des pages."}
+      </p>
+      {rien ? (
+        <p className="blanc__rien" role="status">
+          {rien}
+        </p>
+      ) : fait && !ordre?.doute ? (
+        <p className="blanc__fait" role="status">
+          <Icone nom="coche" />
+          Passages réordonnés{fait.gain ? ` : environ ${fait.gain} mm de blanc en moins` : ""}.
+        </p>
+      ) : decision === "garde" && !ordre?.doute ? (
+        <p className="blanc__fait" role="status">
+          <Icone nom="coche" />
+          Ordre gardé.
+        </p>
+      ) : null}
+      {avertir ? (
+        <div className="blanc__avertir" role="group" aria-label="Réordonner à nouveau ?">
+          <p>Vos déplacements de passages seront abandonnés ; les réglages et les images sont gardés.</p>
+          <p className="blanc__cmd">
+            <button type="button" className="btn btn--primaire" disabled={enCours} onClick={() => void reordonner()}>
+              Réordonner quand même
+            </button>
+            <button type="button" className="lien" onClick={() => setAvertir(false)}>
+              Annuler
+            </button>
+          </p>
+        </div>
+      ) : (
+        <>
+          <p className="blanc__encadre">Les numéros changent, les renvois suivent.</p>
+          <p className="blanc__cmd">
+            <button type="button" className={`btn${decision === null || ordre?.doute ? " btn--primaire" : ""}`} disabled={enCours} aria-busy={enCours || undefined} onClick={demander}>
+              {enCours ? "Calcul…" : decision === "reordonne" ? "Réordonner à nouveau" : "Réordonner les passages"}
+            </button>
+            {decision === null || ordre?.doute ? (
+              <button type="button" className="btn" disabled={enCours} onClick={() => void garder()}>
+                Garder cet ordre
+              </button>
+            ) : null}
+            {fait && !ordre?.doute ? (
+              <button type="button" className="lien" disabled={enCours} onClick={() => void annuler()}>
+                Annuler
+              </button>
+            ) : null}
+          </p>
+        </>
+      )}
+      {erreur ? (
+        <p className="erreur" role="alert">
+          {erreur}
+        </p>
+      ) : null}
+    </div>
   );
 }
 

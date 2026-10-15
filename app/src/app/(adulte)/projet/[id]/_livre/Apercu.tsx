@@ -6,6 +6,7 @@ import { Bulle } from "@/composants/Bulle";
 import { Icone } from "@/composants/Icone";
 import type { Apercu as DonneesApercu } from "@/serveur/livre/apercu";
 import type { BlocPlace } from "@/serveur/livre/dans-la-page";
+import { candidats, mesuresDuModele, type PassageOrdonne } from "@/domaine/agencement";
 
 /**
  * L'aperçu du livre (F11.2) : les pages que le Chromium du serveur a composées, affichées telles
@@ -27,7 +28,7 @@ export type SourceApercu = { charge: Charge | null; calcul: boolean; erreur: str
  * réglages lisent le même (étape 6, lot 3). Il se recalcule quand l'empreinte du contenu change ;
  * pendant une saisie, après un court répit, pour ne pas composer à chaque mot.
  */
-export function useApercu(projetId: string, empreinte: string, actif: boolean): SourceApercu {
+export function useApercu(projetId: string, empreinte: string, actif: boolean, onCalcule?: () => void): SourceApercu {
   const [charge, setCharge] = useState<Charge | null>(null);
   const [calcul, setCalcul] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -53,11 +54,14 @@ export function useApercu(projetId: string, empreinte: string, actif: boolean): 
         void avant?.doc.destroy();
         return { apercu: r.apercu, doc };
       });
+      onCalcule?.();
     } catch {
       if (n === demande.current) setErreur("L’aperçu n’a pas pu être calculé.");
     } finally {
       if (n === demande.current) setCalcul(false);
     }
+    // onCalcule est relu à chaque appel : il n'entre pas dans les dépendances
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projetId]);
 
   // Le contenu a changé depuis l'aperçu montré : il se recalcule, les pages précédentes restant lisibles
@@ -73,7 +77,7 @@ export function useApercu(projetId: string, empreinte: string, actif: boolean): 
 }
 
 export function Apercu({
-  source, limiteAuRecit, modeParDefaut, choisie, aller, onPassage, onRenvoi, nommer, barre, peuRemplies, bandeau, consigne,
+  source, limiteAuRecit, modeParDefaut, choisie, aller, onPassage, onRenvoi, nommer, barre, peuRemplies, bandeau, consigne, suggerer,
 }: {
   /** L'aperçu composé, tenu par le Livre */
   source: SourceApercu;
@@ -96,6 +100,14 @@ export function Apercu({
   bandeau?: ReactNode;
   /** Au-dessus de la barre : ce qu'on fait ici */
   consigne?: ReactNode;
+  /** Récit à choix : de quoi suggérer un passage pour combler la page visée, et le placer (F11.3) */
+  suggerer?: {
+    ordre: PassageOrdonne[];
+    liens: Record<string, string[]>;
+    titres: Record<string, string>;
+    nouvellesPages: string[];
+    placer: (sceneId: string, apres: number) => Promise<void>;
+  };
 }) {
   const { charge, calcul, erreur, calculer } = source;
   const [mode, setMode] = useState<ModeApercu>(() => {
@@ -147,6 +159,13 @@ export function Apercu({
     conteneur.current?.querySelector<HTMLElement>(`[data-folio="${blancs[i].page}"]`)?.scrollIntoView({ block: "center", behavior: "smooth" });
   };
   const blancVise = rangVise !== null ? blancs[rangVise] : null;
+  const suggestion = useMemo(() => {
+    if (!blancVise || !suggerer || !apercu?.mesures) return null;
+    return candidats(blancVise, {
+      ordre: suggerer.ordre, nouvellesPages: new Set(suggerer.nouvellesPages), mesures: mesuresDuModele(apercu.mesures, 0), pageDe: apercu.pageDe, liens: suggerer.liens,
+    });
+  }, [blancVise, suggerer, apercu]);
+  const [place, setPlace] = useState<string | null>(null);
 
   return (
     <section className={`apercu apercu--${mode}${calcul && charge ? " apercu--calcul" : ""}`} aria-label="Aperçu du livre">
@@ -189,6 +208,55 @@ export function Apercu({
         </span>
       </div>
       {bandeau}
+      {blancVise && suggerer && suggestion ? (
+        <section className="suggestion" aria-label={`Page ${blancVise.page}, ${blancVise.mm} mm de blanc`}>
+          <p className="suggestion__tete">
+            <b>Page {blancVise.page}</b> · {blancVise.mm} mm de blanc
+            {suggestion.candidats.length ? ` · ${suggestion.candidats.length} passage${suggestion.candidats.length > 1 ? "s peuvent" : " peut"} le combler` : ""}
+          </p>
+          {suggestion.candidats.length ? (
+            <ul className="suggestion__liste">
+              {suggestion.candidats.map((c) => (
+                <li key={c.sceneId} className="suggestion__candidat">
+                  <span className="suggestion__numero">{c.numero}</span>
+                  <span className="suggestion__texte">
+                    <b>{suggerer.titres[c.sceneId] || nommer(c.sceneId)}</b>
+                    <small>
+                      {c.h} mm · reste {c.reste} mm
+                    </small>
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn--petit"
+                    disabled={place !== null}
+                    aria-busy={place === c.sceneId || undefined}
+                    onClick={async () => {
+                      const apres = suggerer.ordre.find((x) => x.sceneId === blancVise.apres)?.numero;
+                      if (!apres) return;
+                      setPlace(c.sceneId);
+                      await suggerer.placer(c.sceneId, apres);
+                      setPlace(null);
+                    }}
+                  >
+                    Placer ici
+                  </button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p className="suggestion__aucun">
+              {suggestion.raison === "dedans"
+                ? `Ce blanc est dans le ${nommer(blancVise.apres ?? "").split(" · ")[0]} : aucun passage ne peut s’y glisser. Réduisez son image, ou laissez-le.`
+                : "Aucun passage plus loin dans sa partie ne tient dans ce blanc."}
+              {blancVise.apres ? (
+                <button type="button" className="lien" onClick={() => onPassage(blancVise.apres!)}>
+                  Ouvrir le {nommer(blancVise.apres).split(" · ")[0]}
+                </button>
+              ) : null}
+            </p>
+          )}
+        </section>
+      ) : null}
       <div className="apercu__pages" ref={conteneur}>
         {!charge ? <p className="apercu__attente">{erreur ?? "Le livre est mis en pages sur le serveur…"}</p> : null}
         {charge

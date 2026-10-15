@@ -64,7 +64,17 @@ export type RapportDeLaPage = {
    * le blanc, en millimètres sur la feuille. Ni la dernière page du récit, ni une page suivie
    * d'une nouvelle partie, d'un nouveau chapitre ou d'une nouvelle page demandée (F11.5).
    */
-  peuRemplies: { page: number; mm: number; x: number; y: number; l: number; h: number }[];
+  peuRemplies: { page: number; mm: number; x: number; y: number; l: number; h: number; apres: string | null; dedans: boolean }[];
+  /**
+   * Ce que mesure chaque passage, pour l'ordre des passages (F11.5) : sa hauteur entière,
+   * l'espace au-dessus de son numéro compris, celle de son groupe de choix, qui ne se coupe pas,
+   * et s'il porte une image pleine page. En millimètres.
+   */
+  mesures: Record<string, { h: number; choix: number; pleinePage: boolean }>;
+  /** La hauteur utile d'une page du récit, en millimètres */
+  hauteurUtile: number;
+  /** Tout le blanc laissé au bas des pages du récit, compté comme les pages peu remplies, sans seuil */
+  blancTotal: number;
 };
 
 export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
@@ -174,7 +184,7 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
   const enMm = (v) => Math.round((v / MM) * 10) / 10;
   const rapport = {
     pages: pages.length - horsPagination, horsPagination, pageDe: {}, premierePageDuRecit: 0, carte: [], debordements: [], introuvables: [], signature: [],
-    coupuresCorrigees, dureeMiseEnPage, des: [], presentation: [], lignesDeListes: [], illustration: null, peuRemplies: [],
+    coupuresCorrigees, dureeMiseEnPage, des: [], presentation: [], lignesDeListes: [], illustration: null, peuRemplies: [], mesures: {}, hauteurUtile: 0, blancTotal: 0,
   };
   // Le blanc au bas de chaque page du récit, pour repérer les pages peu remplies
   const blancs = [];
@@ -306,14 +316,31 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
       // La page s'ouvre sur un saut demandé : nouvelle partie, nouveau chapitre ou nouvelle page
       const premier = contenu.querySelector("h1, h2, p, figure, li, .debut-scene");
       const force = Boolean(premier && premier.classList.contains("nouvelle-page") && !premier.dataset.splitFrom);
-      blancs.push({ page: n, ouvreForce: force, hauteur: zone.height, x: enMm(zone.left - f.left), y: enMm(fond - f.top), l: enMm(zone.width), h: enMm(zone.bottom - fond) });
+      // Le dernier passage de la page, et s'il continue sur la suivante : le blanc est alors en lui
+      // Paged.js peut laisser au bas de la page un morceau vide du passage suivant : il ne compte pas
+      const passagesIci = [...contenu.querySelectorAll("section.passage[data-scene]")].filter((x) => x.textContent.trim() || x.querySelector("img, figure"));
+      const dernier = passagesIci.length ? passagesIci[passagesIci.length - 1] : null;
+      blancs.push({ page: n, ouvreForce: force, hauteur: zone.height, apres: dernier ? dernier.dataset.scene : null, dedans: Boolean(dernier && dernier.dataset.splitTo), x: enMm(zone.left - f.left), y: enMm(fond - f.top), l: enMm(zone.width), h: enMm(zone.bottom - fond) });
     }
   });
   blancs.forEach((b, i) => {
     const suivante = blancs[i + 1];
     if (!suivante || suivante.page !== b.page + 1 || suivante.ouvreForce) return;
-    if (b.h * MM > b.hauteur / 4) rapport.peuRemplies.push({ page: b.page, mm: Math.round(b.h), x: b.x, y: b.y, l: b.l, h: b.h });
+    rapport.blancTotal = Math.round((rapport.blancTotal + b.h) * 10) / 10;
+    if (b.h * MM > b.hauteur / 4) rapport.peuRemplies.push({ page: b.page, mm: Math.round(b.h), x: b.x, y: b.y, l: b.l, h: b.h, apres: b.apres, dedans: b.dedans });
   });
+  if (blancs.length) rapport.hauteurUtile = enMm(blancs[0].hauteur);
+  // Chaque passage mesuré, tous ses morceaux additionnés
+  for (const section of document.querySelectorAll("section.passage[data-scene]")) {
+    const id = section.dataset.scene;
+    const m = rapport.mesures[id] || (rapport.mesures[id] = { h: 0, choix: 0, pleinePage: false });
+    let h = section.getBoundingClientRect().height;
+    const numero = section.querySelector("h2.numero:not([data-split-from])");
+    if (numero && !section.dataset.splitFrom) h += parseFloat(getComputedStyle(numero).marginTop) || 0;
+    m.h = Math.round((m.h + h / MM) * 10) / 10;
+    for (const g of section.querySelectorAll(".choix-groupe")) m.choix = Math.round((m.choix + g.getBoundingClientRect().height / MM) * 10) / 10;
+    if (section.querySelector("figure.image.page")) m.pleinePage = true;
+  }
 
   for (const img of document.querySelectorAll("img")) {
     if (img.naturalWidth === 0) {

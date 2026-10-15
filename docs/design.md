@@ -1997,6 +1997,25 @@ Sous 900 points, une seule colonne, la couverture en dernier. Captures 621 à
   ambre, sur place, avant la création ; la suppression confirmée sur la
   ligne même (« Le supprimer ? Il ne se retrouvera pas. »).
 
+**Lot 6 — ordre des passages.** Repris de la maquette (captures 111, 129,
+148) : « Moins de blanc », sa phrase, l'encadré ambre « Les numéros changent,
+les renvois suivent. », « Réordonner les passages » en bouton principal et
+« Garder cet ordre » ; fait, « Passages réordonnés : environ 46 mm de blanc
+en moins. », « Réordonner à nouveau » et « Annuler ». Le doute : un triangle
+ambre sur l'onglet « Réglages » et sur l'étape, « Le livre a changé. » dans
+la section, et à la place de la déclaration « Ordre des passages à
+confirmer », qui mène à la section, à côté du bouton inactif. Sur une page
+peu remplie visée, sous la barre de l'aperçu : « Page 16 · 47 mm de blanc ·
+3 passages peuvent le combler », puis une ligne par passage.
+
+- **Écarts, dits au début du lot :** les deux blocs de la section l'un sous
+  l'autre ; les passages suggérés en lignes simples, sans page miniature.
+- **Pris en construisant :** l'avertissement avant de réordonner de nouveau
+  s'ouvre sur place (« Vos déplacements de passages seront abandonnés ; les
+  réglages et les images sont gardés. », « Réordonner quand même »,
+  « Annuler ») ; « Aucun autre ordre ne laisse moins de blanc » se dit en
+  gris, sans couleur d'erreur.
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans

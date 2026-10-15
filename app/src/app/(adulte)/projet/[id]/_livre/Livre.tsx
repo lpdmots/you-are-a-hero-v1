@@ -12,7 +12,8 @@ import { useMessage } from "@/composants/Messages";
 import { ETAPES_DU_LIVRE, MOT_DE_MARQUE, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
 import { pluriel } from "@/domaine/texte";
 import { reglerAide } from "../../../actions-compte";
-import { accepterAvertissement, declarerChemins, declarerMiseEnPage, declarerRelu, noterEtapeDuLivre, ouvrirSceneDuLivre, retirerAcceptation } from "../../actions-livre";
+import { accepterAvertissement, annulerPlacement, declarerChemins, declarerMiseEnPage, declarerRelu, deplacerPassage, noterEtapeDuLivre, ouvrirSceneDuLivre, retirerAcceptation } from "../../actions-livre";
+import type { PassageOrdonne } from "@/domaine/agencement";
 import { marquerFin } from "../../actions-recit";
 import { PageScene } from "../scene/[scene]/PageScene";
 import { Apercu, useApercu } from "./Apercu";
@@ -28,7 +29,7 @@ import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, Tache
  * livre (F11.2) ; « Mettre en page » et « Imprimer et partager » se construisent ensuite.
  */
 export function Livre({
-  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, numeros, miseEnPage, convient, imprimer, aideMasquee, aideVue,
+  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, numeros, miseEnPage, convient, douteOrdre, passages, imprimer, aideMasquee, aideVue,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   etape: EtapeLivre;
@@ -46,6 +47,10 @@ export function Livre({
   numeros: Record<string, number>;
   /** « La mise en page me convient » est déclarée (F11.6) */
   convient: boolean;
+  /** Un passage a changé de page depuis que l'ordre a été décidé : la déclaration attend (F11-AC86) */
+  douteOrdre: boolean;
+  /** Récit à choix, « Mettre en page » ouverte : l'ordre imprimé, pour suggérer un passage */
+  passages: { ordre: PassageOrdonne[]; liens: Record<string, string[]>; titres: Record<string, string>; nouvellesPages: string[] } | null;
   /** « Imprimer et partager », une fois ouverte : le PDF définitif et les PDF conservés */
   imprimer: Omit<Parameters<typeof EtapeImprimer>[0], "projetId"> | null;
   /** « Mettre en page », quand l'étape est ouverte : ses réglages et ses pages de présentation */
@@ -137,7 +142,8 @@ export function Livre({
   };
   const avecApercu = ((etape === "relire" || (etape === "chemins" && chemins)) && !aide) || (enPage && volet === "apercu");
   // L'aperçu reste composé au volet « Réglages », pour la petite double page (étape 6, lot 3)
-  const source = useApercu(projet.id, empreinte, avecApercu || enPage);
+  // À « Mettre en page », la page se relit après chaque composition : le doute sur l'ordre s'y calcule
+  const source = useApercu(projet.id, empreinte, avecApercu || enPage, enPage ? () => routeur.refresh() : undefined);
   const fiche =
     etape === "chemins" && chemins ? (
       <FicheChemins projetId={projet.id} chemins={chemins} fermee={marques.page === "fermee"} />
@@ -197,10 +203,34 @@ export function Livre({
                 <button key={v} type="button" role="tab" aria-selected={volet === v} data-choisi={volet === v || undefined} onClick={() => changerDeVolet(v)}>
                   <Icone nom={v === "reglages" ? "reglages" : "livre"} />
                   {v === "reglages" ? "Réglages" : "Aperçu"}
+                  {v === "reglages" && douteOrdre ? (
+                    <span className="volets__marque" title="Ordre des passages à confirmer">
+                      <Icone nom="alerte" />
+                      <span className="vh"> — ordre des passages à confirmer</span>
+                    </span>
+                  ) : null}
                 </button>
               ))}
             </div>
-            {convient ? (
+            {douteOrdre ? (
+              <p className="volets__fait">
+                <button
+                  type="button"
+                  className="lien volets__doute"
+                  onClick={() => {
+                    changerDeVolet("reglages");
+                    requestAnimationFrame(() => document.getElementById("moins-de-blanc")?.scrollIntoView({ block: "center", behavior: "smooth" }));
+                  }}
+                >
+                  <Icone nom="alerte" />
+                  Ordre des passages à confirmer
+                </button>
+                <button type="button" className="btn btn--primaire" disabled>
+                  <Icone nom="coche" />
+                  La mise en page me convient
+                </button>
+              </p>
+            ) : convient ? (
               <p className="volets__fait">
                 <span className="volets__coche">
                   <Icone nom="coche" />
@@ -324,6 +354,18 @@ export function Livre({
                 aller={aller}
                 nommer={(id) => noms[id] ?? "ce passage"}
                 peuRemplies={enPage}
+                suggerer={
+                  enPage && passages
+                    ? {
+                        ...passages,
+                        placer: async (sceneId, apres) => {
+                          const r = await deplacerPassage(projet.id, sceneId, { sorte: "apres", numero: apres });
+                          if (!r.ok) return dire({ texte: r.erreur });
+                          setDerniere({ texte: `Passé du n° ${r.avant} au n° ${r.apres} · les renvois suivent.`, annuler: () => annulerPlacement(projet.id, r.annuler), jeton: Date.now() });
+                        },
+                      }
+                    : undefined
+                }
                 consigne={
                   enPage ? (
                     <p className="apercu__consigne">
