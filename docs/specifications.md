@@ -7996,6 +7996,13 @@ lancer de dé, sans dé dans la classe.
   interprétés, comme le dé en ligne.
 - **Limite acceptée :** un livre s'ouvre plus souvent vers son milieu ; la
   répartition égale des faces compense sans garantir un vrai hasard.
+- **Les dés ou le numéro de page, jamais les deux (décidé le 15 octobre
+  2026) :** avec les dés, aucune page ne porte de numéro, pas même la
+  marque « p. 12 » du PDF de travail, et sa page récapitulative ne renvoie
+  à aucune page ; le numéro du passage et sa référence suffisent à retrouver
+  un point. L'aperçu garde, sous chaque page et hors d'elle, le « p. 12 » qui
+  sert à s'y repérer à l'écran. Remarque du porteur : une marque de page
+  posée près des dés se confondait avec eux.
 
 - **F11-AC53 — Dés en page de droite :** étant donné un livre à choix réglé
   sur deux dés et sur « dés » en bas de page, lorsque le livre est composé,

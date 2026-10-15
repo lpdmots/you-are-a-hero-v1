@@ -1747,11 +1747,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 2 parcours ; la série complète passe.
   - **Retouches du 15 octobre 2026, après le lot 7 :** l'image pleine page
     en tête de passage partage sa page avec le numéro (F10-AC36, ci-dessus) ;
-    sur une page de droite qui porte les dés, la marque « p. 12 » du PDF de
-    travail et de l'aperçu passe côté reliure, où elle ne se cache plus
-    derrière eux (retour du porteur). Un aperçu gardé avant ces retouches
-    se recompose. Tests : 2 de composition ; F11-AC74 rejoué sur une image
-    posée après le premier paragraphe.
+    avec les dés, aucune page ne porte de numéro, pas même la marque
+    « p. 12 » du PDF de travail et de l'aperçu, qui se cachait derrière eux,
+    et la page récapitulative ne renvoie à aucune page — décidé par le
+    porteur (« soit l'un, soit l'autre »), F11.4. Un aperçu gardé avant ces
+    retouches se recompose. Tests : 2 de composition ; F11-AC74 rejoué sur
+    une image posée après le premier paragraphe.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

@@ -253,8 +253,7 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     const bas = Math.max(5, m.bas / 2 - 2) + "mm";
     if (folio) poser("folio", String(n), { bottom: bas, [exterieur]: m.exterieur + "mm" });
     // Les dés, sur chaque page de droite du récit : ouvrir le livre au hasard tient lieu de lancer
-    const avecDes = Boolean(o.des && droite && !blanche && !presentation);
-    if (avecDes) {
+    if (o.des && droite && !blanche && !presentation) {
       const faces = o.des[pagesDeDroite % o.des.length];
       pagesDeDroite += 1;
       const des = document.createElement("div");
@@ -276,8 +275,8 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     if (illustration) rapport.illustration = { mm: enMm(illustration.getBoundingClientRect().height), page: enMm(contenu.getBoundingClientRect().height) };
     if (o.travail) {
       poser("marque mention", "Version de travail · " + o.etatDu, { top: Math.max(4, m.haut - 9) + "mm", [droite ? "left" : "right"]: m.interieur + "mm" });
-      // Sur une page qui porte les dés, côté extérieur, la marque passe côté reliure
-      if (!folio) poser("marque page", "p. " + n, avecDes ? { bottom: bas, [droite ? "left" : "right"]: m.interieur + "mm" } : { bottom: bas, [exterieur]: m.exterieur + "mm" });
+      // Les dés ou le numéro de page, jamais les deux : avec les dés, aucune page ne porte de numéro
+      if (!folio && !o.des) poser("marque page", "p. " + n, { bottom: bas, [exterieur]: m.exterieur + "mm" });
     }
 
     // La carte des blocs : où se trouve chaque bloc, pour retrouver la scène sous un clic
@@ -396,8 +395,9 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
         placer(page, marge(page, r), r.top - f.top, "marque signal signal--" + mq.gravite, mq.texte);
       }
     }
-    // La page récapitulative dit où se trouve chaque point
-    for (const li of document.querySelectorAll("[data-recap-scene]")) {
+    // La page récapitulative dit où se trouve chaque point ; avec les dés, aucune page n'a de
+    // numéro imprimé : le numéro du passage et sa référence suffisent à le retrouver
+    for (const li of o.des ? [] : document.querySelectorAll("[data-recap-scene]")) {
       const p = rapport.pageDe[li.dataset.recapScene];
       const ou = li.querySelector(".recap__page");
       if (p && ou) ou.textContent = "p. " + p;

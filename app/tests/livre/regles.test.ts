@@ -235,16 +235,14 @@ describe("Pages de présentation, bas de page, présentation commune (F11.4, F11
     }
   });
 
-  it("PDF de travail avec dés : sur une page de droite qui porte les dés, « p. N » passe côté reliure, loin d'eux", async () => {
-    const c = await composer(livreDe(scenes, { feuille: feuille(0), pages: (x) => x, reglages: { basDePage: "des" } }), { travail: true, etatDu: ETAT, lireImage: sansImage });
-    const pages = await lirePdf(c.pdf);
-    const d = c.rapport.des[0];
-    const page = pages[c.rapport.horsPagination + d.page - 1];
-    const bas = page.elements.filter((e) => e.y > page.hauteur - 40);
-    const marque = bas.find((e) => /^p\.?\s*\d+$/.test(e.texte.trim()) || e.texte.trim() === "p.")!;
-    expect(marque).toBeDefined();
-    // Page de droite : la reliure est à gauche, les dés à droite
-    expect(marque.x).toBeLessThan(page.largeur / 2);
+  it("PDF de travail avec dés : les dés ou le numéro de page, jamais les deux — aucune page ne porte « p. N » ; sans dés, chaque page du livre le porte", async () => {
+    const marques = async (basDePage: "des" | "rien") => {
+      const c = await composer(livreDe(scenes, { feuille: feuille(0), pages: (x) => x, reglages: { basDePage } }), { travail: true, etatDu: ETAT, lireImage: sansImage });
+      const pages = await lirePdf(c.pdf);
+      return pages.slice(c.rapport.horsPagination).filter((pg) => pg.lignes.some((l) => /(^|\s)p\.\s*\d+$/.test(l.normalize("NFKC")))).length;
+    };
+    expect(await marques("des")).toBe(0);
+    expect(await marques("rien")).toBeGreaterThan(2);
   });
 
   it("F11-AC51, F11-AC106 — une feuille en image s'imprime dans les marges, ses sections restent pour le lecteur en ligne ; l'illustration du titre ne dépasse pas la moitié de la page", async () => {

@@ -2018,9 +2018,10 @@ ligne par passage. Captures 641 à 644.
   gris, sans couleur d'erreur.
 
 **Retouches après le lot 7.** Une image pleine page en tête de passage :
-le numéro en haut de la page, l'image centrée dessous (capture 651). Sur une
-page de droite qui porte les dés, la marque « p. 12 » du PDF de travail et
-de l'aperçu, en bas côté reliure.
+le numéro en haut de la page, l'image centrée dessous (capture 651). Avec
+les dés, plus de marque « p. 12 » sur les pages du PDF de travail et de
+l'aperçu ; l'aperçu garde le « p. 12 » qu'il écrit sous chaque page, hors
+d'elle.
 
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
