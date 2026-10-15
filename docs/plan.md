@@ -1753,6 +1753,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     porteur (« soit l'un, soit l'autre »), F11.4. Un aperçu gardé avant ces
     retouches se recompose. Tests : 2 de composition ; F11-AC74 rejoué sur
     une image posée après le premier paragraphe.
+- **Mise en ligne, le 15 octobre 2026, à la demande du porteur** (« tu peux
+  migrer ») : vraie base sauvegardée (`sauvegardes/2026-10-15-20-33`), les
+  cinq migrations de l'étape appliquées, `npm run verifier:production`
+  passé ; la série complète passait juste avant (251 unitaires, 238 contre la
+  base, 35 de composition, 304 parcours). Le `git push` sur `main` a été
+  refusé à Claude par le contrôle des permissions de la session : le porteur
+  le lance. Restent V2 (dépôt dans le stockage en ligne), V3 (aperçu
+  ressenti en ligne) et V6.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 
