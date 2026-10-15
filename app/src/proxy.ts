@@ -34,6 +34,7 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-  // L'espace des élèves n'a pas de compte Supabase : le proxy n'y passe pas.
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|illustrations/|classe(?:/|$)|travail(?:/|$)).*)"],
+  // L'espace des élèves n'a pas de compte Supabase : le proxy n'y passe pas. Le diagnostic du
+  // livre non plus : il ne lit pas la base, et une préversion n'en a pas les clés.
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|illustrations/|classe(?:/|$)|travail(?:/|$)|diagnostic(?:/|$)).*)"],
 };
