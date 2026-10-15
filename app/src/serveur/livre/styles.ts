@@ -188,7 +188,8 @@ figure.introuvable .manque, .recit p.vide { display: flex; align-items: center; 
 
 /* ——— Ce que la page du serveur pose après la mise en page, hors du fil du texte ——— */
 .entete, .folio { position: absolute; font-family: ${police}; color: #2a2a2a; white-space: nowrap; }
-.entete { font-size: 8.4pt; letter-spacing: 0.03em; }
+/* Un repère, pas du texte : plus petit et gris, pour qu'on ne le lise pas avec le récit */
+.entete { font-size: 7.6pt; letter-spacing: 0.06em; color: #7a7a7a; }
 .folio { font-size: 9pt; }
 .marque { position: absolute; font-family: 'Atkinson Hyperlegible Next', sans-serif; font-size: 6.4pt; line-height: 1.15; color: #5a5a5a; }
 .marque.mention { font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 5.8pt; }

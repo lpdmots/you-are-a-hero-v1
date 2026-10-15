@@ -2021,7 +2021,10 @@ ligne par passage. Captures 641 à 644.
 le numéro en haut de la page, l'image centrée dessous (capture 651). Avec
 les dés, plus de marque « p. 12 » sur les pages du PDF de travail et de
 l'aperçu ; l'aperçu garde le « p. 12 » qu'il écrit sous chaque page, hors
-d'elle.
+d'elle. L'en-tête courant (« 3 – 4 », ou les titres en récit classique), jugé
+trop présent par le porteur, devient un repère : 7,6 points, gris ; il reste
+imprimé (F11.5), le porteur retenant cette forme plutôt qu'une option ou son
+retrait.
 
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
