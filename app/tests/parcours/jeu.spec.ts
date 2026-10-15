@@ -296,7 +296,8 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await alice.page.keyboard.press("Backspace");
     const preparee = ACTIONS(alice.page);
     await expect(preparee.locator(".action-jeu__texte")).toHaveText("Ajoute le couteau à ton inventaire.");
-    await expect(preparee.locator(".repere-prepare")).toHaveText("Action de jeu préparée : tu écris autour");
+    await expect(preparee.locator(".marge")).toHaveAttribute("title", "Action de jeu préparée : tu écris autour");
+    await expect(preparee.locator(".repere-prepare")).toHaveCount(0);
     await expect(preparee.locator(".prise")).toHaveCount(0);
     // Tout sélectionner, puis supprimer : le récit part, l'action de jeu demeure
     await copie(alice.page).locator("p").first().click();

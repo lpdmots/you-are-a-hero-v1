@@ -891,7 +891,9 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
     await expect(phrase.locator(".recit")).toHaveText(`Traverser le pont : rends-toi au ${numeros[s16]}.`);
     // Un seul numéro pour l'élève : celui du livre. Le lieu, sans « S002 »
     await expect(phrase.locator(".copie__dest")).toHaveText("Clairière");
-    await expect(phrase).toContainText("Choix préparé : tu écris autour");
+    // Le cadenas seul le dit, au survol et aux lecteurs d'écran ; plus de ligne sous la phrase (15 octobre 2026)
+    await expect(phrase.locator("[title='Choix préparé : tu écris autour']")).toHaveCount(1);
+    await expect(phrase.locator(".repere-prepare")).toHaveCount(0);
     await expect(phrase.locator(".prise")).toHaveCount(0);
     await ecrire(alice.page, " /choix");
     await expect(alice.page.locator(".slash")).toHaveCount(0);
@@ -932,7 +934,7 @@ test.describe("Élèves et choix (F05.2, F06.1)", () => {
     await aller(bilal.page, sceneEleve(s15));
     const phrases = PHRASES(bilal.page);
     // La phrase mêlant renvoi interne et raccord est préparée ; l'autre se règle
-    await expect(phrases.nth(1)).toContainText("Choix préparé : tu écris autour");
+    await expect(phrases.nth(1).locator("[title='Choix préparé : tu écris autour']")).toHaveCount(1);
     await expect(phrases.nth(1).locator(".copie__dest")).toContainText("autre chapitre · Le sanctuaire");
     await expect(phrases.nth(1).locator(".copie__dest")).not.toContainText(/autel|S003/i);
     await s.base.from("projets").update({ lecture_ouverte: true }).eq("id", s.projet);

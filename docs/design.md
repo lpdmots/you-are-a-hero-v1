@@ -2019,6 +2019,14 @@ s'occupe prend le liseré canard de son cahier sur « Mon travail », et
 « Tu t'en occupes » devient le même ruban que « Ton chapitre », crayon
 compris : un seul repère pour « ce qui est à toi ». Capture 541.
 
+**Blocs préparés, sans ligne d'explication (retouche demandée par le
+porteur le 15 octobre 2026).** « Choix préparé : tu écris autour » et
+« Action de jeu préparée : tu écris autour », sous chaque bloc, faisaient du
+bruit : la phrase en italique et l'action encadrée se distinguent déjà du
+récit. Seul le cadenas de la marge reste ; il le dit au survol et aux
+lecteurs d'écran. Un paragraphe protégé, qui ressemble à du texte ordinaire,
+et une action protégée gardent « Préparé par Mme Laurent » (F01-AC13).
+
 ### Étape 2 construite (10 octobre 2026)
 
 Les écrans de l'étape 2 sont construits dans l'application d'après la

@@ -255,17 +255,22 @@ export function ActionDeJeu(props: PlateElementProps) {
         attributes={{ ...props.attributes, ...attributs, "data-ferme": "" } as never}
       >
         <Plus bloc={bloc.id} />
-        <span className="marge" contentEditable={false}>
+        <span className="marge" contentEditable={false} title={bloc.protege ? preparePar(c.enseignant) : "Action de jeu préparée : tu écris autour"}>
           <Icone nom="cadenas" />
+          <span className="vh">{bloc.protege ? preparePar(c.enseignant) : "Action de jeu préparée : tu écris autour"}</span>
         </span>
         <span className="action-jeu__cadre" contentEditable={false}>
           <Icone nom={signeDe(bloc)} />
           <span className="action-jeu__texte">{bloc.children.map(lettresLues)}</span>
         </span>
         {props.children}
-        <span className="repere-prepare" contentEditable={false}>
-          {bloc.protege ? preparePar(c.enseignant) : "Action de jeu préparée : tu écris autour"}
-        </span>
+        {/* Une action protégée par l'enseignant le dit, comme un paragraphe (F01-AC13) ; une action préparée,
+            que l'encadré distingue déjà, n'a que son cadenas (retouche demandée par le porteur le 15 octobre 2026) */}
+        {bloc.protege ? (
+          <span className="repere-prepare" contentEditable={false}>
+            {preparePar(c.enseignant)}
+          </span>
+        ) : null}
         {attente}
       </PlateElement>
     );
@@ -441,7 +446,10 @@ export function PhraseDeChoix(props: PlateElementProps) {
       <Plus bloc={bloc.id} />
       <span className="marge" contentEditable={false}>
         {reserve ? (
-          <Icone nom="cadenas" />
+          <span title="Choix préparé : tu écris autour">
+            <Icone nom="cadenas" />
+            <span className="vh">Choix préparé : tu écris autour</span>
+          </span>
         ) : (
           <button
             type="button"
@@ -466,11 +474,6 @@ export function PhraseDeChoix(props: PlateElementProps) {
         <Destinations bloc={bloc} livre={c.livre} pourEleve={c.pourEleve} />
       </span>
       {props.children}
-      {reserve ? (
-        <span className="repere-prepare" contentEditable={false}>
-          Choix préparé : tu écris autour
-        </span>
-      ) : null}
       {attente}
     </PlateElement>
   );
