@@ -11,6 +11,7 @@ import { scenesDe, type Plan } from "@/domaine/recit";
 import { MARGE_MINIMALE, reglagesPropres } from "@/domaine/mise-en-page";
 import { pagesPropres } from "@/domaine/pages";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
+import { supprimerPdfDefinitif } from "@/serveur/livre/livre";
 import { assurerOrdre, structure } from "@/serveur/copie";
 import { deplacer, rangsActuels, type Deplacement } from "@/domaine/ordre";
 
@@ -218,5 +219,14 @@ export async function declarerMiseEnPage(projetId: string, convient: boolean): P
     .eq("id", projetId);
   if (error) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
   rafraichir(projetId);
+  return { ok: true };
+}
+
+/** Supprimer un PDF définitif conservé (F11-AC101) : la confirmation se fait sur place, à l'écran. */
+export async function supprimerPdf(pdfId: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const fait = await supprimerPdfDefinitif(e, pdfId);
+  if (!fait.ok) return fait;
+  rafraichir(fait.projetId);
   return { ok: true };
 }

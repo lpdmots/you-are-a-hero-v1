@@ -1458,3 +1458,225 @@
 .livre-plan--page .livre-plan__panneau {
   top: calc(var(--entete) + var(--volets) + 12px);
 }
+
+/* ——— « Imprimer et partager », volet « Imprimer » (étape 6, lot 5) ——— */
+.imprimer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  gap: 28px;
+  align-items: start;
+}
+.imprimer__principal {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
+}
+.imprimer__pdf {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+}
+.imprimer__titre {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--t-l);
+  font-weight: 800;
+}
+.imprimer__etat {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 16px;
+  border-radius: var(--r-m);
+  font-size: var(--t-m);
+}
+.imprimer__etat .ic {
+  flex: none;
+  align-self: center;
+}
+.imprimer__etat--pret,
+.imprimer__etat--fait {
+  background: var(--e-valide-f);
+  color: var(--e-valide);
+}
+.imprimer__etat--pret b,
+.imprimer__etat--fait b {
+  color: var(--e-valide);
+}
+.imprimer__etat--change {
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+}
+.imprimer__etat--refus {
+  padding: 0;
+  font-weight: 700;
+  color: var(--bloque);
+}
+.imprimer__refus {
+  display: grid;
+  gap: 10px;
+}
+.imprimer__raisons {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.imprimer__raisons .lien {
+  font-weight: 700;
+}
+.imprimer__travail,
+.imprimer__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin: 0;
+}
+.imprimer__statut {
+  min-height: 1.3em;
+  margin: -6px 0 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.imprimer__rappel {
+  display: grid;
+  gap: 10px;
+  max-width: 560px;
+  padding: 14px 16px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1.5px var(--e-valider);
+}
+.imprimer__rappel-titre {
+  margin: 0;
+  font-weight: 800;
+  color: var(--e-valider);
+}
+.imprimer__rappel ul {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: var(--t-s);
+}
+.imprimer__suite {
+  display: grid;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+  width: 100%;
+  max-width: 560px;
+}
+.imprimer__suite h3 {
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.imprimer__suite ol {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.4em;
+}
+.imprimer__suite li {
+  padding-left: 4px;
+}
+.conserves {
+  display: grid;
+  gap: 12px;
+}
+.conserves__liste {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.conserve {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+}
+.conserve > .ic {
+  width: 1.5em;
+  height: 1.5em;
+  color: var(--canard);
+}
+.conserve__texte {
+  display: grid;
+  gap: 2px;
+}
+.conserve__texte small {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.conserve__texte small.conserve__a-jour {
+  font-weight: 700;
+  color: var(--e-valide);
+}
+.conserve__cmd,
+.conserve__confirmer {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px 14px;
+  font-size: var(--t-s);
+}
+.conserves__place {
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.couverture {
+  display: grid;
+  gap: 8px;
+  padding: 16px 18px 18px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  border-top: 3px solid var(--bristol);
+}
+.couverture__titre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.couverture p {
+  margin: 4px 0 0;
+}
+.couverture ul {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding-left: 1.2em;
+  font-size: var(--t-s);
+}
+@media (max-width: 900px) {
+  .imprimer {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .conserve {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .conserve__cmd,
+  .conserve__confirmer {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}

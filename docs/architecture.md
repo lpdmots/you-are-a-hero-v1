@@ -1230,6 +1230,22 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   colonnes collées du Livre passent sous la barre du site (58 points),
   qu'elles recouvraient.
 
+**Lot 5 — PDF définitif (15 octobre 2026) :**
+
+- **Règle unique** : `conditionsDuLivre` (`domaine/livre.ts`) lit les points
+  des contrôles et trois faits du projet (mise en page déclarée, doute sur
+  l'ordre, étape d'arrivée ouverte) ; la page et le serveur l'appellent tous
+  deux. L'instantané porte désormais ses points des contrôles : le PDF
+  définitif est refusé ou composé sur le même état (`produirePdfDefinitif`).
+- **Fichier** : composé sans marques, images entières, déposé dans le seau
+  `livres` sous un identifiant, inscrit dans `pdf_du_livre` (`definitif`) avec
+  l'empreinte du contenu ; rien ne s'efface seul. La route
+  `POST /livre/[projet]/definitif` rend l'adresse de téléchargement, ou les
+  raisons du refus (409).
+- **Livre changé** : l'empreinte du dernier PDF définitif comparée à celle du
+  contenu à l'instant ; une coquille corrigée suffit à la changer.
+- **Suppression** : la ligne puis le fichier, par l'adulte du projet.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

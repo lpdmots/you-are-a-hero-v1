@@ -213,3 +213,43 @@ export const MOT_DE_MARQUE: Record<Exclude<MarqueEtape, null>, string> = {
 };
 
 export const estEtapeLivre = (v: unknown): v is EtapeLivre => ETAPES_DU_LIVRE.some((x) => x.id === v);
+
+// ——— Une seule règle pour le PDF définitif et le partage (F11.2, 15 octobre 2026) ———
+
+/** Ce qui manque encore, étape par étape : chaque raison mène au temps où elle se traite. */
+export type RaisonDeRefus = { etape: EtapeLivre; texte: string };
+
+export type Conditions = {
+  pdf: { possible: boolean; raisons: RaisonDeRefus[] };
+  partage: { possible: boolean; raisons: RaisonDeRefus[] };
+  /** Avertissements et points « à savoir », acceptés ou non : rappelés à la demande, sans rien bloquer */
+  rappels: Probleme[];
+};
+
+/**
+ * Les conditions du PDF définitif et du partage. Communes : toutes les scènes incluses sont
+ * prêtes, et aucun point bloquant ne reste. En plus, pour le PDF définitif : « La mise en page
+ * me convient » est déclarée et aucun doute sur l'ordre des passages n'attend ; pour le
+ * partage : « Imprimer et partager » a été ouverte une fois. Les déclarations des deux
+ * premières étapes ne sont pas revérifiées (F11-AC99, AC100).
+ */
+export function conditionsDuLivre(problemes: Probleme[], o: { aChoix: boolean; convient: boolean; doute: boolean; imprimerOuvert: boolean }): Conditions {
+  const finir = problemes.filter((p) => p.sorte === "a-finir").length;
+  // Les défauts d'écriture d'une scène à finir comptent avec elle (F09.2)
+  const bloquants = problemes.filter((p) => p.gravite === "bloque" && p.sorte !== "a-finir" && !p.reporte);
+  const dans = (etape: "relire" | "chemins") => bloquants.filter((p) => (o.aChoix ? p.etape : "relire") === etape).length;
+  const contenu: RaisonDeRefus[] = [];
+  const relire = [finir ? `${finir} scène${finir > 1 ? "s" : ""} à finir` : "", dans("relire") ? `${dans("relire")} à corriger` : ""].filter(Boolean).join(", ");
+  if (relire) contenu.push({ etape: "relire", texte: relire });
+  if (o.aChoix && dans("chemins")) contenu.push({ etape: "chemins", texte: `${dans("chemins")} à corriger` });
+  const pourLePdf = [...contenu];
+  if (!o.convient) pourLePdf.push({ etape: "page", texte: "« La mise en page me convient » reste à déclarer" });
+  else if (o.doute) pourLePdf.push({ etape: "page", texte: "L’ordre des passages est à confirmer" });
+  const pourLePartage = [...contenu];
+  if (!o.imprimerOuvert) pourLePartage.push({ etape: "sortie", texte: "« Imprimer et partager » n’est pas encore ouverte" });
+  return {
+    pdf: { possible: pourLePdf.length === 0, raisons: pourLePdf },
+    partage: { possible: pourLePartage.length === 0, raisons: pourLePartage },
+    rappels: problemes.filter((p) => (p.gravite === "avert" || p.gravite === "info") && !p.reporte),
+  };
+}

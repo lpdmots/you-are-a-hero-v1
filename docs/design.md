@@ -1977,6 +1977,26 @@ dans un cadre canard, « n° 1 à 6, mélangés ensemble ».
   haut de l'écran que les deux onglets, comme la maquette le prévoyait ; la
   barre de l'aperçu se range sous elle à cette étape.
 
+**Lot 5 — « Imprimer et partager », volet « Imprimer ».** Repris de la
+maquette (captures 26, 125, 249) : à gauche « PDF définitif » et son « i »,
+l'état du livre dans un bandeau (vert : prêt ou fait ; ambre : le livre a
+changé), le bouton principal, « Et maintenant ? », puis « PDF définitifs
+conservés » ; à droite, « La couverture, chez l'imprimeur » et ses trois
+choses à préparer, sans « Idée d'illustration de couverture » (étape 8).
+Sous 900 points, une seule colonne, la couverture en dernier. Captures 621 à
+625.
+
+- **Écarts, dits au début du lot :** le refus ne s'ouvre plus dans une
+  feuille latérale : il tient dans l'étape, une ligne par étape avec son
+  lien, et « Créer un PDF de travail à la place » ; aucun bouton du PDF
+  définitif tant qu'il n'est pas possible. « Télécharger » n'est plus en haut
+  et dans la liste : le dernier PDF à jour porte le bouton principal dans la
+  liste. Pas de volet « Partager » ni de troisième ligne « Partagez le
+  livre » avant l'étape 7.
+- **Pris en construisant :** les avertissements rappelés dans un encadré
+  ambre, sur place, avant la création ; la suppression confirmée sur la
+  ligne même (« Le supprimer ? Il ne se retrouvera pas. »).
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans

@@ -4,7 +4,8 @@ import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
 import { referenceScene } from "@/domaine/recit";
-import { avertissementsAcceptes, estEtapeLivre, etatChemins, etatRelire, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
+import { avertissementsAcceptes, conditionsDuLivre, estEtapeLivre, etatChemins, etatRelire, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
+import { phraseDe } from "@/domaine/controles";
 import { filtresDepuis } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { textesGardesDuProjet } from "@/serveur/copie";
@@ -105,11 +106,15 @@ export default async function PageProjet({ params, searchParams }: Props) {
     // première, ne se referme plus, et dit « il reste à faire » si une étape d'avant le dit (F11-AC62, AC77)
     const sortieOuverte = livre.imprimerOuvert || livre.miseEnPageConvient;
     const avantTermine = relire.terminee && (chemins?.terminee ?? true);
+    // La règle unique du PDF définitif (F11.2) ; l'étape d'arrivée est cochée quand il est à jour
+    const conditions = conditionsDuLivre(livre.problemes, { aChoix, convient: livre.miseEnPageConvient, doute: false, imprimerOuvert: sortieOuverte });
+    const definitifs = pdf.filter((x) => x.sorte === "definitif");
+    const aJour = conditions.pdf.possible && definitifs[0]?.empreinte === instantane.empreinte;
     const marques: Record<EtapeLivre, MarqueEtape> = {
       relire: relire.marque,
       chemins: chemins?.marque ?? null,
       page: !pageOuverte ? "fermee" : livre.miseEnPageConvient ? "coche" : null,
-      sortie: !sortieOuverte ? "fermee" : avantTermine ? null : "reste",
+      sortie: !sortieOuverte ? "fermee" : !avantTermine ? "reste" : aJour ? "coche" : null,
     };
     const contenuLivre = await contenuDuLivre(enseignant, projet.id);
     const eleves = await elevesDeLaClasse(enseignant, projet.classe?.id ?? null);
@@ -134,6 +139,20 @@ export default async function PageProjet({ params, searchParams }: Props) {
         noms={noms}
         numeros={Object.fromEntries(instantane.livre.passages.flatMap((x) => (x.numero ? [[x.sceneId, x.numero]] : [])))}
         convient={livre.miseEnPageConvient}
+        imprimer={
+          sortieOuverte
+            ? {
+                possible: conditions.pdf.possible,
+                raisons: conditions.pdf.raisons,
+                rappels: conditions.rappels.map((p) => {
+                  const sceneId = "sceneId" in p ? (p.sceneId as string | null) : null;
+                  return `${sceneId && noms[sceneId] ? `${noms[sceneId]} · ` : ""}${phraseDe(p).quoi}`;
+                }),
+                definitifs: definitifs.map((x) => ({ id: x.id, etat: etatEnMots(x.etatDu), pages: x.pages, taille: x.taille, aJour: x.empreinte === instantane.empreinte })),
+                placeOccupee: definitifs.reduce((n, x) => n + x.taille, 0),
+              }
+            : null
+        }
         miseEnPage={
           pageOuverte && contenuLivre
             ? {

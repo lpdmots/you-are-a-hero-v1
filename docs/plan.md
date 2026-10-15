@@ -1642,6 +1642,39 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       l'écran, la déclaration défile.
     - **Tests automatiques :** 5 unitaires, 3 de composition, 3 contre la
       base, 4 parcours.
+  - **Lot 5 — PDF définitif : construit le 15 octobre 2026.** Une seule
+    règle de l'application (`conditionsDuLivre`, `domaine/livre.ts`) dit si
+    le PDF définitif et le partage sont possibles, et ce qui reste, étape
+    par étape ; le serveur la vérifie sur l'instantané même qu'il compose,
+    sans contournement. L'étape « Imprimer et partager » montre l'état du
+    livre (« pas encore possible » avec ses raisons et « Créer un PDF de
+    travail à la place », « Le livre est prêt. », « Le livre a changé depuis
+    le PDF définitif du … », « Le livre est fait. »), rappelle les
+    avertissements et les points « à savoir » avant de créer le PDF, garde
+    tous les PDF définitifs (date, pages, taille, place occupée,
+    « Correspond au livre actuel. »), les supprime après une confirmation
+    sur place, et dit ce qu'il faut préparer pour la couverture chez
+    l'imprimeur. L'étape est cochée quand le dernier PDF définitif est à
+    jour. Sans migration.
+    - **Critères fermés :** F11-AC04, AC05, AC07 (le PDF définitif sans la
+      scène exclue, par la composition), AC26, AC56, AC72, AC76, AC100,
+      AC101 ; F09-AC04, AC10 ; F10-AC14 ; F04-AC33 ; F11-AC99 pour sa
+      règle, le doute venant au lot 6.
+    - **Critères qui attendent :** le doute sur l'ordre qui refuse le PDF
+      définitif à l'écran (AC99), au lot 6 ; le partage et sa mise à jour
+      refusée (AC72, seconde moitié), à l'étape 7.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      sans PDF définitif possible, aucune commande pour le créer, seulement
+      « Créer un PDF de travail à la place » et un lien par étape ; le
+      rappel s'ouvre sur place (« À savoir avant de créer le PDF », la liste,
+      « Créer le PDF définitif » et « Annuler »), et seulement s'il y a quelque
+      chose à rappeler ; le PDF se télécharge dès qu'il est créé ; le dernier
+      PDF définitif à jour porte seul le bouton principal « Télécharger » dans
+      la liste ; « Et maintenant ? » garde deux lignes, le partage venant à
+      l'étape 7 ; la taille se dit en Ko sous 1 Mo ; le fichier s'appelle
+      « Le phare - livre.pdf ».
+    - **Tests automatiques :** 5 unitaires, 3 contre la base, 3 parcours ;
+      captures 621 à 625.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

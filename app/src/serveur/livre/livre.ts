@@ -6,6 +6,8 @@ import { estUuid } from "../recit";
 import { clientService } from "../supabase";
 import { SEAU as SEAU_DES_IMAGES, TYPE_MIME } from "../images";
 import type { LivreACompose } from "@/domaine/composition";
+import type { Probleme } from "@/domaine/controles";
+import { conditionsDuLivre, type RaisonDeRefus } from "@/domaine/livre";
 import { composer, type Composition } from "./composer";
 import { contenuDuLivre, livreDuContenu, type ImageDuProjet } from "./contenu";
 import { etatEnMots, pdfDe, SEAU, type PdfDuLivre } from "./pdf";
@@ -24,6 +26,8 @@ export type Instantane = {
   empreinte: string;
   /** Pour lire une image dans le stockage : seulement celles du projet */
   images: Map<string, ImageDuProjet>;
+  /** Les points des contrôles, sur ce même état */
+  problemes: Probleme[];
 };
 
 export async function instantaneDuLivre(e: Enseignant, projetId: string): Promise<Instantane | null> {
@@ -31,7 +35,7 @@ export async function instantaneDuLivre(e: Enseignant, projetId: string): Promis
   const etatDu = new Date().toISOString();
   const [contenu, problemes] = await Promise.all([contenuDuLivre(e, projetId), controlesDuLivre(e, projetId)]);
   if (!contenu) return null;
-  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images };
+  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images, problemes: problemes ?? [] };
 }
 
 /**
@@ -84,3 +88,47 @@ export async function produirePdfDeTravail(e: Enseignant, projetId: string): Pro
   return { ok: true, pdf: pdfDe(inscrit.data) };
 }
 
+
+/**
+ * Produire le PDF définitif (F11.2) : la règle unique est vérifiée sur l'instantané même que
+ * l'on compose, sans contournement (F09-AC10) ; le livre est composé sans marques, ses images
+ * entières, puis déposé et inscrit. Tous les PDF définitifs sont gardés (15 octobre 2026).
+ */
+export async function produirePdfDefinitif(e: Enseignant, projetId: string): Promise<{ ok: true; pdf: PdfDuLivre } | { ok: false; erreur: string; raisons?: RaisonDeRefus[] }> {
+  if (!estUuid(projetId)) return { ok: false, erreur: "Ce projet est introuvable." };
+  const [instantane, projet] = await Promise.all([
+    instantaneDuLivre(e, projetId),
+    e.supabase.from("projets").select("recit, mise_en_page_convient_le, imprimer_ouvert_le").eq("id", projetId).maybeSingle(),
+  ]);
+  if (!instantane || !projet.data) return { ok: false, erreur: "Ce projet est introuvable." };
+  const conditions = conditionsDuLivre(instantane.problemes, {
+    aChoix: projet.data.recit === "choix", convient: Boolean(projet.data.mise_en_page_convient_le), doute: false, imprimerOuvert: Boolean(projet.data.imprimer_ouvert_le),
+  });
+  if (!conditions.pdf.possible) return { ok: false, erreur: "Le PDF définitif n’est pas encore possible.", raisons: conditions.pdf.raisons };
+  const composition = await composerLInstantane(instantane, false);
+  const id = randomUUID();
+  const chemin = `${e.id}/${projetId}/${id}.pdf`;
+  const service = clientService();
+  const depot = await service.storage.from(SEAU).upload(chemin, composition.pdf, { contentType: "application/pdf", upsert: false });
+  if (depot.error) throw new Error(`PDF non déposé : ${depot.error.message}`);
+  const inscrit = await e.supabase.from("pdf_du_livre").insert({
+    id, projet_id: projetId, enseignant_id: e.id, sorte: "definitif", etat_du: instantane.etatDu, empreinte: instantane.empreinte,
+    chemin, taille: composition.pdf.length, pages: composition.rapport.pages + composition.rapport.horsPagination,
+  }).select("id, sorte, etat_du, empreinte, taille, pages, cree_le").single();
+  if (inscrit.error) {
+    await service.storage.from(SEAU).remove([chemin]);
+    throw new Error(`PDF non inscrit : ${inscrit.error.message}`);
+  }
+  return { ok: true, pdf: pdfDe(inscrit.data) };
+}
+
+/** Supprimer un PDF définitif dont l'adulte n'a plus besoin, après confirmation à l'écran (F11-AC101). */
+export async function supprimerPdfDefinitif(e: Enseignant, pdfId: string): Promise<{ ok: true; projetId: string } | { ok: false; erreur: string }> {
+  if (!estUuid(pdfId)) return { ok: false, erreur: "PDF inconnu." };
+  const { data } = await e.supabase.from("pdf_du_livre").select("chemin, projet_id, sorte").eq("id", pdfId).maybeSingle();
+  if (!data || data.sorte !== "definitif") return { ok: false, erreur: "PDF inconnu." };
+  const { error } = await e.supabase.from("pdf_du_livre").delete().eq("id", pdfId);
+  if (error) return { ok: false, erreur: "Le PDF n’a pas pu être supprimé." };
+  await clientService().storage.from(SEAU).remove([data.chemin as string]);
+  return { ok: true, projetId: data.projet_id as string };
+}

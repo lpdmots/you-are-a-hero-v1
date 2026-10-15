@@ -17,6 +17,7 @@ import { marquerFin } from "../../actions-recit";
 import { PageScene } from "../scene/[scene]/PageScene";
 import { Apercu, useApercu } from "./Apercu";
 import { CePassage } from "./CePassage";
+import { EtapeImprimer } from "./Imprimer";
 import { Bulle } from "@/composants/Bulle";
 import { VoletReglages } from "./Reglages";
 import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, TacheRelireAffichee } from "./points";
@@ -27,7 +28,7 @@ import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, Tache
  * livre (F11.2) ; « Mettre en page » et « Imprimer et partager » se construisent ensuite.
  */
 export function Livre({
-  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, numeros, miseEnPage, convient, aideMasquee, aideVue,
+  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, numeros, miseEnPage, convient, imprimer, aideMasquee, aideVue,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   etape: EtapeLivre;
@@ -45,6 +46,8 @@ export function Livre({
   numeros: Record<string, number>;
   /** « La mise en page me convient » est déclarée (F11.6) */
   convient: boolean;
+  /** « Imprimer et partager », une fois ouverte : le PDF définitif et les PDF conservés */
+  imprimer: Omit<Parameters<typeof EtapeImprimer>[0], "projetId"> | null;
   /** « Mettre en page », quand l'étape est ouverte : ses réglages et ses pages de présentation */
   miseEnPage: Omit<Parameters<typeof VoletReglages>[0], "projet" | "apercu" | "onVoirApercu"> | null;
   aideMasquee: { relire: boolean; chemins: boolean };
@@ -371,14 +374,8 @@ export function Livre({
               />
             </div>
           </div>
-        ) : etape === "sortie" && marques.sortie !== "fermee" ? (
-          // Le PDF définitif et ses PDF conservés : lot 5 de l'étape 6
-          <section className="porte" aria-labelledby="sortie-t">
-            <h2 id="sortie-t" tabIndex={-1}>
-              Imprimer et partager
-            </h2>
-            <p className="porte__phrase">Le PDF définitif se créera ici.</p>
-          </section>
+        ) : etape === "sortie" && imprimer ? (
+          <EtapeImprimer projetId={projet.id} {...imprimer} />
         ) : (
           <EtapeFermee projet={projet} etape={etape} chemins={chemins} relire={relire} />
         )}

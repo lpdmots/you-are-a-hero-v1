@@ -84,3 +84,37 @@ test("lot 3 : « Mettre en page », réglages et pages de présentation", async 
   await page.getByRole("region", { name: "Page de titre" }).scrollIntoViewIfNeeded();
   await capturer(page, "mobile-panneau-titre", false);
 });
+
+test("lot 5 : « Imprimer et partager »", async ({ page }) => {
+  test.setTimeout(300_000);
+  n = 620;
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Les passeurs de brume");
+  const { chapitres } = await semerPartie(base, projet, "Le quai aux lanternes", [{ titre: "Le dernier bac", scenes: ["Quai — la sirène", "Passerelle — le bac s’éloigne"] }]);
+  const s = chapitres[0].scenes;
+  await base.from("projets").update({ depart_scene_id: s[0] }).eq("id", projet);
+  await semerBlocs(base, s[0], [recit("La sirène du dernier bac retentit trois fois."), choixAuto("Courir vers la passerelle", s[1])]);
+  await semerBlocs(base, s[1], [recit("Le bac glissait déjà sur l’eau noire.")]);
+  await base.from("scenes").update({ fin: true }).eq("id", s[1]);
+  await sql("update scenes set etat = 'prete' where projet_id = $1", [projet]);
+  await sql("update projets set mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now(), mise_en_page_convient_le = now(), imprimer_ouvert_le = now() where id = $1", [projet]);
+  await page.setViewportSize({ width: 1366, height: 860 });
+
+  await sql("update scenes set etat = 'cours' where id = $1", [s[1]]);
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await capturer(page, "imprimer-refuse", false);
+  await sql("update scenes set etat = 'prete' where id = $1", [s[1]]);
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await capturer(page, "imprimer-pret", false);
+  const telechargement = page.waitForEvent("download", { timeout: 60_000 });
+  await page.getByRole("button", { name: "Créer le PDF définitif…" }).click();
+  await telechargement;
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await capturer(page, "imprimer-fait");
+  await semerBlocs(base, s[1], [recit("Le bac glissait déjà sur l’eau noire, sans lui.")]);
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await capturer(page, "imprimer-livre-change");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await capturer(page, "mobile-imprimer");
+});
