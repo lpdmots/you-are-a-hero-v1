@@ -3,7 +3,7 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
-## État de reprise au 14 octobre 2026
+## État de reprise au 15 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
 ensemble, chacun avec ses points différés. La
@@ -76,7 +76,7 @@ temps — un entretien court, puis, après sa validation, la construction —,
 à mener dans une nouvelle conversation. Son entretien est fait le
 14 octobre 2026, ses réponses reportées en F09.1, F09.2, F03.1 et F11.6,
 validé dans son ensemble le même jour ; sa construction, en cinq lots,
-se fait en local dans une nouvelle conversation ; les lots 1 (contrôles du livre), 2 (destination Livre et « Vérifier les chemins », migration `verifier_les_chemins`, base locale seulement), 3 (lecture d'essai de l'adulte), 4 (lecture d'essai de l'élève, migration `lecture_du_poste`, base locale seulement) et 5 (retouches de « Chemins », essai de bout en bout et son mode d'emploi) sont construits le 14 octobre 2026 et mis en ligne le 15 octobre (migrations appliquées à la vraie base, puis la vraie base restaurée depuis une sauvegarde avec succès, ce qui était dû depuis l'étape 4) ; terminée le 15 octobre 2026 après l'essai du porteur. L'étape 6 attend son instruction ([plan](docs/plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)). Aucun achat n'est lancé. La V1
+se fait en local dans une nouvelle conversation ; les lots 1 (contrôles du livre), 2 (destination Livre et « Vérifier les chemins », migration `verifier_les_chemins`, base locale seulement), 3 (lecture d'essai de l'adulte), 4 (lecture d'essai de l'élève, migration `lecture_du_poste`, base locale seulement) et 5 (retouches de « Chemins », essai de bout en bout et son mode d'emploi) sont construits le 14 octobre 2026 et mis en ligne le 15 octobre (migrations appliquées à la vraie base, puis la vraie base restaurée depuis une sauvegarde avec succès, ce qui était dû depuis l'étape 4) ; terminée le 15 octobre 2026 après l'essai du porteur ([plan](docs/plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)). L'étape 6 (composer et imprimer le livre) est autorisée le 15 octobre 2026, pour elle seule, en deux temps ; son entretien est fait et validé le même jour, ses réponses reportées en F04.2, F10, F11.2, F11.4 à F11.6 et F12.1 ; sa construction, en sept lots, se fait en local ([plan](docs/plan.md#étape-6--composer-et-imprimer-le-livre)). Aucun achat n'est lancé. La V1
 repart de zéro ; la V0 reste une référence d'usage uniquement, et les deux
 prototypes jetables n'ont servi que par leurs verdicts. Les
 propositions, détails différés et inconnues techniques conservent leur

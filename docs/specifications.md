@@ -1999,8 +1999,25 @@ la feuille imprimée peut être remplacée par une image, une feuille composée
 plus longue qu'une page continue sur la suivante sans couper une section, et
 des dés peuvent être imprimés en bas des pages de droite du récit.
 
-**Questions ouvertes :** nombre de lignes d'une section de
-liste sur papier ; présentation de la feuille et du dé sur téléphone ; modification de la feuille par l'adulte
+**Décision confirmée le 15 octobre 2026 — lignes d'une liste sur papier :**
+arbitré à l'entretien de l'étape 6 du
+[plan](plan.md#étape-6--composer-et-imprimer-le-livre), sans réglage. Sur
+la feuille imprimée, les sections de liste et de notes libres se partagent
+la place qui reste sur la page, au moins cinq lignes chacune, espacées de
+8 mm pour l'écriture d'un enfant ; les notes libres sont un cadre sans
+lignes. Une feuille qui ne tient pas sur une page continue sur la suivante
+sans couper une section, et chaque liste garde alors huit lignes. En ligne,
+une liste n'a pas de nombre de lignes. Alternative écartée : un nombre de
+lignes par liste fixé dans la préparation, un réglage de plus.
+
+- **F04-AC42 — Liste qui remplit la page :** étant donné une feuille d'un
+  compteur « Volonté : 5 » et d'une liste « Inventaire », lorsque le livre
+  est composé, alors « Inventaire » s'étend jusqu'au bas de la page en
+  lignes espacées de 8 mm ; avec cinq sections dont la quatrième ne tient
+  plus, alors elle commence sur la page suivante et chaque liste porte huit
+  lignes.
+
+**Questions ouvertes :** présentation de la feuille et du dé sur téléphone ; modification de la feuille par l'adulte
 après un partage, face aux feuilles déjà commencées par des lecteurs.
 
 ### F04.3 — Aperçu des scènes voisines pendant l'écriture
@@ -6503,7 +6520,7 @@ assure ces opérations.
   définitif ; elle est signalée dans l'aperçu et le PDF de travail.
 - **Résolution insuffisante** pour la taille imprimée : avertit sans bloquer.
   Un dessin d'élève photographié peut être voulu tel quel ; l'adulte en juge.
-  Le seuil exact, de l'ordre de 200 à 300 points par pouce, sera fixé techniquement.
+  Le seuil est fixé à 200 points par pouce le 15 octobre 2026 (plus bas).
 - **Image trop grande pour la page :** réduite automatiquement, sans avertissement,
   lorsque sa largeur est l'une des trois largeurs proposées. Lorsque l'adulte
   a réglé lui-même la largeur, la réduction est indiquée dans les contrôles du
@@ -6581,6 +6598,29 @@ hauteur du texte, peut être réduite davantage, en gardant une marge pour le
 cas où la taille du texte ou l'interligne du livre se régleraient. Les
 valeurs sont fixées techniquement, avec le seuil de résolution ci-dessus.
 Cette règle vaut pour les quatre combinaisons de modes.
+
+**Décisions confirmées le 15 octobre 2026 — seuil et définition :**
+arbitré à l'entretien de l'étape 6 du
+[plan](plan.md#étape-6--composer-et-imprimer-le-livre).
+
+- **Seuil de résolution :** une image avertit lorsqu'elle s'imprime à moins
+  de 200 points par pouce, mesurés à la taille réellement imprimée, après
+  la réduction qui la fait tenir dans la page. Cela vaut pour les images
+  des scènes, en bloc ou en ligne, et pour celles des pages de présentation.
+  Un dessin scanné ou photographié dépasse ce seuil en pleine largeur ; une
+  image récupérée de 800 points de large, imprimée en pleine largeur, est
+  signalée. Alternative écartée : 300, la norme des imprimeurs, qui aurait
+  signalé beaucoup de dessins d'élèves et fait de « Garder ainsi » un
+  réflexe.
+- **Définition conservée :** celle du 10 octobre 2026, 2 600 points sur le
+  plus grand côté, suffit à tout emploi : une pleine page demande au plus
+  2 244 points à 300 points par pouce, même avec des marges ramenées à
+  10 mm. Rien n'est réduit davantage.
+
+- **F10-AC35 — Seuil à la taille imprimée :** étant donné une image de
+  800 points de large, lorsqu'elle est placée en pleine largeur dans un
+  livre aux marges de départ, alors un avertissement la désigne (180 points
+  par pouce) ; placée à 40 %, elle ne l'est pas.
 
 - **F10-AC16 — Largeur modifiable sans perte :** étant donné une photographie
   de 4 000 points de large importée puis placée en petite largeur, lorsque
@@ -7170,7 +7210,9 @@ un export destiné à l'impression du livre terminé.
   déclarées prêtes pour le livre. Leur avancement ne suffit pas à bloquer cet export.
 - Un export annoncé comme définitif exige que toutes les scènes utilisées
   dans le livre soient déclarées prêtes et que les vérifications globales
-  requises soient satisfaites. Le contenu exact de ces vérifications reste ouvert.
+  requises soient satisfaites. Ces vérifications sont arrêtées le
+  15 octobre 2026 (« Une seule règle pour le PDF définitif et le partage »,
+  plus bas).
 - Une scène non utilisée dans le livre ne bloque pas l'export définitif du
   seul fait qu'elle n'est pas prête.
 - **Ajout du 3 octobre 2026 :** le PDF définitif se demande depuis l'étape
@@ -7255,8 +7297,65 @@ réexport. La fidélité entre l'aperçu et le PDF est éprouvée le 3 octobre
 serveur, ce qui est retenu le même jour ; voir
 [l'architecture](architecture.md#résultats-du-prototype-pdf-3-octobre-2026).
 
-**Proposition liée au coût d'exploitation, à revoir en F14 :** conserver les
-PDF définitifs successifs d'un projet et seulement le dernier PDF de travail.
+**Décision confirmée le 15 octobre 2026 — une seule règle pour le PDF
+définitif et le partage :** arbitré à l'entretien de l'étape 6 du
+[plan](plan.md#étape-6--composer-et-imprimer-le-livre), pour accorder
+F11.2, F11.6 et F12.1, qui ne le disaient pas de la même façon. Une seule
+règle de l'application calcule ces conditions.
+
+- **Conditions de contenu, communes au PDF définitif et au partage :**
+  toutes les scènes incluses sont déclarées prêtes, et aucun point bloquant
+  ne reste — ceux du tableau de
+  [F09.2](#f092--contrôles-des-chemins-avant-le-pdf-définitif), dont l'image
+  manquante ou illisible de [F10](#f10--illustrations) et le numéro fixé
+  devenu impossible.
+- **Avertissements :** acceptés ou non, ils ne bloquent jamais ; ils sont
+  rappelés à la demande du PDF définitif et du partage. Un avertissement
+  apparu après l'ouverture de « Mettre en page » retire sa coche à
+  « Relire » sans rien bloquer, ce qui tranche l'écart laissé ouvert en
+  [F11.6](#f116--trois-temps-pour-préparer-le-livre).
+- **En plus, pour le PDF définitif :** l'étape « Mettre en page » porte sa
+  coche, c'est-à-dire que « La mise en page me convient » est déclarée et
+  qu'aucun doute sur l'ordre des passages n'attend de réponse. Le PDF
+  définitif est la mise en page : il ne s'imprime pas sur un ordre que
+  l'adulte n'a pas confirmé.
+- **En plus, pour le partage :** seulement que l'étape « Imprimer et
+  partager » ait été ouverte, une fois. La lecture en ligne ne dépend pas
+  des pages ; l'instantané garde ses numéros (F12.1).
+- **Déclarations des deux premières étapes :** elles ne sont pas
+  revérifiées à la demande ; une scène rouverte est déjà couverte par la
+  condition « prêtes ».
+- **Alternative écartée :** exiger les quatre étapes cochées, plus simple à
+  dire, mais un avertissement tardif aurait alors bloqué le PDF, contre
+  F09.2.
+
+- **F11-AC99 — Doute en attente :** étant donné « Imprimer et partager »
+  ouverte et un doute sur l'ordre des passages né d'un allongement de S028,
+  lorsque l'adulte demande le PDF définitif, alors il est refusé, le motif
+  mène à la section « Ordre des passages » ; lorsqu'il demande le partage,
+  alors il est possible ; lorsqu'il répond « Garder cet ordre », alors le
+  PDF définitif redevient possible.
+- **F11-AC100 — Avertissement tardif :** étant donné « Mettre en page »
+  cochée, lorsqu'une image peu définie est posée dans S014, alors
+  « Relire » perd sa coche et présente l'image à « À confirmer », et le PDF
+  définitif reste possible, l'avertissement étant rappelé à sa demande.
+
+**Décision confirmée le 15 octobre 2026 — PDF conservés :** tous les PDF
+définitifs d'un projet sont conservés ; l'étape « Imprimer et partager » les
+liste avec leur date et leur taille, le plus récent en tête, et dit la place
+qu'ils occupent. L'adulte supprime à la main un PDF définitif dont il n'a
+plus besoin, après confirmation ; rien ne s'efface seul, selon la règle du
+8 octobre 2026 du [plan](plan.md#avant-de-saisir-des-prénoms-délèves-réels).
+Seul le dernier PDF de travail est gardé, remplacé par le suivant. La
+règle générale de conservation reste à écrire en F14, pour l'ouverture.
+Alternative écartée : garder automatiquement les trois derniers PDF
+définitifs, contraire à cette règle.
+
+- **F11-AC101 — PDF définitifs successifs :** étant donné un PDF définitif
+  du 18 juin, lorsque l'adulte en crée un le 20 juin, alors les deux sont
+  listés, celui du 20 en tête, chacun avec sa date et sa taille ; lorsqu'il
+  supprime celui du 18 et confirme, alors seul celui du 20 reste ; lorsqu'il
+  crée deux PDF de travail de suite, alors seul le second est gardé.
 
 **Décision confirmée le 30 septembre 2026 — une seule composition :**
 l'aperçu du livre, le PDF de travail et le PDF définitif présentent la même
@@ -7440,8 +7539,16 @@ ou d'écrans et n'interdit pas les retouches et réexports prévus dans le brief
   un déplacement. Image en bloc vue par un élève : peut-il la retirer ?
   Marge maximale. Dernière page du récit et blanc précédant une image pleine
   page, pour le repérage des pages peu remplies.
-- Accès des élèves à l'aperçu et aux PDF de travail, en lien avec la lecture
-  ouverte de F06.2. La variante sans circuit de travail élève est définie en F11.1.
+- **Tranché le 15 octobre 2026 (entretien de l'étape 6) — accès des élèves
+  à l'aperçu :** ni l'aperçu ni les PDF ne sont ouverts aux élèves dans la
+  première livraison. Ils lisent le récit par la lecture d'essai de
+  [F09.1](#f091--playtest), la lecture ouverte leur donnant tout le livre ;
+  l'aperçu porte les marques de travail et les scènes non finies, et chaque
+  recalcul est un calcul du serveur. Pour montrer le livre à la classe,
+  l'enseignant projette son aperçu ou imprime le PDF de travail.
+  Alternative écartée : un aperçu en lecture seule pour l'élève quand la
+  lecture est ouverte. La variante sans circuit de travail élève est
+  définie en F11.1.
 
 Les deux usages du PDF concernent aussi le récit classique ; les contrôles
 propres aux choix n'y ont pas lieu d'être. La composition et le format sont
@@ -7520,7 +7627,8 @@ Le fond perdu imposerait débord et repères supplémentaires.
 
 **Questions ouvertes :** export avec marge de rognage (154 × 216 mm), à
 décider après un premier envoi chez l'imprimeur, selon la décision du
-3 octobre 2026 ; gabarits précis des pages de présentation.
+3 octobre 2026. Les gabarits des pages de présentation sont décidés le
+15 octobre 2026 en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
 
 **Retour d'usage du porteur :** la V0 permettait des ajustements pour mieux
 placer les illustrations et limiter les espaces vides : échanges de passages
@@ -7874,6 +7982,47 @@ lancer de dé, sans dé dans la classe.
   gauche ni page de présentation n'en porte, et les six faces apparaissent
   en nombre égal à une près pour chacun des deux dés.
 
+**Décisions confirmées le 15 octobre 2026 — gabarits des pages de
+présentation :** arbitré à l'entretien de l'étape 6 du
+[plan](plan.md#étape-6--composer-et-imprimer-le-livre). Chaque modèle
+propose un texte de départ, que l'adulte modifie avec la mise en forme
+légère ; la forme « image pleine page » reste celle décidée plus haut.
+
+- **Page de titre :** le titre en grand, un sous-titre facultatif, le filet
+  au losange, la ligne « La classe de CM1-CM2 de Mme Laurent » en mode
+  classe (le nom de l'auteur en mode personnel), l'année scolaire. Une image
+  facultative peut s'y poser, entre le titre et la classe, sur la moitié de
+  la page au plus.
+- **Page des auteurs :** « Ce livre a été écrit par », les prénoms par ordre
+  alphabétique sur deux ou trois colonnes selon leur nombre, puis une ligne
+  modifiable « avec Mme Laurent ».
+- **« Comment lire ce livre » :** un texte de départ sur les numéros des
+  passages ; un paragraphe sur les énigmes, seulement si le livre en
+  contient ; la partie « Règles du jeu » de la préparation ; la phrase qui
+  explique les dés imprimés, quand ils sont choisis.
+- **Feuille d'aventure :** son titre, puis les sections dans l'ordre de la
+  préparation : un compteur porte son nom, sa valeur de départ et une case
+  pour écrire ; une liste, des lignes (voir
+  [F04.2](#f042--objets-de-lhistoire)) ; les notes libres, un cadre.
+- **Page de fin :** absente par défaut ; ajoutée, un texte court à écrire.
+- **Pagination :** la page de titre est la page 1, une page de droite ; les
+  pages suivantes se suivent sans recto imposé ; seul le récit commence sur
+  une page de droite (F11-AC48).
+
+- **F11-AC105 — Page des auteurs :** étant donné une classe de vingt-cinq
+  élèves, lorsque l'enseignant ajoute la page des auteurs, alors elle
+  porte « Ce livre a été écrit par », les vingt-cinq prénoms par ordre
+  alphabétique sur trois colonnes et « avec Mme Laurent », chaque ligne
+  modifiable.
+- **F11-AC106 — Image sur la page de titre :** étant donné un dessin de la
+  classe posé sur la page de titre, lorsque le livre est composé, alors il
+  se trouve entre le titre et la ligne de la classe, sans dépasser la
+  moitié de la page, et la page reste une seule page.
+- **F11-AC107 — Énigmes expliquées seulement si besoin :** étant donné un
+  livre sans liaison cachée, lorsque l'adulte ajoute « Comment lire ce
+  livre », alors son texte de départ ne parle pas d'énigme ; une liaison
+  cachée ajoutée ensuite, il propose le paragraphe des énigmes.
+
 **Lien avec F12 :** depuis le 3 octobre 2026, la version partagée montre par
 défaut les mêmes pages de présentation que le livre ; l'adulte peut en
 retirer la page des auteurs au moment du partage, selon
@@ -7920,7 +8069,8 @@ récit (décision du 2 octobre 2026). Elle peut être composée par
 l'application ou remplacée par une image, et occuper plusieurs pages, selon
 les décisions du 3 octobre 2026 ci-dessus.
 
-**Approfondissements différés :** formats retenus, gabarits de présentation,
+**Approfondissements différés :** formats retenus, gabarits de présentation
+(décidés le 15 octobre 2026, plus haut),
 éléments de couverture et formats des fichiers exportés, adaptation aux
 contraintes d'impression, pages supplémentaires (carte, dédicace), image en
 ligne dans les pages de présentation. Le sort des pages en image dans une
@@ -8016,6 +8166,44 @@ l'adulte agit sur l'ordre imprimé. Le mélange et la numérotation des passages
 ne s'appliquent pas au récit classique : les titres de partie, et de chapitre
 si l'adulte le souhaite, y sont imprimés à leur place naturelle dans l'ordre du plan,
 et un séparateur discret distingue les scènes, sans renvoi ni numéro.
+
+**Décisions confirmées le 15 octobre 2026 — livre en récit classique :**
+arbitré à l'entretien de l'étape 6 du
+[plan](plan.md#étape-6--composer-et-imprimer-le-livre).
+
+- **Séparateur :** le petit filet au losange de la page de titre, centré,
+  une ligne de blanc au-dessus et au-dessous. Il n'y en a pas avant la
+  première scène d'un chapitre, dont le titre tient lieu. À une coupure de
+  page, il reste avec les deux premières lignes au moins de la scène qui
+  suit et n'est jamais seul en bas de page.
+- **Titres de scène :** non imprimés, comme dans le livre à choix : ce sont
+  des noms de travail.
+- **Titres de chapitre :** réglage « Imprimer les titres de chapitre » de
+  « Texte et pages », activé par défaut ; un livre de classe se partage
+  souvent par chapitre. Le titre est précédé de « Chapitre 3 » en petit ;
+  les chapitres sont numérotés à la suite dans tout le livre, sans compter
+  un chapitre dont toutes les scènes sont hors du livre. Il suit la règle de
+  coupure du titre de partie (F11.3).
+- **En-tête courant :** le titre du livre sur la page de gauche, celui du
+  chapitre en cours sur la page de droite ; aucun en-tête sur une page qui
+  ouvre une partie ou un chapitre, ni sur les pages de présentation.
+  Alternative écartée : aucun en-tête, plus sobre, où l'on se repère moins.
+
+- **F11-AC102 — Séparateur de scènes :** étant donné un récit classique dont
+  le chapitre « Le marais » compte trois scènes, lorsque le livre est
+  composé, alors un filet au losange sépare la première de la deuxième et
+  la deuxième de la troisième, aucun ne précède la première, aucun titre de
+  scène n'est imprimé, et aucun filet n'est le dernier élément d'une page.
+- **F11-AC103 — Titres de chapitre :** étant donné ce récit, dont le
+  deuxième chapitre est entièrement hors du livre, lorsque le livre est
+  composé avec le réglage par défaut, alors le troisième chapitre du plan
+  porte « Chapitre 2 » au-dessus de son titre ; le réglage désactivé, aucun
+  titre de chapitre n'est imprimé.
+- **F11-AC104 — En-tête du récit classique :** étant donné une page de
+  gauche et une page de droite au milieu du chapitre « Le marais »,
+  lorsque le livre est composé, alors la première porte le titre du livre
+  et la seconde « Le marais » ; la page où commence ce chapitre n'a pas
+  d'en-tête.
 
 **Critères d'acceptation :**
 
@@ -8290,9 +8478,13 @@ leurs dates et leurs motifs.
 - **« Mettre en page » s'ouvre quand les deux premiers sont terminés :** plus
   aucun problème bloquant, et chaque avertissement corrigé ou accepté. Il
   n'existe pas de passe-droit. Depuis le 4 octobre, une étape n'est
-  terminée qu'une fois sa déclaration posée (voir « Ce qui se valide ») ;
-  que la déclaration soit ainsi requise pour ouvrir « Mettre en page » se
-  déduit de ces deux règles et reste à confirmer.
+  terminée qu'une fois sa déclaration posée (voir « Ce qui se valide »).
+  **Confirmé le 15 octobre 2026** (entretien de l'étape 6) : « J'ai relu le
+  livre » et « J'ai vérifié les chemins » sont requises pour ouvrir « Mettre
+  en page » ; en récit classique, « J'ai relu le livre » seule. L'écran de
+  l'étape fermée nomme la déclaration qui manque, avec un lien vers sa
+  tâche. Alternative écartée : une ouverture calculée seulement, qui aurait
+  réduit les déclarations à une coche sans effet.
 - **« Imprimer et partager » s'ouvre quand l'adulte déclare « La mise en
   page me convient ».** Qui ne veut que la lecture en ligne fait cette
   déclaration sans rien retoucher.
@@ -8499,6 +8691,9 @@ destination Livre.
   de l'étape d'arrivée. « Mettre en page » s'ouvre lorsque « Relire » est
   terminé. La lecture d'essai y est proposée à « Relire ». Ni rubrique
   « Phrases de choix », ni feuille d'aventure, ni réorganisation des passages.
+  **Précisé le 15 octobre 2026 :** « Relire » garde ses quatre tâches, sans
+  cinquième ; la lecture d'essai est un lien, « Lire comme un lecteur »,
+  dans « Lire et corriger », l'aperçu se lisant déjà dans l'ordre du récit.
 - **Modes personnel et classe :** mêmes étapes, mêmes règles d'ouverture.
 - **À l'ouverture de la destination Livre :** l'application affiche la
   dernière étape quittée, et « Relire » la première fois.
@@ -8598,7 +8793,9 @@ troisième.
   sans choix ni fin, lorsque l'adulte choisit « Mettre en page », alors
   l'étape ne s'ouvre pas, lui indique « 4 scènes à finir » et « 2 points à
   corriger » et le mène au temps de chacun ; aucune commande ne permet de
-  passer outre.
+  passer outre. Étant donné ces points réglés et « J'ai vérifié les
+  chemins » non déclarée, alors l'étape reste fermée et nomme cette
+  déclaration (accordé le 15 octobre 2026).
 - **F11-AC69 — Récit classique :** étant donné un récit classique, lorsque
   l'adulte ouvre la destination Livre, alors deux temps lui sont proposés,
   « Relire » et « Mettre en page », et une image manquante lui est signalée
@@ -8660,7 +8857,8 @@ troisième.
   S014, peu défini à 60 % de largeur, lorsque l'adulte est à « Relire »,
   alors la tâche « À confirmer » le lui présente avec « Garder ainsi », et
   « Mettre en page » ne s'ouvre pas tant qu'il n'a ni réduit l'image ni
-  répondu ; à « Mettre en page », aucun défaut ne lui est présenté.
+  répondu, puis déclaré « J'ai relu le livre » (accordé le 15 octobre
+  2026) ; à « Mettre en page », aucun défaut ne lui est présenté.
 - **F11-AC85 — Scène ouverte depuis un point, puis refermée :** étant
   donné S029, sans choix ni fin, lorsque l'adulte est à « Vérifier les
   chemins », alors l'étape lui dit « Cette scène est une impasse. » à côté
@@ -8716,12 +8914,12 @@ proposition, retient cinq améliorations, puis décide les deux volets de
 **Questions ouvertes :** textes des écrans d'aide ; retouche de l'adulte
 qui ne justifie pas un doute sur l'ordre des passages ;
 effet d'un réglage
-de « Texte et pages » sur l'aperçu pendant qu'on le règle ; un
-avertissement apparu après l'ouverture de « Mettre en page » retire sa
-coche à « Relire », sans bloquer le PDF définitif selon F09.2 : cet écart
-entre l'ouverture d'une étape et le PDF reste à confirmer ; F11-AC63 et
-F11-AC84 ne citent pas la déclaration parmi ce qui ouvre « Mettre en
-page » : à accorder si le porteur confirme qu'elle est requise.
+de « Texte et pages » sur l'aperçu pendant qu'on le règle. Tranchés le
+15 octobre 2026 : l'avertissement apparu après l'ouverture de « Mettre en
+page » ne bloque pas le PDF définitif
+([F11.2](#f112--pdf-de-travail-et-pdf-définitif), « Une seule règle ») ; la
+déclaration est requise pour ouvrir « Mettre en page », F11-AC63 et AC84
+étant accordés.
 
 ## F12 — Lecture en ligne et diffusion volontaire
 
@@ -8774,7 +8972,15 @@ fige un instantané daté du contenu, indépendant des PDF ; il ne suit pas les
 modifications ultérieures. L'application signale que le livre a changé depuis
 la version partagée et indique si celle-ci et le dernier PDF définitif portent
 sur le même état. Les avertissements propres à l'impression (résolution
-d'image, mise en page) ne bloquent pas le partage.
+d'image, mise en page) ne bloquent pas le partage. **Précisé le 15 octobre
+2026** (entretien de l'étape 6) : une seule règle calcule ces conditions et
+celles du PDF définitif
+([F11.2](#f112--pdf-de-travail-et-pdf-définitif), « Une seule règle ») ;
+une image manquante ou illisible bloque aussi le partage, le lecteur en
+ligne ne devant pas montrer un trou, ce qui règle la question que le plan
+gardait pour l'étape 7 ; le partage demande que « Imprimer et partager »
+ait été ouverte une fois, et non que « Mettre en page » porte encore sa
+coche : un doute sur l'ordre des passages ne le bloque pas.
 
 **Confirmé le 3 octobre 2026 — copie datée :** le porteur a envisagé une
 lecture en direct du travail courant, avec un livre « momentanément

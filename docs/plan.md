@@ -106,8 +106,8 @@ l'étendue du périmètre, pas une durée.
 **Critères à écarter ou à accorder avant de servir de fin d'étape :**
 F07-AC06, conservé mais inapplicable en première livraison (demandes à
 l'oral) ; F03-AC02, qui porte sur le déplacement d'une scène vers un autre
-chapitre, différé ; F11-AC63 et F11-AC84, à accorder avec la déclaration
-requise en F11.6.
+chapitre, différé. F11-AC63 et F11-AC84 sont accordés le 15 octobre 2026
+avec la déclaration requise en F11.6.
 
 ## Vérifications techniques à lever
 
@@ -1347,6 +1347,100 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   lignes d'une section de liste de la feuille d'aventure (F04.2) ; seuil de
   résolution et définition conservée des images (F10) ; conservation des PDF
   définitifs successifs (F11.2) ; accès des élèves à l'aperçu (F11.2).
+  **Arbitré en entretien le 15 octobre 2026,** réponse par réponse, en
+  trois séries, et validé dans son ensemble par le porteur le même jour :
+  - les deux déclarations requises pour ouvrir « Mettre en page » (F11.6,
+    F11-AC63 et AC84 accordés) ; une seule règle pour le PDF définitif et le
+    partage, la coche de « Mettre en page » en plus pour le PDF définitif,
+    l'image manquante bloquant aussi le partage (F11.2, F12.1, F11-AC99,
+    AC100) ; tous les PDF définitifs gardés, supprimés à la main, le
+    dernier PDF de travail seul (F11.2, F11-AC101) ;
+  - le récit classique : filet au losange, titres de scène non imprimés,
+    titres de chapitre activés par défaut et numérotés, titre du livre et
+    du chapitre en en-tête, « Relire » à quatre tâches avec « Lire comme un
+    lecteur » (F11.5, F11.6, F11-AC102 à AC104) ; les gabarits des cinq
+    pages de présentation (F11.4, F11-AC105 à AC107) ; les listes de la
+    feuille qui remplissent leur page, sans réglage (F04.2, F04-AC42) ;
+  - le seuil de 200 points par pouce à la taille imprimée, la définition de
+    2 600 points gardée (F10, F10-AC35) ; ni aperçu ni PDF pour les élèves
+    (F11.2) ; la composition essayée chez Vercel dès le lot 1, sur une
+    branche à part (`essai-vercel`, jamais `main`), dans une préversion
+    protégée qui compose un livre intégré au code, sans la base ni aucune
+    donnée d'élève ;
+  - pour les écrans (recommandations acceptées, détail dans le
+    [design](design.md#étape-6--écrans-arrêtés-avant-de-construire-15-octobre-2026)) :
+    l'image se glisse dans la scène ouverte à côté de l'aperçu, comme dans
+    la page de scène, ce qui accorde F11.2 et F11-AC46 au glisser-déposer
+    décidé le 10 octobre ; page agrandie par défaut aux deux premières
+    étapes ; polices montrées par un exemple ; marges repliées ; page de
+    présentation modifiée dans le panneau à droite ; étape d'arrivée allégée
+    (« Nouveau PDF définitif » seulement si le livre a changé, liste sans
+    doublon, aide à la couverture sans prompt avant l'étape 8, volet
+    « Partager » à l'étape 7) ; moins de texte autour de l'aperçu.
+
+  Ces critères s'ajoutent au périmètre de l'étape.
+- **Autorisée le 15 octobre 2026,** pour elle seule, en deux temps : un
+  entretien court, puis la construction, après sa validation. Entretien
+  fait et validé le même jour (« Je valide, tu peux coder ») ; la
+  construction se fait en local, dans la même conversation, un commit par
+  lot ; rien n'est poussé sur `main` ni appliqué à la vraie base sans sa
+  demande ; aucun fichier n'est envoyé à un imprimeur et aucun service
+  payant n'est engagé.
+- **Découpage retenu par le porteur le 15 octobre 2026 :** sept lots, un
+  commit local par lot. Le contenu de chaque migration lui est dit au début
+  de son lot ; les écrans sans maquette se conçoivent avec impeccable et se
+  critiquent en deux lectures séparées sur captures.
+  1. **Composition et PDF de travail** — le livre composé d'après un
+     instantané de la base, Paged.js et Chromium aux versions figées (celui
+     de Playwright en local, `@sparticuz/chromium` chez Vercel), polices
+     embarquées, césure posée à la composition et contournement du
+     prototype réécrit ; numéros, renvois, en-tête, titres de partie ;
+     marques du PDF de travail posées après la mise en page, récapitulatif
+     pair ; carte des blocs ; « PDF de travail » à « Relire », déposé dans
+     le stockage ; Linux comparé à macOS sous Docker ; branche
+     `essai-vercel` et sa page de diagnostic. Migration `pdf_du_livre` : la
+     table des PDF produits et un stockage privé `livres` (F11-AC03, AC09,
+     AC15, AC16 à AC20, AC22, AC23, AC26, AC33, AC34, AC58 ; F09-AC09 ;
+     F05-AC08 et F10-AC14 pour le PDF de travail ; F04-AC17).
+  2. **Aperçu et scène ouverte à côté** — aperçu allégé affiché page par
+     page, page agrandie ou double page, son état ; clic sur un passage,
+     éditeur complet à côté, « Annuler » et « Tout annuler » ; renvoi
+     suivi, « Revenir au n° » ; parcours des problèmes ; « Relire » et ses
+     quatre tâches, « J'ai relu le livre » ; « Vérifier les chemins » en
+     colonne à côté de l'aperçu ; dernière étape quittée. Migration
+     `relire` (F11-AC27, AC30, AC46, AC47, AC59, AC61 pour « Relire »,
+     AC69, AC71, AC78, AC80 pour « Relire », AC83, AC85, AC87, AC88, AC90,
+     AC91).
+  3. **Règles de composition, images, pages de présentation** — coupures,
+     césure restreinte, alignement à gauche ; images à leur place, largeur
+     réglée réduite, seuil de résolution, contenu hors des marges, « À
+     confirmer » et « Garder ainsi » ; récit classique ; sections « Texte et
+     pages » et « Pages de début et de fin » ; feuille, dés et numéro de
+     page imprimés ; règles du jeu à portée de main dans la lecture.
+     Migration `mise_en_page` (F11-AC08, AC12, AC28, AC29, AC35 à AC41, AC48
+     à AC55, AC57, AC60, AC84, AC102 à AC107 ; F10-AC13, AC15, AC17 à AC19,
+     AC35 ; F04-AC19, AC24, AC42).
+  4. **Mettre en page** — ouverture selon la règle, deux volets, aperçu du
+     livre entier, « Ce passage dans le livre » (monter, descendre, placer
+     après, nouvelle page, « Annuler »), pages peu remplies, groupes de
+     mélange, « La mise en page me convient ». Migration `mettre_en_page`
+     (F11-AC10, AC11, AC31, AC32, AC42 à AC45, AC61, AC62, AC63, AC76,
+     AC77, AC80, AC92).
+  5. **Imprimer : PDF définitif** — la règle unique, refus motivé et
+     rappels, PDF définitif sur un instantané, PDF conservés, suppression,
+     place occupée, « le livre a changé depuis », aide à la couverture. Sans
+     migration prévue (F11-AC04 à AC07, AC56, AC72, AC99 à AC101 ; F09-AC04,
+     AC10 ; F10-AC14 ; F04-AC33).
+  6. **Ordre des passages** — « Réordonner les passages » sur les hauteurs
+     de la vraie composition, écart d'une double page, « Garder cet
+     ordre », doute sur l'ordre, passage suggéré, blanc dans un passage.
+     Migration `ordre_des_passages` (F11-AC21, AC64 à AC68, AC74, AC81,
+     AC82, AC86).
+  7. **Essai de bout en bout** — deux livres d'essai, à choix en classe et
+     classique, où figure chaque cas ; un parcours de « Relire » au PDF
+     définitif ; mesures chez Vercel (V1 à V3, V5) ; captures ; mode
+     d'emploi de son essai dans `app/README.md`. L'envoi à l'imprimeur (V6)
+     et l'exemplaire reçu reviennent au porteur.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 
@@ -1359,9 +1453,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   (F12-AC06, AC07, AC12) ; feuille conservée en ligne (F04-AC22, AC23).
 - **Dépend de :** étapes 5 et 6.
 - **Vérifications levées :** V16.
-- **À régler avant de commencer :** une image manquante bloque-t-elle le
-  partage (F12.1, F10) ; lecture par les classes d'un livre écrit en mode
-  personnel (F12.3).
+- **À régler avant de commencer :** lecture par les classes d'un livre écrit en mode
+  personnel (F12.3). L'image manquante, qui bloque aussi le partage, est
+  réglée le 15 octobre 2026 en F12.1, à l'entretien de l'étape 6.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 
@@ -1541,11 +1635,6 @@ Signalés sans être tranchés ; à accorder avant l'étape qui s'appuie dessus.
 - **F11.3 et F11.5 :** le passage suggéré dépend d'un essai des hauteurs ;
   l'agencement est retenu sans condition, alors qu'il repose sur le même
   modèle, non éprouvé (étape 6).
-- **F11.2 et F14 :** la conservation des PDF définitifs successifs est une
-  proposition « à revoir en F14 » ; F11-AC82 et F11.6 la tiennent pour
-  acquise (étape 6).
-- **F11.2, F11.6 et F12.1 :** ce qui bloque le PDF définitif et le partage
-  n'est pas dit de la même façon (étapes 6 et 7).
 - **Textes en retard sur les décisions :** « Statut et périmètre » des
   spécifications (choix et fidélité de l'aperçu « à vérifier », aucun
   prototype autorisé) ; brief, dont le fond date du 3 octobre (demandes de changements

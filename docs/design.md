@@ -1879,6 +1879,38 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
+
+Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans
+du Livre de la maquette (« Destination Livre et lecture d'essai », plus
+bas), acceptées avec l'entretien le même jour. Elles corrigent la forme ;
+les règles restent en F10, F11 et F12.1.
+
+- **Image dans la scène ouverte à côté de l'aperçu :** elle se glisse comme
+  les autres blocs de la copie, sans « Monter d'un bloc » ni « Descendre
+  d'un bloc » ; c'est la règle de la page de scène depuis le 10 octobre.
+- **Lecture de l'aperçu :** « Page agrandie » par défaut à « Relire » et à
+  « Vérifier les chemins », où l'on lit le livre ; « Double page » par
+  défaut à « Mettre en page », où les vis-à-vis comptent ; le choix est
+  gardé sur le poste.
+- **Police :** chaque carte montre une phrase écrite dans sa police, comme
+  les cartes d'alignement, son nom en petit.
+- **Marges :** une ligne « Marges · 16 · 20 · 15 · 20 mm · Modifier », qui
+  déplie les quatre champs et le schéma de double page.
+- **Page de présentation modifiée :** dans le panneau à droite, comme les
+  réglages d'un bloc, la petite double page suivant la saisie ; pas de
+  fenêtre par-dessus.
+- **Étape d'arrivée :** « Nouveau PDF définitif » seulement si le livre a
+  changé depuis le dernier ; la liste des PDF conservés comprend le
+  dernier, sans doublon au-dessus ; l'encadré de la couverture garde les
+  trois choses à préparer, sans « Idée d'illustration de couverture »
+  (F10.2, étape 8) ; le volet « Partager » n'apparaît qu'à l'étape 7.
+- **Autour de l'aperçu :** plus de bandeau « Aperçu à jour, calculé à… » ;
+  l'heure reste dans la ligne discrète « 39 passages · 23 pages · état de
+  16 h 40 », et « Mise à jour… » ne s'affiche que pendant un recalcul. Dans
+  « Ce passage dans le livre », la phrase d'explication passe derrière un
+  « i ».
+
 ### Étape 5 construite (14 octobre 2026)
 
 Ce que l'étape 5 du [plan](plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)

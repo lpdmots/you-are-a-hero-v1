@@ -1027,6 +1027,39 @@ l'élève le départ, les fins et les scènes à lien caché de son chapitre
 navigateur : elle tient d'un chapitre et d'une visite à l'autre sur ce
 poste, sans colonne de plus au compte.
 
+## Réalisation de l'étape 6 (15 octobre 2026)
+
+Choix techniques de l'étape 6 du [plan](plan.md) : composer et imprimer le
+livre. Les règles restent en F10, F11 et F12.1 ; la chaîne est celle de
+l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
+
+**Arrêté à l'entretien du 15 octobre 2026, avant de construire :**
+
+- **Fidélité :** l'aperçu et les PDF sortent du même Chromium, celui du
+  serveur, avec des polices embarquées. F11-AC30 se joue donc à l'intérieur
+  d'un même hébergement ; l'écart entre le Chromium de macOS (en local) et
+  celui de Linux (chez Vercel) ne touche que les essais, et se mesure sous
+  Docker avec le Chromium que Vercel exécute (`@sparticuz/chromium`).
+- **Aperçu affiché :** un PDF allégé (images réduites pour l'écran, mêmes
+  boîtes, donc mêmes pages) affiché page par page dans le navigateur ; les
+  clics se retrouvent par la carte des blocs que rend la composition. Un
+  HTML paginé renvoyé au navigateur aurait été recoupé par WebKit
+  (111 pages sur 145 différentes dans le prototype).
+- **Passage par le stockage :** une réponse d'une fonction Vercel ne
+  dépasse pas 4,5 Mo ; aperçu et PDF sont déposés dans un stockage privé de
+  Supabase et lus par une adresse signée. Limites de l'offre gratuite à
+  revérifier (de mémoire, 1 Go de fichiers et 5 Go de téléchargement par
+  mois) ; l'aperçu allégé les ménage.
+- **Délai :** environ 3 s pour 145 pages sur la machine du prototype ;
+  attendu, sans mesure, de 5 à 10 s chez Vercel, davantage au premier
+  appel. Les pages précédentes restent lisibles pendant le recalcul.
+- **Essai chez Vercel dès le lot 1 (V2) :** sur une branche à part,
+  `essai-vercel`, jamais `main`, une préversion protégée compose un livre
+  intégré au code, sans la base ni donnée d'élève, et rend ses durées.
+  Accord du porteur le 15 octobre 2026.
+- **Hauteurs de l'agencement (V4) :** prises sur la vraie composition, par
+  la carte des blocs, plutôt que sur un modèle approché.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte
