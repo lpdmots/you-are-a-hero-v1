@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
-import { aTraiter } from "@/domaine/controles";
+import { referenceScene } from "@/domaine/recit";
 import { avertissementsAcceptes, estEtapeLivre, etatChemins, etatRelire, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
 import { filtresDepuis } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
@@ -17,7 +17,8 @@ import { Plan } from "../_plan/Plan";
 import { Suivi } from "../_suivi/Suivi";
 import { Carnet } from "../_preparation/Carnet";
 import { Livre } from "../_livre/Livre";
-import { afficherChemins, afficherPoint } from "../_livre/points";
+import { afficherChemins, afficherRelire } from "../_livre/points";
+import { instantaneDuLivre } from "@/serveur/livre/livre";
 import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
 import styles from "./projet.module.css";
 
@@ -87,25 +88,36 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else if (onglet === "livre") {
-    const [livre, plan, magasin, demande, pdf] = await Promise.all([etatDuLivre(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams, pdfDuProjet(enseignant, projet.id)]);
+    const [livre, plan, magasin, demande, pdf, instantane] = await Promise.all([
+      etatDuLivre(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams, pdfDuProjet(enseignant, projet.id), instantaneDuLivre(enseignant, projet.id),
+    ]);
+    if (!livre || !instantane) notFound();
     const travail = pdf.find((x) => x.sorte === "travail");
-    if (!livre) notFound();
     const acceptes = avertissementsAcceptes(livre.problemes, livre.acceptations, livre.changements);
     const chemins = aChoix ? etatChemins(livre.problemes, acceptes, livre.cheminsVerifies) : null;
-    const relire = etatRelire(livre.problemes);
-    // « Mettre en page » et « Imprimer et partager » se construisent à l'étape 6 du plan ; leurs règles les fermeraient de toute façon
+    const relire = etatRelire(livre.problemes, acceptes, livre.livreRelu);
+    // « Mettre en page » et « Imprimer et partager » se construisent aux lots suivants de l'étape 6 ; leurs règles les fermeraient de toute façon
     const marques: Record<EtapeLivre, MarqueEtape> = { relire: relire.marque, chemins: chemins?.marque ?? null, page: "fermee", sortie: "fermee" };
-    // À l'étape 5 du plan, le Livre s'ouvre sur « Vérifier les chemins », seule étape construite
-    const etape: EtapeLivre = estEtapeLivre(demande.etape) && (aChoix || demande.etape !== "chemins") ? demande.etape : aChoix ? "chemins" : "relire";
+    // L'étape demandée, sinon la dernière quittée, sinon « Relire » la première fois (F11.6)
+    const valide = (x: unknown): x is EtapeLivre => estEtapeLivre(x) && (aChoix || x !== "chemins");
+    const etape: EtapeLivre = valide(demande.etape) ? demande.etape : valide(livre.derniereEtape) ? livre.derniereEtape : "relire";
+    const noms = Object.fromEntries(
+      plan.parties.flatMap((p) => p.chapitres.flatMap((c) => c.scenes.map((s) => {
+        const numero = instantane.livre.passages.find((x) => x.sceneId === s.id)?.numero;
+        return [s.id, `${numero ? `n° ${numero} · ` : ""}${referenceScene(s.reference)}`];
+      }))),
+    );
     contenu = (
       <Livre
         projet={{ id: projet.id, aChoix, deClasse }}
         etape={etape}
         marques={marques}
         chemins={chemins ? afficherChemins(chemins, plan, projet.id) : null}
-        relire={{ finir: relire.finir, graves: aTraiter(livre.problemes).filter((p) => p.etape === "relire").map((p) => afficherPoint(p, plan, projet.id)) }}
+        relire={afficherRelire(relire, plan, projet.id)}
         pdfDeTravail={travail ? { id: travail.id, etat: etatEnMots(travail.etatDu), pages: travail.pages } : null}
-        aideMasquee={enseignant.aidesMasquees.includes("livre-chemins")}
+        empreinte={instantane.empreinte}
+        noms={noms}
+        aideMasquee={{ relire: enseignant.aidesMasquees.includes("livre-relire"), chemins: enseignant.aidesMasquees.includes("livre-chemins") }}
         aideVue={magasin.get("aide-livre")?.value === "vue"}
       />
     );

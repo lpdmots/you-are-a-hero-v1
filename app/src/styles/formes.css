@@ -144,6 +144,11 @@
 .lien:hover {
   color: var(--canard-fonce);
 }
+.lien:disabled {
+  color: var(--graphite-3);
+  text-decoration: none;
+  cursor: default;
+}
 
 /* ——— Gommette : l'élève, jamais un verrou ——— */
 .gommette {

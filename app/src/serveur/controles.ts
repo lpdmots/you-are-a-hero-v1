@@ -5,7 +5,7 @@ import type { Enseignant } from "./adulte";
 import { projetDe } from "./lectures";
 import { estUuid, planDe, preparationDe } from "./recit";
 import { controler, type Probleme } from "@/domaine/controles";
-import type { Acceptation, Changement } from "@/domaine/livre";
+import { estEtapeLivre, type Acceptation, type Changement, type EtapeLivre } from "@/domaine/livre";
 
 /**
  * Les contrôles du livre (F09.2), tels que l'adulte les lit : la règle est celle du domaine,
@@ -36,6 +36,10 @@ export type EtatDuLivre = {
   changements: Changement[];
   /** « J'ai vérifié les chemins » est posée */
   cheminsVerifies: boolean;
+  /** « J'ai relu le livre » est posée */
+  livreRelu: boolean;
+  /** La dernière étape quittée, où le Livre se rouvre */
+  derniereEtape: EtapeLivre | null;
 };
 
 export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promise<EtatDuLivre | null> => {
@@ -43,7 +47,7 @@ export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promis
   if (!problemes) return null;
   const [acceptees, projet] = await Promise.all([
     e.supabase.from("avertissements_acceptes").select("cle, empreinte, accepte_le").eq("projet_id", projetId),
-    e.supabase.from("projets").select("chemins_verifies_le").eq("id", projetId).maybeSingle(),
+    e.supabase.from("projets").select("chemins_verifies_le, livre_relu_le, derniere_etape_livre").eq("id", projetId).maybeSingle(),
   ]);
   const erreur = acceptees.error ?? projet.error;
   if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
@@ -58,5 +62,11 @@ export const etatDuLivre = cache(async (e: Enseignant, projetId: string): Promis
     if (error) throw new Error(`Livre illisible : ${error.message}`);
     changements = ((data ?? []) as { scene_id: string; sens: "entree" | "sortie"; le: string }[]).map((c) => ({ sceneId: c.scene_id, sens: c.sens, le: c.le }));
   }
-  return { problemes, acceptations, changements, cheminsVerifies: Boolean(projet.data?.chemins_verifies_le) };
+  const derniere = projet.data?.derniere_etape_livre;
+  return {
+    problemes, acceptations, changements,
+    cheminsVerifies: Boolean(projet.data?.chemins_verifies_le),
+    livreRelu: Boolean(projet.data?.livre_relu_le),
+    derniereEtape: estEtapeLivre(derniere) ? derniere : null,
+  };
 });

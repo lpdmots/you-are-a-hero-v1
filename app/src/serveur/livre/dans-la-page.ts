@@ -17,7 +17,17 @@ export type OptionsDeLaPage = {
 };
 
 /** Un bloc à sa place sur une page, en millimètres depuis le coin de la page (la carte des blocs). */
-export type BlocPlace = { page: number; scene: string; bloc: string | null; x: number; y: number; l: number; h: number };
+export type BlocPlace = {
+  page: number;
+  scene: string;
+  bloc: string | null;
+  /** Un renvoi, à suivre d'un clic : la scène où il mène (F11-AC83) */
+  cible?: string;
+  x: number;
+  y: number;
+  l: number;
+  h: number;
+};
 
 export type RapportDeLaPage = {
   /** Pages du livre, page récapitulative et sa blanche non comprises */
@@ -153,11 +163,13 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
     }
 
     // La carte des blocs : où se trouve chaque bloc, pour retrouver la scène sous un clic
-    for (const el of contenu.querySelectorAll("[data-bloc], h2.numero, .debut-scene")) {
+    for (const el of contenu.querySelectorAll("[data-bloc], h2.numero, .debut-scene, b.renvoi[data-cible]")) {
       const r = el.getBoundingClientRect();
       if (!r.height && !r.width) continue;
       const passage = el.closest("section.passage");
-      rapport.carte.push({ page: n, scene: passage ? passage.dataset.scene : null, bloc: el.dataset.bloc || null, x: enMm(r.left - f.left), y: enMm(r.top - f.top), l: enMm(r.width), h: enMm(r.height) });
+      const place = { page: n, scene: passage ? passage.dataset.scene : null, bloc: el.dataset.bloc || null, x: enMm(r.left - f.left), y: enMm(r.top - f.top), l: enMm(r.width), h: enMm(r.height) };
+      if (el.dataset.cible) place.cible = el.dataset.cible;
+      rapport.carte.push(place);
     }
 
     // Ce qui dépasse de la zone de texte (F11-AC57)

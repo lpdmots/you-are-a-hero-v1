@@ -15,6 +15,11 @@ export type FiltresSuivi = {
   /** « Dont Alice s'occupe » : ses prises en charge ; « Tout son chapitre » : ce qu'elle peut ouvrir (F06-AC36) */
   mode: "occupe" | "chapitre";
   etat: Tampon | "tous";
+  /**
+   * Les seules scènes à finir pour le livre (F11-AC78) : incluses dans le livre et pas encore
+   * déclarées prêtes, depuis « Relire ». Facultatif : absent, il vaut « non ».
+   */
+  aFinir?: boolean;
 };
 export const SANS_FILTRE: FiltresSuivi = { chapitre: null, eleve: null, mode: "occupe", etat: "tous" };
 
@@ -29,6 +34,7 @@ export const tamponDeLaScene = (s: Scene): Tampon => tamponDe(s.etat, s.texteVid
 /** Les scènes que retiennent le chapitre et l'élève choisis : c'est sur elles que les tampons comptent. */
 export function filtrerHorsEtat(lignes: LigneSuivi[], f: FiltresSuivi): LigneSuivi[] {
   return lignes.filter(({ scene, chapitre }) => {
+    if (f.aFinir && (scene.horsLivre || chapitre.horsLivre || scene.etat === "prete")) return false;
     if (f.chapitre && chapitre.id !== f.chapitre) return false;
     if (f.eleve === "moi") return scene.priseParEnseignant;
     if (f.eleve) return f.mode === "occupe" ? scene.priseParEleve === f.eleve : chapitre.attributions.some((a) => a.eleveId === f.eleve);
@@ -115,6 +121,7 @@ export function filtresDepuis(demande: Record<string, string | string[] | undefi
     eleve: un(demande.eleve),
     mode: demande.mode === "chapitre" ? "chapitre" : "occupe",
     etat: etat && TAMPONS.has(etat) ? (etat as Tampon) : "tous",
+    ...(demande.livre === "finir" ? { aFinir: true } : {}),
   };
 }
 
@@ -125,5 +132,6 @@ export function adresseDesFiltres(f: FiltresSuivi, vue: "scenes" | "eleves" = "s
   if (f.eleve) p.set("eleve", f.eleve);
   if (f.eleve && f.eleve !== "moi" && f.mode === "chapitre") p.set("mode", "chapitre");
   if (f.etat !== "tous") p.set("etat", f.etat);
+  if (f.aFinir) p.set("livre", "finir");
   return p.toString();
 }

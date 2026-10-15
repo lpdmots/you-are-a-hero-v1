@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { TexteLu } from "@/composants/copie/Blocs";
 import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
-import type { Jeu, Livre, Services, Voisines } from "@/composants/copie/contexte";
+import { SANS_VOISINES, type Jeu, type Livre, type Services, type Voisines } from "@/composants/copie/contexte";
 import { deposer, reduire, REFUS_IMPORT } from "@/composants/importer";
 import { listerImages } from "../../../actions-images";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
@@ -31,7 +31,7 @@ import { encourager } from "../../../actions-encouragements";
 import { changerEtat, relireRelecture } from "../../../actions-relecture";
 import {
   ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, reglerVoisines, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
-  relireNumeros, relireTexte,
+  relireNumeros, relireTexte, retablirTexte,
 } from "../../../actions-texte";
 import { useCommandesScene } from "../../_plan/commandes";
 import { ChoisirDepart } from "../../_plan/Panneaux";
@@ -62,7 +62,7 @@ const instant = (): number => Date.now();
  * tampon ; la fiche de décision porte l'étape suivante (F07.1, F11.1).
  */
 export function PageScene({
-  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins, venuDuLivre, ouvrirChoix, lecture,
+  projet, plan, sceneId, eleves, texte: recu, relecture: relectureRecue, encouragements: encouragementsRecus, livre, jeu, voisines, voisinesAffichees, ouvrir, venuDuSuivi, suivi = "", venuDesChemins, venuDuLivre, ouvrirChoix, lecture, aCote,
 }: {
   projet: { id: string; deClasse: boolean; aChoix: boolean }; plan: Plan; sceneId: string; eleves: ElevePlan[];
   texte: TexteDeScene;
@@ -88,6 +88,19 @@ export function PageScene({
   ouvrirChoix?: string;
   /** Ouverte depuis la lecture d'essai : on y revient, où l'on en était (F09.1) ; ce que l'adresse de la lecture garde */
   lecture?: string;
+  /**
+   * Ouverte à côté de l'aperçu du livre (F11.2) : le même éditeur, son état et son menu, sans
+   * la consigne, les remises ni la relecture, qui restent dans la page de la scène.
+   */
+  aCote?: {
+    onFermer: () => void;
+    /** Où s'ouvrent les réglages d'un bloc : à droite du texte, par-dessus l'aperçu */
+    panneau: HTMLElement | null;
+    /** Le texte ou l'état a changé : l'aperçu se recalcule après une pause */
+    onModifie: () => void;
+    /** Au-dessus de la copie : le problème parcouru, la place du passage dans le livre */
+    dessus?: ReactNode;
+  };
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -108,7 +121,7 @@ export function PageScene({
     : venuDuSuivi
       ? `/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`
       : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
-  const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => routeur.push(retour) });
+  const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => (aCote ? aCote.onFermer() : routeur.push(retour)) });
 
   // Le texte : la page le reçoit à l'ouverture, puis ne le remplace que par un geste (échange, conflit)
   const [copie, setCopie] = useState({ texte: recu.texte, version: recu.version, generation: 0 });
@@ -202,6 +215,25 @@ export function PageScene({
     },
     imagesDuProjet: () => listerImages(projet.id),
     reglerVoisines: (affiche) => reglerVoisines(affiche),
+  };
+
+  // À côté de l'aperçu : « Tout annuler » rend la scène telle qu'à l'ouverture de l'éditeur (F11-AC47)
+  const [modifiee, setModifiee] = useState(false);
+  const [confirmeTout, setConfirmeTout] = useState(false);
+  const toutAnnuler = async () => {
+    setConfirmeTout(false);
+    setGeste(true);
+    if (!(await avantDePartir())) {
+      setGeste(false);
+      return dire({ texte: PAS_ENREGISTRE });
+    }
+    const fait = await retablirTexte(scene.id, versionLue.current, recu.texte);
+    setGeste(false);
+    if (!fait.ok) return dire({ texte: fait.erreur });
+    remplacer(fait.scene);
+    setModifiee(false);
+    aCote?.onModifie();
+    dire({ texte: `${referenceScene(scene.reference)} a retrouvé le texte qu’elle avait à l’ouverture.` });
   };
 
   const remplacer = (suite: TexteDeScene) => {
@@ -343,6 +375,7 @@ export function PageScene({
     setRappel(null);
     setSuspendue(null);
     setDecidee(etatScene === "valider");
+    aCote?.onModifie();
     dire({
       texte:
         // L'élève indiqué n'est plus dans le chapitre : la scène renvoyée n'est plus à personne (F01-AC25)
@@ -443,12 +476,351 @@ export function PageScene({
       }
     : null;
 
+  const menu = (
+  <Menu libelle={`Autres commandes de la scène ${ref}`} discret>
+    {(fermer) => (
+      <>
+        {projet.aChoix ? (
+          <>
+            <button type="button" onClick={() => { fermer(); if (depart?.id === scene.id) commandes.retirerDepart(); else commandes.designer(scene); }}>
+              {depart?.id === scene.id ? "Retirer le départ du livre" : "Départ du livre"}
+            </button>
+            <button type="button" onClick={() => { fermer(); commandes.basculerFin(scene); }}>
+              {scene.fin ? "Retirer le repère de fin" : "Fin de l’histoire"}
+            </button>
+            {/* Le départ porte toujours le n° 1 : il ne se fixe pas (F11-AC97) */}
+            {depart?.id === scene.id ? null : scene.numeroFixe ? (
+              <button
+                type="button"
+                onClick={() => {
+                  fermer();
+                  void libererNumero(scene.id).then((fait) =>
+                    dire({ texte: fait.ok ? `${ref} n’a plus de numéro fixé : le passage prend place à la suite des autres.` : fait.erreur }),
+                  );
+                }}
+              >
+                Libérer le numéro
+              </button>
+            ) : (
+              <button type="button" onClick={() => { fermer(); setNumero(true); }}>
+                Fixer son numéro…
+              </button>
+            )}
+            <hr />
+          </>
+        ) : null}
+        <Link href={`/projet/${projet.id}/lecture?depart=${scene.id}&de=scene&scene=${scene.id}`} onClick={() => fermer()}>
+          Lire à l’essai d’ici
+        </Link>
+        <button type="button" onClick={() => { fermer(); setVersions(true); }}>
+          Versions précédentes
+        </button>
+        <button type="button" onClick={() => { fermer(); commandes.basculerHorsLivre(scene); }}>
+          {scene.horsLivre ? "Réintégrer dans le livre" : "Exclure du livre"}
+        </button>
+        <button type="button" onClick={() => { fermer(); commandes.supprimerScene(scene); }}>
+          Supprimer
+        </button>
+      </>
+    )}
+  </Menu>
+  );
+  const notes = (
+    <>
+    {suspendue ? (
+      <div className="note note--bloque" role="alert">
+        <Icone nom="horloge" />
+        <p>{suspendue}</p>
+      </div>
+    ) : null}
+    {fait?.sorte === "conflit" ? (
+      <div className="note note--attend" role="status">
+        <Icone nom="apart" />
+        <p>
+          {projet.deClasse
+            ? "Quelqu’un a modifié cette scène pendant que vous la corrigiez. Vos corrections sont gardées à part ; la scène montre le texte à jour. "
+            : "Vous avez modifié cette scène dans une autre fenêtre. Ce que vous veniez d’écrire ici est gardé à part ; la scène montre le texte à jour. "}
+          {copies
+            .filter((c) => c.id === fait.copieId)
+            .map((c) => (
+              <span key={c.id}>{voir(c, projet.deClasse ? "Voir vos corrections" : "Voir ce texte")}</span>
+            ))}
+        </p>
+      </div>
+    ) : null}
+    {fait?.sorte === "retire" ? (
+      <div className="note note--ok" role="status">
+        <Icone nom="coche" />
+        <p>
+          {majuscule(nom(fait.copie).enPhrase)} {nom(fait.copie).enPhrase === "vos corrections" ? "ne sont plus gardées" : "n’est plus gardé"}
+          {nom(fait.copie).arrete ? ` : ${nom(fait.copie).arrete} peut de nouveau écrire dans cette scène.` : "."}
+        </p>
+        <span className="note__cmd">
+          <button type="button" className="btn btn--petit" disabled={geste} onClick={() => void annulerRetrait(fait.copie)}>
+            Annuler
+          </button>
+          <small className="ga-tant">tant que vous restez sur cette page</small>
+        </span>
+      </div>
+    ) : null}
+    {fait?.sorte === "echange" ? (
+      <div className="note note--ok" role="status">
+        <Icone nom="coche" />
+        <p>
+          {fait.phrase}{" "}
+          {copies
+            .filter((c) => c.id === fait.ancienId)
+            .map((c) => (
+              <span key={c.id}>{voir(c, "Voir l’ancien texte")}</span>
+            ))}
+        </p>
+      </div>
+    ) : null}
+    {aDire.length === 1 ? (
+      <div className="note note--attend">
+        <Icone nom="apart" />
+        <p>
+          {aDire[0].sorte === "ancien"
+            ? "L’ancien texte de la scène est gardé à part. "
+            : nom(aDire[0]).arrete
+              ? `Un texte ${de(nom(aDire[0]).arrete!)} est gardé à part : tant qu’il attend, ${nom(aDire[0]).arrete} ne peut pas écrire dans cette scène. `
+              : aDire[0].eleveId
+                ? "Le texte d’un élève est gardé à part. "
+                : projet.deClasse
+                  ? `Vos corrections du ${jourEnMots(aDire[0].gardeLe)} sont gardées à part. `
+                  : `Votre texte du ${jourEnMots(aDire[0].gardeLe)} est gardé à part. `}
+          {voir(aDire[0], !aDire[0].eleveId && aDire[0].sorte === "refus" && projet.deClasse ? "Voir vos corrections" : "Voir ce texte")}
+        </p>
+      </div>
+    ) : aDire.length > 1 ? (
+      <div className="note note--attend">
+        <Icone nom="apart" />
+        <p>
+          {aDire.length} textes sont gardés à part
+          {arretes.length ? ` : tant qu’ils attendent, ${enumerer(arretes)} ne ${arretes.length > 1 ? "peuvent" : "peut"} pas écrire dans cette scène. ` : ". "}
+          {aDire.map((c) => (
+            <span key={c.id}>{voir(c, nom(c).titre)} </span>
+          ))}
+        </p>
+      </div>
+    ) : null}
+    </>
+  );
+  const copieEl = (
+    <Copie
+      key={copie.generation}
+      texte={copie.texte}
+      version={copie.version}
+      cible={{ scene: scene.id }}
+      livre={livre}
+      droits={DROITS_ADULTE}
+      lieu={{ projetId: projet.id, sceneId: scene.id, chapitreId: chapitre.id }}
+      services={services}
+      protection={projet.deClasse}
+      jeu={jeu}
+      // À côté de l'aperçu, les extraits des scènes voisines ne figurent pas : le livre est à côté (3 octobre 2026)
+      voisines={aCote ? SANS_VOISINES : voisines}
+      voisinesAffichees={voisinesAffichees}
+      lienDeScene={(id) => `/projet/${projet.id}/scene/${id}`}
+      panneau={aCote ? aCote.panneau : panneau}
+      onPanneau={setReglages}
+      ouvrirChoix={ouvrirChoix}
+      marques
+      libelle={`Texte de la scène ${ref}`}
+      tete={onglets}
+      autre={autre}
+      onEtat={(suite) => {
+        setSauvegarde(suite.etat);
+        apresEtat(suite);
+      }}
+      onVide={setVide}
+      onVersion={(v) => {
+        versionLue.current = v;
+        if (aCote) {
+          setModifiee(true);
+          aCote.onModifie();
+        }
+      }}
+      apresRetour={() => dire({ texte: "Vos corrections sont enregistrées." })}
+      dessus={({ etat: e, reessayer }) =>
+        e.etat === "echec" ? (
+          <div className="note note--bloque" role="alert">
+            <Icone nom="alerte" />
+            <p>Vos dernières corrections ne sont pas encore enregistrées. Nouvel essai dans 10 s : gardez cette page ouverte.</p>
+            <span className="note__cmd">
+              <button type="button" className="btn btn--petit" onClick={reessayer}>
+                Réessayer maintenant
+              </button>
+            </span>
+          </div>
+        ) : null
+      }
+      pied={({ etat: e, annuler, peutAnnuler }) => (
+        <>
+          {e.etat === "enregistre" ? (
+            <p className="sauv" role="status">
+              <Icone nom="coche" />
+              Enregistré
+            </p>
+          ) : (
+            <p className={`sauv ${e.etat === "echec" ? "sauv--echec" : "sauv--attente"}`} role="status">
+              Pas encore enregistré
+            </p>
+          )}
+          {aCote ? (
+            <span className="a-cote__annuler">
+              <button type="button" className="btn btn--petit" disabled={!peutAnnuler} onClick={annuler}>
+                <Icone nom="refaire" />
+                Annuler
+              </button>
+              {confirmeTout ? (
+                <span className="a-cote__confirme" role="group" aria-label="Tout annuler">
+                  <span>Revenir au texte de l’ouverture ?</span>
+                  <button type="button" className="btn btn--petit" disabled={geste} onClick={() => void toutAnnuler()}>
+                    Tout annuler
+                  </button>
+                  <button type="button" className="lien" onClick={() => setConfirmeTout(false)}>
+                    Garder
+                  </button>
+                </span>
+              ) : (
+                <button type="button" className="lien" disabled={!modifiee} onClick={() => setConfirmeTout(true)}>
+                  Tout annuler
+                </button>
+              )}
+            </span>
+          ) : null}
+        </>
+      )}
+    />
+  );
+  const decision = (
+    <FicheDecision
+      sorte={sorte}
+      etat={etatScene}
+      vide={vide}
+      aChoix={projet.aChoix}
+      qui={qui}
+      derniere={derniereRemise ? { par: derniereRemise.eleveId ? nomEleve(derniereRemise.eleveId) : null, le: derniereRemise.remisLe } : null}
+      echec={sauvegarde === "echec"}
+      ailleurs={
+        remiseMontree
+          ? { phrase: `Vous lisez le texte ${nomDeRemise(remiseMontree, remises).toLowerCase()}.` }
+          : montree
+            ? { phrase: `Vous lisez ${nom(montree).enPhrase}, ${nom(montree).sous}.` }
+            : null
+      }
+      rappel={rappel}
+      reprise={reprise}
+      occupe={geste}
+      onEtat={(e, options) => void choisirEtat(e, "fiche", options)}
+      onReprise={(remarque) => void choisirEtat("reprendre", "tampon", { remarque })}
+      onAnnulerReprise={() => setReprise(false)}
+      onPasMaintenant={() => setRappel(null)}
+      onTexteDeLaScene={() => setOnglet("scene")}
+      suite={
+        decidee && projet.deClasse ? (
+          suivante ? (
+            <Link className="btn btn--large decision__suite" href={`/projet/${projet.id}/scene/${suivante.scene.id}${venuDuSuivi ? `?de=suivi${suivi ? `&suivi=${encodeURIComponent(suivi)}` : ""}` : ""}`}>
+              Suivante à valider : {referenceScene(suivante.scene.reference)}
+              <Icone nom="fleche" />
+            </Link>
+          ) : (
+            <p className="decision__aide">Plus de scène à valider{venuDuSuivi ? " dans cette liste" : ""}.</p>
+          )
+        ) : null
+      }
+    />
+  );
+  const fenetres = (
+    <>
+      {versions ? (
+        <VersionsPrecedentes
+          sceneId={scene.id}
+          eleves={eleves}
+          deClasse={projet.deClasse}
+          livre={livre}
+          onFermer={() => setVersions(false)}
+          onRemis={(suite) => {
+            remplacer(suite);
+            setOnglet("scene");
+            setFait(null);
+            setVersions(false);
+            aCote?.onModifie();
+            dire({ texte: "Ce texte est maintenant le texte de la scène. Celui qu’il remplace est dans les versions précédentes." });
+          }}
+        />
+      ) : null}
+      {choixDepart ? (
+        <ChoisirDepart
+          plan={plan}
+          onChoisir={(id) => {
+            const autreScene = scenesDe(plan).find((x) => x.id === id);
+            setChoixDepart(false);
+            if (autreScene) commandes.designer(autreScene);
+          }}
+          onFermer={() => setChoixDepart(false)}
+        />
+      ) : null}
+      {numero ? (
+        <div className="a-cote__fiche-numero">
+          <FicheNumero
+            sceneId={scene.id}
+            nom={ref}
+            onFermer={() => setNumero(false)}
+            onFixe={(n) => {
+              setNumero(false);
+              dire({ texte: `${ref} garde le n° ${n}.` });
+            }}
+          />
+        </div>
+      ) : null}
+      {commandes.dialogue}
+    </>
+  );
+
+  // À côté de l'aperçu du livre : l'en-tête de la scène, puis sa copie (F11.2)
+  if (aCote) {
+    return (
+      <div className="a-cote sur-chapitre" style={varsCouleur(chapitre.couleur)}>
+        <header className="a-cote__tete">
+          <span className="fiche__ref">{ref}</span>
+          <h2 className="a-cote__titre">{titre.trim() || "Sans titre"}</h2>
+          <EtatScene etat={etatScene} vide={vide} sorte={sorte} nom={ref} onChoisir={(e) => void choisirEtat(e, "tampon")} />
+          {menu}
+          <button type="button" className="btn btn--petit a-cote__fermer" onClick={aCote.onFermer}>
+            <Icone nom="fermer" />
+            Fermer
+          </button>
+        </header>
+        <p className="a-cote__sous">
+          <span className="a-cote__chapitre">{chapitre.titre}</span>
+          {scene.horsLivre ? <span className="repere">hors du livre</span> : null}
+          <span>
+            Consigne, remises et relecture : <Link href={`/projet/${projet.id}/scene/${scene.id}?de=livre`}>page de la scène</Link>
+          </span>
+        </p>
+        {aCote.dessus}
+        {rappel || reprise || suspendue ? decision : null}
+        {notes}
+        {copieEl}
+        {fenetres}
+      </div>
+    );
+  }
+
   return (
     <div className="sur-chapitre" style={varsCouleur(chapitre.couleur)}>
       <nav className="fil" aria-label="Fil d’Ariane">
         <Link href={retour}>
           <Icone nom="fleche-g" />
-          {lecture ? "Retour à la lecture d’essai" : venuDuLivre ? "Retour au Livre" : venuDuSuivi ? "Retour au Suivi" : `Retour à ${chapitre.titre}`}
+          {lecture
+            ? "Retour à la lecture d’essai"
+            : venuDuLivre
+              ? "Retour au Livre"
+              : venuDuSuivi
+                ? /(^|&)livre=finir(&|$)/.test(suivi) ? "Retour aux scènes à finir" : "Retour au Suivi"
+                : `Retour à ${chapitre.titre}`}
         </Link>
         <span aria-hidden="true">/</span>
         <span aria-current="page">{ref}</span>
@@ -475,53 +847,7 @@ export function PageScene({
           />
         </h1>
         <EtatScene etat={etatScene} vide={vide} sorte={sorte} nom={ref} onChoisir={(e) => void choisirEtat(e, "tampon")} />
-        <Menu libelle={`Autres commandes de la scène ${ref}`} discret>
-          {(fermer) => (
-            <>
-              {projet.aChoix ? (
-                <>
-                  <button type="button" onClick={() => { fermer(); if (depart?.id === scene.id) commandes.retirerDepart(); else commandes.designer(scene); }}>
-                    {depart?.id === scene.id ? "Retirer le départ du livre" : "Départ du livre"}
-                  </button>
-                  <button type="button" onClick={() => { fermer(); commandes.basculerFin(scene); }}>
-                    {scene.fin ? "Retirer le repère de fin" : "Fin de l’histoire"}
-                  </button>
-                  {/* Le départ porte toujours le n° 1 : il ne se fixe pas (F11-AC97) */}
-                  {depart?.id === scene.id ? null : scene.numeroFixe ? (
-                    <button
-                      type="button"
-                      onClick={() => {
-                        fermer();
-                        void libererNumero(scene.id).then((fait) =>
-                          dire({ texte: fait.ok ? `${ref} n’a plus de numéro fixé : le passage prend place à la suite des autres.` : fait.erreur }),
-                        );
-                      }}
-                    >
-                      Libérer le numéro
-                    </button>
-                  ) : (
-                    <button type="button" onClick={() => { fermer(); setNumero(true); }}>
-                      Fixer son numéro…
-                    </button>
-                  )}
-                  <hr />
-                </>
-              ) : null}
-              <Link href={`/projet/${projet.id}/lecture?depart=${scene.id}&de=scene&scene=${scene.id}`} onClick={() => fermer()}>
-                Lire à l’essai d’ici
-              </Link>
-              <button type="button" onClick={() => { fermer(); setVersions(true); }}>
-                Versions précédentes
-              </button>
-              <button type="button" onClick={() => { fermer(); commandes.basculerHorsLivre(scene); }}>
-                {scene.horsLivre ? "Réintégrer dans le livre" : "Exclure du livre"}
-              </button>
-              <button type="button" onClick={() => { fermer(); commandes.supprimerScene(scene); }}>
-                Supprimer
-              </button>
-            </>
-          )}
-        </Menu>
+        {menu}
       </header>
       <div className={styles.reperes}>
         {projet.deClasse ? <QuiSenOccupe scene={scene} chapitre={chapitre} eleves={eleves} /> : null}
@@ -551,139 +877,8 @@ export function PageScene({
 
       <div className={styles.colonnes}>
         <section className={styles.texte} aria-label="Texte de la scène">
-          {suspendue ? (
-            <div className="note note--bloque" role="alert">
-              <Icone nom="horloge" />
-              <p>{suspendue}</p>
-            </div>
-          ) : null}
-          {fait?.sorte === "conflit" ? (
-            <div className="note note--attend" role="status">
-              <Icone nom="apart" />
-              <p>
-                {projet.deClasse
-                  ? "Quelqu’un a modifié cette scène pendant que vous la corrigiez. Vos corrections sont gardées à part ; la scène montre le texte à jour. "
-                  : "Vous avez modifié cette scène dans une autre fenêtre. Ce que vous veniez d’écrire ici est gardé à part ; la scène montre le texte à jour. "}
-                {copies
-                  .filter((c) => c.id === fait.copieId)
-                  .map((c) => (
-                    <span key={c.id}>{voir(c, projet.deClasse ? "Voir vos corrections" : "Voir ce texte")}</span>
-                  ))}
-              </p>
-            </div>
-          ) : null}
-          {fait?.sorte === "retire" ? (
-            <div className="note note--ok" role="status">
-              <Icone nom="coche" />
-              <p>
-                {majuscule(nom(fait.copie).enPhrase)} {nom(fait.copie).enPhrase === "vos corrections" ? "ne sont plus gardées" : "n’est plus gardé"}
-                {nom(fait.copie).arrete ? ` : ${nom(fait.copie).arrete} peut de nouveau écrire dans cette scène.` : "."}
-              </p>
-              <span className="note__cmd">
-                <button type="button" className="btn btn--petit" disabled={geste} onClick={() => void annulerRetrait(fait.copie)}>
-                  Annuler
-                </button>
-                <small className="ga-tant">tant que vous restez sur cette page</small>
-              </span>
-            </div>
-          ) : null}
-          {fait?.sorte === "echange" ? (
-            <div className="note note--ok" role="status">
-              <Icone nom="coche" />
-              <p>
-                {fait.phrase}{" "}
-                {copies
-                  .filter((c) => c.id === fait.ancienId)
-                  .map((c) => (
-                    <span key={c.id}>{voir(c, "Voir l’ancien texte")}</span>
-                  ))}
-              </p>
-            </div>
-          ) : null}
-          {aDire.length === 1 ? (
-            <div className="note note--attend">
-              <Icone nom="apart" />
-              <p>
-                {aDire[0].sorte === "ancien"
-                  ? "L’ancien texte de la scène est gardé à part. "
-                  : nom(aDire[0]).arrete
-                    ? `Un texte ${de(nom(aDire[0]).arrete!)} est gardé à part : tant qu’il attend, ${nom(aDire[0]).arrete} ne peut pas écrire dans cette scène. `
-                    : aDire[0].eleveId
-                      ? "Le texte d’un élève est gardé à part. "
-                      : projet.deClasse
-                        ? `Vos corrections du ${jourEnMots(aDire[0].gardeLe)} sont gardées à part. `
-                        : `Votre texte du ${jourEnMots(aDire[0].gardeLe)} est gardé à part. `}
-                {voir(aDire[0], !aDire[0].eleveId && aDire[0].sorte === "refus" && projet.deClasse ? "Voir vos corrections" : "Voir ce texte")}
-              </p>
-            </div>
-          ) : aDire.length > 1 ? (
-            <div className="note note--attend">
-              <Icone nom="apart" />
-              <p>
-                {aDire.length} textes sont gardés à part
-                {arretes.length ? ` : tant qu’ils attendent, ${enumerer(arretes)} ne ${arretes.length > 1 ? "peuvent" : "peut"} pas écrire dans cette scène. ` : ". "}
-                {aDire.map((c) => (
-                  <span key={c.id}>{voir(c, nom(c).titre)} </span>
-                ))}
-              </p>
-            </div>
-          ) : null}
-          <Copie
-            key={copie.generation}
-            texte={copie.texte}
-            version={copie.version}
-            cible={{ scene: scene.id }}
-            livre={livre}
-            droits={DROITS_ADULTE}
-            lieu={{ projetId: projet.id, sceneId: scene.id, chapitreId: chapitre.id }}
-            services={services}
-            protection={projet.deClasse}
-            jeu={jeu}
-            voisines={voisines}
-            voisinesAffichees={voisinesAffichees}
-            lienDeScene={(id) => `/projet/${projet.id}/scene/${id}`}
-            panneau={panneau}
-            onPanneau={setReglages}
-            ouvrirChoix={ouvrirChoix}
-            marques
-            libelle={`Texte de la scène ${ref}`}
-            tete={onglets}
-            autre={autre}
-            onEtat={(suite) => {
-              setSauvegarde(suite.etat);
-              apresEtat(suite);
-            }}
-            onVide={setVide}
-            onVersion={(v) => {
-              versionLue.current = v;
-            }}
-            apresRetour={() => dire({ texte: "Vos corrections sont enregistrées." })}
-            dessus={({ etat: e, reessayer }) =>
-              e.etat === "echec" ? (
-                <div className="note note--bloque" role="alert">
-                  <Icone nom="alerte" />
-                  <p>Vos dernières corrections ne sont pas encore enregistrées. Nouvel essai dans 10 s : gardez cette page ouverte.</p>
-                  <span className="note__cmd">
-                    <button type="button" className="btn btn--petit" onClick={reessayer}>
-                      Réessayer maintenant
-                    </button>
-                  </span>
-                </div>
-              ) : null
-            }
-            pied={({ etat: e }) =>
-              e.etat === "enregistre" ? (
-                <p className="sauv" role="status">
-                  <Icone nom="coche" />
-                  Enregistré
-                </p>
-              ) : (
-                <p className={`sauv ${e.etat === "echec" ? "sauv--echec" : "sauv--attente"}`} role="status">
-                  Pas encore enregistré
-                </p>
-              )
-            }
-          />
+          {notes}
+          {copieEl}
         </section>
         <aside className="cote-copie">
           <div className="cote-copie__colle">

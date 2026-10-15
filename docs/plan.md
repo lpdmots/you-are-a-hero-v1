@@ -1502,6 +1502,54 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 16 unitaires, 13 de composition par Chromium
       (`npm run test:livre`, nouveau projet de tests), 4 contre la base,
       1 parcours.
+  - **Lot 2 — aperçu et scène ouverte à côté : construit le 15 octobre
+    2026.** L'aperçu (`app/src/serveur/livre/apercu.ts`) est la composition
+    du PDF de travail, images allégées à 900 points, gardée dans le seau
+    privé sous l'empreinte du contenu, et affichée page par page par pdf.js
+    (`_livre/Apercu.tsx`) ; un clic sur un passage ouvre sa scène à côté —
+    la page de scène elle-même, dans un mode « à côté de l'aperçu » —, un
+    clic sur un renvoi suit le choix, avec « Revenir au n° » ; la page relit
+    le livre deux secondes et demie après un enregistrement, et l'aperçu se
+    recalcule quand l'empreinte change. « Annuler » et « Tout annuler » au
+    pied de la copie. « Relire » a ses quatre tâches et « J'ai relu le
+    livre » ; « Vérifier les chemins » passe en colonne, son « Ouvrir la
+    scène » ouvre la scène à côté ; le parcours des problèmes ; le Suivi
+    filtré sur les scènes à finir (`?livre=finir`) ; l'aide de « Relire » ;
+    le Livre rouvert sur la dernière étape quittée. Migration
+    `20261015110000_relire.sql`, base locale seulement : deux colonnes du
+    projet (`livre_relu_le`, `derniere_etape_livre`), et le seau `livres`
+    qui accepte la carte des blocs en JSON.
+    - **Critères fermés :** F11-AC27, AC30 (l'aperçu et le PDF, images
+      allégées comprises, ont les mêmes lignes aux mêmes places), AC46,
+      AC47, AC59, AC61 pour « Relire », AC69 (sauf l'image manquante, au
+      lot 3), AC71, AC78, AC80 pour « Relire », AC83, AC85, AC87, AC88,
+      AC90, AC91 ; la dernière étape quittée, qui attendait depuis
+      l'étape 5.
+    - **Critères qui attendent :** l'image manquante signalée à « Relire »
+      (F11-AC69), au lot 3, avec les contrôles d'images ; AC61 et AC80 pour
+      « Mettre en page », au lot 4.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      la scène à côté porte sa référence, son titre (qui se change dans sa
+      page), son tampon d'état, le menu ⋯ de sa page et « Fermer » ;
+      dessous, le chapitre et « Consigne, remises et relecture : page de la
+      scène » ; le rappel avant « prête » et la remarque de reprise
+      s'ouvrent au-dessus de la copie ; « Tout annuler » ne s'active
+      qu'après une modification et se confirme sur place (« Revenir au texte
+      de l'ouverture ? ») ; les réglages d'un bloc s'ouvrent à droite du
+      texte, par-dessus l'aperçu ; un renvoi suivi ouvre la scène de sa
+      destination ; le compteur « Problèmes 1 / 8 » parcourt les points de
+      l'étape en cours et ouvre leur scène avec la carte du point ; à
+      « Relire », la tâche ouverte d'abord est la première qui a un point,
+      sinon « Ce qui reste à écrire » s'il reste des scènes à finir, sinon
+      « Lire et corriger » ; en récit classique, « Étape suivante : Mettre en
+      page » ; le Suivi filtré garde les filtres chapitre et élève, sans
+      tampons ni vue « Élèves », et dit « Plus de scène à finir pour le
+      livre. » avec « Retour au Livre » en bouton quand la liste est vide ;
+      une page de scène ouverte depuis ce Suivi dit « Retour aux scènes à
+      finir » ; sous 1 100 points, « Scène S014 » et « Dans le livre » en
+      onglets.
+    - **Tests automatiques :** 5 unitaires, 1 de composition (F11-AC30),
+      7 parcours.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

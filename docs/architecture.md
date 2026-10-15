@@ -1133,6 +1133,38 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   fidélité d'un hébergement à l'autre n'était pas requise ; elle est
   constatée.
 
+**Lot 2 — aperçu et scène ouverte à côté (15 octobre 2026) :**
+
+- **L'aperçu** est la composition du PDF de travail, marques comprises, avec
+  les vignettes de l'import (900 points) à la place des images : les boîtes
+  ne changent pas, les pages non plus (F11-AC30 essayée sur des images de
+  1 800 et de 900 points). Le PDF et sa carte des blocs sont déposés dans le
+  seau `livres` sous `apercu-<empreinte>` ; une même empreinte reprend
+  l'aperçu sans recomposer (0,05 s en local, contre 1,7 s pour composer
+  « Les passeurs de brume ») ; seul le dernier est gardé. Le navigateur lit le
+  PDF par une adresse signée de dix minutes, directement dans le stockage.
+- **Affichage** : pdf.js (`pdfjs-dist` 5.4.394) dessine chaque page dans un
+  canevas quand elle approche de l'écran ; le travailleur de pdf.js est
+  chargé par son adresse de module. La carte des blocs, en millimètres,
+  donne ce qui est sous un clic : un renvoi d'abord (marge de 0,8 mm), puis
+  le bloc et sa scène. Chaque passage et chaque renvoi a aussi son bouton,
+  masqué, pour le clavier et les lecteurs d'écran.
+- **Recalcul** : la page du Livre lit à chaque rendu l'empreinte du contenu
+  (l'instantané sans Chromium) ; l'aperçu se recompose quand elle diffère de
+  la sienne. Un enregistrement du texte, qui ne passe pas par une action
+  serveur, demande une relecture de la page deux secondes et demie après ;
+  les commandes de la scène (état, exclusion, fin) la demandent d'elles-mêmes.
+- **La scène à côté** est `PageScene` dans un mode `aCote`, chargée par une
+  action serveur qui rend ce que sa page lit (`src/serveur/scene.ts`,
+  partagé avec la page) : même éditeur, même tampon d'état et mêmes
+  incidents de sauvegarde. « Annuler » est l'historique de Plate, exposé au
+  pied de la copie ; « Tout annuler » réécrit le texte de l'ouverture sur la
+  version lue (`retablirTexte`), et ne fait rien si quelqu'un l'a changé
+  entre-temps. Les extraits des scènes voisines n'y figurent pas.
+- **Schéma** : `projets.livre_relu_le` et `projets.derniere_etape_livre`,
+  modifiables par l'adulte (droit par colonne) ; le seau `livres` accepte
+  `application/json`.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

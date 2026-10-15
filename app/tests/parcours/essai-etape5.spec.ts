@@ -24,7 +24,7 @@ test("Étape 5 — vérifier les chemins, les corriger, lire le livre à l'essai
   await sql("update scenes set etat = 'prete' where projet_id = $1", [s.projet]);
 
   // 1. « Vérifier les chemins » : un choix à relier et une impasse
-  await aller(page, `/projet/${s.projet}/livre`);
+  await aller(page, `/projet/${s.projet}/livre?etape=chemins`);
   const fiche = page.locator(".controles");
   const tache = (nom: string) => fiche.getByRole("list", { name: "Tâches de l’étape" }).getByRole("button", { name: new RegExp(nom) });
   await expect(fiche.locator(".tache-panneau .point")).toContainText("Cette scène est une impasse.");
@@ -33,10 +33,10 @@ test("Étape 5 — vérifier les chemins, les corriger, lire le livre à l'essai
   await tache("Choix à relier").click();
   await expect(fiche.locator(".tache-panneau .point")).toContainText("« Suivre le héron » ne mène nulle part.");
   // La scène s'ouvre sur ce choix ; la destination y est désignée, puis « Retour au Livre »
-  await fiche.getByRole("link", { name: "Ouvrir la scène" }).click();
+  await fiche.getByRole("button", { name: "Ouvrir la scène" }).click();
   await expect(page.locator(".cx").first().getByLabel("Ce que fait le lecteur")).toHaveValue("Suivre le héron");
   await semerBlocs(s.base, sentier, [recit("Un chant montait des fougères."), choixAuto("Traverser le pont", pont), choixAuto("Suivre le héron", autel)]);
-  await page.getByRole("link", { name: "Retour au Livre" }).click();
+  await page.locator(".a-cote").getByRole("button", { name: "Fermer" }).click();
   await expect(tache("Choix à relier")).not.toContainText(/\d\s*$/);
 
   // 2. La lecture d'essai, du départ à la fin

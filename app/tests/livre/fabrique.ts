@@ -1,3 +1,4 @@
+import { crc32, deflateSync } from "node:zlib";
 import { getDocument } from "pdfjs-dist/legacy/build/pdf.mjs";
 import type { Texte } from "@/domaine/copie";
 import { livreACompose, reglagesDeDepart, type LivreACompose, type ReglagesDuLivre } from "@/domaine/composition";
@@ -131,4 +132,23 @@ export async function lirePdf(pdf: Buffer | Uint8Array): Promise<PageLue[]> {
     pages.push({ lignes, largeur: vue.width, hauteur: vue.height, elements });
   }
   return pages;
+}
+
+/** Une image PNG unie de la taille voulue, fabriquée sans bibliothèque. */
+export function png(largeur: number, hauteur: number, couleur: [number, number, number] = [90, 140, 160]): Buffer {
+  const morceau = (type: string, donnees: Buffer) => {
+    const t = Buffer.concat([Buffer.from(type, "ascii"), donnees]);
+    const l = Buffer.alloc(4);
+    l.writeUInt32BE(donnees.length);
+    const c = Buffer.alloc(4);
+    c.writeUInt32BE(crc32(t));
+    return Buffer.concat([l, t, c]);
+  };
+  const entete = Buffer.alloc(13);
+  entete.writeUInt32BE(largeur, 0);
+  entete.writeUInt32BE(hauteur, 4);
+  entete.set([8, 2, 0, 0, 0], 8);
+  const ligne = Buffer.concat([Buffer.from([0]), Buffer.from(Array.from({ length: largeur }, () => couleur).flat())]);
+  const brut = Buffer.concat(Array.from({ length: hauteur }, () => ligne));
+  return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), morceau("IHDR", entete), morceau("IDAT", deflateSync(brut)), morceau("IEND", Buffer.alloc(0))]);
 }

@@ -1,10 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { avertissementsAcceptes, empreinteDe, etatChemins } from "@/domaine/livre";
+import { avertissementsAcceptes, empreinteDe, estEtapeLivre, etatChemins, etatRelire } from "@/domaine/livre";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { etatDuLivre } from "@/serveur/controles";
-import { estUuid } from "@/serveur/recit";
+import { estUuid, planDe } from "@/serveur/recit";
+import { projetDe } from "@/serveur/lectures";
+import { donneesDeLaScene, type DonneesDeLaScene } from "@/serveur/scene";
+import { scenesDe, type Plan } from "@/domaine/recit";
 
 /**
  * Les deux jugements de « Vérifier les chemins » (F11.6) : « C'est voulu » sur un
@@ -56,4 +59,43 @@ export async function declarerChemins(projetId: string, declaree: boolean): Prom
   if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
   rafraichir(projetId);
   return { ok: true };
+}
+
+/** « J'ai relu le livre » (F11-AC88), posée quand il ne reste rien à « Relire », ou retirée. */
+export async function declarerRelu(projetId: string, declaree: boolean): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
+  if (declaree) {
+    const livre = await etatDuLivre(e, projetId);
+    if (!livre) return { ok: false, erreur: "Projet inconnu." };
+    const etat = etatRelire(livre.problemes, avertissementsAcceptes(livre.problemes, livre.acceptations, livre.changements), false);
+    if (!etat.declarable) return { ok: false, erreur: "Il reste quelque chose à faire avant de le déclarer." };
+  }
+  const { data, error } = await e.supabase
+    .from("projets")
+    .update({ livre_relu_le: declaree ? new Date().toISOString() : null })
+    .eq("id", projetId)
+    .select("id");
+  if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+/** La dernière étape du Livre ouverte : le Livre s'y rouvre (F11.6). */
+export async function noterEtapeDuLivre(projetId: string, etape: string): Promise<void> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId) || !estEtapeLivre(etape)) return;
+  await e.supabase.from("projets").update({ derniere_etape_livre: etape }).eq("id", projetId);
+}
+
+/** La scène ouverte à côté de l'aperçu (F11.2) : ce que son éditeur demande, comme sa page. */
+export async function ouvrirSceneDuLivre(projetId: string, sceneId: string): Promise<{ ok: true; plan: Plan; donnees: DonneesDeLaScene } | { ok: false; erreur: string }> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId) || !estUuid(sceneId)) return { ok: false, erreur: "Scène introuvable." };
+  const projet = await projetDe(e, projetId);
+  if (!projet) return { ok: false, erreur: "Projet inconnu." };
+  const plan = await planDe(e, projetId);
+  if (!scenesDe(plan).some((s) => s.id === sceneId)) return { ok: false, erreur: "Cette scène n’est plus dans le plan." };
+  const donnees = await donneesDeLaScene(e, projet, plan, sceneId);
+  return donnees ? { ok: true, plan, donnees } : { ok: false, erreur: "Scène introuvable." };
 }

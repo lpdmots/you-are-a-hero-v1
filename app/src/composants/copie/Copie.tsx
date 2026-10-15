@@ -58,7 +58,14 @@ type Bandeau = {
 
 type Commande = { cle: string; nom: string; aide: string; icone: NomIcone; faire: () => void };
 
-export type PiedDeCopie = { etat: EtatTexte; vide: boolean; reessayer: () => void };
+export type PiedDeCopie = {
+  etat: EtatTexte;
+  vide: boolean;
+  reessayer: () => void;
+  /** Revenir d'un pas en arrière dans ce qui a été écrit (F11.2, « Annuler ») */
+  annuler: () => void;
+  peutAnnuler: boolean;
+};
 
 /** Ce qui se montre à la place du texte de la scène : un texte gardé à part, dans son onglet */
 export type AutreTexte = { barre?: ReactNode; corps: ReactNode; pied?: ReactNode };
@@ -931,7 +938,11 @@ export function Copie({
   };
 
   const protege = paragrapheCourant();
-  const ou: PiedDeCopie = { etat: sauvegarde.etat, vide, reessayer: () => void sauvegarde.reessayer() };
+  const ou: PiedDeCopie = {
+    etat: sauvegarde.etat, vide, reessayer: () => void sauvegarde.reessayer(),
+    annuler: () => e.tf.undo(),
+    peutAnnuler: (editor.history?.undos.length ?? 0) > 0,
+  };
   return (
     <Contexte value={contexte}>
       <SortieGardee />

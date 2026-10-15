@@ -17,7 +17,7 @@ import { etatEnMots, pdfDe, SEAU, type PdfDuLivre } from "./pdf";
  * se voit à l'empreinte, qui diffère alors de celle du PDF.
  */
 
-type ImageDuProjet = { chemin: string; format: "jpeg" | "png" | "webp" };
+type ImageDuProjet = { chemin: string; vignette: string; format: "jpeg" | "png" | "webp" };
 
 export type Instantane = {
   livre: LivreACompose;
@@ -38,12 +38,12 @@ export async function instantaneDuLivre(e: Enseignant, projetId: string): Promis
     planDe(e, projetId),
     preparationDe(e, projetId),
     e.supabase.from("scenes").select("id, texte").eq("projet_id", projetId).is("supprime_le", null),
-    e.supabase.from("images").select("id, chemin, format, largeur, hauteur").eq("projet_id", projetId),
+    e.supabase.from("images").select("id, chemin, chemin_vignette, format, largeur, hauteur").eq("projet_id", projetId),
     controlesDuLivre(e, projetId),
   ]);
   const erreur = textes.error ?? images.error;
   if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
-  const lignes = (images.data ?? []) as { id: string; chemin: string; format: ImageDuProjet["format"]; largeur: number; hauteur: number }[];
+  const lignes = (images.data ?? []) as { id: string; chemin: string; chemin_vignette: string; format: ImageDuProjet["format"]; largeur: number; hauteur: number }[];
   const livre = livreACompose({
     titre: projet.titre, aChoix, plan,
     textes: new Map(((textes.data ?? []) as { id: string; texte: Texte | null }[]).map((s) => [s.id, s.texte ?? []])),
@@ -55,19 +55,23 @@ export async function instantaneDuLivre(e: Enseignant, projetId: string): Promis
   return {
     livre, etatDu,
     empreinte: createHash("sha256").update(JSON.stringify(livre)).digest("hex"),
-    images: new Map(lignes.map((i) => [i.id, { chemin: i.chemin, format: i.format }])),
+    images: new Map(lignes.map((i) => [i.id, { chemin: i.chemin, vignette: i.chemin_vignette, format: i.format }])),
   };
 }
 
-/** Composer l'instantané : les images sont lues dans le stockage, au moment où Chromium les demande. */
-export function composerLInstantane(i: Instantane, travail: boolean): Promise<Composition> {
+/**
+ * Composer l'instantané : les images sont lues dans le stockage, au moment où Chromium les
+ * demande. L'aperçu les prend allégées (900 points, la vignette de l'import) : leurs boîtes
+ * ne changent pas, ses pages sont donc celles du PDF.
+ */
+export function composerLInstantane(i: Instantane, travail: boolean, allege = false): Promise<Composition> {
   const service = clientService();
   return composer(i.livre, {
     travail, etatDu: etatEnMots(i.etatDu),
     lireImage: async (id) => {
       const image = i.images.get(id);
       if (!image) return null;
-      const { data, error } = await service.storage.from(SEAU_DES_IMAGES).download(image.chemin);
+      const { data, error } = await service.storage.from(SEAU_DES_IMAGES).download(allege ? image.vignette : image.chemin);
       if (error || !data) return null;
       return { octets: Buffer.from(await data.arrayBuffer()), type: TYPE_MIME[image.format] };
     },

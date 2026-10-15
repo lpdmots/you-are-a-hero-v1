@@ -637,3 +637,36 @@
     grid-template-columns: 104px minmax(0, 1fr);
   }
 }
+
+/* ——— Les scènes à finir, depuis « Relire » (F11-AC78) : une sélection, non une alerte ——— */
+.suivi-finir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-bottom: 14px;
+  padding: 12px 16px;
+  border-radius: var(--r-l);
+  background: var(--canard-pale);
+  color: var(--graphite);
+}
+.suivi-finir > .ic {
+  flex: none;
+  color: var(--canard);
+}
+.suivi-finir p {
+  flex: 1 1 320px;
+  margin: 0;
+}
+.suivi-finir__cmd {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+.suivi-finir__cmd .lien,
+.suivi-finir__cmd .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}

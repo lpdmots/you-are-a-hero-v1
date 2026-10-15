@@ -1,7 +1,7 @@
 import { beforeAll, describe, expect, it } from "vitest";
 import type { LivreACompose } from "@/domaine/composition";
 import { composer, type Composition } from "@/serveur/livre/composer";
-import { action, choix, id, image, imageId, liaison, livreAChoix, livreDe, lirePdf, p, recit, type PageLue } from "./fabrique";
+import { action, choix, id, image, imageId, liaison, livreAChoix, livreDe, lirePdf, p, png, recit, type PageLue } from "./fabrique";
 
 /**
  * Étape 6 du plan, lot 1 : le livre mis en pages par Paged.js dans Chromium, puis relu dans
@@ -150,4 +150,23 @@ it("une image lue dans le stockage est imprimée à la largeur demandée (F10-AC
   const largeurTexte = 148 - 20 - 15;
   expect(Math.abs(bloc.l - 0.6 * largeurTexte)).toBeLessThan(0.6);
   expect(c.rapport.introuvables).toEqual([]);
+});
+
+it("F11-AC30 — l'aperçu, ses images allégées, a les mêmes pages que le PDF : chaque ligne à la même place", async () => {
+  const images = Object.fromEntries([1, 2, 3].map((n) => [imageId(n), { largeur: 1800, hauteur: 1200 }]));
+  const scenes = Array.from({ length: 12 }, (_, i) => ({
+    ref: i + 1, fin: i === 11,
+    texte: [...recit(i + 1, 2 + (i % 3), 4), ...(i % 4 === 0 ? [image(1 + (i % 3), 40 + i * 5)] : []), ...(i < 11 ? [choix(`Continuer ${i + 1}`, id(i + 2))] : [])],
+  }));
+  const livre = livreDe(scenes, { images });
+  const [pdf, apercu] = await Promise.all([
+    composer(livre, { travail: true, etatDu: ETAT, lireImage: async () => ({ octets: png(1800, 1200), type: "image/png" }) }),
+    composer(livre, { travail: true, etatDu: ETAT, lireImage: async () => ({ octets: png(900, 600), type: "image/png" }) }),
+  ]);
+  const [a, b] = await Promise.all([lirePdf(pdf.pdf), lirePdf(apercu.pdf)]);
+  expect(b).toHaveLength(a.length);
+  for (let i = 0; i < a.length; i += 1) {
+    expect(b[i].elements.map((e) => [e.texte, e.x.toFixed(1), e.y.toFixed(1)])).toEqual(a[i].elements.map((e) => [e.texte, e.x.toFixed(1), e.y.toFixed(1)]));
+  }
+  expect(apercu.rapport.carte).toEqual(pdf.rapport.carte);
 });

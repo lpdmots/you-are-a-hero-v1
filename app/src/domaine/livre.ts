@@ -5,7 +5,7 @@
  * la déclaration de l'étape.
  */
 
-import { aTraiter, scenesAFinir, type Probleme, type Tache } from "./controles";
+import { aTraiter, scenesAFinir, type Gravite, type Probleme, type Tache } from "./controles";
 
 export type EtapeLivre = "relire" | "chemins" | "page" | "sortie";
 export const ETAPES_DU_LIVRE: { id: EtapeLivre; nom: string }[] = [
@@ -134,14 +134,68 @@ export function etatChemins(problemes: Probleme[], acceptes: ReadonlySet<string>
   };
 }
 
+// ——— « Relire » ———
+
+export type TacheRelire = "ecrire" | "graves" | "confirmer" | "lire";
+export const NOM_TACHE_RELIRE: Record<TacheRelire, string> = {
+  ecrire: "Ce qui reste à écrire",
+  graves: "Erreurs graves",
+  confirmer: "À confirmer",
+  lire: "Lire et corriger",
+};
+
+export type EtatTacheRelire = Omit<EtatTache, "id"> & { id: TacheRelire };
+
+export type EtatRelire = {
+  finir: number;
+  graves: number;
+  confirmer: number;
+  taches: EtatTacheRelire[];
+  /** Les rappels « à savoir » de l'étape : une largeur d'image non appliquée (F10) */
+  aSavoir: Probleme[];
+  declaree: boolean;
+  /** « J'ai relu le livre » se pose quand il ne reste ni scène à finir, ni erreur grave, ni point à confirmer */
+  declarable: boolean;
+  terminee: boolean;
+  marque: MarqueEtape;
+};
+
 /**
- * Ce que la ligne d'étapes montre de « Relire » tant que l'étape n'a pas son aperçu (étape 6
- * du plan) : le sablier s'il reste des scènes à finir, le triangle s'il y a une erreur grave.
+ * L'étape « Relire » (F11.6) : ses quatre tâches, ce qui y reste, sa marque. Mêmes règles que
+ * « Vérifier les chemins » : la tâche vide reste à sa place, cochée quand il n'y a plus de
+ * scène à finir (F11-AC90) ; le sablier tant qu'il ne reste que des scènes à finir (F11-AC89) ;
+ * la coche quand il ne reste rien et que l'adulte a déclaré avoir relu le livre (F11-AC88),
+ * déclaration gardée quand une scène est rouverte (F11-AC91).
  */
-export function etatRelire(problemes: Probleme[]): { finir: number; graves: number; marque: MarqueEtape } {
+export function etatRelire(problemes: Probleme[], acceptes: ReadonlySet<string> = new Set(), declaree = false): EtatRelire {
   const finir = scenesAFinir(problemes).length;
-  const graves = aTraiter(problemes).filter((p) => p.etape === "relire").length;
-  return { finir, graves, marque: graves ? "reste" : finir ? "attente" : null };
+  const aRelire = aTraiter(problemes).filter((p) => p.etape === "relire");
+  const restants = aRelire.filter((p) => !acceptes.has(p.cle));
+  const graves = restants.filter((p) => p.gravite === "bloque").length;
+  const confirmer = restants.filter((p) => p.gravite === "avert").length;
+  const declarable = finir === 0 && graves === 0 && confirmer === 0;
+  const terminee = declarable && declaree;
+  const tache = (id: "graves" | "confirmer", gravite: Gravite): EtatTacheRelire => {
+    const points = restants.filter((p) => p.gravite === gravite);
+    return {
+      id, nom: NOM_TACHE_RELIRE[id], points,
+      acceptes: aRelire.filter((p) => p.gravite === gravite && acceptes.has(p.cle)),
+      avert: gravite === "avert",
+      attente: points.length === 0 && finir > 0,
+      faite: points.length === 0 && finir === 0,
+    };
+  };
+  const taches: EtatTacheRelire[] = [
+    { id: "ecrire", nom: NOM_TACHE_RELIRE.ecrire, points: [], acceptes: [], avert: false, attente: false, faite: finir === 0 },
+    tache("graves", "bloque"),
+    tache("confirmer", "avert"),
+    { id: "lire", nom: NOM_TACHE_RELIRE.lire, points: [], acceptes: [], avert: false, attente: false, faite: terminee },
+  ];
+  const marque: MarqueEtape = graves ? "reste" : finir ? "attente" : confirmer ? "reste" : terminee ? "coche" : null;
+  return {
+    finir, graves, confirmer, taches, declaree, declarable, terminee, marque,
+    aSavoir: problemes.filter((p) => p.gravite === "info" && p.etape === "relire"),
+  };
 }
 
 /** Le texte que la marque d'une étape porte pour un lecteur d'écran, et au survol. */

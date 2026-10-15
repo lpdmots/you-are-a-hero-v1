@@ -47,7 +47,7 @@ test.describe("Destination Livre (F11.6)", () => {
   test("F11-AC79 — à l'ouverture de « Vérifier les chemins » : son titre, quelques questions, « Ne plus afficher », « Commencer » ; la case cochée, l'étape s'ouvre directement et « Aide » rouvre l'écran", async ({ page }) => {
     const l = await phare(page);
     await l.base.from("enseignants").update({ aides_masquees: [] }).eq("id", l.compte.id);
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     const aide = page.getByRole("region", { name: "Vérifier les chemins" });
     await expect(aide.getByText("Étape 2")).toBeVisible();
     await expect(aide.locator("details[open] > summary")).toHaveText(["Que fait-on maintenant ?"]);
@@ -57,7 +57,7 @@ test.describe("Destination Livre (F11.6)", () => {
     await aide.getByRole("button", { name: "Commencer" }).click();
     await expect(fiche(page)).toBeVisible();
     await page.context().clearCookies({ name: "aide-livre" });
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     await expect(fiche(page)).toBeVisible();
     await etapes(page).getByRole("button", { name: "Aide" }).click();
     await expect(page.getByRole("region", { name: "Vérifier les chemins" }).getByRole("button", { name: "Fermer l’aide" })).toBeVisible();
@@ -65,7 +65,7 @@ test.describe("Destination Livre (F11.6)", () => {
 
   test("F11-AC73 — un choix à relier, une impasse, deux passages à confirmer : la destination désignée, la fin marquée, « C'est voulu », puis la déclaration ; l'étape reçoit sa coche", async ({ page }) => {
     const l = await phare(page);
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     await expect(etapes(page).getByRole("link", { name: /Vérifier les chemins — il reste à faire/ })).toBeVisible();
     await expect(tache(page, "Départ et fins")).toContainText("1");
     await expect(tache(page, "Choix à relier")).toContainText("1");
@@ -112,7 +112,7 @@ test.describe("Destination Livre (F11.6)", () => {
   test("F11-AC89 — septembre : scènes à finir et un passage où rien ne mène ; sablier, aucun triangle, le passage listé, la déclaration attend", async ({ page }) => {
     const l = await phare(page);
     await sql("update scenes set etat = 'cours' where id = any($1::uuid[])", [[l.s[0], l.s[3]]]);
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     await expect(etapes(page).getByRole("link", { name: /Relire — en attente de l’écriture/ })).toBeVisible();
     await expect(etapes(page).getByRole("link", { name: /Vérifier les chemins — en attente de l’écriture/ })).toBeVisible();
     await expect(etapes(page).getByText("il reste à faire")).toHaveCount(0);
@@ -128,15 +128,16 @@ test.describe("Destination Livre (F11.6)", () => {
     await expect(fiche(page)).toContainText("Possible quand toutes les scènes seront prêtes pour le livre.");
   });
 
-  test("F09.2 — « Ouvrir la scène » d'un choix à relier : la scène s'ouvre sur ce choix, son panneau ouvert, et « Retour au Livre » y ramène", async ({ page }) => {
+  test("F09.2 — « Ouvrir la scène » d'un choix à relier : la scène s'ouvre à côté de l'aperçu sur ce choix, son panneau ouvert, et « Fermer » rend la liste", async ({ page }) => {
     const l = await phare(page);
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     await tache(page, "Choix à relier").click();
-    await points(page).getByRole("link", { name: "Ouvrir la scène" }).click();
-    await expect(page).toHaveURL(/\/scene\/.*de=livre/);
+    // Depuis l'étape 6 du plan, la scène s'ouvre à côté de l'aperçu (F11-AC85) ; « Fermer » rend la liste
+    await points(page).getByRole("button", { name: "Ouvrir la scène" }).click();
+    await expect(page.locator(".a-cote")).toBeVisible();
     await expect(FICHE(page)).toBeVisible();
     await expect(FICHE(page).getByLabel("Ce que fait le lecteur")).toHaveValue("Suivre le goéland");
-    await page.getByRole("link", { name: "Retour au Livre" }).click();
+    await page.locator(".a-cote").getByRole("button", { name: "Fermer" }).click();
     await expect(fiche(page)).toBeVisible();
     // « Voir dans les chemins » ouvre la vue du chapitre, la scène désignée, et « Retour au Livre »
     await tache(page, "Passages à confirmer").click();
@@ -150,7 +151,7 @@ test.describe("Destination Livre (F11.6)", () => {
 
   test("F04-AC33 — actions de jeu sans feuille : le rappel « à savoir » est replié au pied de la fiche, et nulle part dans la page de scène", async ({ page }) => {
     const l = await phare(page);
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     const savoir = fiche(page).locator(".asavoir");
     await expect(savoir).not.toHaveAttribute("open");
     await savoir.locator("summary").click();

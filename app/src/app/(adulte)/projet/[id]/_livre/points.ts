@@ -1,5 +1,5 @@
 import { phraseDe, type Gravite, type Probleme, type Sorte } from "@/domaine/controles";
-import type { EtatChemins, MarqueEtape, TacheChemins } from "@/domaine/livre";
+import type { EtatChemins, EtatRelire, MarqueEtape, TacheChemins, TacheRelire } from "@/domaine/livre";
 import { chapitresDe, referenceScene, type Plan } from "@/domaine/recit";
 
 /**
@@ -19,6 +19,9 @@ export type PointAffiche = {
   suite?: string;
   /** La page de la scène, avec « Retour au Livre » ; sur un choix, ce choix désigné, son panneau ouvert */
   ouvrir?: string;
+  /** La scène, ouverte à côté de l'aperçu (F11-AC85), et le choix à y désigner */
+  sceneId?: string;
+  choix?: string;
   /** La vue Chemins de son chapitre, la scène désignée */
   chemins?: string;
   /** « Marquer comme fin » : la scène */
@@ -56,6 +59,8 @@ export function afficherPoint(p: Probleme, plan: Plan, projetId: string): PointA
     accepter: p.gravite === "avert",
   };
   if (lu) {
+    point.sceneId = lu.scene.id;
+    if (surUnChoix) point.choix = p.renvoiId;
     point.ouvrir = `/projet/${projetId}/scene/${lu.scene.id}?de=livre${surUnChoix ? `&choix=${encodeURIComponent(p.renvoiId)}` : ""}`;
     point.chemins = `/projet/${projetId}/chapitre/${lu.chapitre.id}?vue=chemins&scene=${lu.scene.id}&de=livre`;
   }
@@ -66,6 +71,27 @@ export function afficherPoint(p: Probleme, plan: Plan, projetId: string): PointA
 }
 
 export function afficherChemins(etat: EtatChemins, plan: Plan, projetId: string): CheminsAffiches {
+  const afficher = (p: Probleme) => afficherPoint(p, plan, projetId);
+  return {
+    taches: etat.taches.map((t) => ({ ...t, points: t.points.map(afficher), acceptes: t.acceptes.map(afficher) })),
+    aSavoir: etat.aSavoir.map(afficher),
+    finir: etat.finir, declaree: etat.declaree, declarable: etat.declarable, terminee: etat.terminee, marque: etat.marque,
+  };
+}
+
+export type TacheRelireAffichee = Omit<TacheAffichee, "id"> & { id: TacheRelire };
+
+export type RelireAffiche = {
+  taches: TacheRelireAffichee[];
+  aSavoir: PointAffiche[];
+  finir: number;
+  declaree: boolean;
+  declarable: boolean;
+  terminee: boolean;
+  marque: MarqueEtape;
+};
+
+export function afficherRelire(etat: EtatRelire, plan: Plan, projetId: string): RelireAffiche {
   const afficher = (p: Probleme) => afficherPoint(p, plan, projetId);
   return {
     taches: etat.taches.map((t) => ({ ...t, points: t.points.map(afficher), acceptes: t.acceptes.map(afficher) })),

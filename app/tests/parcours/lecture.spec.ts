@@ -49,7 +49,7 @@ const etatEnBase = async (scene: string) => (await sql<{ etat: string }>("select
 test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
   test("F09-AC13, F09-AC21, F09-AC03 — depuis « Tester la lecture » : le départ, les choix à travers les trois parties, un retour à une étape, « déjà lu », « Recommencer » ; rien ne change l'état des scènes, et « Quitter » efface les marques", async ({ page }) => {
     const l = await phare(page);
-    await aller(page, `/projet/${l.projet}/livre`);
+    await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     await page.locator(".controles").getByRole("button", { name: /Tester la lecture/ }).click();
     await page.getByRole("link", { name: "Tester la lecture" }).click();
     await expect(page.getByRole("heading", { name: "Par où commencer ?" })).toBeVisible();

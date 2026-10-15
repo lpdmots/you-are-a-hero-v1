@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { nomScene } from "@/domaine/recit";
 import {
-  assurerOrdre, chercherDansLesTextes, numerosDuProjet, texteDeScene, versionsPrecedentes, type TexteDeScene, type Trouvee, type VersionPrecedente,
+  assurerOrdre, chercherDansLesTextes, enregistrerPourAdulte, numerosDuProjet, texteDeScene, versionsPrecedentes, type TexteDeScene, type Trouvee, type VersionPrecedente,
 } from "@/serveur/copie";
 import { estUuid } from "@/serveur/recit";
 import { enregistrerFormule, enregistrerObjet } from "./actions-preparation";
@@ -33,6 +33,19 @@ async function projetDeLaScene(sceneId: string): Promise<{ projetId: string } | 
 /** Le texte de la scène tel qu'il est maintenant, avec ce qui est gardé à part (F08-AC21). */
 export async function relireTexte(sceneId: string): Promise<Fait<{ scene: TexteDeScene }>> {
   const e = await exigerEnseignant();
+  const scene = await texteDeScene(e, sceneId);
+  return scene ? { ok: true, scene } : echec("Cette scène n’existe plus.");
+}
+
+/**
+ * « Tout annuler » (F11-AC47) : la scène ouverte à côté de l'aperçu retrouve le texte qu'elle
+ * avait à l'ouverture de l'éditeur. Le texte est réécrit comme une correction de l'adulte, sur la
+ * version qu'il lit : si quelqu'un l'a modifié entre-temps, rien n'est annulé.
+ */
+export async function retablirTexte(sceneId: string, version: number, texte: unknown): Promise<Fait<{ scene: TexteDeScene }>> {
+  const e = await exigerEnseignant();
+  const fait = await enregistrerPourAdulte(e, sceneId, version, texte);
+  if (fait.etat !== "enregistre") return echec("Le texte a changé entre-temps : rien n’a été annulé.");
   const scene = await texteDeScene(e, sceneId);
   return scene ? { ok: true, scene } : echec("Cette scène n’existe plus.");
 }

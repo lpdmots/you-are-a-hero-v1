@@ -506,3 +506,293 @@
   font-size: var(--t-s);
   color: var(--graphite-2);
 }
+
+/* ——— La fiche ou la scène, à côté de l'aperçu (F11.2, F11.6) ——— */
+.livre-plan {
+  display: grid;
+  grid-template-columns: minmax(300px, 400px) minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+.livre-plan--scene {
+  grid-template-columns: minmax(480px, 600px) minmax(0, 1fr);
+}
+.livre-plan .controles {
+  max-width: none;
+}
+.livre-plan__gauche {
+  position: sticky;
+  top: 12px;
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+.livre-plan__droite {
+  position: relative;
+  min-width: 0;
+}
+/* Les réglages d'un bloc s'ouvrent à droite du texte, par-dessus l'aperçu (F05.2) */
+.livre-plan__panneau {
+  position: sticky;
+  top: 12px;
+  z-index: 5;
+  height: 0;
+}
+.livre-plan__panneau > * {
+  max-width: 420px;
+  margin-left: auto;
+  box-shadow: var(--ombre-panneau);
+}
+.livre-plan__onglets {
+  display: none;
+}
+.livre-plan__chargement {
+  margin: 8px 0 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+/* Sous 1 100 points, la scène et le livre ne tiennent pas côte à côte : deux onglets */
+@media (max-width: 1100px) {
+  .livre-plan,
+  .livre-plan--scene {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .livre-plan__gauche {
+    position: static;
+    max-height: none;
+    overflow: visible;
+  }
+  .livre-plan--scene .livre-plan__onglets {
+    display: flex;
+    gap: 6px;
+  }
+  .livre-plan__onglets button {
+    flex: 1;
+    padding: 8px 12px;
+    border-radius: var(--r-m);
+    border: 1px solid var(--trait);
+    background: var(--feuille);
+    font-weight: 700;
+  }
+  .livre-plan__onglets button[aria-selected="true"] {
+    background: var(--graphite);
+    border-color: var(--graphite);
+    color: var(--feuille);
+  }
+  .livre-plan--scene.livre-plan--vue-scene .livre-plan__droite,
+  .livre-plan--scene.livre-plan--vue-livre .livre-plan__gauche {
+    display: none;
+  }
+}
+
+/* ——— L'aperçu ——— */
+.apercu {
+  display: grid;
+  gap: 12px;
+}
+.apercu__barre {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  padding: 8px 0;
+  background: var(--bureau);
+}
+.apercu__etat {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 10px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.segments {
+  display: inline-flex;
+  padding: 3px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.segments button {
+  padding: 5px 12px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.segments button[aria-pressed="true"] {
+  background: var(--graphite);
+  color: var(--feuille);
+}
+.apercu__pages {
+  display: grid;
+  gap: 22px;
+  justify-items: center;
+  padding-bottom: 40px;
+  transition: opacity 0.2s var(--ease);
+}
+.apercu--calcul .apercu__pages {
+  opacity: 0.55;
+}
+.apercu__attente {
+  padding: 60px 0;
+  color: var(--graphite-2);
+}
+.apercu__etalee {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.apercu--agrandie .apercu__etalee {
+  max-width: 620px;
+}
+.apercu--double .apercu__etalee {
+  max-width: 1080px;
+}
+.apercu__page {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 420 / 595;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+}
+.apercu--double .apercu__page {
+  width: 50%;
+}
+.apercu__page--absente {
+  background: none;
+  box-shadow: none;
+}
+.apercu__page canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.apercu__page--survol {
+  cursor: pointer;
+}
+.apercu__choisie {
+  position: absolute;
+  border: 2px solid var(--canard);
+  border-radius: 4px;
+  pointer-events: none;
+}
+.apercu__folio {
+  position: absolute;
+  right: 0;
+  bottom: -20px;
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
+}
+.parcours {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 4px 3px 10px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.parcours__nom {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 6px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.parcours__nom .ic {
+  color: var(--bloque);
+}
+.parcours__b {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 7px;
+  background: none;
+  cursor: pointer;
+}
+.parcours__b:hover {
+  background: var(--feuille-2);
+}
+
+/* ——— La scène ouverte à côté de l'aperçu ——— */
+.a-cote {
+  display: grid;
+  gap: 10px;
+}
+.a-cote__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+}
+.a-cote__titre {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--t-l);
+  font-weight: 800;
+  line-height: 1.25;
+}
+.a-cote__sous {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.a-cote__chapitre::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border-radius: 2px;
+  background: var(--dos, var(--trait-fort));
+}
+.a-cote__venu {
+  margin: 0;
+}
+.a-cote__venu .lien {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.a-cote__point {
+  margin: 0;
+}
+.a-cote__annuler {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  margin-left: auto;
+}
+.a-cote__confirme {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  font-size: var(--t-s);
+}
+.a-cote .copie__pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.declaration {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--trait);
+}

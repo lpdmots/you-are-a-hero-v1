@@ -189,7 +189,8 @@ export function Suivi({
 
   const vueScenes = (
     <>
-      <div className="suivi-etats">
+      {filtres.aFinir ? null : (
+        <div className="suivi-etats">
         <span className="suivi-etats__lib" aria-hidden="true">
           État
         </span>
@@ -232,6 +233,7 @@ export function Suivi({
           </div>
         ) : null}
       </div>
+      )}
       {listees.length === 0 ? (
         aucune()
       ) : (
@@ -452,6 +454,70 @@ export function Suivi({
     {encouragements ? <ClassementDuSuivi projetId={projet.id} eleves={eleves} totaux={totaux} montre={encouragements.classementMontre} /> : null}
     </>
   );
+
+  // Depuis « Relire » : les seules scènes à finir, et les deux issues (F11-AC78, F11.6)
+  if (filtres.aFinir) {
+    return (
+      <>
+        <div className="suivi-finir" role="status">
+          <Icone nom="livre" />
+          <p>
+            {listees.length
+              ? "Ouvrez une scène pour la finir et la déclarer prête, ou pour l’exclure du livre (menu ⋯ de la scène)."
+              : "Plus de scène à finir pour le livre."}
+          </p>
+          <Bulle question="Une scène validée est-elle finie ?">
+            <span>Non : elle reste à finir tant qu’elle n’est pas déclarée prête pour le livre, par exemple parce que son image manque encore.</span>
+          </Bulle>
+          <span className="suivi-finir__cmd">
+            <Link className={listees.length ? "lien" : "btn btn--primaire btn--petit"} href={`/projet/${projet.id}/livre?etape=relire`}>
+              <Icone nom="fleche-g" />
+              Retour au Livre
+            </Link>
+            <button type="button" className="lien" onClick={() => montrer(SANS_FILTRE, "scenes")}>
+              Tout afficher
+            </button>
+          </span>
+        </div>
+        <div className="suivi-outils">
+          <div className="suivi-champs">
+            <label className="suivi-champ">
+              <span>Chapitre</span>
+              <span className="suivi-champ__select">
+                <select aria-label="Chapitre" value={filtres.chapitre ?? ""} onChange={(e) => montrer({ ...filtres, chapitre: e.target.value || null })}>
+                  <option value="">Tous les chapitres</option>
+                  {chapitres.filter((c) => c.scenes.length).map((c) => (
+                    <option key={c.id} value={c.id}>
+                      {c.titre}
+                    </option>
+                  ))}
+                </select>
+                <Icone nom="chevron-bas" />
+              </span>
+            </label>
+            {projet.deClasse ? (
+              <label className="suivi-champ">
+                <span>Élève</span>
+                <span className="suivi-champ__select">
+                  <select aria-label="Élève" value={filtres.eleve ?? ""} onChange={(e) => montrer({ ...filtres, eleve: e.target.value || null, mode: "occupe" })}>
+                    <option value="">Tous les élèves</option>
+                    {eleves.map((e) => (
+                      <option key={e.id} value={e.id}>
+                        {nom(e)}
+                      </option>
+                    ))}
+                    <option value="moi">Moi</option>
+                  </select>
+                  <Icone nom="chevron-bas" />
+                </span>
+              </label>
+            ) : null}
+          </div>
+        </div>
+        {vueScenes}
+      </>
+    );
+  }
 
   return (
     <>

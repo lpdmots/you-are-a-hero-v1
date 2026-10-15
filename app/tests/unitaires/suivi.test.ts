@@ -124,3 +124,20 @@ describe("Les filtres tiennent dans l'adresse (F06.5)", () => {
     expect(filtresDepuis({ etat: "inconnu", mode: "autre" })).toEqual(SANS_FILTRE);
   });
 });
+
+describe("Les scènes à finir, depuis « Relire » (F11-AC78)", () => {
+  it("F11-AC78 — le filtre ne garde que les scènes du livre pas encore prêtes, et l'adresse le porte", () => {
+    const exclu = { ...chapitre("marais", [], [scene("marais", "cours", { titre: "E" })]), horsLivre: true };
+    const p = plan(
+      chapitre("lisiere", [alice], [
+        scene("lisiere", "valide", { titre: "A" }), scene("lisiere", "prete", { titre: "B" }), scene("lisiere", "cours", { titre: "C" }), scene("lisiere", "cours", { titre: "D", horsLivre: true }),
+      ]),
+      exclu,
+    );
+    const f = filtresDepuis({ livre: "finir" });
+    expect(f.aFinir).toBe(true);
+    expect(filtrer(lignesDuPlan(p), f).map((l) => l.scene.titre)).toEqual(["A", "C"]);
+    expect(adresseDesFiltres(f)).toBe("livre=finir");
+    expect(filtresDepuis({}).aFinir).toBeUndefined();
+  });
+});

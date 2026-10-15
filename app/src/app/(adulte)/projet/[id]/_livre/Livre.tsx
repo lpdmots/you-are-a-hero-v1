@@ -1,112 +1,363 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
+import { createContext, use, useEffect, useRef, useState, useTransition, type ReactNode } from "react";
+import { avantDePartir } from "@/composants/copie/sortie";
+import type { Plan } from "@/domaine/recit";
+import type { DonneesDeLaScene } from "@/serveur/scene";
 import { EcranAide } from "@/composants/EcranAide";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import { ETAPES_DU_LIVRE, MOT_DE_MARQUE, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
 import { pluriel } from "@/domaine/texte";
 import { reglerAide } from "../../../actions-compte";
-import { accepterAvertissement, declarerChemins, retirerAcceptation } from "../../actions-livre";
+import { accepterAvertissement, declarerChemins, declarerRelu, noterEtapeDuLivre, ouvrirSceneDuLivre, retirerAcceptation } from "../../actions-livre";
 import { marquerFin } from "../../actions-recit";
-import type { CheminsAffiches, PointAffiche, TacheAffichee } from "./points";
+import { PageScene } from "../scene/[scene]/PageScene";
+import { Apercu } from "./Apercu";
+import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, TacheRelireAffichee } from "./points";
 
 /**
- * La destination Livre (F11.6) : la ligne d'étapes et l'étape ouverte. À l'étape 5 du plan,
- * seule « Vérifier les chemins » est construite ; « Relire » arrive avec l'aperçu du livre,
- * et les deux dernières étapes sont fermées par leurs propres règles.
+ * La destination Livre (F11.6) : la ligne d'étapes et l'étape ouverte. Aux deux premières
+ * étapes, la fiche de l'étape en colonne, ou la scène ouverte à sa place, à côté de l'aperçu du
+ * livre (F11.2) ; « Mettre en page » et « Imprimer et partager » se construisent ensuite.
  */
 export function Livre({
-  projet, etape, marques, chemins, relire, pdfDeTravail, aideMasquee, aideVue,
+  projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, aideMasquee, aideVue,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   etape: EtapeLivre;
   marques: Record<EtapeLivre, MarqueEtape>;
   /** « Vérifier les chemins » ; rien en récit classique, qui n'a pas cette étape */
   chemins: CheminsAffiches | null;
-  relire: { finir: number; graves: PointAffiche[] };
+  relire: RelireAffiche;
   /** Le dernier PDF de travail, s'il y en a un (F11.2) */
   pdfDeTravail: PdfAffiche | null;
-  aideMasquee: boolean;
+  /** L'empreinte du contenu du livre : l'aperçu se recalcule quand elle change */
+  empreinte: string;
+  /** « n° 12 · S042 » : le nom de chaque passage */
+  noms: Record<string, string>;
+  aideMasquee: { relire: boolean; chemins: boolean };
   aideVue: boolean;
 }) {
+  const routeur = useRouter();
+  const dire = useMessage();
   const etapes = ETAPES_DU_LIVRE.filter((x) => projet.aChoix || x.id !== "chemins");
-  const [aide, setAide] = useState(etape === "chemins" && !aideMasquee && !aideVue);
+  const avecAide = etape === "relire" || (etape === "chemins" && Boolean(chemins));
+  const masquee = etape === "relire" ? aideMasquee.relire : aideMasquee.chemins;
+  const [aide, setAide] = useState(avecAide && !masquee && !aideVue);
   // Rouverte par « Aide » une fois l'étape ouverte, elle se ferme par « Fermer l'aide »
-  const [dejaVue, setDejaVue] = useState(aideVue || aideMasquee);
+  const [dejaVue, setDejaVue] = useState(aideVue || masquee);
   const rang = etapes.findIndex((x) => x.id === etape) + 1;
 
-  return (
-    <section className="livre" aria-label="Livre">
-      <nav className="temps" aria-label="Étapes du livre">
-        <ol>
-          {etapes.map((x, i) => {
-            const marque = marques[x.id];
-            const enCours = x.id === etape;
-            return (
-              <li key={x.id} className="temps__etape">
-                <Link
-                  href={`/projet/${projet.id}/livre?etape=${x.id}`}
-                  className={`temps__lien${enCours ? " est-en-cours" : ""}`}
-                  aria-current={enCours ? "step" : undefined}
-                  scroll={false}
-                  onClick={() => setAide(false)}
-                >
-                  <span className={`temps__num${marque === "coche" ? " temps__num--faite" : ""}${marque === "fermee" ? " temps__num--fermee" : ""}`}>
-                    {marque === "coche" ? <Icone nom="coche" /> : i + 1}
-                  </span>
-                  <span className="temps__nom">{x.nom}</span>
-                  {marque && marque !== "coche" ? (
-                    <span className={`temps__marque temps__marque--${marque}`} title={MOT_DE_MARQUE[marque]}>
-                      <Icone nom={marque === "reste" ? "alerte" : marque === "attente" ? "sablier" : "cadenas"} />
-                      <span className="vh"> — {MOT_DE_MARQUE[marque]}</span>
-                    </span>
-                  ) : marque === "coche" ? (
-                    <span className="vh"> — {MOT_DE_MARQUE.coche}</span>
-                  ) : null}
-                </Link>
-              </li>
-            );
-          })}
-        </ol>
-        {etape === "chemins" ? (
-          <button type="button" className="aide-bouton temps__aide" title="Que fait-on maintenant ?" onClick={() => setAide(true)}>
-            <Icone nom="aide" />
-            Aide
-          </button>
-        ) : null}
-      </nav>
+  // La dernière étape quittée : le Livre s'y rouvre (F11.6)
+  useEffect(() => {
+    void noterEtapeDuLivre(projet.id, etape);
+  }, [projet.id, etape]);
 
-      {aide && chemins ? (
-        <AideChemins
-          rang={rang}
-          dejaVue={dejaVue}
-          masquee={aideMasquee}
-          onCommencer={() => {
-            setAide(false);
-            setDejaVue(true);
-          }}
-        />
-      ) : etape === "chemins" && chemins ? (
-        <FicheChemins projetId={projet.id} chemins={chemins} fermee={marques.page === "fermee"} />
-      ) : etape === "relire" ? (
-        <RelireAVenir projet={projet} relire={relire} pdfDeTravail={pdfDeTravail} />
-      ) : (
-        <EtapeFermee projet={projet} etape={etape} chemins={chemins} relire={relire} />
-      )}
-    </section>
+  // La scène ouverte à côté de l'aperçu, et d'où l'on vient en suivant des renvois (F11-AC83)
+  const [ouverte, setOuverte] = useState<SceneOuverte | null>(null);
+  const [chargement, setChargement] = useState(false);
+  const [aller, setAller] = useState<{ sceneId: string; jeton: number } | null>(null);
+  const [panneau, setPanneau] = useState<HTMLElement | null>(null);
+  const [vue, setVue] = useState<"scene" | "livre">("scene");
+  const relecture = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const placer = (sceneId: string) => setAller({ sceneId, jeton: Date.now() });
+
+  const ouvrir = async (sceneId: string, o: { choix?: string; point?: PointAffiche; depuis?: string[] } = {}) => {
+    if (!(await avantDePartir())) return dire({ texte: "Vos corrections ne sont pas encore enregistrées : réessayez dans un instant." });
+    setChargement(true);
+    const r = await ouvrirSceneDuLivre(projet.id, sceneId);
+    setChargement(false);
+    if (!r.ok) return dire({ texte: r.erreur });
+    setOuverte({ sceneId, choix: o.choix, point: o.point, depuis: o.depuis ?? [], plan: r.plan, donnees: r.donnees, jeton: Date.now() });
+    setVue("scene");
+    placer(sceneId);
+  };
+  const fermer = async () => {
+    if (!(await avantDePartir())) return dire({ texte: "Vos corrections ne sont pas encore enregistrées : réessayez dans un instant." });
+    setOuverte(null);
+    routeur.refresh();
+  };
+  // Le texte ou l'état a changé : la page relit le livre après une pause, l'aperçu suit (F11.2)
+  const modifie = () => {
+    if (relecture.current) clearTimeout(relecture.current);
+    relecture.current = setTimeout(() => routeur.refresh(), 2500);
+  };
+  useEffect(() => () => {
+    if (relecture.current) clearTimeout(relecture.current);
+  }, []);
+
+  // Le parcours des problèmes de l'étape (F11-AC59) : l'aperçu se place sur le passage, sa scène s'ouvre
+  const aParcourir = (etape === "relire" ? relire.taches : (chemins?.taches ?? [])).flatMap((t) => t.points).filter((p) => p.sceneId);
+  const rangProbleme = ouverte?.point ? aParcourir.findIndex((p) => p.cle === ouverte.point!.cle) : -1;
+  const parcourir = (pas: 1 | -1) => {
+    if (!aParcourir.length) return;
+    const suivant = aParcourir[(rangProbleme + pas + aParcourir.length) % aParcourir.length];
+    void ouvrir(suivant.sceneId!, { choix: suivant.choix, point: suivant });
+  };
+
+  const avecApercu = (etape === "relire" || (etape === "chemins" && chemins)) && !aide;
+  const fiche =
+    etape === "chemins" && chemins ? (
+      <FicheChemins projetId={projet.id} chemins={chemins} fermee={marques.page === "fermee"} />
+    ) : etape === "relire" ? (
+      <FicheRelire projet={projet} relire={relire} pdfDeTravail={pdfDeTravail} fermee={marques.page === "fermee"} suivante={projet.aChoix ? "chemins" : "page"} />
+    ) : null;
+
+  return (
+    <OuvrirScene value={(sceneId, choix, point) => void ouvrir(sceneId, { choix, point })}>
+      <section className="livre" aria-label="Livre">
+        <nav className="temps" aria-label="Étapes du livre">
+          <ol>
+            {etapes.map((x, i) => {
+              const marque = marques[x.id];
+              const enCours = x.id === etape;
+              return (
+                <li key={x.id} className="temps__etape">
+                  <Link
+                    href={`/projet/${projet.id}/livre?etape=${x.id}`}
+                    className={`temps__lien${enCours ? " est-en-cours" : ""}`}
+                    aria-current={enCours ? "step" : undefined}
+                    scroll={false}
+                    onClick={() => {
+                      setAide(false);
+                      setOuverte(null);
+                    }}
+                  >
+                    <span className={`temps__num${marque === "coche" ? " temps__num--faite" : ""}${marque === "fermee" ? " temps__num--fermee" : ""}`}>
+                      {marque === "coche" ? <Icone nom="coche" /> : i + 1}
+                    </span>
+                    <span className="temps__nom">{x.nom}</span>
+                    {marque && marque !== "coche" ? (
+                      <span className={`temps__marque temps__marque--${marque}`} title={MOT_DE_MARQUE[marque]}>
+                        <Icone nom={marque === "reste" ? "alerte" : marque === "attente" ? "sablier" : "cadenas"} />
+                        <span className="vh"> — {MOT_DE_MARQUE[marque]}</span>
+                      </span>
+                    ) : marque === "coche" ? (
+                      <span className="vh"> — {MOT_DE_MARQUE.coche}</span>
+                    ) : null}
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+          {avecAide ? (
+            <button type="button" className="aide-bouton temps__aide" title="Que fait-on maintenant ?" onClick={() => setAide(true)}>
+              <Icone nom="aide" />
+              Aide
+            </button>
+          ) : null}
+        </nav>
+
+        {aide && avecAide ? (
+          <AideEtape
+            etape={etape === "relire" ? "relire" : "chemins"}
+            aChoix={projet.aChoix}
+            rang={rang}
+            dejaVue={dejaVue}
+            masquee={masquee}
+            onCommencer={() => {
+              setAide(false);
+              setDejaVue(true);
+            }}
+          />
+        ) : avecApercu ? (
+          <div className={`livre-plan${ouverte ? " livre-plan--scene" : ""} livre-plan--vue-${vue}`}>
+            {ouverte ? (
+              <div className="livre-plan__onglets" role="tablist" aria-label="Scène et livre">
+                <button type="button" role="tab" aria-selected={vue === "scene"} onClick={() => setVue("scene")}>
+                  Scène {noms[ouverte.sceneId]?.split(" · ").pop() ?? ""}
+                </button>
+                <button type="button" role="tab" aria-selected={vue === "livre"} onClick={() => setVue("livre")}>
+                  Dans le livre
+                </button>
+              </div>
+            ) : null}
+            <div className="livre-plan__gauche">
+              {ouverte ? (
+                <PageScene
+                  key={`${ouverte.sceneId}-${ouverte.jeton}`}
+                  projet={projet}
+                  plan={ouverte.plan}
+                  sceneId={ouverte.sceneId}
+                  {...ouverte.donnees}
+                  ouvrirChoix={ouverte.choix}
+                  aCote={{
+                    onFermer: () => void fermer(),
+                    panneau,
+                    onModifie: modifie,
+                    dessus: (
+                      <>
+                        {ouverte.depuis.length ? (
+                          <p className="a-cote__venu">
+                            <button
+                              type="button"
+                              className="lien"
+                              onClick={() => {
+                                const precedente = ouverte.depuis[ouverte.depuis.length - 1];
+                                void ouvrir(precedente, { depuis: ouverte.depuis.slice(0, -1) });
+                              }}
+                            >
+                              <Icone nom="fleche-g" />
+                              Revenir au {noms[ouverte.depuis[ouverte.depuis.length - 1]]?.split(" · ")[0] ?? "passage précédent"}
+                            </button>
+                          </p>
+                        ) : null}
+                        {ouverte.point ? (
+                          <ul className="points a-cote__point">
+                            <CartePoint projetId={projet.id} point={ouverte.point} sansOuvrir />
+                          </ul>
+                        ) : null}
+                      </>
+                    ),
+                  }}
+                />
+              ) : (
+                fiche
+              )}
+              {chargement ? <p className="livre-plan__chargement" role="status">Ouverture de la scène…</p> : null}
+            </div>
+            <div className="livre-plan__droite">
+              <div ref={setPanneau} className="livre-plan__panneau" />
+              <Apercu
+                projetId={projet.id}
+                empreinte={empreinte}
+                limiteAuRecit
+                modeParDefaut="agrandie"
+                choisie={ouverte?.sceneId ?? null}
+                aller={aller}
+                nommer={(id) => noms[id] ?? "ce passage"}
+                onPassage={(id) => void ouvrir(id)}
+                onRenvoi={(cible, depuis) => void ouvrir(cible, { depuis: [...(ouverte?.depuis ?? []), depuis] })}
+                barre={
+                  aParcourir.length ? (
+                    <span className="parcours" role="group" aria-label="Parcourir les problèmes">
+                      <span className="parcours__nom">
+                        <Icone nom="alerte" />
+                        Problèmes {rangProbleme >= 0 ? `${rangProbleme + 1} / ` : ""}
+                        {aParcourir.length}
+                      </span>
+                      <button type="button" className="parcours__b" aria-label="Problème précédent" onClick={() => parcourir(-1)}>
+                        <Icone nom="chevron-haut" />
+                      </button>
+                      <button type="button" className="parcours__b" aria-label="Problème suivant" onClick={() => parcourir(1)}>
+                        <Icone nom="chevron-bas" />
+                      </button>
+                    </span>
+                  ) : null
+                }
+              />
+            </div>
+          </div>
+        ) : (
+          <EtapeFermee projet={projet} etape={etape} chemins={chemins} relire={relire} />
+        )}
+      </section>
+    </OuvrirScene>
   );
 }
 
+type SceneOuverte = {
+  sceneId: string;
+  choix?: string;
+  point?: PointAffiche;
+  /** Les passages d'où l'on est venu en suivant des renvois : « Revenir au n° 3 » */
+  depuis: string[];
+  plan: Plan;
+  donnees: DonneesDeLaScene;
+  jeton: number;
+};
+
+/** Ouvrir une scène à côté de l'aperçu, depuis un point d'une fiche (F11-AC85). */
+const OuvrirScene = createContext<((sceneId: string, choix?: string, point?: PointAffiche) => void) | null>(null);
+
 // ——— Aide à l'ouverture de l'étape (F11-AC79) ———
 
-function AideChemins({ rang, dejaVue, masquee, onCommencer }: { rang: number; dejaVue: boolean; masquee: boolean; onCommencer: () => void }) {
+const AIDES: Record<"relire" | "chemins", { titre: string; questions: (aChoix: boolean) => { question: string; reponse: ReactNode }[] }> = {
+  relire: {
+    titre: "Relire",
+    questions: () => [
+      {
+        question: "Que fait-on maintenant ?",
+        reponse: (
+          <>
+            <p>On lit le livre tel qu’il sera imprimé, et on corrige ce qu’on voit, directement dans la scène.</p>
+            <ol className="aide-etape__taches">
+              <li>Ce qui reste à écrire</li>
+              <li>Erreurs graves</li>
+              <li>À confirmer</li>
+              <li>Lire et corriger</li>
+            </ol>
+          </>
+        ),
+      },
+      {
+        question: "Comment corriger une coquille ?",
+        reponse: <p>Cliquez sur le passage dans l’aperçu : sa scène s’ouvre à côté. Ce que vous écrivez entre dans la scène, et l’aperçu se met à jour.</p>,
+      },
+      {
+        question: "Et les scènes à finir ?",
+        reponse: (
+          <p>
+            Elles se terminent dans le Suivi. Une scène qui ne sera pas finie peut être exclue du livre, depuis son menu ⋯ : elle reste dans le
+            projet.
+          </p>
+        ),
+      },
+      {
+        question: "À quoi sert le PDF de travail ?",
+        reponse: <p>À relire sur papier. Il porte la référence de chaque scène, pour retrouver vos annotations, et ne peut pas servir de livre.</p>,
+      },
+    ],
+  },
+  chemins: {
+    titre: "Vérifier les chemins",
+    questions: () => [
+      {
+        question: "Que fait-on maintenant ?",
+        reponse: (
+          <>
+            <p>On vérifie que chaque choix mène quelque part et que chaque chemin a une fin.</p>
+            <ol className="aide-etape__taches">
+              <li>Départ et fins</li>
+              <li>Choix à relier</li>
+              <li>Passages à confirmer</li>
+              <li>Tester la lecture, si vous le souhaitez</li>
+            </ol>
+          </>
+        ),
+      },
+      {
+        question: "Que veut dire « Aucun chemin n’y mène » ?",
+        reponse: <p>Aucun choix ne conduit à ce passage depuis le départ. C’est peut-être voulu, comme un passage caché, ou c’est un oubli.</p>,
+      },
+      {
+        question: "Que veut dire « C’est voulu » ?",
+        reponse: (
+          <p>
+            Vous gardez le passage tel quel : il ne compte plus parmi ce qui reste à faire. Si ses chemins changent, la question vous est posée de nouveau. Un
+            problème qui bloque le livre, lui, se corrige.
+          </p>
+        ),
+      },
+      {
+        question: "Et les scènes à finir ?",
+        reponse: <p>Leurs choix seront vérifiés une fois qu’elles seront prêtes pour le livre. En attendant, elles ne sont pas signalées ici.</p>,
+      },
+    ],
+  },
+};
+
+function AideEtape({
+  etape, aChoix, rang, dejaVue, masquee, onCommencer,
+}: { etape: "relire" | "chemins"; aChoix: boolean; rang: number; dejaVue: boolean; masquee: boolean; onCommencer: () => void }) {
   const [, lancer] = useTransition();
   return (
     <EcranAide
       rang={`Étape ${rang}`}
-      titre="Vérifier les chemins"
+      titre={AIDES[etape].titre}
       dejaVue={dejaVue}
       masquee={masquee}
       onCommencer={() => {
@@ -114,40 +365,8 @@ function AideChemins({ rang, dejaVue, masquee, onCommencer }: { rang: number; de
         document.cookie = "aide-livre=vue; path=/; samesite=lax";
         onCommencer();
       }}
-      onMasquer={(m) => lancer(() => reglerAide("livre-chemins", m))}
-      questions={[
-        {
-          question: "Que fait-on maintenant ?",
-          reponse: (
-            <>
-              <p>On vérifie que chaque choix mène quelque part et que chaque chemin a une fin.</p>
-              <ol className="aide-etape__taches">
-                <li>Départ et fins</li>
-                <li>Choix à relier</li>
-                <li>Passages à confirmer</li>
-                <li>Tester la lecture, si vous le souhaitez</li>
-              </ol>
-            </>
-          ),
-        },
-        {
-          question: "Que veut dire « Aucun chemin n’y mène » ?",
-          reponse: <p>Aucun choix ne conduit à ce passage depuis le départ. C’est peut-être voulu, comme un passage caché, ou c’est un oubli.</p>,
-        },
-        {
-          question: "Que veut dire « C’est voulu » ?",
-          reponse: (
-            <p>
-              Vous gardez le passage tel quel : il ne compte plus parmi ce qui reste à faire. Si ses chemins changent, la question vous est posée de nouveau. Un
-              problème qui bloque le livre, lui, se corrige.
-            </p>
-          ),
-        },
-        {
-          question: "Et les scènes à finir ?",
-          reponse: <p>Leurs choix seront vérifiés une fois qu’elles seront prêtes pour le livre. En attendant, elles ne sont pas signalées ici.</p>,
-        },
-      ]}
+      onMasquer={(m) => lancer(() => reglerAide(`livre-${etape}`, m))}
+      questions={AIDES[etape].questions(aChoix)}
     />
   );
 }
@@ -271,8 +490,9 @@ function FicheChemins({ projetId, chemins, fermee }: { projetId: string; chemins
 }
 
 /** Un point : sa scène, sa phrase, et de quoi le traiter, sur une seule ligne. */
-function CartePoint({ projetId, point }: { projetId: string; point: PointAffiche }) {
+function CartePoint({ projetId, point, sansOuvrir }: { projetId: string; point: PointAffiche; sansOuvrir?: boolean }) {
   const dire = useMessage();
+  const ouvrirACote = use(OuvrirScene);
   const [occupe, lancer] = useTransition();
   const accepter = () =>
     lancer(async () => {
@@ -306,7 +526,11 @@ function CartePoint({ projetId, point }: { projetId: string; point: PointAffiche
             Marquer comme fin
           </button>
         ) : null}
-        {point.ouvrir ? (
+        {sansOuvrir ? null : ouvrirACote && point.sceneId ? (
+          <button type="button" className="lien" onClick={() => ouvrirACote(point.sceneId!, point.choix, point)}>
+            Ouvrir la scène
+          </button>
+        ) : point.ouvrir ? (
           <Link className="lien" href={point.ouvrir}>
             Ouvrir la scène
           </Link>
@@ -423,35 +647,211 @@ function Declaration({ projetId, chemins }: { projetId: string; chemins: Chemins
   );
 }
 
-// ——— Les autres étapes, à l'étape 5 du plan ———
+// ——— « Relire » ———
 
-/** « Relire » arrive avec l'aperçu du livre (étape 6 du plan) ; on y voit déjà ce qui reste à écrire. */
-function RelireAVenir({ projet, relire, pdfDeTravail }: { projet: { id: string; deClasse: boolean }; relire: { finir: number; graves: PointAffiche[] }; pdfDeTravail: PdfAffiche | null }) {
+const FAIT_RELIRE: Record<TacheRelireAffichee["id"], string> = {
+  ecrire: "Toutes les scènes sont prêtes pour le livre.",
+  graves: "Aucune erreur grave.",
+  confirmer: "Rien à confirmer.",
+  lire: "",
+};
+
+/** « Relire » (F11.6) : quatre tâches, en colonne à côté de l'aperçu. */
+function FicheRelire({
+  projet, relire, pdfDeTravail, fermee, suivante,
+}: {
+  projet: { id: string; aChoix: boolean };
+  relire: RelireAffiche;
+  pdfDeTravail: PdfAffiche | null;
+  fermee: boolean;
+  suivante: "chemins" | "page";
+}) {
+  const { taches } = relire;
+  const [choisie, setChoisie] = useState<TacheRelireAffichee["id"]>(() => (taches.find((t) => t.points.length) ?? (relire.finir ? taches[0] : taches[taches.length - 1])).id);
+  const cour = taches.find((t) => t.id === choisie) ?? taches[0];
+  const i = taches.indexOf(cour);
+  const apres = taches[i + 1];
   return (
-    <section className="porte" aria-labelledby="relire-t">
-      <h2 id="relire-t" tabIndex={-1}>
-        Relire
-      </h2>
-      <p className="porte__phrase">Cette étape arrive avec l’aperçu du livre.</p>
-      {relire.finir ? (
+    <section className="carnet-fiche carnet-fiche--decision controles" aria-labelledby="relire-t">
+      <header>
+        <Icone nom="loupe" />
+        <h2 id="relire-t">Relire</h2>
+      </header>
+      <div className="carnet-fiche__corps">
+        <ol className="fil-taches" aria-label="Tâches de l’étape">
+          {taches.map((t, k) => (
+            <li key={t.id}>
+              <button type="button" className="fil__b" aria-current={t === cour ? "step" : undefined} onClick={() => setChoisie(t.id)}>
+                <span className={`fil__n${t.faite ? " fil__n--faite" : ""}`} aria-hidden="true">
+                  {t.faite ? <Icone nom="coche" /> : k + 1}
+                </span>
+                <span className="fil__nom">
+                  {t.nom}
+                  {t.faite ? <span className="vh"> — fait</span> : null}
+                </span>
+                {t.id === "ecrire" && relire.finir ? (
+                  <span className="fil__marque" title="En attente de l’écriture">
+                    <Icone nom="sablier" />
+                    <span className="vh"> — en attente de l’écriture</span>
+                  </span>
+                ) : t.points.length ? (
+                  <span className={`compte compte--${t.avert ? "avert" : "bloque"}`}>
+                    {t.points.length}
+                    <span className="vh"> {t.avert ? "à confirmer" : "à corriger"}</span>
+                  </span>
+                ) : t.attente ? (
+                  <span className="fil__marque" title="En attente de l’écriture">
+                    <Icone nom="sablier" />
+                    <span className="vh"> — en attente de l’écriture</span>
+                  </span>
+                ) : null}
+              </button>
+            </li>
+          ))}
+        </ol>
+
+        <div className="tache-panneau" role="group" aria-labelledby="tache-relire-t">
+          <h3 className="vh" id="tache-relire-t">
+            {cour.nom}
+          </h3>
+          {cour.id === "ecrire" ? (
+            relire.finir ? (
+              <p className="tache__cmd">
+                <span className="tache__chiffre">
+                  <b>{relire.finir}</b> scène{pluriel(relire.finir)} à finir
+                </span>
+                <Link className="btn btn--petit" href={`/projet/${projet.id}/suivi?livre=finir&direct=1`}>
+                  Voir dans le Suivi
+                </Link>
+              </p>
+            ) : (
+              <p className="tache__ok">
+                <Icone nom="coche" />
+                {FAIT_RELIRE.ecrire}
+              </p>
+            )
+          ) : cour.id === "lire" ? (
+            <LireEtCorriger projet={projet} relire={relire} pdfDeTravail={pdfDeTravail} />
+          ) : (
+            <>
+              {cour.points.length ? (
+                <ul className="points">
+                  {cour.points.map((p) => (
+                    <CartePoint key={p.cle} projetId={projet.id} point={p} />
+                  ))}
+                </ul>
+              ) : cour.attente ? (
+                <p className="tache__aide">Rien pour l’instant.</p>
+              ) : (
+                <p className="tache__ok">
+                  <Icone nom="coche" />
+                  {cour.id === "confirmer" && cour.acceptes.length ? "Tout est confirmé." : FAIT_RELIRE[cour.id]}
+                </p>
+              )}
+              {cour.acceptes.length ? <Acceptes projetId={projet.id} points={cour.acceptes} /> : null}
+            </>
+          )}
+        </div>
+
+        {relire.aSavoir.length ? (
+          <details className="asavoir">
+            <summary>
+              <Icone nom="info" />À savoir <span className="compte">{relire.aSavoir.length}</span>
+            </summary>
+            <ul className="points">
+              {relire.aSavoir.map((p) => (
+                <CartePoint key={p.cle} projetId={projet.id} point={p} />
+              ))}
+            </ul>
+          </details>
+        ) : null}
+
+        <p className="tache__suite">
+          {apres ? (
+            <button type="button" className="btn btn--petit" onClick={() => setChoisie(apres.id)}>
+              Continuer
+              <Icone nom="fleche" />
+            </button>
+          ) : suivante === "chemins" ? (
+            <Link className="controles__suite controles__suite--prete" href={`/projet/${projet.id}/livre?etape=chemins`} scroll={false}>
+              Étape suivante : Vérifier les chemins
+              <Icone nom="fleche" />
+            </Link>
+          ) : (
+            <Link className={`controles__suite${fermee ? "" : " controles__suite--prete"}`} href={`/projet/${projet.id}/livre?etape=page`} scroll={false}>
+              {fermee ? <Icone nom="cadenas" /> : null}
+              Étape suivante : Mettre en page
+              {fermee ? null : <Icone nom="fleche" />}
+            </Link>
+          )}
+        </p>
+      </div>
+    </section>
+  );
+}
+
+/** « Lire et corriger » : la lecture continue dans l'aperçu, le PDF de travail, puis « J'ai relu le livre » (F11-AC88). */
+function LireEtCorriger({ projet, relire, pdfDeTravail }: { projet: { id: string; aChoix: boolean }; relire: RelireAffiche; pdfDeTravail: PdfAffiche | null }) {
+  const dire = useMessage();
+  const [occupe, lancer] = useTransition();
+  const declarer = (oui: boolean) =>
+    lancer(async () => {
+      const r = await declarerRelu(projet.id, oui);
+      if (!r.ok) dire({ texte: r.erreur });
+    });
+  return (
+    <>
+      <p className="tache__aide">Lisez le livre dans l’aperçu. Un clic sur un passage ouvre sa scène à côté, pour la corriger sur place.</p>
+      {projet.aChoix ? null : (
         <p className="tache__cmd">
-          <span className="tache__chiffre">
-            <b>{relire.finir}</b> scène{pluriel(relire.finir)} à finir
-          </span>
-          <Link className="btn btn--petit" href={`/projet/${projet.id}/suivi`}>
-            Voir dans le Suivi
+          <Link className="lien" href={`/projet/${projet.id}/lecture?de=livre`}>
+            Lire comme un lecteur
           </Link>
         </p>
-      ) : null}
-      {relire.graves.length ? (
-        <ul className="points">
-          {relire.graves.map((p) => (
-            <CartePoint key={p.cle} projetId={projet.id} point={p} />
-          ))}
-        </ul>
-      ) : null}
+      )}
       <PdfDeTravail projetId={projet.id} dernier={pdfDeTravail} />
-    </section>
+      <div className="declaration">
+        {relire.terminee ? (
+          <>
+            <p className="tache__ok">
+              <Icone nom="coche" />
+              Livre relu.
+            </p>
+            <p className="tache__cmd">
+              <button type="button" className="lien" disabled={occupe} onClick={() => declarer(false)}>
+                Revenir sur cette déclaration
+              </button>
+            </p>
+          </>
+        ) : relire.declaree ? (
+          <>
+            <p className="tache__aide">
+              <Icone nom="sablier" />
+              Vous l’avez déclaré. La coche reviendra quand il ne restera plus rien à faire.
+            </p>
+            <p className="tache__cmd">
+              <button type="button" className="lien" disabled={occupe} onClick={() => declarer(false)}>
+                Revenir sur cette déclaration
+              </button>
+            </p>
+          </>
+        ) : (
+          <>
+            <p className="tache__cmd">
+              <button type="button" className="btn btn--primaire" disabled={!relire.declarable || occupe} aria-busy={occupe || undefined} onClick={() => declarer(true)}>
+                <Icone nom="coche" />
+                J’ai relu le livre
+              </button>
+            </p>
+            {relire.declarable ? null : (
+              <p className="tache__aide">
+                {relire.finir ? "Possible quand toutes les scènes seront prêtes pour le livre." : "Possible quand les tâches précédentes sont terminées."}
+              </p>
+            )}
+          </>
+        )}
+      </div>
+    </>
   );
 }
 
@@ -486,7 +886,7 @@ function PdfDeTravail({ projetId, dernier }: { projetId: string; dernier: PdfAff
   }
   return (
     <div className="pdf-travail">
-      <h3 className="pdf-travail__titre">PDF de travail</h3>
+      <h4 className="pdf-travail__titre">PDF de travail</h4>
       <p className="pdf-travail__phrase">Pour relire sur papier, avec les références des scènes et les points à corriger.</p>
       <p className="pdf-travail__cmd">
         <button type="button" className="btn" onClick={creer} disabled={calcul} aria-describedby={calcul ? "pdf-travail-etat" : undefined}>
@@ -513,9 +913,10 @@ function EtapeFermee({
   projet: { id: string; aChoix: boolean };
   etape: EtapeLivre;
   chemins: CheminsAffiches | null;
-  relire: { finir: number };
+  relire: RelireAffiche;
 }) {
   const nom = ETAPES_DU_LIVRE.find((x) => x.id === etape)!.nom;
+  const resteRelire = relire.taches.reduce((n, t) => n + t.points.length, 0);
   const reste = chemins
     ? [chemins.taches.reduce((n, t) => n + (t.avert ? 0 : t.points.length), 0), chemins.taches.reduce((n, t) => n + (t.avert ? t.points.length : 0), 0)]
     : [0, 0];
@@ -537,7 +938,16 @@ function EtapeFermee({
           <Link href={`/projet/${projet.id}/livre?etape=relire`} scroll={false}>
             Relire
           </Link>{" "}
-          : arrive avec l’aperçu du livre{relire.finir ? ` ; ${relire.finir} scène${pluriel(relire.finir)} à finir` : ""}.
+ :{" "}
+          {relire.terminee
+            ? "terminée."
+            : [
+                relire.finir ? `${relire.finir} scène${pluriel(relire.finir)} à finir` : "",
+                resteRelire ? `${resteRelire} point${pluriel(resteRelire)} à traiter` : "",
+                !relire.finir && !resteRelire && !relire.declaree ? "« J’ai relu le livre » à déclarer" : "",
+              ]
+                .filter(Boolean)
+                .join(" · ") || "en attente."}
         </li>
         {chemins ? (
           <li>
@@ -547,7 +957,7 @@ function EtapeFermee({
             :{" "}
             {chemins.terminee
               ? "terminée."
-              : [reste[0] ? `${reste[0]} à corriger` : "", reste[1] ? `${reste[1]} à confirmer` : "", !reste[0] && !reste[1] && !chemins.declaree && !chemins.finir ? "à déclarer" : ""]
+              : [reste[0] ? `${reste[0]} à corriger` : "", reste[1] ? `${reste[1]} à confirmer` : "", !reste[0] && !reste[1] && !chemins.declaree && !chemins.finir ? "« J’ai vérifié les chemins » à déclarer" : ""]
                   .filter(Boolean)
                   .join(" · ") || "en attente de l’écriture."}
           </li>

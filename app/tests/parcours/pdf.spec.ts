@@ -23,6 +23,8 @@ test("F11-AC03 — à « Relire », un livre dont des scènes restent à finir d
   await sql("update scenes set etat = 'prete' where id = $1", [s[1]]);
 
   await aller(page, `/projet/${projet}/livre?etape=relire`);
+  // Le PDF de travail est à la dernière tâche, « Lire et corriger » (F11.6)
+  await page.locator(".controles").getByRole("button", { name: /Lire et corriger/ }).click();
   const bouton = page.getByRole("button", { name: "Créer le PDF de travail" });
   const telechargement = page.waitForEvent("download");
   await bouton.click();
@@ -32,5 +34,6 @@ test("F11-AC03 — à « Relire », un livre dont des scènes restent à finir d
   expect(octets.subarray(0, 5).toString()).toBe("%PDF-");
 
   await aller(page, `/projet/${projet}/livre?etape=relire`);
+  await page.locator(".controles").getByRole("button", { name: /Lire et corriger/ }).click();
   await expect(page.getByRole("link", { name: /^Télécharger celui du \d+ \S+, \d+ h \d\d$/ })).toBeVisible();
 });

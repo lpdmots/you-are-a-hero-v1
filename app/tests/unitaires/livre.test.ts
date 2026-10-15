@@ -112,3 +112,37 @@ describe("Vérifier les chemins (F11.6)", () => {
     expect(etatRelire(controle([{ ref: 1, choix: [2] }, { ref: 2, fin: true, vide: true }])).marque).toBe("reste");
   });
 });
+
+describe("« Relire » (F11.6, étape 6 du plan, lot 2)", () => {
+  it("F11-AC88 — tout prêt, sans erreur grave : l'étape garde son numéro et propose « J'ai relu le livre » ; déclarée, elle porte une coche ; quatre scènes à finir, la déclaration attend", () => {
+    const pret = controle([{ ref: 1, choix: [2] }, { ref: 2, fin: true }]);
+    const avant = etatRelire(pret, new Set(), false);
+    expect(avant).toMatchObject({ declarable: true, terminee: false, marque: null });
+    expect(etatRelire(pret, new Set(), true)).toMatchObject({ terminee: true, marque: "coche" });
+    const quatre = controle([{ ref: 1, choix: [2] }, { ref: 2, choix: [3], etat: "cours" }, { ref: 3, choix: [4], etat: "valide" }, { ref: 4, choix: [5], etat: "cours" }, { ref: 5, fin: true, etat: "cours" }]);
+    const attente = etatRelire(quatre, new Set(), false);
+    expect(attente.finir).toBe(4);
+    expect(attente.declarable).toBe(false);
+    expect(attente.marque).toBe("attente");
+  });
+
+  it("F11-AC90 — sans erreur grave, toutes les scènes prêtes : « Erreurs graves » reste affichée, cochée, et « Lire et corriger » garde son rang", () => {
+    const etat = etatRelire(controle([{ ref: 1, choix: [2] }, { ref: 2, fin: true }]), new Set(), false);
+    expect(etat.taches.map((t) => t.id)).toEqual(["ecrire", "graves", "confirmer", "lire"]);
+    expect(etat.taches[1]).toMatchObject({ nom: "Erreurs graves", points: [], faite: true });
+    expect(etat.taches[3]).toMatchObject({ nom: "Lire et corriger", faite: false });
+  });
+
+  it("F11-AC91 — « J'ai relu le livre » déclaré, S028 rouverte puis de nouveau prête : la coche revient sans nouvelle déclaration", () => {
+    const rouverte = etatRelire(controle([{ ref: 1, choix: [28] }, { ref: 28, fin: true, etat: "reprendre" }]), new Set(), true);
+    expect(rouverte).toMatchObject({ declaree: true, terminee: false, marque: "attente" });
+    expect(rouverte.taches[0].faite).toBe(false);
+    expect(etatRelire(controle([{ ref: 1, choix: [28] }, { ref: 28, fin: true }]), new Set(), true).marque).toBe("coche");
+  });
+
+  it("F11-AC89 — septembre : les tâches vides de « Relire » disent « Rien pour l'instant », sans coche", () => {
+    const etat = etatRelire(controle([{ ref: 1, choix: [2], etat: "cours" }, { ref: 2, fin: true, etat: "cours" }]), new Set(), false);
+    expect(etat.taches[1]).toMatchObject({ attente: true, faite: false });
+    expect(etat.taches[2]).toMatchObject({ attente: true, faite: false });
+  });
+});

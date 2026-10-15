@@ -1900,6 +1900,30 @@ entre deux filets — et ses marques de travail en Atkinson, dans les couleurs
 des trois gravités ; précisions à confirmer dans le
 [plan](plan.md#étape-6--composer-et-imprimer-le-livre), lot 1.
 
+**Lot 2 — aperçu, scène à côté, « Relire ».** Repris de la maquette
+(captures 103, 106, 122, 131, 143, 146, 153) : la colonne de la fiche à
+gauche de l'aperçu, ses quatre tâches toujours à leur place, la tâche en
+cours dessous ; « 1 scène à finir » et « Voir dans le Suivi » ; « J'ai relu
+le livre » au bout de « Lire et corriger », sous le PDF de travail ; l'aperçu
+en page agrandie, le passage ouvert entouré de canard ; la scène ouverte à la
+place de la fiche, l'éditeur complet, « Annuler » et « Tout annuler » au pied ;
+« Revenir au n° 1 » après un renvoi suivi ; le Suivi filtré, son bandeau en
+canard pâle, « Retour au Livre » et « Tout afficher ».
+
+- **Écarts, retenus à l'entretien ou dits au début du lot :** page agrandie
+  par défaut ; plus de bandeau « Aperçu à jour » — l'état tient dans la
+  ligne « 13 passages · 3 pages · état du 15 octobre, 18 h 05 », et « Mise à
+  jour… » pendant un recalcul, les pages précédentes restant lisibles,
+  estompées ; l'image se glisse dans la scène ouverte ; sous 1 100 points,
+  deux onglets « Scène S014 » et « Dans le livre ».
+- **Pris en construisant :** le titre de la scène à côté se lit sans se
+  changer (il se change dans sa page) ; le parcours des problèmes est un
+  compteur « Problèmes 1 / 8 » à flèches, en tête de la barre de l'aperçu,
+  qui ouvre la scène avec la carte du point au-dessus de la copie ; le
+  numéro de page « p. 12 » en petit sous chaque page de l'aperçu ; l'aide de
+  « Relire » à l'ouverture de l'étape, comme celle de « Vérifier les
+  chemins », avec quatre questions.
+
 ### Étape 6 : écrans arrêtés avant de construire (15 octobre 2026)
 
 Recommandations faites au porteur à l'entretien de l'étape 6 sur les écrans
