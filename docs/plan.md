@@ -1470,8 +1470,19 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       (`@sparticuz/chromium` 153, Linux, essayé sous Docker dans l'image
       Lambda d'Amazon) donne, sur un livre de 107 pages, les mêmes 3 035
       lignes aux mêmes places, au centième de point, que le Chromium 156
-      de macOS ; V19 en partie (versions figées). V2 et V3 attendent la
-      préversion de la branche `essai-vercel`.
+      de macOS ; V19 en partie (versions figées). V2 pour la composition,
+      le 15 octobre 2026, sur une préversion de la branche `essai-vercel`
+      (région `cdg1`) : le même livre de 107 pages, la même empreinte des
+      pages qu'en local, composé en 5,8 s au premier appel (7,4 s vus du
+      poste, Chromium décompressé en 2,8 s) puis en 3,0 à 3,1 s (3,4 s vus
+      du poste), 0,2 Go de mémoire pour le serveur. Le dépôt dans le
+      stockage, que la préversion ne peut pas faire sans la base, et V3
+      (l'aperçu ressenti) attendent la mise en ligne. Deux corrections nées
+      de l'essai : le diagnostic passe hors du relais d'authentification, et
+      tout `playwright-core` part avec les fonctions. Pour lire la
+      préversion protégée, `vercel curl` a créé, avec l'accord du porteur, un
+      secret de contournement dans les réglages du projet Vercel
+      (« Protection Bypass for Automation ») ; il peut le retirer.
     - **Précisions prises en construisant, à faire confirmer au porteur :**
       les marques du PDF de travail — « Version de travail · état du
       15 octobre, 10 h 02 » en haut, côté reliure ; la référence « S042 » à

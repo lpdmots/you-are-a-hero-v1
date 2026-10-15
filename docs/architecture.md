@@ -1122,6 +1122,12 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   Vercel émulé en x86 (lancement 1,0 à 1,9 s, mise en page 2,8 s). Le PDF
   de travail de « Les passeurs de brume » local (24 pages) : 2,2 s, bouton
   compris.
+- **Chez Vercel (V2, composition)**, préversion `essai-vercel`, région
+  `cdg1`, Chromium 153 : 107 pages, empreinte des pages identique au local ;
+  premier appel 5,8 s (lancement 2,8 s, mise en page 2,4 s, impression
+  0,6 s), puis 3,0 à 3,1 s ; mémoire résidente 0,2 Go. Le relais
+  d'authentification (`proxy.ts`) ne passe pas sur `/diagnostic`, et tout
+  `playwright-core` est emporté, son traçage oubliant `browsers.json`.
 - **V1 levée** : mêmes 107 pages, mêmes 3 035 lignes aux mêmes places au
   centième de point, entre le Chromium 153 de Linux et le 156 de macOS. Une
   fidélité d'un hébergement à l'autre n'était pas requise ; elle est
