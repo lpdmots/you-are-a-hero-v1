@@ -1318,7 +1318,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   base sauvegardée, les deux migrations appliquées, 200 tests unitaires,
   228 contre la base et 278 parcours passés avant de pousser, puis la vraie
   base restaurée depuis une sauvegarde (étape 4, « Reste dû »). Ne plus
-  modifier ces migrations. Reste l'essai du porteur, qui la termine.
+  modifier ces migrations. **Terminée le 15 octobre 2026,** après l'essai du
+  porteur (« étape 5 terminée »).
 - **Terminée quand :** le porteur a lu son récit de bout en bout et corrigé
   ce que les contrôles signalaient ; un élève a lu ses chapitres.
 
