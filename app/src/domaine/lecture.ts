@@ -264,3 +264,57 @@ export function debutDuChapitre(livre: LivreLu, chapitreId: string): string | nu
   );
   return ids.find((id) => !atteintes.has(id)) ?? ids[0] ?? null;
 }
+
+// ——— Une lecture retenue (F12.1, F04.2) ———
+
+/** Ce qu'une lecture garde d'une fois sur l'autre : son parcours, les choix déjà lus, la feuille et le dernier lancer. */
+export type LectureGardee = { parcours: Parcours; deja: string[]; feuille: EtatFeuille; des: number[] | null };
+
+/**
+ * La feuille d'un lecteur, reprise sur la feuille du livre (F04-AC43, 16 octobre 2026) : les
+ * sections et compteurs qui existent encore gardent ses valeurs, un nouveau part de sa valeur
+ * de départ, un retiré disparaît.
+ */
+export function feuilleReprise(feuille: Feuille | null, ancienne: Partial<EtatFeuille> | null | undefined): EtatFeuille {
+  const etat = feuilleDeDepart(feuille);
+  const a = ancienne ?? {};
+  for (const cle of Object.keys(etat.compteurs)) {
+    const v = a.compteurs?.[cle];
+    if (typeof v === "number" && Number.isFinite(v)) etat.compteurs[cle] = Math.max(0, Math.round(v));
+  }
+  for (const cle of Object.keys(etat.listes)) {
+    const v = a.listes?.[cle];
+    if (Array.isArray(v)) etat.listes[cle] = v.filter((l): l is string => typeof l === "string").slice(0, 200).map((l) => l.slice(0, 80));
+  }
+  for (const cle of Object.keys(etat.notes)) {
+    const v = a.notes?.[cle];
+    if (typeof v === "string") etat.notes[cle] = v.slice(0, 2000);
+  }
+  return etat;
+}
+
+/**
+ * Reprendre une lecture retenue (F12-AC19, AC25) : elle suit les passages par leur identité.
+ * Le parcours garde ceux qui existent encore ; si celui où le lecteur s'était arrêté n'existe
+ * plus, la lecture est perdue et reprend au début, ce que l'écran dit. Rien de lisible : rien
+ * à reprendre.
+ */
+export function reprendre(brut: unknown, livre: LivreLu): { lecture: LectureGardee | null; perdue: boolean } {
+  const g = (brut && typeof brut === "object" ? brut : null) as Partial<LectureGardee> | null;
+  const etapes = Array.isArray(g?.parcours?.etapes) ? g.parcours.etapes.filter((e): e is string => typeof e === "string") : [];
+  const position = Number.isInteger(g?.parcours?.position) ? Math.max(0, Math.min(g!.parcours!.position, etapes.length - 1)) : etapes.length - 1;
+  if (!etapes.length) return { lecture: null, perdue: false };
+  const ici = etapes[position];
+  if (!livre.passages[ici]) return { lecture: null, perdue: true };
+  const avant = etapes.slice(0, position + 1).filter((e) => livre.passages[e]);
+  const apres = etapes.slice(position + 1).filter((e) => livre.passages[e]);
+  return {
+    lecture: {
+      parcours: { etapes: [...avant, ...apres], position: avant.length - 1 },
+      deja: Array.isArray(g?.deja) ? g.deja.filter((d): d is string => typeof d === "string") : [],
+      feuille: feuilleReprise(livre.feuille, g?.feuille),
+      des: Array.isArray(g?.des) && g.des.every((d) => Number.isInteger(d) && d >= 1 && d <= 6) ? g.des : null,
+    },
+    perdue: false,
+  };
+}

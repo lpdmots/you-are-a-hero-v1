@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { feuilleReprise, reprendre } from "@/domaine/lecture";
 import {
-  codeAffiche, codeDepuis, codeSaisi, commeLeLivre, etatDuPartage, nomsPropres, NOMS_COMME_LE_LIVRE, sortieAJour, versionDuLivre,
+  codeAffiche, codeDepuis, codeSaisi, commeLeLivre, etatDuPartage, livreLuDe, nomsPropres, NOMS_COMME_LE_LIVRE, premiersMots, sortieAJour, versionDuLivre,
 } from "@/domaine/partage";
-import { choix, id, image, imageId, liaison, livreDe, p, type Decrite } from "../livre/fabrique";
+import type { Feuille } from "@/domaine/preparation";
+import { choix, id, image, imageId, liaison, livreDe, p, planDe, type Decrite } from "../livre/fabrique";
 
 /**
  * Étape 7 du plan, lot 1 : la version partagée tirée du livre composé (F12.1), ses noms, le
@@ -38,14 +40,16 @@ describe("La version partagée (F12.1)", () => {
     expect(JSON.stringify(versionDuLivre(corrige, NOMS_COMME_LE_LIVRE))).not.toBe(avant);
   });
 
-  it("récit classique : titres de chapitre numérotés comme dans le livre, filet entre les scènes, aucun numéro de passage", () => {
-    const l = livreDe(
-      [{ ref: 1, chapitre: "Le départ", texte: [p("Un.")] }, { ref: 2, chapitre: "Le départ", texte: [p("Deux.")] }, { ref: 3, chapitre: "Le retour", texte: [p("Trois.")] }],
-      { aChoix: false },
-    );
-    const v = versionDuLivre(l, NOMS_COMME_LE_LIVRE);
+  it("récit classique : un chapitre par écran, numérotés comme dans le livre, filet entre les scènes, aucun numéro de passage", () => {
+    const classique: Decrite[] = [{ ref: 1, chapitre: "Le départ", texte: [p("Un.")] }, { ref: 2, chapitre: "Le départ", texte: [p("Deux.")] }, { ref: 3, chapitre: "Le retour", texte: [p("Trois.")] }];
+    const chapitres = new Map(planDe(classique).parties.flatMap((x) => x.chapitres.flatMap((c) => c.scenes.map((s) => [s.id, { id: c.id, titre: c.titre }] as const))));
+    const v = versionDuLivre(livreDe(classique, { aChoix: false }), NOMS_COMME_LE_LIVRE, chapitres);
     expect(v.passages.map((x) => [x.numero, x.chapitre?.numero ?? null, x.separateur])).toEqual([[null, 1, false], [null, null, true], [null, 2, false]]);
+    expect(v.passages[2].chapitre).toEqual({ numero: 2, titre: "Le retour", imprime: true });
     expect(v.feuille).toBeNull();
+    // Titres de chapitre non imprimés : les chapitres restent, sans titre affiché
+    const sansTitres = versionDuLivre(livreDe(classique, { aChoix: false, reglages: { titresDeChapitre: false } }), NOMS_COMME_LE_LIVRE, chapitres);
+    expect(sansTitres.passages[2].chapitre).toEqual({ numero: 2, titre: "Le retour", imprime: false });
   });
 });
 
@@ -114,5 +118,39 @@ describe("État du partage et coche de l'étape d'arrivée", () => {
     expect(sortieAJour(rien, { existe: true, aJour: false })).toBe(false);
     expect(sortieAJour({ existe: true, aJour: true }, { existe: true, aJour: false })).toBe(false);
     expect(sortieAJour({ existe: true, aJour: true }, rien)).toBe(true);
+  });
+});
+
+describe("Une lecture retenue, reprise après une mise à jour (F12-AC25, F04-AC43)", () => {
+  const feuille = (sections: Feuille["sections"]): Feuille => ({ on: true, des: 1, sections });
+  const heros = { id: "heros", type: "compteurs" as const, titre: "Ton héros", compteurs: [{ id: "vol", nom: "Volonté", depart: 5 }] };
+  const inventaire = { id: "inv", type: "liste" as const, titre: "Inventaire", lignes: 6 };
+
+  it("F04-AC43 — un compteur ajouté part de sa valeur de départ, une section retirée disparaît, le reste garde ses valeurs", () => {
+    const ancienne = { compteurs: { "heros/vol": 2 }, listes: { inv: ["couteau"] }, notes: {} };
+    const ajout = feuilleReprise(feuille([{ ...heros, compteurs: [...heros.compteurs, { id: "tps", nom: "Temps", depart: 10 }] }, inventaire]), ancienne);
+    expect(ajout).toEqual({ compteurs: { "heros/vol": 2, "heros/tps": 10 }, listes: { inv: ["couteau"] }, notes: {} });
+    expect(feuilleReprise(feuille([heros]), ancienne)).toEqual({ compteurs: { "heros/vol": 2 }, listes: {}, notes: {} });
+  });
+
+  it("F12-AC25 — la lecture suit les passages par leur identité ; arrêtée sur un passage retiré, elle reprend au début", () => {
+    const v = versionDuLivre(livre(), NOMS_COMME_LE_LIVRE);
+    const lu = livreLuDe(v);
+    const gardee = { parcours: { etapes: [id(1), id(9), id(3)], position: 2 }, deja: ["c-x"], feuille: { compteurs: {}, listes: {}, notes: {} }, des: [4] };
+    const r = reprendre(gardee, lu);
+    expect(r.perdue).toBe(false);
+    expect(r.lecture?.parcours).toEqual({ etapes: [id(1), id(3)], position: 1 });
+    expect(r.lecture?.des).toEqual([4]);
+    expect(reprendre({ ...gardee, parcours: { etapes: [id(1), id(9)], position: 1 } }, lu)).toEqual({ lecture: null, perdue: true });
+    expect(reprendre("n'importe quoi", lu)).toEqual({ lecture: null, perdue: false });
+  });
+
+  it("le passage lu en ligne : ni titre de travail ni référence ; nommé dans le parcours par ses premiers mots", () => {
+    const v = versionDuLivre(livre(), NOMS_COMME_LE_LIVRE);
+    const lu = livreLuDe(v);
+    expect(lu.departId).toBe(id(1));
+    expect(lu.passages[id(1)]).toMatchObject({ titre: null, reference: null, etat: null });
+    expect(lu.passages[id(1)].enigmes).toEqual([{ id: "enigme-3", numero: 3, cible: { sorte: "passage", id: id(3) } }]);
+    expect(premiersMots(v.passages[0])).toBe("Le quai.");
   });
 });

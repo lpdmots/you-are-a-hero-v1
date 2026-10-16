@@ -52,8 +52,8 @@ export async function partageDuProjet(e: Enseignant, projetId: string): Promise<
  * qui imprime les noms du livre, F12-AC22).
  */
 export function versionsDe(i: Instantane, noms: NomsDuPartage): { version: VersionPartagee; empreinte: string; empreinteLecture: string } {
-  const version = versionDuLivre(i.livre, noms);
-  return { version, empreinte: empreinteDeLaVersion(version), empreinteLecture: empreinteDeLecture(i.livre) };
+  const version = versionDuLivre(i.livre, noms, i.chapitres);
+  return { version, empreinte: empreinteDeLaVersion(version), empreinteLecture: empreinteDeLecture(i.livre, i.chapitres) };
 }
 
 /** Un nouveau code au hasard (F12.1, 16 octobre 2026). */

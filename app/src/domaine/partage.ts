@@ -8,7 +8,7 @@
  */
 
 import type { LivreACompose, PresentationACompose } from "./composition";
-import type { BlocLu, CibleLue } from "./lecture";
+import type { BlocLu, CibleLue, LivreLu, PassageLu } from "./lecture";
 import type { Feuille } from "./preparation";
 import type { TexteLeger } from "./pages";
 
@@ -21,8 +21,11 @@ export type PassagePartage = {
   numero: number | null;
   /** Le titre de partie imprimé au-dessus du passage */
   partie: string | null;
-  /** Récit classique : le titre de chapitre, numéroté comme dans le livre */
-  chapitre: { numero: number; titre: string } | null;
+  /**
+   * Récit classique : le passage ouvre un chapitre, lu sur un écran à lui (F12.1). Son titre
+   * s'affiche comme le livre l'imprime (`imprime`) ; le sommaire le nomme toujours.
+   */
+  chapitre: { numero: number; titre: string; imprime: boolean } | null;
   /** Récit classique : le filet au losange qui le sépare de la scène précédente */
   separateur: boolean;
   fin: boolean;
@@ -109,15 +112,28 @@ function imagesDesBlocs(blocs: BlocLu[]): string[] {
  * La version partagée du livre composé. Un renvoi vers une scène que le livre n'imprime pas
  * n'a pas de destination (la règle du partage l'aurait refusé : cela ne se voit qu'en essai).
  */
-export function versionDuLivre(livre: LivreACompose, noms: NomsDuPartage): VersionPartagee {
+export function versionDuLivre(
+  livre: LivreACompose, noms: NomsDuPartage,
+  /** Récit classique : le chapitre de chaque scène, pour lire un chapitre par écran */
+  chapitres: ReadonlyMap<string, { id: string; titre: string }> = new Map(),
+): VersionPartagee {
   const dans = new Set(livre.passages.map((p) => p.sceneId));
   const parNumero = new Map(livre.passages.flatMap((p) => (p.numero === null ? [] : [[p.numero, p.sceneId] as const])));
   const cible = (c: CibleLue): CibleLue => (c.sorte === "passage" && !dans.has(c.id) ? { sorte: "sans" } : c);
+  let rang = 0;
+  let dernier: string | null = null;
+  const chapitreDe = (p: LivreACompose["passages"][number]): PassagePartage["chapitre"] => {
+    const c = livre.aChoix ? null : chapitres.get(p.sceneId);
+    if (!c || c.id === dernier) return null;
+    dernier = c.id;
+    rang += 1;
+    return { numero: rang, titre: c.titre, imprime: Boolean(p.chapitre) };
+  };
   const passages: PassagePartage[] = livre.passages.map((p) => ({
     id: p.sceneId,
     numero: p.numero,
     partie: p.partie?.titre ?? null,
-    chapitre: p.chapitre ? { numero: p.chapitre.numero, titre: p.chapitre.titre } : null,
+    chapitre: chapitreDe(p),
     separateur: p.separateur,
     fin: p.fin,
     blocs: p.blocs.map((b) => (b.type === "choix" ? { ...b, morceaux: b.morceaux.map((m) => ("renvoi" in m ? { ...m, cible: cible(m.cible) } : m)) } : b)),
@@ -204,4 +220,56 @@ export function etatDuPartage(
 export function sortieAJour(pdf: { existe: boolean; aJour: boolean }, partage: { existe: boolean; aJour: boolean }): boolean {
   if (!pdf.existe && !partage.existe) return false;
   return (!pdf.existe || pdf.aJour) && (!partage.existe || partage.aJour);
+}
+
+// ——— La version, lue (F12.1) ———
+
+/**
+ * Un passage de la version, dans la forme que la lecture connaît (`lecture.ts`) : le même
+ * composant l'affiche dans la lecture d'essai et dans le lecteur en ligne. Rien de l'atelier :
+ * ni référence, ni état, ni titre de travail.
+ */
+export function passageLu(p: PassagePartage): PassageLu {
+  return {
+    id: p.id, numero: p.numero, titre: null, reference: null, chapitre: { id: "", titre: p.chapitre?.titre ?? "", couleur: 0 },
+    etat: null, horsLivre: false, vide: false, fin: p.fin, blocs: p.blocs,
+    enigmes: p.enigmes.map((e) => ({ id: `enigme-${e.numero}`, numero: e.numero, cible: { sorte: "passage", id: e.cible } })),
+  };
+}
+
+/** La version entière, lue : le départ est le premier passage, le n° 1 d'un récit à choix. */
+export function livreLuDe(v: VersionPartagee): LivreLu {
+  return {
+    aChoix: v.aChoix, marqueFin: v.marqueFin, departId: v.passages[0]?.id ?? null,
+    passages: Object.fromEntries(v.passages.map((p) => [p.id, passageLu(p)])),
+    ordre: v.passages.map((p) => p.id),
+    feuille: v.feuille,
+    regles: v.presentation?.commentLire?.regles ?? "",
+  };
+}
+
+/** Récit classique : les chapitres, chacun lu sur un écran, avec ses passages dans l'ordre du livre. */
+export type ChapitreLu = { numero: number; titre: string; imprime: boolean; partie: string | null; passages: PassagePartage[] };
+
+export function chapitresLus(v: VersionPartagee): ChapitreLu[] {
+  const chapitres: ChapitreLu[] = [];
+  for (const p of v.passages) {
+    if (p.chapitre || !chapitres.length) {
+      chapitres.push({ numero: p.chapitre?.numero ?? chapitres.length + 1, titre: p.chapitre?.titre ?? "", imprime: p.chapitre?.imprime ?? false, partie: p.partie, passages: [p] });
+    } else {
+      chapitres[chapitres.length - 1].passages.push(p);
+    }
+  }
+  return chapitres;
+}
+
+/** « Le brouillard tombait sur le… » : le début d'un passage, pour le nommer dans le parcours sans son titre de travail. */
+export function premiersMots(p: PassagePartage, n = 7): string {
+  const texte = p.blocs
+    .flatMap((b) => (b.type === "p" ? b.mots.flatMap((m) => ("text" in m ? [m.text] : [])) : []))
+    .join(" ")
+    .replace(/\s+/g, " ")
+    .trim();
+  const mots = texte.split(" ").filter(Boolean);
+  return mots.length > n ? `${mots.slice(0, n).join(" ")}…` : texte;
 }

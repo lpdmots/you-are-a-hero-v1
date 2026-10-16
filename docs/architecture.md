@@ -1330,6 +1330,46 @@ F12.3 et F04.2.
   l'instantané qu'il a déjà : aucune lecture de plus de la base ni de
   Chromium (le test `pages-sans-chromium` passe).
 
+**Lot 2 — le lecteur en ligne par le lien.**
+
+- **Sans compte.** `/lire/<code>` et `/images/lire/<code>/<image>` sont
+  hors du relais d'authentification (`proxy.ts`) : on y lit sans cookie.
+  Le serveur lit la version avec la clé de service, par le code seul, et ne
+  rend que la version ; aucune table n'est ouverte au rôle anonyme. La page
+  n'est lue qu'une fois par demande (`cache` de React), pour qu'un code faux
+  ne se compte qu'une fois.
+- **Codes faux.** Ils passent par les fonctions existantes de l'entrée des
+  classes (`entree_bloquee_jusqua`, `prendre_essai_entree`), avec deux clés :
+  l'adresse réseau propre au lien (dix de suite, cinq minutes) et celle de
+  l'entrée des classes (cent en cinq minutes). Seul un code faux compte ; une
+  famille qui relit n'use rien. Bloquée, l'adresse voit la page neutre, même
+  avec un bon code. Pas de cookie de navigateur : un lecteur sans cookie
+  aurait partagé un seul compteur avec tous les autres.
+- **Images.** Servies par `/images/lire/<code>/<image>`, seulement si la
+  version les montre (lue par `version->images`, sans charger la version
+  entière), en deux tailles par `srcset` : la vignette de 900 points et
+  l'image de 2 600. Gardées un jour par le navigateur seul (`private`). Le
+  chemin commence par `images/` : la règle qui interdit le cache des pages ne
+  le touche pas. Une image ne se supprime jamais dans l'application ; si on
+  l'ajoute un jour, il faudra épargner celles d'une version partagée.
+- **Non-indexation.** La racine le demande déjà par sa balise ; le lien et
+  ses images ajoutent l'en-tête `X-Robots-Tag: noindex, nofollow`.
+- **Un seul lecteur.** `LecteurEnLigne` lit une `VersionPartagee` convertie
+  en `LivreLu` (`livreLuDe`) et reprend `Passage` et `Feuille` de la lecture
+  d'essai ; la source des images passe par un contexte React
+  (`SourceDesImages`), « Passer l'énigme » par une option. La mémoire est
+  une prop : l'appareil (`localStorage`, clé `lecture:<code>`), le profil
+  de l'élève (lot 3), ou rien pour la prévisualisation. La reprise
+  (`reprendre`, `feuilleReprise` dans `domaine/lecture.ts`) suit l'identité
+  des passages, sections et compteurs.
+- **Récit classique.** La version porte, au premier passage de chaque
+  chapitre, son numéro, son titre et s'il est imprimé ; elle le tire des
+  chapitres du plan, que l'instantané du livre garde désormais à côté du
+  livre composé (`Instantane.chapitres`), sans toucher à `LivreACompose` :
+  l'empreinte des PDF déjà produits ne change pas.
+- **Base en sommeil.** Une erreur de la base mène à « Le livre est
+  momentanément indisponible. », non à une page d'erreur.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

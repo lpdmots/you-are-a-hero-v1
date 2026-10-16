@@ -121,4 +121,5 @@ export const empreinteDeLaVersion = (v: VersionPartagee): string => createHash("
  * L'empreinte de ce que le lecteur lit, avec les noms du livre : le PDF définitif la garde, la
  * version partagée aussi, et les deux disent ainsi s'ils ont le même texte (F12-AC22).
  */
-export const empreinteDeLecture = (livre: LivreACompose): string => empreinteDeLaVersion(versionDuLivre(livre, NOMS_COMME_LE_LIVRE));
+export const empreinteDeLecture = (livre: LivreACompose, chapitres: ReadonlyMap<string, { id: string; titre: string }>): string =>
+  empreinteDeLaVersion(versionDuLivre(livre, NOMS_COMME_LE_LIVRE, chapitres));

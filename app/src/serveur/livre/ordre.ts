@@ -54,7 +54,7 @@ export async function reordonnerLeLivre(e: Enseignant, projetId: string): Promis
     ...contenu,
     plan: { ...contenu.plan, parties: contenu.plan.parties.map((p) => ({ ...p, chapitres: p.chapitres.map((c) => ({ ...c, scenes: c.scenes.map((s) => (s.id in rangs ? { ...s, rangLivre: rangs[s.id] } : s)) })) })) },
   };
-  const compose = await composerLInstantane({ livre: livreDuContenu(essai, []), etatDu: new Date().toISOString(), empreinte: "", images: contenu.images, problemes: [] }, true, true);
+  const compose = await composerLInstantane({ livre: livreDuContenu(essai, []), etatDu: new Date().toISOString(), empreinte: "", images: contenu.images, problemes: [], chapitres: new Map() }, true, true);
   const avant = apercu.blancTotal;
   const apres = compose.rapport.blancTotal;
   if (apres >= avant - 1 && compose.rapport.pages >= apercu.pages) {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { createContext, useContext, useState, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import type { SigneAction } from "@/domaine/preparation";
 import { resoudre, seulRenvoi, type BlocLu, type CibleLue, type EnigmeLue, type MorceauDeChoix, type MotLu, type PassageLu } from "@/domaine/lecture";
@@ -11,10 +11,18 @@ import { resoudre, seulRenvoi, type BlocLu, type CibleLue, type EnigmeLue, type 
  * lecture d'essai et le lecteur en ligne ; rien ici ne parle de la base ni de l'éditeur.
  */
 
+/**
+ * D'où viennent les images : de l'atelier pour la lecture d'essai ; de la version partagée,
+ * par son lien, pour le lecteur en ligne, en deux tailles selon l'écran (F12.1).
+ */
+export type SourceImage = (image: string, symbole: boolean) => { src: string; srcSet?: string; sizes?: string };
+export const SourceDesImages = createContext<SourceImage>((image) => ({ src: `/images/${image}?v=1` }));
+
 /** Une image du livre, servie par l'application, qui vérifie qui peut la voir. */
 function ImageDuLivre({ image, alt, className }: { image: string; alt?: string; className?: string }) {
+  const source = useContext(SourceDesImages)(image, className === "symbole");
   // eslint-disable-next-line @next/next/no-img-element -- servie par l'application, qui vérifie qui peut la voir
-  return <img className={className} src={`/images/${image}?v=1`} alt={alt ?? ""} />;
+  return <img className={className} src={source.src} srcSet={source.srcSet} sizes={source.sizes} alt={alt ?? ""} loading="lazy" />;
 }
 
 export function Mots({ mots }: { mots: MotLu[] }) {
@@ -102,10 +110,11 @@ function PhraseDeChoix({
  * d'une liaison cachée du passage ; « Passer l'énigme » rejoint la suite prévue, dont l'adulte
  * seul lit le numéro (F09-AC19).
  */
-function Enigme({ passage, pourEleve, onSuivre }: { passage: PassageLu; pourEleve: boolean; onSuivre: (e: EnigmeLue) => void }) {
+function Enigme({ passage, pourEleve, onSuivre, passer }: { passage: PassageLu; pourEleve: boolean; onSuivre: (e: EnigmeLue) => void; passer: boolean }) {
   const [saisie, setSaisie] = useState("");
   const [faux, setFaux] = useState(false);
-  const prevue = passage.enigmes[0];
+  // En ligne, l'énigme ne se passe pas : l'issue d'un échec relève de l'auteur (F12.1)
+  const prevue = passer ? passage.enigmes[0] : undefined;
   return (
     <form
       className="lu-enigme"
@@ -169,8 +178,10 @@ function Enigme({ passage, pourEleve, onSuivre }: { passage: PassageLu; pourElev
 }
 
 export function Passage({
-  passage, deja, pourEleve, onSuivre, onEnigme, onAction, feuilleOuverte,
+  passage, deja, pourEleve, onSuivre, onEnigme, onAction, feuilleOuverte, passerEnigme = true,
 }: {
+  /** « Passer l'énigme » : dans la lecture d'essai seulement */
+  passerEnigme?: boolean;
   passage: PassageLu;
   deja: ReadonlySet<string>;
   pourEleve: boolean;
@@ -231,7 +242,7 @@ export function Passage({
           ))}
         </ul>
       ) : null}
-      {passage.enigmes.length ? <Enigme key={passage.id} passage={passage} pourEleve={pourEleve} onSuivre={onEnigme} /> : null}
+      {passage.enigmes.length ? <Enigme key={passage.id} passage={passage} pourEleve={pourEleve} onSuivre={onEnigme} passer={passerEnigme} /> : null}
     </>
   );
 }

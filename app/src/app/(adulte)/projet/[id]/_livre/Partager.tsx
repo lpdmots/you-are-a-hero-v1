@@ -173,7 +173,7 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
 
         <p className="partager__voir">
           {!partage ? (
-            <Link className="btn" href={`/projet/${projetId}/previsualiser`}>
+            <Link className="btn" href={`/previsualiser/${projetId}`}>
               <Icone nom="oeil" />
               Prévisualiser
             </Link>

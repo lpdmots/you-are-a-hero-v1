@@ -28,6 +28,8 @@ export type Instantane = {
   images: Map<string, ImageDuProjet>;
   /** Les points des contrôles, sur ce même état */
   problemes: Probleme[];
+  /** Le chapitre de chaque scène : le récit classique se lit en ligne un chapitre par écran (F12.1) */
+  chapitres: Map<string, { id: string; titre: string }>;
 };
 
 export async function instantaneDuLivre(e: Enseignant, projetId: string): Promise<Instantane | null> {
@@ -35,7 +37,8 @@ export async function instantaneDuLivre(e: Enseignant, projetId: string): Promis
   const etatDu = new Date().toISOString();
   const [contenu, problemes] = await Promise.all([contenuDuLivre(e, projetId), controlesDuLivre(e, projetId)]);
   if (!contenu) return null;
-  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images, problemes: problemes ?? [] };
+  const chapitres = new Map(contenu.plan.parties.flatMap((p) => p.chapitres.flatMap((c) => c.scenes.map((s) => [s.id, { id: c.id, titre: c.titre }] as const))));
+  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images, problemes: problemes ?? [], chapitres };
 }
 
 /**
@@ -117,7 +120,7 @@ export async function produirePdfDefinitif(e: Enseignant, projetId: string): Pro
   const inscrit = await e.supabase.from("pdf_du_livre").insert({
     id, projet_id: projetId, enseignant_id: e.id, sorte: "definitif", etat_du: instantane.etatDu, empreinte: instantane.empreinte,
     // Ce que lit le lecteur, pour dire si la version partagée a le même texte (F12-AC22)
-    empreinte_lecture: empreinteDeLecture(instantane.livre),
+    empreinte_lecture: empreinteDeLecture(instantane.livre, instantane.chapitres),
     chemin, taille: composition.pdf.length, pages: composition.rapport.pages + composition.rapport.horsPagination,
   }).select("id, sorte, etat_du, empreinte, empreinte_lecture, taille, pages, cree_le").single();
   if (inscrit.error) {

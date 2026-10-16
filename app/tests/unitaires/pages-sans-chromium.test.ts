@@ -46,7 +46,11 @@ function cheminVersLeMoteur(depart: string): string[] | null {
 }
 
 describe("Les pages du projet ne chargent pas Chromium", () => {
-  for (const page of ["app/(adulte)/projet/[id]/[onglet]/page.tsx", "app/(adulte)/projet/[id]/scene/[scene]/page.tsx", "app/(adulte)/projet/actions-livre.ts"]) {
+  for (const page of [
+    "app/(adulte)/projet/[id]/[onglet]/page.tsx", "app/(adulte)/projet/[id]/scene/[scene]/page.tsx", "app/(adulte)/projet/actions-livre.ts",
+    // Étape 7 : le partage, le lecteur du lien et ses images, la prévisualisation
+    "app/(adulte)/projet/actions-partage.ts", "app/lire/[code]/page.tsx", "app/images/lire/[code]/[id]/route.ts", "app/previsualiser/[projet]/page.tsx",
+  ]) {
     it(`${page} : aucun import statique ne mène à Playwright ni à Chromium`, () => {
       const chemin = cheminVersLeMoteur(resolve(SRC, page));
       expect(chemin?.map((f) => f.replace(`${SRC}/`, "")) ?? null).toBeNull();

@@ -1904,6 +1904,24 @@ livre n'est plus partagé ». ». En 390 px, les signes des canaux disparaissent
 et l'interrupteur reste à droite de la phrase. Précisions à confirmer dans le
 [plan](plan.md#étape-7--partager-et-lire-en-ligne), lot 1.
 
+**Lot 2 — lecteur en ligne.** Repris de la maquette (captures 43 à 51, 55,
+57, 59, 60, 94 à 100) : la page blanche à toute la largeur, Vollkorn, la
+barre fine (titre, « Comment lire », « Ma feuille », « Parcours » et son
+compteur), le grand titre, le sous-titre en italique, l'ornement au losange,
+la ligne et l'année ; le numéro du passage entre deux filets, la partie en
+petites capitales au-dessus ; les choix du livre ; l'énigme ; la marque de
+fin et « Recommencer » ; la feuille dans la marge droite sur grand écran, en
+panneau bas sur téléphone avec la barre « Ma feuille » et son résumé. Écarts :
+la feuille fermée au départ (décidé le 16 octobre) ; en récit classique, le
+filet au losange et les titres de chapitre du livre au lieu des trois points ;
+l'illustration de la page de titre entre le sous-titre et l'ornement, comme
+dans le livre ; la page des auteurs du début sous la page de titre ; sur
+téléphone, les outils de la barre en icônes seules ; la prévisualisation sur
+la page même du lecteur, sous un bandeau canard pâle. Sans maquette, à
+critiquer au lot 3 : la page « momentanément indisponible », mise comme la
+page neutre (une phrase en Vollkorn, une ligne d'aide), et la phrase ambre
+« Le livre a été mis à jour : la lecture reprend au début. ».
+
 ### Étape 7 : écrans arrêtés avant de construire (16 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 7 ; elles

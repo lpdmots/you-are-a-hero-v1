@@ -1899,6 +1899,55 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       et une ligne « Un changement vaut pour la prochaine mise à jour du
       partage. » une fois le livre partagé.
     - **Tests automatiques :** 11 unitaires, 12 contre la base, 3 parcours.
+  - **Lot 2 — lecteur en ligne par le lien : construit le 16 octobre 2026.**
+    `/lire/<code>` lit la version partagée sans compte, par la clé de
+    service et le seul code (`serveur/lecteur.ts`), et l'affiche dans le
+    lecteur en ligne (`composants/lecture/LecteurEnLigne.tsx`), qui reprend
+    le passage de la lecture d'essai (`Passage.tsx`) sans « Passer
+    l'énigme » : page de titre et page des auteurs du début, « Commencer la
+    lecture » ou « Continuer au passage n » et « Recommencer au début »,
+    « Comment lire ce livre » et les règles, le passage, ses choix, son
+    énigme, le parcours, la fin, la page des auteurs de la fin et la page de
+    fin ; la feuille et les dés, fermés au départ ; le récit classique un
+    chapitre par écran, avec « Sommaire ». La lecture est retenue sur
+    l'appareil et reprise par l'identité des passages, la feuille par celle
+    des sections et des compteurs. Un code inconnu, coupé ou changé mène à la
+    page neutre ; une base qui ne répond pas, à « Le livre est
+    momentanément indisponible. ». « Prévisualiser » ouvre le même lecteur
+    (`/previsualiser/<projet>`), sous un bandeau, sans rien retenir. Sans
+    migration.
+    - **Critères fermés :** F12-AC01, AC13, AC14, AC18, AC19, AC25 ;
+      F12-AC03, AC10, AC11 côté lecteur ; F04-AC17 (lecteur en ligne), AC18,
+      AC20, AC21, AC23, AC24, AC31, AC32, AC43 ; F11-AC46 pour le lecteur.
+    - **Critères qui attendent :** F12-AC23 se vérifie contre la base (lot 1)
+      ; la lecture par les élèves et F04-AC22, au lot 3. Les écrans sans
+      maquette (page « momentanément indisponible », phrase de reprise après
+      une mise à jour) se critiquent au lot 3 avec l'entrée « Lire » de
+      l'élève.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      le titre de l'onglet est celui du livre, sans le nom de l'application ;
+      la barre fine porte le titre (qui ramène à la première page),
+      « Comment lire », « Ma feuille » (grand écran) et « Parcours » avec le
+      nombre de passages lus, ou « Sommaire » ; sur téléphone, les outils en
+      icônes seules et « Ma feuille » dans la barre basse avec son résumé ;
+      la page des auteurs « au début » se lit sous la page de titre, « à la
+      fin » après la marque de fin, puis la page de fin ; le parcours nomme
+      un passage « 7 · La barque toucha la rive… » ; « Ta lecture est
+      retenue sur cet appareil. » sous les boutons de départ, et « Ta
+      feuille est retenue sur cet appareil. » au pied de la feuille ;
+      « Recommencer » propose « Annuler » quelques secondes ; le texte de
+      « Comment lire ce livre » à l'écran, tutoyant le lecteur comme le livre
+      imprimé, ses phrases sur les énigmes et la feuille seulement si le
+      livre en a, puis « Règles du jeu » ; en récit classique, « Chapitre
+      précédent », « Chapitre suivant », et « Relire depuis le début » au
+      dernier chapitre ; la page neutre ajoute « Si quelqu'un vous a donné
+      ce lien, demandez-lui le nouveau. » ; un code se lit avec ou sans
+      tirets ni majuscules ; dix codes faux de suite depuis une adresse
+      réseau (ou cent en cinq minutes, comptés avec l'entrée des classes)
+      font montrer la page neutre cinq minutes, même pour un bon code.
+    - **Tests automatiques :** 3 unitaires, 5 parcours (sur une fenêtre de
+      téléphone, sans compte) ; le test `pages-sans-chromium` suit aussi les
+      nouvelles pages.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 
