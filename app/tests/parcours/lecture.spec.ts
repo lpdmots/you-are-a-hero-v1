@@ -150,7 +150,7 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("1");
   });
 
-  test("F04.2 — une action de jeu ouvre la feuille, sans rien y écrire ; « Ranger » la referme ; le texte reste centré", async ({ page }) => {
+  test("F04.2 — une action de jeu ouvre la feuille, sans rien y écrire ; un second clic sur l'action la range, « Ranger » aussi ; le texte reste centré", async ({ page }) => {
     const l = await phare(page);
     await aller(page, `/projet/${l.projet}/lecture?depart=${l.s.depart}&de=livre`);
     const feuille = page.getByRole("complementary", { name: "Feuille d’aventure" });
@@ -160,6 +160,13 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     await expect(feuille.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("");
     // La feuille s'ouvre par-dessus, dans la marge : le texte n'a pas bougé
     expect((await page_(page).boundingBox())!.x).toBe(texteAvant.x);
+    // Un second clic sur l'action range la feuille (16 octobre 2026)
+    const action = page_(page).getByRole("button", { name: /Ajoute la corde à ton inventaire/ });
+    await expect(action).toHaveAttribute("title", "Ranger ma feuille d’aventure");
+    await action.click();
+    await expect(feuille).toBeHidden();
+    await expect(action).toHaveAttribute("title", "Ouvrir ma feuille d’aventure");
+    await action.click();
     await feuille.getByRole("button", { name: "Ranger" }).click();
     await expect(feuille).toBeHidden();
   });

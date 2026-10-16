@@ -2193,7 +2193,9 @@ de la lecture, sans déplacer le texte ; « Ranger » ou Échap la referment, et
 ce qu'on y a noté reste jusqu'à « Recommencer ». Une action de jeu ouvre
 aussi la feuille — sur le dé quand elle porte le dé —, une bulle disant
 « Ouvrir ma feuille d'aventure » ; elle ne fait rien d'autre, le lecteur
-note lui-même (F04-AC18). Sur téléphone, rien ne change : « Ma feuille »
+note lui-même (F04-AC18). Demandé par le porteur le 16 octobre 2026 : un
+second clic sur l'action range la feuille, la bulle disant alors « Ranger
+ma feuille d'aventure ». Sur téléphone, rien ne change : « Ma feuille »
 dans la barre basse. Cela remplace « la feuille à côté du texte » de la
 lecture d'essai et, pour le lecteur en ligne, la feuille « ouverte par
 défaut et rangeable » : la lecture est commune. Captures 531 à 533.

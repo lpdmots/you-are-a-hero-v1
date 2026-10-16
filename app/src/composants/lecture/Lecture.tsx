@@ -235,7 +235,9 @@ export default function Lecture({
                   pourEleve={pourEleve}
                   onSuivre={(r) => versCible(r.cible as { sorte: string; id?: string }, r.renvoi)}
                   onEnigme={(e) => versCible(e.cible as { sorte: string; id?: string }, e.id)}
-                  onAction={livre.feuille ? (signe) => ouvrirFeuille(signe === "de" && livre.feuille!.des > 0) : undefined}
+                  // Une action ouvre la feuille ; un second clic la range, comme « Ma feuille »
+                  onAction={livre.feuille ? (signe) => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille(signe === "de" && livre.feuille!.des > 0)) : undefined}
+                  feuilleOuverte={feuilleOuverte}
                 />
                 {issue === "rien" ? (
                   <p className="lu-issue">

@@ -169,7 +169,7 @@ function Enigme({ passage, pourEleve, onSuivre }: { passage: PassageLu; pourElev
 }
 
 export function Passage({
-  passage, deja, pourEleve, onSuivre, onEnigme, onAction,
+  passage, deja, pourEleve, onSuivre, onEnigme, onAction, feuilleOuverte,
 }: {
   passage: PassageLu;
   deja: ReadonlySet<string>;
@@ -181,6 +181,8 @@ export function Passage({
    * porte. Elle ne fait rien d'autre — c'est le lecteur qui note (F04-AC18).
    */
   onAction?: (signe: SigneAction) => void;
+  /** La feuille d'aventure est ouverte : une action la range (16 octobre 2026) */
+  feuilleOuverte?: boolean;
 }) {
   const recit = passage.blocs.filter((b) => b.type !== "choix");
   const choix = passage.blocs.filter((b): b is Extract<BlocLu, { type: "choix" }> => b.type === "choix");
@@ -197,7 +199,7 @@ export function Passage({
               );
             if (b.type === "action")
               return onAction ? (
-                <button key={b.id} type="button" className="lu-action lu-action--feuille" title="Ouvrir ma feuille d’aventure" onClick={() => onAction(b.signe)}>
+                <button key={b.id} type="button" className="lu-action lu-action--feuille" title={feuilleOuverte ? "Ranger ma feuille d’aventure" : "Ouvrir ma feuille d’aventure"} aria-expanded={feuilleOuverte ?? false} aria-controls="feuille-aventure" onClick={() => onAction(b.signe)}>
                   <Icone nom={b.signe} />
                   <span>
                     <Mots mots={b.mots} />
