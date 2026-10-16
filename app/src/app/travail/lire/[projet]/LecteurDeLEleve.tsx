@@ -13,7 +13,7 @@ import { garderLecture } from "../actions";
  * Le lecteur de l'élève : ses images par son poste, sa lecture gardée par la base une seconde
  * après le dernier geste, et au départ de la page ; « Retour à Lire » en tête.
  */
-export function LecteurDeLEleve({ projetId, version, lecture, prenom }: { projetId: string; version: VersionPartagee; lecture: unknown; prenom: string }) {
+export function LecteurDeLEleve({ projetId, version, lecture }: { projetId: string; version: VersionPartagee; lecture: unknown }) {
   const attente = useRef<{ minuteur: ReturnType<typeof setTimeout>; lecture: LectureGardee } | null>(null);
   const envoyer = () => {
     if (!attente.current) return;
@@ -33,7 +33,6 @@ export function LecteurDeLEleve({ projetId, version, lecture, prenom }: { projet
     () => ({
       sorte: "profil",
       initiale: lecture,
-      prenom,
       garder: (l) => {
         if (attente.current) clearTimeout(attente.current.minuteur);
         attente.current = { lecture: l, minuteur: setTimeout(envoyer, 1000) };

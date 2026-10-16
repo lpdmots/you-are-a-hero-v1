@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
   return (
     <Messages>
       <VeillePoste attendu="eleve" />
-      <LecteurDeLEleve projetId={projet} version={lu.version} lecture={lu.lecture} prenom={contexte.moi.prenom} />
+      <LecteurDeLEleve projetId={projet} version={lu.version} lecture={lu.lecture} />
     </Messages>
   );
 }

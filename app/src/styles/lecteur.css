@@ -226,14 +226,6 @@
   font-size: var(--t-s);
   font-weight: 700;
 }
-.lecteur__ou {
-  margin: 0;
-  font-size: var(--t-xs);
-  color: var(--graphite-2);
-}
-.lecteur__ou--feuille {
-  padding: 0 18px 16px;
-}
 
 /* Pages de présentation, « Comment lire ce livre » */
 .lecteur__presentation {

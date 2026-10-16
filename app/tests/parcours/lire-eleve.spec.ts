@@ -61,7 +61,6 @@ test("F12-AC12, F12-AC24, F12-AC26, F04-AC22 — « Lire » : l'histoire en cour
 
   // Alice lit, note un objet ; sa lecture est gardée avec son prénom
   await livres.first().click();
-  await expect(alice.page.getByText("Ta place est gardée avec ton prénom, Alice.")).toBeVisible();
   await alice.page.getByRole("button", { name: "Commencer la lecture" }).click();
   await alice.page.getByRole("button", { name: "Ma feuille" }).first().click();
   await alice.page.getByRole("textbox", { name: "Inventaire, ligne 1" }).fill("couteau");

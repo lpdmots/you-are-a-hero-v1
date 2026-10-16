@@ -1937,7 +1937,7 @@ Critique en deux lectures séparées au premier dessin : 28/40 (informée) et
 26/40 (indépendante). Corrigé aussitôt, sans nouvelle mesure :
 - **boutons :** un seul bouton plein, « Lire à l'essai » devenu ordinaire ;
 - **histoire en cours :** passée de la grande bande à une rangée basse, pour laisser la vedette au livre de la classe ;
-- **mots :** « retenue » remplacé par « gardée » (« Ta place est gardée… »), le mot sonnant comme une punition pour un enfant ;
+- **mots :** « Ta lecture est retenue… » écartée, « retenue » sonnant comme une punition pour un enfant ; la phrase, devenue « Ta place est gardée… », est ensuite retirée sur la remarque du porteur (16 octobre 2026), qui ne la comprenait pas : « Continuer au passage n » montre seul que la lecture est gardée ;
 - **hors des horaires :** « La lecture à l'essai rouvre demain, 8 h 30, avec le travail. » au lieu d'une phrase elliptique ;
 - **cartes :** un livre seul sur toute la largeur plutôt qu'une demi-carte ;
 - **ligne de la page de titre :** sur sa propre ligne, et non ajoutée au décompte, où « Mme Laurent » paraissait ambigu ;
@@ -3010,8 +3010,9 @@ rappel à chaque activation d'un canal. Dispositions retenues pour les montrer :
   précédent » figure sous chaque passage.
 - **Reprise :** la première page propose « Continuer au passage n »
   (« Reprendre au passage n » jusqu'à la passe de cohérence) ou
-  « Recommencer au début », et dit où la lecture est retenue : sur l'appareil
-  pour le lien, avec le prénom pour un élève identifié.
+  « Recommencer au début ». La phrase qui disait où la lecture est retenue
+  (sur l'appareil, ou avec le prénom) est retirée le 16 octobre 2026, sur la
+  remarque du porteur.
 - **Phrases de choix :** la lecture d'essai et l'aperçu du livre montrent les
   mêmes phrases ; S051 porte l'exemple à deux renvois. Dans Composition, les
   constructions se cochent sous la formule de renvoi, chacune avec son exemple.

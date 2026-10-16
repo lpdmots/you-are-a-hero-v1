@@ -1932,9 +1932,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       icônes seules et « Ma feuille » dans la barre basse avec son résumé ;
       la page des auteurs « au début » se lit sous la page de titre, « à la
       fin » après la marque de fin, puis la page de fin ; le parcours nomme
-      un passage « 7 · La barque toucha la rive… » ; « Ta lecture est
-      retenue sur cet appareil. » sous les boutons de départ, et « Ta
-      feuille est retenue sur cet appareil. » au pied de la feuille ;
+      un passage « 7 · La barque toucha la rive… » ; aucune phrase ne dit
+      où la lecture est gardée (retirée le 16 octobre 2026 sur la remarque du
+      porteur, qui ne la comprenait pas : « Continuer au passage n » le
+      montre de lui-même) ;
       « Recommencer » propose « Annuler » quelques secondes ; le texte de
       « Comment lire ce livre » à l'écran, tutoyant le lecteur comme le livre
       imprimé, ses phrases sur les énigmes et la feuille seulement si le
@@ -1980,8 +1981,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       un « i » ; le livre de la classe en grand seulement quand il est
       partagé, les autres en cartes égales, un livre seul sur toute la
       largeur ; la couverture d'un livre reprend l'image de sa page de titre ;
-      « Ta place est gardée avec ton prénom, Alice. » (« retenue », jugé
-      punitif pour un enfant, est écarté partout dans le lecteur) ; le
+      aucune phrase sur la lecture gardée, pas plus que par le lien ; le
       bandeau « Retour à Lire » ; un livre retiré des classes rend la page
       introuvable.
     - **Tests automatiques :** 5 contre la base, 2 parcours ; deux parcours

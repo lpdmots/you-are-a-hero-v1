@@ -24,7 +24,7 @@ import { Mots, Passage, SourceDesImages, type SourceImage } from "./Passage";
 
 export type Memoire =
   | { sorte: "appareil"; cle: string }
-  | { sorte: "profil"; initiale: unknown; garder: (l: LectureGardee) => void; prenom: string }
+  | { sorte: "profil"; initiale: unknown; garder: (l: LectureGardee) => void }
   | { sorte: "aucune" };
 
 type Ecran = { sorte: "accueil" } | { sorte: "comment" } | { sorte: "lecture" };
@@ -233,12 +233,6 @@ export function LecteurEnLigne({
     }
     return `${p.numero ?? ""} · ${premiersMots(p)}`;
   };
-  const ou =
-    memoire.sorte === "appareil"
-      ? "Ta place est gardée sur cet appareil."
-      : memoire.sorte === "profil"
-        ? `Ta place est gardée avec ton prénom, ${memoire.prenom}.`
-        : null;
 
   const feuille = livre.feuille && g ? (
     <Feuille
@@ -368,7 +362,6 @@ export function LecteurEnLigne({
                       Comment lire ce livre
                     </button>
                   ) : null}
-                  {ou ? <p className="lecteur__ou">{ou}</p> : null}
                 </div>
               </article>
               {present?.auteurs && present.auteurs.place === "debut" ? <PageDesAuteurs p={present.auteurs} source={source} /> : null}
@@ -483,7 +476,6 @@ export function LecteurEnLigne({
               </button>
             </header>
             {feuille}
-            {ou ? <p className="lecteur__ou lecteur__ou--feuille">{ou.replace("Ta place est gardée", "Ta feuille est gardée")}</p> : null}
           </aside>
         ) : null}
 
