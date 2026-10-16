@@ -1761,6 +1761,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   refusé à Claude par le contrôle des permissions de la session : le porteur
   le lance. Restent V2 (dépôt dans le stockage en ligne), V3 (aperçu
   ressenti en ligne) et V6.
+- **Panne de la mise en ligne, réparée le 16 octobre 2026 :** après le
+  `git push`, les pages d'un projet ne s'ouvraient plus chez Vercel
+  (Playwright chargé par les pages, ses fichiers absents hors des routes du
+  livre). Cause, correction et test de garde :
+  [architecture](architecture.md#réalisation-de-létape-6-15-octobre-2026).
+  La base n'y était pour rien. Le correctif attend d'être poussé par le
+  porteur.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
 

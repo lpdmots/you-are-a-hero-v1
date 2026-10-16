@@ -12,7 +12,6 @@ import { MARGE_MINIMALE, reglagesPropres } from "@/domaine/mise-en-page";
 import { pagesPropres } from "@/domaine/pages";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { supprimerPdfDefinitif } from "@/serveur/livre/livre";
-import { reordonnerLeLivre, type Reordonne } from "@/serveur/livre/ordre";
 import type { Enseignant } from "@/serveur/adulte";
 import { assurerOrdre, structure } from "@/serveur/copie";
 import { deplacer, rangsActuels, type Deplacement } from "@/domaine/ordre";
@@ -247,15 +246,6 @@ export async function supprimerPdf(pdfId: string): Promise<Fait> {
 }
 
 // ——— Ordre des passages (étape 6, lot 6) ———
-
-/** « Réordonner les passages » (F11.5, F11-AC64) ; les anciens rangs reviennent, pour « Annuler ». */
-export async function reordonnerPassages(projetId: string): Promise<Reordonne> {
-  const e = await exigerEnseignant();
-  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
-  const r = await reordonnerLeLivre(e, projetId);
-  if (r.ok) rafraichir(projetId);
-  return r;
-}
 
 /** « Annuler » un agencement : les rangs d'avant, et la décision d'avant. */
 export async function annulerAgencement(projetId: string, rangs: Record<string, number>, decision: string | null): Promise<Fait> {

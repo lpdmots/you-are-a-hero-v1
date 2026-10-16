@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { adresseImage } from "@/composants/copie/Blocs";
@@ -13,8 +14,8 @@ import { colonnesDesNoms, nomsTries, texteSimple, type FormePage, type PagesDuLi
 import { pluriel } from "@/domaine/texte";
 import { listerImages } from "../../actions-images";
 import { PetiteDoublePage, type SourceApercu } from "./Apercu";
-import { annulerAgencement, garderOrdre, melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre, reordonnerPassages } from "../../actions-livre";
-import type { EtatDeLOrdre } from "@/serveur/livre/ordre";
+import { annulerAgencement, garderOrdre, melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre } from "../../actions-livre";
+import type { EtatDeLOrdre, Reordonne } from "@/serveur/livre/ordre";
 
 /**
  * Le volet « Réglages » de « Mettre en page » (F11.6) : « Texte et pages », puis « Pages de début
@@ -304,6 +305,7 @@ function OrdreDesPassages({ projetId, parties, ordre }: { projetId: string; part
  * (F11-AC81). Le doute se dit ici, avec ses deux réponses (F11-AC86).
  */
 function MoinsDeBlanc({ projetId, ordre }: { projetId: string; ordre: EtatDeLOrdre | null }) {
+  const routeur = useRouter();
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [avertir, setAvertir] = useState(false);
@@ -314,10 +316,17 @@ function MoinsDeBlanc({ projetId, ordre }: { projetId: string; ordre: EtatDeLOrd
     setErreur(null);
     setRien(null);
     setAvertir(false);
-    const r = await reordonnerPassages(projetId);
+    // Une route du livre, comme l'aperçu : l'ordre proposé y est composé une fois, avec Chromium
+    let r: Reordonne;
+    try {
+      r = (await (await fetch(`/livre/${projetId}/reordonner`, { method: "POST" })).json()) as Reordonne;
+    } catch {
+      r = { ok: false, erreur: "L’ordre n’a pas pu être changé. Réessayez dans un instant." };
+    }
     setEnCours(false);
     if (!r.ok) return r.rien ? setRien(r.erreur) : setErreur(r.erreur);
     setFait({ annuler: r.annuler, decision: r.decision, gain: Math.max(0, r.avant - r.apres) });
+    routeur.refresh();
   };
   const demander = () => (ordre?.retouche ? setAvertir(true) : void reordonner());
   const garder = async () => {

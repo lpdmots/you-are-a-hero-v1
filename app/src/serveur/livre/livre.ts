@@ -8,7 +8,7 @@ import { SEAU as SEAU_DES_IMAGES, TYPE_MIME } from "../images";
 import type { LivreACompose } from "@/domaine/composition";
 import type { Probleme } from "@/domaine/controles";
 import { conditionsDuLivre, type RaisonDeRefus } from "@/domaine/livre";
-import { composer, type Composition } from "./composer";
+import type { Composition } from "./composer";
 import { contenuDuLivre, livreDuContenu, type ImageDuProjet } from "./contenu";
 import { etatEnMots, pdfDe, SEAU, type PdfDuLivre } from "./pdf";
 
@@ -43,7 +43,10 @@ export async function instantaneDuLivre(e: Enseignant, projetId: string): Promis
  * demande. L'aperçu les prend allégées (900 points, la vignette de l'import) : leurs boîtes
  * ne changent pas, ses pages sont donc celles du PDF.
  */
-export function composerLInstantane(i: Instantane, travail: boolean, allege = false): Promise<Composition> {
+export async function composerLInstantane(i: Instantane, travail: boolean, allege = false): Promise<Composition> {
+  // Chromium n'est chargé qu'au moment de composer : les pages du projet, qui lisent le livre
+  // sans le composer, n'emportent pas ses fichiers chez Vercel (seules les routes /livre/** les ont)
+  const { composer } = await import("./composer");
   const service = clientService();
   return composer(i.livre, {
     travail, etatDu: etatEnMots(i.etatDu),

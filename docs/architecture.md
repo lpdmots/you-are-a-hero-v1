@@ -1272,6 +1272,19 @@ l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
   de chaque passage) et l'ordre imprimé que la page donne ; « Placer ici »
   est « Placer après le n° » du lot 4.
 
+**Chromium hors des pages du projet (16 octobre 2026) :** à la mise en ligne,
+toutes les pages d'un projet sont tombées (« This page couldn't load ») : la
+page du projet lisait le livre par `livre.ts`, qui importait la composition,
+donc Playwright, dont `browsers.json` n'est emporté par Vercel que pour les
+routes `/livre/**` (`outputFileTracingIncludes`). La composition est
+maintenant importée seulement au moment de composer (`await import`), et
+« Réordonner les passages », qui compose une fois, passe par la route
+`POST /livre/[projet]/reordonner` au lieu d'une action serveur, qui
+s'exécute avec la page. Vérifié en local sur une construction de production
+dont le serveur ne trouve plus `browsers.json` (simulation de Vercel) : les
+pages s'ouvrent ; un test (`pages-sans-chromium`) suit les imports statiques
+des pages et échoue si l'un mène de nouveau à Playwright ou à Chromium.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte
