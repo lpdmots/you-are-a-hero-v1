@@ -2015,6 +2015,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   Ne plus modifier ces migrations.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
+- **Terminée le 16 octobre 2026, sur décision du porteur,** après son essai en
+  ligne (« cela fonctionne ») : les deux livres d'essai chargés dans la vraie
+  base (`npm run livres:essai -- --production adresse --oui`, puis
+  `partages:essai`), partagés par le lien et « À mes classes », lus sur son
+  téléphone et par un élève de la classe d'essai. V16 est levée. Les livres
+  d'essai se retirent de la vraie base par `--retirer`. Sorti de l'essai : le
+  lien du lecteur vers le site, question notée à l'étape 9.
 
 ### Étape 8 — Aides IA
 
