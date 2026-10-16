@@ -29,6 +29,7 @@
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
     "livre:essai": "tsx scripts/livre-d-essai.ts",
     "livres:essai": "tsx --conditions=react-server scripts/livres-a-imprimer.ts",
+    "partages:essai": "tsx scripts/partages-d-essai.ts",
     "captures": "playwright test --config playwright.captures.config.ts",
     "verifier:production": "tsx scripts/verifier-production.ts",
     "cle:copier": "tsx scripts/presse-papiers.ts",

@@ -1986,6 +1986,26 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       introuvable.
     - **Tests automatiques :** 5 contre la base, 2 parcours ; deux parcours
       de l'étape 5 passent par « Lire ».
+  - **Lot 4 — essai de bout en bout : fait en local le 16 octobre 2026.**
+    `npm run partages:essai` mène les deux livres de `npm run livres:essai`
+    (« La lanterne du passeur », à choix, de la classe d'essai ; « Le grand
+    voyage », classique, personnel) jusqu'à « Imprimer et partager », ouverte,
+    sans les partager. Un parcours (`partage-de-bout-en-bout`) joue l'étape
+    entière : la mise en page déclarée, le partage par les deux canaux et la
+    coche de l'étape, la lecture d'une famille sur un téléphone sans compte
+    jusqu'à la fin, celle d'Alice depuis « Lire », une coquille corrigée qui
+    n'arrive qu'à la mise à jour, puis le retrait (page neutre, livre sorti de
+    « Lire »). Le mode d'emploi de l'essai est dans `app/README.md`,
+    « Essayer l'étape 7 ». Captures 701 à 713 (`npm run captures -- etape7`).
+    Vérifié aussi sur le serveur local, avec la classe d'essai, en 390 points.
+    - **Série complète :** 273 unitaires, 255 contre la base, 35 de
+      composition, 314 parcours passent avant ce lot ; le parcours de bout en
+      bout s'y ajoute.
+    - **Restent au porteur, à sa demande :** la mise en ligne de l'étape (deux
+      migrations, `partage` et `lectures_des_eleves`, après une sauvegarde),
+      le second nom en `.vercel.app` et le réglage `ADRESSE_SITE` avant de
+      donner un premier lien, puis l'essai sur un vrai téléphone et par ses
+      élèves, qui terminera l'étape.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 

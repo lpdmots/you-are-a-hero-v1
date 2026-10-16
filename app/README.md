@@ -13,7 +13,7 @@ React Flow et dagre pour la vue « Chemins ». Versions figées dans
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`) ; « Mon travail », par urgence (`travail.ts`) ; ce que le Suivi liste, compte et propose (`suivi.ts`) ; fiches de rédaction : ce qui se choisit, les feuilles, le partage, le nombre fixé (`fiches.ts`) ; encouragements : totaux et classement par catégorie (`encouragements.ts`) ; contrôles du livre : chaque point, sa gravité, son étape et sa phrase (`controles.ts`) ; la destination Livre : marques des étapes, tâches, avertissements acceptés (`livre.ts`) ; ce qu'une lecture reçoit d'un livre, son parcours, son énigme, sa feuille (`lecture.ts`). |
+| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`) ; « Mon travail », par urgence (`travail.ts`) ; ce que le Suivi liste, compte et propose (`suivi.ts`) ; fiches de rédaction : ce qui se choisit, les feuilles, le partage, le nombre fixé (`fiches.ts`) ; encouragements : totaux et classement par catégorie (`encouragements.ts`) ; contrôles du livre : chaque point, sa gravité, son étape et sa phrase (`controles.ts`) ; la destination Livre : marques des étapes, tâches, avertissements acceptés (`livre.ts`) ; ce qu'une lecture reçoit d'un livre, son parcours, son énigme, sa feuille, sa reprise (`lecture.ts`) ; la version partagée, ses noms, le code du lien, l'état du partage (`partage.ts`). |
 | `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`) ; état, remises et remarques d'une scène (`relecture.ts`) ; ce qu'une fiche de rédaction imprime d'une scène (`fiches.ts`) ; encouragements de l'adulte, et ce que le poste d'un élève en reçoit (`encouragements.ts`) ; ce que les contrôles du livre et la destination Livre lisent (`controles.ts`). |
 | `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre et ses chemins, scène, Suivi (`_suivi/`), fiches de rédaction (`fiches/`), destination Livre (`_livre/`), lecture d'essai (`lecture/`) ; histoire, chapitre et scène de l'élève, sa lecture d'essai (`travail/lecture/`). `travail/actions.ts` : ce que fait un élève (prendre, rendre, remettre, retirer sa remise). `copie/` : l'adresse où le texte s'enregistre. `images/` : celle qui sert une image à qui peut la voir. |
 | `src/composants/copie/` | La copie d'une scène : l'éditeur (Plate, sur Slate), ses blocs, ses fiches, l'enregistrement automatique. `regles.ts` réunit tout ce qui s'écrit contre Slate. |
@@ -366,3 +366,63 @@ sauvegarder`, puis `npm run production:schema -- --oui`, qui applique les cinq
 migrations à la vraie base, puis la mise en ligne du code. Le PDF définitif du
 livre de la classe se crée alors en ligne (V2, V3), puis s'envoie à l'imprimeur
 par le porteur (V6).
+
+## Essayer l'étape 7 : partager et lire en ligne
+
+L'étape 7 du plan se termine quand le lien s'ouvre sur un téléphone sans compte,
+et qu'un élève lit un livre terminé depuis son espace. L'essai se joue d'abord en
+local, sur http://localhost:4840, avec le compte local ; la vraie base n'est pas
+touchée.
+
+**1. Les livres prêts à partager.** Les deux migrations de l'étape (`partage`,
+`lectures_des_eleves`) doivent être dans la base locale : `npx tsx
+scripts/supabase.ts migration up --local` les applique sans rien effacer.
+
+```bash
+npm run histoire:essai -- --refaire     # la classe d'essai, si elle n'est pas chargée
+npm run livres:essai -- --refaire       # « La lanterne du passeur » et « Le grand voyage »
+npm run partages:essai                  # les mène à « Imprimer et partager », sans les partager
+```
+
+**2. Partager « La lanterne du passeur ».** Onglet « Livre », étape « Imprimer et
+partager », volet « Partager » :
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| « Prévisualiser » | le livre tel que le lecteur le verra, sous un bandeau, rien de retenu |
+| « Noms affichés » > « Modifier » | la ligne de classe à retirer ou à remplacer (« Une classe de CM1-CM2 »), la page des auteurs à retirer ; « Le livre imprimé ne change pas. » |
+| « Par un lien » | le rappel à cocher sur place, puis le lien en trois groupes, « Copier le lien », « Ouvrir » ; l'étape porte sa coche |
+| « À mes classes » | le même rappel ; la version déjà partagée, sans nouvelle date |
+| Une coquille corrigée dans une scène | « Le livre a changé depuis la version partagée », le triangle sur l'étape et sur l'onglet « Partager », « Mettre à jour le partage… » |
+| Une scène rouverte (« En cours ») | « Mise à jour impossible pour l'instant », avec ce qui reste et le lien vers l'étape |
+| « Changer de lien… » | un nouveau lien ; l'ancien affiche « Ce livre n'est plus partagé. » |
+| Couper le dernier interrupteur | « Retirer le partage ? » et ce que le lien affichera |
+
+**3. Lire par le lien, sur un téléphone, sans compte.** Ouvrir le lien dans une
+fenêtre privée, à la taille d'un téléphone (mode « appareil » des outils du
+navigateur) ; un vrai téléphone, une fois l'étape en ligne :
+« Commencer la lecture », les choix, l'énigme (le bon numéro, puis un autre), « Ma
+feuille » en bas de l'écran, le dé, « Comment lire » et les règles, « Parcours » ;
+la page rouverte propose « Continuer au passage n ». Après une mise à jour, la
+lecture continue ; une scène retirée du livre la fait reprendre au début, ce que
+la page dit.
+
+**4. Lire depuis la classe.** Un autre navigateur, sur
+http://localhost:4840/classe, avec l'identifiant, le mot de passe et un code de
+« Mes classes » > « CM1-CM2 d'essai ». « Lire », dans la barre : « Notre
+histoire en cours » (« Les passeurs de brume », à l'essai), puis « Livres à
+lire » : « La lanterne du passeur » en grand, « Écrit par ta classe ». Une note
+dans « Ma feuille », puis le même élève sur un autre navigateur : « Continuer »,
+la feuille avec lui ; un autre élève sur le premier : sa feuille à lui. « Le grand
+voyage », partagé « À mes classes », s'y ajoute avec la ligne de sa page de titre,
+et se lit un chapitre par écran.
+
+`npx playwright test partage-de-bout-en-bout` joue le parcours en raccourci ; les
+captures de l'étape se refont par `npm run captures -- etape7`.
+
+**5. En ligne, à la demande seulement.** Avant de donner un premier lien aux
+familles, ajouter dans Vercel un second nom gratuit en `.vercel.app` (par exemple
+`il-etait-une-classe.vercel.app`) et régler `ADRESSE_SITE` sur cette adresse : les
+liens copiés la porteront. Pour pousser l'étape : `npm run sauvegarder`, puis
+`npm run production:schema -- --oui`, qui applique les deux migrations à la vraie
+base, puis la mise en ligne du code.
