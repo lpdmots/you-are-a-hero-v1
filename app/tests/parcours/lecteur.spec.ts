@@ -14,6 +14,10 @@ import {
 test.afterEach(async () => {
   await supprimerComptes();
 });
+// Les codes faux comptent par adresse réseau : tous les essais viennent de la même, on repart à zéro
+test.beforeEach(async () => {
+  await sql("delete from essais_entree");
+});
 
 type Livre = { compte: Compte; base: SupabaseClient; projet: string; s: Record<string, string> };
 
@@ -97,7 +101,7 @@ test("F12-AC01, F04-AC17, F11-AC46, F04-AC18, F04-AC20, F04-AC21, F04-AC31, F04-
   expect((await contexte.cookies()).filter((c) => c.name.startsWith("sb-"))).toEqual([]);
   await expect(lecteur).toHaveTitle("Le phare");
   await expect(lecteur.getByRole("heading", { name: "Le phare", level: 1 })).toBeVisible();
-  await expect(lecteur.getByText("Ta lecture est retenue sur cet appareil.")).toBeVisible();
+  await expect(lecteur.getByText("Ta place est gardée sur cet appareil.")).toBeVisible();
   await lecteur.getByRole("button", { name: "Commencer la lecture" }).click();
 
   // Le passage n° 1, l'image à sa place entre les deux paragraphes, l'action mise à part

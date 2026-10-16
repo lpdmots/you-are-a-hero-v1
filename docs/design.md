@@ -1922,6 +1922,35 @@ critiquer au lot 3 : la page « momentanément indisponible », mise comme la
 page neutre (une phrase en Vollkorn, une ligne d'aide), et la phrase ambre
 « Le livre a été mis à jour : la lecture reprend au début. ».
 
+**Lot 3 — « Lire », côté élève.** Écran sans maquette d'ensemble, conçu avec
+impeccable dans le système de l'espace élève, d'après la capture 52
+« Lectures » : le titre « Lire » et son livre ; « Notre histoire en cours » en
+rangée basse (vignette de l'image du projet, titre, une phrase, « Lire à
+l'essai » en bouton ordinaire), ou, hors des horaires, une ligne ambre avec
+l'horloge ; « Livres à lire » et son « i » ; le livre de la classe en grande
+carte, couverture en objet-livre (page de titre sur papier crème, image,
+titre en Vollkorn, ornement au losange, deux feuilles qui dépassent
+derrière), pastille « Écrit par ta classe », seul bouton plein de la page ;
+les autres livres en cartes égales, la ligne de leur page de titre en
+italique. Captures 701 à 713 (`npm run captures -- etape7`).
+Critique en deux lectures séparées au premier dessin : 28/40 (informée) et
+26/40 (indépendante). Corrigé aussitôt, sans nouvelle mesure :
+- **boutons :** un seul bouton plein, « Lire à l'essai » devenu ordinaire ;
+- **histoire en cours :** passée de la grande bande à une rangée basse, pour laisser la vedette au livre de la classe ;
+- **mots :** « retenue » remplacé par « gardée » (« Ta place est gardée… »), le mot sonnant comme une punition pour un enfant ;
+- **hors des horaires :** « La lecture à l'essai rouvre demain, 8 h 30, avec le travail. » au lieu d'une phrase elliptique ;
+- **cartes :** un livre seul sur toute la largeur plutôt qu'une demi-carte ;
+- **ligne de la page de titre :** sur sa propre ligne, et non ajoutée au décompte, où « Mme Laurent » paraissait ambigu ;
+- **reprise perdue :** la phrase au-dessus des boutons, lue avant le clic ;
+- **pages neutre et indisponible :** l'ornement au losange, et pour la page indisponible un bouton « Réessayer dans quelques minutes » sans vouvoiement ;
+- **signes :** le point d'interrogation sur « Comment lire » et « Règles du jeu », le « i » restant aux bulles.
+
+Laissé en l'état :
+- « Lire à l'essai » et « passages », mots arrêtés depuis l'étape 5 et le livre ;
+- l'absence du nom du produit sur la page neutre, qui ne dit rien du livre ;
+- « Comment lire ce livre », présent à la fois dans la barre et sous les boutons, comme dans la maquette ;
+- les outils de la barre en icônes seules sur téléphone.
+
 ### Étape 7 : écrans arrêtés avant de construire (16 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 7 ; elles

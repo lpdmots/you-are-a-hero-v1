@@ -12,7 +12,7 @@ import styles from "./travail.module.css";
 /** La barre de l'espace élève : sa classe, son prénom, « Changer d'élève ». */
 export function EnteteEleve({ contexte, auTravail, ici = "travail" }: {
   contexte: ContexteEleve;
-  /** La page où l'on est, dans la barre : « Mon travail » ou « Lire à l'essai » (F09.1) */
+  /** La page où l'on est, dans la barre : « Mon travail » ou « Lire » (F09.1, F12.3) */
   ici?: "travail" | "lecture";
   /** La page montre le récit : elle se quitte quand la plage horaire se termine */
   auTravail?: boolean;
@@ -27,7 +27,7 @@ export function EnteteEleve({ contexte, auTravail, ici = "travail" }: {
             Mon travail
           </Link>
           <Link href="/travail/lecture" aria-current={ici === "lecture" ? "page" : undefined}>
-            Lire à l’essai
+            Lire
           </Link>
         </nav>
         <span className={styles.classe}>

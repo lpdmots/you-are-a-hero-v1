@@ -42,7 +42,9 @@ test.describe("Lecture d'essai de l'élève (F09.1)", () => {
   test("F09-AC22, F09-AC01, F09-AC18 — « Lire à l'essai », près de « Mon travail » : le début de son chapitre, sans départ du livre ; un choix de son chapitre s'ouvre, une scène exclue se lit sans mention", async ({ page, browser }) => {
     const r = await recitDeClasse(page);
     const alice = await posteDe(browser, r.s, "Alice");
-    await alice.page.getByRole("navigation", { name: "Espace élève" }).getByRole("link", { name: "Lire à l’essai" }).click();
+    // « Lire », près de « Mon travail » ; l'histoire en cours s'y lit à l'essai (étape 7, 16 octobre 2026)
+    await alice.page.getByRole("navigation", { name: "Espace élève" }).getByRole("link", { name: "Lire", exact: true }).click();
+    await alice.page.getByRole("link", { name: "Lire à l’essai" }).click();
     await alice.page.waitForURL(new RegExp(departDe(r.s)));
     await expect(alice.page.getByRole("link", { name: "Commencer au début de La lisière" })).toBeVisible();
     await expect(alice.page.getByRole("link", { name: /Commencer le livre/ })).toHaveCount(0);

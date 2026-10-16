@@ -235,3 +235,226 @@
     max-width: none;
   }
 }
+
+/* ——— « Lire » (étape 7, lot 3) : l'histoire en cours, puis les livres à lire ——— */
+.ferme {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  padding: 12px 18px;
+  border-radius: var(--r-m);
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+  font-weight: 700;
+}
+.livre__texte h3 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+}
+.titreAvecBulle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.livres {
+  display: grid;
+  /* Un livre seul prend toute la largeur : une demi-carte paraissait cassée */
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Un livre proposé : un objet-livre typographique à gauche, de quoi le choisir à droite */
+.propose {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: center;
+  gap: 22px;
+  height: 100%;
+  padding: 22px 24px 22px 22px;
+  border-radius: 18px;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  color: var(--graphite);
+  text-decoration: none;
+  transition: box-shadow 0.18s var(--ease), transform 0.18s var(--ease);
+}
+.propose:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 2px rgba(30, 40, 38, 0.06), 0 14px 28px -10px rgba(30, 40, 38, 0.28);
+}
+.propose:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 3px;
+}
+.proposeGrand {
+  grid-template-columns: 168px minmax(0, 1fr);
+  gap: 32px;
+  padding: 30px 34px 30px 30px;
+}
+
+/* La couverture : une page de titre, et deux feuilles qui dépassent derrière elle */
+.couverture {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 10px;
+  aspect-ratio: 3 / 4;
+  padding: 14px 10px;
+  border-radius: 3px 6px 6px 3px;
+  background: #fffdf7;
+  box-shadow: inset 0 0 0 1px var(--trait), 0 1px 2px rgba(30, 40, 38, 0.1);
+  text-align: center;
+}
+.couverture::before,
+.couverture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: 3px 6px 6px 3px;
+  background: #fbf8f0;
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.couverture::before {
+  transform: translate(4px, 4px);
+}
+.couverture::after {
+  transform: translate(8px, 8px);
+  z-index: -2;
+}
+.propose,
+.couverture {
+  isolation: isolate;
+}
+.couverture img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 2px;
+}
+.couverture__titre {
+  font-family: var(--f-recit);
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.proposeGrand .couverture__titre {
+  font-size: 1.25rem;
+}
+.couverture svg {
+  width: 56px;
+  height: 8px;
+  fill: none;
+  stroke: var(--graphite-2);
+  stroke-width: 1.2;
+}
+
+.propose__texte {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  min-width: 0;
+}
+.tampon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--canard-pale);
+  color: var(--canard-fonce);
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.tampon :global(.ic) {
+  width: 1em;
+  height: 1em;
+}
+.propose__titre {
+  font-size: var(--t-xl);
+  font-weight: 800;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.proposeGrand .propose__titre {
+  font-size: 1.9rem;
+  letter-spacing: -0.01em;
+}
+.propose__meta {
+  color: var(--graphite-2);
+}
+.propose__lire {
+  margin-top: 6px;
+}
+
+@media (max-width: 720px) {
+  .livres {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .propose,
+  .proposeGrand {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 18px;
+    padding: 18px;
+  }
+  .proposeGrand .couverture__titre,
+  .couverture__titre {
+    font-size: 0.82rem;
+  }
+  .proposeGrand .propose__titre {
+    font-size: var(--t-xl);
+  }
+}
+
+/* L'histoire en cours : une rangée basse, vignette, titre, « Lire à l'essai » */
+.enCours {
+  display: grid;
+  grid-template-columns: 148px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 20px;
+  padding: 12px 22px 12px 12px;
+  border-radius: 16px;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+}
+.enCours__image {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  border-radius: 10px;
+}
+.enCours__image :global(img) {
+  object-fit: cover;
+}
+.enCours__texte {
+  display: grid;
+  gap: 4px;
+}
+.enCours__texte h3 {
+  font-size: var(--t-l);
+  font-weight: 800;
+}
+.enCours__texte p {
+  color: var(--graphite-2);
+}
+.propose__ligne {
+  font-style: italic;
+  color: var(--graphite-2);
+}
+@media (max-width: 720px) {
+  .enCours {
+    grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
+    padding: 10px 14px 14px 10px;
+  }
+  .enCours > :global(.btn) {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+}

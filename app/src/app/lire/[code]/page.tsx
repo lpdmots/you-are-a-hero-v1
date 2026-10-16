@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { cache } from "react";
 import { Messages } from "@/composants/Messages";
 import { versionParLeLien } from "@/serveur/lecteur";
-import { LecteurParLeLien } from "./LecteurParLeLien";
+import { LecteurParLeLien, Reessayer } from "./LecteurParLeLien";
 
 type Props = { params: Promise<{ code: string }> };
 
@@ -26,6 +26,10 @@ export default async function Page({ params }: Props) {
   if (lu.sorte === "neutre")
     return (
       <main className="lecteur-seul">
+        <svg className="lecteur__ornement" viewBox="0 0 120 10" aria-hidden="true">
+          <path d="M0 5h52M68 5h52" />
+          <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
+        </svg>
         <p className="lecteur-seul__titre recit">Ce livre n’est plus partagé.</p>
         <p>Si quelqu’un vous a donné ce lien, demandez-lui le nouveau.</p>
       </main>
@@ -33,8 +37,12 @@ export default async function Page({ params }: Props) {
   if (lu.sorte === "indisponible")
     return (
       <main className="lecteur-seul">
+        <svg className="lecteur__ornement" viewBox="0 0 120 10" aria-hidden="true">
+          <path d="M0 5h52M68 5h52" />
+          <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
+        </svg>
         <p className="lecteur-seul__titre recit">Le livre est momentanément indisponible.</p>
-        <p>Réessayez dans quelques minutes.</p>
+        <Reessayer />
       </main>
     );
   return (

@@ -1,5 +1,6 @@
 "use client";
 
+import { Icone } from "@/composants/Icone";
 import { LecteurEnLigne } from "@/composants/lecture/LecteurEnLigne";
 import type { SourceImage } from "@/composants/lecture/Passage";
 import type { VersionPartagee } from "@/domaine/partage";
@@ -11,4 +12,14 @@ export function LecteurParLeLien({ code, version }: { code: string; version: Ver
     return symbole ? { src: `${base}?v=1` } : { src: `${base}?v=1`, srcSet: `${base}?v=1 900w, ${base} 2600w`, sizes: "(max-width: 720px) 100vw, 680px" };
   };
   return <LecteurEnLigne version={version} source={source} memoire={{ sorte: "appareil", cle: `lecture:${code.replace(/[\s-]/g, "").toLowerCase()}` }} />;
+}
+
+/** « Momentanément indisponible » : réessayer d'un geste, sans chercher comment recharger la page. */
+export function Reessayer() {
+  return (
+    <button type="button" className="btn" onClick={() => window.location.reload()}>
+      <Icone nom="refaire" />
+      Réessayer dans quelques minutes
+    </button>
+  );
 }

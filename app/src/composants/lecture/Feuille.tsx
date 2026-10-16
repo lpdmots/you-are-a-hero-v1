@@ -138,7 +138,7 @@ export function Feuille({
       {regles.trim() ? (
         <details className="fa-regles">
           <summary>
-            <Icone nom="info" />
+            <Icone nom="aide" />
             Règles du jeu
           </summary>
           <div className="recit">

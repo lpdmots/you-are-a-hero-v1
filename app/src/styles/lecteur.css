@@ -10,7 +10,17 @@
   background: var(--feuille);
   color: var(--graphite);
 }
+.lecteur--bandeau {
+  --lecteur-bandeau: 40px;
+}
+.lecteur__haut {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
 .lecteur__bandeau {
+  box-sizing: border-box;
+  min-height: 40px;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -29,9 +39,6 @@
   gap: 6px;
 }
 .lecteur__barre {
-  position: sticky;
-  top: 0;
-  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -379,11 +386,11 @@
   .lecteur__feuille.est-ouverte {
     display: block;
     position: fixed;
-    top: calc(var(--lecteur-barre) + 16px);
+    top: calc(var(--lecteur-barre) + var(--lecteur-bandeau, 0px) + 16px);
     right: 16px;
     z-index: 15;
     width: clamp(300px, calc(50vw - 372px), 340px);
-    max-height: calc(100vh - var(--lecteur-barre) - 32px);
+    max-height: calc(100vh - var(--lecteur-barre) - var(--lecteur-bandeau, 0px) - 32px);
   }
   .lecteur__barre-basse {
     display: none;

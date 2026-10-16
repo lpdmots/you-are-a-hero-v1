@@ -235,9 +235,9 @@ export function LecteurEnLigne({
   };
   const ou =
     memoire.sorte === "appareil"
-      ? "Ta lecture est retenue sur cet appareil."
+      ? "Ta place est gardée sur cet appareil."
       : memoire.sorte === "profil"
-        ? `Ta lecture est retenue avec ton prénom, ${memoire.prenom}.`
+        ? `Ta place est gardée avec ton prénom, ${memoire.prenom}.`
         : null;
 
   const feuille = livre.feuille && g ? (
@@ -253,7 +253,9 @@ export function LecteurEnLigne({
 
   return (
     <SourceDesImages value={source}>
-      <div className={`lecteur${livre.feuille && ecran.sorte === "lecture" ? " lecteur--feuille" : ""}`}>
+      <div className={`lecteur${livre.feuille && ecran.sorte === "lecture" ? " lecteur--feuille" : ""}${bandeau ? " lecteur--bandeau" : ""}`}>
+        {/* Le bandeau et la barre restent ensemble en haut de l'écran : la feuille se pose dessous */}
+        <div className="lecteur__haut">
         {bandeau}
         <header className="lecteur__barre">
           <button type="button" className="lecteur__nom recit" onClick={() => setEcran({ sorte: "accueil" })}>
@@ -262,7 +264,7 @@ export function LecteurEnLigne({
           <nav className="lecteur__outils" aria-label="Outils de lecture">
             {commentLire ? (
               <button type="button" className="lecteur__outil" aria-pressed={ecran.sorte === "comment"} onClick={() => setEcran(ecran.sorte === "comment" ? { sorte: g ? "lecture" : "accueil" } : { sorte: "comment" })}>
-                <Icone nom="info" />
+                <Icone nom="aide" />
                 <span>Comment lire</span>
               </button>
             ) : null}
@@ -316,6 +318,7 @@ export function LecteurEnLigne({
             ) : null}
           </nav>
         </header>
+        </div>
 
         <div ref={haut} tabIndex={-1} className="lecteur__ancre" aria-label={ecran.sorte === "lecture" && id ? nomDe(id) : version.titre} />
 
@@ -341,6 +344,8 @@ export function LecteurEnLigne({
                   </div>
                 )}
                 <div className="lecteur__depart">
+                  {/* Dit avant le bouton : le lecteur sait pourquoi il repart du début (F12-AC25) */}
+                  {pret && retenue.perdue && !g ? <p className="lecteur__perdue">Le livre a été mis à jour : la lecture reprend au début.</p> : null}
                   {!pret ? null : reprise ? (
                     <>
                       <button type="button" className="btn btn--primaire btn--grand" onClick={() => lancer(reprise)}>
@@ -358,7 +363,6 @@ export function LecteurEnLigne({
                       Commencer la lecture
                     </button>
                   )}
-                  {pret && retenue.perdue ? <p className="lecteur__perdue">Le livre a été mis à jour : la lecture reprend au début.</p> : null}
                   {commentLire ? (
                     <button type="button" className="lien" onClick={() => setEcran({ sorte: "comment" })}>
                       Comment lire ce livre
@@ -479,7 +483,7 @@ export function LecteurEnLigne({
               </button>
             </header>
             {feuille}
-            {ou ? <p className="lecteur__ou lecteur__ou--feuille">{ou.replace("Ta lecture est retenue", "Ta feuille est retenue")}</p> : null}
+            {ou ? <p className="lecteur__ou lecteur__ou--feuille">{ou.replace("Ta place est gardée", "Ta feuille est gardée")}</p> : null}
           </aside>
         ) : null}
 

@@ -1948,6 +1948,44 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 3 unitaires, 5 parcours (sur une fenêtre de
       téléphone, sans compte) ; le test `pages-sans-chromium` suit aussi les
       nouvelles pages.
+  - **Lot 3 — lire, côté élève : construit le 16 octobre 2026.** Une seule
+    entrée « Lire » dans la barre de l'élève, à la place de « Lire à
+    l'essai » : « Notre histoire en cours » (la lecture d'essai, en rangée
+    basse, fermée hors des horaires) puis « Livres à lire » (les versions
+    ouvertes aux classes, celui de la classe en grand avec « Écrit par ta
+    classe », les autres avec la ligne de leur page de titre). Un livre
+    s'ouvre dans le lecteur du lot 2, sous un bandeau « Retour à Lire », à
+    toute heure ; la lecture et la feuille sont gardées par la base pour
+    l'élève, une seconde après son dernier geste et au départ de la page.
+    Migration `20261016110000_lectures_des_eleves.sql`, base locale
+    seulement : la table `lectures_en_cours` (aucun accès direct) et quatre
+    fonctions réservées aux postes (`livres_du_poste`, `livre_du_poste`,
+    `garder_lecture_du_poste`, `image_d_un_livre_du_poste`).
+    - **Critères fermés :** F12-AC06, AC07, AC12, AC24 (pour l'élève), AC26 ;
+      F04-AC22 ; F06-AC31 pour la lecture des livres partagés ; V16 levée
+      (reprise liée au profil de l'élève, d'un poste à l'autre).
+    - **Critique des écrans sans maquette :** « Lire », la page
+      « momentanément indisponible » et la phrase de reprise après une mise à
+      jour, en deux lectures séparées sur captures : 28/40 (informée) et
+      26/40 (indépendante) au premier dessin, corrigés aussitôt, sans
+      nouvelle mesure (design, « Étape 7 construite », lot 3).
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      « Lire » remplace « Lire à l'essai » dans la barre, et la liste des
+      histoires à lire à l'essai ne mène plus d'office à la seule histoire ;
+      hors des horaires, « La lecture à l'essai rouvre demain, 8 h 30, avec
+      le travail. », sans le titre de l'histoire, que la base ne rend pas
+      hors des horaires ; « Pas encore fini : lis-le à l'essai, pour voir si
+      tout s'enchaîne. » ; « Pas encore de livre. Quand Mme Laurent en
+      proposera un, il sera ici. » ; l'explication des livres à lire derrière
+      un « i » ; le livre de la classe en grand seulement quand il est
+      partagé, les autres en cartes égales, un livre seul sur toute la
+      largeur ; la couverture d'un livre reprend l'image de sa page de titre ;
+      « Ta place est gardée avec ton prénom, Alice. » (« retenue », jugé
+      punitif pour un enfant, est écarté partout dans le lecteur) ; le
+      bandeau « Retour à Lire » ; un livre retiré des classes rend la page
+      introuvable.
+    - **Tests automatiques :** 5 contre la base, 2 parcours ; deux parcours
+      de l'étape 5 passent par « Lire ».
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 

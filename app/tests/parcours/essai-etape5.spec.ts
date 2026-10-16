@@ -55,6 +55,7 @@ test("Étape 5 — vérifier les chemins, les corriger, lire le livre à l'essai
 
   // 4. Alice lit ses chapitres : la lisière, et une suite à découvrir au sanctuaire
   const alice = await posteDe(browser, s, "Alice");
+  await alice.page.getByRole("navigation", { name: "Espace élève" }).getByRole("link", { name: "Lire", exact: true }).click();
   await alice.page.getByRole("link", { name: "Lire à l’essai" }).click();
   await alice.page.getByRole("link", { name: "Commencer au début de La lisière" }).click();
   await alice.page.locator(".lu-page").getByRole("button", { name: /Traverser le pont/ }).click();

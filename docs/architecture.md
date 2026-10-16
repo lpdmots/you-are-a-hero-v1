@@ -1370,6 +1370,34 @@ F12.3 et F04.2.
 - **Base en sommeil.** Une erreur de la base mène à « Le livre est
   momentanément indisponible. », non à une page d'erreur.
 
+**Lot 3 — la lecture par les classes.**
+
+- **Aucun accès direct.** `lectures_en_cours` (une ligne par élève et par
+  livre, 64 Ko au plus) n'a aucune règle d'accès : seules quatre fonctions
+  `security definer`, réservées au rôle `poste`, la lisent et l'écrivent.
+  `prive.eleve_du_poste` donne l'élève identifié sans condition d'horaire
+  (`inscription_du_poste`), à la différence de `eleve_au_travail` ;
+  `prive.livre_ouvert_au_poste` vérifie que la version est ouverte aux
+  classes et que son enseignant est celui de la classe du poste, dont l'année
+  est en cours. Les livres d'un autre enseignant n'arrivent jamais.
+- **Ce qui part.** `livres_du_poste` rend de quoi dresser la liste (titre,
+  sorte, ligne de la page de titre, nombre de passages ou de chapitres,
+  image, livre de la classe ou non) ; `livre_du_poste` la version et la
+  lecture de l'élève ; `image_d_un_livre_du_poste` une image seulement si la
+  version la montre, servie par `/images/classe/<projet>/<image>`.
+- **Lecture gardée.** Le lecteur appelle `garderLecture` (action serveur)
+  une seconde après le dernier geste et au départ de la page ; la base
+  refuse pour un livre qui n'est plus ouvert aux classes. V16 levée : la
+  reprise suit le profil, d'un poste à l'autre, et deux élèves d'un même
+  poste ont chacun leur feuille.
+- **Bandeau et barre ensemble.** Le bandeau (« Retour à Lire »,
+  « Prévisualisation ») et la barre du lecteur restent collés ensemble en
+  haut de l'écran ; la feuille se pose dessous. Un parcours l'a montré : la
+  barre seule, collée sous le bandeau, couvrait le haut de la feuille.
+- **Essais faux dans les parcours.** Tous viennent de la même adresse : le
+  parcours du lecteur et les captures vident `essais_entree` avant chaque
+  essai.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte
