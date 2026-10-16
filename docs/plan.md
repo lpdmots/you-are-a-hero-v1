@@ -2001,11 +2001,17 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Série complète :** 273 unitaires, 255 contre la base, 35 de
       composition, 314 parcours passent avant ce lot ; le parcours de bout en
       bout s'y ajoute.
-    - **Restent au porteur, à sa demande :** la mise en ligne de l'étape (deux
-      migrations, `partage` et `lectures_des_eleves`, après une sauvegarde),
-      le second nom en `.vercel.app` et le réglage `ADRESSE_SITE` avant de
-      donner un premier lien, puis l'essai sur un vrai téléphone et par ses
-      élèves, qui terminera l'étape.
+    - **Restent au porteur :** le second nom en `.vercel.app` et le réglage
+      `ADRESSE_SITE` avant de donner un premier lien, puis l'essai sur un vrai
+      téléphone et par ses élèves, qui terminera l'étape.
+- **Essayée en local par le porteur le 16 octobre 2026** (« c'est bien ») ;
+  deux retouches en sortent : le rappel d'une image de page de présentation
+  nomme sa page, et la phrase sur la lecture gardée est retirée du lecteur.
+- **Mise en ligne, le 16 octobre 2026, à la demande du porteur** (« tu peux
+  pousser en ligne ») : vraie base sauvegardée (`sauvegardes/2026-10-16-18-12`),
+  les deux migrations de l'étape appliquées, `npm run verifier:production`
+  passé, code poussé jusqu'à `32956d8` ; le lien de lecture répond en ligne.
+  Ne plus modifier ces migrations.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 
