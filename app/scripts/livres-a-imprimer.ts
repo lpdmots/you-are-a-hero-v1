@@ -11,6 +11,7 @@
  *
  *   npm run livres:essai              les charge
  *   npm run livres:essai -- --refaire les retire, avec ce qui y a été écrit, puis les recharge
+ *   npm run livres:essai -- --retirer les retire seulement, avec leurs images et leurs partages
  *
  *   npm run livres:essai -- --production adresse         dit ce qui serait fait dans la vraie base
  *   npm run livres:essai -- --production adresse --oui   le fait (« --refaire » s'y ajoute de même)
@@ -37,7 +38,8 @@ const locale = (adresse: string): boolean => {
   }
 };
 const options = process.argv.slice(2);
-const refaire = options.includes("--refaire");
+const retirer = options.includes("--retirer");
+const refaire = options.includes("--refaire") || retirer;
 const production = options.includes("--production");
 const oui = options.includes("--oui");
 
@@ -158,7 +160,12 @@ async function principal(): Promise<void> {
     const deja = await q<{ id: string }>("select id from public.projets where enseignant_id = $1 and titre = any($2::text[])", [compte.id, [A_CHOIX.titre, CLASSIQUE.titre]]);
     if (deja.length && !refaire) throw new Error("Les livres d'essai sont déjà chargés. Pour les remettre à neuf, ajoutez « --refaire ».");
     if (production && !oui) {
-      console.log(`Dans la vraie base, pour « ${courriel} » : ${deja.length ? "retirer puis recharger" : "charger"} « ${A_CHOIX.titre} » (classe « ${CLASSE.nom} ») et « ${CLASSIQUE.titre} », avec leurs images.`);
+      if (retirer && !deja.length) {
+        console.log(`Aucun livre d'essai à retirer dans la vraie base pour « ${courriel} ».`);
+        return;
+      }
+      const faire = retirer ? "retirer" : deja.length ? "retirer puis recharger" : "charger";
+      console.log(`Dans la vraie base, pour « ${courriel} » : ${faire} « ${A_CHOIX.titre} » (classe « ${CLASSE.nom} ») et « ${CLASSIQUE.titre} », avec leurs images.`);
       console.log("Rien n'est fait. Pour le faire, ajoutez « --oui ».");
       return;
     }
@@ -166,6 +173,10 @@ async function principal(): Promise<void> {
       const { data } = await stockage.list(`${compte.id}/${p.id}`);
       if (data?.length) await stockage.remove(data.map((f) => `${compte.id}/${p.id}/${f.name}`));
       await q("delete from public.projets where id = $1", [p.id]);
+    }
+    if (retirer) {
+      console.log(deja.length ? `Livres d'essai retirés de ${ou}.` : `Aucun livre d'essai dans ${ou}.`);
+      return;
     }
 
     for (const livre of [A_CHOIX, CLASSIQUE]) {

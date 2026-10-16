@@ -441,4 +441,5 @@ npm run partages:essai -- --production adresse@du.compte --oui
 Puis, en ligne : partager « La lanterne du passeur » par le lien et « À mes
 classes », l'ouvrir sur un téléphone, et la faire lire à un élève de la classe
 d'essai depuis « Lire ». `npm run livres:essai -- --production adresse --refaire
---oui` remet les deux livres à neuf ; les supprimer se fait depuis « Mes projets ».
+--oui` remet les deux livres à neuf ; `--retirer` à la place de `--refaire` les
+retire, avec leurs images, leurs partages et les lectures des élèves.
