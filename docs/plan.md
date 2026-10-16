@@ -2001,9 +2001,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Série complète :** 273 unitaires, 255 contre la base, 35 de
       composition, 314 parcours passent avant ce lot ; le parcours de bout en
       bout s'y ajoute.
-    - **Restent au porteur :** le second nom en `.vercel.app` et le réglage
-      `ADRESSE_SITE` avant de donner un premier lien, puis l'essai sur un vrai
-      téléphone et par ses élèves, qui terminera l'étape.
+    - **Reste au porteur :** l'essai sur un vrai téléphone et par ses élèves,
+      qui terminera l'étape. Le second nom `il-etait-une-classe.vercel.app`
+      est ajouté par lui le 16 octobre 2026, avec `ADRESSE_SITE` chez Vercel et
+      l'adresse de retour chez Supabase ; l'ancienne adresse répond toujours.
 - **Essayée en local par le porteur le 16 octobre 2026** (« c'est bien ») ;
   deux retouches en sortent : le rappel d'une image de page de présentation
   nomme sa page, et la phrase sur la lecture gardée est retirée du lecteur.
