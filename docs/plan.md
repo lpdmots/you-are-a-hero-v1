@@ -1770,6 +1770,17 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   porteur.
 - **Terminée quand :** le PDF définitif du livre de la classe sort de
   Vercel, identique à son aperçu, et un exemplaire imprimé a été reçu.
+- **Terminée le 16 octobre 2026, sur décision du porteur**, après ses essais
+  en ligne (« l'ensemble fonctionne ») : il veut d'abord finir le site, puis
+  essayer l'ensemble sur un projet complet avec ses élèves. V2 (dépôt du PDF
+  définitif dans le stockage en ligne), V3 (aperçu ressenti en ligne) et V6
+  (envoi à l'imprimeur, exemplaire reçu) sont reportées à cet essai ; ce
+  qu'il fera apparaître se reprendra en retouches. Le même jour, il
+  confirme en bloc les précisions prises en construisant les sept lots
+  (« ok ») : ne plus les lui soumettre. Retouches du 16 octobre, en ligne
+  avec la fin de l'étape : Chromium hors des pages du projet, l'horloge
+  pour ce qui attend l'écriture, un second clic sur une action qui range la
+  feuille d'aventure.
 
 ### Étape 7 — Partager et lire en ligne
 
