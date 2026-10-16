@@ -1681,6 +1681,218 @@
   }
 }
 
+/* ——— « Imprimer et partager », volet « Partager » (étape 7, lot 1) ——— */
+.partager {
+  display: grid;
+  max-width: 760px;
+}
+.partager__principal {
+  display: grid;
+  gap: 18px;
+  justify-items: start;
+  min-width: 0;
+}
+.partager__principal > * {
+  max-width: 100%;
+}
+.imprimer__etat--neutre {
+  padding: 0;
+  color: var(--graphite-2);
+}
+.imprimer__etat--neutre b {
+  color: var(--graphite);
+}
+.partager__etat {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+.partager__impossible,
+.partager__pdf {
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.partager__carte {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+}
+.partager__carte-titre {
+  margin: 0 0 4px;
+  font-size: var(--t-m);
+  font-weight: 800;
+}
+.canal,
+.nom-partage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 12px 0;
+}
+.canal + .canal,
+.nom-partage + .nom-partage {
+  border-top: 1px solid var(--trait);
+}
+.nom-partage {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.canal__signe {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-m);
+  background: var(--canard-pale);
+  color: var(--canard);
+}
+.canal__texte {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.canal__texte small {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.canal__inter {
+  min-width: 8.5em;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.canal__suite,
+.nom-partage__texte {
+  grid-column: 1 / -1;
+}
+.canal__suite {
+  padding-left: 50px;
+}
+.lien-de-lecture {
+  display: grid;
+  gap: 6px;
+  justify-items: start;
+}
+.lien-de-lecture__ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin: 0;
+}
+.lien-de-lecture__adresse {
+  flex: 1 1 260px;
+  min-width: 0;
+  font-family: var(--f-code);
+  font-size: var(--t-s);
+}
+.lien-de-lecture__note,
+.partager__detecte,
+.partager__prochaine {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.lien-de-lecture__changer {
+  font-size: var(--t-s);
+}
+.partager__rappel {
+  margin-top: 6px;
+}
+.partager__a-savoir {
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.partager__a-savoir + ul {
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--trait);
+  color: var(--graphite-2);
+}
+.partager__relu {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  font-weight: 700;
+}
+.partager__relu input {
+  width: 1.15em;
+  height: 1.15em;
+  accent-color: var(--canard);
+}
+.partager__couper {
+  display: grid;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 14px;
+  border-radius: var(--r-m);
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  font-size: var(--t-s);
+}
+.partager__couper p {
+  margin: 0;
+}
+.partager__noms-ligne {
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.partager__noms-reglages {
+  display: grid;
+  gap: 4px;
+}
+.nom-partage__texte {
+  display: grid;
+  gap: 4px;
+  max-width: 520px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.nom-partage__texte small {
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.partager__voir {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 18px;
+  margin: 0;
+}
+.partager__jamais {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+@media (max-width: 560px) {
+  .partager__carte {
+    padding: 12px 14px;
+  }
+  .canal {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .canal__signe {
+    display: none;
+  }
+  .canal__suite {
+    padding-left: 0;
+  }
+  .canal__inter {
+    min-width: 0;
+  }
+}
+
 /* ——— Ordre des passages : moins de blanc, doute, passage suggéré (étape 6, lot 6) ——— */
 .blanc {
   display: grid;

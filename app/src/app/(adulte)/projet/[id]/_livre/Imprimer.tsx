@@ -7,23 +7,66 @@ import { Bulle } from "@/composants/Bulle";
 import { Icone } from "@/composants/Icone";
 import { ETAPES_DU_LIVRE, type RaisonDeRefus } from "@/domaine/livre";
 import { supprimerPdf } from "../../actions-livre";
+import { VoletPartager, type PartageAffiche } from "./Partager";
 
 /**
  * « Imprimer et partager », volet « Imprimer » (F11.2, F11.6) : le PDF définitif, refusé tant
  * que la règle unique ne le permet pas, sans contournement (F09-AC10) ; les avertissements
  * rappelés à sa demande ; les PDF définitifs conservés, le plus récent en tête (F11-AC101) ;
- * la couverture à préparer chez l'imprimeur (F10.2). Le volet « Partager » vient à l'étape 7.
+ * la couverture à préparer chez l'imprimeur (F10.2). Le volet « Partager » est dans `Partager.tsx`.
  */
 
 export type DefinitifAffiche = { id: string; etat: string; pages: number; taille: number; aJour: boolean };
 
 export function EtapeImprimer({
+  projetId, possible, raisons, rappels, definitifs, placeOccupee, partager, voletDemande,
+}: {
+  projetId: string;
+  /** Le volet « Partager » (étape 7) */
+  partager: PartageAffiche;
+  /** Le volet ouvert d'abord : « Partager » quand l'adresse le demande */
+  voletDemande?: "imprimer" | "partager";
+  possible: boolean;
+  raisons: RaisonDeRefus[];
+  /** « S014 · Image peu définie. » : avertissements et points « à savoir », rappelés avant de créer le PDF */
+  rappels: string[];
+  definitifs: DefinitifAffiche[];
+  placeOccupee: number;
+}) {
+  const [volet, setVolet] = useState<"imprimer" | "partager">(voletDemande ?? "imprimer");
+  return (
+    <>
+      <div className="volets" role="tablist" aria-label="Imprimer et partager">
+        <div className="bascule">
+          {(["imprimer", "partager"] as const).map((v) => (
+            <button key={v} type="button" role="tab" aria-selected={volet === v} data-choisi={volet === v || undefined} onClick={() => setVolet(v)}>
+              <Icone nom={v === "imprimer" ? "imprimer" : "partager"} />
+              {v === "imprimer" ? "Imprimer" : "Partager"}
+              {v === "partager" && partager.partage && !partager.partage.aJour ? (
+                <span className="volets__marque" title="Le livre a changé depuis la version partagée">
+                  <Icone nom="alerte" />
+                  <span className="vh"> — le livre a changé depuis la version partagée</span>
+                </span>
+              ) : null}
+            </button>
+          ))}
+        </div>
+      </div>
+      {volet === "imprimer" ? (
+        <VoletImprimer projetId={projetId} possible={possible} raisons={raisons} rappels={rappels} definitifs={definitifs} placeOccupee={placeOccupee} />
+      ) : (
+        <VoletPartager projetId={projetId} p={partager} rappels={rappels} />
+      )}
+    </>
+  );
+}
+
+function VoletImprimer({
   projetId, possible, raisons, rappels, definitifs, placeOccupee,
 }: {
   projetId: string;
   possible: boolean;
   raisons: RaisonDeRefus[];
-  /** « S014 · Image peu définie. » : avertissements et points « à savoir », rappelés avant de créer le PDF */
   rappels: string[];
   definitifs: DefinitifAffiche[];
   placeOccupee: number;

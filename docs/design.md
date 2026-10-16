@@ -1879,6 +1879,31 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 7 construite (16 octobre 2026)
+
+Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)
+construit, lot par lot, et ses écarts avec la maquette (« Partage et lecteur
+en ligne », plus bas). Les règles restent en F12.1, F12.3 et F04.2.
+
+**Lot 1 — volet « Partager ».** Repris de la maquette (captures 36 à 42,
+53, 54, 117), allégé selon les écrans arrêtés : la bascule « Imprimer ·
+Partager » en tête de l'étape, comme les volets de « Mettre en page » ;
+« Version partagée » et son « i » ; l'état en une phrase dans la pastille des
+états du PDF (vert à jour, ambre changé, brique refusé, sans fond quand rien
+n'est partagé) ; « Qui peut lire » en carte, deux lignes avec leur signe,
+leur phrase et leur interrupteur « Activé » ou « Désactivé » ; le lien en
+champ à chasse fixe, « Copier le lien », « Ouvrir », une phrase sur ce qu'il
+a de transmissible, « Changer de lien… » en lien discret ; le rappel encadré
+d'ambre sous la ligne qu'on ouvre ; la coupure confirmée sur place, sur papier
+grisé, le bouton en brique ; « Noms affichés » en carte repliée, « Comme dans
+le livre. Modifier ». Écarts : pas de feuille latérale, pas de carte « Ce que
+voit le lecteur », pas de « Retirer le partage… » à part, pas de seconde liste
+de prénoms (décisions de l'entretien) ; « Ancien lien désactivé · Voir ce
+qu'il affiche » devient le message « Nouveau lien : l'ancien affiche « Ce
+livre n'est plus partagé ». ». En 390 px, les signes des canaux disparaissent
+et l'interrupteur reste à droite de la phrase. Précisions à confirmer dans le
+[plan](plan.md#étape-7--partager-et-lire-en-ligne), lot 1.
+
 ### Étape 7 : écrans arrêtés avant de construire (16 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 7 ; elles

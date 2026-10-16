@@ -9,7 +9,7 @@ import type { LivreACompose } from "@/domaine/composition";
 import type { Probleme } from "@/domaine/controles";
 import { conditionsDuLivre, type RaisonDeRefus } from "@/domaine/livre";
 import type { Composition } from "./composer";
-import { contenuDuLivre, livreDuContenu, type ImageDuProjet } from "./contenu";
+import { contenuDuLivre, empreinteDeLecture, livreDuContenu, type ImageDuProjet } from "./contenu";
 import { etatEnMots, pdfDe, SEAU, type PdfDuLivre } from "./pdf";
 
 /**
@@ -78,7 +78,7 @@ export async function produirePdfDeTravail(e: Enseignant, projetId: string): Pro
   const inscrit = await e.supabase.from("pdf_du_livre").insert({
     id, projet_id: projetId, enseignant_id: e.id, sorte: "travail", etat_du: instantane.etatDu, empreinte: instantane.empreinte,
     chemin, taille: composition.pdf.length, pages: composition.rapport.pages + composition.rapport.horsPagination,
-  }).select("id, sorte, etat_du, empreinte, taille, pages, cree_le").single();
+  }).select("id, sorte, etat_du, empreinte, empreinte_lecture, taille, pages, cree_le").single();
   if (inscrit.error) {
     await service.storage.from(SEAU).remove([chemin]);
     throw new Error(`PDF non inscrit : ${inscrit.error.message}`);
@@ -116,8 +116,10 @@ export async function produirePdfDefinitif(e: Enseignant, projetId: string): Pro
   if (depot.error) throw new Error(`PDF non déposé : ${depot.error.message}`);
   const inscrit = await e.supabase.from("pdf_du_livre").insert({
     id, projet_id: projetId, enseignant_id: e.id, sorte: "definitif", etat_du: instantane.etatDu, empreinte: instantane.empreinte,
+    // Ce que lit le lecteur, pour dire si la version partagée a le même texte (F12-AC22)
+    empreinte_lecture: empreinteDeLecture(instantane.livre),
     chemin, taille: composition.pdf.length, pages: composition.rapport.pages + composition.rapport.horsPagination,
-  }).select("id, sorte, etat_du, empreinte, taille, pages, cree_le").single();
+  }).select("id, sorte, etat_du, empreinte, empreinte_lecture, taille, pages, cree_le").single();
   if (inscrit.error) {
     await service.storage.from(SEAU).remove([chemin]);
     throw new Error(`PDF non inscrit : ${inscrit.error.message}`);

@@ -9,6 +9,7 @@ import { livreACompose, presentationDe, type LivreACompose } from "@/domaine/com
 import type { Texte } from "@/domaine/copie";
 import type { ContenuAControler, Probleme } from "@/domaine/controles";
 import { nomPourEleves } from "@/domaine/eleves";
+import { NOMS_COMME_LE_LIVRE, versionDuLivre, type VersionPartagee } from "@/domaine/partage";
 import { reglagesPropres, type ReglagesDuLivre } from "@/domaine/mise-en-page";
 import { imagesDesPages, pagesParDefaut, pagesPropres, type PagesDuLivre } from "@/domaine/pages";
 import type { Preparation } from "@/domaine/preparation";
@@ -112,3 +113,12 @@ export async function contenuAControler(e: Enseignant, c: ContenuDuLivre): Promi
     imagesDesPages: imagesDesPages(c.pages, { aChoix: c.aChoix, feuille: Boolean(c.preparation?.feuille?.on && c.preparation.feuille.sections.length) }),
   };
 }
+
+/** L'empreinte d'une version partagée : ce que le lecteur lit, écrit toujours de la même façon (F12.1). */
+export const empreinteDeLaVersion = (v: VersionPartagee): string => createHash("sha256").update(JSON.stringify(v)).digest("hex");
+
+/**
+ * L'empreinte de ce que le lecteur lit, avec les noms du livre : le PDF définitif la garde, la
+ * version partagée aussi, et les deux disent ainsi s'ils ont le même texte (F12-AC22).
+ */
+export const empreinteDeLecture = (livre: LivreACompose): string => empreinteDeLaVersion(versionDuLivre(livre, NOMS_COMME_LE_LIVRE));

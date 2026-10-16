@@ -299,6 +299,21 @@ const TRACES = {
       <circle cx="9.5" cy="16" r="2" />
     </>
   ),
+  /** Le partage du livre (F12.1) : ce qui sort du projet vers les lecteurs */
+  partager: (
+    <>
+      <path d="M12 15V4" />
+      <path d="M8 7.5L12 3.5l4 4" />
+      <path d="M7 10.5H5.8A1.8 1.8 0 004 12.3v6.9A1.8 1.8 0 005.8 21h12.4a1.8 1.8 0 001.8-1.8v-6.9a1.8 1.8 0 00-1.8-1.8H17" />
+    </>
+  ),
+  /** Le lien de lecture (F12.1) */
+  lien: (
+    <>
+      <path d="M10 14a4.5 4.5 0 006.4 0l3-3a4.5 4.5 0 00-6.4-6.4l-1.2 1.2" />
+      <path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1.2-1.2" />
+    </>
+  ),
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

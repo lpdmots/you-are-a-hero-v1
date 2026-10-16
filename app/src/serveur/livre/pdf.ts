@@ -15,16 +15,21 @@ export const cheminDeLApercu = (enseignantId: string, projetId: string, empreint
 /** « état du 15 octobre, 10 h 02 » : la date que porte la mention « Version de travail ». */
 export const etatEnMots = (etatDu: string): string => `état du ${jourCourt(etatDu)}, ${heureEnMots(etatDu)}`;
 
-export type PdfDuLivre = { id: string; sorte: "travail" | "definitif"; etatDu: string; empreinte: string; taille: number; pages: number; creeLe: string };
+export type PdfDuLivre = {
+  id: string; sorte: "travail" | "definitif"; etatDu: string; empreinte: string; taille: number; pages: number; creeLe: string;
+  /** Ce que lit le lecteur, pour la comparer à la version partagée ; rien pour un PDF d'avant l'étape 7 (F12-AC22) */
+  empreinteLecture: string | null;
+};
 
-export const pdfDe = (l: { id: string; sorte: "travail" | "definitif"; etat_du: string; empreinte: string; taille: number; pages: number; cree_le: string }): PdfDuLivre => ({
+export const pdfDe = (l: { id: string; sorte: "travail" | "definitif"; etat_du: string; empreinte: string; taille: number; pages: number; cree_le: string; empreinte_lecture?: string | null }): PdfDuLivre => ({
   id: l.id, sorte: l.sorte, etatDu: l.etat_du, empreinte: l.empreinte, taille: Number(l.taille), pages: l.pages, creeLe: l.cree_le,
+  empreinteLecture: l.empreinte_lecture ?? null,
 });
 
 /** Les PDF du projet, les plus récents en tête. */
 export async function pdfDuProjet(e: Enseignant, projetId: string): Promise<PdfDuLivre[]> {
   if (!estUuid(projetId)) return [];
-  const { data, error } = await e.supabase.from("pdf_du_livre").select("id, sorte, etat_du, empreinte, taille, pages, cree_le").eq("projet_id", projetId).order("cree_le", { ascending: false });
+  const { data, error } = await e.supabase.from("pdf_du_livre").select("id, sorte, etat_du, empreinte, empreinte_lecture, taille, pages, cree_le").eq("projet_id", projetId).order("cree_le", { ascending: false });
   if (error) throw new Error(`PDF illisibles : ${error.message}`);
   return (data ?? []).map(pdfDe);
 }

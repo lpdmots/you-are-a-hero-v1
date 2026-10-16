@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
@@ -24,6 +24,9 @@ import { etatDeLOrdre, ordreDuContenu } from "@/serveur/livre/ordre";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { nomPourEleves } from "@/domaine/eleves";
 import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
+import { aDesClassesEnCours, partageDuProjet, versionsDe } from "@/serveur/partage";
+import { adresseDuSite } from "@/serveur/env";
+import { codeAffiche, etatDuPartage, sortieAJour } from "@/domaine/partage";
 import styles from "./projet.module.css";
 
 type Props = { params: Promise<{ id: string; onglet: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
@@ -114,11 +117,20 @@ export default async function PageProjet({ params, searchParams }: Props) {
     const conditions = conditionsDuLivre(livre.problemes, { aChoix, convient: livre.miseEnPageConvient, doute: douteOrdre, imprimerOuvert: sortieOuverte });
     const definitifs = pdf.filter((x) => x.sorte === "definitif");
     const aJour = conditions.pdf.possible && definitifs[0]?.empreinte === instantane.empreinte;
+    // La version partagée (F12.1) : comparée à ce que le lecteur verrait aujourd'hui, et au dernier PDF définitif
+    const [partage, classesEnCours] = sortieOuverte ? await Promise.all([partageDuProjet(enseignant, projet.id), aDesClassesEnCours(enseignant)]) : [null, false];
+    const actuelle = partage ? versionsDe(instantane, partage.noms) : null;
+    const etatPartage = etatDuPartage(partage?.version ?? null, { empreinte: actuelle?.empreinte ?? "" }, definitifs[0] ?? null);
     const marques: Record<EtapeLivre, MarqueEtape> = {
       relire: relire.marque,
       chemins: chemins?.marque ?? null,
       page: !pageOuverte ? "fermee" : douteOrdre ? "reste" : livre.miseEnPageConvient ? "coche" : null,
-      sortie: !sortieOuverte ? "fermee" : !avantTermine ? "reste" : aJour ? "coche" : null,
+      // Cochée quand tout ce qui a été produit est à jour : PDF définitif, version partagée (F11-AC108)
+      sortie: !sortieOuverte
+        ? "fermee"
+        : !avantTermine || (etatPartage.sorte === "partage" && !etatPartage.aJour)
+          ? "reste"
+          : sortieAJour({ existe: definitifs.length > 0, aJour }, { existe: etatPartage.sorte === "partage", aJour: etatPartage.sorte === "partage" && etatPartage.aJour }) ? "coche" : null,
     };
     const contenuLivre = await contenuDuLivre(enseignant, projet.id);
     const eleves = await elevesDeLaClasse(enseignant, projet.classe?.id ?? null);
@@ -164,6 +176,32 @@ export default async function PageProjet({ params, searchParams }: Props) {
                 }),
                 definitifs: definitifs.map((x) => ({ id: x.id, etat: etatEnMots(x.etatDu), pages: x.pages, taille: x.taille, aJour: x.empreinte === instantane.empreinte })),
                 placeOccupee: definitifs.reduce((n, x) => n + x.taille, 0),
+                voletDemande: demande.volet === "partager" ? "partager" : undefined,
+                partager: {
+                  deClasse,
+                  possible: conditions.partage.possible,
+                  raisons: conditions.partage.raisons,
+                  classes: classesEnCours,
+                  noms: partage?.noms ?? { ligne: true, texte: null, auteurs: true },
+                  livre: {
+                    titreEnImage: contenuLivre?.pages.titre.forme === "image",
+                    ligne: contenuLivre?.pages.titre.ligne ?? "",
+                    annee: contenuLivre?.pages.titre.annee ?? "",
+                    auteurs: contenuLivre?.pages.auteurs.presente ? { enImage: contenuLivre.pages.auteurs.forme === "image", nombre: contenuLivre.pages.auteurs.noms.length } : null,
+                  },
+                  partage: partage?.version && etatPartage.sorte === "partage"
+                    ? {
+                        parLien: partage.parLien,
+                        auxClasses: partage.auxClasses,
+                        adresse: `${adresseDuSite((await headers()).get("host"))}/lire/${codeAffiche(partage.code)}`,
+                        etatDu: etatEnMots(partage.version.etatDu).replace(/^état du /, ""),
+                        aJour: etatPartage.aJour,
+                        pdf: definitifs[0] && etatPartage.memeTexteQueLePdf !== null
+                          ? { etatDu: etatEnMots(definitifs[0].etatDu).replace(/^état du /, ""), memeTexte: etatPartage.memeTexteQueLePdf }
+                          : null,
+                      }
+                    : null,
+                },
               }
             : null
         }

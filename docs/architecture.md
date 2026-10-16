@@ -1285,6 +1285,51 @@ dont le serveur ne trouve plus `browsers.json` (simulation de Vercel) : les
 pages s'ouvrent ; un test (`pages-sans-chromium`) suit les imports statiques
 des pages et échoue si l'un mène de nouveau à Playwright ou à Chromium.
 
+## Réalisation de l'étape 7 (16 octobre 2026)
+
+Construite en local, lot par lot, d'après le
+[plan](plan.md#étape-7--partager-et-lire-en-ligne) ; les règles sont en F12.1,
+F12.3 et F04.2.
+
+**Lot 1 — la version partagée et son partage.**
+
+- **Tirée du livre composé.** `versionDuLivre` (`src/domaine/partage.ts`)
+  reprend `LivreACompose`, celui du PDF : même ordre, mêmes numéros, mêmes
+  titres de partie et de chapitre, mêmes pages de présentation. Elle retire ce
+  qui ne sert qu'à l'impression (réglages, nouvelles pages, dés imprimés) ou
+  au travail (références, marques, récapitulatif), garde l'identité stable de
+  chaque scène pour la reprise de lecture, et ne liste que les images qu'elle
+  montre. Un renvoi vers une scène que le livre n'imprime pas n'a pas de
+  destination.
+- **Deux empreintes.** `empreinte` est celle de la version entière, noms du
+  partage compris : elle dit si le livre a changé depuis la version partagée
+  (F12-AC21). `empreinte_lecture` est celle de la même version avec les noms
+  du livre : le PDF définitif la garde aussi (nouvelle colonne de
+  `pdf_du_livre`), et les deux disent ainsi s'ils ont le même texte
+  (F12-AC22). Elles se calculent dans `serveur/livre/contenu.ts`
+  (`empreinteDeLaVersion`, `empreinteDeLecture`), que le PDF et le partage
+  partagent sans s'importer l'un l'autre.
+- **Table `partages`.** Une ligne par projet, réservée à l'adulte par ses
+  règles d'accès ; ni le rôle anonyme ni les postes ne la lisent. Une
+  contrainte tient ensemble la version et les canaux : une version suppose un
+  canal ouvert, et inversement. Couper le dernier canal efface la version et
+  ses empreintes, et garde le code et les noms.
+- **Le code.** Dix caractères tirés de 32 octets au hasard (`randomBytes`),
+  dans un alphabet de 31 signes sans i, l, o, 0 ni 1, un octet de 248 ou plus
+  écarté pour que chaque signe reste également probable : près de 50 bits.
+  Gardé sans tirets en base, affiché en trois groupes. L'adresse se compose
+  sur `adresseDuSite` (`ADRESSE_SITE`), que le porteur réglera chez Vercel sur
+  le second nom en `.vercel.app` avant de donner un premier lien.
+- **Chaque geste revérifie.** `ouvrirCanal` et `mettreAJourLePartage`
+  refusent sans le rappel confirmé, relisent l'instantané et calculent la
+  règle unique (`conditionsDuLivre`) sur lui avant de le figer ; aucun
+  contournement. Ouvrir le second canal d'une version déjà lisible ne fige
+  rien de nouveau.
+- **Page du projet.** L'onglet Livre lit le partage seulement quand
+  « Imprimer et partager » est ouverte, et calcule la version actuelle sur
+  l'instantané qu'il a déjà : aucune lecture de plus de la base ni de
+  Chromium (le test `pages-sans-chromium` passe).
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

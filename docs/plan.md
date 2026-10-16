@@ -1852,6 +1852,53 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      partagés en local, un parcours du partage à la lecture sur téléphone
      sans compte puis par un élève, captures, mode d'emploi de son essai
      dans `app/README.md`.
+- **Construction, commencée le 16 octobre 2026,** en local, un commit par
+  lot ; rien n'est poussé sur `main` ni appliqué à la vraie base.
+  - **Lot 1 — partager, côté adulte : construit le 16 octobre 2026.** La
+    version partagée est tirée du livre composé (`domaine/partage.ts`) : son
+    ordre, ses numéros, ses titres, ses pages de présentation avec les noms du
+    partage, sa feuille et son dé, sans rien de l'impression ni du travail.
+    Le serveur (`serveur/partage.ts`) revérifie la règle unique sur
+    l'instantané qu'il fige, exige le rappel à chaque ouverture de canal et à
+    chaque mise à jour, garde le code du lien d'un retrait à l'autre et le
+    remplace à « Changer de lien ». « Imprimer et partager » a deux volets ;
+    « Partager » porte l'état, la comparaison au PDF définitif, « Qui peut
+    lire », le rappel sur place, la confirmation de la coupure et les noms.
+    Migration `20261016100000_partage.sql`, base locale seulement : la table
+    `partages` (l'adulte seul) et `pdf_du_livre.empreinte_lecture`.
+    - **Critères fermés :** F12-AC02, AC03, AC04, AC05, AC08, AC09, AC10,
+      AC11, AC15, AC16, AC17, AC20, AC21, AC22, AC23 ; F12-AC24 pour
+      l'adulte ; F11-AC72 (seconde moitié) ; F11-AC108.
+    - **Critères qui attendent :** ce que voit le lecteur du lien, la page
+      neutre d'un lien retiré ou changé (F12-AC03, AC10, AC11 côté lecteur),
+      au lot 2 ; la lecture par les élèves (F12-AC06, AC07, AC12, AC24 côté
+      élève), au lot 3. « Prévisualiser » et « Ouvrir » mènent au lecteur du
+      lot 2.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      le volet « Imprimer » s'ouvre d'abord, « Partager » quand l'adresse le
+      demande (`?volet=partager`), et son onglet porte le triangle quand le
+      livre a changé depuis la version partagée ; l'étape d'arrivée porte
+      alors aussi le triangle ; « Livre partagé, à jour depuis le 16 octobre,
+      17 h 37. » ; « Le livre a changé depuis la version partagée du … » et
+      « Mettre à jour le partage… », ou « Mise à jour impossible pour
+      l'instant : les lecteurs gardent la version du … » avec ses raisons ;
+      sous l'état, « Même texte que le PDF définitif du … », « Texte
+      différent du … » ou, pour un PDF d'avant l'étape 7, « Comparaison
+      impossible avec le PDF définitif du … » ; le rappel liste d'abord les
+      points « à savoir » du livre, séparés, puis les quatre phrases (trois
+      en mode personnel, sans les autorisations des familles), la case
+      « J'ai relu le livre sur ces points. », « Partager » ou « Mettre à
+      jour » et « Annuler » ; ouvrir le second canal reprend la version
+      déjà partagée sans en figer une nouvelle (F12-AC20), même si le livre
+      a changé ; « Couper le lien ? » ou « Retirer le partage ? » selon
+      qu'un canal reste ouvert, avec ce que le lien affichera ; le lien
+      s'affiche avec son code en trois groupes (`/lire/5uuk-hcj-km7`), « Copier
+      le lien », « Ouvrir » et une phrase sur ce qu'il a de transmissible ;
+      les noms se règlent avant comme après le partage, enregistrés aussitôt
+      (le texte en quittant le champ), « Nom de l'auteur » en mode personnel,
+      et une ligne « Un changement vaut pour la prochaine mise à jour du
+      partage. » une fois le livre partagé.
+    - **Tests automatiques :** 11 unitaires, 12 contre la base, 3 parcours.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 
