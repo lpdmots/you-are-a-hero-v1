@@ -1,5 +1,5 @@
 /**
- * Charge dans la base locale, pour le compte local, deux livres finis à mener de « Relire » au
+ * Charge dans la base locale (ou la vraie base), pour le compte local, deux livres finis à mener de « Relire » au
  * PDF définitif (étape 6 du plan, lot 7) ; chacun porte les cas de la mise en page :
  *
  * - « La lanterne du passeur », récit à choix de la classe d'essai : deux parties, une énigme
@@ -12,7 +12,12 @@
  *   npm run livres:essai              les charge
  *   npm run livres:essai -- --refaire les retire, avec ce qui y a été écrit, puis les recharge
  *
- * La classe d'essai vient de « npm run histoire:essai ». Base locale seulement.
+ *   npm run livres:essai -- --production adresse         dit ce qui serait fait dans la vraie base
+ *   npm run livres:essai -- --production adresse --oui   le fait (« --refaire » s'y ajoute de même)
+ *
+ * La classe d'essai vient de « npm run histoire:essai » (avec « --production » pour la vraie
+ * base). Rien d'autre n'est touché : seuls ces deux livres, et leurs images, sont retirés par
+ * « --refaire ». Dans la vraie base, ils servent à essayer le partage (étape 7) sans projet fini.
  */
 import { randomUUID } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
@@ -21,10 +26,9 @@ import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { Client } from "pg";
 import { hasard, melangeInitial, type PlanNumerote } from "@/domaine/numeros";
+import { adresseDeProduction, lireEnv, racine } from "./base-de-production";
 import { CLASSE } from "./passeurs-de-brume";
 
-const racine = resolve(__dirname, "..");
-config({ path: resolve(racine, ".env.local"), quiet: true });
 const locale = (adresse: string): boolean => {
   try {
     return ["127.0.0.1", "localhost"].includes(new URL(adresse).hostname);
@@ -32,16 +36,39 @@ const locale = (adresse: string): boolean => {
     return false;
   }
 };
-const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
-const adresseBase = process.env.BASE_LOCALE_URL ?? "";
-if (!locale(url) || !locale(adresseBase)) {
-  console.error("Cette commande ne parle qu'à la base locale : lancez « npm run base:demarrer » puis « npm run env:local ».");
-  process.exit(1);
+const options = process.argv.slice(2);
+const refaire = options.includes("--refaire");
+const production = options.includes("--production");
+const oui = options.includes("--oui");
+
+// La base visée, et les clés qui vont avec : jamais celles de l'une pour l'autre
+let url: string;
+let adresseBase: string;
+let cleSecrete: string;
+if (production) {
+  const env = lireEnv("production.env");
+  url = env.get("NEXT_PUBLIC_SUPABASE_URL") ?? "";
+  cleSecrete = env.get("SUPABASE_CLE_SECRETE") ?? "";
+  if (!url || !cleSecrete || locale(url)) {
+    console.error("Il manque NEXT_PUBLIC_SUPABASE_URL ou SUPABASE_CLE_SECRETE dans production.env.");
+    process.exit(1);
+  }
+  adresseBase = adresseDeProduction();
+} else {
+  config({ path: resolve(racine, ".env.local"), quiet: true });
+  url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
+  adresseBase = process.env.BASE_LOCALE_URL ?? "";
+  cleSecrete = process.env.SUPABASE_CLE_SECRETE ?? "";
+  if (!locale(url) || !locale(adresseBase)) {
+    console.error("Sans « --production », cette commande ne parle qu'à la base locale : lancez « npm run base:demarrer » puis « npm run env:local ».");
+    process.exit(1);
+  }
 }
-const refaire = process.argv.includes("--refaire");
+const ou = production ? "la vraie base" : "la base locale";
 const compteLocal = resolve(racine, ".compte-local");
-// La première ligne de .compte-local est l'adresse du compte ; la seconde, son mot de passe, n'est pas lue
-const courriel = existsSync(compteLocal) ? readFileSync(compteLocal, "utf8").split("\n")[0].trim() : "";
+// La première ligne de .compte-local est l'adresse du compte ; la seconde, son mot de passe, n'est pas lue.
+// Dans la vraie base, le compte se nomme : aucun n'est pris par défaut.
+const courriel = options.find((o) => !o.startsWith("--")) ?? (!production && existsSync(compteLocal) ? readFileSync(compteLocal, "utf8").split("\n")[0].trim() : "");
 
 const PHRASES = [
   "Lou s’approcha des lanternes, qui s’éteignaient une à une au bout du quai.",
@@ -116,21 +143,25 @@ const ILLUSTRATIONS: Record<Image, { fichier: string; largeur: number; hauteur: 
 const bloc = (type: string, reste: Record<string, unknown>) => ({ type, id: randomUUID(), ...reste });
 
 async function principal(): Promise<void> {
-  if (!courriel) throw new Error("Aucun compte local : lancez « npm run compte:local ».");
-  const cleSecrete = process.env.SUPABASE_CLE_SECRETE ?? "";
+  if (!courriel) throw new Error(production ? "Nommez le compte : « --production adresse@du.compte »." : "Aucun compte local : lancez « npm run compte:local ».");
   const stockage = createClient(url, cleSecrete, { auth: { persistSession: false, autoRefreshToken: false } }).storage.from("images");
   const base = new Client({ connectionString: adresseBase });
   await base.connect();
   const q = async <T = Record<string, unknown>>(texte: string, valeurs: unknown[] = []): Promise<T[]> => (await base.query(texte, valeurs)).rows as T[];
   try {
     const [compte] = await q<{ id: string }>("select e.id from public.enseignants e join auth.users u on u.id = e.id where u.email = $1", [courriel]);
-    if (!compte) throw new Error("Le compte local n'est pas dans la base locale : lancez « npm run compte:local ».");
+    if (!compte) throw new Error(production ? `Aucun compte « ${courriel} » dans la vraie base.` : "Le compte local n'est pas dans la base locale : lancez « npm run compte:local ».");
     const [schema] = await q<{ pret: boolean }>("select to_regclass('public.pdf_du_livre') is not null and exists (select 1 from information_schema.columns where table_name = 'projets' and column_name = 'ordre_decision') as pret");
-    if (!schema?.pret) throw new Error("Le schéma de la base locale n'est pas à jour : appliquez d'abord les migrations.");
+    if (!schema?.pret) throw new Error(`Le schéma de ${ou} n'est pas à jour : appliquez d'abord les migrations.`);
     const [classe] = await q<{ id: string }>("select id from public.classes where enseignant_id = $1 and identifiant = $2", [compte.id, CLASSE.identifiant]);
-    if (!classe) throw new Error("La classe d'essai manque : lancez d'abord « npm run histoire:essai ».");
+    if (!classe) throw new Error(`La classe d'essai manque dans ${ou} : lancez d'abord « npm run histoire:essai${production ? " -- --production adresse --oui" : ""} ».`);
     const deja = await q<{ id: string }>("select id from public.projets where enseignant_id = $1 and titre = any($2::text[])", [compte.id, [A_CHOIX.titre, CLASSIQUE.titre]]);
     if (deja.length && !refaire) throw new Error("Les livres d'essai sont déjà chargés. Pour les remettre à neuf, ajoutez « --refaire ».");
+    if (production && !oui) {
+      console.log(`Dans la vraie base, pour « ${courriel} » : ${deja.length ? "retirer puis recharger" : "charger"} « ${A_CHOIX.titre} » (classe « ${CLASSE.nom} ») et « ${CLASSIQUE.titre} », avec leurs images.`);
+      console.log("Rien n'est fait. Pour le faire, ajoutez « --oui ».");
+      return;
+    }
     for (const p of deja) {
       const { data } = await stockage.list(`${compte.id}/${p.id}`);
       if (data?.length) await stockage.remove(data.map((f) => `${compte.id}/${p.id}/${f.name}`));

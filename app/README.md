@@ -426,3 +426,19 @@ familles, ajouter dans Vercel un second nom gratuit en `.vercel.app` (par exempl
 liens copiés la porteront. Pour pousser l'étape : `npm run sauvegarder`, puis
 `npm run production:schema -- --oui`, qui applique les deux migrations à la vraie
 base, puis la mise en ligne du code.
+
+**6. Essayer en ligne sans projet fini.** Les deux livres d'essai se chargent dans
+la vraie base, sur votre compte, à côté de vos projets, qui ne sont pas touchés ;
+la classe d'essai en ligne vient de `npm run histoire:essai -- --production
+adresse --oui`. Sans `--oui`, chaque commande dit seulement ce qu'elle ferait.
+
+```bash
+npm run sauvegarder
+npm run livres:essai -- --production adresse@du.compte --oui
+npm run partages:essai -- --production adresse@du.compte --oui
+```
+
+Puis, en ligne : partager « La lanterne du passeur » par le lien et « À mes
+classes », l'ouvrir sur un téléphone, et la faire lire à un élève de la classe
+d'essai depuis « Lire ». `npm run livres:essai -- --production adresse --refaire
+--oui` remet les deux livres à neuf ; les supprimer se fait depuis « Mes projets ».
