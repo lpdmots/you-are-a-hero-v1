@@ -1879,6 +1879,49 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 7 : écrans arrêtés avant de construire (16 octobre 2026)
+
+Recommandations acceptées par le porteur à l'entretien de l'étape 7 ; elles
+prévalent sur [Partage et lecteur en ligne](#partage-et-lecteur-en-ligne)
+pour les points qu'elles touchent. Les règles sont en
+[F12.1](specifications.md#f121--partager-une-version-du-récit),
+[F12.3](specifications.md#f123--lecture-des-anciens-livres-par-les-autres-classes)
+et [F04.2](specifications.md#f042--objets-de-lhistoire).
+
+- **Élève, une seule entrée « Lire » :** elle remplace « Lire à l'essai » dans
+  la barre, à côté de « Mon travail ». La page a deux parties : en haut,
+  « Notre histoire en cours », la lecture d'essai, fermée hors des horaires ;
+  dessous, « Livres à lire », les versions partagées aux classes, ouvertes à
+  toute heure (F06-AC31), le livre de la classe en grand avec « Écrit par ta
+  classe ». Aucun « ta maîtresse » : le nom affiché de l'enseignant. Écran
+  sans maquette pour sa forme d'ensemble : conçu avec impeccable, critiqué
+  en deux lectures.
+- **Volet « Partager » allégé :** le rappel à cocher s'ouvre sur place, comme
+  celui du PDF définitif de l'étape 6, sans feuille latérale ; couper le
+  dernier interrupteur retire le partage, après une confirmation sur place
+  qui dit ce que le lien affichera, sans bouton « Retirer » à part ; une
+  seule commande pour voir le livre, « Prévisualiser » avant le partage,
+  « Ouvrir » sur le lien ensuite ; la carte « Ce que voit le lecteur » et
+  « Lire la version partagée » sont retirées. Noms repliés en « Comme dans
+  le livre · Modifier » ; ouverts : la ligne de classe (interrupteur et
+  texte propre au partage), la page des auteurs (interrupteur seul, F12.1
+  révisé). L'état du partage ne se lit que dans l'étape « Imprimer et
+  partager » et sa marque ; le bandeau « Livre intérieur » de la maquette est
+  périmé.
+- **Lecteur en ligne :** la feuille d'aventure est fermée au départ, ouverte
+  par « Ma feuille » ou par une action de jeu (décidé le 16 octobre 2026),
+  et non posée en colonne ; en récit classique, le filet au losange entre les
+  scènes et les titres de chapitre numérotés comme dans le livre, sans titre
+  de scène, « Sommaire » listant les chapitres ; le parcours nomme chaque
+  passage lu par son numéro et ses premiers mots ; la page de titre propose
+  « Commencer la lecture », ou « Continuer au passage n » et « Recommencer au
+  début », avec une ligne disant où la lecture est retenue. Le texte
+  « Comment lire ce livre » propre à l'écran est écrit à la construction et
+  montré au porteur.
+- **Sans maquette, à concevoir avec impeccable :** la page « momentanément
+  indisponible » (base en sommeil), la phrase de reprise après une mise à
+  jour, l'entrée « Lire » de l'élève.
+
 ### Étape 6 construite (15 octobre 2026)
 
 Ce que l'étape 6 du [plan](plan.md#étape-6--composer-et-imprimer-le-livre)
@@ -2870,7 +2913,7 @@ ni couleur de chapitre, ni référence, ni titre de travail.
 | Situation | Disposition proposée |
 | --- | --- |
 | Partage | Volet « Partager » de l'étape « Imprimer et partager » (quatrième onglet de la destination Livre jusqu'au 3 octobre). Fiche « Version partagée » : état en une phrase (pas partagé et pourquoi, à jour, « le livre a changé depuis la version partagée », retiré), puis une ligne disant si cette version et le dernier PDF définitif portent sur le même état. La même phrase, abrégée, figure dans le bandeau « Livre intérieur » sur tous les onglets. |
-| Canaux | « Qui peut lire » : lien de lecture et lecture par mes classes, chacun avec son interrupteur, désactivé par défaut et indépendant. Lien actif : adresse, Copier, Ouvrir, rappel qu'il est transmissible et non indexé sans être secret. Classes : classes en cours concernées, renvoi vers « Lectures ». En mode personnel, seul le lien est proposé. |
+| Canaux | « Qui peut lire » : lien de lecture et lecture par mes classes, chacun avec son interrupteur, désactivé par défaut et indépendant. Lien actif : adresse, Copier, Ouvrir, rappel qu'il est transmissible et non indexé sans être secret. Classes : classes en cours concernées, renvoi vers « Lectures ». En mode personnel, « À mes classes » est aussi proposé dès que le compte a une classe en cours (F12.3, 16 octobre 2026). |
 | Auteurs | « Ce que les lecteurs voient des auteurs » : titre et sous-titre toujours affichés ; ligne « classe ou auteur, année » et page des auteurs affichées par défaut, comme dans le livre, depuis le 3 octobre 2026 ; chacune peut être retirée ou recevoir un texte propre au partage, avec le rappel de la mention imprimée. À droite, la première page vue par le lecteur se met à jour pendant la saisie. Un réglage modifié après le partage s'applique à la prochaine mise à jour, et l'état le dit. |
 | Auteurs, précisions du 3 octobre | Ligne de classe et page des auteurs affichées par défaut, « comme dans le livre », chacune avec son interrupteur et son texte propre au partage ; rappel du lien transmissible toujours affiché. Page des auteurs en image : affichée telle quelle, le retrait porte sur la page entière. Sans page des auteurs dans le livre, la ligne le dit et ne propose rien. |
 | Partage refusé | Feuille latérale : problèmes bloquants par nature avec accès aux scènes, aucune commande d'ignorance, rappel qu'un PDF définitif n'est pas exigé et que les avertissements d'impression ne bloquent pas. |

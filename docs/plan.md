@@ -1794,6 +1794,64 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **À régler avant de commencer :** lecture par les classes d'un livre écrit en mode
   personnel (F12.3). L'image manquante, qui bloque aussi le partage, est
   réglée le 15 octobre 2026 en F12.1, à l'entretien de l'étape 6.
+  **Arbitré en entretien le 16 octobre 2026,** réponse par réponse, en
+  trois séries, et validé dans son ensemble par le porteur le même jour
+  (« je valide l'ensemble ») :
+  - « À mes classes » aussi pour un récit personnel, dès que le compte a une
+    classe en cours (F12.3, F12-AC24) ; la version partagée fige ce que le
+    lecteur voit, sans les réglages d'impression, « le livre a changé » et
+    la comparaison au PDF définitif portant sur ce seul contenu (F12.1,
+    F12-AC21 à AC23) ; « Imprimer et partager » cochée quand tout ce qui a
+    été produit est à jour, PDF définitif ou version partagée (F11.6,
+    F11-AC108) ;
+  - après une mise à jour, la lecture en cours et la feuille suivent les
+    passages, sections et compteurs par leur identité (F04.2, F12.1,
+    F04-AC43, F12-AC25) ; la lecture d'un élève gardée par la base pour son
+    profil (V16, F12-AC26) ; seule la ligne de classe reçoit un texte propre
+    au partage, la page des auteurs n'ayant qu'un interrupteur (F12.1) ;
+    l'adresse publique réglée dans l'application, un second nom gratuit en
+    `.vercel.app` à ajouter par le porteur avant le premier lien donné aux
+    familles, un code de lien court à recopier, essais faux limités (F12.1) ;
+  - pour les écrans (recommandations acceptées, détail dans le
+    [design](design.md#étape-7--écrans-arrêtés-avant-de-construire-16-octobre-2026)) :
+    une seule entrée « Lire » chez l'élève, en deux parties ; le volet
+    « Partager » allégé (rappel sur place, retrait par le dernier
+    interrupteur, « Prévisualiser » puis « Ouvrir ») ; le lecteur qui suit
+    le livre et les décisions prises depuis la maquette.
+
+  Ces critères s'ajoutent au périmètre de l'étape.
+- **Autorisée le 16 octobre 2026,** pour elle seule, en deux temps : un
+  entretien court, puis la construction, après sa validation, donnée le même
+  jour. La construction se fait en local, un commit par lot ; rien n'est
+  poussé sur `main` ni appliqué à la vraie base sans sa demande ; aucun
+  service payant n'est engagé.
+- **Découpage retenu par le porteur le 16 octobre 2026 :** quatre lots. Le
+  contenu de chaque migration lui est dit au début de son lot ; les écrans
+  sans maquette se conçoivent avec impeccable et se critiquent en deux
+  lectures séparées sur captures.
+  1. **Partager (côté adulte)** — la version partagée tirée du contenu du
+     livre, la règle unique et la coche de l'étape d'arrivée, le volet
+     « Partager » (état, deux canaux, rappel, mise à jour, retrait,
+     changement de lien, noms, prévisualisation), la comparaison avec le PDF
+     définitif. Migration `partage` (F12-AC02 à AC05, AC08 à AC11, AC15 à
+     AC17, AC20 à AC22, AC24 pour l'adulte ; F11-AC72 seconde moitié,
+     F11-AC108).
+  2. **Lecteur en ligne par le lien, sans compte** — page de titre,
+     « Comment lire ce livre » et règles, passages et choix, énigmes,
+     parcours, fin et pages de présentation, feuille et dé, récit classique,
+     reprise sur l'appareil et après une mise à jour, page neutre, page
+     « momentanément indisponible », non-indexation, essais faux limités ;
+     essai sur une fenêtre de téléphone. Sans migration (F12-AC01, AC13,
+     AC14, AC18, AC19, AC23, AC25 ; F04-AC17 à AC21, AC23, AC24, AC31, AC32,
+     AC43 ; F11-AC46 pour le lecteur).
+  3. **Lire, côté élève** — l'entrée unique « Lire », les livres ouverts aux
+     classes, la lecture et la feuille gardées par profil. Migration
+     `lectures_des_eleves` (F12-AC06, AC07, AC12, AC24 pour l'élève, AC26 ;
+     F04-AC22 ; V16).
+  4. **Essai de bout en bout** — un livre à choix et un récit classique
+     partagés en local, un parcours du partage à la lecture sur téléphone
+     sans compte puis par un élève, captures, mode d'emploi de son essai
+     dans `app/README.md`.
 - **Terminée quand :** le lien s'ouvre sur un téléphone sans compte, et un
   élève lit un livre terminé depuis son espace.
 
@@ -1942,7 +2000,6 @@ de commencer ». Celles-ci n'en bloquent aucune.
 - **F03.1 :** scènes communes à plusieurs chapitres, pour lesquelles un
   chapitre ordinaire est recommandé sans retour ; arrivées regroupées dans
   « Chemins » quand de nombreux chapitres mènent au même.
-- **F04.2 :** modification de la feuille d'aventure après un partage.
 - **F06.3 :** changements simultanés de prise en charge ; durée pendant
   laquelle une reprise reste annulable.
 - **F06.4 :** exceptions ponctuelles aux horaires ; raccourcis par lien ou

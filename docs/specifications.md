@@ -2017,8 +2017,26 @@ lignes par liste fixé dans la préparation, un réglage de plus.
   plus, alors elle commence sur la page suivante et chaque liste porte huit
   lignes.
 
-**Questions ouvertes :** présentation de la feuille et du dé sur téléphone ; modification de la feuille par l'adulte
-après un partage, face aux feuilles déjà commencées par des lecteurs.
+**Décision confirmée le 16 octobre 2026 — feuille commencée et mise à jour
+du partage** (entretien de l'étape 7 du
+[plan](plan.md#étape-7--partager-et-lire-en-ligne)) : quand l'adulte met à
+jour la version partagée, la feuille d'un lecteur déjà commencée suit les
+sections et les compteurs par leur identité. Ceux qui existent encore gardent
+les valeurs du lecteur, même renommés ; une section ou un compteur nouveau
+part de sa valeur de départ ; une section ou un compteur retiré disparaît. Aucun
+message ne le signale. La reprise de lecture suit la même règle en
+[F12.1](#f121--partager-une-version-du-récit). Alternative écartée : remettre
+toutes les feuilles à zéro à chaque mise à jour, qui aurait effacé celles
+d'une classe en pleine lecture pour une coquille corrigée.
+
+- **F04-AC43 — Feuille gardée après une mise à jour :** étant donné Alice
+  dont la feuille porte « Volonté : 2 » et « couteau » dans l'inventaire,
+  lorsque l'enseignant ajoute un compteur « Temps : 10 » et met à jour le
+  partage, alors Alice retrouve « Volonté : 2 », « couteau » et « Temps : 10 » ;
+  lorsqu'il retire ensuite la section « Inventaire » et met à jour, alors la
+  section disparaît de sa feuille et « Volonté » vaut toujours 2.
+
+**Questions ouvertes :** présentation de la feuille et du dé sur téléphone.
 
 ### F04.3 — Aperçu des scènes voisines pendant l'écriture
 
@@ -8647,7 +8665,12 @@ l'application connaît est calculé ; seul un jugement se pose à la main.
   les chemins » la reçoivent lorsqu'il ne reste ni scène à finir, ni
   problème bloquant, ni avertissement à traiter, et que l'adulte a posé la
   déclaration de l'étape ; « Mettre en page » par la déclaration de
-  l'adulte ; « Imprimer et partager » lorsque le PDF définitif est à jour.
+  l'adulte ; « Imprimer et partager » lorsque tout ce qui a été produit est
+  à jour — le dernier PDF définitif s'il en existe un, la version partagée
+  si le livre est partagé —, l'un des deux au moins existant (révisé le
+  16 octobre 2026, entretien de l'étape 7 : jusque-là, le PDF définitif
+  seul ; un livre lu seulement en ligne n'aurait jamais eu sa coche, et un
+  partage en retard ne se serait pas vu dans la ligne des étapes).
   La coche garde un seul sens, « il ne reste rien ».
 - **Marque d'attente (4 octobre, troisième critique) :** une étape à laquelle il ne reste que des scènes à
   finir porte une horloge, non le triangle « il reste à faire » : septembre
@@ -8845,6 +8868,11 @@ troisième.
   lorsque S028 est rouverte aux élèves, alors l'étape reste accessible, la
   mise à jour du partage est refusée avec son motif, la version partagée
   reste lisible et l'adulte peut retirer le partage.
+- **F11-AC108 — Coche de l'étape d'arrivée :** étant donné un livre partagé
+  sans PDF définitif, à jour, alors « Imprimer et partager » porte sa coche ;
+  lorsqu'une coquille est corrigée, alors la coche laisse place au triangle et
+  l'étape propose « Mettre à jour le partage » ; étant donné un PDF définitif
+  à jour et une version partagée en retard, alors l'étape n'est pas cochée.
 - **F11-AC73 — Coche (révisé) :** étant donné un temps « Vérifier les
   chemins » auquel il reste un choix sans destination et un passage
   inaccessible depuis le départ, lorsque l'adulte désigne la destination,
@@ -9012,6 +9040,40 @@ gardait pour l'étape 7 ; le partage demande que « Imprimer et partager »
 ait été ouverte une fois, et non que « Mettre en page » porte encore sa
 coche : un doute sur l'ordre des passages ne le bloque pas.
 
+**Décision confirmée le 16 octobre 2026 — ce que fige la version partagée**
+(entretien de l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)) :
+l'instantané fige ce que le lecteur voit : les textes tels que le livre les
+imprime, sans notes ni références ; les numéros des passages tels que la
+composition les donne, ordre des passages et numéros fixés compris ; les
+images ; les pages de présentation avec les réglages propres au partage ; la
+feuille d'aventure, les « Règles du jeu » et le dé. Les réglages qui ne
+servent qu'à l'impression (police, taille, marges, bas de page) n'en font
+pas partie.
+
+- **« Le livre a changé depuis la version partagée »** ne s'affiche que si ce
+  que le lecteur verrait change. Une marge, une police ou une taille
+  retouchées ne le déclenchent pas.
+- **Comparaison avec le dernier PDF définitif :** elle porte sur le même
+  contenu, dit « le même texte » ou non, et non sur la mise en page. Un PDF
+  définitif garde pour cela l'empreinte de ce contenu ; un PDF produit avant
+  l'étape 7, qui ne l'a pas, est dit sans comparaison possible.
+- **Alternative écartée :** comparer tout le livre imprimé, qui aurait
+  annoncé un livre « changé » pour une marge retouchée.
+
+- **F12-AC21 — Retouche d'impression sans effet :** étant donné un livre
+  partagé, lorsque l'adulte élargit la marge extérieure, alors l'étape
+  « Imprimer et partager » ne dit pas que le livre a changé depuis la version
+  partagée ; lorsqu'il corrige une coquille dans une scène, alors elle le dit.
+- **F12-AC22 — Même texte que le PDF :** étant donné un PDF définitif du
+  18 juin et une version partagée du 19 juin faite sans autre modification
+  qu'une marge, alors l'étape dit qu'ils ont le même texte ; après un
+  « Réordonner les passages » partagé sans nouveau PDF, alors elle dit
+  qu'ils diffèrent.
+- **F12-AC23 — Numéros figés :** étant donné une version partagée où
+  « La salle des brumes » porte le n° 38, lorsque l'adulte réordonne les
+  passages sans mettre à jour le partage, alors le lecteur en ligne lit
+  toujours le n° 38 et l'énigme qui y mène fonctionne.
+
 **Confirmé le 3 octobre 2026 — copie datée :** le porteur a envisagé une
 lecture en direct du travail courant, avec un livre « momentanément
 indisponible » pendant qu'une scène est rouverte. Il garde l'instantané :
@@ -9145,8 +9207,12 @@ désactivation par défaut des pages en image, proposée pendant l'entretien,
 est écartée.
 
 - **Ce qui demeure :** l'adulte peut encore retirer la ligne de classe ou la
-  page des auteurs de la version partagée, ou leur donner un texte propre au
-  partage ; pour une page en image, le retrait porte sur la page entière. Le
+  page des auteurs de la version partagée ; pour une page en image, le
+  retrait porte sur la page entière. **Révisé le 16 octobre 2026**
+  (entretien de l'étape 7) : seule la ligne de classe reçoit un texte propre
+  au partage ; la page des auteurs s'affiche comme dans le livre ou ne
+  s'affiche pas, sans seconde liste de prénoms à tenir d'accord avec la page
+  imprimée. Qui ne veut pas des prénoms en ligne retire la page. Le
   rappel de F12-AC17 sur les noms, les photos et les autorisations des
   familles reste confirmé avant chaque partage.
 - **Formes propres à l'écran :** la feuille d'aventure et « Comment lire ce
@@ -9241,8 +9307,44 @@ lecture, sans contrôle automatique, et peut comporter un dé. La feuille et
 les actions de jeu font partie de l'instantané partagé. Règles et critères en
 [F04.2](#f042--objets-de-lhistoire).
 
-**Approfondissements différés :** faisabilité de la reprise liée au profil
-de l'élève, réglage des auteurs par canal, conservation des versions partagées antérieures, durée
+**Décision confirmée le 16 octobre 2026 — lecture en cours et mise à
+jour** (entretien de l'étape 7) : la lecture retenue suit les passages par
+leur identité stable, non par leur numéro. Après une mise à jour du partage,
+si le passage où le lecteur s'était arrêté existe encore, « Continuer » l'y
+ramène, même sous un autre numéro, et son parcours garde les passages qui
+existent toujours ; sinon, seul « Recommencer au début » est proposé, avec
+la phrase « Le livre a été mis à jour : la lecture reprend au début. ». La
+feuille suit la règle de [F04.2](#f042--objets-de-lhistoire) (F04-AC43). La
+reprise par profil de l'élève est retenue (V16) : sa lecture et sa feuille
+sont gardées par la base pour son profil, la reprise sur l'appareil restant
+celle du lien.
+
+- **F12-AC25 — Continuer après une mise à jour :** étant donné Bilal arrêté
+  au passage « La salle des brumes », n° 38, lorsque l'enseignant réordonne
+  les passages, qui donnent à cette scène le n° 41, puis met à jour le
+  partage, alors Bilal peut continuer à « La salle des brumes », lue sous le
+  n° 41 ; étant donné une lectrice arrêtée sur une scène exclue du livre
+  avant la mise à jour, alors seule la reprise au début lui est proposée,
+  avec la phrase qui le dit.
+- **F12-AC26 — Lecture d'un élève retenue par profil :** étant donné Alice
+  arrêtée au passage 23 sur l'ordinateur 4, lorsqu'elle s'identifie la
+  semaine suivante sur l'ordinateur 7 et rouvre le livre, alors elle peut
+  continuer au passage 23 avec sa feuille.
+
+**Décision confirmée le 16 octobre 2026 — adresse et code du lien**
+(entretien de l'étape 7) : le lien se compose sur une adresse publique
+réglée dans l'application, et non sur celle où l'adulte se trouve. Avant le
+premier lien donné aux familles, le porteur ajoute dans Vercel un second nom
+gratuit en `.vercel.app` portant le nom du produit (par exemple
+`il-etait-une-classe.vercel.app`, si libre), l'ancienne adresse restant
+valable. Le code du lien est court et se recopie à la main depuis un mot du
+cahier de liaison : dix caractères, sans lettres ni chiffres ambigus, en
+trois groupes ; les essais faux sont limités comme ceux des codes de classe
+([F06.4](#f064--classe-de-référence-et-postes-partagés)), ce qui le rend
+impossible à deviner. Un code inconnu mène à la même page neutre qu'un
+partage retiré.
+
+**Approfondissements différés :** réglage des auteurs par canal, conservation des versions partagées antérieures, durée
 d'hébergement, coûts d'exploitation
 et devenir du partage après la fin d'une offre payante. La gratuité et les
 limites commerciales de la lecture restent à cadrer en F14 ; ne pas acheter
@@ -9367,6 +9469,24 @@ livraison, ce canal ouvre la lecture à toutes les classes en cours de
 l'enseignant, y compris celle qui a écrit le livre ; le choix classe par
 classe est différé. Une classe est en cours tant que son année n'est pas
 terminée ([F01.1](#f011--classes-années-et-éventuel-espace-école)).
+
+**Décision confirmée le 16 octobre 2026 — livre écrit en mode personnel**
+(entretien de l'étape 7) : le canal « À mes classes » est aussi proposé pour
+un projet personnel, dès que le compte de l'adulte a au moins une classe en
+cours, avec les mêmes règles que pour un livre de classe. Cas visés : un
+livre-modèle qui fait découvrir le genre en début d'année, un livre écrit
+pendant l'été. Dans les lectures de l'élève, un tel livre porte la ligne de
+sa page de titre (le nom de l'auteur, si la version partagée l'affiche) au
+lieu de « Écrit par ta classe ». Sans classe en cours, la ligne n'est pas
+proposée. Alternative écartée : le lien seul, qui ferait sortir les élèves
+de leur espace et retiendrait leur lecture sur le poste plutôt que par élève.
+
+- **F12-AC24 — Livre personnel lu par les classes :** étant donné un récit
+  personnel « Le phare » partagé « À mes classes » par un adulte qui a la
+  classe en cours CM1-CM2, lorsqu'Alice ouvre ses lectures, alors elle y
+  trouve « Le phare » sans la mention « Écrit par ta classe » ; étant donné
+  un adulte sans classe en cours, alors le partage de son récit personnel ne
+  propose que le lien.
 
 **Justification :** même terminé, un livre n'est pas nécessairement destiné
 aux autres classes ; l'enseignant peut réutiliser une intrigue dont il souhaite
