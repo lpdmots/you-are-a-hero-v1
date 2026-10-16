@@ -106,3 +106,15 @@ export function afficherRelire(etat: EtatRelire, plan: Plan, projetId: string): 
     finir: etat.finir, declaree: etat.declaree, declarable: etat.declarable, terminee: etat.terminee, marque: etat.marque,
   };
 }
+
+/**
+ * Un point rappelé avant le PDF définitif ou le partage (F11.2, F12.1) : « n° 4 · S004 · Image
+ * peu définie. » pour une scène ; « Page de titre · Image peu définie. » pour une page de
+ * présentation, qui n'a pas de scène ; la phrase seule pour ce qui porte sur tout le livre.
+ */
+export function rappelDe(p: Probleme, noms: Readonly<Record<string, string>>): string {
+  const sceneId = "sceneId" in p ? (p.sceneId as string | null) : null;
+  const page = (p.sorte === "image-manquante" || p.sorte === "image-floue") && p.pageDuLivre ? p.pageDuLivre : null;
+  const ou = sceneId && noms[sceneId] ? noms[sceneId] : page;
+  return `${ou ? `${ou} · ` : ""}${phraseDe(p).quoi}`;
+}

@@ -5,7 +5,6 @@ import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
 import { referenceScene } from "@/domaine/recit";
 import { avertissementsAcceptes, conditionsDuLivre, estEtapeLivre, etatChemins, etatRelire, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
-import { phraseDe } from "@/domaine/controles";
 import { filtresDepuis } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { textesGardesDuProjet } from "@/serveur/copie";
@@ -18,7 +17,7 @@ import { Plan } from "../_plan/Plan";
 import { Suivi } from "../_suivi/Suivi";
 import { Carnet } from "../_preparation/Carnet";
 import { Livre } from "../_livre/Livre";
-import { afficherChemins, afficherRelire } from "../_livre/points";
+import { afficherChemins, afficherRelire, rappelDe } from "../_livre/points";
 import { instantaneDuLivre } from "@/serveur/livre/livre";
 import { etatDeLOrdre, ordreDuContenu } from "@/serveur/livre/ordre";
 import { contenuDuLivre } from "@/serveur/livre/contenu";
@@ -170,10 +169,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
             ? {
                 possible: conditions.pdf.possible,
                 raisons: conditions.pdf.raisons,
-                rappels: conditions.rappels.map((p) => {
-                  const sceneId = "sceneId" in p ? (p.sceneId as string | null) : null;
-                  return `${sceneId && noms[sceneId] ? `${noms[sceneId]} · ` : ""}${phraseDe(p).quoi}`;
-                }),
+                rappels: conditions.rappels.map((p) => rappelDe(p, noms)),
                 definitifs: definitifs.map((x) => ({ id: x.id, etat: etatEnMots(x.etatDu), pages: x.pages, taille: x.taille, aJour: x.empreinte === instantane.empreinte })),
                 placeOccupee: definitifs.reduce((n, x) => n + x.taille, 0),
                 voletDemande: demande.volet === "partager" ? "partager" : undefined,
