@@ -83,7 +83,7 @@ describe("Vérifier les chemins (F11.6)", () => {
     expect(avertissementsAcceptes(apres, [acceptation], []).size).toBe(0);
   });
 
-  it("F11-AC89 — septembre : scènes à finir, deux passages où rien ne mène ; sablier, pas de triangle, les deux passages listés", () => {
+  it("F11-AC89 — septembre : scènes à finir, deux passages où rien ne mène ; horloge, pas de triangle, les deux passages listés", () => {
     const p = controle([{ ref: 1, choix: [2], etat: "cours" }, { ref: 2, etat: "cours", vide: true }, { ref: 40, fin: true }, { ref: 41, fin: true }]);
     const etat = etatChemins(p, new Set(), false);
     expect(etat.marque).toBe("attente");

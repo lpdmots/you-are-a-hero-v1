@@ -17,7 +17,7 @@ export const ETAPES_DU_LIVRE: { id: EtapeLivre; nom: string }[] = [
 
 /**
  * La marque d'une étape dans la ligne : il reste à faire (triangle), elle attend l'écriture
- * (sablier), il ne reste rien (coche), elle est fermée (cadenas) ; rien sinon.
+ * (horloge), il ne reste rien (coche), elle est fermée (cadenas) ; rien sinon.
  */
 export type MarqueEtape = "reste" | "attente" | "coche" | "fermee" | null;
 
@@ -169,7 +169,7 @@ export type EtatRelire = {
 /**
  * L'étape « Relire » (F11.6) : ses quatre tâches, ce qui y reste, sa marque. Mêmes règles que
  * « Vérifier les chemins » : la tâche vide reste à sa place, cochée quand il n'y a plus de
- * scène à finir (F11-AC90) ; le sablier tant qu'il ne reste que des scènes à finir (F11-AC89) ;
+ * scène à finir (F11-AC90) ; l'horloge tant qu'il ne reste que des scènes à finir (F11-AC89) ;
  * la coche quand il ne reste rien et que l'adulte a déclaré avoir relu le livre (F11-AC88),
  * déclaration gardée quand une scène est rouverte (F11-AC91).
  */

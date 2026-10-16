@@ -2017,6 +2017,13 @@ ligne par passage. Captures 641 à 644.
   « Annuler ») ; « Aucun autre ordre ne laisse moins de blanc » se dit en
   gris, sans couleur d'erreur.
 
+**Horloge, 16 octobre 2026.** Remarque du porteur sur le sablier des étapes du
+Livre (« pas trop de sens ») : l'application l'avait repris de F11.6, que la
+passe de cohérence du 6 octobre n'avait pas accordé. Les marques d'attente de
+l'écriture du Livre et le « pas encore de suite » de la lecture prennent
+l'horloge ; le sablier ne dit plus que « À valider » (« Mes projets », copie
+de l'élève, tampon).
+
 **Retouches après le lot 7.** Une image pleine page en tête de passage :
 le numéro en haut de la page, l'image centrée dessous (capture 651). Avec
 les dés, plus de marque « p. 12 » sur les pages du PDF de travail et de
@@ -2066,7 +2073,7 @@ et lecture d'essai », plus bas). Les règles restent en F09.1, F09.2 et F11.6.
 
 **Lot 2 — destination Livre et « Vérifier les chemins ».** Repris de la
 maquette (captures 123, 137, 138) : la ligne d'étapes, ses pastilles reliées
-par le pointillé, ses marques (triangle ambre, sablier gris, coche, cadenas
+par le pointillé, ses marques (triangle ambre, horloge grise, coche, cadenas
 et pastille en pointillé) ; l'aide à l'ouverture, avec son rang « Étape 2 » ;
 la fiche à filet canard, ses quatre tâches toujours à leur place, la tâche en
 cours seule dessous, « Continuer », puis « Étape suivante » avec cadenas ;
@@ -2076,7 +2083,7 @@ replié au pied ; la ligne au sablier des scènes à finir.
 - **Écarts, dits au porteur avant de construire :**
   - « Relire », que l'étape 6 construira avec l'aperçu, n'est pas fermée
     d'un cadenas, qui voudrait dire « fermée par la règle » : elle garde sa
-    marque calculée (sablier en septembre) et s'ouvre sur une ligne, « Cette
+    marque calculée (horloge en septembre) et s'ouvre sur une ligne, « Cette
     étape arrive avec l'aperçu du livre. », le nombre de scènes à finir avec
     « Voir dans le Suivi », et ses erreurs graves.
   - La phrase d'un point nomme le choix : « « Suivre le héron » ne mène
@@ -2471,7 +2478,7 @@ garde son rôle de sélection : il désigne l'étape en cours et entoure la
 tâche ouverte, comme la page visée dans l'aperçu. Une étape fermée porte une
 pastille en pointillé et un cadenas, sans couleur. Dans la ligne d'étapes,
 une marque seule suffit depuis le 4 octobre : triangle ambre s'il reste à
-faire, sablier gris si l'étape attend la fin de l'écriture, cadenas si elle
+faire, horloge grise si l'étape attend la fin de l'écriture, cadenas si elle
 est fermée ; son texte reste lisible au survol et par un lecteur d'écran.
 Partout ailleurs, un signalement garde un pictogramme et un mot. La coche ne
 veut dire qu'une chose : il ne reste rien.

@@ -177,7 +177,7 @@ export function Livre({
                     <span className="temps__nom">{x.nom}</span>
                     {marque && marque !== "coche" ? (
                       <span className={`temps__marque temps__marque--${marque}`} title={MOT_DE_MARQUE[marque]}>
-                        <Icone nom={marque === "reste" ? "alerte" : marque === "attente" ? "sablier" : "cadenas"} />
+                        <Icone nom={marque === "reste" ? "alerte" : marque === "attente" ? "horloge" : "cadenas"} />
                         <span className="vh"> — {MOT_DE_MARQUE[marque]}</span>
                       </span>
                     ) : marque === "coche" ? (
@@ -579,7 +579,7 @@ function FicheChemins({ projetId, chemins, fermee }: { projetId: string; chemins
                   </span>
                 ) : t.attente ? (
                   <span className="fil__marque" title="En attente de l’écriture">
-                    <Icone nom="sablier" />
+                    <Icone nom="horloge" />
                     <span className="vh"> — en attente de l’écriture</span>
                   </span>
                 ) : null}
@@ -630,7 +630,7 @@ function FicheChemins({ projetId, chemins, fermee }: { projetId: string; chemins
 
         {chemins.finir ? (
           <p className="fiche-note">
-            <Icone nom="sablier" />
+            <Icone nom="horloge" />
             <span>
               {chemins.finir} scène{pluriel(chemins.finir)} à finir : {chemins.finir > 1 ? "leurs choix seront vérifiés" : "ses choix seront vérifiés"} ensuite.
             </span>
@@ -786,7 +786,7 @@ function Declaration({ projetId, chemins }: { projetId: string; chemins: Chemins
       ) : chemins.declaree ? (
         <>
           <p className="tache__aide">
-            <Icone nom="sablier" />
+            <Icone nom="horloge" />
             Vous l’avez déclaré. La coche reviendra quand il ne restera plus rien à faire.
           </p>
           <p className="tache__cmd">
@@ -858,7 +858,7 @@ function FicheRelire({
                 </span>
                 {t.id === "ecrire" && relire.finir ? (
                   <span className="fil__marque" title="En attente de l’écriture">
-                    <Icone nom="sablier" />
+                    <Icone nom="horloge" />
                     <span className="vh"> — en attente de l’écriture</span>
                   </span>
                 ) : t.points.length ? (
@@ -868,7 +868,7 @@ function FicheRelire({
                   </span>
                 ) : t.attente ? (
                   <span className="fil__marque" title="En attente de l’écriture">
-                    <Icone nom="sablier" />
+                    <Icone nom="horloge" />
                     <span className="vh"> — en attente de l’écriture</span>
                   </span>
                 ) : null}
@@ -993,7 +993,7 @@ function LireEtCorriger({ projet, relire, pdfDeTravail }: { projet: { id: string
         ) : relire.declaree ? (
           <>
             <p className="tache__aide">
-              <Icone nom="sablier" />
+              <Icone nom="horloge" />
               Vous l’avez déclaré. La coche reviendra quand il ne restera plus rien à faire.
             </p>
             <p className="tache__cmd">

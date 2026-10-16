@@ -109,7 +109,7 @@ test.describe("Destination Livre (F11.6)", () => {
     await expect(etapes(page).getByRole("link", { name: /Vérifier les chemins — il reste à faire/ })).toBeVisible();
   });
 
-  test("F11-AC89 — septembre : scènes à finir et un passage où rien ne mène ; sablier, aucun triangle, le passage listé, la déclaration attend", async ({ page }) => {
+  test("F11-AC89 — septembre : scènes à finir et un passage où rien ne mène ; horloge, aucun triangle, le passage listé, la déclaration attend", async ({ page }) => {
     const l = await phare(page);
     await sql("update scenes set etat = 'cours' where id = any($1::uuid[])", [[l.s[0], l.s[3]]]);
     await aller(page, `/projet/${l.projet}/livre?etape=chemins`);

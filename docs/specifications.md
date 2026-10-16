@@ -8650,8 +8650,10 @@ l'application connaît est calculé ; seul un jugement se pose à la main.
   l'adulte ; « Imprimer et partager » lorsque le PDF définitif est à jour.
   La coche garde un seul sens, « il ne reste rien ».
 - **Marque d'attente (4 octobre, troisième critique) :** une étape à laquelle il ne reste que des scènes à
-  finir porte un sablier, non le triangle « il reste à faire » : septembre
-  ne doit pas paraître fautif. « Vérifier les chemins » ne porte pas de
+  finir porte une horloge, non le triangle « il reste à faire » : septembre
+  ne doit pas paraître fautif. (Sablier d'abord ; l'horloge depuis la passe
+  de cohérence du 6 octobre 2026, le sablier ne disant plus que « À
+  valider ».) « Vérifier les chemins » ne porte pas de
   triangle tant qu'il reste des scènes à finir et rien à corriger ; ses
   points à confirmer restent listés dans sa tâche. Cette règle ne touche
   que la marque : les contrôles du plan de F09.2 restent actifs toute
@@ -8901,7 +8903,7 @@ troisième.
   redevient possible.
 - **F11-AC89 — Septembre sans alerte :** étant donné trente-neuf scènes à
   finir et deux passages auxquels aucun chemin ne mène, lorsque l'adulte
-  ouvre la destination Livre, alors « Relire » porte un sablier, aucune
+  ouvre la destination Livre, alors « Relire » porte une horloge, aucune
   étape ne porte de triangle, et les deux
   passages figurent dans la tâche « Passages à confirmer ».
 - **F11-AC90 — Tâche vide gardée :** étant donné un livre sans erreur
