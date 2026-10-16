@@ -2063,6 +2063,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   l'école élargirait la cible, sans qu'il en fasse un objectif ; le livre de
   sa classe pourra servir d'exemple à feuilleter, les règles de diffusion de
   F12.2 restant différées.
+- **Du lecteur en ligne vers le site, question du porteur le 16 octobre 2026,
+  non décidée :** aujourd'hui, l'adresse de l'application mène à l'entrée des
+  enseignants ; un lien depuis le lecteur n'y conduirait une famille qu'à une
+  page de connexion. Recommandé : rien avant l'ouverture ; avec la page
+  d'accueil publique, une mention discrète « Écrit avec Il était une classe »,
+  menant à elle, au pied de la page de titre et après la fin du livre — jamais
+  pendant la lecture, ni sur la page neutre. Le lecteur est le premier aperçu du
+  produit pour qui reçoit un lien (F04.2) : c'est le canal de découverte le plus
+  naturel. Il touche à F12.2 (le livre ne sert pas de vitrine sans accord) et
+  reste à décider avec les pages publiques.
 - **Mention « React Flow », à trancher avant l'ouverture :** la
   bibliothèque de la vue « Chemins » affiche d'ordinaire son nom dans un coin
   du schéma ; elle est masquée depuis le 12 octobre 2026. Sa licence le
