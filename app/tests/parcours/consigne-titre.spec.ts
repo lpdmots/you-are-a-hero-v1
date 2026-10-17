@@ -77,27 +77,54 @@ test.describe("« ✦ Formuler » sous la consigne (F13.2)", () => {
 });
 
 test.describe("Le ✦ du titre de scène (F05)", () => {
-  test("F05-AC04 — « Laisser » ne change rien ; un nouveau clic montre le titre suivant, « Utiliser » le garde", async ({ page }) => {
+  test("F05-AC04 — les trois titres ensemble ; « Laisser », Échap ou un clic ailleurs ne changent rien ; un clic sur un titre l'utilise", async ({ page }) => {
     const s = await lePont(page);
-    await page.getByRole("button", { name: "Proposer un titre" }).click();
-    const propose = page.getByRole("group", { name: "Titre proposé" });
-    await expect(propose).toContainText("Le pont de brume");
-    await propose.getByRole("button", { name: "Laisser" }).click();
-    await expect(propose).toHaveCount(0);
+    const signe = page.getByRole("button", { name: "Proposer des titres" });
+    const liste = page.getByRole("group", { name: "Titres proposés" });
+    const titres = liste.locator(".ia-titres__choix");
+    await signe.click();
+    await expect(titres).toHaveText(["Le pont de brume", "La lanterne qui tremble", "Rencontre sur le pont"]);
+    await expect(titres.first()).toBeFocused();
+    await liste.getByRole("button", { name: "Laisser" }).click();
+    await expect(liste).toHaveCount(0);
+    await signe.click();
+    await expect(liste).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(liste).toHaveCount(0);
+    await expect(signe).toBeFocused();
+    await signe.click();
+    await expect(liste).toBeVisible();
+    await page.getByRole("textbox", { name: "Consigne", exact: true }).click();
+    await expect(liste).toHaveCount(0);
     await expect(titre(page)).toHaveValue("Le pont");
     expect(await titreEnBase(s.pont)).toBe("Le pont");
 
-    await page.getByRole("button", { name: "Proposer un titre" }).click();
-    await expect(propose).toContainText("La lanterne qui tremble");
-    await page.getByRole("button", { name: "Proposer un autre titre" }).click();
-    await expect(propose).toContainText("Rencontre sur le pont");
-    await propose.getByRole("button", { name: "Utiliser" }).click();
+    await signe.click();
+    await expect(titres.first()).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await page.keyboard.press("ArrowDown");
+    await expect(titres.nth(2)).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(liste).toHaveCount(0);
     await expect(titre(page)).toHaveValue("Rencontre sur le pont");
     await expect.poll(() => titreEnBase(s.pont)).toBe("Rencontre sur le pont");
-    // Les trois titres vus, un nouveau clic redemande
-    await page.getByRole("button", { name: "Proposer un titre" }).click();
-    await expect(propose).toContainText("Le pont de brume");
-    expect(await sql("select aide from public.appels_ia where enseignant_id = $1 and aide = 'titre'", [s.compte.id])).toHaveLength(2);
+    await expect(MESSAGE(page)).toContainText("Titre changé.");
+    await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
+    await expect(titre(page)).toHaveValue("Le pont");
+    await expect.poll(() => titreEnBase(s.pont)).toBe("Le pont");
+
+    // « D'autres titres » redemande
+    await signe.click();
+    await liste.getByRole("button", { name: "D’autres titres" }).click();
+    await expect.poll(async () => (await sql("select aide from public.appels_ia where enseignant_id = $1 and aide = 'titre'", [s.compte.id])).length).toBe(6);
+    await expect(titres).toHaveCount(3);
+  });
+
+  test("la consigne prend la hauteur de son texte, sans défiler", async ({ page }) => {
+    await lePont(page);
+    const champ = champConsigne(page);
+    await champ.fill(Array.from({ length: 12 }, (_, i) => `Ligne ${i + 1} de la consigne.`).join("\n"));
+    await expect.poll(() => champ.evaluate((t) => t.scrollHeight - t.clientHeight)).toBeLessThanOrEqual(1);
   });
 
   test("aides éteintes : ni ✦ du titre, ni « Formuler »", async ({ page }) => {

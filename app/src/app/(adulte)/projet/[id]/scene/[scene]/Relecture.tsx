@@ -216,7 +216,7 @@ function Reprise({
       </label>
       <textarea id="remarque" className="pchamp" rows={5} maxLength={2000} value={remarque} autoFocus onChange={(e) => setRemarque(e.target.value)} />
       {pistes ? (
-        <button type="button" className="btn btn--petit decision__pistes" title="Demander à l’IA des pistes de reprise" disabled={demande} aria-busy={demande} onClick={() => void proposer()}>
+        <button type="button" className="btn btn--petit btn--ia decision__pistes" title="Demander à l’IA des pistes de reprise" disabled={demande} aria-busy={demande} onClick={() => void proposer()}>
           <Icone nom="ia" />
           {demande ? "Pistes…" : "Proposer des pistes"}
         </button>

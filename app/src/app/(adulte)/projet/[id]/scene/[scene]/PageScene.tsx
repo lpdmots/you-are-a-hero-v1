@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
+import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { TexteLu } from "@/composants/copie/Blocs";
 import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
 import { SANS_VOISINES, type Jeu, type Livre, type Services, type Voisines } from "@/composants/copie/contexte";
@@ -56,6 +57,8 @@ type Fait =
 const PAS_ENREGISTRE = "Vos dernières corrections ne sont pas encore enregistrées : réessayez dans un instant.";
 /** Un second clic au même endroit, juste après une décision, est ignoré : valider puis déclarer prête d'un double-clic (F11.1) */
 const DOUBLE_CLIC_MS = 700;
+/** Le champ du titre : la liste des titres proposés s'ouvre dessous (F05) */
+const champDuTitre = () => document.getElementById("scene-titre");
 /** L'heure d'un geste : lue dans les gestionnaires de clic, jamais pendant l'affichage */
 const instant = (): number => Date.now();
 
@@ -202,6 +205,7 @@ export function PageScene({
   const titreIa = useTitreIa({
     sceneId: scene.id,
     avantDePartir: envoyer,
+    champ: champDuTitre,
     actuel: titre,
     onUtiliser: (t) => {
       setTitre(t);
@@ -1019,16 +1023,6 @@ export function PageScene({
                 }
               />
               {etatScene === "reprendre" && remarques.length ? <FicheRemarque remarque={remarques[remarques.length - 1]} qui={qui} /> : null}
-              {projet.deClasse ? (
-                <FicheEncouragements
-                  eleve={scene.priseParEleve && qui ? { id: scene.priseParEleve, nom: qui } : null}
-                  raison={pourquoiSansTampon({ priseParEleve: scene.priseParEleve, priseParEnseignant: scene.priseParEnseignant, texteVide: vide })}
-                  donnes={encouragements}
-                  nomEleve={nomEleve}
-                  enCours={tamponEnCours}
-                  onEncourager={(categorie, donner) => void encouragerScene(categorie, donner)}
-                />
-              ) : null}
             <details className="carnet-fiche carnet-fiche--pli" open={consigneOuverte} onToggle={(e) => setConsigneOuverte(e.currentTarget.open)}>
               <summary>
                 <header>
@@ -1039,11 +1033,12 @@ export function PageScene({
                 </header>
               </summary>
               <div className="carnet-fiche__corps">
-                <textarea
+                {/* Toute la consigne se lit sans faire défiler le champ */}
+                <ChampQuiGrandit
                   id="scene-consigne"
                   aria-label="Consigne"
                   className="pchamp"
-                  rows={7}
+                  rows={4}
                   maxLength={4000}
                   value={consigne}
                   placeholder={consigneIa.bouton ? "Ce que la scène doit raconter, même en quelques mots." : "Ce que la scène doit raconter."}
@@ -1062,6 +1057,17 @@ export function PageScene({
                 </p>
               </div>
             </details>
+              {/* Après la consigne : moins important qu'elle (demandé par le porteur, 17 octobre 2026) */}
+              {projet.deClasse ? (
+                <FicheEncouragements
+                  eleve={scene.priseParEleve && qui ? { id: scene.priseParEleve, nom: qui } : null}
+                  raison={pourquoiSansTampon({ priseParEleve: scene.priseParEleve, priseParEnseignant: scene.priseParEnseignant, texteVide: vide })}
+                  donnes={encouragements}
+                  nomEleve={nomEleve}
+                  enCours={tamponEnCours}
+                  onEncourager={(categorie, donner) => void encouragerScene(categorie, donner)}
+                />
+              ) : null}
               <FicheRemises
                 remises={remises}
                 remarques={remarques}

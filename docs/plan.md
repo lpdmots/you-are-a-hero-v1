@@ -2274,8 +2274,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     classe, une note d'intention en mode personnel, avec « Utiliser » ou
     « Laisser » ; « Utiliser » remplace la consigne, « Annuler » dans le
     message. Un ✦ juste après le titre de la scène : trois titres en une
-    demande, montrés un à un dans une bande « Titre proposé » sous le bandeau,
-    avec « Utiliser », « Un autre » et « Laisser ». Les demandes passent par
+    demande, montrés ensemble dans une liste ouverte sous le titre (révisé à
+    l'essai, voir plus bas). Les demandes passent par
     `/ia/consigne` et `/ia/titre` ; la page enregistre d'abord ce que l'adulte a
     tapé, puis le serveur relit la consigne et le début du texte.
     - **Critères fermés :** F13-AC06, F13-AC07 et F05-AC04 ; F13-AC18 pour la
@@ -2311,6 +2311,17 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       partir.
     - **Écrans critiqués** en deux lectures sur les captures 832 à 839 : 26/40
       et 26/40, corrigés aussitôt (voir le design).
+    - **Retouches du même jour, sur son retour :** une couleur propre à l'IA, le
+      prune, ajoutée à la règle « une couleur, un rôle » (son choix, sur
+      recommandation, contre le canard pâle) ; le signe des étincelles à la
+      place de l'étoile seule (son choix parmi trois) ; « Corriger » et son
+      degré en une pastille, sans place réservée ; la barre d'outils de la
+      copie, mise en forme et « Protéger » à gauche, commandes à droite (sa
+      demande) ; les trois titres ensemble dans une liste ouverte sous le
+      titre, un clic sur l'un l'utilisant, au lieu d'une bande qui les montrait
+      un à un (F05 révisé) ; la consigne, et la consigne proposée, à la hauteur
+      de leur texte, sans défilement ; « Encouragements » sous la consigne. Voir
+      le design, lot 3.
     - **Dépense :** aucun appel réel (les consignes au modèle sont celles de
       l'essai V17) ; dépense de l'étape, environ 1,16 dollar (1 €).
     - **Tests automatiques :** 2 unitaires, 11 contre la base, 5 parcours.

@@ -205,9 +205,10 @@ test("lot 3 : « ✦ Formuler » sous la consigne, et le ✦ du titre de scène"
   await page.getByText("Enregistré").waitFor();
   await capturer(page, "scene-titre-et-formuler", false);
 
-  await page.getByRole("button", { name: "Proposer un titre" }).click();
-  await page.getByRole("group", { name: "Titre proposé" }).waitFor();
+  await page.getByRole("button", { name: "Proposer des titres" }).click();
+  await page.getByRole("group", { name: "Titres proposés" }).waitFor();
   await capturer(page, "titre-propose", false);
+  await page.keyboard.press("Escape");
 
   await page.getByRole("button", { name: "Formuler" }).click();
   await page.getByRole("textbox", { name: "Consigne proposée" }).waitFor();
@@ -220,9 +221,10 @@ test("lot 3 : « ✦ Formuler » sous la consigne, et le ✦ du titre de scène"
   await aller(page, scene);
   await copie(page).waitFor();
   await capturer(page, "scene-390", false);
-  await page.getByRole("button", { name: "Proposer un titre" }).click();
-  await page.getByRole("group", { name: "Titre proposé" }).waitFor();
+  await page.getByRole("button", { name: "Proposer des titres" }).click();
+  await page.getByRole("group", { name: "Titres proposés" }).waitFor();
   await capturer(page, "titre-propose-390", false);
+  await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Formuler" }).click();
   await page.getByRole("textbox", { name: "Consigne proposée" }).scrollIntoViewIfNeeded();
   await capturer(page, "consigne-proposee-390", false);

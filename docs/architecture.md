@@ -1516,6 +1516,9 @@ F10.2.
   de la consigne devient une file : une aide attend l'envoi en cours (celui que
   déclenche la sortie du champ au moment du clic) avant de partir, et un envoi
   qui échoue repart au suivant au lieu d'être perdu.
+- **La couleur de l'IA.** Les jetons `--ia`, `--ia-fonce`, `--ia-pale` et
+  `--ia-trait` (`styles/jetons.css`), la classe `btn--ia` pour un bouton d'aide
+  (`styles/formes.css`) ; le signe `ia` d'`Icone` devient des étincelles.
 - **Le champ du titre à la largeur de son texte,** par une copie invisible de la
   valeur dans la même case de grille (`::after` et `attr(data-valeur)`), pour
   poser le ✦ juste après lui.

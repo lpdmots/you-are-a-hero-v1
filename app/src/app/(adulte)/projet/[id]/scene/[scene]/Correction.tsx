@@ -158,7 +158,7 @@ export function useCorrection({
         onClick={() => void corriger()}
       >
         <Icone nom="ia" />
-        {/* Les libellés occupent la même place : le degré ne bouge pas quand une sélection apparaît */}
+        {/* Seul le libellé du moment s'affiche : la pastille, calée à droite, grandit vers la gauche et le degré ne bouge pas */}
         <span className="outil__deux">
           <span aria-hidden={!!selection || phase?.sorte === "demande"} className={selection || phase?.sorte === "demande" ? "est-cache" : undefined}>Corriger</span>
           <span aria-hidden={!selection || phase?.sorte === "demande"} className={selection && phase?.sorte !== "demande" ? undefined : "est-cache"}>Corriger la sélection</span>
@@ -216,7 +216,7 @@ export function useCorrection({
         <Icone nom="horloge" />
         <p>Le texte a changé depuis la demande. Redemander ?</p>
         <span className="note__cmd">
-          <button type="button" className="btn btn--petit" onClick={() => void redemander()}>
+          <button type="button" className="btn btn--petit btn--ia" onClick={() => void redemander()}>
             <Icone nom="ia" />
             Redemander
           </button>

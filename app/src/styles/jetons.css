@@ -12,6 +12,11 @@
   --canard-fonce: #07525a;
   --canard-pale: #e1f0ef;
   --bristol: #e8a0a9; /* filet rose des fiches */
+  /* Ce qui vient de l'IA : ses boutons et ses propositions, toujours facultatifs (étape 8, 17 octobre 2026) */
+  --ia: #7a2e6e;
+  --ia-fonce: #5e2255;
+  --ia-pale: #f8ecf5;
+  --ia-trait: #e2bcd8;
   --marge: #efa9a9; /* marge rouge de la copie */
 
   /* États : bleu « En cours », ambre « attend », brique « à refaire ou bloque », vert « fait », violet « Prête » */

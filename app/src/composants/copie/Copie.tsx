@@ -989,6 +989,43 @@ export function Copie({
             autre.barre
           ) : arrete ? null : (
             <div className="copie__outils" role="toolbar" aria-label="Outils de la copie">
+              {/* À gauche, ce qui s'applique au texte : la mise en forme, comme dans un traitement de texte, et la protection du paragraphe ; à droite, ce qu'on insère */}
+              {marques
+                ? MARQUES.map((m) => (
+                    <button
+                      key={m.cle}
+                      type="button"
+                      className={`outil outil--${m.cle}`}
+                      aria-label={m.nom}
+                      title={m.nom}
+                      aria-pressed={actives[m.cle]}
+                      // Le bouton ne prend pas le curseur à la copie
+                      onMouseDown={(ev) => ev.preventDefault()}
+                      onClick={() => basculer(m.cle)}
+                    >
+                      {m.lettre}
+                    </button>
+                  ))
+                : null}
+              {adulte && protection ? (
+                <button
+                  type="button"
+                  className="outil outil--texte"
+                  aria-pressed={!!protege?.bloc.protege}
+                  disabled={!protege}
+                  title={protege ? undefined : "Placez le curseur dans un paragraphe de récit"}
+                  onMouseDown={(ev) => ev.preventDefault()}
+                  onClick={basculerProtection}
+                >
+                  <Icone nom={protege?.bloc.protege ? "cadenas-ouvert" : "cadenas"} />
+                  {/* Les deux libellés occupent la même place : la barre ne bouge pas quand le curseur change de paragraphe */}
+                  <span className="outil__deux">
+                    <span aria-hidden={!!protege?.bloc.protege} className={protege?.bloc.protege ? "est-cache" : undefined}>Protéger</span>
+                    <span aria-hidden={!protege?.bloc.protege} className={protege?.bloc.protege ? undefined : "est-cache"}>Retirer la protection</span>
+                  </span>
+                </button>
+              ) : null}
+              <span className="outil-sep" aria-hidden="true" />
               {peutChoisir ? (
                 <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={() => ouvrirCreation()}>
                   <Icone nom="choix" />
@@ -1017,42 +1054,6 @@ export function Copie({
                   Note
                 </button>
               ) : null}
-              {adulte && protection ? (
-                <button
-                  type="button"
-                  className="outil outil--texte"
-                  aria-pressed={!!protege?.bloc.protege}
-                  disabled={!protege}
-                  title={protege ? undefined : "Placez le curseur dans un paragraphe de récit"}
-                  onMouseDown={(ev) => ev.preventDefault()}
-                  onClick={basculerProtection}
-                >
-                  <Icone nom={protege?.bloc.protege ? "cadenas-ouvert" : "cadenas"} />
-                  {/* Les deux libellés occupent la même place : la barre ne bouge pas quand le curseur change de paragraphe */}
-                  <span className="outil__deux">
-                    <span aria-hidden={!!protege?.bloc.protege} className={protege?.bloc.protege ? "est-cache" : undefined}>Protéger</span>
-                    <span aria-hidden={!protege?.bloc.protege} className={protege?.bloc.protege ? undefined : "est-cache"}>Retirer la protection</span>
-                  </span>
-                </button>
-              ) : null}
-              {marques ? <span className="outil-sep" aria-hidden="true" /> : null}
-              {marques
-                ? MARQUES.map((m) => (
-                    <button
-                      key={m.cle}
-                      type="button"
-                      className={`outil outil--${m.cle}`}
-                      aria-label={m.nom}
-                      title={m.nom}
-                      aria-pressed={actives[m.cle]}
-                      // Le bouton ne prend pas le curseur à la copie
-                      onMouseDown={(ev) => ev.preventDefault()}
-                      onClick={() => basculer(m.cle)}
-                    >
-                      {m.lettre}
-                    </button>
-                  ))
-                : null}
             </div>
           )}
         </div>

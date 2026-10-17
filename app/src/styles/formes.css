@@ -1218,3 +1218,18 @@
   text-transform: uppercase;
   color: var(--canard);
 }
+
+/* Un bouton d'aide IA : la pastille prune, un bouton ordinaire, jamais plein (étape 8) */
+.btn--ia {
+  border-color: var(--ia-trait);
+  background: var(--ia-pale);
+  color: var(--ia-fonce);
+}
+.btn--ia:hover {
+  border-color: var(--ia);
+  background: color-mix(in srgb, var(--ia) 10%, var(--ia-pale));
+  color: var(--ia-fonce);
+}
+.btn--ia .ic {
+  color: var(--ia);
+}

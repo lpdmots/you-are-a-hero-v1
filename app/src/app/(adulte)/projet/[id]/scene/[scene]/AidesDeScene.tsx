@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ToucheReact } from "react";
+import { poser } from "@/composants/flottant";
 import { useAidesIa } from "@/composants/AidesIa";
+import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
@@ -35,24 +37,24 @@ type Commun = {
 };
 
 /**
- * Le ✦ du titre : trois titres en une demande, montrés un à un sous le champ ; un nouveau clic
- * montre le suivant, puis redemande quand les trois ont été vus.
+ * Le ✦ du titre : trois titres en une demande, montrés ensemble dans une liste ouverte sous le
+ * titre, pour les comparer (décidé par le porteur le 17 octobre 2026). Un clic sur un titre
+ * l'utilise ; « D'autres titres » redemande ; Échap, un clic ailleurs ou « Laisser » ne
+ * changent rien (F05-AC04).
  */
-export function useTitreIa({ sceneId, avantDePartir, actuel, onUtiliser }: Commun & { actuel: string; onUtiliser: (titre: string) => void }) {
+export function useTitreIa({
+  sceneId, avantDePartir, actuel, onUtiliser, champ,
+}: Commun & { actuel: string; onUtiliser: (titre: string) => void; /** Le champ du titre, sous lequel la liste s'ouvre */ champ: () => HTMLElement | null }) {
   const aides = useAidesIa();
   const dire = useMessage();
-  const [titres, setTitres] = useState<string[]>([]);
-  const [rang, setRang] = useState(0);
-  const [montre, setMontre] = useState(false);
+  const [titres, setTitres] = useState<string[] | null>(null);
   const [demande, setDemande] = useState(false);
+  const bouton = useRef<HTMLButtonElement>(null);
+  const liste = useRef<HTMLDivElement>(null);
+  const ouverte = titres !== null;
 
   const proposer = async () => {
     if (demande) return;
-    // Il reste un titre de la dernière demande : il se montre sans rien demander
-    if (rang + 1 < titres.length) {
-      setRang(rang + 1);
-      return setMontre(true);
-    }
     setDemande(true);
     if (!(await avantDePartir())) {
       setDemande(false);
@@ -62,48 +64,88 @@ export function useTitreIa({ sceneId, avantDePartir, actuel, onUtiliser }: Commu
     setDemande(false);
     if (!r.ok) return dire({ texte: r.message });
     setTitres(r.titres);
-    setRang(0);
-    setMontre(true);
     if (r.reste) dire({ texte: r.reste });
   };
 
-  const propose = montre ? (titres[rang] ?? null) : null;
-  const utiliser = () => {
-    if (!propose) return;
+  const fermer = () => setTitres(null);
+  const utiliser = (t: string) => {
     const avant = actuel;
-    setMontre(false);
-    onUtiliser(propose);
+    fermer();
+    onUtiliser(t);
     dire({ texte: "Titre changé.", annuler: () => onUtiliser(avant) });
   };
 
-  const fermer = () => setMontre(false);
+  // Sous le titre, dans la fenêtre ; le premier titre prend le clavier
+  useLayoutEffect(() => {
+    const ancre = champ();
+    if (!ouverte || !ancre || !liste.current) return;
+    return poser(ancre, liste.current, { cote: "bottom-start", fixe: true });
+  }, [ouverte, champ]);
+  useEffect(() => {
+    if (ouverte) liste.current?.querySelector<HTMLButtonElement>(".ia-titres__choix")?.focus();
+  }, [ouverte, titres]);
+  // Échap ou un clic ailleurs : on laisse
+  useEffect(() => {
+    if (!ouverte) return;
+    const dehors = (e: MouseEvent) => {
+      const cible = e.target as Node;
+      if (!liste.current?.contains(cible) && !bouton.current?.contains(cible)) fermer();
+    };
+    const touche = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      fermer();
+      bouton.current?.focus();
+    };
+    document.addEventListener("mousedown", dehors);
+    document.addEventListener("keydown", touche);
+    return () => {
+      document.removeEventListener("mousedown", dehors);
+      document.removeEventListener("keydown", touche);
+    };
+  }, [ouverte]);
+
+  // Flèches haut et bas entre les titres
+  const parcourir = (e: ToucheReact) => {
+    if (e.key !== "ArrowDown" && e.key !== "ArrowUp") return;
+    const boutons = [...(liste.current?.querySelectorAll<HTMLButtonElement>("button:not([disabled])") ?? [])];
+    const ici = boutons.indexOf(document.activeElement as HTMLButtonElement);
+    if (ici < 0) return;
+    e.preventDefault();
+    boutons[(ici + (e.key === "ArrowDown" ? 1 : boutons.length - 1)) % boutons.length]?.focus();
+  };
+
   if (!aides.proposer) return { bouton: null, proposition: null, fermer };
-  const bouton = (
+  const signe = (
     <button
+      ref={bouton}
       type="button"
       className="btn btn--discret ia-titre"
-      aria-label={propose ? "Proposer un autre titre" : "Proposer un titre"}
-      title={propose ? "Un autre titre" : "Demander à l’IA un titre"}
+      aria-label="Proposer des titres"
+      aria-expanded={ouverte}
+      title="Demander à l’IA des titres"
       disabled={demande}
       aria-busy={demande}
-      onClick={() => void proposer()}
+      onClick={() => (ouverte ? fermer() : void proposer())}
     >
       <Icone nom="ia" />
     </button>
   );
-  const proposition = propose ? (
-    <div className="ia-propose ia-propose--titre" role="group" aria-label="Titre proposé">
-      <span className="ia-propose__tete">
+  const proposition = titres ? (
+    <div ref={liste} className="menu__liste flottant ia-titres" style={{ position: "fixed" }} role="group" aria-label="Titres proposés" onKeyDown={parcourir}>
+      <p className="ia-propose__tete">
         <Icone nom="ia" />
-        Titre proposé
-      </span>
-      <span className="ia-propose__titre">{propose}</span>
-      <span className="ia-propose__gestes">
-        <button type="button" className="btn btn--petit" onClick={utiliser}>
-          Utiliser
+        Titres proposés
+        <span>cliquez pour l’utiliser</span>
+      </p>
+      {titres.map((t) => (
+        <button key={t} type="button" className="ia-titres__choix" onClick={() => utiliser(t)}>
+          {t}
         </button>
-        <button type="button" className="btn btn--petit btn--discret" disabled={demande} aria-busy={demande} onClick={() => void proposer()}>
-          Un autre
+      ))}
+      <span className="ia-titres__pied">
+        <button type="button" className="btn btn--petit btn--ia" disabled={demande} aria-busy={demande} onClick={() => void proposer()}>
+          <Icone nom="ia" />
+          D’autres titres
         </button>
         <button type="button" className="btn btn--petit btn--discret" onClick={fermer}>
           Laisser
@@ -111,7 +153,7 @@ export function useTitreIa({ sceneId, avantDePartir, actuel, onUtiliser }: Commu
       </span>
     </div>
   ) : null;
-  return { bouton, proposition, fermer };
+  return { bouton: signe, proposition, fermer };
 }
 
 /**
@@ -172,7 +214,7 @@ export function useConsigneIa({
   const bouton = (
     <button
       type="button"
-      className="btn btn--petit ia-formuler"
+      className="btn btn--petit btn--ia ia-formuler"
       title={deClasse ? "Demander à l’IA de formuler la consigne d’après vos mots" : "Demander à l’IA une note d’intention d’après vos mots"}
       disabled={demande}
       aria-busy={demande}
@@ -182,7 +224,6 @@ export function useConsigneIa({
       Formuler
     </button>
   );
-  const lignes = propose ? propose.split("\n").length : 0;
   const proposition =
     propose !== null ? (
       <div ref={cadre} className="ia-propose ia-propose--consigne" role="group" aria-labelledby="ia-consigne-t">
@@ -191,10 +232,10 @@ export function useConsigneIa({
           Consigne proposée
           <span>modifiable</span>
         </p>
-        <textarea
+        <ChampQuiGrandit
           className="pchamp"
           aria-label="Consigne proposée"
-          rows={Math.min(9, Math.max(3, lignes + 1))}
+          rows={3}
           maxLength={4000}
           value={propose}
           onChange={(e) => setPropose(e.target.value)}

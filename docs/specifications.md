@@ -2334,10 +2334,12 @@ justifié. Le coût réel et la qualité restent à mesurer ultérieurement.
 
 **Décidé le 17 octobre 2026, entretien de l'étape 8 (recommandation
 acceptée) :** un ✦ à côté du titre de la scène, pour l'adulte. L'IA propose un
-titre d'après la consigne, ou d'après le début du texte s'il existe ; il
-s'affiche sous le champ avec « Utiliser » ou « Laisser » ; un nouveau clic
-sur ✦ donne le titre suivant, trois étant obtenus en une demande. « Laisser »
-ne change rien (F05-AC04).
+titre d'après la consigne, ou d'après le début du texte s'il existe.
+**Révisé par le porteur le 17 octobre 2026,** à l'essai du lot 3 : les trois
+titres d'une demande s'affichent ensemble, pour les comparer, dans une liste
+ouverte sous le titre (et non un à un dans une bande) ; un clic sur un titre
+l'utilise, « D'autres titres » redemande, « Laisser », Échap ou un clic ailleurs
+ne changent rien (F05-AC04).
 
 **Critères d'acceptation :**
 

@@ -270,7 +270,10 @@ L'illustration crée l'ambiance ; les objets portent l'information.
    barre des scènes prêtes de « Mes projets ». Bleu canard : le bouton
    principal, les liens et ce qui est coché ; la vue choisie dans une
    bascule est une pilule graphite, pour ne pas imiter le bouton principal.
-   Couleur de l'élève, adoucie : sa gommette uniquement. La règle d'origine
+   Couleur de l'élève, adoucie : sa gommette uniquement. Prune (ajouté le
+   17 octobre 2026, sur décision du porteur) : ce qui vient de l'IA, ses
+   boutons en pastille prune pâle et ses propositions sur fond prune pâle,
+   avec le signe des étincelles ; jamais un bouton plein. La règle d'origine
    réservait les couleurs d'état aux tampons : la maquette ne la tenait que
    pour le bleu et le violet, et le sens des trois autres était déjà le même
    partout.
@@ -1889,8 +1892,9 @@ maquette à jour : chacun se conçoit avec impeccable, dans le système « Cahie
 d'aventure », et se critique en deux lectures séparées sur captures avant
 d'être montré au porteur.
 
-- **Un seul geste d'IA, partout :** le signe ✦, avec la bulle « Demander à
-  l'IA » et un nom lisible au clavier. Pour enrichir une liste, un **bouton
+- **Un seul geste d'IA, partout :** le signe ✦ (depuis le 17 octobre 2026,
+  des étincelles, et la couleur prune : voir « Étape 8 construite », lot 3),
+  avec la bulle « Demander à l'IA » et un nom lisible au clavier. Pour enrichir une liste, un **bouton
   double** : une large partie nommée qui ajoute à la main (« Ajouter une
   question », « Noter une idée », « Ajouter une partie », « Ajouter un
   chapitre »), une petite partie ✦ qui fait ajouter par l'IA ; l'IA garde une
@@ -2058,6 +2062,31 @@ captures (`npm run captures -- etape8`, 832 à 839) : 26/40 (lecture informée) 
   imprimé, dans un champ, puis « Utiliser » et « Laisser » ; il se fait voir en
   arrivant au bas de la colonne. La ligne d'aide du champ passe après.
 - **Après :** « Consigne remplacée. » ou « Titre changé. », avec « Annuler ».
+
+**Retouches du 17 octobre 2026, sur le retour du porteur** (« bouton IA assez
+peu visible et bizarrement disposé ») : une couleur propre à l'IA, le prune,
+retenue contre le canard pâle des propositions (le canard dit déjà « bouton
+principal, coché ») ; le signe des étincelles, une grande étoile et deux
+petites, à la place de l'étoile seule, choisi par lui parmi trois (étincelles,
+baguette, plume) ; « ✦ Corriger » et « Degré 2 ▾ » en une seule pastille prune,
+« Scènes voisines » séparé par un filet ; les boutons d'IA en pastille prune
+pâle (`btn--ia` : « Formuler », « Proposer des pistes », « Redemander », le ✦ du
+titre, qui garde sa pastille sur tous les bandeaux), les propositions et les
+paragraphes changés du côte à côte sur fond prune pâle. Les marques de la
+correction gardent le brique et le vert. Barre d'outils de la copie, à sa
+demande : la mise en forme et « Protéger » à gauche (ce qui s'applique au
+texte), les commandes qui insèrent à droite (« Choix », « Action de jeu »,
+« Objets », « Image », « Note ») ; en 390 px, la mise en forme a sa ligne.
+« Corriger » prend la largeur de son libellé, sans réserver celle de « Corriger
+la sélection » : la pastille, calée à droite, grandit alors vers la gauche, et le
+degré ne bouge pas (en 390 px, où elle commence la ligne, il se décale). Les
+titres proposés : plus de bande sous le bandeau, mais une liste ouverte sous le
+titre, comme un menu (« ✦ Titres proposés · cliquez pour l'utiliser », les trois
+titres en gras, puis « ✦ D'autres titres » et « Laisser ») ; Échap ou un clic
+ailleurs la referment, les flèches passent d'un titre à l'autre. La consigne et
+la consigne proposée prennent la hauteur de leur texte (`ChampQuiGrandit`), sans
+barre de défilement, quatre lignes au moins. « Encouragements » passe sous la
+consigne, moins important qu'elle.
 
 Corrigé après la critique : le ✦ du titre, collé au tampon d'état à l'autre bout
 du bandeau, posé juste après le titre ; la bande du titre nommée « Titre
