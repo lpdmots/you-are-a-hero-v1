@@ -158,6 +158,26 @@ test("lot 2 : la correction dans la page de scène, et les pistes de reprise", a
   await page.waitForFunction(() => (document.querySelector("#remarque") as HTMLTextAreaElement | null)?.value.includes("–"));
   await capturer(page, "reprise-pistes");
 
+  // La longueur, aux degrés 4 et 5
+  await aller(page, scene);
+  await copie(page).waitFor();
+  await page.locator(".corriger summary").click();
+  await page.getByRole("menuitemradio", { name: /^Degré 4 ·/ }).click();
+  await capturer(page, "longueur-menu", false);
+  await page.getByRole("group", { name: "Longueur de la proposition" }).getByRole("button", { name: /×2/ }).click();
+  await capturer(page, "longueur-choisie", false);
+  await page.getByRole("button", { name: "Corriger", exact: true }).click();
+  await page.getByLabel("Paragraphe proposé").first().waitFor();
+  await page.locator(".copie__pied").scrollIntoViewIfNeeded();
+  await capturer(page, "longueur-cote-a-cote", false);
+  await page.getByRole("button", { name: "Laisser" }).click();
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator(".corriger summary").scrollIntoViewIfNeeded();
+  await page.locator(".corriger summary").click();
+  await capturer(page, "longueur-menu-390", false);
+  await page.keyboard.press("Escape");
+  await page.setViewportSize({ width: 1366, height: 900 });
+
   await base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", compte.id);
   await aller(page, scene);
   await copie(page).waitFor();

@@ -2400,13 +2400,17 @@ kbd {
   color: var(--graphite-2);
 }
 .corriger .menu__liste {
-  min-width: 370px;
-  max-width: min(400px, calc(100vw - 16px));
+  width: min(400px, calc(100vw - 16px));
+  min-width: 0;
+  max-width: none;
 }
 .outil--ia .outil__deux > span {
   justify-self: start;
 }
 .menu__liste button.corriger__degre {
+  min-height: 0;
+  padding: 6px 10px;
+  line-height: 1.35;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 18px;
   column-gap: 10px;
@@ -2513,8 +2517,14 @@ kbd {
 }
 .corr-cote__col {
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-width: 0;
   overflow: clip;
+}
+/* Les deux textes vont jusqu'au pied, même quand l'un est plus court */
+.corr-cote__col > .copie__texte {
+  flex: 1;
 }
 .corr-cote__col + .corr-cote__col {
   border-left: 1px solid var(--trait);
@@ -2645,4 +2655,61 @@ kbd {
   .corr-consigne {
     padding-left: 18px;
   }
+}
+
+/* Longueur de la proposition, aux degrés 4 et 5 : deux lignes sous la liste des degrés (F13.1) */
+.corriger__longueur {
+  display: grid;
+  gap: 8px;
+  margin: 4px 4px 2px;
+  padding: 10px 6px 4px;
+  border-top: 1px solid var(--trait);
+}
+.corriger__facteurs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.corriger__facteurs > b {
+  margin-right: auto;
+  font-size: var(--t-s);
+  color: var(--graphite);
+}
+.menu__liste .corriger__facteurs button {
+  width: auto;
+  min-height: 34px;
+  padding: 4px 12px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 99px;
+  text-align: center;
+}
+.menu__liste .corriger__facteurs button[aria-pressed="true"] {
+  border-color: var(--canard);
+  background: var(--canard-pale);
+  box-shadow: inset 0 0 0 1px var(--canard);
+}
+.corriger__mots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.corriger__mots input {
+  width: 92px;
+  padding: 5px 8px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 7px;
+  font: inherit;
+  color: var(--graphite);
+}
+.corriger__mots input:focus {
+  outline: none;
+  border-color: var(--canard);
+  box-shadow: 0 0 0 2px var(--canard-pale);
+}
+.corriger__compte {
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
 }

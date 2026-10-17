@@ -148,6 +148,32 @@ test.describe("Corriger une scène (F13.1)", () => {
     expect(await motsEnBase(s.s1)).toBe(`Le dragon dormait au fond de la grotte, immense. /  / Alice a oublié la grote. / ${CHEMIN}.`);
   });
 
+  test("F13-AC21 — aux degrés 4 et 5, la longueur se règle sous la liste : ×2, puis un nombre de mots ; le pied dit ce que l'IA a rendu", async ({ page }) => {
+    const s = await sceneDAlice(page);
+    await aller(page, `/projet/${s.projet}/scene/${s.s1}`);
+    await degre(page).click();
+    // Aux degrés 1 à 3, pas de longueur
+    await expect(page.getByRole("group", { name: "Longueur de la proposition" })).toHaveCount(0);
+    await page.getByRole("menuitemradio", { name: /^Degré 4 ·/ }).click();
+    const longueur = page.getByRole("group", { name: "Longueur de la proposition" });
+    // DRAGON (11 mots) et CHEMIN (4 mots) : 15 mots
+    await expect(longueur).toContainText("texte actuel : 15");
+    await expect(longueur.getByRole("button", { name: "Même longueur" })).toHaveAttribute("aria-pressed", "true");
+    await longueur.getByRole("button", { name: /×2/ }).click();
+    await expect(degre(page)).toHaveText("Degré 4 · ×2");
+    await page.getByRole("button", { name: "Corriger", exact: true }).click();
+    await expect(page.locator(".corr-tete")).toContainText("Degré 4 · Style · ×2");
+    await expect(page.locator(".corr-compte")).toContainText(/^15 → (3\d) mots\./);
+    await page.getByRole("button", { name: "Laisser" }).click();
+
+    await degre(page).click();
+    await page.getByLabel("Nombre de mots approximatif").fill("60");
+    await page.keyboard.press("Enter");
+    await expect(degre(page)).toHaveText("Degré 4 · ≈ 60 mots");
+    await page.getByRole("button", { name: "Corriger", exact: true }).click();
+    await expect(page.locator(".corr-compte")).toContainText(/^15 → (6\d) mots\./);
+  });
+
   test("F13-AC01 — le degré choisi pour une scène ne change pas le défaut : la scène suivante repart du degré du compte", async ({ page }) => {
     const s = await sceneDAlice(page);
     await s.base.from("enseignants").update({ reglages_ia: { degre: 3, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);

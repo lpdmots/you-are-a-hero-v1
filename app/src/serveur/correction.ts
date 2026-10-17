@@ -1,6 +1,6 @@
 import "server-only";
 import { DEGRES, MESSAGES_IA, type Degre } from "@/domaine/aides-ia";
-import { appliquerCorrection, paragraphesACorriger, type Proposition } from "@/domaine/correction";
+import { appliquerCorrection, cibleDe, compterMots, longueurReglable, MEME_LONGUEUR, paragraphesACorriger, type Longueur, type Proposition } from "@/domaine/correction";
 import { nettoyerTexte, type Texte } from "@/domaine/copie";
 import type { Enseignant } from "./adulte";
 import { enregistrerPourAdulte, texteDeScene, type TexteDeScene } from "./copie";
@@ -48,10 +48,12 @@ const CHANGE = { ok: false, change: true, message: MESSAGES_IA.texteChange } as 
 
 /**
  * Demander une correction (F13.1) : au degré choisi pour cette demande, sur toute la scène ou
- * sur les paragraphes que la sélection touche. `version` est celle que la page montre : si le
+ * sur les paragraphes que la sélection touche, et aux degrés 4 et 5 à la longueur demandée. `version` est celle que la page montre : si le
  * texte a changé avant ou pendant la demande, rien ne se propose (« Redemander ? »).
  */
-export async function demanderUneCorrection(e: Enseignant, sceneId: string, version: number, degre: Degre, selection: string[] | null): Promise<ReponseCorrection> {
+export async function demanderUneCorrection(
+  e: Enseignant, sceneId: string, version: number, degre: Degre, selection: string[] | null, longueur: Longueur = MEME_LONGUEUR,
+): Promise<ReponseCorrection> {
   if (!DEGRES.includes(degre)) return { ok: false, message: MESSAGES_IA.pasDeReponse };
   const lieu = await lieuDeLaScene(e, sceneId);
   if (!lieu) return { ok: false, message: "Cette scène n’existe plus." };
@@ -59,8 +61,10 @@ export async function demanderUneCorrection(e: Enseignant, sceneId: string, vers
   const parts = paragraphesACorriger(lieu.scene.texte, selection);
   if (!parts.length) return { ok: false, message: selection ? "La sélection ne touche aucun paragraphe de récit." : "Le texte est vide." };
 
+  // Aux degrés 4 et 5, la longueur se compte sur ce que le serveur a relu, jamais sur ce que dit la page
+  const cible = longueurReglable(degre) ? cibleDe(longueur, compterMots(parts.map((p) => p.texte).join(" "))) : null;
   const r = await demanderUneAide(e, correction, {
-    histoire: lieu.histoire, degre, paragraphes: parts.map((p) => p.texte), consigne: lieu.consigne, nomsPropres: lieu.nomsPropres,
+    histoire: lieu.histoire, degre, paragraphes: parts.map((p) => p.texte), consigne: lieu.consigne, nomsPropres: lieu.nomsPropres, cible,
   });
   if (!r.ok) return { ok: false, message: r.message };
   // Pendant la demande, un élève a pu écrire, ou l'adulte lui-même dans une autre fenêtre

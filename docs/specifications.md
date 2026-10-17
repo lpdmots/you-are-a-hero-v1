@@ -9739,6 +9739,22 @@ corrige dès le degré 1, avec les accords et les homophones ; la grammaire du
 degré 2 désigne les tournures mal construites. Le degré 1 ne change ni l'ordre
 des mots ni la ponctuation.
 
+**Longueur de la proposition, décidée par le porteur le 17 octobre 2026 :**
+aux degrés 4 et 5, l'adulte règle la longueur pour la demande : la même par
+défaut, « ×1,5 », « ×2 », ou environ un nombre de mots qu'il saisit (de 5 à
+1 500), plus court comme plus long. Le réglage se trouve sous la liste des
+degrés, qui reste ouverte quand on choisit le degré 4 ou 5 ; chaque facteur dit
+en bulle ce qu'il donne en mots, et la proposition dit au pied « 34 → 70
+mots ». Rien ne se garde avec le compte. La part du texte d'origine qui reste
+est le choix de l'auteur : un adulte qui écrit pour lui peut faire écrire l'IA
+autour de ses idées. La règle du degré 5 ne change pas : aucun événement ni
+personnage nouveau ; l'IA allonge par la description, les sensations, les
+pensées et les dialogues. Aux degrés 1 à 3, une correction ne change pas la
+longueur. Remplace, aux degrés 4 et 5, « à peu près la même longueur, au plus
+un tiers de plus » et « au plus quelques phrases par paragraphe », qui restent
+le comportement par défaut. Écarté : « Plus court » parmi les facteurs, le
+degré 3 resserrant déjà.
+
 **Révisé par le porteur le même jour, à l'essai du lot 2 :** les fautes
 d'espacement se corrigent dès le degré 1 (« il le range ,et part . » →
 « Il le range, et part. », « quai.Le » → « quai. Le »), selon la typographie
@@ -9861,6 +9877,12 @@ livraison ; le degré 5, borné par la consigne, en ouvre une part le 16 octobre
   copie et refusable d'un clic ; aucune virgule ni aucun point n'est ajouté ou
   retiré (17 octobre 2026). La qualité se juge sur l'essai ; la marque et le
   refus se vérifient automatiquement.
+- **F13-AC21 — Longueur demandée :** étant donné une scène de 80 mots, lorsque
+  l'adulte choisit le degré 4 et « ×2 », alors la demande vise environ 160 mots
+  et le pied de la proposition dit le nombre de mots avant et après ; lorsqu'il
+  saisit « 300 » mots, alors la demande vise environ 300 mots ; aux degrés 1 à
+  3, aucune longueur n'est demandée. Le modèle tient un ordre de grandeur, pas
+  un compte exact : la qualité se juge sur l'essai (17 octobre 2026).
 - **F13-AC02 — Proposition avant application :** étant donné une suggestion IA
   disponible, tant que l'enseignant ne l'a pas appliquée, le texte de la scène
   reste inchangé ; il peut refuser la proposition ou la retoucher.

@@ -1,4 +1,5 @@
 import { NOMS_DES_DEGRES, niveauEnMots, type Degre } from "@/domaine/aides-ia";
+import { compterMots } from "@/domaine/correction";
 import { assembler, bloc, chaine, champs, liste, objet, type DefinitionAide } from "../aide";
 import { REGLES_COMMUNES, type Histoire } from "./contexte";
 
@@ -16,6 +17,8 @@ export type EntreeCorrection = {
   consigne: string | null;
   /** Personnages, autres noms et objets de l'histoire : la correction n'y touche pas */
   nomsPropres: string[];
+  /** Degrés 4 et 5 : le nombre de mots visé pour l'ensemble, ou rien pour la même longueur */
+  cible?: number | null;
 };
 
 export type Correction = { paragraphes: string[] };
@@ -34,10 +37,26 @@ Ne change ni le vocabulaire, ni les répétitions, ni la longueur des phrases au
   3: `Degré 3, « Phrases plus claires ». Corrige d'abord comme au degré 2, puis rends les phrases plus claires : coupe une phrase trop longue, évite une répétition gênante, remplace un mot imprécis (« truc », « faire », « il y a » répété) par le mot juste, rends clair qui fait quoi.
 Ne change RIEN à ce qui se passe, à l'ordre des événements, au point de vue ni à ce que pense un personnage : « il croit que le dragon dort » ne devient pas « le dragon dort ». Garde les mots et les tournures de l'auteur partout où ils sont clairs.`,
   4: `Degré 4, « Style ». Corrige comme au degré 3, puis améliore le style : vocabulaire plus riche et plus précis, phrases plus fluides et plus variées, liaisons plus naturelles, détails sensoriels déjà suggérés mieux rendus.
-Garde les mêmes événements, dans le même ordre, les mêmes personnages, le même point de vue et à peu près la même longueur (au plus un tiers de plus). Le texte doit rester lisible et crédible pour des enfants de cet âge.`,
+Garde les mêmes événements, dans le même ordre, les mêmes personnages et le même point de vue. Le texte doit rester lisible et crédible pour des enfants de cet âge.`,
   5: `Degré 5, « D'après la consigne ». Le texte de l'auteur sert de base : corrige-le comme au degré 4 et améliore-le pour qu'il réponde bien à la consigne. Il peut recevoir ce que la consigne demande et qui manque (une description, un sentiment, un dialogue demandé).
-N'ajoute AUCUN événement ni AUCUN personnage que ni le texte ni la consigne n'apportent ; garde ce qui se passe, l'ordre, le point de vue et la fin du texte. Ajoute au plus quelques phrases par paragraphe.`,
+N'ajoute AUCUN événement ni AUCUN personnage que ni le texte ni la consigne n'apportent ; garde ce qui se passe, l'ordre, le point de vue et la fin du texte.`,
 };
+
+/**
+ * La longueur, aux degrés 4 et 5 : la même par défaut, ou celle que l'adulte demande (F13.1).
+ * Un modèle tient mal un nombre exact de mots, assez bien un ordre de grandeur.
+ */
+function consigneDeLongueur(e: EntreeCorrection): string {
+  if (e.degre < 4) return "";
+  if (!e.cible) {
+    return e.degre === 4 ? "Garde à peu près la même longueur (au plus un tiers de plus)." : "Ajoute au plus quelques phrases par paragraphe.";
+  }
+  const actuels = compterMots(e.paragraphes.join(" "));
+  return `Longueur demandée : environ ${e.cible} mots en tout (le texte en compte ${actuels}). Répartis-les entre les paragraphes, dont le nombre ne change pas.
+${e.cible >= actuels
+    ? "Pour allonger, développe la description, les sensations, les pensées et les dialogues que le texte et la consigne suggèrent ; n'ajoute aucun événement ni aucun personnage."
+    : "Pour raccourcir, resserre les phrases sans rien retirer de ce qui se passe."}`;
+}
 
 /** Les fautes que la réponse simulée corrige, comme une élève de CE2 les ferait (F13-AC17 en tête). */
 const FAUTES_SIMULEES: Record<string, string> = {
@@ -46,11 +65,13 @@ const FAUTES_SIMULEES: Record<string, string> = {
 
 export const correction: DefinitionAide<EntreeCorrection, Correction> = {
   aide: "correction",
-  sortieMax: 4000,
+  // Jusqu'à 1 500 mots demandés aux degrés 4 et 5, en JSON : de quoi les rendre sans les couper
+  sortieMax: 8000,
   systeme: (e) => assembler(
     REGLES_COMMUNES,
     `Tu corriges le texte d'une scène, ${e.histoire.mode === "classe" ? `écrit par un élève (${niveauEnMots(e.histoire.niveaux)})` : "écrit par un adulte"}, au degré demandé.`,
     CONSIGNES_DES_DEGRES[e.degre],
+    consigneDeLongueur(e),
     `Règles de tous les degrés :
 - Rends exactement autant de paragraphes que tu en reçois, dans le même ordre ; ne fusionne ni ne coupe aucun paragraphe.
 - Un paragraphe qui n'a rien à corriger revient identique, au caractère près.
@@ -63,14 +84,14 @@ export const correction: DefinitionAide<EntreeCorrection, Correction> = {
     bloc("noms_propres", e.nomsPropres),
     e.degre === 5 || e.degre === 4 ? bloc("consigne", e.consigne) : "",
     bloc("paragraphes", e.paragraphes.map((p, i) => `[${i + 1}] ${p}`).join("\n")),
-    `Corrige ces ${e.paragraphes.length} paragraphe${e.paragraphes.length > 1 ? "s" : ""} au degré ${e.degre} (${NOMS_DES_DEGRES[e.degre]}), sans leur numéro entre crochets.`,
+    `Corrige ces ${e.paragraphes.length} paragraphe${e.paragraphes.length > 1 ? "s" : ""} au degré ${e.degre} (${NOMS_DES_DEGRES[e.degre]})${e.degre >= 4 && e.cible ? `, en visant environ ${e.cible} mots en tout` : ""}, sans leur numéro entre crochets.`,
   ),
   schema: { nom: "correction", schema: objet({ paragraphes: liste(chaine) }) },
   lire: (json, e) => {
     const o = champs(json);
     if (!o || !Array.isArray(o.paragraphes) || o.paragraphes.length !== e.paragraphes.length) return null;
     const paragraphes = o.paragraphes.map((p) => (typeof p === "string" ? p.replace(/^\[\d+\]\s*/, "").trim() : null));
-    if (paragraphes.some((p) => !p || p.length > 6000)) return null;
+    if (paragraphes.some((p) => !p || p.length > 20_000)) return null;
     return { paragraphes: paragraphes as string[] };
   },
   // Une correction visible et prévisible : quelques fautes connues (F13-AC17), les espaces et les
@@ -83,6 +104,12 @@ export const correction: DefinitionAide<EntreeCorrection, Correction> = {
       if (e.degre === 1) return t;
       const t2 = t.trim();
       return /[.!?…»]$/.test(t2) ? t2 : `${t2}.`;
+    }).map((p, i, tous) => {
+      // Une longueur demandée : le dernier paragraphe s'allonge d'une phrase répétée, jusqu'à la cible
+      if (!e.cible || e.degre < 4 || i < tous.length - 1) return p;
+      let suite = p;
+      while (compterMots([...tous.slice(0, -1), suite].join(" ")) < e.cible) suite += " La brume glissait doucement sur l'eau.";
+      return suite;
     }),
   }),
 };

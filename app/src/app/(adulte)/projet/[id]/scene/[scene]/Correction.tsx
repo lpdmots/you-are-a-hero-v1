@@ -9,7 +9,9 @@ import { Icone } from "@/composants/Icone";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { DEGRES, marquesDansLaCopie, NOMS_DES_DEGRES, ROLES_DES_DEGRES, type Degre } from "@/domaine/aides-ia";
-import { changementsDe, segmentsParParagraphe, type Proposition } from "@/domaine/correction";
+import {
+  cibleDe, changementsDe, compterMots, FACTEURS, longueurReglable, MEME_LONGUEUR, MOTS_DEMANDES, nomDeLongueur, segmentsParParagraphe, type Longueur, type Proposition,
+} from "@/domaine/correction";
 import type { Texte } from "@/domaine/copie";
 import { pluriel } from "@/domaine/texte";
 import type { TexteDeScene } from "@/serveur/copie";
@@ -35,6 +37,8 @@ type Revue = {
   refuses: number[];
   /** Degrés 4 et 5 : ce que montre un téléphone, qui n'a la place que d'un texte */
   onglet: "scene" | "proposition";
+  /** Degrés 4 et 5 : la longueur demandée */
+  longueur: Longueur;
   reste: string | null;
 };
 
@@ -43,9 +47,11 @@ type Phase = null | { sorte: "demande"; degre: Degre } | { sorte: "change" } | (
 export const AUCUN_CHANGEMENT = (degre: Degre) => `Rien à corriger au degré ${degre}.`;
 
 export function useCorrection({
-  sceneId, version, selection, livre, consigne, avantDePartir, enAttente, relire, onRemplace,
+  sceneId, version, selection, livre, consigne, mots, avantDePartir, enAttente, relire, onRemplace,
 }: {
   sceneId: string;
+  /** Les mots du récit et de la sélection, lus quand la liste des degrés s'ouvre */
+  mots: () => { tout: number; selection: number };
   /** La consigne de la scène, montrée au-dessus du côte à côte au degré 5 */
   consigne: string;
   /** La version que la page montre, à jour à chaque enregistrement */
@@ -64,6 +70,8 @@ export function useCorrection({
   const aides = useAidesIa();
   const dire = useMessage();
   const [degre, setDegre] = useState<Degre>(aides.degre);
+  // Aux degrés 4 et 5 : la même longueur par défaut, pour cette demande seulement (F13.1)
+  const [longueur, setLongueur] = useState<Longueur>(MEME_LONGUEUR);
   const [phase, setPhase] = useState<Phase>(null);
   const [occupe, setOccupe] = useState(false);
 
@@ -80,7 +88,7 @@ export function useCorrection({
       const reponse = await fetch("/ia/correction", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ scene: sceneId, version: depuis, degre: pour, selection: sur }),
+        body: JSON.stringify({ scene: sceneId, version: depuis, degre: pour, selection: sur, longueur: longueurReglable(pour) ? longueur : undefined }),
       });
       r = reponse.status === 401 ? { ok: false, message: "Connectez-vous de nouveau." } : ((await reponse.json()) as ReponseCorrection);
     } catch {
@@ -98,7 +106,7 @@ export function useCorrection({
       setPhase(null);
       return dire({ texte: `${AUCUN_CHANGEMENT(pour)}${r.reste ? ` ${r.reste}` : ""}` });
     }
-    setPhase({ sorte: "revue", degre: pour, version: r.version, texte: r.texte, propositions: r.propositions, refuses: [], onglet: "proposition", reste: r.reste });
+    setPhase({ sorte: "revue", degre: pour, version: r.version, texte: r.texte, propositions: r.propositions, refuses: [], onglet: "proposition", reste: r.reste, longueur: longueurReglable(pour) ? longueur : MEME_LONGUEUR });
   };
 
   const redemander = async () => {
@@ -158,11 +166,13 @@ export function useCorrection({
         </span>
       </button>
       <Menu
-        libelle={`Degré de correction : ${degre}, ${NOMS_DES_DEGRES[degre]}`}
+        fixe
+        libelle={`Degré de correction : ${degre}, ${NOMS_DES_DEGRES[degre]}${longueurReglable(degre) && nomDeLongueur(longueur) ? `, longueur ${nomDeLongueur(longueur)}` : ""}`}
         // Le nom du degré se lit dans la liste et en tête de la proposition : l'en-tête de la copie n'a la place que du numéro
         bouton={
           <span title={`Degré ${degre} · ${NOMS_DES_DEGRES[degre]}`}>
             Degré {degre}
+            {longueurReglable(degre) && nomDeLongueur(longueur) ? ` · ${nomDeLongueur(longueur)}` : ""}
             <Icone nom="chevron-bas" />
           </span>
         }
@@ -178,8 +188,9 @@ export function useCorrection({
                 aria-checked={d === degre}
                 onMouseDown={(ev) => ev.preventDefault()}
                 onClick={() => {
-                  fermer();
                   setDegre(d);
+                  // Aux degrés 4 et 5, la liste reste ouverte : la longueur se règle dessous
+                  if (!longueurReglable(d)) fermer();
                 }}
               >
                 <b>
@@ -190,6 +201,9 @@ export function useCorrection({
                 {d === degre ? <Icone nom="coche" /> : null}
               </button>
             ))}
+            {longueurReglable(degre) ? (
+              <ReglageLongueur longueur={longueur} actuels={selection ? mots().selection : mots().tout} sur={selection ? "la sélection" : "le texte"} onChoisir={setLongueur} fermer={fermer} />
+            ) : null}
           </div>
         )}
       </Menu>
@@ -215,7 +229,7 @@ export function useCorrection({
 
   let autre: AutreTexte | null = null;
   if (revue) {
-    const enLigne = <EnTete degre={revue.degre} />;
+    const enLigne = <EnTete degre={revue.degre} longueur={revue.longueur} />;
     if (marquesDansLaCopie(revue.degre)) {
       const total = changementsDe(revue.propositions);
       const refuses = revue.refuses.length;
@@ -262,7 +276,8 @@ export function useCorrection({
         pied: (
           <>
             <p className="corr-compte">
-              La proposition se modifie sur place.
+              {compterMots(revue.propositions.map((p) => p.avant).join(" "))} → {compterMots(revue.propositions.map((p) => p.apres).join(" "))} mots.
+              <span> La proposition se modifie sur place.</span>
               {revue.reste ? <span className="corr-reste"> {revue.reste}</span> : null}
             </p>
             <span className="corr-cmd">
@@ -288,12 +303,76 @@ export function useCorrection({
   return { barre, note, autre, large: !!revue && !marquesDansLaCopie(revue.degre), enCours: phase !== null };
 }
 
-function EnTete({ degre }: { degre: Degre }) {
+function EnTete({ degre, longueur }: { degre: Degre; longueur: Longueur }) {
+  const l = longueurReglable(degre) ? nomDeLongueur(longueur) : null;
   return (
     <span className="copie__lecture corr-tete">
       <Icone nom="ia" />
       Correction proposée · Degré {degre} · {NOMS_DES_DEGRES[degre]}
+      {l ? ` · ${l}` : ""}
     </span>
+  );
+}
+
+/**
+ * La longueur de la proposition, aux degrés 4 et 5 : « Même longueur », « ×1,5 », « ×2 », ou
+ * un nombre de mots approximatif. Chaque facteur dit ce qu'il donne en mots.
+ */
+function ReglageLongueur({
+  longueur, actuels, sur, onChoisir, fermer,
+}: { longueur: Longueur; actuels: number; /** « le texte » ou « la sélection » */ sur: string; onChoisir: (l: Longueur) => void; fermer: () => void }) {
+  const [saisie, setSaisie] = useState("mots" in longueur ? String(longueur.mots) : "");
+  return (
+    <div className="corriger__longueur" role="group" aria-label="Longueur de la proposition">
+      <div className="corriger__facteurs">
+        <b>Longueur</b>
+        {FACTEURS.map((f) => {
+          const choisi = !("mots" in longueur) && longueur.facteur === f;
+          const cible = cibleDe({ facteur: f }, actuels);
+          return (
+            <button
+              key={f}
+              type="button"
+              aria-pressed={choisi}
+              title={cible ? `Environ ${cible} mots` : `${actuels} mots, comme ${sur}`}
+              onMouseDown={(ev) => ev.preventDefault()}
+              onClick={() => {
+                setSaisie("");
+                onChoisir({ facteur: f });
+                fermer();
+              }}
+            >
+              {f === 1 ? "Même longueur" : nomDeLongueur({ facteur: f })}
+            </button>
+          );
+        })}
+      </div>
+      <label className="corriger__mots">
+        ou environ
+        <input
+          type="number"
+          inputMode="numeric"
+          min={MOTS_DEMANDES.min}
+          max={MOTS_DEMANDES.max}
+          step={10}
+          value={saisie}
+          placeholder="ex. 100"
+          aria-label="Nombre de mots approximatif"
+          onChange={(ev) => {
+            setSaisie(ev.target.value);
+            const n = Number(ev.target.value);
+            onChoisir(ev.target.value.trim() && Number.isFinite(n) && n > 0 ? { mots: Math.min(MOTS_DEMANDES.max, Math.max(MOTS_DEMANDES.min, Math.round(n))) } : MEME_LONGUEUR);
+          }}
+          onKeyDown={(ev) => {
+            if (ev.key === "Enter") {
+              ev.preventDefault();
+              fermer();
+            }
+          }}
+        />
+        mots <span className="corriger__compte">· {sur === "la sélection" ? "sélection actuelle" : "texte actuel"} : {actuels}</span>
+      </label>
+    </div>
   );
 }
 

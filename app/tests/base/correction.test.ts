@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
+import { compterMots } from "@/domaine/correction";
 import { correction } from "@/serveur/ia/aides/correction";
 import { demanderDesPistes, demanderUneCorrection, garderUneCorrection, remplacerSiInchange } from "@/serveur/correction";
 import {
@@ -155,6 +156,21 @@ describe("Garder une correction (F13.1)", () => {
     const retouchee = r.propositions.map((p) => ({ ...p, apres: "Le dragon dormait au fond de la grotte, immense." }));
     expect((await garderUneCorrection(e, s015, r.version, retouchee, [])).ok).toBe(true);
     expect(mots(await ligne(s015))).toEqual(["Le dragon dormait au fond de la grotte, immense."]);
+  });
+
+  it("F13-AC21 — aux degrés 4 et 5, la longueur demandée part chez l'aide, comptée sur le texte que le serveur relit ; aux degrés 1 à 3, jamais", async () => {
+    const { s015 } = await scene();
+    const e = enseignantDe(laurent);
+    const simuler = vi.spyOn(correction, "simuler");
+    const v = (await ligne(s015)).version;
+    const r = await demanderUneCorrection(e, s015, v, 4, null, { facteur: 2 });
+    if (!r.ok) throw new Error("correction attendue");
+    expect(simuler.mock.calls[0][0].cible).toBe(22);
+    expect(compterMots(r.propositions[0].apres)).toBeGreaterThanOrEqual(22);
+    await demanderUneCorrection(e, s015, v, 5, null, { mots: 300 });
+    expect(simuler.mock.calls[1][0].cible).toBe(300);
+    await demanderUneCorrection(e, s015, v, 2, null, { facteur: 2 });
+    expect(simuler.mock.calls[2][0].cible).toBeNull();
   });
 
   it("le texte a changé entre la proposition et « Garder » : rien ne s'applique, rien n'est gardé à part", async () => {

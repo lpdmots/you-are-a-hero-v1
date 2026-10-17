@@ -10,6 +10,7 @@ import {
   ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, renvoisDe, texteOuvert, tirerConstruction,
   type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
 } from "@/domaine/copie";
+import { compterMots } from "@/domaine/correction";
 import { constructionsUtiles } from "@/domaine/preparation";
 import { nomScene } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
@@ -76,7 +77,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide, onVersion,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
-  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, aides, onSelection,
+  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, aides, onSelection, onMots,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -131,6 +132,11 @@ export function Copie({
    * changement ; aucun quand elle est réduite au curseur (« Corriger la sélection », F13.1)
    */
   onSelection?: (blocs: string[]) => void;
+  /**
+   * Les mots du récit, et ceux des paragraphes que touche la sélection, à chaque changement :
+   * la longueur d'une correction se règle d'après eux (F13.1). Rien ne se redessine pour cela.
+   */
+  onMots?: (mots: { tout: number; selection: number }) => void;
 }) {
   // Ce que la copie a appris depuis que la page lui a donné le livre : numéros relus, scènes créées
   // depuis un choix. Quand la page relit le livre, c'est elle qui fait foi.
@@ -1065,7 +1071,7 @@ export function Copie({
               );
               lireLaBarre();
               setTic((n) => n + 1);
-              if (onSelection) {
+              if (onSelection || onMots) {
                 const s = e.selection;
                 const blocs = blocsDe(e);
                 const touches =
@@ -1073,12 +1079,15 @@ export function Copie({
                     ? blocs
                         .slice(Math.min(s.anchor.path[0], s.focus.path[0]), Math.max(s.anchor.path[0], s.focus.path[0]) + 1)
                         .filter((b) => b.type === "p" && lettresDe(b).trim() !== "")
-                        .map((b) => b.id)
                     : [];
-                if (touches.join() !== selectionDite.current) {
-                  selectionDite.current = touches.join();
-                  onSelection(touches);
+                if (onSelection && touches.map((b) => b.id).join() !== selectionDite.current) {
+                  selectionDite.current = touches.map((b) => b.id).join();
+                  onSelection(touches.map((b) => b.id));
                 }
+                onMots?.({
+                  tout: blocs.reduce((n, b) => n + (b.type === "p" ? compterMots(lettresDe(b)) : 0), 0),
+                  selection: touches.reduce((n, b) => n + compterMots(lettresDe(b)), 0),
+                });
               }
             }}
             onValueChange={({ value }) => {

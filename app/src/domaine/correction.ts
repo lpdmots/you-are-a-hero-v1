@@ -171,3 +171,41 @@ export function segmentsParParagraphe(propositions: readonly Proposition[]): Map
 /** Le nombre de changements d'une proposition, sur toute la scène. */
 export const changementsDe = (propositions: readonly Proposition[]): number =>
   [...segmentsParParagraphe(propositions).values()].reduce((n, s) => n + nombreDe(s), 0);
+
+/**
+ * La longueur de la proposition, aux degrés 4 et 5 (F13.1, décidé par le porteur le
+ * 17 octobre 2026) : la même par défaut, ou un facteur, ou un nombre de mots approximatif.
+ * Elle vaut pour la demande, comme le degré choisi pour une scène ; rien ne se garde avec le
+ * compte. La part du texte d'origine qui reste est le choix de l'auteur.
+ */
+export type Longueur = { facteur: Facteur } | { mots: number };
+export const FACTEURS = [1, 1.5, 2] as const;
+export type Facteur = (typeof FACTEURS)[number];
+export const MEME_LONGUEUR: Longueur = { facteur: 1 };
+/** Bornes d'un nombre de mots demandé : au-delà, la réponse ne tiendrait pas dans la minute de l'aide */
+export const MOTS_DEMANDES = { min: 5, max: 1500 } as const;
+
+/** Les mots d'un texte : « l'eau » et « arc-en-ciel » en font un, la ponctuation aucun. */
+export const compterMots = (texte: string): number => (texte.match(/[\p{L}\p{N}]+(?:['’ʼ-][\p{L}\p{N}]+)*/gu) ?? []).length;
+
+/** La longueur s'applique-t-elle à ce degré ? Aux degrés 1 à 3, une correction ne rallonge pas. */
+export const longueurReglable = (degre: number): boolean => degre >= 4;
+
+/** Le nombre de mots visé pour un texte qui en compte `actuels`, ou null pour la même longueur. */
+export function cibleDe(longueur: Longueur, actuels: number): number | null {
+  if ("mots" in longueur) return Math.min(MOTS_DEMANDES.max, Math.max(MOTS_DEMANDES.min, Math.round(longueur.mots)));
+  if (longueur.facteur === 1) return null;
+  return Math.min(MOTS_DEMANDES.max, Math.max(MOTS_DEMANDES.min, Math.round(actuels * longueur.facteur)));
+}
+
+/** Ce que la page envoie, relu sans confiance : un facteur connu, ou un nombre de mots entier dans les bornes. */
+export function lireLongueur(v: unknown): Longueur {
+  const o = v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
+  if (typeof o.mots === "number" && Number.isFinite(o.mots)) return { mots: Math.min(MOTS_DEMANDES.max, Math.max(MOTS_DEMANDES.min, Math.round(o.mots))) };
+  const f = FACTEURS.find((x) => x === o.facteur);
+  return f ? { facteur: f } : MEME_LONGUEUR;
+}
+
+/** « ×1,5 », « ≈ 300 mots », ou rien pour la même longueur. */
+export const nomDeLongueur = (l: Longueur): string | null =>
+  "mots" in l ? `≈ ${l.mots} mots` : l.facteur === 1 ? null : `×${String(l.facteur).replace(".", ",")}`;

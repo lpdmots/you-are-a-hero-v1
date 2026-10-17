@@ -114,3 +114,30 @@ describe("La mise en forme et les images sur la ligne restent (F13.1)", () => {
     expect(apres[0]).toEqual(p("a", { text: "Le dragon dormait dans la grotte. Il était très très grand." }));
   });
 });
+
+describe("Longueur de la proposition, aux degrés 4 et 5 (F13.1)", () => {
+  it("F13-AC21 — même longueur par défaut ; ×1,5 et ×2 se comptent sur le texte ; un nombre de mots reste dans ses bornes", async () => {
+    const { cibleDe, compterMots, lireLongueur, nomDeLongueur, MEME_LONGUEUR } = await import("@/domaine/correction");
+    expect(compterMots("Lou ouvre l'eau, l’arc-en-ciel brille : 42 fois !")).toBe(7);
+    expect(cibleDe(MEME_LONGUEUR, 60)).toBeNull();
+    expect(cibleDe({ facteur: 1.5 }, 60)).toBe(90);
+    expect(cibleDe({ facteur: 2 }, 60)).toBe(120);
+    expect(cibleDe({ mots: 300 }, 60)).toBe(300);
+    expect(cibleDe({ mots: 9000 }, 60)).toBe(1500);
+    expect(lireLongueur({ facteur: 3 })).toEqual(MEME_LONGUEUR);
+    expect(lireLongueur({ mots: "beaucoup" })).toEqual(MEME_LONGUEUR);
+    expect(lireLongueur({ mots: 2 })).toEqual({ mots: 5 });
+    expect([nomDeLongueur(MEME_LONGUEUR), nomDeLongueur({ facteur: 1.5 }), nomDeLongueur({ mots: 300 })]).toEqual([null, "×1,5", "≈ 300 mots"]);
+  });
+
+  it("F13-AC21 — la consigne au modèle dit la longueur visée aux degrés 4 et 5 seulement, et allonge sans événement nouveau", async () => {
+    const { correction } = await import("@/serveur/ia/aides/correction");
+    const histoire = { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, niveaux: [] };
+    const entree = { histoire, paragraphes: ["Lou arrive au pont. Il a peur."], consigne: null, nomsPropres: [], cible: 14 };
+    expect(correction.systeme({ ...entree, degre: 4 })).toContain("environ 14 mots en tout (le texte en compte 7)");
+    expect(correction.systeme({ ...entree, degre: 4 })).toContain("n'ajoute aucun événement");
+    expect(correction.message({ ...entree, degre: 5 })).toContain("en visant environ 14 mots");
+    expect(correction.systeme({ ...entree, degre: 4, cible: null })).toContain("au plus un tiers de plus");
+    expect(correction.systeme({ ...entree, degre: 2 })).not.toContain("mots en tout");
+  });
+});

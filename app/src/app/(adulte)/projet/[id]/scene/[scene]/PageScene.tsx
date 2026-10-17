@@ -38,6 +38,7 @@ import { ChoisirDepart } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import { useAidesIa } from "@/composants/AidesIa";
+import { compterMots, paragraphesACorriger } from "@/domaine/correction";
 import { useCorrection } from "./Correction";
 import { FicheNumero } from "./FicheNumero";
 import { FicheEncouragements } from "./Encouragements";
@@ -245,6 +246,7 @@ export function PageScene({
     setCopie((avant) => ({ texte: suite.texte, version: suite.version, generation: avant.generation + 1 }));
     setCopies(suite.copies);
     setVide(estVide(suite.texte));
+    mots.current = { tout: compterMots(paragraphesACorriger(suite.texte).map((p) => p.texte).join(" ")), selection: 0 };
   };
 
   // Le texte de l'adulte a été refusé : ses corrections sont gardées à part, la scène montre
@@ -265,6 +267,8 @@ export function PageScene({
 
   // L'aide à la correction (F13.1) : sur la page de la scène, pas à côté de l'aperçu, trop étroit pour le côte à côte
   const [selection, setSelection] = useState<string[]>([]);
+  // Les mots du récit et de la sélection, tenus sans redessiner la page : la longueur d'une correction s'en sert
+  const mots = useRef({ tout: compterMots(paragraphesACorriger(recu.texte).map((p) => p.texte).join(" ")), selection: 0 });
   const aides = useAidesIa();
   const correction = useCorrection({
     sceneId: scene.id,
@@ -272,6 +276,7 @@ export function PageScene({
     selection: selection.length ? selection : null,
     livre,
     consigne,
+    mots: () => mots.current,
     avantDePartir,
     enAttente: () => sauvegardeTenue.current !== "enregistre",
     relire: async () => {
@@ -659,6 +664,7 @@ export function PageScene({
       autre={(corrige ? correction.autre : null) ?? autre}
       aides={corrige && !correction.autre ? correction.barre : undefined}
       onSelection={setSelection}
+      onMots={(m) => (mots.current = m)}
       onEtat={(suite) => {
         setSauvegarde(suite.etat);
         sauvegardeTenue.current = suite.etat;

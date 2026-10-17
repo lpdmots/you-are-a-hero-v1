@@ -10,7 +10,7 @@ import { Icone } from "./Icone";
  * le bouton, ou au-dessus quand la fenêtre n'a pas la place dessous.
  */
 export function Menu({
-  libelle, discret, bouton, agauche, tampon, children,
+  libelle, discret, bouton, agauche, tampon, fixe, children,
 }: {
   /** Ce que le menu commande, pour qui ne voit pas l'écran : « Autres commandes du chapitre La lisière » */
   libelle: string;
@@ -21,6 +21,8 @@ export function Menu({
   agauche?: boolean;
   /** Le bouton est un tampon d'état, qui porte un chevron : celui-là se clique (F11.1) */
   tampon?: string;
+  /** Le menu est dans un cadre qui coupe ce qui dépasse (la copie) : sa liste en sort */
+  fixe?: boolean;
   children: (fermer: () => void) => ReactNode;
 }) {
   const [ouvert, setOuvert] = useState(false);
@@ -30,8 +32,8 @@ export function Menu({
   useLayoutEffect(() => {
     const bouton = ref.current?.querySelector("summary");
     if (!ouvert || !bouton || !liste.current) return;
-    return poser(bouton, liste.current, { cote: agauche ? "bottom-start" : "bottom-end" });
-  }, [ouvert, agauche]);
+    return poser(bouton, liste.current, { cote: agauche ? "bottom-start" : "bottom-end", fixe });
+  }, [ouvert, agauche, fixe]);
 
   useEffect(() => {
     if (!ouvert) return;
@@ -61,7 +63,11 @@ export function Menu({
       <summary className={tampon ? "tampon tampon--menu" : "btn"} data-e={tampon} aria-label={libelle} title={bouton ? undefined : libelle}>
         {bouton ?? <Icone nom="points" />}
       </summary>
-      {ouvert ? <div className="menu__liste flottant" ref={liste}>{children(() => setOuvert(false))}</div> : null}
+      {ouvert ? (
+        <div className="menu__liste flottant" ref={liste} style={fixe ? { position: "fixed" } : undefined}>
+          {children(() => setOuvert(false))}
+        </div>
+      ) : null}
     </details>
   );
 }

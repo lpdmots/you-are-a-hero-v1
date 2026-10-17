@@ -1982,7 +1982,7 @@ Corrigé aussitôt, sans nouvelle mesure :
 **Lot 2 — la correction dans la page de scène, et les pistes de reprise.**
 Écrans arrêtés à l'entretien, sans maquette à jour, conçus dans le système
 « Cahiers d'aventure » et critiqués en deux lectures séparées sur captures
-(`npm run captures -- etape8`, 813 à 827) : 27/40 (lecture informée) et 27/40
+(`npm run captures -- etape8`, 813 à 826, puis 831 pour les aides éteintes) : 27/40 (lecture informée) et 27/40
 (lecture indépendante). Forme construite :
 
 - **En-tête de la copie :** à droite des onglets, « ✦ Corriger » et
@@ -2010,6 +2010,20 @@ Corrigé aussitôt, sans nouvelle mesure :
 - **Espaces (retouche du 17 octobre 2026) :** une faute d'espacement se marque
   avec la ponctuation qu'elle entoure (« ␣, » barré, « ,␣ » en vert) ; les
   espaces ajoutés ou retirés restent visibles dans la marque.
+- **Longueur (degrés 4 et 5, 17 octobre 2026) :** sous la liste des degrés,
+  séparée d'un filet, une ligne « Longueur » et trois pastilles « Même
+  longueur », « ×1,5 », « ×2 » (cernées de canard sur fond pâle pour la
+  pastille choisie, l'équivalent en mots dans la bulle), puis « ou environ
+  [ex. 100] mots · texte actuel : 34 ». La
+  liste reste ouverte au degré 4 ou 5 et sort du cadre de la copie, sur
+  téléphone compris ; le bouton dit « Degré 4 · ×2 » ; au pied du côte à côte,
+  « 34 → 70 mots. ». Captures 827 à 830, critiquées en deux lectures : 26/40
+  (informée) et 27/40 (indépendante) ; corrigé : « Même » devenu « Même
+  longueur », le champ qui semblait déjà rempli (« 34 ») et le compte redit
+  deux fois. Laissé : la section qui n'apparaît qu'aux degrés 4 et 5 (une
+  lecture la voulait grisée aux degrés 1 à 3) ; les marques mot à mot aux
+  degrés 4 et 5, écartées à l'entretien. Proposé, non fait : changer de
+  longueur depuis la proposition, sans repasser par la liste.
 
 Corrigé après la critique : la proposition tronquée en 390 px (hauteur des
 champs remesurée quand la largeur change) ; deux onglets « Texte de la scène »
