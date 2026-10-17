@@ -820,7 +820,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       qui parle de « Remettre ».
     - **Critères qui attendent :** la répartition des fiches, non
       exclusive (F06-AC61), au lot 5.
-    - **Précisions prises en construisant, à faire confirmer au porteur :**
+    - **Précisions prises en construisant, confirmées par le porteur le 17 octobre 2026 :**
       dans une scène que personne n'a prise, l'élève écrit sans s'en
       occuper, et c'est la remise qui la met à son nom ; la page de la
       scène ne propose donc de prendre que la scène d'un camarade, le
@@ -2186,7 +2186,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       183 appels, aucun échec, 0,96 dollar ; dépense de l'étape à ce jour,
       environ 1,14 dollar (1 €) sur les 100 € du budget.
     - **Tests automatiques :** 21 unitaires, 14 contre la base, 2 parcours.
-  - **Lot 2 — correction : construit le 17 octobre 2026,** en local, sans
+  - **Lot 2 — correction : construit le 17 octobre 2026, et terminé le même
+    jour :** le porteur l'essaie sur le serveur local avec de vrais appels
+    (« satisfaisant ») et confirme en bloc ses précisions, retouches comprises,
+    les versions précédentes restant réglées comme F08.2 (une par personne et
+    par jour, sans version propre à la correction) ; ne plus les lui soumettre.
+    Construit en local, sans
     migration. « Corriger » et le degré dans l'en-tête de la copie de la page
     de scène, « Corriger la sélection » quand une sélection touche un paragraphe
     de récit ; aux degrés 1 à 3, la copie passe en lecture, les changements
@@ -2257,7 +2262,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       compte sur le texte que relit le serveur ; la réponse peut aller jusqu'à
       1 500 mots. Essayé sur Sonnet 5.5 : « ×2 » sur 80 mots en rend 167, « environ
       150 mots » 130, sans événement nouveau (cas `correction-4-x2` et
-      `correction-5-mots`) ; 0,013 dollar. Précisions à confirmer : la liste
+      `correction-5-mots`) ; 0,013 dollar. Précisions confirmées : la liste
       reste ouverte au degré 4 ou 5 ; chaque facteur dit ce qu'il donne en mots
       dans sa bulle ; un nombre saisi se ramène entre 5 et 1 500 mots ; le
       réglage dure tant que la page est ouverte, comme le degré.
