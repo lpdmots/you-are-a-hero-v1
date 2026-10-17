@@ -9,10 +9,11 @@ export const FICHIER_JUGEMENTS = "essais-ia/jugements.json";
 /**
  * Les modèles candidats (F13, cadre commun) : Claude Sonnet 5.5 et Opus 5.5, GPT-5.6 Terra et
  * Sol pour toutes les aides ; en plus, Claude Haiku 4.5 et GPT-5.6 Luna pour la correction, les
- * titres et les prompts d'image.
+ * titres et les prompts d'image. GPT-6.1 Sol et GPT-6 Luna, servis depuis le 29 septembre 2026,
+ * s'y ajoutent sur décision du porteur du 17 octobre 2026.
  */
-export const LOURDS: IdModele[] = ["claude-sonnet-5-5", "claude-opus-5-5", "gpt-5.6-terra", "gpt-5.6-sol"];
-export const LEGERS: IdModele[] = ["claude-haiku-4-5", "gpt-5.6-luna"];
+export const LOURDS: IdModele[] = ["claude-sonnet-5-5", "claude-opus-5-5", "gpt-5.6-terra", "gpt-5.6-sol", "gpt-6.1-sol"];
+export const LEGERS: IdModele[] = ["claude-haiku-4-5", "gpt-5.6-luna", "gpt-6-luna"];
 const AIDES_LEGERES: AideTexte[] = ["correction", "titre", "fiche-visuelle", "description-image"];
 
 export const CANDIDATS = (aide: AideTexte): IdModele[] => (AIDES_LEGERES.includes(aide) ? [...LOURDS, ...LEGERS] : LOURDS);

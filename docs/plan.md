@@ -2143,12 +2143,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       F13-AC, F05-AC04 et F10-AC07 à AC12, aux lots 2 à 8. Le choix du
       fournisseur, sur la page de jugement, ferme le lot.
     - **Précisions prises en construisant, à faire confirmer au porteur :**
-      les aides de texte suivent les candidats de l'entretien (Claude Sonnet
-      5.5 et Opus 5.5, GPT-5.6 Terra et Sol ; Claude Haiku 4.5 et GPT-5.6
-      Luna en plus pour la correction, les titres, la fiche visuelle et la
-      description d'image) ; OpenAI sert GPT-6.1 Sol et GPT-6 Luna depuis le
-      29 septembre 2026, plus récents et moins chers, ajoutables à l'essai sur
-      sa décision ; effort de raisonnement bas pour toutes les aides ; une
+      les aides de texte se jugent sur les candidats de l'entretien et GPT-6
+      (Claude Sonnet 5.5 et Opus 5.5, GPT-5.6 Terra et Sol, GPT-6.1 Sol ;
+      Claude Haiku 4.5, GPT-5.6 Luna et GPT-6 Luna en plus pour la correction,
+      les titres, la fiche visuelle et la description d'image) ; effort de raisonnement bas pour toutes les aides ; une
       demande abandonnée depuis 75 secondes ne retient plus l'adulte ; une
       demande échouée ou sans réponse compte dans le plafond du jour, puisqu'elle
       peut avoir été facturée ; pour les images, rien ne s'affiche au-dessus
@@ -2170,10 +2168,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       passage de mise au point (un cas par aide, deux modèles) qui a fait
       corriger quatre consignes (étiquette « Partie : », carte « Le héros » en
       double, accessoire inventé dans une fiche visuelle, majuscule des points
-      de consigne) ; dépense à ce jour : 0,18 dollar. Le passage complet (142
-      appels, de 2 à 4 dollars estimés) attend la réponse du porteur sur les
-      candidats et sur les consignes, choix et préparation d'un ancien projet
-      à ajouter au jeu.
+      de consigne) ; 0,18 dollar. Décidé par le porteur le 17 octobre 2026 :
+      GPT-6.1 Sol et GPT-6 Luna s'ajoutent aux candidats, et l'essai part sur
+      le contexte de « Les passeurs de brume », ses textes de cette année
+      servant au jugement final (lot 9). Passage complet le même jour :
+      183 appels, aucun échec, 0,96 dollar ; dépense de l'étape à ce jour,
+      environ 1,14 dollar (1 €) sur les 100 € du budget.
     - **Tests automatiques :** 21 unitaires, 14 contre la base, 2 parcours.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
