@@ -154,7 +154,7 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
 | Région des données | Paris, pour la base (Supabase, `eu-west-3`) comme pour les fonctions (Vercel, `cdg1`), depuis le 9 octobre 2026. | Fait. |
 | Production du PDF et de l'aperçu | Chaîne retenue (ADR 0003), exécutée chez Vercel par hypothèse ; Render si V2 échoue. | Étape 6. |
 | Imprimeur | epubli sert de premier cas de vérification, sans exclusivité. | Étape 6 (V6). |
-| IA | Fournisseur et modèle non choisis. | Étape 8. |
+| IA | Images par OpenAI ; fournisseur des textes choisi par l'essai V17, au lot 1 de l'étape 8, entre Claude (API d'Anthropic) et OpenAI ; traitement aux États-Unis accepté le 17 octobre 2026. | Étape 8. |
 | Paiement | Stripe Checkout proposé. | Étape 9. |
 
 ## Avant de saisir des prénoms d'élèves réels
@@ -2037,6 +2037,83 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   de la comparaison et application des corrections (F13.1) ; destinations,
   chapitre des nouvelles scènes et annulation des ajouts (F13.3) ; aides en
   mode personnel (F13.1, F13.2) ; liste des styles d'illustration (F10.2).
+  Arbitré les 16 et 17 octobre 2026, voir plus bas.
+- **Périmètre élargi à l'entretien,** à la demande du porteur : la
+  Préparation en étapes (F02), les idées de chapitres, les personnages et les
+  images créées (F10.1, F10.2).
+- **Autorisée le 16 octobre 2026,** pour elle seule, en deux temps : un
+  entretien court, puis la construction après sa validation. Construction en
+  local, un commit par lot ; rien n'est poussé sur `main` ni appliqué à la
+  vraie base sans sa demande. Budget d'essai V17 : 100 € d'appels pour toute
+  l'étape, essais de qualité compris, le porteur prévenu avant la moitié ;
+  aucun autre service payant. Les clés d'API sont fournies par le porteur dans
+  `.env.local`, jamais lues ni affichées.
+- **Arbitré en entretien les 16 et 17 octobre 2026,** réponse par réponse
+  (détail dans les spécifications, qui font foi) :
+  - fournisseur des textes choisi par l'essai V17 entre Claude Sonnet 5.5 et
+    Opus 5.5 (API d'Anthropic, sur les crédits mensuels du forfait Max du
+    porteur, séparés de Claude Code) et GPT-5.6 Terra et Sol (OpenAI), avec
+    Haiku 4.5 et Luna pour la correction, les titres et les prompts ; critères :
+    jugement à l'aveugle aide par aide, puis coût ; images par OpenAI ;
+    traitement aux États-Unis accepté ; liste de ce qui est transmis ; journal
+    des appels sans contenu ; plafonds par aide, par jour et par mois, le
+    financement attendant F14 ; rubrique « Aides IA » de « Mon compte » ;
+    champ pour orienter l'IA ; mode personnel (F13) ;
+  - correction en cinq degrés nommés, défaut propre à l'adulte, sélection
+    étendue aux paragraphes, marques dans la copie aux degrés 1 à 3, côte à
+    côte aux degrés 4 et 5, « Proposer des pistes » dans la reprise (F13.1) ;
+    consigne sur un modèle fixe, « Décris : » (F13.2) ; dix idées de choix en
+    une demande, montrées trois par trois (F13.3) ; titre de scène par ✦
+    (F05) ;
+  - la Préparation refaite en parcours d'étapes, carnet et atelier fondus,
+    questions, idées et « Nous retenons » enrichis à la main ou par l'IA par un
+    bouton double, Grandes étapes réduites aux parties (F02, F13.4) ; idées de
+    parties et de chapitres, résumé proposé (F13.5) ;
+  - styles d'illustration, prompts en français, personnages de l'histoire et
+    objets avec fiche visuelle et portrait de référence, images créées pour le
+    repérage et pour une scène, une ou deux par création, qualité normale ou
+    haute (F10.1, F10.2) ; la couverture reste un prompt (F11.4).
+  `/personnage` insère le nom en texte ordinaire, comme `/objet` ; l'idée de
+  personnages et d'objets liés dans le texte est laissée de côté (F10.2).
+- **Jeu d'essai V17 :** textes d'élèves inventés par Claude, de niveau CE2 à
+  CM2, avec des fautes typiques relues par le porteur, pour construire et
+  calibrer ; idées de choix, consignes et préparation tirées d'un ancien projet
+  du porteur ; jugement final sur des textes de sa classe de cette année.
+- **Validé dans son ensemble par le porteur le 17 octobre 2026** (« ok je suis
+  d'accord »), avec `/personnage` en texte ordinaire et l'idée des éléments
+  liés laissée de côté.
+- **Découpage retenu par le porteur le 17 octobre 2026 :** neuf lots. Au début
+  de chaque lot : ce qu'il construit, le contenu de sa migration et ce qui
+  paraît perfectible dans la maquette ; les écrans sans maquette se conçoivent
+  avec impeccable et se critiquent en deux lectures séparées sur captures. Les
+  tests n'appellent jamais le vrai fournisseur.
+  1. **Socle et essai de qualité** — appels côté serveur aux deux
+     fournisseurs, tableau « aide → modèle », réponse simulée pour les tests,
+     journal des appels et plafonds, rubrique « Aides IA » de « Mon compte »,
+     `env:local` qui garde les clés ; jeu d'essai, passage sur les modèles
+     candidats et page locale de jugement à l'aveugle ; le porteur choisit le
+     fournisseur des textes. Migration `aides_ia` (journal, réglages du compte).
+  2. **Correction** — « Corriger », degré, sélection, marques dans la copie,
+     côte à côte, application et « Annuler », texte changé pendant la demande,
+     « Proposer des pistes ».
+  3. **Consigne et titre** — modèle de consigne, note d'intention en mode
+     personnel, ✦ du titre.
+  4. **Idées de choix** — panneau, dix idées, destinations, ajout et
+     « Annuler ».
+  5. **La Préparation en étapes** — parcours, projection, questions, idées et
+     « Nous retenons » à la main ou par l'IA, orientation, écran d'aide.
+     Migration `preparation_en_etapes` (questions, origine des idées,
+     orientation).
+  6. **Parties, chapitres et résumés** — boutons doubles dans Grandes étapes
+     et « Parties et chapitres », résumé proposé.
+  7. **Personnages et objets** — cartes des personnages, fiche visuelle,
+     portrait, « Repérer les personnages », fiches des objets, style et réglage
+     du héros dans les options du projet. Migration `personnages`.
+  8. **Images créées** — repérage d'après le résumé, image d'une scène
+     (cadrages, badges, prompt, création), prompt à copier, idée
+     d'illustration de l'élève, prompt de couverture.
+  9. **Essai de bout en bout** — parcours, captures, mode d'emploi dans
+     `app/README.md`, jugement du porteur sur des textes de sa classe.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.
@@ -2113,7 +2190,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   dictée vocale, différée sans décision d'inclusion ni d'exclusion (F07.4).
 - **F08.1 :** session d'écriture exclusive ; coédition simultanée ;
   comparaison et fusion de deux textes.
-- **F10 :** génération d'illustrations par IA dans l'application ; import
+- **F10 :** import
   d'images par les élèves.
 - **F11 :** autres formats que l'A5 ; assemblage de la couverture ; commande
   et livraison de livres ; pages supplémentaires ; modification du fichier

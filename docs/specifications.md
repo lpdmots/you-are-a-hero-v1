@@ -535,6 +535,40 @@ les décisions en classe, notamment sur l'univers, les personnages, l'enjeu,
 les grandes étapes et les premières bifurcations. Le porteur considère cet
 accompagnement comme important pour prévenir l'abandon des projets.
 
+**Décision du 17 octobre 2026, entretien de l'étape 8 — la Préparation en
+étapes :** le porteur juge la page « très complexe, trop remplie, pas assez
+guidée, décourageante » et demande une autre organisation. Recommandations
+acceptées :
+
+- **Un parcours en étapes, comme le Livre,** qui fond ensemble le carnet et
+  l'atelier projeté : Univers, Personnages, Enjeu, Grandes étapes, puis deux
+  étapes facultatives, « Les choix » (récit à choix seulement : formule de
+  renvoi, phrases de choix, marque de fin) et « Le jeu » (objets, formules,
+  feuille d'aventure, dé, règles). Un écran par étape ; une étape de l'histoire
+  est cochée quand « Nous retenons » n'est pas vide ; rien n'est bloqué, la
+  préparation pouvant s'abréger ; la page s'ouvre sur la première étape sans
+  texte retenu.
+- **Une étape de l'histoire** montre sa question, puis trois listes : les
+  questions pour la classe (« pour vous » en mode personnel), qui partent des
+  relances du guidage et s'allongent ; les idées, avec leurs états (retenue, à
+  discuter, écartée) ; « Nous retenons », champ écrit directement.
+- **« Projeter »** montre le même écran en grand, sans la barre de
+  l'application ; l'atelier séparé disparaît. Pas de projection en mode
+  personnel, comme avant.
+- **Grandes étapes ne montre que les parties,** proposition du porteur : leur
+  titre, leur image, leur nombre de chapitres, qui mène à « Parties et
+  chapitres », où les chapitres se créent et se règlent. Ajouter une partie lui
+  donne son premier chapitre, comme avant (F03.1) ; le plan reste commun aux
+  deux vues (F02-AC08 à AC10).
+- **L'écran d'aide de la Préparation** dit, quand les aides IA sont proposées,
+  que ce carnet donne leur contexte aux aides de la suite (consignes, idées de
+  choix, corrections) : plus il est précis, mieux elles tiennent compte de
+  l'histoire.
+
+Les décisions qui suivent, rédigées pour le carnet en rubriques et l'atelier,
+restent valables quant au fond ; leur disposition à l'écran est remplacée par
+celle-ci. Écrans : [design](design.md), à concevoir à l'étape 8.
+
 **Décisions confirmées :**
 
 - Proposer une préparation guidée avec des repères et des exemples. Une
@@ -1725,6 +1759,8 @@ dans la première livraison, sous une forme sans vérification par l'application
   l'éditeur. Conséquences acceptées : renommer un objet dans la liste ne
   modifie pas les textes déjà écrits, et l'application ne sait pas où un
   objet est obtenu ni utilisé ; la recherche de F05 permet de le retrouver.
+  Depuis le 17 octobre 2026, `/personnage` fait de même avec les personnages
+  de l'histoire (F10.2).
 - **Feuille d'aventure composée par l'adulte :** elle est facultative et
   propre à chaque histoire. L'adulte y ajoute, selon les règles de son livre,
   des sections de trois types :
@@ -2295,6 +2331,13 @@ aux choix de F13.3, les titres des nouvelles destinations sont proposés dans
 la même réponse que les choix, en un seul appel IA pour cette génération.
 Le contexte local est privilégié ; envoyer tout le livre à chaque renommage n'est pas
 justifié. Le coût réel et la qualité restent à mesurer ultérieurement.
+
+**Décidé le 17 octobre 2026, entretien de l'étape 8 (recommandation
+acceptée) :** un ✦ à côté du titre de la scène, pour l'adulte. L'IA propose un
+titre d'après la consigne, ou d'après le début du texte s'il existe ; il
+s'affiche sous le champ avec « Utiliser » ou « Laisser » ; un nouveau clic
+sur ✦ donne le titre suivant, trois étant obtenus en une demande. « Laisser »
+ne change rien (F05-AC04).
 
 **Critères d'acceptation :**
 
@@ -6508,7 +6551,9 @@ portant des choix sont admises selon F11.5 ; les contrôles d'images suivent F10
 d'images facultatives prévus au brief sont conservés. Ils permettent notamment
 d'utiliser des dessins numérisés, des images préparées ailleurs ou des
 illustrations générées avec un outil externe. La génération d'illustrations
-par IA directement dans l'application est reportée après cette première livraison.
+par IA directement dans l'application, d'abord reportée après cette première
+livraison, y entre le 17 octobre 2026 à la demande du porteur, pour l'adulte
+seul : images de repérage et images d'une scène (F10.1, F10.2).
 
 **Responsabilité confirmée :** dans le mode classe, l'enseignant importe et
 place les illustrations pour cette première livraison. Les élèves peuvent
@@ -6850,6 +6895,20 @@ un chapitre de la même partie. Le choix d'une image
 n'est pas nécessaire pour préparer ou écrire. Cette possibilité concerne les
 modes personnel et classe, en récit classique comme à choix.
 
+**Décidé par le porteur le 16 octobre 2026, entretien de l'étape 8 — image
+créée d'après le résumé :** depuis « Choisir une image » d'un chapitre, d'une
+partie ou du projet, un bouton « Créer une image d'après le résumé » demande à
+l'IA une image, ou deux selon le réglage « Images par création » (F13), dans
+le style du projet (F10.2), le héros absent selon son réglage ; l'adulte garde
+celle qui lui convient, ou redemande ; une image écartée n'est pas conservée. L'image gardée
+rejoint les images du projet, comme une image importée : elle sert au repérage
+et peut aussi se poser dans le texte d'une scène, donc dans le livre, demande
+du porteur (« d'une pierre deux coups »). Cette part de la génération d'images,
+d'abord reportée (F10), entre ainsi dans la première livraison ; la génération
+d'une illustration depuis une scène reste reportée. Sans IA, le choix et
+l'import d'une image restent entiers. Le fournisseur des images est OpenAI,
+quel que soit celui des textes (voir F13).
+
 **Décidé par le porteur le 10 octobre 2026, après l'essai de l'étape 1 :**
 l'image de repérage se choisit dès la création d'un projet et dès celle d'un
 chapitre, et ce choix reste facultatif : on peut créer sans image, le
@@ -7050,20 +7109,85 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   ce prompt n'exclut plus le héros ; un nouveau projet conserve le réglage
   activé par défaut.
 
-**Questions ouvertes :**
+**Décisions du 17 octobre 2026, entretien de l'étape 8 :**
 
-- Liste exacte des styles et possibilité d'un style libre décrit par l'adulte.
+- **Styles,** recommandation acceptée : la liste, réglée dans les options du
+  projet, compte « Illustration 2D lumineuse », le style des images de
+  l'application, que le porteur trouve « super » (2D contemporaine en lumière
+  de jour, formes arrondies, peu de détails), proposé par défaut ; puis
+  aquarelle douce, crayons de couleur, gouache d'album jeunesse, papier
+  découpé, encre et hachures en noir et blanc (pour un intérieur imprimé en
+  noir), et « Autre », décrit par l'adulte. Jamais un nom d'artiste ni de
+  studio.
+- **Langue :** les prompts sont en français, lisibles et faciles à retoucher ;
+  pas de réglage de langue tant que personne ne le demande.
+- **Couverture (F11.4) :** un prompt à copier seulement ; une image générée
+  n'aurait pas la finesse d'une couverture imprimée, d'après les tailles
+  annoncées par le fournisseur, à vérifier.
+- **Personnages de l'histoire,** idée du porteur, forme recommandée et
+  acceptée : dans l'étape « Personnages » de la Préparation (F02), sous « Nous
+  retenons », une carte par personnage important — nom, autres noms (« le
+  passeur », « le vieux Maël »), héros ou non (un seul héros), description en
+  quelques mots par l'adulte, « ✦ Préciser pour les images » qui en tire une
+  **fiche visuelle** détaillée (âge apparent, silhouette, visage, cheveux,
+  vêtements et leurs couleurs, objet fétiche), retouchable puis reprise mot
+  pour mot dans chaque prompt, et « Créer son portrait », un ou deux selon le
+  réglage, dont l'adulte garde un, le **portrait de référence**, joint à chaque image créée
+  et téléchargeable pour un outil externe. « ✦ Repérer les personnages »
+  propose les cartes d'après le texte retenu, sans rien créer d'office. Les
+  objets de l'histoire (F04.2) reçoivent de même une fiche visuelle et une
+  image de référence, demande du porteur. Les fiches servent aussi de contexte
+  aux autres aides : la correction ne touche pas à leurs noms.
+- **Le héros d'un livre-jeu est « tu » :** son nom n'apparaît pas dans le
+  texte. Le réglage « héros absent » reste allumé par défaut (seulement des
+  mains neutres) ; éteint, le héros est représenté d'après sa carte, et son
+  badge se pose de lui-même sur chaque image de scène.
+- **Créer l'image d'une scène,** demande du porteur : scène par scène, soit
+  on importe (dessin d'élève, image à soi, F10), soit on crée. Depuis
+  « Ajouter une image », dans le panneau à droite du texte : « Ce que montre
+  l'image », facultatif, où se trouve déjà l'idée de l'élève s'il en a écrit
+  une ; le cadrage, choisi d'un clic sur quatre cadres dessinés — pleine page
+  en hauteur, 3:2, 16:9, carré ; les badges des personnages et des objets dont
+  un nom apparaît dans le texte de la scène ou dans l'indication, retirés d'un
+  clic, ajoutés par « + » ; « ✦ Proposer la description » rend un prompt
+  modifiable, d'après la scène, le chapitre, le style et les badges ; puis
+  « Créer l'image », une ou deux images selon le réglage, faites avec les
+  portraits des badges en référence ; l'image gardée est posée dans la scène à l'endroit du
+  curseur comme une image importée — ou « Copier le prompt » pour un outil
+  externe. Le porteur trouvant les images chères, deux réglages s'ajoutent
+  aux « Aides IA » de « Mon compte » (F13) : « Images par création », une
+  (par défaut) ou deux ; « Qualité des images », normale (par défaut) ou
+  haute, conseillée pour une pleine page imprimée. Les portraits suivent les
+  mêmes réglages. Ces gestes restent ceux de l'adulte (F10) ; l'élève
+  écrit seulement son idée (F10-AC10). Le contrôle des images peu nettes du
+  livre s'applique à ces images comme aux autres.
+
+**Décidé le 17 octobre 2026 (recommandation acceptée) :** `/personnage`
+propose la liste des personnages de l'histoire et insère le nom retenu en
+texte ordinaire, comme `/objet` (F04.2), ce qui aide la recherche des badges.
+
+**Idée du porteur du 17 octobre 2026, avis donné, laissée de côté — personnages
+et objets liés dans le texte :** `/personnage`, comme `/objet`, poserait dans
+le texte un élément lié au personnage ou à l'objet, au texte modifiable
+(« ta fourchette », « ton ami »), pour que l'image sache qui est concerné.
+Avis : bonne intuition, mauvais rapport coût sur gain aujourd'hui. Le gain se
+limite aux cas où le texte ne nomme pas le personnage, que l'adulte couvre en
+un clic sur « + » ; le coût est un élément en ligne modifiable dans l'éditeur,
+la part la plus fragile de Slate, qui toucherait la correction par l'IA (la
+réécriture devrait conserver ces éléments), le collage, la recherche, les
+versions, la composition et le lecteur, et reviendrait sur F04.2, où le texte
+ordinaire et ses conséquences ont été acceptés. Recommandé : `/personnage`
+insère le nom en texte ordinaire, comme `/objet`, ce qui suffit à la
+recherche des badges ; l'élément lié se reprend avec « objet suivi dans le
+texte », déjà différé, le jour où l'application voudra savoir où un objet
+s'obtient et sert.
 
 **Approfondissement différé à la demande du porteur :** traitement des
 personnages récurrents autres que le héros (exclusion, courte description
 visuelle fixée dans la préparation de F02 ou tolérance aux écarts).
-- Représentation du héros lorsque le réglage est désactivé : description
-  visuelle éventuelle et moyen d'en garder la cohérence.
 - Droits de l'élève sur l'idée d'illustration : scènes concernées, place de
   cette idée dans la soumission de F07.1 et possibilité de la saisir sur la
   fiche papier de F07.4.
-- Langue du prompt : le français est plus lisible pour l'adulte, l'anglais
-  parfois mieux compris par les outils de génération.
 
 ## F11 — Composition et préparation du livre
 
@@ -9512,6 +9636,75 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
 
 ## F13 — Assistance IA facultative
 
+**Cadre commun, arbitré à l'entretien de l'étape 8, 16 octobre 2026 :**
+
+- **Fournisseur et modèles.** Le fournisseur des textes se choisit par l'essai
+  de qualité V17 du [plan](plan.md#étape-8--aides-ia), entre Claude
+  Sonnet 5.5 et Opus 5.5 (API d'Anthropic) et GPT-5.6 Terra et Sol (OpenAI),
+  avec en plus Claude Haiku 4.5 et GPT-5.6 Luna pour la correction, les titres
+  et les prompts. Critères, dans l'ordre : le jugement du porteur à l'aveugle,
+  aide par aide, puis le coût. Les images sont créées par OpenAI (F10.1).
+- **Lieu de traitement.** Le traitement aux États-Unis est accepté par le
+  porteur, à l'ouverture comprise : « on va au plus simple et moins cher ». La
+  question se reprendra si une école la pose.
+- **Ce qui est transmis,** liste confirmée le 17 octobre 2026 :
+  - correction : les paragraphes de récit de la scène ou de la sélection, sa
+    consigne, les noms propres de l'histoire (personnages, objets) ;
+  - consigne : l'indication de l'adulte, la Préparation, les titres et
+    consignes des scènes voisines, le niveau des élèves ;
+  - idées de choix : la consigne, le texte de la scène, le résumé du chapitre,
+    les titres et consignes de ses scènes, les objets de l'histoire, la
+    Préparation ;
+  - Préparation, parties et chapitres : le carnet et le plan, sans texte
+    d'élève ;
+  - titre : la consigne ou le début du texte ;
+  - images : l'idée d'illustration (écrite parfois par un élève), le texte de
+    la scène, le style, les fiches et portraits des personnages retenus.
+
+  Ne partent jamais : le prénom ou le nom d'un élève, la classe, l'école, le
+  nom de l'adulte, les remarques, les encouragements, les codes. L'application
+  tient un journal des appels sans leur contenu (date, aide, jetons, coût),
+  qui sert aux plafonds et au budget.
+- **Ce qui est transmis n'est pas dit à l'écran,** décision du porteur : la
+  liste figure ici et, à l'ouverture, dans la politique de confidentialité.
+- **Plafonds,** recommandation acceptée le 16 octobre 2026. Par aide : une
+  seule demande à la fois par adulte, le bouton attendant la réponse ; une
+  longueur de réponse bornée ; soixante secondes au plus, après quoi « L'aide
+  n'a pas répondu. Le texte n'a pas changé. » Par adulte et par jour, heure de
+  Paris : soixante demandes de texte et vingt images (relevé de dix à vingt le
+  17 octobre 2026, chaque création en donnant deux) ; rien ne s'affiche avant les
+  dix dernières demandes, puis « Encore 10 demandes aujourd'hui. », et à la limite « Les
+  aides reviennent demain. Tout le reste fonctionne. » Pour toute
+  l'application et par mois : trente euros d'images ; côté texte, la limite du
+  compte chez le fournisseur. Les valeurs sont rangées en un seul endroit,
+  réglées à l'ouverture (F14) ; elles se comptent en demandes, plus lisibles
+  que des euros. Le financement (crédits, quotas par offre) attend F14, à
+  l'étape 9 : le journal des appels, qui garde le coût de chacun, permettra
+  alors de passer des plafonds du jour à un solde sans rien reprendre. Un échec, une absence de réponse ou une limite atteinte ne
+  modifient rien et laissent tout le travail sans IA possible.
+- **Réglages des aides,** recommandation acceptée le 16 octobre 2026 : une
+  rubrique « Aides IA » dans « Mon compte », valable pour tous les projets du
+  compte, comme les réglages des fiches. Elle porte le degré de correction par
+  défaut (F13.1) ; « Proposer les aides IA », allumé par défaut, qui, éteint,
+  retire tous les boutons d'IA de l'application (projection devant la classe,
+  travail sans IA) ; le niveau des élèves, du CE1 au CM2, plusieurs cases pour
+  un cours double, qui règle le vocabulaire des consignes et des pistes ;
+  « Images par création », une ou deux, et « Qualité des images », normale ou
+  haute (F10.2), ajoutés le 17 octobre 2026.
+- **Orienter l'IA,** demande du porteur du 17 octobre 2026 : partout où l'IA
+  propose plusieurs éléments (idées de choix, de parties, questions et idées de
+  la préparation), un champ facultatif permet de l'orienter. Si ce texte
+  change, les propositions déjà reçues et pas encore montrées sont jetées, et
+  une nouvelle demande part du nouveau contexte, au lieu de compléter la
+  précédente.
+- **Mode personnel,** recommandation acceptée le 17 octobre 2026 : toutes les
+  aides sont offertes, sauf « Proposer des pistes », sans reprise par un élève ;
+  la correction garde ses cinq degrés et corrige l'écriture d'un adulte, sans
+  réglage de niveau ; l'aide à la consigne y rend une note d'intention pour
+  soi, sans tutoiement ni « Décris : » (« La rencontre avec le passeur ; à
+  faire sentir : sa lanterne, sa voix, la peur de Lou. ») ; l'atelier projeté
+  n'existe pas en mode personnel.
+
 ### F13.1 — Aide de l'enseignant à la correction et à la réécriture
 
 **Besoin confirmé :** l'enseignant peut demander une aide IA lorsqu'il corrige
@@ -9523,9 +9716,31 @@ reste utilisable sans elle, l'humain arbitre et aucune validation ou publication
 ne devient automatique. Dans ce parcours de classe, la demande vient de
 l'enseignant ; cela n'ouvre pas un accès IA aux élèves.
 
-**Décision confirmée :** proposer trois intentions nommées, avec « Corriger les
-erreurs » comme choix par défaut. Une réécriture créative complète n'entre pas
-dans ces actions pour la première livraison.
+**Décision du 16 octobre 2026, entretien de l'étape 8 — degrés de correction :**
+à la demande du porteur, un seul réglage, le **degré de correction**, de 1 à 5,
+remplace les trois intentions. Chaque degré est nommé à l'écran :
+
+| Degré | Nom | Intervention attendue |
+| --- | --- | --- |
+| 1 | Orthographe | Les mots mal écrits seulement. |
+| 2 | Orthographe et grammaire | Accords, conjugaison, ponctuation ; c'était « Corriger les erreurs ». |
+| 3 | Phrases plus claires | Répétitions, phrases trop longues, mots imprécis, sans rien changer à ce qui se passe ; c'était « Clarifier la formulation ». |
+| 4 | Style | Vocabulaire plus riche, phrases plus fluides, mêmes événements. |
+| 5 | D'après la consigne | Le texte de l'élève sert de base et s'améliore pour bien répondre à la consigne ; il peut recevoir ce que la consigne demande, sans événement ni personnage nouveau. |
+
+Le degré 2 est le défaut d'un compte neuf ; l'adulte règle **son propre
+degré par défaut** une fois pour toutes, à part, et le change en un clic pour
+une demande, sans toucher à ce défaut, certains textes demandant plus de reprise
+que d'autres (demande du porteur du 16 octobre 2026, qui remplace « le dernier
+degré choisi est retenu »). Le degré 5 assouplit la décision ci-dessous, qui excluait
+toute réécriture : il reste borné par la consigne, et la remise de l'élève reste
+consultable (F13-AC04). « Suggérer des améliorations », qui ne réécrit rien,
+quitte ce réglage : il devient « Proposer des pistes » dans la demande de
+reprise, qui remplit la remarque de reprise que l'adulte retouche (F07.3).
+
+**Décision remplacée, gardée pour mémoire :** trois intentions nommées, avec
+« Corriger les erreurs » comme choix par défaut ; une réécriture créative
+complète n'entrait pas dans ces actions pour la première livraison.
 
 | Action | Intervention attendue | Limites retenues |
 | --- | --- | --- |
@@ -9536,7 +9751,7 @@ dans ces actions pour la première livraison.
 Ces limites décrivent le résultat souhaité ; elles ne constituent pas une garantie
 de conformité d'une sortie IA. Une relecture humaine reste nécessaire.
 
-**Parcours retenu :** l'enseignant choisit une action, consulte la proposition
+**Parcours retenu :** l'enseignant choisit un degré de correction, consulte la proposition
 avant toute application, puis la rejette, la retouche ou l'applique explicitement.
 La présentation précise de cette comparaison reste à définir.
 L'application d'une correction ne vaut
@@ -9562,6 +9777,36 @@ scènes, sa place dans l'offre de F14, encore indéfinie.
   libellé d'un choix reste à préciser.
 - Aucun changement proposé n'est appliqué sans action de l'enseignant.
 
+**Décisions du 16 octobre 2026, entretien de l'étape 8 — présentation et
+application, recommandations acceptées :**
+
+- **Accès :** un bouton « Corriger » dans l'en-tête de la copie, avec le degré
+  à côté, plutôt qu'une fiche repliée dans la colonne de droite.
+- **Ce qui part :** les seuls paragraphes de récit, de toute la scène ou de la
+  sélection ; une sélection s'étend aux paragraphes entiers qu'elle touche
+  (« Corriger la sélection »). Phrases de choix, actions de jeu, images et
+  notes ne partent pas et restent intactes, ce qui tient F13-AC03 par
+  construction. L'aide s'offre sur toute scène dont le texte n'est pas vide,
+  quel que soit son état.
+- **Degrés 1 à 3 :** les changements s'affichent dans la copie même, comme des
+  corrections au stylo, chacun accepté ou refusé d'un clic ; puis « Garder les
+  changements » (ceux qui ne sont pas refusés) ou « Laisser ». La retouche se
+  fait ensuite dans le texte, comme d'habitude.
+- **Degrés 4 et 5 :** le texte de l'élève et la proposition côte à côte, la
+  proposition modifiable sur place ; puis « Mettre ce texte dans la scène » ou
+  « Laisser ». Sur un téléphone, un onglet pour chacun.
+- **Après application :** « Annuler » quelques secondes ; ensuite la version
+  précédente (F08.2) et la remise de l'élève (F13-AC04) restent consultables ;
+  l'état de la scène ne change pas.
+- **Texte changé pendant la génération,** par un élève qui écrit par exemple :
+  rien ne s'applique, et « Le texte a changé depuis la demande. Redemander ? »
+- **« Proposer des pistes »,** sous le champ de la remarque de reprise : il
+  remplit le champ s'il est vide, ou ajoute les pistes à la suite.
+
+Écarté : la proposition au-dessus de la copie de la maquette, qui fait lire
+deux fois une scène longue, et ses marques mot à mot, illisibles aux degrés 4
+et 5.
+
 **Propositions sur les exceptions :**
 
 - Si le texte a changé pendant la préparation d'une proposition, celle-ci
@@ -9573,13 +9818,23 @@ scènes, sa place dans l'offre de F14, encore indéfinie.
 objectifs différents. Modifier fortement le vocabulaire ou ajouter des événements
 peut changer la voix de l'élève et le travail que l'enseignant souhaite évaluer.
 Une réécriture plus libre peut être utile à l'adulte, notamment en mode personnel,
-mais elle reste hors des actions de correction retenues pour la première livraison.
+mais elle restait hors des actions de correction retenues pour la première
+livraison ; le degré 5, borné par la consigne, en ouvre une part le 16 octobre
+2026, à la demande du porteur.
 
 **Critères d'acceptation sur les éléments confirmés :**
 
-- **F13-AC01 — Action par défaut :** étant donné l'enseignant ouvrant l'aide
-  à la correction, lorsqu'il n'a pas choisi une autre intention, alors l'action
-  proposée est « Corriger les erreurs ».
+- **F13-AC01 — Degré par défaut :** étant donné un adulte qui ouvre l'aide à
+  la correction pour la première fois, lorsqu'il n'a pas choisi de degré, alors
+  le degré proposé est 2, « Orthographe et grammaire » ; étant donné un adulte
+  dont le degré par défaut est 3, lorsqu'il choisit le degré 5 pour une scène
+  puis ouvre l'aide sur une autre scène, d'un autre projet compris, alors le
+  degré proposé est 3.
+- **F13-AC17 — Degré 1 :** étant donné « Le dragon dormé dans la grote. Il
+  était très très grand. », lorsque l'adulte demande une proposition au degré 1,
+  alors seul « grote » est corrigé en « grotte » ; « dormé », erreur de
+  conjugaison, relève du degré 2 et la répétition du degré 3 : ils restent. Ce critère sert à
+  évaluer la qualité des propositions, sans contrôle automatique du sens.
 - **F13-AC02 — Proposition avant application :** étant donné une suggestion IA
   disponible, tant que l'enseignant ne l'a pas appliquée, le texte de la scène
   reste inchangé ; il peut refuser la proposition ou la retoucher.
@@ -9635,8 +9890,28 @@ qui remplaceraient les décisions de l'enseignant. La liste doit être adaptée
 à la consigne, et non imposer les mêmes descriptions dans toutes les scènes.
 La conformité réelle des propositions restera à éprouver sur des exemples.
 
+**Décision du 16 octobre 2026, entretien de l'étape 8 — modèle de consigne :**
+la proposition suit toujours le même modèle, demandé par le porteur : une ou
+deux phrases qui tutoient l'élève, d'un vocabulaire d'élémentaire, puis la
+ligne « Décris : » et deux ou trois points de quelques mots, un par ligne. Elle
+n'ajoute aucun événement ni personnage absent de l'indication. « Décris : »
+s'écrit toujours ainsi, routine que les élèves reconnaissent. La consigne reste
+un texte simple, imprimé tel quel sur les fiches de F07.4 :
+
+> Sur le pont de brume, une silhouette apparaît : c'est le passeur. Raconte ce
+> qu'il dit à Lou.
+> Décris :
+> – sa lanterne et son visage ;
+> – sa voix ;
+> – ce que ressent Lou.
+
 **Critères d'acceptation sur les éléments confirmés :**
 
+- **F13-AC18 — Modèle de consigne :** étant donné l'indication « le passeur
+  apparaît sur le pont », lorsque l'adulte demande l'aide, alors la proposition
+  tient en une ou deux phrases suivies de « Décris : » et de deux ou trois
+  points, sans personnage que l'indication, la préparation ou le chapitre ne
+  nomment pas.
 - **F13-AC06 — Deux éléments proposés :** étant donné une indication courte
   rédigée par l'enseignant, lorsqu'il demande l'aide aux consignes, alors il
   reçoit une consigne formulée pour les élèves et une courte liste de points
@@ -9733,14 +10008,70 @@ Une correction éditoriale reste distincte de l'application de nouveaux choix.
   réussit, alors ses suggestions comprennent les choix et les titres associés
   dans la même réponse, sans appel supplémentaire dédié aux titres.
 
-**Arbitrages et approfondissements restants :** contexte
-autorisé, choix des destinations et du chapitre des nouvelles scènes,
-prévisualisation des ajouts, reprise ou annulation, quotas et coût. Ne pas
+**Décisions du 16 octobre 2026, entretien de l'étape 8, recommandations
+acceptées et précisées par le porteur :**
+
+- **Accès :** « Idées de choix », dans l'en-tête de la copie, pour l'adulte
+  seul et en récit à choix seulement ; l'aide s'ouvre dans le panneau à droite
+  du texte (F05.2).
+- **Dix idées en une demande,** idée du porteur pour réduire les allers et
+  retours : l'IA en rend dix, rangées par pertinence ; les trois premières
+  s'affichent, « D'autres idées » montre les trois suivantes sans nouvel
+  appel ; une nouvelle demande n'a lieu qu'une fois les dix épuisées, et écarte
+  les idées déjà montrées. La première réponse est un peu plus longue à venir.
+- **Une idée,** tout modifiable sur place : une case, le libellé, une ligne
+  d'intention, la destination — « Nouvelle scène » avec son titre, ou une
+  scène existante que l'IA désigne parmi celles du chapitre —, changée par le
+  menu de destination de « Nouveau choix ». Une nouvelle scène va dans le
+  chapitre de la scène, sauf si l'adulte ouvre « Dans le chapitre », comme
+  pour un choix créé à la main.
+- **Ajout :** le bouton dit ce qu'il fait (« Ajouter 2 choix et 1 scène ») ;
+  les choix se placent à la fin de la scène, après les choix existants ; une
+  nouvelle scène reçoit son titre et l'intention comme consigne de départ, sans
+  texte ni élève, rangée à la fin de son chapitre ; « Chemins » la montre
+  aussitôt. Si la scène a changé pendant la génération, l'ajout se fait quand
+  même, puisqu'il n'écrase rien.
+- **Retour :** « Annuler » quelques secondes retire les choix et les scènes
+  créées ; ensuite, un choix se supprime comme d'habitude, et une scène sans
+  texte sans confirmation (F03.1). Pas d'historique des ajouts à défaire.
+
+**Arbitrages et approfondissements restants :** prévisualisation des ajouts
+au-delà du libellé du bouton ; qualité, à éprouver (V17). Ne pas
 confondre la rapidité de génération avec le temps nécessaire pour écrire,
 relire et raccorder les branches retenues. Aucun fournisseur ni prototype
 n'est choisi ou autorisé par cette décision fonctionnelle.
 
 ### F13.4 — Aide itérative aux rubriques de préparation
+
+**Décision du 17 octobre 2026, entretien de l'étape 8, qui remplace l'échange
+« M'aider à développer » décrit plus bas :** proposition du porteur, retenue
+avec quatre ajustements recommandés. Dans chaque étape de l'histoire de la
+Préparation (F02), trois listes s'enrichissent à la main ou par l'IA, par un
+bouton double : une large partie nommée (« Ajouter une question », « Noter une
+idée ») ajoute à la main ; une petite partie ✦, nommée « Demander à l'IA » par
+sa bulle et pour le clavier, fait ajouter un élément par l'IA.
+
+- **Questions et idées :** une demande en rend six, que l'IA livre une par
+  une à chaque clic, sans nouvel appel ; la réserve est jetée dès que l'étape
+  change (une idée notée ou changée d'état, le texte retenu modifié,
+  l'orientation de F13 modifiée), pour ne pas demander l'âge du héros quand la
+  classe l'a déjà dit. Une idée de l'IA arrive « à discuter », marquée ✦ ;
+  l'adulte la retient, l'écarte ou la supprime, comme toute idée — écarter
+  garde une idée qui peut resservir, supprimer évite d'encombrer la liste.
+- **« Nous retenons » :** le champ s'écrit directement ; « ✦ Rédiger d'après
+  les idées » compose un texte à partir des idées retenues, du texte en place
+  et des autres étapes, toujours d'après le contexte du moment ; il s'affiche
+  comme une proposition, avec « Utiliser ce texte » ou « Laisser », sans rien
+  remplacer d'office (F13-AC12).
+- L'IA lit la question de l'étape, ses questions, ses idées et leurs états, le
+  texte retenu, les autres étapes et l'orientation. Aucun échange n'est à
+  conserver.
+
+Pourquoi : l'IA souffle une question ou une idée de plus, la classe garde la
+main — elle répond à l'oral et choisit ce qu'elle retient ; il n'y a plus de
+conversation à garder ni de « Poursuivre » obscur.
+
+**Décision remplacée, gardée pour mémoire :**
 
 **Décision confirmée :** depuis chaque rubrique de F02,
 demander une aide IA qui lit le texte, pose des questions ou suggère des
@@ -9784,11 +10115,15 @@ et le respect effectif des contraintes devront être éprouvés.
   reçoit le texte retouché sans création de partie, de chapitre ou
   de scène. Le texte retenu devient celui de la préparation de l'enseignant ;
   ni la rubrique ni l'historique IA ne sont publiés aux élèves par cette action.
-- **F13-AC14 — Poursuivre selon les réponses :** étant donné un échange
-  sur une rubrique et un quota disponible, lorsque l'adulte précise que le
-  héros ne peut pas voler puis demande de poursuivre, alors cette précision
-  fait partie du contexte de la demande suivante. La pertinence de la réponse
-  reste un critère de qualité à éprouver, pas une garantie de raisonnement IA.
+- **F13-AC14 — Contexte à jour :** étant donné une réserve de questions de
+  l'étape Personnages, lorsque l'adulte retient l'idée « il ne peut pas voler »
+  puis demande une question à l'IA, alors la réserve précédente est jetée et
+  cette idée fait partie du contexte de la nouvelle demande (réécrit le
+  17 octobre 2026). La pertinence de la réponse reste un critère de qualité à
+  éprouver, pas une garantie de raisonnement IA.
+- **F13-AC19 — Idée de l'IA :** étant donné une idée ajoutée par l'IA,
+  lorsqu'elle s'affiche, alors elle est « à discuter » et marquée comme venant
+  de l'IA ; l'adulte peut la retenir, l'écarter ou la supprimer.
 
 **Questions ouvertes :** sélection précise du contexte
 transmis, conservation ou reprise des échanges, texte modifié pendant une
@@ -9846,9 +10181,28 @@ sans liste d'étapes séparée à convertir ou à synchroniser.
   ajoutés au plan commun avec les textes retenus, sans scène, choix ni
   attribution. Elles sont retrouvées dans les deux vues sans conversion.
 
-**Limites et questions ouvertes :** place des nouvelles parties dans l'ordre,
-retouche assistée d'une partie existante, prévention des doublons et récupération
-après échec. La qualité des suggestions et le contexte exact restent à éprouver.
+**Décisions du 16 et 17 octobre 2026, entretien de l'étape 8 (recommandations
+acceptées) :**
+
+- **Parties :** depuis l'étape « Grandes étapes » de la Préparation (F02) et
+  depuis l'en-tête de « Parties et chapitres », par un bouton double « Ajouter
+  une partie │ ✦ » et un champ facultatif pour orienter l'IA (F13). Dix
+  ensembles en une demande, montrés trois par trois, chacun avec le titre de
+  la partie, celui de son premier chapitre et le résumé de ce chapitre, tout
+  modifiable sur place, une case à cocher ; « Ajouter 2 parties » les place à
+  la fin du plan, d'où le glisser-déposer les déplace ; ni scène ni élève ;
+  « Annuler » quelques secondes.
+- **Chapitres,** ajout du 17 octobre 2026 : dans « Parties et chapitres »,
+  chaque partie a « + Ajouter un chapitre │ ✦ » ; l'IA rend six chapitres
+  (titre et résumé) en une demande, d'après la Préparation, la partie, ses
+  chapitres et l'orientation, et les livre un par un à chaque clic ; un
+  chapitre ajouté par l'IA se place à la fin de la partie, sans scène ni
+  élève. Dans les réglages d'un chapitre, « ✦ Proposer un résumé » s'affiche
+  comme une proposition, avec « Utiliser ce texte » ou « Laisser ».
+
+**Limites et questions ouvertes :** retouche assistée d'une partie existante,
+prévention des doublons. La qualité des suggestions et le contexte exact
+restent à éprouver.
 
 ## Suite de l'entretien et couverture restante
 

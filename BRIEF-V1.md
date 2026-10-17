@@ -133,7 +133,7 @@ sans seconde liste d'étapes à convertir ou à synchroniser, selon
 | F07 | Fournir les consignes et fiches de rédaction imprimables, commenter, faire réviser et valider ; distinguer texte source et texte final. Encouragements de l'enseignant aux textes des élèves, comptés par élève. |
 | F08 | Sauvegarder automatiquement, afficher l’état de sauvegarde et récupérer des versions. |
 | F09 | Tester la lecture ; signaler textes manquants, destinations invalides et scènes inaccessibles, y compris pour les liaisons cachées par énigme. |
-| F10 | Importer et placer des images facultatives, en bloc ou en ligne à la hauteur du texte ; opérations confiées à l'adulte pour la première livraison. Aide discrète à l'illustration par prompts prêts à copier, sans génération intégrée. |
+| F10 | Importer et placer des images facultatives, en bloc ou en ligne à la hauteur du texte ; opérations confiées à l'adulte pour la première livraison. Aide discrète à l'illustration par prompts prêts à copier ; images créées par l'IA pour l'adulte, en repérage et dans une scène, depuis le 17 octobre 2026. |
 | F11 | Composer le livre et ses pages de présentation, le prévisualiser, modifier les scènes et régler la composition depuis l'aperçu, réexporter un PDF avec renvois cohérents ; assemblage de couverture reporté. |
 | F12 | Dès la première livraison, partager volontairement un instantané du livre terminé, par un lien de lecture sans compte ou auprès de ses classes ; mise à jour explicite et retrait par l’adulte. |
 | F13 | Proposer une assistance IA facultative, contextualisée et plafonnée. |
@@ -230,11 +230,12 @@ restent à préciser. Aucun template n'est choisi.
 
 **Reports confirmés :** prise en charge de la commande et de la livraison
 de livres depuis l'application ; conversion des modes d'un projet selon
-[F01](docs/specifications.md#f01--projet-et-responsabilité-de-ladulte) ; génération
-d'illustrations IA intégrée après la première livraison, avec import d'images
-conservé selon [F10](docs/specifications.md#f10--illustrations). L'aide à
+[F01](docs/specifications.md#f01--projet-et-responsabilité-de-ladulte). L'aide à
 l'illustration par prompts prêts à copier est retenue pour la première
-livraison en [F10.2](docs/specifications.md#f102--aide-à-lillustration-par-prompts).
+livraison en [F10.2](docs/specifications.md#f102--aide-à-lillustration-par-prompts) ;
+la génération d'illustrations par l'IA, d'abord reportée, y entre le
+17 octobre 2026 pour l'adulte, l'import d'images restant entier selon
+[F10](docs/specifications.md#f10--illustrations).
 L'assemblage de la couverture est reporté ; la première livraison se limite à
 un prompt d'illustration de couverture et à une aide pour l'outil de l'imprimeur,
 selon [F11.4](docs/specifications.md#f114--intérieur-du-livre-pages-de-présentation-et-couverture).

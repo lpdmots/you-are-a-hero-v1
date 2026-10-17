@@ -1879,6 +1879,73 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
+
+Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
+[plan](plan.md#étape-8--aides-ia), validé dans son ensemble le 17 octobre
+2026. Les règles sont en F02, F05, F10.1, F10.2 et F13 des
+[spécifications](specifications.md), qui font foi. Aucun de ces écrans n'a de
+maquette à jour : chacun se conçoit avec impeccable, dans le système « Cahiers
+d'aventure », et se critique en deux lectures séparées sur captures avant
+d'être montré au porteur.
+
+- **Un seul geste d'IA, partout :** le signe ✦, avec la bulle « Demander à
+  l'IA » et un nom lisible au clavier. Pour enrichir une liste, un **bouton
+  double** : une large partie nommée qui ajoute à la main (« Ajouter une
+  question », « Noter une idée », « Ajouter une partie », « Ajouter un
+  chapitre »), une petite partie ✦ qui fait ajouter par l'IA ; l'IA garde une
+  réserve et livre un élément par clic. Pour un champ (titre, résumé, « Nous
+  retenons »), un ✦ qui rend une proposition, avec « Utiliser » ou
+  « Laisser ». « Orienter l'IA », lien discret, ouvre un champ facultatif.
+  Quand « Proposer les aides IA » est éteint dans « Mon compte », aucun ✦ ni
+  bouton d'IA ne s'affiche, et les boutons doubles redeviennent simples.
+- **Correction, dans la page de scène :** « Corriger » dans l'en-tête de la
+  copie, le degré à côté (« Degré 2 · Orthographe et grammaire ▾ »), « Corriger
+  la sélection » quand du texte est sélectionné. Degrés 1 à 3 : marques au
+  stylo dans la copie, chacune acceptée ou refusée d'un clic, « Garder les
+  changements » ou « Laisser ». Degrés 4 et 5 : côte à côte, la proposition
+  modifiable, un onglet chacun sur téléphone. Écarté de la maquette : la
+  proposition au-dessus de la copie, qui fait lire deux fois une scène longue,
+  ses marques mot à mot aux degrés 4 et 5, « Retoucher » sans lieu, et la fiche
+  repliée « Aide à la correction ». « Proposer des pistes » sous le champ de la
+  remarque de reprise.
+- **Idées de choix :** « Idées de choix » dans l'en-tête de la copie, en récit
+  à choix ; le panneau à droite du texte montre trois idées à la fois, chacune
+  une case, son libellé, une ligne d'intention et sa destination, puis
+  « D'autres idées » et le bouton qui dit ce qu'il ajoute (« Ajouter 2 choix et
+  1 scène »).
+- **La Préparation en étapes,** à la place du carnet en rubriques et de
+  l'atelier : une ligne d'étapes comme au Livre (Univers, Personnages, Enjeu,
+  Grandes étapes, puis « Les choix » et « Le jeu », facultatives) et
+  « Projeter » ; un écran par étape, sa question en grand, à gauche les
+  questions pour la classe et les idées, à droite « Nous retenons » et
+  « ✦ Rédiger d'après les idées » ; « Étape suivante » au pied. En projection,
+  le même écran en grand, sans la barre de l'application. Sur téléphone, les
+  colonnes s'empilent. Écarté : la page actuelle, trois cartes de six éléments
+  côte à côte, quatre écrans de défilement mêlant l'histoire et les réglages du
+  livre, de grands champs vides qui dominent, rien qui dise par où commencer
+  (jugée par le porteur « très complexe, trop remplie, pas assez guidée,
+  décourageante ») ; dans l'atelier de la maquette, l'échange IA qui
+  remplaçait les idées de la classe.
+- **Grandes étapes :** les parties seules, leur titre, leur image et leur
+  nombre de chapitres, qui mène à « Parties et chapitres ».
+- **Personnages,** sous « Nous retenons » de l'étape du même nom : une carte
+  par personnage, nom et autres noms, marque « héros », description, fiche
+  visuelle et portrait de référence ; « ✦ Repérer les personnages ».
+- **Image d'une scène,** dans le panneau à droite du texte, depuis « Ajouter
+  une image » : « Ce que montre l'image », quatre cadres dessinés à cliquer
+  (pleine page, 3:2, 16:9, carré), les badges des personnages et des objets,
+  « ✦ Proposer la description », puis « Créer l'image » ou « Copier le
+  prompt ». La même création depuis « Choisir une image » d'un chapitre,
+  d'une partie ou du projet, d'après le résumé.
+- **« Aides IA » dans « Mon compte » :** degré de correction par défaut,
+  « Proposer les aides IA », niveau des élèves, images par création, qualité
+  des images. Le style d'illustration et le réglage « héros absent » restent
+  dans les options du projet.
+- **Messages :** « L'aide n'a pas répondu. Le texte n'a pas changé. » ; « Le
+  texte a changé depuis la demande. Redemander ? » ; « Encore 10 demandes
+  aujourd'hui. » ; « Les aides reviennent demain. Tout le reste fonctionne. »
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

@@ -573,3 +573,36 @@ chapitres, puis des scènes, sans renvois de choix.
 **Récit à choix** :
 Récit dont les scènes sont reliées par des options proposées au lecteur,
 avec des convergences et des fins possibles.
+
+**Degré de correction** :
+Intensité de l'aide à la correction par l'IA, de 1 (orthographe) à 5
+(d'après la consigne), choisie pour une demande, avec un défaut propre à
+chaque adulte.
+_Éviter_ : niveau, intention de correction, réécriture.
+
+**Personnage de l'histoire** :
+Personnage important décrit par l'adulte dans la préparation, avec ses autres
+noms, éventuellement désigné comme héros, servant de repère aux aides et aux
+images.
+_Éviter_ : profil, élève, rôle.
+
+**Fiche visuelle** :
+Description détaillée de l'apparence d'un personnage ou d'un objet de
+l'histoire, reprise mot pour mot dans chaque prompt et chaque image créée pour
+garder leur apparence constante.
+_Éviter_ : description, portrait.
+
+**Portrait de référence** :
+Image d'un personnage ou d'un objet de l'histoire, gardée par l'adulte, jointe
+aux images créées où il figure.
+_Éviter_ : image de repérage, avatar.
+
+**Style d'illustration** :
+Technique d'image choisie pour le projet parmi une liste, ou décrite par
+l'adulte, reprise par tous les prompts et toutes les images créées.
+_Éviter_ : thème, nom d'artiste.
+
+**Image créée** :
+Image produite par l'IA à la demande de l'adulte, gardée parmi les images du
+projet comme une image importée, pour le repérage ou dans le texte d'une scène.
+_Éviter_ : image générée automatiquement, illustration de l'élève.
