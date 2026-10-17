@@ -37,6 +37,11 @@ Garde les mêmes événements, dans le même ordre, les mêmes personnages, le m
 N'ajoute AUCUN événement ni AUCUN personnage que ni le texte ni la consigne n'apportent ; garde ce qui se passe, l'ordre, le point de vue et la fin du texte. Ajoute au plus quelques phrases par paragraphe.`,
 };
 
+/** Les fautes que la réponse simulée corrige, comme une élève de CE2 les ferait (F13-AC17 en tête). */
+const FAUTES_SIMULEES: Record<string, string> = {
+  dormé: "dormait", grote: "grotte", révéyer: "réveiller", Soudin: "Soudain", "ses pied": "ses pieds", "brillé comme des étoile": "brillaient comme des étoiles", ouvri: "ouvrit",
+};
+
 export const correction: DefinitionAide<EntreeCorrection, Correction> = {
   aide: "correction",
   sortieMax: 4000,
@@ -66,12 +71,15 @@ export const correction: DefinitionAide<EntreeCorrection, Correction> = {
     if (paragraphes.some((p) => !p || p.length > 6000)) return null;
     return { paragraphes: paragraphes as string[] };
   },
-  // Une correction visible et prévisible : majuscule en tête, point final, « grote » → « grotte »
+  // Une correction visible et prévisible : quelques fautes connues (F13-AC17), puis, à
+  // partir du degré 2, la majuscule en tête et le point final
   simuler: (e) => ({
     paragraphes: e.paragraphes.map((p) => {
-      let t = p.replace(/\bgrote\b/g, "grotte").trim();
-      t = t.charAt(0).toLocaleUpperCase("fr") + t.slice(1);
-      return /[.!?…»]$/.test(t) ? t : `${t}.`;
+      const t = Object.entries(FAUTES_SIMULEES).reduce((x, [faute, juste]) => x.replace(new RegExp(`(?<!\\p{L})${faute}(?!\\p{L})`, "gu"), juste), p);
+      if (e.degre === 1) return t;
+      let t2 = t.trim();
+      t2 = t2.charAt(0).toLocaleUpperCase("fr") + t2.slice(1);
+      return /[.!?…»]$/.test(t2) ? t2 : `${t2}.`;
     }),
   }),
 };

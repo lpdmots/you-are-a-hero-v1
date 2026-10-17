@@ -133,26 +133,29 @@ describe("Chaque aide relit sa réponse sans confiance", () => {
 });
 
 describe("Différence mot à mot d'une correction (F13.1)", () => {
-  it("F13-AC17 — « grote » corrigé en « grotte » est un seul changement, le reste est pareil", async () => {
+  it("F13-AC17 — au degré 1, « dormé » devient « dormait » et « grote » « grotte » : deux changements, « très très » reste", async () => {
     const { difference, nombreDeChangements } = await import("@/domaine/difference");
-    const d = difference("Le dragon dormé dans la grote. Il était très très grand.", "Le dragon dormé dans la grotte. Il était très très grand.");
-    expect(d).toEqual([
-      { sorte: "pareil", texte: "Le dragon dormé dans la " },
+    const d = difference("Le dragon dormé dans la grote. Il était très très grand.", "Le dragon dormait dans la grotte. Il était très très grand.");
+    expect(d.map(({ sorte, texte }) => ({ sorte, texte }))).toEqual([
+      { sorte: "pareil", texte: "Le dragon " },
+      { sorte: "retire", texte: "dormé " },
+      { sorte: "ajoute", texte: "dormait " },
+      { sorte: "pareil", texte: "dans la " },
       { sorte: "retire", texte: "grote" },
       { sorte: "ajoute", texte: "grotte" },
       { sorte: "pareil", texte: ". Il était très très grand." },
     ]);
-    expect(nombreDeChangements(d)).toBe(1);
+    expect(nombreDeChangements(d)).toBe(2);
   });
 
   it("la ponctuation est un morceau à part : « brume et il » devenu « brume. Il » laisse « brume » intact", async () => {
     const { difference } = await import("@/domaine/difference");
     expect(difference("le pont de brume et il y avait", "le pont de brume. Il y avait")).toEqual([
-      { sorte: "pareil", texte: "le pont de brume" },
-      // « pareil » prend la forme nouvelle, espace compris : le lot 2 recompose un refus avec l'espace d'avant
+      // « pareil » garde ses deux formes, espace compris : un refus se recompose avec l'espace d'avant
+      { sorte: "pareil", texte: "le pont de brume", avant: "le pont de brume " },
       { sorte: "retire", texte: "et il " },
       { sorte: "ajoute", texte: ". Il " },
-      { sorte: "pareil", texte: "y avait" },
+      { sorte: "pareil", texte: "y avait", avant: "y avait" },
     ]);
   });
 
@@ -160,7 +163,7 @@ describe("Différence mot à mot d'une correction (F13.1)", () => {
     const { difference, nombreDeChangements } = await import("@/domaine/difference");
     expect(difference("il vit une lumière", "il vit une petite lumière").filter((m) => m.sorte !== "pareil")).toEqual([{ sorte: "ajoute", texte: "petite " }]);
     expect(nombreDeChangements(difference("et puis il partit", "il partit"))).toBe(1);
-    expect(difference("Rien à changer.", "Rien à changer.")).toEqual([{ sorte: "pareil", texte: "Rien à changer." }]);
+    expect(difference("Rien à changer.", "Rien à changer.")).toEqual([{ sorte: "pareil", texte: "Rien à changer.", avant: "Rien à changer." }]);
   });
 });
 
@@ -178,8 +181,8 @@ describe("Retouches des réponses, d'après le premier passage de l'essai", () =
 });
 
 describe("Une apostrophe n'est pas une correction", () => {
-  it("l'apostrophe courbe et l'espace insécable passent pour « pareil », sous leur forme nouvelle", async () => {
+  it("l'apostrophe courbe et l'espace insécable passent pour « pareil », chacun sous sa forme", async () => {
     const { difference } = await import("@/domaine/difference");
-    expect(difference("Il n'en est pas sûr : l'eau.", "Il n’en est pas sûr : l’eau.")).toEqual([{ sorte: "pareil", texte: "Il n’en est pas sûr : l’eau." }]);
+    expect(difference("Il n'en est pas sûr : l'eau.", "Il n’en est pas sûr : l’eau.")).toEqual([{ sorte: "pareil", texte: "Il n’en est pas sûr : l’eau.", avant: "Il n'en est pas sûr : l'eau." }]);
   });
 });

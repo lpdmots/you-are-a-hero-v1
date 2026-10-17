@@ -76,7 +76,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide, onVersion,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
-  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix,
+  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, aides, onSelection,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -124,6 +124,13 @@ export function Copie({
    * ses réglages ouverts dans le panneau (F09.2, « Récupération »)
    */
   ouvrirChoix?: string;
+  /** Au bout de la barre, les commandes d'IA que la page offre : « Corriger » et son degré (F13.1) */
+  aides?: ReactNode;
+  /**
+   * Les paragraphes de récit qui ont des mots et que touche la sélection, en entier, à chaque
+   * changement ; aucun quand elle est réduite au curseur (« Corriger la sélection », F13.1)
+   */
+  onSelection?: (blocs: string[]) => void;
 }) {
   // Ce que la copie a appris depuis que la page lui a donné le livre : numéros relus, scènes créées
   // depuis un choix. Quand la page relit le livre, c'est elle qui fait foi.
@@ -171,6 +178,7 @@ export function Copie({
   const [tire, setTire] = useState<{ bloc: string; avant: string | null } | null>(null);
   const [, setTic] = useState(0);
   const zone = useRef<HTMLDivElement>(null);
+  const selectionDite = useRef("");
   const menuRef = useRef<HTMLDivElement>(null);
   // La scène créée avec le dernier choix : si ce choix est annulé, elle reste, et la copie le dit (F05-AC44)
   const creation = useRef<{ choix: string; scene: SceneCreee } | null>(null);
@@ -937,6 +945,25 @@ export function Copie({
     }
   };
 
+  const caseVoisines = (
+    <label className="outil-case" title={vous ? "Ce réglage vaut pour toutes vos scènes" : "Ce réglage vaut pour toutes tes scènes"}>
+      <input
+        type="checkbox"
+        checked={avecVoisines}
+        onChange={(ev) => {
+          const affiche = ev.target.checked;
+          setAvecVoisines(affiche);
+          void services.reglerVoisines?.(affiche);
+          setBandeau({
+            texte: affiche
+              ? `Les scènes voisines s’affichent, dans toutes ${vous ? "vos" : "tes"} scènes.`
+              : `Les scènes voisines ne s’affichent plus, dans aucune de ${vous ? "vos" : "tes"} scènes. ${vous ? "Vous pouvez" : "Tu peux"} recocher la case.`,
+          });
+        }}
+      />
+      <span>Scènes voisines</span>
+    </label>
+  );
   const protege = paragrapheCourant();
   const ou: PiedDeCopie = {
     etat: sauvegarde.etat, vide, reessayer: () => void sauvegarde.reessayer(),
@@ -950,25 +977,8 @@ export function Copie({
       <div className={`copie${arrete ? " copie--lecture" : ""}`}>
         <div className="copie__barre">
           {tete}
-          {aDesVoisines && !autre ? (
-                <label className="outil-case" title={vous ? "Ce réglage vaut pour toutes vos scènes" : "Ce réglage vaut pour toutes tes scènes"}>
-                  <input
-                    type="checkbox"
-                    checked={avecVoisines}
-                    onChange={(ev) => {
-                      const affiche = ev.target.checked;
-                      setAvecVoisines(affiche);
-                      void services.reglerVoisines?.(affiche);
-                      setBandeau({
-                        texte: affiche
-                          ? `Les scènes voisines s’affichent, dans toutes ${vous ? "vos" : "tes"} scènes.`
-                          : `Les scènes voisines ne s’affichent plus, dans aucune de ${vous ? "vos" : "tes"} scènes. ${vous ? "Vous pouvez" : "Tu peux"} recocher la case.`,
-                      });
-                    }}
-                  />
-                  <span>Scènes voisines</span>
-                </label>
-          ) : null}
+          {aides && !autre && !arrete ? <div className="copie__aides">{aides}</div> : null}
+          {aDesVoisines && !autre ? caseVoisines : null}
           {autre ? (
             autre.barre
           ) : arrete ? null : (
@@ -1055,6 +1065,21 @@ export function Copie({
               );
               lireLaBarre();
               setTic((n) => n + 1);
+              if (onSelection) {
+                const s = e.selection;
+                const blocs = blocsDe(e);
+                const touches =
+                  s && !e.api.isCollapsed()
+                    ? blocs
+                        .slice(Math.min(s.anchor.path[0], s.focus.path[0]), Math.max(s.anchor.path[0], s.focus.path[0]) + 1)
+                        .filter((b) => b.type === "p" && lettresDe(b).trim() !== "")
+                        .map((b) => b.id)
+                    : [];
+                if (touches.join() !== selectionDite.current) {
+                  selectionDite.current = touches.join();
+                  onSelection(touches);
+                }
+              }
             }}
             onValueChange={({ value }) => {
               const suite = value as unknown as Texte;

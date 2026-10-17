@@ -37,6 +37,8 @@ import { useCommandesScene } from "../../_plan/commandes";
 import { ChoisirDepart } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
+import { useAidesIa } from "@/composants/AidesIa";
+import { useCorrection } from "./Correction";
 import { FicheNumero } from "./FicheNumero";
 import { FicheEncouragements } from "./Encouragements";
 import { FicheDecision, FicheRemarque, FicheRemises, nomDeRemise } from "./Relecture";
@@ -143,6 +145,8 @@ export function PageScene({
   // L'état de la scène et sa relecture (F07.1) : la page les tient à jour d'après ce que le serveur répond
   const [relecture, setRelecture] = useState(relectureRecue);
   const [sauvegarde, setSauvegarde] = useState<EtatTexte["etat"]>("enregistre");
+  // La même chose, lue dans un geste : une frappe pas encore enregistrée au retour d'une aide
+  const sauvegardeTenue = useRef<EtatTexte["etat"]>("enregistre");
   const [reprise, setReprise] = useState(false);
   const [rappel, setRappel] = useState<string[] | null>(null);
   const [suspendue, setSuspendue] = useState<string | null>(null);
@@ -258,6 +262,30 @@ export function PageScene({
       setFait(suite.etat === "garde" ? { sorte: "conflit", copieId: miennes[miennes.length - 1]?.id ?? null } : null);
     });
   };
+
+  // L'aide à la correction (F13.1) : sur la page de la scène, pas à côté de l'aperçu, trop étroit pour le côte à côte
+  const [selection, setSelection] = useState<string[]>([]);
+  const aides = useAidesIa();
+  const correction = useCorrection({
+    sceneId: scene.id,
+    version: () => versionLue.current,
+    selection: selection.length ? selection : null,
+    livre,
+    consigne,
+    avantDePartir,
+    enAttente: () => sauvegardeTenue.current !== "enregistre",
+    relire: async () => {
+      if (!(await avantDePartir())) return;
+      const lu = await relireTexte(scene.id);
+      if (lu.ok) remplacer(lu.scene);
+    },
+    onRemplace: (suite) => {
+      remplacer(suite);
+      setOnglet("scene");
+      setSelection([]);
+    },
+  });
+  const corrige = !aCote && onglet === "scene" && !vide;
 
   const retirer = async (c: CopieGardee) => {
     setGeste(true);
@@ -628,9 +656,12 @@ export function PageScene({
       marques
       libelle={`Texte de la scène ${ref}`}
       tete={onglets}
-      autre={autre}
+      autre={(corrige ? correction.autre : null) ?? autre}
+      aides={corrige && !correction.autre ? correction.barre : undefined}
+      onSelection={setSelection}
       onEtat={(suite) => {
         setSauvegarde(suite.etat);
+        sauvegardeTenue.current = suite.etat;
         apresEtat(suite);
       }}
       onVide={setVide}
@@ -875,12 +906,13 @@ export function PageScene({
         </span>
       </div>
 
-      <div className={styles.colonnes}>
+      <div className={`${styles.colonnes}${corrige && correction.large ? ` ${styles.large}` : ""}`}>
         <section className={styles.texte} aria-label="Texte de la scène">
           {notes}
+          {corrige ? correction.note : null}
           {copieEl}
         </section>
-        <aside className="cote-copie">
+        <aside className="cote-copie" hidden={corrige && correction.large}>
           <div className="cote-copie__colle">
             {numero ? (
               <FicheNumero
@@ -905,7 +937,9 @@ export function PageScene({
                 derniere={derniereRemise ? { par: derniereRemise.eleveId ? nomEleve(derniereRemise.eleveId) : null, le: derniereRemise.remisLe } : null}
                 echec={sauvegarde === "echec"}
                 ailleurs={
-                  remiseMontree
+                  corrige && correction.autre
+                    ? { correction: true, phrase: "Gardez ou laissez la correction proposée : l’état se choisira ensuite." }
+                    : remiseMontree
                     ? { phrase: `Vous lisez le texte ${nomDeRemise(remiseMontree, remises).toLowerCase()}.` }
                     : montree
                       ? { phrase: `Vous lisez ${nom(montree).enPhrase}, ${nom(montree).sous}.` }
@@ -914,6 +948,7 @@ export function PageScene({
                 rappel={rappel}
                 reprise={reprise}
                 occupe={geste}
+                pistes={projet.deClasse && aides.proposer && !vide ? scene.id : null}
                 onEtat={(e, options) => void choisirEtat(e, "fiche", options)}
                 onReprise={(remarque) => void choisirEtat("reprendre", "tampon", { remarque })}
                 onAnnulerReprise={() => setReprise(false)}

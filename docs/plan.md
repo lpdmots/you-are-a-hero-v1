@@ -2186,6 +2186,60 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       183 appels, aucun échec, 0,96 dollar ; dépense de l'étape à ce jour,
       environ 1,14 dollar (1 €) sur les 100 € du budget.
     - **Tests automatiques :** 21 unitaires, 14 contre la base, 2 parcours.
+  - **Lot 2 — correction : construit le 17 octobre 2026,** en local, sans
+    migration. « Corriger » et le degré dans l'en-tête de la copie de la page
+    de scène, « Corriger la sélection » quand une sélection touche un paragraphe
+    de récit ; aux degrés 1 à 3, la copie passe en lecture, les changements
+    marqués au stylo (barré brique, ajout vert), chacun refusé ou rétabli d'un
+    clic, puis « Garder les changements » ou « Laisser » ; aux degrés 4 et 5, le
+    texte actuel et la proposition côte à côte sur toute la largeur, la
+    proposition modifiable paragraphe par paragraphe, un onglet chacun sur
+    téléphone, puis « Mettre ce texte dans la scène » ou « Laisser » ;
+    « Annuler » dans le message qui suit (huit secondes) ; « Le texte a changé
+    depuis la demande. Redemander ? » si la scène change avant, pendant ou après
+    la demande ; « Proposer des pistes » sous la remarque de reprise, en mode
+    classe. La demande passe par l'adresse `/ia/correction` (et `/ia/pistes`) ;
+    « Garder » et « Annuler » sont des actions serveur. Le serveur relit le
+    texte lui-même et recompose la correction d'après ce qu'il a relu.
+    - **Critères fermés :** F13-AC02, AC03, AC04 ; F13-AC01 à l'écran (le
+      degré choisi pour une scène ne change pas le défaut) ; F13-AC17 pour la
+      forme (deux marques au degré 1 sur la réponse simulée), la qualité restant
+      à juger ; le message du texte changé ; les aides éteintes, sans
+      « Corriger » ni pistes ; les pistes, absentes en mode personnel.
+    - **Critères qui attendent :** F13-AC05 et AC17 pour la qualité réelle, au
+      jugement du lot 9 sur des textes de sa classe.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      pas de « Corriger » dans la scène ouverte à côté de l'aperçu du livre,
+      trop étroite pour le côte à côte ; dans l'en-tête, « Degré 2 ▾ » sans le
+      nom, faute de place à côté des onglets (le nom se lit dans la liste, avec
+      « par défaut » sur le degré du compte, et en tête de la proposition) ; ce
+      qui ne se voit pas ne s'applique pas : une apostrophe ou un espace changés
+      seuls gardent la forme de l'auteur, et un refus rend le texte d'origine
+      avec son espace ; un mot qui reste garde son gras ou son italique, un mot
+      ajouté prend la forme du précédent, une image sur la ligne reste devant
+      la lettre qui la suivait (elle ne s'affiche pas pendant la relecture des
+      marques) ; « Rien à corriger au degré 2. » quand la proposition ne change
+      rien, sans passer en revue ; pendant la revue, la fiche de décision dit
+      « Gardez ou laissez la correction proposée : l'état se choisira
+      ensuite. », sans bouton ; « Annuler » ne défait rien si quelqu'un a écrit
+      depuis (« Le texte a changé entre-temps : rien n'a été annulé. ») ; un
+      texte changé pendant la demande ne passe jamais par l'enregistrement, pour
+      ne pas créer de texte gardé à part ; « Redemander » relit d'abord la
+      scène ; au degré 5, la consigne se lit au-dessus du côte à côte ; seuls
+      les paragraphes changés sont teintés dans la proposition ; une correction
+      appliquée compte comme une modification de l'adulte pour les versions
+      précédentes de F08.2 (une par personne et par jour) ; les personnages ne
+      partent pas encore parmi les noms propres, seulement les objets : ils
+      s'ajouteront avec leurs cartes au lot 7 ; la réponse simulée corrige
+      quelques fautes fixes (« dormé », « grote », « révéyer »…) pour les
+      parcours et les captures.
+    - **Écrans critiqués** en deux lectures sur les captures 813 à 827 : 27/40
+      et 27/40, corrigés aussitôt (voir le design).
+    - **Dépense :** aucun appel au vrai fournisseur pendant ce lot ; la dépense
+      de l'étape reste d'environ 1,14 dollar.
+    - **Tests automatiques :** 12 unitaires, 12 contre la base, 9 parcours ;
+      le test de F13-AC17 attend « dormait » au degré 1 (F13.1 révisé le
+      17 octobre 2026).
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

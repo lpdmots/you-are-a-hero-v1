@@ -93,3 +93,7 @@
     margin-left: auto;
   }
 }
+/* Degrés 4 et 5 de la correction : le texte et la proposition prennent toute la largeur (F13.1) */
+.colonnes.large {
+  grid-template-columns: minmax(0, 1fr);
+}

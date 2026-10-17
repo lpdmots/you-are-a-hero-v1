@@ -1,7 +1,7 @@
 "use client";
 
 import { PlateElement, useSelected, type PlateElementProps } from "platejs/react";
-import type { ReactNode } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { Signes } from "@/composants/Signes";
 import {
@@ -539,9 +539,16 @@ export function RepereDeLiaison({ liaison, livre, pourEleve }: { liaison: Liaiso
  * Un texte en lecture : un texte gardé à part, une version précédente, la scène d'un
  * camarade. Les mêmes blocs que dans la copie, sans rien qui se modifie (F05-AC09).
  */
-export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: Texte; libelle: string; livre: Livre; pourEleve?: boolean }) {
+export function TexteLu({
+  texte, libelle, livre, pourEleve = false, paragraphe, className,
+}: {
+  texte: Texte; libelle: string; livre: Livre; pourEleve?: boolean;
+  /** Un paragraphe de récit montré autrement : marqué d'une correction, ou modifiable (F13.1) ; null pour le montrer tel quel */
+  paragraphe?: (bloc: ParagrapheDeRecit) => ReactNode | null;
+  className?: string;
+}) {
   return (
-    <div className="copie__texte copie__texte--lu" aria-label={libelle} lang="fr">
+    <div className={`copie__texte copie__texte--lu${className ? ` ${className}` : ""}`} aria-label={libelle} lang="fr">
       {estVide(texte) ? (
         <p className="copie__vide">Ce texte est vide.</p>
       ) : (
@@ -576,6 +583,8 @@ export function TexteLu({ texte, libelle, livre, pourEleve = false }: { texte: T
                 <Destinations bloc={bloc} livre={livre} pourEleve={pourEleve} />
               </span>
             </div>
+          ) : paragraphe?.(bloc) ? (
+            <Fragment key={bloc.id}>{paragraphe(bloc)}</Fragment>
           ) : (
             <p key={bloc.id} className={bloc.protege ? "est-protege" : undefined}>
               {bloc.protege ? (

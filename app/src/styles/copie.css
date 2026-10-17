@@ -2369,3 +2369,278 @@ kbd {
   width: 110px;
   min-width: 0;
 }
+
+/* ——— Aide à la correction (F13.1) : « Corriger » et son degré, au bout de la barre de la copie ——— */
+.copie__aides {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+.copie__aides + .outil-case {
+  margin-left: 0;
+}
+.corriger {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.outil--ia .ic,
+.corr-tete .ic,
+.corr-cote h3 .ic,
+.corr-cote__onglets .ic {
+  color: var(--canard);
+}
+.outil--ia[disabled] {
+  cursor: progress;
+  color: var(--graphite-2);
+}
+.corriger .menu--mots > summary {
+  padding: 3px 8px;
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.corriger .menu__liste {
+  min-width: 370px;
+  max-width: min(400px, calc(100vw - 16px));
+}
+.outil--ia .outil__deux > span {
+  justify-self: start;
+}
+.menu__liste button.corriger__degre {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  column-gap: 10px;
+  row-gap: 1px;
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.corriger__degre b {
+  color: var(--graphite);
+}
+.corriger__degre > span {
+  grid-column: 1;
+  font-size: var(--t-xs);
+}
+.corriger__degre > .ic {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  width: 16px;
+  height: 16px;
+  color: var(--canard);
+}
+
+/* Degrés 1 à 3 : les changements au stylo, dans la copie même. Ce qui part, barré en brique ; ce qui
+   arrive, en vert, comme une correction faite ; chacun se clique pour le refuser ou le reprendre. */
+.corr-texte .corr-p {
+  max-width: 62ch;
+}
+.corr {
+  display: inline;
+  padding: 0 1px;
+  border: 0;
+  border-radius: 3px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+.corr:hover {
+  background: var(--feuille-2);
+  box-shadow: 0 0 0 1px var(--trait-fort);
+}
+.corr del {
+  color: var(--e-reprendre);
+  text-decoration-line: line-through;
+  text-decoration-thickness: 2px;
+  text-decoration-color: color-mix(in srgb, var(--e-reprendre) 75%, transparent);
+}
+.corr ins {
+  margin-left: 0.15em;
+  padding: 0 2px;
+  border-radius: 3px;
+  background: var(--e-valide-f);
+  color: var(--e-valide);
+  font-weight: 600;
+  text-decoration: none;
+}
+.corr del:only-child,
+.corr ins:only-child {
+  margin-left: 0;
+}
+/* Refusé : le texte d'origine, souligné d'un pointillé discret, qui se reprend d'un clic */
+.corr--refuse {
+  text-decoration: underline dotted var(--trait-fort);
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+}
+.corr__vide {
+  color: var(--graphite-3);
+  font-family: var(--f-ui);
+  font-size: 0.85em;
+}
+.corr-compte {
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite);
+}
+.corr-compte > span {
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.corr-compte > .corr-reste {
+  color: var(--e-valider);
+}
+.corr-cmd {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-left: auto;
+}
+
+/* Degrés 4 et 5 : le texte de la scène et la proposition côte à côte, la proposition modifiable */
+.corr-cote {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.corr-cote__onglets {
+  display: none;
+}
+.corr-cote__col {
+  position: relative;
+  min-width: 0;
+  overflow: clip;
+}
+.corr-cote__col + .corr-cote__col {
+  border-left: 1px solid var(--trait);
+}
+.corr-cote h3 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 12px 18px 0 var(--gout, 64px);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--graphite-2);
+}
+.corr-cote .copie__texte {
+  min-height: 0 !important;
+  padding-top: 12px;
+  font-size: 1.1rem;
+}
+.corr-cote__col--prop .copie__texte {
+  background: var(--feuille);
+}
+.corr-champ {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 62ch;
+  min-height: 2em;
+  margin: -4px -8px;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  line-height: inherit;
+  resize: none;
+  overflow: hidden;
+}
+/* Seuls les paragraphes que la proposition change sont teintés */
+.corr-champ--change {
+  background: var(--canard-pale);
+}
+.corr-champ:hover {
+  border-color: var(--trait-fort);
+}
+.corr-champ:focus {
+  outline: none;
+  border-color: var(--canard);
+  background: var(--feuille);
+}
+@media (max-width: 760px) {
+  .corr-cote {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .corr-cote__onglets {
+    display: flex;
+    gap: 2px;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--trait);
+  }
+  .corr-cote__onglets button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-height: 44px;
+    padding: 0 12px;
+    border: 0;
+    background: transparent;
+    box-shadow: inset 0 -3px 0 transparent;
+    color: var(--graphite-2);
+    font: inherit;
+    font-size: var(--t-s);
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .corr-cote__onglets button[aria-selected="true"] {
+    color: var(--graphite);
+    box-shadow: inset 0 -3px 0 var(--canard);
+  }
+  .corr-cote h3 {
+    display: none;
+  }
+  .corr-cote__col + .corr-cote__col {
+    border-left: 0;
+  }
+  .corr-cote[data-onglet="scene"] [data-col="proposition"],
+  .corr-cote[data-onglet="proposition"] [data-col="scene"] {
+    display: none;
+  }
+}
+
+/* « Proposer des pistes », sous la remarque de reprise (F13.1) */
+.decision__pistes {
+  justify-self: start;
+  align-self: start;
+  margin-top: -4px;
+}
+.decision__pistes .ic {
+  color: var(--canard);
+}
+.corriger summary > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.corriger__degre small {
+  font-weight: 600;
+  color: var(--canard);
+}
+.corr-consigne {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 10px 18px 10px var(--gout, 64px);
+  border-bottom: 1px solid var(--trait);
+  background: var(--feuille-2);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+  white-space: pre-line;
+}
+.corr-consigne b {
+  margin-right: 6px;
+  color: var(--graphite);
+}
+@media (max-width: 760px) {
+  .corr-consigne {
+    padding-left: 18px;
+  }
+}

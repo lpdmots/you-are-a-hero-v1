@@ -1472,6 +1472,36 @@ F10.2.
   sur des morceaux (mots, signes, espaces) : elle sert la page de jugement et
   marquera les corrections dans la copie au lot 2.
 
+**Lot 2 — la correction (17 octobre 2026).**
+
+- **Le serveur relit, le navigateur ne fournit rien.** `/ia/correction` (une
+  adresse, pour ne pas retenir les actions de la page) reçoit la scène, la
+  version que la page montre, le degré et les paragraphes de la sélection ;
+  `serveur/correction.ts` relit le texte, la consigne et les noms des objets,
+  refuse si la version a changé, appelle `demanderUneAide`, puis relit la
+  version : changée pendant la demande, rien ne se propose. La réponse porte le
+  texte relu et, pour chaque paragraphe parti, l'avant et l'après.
+- **Garder.** `garderLaCorrection` (action serveur) relit le texte à la version
+  de la demande, vérifie que chaque paragraphe est encore celui qu'on a corrigé,
+  recompose la correction elle-même d'après les numéros des changements refusés
+  (ou les paragraphes retouchés aux degrés 4 et 5), puis l'enregistre comme une
+  correction de l'adulte. La version est relue avant d'écrire : un texte devenu
+  ancien ne passe pas par `enregistrer_texte`, qui le garderait à part comme un
+  conflit (F08.1). « Annuler » suit le même chemin avec le texte d'avant.
+- **Recomposer.** `domaine/correction.ts` : la différence mot à mot de
+  `difference.ts` (dont « pareil » garde désormais ses deux formes) se groupe
+  en changements numérotés sur toute la scène ; le texte recomposé garde la
+  forme d'origine de ce qui reste, rend l'espace d'origine d'un changement
+  refusé, et se reporte lettre à lettre sur les morceaux du paragraphe, ce qui
+  garde la mise en forme et les images sur la ligne. Les autres blocs ne sont
+  pas touchés.
+- **Pistes.** `/ia/pistes` rend la remarque déjà mise en lignes ; refusées en
+  mode personnel.
+- **La copie** reçoit les commandes d'IA de la page (`aides`) et lui dit les
+  paragraphes de récit que touche la sélection (`onSelection`) ; `TexteLu`
+  accepte un rendu propre aux paragraphes, pour les marques et les champs de
+  la proposition. Le signe ✦ est l'icône `ia`.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

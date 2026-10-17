@@ -2,13 +2,15 @@
 
 import { useState, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
+import { useMessage } from "@/composants/Messages";
+import type { ReponsePistes } from "@/serveur/correction";
 import { heureEnMots, jourCourt, jourEnMots } from "@/domaine/dates";
 import type { Etat, SorteDeScene } from "@/domaine/etats";
 import { de } from "@/domaine/texte";
 import type { Remarque, Remise } from "@/serveur/relecture";
 
 /** Ce que la fiche dit quand la page montre un autre texte que celui de la scène : elle ne décide pas. */
-export type TexteLuAilleurs = { phrase: string } | null;
+export type TexteLuAilleurs = { phrase: string; /** Une correction proposée occupe la copie : la décision attend qu'on la garde ou la laisse (F13.1) */ correction?: true } | null;
 
 /**
  * Fiche de décision (docs/design.md, « Page de scène reprise après critique ») : elle ne
@@ -17,7 +19,7 @@ export type TexteLuAilleurs = { phrase: string } | null;
  * tampon de l'en-tête.
  */
 export function FicheDecision({
-  sorte, etat, vide, aChoix, qui, derniere, echec, ailleurs, rappel, reprise, occupe, suite,
+  sorte, etat, vide, aChoix, qui, derniere, echec, ailleurs, rappel, reprise, occupe, suite, pistes,
   onEtat, onReprise, onAnnulerReprise, onPasMaintenant, onTexteDeLaScene,
 }: {
   sorte: SorteDeScene; etat: Etat; vide: boolean; aChoix: boolean;
@@ -35,6 +37,8 @@ export function FicheDecision({
   occupe: boolean;
   /** Juste après une décision : la scène suivante à valider (F06.5) */
   suite?: ReactNode;
+  /** « Proposer des pistes » sous la remarque : la scène où les demander, en mode classe, aides allumées (F13.1) */
+  pistes?: string | null;
   onEtat: (etat: Etat, options?: { confirme?: boolean }) => void;
   onReprise: (remarque: string) => void;
   onAnnulerReprise: () => void;
@@ -57,6 +61,13 @@ export function FicheDecision({
       <p className="decision__attente">
         <Icone nom="horloge" />
         Vos corrections ne sont pas enregistrées. L’état se choisira ensuite.
+      </p>
+    );
+  } else if (ailleurs?.correction) {
+    corps = (
+      <p className="decision__attente">
+        <Icone nom="ia" />
+        {ailleurs.phrase}
       </p>
     );
   } else if (ailleurs) {
@@ -89,7 +100,7 @@ export function FicheDecision({
       </>
     );
   } else if (reprise) {
-    corps = <Reprise qui={qui} occupe={occupe} onDemander={onReprise} onAnnuler={onAnnulerReprise} />;
+    corps = <Reprise qui={qui} occupe={occupe} pistes={pistes ?? null} onDemander={onReprise} onAnnuler={onAnnulerReprise} />;
   } else if (etat === "prete") {
     corps = (
       <>
@@ -176,14 +187,40 @@ export function FicheDecision({
  * « Demander une reprise… » : la remarque, facultative (F07.3). Le retour a pu être donné à
  * l'oral ou sur la feuille de l'élève. La saisie repart de rien à chaque demande.
  */
-function Reprise({ qui, occupe, onDemander, onAnnuler }: { qui: string | null; occupe: boolean; onDemander: (remarque: string) => void; onAnnuler: () => void }) {
+function Reprise({
+  qui, occupe, pistes, onDemander, onAnnuler,
+}: { qui: string | null; occupe: boolean; pistes: string | null; onDemander: (remarque: string) => void; onAnnuler: () => void }) {
   const [remarque, setRemarque] = useState("");
+  const [demande, setDemande] = useState(false);
+  const dire = useMessage();
+  // « Proposer des pistes » remplit la remarque si elle est vide, ou ajoute les pistes à la suite (F13.1)
+  const proposer = async () => {
+    if (!pistes) return;
+    setDemande(true);
+    let r: ReponsePistes;
+    try {
+      const reponse = await fetch("/ia/pistes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scene: pistes }) });
+      r = reponse.status === 401 ? { ok: false, message: "Connectez-vous de nouveau." } : ((await reponse.json()) as ReponsePistes);
+    } catch {
+      r = { ok: false, message: "L’aide n’a pas répondu. Le texte n’a pas changé." };
+    }
+    setDemande(false);
+    if (!r.ok) return dire({ texte: r.message });
+    setRemarque((avant) => (avant.trim() ? `${avant.trimEnd()}\n${r.remarque}` : r.remarque).slice(0, 2000));
+    if (r.reste) dire({ texte: r.reste });
+  };
   return (
     <>
       <label htmlFor="remarque" className="decision__label">
         Remarque{qui ? ` pour ${qui}` : ""} <span>facultative · lisible par les élèves du chapitre</span>
       </label>
       <textarea id="remarque" className="pchamp" rows={5} maxLength={2000} value={remarque} autoFocus onChange={(e) => setRemarque(e.target.value)} />
+      {pistes ? (
+        <button type="button" className="btn btn--petit decision__pistes" title="Demander à l’IA des pistes de reprise" disabled={demande} aria-busy={demande} onClick={() => void proposer()}>
+          <Icone nom="ia" />
+          {demande ? "Pistes…" : "Proposer des pistes"}
+        </button>
+      ) : null}
       <button type="button" className="btn btn--primaire btn--large" disabled={occupe} onClick={() => onDemander(remarque)}>
         <Icone nom="demi-tour" />
         Demander la reprise

@@ -314,6 +314,11 @@ const TRACES = {
       <path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1.2-1.2" />
     </>
   ),
+  /**
+   * Le seul geste d'IA de l'application (F13) : une étoile à quatre branches, ✦, devant chaque
+   * commande qui demande quelque chose à une aide, et nulle part ailleurs
+   */
+  ia: <path d="M12 3.5c.5 4.6 2.4 7 8.5 8.5-6.1 1.5-8 3.9-8.5 8.5-.5-4.6-2.4-7-8.5-8.5 6.1-1.5 8-3.9 8.5-8.5z" />,
 } as const;
 
 export type NomIcone = keyof typeof TRACES;

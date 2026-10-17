@@ -3,10 +3,11 @@
  * sert à marquer une correction dans la copie, comme au stylo (F13.1, degrés 1 à 3), et à la
  * page de jugement de l'essai V17. Un mot et un signe de ponctuation sont deux morceaux, chacun
  * avec l'espace qui le suit : « brume et il » devenu « brume. Il » laisse « brume » intact.
- * Un mot qui ne change que d'apostrophe ou d'espace insécable est « pareil » et prend la forme
- * du texte nouveau.
+ * Un mot qui ne change que d'apostrophe ou d'espace insécable est « pareil » : il garde sa forme
+ * dans chacun des deux textes, `texte` pour le nouveau, `avant` pour l'ancien, espace comprise.
+ * Un changement refusé se recompose ainsi avec l'espace du texte d'origine (`domaine/correction.ts`).
  */
-export type Morceau = { sorte: "pareil" | "retire" | "ajoute"; texte: string };
+export type Morceau = { sorte: "pareil" | "retire" | "ajoute"; texte: string; /** Pour « pareil » : la forme du texte d'origine */ avant?: string };
 
 const typographie = (t: string): string => t.replace(/[’ʼ]/g, "'").replace(/[\u00a0\u202f]/g, " ");
 
@@ -38,8 +39,7 @@ export function difference(avant: string, apres: string): Morceau[] {
   let j = 0;
   while (i < n && j < m) {
     if (egal(a[i], b[j])) {
-      // L'espace qui suit est celui du texte nouveau : un saut de ligne retiré se voit
-      sortie.push({ sorte: "pareil", texte: b[j] });
+      sortie.push({ sorte: "pareil", texte: b[j], avant: a[i] });
       i += 1;
       j += 1;
     } else if (table[i + 1][j] >= table[i][j + 1]) {
@@ -61,8 +61,10 @@ function fusionner(morceaux: Morceau[]): Morceau[] {
   for (const m of morceaux) {
     if (!m.texte) continue;
     const dernier = sortie[sortie.length - 1];
-    if (dernier && dernier.sorte === m.sorte) dernier.texte += m.texte;
-    else sortie.push({ ...m });
+    if (dernier && dernier.sorte === m.sorte) {
+      dernier.texte += m.texte;
+      if (m.avant !== undefined) dernier.avant = (dernier.avant ?? "") + m.avant;
+    } else sortie.push({ ...m });
   }
   return sortie;
 }

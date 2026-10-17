@@ -1979,6 +1979,50 @@ Corrigé aussitôt, sans nouvelle mesure :
   champ « Nom affiché aux élèves » et « Se déconnecter », antérieurs à
   l'étape, ne changent pas.
 
+**Lot 2 — la correction dans la page de scène, et les pistes de reprise.**
+Écrans arrêtés à l'entretien, sans maquette à jour, conçus dans le système
+« Cahiers d'aventure » et critiqués en deux lectures séparées sur captures
+(`npm run captures -- etape8`, 813 à 827) : 27/40 (lecture informée) et 27/40
+(lecture indépendante). Forme construite :
+
+- **En-tête de la copie :** à droite des onglets, « ✦ Corriger » et
+  « Degré 2 ▾ » (le nom en bulle de survol), puis « Scènes voisines » ; la
+  liste des degrés dit le nom et le rôle de chacun, coche le degré choisi et
+  marque « par défaut » celui du compte. « Corriger la sélection » prend la
+  place de « Corriger » sans rien déplacer.
+- **Degrés 1 à 3 :** la copie en lecture, l'en-tête « ✦ Correction proposée ·
+  Degré 2 · Orthographe et grammaire » à la place des outils ; ce qui part,
+  barré en brique, ce qui arrive en vert gras sur fond vert pâle (rôles de la
+  maquette) ; un refus montre le texte d'origine souligné d'un pointillé
+  léger ; au pied, « 7 changements sur 8. Cliquez un changement pour le
+  refuser ou le rétablir. », « Laisser » et « Garder les changements », seul
+  bouton plein de l'écran (la fiche de décision n'en porte plus pendant la
+  revue).
+- **Degrés 4 et 5 :** la colonne de droite se replie et la copie prend toute
+  la largeur ; « Texte actuel » à gauche, « ✦ Proposition » à droite, ses
+  paragraphes modifiables sur place, teintés en canard pâle quand ils
+  changent ; au degré 5, la consigne au-dessus ; en 390 px, deux onglets
+  « Texte actuel » et « Proposition ».
+- **Après :** le message « 7 changements gardés. » ou « La proposition est
+  maintenant le texte de la scène. », avec « Annuler ».
+- **Pistes :** « ✦ Proposer des pistes », bouton cerné sous le champ de la
+  remarque.
+
+Corrigé après la critique : la proposition tronquée en 390 px (hauteur des
+champs remesurée quand la largeur change) ; deux onglets « Texte de la scène »
+empilés en 390 px (l'intérieur devient « Texte actuel ») ; « reprendre »,
+mot réservé, remplacé par « rétablir », et la phrase du pied fixe ; deux
+boutons pleins pendant la revue ; le ✦ sous trois formes (« Redemander » et
+les pistes en bouton cerné) ; la teinte sur tous les paragraphes proposés ; la
+consigne absente au degré 5 ; le pied de la liste des degrés, qui ne disait
+rien d'utile ; le bouton qui s'élargissait avec une sélection ; une icône de
+choix égarée dans le côte à côte. Laissé : les marques mot à mot aux degrés 4
+et 5, écartées à l'entretien ; la barre d'outils en quatre lignes sur
+téléphone, antérieure au lot ; le texte du message « Redemander ? », arrêté à
+l'entretien ; le numéro du choix passé de 2 à 3 dans les captures, qui vient de
+l'ordre du livre établi au premier enregistrement de la scène semée, non de la
+correction.
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)
