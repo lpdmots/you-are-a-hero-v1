@@ -21,10 +21,14 @@ export type EntreeCorrection = {
 export type Correction = { paragraphes: string[] };
 
 const CONSIGNES_DES_DEGRES: Record<Degre, string> = {
-  1: `Degré 1, « Orthographe ». Corrige seulement les mots mal écrits : l'orthographe du mot lui-même (« grote » → « grotte », « strange » → « étrange »).
-Ne touche PAS aux accords (pluriel, féminin), à la conjugaison (« il dormé » reste tel quel), à la ponctuation, aux majuscules, aux répétitions ni aux tournures. Un mot bien écrit mais mal accordé ou mal conjugué reste tel quel.`,
-  2: `Degré 2, « Orthographe et grammaire ». Corrige l'orthographe des mots, les accords, la conjugaison, les homophones (a/à, et/est, son/sont, ces/ses…), la ponctuation et les majuscules.
-Ne change ni le vocabulaire, ni l'ordre des mots, ni les répétitions, ni la longueur des phrases. Ajoute seulement la ponctuation qui manque vraiment (point en fin de phrase, virgules d'une énumération, tirets ou guillemets d'un dialogue).`,
+  1: `Degré 1, « Orthographe ». Corrige tout ce qui s'écrit mal, sans toucher à la phrase :
+- l'orthographe des mots (« grote » → « grotte ») ;
+- les terminaisons de conjugaison quand on voit ce que l'auteur voulait écrire (« il dormé » → « il dormait », « il ouvri » → « il ouvrit ») ;
+- les accords en genre et en nombre (« ses pied » → « ses pieds ») ;
+- les homophones (a/à, et/est, son/sont, ces/ses, sa/ça, on/ont…).
+Ne touche PAS à la ponctuation, aux majuscules, à l'ordre des mots, aux répétitions ni aux tournures : la phrase garde ses mots et sa construction.`,
+  2: `Degré 2, « Orthographe et grammaire ». Corrige comme au degré 1, puis la ponctuation, les majuscules et les tournures mal construites (« il se dit que il » → « il se dit qu'il », un mot qui manque, un pronom mal placé).
+Ne change ni le vocabulaire, ni les répétitions, ni la longueur des phrases au-delà de ce qu'exige une phrase correcte. Ajoute seulement la ponctuation qui manque vraiment (point en fin de phrase, virgules d'une énumération, tirets ou guillemets d'un dialogue).`,
   3: `Degré 3, « Phrases plus claires ». Corrige d'abord comme au degré 2, puis rends les phrases plus claires : coupe une phrase trop longue, évite une répétition gênante, remplace un mot imprécis (« truc », « faire », « il y a » répété) par le mot juste, rends clair qui fait quoi.
 Ne change RIEN à ce qui se passe, à l'ordre des événements, au point de vue ni à ce que pense un personnage : « il croit que le dragon dort » ne devient pas « le dragon dort ». Garde les mots et les tournures de l'auteur partout où ils sont clairs.`,
   4: `Degré 4, « Style ». Corrige comme au degré 3, puis améliore le style : vocabulaire plus riche et plus précis, phrases plus fluides et plus variées, liaisons plus naturelles, détails sensoriels déjà suggérés mieux rendus.

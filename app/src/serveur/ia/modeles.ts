@@ -44,9 +44,10 @@ export const estUnModele = (id: string): id is IdModele => Object.hasOwn(MODELES
  * Le modèle de chaque aide, choisi le 17 octobre 2026 à la fin du lot 1 de l'étape 8 : Claude,
  * décision du porteur (crédits d'API de son forfait), le modèle de chaque aide sur l'essai V17.
  * Opus 5.5 pour ce qui invente ou construit (idées de choix, questions et idées de la
- * Préparation, parties, chapitres), où il a été le plus juste ; Sonnet 5.5 pour le reste. Haiku
- * 4.5 n'est retenu nulle part : il a corrigé la conjugaison au degré 1, changé le héros en fille
- * au degré 5, écrit un titre à la première personne, pour moins d'un demi-centime d'écart.
+ * Préparation, parties, chapitres), où il a été le plus juste ; Sonnet 5.5 pour le reste, la
+ * correction comprise, sur décision du porteur. Haiku 4.5 n'est retenu nulle part : il a changé
+ * le héros en fille au degré 5, trop réécrit au degré 4, écrit un titre à la première personne et
+ * une fiche visuelle sans apparence, pour moins d'un demi-centime d'écart.
  */
 export const MODELE_DES_AIDES: Record<AideTexte, IdModele> = {
   correction: "claude-sonnet-5-5",

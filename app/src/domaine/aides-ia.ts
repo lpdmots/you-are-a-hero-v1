@@ -57,8 +57,8 @@ export const NOMS_DES_DEGRES: Record<Degre, string> = {
 
 /** Ce que fait chaque degré, en une ligne, pour le choisir. */
 export const ROLES_DES_DEGRES: Record<Degre, string> = {
-  1: "Les mots mal écrits seulement.",
-  2: "Accords, conjugaison, ponctuation.",
+  1: "Les mots mal écrits, les terminaisons, les accords ; la phrase ne change pas.",
+  2: "Le degré 1, plus la ponctuation et les tournures mal construites.",
   3: "Répétitions, phrases trop longues, mots imprécis ; rien ne change à ce qui se passe.",
   4: "Vocabulaire plus riche, phrases plus fluides ; mêmes événements.",
   5: "Le texte s'améliore pour bien répondre à la consigne, sans événement ni personnage nouveau.",

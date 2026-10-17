@@ -1459,8 +1459,8 @@ F10.2.
   1,1 centime (5,0 s), Haiku 4.5 0,15 centime (2,8 s) ; GPT-6.1 Sol 0,4 centime
   (7,1 s), GPT-5.6 Terra 0,4 (3,4 s), GPT-5.6 Sol 0,7 (4,7 s). Le porteur
   choisit Claude. Lu par Claude, ce qui demande de le dire : Haiku est écarté
-  (degré 1 qui corrige la conjugaison, héros changé en fille au degré 5, titre
-  à la première personne, fiche visuelle qui décrit un comportement) ; Sonnet
+  (héros changé en fille au degré 5, texte trop réécrit au degré 4, titre à la
+  première personne, fiche visuelle qui décrit un comportement) ; Sonnet
   et Opus tiennent les degrés et les consignes ; Opus est un peu plus juste et
   plus inventif sur les idées de choix et les questions de la Préparation, plus
   court aussi dans ses questions, et sert les aides qui inventent ou

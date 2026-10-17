@@ -45,7 +45,7 @@ const nomsPropres = ["Lou", "Marius", ...OBJETS.map(([nom]) => nom)];
 
 // ——— Textes d'élèves inventés ———
 
-/** CE2. Le critère F13-AC17 en tête : au degré 1, seul « grote » se corrige dans la première phrase. */
+/** CE2. Le critère F13-AC17 en tête : au degré 1, « dormé » et « grote » se corrigent, « très très » reste. */
 const DRAGON = [
   "Le dragon dormé dans la grote. Il était très très grand.",
   "Lou avancé doucement pour ne pas le révéyer. Sous ses pied, les cailloux brillé comme des étoile. Soudin, le dragon ouvri un œil.",
@@ -140,8 +140,8 @@ const etapeEnjeu = {
 
 export const JEU_D_ESSAI: Cas[] = [
   // Correction (F13.1)
-  { id: "correction-1", aide: "correction", titre: "Correction, degré 1 (orthographe), CE2", repere: "« grote », « révéyer », « Soudin » corrigés ; « dormé », « avancé », « brillé », « ouvri », « pied », « étoile » laissés (accords et conjugaison relèvent du degré 2).", source: "inventé", entree: { histoire: ce2, degre: 1, paragraphes: DRAGON, consigne: null, nomsPropres } },
-  { id: "correction-2a", aide: "correction", titre: "Correction, degré 2 (orthographe et grammaire), CM1", repere: "Accords, homophones (« sa » → « ça », « a » → « à »), majuscule, guillemets du dialogue ; rien d'autre ne change.", source: "inventé", entree: { histoire: classe, degre: 2, paragraphes: PASSERELLE, consigne: CONSIGNES[2], nomsPropres } },
+  { id: "correction-1", aide: "correction", titre: "Correction, degré 1 (orthographe), CE2", repere: "Mots, terminaisons et accords corrigés (« dormait », « grotte », « réveiller », « pieds », « brillaient », « étoiles », « ouvrit ») ; « très très », la ponctuation et l'ordre des mots restent.", source: "inventé", entree: { histoire: ce2, degre: 1, paragraphes: DRAGON, consigne: null, nomsPropres } },
+  { id: "correction-2a", aide: "correction", titre: "Correction, degré 2 (orthographe et grammaire), CM1", repere: "Le degré 1, plus la majuscule, les guillemets du dialogue, « il se dit que il » ; rien d'autre ne change.", source: "inventé", entree: { histoire: classe, degre: 2, paragraphes: PASSERELLE, consigne: CONSIGNES[2], nomsPropres } },
   { id: "correction-2b", aide: "correction", titre: "Correction, degré 2, CE2, texte très court", repere: "Les fautes corrigées, le texte reste aussi court et aussi simple.", source: "inventé", entree: { histoire: ce2, degre: 2, paragraphes: FOUGERES, consigne: CONSIGNES[15], nomsPropres } },
   { id: "correction-3", aide: "correction", titre: "Correction, degré 3 (phrases plus claires), CM2", repere: "Phrases coupées, « il y avait » et « et » allégés, « un truc » précisé ; « Il croit que le passeur l'attend » reste une croyance (F13-AC05) ; rien de nouveau ne se passe.", source: "inventé", entree: { histoire: classe, degre: 3, paragraphes: PONT, consigne: null, nomsPropres } },
   { id: "correction-4", aide: "correction", titre: "Correction, degré 4 (style), CM2, au « tu »", repere: "Plus riche et plus fluide, mêmes événements, toujours au « tu », lisible par un enfant, pas plus d'un tiers plus long.", source: "inventé", entree: { histoire: classe, degre: 4, paragraphes: CABANE, consigne: CONSIGNES[4], nomsPropres } },

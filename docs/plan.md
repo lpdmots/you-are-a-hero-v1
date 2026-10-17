@@ -2122,7 +2122,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     5.5 pour les idées de choix, les questions et idées de la Préparation, les
     parties et les chapitres ; Sonnet 5.5 pour tout le reste ; Haiku 4.5 nulle
     part, ses erreurs de l'essai valant plus que l'écart de coût (détail dans
-    `serveur/ia/modeles.ts` et l'architecture). Les images restent chez OpenAI. Les
+    `serveur/ia/modeles.ts` et l'architecture). Les images restent chez OpenAI.
+    Révisé le même jour sur sa remarque (F13.1, F13-AC17) : une terminaison
+    fautive dont l'intention est claire (« dormé » pour « dormait »), les
+    accords et les homophones se corrigent dès le degré 1 ; le degré 2 ajoute
+    la ponctuation, les majuscules et les tournures mal construites. Consignes
+    au modèle reprises, vérifiées sur Sonnet 5.5, qu'il garde pour la
+    correction. Les
     appels partent du serveur seul, par les bibliothèques officielles
     d'Anthropic et d'OpenAI (`serveur/ia/fournisseurs.ts`), en réponse JSON
     conforme à un schéma ; un tableau unique dit le modèle de chaque aide et
