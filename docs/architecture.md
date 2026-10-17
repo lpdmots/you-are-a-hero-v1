@@ -1454,6 +1454,20 @@ F10.2.
   partagent avec la page `/essai-ia`. Celle-ci lit `essais-ia/` (hors de Git)
   et n'envoie au navigateur que des lettres ; le modèle derrière une lettre ne
   se lit que sur le serveur. Elle répond « introuvable » chez Vercel.
+- **Le choix, après l'essai (17 octobre 2026).** 183 appels, aucun échec. Coût
+  moyen d'un appel : Sonnet 5.5 0,6 centime de dollar (3,5 s), Opus 5.5
+  1,1 centime (5,0 s), Haiku 4.5 0,15 centime (2,8 s) ; GPT-6.1 Sol 0,4 centime
+  (7,1 s), GPT-5.6 Terra 0,4 (3,4 s), GPT-5.6 Sol 0,7 (4,7 s). Le porteur
+  choisit Claude. Lu par Claude, ce qui demande de le dire : Haiku est écarté
+  (degré 1 qui corrige la conjugaison, héros changé en fille au degré 5, titre
+  à la première personne, fiche visuelle qui décrit un comportement) ; Sonnet
+  et Opus tiennent les degrés et les consignes ; Opus est un peu plus juste et
+  plus inventif sur les idées de choix et les questions de la Préparation, plus
+  court aussi dans ses questions, et sert les aides qui inventent ou
+  construisent ; Sonnet, qui garde mieux la voix de l'élève et tient mieux le
+  modèle de consigne (Opus a écrit « Tu es Lou » à des CE2), sert le reste. À
+  soixante demandes par jour d'école, le plus cher des cas reste de l'ordre de
+  quelques dollars par mois.
 - **Différence mot à mot.** `domaine/difference.ts`, plus longue suite commune
   sur des morceaux (mots, signes, espaces) : elle sert la page de jugement et
   marquera les corrections dans la copie au lot 2.

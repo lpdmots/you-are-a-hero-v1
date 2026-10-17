@@ -154,7 +154,7 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
 | Région des données | Paris, pour la base (Supabase, `eu-west-3`) comme pour les fonctions (Vercel, `cdg1`), depuis le 9 octobre 2026. | Fait. |
 | Production du PDF et de l'aperçu | Chaîne retenue (ADR 0003), exécutée chez Vercel par hypothèse ; Render si V2 échoue. | Étape 6. |
 | Imprimeur | epubli sert de premier cas de vérification, sans exclusivité. | Étape 6 (V6). |
-| IA | Images par OpenAI ; fournisseur des textes choisi par l'essai V17, au lot 1 de l'étape 8, entre Claude (API d'Anthropic) et OpenAI ; traitement aux États-Unis accepté le 17 octobre 2026. | Étape 8. |
+| IA | Images par OpenAI ; textes par Claude (API d'Anthropic), choisi par le porteur le 17 octobre 2026 après l'essai V17 ; traitement aux États-Unis accepté le même jour. | Décidé. |
 | Paiement | Stripe Checkout proposé. | Étape 9. |
 
 ## Avant de saisir des prénoms d'élèves réels
@@ -2115,8 +2115,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   9. **Essai de bout en bout** — parcours, captures, mode d'emploi dans
      `app/README.md`, jugement du porteur sur des textes de sa classe.
 - **Construction, en local, lot par lot :**
-  - **Lot 1 — socle et essai de qualité : construit le 17 octobre 2026,** le
-    choix du fournisseur des textes attendant le jugement du porteur. Les
+  - **Lot 1 — socle et essai de qualité : construit et terminé le 17 octobre
+    2026.** Le porteur, sans le temps de tout juger, trouve les résultats
+    satisfaisants dans l'ensemble, choisit Claude pour les textes (crédits
+    d'API de son forfait) et laisse le choix des modèles à l'analyse : Opus
+    5.5 pour les idées de choix, les questions et idées de la Préparation, les
+    parties et les chapitres ; Sonnet 5.5 pour tout le reste ; Haiku 4.5 nulle
+    part, ses erreurs de l'essai valant plus que l'écart de coût (détail dans
+    `serveur/ia/modeles.ts` et l'architecture). Les images restent chez OpenAI. Les
     appels partent du serveur seul, par les bibliothèques officielles
     d'Anthropic et d'OpenAI (`serveur/ia/fournisseurs.ts`), en réponse JSON
     conforme à un schéma ; un tableau unique dit le modèle de chaque aide et
@@ -2140,8 +2146,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       le délai, le journal sans contenu, les aides éteintes, les messages.
     - **Critères qui attendent :** F13-AC17, AC05, AC18 (qualité, jugée sur
       l'essai, puis à l'écran aux lots 2 et 3) ; toutes les autres
-      F13-AC, F05-AC04 et F10-AC07 à AC12, aux lots 2 à 8. Le choix du
-      fournisseur, sur la page de jugement, ferme le lot.
+      F13-AC, F05-AC04 et F10-AC07 à AC12, aux lots 2 à 8.
     - **Précisions prises en construisant, à faire confirmer au porteur :**
       les aides de texte se jugent sur les candidats de l'entretien et GPT-6
       (Claude Sonnet 5.5 et Opus 5.5, GPT-5.6 Terra et Sol, GPT-6.1 Sol ;

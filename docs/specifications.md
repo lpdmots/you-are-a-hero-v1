@@ -9644,6 +9644,10 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   avec en plus Claude Haiku 4.5 et GPT-5.6 Luna pour la correction, les titres
   et les prompts. Critères, dans l'ordre : le jugement du porteur à l'aveugle,
   aide par aide, puis le coût. Les images sont créées par OpenAI (F10.1).
+  **Décidé par le porteur le 17 octobre 2026,** après l'essai : les textes
+  par Claude, sur les crédits d'API de son forfait ; le modèle de chaque aide
+  est réglé d'après l'essai (Opus 5.5 pour ce qui invente ou construit,
+  Sonnet 5.5 pour le reste), voir l'[architecture](architecture.md#réalisation-de-létape-8-17-octobre-2026).
 - **Lieu de traitement.** Le traitement aux États-Unis est accepté par le
   porteur, à l'ouverture comprise : « on va au plus simple et moins cher ». La
   question se reprendra si une école la pose.

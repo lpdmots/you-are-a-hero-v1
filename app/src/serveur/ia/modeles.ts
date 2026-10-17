@@ -41,25 +41,28 @@ export type IdModele = keyof typeof MODELES;
 export const estUnModele = (id: string): id is IdModele => Object.hasOwn(MODELES, id);
 
 /**
- * Le modèle de chaque aide. Provisoire jusqu'au choix du porteur à la fin du lot 1 de
- * l'étape 8, sur l'essai de qualité : Claude, le plus capable pour ce qui demande du jugement,
- * le plus léger pour la correction des degrés 1 et 2, les titres et les prompts.
+ * Le modèle de chaque aide, choisi le 17 octobre 2026 à la fin du lot 1 de l'étape 8 : Claude,
+ * décision du porteur (crédits d'API de son forfait), le modèle de chaque aide sur l'essai V17.
+ * Opus 5.5 pour ce qui invente ou construit (idées de choix, questions et idées de la
+ * Préparation, parties, chapitres), où il a été le plus juste ; Sonnet 5.5 pour le reste. Haiku
+ * 4.5 n'est retenu nulle part : il a corrigé la conjugaison au degré 1, changé le héros en fille
+ * au degré 5, écrit un titre à la première personne, pour moins d'un demi-centime d'écart.
  */
 export const MODELE_DES_AIDES: Record<AideTexte, IdModele> = {
   correction: "claude-sonnet-5-5",
   pistes: "claude-sonnet-5-5",
   consigne: "claude-sonnet-5-5",
-  titre: "claude-haiku-4-5",
-  "idees-choix": "claude-sonnet-5-5",
-  questions: "claude-sonnet-5-5",
-  idees: "claude-sonnet-5-5",
+  titre: "claude-sonnet-5-5",
+  "idees-choix": "claude-opus-5-5",
+  questions: "claude-opus-5-5",
+  idees: "claude-opus-5-5",
   retenons: "claude-sonnet-5-5",
-  parties: "claude-sonnet-5-5",
-  chapitres: "claude-sonnet-5-5",
+  parties: "claude-opus-5-5",
+  chapitres: "claude-opus-5-5",
   resume: "claude-sonnet-5-5",
   personnages: "claude-sonnet-5-5",
-  "fiche-visuelle": "claude-haiku-4-5",
-  "description-image": "claude-haiku-4-5",
+  "fiche-visuelle": "claude-sonnet-5-5",
+  "description-image": "claude-sonnet-5-5",
 };
 
 /** Ce que coûte un appel, en dollars, d'après les jetons que le fournisseur annonce. */
