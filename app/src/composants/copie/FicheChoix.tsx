@@ -49,7 +49,7 @@ const D_AILLEURS_MAX = 3;
  * bouton des chapitres en ouvre un autre. « Décider plus tard » laisse le choix sans destination.
  */
 export function ChoisirDestination({
-  libelle, services, valider, actuelle, creer, focus, seulementExistante = false,
+  libelle, services, valider, actuelle, creer, focus, seulementExistante = false, differer, sansPlusTard = false, titreNouvelle, chapitreNouvelle, issueDeDepart,
 }: {
   libelle: string; services: Services;
   valider: (destination: Destination) => void;
@@ -59,19 +59,32 @@ export function ChoisirDestination({
   focus?: boolean;
   /** Un lien caché ne mène qu'à une scène qui existe : ni « nouvelle scène » ni « plus tard » */
   seulementExistante?: boolean;
+  /**
+   * Une idée de choix (F13.3) : la nouvelle scène n'est créée qu'à l'ajout. Le titre et le
+   * chapitre retenus sont rendus tels quels, sans rien créer.
+   */
+  differer?: (nouvelle: { titre: string; chapitreId: string }) => void;
+  /** Sans « Décider plus tard » : une idée retenue a toujours une destination */
+  sansPlusTard?: boolean;
+  /** Le titre proposé pour une nouvelle scène, quand il n'est pas le libellé */
+  titreNouvelle?: string;
+  /** Le chapitre déjà retenu pour cette nouvelle scène, quand ce n'est pas celui de la scène */
+  chapitreNouvelle?: string;
+  /** L'issue ouverte d'abord : celle de la destination qu'on change */
+  issueDeDepart?: Issue;
 }) {
   const { livre, droits, lieu } = useCopie();
   const adulte = droits.role === "adulte";
   const autres = useMemo(() => livre.scenes.filter((s) => s.id !== lieu.sceneId), [livre.scenes, lieu.sceneId]);
   // Sans autre scène à choisir, il ne reste qu'à en créer une
-  const [issue, setIssue] = useState<Issue>(seulementExistante || autres.length > 0 ? "existante" : "nouvelle");
+  const [issue, setIssue] = useState<Issue>(issueDeDepart ?? (seulementExistante || autres.length > 0 ? "existante" : "nouvelle"));
   const [demande, setDemande] = useState("");
   const [chapitre, setChapitre] = useState(lieu.chapitreId);
   const [surligne, setSurligne] = useState(0);
   const [extraits, setExtraits] = useState<Record<string, string>>({});
-  const [titre, setTitre] = useState<string | null>(null);
-  const [ou, setOu] = useState(lieu.chapitreId);
-  const [ailleurs, setAilleurs] = useState(false);
+  const [titre, setTitre] = useState<string | null>(titreNouvelle ?? null);
+  const [ou, setOu] = useState(chapitreNouvelle ?? lieu.chapitreId);
+  const [ailleurs, setAilleurs] = useState(!!chapitreNouvelle && chapitreNouvelle !== lieu.chapitreId);
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const champ = useRef<HTMLInputElement>(null);
@@ -117,6 +130,11 @@ export function ChoisirDestination({
   const choisie = resultats[Math.min(surligne, resultats.length - 1)];
 
   const creerLaScene = async () => {
+    if (differer) {
+      const propre = (titre ?? libelle).trim();
+      if (propre) differer({ titre: propre, chapitreId: ou });
+      return;
+    }
     setAttente(true);
     setErreur(null);
     const fait = await services.creerScene(ou, (titre ?? libelle).trim());
@@ -293,7 +311,7 @@ export function ChoisirDestination({
           {erreur}
         </p>
       ) : null}
-      {seulementExistante ? null : (
+      {seulementExistante || sansPlusTard ? null : (
         <p className="cx-autre">
           <button type="button" className="lien cx-discret" onClick={() => valider({ cible: null })}>
             Décider plus tard

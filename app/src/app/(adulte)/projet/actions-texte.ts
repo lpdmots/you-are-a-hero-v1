@@ -128,15 +128,18 @@ export type SceneCreee = { id: string; reference: number; titre: string | null; 
 /**
  * « Nouvelle scène », depuis un choix (F05-AC16) : une scène vide, dans le chapitre voulu,
  * avec le libellé pour titre proposé (F05-AC12). L'auteur reste dans la scène où il écrit.
+ * Depuis une idée de choix (F13.3), l'intention de l'idée devient sa consigne de départ.
  */
-export async function creerSceneDepuisChoix(chapitreId: string, titre: string): Promise<Fait<{ scene: SceneCreee; numeros: Record<string, number> }>> {
+export async function creerSceneDepuisChoix(chapitreId: string, titre: string, consigne?: string): Promise<Fait<{ scene: SceneCreee; numeros: Record<string, number> }>> {
   const e = await exigerEnseignant();
   if (!estUuid(chapitreId)) return echec("Ce chapitre n’existe pas.");
   const { data, error } = await e.supabase.rpc("creer_scene", { p_chapitre: chapitreId });
   const ligne = (Array.isArray(data) ? data[0] : data) as { scene_id: string; reference: number } | null;
   if (error || !ligne) return refus(error, "La scène n’a pas pu être créée. Réessayez.");
   const propre = String(titre ?? "").trim().replace(/\s+/g, " ").slice(0, 120) || null;
-  const { data: scene } = await e.supabase.from("scenes").update({ titre: propre }).eq("id", ligne.scene_id).select("projet_id").maybeSingle();
+  const depart = typeof consigne === "string" ? consigne.trim().replace(/[ \t]+/g, " ").slice(0, 1500) || null : null;
+  const { data: scene } = await e.supabase
+    .from("scenes").update(depart ? { titre: propre, consigne: depart } : { titre: propre }).eq("id", ligne.scene_id).select("projet_id").maybeSingle();
   const projetId = scene?.projet_id as string | undefined;
   if (projetId) rafraichir(projetId);
   const lus = projetId ? await numerosDuProjet(e.supabase, projetId) : null;

@@ -1532,6 +1532,28 @@ F10.2.
   valeur dans la même case de grille (`::after` et `attr(data-valeur)`), pour
   poser le ✦ juste après lui.
 
+**Lot 4 — idées de choix (17 octobre 2026).**
+
+- **Le serveur relit, la copie ajoute.** `/ia/idees-choix` reçoit la scène,
+  l'orientation et les libellés déjà montrés ; `serveur/idees-de-choix.ts` relit
+  la consigne, la fin du texte (`finPourLesIdees`), les choix déjà là, le chapitre
+  et ses scènes (désignées au modèle par leur référence, rendues à la page par
+  leur identité), les objets et la Préparation, puis appelle `demanderUneAide` avec
+  l'aide `idees-choix` du lot 1, sur Opus 5.5. Une idée vers une scène où la scène
+  mène déjà est écartée. Rien n'est écrit par la demande.
+- **Les mêmes chemins qu'un choix fait à la main.** L'ajout se fait dans la copie
+  (`Copie.tsx`, `ajouterIdees`) : les nouvelles scènes par `services.creerScene`,
+  c'est-à-dire `creerSceneDepuisChoix`, qui accepte une consigne de départ, puis
+  les phrases de choix automatiques insérées dans l'éditeur, que l'enregistrement
+  ordinaire envoie ; la table `liens` s'en déduit comme pour tout texte. Aucun
+  texte n'est réécrit par le serveur, donc aucun conflit possible avec une frappe
+  en cours. `ChoisirDestination` accepte `differer`, qui rend le titre et le
+  chapitre d'une nouvelle scène sans la créer, `sansPlusTard` et `issueDeDepart`.
+- **L'état des idées est tenu par la copie** (`useIdeesDeChoix`,
+  `composants/copie/FicheIdees.tsx`) : la réserve des dix, les libellés vus, l'orientation ;
+  la fiche `idees` du panneau ne fait que le montrer. Le service `demanderIdees`
+  n'est donné à la copie que sur la page de la scène, aides allumées.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

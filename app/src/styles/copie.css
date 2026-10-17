@@ -2386,7 +2386,10 @@ kbd {
 /* ——— Aide à la correction (F13.1) : « Corriger » et son degré, au bout de la barre de la copie ——— */
 .copie__aides {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-end;
+  row-gap: 6px;
   margin-left: auto;
 }
 /* « Scènes voisines » n'a rien à voir avec l'IA : un filet l'en sépare */
@@ -2861,5 +2864,273 @@ kbd {
   .copie__aides + .outil-case {
     padding-left: 0;
     border-left: 0;
+  }
+}
+
+/* ——— Idées de choix (F13.3) : « ✦ Idées de choix » au bout de la barre, le panneau à droite du texte ——— */
+.copie__idees {
+  min-height: 34px;
+  margin-left: 8px;
+  padding-inline: 12px;
+  border-radius: 999px;
+  font-size: 15px;
+  white-space: nowrap;
+}
+/* Le pied reste sous la main quand le panneau défile : « Ajouter » ne se cherche pas */
+.cx--ia .cx__pied {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+}
+.copie__idees.est-ouvert {
+  border-color: var(--ia);
+  background: color-mix(in srgb, var(--ia) 12%, var(--ia-pale));
+}
+/* Le panneau des idées : le cadre des fiches, au filet prune de l'IA */
+.cx--ia {
+  box-shadow:
+    inset 0 0 0 1.5px var(--ia),
+    0 14px 26px -18px rgba(94, 34, 85, 0.45);
+}
+.cx--ia .cx__tete {
+  border-bottom-color: var(--ia);
+}
+.cx--ia .cx__tete > .ic {
+  color: var(--ia);
+}
+.cx--ia .cx__pied {
+  box-shadow:
+    inset 1.5px 0 0 var(--ia),
+    inset -1.5px 0 0 var(--ia),
+    inset 0 -1.5px 0 var(--ia);
+}
+.ix {
+  gap: 10px;
+}
+.ix__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.ix__tete .ix__aide {
+  flex: 1 1 14em;
+}
+.ix__tete .lien {
+  margin-left: auto;
+  font-size: var(--t-xs);
+}
+.ix__aide,
+.ix__reste {
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+/* Les idées : une liste à filets sur le prune pâle des propositions ; une idée cochée devient une feuille blanche */
+.ix__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 1px solid var(--ia-trait);
+  border-radius: 10px;
+  background: var(--ia-pale);
+  overflow: hidden;
+}
+.ix-idee {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 10px;
+  padding: 10px 12px 11px 10px;
+  transition: background 0.18s var(--ease);
+}
+.ix-idee + .ix-idee {
+  border-top: 1px solid var(--ia-trait);
+}
+/* Cochée : le filet canard, celui de ce qui est coché ; le fond reste celui de l'IA */
+.ix-idee.est-cochee {
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.ix-idee.est-cochee + .ix-idee {
+  border-top-color: transparent;
+}
+.ix-idee__case {
+  width: 18px;
+  height: 18px;
+  margin: 5px 0 0 1px;
+  accent-color: var(--canard);
+  cursor: pointer;
+}
+.ix-idee__corps {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+/* Tout se retouche sur place : des champs qui se lisent comme du texte, cernés au survol et au clavier */
+.ix-libelle,
+.ix-intention,
+.ix-titre {
+  box-sizing: border-box;
+  display: block;
+  min-width: 0;
+  margin: 0 0 0 -6px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  transition:
+    border-color 0.15s var(--ease),
+    background 0.15s var(--ease);
+}
+.ix-libelle,
+.ix-intention {
+  width: calc(100% + 6px);
+}
+/* Ce qui se retouche se montre : un pointillé discret sous le texte, un cadre au survol */
+.ix-libelle,
+.ix-intention,
+.ix-titre {
+  text-decoration: underline dotted color-mix(in srgb, var(--ia) 45%, transparent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.ix-libelle:hover,
+.ix-intention:hover,
+.ix-titre:hover {
+  border-color: var(--ia-trait);
+  background: color-mix(in srgb, var(--feuille) 60%, transparent);
+}
+.ix-libelle:focus-visible,
+.ix-intention:focus-visible,
+.ix-titre:focus-visible {
+  text-decoration: none;
+}
+.ix-libelle:focus-visible,
+.ix-intention:focus-visible,
+.ix-titre:focus-visible {
+  border-color: var(--canard);
+  background: var(--feuille);
+  outline: 2px solid color-mix(in srgb, var(--canard) 25%, transparent);
+  outline-offset: 0;
+}
+.ix-libelle {
+  color: var(--graphite);
+  font-size: 15.5px;
+  font-weight: 700;
+}
+.ix-intention {
+  display: block;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+  line-height: 1.4;
+}
+.ix-dest {
+  display: grid;
+  gap: 0;
+  margin-top: 4px;
+}
+.ix-dest__tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px 6px;
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.ix-dest__tete > .ic {
+  width: 14px;
+  height: 14px;
+  color: var(--ia);
+}
+.ix-dest__sorte {
+  color: var(--ia-fonce);
+  font-weight: 700;
+}
+.ix-titre,
+.ix-dest__scene {
+  width: calc(100% + 6px);
+  color: var(--graphite);
+  font-size: var(--t-s);
+  font-weight: 600;
+  line-height: 1.4;
+}
+.ix-titre {
+  display: block;
+}
+.ix-dest__scene {
+  margin: 0;
+  padding: 3px 0;
+}
+.ix-dest__ailleurs {
+  color: var(--graphite-2);
+}
+.ix-dest__changer {
+  margin-left: auto;
+  font-size: var(--t-xs);
+}
+.ix-changer {
+  margin-top: 8px;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait-fort);
+}
+.ix__attente {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--ia-pale);
+  color: var(--ia-fonce);
+  font-weight: 600;
+}
+.ix__attente .ic {
+  color: var(--ia);
+  animation: ix-scintille 1.4s var(--ease) infinite alternate;
+}
+@keyframes ix-scintille {
+  from {
+    opacity: 0.45;
+    transform: scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ix__attente .ic {
+    animation: none;
+  }
+}
+.ix__erreur {
+  margin: 0;
+  color: var(--bloque);
+  font-weight: 600;
+}
+.ix__orienter {
+  display: grid;
+  gap: 4px;
+}
+.ix__orienter label {
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.ix__orienter textarea {
+  width: 100%;
+  box-sizing: border-box;
+}
+.ix__ajouter {
+  margin-left: auto;
+}
+@media (max-width: 640px) {
+  .copie__idees {
+    margin-left: 6px;
+    padding-inline: 10px;
   }
 }

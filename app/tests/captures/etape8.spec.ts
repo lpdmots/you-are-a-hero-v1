@@ -265,3 +265,86 @@ test("lot 3 : « ✦ Écrire » une scène vide", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await capturer(page, "ecrire-proposition-390", false);
 });
+
+test("lot 4 : les idées de choix dans le panneau à droite du texte", async ({ page }) => {
+  test.setTimeout(240_000);
+  n = 843;
+  const { compte, base } = await adultePret(page);
+  await base.from("enseignants").update({ nom_affiche: "Mme Laurent" }).eq("id", compte.id);
+  const classe = await semerClasse(base, "CE2", ["Alice"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  const { chapitres } = await semerPartie(base, projet, "La forêt", [
+    { titre: "La lisière", scenes: ["Gué — les pierres qui chantent", "Le pont", "Souche — la lanterne de secours", "La clairière aux lucioles"] },
+  ]);
+  const [gue, pont, souche] = chapitres[0].scenes;
+  await semerAttribution(base, chapitres[0].id, [{ eleve: classe.eleves.Alice.id }]);
+  await base.from("scenes").update({ prise_par_eleve: classe.eleves.Alice.id, consigne: "Le passeur apparaît sur le pont. Raconte ce qu'il dit à Lou.\nDécris :\n– sa lanterne ;\n– sa voix." }).eq("id", pont);
+  await semerBlocs(base, pont, [
+    recit("Une silhouette avance sur le pont de brume, une lanterne à la main. Lou retient son souffle."),
+    recit("« Personne ne traverse sans payer », dit le passeur d'une voix rauque. Sa lanterne grésille, et la brume se referme derrière lui."),
+  ]);
+  // Des idées comme l'IA en rend, servies par le navigateur : aucune demande ne part chez le fournisseur
+  const nouvelle = (libelle: string, intention: string, titre: string) => ({ libelle, intention, destination: { sorte: "nouvelle", titre } });
+  const existante = (libelle: string, intention: string, sceneId: string) => ({ libelle, intention, destination: { sorte: "existante", sceneId } });
+  const idees = [
+    nouvelle("Suivre le passeur sur l'autre rive", "Le passeur mène Lou vers une rive inconnue ; on découvre ce qu'il cache sous sa cape.", "La rive des lanternes"),
+    existante("Retourner au gué", "Prudence : Lou revient sur ses pas, mais les pierres ne chantent plus de la même façon.", gue),
+    nouvelle("Se cacher sous le pont", "Lou observe le passeur sans être vu et surprend une conversation avec quelqu'un d'invisible.", "Sous les planches du pont"),
+    nouvelle("Proposer un objet en échange", "Lou fouille son sac : le passeur accepte, mais pas ce que Lou croyait.", "Le prix du passage"),
+    existante("Allumer la lanterne de secours", "La lumière fait reculer la brume et révèle un sentier caché.", souche),
+    nouvelle("Sauter dans la brume", "Un choix audacieux : Lou tombe plus loin qu'il ne l'imaginait.", "La chute dans la brume"),
+    nouvelle("Demander son nom au passeur", "Le passeur hésite ; son nom ouvre une piste pour la suite du livre.", "Le nom oublié"),
+    nouvelle("Courir sans payer", "Lou fonce ; le pont tangue, et une planche cède.", "La planche qui cède"),
+    nouvelle("Attendre que la brume se lève", "Le temps passe, le passeur s'impatiente, et la nuit tombe.", "La nuit sur le pont"),
+    nouvelle("Chanter la chanson des pierres", "Le chant apaise le passeur, qui laisse passer Lou en silence.", "Le chant qui apaise"),
+  ];
+  let attente = 0;
+  await page.route("**/ia/idees-choix", async (route) => {
+    if (attente) await new Promise((fin) => setTimeout(fin, attente));
+    await route.fulfill({ json: { ok: true, idees, reste: null } });
+  });
+  const panneau = page.getByRole("region", { name: "Idées de choix" });
+  const ligne = (i: number) => panneau.getByRole("listitem").nth(i);
+  const scene = `/projet/${projet}/scene/${pont}`;
+
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await aller(page, scene);
+  await copie(page).waitFor();
+  attente = 4000;
+  await page.getByRole("button", { name: "Idées de choix" }).click();
+  await panneau.getByText("L’IA cherche des idées").waitFor();
+  await capturer(page, "idees-attente", false);
+  await panneau.getByRole("listitem").first().waitFor({ timeout: 10_000 });
+  attente = 0;
+  await capturer(page, "idees-trois", false);
+  await ligne(0).getByRole("checkbox").check();
+  await ligne(1).getByRole("checkbox").check();
+  await capturer(page, "idees-cochees", false);
+  await ligne(2).getByRole("textbox", { name: "Ce que fait le lecteur" }).fill("Se cacher sous le pont et écouter");
+  await capturer(page, "idees-retouche", false);
+  await ligne(0).getByRole("button", { name: "Changer" }).click();
+  await capturer(page, "idees-changer", false);
+  await ligne(0).getByRole("button", { name: "Fermer sans changer" }).click();
+  await ligne(2).getByRole("checkbox").uncheck();
+  await panneau.getByRole("button", { name: "D’autres idées" }).click();
+  await capturer(page, "idees-autres", false);
+  await panneau.getByRole("button", { name: "Orienter l’IA" }).click();
+  await panneau.getByRole("textbox", { name: "Orienter l’IA" }).fill("un choix qui utilise un objet du sac");
+  await capturer(page, "idees-orienter", false);
+  await panneau.getByRole("button", { name: /^Ajouter/ }).click();
+  await page.locator(".copie__message").waitFor();
+  await capturer(page, "idees-ajoutees", false);
+
+  // Comme le serveur, qui ne repropose pas un choix déjà dans la scène
+  idees.splice(0, 2);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, scene);
+  await copie(page).waitFor();
+  await capturer(page, "idees-bouton-390", false);
+  await page.getByRole("button", { name: "Idées de choix" }).click();
+  await panneau.getByRole("listitem").first().waitFor();
+  await capturer(page, "idees-390", false);
+  await ligne(0).getByRole("checkbox").check();
+  await panneau.getByRole("button", { name: /^Ajouter/ }).scrollIntoViewIfNeeded();
+  await capturer(page, "idees-390-cochee", false);
+});

@@ -22,6 +22,7 @@ import {
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
 import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
+import { FicheIdees, useIdeesDeChoix, type Idee } from "./FicheIdees";
 import { FicheLiaison, HorsRecit, type GestesDeLiaison } from "./Liaisons";
 import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, type Editeur, type Signal } from "./regles";
 import { ScenesVoisines } from "./ScenesVoisines";
@@ -194,6 +195,8 @@ export function Copie({
   const arrete = sauvegarde.etat.etat === "garde" || sauvegarde.etat.etat === "refuse" || sauvegarde.etat.etat === "ferme";
   const adulte = droits.role === "adulte";
   const peutChoisir = livre.aChoix && (adulte || droits.profil === "organisation");
+  // Les idées de choix de l'IA : l'adulte seul, en récit à choix, quand les aides sont proposées (F13.3)
+  const peutDemanderIdees = livre.aChoix && adulte && !!services.demanderIdees;
   const vous = !pourEleve;
 
   useEffect(() => {
@@ -390,6 +393,77 @@ export function Copie({
           : "Le choix est ajouté.",
       annuler: true,
       actions: [{ libelle: "Ajouter un autre choix", faire: () => ouvrirCreation(choix.id) }],
+    });
+  };
+
+  // ——— Idées de choix de l'IA (F13.3) ———
+  const idees = useIdeesDeChoix(services.demanderIdees, lieu.chapitreId);
+  const [ajoutIdees, setAjoutIdees] = useState(false);
+  const ouvrirIdees = () => {
+    setBarre(null);
+    setBandeau(null);
+    lacherLeTexte();
+    setFiche({ sorte: "idees" });
+    // La première ouverture demande aussitôt ; les suivantes retrouvent les idées déjà reçues
+    if (idees.etat.premiere && !idees.etat.demande) void idees.demander();
+  };
+  /**
+   * « Ajouter 2 choix et 1 scène » : les nouvelles scènes d'abord, comme pour un choix fait à la
+   * main, avec l'intention pour consigne de départ ; si l'une ne se crée pas, celles déjà créées
+   * sont retirées et rien ne s'ajoute. Puis les choix, à la fin de la scène, après ceux qui y
+   * sont. La scène a pu changer pendant la demande : l'ajout se fait quand même, il n'écrase rien.
+   */
+  const ajouterIdees = async (choisies: Idee[]) => {
+    if (!choisies.length || ajoutIdees) return;
+    setAjoutIdees(true);
+    const creees: { idee: string; scene: SceneCreee }[] = [];
+    let numeros: Record<string, number> | undefined;
+    for (const idee of choisies) {
+      const d = idee.destination;
+      if (d.sorte !== "nouvelle") continue;
+      const fait = await services.creerScene(d.chapitreId, d.titre.trim(), idee.intention.trim());
+      if (!fait.ok) {
+        await Promise.all(creees.map((c) => services.supprimerScene(c.scene.id)));
+        setAjoutIdees(false);
+        setBandeau({ texte: `Les idées n’ont pas été ajoutées : ${fait.erreur}` });
+        return;
+      }
+      creees.push({ idee: idee.id, scene: fait.scene });
+      numeros = fait.numeros;
+    }
+    const utiles = constructionsUtiles(livre.formule, livre.constructions);
+    const blocs: Choix[] = choisies.map((idee) => ({
+      type: "choix", id: nouvelId(), auto: true, libelle: idee.libelle.trim(), construction: tirerConstruction(utiles), children: [{ text: "" }],
+      cible: idee.destination.sorte === "existante" ? idee.destination.sceneId : creees.find((c) => c.idee === idee.id)!.scene.id,
+    }));
+    // Après le dernier bloc qui n'est pas une ligne vide : une scène vide garde sa ligne où écrire, au-dessus
+    const presents = blocsDe(e);
+    let k = presents.length - 1;
+    while (k >= 0 && presents[k].type === "p" && lettresDe(presents[k]) === "") k -= 1;
+    const ou = k >= 0 ? k + 1 : Math.min(1, presents.length);
+    e.tf.withoutNormalizing(() => blocs.forEach((b, n) => e.tf.insertNodes(b, { at: [ou + n] })));
+    creees.forEach((c) => connaitre(c.scene));
+    if (numeros) apprendre({ numeros });
+    idees.retirer(choisies.map((i) => i.id));
+    setAjoutIdees(false);
+    setFiche(null);
+    requestAnimationFrame(() => zone.current?.querySelector(`[data-bloc="${blocs[0].id}"]`)?.scrollIntoView({ block: "nearest" }));
+    const n = blocs.length;
+    setBandeau({
+      texte: `${n} choix ajouté${pluriel(n)} à la fin de la scène${
+        creees.length ? `, et ${creees.length > 1 ? `${creees.length} scènes créées` : "1 scène créée"} dans le chapitre : ${creees.map((c) => `« ${c.scene.titre ?? "sans titre"} »`).join(", ")}` : ""
+      }.`,
+      annuler: () => {
+        e.tf.withoutNormalizing(() => {
+          for (const b of blocs) {
+            const i = indexDe(b.id);
+            if (i !== -1) e.tf.removeNodes({ at: [i] });
+          }
+        });
+        void Promise.all(creees.map((c) => services.supprimerScene(c.scene.id))).then(() => creees.forEach((c) => apprendre({ retiree: c.scene.id })));
+        idees.remettre(choisies);
+        setBandeau({ texte: creees.length ? "Les choix et les scènes créées sont retirés. Les idées restent à cocher." : "Les choix sont retirés. Les idées restent à cocher." });
+      },
     });
   };
 
@@ -747,7 +821,7 @@ export function Copie({
   /** Le bloc qu'une fiche concerne : s'il disparaît du texte, elle se referme. */
   const blocDe = (f: FicheOuverte): string | null => {
     if (f.sorte === "creation" || f.sorte === "action") return f.apres;
-    if (f.sorte === "liaison" || f.sorte === "objet-nouveau" || f.sorte === "formule-nouvelle") return null;
+    if (f.sorte === "liaison" || f.sorte === "objet-nouveau" || f.sorte === "formule-nouvelle" || f.sorte === "idees") return null;
     return f.bloc;
   };
   // Les listes courtes — commandes, objets, formules — s'ouvrent au curseur, sous son bloc et
@@ -983,7 +1057,24 @@ export function Copie({
       <div className={`copie${arrete ? " copie--lecture" : ""}`}>
         <div className="copie__barre">
           {tete}
-          {aides && !autre && !arrete ? <div className="copie__aides">{aides}</div> : null}
+          {(aides || peutDemanderIdees) && !autre && !arrete ? (
+            <div className="copie__aides">
+              {aides}
+              {peutDemanderIdees ? (
+                <button
+                  type="button"
+                  className={`btn btn--petit btn--ia copie__idees${fiche?.sorte === "idees" ? " est-ouvert" : ""}`}
+                  title="Demander à l’IA des idées de choix pour la fin de la scène"
+                  aria-pressed={fiche?.sorte === "idees"}
+                  onMouseDown={(ev) => ev.preventDefault()}
+                  onClick={() => (fiche?.sorte === "idees" ? fermer() : ouvrirIdees())}
+                >
+                  <Icone nom="ia" />
+                  Idées de choix
+                </button>
+              ) : null}
+            </div>
+          ) : null}
           {aDesVoisines && !autre ? caseVoisines : null}
           {autre ? (
             autre.barre
@@ -1209,7 +1300,9 @@ export function Copie({
         {autre ? autre.corps : null}
         {dansLePanneau && !autre ? (
           <Reglages panneau={panneau}>
-            {dansLePanneau.sorte === "creation" ? (
+            {dansLePanneau.sorte === "idees" ? (
+              <FicheIdees idees={idees} services={services} ajout={ajoutIdees} onAjouter={(choisies) => void ajouterIdees(choisies)} onFermer={fermer} />
+            ) : dansLePanneau.sorte === "creation" ? (
               <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onApercu={setApercu} onFermer={fermer} />
             ) : dansLePanneau.sorte === "poser-image" ? (
               <FichePoserImage services={services} surLaLigne={admetUneImage()} onPoser={poserImage} onFermer={fermer} />

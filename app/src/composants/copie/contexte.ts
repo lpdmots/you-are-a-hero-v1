@@ -81,7 +81,8 @@ export type SceneCreee = { id: string; reference: number; titre: string | null; 
 export type Services = {
   /** Chercher une destination dans les textes ; sans cette recherche, seuls les titres sont cherchés */
   chercher?: (demande: string) => Promise<Trouvee[]>;
-  creerScene: (chapitreId: string, titre: string) => Promise<{ ok: true; scene: SceneCreee; numeros: Record<string, number> } | { ok: false; erreur: string }>;
+  /** Une nouvelle scène ; depuis une idée de choix, l'intention de l'idée lui sert de consigne de départ (F13.3) */
+  creerScene: (chapitreId: string, titre: string, consigne?: string) => Promise<{ ok: true; scene: SceneCreee; numeros: Record<string, number> } | { ok: false; erreur: string }>;
   /** « Supprimer aussi la scène », après l'annulation d'un choix qui l'avait créée (F05-AC44) */
   supprimerScene: (sceneId: string) => Promise<{ ok: boolean; erreur?: string }>;
   relireNumeros: () => Promise<Record<string, number>>;
@@ -98,7 +99,20 @@ export type Services = {
   imagesDuProjet?: () => Promise<string[]>;
   /** « Scènes voisines » : la préférence de la personne, pour toutes ses scènes (F04-AC08) */
   reglerVoisines?: (affiche: boolean) => Promise<unknown>;
+  /**
+   * « ✦ Idées de choix » (F13.3), pour l'adulte seul, quand les aides sont proposées : dix idées
+   * en une demande. Sans ce service, ni bouton ni panneau.
+   */
+  demanderIdees?: (demande: { orientation: string; dejaMontrees: string[] }) => Promise<ReponseIdees>;
 };
+
+/** Une idée de choix telle que le serveur la rend (F13.3) : rien n'est encore créé. */
+export type IdeeRecue = {
+  libelle: string;
+  intention: string;
+  destination: { sorte: "nouvelle"; titre: string } | { sorte: "existante"; sceneId: string };
+};
+export type ReponseIdees = { ok: true; idees: IdeeRecue[]; reste: string | null } | { ok: false; message: string };
 
 export type Lieu = { projetId: string; sceneId: string; chapitreId: string };
 
@@ -124,7 +138,9 @@ export type FicheOuverte =
   /** Un nouvel objet, une nouvelle formule : ce qui se saisit s'ouvre dans le panneau */
   | { sorte: "objet-nouveau"; nom: string }
   | { sorte: "formule-nouvelle"; pour: { sorte: "action"; apres: string; remplace: boolean } | { sorte: "formules"; bloc: string } }
-  | { sorte: "reglages"; bloc: string; confirmer?: "dernier-renvoi"; auClavier?: boolean };
+  | { sorte: "reglages"; bloc: string; confirmer?: "dernier-renvoi"; auClavier?: boolean }
+  /** Les idées de choix de l'IA (F13.3) : elles ne concernent aucun bloc */
+  | { sorte: "idees" };
 
 /** La phrase de choix qu'on est en train de créer : la copie la montre à sa place, en attente, pendant la saisie. */
 export type ApercuDeChoix = { libelle: string; construction: Construction };

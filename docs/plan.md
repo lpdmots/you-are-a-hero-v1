@@ -2355,6 +2355,70 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       consigne un peu plus haute la fait défiler en 1366 × 768) : il le pose
       désormais à la fin du paragraphe. Le comportement de « Fin » dans un vrai
       navigateur, sur une page qui défile, reste à vérifier.
+  - **Lot 4 — idées de choix : construit le 17 octobre 2026,** en local, sans
+    migration (le journal accepte déjà l'aide `idees-choix` ; les liens se
+    déduisent du texte). « ✦ Idées de choix », pastille prune à droite de
+    « Corriger » dans l'en-tête de la copie, pour l'adulte seul, en récit à choix,
+    quand les aides sont proposées ; pas dans la scène ouverte à côté de
+    l'aperçu. Le panneau à droite du texte demande aussitôt dix idées et en montre
+    trois : une case, le libellé, une ligne d'intention, la destination (« Nouvelle
+    scène » et son titre, ou « Scène existante » et son nom), tout modifiable sur
+    place ; « Changer » ouvre le menu de destination de « Nouveau choix ». « D'autres
+    idées » montre les trois suivantes sans appel, puis redemande en écartant les
+    idées déjà vues ; « Orienter l'IA » jette celles qui n'ont pas été montrées.
+    « Ajouter 2 choix et 1 scène » crée d'abord les scènes par
+    `creerSceneDepuisChoix` (qui reçoit désormais une consigne), l'intention pour
+    consigne de départ, puis écrit les choix dans la copie, à la fin de la scène ;
+    le message qui suit porte « Annuler ». Adresse `/ia/idees-choix`.
+    - **Critères fermés :** F13-AC08, AC09, AC10, AC11 (les critères de F13.3 ;
+      AC12 et AC13 sont ceux de la Préparation, F13.4, au lot 5) ; les aides
+      éteintes et le récit classique, sans bouton ; la demande unique, les dix
+      idées montrées trois par trois, l'orientation et « Annuler ».
+    - **Critères qui attendent :** la qualité réelle des idées (choix vraiment
+      différents, contraintes de la scène tenues), au jugement du lot 9 sur un
+      chapitre de sa classe.
+    - **Précisions prises en construisant, à faire confirmer au porteur :** la
+      première ouverture demande aussitôt, sans écran d'attente à remplir ;
+      refermer le panneau garde les idées, et le rouvrir les montre sans nouvel
+      appel, tant que la page reste ouverte ; les idées cochées restent en tête
+      quand « D'autres idées » remplace les autres ; retoucher une idée la coche ;
+      la dernière page d'une demande peut montrer moins de trois idées ; une idée
+      dont le libellé ou le titre est vidé bloque l'ajout ; une scène où la scène
+      mène déjà n'est pas reproposée, ni un libellé déjà dans la scène (une
+      demande peut ainsi rendre huit idées au lieu de dix) ; l'IA ne désigne que
+      des scènes du chapitre, l'adulte peut en choisir une ailleurs par « Changer » ;
+      une nouvelle scène créée depuis une idée n'a ni texte ni élève, et va à la
+      fin de son chapitre ; les choix se posent après le dernier bloc qui n'est pas
+      une ligne vide, si bien qu'une scène vide garde sa ligne où écrire au-dessus ;
+      si une scène ne se crée pas, celles déjà créées sont retirées et aucun choix
+      n'est écrit ; après l'ajout, le panneau se referme et le premier choix vient
+      sous les yeux ; « Annuler » retire les choix, met les scènes créées dans la
+      corbeille (comme « Supprimer aussi la scène » de F05-AC44) et remet les
+      idées dans le panneau, cochées ; ce qui part : la consigne, la fin du texte
+      (6 000 signes au plus, en paragraphes entiers, sans note), les libellés des
+      choix déjà là, le titre et le résumé du chapitre, les titres et consignes de
+      ses scènes (soixante au plus), les objets, la Préparation, l'orientation et
+      les libellés déjà montrés.
+    - **Deux points de règle, signalés au porteur, non décidés :** une scène vide
+      qui reçoit des choix n'est plus vide (F07.1), et « ✦ Écrire » (F13.6) ne s'y
+      propose plus ; recommandé : proposer « Écrire » tant que la scène n'a aucun
+      paragraphe de récit écrit, le texte s'écrivant au-dessus des choix. Et
+      « Annuler » met les scènes créées dans la corbeille plutôt que de les
+      effacer, faute de suppression définitive sans migration ; recommandé : s'en
+      tenir là.
+    - **Écrans critiqués** en deux lectures sur les captures 844 à 854 : 27/40
+      (informée) et 26/40 (indépendante), corrigés aussitôt (voir le design).
+    - **Dépense :** deux vrais appels à Opus 5.5 sur une scène de l'histoire
+      d'essai, en local (le second lancé par une page d'idées épuisée), 9,5 s et
+      0,026 dollar chacun ; idées variées, tenues par la situation (la carte déjà
+      prise n'est pas reproposée), titres dans la forme du chapitre ; une idée de
+      la seconde demande frôle une idée déjà vue (« Regarder dans la casquette »
+      après « Mettre la casquette de son père »). Dépense de l'étape, environ
+      1,24 dollar (1,1 €).
+    - **Tests automatiques :** 2 unitaires, 7 contre la base, 6 parcours. Suite
+      complète des parcours avant le commit : 342 sur 343 ; le parcours de bout en
+      bout du partage (étape 7) a dépassé son délai sur « Partager », puis passe
+      seul, avec ceux des choix et des idées (45 sur 45).
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

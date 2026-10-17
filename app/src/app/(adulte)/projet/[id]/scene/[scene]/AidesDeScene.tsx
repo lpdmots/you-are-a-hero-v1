@@ -8,6 +8,7 @@ import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import type { ReponseConsigne, ReponseTitres } from "@/serveur/aides-de-la-scene";
+import type { ReponseIdees } from "@/serveur/idees-de-choix";
 
 /**
  * Le ✦ du titre de scène (F05) et « ✦ Formuler » sous la consigne (F13.2), dans la page de
@@ -25,6 +26,24 @@ async function demander<R extends { ok: boolean }>(adresse: string, scene: strin
     const reponse = await fetch(adresse, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scene }) });
     if (reponse.status === 401) return { ok: false, message: "Connectez-vous de nouveau." };
     return (await reponse.json()) as R;
+  } catch {
+    return { ok: false, message: MESSAGES_IA.pasDeReponse };
+  }
+}
+
+/**
+ * « ✦ Idées de choix » (F13.3) : le panneau des idées, dans la copie, demande par cette adresse.
+ * La page n'envoie que l'orientation et les libellés déjà montrés ; le serveur relit le reste.
+ */
+export async function demanderDesIdees(scene: string, demande: { orientation: string; dejaMontrees: string[] }): Promise<ReponseIdees> {
+  try {
+    const reponse = await fetch("/ia/idees-choix", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ scene, orientation: demande.orientation, dejaMontrees: demande.dejaMontrees }),
+    });
+    if (reponse.status === 401) return { ok: false, message: "Connectez-vous de nouveau." };
+    return (await reponse.json()) as ReponseIdees;
   } catch {
     return { ok: false, message: MESSAGES_IA.pasDeReponse };
   }

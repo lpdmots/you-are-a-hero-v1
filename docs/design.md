@@ -2111,6 +2111,51 @@ lecture proposait « Ignorer ») ; le message en bas de l'écran, commun à tout
 l'application, plutôt qu'au bord de la fiche ; la bulle de « Formuler »,
 jugée suffisante.
 
+**Lot 4 — les idées de choix, dans le panneau à droite du texte (F13.3).** Sans
+maquette. Conçu avec impeccable dans le système « Cahiers d'aventure », critiqué
+en deux lectures séparées sur captures (`npm run captures -- etape8`, 844 à 854,
+idées servies par le navigateur, sans appel) : 27/40 (lecture informée) et 26/40
+(lecture indépendante). Forme construite :
+
+- **En-tête de la copie :** « ✦ Idées de choix », pastille prune à droite de
+  « Corriger · Degré 2 », à la même hauteur ; plus foncée quand le panneau est
+  ouvert, un second clic le referme. En 390 px, elle suit « Corriger » sur la même
+  ligne.
+- **Le panneau :** le cadre des fiches, au filet prune ; « ✦ Idées de choix » en
+  tête. Dessous, une ligne d'aide (« Cochez celles à ajouter ; un clic sur un texte
+  le retouche. ») et, à droite, « Orienter l'IA », lien discret qui déplie le champ
+  à cet endroit. Les idées forment une liste à filets sur le prune pâle des
+  propositions, pas des cartes : la case, le libellé en gras, l'intention en gris,
+  puis la destination sur deux lignes (« → Nouvelle scène » ou « → Scène
+  existante · n° 1 » et « Changer » au bout ; le titre entier dessous). Libellé,
+  intention et titre sont des champs qui se lisent comme du texte, soulignés d'un
+  pointillé prune, cernés au survol et au clavier. Une idée cochée garde le fond
+  prune et prend un filet canard de 2 px, couleur de ce qui est coché. « Changer »
+  remplace la destination par le menu de « Nouveau choix », ouvert sur la
+  destination actuelle, avec « Fermer sans changer » ; Échap le referme seul.
+- **Le pied,** collé au bas du panneau quand il défile : « ✦ D'autres idées »
+  (« Nouvelles idées » après une orientation), bouton d'IA cerné, et « Ajouter 2
+  choix et 1 scène », seul bouton plein, éteint tant que rien n'est coché. Pendant
+  la première demande, pas de pied : « ✦ L'IA cherche des idées pour cette
+  scène… », les étincelles qui scintillent (immobiles si le système le demande).
+  Après « D'autres idées », la première idée nouvelle vient sous les yeux.
+- **Après l'ajout :** le panneau se referme, le premier choix vient sous les yeux,
+  le message de la copie dit « 2 choix ajoutés à la fin de la scène, et 1 scène
+  créée dans le chapitre : « La rive des lanternes ». » avec « Annuler ».
+- **En 390 px :** le panneau monte du bas de l'écran, comme les autres fiches, son
+  pied toujours visible.
+
+Corrigé après la critique : la case cochée qui rendait l'idée blanche (lue comme
+l'inverse d'une sélection) ; « Orienter l'IA » au bas du panneau, masqué par le
+pied ; rien qui montrait ce qui se retouche ; le menu de destination ouvert sur
+« Scène existante » pour une nouvelle scène, sous l'ancienne destination, et son
+« Garder » ambigu ; « dix idées » annoncées et trois montrées ; le pied vide
+pendant l'attente ; les nouvelles idées arrivées hors de vue ; le titre coupé
+d'une nouvelle scène. Laissé : « D'autres idées », mot arrêté à l'entretien (une
+lecture proposait « Remplacer les non cochées ») ; pas de « Tout cocher », dix
+idées n'étant jamais montrées ensemble ; une idée par ligne de trois niveaux de
+texte, l'intention étant ce qui distingue deux idées.
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

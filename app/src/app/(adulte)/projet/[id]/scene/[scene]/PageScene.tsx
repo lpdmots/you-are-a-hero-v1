@@ -40,7 +40,7 @@ import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import { useAidesIa } from "@/composants/AidesIa";
 import { compterMots, paragraphesACorriger } from "@/domaine/correction";
-import { useConsigneIa, useTitreIa } from "./AidesDeScene";
+import { demanderDesIdees, useConsigneIa, useTitreIa } from "./AidesDeScene";
 import { useCorrection } from "./Correction";
 import { useEcriture } from "./Ecriture";
 import { FicheNumero } from "./FicheNumero";
@@ -236,10 +236,11 @@ export function PageScene({
     [scene.id],
   );
 
+  const aides = useAidesIa();
   // Ce que la copie demande au serveur : chercher une destination, créer une scène depuis un choix
   const services: Services = {
     chercher: (demande) => chercherDestinations(projet.id, demande),
-    creerScene: (chapitreId, titreScene) => creerSceneDepuisChoix(chapitreId, titreScene),
+    creerScene: (chapitreId, titreScene, consigneScene) => creerSceneDepuisChoix(chapitreId, titreScene, consigneScene),
     supprimerScene: async (id) => {
       const reponse = await supprimer("scene", id);
       return reponse.ok ? { ok: true } : { ok: false, erreur: reponse.erreur };
@@ -260,6 +261,8 @@ export function PageScene({
     },
     imagesDuProjet: () => listerImages(projet.id),
     reglerVoisines: (affiche) => reglerVoisines(affiche),
+    // Les idées de choix (F13.3) : sur la page de la scène, pas à côté de l'aperçu ; rien quand les aides sont éteintes
+    demanderIdees: aides.proposer && !aCote ? (demande) => demanderDesIdees(scene.id, demande) : undefined,
   };
 
   // À côté de l'aperçu : « Tout annuler » rend la scène telle qu'à l'ouverture de l'éditeur (F11-AC47)
@@ -309,7 +312,6 @@ export function PageScene({
   const [selection, setSelection] = useState<string[]>([]);
   // Les mots du récit et de la sélection, tenus sans redessiner la page : la longueur d'une correction s'en sert
   const mots = useRef({ tout: compterMots(paragraphesACorriger(recu.texte).map((p) => p.texte).join(" ")), selection: 0 });
-  const aides = useAidesIa();
   const correction = useCorrection({
     sceneId: scene.id,
     version: () => versionLue.current,
