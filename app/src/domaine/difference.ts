@@ -1,18 +1,18 @@
 /**
  * La différence mot à mot entre deux textes : ce qui reste, ce qui part, ce qui arrive. Elle
  * sert à marquer une correction dans la copie, comme au stylo (F13.1, degrés 1 à 3), et à la
- * page de jugement de l'essai V17. Un mot et un signe de ponctuation sont deux morceaux, chacun
- * avec l'espace qui le suit : « brume et il » devenu « brume. Il » laisse « brume » intact.
- * Un mot qui ne change que d'apostrophe ou d'espace insécable est « pareil » : il garde sa forme
- * dans chacun des deux textes, `texte` pour le nouveau, `avant` pour l'ancien, espace comprise.
- * Un changement refusé se recompose ainsi avec l'espace du texte d'origine (`domaine/correction.ts`).
+ * page de jugement de l'essai V17. Un texte se découpe en mots et en séparateurs (espaces et
+ * ponctuation, d'un seul tenant) : « range ,et » devenu « range, et » change le seul séparateur
+ * « ␣, » en « ,␣ », et une faute d'espacement se voit comme les autres (F13.1, degré 1).
+ * L'apostrophe droite et la courbe, l'espace ordinaire et l'insécable sont « pareil » : chaque
+ * texte garde sa forme, `texte` pour le nouveau, `avant` pour l'ancien.
  */
 export type Morceau = { sorte: "pareil" | "retire" | "ajoute"; texte: string; /** Pour « pareil » : la forme du texte d'origine */ avant?: string };
 
 const typographie = (t: string): string => t.replace(/[’ʼ]/g, "'").replace(/[\u00a0\u202f]/g, " ");
 
-/** « Le dragon dormé. » → ["Le ", "dragon ", "dormé", ". "] : mots et signes, chacun avec l'espace qui le suit. */
-export const mots = (texte: string): string[] => texte.match(/[\p{L}\p{N}'’ʼ-]+\s*|[^\s\p{L}\p{N}]\s*|\s+/gu) ?? [];
+/** « Le dragon dormé. » → ["Le", " ", "dragon", " ", "dormé", "."] : les mots, et entre eux leurs séparateurs. */
+export const mots = (texte: string): string[] => texte.match(/[\p{L}\p{N}'’ʼ-]+|[^\p{L}\p{N}'’ʼ-]+/gu) ?? [];
 
 /**
  * La plus longue suite commune (programmation dynamique, en mots) : un paragraphe d'élève
@@ -23,7 +23,7 @@ export function difference(avant: string, apres: string): Morceau[] {
   const a = mots(avant);
   const b = mots(apres);
   // L'apostrophe droite et la courbe, l'espace ordinaire et l'insécable ne font pas une correction
-  const egal = (x: string, y: string) => typographie(x.trimEnd()) === typographie(y.trimEnd());
+  const egal = (x: string, y: string) => typographie(x) === typographie(y);
   if (a.length * b.length > 16_000_000) return fusionner([{ sorte: "retire", texte: avant }, { sorte: "ajoute", texte: apres }]);
 
   const n = a.length;

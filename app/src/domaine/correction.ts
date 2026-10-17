@@ -62,8 +62,6 @@ export function segmentsDe(avant: string, apres: string, premier = 0): Segment[]
 
 export const nombreDe = (segments: readonly Segment[]): number => segments.filter((s) => s.sorte === "change").length;
 
-const espaceFinale = (t: string): string => t.slice(t.trimEnd().length);
-
 /**
  * Une lettre du texte recomposé, avec la place qu'elle occupait dans le texte d'origine, ou
  * null si elle vient de la proposition.
@@ -72,9 +70,9 @@ type Lettre = { c: string; source: number | null };
 
 /**
  * Le texte qu'on obtient en gardant les changements acceptés : ce qui reste garde sa forme
- * d'origine (apostrophe, espaces) ; un changement refusé rend ce qu'il retirait, avec l'espace
- * qui le suivait ; seul l'espace devant un changement accepté prend celui de la proposition,
- * pour que « dort la » devenu « dort. La » ne garde pas d'espace avant le point.
+ * d'origine (apostrophe, espace insécable) ; un changement refusé rend ce qu'il retirait. Les
+ * espaces et la ponctuation font des changements comme les mots : « quai.Le » devenu
+ * « quai. Le » se garde ou se refuse d'un clic (F13.1, degré 1).
  */
 function recomposerEnLettres(segments: readonly Segment[], refuses: ReadonlySet<number>): Lettre[] {
   const sortie: Lettre[] = [];
@@ -85,25 +83,14 @@ function recomposerEnLettres(segments: readonly Segment[], refuses: ReadonlySet<
       i += c.length;
     }
   };
-  segments.forEach((s, k) => {
-    if (s.sorte === "change") {
-      if (refuses.has(s.n)) depuisLOrigine(s.retire);
-      else {
-        for (const c of s.ajoute) sortie.push({ c, source: null });
-        i += s.retire.length;
-      }
-      return;
+  for (const s of segments) {
+    if (s.sorte === "pareil") depuisLOrigine(s.avant);
+    else if (refuses.has(s.n)) depuisLOrigine(s.retire);
+    else {
+      for (const c of s.ajoute) sortie.push({ c, source: null });
+      i += s.retire.length;
     }
-    const suivant = segments[k + 1];
-    const devantUnAccepte = suivant?.sorte === "change" && !refuses.has(suivant.n);
-    if (!devantUnAccepte) return depuisLOrigine(s.avant);
-    const espace = espaceFinale(s.avant);
-    depuisLOrigine(s.avant.slice(0, s.avant.length - espace.length));
-    const nouvelle = espaceFinale(s.apres);
-    // L'espace de la proposition, posé sur celui d'origine tant qu'il y en a : il en garde la forme
-    [...nouvelle].forEach((c, j) => sortie.push({ c, source: j < espace.length ? i + j : null }));
-    i += espace.length;
-  });
+  }
   return sortie;
 }
 

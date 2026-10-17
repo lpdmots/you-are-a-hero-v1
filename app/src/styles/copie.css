@@ -2437,6 +2437,8 @@ kbd {
 }
 .corr {
   display: inline;
+  /* Un espace ajouté ou retiré se voit, comme un mot */
+  white-space: pre-wrap;
   padding: 0 1px;
   border: 0;
   border-radius: 3px;

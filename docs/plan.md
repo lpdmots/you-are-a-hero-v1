@@ -2201,12 +2201,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     classe. La demande passe par l'adresse `/ia/correction` (et `/ia/pistes`) ;
     « Garder » et « Annuler » sont des actions serveur. Le serveur relit le
     texte lui-même et recompose la correction d'après ce qu'il a relu.
-    - **Critères fermés :** F13-AC02, AC03, AC04 ; F13-AC01 à l'écran (le
+    - **Critères fermés :** F13-AC02, AC03, AC04 ; F13-AC20 pour la marque et
+      le refus ; F13-AC01 à l'écran (le
       degré choisi pour une scène ne change pas le défaut) ; F13-AC17 pour la
       forme (deux marques au degré 1 sur la réponse simulée), la qualité restant
       à juger ; le message du texte changé ; les aides éteintes, sans
       « Corriger » ni pistes ; les pistes, absentes en mode personnel.
-    - **Critères qui attendent :** F13-AC05 et AC17 pour la qualité réelle, au
+    - **Critères qui attendent :** F13-AC05, AC17 et AC20 pour la qualité réelle, au
       jugement du lot 9 sur des textes de sa classe.
     - **Précisions prises en construisant, à faire confirmer au porteur :**
       pas de « Corriger » dans la scène ouverte à côté de l'aperçu du livre,
@@ -2240,6 +2241,15 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 12 unitaires, 12 contre la base, 9 parcours ;
       le test de F13-AC17 attend « dormait » au degré 1 (F13.1 révisé le
       17 octobre 2026).
+    - **Retouche du même jour, sur sa remarque (F13.1, F13-AC20) :** les fautes
+      d'espacement et la majuscule en début de phrase se corrigent dès le
+      degré 1. La différence découpe désormais le texte en mots et en
+      séparateurs (espaces et ponctuation d'un seul tenant) : une faute
+      d'espacement devient un changement marqué et refusable, alors qu'elle
+      passait jusque-là pour « pareil » et ne s'appliquait pas (« quai.Le »
+      restait tel quel). Consigne du degré 1 reprise et vérifiée sur Sonnet 5.5
+      par deux vrais appels (cas `correction-1` et `correction-1b` du jeu
+      d'essai) : 0,008 dollar ; dépense de l'étape, environ 1,15 dollar.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

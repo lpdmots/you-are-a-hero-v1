@@ -9726,8 +9726,8 @@ remplace les trois intentions. Chaque degré est nommé à l'écran :
 
 | Degré | Nom | Intervention attendue |
 | --- | --- | --- |
-| 1 | Orthographe | Tout ce qui s'écrit mal, sans toucher à la phrase : les mots, les terminaisons de conjugaison quand l'intention est claire (« dormé » pour « dormait »), les accords, les homophones (a/à, sa/ça, et/est). |
-| 2 | Orthographe et grammaire | Le degré 1, plus la ponctuation, les majuscules et les tournures mal construites (« il se dit que il ») ; c'était « Corriger les erreurs ». |
+| 1 | Orthographe | Tout ce qui s'écrit mal, sans toucher à la phrase : les mots, les terminaisons de conjugaison quand l'intention est claire (« dormé » pour « dormait »), les accords, les homophones (a/à, sa/ça, et/est), les espaces autour de la ponctuation et la majuscule en début de phrase (« il le range ,et part . » → « Il le range, et part. »). |
+| 2 | Orthographe et grammaire | Le degré 1, plus la ponctuation qui manque ou qui est en trop et les tournures mal construites (« il se dit que il ») ; c'était « Corriger les erreurs ». |
 | 3 | Phrases plus claires | Répétitions, phrases trop longues, mots imprécis, sans rien changer à ce qui se passe ; c'était « Clarifier la formulation ». |
 | 4 | Style | Vocabulaire plus riche, phrases plus fluides, mêmes événements. |
 | 5 | D'après la consigne | Le texte de l'élève sert de base et s'améliore pour bien répondre à la consigne ; il peut recevoir ce que la consigne demande, sans événement ni personnage nouveau. |
@@ -9738,6 +9738,14 @@ terminaison de conjugaison fautive dont l'intention est claire (« dormé » pou
 corrige dès le degré 1, avec les accords et les homophones ; la grammaire du
 degré 2 désigne les tournures mal construites. Le degré 1 ne change ni l'ordre
 des mots ni la ponctuation.
+
+**Révisé par le porteur le même jour, à l'essai du lot 2 :** les fautes
+d'espacement se corrigent dès le degré 1 (« il le range ,et part . » →
+« Il le range, et part. », « quai.Le » → « quai. Le »), selon la typographie
+française, avec la majuscule en début de phrase que montre son exemple. Le
+degré 1 n'ajoute ni ne retire aucun signe de ponctuation : il déplace
+seulement les espaces autour de ceux qui sont là. À l'écran, une faute
+d'espacement se marque et se refuse comme une faute de mot.
 
 Le degré 2 est le défaut d'un compte neuf ; l'adulte règle **son propre
 degré par défaut** une fois pour toutes, à part, et le change en un clic pour
@@ -9847,6 +9855,12 @@ livraison ; le degré 5, borné par la consigne, en ouvre une part le 16 octobre
   répétition « très très », qui relève du degré 3, reste, et la phrase garde ses
   mots et sa ponctuation (révisé le 17 octobre 2026). Ce critère sert à
   évaluer la qualité des propositions, sans contrôle automatique du sens.
+- **F13-AC20 — Espaces dès le degré 1 :** étant donné « il le range ,et part . »
+  en tête de paragraphe, lorsque l'adulte demande une proposition au degré 1,
+  alors elle rend « Il le range, et part. », chaque correction marquée dans la
+  copie et refusable d'un clic ; aucune virgule ni aucun point n'est ajouté ou
+  retiré (17 octobre 2026). La qualité se juge sur l'essai ; la marque et le
+  refus se vérifient automatiquement.
 - **F13-AC02 — Proposition avant application :** étant donné une suggestion IA
   disponible, tant que l'enseignant ne l'a pas appliquée, le texte de la scène
   reste inchangé ; il peut refuser la proposition ou la retoucher.

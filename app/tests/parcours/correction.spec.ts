@@ -71,6 +71,22 @@ test.describe("Corriger une scène (F13.1)", () => {
     expect(await motsEnBase(s.s1)).toBe(`${DRAGON} /  / Alice a oublié la grote. / ${CHEMIN}`);
   });
 
+  test("F13-AC20 — au degré 1, les fautes d'espacement et la majuscule sont marquées, et chacune se refuse", async ({ page }) => {
+    const s = await sceneDAlice(page);
+    await semerBlocs(s.base, s.s3, [recit("il le range ,et part .")]);
+    await aller(page, `/projet/${s.projet}/scene/${s.s3}`);
+    await choisirDegre(page, 1);
+    await page.getByRole("button", { name: "Corriger", exact: true }).click();
+    await expect(changements(page)).toHaveCount(3);
+    await expect(changements(page).nth(0)).toHaveAccessibleName("Changement 1 : « il » devient « Il ». Gardé.");
+    await expect(changements(page).nth(1)).toHaveAccessibleName("Changement 2 : « ␣, » devient « ,␣ ». Gardé.");
+    await expect(changements(page).nth(2)).toHaveAccessibleName("Changement 3 : « ␣. » devient « . ». Gardé.");
+    await changements(page).nth(0).click();
+    await page.getByRole("button", { name: "Garder les changements" }).click();
+    await expect(MESSAGE(page)).toContainText("2 changements gardés.");
+    expect(await motsEnBase(s.s3)).toBe("il le range, et part.");
+  });
+
   test("F13-AC03, F13-AC04 — la correction gardée laisse l'état, l'élève, le choix vers S002 et la remise d'Alice", async ({ page }) => {
     const s = await sceneDAlice(page);
     await sql(

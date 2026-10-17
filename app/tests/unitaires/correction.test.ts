@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { Paragraphe, Texte } from "@/domaine/copie";
 import {
-  appliquerCorrection, changementsDe, corrigerParagraphe, paragraphesACorriger, recomposer, segmentsDe, selectionACorriger,
+  appliquerCorrection, changementsDe, corrigerParagraphe, nombreDe, paragraphesACorriger, recomposer, segmentsDe, selectionACorriger,
 } from "@/domaine/correction";
 
 /**
@@ -46,7 +46,7 @@ describe("Changements gardés ou refusés (F13.1, degrés 1 à 3)", () => {
   it("F13-AC17 — au degré 1, deux changements : « dormé » devient « dormait », « grote » « grotte »", () => {
     const s = segmentsDe(avant, apres);
     expect(s.filter((x) => x.sorte === "change")).toEqual([
-      { sorte: "change", n: 0, retire: "dormé ", ajoute: "dormait " },
+      { sorte: "change", n: 0, retire: "dormé", ajoute: "dormait" },
       { sorte: "change", n: 1, retire: "grote", ajoute: "grotte" },
     ]);
   });
@@ -64,9 +64,15 @@ describe("Changements gardés ou refusés (F13.1, degrés 1 à 3)", () => {
     expect(recomposer(s, new Set([0]))).toBe("le pont de brume et il y avait");
   });
 
-  it("ce qui ne se voit pas ne s'applique pas : l'apostrophe et l'espace de l'auteur restent", () => {
-    const s = segmentsDe("Il n'en est pas sûr : l'eau  monte", "Il n’en est pas sûr : l’eau monte.");
-    expect(recomposer(s)).toBe("Il n'en est pas sûr : l'eau  monte.");
+  it("F13-AC20 — une faute d'espacement se garde ou se refuse comme une autre ; l'apostrophe et l'espace insécable de l'auteur restent", () => {
+    const s = segmentsDe("Il n'en est pas sûr\u00a0: l'eau monte", "Il n’en est pas sûr : l’eau monte.");
+    expect(recomposer(s)).toBe("Il n'en est pas sûr\u00a0: l'eau monte.");
+    const espaces = segmentsDe("il le range ,et part .", "Il le range, et part.");
+    expect(nombreDe(espaces)).toBe(3);
+    expect(recomposer(espaces)).toBe("Il le range, et part.");
+    expect(recomposer(espaces, new Set([0]))).toBe("il le range, et part.");
+    expect(recomposer(espaces, new Set([1, 2]))).toBe("Il le range ,et part .");
+    expect(recomposer(segmentsDe("Lou courut sur le quai.Le train partit.", "Lou courut sur le quai. Le train partit."))).toBe("Lou courut sur le quai. Le train partit.");
   });
 
   it("un mot retiré, puis refusé ; un mot ajouté, puis refusé", () => {

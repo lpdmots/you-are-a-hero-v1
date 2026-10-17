@@ -9,7 +9,7 @@ import { Icone } from "@/composants/Icone";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { DEGRES, marquesDansLaCopie, NOMS_DES_DEGRES, ROLES_DES_DEGRES, type Degre } from "@/domaine/aides-ia";
-import { changementsDe, segmentsParParagraphe, type Proposition, type Segment } from "@/domaine/correction";
+import { changementsDe, segmentsParParagraphe, type Proposition } from "@/domaine/correction";
 import type { Texte } from "@/domaine/copie";
 import { pluriel } from "@/domaine/texte";
 import type { TexteDeScene } from "@/serveur/copie";
@@ -297,17 +297,8 @@ function EnTete({ degre }: { degre: Degre }) {
   );
 }
 
-/** Ce qui reste, dans sa forme d'origine ; seul l'espace devant un changement gardé prend celui de la proposition. */
-function pareil(segments: Segment[], k: number, refuses: number[]): string {
-  const s = segments[k];
-  if (s.sorte !== "pareil") return "";
-  const suivant = segments[k + 1];
-  if (suivant?.sorte !== "change" || refuses.includes(suivant.n)) return s.avant;
-  return s.avant.trimEnd() + s.apres.slice(s.apres.trimEnd().length);
-}
-
-const sansEspaceFinale = (t: string) => t.trimEnd();
-const espaceFinale = (t: string) => t.slice(t.trimEnd().length);
+/** Un changement dit à voix haute : ses mots, ou, pour la ponctuation et les espaces, chaque espace en « ␣ ». */
+const enClair = (t: string): string => (/[\p{L}\p{N}]/u.test(t) ? t.trim() : t.replace(/[ \u00a0\u202f]/g, "␣"));
 
 /** Degrés 1 à 3 : la copie, en lecture, avec les changements au stylo. */
 function Marques({ revue, livre, onBasculer }: { revue: Revue; livre: Livre; onBasculer: (n: number) => void }) {
@@ -324,32 +315,30 @@ function Marques({ revue, livre, onBasculer }: { revue: Revue; livre: Livre; onB
         return (
           <p className="corr-p">
             {s.map((seg, k) => {
-              if (seg.sorte === "pareil") return <span key={k}>{pareil(s, k, revue.refuses)}</span>;
+              if (seg.sorte === "pareil") return <span key={k}>{seg.avant}</span>;
               const refuse = revue.refuses.includes(seg.n);
-              const avant = sansEspaceFinale(seg.retire);
-              const apres = sansEspaceFinale(seg.ajoute);
+              const avant = enClair(seg.retire);
+              const apres = enClair(seg.ajoute);
               const nom = !avant ? `ajouter « ${apres} »` : !apres ? `retirer « ${avant} »` : `« ${avant} » devient « ${apres} »`;
               return (
-                <span key={k}>
-                  <button
-                    type="button"
-                    className={`corr${refuse ? " corr--refuse" : ""}`}
-                    aria-pressed={!refuse}
-                    aria-label={`Changement ${seg.n + 1} : ${nom}. ${refuse ? "Refusé" : "Gardé"}.`}
-                    title={refuse ? "Refusé. Cliquer pour le reprendre." : "Cliquer pour refuser ce changement."}
-                    onClick={() => onBasculer(seg.n)}
-                  >
-                    {refuse ? (
-                      avant ? <span className="corr__laisse">{avant}</span> : <span className="corr__vide" aria-hidden="true">‸</span>
-                    ) : (
-                      <>
-                        {avant ? <del>{apres ? avant : seg.retire.trimEnd()}</del> : null}
-                        {apres ? <ins>{apres}</ins> : null}
-                      </>
-                    )}
-                  </button>
-                  {refuse ? espaceFinale(seg.retire) : apres ? espaceFinale(seg.ajoute) : espaceFinale(seg.retire) && !espaceFinale(seg.ajoute) ? " " : espaceFinale(seg.ajoute)}
-                </span>
+                <button
+                  key={k}
+                  type="button"
+                  className={`corr${refuse ? " corr--refuse" : ""}`}
+                  aria-pressed={!refuse}
+                  aria-label={`Changement ${seg.n + 1} : ${nom}. ${refuse ? "Refusé" : "Gardé"}.`}
+                  title={refuse ? "Refusé. Cliquer pour le rétablir." : "Cliquer pour refuser ce changement."}
+                  onClick={() => onBasculer(seg.n)}
+                >
+                  {refuse ? (
+                    seg.retire ? <span className="corr__laisse">{seg.retire}</span> : <span className="corr__vide" aria-hidden="true">‸</span>
+                  ) : (
+                    <>
+                      {seg.retire ? <del>{seg.retire}</del> : null}
+                      {seg.ajoute ? <ins>{seg.ajoute}</ins> : null}
+                    </>
+                  )}
+                </button>
               );
             })}
           </p>

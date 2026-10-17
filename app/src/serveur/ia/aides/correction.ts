@@ -25,9 +25,11 @@ const CONSIGNES_DES_DEGRES: Record<Degre, string> = {
 - l'orthographe des mots (« grote » → « grotte ») ;
 - les terminaisons de conjugaison quand on voit ce que l'auteur voulait écrire (« il dormé » → « il dormait », « il ouvri » → « il ouvrit ») ;
 - les accords en genre et en nombre (« ses pied » → « ses pieds ») ;
-- les homophones (a/à, et/est, son/sont, ces/ses, sa/ça, on/ont…).
-Ne touche PAS à la ponctuation, aux majuscules, à l'ordre des mots, aux répétitions ni aux tournures : la phrase garde ses mots et sa construction.`,
-  2: `Degré 2, « Orthographe et grammaire ». Corrige comme au degré 1, puis la ponctuation, les majuscules et les tournures mal construites (« il se dit que il » → « il se dit qu'il », un mot qui manque, un pronom mal placé).
+- les homophones (a/à, et/est, son/sont, ces/ses, sa/ça, on/ont…) ;
+- les espaces autour de la ponctuation, selon la typographie française : pas d'espace avant la virgule ni le point, une espace après (« il le range ,et part . » → « il le range, et part. », « sur le quai.Le » → « sur le quai. Le ») ; une espace avant « : ; ! ? » et à l'intérieur des guillemets « » ; une seule espace entre deux mots ;
+- la majuscule au début d'une phrase (après un point) et aux noms propres (« il le range » en tête de phrase → « Il le range »).
+N'ajoute ni ne retire AUCUN signe de ponctuation (virgule, point, guillemet, tiret) : seulement les espaces autour de ceux qui sont là. Ne touche PAS à l'ordre des mots, aux répétitions ni aux tournures : la phrase garde ses mots, sa ponctuation et sa construction.`,
+  2: `Degré 2, « Orthographe et grammaire ». Corrige comme au degré 1, puis la ponctuation qui manque ou qui est en trop et les tournures mal construites (« il se dit que il » → « il se dit qu'il », un mot qui manque, un pronom mal placé).
 Ne change ni le vocabulaire, ni les répétitions, ni la longueur des phrases au-delà de ce qu'exige une phrase correcte. Ajoute seulement la ponctuation qui manque vraiment (point en fin de phrase, virgules d'une énumération, tirets ou guillemets d'un dialogue).`,
   3: `Degré 3, « Phrases plus claires ». Corrige d'abord comme au degré 2, puis rends les phrases plus claires : coupe une phrase trop longue, évite une répétition gênante, remplace un mot imprécis (« truc », « faire », « il y a » répété) par le mot juste, rends clair qui fait quoi.
 Ne change RIEN à ce qui se passe, à l'ordre des événements, au point de vue ni à ce que pense un personnage : « il croit que le dragon dort » ne devient pas « le dragon dort ». Garde les mots et les tournures de l'auteur partout où ils sont clairs.`,
@@ -71,14 +73,15 @@ export const correction: DefinitionAide<EntreeCorrection, Correction> = {
     if (paragraphes.some((p) => !p || p.length > 6000)) return null;
     return { paragraphes: paragraphes as string[] };
   },
-  // Une correction visible et prévisible : quelques fautes connues (F13-AC17), puis, à
-  // partir du degré 2, la majuscule en tête et le point final
+  // Une correction visible et prévisible : quelques fautes connues (F13-AC17), les espaces et les
+  // majuscules de début de phrase, puis, à partir du degré 2, le point final
   simuler: (e) => ({
     paragraphes: e.paragraphes.map((p) => {
-      const t = Object.entries(FAUTES_SIMULEES).reduce((x, [faute, juste]) => x.replace(new RegExp(`(?<!\\p{L})${faute}(?!\\p{L})`, "gu"), juste), p);
+      let t = Object.entries(FAUTES_SIMULEES).reduce((x, [faute, juste]) => x.replace(new RegExp(`(?<!\\p{L})${faute}(?!\\p{L})`, "gu"), juste), p);
+      // Dès le degré 1 : pas d'espace avant la virgule ni le point, une après ; la majuscule en tête de phrase
+      t = t.replace(/ +([,.])/g, "$1").replace(/([,.])(?=\p{L})/gu, "$1 ").replace(/(^|[.!?] )(\p{Ll})/gu, (_, avant: string, l: string) => avant + l.toLocaleUpperCase("fr"));
       if (e.degre === 1) return t;
-      let t2 = t.trim();
-      t2 = t2.charAt(0).toLocaleUpperCase("fr") + t2.slice(1);
+      const t2 = t.trim();
       return /[.!?…»]$/.test(t2) ? t2 : `${t2}.`;
     }),
   }),

@@ -138,9 +138,9 @@ describe("Différence mot à mot d'une correction (F13.1)", () => {
     const d = difference("Le dragon dormé dans la grote. Il était très très grand.", "Le dragon dormait dans la grotte. Il était très très grand.");
     expect(d.map(({ sorte, texte }) => ({ sorte, texte }))).toEqual([
       { sorte: "pareil", texte: "Le dragon " },
-      { sorte: "retire", texte: "dormé " },
-      { sorte: "ajoute", texte: "dormait " },
-      { sorte: "pareil", texte: "dans la " },
+      { sorte: "retire", texte: "dormé" },
+      { sorte: "ajoute", texte: "dormait" },
+      { sorte: "pareil", texte: " dans la " },
       { sorte: "retire", texte: "grote" },
       { sorte: "ajoute", texte: "grotte" },
       { sorte: "pareil", texte: ". Il était très très grand." },
@@ -148,14 +148,29 @@ describe("Différence mot à mot d'une correction (F13.1)", () => {
     expect(nombreDeChangements(d)).toBe(2);
   });
 
-  it("la ponctuation est un morceau à part : « brume et il » devenu « brume. Il » laisse « brume » intact", async () => {
+  it("espaces et ponctuation forment un séparateur : « brume et il » devenu « brume. Il » laisse « brume » intact", async () => {
     const { difference } = await import("@/domaine/difference");
     expect(difference("le pont de brume et il y avait", "le pont de brume. Il y avait")).toEqual([
-      // « pareil » garde ses deux formes, espace compris : un refus se recompose avec l'espace d'avant
-      { sorte: "pareil", texte: "le pont de brume", avant: "le pont de brume " },
-      { sorte: "retire", texte: "et il " },
-      { sorte: "ajoute", texte: ". Il " },
-      { sorte: "pareil", texte: "y avait", avant: "y avait" },
+      { sorte: "pareil", texte: "le pont de brume", avant: "le pont de brume" },
+      { sorte: "retire", texte: " et il" },
+      { sorte: "ajoute", texte: ". Il" },
+      { sorte: "pareil", texte: " y avait", avant: " y avait" },
+    ]);
+  });
+
+  it("une faute d'espacement est un changement : « range ,et » devient « range, et », « quai.Le » « quai. Le »", async () => {
+    const { difference } = await import("@/domaine/difference");
+    expect(difference("il le range ,et part .", "Il le range, et part.").filter((m) => m.sorte !== "pareil")).toEqual([
+      { sorte: "retire", texte: "il" },
+      { sorte: "ajoute", texte: "Il" },
+      { sorte: "retire", texte: " ," },
+      { sorte: "ajoute", texte: ", " },
+      { sorte: "retire", texte: " ." },
+      { sorte: "ajoute", texte: "." },
+    ]);
+    expect(difference("sur le quai.Le train", "sur le quai. Le train").filter((m) => m.sorte !== "pareil")).toEqual([
+      { sorte: "retire", texte: "." },
+      { sorte: "ajoute", texte: ". " },
     ]);
   });
 

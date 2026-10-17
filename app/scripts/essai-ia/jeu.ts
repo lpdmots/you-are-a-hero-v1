@@ -51,6 +51,12 @@ const DRAGON = [
   "Lou avancé doucement pour ne pas le révéyer. Sous ses pied, les cailloux brillé comme des étoile. Soudin, le dragon ouvri un œil.",
 ];
 
+/** CE2. Fautes d'espacement et majuscules, corrigées dès le degré 1 (F13.1, révisé le 17 octobre 2026). */
+const QUAI = [
+  "Lou courut sur le quai.Le bac partait déja ,il cria tres fort .",
+  "il prit sa lanterne ,la rangea dans son sac et parti vers le pont .Le passeur l'attendait : « monte vite ! »",
+];
+
 /** CM1, pour la scène 2 (« Lou court vers la passerelle »). */
 const PASSERELLE = [
   "Lou couru vers la passerelle mais le bac etait deja parti. il cria \"attendez moi\" mais personne ne l'entendit. Les lanterne du quai s'éteignait une par une et sa lui faisait peur.",
@@ -141,6 +147,7 @@ const etapeEnjeu = {
 export const JEU_D_ESSAI: Cas[] = [
   // Correction (F13.1)
   { id: "correction-1", aide: "correction", titre: "Correction, degré 1 (orthographe), CE2", repere: "Mots, terminaisons et accords corrigés (« dormait », « grotte », « réveiller », « pieds », « brillaient », « étoiles », « ouvrit ») ; « très très », la ponctuation et l'ordre des mots restent.", source: "inventé", entree: { histoire: ce2, degre: 1, paragraphes: DRAGON, consigne: null, nomsPropres } },
+  { id: "correction-1b", aide: "correction", titre: "Correction, degré 1, espaces et majuscules, CE2", repere: "« quai.Le » → « quai. Le », « déja ,il » → « déjà, il », « fort . » → « fort. », « il prit » → « Il prit », « parti » → « partit », « tres » → « très », « monte » → « Monte » ; aucune virgule ni aucun point ajouté ou retiré.", source: "inventé", entree: { histoire: ce2, degre: 1, paragraphes: QUAI, consigne: null, nomsPropres } },
   { id: "correction-2a", aide: "correction", titre: "Correction, degré 2 (orthographe et grammaire), CM1", repere: "Le degré 1, plus la majuscule, les guillemets du dialogue, « il se dit que il » ; rien d'autre ne change.", source: "inventé", entree: { histoire: classe, degre: 2, paragraphes: PASSERELLE, consigne: CONSIGNES[2], nomsPropres } },
   { id: "correction-2b", aide: "correction", titre: "Correction, degré 2, CE2, texte très court", repere: "Les fautes corrigées, le texte reste aussi court et aussi simple.", source: "inventé", entree: { histoire: ce2, degre: 2, paragraphes: FOUGERES, consigne: CONSIGNES[15], nomsPropres } },
   { id: "correction-3", aide: "correction", titre: "Correction, degré 3 (phrases plus claires), CM2", repere: "Phrases coupées, « il y avait » et « et » allégés, « un truc » précisé ; « Il croit que le passeur l'attend » reste une croyance (F13-AC05) ; rien de nouveau ne se passe.", source: "inventé", entree: { histoire: classe, degre: 3, paragraphes: PONT, consigne: null, nomsPropres } },

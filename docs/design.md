@@ -2007,6 +2007,9 @@ Corrigé aussitôt, sans nouvelle mesure :
   maintenant le texte de la scène. », avec « Annuler ».
 - **Pistes :** « ✦ Proposer des pistes », bouton cerné sous le champ de la
   remarque.
+- **Espaces (retouche du 17 octobre 2026) :** une faute d'espacement se marque
+  avec la ponctuation qu'elle entoure (« ␣, » barré, « ,␣ » en vert) ; les
+  espaces ajoutés ou retirés restent visibles dans la marque.
 
 Corrigé après la critique : la proposition tronquée en 390 px (hauteur des
 champs remesurée quand la largeur change) ; deux onglets « Texte de la scène »
