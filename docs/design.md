@@ -1946,6 +1946,39 @@ d'être montré au porteur.
   texte a changé depuis la demande. Redemander ? » ; « Encore 10 demandes
   aujourd'hui. » ; « Les aides reviennent demain. Tout le reste fonctionne. »
 
+### Étape 8 construite (17 octobre 2026)
+
+**Lot 1 — « Aides IA » dans « Mon compte », et la page de jugement de
+l'essai.** Conçus avec impeccable dans le système « Cahiers d'aventure », sans
+maquette, puis critiqués en deux lectures séparées sur captures
+(`npm run captures -- etape8`, 801 à 812) : « Mon compte » 27/40 (lecture
+informée) et 26/40 (lecture indépendante) ; page de jugement 23/40 et 20/40.
+Corrigé aussitôt, sans nouvelle mesure :
+
+- **« Aides IA » :** une seule section, l'interrupteur « Proposer les aides IA »
+  en tête, ses réglages en sous-titres sans filet entre eux, repliés quand il
+  est éteint (« Aucune aide IA dans vos projets. Tout le reste fonctionne. ») ;
+  une ligne d'aide au plus par réglage ; « Degré de correction par défaut »,
+  « Modifiable à chaque correction. » ; les niveaux cochés en canard plein,
+  avec une coche, comme les cases de l'application (les jours des horaires de
+  classe gardent encore le fond pâle : à aligner un jour) ; les deux bascules
+  des images sur un même bord. Ce qui part chez le fournisseur n'est pas dit à
+  l'écran, décision du porteur (F13).
+- **Page de jugement :** la demande toujours ouverte, « Ce qu'on attend : » à
+  la place de la loupe, sans identifiant de critère ; « Enregistré » ou
+  « Note non enregistrée : refaites ce geste. » à côté de la liste des cas ;
+  « Aucune n'est bonne » ; « Reste à noter : propositions B et E. » au-dessus
+  de « Cas suivant » ; « Voir les modèles maintenant ? » avant de révéler les
+  résultats d'un essai inachevé ; résultats avec « Cas notés », la virgule
+  décimale, le coût en euros, les modèles non lancés retirés, les aides
+  repliées sous le tableau de l'ensemble ; la comparaison des corrections
+  sépare la ponctuation des mots.
+- **Laissé :** la liste des degrés reste une liste déroulante (une lecture
+  préférait cinq choix visibles, ce qui ajoutait cinq lignes de texte) ; pas
+  de raccourcis clavier sur la page de jugement, outil d'une seule fois ; le
+  champ « Nom affiché aux élèves » et « Se déconnecter », antérieurs à
+  l'étape, ne changent pas.
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

@@ -1,9 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { aTraiter, scenesAFinir } from "@/domaine/controles";
-import type { Enseignant } from "@/serveur/adulte";
 import { controlesDuLivre, scenesAvecActions } from "@/serveur/controles";
-import { creerEnseignant, creerPartie, creerProjet, creerScene, nettoyer, type Adulte } from "./outils";
+import { creerEnseignant, creerPartie, creerProjet, creerScene, nettoyer, type Adulte, enseignantDe } from "./outils";
 
 /**
  * Étape 5 du plan, lot 1 : les contrôles du livre lus par l'adulte, contre la vraie base
@@ -25,7 +24,7 @@ const ecrire = async (scene: string, texte: unknown[]) => {
   const { error } = await laurent.base.rpc("enregistrer_texte", { p_scene: scene, p_version: 0, p_texte: texte });
   if (error) throw new Error(error.message);
 };
-const enseignant = (a: Adulte): Enseignant => ({ id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], supabase: a.base });
+const enseignant = enseignantDe;
 
 describe("Contrôles du livre lus par l'adulte (F09.2)", () => {
   it("F04-AC33 — les scènes qui portent une action de jeu se lisent sans les textes ; sans feuille d'aventure, le rappel « à savoir » est rendu, jamais parmi les points à corriger", async () => {

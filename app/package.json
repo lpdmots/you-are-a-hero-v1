@@ -34,9 +34,11 @@
     "verifier:production": "tsx scripts/verifier-production.ts",
     "cle:copier": "tsx scripts/presse-papiers.ts",
     "vercel:env": "tsx scripts/vercel-env.ts",
-    "production:schema": "tsx scripts/schema-production.ts"
+    "production:schema": "tsx scripts/schema-production.ts",
+    "ia:essai": "tsx --conditions=react-server scripts/essai-ia/lancer.ts"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "0.135.0",
     "@dagrejs/dagre": "3.1.1",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "10.0.0",
@@ -53,6 +55,7 @@
     "hyphen": "1.14.1",
     "jose": "6.2.12",
     "next": "16.4.0",
+    "openai": "7.36.0",
     "pagedjs": "0.4.3",
     "pdfjs-dist": "5.4.394",
     "platejs": "53.3.14",

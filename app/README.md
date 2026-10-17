@@ -13,8 +13,8 @@ React Flow et dagre pour la vue « Chemins ». Versions figées dans
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`) ; « Mon travail », par urgence (`travail.ts`) ; ce que le Suivi liste, compte et propose (`suivi.ts`) ; fiches de rédaction : ce qui se choisit, les feuilles, le partage, le nombre fixé (`fiches.ts`) ; encouragements : totaux et classement par catégorie (`encouragements.ts`) ; contrôles du livre : chaque point, sa gravité, son étape et sa phrase (`controles.ts`) ; la destination Livre : marques des étapes, tâches, avertissements acceptés (`livre.ts`) ; ce qu'une lecture reçoit d'un livre, son parcours, son énigme, sa feuille, sa reprise (`lecture.ts`) ; la version partagée, ses noms, le code du lien, l'état du partage (`partage.ts`). |
-| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`) ; état, remises et remarques d'une scène (`relecture.ts`) ; ce qu'une fiche de rédaction imprime d'une scène (`fiches.ts`) ; encouragements de l'adulte, et ce que le poste d'un élève en reçoit (`encouragements.ts`) ; ce que les contrôles du livre et la destination Livre lisent (`controles.ts`). |
+| `src/domaine/` | Règles sans base : année scolaire, prénoms, identifiant, mot de passe, code, horaires ; plan du récit, visuels, préparation ; texte d'une scène et droits sur ses blocs (`copie.ts`), numéros du livre (`numeros.ts`), chemins d'un chapitre et ce qu'il y a « à regarder » (`chemins.ts`) ; états d'une scène, ce qu'ils changent et où ils se choisissent (`etats.ts`) ; « Mon travail », par urgence (`travail.ts`) ; ce que le Suivi liste, compte et propose (`suivi.ts`) ; fiches de rédaction : ce qui se choisit, les feuilles, le partage, le nombre fixé (`fiches.ts`) ; encouragements : totaux et classement par catégorie (`encouragements.ts`) ; contrôles du livre : chaque point, sa gravité, son étape et sa phrase (`controles.ts`) ; la destination Livre : marques des étapes, tâches, avertissements acceptés (`livre.ts`) ; ce qu'une lecture reçoit d'un livre, son parcours, son énigme, sa feuille, sa reprise (`lecture.ts`) ; la version partagée, ses noms, le code du lien, l'état du partage (`partage.ts`) ; les aides IA : réglages, degrés, plafonds et leurs phrases (`aides-ia.ts`), la différence mot à mot d'une correction (`difference.ts`). |
+| `src/serveur/` | Ce qui parle à la base : accès, session de l'adulte, accès de poste, chiffrement ; lectures du récit (adulte, élève), images ; texte des scènes, enregistrement, numéros, scènes voisines (`copie.ts`) ; état, remises et remarques d'une scène (`relecture.ts`) ; ce qu'une fiche de rédaction imprime d'une scène (`fiches.ts`) ; encouragements de l'adulte, et ce que le poste d'un élève en reçoit (`encouragements.ts`) ; ce que les contrôles du livre et la destination Livre lisent (`controles.ts`) ; les aides IA : fournisseurs, modèles et prix, une définition par aide, demande, plafonds et journal (`ia/`). |
 | `src/app/` | Pages : entrée enseignant, « Mes projets », « Mes classes », entrée des élèves ; préparation, atelier projeté, parties et chapitres, chapitre et ses chemins, scène, Suivi (`_suivi/`), fiches de rédaction (`fiches/`), destination Livre (`_livre/`), lecture d'essai (`lecture/`) ; histoire, chapitre et scène de l'élève, sa lecture d'essai (`travail/lecture/`). `travail/actions.ts` : ce que fait un élève (prendre, rendre, remettre, retirer sa remise). `copie/` : l'adresse où le texte s'enregistre. `images/` : celle qui sert une image à qui peut la voir. |
 | `src/composants/copie/` | La copie d'une scène : l'éditeur (Plate, sur Slate), ses blocs, ses fiches, l'enregistrement automatique. `regles.ts` réunit tout ce qui s'écrit contre Slate. |
 | `src/composants/chemins/` | Le schéma de la vue « Chemins » : la place des cartes et le tracé des traits (`disposer.ts`, avec dagre), leur dessin (`Schema.tsx`, avec React Flow). Chargé seulement à l'ouverture de la vue, sur un écran large. |
@@ -146,6 +146,11 @@ Rien de secret n'est dans Git ni ne s'écrit dans une conversation.
   ne rend pas les codes, et il faudrait en redonner un à chaque élève.
 - `CLE_SIGNATURE_POSTES` signe les accès des postes d'élèves. Elle est importée
   une fois dans Supabase : `npm run cle:copier`, puis Project Settings > JWT Keys.
+- `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` (étape 8, aides IA) : posées à la main par
+  le porteur dans `.env.local`, jamais lues ni affichées ; `npm run env:local` les
+  garde quand il réécrit le fichier. Aucun essai automatique ne s'en sert : les tests
+  et les parcours imposent `IA_SIMULEE=1` et des clés vides, et les aides rendent
+  alors une réponse simulée (`IA_SIMULEE=echec` ou `delai` simulent une panne).
 
 ## Mettre en production
 
@@ -443,3 +448,24 @@ classes », l'ouvrir sur un téléphone, et la faire lire à un élève de la cl
 d'essai depuis « Lire ». `npm run livres:essai -- --production adresse --refaire
 --oui` remet les deux livres à neuf ; `--retirer` à la place de `--refaire` les
 retire, avec leurs images, leurs partages et les lectures des élèves.
+
+## Essai de qualité des aides IA (étape 8, lot 1)
+
+Avant de choisir le fournisseur des textes, chaque aide se juge à l'aveugle sur un
+jeu d'essai (`scripts/essai-ia/jeu.ts`) : chaque cas part chez chaque modèle
+candidat, avec les vraies consignes des aides (`src/serveur/ia/aides/`). Les
+réponses vont dans `essais-ia/resultats.json`, hors de Git ; le coût de chaque
+appel s'affiche, et la commande s'arrête avant de dépasser son plafond.
+
+```bash
+npm run ia:essai -- --a-blanc       # ce qui serait lancé, sans rien appeler
+npm run ia:essai                    # lance ce qui manque, 10 dollars au plus
+npm run ia:essai -- --cas titre-1   # un seul cas
+```
+
+Puis, sur http://localhost:4840/essai-ia, connecté avec le compte local : chaque
+cas, les propositions sous une lettre, « Bonne », « Passable » ou « À écarter »,
+et « La meilleure ». Les notes s'écrivent dans `essais-ia/jugements.json`. « Voir
+les résultats » révèle les modèles : points, coût moyen et durée, par aide et pour
+tout l'essai. La page n'existe pas chez Vercel.
+

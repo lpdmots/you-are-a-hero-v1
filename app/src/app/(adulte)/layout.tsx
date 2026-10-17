@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { AidesIa } from "@/composants/AidesIa";
 import { BarreAdulte } from "@/composants/BarreAdulte";
 import { Messages } from "@/composants/Messages";
 import { ProjetCourant } from "@/composants/ProjetCourant";
@@ -12,8 +13,10 @@ export default async function EspaceAdulte({ children }: { children: ReactNode }
   return (
     <Messages>
       <ProjetCourant depart={dernier ? { id: dernier.id, titre: dernier.titre, onglet: dernier.dernierOnglet } : null}>
-        <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} />
-        <main>{children}</main>
+        <AidesIa reglages={enseignant.reglagesIa}>
+          <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} reglagesIa={enseignant.reglagesIa} />
+          <main>{children}</main>
+        </AidesIa>
       </ProjetCourant>
     </Messages>
   );

@@ -606,3 +606,13 @@ _Éviter_ : thème, nom d'artiste.
 Image produite par l'IA à la demande de l'adulte, gardée parmi les images du
 projet comme une image importée, pour le repérage ou dans le texte d'une scène.
 _Éviter_ : image générée automatiquement, illustration de l'élève.
+
+**Aide IA** :
+Proposition demandée par l'adulte à un modèle d'IA, toujours facultative et
+plafonnée, qui ne change rien au projet tant qu'il ne l'a pas retenue.
+_Éviter_ : assistant, génération automatique, IA de l'élève.
+
+**Journal des appels** :
+Trace de chaque demande faite à un fournisseur d'IA, sans son contenu : date,
+aide, modèle, jetons, coût. Il sert aux plafonds et au budget.
+_Éviter_ : historique des échanges, conversation.

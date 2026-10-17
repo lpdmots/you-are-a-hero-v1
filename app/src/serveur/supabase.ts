@@ -41,7 +41,8 @@ export function clientPoste(jeton: string): SupabaseClient {
 
 /**
  * Client du serveur : contourne les règles d'accès. Réservé à l'entrée des élèves
- * (ouvrir la classe, vérifier un code), avant qu'un poste n'ait de jeton.
+ * (ouvrir la classe, vérifier un code), avant qu'un poste n'ait de jeton, au lecteur du lien,
+ * et au journal des appels aux aides IA, que l'adulte lit sans pouvoir l'écrire.
  */
 export function clientService(): SupabaseClient {
   return createClient(env.supabaseUrl, env.cleSecrete, { auth: { persistSession: false, autoRefreshToken: false } });

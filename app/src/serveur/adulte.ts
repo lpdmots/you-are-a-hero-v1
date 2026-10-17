@@ -2,6 +2,7 @@ import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { lireReglagesIa, type ReglagesIa } from "@/domaine/aides-ia";
 import { clientAdulte } from "./supabase";
 
 export type Enseignant = {
@@ -10,6 +11,8 @@ export type Enseignant = {
   nomAffiche: string | null;
   dernierProjetId: string | null;
   aidesMasquees: string[];
+  /** Réglages des aides IA, valables pour tous ses projets (F13) */
+  reglagesIa: ReglagesIa;
   supabase: SupabaseClient;
 };
 
@@ -21,7 +24,7 @@ export const enseignantCourant = cache(async (): Promise<Enseignant | null> => {
   if (error || !claims?.sub || claims.role !== "authenticated" || claims.is_anonymous) return null;
   const { data: ligne } = await supabase
     .from("enseignants")
-    .select("id, nom_affiche, dernier_projet_id, aides_masquees")
+    .select("id, nom_affiche, dernier_projet_id, aides_masquees, reglages_ia")
     .eq("id", claims.sub)
     .maybeSingle();
   if (!ligne) return null;
@@ -31,6 +34,7 @@ export const enseignantCourant = cache(async (): Promise<Enseignant | null> => {
     nomAffiche: ligne.nom_affiche,
     dernierProjetId: ligne.dernier_projet_id,
     aidesMasquees: ligne.aides_masquees ?? [],
+    reglagesIa: lireReglagesIa(ligne.reglages_ia),
     supabase,
   };
 });

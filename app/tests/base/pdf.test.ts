@@ -1,10 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { Enseignant } from "@/serveur/adulte";
 import { composerLInstantane, instantaneDuLivre, produirePdfDeTravail } from "@/serveur/livre/livre";
 import { adresseDuPdf, pdfDuProjet, SEAU } from "@/serveur/livre/pdf";
 import { lirePdf } from "../livre/fabrique";
-import { creerEnseignant, creerPartie, creerProjet, creerScene, nettoyer, service, sql, type Adulte } from "./outils";
+import { creerEnseignant, creerPartie, creerProjet, creerScene, nettoyer, service, sql, type Adulte, enseignantDe } from "./outils";
 
 /**
  * Étape 6 du plan, lot 1 : le PDF de travail produit, déposé et donné, contre la vraie base
@@ -20,7 +19,7 @@ beforeAll(async () => {
 });
 afterAll(nettoyer);
 
-const enseignant = (a: Adulte): Enseignant => ({ id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], supabase: a.base });
+const enseignant = enseignantDe;
 const paragraphe = (t: string) => ({ type: "p", id: randomUUID(), children: [{ text: t }] });
 const choix = (libelle: string, cible: string | null) => ({ type: "choix", id: randomUUID(), auto: true, libelle, construction: "neutre", cible, children: [{ text: "" }] });
 

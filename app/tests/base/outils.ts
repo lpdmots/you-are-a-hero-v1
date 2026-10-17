@@ -3,6 +3,8 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { Client } from "pg";
 import { chiffrer } from "@/serveur/chiffrement";
 import { signerJetonDePoste } from "@/serveur/jetons";
+import { REGLAGES_IA_HABITUELS } from "@/domaine/aides-ia";
+import type { Enseignant } from "@/serveur/adulte";
 import { supprimerComptesDEssai } from "../comptes-d-essai";
 
 /** Outils des essais contre la base locale : comptes, classes, élèves, postes. */
@@ -42,6 +44,11 @@ export async function inscriptionVueParLaBase(posteId: string): Promise<string |
 }
 
 export type Adulte = { id: string; courriel: string; motDePasse: string; base: SupabaseClient };
+
+/** L'adulte tel que le serveur le voit une fois connecté, pour appeler directement ses fonctions. */
+export const enseignantDe = (a: Adulte): Enseignant => ({
+  id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], reglagesIa: REGLAGES_IA_HABITUELS, supabase: a.base,
+});
 const crees: string[] = [];
 
 export async function creerEnseignant(nomAffiche?: string): Promise<Adulte> {

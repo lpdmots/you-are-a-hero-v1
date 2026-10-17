@@ -2114,6 +2114,67 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      d'illustration de l'élève, prompt de couverture.
   9. **Essai de bout en bout** — parcours, captures, mode d'emploi dans
      `app/README.md`, jugement du porteur sur des textes de sa classe.
+- **Construction, en local, lot par lot :**
+  - **Lot 1 — socle et essai de qualité : construit le 17 octobre 2026,** le
+    choix du fournisseur des textes attendant le jugement du porteur. Les
+    appels partent du serveur seul, par les bibliothèques officielles
+    d'Anthropic et d'OpenAI (`serveur/ia/fournisseurs.ts`), en réponse JSON
+    conforme à un schéma ; un tableau unique dit le modèle de chaque aide et
+    les prix (`serveur/ia/modeles.ts`). Chaque aide de texte a sa consigne au
+    modèle, son schéma, la relecture sans confiance de sa réponse et une
+    réponse simulée (`serveur/ia/aides/`, quatorze aides, de la correction à
+    la description d'une image). `demanderUneAide` tient les plafonds, la
+    demande unique, les soixante secondes et le journal ; `IA_SIMULEE`
+    remplace le fournisseur pour tous les essais automatiques, qui reçoivent
+    aussi des clés vides. « Aides IA » dans « Mon compte ». `env:local` garde
+    les deux clés. Jeu d'essai de 29 cas (`scripts/essai-ia/jeu.ts`),
+    lanceur `npm run ia:essai` avec plafond de dépense, page locale
+    `/essai-ia` de jugement à l'aveugle, absente chez Vercel. Migration
+    `20261017100000_aides_ia.sql`, base locale seulement : la table
+    `appels_ia` (l'adulte lit ses lignes, le serveur seul écrit), la colonne
+    `enseignants.reglages_ia`, et deux fonctions réservées au serveur,
+    `commencer_appel_ia` (plafonds et demande unique d'un seul tenant, sous le
+    verrou de la ligne de l'adulte) et `terminer_appel_ia`.
+    - **Critères fermés :** F13-AC01 (degré par défaut, gardé avec le
+      compte) ; le cadre commun de F13 pour les plafonds, la demande unique,
+      le délai, le journal sans contenu, les aides éteintes, les messages.
+    - **Critères qui attendent :** F13-AC17, AC05, AC18 (qualité, jugée sur
+      l'essai, puis à l'écran aux lots 2 et 3) ; toutes les autres
+      F13-AC, F05-AC04 et F10-AC07 à AC12, aux lots 2 à 8. Le choix du
+      fournisseur, sur la page de jugement, ferme le lot.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      les aides de texte suivent les candidats de l'entretien (Claude Sonnet
+      5.5 et Opus 5.5, GPT-5.6 Terra et Sol ; Claude Haiku 4.5 et GPT-5.6
+      Luna en plus pour la correction, les titres, la fiche visuelle et la
+      description d'image) ; OpenAI sert GPT-6.1 Sol et GPT-6 Luna depuis le
+      29 septembre 2026, plus récents et moins chers, ajoutables à l'essai sur
+      sa décision ; effort de raisonnement bas pour toutes les aides ; une
+      demande abandonnée depuis 75 secondes ne retient plus l'adulte ; une
+      demande échouée ou sans réponse compte dans le plafond du jour, puisqu'elle
+      peut avoir été facturée ; pour les images, rien ne s'affiche au-dessus
+      des quatre dernières du jour (« Encore 2 images aujourd'hui. ») ; à la
+      limite du mois, « Les images reviennent le mois prochain. Tout le reste
+      fonctionne. » ; une autre demande en cours : « Une autre demande attend
+      encore sa réponse. » ; le plafond du mois est de 30 € au taux approché
+      de 1,15 dollar pour un euro, rangé avec les plafonds ; dans « Mon
+      compte », la rubrique est une section unique, l'interrupteur en tête,
+      ses réglages repliés quand il est éteint ; « Degré de correction par
+      défaut » en liste, « Modifiable à chaque correction. » ; niveaux en
+      pastilles, « Sans niveau coché : des mots simples, pour tout
+      l'élémentaire. » ; « Images créées » : « Une » ou « Deux », « Normale »
+      ou « Haute ». La différence mot à mot qui marquera les corrections du
+      lot 2 (`domaine/difference.ts`) sépare la ponctuation des mots et tient
+      une apostrophe courbe pour la même qu'une droite ; le lot 2 recompose un
+      changement refusé avec l'espace du texte d'origine.
+    - **Essai V17 :** liaison vérifiée avec les six modèles candidats, puis un
+      passage de mise au point (un cas par aide, deux modèles) qui a fait
+      corriger quatre consignes (étiquette « Partie : », carte « Le héros » en
+      double, accessoire inventé dans une fiche visuelle, majuscule des points
+      de consigne) ; dépense à ce jour : 0,18 dollar. Le passage complet (142
+      appels, de 2 à 4 dollars estimés) attend la réponse du porteur sur les
+      candidats et sur les consignes, choix et préparation d'un ancien projet
+      à ajouter au jeu.
+    - **Tests automatiques :** 21 unitaires, 14 contre la base, 2 parcours.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

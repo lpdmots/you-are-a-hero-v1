@@ -1,10 +1,9 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { Enseignant } from "@/serveur/adulte";
 import { instantaneDuLivre, produirePdfDefinitif } from "@/serveur/livre/livre";
 import { pdfDuProjet } from "@/serveur/livre/pdf";
 import { changerDeLien, couperCanal, mettreAJourLePartage, ouvrirCanal, partageDuProjet, reglerNoms, versionsDe } from "@/serveur/partage";
-import { creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, inconnu, nettoyer, sql, type Adulte } from "./outils";
+import { creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, inconnu, nettoyer, sql, type Adulte, enseignantDe } from "./outils";
 
 /**
  * Étape 7 du plan, lot 1 : le partage contre la vraie base locale (F12.1, F12.3) — la règle
@@ -20,7 +19,7 @@ beforeAll(async () => {
 });
 afterAll(nettoyer);
 
-const enseignant = (a: Adulte): Enseignant => ({ id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], supabase: a.base });
+const enseignant = enseignantDe;
 const paragraphe = (t: string) => ({ type: "p", id: randomUUID(), children: [{ text: t }] });
 const note = (t: string) => ({ type: "note", id: randomUUID(), children: [{ text: t }] });
 const choix = (libelle: string, cible: string | null) => ({ type: "choix", id: randomUUID(), auto: true, libelle, construction: "neutre", cible, children: [{ text: "" }] });

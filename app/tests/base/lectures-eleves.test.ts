@@ -1,8 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import type { Enseignant } from "@/serveur/adulte";
 import { ouvrirCanal } from "@/serveur/partage";
-import { creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, inscrire, nettoyer, posteDe, sql, type Adulte, type ClasseEssai, type EleveEssai } from "./outils";
+import { creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, inscrire, nettoyer, posteDe, sql, type Adulte, type ClasseEssai, type EleveEssai, enseignantDe } from "./outils";
 
 /**
  * Étape 7 du plan, lot 3 : la lecture par les classes contre la vraie base locale (F12.3) —
@@ -29,7 +28,7 @@ beforeAll(async () => {
 });
 afterAll(nettoyer);
 
-const enseignant = (a: Adulte): Enseignant => ({ id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], supabase: a.base });
+const enseignant = enseignantDe;
 const paragraphe = (t: string) => ({ type: "p", id: randomUUID(), children: [{ text: t }] });
 const note = (t: string) => ({ type: "note", id: randomUUID(), children: [{ text: t }] });
 

@@ -49,3 +49,4 @@ next-env.d.ts
 # clés de la vraie application : jamais dans Git, jamais chargées par Next
 /production.env
 /.compte-local
+/essais-ia/

@@ -2,10 +2,9 @@ import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { aTraiter } from "@/domaine/controles";
 import { avertissementsAcceptes, empreinteDe, etatChemins } from "@/domaine/livre";
-import type { Enseignant } from "@/serveur/adulte";
 import { etatDuLivre } from "@/serveur/controles";
 import {
-  attribuer, creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, inconnu, inscrire, lire, nettoyer, posteDe, sql, type Adulte,
+  attribuer, creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, enseignantDe, inconnu, inscrire, lire, nettoyer, posteDe, sql, type Adulte,
 } from "./outils";
 
 /**
@@ -25,7 +24,7 @@ afterAll(nettoyer);
 
 const paragraphe = (t: string) => ({ type: "p", id: randomUUID(), children: [{ text: t }] });
 const choix = (libelle: string, cible: string | null, id = randomUUID()) => ({ type: "choix", id, auto: true, libelle, construction: "neutre", cible, children: [{ text: "" }] });
-const enseignant = (a: Adulte): Enseignant => ({ id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], supabase: a.base });
+const enseignant = enseignantDe;
 
 async function ecrire(scene: string, texte: unknown[]): Promise<void> {
   const { data } = await laurent.base.from("scenes").select("version").eq("id", scene).single();

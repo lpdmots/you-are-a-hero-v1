@@ -3,17 +3,20 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useTransition, type CSSProperties } from "react";
-import { enregistrerNomAffiche } from "@/app/(adulte)/actions-compte";
+import { enregistrerNomAffiche, reglerAidesIa } from "@/app/(adulte)/actions-compte";
+import type { ReglagesIa } from "@/domaine/aides-ia";
 import { seDeconnecter } from "@/app/entree/actions";
 import { BoutonEnvoi } from "./Attente";
 import { Logo } from "./Logo";
 import { Panneau, PiedFermer } from "./Panneau";
 import { useProjetCourant } from "./ProjetCourant";
+import { ReglagesAidesIa } from "./ReglagesAidesIa";
 import styles from "./BarreAdulte.module.css";
 
 type Props = {
   nomAffiche: string | null;
   courriel: string | null;
+  reglagesIa: ReglagesIa;
 };
 
 const signe = (nom: string): string =>
@@ -28,7 +31,7 @@ const signe = (nom: string): string =>
  * Barre du haut de l'adulte : le nom du dernier projet ouvert, qui y ramène de
  * partout, puis « Mes projets » et « Mes classes ». Son nom ouvre « Mon compte ».
  */
-export function BarreAdulte({ nomAffiche, courriel }: Props) {
+export function BarreAdulte({ nomAffiche, courriel, reglagesIa }: Props) {
   const projet = useProjetCourant();
   const chemin = usePathname();
   const routeur = useRouter();
@@ -36,6 +39,18 @@ export function BarreAdulte({ nomAffiche, courriel }: Props) {
   const [nom, setNom] = useState(nomAffiche ?? "");
   const [enregistre, setEnregistre] = useState(false);
   const [enCours, lancer] = useTransition();
+  // Montrés aussitôt, gardés ensuite : un réglage ne doit pas attendre le serveur pour changer
+  const [ia, setIa] = useState(reglagesIa);
+
+  const reglerIa = (changes: Partial<ReglagesIa>) => {
+    setIa((r) => ({ ...r, ...changes }));
+    setEnregistre(false);
+    lancer(async () => {
+      await reglerAidesIa(changes);
+      setEnregistre(true);
+      routeur.refresh();
+    });
+  };
 
   const reprise = projet ? `/projet/${projet.id}/${projet.onglet}` : "/projets";
   const ici = (debut: string) => (chemin.startsWith(debut) ? "page" : undefined);
@@ -103,6 +118,7 @@ export function BarreAdulte({ nomAffiche, courriel }: Props) {
               enseignant(e) ».
             </p>
           </section>
+          <ReglagesAidesIa reglages={ia} onChanger={reglerIa} />
           <section>
             <form action={seDeconnecter}>
               <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>

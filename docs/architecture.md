@@ -1398,6 +1398,66 @@ F12.3 et F04.2.
   parcours du lecteur et les captures vident `essais_entree` avant chaque
   essai.
 
+## Réalisation de l'étape 8 (17 octobre 2026)
+
+Construite en local, lot par lot, d'après le
+[plan](plan.md#étape-8--aides-ia) ; les règles sont en F13, F02, F05, F10.1 et
+F10.2.
+
+**Lot 1 — le socle des aides et l'essai de qualité.**
+
+- **Deux fournisseurs, les bibliothèques officielles.** `@anthropic-ai/sdk`
+  0.135.0 et `openai` 7.36.0, versions figées, appelés du serveur seul
+  (`serveur/ia/fournisseurs.ts`) ; les clés ne quittent pas ce fichier. Chaque
+  appel demande une réponse JSON conforme à un schéma (`output_config.format`
+  chez Anthropic, `text.format` en `json_schema` strict chez OpenAI), avec un
+  effort de raisonnement bas ; Claude Haiku 4.5 n'en prend pas. Rien n'est
+  gardé chez OpenAI (`store: false`). Une réponse coupée, refusée ou non
+  conforme est « inutilisable » ; ses jetons se comptent quand même. Pas de
+  repli automatique sur un autre modèle en cas de refus : le coût de chaque
+  appel reste celui du modèle du tableau, et l'aide dit simplement qu'elle n'a
+  pas répondu.
+- **Un tableau, un endroit.** `serveur/ia/modeles.ts` donne les modèles connus,
+  leurs prix relevés le 17 octobre 2026 et le modèle de chaque aide
+  (`MODELE_DES_AIDES`) : changer de fournisseur après l'essai ne touche que
+  lui. Les plafonds et le taux de change approché sont dans
+  `domaine/aides-ia.ts` (`PLAFONDS`, `DOLLARS_PAR_EURO`).
+- **Une aide, une définition.** `serveur/ia/aides/` : pour chacune, sa consigne
+  fixe au modèle, son message (le contexte, entre balises, comme des données),
+  son schéma, une borne de réponse, sa relecture sans confiance (longueurs,
+  doublons, étiquettes recopiées, destinations inconnues) et une réponse
+  simulée. Le contexte commun (`contexte.ts`) ne porte jamais de prénom
+  d'élève, de classe ni de nom d'adulte : le type `Histoire` n'en a pas.
+- **La demande.** `demanderUneAide` (`serveur/ia/demander.ts`) refuse une aide
+  éteinte, ouvre la demande par `commencer_appel_ia` (sous le verrou de la
+  ligne de l'adulte : une seule demande à la fois, plafond du jour à l'heure
+  de Paris, plafond du mois des images pour toute l'application), coupe à
+  soixante secondes, relit la réponse, puis note l'issue, le modèle, les
+  jetons et le coût par `terminer_appel_ia`. Les deux fonctions ne sont
+  ouvertes qu'à la clé de service ; l'adulte lit ses lignes du journal et ne
+  peut ni en écrire ni en effacer. Les pages appelleront les aides par une
+  adresse plutôt que par une action serveur : Next.js passe les actions d'un
+  même navigateur l'une après l'autre, et une aide de quelques secondes
+  retiendrait les autres gestes.
+- **Jamais de vrai fournisseur dans un essai.** `IA_SIMULEE=1` rend la réponse
+  simulée de l'aide (`echec` et `delai` simulent une panne) ; une valeur
+  inconnue arrête tout. Les tests contre la base, Vitest et les parcours la
+  posent, et les parcours reçoivent des clés vides, que Next.js ne remplace pas
+  par celles de `.env.local`.
+- **Réglages.** `enseignants.reglages_ia` (jsonb, relu sans confiance par
+  `lireReglagesIa`), lu avec la session de l'adulte, donné aux pages par un
+  contexte React (`composants/AidesIa.tsx`) : chaque bouton d'IA consultera
+  `useAidesIa().proposer` avant de s'afficher.
+- **L'essai V17.** `scripts/essai-ia/` : le jeu d'essai, le lanceur (ce qui
+  manque seulement, quatre appels à la fois, arrêt avant le plafond de
+  dépense, ordre des propositions tiré une fois au hasard) et ce qu'ils
+  partagent avec la page `/essai-ia`. Celle-ci lit `essais-ia/` (hors de Git)
+  et n'envoie au navigateur que des lettres ; le modèle derrière une lettre ne
+  se lit que sur le serveur. Elle répond « introuvable » chez Vercel.
+- **Différence mot à mot.** `domaine/difference.ts`, plus longue suite commune
+  sur des morceaux (mots, signes, espaces) : elle sert la page de jugement et
+  marquera les corrections dans la copie au lot 2.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte
