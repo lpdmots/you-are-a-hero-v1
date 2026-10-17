@@ -183,3 +183,58 @@ test("lot 2 : la correction dans la page de scène, et les pistes de reprise", a
   await copie(page).waitFor();
   await capturer(page, "scene-aides-eteintes", false);
 });
+
+test("lot 3 : « ✦ Formuler » sous la consigne, et le ✦ du titre de scène", async ({ page }) => {
+  test.setTimeout(240_000);
+  n = 831;
+  const { compte, base } = await adultePret(page);
+  await base.from("enseignants").update({ nom_affiche: "Mme Laurent" }).eq("id", compte.id);
+  const classe = await semerClasse(base, "CE2", ["Alice"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  const { chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["Gué — les pierres qui chantent", "Le pont", "Souche — la lanterne de secours"] }]);
+  const [, s2] = chapitres[0].scenes;
+  await semerAttribution(base, chapitres[0].id, [{ eleve: classe.eleves.Alice.id }]);
+  await base.from("scenes").update({ prise_par_eleve: classe.eleves.Alice.id }).eq("id", s2);
+  await semerBlocs(base, s2, [recit("Une silhouette avance sur le pont de brume, une lanterne à la main. Lou retient son souffle.")]);
+  const scene = `/projet/${projet}/scene/${s2}`;
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await aller(page, scene);
+  await copie(page).waitFor();
+  const consigne = page.getByRole("textbox", { name: "Consigne", exact: true });
+  await consigne.fill("le passeur apparaît sur le pont");
+  await page.getByText("Enregistré").waitFor();
+  await capturer(page, "scene-titre-et-formuler", false);
+
+  await page.getByRole("button", { name: "Proposer un titre" }).click();
+  await page.getByRole("group", { name: "Titre proposé" }).waitFor();
+  await capturer(page, "titre-propose", false);
+
+  await page.getByRole("button", { name: "Formuler" }).click();
+  await page.getByRole("textbox", { name: "Consigne proposée" }).waitFor();
+  await capturer(page, "consigne-proposee");
+  await page.getByRole("button", { name: "Utiliser" }).last().click();
+  await capturer(page, "consigne-utilisee");
+
+  await base.from("scenes").update({ consigne: "le passeur apparaît sur le pont" }).eq("id", s2);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, scene);
+  await copie(page).waitFor();
+  await capturer(page, "scene-390", false);
+  await page.getByRole("button", { name: "Proposer un titre" }).click();
+  await page.getByRole("group", { name: "Titre proposé" }).waitFor();
+  await capturer(page, "titre-propose-390", false);
+  await page.getByRole("button", { name: "Formuler" }).click();
+  await page.getByRole("textbox", { name: "Consigne proposée" }).scrollIntoViewIfNeeded();
+  await capturer(page, "consigne-proposee-390", false);
+
+  // En projet personnel : la note d'intention
+  await page.setViewportSize({ width: 1366, height: 900 });
+  const perso = await semerProjet(base, compte, "personnel", "choix", "Mon roman");
+  const { chapitres: cp } = await semerPartie(base, perso, "Le début", [{ titre: "Chapitre un", scenes: ["La gare"] }]);
+  await base.from("scenes").update({ consigne: "la rencontre avec le passeur" }).eq("id", cp[0].scenes[0]);
+  await aller(page, `/projet/${perso}/scene/${cp[0].scenes[0]}`);
+  await copie(page).waitFor();
+  await page.getByRole("button", { name: "Formuler" }).click();
+  await page.getByRole("textbox", { name: "Consigne proposée" }).waitFor();
+  await capturer(page, "note-proposee-personnel", false);
+});

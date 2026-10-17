@@ -46,6 +46,8 @@ test("éteintes, les aides replient leurs réglages ; rallumées, elles les retr
   await page.getByText("Proposer les aides IA", { exact: true }).click();
   await expect(page.getByText("Aucune aide IA dans vos projets. Tout le reste fonctionne.")).toBeVisible();
   await expect(page.getByLabel("Degré de correction par défaut")).toHaveCount(0);
+  // Le réglage s'enregistre avant qu'on recharge la page
+  await expect(page.getByText("Enregistré")).toBeVisible();
 
   await page.reload();
   await ouvrirMonCompte(page);

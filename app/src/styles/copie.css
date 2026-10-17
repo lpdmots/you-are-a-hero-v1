@@ -2713,3 +2713,71 @@ kbd {
   font-size: var(--t-xs);
   color: var(--graphite-3);
 }
+
+/* Le ✦ du titre de scène (F05) et « ✦ Formuler » sous la consigne (F13.2) : une proposition
+   sur fond canard pâle, « Utiliser » ou « Laisser » ; rien ne change avant « Utiliser ». */
+.ia-titre {
+  min-width: 38px;
+  justify-content: center;
+  padding-inline: 0;
+  color: var(--canard);
+}
+.ia-titre:hover {
+  color: var(--canard-fonce);
+}
+.ia-formuler {
+  justify-self: start;
+}
+.ia-formuler .ic,
+.ia-propose .ic {
+  color: var(--canard);
+}
+.ia-propose {
+  border-radius: 10px;
+  background: var(--canard-pale);
+}
+.ia-propose__gestes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.ia-propose--titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 8px 0 0;
+  padding: 6px 6px 6px 14px;
+}
+.ia-propose__titre {
+  font-size: var(--t-l);
+  font-weight: 700;
+  color: var(--graphite);
+}
+.ia-propose--consigne {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px 12px;
+}
+.ia-propose__tete {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--canard-fonce);
+}
+.ia-propose__tete span {
+  font-weight: 500;
+  color: var(--graphite-2);
+}
+.ia-propose--consigne .pchamp {
+  resize: vertical;
+  line-height: 1.45;
+}
+.ia-propose--titre .ia-propose__tete {
+  margin-right: 2px;
+}

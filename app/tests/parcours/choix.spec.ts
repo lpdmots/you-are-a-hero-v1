@@ -79,8 +79,9 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     const l = await auteur(page);
     await deuxParagraphes(page, l);
     await selectionner(page, { bloc: 0, offset: 15 });
-    // Le curseur est au milieu de « Lou fit un pas, puis un autre. »
-    await page.keyboard.press("End");
+    // Le curseur est au milieu de « Lou fit un pas, puis un autre. », puis à sa fin. Pas de touche
+    // « Fin » : dans le navigateur des parcours, elle ne bouge plus le curseur dès que la page défile
+    await selectionner(page, { bloc: 0, offset: "Lou fit un pas, puis un autre.".length });
     await page.keyboard.type(" /cho");
     await expect(page.locator(".slash")).toContainText("Choix");
     await page.keyboard.press("Enter");

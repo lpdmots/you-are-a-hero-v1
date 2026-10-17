@@ -2040,6 +2040,36 @@ l'entretien ; le numéro du choix passé de 2 à 3 dans les captures, qui vient 
 l'ordre du livre établi au premier enregistrement de la scène semée, non de la
 correction.
 
+**Lot 3 — « ✦ Formuler » sous la consigne, et le ✦ du titre de scène.** Sans
+maquette pour le titre ; la maquette de la consigne (« M'aider à la formuler »,
+trois boutons « Appliquer », « Retoucher », « Rejeter », la consigne et ses
+points séparés, l'indication redite en tête) est allégée. Conçus avec impeccable
+dans le système « Cahiers d'aventure », critiqués en deux lectures séparées sur
+captures (`npm run captures -- etape8`, 832 à 839) : 26/40 (lecture informée) et
+26/40 (lecture indépendante). Forme construite :
+
+- **Titre :** le champ du titre prend la largeur de son texte et le ✦ (icône
+  seule, bulle « Demander à l'IA un titre ») se pose juste après lui ; le tampon
+  d'état et le menu restent à droite, et passent à la ligne en 390 px. La
+  proposition s'affiche sous le bandeau, dans une bande canard pâle : « ✦ Titre
+  proposé », le titre en gras, « Utiliser », « Un autre », « Laisser ».
+- **Consigne :** sous le champ, « ✦ Formuler », bouton cerné ; dessous, le cadre
+  canard pâle « ✦ Consigne proposée · modifiable », le texte tel qu'il sera
+  imprimé, dans un champ, puis « Utiliser » et « Laisser » ; il se fait voir en
+  arrivant au bas de la colonne. La ligne d'aide du champ passe après.
+- **Après :** « Consigne remplacée. » ou « Titre changé. », avec « Annuler ».
+
+Corrigé après la critique : le ✦ du titre, collé au tampon d'état à l'autre bout
+du bandeau, posé juste après le titre ; la bande du titre nommée « Titre
+proposé », comme le cadre de la consigne ; « Un autre » dans la bande, pour ne
+pas devoir se souvenir du ✦ ; la bande refermée quand on demande une consigne ou
+qu'on écrit le titre ; « Note proposée » du mode personnel, qui contredisait la
+fiche « Consigne », devenue « Consigne proposée » ; « Formuler » remonté sous le
+champ, avant la ligne d'aide. Laissé : « Laisser », arrêté à l'entretien (une
+lecture proposait « Ignorer ») ; le message en bas de l'écran, commun à toute
+l'application, plutôt qu'au bord de la fiche ; la bulle de « Formuler »,
+jugée suffisante.
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

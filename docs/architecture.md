@@ -1502,6 +1502,24 @@ F10.2.
   accepte un rendu propre aux paragraphes, pour les marques et les champs de
   la proposition. Le signe ✦ est l'icône `ia`.
 
+**Lot 3 — consigne et titre (17 octobre 2026).**
+
+- **Le serveur relit, comme pour la correction.** `/ia/consigne` et `/ia/titre`
+  ne reçoivent que la scène ; `serveur/aides-de-la-scene.ts` relit la consigne
+  enregistrée (qui sert d'indication), le titre et le résumé du chapitre, les
+  titres et consignes des scènes voisines (`voisinesDe`, les six plus proches de
+  part et d'autre), le début du texte (`debutDuTexte`, paragraphes de récit
+  entiers), et appelle `demanderUneAide` avec les aides `consigne` et `titre` du
+  lot 1. Rien n'est écrit : « Utiliser » passe par l'enregistrement ordinaire du
+  titre et de la consigne (`reglerScene`).
+- **Enregistrer avant de demander.** Dans la page de scène, l'envoi du titre et
+  de la consigne devient une file : une aide attend l'envoi en cours (celui que
+  déclenche la sortie du champ au moment du clic) avant de partir, et un envoi
+  qui échoue repart au suivant au lieu d'être perdu.
+- **Le champ du titre à la largeur de son texte,** par une copie invisible de la
+  valeur dans la même case de grille (`::after` et `attr(data-valeur)`), pour
+  poser le ✦ juste après lui.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

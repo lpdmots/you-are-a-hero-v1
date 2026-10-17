@@ -2266,6 +2266,61 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       reste ouverte au degré 4 ou 5 ; chaque facteur dit ce qu'il donne en mots
       dans sa bulle ; un nombre saisi se ramène entre 5 et 1 500 mots ; le
       réglage dure tant que la page est ouverte, comme le degré.
+  - **Lot 3 — consigne et titre : construit le 17 octobre 2026,** en local,
+    sans migration (le journal accepte déjà les aides « consigne » et
+    « titre »). Dans la page de scène : « ✦ Formuler » sous le champ de la
+    consigne, qui part de ce que l'adulte y a écrit, même en trois mots, et
+    rend une « Consigne proposée » modifiable sur place, sur le modèle fixe en
+    classe, une note d'intention en mode personnel, avec « Utiliser » ou
+    « Laisser » ; « Utiliser » remplace la consigne, « Annuler » dans le
+    message. Un ✦ juste après le titre de la scène : trois titres en une
+    demande, montrés un à un dans une bande « Titre proposé » sous le bandeau,
+    avec « Utiliser », « Un autre » et « Laisser ». Les demandes passent par
+    `/ia/consigne` et `/ia/titre` ; la page enregistre d'abord ce que l'adulte a
+    tapé, puis le serveur relit la consigne et le début du texte.
+    - **Critères fermés :** F13-AC06, F13-AC07 et F05-AC04 ; F13-AC18 pour la
+      forme (une ou deux phrases, « Décris : », deux ou trois points, sur la
+      réponse simulée et la relecture de toute réponse) ; les aides éteintes,
+      sans ✦ ni « Formuler » ; la note d'intention du mode personnel.
+    - **Critères qui attendent :** F13-AC18 pour la qualité réelle (aucun
+      personnage inventé), jugée sur l'essai V17 et au jugement du lot 9 sur des
+      consignes de sa classe.
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      l'indication est la consigne elle-même, sans champ à part : « Formuler »
+      sur un champ vide dit « Écrivez d'abord en quelques mots ce que la scène
+      doit raconter. » et place le curseur dans le champ, dont l'exemple devient
+      « Ce que la scène doit raconter, même en quelques mots. » ; la consigne
+      proposée se retouche dans son cadre avant « Utiliser », et « Utiliser » la
+      met dans la consigne, que les élèves lisent aussitôt ; un nouveau clic sur
+      « Formuler » remplace la proposition ; le même nom, « Consigne proposée »,
+      en mode personnel, où la fiche s'appelle aussi « Consigne » ; partent
+      l'indication (1 500 signes au plus), l'univers, les personnages et l'enjeu
+      de la Préparation, le titre et le résumé du chapitre, les titres et
+      consignes des six scènes les plus proches dans le chapitre ; pour un titre,
+      la consigne et le début du texte (les premiers paragraphes de récit,
+      800 signes environ, sans note ni choix), les titres des autres scènes du
+      chapitre, le titre actuel ; sans consigne ni texte, « Écrivez d'abord une
+      consigne ou le début du texte. » ; un titre déjà pris dans le chapitre
+      n'est pas reproposé ; « Un autre », dans la bande, fait comme le ✦ :
+      le titre suivant, puis une nouvelle demande quand les trois ont été vus ;
+      écrire le titre soi-même, ou demander une consigne, referme la bande ;
+      « Utiliser » un titre donne « Titre changé. » avec « Annuler » ; pas de ✦
+      du titre dans la scène ouverte à côté de l'aperçu, où le titre ne se
+      modifie pas ; un envoi du titre ou de la consigne qui échoue repart au
+      suivant au lieu d'être perdu, et une aide attend l'envoi en cours avant de
+      partir.
+    - **Écrans critiqués** en deux lectures sur les captures 832 à 839 : 26/40
+      et 26/40, corrigés aussitôt (voir le design).
+    - **Dépense :** aucun appel réel (les consignes au modèle sont celles de
+      l'essai V17) ; dépense de l'étape, environ 1,16 dollar (1 €).
+    - **Tests automatiques :** 2 unitaires, 11 contre la base, 5 parcours.
+      Deux parcours anciens repris : celui des aides éteintes (lot 1) rechargeait
+      la page avant l'enregistrement du réglage et échouait déjà ; celui de
+      « /choix » (F05-AC13) posait le curseur par la touche « Fin », qui ne le
+      bouge plus dans le navigateur des parcours dès que la page défile (la
+      consigne un peu plus haute la fait défiler en 1366 × 768) : il le pose
+      désormais à la fin du paragraphe. Le comportement de « Fin » dans un vrai
+      navigateur, sur une page qui défile, reste à vérifier.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

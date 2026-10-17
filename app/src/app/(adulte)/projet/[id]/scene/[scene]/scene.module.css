@@ -8,10 +8,36 @@
   box-shadow: inset 8px 0 0 var(--dos);
 }
 .tete h1 {
-  flex: 1;
+  flex: 0 1 auto;
   min-width: 0;
 }
+/* Le tampon d'état et le menu restent à droite, le ✦ suit le titre */
+.tete h1 + * + .saut,
+.tete h1 + .saut {
+  flex: 1;
+}
+/* Le champ du titre prend la largeur de son texte : une copie invisible de la valeur le mesure */
+.champTitre {
+  display: inline-grid;
+  grid-template-columns: minmax(0, max-content);
+  max-width: 100%;
+  vertical-align: middle;
+}
+.champTitre::after {
+  content: attr(data-valeur) " ";
+  grid-area: 1 / 1;
+  visibility: hidden;
+  white-space: pre;
+  overflow: hidden;
+  padding: 4px 8px;
+  border: 1px solid transparent;
+  font-size: var(--t-2xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
 .titre {
+  grid-area: 1 / 1;
+  min-width: 0;
   width: 100%;
   box-sizing: border-box;
   padding: 4px 8px;
@@ -76,18 +102,24 @@
   .colonnes {
     grid-template-columns: 1fr;
   }
-  .titre {
+  .titre,
+  .champTitre::after {
     font-size: var(--t-xl);
   }
 }
-/* Téléphone : le titre garde sa ligne, le tampon d'état et le menu passent dessous */
+/* Téléphone : le titre garde sa ligne, avec son ✦ ; le tampon d'état et le menu passent dessous */
 @media (max-width: 520px) {
   .tete {
     flex-wrap: wrap;
     row-gap: 8px;
   }
   .tete h1 {
-    flex-basis: calc(100% - 70px);
+    max-width: calc(100% - 110px);
+  }
+  /* Le tampon d'état et le menu passent à la ligne */
+  .tete h1 + * + .saut,
+  .tete h1 + .saut {
+    flex-basis: 100%;
   }
   .tete :global(.menu--tampon) {
     margin-left: auto;

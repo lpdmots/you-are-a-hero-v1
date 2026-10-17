@@ -39,6 +39,7 @@ import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import { useAidesIa } from "@/composants/AidesIa";
 import { compterMots, paragraphesACorriger } from "@/domaine/correction";
+import { useConsigneIa, useTitreIa } from "./AidesDeScene";
 import { useCorrection } from "./Correction";
 import { FicheNumero } from "./FicheNumero";
 import { FicheEncouragements } from "./Encouragements";
@@ -171,15 +172,25 @@ export function PageScene({
   const remiseMontree = onglet.startsWith("r:") ? (remises.find((r) => `r:${r.id}` === onglet) ?? null) : null;
   const derniereRemise = remises[remises.length - 1] ?? null;
 
-  const envoyer = async () => {
+  // L'envoi en cours : une aide demandée juste après une frappe attend qu'il ait abouti
+  const envoi = useRef<Promise<boolean>>(Promise.resolve(true));
+  /** Envoie ce qui attend, après l'envoi en cours ; faux si cela n'a pas pu être enregistré */
+  const envoyer = (): Promise<boolean> => {
     if (minuteur.current) clearTimeout(minuteur.current);
     minuteur.current = null;
-    const valeurs = enAttente.current;
-    enAttente.current = {};
-    if (Object.keys(valeurs).length === 0) return;
-    const reponse = await reglerScene(scene.id, valeurs);
-    // Une frappe arrivée entre-temps garde « Enregistrement… » jusqu'à son propre envoi
-    if (Object.keys(enAttente.current).length === 0) setEtat(reponse.ok ? "enregistre" : "erreur");
+    const suite = envoi.current.then(async () => {
+      const valeurs = enAttente.current;
+      enAttente.current = {};
+      if (Object.keys(valeurs).length === 0) return true;
+      const ok = await reglerScene(scene.id, valeurs).then((r) => r.ok, () => false);
+      // Une frappe arrivée entre-temps garde « Enregistrement… » jusqu'à son propre envoi
+      if (Object.keys(enAttente.current).length === 0) setEtat(ok ? "enregistre" : "erreur");
+      // Ce qui n'a pas pu partir repartira au prochain envoi, sous ce que l'adulte a tapé depuis
+      if (!ok) enAttente.current = { ...valeurs, ...enAttente.current };
+      return ok;
+    });
+    envoi.current = suite;
+    return suite;
   };
   const enregistrer = (valeurs: { titre?: string; consigne?: string }) => {
     setEtat("attente");
@@ -187,6 +198,30 @@ export function PageScene({
     if (minuteur.current) clearTimeout(minuteur.current);
     minuteur.current = setTimeout(() => void envoyer(), 700);
   };
+  // Le ✦ du titre (F05) et « ✦ Formuler » sous la consigne (F13.2) : ce qu'on retient s'enregistre aussitôt
+  const titreIa = useTitreIa({
+    sceneId: scene.id,
+    avantDePartir: envoyer,
+    actuel: titre,
+    onUtiliser: (t) => {
+      setTitre(t);
+      enregistrer({ titre: t });
+      void envoyer();
+    },
+  });
+  const consigneIa = useConsigneIa({
+    sceneId: scene.id,
+    avantDePartir: envoyer,
+    deClasse: projet.deClasse,
+    actuelle: consigne,
+    onUtiliser: (c) => {
+      setConsigne(c);
+      enregistrer({ consigne: c });
+      void envoyer();
+    },
+    onSansIndication: () => document.getElementById("scene-consigne")?.focus(),
+    onDemande: () => titreIa.fermer(),
+  });
   // Quitter la page n'abandonne pas ce qui attendait
   useEffect(
     () => () => {
@@ -869,23 +904,33 @@ export function PageScene({
           <label className="vh" htmlFor="scene-titre">
             Titre de la scène
           </label>
-          <input
-            id="scene-titre"
-            className={styles.titre}
-            type="text"
-            value={titre}
-            maxLength={120}
-            placeholder="Titre de la scène"
-            onChange={(e) => {
-              setTitre(e.target.value);
-              enregistrer({ titre: e.target.value });
-            }}
-            onBlur={() => void envoyer()}
-          />
+          {/* Le champ prend la largeur de son titre : le ✦ se pose juste après (F05) */}
+          <span className={styles.champTitre} data-valeur={titre || "Titre de la scène"}>
+            <input
+              id="scene-titre"
+              className={styles.titre}
+              type="text"
+              // La largeur vient de la copie invisible du titre, pas de la taille par défaut du champ
+              size={1}
+              value={titre}
+              maxLength={120}
+              placeholder="Titre de la scène"
+              onChange={(e) => {
+                setTitre(e.target.value);
+                enregistrer({ titre: e.target.value });
+                // Écrire le titre soi-même, c'est laisser la proposition
+                titreIa.fermer();
+              }}
+              onBlur={() => void envoyer()}
+            />
+          </span>
         </h1>
+        {titreIa.bouton}
+        <span className={styles.saut} aria-hidden="true" />
         <EtatScene etat={etatScene} vide={vide} sorte={sorte} nom={ref} onChoisir={(e) => void choisirEtat(e, "tampon")} />
         {menu}
       </header>
+      {titreIa.proposition}
       <div className={styles.reperes}>
         {projet.deClasse ? <QuiSenOccupe scene={scene} chapitre={chapitre} eleves={eleves} /> : null}
         {depart?.id === scene.id ? (
@@ -1001,13 +1046,15 @@ export function PageScene({
                   rows={7}
                   maxLength={4000}
                   value={consigne}
-                  placeholder="Ce que la scène doit raconter."
+                  placeholder={consigneIa.bouton ? "Ce que la scène doit raconter, même en quelques mots." : "Ce que la scène doit raconter."}
                   onChange={(e) => {
                     setConsigne(e.target.value);
                     enregistrer({ consigne: e.target.value });
                   }}
                   onBlur={() => void envoyer()}
                 />
+                {consigneIa.bouton}
+                {consigneIa.proposition}
                 <p className={styles.aide}>
                   {projet.deClasse
                     ? "Les élèves du chapitre la lisent en ouvrant la scène. Sans consigne écrite, ils suivent celle que vous leur avez donnée."
