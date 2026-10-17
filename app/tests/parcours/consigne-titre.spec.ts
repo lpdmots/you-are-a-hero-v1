@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, MESSAGE, recit, semerBlocs, semerClasse, semerPartie, semerProjet, sql, supprimerComptes } from "./outils";
+import { adultePret, aller, MESSAGE, recit, semerAttribution, semerBlocs, semerClasse, semerPartie, semerProjet, sql, supprimerComptes } from "./outils";
 
 /**
  * Étape 8, lot 3 : « ✦ Formuler » sous la consigne (F13.2) et le ✦ du titre de scène (F05),
@@ -135,5 +135,59 @@ test.describe("Le ✦ du titre de scène (F05)", () => {
     await expect(page.getByRole("button", { name: /titre/ })).toHaveCount(0);
     await expect(page.getByRole("button", { name: "Formuler" })).toHaveCount(0);
     await expect(champConsigne(page)).toHaveAttribute("placeholder", "Ce que la scène doit raconter.");
+  });
+});
+
+test.describe("« ✦ Écrire » une scène vide (F13.6)", () => {
+  /** « La grotte », vide, avec sa consigne ; Alice s'en occupe si on le demande. */
+  async function grotteVide(page: Page, avecAlice: boolean) {
+    const { compte, base } = await adultePret(page);
+    const classe = await semerClasse(base, "CM1-CM2", ["Alice"]);
+    const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+    const { chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["La grotte", "Le pont"] }]);
+    const grotte = chapitres[0].scenes[0];
+    await semerAttribution(base, chapitres[0].id, [{ eleve: classe.eleves.Alice.id }]);
+    await base.from("scenes").update({ consigne: "Lou entre dans la grotte du dragon. Décris la grotte.", prise_par_eleve: avecAlice ? classe.eleves.Alice.id : null }).eq("id", grotte);
+    await aller(page, `/projet/${projet}/scene/${grotte}`);
+    return { compte, base, grotte, alice: classe.eleves.Alice.id };
+  }
+  const mots = async (id: string) => (await sql<{ t: string }>("select string_agg(c->>'text', ' ') as t from public.scenes, jsonb_array_elements(texte) b, jsonb_array_elements(b->'children') c where id = $1", [id]))[0].t?.trim() ?? "";
+
+  test("F13-AC22 — « Écrire » à la place de « Corriger » : la proposition se retouche, puis « Mettre ce texte dans la scène » ; rien avant", async ({ page }) => {
+    const s = await grotteVide(page, false);
+    await expect(page.getByRole("button", { name: "Corriger", exact: true })).toHaveCount(0);
+    await page.getByRole("button", { name: "Écrire", exact: true }).click();
+    const champs = page.getByRole("textbox", { name: "Paragraphe proposé" });
+    await expect(champs.first()).toBeVisible();
+    expect(await mots(s.grotte)).toBe("");
+    await champs.first().fill("Lou entre dans la grotte, la lanterne levée.");
+    await page.getByRole("button", { name: "Mettre ce texte dans la scène" }).click();
+    await expect(MESSAGE(page)).toContainText("Le texte est dans la scène.");
+    await expect.poll(() => mots(s.grotte)).toContain("Lou entre dans la grotte, la lanterne levée.");
+    await expect(page.getByRole("button", { name: "Corriger", exact: true })).toBeVisible();
+  });
+
+  test("F13-AC24 — la scène d'Alice : prévenu d'abord ; le texte gardé, « Vous » s'en occupe ; « Annuler » la rend vide, à Alice", async ({ page }) => {
+    const s = await grotteVide(page, true);
+    await page.getByRole("button", { name: "Écrire", exact: true }).click();
+    const dialogue = page.getByRole("alertdialog", { name: "Alice s’occupe de cette scène" });
+    await expect(dialogue).toContainText("Alice ne l’écrira plus.");
+    await dialogue.getByRole("button", { name: "Écrire quand même" }).click();
+    await page.getByRole("button", { name: "Mettre ce texte dans la scène" }).click();
+    await expect(MESSAGE(page)).toContainText("Vous vous en occupez maintenant.");
+    await expect.poll(async () => (await sql<{ e: string | null; m: boolean }>("select prise_par_eleve as e, prise_par_enseignant as m from public.scenes where id = $1", [s.grotte]))[0]).toEqual({ e: null, m: true });
+    await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
+    await expect(MESSAGE(page)).toContainText("La scène est de nouveau vide.");
+    await expect.poll(async () => (await sql<{ e: string | null; m: boolean }>("select prise_par_eleve as e, prise_par_enseignant as m from public.scenes where id = $1", [s.grotte]))[0]).toEqual({ e: s.alice, m: false });
+    expect(await mots(s.grotte)).toBe("");
+  });
+
+  test("F13-AC23 — sans consigne, rien ne part : le champ de la consigne s'ouvre", async ({ page }) => {
+    const s = await grotteVide(page, false);
+    await s.base.from("scenes").update({ consigne: "" }).eq("id", s.grotte);
+    await page.reload();
+    await page.getByRole("button", { name: "Écrire", exact: true }).click();
+    await expect(MESSAGE(page)).toContainText("Écrivez d’abord la consigne de la scène");
+    await expect(champConsigne(page)).toBeFocused();
   });
 });

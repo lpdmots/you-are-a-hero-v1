@@ -54,6 +54,10 @@ export const MODELE_DES_AIDES: Record<AideTexte, IdModele> = {
   pistes: "claude-sonnet-5-5",
   consigne: "claude-sonnet-5-5",
   titre: "claude-sonnet-5-5",
+  // Ajoutée le 17 octobre 2026. Sonnet, contre l'attente : sur le cas d'essai, Opus est passé au
+  // « tu » au présent après une scène au passé simple et a inventé un signe gravé ; Sonnet a gardé
+  // la personne et le temps, pour moitié moins cher
+  ecriture: "claude-sonnet-5-5",
   "idees-choix": "claude-opus-5-5",
   questions: "claude-opus-5-5",
   idees: "claude-opus-5-5",

@@ -64,6 +64,8 @@ function affichage(cas: Cas, valeur: unknown, erreur: string | null): Affichage 
       return { sorte: "liste", elements: (v.pistes as string[]).map((t) => ({ titre: t })) };
     case "titre":
       return { sorte: "liste", elements: (v.titres as string[]).map((t) => ({ titre: t })) };
+    case "ecriture":
+      return { sorte: "texte", texte: (v.paragraphes as string[]).join("\n\n") };
     case "questions":
       return { sorte: "liste", elements: (v.questions as string[]).map((t) => ({ titre: t })) };
     case "idees":
@@ -120,6 +122,11 @@ function demande(cas: Cas): CasAffiche["demande"] {
     case "consigne":
       ajouter("Indication de l'adulte", e.indication);
       ajouter("Chapitre", e.chapitre ? `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}` : "");
+      break;
+    case "ecriture":
+      ajouter("Consigne", e.consigne);
+      ajouter("Ce qui mène ici", e.avant.map((x: { fin: string; choix?: string }) => `${x.fin}${x.choix ? ` (choix : « ${x.choix} »)` : ""}`).join("\n"));
+      ajouter("Longueur visée", `environ ${e.cible} mots`);
       break;
     case "titre":
       ajouter("Consigne", e.consigne);

@@ -11,6 +11,7 @@ export const AIDES_TEXTE = [
   "pistes", // F13.1, « Proposer des pistes » dans la reprise
   "consigne", // F13.2
   "titre", // F05, ✦ du titre de scène
+  "ecriture", // F13.6, « ✦ Écrire » une scène vide
   "idees-choix", // F13.3
   "questions", // F13.4, questions pour la classe
   "idees", // F13.4, idées d'une étape
@@ -31,6 +32,7 @@ export const NOMS_DES_AIDES: Record<AideTexte, string> = {
   pistes: "Pistes de reprise",
   consigne: "Consigne",
   titre: "Titre de scène",
+  ecriture: "Écriture d'une scène",
   "idees-choix": "Idées de choix",
   questions: "Questions pour la classe",
   idees: "Idées de la préparation",

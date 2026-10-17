@@ -2088,6 +2088,18 @@ la consigne proposée prennent la hauteur de leur texte (`ChampQuiGrandit`), san
 barre de défilement, quatre lignes au moins. « Encouragements » passe sous la
 consigne, moins important qu'elle.
 
+**« ✦ Écrire » une scène vide (F13.6, 17 octobre 2026).** Dans la pastille prune,
+« ✦ Écrire » et « ≈ 150 mots ▾ » (une ligne « Environ [150] mots ») prennent la
+place de « Corriger » et du degré tant que le texte est vide. Si un élève s'en
+occupe, un dialogue d'abord : « Alice s'occupe de cette scène », deux faits (la
+scène vous sera attribuée ; Alice ne l'écrira plus), « Écrire quand même » ou
+« Annuler ». La proposition prend la place du texte, comme la correction au
+degré 4 sans le côte à côte : « ✦ Texte proposé · environ 150 mots » dans
+l'en-tête, ses paragraphes modifiables sur fond prune pâle, au pied le compte de
+mots, la phrase sur l'élève, « Laisser » et « Mettre ce texte dans la scène ».
+La consigne reste lisible à droite. Captures 840 à 843 ; pas de critique en deux
+lectures, l'écran reprenant les formes de la correction déjà critiquées.
+
 Corrigé après la critique : le ✦ du titre, collé au tampon d'état à l'autre bout
 du bandeau, posé juste après le titre ; la bande du titre nommée « Titre
 proposé », comme le cadre de la consigne ; « Un autre » dans la bande, pour ne

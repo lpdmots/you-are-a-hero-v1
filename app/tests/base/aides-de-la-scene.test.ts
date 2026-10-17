@@ -1,8 +1,12 @@
 import { randomUUID } from "node:crypto";
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
-import { demanderDesTitres, demanderUneConsigne, RIEN_POUR_UN_TITRE, SANS_INDICATION } from "@/serveur/aides-de-la-scene";
+import { compterMots } from "@/domaine/correction";
+import {
+  annulerUneEcriture, DEJA_ECRITE, demanderDesTitres, demanderUneConsigne, demanderUneEcriture, mettreUneEcriture, RIEN_POUR_UN_TITRE, SANS_CONSIGNE, SANS_INDICATION,
+} from "@/serveur/aides-de-la-scene";
 import { consigne } from "@/serveur/ia/aides/consigne";
+import { ecriture } from "@/serveur/ia/aides/ecriture";
 import { titre } from "@/serveur/ia/aides/titre";
 import {
   attribuer, creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, enseignantDe, inscrire, nettoyer, sql,
@@ -178,5 +182,72 @@ describe("Le ✦ du titre de scène (F05)", () => {
     await demanderUneConsigne(enseignantDe(laurent), ici);
     const lignes = await sql<{ aide: string }>("select aide from public.appels_ia where enseignant_id = $1 order by commence_le", [laurent.id]);
     expect(lignes.map((l) => l.aide)).toEqual(["titre", "consigne"]);
+  });
+});
+
+describe("« ✦ Écrire » une scène vide (F13.6)", () => {
+  it("F13-AC22 — une scène vide et sa consigne : un texte d'environ la longueur demandée, et rien d'écrit", async () => {
+    const { ici } = await lisiere();
+    const avant = await ligne(ici);
+    const r = await demanderUneEcriture(enseignantDe(laurent), ici, avant.version as number, 120);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(compterMots(r.paragraphes.join(" "))).toBeGreaterThanOrEqual(120);
+    expect(await ligne(ici)).toEqual(avant);
+  });
+
+  it("F13-AC23 — un texte déjà écrit, ou pas de consigne : rien ne part", async () => {
+    const { ici } = await lisiere();
+    const simuler = vi.spyOn(ecriture, "simuler");
+    await ecrire(ici, [{ type: "p", id: randomUUID(), children: [{ text: "Déjà écrit." }] }]);
+    const v = (await ligne(ici)).version as number;
+    expect(await demanderUneEcriture(enseignantDe(laurent), ici, v, 150)).toEqual({ ok: false, message: DEJA_ECRITE });
+    const { ici: autre } = await lisiere();
+    await laurent.base.from("scenes").update({ consigne: "" }).eq("id", autre);
+    expect(await demanderUneEcriture(enseignantDe(laurent), autre, (await ligne(autre)).version as number, 150)).toEqual({ ok: false, message: SANS_CONSIGNE });
+    expect(simuler).not.toHaveBeenCalled();
+  });
+
+  it("F13-AC25 — la fin de la scène d'où l'on vient et la phrase du choix partent, sans prénom d'élève", async () => {
+    const { ici, souche } = await lisiere();
+    await ecrire(souche, [
+      { type: "p", id: randomUUID(), children: [{ text: "Dans la souche, Lou allume la lanterne de secours." }] },
+      { type: "choix", id: randomUUID(), auto: true, libelle: "Sortir de la souche", construction: "neutre", cible: ici, children: [{ text: "" }] },
+      { type: "note", id: randomUUID(), children: [{ text: "Alice : à relire." }] },
+    ]);
+    const simuler = vi.spyOn(ecriture, "simuler");
+    const r = await demanderUneEcriture(enseignantDe(laurent), ici, (await ligne(ici)).version as number, 150);
+    expect(r.ok).toBe(true);
+    const parti = envoye(ecriture, simuler);
+    for (const present of ["Lou allume la lanterne de secours", "Sortir de la souche", "le passeur apparaît sur le pont", "Gué — les pierres qui chantent"]) expect(parti).toContain(present);
+    for (const absent of ["Alice", "Laurent", "à relire"]) expect(parti).not.toContain(absent);
+  });
+
+  it("F13-AC24 — la scène d'Alice : le texte gardé, elle passe à l'adulte ; « Annuler » la rend vide, à Alice", async () => {
+    const { ici } = await lisiere();
+    const e = enseignantDe(laurent);
+    const v = (await ligne(ici)).version as number;
+    const r = await demanderUneEcriture(e, ici, v, 60);
+    if (!r.ok) throw new Error(r.message);
+    const mis = await mettreUneEcriture(e, ici, r.version, r.paragraphes);
+    expect(mis.ok && mis.eleveRetire).toBe(alice.id);
+    const apres = await sql<{ prise_par_eleve: string | null; prise_par_enseignant: boolean; texte: { type: string }[] }>(
+      "select prise_par_eleve, prise_par_enseignant, texte from public.scenes where id = $1", [ici]);
+    expect(apres[0].prise_par_eleve).toBeNull();
+    expect(apres[0].prise_par_enseignant).toBe(true);
+    expect(apres[0].texte.every((b) => b.type === "p")).toBe(true);
+    if (!mis.ok) return;
+    const defait = await annulerUneEcriture(e, ici, mis.scene.version, [{ type: "p", id: randomUUID(), children: [{ text: "" }] }], alice.id);
+    expect(defait.ok).toBe(true);
+    const rendu = await sql<{ prise_par_eleve: string | null; prise_par_enseignant: boolean }>("select prise_par_eleve, prise_par_enseignant from public.scenes where id = $1", [ici]);
+    expect(rendu[0]).toEqual({ prise_par_eleve: alice.id, prise_par_enseignant: false });
+  });
+
+  it("le texte a changé pendant la demande : rien ne s'écrit", async () => {
+    const { ici } = await lisiere();
+    const v = (await ligne(ici)).version as number;
+    await sql("update public.scenes set version = version + 1 where id = $1", [ici]);
+    expect(await demanderUneEcriture(enseignantDe(laurent), ici, v, 150)).toEqual({ ok: false, change: true, message: MESSAGES_IA.texteChange });
+    expect(await mettreUneEcriture(enseignantDe(laurent), ici, v, ["Un texte."])).toEqual({ ok: false, change: true, message: MESSAGES_IA.texteChange });
   });
 });

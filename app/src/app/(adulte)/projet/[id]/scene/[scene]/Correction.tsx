@@ -473,7 +473,7 @@ function CoteACote({
 }
 
 /** Un paragraphe de la proposition, modifiable, qui grandit avec son texte. */
-function Champ({ valeur, change, onChange }: { valeur: string; change: boolean; onChange: (v: string) => void }): ReactNode {
+export function Champ({ valeur, change, onChange }: { valeur: string; change: boolean; onChange: (v: string) => void }): ReactNode {
   const ref = useRef<HTMLTextAreaElement>(null);
   // La hauteur suit le texte, et la largeur : un champ mesuré caché, ou avant que l'écran tourne, se remesure
   useLayoutEffect(() => {

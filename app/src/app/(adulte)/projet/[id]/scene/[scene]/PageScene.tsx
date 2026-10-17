@@ -42,6 +42,7 @@ import { useAidesIa } from "@/composants/AidesIa";
 import { compterMots, paragraphesACorriger } from "@/domaine/correction";
 import { useConsigneIa, useTitreIa } from "./AidesDeScene";
 import { useCorrection } from "./Correction";
+import { useEcriture } from "./Ecriture";
 import { FicheNumero } from "./FicheNumero";
 import { FicheEncouragements } from "./Encouragements";
 import { FicheDecision, FicheRemarque, FicheRemises, nomDeRemise } from "./Relecture";
@@ -330,6 +331,30 @@ export function PageScene({
     },
   });
   const corrige = !aCote && onglet === "scene" && !vide;
+  // Une scène vide : « ✦ Écrire » à la place de « Corriger » (F13.6)
+  const ecriture = useEcriture({
+    sceneId: scene.id,
+    version: () => versionLue.current,
+    consigne,
+    eleve: scene.priseParEleve && eleveDeLaScene ? nomPourEleves(eleveDeLaScene, eleves) : null,
+    avantDePartir,
+    enAttente: () => sauvegardeTenue.current !== "enregistre",
+    relire: async () => {
+      if (!(await avantDePartir())) return;
+      const lu = await relireTexte(scene.id);
+      if (lu.ok) remplacer(lu.scene);
+    },
+    onRemplace: (suite) => {
+      remplacer(suite);
+      setOnglet("scene");
+    },
+    onSansConsigne: () => {
+      setConsigneOuverte(true);
+      setTimeout(() => document.getElementById("scene-consigne")?.focus(), 0);
+    },
+  });
+  const ecrit = !aCote && onglet === "scene" && vide;
+  const aide = corrige ? correction : ecrit ? ecriture : null;
 
   const retirer = async (c: CopieGardee) => {
     setGeste(true);
@@ -700,8 +725,8 @@ export function PageScene({
       marques
       libelle={`Texte de la scène ${ref}`}
       tete={onglets}
-      autre={(corrige ? correction.autre : null) ?? autre}
-      aides={corrige && !correction.autre ? correction.barre : undefined}
+      autre={aide?.autre ?? autre}
+      aides={aide && !aide.autre ? aide.barre : undefined}
       onSelection={setSelection}
       onMots={(m) => (mots.current = m)}
       onEtat={(suite) => {
@@ -964,7 +989,7 @@ export function PageScene({
       <div className={`${styles.colonnes}${corrige && correction.large ? ` ${styles.large}` : ""}`}>
         <section className={styles.texte} aria-label="Texte de la scène">
           {notes}
-          {corrige ? correction.note : null}
+          {aide?.note ?? null}
           {copieEl}
         </section>
         <aside className="cote-copie" hidden={corrige && correction.large}>
@@ -992,8 +1017,8 @@ export function PageScene({
                 derniere={derniereRemise ? { par: derniereRemise.eleveId ? nomEleve(derniereRemise.eleveId) : null, le: derniereRemise.remisLe } : null}
                 echec={sauvegarde === "echec"}
                 ailleurs={
-                  corrige && correction.autre
-                    ? { correction: true, phrase: "Gardez ou laissez la correction proposée : l’état se choisira ensuite." }
+                  aide?.autre
+                    ? { correction: true, phrase: corrige ? "Gardez ou laissez la correction proposée : l’état se choisira ensuite." : "Gardez ou laissez le texte proposé : l’état se choisira ensuite." }
                     : remiseMontree
                     ? { phrase: `Vous lisez le texte ${nomDeRemise(remiseMontree, remises).toLowerCase()}.` }
                     : montree
@@ -1107,6 +1132,7 @@ export function PageScene({
           onFermer={() => setChoixDepart(false)}
         />
       ) : null}
+      {ecriture.prevenir}
       {commandes.dialogue}
     </div>
   );

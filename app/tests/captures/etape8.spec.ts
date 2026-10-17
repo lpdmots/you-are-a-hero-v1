@@ -240,3 +240,28 @@ test("lot 3 : « ✦ Formuler » sous la consigne, et le ✦ du titre de scène"
   await page.getByRole("textbox", { name: "Consigne proposée" }).waitFor();
   await capturer(page, "note-proposee-personnel", false);
 });
+
+test("lot 3 : « ✦ Écrire » une scène vide", async ({ page }) => {
+  test.setTimeout(240_000);
+  n = 839;
+  const { compte, base } = await adultePret(page);
+  await base.from("enseignants").update({ nom_affiche: "Mme Laurent" }).eq("id", compte.id);
+  const classe = await semerClasse(base, "CE2", ["Alice"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  const { chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["Grotte — le dragon endormi", "Le pont"] }]);
+  const [s1] = chapitres[0].scenes;
+  await semerAttribution(base, chapitres[0].id, [{ eleve: classe.eleves.Alice.id }]);
+  await base.from("scenes").update({ prise_par_eleve: classe.eleves.Alice.id, consigne: "Lou entre dans la grotte où dort le dragon. Raconte comment il avance sans le réveiller.\nDécris :\n– la grotte ;\n– ce que ressent Lou." }).eq("id", s1);
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await aller(page, `/projet/${projet}/scene/${s1}`);
+  await copie(page).waitFor();
+  await capturer(page, "ecrire-scene-vide", false);
+  await page.getByRole("button", { name: "Écrire", exact: true }).click();
+  await page.getByRole("alertdialog").waitFor();
+  await capturer(page, "ecrire-prevenir", false);
+  await page.getByRole("button", { name: "Écrire quand même" }).click();
+  await page.getByRole("button", { name: "Mettre ce texte dans la scène" }).waitFor();
+  await capturer(page, "ecrire-proposition", false);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await capturer(page, "ecrire-proposition-390", false);
+});

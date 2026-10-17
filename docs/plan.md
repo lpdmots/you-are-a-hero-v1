@@ -2266,7 +2266,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       reste ouverte au degré 4 ou 5 ; chaque facteur dit ce qu'il donne en mots
       dans sa bulle ; un nombre saisi se ramène entre 5 et 1 500 mots ; le
       réglage dure tant que la page est ouverte, comme le degré.
-  - **Lot 3 — consigne et titre : construit le 17 octobre 2026,** en local,
+  - **Lot 3 — consigne et titre : construit le 17 octobre 2026, et terminé le
+    même jour :** le porteur l'essaie sur le serveur local avec de vrais appels
+    (« le tout me semble bon ») et confirme ses précisions, celles d'« Écrire »
+    comprises ; ne plus les lui soumettre. Construit en local,
     sans migration (le journal accepte déjà les aides « consigne » et
     « titre »). Dans la page de scène : « ✦ Formuler » sous le champ de la
     consigne, qui part de ce que l'adulte y a écrit, même en trois mots, et
@@ -2322,6 +2325,26 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       un à un (F05 révisé) ; la consigne, et la consigne proposée, à la hauteur
       de leur texte, sans défilement ; « Encouragements » sous la consigne. Voir
       le design, lot 3.
+    - **« ✦ Écrire » une scène vide (F13.6), décidé par le porteur le même jour**
+      sur trois recommandations (toujours quand le texte est vide, l'adulte
+      prévenu si un élève s'en occupe ; environ 150 mots, réglables ; ce qui
+      mène à la scène transmis) : construit dans le lot, sans migration.
+      « Écrire » et « ≈ 150 mots » prennent la place de « Corriger » et du degré
+      dans la pastille ; la proposition, modifiable par paragraphe, s'affiche
+      dans la copie, avec « Mettre ce texte dans la scène » ou « Laisser » ; la
+      scène d'un élève passe à l'adulte quand il garde le texte, « Annuler » la
+      lui rend. Adresse `/ia/ecriture`. Critères fermés : F13-AC22 à AC25, sur
+      la réponse simulée ; la qualité attend le jugement du lot 9. Modèle :
+      Sonnet 5.5, après un vrai appel sur chacun des deux (cas `ecriture-1`) :
+      Opus est passé au « tu » au présent derrière une scène au passé simple et a
+      inventé un détail, Sonnet a tenu la personne, le temps et la consigne ;
+      0,027 dollar ; dépense de l'étape, environ 1,19 dollar. Précisions à
+      confirmer : l'aide de la fiche de décision pendant la revue (« Gardez ou
+      laissez le texte proposé : l'état se choisira ensuite. ») ; sans consigne,
+      le champ de la consigne s'ouvre et prend le curseur ; une scène sans élève,
+      ou déjà à l'adulte, ne change pas de main ; jusqu'à deux scènes d'où l'on
+      arrive, dans l'ordre des choix. Captures 840 à 843. Tests : 5 contre la
+      base, 3 parcours.
     - **Dépense :** aucun appel réel (les consignes au modèle sont celles de
       l'essai V17) ; dépense de l'étape, environ 1,16 dollar (1 €).
     - **Tests automatiques :** 2 unitaires, 11 contre la base, 5 parcours.
@@ -2417,7 +2440,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **F12 :** retour à une version partagée antérieure ; auteurs réglés par
   canal ; classes destinataires choisies une à une ; droits de diffusion,
   vitrine et bibliothèque (F12.2), mis de côté.
-- **F13 :** réécriture créative complète ; accès des élèves à l'IA ;
+- **F13 :** réécriture créative complète d'un texte écrit (l'écriture d'une scène vide d'après sa consigne y entre le 17 octobre 2026, F13.6) ; accès des élèves à l'IA ;
   relecture des coquilles du livre entier, idée non décidée.
 - **Hors identifiant :** anglais ; logiciel natif ; hors ligne complet ;
   import de la V0.

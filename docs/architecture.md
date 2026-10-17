@@ -1516,6 +1516,15 @@ F10.2.
   de la consigne devient une file : une aide attend l'envoi en cours (celui que
   déclenche la sortie du champ au moment du clic) avant de partir, et un envoi
   qui échoue repart au suivant au lieu d'être perdu.
+- **« ✦ Écrire » (F13.6).** L'aide `ecriture` (`serveur/ia/aides/ecriture.ts`),
+  sur Sonnet 5.5 ; `/ia/ecriture` relit la consigne, refuse une scène qui a un
+  texte, et envoie la fin du texte des scènes d'où l'on arrive (la table
+  `liens`, par la destination ; en récit classique, la scène d'avant).
+  `mettreLEcriture` (action serveur) relit la scène, toujours vide à la version
+  de la demande, y met les paragraphes, puis la passe à l'adulte si un élève
+  s'en occupait ; `annulerLEcriture` la vide et la rend. Côté page,
+  `Ecriture.tsx` prend la place de la correction quand le texte est vide, avec
+  le même cadre (`AutreTexte`) et les mêmes champs (`Champ`).
 - **La couleur de l'IA.** Les jetons `--ia`, `--ia-fonce`, `--ia-pale` et
   `--ia-trait` (`styles/jetons.css`), la classe `btn--ia` pour un bouton d'aide
   (`styles/formes.css`) ; le signe `ia` d'`Icone` devient des étincelles.

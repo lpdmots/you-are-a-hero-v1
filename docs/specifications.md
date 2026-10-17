@@ -9664,6 +9664,9 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   - Préparation, parties et chapitres : le carnet et le plan, sans texte
     d'élève ;
   - titre : la consigne ou le début du texte ;
+  - écriture d'une scène vide (F13.6, ajouté le 17 octobre 2026) : ce que reçoit
+    la consigne, plus le titre de la scène et la fin du texte des scènes qui y
+    mènent, avec la phrase du choix ;
   - images : l'idée d'illustration (écrite parfois par un élève), le texte de
     la scène, le style, les fiches et portraits des personnages retenus.
 
@@ -10253,6 +10256,57 @@ acceptées) :**
 **Limites et questions ouvertes :** retouche assistée d'une partie existante,
 prévention des doublons. La qualité des suggestions et le contexte exact
 restent à éprouver.
+
+### F13.6 — Écrire une scène vide d'après sa consigne
+
+**Décidé par le porteur le 17 octobre 2026,** à l'essai du lot 3 de l'étape 8,
+réponse par réponse aux recommandations ; cela révise la limite « réécriture
+créative complète » hors de la première livraison (F13, plan) pour la seule
+écriture d'une scène vide. Besoin : l'adulte qui n'a que la consigne, faute de
+temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
+
+- **Où :** « ✦ Écrire » prend la place de « Corriger » dans la page de scène
+  dès que le texte est vide, en classe comme en mode personnel. La consigne est
+  requise : sans elle, « Écrivez d'abord la consigne de la scène : l'IA écrit
+  d'après elle. »
+- **La scène d'un élève :** si un élève s'en occupe, l'adulte est prévenu avant
+  la demande (« Alice s'occupe de cette scène » : en gardant le texte, la scène
+  lui sera attribuée, Alice ne l'écrira plus). En gardant le texte, la scène
+  passe à l'adulte (« Vous ») ; « Annuler » la rend vide et la rend à l'élève.
+- **Longueur :** environ 150 mots par défaut, réglable de 30 à 1 500 dans la
+  même pastille (« ≈ 150 mots »).
+- **Ce que l'IA écrit :** le récit seul, en paragraphes, sans choix, action de
+  jeu ni note ; ni « rends-toi au », ni personnage ou événement que la consigne,
+  la Préparation ou le chapitre n'annoncent pas ; dans la personne et le temps
+  des scènes d'avant. En classe, à la portée d'un bon élève du niveau réglé.
+- **Ce qui est transmis :** la consigne, le titre de la scène, la Préparation,
+  le titre et le résumé du chapitre, les titres et consignes des scènes
+  voisines, et ce qui mène à la scène : la fin du texte des deux premières
+  scènes dont un choix y conduit, avec la phrase de ce choix (en récit
+  classique, la fin de la scène d'avant). Jamais un prénom d'élève.
+- **Sous contrôle de l'adulte :** la proposition s'affiche dans la copie,
+  modifiable paragraphe par paragraphe, avec « Mettre ce texte dans la scène »
+  ou « Laisser » ; rien ne change avant. Le texte changé pendant la demande ne
+  reçoit rien (« Redemander ? »), comme la correction.
+
+**Critères d'acceptation :**
+
+- **F13-AC22 — Une proposition, rien d'écrit :** étant donné une scène vide et
+  sa consigne, lorsque l'adulte demande « ✦ Écrire », alors il reçoit un texte
+  de récit d'environ la longueur demandée, et la scène reste vide tant qu'il ne
+  l'a pas mis dans la scène.
+- **F13-AC23 — Seulement une scène vide, avec sa consigne :** étant donné une
+  scène qui a un texte, ou une scène vide sans consigne, lorsque l'aide est
+  demandée, alors rien ne part chez le fournisseur.
+- **F13-AC24 — La scène d'un élève :** étant donné une scène vide dont Alice
+  s'occupe, lorsque l'adulte demande « ✦ Écrire », alors il est d'abord prévenu ;
+  lorsqu'il garde le texte, alors la scène lui est attribuée et Alice ne
+  l'écrit plus ; lorsqu'il annule aussitôt, la scène redevient vide et Alice la
+  retrouve.
+- **F13-AC25 — Ce qui mène ici :** étant donné S018 où mène le choix « Sortir de
+  la souche » de S016, lorsque l'adulte demande « ✦ Écrire » pour S018, alors la
+  fin du texte de S016 et la phrase du choix partent avec la consigne, sans
+  aucun prénom d'élève.
 
 ## Suite de l'entretien et couverture restante
 
