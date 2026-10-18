@@ -28,7 +28,7 @@ export const estSorteDeCarte = (v: unknown): v is SorteDeCarte => v === "personn
 
 const INTROUVABLE = "Cette carte n’existe plus.";
 /** Sans fiche visuelle, l'image de référence ne se crée pas : la page le dit sous le bouton éteint */
-export const SANS_FICHE = "Écrivez d’abord la fiche visuelle, ou faites-la préciser.";
+export const SANS_FICHE = "Décrivez d’abord son apparence.";
 const histoireDe = (e: Enseignant, p: Projet): Histoire => ({
   titre: p.titre, mode: p.organisation, recit: p.recit, niveaux: p.organisation === "classe" ? e.reglagesIa.niveaux : [],
 });
@@ -46,8 +46,10 @@ export async function repererLesPersonnages(e: Enseignant, projetId: string): Pr
   if (!projet || !preparation) return { ok: false, message: "Ce projet n’existe plus." };
   const carnet = carnetDe(preparation);
   const idees = preparation.pistes.filter((p) => p.rubrique === "personnages" && p.etat === "retenue").map((p) => p.texte);
-  if (!carnet.personnages?.trim() && !idees.length) {
-    return { ok: false, message: "Écrivez d’abord dans « Nous retenons » qui sont les personnages, ou retenez des idées." };
+  // Le texte retenu de chaque héros nomme souvent ceux qu'il croise (18 octobre 2026)
+  const herosDecrits = preparation.personnagesDeLHistoire.some((p) => p.heros && p.description.trim());
+  if (!carnet.personnages?.trim() && !idees.length && !herosDecrits) {
+    return { ok: false, message: "Écrivez d’abord dans « Nous retenons » d’un héros qui il croise, ou retenez des idées." };
   }
   const connus = preparation.personnagesDeLHistoire.map((p) => ({ nom: p.nom, autresNoms: p.autresNoms, description: p.description, heros: p.heros }));
   const r = await demanderUneAide(e, aidePersonnages, { histoire: histoireDe(e, projet), carnet, idees, connus });

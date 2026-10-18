@@ -75,6 +75,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
         preparation={preparation}
         plan={plan}
         etape={etape}
+        onglet={typeof demande.heros === "string" ? demande.heros : null}
         aideMasquee={enseignant.aidesMasquees.includes("preparation")}
         aideVue={magasin.get("aide-preparation")?.value === "vue"}
       />

@@ -8,7 +8,7 @@ import { projetDe } from "@/serveur/lectures";
 import { planDe, preparationDe } from "@/serveur/recit";
 import { Projection } from "./Projection";
 
-type Props = { params: Promise<{ projet: string; etape: string }> };
+type Props = { params: Promise<{ projet: string; etape: string }>; searchParams: Promise<{ heros?: string | string[] }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { etape } = await params;
@@ -20,8 +20,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  * en grand, sans la barre de l'application. La page reste celle de l'enseignant : la projeter ne
  * donne aucun accès aux élèves (F02-AC04). Elle n'existe que pour un projet de classe.
  */
-export default async function PageProjection({ params }: Props) {
+export default async function PageProjection({ params, searchParams }: Props) {
   const { projet: projetId, etape } = await params;
+  const { heros } = await searchParams;
   const enseignant = await exigerEnseignant();
   const projet = await projetDe(enseignant, projetId);
   if (!projet || projet.organisation !== "classe" || !estRubrique(etape)) notFound();
@@ -31,8 +32,9 @@ export default async function PageProjection({ params }: Props) {
     <Messages>
       <AidesIa reglages={enseignant.reglagesIa}>
         <Projection
-          projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit }}
+          projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit, herosAbsent: projet.herosAbsent }}
           etape={etape}
+          onglet={typeof heros === "string" ? heros : null}
           preparation={preparation}
           plan={plan}
         />

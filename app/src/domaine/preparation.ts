@@ -77,9 +77,10 @@ export type EtatPiste = (typeof ETATS_PISTE)[number];
 export const NOM_ETAT_PISTE: Record<EtatPiste, string> = { retenue: "retenue", discuter: "à discuter", ecartee: "écartée" };
 /** Une idée notée à la main, ou ajoutée par l'IA (F13-AC19) : « origine », pour la marquer ✦. */
 export type Origine = "main" | "ia";
-export type Piste = { id: string; rubrique: Rubrique; texte: string; etat: EtatPiste; origine: Origine };
+/** Dans l'étape Personnages, une idée ou une question appartient à un héros (F10.2, 18 octobre 2026). */
+export type Piste = { id: string; rubrique: Rubrique; texte: string; etat: EtatPiste; origine: Origine; personnageId?: string | null };
 /** Une question ajoutée à une étape, après les relances du guidage (F02, 17 octobre 2026). */
-export type Question = { id: string; etape: Rubrique; texte: string; origine: Origine };
+export type Question = { id: string; etape: Rubrique; texte: string; origine: Origine; personnageId?: string | null };
 
 // ——— La Préparation en étapes (F02, décision du 17 octobre 2026) ———
 
@@ -100,13 +101,18 @@ export const etapesDe = (recit: Recit): EtapePreparation[] => ETAPES_PREPARATION
 export const nomEtape = (etape: EtapePreparation, recit: Recit): string =>
   etape === "choix" ? "Les choix" : etape === "jeu" ? (recit === "choix" ? "Le jeu" : "Les objets") : NOM_RUBRIQUE[etape];
 
-/** Une étape de l'histoire est faite quand « Nous retenons » n'est pas vide ; Grandes étapes, dès qu'il y a une partie. */
-export function etapeFaite(etape: Rubrique, carnet: Pick<Preparation, RubriqueTexte>, parties: number): boolean {
-  return etape === "etapes" ? parties > 0 : carnet[etape].trim() !== "";
+/**
+ * Une étape de l'histoire est faite quand « Nous retenons » n'est pas vide ; Grandes étapes, dès
+ * qu'il y a une partie ; Personnages, dès qu'un héros a un texte retenu (F10.2, 18 octobre 2026).
+ */
+export function etapeFaite(etape: Rubrique, carnet: Pick<Preparation, RubriqueTexte> & { personnagesDeLHistoire?: Personnage[] }, parties: number): boolean {
+  if (etape === "etapes") return parties > 0;
+  if (etape === "personnages" && carnet.personnagesDeLHistoire?.some((p) => p.heros && p.description.trim())) return true;
+  return carnet[etape].trim() !== "";
 }
 
 /** La page s'ouvre sur la première étape de l'histoire sans texte retenu ; toutes faites, sur la première. */
-export function etapeDOuverture(carnet: Pick<Preparation, RubriqueTexte>, parties: number): Rubrique {
+export function etapeDOuverture(carnet: Pick<Preparation, RubriqueTexte> & { personnagesDeLHistoire?: Personnage[] }, parties: number): Rubrique {
   return RUBRIQUES.find((r) => !etapeFaite(r, carnet, parties)) ?? "univers";
 }
 
@@ -285,3 +291,51 @@ export type Preparation = {
   /** Les cartes de l'étape « Personnages » (F10.2) ; « personnages » est le texte retenu de l'étape */
   personnagesDeLHistoire: Personnage[];
 };
+
+// ——— Un onglet par héros dans l'étape Personnages (F10.2, décidé le 18 octobre 2026) ———
+
+/** L'onglet des personnages qui ne sont pas des héros : une liste simple, sans questions ni idées. */
+export const AUTRES_PERSONNAGES = "autres";
+
+/** Le nom d'une carte de héros qui n'en a pas encore : la question garde alors « notre héros ». */
+export const HEROS_SANS_NOM = "Le héros";
+
+/**
+ * Ce que montre l'onglet d'un héros : sa question, ses relances, ses questions et ses idées.
+ * Le premier héros reçoit aussi ce qui n'appartient à aucun (une idée notée avant toute carte) ;
+ * la relance « Un seul héros, ou plusieurs ? » ne se pose qu'à lui.
+ */
+export function ongletDuHeros(
+  preparation: Pick<Preparation, "questions" | "pistes" | "personnagesDeLHistoire">,
+  herosId: string | null,
+  organisation: Organisation,
+  recit: Recit,
+): { heros: Personnage | null; premier: boolean; question: string; relances: string[]; questions: Question[]; idees: Piste[] } {
+  const tous = preparation.personnagesDeLHistoire.filter((p) => p.heros);
+  const heros = tous.find((p) => p.id === herosId) ?? null;
+  const premier = !heros || heros.id === tous[0]?.id;
+  const guide = guidage("personnages", organisation, recit);
+  const aLui = (id: string | null | undefined) => (heros && id === heros.id) || (premier && !id);
+  const nomme = heros && heros.nom.trim() !== HEROS_SANS_NOM ? heros.nom.trim() : null;
+  // Une ligne, pour ne pas faire défiler (porteur, 18 octobre 2026) ; le prénom dit lequel
+  const question = nomme ? `Qui est ${nomme} ?` : "Qui est notre héros ?";
+  // Les relances nomment le héros : le prénom ne dit pas si c'est une fille ou un garçon
+  const relances = nomme && recit === "choix"
+    ? [`Quel âge a ${nomme}, et que sait faire ce héros ?`, `Qu’est-ce qui fait peur à ${nomme} ?`, `Qui va aider ${nomme}, qui va lui barrer la route ?`, RELANCE_DES_HEROS]
+    : nomme
+      ? [`Quel âge a ${nomme}, et que sait faire ce héros ?`, `Qu’est-ce qui fait peur à ${nomme} ?`, `Qui va aider ${nomme}, qui va lui barrer la route ?`]
+      : guide.relances;
+  return {
+    heros,
+    premier,
+    question: organisation === "personnel" && !nomme ? "Qui est votre héros ?" : question,
+    relances: premier ? relances : relances.filter((r) => r !== RELANCE_DES_HEROS),
+    questions: preparation.questions.filter((q) => q.etape === "personnages" && aLui(q.personnageId)),
+    idees: preparation.pistes.filter((p) => p.rubrique === "personnages" && aLui(p.personnageId)),
+  };
+}
+
+/** La question de l'onglet des autres personnages. */
+export const questionDesAutres = (organisation: Organisation): string =>
+  // Traits d'union insécables : « croise-t-on » ne se coupe pas
+  organisation === "classe" ? "Qui d’autre croise\u2011t\u2011on dans notre histoire ?" : "Qui d’autre croise\u2011t\u2011on dans votre histoire ?";

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { DESCRIPTION_MAX, FICHE_MAX, ligne, lireAutresNoms, NOM_MAX, paragraphes } from "@/domaine/personnages";
+import { HEROS_SANS_NOM } from "@/domaine/preparation";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { jeterLesPropositions, type SorteDeCarte } from "@/serveur/personnages";
 import { estUuid } from "@/serveur/recit";
@@ -55,6 +56,30 @@ export async function ajouterDesPersonnages(projetId: string, cartes: CarteSaisi
   return { ok: true, ids: [...data].sort((a, b) => (a.rang as number) - (b.rang as number)).map((d) => d.id as string) };
 }
 
+/**
+ * Le héros d'un onglet qui n'en a pas encore (F10.2, 18 octobre 2026) : le premier héros du
+ * projet, sinon une carte « Le héros », créée au premier mot écrit dans l'étape.
+ */
+export async function premierHeros(projetId: string): Promise<Fait<{ id: string }>> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return echec("Projet inconnu.");
+  const { data: deja } = await e.supabase.from("personnages").select("id").eq("projet_id", projetId).eq("heros", true).order("rang").order("cree_le").limit(1);
+  if (deja?.length) return { ok: true, id: deja[0].id as string };
+  // Le texte retenu commun et les idées de l'étape, écrits avant toute carte, vont à ce héros,
+  // comme la migration l'a fait pour les projets existants
+  const { data: prep } = await e.supabase.from("preparations").select("personnages").eq("projet_id", projetId).maybeSingle();
+  const fait = await ajouterDesPersonnages(projetId, [{ nom: HEROS_SANS_NOM, heros: true, description: (prep?.personnages as string | undefined) ?? "" }]);
+  if (!fait.ok) return fait;
+  const id = fait.ids[0];
+  await Promise.all([
+    e.supabase.from("pistes").update({ personnage_id: id }).eq("projet_id", projetId).eq("rubrique", "personnages").is("personnage_id", null),
+    e.supabase.from("questions").update({ personnage_id: id }).eq("projet_id", projetId).eq("etape", "personnages").is("personnage_id", null),
+    e.supabase.from("preparations").update({ personnages: "" }).eq("projet_id", projetId),
+  ]);
+  rafraichir(projetId);
+  return { ok: true, id };
+}
+
 /** Le nom, les autres noms, la marque « héros », la description ou la fiche visuelle d'une carte. */
 export async function reglerPersonnage(personnageId: string, valeurs: Partial<CarteSaisie>): Promise<Fait> {
   const e = await exigerEnseignant();
@@ -76,7 +101,9 @@ export async function reglerPersonnage(personnageId: string, valeurs: Partial<Ca
   return { ok: true };
 }
 
-export type CarteSupprimee = CarteSaisie & { rang: number; portraitId: string | null };
+type Piece = Record<string, unknown>;
+/** Une carte supprimée, avec ses questions et ses idées de l'étape Personnages, pour « Annuler » */
+export type CarteSupprimee = CarteSaisie & { id: string; rang: number; portraitId: string | null; pieces?: { questions: Piece[]; pistes: Piece[] } };
 
 /**
  * Supprime des cartes, et rend ce qu'il faut pour « Annuler » : la même carte revient à sa place,
@@ -85,19 +112,28 @@ export type CarteSupprimee = CarteSaisie & { rang: number; portraitId: string | 
 export async function supprimerDesPersonnages(projetId: string, ids: string[]): Promise<Fait<{ cartes: CarteSupprimee[] }>> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId) || !Array.isArray(ids) || !ids.length || ids.some((i) => !estUuid(i))) return echec("Personnage inconnu.");
+  // Les questions et les idées d'un héros partent avec lui : elles reviennent avec « Annuler »
+  const [questions, pistes] = await Promise.all([
+    e.supabase.from("questions").select("*").in("personnage_id", ids),
+    e.supabase.from("pistes").select("*").in("personnage_id", ids),
+  ]);
   const { data, error } = await e.supabase
     .from("personnages")
     .delete()
     .eq("projet_id", projetId)
     .in("id", ids)
-    .select("nom, autres_noms, heros, description, fiche, rang, portrait_id");
+    .select("id, nom, autres_noms, heros, description, fiche, rang, portrait_id");
   if (error || !data?.length) return echec(NON_ENREGISTRE);
   rafraichir(projetId);
   return {
     ok: true,
     cartes: data.map((c) => ({
-      nom: c.nom as string, autresNoms: (c.autres_noms as string[]) ?? [], heros: c.heros as boolean, description: c.description as string,
+      id: c.id as string, nom: c.nom as string, autresNoms: (c.autres_noms as string[]) ?? [], heros: c.heros as boolean, description: c.description as string,
       fiche: c.fiche as string, rang: c.rang as number, portraitId: (c.portrait_id as string | null) ?? null,
+      pieces: {
+        questions: (questions.data ?? []).filter((q) => q.personnage_id === c.id),
+        pistes: (pistes.data ?? []).filter((p) => p.personnage_id === c.id),
+      },
     })),
   };
 }
@@ -108,11 +144,20 @@ export async function remettreDesPersonnages(projetId: string, cartes: CarteSupp
   if (!estUuid(projetId) || !Array.isArray(cartes) || !cartes.length || cartes.length > 20) return echec("Projet inconnu.");
   const lignes = cartes.map((c) => {
     const v = valeursDe(c);
-    return v ? { ...v, rang: Number.isInteger(c.rang) ? c.rang : 0, portrait_id: estUuid(c.portraitId) ? c.portraitId : null, projet_id: projetId, enseignant_id: e.id } : null;
+    return v
+      ? { ...v, ...(estUuid(c.id) ? { id: c.id } : {}), rang: Number.isInteger(c.rang) ? c.rang : 0, portrait_id: estUuid(c.portraitId) ? c.portraitId : null, projet_id: projetId, enseignant_id: e.id }
+      : null;
   });
   if (lignes.some((l) => !l)) return echec(NON_ENREGISTRE);
   const { error } = await e.supabase.from("personnages").insert(lignes.flatMap((l) => (l ? [l] : [])));
   if (error) return echec(NON_ENREGISTRE);
+  // Ses questions et ses idées reviennent telles quelles, dans le même projet (la base le vérifie)
+  const pieces = (table: "questions" | "pistes") =>
+    cartes.flatMap((c) => (Array.isArray(c.pieces?.[table]) ? c.pieces[table] : [])).map((p) => ({ ...p, projet_id: projetId, enseignant_id: e.id }));
+  for (const table of ["questions", "pistes"] as const) {
+    const lot = pieces(table);
+    if (lot.length) await e.supabase.from(table).insert(lot);
+  }
   rafraichir(projetId);
   return { ok: true };
 }

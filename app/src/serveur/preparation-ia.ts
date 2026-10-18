@@ -1,7 +1,7 @@
 import "server-only";
 import { carnetDe } from "./ia/aides/contexte";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
-import { guidage, type Rubrique } from "@/domaine/preparation";
+import { guidage, HEROS_SANS_NOM, ongletDuHeros, type Rubrique } from "@/domaine/preparation";
 import type { Enseignant } from "./adulte";
 import { idees as aideIdees, questions as aideQuestions, retenons as aideRetenons, type EntreeEtape } from "./ia/aides/preparation";
 import { demanderUneAide } from "./ia/demander";
@@ -29,12 +29,29 @@ export type ReponsePreparation =
 export const RIEN_A_REDIGER = "Retenez d’abord une idée, ou écrivez quelques mots : l’IA rédige d’après eux.";
 
 /** Ce que l'aide d'une étape reçoit, relu dans la base. Null si le projet n'est pas à l'adulte. */
-export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rubrique): Promise<EntreeEtape | null> {
+export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rubrique, herosId: string | null = null): Promise<EntreeEtape | null> {
   if (!estUuid(projetId)) return null;
   const [projet, preparation] = await Promise.all([projetDe(e, projetId), preparationDe(e, projetId)]);
   if (!projet || !preparation) return null;
   const plan = etape === "etapes" ? await planDe(e, projetId) : null;
   const guide = guidage(etape, projet.organisation, projet.recit);
+  // L'étape Personnages a un onglet par héros (F10.2, 18 octobre 2026) : l'aide ne regarde que le sien
+  if (etape === "personnages") {
+    const onglet = ongletDuHeros(preparation, estUuid(herosId) ? herosId : null, projet.organisation, projet.recit);
+    const carnet = carnetDe(preparation);
+    return {
+      histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
+      etape,
+      question: onglet.question,
+      questions: [...onglet.relances, ...onglet.questions.map((q) => q.texte)],
+      idees: onglet.idees.map((p) => ({ texte: p.texte, etat: p.etat })),
+      retenu: onglet.heros?.description ?? preparation.personnages,
+      heros: onglet.heros && onglet.heros.nom.trim() !== HEROS_SANS_NOM ? onglet.heros.nom.trim() : undefined,
+      // Ce héros se lit dans « Nous retenons » : les cartes ne redisent que les autres
+      carnet: { ...carnet, cartes: carnet.cartes?.filter((c) => !onglet.heros || c.nom !== onglet.heros.nom) },
+      orientation: preparation.orientations[etape],
+    };
+  }
   return {
     histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
     etape,
@@ -50,8 +67,10 @@ export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rub
 }
 
 /** Six questions ou six idées en une demande, ou une proposition pour « Nous retenons ». */
-export async function demanderPourLEtape(e: Enseignant, projetId: string, etape: Rubrique, sorte: SorteAidePreparation): Promise<ReponsePreparation> {
-  const entree = await entreeDeLEtape(e, projetId, etape);
+export async function demanderPourLEtape(
+  e: Enseignant, projetId: string, etape: Rubrique, sorte: SorteAidePreparation, herosId: string | null = null,
+): Promise<ReponsePreparation> {
+  const entree = await entreeDeLEtape(e, projetId, etape, herosId);
   if (!entree) return { ok: false, message: "Ce projet n’existe plus." };
   if (sorte === "retenons") {
     // « Grandes étapes » retient des parties, pas un texte : le lot 6 y apporte ses idées de parties

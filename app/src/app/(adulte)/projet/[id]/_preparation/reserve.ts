@@ -6,12 +6,12 @@ import { prendreDansLaReserve, type Rubrique } from "@/domaine/preparation";
 import type { ReponsePreparation, SorteAidePreparation } from "@/serveur/preparation-ia";
 
 /** Demande une aide de la Préparation par son adresse (F13.4) ; une panne se dit comme un refus. */
-export async function demanderALaPreparation(projetId: string, etape: Rubrique, sorte: SorteAidePreparation): Promise<ReponsePreparation> {
+export async function demanderALaPreparation(projetId: string, etape: Rubrique, sorte: SorteAidePreparation, heros: string | null = null): Promise<ReponsePreparation> {
   try {
     const r = await fetch("/ia/preparation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ projet: projetId, etape, sorte }),
+      body: JSON.stringify({ projet: projetId, etape, sorte, heros }),
     });
     if (!r.ok && r.status !== 401 && r.status !== 500) return { ok: false, message: MESSAGES_IA.pasDeReponse };
     return (await r.json()) as ReponsePreparation;
@@ -27,10 +27,12 @@ export async function demanderALaPreparation(projetId: string, etape: Rubrique, 
  * suivante parte du contexte du moment (F13-AC14).
  */
 export function useReserveIa({
-  projetId, etape, sorte, deja, avantDeDemander, ajouter,
+  projetId, etape, heros = null, sorte, deja, avantDeDemander, ajouter,
 }: {
   projetId: string;
   etape: Rubrique;
+  /** Dans l'étape Personnages, le héros de l'onglet (F10.2, 18 octobre 2026) */
+  heros?: string | null;
   sorte: "questions" | "idees";
   /** Ce que la liste contient déjà : rien de ce qui y est n'est livré une seconde fois */
   deja: string[];
@@ -65,7 +67,7 @@ export function useReserveIa({
     }
     setAttente(true);
     await avantDeDemander();
-    const r = await demanderALaPreparation(projetId, etape, sorte);
+    const r = await demanderALaPreparation(projetId, etape, sorte, heros);
     if (!r.ok || r.sorte === "retenons") {
       setAttente(false);
       return setErreur(r.ok ? MESSAGES_IA.pasDeReponse : r.message);

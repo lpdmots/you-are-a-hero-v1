@@ -23,12 +23,14 @@ import styles from "./preparation.module.css";
  * « Nous retenons » n'est pas vide. « Les choix » et « Le jeu » sont facultatives.
  */
 export function PagePreparation({
-  projet, preparation, plan, etape, aideMasquee, aideVue,
+  projet, preparation, plan, etape, onglet, aideMasquee, aideVue,
 }: {
   projet: ProjetDuCarnet;
   preparation: Preparation;
   plan: Plan;
   etape: EtapePreparation;
+  /** Dans l'étape Personnages, l'onglet ouvert : un héros ou les autres personnages */
+  onglet?: string | null;
   aideMasquee: boolean;
   aideVue: boolean;
 }) {
@@ -104,7 +106,12 @@ export function PagePreparation({
             Aide
           </button>
           {deClasse ? (
-            <Link className="btn" href={`/atelier/${projet.id}/${estEtapeDeLHistoire(etape) ? etape : "univers"}`}>
+            <Link
+              className="btn"
+              href={`/atelier/${projet.id}/${estEtapeDeLHistoire(etape) ? etape : "univers"}`}
+              // Devant la classe, tout l'écran (porteur, 18 octobre 2026) ; refusé par le navigateur, rien ne change
+              onClick={() => void document.documentElement.requestFullscreen?.().catch(() => undefined)}
+            >
               <Icone nom="oeil" />
               Projeter
             </Link>
@@ -115,9 +122,10 @@ export function PagePreparation({
       <div className={styles.page}>
         {estEtapeDeLHistoire(etape) ? (
           <EtapeHistoire
-            key={etape}
+            key={`${etape}-${onglet ?? ""}`}
             projet={projet}
             etape={etape}
+            onglet={onglet}
             preparation={preparation}
             plan={plan}
             parties={{ regler: (p) => setReglee({ id: p.id, image: false }), supprimer: (p) => void supprimerPartie(p) }}

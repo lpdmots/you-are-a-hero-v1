@@ -1015,11 +1015,6 @@
   font-weight: 800;
   color: var(--graphite);
 }
-.personnages__note {
-  margin: 0 0 8px;
-  font-size: var(--t-s);
-  color: var(--graphite-2);
-}
 .cartes {
   display: grid;
   gap: 4px;
@@ -1273,7 +1268,14 @@
   display: grid;
   gap: 6px;
 }
-.images__champ > label,
+/* « À quoi ressemble Lou ? » et, à sa droite, le ✦ qui l'écrit ou la précise */
+.images__tete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.images__tete > label,
 .reference__titre {
   margin: 0;
   font-size: var(--t-s);
@@ -1294,14 +1296,23 @@
   display: grid;
   gap: 8px;
 }
+.images__ia {
+  justify-content: center;
+  width: 34px;
+  padding: 0;
+}
 .reference__gardee {
   display: flex;
-  align-items: flex-end;
-  gap: 14px;
+  align-items: center;
+  gap: 16px;
+}
+.reference__carre .portrait {
+  aspect-ratio: 1;
 }
 .reference__gestes {
   display: grid;
-  gap: 2px;
+  justify-items: start;
+  gap: 8px;
   font-size: var(--t-s);
 }
 .reference__gestes a {
@@ -1325,7 +1336,7 @@
 .dessine__cadre {
   display: grid;
   place-items: center;
-  width: 88px;
+  width: 132px;
   aspect-ratio: 2 / 3;
   border-radius: 8px;
   background: var(--ia-pale);
@@ -1377,5 +1388,174 @@
 @media (max-width: 899px) {
   .portrait_grand {
     width: 112px;
+  }
+}
+
+/* ——— Un onglet par héros, dans l'étape Personnages (F10.2, 18 octobre 2026) ———
+   Les onglets du projet, soulignés, au-dessus de la question : chaque héros avec sa vignette,
+   « + Un autre héros », puis, après un filet, « Autres personnages ». */
+/* Serrés contre la question : rien à faire défiler pour rien (porteur, 18 octobre 2026) */
+.onglets {
+  display: grid;
+  gap: 6px;
+  margin: -10px 0 -10px;
+}
+.onglets__liste {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 18px;
+  border-bottom: 1px solid var(--trait);
+}
+.onglet {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: -1px;
+  padding: 4px 2px;
+  border-bottom: 2.5px solid transparent;
+  font-size: var(--t-m);
+  font-weight: 600;
+  color: var(--graphite-2);
+  text-decoration: none;
+  transition:
+    color 0.15s var(--ease),
+    border-color 0.15s var(--ease);
+}
+.onglet:hover {
+  color: var(--graphite);
+  border-bottom-color: var(--trait-fort);
+}
+.onglet_ouvert,
+.onglet_ouvert:hover {
+  color: var(--graphite);
+  border-bottom-color: var(--canard);
+}
+.onglet:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+/* « + Un autre héros » : une commande discrète dans la rangée, pas un faux onglet */
+.onglets__plus {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px dashed var(--trait-fort);
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite-2);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.onglets__plus:hover {
+  border-color: var(--canard);
+  color: var(--canard);
+}
+.onglets__ajout {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.onglets__ajout input {
+  width: 12rem;
+  min-height: 34px;
+  padding-block: 4px;
+}
+.onglets__filet {
+  width: 1px;
+  height: 22px;
+  background: var(--trait);
+}
+.onglets__note {
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.vignette {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px rgba(30, 34, 38, 0.1);
+}
+.vignette img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 12%;
+}
+.vignette_vide {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px dashed var(--trait-fort);
+  color: var(--graphite-3);
+}
+.vignette_vide :global(.ic) {
+  width: 16px;
+  height: 16px;
+}
+
+/* La carte du héros, sous « Nous retenons » ; sans carte, « Donner un nom au héros » */
+.carteHeros {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 -14px;
+}
+.carteHeros > .carte {
+  flex: 1 1 auto;
+}
+/* Supprimer un héros : une poubelle discrète, à côté de sa carte */
+.carteHeros__supprimer {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--graphite-3);
+  cursor: pointer;
+}
+.carteHeros__supprimer:hover {
+  background: var(--feuille-2);
+  color: var(--bloque);
+}
+.carteHeros__supprimer:focus-visible {
+  outline: 2px solid var(--canard);
+}
+.carteHeros__nommer {
+  margin: 0;
+}
+.carteHeros__nommer :global(.btn) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* L'onglet des autres personnages : la liste seule, sur une colonne */
+.autres {
+  max-width: 760px;
+}
+/* Sur téléphone, la rangée passe à la ligne : « Autres personnages » reste en vue */
+@media (max-width: 600px) {
+  .onglets__liste {
+    gap: 2px 14px;
+  }
+  .onglets__filet {
+    display: none;
   }
 }

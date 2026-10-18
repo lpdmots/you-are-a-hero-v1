@@ -17,6 +17,8 @@ export type EntreeEtape = {
   questions: string[];
   idees: { texte: string; etat: EtatIdee }[];
   retenu: string;
+  /** Dans l'étape Personnages, le héros de l'onglet (F10.2, 18 octobre 2026) : tout ce qui précède parle de lui */
+  heros?: string;
   /** Les autres étapes : leur texte retenu */
   carnet: Carnet;
   /** Pour « Grandes étapes » : les parties et chapitres déjà au plan */
@@ -32,6 +34,7 @@ function contexteEtape(e: EntreeEtape): string {
     blocCarnet(e.carnet, e.etape),
     e.etape === "etapes" ? blocPlan(e.plan) : "",
     bloc("etape", `${ETAPES_DU_CARNET[e.etape]} — « ${e.question} »`),
+    e.heros ? bloc("heros_de_cette_page", `Cette page parle de ${e.heros}, l'un des héros, et de lui seul : questions, idées et texte retenu le concernent.`) : "",
     bloc("questions_deja_posees", e.questions),
     bloc("idees_notees", e.idees.map((i) => `${i.texte} (${NOMS_DES_ETATS[i.etat]})`)),
     bloc("nous_retenons", e.retenu),

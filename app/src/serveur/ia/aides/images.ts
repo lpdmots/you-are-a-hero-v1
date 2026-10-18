@@ -1,4 +1,5 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
+import { lireAutresNoms } from "@/domaine/personnages";
 import { REGLES_COMMUNES, presentation, type Carnet, type Histoire } from "./contexte";
 
 /**
@@ -29,7 +30,8 @@ Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les a
     bloc("personnages_retenus", e.carnet.personnages),
     bloc("univers", e.carnet.univers), bloc("enjeu", e.carnet.enjeu),
     bloc("idees_retenues", e.idees),
-    bloc("cartes_existantes", e.connus.map((p) => [p.nom, ...p.autresNoms].join(", "))),
+    // Les héros ont chacun leur texte retenu (18 octobre 2026) : les personnages s'y nomment aussi
+    bloc("cartes_existantes", e.connus.map((p) => `${[p.nom, ...p.autresNoms].join(", ")}${p.heros ? " (héros)" : ""}${p.description.trim() ? ` : ${p.description.trim()}` : ""}`)),
     "Repère les personnages.",
   ),
   schema: { nom: "personnages", schema: objet({ personnages: liste(objet({ nom: chaine, autres_noms: liste(chaine), description: chaine, heros: { type: "boolean" } })) }) },
@@ -44,7 +46,7 @@ Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les a
       const description = texte(o?.description, 400) ?? "";
       if (!nom || connus.has(nom.toLocaleLowerCase("fr")) || /^(tu|toi|le lecteur)$/i.test(nom)) return [];
       connus.add(nom.toLocaleLowerCase("fr"));
-      const autresNoms = (textes(o?.autres_noms, 60) ?? []).filter((n) => !connus.has(n.toLocaleLowerCase("fr"))).slice(0, 5);
+      const autresNoms = lireAutresNoms((textes(o?.autres_noms, 60) ?? []).filter((n) => !connus.has(n.toLocaleLowerCase("fr"))), nom);
       return [{ nom, autresNoms, description, heros: o?.heros === true }];
     });
     return { personnages: sortie.slice(0, 12) };

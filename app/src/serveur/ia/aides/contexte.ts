@@ -44,7 +44,9 @@ export function blocPersonnages(cartes: readonly CarteDePersonnage[] | undefined
   const tries = [...cartes.filter((c) => c.heros), ...cartes.filter((c) => !c.heros)].slice(0, 20);
   const lignes = tries.map((c) => {
     const marques = [c.heros ? "héros" : "", c.autresNoms.length ? `aussi : ${c.autresNoms.join(", ")}` : ""].filter(Boolean).join(" ; ");
-    return `${c.nom.trim()}${marques ? ` (${marques})` : ""}${c.description.trim() ? ` : ${c.description.trim()}` : ""}`;
+    // La description d'un héros est son texte retenu : bornée, pour ne pas noyer le reste
+    const description = c.description.trim().replace(/\s*\n\s*/g, " ").slice(0, 1500);
+    return `${c.nom.trim()}${marques ? ` (${marques})` : ""}${description ? ` : ${description}` : ""}`;
   });
   const heros = tries.filter((c) => c.heros);
   const note = heros.length > 1

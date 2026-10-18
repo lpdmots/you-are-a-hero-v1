@@ -4,6 +4,8 @@ import { ficheVisuelle, personnages as aidePersonnages } from "@/serveur/ia/aide
 import { demanderDesImages } from "@/serveur/ia/demander";
 import { SEAU } from "@/serveur/images";
 import { cheminProposition, creerLesReferences, jeterLesPropositions, preciserLaFiche, repererLesPersonnages } from "@/serveur/personnages";
+import { entreeDeLEtape } from "@/serveur/preparation-ia";
+import { questions as aideQuestions } from "@/serveur/ia/aides/preparation";
 import { preparationDe } from "@/serveur/recit";
 import {
   attribuer, creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, enseignantDe, inscrire, lire, nettoyer, posteDe, service, sql, type Adulte,
@@ -75,7 +77,7 @@ describe("Les cartes des personnages (F10.2)", () => {
   it("sans texte retenu ni idée retenue, rien ne part, et la page dit quoi faire", async () => {
     const projet = (await creerProjet(laurent, "classe", "choix", "Vide", classe.id)).id;
     const r = await repererLesPersonnages(enseignantDe(laurent), projet);
-    expect(r).toEqual({ ok: false, message: "Écrivez d’abord dans « Nous retenons » qui sont les personnages, ou retenez des idées." });
+    expect(r).toEqual({ ok: false, message: "Écrivez d’abord dans « Nous retenons » d’un héros qui il croise, ou retenez des idées." });
     expect(await appels()).toEqual([]);
   });
 
@@ -113,6 +115,37 @@ describe("Les cartes des personnages (F10.2)", () => {
   });
 });
 
+describe("Un onglet par héros (F10.2, 18 octobre 2026)", () => {
+  it("F10-AC46 — les aides de l'onglet d'un héros ne lisent que ses questions, ses idées et son texte retenu ; les autres héros partent en cartes", async () => {
+    const projet = await passeurs();
+    const lou = await carte(projet, { nom: "Lou", heros: true, rang: 0, description: "Lou, dix ans, a peur de l’eau." });
+    const mina = await carte(projet, { nom: "Mina", heros: true, rang: 1, description: "Mina, onze ans, sait nager." });
+    await laurent.base.from("questions").insert([
+      { projet_id: projet, enseignant_id: laurent.id, etape: "personnages", texte: "A-t-il un animal ?", personnage_id: lou },
+      { projet_id: projet, enseignant_id: laurent.id, etape: "personnages", texte: "Pourquoi suit-elle Lou ?", personnage_id: mina },
+    ]);
+    await laurent.base.from("pistes").insert({ projet_id: projet, enseignant_id: laurent.id, rubrique: "personnages", texte: "Elle a un sifflet", personnage_id: mina });
+    const entree = await entreeDeLEtape(enseignantDe(laurent), projet, "personnages", mina);
+    expect(entree?.retenu).toBe("Mina, onze ans, sait nager.");
+    expect(entree?.heros).toBe("Mina");
+    expect(entree?.questions).toContain("Pourquoi suit-elle Lou ?");
+    expect(entree?.questions).not.toContain("A-t-il un animal ?");
+    expect(entree?.idees.map((i) => i.texte)).toEqual(["Elle a un sifflet"]);
+    const message = aideQuestions.message(entree!);
+    expect(message).toContain("Cette page parle de Mina");
+    expect(message).toContain("Lou (héros) : Lou, dix ans, a peur de l’eau.");
+    expect(message).not.toContain("Mina (héros)");
+  });
+
+  it("une question ou une idée ne se rattache qu'à un personnage de son projet", async () => {
+    const projet = await passeurs();
+    const autre = await passeurs();
+    const lou = await carte(autre, { nom: "Lou", heros: true });
+    const { error } = await laurent.base.from("pistes").insert({ projet_id: projet, enseignant_id: laurent.id, rubrique: "personnages", texte: "x", personnage_id: lou });
+    expect(error).not.toBeNull();
+  });
+});
+
 describe("Fiche visuelle et images de référence (F10.2)", () => {
   it("F10-AC40 — « Préciser pour les images » rend une fiche proposée, sans rien changer à la carte", async () => {
     const projet = await passeurs();
@@ -132,7 +165,7 @@ describe("Fiche visuelle et images de référence (F10.2)", () => {
     const sans = await carte(projet, { nom: "Brindille" });
     expect(await preciserLaFiche(enseignantDe(laurent), "personnage", sans)).toEqual({ ok: false, message: "Décrivez d’abord le personnage en quelques mots." });
     const decrite = await carte(projet, { nom: "Maël", description: "Le père de Lou." });
-    expect(await creerLesReferences(enseignantDe(laurent), "personnage", decrite)).toEqual({ ok: false, message: "Écrivez d’abord la fiche visuelle, ou faites-la préciser." });
+    expect(await creerLesReferences(enseignantDe(laurent), "personnage", decrite)).toEqual({ ok: false, message: "Décrivez d’abord son apparence." });
     expect(await appels()).toEqual([]);
   });
 

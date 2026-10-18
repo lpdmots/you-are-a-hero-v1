@@ -42,14 +42,17 @@ const origineDe = (o: unknown): Origine => (o === "ia" ? "ia" : "main");
  * Une idée évoquée par la classe, notée par l'enseignant, ou ajoutée par l'IA (F13-AC19) :
  * « à discuter » tant qu'elle n'est ni retenue ni écartée.
  */
-export async function ajouterPiste(projetId: string, rubrique: string, texte: string, origine: Origine = "main"): Promise<Fait<{ id: string }>> {
+export async function ajouterPiste(
+  projetId: string, rubrique: string, texte: string, origine: Origine = "main", personnageId: string | null = null,
+): Promise<Fait<{ id: string }>> {
   const e = await exigerEnseignant();
   const propre = ligne(texte, 200);
-  if (!estUuid(projetId) || !estRubrique(rubrique)) return echec("Rubrique inconnue.");
+  if (!estUuid(projetId) || !estRubrique(rubrique) || (personnageId !== null && !estUuid(personnageId))) return echec("Rubrique inconnue.");
   if (!propre) return echec("Écrivez l’idée à noter.");
+  // Dans l'étape Personnages, l'idée appartient au héros de l'onglet (F10.2, 18 octobre 2026)
   const { data, error } = await e.supabase
     .from("pistes")
-    .insert({ projet_id: projetId, enseignant_id: e.id, rubrique, texte: propre, origine: origineDe(origine) })
+    .insert({ projet_id: projetId, enseignant_id: e.id, rubrique, texte: propre, origine: origineDe(origine), personnage_id: rubrique === "personnages" ? personnageId : null })
     .select("id")
     .single();
   if (error || !data) return echec(NON_ENREGISTRE);
@@ -77,14 +80,16 @@ export async function supprimerPiste(pisteId: string): Promise<Fait> {
 }
 
 /** Une question pour la classe, ajoutée après les relances d'une étape, à la main ou par l'IA (F02, F13.4). */
-export async function ajouterQuestion(projetId: string, etape: string, texte: string, origine: Origine = "main"): Promise<Fait<{ id: string }>> {
+export async function ajouterQuestion(
+  projetId: string, etape: string, texte: string, origine: Origine = "main", personnageId: string | null = null,
+): Promise<Fait<{ id: string }>> {
   const e = await exigerEnseignant();
   const propre = ligne(texte, 200);
-  if (!estUuid(projetId) || !estRubrique(etape)) return echec("Étape inconnue.");
+  if (!estUuid(projetId) || !estRubrique(etape) || (personnageId !== null && !estUuid(personnageId))) return echec("Étape inconnue.");
   if (!propre) return echec("Écrivez la question.");
   const { data, error } = await e.supabase
     .from("questions")
-    .insert({ projet_id: projetId, enseignant_id: e.id, etape, texte: propre, origine: origineDe(origine) })
+    .insert({ projet_id: projetId, enseignant_id: e.id, etape, texte: propre, origine: origineDe(origine), personnage_id: etape === "personnages" ? personnageId : null })
     .select("id")
     .single();
   if (error || !data) return echec(NON_ENREGISTRE);

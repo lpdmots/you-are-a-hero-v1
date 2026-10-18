@@ -536,7 +536,7 @@ test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
   await capturer(page, "plan-sans-ia", false);
 });
 
-test("lot 7 : personnages et objets de l'histoire (F10.2)", async ({ page }) => {
+test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros", async ({ page }) => {
   test.setTimeout(300_000);
   n = 889;
   const { compte, base } = await adultePret(page);
@@ -547,69 +547,67 @@ test("lot 7 : personnages et objets de l'histoire (F10.2)", async ({ page }) => 
     personnages: "Lou, 10 ans, fils du dernier passeur du village. Il connaît le chant des lanternes mais a peur de l’eau. Son père, Maël, a disparu dans la brume. Une chouette, Brindille, le guide la nuit.",
   }).eq("projet_id", projet);
   await base.from("enseignants").update({ reglages_ia: { imagesParCreation: 2 } }).eq("id", compte.id);
+  const etape = `/projet/${projet}/preparation?etape=personnages`;
 
-  // Sans carte : la place des personnages sous « Nous retenons »
+  // Sans carte de héros : un seul onglet, « Le héros », et « Donner un nom au héros »
   await page.setViewportSize({ width: 1366, height: 900 });
-  await aller(page, `/projet/${projet}/preparation?etape=personnages`);
-  await page.getByRole("heading", { name: "Personnages de l’histoire" }).scrollIntoViewIfNeeded();
-  await capturer(page, "personnages-vide", false);
-
-  // « Repérer les personnages » : des cartes proposées, cochées, rien de créé
-  await page.getByRole("button", { name: "Repérer les personnages d’après le texte retenu" }).click();
-  await page.getByText("Personnages repérés").waitFor();
-  await capturer(page, "personnages-reperes", false);
-  await page.getByRole("checkbox", { name: "Ajouter Brindille" }).uncheck();
-  await capturer(page, "personnages-reperes-decoche", false);
-  await page.getByRole("button", { name: "Ajouter 2 personnages" }).click();
-  await page.getByText("2 personnages ajoutés.").waitFor();
-  await capturer(page, "personnages-cartes", false);
-
-  // La carte de Lou : nom, autres noms, héros, description, puis « Pour les images »
-  await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
-  await page.getByRole("heading", { name: "Lou" }).waitFor();
-  await capturer(page, "personnage-panneau", false);
-  await page.getByRole("button", { name: "Préciser pour les images" }).click();
-  await page.getByText("Fiche proposée · modifiable").waitFor();
-  await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
-  await capturer(page, "personnage-fiche-proposee", false);
+  await aller(page, etape);
+  await capturer(page, "heros-sans-carte", false);
+  await page.getByRole("button", { name: "Donner un nom au héros" }).click();
+  await page.locator(".panneau").getByLabel("Nom", { exact: true }).fill("Lou");
+  await page.locator(".panneau").getByRole("button", { name: /son apparence avec l’IA/ }).click();
   await page.getByRole("button", { name: "Utiliser ce texte" }).click();
-  await page.getByRole("button", { name: "Créer son portrait" }).click();
+  await page.locator(".panneau").getByRole("button", { name: "Créer son portrait" }).click();
   await page.getByText("Deux propositions").waitFor();
   await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
-  await capturer(page, "personnage-deux-portraits", false);
+  await capturer(page, "heros-deux-portraits", false);
   await page.getByRole("button", { name: "Garder celle-ci" }).first().click();
   await page.getByText("Portrait de « Lou » gardé.").waitFor();
-  await page.getByRole("link", { name: "Télécharger" }).waitFor();
-  await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
-  await capturer(page, "personnage-portrait-garde", false);
-  await page.getByRole("button", { name: "Fermer", exact: true }).last().click();
-
-  // Deux héros : le lecteur choisit le sien
-  await base.from("personnages").insert({ projet_id: projet, enseignant_id: compte.id, nom: "Mina", heros: true, rang: 5, description: "La sœur de Lou, onze ans ; elle sait nager." });
+  await page.locator(".panneau").getByRole("button", { name: "Fermer", exact: true }).last().click();
   await page.reload();
-  await page.getByRole("heading", { name: "Personnages de l’histoire" }).scrollIntoViewIfNeeded();
-  await capturer(page, "personnages-deux-heros", false);
-  await capturer(page, "personnages-toute");
+  await page.getByRole("link", { name: "Lou" }).waitFor();
+  await capturer(page, "heros-lou", false);
+  await capturer(page, "heros-lou-toute");
+
+  // Un autre héros : son onglet, sa question, ses questions et ses idées
+  await page.getByRole("button", { name: "Un autre héros" }).click();
+  await page.getByRole("textbox", { name: "Nom du nouveau héros" }).fill("Mina");
+  await page.getByRole("textbox", { name: "Nom du nouveau héros" }).press("Enter");
+  await page.getByRole("heading", { name: /Qui est Mina/ }).waitFor();
+  await page.getByRole("textbox", { name: "Nous retenons…" }).fill("La sœur de Lou, onze ans. Elle sait nager et n’a peur de rien.");
+  await page.getByRole("button", { name: "Demander une idée à l’IA" }).click();
+  await page.getByRole("button", { name: "Proposer une idée" }).click();
+  await page.getByText("Il parle aux chouettes").waitFor();
+  await capturer(page, "heros-mina", false);
+
+  // Autres personnages : la liste simple, et « Repérer les personnages »
+  await page.getByRole("link", { name: /Autres personnages/ }).click();
+  await page.getByRole("heading", { name: /Qui d’autre croise/ }).waitFor();
+  await capturer(page, "autres-vide", false);
+  await page.getByRole("button", { name: "Repérer les personnages d’après le texte retenu" }).click();
+  await page.getByText("Personnages repérés").waitFor();
+  await capturer(page, "autres-reperes", false);
+  await page.getByRole("button", { name: "Ajouter 2 personnages" }).click();
+  await page.getByText("2 personnages ajoutés.").waitFor();
+  await capturer(page, "autres-cartes", false);
+  await page.getByRole("button", { name: "Ouvrir la carte de Maël" }).click();
+  await capturer(page, "autre-panneau", false);
+  await page.keyboard.press("Escape");
 
   // Un objet de l'histoire : sa fiche visuelle et son image de référence
   await base.from("objets").insert({ projet_id: projet, enseignant_id: compte.id, nom: "la lanterne de cuivre", description: "Celle du père de Lou" });
   await aller(page, `/projet/${projet}/preparation?etape=jeu`);
   await page.getByRole("button", { name: "Modifier la lanterne de cuivre" }).click();
-  await capturer(page, "objet-panneau", false);
-  await page.getByRole("button", { name: "Préciser pour les images" }).click();
+  await page.getByRole("button", { name: /son apparence avec l’IA/ }).click();
   await page.getByRole("button", { name: "Utiliser ce texte" }).click();
   await page.getByRole("button", { name: "Créer son image" }).click();
   await page.getByText("Deux propositions").waitFor();
   await capturer(page, "objet-images", false);
-  await page.getByRole("button", { name: "Garder celle-ci" }).nth(1).click();
-  await page.getByText("Image de « la lanterne de cuivre » gardée.").waitFor();
-  await page.getByRole("button", { name: "Fermer", exact: true }).last().click();
-  await capturer(page, "objet-liste", false);
+  await page.keyboard.press("Escape");
 
   // Réglages du projet : le style des images et le héros absent
   await page.getByLabel("Autres commandes du projet Les passeurs de brume").click();
   await page.getByRole("button", { name: "Réglages du projet" }).click();
-  await page.getByLabel("Style des images").selectOption("autre");
   await page.getByRole("heading", { name: "Le héros dans les images" }).scrollIntoViewIfNeeded();
   await capturer(page, "projet-style-images", false);
   await page.keyboard.press("Escape");
@@ -617,7 +615,6 @@ test("lot 7 : personnages et objets de l'histoire (F10.2)", async ({ page }) => 
   // `/personnage` dans une scène
   const { chapitres } = await semerPartie(base, projet, "Le port", [{ titre: "Le départ", scenes: ["Le quai"] }], "port");
   await aller(page, `/projet/${projet}/scene/${chapitres[0].scenes[0]}`);
-  await copie(page).waitFor();
   await copie(page).click();
   await page.keyboard.type("Au bout du quai, /perso");
   await page.locator(".slash").waitFor();
@@ -626,21 +623,13 @@ test("lot 7 : personnages et objets de l'histoire (F10.2)", async ({ page }) => 
   await capturer(page, "personnage-commande", false);
   await page.keyboard.press("Escape");
 
-  // Aides éteintes : ni ✦, ni portrait à créer
-  await base.from("enseignants").update({ reglages_ia: { proposer: false } }).eq("id", compte.id);
-  await aller(page, `/projet/${projet}/preparation?etape=personnages`);
-  await page.getByRole("button", { name: "Ouvrir la carte de Mina" }).click();
-  await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
-  await capturer(page, "personnage-sans-ia", false);
-  await base.from("enseignants").update({ reglages_ia: { imagesParCreation: 2 } }).eq("id", compte.id);
+  // Projection : les mêmes onglets
+  await aller(page, `/atelier/${projet}/personnages`);
+  await capturer(page, "heros-projete", false);
 
   // Sur téléphone
   await page.setViewportSize({ width: 390, height: 844 });
-  await aller(page, `/projet/${projet}/preparation?etape=personnages`);
-  await page.getByRole("heading", { name: "Personnages de l’histoire" }).scrollIntoViewIfNeeded();
-  await capturer(page, "personnages-390", false);
-  await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
-  await capturer(page, "personnage-panneau-390", false);
-  await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
-  await capturer(page, "personnage-panneau-390-bas", false);
+  await aller(page, etape);
+  await capturer(page, "heros-390", false);
+  await capturer(page, "heros-390-toute");
 });

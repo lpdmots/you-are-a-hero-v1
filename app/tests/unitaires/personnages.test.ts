@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { qualiteDeLImage, TAILLES_DES_IMAGES } from "@/domaine/aides-ia";
 import { descriptionDuStyle, nomDeFichier, promptDeLObjet, promptDuPortrait, STYLES, STYLES_DES_IMAGES } from "@/domaine/illustration";
 import { dejaUneCarte, herosDe, lireAutresNoms, nomsPropresDeLHistoire } from "@/domaine/personnages";
-import { guidage, RELANCE_DES_HEROS } from "@/domaine/preparation";
+import { etapeFaite, guidage, ongletDuHeros, RELANCE_DES_HEROS, type Piste, type Question } from "@/domaine/preparation";
 import { blocPersonnages } from "@/serveur/ia/aides/contexte";
 import { personnages as aidePersonnages } from "@/serveur/ia/aides/images";
 
@@ -47,6 +47,38 @@ describe("Les cartes des personnages (F10.2)", () => {
 
   it("F10-AC44 — les noms propres de l'histoire : les personnages, leurs autres noms, puis les objets, sans doublon", () => {
     expect(nomsPropresDeLHistoire([lou, mael], [{ nom: "la clé d’argent" }, { nom: "Lou" }])).toEqual(["Lou", "le garçon", "Maël", "le passeur", "le vieux Maël", "la clé d’argent"]);
+  });
+
+  it("« tu », « toi » ne sont jamais des autres noms : ils désigneraient tous les héros", () => {
+    expect(lireAutresNoms("tu, le garçon, Toi, vous")).toEqual(["le garçon"]);
+  });
+
+  it("F10-AC46 — l'onglet d'un héros : sa question, ses questions et ses idées ; le premier reçoit la relance des héros et ce qui n'a pas de héros", () => {
+    const carte = (id: string, nom: string, heros = true) => ({ id, nom, autresNoms: [], heros, description: "", fiche: "", portraitId: null });
+    const q = (id: string, personnageId: string | null): Question => ({ id, etape: "personnages", texte: id, origine: "main", personnageId });
+    const i = (id: string, personnageId: string | null): Piste => ({ id, rubrique: "personnages", texte: id, etat: "discuter", origine: "main", personnageId });
+    const preparation = {
+      personnagesDeLHistoire: [carte("lou", "Lou"), carte("mael", "Maël", false), carte("mina", "Mina")],
+      questions: [q("q-lou", "lou"), q("q-mina", "mina"), q("q-sans", null)],
+      pistes: [i("i-lou", "lou"), i("i-mina", "mina"), i("i-sans", null)],
+    };
+    const louOnglet = ongletDuHeros(preparation, "lou", "classe", "choix");
+    expect(louOnglet.question).toBe("Qui est Lou ?");
+    expect(louOnglet.relances).toEqual(["Quel âge a Lou, et que sait faire ce héros ?", "Qu’est-ce qui fait peur à Lou ?", "Qui va aider Lou, qui va lui barrer la route ?", RELANCE_DES_HEROS]);
+    expect(louOnglet.relances).toContain(RELANCE_DES_HEROS);
+    expect(louOnglet.questions.map((x) => x.id)).toEqual(["q-lou", "q-sans"]);
+    expect(louOnglet.idees.map((x) => x.id)).toEqual(["i-lou", "i-sans"]);
+    const minaOnglet = ongletDuHeros(preparation, "mina", "classe", "choix");
+    expect(minaOnglet.relances).not.toContain(RELANCE_DES_HEROS);
+    expect(minaOnglet.questions.map((x) => x.id)).toEqual(["q-mina"]);
+    // Sans carte : « notre héros », et tout ce qui n'a pas de héros
+    const vide = ongletDuHeros({ ...preparation, personnagesDeLHistoire: [] }, null, "classe", "choix");
+    expect(vide.question).toBe("Qui est notre héros ?");
+    expect(vide.idees.map((x) => x.id)).toEqual(["i-sans"]);
+    // L'étape est faite dès qu'un héros a un texte retenu
+    const sansTexte = { univers: "", personnages: "", enjeu: "", personnagesDeLHistoire: [carte("lou", "Lou")] };
+    expect(etapeFaite("personnages", sansTexte, 0)).toBe(false);
+    expect(etapeFaite("personnages", { ...sansTexte, personnagesDeLHistoire: [{ ...carte("lou", "Lou"), description: "Dix ans." }] }, 0)).toBe(true);
   });
 
   it("la relance des héros ne vaut qu'en récit à choix", () => {

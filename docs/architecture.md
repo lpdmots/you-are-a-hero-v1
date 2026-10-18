@@ -1662,6 +1662,15 @@ F10.2.
   Préparation), `objets.fiche` et `objets.image_id`, `projets.style_images`,
   `style_autre`, `heros_absent` ; `jeu_de_la_scene` rend au poste les noms des personnages,
   pour `/personnage` (`ListePersonnages`, `composants/copie/FicheJeu.tsx`).
+- **Un onglet par héros (reprise du 18 octobre 2026).** `ongletDuHeros`
+  (`domaine/preparation.ts`) donne la question, les relances, les questions et les idées
+  d'un héros (le premier reçoit aussi ce qui n'a pas de héros) ; `EtapeHistoire` les
+  montre, son « Nous retenons » écrit la description du héros (`reglerPersonnage`), et
+  `premierHeros` (action serveur) crée « Le héros » au premier mot, en lui rattachant le
+  texte commun et les idées d'avant. `entreeDeLEtape` (`serveur/preparation-ia.ts`) reçoit
+  le héros de l'onglet : l'aide lit ses seules pièces, son nom (bloc `heros_de_cette_page`)
+  et les autres héros en cartes. Migration `heros_par_onglet` : `personnage_id` sur
+  `questions` et `pistes`, clé étrangère composée avec le projet.
 - **Enregistrer avant de demander.** `partir()` de `useEnregistrement`
   (`composants/Enregistrement.ts`) attend aussi les envois déjà partis, et plus seulement
   ceux qui attendaient : une aide demandée juste après la sortie d'un champ relit bien ce

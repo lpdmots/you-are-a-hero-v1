@@ -11,14 +11,14 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
-const RETENU = "Lou, 10 ans, fils du dernier passeur. Son père, Maël, a disparu dans la brume. Une chouette, Brindille, le guide la nuit.";
+const RETENU_TEXTE = "Lou, 10 ans, fils du dernier passeur. Son père, Maël, a disparu dans la brume. Une chouette, Brindille, le guide la nuit.";
 
 async function passeurs(page: Page, reglages: Record<string, unknown> = {}) {
   const { compte, base } = await adultePret(page);
   await base.from("enseignants").update({ reglages_ia: reglages }).eq("id", compte.id);
   const classe = await semerClasse(base, "CM1-CM2", ["Alice"]);
   const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
-  await base.from("preparations").update({ personnages: RETENU }).eq("projet_id", projet);
+  await base.from("preparations").update({ personnages: RETENU_TEXTE }).eq("projet_id", projet);
   return { compte, base, projet };
 }
 const cartesEnBase = (projet: string) =>
@@ -27,61 +27,136 @@ const cartesEnBase = (projet: string) =>
     [projet],
   );
 const PANNEAU = (page: Page) => page.locator(".panneau");
+const ONGLETS = (page: Page) => page.getByRole("navigation", { name: "Les héros et les autres personnages" });
+const QUESTIONS = (page: Page) => page.getByRole("region", { name: /^Questions pour/ });
+const RETENU = (page: Page) => page.getByRole("textbox", { name: "Nous retenons…", exact: true });
 const propositionsEnStockage = async (compte: string, projet: string) =>
   (await sql("select name from storage.objects where bucket_id = 'images' and name like $1", [`${compte}/${projet}/propositions/%`])).length;
 
 test.describe("Personnages de l'histoire (F10.2)", () => {
-  test("F10-AC38 — « Repérer les personnages » propose des cartes, cochées, sans rien créer ; une décochée n'est pas ajoutée ; « Annuler » retire celles ajoutées", async ({ page }) => {
+  test("F10-AC38 — dans « Autres personnages », « Repérer les personnages » propose des cartes, cochées, sans rien créer ; une décochée n'est pas ajoutée ; un héros repéré prend son onglet ; « Annuler » retire les cartes", async ({ page }) => {
     const s = await passeurs(page);
-    await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages&heros=autres`);
+    await expect(page.getByRole("heading", { name: /Qui d’autre croise/ })).toBeVisible();
     await page.getByRole("button", { name: "Repérer les personnages d’après le texte retenu" }).click();
     const reperes = page.getByRole("group", { name: /Personnages repérés/ });
     const noms = reperes.getByRole("textbox", { name: "Nom", exact: true });
     await expect(noms).toHaveCount(3);
     expect(await noms.evaluateAll((champs) => champs.map((c) => (c as HTMLInputElement).value))).toEqual(["Lou", "Maël", "Brindille"]);
     expect(await cartesEnBase(s.projet)).toEqual([]);
-    // Lou est marqué héros ; Brindille décochée ; le nom de Maël retouché
     await expect(reperes.getByRole("checkbox", { name: "Héros" }).first()).toBeChecked();
     await reperes.getByRole("checkbox", { name: "Ajouter Brindille" }).uncheck();
-    await reperes.getByRole("textbox", { name: "Nom", exact: true }).nth(1).fill("Maël le passeur");
+    await noms.nth(1).fill("Maël le passeur");
     await reperes.getByRole("button", { name: "Ajouter 2 personnages" }).click();
     await expect(MESSAGE(page)).toContainText("2 personnages ajoutés.");
     await expect.poll(async () => (await cartesEnBase(s.projet)).map((c) => [c.nom, c.heros])).toEqual([["Lou", true], ["Maël le passeur", false]]);
-    await expect(page.getByRole("button", { name: "Ouvrir la carte de Lou" })).toContainText("héros");
+    // Lou, héros, a son onglet ; la liste des autres ne montre que Maël
+    await expect(ONGLETS(page).getByRole("link", { name: "Lou" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Ouvrir la carte de Maël le passeur" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Ouvrir la carte de Lou" })).toHaveCount(0);
     await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
     await expect.poll(async () => (await cartesEnBase(s.projet)).length).toBe(0);
   });
 
-  test("F10-AC39 — plusieurs héros, sans limite : la liste dit que le lecteur choisit le sien ; le panneau dit d'écrire leur compétence", async ({ page }) => {
+  test("F10-AC46 — un onglet par héros : chacun sa question, ses questions, ses idées et son « Nous retenons », qui est sa description ; deux héros, le lecteur choisit le sien", async ({ page }) => {
     const s = await passeurs(page);
-    await s.base.from("personnages").insert([
-      { projet_id: s.projet, enseignant_id: s.compte.id, nom: "Lou", heros: true, rang: 0 },
-      { projet_id: s.projet, enseignant_id: s.compte.id, nom: "Mina", heros: false, rang: 1 },
-    ]);
+    const [lou] = (await s.base.from("personnages").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "Lou", heros: true, rang: 0, description: "Lou, 10 ans." }).select("id")).data!;
+    await s.base.from("pistes").insert({ projet_id: s.projet, enseignant_id: s.compte.id, rubrique: "personnages", texte: "Il a peur de l’eau", personnage_id: lou.id });
     await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
-    await expect(page.getByText("héros : le lecteur choisit le sien")).toHaveCount(0);
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText("Qui est Lou ?");
+    await expect(QUESTIONS(page).getByRole("listitem")).toHaveText([/Quel âge a Lou/, /fait peur à Lou/, /Qui va aider Lou/, /Un seul héros, ou plusieurs/]);
+    await expect(page.getByText("Il a peur de l’eau")).toBeVisible();
+    // Un autre héros : son onglet s'ouvre, vide, sans la relance des héros
+    await ONGLETS(page).getByRole("button", { name: "Un autre héros" }).click();
+    await page.getByRole("textbox", { name: "Nom du nouveau héros" }).fill("Mina");
+    await page.keyboard.press("Enter");
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText(/Qui est Mina/);
+    await expect(QUESTIONS(page).getByRole("listitem")).toHaveText([/Quel âge a Mina/, /fait peur à Mina/, /Qui va aider Mina/]);
+    await expect(page.getByText("Il a peur de l’eau")).toHaveCount(0);
+    await ONGLETS(page).getByRole("button", { name: "Pourquoi plusieurs héros ?" }).click();
+    await expect(ONGLETS(page)).toContainText("2 héros : le lecteur choisit le sien au début du livre");
+    await page.keyboard.press("Escape");
+    // Ses idées et son texte retenu sont les siens
+    await page.getByRole("button", { name: "Noter une idée" }).click();
+    await page.getByLabel("Nouvelle idée").fill("Elle sait nager");
+    await page.keyboard.press("Enter");
+    await RETENU(page).fill("La sœur de Lou, onze ans.");
+    await RETENU(page).blur();
+    const mina = async () => (await sql<{ id: string; description: string }>("select id, description from personnages where projet_id = $1 and nom = 'Mina'", [s.projet]))[0];
+    await expect.poll(async () => (await mina())?.description).toBe("La sœur de Lou, onze ans.");
+    expect(await sql("select texte from pistes where personnage_id = $1", [(await mina()).id])).toEqual([{ texte: "Elle sait nager" }]);
+    // Le panneau d'un héros n'a pas de description : c'est son « Nous retenons »
     await page.getByRole("button", { name: "Ouvrir la carte de Mina" }).click();
-    await PANNEAU(page).getByText("Héros", { exact: true }).click();
-    await expect(PANNEAU(page).getByRole("switch", { name: "Héros" })).toBeChecked();
+    await expect(PANNEAU(page).getByLabel("Description")).toHaveCount(0);
     await expect(PANNEAU(page)).toContainText("Le lecteur choisit son héros : dites ce que chacun sait faire.");
-    await PANNEAU(page).getByLabel("Description").fill("Elle sait nager.");
     await PANNEAU(page).getByRole("button", { name: "Fermer", exact: true }).last().click();
-    await expect(page.getByText("2 héros : le lecteur choisit le sien au début du livre.")).toBeVisible();
-    await expect.poll(async () => (await cartesEnBase(s.projet)).map((c) => c.heros)).toEqual([true, true]);
+    // En projection, les mêmes onglets
+    await aller(page, `/atelier/${s.projet}/personnages?heros=${(await mina()).id}`);
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText(/Qui est Mina/);
+    await expect(ONGLETS(page).getByRole("link", { name: "Lou" })).toHaveAttribute("href", `/atelier/${s.projet}/personnages?heros=${lou.id}`);
+    await expect(ONGLETS(page).getByRole("button", { name: "Un autre héros" })).toHaveCount(0);
   });
 
-  test("une carte ajoutée à la main s'ouvre ; ses autres noms se lisent d'une ligne ; supprimée, « Annuler » la rend", async ({ page }) => {
+  test("F10-AC47 — sans carte de héros, l'onglet « Le héros » : le premier mot écrit crée sa carte, qui reçoit le texte retenu et les idées d'avant", async ({ page }) => {
     const s = await passeurs(page);
+    await s.base.from("pistes").insert({ projet_id: s.projet, enseignant_id: s.compte.id, rubrique: "personnages", texte: "Il a peur de l’eau" });
     await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
+    await expect(ONGLETS(page)).toContainText("Le héros");
+    await expect(RETENU(page)).toHaveValue(RETENU_TEXTE);
+    await RETENU(page).fill(`${RETENU_TEXTE} Il porte un ciré jaune.`);
+    await RETENU(page).blur();
+    await expect.poll(async () => (await cartesEnBase(s.projet)).map((c) => [c.nom, c.heros])).toEqual([["Le héros", true]]);
+    await expect.poll(async () => (await sql<{ description: string }>("select description from personnages where projet_id = $1", [s.projet]))[0].description).toMatch(/ciré jaune/);
+    expect(await sql("select count(*)::int n from pistes where projet_id = $1 and personnage_id is null", [s.projet])).toEqual([{ n: 0 }]);
+    expect((await sql("select personnages from preparations where projet_id = $1", [s.projet]))[0].personnages).toBe("");
+    // « Donner un nom au héros » ouvre sa carte
+    await page.reload();
+    await page.getByRole("button", { name: "Ouvrir la carte de Le héros" }).click();
+    await PANNEAU(page).getByLabel("Nom", { exact: true }).fill("Lou");
+    await PANNEAU(page).getByRole("button", { name: "Fermer", exact: true }).last().click();
+    await page.reload();
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText(/Qui est Lou/);
+  });
+
+  test("un personnage qui devient héros, ou ne l'est plus, change d'onglet et la page le suit ; la poubelle de la carte supprime le héros, « Annuler » le rend ; en projection, la carte s'ouvre", async ({ page }) => {
+    const s = await passeurs(page);
+    const [lou] = (await s.base.from("personnages").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "Lou", heros: true, rang: 0 }).select("id")).data!;
+    const [mael] = (await s.base.from("personnages").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "Maël", heros: false, rang: 1 }).select("id")).data!;
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages&heros=autres`);
+    await page.getByRole("button", { name: "Ouvrir la carte de Maël" }).click();
+    await PANNEAU(page).getByText("Héros", { exact: true }).click();
+    await expect(page).toHaveURL(new RegExp(`heros=${mael.id}`));
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText("Qui est Maël ?");
+    // Et l'inverse : il n'est plus un héros, la page ouvre « Autres personnages »
+    await page.getByRole("button", { name: "Ouvrir la carte de Maël" }).click();
+    await PANNEAU(page).getByText("Héros", { exact: true }).click();
+    await expect(page).toHaveURL(/heros=autres/);
+    await expect(page.getByRole("heading", { level: 2 })).toHaveText(/Qui d’autre croise/);
+    // La poubelle à côté de la carte du héros
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages&heros=${lou.id}`);
+    await page.getByRole("button", { name: "Supprimer Lou et son onglet" }).click();
+    await expect(MESSAGE(page)).toContainText("« Lou » et son onglet sont supprimés.");
+    await expect(ONGLETS(page).getByRole("link", { name: "Lou" })).toHaveCount(0);
+    await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
+    await expect(ONGLETS(page).getByRole("link", { name: "Lou" })).toBeVisible();
+    // Devant la classe, la carte du héros s'ouvre, sans rien à supprimer
+    await aller(page, `/atelier/${s.projet}/personnages`);
+    await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
+    await expect(PANNEAU(page).getByLabel(/À quoi ressemble Lou/)).toBeVisible();
+    await expect(PANNEAU(page).getByRole("button", { name: /Supprimer/ })).toHaveCount(0);
+  });
+
+  test("une carte d'autre personnage ajoutée à la main s'ouvre ; ses autres noms se lisent d'une ligne, sans « tu » ; supprimée, « Annuler » la rend", async ({ page }) => {
+    const s = await passeurs(page);
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages&heros=autres`);
     await page.getByRole("button", { name: "Ajouter un personnage" }).click();
     await page.getByRole("textbox", { name: "Nom du personnage" }).fill("Maël");
     await page.getByRole("textbox", { name: "Nom du personnage" }).press("Enter");
     await expect(PANNEAU(page).getByRole("heading", { name: "Maël" })).toBeVisible();
-    await PANNEAU(page).getByLabel("Autres noms").fill("le passeur, le vieux Maël, Maël");
+    await PANNEAU(page).getByLabel("Autres noms").fill("le passeur, tu, le vieux Maël, Maël");
     await PANNEAU(page).getByLabel("Autres noms").blur();
     await expect.poll(async () => (await cartesEnBase(s.projet))[0]?.autres_noms).toEqual(["le passeur", "le vieux Maël"]);
-    // Le premier personnage ajouté est le héros
-    expect((await cartesEnBase(s.projet))[0].heros).toBe(true);
+    expect((await cartesEnBase(s.projet))[0].heros).toBe(false);
     await PANNEAU(page).getByRole("button", { name: "Supprimer la carte" }).click();
     await expect(MESSAGE(page)).toContainText("La carte de « Maël » est supprimée.");
     await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
@@ -94,12 +169,12 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
     await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
     await expect(PANNEAU(page).getByRole("button", { name: "Créer son portrait" })).toBeDisabled();
-    await expect(PANNEAU(page)).toContainText("Écrivez d’abord la fiche visuelle, ou faites-la préciser.");
-    await PANNEAU(page).getByRole("button", { name: "Préciser pour les images" }).click();
-    await expect(PANNEAU(page).getByRole("textbox", { name: "Fiche proposée" })).toHaveValue(/Ciré jaune moutarde/);
+    await expect(PANNEAU(page)).toContainText("Décrivez d’abord son apparence.");
+    await PANNEAU(page).getByRole("button", { name: /son apparence avec l’IA/ }).click();
+    await expect(PANNEAU(page).getByRole("textbox", { name: "Apparence proposée" })).toHaveValue(/Ciré jaune moutarde/);
     expect((await cartesEnBase(s.projet))[0].fiche).toBe("");
     await PANNEAU(page).getByRole("button", { name: "Utiliser ce texte" }).click();
-    await expect(MESSAGE(page)).toContainText("La fiche visuelle est remplie.");
+    await expect(MESSAGE(page)).toContainText("Son apparence est écrite.");
     await expect.poll(async () => (await cartesEnBase(s.projet))[0].fiche).toMatch(/Ciré jaune moutarde/);
 
     await PANNEAU(page).getByRole("button", { name: "Créer son portrait" }).click();
@@ -131,7 +206,7 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await s.base.from("objets").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "la lanterne de cuivre", description: "Celle du père." });
     await aller(page, `/projet/${s.projet}/preparation?etape=jeu`);
     await page.getByRole("button", { name: "Modifier la lanterne de cuivre" }).click();
-    await PANNEAU(page).getByLabel("Fiche visuelle").fill("Cuivre patiné, verre bleuté, grande comme une main.");
+    await PANNEAU(page).getByLabel(/À quoi ressemble/).fill("Cuivre patiné, verre bleuté, grande comme une main.");
     await PANNEAU(page).getByRole("button", { name: "Créer son image" }).click();
     await PANNEAU(page).getByRole("button", { name: "Garder" }).click();
     await expect(MESSAGE(page)).toContainText("Image de « la lanterne de cuivre » gardée.");
@@ -145,13 +220,15 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
   test("aides éteintes : ni ✦ de repérage, ni « Préciser », ni portrait à créer ; la fiche s'écrit à la main", async ({ page }) => {
     const s = await passeurs(page, { proposer: false });
     await s.base.from("personnages").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "Lou", heros: true });
-    await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages&heros=autres`);
+    await expect(page.getByRole("button", { name: "Ajouter un personnage" })).toBeVisible();
     await expect(page.getByRole("button", { name: "Repérer les personnages d’après le texte retenu" })).toHaveCount(0);
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
     await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
-    await expect(PANNEAU(page).getByRole("button", { name: "Préciser pour les images" })).toHaveCount(0);
+    await expect(PANNEAU(page).getByRole("button", { name: /son apparence avec l’IA/ })).toHaveCount(0);
     await expect(PANNEAU(page).getByRole("button", { name: "Créer son portrait" })).toHaveCount(0);
-    await PANNEAU(page).getByLabel("Fiche visuelle").fill("Ciré jaune.");
-    await PANNEAU(page).getByLabel("Fiche visuelle").blur();
+    await PANNEAU(page).getByLabel(/À quoi ressemble/).fill("Ciré jaune.");
+    await PANNEAU(page).getByLabel(/À quoi ressemble/).blur();
     await expect.poll(async () => (await cartesEnBase(s.projet))[0].fiche).toBe("Ciré jaune.");
   });
 });

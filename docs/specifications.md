@@ -7245,10 +7245,31 @@ sur son instruction) :
   par la règle du badge (seul héros dessiné : son badge d'office ; plusieurs : aucun
   d'office, ajouté par « + »), non par le mot « tu », qui désignerait tous les héros
   à la fois.
-- **Questions laissées ouvertes, à trancher avant de construire :** ce que deviennent
-  le texte retenu commun et les idées d'un projet existant (recommandé : rattachés au
-  premier héros) ; la question en grand d'un onglet (recommandé : « Qui est José, et
-  qu'est-ce qui le rend unique ? » quand il a un nom) ; la projection des onglets.
+- **Tranché par le porteur le même jour, sur recommandation (« ok pour tes 3
+  recos ») :** le texte retenu commun et les idées d'un projet existant vont à un
+  héros, celui que ce texte nomme en premier, à défaut le premier héros (précision
+  prise en construisant : dans le projet du porteur, José était la première carte et
+  le texte parlait de Lou) ; sans héros, une carte « Le héros » se crée au premier mot
+  écrit et les reçoit ; la question d'un onglet nomme le héros, au neutre (« Qui est
+  Mina, et qu'est-ce qui rend ce héros unique ? »), « notre héros » tant qu'il n'a pas
+  de nom ; en projection, les mêmes onglets, cliquables, sans « + Un autre héros ».
+  Construit le 18 octobre 2026 (reprise du lot 7 de l'étape 8). **Retouché le même jour à
+  sa demande :** la question d'un onglet tient sur une ligne, « Qui est Mina ? », et les
+  relances nomment le héros sans pronom ; la projection passe en plein écran, et la carte du
+  héros s'y ouvre pour que la classe décrive son apparence et choisisse son portrait ; un
+  héros se supprime aussi par une poubelle à côté de sa carte ; un personnage qui devient
+  héros, ou ne l'est plus, ouvre l'onglet où il va.
+- **F10-AC46 — Un onglet par héros :** étant donné Lou, héros, avec une idée, lorsque
+  l'adulte ajoute « Mina » par « + Un autre héros », alors l'onglet de Mina s'ouvre :
+  « Qui est Mina ? », les relances à son prénom, sans « Un seul héros, ou plusieurs ? »,
+  aucune idée de Lou ; l'idée qu'il y note et le texte
+  qu'il y retient sont ceux de Mina, et les aides de l'onglet ne lisent qu'eux, les
+  autres héros partant comme cartes ; la bulle « i » des onglets dit « 2 héros : le
+  lecteur choisit le sien au début du livre ».
+- **F10-AC47 — Le héros sans carte :** étant donné un projet qui a un texte retenu
+  commun et une idée dans l'étape Personnages, sans carte de héros, lorsque l'adulte
+  écrit dans « Nous retenons » de l'onglet « Le héros », alors une carte « Le héros »
+  se crée, reçoit le texte et l'idée, et « Donner un nom au héros » ouvre sa carte.
 
 **Construit au lot 7 de l'étape 8 (18 octobre 2026) — personnages et objets :**
 écrans dans le [design](design.md), précisions à confirmer dans le

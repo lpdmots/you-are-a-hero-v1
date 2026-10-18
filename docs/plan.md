@@ -2722,14 +2722,56 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       (« Personnage » et la relance des héros en plus), repris ; le quatrième (la formule
       surlignée au clavier, étape 3) passe seul, comme les fichiers des choix, du jeu et
       de la Préparation rejoués entiers (66 sur 66).
-  - **Reprise décidée par le porteur le 18 octobre 2026, après son essai du lot 7, non
-    construite** (F10.2) : un onglet par héros dans l'étape Personnages, chacun avec ses
-    questions, ses idées et son « Nous retenons », qui devient sa description ; les autres
-    personnages en liste simple, dans le dernier onglet ; « tu » et « toi » refusés comme
-    autres noms. Demande une migration (questions et idées rattachées à un héros, texte
-    retenu d'un héros) et la reprise des aides de la Préparation, de la projection et de la
-    coche de l'étape : de l'ordre d'un lot. À construire sur son instruction, après les
-    trois questions laissées ouvertes en F10.2.
+  - **Reprise décidée par le porteur le 18 octobre 2026, après son essai du lot 7, et
+    construite le même jour sur son instruction** (F10.2, F10-AC46, AC47) : un onglet par
+    héros dans l'étape Personnages, chacun avec ses questions, ses idées et son « Nous
+    retenons », qui est sa description ; les autres personnages en liste simple, dans le
+    dernier onglet ; « tu » et « toi » refusés comme autres noms. Adresse
+    `…/preparation?etape=personnages&heros={héros|autres}`, et en projection
+    `/atelier/{projet}/personnages?heros=…`. Migration
+    `20261018120000_heros_par_onglet.sql`, base locale seulement : `questions.personnage_id`
+    et `pistes.personnage_id` (le personnage du même projet, supprimés avec lui), la
+    description d'une carte portée à 6 000 signes ; pour les projets existants, le texte
+    retenu commun et les idées de l'étape vont au héros que ce texte nomme en premier, sinon
+    au premier héros, et une carte « Le héros » est créée pour qui n'en avait pas.
+    - **Critères fermés :** F10-AC46, F10-AC47 ; F10-AC38 rejoué dans « Autres
+      personnages » ; F02-AC18 (la relance des héros dans le premier onglet).
+    - **Précisions prises en construisant :** le texte commun va au héros que ce texte nomme
+      en premier (José était la première carte du projet du porteur, le texte parlait de
+      Lou) ; sans carte, l'onglet s'appelle « Le héros », sa carte se crée au premier mot
+      écrit (texte retenu, idée ou question) et reçoit le texte commun et les idées d'avant,
+      et « Donner un nom au héros » la crée et l'ouvre ; « + Un autre héros » n'apparaît
+      qu'une fois le premier héros créé, demande un nom sur place et ouvre son onglet ; le
+      panneau d'un héros n'a plus de champ « Description » (c'est son « Nous retenons ») ;
+      une carte ajoutée dans « Autres personnages » n'est pas un héros, et un personnage
+      marqué héros dans son panneau prend son onglet ; supprimer un héros emporte ses
+      questions et ses idées, que « Annuler » rend ; l'orientation de l'IA reste celle de
+      l'étape, commune aux onglets ; la carte du héros, sous « Nous retenons », dit « Fiche
+      visuelle écrite · portrait gardé » ou ce qui manque ; les relances gardent « il »
+      (« Quel âge a-t-il ? ») pour une héroïne, à reprendre sur un mot du porteur.
+    - **Écrans critiqués** en deux lectures séparées sur les captures 890 à 904 refaites :
+      27/40 et 27/40, corrigés aussitôt (voir le design).
+    - **Retouches demandées par le porteur le même jour, après son essai, construites :**
+      moins d'espace entre les onglets et la question ; la question d'un onglet tient sur une
+      ligne (« Qui est José ? », « Qui est notre héros ? » sans nom ; recommandé et retenu :
+      le prénom plutôt que « Qui est le héros ? », pour dire lequel) ; les relances nomment le
+      héros, sans pronom (« Quel âge a Mina, et que sait faire ce héros ? », « Qu'est-ce qui
+      fait peur à Mina ? », « Qui va aider Mina, qui va lui barrer la route ? ») ; la fiche
+      visuelle s'intitule « À quoi ressemble José ? », un ✦ à sa droite l'écrit ou la
+      précise, sans ligne d'aide ni grand bouton ; « Son portrait » : la place du portrait
+      (silhouette en pointillé) et, à sa droite, « ✦ Créer son portrait », éteint sans
+      apparence avec « Décrivez d'abord son apparence. » ; « Projeter » met l'écran en plein
+      écran, « Quitter la projection » en sort, un bouton « Plein écran » le propose si l'on
+      arrive autrement ; en projection, la carte du héros s'ouvre (apparence et portrait,
+      pour que les élèves participent), sans « Supprimer » ; une poubelle discrète à côté
+      de la carte du héros (« Supprimer José et son onglet », avec « Annuler ») ; un
+      personnage qui devient héros, ou ne l'est plus, ouvre l'onglet où il va ; « 3 héros :
+      le lecteur choisit le sien… » passe dans une bulle « i » au bout des onglets.
+    - **Suite complète des parcours avant le commit de clôture :** 364 sur 364 ; 337 tests
+      contre la base, 335 unitaires.
+    - **Tests automatiques :** 2 unitaires, 3 contre la base, 9 parcours (F10-AC46, AC47 et
+      ceux du lot repris) ; deux parcours de la Préparation lisent désormais le texte
+      retenu des personnages dans la carte du héros.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

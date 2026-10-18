@@ -2383,6 +2383,48 @@ images », nom du réglage dans F10.2 (une lecture préférait « Montrer le hé
 personnage décoché, qui disparaît sans trace (un nouveau repérage le repropose) ; les
 surnoms sans vignette dans `/personnage`.
 
+**Reprise du lot 7 — un onglet par héros (18 octobre 2026, F10.2).** Décidée par le porteur
+après son essai, conçue dans le système « Cahiers d'aventure » et critiquée en deux lectures
+séparées sur captures (890 à 904 de la série refaite) : 27/40 (informée) et 27/40
+(indépendante), corrigé aussitôt. Forme construite :
+
+- **La rangée d'onglets,** sous la ligne d'étapes et au-dessus de la question, soulignée
+  comme les onglets du projet : chaque héros avec la vignette ronde de son portrait (la
+  silhouette en pointillé sans portrait) et son nom ; « + Un autre héros », pastille en
+  pointillé, discrète, qui demande le nom sur place ; un filet, puis « Autres personnages »
+  et son compte. Avec deux héros ou plus, « 2 héros : le lecteur choisit le sien au début du
+  livre. » sous la rangée (pas en projection). Sans carte, un seul onglet, « Le héros ». En
+  390 px, la rangée passe à la ligne.
+- **L'onglet d'un héros :** l'écran d'une étape du lot 5, la question qui le nomme (« Qui
+  est Lou, et qu'est-ce qui rend ce héros unique ? »), ses questions et ses idées ; à droite,
+  en tête de colonne, la carte du héros en une ligne (portrait, nom, tampon « héros », « Fiche
+  visuelle écrite · portrait gardé », flèche), puis la page de cahier « Nous retenons ». Sans
+  carte, « Donner un nom au héros ». Le panneau d'un héros n'a plus de description.
+- **« Autres personnages » :** la question « Qui d'autre croise-t-on dans notre histoire ? »,
+  puis la liste des cartes simples et « Ajouter un personnage │ ✦ » (repérage), sur une
+  colonne.
+
+Corrigé après la critique : « Autres personnages » caché hors de l'écran en 390 px (la
+rangée défilait sans le montrer) ; la carte du héros sous la ligne de flottaison (en tête de
+colonne) ; l'interrupteur « Héros » qui changeait un personnage d'onglet sans le dire (sa
+ligne le dit, et « Supprimer le héros et son onglet ») ; la rangée sans unité (une seule
+police, « + Un autre héros » en commande discrète) ; les lignes de gestion montrées en
+projection ; « croise-t-on » coupé au trait d'union. Laissé : les relances au masculin pour
+une héroïne (« Quel âge a-t-il ? »), textes du guidage que le porteur reprend à l'essai ; la
+case « Héros » du repérage (un héros repéré prend son onglet) ; `/personnage` qui ne
+distingue pas les héros ; « Laisser », « Héros absent des images » et la place du message,
+arrêtés.
+
+Retouches du porteur, le même jour, après son essai (le détail dans le plan) : la question
+d'un onglet sur une ligne (« Qui est José ? ») et les relances au prénom ; « À quoi ressemble
+José ? » avec un ✦ rond à droite, à la place de « Fiche visuelle », de sa ligne d'aide et du
+bouton « Préciser pour les images » ; « Son portrait » : la place du portrait, 132 px, et le
+bouton à sa droite, avec « Télécharger » dessous ; la poubelle ronde, gris clair, brique au
+survol, à droite de la carte du héros ; la bulle « i » à la place de la ligne « 3 héros… » ;
+la rangée d'onglets serrée contre la question ; « Projeter » en plein écran ; la carte du héros
+qui s'ouvre aussi en projection. Pas de nouvelle critique : les formes sont celles déjà
+critiquées, allégées à sa demande.
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

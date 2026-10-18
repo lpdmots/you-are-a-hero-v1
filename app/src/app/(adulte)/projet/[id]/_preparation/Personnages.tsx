@@ -1,8 +1,11 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { useAidesIa } from "@/composants/AidesIa";
 import { BoutonDouble } from "@/composants/BoutonDouble";
+import { Bulle } from "@/composants/Bulle";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { useEnregistrement } from "@/composants/Enregistrement";
 import { Icone } from "@/composants/Icone";
@@ -11,12 +14,13 @@ import { useMessage } from "@/composants/Messages";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { nomDeFichier } from "@/domaine/illustration";
-import { autresNomsEnTexte, DESCRIPTION_MAX, FICHE_MAX, herosDe, lireAutresNoms, NOM_MAX, type Personnage } from "@/domaine/personnages";
+import { autresNomsEnTexte, DESCRIPTION_COURTE_MAX, DESCRIPTION_MAX, FICHE_MAX, herosDe, lireAutresNoms, NOM_MAX, type Personnage } from "@/domaine/personnages";
+import { AUTRES_PERSONNAGES, HEROS_SANS_NOM } from "@/domaine/preparation";
 import type { PersonnageConnu } from "@/serveur/ia/aides/images";
 import type { ReponseFiche, ReponseReferences, ReponseReperage, SorteDeCarte } from "@/serveur/personnages";
 
 /** Sans fiche visuelle, l'image de référence ne se crée pas (la même phrase que le serveur). */
-const SANS_FICHE = "Écrivez d’abord la fiche visuelle, ou faites-la préciser.";
+const SANS_FICHE = "Décrivez d’abord son apparence.";
 import {
   ajouterDesPersonnages, laisserLesPropositions, poserLaReference, reglerPersonnage, remettreDesPersonnages, supprimerDesPersonnages, type CarteSaisie, type CarteSupprimee,
 } from "../../actions-personnages";
@@ -42,9 +46,11 @@ async function demanderAuxPersonnages<R>(corps: Record<string, unknown>, image =
 }
 
 export function CartesDesPersonnages({
-  projetId, personnages, herosAbsent, projection, avantDeDemander,
+  projetId, personnages, herosAbsent, projection, avantDeDemander, adresse,
 }: {
   projetId: string;
+  /** L'adresse d'un onglet : un personnage qui devient héros y passe */
+  adresse?: (onglet: string) => string;
   personnages: Personnage[];
   /** Le héros absent des images (options du projet) : son portrait ne sert pas aux images de scène */
   herosAbsent: boolean;
@@ -54,6 +60,7 @@ export function CartesDesPersonnages({
 }) {
   const { proposer } = useAidesIa();
   const dire = useMessage();
+  const router = useRouter();
   const titreId = useId();
   const [ouvert, setOuvert] = useState<string | null>(null);
   const [ajout, setAjout] = useState(false);
@@ -112,12 +119,11 @@ export function CartesDesPersonnages({
 
   return (
     <section className={styles.personnages} aria-labelledby={titreId}>
-      <h3 id={titreId}>
-        Personnages de l’histoire {personnages.length ? <span className={styles.compte}>{personnages.length}</span> : null}
+      <h3 id={titreId} className="vh">
+        Autres personnages
       </h3>
       {personnages.length ? (
         <>
-          {nbHeros > 1 ? <p className={styles.personnages__note}>{nbHeros} héros : le lecteur choisit le sien au début du livre.</p> : null}
           <ul className={styles.cartes}>
             {personnages.map((p) => (
               <li key={p.id}>
@@ -144,14 +150,15 @@ export function CartesDesPersonnages({
           </ul>
         </>
       ) : (
-        <p className={styles.vide}>Une carte par personnage important : son nom, ce qui le rend unique, son portrait pour les images.</p>
+        <p className={styles.vide}>Ceux que les héros croisent : un nom, une ligne, un portrait si les images en ont besoin.</p>
       )}
 
       {ajout ? (
         <AjoutPersonnage
           onFermer={() => setAjout(false)}
           onAjouter={async (nom) => {
-            const fait = await ajouterDesPersonnages(projetId, [{ nom, heros: personnages.length === 0 }]);
+            // Les héros ont leur onglet : une carte ajoutée ici est un autre personnage
+            const fait = await ajouterDesPersonnages(projetId, [{ nom, heros: false }]);
             if (!fait.ok) return { ok: false, erreur: fait.erreur };
             aOuvrir.current = fait.ids[0];
             setAjout(false);
@@ -246,6 +253,231 @@ export function CartesDesPersonnages({
             setOuvert(null);
             dire({ texte: `La carte de « ${courant.nom} » est supprimée.`, annuler: () => void remettreDesPersonnages(projetId, [carte]) });
           }}
+          onHeros={(heros) => {
+            // Devenu héros, il a son onglet : on le suit
+            if (heros && adresse) router.push(adresse(courant.id), { scroll: false });
+          }}
+        />
+      ) : null}
+    </section>
+  );
+}
+
+/**
+ * Les onglets de l'étape Personnages (F10.2, 18 octobre 2026) : un par héros, sa vignette et son
+ * nom ; « + Un autre héros » ; « Autres personnages ». Sans carte de héros encore, un seul onglet,
+ * « Le héros », et l'écran reste celui d'une étape ordinaire.
+ */
+export function OngletsDesPersonnages({
+  projetId, heros, ouvert, autres, adresse, projection,
+}: {
+  projetId: string;
+  heros: Personnage[];
+  /** Le héros ouvert, ou AUTRES_PERSONNAGES ; null : l'onglet « Le héros » sans carte */
+  ouvert: string | null;
+  autres: number;
+  adresse: (onglet: string) => string;
+  projection?: boolean;
+}) {
+  const router = useRouter();
+  const dire = useMessage();
+  const [ajout, setAjout] = useState(false);
+  const [nom, setNom] = useState("");
+  const [enCours, setEnCours] = useState(false);
+  const ajouter = async () => {
+    if (!nom.trim() || enCours) return;
+    setEnCours(true);
+    const fait = await ajouterDesPersonnages(projetId, [{ nom, heros: true }]);
+    setEnCours(false);
+    if (!fait.ok) return dire({ texte: fait.erreur });
+    setAjout(false);
+    setNom("");
+    router.push(adresse(fait.ids[0]), { scroll: false });
+  };
+  const lien = (cle: string, contenu: React.ReactNode, actif: boolean) => (
+    <Link key={cle} href={adresse(cle)} scroll={false} className={`${styles.onglet}${actif ? ` ${styles.onglet_ouvert}` : ""}`} aria-current={actif ? "page" : undefined}>
+      {contenu}
+    </Link>
+  );
+  return (
+    <nav className={styles.onglets} aria-label="Les héros et les autres personnages">
+      <div className={styles.onglets__liste}>
+        {heros.length
+          ? heros.map((h) =>
+              lien(
+                h.id,
+                <>
+                  <Vignette id={h.portraitId} />
+                  <span>{h.nom}</span>
+                </>,
+                ouvert === h.id,
+              ),
+            )
+          : (
+            <span className={`${styles.onglet} ${styles.onglet_ouvert}`} aria-current={ouvert !== AUTRES_PERSONNAGES ? "page" : undefined}>
+              <Vignette id={null} />
+              <span>{HEROS_SANS_NOM}</span>
+            </span>
+          )}
+        {!projection && heros.length ? (
+          ajout ? (
+            <form
+              className={styles.onglets__ajout}
+              onSubmit={(ev) => {
+                ev.preventDefault();
+                void ajouter();
+              }}
+            >
+              <input
+                className="pchamp"
+                autoFocus
+                maxLength={NOM_MAX}
+                aria-label="Nom du nouveau héros"
+                placeholder="Son nom"
+                value={nom}
+                onChange={(ev) => setNom(ev.target.value)}
+                onKeyDown={(ev) => {
+                  if (ev.key === "Escape") setAjout(false);
+                }}
+                onBlur={() => {
+                  if (!nom.trim()) setAjout(false);
+                }}
+              />
+              <button type="submit" className="btn btn--petit" disabled={!nom.trim() || enCours} aria-busy={enCours || undefined}>
+                Ajouter
+              </button>
+            </form>
+          ) : (
+            <button type="button" className={styles.onglets__plus} onClick={() => setAjout(true)}>
+              <Icone nom="plus" />
+              Un autre héros
+            </button>
+          )
+        ) : null}
+        {heros.length > 1 && !projection ? (
+          <Bulle question="Pourquoi plusieurs héros ?">{`${heros.length} héros : le lecteur choisit le sien au début du livre, et le texte dit « tu ». Écrivez ce que chacun sait faire dans « Nous retenons ».`}</Bulle>
+        ) : null}
+        <span className={styles.onglets__filet} aria-hidden="true" />
+        {lien(
+          AUTRES_PERSONNAGES,
+          <>
+            Autres personnages
+            {autres ? <span className={styles.compte}>{autres}</span> : null}
+          </>,
+          ouvert === AUTRES_PERSONNAGES,
+        )}
+      </div>
+
+    </nav>
+  );
+}
+
+/** La vignette d'un héros dans son onglet : son portrait, ou la silhouette. */
+function Vignette({ id }: { id: string | null }) {
+  return (
+    <span className={`${styles.vignette}${id ? "" : ` ${styles.vignette_vide}`}`} aria-hidden="true">
+      {/* eslint-disable-next-line @next/next/no-img-element -- portrait déjà réduit, servi par l'application */}
+      {id ? <img src={`/images/${id}?v=1`} alt="" loading="lazy" draggable={false} /> : <Icone nom="personnage" />}
+    </span>
+  );
+}
+
+/**
+ * La carte du héros de l'onglet, sous « Nous retenons » : son portrait, son nom, ses autres noms ;
+ * un clic ouvre son panneau (nom, autres noms, fiche visuelle, portrait). Sans carte encore,
+ * « Donner un nom au héros » la crée.
+ */
+export function CarteDuHeros({
+  projetId, heros, autresHeros, herosAbsent, projection, creer, adresse,
+}: {
+  projetId: string;
+  adresse: (onglet: string) => string;
+  heros: Personnage | null;
+  autresHeros: number;
+  herosAbsent: boolean;
+  projection?: boolean;
+  creer: () => Promise<string | null>;
+}) {
+  const { proposer } = useAidesIa();
+  const dire = useMessage();
+  const router = useRouter();
+  const [ouvert, setOuvert] = useState(false);
+  const [creation, setCreation] = useState(false);
+  if (!heros) {
+    return projection ? null : (
+      <p className={styles.carteHeros__nommer}>
+        <button
+          type="button"
+          className="btn btn--petit"
+          disabled={creation}
+          onClick={async () => {
+            setCreation(true);
+            const id = await creer();
+            setCreation(false);
+            if (id) setOuvert(true);
+          }}
+        >
+          <Icone nom="personnage" />
+          Donner un nom au héros
+        </button>
+      </p>
+    );
+  }
+  return (
+    <section className={styles.carteHeros} aria-label={`La carte de ${heros.nom}`}>
+      {/* Devant la classe aussi, la carte s'ouvre : les élèves décrivent le héros et choisissent son portrait */}
+      <button type="button" className={styles.carte} onClick={() => setOuvert(true)} aria-label={`Ouvrir la carte de ${heros.nom}`}>
+        <Portrait id={heros.portraitId} />
+        <span className={styles.carte__texte}>
+          <span className={styles.carte__nom}>
+            <b className="recit">{heros.nom}</b>
+            <span className={styles.heros}>héros</span>
+          </span>
+          {heros.autresNoms.length ? <span className={styles.carte__autres}>aussi : {autresNomsEnTexte(heros)}</span> : null}
+          {projection ? null : (
+            <span className={styles.carte__desc}>{heros.fiche.trim() ? "Fiche visuelle écrite" : "Sans fiche visuelle"} · {heros.portraitId ? "portrait gardé" : "sans portrait"}</span>
+          )}
+        </span>
+        <Icone nom="fleche" className={styles.carte__ouvrir} />
+      </button>
+      {projection ? null : (
+        <button
+          type="button"
+          className={styles.carteHeros__supprimer}
+          aria-label={`Supprimer ${heros.nom} et son onglet`}
+          title={`Supprimer ${heros.nom} et son onglet`}
+          onClick={async () => {
+            const fait = await supprimerDesPersonnages(projetId, [heros.id]);
+            if (!fait.ok) return dire({ texte: fait.erreur });
+            dire({ texte: `« ${heros.nom} » et son onglet sont supprimés.`, annuler: () => void remettreDesPersonnages(projetId, fait.cartes).then(() => router.push(adresse(heros.id), { scroll: false })) });
+            router.push(adresse(""), { scroll: false });
+          }}
+        >
+          <Icone nom="corbeille" />
+        </button>
+      )}
+      {ouvert ? (
+        <PanneauPersonnage
+          key={heros.id}
+          projection={projection}
+          projetId={projetId}
+          personnage={heros}
+          autresHeros={autresHeros}
+          herosAbsent={herosAbsent}
+          proposer={proposer}
+          onFermer={() => setOuvert(false)}
+          onSupprime={(carte) => {
+            setOuvert(false);
+            dire({ texte: `« ${heros.nom} » et son onglet sont supprimés.`, annuler: () => void remettreDesPersonnages(projetId, [carte]) });
+            router.push(adresse(""), { scroll: false });
+          }}
+          onHeros={(estHeros) => {
+            // Il n'est plus un héros : il rejoint les autres personnages, et la page le suit
+            if (!estHeros) {
+              setOuvert(false);
+              router.push(adresse(AUTRES_PERSONNAGES), { scroll: false });
+            }
+          }}
         />
       ) : null}
     </section>
@@ -315,7 +547,7 @@ function AjoutPersonnage({ onAjouter, onFermer }: { onAjouter: (nom: string) => 
  * aux images. Chaque champ s'enregistre après une courte pause, comme la Préparation.
  */
 function PanneauPersonnage({
-  projetId, personnage: p, autresHeros, herosAbsent, proposer, onFermer, onSupprime,
+  projetId, personnage: p, autresHeros, herosAbsent, proposer, onFermer, onSupprime, onHeros, projection,
 }: {
   projetId: string;
   personnage: Personnage;
@@ -324,6 +556,10 @@ function PanneauPersonnage({
   proposer: boolean;
   onFermer: () => void;
   onSupprime: (carte: CarteSupprimee) => void;
+  /** Le personnage devient héros, ou ne l'est plus : la page ouvre l'onglet où il va */
+  onHeros?: (heros: boolean) => void;
+  /** Devant la classe : on règle son apparence et son portrait, sans rien supprimer */
+  projection?: boolean;
 }) {
   const e = useEnregistrement();
   const dire = useMessage();
@@ -413,33 +649,49 @@ function PanneauPersonnage({
             role="switch"
             checked={heros}
             onChange={(ev) => {
-              setHeros(ev.target.checked);
-              regler({ heros: ev.target.checked }, "heros", 0);
+              const v = ev.target.checked;
+              setHeros(v);
+              void e.partir().then(() => reglerPersonnage(p.id, { heros: v })).then((fait) => {
+                if (fait.ok) onHeros?.(v);
+              });
             }}
           />
           <span className="inter__piste" aria-hidden="true" />
           <span>Héros</span>
         </label>
-        <p>{heros && autresHeros > 0 ? "Le lecteur choisit son héros : dites ce que chacun sait faire." : "Le personnage que le lecteur suit."}</p>
+        <p>
+          {p.heros
+            ? heros
+              ? autresHeros > 0
+                ? "Le lecteur choisit son héros : dites ce que chacun sait faire."
+                : "Le personnage que le lecteur suit."
+              : "Éteint, il rejoint les autres personnages ; son onglet se ferme, ses questions et ses idées restent avec lui."
+            : heros
+              ? "Il aura son onglet : questions, idées et « Nous retenons »."
+              : "Un héros a son onglet, avec ses questions et ses idées ; le lecteur choisit le sien."}
+        </p>
       </section>
-      <section>
-        <h3>
-          <label htmlFor="perso-desc">Description</label>
-        </h3>
-        <ChampQuiGrandit
-          className="pchamp"
-          id="perso-desc"
-          rows={3}
-          maxLength={DESCRIPTION_MAX}
-          value={description}
-          placeholder={heros ? "Qui il est, ce qu’il sait faire, ce qui le rend unique." : "Qui il est, ce qui le rend unique."}
-          onChange={(ev) => {
-            setDescription(ev.target.value);
-            regler({ description: ev.target.value }, "description");
-          }}
-          onBlur={() => void e.partir()}
-        />
-      </section>
+      {/* Ce qu'on retient d'un héros s'écrit dans « Nous retenons » de son onglet (18 octobre 2026) */}
+      {p.heros ? null : (
+        <section>
+          <h3>
+            <label htmlFor="perso-desc">Description</label>
+          </h3>
+          <ChampQuiGrandit
+            className="pchamp"
+            id="perso-desc"
+            rows={2}
+            maxLength={heros ? DESCRIPTION_MAX : DESCRIPTION_COURTE_MAX}
+            value={description}
+            placeholder="Qui il est, en une ligne."
+            onChange={(ev) => {
+              setDescription(ev.target.value);
+              regler({ description: ev.target.value }, "description");
+            }}
+            onBlur={() => void e.partir()}
+          />
+        </section>
+      )}
       <PourLesImages
         sorte="personnage"
         id={p.id}
@@ -455,12 +707,14 @@ function PanneauPersonnage({
           regler({ fiche: v }, "fiche");
         }}
       />
-      <p className={styles.finDuPanneau}>
-        <button type="button" className={`lien ${styles.supprimerCarte}`} onClick={() => void supprimer()}>
-          <Icone nom="corbeille" />
-          Supprimer la carte
-        </button>
-      </p>
+      {projection ? null : (
+        <p className={styles.finDuPanneau}>
+          <button type="button" className={`lien ${styles.supprimerCarte}`} onClick={() => void supprimer()}>
+            <Icone nom="corbeille" />
+            {p.heros ? "Supprimer le héros et son onglet" : "Supprimer la carte"}
+          </button>
+        </p>
+      )}
     </Panneau>
   );
 }
@@ -510,7 +764,6 @@ export function PourLesImages({
     [projetId],
   );
 
-  const deQui = sorte === "personnage" ? "Portrait de référence" : "Image de référence";
   const creerLibelle = sorte === "personnage" ? (referenceId ? "Créer un autre portrait" : "Créer son portrait") : referenceId ? "Créer une autre image" : "Créer son image";
 
   const preciser = async () => {
@@ -567,12 +820,24 @@ export function PourLesImages({
   };
 
   return (
-    <section className={styles.images} aria-labelledby={`${ficheId}-t`}>
-      <h3 id={`${ficheId}-t`} className={styles.images__titre}>
-        Pour les images
-      </h3>
+    <section className={styles.images} aria-label="Pour les images">
       <div className={styles.images__champ}>
-        <label htmlFor={ficheId}>Fiche visuelle</label>
+        <div className={styles.images__tete}>
+          <label htmlFor={ficheId}>À quoi ressemble {nom} ?</label>
+          {proposer ? (
+            <button
+              type="button"
+              className={`btn btn--ia ${styles.images__ia}`}
+              onClick={() => void preciser()}
+              disabled={attenteFiche}
+              aria-busy={attenteFiche || undefined}
+              aria-label={fiche.trim() ? "Préciser son apparence avec l’IA" : "Proposer son apparence avec l’IA"}
+              title="Demander à l’IA"
+            >
+              <Icone nom="ia" />
+            </button>
+          ) : null}
+        </div>
         <ChampQuiGrandit
           className="pchamp"
           id={ficheId}
@@ -583,19 +848,10 @@ export function PourLesImages({
           onChange={(ev) => onFiche(ev.target.value)}
           onBlur={() => void avantDeDemander()}
         />
-        <p>Reprise mot pour mot dans chaque image.</p>
-        {proposer ? (
-          <p className={styles.images__gestes}>
-            <button type="button" className="btn btn--ia" onClick={() => void preciser()} disabled={attenteFiche} aria-busy={attenteFiche || undefined}>
-              <Icone nom="ia" />
-              Préciser pour les images
-            </button>
-          </p>
-        ) : null}
         {attenteFiche ? (
           <p className={styles.noteIa} role="status">
             <Icone nom="ia" />
-            L’IA écrit la fiche…
+            L’IA décrit son apparence…
           </p>
         ) : erreurFiche ? (
           <p className={styles.noteIa_erreur} role="alert">
@@ -606,9 +862,9 @@ export function PourLesImages({
           <div className="ia-propose ia-propose--consigne" role="group" aria-labelledby={`${ficheId}-p`}>
             <p className="ia-propose__tete" id={`${ficheId}-p`}>
               <Icone nom="ia" />
-              Fiche proposée · modifiable
+              Apparence proposée · modifiable
             </p>
-            <ChampQuiGrandit className="pchamp" rows={3} maxLength={FICHE_MAX} value={ficheProposee} aria-label="Fiche proposée" onChange={(ev) => setFicheProposee(ev.target.value)} />
+            <ChampQuiGrandit className="pchamp" rows={3} maxLength={FICHE_MAX} value={ficheProposee} aria-label="Apparence proposée" onChange={(ev) => setFicheProposee(ev.target.value)} />
             <span className="ia-propose__gestes">
               <button
                 type="button"
@@ -619,7 +875,7 @@ export function PourLesImages({
                   onFiche(ficheProposee);
                   void avantDeDemander();
                   setFicheProposee(null);
-                  dire({ texte: avant.trim() ? "La fiche visuelle est remplacée." : "La fiche visuelle est remplie.", annuler: () => onFiche(avant) });
+                  dire({ texte: avant.trim() ? "Son apparence est remplacée." : "Son apparence est écrite.", annuler: () => onFiche(avant) });
                 }}
               >
                 <Icone nom="coche" />
@@ -634,86 +890,86 @@ export function PourLesImages({
       </div>
 
       <div className={styles.reference}>
-        <p className={styles.reference__titre}>{deQui}</p>
+        <p className={styles.reference__titre}>{sorte === "personnage" ? "Son portrait" : "Son image"}</p>
         {note ? <p className={styles.reference__aide}>{note}</p> : null}
-        {referenceId ? (
-          <div className={styles.reference__gardee}>
-            <Portrait id={referenceId} grand />
-            <span className={styles.reference__gestes}>
-              <a className="lien" href={`/images/${referenceId}`} download={nomDeFichier(sorte === "personnage" ? "Portrait de" : "Image de", nom)}>
+        <div className={styles.reference__gardee}>
+          {attenteImages ? (
+            <span className={`${styles.dessine__cadre}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`} role="status" aria-label={sorte === "personnage" ? "L’IA dessine le portrait" : "L’IA dessine l’image"}>
+              <Icone nom="ia" />
+            </span>
+          ) : (
+            <span className={sorte === "objet" ? styles.reference__carre : undefined}>
+              <Portrait id={referenceId} grand />
+            </span>
+          )}
+          <span className={styles.reference__gestes}>
+            {proposer ? (
+              attenteImages ? (
+                <span className={styles.reference__aide}>
+                  L’IA dessine…
+                  <br />
+                  Une demi-minute environ.
+                </span>
+              ) : (
+                <>
+                  <button type="button" className="btn btn--ia" onClick={() => void creer()} disabled={garde !== null || !fiche.trim()}>
+                    <Icone nom="ia" />
+                    {propositions ? "En créer d’autres" : creerLibelle}
+                  </button>
+                  {!fiche.trim() ? <span className={styles.reference__aide}>{SANS_FICHE}</span> : reste ? <span className={styles.reference__aide}>{reste}</span> : null}
+                </>
+              )
+            ) : !referenceId ? (
+              <span className={styles.reference__aide}>Les portraits se créent avec les aides IA, à allumer dans « Mon compte ».</span>
+            ) : null}
+            {referenceId ? (
+              <a className="lien" href={`/images/${referenceId}`} download={nomDeFichier(sorte === "personnage" ? "Portrait de" : "Image de", nom)} title="Pour le donner à un autre outil d’images">
                 <Icone nom="telecharger" />
                 Télécharger
               </a>
-              <span className={styles.reference__aide}>Pour le donner à un autre outil d’images.</span>
+            ) : null}
+          </span>
+        </div>
+
+        {proposer && propositions ? (
+          <div className={`ia-propose ${styles.propositions}`} role="group" aria-labelledby={`${ficheId}-i`}>
+            <p className="ia-propose__tete" id={`${ficheId}-i`}>
+              <Icone nom="ia" />
+              {propositions.length > 1 ? "Deux propositions" : "Proposition"} <span>· {propositions.length > 1 ? "gardez celle qui convient" : "gardez-la ou laissez-la"}</span>
+            </p>
+            <ul className={styles.propositions__liste}>
+              {propositions.map((pr, i) => (
+                <li key={pr}>
+                  <span className={`${styles.portrait} ${styles.portrait_grand}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`}>
+                    {/* eslint-disable-next-line @next/next/no-img-element -- image créée, en attente, servie par l'application */}
+                    <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 1}`} draggable={false} />
+                  </span>
+                  <button type="button" className="btn btn--petit" disabled={garde !== null} aria-busy={garde === pr || undefined} onClick={() => void garder(pr)}>
+                    <Icone nom="coche" />
+                    {propositions.length > 1 ? "Garder celle-ci" : "Garder"}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <span className="ia-propose__gestes">
+              <button
+                type="button"
+                className="btn btn--petit btn--discret"
+                disabled={garde !== null}
+                onClick={() => {
+                  void laisserLesPropositions(projetId, propositions);
+                  setPropositions(null);
+                }}
+              >
+                Laisser
+              </button>
             </span>
           </div>
-        ) : !proposer ? (
-          <p className={styles.vide}>Les portraits se créent avec les aides IA, à allumer dans « Mon compte ».</p>
         ) : null}
-
-        {proposer ? (
-          <>
-            {attenteImages ? (
-              <div className={styles.dessine} role="status">
-                <span className={styles.dessine__cadre} aria-hidden="true">
-                  <Icone nom="ia" />
-                </span>
-                <span>
-                  L’IA dessine {sorte === "personnage" ? "le portrait" : "l’image"}…
-                  <br />
-                  <span className={styles.reference__aide}>Une demi-minute environ.</span>
-                </span>
-              </div>
-            ) : propositions ? (
-              <div className={`ia-propose ${styles.propositions}`} role="group" aria-labelledby={`${ficheId}-i`}>
-                <p className="ia-propose__tete" id={`${ficheId}-i`}>
-                  <Icone nom="ia" />
-                  {propositions.length > 1 ? "Deux propositions" : "Proposition"} <span>· {propositions.length > 1 ? "gardez celle qui convient" : "gardez-la ou laissez-la"}</span>
-                </p>
-                <ul className={styles.propositions__liste}>
-                  {propositions.map((pr, i) => (
-                    <li key={pr}>
-                      <span className={`${styles.portrait} ${styles.portrait_grand}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`}>
-                        {/* eslint-disable-next-line @next/next/no-img-element -- image créée, en attente, servie par l'application */}
-                        <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 1}`} draggable={false} />
-                      </span>
-                      <button type="button" className="btn btn--petit" disabled={garde !== null} aria-busy={garde === pr || undefined} onClick={() => void garder(pr)}>
-                        <Icone nom="coche" />
-                        {propositions.length > 1 ? "Garder celle-ci" : "Garder"}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-                <span className="ia-propose__gestes">
-                  <button
-                    type="button"
-                    className="btn btn--petit btn--discret"
-                    disabled={garde !== null}
-                    onClick={() => {
-                      void laisserLesPropositions(projetId, propositions);
-                      setPropositions(null);
-                    }}
-                  >
-                    Laisser
-                  </button>
-                </span>
-              </div>
-            ) : null}
-            {erreurImages ? (
-              <p className={styles.noteIa_erreur} role="alert">
-                {erreurImages}
-              </p>
-            ) : null}
-            {!attenteImages ? (
-              <p className={styles.images__gestes}>
-                <button type="button" className="btn btn--ia" onClick={() => void creer()} disabled={garde !== null || !fiche.trim()}>
-                  <Icone nom="ia" />
-                  {propositions ? "En créer d’autres" : creerLibelle}
-                </button>
-                {!fiche.trim() ? <span className={styles.reference__aide}>{SANS_FICHE}</span> : reste ? <span className={styles.reference__aide}>{reste}</span> : null}
-              </p>
-            ) : null}
-          </>
+        {erreurImages ? (
+          <p className={styles.noteIa_erreur} role="alert">
+            {erreurImages}
+          </p>
         ) : null}
       </div>
     </section>

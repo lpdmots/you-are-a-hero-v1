@@ -6,7 +6,7 @@ import { demanderPourLEtape, estSorteAidePreparation } from "@/serveur/preparati
 /**
  * Les aides d'une étape de la Préparation (F13.4) : questions, idées, « Rédiger d'après les
  * idées ». Une adresse plutôt qu'une action serveur, comme les autres aides. Corps :
- * { projet, etape, sorte } ; tout ce qui part est relu par le serveur, orientation comprise.
+ * { projet, etape, sorte, heros? } (le héros de l'onglet, dans l'étape Personnages) ; tout ce qui part est relu par le serveur, orientation comprise.
  */
 export const maxDuration = 90;
 
@@ -15,7 +15,7 @@ export async function POST(requete: Request): Promise<Response> {
   if (origine && origine !== new URL(requete.url).origin) return new Response(null, { status: 403 });
   const e = await enseignantCourant();
   if (!e) return Response.json({ ok: false, message: "Connectez-vous de nouveau." }, { status: 401 });
-  let corps: { projet?: unknown; etape?: unknown; sorte?: unknown };
+  let corps: { projet?: unknown; etape?: unknown; sorte?: unknown; heros?: unknown };
   try {
     corps = await requete.json();
   } catch {
@@ -25,7 +25,8 @@ export async function POST(requete: Request): Promise<Response> {
     return new Response(null, { status: 400 });
   }
   try {
-    return Response.json(await demanderPourLEtape(e, corps.projet, corps.etape, corps.sorte), { headers: { "Cache-Control": "no-store" } });
+    const heros = typeof corps.heros === "string" ? corps.heros : null;
+    return Response.json(await demanderPourLEtape(e, corps.projet, corps.etape, corps.sorte, heros), { headers: { "Cache-Control": "no-store" } });
   } catch (erreur) {
     console.error("Préparation", erreur);
     return Response.json({ ok: false, message: MESSAGES_IA.pasDeReponse }, { status: 500 });

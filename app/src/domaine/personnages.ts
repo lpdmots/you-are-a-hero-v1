@@ -8,7 +8,16 @@
 
 export const NOM_MAX = 60;
 export const AUTRES_NOMS_MAX = 5;
-export const DESCRIPTION_MAX = 400;
+/** La description d'un héros est son « Nous retenons » (18 octobre 2026) : la longueur d'un texte retenu */
+export const DESCRIPTION_MAX = 6000;
+/** Celle d'un autre personnage tient en une ligne ou deux */
+export const DESCRIPTION_COURTE_MAX = 400;
+
+/**
+ * « tu » désigne le héros, et tous les héros quand il y en a plusieurs : ce n'est jamais l'autre
+ * nom d'un personnage (18 octobre 2026). Le héros rejoint une image par la règle du badge.
+ */
+export const estUnPronomDuLecteur = (nom: string): boolean => /^(tu|toi|te|vous)$/i.test(nom.trim());
 export const FICHE_MAX = 900;
 
 export type Personnage = {
@@ -33,7 +42,7 @@ export const paragraphes = (v: unknown, max: number): string =>
 
 /**
  * « le passeur, le vieux Maël » : les autres noms, séparés par des virgules ou des points-virgules,
- * sans doublon ni le nom lui-même, cinq au plus.
+ * sans doublon ni le nom lui-même, ni « tu », cinq au plus.
  */
 export function lireAutresNoms(texte: string | readonly string[], nom = ""): string[] {
   const morceaux = typeof texte === "string" ? texte.split(/[,;\n]/) : [...texte];
@@ -42,7 +51,7 @@ export function lireAutresNoms(texte: string | readonly string[], nom = ""): str
   for (const m of morceaux) {
     const t = ligne(m, NOM_MAX);
     const cle = t.toLocaleLowerCase("fr");
-    if (!t || vus.has(cle)) continue;
+    if (!t || vus.has(cle) || estUnPronomDuLecteur(t)) continue;
     vus.add(cle);
     sortie.push(t);
     if (sortie.length === AUTRES_NOMS_MAX) break;

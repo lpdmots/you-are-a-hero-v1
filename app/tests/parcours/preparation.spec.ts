@@ -13,6 +13,9 @@ test.afterEach(async () => {
 
 const LIGNE = (page: Page) => page.getByRole("navigation", { name: "Étapes de la préparation" });
 const RETENU = (page: Page, nom = "Nous retenons…") => page.getByRole("textbox", { name: nom, exact: true });
+/** Le texte retenu de l'étape Personnages : celui du premier héros (F10.2, 18 octobre 2026) */
+const retenuDuHeros = async (projet: string) =>
+  (await sql<{ description: string }>("select description from personnages where projet_id = $1 and heros order by rang, cree_le limit 1", [projet]))[0]?.description;
 const QUESTIONS = (page: Page) => page.getByRole("region", { name: /^Questions pour/ });
 const IDEES = (page: Page) => page.getByRole("region", { name: "Idées", exact: true });
 const etape = (page: Page, nom: string | RegExp) => LIGNE(page).locator("ol").getByRole("link", { name: nom });
@@ -75,7 +78,7 @@ test("F02-AC01, F02-AC07 — la préparation se garde étape par étape, et l'or
 test("F02-AC18 — chaque étape a sa question en grand, ses relances parmi les questions pour la classe, et un exemple replié", async ({ page }) => {
   const { projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation?etape=personnages`);
-  await expect(page.getByRole("heading", { level: 2 })).toContainText("Qui est notre héros, et qu");
+  await expect(page.getByRole("heading", { level: 2 })).toContainText("Qui est notre héros ?");
   await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", "Un seul héros, ou plusieurs au choix du lecteur ?"]);
   await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeHidden();
   await page.getByText("Voir un exemple").click();
@@ -319,7 +322,8 @@ test("F13-AC12, F13-AC13 — « Rédiger d'après les idées » propose un texte
   await page.getByRole("button", { name: "Utiliser ce texte" }).click();
   await expect(RETENU(page)).toHaveValue("Lou, 10 ans, connaît le chant des lanternes.");
   await expect(MESSAGE(page)).toContainText("Le texte retenu est remplacé.");
-  await expect.poll(async () => (await sql("select personnages from preparations where projet_id = $1", [projet]))[0].personnages).toBe("Lou, 10 ans, connaît le chant des lanternes.");
+  // Le texte retenu des personnages est celui du héros (18 octobre 2026) : sa carte se crée au premier mot
+  await expect.poll(() => retenuDuHeros(projet)).toBe("Lou, 10 ans, connaît le chant des lanternes.");
   expect(await sql("select 1 from parties where projet_id = $1 union all select 1 from scenes where projet_id = $1", [projet])).toEqual([]);
   // « Annuler » rend le texte d'avant
   await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
@@ -347,7 +351,7 @@ test("aides éteintes dans « Mon compte » : aucun ✦, les boutons doubles red
   await page.getByRole("button", { name: "Reprendre les idées retenues" }).click();
   await expect(RETENU(page)).toHaveValue("Il a dix ans.\nLou, fils du dernier passeur");
   await expect(page.getByRole("button", { name: "Reprendre les idées retenues" })).toHaveCount(0);
-  await expect.poll(async () => (await sql("select personnages from preparations where projet_id = $1", [projet]))[0].personnages).toBe("Il a dix ans.\nLou, fils du dernier passeur");
+  await expect.poll(() => retenuDuHeros(projet)).toBe("Il a dix ans.\nLou, fils du dernier passeur");
 });
 
 test("F02-AC19 — en projet personnel, la préparation parle à l'auteur, dit « Je retiens… » et ne propose pas de projeter", async ({ page }) => {

@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import type { Enseignant } from "./adulte";
+import { estUnPronomDuLecteur } from "@/domaine/personnages";
 import type { Attribution, Chapitre, ElevePlan, Partie, Plan, Profil, Scene, Supprime } from "@/domaine/recit";
 import { nomScene } from "@/domaine/recit";
 import { estEtat } from "@/domaine/etats";
@@ -159,10 +160,10 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
       .select("univers, personnages, enjeu, rubrique_jeu, feuille, regles, formule_renvoi, constructions, marque_fin, orientations")
       .eq("projet_id", projetId)
       .maybeSingle(),
-    e.supabase.from("pistes").select("id, rubrique, texte, etat, origine").eq("projet_id", projetId).order("cree_le").order("id"),
+    e.supabase.from("pistes").select("id, rubrique, texte, etat, origine, personnage_id").eq("projet_id", projetId).order("cree_le").order("id"),
     e.supabase.from("objets").select("id, nom, description, fiche, image_id").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("formules").select("id, texte, signe").eq("projet_id", projetId).order("cree_le"),
-    e.supabase.from("questions").select("id, etape, texte, origine").eq("projet_id", projetId).order("cree_le").order("id"),
+    e.supabase.from("questions").select("id, etape, texte, origine, personnage_id").eq("projet_id", projetId).order("cree_le").order("id"),
     e.supabase
       .from("personnages")
       .select("id, nom, autres_noms, heros, description, fiche, portrait_id")
@@ -182,11 +183,15 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
     formuleRenvoi: estFormuleRenvoi(c.formule_renvoi) ? c.formule_renvoi : "rends",
     constructions: constructions.length ? constructions : ["neutre"],
     marqueFin: c.marque_fin,
-    pistes: ((pistes.data ?? []) as { id: string; rubrique: string; texte: string; etat: EtatPiste; origine: string }[]).flatMap((p) =>
-      estRubrique(p.rubrique) ? [{ id: p.id, rubrique: p.rubrique, texte: p.texte, etat: p.etat, origine: p.origine === "ia" ? ("ia" as const) : ("main" as const) }] : [],
+    pistes: ((pistes.data ?? []) as { id: string; rubrique: string; texte: string; etat: EtatPiste; origine: string; personnage_id: string | null }[]).flatMap((p) =>
+      estRubrique(p.rubrique)
+        ? [{ id: p.id, rubrique: p.rubrique, texte: p.texte, etat: p.etat, origine: p.origine === "ia" ? ("ia" as const) : ("main" as const), personnageId: p.personnage_id }]
+        : [],
     ),
-    questions: ((questions.data ?? []) as { id: string; etape: string; texte: string; origine: string }[]).flatMap((q) =>
-      estRubrique(q.etape) ? [{ id: q.id, etape: q.etape, texte: q.texte, origine: q.origine === "ia" ? ("ia" as const) : ("main" as const) }] : [],
+    questions: ((questions.data ?? []) as { id: string; etape: string; texte: string; origine: string; personnage_id: string | null }[]).flatMap((q) =>
+      estRubrique(q.etape)
+        ? [{ id: q.id, etape: q.etape, texte: q.texte, origine: q.origine === "ia" ? ("ia" as const) : ("main" as const), personnageId: q.personnage_id }]
+        : [],
     ),
     orientations: orientationsPropres(c.orientations),
     objets: ((objets.data ?? []) as { id: string; nom: string; description: string; fiche: string; image_id: string | null }[]).map((o) => ({
@@ -196,7 +201,8 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
     personnagesDeLHistoire: (
       (personnages.data ?? []) as { id: string; nom: string; autres_noms: string[] | null; heros: boolean; description: string; fiche: string; portrait_id: string | null }[]
     ).map((p) => ({
-      id: p.id, nom: p.nom, autresNoms: p.autres_noms ?? [], heros: p.heros, description: p.description, fiche: p.fiche, portraitId: p.portrait_id,
+      // « tu » n'est jamais un autre nom (18 octobre 2026) : une carte écrite avant se lit sans lui
+      id: p.id, nom: p.nom, autresNoms: (p.autres_noms ?? []).filter((n) => !estUnPronomDuLecteur(n)), heros: p.heros, description: p.description, fiche: p.fiche, portraitId: p.portrait_id,
     })),
   };
 });

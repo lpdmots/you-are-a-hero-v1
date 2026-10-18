@@ -12,7 +12,8 @@ import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import {
-  guidage, ORIENTATION_MAX, titreQuestions, titreSynthese, type EtatPiste, type Piste, type Preparation, type Question, type Rubrique, type RubriqueTexte,
+  AUTRES_PERSONNAGES, guidage, ongletDuHeros, ORIENTATION_MAX, questionDesAutres, titreQuestions, titreSynthese, type EtatPiste, type Piste, type Preparation,
+  type Question, type Rubrique, type RubriqueTexte,
 } from "@/domaine/preparation";
 import type { Organisation, Recit } from "@/domaine/projets";
 import type { Partie, Plan } from "@/domaine/recit";
@@ -20,7 +21,8 @@ import { pluriel, sansCoupureFautive } from "@/domaine/texte";
 import { ajouterPiste, ajouterQuestion, changerPiste, ecrireRubrique, orienterLIa, supprimerPiste, supprimerQuestion } from "../../actions-preparation";
 import { creerPartie } from "../../actions-recit";
 import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "../_plan/IdeesDeParties";
-import { CartesDesPersonnages } from "./Personnages";
+import { premierHeros, reglerPersonnage } from "../../actions-personnages";
+import { CarteDuHeros, CartesDesPersonnages, OngletsDesPersonnages } from "./Personnages";
 import { demanderALaPreparation, useReserveIa } from "./reserve";
 
 /** Sans idée retenue ni texte, « Rédiger » ne demande rien (le serveur dit la même chose). */
@@ -43,7 +45,7 @@ export type GestesDesParties = { regler: (p: Partie) => void; supprimer: (p: Par
  * « Projeter » montre le même écran en grand.
  */
 export function EtapeHistoire({
-  projet, etape, preparation, plan, projection, parties,
+  projet, etape, preparation, plan, projection, parties, onglet, adresseOnglet,
 }: {
   projet: ProjetDuCarnet;
   etape: Rubrique;
@@ -51,12 +53,37 @@ export function EtapeHistoire({
   plan: Plan;
   projection?: boolean;
   parties?: GestesDesParties;
+  /** Dans l'étape Personnages : l'onglet ouvert, un héros ou les autres personnages (F10.2, 18 octobre 2026) */
+  onglet?: string | null;
+  /** L'adresse d'un onglet des personnages, dans la page ou en projection */
+  adresseOnglet?: (onglet: string) => string;
 }) {
   const { proposer } = useAidesIa();
-  const guide = guidage(etape, projet.organisation, projet.recit);
   const e = useEnregistrement();
-  const questions = preparation.questions.filter((q) => q.etape === etape);
-  const idees = preparation.pistes.filter((p) => p.rubrique === etape);
+  // L'étape Personnages : un onglet par héros, chacun ses questions, ses idées et son texte retenu
+  const personnages = etape === "personnages";
+  const herosDuProjet = preparation.personnagesDeLHistoire.filter((p) => p.heros);
+  const autres = personnages && onglet === AUTRES_PERSONNAGES;
+  const herosOuvert = personnages && !autres ? (herosDuProjet.find((h) => h.id === onglet) ?? herosDuProjet[0] ?? null) : null;
+  const ongletHeros = personnages ? ongletDuHeros(preparation, herosOuvert?.id ?? null, projet.organisation, projet.recit) : null;
+  const base = guidage(etape, projet.organisation, projet.recit);
+  const guide = ongletHeros ? { ...base, question: ongletHeros.question, relances: ongletHeros.relances } : base;
+  const questions = ongletHeros?.questions ?? preparation.questions.filter((q) => q.etape === etape);
+  const idees = ongletHeros?.idees ?? preparation.pistes.filter((p) => p.rubrique === etape);
+
+  // Le héros de l'onglet ; sans carte encore, « Le héros » se crée au premier mot écrit
+  const herosId = useRef<string | null>(herosOuvert?.id ?? null);
+  const creation = useRef<Promise<string | null> | null>(null);
+  useEffect(() => {
+    herosId.current = herosOuvert?.id ?? herosId.current;
+  }, [herosOuvert?.id]);
+  const idDuHeros = async (): Promise<string | null> => {
+    if (!personnages) return null;
+    if (herosId.current) return herosId.current;
+    creation.current ??= premierHeros(projet.id).then((fait) => (fait.ok ? fait.id : null));
+    herosId.current = await creation.current;
+    return herosId.current;
+  };
 
   // « Orienter l'IA » : gardée avec l'étape ; avant la première demande, le champ s'ouvre d'abord (deux clics)
   const [orientation, setOrientation] = useState(preparation.orientations[etape] ?? "");
@@ -64,19 +91,20 @@ export function EtapeHistoire({
   const [enAttenteDOrienter, setEnAttenteDOrienter] = useState<"questions" | "idees" | null>(null);
   const dejaDemande = useRef(false);
 
-  // Le texte retenu, tenu ici : la réserve est jetée quand il change, et il part avant chaque demande
-  const [retenu, setRetenu] = useState(etape === "etapes" ? "" : preparation[etape]);
+  // Le texte retenu, tenu ici : la réserve est jetée quand il change, et il part avant chaque demande.
+  // Celui d'un héros est sa description (18 octobre 2026)
+  const [retenu, setRetenu] = useState(etape === "etapes" ? "" : ongletHeros ? (ongletHeros.heros?.description ?? preparation.personnages) : preparation[etape]);
 
   const avantDeDemander = () => e.partir();
   const reserveQ = useReserveIa({
-    projetId: projet.id, etape, sorte: "questions", avantDeDemander,
+    projetId: projet.id, etape, heros: herosOuvert?.id ?? null, sorte: "questions", avantDeDemander,
     deja: [...guide.relances, ...questions.map((q) => q.texte)],
-    ajouter: (texte) => ajouterQuestion(projet.id, etape, texte, "ia"),
+    ajouter: async (texte) => ajouterQuestion(projet.id, etape, texte, "ia", await idDuHeros()),
   });
   const reserveI = useReserveIa({
-    projetId: projet.id, etape, sorte: "idees", avantDeDemander,
+    projetId: projet.id, etape, heros: herosOuvert?.id ?? null, sorte: "idees", avantDeDemander,
     deja: idees.map((i) => i.texte),
-    ajouter: (texte) => ajouterPiste(projet.id, etape, texte, "ia"),
+    ajouter: async (texte) => ajouterPiste(projet.id, etape, texte, "ia", await idDuHeros()),
   });
   /** L'étape a changé : les deux réserves sont jetées (F13-AC14) */
   const changee = () => {
@@ -126,8 +154,40 @@ export function EtapeHistoire({
     />
   );
 
+  const versOnglet = adresseOnglet ?? ((o: string) => `/projet/${projet.id}/preparation?etape=personnages${o ? `&heros=${o}` : ""}`);
+  const onglets = personnages ? (
+    <OngletsDesPersonnages
+      projetId={projet.id}
+      heros={herosDuProjet}
+      ouvert={autres ? AUTRES_PERSONNAGES : (herosOuvert?.id ?? null)}
+      autres={preparation.personnagesDeLHistoire.length - herosDuProjet.length}
+      adresse={versOnglet}
+      projection={projection}
+    />
+  ) : null;
+
+  if (autres) {
+    return (
+      <div className={`${styles.etape}${projection ? ` ${styles.etape_projetee}` : ""}`}>
+        {onglets}
+        <Question question={questionDesAutres(projet.organisation)} />
+        <div className={styles.autres}>
+          <CartesDesPersonnages
+            projetId={projet.id}
+            personnages={preparation.personnagesDeLHistoire.filter((p) => !p.heros)}
+            herosAbsent={projet.herosAbsent !== false}
+            projection={projection}
+            avantDeDemander={avantDeDemander}
+            adresse={versOnglet}
+          />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={`${styles.etape}${projection ? ` ${styles.etape_projetee}` : ""}`}>
+      {onglets}
       <Question question={guide.question} exemple={guide.exemple} />
 
       <div className={styles.colonnes}>
@@ -148,7 +208,7 @@ export function EtapeHistoire({
             titre={titreQuestions(projet.organisation)}
             relances={guide.relances}
             questions={questions}
-            onAjouter={(t) => ajouterQuestion(projet.id, etape, t)}
+            onAjouter={async (t) => ajouterQuestion(projet.id, etape, t, "main", await idDuHeros())}
             onIa={() => demander("questions")}
             orienter={enAttenteDOrienter === "questions" ? orienter : null}
             attente={reserveQ.attente}
@@ -161,7 +221,7 @@ export function EtapeHistoire({
             deClasse={projet.organisation === "classe"}
             idees={idees}
             onNoter={async (t) => {
-              const fait = await ajouterPiste(projet.id, etape, t);
+              const fait = await ajouterPiste(projet.id, etape, t, "main", await idDuHeros());
               if (fait.ok) changee();
               return fait;
             }}
@@ -190,9 +250,21 @@ export function EtapeHistoire({
           />
         ) : (
           <div className={styles.droite}>
+            {personnages ? (
+              <CarteDuHeros
+                projetId={projet.id}
+                heros={herosOuvert}
+                autresHeros={herosDuProjet.length - (herosOuvert ? 1 : 0)}
+                herosAbsent={projet.herosAbsent !== false}
+                projection={projection}
+                creer={idDuHeros}
+                adresse={versOnglet}
+              />
+            ) : null}
             <TexteRetenu
               projet={projet}
               etape={etape}
+              heros={herosOuvert?.id ?? null}
               valeur={retenu}
               enregistrement={e}
               peutRediger={retenu.trim() !== "" || idees.some((i) => i.etat === "retenue")}
@@ -200,18 +272,19 @@ export function EtapeHistoire({
               onChange={(v) => {
                 setRetenu(v);
                 changee();
-                e.prevoir(() => ecrireRubrique(projet.id, etape, v), 700, "retenu");
+                e.prevoir(
+                  personnages
+                    ? async () => {
+                        const id = await idDuHeros();
+                        return id ? reglerPersonnage(id, { description: v }) : { ok: false, erreur: "Cela n’a pas pu être enregistré. Réessayez." };
+                      }
+                    : () => ecrireRubrique(projet.id, etape, v),
+                  700,
+                  "retenu",
+                );
               }}
             />
-            {etape === "personnages" ? (
-              <CartesDesPersonnages
-                projetId={projet.id}
-                personnages={preparation.personnagesDeLHistoire}
-                herosAbsent={projet.herosAbsent !== false}
-                projection={projection}
-                avantDeDemander={avantDeDemander}
-              />
-            ) : null}
+
           </div>
         )}
       </div>
@@ -495,10 +568,12 @@ function Idees({
  * proposition, retouchable, qui ne remplace rien avant « Utiliser ce texte » (F13-AC12, AC13).
  */
 function TexteRetenu({
-  projet, etape, valeur, enregistrement: e, peutRediger, ideesRetenues, onChange,
+  projet, etape, heros, valeur, enregistrement: e, peutRediger, ideesRetenues, onChange,
 }: {
   projet: ProjetDuCarnet;
   etape: RubriqueTexte;
+  /** Le héros de l'onglet, dans l'étape Personnages */
+  heros: string | null;
   valeur: string;
   /** Les idées retenues de l'étape : « Reprendre les idées retenues » met dans le texte celles qui n'y sont pas */
   ideesRetenues: string[];
@@ -528,7 +603,7 @@ function TexteRetenu({
     setAttente(true);
     setErreur(null);
     await e.partir();
-    const r = await demanderALaPreparation(projet.id, etape, "retenons");
+    const r = await demanderALaPreparation(projet.id, etape, "retenons", heros);
     setAttente(false);
     if (!r.ok) return setErreur(r.message);
     if (r.sorte !== "retenons") return setErreur(MESSAGES_IA.pasDeReponse);
