@@ -2674,7 +2674,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Critères qui attendent :** F10-AC07, AC08, AC10, AC11 et le reste de AC09 et AC12
       (prompts et images de scène), au lot 8 ; la qualité réelle du repérage et des
       fiches, au jugement du lot 9.
-    - **Précisions prises en construisant, à faire confirmer au porteur :** les
+    - **Précisions prises en construisant, confirmées par le porteur le 18 octobre
+      2026 (« ok pour tes recos »), le portrait seulement avec une fiche et les deux
+      minutes des images compris ; ne plus les lui soumettre :** les
       personnages repérés arrivent cochés (ils viennent de ce que la classe a retenu),
       à décocher, contrairement aux idées de choix ; une carte déjà là, sous son nom ou
       un autre nom, n'est pas reproposée ; « tu » n'est jamais une carte ; un
