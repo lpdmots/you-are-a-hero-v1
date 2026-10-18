@@ -2109,6 +2109,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   7. **Personnages et objets** — cartes des personnages, fiche visuelle,
      portrait, « Repérer les personnages », fiches des objets, style et réglage
      du héros dans les options du projet. Migration `personnages`.
+     Ajouté le 18 octobre 2026 (F10.2, F02) : plusieurs cartes marquées « héros »
+     possibles, sans limite, leur liste dans le contexte des aides, pas de badge
+     de héros automatique quand il y en a plusieurs, et la relance « Un seul
+     héros, ou plusieurs au choix du lecteur ? » à l'étape Personnages.
   8. **Images créées** — repérage d'après le résumé, image d'une scène
      (cadrages, badges, prompt, création), prompt à copier, idée
      d'illustration de l'élève, prompt de couverture.

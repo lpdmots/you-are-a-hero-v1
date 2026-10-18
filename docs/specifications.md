@@ -674,6 +674,10 @@ progressivement selon les règles ci-dessus.
 **Décision confirmée le 10 octobre 2026 — textes du guidage :** arbitré
 avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
 
+- **Relance ajoutée le 18 octobre 2026,** décision du porteur : à l'étape
+  « Personnages », « Un seul héros, ou plusieurs au choix du lecteur ? »
+  (F10.2, plusieurs héros), à construire avec les cartes des personnages
+  (lot 7 de l'étape 8).
 - **Une question et des relances par rubrique.** Chaque rubrique porte une
   question principale et deux ou trois relances. Les textes de départ sont
   ceux de la maquette de synthèse ; le porteur, qui mène cet atelier depuis
@@ -7148,6 +7152,19 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   objets de l'histoire (F04.2) reçoivent de même une fiche visuelle et une
   image de référence, demande du porteur. Les fiches servent aussi de contexte
   aux autres aides : la correction ne touche pas à leurs noms.
+- **Plusieurs héros au choix du lecteur, décidé par le porteur le 18 octobre
+  2026** sur recommandation (révise « un seul héros » ci-dessus) : plusieurs
+  cartes peuvent porter la marque « héros », sans limite (deux ou trois en
+  pratique) ; la compétence de chacun s'écrit dans sa description, sans champ
+  à part. Le choix du héros se fait dans la scène de départ par des choix
+  ordinaires menant tous à la même scène suivante, une action de jeu le faisant
+  noter sur la feuille d'aventure ; les compétences servent par des phrases de
+  choix personnalisées (« Si tu sais nager… »), sans vérification par
+  l'application (F04.2). Les aides IA reçoivent la liste des héros et de leurs
+  compétences (F13, contexte), pour proposer des choix qui s'en servent. Avec
+  plusieurs héros, aucun badge de héros ne se pose de lui-même sur une image ;
+  « héros absent » reste recommandé. Écarté : un bloc « choix du héros » avec
+  compétences et conditions vérifiées (moteur de jeu, écarté en F04.2).
 - **Le héros d'un livre-jeu est « tu » :** son nom n'apparaît pas dans le
   texte. Le réglage « héros absent » reste allumé par défaut (seulement des
   mains neutres) ; éteint, le héros est représenté d'après sa carte, et son
