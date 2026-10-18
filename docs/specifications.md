@@ -674,6 +674,9 @@ progressivement selon les règles ci-dessus.
 **Décision confirmée le 10 octobre 2026 — textes du guidage :** arbitré
 avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
 
+- **Un onglet par héros, décidé le 18 octobre 2026** (F10.2, à construire) :
+  l'étape « Personnages » donne à chaque héros ses questions, ses idées et son
+  « Nous retenons », les autres personnages en liste simple.
 - **Relance ajoutée le 18 octobre 2026,** décision du porteur : à l'étape
   « Personnages », « Un seul héros, ou plusieurs au choix du lecteur ? »
   (F10.2, plusieurs héros), construite avec les cartes des personnages (lot 7
@@ -7217,6 +7220,35 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
     réglée sur « Normale », la pleine page est demandée en qualité normale. Ces gestes restent ceux de l'adulte (F10) ; l'élève
   écrit seulement son idée (F10-AC10). Le contrôle des images peu nettes du
   livre s'applique à ces images comme aux autres.
+
+**Décidé par le porteur le 18 octobre 2026, après l'essai du lot 7 — un
+questionnement par héros, les autres personnages en liste simple** (à construire,
+sur son instruction) :
+
+- **Un onglet par héros** dans l'étape « Personnages » (F02), sous la question :
+  « Lou · José · + Un autre héros · Autres personnages ». Chaque onglet de héros a
+  le parcours de l'étape : les questions pour la classe (les mêmes relances, « Un
+  seul héros, ou plusieurs au choix du lecteur ? » dans le premier seulement), les
+  idées avec leurs états, « Nous retenons » et « ✦ Rédiger d'après les idées », puis
+  la carte du héros (autres noms, fiche visuelle, portrait) ; les aides de l'onglet
+  ne regardent que ce héros. Avec un seul héros, un seul onglet : l'écran reste
+  celui du lot 7. L'étape est cochée dès qu'un héros a un texte retenu. Écartés :
+  une étape par héros dans la ligne d'étapes (ligne de longueur variable, qui
+  s'allonge vite) ; une discussion commune avec des cartes de héros enrichies, qui
+  ne sépare pas ce qu'on retient de chacun.
+- **« Nous retenons » d'un héros est sa description :** un seul texte, celui que
+  lisent la carte et les aides, pour qu'ils ne se contredisent jamais.
+- **Les autres personnages,** facultatifs, dans le dernier onglet : une liste simple
+  de cartes légères (nom, une ligne, autres noms, portrait possible), sans questions
+  ni idées ni « Nous retenons ».
+- **« tu » et « toi » ne sont jamais des autres noms :** le héros rejoint une image
+  par la règle du badge (seul héros dessiné : son badge d'office ; plusieurs : aucun
+  d'office, ajouté par « + »), non par le mot « tu », qui désignerait tous les héros
+  à la fois.
+- **Questions laissées ouvertes, à trancher avant de construire :** ce que deviennent
+  le texte retenu commun et les idées d'un projet existant (recommandé : rattachés au
+  premier héros) ; la question en grand d'un onglet (recommandé : « Qui est José, et
+  qu'est-ce qui le rend unique ? » quand il a un nom) ; la projection des onglets.
 
 **Construit au lot 7 de l'étape 8 (18 octobre 2026) — personnages et objets :**
 écrans dans le [design](design.md), précisions à confirmer dans le

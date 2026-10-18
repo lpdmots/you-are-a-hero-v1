@@ -2722,6 +2722,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       (« Personnage » et la relance des héros en plus), repris ; le quatrième (la formule
       surlignée au clavier, étape 3) passe seul, comme les fichiers des choix, du jeu et
       de la Préparation rejoués entiers (66 sur 66).
+  - **Reprise décidée par le porteur le 18 octobre 2026, après son essai du lot 7, non
+    construite** (F10.2) : un onglet par héros dans l'étape Personnages, chacun avec ses
+    questions, ses idées et son « Nous retenons », qui devient sa description ; les autres
+    personnages en liste simple, dans le dernier onglet ; « tu » et « toi » refusés comme
+    autres noms. Demande une migration (questions et idées rattachées à un héros, texte
+    retenu d'un héros) et la reprise des aides de la Préparation, de la projection et de la
+    coche de l'étape : de l'ordre d'un lot. À construire sur son instruction, après les
+    trois questions laissées ouvertes en F10.2.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.
