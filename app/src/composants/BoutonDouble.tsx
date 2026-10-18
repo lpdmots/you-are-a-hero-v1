@@ -9,7 +9,7 @@ import { useAidesIa } from "./AidesIa";
  * redevient un bouton simple (F13, cadre commun).
  */
 export function BoutonDouble({
-  libelle, nomIa, onMain, onIa, attente, desactive,
+  libelle, nomIa, onMain, onIa, attente, desactive, primaire,
 }: {
   libelle: string;
   /** Ce que fait la partie ✦, pour le clavier et la bulle : « Demander une question à l'IA » */
@@ -19,10 +19,12 @@ export function BoutonDouble({
   /** L'IA prépare sa réponse : la partie ✦ attend */
   attente?: boolean;
   desactive?: boolean;
+  /** Le bouton principal de l'écran : la partie nommée pleine, la partie ✦ reste pâle */
+  primaire?: boolean;
 }) {
   const { proposer } = useAidesIa();
   return (
-    <span className={`double${proposer ? "" : " double--seul"}`}>
+    <span className={`double${proposer ? "" : " double--seul"}${primaire ? " double--primaire" : ""}`}>
       <button type="button" className="double__main" data-ouvre-ajout="" onClick={onMain} disabled={desactive}>
         <Icone nom="plus" />
         {libelle}

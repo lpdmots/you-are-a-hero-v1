@@ -2247,6 +2247,53 @@ encore dense (ses réglages datent de l'étape 2) ; l'en-tête du projet haut en
 listes, qui s'enregistrent à chaque ajout. Premier retour du porteur, le
 18 octobre 2026 : la nouvelle mise en page est « beaucoup plus claire ».
 
+**Lot 6 — parties, chapitres et résumés (F13.5).** Sans maquette (la maquette n'avait
+qu'un bouton « Idées de parties » qui répondait par un message). Conçu avec impeccable
+dans le système « Cahiers d'aventure », en reprenant les formes des lots 4 et 5,
+critiqué en deux lectures séparées sur captures (`npm run captures -- etape8`, 872 à
+887) : 28/40 (lecture informée) et 26/40 (lecture indépendante). Forme construite :
+
+- **« Ajouter une partie │ ✦ » :** le bouton double du lot 5 ; dans l'en-tête de
+  « Parties et chapitres », sa partie nommée est pleine (`double--primaire`), seul
+  bouton plein de l'écran ; cerné dans Grandes étapes et dans le plan vide.
+- **Le panneau « ✦ Idées de parties »,** panneau latéral des réglages, le même dans
+  les deux vues : une ligne d'aide, « Orienter l'IA » (ouvert, le curseur dedans, avant
+  la première demande ; « gardé avec Grandes étapes » ou « le même que pour les
+  questions et les idées » à côté de « facultatif »), puis la liste à filets des idées
+  de choix : la case, le titre de la partie en gras, « Premier chapitre » en
+  étiquette grise, le titre du chapitre, le résumé en gris, tous champs soulignés
+  d'un pointillé ; une partie cochée prend le filet canard de 2 px. « ✦ D'autres
+  idées » sous la liste ; au pied, « Ajouter 2 parties », pleine largeur. En 390 px,
+  le panneau prend l'écran, son pied visible.
+- **Après l'ajout :** le panneau se referme, la première partie ajoutée vient sous la
+  barre du haut, et le message dit « 2 parties ajoutées à la fin du plan :
+  « Le marais des lucioles » et « Le village englouti ». » avec « Annuler ».
+- **« Ajouter un chapitre │ ✦ » :** la carte en pointillé coupée à droite d'une bande
+  de 52 px en canard pâle, les étincelles au milieu, qui scintillent pendant la
+  demande. Au premier clic, sous la partie, le cadre canard pâle « Orienter l'IA ·
+  facultatif · pour cette partie » et « ✦ Proposer un chapitre » ; ensuite, sous la
+  partie, une ligne discrète (attente, échec, demandes qui restent) et « Orienter l'IA
+  pour cette partie ». Le chapitre ajouté est cerné comme une carte montrée ; le
+  message dit « « Le gué des saules » est ajouté à la fin de « La forêt », avec un
+  résumé. », avec « Voir le résumé » et « Annuler ».
+- **« ✦ Proposer un résumé »** (« Proposer un autre résumé » quand il y en a un), sous
+  le champ du résumé, dans les réglages du chapitre : le cadre canard pâle « Résumé
+  proposé · modifiable », « Utiliser ce texte », « ✦ Un autre », « Laisser ».
+
+Corrigé après la critique : le résumé du chapitre ajouté par l'IA, invisible
+(« Voir le résumé » dans le message) ; deux champs « Orienter l'IA » au même texte
+sans dire qu'ils sont liés ; la partie ajoutée qui passait sous la barre du haut et le
+message ; « Proposer un autre résumé » au-dessus de la proposition qu'il remplace (un
+seul bouton d'IA pendant la décision, « Un autre », dans la proposition) ; une
+proposition identique au résumé en place (« L'IA n'a rien à changer à ce résumé. ») ;
+« Premier chapitre » en canard, lu comme un lien. Laissé : « D'autres idées » sous la
+liste, comme le porteur l'a voulu au lot 4 (une lecture le voulait au pied) ; le ✦
+sans mot, nommé par sa bulle (décidé) ; l'ajout direct d'un chapitre, sans aperçu,
+décidé en F13.5 ; le bouton éteint en canard pâle et le message au-dessus du voile,
+communs à l'application ; les images par défaut des nouvelles parties, sans rapport
+avec leur titre (visuels par défaut tirés au hasard, F10.1 ; les images créées
+d'après le résumé viennent au lot 8).
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

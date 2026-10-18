@@ -2544,6 +2544,64 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       échouait aussi seul : il cliquait « La mise en page me convient » puis
       changeait de page avant l'enregistrement, et « Imprimer et partager »
       restait fermée. Il attend désormais « Mise en page terminée », et passe.
+  - **Lot 6 — parties, chapitres et résumés : construit le 18 octobre 2026,** en
+    local, sur instruction du porteur, dans une nouvelle conversation, sans
+    migration. « Ajouter une partie │ ✦ » (`BoutonDouble`, plein dans l'en-tête de
+    « Parties et chapitres », cerné dans Grandes étapes et dans le plan vide) ouvre le
+    panneau « ✦ Idées de parties », le même dans les deux vues : à la première
+    ouverture, « Orienter l'IA » et « ✦ Proposer des parties » (deux clics) ; dix
+    ensembles en une demande (titre de partie, premier chapitre, résumé), montrés
+    trois par trois, chacun une case et trois champs retouchables sur place ;
+    « D'autres idées » sous la liste ; « Ajouter 2 parties » au pied, qui les place
+    à la fin du plan, chacune avec son premier chapitre et son résumé, ni scène ni
+    élève ; le message nomme les parties, avec « Annuler ». Dans chaque partie, la
+    carte « Ajouter un chapitre » coupée d'une bande ✦ : six chapitres par demande,
+    livrés un par clic à la fin de la partie, titre et résumé, avec « Voir le
+    résumé » et « Annuler » dans le message. Dans les réglages d'un chapitre,
+    « ✦ Proposer un résumé » : une proposition modifiable, « Utiliser ce texte »,
+    « Un autre » ou « Laisser ». Adresse `/ia/plan` ; ajout par `ajouterDesParties`
+    et `creerChapitre`, qui accepte un titre et un résumé.
+    - **Critères fermés :** F13-AC15, F13-AC16 ; les décisions des 16 et
+      17 octobre 2026 de F13.5 (bouton double dans les deux vues, orientation, dix
+      ensembles trois par trois, ajout à la fin du plan sans scène ni élève,
+      « Annuler » ; six chapitres livrés un par clic à la fin de la partie ;
+      « Proposer un résumé » comme une proposition) ; F02-AC08 pour des parties
+      ajoutées par l'IA ; les aides éteintes (boutons simples, aucun ✦) ; ce qui
+      part, sans texte d'élève, prénom ni adulte.
+    - **Critères qui attendent :** la qualité réelle des parties, des chapitres et
+      des résumés, au jugement du lot 9 (l'essai V17 les a déjà jugés tenus par la
+      Préparation et le plan, sans doublon).
+    - **Précisions prises en construisant, à faire confirmer au porteur :**
+      l'orientation des idées de parties est celle de l'étape Grandes étapes,
+      gardée avec le projet, la même dans les deux vues (elle oriente aussi les
+      questions et les idées de l'étape) ; celle des chapitres est propre à chaque
+      partie et ne dure que le temps de la page, comme celle des idées de choix,
+      ouverte sous la partie au premier ✦, puis par « Orienter l'IA pour cette
+      partie » ; un chapitre de l'IA s'ajoute aussitôt, sans aperçu (décision de
+      F13.5), et son résumé se lit par « Voir le résumé » ; la réserve des chapitres
+      est jetée quand la partie change sans l'IA ou que son orientation change ;
+      une partie déjà dans le plan, ou déjà montrée, et un chapitre déjà dans la
+      partie ne sont pas reproposés ; « Annuler » met les parties ou le chapitre
+      ajoutés à la corbeille, faute de suppression définitive sans migration (règle
+      du lot 4) ; si une partie ne se crée pas, celles déjà créées vont à la
+      corbeille et rien n'est annoncé comme ajouté ; une retouche coche l'ensemble ;
+      le panneau refermé garde ses ensembles tant que la page reste ouverte ; en
+      projection, le panneau demande dès l'ouverture, sans orientation ; partent la
+      Préparation (univers, personnages, enjeu), le plan avec les résumés, et pour
+      un résumé les titres et consignes des scènes du chapitre (soixante au plus),
+      jamais leur texte ; une proposition de résumé identique au résumé en place se
+      dit (« L'IA n'a rien à changer à ce résumé. ») ; le bouton principal de
+      « Parties et chapitres » prend la forme du bouton double (pastille).
+    - **Écrans critiqués** en deux lectures séparées sur les captures 872 à 887 :
+      28/40 (informée) et 26/40 (indépendante), corrigés aussitôt (voir le design).
+    - **Dépense :** aucun appel réel (consignes au modèle de l'essai V17, qui a jugé
+      ces trois aides ; réponses simulées pour les écrans) ; dépense de l'étape,
+      environ 1,25 dollar (1,1 €).
+    - **Tests automatiques :** 8 contre la base, 6 parcours.
+    - **Suite complète des parcours avant le commit :** 353 sur 354 ; le parcours
+      de F04-AC29 (objet ajouté depuis la scène, étape 3) a trouvé le texte frappé
+      après l'objet au lieu d'avant, un curseur mal posé dans l'éditeur, que ce lot
+      ne touche pas ; il passe seul.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

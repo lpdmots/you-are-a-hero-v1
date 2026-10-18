@@ -51,9 +51,12 @@ export default async function PageProjet({ params, searchParams }: Props) {
 
   let contenu;
   if (onglet === "plan") {
-    const [plan, eleves, magasin] = await Promise.all([planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), cookies()]);
+    const [plan, eleves, magasin, preparation] = await Promise.all([
+      planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), cookies(), preparationDe(enseignant, projet.id),
+    ]);
     contenu = (
       <Plan
+        orientation={preparation?.orientations.etapes ?? ""}
         projet={{ id: projet.id, titre: projet.titre, deClasse, aChoix, classe: projet.classe ? { id: projet.classe.id, nom: projet.classe.nom } : null }}
         plan={plan}
         eleves={eleves}

@@ -19,6 +19,7 @@ import type { Partie, Plan } from "@/domaine/recit";
 import { pluriel, sansCoupureFautive } from "@/domaine/texte";
 import { ajouterPiste, ajouterQuestion, changerPiste, ecrireRubrique, orienterLIa, supprimerPiste, supprimerQuestion } from "../../actions-preparation";
 import { creerPartie } from "../../actions-recit";
+import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "../_plan/IdeesDeParties";
 import { demanderALaPreparation, useReserveIa } from "./reserve";
 
 /** Sans idée retenue ni texte, « Rédiger » ne demande rien (le serveur dit la même chose). */
@@ -91,16 +92,17 @@ export function EtapeHistoire({
   };
 
   const orienterVisible = orienterOuvert || orientation.trim() !== "";
+  const changerOrientation = (v: string) => {
+    setOrientation(v);
+    changee();
+    e.prevoir(() => orienterLIa(projet.id, etape, v), 700, "orientation");
+  };
   // Ouvert par un ✦ avant la première demande, le champ se pose juste au-dessus du bouton cliqué
   const orienter = (
     <Orienter
       valeur={orientation}
       focus={enAttenteDOrienter !== null}
-      onChange={(v) => {
-        setOrientation(v);
-        changee();
-        e.prevoir(() => orienterLIa(projet.id, etape, v), 700, "orientation");
-      }}
+      onChange={changerOrientation}
       proposer={
         enAttenteDOrienter ? (
           <button
@@ -172,7 +174,15 @@ export function EtapeHistoire({
         </div>
 
         {etape === "etapes" ? (
-          <PartiesRetenues projet={projet} plan={plan} gestes={projection ? undefined : parties} />
+          <PartiesRetenues
+            projet={projet}
+            plan={plan}
+            gestes={projection ? undefined : parties}
+            projection={projection}
+            orientation={orientation}
+            onOrienter={changerOrientation}
+            avantDeDemander={avantDeDemander}
+          />
         ) : (
           <TexteRetenu
             projet={projet}
@@ -584,16 +594,42 @@ function TexteRetenu({
  * leur nombre de chapitres, qui mènent à « Parties et chapitres ». Ajouter une partie lui donne
  * son premier chapitre (F02-AC08) ; le plan reste celui des deux vues.
  */
-function PartiesRetenues({ projet, plan, gestes }: { projet: ProjetDuCarnet; plan: Plan; gestes?: GestesDesParties }) {
+function PartiesRetenues({
+  projet, plan, gestes, projection, orientation, onOrienter, avantDeDemander,
+}: {
+  projet: ProjetDuCarnet;
+  plan: Plan;
+  gestes?: GestesDesParties;
+  projection?: boolean;
+  /** L'orientation de l'étape, la même pour ses questions, ses idées et les idées de parties (F13.5) */
+  orientation: string;
+  onOrienter: (v: string) => void;
+  avantDeDemander: () => Promise<void>;
+}) {
   const dire = useMessage();
   const [ajout, setAjout] = useState(false);
+  const [panneau, setPanneau] = useState(false);
+  const idees = useIdeesDeParties(projet.id, orientation, avantDeDemander);
+  // Les parties ajoutées viennent sous les yeux dès que la liste les montre
+  const aMontrer = useRef<string | null>(null);
+  const montrerPartie = () => {
+    const ligne = aMontrer.current ? document.getElementById(`partie-retenue-${aMontrer.current}`) : null;
+    if (!ligne) return;
+    ligne.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    aMontrer.current = null;
+  };
+  const ajoutIdees = useAjouterDesParties(projet.id, idees, (id) => {
+    aMontrer.current = id;
+    requestAnimationFrame(montrerPartie);
+  });
+  useEffect(montrerPartie, [plan]);
   return (
     <section className={styles.retenu} aria-labelledby="retenons">
       <h3 id="retenons">{titreSynthese(projet.organisation)}</h3>
       {plan.parties.length ? (
         <ol className={styles.parties}>
           {plan.parties.map((p, i) => (
-            <li key={p.id} className={styles.partie}>
+            <li key={p.id} id={`partie-retenue-${p.id}`} className={styles.partie}>
               <Link className={styles.partie__lien} href={`/projet/${projet.id}/plan#partie-${p.id}`}>
                 <span className={styles.partie__image}>
                   <ImageRepere repere={p} graine={p.id} />
@@ -638,16 +674,29 @@ function PartiesRetenues({ projet, plan, gestes }: { projet: ProjetDuCarnet; pla
         />
       ) : null}
       <p className={styles.gestes}>
-        <button type="button" className="btn btn--petit" data-ouvre-ajout="" onClick={() => setAjout(true)}>
-          <Icone nom="plus" />
-          Ajouter une partie
-        </button>
+        <BoutonDouble libelle="Ajouter une partie" nomIa="Demander des idées de parties à l’IA" onMain={() => setAjout(true)} onIa={() => setPanneau(true)} />
         {plan.parties.length ? (
           <Link className={`lien ${styles.versPlan}`} href={`/projet/${projet.id}/plan`}>
             Ouvrir Parties et chapitres
           </Link>
         ) : null}
       </p>
+      {panneau ? (
+        <PanneauIdeesDeParties
+          idees={idees}
+          orientation={orientation}
+          onOrienter={onOrienter}
+          projection={projection}
+          depuisLEtape
+          ajout={ajoutIdees.ajout}
+          onAjouter={(choisis) =>
+            void ajoutIdees.ajouter(choisis).then((fait) => {
+              if (fait) setPanneau(false);
+            })
+          }
+          onFermer={() => setPanneau(false)}
+        />
+      ) : null}
     </section>
   );
 }

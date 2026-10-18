@@ -45,32 +45,98 @@ export async function creerPartie(projetId: string, titre?: string): Promise<Fai
   const titrePartie = titre === undefined ? TITRE_PARTIE : propre(titre, 120);
   if (!titrePartie) return echec("Donnez un titre à la partie.");
   const plan = await planDe(e, projetId);
-  const graine = `${projetId}:${plan.parties.length}:${plan.corbeille.length}`;
-  const visuelPartie = tirerVisuel(`p:${graine}`, plan.parties.map((p) => p.visuelDefaut));
-  const { data, error } = await e.supabase.rpc("creer_partie", {
-    p_projet: projetId, p_titre: titrePartie, p_visuel: visuelPartie, p_titre_chapitre: TITRE_CHAPITRE,
-    p_couleur: couleurNouvelle(chapitresDe(plan).map((c) => c.couleur)), p_visuel_chapitre: tirerVisuel(`c:${graine}`, [visuelPartie]),
-  });
-  const ligne = (Array.isArray(data) ? data[0] : data) as { partie_id: string; chapitre_id: string } | null;
-  if (error || !ligne) return refus(error, "La partie n’a pas pu être ajoutée. Réessayez.");
+  const [faite] = await creerDesParties(e, projetId, plan, [{ partie: titrePartie, chapitre: TITRE_CHAPITRE, resume: "" }]);
+  if (!faite.ok) return faite;
   rafraichir(projetId);
-  return { ok: true, partieId: ligne.partie_id, chapitreId: ligne.chapitre_id };
+  return faite;
 }
 
-/** Un chapitre se crée à la fin de sa partie, sans scène ni élève (F03-AC11). */
-export async function creerChapitre(partieId: string): Promise<Fait<{ id: string }>> {
+/**
+ * Les parties l'une après l'autre, à la fin du plan, chacune avec son premier chapitre et son
+ * résumé (F13.5). Les visuels par défaut évitent ceux qu'on vient de tirer (F10.1).
+ */
+async function creerDesParties(
+  e: Enseignant,
+  projetId: string,
+  plan: Awaited<ReturnType<typeof planDe>>,
+  ensembles: { partie: string; chapitre: string; resume: string }[],
+): Promise<Fait<{ partieId: string; chapitreId: string }>[]> {
+  const visuels = plan.parties.map((p) => p.visuelDefaut);
+  const couleurs = chapitresDe(plan).map((c) => c.couleur);
+  const faites: Fait<{ partieId: string; chapitreId: string }>[] = [];
+  for (const [i, x] of ensembles.entries()) {
+    const graine = `${projetId}:${plan.parties.length + i}:${plan.corbeille.length}`;
+    const visuelPartie = tirerVisuel(`p:${graine}`, visuels);
+    const couleur = couleurNouvelle(couleurs);
+    const { data, error } = await e.supabase.rpc("creer_partie", {
+      p_projet: projetId, p_titre: x.partie, p_visuel: visuelPartie, p_titre_chapitre: x.chapitre, p_couleur: couleur,
+      p_visuel_chapitre: tirerVisuel(`c:${graine}`, [visuelPartie]),
+    });
+    const ligne = (Array.isArray(data) ? data[0] : data) as { partie_id: string; chapitre_id: string } | null;
+    if (error || !ligne) {
+      faites.push(refus(error, "La partie n’a pas pu être ajoutée. Réessayez."));
+      break;
+    }
+    if (x.resume) {
+      const { error: erreurResume } = await e.supabase.from("chapitres").update({ resume: x.resume }).eq("id", ligne.chapitre_id);
+      if (erreurResume) {
+        faites.push({ ok: true, partieId: ligne.partie_id, chapitreId: ligne.chapitre_id }, echec("La partie n’a pas pu être ajoutée. Réessayez."));
+        break;
+      }
+    }
+    visuels.push(visuelPartie);
+    couleurs.push(couleur);
+    faites.push({ ok: true, partieId: ligne.partie_id, chapitreId: ligne.chapitre_id });
+  }
+  return faites;
+}
+
+/**
+ * « Ajouter 2 parties » (F13.5, F13-AC16) : les ensembles retenus, retouchés ou non, à la fin du
+ * plan, chacun avec son premier chapitre et le résumé retenu, sans scène, choix ni élève. Si
+ * l'une ne se crée pas, celles déjà créées vont à la corbeille et rien n'est ajouté.
+ */
+export async function ajouterDesParties(
+  projetId: string,
+  ensembles: { partie: string; chapitre: string; resume: string }[],
+): Promise<Fait<{ parties: string[] }>> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId) || !Array.isArray(ensembles) || ensembles.length === 0 || ensembles.length > 10) return echec("Rien à ajouter.");
+  const propres = ensembles.map((x) => ({ partie: propre(x?.partie, 120), chapitre: propre(x?.chapitre, 120), resume: texteLong(x?.resume, 4000) }));
+  if (propres.some((x) => !x.partie || !x.chapitre)) return echec("Chaque partie cochée demande un titre, et son premier chapitre aussi.");
+  const plan = await planDe(e, projetId);
+  const faites = await creerDesParties(e, projetId, plan, propres);
+  const ratee = faites.find((f) => !f.ok);
+  if (ratee && !ratee.ok) {
+    for (const f of faites) if (f.ok) await e.supabase.rpc("supprimer_element", { p_sorte: "partie", p_id: f.partieId });
+    rafraichir(projetId);
+    return ratee;
+  }
+  rafraichir(projetId);
+  return { ok: true, parties: faites.flatMap((f) => (f.ok ? [f.partieId] : [])) };
+}
+
+/**
+ * Un chapitre se crée à la fin de sa partie, sans scène ni élève (F03-AC11). Un chapitre proposé
+ * par l'IA arrive avec son titre et son résumé (F13.5).
+ */
+export async function creerChapitre(partieId: string, propose?: { titre: string; resume: string }): Promise<Fait<{ id: string }>> {
   const e = await exigerEnseignant();
   const projetId = await projetDeLElement(e, "partie", partieId);
   if (!projetId) return echec("Partie inconnue.");
+  const titre = propose ? propre(propose.titre, 120) : TITRE_CHAPITRE;
+  if (!titre) return echec("Donnez un titre au chapitre.");
   const plan = await planDe(e, projetId);
   const partie = plan.parties.find((p) => p.id === partieId);
   if (!partie) return echec("Partie inconnue.");
   // Le visuel par défaut évite ceux de la partie et de ses autres chapitres (F10.1)
   const visuel = tirerVisuel(`c:${partieId}:${partie.chapitres.length}:${plan.corbeille.length}`, [partie.visuelDefaut, ...partie.chapitres.map((c) => c.visuelDefaut)]);
   const { data, error } = await e.supabase.rpc("creer_chapitre", {
-    p_partie: partieId, p_titre: TITRE_CHAPITRE, p_couleur: couleurNouvelle(chapitresDe(plan).map((c) => c.couleur)), p_visuel: visuel,
+    p_partie: partieId, p_titre: titre, p_couleur: couleurNouvelle(chapitresDe(plan).map((c) => c.couleur)), p_visuel: visuel,
   });
   if (error || !data) return refus(error, "Le chapitre n’a pas pu être ajouté. Réessayez.");
+  const resume = propose ? texteLong(propose.resume, 4000) : "";
+  if (resume) await e.supabase.from("chapitres").update({ resume }).eq("id", data as string);
   rafraichir(projetId);
   return { ok: true, id: data as string };
 }

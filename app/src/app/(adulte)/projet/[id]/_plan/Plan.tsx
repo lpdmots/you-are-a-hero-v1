@@ -6,7 +6,8 @@ import {
 import { arrayMove, rectSortingStrategy, SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
-import { useRef, useState, type CSSProperties } from "react";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { BoutonDouble } from "@/composants/BoutonDouble";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
@@ -14,6 +15,7 @@ import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
+import { useEnregistrement } from "@/composants/Enregistrement";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
 import {
@@ -24,7 +26,10 @@ import { pluriel } from "@/domaine/texte";
 import {
   choisirRepere, creerChapitre, creerPartie, designerDepart, exclureDuLivre, placerChapitre, placerPartie, restaurer, supprimer,
 } from "../../actions-recit";
+import { orienterLIa } from "../../actions-preparation";
 import { AidePlan } from "./AidePlan";
+import { AjoutChapitre } from "./AjoutChapitre";
+import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "./IdeesDeParties";
 import { AttribuerEleves, ChoisirDepart, Corbeille, ReglagesChapitre, ReglagesPartie } from "./Panneaux";
 import { libelleQui } from "./QuiSenOccupe";
 import { useConfirmerSuppression } from "./suppression";
@@ -41,6 +46,7 @@ type Ouvert =
   | { sorte: "exclure"; id: string }
   | { sorte: "corbeille" }
   | { sorte: "depart" }
+  | { sorte: "idees" }
   | null;
 
 export const varsCouleur = (rang: number): CSSProperties => {
@@ -65,9 +71,11 @@ const collision: CollisionDetection = (args) => {
 
 /** « Parties et chapitres » : le plan de l'histoire (F03.1). Le chapitre est le plan, le Suivi est le travail. */
 export function Plan({
-  projet, plan, eleves, aideMasquee, aideVue,
+  projet, plan, eleves, aideMasquee, aideVue, orientation: orientationGardee,
 }: {
   projet: ProjetDuPlan; plan: PlanDuRecit; eleves: ElevePlan[]; aideMasquee: boolean; aideVue: boolean;
+  /** L'orientation de « Grandes étapes » : celle des idées de parties, dans les deux vues (F13.5) */
+  orientation: string;
 }) {
   const dire = useMessage();
   const suppression = useConfirmerSuppression({ plan, eleves });
@@ -82,6 +90,24 @@ export function Plan({
   const [local, setLocal] = useState<{ base: PlanDuRecit; parties: Partie[] } | null>(null);
   const [tire, setTire] = useState<string | null>(null);
   const seulRefuse = useRef<string | null>(null);
+
+  // ——— Idées de parties (F13.5) : l'orientation gardée avec « Grandes étapes », les ensembles tenus ici ———
+  const enregistrement = useEnregistrement();
+  const [orientation, setOrientation] = useState(orientationGardee);
+  const idees = useIdeesDeParties(projet.id, orientation, () => enregistrement.partir());
+  // Les parties ajoutées viennent sous les yeux dès que le plan les montre
+  const aMontrer = useRef<string | null>(null);
+  const montrerPartie = () => {
+    const titre = aMontrer.current ? document.getElementById(`partie-${aMontrer.current}`) : null;
+    if (!titre) return;
+    titre.closest("section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    aMontrer.current = null;
+  };
+  const ajoutIdees = useAjouterDesParties(projet.id, idees, (id) => {
+    aMontrer.current = id;
+    requestAnimationFrame(montrerPartie);
+  });
+  useEffect(montrerPartie, [plan]);
 
   const parties = local?.base === plan ? local.parties : plan.parties;
   const chapitres = parties.flatMap((p) => p.chapitres);
@@ -133,6 +159,24 @@ export function Plan({
       if (!fait.ok) return dire({ texte: fait.erreur });
       setOuvert({ sorte: "chapitre", id: fait.id, neuf: true });
     });
+
+  /** Un chapitre de l'IA, à la fin de sa partie (F13.5) : il vient sous les yeux, « Annuler » le met à la corbeille. */
+  const ajouterChapitrePropose = async (partie: Partie, c: { titre: string; resume: string }): Promise<boolean> => {
+    const fait = await creerChapitre(partie.id, c);
+    if (!fait.ok) return false;
+    dire({
+      texte: `« ${c.titre} » est ajouté à la fin de « ${partie.titre} », avec un résumé.`,
+      annuler: () => void supprimer("chapitre", fait.id),
+      // Le résumé écrit par l'IA se lit avant de continuer : il est dans les réglages du chapitre
+      autre: { libelle: "Voir le résumé", faire: () => setOuvert({ sorte: "chapitre", id: fait.id, neuf: false }) },
+    });
+    setMontree(null);
+    setTimeout(() => {
+      setMontree(fait.id);
+      document.getElementById(`chapitre-${fait.id}`)?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 120);
+    return true;
+  };
 
   // ——— Supprimer, restaurer (F03-AC22, F03-AC27) ———
   const supprimerElement = (sorte: "partie" | "chapitre", id: string, titre: string) =>
@@ -351,10 +395,14 @@ export function Plan({
             <Icone nom="aide" />
             Aide
           </button>
-          <button type="button" className="btn btn--primaire" disabled={attente === "partie"} aria-busy={attente === "partie" || undefined} onClick={ajouterPartie}>
-            <Icone nom="plus" />
-            Ajouter une partie
-          </button>
+          <BoutonDouble
+            primaire
+            libelle="Ajouter une partie"
+            nomIa="Demander des idées de parties à l’IA"
+            desactive={attente === "partie"}
+            onMain={ajouterPartie}
+            onIa={() => setOuvert({ sorte: "idees" })}
+          />
         </div>
       </section>
 
@@ -413,10 +461,13 @@ export function Plan({
           <p>
             Le plan est encore vide. Une partie regroupe des chapitres : ajoutez la première, son premier chapitre se crée avec elle.
           </p>
-          <button type="button" className="btn" disabled={attente === "partie"} onClick={ajouterPartie}>
-            <Icone nom="plus" />
-            Ajouter une partie
-          </button>
+          <BoutonDouble
+            libelle="Ajouter une partie"
+            nomIa="Demander des idées de parties à l’IA"
+            desactive={attente === "partie"}
+            onMain={ajouterPartie}
+            onIa={() => setOuvert({ sorte: "idees" })}
+          />
         </div>
       ) : (
         <DndContext
@@ -447,6 +498,7 @@ export function Plan({
                   unique={parties.length === 1}
                   ajoutEnCours={attente === `chapitre-${p.id}`}
                   onAjouter={() => ajouterChapitre(p.id)}
+                  onAjouterPropose={(c) => ajouterChapitrePropose(p, c)}
                   onReglages={() => setOuvert({ sorte: "partie", id: p.id, neuf: false })}
                   onSupprimer={() => void supprimerElement("partie", p.id, p.titre)}
                 >
@@ -525,6 +577,23 @@ export function Plan({
         <Corbeille corbeille={plan.corbeille} attente={attente} onRestaurer={restaurerElement} onFermer={() => setOuvert(null)} />
       ) : null}
       {ouvert?.sorte === "depart" ? <ChoisirDepart plan={plan} onChoisir={(id) => void choisirDepart(id)} onFermer={() => setOuvert(null)} /> : null}
+      {ouvert?.sorte === "idees" ? (
+        <PanneauIdeesDeParties
+          idees={idees}
+          orientation={orientation}
+          onOrienter={(v) => {
+            setOrientation(v);
+            enregistrement.prevoir(() => orienterLIa(projet.id, "etapes", v), 700, "orientation");
+          }}
+          ajout={ajoutIdees.ajout}
+          onAjouter={(choisis) =>
+            void ajoutIdees.ajouter(choisis).then((fait) => {
+              if (fait) setOuvert(null);
+            })
+          }
+          onFermer={() => setOuvert(null)}
+        />
+      ) : null}
       {suppression.dialogue}
       {ouvert?.sorte === "exclure" && chapitreOuvert ? (
         <Dialogue
@@ -555,10 +624,11 @@ export function Plan({
 }
 
 function SectionPartie({
-  partie, rang, deClasse, unique, ajoutEnCours, onAjouter, onReglages, onSupprimer, children,
+  partie, rang, deClasse, unique, ajoutEnCours, onAjouter, onAjouterPropose, onReglages, onSupprimer, children,
 }: {
   partie: Partie; rang: number; deClasse: boolean; unique: boolean; ajoutEnCours: boolean;
-  onAjouter: () => void; onReglages: () => void; onSupprimer: () => void; children: React.ReactNode;
+  onAjouter: () => void; onAjouterPropose: (c: { titre: string; resume: string }) => Promise<boolean>; onReglages: () => void; onSupprimer: () => void;
+  children: React.ReactNode;
 }) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({ id: `p:${partie.id}` });
   const { setNodeRef: poserZone, isOver: accueille } = useDroppable({ id: `z:${partie.id}` });
@@ -598,12 +668,7 @@ function SectionPartie({
       <SortableContext items={partie.chapitres.map((c) => `c:${c.id}`)} strategy={rectSortingStrategy}>
         <ul className="cahiers" ref={poserZone}>
           {children}
-          <li>
-            <button type="button" className="cahier-ajout" disabled={ajoutEnCours} aria-busy={ajoutEnCours || undefined} onClick={onAjouter} style={{ width: "100%" }}>
-              <Icone nom="plus" />
-              <span>Ajouter un chapitre</span>
-            </button>
-          </li>
+          <AjoutChapitre partie={partie} enCours={ajoutEnCours} onAjouter={onAjouter} onAjouterPropose={onAjouterPropose} />
         </ul>
       </SortableContext>
     </section>

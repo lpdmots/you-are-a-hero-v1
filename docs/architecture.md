@@ -1594,6 +1594,31 @@ F10.2.
   idées plausibles, toujours les mêmes : la relecture écarte celles que la liste a
   déjà, ce qui rend visible, dans les parcours, la réserve et sa nouvelle demande.
 
+**Lot 6 — parties, chapitres et résumés (18 octobre 2026).**
+
+- **Le serveur relit, les actions ordinaires ajoutent.** `/ia/plan` reçoit la sorte
+  (`parties`, `chapitres`, `resume`), l'élément visé, l'orientation et les titres
+  déjà montrés ; `serveur/plan-ia.ts` relit la Préparation et le plan (`planPourLesAides`,
+  titres et résumés), et pour un résumé les titres et consignes des scènes du
+  chapitre, puis appelle `demanderUneAide` avec les aides du lot 1
+  (`serveur/ia/aides/plan.ts`, Opus 5.5 pour les parties et les chapitres, Sonnet 5.5
+  pour le résumé). Il écarte une partie déjà dans le plan ou déjà montrée, un chapitre
+  déjà dans la partie. Rien n'est écrit par la demande.
+- **Ajouter.** `ajouterDesParties` (action serveur) crée les ensembles retenus l'un
+  après l'autre par `creer_partie`, qui reçoit le titre du premier chapitre, puis écrit
+  son résumé ; si l'un échoue, ceux déjà créés vont à la corbeille. `creerPartie`
+  passe par le même chemin ; `creerChapitre` accepte un titre et un résumé proposés.
+  « Annuler » passe par `supprimer` : sans droit de suppression définitive, les
+  éléments vont à la corbeille, comme les scènes des idées de choix.
+- **L'état des ensembles est tenu par la page** (`_plan/IdeesDeParties.tsx`,
+  `useIdeesDeParties`, `useAjouterDesParties`, `PanneauIdeesDeParties`), dans
+  « Parties et chapitres » comme dans Grandes étapes ; l'orientation est celle de
+  l'étape `etapes` (`preparations.orientations`), lue par la page du plan et écrite par
+  `orienterLIa`. La réserve des chapitres est tenue par chaque partie
+  (`_plan/AjoutChapitre.tsx`), avec son orientation, le temps de la page.
+- **Les réponses simulées** sont des parties et des chapitres plausibles, toujours les
+  mêmes, ceux déjà vus d'abord écartés ; le résumé simulé complète celui en place.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

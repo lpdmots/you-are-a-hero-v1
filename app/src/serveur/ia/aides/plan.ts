@@ -26,6 +26,31 @@ export type Ensemble = { partie: string; chapitre: string; resume: string };
 /** « Partie 3 : Le marais » → « Le marais » : certains modèles recopient l'étiquette. */
 const sansEtiquette = (t: string | null): string | null => t?.replace(/^(partie|chapitre)\s*\d*\s*[:.—–-]\s*/i, "").trim() || null;
 
+const ENSEMBLES_SIMULES: Ensemble[] = [
+  { partie: "Le marais des lucioles", chapitre: "La barque sans rames", resume: "Le héros trouve une barque qui avance seule. Il doit décider s'il la suit dans le brouillard ou s'il longe la rive à pied." },
+  { partie: "La tour du guetteur", chapitre: "L'escalier qui grince", resume: "Au sommet d'une tour en ruine vit un guetteur qui a tout vu. Il ne parle qu'à ceux qui répondent à sa devinette." },
+  { partie: "Le village englouti", chapitre: "Les cloches sous l'eau", resume: "Quand la marée descend, on entend sonner des cloches. Le héros découvre un chemin de pierres qui mène au clocher." },
+  { partie: "La forêt qui chuchote", chapitre: "Les arbres messagers", resume: "Les arbres se transmettent des nouvelles. Le héros apprend qu'on le cherche, et doit choisir à qui faire confiance." },
+  { partie: "Le pont de lianes", chapitre: "La traversée", resume: "Un pont fragile enjambe un ravin. Le héros doit traverser avec ce qu'il porte, ou laisser quelque chose derrière lui." },
+  { partie: "La grotte aux échos", chapitre: "Les voix d'autrefois", resume: "Dans la grotte, les échos répètent des phrases anciennes. L'une d'elles donne un indice sur la suite du voyage." },
+  { partie: "Le marché flottant", chapitre: "Le marchand de cartes", resume: "Sur des radeaux reliés entre eux, on vend de tout. Un marchand propose une carte du brouillard contre un service." },
+  { partie: "Les collines du vent", chapitre: "Le cerf-volant perdu", resume: "Un enfant a perdu son cerf-volant dans les collines. L'aider fait perdre du temps, mais il connaît un raccourci." },
+  { partie: "Le phare éteint", chapitre: "La lampe à rallumer", resume: "Le phare ne brille plus depuis longtemps. Le héros comprend que le rallumer pourrait guider les passeurs perdus." },
+  { partie: "Le retour au port", chapitre: "Ceux qui attendent", resume: "Le héros revient avec ce qu'il a appris. Sur le quai, chacun attend une réponse différente." },
+  { partie: "L'île aux oiseaux", chapitre: "Le nid géant", resume: "Une île couverte d'oiseaux cache un nid immense. Ce qui dort dedans pourrait aider le héros, ou le retarder." },
+  { partie: "La vallée des horloges", chapitre: "Le temps arrêté", resume: "Toutes les horloges de la vallée se sont arrêtées à la même heure. Le héros cherche pourquoi." },
+];
+
+const CHAPITRES_SIMULES: ChapitrePropose[] = [
+  { titre: "Le gué des saules", resume: "Le héros doit traverser la rivière là où l'eau est basse. Des saules penchés cachent un passage, et quelqu'un l'observe." },
+  { titre: "La cabane du pêcheur", resume: "Une cabane abandonnée garde des traces d'un voyageur passé avant lui. Un carnet y raconte une partie du chemin." },
+  { titre: "Le chemin des lanternes", resume: "Des lanternes s'allument une à une sur le passage du héros. Elles mènent quelque part, mais pas forcément où il veut aller." },
+  { titre: "La clairière ronde", resume: "Au milieu de la forêt, une clairière parfaitement ronde où rien ne pousse. Le héros y fait une rencontre inattendue." },
+  { titre: "Le ruisseau qui parle", resume: "Le ruisseau répond aux questions, mais seulement par oui ou par non. Le héros doit bien choisir ce qu'il demande." },
+  { titre: "La porte dans la colline", resume: "Une petite porte ronde s'ouvre dans le flanc d'une colline. Derrière, un couloir descend sous la terre." },
+  { titre: "Le campement de nuit", resume: "La nuit tombe, il faut s'arrêter. Autour du feu, le héros partage ses provisions et apprend une nouvelle inquiétante." },
+];
+
 export const parties: DefinitionAide<EntreePlan, { ensembles: Ensemble[] }> = {
   aide: "parties",
   sortieMax: 2500,
@@ -48,9 +73,13 @@ export const parties: DefinitionAide<EntreePlan, { ensembles: Ensemble[] }> = {
     });
     return ensembles.length >= 3 ? { ensembles: ensembles.slice(0, 10) } : null;
   },
-  simuler: (e) => ({
-    ensembles: Array.from({ length: 10 }, (_, i) => ({ partie: `Partie ${e.dejaMontres.length + i + 1}`, chapitre: `Chapitre ${i + 1}`, resume: "Le héros arrive dans un lieu nouveau." })),
-  }),
+  // Dix ensembles plausibles, toujours les mêmes : une seconde demande, qui les a déjà vus, rend les suivants
+  simuler: (e) => {
+    const vus = new Set(e.dejaMontres.map((t) => t.toLocaleLowerCase("fr")));
+    // Ceux qui n'ont pas été vus d'abord, puis les autres : le serveur écarte ceux déjà montrés
+    const neufs = ENSEMBLES_SIMULES.filter((x) => !vus.has(x.partie.toLocaleLowerCase("fr")));
+    return { ensembles: [...neufs, ...ENSEMBLES_SIMULES.filter((x) => !neufs.includes(x))].slice(0, 10) };
+  },
 };
 
 export type EntreeChapitres = EntreePlan & { partie: string };
@@ -77,7 +106,11 @@ export const chapitres: DefinitionAide<EntreeChapitres, { chapitres: ChapitrePro
     });
     return chapitres.length ? { chapitres: chapitres.slice(0, 6) } : null;
   },
-  simuler: (e) => ({ chapitres: Array.from({ length: 6 }, (_, i) => ({ titre: `Chapitre ${e.dejaMontres.length + i + 1}`, resume: "Le héros avance." })) }),
+  simuler: (e) => {
+    const vus = new Set(e.dejaMontres.map((t) => t.toLocaleLowerCase("fr")));
+    const neufs = CHAPITRES_SIMULES.filter((x) => !vus.has(x.titre.toLocaleLowerCase("fr")));
+    return { chapitres: [...neufs, ...CHAPITRES_SIMULES.filter((x) => !neufs.includes(x))].slice(0, 6) };
+  },
 };
 
 export type EntreeResume = {
@@ -112,5 +145,6 @@ export const resume: DefinitionAide<EntreeResume, { resume: string }> = {
     const t = texte(champs(json)?.resume, 1200);
     return t ? { resume: t } : null;
   },
-  simuler: (e) => ({ resume: e.resumeActuel || `Le héros traverse ${e.chapitre.toLocaleLowerCase("fr")}.` }),
+  // Le résumé actuel, complété d'une phrase : la proposition diffère toujours de ce qui est en place
+  simuler: (e) => ({ resume: `${e.resumeActuel ? `${e.resumeActuel.trim()} ` : ""}Le héros y trouve un premier indice sur la suite du chemin.` }),
 };

@@ -446,3 +446,81 @@ test("lot 5 : la Préparation en étapes (F02, F13.4)", async ({ page }) => {
   await aller(page, `/projet/${seul}/preparation`);
   await capturer(page, "preparation-personnel");
 });
+
+test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
+  test.setTimeout(240_000);
+  n = 871;
+  const { compte, base } = await adultePret(page);
+  const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  await semerPreparation(base, compte, projet);
+  await semerPartie(base, projet, "Le port", [{ titre: "Le départ", scenes: ["Le quai"] }], "port");
+  const foret = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["L’entrée du bois", "La souche creuse"] }, { titre: "Le sanctuaire" }], "foret");
+  await base.from("chapitres").update({ resume: "Lou entre dans le bois, guidé par la chouette." }).eq("id", foret.chapitres[0].id);
+
+  // « Parties et chapitres » : les boutons doubles
+  await aller(page, `/projet/${projet}/plan`);
+  await capturer(page, "plan-boutons-doubles", false);
+  await capturer(page, "plan-boutons-doubles-toute");
+
+  // Idées de parties : orienter d'abord, puis trois ensembles
+  await page.getByRole("button", { name: "Demander des idées de parties à l’IA" }).click();
+  await page.getByRole("button", { name: "Proposer des parties" }).waitFor();
+  await capturer(page, "parties-ouverture", false);
+  await page.getByRole("textbox", { name: /Orienter l’IA/ }).fill("un passage près de l’eau");
+  await page.getByRole("button", { name: "Proposer des parties" }).click();
+  await page.getByRole("textbox", { name: "Titre de la partie" }).first().waitFor();
+  await capturer(page, "parties-trois", false);
+  await page.getByRole("checkbox", { name: "Garder la partie « Le marais des lucioles »" }).check();
+  await page.getByRole("textbox", { name: "Titre du premier chapitre" }).nth(2).fill("Les cloches d’en bas");
+  await capturer(page, "parties-cochees", false);
+  await page.getByRole("button", { name: "D’autres idées" }).click();
+  await page.getByRole("textbox", { name: "Titre de la partie" }).nth(3).waitFor();
+  await capturer(page, "parties-autres", false);
+  await page.getByRole("button", { name: "Ajouter 2 parties" }).click();
+  await page.getByText(/2 parties ajoutées à la fin du plan/).waitFor();
+  await capturer(page, "parties-ajoutees", false);
+
+  // Un chapitre par l'IA : orienter d'abord, sous la partie
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).click();
+  await page.getByRole("button", { name: "Proposer un chapitre" }).waitFor();
+  await capturer(page, "chapitre-orienter", false);
+  await page.getByRole("button", { name: "Proposer un chapitre" }).click();
+  await page.getByText(/« Le gué des saules » est ajouté/).waitFor();
+  await capturer(page, "chapitre-ajoute", false);
+
+  // Le résumé proposé, dans les réglages du chapitre
+  await page.getByLabel("Autres commandes du chapitre La lisière").click();
+  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Proposer un autre résumé" }).click();
+  await page.getByText("Résumé proposé").waitFor();
+  await capturer(page, "resume-propose", false);
+  await page.keyboard.press("Escape");
+
+  // Grandes étapes : le même bouton double, le même panneau
+  await aller(page, `/projet/${projet}/preparation?etape=etapes`);
+  await page.getByRole("heading", { name: /Par quels lieux/ }).waitFor();
+  await capturer(page, "grandes-etapes-double");
+  await page.getByRole("button", { name: "Demander des idées de parties à l’IA" }).click();
+  await page.getByRole("button", { name: "Proposer des parties" }).waitFor();
+  await capturer(page, "grandes-etapes-panneau", false);
+
+  // Sur téléphone
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/plan`);
+  await capturer(page, "plan-390", false);
+  await page.getByRole("button", { name: "Demander des idées de parties à l’IA" }).click();
+  await page.getByRole("button", { name: "Proposer des parties" }).click();
+  await page.getByRole("textbox", { name: "Titre de la partie" }).first().waitFor();
+  await capturer(page, "parties-390", false);
+  await page.keyboard.press("Escape");
+  await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).scrollIntoViewIfNeeded();
+  await capturer(page, "chapitre-double-390", false);
+
+  // Aides éteintes : des boutons simples
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await base.from("enseignants").update({ reglages_ia: { proposer: false } }).eq("id", compte.id);
+  await aller(page, `/projet/${projet}/plan`);
+  await capturer(page, "plan-sans-ia", false);
+});

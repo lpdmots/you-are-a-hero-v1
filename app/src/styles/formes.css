@@ -1274,6 +1274,16 @@
   background: var(--feuille-2);
   border-color: var(--graphite-3);
 }
+/* Le bouton principal de l'écran (« Ajouter une partie │ ✦ ») : la partie nommée pleine */
+.double--primaire .double__main {
+  border-color: var(--canard);
+  background: var(--canard);
+  color: #fff;
+}
+.double--primaire .double__main:hover {
+  border-color: var(--canard-fonce);
+  background: var(--canard-fonce);
+}
 .double__ia {
   justify-content: center;
   width: 42px;
