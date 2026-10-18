@@ -567,7 +567,13 @@ acceptées :
 
 Les décisions qui suivent, rédigées pour le carnet en rubriques et l'atelier,
 restent valables quant au fond ; leur disposition à l'écran est remplacée par
-celle-ci. Écrans : [design](design.md), à concevoir à l'étape 8.
+celle-ci. Écrans : [design](design.md), construits au lot 5 de l'étape 8
+(18 octobre 2026) ; les précisions prises en construisant ont reçu la
+confirmation du porteur ([plan](plan.md#étape-8--aides-ia)), donnée le
+18 octobre 2026. **Décidé par le porteur le 18 octobre 2026,** sur
+recommandation : « Reprendre les idées retenues », lien sans IA sous « Nous
+retenons », qui ajoute au texte les idées retenues qu'il ne contient pas, une
+par ligne, avec « Annuler ».
 
 **Décisions confirmées :**
 
@@ -684,7 +690,9 @@ avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
 - **Aides IA.** « M'aider à développer » et « Idées de parties » ne sont pas
   à l'écran tant que F13 n'est pas construit (étape 8 du plan) ; aucun
   bouton inactif ne les annonce. L'explication d'ouverture de F02-AC02 ne
-  parle de l'aide IA qu'à partir de ce moment.
+  parle de l'aide IA qu'à partir de ce moment. Depuis le lot 5 de l'étape 8
+  (18 octobre 2026), les boutons doubles de F13.4 remplacent « M'aider à
+  développer », et l'écran d'aide parle de l'IA quand les aides sont proposées.
 - **Écran d'aide à l'ouverture (demande du porteur, 10 octobre 2026).** La
   Préparation s'ouvre la première fois sur un écran d'aide, comme « Parties
   et chapitres », le Suivi et le Livre, avec « Commencer », « Ne plus

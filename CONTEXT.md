@@ -214,7 +214,8 @@ _Éviter_ : texte du livre, questionnaire nécessairement terminé avant l'écri
 
 **Atelier collectif** :
 Vue de la préparation destinée à guider une discussion de classe sur un écran
-projeté, où l'enseignant consigne les décisions retenues.
+projeté, où l'enseignant consigne les décisions retenues. À l'écran,
+« Projeter » : la même étape de la préparation, en grand.
 _Éviter_ : nouvelle copie du récit, vote numérique, accès individuel élève.
 
 **Plan du récit** :

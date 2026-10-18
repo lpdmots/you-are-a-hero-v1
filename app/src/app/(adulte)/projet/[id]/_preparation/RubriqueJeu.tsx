@@ -8,65 +8,22 @@ import {
   nouvelleSection, resumeFeuille, TYPES_SECTION, type Feuille, type Formule, type Objet, type Preparation, type Section, type SigneAction, type TypeSection,
 } from "@/domaine/preparation";
 import { Signes } from "@/composants/Signes";
-import { activerRubriqueJeu, enregistrerFormule, enregistrerObjet, reglerJeu, supprimerFormule, supprimerObjet } from "../../actions-preparation";
-import type { ProjetDuCarnet } from "./Carnet";
+import { enregistrerFormule, enregistrerObjet, reglerJeu, supprimerFormule, supprimerObjet } from "../../actions-preparation";
+import type { ProjetDuCarnet } from "./Etape";
 import styles from "./preparation.module.css";
 
 /**
- * Rubrique facultative « Objets et formules » (F04.2) : les objets de l'histoire et, dans un
- * récit à choix, les formules d'action, la feuille d'aventure, le dé et les règles du jeu.
+ * L'étape facultative « Le jeu » (F04.2) : les objets de l'histoire et, dans un récit à choix,
+ * les formules d'action, la feuille d'aventure, le dé et les règles du jeu. En récit classique,
+ * « Les objets » : les objets seuls.
  */
 export function RubriqueJeu({ projet, preparation }: { projet: ProjetDuCarnet; preparation: Preparation }) {
-  const dire = useMessage();
   const aChoix = projet.recit === "choix";
   const deClasse = projet.organisation === "classe";
   const titre = aChoix ? "Objets et formules" : "Objets de l’histoire";
-  const [attente, setAttente] = useState(false);
-
-  if (!preparation.rubriqueJeu) {
-    return (
-      <section className={`${styles.invite} ${styles.large}`} aria-labelledby="rubrique-jeu">
-        <div>
-          <h2 id="rubrique-jeu">
-            {titre} <span className={styles.fin}>rubrique facultative</span>
-          </h2>
-          <p>
-            {aChoix
-              ? "Pour un livre à objets, à compteurs ou à dés : on décide ici du nom exact de chaque objet et des demandes au lecteur qui reviennent."
-              : "Pour écrire toujours de la même façon le nom des objets qui reviennent dans le récit."}
-          </p>
-        </div>
-        <button
-          type="button"
-          className="btn"
-          disabled={attente}
-          aria-busy={attente || undefined}
-          onClick={async () => {
-            setAttente(true);
-            const fait = await activerRubriqueJeu(projet.id, true);
-            setAttente(false);
-            if (!fait.ok) dire({ texte: fait.erreur });
-          }}
-        >
-          <Icone nom="plus" />
-          Ajouter cette rubrique
-        </button>
-      </section>
-    );
-  }
-
   return (
-    <section className={`carnet-fiche ${styles.rubrique} ${styles.large}`} aria-labelledby="rubrique-jeu">
-      <header>
-        <h2 id="rubrique-jeu">{titre}</h2>
-        <span className={styles.fin}>rubrique facultative</span>
-      </header>
-      <div className="carnet-fiche__corps">
-        <p className={styles.question}>
-          {aChoix
-            ? "Quels objets reviennent dans l’histoire, et que demande-t-on au lecteur de noter ?"
-            : "Quels objets reviennent dans l’histoire, et comment les appelle-t-on ?"}
-        </p>
+    <section className={styles.facultatif__corps} aria-label={titre}>
+      <div>
         <div className={aChoix ? styles.cols : undefined}>
           <Objets projetId={projet.id} objets={preparation.objets} deClasse={deClasse} />
           {aChoix ? <Formules projetId={projet.id} formules={preparation.formules} /> : null}

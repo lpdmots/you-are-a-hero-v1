@@ -18,3 +18,10 @@ export const majuscule = (texte: string): string => texte.charAt(0).toLocaleUppe
 
 /** « de Bilal », « d’Alice » : l'élision devant une voyelle ou un h. */
 export const de = (nom: string): string => (/^[aeiouyàâäéèêëîïôöùûüh]/i.test(nom.trim()) ? `d’${nom.trim()}` : `de ${nom.trim()}`);
+
+/**
+ * Pour l'affichage seulement : « ? », « ! », « : » et « ; » ne passent pas seuls à la ligne,
+ * ni « -ce » de « qu'est-ce ». Le texte gardé ne change pas.
+ */
+export const sansCoupureFautive = (t: string): string =>
+  t.replace(/ ([?!:;»])/g, " $1").replace(/« /g, "« ").replace(/est-ce\b/g, "est‑ce");

@@ -15,7 +15,8 @@ import { elevesDeLaClasse, planDe, preparationDe } from "@/serveur/recit";
 import { EnteteProjet } from "../_commun/EnteteProjet";
 import { Plan } from "../_plan/Plan";
 import { Suivi } from "../_suivi/Suivi";
-import { Carnet } from "../_preparation/Carnet";
+import { PagePreparation } from "../_preparation/Preparation";
+import { estEtapePreparation, etapeDOuverture, etapesDe } from "@/domaine/preparation";
 import { Livre } from "../_livre/Livre";
 import { afficherChemins, afficherRelire, rappelDe } from "../_livre/points";
 import { instantaneDuLivre } from "@/serveur/livre/livre";
@@ -61,13 +62,16 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else if (onglet === "preparation") {
-    const [preparation, plan, magasin] = await Promise.all([preparationDe(enseignant, projet.id), planDe(enseignant, projet.id), cookies()]);
+    const [preparation, plan, magasin, demande] = await Promise.all([preparationDe(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams]);
     if (!preparation) notFound();
+    // L'étape demandée, sinon la première étape de l'histoire sans texte retenu (F02, 17 octobre 2026)
+    const etape = estEtapePreparation(demande.etape) && etapesDe(projet.recit).includes(demande.etape) ? demande.etape : etapeDOuverture(preparation, plan.parties.length);
     contenu = (
-      <Carnet
+      <PagePreparation
         projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit }}
         preparation={preparation}
         plan={plan}
+        etape={etape}
         aideMasquee={enseignant.aidesMasquees.includes("preparation")}
         aideVue={magasin.get("aide-preparation")?.value === "vue"}
       />

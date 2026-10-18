@@ -5,7 +5,7 @@ import type { Attribution, Chapitre, ElevePlan, Partie, Plan, Profil, Scene, Sup
 import { nomScene } from "@/domaine/recit";
 import { estEtat } from "@/domaine/etats";
 import {
-  estConstruction, estFormuleRenvoi, estRubrique, feuillePropre, type Construction, type EtatPiste, type Preparation, signeDe,
+  estConstruction, estFormuleRenvoi, estRubrique, feuillePropre, orientationsPropres, type Construction, type EtatPiste, type Preparation, signeDe,
 } from "@/domaine/preparation";
 
 /**
@@ -153,17 +153,18 @@ export async function imagesDuProjet(e: Enseignant, projetId: string): Promise<{
 /** Le carnet de préparation du projet (F02). */
 export const preparationDe = cache(async (e: Enseignant, projetId: string): Promise<Preparation | null> => {
   if (!estUuid(projetId)) return null;
-  const [carnet, pistes, objets, formules] = await Promise.all([
+  const [carnet, pistes, objets, formules, questions] = await Promise.all([
     e.supabase
       .from("preparations")
-      .select("univers, personnages, enjeu, rubrique_jeu, feuille, regles, formule_renvoi, constructions, marque_fin")
+      .select("univers, personnages, enjeu, rubrique_jeu, feuille, regles, formule_renvoi, constructions, marque_fin, orientations")
       .eq("projet_id", projetId)
       .maybeSingle(),
-    e.supabase.from("pistes").select("id, rubrique, texte, etat").eq("projet_id", projetId).order("cree_le"),
+    e.supabase.from("pistes").select("id, rubrique, texte, etat, origine").eq("projet_id", projetId).order("cree_le").order("id"),
     e.supabase.from("objets").select("id, nom, description").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("formules").select("id, texte, signe").eq("projet_id", projetId).order("cree_le"),
+    e.supabase.from("questions").select("id, etape, texte, origine").eq("projet_id", projetId).order("cree_le").order("id"),
   ]);
-  const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error;
+  const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error ?? questions.error;
   if (erreur) throw new Error(`Préparation illisible : ${erreur.message}`);
   const c = carnet.data;
   if (!c) return null;
@@ -174,9 +175,13 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
     formuleRenvoi: estFormuleRenvoi(c.formule_renvoi) ? c.formule_renvoi : "rends",
     constructions: constructions.length ? constructions : ["neutre"],
     marqueFin: c.marque_fin,
-    pistes: ((pistes.data ?? []) as { id: string; rubrique: string; texte: string; etat: EtatPiste }[]).flatMap((p) =>
-      estRubrique(p.rubrique) ? [{ id: p.id, rubrique: p.rubrique, texte: p.texte, etat: p.etat }] : [],
+    pistes: ((pistes.data ?? []) as { id: string; rubrique: string; texte: string; etat: EtatPiste; origine: string }[]).flatMap((p) =>
+      estRubrique(p.rubrique) ? [{ id: p.id, rubrique: p.rubrique, texte: p.texte, etat: p.etat, origine: p.origine === "ia" ? ("ia" as const) : ("main" as const) }] : [],
     ),
+    questions: ((questions.data ?? []) as { id: string; etape: string; texte: string; origine: string }[]).flatMap((q) =>
+      estRubrique(q.etape) ? [{ id: q.id, etape: q.etape, texte: q.texte, origine: q.origine === "ia" ? ("ia" as const) : ("main" as const) }] : [],
+    ),
+    orientations: orientationsPropres(c.orientations),
     objets: (objets.data ?? []) as { id: string; nom: string; description: string }[],
     formules: ((formules.data ?? []) as { id: string; texte: string; signe: string }[]).map((f) => ({ id: f.id, texte: f.texte, signe: signeDe(f) })),
   };

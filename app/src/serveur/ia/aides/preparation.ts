@@ -45,6 +45,24 @@ const qui = (h: Histoire) => (h.mode === "classe"
 
 export type Questions = { questions: string[] };
 
+/** Les réponses simulées des essais automatiques (IA_SIMULEE) : six questions, six idées. */
+export const QUESTIONS_SIMULEES = [
+  "Qu’est-ce qui le rend différent des autres ?",
+  "Que fait-il quand il a très peur ?",
+  "Qui compte le plus pour lui ?",
+  "Quel objet garde-t-il toujours sur lui ?",
+  "Qu’est-ce qu’il ne sait pas encore faire ?",
+  "Et si son meilleur ami cachait un secret ?",
+];
+export const IDEES_SIMULEES = [
+  "Il parle aux chouettes",
+  "Une cicatrice en forme d’étoile sur la main",
+  "Sa sœur le suit en cachette",
+  "Il garde la lanterne de son grand-père",
+  "Il a peur du noir mais ne le dit à personne",
+  "Un renard l’accompagne depuis le port",
+];
+
 export const questions: DefinitionAide<EntreeEtape, Questions> = {
   aide: "questions",
   sortieMax: 600,
@@ -64,7 +82,8 @@ export const questions: DefinitionAide<EntreeEtape, Questions> = {
     const l = textes(champs(json)?.questions, 200)?.filter((q) => !deja.has(q.toLocaleLowerCase("fr")));
     return l && l.length ? { questions: l.slice(0, 6) } : null;
   },
-  simuler: (e) => ({ questions: Array.from({ length: 6 }, (_, i) => `Question ${e.questions.length + i + 1} ?`) }),
+  // Une réponse plausible, toujours la même : la relecture écarte ce que la liste a déjà
+  simuler: () => ({ questions: QUESTIONS_SIMULEES }),
 };
 
 export type Idees = { idees: string[] };
@@ -87,7 +106,7 @@ export const idees: DefinitionAide<EntreeEtape, Idees> = {
     const l = textes(champs(json)?.idees, 200)?.filter((i) => !deja.has(i.toLocaleLowerCase("fr")));
     return l && l.length ? { idees: l.slice(0, 6) } : null;
   },
-  simuler: (e) => ({ idees: Array.from({ length: 6 }, (_, i) => `Idée ${e.idees.length + i + 1}`) }),
+  simuler: () => ({ idees: IDEES_SIMULEES }),
 };
 
 export type Retenu = { texte: string };

@@ -2463,6 +2463,83 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'ouverture). Sans migration ; parcours des scènes voisines et des choix
     repassés.
   - **Suite complète des parcours avant le commit de clôture :** 343 sur 343.
+  - **Lot 5 — la Préparation en étapes : construit le 18 octobre 2026,** en local,
+    sur instruction du porteur, dans une nouvelle conversation. Le carnet en
+    rubriques et l'atelier projeté laissent place à un parcours : une ligne
+    d'étapes comme au Livre (Univers, Personnages, Enjeu, Grandes étapes, puis
+    « Les choix » et « Le jeu », marquées facultatives, « Les objets » en récit
+    classique), un écran par étape, adresse `…/preparation?etape=personnages`, la
+    page ouverte sur la première étape de l'histoire sans texte retenu. Une étape
+    de l'histoire montre sa question en grand et « Voir un exemple » ; à gauche les
+    questions pour la classe (les relances, puis celles qu'on ajoute) et les idées
+    (cocher retient, « Écarter », ×, les écartées repliées) ; à droite « Nous
+    retenons », sur une page de cahier, et « ✦ Rédiger d'après les idées ». Boutons
+    doubles « Ajouter une question │ ✦ » et « Noter une idée │ ✦ » (`BoutonDouble`,
+    réutilisable au lot 6) : six éléments par demande, un par clic, réserve jetée
+    quand l'étape change ; « Orienter l'IA », gardé par étape. Grandes étapes : les
+    parties seules (image, titre, nombre de chapitres), qui mènent à « Parties et
+    chapitres ». « Projeter » (`/atelier/{projet}/{etape}`) montre le même écran en
+    grand, sans la barre de l'application. Écran d'aide réécrit. Adresse
+    `/ia/preparation`. Migration `20261018100000_preparation_en_etapes.sql`, base
+    locale seulement : la table `questions` (projet, étape de l'histoire, texte,
+    origine « main » ou « ia », l'adulte seul y a droit), `pistes.origine`,
+    `preparations.orientations` (une orientation par étape, 4 000 octets au plus).
+    - **Critères fermés :** la décision du 17 octobre 2026 de F02 (parcours, étape
+      d'ouverture, coche, rien de bloqué, « Projeter », Grandes étapes réduites aux
+      parties, écran d'aide qui dit le contexte donné aux aides) ; F02-AC01, AC02,
+      AC04, AC05, AC07 à AC14, AC17 à AC20, rejoués sur le nouvel écran ; F13-AC12,
+      AC13, AC14, AC19 ; les aides éteintes (boutons simples, aucun ✦, ni
+      orientation ni « Rédiger ») ; la demande unique et ce qui part, sans élève ni
+      adulte.
+    - **Critères qui attendent :** la qualité réelle des questions, des idées et
+      des textes rédigés, au jugement du lot 9 ; les idées de parties (bouton double
+      de Grandes étapes, F13-AC15, AC16), au lot 6 ; les cartes des personnages, au
+      lot 7.
+    - **Précisions prises en construisant, confirmées par le porteur le 18 octobre
+      2026 (« ok ») ; ne plus les lui soumettre :** les
+      relances restent les premières questions, fixes, celles qu'on ajoute viennent
+      après et se suppriment ; la réserve de l'IA est jetée aussi quand on change
+      d'étape ; les deux clics (orienter, puis « Proposer ») valent la première fois
+      par étape et par visite, sauf si une orientation est déjà écrite, et jamais en
+      projection, où l'orientation, consigne de l'adulte, ne s'affiche pas ;
+      « Utiliser ce texte » remplace le texte retenu, message avec « Annuler » ;
+      « Rédiger » sans idée retenue ni texte ne demande rien et le dit ; pas de
+      « Rédiger » dans Grandes étapes, dont « Nous retenons » est la liste des
+      parties ; une partie s'ajoute par une ligne de titre, une à la fois, et se
+      règle ou se supprime par son menu ; les résumés de chapitres ne sont plus dans
+      la Préparation (F02-AC14 se vérifie dans « Parties et chapitres ») ; « Les
+      choix » et « Le jeu » n'ont pas de coche et plus d'invitation « Ajouter cette
+      rubrique » (la colonne `rubrique_jeu` reste, sans effet à l'écran) ; la
+      projection ne montre que les quatre étapes de l'histoire, « Projeter » depuis
+      une étape facultative ouvre Univers, et le bouton n'est pas sur téléphone ;
+      « Écarter » et × se montrent au survol ou au clavier (toujours sur écran
+      tactile) ; en mode personnel, « Ce que je décide. » dans le champ vide ; sur
+      téléphone, l'étape en cours garde son nom et la ligne défile si elle dépasse.
+      **Ajout issu de la critique, décidé par le porteur le 18 octobre 2026 sur
+      recommandation (« ok reco ») :** « Reprendre les idées retenues », lien sans
+      IA sous « Nous retenons », met à la fin du texte les idées retenues qu'il ne
+      contient pas, une par ligne, avec « Annuler » : sans lui, l'adulte sans IA
+      recopiait ses idées à la main.
+    - **Premier essai du porteur, le 18 octobre 2026 :** il juge la nouvelle mise
+      en page « beaucoup plus claire ». Ses demandes de questions, d'idées et de
+      texte répondaient « L'aide n'a pas répondu » : son serveur local, lancé avant
+      le lot, gardait l'ancienne lecture de la préparation (erreur avant tout
+      appel, rien au journal). Redémarré, il répond ; un appel de vérification
+      (six questions sur Univers, 4,3 s) a suivi son orientation. Dépense de
+      l'étape, environ 1,25 dollar.
+    - **Écrans critiqués** en deux lectures séparées sur les captures 856 à 871 :
+      28/40 (informée) et 26/40 (indépendante), corrigés aussitôt (voir le design).
+    - **Dépense :** aucun appel réel (consignes au modèle de l'essai V17, réponses
+      simulées pour les écrans) ; dépense de l'étape, environ 1,24 dollar (1,1 €).
+    - **Tests automatiques :** 9 unitaires, 7 contre la base, 17 parcours (celui de
+      la Préparation réécrit) ; deux parcours anciens repris (« Le jeu » pour
+      l'objet créé depuis la scène, l'ordre des chapitres relu dans « Parties et
+      chapitres »).
+    - **Suite complète des parcours avant le commit :** 347 sur 348 ; le
+      parcours de bout en bout du partage (étape 7), déjà instable au lot 4,
+      échouait aussi seul : il cliquait « La mise en page me convient » puis
+      changeait de page avant l'enregistrement, et « Imprimer et partager »
+      restait fermée. Il attend désormais « Mise en page terminée », et passe.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

@@ -146,8 +146,10 @@ test("écrans de l'étape 2 : préparation, création, élève", async ({ page, 
   const eleves = await elevesDe(base, classe.id);
   await semerAttribution(base, foret.chapitres[0].id, [{ eleve: eleves.Alice.id, profil: "organisation" }, { eleve: eleves.Bilal.id }]);
 
+  // Depuis l'étape 8 (lot 5), la Préparation est en étapes : la feuille d'aventure est dans « Le jeu »
   await aller(page, `/projet/${projet}/preparation`);
   await capturer(page, "preparation");
+  await aller(page, `/projet/${projet}/preparation?etape=jeu`);
   await page.getByText("Feuille d’aventure du lecteur").click();
   await capturer(page, "preparation-feuille");
   await page.setViewportSize({ width: 1366, height: 768 });

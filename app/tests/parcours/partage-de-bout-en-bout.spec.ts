@@ -37,6 +37,8 @@ test("Étape 7 — partager le livre de la classe, le lire sur un téléphone sa
   // Mme Laurent déclare la mise en page, puis partage par les deux canaux
   await aller(page, `/projet/${projet}/livre?etape=page`);
   await page.getByRole("button", { name: "La mise en page me convient" }).click();
+  // La déclaration doit être enregistrée avant de changer de page : sinon « Imprimer et partager » reste fermée
+  await expect(page.getByText("Mise en page terminée")).toBeVisible();
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
   await interrupteur(page, "Par un lien").click();
   await confirmer(page, "Partager");

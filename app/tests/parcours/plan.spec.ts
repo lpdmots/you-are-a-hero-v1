@@ -196,11 +196,9 @@ test("F03-AC34 — un chapitre tiré change de rang, et « Annuler » remet l'or
   await tirer(page, carte(page, "Le sanctuaire"), carte(page, "La lisière"));
   await expect(MESSAGE(page)).toContainText("« Le sanctuaire » est placé avant « La lisière ».");
   await expect.poll(() => chapitresDeLaPartie(page, "La forêt")).toEqual(["Le sanctuaire", "La lisière", "Les racines"]);
-  // L'ordre est enregistré : il tient après un rechargement, et se retrouve dans la préparation
-  await aller(page, `/projet/${projet}/preparation`);
-  await expect(page.locator("ol").filter({ hasText: "La forêt" })).toContainText(/Le sanctuaire[\s\S]*La lisière/);
-
+  // L'ordre est enregistré : il tient après un rechargement
   await aller(page, `/projet/${projet}/plan`);
+  await expect.poll(() => chapitresDeLaPartie(page, "La forêt")).toEqual(["Le sanctuaire", "La lisière", "Les racines"]);
   await tirer(page, carte(page, "Les racines"), carte(page, "Le sanctuaire"));
   await expect(MESSAGE(page)).toContainText("« Les racines » est placé avant « Le sanctuaire ».");
   await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();

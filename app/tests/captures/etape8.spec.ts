@@ -352,3 +352,97 @@ test("lot 4 : les idées de choix dans le panneau à droite du texte", async ({ 
   await panneau.getByRole("button", { name: /^Ajouter/ }).scrollIntoViewIfNeeded();
   await capturer(page, "idees-390-cochee", false);
 });
+
+/** Une préparation en cours : l'univers retenu, des questions et des idées pour les personnages. */
+async function semerPreparation(base: import("@supabase/supabase-js").SupabaseClient, compte: { id: string }, projet: string) {
+  await base.from("preparations").update({
+    univers: "Un pays de lacs et de forêts noyé dans la brume. Des passeurs guident les voyageurs avec des lanternes ; quand elles s’éteignent, les chemins changent de place.",
+  }).eq("projet_id", projet);
+  await base.from("questions").insert([
+    { projet_id: projet, enseignant_id: compte.id, etape: "personnages", texte: "A-t-il un animal avec lui ?", origine: "main" },
+    { projet_id: projet, enseignant_id: compte.id, etape: "personnages", texte: "Que fait-il quand il a très peur ?", origine: "ia" },
+  ]);
+  const idees: [string, string, string][] = [
+    ["Lou, 10 ans, fils du dernier passeur", "retenue", "main"],
+    ["Il connaît le chant des lanternes", "retenue", "ia"],
+    ["Une chouette qui ne parle qu’aux enfants", "discuter", "main"],
+    ["Il a peur de l’eau", "discuter", "main"],
+    ["Des jumeaux inséparables", "ecartee", "main"],
+  ];
+  for (const [texte, etat, origine] of idees) {
+    await base.from("pistes").insert({ projet_id: projet, enseignant_id: compte.id, rubrique: "personnages", texte, etat, origine });
+  }
+}
+
+test("lot 5 : la Préparation en étapes (F02, F13.4)", async ({ page }) => {
+  test.setTimeout(240_000);
+  n = 855;
+  const { compte, base } = await adultePret(page);
+  const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
+  await semerPreparation(base, compte, projet);
+
+  // L'écran d'aide, à la première ouverture
+  await base.from("enseignants").update({ aides_masquees: [] }).eq("id", compte.id);
+  await aller(page, `/projet/${projet}/preparation`);
+  await page.getByRole("button", { name: "Commencer" }).waitFor();
+  await capturer(page, "preparation-aide");
+  await page.getByRole("button", { name: "Commencer" }).click();
+
+  // La page s'ouvre sur la première étape sans texte retenu : Personnages
+  await page.getByRole("heading", { name: /Qui est notre héros/ }).waitFor();
+  await capturer(page, "preparation-personnages");
+  await capturer(page, "preparation-personnages-ecran", false);
+  // Le ✦ des idées, la première fois : « Orienter l'IA » d'abord
+  await page.getByRole("button", { name: "Demander une idée à l’IA" }).click();
+  await page.getByRole("button", { name: "Proposer une idée" }).waitFor();
+  await page.getByRole("textbox", { name: /Orienter l’IA/ }).fill("un compagnon animal");
+  await capturer(page, "preparation-orienter", false);
+  await page.getByRole("button", { name: "Proposer une idée" }).click();
+  await page.getByText("Il parle aux chouettes").waitFor();
+  await page.getByRole("button", { name: "Demander une question à l’IA" }).click();
+  await page.getByText(/le rend différent des autres/).waitFor();
+  await capturer(page, "preparation-idee-ia");
+  // « Rédiger d'après les idées » : une proposition, rien de remplacé
+  await page.getByRole("button", { name: "Rédiger d’après les idées" }).click();
+  await page.getByText("Texte proposé · modifiable").waitFor();
+  await capturer(page, "preparation-rediger");
+
+  // Grandes étapes : les parties seules
+  await semerPartie(base, projet, "Le port", [{ titre: "Le départ" }], "port");
+  await semerPartie(base, projet, "La forêt", [{ titre: "La lisière" }, { titre: "Le sanctuaire" }, { titre: "Les racines" }], "foret");
+  await aller(page, `/projet/${projet}/preparation?etape=etapes`);
+  await page.getByRole("heading", { name: /Par quels lieux/ }).waitFor();
+  await capturer(page, "preparation-grandes-etapes");
+  await aller(page, `/projet/${projet}/preparation?etape=choix`);
+  await capturer(page, "preparation-les-choix");
+  await aller(page, `/projet/${projet}/preparation?etape=jeu`);
+  await capturer(page, "preparation-le-jeu");
+
+  // « Projeter » : le même écran, en grand
+  await aller(page, `/projet/${projet}/preparation?etape=personnages`);
+  await page.getByRole("link", { name: "Projeter" }).click();
+  await page.getByRole("link", { name: "Quitter la projection" }).first().waitFor();
+  await capturer(page, "preparation-projetee", false);
+  await capturer(page, "preparation-projetee-toute");
+
+  // Aides éteintes : les boutons doubles redeviennent simples
+  await base.from("enseignants").update({ reglages_ia: { proposer: false } }).eq("id", compte.id);
+  await aller(page, `/projet/${projet}/preparation?etape=personnages`);
+  await capturer(page, "preparation-sans-ia", false);
+  await base.from("enseignants").update({ reglages_ia: {} }).eq("id", compte.id);
+
+  // Sur téléphone
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/preparation?etape=personnages`);
+  await capturer(page, "preparation-390", false);
+  await capturer(page, "preparation-390-toute");
+  await aller(page, `/projet/${projet}/preparation?etape=etapes`);
+  await capturer(page, "preparation-390-grandes-etapes");
+
+  // Projet personnel : « Je retiens », questions pour soi, pas de projection
+  await page.setViewportSize({ width: 1366, height: 900 });
+  const seul = await semerProjet(base, compte, "personnel", "classique", "Carnet de voyage");
+  await aller(page, `/projet/${seul}/preparation`);
+  await capturer(page, "preparation-personnel");
+});

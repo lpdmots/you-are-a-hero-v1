@@ -1556,6 +1556,44 @@ F10.2.
   la fiche `idees` du panneau ne fait que le montrer. Le service `demanderIdees`
   n'est donné à la copie que sur la page de la scène, aides allumées.
 
+**Lot 5 — la Préparation en étapes (18 octobre 2026).**
+
+- **Une page, un écran par étape.** `_preparation/Preparation.tsx` tient la ligne
+  d'étapes et l'écran d'aide ; l'étape vient de `?etape=`, sinon de
+  `etapeDOuverture` (`domaine/preparation.ts`, avec `etapesDe`, `etapeFaite`,
+  `nomEtape`). `Etape.tsx` dessine une étape de l'histoire, la même dans la page et
+  dans la projection (`atelier/[projet]/[etape]/Projection.tsx`, hors de l'espace
+  adulte pour n'avoir pas sa barre, avec son propre fournisseur `AidesIa`).
+  `RubriqueJeu` et `RubriquePhrases` deviennent les étapes « Le jeu » et « Les
+  choix ». `Carnet.tsx`, `Pistes.tsx` et l'ancien atelier sont retirés, avec
+  l'action `activerRubriqueJeu`.
+- **Le serveur relit, la page ajoute.** `/ia/preparation` reçoit le projet,
+  l'étape et la sorte (`questions`, `idees`, `retenons`) ;
+  `serveur/preparation-ia.ts` relit la préparation, les relances (premières
+  questions de la liste), les questions ajoutées, les idées et leurs états, le
+  texte retenu, les autres étapes, le plan pour Grandes étapes et l'orientation
+  gardée, puis appelle `demanderUneAide` avec les aides du lot 1
+  (`serveur/ia/aides/preparation.ts`, Opus 5.5 pour les questions et les idées,
+  Sonnet 5.5 pour « Rédiger »). Rien n'est écrit par la demande : la page enregistre
+  d'abord ce qui attend (texte retenu, orientation), puis ajoute chaque élément
+  livré par les actions ordinaires (`ajouterQuestion`, `ajouterPiste`, avec
+  l'origine `ia`) ; « Utiliser ce texte » passe par `ecrireRubrique`.
+- **La réserve est tenue par la page** (`_preparation/reserve.ts`,
+  `useReserveIa`) : une par liste et par étape affichée, livrée par
+  `prendreDansLaReserve`, qui écarte ce que la liste a déjà ; `jeter` à chaque
+  changement de l'étape (idée notée ou changée d'état, texte retenu, orientation).
+  Changer d'étape démonte l'écran et jette la réserve.
+- **`BoutonDouble`** (`composants/BoutonDouble.tsx`, styles dans `formes.css`) :
+  la partie nommée et la partie ✦, simple quand les aides sont éteintes ; il
+  servira aux parties et aux chapitres du lot 6.
+- **Migration `preparation_en_etapes`.** La table `questions` (lire, ajouter,
+  supprimer pour l'adulte seul), `pistes.origine`, `preparations.orientations`
+  (jsonb, relu par `orientationsPropres`). `orienterLIa` écrit l'orientation de
+  l'étape sans rafraîchir la page, pour ne pas la recalculer à chaque frappe.
+- **Les réponses simulées** de la Préparation sont désormais six questions et six
+  idées plausibles, toujours les mêmes : la relecture écarte celles que la liste a
+  déjà, ce qui rend visible, dans les parcours, la réserve et sa nouvelle demande.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

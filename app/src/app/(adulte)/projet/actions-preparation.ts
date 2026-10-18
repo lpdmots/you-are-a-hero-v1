@@ -2,7 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import {
-  estConstruction, estFormuleRenvoi, estRubrique, ETATS_PISTE, feuillePropre, type Construction, type EtatPiste, type Feuille, type RubriqueTexte, signeDe,
+  estConstruction, estFormuleRenvoi, estRubrique, ETATS_PISTE, feuillePropre, ORIENTATION_MAX, orientationsPropres, type Construction, type EtatPiste, type Feuille,
+  type Origine, type RubriqueTexte, signeDe,
 } from "@/domaine/preparation";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { estUuid } from "@/serveur/recit";
@@ -35,13 +36,22 @@ export async function ecrireRubrique(projetId: string, rubrique: RubriqueTexte, 
   return { ok: true };
 }
 
-/** Une piste évoquée par la classe, notée par l'enseignant : « à discuter » tant qu'elle n'est ni retenue ni écartée. */
-export async function ajouterPiste(projetId: string, rubrique: string, texte: string): Promise<Fait<{ id: string }>> {
+const origineDe = (o: unknown): Origine => (o === "ia" ? "ia" : "main");
+
+/**
+ * Une idée évoquée par la classe, notée par l'enseignant, ou ajoutée par l'IA (F13-AC19) :
+ * « à discuter » tant qu'elle n'est ni retenue ni écartée.
+ */
+export async function ajouterPiste(projetId: string, rubrique: string, texte: string, origine: Origine = "main"): Promise<Fait<{ id: string }>> {
   const e = await exigerEnseignant();
   const propre = ligne(texte, 200);
   if (!estUuid(projetId) || !estRubrique(rubrique)) return echec("Rubrique inconnue.");
   if (!propre) return echec("Écrivez l’idée à noter.");
-  const { data, error } = await e.supabase.from("pistes").insert({ projet_id: projetId, enseignant_id: e.id, rubrique, texte: propre }).select("id").single();
+  const { data, error } = await e.supabase
+    .from("pistes")
+    .insert({ projet_id: projetId, enseignant_id: e.id, rubrique, texte: propre, origine: origineDe(origine) })
+    .select("id")
+    .single();
   if (error || !data) return echec(NON_ENREGISTRE);
   rafraichir(projetId);
   return { ok: true, id: data.id };
@@ -66,13 +76,40 @@ export async function supprimerPiste(pisteId: string): Promise<Fait> {
   return { ok: true };
 }
 
-/** La rubrique facultative « Objets et formules » s'ajoute au carnet, et se retire tant qu'elle est vide. */
-export async function activerRubriqueJeu(projetId: string, active: boolean): Promise<Fait> {
+/** Une question pour la classe, ajoutée après les relances d'une étape, à la main ou par l'IA (F02, F13.4). */
+export async function ajouterQuestion(projetId: string, etape: string, texte: string, origine: Origine = "main"): Promise<Fait<{ id: string }>> {
   const e = await exigerEnseignant();
-  if (!estUuid(projetId)) return echec("Projet inconnu.");
-  const { data, error } = await e.supabase.from("preparations").update({ rubrique_jeu: active === true }).eq("projet_id", projetId).select("projet_id");
-  if (error || !data?.length) return echec(NON_ENREGISTRE);
+  const propre = ligne(texte, 200);
+  if (!estUuid(projetId) || !estRubrique(etape)) return echec("Étape inconnue.");
+  if (!propre) return echec("Écrivez la question.");
+  const { data, error } = await e.supabase
+    .from("questions")
+    .insert({ projet_id: projetId, enseignant_id: e.id, etape, texte: propre, origine: origineDe(origine) })
+    .select("id")
+    .single();
+  if (error || !data) return echec(NON_ENREGISTRE);
   rafraichir(projetId);
+  return { ok: true, id: data.id };
+}
+
+export async function supprimerQuestion(questionId: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(questionId)) return echec("Question inconnue.");
+  const { data, error } = await e.supabase.from("questions").delete().eq("id", questionId).select("projet_id");
+  if (error || !data?.length) return echec(NON_ENREGISTRE);
+  rafraichir(data[0].projet_id);
+  return { ok: true };
+}
+
+/** « Orienter l'IA » pour une étape : gardée avec la préparation, relue par les demandes suivantes (F13). */
+export async function orienterLIa(projetId: string, etape: string, texte: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId) || !estRubrique(etape)) return echec("Étape inconnue.");
+  const { data: actuelle, error: lecture } = await e.supabase.from("preparations").select("orientations").eq("projet_id", projetId).maybeSingle();
+  if (lecture || !actuelle) return echec(NON_ENREGISTRE);
+  const orientations = { ...orientationsPropres(actuelle.orientations), [etape]: ligne(texte, ORIENTATION_MAX) };
+  const { data, error } = await e.supabase.from("preparations").update({ orientations: orientationsPropres(orientations) }).eq("projet_id", projetId).select("projet_id");
+  if (error || !data?.length) return echec(NON_ENREGISTRE);
   return { ok: true };
 }
 

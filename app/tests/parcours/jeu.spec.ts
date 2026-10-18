@@ -112,8 +112,8 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     await BARRE(page).getByRole("button", { name: "Objets" }).click();
     await expect(LISTE(page).getByRole("option")).toHaveText([/la lanterne sourde.*Éclaire sans être vue/]);
     await page.keyboard.press("Escape");
-    // Dans la préparation, la rubrique « Objets et formules » la montre
-    await aller(page, `/projet/${s.projet}/preparation`);
+    // Dans la préparation, l'étape « Le jeu » la montre
+    await aller(page, `/projet/${s.projet}/preparation?etape=jeu`);
     await expect(page.getByText("la lanterne sourde")).toBeVisible();
     expect(await sql("select nom, description from objets where projet_id = $1", [s.projet])).toEqual([{ nom: "la lanterne sourde", description: "Éclaire sans être vue" }]);
   });

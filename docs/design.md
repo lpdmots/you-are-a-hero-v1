@@ -2177,6 +2177,76 @@ lecture proposait « Remplacer les non cochées ») ; pas de « Tout cocher », 
 idées n'étant jamais montrées ensemble ; une idée par ligne de trois niveaux de
 texte, l'intention étant ce qui distingue deux idées.
 
+**Lot 5 — la Préparation en étapes (F02, F13.4).** Sans maquette à jour ; la
+page en rubriques et l'atelier de la maquette sont écartés (voir « Étape 8 :
+écrans arrêtés avant de construire »). Conçu avec impeccable dans le système
+« Cahiers d'aventure », critiqué en deux lectures séparées sur captures
+(`npm run captures -- etape8`, 856 à 871) : 28/40 (lecture informée) et 26/40
+(lecture indépendante). Forme construite :
+
+- **La ligne d'étapes** du Livre (`.temps`) : les quatre étapes de l'histoire
+  reliées par le pointillé, un filet, puis « Les choix » et « Le jeu », leur
+  pastille cerclée de tirets ; une étape retenue prend la coche verte ; au bout,
+  « Aide » et « Projeter » (classe seulement). En 390 px, des pastilles seules,
+  l'étape en cours avec son nom, la ligne qui défile si elle dépasse.
+- **La feuille d'une étape,** blanche, une seule par écran : la question en
+  grand dans la voix du récit (Vollkorn, 1,6 à 2,25 rem, sans césure de
+  « qu'est-ce » ni « ? » seul en début de ligne), « Voir un exemple » replié ;
+  deux colonnes, qui s'empilent sous 900 px. Pas d'étiquette au-dessus de la
+  question : la ligne d'étapes dit où l'on est.
+- **À gauche,** « Questions pour la classe » (« pour vous » en mode personnel),
+  une ligne chacune, séparées d'un pointillé comme au tableau ; puis « Idées » :
+  un rond à cocher pour retenir (vert plein, la ligne sur fond vert pâle, le
+  texte en gras), « Écarter » en mot et × au survol, « Idées écartées · 1 »
+  replié, avec « Remettre ». Un ✦ canard suit ce qui vient de l'IA. Sous chaque
+  liste, le bouton double : une pastille de 34 px, la partie nommée en blanc, la
+  partie ✦ en canard pâle, bulle « Demander à l'IA » ; ses étincelles
+  scintillent pendant la demande. « Orienter l'IA », lien en haut de la colonne,
+  ouvre le cadre canard pâle ; ouvert par un ✦ avant la première demande, il se
+  pose juste au-dessus du bouton cliqué, le curseur dedans, avec « ✦ Proposer
+  une idée ».
+- **À droite, « Nous retenons… »** sur une page de cahier : la marge rouge de la
+  copie, des lignes au pas du texte, le texte dans la voix du récit ; le champ
+  prend la hauteur de son texte, cinq lignes au moins. Dessous, « ✦ Rédiger
+  d'après les idées » et, s'il reste des idées retenues absentes du texte,
+  « Reprendre les idées retenues » ; la proposition dans le cadre canard pâle
+  des lots 3 et 4, « Texte proposé · modifiable », « Utiliser ce texte » et
+  « Laisser ».
+- **Grandes étapes :** sous « Nous retenons… », les parties, vignette 84 × 56,
+  « Partie 1 », le titre, « 3 chapitres », chacune menant à « Parties et
+  chapitres », son menu à trois points (Réglages, Supprimer) ; « Ajouter une
+  partie » ouvre une ligne de titre.
+- **Le pied :** « Étape suivante : Enjeu », seul bouton plein, avec
+  « (facultative) » devant les deux dernières ; après « Le jeu », « Aller à
+  Parties et chapitres ».
+- **« Les choix » et « Le jeu »** reprennent les réglages de l'ancien carnet
+  sous leur question en grand, sans leur en-tête ; les parties repliées de « Le
+  jeu » prennent un chevron.
+- **« Projeter » :** le fond du bureau, le titre du projet, la ligne des quatre
+  étapes de l'histoire, « Quitter la projection » ; la même feuille, la question
+  jusqu'à 2,6 rem, les lignes à 1,3 rem, « Nous retenons » à 1,45 rem ; ni
+  orientation ni commande de ligne visible sans survol. Les questions et le haut
+  des idées tiennent dans 1 366 × 768.
+
+Corrigé après la critique : le champ d'orientation ouvert en haut de la colonne
+quand on cliquait le ✦ des idées en bas ; l'orientation, consigne de l'adulte,
+montrée à la classe en projection ; la question projetée qui repoussait les idées
+sous le bord ; « Écarter » et × répétés sur chaque ligne (au survol désormais), et
+l'icône d'« Écarter », lue comme « télécharger », remplacée par le mot ; le ✦ des
+questions de l'IA resté visible aides éteintes ; « Rédiger » grisé sans raison
+(il dit maintenant ce qui manque) ; les idées retenues qui ne nourrissaient pas
+« Nous retenons » sans IA (« Reprendre les idées retenues », décidé par le porteur
+le 18 octobre 2026) ; les
+libellés du pied, différents d'une étape à l'autre ; le nom de l'étape absent en
+390 px ; les parties repliées de « Le jeu » sans chevron ; « Ce que vous
+décidez. » à côté de « Je retiens ». Laissé : « Laisser » et « Utiliser ce
+texte », arrêtés à l'entretien ; le ✦ du bouton double sans mot, comme décidé (sa
+bulle le nomme) ; la marque ✦ de provenance, décidée en F13-AC19 ; « Le jeu »
+encore dense (ses réglages datent de l'étape 2) ; l'en-tête du projet haut en
+390 px, commun à tous les onglets ; pas d'indicateur d'enregistrement pour les
+listes, qui s'enregistrent à chaque ajout. Premier retour du porteur, le
+18 octobre 2026 : la nouvelle mise en page est « beaucoup plus claire ».
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

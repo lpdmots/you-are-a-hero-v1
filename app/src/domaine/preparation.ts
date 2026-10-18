@@ -69,7 +69,78 @@ export const introCarnet = (organisation: Organisation): string =>
 export const ETATS_PISTE = ["retenue", "discuter", "ecartee"] as const;
 export type EtatPiste = (typeof ETATS_PISTE)[number];
 export const NOM_ETAT_PISTE: Record<EtatPiste, string> = { retenue: "retenue", discuter: "à discuter", ecartee: "écartée" };
-export type Piste = { id: string; rubrique: Rubrique; texte: string; etat: EtatPiste };
+/** Une idée notée à la main, ou ajoutée par l'IA (F13-AC19) : « origine », pour la marquer ✦. */
+export type Origine = "main" | "ia";
+export type Piste = { id: string; rubrique: Rubrique; texte: string; etat: EtatPiste; origine: Origine };
+/** Une question ajoutée à une étape, après les relances du guidage (F02, 17 octobre 2026). */
+export type Question = { id: string; etape: Rubrique; texte: string; origine: Origine };
+
+// ——— La Préparation en étapes (F02, décision du 17 octobre 2026) ———
+
+/**
+ * Les étapes du parcours : les quatre de l'histoire, puis deux facultatives, « Les choix »
+ * (récit à choix seulement) et « Le jeu ». Rien n'est bloqué : on va où l'on veut.
+ */
+export const ETAPES_PREPARATION = [...RUBRIQUES, "choix", "jeu"] as const;
+export type EtapePreparation = (typeof ETAPES_PREPARATION)[number];
+export const estEtapePreparation = (v: unknown): v is EtapePreparation => typeof v === "string" && (ETAPES_PREPARATION as readonly string[]).includes(v);
+export const estEtapeDeLHistoire = (e: EtapePreparation): e is Rubrique => (RUBRIQUES as readonly string[]).includes(e);
+export const ETAPES_FACULTATIVES: readonly EtapePreparation[] = ["choix", "jeu"];
+
+/** Les étapes d'un projet : un récit classique n'a pas « Les choix » (F02-AC20). */
+export const etapesDe = (recit: Recit): EtapePreparation[] => ETAPES_PREPARATION.filter((e) => recit === "choix" || e !== "choix");
+
+/** « Le jeu » ne réunit que les objets en récit classique : il s'y appelle « Les objets ». */
+export const nomEtape = (etape: EtapePreparation, recit: Recit): string =>
+  etape === "choix" ? "Les choix" : etape === "jeu" ? (recit === "choix" ? "Le jeu" : "Les objets") : NOM_RUBRIQUE[etape];
+
+/** Une étape de l'histoire est faite quand « Nous retenons » n'est pas vide ; Grandes étapes, dès qu'il y a une partie. */
+export function etapeFaite(etape: Rubrique, carnet: Pick<Preparation, RubriqueTexte>, parties: number): boolean {
+  return etape === "etapes" ? parties > 0 : carnet[etape].trim() !== "";
+}
+
+/** La page s'ouvre sur la première étape de l'histoire sans texte retenu ; toutes faites, sur la première. */
+export function etapeDOuverture(carnet: Pick<Preparation, RubriqueTexte>, parties: number): Rubrique {
+  return RUBRIQUES.find((r) => !etapeFaite(r, carnet, parties)) ?? "univers";
+}
+
+/** La liste des questions s'adresse à la classe, ou à l'auteur seul (F02-AC19). */
+export const titreQuestions = (organisation: Organisation): string => (organisation === "classe" ? "Questions pour la classe" : "Questions pour vous");
+
+/** Les questions des deux étapes facultatives, en grand comme les autres. */
+export const QUESTIONS_FACULTATIVES: Record<"choix" | "jeu", (recit: Recit) => string> = {
+  choix: () => "Comment s’écrit un choix dans notre livre ?",
+  jeu: (recit) =>
+    recit === "choix" ? "Quels objets reviennent, et que note le lecteur ?" : "Quels objets reviennent dans l’histoire, et comment les appelle-t-on ?",
+};
+
+/** La question en grand d'une étape, quelle qu'elle soit. */
+export const questionDeLEtape = (etape: EtapePreparation, organisation: Organisation, recit: Recit): string =>
+  estEtapeDeLHistoire(etape)
+    ? guidage(etape, organisation, recit).question
+    : organisation === "personnel" ? pourLAuteur(QUESTIONS_FACULTATIVES[etape](recit)) : QUESTIONS_FACULTATIVES[etape](recit);
+
+export const ORIENTATION_MAX = 600;
+/** Les orientations gardées, relues sans confiance : une par étape de l'histoire, courte. */
+export function orientationsPropres(brut: unknown): Partial<Record<Rubrique, string>> {
+  const o = brut && typeof brut === "object" && !Array.isArray(brut) ? (brut as Record<string, unknown>) : {};
+  return Object.fromEntries(
+    RUBRIQUES.flatMap((r) => {
+      const t = typeof o[r] === "string" ? (o[r] as string).replace(/\s+/g, " ").trim().slice(0, ORIENTATION_MAX) : "";
+      return t ? [[r, t]] : [];
+    }),
+  );
+}
+
+/**
+ * La réserve de l'IA (F13.4) : six questions ou idées par demande, livrées une à une. La
+ * suivante est la première qui ne redit pas ce que la liste a déjà, sans tenir compte de la casse.
+ */
+export function prendreDansLaReserve(reserve: string[], deja: string[]): { element: string | null; reste: string[] } {
+  const vus = new Set(deja.map((t) => t.trim().toLocaleLowerCase("fr")));
+  const reste = reserve.filter((t) => t.trim() && !vus.has(t.trim().toLocaleLowerCase("fr")));
+  return { element: reste[0] ?? null, reste: reste.slice(1) };
+}
 
 // ——— Rubrique « Objets et formules » (F04.2), feuille d'aventure, dé, règles du jeu ———
 
@@ -200,6 +271,8 @@ export type Preparation = {
   constructions: Construction[];
   marqueFin: string;
   pistes: Piste[];
+  questions: Question[];
+  orientations: Partial<Record<Rubrique, string>>;
   objets: Objet[];
   formules: Formule[];
 };

@@ -1238,3 +1238,88 @@
 .btn--ia .ic {
   color: var(--ia);
 }
+
+/* ——— Bouton double (F13.4) : ajouter à la main, ou ✦ par l'IA. Une pastille de 34 px, comme
+   les boutons d'IA ; la partie ✦ garde leur canard pâle. ——— */
+.double {
+  display: inline-flex;
+  align-items: stretch;
+  min-height: 34px;
+}
+.double__main,
+.double__ia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--trait-fort);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background 0.15s var(--ease),
+    border-color 0.15s var(--ease),
+    color 0.15s var(--ease);
+}
+.double__main {
+  padding: 0 14px 0 12px;
+  border-radius: 999px 0 0 999px;
+  background: var(--feuille);
+  color: var(--graphite);
+}
+.double--seul .double__main {
+  border-radius: 999px;
+}
+.double__main:hover {
+  background: var(--feuille-2);
+  border-color: var(--graphite-3);
+}
+.double__ia {
+  justify-content: center;
+  width: 42px;
+  margin-left: -1px;
+  padding: 0 4px 0 0;
+  border-color: var(--ia-trait);
+  border-radius: 0 999px 999px 0;
+  background: var(--ia-pale);
+  color: var(--ia);
+}
+.double__ia:hover {
+  position: relative;
+  border-color: var(--ia);
+  background: color-mix(in srgb, var(--ia) 12%, var(--ia-pale));
+  color: var(--ia-fonce);
+}
+.double__main:focus-visible,
+.double__ia:focus-visible {
+  position: relative;
+  z-index: 1;
+}
+.double__main:disabled,
+.double__ia:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+/* L'IA cherche : les étincelles scintillent à la place du clic */
+.double__ia[aria-busy="true"] {
+  cursor: progress;
+  opacity: 1;
+}
+.double__ia[aria-busy="true"] .ic {
+  animation: scintille 1.1s var(--ease) infinite alternate;
+}
+@keyframes scintille {
+  from {
+    opacity: 0.35;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .double__ia[aria-busy="true"] .ic {
+    animation: none;
+  }
+}
