@@ -9,7 +9,7 @@ import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { compterMots } from "@/domaine/correction";
-import type { Texte } from "@/domaine/copie";
+import { estVide } from "@/domaine/copie";
 import type { ReponseEcriture } from "@/serveur/aides-de-la-scene";
 import type { TexteDeScene } from "@/serveur/copie";
 import { annulerLEcriture, mettreLEcriture } from "../../../actions-correction";
@@ -95,16 +95,15 @@ export function useEcriture({
     setPhase(null);
     onRemplace(fait.scene);
     const apres = fait.scene.version;
-    const vide: Texte = [{ type: "p", id: crypto.randomUUID(), children: [{ text: "" }] }] as Texte;
     dire({
       texte: fait.eleveRetire ? "Le texte est dans la scène. Vous vous en occupez maintenant." : "Le texte est dans la scène.",
       annuler: () =>
         void (async () => {
           if (!(await avantDePartir())) return dire({ texte: "Le texte a changé entre-temps : rien n’a été annulé." });
-          const defait = await annulerLEcriture(sceneId, apres, vide, fait.eleveRetire);
+          const defait = await annulerLEcriture(sceneId, apres, fait.avant.length ? fait.avant : [{ type: "p", id: crypto.randomUUID(), children: [{ text: "" }] }], fait.eleveRetire);
           if (!defait.ok) return dire({ texte: defait.message });
           onRemplace(defait.scene);
-          dire({ texte: "La scène est de nouveau vide." });
+          dire({ texte: estVide(fait.avant) ? "La scène est de nouveau vide." : "Le texte écrit est retiré ; le reste de la scène est inchangé." });
         })(),
     });
   };

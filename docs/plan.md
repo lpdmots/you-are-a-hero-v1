@@ -2399,7 +2399,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       choix déjà là, le titre et le résumé du chapitre, les titres et consignes de
       ses scènes (soixante au plus), les objets, la Préparation, l'orientation et
       les libellés déjà montrés.
-    - **Deux points de règle, signalés au porteur, non décidés :** une scène vide
+    - **Deux points de règle, décidés le 18 octobre 2026 (voir plus bas) :** une scène vide
       qui reçoit des choix n'est plus vide (F07.1), et « ✦ Écrire » (F13.6) ne s'y
       propose plus ; recommandé : proposer « Écrire » tant que la scène n'a aucun
       paragraphe de récit écrit, le texte s'écrivant au-dessus des choix. Et
@@ -2438,6 +2438,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     sont pas repris pour l'instant : le parcours `idees-choix` et les captures du
     lot 4 attendent encore l'ouverture qui demandait aussitôt, à mettre à jour
     avant la prochaine suite complète.
+  - **Les deux points de règle du lot 4, décidés par le porteur le 18 octobre
+    2026** (« ok pour ces recos ») : « ✦ Écrire » se propose tant que la scène n'a
+    aucun paragraphe de récit écrit, choix compris (F13.6 révisé, F13-AC26) ; le
+    texte écrit se pose au-dessus des blocs déjà là (`texteEcrit`), et « Annuler »
+    rend le texte d'avant, choix compris (`mettreUneEcriture` le renvoie), avec
+    « Le texte écrit est retiré ; le reste de la scène est inchangé. » ; la page
+    choisit « Écrire » ou « Corriger » d'après le compte des mots du récit. Et
+    « Annuler » des idées de choix laisse les scènes créées dans la corbeille,
+    sans migration. Tests existants d'« Écrire » repassés (16 contre la base,
+    9 parcours) ; F13-AC26 attend son test, à sa demande pour l'instant.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

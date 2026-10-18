@@ -1,7 +1,7 @@
 import "server-only";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { paragraphesACorriger } from "@/domaine/correction";
-import { estVide, type Texte } from "@/domaine/copie";
+import { lettresDe, sansRecit, type Texte } from "@/domaine/copie";
 import type { Enseignant } from "./adulte";
 import { remplacerSiInchange, type Remplacement } from "./correction";
 import { texteDeScene, type TexteDeScene } from "./copie";
@@ -196,7 +196,7 @@ async function ceQuiMeneIci(e: Enseignant, lieu: Lieu): Promise<{ fin: string; c
 }
 
 /**
- * « ✦ Écrire » (F13.6) : le texte d'une scène vide, d'après sa consigne. `version` est celle que
+ * « ✦ Écrire » (F13.6) : le texte d'une scène sans récit écrit, d'après sa consigne ; elle peut déjà avoir ses choix. `version` est celle que
  * la page montre ; si le texte a changé avant ou pendant la demande, rien ne se propose.
  */
 export async function demanderUneEcriture(e: Enseignant, sceneId: string, version: number, mots: unknown): Promise<ReponseEcriture> {
@@ -205,7 +205,7 @@ export async function demanderUneEcriture(e: Enseignant, sceneId: string, versio
   const texte = await texteDeScene(e, sceneId);
   if (!texte) return { ok: false, message: "Cette scène n’existe plus." };
   if (texte.version !== version) return { ok: false, change: true, message: MESSAGES_IA.texteChange };
-  if (!estVide(texte.texte)) return { ok: false, message: DEJA_ECRITE };
+  if (!sansRecit(texte.texte)) return { ok: false, message: DEJA_ECRITE };
   if (!lieu.scene.consigne) return { ok: false, message: SANS_CONSIGNE };
   const [preparation, avant] = await Promise.all([preparationDe(e, lieu.projetId), ceQuiMeneIci(e, lieu)]);
   const r = await demanderUneAide(e, aideEcriture, {
@@ -226,16 +226,25 @@ export async function demanderUneEcriture(e: Enseignant, sceneId: string, versio
   return { ok: true, version, paragraphes: r.valeur.paragraphes, reste: r.reste };
 }
 
-/** Le texte écrit, en paragraphes de récit, tel qu'il entre dans la scène. */
-export const texteEcrit = (paragraphes: string[]): Texte =>
-  paragraphes.map((p) => ({ type: "p", id: crypto.randomUUID(), children: [{ text: p }] })) as Texte;
+/**
+ * Le texte écrit, en paragraphes de récit, tel qu'il entre dans la scène : au-dessus de ce qui
+ * s'y trouve déjà (choix, actions de jeu, images, notes), les lignes vides retirées.
+ */
+export const texteEcrit = (paragraphes: string[], deja: Texte = []): Texte => [
+  ...(paragraphes.map((p) => ({ type: "p", id: crypto.randomUUID(), children: [{ text: p }] })) as Texte),
+  ...deja.filter((b) => b.type !== "p" || lettresDe(b).trim() !== ""),
+];
 
 export type EcritureMise =
-  | { ok: true; scene: TexteDeScene; /** L'élève qui s'en occupait, et ne s'en occupe plus */ eleveRetire: string | null }
+  | {
+      ok: true; scene: TexteDeScene; /** L'élève qui s'en occupait, et ne s'en occupe plus */ eleveRetire: string | null;
+      /** Le texte d'avant, choix compris : « Annuler » le rend */
+      avant: Texte;
+    }
   | { ok: false; change: boolean; message: string };
 
 /**
- * « Mettre ce texte dans la scène » (F13.6), seulement si elle est toujours vide à `version`. Une
+ * « Mettre ce texte dans la scène » (F13.6), seulement si elle est toujours sans récit à `version`. Une
  * scène dont un élève s'occupait passe à l'adulte (« Vous ») : l'adulte en a été prévenu, et
  * l'élève ne l'écrit plus.
  */
@@ -247,16 +256,16 @@ export async function mettreUneEcriture(e: Enseignant, sceneId: string, version:
   const lieu = await lieuDeLaScene(e, sceneId);
   const actuel = await texteDeScene(e, sceneId);
   if (!lieu || !actuel) return { ok: false, change: false, message: "Cette scène n’existe plus." };
-  if (actuel.version !== version || !estVide(actuel.texte)) return { ok: false, change: true, message: MESSAGES_IA.texteChange };
-  const fait = await remplacerSiInchange(e, sceneId, version, texteEcrit(paragraphes));
+  if (actuel.version !== version || !sansRecit(actuel.texte)) return { ok: false, change: true, message: MESSAGES_IA.texteChange };
+  const fait = await remplacerSiInchange(e, sceneId, version, texteEcrit(paragraphes, actuel.texte));
   if (!fait.ok) return fait;
   if (lieu.eleveId) {
     await e.supabase.from("scenes").update({ prise_par_enseignant: true, prise_par_eleve: null }).eq("id", sceneId);
   }
-  return { ok: true, scene: fait.scene, eleveRetire: lieu.eleveId };
+  return { ok: true, scene: fait.scene, eleveRetire: lieu.eleveId, avant: actuel.texte };
 }
 
-/** « Annuler », juste après : la scène redevient vide, et l'élève qui s'en occupait la retrouve. */
+/** « Annuler », juste après : la scène retrouve son texte d'avant, choix compris, et l'élève qui s'en occupait la retrouve. */
 export async function annulerUneEcriture(e: Enseignant, sceneId: string, version: number, texte: unknown, eleve: unknown): Promise<Remplacement> {
   const fait = await remplacerSiInchange(e, sceneId, version, texte);
   if (!fait.ok) return fait.change ? { ...fait, message: "Le texte a changé entre-temps : rien n’a été annulé." } : fait;

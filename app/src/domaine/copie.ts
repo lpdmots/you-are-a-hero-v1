@@ -280,6 +280,12 @@ export const enMots = (texte: Texte): string => recitDe(texte).map((b) => (b.typ
 export const estVide = (texte: Texte): boolean =>
   texte.every((b) => b.type === "note" || b.type === "liaison" || ((b.type === "p" || b.type === "action") && lettresDe(b).trim() === ""));
 
+/**
+ * Aucun paragraphe de récit écrit : la scène peut avoir des choix, des actions de jeu ou des
+ * images, mais pas encore son texte. « ✦ Écrire » s'y propose (F13.6, révisé le 18 octobre 2026).
+ */
+export const sansRecit = (texte: Texte): boolean => texte.every((b) => b.type !== "p" || lettresDe(b).trim() === "");
+
 /** Les fichiers d'image qu'un texte emploie, en bloc ou sur la ligne. */
 export const imagesDe = (texte: Texte): string[] =>
   texte.flatMap((b) => (b.type === "image" ? [b.image] : b.type === "liaison" ? [] : (b.children as unknown[]).filter(estImageLigne).map((i) => i.image)));

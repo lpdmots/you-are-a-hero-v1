@@ -10278,13 +10278,19 @@ créative complète » hors de la première livraison (F13, plan) pour la seule
 temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
 
 - **Où :** « ✦ Écrire » prend la place de « Corriger » dans la page de scène
-  dès que le texte est vide, en classe comme en mode personnel. La consigne est
+  dès que le texte est vide, en classe comme en mode personnel. **Révisé par le
+  porteur le 18 octobre 2026,** sur recommandation, après les idées de choix
+  (F13.3) : « vide » s'entend ici sans paragraphe de récit écrit ; une scène qui
+  a déjà ses choix, ses actions de jeu ou ses images garde « ✦ Écrire », et le
+  texte écrit se pose au-dessus de ce qui s'y trouve, sans rien en retirer
+  (l'état « Texte vide » de F07.1 ne change pas). La consigne est
   requise : sans elle, « Écrivez d'abord la consigne de la scène : l'IA écrit
   d'après elle. »
 - **La scène d'un élève :** si un élève s'en occupe, l'adulte est prévenu avant
   la demande (« Alice s'occupe de cette scène » : en gardant le texte, la scène
   lui sera attribuée, Alice ne l'écrira plus). En gardant le texte, la scène
-  passe à l'adulte (« Vous ») ; « Annuler » la rend vide et la rend à l'élève.
+  passe à l'adulte (« Vous ») ; « Annuler » retire le texte écrit, rend la
+  scène telle qu'elle était, choix compris, et la rend à l'élève.
 - **Longueur :** environ 150 mots par défaut, réglable de 30 à 1 500 dans la
   même pastille (« ≈ 150 mots »).
 - **Ce que l'IA écrit :** le récit seul, en paragraphes, sans choix, action de
@@ -10307,9 +10313,15 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
   sa consigne, lorsque l'adulte demande « ✦ Écrire », alors il reçoit un texte
   de récit d'environ la longueur demandée, et la scène reste vide tant qu'il ne
   l'a pas mis dans la scène.
-- **F13-AC23 — Seulement une scène vide, avec sa consigne :** étant donné une
-  scène qui a un texte, ou une scène vide sans consigne, lorsque l'aide est
-  demandée, alors rien ne part chez le fournisseur.
+- **F13-AC23 — Seulement une scène sans récit, avec sa consigne :** étant donné
+  une scène qui a un paragraphe de récit écrit, ou une scène vide sans
+  consigne, lorsque l'aide est demandée, alors rien ne part chez le
+  fournisseur.
+- **F13-AC26 — Des choix déjà là (18 octobre 2026) :** étant donné une scène
+  sans récit qui a deux choix, ajoutés par les idées de choix, lorsque l'adulte
+  demande « ✦ Écrire » et met le texte dans la scène, alors les paragraphes
+  écrits précèdent les deux choix, qui restent avec leurs destinations ;
+  lorsqu'il annule aussitôt, la scène retrouve ses deux choix sans texte.
 - **F13-AC24 — La scène d'un élève :** étant donné une scène vide dont Alice
   s'occupe, lorsque l'adulte demande « ✦ Écrire », alors il est d'abord prévenu ;
   lorsqu'il garde le texte, alors la scène lui est attribuée et Alice ne

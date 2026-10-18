@@ -290,6 +290,7 @@ export function PageScene({
     setCopies(suite.copies);
     setVide(estVide(suite.texte));
     mots.current = { tout: compterMots(paragraphesACorriger(suite.texte).map((p) => p.texte).join(" ")), selection: 0 };
+    setRecit(mots.current.tout > 0);
   };
 
   // Le texte de l'adulte a été refusé : ses corrections sont gardées à part, la scène montre
@@ -312,6 +313,8 @@ export function PageScene({
   const [selection, setSelection] = useState<string[]>([]);
   // Les mots du récit et de la sélection, tenus sans redessiner la page : la longueur d'une correction s'en sert
   const mots = useRef({ tout: compterMots(paragraphesACorriger(recu.texte).map((p) => p.texte).join(" ")), selection: 0 });
+  // La scène a-t-elle du récit écrit ? Tenu d'après le compte des mots que la copie donne à chaque changement
+  const [recit, setRecit] = useState(() => paragraphesACorriger(recu.texte).length > 0);
   const correction = useCorrection({
     sceneId: scene.id,
     version: () => versionLue.current,
@@ -332,7 +335,8 @@ export function PageScene({
       setSelection([]);
     },
   });
-  const corrige = !aCote && onglet === "scene" && !vide;
+  // Sans paragraphe de récit écrit, même avec des choix : « ✦ Écrire » plutôt que « Corriger » (F13.6, 18 octobre 2026)
+  const corrige = !aCote && onglet === "scene" && recit;
   // Une scène vide : « ✦ Écrire » à la place de « Corriger » (F13.6)
   const ecriture = useEcriture({
     sceneId: scene.id,
@@ -355,7 +359,7 @@ export function PageScene({
       setTimeout(() => document.getElementById("scene-consigne")?.focus(), 0);
     },
   });
-  const ecrit = !aCote && onglet === "scene" && vide;
+  const ecrit = !aCote && onglet === "scene" && !recit;
   const aide = corrige ? correction : ecrit ? ecriture : null;
 
   const retirer = async (c: CopieGardee) => {
@@ -730,7 +734,10 @@ export function PageScene({
       autre={aide?.autre ?? autre}
       aides={aide && !aide.autre ? aide.barre : undefined}
       onSelection={setSelection}
-      onMots={(m) => (mots.current = m)}
+      onMots={(m) => {
+        mots.current = m;
+        setRecit(m.tout > 0);
+      }}
       onEtat={(suite) => {
         setSauvegarde(suite.etat);
         sauvegardeTenue.current = suite.etat;
