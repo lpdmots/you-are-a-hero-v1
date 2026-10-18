@@ -2116,6 +2116,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   8. **Images créées** — repérage d'après le résumé, image d'une scène
      (cadrages, badges, prompt, création), prompt à copier, idée
      d'illustration de l'élève, prompt de couverture.
+     Ajouté le 18 octobre 2026 (F10.1) : l'image créée d'office, une seule,
+     pour une partie ou un chapitre ajouté depuis une proposition de l'IA, avec
+     son signe d'attente sur la carte, le réglage « Créer l'image des parties et
+     chapitres ajoutés par l'IA » (allumé par défaut) dans « Mon compte », et sa
+     mention « ✦ Image créée à l'ajout · Régler » dans la carte et le panneau.
   9. **Essai de bout en bout** — parcours, captures, mode d'emploi dans
      `app/README.md`, jugement du porteur sur des textes de sa classe.
 - **Construction, en local, lot par lot :**
@@ -2544,7 +2549,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       échouait aussi seul : il cliquait « La mise en page me convient » puis
       changeait de page avant l'enregistrement, et « Imprimer et partager »
       restait fermée. Il attend désormais « Mise en page terminée », et passe.
-  - **Lot 6 — parties, chapitres et résumés : construit le 18 octobre 2026,** en
+  - **Lot 6 — parties, chapitres et résumés : construit le 18 octobre 2026, et terminé
+    le même jour** après l'essai du porteur (« le reste est bon pour moi »), ses
+    précisions et ses reprises confirmées ; ne plus les lui soumettre. Construit en
     local, sur instruction du porteur, dans une nouvelle conversation, sans
     migration. « Ajouter une partie │ ✦ » (`BoutonDouble`, plein dans l'en-tête de
     « Parties et chapitres », cerné dans Grandes étapes et dans le plan vide) ouvre le
@@ -2561,7 +2568,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     « ✦ Proposer un résumé » : une proposition modifiable, « Utiliser ce texte »,
     « Un autre » ou « Laisser ». Adresse `/ia/plan` ; ajout par `ajouterDesParties`
     et `creerChapitre`, qui accepte un titre et un résumé.
-    - **Critères fermés :** F13-AC15, F13-AC16 ; les décisions des 16 et
+    - **Critères fermés :** F13-AC15, F13-AC16, F13-AC27 (reprise plus bas) ; les décisions des 16 et
       17 octobre 2026 de F13.5 (bouton double dans les deux vues, orientation, dix
       ensembles trois par trois, ajout à la fin du plan sans scène ni élève,
       « Annuler » ; six chapitres livrés un par clic à la fin de la partie ;
@@ -2571,8 +2578,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Critères qui attendent :** la qualité réelle des parties, des chapitres et
       des résumés, au jugement du lot 9 (l'essai V17 les a déjà jugés tenus par la
       Préparation et le plan, sans doublon).
-    - **Précisions prises en construisant, à faire confirmer au porteur :**
-      l'orientation des idées de parties est celle de l'étape Grandes étapes,
+    - **Précisions prises en construisant, confirmées par le porteur le 18 octobre
+      2026 :** l'orientation des idées de parties est celle de l'étape Grandes étapes,
       gardée avec le projet, la même dans les deux vues (elle oriente aussi les
       questions et les idées de l'étape) ; celle des chapitres est propre à chaque
       partie et ne dure que le temps de la page, comme celle des idées de choix,
@@ -2612,6 +2619,28 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     ouverture demande donc deux clics pour le premier chapitre, puis un par chapitre.
     Sans migration ; parcours des chapitres repris (6 parcours du lot).
     Suite complète des parcours avant le commit : 354 sur 354.
+  - **Chapitres proposés avant d'être ajoutés, décidé par le porteur le 18 octobre
+    2026** (F13.5 révisé, F13-AC27) : un chapitre ajouté d'office l'obligeait à le
+    supprimer et encombrait la corbeille. L'espace de l'IA de la carte montre
+    désormais les six chapitres de la demande un à un (‹ 2 / 6 ›), titre et résumé
+    modifiables ; « Ajouter ce chapitre » crée celui qu'on voit et passe au suivant ;
+    « D'autres idées » et « Orienter l'IA » en liens discrets ; « Annuler » met le
+    chapitre à la corbeille et rend sa proposition à la série. Recommandé et retenu :
+    six plutôt que trois, sans cases à cocher, dans la carte plutôt qu'en fausse carte
+    de chapitre ou dans le panneau des parties. Sans migration. Décidé le même jour,
+    pour le lot 8 (F10.1) : une image créée d'office, une seule, pour une partie ou un
+    chapitre ajouté depuis l'IA, avec un réglage allumé par défaut dans « Mon
+    compte » et une mention discrète là où l'on ajoute. Critère fermé : F13-AC27.
+    Précisions : un titre vidé empêche l'ajout ; une proposition dont le
+    titre est déjà dans la partie ne se montre plus ; « D'autres idées » remplace la
+    série entière ; le message ne porte plus « Voir le résumé », le résumé se lisant
+    avant l'ajout. Confirmées par le porteur le même jour. Retouche du même jour, sur
+    sa remarque : la carte ouverte garde une hauteur fixe, pour que les flèches ne
+    bougent pas d'une proposition à l'autre ; un long résumé défile dans son champ.
+    Et, en changeant de proposition, le résumé repart de son début. Décidé aussi le
+    même jour : la suite complète des parcours et le commit ne se font plus qu'une
+    fois, à la clôture d'un lot ; pendant les reprises, seuls les tests du lot.
+    Suite complète des parcours à la clôture : 354 sur 354.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

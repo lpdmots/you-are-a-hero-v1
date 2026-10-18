@@ -160,15 +160,20 @@ export function Plan({
       setOuvert({ sorte: "chapitre", id: fait.id, neuf: true });
     });
 
-  /** Un chapitre de l'IA, à la fin de sa partie (F13.5) : il vient sous les yeux, « Annuler » le met à la corbeille. */
-  const ajouterChapitrePropose = async (partie: Partie, c: { titre: string; resume: string }): Promise<boolean> => {
+  /** Un chapitre proposé par l'IA et accepté, à la fin de sa partie (F13.5) : il vient sous les yeux, « Annuler » le met à la corbeille. */
+  const ajouterChapitrePropose = async (partie: Partie, c: { titre: string; resume: string }, remettre: () => void): Promise<boolean> => {
     const fait = await creerChapitre(partie.id, c);
-    if (!fait.ok) return false;
+    if (!fait.ok) {
+      dire({ texte: fait.erreur });
+      return false;
+    }
     dire({
-      texte: `« ${c.titre} » est ajouté à la fin de « ${partie.titre} », avec un résumé.`,
-      annuler: () => void supprimer("chapitre", fait.id),
-      // Le résumé écrit par l'IA se lit avant de continuer : il est dans les réglages du chapitre
-      autre: { libelle: "Voir le résumé", faire: () => setOuvert({ sorte: "chapitre", id: fait.id, neuf: false }) },
+      texte: `« ${c.titre} » est ajouté à la fin de « ${partie.titre} ».`,
+      // Le chapitre va à la corbeille, et sa proposition retourne dans la série
+      annuler: () => {
+        void supprimer("chapitre", fait.id);
+        remettre();
+      },
     });
     setMontree(null);
     setTimeout(() => {
@@ -498,7 +503,7 @@ export function Plan({
                   unique={parties.length === 1}
                   ajoutEnCours={attente === `chapitre-${p.id}`}
                   onAjouter={() => ajouterChapitre(p.id)}
-                  onAjouterPropose={(c) => ajouterChapitrePropose(p, c)}
+                  onAjouterPropose={(c, remettre) => ajouterChapitrePropose(p, c, remettre)}
                   onReglages={() => setOuvert({ sorte: "partie", id: p.id, neuf: false })}
                   onSupprimer={() => void supprimerElement("partie", p.id, p.titre)}
                 >
@@ -627,7 +632,7 @@ function SectionPartie({
   partie, rang, deClasse, unique, ajoutEnCours, onAjouter, onAjouterPropose, onReglages, onSupprimer, children,
 }: {
   partie: Partie; rang: number; deClasse: boolean; unique: boolean; ajoutEnCours: boolean;
-  onAjouter: () => void; onAjouterPropose: (c: { titre: string; resume: string }) => Promise<boolean>; onReglages: () => void; onSupprimer: () => void;
+  onAjouter: () => void; onAjouterPropose: (c: { titre: string; resume: string }, remettre: () => void) => Promise<boolean>; onReglages: () => void; onSupprimer: () => void;
   children: React.ReactNode;
 }) {
   const { attributes, listeners, setNodeRef, setActivatorNodeRef, transform, transition, isDragging } = useSortable({ id: `p:${partie.id}` });

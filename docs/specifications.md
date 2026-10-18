@@ -6923,6 +6923,23 @@ d'une illustration depuis une scène reste reportée. Sans IA, le choix et
 l'import d'une image restent entiers. Le fournisseur des images est OpenAI,
 quel que soit celui des textes (voir F13).
 
+**Décidé par le porteur le 18 octobre 2026 — image créée à l'ajout par l'IA :**
+une partie ou un chapitre ajouté depuis une proposition de l'IA (F13.5) reçoit
+d'office une image créée d'après son résumé, dans le style du projet ; il se crée
+aussitôt avec son visuel par défaut et un petit signe d'attente, que l'image
+remplace quand elle arrive ; si la création échoue, le visuel par défaut reste,
+sans rien bloquer. Une seule image, sans choix, quel que soit « Images par
+création » ; les deux images d'une création restent pour la création depuis
+« Choisir une image » (redemander depuis les réglages du chapitre ou de la partie
+en donne deux, à choisir) et pour l'image d'une scène (F10.2). Un réglage des
+« Aides IA » de « Mon compte » (F13), « Créer l'image des parties et chapitres
+ajoutés par l'IA », allumé par défaut, le porteur préférant l'ajout automatique ;
+éteint, on crée l'image soi-même depuis « Choisir une image ». Quand il est allumé,
+une mention discrète le rappelle là où l'on ajoute (« ✦ Image créée à l'ajout ·
+Régler »), avec un lien vers le réglage : l'image coûte plus qu'un texte et compte
+dans le plafond des images du jour. À construire avec les images créées (étape 8,
+lot 8) ; un ajout manuel ne crée pas d'image.
+
 **Décidé par le porteur le 10 octobre 2026, après l'essai de l'étape 1 :**
 l'image de repérage se choisit dès la création d'un projet et dès celle d'un
 chapitre, et ce choix reste facultatif : on peut créer sans image, le
@@ -10289,6 +10306,31 @@ acceptées) :**
   chapitre ajouté par l'IA se place à la fin de la partie, sans scène ni
   élève. Dans les réglages d'un chapitre, « ✦ Proposer un résumé » s'affiche
   comme une proposition, avec « Utiliser ce texte » ou « Laisser ».
+
+**Chapitres proposés avant d'être ajoutés, décidé par le porteur le 18 octobre
+2026** (révise « les livre un par un à chaque clic » ci-dessus) : un chapitre ajouté
+d'office l'obligeait à le supprimer s'il ne lui plaisait pas, et encombrait la
+corbeille. Dans la carte « Ajouter un chapitre » de la partie, la bande ✦ du pied
+ouvre l'espace de l'IA, qui recouvre la carte : « Orienter l'IA » (facultatif, propre
+à la partie) et « ✦ Proposer des chapitres ». Les six chapitres de la demande se
+montrent un à un dans cet espace, en mini-carrousel (‹ 2 / 6 ›), chacun son titre
+et son résumé, modifiables sur place ; « Ajouter ce chapitre » crée celui qu'on
+voit, à la fin de la partie, sans scène ni élève, et l'espace passe au suivant ;
+« D'autres idées » redemande en écartant ceux déjà vus ; une orientation nouvelle
+remplace la série par une nouvelle demande ; la croix referme l'espace, qui garde
+ses propositions tant que la page reste ouverte. Rien n'est créé avant « Ajouter ce
+chapitre ». Recommandé et retenu : pas de cases à cocher (dans un carrousel, on ne
+voit pas ce qu'on a coché), six propositions plutôt que trois (elles viennent d'une
+seule demande) ; écarté : une fausse carte de chapitre dans la grille, qui se
+confondrait avec un vrai chapitre, et le panneau latéral des parties, qui ferait
+quitter la partie.
+
+- **F13-AC27 — Chapitre proposé avant d'être ajouté :** étant donné six chapitres
+  proposés pour « La forêt », lorsque l'adulte fait défiler les propositions et
+  retouche le titre de la deuxième, alors aucun chapitre n'est créé ; lorsqu'il
+  choisit « Ajouter ce chapitre », seul ce chapitre, avec le titre retouché et son
+  résumé, s'ajoute à la fin de « La forêt », sans scène ni élève, et la proposition
+  suivante s'affiche.
 
 **Limites et questions ouvertes :** retouche assistée d'une partie existante,
 prévention des doublons. La qualité des suggestions et le contexte exact

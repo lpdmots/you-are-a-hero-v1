@@ -2251,7 +2251,7 @@ listes, qui s'enregistrent à chaque ajout. Premier retour du porteur, le
 qu'un bouton « Idées de parties » qui répondait par un message). Conçu avec impeccable
 dans le système « Cahiers d'aventure », en reprenant les formes des lots 4 et 5,
 critiqué en deux lectures séparées sur captures (`npm run captures -- etape8`, 872 à
-888) : 28/40 (lecture informée) et 26/40 (lecture indépendante). Forme construite :
+889) : 28/40 (lecture informée) et 26/40 (lecture indépendante). Forme construite :
 
 - **« Ajouter une partie │ ✦ » :** le bouton double du lot 5 ; dans l'en-tête de
   « Parties et chapitres », sa partie nommée est pleine (`double--primaire`), seul
@@ -2280,8 +2280,20 @@ critiqué en deux lectures séparées sur captures (`npm run captures -- etape8`
   message dit « « Le gué des saules » est ajouté à la fin de « La forêt », avec un
   résumé. », avec « Voir le résumé » et « Annuler ». En 390 px, la carte ouverte
   grandit à 236 px au moins, le bouton en petit texte sur une ligne. Mouvement retiré
-  si le système le demande. Captures 879, 880, 886 et 887 ; pas de nouvelle critique,
-  la forme reprenant celles déjà critiquées.
+  si le système le demande. Pas de nouvelle critique, la forme reprenant celles déjà
+  critiquées.
+- **Le carrousel des chapitres proposés** (F13.5 révisé le 18 octobre 2026) : après
+  « ✦ Proposer des chapitres », l'espace montre « ✦ Chapitre proposé » et la croix,
+  puis une fiche blanche cernée de canard pâle : le titre en gras et le résumé en gris,
+  champs soulignés d'un pointillé, qui passent à la ligne ; dessous, deux flèches
+  rondes et « 2 / 6 » ; puis « ✦ D'autres idées » et « Orienter l'IA » en liens
+  discrets ; au pied, « + Ajouter ce chapitre », pastille cernée de canard. La carte
+  ouverte a une hauteur fixe (330 px au moins, la hauteur de la rangée sinon), pour
+  que les flèches et le bouton restent à leur place d'une proposition à l'autre, sur sa
+  demande (« on ne peut pas enchaîner ») : un long résumé défile dans son champ. Après l'ajout,
+  le chapitre vient dans la grille, cerné, et la fiche passe au suivant ; le message
+  dit « « La cabane du pêcheur » est ajouté à la fin de « La forêt ». » avec
+  « Annuler ». Captures 879 à 882, 888 et 889.
 - **« ✦ Proposer un résumé »** (« Proposer un autre résumé » quand il y en a un), sous
   le champ du résumé, dans les réglages du chapitre : le cadre canard pâle « Résumé
   proposé · modifiable », « Utiliser ce texte », « ✦ Un autre », « Laisser ».

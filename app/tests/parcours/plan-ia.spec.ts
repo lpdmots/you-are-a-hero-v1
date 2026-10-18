@@ -123,42 +123,62 @@ test.describe("Idées de parties (F13.5)", () => {
 });
 
 test.describe("Chapitres proposés (F13.5)", () => {
-  test("le ✦ au pied de la carte ouvre l'espace de l'IA sur la carte ; chaque « Proposer un chapitre » ajoute un chapitre, titre et résumé, à la fin de la partie, d'une seule demande ; « Annuler » le retire", async ({ page }) => {
+  test("F13-AC27 — le ✦ au pied de la carte ouvre l'espace de l'IA ; six chapitres proposés un à un, rien de créé avant « Ajouter ce chapitre », qui ajoute le chapitre vu, retouché, à la fin de la partie ; « Annuler » le rend à la série", async ({ page }) => {
     const s = await passeurs(page);
     await aller(page, `/projet/${s.projet}/plan`);
-    await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).click();
-    const espace = page.getByRole("group", { name: "Proposer un chapitre pour « La forêt »" });
+    await page.getByRole("button", { name: "Demander des chapitres à l’IA pour « La forêt »" }).click();
+    const espace = page.getByRole("group", { name: "Chapitres proposés pour « La forêt »" });
     const orienter = espace.getByRole("textbox", { name: /Orienter l’IA/ });
     await expect(orienter).toBeFocused();
     expect(s.demandes).toHaveLength(0);
     await orienter.fill("au bord de l’eau");
-    await espace.getByRole("button", { name: "Proposer un chapitre" }).click();
-    await expect(MESSAGE(page)).toContainText("« Le gué des saules » est ajouté à la fin de « La forêt », avec un résumé.");
-    await expect(page.getByRole("link", { name: "Ouvrir Le gué des saules" })).toBeVisible();
+    await espace.getByRole("button", { name: "Proposer des chapitres" }).click();
+    const titre = espace.getByRole("textbox", { name: "Titre du chapitre proposé" });
+    await expect(titre).toHaveValue("Le gué des saules");
+    await expect(espace.getByRole("textbox", { name: "Résumé du chapitre proposé" })).toHaveValue(/rivière/);
+    await expect(espace.getByText("1 / 6")).toBeVisible();
+    expect(s.demandes).toEqual([expect.objectContaining({ sorte: "chapitres", partie: s.foret.partieId, orientation: "au bord de l’eau" })]);
+
+    // Défiler et retoucher ne crée rien
+    await espace.getByRole("button", { name: "Proposition suivante" }).click();
+    await expect(titre).toHaveValue("La cabane du pêcheur");
+    await titre.fill("La cabane du vieux pêcheur");
+    await espace.getByRole("button", { name: "Proposition précédente" }).click();
+    await expect(titre).toHaveValue("Le gué des saules");
+    await espace.getByRole("button", { name: "Proposition suivante" }).click();
+    await expect(titre).toHaveValue("La cabane du vieux pêcheur");
+    expect((await chapitresDe(s.foret.partieId)).map((c) => c.titre)).toEqual(["La lisière"]);
+
+    // « Ajouter ce chapitre » : seul celui qu'on voit, retouché, avec son résumé ; le suivant s'affiche
+    await espace.getByRole("button", { name: "Ajouter ce chapitre" }).click();
+    await expect(MESSAGE(page)).toContainText("« La cabane du vieux pêcheur » est ajouté à la fin de « La forêt ».");
+    await expect(page.getByRole("link", { name: "Ouvrir La cabane du vieux pêcheur" })).toBeVisible();
     expect(await chapitresDe(s.foret.partieId)).toEqual([
       expect.objectContaining({ titre: "La lisière" }),
-      expect.objectContaining({ titre: "Le gué des saules", resume: expect.stringContaining("rivière") }),
+      expect.objectContaining({ titre: "La cabane du vieux pêcheur", resume: expect.stringContaining("cabane") }),
     ]);
-    // L'espace reste ouvert : le clic suivant prend dans la réserve, sans nouvel appel
-    await espace.getByRole("button", { name: "Proposer un chapitre" }).click();
-    await expect(page.getByRole("link", { name: "Ouvrir La cabane du pêcheur" })).toBeVisible();
-    expect(s.demandes).toEqual([expect.objectContaining({ sorte: "chapitres", partie: s.foret.partieId, orientation: "au bord de l’eau" })]);
-    expect(
-      await sql("select 1 from public.scenes s join public.chapitres c on c.id = s.chapitre_id where c.partie_id = $1 and c.titre in ('Le gué des saules', 'La cabane du pêcheur')", [s.foret.partieId]),
-    ).toHaveLength(0);
-    await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
-    await expect.poll(async () => (await chapitresDe(s.foret.partieId)).map((c) => c.titre)).toEqual(["La lisière", "Le gué des saules"]);
+    await expect(titre).toHaveValue("Le chemin des lanternes");
+    await expect(espace.getByText("2 / 5")).toBeVisible();
+    expect(await sql("select 1 from public.scenes s join public.chapitres c on c.id = s.chapitre_id where c.partie_id = $1", [s.foret.partieId])).toHaveLength(1);
 
-    // La croix referme l'espace et garde l'orientation ; le résumé se lit depuis le message
+    // « Annuler » : le chapitre va à la corbeille, sa proposition revient dans la série
+    await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
+    await expect.poll(async () => (await chapitresDe(s.foret.partieId)).map((c) => c.titre)).toEqual(["La lisière"]);
+    await expect(titre).toHaveValue("La cabane du vieux pêcheur");
+    await expect(espace.getByText("2 / 6")).toBeVisible();
+
+    // La croix referme l'espace ; le rouvrir montre la même série, sans nouvel appel
     await espace.getByRole("button", { name: "Fermer l’aide de l’IA" }).click();
     await expect(espace).toHaveCount(0);
-    await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).click();
-    await expect(orienter).toHaveValue("au bord de l’eau");
+    await page.getByRole("button", { name: "Demander des chapitres à l’IA pour « La forêt »" }).click();
+    await expect(titre).toHaveValue("La cabane du vieux pêcheur");
+    expect(s.demandes).toHaveLength(1);
+    // « D'autres idées » redemande, en écartant ceux déjà vus
+    await espace.getByRole("button", { name: "D’autres idées" }).click();
+    await expect.poll(() => s.demandes.length).toBe(2);
+    expect(s.demandes[1].dejaMontres).toHaveLength(6);
     await page.keyboard.press("Escape");
     await expect(espace).toHaveCount(0);
-    await page.getByLabel("Autres commandes du chapitre Le gué des saules").click();
-    await page.getByRole("button", { name: "Réglages" }).click();
-    await expect(page.getByLabel("Résumé", { exact: true })).toHaveValue(/rivière/);
   });
 });
 
