@@ -229,7 +229,9 @@ export function FicheIdees({
 }) {
   const { etat } = idees;
   const idOrienter = useId();
-  const [orienterOuvert, setOrienterOuvert] = useState(() => etat.orientation.trim() !== "");
+  const [orienter, setOrienter] = useState(() => etat.orientation.trim() !== "");
+  // Avant la première demande, le champ est là d'emblée : on oriente l'IA dès le premier appel (18 octobre 2026)
+  const orienterOuvert = orienter || etat.orientation.trim() !== "" || (etat.premiere && !etat.demande);
   const cochees = etat.montrees.filter((i) => i.cochee);
   const pretes = cochees.filter((i) => i.libelle.trim() && (i.destination.sorte === "existante" || i.destination.titre.trim()));
   // L'orientation a changé depuis la dernière demande, et la réserve a été jetée : la prochaine idée vient d'une nouvelle demande
@@ -266,14 +268,16 @@ export function FicheIdees({
         <div className="ix__tete">
           {etat.montrees.length ? <p className="ix__aide">Cochez celles à ajouter ; un clic sur un texte le retouche.</p> : null}
           {orienterOuvert ? null : (
-            <button type="button" className="lien cx-discret" onClick={() => setOrienterOuvert(true)}>
+            <button type="button" className="lien cx-discret" onClick={() => setOrienter(true)}>
               Orienter l’IA
             </button>
           )}
         </div>
         {orienterOuvert ? (
           <div className="ix__orienter">
-            <label htmlFor={idOrienter}>Orienter l’IA</label>
+            <label htmlFor={idOrienter}>
+              Orienter l’IA <span className="ix__facultatif">facultatif</span>
+            </label>
             <ChampQuiGrandit
               id={idOrienter}
               className="pchamp"
@@ -308,7 +312,7 @@ export function FicheIdees({
           <p className="ix__reste">{etat.reste}</p>
         ) : null}
         {/* Redemander, ou voir les suivantes : sous la liste, à part de la décision du pied */}
-        {etat.demande || (!etat.montrees.length && !etat.erreur) ? null : (
+        {etat.demande || (!etat.montrees.length && !etat.erreur && !etat.premiere) ? null : (
           <button type="button" className="btn btn--ia ix__autres" onClick={() => void (etat.premiere || (etat.erreur && !etat.montrees.length) ? idees.demander() : idees.autres())}>
             <Icone nom="ia" />
             {etat.premiere || (etat.erreur && !etat.montrees.length) ? "Proposer des idées" : nouvelles ? "Nouvelles idées" : "D’autres idées"}

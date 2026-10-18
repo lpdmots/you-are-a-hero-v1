@@ -403,9 +403,8 @@ export function Copie({
     setBarre(null);
     setBandeau(null);
     lacherLeTexte();
+    // La première ouverture laisse orienter l'IA avant de demander ; les suivantes retrouvent les idées déjà reçues
     setFiche({ sorte: "idees" });
-    // La première ouverture demande aussitôt ; les suivantes retrouvent les idées déjà reçues
-    if (idees.etat.premiere && !idees.etat.demande) void idees.demander();
   };
   /**
    * « Ajouter 2 choix et 1 scène » : les nouvelles scènes d'abord, comme pour un choix fait à la

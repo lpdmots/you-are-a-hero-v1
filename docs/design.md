@@ -2127,7 +2127,10 @@ hauteurs). Le panneau des idées garde au pied la seule décision, « Ajouter…
 Dans « Mon compte », « Qualité » a trois choix : « Automatique » (par défaut),
 « Normale », « Haute », et la ligne « Automatique : haute pour une pleine page,
 normale ailleurs. Une image haute coûte comme deux. ». Pas de nouvelle critique :
-la forme reste celle des lots critiqués.
+la forme reste celle des lots critiqués. Le même jour, sur sa remarque : la
+première ouverture du panneau des idées ne demande rien ; elle montre « Orienter
+l'IA » (le mot « facultatif » en gris à côté), le curseur dans le champ, puis
+« ✦ Proposer des idées ».
 
 **Lot 4 — les idées de choix, dans le panneau à droite du texte (F13.3).** Sans
 maquette. Conçu avec impeccable dans le système « Cahiers d'aventure », critiqué

@@ -2378,7 +2378,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       différents, contraintes de la scène tenues), au jugement du lot 9 sur un
       chapitre de sa classe.
     - **Précisions prises en construisant, à faire confirmer au porteur :** la
-      première ouverture demande aussitôt, sans écran d'attente à remplir ;
+      première ouverture demandait aussitôt (révisé le 18 octobre : voir plus bas) ;
       refermer le panneau garde les idées, et le rouvrir les montre sans nouvel
       appel, tant que la page reste ouverte ; les idées cochées restent en tête
       quand « D'autres idées » remplace les autres ; retoucher une idée la coche ;
@@ -2429,6 +2429,15 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     la création d'images au lot 8). Sans migration : un compte qui avait enregistré
     « Normale » la garde, à changer dans « Mon compte ». Tests : 315 unitaires,
     62 parcours des aides.
+  - **Retouche du 18 octobre 2026, sur sa remarque** (« on ne peut pas orienter
+    l'IA la première fois ») : la première ouverture des idées de choix ne demande
+    plus rien ; le panneau montre « Orienter l'IA » (facultatif), le curseur dans
+    le champ, et « ✦ Proposer des idées » : deux clics au lieu d'un, l'orientation
+    dès le premier appel. Ensuite, inchangé : les idées gardées, le champ resté
+    ouvert tant qu'il a un texte, sinon replié en lien. À sa demande, les tests ne
+    sont pas repris pour l'instant : le parcours `idees-choix` et les captures du
+    lot 4 attendent encore l'ouverture qui demandait aussitôt, à mettre à jour
+    avant la prochaine suite complète.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

@@ -3124,6 +3124,11 @@ kbd {
   font-size: var(--t-xs);
   font-weight: 700;
 }
+.ix__facultatif {
+  margin-left: 4px;
+  color: var(--graphite-3);
+  font-weight: 400;
+}
 .ix__orienter textarea {
   width: 100%;
   box-sizing: border-box;
