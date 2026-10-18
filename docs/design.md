@@ -2251,7 +2251,7 @@ listes, qui s'enregistrent à chaque ajout. Premier retour du porteur, le
 qu'un bouton « Idées de parties » qui répondait par un message). Conçu avec impeccable
 dans le système « Cahiers d'aventure », en reprenant les formes des lots 4 et 5,
 critiqué en deux lectures séparées sur captures (`npm run captures -- etape8`, 872 à
-887) : 28/40 (lecture informée) et 26/40 (lecture indépendante). Forme construite :
+888) : 28/40 (lecture informée) et 26/40 (lecture indépendante). Forme construite :
 
 - **« Ajouter une partie │ ✦ » :** le bouton double du lot 5 ; dans l'en-tête de
   « Parties et chapitres », sa partie nommée est pleine (`double--primaire`), seul
@@ -2268,14 +2268,20 @@ critiqué en deux lectures séparées sur captures (`npm run captures -- etape8`
 - **Après l'ajout :** le panneau se referme, la première partie ajoutée vient sous la
   barre du haut, et le message dit « 2 parties ajoutées à la fin du plan :
   « Le marais des lucioles » et « Le village englouti ». » avec « Annuler ».
-- **« Ajouter un chapitre │ ✦ » :** la carte en pointillé coupée à droite d'une bande
-  de 52 px en canard pâle, les étincelles au milieu, qui scintillent pendant la
-  demande. Au premier clic, sous la partie, le cadre canard pâle « Orienter l'IA ·
-  facultatif · pour cette partie » et « ✦ Proposer un chapitre » ; ensuite, sous la
-  partie, une ligne discrète (attente, échec, demandes qui restent) et « Orienter l'IA
-  pour cette partie ». Le chapitre ajouté est cerné comme une carte montrée ; le
+- **« Ajouter un chapitre │ ✦ »** (repris le 18 octobre 2026 sur l'idée du porteur, qui
+  trouvait la bande à droite peu belle et l'orientation sous la partie mal placée) : la
+  carte en pointillé porte à son pied une bande ✦ de 46 px, en canard pâle. Un clic sur
+  la bande l'étend, en 0,3 s, à toute la carte, qu'elle recouvre : « Orienter l'IA ·
+  facultatif » et une croix en haut, le champ (« Pour cette partie, par exemple… »), le
+  curseur dedans ; le ✦ reste au pied et devient la pastille « ✦ Proposer un
+  chapitre ». Tant que l'espace est ouvert, chaque clic ajoute un chapitre (la carte
+  ouverte passe derrière lui, toujours ouverte) ; la croix ou Échap le referment en
+  gardant l'orientation. Le chapitre ajouté est cerné comme une carte montrée ; le
   message dit « « Le gué des saules » est ajouté à la fin de « La forêt », avec un
-  résumé. », avec « Voir le résumé » et « Annuler ».
+  résumé. », avec « Voir le résumé » et « Annuler ». En 390 px, la carte ouverte
+  grandit à 236 px au moins, le bouton en petit texte sur une ligne. Mouvement retiré
+  si le système le demande. Captures 879, 880, 886 et 887 ; pas de nouvelle critique,
+  la forme reprenant celles déjà critiquées.
 - **« ✦ Proposer un résumé »** (« Proposer un autre résumé » quand il y en a un), sous
   le champ du résumé, dans les réglages du chapitre : le cadre canard pâle « Résumé
   proposé · modifiable », « Utiliser ce texte », « ✦ Un autre », « Laisser ».
@@ -2286,7 +2292,9 @@ sans dire qu'ils sont liés ; la partie ajoutée qui passait sous la barre du ha
 message ; « Proposer un autre résumé » au-dessus de la proposition qu'il remplace (un
 seul bouton d'IA pendant la décision, « Un autre », dans la proposition) ; une
 proposition identique au résumé en place (« L'IA n'a rien à changer à ce résumé. ») ;
-« Premier chapitre » en canard, lu comme un lien. Laissé : « D'autres idées » sous la
+« Premier chapitre » en canard, lu comme un lien ; l'orientation d'une partie, ouverte
+sous la grille, loin de la bande cliquée (reprise du porteur, voir plus haut). Laissé :
+« D'autres idées » sous la
 liste, comme le porteur l'a voulu au lot 4 (une lecture le voulait au pied) ; le ✦
 sans mot, nommé par sa bulle (décidé) ; l'ajout direct d'un chapitre, sans aperçu,
 décidé en F13.5 ; le bouton éteint en canard pâle et le message au-dessus du voile,

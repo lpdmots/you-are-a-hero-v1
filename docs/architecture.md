@@ -1615,7 +1615,10 @@ F10.2.
   « Parties et chapitres » comme dans Grandes étapes ; l'orientation est celle de
   l'étape `etapes` (`preparations.orientations`), lue par la page du plan et écrite par
   `orienterLIa`. La réserve des chapitres est tenue par chaque partie
-  (`_plan/AjoutChapitre.tsx`), avec son orientation, le temps de la page.
+  (`_plan/AjoutChapitre.tsx`), avec son orientation et l'ouverture de l'espace de l'IA
+  de la carte, le temps de la page ; l'espace est une couche posée sur la carte, qui
+  passe de la bande du pied à toute la carte par une transition de `inset`, la carte
+  dessous rendue inerte.
 - **Les réponses simulées** sont des parties et des chapitres plausibles, toujours les
   mêmes, ceux déjà vus d'abord écartés ; le résumé simulé complète celui en place.
 

@@ -1950,102 +1950,167 @@ a.noeud__ailleurs {
 
 /* ——— Étape 8, lot 6 : parties, chapitres et résumés par l'IA (F13.5) ——— */
 
-/* « Ajouter un chapitre │ ✦ » : la carte en pointillé, coupée d'une bande ✦ canard pâle à droite */
+/* « Ajouter un chapitre │ ✦ » : la carte en pointillé, une bande ✦ canard pâle à son pied.
+   Un clic sur la bande l'étend à toute la carte : l'espace de l'IA (retouche du 18 octobre 2026) */
 .cahier-ajout-place {
+  position: relative;
   display: flex;
 }
 .cahier-ajout-place > .cahier-ajout {
   flex: 1;
   width: 100%;
 }
-.cahier-ajout-place--double > .cahier-ajout {
-  border-right-width: 0;
-  border-radius: var(--r-m) 0 0 var(--r-m);
+.cahier-ajout-place--ia > .cahier-ajout {
+  /* le libellé reste au milieu de ce qui n'est pas la bande */
+  padding-bottom: 46px;
 }
-.cahier-ajout__ia {
-  flex: 0 0 52px;
+.ajout-ia {
+  --bande: 46px;
+  position: absolute;
+  inset: calc(100% - var(--bande)) 0 0 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  overflow: hidden;
   border: 1.5px dashed var(--ia-trait);
-  border-radius: 0 var(--r-m) var(--r-m) 0;
+  border-radius: 0 0 var(--r-m) var(--r-m);
   background: var(--ia-pale);
-  color: var(--ia);
-  cursor: pointer;
   transition:
-    background 0.15s var(--ease),
-    border-color 0.15s var(--ease),
-    color 0.15s var(--ease);
+    inset 0.32s var(--ease),
+    border-radius 0.32s var(--ease),
+    box-shadow 0.32s var(--ease);
 }
-.cahier-ajout__ia .ic {
-  width: 22px;
-  height: 22px;
-}
-.cahier-ajout__ia:hover {
+.est-ouvert > .ajout-ia {
+  inset: 0;
   border-style: solid;
-  border-color: var(--ia);
-  background: color-mix(in srgb, var(--ia) 12%, var(--ia-pale));
-  color: var(--ia-fonce);
+  border-color: var(--ia-trait);
+  border-radius: var(--r-m);
+  box-shadow: 0 8px 22px rgba(30, 40, 38, 0.12);
 }
-.cahier-ajout__ia:disabled {
-  cursor: not-allowed;
+.ajout-ia__corps {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  padding: 12px 12px 4px;
+  animation: ajout-ia-paraitre 0.28s var(--ease) 0.12s both;
 }
-.cahier-ajout__ia[aria-busy="true"] {
-  cursor: progress;
-}
-.cahier-ajout__ia[aria-busy="true"] .ic {
-  animation: scintille 1.1s var(--ease) infinite alternate;
-}
-@media (prefers-reduced-motion: reduce) {
-  .cahier-ajout__ia[aria-busy="true"] .ic {
-    animation: none;
+@keyframes ajout-ia-paraitre {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
-
-/* Sous la partie, sur toute la largeur de la grille : l'orientation, l'attente, ce qui reste */
-.plan-ia-ligne {
-  grid-column: 1 / -1;
-  margin-top: -8px;
-}
-.plan-ia {
-  display: grid;
-  gap: 8px;
-  justify-items: start;
-}
-.plan-ia__orienter {
-  width: min(100%, 560px);
-  padding: 10px 12px 12px;
-  border: 1px solid var(--ia-trait);
-  border-radius: 10px;
-  background: var(--ia-pale);
-}
-.plan-ia__orienter .btn--ia {
-  justify-self: start;
-  margin-top: 4px;
-}
-.plan-ia__note {
+.ajout-ia__tete {
   display: flex;
   align-items: center;
   gap: 6px;
   margin: 0;
+}
+.ajout-ia__tete label {
+  flex: 1;
+  color: var(--ia-fonce);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.ajout-ia__fermer {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  margin: -4px -4px 0 0;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.ajout-ia__fermer:hover,
+.ajout-ia__fermer:focus-visible {
+  background: color-mix(in srgb, var(--ia) 12%, var(--ia-pale));
+  color: var(--ia-fonce);
+}
+.ajout-ia__fermer .ic {
+  width: 16px;
+  height: 16px;
+}
+.ajout-ia__champ {
+  width: 100%;
+  box-sizing: border-box;
+  max-height: 100%;
+  font-size: var(--t-s);
+  line-height: 1.4;
+}
+.ajout-ia__note {
+  margin: 0;
   color: var(--graphite-2);
   font-size: var(--t-xs);
 }
-.plan-ia__note .ic {
-  width: 16px;
-  height: 16px;
-  color: var(--ia);
-  animation: scintille 1.1s var(--ease) infinite alternate;
-}
-.plan-ia__note--erreur {
+.ajout-ia__note--erreur {
   color: var(--bloque);
   font-weight: 600;
 }
-.plan-ia__lien {
+/* Le ✦ garde sa place, au pied ; ouvert, il gagne son libellé */
+.ajout-ia__bouton {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: calc(var(--bande) - 3px);
   margin: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ia);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background 0.15s var(--ease),
+    color 0.15s var(--ease);
+}
+.ajout-ia__bouton .ic {
+  width: 22px;
+  height: 22px;
+}
+.ajout-ia__bouton:hover {
+  background: color-mix(in srgb, var(--ia) 12%, var(--ia-pale));
+  color: var(--ia-fonce);
+}
+.est-ouvert .ajout-ia__bouton {
+  margin: 4px 10px 10px;
+  height: 36px;
+  border: 1px solid var(--ia-trait);
+  border-radius: 999px;
+  background: var(--feuille);
+  color: var(--ia-fonce);
+}
+.est-ouvert .ajout-ia__bouton:hover {
+  border-color: var(--ia);
+}
+.est-ouvert .ajout-ia__bouton .ic {
+  width: 18px;
+  height: 18px;
+}
+.ajout-ia__bouton:disabled {
+  cursor: progress;
+}
+.ajout-ia__bouton[aria-busy="true"] .ic {
+  animation: scintille 1.1s var(--ease) infinite alternate;
 }
 @media (prefers-reduced-motion: reduce) {
-  .plan-ia__note .ic {
+  .ajout-ia,
+  .ajout-ia__corps {
+    transition: none;
+    animation: none;
+  }
+  .ajout-ia__bouton[aria-busy="true"] .ic {
     animation: none;
   }
 }
@@ -2098,4 +2163,24 @@ a.noeud__ailleurs {
 /* « Premier chapitre » : une étiquette, pas un lien ; le canard reste aux liens et à ce qui est coché */
 .ipx__chap .ix-dest__sorte {
   color: var(--graphite-2);
+}
+/* Seule sur sa ligne (téléphone), la carte ouverte grandit assez pour le champ et le bouton */
+.cahier-ajout-place.est-ouvert {
+  min-height: 236px;
+}
+/* Deux cartes par ligne sur téléphone : le bouton tient sur une ligne */
+@media (max-width: 640px) {
+  .est-ouvert .ajout-ia__bouton {
+    margin: 4px 6px 8px;
+    gap: 5px;
+    white-space: nowrap;
+    font-size: var(--t-xs);
+  }
+  .est-ouvert .ajout-ia__bouton .ic {
+    width: 15px;
+    height: 15px;
+  }
+  .ajout-ia__corps {
+    padding: 10px 8px 4px;
+  }
 }

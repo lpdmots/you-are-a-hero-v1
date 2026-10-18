@@ -2576,8 +2576,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       gardée avec le projet, la même dans les deux vues (elle oriente aussi les
       questions et les idées de l'étape) ; celle des chapitres est propre à chaque
       partie et ne dure que le temps de la page, comme celle des idées de choix,
-      ouverte sous la partie au premier ✦, puis par « Orienter l'IA pour cette
-      partie » ; un chapitre de l'IA s'ajoute aussitôt, sans aperçu (décision de
+      dans l'espace de l'IA de la carte (reprise du 18 octobre, plus bas) ; un
+      chapitre de l'IA s'ajoute aussitôt, sans aperçu (décision de
       F13.5), et son résumé se lit par « Voir le résumé » ; la réserve des chapitres
       est jetée quand la partie change sans l'IA ou que son orientation change ;
       une partie déjà dans le plan, ou déjà montrée, et un chapitre déjà dans la
@@ -2602,6 +2602,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       de F04-AC29 (objet ajouté depuis la scène, étape 3) a trouvé le texte frappé
       après l'objet au lieu d'avant, un curseur mal posé dans l'éditeur, que ce lot
       ne touche pas ; il passe seul.
+  - **Reprise du 18 octobre 2026, sur le retour du porteur** (« pas satisfait de la
+    façon de faire » pour ajouter un chapitre) : la bande ✦ passe au pied de la carte
+    « Ajouter un chapitre » ; un clic l'étend à toute la carte, avec « Orienter l'IA »,
+    une croix, et le ✦ devenu « Proposer un chapitre », à sa place. Amélioration
+    prise en plus de son idée : tant que l'espace reste ouvert, chaque clic ajoute un
+    chapitre, et la croix le referme en gardant l'orientation ; le cadre ouvert sous
+    la partie et le lien « Orienter l'IA pour cette partie » disparaissent. Chaque
+    ouverture demande donc deux clics pour le premier chapitre, puis un par chapitre.
+    Sans migration ; parcours des chapitres repris (6 parcours du lot).
+    Suite complète des parcours avant le commit : 354 sur 354.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

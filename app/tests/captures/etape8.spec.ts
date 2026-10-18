@@ -485,10 +485,12 @@ test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).click();
   await page.getByRole("button", { name: "Proposer un chapitre" }).waitFor();
+  await page.getByRole("textbox", { name: /Orienter l’IA/ }).fill("une rencontre au bord de l’eau");
   await capturer(page, "chapitre-orienter", false);
   await page.getByRole("button", { name: "Proposer un chapitre" }).click();
   await page.getByText(/« Le gué des saules » est ajouté/).waitFor();
   await capturer(page, "chapitre-ajoute", false);
+  await page.getByRole("button", { name: "Fermer l’aide de l’IA" }).click();
 
   // Le résumé proposé, dans les réglages du chapitre
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
@@ -517,6 +519,9 @@ test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).scrollIntoViewIfNeeded();
   await capturer(page, "chapitre-double-390", false);
+  await page.getByRole("button", { name: "Demander un chapitre à l’IA pour « La forêt »" }).click();
+  await page.getByRole("button", { name: "Proposer un chapitre" }).waitFor();
+  await capturer(page, "chapitre-ouvert-390", false);
 
   // Aides éteintes : des boutons simples
   await page.setViewportSize({ width: 1366, height: 900 });

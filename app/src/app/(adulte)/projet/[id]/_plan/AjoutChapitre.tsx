@@ -21,7 +21,8 @@ function useReserveDeChapitres(partie: Partie, orientation: string, creer: (c: C
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [reste, setReste] = useState<string | null>(null);
-  const [demandee, setDemandee] = useState(false);
+  // Un chapitre de la réserve est en train de s'ajouter : un second clic n'en ajoute pas deux
+  const [ajout, setAjout] = useState(false);
   const reserve = useRef<ChapitrePropose[]>([]);
   const vus = useRef<string[]>([]);
   // Ce que la partie doit contenir après nos propres ajouts : une autre différence vient de la main
@@ -38,7 +39,10 @@ function useReserveDeChapitres(partie: Partie, orientation: string, creer: (c: C
 
   const livrer = async (c: ChapitrePropose) => {
     attendu.current = [...partie.chapitres.map((x) => cle(x.titre)), cle(c.titre)].join("|");
-    if (!(await creer(c))) {
+    setAjout(true);
+    const fait = await creer(c);
+    setAjout(false);
+    if (!fait) {
       attendu.current = titres;
       setErreur("Le chapitre n’a pas pu être ajouté. Réessayez.");
     }
@@ -52,12 +56,11 @@ function useReserveDeChapitres(partie: Partie, orientation: string, creer: (c: C
 
   /** Un clic sur ✦ : le chapitre suivant de la réserve, ou une nouvelle demande quand elle est vide. */
   const prendre = async () => {
-    if (attente) return;
+    if (attente || ajout) return;
     setErreur(null);
     const ici = suivant();
     if (ici) return livrer(ici);
     setAttente(true);
-    setDemandee(true);
     orientationDemandee.current = orientation;
     const r = await demanderAuPlan({ sorte: "chapitres", partie: partie.id, orientation, dejaMontres: vus.current });
     if (!r.ok || r.sorte !== "chapitres") {
@@ -72,14 +75,16 @@ function useReserveDeChapitres(partie: Partie, orientation: string, creer: (c: C
     else setErreur(MESSAGES_IA.pasDeReponse);
     setAttente(false);
   };
-  return { attente, erreur, reste, demandee, prendre };
+  return { attente, ajout, erreur, reste, prendre };
 }
 
 /**
  * « + Ajouter un chapitre │ ✦ » au bout d'une partie (F13.5) : la carte en pointillé ajoute à la
- * main ; sa bande ✦ fait ajouter par l'IA un chapitre, titre et résumé, à la fin de la partie,
- * sans scène ni élève. Avant la première demande, « Orienter l'IA » s'ouvre sous la partie, le
- * curseur dedans, avec « Proposer un chapitre » (deux clics). Aides éteintes, la carte est simple.
+ * main ; sa bande ✦, au pied, ouvre l'espace de l'IA, qui monte et recouvre la carte : « Orienter
+ * l'IA » pour cette partie, et « Proposer un chapitre » à la place du ✦. Tant qu'il est ouvert,
+ * chaque clic ajoute un chapitre, titre et résumé, à la fin de la partie, sans scène ni élève ;
+ * la croix le referme en gardant l'orientation (retouche du porteur, 18 octobre 2026). Aides
+ * éteintes, la carte est simple.
  */
 export function AjoutChapitre({
   partie, enCours, onAjouter, onAjouterPropose,
@@ -92,133 +97,84 @@ export function AjoutChapitre({
 }) {
   const { proposer } = useAidesIa();
   const [orientation, setOrientation] = useState("");
-  const [orienter, setOrienter] = useState<"avant" | "ouvert" | null>(null);
+  const [ouvert, setOuvert] = useState(false);
   const r = useReserveDeChapitres(partie, orientation, onAjouterPropose);
+  const id = useId();
+  const bouton = useRef<HTMLButtonElement>(null);
 
-  const ia = () => {
-    // La première fois, on oriente d'abord ; ensuite, un clic, un chapitre
-    if (!r.demandee && !orientation.trim()) return setOrienter("avant");
-    setOrienter(orientation.trim() ? "ouvert" : null);
-    void r.prendre();
+  // Ouvert : le curseur dans le champ, la carte entière sous les yeux
+  useEffect(() => {
+    if (!ouvert) return;
+    const champ = document.getElementById(id) as HTMLTextAreaElement | null;
+    champ?.focus({ preventScroll: true });
+    champ?.closest("li")?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [ouvert, id]);
+
+  const fermer = () => {
+    setOuvert(false);
+    bouton.current?.focus();
   };
 
   return (
-    <>
-      <li className={`cahier-ajout-place${proposer ? " cahier-ajout-place--double" : ""}`}>
-        <button type="button" className="cahier-ajout" disabled={enCours} aria-busy={enCours || undefined} onClick={onAjouter}>
-          <Icone nom="plus" />
-          <span>Ajouter un chapitre</span>
-        </button>
-        {proposer ? (
-          <button
-            type="button"
-            className="cahier-ajout__ia"
-            onClick={ia}
-            disabled={r.attente}
-            aria-busy={r.attente || undefined}
-            aria-label={`Demander un chapitre à l’IA pour « ${partie.titre} »`}
-            title="Demander à l’IA"
-          >
-            <Icone nom="ia" />
-          </button>
-        ) : null}
-      </li>
-      {/* Sous la partie, sur toute la largeur de la grille */}
-      {proposer && (orienter || r.attente || r.erreur || r.reste || r.demandee) ? (
-        <li className="plan-ia-ligne">
-          <NotesChapitres
-          orientation={orientation}
-          orienter={orienter}
-          attente={r.attente}
-          erreur={r.erreur}
-          reste={r.reste}
-          onOrienter={(v) => setOrientation(v)}
-          onOuvrir={() => setOrienter("ouvert")}
-          onFermer={() => setOrienter(null)}
-          onProposer={() => {
-            setOrienter(orientation.trim() ? "ouvert" : null);
-            void r.prendre();
-          }}
-          />
-        </li>
-      ) : null}
-    </>
-  );
-}
-
-/** Sous la partie, sur toute sa largeur : l'orientation, l'attente, l'échec ou les demandes qui restent. */
-function NotesChapitres({
-  orientation, orienter, attente, erreur, reste, onOrienter, onOuvrir, onFermer, onProposer,
-}: {
-  orientation: string;
-  orienter: "avant" | "ouvert" | null;
-  attente: boolean;
-  erreur: string | null;
-  reste: string | null;
-  onOrienter: (v: string) => void;
-  onOuvrir: () => void;
-  onFermer: () => void;
-  onProposer: () => void;
-}) {
-  const id = useId();
-  // Ouvert par le ✦ ou par le lien : le curseur dans le champ, le champ sous les yeux
-  const ouvert = orienter !== null;
-  useEffect(() => {
-    if (!ouvert) return;
-    const champ = document.getElementById(id);
-    champ?.focus();
-    champ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  }, [ouvert, id]);
-  return (
-    <div className="plan-ia">
-      {orienter ? (
+    <li className={`cahier-ajout-place${proposer ? " cahier-ajout-place--ia" : ""}${ouvert ? " est-ouvert" : ""}`}>
+      <button type="button" className="cahier-ajout" disabled={enCours} aria-busy={enCours || undefined} onClick={onAjouter} inert={ouvert || undefined}>
+        <Icone nom="plus" />
+        <span>Ajouter un chapitre</span>
+      </button>
+      {proposer ? (
         <div
-          className="plan-ia__orienter ix__orienter"
+          className="ajout-ia"
+          role={ouvert ? "group" : undefined}
+          aria-label={ouvert ? `Proposer un chapitre pour « ${partie.titre} »` : undefined}
           onKeyDown={(e) => {
-            if (e.key !== "Escape" || orientation.trim()) return;
+            if (e.key !== "Escape" || !ouvert) return;
             e.stopPropagation();
-            onFermer();
+            fermer();
           }}
         >
-          <label htmlFor={id}>
-            Orienter l’IA <span className="ix__facultatif">facultatif · pour cette partie</span>
-          </label>
-          <ChampQuiGrandit
-            id={id}
-            className="pchamp"
-            rows={1}
-            maxLength={ORIENTATION_MAX}
-            value={orientation}
-            placeholder="Par exemple : une rencontre au bord de l’eau"
-            onChange={(e) => onOrienter(e.target.value)}
-          />
-          {orienter === "avant" ? (
-            <button type="button" className="btn btn--ia" onClick={onProposer}>
-              <Icone nom="ia" />
-              Proposer un chapitre
-            </button>
+          {ouvert ? (
+            <div className="ajout-ia__corps">
+              <p className="ajout-ia__tete">
+                <label htmlFor={id}>
+                  Orienter l’IA <span className="ix__facultatif">facultatif</span>
+                </label>
+                <button type="button" className="ajout-ia__fermer" onClick={fermer} aria-label="Fermer l’aide de l’IA" title="Fermer">
+                  <Icone nom="fermer" />
+                </button>
+              </p>
+              <ChampQuiGrandit
+                id={id}
+                className="pchamp ajout-ia__champ"
+                rows={3}
+                maxLength={ORIENTATION_MAX}
+                value={orientation}
+                placeholder="Pour cette partie, par exemple : une rencontre au bord de l’eau"
+                onChange={(e) => setOrientation(e.target.value)}
+              />
+              {r.erreur ? (
+                <p className="ajout-ia__note ajout-ia__note--erreur" role="alert">
+                  {r.erreur}
+                </p>
+              ) : r.reste && !r.attente ? (
+                <p className="ajout-ia__note">{r.reste}</p>
+              ) : null}
+            </div>
           ) : null}
+          <button
+            ref={bouton}
+            type="button"
+            className="ajout-ia__bouton"
+            onClick={() => (ouvert ? void r.prendre() : setOuvert(true))}
+            disabled={r.attente || r.ajout}
+            aria-busy={r.attente || r.ajout || undefined}
+            aria-label={ouvert ? undefined : `Demander un chapitre à l’IA pour « ${partie.titre} »`}
+            title={ouvert ? undefined : "Demander à l’IA"}
+          >
+            <Icone nom="ia" />
+            {ouvert ? <span>{r.attente ? "L’IA cherche…" : "Proposer un chapitre"}</span> : null}
+          </button>
         </div>
       ) : null}
-      {attente ? (
-        <p className="plan-ia__note" role="status">
-          <Icone nom="ia" />
-          L’IA cherche des chapitres pour cette partie…
-        </p>
-      ) : erreur ? (
-        <p className="plan-ia__note plan-ia__note--erreur" role="alert">
-          {erreur}
-        </p>
-      ) : reste ? (
-        <p className="plan-ia__note">{reste}</p>
-      ) : null}
-      {orienter ? null : (
-        <p className="plan-ia__lien">
-          <button type="button" className="lien cx-discret" onClick={onOuvrir}>
-            Orienter l’IA pour cette partie
-          </button>
-        </p>
-      )}
-    </div>
+    </li>
   );
 }
