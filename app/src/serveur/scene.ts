@@ -57,7 +57,11 @@ export async function donneesDeLaScene(e: Enseignant, projet: Projet, plan: Plan
   };
   return {
     eleves, texte, relecture, encouragements, livre,
-    jeu: { objets: preparation?.objets ?? [], formules: projet.recit === "choix" ? (preparation?.formules ?? []) : [] },
+    jeu: {
+      objets: preparation?.objets ?? [],
+      formules: projet.recit === "choix" ? (preparation?.formules ?? []) : [],
+      personnages: (preparation?.personnagesDeLHistoire ?? []).map((p) => ({ id: p.id, nom: p.nom, autresNoms: p.autresNoms })),
+    },
     voisines,
     voisinesAffichees: preference.data?.voisines !== false,
   };

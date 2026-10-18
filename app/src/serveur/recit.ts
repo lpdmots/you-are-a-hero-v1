@@ -153,18 +153,25 @@ export async function imagesDuProjet(e: Enseignant, projetId: string): Promise<{
 /** Le carnet de préparation du projet (F02). */
 export const preparationDe = cache(async (e: Enseignant, projetId: string): Promise<Preparation | null> => {
   if (!estUuid(projetId)) return null;
-  const [carnet, pistes, objets, formules, questions] = await Promise.all([
+  const [carnet, pistes, objets, formules, questions, personnages] = await Promise.all([
     e.supabase
       .from("preparations")
       .select("univers, personnages, enjeu, rubrique_jeu, feuille, regles, formule_renvoi, constructions, marque_fin, orientations")
       .eq("projet_id", projetId)
       .maybeSingle(),
     e.supabase.from("pistes").select("id, rubrique, texte, etat, origine").eq("projet_id", projetId).order("cree_le").order("id"),
-    e.supabase.from("objets").select("id, nom, description").eq("projet_id", projetId).order("cree_le"),
+    e.supabase.from("objets").select("id, nom, description, fiche, image_id").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("formules").select("id, texte, signe").eq("projet_id", projetId).order("cree_le"),
     e.supabase.from("questions").select("id, etape, texte, origine").eq("projet_id", projetId).order("cree_le").order("id"),
+    e.supabase
+      .from("personnages")
+      .select("id, nom, autres_noms, heros, description, fiche, portrait_id")
+      .eq("projet_id", projetId)
+      .order("rang")
+      .order("cree_le")
+      .order("id"),
   ]);
-  const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error ?? questions.error;
+  const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error ?? questions.error ?? personnages.error;
   if (erreur) throw new Error(`Préparation illisible : ${erreur.message}`);
   const c = carnet.data;
   if (!c) return null;
@@ -182,7 +189,14 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
       estRubrique(q.etape) ? [{ id: q.id, etape: q.etape, texte: q.texte, origine: q.origine === "ia" ? ("ia" as const) : ("main" as const) }] : [],
     ),
     orientations: orientationsPropres(c.orientations),
-    objets: (objets.data ?? []) as { id: string; nom: string; description: string }[],
+    objets: ((objets.data ?? []) as { id: string; nom: string; description: string; fiche: string; image_id: string | null }[]).map((o) => ({
+      id: o.id, nom: o.nom, description: o.description, fiche: o.fiche, imageId: o.image_id,
+    })),
     formules: ((formules.data ?? []) as { id: string; texte: string; signe: string }[]).map((f) => ({ id: f.id, texte: f.texte, signe: signeDe(f) })),
+    personnagesDeLHistoire: (
+      (personnages.data ?? []) as { id: string; nom: string; autres_noms: string[] | null; heros: boolean; description: string; fiche: string; portrait_id: string | null }[]
+    ).map((p) => ({
+      id: p.id, nom: p.nom, autresNoms: p.autres_noms ?? [], heros: p.heros, description: p.description, fiche: p.fiche, portraitId: p.portrait_id,
+    })),
   };
 });

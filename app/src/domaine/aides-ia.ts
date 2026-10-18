@@ -24,7 +24,14 @@ export const AIDES_TEXTE = [
   "description-image", // F10.2, « Proposer la description »
 ] as const;
 export type AideTexte = (typeof AIDES_TEXTE)[number];
-export type Aide = AideTexte | "image";
+/**
+ * Les créations d'images (F10.1, F10.2) : le portrait de référence d'un personnage, l'image de
+ * référence d'un objet, puis au lot 8 l'image d'une scène et l'image de repérage. Le journal
+ * les distingue pour suivre la dépense.
+ */
+export const AIDES_IMAGE = ["portrait", "image-objet", "image-scene", "image-reperage"] as const;
+export type AideImage = (typeof AIDES_IMAGE)[number];
+export type Aide = AideTexte | AideImage;
 
 /** Le nom de chaque aide, tel que l'adulte le lit. */
 export const NOMS_DES_AIDES: Record<AideTexte, string> = {
@@ -91,7 +98,21 @@ export type ReglagesIa = {
 export const QUALITES = ["auto", "normale", "haute"] as const;
 export type QualiteDesImages = (typeof QUALITES)[number];
 /** Ce pour quoi une image est créée : le cadrage d'une image de scène, l'image de repérage, le portrait de référence */
-export type UsageDImage = "pleine-page" | "3:2" | "16:9" | "carre" | "reperage" | "portrait";
+export type UsageDImage = "pleine-page" | "3:2" | "16:9" | "carre" | "reperage" | "portrait" | "objet";
+
+/**
+ * La taille demandée au fournisseur pour chaque usage, en points, multiples de 16. Le portrait
+ * de référence est en hauteur, le personnage en pied ; l'objet, carré.
+ */
+export const TAILLES_DES_IMAGES: Record<UsageDImage, string> = {
+  "pleine-page": "1024x1536",
+  "3:2": "1536x1024",
+  "16:9": "1536x864",
+  carre: "1024x1024",
+  reperage: "1536x1024",
+  portrait: "1024x1536",
+  objet: "1024x1024",
+};
 
 /** La qualité demandée au fournisseur pour une image, d'après le réglage du compte. */
 export const qualiteDeLImage = (reglage: QualiteDesImages, usage: UsageDImage): "normale" | "haute" =>
@@ -146,10 +167,16 @@ export const PLAFONDS = {
   imagesParMoisUsd: 30 * DOLLARS_PAR_EURO,
   /** Au-delà, la demande est abandonnée : « L'aide n'a pas répondu. » */
   secondes: 60,
+  /**
+   * Une image se crée en trente à quarante secondes chez OpenAI, parfois davantage en haute
+   * qualité ou par deux : deux minutes avant d'abandonner (étape 8, lot 7, à confirmer).
+   */
+  secondesImage: 120,
 } as const;
 
 export const MESSAGES_IA = {
   pasDeReponse: "L'aide n'a pas répondu. Le texte n'a pas changé.",
+  pasDImage: "L'image n'a pas pu être créée. Rien n'a changé.",
   texteChange: "Le texte a changé depuis la demande. Redemander ?",
   demain: "Les aides reviennent demain. Tout le reste fonctionne.",
   occupe: "Une autre demande attend encore sa réponse.",
@@ -169,7 +196,7 @@ export function resteDuJour(sorte: "texte" | "image", restant: number): string |
 /** Pourquoi une demande n'a rien donné ; le texte, lui, n'a jamais changé. */
 export type RefusIa = "eteint" | "occupe" | "jour" | "mois" | "delai" | "echec";
 
-export function messageDuRefus(refus: RefusIa): string {
+export function messageDuRefus(refus: RefusIa, sorte: "texte" | "image" = "texte"): string {
   switch (refus) {
     case "jour":
       return MESSAGES_IA.demain;
@@ -178,6 +205,6 @@ export function messageDuRefus(refus: RefusIa): string {
     case "occupe":
       return MESSAGES_IA.occupe;
     default:
-      return MESSAGES_IA.pasDeReponse;
+      return sorte === "image" ? MESSAGES_IA.pasDImage : MESSAGES_IA.pasDeReponse;
   }
 }

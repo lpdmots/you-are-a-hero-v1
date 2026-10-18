@@ -676,8 +676,9 @@ avant l'étape 2 du [plan](plan.md#étape-2--préparer-et-organiser-le-récit).
 
 - **Relance ajoutée le 18 octobre 2026,** décision du porteur : à l'étape
   « Personnages », « Un seul héros, ou plusieurs au choix du lecteur ? »
-  (F10.2, plusieurs héros), à construire avec les cartes des personnages
-  (lot 7 de l'étape 8).
+  (F10.2, plusieurs héros), construite avec les cartes des personnages (lot 7
+  de l'étape 8), en récit à choix seulement : en récit classique, le lecteur ne
+  choisit pas son héros.
 - **Une question et des relances par rubrique.** Chaque rubrique porte une
   question principale et deux ou trois relances. Les textes de départ sont
   ceux de la maquette de synthèse ; le porteur, qui mène cet atelier depuis
@@ -7216,6 +7217,55 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
     réglée sur « Normale », la pleine page est demandée en qualité normale. Ces gestes restent ceux de l'adulte (F10) ; l'élève
   écrit seulement son idée (F10-AC10). Le contrôle des images peu nettes du
   livre s'applique à ces images comme aux autres.
+
+**Construit au lot 7 de l'étape 8 (18 octobre 2026) — personnages et objets :**
+écrans dans le [design](design.md), précisions à confirmer dans le
+[plan](plan.md#étape-8--aides-ia). Prise en construisant, après la critique : un
+portrait ou une image de référence ne se crée qu'avec une fiche visuelle écrite
+(« Écrivez d'abord la fiche visuelle, ou faites-la préciser. »), pour ne pas payer
+une image faite d'après trois mots que la fiche contredirait ensuite. Le modèle
+d'image est GPT Image 2.5 Flare (OpenAI), « normale » sa qualité *medium*,
+« haute » sa qualité *high* ; un portrait normal coûte environ 1,1 centime de
+dollar et se crée en une dizaine de secondes (un essai réel), une image haute
+environ quatre fois plus.
+
+- **F10-AC38 — Repérer sans rien créer :** étant donné « Nous retenons » qui
+  nomme Lou, Maël et Brindille, et une carte « Maël le passeur » dont un autre nom
+  est « Maël », lorsque l'adulte demande « Repérer les personnages », alors Lou et
+  Brindille lui sont proposés, cochés, Lou marqué héros, sans aucune carte créée ;
+  s'il décoche Brindille et ajoute, seule la carte de Lou s'ajoute, et « Annuler »
+  la retire.
+- **F10-AC39 — Plusieurs héros :** étant donné Lou et Mina tous deux marqués héros,
+  lorsque l'adulte ouvre l'étape Personnages, alors la liste dit « 2 héros : le
+  lecteur choisit le sien au début du livre. » ; les aides qui reçoivent la
+  Préparation (consigne, idées de choix, écriture, Préparation, plan) reçoivent les
+  deux héros, leur description et le choix du lecteur.
+- **F10-AC40 — Fiche visuelle proposée :** étant donné la carte de Lou décrite en
+  quelques mots, lorsque l'adulte demande « Préciser pour les images », alors une
+  fiche proposée, modifiable, s'affiche sans rien changer à la carte ; « Utiliser
+  ce texte » la met dans la fiche visuelle, avec « Annuler ».
+- **F10-AC41 — Portrait de référence :** étant donné « Images par création » sur
+  deux et la fiche de Lou écrite, lorsque l'adulte demande « Créer son portrait »,
+  alors deux images sont proposées, comptées deux dans le plafond du jour ; celle
+  qu'il garde devient le portrait de la carte, parmi les images du projet, et se
+  télécharge sous « Portrait de Lou.jpg » ; l'autre n'est pas conservée, ni celles
+  d'un panneau refermé sans choisir.
+- **F10-AC42 — Objet de l'histoire :** étant donné « la lanterne de cuivre »,
+  lorsque l'adulte ouvre l'objet, alors son panneau porte son nom, sa description,
+  sa fiche visuelle et son image de référence, créée et gardée comme un portrait.
+- **F10-AC43 — `/personnage` :** étant donné Maël, autre nom « le passeur »,
+  lorsque l'adulte ou un élève tape « /personnage » dans une scène, alors la liste
+  propose « Maël » et, en retrait, « le passeur » ; le nom retenu s'écrit comme du
+  texte ordinaire. Le poste d'un élève ne reçoit que les noms, ni description, ni
+  fiche, ni portrait.
+- **F10-AC44 — Noms propres :** étant donné les cartes de Lou (« le garçon ») et de
+  Maël (« le passeur ») et l'objet « la clé d'argent », lorsque l'adulte demande une
+  correction, alors ces noms partent comme noms propres, que la correction ne
+  touche pas.
+- **F10-AC45 — Options du projet :** étant donné un nouveau projet, lorsque
+  l'adulte ouvre ses réglages, alors le style est « Illustration 2D lumineuse » et
+  « Héros absent des images » est allumé ; « Autre » se décrit en quelques mots,
+  repris par toutes les images créées.
 
 **Décidé le 17 octobre 2026 (recommandation acceptée) :** `/personnage`
 propose la liste des personnages de l'histoire et insère le nom retenu en

@@ -18,41 +18,57 @@ export const personnages: DefinitionAide<EntreePersonnages, { personnages: Perso
   systeme: () => assembler(
     REGLES_COMMUNES,
     `Tu repères les personnages importants d'une histoire d'après ce que la préparation en retient, pour en faire des cartes.
-Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les autres façons de le désigner dans l'histoire : « le passeur », « le vieux Maël »), « description » en quelques mots tirés de la préparation, « heros » vrai pour le personnage principal, celui que le lecteur suit ou incarne, et pour lui seul.
+Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les autres façons de le désigner dans l'histoire : « le passeur », « le vieux Maël »), « description » en quelques mots tirés de la préparation, « heros » vrai pour le personnage que le lecteur suit ou incarne.
+- Plusieurs héros seulement si la préparation dit que le lecteur choisit le sien parmi eux ; leur description dit alors ce que chacun sait faire, si la préparation le dit.
 - Seulement les personnages que la préparation nomme ou décrit ; n'en invente aucun et n'ajoute rien à leur description.
 - Une seule carte par personnage : le héros a la sienne sous son nom ; ne crée pas de carte « Le héros » ni « tu » à part. Seulement si le héros n'a aucun nom, sa carte s'appelle « Le héros ».
-- Ne reprends pas les personnages qui ont déjà leur carte.`,
+- Ne reprends pas les personnages qui ont déjà leur carte, sous leur nom ou l'un de leurs autres noms.`,
   ),
   message: (e) => assembler(
     presentation(e.histoire),
     bloc("personnages_retenus", e.carnet.personnages),
     bloc("univers", e.carnet.univers), bloc("enjeu", e.carnet.enjeu),
     bloc("idees_retenues", e.idees),
-    bloc("cartes_existantes", e.connus.map((p) => p.nom)),
+    bloc("cartes_existantes", e.connus.map((p) => [p.nom, ...p.autresNoms].join(", "))),
     "Repère les personnages.",
   ),
   schema: { nom: "personnages", schema: objet({ personnages: liste(objet({ nom: chaine, autres_noms: liste(chaine), description: chaine, heros: { type: "boolean" } })) }) },
   lire: (json, e) => {
     const l = champs(json)?.personnages;
     if (!Array.isArray(l)) return null;
-    const connus = new Set(e.connus.map((p) => p.nom.toLocaleLowerCase("fr")));
-    let heros = e.connus.some((p) => p.heros);
+    // Plusieurs héros sont possibles, au choix du lecteur (F10.2, 18 octobre 2026)
+    const connus = new Set(e.connus.flatMap((p) => [p.nom, ...p.autresNoms]).map((n) => n.toLocaleLowerCase("fr")));
     const sortie = l.flatMap((b) => {
       const o = champs(b);
       const nom = texte(o?.nom, 60);
       const description = texte(o?.description, 400) ?? "";
-      if (!nom || connus.has(nom.toLocaleLowerCase("fr"))) return [];
+      if (!nom || connus.has(nom.toLocaleLowerCase("fr")) || /^(tu|toi|le lecteur)$/i.test(nom)) return [];
       connus.add(nom.toLocaleLowerCase("fr"));
-      const estHeros = o?.heros === true && !heros;
-      if (estHeros) heros = true;
-      return [{ nom, autresNoms: textes(o?.autres_noms, 60)?.slice(0, 5) ?? [], description, heros: estHeros }];
+      const autresNoms = (textes(o?.autres_noms, 60) ?? []).filter((n) => !connus.has(n.toLocaleLowerCase("fr"))).slice(0, 5);
+      return [{ nom, autresNoms, description, heros: o?.heros === true }];
     });
     return { personnages: sortie.slice(0, 12) };
   },
-  simuler: () => ({ personnages: [{ nom: "Lou", autres_noms: ["le garçon"], description: "Fils du passeur, a peur de l'eau.", heros: true }] }),
+  simuler: () => ({
+    personnages: [
+      { nom: "Lou", autres_noms: ["le garçon"], description: "Fils du passeur, dix ans, a peur de l'eau.", heros: true },
+      { nom: "Maël", autres_noms: ["le passeur", "le vieux Maël"], description: "Le père de Lou, disparu dans la brume.", heros: false },
+      { nom: "Brindille", autres_noms: ["la chouette"], description: "Une chouette qui guide Lou la nuit.", heros: false },
+    ],
+  }),
 };
 
-export type EntreeFiche = { histoire: Histoire; sorte: "personnage" | "objet"; nom: string; description: string; univers?: string };
+export type EntreeFiche = {
+  histoire: Histoire;
+  sorte: "personnage" | "objet";
+  nom: string;
+  description: string;
+  univers?: string;
+  /** Ce que la Préparation retient des personnages, où l'apparence est parfois dite */
+  retenu?: string;
+  /** La fiche déjà écrite, à préciser plutôt qu'à refaire */
+  ficheActuelle?: string;
+};
 
 /** « ✦ Préciser pour les images » : la fiche visuelle, retouchable, reprise mot pour mot ensuite. */
 export const ficheVisuelle: DefinitionAide<EntreeFiche, { fiche: string }> = {
@@ -69,13 +85,24 @@ Un objet fétiche ou un accessoire seulement si la description ou l'univers en d
 - Des traits concrets et visibles ; pas d'émotion, d'histoire ni de style de dessin.
 - Au plus soixante-dix mots, en phrases simples.`,
   ),
-  message: (e) => assembler(presentation(e.histoire), bloc("univers", e.univers), bloc(e.sorte, `${e.nom} : ${e.description}`), "Écris sa fiche visuelle."),
+  message: (e) => assembler(
+    presentation(e.histoire),
+    bloc("univers", e.univers),
+    e.sorte === "personnage" ? bloc("personnages_retenus", e.retenu) : "",
+    bloc(e.sorte, `${e.nom} : ${e.description}`),
+    bloc("fiche_actuelle", e.ficheActuelle),
+    e.ficheActuelle?.trim() ? "Reprends la fiche actuelle : garde ce qu'elle dit, précise-la et complète-la." : "Écris sa fiche visuelle.",
+  ),
   schema: { nom: "fiche", schema: objet({ fiche: chaine }) },
   lire: (json) => {
     const t = texte(champs(json)?.fiche, 900);
     return t ? { fiche: t } : null;
   },
-  simuler: (e) => ({ fiche: `${e.nom}, ${e.description}` }),
+  simuler: (e) => ({
+    fiche: e.sorte === "personnage"
+      ? `Environ dix ans, petit et vif. Visage rond, joues roses, yeux noisette. Cheveux bruns en bataille. Ciré jaune moutarde sur un pull bleu marine, bottes vertes. Porte une petite lanterne de cuivre.`
+      : `${e.nom} : objet de cuivre patiné, grand comme une main, poignée arrondie, verre légèrement bleuté.`,
+  }),
 };
 
 export type Cadrage = "pleine-page" | "3:2" | "16:9" | "carre";

@@ -138,6 +138,77 @@ export function ListeObjets({ jeu, onChoisir, onCreer, onFermer }: { jeu: Jeu; o
 }
 
 /**
+ * `/personnage` (F10.2, décidé le 17 octobre 2026) : les personnages de l'histoire, sous leur nom
+ * et leurs autres noms ; le nom retenu s'écrit comme du texte ordinaire, comme un objet.
+ */
+export function ListePersonnages({ jeu, onChoisir, onFermer }: { jeu: Jeu; onChoisir: (nom: string) => void; onFermer: () => void }) {
+  const { enseignant, pourEleve } = useCopie();
+  const adulte = !pourEleve;
+  const [demande, setDemande] = useState("");
+  const champ = useRef<HTMLInputElement>(null);
+  const vide = useRef<HTMLParagraphElement>(null);
+  useEffect(() => {
+    (champ.current ?? vide.current)?.focus();
+  }, []);
+  // Chaque nom se propose, les autres noms avec celui du personnage : « le passeur · Maël »
+  const noms = useMemo(
+    () => (jeu.personnages ?? []).flatMap((p) => [{ cle: `${p.id}`, nom: p.nom, de: null as string | null }, ...p.autresNoms.map((a, i) => ({ cle: `${p.id}-${i}`, nom: a, de: p.nom }))]),
+    [jeu.personnages],
+  );
+  const mots = cle(demande).split(" ").filter(Boolean);
+  const trouves = useMemo(
+    () => noms.filter((n) => mots.every((m) => cle(`${n.nom} ${n.de ?? ""}`).includes(m))),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [noms, demande],
+  );
+  const lignes = useRef<HTMLUListElement>(null);
+  const liste = useListe(trouves.length, (i) => onChoisir(trouves[i].nom), lignes);
+  return (
+    <div className="pop" role="dialog" aria-label="Personnages de l’histoire" onKeyDown={auClavierDeLaListe(onFermer)}>
+      {noms.length === 0 ? (
+        <p className="pop__vide" ref={vide} tabIndex={-1}>
+          {adulte ? "Aucun personnage pour l’instant : ils se notent dans la Préparation, étape Personnages." : `${enseignant ?? "Ton enseignant(e)"} n’a pas encore noté de personnage.`}
+        </p>
+      ) : (
+        <>
+          <label className="vh" htmlFor="pop-personnage">
+            Chercher un personnage
+          </label>
+          <input
+            id="pop-personnage"
+            ref={champ}
+            className="pchamp pop__filtre"
+            type="search"
+            autoComplete="off"
+            value={demande}
+            placeholder="Chercher un personnage"
+            onChange={(e) => {
+              setDemande(e.target.value);
+              liste.setSurligne(0);
+            }}
+            onKeyDown={liste.auClavier}
+          />
+          {trouves.length === 0 ? (
+            <p className="pop__vide">Aucun personnage ne porte ce nom.</p>
+          ) : (
+            <ul className="pop__liste" role="listbox" aria-label="Personnages" ref={lignes}>
+              {trouves.map((n, i) => (
+                <li key={n.cle} role="option" aria-selected={i === liste.choisi} className={n.de ? "pop__autre-nom" : undefined}>
+                  <button type="button" tabIndex={-1} onClick={() => onChoisir(n.nom)} onMouseEnter={() => liste.setSurligne(i)}>
+                    <span className="pop__nom">{n.nom}</span>
+                    {n.de ? <span className="vh"> : {n.de}</span> : null}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      )}
+    </div>
+  );
+}
+
+/**
  * « Action de jeu » : un paragraphe vide, à écrire, ou une formule de la liste (F04-AC27).
  * La formule retenue devient du texte libre, modifiable sur place.
  */

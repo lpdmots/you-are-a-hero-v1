@@ -3,6 +3,7 @@
  * Les textes du guidage partent de ceux de la maquette (10 octobre 2026) ; le design en
  * garde la version en vigueur.
  */
+import type { Personnage } from "./personnages";
 import type { Organisation, Recit } from "./projets";
 
 export const RUBRIQUES = ["univers", "personnages", "enjeu", "etapes"] as const;
@@ -20,6 +21,9 @@ export const NOM_RUBRIQUE: Record<Rubrique, string> = {
 
 export type Guidage = { question: string; relances: string[]; exemple: string };
 
+/** Ajoutée le 18 octobre 2026 (F02, F10.2) : plusieurs héros possibles, au choix du lecteur. */
+export const RELANCE_DES_HEROS = "Un seul héros, ou plusieurs au choix du lecteur ?";
+
 const CLASSE: Record<Rubrique, Guidage> = {
   univers: {
     question: "Où se passe notre histoire, et qu’a-t-elle d’étrange ?",
@@ -29,7 +33,7 @@ const CLASSE: Record<Rubrique, Guidage> = {
   },
   personnages: {
     question: "Qui est notre héros, et qu’est-ce qui le rend unique ?",
-    relances: ["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?"],
+    relances: ["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", RELANCE_DES_HEROS],
     exemple: "Lou, 10 ans, fils du dernier passeur du village. Il connaît le chant des lanternes mais a peur de l’eau.",
   },
   enjeu: {
@@ -54,7 +58,9 @@ const ETAPES_CLASSIQUE: Guidage = {
 const pourLAuteur = (texte: string): string => texte.replace(/\bnotre\b/g, "votre").replace(/\bNotre\b/g, "Votre");
 
 export function guidage(rubrique: Rubrique, organisation: Organisation, recit: Recit): Guidage {
-  const base = rubrique === "etapes" && recit === "classique" ? ETAPES_CLASSIQUE : CLASSE[rubrique];
+  let base = rubrique === "etapes" && recit === "classique" ? ETAPES_CLASSIQUE : CLASSE[rubrique];
+  // Le lecteur ne choisit son héros que dans un récit à choix (F10.2, relance du 18 octobre 2026)
+  if (rubrique === "personnages" && recit === "classique") base = { ...base, relances: base.relances.filter((r) => r !== RELANCE_DES_HEROS) };
   return organisation === "personnel" ? { ...base, question: pourLAuteur(base.question) } : base;
 }
 
@@ -144,7 +150,8 @@ export function prendreDansLaReserve(reserve: string[], deja: string[]): { eleme
 
 // ——— Rubrique « Objets et formules » (F04.2), feuille d'aventure, dé, règles du jeu ———
 
-export type Objet = { id: string; nom: string; description: string };
+/** Un objet de l'histoire ; sa fiche visuelle et son image de référence servent aux images (F10.2). */
+export type Objet = { id: string; nom: string; description: string; fiche?: string; imageId?: string | null };
 /**
  * Le signe placé devant une action de jeu, dans la copie comme dans le livre : le crayon
  * par défaut, pour ce qui se note ; le dé, le sac, le cœur (F04-AC40). Une formule porte le
@@ -275,4 +282,6 @@ export type Preparation = {
   orientations: Partial<Record<Rubrique, string>>;
   objets: Objet[];
   formules: Formule[];
+  /** Les cartes de l'étape « Personnages » (F10.2) ; « personnages » est le texte retenu de l'étape */
+  personnagesDeLHistoire: Personnage[];
 };

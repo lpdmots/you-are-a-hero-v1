@@ -2641,6 +2641,85 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     même jour : la suite complète des parcours et le commit ne se font plus qu'une
     fois, à la clôture d'un lot ; pendant les reprises, seuls les tests du lot.
     Suite complète des parcours à la clôture : 354 sur 354.
+  - **Lot 7 — personnages et objets : construit le 18 octobre 2026,** en local, sur
+    instruction du porteur, dans une nouvelle conversation. Dans l'étape Personnages,
+    sous « Nous retenons », « Personnages de l'histoire » : une fiche par personnage
+    (portrait en 2:3 ou sa place en pointillé, nom, tampon « héros », autres noms,
+    description), qui ouvre son panneau (nom, autres noms, interrupteur « Héros »,
+    description, puis « Pour les images » : fiche visuelle, « ✦ Préciser pour les
+    images », portrait de référence) ; « Ajouter un personnage │ ✦ », dont la partie ✦
+    repère les personnages d'après le texte retenu et les idées retenues, proposés
+    cochés, retouchables, ajoutés par « Ajouter 2 personnages ». Plusieurs héros, sans
+    limite : « 2 héros : le lecteur choisit le sien au début du livre. ». La relance
+    « Un seul héros, ou plusieurs au choix du lecteur ? », en récit à choix. Les objets
+    de « Le jeu » s'ouvrent dans le même panneau (nom, description, fiche, image de
+    référence). Le style d'illustration et « Héros absent des images » dans les
+    réglages du projet. `/personnage` dans l'éditeur, pour l'adulte et l'élève. Les
+    personnages partent dans le contexte des aides et parmi les noms propres de la
+    correction. Première création d'images de l'application : `demanderDesImages`
+    (plafonds du jour et du mois, journal), GPT Image 2.5 Flare. Adresses `/ia/personnages`
+    et `/images/proposition/{projet}/{image}`. Migration
+    `20261018110000_personnages.sql`, base locale seulement : la table `personnages`
+    (l'adulte seul), `objets.fiche` et `objets.image_id`, `projets.style_images`,
+    `style_autre` et `heros_absent` (allumé), `jeu_de_la_scene` qui rend aussi les noms
+    des personnages au poste.
+    - **Critères fermés :** F10-AC38 à AC45 (ajoutés au lot, voir F10.2) ; F10-AC37 pour
+      les portraits et les images d'objet (normale sous « Automatique ») et pour la
+      qualité demandée selon l'usage ; F10-AC12 pour le réglage par défaut d'un nouveau
+      projet ; F10-AC09 pour le style repris par les portraits ; les décisions des 17 et
+      18 octobre 2026 de F10.2 pour les personnages, plusieurs héros, la fiche visuelle,
+      le portrait de référence, les objets ; F02 pour la relance des héros ; le plafond
+      des images (vingt par jour, chaque image d'une création comptée) ; les aides
+      éteintes.
+    - **Critères qui attendent :** F10-AC07, AC08, AC10, AC11 et le reste de AC09 et AC12
+      (prompts et images de scène), au lot 8 ; la qualité réelle du repérage et des
+      fiches, au jugement du lot 9.
+    - **Précisions prises en construisant, à faire confirmer au porteur :** les
+      personnages repérés arrivent cochés (ils viennent de ce que la classe a retenu),
+      à décocher, contrairement aux idées de choix ; une carte déjà là, sous son nom ou
+      un autre nom, n'est pas reproposée ; « tu » n'est jamais une carte ; un
+      personnage ajouté à la main s'ouvre aussitôt dans son panneau, et le premier est
+      marqué héros ; les autres noms s'écrivent sur une ligne, séparés par des virgules,
+      cinq au plus ; supprimer une carte la retire aussitôt, avec « Annuler », son
+      portrait restant parmi les images du projet ; **le portrait ne se crée qu'avec une
+      fiche visuelle écrite** (le bouton reste éteint et le dit), décidé après la
+      critique ; l'image gardée passe par le même chemin qu'une image importée (réduite
+      à 2 600 points et vignette), les propositions écartées ou laissées sont effacées,
+      et celles d'une page fermée s'effacent passé un jour, à la création suivante ;
+      portrait en hauteur (1024 × 1536), image d'objet carrée (1024 × 1024), sur fond uni
+      très clair, en pied ; pour un héros quand « Héros absent » est allumé, le panneau
+      dit « Le héros n'est pas dessiné dans les images de scène (Réglages du projet). »,
+      sans empêcher son portrait (utile au choix du héros, ou si le réglage change) ;
+      la qualité « normale » est *medium* chez OpenAI, « haute » *high*, et la phrase de
+      « Mon compte » dit désormais « Une image haute coûte environ quatre fois plus. » ;
+      une création d'images attend **deux minutes** avant d'abandonner, au lieu des
+      soixante secondes des aides de texte (`PLAFONDS.secondesImage`), mesure de
+      prudence pour la haute qualité et les créations par deux ; en projection, les
+      cartes se voient sans s'ouvrir ; `/personnage` montre les autres noms en retrait
+      sous leur personnage, et n'a pas de bouton dans la barre d'outils (« / »
+      seulement) ; les objets, ouverts jusque-là sur place par « Modifier », s'ouvrent
+      désormais dans le panneau, comme un personnage.
+    - **Écrans critiqués** en deux lectures séparées sur les captures 890 à 907 : 27/40
+      (informée) et 26/40 (indépendante), corrigés aussitôt (voir le design).
+    - **Dépense :** un vrai appel d'image, un portrait de Lou en qualité normale, pour
+      juger la qualité : 10,9 s, 182 jetons de texte et 343 d'image, 0,011 dollar ;
+      portrait fidèle à la fiche (ciré moutarde, pull marine, bottes vertes, lanterne de
+      cuivre), en pied sur fond uni, dans le style « Illustration 2D lumineuse ». Aucun
+      appel de texte réel (consignes au modèle de l'essai V17, qui a jugé le repérage et
+      la fiche visuelle). Dépense de l'étape, environ 1,26 dollar (1,1 €).
+    - **Tests automatiques :** 9 unitaires, 14 contre la base (dont F10-AC44 dans la
+      correction), 8 parcours. Trois parcours anciens comptaient les commandes « / » et
+      reçoivent « Personnage » ; celui de « Le jeu » renomme l'objet dans le panneau ;
+      celui des objets du poste attend aussi la liste des personnages. Un parcours du lot
+      a trouvé un vrai défaut, corrigé : un clic sur « Créer son image » juste après la
+      fiche tapée partait avant que la fiche soit enregistrée (l'envoi lancé à la sortie
+      du champ était encore en route) ; `partir()` de `useEnregistrement` attend
+      désormais aussi les envois déjà partis, ce qui vaut pour toutes les aides.
+    - **Suite complète des parcours avant le commit :** 358 sur 362 ; trois parcours
+      anciens comptaient encore les commandes « / » ou les relances de Personnages
+      (« Personnage » et la relance des héros en plus), repris ; le quatrième (la formule
+      surlignée au clavier, étape 3) passe seul, comme les fichiers des choix, du jeu et
+      de la Préparation rejoués entiers (66 sur 66).
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

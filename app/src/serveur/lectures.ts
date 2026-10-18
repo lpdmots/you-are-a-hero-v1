@@ -1,5 +1,6 @@
 import { avancement } from "@/domaine/suivi";
 import "server-only";
+import { estStyle, STYLE_PAR_DEFAUT, type Style } from "@/domaine/illustration";
 import { cache } from "react";
 import type { Enseignant } from "./adulte";
 import type { Eleve, ProfilConnu } from "@/domaine/eleves";
@@ -28,6 +29,10 @@ export type Projet = {
   lectureOuverte: boolean;
   /** Gras, italique et souligné permis aux élèves (F04-AC02) */
   miseEnFormeEleves: boolean;
+  /** Le style des images et le héros absent des images (F10.2) */
+  styleImages: Style;
+  styleAutre: string;
+  herosAbsent: boolean;
 };
 
 type LigneClasseCourte = { id: string; nom: string; annee_debut: number; terminee_le: string | null; inscriptions?: { retire_le: string | null }[] };
@@ -43,7 +48,7 @@ const classeCourte = (c: LigneClasseCourte | null | undefined): ClasseCourte | n
     : null;
 
 const SELECT_PROJET =
-  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, mise_en_forme_eleves, " +
+  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, mise_en_forme_eleves, style_images, style_autre, heros_absent, " +
   "classes(id, nom, annee_debut, terminee_le, inscriptions(retire_le))";
 
 function projetDepuis(l: Record<string, unknown>): Projet {
@@ -60,6 +65,9 @@ function projetDepuis(l: Record<string, unknown>): Projet {
     visuelDefaut: (l.visuel_defaut as string | null) ?? null,
     lectureOuverte: l.lecture_ouverte === true,
     miseEnFormeEleves: l.mise_en_forme_eleves !== false,
+    styleImages: estStyle(l.style_images) ? l.style_images : STYLE_PAR_DEFAUT,
+    styleAutre: typeof l.style_autre === "string" ? l.style_autre : "",
+    herosAbsent: l.heros_absent !== false,
   };
 }
 

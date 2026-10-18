@@ -1,7 +1,7 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
-import { MODELES, type IdModele } from "./modeles";
+import { MODELES, MODELE_DES_IMAGES, type IdModele } from "./modeles";
 
 /**
  * L'appel à un fournisseur, et rien d'autre : une consigne fixe, un message, une réponse en
@@ -106,3 +106,40 @@ export const jetonsDe = (e: unknown): { jetonsEntree: number; jetonsSortie: numb
     jetonsSortie: typeof o.jetonsSortie === "number" ? o.jetonsSortie : 0,
   };
 };
+
+export type RequeteImages = {
+  prompt: string;
+  /** « 1024x1536 » : largeur et hauteur multiples de 16 */
+  taille: string;
+  qualite: "normale" | "haute";
+  nombre: 1 | 2;
+  signal: AbortSignal;
+};
+
+export type ReponseImages = { images: Uint8Array[]; texteEntree: number; imageEntree: number; sortie: number };
+
+/**
+ * Crée une ou deux images chez OpenAI (F10.1, F10.2), en JPEG. « Normale » est la qualité
+ * « medium » du modèle, « haute » sa qualité « high ». Jamais pendant les essais automatiques.
+ */
+export async function creerDesImages(r: RequeteImages): Promise<ReponseImages> {
+  const reponse = await clientOpenAI().images.generate(
+    {
+      model: MODELE_DES_IMAGES.id,
+      prompt: r.prompt,
+      size: r.taille,
+      quality: r.qualite === "haute" ? "high" : "medium",
+      n: r.nombre,
+      output_format: "jpeg",
+      output_compression: 92,
+      background: "opaque",
+    },
+    { signal: r.signal },
+  );
+  const u = reponse.usage;
+  const imageEntree = u?.input_tokens_details?.image_tokens ?? 0;
+  const jetons = { texteEntree: Math.max(0, (u?.input_tokens ?? 0) - imageEntree), imageEntree, sortie: u?.output_tokens ?? 0 };
+  const images = (reponse.data ?? []).flatMap((d) => (d.b64_json ? [new Uint8Array(Buffer.from(d.b64_json, "base64"))] : []));
+  if (!images.length) throw Object.assign(new ReponseInutilisable("Aucune image rendue."), { jetonsImages: jetons });
+  return { images, ...jetons };
+}

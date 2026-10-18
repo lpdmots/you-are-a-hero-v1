@@ -168,7 +168,7 @@ test.describe("Image en bloc (F10) — V12", () => {
     await expect(BARRE(bilal.page).getByRole("button", { name: "Image" })).toHaveCount(0);
     await selectionner(bilal.page, { bloc: 0, offset: 0 });
     await bilal.page.keyboard.type(" /");
-    await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Choix/, /Action de jeu/, /Objet/]);
+    await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Choix/, /Action de jeu/, /Objet/, /Personnage/]);
     await bilal.page.keyboard.press("Backspace");
     await expect(FIGURES(bilal.page).locator(".prise")).toHaveCount(0);
     // Sélectionnée, puis Suppr., Alt et flèche, et les commandes appelées directement : rien ne bouge

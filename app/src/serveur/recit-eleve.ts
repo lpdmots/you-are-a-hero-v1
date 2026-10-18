@@ -307,8 +307,12 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
     aChoix ? numerosDuPoste(c, s.projet) : Promise.resolve({} as Record<string, number>),
     base.rpc("jeu_de_la_scene", { p_scene: sceneId }).then((r): Jeu => {
-      const lu = (r.data as Jeu | null) ?? { objets: [], formules: [] };
-      return { objets: lu.objets, formules: lu.formules.map((f) => ({ ...f, signe: signeDe(f) })) };
+      const lu = (r.data as (Omit<Jeu, "personnages"> & { personnages?: { id: string; nom: string; autres_noms?: string[] }[] }) | null) ?? { objets: [], formules: [] };
+      return {
+        objets: lu.objets,
+        formules: lu.formules.map((f) => ({ ...f, signe: signeDe(f) })),
+        personnages: (lu.personnages ?? []).map((p) => ({ id: p.id, nom: p.nom, autresNoms: p.autres_noms ?? [] })),
+      };
     }),
     voisinesDe(base, sceneId),
     base.rpc("voisines_affichees").then((r) => r.data !== false),

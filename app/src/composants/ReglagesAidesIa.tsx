@@ -78,7 +78,7 @@ export function ReglagesAidesIa({ reglages, onChanger }: { reglages: ReglagesIa;
                 ))}
               </div>
             </div>
-            <p>Automatique : haute pour une pleine page, normale ailleurs. Une image haute coûte comme deux.</p>
+            <p>Automatique : haute pour une pleine page, normale ailleurs. Une image haute coûte environ quatre fois plus.</p>
           </div>
         </>
       ) : null}

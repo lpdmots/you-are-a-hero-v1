@@ -1,9 +1,10 @@
 import "server-only";
-import { PLAFONDS, messageDuRefus, resteDuJour, type RefusIa, type ReglagesIa } from "@/domaine/aides-ia";
+import { PLAFONDS, TAILLES_DES_IMAGES, messageDuRefus, qualiteDeLImage, resteDuJour, type AideImage, type RefusIa, type ReglagesIa, type UsageDImage } from "@/domaine/aides-ia";
 import { clientService } from "../supabase";
 import type { DefinitionAide } from "./aide";
-import { appelerLeFournisseur, jetonsDe } from "./fournisseurs";
-import { MODELES, MODELE_DES_AIDES, coutDe, type IdModele } from "./modeles";
+import { appelerLeFournisseur, creerDesImages, jetonsDe } from "./fournisseurs";
+import { OBJET_1, OBJET_2, PORTRAIT_1, PORTRAIT_2 } from "./images-simulees";
+import { MODELES, MODELE_DES_AIDES, MODELE_DES_IMAGES, coutDe, coutDesImages, type IdModele } from "./modeles";
 
 /**
  * Demander une aide (F13, cadre commun) : une demande à la fois par adulte, sous les plafonds
@@ -112,6 +113,80 @@ export async function demanderUneAide<E, S>(
 
   if (issue !== "reussi" || valeur === null) return refus(issue === "delai" ? "delai" : "echec");
   return { ok: true, valeur, reste: resteDuJour("texte", commence.restant ?? PLAFONDS.textesParJour) };
+}
+
+export type ResultatImages =
+  | { ok: true; images: Uint8Array[]; qualite: "normale" | "haute"; /** « Encore 3 images aujourd'hui. », ou rien */ reste: string | null }
+  | { ok: false; refus: RefusIa; message: string };
+
+export type DemandeDImages = {
+  aide: AideImage;
+  usage: UsageDImage;
+  /** Le prompt assemblé par l'application, en français */
+  prompt: string;
+  /** Sinon le réglage « Images par création » de l'adulte */
+  nombre?: 1 | 2;
+};
+
+const refusImage = (r: RefusIa): ResultatImages => ({ ok: false, refus: r, message: messageDuRefus(r, "image") });
+const decoder = (b64: string) => new Uint8Array(Buffer.from(b64, "base64"));
+
+/**
+ * Crée une ou deux images pour l'adulte (F10.1, F10.2), sous les mêmes règles que les aides de
+ * texte : une demande à la fois, vingt images par jour (chaque image d'une création compte), le
+ * plafond du mois pour toute l'application, le journal sans contenu. La qualité suit le réglage
+ * du compte et l'usage (F10-AC37). Rien n'est gardé ici : la page propose, l'adulte garde.
+ */
+export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImages, options: { delaiMs?: number } = {}): Promise<ResultatImages> {
+  if (!adulte.reglagesIa.proposer) return refusImage("eteint");
+  const base = clientService();
+  const nombre = demande.nombre ?? adulte.reglagesIa.imagesParCreation;
+  const qualite = qualiteDeLImage(adulte.reglagesIa.qualite, demande.usage);
+  const delaiMs = options.delaiMs ?? PLAFONDS.secondesImage * 1000;
+
+  const { data: debut, error } = await base.rpc("commencer_appel_ia", {
+    p_enseignant: adulte.id, p_aide: demande.aide, p_sorte: "image", p_nombre: nombre,
+    p_par_jour: PLAFONDS.imagesParJour, p_mois_usd: PLAFONDS.imagesParMoisUsd, p_attente: Math.ceil(delaiMs / 1000) + 15,
+  });
+  if (error) throw new Error(`Journal des aides : ${error.message}`);
+  const commence = debut as { id?: string; restant?: number; refus?: "occupe" | "jour" | "mois" };
+  if (commence.refus || !commence.id) return refusImage(commence.refus ?? "echec");
+
+  const arret = new AbortController();
+  const minuterie = setTimeout(() => arret.abort(new Error("délai")), delaiMs);
+  let issue: "reussi" | "echec" | "delai" = "echec";
+  let jetons = { texteEntree: 0, imageEntree: 0, sortie: 0 };
+  let images: Uint8Array[] = [];
+  const simulee = simulation();
+  try {
+    if (simulee === "reponse") {
+      const deux = demande.usage === "objet" ? [OBJET_1, OBJET_2] : [PORTRAIT_1, PORTRAIT_2];
+      images = deux.slice(0, nombre).map(decoder);
+    } else if (simulee === "delai") {
+      await attendre(10 * 60_000, arret.signal);
+    } else if (simulee !== "echec") {
+      const r = await creerDesImages({ prompt: demande.prompt, taille: TAILLES_DES_IMAGES[demande.usage], qualite, nombre, signal: arret.signal });
+      jetons = r;
+      images = r.images;
+    }
+    issue = images.length ? "reussi" : "echec";
+  } catch (e) {
+    const j = (e && typeof e === "object" && "jetonsImages" in e ? (e as { jetonsImages: typeof jetons }).jetonsImages : null);
+    if (j) jetons = j;
+    issue = arret.signal.aborted ? "delai" : "echec";
+    if (!arret.signal.aborted) console.error(`Images « ${demande.aide} » : ${e instanceof Error ? e.message : e}`);
+  } finally {
+    clearTimeout(minuterie);
+  }
+
+  const { error: fin } = await base.rpc("terminer_appel_ia", {
+    p_id: commence.id, p_issue: issue, p_fournisseur: simulee ? "simule" : "openai", p_modele: MODELE_DES_IMAGES.id,
+    p_entree: jetons.texteEntree + jetons.imageEntree, p_sortie: jetons.sortie, p_cout: simulee ? 0 : coutDesImages(jetons),
+  });
+  if (fin) console.error(`Journal des aides : ${fin.message}`);
+
+  if (issue !== "reussi") return refusImage(issue === "delai" ? "delai" : "echec");
+  return { ok: true, images, qualite, reste: resteDuJour("image", commence.restant ?? PLAFONDS.imagesParJour) };
 }
 
 /**

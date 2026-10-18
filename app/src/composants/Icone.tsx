@@ -145,6 +145,19 @@ const TRACES = {
       <path d="M14 12.8h1.5M8.8 17.5h6.4" />
     </>
   ),
+  // Un personnage de l'histoire, sans visage : la place de son portrait (F10.2)
+  personnage: (
+    <>
+      <circle cx="12" cy="7.5" r="3.5" />
+      <path d="M5 20.5c.6-4.6 3.3-7 7-7s6.4 2.4 7 7" />
+    </>
+  ),
+  telecharger: (
+    <>
+      <path d="M12 4.5V15M7.5 10.5L12 15l4.5-4.5" />
+      <path d="M5 19.5h14" />
+    </>
+  ),
   importer: (
     <>
       <path d="M12 15.5V5M7.5 9.5L12 5l4.5 4.5" />

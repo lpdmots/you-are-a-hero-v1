@@ -76,7 +76,7 @@ test("F02-AC18 — chaque étape a sa question en grand, ses relances parmi les 
   const { projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation?etape=personnages`);
   await expect(page.getByRole("heading", { level: 2 })).toContainText("Qui est notre héros, et qu");
-  await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?"]);
+  await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", "Un seul héros, ou plusieurs au choix du lecteur ?"]);
   await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeHidden();
   await page.getByText("Voir un exemple").click();
   await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeVisible();
@@ -90,7 +90,7 @@ test("F02-AC18 — chaque étape a sa question en grand, ses relances parmi les 
   await expect(QUESTIONS(page).getByRole("listitem").last()).toHaveText("A-t-il un animal avec lui ?");
   await expect(QUESTIONS(page).getByRole("button", { name: /^Supprimer la question/ })).toHaveCount(1);
   await QUESTIONS(page).getByRole("button", { name: "Supprimer la question « A-t-il un animal avec lui ? »" }).click();
-  await expect(QUESTIONS(page).getByRole("listitem")).toHaveCount(3);
+  await expect(QUESTIONS(page).getByRole("listitem")).toHaveCount(4);
 });
 
 test("F02-AC02, F02-AC07 — l'écran d'aide ouvre la Préparation : rien n'est obligatoire, et la préparation sert de contexte aux aides IA", async ({ page }) => {
@@ -403,10 +403,11 @@ test("F04.2 — l'étape « Le jeu » réunit les objets, les formules d'action,
   await expect.poll(signes).toEqual([{ texte: "Retire un point de volonté à ton héros.", signe: "coeur" }, { texte: "Lance le dé.", signe: "de" }]);
 
   // Renommer un objet ne touche pas aux textes : l'écran le dit
+  // Depuis le lot 7 de l'étape 8, l'objet s'ouvre dans le panneau, comme un personnage
   await jeu.getByRole("button", { name: "Modifier la lanterne sourde" }).click();
-  await expect(jeu).toContainText("Renommer ne modifie pas les textes déjà écrits.");
-  await jeu.getByLabel("Nom, tel qu’il s’écrit dans une phrase").fill("la lanterne d’argent");
-  await jeu.getByRole("button", { name: "Enregistrer" }).click();
+  await expect(page.locator(".panneau")).toContainText("Renommer ne modifie pas les textes déjà écrits.");
+  await page.getByLabel("Nom, tel qu’il s’écrit dans une phrase").fill("la lanterne d’argent");
+  await page.locator(".panneau").getByRole("button", { name: "Fermer", exact: true }).last().click();
   await expect(jeu.getByText("la lanterne d’argent")).toBeVisible();
 
   await jeu.getByText("Feuille d’aventure du lecteur").click();

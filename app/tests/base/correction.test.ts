@@ -158,6 +158,18 @@ describe("Garder une correction (F13.1)", () => {
     expect(mots(await ligne(s015))).toEqual(["Le dragon dormait au fond de la grotte, immense."]);
   });
 
+  it("F10-AC44 — les noms des personnages, leurs autres noms et ceux des objets partent comme noms propres, que la correction ne touche pas", async () => {
+    const { projet, s015 } = await scene();
+    await laurent.base.from("personnages").insert([
+      { projet_id: projet, enseignant_id: laurent.id, nom: "Lou", autres_noms: ["le garçon"], heros: true, rang: 0 },
+      { projet_id: projet, enseignant_id: laurent.id, nom: "Maël", autres_noms: ["le passeur"], heros: false, rang: 1 },
+    ]);
+    await laurent.base.from("objets").insert({ projet_id: projet, enseignant_id: laurent.id, nom: "la clé d’argent" });
+    const simuler = vi.spyOn(correction, "simuler");
+    await demanderUneCorrection(enseignantDe(laurent), s015, (await ligne(s015)).version, 1, null);
+    expect(simuler.mock.calls[0][0].nomsPropres).toEqual(["Lou", "le garçon", "Maël", "le passeur", "la clé d’argent"]);
+  });
+
   it("F13-AC21 — aux degrés 4 et 5, la longueur demandée part chez l'aide, comptée sur le texte que le serveur relit ; aux degrés 1 à 3, jamais", async () => {
     const { s015 } = await scene();
     const e = enseignantDe(laurent);

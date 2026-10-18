@@ -51,6 +51,7 @@ export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant:
           projet={{
             id: projet.id, titre: projet.titre, deClasse, lectureOuverte: projet.lectureOuverte, miseEnFormeEleves: projet.miseEnFormeEleves,
             imageId: projet.imageId, visuelChoisi: projet.visuelChoisi, visuelDefaut: projet.visuelDefaut,
+            styleImages: projet.styleImages, styleAutre: projet.styleAutre, herosAbsent: projet.herosAbsent,
           }}
         />
       </div>

@@ -1623,6 +1623,50 @@ F10.2.
 - **Les réponses simulées** sont des parties et des chapitres plausibles, toujours les
   mêmes, ceux déjà vus d'abord écartés ; le résumé simulé complète celui en place.
 
+**Lot 7 — personnages et objets (18 octobre 2026).**
+
+- **La première création d'images.** `creerDesImages` (`serveur/ia/fournisseurs.ts`) appelle
+  `images.generate` d'OpenAI : GPT Image 2.5 Flare, JPEG, fond opaque, une ou deux images ;
+  « normale » est la qualité *medium*, « haute » *high*. `demanderDesImages`
+  (`serveur/ia/demander.ts`) tient les mêmes règles que les aides de texte, avec
+  `commencer_appel_ia` en sorte `image` : une demande à la fois, vingt images par jour
+  (chaque image d'une création comptée), trente euros par mois pour toute l'application,
+  le journal sans contenu, la qualité d'après `qualiteDeLImage` et la taille d'après
+  `TAILLES_DES_IMAGES` (`domaine/aides-ia.ts`), deux minutes avant d'abandonner
+  (`PLAFONDS.secondesImage`). Prix dans `MODELE_DES_IMAGES` et `coutDesImages`
+  (`serveur/ia/modeles.ts`) : 5 dollars par million de jetons de texte en entrée, 8
+  d'image en entrée, 30 en sortie. `IA_SIMULEE` rend deux dessins fixes
+  (`serveur/ia/images-simulees.ts`) ; aucun essai ne crée une vraie image.
+- **Proposer, puis garder.** Les images créées attendent dans le stockage, sous
+  `{adulte}/{projet}/propositions/`, sans ligne en base ; `/images/proposition/{projet}/{image}`
+  ne les sert qu'à leur adulte (le chemin se compose avec son identité). L'image gardée
+  passe par le chemin d'une image importée : la page la lit, la réduit et la dépose
+  (`reduire`, `deposer`), puis `poserLaReference` (action serveur) pose le portrait ou
+  l'image de l'objet et efface les autres propositions. Celles d'un panneau refermé sont
+  effacées par la page ; celles d'une page fermée, passé un jour, à la création suivante.
+  Ce chemin évite une bibliothèque d'images côté serveur (la vignette se fait dans le
+  navigateur), au prix d'un aller-retour de l'image.
+- **Le serveur relit.** `/ia/personnages` (`serveur/personnages.ts`) : « reperer » relit la
+  Préparation, les idées retenues et les cartes (aide `personnages`, plusieurs héros
+  admis, une carte déjà là sous un de ses noms écartée) ; « fiche » relit la carte,
+  l'univers et ce que la Préparation retient des personnages (aide `fiche-visuelle`, qui
+  précise une fiche déjà écrite) ; « images » relit la carte et le style du projet et
+  assemble le prompt (`promptDuPortrait`, `promptDeLObjet`, `domaine/illustration.ts`),
+  la fiche reprise mot pour mot, sans modèle de texte entre les deux. Rien n'est écrit
+  par une demande ; les cartes passent par les actions de `actions-personnages.ts`.
+- **Le contexte des aides.** `carnetDe` (`serveur/ia/aides/contexte.ts`) donne aux aides la
+  Préparation et les cartes ; `blocCarnet` y ajoute `blocPersonnages` : héros en tête,
+  autres noms, description, et avec plusieurs héros le choix du lecteur. Les noms propres
+  de la correction viennent de `nomsPropresDeLHistoire` (`domaine/personnages.ts`).
+- **Migration `personnages`.** La table `personnages` (l'adulte seul, comme la
+  Préparation), `objets.fiche` et `objets.image_id`, `projets.style_images`,
+  `style_autre`, `heros_absent` ; `jeu_de_la_scene` rend au poste les noms des personnages,
+  pour `/personnage` (`ListePersonnages`, `composants/copie/FicheJeu.tsx`).
+- **Enregistrer avant de demander.** `partir()` de `useEnregistrement`
+  (`composants/Enregistrement.ts`) attend aussi les envois déjà partis, et plus seulement
+  ceux qui attendaient : une aide demandée juste après la sortie d'un champ relit bien ce
+  que l'adulte vient de taper.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

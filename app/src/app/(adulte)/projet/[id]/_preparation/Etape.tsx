@@ -20,13 +20,18 @@ import { pluriel, sansCoupureFautive } from "@/domaine/texte";
 import { ajouterPiste, ajouterQuestion, changerPiste, ecrireRubrique, orienterLIa, supprimerPiste, supprimerQuestion } from "../../actions-preparation";
 import { creerPartie } from "../../actions-recit";
 import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "../_plan/IdeesDeParties";
+import { CartesDesPersonnages } from "./Personnages";
 import { demanderALaPreparation, useReserveIa } from "./reserve";
 
 /** Sans idée retenue ni texte, « Rédiger » ne demande rien (le serveur dit la même chose). */
 const RIEN_A_REDIGER = "Retenez d’abord une idée, ou écrivez quelques mots : l’IA rédige d’après eux.";
 import styles from "./preparation.module.css";
 
-export type ProjetDuCarnet = { id: string; titre: string; organisation: Organisation; recit: Recit };
+export type ProjetDuCarnet = {
+  id: string; titre: string; organisation: Organisation; recit: Recit;
+  /** Le héros absent des images (F10.2) : son portrait ne sert pas aux images de scène */
+  herosAbsent?: boolean;
+};
 
 /** Ce que la page offre autour des parties de « Grandes étapes » : réglages et suppression, hors projection. */
 export type GestesDesParties = { regler: (p: Partie) => void; supprimer: (p: Partie) => void };
@@ -184,19 +189,30 @@ export function EtapeHistoire({
             avantDeDemander={avantDeDemander}
           />
         ) : (
-          <TexteRetenu
-            projet={projet}
-            etape={etape}
-            valeur={retenu}
-            enregistrement={e}
-            peutRediger={retenu.trim() !== "" || idees.some((i) => i.etat === "retenue")}
-            ideesRetenues={idees.filter((i) => i.etat === "retenue").map((i) => i.texte)}
-            onChange={(v) => {
-              setRetenu(v);
-              changee();
-              e.prevoir(() => ecrireRubrique(projet.id, etape, v), 700, "retenu");
-            }}
-          />
+          <div className={styles.droite}>
+            <TexteRetenu
+              projet={projet}
+              etape={etape}
+              valeur={retenu}
+              enregistrement={e}
+              peutRediger={retenu.trim() !== "" || idees.some((i) => i.etat === "retenue")}
+              ideesRetenues={idees.filter((i) => i.etat === "retenue").map((i) => i.texte)}
+              onChange={(v) => {
+                setRetenu(v);
+                changee();
+                e.prevoir(() => ecrireRubrique(projet.id, etape, v), 700, "retenu");
+              }}
+            />
+            {etape === "personnages" ? (
+              <CartesDesPersonnages
+                projetId={projet.id}
+                personnages={preparation.personnagesDeLHistoire}
+                herosAbsent={projet.herosAbsent !== false}
+                projection={projection}
+                avantDeDemander={avantDeDemander}
+              />
+            ) : null}
+          </div>
         )}
       </div>
     </div>

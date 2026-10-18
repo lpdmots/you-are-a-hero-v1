@@ -1,4 +1,5 @@
 import "server-only";
+import { carnetDe } from "./ia/aides/contexte";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { paragraphesACorriger } from "@/domaine/correction";
 import { ciblesDe, estChoix } from "@/domaine/copie";
@@ -99,7 +100,7 @@ export async function demanderDesIdees(
 
   const r = await demanderUneAide(e, aideIdees, {
     histoire: lieu.histoire,
-    carnet: preparation ? { univers: preparation.univers, personnages: preparation.personnages, enjeu: preparation.enjeu } : undefined,
+    carnet: carnetDe(preparation),
     chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },
     scene: { titre: lieu.scene.titre ?? "Sans titre", consigne, paragraphes },
     scenes: autres.map((s) => ({ ref: referenceScene(s.reference), titre: s.titre?.trim() || "Sans titre", consigne: s.consigne?.trim().slice(0, 300) || undefined })),

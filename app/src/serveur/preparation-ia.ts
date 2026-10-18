@@ -1,4 +1,5 @@
 import "server-only";
+import { carnetDe } from "./ia/aides/contexte";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { guidage, type Rubrique } from "@/domaine/preparation";
 import type { Enseignant } from "./adulte";
@@ -42,7 +43,7 @@ export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rub
     questions: [...guide.relances, ...preparation.questions.filter((q) => q.etape === etape).map((q) => q.texte)],
     idees: preparation.pistes.filter((p) => p.rubrique === etape).map((p) => ({ texte: p.texte, etat: p.etat })),
     retenu: etape === "etapes" ? "" : preparation[etape],
-    carnet: { univers: preparation.univers, personnages: preparation.personnages, enjeu: preparation.enjeu },
+    carnet: carnetDe(preparation),
     plan: plan?.parties.map((p) => ({ partie: p.titre, chapitres: p.chapitres.map((c) => ({ titre: c.titre, resume: c.resume || undefined })) })),
     orientation: preparation.orientations[etape],
   };

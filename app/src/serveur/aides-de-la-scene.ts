@@ -7,7 +7,7 @@ import { remplacerSiInchange, type Remplacement } from "./correction";
 import { texteDeScene, type TexteDeScene } from "./copie";
 import { consigne as aideConsigne } from "./ia/aides/consigne";
 import { ecriture as aideEcriture } from "./ia/aides/ecriture";
-import type { Carnet, Histoire } from "./ia/aides/contexte";
+import { carnetDe, type Carnet, type Histoire } from "./ia/aides/contexte";
 import { titre as aideTitre } from "./ia/aides/titre";
 import { demanderUneAide } from "./ia/demander";
 import { projetDe } from "./lectures";
@@ -108,9 +108,7 @@ export async function demanderUneConsigne(e: Enseignant, sceneId: string): Promi
   const indication = lieu.scene.consigne;
   if (!indication) return { ok: false, message: SANS_INDICATION };
   const preparation = await preparationDe(e, lieu.projetId);
-  const carnet: Carnet | undefined = preparation
-    ? { univers: preparation.univers, personnages: preparation.personnages, enjeu: preparation.enjeu }
-    : undefined;
+  const carnet: Carnet | undefined = carnetDe(preparation);
   const r = await demanderUneAide(e, aideConsigne, {
     histoire: lieu.histoire,
     indication: indication.slice(0, 1500),
@@ -212,7 +210,7 @@ export async function demanderUneEcriture(e: Enseignant, sceneId: string, versio
     histoire: lieu.histoire,
     consigne: lieu.scene.consigne.slice(0, 1500),
     titre: lieu.scene.titre ?? undefined,
-    carnet: preparation ? { univers: preparation.univers, personnages: preparation.personnages, enjeu: preparation.enjeu } : undefined,
+    carnet: carnetDe(preparation),
     chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },
     voisines: voisinesDe(lieu.avant, lieu.apres)
       .filter((v) => v.titre || v.consigne)

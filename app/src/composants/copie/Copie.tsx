@@ -20,7 +20,7 @@ import {
   type Services, type Voisines,
 } from "./contexte";
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
-import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets } from "./FicheJeu";
+import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets, ListePersonnages } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
 import { FicheIdees, useIdeesDeChoix, type Idee } from "./FicheIdees";
 import { FicheLiaison, HorsRecit, type GestesDeLiaison } from "./Liaisons";
@@ -683,6 +683,15 @@ export function Copie({
     lacherLeTexte();
     setFiche({ sorte: "objets", bloc: ici.id });
   };
+  const ouvrirPersonnages = () => {
+    const blocs = blocsDe(e);
+    const ici = blocCourant(e)?.bloc ?? blocs[blocs.length - 1];
+    if (!ici) return;
+    setBarre(null);
+    setBandeau(null);
+    lacherLeTexte();
+    setFiche({ sorte: "personnages", bloc: ici.id });
+  };
   // ——— Images (F10) ———
   const ouvrirPoserImage = () => {
     const blocs = blocsDe(e);
@@ -800,6 +809,8 @@ export function Copie({
     ...(peutChoisir ? [{ cle: "action", nom: "Action de jeu", aide: "Ce que le lecteur fait sur sa feuille d’aventure", icone: "crayon", faire: ouvrirAction } as Commande] : []),
     // Les objets servent à la cohérence de tout récit, classique compris (F04-AC26)
     { cle: "objet", nom: "Objet", aide: "Un nom de la liste des objets de l’histoire", icone: "sac", faire: ouvrirObjets },
+    // Les personnages de l'histoire, en texte ordinaire comme les objets (F10.2)
+    { cle: "personnage", nom: "Personnage", aide: "Un nom de la liste des personnages", icone: "personnage", faire: ouvrirPersonnages },
     // L'enseignant importe et place les images (F10)
     ...(adulte ? [{ cle: "image", nom: "Image", aide: "Dans le texte, ou sur la ligne", icone: "image", faire: ouvrirPoserImage } as Commande] : []),
     ...(adulte ? [{ cle: "note", nom: "Note", aide: "Pour vous seul, jamais imprimée", icone: "noter", faire: ajouterNote } as Commande] : []),
@@ -856,7 +867,7 @@ export function Copie({
   // La liste se pose sous la ligne du curseur quand elle y écrit — commandes, objets —, sinon
   // sous son bloc ; au-dessus quand la fenêtre n'a pas la place dessous. Elle sort du cadre du
   // texte s'il le faut : ni le cadre ni le texte ne bougent
-  const surLaLigne = menuOuvert || liste?.sorte === "objets";
+  const surLaLigne = menuOuvert || liste?.sorte === "objets" || liste?.sorte === "personnages";
   const sorte = menuOuvert ? "commandes" : (liste?.sorte ?? null);
   useLayoutEffect(() => {
     const menu = menuRef.current;
@@ -1286,6 +1297,8 @@ export function Copie({
                   onCreer={adulte && services.ajouterObjet ? (nom) => setFiche({ sorte: "objet-nouveau", nom }) : undefined}
                   onFermer={fermer}
                 />
+              ) : liste.sorte === "personnages" ? (
+                <ListePersonnages jeu={jeu} onChoisir={ecrireObjet} onFermer={fermer} />
               ) : (
                 <ListeFormules
                   jeu={jeu}

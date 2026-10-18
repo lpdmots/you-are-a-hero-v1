@@ -936,6 +936,12 @@
   overflow: hidden;
   box-shadow: inset 0 0 0 1px var(--trait);
 }
+/* « Autre » style des images, décrit par l'adulte (F10.2) */
+.reg-style-autre {
+  margin-top: 8px;
+  resize: vertical;
+  line-height: 1.45;
+}
 .palette {
   display: flex;
   flex-wrap: wrap;

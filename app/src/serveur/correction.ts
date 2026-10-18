@@ -2,6 +2,7 @@ import "server-only";
 import { DEGRES, MESSAGES_IA, type Degre } from "@/domaine/aides-ia";
 import { appliquerCorrection, cibleDe, compterMots, longueurReglable, MEME_LONGUEUR, paragraphesACorriger, type Longueur, type Proposition } from "@/domaine/correction";
 import { nettoyerTexte, type Texte } from "@/domaine/copie";
+import { nomsPropresDeLHistoire } from "@/domaine/personnages";
 import type { Enseignant } from "./adulte";
 import { enregistrerPourAdulte, texteDeScene, type TexteDeScene } from "./copie";
 import { correction } from "./ia/aides/correction";
@@ -15,7 +16,7 @@ import { estUuid, preparationDe } from "./recit";
  * La correction d'une scène et les pistes de reprise (F13.1), côté serveur. Le serveur relit
  * lui-même le texte de la scène : ce qui part chez l'aide, et la version sur laquelle la
  * proposition se fonde, ne viennent jamais du navigateur. Ne partent que les paragraphes de
- * récit, la consigne et les noms des objets de l'histoire ; jamais un prénom d'élève, une
+ * récit, la consigne et les noms des personnages et des objets de l'histoire ; jamais un prénom d'élève, une
  * remarque ni le nom de l'adulte (F13, ce qui est transmis).
  */
 
@@ -32,8 +33,8 @@ async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | nul
     scene,
     consigne,
     histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
-    // Les personnages de l'histoire s'y ajouteront avec leurs cartes (étape 8, lot 7)
-    nomsPropres: (preparation?.objets ?? []).map((o) => o.nom.trim()).filter(Boolean),
+    // Les noms des personnages, leurs autres noms et ceux des objets ne se corrigent pas (F10.2)
+    nomsPropres: nomsPropresDeLHistoire(preparation?.personnagesDeLHistoire ?? [], preparation?.objets ?? []),
     deClasse: projet.organisation === "classe",
   };
 }

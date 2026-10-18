@@ -75,3 +75,21 @@ export function coutDe(modele: IdModele, jetonsEntree: number, jetonsSortie: num
   const m = MODELES[modele];
   return Math.round(((jetonsEntree * m.entree + jetonsSortie * m.sortie) / 1_000_000) * 1_000_000) / 1_000_000;
 }
+
+/**
+ * Le modèle des images (F10.1, F10.2), chez OpenAI quel que soit celui des textes. GPT Image 2.5
+ * Flare, sorti le 8 septembre 2026, pour la création courante : rapide, et quatre fois moins cher
+ * que GPT Image 2 à qualité égale. Prix relevés le 18 octobre 2026, en dollars par million de
+ * jetons : texte en entrée 5, image en entrée 8 (les portraits joints au lot 8), image en
+ * sortie 30. Une image normale (« medium ») carrée en coûte environ 1,3 centime, une haute
+ * (« high ») environ 5,3 ; un portrait en hauteur un peu moins.
+ */
+export const MODELE_DES_IMAGES = {
+  fournisseur: "openai", id: "gpt-image-2.5-flare", nom: "GPT Image 2.5 Flare", entreeTexte: 5, entreeImage: 8, sortie: 30,
+} as const;
+
+/** Ce que coûte une création d'images, en dollars, d'après les jetons que le fournisseur annonce. */
+export function coutDesImages(j: { texteEntree: number; imageEntree: number; sortie: number }): number {
+  const m = MODELE_DES_IMAGES;
+  return Math.round(((j.texteEntree * m.entreeTexte + j.imageEntree * m.entreeImage + j.sortie * m.sortie) / 1_000_000) * 1_000_000) / 1_000_000;
+}

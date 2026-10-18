@@ -2314,6 +2314,75 @@ communs à l'application ; les images par défaut des nouvelles parties, sans ra
 avec leur titre (visuels par défaut tirés au hasard, F10.1 ; les images créées
 d'après le résumé viennent au lot 8).
 
+**Lot 7 — personnages et objets de l'histoire (F10.2).** Sans maquette. Conçu avec
+impeccable dans le système « Cahiers d'aventure », en reprenant les formes des lots 4 à 6,
+critiqué en deux lectures séparées sur captures (`npm run captures -- etape8`, 890 à 907) :
+27/40 (lecture informée) et 26/40 (lecture indépendante). Forme construite (captures 890 à
+908 après correction) :
+
+- **« Personnages de l'histoire »,** sous la page de cahier de « Nous retenons… », à
+  droite, avec son compte : une fiche d'identité par personnage, comme les parties de
+  Grandes étapes, le portrait en 2:3 (56 px) à gauche comme une photo collée, ou sa place
+  en pointillé avec une silhouette sans visage ; le nom dans la voix du récit ; le tampon
+  « héros », graphite, seul tampon qui n'est pas un état ; « aussi : le passeur » en petit
+  gris ; la description sur deux lignes au plus ; une flèche à droite, qui s'avance au
+  survol. Deux héros ou plus : « 2 héros : le lecteur choisit le sien au début du livre. »
+  sous le titre. Dessous, « Ajouter un personnage │ ✦ » (bulle « Repérer les personnages
+  d'après le texte retenu ») ; sans carte, une ligne : « Une carte par personnage
+  important : son nom, ce qui le rend unique, son portrait pour les images. »
+- **Personnages repérés :** le cadre canard pâle des propositions, « ✦ Personnages repérés ·
+  cochez ceux à ajouter ; un clic sur un texte le retouche », la liste à filets des idées
+  de choix : la case, le nom en Vollkorn gras, une case « Héros » à droite, les autres noms
+  puis la description, champs soulignés d'un pointillé ; une ligne cochée prend le filet
+  canard de 2 px ; « Ajouter 2 personnages » et « Laisser ».
+- **Le panneau d'un personnage,** le panneau des réglages : le nom en titre et « Héros de
+  l'histoire » ou « Personnage de l'histoire » ; « Nom » ; « Autres noms » (« Séparés par
+  des virgules » en exemple) ; l'interrupteur « Héros », une ligne (« Le personnage que le
+  lecteur suit. », ou avec d'autres héros « Le lecteur choisit son héros : dites ce que
+  chacun sait faire. ») ; « Description » ; puis **« Pour les images »** : « Fiche
+  visuelle » (« Reprise mot pour mot dans chaque image. »), « ✦ Préciser pour les
+  images » et le cadre « Fiche proposée · modifiable » ; « Portrait de référence » : le
+  portrait gardé (132 px) avec « Télécharger » et « Pour le donner à un autre outil
+  d'images. », ou rien ; pendant la création, le cadre du portrait à venir en canard pâle,
+  ses étincelles qui luisent, « L'IA dessine le portrait… Une demi-minute environ. » ; puis
+  le cadre « ✦ Deux propositions · gardez celle qui convient », chaque image avec « Garder
+  celle-ci », et « Laisser » ; « ✦ Créer son portrait » (« Créer un autre portrait »,
+  « En créer d'autres »), éteint sans fiche, avec la raison à côté. Pour un héros quand le
+  héros est absent des images : « Le héros n'est pas dessiné dans les images de scène
+  (Réglages du projet). ». En bas du contenu, sous un filet, « Supprimer la carte », lien
+  discret ; au pied, « Enregistré » et « Fermer ».
+- **Un objet de l'histoire** (« Le jeu ») : la ligne porte la vignette de son image de
+  référence (32 px) devant le nom, et « Modifier » ouvre le même panneau : nom (avec
+  « Renommer ne modifie pas les textes déjà écrits. »), description, « Pour les images »
+  (« Image de référence », carrée), « Supprimer de la liste ».
+- **Réglages du projet :** « Style des images », une liste (« Illustration 2D lumineuse
+  (celui de l'application) », les cinq autres techniques, « Autre, à décrire », qui ouvre
+  un champ) et « Repris par toutes les images créées. Décrivez une technique, jamais le
+  nom d'un artiste. » ; « Le héros dans les images », l'interrupteur « Héros absent des
+  images » et sa ligne selon l'état.
+- **`/personnage`,** dans la copie : la liste au curseur des objets, « Chercher un
+  personnage », chaque nom en Vollkorn, les autres noms en retrait dessous, en gris.
+- **En 390 px,** les cartes sous « Nous retenons », le panneau en plein écran, le portrait
+  à 112 px.
+
+Corrigé après la critique : la marque « héros » des personnages repérés, un tampon qui
+s'allumait d'un clic et se distinguait mal éteint (une case « Héros ») ; le texte
+d'exemple des autres noms, qui reprenait ceux de Maël et se lisait comme une donnée sur
+la carte de Mina ; un portrait payé avant toute fiche visuelle (bouton éteint et sa
+raison) ; le panneau trop bavard (trois lignes d'aide raccourcies ou retirées) ;
+« Supprimer la carte » collé à « Fermer » (au bas du contenu) ; « La fiche visuelle est
+remplacée » quand elle était vide (« remplie ») ; les objets ouverts par deux liens sur
+place, l'un pour le nom, l'autre pour les images (un seul panneau, comme un personnage) ;
+les autres noms de `/personnage` au même rang que les noms (en retrait) ; rien qui
+disait que la carte s'ouvre (la flèche) ; le portrait d'un héros absent des images, sans
+mot (la ligne de rappel) ; « prompts » dans les réglages ; le champ de la fiche, étroit
+dans le panneau. Laissé : la partie ✦ du bouton double sans mot, décidé (sa bulle le
+nomme) ; « Laisser », arrêté à l'entretien ; la proposition sous le champ, forme des lots
+3 et 5 ; le message en haut de l'écran, commun à l'application ; « Héros absent des
+images », nom du réglage dans F10.2 (une lecture préférait « Montrer le héros ») ; le
+personnage décoché, qui disparaît sans trace (un nouveau repérage le repropose) ; les
+surnoms sans vignette dans `/personnage`.
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

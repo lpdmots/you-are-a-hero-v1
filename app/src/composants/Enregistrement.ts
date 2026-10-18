@@ -14,6 +14,9 @@ export function useEnregistrement() {
   const [enCours, setEnCours] = useState(0);
   const [erreur, setErreur] = useState<string | null>(null);
   const attente = useRef(new Map<string, { envoi: Envoi; minuteur: ReturnType<typeof setTimeout> }>());
+  // Les envois partis et pas encore revenus : `partir` les attend aussi (lot 7 de l'étape 8 : un
+  // clic juste après la sortie d'un champ demandait une aide avant que le champ soit enregistré)
+  const enVol = useRef(new Set<Promise<unknown>>());
 
   const envoyer = async (cle: string) => {
     const prevu = attente.current.get(cle);
@@ -21,7 +24,9 @@ export function useEnregistrement() {
     clearTimeout(prevu.minuteur);
     attente.current.delete(cle);
     setEnCours((n) => n + 1);
-    const fait = await prevu.envoi();
+    const envoi = prevu.envoi();
+    enVol.current.add(envoi);
+    const fait = await envoi.finally(() => enVol.current.delete(envoi));
     setEnCours((n) => n - 1);
     if (fait.ok) {
       setErreur(null);
@@ -35,9 +40,9 @@ export function useEnregistrement() {
     if (avant) clearTimeout(avant.minuteur);
     attente.current.set(cle, { envoi, minuteur: setTimeout(() => void envoyer(cle), delai) });
   };
-  /** Envoie tout de suite ce qui attendait : à la sortie d'un champ. */
+  /** Envoie tout de suite ce qui attendait, et attend ce qui est déjà parti : à la sortie d'un champ, avant une aide. */
   const partir = async () => {
-    await Promise.all([...attente.current.keys()].map(envoyer));
+    await Promise.all([...[...attente.current.keys()].map(envoyer), ...[...enVol.current].map((p) => p.catch(() => undefined))]);
   };
   // Le panneau qui se ferme n'abandonne pas ce qui attendait d'être enregistré
   useEffect(() => {

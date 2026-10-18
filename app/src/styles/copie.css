@@ -1697,6 +1697,15 @@ kbd {
   color: var(--graphite-2);
   font-size: var(--t-xs);
 }
+/* `/personnage` : les autres noms sous leur personnage, en retrait (F10.2) */
+.pop__autre-nom button {
+  padding-top: 3px;
+  padding-left: 26px;
+}
+.pop__autre-nom .pop__nom {
+  font-size: 0.98rem;
+  color: var(--graphite-2);
+}
 .pop__formule {
   font-family: var(--f-recit);
   font-weight: 600;

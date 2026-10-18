@@ -1,5 +1,6 @@
 "use server";
 
+import { estStyle, STYLE_AUTRE_MAX } from "@/domaine/illustration";
 import { revalidatePath } from "next/cache";
 import { chapitresDe, couleurNouvelle, departDe, nomScene, TITRE_CHAPITRE, TITRE_PARTIE, COULEURS, type Profil } from "@/domaine/recit";
 import { estVisuel, tirerVisuel } from "@/domaine/visuels";
@@ -354,10 +355,11 @@ export async function attribuerChapitre(chapitreId: string, eleves: { eleve: str
 
 /**
  * Réglages du projet : son titre, la lecture ouverte de l'histoire aux élèves (F06-AC48),
- * leur mise en forme (F04-AC03).
+ * leur mise en forme (F04-AC03), le style des images et le héros absent (F10.2).
  */
 export async function reglerProjet(
-  projetId: string, valeurs: { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean },
+  projetId: string,
+  valeurs: { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: string; styleAutre?: string; herosAbsent?: boolean },
 ): Promise<Fait> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId)) return echec("Projet inconnu.");
@@ -369,6 +371,13 @@ export async function reglerProjet(
   }
   if (valeurs.lectureOuverte !== undefined) maj.lecture_ouverte = valeurs.lectureOuverte === true;
   if (valeurs.miseEnFormeEleves !== undefined) maj.mise_en_forme_eleves = valeurs.miseEnFormeEleves === true;
+  // Le style des images et le héros absent (F10.2) : repris par toutes les images créées ensuite
+  if (valeurs.styleImages !== undefined) {
+    if (!estStyle(valeurs.styleImages)) return echec("Style inconnu.");
+    maj.style_images = valeurs.styleImages;
+  }
+  if (valeurs.styleAutre !== undefined) maj.style_autre = propre(valeurs.styleAutre, STYLE_AUTRE_MAX);
+  if (valeurs.herosAbsent !== undefined) maj.heros_absent = valeurs.herosAbsent === true;
   if (Object.keys(maj).length === 0) return { ok: true };
   const { data, error } = await e.supabase.from("projets").update(maj).eq("id", projetId).select("id");
   if (error || !data?.length) return echec("Ce réglage n’a pas pu être enregistré.");

@@ -8,6 +8,10 @@ import {
   nouvelleSection, resumeFeuille, TYPES_SECTION, type Feuille, type Formule, type Objet, type Preparation, type Section, type SigneAction, type TypeSection,
 } from "@/domaine/preparation";
 import { Signes } from "@/composants/Signes";
+import { useAidesIa } from "@/composants/AidesIa";
+import { Panneau, PiedFermer } from "@/composants/Panneau";
+import { reglerFicheDeLObjet } from "../../actions-personnages";
+import { PourLesImages } from "./Personnages";
 import { enregistrerFormule, enregistrerObjet, reglerJeu, supprimerFormule, supprimerObjet } from "../../actions-preparation";
 import type { ProjetDuCarnet } from "./Etape";
 import styles from "./preparation.module.css";
@@ -60,20 +64,16 @@ const identifiant = (prefixe: string): string => `${prefixe}${Date.now().toStrin
 
 function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Objet[]; deClasse: boolean }) {
   const dire = useMessage();
-  const [edite, setEdite] = useState<string | null>(null);
-  const [nom, setNom] = useState("");
-  const [description, setDescription] = useState("");
+  const [ouvert, setOuvert] = useState<string | null>(null);
   const [neufNom, setNeufNom] = useState("");
   const [neufDescription, setNeufDescription] = useState("");
+  const courant = objets.find((o) => o.id === ouvert) ?? null;
 
-  const enregistrer = async (id: string | null, n: string, d: string) => {
-    const fait = await enregistrerObjet(projetId, id, n, d);
+  const ajouter = async () => {
+    const fait = await enregistrerObjet(projetId, null, neufNom, neufDescription);
     if (!fait.ok) return dire({ texte: fait.erreur });
-    if (id) setEdite(null);
-    else {
-      setNeufNom("");
-      setNeufDescription("");
-    }
+    setNeufNom("");
+    setNeufDescription("");
   };
 
   return (
@@ -86,64 +86,27 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
         Écrits comme dans une phrase, avec leur article.{deClasse ? " Les élèves les consulteront depuis la scène, sans pouvoir les modifier." : ""} Le lecteur ne voit jamais cette liste.
       </p>
       <ul className={styles.liste}>
-        {objets.map((o) =>
-          edite === o.id ? (
-            <li key={o.id} className={styles.edition}>
-              <label className={styles.champ}>
-                <span>Nom, tel qu’il s’écrit dans une phrase</span>
-                <input className="pchamp" type="text" maxLength={60} value={nom} onChange={(e) => setNom(e.target.value)} />
-              </label>
-              <label className={styles.champ}>
-                <span>Description pour les auteurs</span>
-                <input className="pchamp" type="text" maxLength={120} value={description} onChange={(e) => setDescription(e.target.value)} />
-              </label>
-              <p className={styles.aide}>Renommer ne modifie pas les textes déjà écrits.</p>
-              <div className={styles.actions}>
-                <button type="button" className="btn btn--petit btn--primaire" onClick={() => void enregistrer(o.id, nom, description)}>
-                  Enregistrer
-                </button>
-                <button type="button" className="btn btn--petit" onClick={() => setEdite(null)}>
-                  Annuler
-                </button>
-                <button
-                  type="button"
-                  className="btn btn--petit"
-                  onClick={async () => {
-                    const fait = await supprimerObjet(projetId, o.id);
-                    setEdite(null);
-                    dire(fait.ok ? { texte: `« ${o.nom} » est supprimé de la liste.`, annuler: () => void enregistrerObjet(projetId, null, o.nom, o.description) } : { texte: fait.erreur });
-                  }}
-                >
-                  <Icone nom="corbeille" />
-                  Supprimer de la liste
-                </button>
-              </div>
-            </li>
-          ) : (
-            <li key={o.id}>
-              <span className={`recit ${styles.liste__nom}`}>{o.nom}</span>
-              <span className={styles.liste__desc}>{o.description}</span>
-              <button
-                type="button"
-                className="lien"
-                aria-label={`Modifier ${o.nom}`}
-                onClick={() => {
-                  setNom(o.nom);
-                  setDescription(o.description);
-                  setEdite(o.id);
-                }}
-              >
-                Modifier
-              </button>
-            </li>
-          ),
-        )}
+        {objets.map((o) => (
+          <li key={o.id}>
+            <span className={`recit ${styles.liste__nom}`}>
+              {o.imageId ? (
+                // eslint-disable-next-line @next/next/no-img-element -- image de référence, déjà réduite
+                <img className={styles.liste__vignette} src={`/images/${o.imageId}?v=1`} alt="" loading="lazy" />
+              ) : null}
+              <span>{o.nom}</span>
+            </span>
+            <span className={styles.liste__desc}>{o.description}</span>
+            <button type="button" className="lien" aria-label={`Modifier ${o.nom}`} onClick={() => setOuvert(o.id)}>
+              Modifier
+            </button>
+          </li>
+        ))}
       </ul>
       <form
         className={styles.ajout}
         onSubmit={(e) => {
           e.preventDefault();
-          void enregistrer(null, neufNom, neufDescription);
+          void ajouter();
         }}
       >
         <label className={styles.champ}>
@@ -159,7 +122,108 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
           Ajouter
         </button>
       </form>
+      {courant ? (
+        <PanneauObjet
+          key={courant.id}
+          projetId={projetId}
+          objet={courant}
+          onFermer={() => setOuvert(null)}
+          onSupprime={() => {
+            setOuvert(null);
+            dire({ texte: `« ${courant.nom} » est supprimé de la liste.`, annuler: () => void enregistrerObjet(projetId, null, courant.nom, courant.description) });
+          }}
+        />
+      ) : null}
     </section>
+  );
+}
+
+/**
+ * Un objet de l'histoire, dans le panneau des réglages, comme un personnage : son nom, sa
+ * description, puis « Pour les images » (F10.2) ; chaque champ s'enregistre après une courte pause.
+ */
+function PanneauObjet({ projetId, objet, onFermer, onSupprime }: { projetId: string; objet: Objet; onFermer: () => void; onSupprime: () => void }) {
+  const { proposer } = useAidesIa();
+  const dire = useMessage();
+  const e = useEnregistrement();
+  const [nom, setNom] = useState(objet.nom);
+  const [description, setDescription] = useState(objet.description);
+  const [fiche, setFiche] = useState(objet.fiche ?? "");
+  const regler = (n: string, d: string) => {
+    if (n.trim()) e.prevoir(() => enregistrerObjet(projetId, objet.id, n, d), 700, "objet");
+  };
+  const fermer = () => {
+    void e.partir();
+    onFermer();
+  };
+  return (
+    <Panneau titre={nom.trim() || objet.nom} sous="Objet de l’histoire" onFermer={fermer} pied={<PiedFermer enregistre={e.enregistre} enCours={e.enCours} onFermer={fermer} />}>
+      <section>
+        <h3>
+          <label htmlFor="objet-nom">Nom, tel qu’il s’écrit dans une phrase</label>
+        </h3>
+        <input
+          className="pchamp"
+          id="objet-nom"
+          data-focus=""
+          type="text"
+          maxLength={60}
+          value={nom}
+          onChange={(ev) => {
+            setNom(ev.target.value);
+            regler(ev.target.value, description);
+          }}
+          onBlur={() => void e.partir()}
+        />
+        <p>Renommer ne modifie pas les textes déjà écrits.</p>
+      </section>
+      <section>
+        <h3>
+          <label htmlFor="objet-desc">Description pour les auteurs</label>
+        </h3>
+        <input
+          className="pchamp"
+          id="objet-desc"
+          type="text"
+          maxLength={120}
+          value={description}
+          onChange={(ev) => {
+            setDescription(ev.target.value);
+            regler(nom, ev.target.value);
+          }}
+          onBlur={() => void e.partir()}
+        />
+      </section>
+      <PourLesImages
+        sorte="objet"
+        id={objet.id}
+        projetId={projetId}
+        nom={nom.trim() || objet.nom}
+        fiche={fiche}
+        referenceId={objet.imageId ?? null}
+        proposer={proposer}
+        avantDeDemander={() => e.partir()}
+        onFiche={(v) => {
+          setFiche(v);
+          e.prevoir(() => reglerFicheDeLObjet(objet.id, v), 700, "fiche");
+        }}
+      />
+      <p className={styles.finDuPanneau}>
+        <button
+          type="button"
+          className={`lien ${styles.supprimerCarte}`}
+          onClick={async () => {
+            await e.partir();
+            const fait = await supprimerObjet(projetId, objet.id);
+            if (fait.ok) onSupprime();
+            else dire({ texte: fait.erreur });
+          }}
+        >
+          <Icone nom="corbeille" />
+          Supprimer de la liste
+        </button>
+      </p>
+    </Panneau>
   );
 }
 

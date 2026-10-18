@@ -168,7 +168,8 @@ describe("Préparation (F02)", () => {
       const g = guidage(rubrique, "classe", "choix");
       expect(g.question).toMatch(/\?$/);
       expect(g.relances.length).toBeGreaterThanOrEqual(2);
-      expect(g.relances.length).toBeLessThanOrEqual(3);
+      // Personnages en reçoit une quatrième en récit à choix, le 18 octobre 2026 (F10.2, plusieurs héros)
+      expect(g.relances.length).toBeLessThanOrEqual(rubrique === "personnages" ? 4 : 3);
       expect(g.exemple.length).toBeGreaterThan(20);
     }
   });

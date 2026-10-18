@@ -112,7 +112,8 @@ test.describe("Créer un choix (F05.2) — points 1, 2 et 4 du prototype", () =>
     await selectionner(page, { bloc: 1, offset: 38 });
     await page.keyboard.type(" /");
     const menu = page.locator(".slash");
-    await expect(menu.getByRole("option")).toHaveCount(5);
+    // Choix, Action de jeu, Objet, Personnage (depuis le lot 7 de l'étape 8), Image, Note
+    await expect(menu.getByRole("option")).toHaveCount(6);
     await expect(menu).toHaveAttribute("data-cote", "bottom");
     const dessous = (await menu.boundingBox())!;
     expect(dessous.y).toBeGreaterThanOrEqual(ligne.y + ligne.height - 2);

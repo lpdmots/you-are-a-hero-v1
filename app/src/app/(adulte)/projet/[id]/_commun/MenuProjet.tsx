@@ -5,14 +5,21 @@ import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
+import { nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
 
 type ProjetRegle = {
   id: string; titre: string; deClasse: boolean; lectureOuverte: boolean; miseEnFormeEleves: boolean;
   imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null;
+  styleImages: Style; styleAutre: string; herosAbsent: boolean;
 };
 
-/** Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur mise en forme (F06-AC48, F10.1, F04.1). */
+type Reglage = { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: Style; styleAutre?: string; herosAbsent?: boolean };
+
+/**
+ * Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur
+ * mise en forme, le style des images et le héros absent des images (F06-AC48, F10.1, F04.1, F10.2).
+ */
 export function MenuProjet({ projet }: { projet: ProjetRegle }) {
   const [ouvert, setOuvert] = useState<"reglages" | "image" | null>(null);
   const [titre, setTitre] = useState(projet.titre);
@@ -20,7 +27,10 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
 
-  const regler = async (valeurs: { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean }) => {
+  const [style, setStyle] = useState<Style>(projet.styleImages);
+  const [styleAutre, setStyleAutre] = useState(projet.styleAutre);
+
+  const regler = async (valeurs: Reglage) => {
     setErreur(null);
     setEnCours(true);
     const fait = await reglerProjet(projet.id, valeurs);
@@ -44,6 +54,8 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
             onClick={() => {
               fermer();
               setTitre(projet.titre);
+              setStyle(projet.styleImages);
+              setStyleAutre(projet.styleAutre);
               setEnregistre(false);
               setOuvert("reglages");
             }}
@@ -119,6 +131,60 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
               </p>
             </section>
           ) : null}
+          <section>
+            <h3>
+              <label htmlFor="projet-style">Style des images</label>
+            </h3>
+            <select
+              className="pchamp"
+              id="projet-style"
+              value={style}
+              disabled={enCours}
+              onChange={(e) => {
+                const v = e.target.value as Style;
+                setStyle(v);
+                void regler({ styleImages: v });
+              }}
+            >
+              {STYLES.map((s) => (
+                <option key={s} value={s}>
+                  {s === "autre" ? "Autre, à décrire" : nomDuStyle(s)}
+                  {s === STYLE_PAR_DEFAUT ? " (celui de l’application)" : ""}
+                </option>
+              ))}
+            </select>
+            {style === "autre" ? (
+              <textarea
+                className="pchamp reg-style-autre"
+                aria-label="Le style, décrit par sa technique"
+                rows={2}
+                maxLength={STYLE_AUTRE_MAX}
+                value={styleAutre}
+                placeholder="Par exemple : linogravure en deux couleurs, traits épais"
+                onChange={(e) => {
+                  setStyleAutre(e.target.value);
+                  setEnregistre(false);
+                }}
+                onBlur={() => {
+                  if (styleAutre !== projet.styleAutre) void regler({ styleAutre });
+                }}
+              />
+            ) : null}
+            <p>Repris par toutes les images créées. Décrivez une technique, jamais le nom d’un artiste.</p>
+          </section>
+          <section>
+            <h3>Le héros dans les images</h3>
+            <label className="inter">
+              <input type="checkbox" role="switch" checked={projet.herosAbsent} disabled={enCours} onChange={(e) => void regler({ herosAbsent: e.target.checked })} />
+              <span className="inter__piste" aria-hidden="true" />
+              <span>Héros absent des images</span>
+            </label>
+            <p>
+              {projet.herosAbsent
+                ? "Seules ses mains peuvent paraître : il ne change pas d’une image à l’autre, et chaque lecteur peut s’y voir."
+                : "Le héros est dessiné d’après sa carte et son portrait, dans la Préparation."}
+            </p>
+          </section>
         </Panneau>
       ) : null}
       {ouvert === "image" ? (

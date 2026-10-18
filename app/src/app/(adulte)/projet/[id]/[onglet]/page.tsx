@@ -71,7 +71,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
     const etape = estEtapePreparation(demande.etape) && etapesDe(projet.recit).includes(demande.etape) ? demande.etape : etapeDOuverture(preparation, plan.parties.length);
     contenu = (
       <PagePreparation
-        projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit }}
+        projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit, herosAbsent: projet.herosAbsent }}
         preparation={preparation}
         plan={plan}
         etape={etape}

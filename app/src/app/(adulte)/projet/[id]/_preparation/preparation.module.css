@@ -609,11 +609,23 @@
   font-size: var(--t-s);
 }
 .liste__nom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 1.02rem;
   font-weight: 600;
 }
 .liste__desc {
   color: var(--graphite-2);
+}
+.liste__vignette {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 5px;
+  object-fit: cover;
+  vertical-align: middle;
+  box-shadow: inset 0 0 0 1px rgba(30, 34, 38, 0.08);
 }
 .formule_action {
   grid-column: 1 / 3;
@@ -983,5 +995,387 @@
     background:
       linear-gradient(to right, transparent 16px, var(--marge) 16px, var(--marge) 17.5px, transparent 17.5px),
       var(--feuille);
+  }
+}
+
+/* ——— Personnages de l'histoire (F10.2, étape 8, lot 7) ———
+   Sous la page de cahier : une fiche d'identité par personnage, son portrait en 2:3 à gauche
+   comme une photo collée, son nom dans la voix du récit, le tampon « héros ». */
+.droite {
+  display: grid;
+  gap: 28px;
+  align-content: start;
+}
+.personnages h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: var(--t-s);
+  font-weight: 800;
+  color: var(--graphite);
+}
+.personnages__note {
+  margin: 0 0 8px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.cartes {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.carte {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 6px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  color: var(--graphite);
+  cursor: pointer;
+  transition: background 0.18s var(--ease);
+}
+.carte:hover:not(:disabled) {
+  background: var(--feuille-2);
+}
+/* La flèche dit que la carte s'ouvre ; elle s'avance au survol */
+.carte__ouvrir {
+  width: 18px;
+  height: 18px;
+  color: var(--graphite-3);
+  transition:
+    transform 0.18s var(--ease),
+    color 0.18s var(--ease);
+}
+.carte:hover .carte__ouvrir {
+  color: var(--canard);
+  transform: translateX(2px);
+}
+.carte:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.carte:disabled {
+  cursor: default;
+}
+.carte__texte {
+  display: grid;
+  gap: 1px;
+  min-width: 0;
+}
+.carte__nom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+.carte__nom b {
+  font-size: var(--t-l);
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+.carte__autres {
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
+  overflow-wrap: anywhere;
+}
+.carte__desc,
+.carte__vide {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  font-size: var(--t-s);
+  line-height: 1.4;
+  color: var(--graphite-2);
+}
+.carte__vide {
+  font-style: italic;
+  color: var(--graphite-3);
+}
+
+/* « héros » : un tampon graphite, le seul tampon qui n'est pas un état */
+.heros {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 0.45rem;
+  border: 0;
+  border-radius: 5px;
+  font: inherit;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+.heros {
+  color: var(--graphite);
+  background: var(--feuille-2);
+  box-shadow:
+    inset 0 0 0 1.5px var(--graphite-2),
+    inset 0 0 0 3px var(--feuille-2),
+    inset 0 0 0 3.8px color-mix(in srgb, var(--graphite-2) 35%, transparent);
+}
+
+/* Le portrait, ou sa place en pointillé avec une silhouette sans visage */
+.portrait {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  border-radius: 8px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px rgba(30, 34, 38, 0.08);
+}
+.portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.portrait_grand {
+  width: 132px;
+}
+.portrait_carre {
+  aspect-ratio: 1;
+}
+.portrait_vide {
+  background: transparent;
+  box-shadow: none;
+  border: 1.5px dashed var(--trait-fort);
+  color: var(--graphite-3);
+}
+.portrait_vide :global(.ic) {
+  width: 44%;
+  height: auto;
+}
+
+/* Les personnages repérés par l'IA : la liste à filets des idées, sur le canard pâle */
+.reperes {
+  display: grid;
+  gap: 8px;
+  padding: 10px 12px 12px;
+}
+.reperes__liste {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.reperes__liste li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 10px;
+  align-items: start;
+  padding: 8px 6px;
+  border-top: 1px solid var(--ia-trait);
+}
+.reperes__liste li:first-child {
+  border-top: 0;
+}
+.reperes__liste input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin: 4px 0 0;
+  accent-color: var(--canard);
+}
+.repere_coche {
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.repere__corps {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.repere__ligne {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* Des champs qui se lisent comme du texte, soulignés d'un pointillé, cernés au survol */
+.enLigne {
+  width: 100%;
+  min-width: 0;
+  padding: 1px 4px;
+  margin: 0 -4px;
+  border: 0;
+  border-bottom: 1px dashed var(--ia-trait);
+  border-radius: 4px 4px 0 0;
+  background: transparent;
+  font: inherit;
+  color: var(--graphite);
+  resize: none;
+}
+.enLigne:hover {
+  background: color-mix(in srgb, var(--feuille) 60%, transparent);
+}
+.enLigne:focus {
+  outline: 2px solid var(--canard);
+  outline-offset: 0;
+  background: var(--feuille);
+}
+.repere__heros {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite);
+  cursor: pointer;
+}
+.reperes__liste .repere__heros input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+.repere__nom {
+  flex: 1 1 auto;
+  font-family: var(--f-recit);
+  font-size: var(--t-l);
+  font-weight: 700;
+}
+.repere__autres {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.repere__autres::placeholder {
+  color: var(--graphite-3);
+}
+.repere__desc {
+  font-size: var(--t-s);
+  line-height: 1.4;
+  color: var(--graphite-2);
+}
+
+/* Dans le panneau : « Pour les images », séparé de ce que l'adulte dit du personnage */
+.images {
+  display: grid;
+  gap: 16px;
+}
+/* Les sections du panneau calent leurs enfants à gauche : celle-ci les étend, champ compris */
+:global(.panneau__corps) .images {
+  justify-items: stretch;
+}
+.images__titre {
+  margin: 0;
+}
+.images__champ {
+  display: grid;
+  gap: 6px;
+}
+.images__champ > label,
+.reference__titre {
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite);
+}
+.images__champ > p {
+  margin: 0;
+}
+.images__gestes {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin: 2px 0 0;
+}
+.reference {
+  display: grid;
+  gap: 8px;
+}
+.reference__gardee {
+  display: flex;
+  align-items: flex-end;
+  gap: 14px;
+}
+.reference__gestes {
+  display: grid;
+  gap: 2px;
+  font-size: var(--t-s);
+}
+.reference__gestes a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: max-content;
+}
+.reference__aide {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+/* L'IA dessine : le cadre du portrait à venir, ses étincelles qui luisent */
+.dessine {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.dessine__cadre {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia-trait);
+  color: var(--ia);
+}
+.dessine__cadre :global(.ic) {
+  width: 26px;
+  height: 26px;
+  animation: luit 1.1s var(--ease) infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .dessine__cadre :global(.ic) {
+    animation: none;
+  }
+}
+.propositions {
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px 12px;
+}
+.propositions__liste {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.propositions__liste li {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.propositions__liste .portrait {
+  background: var(--feuille);
+}
+.finDuPanneau {
+  margin: 0;
+  padding-top: 16px;
+}
+.supprimerCarte {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+@media (max-width: 899px) {
+  .portrait_grand {
+    width: 112px;
   }
 }

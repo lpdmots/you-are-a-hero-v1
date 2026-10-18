@@ -42,9 +42,15 @@ export type Livre = {
   depart: string | null;
 };
 
-/** Les deux listes du projet que la copie propose : objets de l'histoire et formules d'action (F04.2). */
-export type Jeu = { objets: Objet[]; formules: Formule[] };
-export const SANS_JEU: Jeu = { objets: [], formules: [] };
+/** Un personnage de l'histoire, tel que `/personnage` le propose : ses noms seulement (F10.2). */
+export type NomsDePersonnage = { id: string; nom: string; autresNoms: string[] };
+
+/**
+ * Les listes du projet que la copie propose : objets de l'histoire et formules d'action (F04.2),
+ * et les personnages de l'histoire pour `/personnage` (F10.2).
+ */
+export type Jeu = { objets: Objet[]; formules: Formule[]; personnages?: NomsDePersonnage[] };
+export const SANS_JEU: Jeu = { objets: [], formules: [], personnages: [] };
 
 /**
  * Une scène voisine (F04.3) : celle d'où arrive le lecteur, ou celle où il repart. La
@@ -129,8 +135,9 @@ export type FicheOuverte =
   /** Une action de jeu à créer après ce bloc, ou les formules pour le texte d'une action qui existe */
   | { sorte: "action"; apres: string; remplace: boolean }
   | { sorte: "formules"; bloc: string }
-  /** Les objets de l'histoire : la liste s'ouvre sous le bloc du curseur */
+  /** Les objets de l'histoire, les personnages (F10.2) : la liste s'ouvre sous le bloc du curseur */
   | { sorte: "objets"; bloc: string }
+  | { sorte: "personnages"; bloc: string }
   /** Poser une image (F10), après le bloc du curseur. Régler une image en bloc, ou une image sur la ligne */
   | { sorte: "poser-image"; bloc: string }
   | { sorte: "image"; bloc: string }
@@ -190,5 +197,5 @@ export const LIVRE_SANS_CHOIX: Livre = {
 };
 
 /** Les listes courtes, qui s'ouvrent au curseur ; toute autre fiche va dans le panneau. */
-export const estAuCurseur = (f: FicheOuverte): f is Extract<FicheOuverte, { sorte: "objets" | "action" | "formules" }> =>
-  f.sorte === "objets" || f.sorte === "action" || f.sorte === "formules";
+export const estAuCurseur = (f: FicheOuverte): f is Extract<FicheOuverte, { sorte: "objets" | "personnages" | "action" | "formules" }> =>
+  f.sorte === "objets" || f.sorte === "personnages" || f.sorte === "action" || f.sorte === "formules";

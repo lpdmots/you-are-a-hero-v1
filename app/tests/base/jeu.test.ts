@@ -79,7 +79,7 @@ describe("Objets et formules lus par un poste (F04.2)", () => {
     const r = await recit();
     expect(await jeuDe(chloe, r.scene)).toBeNull();
     await laurent.base.from("projets").update({ lecture_ouverte: true }).eq("id", r.projet);
-    expect(await jeuDe(chloe, r.scene)).toEqual({ objets: [], formules: [] });
+    expect(await jeuDe(chloe, r.scene)).toEqual({ objets: [], formules: [], personnages: [] });
     const poste = await posteDe(classe.id, alice.inscriptionId);
     const base = await poste.base();
     expect((await base.from("objets").select("nom")).data ?? []).toEqual([]);

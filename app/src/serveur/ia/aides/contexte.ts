@@ -1,5 +1,6 @@
 import { niveauEnMots, type Niveau } from "@/domaine/aides-ia";
-import { bloc } from "../aide";
+import type { Preparation } from "@/domaine/preparation";
+import { assembler, bloc } from "../aide";
 
 /**
  * Ce que les aides savent de l'histoire : jamais le prénom ni le nom d'un élève, la classe,
@@ -13,8 +14,44 @@ export type Histoire = {
   niveaux: Niveau[];
 };
 
-/** Le carnet de la Préparation : le texte retenu de chaque étape de l'histoire (F02). */
-export type Carnet = { univers?: string; personnages?: string; enjeu?: string; etapes?: string };
+/** Une carte de l'étape « Personnages » (F10.2), telle que les aides la reçoivent. */
+export type CarteDePersonnage = { nom: string; autresNoms: string[]; description: string; heros: boolean };
+
+/**
+ * Le carnet de la Préparation : le texte retenu de chaque étape de l'histoire (F02), et les
+ * cartes des personnages (F10.2), héros en tête.
+ */
+export type Carnet = { univers?: string; personnages?: string; enjeu?: string; etapes?: string; cartes?: CarteDePersonnage[] };
+
+/** Le carnet que reçoivent les aides, d'après la Préparation ; Grandes étapes passe par le plan. */
+export function carnetDe(p: Preparation): Carnet;
+export function carnetDe(p: Preparation | null | undefined): Carnet | undefined;
+export function carnetDe(p: Preparation | null | undefined): Carnet | undefined {
+  if (!p) return undefined;
+  return {
+    univers: p.univers, personnages: p.personnages, enjeu: p.enjeu,
+    cartes: p.personnagesDeLHistoire.map((c) => ({ nom: c.nom, autresNoms: c.autresNoms, description: c.description, heros: c.heros })),
+  };
+}
+
+/**
+ * Les cartes des personnages, en lignes : « Lou (héros ; aussi : le garçon) : … ». Avec
+ * plusieurs héros, le lecteur choisit le sien (F10.2, 18 octobre 2026) : les aides le savent,
+ * pour proposer des choix qui se servent de leurs compétences.
+ */
+export function blocPersonnages(cartes: readonly CarteDePersonnage[] | undefined): string {
+  if (!cartes?.length) return "";
+  const tries = [...cartes.filter((c) => c.heros), ...cartes.filter((c) => !c.heros)].slice(0, 20);
+  const lignes = tries.map((c) => {
+    const marques = [c.heros ? "héros" : "", c.autresNoms.length ? `aussi : ${c.autresNoms.join(", ")}` : ""].filter(Boolean).join(" ; ");
+    return `${c.nom.trim()}${marques ? ` (${marques})` : ""}${c.description.trim() ? ` : ${c.description.trim()}` : ""}`;
+  });
+  const heros = tries.filter((c) => c.heros);
+  const note = heros.length > 1
+    ? `\nLe lecteur choisit son héros au début du livre parmi : ${heros.map((c) => c.nom.trim()).join(", ")}. Le texte dit « tu » sans le nommer ; un choix peut se servir de la compétence de l'un d'eux (« Si tu sais nager… »).`
+    : "";
+  return bloc("personnages", lignes.map((l) => `- ${l}`).join("\n") + note);
+}
 
 export const ETAPES_DU_CARNET = { univers: "Univers", personnages: "Personnages", enjeu: "Enjeu", etapes: "Grandes étapes" } as const;
 export type EtapeDuCarnet = keyof typeof ETAPES_DU_CARNET;
@@ -38,7 +75,7 @@ export function blocCarnet(c: Carnet | undefined, sauf?: EtapeDuCarnet): string 
   const lignes = (Object.keys(ETAPES_DU_CARNET) as EtapeDuCarnet[])
     .filter((e) => e !== sauf && c[e]?.trim())
     .map((e) => `${ETAPES_DU_CARNET[e]} : ${c[e]!.trim()}`);
-  return lignes.length ? bloc("preparation", lignes.join("\n")) : "";
+  return assembler(lignes.length ? bloc("preparation", lignes.join("\n")) : "", blocPersonnages(c.cartes));
 }
 
 export function blocPlan(plan: Plan | undefined): string {
