@@ -78,7 +78,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide, onVersion,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
-  voisines = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, aides, onSelection, onMots,
+  voisines: voisinesRecues = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, aides, onSelection, onMots,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -179,6 +179,9 @@ export function Copie({
   const [apercu, setApercu] = useState<ApercuDeChoix | null>(null);
   const [formuleVue, setFormuleVue] = useState<{ texte: string; signe: SigneAction }>({ texte: "", signe: "crayon" });
   const [avecVoisines, setAvecVoisines] = useState(voisinesAffichees);
+  // Relues après un choix ajouté ou retiré : « Juste après » suit les destinations du texte (F04.3)
+  const [voisinesRelues, setVoisinesRelues] = useState<{ pour: Voisines; lues: Voisines } | null>(null);
+  const voisines = voisinesRelues?.pour === voisinesRecues ? voisinesRelues.lues : voisinesRecues;
   const aDesVoisines = voisines.avant.length + voisines.apres.length > 0;
   const [bandeau, setBandeau] = useState<Bandeau | null>(null);
   const [barre, setBarre] = useState<{ demande: string; choisie: number } | null>(null);
@@ -333,7 +336,9 @@ export function Copie({
     if (cibles !== ciblesRelues.current) {
       ciblesRelues.current = cibles;
       void sauvegarde.envoyer().then((ok) => {
-        if (ok) void services.relireNumeros().then((numeros) => apprendre({ numeros }));
+        if (!ok) return;
+        void services.relireNumeros().then((numeros) => apprendre({ numeros }));
+        void services.relireVoisines?.().then((lues) => lues && setVoisinesRelues({ pour: voisinesRecues, lues }));
       });
     }
   };

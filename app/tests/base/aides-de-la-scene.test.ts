@@ -243,6 +243,33 @@ describe("« ✦ Écrire » une scène vide (F13.6)", () => {
     expect(rendu[0]).toEqual({ prise_par_eleve: alice.id, prise_par_enseignant: false });
   });
 
+  it("F13-AC26 — des choix déjà là : le texte écrit se pose au-dessus, les choix gardent leurs destinations ; « Annuler » rend les deux choix sans texte", async () => {
+    const { ici, souche } = await lisiere();
+    const e = enseignantDe(laurent);
+    const choix = [
+      { type: "choix", id: randomUUID(), auto: true, libelle: "Fuir vers la souche", construction: "neutre", cible: souche, children: [{ text: "" }] },
+      { type: "choix", id: randomUUID(), auto: true, libelle: "Attendre le passeur", construction: "neutre", cible: null, children: [{ text: "" }] },
+    ];
+    await ecrire(ici, [{ type: "p", id: randomUUID(), children: [{ text: "" }] }, ...choix]);
+    const v = (await ligne(ici)).version as number;
+    const r = await demanderUneEcriture(e, ici, v, 60);
+    if (!r.ok) throw new Error(r.message);
+    const mis = await mettreUneEcriture(e, ici, r.version, r.paragraphes);
+    if (!mis.ok) throw new Error(mis.message);
+    const ecrit = (await ligne(ici)).texte as { type: string; id: string; cible?: string | null }[];
+    // Les paragraphes écrits d'abord, sans la ligne vide ; puis les deux choix, intacts
+    expect(ecrit.map((b) => b.type)).toEqual([...r.paragraphes.map(() => "p"), "choix", "choix"]);
+    expect(ecrit.slice(-2).map((b) => [b.id, b.cible])).toEqual(choix.map((c) => [c.id, c.cible]));
+    // Les deux renvois, l'un vers la souche, l'autre sans destination
+    const liens = await sql<{ cible_id: string | null }>("select cible_id from public.liens where scene_id = $1 order by rang", [ici]);
+    expect(liens.map((l) => l.cible_id)).toEqual([souche, null]);
+    const defait = await annulerUneEcriture(e, ici, mis.scene.version, mis.avant, alice.id);
+    expect(defait.ok).toBe(true);
+    const rendu = (await ligne(ici)).texte as { type: string; id: string }[];
+    expect(rendu.filter((b) => b.type !== "p").map((b) => b.id)).toEqual(choix.map((c) => c.id));
+    expect(rendu.filter((b) => b.type === "p").every((b) => JSON.stringify(b).includes('"text":""'))).toBe(true);
+  });
+
   it("le texte a changé pendant la demande : rien ne s'écrit", async () => {
     const { ici } = await lisiere();
     const v = (await ligne(ici)).version as number;

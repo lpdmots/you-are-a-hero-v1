@@ -2355,7 +2355,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       consigne un peu plus haute la fait défiler en 1366 × 768) : il le pose
       désormais à la fin du paragraphe. Le comportement de « Fin » dans un vrai
       navigateur, sur une page qui défile, reste à vérifier.
-  - **Lot 4 — idées de choix : construit le 17 octobre 2026,** en local, sans
+  - **Lot 4 — idées de choix : construit le 17 octobre 2026, et terminé le
+    18 octobre :** le porteur l'essaie sur le serveur local avec de vrais appels
+    (« la proposition de choix semble fonctionner et est assez pertinente »),
+    valide le lot et confirme ses précisions, ainsi que les retouches et les deux
+    points de règle du 18 octobre ; ne plus les lui soumettre. Construit en local, sans
     migration (le journal accepte déjà l'aide `idees-choix` ; les liens se
     déduisent du texte). « ✦ Idées de choix », pastille prune à droite de
     « Corriger » dans l'en-tête de la copie, pour l'adulte seul, en récit à choix,
@@ -2377,7 +2381,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Critères qui attendent :** la qualité réelle des idées (choix vraiment
       différents, contraintes de la scène tenues), au jugement du lot 9 sur un
       chapitre de sa classe.
-    - **Précisions prises en construisant, à faire confirmer au porteur :** la
+    - **Précisions prises en construisant, confirmées par le porteur le 18 octobre 2026 :** la
       première ouverture demandait aussitôt (révisé le 18 octobre : voir plus bas) ;
       refermer le panneau garde les idées, et le rouvrir les montre sans nouvel
       appel, tant que la page reste ouverte ; les idées cochées restent en tête
@@ -2447,7 +2451,18 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     choisit « Écrire » ou « Corriger » d'après le compte des mots du récit. Et
     « Annuler » des idées de choix laisse les scènes créées dans la corbeille,
     sans migration. Tests existants d'« Écrire » repassés (16 contre la base,
-    9 parcours) ; F13-AC26 attend son test, à sa demande pour l'instant.
+    9 parcours), puis, à sa demande, le test de F13-AC26 écrit (contre la base) et
+    le parcours `idees-choix` et les captures du lot 4 remis à jour pour
+    l'ouverture en deux clics (captures 844 à 855, « idees-ouverture » en tête).
+  - **Retouche du 18 octobre 2026, sur sa remarque (F04.3) :** deux choix
+    supprimés restaient dans « Juste après » des scènes voisines jusqu'au
+    rechargement de la page, la liste étant lue à l'ouverture seulement. Elle se
+    relit désormais après l'enregistrement d'un choix ajouté ou retiré, comme les
+    numéros du livre (`relireVoisines`, service facultatif de la copie, donné par
+    la page de scène de l'adulte ; pour un élève, la liste reste celle de
+    l'ouverture). Sans migration ; parcours des scènes voisines et des choix
+    repassés.
+  - **Suite complète des parcours avant le commit de clôture :** 343 sur 343.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

@@ -32,6 +32,8 @@ async function lePont(page: Page, options: { recit?: "choix" | "classique"; prop
 }
 
 const panneau = (page: Page) => page.getByRole("region", { name: "Idées de choix" });
+/** « ✦ Proposer des idées », dans le panneau ouvert pour la première fois */
+const proposer = (page: Page) => panneau(page).getByRole("button", { name: "Proposer des idées" }).click();
 const idee = (page: Page, n: number) => panneau(page).getByRole("listitem").nth(n);
 const libelles = (page: Page) => panneau(page).getByRole("textbox", { name: "Ce que fait le lecteur" });
 /** Les libellés montrés, dans l'ordre */
@@ -48,6 +50,10 @@ test.describe("Idées de choix (F13.3)", () => {
   test("F13-AC08, F13-AC09 — trois idées d'abord, rien d'ajouté ; deux cochées, l'une vers une scène existante, l'autre vers une nouvelle : seuls ces deux choix et une scène", async ({ page }) => {
     const s = await lePont(page);
     await page.getByRole("button", { name: "Idées de choix" }).click();
+    // La première ouverture ne demande rien : l'IA s'oriente d'abord, si l'on veut
+    await expect(panneau(page).getByRole("textbox", { name: /Orienter l’IA/ })).toBeFocused();
+    expect(s.demandes).toHaveLength(0);
+    await proposer(page);
     await expect(libelles(page)).toHaveCount(3);
     await expect(libelles(page).nth(0)).toHaveValue("Idée 1");
     await expect(idee(page, 1)).toContainText("La grotte");
@@ -84,6 +90,7 @@ test.describe("Idées de choix (F13.3)", () => {
   test("F13-AC10 — le libellé et le titre retouchés sur place sont ceux qui s'ajoutent, sans nouvel appel", async ({ page }) => {
     const s = await lePont(page);
     await page.getByRole("button", { name: "Idées de choix" }).click();
+    await proposer(page);
     await expect(libelles(page)).toHaveCount(3);
     await libelles(page).nth(2).fill("Suivre la chouette");
     // Une retouche coche l'idée
@@ -100,6 +107,7 @@ test.describe("Idées de choix (F13.3)", () => {
   test("une destination changée par le menu de « Nouveau choix » : une scène existante, ou une nouvelle scène qui ne se crée qu'à l'ajout", async ({ page }) => {
     const s = await lePont(page);
     await page.getByRole("button", { name: "Idées de choix" }).click();
+    await proposer(page);
     await idee(page, 0).getByRole("button", { name: "Changer" }).click();
     // Le menu s'ouvre sur la destination actuelle : une nouvelle scène, son titre rempli
     await expect(idee(page, 0).getByRole("radio", { name: "Nouvelle scène" })).toBeChecked();
@@ -123,6 +131,7 @@ test.describe("Idées de choix (F13.3)", () => {
   test("« D'autres idées » : les trois suivantes sans appel, les idées cochées gardées ; une nouvelle demande une fois les dix vues, qui les écarte ; l'orientation jette la réserve", async ({ page }) => {
     const s = await lePont(page);
     await page.getByRole("button", { name: "Idées de choix" }).click();
+    await proposer(page);
     await idee(page, 0).getByRole("checkbox").check();
     const autres = panneau(page).getByRole("button", { name: "D’autres idées" });
     await autres.click();
@@ -139,7 +148,7 @@ test.describe("Idées de choix (F13.3)", () => {
 
     // Orienter l'IA : ce qui restait de la demande est jeté, la suivante part avec l'orientation
     await panneau(page).getByRole("button", { name: "Orienter l’IA" }).click();
-    await panneau(page).getByRole("textbox", { name: "Orienter l’IA" }).fill("une fausse piste");
+    await panneau(page).getByRole("textbox", { name: /Orienter l’IA/ }).fill("une fausse piste");
     await panneau(page).getByRole("button", { name: "Nouvelles idées" }).click();
     await expect.poll(() => s.demandes.length).toBe(3);
     expect(s.demandes[2].orientation).toBe("une fausse piste");
@@ -149,6 +158,7 @@ test.describe("Idées de choix (F13.3)", () => {
   test("« Annuler » retire les choix et les scènes créées, et rend les idées, cochées ; refermer le panneau garde les idées, sans nouvel appel", async ({ page }) => {
     const s = await lePont(page);
     await page.getByRole("button", { name: "Idées de choix" }).click();
+    await proposer(page);
     await idee(page, 0).getByRole("checkbox").check();
     await idee(page, 1).getByRole("checkbox").check();
     await panneau(page).getByRole("button", { name: "Ajouter 2 choix et 1 scène" }).click();

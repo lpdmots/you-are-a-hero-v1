@@ -32,7 +32,7 @@ import { encourager } from "../../../actions-encouragements";
 import { changerEtat, relireRelecture } from "../../../actions-relecture";
 import {
   ajouterFormuleDepuisLaScene, ajouterObjetDepuisLaScene, chercherDestinations, reglerVoisines, creerSceneDepuisChoix, fixerPourLiaison, garderDeNouveau, libererNumero, mettreDansLaScene, nePlusGarder, numeroDeLaScene,
-  relireNumeros, relireTexte, retablirTexte,
+  relireNumeros, relireTexte, relireVoisines, retablirTexte,
 } from "../../../actions-texte";
 import { useCommandesScene } from "../../_plan/commandes";
 import { ChoisirDepart } from "../../_plan/Panneaux";
@@ -261,6 +261,8 @@ export function PageScene({
     },
     imagesDuProjet: () => listerImages(projet.id),
     reglerVoisines: (affiche) => reglerVoisines(affiche),
+    // À côté de l'aperçu, pas de scènes voisines à relire
+    relireVoisines: aCote ? undefined : () => relireVoisines(scene.id),
     // Les idées de choix (F13.3) : sur la page de la scène, pas à côté de l'aperçu ; rien quand les aides sont éteintes
     demanderIdees: aides.proposer && !aCote ? (demande) => demanderDesIdees(scene.id, demande) : undefined,
   };

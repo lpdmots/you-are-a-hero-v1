@@ -4,9 +4,10 @@ import { revalidatePath } from "next/cache";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { nomScene } from "@/domaine/recit";
 import {
-  assurerOrdre, chercherDansLesTextes, enregistrerPourAdulte, numerosDuProjet, texteDeScene, versionsPrecedentes, type TexteDeScene, type Trouvee, type VersionPrecedente,
+  assurerOrdre, chercherDansLesTextes, enregistrerPourAdulte, numerosDuProjet, texteDeScene, versionsPrecedentes, voisinesDe, type TexteDeScene, type Trouvee, type VersionPrecedente,
 } from "@/serveur/copie";
 import { estUuid } from "@/serveur/recit";
+import type { Voisines } from "@/composants/copie/contexte";
 import { enregistrerFormule, enregistrerObjet } from "./actions-preparation";
 
 /**
@@ -115,6 +116,16 @@ export async function relireNumeros(projetId: string): Promise<{ numeros: Record
   const e = await exigerEnseignant();
   const lus = await numerosDuProjet(e.supabase, projetId);
   return { numeros: lus ? enTable(lus.de) : {}, total: lus?.total ?? 0 };
+}
+
+/**
+ * Les scènes voisines relues (F04.3), après un choix ajouté ou retiré : « Juste après » suit
+ * les destinations du texte enregistré sans recharger la page.
+ */
+export async function relireVoisines(sceneId: string): Promise<Voisines | null> {
+  const e = await exigerEnseignant();
+  if (!estUuid(sceneId)) return null;
+  return voisinesDe(e.supabase, sceneId);
 }
 
 /** Chercher une destination dans les textes du projet (F05-AC01). Aucune IA : une simple recherche de mots. */

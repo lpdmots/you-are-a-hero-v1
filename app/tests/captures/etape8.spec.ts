@@ -312,6 +312,9 @@ test("lot 4 : les idées de choix dans le panneau à droite du texte", async ({ 
   await copie(page).waitFor();
   attente = 4000;
   await page.getByRole("button", { name: "Idées de choix" }).click();
+  await panneau.getByRole("button", { name: "Proposer des idées" }).waitFor();
+  await capturer(page, "idees-ouverture", false);
+  await panneau.getByRole("button", { name: "Proposer des idées" }).click();
   await panneau.getByText("L’IA cherche des idées").waitFor();
   await capturer(page, "idees-attente", false);
   await panneau.getByRole("listitem").first().waitFor({ timeout: 10_000 });
@@ -329,7 +332,7 @@ test("lot 4 : les idées de choix dans le panneau à droite du texte", async ({ 
   await panneau.getByRole("button", { name: "D’autres idées" }).click();
   await capturer(page, "idees-autres", false);
   await panneau.getByRole("button", { name: "Orienter l’IA" }).click();
-  await panneau.getByRole("textbox", { name: "Orienter l’IA" }).fill("un choix qui utilise un objet du sac");
+  await panneau.getByRole("textbox", { name: /Orienter l’IA/ }).fill("un choix qui utilise un objet du sac");
   await capturer(page, "idees-orienter", false);
   await panneau.getByRole("button", { name: /^Ajouter/ }).click();
   await page.locator(".copie__message").waitFor();
@@ -342,6 +345,7 @@ test("lot 4 : les idées de choix dans le panneau à droite du texte", async ({ 
   await copie(page).waitFor();
   await capturer(page, "idees-bouton-390", false);
   await page.getByRole("button", { name: "Idées de choix" }).click();
+  await panneau.getByRole("button", { name: "Proposer des idées" }).click();
   await panneau.getByRole("listitem").first().waitFor();
   await capturer(page, "idees-390", false);
   await ligne(0).getByRole("checkbox").check();

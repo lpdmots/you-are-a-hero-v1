@@ -99,6 +99,8 @@ export type Services = {
   imagesDuProjet?: () => Promise<string[]>;
   /** « Scènes voisines » : la préférence de la personne, pour toutes ses scènes (F04-AC08) */
   reglerVoisines?: (affiche: boolean) => Promise<unknown>;
+  /** Les scènes voisines relues après un choix ajouté ou retiré ; sans ce service, elles restent celles de l'ouverture */
+  relireVoisines?: () => Promise<Voisines | null>;
   /**
    * « ✦ Idées de choix » (F13.3), pour l'adulte seul, quand les aides sont proposées : dix idées
    * en une demande. Sans ce service, ni bouton ni panneau.
