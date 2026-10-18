@@ -79,7 +79,7 @@ test("F02-AC18 — chaque étape a sa question en grand, ses relances parmi les 
   const { projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation?etape=personnages`);
   await expect(page.getByRole("heading", { level: 2 })).toContainText("Qui est notre héros ?");
-  await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", "Un seul héros, ou plusieurs au choix du lecteur ?"]);
+  await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", "Un seul héros, ou plusieurs ?"]);
   await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeHidden();
   await page.getByText("Voir un exemple").click();
   await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeVisible();

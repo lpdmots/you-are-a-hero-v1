@@ -359,7 +359,9 @@ export async function attribuerChapitre(chapitreId: string, eleves: { eleve: str
  */
 export async function reglerProjet(
   projetId: string,
-  valeurs: { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: string; styleAutre?: string; herosAbsent?: boolean },
+  valeurs: {
+    titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: string; styleAutre?: string; herosAbsent?: boolean; consigneEcriture?: string;
+  },
 ): Promise<Fait> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId)) return echec("Projet inconnu.");
@@ -378,6 +380,8 @@ export async function reglerProjet(
   }
   if (valeurs.styleAutre !== undefined) maj.style_autre = propre(valeurs.styleAutre, STYLE_AUTRE_MAX);
   if (valeurs.herosAbsent !== undefined) maj.heros_absent = valeurs.herosAbsent === true;
+  // « Pour l'IA, notre façon d'écrire » : une ligne, reprise par les aides qui écrivent (18 octobre 2026)
+  if (valeurs.consigneEcriture !== undefined) maj.consigne_ecriture = propre(valeurs.consigneEcriture, 300);
   if (Object.keys(maj).length === 0) return { ok: true };
   const { data, error } = await e.supabase.from("projets").update(maj).eq("id", projetId).select("id");
   if (error || !data?.length) return echec("Ce réglage n’a pas pu être enregistré.");

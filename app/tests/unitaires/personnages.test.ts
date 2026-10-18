@@ -3,7 +3,8 @@ import { qualiteDeLImage, TAILLES_DES_IMAGES } from "@/domaine/aides-ia";
 import { descriptionDuStyle, nomDeFichier, promptDeLObjet, promptDuPortrait, STYLES, STYLES_DES_IMAGES } from "@/domaine/illustration";
 import { dejaUneCarte, herosDe, lireAutresNoms, nomsPropresDeLHistoire } from "@/domaine/personnages";
 import { etapeFaite, guidage, ongletDuHeros, RELANCE_DES_HEROS, type Piste, type Question } from "@/domaine/preparation";
-import { blocPersonnages } from "@/serveur/ia/aides/contexte";
+import { blocPersonnages, histoireDuProjet, presentation } from "@/serveur/ia/aides/contexte";
+import { phraseDeChoix } from "@/domaine/preparation";
 import { personnages as aidePersonnages } from "@/serveur/ia/aides/images";
 
 /** Étape 8, lot 7 : personnages et objets de l'histoire, styles et images de référence (F10.2). */
@@ -18,15 +19,14 @@ describe("Les cartes des personnages (F10.2)", () => {
     expect(lireAutresNoms("a, b, c, d, e, f, g")).toHaveLength(5);
   });
 
-  it("F10-AC39 — plusieurs héros sans limite, dans l'ordre des cartes ; les aides lisent leur liste, héros en tête, et le choix du lecteur", () => {
+  it("F10-AC39 — plusieurs héros sans limite, dans l'ordre des cartes ; les aides lisent leur liste, héros en tête, sans supposer comment le livre les emploie", () => {
     expect(herosDe([mael, lou, mina]).map((p) => p.nom)).toEqual(["Lou", "Mina"]);
     const bloc = blocPersonnages([mael, lou, mina]);
     expect(bloc.indexOf("Lou (héros")).toBeLessThan(bloc.indexOf("Maël"));
     expect(bloc).toContain("Lou (héros ; aussi : le garçon) : Fils du passeur ; il connaît le chant des lanternes.");
     expect(bloc).toContain("Mina (héros) : Elle sait nager.");
-    expect(bloc).toContain("parmi : Lou, Mina.");
-    // Un seul héros : pas de choix du lecteur à dire
-    expect(blocPersonnages([lou, mael])).not.toContain("choisit son héros");
+    // Au choix du lecteur, en groupe… : ni l'écran ni l'IA ne le supposent (18 octobre 2026)
+    expect(bloc).not.toContain("choisit");
     expect(blocPersonnages([])).toBe("");
   });
 
@@ -84,6 +84,21 @@ describe("Les cartes des personnages (F10.2)", () => {
   it("la relance des héros ne vaut qu'en récit à choix", () => {
     expect(guidage("personnages", "classe", "choix").relances).toContain(RELANCE_DES_HEROS);
     expect(guidage("personnages", "classe", "classique").relances).not.toContain(RELANCE_DES_HEROS);
+  });
+});
+
+describe("La façon d'écrire du livre (F13, F05, 18 octobre 2026)", () => {
+  it("F13-AC28 — « Pour l'IA, notre façon d'écrire » part avec chaque aide et prime sur le « tu » ; vide, rien ne s'ajoute", () => {
+    const projet = { titre: "Les passeurs", organisation: "classe" as const, recit: "choix" as const, consigneEcriture: " vous, au présent " };
+    const h = histoireDuProjet(projet, ["CM1"]);
+    expect(presentation(h)).toContain("Façon d'écrire voulue par l'adulte, qui prime sur ce qui précède : vous, au présent");
+    expect(presentation(histoireDuProjet({ ...projet, consigneEcriture: "" }, []))).not.toContain("Façon d'écrire");
+  });
+
+  it("F05-AC58 — au « vous », le renvoi dit « rendez-vous au 12 » ou « allez au 12 », et « Si tu veux » devient « Si vous voulez »", () => {
+    expect(phraseDeChoix("plonger la main", 17, "rendez", "si")).toBe("Si vous voulez plonger la main, rendez-vous au 17.");
+    expect(phraseDeChoix("plonger la main", 17, "allez", "neutre")).toBe("Plonger la main : allez au 17.");
+    expect(phraseDeChoix("plonger la main", 17, "rends", "si")).toBe("Si tu veux plonger la main, rends-toi au 17.");
   });
 });
 

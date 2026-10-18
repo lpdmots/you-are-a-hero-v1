@@ -1,5 +1,5 @@
 import "server-only";
-import { carnetDe } from "./ia/aides/contexte";
+import { carnetDe, histoireDuProjet } from "./ia/aides/contexte";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { guidage, HEROS_SANS_NOM, ongletDuHeros, type Rubrique } from "@/domaine/preparation";
 import type { Enseignant } from "./adulte";
@@ -40,7 +40,7 @@ export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rub
     const onglet = ongletDuHeros(preparation, estUuid(herosId) ? herosId : null, projet.organisation, projet.recit);
     const carnet = carnetDe(preparation);
     return {
-      histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
+      histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
       etape,
       question: onglet.question,
       questions: [...onglet.relances, ...onglet.questions.map((q) => q.texte)],
@@ -53,7 +53,7 @@ export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rub
     };
   }
   return {
-    histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
+    histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
     etape,
     question: guide.question,
     // Les relances sont les premières questions de la liste : l'IA ne les redemande pas

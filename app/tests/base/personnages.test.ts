@@ -94,7 +94,7 @@ describe("Les cartes des personnages (F10.2)", () => {
     expect(bloc).toContain("Lou (héros) : Il connaît le chant des lanternes.");
     expect(bloc).toContain("Mina (héros) : Elle sait nager.");
     expect(bloc).toContain("Maël (aussi : le passeur)");
-    expect(bloc).toContain("Le lecteur choisit son héros au début du livre parmi : Lou, Mina.");
+    expect(bloc).not.toContain("choisit son héros");
   });
 
   it("les cartes ne regardent que l'adulte : un autre adulte et le poste d'un élève ne les lisent pas ; le poste reçoit les noms seuls pour `/personnage`", async () => {

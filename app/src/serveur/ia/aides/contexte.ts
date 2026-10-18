@@ -12,7 +12,17 @@ export type Histoire = {
   mode: "classe" | "personnel";
   recit: "choix" | "classique";
   niveaux: Niveau[];
+  /** « Pour l'IA, notre façon d'écrire » (réglages du projet, 18 octobre 2026) : « vous, au présent » */
+  ecriture?: string;
 };
+
+/** L'histoire telle que les aides la reçoivent, d'après le projet et les niveaux de l'adulte. */
+export const histoireDuProjet = (
+  p: { titre: string; organisation: "classe" | "personnel"; recit: "choix" | "classique"; consigneEcriture?: string },
+  niveaux: Niveau[],
+): Histoire => ({
+  titre: p.titre, mode: p.organisation, recit: p.recit, niveaux: p.organisation === "classe" ? niveaux : [], ecriture: p.consigneEcriture?.trim() || undefined,
+});
 
 /** Une carte de l'étape « Personnages » (F10.2), telle que les aides la reçoivent. */
 export type CarteDePersonnage = { nom: string; autresNoms: string[]; description: string; heros: boolean };
@@ -35,9 +45,9 @@ export function carnetDe(p: Preparation | null | undefined): Carnet | undefined 
 }
 
 /**
- * Les cartes des personnages, en lignes : « Lou (héros ; aussi : le garçon) : … ». Avec
- * plusieurs héros, le lecteur choisit le sien (F10.2, 18 octobre 2026) : les aides le savent,
- * pour proposer des choix qui se servent de leurs compétences.
+ * Les cartes des personnages, en lignes : « Lou (héros ; aussi : le garçon) : … », héros en
+ * tête. Plusieurs héros ne disent pas comment le livre les emploie (au choix du lecteur, en
+ * groupe…) : c'est le texte retenu ou la façon d'écrire de l'adulte qui le dit (18 octobre 2026).
  */
 export function blocPersonnages(cartes: readonly CarteDePersonnage[] | undefined): string {
   if (!cartes?.length) return "";
@@ -48,11 +58,7 @@ export function blocPersonnages(cartes: readonly CarteDePersonnage[] | undefined
     const description = c.description.trim().replace(/\s*\n\s*/g, " ").slice(0, 1500);
     return `${c.nom.trim()}${marques ? ` (${marques})` : ""}${description ? ` : ${description}` : ""}`;
   });
-  const heros = tries.filter((c) => c.heros);
-  const note = heros.length > 1
-    ? `\nLe lecteur choisit son héros au début du livre parmi : ${heros.map((c) => c.nom.trim()).join(", ")}. Le texte dit « tu » sans le nommer ; un choix peut se servir de la compétence de l'un d'eux (« Si tu sais nager… »).`
-    : "";
-  return bloc("personnages", lignes.map((l) => `- ${l}`).join("\n") + note);
+  return bloc("personnages", lignes.map((l) => `- ${l}`).join("\n"));
 }
 
 export const ETAPES_DU_CARNET = { univers: "Univers", personnages: "Personnages", enjeu: "Enjeu", etapes: "Grandes étapes" } as const;
@@ -69,7 +75,9 @@ export function presentation(h: Histoire): string {
   const qui = h.mode === "classe"
     ? `écrit par une classe (${niveauEnMots(h.niveaux)}) avec son enseignant ; chaque élève écrit une ou plusieurs scènes`
     : "écrit par un adulte pour lui-même";
-  return `« ${h.titre} » est ${sorte}, ${qui}.`;
+  // La façon d'écrire de l'adulte prime : un livre à plusieurs héros peut dire « vous »
+  const ecriture = h.ecriture?.trim() ? `\nFaçon d'écrire voulue par l'adulte, qui prime sur ce qui précède : ${h.ecriture.trim()}` : "";
+  return `« ${h.titre} » est ${sorte}, ${qui}.${ecriture}`;
 }
 
 export function blocCarnet(c: Carnet | undefined, sauf?: EtapeDuCarnet): string {

@@ -2423,7 +2423,13 @@ bouton à sa droite, avec « Télécharger » dessous ; la poubelle ronde, gris 
 survol, à droite de la carte du héros ; la bulle « i » à la place de la ligne « 3 héros… » ;
 la rangée d'onglets serrée contre la question ; « Projeter » en plein écran ; la carte du héros
 qui s'ouvre aussi en projection. Pas de nouvelle critique : les formes sont celles déjà
-critiquées, allégées à sa demande.
+critiquées, allégées à sa demande. Seconde série, le même jour : la poubelle du héros,
+ronde et grise, à droite de la question ; en projection, la page blanche descend jusqu'au bas
+de l'écran (le pied « Étape suivante » en bas), et « Plein écran » apparaît à côté de
+« Quitter la projection » quand l'écran n'y est pas ; un portrait ou une proposition se
+voient en grand d'un clic (voile sombre, image jusqu'à 900 px, croix, Échap) ; la bulle
+« i » des héros est retirée ; « Pour l'IA, notre façon d'écrire », champ d'une ligne en tête
+des réglages d'images du projet, quand les aides sont proposées.
 
 ### Étape 7 construite (16 octobre 2026)
 

@@ -7,7 +7,7 @@ import type { Enseignant } from "./adulte";
 import { enregistrerPourAdulte, texteDeScene, type TexteDeScene } from "./copie";
 import { correction } from "./ia/aides/correction";
 import { pistes, remarqueDesPistes } from "./ia/aides/pistes";
-import type { Histoire } from "./ia/aides/contexte";
+import { type Histoire, histoireDuProjet } from "./ia/aides/contexte";
 import { demanderUneAide } from "./ia/demander";
 import { projetDe } from "./lectures";
 import { estUuid, preparationDe } from "./recit";
@@ -32,7 +32,7 @@ async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | nul
   return {
     scene,
     consigne,
-    histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
+    histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
     // Les noms des personnages, leurs autres noms et ceux des objets ne se corrigent pas (F10.2)
     nomsPropres: nomsPropresDeLHistoire(preparation?.personnagesDeLHistoire ?? [], preparation?.objets ?? []),
     deClasse: projet.organisation === "classe",

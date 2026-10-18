@@ -2769,6 +2769,23 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       le lecteur choisit le sien… » passe dans une bulle « i » au bout des onglets.
     - **Suite complète des parcours avant le commit de clôture :** 364 sur 364 ; 337 tests
       contre la base, 335 unitaires.
+    - **Seconde série de retouches, demandée par le porteur le même jour :** la poubelle
+      du héros à droite de « Qui est José ? » ; en projection, la page prend toute la
+      hauteur de l'écran, la carte de chaque personnage s'ouvre (autres personnages
+      compris, ajout et repérage aussi), et l'on peut supprimer, comme hors projection ;
+      sortir du plein écran par Échap quitte la projection, sauf si un panneau ou une
+      image agrandie est ouvert (le navigateur garde Échap pour le plein écran : il
+      referme alors le plein écran, et « Plein écran » le propose de nouveau) ; un clic
+      sur le portrait gardé ou sur une proposition l'agrandit ; plusieurs héros ne
+      supposent plus le choix du lecteur (bulle retirée, relance « Un seul héros, ou
+      plusieurs ? », phrase retirée de ce que reçoivent les aides) ; « Pour l'IA, notre
+      façon d'écrire », une ligne dans les réglages du projet, part avec toutes les aides
+      (F13-AC28) ; les formules « rendez-vous au 12 » et « allez au 12 », avec « Si vous
+      voulez… » (F05-AC58). Migration `20261018130000_ecriture_et_renvois.sql`, base
+      locale seulement : `projets.consigne_ecriture` (300 signes), et les deux formules
+      admises par `preparations.formule_renvoi`. Tests : 2 unitaires, parcours du lot
+      repris (projection, agrandissement, réglage de l'écriture). Suite complète des parcours avant le commit
+      de clôture : 364 sur 364 ; 337 contre la base, 337 unitaires.
     - **Tests automatiques :** 2 unitaires, 3 contre la base, 9 parcours (F10-AC46, AC47 et
       ceux du lot repris) ; deux parcours de la Préparation lisent désormais le texte
       retenu des personnages dans la carte du héros.

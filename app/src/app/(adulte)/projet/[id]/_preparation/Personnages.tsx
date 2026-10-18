@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
 import { useAidesIa } from "@/composants/AidesIa";
 import { BoutonDouble } from "@/composants/BoutonDouble";
-import { Bulle } from "@/composants/Bulle";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { useEnregistrement } from "@/composants/Enregistrement";
 import { Icone } from "@/composants/Icone";
@@ -14,7 +13,7 @@ import { useMessage } from "@/composants/Messages";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { nomDeFichier } from "@/domaine/illustration";
-import { autresNomsEnTexte, DESCRIPTION_COURTE_MAX, DESCRIPTION_MAX, FICHE_MAX, herosDe, lireAutresNoms, NOM_MAX, type Personnage } from "@/domaine/personnages";
+import { autresNomsEnTexte, DESCRIPTION_COURTE_MAX, DESCRIPTION_MAX, FICHE_MAX, lireAutresNoms, NOM_MAX, type Personnage } from "@/domaine/personnages";
 import { AUTRES_PERSONNAGES, HEROS_SANS_NOM } from "@/domaine/preparation";
 import type { PersonnageConnu } from "@/serveur/ia/aides/images";
 import type { ReponseFiche, ReponseReferences, ReponseReperage, SorteDeCarte } from "@/serveur/personnages";
@@ -83,7 +82,6 @@ export function CartesDesPersonnages({
     if (reperes) cadre.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [reperes !== null]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const nbHeros = herosDe(personnages).length;
   const courant = personnages.find((p) => p.id === ouvert) ?? null;
 
   const reperer = async () => {
@@ -130,9 +128,8 @@ export function CartesDesPersonnages({
                 <button
                   type="button"
                   className={styles.carte}
-                  disabled={projection}
                   onClick={() => setOuvert(p.id)}
-                  aria-label={projection ? undefined : `Ouvrir la carte de ${p.nom}`}
+                  aria-label={`Ouvrir la carte de ${p.nom}`}
                 >
                   <Portrait id={p.portraitId} />
                   <span className={styles.carte__texte}>
@@ -167,85 +164,83 @@ export function CartesDesPersonnages({
         />
       ) : null}
 
-      {!projection ? (
-        <>
-          {attente ? (
-            <p className={styles.noteIa} role="status">
-              <Icone nom="ia" />
-              L’IA lit ce que vous retenez…
-            </p>
-          ) : erreur ? (
-            <p className={styles.noteIa_erreur} role="alert">
-              {erreur}
-            </p>
-          ) : null}
-          {reperes ? (
-            <div ref={cadre} className={`ia-propose ${styles.reperes}`} role="group" aria-labelledby="reperes-t">
-              <p className="ia-propose__tete" id="reperes-t">
-                <Icone nom="ia" />
-                Personnages repérés <span>· cochez ceux à ajouter ; un clic sur un texte le retouche</span>
-              </p>
-              <ul className={styles.reperes__liste}>
-                {reperes.map((p, i) => (
-                  <li key={i} className={p.coche ? styles.repere_coche : undefined}>
-                    <input type="checkbox" checked={p.coche} aria-label={`Ajouter ${p.nom || "ce personnage"}`} onChange={(ev) => changerRepere(i, { coche: ev.target.checked })} />
-                    <span className={styles.repere__corps}>
-                      <span className={styles.repere__ligne}>
-                        <input className={`${styles.enLigne} ${styles.repere__nom}`} value={p.nom} maxLength={NOM_MAX} aria-label="Nom" onChange={(ev) => changerRepere(i, { nom: ev.target.value })} />
-                        <label className={styles.repere__heros}>
-                          <input type="checkbox" checked={p.heros} onChange={(ev) => changerRepere(i, { heros: ev.target.checked })} />
-                          Héros
-                        </label>
-                      </span>
-                      <input
-                        className={`${styles.enLigne} ${styles.repere__autres}`}
-                        value={p.autresNoms.join(", ")}
-                        placeholder="Autres noms"
-                        aria-label="Autres noms, séparés par des virgules"
-                        onChange={(ev) => changerRepere(i, { autresNoms: ev.target.value.split(",").map((t) => t.trimStart()) })}
-                      />
-                      <ChampQuiGrandit
-                        className={`${styles.enLigne} ${styles.repere__desc}`}
-                        rows={1}
-                        maxLength={DESCRIPTION_MAX}
-                        value={p.description}
-                        aria-label="Description"
-                        onChange={(ev) => changerRepere(i, { description: ev.target.value })}
-                      />
-                    </span>
-                  </li>
-                ))}
-              </ul>
-              <span className="ia-propose__gestes">
-                <button type="button" className="btn btn--petit" disabled={!cochees || ajoutEnCours} aria-busy={ajoutEnCours || undefined} onClick={() => void ajouterReperes()}>
-                  <Icone nom="plus" />
-                  {cochees > 1 ? `Ajouter ${cochees} personnages` : "Ajouter ce personnage"}
-                </button>
-                <button type="button" className="btn btn--petit btn--discret" onClick={() => setReperes(null)}>
-                  Laisser
-                </button>
-              </span>
-              {reste ? <p className={styles.noteIa}>{reste}</p> : null}
-            </div>
-          ) : null}
-          <p className={styles.gestes}>
-            <BoutonDouble
-              libelle="Ajouter un personnage"
-              nomIa="Repérer les personnages d’après le texte retenu"
-              onMain={() => setAjout(true)}
-              onIa={() => void reperer()}
-              attente={attente}
-            />
+      {/* Devant la classe aussi : la classe ajoute et décrit les personnages avec l'adulte */}
+      <>
+        {attente ? (
+          <p className={styles.noteIa} role="status">
+            <Icone nom="ia" />
+            L’IA lit ce que vous retenez…
           </p>
-        </>
-      ) : null}
+        ) : erreur ? (
+          <p className={styles.noteIa_erreur} role="alert">
+            {erreur}
+          </p>
+        ) : null}
+        {reperes ? (
+          <div ref={cadre} className={`ia-propose ${styles.reperes}`} role="group" aria-labelledby="reperes-t">
+            <p className="ia-propose__tete" id="reperes-t">
+              <Icone nom="ia" />
+              Personnages repérés <span>· cochez ceux à ajouter ; un clic sur un texte le retouche</span>
+            </p>
+            <ul className={styles.reperes__liste}>
+              {reperes.map((p, i) => (
+                <li key={i} className={p.coche ? styles.repere_coche : undefined}>
+                  <input type="checkbox" checked={p.coche} aria-label={`Ajouter ${p.nom || "ce personnage"}`} onChange={(ev) => changerRepere(i, { coche: ev.target.checked })} />
+                  <span className={styles.repere__corps}>
+                    <span className={styles.repere__ligne}>
+                      <input className={`${styles.enLigne} ${styles.repere__nom}`} value={p.nom} maxLength={NOM_MAX} aria-label="Nom" onChange={(ev) => changerRepere(i, { nom: ev.target.value })} />
+                      <label className={styles.repere__heros}>
+                        <input type="checkbox" checked={p.heros} onChange={(ev) => changerRepere(i, { heros: ev.target.checked })} />
+                        Héros
+                      </label>
+                    </span>
+                    <input
+                      className={`${styles.enLigne} ${styles.repere__autres}`}
+                      value={p.autresNoms.join(", ")}
+                      placeholder="Autres noms"
+                      aria-label="Autres noms, séparés par des virgules"
+                      onChange={(ev) => changerRepere(i, { autresNoms: ev.target.value.split(",").map((t) => t.trimStart()) })}
+                    />
+                    <ChampQuiGrandit
+                      className={`${styles.enLigne} ${styles.repere__desc}`}
+                      rows={1}
+                      maxLength={DESCRIPTION_MAX}
+                      value={p.description}
+                      aria-label="Description"
+                      onChange={(ev) => changerRepere(i, { description: ev.target.value })}
+                    />
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <span className="ia-propose__gestes">
+              <button type="button" className="btn btn--petit" disabled={!cochees || ajoutEnCours} aria-busy={ajoutEnCours || undefined} onClick={() => void ajouterReperes()}>
+                <Icone nom="plus" />
+                {cochees > 1 ? `Ajouter ${cochees} personnages` : "Ajouter ce personnage"}
+              </button>
+              <button type="button" className="btn btn--petit btn--discret" onClick={() => setReperes(null)}>
+                Laisser
+              </button>
+            </span>
+            {reste ? <p className={styles.noteIa}>{reste}</p> : null}
+          </div>
+        ) : null}
+        <p className={styles.gestes}>
+          <BoutonDouble
+            libelle="Ajouter un personnage"
+            nomIa="Repérer les personnages d’après le texte retenu"
+            onMain={() => setAjout(true)}
+            onIa={() => void reperer()}
+            attente={attente}
+          />
+        </p>
+      </>
 
-      {courant && !projection ? (
+      {courant ? (
         <PanneauPersonnage
           key={courant.id}
           projetId={projetId}
           personnage={courant}
-          autresHeros={nbHeros - (courant.heros ? 1 : 0)}
           herosAbsent={herosAbsent}
           proposer={proposer}
           onFermer={() => setOuvert(null)}
@@ -354,9 +349,6 @@ export function OngletsDesPersonnages({
             </button>
           )
         ) : null}
-        {heros.length > 1 && !projection ? (
-          <Bulle question="Pourquoi plusieurs héros ?">{`${heros.length} héros : le lecteur choisit le sien au début du livre, et le texte dit « tu ». Écrivez ce que chacun sait faire dans « Nous retenons ».`}</Bulle>
-        ) : null}
         <span className={styles.onglets__filet} aria-hidden="true" />
         {lien(
           AUTRES_PERSONNAGES,
@@ -388,12 +380,11 @@ function Vignette({ id }: { id: string | null }) {
  * « Donner un nom au héros » la crée.
  */
 export function CarteDuHeros({
-  projetId, heros, autresHeros, herosAbsent, projection, creer, adresse,
+  projetId, heros, herosAbsent, projection, creer, adresse,
 }: {
   projetId: string;
   adresse: (onglet: string) => string;
   heros: Personnage | null;
-  autresHeros: number;
   herosAbsent: boolean;
   projection?: boolean;
   creer: () => Promise<string | null>;
@@ -440,29 +431,11 @@ export function CarteDuHeros({
         </span>
         <Icone nom="fleche" className={styles.carte__ouvrir} />
       </button>
-      {projection ? null : (
-        <button
-          type="button"
-          className={styles.carteHeros__supprimer}
-          aria-label={`Supprimer ${heros.nom} et son onglet`}
-          title={`Supprimer ${heros.nom} et son onglet`}
-          onClick={async () => {
-            const fait = await supprimerDesPersonnages(projetId, [heros.id]);
-            if (!fait.ok) return dire({ texte: fait.erreur });
-            dire({ texte: `« ${heros.nom} » et son onglet sont supprimés.`, annuler: () => void remettreDesPersonnages(projetId, fait.cartes).then(() => router.push(adresse(heros.id), { scroll: false })) });
-            router.push(adresse(""), { scroll: false });
-          }}
-        >
-          <Icone nom="corbeille" />
-        </button>
-      )}
       {ouvert ? (
         <PanneauPersonnage
           key={heros.id}
-          projection={projection}
           projetId={projetId}
           personnage={heros}
-          autresHeros={autresHeros}
           herosAbsent={herosAbsent}
           proposer={proposer}
           onFermer={() => setOuvert(false)}
@@ -481,6 +454,66 @@ export function CarteDuHeros({
         />
       ) : null}
     </section>
+  );
+}
+
+/**
+ * Supprimer un héros, à droite de « Qui est José ? » : la poubelle vise le héros entier, son
+ * onglet, ses questions et ses idées ; « Annuler » les rend (porteur, 18 octobre 2026).
+ */
+export function SupprimerHeros({ projetId, heros, adresse }: { projetId: string; heros: Personnage; adresse: (onglet: string) => string }) {
+  const dire = useMessage();
+  const router = useRouter();
+  return (
+    <button
+      type="button"
+      className={styles.carteHeros__supprimer}
+      aria-label={`Supprimer ${heros.nom} et son onglet`}
+      title={`Supprimer ${heros.nom} et son onglet`}
+      onClick={async () => {
+        const fait = await supprimerDesPersonnages(projetId, [heros.id]);
+        if (!fait.ok) return dire({ texte: fait.erreur });
+        dire({
+          texte: `« ${heros.nom} » et son onglet sont supprimés.`,
+          annuler: () => void remettreDesPersonnages(projetId, fait.cartes).then(() => router.push(adresse(heros.id), { scroll: false })),
+        });
+        router.push(adresse(""), { scroll: false });
+      }}
+    >
+      <Icone nom="corbeille" />
+    </button>
+  );
+}
+
+/** Une image qu'un clic agrandit, par-dessus la page ; un clic ou Échap la referme. */
+function Agrandissable({ src, nom, children }: { src: string; nom: string; children: React.ReactNode }) {
+  const [ouverte, setOuverte] = useState(false);
+  useEffect(() => {
+    if (!ouverte) return;
+    const touche = (ev: KeyboardEvent) => {
+      if (ev.key !== "Escape") return;
+      // Échap referme l'image, pas le panneau dessous
+      ev.stopImmediatePropagation();
+      setOuverte(false);
+    };
+    document.addEventListener("keydown", touche, true);
+    return () => document.removeEventListener("keydown", touche, true);
+  }, [ouverte]);
+  return (
+    <>
+      <button type="button" className={styles.agrandir} onClick={() => setOuverte(true)} aria-label={`Voir ${nom} en grand`} title="Voir en grand">
+        {children}
+      </button>
+      {ouverte ? (
+        <div className={styles.agrandie} role="dialog" aria-label={nom} onClick={() => setOuverte(false)}>
+          {/* eslint-disable-next-line @next/next/no-img-element -- image servie par l'application */}
+          <img src={src} alt={nom} />
+          <button type="button" className={styles.agrandie__fermer} aria-label="Fermer" onClick={() => setOuverte(false)}>
+            <Icone nom="fermer" />
+          </button>
+        </div>
+      ) : null}
+    </>
   );
 }
 
@@ -547,19 +580,16 @@ function AjoutPersonnage({ onAjouter, onFermer }: { onAjouter: (nom: string) => 
  * aux images. Chaque champ s'enregistre après une courte pause, comme la Préparation.
  */
 function PanneauPersonnage({
-  projetId, personnage: p, autresHeros, herosAbsent, proposer, onFermer, onSupprime, onHeros, projection,
+  projetId, personnage: p, herosAbsent, proposer, onFermer, onSupprime, onHeros,
 }: {
   projetId: string;
   personnage: Personnage;
-  autresHeros: number;
   herosAbsent: boolean;
   proposer: boolean;
   onFermer: () => void;
   onSupprime: (carte: CarteSupprimee) => void;
   /** Le personnage devient héros, ou ne l'est plus : la page ouvre l'onglet où il va */
   onHeros?: (heros: boolean) => void;
-  /** Devant la classe : on règle son apparence et son portrait, sans rien supprimer */
-  projection?: boolean;
 }) {
   const e = useEnregistrement();
   const dire = useMessage();
@@ -662,13 +692,11 @@ function PanneauPersonnage({
         <p>
           {p.heros
             ? heros
-              ? autresHeros > 0
-                ? "Le lecteur choisit son héros : dites ce que chacun sait faire."
-                : "Le personnage que le lecteur suit."
+              ? "Le personnage que le lecteur suit ou incarne."
               : "Éteint, il rejoint les autres personnages ; son onglet se ferme, ses questions et ses idées restent avec lui."
             : heros
               ? "Il aura son onglet : questions, idées et « Nous retenons »."
-              : "Un héros a son onglet, avec ses questions et ses idées ; le lecteur choisit le sien."}
+              : "Un héros a son onglet, avec ses questions et ses idées."}
         </p>
       </section>
       {/* Ce qu'on retient d'un héros s'écrit dans « Nous retenons » de son onglet (18 octobre 2026) */}
@@ -707,14 +735,12 @@ function PanneauPersonnage({
           regler({ fiche: v }, "fiche");
         }}
       />
-      {projection ? null : (
-        <p className={styles.finDuPanneau}>
-          <button type="button" className={`lien ${styles.supprimerCarte}`} onClick={() => void supprimer()}>
-            <Icone nom="corbeille" />
-            {p.heros ? "Supprimer le héros et son onglet" : "Supprimer la carte"}
-          </button>
-        </p>
-      )}
+      <p className={styles.finDuPanneau}>
+        <button type="button" className={`lien ${styles.supprimerCarte}`} onClick={() => void supprimer()}>
+          <Icone nom="corbeille" />
+          {p.heros ? "Supprimer le héros et son onglet" : "Supprimer la carte"}
+        </button>
+      </p>
     </Panneau>
   );
 }
@@ -899,7 +925,13 @@ export function PourLesImages({
             </span>
           ) : (
             <span className={sorte === "objet" ? styles.reference__carre : undefined}>
-              <Portrait id={referenceId} grand />
+              {referenceId ? (
+                <Agrandissable src={`/images/${referenceId}`} nom={sorte === "personnage" ? `Portrait de ${nom}` : `Image de ${nom}`}>
+                  <Portrait id={referenceId} grand />
+                </Agrandissable>
+              ) : (
+                <Portrait id={null} grand />
+              )}
             </span>
           )}
           <span className={styles.reference__gestes}>
@@ -940,10 +972,12 @@ export function PourLesImages({
             <ul className={styles.propositions__liste}>
               {propositions.map((pr, i) => (
                 <li key={pr}>
-                  <span className={`${styles.portrait} ${styles.portrait_grand}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`}>
-                    {/* eslint-disable-next-line @next/next/no-img-element -- image créée, en attente, servie par l'application */}
-                    <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 1}`} draggable={false} />
-                  </span>
+                  <Agrandissable src={`/images/proposition/${projetId}/${pr}`} nom={`Proposition ${i + 1}`}>
+                    <span className={`${styles.portrait} ${styles.portrait_grand}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`}>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- image créée, en attente, servie par l'application */}
+                      <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 1}`} draggable={false} />
+                    </span>
+                  </Agrandissable>
                   <button type="button" className="btn btn--petit" disabled={garde !== null} aria-busy={garde === pr || undefined} onClick={() => void garder(pr)}>
                     <Icone nom="coche" />
                     {propositions.length > 1 ? "Garder celle-ci" : "Garder"}

@@ -33,6 +33,8 @@ export type Projet = {
   styleImages: Style;
   styleAutre: string;
   herosAbsent: boolean;
+  /** « Pour l'IA, notre façon d'écrire » (18 octobre 2026) */
+  consigneEcriture: string;
 };
 
 type LigneClasseCourte = { id: string; nom: string; annee_debut: number; terminee_le: string | null; inscriptions?: { retire_le: string | null }[] };
@@ -48,7 +50,7 @@ const classeCourte = (c: LigneClasseCourte | null | undefined): ClasseCourte | n
     : null;
 
 const SELECT_PROJET =
-  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, mise_en_forme_eleves, style_images, style_autre, heros_absent, " +
+  "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, mise_en_forme_eleves, style_images, style_autre, heros_absent, consigne_ecriture, " +
   "classes(id, nom, annee_debut, terminee_le, inscriptions(retire_le))";
 
 function projetDepuis(l: Record<string, unknown>): Projet {
@@ -68,6 +70,7 @@ function projetDepuis(l: Record<string, unknown>): Projet {
     styleImages: estStyle(l.style_images) ? l.style_images : STYLE_PAR_DEFAUT,
     styleAutre: typeof l.style_autre === "string" ? l.style_autre : "",
     herosAbsent: l.heros_absent !== false,
+    consigneEcriture: typeof l.consigne_ecriture === "string" ? l.consigne_ecriture : "",
   };
 }
 

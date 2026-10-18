@@ -3,7 +3,7 @@ import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { chapitresDe, type Plan as PlanDuRecit } from "@/domaine/recit";
 import type { Enseignant } from "./adulte";
 import { chapitres as aideChapitres, parties as aideParties, resume as aideResume, type ChapitrePropose, type Ensemble, type EntreePlan } from "./ia/aides/plan";
-import { carnetDe, type Plan } from "./ia/aides/contexte";
+import { carnetDe, type Plan, histoireDuProjet } from "./ia/aides/contexte";
 import { demanderUneAide } from "./ia/demander";
 import { lireDejaMontrees, lireOrientation } from "./idees-de-choix";
 import { projetDe } from "./lectures";
@@ -42,7 +42,7 @@ async function entreeDuProjet(e: Enseignant, projetId: string): Promise<{ entree
   return {
     plan,
     entree: {
-      histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
+      histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
       carnet: carnetDe(preparation),
       plan: planPourLesAides(plan),
     },

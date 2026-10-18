@@ -3,7 +3,7 @@ import { randomUUID } from "node:crypto";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { peutCreerSonImage, promptDeLObjet, promptDuPortrait } from "@/domaine/illustration";
 import type { Enseignant } from "./adulte";
-import { carnetDe, type Histoire } from "./ia/aides/contexte";
+import { carnetDe, histoireDuProjet, type Histoire } from "./ia/aides/contexte";
 import { ficheVisuelle, personnages as aidePersonnages, type PersonnageConnu } from "./ia/aides/images";
 import { demanderDesImages, demanderUneAide } from "./ia/demander";
 import { lireImage, SEAU } from "./images";
@@ -29,9 +29,7 @@ export const estSorteDeCarte = (v: unknown): v is SorteDeCarte => v === "personn
 const INTROUVABLE = "Cette carte n’existe plus.";
 /** Sans fiche visuelle, l'image de référence ne se crée pas : la page le dit sous le bouton éteint */
 export const SANS_FICHE = "Décrivez d’abord son apparence.";
-const histoireDe = (e: Enseignant, p: Projet): Histoire => ({
-  titre: p.titre, mode: p.organisation, recit: p.recit, niveaux: p.organisation === "classe" ? e.reglagesIa.niveaux : [],
-});
+const histoireDe = (e: Enseignant, p: Projet): Histoire => histoireDuProjet(p, e.reglagesIa.niveaux);
 
 export type ReponseReperage = { ok: true; personnages: PersonnageConnu[]; reste: string | null } | { ok: false; message: string };
 

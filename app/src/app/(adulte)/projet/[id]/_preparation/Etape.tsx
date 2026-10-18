@@ -22,7 +22,7 @@ import { ajouterPiste, ajouterQuestion, changerPiste, ecrireRubrique, orienterLI
 import { creerPartie } from "../../actions-recit";
 import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "../_plan/IdeesDeParties";
 import { premierHeros, reglerPersonnage } from "../../actions-personnages";
-import { CarteDuHeros, CartesDesPersonnages, OngletsDesPersonnages } from "./Personnages";
+import { CarteDuHeros, CartesDesPersonnages, OngletsDesPersonnages, SupprimerHeros } from "./Personnages";
 import { demanderALaPreparation, useReserveIa } from "./reserve";
 
 /** Sans idée retenue ni texte, « Rédiger » ne demande rien (le serveur dit la même chose). */
@@ -188,7 +188,11 @@ export function EtapeHistoire({
   return (
     <div className={`${styles.etape}${projection ? ` ${styles.etape_projetee}` : ""}`}>
       {onglets}
-      <Question question={guide.question} exemple={guide.exemple} />
+      <Question
+        question={guide.question}
+        exemple={guide.exemple}
+        action={herosOuvert ? <SupprimerHeros projetId={projet.id} heros={herosOuvert} adresse={versOnglet} /> : undefined}
+      />
 
       <div className={styles.colonnes}>
         <div className={styles.gauche}>
@@ -254,7 +258,6 @@ export function EtapeHistoire({
               <CarteDuHeros
                 projetId={projet.id}
                 heros={herosOuvert}
-                autresHeros={herosDuProjet.length - (herosOuvert ? 1 : 0)}
                 herosAbsent={projet.herosAbsent !== false}
                 projection={projection}
                 creer={idDuHeros}
@@ -293,9 +296,10 @@ export function EtapeHistoire({
 }
 
 /** La question de l'étape, en grand, et son exemple replié : rien d'autre à lire (F02-AC18). */
-export function Question({ question, exemple }: { question: string; exemple?: string }) {
+export function Question({ question, exemple, action }: { question: string; exemple?: string; action?: ReactNode }) {
   return (
-    <header className={styles.tete}>
+    <header className={`${styles.tete}${action ? ` ${styles.tete_avecAction}` : ""}`}>
+      {action ? <span className={styles.tete__action}>{action}</span> : null}
       <h2 className={styles.question}>{sansCoupureFautive(question)}</h2>
       {exemple ? (
         <details className={styles.exemple}>

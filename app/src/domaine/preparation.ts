@@ -21,8 +21,11 @@ export const NOM_RUBRIQUE: Record<Rubrique, string> = {
 
 export type Guidage = { question: string; relances: string[]; exemple: string };
 
-/** Ajoutée le 18 octobre 2026 (F02, F10.2) : plusieurs héros possibles, au choix du lecteur. */
-export const RELANCE_DES_HEROS = "Un seul héros, ou plusieurs au choix du lecteur ?";
+/**
+ * Ajoutée le 18 octobre 2026 (F02, F10.2) : plusieurs héros possibles, sans dire comment le livre
+ * les emploie (au choix du lecteur, en groupe, tour à tour…), révisé le même jour.
+ */
+export const RELANCE_DES_HEROS = "Un seul héros, ou plusieurs ?";
 
 const CLASSE: Record<Rubrique, Guidage> = {
   univers: {
@@ -237,8 +240,13 @@ export const resumeFeuille = (f: Feuille): string =>
 export const FORMULES_RENVOI = {
   rends: { nom: "« rends-toi au 12 »", avant: "rends-toi au " },
   va: { nom: "« va au 12 »", avant: "va au " },
+  // Un livre écrit au « vous », à plusieurs héros par exemple (18 octobre 2026)
+  rendez: { nom: "« rendez-vous au 12 »", avant: "rendez-vous au " },
+  allez: { nom: "« allez au 12 »", avant: "allez au " },
   fleche: { nom: "« → 12 »", avant: "→ " },
 } as const;
+/** Les formules au « vous » : « Si tu veux… » devient « Si vous voulez… ». */
+export const estAuVous = (formule: FormuleRenvoi): boolean => formule === "rendez" || formule === "allez";
 export type FormuleRenvoi = keyof typeof FORMULES_RENVOI;
 export const estFormuleRenvoi = (v: string): v is FormuleRenvoi => v in FORMULES_RENVOI;
 
@@ -265,7 +273,11 @@ export const constructionsUtiles = (formule: FormuleRenvoi, cochees: Constructio
 /** Phrase de choix automatique : « Prendre la clé : rends-toi au 12. » (F05). */
 export function phraseDeChoix(libelle: string, numero: number | string, formule: FormuleRenvoi, construction: Construction): string {
   const renvoi = `${FORMULES_RENVOI[formule].avant}${numero}`;
-  const gabarit = formule === "fleche" ? "{L} {r}" : CONSTRUCTIONS[construction].gabarit;
+  const gabarit = formule === "fleche"
+    ? "{L} {r}"
+    : construction === "si" && estAuVous(formule)
+      ? "Si vous voulez {l}, {r}."
+      : CONSTRUCTIONS[construction].gabarit;
   return gabarit
     .replace("{L}", majuscule(libelle))
     .replace("{l}", minuscule(libelle))

@@ -20,7 +20,7 @@ export const personnages: DefinitionAide<EntreePersonnages, { personnages: Perso
     REGLES_COMMUNES,
     `Tu repères les personnages importants d'une histoire d'après ce que la préparation en retient, pour en faire des cartes.
 Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les autres façons de le désigner dans l'histoire : « le passeur », « le vieux Maël »), « description » en quelques mots tirés de la préparation, « heros » vrai pour le personnage que le lecteur suit ou incarne.
-- Plusieurs héros seulement si la préparation dit que le lecteur choisit le sien parmi eux ; leur description dit alors ce que chacun sait faire, si la préparation le dit.
+- Plusieurs héros seulement si la préparation en retient plusieurs (au choix du lecteur, en groupe…) ; leur description dit ce que chacun sait faire, si la préparation le dit.
 - Seulement les personnages que la préparation nomme ou décrit ; n'en invente aucun et n'ajoute rien à leur description.
 - Une seule carte par personnage : le héros a la sienne sous son nom ; ne crée pas de carte « Le héros » ni « tu » à part. Seulement si le héros n'a aucun nom, sa carte s'appelle « Le héros ».
 - Ne reprends pas les personnages qui ont déjà leur carte, sous leur nom ou l'un de leurs autres noms.`,

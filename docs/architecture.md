@@ -1671,6 +1671,10 @@ F10.2.
   le héros de l'onglet : l'aide lit ses seules pièces, son nom (bloc `heros_de_cette_page`)
   et les autres héros en cartes. Migration `heros_par_onglet` : `personnage_id` sur
   `questions` et `pistes`, clé étrangère composée avec le projet.
+- **La façon d'écrire.** `histoireDuProjet` (`serveur/ia/aides/contexte.ts`) donne aux aides
+  l'histoire avec `projets.consigne_ecriture` ; `presentation` l'ajoute, comme prioritaire, à
+  toute aide. Les formules au « vous » (`rendez`, `allez`) sont dans `FORMULES_RENVOI`, et
+  `phraseDeChoix` y passe « Si tu veux » à « Si vous voulez » (`estAuVous`).
 - **Enregistrer avant de demander.** `partir()` de `useEnregistrement`
   (`composants/Enregistrement.ts`) attend aussi les envois déjà partis, et plus seulement
   ceux qui attendaient : une aide demandée juste après la sortie d'un champ relit bien ce

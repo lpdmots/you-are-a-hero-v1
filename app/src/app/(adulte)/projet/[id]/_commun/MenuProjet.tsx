@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
+import { useAidesIa } from "@/composants/AidesIa";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
@@ -11,10 +12,12 @@ import { choisirRepere, reglerProjet } from "../../actions-recit";
 type ProjetRegle = {
   id: string; titre: string; deClasse: boolean; lectureOuverte: boolean; miseEnFormeEleves: boolean;
   imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null;
-  styleImages: Style; styleAutre: string; herosAbsent: boolean;
+  styleImages: Style; styleAutre: string; herosAbsent: boolean; consigneEcriture: string;
 };
 
-type Reglage = { titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: Style; styleAutre?: string; herosAbsent?: boolean };
+type Reglage = {
+  titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: Style; styleAutre?: string; herosAbsent?: boolean; consigneEcriture?: string;
+};
 
 /**
  * Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur
@@ -29,6 +32,8 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
 
   const [style, setStyle] = useState<Style>(projet.styleImages);
   const [styleAutre, setStyleAutre] = useState(projet.styleAutre);
+  const [ecriture, setEcriture] = useState(projet.consigneEcriture);
+  const { proposer } = useAidesIa();
 
   const regler = async (valeurs: Reglage) => {
     setErreur(null);
@@ -56,6 +61,7 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
               setTitre(projet.titre);
               setStyle(projet.styleImages);
               setStyleAutre(projet.styleAutre);
+              setEcriture(projet.consigneEcriture);
               setEnregistre(false);
               setOuvert("reglages");
             }}
@@ -129,6 +135,30 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
                   ? "Les élèves ont les trois boutons dans leurs scènes."
                   : "Les élèves n’ont plus les trois boutons. Ce qui est déjà mis en forme le reste ; vous pouvez le retirer vous-même."}
               </p>
+            </section>
+          ) : null}
+          {/* Une ligne pour les aides qui écrivent : « vous, au présent » (18 octobre 2026) */}
+          {proposer ? (
+            <section>
+              <h3>
+                <label htmlFor="projet-ecriture">Pour l’IA, notre façon d’écrire</label>
+              </h3>
+              <input
+                className="pchamp"
+                id="projet-ecriture"
+                type="text"
+                maxLength={300}
+                value={ecriture}
+                placeholder="Par exemple : vous, au présent, phrases courtes"
+                onChange={(e) => {
+                  setEcriture(e.target.value);
+                  setEnregistre(false);
+                }}
+                onBlur={() => {
+                  if (ecriture !== projet.consigneEcriture) void regler({ consigneEcriture: ecriture });
+                }}
+              />
+              <p>Les aides qui écrivent ou réécrivent la suivent.</p>
             </section>
           ) : null}
           <section>

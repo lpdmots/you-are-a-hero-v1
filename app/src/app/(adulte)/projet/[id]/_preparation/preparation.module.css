@@ -518,13 +518,22 @@
 }
 
 /* ——— « Projeter » : la même feuille en grand, sans la barre de l'application ——— */
+/* La page projetée prend toute la hauteur de l'écran, ses marges comprises (18 octobre 2026) */
 .projection {
   display: grid;
-  align-content: start;
+  grid-template-rows: auto 1fr;
   gap: 16px;
   min-height: 100vh;
+  min-height: 100dvh;
   padding: 16px 28px 28px;
   background: var(--bureau);
+}
+.projection > .page {
+  display: flex;
+  flex-direction: column;
+}
+.projection > .page > .pied {
+  margin-top: auto;
 }
 .projection__barre {
   display: flex;
@@ -1558,4 +1567,63 @@
   .onglets__filet {
     display: none;
   }
+}
+
+/* Supprimer un héros : une poubelle discrète à droite de « Qui est José ? » */
+.tete_avecAction {
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+}
+.tete_avecAction > :not(.tete__action) {
+  grid-column: 1;
+}
+.tete__action {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: center;
+}
+
+/* Une image qu'on agrandit d'un clic : le portrait gardé, les propositions de l'IA */
+.agrandir {
+  display: block;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  cursor: zoom-in;
+}
+.agrandir:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.agrandie {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(20, 26, 26, 0.72);
+  cursor: zoom-out;
+}
+.agrandie img {
+  max-width: min(92vw, 900px);
+  max-height: 88vh;
+  border-radius: 10px;
+  background: var(--feuille);
+  box-shadow: 0 20px 60px -20px rgba(0, 0, 0, 0.5);
+}
+.agrandie__fermer {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--feuille);
+  color: var(--graphite);
+  cursor: pointer;
 }

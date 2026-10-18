@@ -2256,7 +2256,13 @@ phrase incomplète à l'écran lorsque le renvoi en portait le verbe.
   L'application compose la phrase avec une construction et la formule de renvoi
   du livre de [F11.5](#f115--ordre-imprimé-et-numérotation-du-récit-à-choix) :
   « Prendre la clé : rends-toi au 12. » Tant que la phrase reste automatique,
-  un changement de formule du livre s'y applique.
+  un changement de formule du livre s'y applique. **Ajouté le 18 octobre 2026,**
+  pour un livre écrit au « vous » (F13, « Pour l'IA, notre façon d'écrire ») : les
+  formules « rendez-vous au 12 » et « allez au 12 », avec lesquelles « Si tu veux
+  prendre la clé » devient « Si vous voulez prendre la clé ».
+  - **F05-AC58 — Renvoi au « vous » :** étant donné la formule « rendez-vous au
+    12 », lorsque l'auteur crée le choix « Plonger la main » en construction « Si… »,
+    alors la phrase est « Si vous voulez plonger la main, rendez-vous au 17. ».
 - **Constructions :** les réglages du projet proposent quelques constructions
   à cocher : « Prendre la clé : … », toujours disponible et cochée par défaut,
   « Pour prendre la clé, … », « Si tu veux prendre la clé, … », « Prendre la
@@ -7186,6 +7192,14 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   plusieurs héros, aucun badge de héros ne se pose de lui-même sur une image ;
   « héros absent » reste recommandé. Écarté : un bloc « choix du héros » avec
   compétences et conditions vérifiées (moteur de jeu, écarté en F04.2).
+  **Révisé par le porteur le même jour, après son essai :** plusieurs héros ne
+  disent pas comment le livre les emploie (au choix du lecteur, un groupe qui part
+  à l'aventure, des héros qui alternent…) ; l'auteur en décide. L'écran ne le
+  suppose plus (la bulle « 3 héros : le lecteur choisit le sien » est retirée,
+  la relance devient « Un seul héros, ou plusieurs ? »), et les aides IA
+  reçoivent la seule liste des héros, sans la phrase « le lecteur choisit son
+  héros ». Ce que le livre en fait se dit dans le texte retenu de chaque héros ou
+  dans « Pour l'IA, notre façon d'écrire » (F13).
 - **Le héros d'un livre-jeu est « tu » :** son nom n'apparaît pas dans le
   texte. Le réglage « héros absent » reste allumé par défaut (seulement des
   mains neutres) ; éteint, le héros est représenté d'après sa carte, et son
@@ -9857,6 +9871,17 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   « Images par création », une ou deux, et « Qualité des images »,
   automatique, normale ou haute (F10.2), ajoutés le 17 octobre 2026,
   « automatique » le 18.
+- **« Pour l'IA, notre façon d'écrire »,** demande du porteur du 18 octobre 2026,
+  recommandation retenue : une ligne libre dans les réglages du projet, vide par
+  défaut (« vous, au présent, phrases courtes »), affichée quand les aides sont
+  proposées. Elle part avec toutes les aides, dans la présentation de l'histoire,
+  et prime sur le « tu » qu'elles supposent : un livre à plusieurs héros peut être
+  écrit au « vous ». Écarté : des choix fermés « personne » et « temps », plus
+  fiables mais limités à ces deux points. Les phrases de choix suivent par les
+  formules « rendez-vous au 12 » et « allez au 12 » (F05).
+  - **F13-AC28 — Façon d'écrire :** étant donné « vous, au présent » écrit dans les
+    réglages du projet, lorsque l'adulte demande une aide, alors elle reçoit cette
+    ligne comme la façon d'écrire voulue, qui prime ; vide, rien ne s'ajoute.
 - **Orienter l'IA,** demande du porteur du 17 octobre 2026 : partout où l'IA
   propose plusieurs éléments (idées de choix, de parties, questions et idées de
   la préparation), un champ facultatif permet de l'orienter. Si ce texte

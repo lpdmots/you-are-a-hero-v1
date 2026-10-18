@@ -7,7 +7,7 @@ import { remplacerSiInchange, type Remplacement } from "./correction";
 import { texteDeScene, type TexteDeScene } from "./copie";
 import { consigne as aideConsigne } from "./ia/aides/consigne";
 import { ecriture as aideEcriture } from "./ia/aides/ecriture";
-import { carnetDe, type Carnet, type Histoire } from "./ia/aides/contexte";
+import { carnetDe, type Carnet, type Histoire, histoireDuProjet } from "./ia/aides/contexte";
 import { titre as aideTitre } from "./ia/aides/titre";
 import { demanderUneAide } from "./ia/demander";
 import { projetDe } from "./lectures";
@@ -58,7 +58,7 @@ export async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lie
     projetId: s.projet_id as string,
     recit: projet.recit,
     eleveId: (s.prise_par_eleve as string | null) ?? null,
-    histoire: { titre: projet.titre, mode: projet.organisation, recit: projet.recit, niveaux: projet.organisation === "classe" ? e.reglagesIa.niveaux : [] },
+    histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
     scene: { ...lue(s as SceneLue), id: sceneId },
     chapitre: { titre: chapitre.data.titre as string, resume: (chapitre.data.resume as string | null)?.trim() || null },
     avant: (ici < 0 ? [] : liste.slice(0, ici)).map(lue),

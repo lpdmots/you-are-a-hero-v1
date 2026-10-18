@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { EtapeHistoire, type ProjetDuCarnet } from "@/app/(adulte)/projet/[id]/_preparation/Etape";
 import { Icone } from "@/composants/Icone";
@@ -20,12 +21,22 @@ export function Projection({
   const suivante = RUBRIQUES[rang + 1];
   // Plein écran : demandé par « Projeter » ; ici, si l'on est arrivé autrement, un bouton le propose
   const [pleinEcran, setPleinEcran] = useState(true);
+  const router = useRouter();
+  const retour = `/projet/${projet.id}/preparation?etape=${etape}${onglet ? `&heros=${onglet}` : ""}`;
   useEffect(() => {
-    const lire = () => setPleinEcran(document.fullscreenElement !== null || !document.fullscreenEnabled);
+    let etait = document.fullscreenElement !== null;
+    const lire = () => {
+      const est = document.fullscreenElement !== null;
+      setPleinEcran(est || !document.fullscreenEnabled);
+      // Échap sort du plein écran : la projection se quitte avec lui, sauf si un panneau ou une
+      // image agrandie était ouvert (le navigateur garde Échap pour le plein écran)
+      if (etait && !est && !document.querySelector(".panneau, [role='dialog']")) router.push(retour);
+      etait = est;
+    };
     lire();
     document.addEventListener("fullscreenchange", lire);
     return () => document.removeEventListener("fullscreenchange", lire);
-  }, []);
+  }, [retour, router]);
   const quitter = () => {
     if (document.fullscreenElement) void document.exitFullscreen().catch(() => undefined);
   };
@@ -55,7 +66,7 @@ export function Projection({
             Plein écran
           </button>
         )}
-        <Link className="btn" href={`/projet/${projet.id}/preparation?etape=${etape}`} onClick={quitter}>
+        <Link className="btn" href={retour} onClick={quitter}>
           <Icone nom="fermer" />
           Quitter la projection
         </Link>
