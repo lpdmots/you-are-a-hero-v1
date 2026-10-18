@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { DEGRES, NIVEAUX, NOMS_DES_DEGRES, type Degre, type ReglagesIa } from "@/domaine/aides-ia";
+import { DEGRES, NIVEAUX, NOMS_DES_DEGRES, QUALITES, type Degre, type ReglagesIa } from "@/domaine/aides-ia";
 import styles from "./BarreAdulte.module.css";
 
 /**
@@ -71,14 +71,14 @@ export function ReglagesAidesIa({ reglages, onChanger }: { reglages: ReglagesIa;
               </div>
               <span id={`${id}-qualite`}>Qualité</span>
               <div className="bascule" role="group" aria-labelledby={`${id}-qualite`}>
-                {(["normale", "haute"] as const).map((q) => (
+                {QUALITES.map((q) => (
                   <button key={q} type="button" aria-pressed={reglages.qualite === q} onClick={() => onChanger({ qualite: q })}>
-                    {q === "normale" ? "Normale" : "Haute"}
+                    {q === "auto" ? "Automatique" : q === "normale" ? "Normale" : "Haute"}
                   </button>
                 ))}
               </div>
             </div>
-            <p>Haute : pour une pleine page imprimée. Elle coûte plus cher, comme deux images.</p>
+            <p>Automatique : haute pour une pleine page, normale ailleurs. Une image haute coûte comme deux.</p>
           </div>
         </>
       ) : null}

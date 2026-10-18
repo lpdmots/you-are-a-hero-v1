@@ -2419,6 +2419,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       complète des parcours avant le commit : 342 sur 343 ; le parcours de bout en
       bout du partage (étape 7) a dépassé son délai sur « Partager », puis passe
       seul, avec ceux des choix et des idées (45 sur 45).
+  - **Retouches du 18 octobre 2026, sur le retour du porteur :** l'IA revient au
+    canard (le prune n'a pas convaincu) et ses boutons prennent une seule forme,
+    une pastille de 34 px ; dans le panneau des idées, « D'autres idées » passe
+    sous la liste et le pied ne garde que « Ajouter… » (voir le design). « Qualité
+    des images » reçoit « Automatique », par défaut, sur son idée : haute pour une
+    image de scène en pleine page, normale ailleurs, repérage et portraits compris
+    (F10.2, F10-AC37, `qualiteDeLImage` dans `domaine/aides-ia.ts`, appliquée par
+    la création d'images au lot 8). Sans migration : un compte qui avait enregistré
+    « Normale » la garde, à changer dans « Mon compte ». Tests : 315 unitaires,
+    62 parcours des aides.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

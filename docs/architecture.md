@@ -1527,7 +1527,9 @@ F10.2.
   le même cadre (`AutreTexte`) et les mêmes champs (`Champ`).
 - **La couleur de l'IA.** Les jetons `--ia`, `--ia-fonce`, `--ia-pale` et
   `--ia-trait` (`styles/jetons.css`), la classe `btn--ia` pour un bouton d'aide
-  (`styles/formes.css`) ; le signe `ia` d'`Icone` devient des étincelles.
+  (`styles/formes.css`) ; le signe `ia` d'`Icone` devient des étincelles. Le
+  18 octobre 2026, les jetons pointent vers le canard, et `btn--ia` porte seule la
+  forme commune des boutons d'IA (pastille de 34 px).
 - **Le champ du titre à la largeur de son texte,** par une copie invisible de la
   valeur dans la même case de grille (`::after` et `attr(data-valeur)`), pour
   poser le ✦ juste après lui.

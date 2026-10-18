@@ -7158,9 +7158,20 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   curseur comme une image importée — ou « Copier le prompt » pour un outil
   externe. Le porteur trouvant les images chères, deux réglages s'ajoutent
   aux « Aides IA » de « Mon compte » (F13) : « Images par création », une
-  (par défaut) ou deux ; « Qualité des images », normale (par défaut) ou
-  haute, conseillée pour une pleine page imprimée. Les portraits suivent les
-  mêmes réglages. Ces gestes restent ceux de l'adulte (F10) ; l'élève
+  (par défaut) ou deux ; « Qualité des images », automatique (par défaut),
+  normale ou haute. **Automatique, décidé par le porteur le 18 octobre 2026,**
+  sur son idée et la règle recommandée : haute pour une image de scène au
+  cadrage « pleine page », normale pour 3:2, 16:9 et carré, pour l'image de
+  repérage et pour les portraits de référence ; la haute qualité ne se paie
+  que là où elle se voit, à l'impression d'une pleine page. Une image 3:2
+  agrandie ensuite à toute la page reste en qualité normale, et le contrôle
+  des images peu nettes du livre la signale. Normale ou haute s'imposent à
+  toutes les images. Les portraits suivent les mêmes réglages.
+  - **F10-AC37 — Qualité automatique :** étant donné « Qualité des images »
+    réglée sur « Automatique », lorsque l'adulte crée l'image d'une scène au
+    cadrage pleine page, alors elle est demandée en haute qualité ; au cadrage
+    3:2, comme pour une image de repérage ou un portrait, en qualité normale ;
+    réglée sur « Normale », la pleine page est demandée en qualité normale. Ces gestes restent ceux de l'adulte (F10) ; l'élève
   écrit seulement son idée (F10-AC10). Le contrôle des images peu nettes du
   livre s'applique à ces images comme aux autres.
 
@@ -9698,8 +9709,9 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   retire tous les boutons d'IA de l'application (projection devant la classe,
   travail sans IA) ; le niveau des élèves, du CE1 au CM2, plusieurs cases pour
   un cours double, qui règle le vocabulaire des consignes et des pistes ;
-  « Images par création », une ou deux, et « Qualité des images », normale ou
-  haute (F10.2), ajoutés le 17 octobre 2026.
+  « Images par création », une ou deux, et « Qualité des images »,
+  automatique, normale ou haute (F10.2), ajoutés le 17 octobre 2026,
+  « automatique » le 18.
 - **Orienter l'IA,** demande du porteur du 17 octobre 2026 : partout où l'IA
   propose plusieurs éléments (idées de choix, de parties, questions et idées de
   la préparation), un champ facultatif permet de l'orienter. Si ce texte

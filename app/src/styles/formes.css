@@ -1219,11 +1219,16 @@
   color: var(--canard);
 }
 
-/* Un bouton d'aide IA : la pastille prune, un bouton ordinaire, jamais plein (étape 8) */
+/* Un bouton d'aide IA : une pastille pâle, jamais pleine, partout la même forme et la même hauteur (étape 8) */
 .btn--ia {
+  min-height: 34px;
+  padding: 0 14px;
   border-color: var(--ia-trait);
+  border-radius: 999px;
   background: var(--ia-pale);
   color: var(--ia-fonce);
+  font-size: var(--t-s);
+  font-weight: 600;
 }
 .btn--ia:hover {
   border-color: var(--ia);

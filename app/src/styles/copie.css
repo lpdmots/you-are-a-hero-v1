@@ -2408,10 +2408,11 @@ kbd {
 }
 .corriger .outil--ia {
   height: 32px;
-  padding: 0 12px;
+  padding: 0 14px;
   border: 0;
   border-radius: 999px 0 0 999px;
   color: var(--ia-fonce);
+  font-size: var(--t-s);
   font-weight: 600;
 }
 .corriger .outil--ia:hover {
@@ -2436,6 +2437,7 @@ kbd {
   padding: 3px 12px 3px 10px;
   border-left: 1px solid var(--ia-trait);
   border-radius: 0 999px 999px 0;
+  font-size: var(--t-s);
   font-weight: 600;
   color: var(--ia-fonce);
 }
@@ -2762,10 +2764,11 @@ kbd {
 
 /* Le ✦ du titre de scène (F05) et « ✦ Formuler » sous la consigne (F13.2) : une proposition
    sur fond canard pâle, « Utiliser » ou « Laisser » ; rien ne change avant « Utiliser ». */
-/* Sur le bandeau, quelle que soit la couleur du chapitre, le ✦ garde sa pastille prune */
+/* Sur le bandeau, quelle que soit la couleur du chapitre, le ✦ garde sa pastille : la même, réduite à son signe */
 .ia-titre {
-  min-width: 36px;
-  min-height: 36px;
+  width: 34px;
+  min-width: 34px;
+  min-height: 34px;
   justify-content: center;
   padding-inline: 0;
   border-color: var(--ia-trait);
@@ -2833,7 +2836,11 @@ kbd {
   font-size: var(--t-xs);
 }
 .menu__liste .ia-titres__pied .btn--ia {
+  min-height: 34px;
+  padding: 0 14px;
   border: 1px solid var(--ia-trait);
+  border-radius: 999px;
+  font-size: var(--t-s);
   background: var(--ia-pale);
   color: var(--ia-fonce);
 }
@@ -2869,11 +2876,7 @@ kbd {
 
 /* ——— Idées de choix (F13.3) : « ✦ Idées de choix » au bout de la barre, le panneau à droite du texte ——— */
 .copie__idees {
-  min-height: 34px;
   margin-left: 8px;
-  padding-inline: 12px;
-  border-radius: 999px;
-  font-size: 15px;
   white-space: nowrap;
 }
 /* Le pied reste sous la main quand le panneau défile : « Ajouter » ne se cherche pas */
@@ -2886,11 +2889,11 @@ kbd {
   border-color: var(--ia);
   background: color-mix(in srgb, var(--ia) 12%, var(--ia-pale));
 }
-/* Le panneau des idées : le cadre des fiches, au filet prune de l'IA */
+/* Le panneau des idées : le cadre des fiches, au filet de l'IA */
 .cx--ia {
   box-shadow:
     inset 0 0 0 1.5px var(--ia),
-    0 14px 26px -18px rgba(94, 34, 85, 0.45);
+    0 14px 26px -18px rgba(11, 60, 66, 0.5);
 }
 .cx--ia .cx__tete {
   border-bottom-color: var(--ia);
@@ -2926,7 +2929,7 @@ kbd {
   color: var(--graphite-2);
   font-size: var(--t-xs);
 }
-/* Les idées : une liste à filets sur le prune pâle des propositions ; une idée cochée devient une feuille blanche */
+/* Les idées : une liste à filets sur le fond pâle des propositions */
 .ix__liste {
   margin: 0;
   padding: 0;
@@ -3124,6 +3127,9 @@ kbd {
 .ix__orienter textarea {
   width: 100%;
   box-sizing: border-box;
+}
+.ix__autres {
+  justify-self: start;
 }
 .ix__ajouter {
   margin-left: auto;

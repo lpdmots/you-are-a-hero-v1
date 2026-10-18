@@ -270,10 +270,12 @@ L'illustration crée l'ambiance ; les objets portent l'information.
    barre des scènes prêtes de « Mes projets ». Bleu canard : le bouton
    principal, les liens et ce qui est coché ; la vue choisie dans une
    bascule est une pilule graphite, pour ne pas imiter le bouton principal.
-   Couleur de l'élève, adoucie : sa gommette uniquement. Prune (ajouté le
-   17 octobre 2026, sur décision du porteur) : ce qui vient de l'IA, ses
-   boutons en pastille prune pâle et ses propositions sur fond prune pâle,
-   avec le signe des étincelles ; jamais un bouton plein. La règle d'origine
+   Couleur de l'élève, adoucie : sa gommette uniquement. Ce qui vient de
+   l'IA (étape 8) : des pastilles en canard pâle et des propositions sur fond
+   canard pâle, avec le signe des étincelles ; jamais un bouton plein, ce qui
+   les distingue du bouton principal. Le prune, retenu le 17 octobre 2026,
+   est retiré le 18 à la demande du porteur, qui n'en est pas convaincu ; les
+   jetons `--ia` gardent cette couleur en un seul endroit. La règle d'origine
    réservait les couleurs d'état aux tampons : la maquette ne la tenait que
    pour le bleu et le violet, et le sens des trois autres était déjà le même
    partout.
@@ -1893,7 +1895,7 @@ d'aventure », et se critique en deux lectures séparées sur captures avant
 d'être montré au porteur.
 
 - **Un seul geste d'IA, partout :** le signe ✦ (depuis le 17 octobre 2026,
-  des étincelles, et la couleur prune : voir « Étape 8 construite », lot 3),
+  des étincelles ; la couleur prune du 17 octobre est revenue au canard le 18 : voir « Étape 8 construite »),
   avec la bulle « Demander à l'IA » et un nom lisible au clavier. Pour enrichir une liste, un **bouton
   double** : une large partie nommée qui ajoute à la main (« Ajouter une
   question », « Noter une idée », « Ajouter une partie », « Ajouter un
@@ -2110,6 +2112,22 @@ champ, avant la ligne d'aide. Laissé : « Laisser », arrêté à l'entretien (
 lecture proposait « Ignorer ») ; le message en bas de l'écran, commun à toute
 l'application, plutôt qu'au bord de la fiche ; la bulle de « Formuler »,
 jugée suffisante.
+
+**Retouches du 18 octobre 2026, sur le retour du porteur** (« pas convaincu par
+la couleur… le vert canard était peut-être mieux », et « le design des boutons ne
+devrait-il pas aussi être accordé ? ») : l'IA revient au canard, par ses quatre
+jetons (`--ia` désigne désormais le canard, `--ia-pale` le canard pâle), le prune
+écrit plus haut et aux lots 3 et 4 se lisant donc canard ; les boutons d'IA ont
+une seule forme, une pastille de 34 px de haut, en taille de texte des boutons,
+« Corriger · Degré », « Idées de choix », « Formuler », « Proposer des pistes »,
+« Redemander », « D'autres idées », et le ✦ du titre réduit à un rond de même
+hauteur (ils étaient en pastille, en rectangle arrondi ou en rond, sur deux
+hauteurs). Le panneau des idées garde au pied la seule décision, « Ajouter… » ;
+« ✦ D'autres idées » passe sous la liste, les deux ne tenant plus sur une ligne.
+Dans « Mon compte », « Qualité » a trois choix : « Automatique » (par défaut),
+« Normale », « Haute », et la ligne « Automatique : haute pour une pleine page,
+normale ailleurs. Une image haute coûte comme deux. ». Pas de nouvelle critique :
+la forme reste celle des lots critiqués.
 
 **Lot 4 — les idées de choix, dans le panneau à droite du texte (F13.3).** Sans
 maquette. Conçu avec impeccable dans le système « Cahiers d'aventure », critiqué

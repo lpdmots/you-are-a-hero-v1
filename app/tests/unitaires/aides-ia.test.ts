@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, niveauEnMots, resteDuJour } from "@/domaine/aides-ia";
+import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, niveauEnMots, qualiteDeLImage, resteDuJour } from "@/domaine/aides-ia";
 import { AIDES } from "@/serveur/ia/aides";
 import { composerConsigne, consigne } from "@/serveur/ia/aides/consigne";
 import { correction } from "@/serveur/ia/aides/correction";
@@ -17,7 +17,15 @@ describe("Réglages des aides IA (F13)", () => {
   it("F13-AC01 — sans réglage, le degré proposé est 2, « Orthographe et grammaire »", () => {
     expect(lireReglagesIa({}).degre).toBe(2);
     expect(lireReglagesIa(null)).toEqual(REGLAGES_IA_HABITUELS);
-    expect(REGLAGES_IA_HABITUELS).toEqual({ degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "normale" });
+    expect(REGLAGES_IA_HABITUELS).toEqual({ degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto" });
+  });
+
+  it("F10-AC37 — qualité automatique : haute pour une pleine page, normale ailleurs ; un choix forcé reste forcé", () => {
+    expect(qualiteDeLImage("auto", "pleine-page")).toBe("haute");
+    for (const u of ["3:2", "16:9", "carre", "reperage", "portrait"] as const) expect(qualiteDeLImage("auto", u)).toBe("normale");
+    expect(qualiteDeLImage("normale", "pleine-page")).toBe("normale");
+    expect(qualiteDeLImage("haute", "portrait")).toBe("haute");
+    expect(lireReglagesIa({ qualite: "normale" }).qualite).toBe("normale");
   });
 
   it("un réglage abîmé reprend sa valeur habituelle ; les niveaux gardent leur ordre", () => {

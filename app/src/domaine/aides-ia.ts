@@ -80,11 +80,25 @@ export type ReglagesIa = {
   /** Plusieurs pour un cours double ; aucun : « élèves d'école élémentaire » */
   niveaux: Niveau[];
   imagesParCreation: 1 | 2;
-  qualite: "normale" | "haute";
+  qualite: QualiteDesImages;
 };
 
-/** Un compte neuf (F13, F10.2) : degré 2, aides proposées, une image en qualité normale. */
-export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "normale" };
+/**
+ * « Qualité des images » (F10.2) : automatique, normale ou haute. Automatique, ajouté le
+ * 18 octobre 2026 à la demande du porteur : la haute qualité là seulement où elle se voit,
+ * une image en pleine page imprimée ; la normale partout ailleurs.
+ */
+export const QUALITES = ["auto", "normale", "haute"] as const;
+export type QualiteDesImages = (typeof QUALITES)[number];
+/** Ce pour quoi une image est créée : le cadrage d'une image de scène, l'image de repérage, le portrait de référence */
+export type UsageDImage = "pleine-page" | "3:2" | "16:9" | "carre" | "reperage" | "portrait";
+
+/** La qualité demandée au fournisseur pour une image, d'après le réglage du compte. */
+export const qualiteDeLImage = (reglage: QualiteDesImages, usage: UsageDImage): "normale" | "haute" =>
+  reglage === "auto" ? (usage === "pleine-page" ? "haute" : "normale") : reglage;
+
+/** Un compte neuf (F13, F10.2) : degré 2, aides proposées, une image, en qualité automatique. */
+export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto" };
 
 /** Ce que la base garde, relu sans confiance : un réglage absent ou abîmé reprend sa valeur habituelle. */
 export function lireReglagesIa(v: unknown): ReglagesIa {
@@ -96,7 +110,7 @@ export function lireReglagesIa(v: unknown): ReglagesIa {
     proposer: typeof o.proposer === "boolean" ? o.proposer : h.proposer,
     niveaux,
     imagesParCreation: o.imagesParCreation === 1 || o.imagesParCreation === 2 ? o.imagesParCreation : h.imagesParCreation,
-    qualite: o.qualite === "normale" || o.qualite === "haute" ? o.qualite : h.qualite,
+    qualite: QUALITES.includes(o.qualite as QualiteDesImages) ? (o.qualite as QualiteDesImages) : h.qualite,
   };
 }
 

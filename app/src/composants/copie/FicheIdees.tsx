@@ -307,14 +307,17 @@ export function FicheIdees({
         ) : etat.reste ? (
           <p className="ix__reste">{etat.reste}</p>
         ) : null}
+        {/* Redemander, ou voir les suivantes : sous la liste, à part de la décision du pied */}
+        {etat.demande || (!etat.montrees.length && !etat.erreur) ? null : (
+          <button type="button" className="btn btn--ia ix__autres" onClick={() => void (etat.premiere || (etat.erreur && !etat.montrees.length) ? idees.demander() : idees.autres())}>
+            <Icone nom="ia" />
+            {etat.premiere || (etat.erreur && !etat.montrees.length) ? "Proposer des idées" : nouvelles ? "Nouvelles idées" : "D’autres idées"}
+          </button>
+        )}
       </div>
-      {/* Pendant la première demande, rien à ajouter ni à redemander : le pied attend les idées */}
-      {etat.premiere && etat.demande ? null : (
+      {/* Sans idée à cocher, rien à ajouter : le pied attend les idées */}
+      {!etat.montrees.length ? null : (
       <footer className="cx__pied">
-        <button type="button" className="btn btn--petit btn--ia" disabled={etat.demande} aria-busy={etat.demande || undefined} onClick={() => void (etat.premiere || etat.erreur && !etat.montrees.length ? idees.demander() : idees.autres())}>
-          <Icone nom="ia" />
-          {etat.premiere || (etat.erreur && !etat.montrees.length) ? "Proposer des idées" : nouvelles ? "Nouvelles idées" : "D’autres idées"}
-        </button>
         <button
           type="button"
           className="btn btn--primaire ix__ajouter"
