@@ -1680,6 +1680,53 @@ F10.2.
   ceux qui attendaient : une aide demandée juste après la sortie d'un champ relit bien ce
   que l'adulte vient de taper.
 
+**Lot 8 — images créées (18 octobre 2026).**
+
+- **Le serveur relit, la page choisit.** `serveur/images-creees.ts` : `creerLeReperage` (résumé du
+  chapitre, résumés des chapitres d'une partie, univers et enjeu du projet), `creerLesImagesALAjout`,
+  `ouvrirLImageDeScene`, `proposerLaDescription`, `creerLImageDeScene`, `promptDeLImageDeScene`, et pour
+  la couverture `proposerLaCouverture` et `promptDeLaCouverture`. Du navigateur ne viennent que le
+  cadrage et les badges (des identités relues dans les cartes du projet) ; l'idée et la description
+  sont enregistrées par la page avant la demande (`actions-images-creees.ts`), puis relues. Adresse
+  `/ia/images` pour ce qui appelle un fournisseur, actions serveur pour le reste.
+- **Les prompts s'assemblent dans le domaine** (`domaine/illustration.ts`) : `promptDeLaScene`,
+  `promptDuReperage`, `promptDeCouverture`, sans modèle de texte entre la fiche et l'image ; la
+  description proposée (aide `description-image`, `pour: "scene" | "couverture"`) ne reçoit ni le
+  style ni les fiches. `badgesDOffice` et `candidatsDeLImage` font la règle des badges (`nommeDans`
+  sans tenir compte de l'article).
+- **Les portraits en référence.** `creerDesImages` passe par `images.edit` d'OpenAI quand des images
+  de référence sont jointes (au plus quatre, lues dans le stockage), par `images.generate` sinon ; ils
+  se paient en jetons d'image d'entrée (1 536 pour un portrait 2:3 à l'essai). En simulation,
+  `derniereCreationSimulee` garde ce qui serait parti (prompt, usage, qualité, nombre de références)
+  pour les essais ; les images simulées d'une scène ou d'un repérage sont deux visuels réduits.
+- **Proposer, puis garder,** comme au lot 7 : `deposerLesPropositions` (sorti de
+  `serveur/personnages.ts`), puis `garderLaProposition` côté navigateur (`composants/imagesCreees.ts`),
+  qui réduit et dépose l'image gardée comme un import et efface les propositions. Pour l'image d'une
+  scène, la copie pose l'image (`poserImage` reçoit le cadrage et le texte lu à voix haute).
+- **L'image d'office** se crée côté serveur, une requête pour tous les éléments ajoutés, l'un après
+  l'autre : elle continue si la page se ferme. Sans bibliothèque d'images côté serveur, l'image et sa
+  vignette sont le même JPEG ; la ligne d'`images` s'inscrit avec les droits de l'adulte, puis
+  `image_id` se pose si l'élément n'a ni image ni visuel choisis. La page tient les éléments en attente
+  (`composants/ImagesALAjout.tsx`, un magasin partagé par `useSyncExternalStore`) et relit le plan à la
+  fin. Le réglage est `reglages_ia.imageALAjout` (jsonb, sans colonne).
+- **Une demande à la fois par sorte :** `commencer_appel_ia` (migration `images_creees`) ne compte plus
+  que les demandes en cours de la même sorte.
+- **On demande, puis on continue (reprise du 18 octobre 2026).** Une image (repérage, scène, office)
+  ouvre une ligne de `demandes_d_images` et la route répond aussitôt ; la création se fait ensuite
+  dans `after()` (Next.js), dans la durée de la route (`maxDuration` 300 s), que la page reste ouverte
+  ou non. À l'arrivée : le repérage se pose d'office si l'élément a encore l'image ou le visuel notés à
+  la demande (`image_avant`, `visuel_avant`), sinon l'image reste parmi les images du projet ; l'image
+  d'une scène reste en propositions, posée par la copie au retour, jamais par le serveur dans le texte.
+  La page suit une demande par son identité (`suivreLaDemande`, toutes les 2,5 s) ; `SuiviDesImages`
+  lit les éléments en route du projet et relit la page à l'arrivée. Une demande en route par élément
+  (index unique partiel) ; `commencer_appel_ia` (migration `images_en_route`) ne retient plus que les
+  textes. Les fonctions de demande rendent leur travail (`Lancee.travail`), que la route confie à
+  `after` et que les essais attendent.
+- **L'idée de l'élève :** `scenes.idee_image`, lue par le poste (droit de colonne), écrite par
+  `eleve_noter_idee_image`, qui demande `refus_d_ecrire` vide ; `scenes.description_image` reste à
+  l'adulte. Les droits d'écriture de l'adulte sur ces deux colonnes, oubliés par `images_creees`, sont
+  donnés par `idee_et_description_de_l_image` : une migration ne se modifie pas une fois écrite.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

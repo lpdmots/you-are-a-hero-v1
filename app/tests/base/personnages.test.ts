@@ -244,6 +244,6 @@ describe("Les options du projet pour les images (F10.2)", () => {
     const projet = await creerProjet(laurent);
     expect((await sql("select style_images, style_autre, heros_absent from public.projets where id = $1", [projet.id]))[0]).toEqual({ style_images: "lumineuse", style_autre: "", heros_absent: true });
     expect((await laurent.base.from("projets").update({ style_images: "autre", style_autre: "linogravure", heros_absent: false }).eq("id", projet.id)).error).toBeNull();
-    expect((await laurent.base.from("projets").update({ style_images: "pixel" }).eq("id", projet.id)).error).not.toBeNull();
+    expect((await laurent.base.from("projets").update({ style_images: "gouache" }).eq("id", projet.id)).error).not.toBeNull();
   });
 });

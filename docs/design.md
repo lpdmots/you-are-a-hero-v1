@@ -312,7 +312,7 @@ lumière et une palette constantes.
 
 | Situation | Disposition |
 | --- | --- |
-| Parties et chapitres | Cartes-cahiers par partie. Toute la carte ouvre le chapitre ; elle dit le nombre de scènes et de scènes validées, ce qui attend l'adulte, les élèves et ce qui manque. Menu à trois points pour ses commandes. En tête, la phrase « À compléter » et ses liens ; écran d'aide à l'ouverture. Détail dans [Organisation du récit reprise après critique](#organisation-du-récit-reprise-après-critique-6-octobre-2026). |
+| Parties et chapitres | Cartes-cahiers par partie. Toute la carte ouvre le chapitre (un essai du 18 octobre 2026, la carte ouvrant ses réglages, est revenu en arrière le 19) ; elle dit le nombre de scènes et de scènes validées, ce qui attend l'adulte, les élèves et ce qui manque. Menu à trois points pour ses commandes. En tête, la phrase « À compléter » et ses liens ; écran d'aide à l'ouverture. Détail dans [Organisation du récit reprise après critique](#organisation-du-récit-reprise-après-critique-6-octobre-2026). |
 | Chapitre | Bandeau du chapitre avec « Ajouter une scène », « Attribuer des élèves » et le menu à trois points ; une ligne d'outils : bascule Scènes/Chemins, recherche, « Voir dans le Suivi ». Cartes de scène sans case à cocher : état, liens, « qui s'en occupe » à changer sur place, menu de la scène. Le mode personnel et l'élève gardent leurs filtres. |
 | Chemins (vue Graphe) | Chaque lien part de la ligne du choix qui le propose ; « Départ du livre », « Fin de l'histoire » et « 2 chemins se rejoignent » écrits au-dessus de la scène ; « Sans suite » dans une scène sans choix ni fin ; choix vers les autres chapitres à leur couleur, qui ouvrent ce chapitre dans la même vue ; taille lisible par défaut, « Tout voir ». Sur mobile : disposition verticale, scène touchée marquée, encart de ses choix collé en bas. |
 | Suivi | Suivi d'un projet, sous son en-tête : rappel des élèves sans chapitre, filtres chapitre et élève, tampons d'état en filtres, tableau groupé par chapitre, vue Élèves. Détail dans [Suivi repris après critique](#suivi-repris-après-critique-4-octobre-2026). |
@@ -2430,6 +2430,56 @@ de l'écran (le pied « Étape suivante » en bas), et « Plein écran » appara
 voient en grand d'un clic (voile sombre, image jusqu'à 900 px, croix, Échap) ; la bulle
 « i » des héros est retirée ; « Pour l'IA, notre façon d'écrire », champ d'une ligne en tête
 des réglages d'images du projet, quand les aides sont proposées.
+
+**Lot 8 — images créées (18 octobre 2026, F10.1, F10.2, F11.4).** Sans maquette. Conçu dans le
+système « Cahiers d'aventure », avec les formes des lots 3 à 7 (pastille ✦, cadre canard pâle des
+propositions, « Garder celle-ci », « Laisser »), critiqué en deux lectures séparées sur captures
+(`npm run captures -- etape8`, 910 à 932) : 25/40 (informée) et 25/40 (indépendante). Forme
+construite :
+
+- **« Choisir une image »** (projet, partie, chapitre) : sous « Importer une image », « ✦ Créer une
+  image d'après le résumé », pastille ✦, éteinte avec sa raison sans résumé ; pendant la création,
+  un cadre 3:2 canard pâle aux étincelles qui luisent et « L'IA dessine un lieu d'après le
+  résumé… Une demi-minute environ. » ; puis « Deux propositions · gardez celle qui convient »,
+  chaque image avec « Garder celle-ci », et « Laisser » ; le bouton devient « En créer d'autres ».
+- **« Image » dans la copie :** « Importer une image », puis, sous un filet, « ✦ Créer une image »
+  et « D'après la scène, avec les portraits des personnages. » ; aides éteintes, le lien discret
+  « Préparer le prompt d'une image ».
+- **« Créer une image »,** dans le panneau à droite du texte : « Importer ou choisir une image »
+  pour revenir ; « Ce que montre l'image », un seul champ (l'idée, puis la description proposée,
+  sur fond canard pâle, « ✦ proposée · modifiable », et « Revenir à l'idée de départ ») ;
+  « Cadrage », quatre cadres dessinés à leurs proportions, le choisi cerné de canard, la qualité
+  dessous (« Haute qualité (automatique) : environ quatre fois plus chère. ») ; « Dans l'image »,
+  des étiquettes rondes (vignette du portrait ou silhouette, nom, « héros », croix), le « + » en
+  pointillé, en mots sans badge (« + Personnage ou objet »), et la ligne du héros absent qui le
+  nomme ; « ✦ Proposer la description » ; au pied, « ✦ Créer l'image », seul bouton plein, et
+  « Copier le prompt » en lien, éteints avec leur raison ; l'attente au cadrage choisi (« Une
+  minute environ » en haute qualité) et les propositions viennent sous les yeux. L'image gardée se
+  pose et ses réglages s'ouvrent à la place.
+- **Côté élève :** « Mon idée d'image », fiche repliée sous la consigne (« écrite » quand elle
+  l'est), une ligne qui dit quoi décrire, le champ, « Enregistrée. » ; sans champ quand la scène
+  ne s'écrit plus.
+- **Image créée à l'ajout :** une pastille ronde canard pâle aux étincelles en haut à droite de
+  l'image de la carte, tant que l'image se crée ; « ✦ Image créée à l'ajout · Régler » sous les
+  liens de la carte « Ajouter un chapitre » ouverte et au pied du panneau des idées de parties ;
+  dans « Mon compte », l'interrupteur sous la qualité des images et sa ligne.
+- **Couverture :** « ✦ Le prompt de l'image de face », repliable sous les trois choses à préparer,
+  le même champ unique, « ✦ Proposer la description », « Copier le prompt » et « Au format A5,
+  sans texte : l'imprimeur ajoute le titre. ».
+
+Corrigé après la critique : deux champs presque identiques (l'idée et la description), fondus en
+un seul ; les propositions et l'attente arrivées sous le bord du panneau (elles viennent sous les
+yeux) ; la ligne « Le héros n'est pas dessiné » à côté du badge d'un autre personnage, lue comme une
+contradiction (elle nomme le héros, et n'apparaît que s'il y en a un) ; « Créer une image » au-dessus
+d'« Importer », à l'inverse de « Choisir une image » (le même ordre partout) ; « Ce que montre
+l'image » qui désignait aussi le texte lu à voix haute d'une image posée (« Lu à voix haute »,
+prérempli de l'idée) ; « Régler » qui ouvrait « Mon compte » derrière le panneau des parties ; le
+signe d'attente caché sous l'étiquette du chapitre (en haut à droite) ; le « + » seul sans badge ;
+« Facultatif » dans le champ alors que la création demande une description. Laissé : « Laisser »,
+« prompt » et « Copier le prompt », mots arrêtés ; aucun coût en euros à l'écran, les plafonds se
+comptant en demandes (F13) ; un message à l'arrivée de l'image d'office, jugé inutile (l'image
+remplace le visuel) ; le résumé coupé de la carte « Ajouter un chapitre », forme du lot 6 ; l'exemple
+de légende « dessiné par Chloé » ; les états d'échec, communs aux aides (messages du lot 1).
 
 ### Étape 7 construite (16 octobre 2026)
 

@@ -8,6 +8,7 @@ import { useMessage } from "@/composants/Messages";
 import {
   estEtapeDeLHistoire, etapeFaite, etapesDe, ETAPES_FACULTATIVES, nomEtape, questionDeLEtape, type EtapePreparation, type Preparation,
 } from "@/domaine/preparation";
+import { raisonDuReperage } from "@/domaine/illustration";
 import type { Partie, Plan } from "@/domaine/recit";
 import { choisirRepere, restaurer, supprimer } from "../../actions-recit";
 import { ReglagesPartie } from "../_plan/Panneaux";
@@ -162,6 +163,7 @@ export function PagePreparation({
           projetId={projet.id}
           actuel={partieReglee}
           pour={`de « ${partieReglee.titre} »`}
+          creer={{ sorte: "partie", id: partieReglee.id, raison: raisonDuReperage(partieReglee) }}
           onChoisir={(choix) => choisirImage(partieReglee.id, choix)}
           onFermer={() => setReglee({ id: partieReglee.id, image: false })}
         />

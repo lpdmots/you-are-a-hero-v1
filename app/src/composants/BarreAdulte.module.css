@@ -166,3 +166,9 @@
   font-size: var(--t-s);
   font-weight: 700;
 }
+/* « Créer l'image des parties et chapitres ajoutés par l'IA » (F10.1), sous la qualité des images */
+.interSous {
+  margin-top: 6px;
+  font-size: var(--t-s);
+  font-weight: 600;
+}

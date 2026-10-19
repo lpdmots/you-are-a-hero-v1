@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useRef, useState } from "react";
+import { Agrandissable } from "@/composants/Agrandissable";
 import { useAidesIa } from "@/composants/AidesIa";
 import { BoutonDouble } from "@/composants/BoutonDouble";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
@@ -485,38 +486,6 @@ export function SupprimerHeros({ projetId, heros, adresse }: { projetId: string;
   );
 }
 
-/** Une image qu'un clic agrandit, par-dessus la page ; un clic ou Échap la referme. */
-function Agrandissable({ src, nom, children }: { src: string; nom: string; children: React.ReactNode }) {
-  const [ouverte, setOuverte] = useState(false);
-  useEffect(() => {
-    if (!ouverte) return;
-    const touche = (ev: KeyboardEvent) => {
-      if (ev.key !== "Escape") return;
-      // Échap referme l'image, pas le panneau dessous
-      ev.stopImmediatePropagation();
-      setOuverte(false);
-    };
-    document.addEventListener("keydown", touche, true);
-    return () => document.removeEventListener("keydown", touche, true);
-  }, [ouverte]);
-  return (
-    <>
-      <button type="button" className={styles.agrandir} onClick={() => setOuverte(true)} aria-label={`Voir ${nom} en grand`} title="Voir en grand">
-        {children}
-      </button>
-      {ouverte ? (
-        <div className={styles.agrandie} role="dialog" aria-label={nom} onClick={() => setOuverte(false)}>
-          {/* eslint-disable-next-line @next/next/no-img-element -- image servie par l'application */}
-          <img src={src} alt={nom} />
-          <button type="button" className={styles.agrandie__fermer} aria-label="Fermer" onClick={() => setOuverte(false)}>
-            <Icone nom="fermer" />
-          </button>
-        </div>
-      ) : null}
-    </>
-  );
-}
-
 /** Le portrait de référence, ou sa place, en pointillé, avec une silhouette sans visage. */
 function Portrait({ id, grand }: { id: string | null; grand?: boolean }) {
   return (
@@ -972,7 +941,7 @@ export function PourLesImages({
             <ul className={styles.propositions__liste}>
               {propositions.map((pr, i) => (
                 <li key={pr}>
-                  <Agrandissable src={`/images/proposition/${projetId}/${pr}`} nom={`Proposition ${i + 1}`}>
+                  <Agrandissable src={`/images/proposition/${projetId}/${pr}`} nom={`Proposition ${i + 1}`} fichier={nomDeFichier(`Proposition ${i + 1},`, nom)}>
                     <span className={`${styles.portrait} ${styles.portrait_grand}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element -- image créée, en attente, servie par l'application */}
                       <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 1}`} draggable={false} />

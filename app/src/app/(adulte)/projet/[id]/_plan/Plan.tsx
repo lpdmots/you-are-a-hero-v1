@@ -14,6 +14,7 @@ import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
 import { ImageRepere } from "@/composants/ImageRepere";
+import { AttenteDImage, useImagesALAjout } from "@/composants/ImagesALAjout";
 import { Menu } from "@/composants/Menu";
 import { useEnregistrement } from "@/composants/Enregistrement";
 import { useMessage } from "@/composants/Messages";
@@ -22,6 +23,7 @@ import {
   aCompleter, chercherScenes, compteScenes, couleurDeChapitre, departDe, ecritParLEnseignant, libelleManque, referenceScene, sansEleve, scenesDe,
   type Chapitre, type ElevePlan, type Manque, type Partie, type Plan as PlanDuRecit, type Supprime,
 } from "@/domaine/recit";
+import { raisonDuReperage } from "@/domaine/illustration";
 import { pluriel } from "@/domaine/texte";
 import {
   choisirRepere, creerChapitre, creerPartie, designerDepart, exclureDuLivre, placerChapitre, placerPartie, restaurer, supprimer,
@@ -78,6 +80,7 @@ export function Plan({
   orientation: string;
 }) {
   const dire = useMessage();
+  const imagesALAjout = useImagesALAjout();
   const suppression = useConfirmerSuppression({ plan, eleves });
   const capteurs = useCapteurs();
   const [aide, setAide] = useState(!aideMasquee && !aideVue);
@@ -167,6 +170,8 @@ export function Plan({
       dire({ texte: fait.erreur });
       return false;
     }
+    // Son image, créée d'office d'après le résumé, remplacera le visuel par défaut (F10.1)
+    imagesALAjout("chapitre", [fait.id]);
     dire({
       texte: `« ${c.titre} » est ajouté à la fin de « ${partie.titre} ».`,
       // Le chapitre va à la corbeille, et sa proposition retourne dans la série
@@ -553,6 +558,7 @@ export function Plan({
           chapitre={chapitreOuvert}
           neuf={ouvert.neuf}
           lisibleParLesEleves={projet.deClasse}
+          entrer={`/projet/${projet.id}/chapitre/${chapitreOuvert.id}`}
           onImage={() => setOuvert({ sorte: "image", pour: "chapitre", id: chapitreOuvert.id, neuf: false })}
           onFermer={() => setOuvert(null)}
         />
@@ -571,6 +577,7 @@ export function Plan({
           projetId={projet.id}
           actuel={(ouvert.pour === "chapitre" ? chapitreOuvert : partieOuverte)!}
           pour={`de « ${(ouvert.pour === "chapitre" ? chapitreOuvert : partieOuverte)!.titre} »`}
+          creer={{ sorte: ouvert.pour, id: ouvert.id, raison: raisonDuReperage(ouvert.pour === "chapitre" ? chapitreOuvert : partieOuverte) }}
           onChoisir={(choix) => choisirImage(ouvert.pour, ouvert.id, choix)}
           onFermer={() => setOuvert({ sorte: ouvert.pour, id: ouvert.id, neuf: false })}
         />
@@ -652,6 +659,7 @@ function SectionPartie({
         {unique ? <span /> : <Prise nom={`la partie ${partie.titre}`} ref={setActivatorNodeRef} {...attributes} />}
         <div className="partie__vignette">
           <ImageRepere repere={partie} graine={partie.id} />
+          <AttenteDImage id={partie.id} />
         </div>
         <div className="partie__titres">
           <h2 id={`partie-${partie.id}`}>{partie.titre}</h2>
@@ -725,7 +733,11 @@ function CarteChapitre({
   );
 }
 
-/** La carte-cahier d'un chapitre : toute la carte ouvre le chapitre (F03-AC21). */
+/**
+ * La carte-cahier d'un chapitre : toute la carte entre dans le chapitre, l'action la plus fréquente
+ * (F03-AC21 ; un essai du 18 octobre 2026, où la carte ouvrait les réglages, est revenu en arrière
+ * le 19 à la demande du porteur). Les réglages s'ouvrent par le menu à trois points.
+ */
 export function Cahier({
   chapitre, deClasse, eleves, montree, lien, prise, menu,
 }: {
@@ -741,6 +753,7 @@ export function Cahier({
       <div className="cahier__couv">
         <div className="cahier__vignette">
           <ImageRepere repere={chapitre} graine={chapitre.id} />
+          <AttenteDImage id={chapitre.id} />
         </div>
         <div className="etiquette">
           <h3>{chapitre.titre}</h3>

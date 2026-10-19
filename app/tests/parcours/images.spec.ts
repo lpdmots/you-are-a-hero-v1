@@ -18,7 +18,7 @@ async function projetEtPlan(page: Page) {
 }
 const ouvrirReglages = async (page: Page, sorte: "chapitre" | "partie", titre: string) => {
   await page.getByLabel(`Autres commandes ${sorte === "chapitre" ? "du chapitre" : "de la partie"} ${titre}`).click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await page.getByRole("complementary").getByRole("button", { name: "Choisir une image" }).click();
   await expect(page.getByRole("heading", { name: "Choisir une image" })).toBeVisible();
 };

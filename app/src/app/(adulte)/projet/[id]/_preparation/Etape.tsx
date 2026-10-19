@@ -8,6 +8,7 @@ import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { useEnregistrement } from "@/composants/Enregistrement";
 import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
+import { AttenteDImage } from "@/composants/ImagesALAjout";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
@@ -728,6 +729,7 @@ function PartiesRetenues({
               <Link className={styles.partie__lien} href={`/projet/${projet.id}/plan#partie-${p.id}`}>
                 <span className={styles.partie__image}>
                   <ImageRepere repere={p} graine={p.id} />
+                  <AttenteDImage id={p.id} />
                 </span>
                 <span className={styles.partie__texte}>
                   <span className={styles.partie__rang}>Partie {i + 1}</span>

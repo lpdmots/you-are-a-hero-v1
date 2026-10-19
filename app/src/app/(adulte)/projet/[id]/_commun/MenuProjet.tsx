@@ -1,12 +1,15 @@
 "use client";
 
 import { useState } from "react";
+import { Agrandissable } from "@/composants/Agrandissable";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { useAidesIa } from "@/composants/AidesIa";
+import { Icone } from "@/composants/Icone";
+import { SuiviDesImages } from "@/composants/ImagesALAjout";
 import { ImageRepere } from "@/composants/ImageRepere";
-import { Menu } from "@/composants/Menu";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
-import { nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
+import { exempleDuStyle, nomDeFichier, nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
+import { adresseRepereEnGrand } from "@/domaine/visuels";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
 
 type ProjetRegle = {
@@ -52,24 +55,26 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
 
   return (
     <>
-      <Menu libelle={`Autres commandes du projet ${projet.titre}`} discret>
-        {(fermer) => (
-          <button
-            type="button"
-            onClick={() => {
-              fermer();
-              setTitre(projet.titre);
-              setStyle(projet.styleImages);
-              setStyleAutre(projet.styleAutre);
-              setEcriture(projet.consigneEcriture);
-              setEnregistre(false);
-              setOuvert("reglages");
-            }}
-          >
-            Réglages du projet
-          </button>
-        )}
-      </Menu>
+      {/* Les images en route du projet, suivies sur chaque onglet : la page se relit à leur arrivée */}
+      <SuiviDesImages projetId={projet.id} />
+      {/* Un bouton nommé plutôt qu'un menu à une seule commande : les réglages du projet (style des
+          images, façon d'écrire pour l'IA…) se voient sans chercher (18 octobre 2026, remarque du porteur) */}
+      <button
+        type="button"
+        className="btn btn--petit reglages-projet"
+        aria-label="Réglages du projet"
+        onClick={() => {
+          setTitre(projet.titre);
+          setStyle(projet.styleImages);
+          setStyleAutre(projet.styleAutre);
+          setEcriture(projet.consigneEcriture);
+          setEnregistre(false);
+          setOuvert("reglages");
+        }}
+      >
+        <Icone nom="reglages" />
+        Réglages
+      </button>
       {ouvert === "reglages" ? (
         <Panneau titre="Réglages du projet" sous={projet.titre} onFermer={() => setOuvert(null)} pied={<PiedFermer enregistre={enregistre} enCours={enCours} onFermer={() => setOuvert(null)} />}>
           <section>
@@ -99,12 +104,20 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
           <section>
             <h3>Image</h3>
             <div className="reg-image">
-              <span className="reg-image__vue">
+              <Agrandissable className="reg-image__vue" src={adresseRepereEnGrand(projet, projet.id)} nom={`l’image de « ${projet.titre} »`} fichier={nomDeFichier("Image de", projet.titre)}>
                 <ImageRepere repere={projet} graine={projet.id} />
+              </Agrandissable>
+              <span className="reg-image__gestes">
+                <button type="button" className="btn btn--petit" onClick={() => setOuvert("image")}>
+                  Choisir une image
+                </button>
+                {projet.imageId ? (
+                  <a className="lien cx-discret" href={`/images/${projet.imageId}`} download={nomDeFichier("Image de", projet.titre)}>
+                    <Icone nom="telecharger" />
+                    Télécharger
+                  </a>
+                ) : null}
               </span>
-              <button type="button" className="btn btn--petit" onClick={() => setOuvert("image")}>
-                Choisir une image
-              </button>
             </div>
           </section>
           {projet.deClasse ? (
@@ -162,27 +175,43 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
             </section>
           ) : null}
           <section>
-            <h3>
-              <label htmlFor="projet-style">Style des images</label>
-            </h3>
-            <select
-              className="pchamp"
-              id="projet-style"
-              value={style}
-              disabled={enCours}
-              onChange={(e) => {
-                const v = e.target.value as Style;
-                setStyle(v);
-                void regler({ styleImages: v });
-              }}
-            >
+            <h3 id="projet-style">Style des images</h3>
+            {/* Un exemple par style, le même sujet partout : on compare les techniques d'un coup d'œil */}
+            <div className="styles-images" role="radiogroup" aria-labelledby="projet-style">
               {STYLES.map((s) => (
-                <option key={s} value={s}>
-                  {s === "autre" ? "Autre, à décrire" : nomDuStyle(s)}
-                  {s === STYLE_PAR_DEFAUT ? " (celui de l’application)" : ""}
-                </option>
+                <label key={s} className="style-image">
+                  <input
+                    type="radio"
+                    name="projet-style"
+                    value={s}
+                    checked={style === s}
+                    disabled={enCours}
+                    onChange={() => {
+                      setStyle(s);
+                      void regler({ styleImages: s });
+                    }}
+                  />
+                  <span className="style-image__exemple" aria-hidden="true">
+                    {s === "autre" ? (
+                      <Icone nom="crayon" />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element -- exemples livrés avec l'application
+                      <img src={exempleDuStyle(s)} alt="" loading="lazy" onError={(e) => (e.currentTarget.hidden = true)} />
+                    )}
+                  </span>
+                  {s !== "autre" ? (
+                    // Voir l'exemple en grand, sans choisir le style : un bouton dans l'étiquette ne la coche pas
+                    <Agrandissable className="style-image__loupe" src={exempleDuStyle(s, true)} nom={`l’exemple du style ${nomDuStyle(s)}`}>
+                      <Icone nom="loupe" />
+                    </Agrandissable>
+                  ) : null}
+                  <span className="style-image__nom">
+                    {s === "autre" ? "Autre, à décrire" : nomDuStyle(s)}
+                    {s === STYLE_PAR_DEFAUT ? <span className="style-image__defaut"> · par défaut</span> : null}
+                  </span>
+                </label>
               ))}
-            </select>
+            </div>
             {style === "autre" ? (
               <textarea
                 className="pchamp reg-style-autre"
@@ -200,7 +229,7 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
                 }}
               />
             ) : null}
-            <p>Repris par toutes les images créées. Décrivez une technique, jamais le nom d’un artiste.</p>
+            <p>{style === "autre" ? "Décrivez une technique, jamais le nom d’un artiste. Reprise par toutes les images créées." : "Repris par toutes les images créées."}</p>
           </section>
           <section>
             <h3>Le héros dans les images</h3>
@@ -218,7 +247,7 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
         </Panneau>
       ) : null}
       {ouvert === "image" ? (
-        <ChoisirImage projetId={projet.id} actuel={projet} pour="du projet" onChoisir={choisirImage} onFermer={() => setOuvert("reglages")} />
+        <ChoisirImage projetId={projet.id} actuel={projet} pour="du projet" creer={{ sorte: "projet", id: projet.id }} onChoisir={choisirImage} onFermer={() => setOuvert("reglages")} />
       ) : null}
     </>
   );

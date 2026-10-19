@@ -63,6 +63,10 @@ export function tirerVisuel(graine: string, aEviter: (string | null | undefined)
  * défaut. « grande » : pour une image large à l'écran, le visuel entier plutôt que sa
  * vignette ; une image importée se montre toujours par sa réduction d'écran, qui y suffit.
  */
+/** L'image de repérage en grand, pour la voir d'un clic : l'image entière, et non sa vignette (étape 8, lot 8). */
+export const adresseRepereEnGrand = (repere: { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null }, graine: string): string =>
+  repere.imageId ? `/images/${repere.imageId}` : adresseRepere(repere, graine, true);
+
 export function adresseRepere(
   repere: { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null },
   graine: string,

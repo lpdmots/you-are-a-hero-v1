@@ -2,8 +2,8 @@ import "server-only";
 import { PLAFONDS, TAILLES_DES_IMAGES, messageDuRefus, qualiteDeLImage, resteDuJour, type AideImage, type RefusIa, type ReglagesIa, type UsageDImage } from "@/domaine/aides-ia";
 import { clientService } from "../supabase";
 import type { DefinitionAide } from "./aide";
-import { appelerLeFournisseur, creerDesImages, jetonsDe } from "./fournisseurs";
-import { OBJET_1, OBJET_2, PORTRAIT_1, PORTRAIT_2 } from "./images-simulees";
+import { appelerLeFournisseur, creerDesImages, jetonsDe, type RequeteImages } from "./fournisseurs";
+import { OBJET_1, OBJET_2, PORTRAIT_1, PORTRAIT_2, SCENE_1, SCENE_2 } from "./images-simulees";
 import { MODELES, MODELE_DES_AIDES, MODELE_DES_IMAGES, coutDe, coutDesImages, type IdModele } from "./modeles";
 
 /**
@@ -126,7 +126,18 @@ export type DemandeDImages = {
   prompt: string;
   /** Sinon le réglage « Images par création » de l'adulte */
   nombre?: 1 | 2;
+  /** Détourée : sur fond transparent, en PNG (18 octobre 2026) */
+  transparente?: boolean;
+  /** Les portraits et images de référence des badges, joints à une image de scène (F10.2) */
+  references?: RequeteImages["references"];
 };
+
+/**
+ * Ce que la dernière création simulée a reçu (`IA_SIMULEE`) : le prompt, l'usage, la qualité et le
+ * nombre d'images de référence, pour que les essais vérifient ce qui serait parti sans rien payer.
+ */
+let derniereSimulee: { prompt: string; usage: UsageDImage; qualite: "normale" | "haute"; nombre: number; references: number } | null = null;
+export const derniereCreationSimulee = () => derniereSimulee;
 
 const refusImage = (r: RefusIa): ResultatImages => ({ ok: false, refus: r, message: messageDuRefus(r, "image") });
 const decoder = (b64: string) => new Uint8Array(Buffer.from(b64, "base64"));
@@ -159,13 +170,16 @@ export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImag
   let images: Uint8Array[] = [];
   const simulee = simulation();
   try {
+    if (simulee) derniereSimulee = { prompt: demande.prompt, usage: demande.usage, qualite, nombre, references: demande.references?.length ?? 0 };
     if (simulee === "reponse") {
-      const deux = demande.usage === "objet" ? [OBJET_1, OBJET_2] : [PORTRAIT_1, PORTRAIT_2];
+      const deux = demande.usage === "objet" ? [OBJET_1, OBJET_2] : demande.usage === "portrait" ? [PORTRAIT_1, PORTRAIT_2] : [SCENE_1, SCENE_2];
       images = deux.slice(0, nombre).map(decoder);
     } else if (simulee === "delai") {
       await attendre(10 * 60_000, arret.signal);
     } else if (simulee !== "echec") {
-      const r = await creerDesImages({ prompt: demande.prompt, taille: TAILLES_DES_IMAGES[demande.usage], qualite, nombre, signal: arret.signal });
+      const r = await creerDesImages({
+        prompt: demande.prompt, taille: TAILLES_DES_IMAGES[demande.usage], qualite, nombre, transparente: demande.transparente === true, references: demande.references, signal: arret.signal,
+      });
       jetons = r;
       images = r.images;
     }

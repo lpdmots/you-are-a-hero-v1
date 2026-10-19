@@ -266,11 +266,14 @@ test.describe("`/personnage` et les options du projet (F10.2)", () => {
   test("F10-AC45 — le style des images et le héros absent se règlent dans les options du projet ; « Autre » se décrit", async ({ page }) => {
     const s = await passeurs(page);
     await aller(page, `/projet/${s.projet}/preparation`);
-    await page.getByLabel("Autres commandes du projet Les passeurs de brume").click();
     await page.getByRole("button", { name: "Réglages du projet" }).click();
-    await expect(page.getByLabel("Style des images")).toHaveValue("lumineuse");
+    // Un exemple par style, le même sujet partout (18 octobre 2026)
+    const styles = page.getByRole("radiogroup", { name: "Style des images" });
+    await expect(styles.getByRole("radio", { name: /Illustration 2D lumineuse/ })).toBeChecked();
+    await expect(styles.getByRole("radio")).toHaveCount(9);
     await expect(page.getByRole("switch", { name: "Héros absent des images" })).toBeChecked();
-    await page.getByLabel("Style des images").selectOption("autre");
+    await styles.getByText("Autre, à décrire", { exact: true }).click();
+    await expect(styles.getByRole("radio", { name: "Autre, à décrire" })).toBeChecked();
     await page.getByRole("textbox", { name: "Le style, décrit par sa technique" }).fill("linogravure en deux couleurs");
     await page.getByRole("textbox", { name: "Le style, décrit par sa technique" }).blur();
     await page.getByText("Héros absent des images", { exact: true }).click();

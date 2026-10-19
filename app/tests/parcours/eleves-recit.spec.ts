@@ -85,7 +85,7 @@ test("F03-AC42, F06-AC20, F03-AC17 — dans son chapitre, l'élève lit toutes l
   // La consigne se lit, son absence n'empêche rien (F07-AC19) ; le résumé se consulte sans être imposé (F02-AC15, AC16)
   await expect(alice.page.locator(".fiche").first()).toContainText("Lou entre dans la forêt. Décris ce qu’il voit.");
   await expect(alice.page.getByText("Lou entre dans la forêt et découvre que les chemins bougent.")).toBeHidden();
-  await alice.page.getByText("Ce qui se passe dans ce chapitre").click();
+  await alice.page.getByText("Où se passe ce chapitre").click();
   await expect(alice.page.getByText("Lou entre dans la forêt et découvre que les chemins bougent.")).toBeVisible();
   // Profil par défaut : ni ajout, ni menu, ni carte à tirer (F06-AC11)
   await expect(alice.page.getByRole("button", { name: "Ajouter une scène" })).toHaveCount(0);
@@ -150,7 +150,6 @@ test("F06-AC48, F06-AC49 — la lecture ouverte laisse lire les autres chapitres
   const bilal = await poste(browser, s, "Bilal");
 
   await aller(page, `/projet/${s.projet}/plan`);
-  await page.getByLabel("Autres commandes du projet Les passeurs de brume").click();
   await page.getByRole("button", { name: "Réglages du projet" }).click();
   await page.getByText("Les élèves lisent toute l’histoire").click();
   await expect(page.getByText("Chaque élève lit les scènes de tous les chapitres. Il n’écrit que dans les siens.")).toBeVisible();
@@ -234,7 +233,7 @@ test("F10-AC06 — l'élève voit l'image de repérage d'un chapitre qui n'est p
   const s = await classeAuTravail(page);
   const importer = async (titre: string) => {
     await page.getByLabel(`Autres commandes du chapitre ${titre}`).click();
-    await page.getByRole("button", { name: "Réglages" }).click();
+    await page.getByRole("button", { name: "Réglages", exact: true }).click();
     await page.getByRole("complementary").getByRole("button", { name: "Choisir une image" }).click();
     await page.getByLabel("Fichier de l’image").setInputFiles(resolve(__dirname, "../../public/illustrations/defaut-desert.jpg"));
     await expect(page.locator(".reg-image__vue img")).toHaveAttribute("src", /^\/images\//);
@@ -247,7 +246,7 @@ test("F10-AC06 — l'élève voit l'image de repérage d'un chapitre qui n'est p
   // Une seconde image, importée puis remplacée : elle reste une image du projet, sans être le repère de rien
   const autre = await importer("La lisière");
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await page.getByRole("complementary").getByRole("button", { name: "Choisir une image" }).click();
   await page.getByRole("button", { name: "Revenir au visuel par défaut" }).click();
   await expect(page.locator(".reg-image__vue img")).toHaveAttribute("src", /^\/illustrations\//);

@@ -6,7 +6,7 @@ import type { Enseignant } from "./adulte";
 import { carnetDe, histoireDuProjet, type Histoire } from "./ia/aides/contexte";
 import { ficheVisuelle, personnages as aidePersonnages, type PersonnageConnu } from "./ia/aides/images";
 import { demanderDesImages, demanderUneAide } from "./ia/demander";
-import { lireImage, SEAU } from "./images";
+import { lireImage, SEAU, TYPE_MIME } from "./images";
 import { projetDe, type Projet } from "./lectures";
 import { estUuid, preparationDe } from "./recit";
 import { clientService } from "./supabase";
@@ -102,9 +102,16 @@ const DUREE_D_UNE_PROPOSITION_MS = 24 * 3600 * 1000;
 
 async function effacerLesAnciennes(enseignantId: string, projetId: string): Promise<void> {
   const stockage = clientService().storage.from(SEAU);
-  const { data } = await stockage.list(dossierDesPropositions(enseignantId, projetId), { limit: 100 });
+  const [{ data }, { data: attendues }] = await Promise.all([
+    stockage.list(dossierDesPropositions(enseignantId, projetId), { limit: 100 }),
+    // Les images d'une demande prête attendent qu'on revienne les poser : elles ne s'effacent pas
+    clientService().from("demandes_d_images").select("propositions").eq("projet_id", projetId).in("etat", ["en_route", "prete"]),
+  ]);
+  const gardees = new Set(((attendues ?? []) as { propositions: string[] | null }[]).flatMap((d) => d.propositions ?? []).map((p) => `${p}.jpg`));
   const limite = Date.now() - DUREE_D_UNE_PROPOSITION_MS;
-  const anciennes = (data ?? []).filter((f) => f.created_at && Date.parse(f.created_at) < limite).map((f) => `${dossierDesPropositions(enseignantId, projetId)}/${f.name}`);
+  const anciennes = (data ?? [])
+    .filter((f) => f.created_at && Date.parse(f.created_at) < limite && !gardees.has(f.name))
+    .map((f) => `${dossierDesPropositions(enseignantId, projetId)}/${f.name}`);
   if (anciennes.length) await stockage.remove(anciennes);
 }
 
@@ -131,18 +138,29 @@ export async function creerLesReferences(e: Enseignant, sorte: SorteDeCarte, id:
     prompt: sorte === "personnage" ? promptDuPortrait(carte, style) : promptDeLObjet(carte, style),
   });
   if (!r.ok) return { ok: false, message: r.message };
-
-  const stockage = clientService().storage.from(SEAU);
-  await effacerLesAnciennes(e.id, carte.projetId).catch(() => undefined);
-  const propositions: string[] = [];
-  for (const octets of r.images) {
-    if (!lireImage(octets)) continue;
-    const nouvelle = randomUUID();
-    const { error } = await stockage.upload(cheminProposition(e.id, carte.projetId, nouvelle), octets, { contentType: "image/jpeg", upsert: false });
-    if (!error) propositions.push(nouvelle);
-  }
+  const propositions = await deposerLesPropositions(e.id, carte.projetId, r.images);
   if (!propositions.length) return { ok: false, message: MESSAGES_IA.pasDImage };
   return { ok: true, propositions, reste: r.reste };
+}
+
+/**
+ * Les images créées attendent dans le stockage que l'adulte en garde une (F10.1 : une image écartée
+ * n'est pas conservée) ; celles d'une page fermée s'effacent passé un jour, à la création suivante.
+ * Rend les identités des propositions déposées.
+ */
+export async function deposerLesPropositions(enseignantId: string, projetId: string, images: readonly Uint8Array[]): Promise<string[]> {
+  const stockage = clientService().storage.from(SEAU);
+  await effacerLesAnciennes(enseignantId, projetId).catch(() => undefined);
+  const propositions: string[] = [];
+  for (const octets of images) {
+    const lue = lireImage(octets);
+    if (!lue) continue;
+    const nouvelle = randomUUID();
+    // Une image détourée reste en PNG : le nom garde « .jpg », le type dit le vrai format
+    const { error } = await stockage.upload(cheminProposition(enseignantId, projetId, nouvelle), octets, { contentType: TYPE_MIME[lue.format], upsert: false });
+    if (!error) propositions.push(nouvelle);
+  }
+  return propositions;
 }
 
 /** Efface les propositions écartées ; celles d'un autre adulte ou d'un autre projet ne se nomment pas. */

@@ -103,8 +103,8 @@ describe("La façon d'écrire du livre (F13, F05, 18 octobre 2026)", () => {
 });
 
 describe("Styles et prompts des images de référence (F10.2)", () => {
-  it("six styles décrits par leur technique, et « Autre » ; jamais un nom d'artiste ni de studio", () => {
-    expect(STYLES).toEqual(["lumineuse", "aquarelle", "crayons", "gouache", "papier", "encre", "autre"]);
+  it("huit styles décrits par leur technique, et « Autre » ; jamais un nom d'artiste ni de studio", () => {
+    expect(STYLES).toEqual(["lumineuse", "aquarelle", "crayons", "photo", "volume", "bd", "pixel", "encre", "autre"]);
     expect(STYLES_DES_IMAGES.lumineuse.nom).toBe("Illustration 2D lumineuse");
     const tout = Object.values(STYLES_DES_IMAGES).map((s) => s.prompt).join(" ");
     for (const nom of ["Ghibli", "Disney", "Pixar", "Miyazaki", "à la manière"]) expect(tout).not.toContain(nom);

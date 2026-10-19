@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useTransition, type CSSProperties } from "react";
+import { useEffect, useState, useTransition, type CSSProperties } from "react";
 import { enregistrerNomAffiche, reglerAidesIa } from "@/app/(adulte)/actions-compte";
 import type { ReglagesIa } from "@/domaine/aides-ia";
 import { seDeconnecter } from "@/app/entree/actions";
@@ -41,6 +41,16 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa }: Props) {
   const [enCours, lancer] = useTransition();
   // Montrés aussitôt, gardés ensuite : un réglage ne doit pas attendre le serveur pour changer
   const [ia, setIa] = useState(reglagesIa);
+  // « Régler », sous une mention des aides (« ✦ Image créée à l'ajout ») : « Mon compte » s'ouvre sur le réglage
+  useEffect(() => {
+    const ouvrir = () => {
+      setEnregistre(false);
+      setCompte(true);
+      requestAnimationFrame(() => document.getElementById("reglage-image-ajout")?.scrollIntoView({ block: "center" }));
+    };
+    window.addEventListener("ouvrir-mon-compte", ouvrir);
+    return () => window.removeEventListener("ouvrir-mon-compte", ouvrir);
+  }, []);
 
   const reglerIa = (changes: Partial<ReglagesIa>) => {
     setIa((r) => ({ ...r, ...changes }));

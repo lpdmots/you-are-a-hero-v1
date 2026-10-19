@@ -17,6 +17,6 @@ export async function GET(_requete: Request, { params }: { params: Promise<{ pro
   const { data, error } = await clientService().storage.from(SEAU).download(cheminProposition(e.id, projet, id));
   if (error || !data) return new Response(null, { status: 404 });
   return new Response(data, {
-    headers: { "Content-Type": "image/jpeg", "Cache-Control": "private, max-age=86400", "X-Content-Type-Options": "nosniff" },
+    headers: { "Content-Type": data.type || "image/jpeg", "Cache-Control": "private, max-age=86400", "X-Content-Type-Options": "nosniff" },
   });
 }

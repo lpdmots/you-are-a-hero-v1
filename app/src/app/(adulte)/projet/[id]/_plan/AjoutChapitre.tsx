@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { useAidesIa } from "@/composants/AidesIa";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { Icone } from "@/composants/Icone";
+import { MentionImageALAjout } from "@/composants/ImagesALAjout";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { ORIENTATION_MAX } from "@/domaine/preparation";
 import type { Partie } from "@/domaine/recit";
@@ -238,6 +239,7 @@ export function AjoutChapitre({
                         Orienter l’IA
                       </button>
                     </p>
+                    <MentionImageALAjout className="ajout-ia__mention" />
                   </>
                 ) : null}
               </div>

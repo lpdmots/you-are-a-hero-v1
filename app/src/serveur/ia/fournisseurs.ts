@@ -1,6 +1,6 @@
 import "server-only";
 import Anthropic from "@anthropic-ai/sdk";
-import OpenAI from "openai";
+import OpenAI, { toFile } from "openai";
 import { MODELES, MODELE_DES_IMAGES, type IdModele } from "./modeles";
 
 /**
@@ -113,6 +113,14 @@ export type RequeteImages = {
   taille: string;
   qualite: "normale" | "haute";
   nombre: 1 | 2;
+  /** Sur fond transparent, en PNG (l'image détourée) */
+  transparente?: boolean;
+  /**
+   * Les portraits et les images de référence des personnages et des objets retenus (F10.2) :
+   * avec eux, l'image se crée par l'édition d'OpenAI, qui les reçoit en entrée. Chacune se paie
+   * en jetons d'image d'entrée.
+   */
+  references?: { octets: Uint8Array; format: "jpeg" | "png" | "webp" }[];
   signal: AbortSignal;
 };
 
@@ -123,19 +131,25 @@ export type ReponseImages = { images: Uint8Array[]; texteEntree: number; imageEn
  * « medium » du modèle, « haute » sa qualité « high ». Jamais pendant les essais automatiques.
  */
 export async function creerDesImages(r: RequeteImages): Promise<ReponseImages> {
-  const reponse = await clientOpenAI().images.generate(
-    {
-      model: MODELE_DES_IMAGES.id,
-      prompt: r.prompt,
-      size: r.taille,
-      quality: r.qualite === "haute" ? "high" : "medium",
-      n: r.nombre,
-      output_format: "jpeg",
-      output_compression: 92,
-      background: "opaque",
-    },
-    { signal: r.signal },
-  );
+  const commun = {
+    model: MODELE_DES_IMAGES.id,
+    prompt: r.prompt,
+    size: r.taille,
+    quality: r.qualite === "haute" ? ("high" as const) : ("medium" as const),
+    n: r.nombre,
+    ...(r.transparente
+      ? { output_format: "png" as const, background: "transparent" as const }
+      : { output_format: "jpeg" as const, output_compression: 92, background: "opaque" as const }),
+  };
+  const reponse = r.references?.length
+    ? await clientOpenAI().images.edit(
+        {
+          ...commun,
+          image: await Promise.all(r.references.map((x, i) => toFile(Buffer.from(x.octets), `reference-${i + 1}.${x.format === "jpeg" ? "jpg" : x.format}`, { type: `image/${x.format}` }))),
+        },
+        { signal: r.signal },
+      )
+    : await clientOpenAI().images.generate(commun, { signal: r.signal });
   const u = reponse.usage;
   const imageEntree = u?.input_tokens_details?.image_tokens ?? 0;
   const jetons = { texteEntree: Math.max(0, (u?.input_tokens ?? 0) - imageEntree), imageEntree, sortie: u?.output_tokens ?? 0 };

@@ -2030,3 +2030,60 @@
 .apercu__barre .suggestion {
   flex-basis: 100%;
 }
+
+/* Le prompt de l'image de face (F11.4, étape 8, lot 8) : replié sous les trois choses à préparer */
+.couverture__prompt {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--trait);
+}
+.couverture__prompt > summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--canard);
+  list-style: none;
+}
+.couverture__prompt > summary::-webkit-details-marker {
+  display: none;
+}
+.couverture__prompt > summary::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  margin-left: 2px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+.couverture__prompt[open] > summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+.couverture__prompt > summary .ic {
+  width: 16px;
+  height: 16px;
+}
+.couverture__prompt > summary:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.couverture__prompt-corps {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+  margin-top: 10px;
+}
+.couverture__prompt-corps > .champ,
+.couverture__prompt-corps > .ia-propose {
+  width: 100%;
+}
+.couverture__copier {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+}

@@ -270,7 +270,7 @@ export function ChapitreEleve({
           ) : null}
           {chapitre.resume ? (
             <details className="chap-resume">
-              <summary>Ce qui se passe dans ce chapitre</summary>
+              <summary>Où se passe ce chapitre</summary>
               <p>{chapitre.resume}</p>
             </details>
           ) : null}

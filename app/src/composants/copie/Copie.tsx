@@ -19,6 +19,9 @@ import {
   Contexte, estAuCurseur, SANS_JEU, SANS_VOISINES, type ApercuDeChoix, type ContexteDeCopie, type FicheOuverte, type Jeu, type Lieu, type Livre, type SceneConnue, type SceneCreee,
   type Services, type Voisines,
 } from "./contexte";
+import type { Cadrage } from "@/domaine/illustration";
+import type { ImageAPoser } from "./contexte";
+import { FicheCreerImage } from "./FicheCreerImage";
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
 import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets, ListePersonnages } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
@@ -78,7 +81,7 @@ export const DROITS_ADULTE: Droits = { role: "adulte" };
 export function Copie({
   texte, version, cible, marques, libelle, invite = "Écrivez ici.", tete, dessus, pied, autre, apresRetour, onEtat, onVide, onVersion,
   livre: livreRecu, droits, lieu, pourEleve = false, services, protection = false, enseignant = null, jeu = SANS_JEU,
-  voisines: voisinesRecues = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, aides, onSelection, onMots,
+  voisines: voisinesRecues = SANS_VOISINES, voisinesAffichees = true, lienDeScene, panneau = null, onPanneau, ouvrirChoix, ouvrirImage, aPoser, onPosee, onCreationDImage, aides, onSelection, onMots,
 }: {
   texte: Texte; version: number; cible: Cible;
   /** Gras, italique et souligné sont-ils permis ici ? (F04-AC03) */
@@ -126,6 +129,17 @@ export function Copie({
    * ses réglages ouverts dans le panneau (F09.2, « Récupération »)
    */
   ouvrirChoix?: string;
+  /**
+   * « La poser », au-dessus de la copie : l'image demandée pour la scène est prête, son panneau
+   * s'ouvre ; un nouveau numéro le rouvre (reprise du 18 octobre 2026)
+   */
+  ouvrirImage?: number;
+  /** Une image demandée, prête, à poser d'elle-même : un nouveau jeton la pose */
+  aPoser?: ImageAPoser;
+  /** L'image demandée vient d'être posée */
+  onPosee?: () => void;
+  /** Le panneau « Créer une image » s'ouvre ou se ferme */
+  onCreationDImage?: (ouverte: boolean) => void;
   /** Au bout de la barre, les commandes d'IA que la page offre : « Corriger » et son degré (F13.1) */
   aides?: ReactNode;
   /**
@@ -707,8 +721,8 @@ export function Copie({
     const ici = blocCourant(e);
     return !!ici && !estFerme(ici.bloc, droits) && (ici.bloc.type === "p" || ici.bloc.type === "action" || ici.bloc.type === "choix");
   };
-  const poserImage = (image: string, ou: "bloc" | "ligne") => {
-    if (fiche?.sorte !== "poser-image") return;
+  const poserImage = (image: string, ou: "bloc" | "ligne", cadrage?: Cadrage, alt?: string, apresBloc?: string | null, detouree?: boolean) => {
+    if (fiche?.sorte !== "poser-image" && fiche?.sorte !== "creer-image") return;
     // L'image posée, ses réglages s'ouvrent à la place : largeur, légende, ce qu'elle montre
     const ici = blocCourant(e);
     if (ou === "ligne" && admetUneImage() && e.selection && ici) {
@@ -717,11 +731,20 @@ export function Copie({
       e.tf.move({ distance: 1, unit: "offset" });
       setFiche({ sorte: "symbole", bloc: ici.bloc.id, symbole: symbole.id });
     } else {
-      const i = Math.max(0, indexDe(fiche.bloc));
+      // Une image demandée plus tôt se pose après le bloc d'alors, s'il est encore là
+      const demandee = apresBloc ? indexDe(apresBloc) : -1;
+      const i = Math.max(0, demandee >= 0 ? demandee : indexDe(fiche.bloc));
       const ici = blocsDe(e)[i];
       const remplace = ici?.type === "p" && lettresDe(ici) === "";
-      // En bloc, après le paragraphe du curseur, en largeur moyenne (F10-AC27)
-      const figure: ImageBloc = { type: "image", id: nouvelId(), image, largeur: LARGEURS.moyenne, children: [{ text: "" }] };
+      // En bloc, après le paragraphe du curseur, en largeur moyenne (F10-AC27) ; une image créée
+      // en pleine page se pose en « Pleine page », les autres cadrages en pleine largeur (F10.2)
+      const figure: ImageBloc = {
+        type: "image", id: nouvelId(), image,
+        largeur: detouree ? LARGEURS.petite : cadrage ? LARGEURS.pleine : LARGEURS.moyenne,
+        ...(cadrage === "pleine-page" ? { largeur: 100, page: true } : {}),
+        ...(alt?.trim() ? { alt: alt.trim() } : {}),
+        children: [{ text: "" }],
+      };
       e.tf.withoutNormalizing(() => {
         e.tf.insertNodes(figure, { at: [i + 1] });
         if (remplace) e.tf.removeNodes({ at: [i] });
@@ -731,6 +754,51 @@ export function Copie({
     }
     reprendreLeTexte();
   };
+  /**
+   * Une image demandée pour la scène se pose d'elle-même quand l'adulte ne regarde pas son panneau
+   * (« quitter vaut accord », 18 octobre 2026) : après le bloc d'alors, ou à la fin du texte s'il
+   * n'est plus là ; ou elle prend la place de l'image déjà posée (« Mettre celle-ci à la place »).
+   * La copie l'écrit comme une modification de l'adulte, que l'enregistrement ordinaire envoie.
+   */
+  const poserImageDemandee = (p: ImageAPoser) => {
+    if (p.remplace) {
+      const i = blocsDe(e).findIndex((b) => b.type === "image" && (b as ImageBloc).image === p.remplace);
+      if (i >= 0) {
+        e.tf.setNodes({ image: p.image }, { at: [i] });
+        return;
+      }
+    }
+    const blocs = blocsDe(e);
+    const demandee = p.apresBloc ? indexDe(p.apresBloc) : -1;
+    const i = demandee >= 0 ? demandee : blocs.length - 1;
+    const ici = blocs[i];
+    const remplace = ici?.type === "p" && lettresDe(ici) === "" && blocs.length > 1;
+    const figure: ImageBloc = {
+      type: "image", id: nouvelId(), image: p.image,
+      largeur: p.detouree ? LARGEURS.petite : LARGEURS.pleine,
+      ...(p.cadrage === "pleine-page" ? { largeur: 100, page: true } : {}),
+      ...(p.alt.trim() ? { alt: p.alt.trim() } : {}),
+      children: [{ text: "" }],
+    };
+    e.tf.withoutNormalizing(() => {
+      e.tf.insertNodes(figure, { at: [i + 1] });
+      if (remplace) e.tf.removeNodes({ at: [i] });
+    });
+  };
+  const jetonAPoser = useRef(0);
+  useEffect(() => {
+    if (!aPoser || aPoser.jeton === jetonAPoser.current) return;
+    jetonAPoser.current = aPoser.jeton;
+    poserImageDemandee(aPoser);
+    // Posée une fois : une copie montée de nouveau ne la reposera pas
+    onPosee?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [aPoser]);
+  // La page sait si le panneau de création d'une image est ouvert : elle ne pose rien d'elle-même pendant ce temps
+  const creationOuverte = fiche?.sorte === "creer-image";
+  useEffect(() => {
+    onCreationDImage?.(creationOuverte);
+  }, [creationOuverte, onCreationDImage]);
   /** Le chemin d'une image sur la ligne dans le texte, d'après son identité. */
   const cheminDuSymbole = (id: string): [number, number] | null => {
     for (const [i, b] of blocsDe(e).entries()) {
@@ -836,7 +904,8 @@ export function Copie({
   /** Le bloc qu'une fiche concerne : s'il disparaît du texte, elle se referme. */
   const blocDe = (f: FicheOuverte): string | null => {
     if (f.sorte === "creation" || f.sorte === "action") return f.apres;
-    if (f.sorte === "liaison" || f.sorte === "objet-nouveau" || f.sorte === "formule-nouvelle" || f.sorte === "idees") return null;
+    // La création d'une image ne se referme pas avec son bloc : l'image se pose alors au mieux (F10.2)
+    if (f.sorte === "liaison" || f.sorte === "objet-nouveau" || f.sorte === "formule-nouvelle" || f.sorte === "idees" || f.sorte === "creer-image") return null;
     return f.bloc;
   };
   // Les listes courtes — commandes, objets, formules — s'ouvrent au curseur, sous son bloc et
@@ -849,6 +918,13 @@ export function Copie({
   useEffect(() => {
     onPanneau?.(panneauOuvert);
   }, [onPanneau, panneauOuvert]);
+  // L'image demandée est prête : son panneau s'ouvre, sur le dernier bloc (elle se pose après celui d'alors)
+  const [imageOuverte, setImageOuverte] = useState(ouvrirImage ?? 0);
+  if ((ouvrirImage ?? 0) !== imageOuverte) {
+    setImageOuverte(ouvrirImage ?? 0);
+    const dernier = blocsDe(e).at(-1);
+    if (ouvrirImage && services.imageDeScene && dernier) setFiche({ sorte: "creer-image", bloc: dernier.id });
+  }
   // Arrivée depuis un point du Livre : le choix désigné vient sous les yeux, une seule fois
   useEffect(() => {
     if (!ouvrirChoix || fiche?.sorte !== "reglages") return;
@@ -1209,7 +1285,8 @@ export function Copie({
               // On se remet à écrire : la fiche se referme. Pas quand on déplace un bloc, ni quand
               // on écrit dans la phrase de choix qu'on est en train de régler. Le curseur est alors
               // dans le texte : ce que la fiche change elle-même, ou la commande qui l'ouvre, ne compte pas
-              else if (fiche && zone.current?.querySelector("[data-slate-editor]")?.contains(document.activeElement)) {
+              // La création d'une image reste ouverte : une image en route ne se perd pas (F10.2)
+              else if (fiche && fiche.sorte !== "creer-image" && zone.current?.querySelector("[data-slate-editor]")?.contains(document.activeElement)) {
                 const regle = fiche.sorte === "reglages" ? suite.findIndex((b) => b.id === fiche.bloc) : -1;
                 const ecrit = (e.operations as { type: string; path?: number[] }[]).some(
                   (op) => ["insert_text", "remove_text", "split_node", "merge_node"].includes(op.type) && op.path?.[0] !== regle,
@@ -1322,7 +1399,26 @@ export function Copie({
             ) : dansLePanneau.sorte === "creation" ? (
               <FicheNouveauChoix services={services} onCreer={creerChoix} onCreerLiaison={creerLiaison} onApercu={setApercu} onFermer={fermer} />
             ) : dansLePanneau.sorte === "poser-image" ? (
-              <FichePoserImage services={services} surLaLigne={admetUneImage()} onPoser={poserImage} onFermer={fermer} />
+              <FichePoserImage
+                services={services}
+                surLaLigne={admetUneImage()}
+                onPoser={poserImage}
+                onCreer={services.imageDeScene ? () => setFiche({ sorte: "creer-image", bloc: dansLePanneau.bloc }) : undefined}
+                onFermer={fermer}
+              />
+            ) : dansLePanneau.sorte === "creer-image" && services.imageDeScene ? (
+              <FicheCreerImage
+                services={services.imageDeScene}
+                texte={blocsDe(e).filter((b) => b.type === "p" || b.type === "action").map(lettresDe).join("\n")}
+                apres={dansLePanneau.bloc}
+                onPoser={(image, cadrage, alt, apresBloc, detouree) => poserImage(image, "bloc", cadrage, alt, apresBloc, detouree)}
+                onRemplacer={(ancienne, image) => {
+                  poserImageDemandee({ jeton: 0, image, remplace: ancienne, cadrage: null, alt: "", apresBloc: null });
+                  fermer();
+                }}
+                onRetour={() => setFiche({ sorte: "poser-image", bloc: dansLePanneau.bloc })}
+                onFermer={fermer}
+              />
             ) : dansLePanneau.sorte === "image" && imageReglee ? (
               <FicheImageBloc
                 bloc={imageReglee}

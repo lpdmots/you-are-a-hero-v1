@@ -115,13 +115,12 @@ test.describe("Image en bloc (F10) — V12", () => {
     await FICHE(page).getByLabel("Légende").fill("Le pont, dessiné par Chloé");
     await FICHE(page).getByLabel("Légende").press("Enter");
     await expect(FIGURES(page).locator(".figure__legende")).toHaveText("Le pont, dessiné par Chloé");
-    await FICHE(page).getByLabel("Ce que montre l’image").fill("un pont de cordes dans la brume");
-    await FICHE(page).getByLabel("Ce que montre l’image").press("Enter");
+    // Le texte lu à voix haute n'a plus de champ (19 octobre 2026)
+    await expect(FICHE(page).getByLabel("Lu à voix haute")).toHaveCount(0);
     await attendreEnregistre(page);
     enBase = await sceneEnBase(s15);
-    expect(enBase.texte[1]).toMatchObject({ largeur: 65, legende: "Le pont, dessiné par Chloé", alt: "un pont de cordes dans la brume" });
+    expect(enBase.texte[1]).toMatchObject({ largeur: 65, legende: "Le pont, dessiné par Chloé" });
     expect(enBase.texte[1]).not.toHaveProperty("page");
-    await expect(FIGURES(page).locator("img")).toHaveAttribute("alt", "un pont de cordes dans la brume");
 
     // Alice lit l'image et sa légende, sans pouvoir y toucher
     const alice = await posteDe(browser, s, "Alice");
@@ -289,7 +288,7 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await FICHE(page).getByRole("button", { name: "Sur la ligne" }).click();
     await expect(copie(page)).toBeFocused();
     // Ses réglages s'ouvrent aussi ; se remettre à écrire les referme
-    await expect(FICHE(page).getByLabel(/Ce que montre/)).toBeVisible();
+    await expect(FICHE(page).getByLabel("Nom du symbole")).toBeVisible();
     await page.keyboard.type(", pousse-la.");
     await expect(FICHE(page)).toHaveCount(0);
     await attendreEnBase(s16, "pousse-la.");
@@ -325,8 +324,8 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await page.keyboard.press(`${MOD}+c`);
     expect(await presseTexte(page)).toBe("Si tu choisis la porte [image], pousse-la.");
     await copie(page).getByRole("button", { name: /Régler l’image/ }).click();
-    await FICHE(page).getByLabel("Ce que montre l’image").fill("lune");
-    await FICHE(page).getByLabel("Ce que montre l’image").press("Enter");
+    await FICHE(page).getByLabel("Nom du symbole").fill("lune");
+    await FICHE(page).getByLabel("Nom du symbole").press("Enter");
     await FICHE(page).getByRole("button", { name: "Fermer la fiche" }).click();
     await attendreEnregistre(page);
     await copie(page).locator("p").first().click();

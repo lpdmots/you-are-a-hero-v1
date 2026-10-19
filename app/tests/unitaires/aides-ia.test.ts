@@ -17,7 +17,7 @@ describe("Réglages des aides IA (F13)", () => {
   it("F13-AC01 — sans réglage, le degré proposé est 2, « Orthographe et grammaire »", () => {
     expect(lireReglagesIa({}).degre).toBe(2);
     expect(lireReglagesIa(null)).toEqual(REGLAGES_IA_HABITUELS);
-    expect(REGLAGES_IA_HABITUELS).toEqual({ degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto" });
+    expect(REGLAGES_IA_HABITUELS).toEqual({ degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto", imageALAjout: true });
   });
 
   it("F10-AC37 — qualité automatique : haute pour une pleine page, normale ailleurs ; un choix forcé reste forcé", () => {

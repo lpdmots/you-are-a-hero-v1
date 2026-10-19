@@ -1524,7 +1524,10 @@ arrivées regroupées d'un chapitre où mènent de nombreux chapitres.
 
 - **F03-AC21 — La carte ouvre le chapitre :** étant donné la page « Parties
   et chapitres », lorsque l'enseignant clique l'image ou le titre de « La
-  lisière », alors la page de ce chapitre s'ouvre. Le menu à trois points de
+  lisière », alors la page de ce chapitre s'ouvre. Ses réglages, ouverts par le
+  menu, portent au bas « Entrer dans le chapitre » et « Fermer » (18 octobre
+  2026 ; un essai où la carte ouvrait les réglages est revenu en arrière le
+  19 octobre à la demande du porteur : entrer est l'action la plus fréquente). Le menu à trois points de
   la carte propose « Réglages », « Attribuer des élèves », « Exclure du
   livre » et « Supprimer », comme celui du bandeau de la page.
 - **F03-AC22 — Supprimer puis restaurer :** étant donné « Le sanctuaire »,
@@ -6848,7 +6851,14 @@ de l'image. Non remplie, il n'y en a pas : ni ligne vide, ni espace réservé.
 simple et collage :**
 
 - **« Ce que montre l'image » :** champ facultatif, pour l'image en bloc
-  comme en ligne (« lune »), lu par un lecteur d'écran.
+  comme en ligne (« lune »), lu par un lecteur d'écran. Nommé « Lu à voix
+  haute » à l'écran depuis le lot 8 de l'étape 8 (18 octobre 2026), le nom
+  « Ce que montre l'image » passant au champ de création d'une image (F10.2),
+  pour que deux champs ne portent pas le même nom ; confirmé par le porteur le
+  même jour. **Retiré par le porteur le 19 octobre 2026** pour l'image en bloc
+  (« du bruit pour rien ») : plus de champ ; une image créée reçoit ce texte de
+  son idée, sans rien demander. L'image sur la ligne garde le sien, nommé « Nom
+  du symbole », qui donne « [lune] » quand la phrase est copiée ailleurs.
 - **Sortie en texte simple** (copie vers l'extérieur, recherche, libellé du
   graphe quand la phrase en tient lieu) : l'image en ligne devient
   « [lune] », ou « [image] » sans ce texte ; l'image en bloc ne sort pas.
@@ -6949,6 +6959,29 @@ une mention discrète le rappelle là où l'on ajoute (« ✦ Image créée à l
 Régler »), avec un lien vers le réglage : l'image coûte plus qu'un texte et compte
 dans le plafond des images du jour. À construire avec les images créées (étape 8,
 lot 8) ; un ajout manuel ne crée pas d'image.
+
+**Décidé par le porteur le 18 octobre 2026, en essayant le lot 8 de l'étape 8 — on demande, puis
+on continue son chemin :** une image demandée (repérage, image d'une scène, image d'office) se crée
+côté serveur, même si l'adulte ferme le tiroir ou quitte la page ; il sait que l'élément aura une
+image adaptée quand il y reviendra, et en redemande une si elle ne lui plaît pas. Recommandations
+acceptées :
+- **Repérage :** la première image se pose d'office sur le projet, la partie ou le chapitre ; avec
+  « Images par création » sur deux, la seconde attend en tête de « Choisir une image » de l'élément
+  (« Une autre proposition · la première est posée »), jusqu'à « Garder celle-ci » ou « Laisser ».
+- **Image d'une scène :** le serveur ne l'écrit jamais dans le texte, qu'un élève peut être en
+  train d'écrire. **Révisé par le porteur le même jour : quitter vaut accord.** Quand l'adulte a
+  refermé le panneau ou quitté la scène, l'image prête se pose d'elle-même dans le texte dès qu'il
+  est sur la scène (tout de suite s'il y est resté, à son retour sinon), écrite par sa copie comme
+  une modification ordinaire, après le bloc où elle avait été demandée (à la fin du texte s'il n'est
+  plus là), avec « L'image demandée est posée dans la scène. » ; pendant la création, une ligne
+  au-dessus de la copie dit qu'elle se posera d'elle-même. Panneau ouvert, il choisit comme avant.
+  Avec deux images, la seconde attend : « Image posée. Une autre proposition attend. La voir », et
+  « Mettre celle-ci à la place » remplace l'image posée.
+- **Le geste le plus récent gagne :** une image choisie entre la demande et l'arrivée n'est pas
+  remplacée ; l'image arrivée reste parmi les images du projet, payée.
+- **Plusieurs images en même temps,** une seule à la fois pour un même élément ; les plafonds du jour
+  et du mois sont inchangés ; les aides de texte gardent une demande à la fois (F13).
+Les cartes des éléments qui attendent portent le signe d'attente, y compris après un rechargement.
 
 **Décidé par le porteur le 10 octobre 2026, après l'essai de l'étape 1 :**
 l'image de repérage se choisit dès la création d'un projet et dès celle d'un
@@ -7156,10 +7189,16 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   projet, compte « Illustration 2D lumineuse », le style des images de
   l'application, que le porteur trouve « super » (2D contemporaine en lumière
   de jour, formes arrondies, peu de détails), proposé par défaut ; puis
-  aquarelle douce, crayons de couleur, gouache d'album jeunesse, papier
-  découpé, encre et hachures en noir et blanc (pour un intérieur imprimé en
+  aquarelle douce, crayons de couleur, gouache d'album jeunesse (remplacée le
+  18 octobre 2026, à la demande du porteur, par « Photo réaliste », la gouache
+  ressemblant trop à l'illustration 2D réécrite), papier
+  découpé (remplacé le même jour par « Dessin animé en volume », décrit par sa technique),
+  encre et hachures en noir et blanc ; s'y ajoutent le même jour, à sa demande, « Bande
+  dessinée, ligne claire » et « Pixel art » (pour un intérieur imprimé en
   noir), et « Autre », décrit par l'adulte. Jamais un nom d'artiste ni de
-  studio.
+  studio. Demandé par le porteur le 18 octobre 2026 : chaque style se montre par une
+  image d'exemple, le même sujet dans tous les styles, pour qu'il parle à l'adulte ; le
+  choix se fait sur une grille de cartes plutôt que dans une liste.
 - **Langue :** les prompts sont en français, lisibles et faciles à retoucher ;
   pas de réglage de langue tant que personne ne le demande.
 - **Couverture (F11.4) :** un prompt à copier seulement ; une image générée
@@ -7209,7 +7248,8 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   « Ajouter une image », dans le panneau à droite du texte : « Ce que montre
   l'image », facultatif, où se trouve déjà l'idée de l'élève s'il en a écrit
   une ; le cadrage, choisi d'un clic sur quatre cadres dessinés — pleine page
-  en hauteur, 3:2, 16:9, carré ; les badges des personnages et des objets dont
+  en hauteur, 3:2, 16:9, carré, et depuis le 18 octobre 2026, à la demande du
+  porteur, « Détourée » (le sujet seul sur fond transparent, posé en petit) ; les badges des personnages et des objets dont
   un nom apparaît dans le texte de la scène ou dans l'indication, retirés d'un
   clic, ajoutés par « + » ; « ✦ Proposer la description » rend un prompt
   modifiable, d'après la scène, le chapitre, le style et les badges ; puis
@@ -7284,6 +7324,51 @@ sur son instruction) :
   commun et une idée dans l'étape Personnages, sans carte de héros, lorsque l'adulte
   écrit dans « Nous retenons » de l'onglet « Le héros », alors une carte « Le héros »
   se crée, reçoit le texte et l'idée, et « Donner un nom au héros » ouvre sa carte.
+
+**Construit au lot 8 de l'étape 8 (18 octobre 2026) — images créées :** écrans dans
+le [design](design.md), précisions confirmées par le porteur le même jour, listées dans le
+[plan](plan.md#étape-8--aides-ia). Pris en construisant, après la critique : « Ce que montre l'image » est un seul champ,
+l'idée de l'élève ou de l'adulte, que « ✦ Proposer la description » remplace par une
+description modifiable, l'idée restant gardée (« Revenir à l'idée de départ ») ; le prompt
+part de la description, sinon de l'idée ; l'image gardée se pose en « Pleine page » au
+cadrage pleine page, en pleine largeur sinon, avec l'idée pour texte lu à voix haute. Les
+badges d'office sont les personnages et objets nommés dans le texte ou l'idée, l'article
+du nom ne comptant pas (« sa lanterne de cuivre » nomme « la lanterne de cuivre ») ; un
+héros absent des images n'a jamais de badge, et la ligne qui le rappelle le nomme. Au plus
+quatre images de référence par image ; une image de scène normale avec un portrait coûte
+environ 2,4 centimes de dollar (un essai réel, 12 s, portrait tenu). L'idée de l'élève
+s'écrit sur une scène qu'il peut écrire, avec les droits du texte. L'image de repérage se
+crée sans modèle de texte, d'après le résumé (d'un chapitre, ceux des chapitres d'une
+partie, l'univers et l'enjeu pour le projet) : un lieu et son ambiance, sans personnage au
+premier plan ; sans résumé, elle ne se crée pas et le bouton le dit. L'image d'office d'une
+partie se fait d'après le résumé de son premier chapitre, une par partie ; une image
+choisie entre-temps n'est pas remplacée.
+
+- **F10-AC48 — Image de repérage d'après le résumé :** étant donné « La lisière » et son
+  résumé, « Images par création » sur deux, lorsque l'adulte demande « ✦ Créer une image
+  d'après le résumé » dans « Choisir une image », alors deux images sont proposées, dans le
+  style du projet, rien n'étant posé ; celle qu'il garde devient l'image du chapitre, parmi
+  les images du projet, l'autre n'est pas conservée. Sans résumé, le bouton est éteint et dit
+  « Écrivez d'abord le résumé du chapitre. ».
+- **F10-AC49 — Image d'une scène :** étant donné une scène où « le passeur » (Maël) lève
+  « sa lanterne de cuivre », Lou héros absent des images, lorsque l'adulte ouvre « Créer une
+  image », alors Maël et la lanterne ont leur badge, Lou n'en a pas et la ligne le dit ; « + »
+  ajoute un autre personnage ou objet ; au cadrage pleine page, « Créer l'image » demande une
+  image haute, avec les portraits des badges en référence et leurs fiches mot pour mot ; celle
+  qu'il garde se pose dans la scène en « Pleine page ».
+- **F10-AC50 — Image créée à l'ajout :** étant donné le réglage allumé, lorsque l'adulte
+  ajoute un chapitre (ou une partie) proposé par l'IA, alors une seule image d'après son
+  résumé lui est créée, quel que soit « Images par création », avec un signe d'attente sur la
+  carte ; la mention « ✦ Image créée à l'ajout · Régler » le dit, « Régler » ouvre le réglage ;
+  une image choisie entre-temps n'est pas remplacée.
+- **F10-AC51 — Réglage éteint :** étant donné « Créer l'image des parties et chapitres ajoutés
+  par l'IA » éteint, ou les aides éteintes, lorsque l'adulte ajoute un chapitre proposé, alors
+  aucune image n'est créée et la mention ne s'affiche pas ; un ajout à la main n'en crée jamais.
+- **F10-AC52 — Prompt de couverture :** étant donné « le bac sur le lac au lever du jour »
+  écrit dans « Le prompt de l'image de face » (« La couverture, chez l'imprimeur »), lorsque
+  l'adulte demande « ✦ Proposer la description » puis « Copier le prompt », alors le
+  presse-papiers reçoit un prompt de couverture au format A5, sans texte, de la place pour le
+  titre, le style et la règle du héros absent ; aucune image n'est créée.
 
 **Construit au lot 7 de l'étape 8 (18 octobre 2026) — personnages et objets :**
 écrans dans le [design](design.md), précisions à confirmer dans le
@@ -8393,7 +8478,11 @@ coût de réalisation et de vérification. À la place, la première livraison
 propose en F10.2 un cadrage de prompt « illustration de couverture » au format
 du livre, et une page d'aide expliquant quoi préparer pour l'outil de
 l'imprimeur : image de face, titre, texte de quatrième. L'aide complète
-reste possible ultérieurement.
+reste possible ultérieurement. Construit au lot 8 de l'étape 8 (18 octobre 2026) :
+« Le prompt de l'image de face », replié sous les trois choses à préparer de « La
+couverture, chez l'imprimeur » ; « Ce que montre la couverture », « ✦ Proposer la
+description » d'après l'idée, l'univers et l'enjeu, puis « Copier le prompt », qui
+marche sans IA ; l'idée et la description restent avec le projet (F10-AC52).
 
 **Décision confirmée le 3 octobre 2026 — premier cas réel :** le parcours
 epubli sert de premier cas réel de vérification, sans promettre un fichier
@@ -9847,7 +9936,13 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
 - **Ce qui est transmis n'est pas dit à l'écran,** décision du porteur : la
   liste figure ici et, à l'ouverture, dans la politique de confidentialité.
 - **Plafonds,** recommandation acceptée le 16 octobre 2026. Par aide : une
-  seule demande à la fois par adulte, le bouton attendant la réponse ; une
+  seule demande à la fois par adulte, le bouton attendant la réponse (précisé au
+  lot 8 de l'étape 8, le 18 octobre 2026, sur recommandation annoncée au porteur :
+  une à la fois **par sorte**, une demande de texte et une création d'image pouvant
+  attendre ensemble, jamais deux images, pour que l'image créée d'office à l'ajout
+  d'un chapitre ne retienne pas l'aide suivante ; confirmé par le porteur le même jour ; puis,
+  le même jour, à sa demande : les images se créent en parallèle, une seule à la fois pour un
+  même élément, voir F10.1, « on demande, puis on continue son chemin ») ; une
   longueur de réponse bornée ; soixante secondes au plus, après quoi « L'aide
   n'a pas répondu. Le texte n'a pas changé. » Par adulte et par jour, heure de
   Paris : soixante demandes de texte et vingt images (relevé de dix à vingt le
@@ -10463,6 +10558,16 @@ quitter la partie.
 **Limites et questions ouvertes :** retouche assistée d'une partie existante,
 prévention des doublons. La qualité des suggestions et le contexte exact
 restent à éprouver.
+
+**Décidé par le porteur le 18 octobre 2026, en essayant le lot 8 de l'étape 8 — le résumé
+d'un chapitre décrit son lieu :** le résumé proposé par l'IA était trop long et racontait ce
+que les élèves inventeront scène après scène. Les résumés que l'IA propose (« ✦ Proposer un
+résumé », chapitres et parties proposés) décrivent désormais le lieu du chapitre et son
+ambiance, en une ou deux phrases courtes (quarante mots au plus), sans événement, rencontre,
+indice ni choix : ils servent d'abord à l'image du chapitre (F10.1). Sous le champ, « Le lieu
+et son ambiance, en une ou deux phrases. » ; côté élève, « Où se passe ce chapitre ». Dans les
+réglages du chapitre, le résumé passe avant l'image, qui se crée d'après lui ; une image,
+proposée ou choisie, s'agrandit d'un clic, comme un portrait.
 
 ### F13.6 — Écrire une scène vide d'après sa consigne
 

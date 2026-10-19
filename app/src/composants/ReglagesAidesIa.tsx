@@ -79,6 +79,12 @@ export function ReglagesAidesIa({ reglages, onChanger }: { reglages: ReglagesIa;
               </div>
             </div>
             <p>Automatique : haute pour une pleine page, normale ailleurs. Une image haute coûte environ quatre fois plus.</p>
+            <label className={`inter ${styles.interSous}`} id="reglage-image-ajout">
+              <input type="checkbox" role="switch" checked={reglages.imageALAjout} onChange={(e) => onChanger({ imageALAjout: e.target.checked })} />
+              <span className="inter__piste" aria-hidden="true" />
+              <span>Créer l’image des parties et chapitres ajoutés par l’IA</span>
+            </label>
+            <p>{reglages.imageALAjout ? "Une image d’après le résumé, comptée parmi les images du jour." : "L’image se crée depuis « Choisir une image »."}</p>
           </div>
         </>
       ) : null}

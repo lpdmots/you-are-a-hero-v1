@@ -215,8 +215,8 @@ test.describe("La remarque de l'enseignante (F07.3)", () => {
     // Le texte qu'il avait remis se relit, sans remplacer celui de la scène
     await remarque.getByRole("button", { name: /^Voir mon texte du/ }).click();
     await expect(remarque.locator(".remise-apercu")).toContainText("Lou se glisse dans la souche.");
-    // Aucun champ de réponse ni de note d'accompagnement (AC24)
-    await expect(bilal.page.locator("textarea, input[type=text]")).toHaveCount(0);
+    // Aucun champ de réponse ni de note d'accompagnement (AC24) ; seule l'idée d'image, repliée, a le sien (F10-AC10)
+    expect(await bilal.page.locator("textarea, input[type=text]").evaluateAll((champs) => champs.filter((c) => !c.closest("details")).length)).toBe(0);
     // La fiche en grand ne revient pas
     await bilal.page.reload();
     await expect(bilal.page.getByRole("region", { name: "Mme Laurent te demande de reprendre ton texte" })).toHaveCount(0);

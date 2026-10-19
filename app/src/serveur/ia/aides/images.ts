@@ -1,4 +1,5 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
+import { CADRAGES_EN_MOTS, DESCRIPTION_IMAGE_MAX, type Cadrage } from "@/domaine/illustration";
 import { lireAutresNoms } from "@/domaine/personnages";
 import { REGLES_COMMUNES, presentation, type Carnet, type Histoire } from "./contexte";
 
@@ -107,54 +108,65 @@ Un objet fétiche ou un accessoire seulement si la description ou l'univers en d
   }),
 };
 
-export type Cadrage = "pleine-page" | "3:2" | "16:9" | "carre";
-
-export const CADRAGES: Record<Cadrage, string> = {
-  "pleine-page": "illustration pleine page, en hauteur",
-  "3:2": "illustration horizontale, format 3:2",
-  "16:9": "bandeau horizontal, format 16:9",
-  carre: "illustration carrée",
-};
-
 export type EntreeDescription = {
   histoire: Histoire;
+  /** L'image d'une scène, ou l'illustration de couverture (F11.4) */
+  pour: "scene" | "couverture";
   /** « Ce que montre l'image » : l'idée de l'élève ou de l'adulte, s'il y en a une */
   idee: string;
+  /** Les paragraphes de récit de la scène ; pour la couverture, rien */
   paragraphes: string[];
   chapitre?: { titre: string; resume?: string };
-  cadrage: Cadrage;
+  /** Pour la couverture : l'univers et l'enjeu que la Préparation retient */
+  univers?: string;
+  enjeu?: string;
+  cadrage: Cadrage | "couverture";
   /** Le héros n'est pas représenté : au plus des mains neutres (F10-AC08) */
   herosAbsent: boolean;
-  /** Personnages et objets retenus par leurs badges, avec leur fiche visuelle */
-  badges: { nom: string; fiche: string }[];
+  /** Personnages et objets retenus par leurs badges ; leur fiche est ajoutée par l'application */
+  badges: { nom: string }[];
 };
 
-/** « ✦ Proposer la description » : ce que montre l'image, sans le style ni les fiches, que l'application ajoute. */
+/**
+ * « ✦ Proposer la description » (F10.2) : ce que montre l'image, d'après la scène, le chapitre et
+ * les badges, sans le style ni les fiches, que l'application ajoute elle-même au prompt.
+ */
 export const descriptionImage: DefinitionAide<EntreeDescription, { description: string }> = {
   aide: "description-image",
   sortieMax: 500,
   systeme: (e) => assembler(
     REGLES_COMMUNES,
-    `Tu décris l'image à créer pour une scène du livre, en français, comme on le demanderait à un illustrateur : ce qu'on voit, où, la lumière, l'ambiance, la composition.
+    e.pour === "couverture"
+      ? `Tu décris l'illustration de couverture d'un livre, en français, comme on la demanderait à un illustrateur : ce qu'on voit, où, la lumière, l'ambiance, la composition.
+- Une image qui donne envie d'ouvrir le livre, tirée de son univers et de son enjeu, sans rien dévoiler de la fin.
+- Laisse le haut de l'image assez calme pour le titre.`
+      : `Tu décris l'image à créer pour une scène du livre, en français, comme on le demanderait à un illustrateur : ce qu'on voit, où, la lumière, l'ambiance, la composition.
 - Une image ne montre qu'un instant : choisis le moment le plus parlant de la scène, ou celui que décrit l'idée donnée.
-- Les personnages et objets retenus apparaissent ; nomme-les, sans redécrire leur apparence, que l'application ajoutera.
-- ${e.herosAbsent ? "Le héros n'est PAS représenté : ni son visage ni son corps. Au plus, ses mains, neutres (sans bijou, ni manche distinctive, ni couleur de peau marquée), quand il agit sur un objet." : "Le héros est représenté, comme un personnage retenu."}
+- Les personnages et objets retenus apparaissent ; nomme-les, sans redécrire leur apparence, que l'application ajoutera.`,
+    `- ${e.herosAbsent ? "Le héros n'est PAS représenté : ni son visage ni son corps. Au plus, ses mains, neutres (sans bijou, ni manche distinctive, ni couleur de peau marquée), quand il agit sur un objet." : "Le héros est représenté, comme un personnage retenu."}
 - Aucun texte, lettre ni chiffre dans l'image. Pas de style de dessin : l'application l'ajoutera.
 - Au plus quatre-vingts mots.`,
   ),
   message: (e) => assembler(
     presentation(e.histoire),
     e.chapitre ? bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`) : "",
-    bloc("texte_de_la_scene", e.paragraphes.join("\n")),
+    bloc("univers", e.univers), bloc("enjeu", e.enjeu),
+    e.paragraphes.length ? bloc("texte_de_la_scene", e.paragraphes.join("\n")) : "",
     bloc("idee", e.idee),
     bloc("retenus", e.badges.map((b) => b.nom)),
-    bloc("cadrage", CADRAGES[e.cadrage]),
-    "Décris l'image.",
+    bloc("cadrage", e.cadrage === "couverture" ? "couverture, image de face en hauteur" : CADRAGES_EN_MOTS[e.cadrage]),
+    e.pour === "couverture" ? "Décris l'illustration de couverture." : "Décris l'image.",
   ),
   schema: { nom: "description", schema: objet({ description: chaine }) },
   lire: (json) => {
-    const t = texte(champs(json)?.description, 1200);
+    const t = texte(champs(json)?.description, DESCRIPTION_IMAGE_MAX);
     return t ? { description: t } : null;
   },
-  simuler: (e) => ({ description: e.idee || "Un quai dans la brume, le soir, éclairé par une lanterne." }),
+  simuler: (e) => ({
+    description: e.idee.trim()
+      ? `${e.idee.trim()}, dans une lumière de fin de journée.`
+      : e.pour === "couverture"
+        ? "Un lac noyé de brume au lever du jour, une barque vide amarrée à un ponton, une lanterne allumée à sa proue."
+        : "Un quai dans la brume, le soir, éclairé par une lanterne.",
+  }),
 };

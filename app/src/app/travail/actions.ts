@@ -63,6 +63,19 @@ export async function supprimerScene(sceneId: string): Promise<Fait> {
   return { ok: true };
 }
 
+/**
+ * « Mon idée d'image » (F10.2, F10-AC10) : l'élève décrit en quelques mots l'image qu'il imagine
+ * pour une scène qu'il peut écrire ; il n'a aucune commande d'IA, l'adulte la retrouve en créant
+ * l'image. La base revérifie qu'il peut écrire la scène.
+ */
+export async function noterMonIdee(sceneId: string, idee: string): Promise<Fait> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId)) return refus(null);
+  const { error } = await poste.rpc("eleve_noter_idee_image", { p_scene: sceneId, p_idee: String(idee ?? "").slice(0, 2000) });
+  if (error) return refus(error);
+  return { ok: true };
+}
+
 /** « Scènes voisines » : la préférence de l'élève, qui le suit d'un poste à l'autre (F04-AC08). */
 export async function reglerVoisines(affiche: boolean): Promise<void> {
   const poste = await base();

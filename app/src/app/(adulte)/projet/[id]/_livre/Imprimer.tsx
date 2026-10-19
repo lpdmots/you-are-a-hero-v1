@@ -8,6 +8,7 @@ import { Icone } from "@/composants/Icone";
 import { ETAPES_DU_LIVRE, type RaisonDeRefus } from "@/domaine/livre";
 import { supprimerPdf } from "../../actions-livre";
 import { VoletPartager, type PartageAffiche } from "./Partager";
+import { PromptCouverture } from "./PromptCouverture";
 
 /**
  * « Imprimer et partager », volet « Imprimer » (F11.2, F11.6) : le PDF définitif, refusé tant
@@ -242,6 +243,7 @@ function VoletImprimer({
             le <b>texte de quatrième</b>.
           </li>
         </ul>
+        <PromptCouverture projetId={projetId} />
       </aside>
     </div>
   );

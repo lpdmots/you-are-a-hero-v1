@@ -149,7 +149,7 @@ test("F02-AC08, F02-AC09, F02-AC10 — Grandes étapes ne montre que les parties
 
   // Renommée depuis « Parties et chapitres », elle l'est aussi dans la préparation
   await page.getByLabel("Autres commandes de la partie La forêt").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await page.getByLabel("Titre").fill("La forêt endormie");
   await page.getByLabel("Titre").blur();
   await expect(page.getByRole("complementary").getByText("Enregistré")).toBeVisible();
@@ -159,7 +159,7 @@ test("F02-AC08, F02-AC09, F02-AC10 — Grandes étapes ne montre que les parties
 
   // … et réciproquement
   await page.getByLabel("Autres commandes de la partie La montagne").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await page.getByLabel("Titre").fill("La montagne bleue");
   await page.getByLabel("Titre").blur();
   await expect(page.getByRole("complementary").getByText("Enregistré")).toBeVisible();
@@ -186,7 +186,7 @@ test("F02-AC14 — les chapitres et leur résumé se règlent dans « Parties et
   await page.getByRole("link", { name: /La forêt/ }).click();
   await expect(page).toHaveURL(/\/plan/);
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await expect(page.getByLabel(/^Résumé/)).toHaveValue("Lou entre dans la forêt et découvre que les chemins bougent.");
   await page.getByRole("button", { name: "Fermer", exact: true }).last().click();
 

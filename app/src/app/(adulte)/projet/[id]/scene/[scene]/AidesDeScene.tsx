@@ -9,6 +9,10 @@ import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import type { ReponseConsigne, ReponseTitres } from "@/serveur/aides-de-la-scene";
 import type { ReponseIdees } from "@/serveur/idees-de-choix";
+import type { ServicesImage } from "@/composants/copie/contexte";
+import { demanderAuxImages, garderLaProposition } from "@/composants/imagesCreees";
+import type { DemandeDImage } from "@/serveur/images-creees";
+import { demandeDImage, fermerUneDemande, noterLImage, ouvrirLImage, premiereImagePosee, promptDeLImage, suivreLaDemande } from "../../../actions-images-creees";
 
 /**
  * Le ✦ du titre de scène (F05) et « ✦ Formuler » sous la consigne (F13.2), dans la page de
@@ -29,6 +33,81 @@ async function demander<R extends { ok: boolean }>(adresse: string, scene: strin
   } catch {
     return { ok: false, message: MESSAGES_IA.pasDeReponse };
   }
+}
+
+/**
+ * L'image d'une scène (F10.2), pour la copie : ouvrir, noter l'idée et la description, proposer la
+ * description et créer l'image par `/ia/images`, copier le prompt sans IA, garder une proposition
+ * comme une image importée.
+ */
+export function imageDeScene(projetId: string, sceneId: string, ia: boolean): ServicesImage {
+  return {
+    ia,
+    ouvrir: () => ouvrirLImage(sceneId),
+    noter: (note) => noterLImage(sceneId, note),
+    proposer: (d) => demanderAuxImages({ demande: "description", scene: sceneId, ...d }),
+    creer: async (d) => {
+      const r = await demanderAuxImages<{ ok: true; demande: string } | { ok: false; message: string }>({ demande: "image-scene", scene: sceneId, ...d }, true);
+      window.dispatchEvent(new Event("image-de-scene"));
+      return r;
+    },
+    suivre: (id) => suivreLaDemande(id),
+    prompt: (d) => promptDeLImage(sceneId, d),
+    adresse: (p) => `/images/proposition/${projetId}/${p}`,
+    garder: (p) => garderLaProposition(projetId, p, []),
+    fermer: async (id) => {
+      await fermerUneDemande(id);
+      window.dispatchEvent(new Event("image-de-scene"));
+    },
+  };
+}
+
+/**
+ * L'image demandée pour une scène (reprise du 18 octobre 2026) : en route, elle se suit toutes les
+ * trois secondes ; prête, la page la pose d'elle-même dans le texte, sauf quand le panneau « Créer
+ * une image » est ouvert, où l'adulte choisit (« quitter vaut accord »). Rend la demande en cours.
+ */
+export function useImageDemandee(sceneId: string, suivre: boolean): DemandeDImage | null {
+  const [demande, setDemande] = useState<DemandeDImage | null>(null);
+  useEffect(() => {
+    if (!suivre) return;
+    let vivant = true;
+    let minuterie: ReturnType<typeof setTimeout> | null = null;
+    const lire = () =>
+      void demandeDImage("scene", sceneId)
+        .then((d) => {
+          if (!vivant) return;
+          setDemande(d);
+          if (d?.etat === "en_route") minuterie = setTimeout(lire, 3000);
+        })
+        .catch(() => {});
+    lire();
+    // Quand une demande part, se pose ou se ferme, la page la relit
+    const relire = () => {
+      if (minuterie) clearTimeout(minuterie);
+      lire();
+    };
+    window.addEventListener("image-de-scene", relire);
+    return () => {
+      vivant = false;
+      if (minuterie) clearTimeout(minuterie);
+      window.removeEventListener("image-de-scene", relire);
+    };
+  }, [sceneId, suivre]);
+  return demande;
+}
+
+/**
+ * Pose la première image d'une demande prête : déposée comme une image importée, puis donnée à la
+ * copie, qui l'écrit dans le texte ; la demande la retire de ses propositions.
+ */
+export async function poserLaPremiere(projetId: string, demande: DemandeDImage): Promise<{ ok: true; image: string } | { ok: false }> {
+  const premiere = demande.propositions[0];
+  if (!premiere) return { ok: false };
+  const fait = await garderLaProposition(projetId, premiere, []);
+  if (!fait.ok) return { ok: false };
+  await premiereImagePosee(demande.id, fait.id);
+  return { ok: true, image: fait.id };
 }
 
 /**

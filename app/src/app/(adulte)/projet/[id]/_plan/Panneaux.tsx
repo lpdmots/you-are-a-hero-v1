@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { Agrandissable } from "@/composants/Agrandissable";
 import { useAidesIa } from "@/composants/AidesIa";
-import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
@@ -12,6 +13,8 @@ import { useMessage } from "@/composants/Messages";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { nomPourEleves } from "@/domaine/eleves";
+import { nomDeFichier } from "@/domaine/illustration";
+import { adresseRepereEnGrand } from "@/domaine/visuels";
 import {
   chapitresDe, chercherScenes, COULEURS, departDe, referenceScene, scenesDe, type Chapitre, type ElevePlan, type Partie, type Plan,
   type Profil, type Supprime,
@@ -30,10 +33,14 @@ function ChampTitre({ id, valeur, onChange, onSortie, selectionne }: { id: strin
 
 /** Réglages d'un chapitre : titre, image, couleur, résumé (F03.1, F10.1). */
 export function ReglagesChapitre({
-  chapitre, neuf, lisibleParLesEleves, onImage, onFermer,
+  chapitre, neuf, lisibleParLesEleves, entrer, onImage, onFermer,
 }: {
-  chapitre: Chapitre; neuf: boolean; lisibleParLesEleves: boolean; onImage: () => void; onFermer: () => void;
+  chapitre: Chapitre; neuf: boolean; lisibleParLesEleves: boolean;
+  /** Depuis « Parties et chapitres » : « Entrer dans le chapitre » au bas des réglages ; rien dans la page du chapitre */
+  entrer?: string;
+  onImage: () => void; onFermer: () => void;
 }) {
+  const routeur = useRouter();
   const [titre, setTitre] = useState(chapitre.titre);
   const [resume, setResume] = useState(chapitre.resume);
   const e = useEnregistrement();
@@ -41,8 +48,25 @@ export function ReglagesChapitre({
     setResume(v);
     e.prevoir(() => reglerChapitre(chapitre.id, { resume: v }), delai, "resume");
   };
+  const resumeIa = useResumeIa(chapitre.id, resume, () => e.partir(), (v) => changerResume(v, 0));
   return (
-    <Panneau titre="Réglages du chapitre" sous={chapitre.titre} onFermer={onFermer} pied={<PiedFermer enregistre={e.enregistre} enCours={e.enCours} onFermer={onFermer} />}>
+    <Panneau
+      titre="Réglages du chapitre"
+      sous={chapitre.titre}
+      onFermer={onFermer}
+      pied={
+        <>
+          {entrer ? (
+            // Ce qui vient d'être tapé s'enregistre avant d'entrer
+            <button type="button" className="btn btn--primaire btn--grand" onClick={() => void e.partir().then(() => routeur.push(entrer))}>
+              Entrer dans le chapitre
+              <Icone nom="fleche" />
+            </button>
+          ) : null}
+          <PiedFermer enregistre={e.enregistre} enCours={e.enCours} onFermer={onFermer} />
+        </>
+      }
+    >
       <section>
         <h3>
           <label htmlFor="chap-titre">Titre</label>
@@ -64,16 +88,69 @@ export function ReglagesChapitre({
         ) : null}
       </section>
       <section>
+        <h3 className="reg-resume__tete">
+          <span>
+            <label htmlFor="chap-resume">Résumé</label> <span className="facultatif">facultatif</span>
+          </span>
+          {resumeIa.proposer ? (
+            <button
+              type="button"
+              className="btn btn--ia ci__ia"
+              disabled={resumeIa.attente}
+              aria-busy={resumeIa.attente || undefined}
+              onClick={() => void resumeIa.demander()}
+              aria-label={resume.trim() ? "Proposer un autre résumé avec l’IA" : "Proposer un résumé avec l’IA"}
+              title="Demander à l’IA"
+            >
+              <Icone nom="ia" />
+            </button>
+          ) : null}
+        </h3>
+        <span className="ci__zone">
+          <textarea
+            className="pchamp"
+            id="chap-resume"
+            rows={5}
+            maxLength={4000}
+            value={resumeIa.attente ? "" : resume}
+            readOnly={resumeIa.attente}
+            onChange={(ev) => changerResume(ev.target.value)}
+            onBlur={() => void e.partir()}
+          />
+          {resumeIa.attente ? (
+            <span className="ci__points" role="status" aria-label="L’IA rédige un résumé">
+              <i />
+              <i />
+              <i />
+            </span>
+          ) : null}
+        </span>
+        <p>
+          {lisibleParLesEleves
+            ? "Le lieu et son ambiance, en une ou deux phrases. Les élèves du chapitre peuvent le lire."
+            : "Le lieu et son ambiance, en une ou deux phrases, pour vous en souvenir."}
+        </p>
+      </section>
+      <section>
         <h3>
           Image <span className="facultatif">facultative</span>
         </h3>
         <div className="reg-image">
-          <span className="reg-image__vue">
+          <Agrandissable className="reg-image__vue" src={adresseRepereEnGrand(chapitre, chapitre.id)} nom={`l’image de « ${chapitre.titre} »`} fichier={nomDeFichier("Image de", chapitre.titre)}>
             <ImageRepere repere={chapitre} graine={chapitre.id} />
+          </Agrandissable>
+          {/* Le résumé tapé s'enregistre d'abord : l'image se crée d'après lui (F10.1) */}
+          <span className="reg-image__gestes">
+            <button type="button" className="btn btn--petit" onClick={() => void e.partir().then(onImage)}>
+              Choisir une image
+            </button>
+            {chapitre.imageId ? (
+              <a className="lien cx-discret" href={`/images/${chapitre.imageId}`} download={nomDeFichier("Image de", chapitre.titre)}>
+                <Icone nom="telecharger" />
+                Télécharger
+              </a>
+            ) : null}
           </span>
-          <button type="button" className="btn btn--petit" onClick={onImage}>
-            Choisir une image
-          </button>
         </div>
       </section>
       <section>
@@ -94,121 +171,36 @@ export function ReglagesChapitre({
           ))}
         </fieldset>
       </section>
-      <section>
-        <h3>
-          <label htmlFor="chap-resume">Résumé</label> <span className="facultatif">facultatif</span>
-        </h3>
-        <textarea
-          className="pchamp"
-          id="chap-resume"
-          rows={5}
-          maxLength={4000}
-          value={resume}
-          onChange={(ev) => changerResume(ev.target.value)}
-          onBlur={() => void e.partir()}
-        />
-        <p>
-          {lisibleParLesEleves
-            ? "Ce qui se passe dans ce chapitre. Les élèves du chapitre peuvent le lire."
-            : "Ce qui se passe dans ce chapitre, pour vous en souvenir."}
-        </p>
-        <ResumePropose chapitreId={chapitre.id} resume={resume} avantDeDemander={() => e.partir()} onUtiliser={(v) => changerResume(v, 0)} />
-      </section>
     </Panneau>
   );
 }
 
 /**
- * « ✦ Proposer un résumé » (F13.5) : d'après le résumé enregistré, la place du chapitre dans le
- * plan et les titres et consignes de ses scènes. La proposition se retouche, et ne remplace le
- * résumé qu'à « Utiliser ce texte » ; « Annuler » dans le message rend l'ancien.
+ * « ✦ Proposer un résumé » (F13.5, repris le 18 octobre 2026 sur la remarque du porteur) : un petit ✦
+ * rond au niveau du libellé, comme pour l'image d'une scène ; pendant la demande il scintille et trois
+ * points battent dans le champ ; le résumé proposé prend place dans le champ, modifiable, avec
+ * « Annuler » dans le message. D'après le résumé enregistré, la place du chapitre dans le plan et
+ * les titres et consignes de ses scènes.
  */
-function ResumePropose({
-  chapitreId, resume, avantDeDemander, onUtiliser,
-}: {
-  chapitreId: string;
-  resume: string;
-  avantDeDemander: () => Promise<void>;
-  onUtiliser: (v: string) => void;
-}) {
+function useResumeIa(chapitreId: string, resume: string, avantDeDemander: () => Promise<void>, utiliser: (v: string) => void) {
   const { proposer } = useAidesIa();
   const dire = useMessage();
-  const [propose, setPropose] = useState<string | null>(null);
   const [attente, setAttente] = useState(false);
-  const [erreur, setErreur] = useState<string | null>(null);
-  const [reste, setReste] = useState<string | null>(null);
-  const cadre = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (propose !== null) cadre.current?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  }, [propose !== null]); // eslint-disable-line react-hooks/exhaustive-deps
-  if (!proposer) return null;
   const demander = async () => {
+    if (attente) return;
     setAttente(true);
-    setErreur(null);
     await avantDeDemander();
     const r = await demanderAuPlan({ sorte: "resume", chapitre: chapitreId });
     setAttente(false);
-    if (!r.ok) return setErreur(r.message);
-    if (r.sorte !== "resume") return setErreur(MESSAGES_IA.pasDeReponse);
-    setReste(r.reste);
-    // Rien de nouveau : le dire, plutôt qu'une proposition qui semble ne rien changer
-    if (r.resume.trim() === resume.trim()) {
-      setPropose(null);
-      return setErreur("L’IA n’a rien à changer à ce résumé.");
-    }
-    setPropose(r.resume);
-  };
-  const utiliser = () => {
-    if (propose === null) return;
+    if (!r.ok) return dire({ texte: r.message });
+    if (r.sorte !== "resume") return dire({ texte: MESSAGES_IA.pasDeReponse });
+    // Rien de nouveau : le dire, plutôt qu'un résumé qui semble ne rien changer
+    if (r.resume.trim() === resume.trim()) return dire({ texte: "L’IA n’a rien à changer à ce résumé." });
     const avant = resume;
-    onUtiliser(propose);
-    setPropose(null);
-    dire({ texte: avant.trim() ? "Résumé remplacé." : "Résumé ajouté.", annuler: () => onUtiliser(avant) });
+    utiliser(r.resume);
+    dire({ texte: avant.trim() ? "Résumé remplacé." : "Résumé ajouté.", annuler: () => utiliser(avant) });
   };
-  return (
-    <div className="resume-ia">
-      {/* Pendant la décision, un seul bouton d'IA : « Un autre », dans la proposition */}
-      {propose === null ? (
-        <button type="button" className="btn btn--ia" onClick={() => void demander()} disabled={attente} aria-busy={attente || undefined}>
-          <Icone nom="ia" />
-          {resume.trim() ? "Proposer un autre résumé" : "Proposer un résumé"}
-        </button>
-      ) : null}
-      {attente ? (
-        <p className="ix__attente" role="status">
-          <Icone nom="ia" />
-          L’IA rédige un résumé…
-        </p>
-      ) : erreur ? (
-        <p className={erreur.startsWith("L’IA n’a rien") ? "ix__reste" : "ix__erreur"} role="alert">
-          {erreur}
-        </p>
-      ) : null}
-      {propose !== null && !attente ? (
-        <div ref={cadre} className="ia-propose ia-propose--consigne" role="group" aria-labelledby={`resume-propose-${chapitreId}`}>
-          <p className="ia-propose__tete" id={`resume-propose-${chapitreId}`}>
-            <Icone nom="ia" />
-            Résumé proposé <span>· modifiable</span>
-          </p>
-          <ChampQuiGrandit className="pchamp" rows={3} maxLength={4000} value={propose} aria-label="Résumé proposé" onChange={(ev) => setPropose(ev.target.value)} />
-          <span className="ia-propose__gestes">
-            <button type="button" className="btn btn--petit" disabled={!propose.trim()} onClick={utiliser}>
-              <Icone nom="coche" />
-              Utiliser ce texte
-            </button>
-            <button type="button" className="btn btn--petit btn--ia" onClick={() => void demander()} disabled={attente} aria-busy={attente || undefined}>
-              <Icone nom="ia" />
-              Un autre
-            </button>
-            <button type="button" className="btn btn--petit btn--discret" onClick={() => setPropose(null)}>
-              Laisser
-            </button>
-          </span>
-          {reste ? <p className="ix__reste">{reste}</p> : null}
-        </div>
-      ) : null}
-    </div>
-  );
+  return { proposer, attente, demander };
 }
 
 /** Réglages d'une partie : titre et image (F03.1, F10.1). */
@@ -242,12 +234,20 @@ export function ReglagesPartie({ partie, neuf, onImage, onFermer }: { partie: Pa
           Image <span className="facultatif">facultative</span>
         </h3>
         <div className="reg-image">
-          <span className="reg-image__vue">
+          <Agrandissable className="reg-image__vue" src={adresseRepereEnGrand(partie, partie.id)} nom={`l’image de « ${partie.titre} »`} fichier={nomDeFichier("Image de", partie.titre)}>
             <ImageRepere repere={partie} graine={partie.id} />
+          </Agrandissable>
+          <span className="reg-image__gestes">
+            <button type="button" className="btn btn--petit" onClick={onImage}>
+              Choisir une image
+            </button>
+            {partie.imageId ? (
+              <a className="lien cx-discret" href={`/images/${partie.imageId}`} download={nomDeFichier("Image de", partie.titre)}>
+                <Icone nom="telecharger" />
+                Télécharger
+              </a>
+            ) : null}
           </span>
-          <button type="button" className="btn btn--petit" onClick={onImage}>
-            Choisir une image
-          </button>
         </div>
       </section>
     </Panneau>

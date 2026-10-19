@@ -2151,24 +2151,6 @@ a.noeud__ailleurs {
 }
 
 /* « ✦ Proposer un résumé », dans les réglages du chapitre */
-.resume-ia {
-  display: grid;
-  gap: 8px;
-  justify-items: start;
-  width: 100%;
-}
-.resume-ia .ia-propose {
-  width: 100%;
-  box-sizing: border-box;
-}
-.resume-ia .ia-propose .pchamp {
-  width: 100%;
-  box-sizing: border-box;
-}
-.resume-ia .ix__attente {
-  width: 100%;
-  box-sizing: border-box;
-}
 /* Après l'ajout, la partie vient sous les yeux sans passer sous la barre du haut ni sous le message */
 .partie {
   scroll-margin-top: 140px;
@@ -2296,4 +2278,251 @@ a.noeud__ailleurs {
 }
 .ajout-ia__nom.ix-libelle {
   line-height: 1.3;
+}
+
+/* ——— « Créer une image d'après le résumé » dans « Choisir une image » (F10.1, étape 8, lot 8) ——— */
+.cree {
+  display: grid;
+  gap: 10px;
+}
+.cree__cmd {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 10px;
+  margin: 0;
+}
+.cree__aide {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.cree__dessine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cree__attente {
+  display: grid;
+  place-items: center;
+  width: 150px;
+  aspect-ratio: 3 / 2;
+  border-radius: 8px;
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia-trait);
+  color: var(--ia);
+}
+.cree__attente .ic {
+  width: 26px;
+  height: 26px;
+  animation: scintille 1.1s var(--ease) infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cree__attente .ic {
+    animation: none;
+  }
+}
+.cree__propositions {
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px 12px;
+}
+.cree__propositions ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cree__propositions li {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.cree__propositions img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px var(--ia-trait);
+}
+
+/* ——— L'image créée d'office à l'ajout par l'IA (F10.1, étape 8, lot 8) ——— */
+.attente-image {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--ia-pale);
+  box-shadow: 0 0 0 1px var(--ia-trait), 0 2px 6px rgba(20, 30, 30, 0.18);
+  color: var(--ia);
+  pointer-events: none;
+}
+.attente-image .ic {
+  width: 15px;
+  height: 15px;
+  animation: scintille 1.1s var(--ease) infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .attente-image .ic {
+    animation: none;
+  }
+}
+.mention-ajout {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.mention-ajout .ic {
+  width: 13px;
+  height: 13px;
+  color: var(--ia);
+}
+.mention-ajout .lien {
+  font-size: inherit;
+}
+
+
+/* ——— Style des images : un exemple par style, le même sujet (18 octobre 2026) ——— */
+.styles-images {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+.style-image {
+  position: relative;
+  display: grid;
+  gap: 5px;
+  padding: 5px 5px 7px;
+  border-radius: 9px;
+  box-shadow: inset 0 0 0 1px var(--trait);
+  background: var(--feuille);
+  cursor: pointer;
+}
+.style-image input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.style-image__exemple {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--feuille-2);
+  color: var(--graphite-3);
+}
+.style-image__exemple img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.style-image__exemple .ic {
+  width: 22px;
+  height: 22px;
+}
+.style-image:has(input[value="autre"]) .style-image__exemple {
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+  border: 1px dashed transparent;
+}
+.style-image__nom {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--graphite-2);
+}
+.style-image__defaut {
+  font-weight: 500;
+  color: var(--graphite-3);
+}
+.style-image:hover {
+  box-shadow: inset 0 0 0 1px var(--canard);
+}
+.style-image:has(input:checked) {
+  box-shadow: inset 0 0 0 2px var(--canard);
+  background: var(--canard-pale);
+}
+.style-image:has(input:checked) .style-image__nom {
+  color: var(--canard-fonce);
+}
+.style-image:has(input:focus-visible) {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.style-image:has(input:disabled) {
+  cursor: progress;
+}
+
+/* « Réglages » du projet, dans son en-tête : un bouton nommé, visible (18 octobre 2026) */
+.reglages-projet {
+  align-self: start;
+  flex: none;
+}
+/* Sous « Choisir une image » : « Télécharger » l'image choisie (18 octobre 2026) */
+.reg-image__gestes {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+/* La loupe d'un style : voir son exemple en grand, sans le choisir */
+.style-image__loupe {
+  position: absolute;
+  top: 9px;
+  right: 9px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 1px 4px rgba(20, 30, 30, 0.22);
+  color: var(--graphite);
+}
+.style-image__loupe .ic {
+  width: 15px;
+  height: 15px;
+}
+.style-image__loupe:hover {
+  background: var(--feuille);
+  color: var(--canard);
+}
+
+/* Le ✦ du résumé, au niveau de son libellé (18 octobre 2026) */
+.reg-resume__tete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+}
+.reg-resume__tete + .ci__zone {
+  width: 100%;
+}
+/* L'image créée et posée, montrée dans « Choisir une image » ; un clic l'agrandit */
+.cree__posee {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.cree__vignette {
+  width: 150px;
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 0 0 1px var(--trait);
+}
+.cree__vignette img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

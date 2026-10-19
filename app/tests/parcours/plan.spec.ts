@@ -55,8 +55,14 @@ test("F03-AC10, F02-AC08, F10-AC22 — une partie ajoutée s'ouvre sur ses régl
   expect(await chapitresDeLaPartie(page, "La forêt")).toEqual(["Nouveau chapitre", "La lisière"]);
 });
 
-test("F03-AC21 — la carte ouvre le chapitre ; son menu et celui du bandeau portent les mêmes commandes", async ({ page }) => {
+test("F03-AC21 — la carte ouvre le chapitre ; ses réglages, par le menu, disent « Entrer dans le chapitre » ; son menu et celui du bandeau portent les mêmes commandes", async ({ page }) => {
   const { projet } = await passeursDeBrume(page);
+  await aller(page, `/projet/${projet}/plan`);
+  await menuChapitre(page, "La lisière").click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Réglages du chapitre" })).toBeVisible();
+  await page.getByRole("button", { name: "Entrer dans le chapitre" }).click();
+  await expect(page).toHaveURL(/\/chapitre\/[0-9a-f-]{36}$/);
   await aller(page, `/projet/${projet}/plan`);
   await menuChapitre(page, "La lisière").click();
   for (const commande of ["Réglages", "Attribuer des élèves", "Exclure du livre", "Supprimer"]) {

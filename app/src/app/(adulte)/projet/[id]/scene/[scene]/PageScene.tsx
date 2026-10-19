@@ -7,7 +7,7 @@ import { Bulle } from "@/composants/Bulle";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { TexteLu } from "@/composants/copie/Blocs";
 import { Copie, DROITS_ADULTE, type AutreTexte } from "@/composants/copie/Copie";
-import { SANS_VOISINES, type Jeu, type Livre, type Services, type Voisines } from "@/composants/copie/contexte";
+import { SANS_VOISINES, type ImageAPoser, type Jeu, type Livre, type Services, type Voisines } from "@/composants/copie/contexte";
 import { deposer, reduire, REFUS_IMPORT } from "@/composants/importer";
 import { listerImages } from "../../../actions-images";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
@@ -40,7 +40,7 @@ import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur } from "../../_plan/Plan";
 import { useAidesIa } from "@/composants/AidesIa";
 import { compterMots, paragraphesACorriger } from "@/domaine/correction";
-import { demanderDesIdees, useConsigneIa, useTitreIa } from "./AidesDeScene";
+import { demanderDesIdees, imageDeScene, poserLaPremiere, useConsigneIa, useImageDemandee, useTitreIa } from "./AidesDeScene";
 import { useCorrection } from "./Correction";
 import { useEcriture } from "./Ecriture";
 import { FicheNumero } from "./FicheNumero";
@@ -237,6 +237,27 @@ export function PageScene({
   );
 
   const aides = useAidesIa();
+  // L'image demandée pour la scène, si elle est en route ou prête à poser (reprise du 18 octobre 2026)
+  const imageDemandee = useImageDemandee(scene.id, !aCote);
+  const [ouvrirImage, setOuvrirImage] = useState(0);
+  // Quitter le panneau vaut accord : l'image prête se pose d'elle-même dans le texte, une seule fois
+  const [creationOuverte, setCreationOuverte] = useState(false);
+  const [aPoser, setAPoser] = useState<ImageAPoser | undefined>(undefined);
+  const enPose = useRef<string | null>(null);
+  useEffect(() => {
+    const d = imageDemandee;
+    if (!d || d.etat !== "prete" || d.imagePosee || creationOuverte || enPose.current === d.id) return;
+    enPose.current = d.id;
+    void poserLaPremiere(projet.id, d).then((r) => {
+      if (!r.ok) {
+        enPose.current = null;
+        return;
+      }
+      setAPoser((avant) => ({ jeton: (avant?.jeton ?? 0) + 1, image: r.image, cadrage: d.cadrage, detouree: d.detouree, alt: d.alt, apresBloc: d.apresBloc }));
+      dire({ texte: "L’image demandée est posée dans la scène." });
+      window.dispatchEvent(new Event("image-de-scene"));
+    });
+  }, [imageDemandee, creationOuverte, projet.id, dire]);
   // Ce que la copie demande au serveur : chercher une destination, créer une scène depuis un choix
   const services: Services = {
     chercher: (demande) => chercherDestinations(projet.id, demande),
@@ -265,6 +286,8 @@ export function PageScene({
     relireVoisines: aCote ? undefined : () => relireVoisines(scene.id),
     // Les idées de choix (F13.3) : sur la page de la scène, pas à côté de l'aperçu ; rien quand les aides sont éteintes
     demanderIdees: aides.proposer && !aCote ? (demande) => demanderDesIdees(scene.id, demande) : undefined,
+    // L'image d'une scène (F10.2) : le prompt se copie toujours, l'image se crée avec les aides
+    imageDeScene: imageDeScene(projet.id, scene.id, aides.proposer),
   };
 
   // À côté de l'aperçu : « Tout annuler » rend la scène telle qu'à l'ouverture de l'éditeur (F11-AC47)
@@ -730,6 +753,10 @@ export function PageScene({
       panneau={aCote ? aCote.panneau : panneau}
       onPanneau={setReglages}
       ouvrirChoix={ouvrirChoix}
+      ouvrirImage={ouvrirImage}
+      aPoser={aPoser}
+      onPosee={() => setAPoser(undefined)}
+      onCreationDImage={setCreationOuverte}
       marques
       libelle={`Texte de la scène ${ref}`}
       tete={onglets}
@@ -755,7 +782,23 @@ export function PageScene({
       }}
       apresRetour={() => dire({ texte: "Vos corrections sont enregistrées." })}
       dessus={({ etat: e, reessayer }) =>
-        e.etat === "echec" ? (
+        e.etat !== "echec" && (imageDemandee?.etat === "en_route" || (imageDemandee?.etat === "prete" && imageDemandee.imagePosee)) && !creationOuverte ? (
+          <div className="note note--ia" role="status">
+            <Icone nom="ia" />
+            {imageDemandee.etat === "en_route" ? (
+              <p>Image en création…</p>
+            ) : (
+              <>
+                <p>Image posée. Une autre proposition attend.</p>
+                <span className="note__cmd">
+                  <button type="button" className="btn btn--petit" onClick={() => setOuvrirImage((n) => n + 1)}>
+                    La voir
+                  </button>
+                </span>
+              </>
+            )}
+          </div>
+        ) : e.etat === "echec" ? (
           <div className="note note--bloque" role="alert">
             <Icone nom="alerte" />
             <p>Vos dernières corrections ne sont pas encore enregistrées. Nouvel essai dans 10 s : gardez cette page ouverte.</p>

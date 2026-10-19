@@ -446,3 +446,14 @@
     flex-wrap: wrap;
   }
 }
+
+/* « Mon idée d'image » (F10.2) : une ligne qui dit quoi écrire, puis le champ */
+.ideeAide {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.ideeEtat {
+  min-height: 1.2em;
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
+}

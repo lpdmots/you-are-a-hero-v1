@@ -1,6 +1,7 @@
 import { test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, choixAuto, copie, note, recit, selectionner, semerAttribution, semerBlocs, semerClasse, semerPartie, semerProjet, sql, supprimerComptes,
+  adultePret, aller, choixAuto, classeQuiEcrit, copie, note, posteDe, recit, selectionner, semerAttribution, semerBlocs, semerClasse, semerImageDeposee, semerPartie, semerProjet,
+  sql, supprimerComptes,
 } from "../parcours/outils";
 
 /**
@@ -499,7 +500,7 @@ test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
 
   // Le résumé proposé, dans les réglages du chapitre
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await page.getByRole("button", { name: "Proposer un autre résumé" }).click();
   await page.getByText("Résumé proposé").waitFor();
   await capturer(page, "resume-propose", false);
@@ -606,7 +607,6 @@ test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros"
   await page.keyboard.press("Escape");
 
   // Réglages du projet : le style des images et le héros absent
-  await page.getByLabel("Autres commandes du projet Les passeurs de brume").click();
   await page.getByRole("button", { name: "Réglages du projet" }).click();
   await page.getByRole("heading", { name: "Le héros dans les images" }).scrollIntoViewIfNeeded();
   await capturer(page, "projet-style-images", false);
@@ -632,4 +632,165 @@ test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros"
   await aller(page, etape);
   await capturer(page, "heros-390", false);
   await capturer(page, "heros-390-toute");
+});
+
+/** Les réponses des images créées attendent un peu : l'attente se capture (IA_SIMULEE répond sur-le-champ). */
+const ralentirLesImages = (page: Page, ms = 2500) =>
+  page.route("**/ia/images", async (route) => {
+    await new Promise((r) => setTimeout(r, ms));
+    await route.continue();
+  });
+
+test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser }) => {
+  test.setTimeout(300_000);
+  n = 909;
+  const s = await classeQuiEcrit(page, ["Alice", "Bilal"]);
+  const { base, compte, projet } = s;
+  await base.from("enseignants").update({ reglages_ia: { imagesParCreation: 2 } }).eq("id", compte.id);
+  await base.from("projets").update({ style_images: "lumineuse" }).eq("id", projet);
+  await semerPreparation(base, compte, projet);
+  await base.from("chapitres").update({ resume: "Lou s’aventure sous les grands arbres, où la brume efface le sentier derrière lui." }).eq("id", s.lisiere.id);
+  const portrait = await semerImageDeposee(base, compte, projet);
+  await base.from("personnages").insert([
+    { projet_id: projet, enseignant_id: compte.id, nom: "Lou", autres_noms: ["le garçon"], heros: true, fiche: "Dix ans, ciré moutarde, bottes vertes.", portrait_id: portrait, rang: 0 },
+    { projet_id: projet, enseignant_id: compte.id, nom: "Maël", autres_noms: ["le passeur"], heros: false, fiche: "Grand, barbe grise, manteau bleu nuit.", portrait_id: portrait, rang: 1 },
+    { projet_id: projet, enseignant_id: compte.id, nom: "Brindille", autres_noms: ["la chouette"], heros: false, fiche: "Petite chouette grise aux yeux d’ambre.", portrait_id: null, rang: 2 },
+  ]).throwOnError();
+  await base.from("objets").insert({ projet_id: projet, enseignant_id: compte.id, nom: "la lanterne de cuivre", description: "Celle du père de Lou.", fiche: "Cuivre patiné, verre bleuté." });
+  const scene = s.lisiere.scenes[1];
+  await semerBlocs(base, scene, [
+    recit("Le pont de cordes se balance au-dessus du ravin. De l’autre côté, le passeur lève sa lanterne de cuivre et te fait signe d’avancer."),
+    recit("Une chouette se pose sur la rambarde."),
+  ]);
+  await page.setViewportSize({ width: 1366, height: 900 });
+
+  // « Choisir une image » d'un chapitre : créer d'après le résumé
+  await aller(page, `/projet/${projet}/plan`);
+  await page.getByLabel("Autres commandes du chapitre La lisière").click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
+  await capturer(page, "chapitre-reglages", false);
+  await page.getByRole("complementary").getByRole("button", { name: "Choisir une image" }).click();
+  await page.getByRole("heading", { name: "Choisir une image" }).waitFor();
+  await capturer(page, "reperage-choisir", false);
+  await ralentirLesImages(page);
+  await page.getByRole("button", { name: "Créer une image d’après le résumé" }).click();
+  await page.getByText("L’IA dessine un lieu").waitFor();
+  await capturer(page, "reperage-attente", false);
+  await page.getByRole("group", { name: /Une autre proposition/ }).waitFor();
+  await capturer(page, "reperage-propositions", false);
+  await page.getByRole("button", { name: "Garder celle-ci" }).first().click();
+  await page.getByRole("heading", { name: "Choisir une image" }).waitFor({ state: "detached" });
+  await page.unrouteAll({ behavior: "wait" });
+
+  // L'image d'une scène, dans le panneau à droite du texte
+  await aller(page, `/projet/${projet}/scene/${scene}`);
+  await copie(page).click();
+  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await capturer(page, "scene-ajouter-image", false);
+  await page.locator(".cx").first().getByRole("button", { name: "Créer une image" }).click();
+  const creer = page.getByRole("region", { name: "Créer une image" });
+  await creer.getByRole("group", { name: "Dans l’image" }).waitFor();
+  await capturer(page, "scene-creer", false);
+  // Tous nommés dans le texte : un badge retiré revient par « + »
+  await creer.getByRole("button", { name: "Retirer la lanterne de cuivre de l’image" }).click();
+  await creer.getByLabel("Ajouter un personnage ou un objet à l’image").click();
+  await capturer(page, "scene-badges-plus", false);
+  await page.getByRole("button", { name: "la lanterne de cuivre" }).click();
+  await creer.getByLabel("Ce que montre l’image").fill("le passeur qui attend au bout du pont, la lanterne levée");
+  await creer.getByRole("radio", { name: "Pleine page" }).check({ force: true });
+  await creer.getByRole("button", { name: "Proposer la description" }).click();
+  await creer.locator(".ci__decrit").waitFor();
+  await capturer(page, "scene-description", false);
+  await ralentirLesImages(page);
+  await creer.getByRole("button", { name: "Créer l’image" }).click();
+  await creer.getByText("L’IA dessine…").waitFor();
+  await capturer(page, "scene-attente", false);
+  await creer.getByRole("group", { name: /Deux propositions/ }).waitFor();
+  await capturer(page, "scene-propositions", false);
+  await creer.getByRole("button", { name: "Garder celle-ci" }).first().click();
+  await copie(page).locator(".image-bloc").waitFor();
+  await capturer(page, "scene-image-posee", false);
+  await page.unrouteAll({ behavior: "wait" });
+
+  // Sur téléphone
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/scene/${s.lisiere.scenes[0]}`);
+  await copie(page).click();
+  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await page.locator(".cx").first().getByRole("button", { name: "Créer une image" }).click();
+  await page.getByRole("region", { name: "Créer une image" }).getByRole("group", { name: "Dans l’image" }).waitFor();
+  await capturer(page, "scene-creer-390", false);
+  await page.setViewportSize({ width: 1366, height: 900 });
+
+  // Aides éteintes : le prompt seul
+  await base.from("enseignants").update({ reglages_ia: { imagesParCreation: 2, proposer: false } }).eq("id", compte.id);
+  await aller(page, `/projet/${projet}/scene/${s.lisiere.scenes[0]}`);
+  await copie(page).click();
+  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await capturer(page, "scene-sans-ia", false);
+  await page.locator(".cx").first().getByRole("button", { name: "Préparer le prompt d’une image" }).click();
+  await page.getByRole("heading", { name: "Prompt d’une image" }).waitFor();
+  await capturer(page, "scene-prompt-sans-ia", false);
+  await base.from("enseignants").update({ reglages_ia: { imagesParCreation: 2 } }).eq("id", compte.id);
+
+  // L'image créée d'office : un chapitre ajouté par l'IA, son signe d'attente, la mention
+  await aller(page, `/projet/${projet}/plan`);
+  await page.getByRole("button", { name: "Demander des chapitres à l’IA pour « La forêt »" }).click();
+  const espace = page.getByRole("group", { name: "Chapitres proposés pour « La forêt »" });
+  await espace.getByRole("button", { name: "Proposer des chapitres" }).click();
+  await espace.getByText("Image créée à l’ajout").waitFor();
+  await capturer(page, "ajout-mention", false);
+  await ralentirLesImages(page, 4000);
+  await espace.getByRole("button", { name: "Ajouter ce chapitre" }).click();
+  await page.locator(".attente-image").first().waitFor();
+  await page.locator(".attente-image").first().scrollIntoViewIfNeeded();
+  await capturer(page, "ajout-attente", false);
+  await page.locator(".attente-image").first().waitFor({ state: "detached" });
+  await page.waitForTimeout(800);
+  await capturer(page, "ajout-image", false);
+  await page.unrouteAll({ behavior: "wait" });
+  await page.getByRole("button", { name: "Demander des idées de parties à l’IA" }).click();
+  await page.getByRole("button", { name: "Proposer des parties" }).click();
+  await page.getByText("Image créée à l’ajout").last().waitFor();
+  await capturer(page, "parties-mention", false);
+  await page.getByRole("button", { name: "Régler" }).last().click();
+  await page.getByRole("heading", { name: "Mon compte" }).waitFor();
+  await capturer(page, "mon-compte-image-ajout", false);
+  await page.keyboard.press("Escape");
+
+  // L'idée d'image de l'élève
+  const alice = await posteDe(browser, s, "Alice");
+  await alice.page.setViewportSize({ width: 1366, height: 900 });
+  await aller(alice.page, `/travail/scene/${s.lisiere.scenes[0]}`);
+  const n0 = n;
+  n += 1;
+  await alice.page.waitForTimeout(500);
+  await alice.page.screenshot({ path: `${dossier}/${n}-eleve-idee-fermee.png` });
+  await alice.page.locator("details", { hasText: "Mon idée d’image" }).locator("summary").click();
+  await alice.page.locator("details", { hasText: "Mon idée d’image" }).getByRole("textbox").fill("Une grotte pleine de cristaux bleus qui brillent dans le noir, et une petite rivière.");
+  await alice.page.locator("details", { hasText: "Mon idée d’image" }).getByRole("textbox").blur();
+  await alice.page.getByText("Enregistrée.").waitFor();
+  n += 1;
+  await alice.page.screenshot({ path: `${dossier}/${n}-eleve-idee.png` });
+  await alice.page.setViewportSize({ width: 390, height: 844 });
+  await alice.page.waitForTimeout(400);
+  n += 1;
+  await alice.page.screenshot({ path: `${dossier}/${n}-eleve-idee-390.png`, fullPage: true });
+  await alice.contexte.close();
+  void n0;
+
+  // Le prompt de couverture
+  await sql(
+    "update projets set mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now(), mise_en_page_convient_le = now(), imprimer_ouvert_le = now() where id = $1",
+    [projet],
+  );
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await capturer(page, "couverture-replie", false);
+  const prompt = page.locator("details.couverture__prompt");
+  await prompt.locator("summary").click();
+  await prompt.getByLabel("Ce que montre la couverture").fill("le bac sur le lac au lever du jour");
+  await prompt.getByRole("button", { name: "Proposer la description" }).click();
+  await prompt.locator(".ci__decrit").waitFor();
+  await prompt.scrollIntoViewIfNeeded();
+  await capturer(page, "couverture-prompt", false);
 });

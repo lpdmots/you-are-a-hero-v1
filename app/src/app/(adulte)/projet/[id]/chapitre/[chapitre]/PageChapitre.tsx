@@ -12,11 +12,13 @@ import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
+import { SuiviDesImages } from "@/composants/ImagesALAjout";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Tirer";
 import { cheminsDuPlan } from "@/domaine/chemins";
+import { raisonDuReperage } from "@/domaine/illustration";
 import { nomPourEleves } from "@/domaine/eleves";
 import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
@@ -165,6 +167,7 @@ export function PageChapitre({
 
   return (
     <div className="sur-chapitre" style={varsCouleur(chapitre.couleur)}>
+      <SuiviDesImages projetId={projet.id} />
       <nav className="fil" aria-label="Fil d’Ariane">
         <Link href={venuDuLivre ? `/projet/${projet.id}/livre` : `/projet/${projet.id}/plan`}>
           <Icone nom="fleche-g" />
@@ -328,7 +331,14 @@ export function PageChapitre({
         <ReglagesChapitre chapitre={chapitre} neuf={false} lisibleParLesEleves={projet.deClasse} onImage={() => setOuvert("image")} onFermer={() => setOuvert(null)} />
       ) : null}
       {ouvert === "image" ? (
-        <ChoisirImage projetId={projet.id} actuel={chapitre} pour={`de « ${chapitre.titre} »`} onChoisir={choisirImage} onFermer={() => setOuvert("reglages")} />
+        <ChoisirImage
+          projetId={projet.id}
+          actuel={chapitre}
+          pour={`de « ${chapitre.titre} »`}
+          creer={{ sorte: "chapitre", id: chapitre.id, raison: raisonDuReperage(chapitre) }}
+          onChoisir={choisirImage}
+          onFermer={() => setOuvert("reglages")}
+        />
       ) : null}
       {ouvert === "attribuer" ? <AttribuerEleves chapitre={chapitre} plan={plan} eleves={eleves} classe={projet.classe} onFermer={() => setOuvert(null)} /> : null}
       {ouvert === "depart" ? (

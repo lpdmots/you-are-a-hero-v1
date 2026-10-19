@@ -17,7 +17,8 @@ export type EntreePlan = {
 
 const REGLES_PLAN = `- Le plan sert à organiser l'écriture : une partie regroupe des chapitres ; un chapitre est un lieu ou un moment de l'aventure que quelques élèves écriront ensemble.
 - Des titres courts (deux à six mots), évocateurs, sans dévoiler la fin, sans étiquette (« Le marais », pas « Partie : Le marais »).
-- Un résumé dit en deux ou trois phrases l'intention du chapitre et ce qui s'y passe, sans écrire les scènes.
+- Un résumé décrit le lieu du chapitre et son ambiance, en une ou deux phrases courtes (quarante mots au plus) : ce qu'on y voit, la lumière, ce qui le rend reconnaissable. Il sert d'abord à l'image du chapitre.
+- Pas d'intrigue dans un résumé : ni événement, ni rencontre, ni indice, ni choix à faire ; les élèves les inventeront scène après scène. Aucun personnage n'y agit.
 - Tiens compte de la préparation et du plan existant : pas de doublon, pas de contradiction, une suite logique.
 - Ne reprends aucun titre déjà proposé. Si une orientation est donnée, suis-la.`;
 
@@ -27,28 +28,28 @@ export type Ensemble = { partie: string; chapitre: string; resume: string };
 const sansEtiquette = (t: string | null): string | null => t?.replace(/^(partie|chapitre)\s*\d*\s*[:.—–-]\s*/i, "").trim() || null;
 
 const ENSEMBLES_SIMULES: Ensemble[] = [
-  { partie: "Le marais des lucioles", chapitre: "La barque sans rames", resume: "Le héros trouve une barque qui avance seule. Il doit décider s'il la suit dans le brouillard ou s'il longe la rive à pied." },
-  { partie: "La tour du guetteur", chapitre: "L'escalier qui grince", resume: "Au sommet d'une tour en ruine vit un guetteur qui a tout vu. Il ne parle qu'à ceux qui répondent à sa devinette." },
-  { partie: "Le village englouti", chapitre: "Les cloches sous l'eau", resume: "Quand la marée descend, on entend sonner des cloches. Le héros découvre un chemin de pierres qui mène au clocher." },
-  { partie: "La forêt qui chuchote", chapitre: "Les arbres messagers", resume: "Les arbres se transmettent des nouvelles. Le héros apprend qu'on le cherche, et doit choisir à qui faire confiance." },
-  { partie: "Le pont de lianes", chapitre: "La traversée", resume: "Un pont fragile enjambe un ravin. Le héros doit traverser avec ce qu'il porte, ou laisser quelque chose derrière lui." },
-  { partie: "La grotte aux échos", chapitre: "Les voix d'autrefois", resume: "Dans la grotte, les échos répètent des phrases anciennes. L'une d'elles donne un indice sur la suite du voyage." },
-  { partie: "Le marché flottant", chapitre: "Le marchand de cartes", resume: "Sur des radeaux reliés entre eux, on vend de tout. Un marchand propose une carte du brouillard contre un service." },
-  { partie: "Les collines du vent", chapitre: "Le cerf-volant perdu", resume: "Un enfant a perdu son cerf-volant dans les collines. L'aider fait perdre du temps, mais il connaît un raccourci." },
-  { partie: "Le phare éteint", chapitre: "La lampe à rallumer", resume: "Le phare ne brille plus depuis longtemps. Le héros comprend que le rallumer pourrait guider les passeurs perdus." },
-  { partie: "Le retour au port", chapitre: "Ceux qui attendent", resume: "Le héros revient avec ce qu'il a appris. Sur le quai, chacun attend une réponse différente." },
-  { partie: "L'île aux oiseaux", chapitre: "Le nid géant", resume: "Une île couverte d'oiseaux cache un nid immense. Ce qui dort dedans pourrait aider le héros, ou le retarder." },
-  { partie: "La vallée des horloges", chapitre: "Le temps arrêté", resume: "Toutes les horloges de la vallée se sont arrêtées à la même heure. Le héros cherche pourquoi." },
+  { partie: "Le marais des lucioles", chapitre: "La barque sans rames", resume: "Un marais d'eau noire sous la brume, où des milliers de lucioles flottent entre les roseaux." },
+  { partie: "La tour du guetteur", chapitre: "L'escalier qui grince", resume: "Une tour de pierre en ruine sur une colline nue, son escalier de bois tordu montant vers le ciel gris." },
+  { partie: "Le village englouti", chapitre: "Les cloches sous l'eau", resume: "Un village à demi englouti dans une baie calme ; seuls les toits et un clocher aux cloches muettes dépassent de l'eau verte." },
+  { partie: "La forêt qui chuchote", chapitre: "Les arbres messagers", resume: "Une forêt de grands hêtres aux feuilles argentées, où le vent fait bruisser les branches comme des voix." },
+  { partie: "Le pont de lianes", chapitre: "La traversée", resume: "Un pont de lianes au-dessus d'un ravin profond, dans une lumière dorée de fin d'après-midi." },
+  { partie: "La grotte aux échos", chapitre: "Les voix d'autrefois", resume: "Une grande grotte aux parois humides, éclairée par des cristaux bleus qui brillent dans le noir." },
+  { partie: "Le marché flottant", chapitre: "Le marchand de cartes", resume: "Des radeaux colorés reliés par des cordes sur un lac, couverts d'étals, de paniers et de lanternes." },
+  { partie: "Les collines du vent", chapitre: "Le cerf-volant perdu", resume: "Des collines d'herbe haute balayées par le vent, sous un ciel immense parcouru de nuages rapides." },
+  { partie: "Le phare éteint", chapitre: "La lampe à rallumer", resume: "Un phare blanc et rouge, éteint, au bout d'une jetée de rochers battue par les vagues." },
+  { partie: "Le retour au port", chapitre: "Ceux qui attendent", resume: "Le petit port du village au soir, ses quais de bois, ses barques amarrées et ses lanternes allumées." },
+  { partie: "L'île aux oiseaux", chapitre: "Le nid géant", resume: "Une île rocheuse couverte d'oiseaux de mer, avec au sommet un nid immense fait de branches." },
+  { partie: "La vallée des horloges", chapitre: "Le temps arrêté", resume: "Une vallée paisible semée d'horloges de toutes tailles, posées dans l'herbe et sur les toits." },
 ];
 
 const CHAPITRES_SIMULES: ChapitrePropose[] = [
-  { titre: "Le gué des saules", resume: "Le héros doit traverser la rivière là où l'eau est basse. Des saules penchés cachent un passage, et quelqu'un l'observe." },
-  { titre: "La cabane du pêcheur", resume: "Une cabane abandonnée garde des traces d'un voyageur passé avant lui. Un carnet y raconte une partie du chemin." },
-  { titre: "Le chemin des lanternes", resume: "Des lanternes s'allument une à une sur le passage du héros. Elles mènent quelque part, mais pas forcément où il veut aller." },
-  { titre: "La clairière ronde", resume: "Au milieu de la forêt, une clairière parfaitement ronde où rien ne pousse. Le héros y fait une rencontre inattendue." },
-  { titre: "Le ruisseau qui parle", resume: "Le ruisseau répond aux questions, mais seulement par oui ou par non. Le héros doit bien choisir ce qu'il demande." },
-  { titre: "La porte dans la colline", resume: "Une petite porte ronde s'ouvre dans le flanc d'une colline. Derrière, un couloir descend sous la terre." },
-  { titre: "Le campement de nuit", resume: "La nuit tombe, il faut s'arrêter. Autour du feu, le héros partage ses provisions et apprend une nouvelle inquiétante." },
+  { titre: "Le gué des saules", resume: "Un gué peu profond sur une rivière claire, bordé de saules penchés dont les branches touchent l'eau." },
+  { titre: "La cabane du pêcheur", resume: "Une cabane de pêcheur en planches grises au bord de l'eau, entourée de filets qui sèchent." },
+  { titre: "Le chemin des lanternes", resume: "Un sentier de forêt bordé de lanternes de papier suspendues aux branches, dans la nuit tombante." },
+  { titre: "La clairière ronde", resume: "Une clairière parfaitement ronde au milieu de la forêt, au sol de mousse, baignée de lumière." },
+  { titre: "Le ruisseau qui parle", resume: "Un ruisseau qui serpente entre des pierres moussues, sous un couvert de fougères." },
+  { titre: "La porte dans la colline", resume: "Une colline verte où s'ouvre une petite porte ronde en bois, à demi cachée par les herbes." },
+  { titre: "Le campement de nuit", resume: "Un campement sous les étoiles, un feu qui crépite au pied de grands pins, la nuit tout autour." },
 ];
 
 export const parties: DefinitionAide<EntreePlan, { ensembles: Ensemble[] }> = {
@@ -68,7 +69,7 @@ export const parties: DefinitionAide<EntreePlan, { ensembles: Ensemble[] }> = {
       const o = champs(b);
       const partie = sansEtiquette(texte(o?.partie, 80));
       const chapitre = sansEtiquette(texte(o?.chapitre, 80));
-      const resume = texte(o?.resume, 600);
+      const resume = texte(o?.resume, 400);
       return partie && chapitre && resume ? [{ partie, chapitre, resume }] : [];
     });
     return ensembles.length >= 3 ? { ensembles: ensembles.slice(0, 10) } : null;
@@ -101,7 +102,7 @@ export const chapitres: DefinitionAide<EntreeChapitres, { chapitres: ChapitrePro
     const chapitres = l.flatMap((b) => {
       const o = champs(b);
       const titre = sansEtiquette(texte(o?.titre, 80));
-      const resume = texte(o?.resume, 600);
+      const resume = texte(o?.resume, 400);
       return titre && resume ? [{ titre, resume }] : [];
     });
     return chapitres.length ? { chapitres: chapitres.slice(0, 6) } : null;
@@ -129,9 +130,10 @@ export const resume: DefinitionAide<EntreeResume, { resume: string }> = {
   sortieMax: 500,
   systeme: () => assembler(
     REGLES_COMMUNES,
-    `Tu proposes le résumé d'un chapitre : deux à quatre phrases qui disent l'intention du chapitre et ce qui doit s'y passer, pour guider les élèves qui l'écriront et les aides de la suite.
-- Pars du résumé actuel s'il existe : garde ce qu'il dit et complète-le.
-- Appuie-toi sur les scènes déjà prévues et sur la place du chapitre dans le plan ; n'invente pas de rebondissement que rien n'annonce.
+    `Tu proposes le résumé d'un chapitre : une ou deux phrases courtes (quarante mots au plus) qui décrivent le lieu du chapitre et son ambiance — ce qu'on y voit, la lumière, ce qui le rend reconnaissable. Il sert d'abord à créer l'image du chapitre.
+- Pas d'intrigue : ni événement, ni rencontre, ni indice, ni choix à faire ; les élèves les inventeront scène après scène. Aucun personnage n'y agit.
+- Pars du résumé actuel s'il existe : garde le lieu qu'il décrit, retire ce qui raconte.
+- Appuie-toi sur le titre, les scènes déjà prévues et la place du chapitre dans le plan pour savoir où l'on est.
 - Pas de titre, pas de liste.`,
   ),
   message: (e) => assembler(
@@ -145,6 +147,6 @@ export const resume: DefinitionAide<EntreeResume, { resume: string }> = {
     const t = texte(champs(json)?.resume, 1200);
     return t ? { resume: t } : null;
   },
-  // Le résumé actuel, complété d'une phrase : la proposition diffère toujours de ce qui est en place
-  simuler: (e) => ({ resume: `${e.resumeActuel ? `${e.resumeActuel.trim()} ` : ""}Le héros y trouve un premier indice sur la suite du chemin.` }),
+  // Un lieu, et la proposition diffère toujours de ce qui est en place
+  simuler: (e) => ({ resume: e.resumeActuel.trim() ? `${e.resumeActuel.trim()} La brume y adoucit toutes les couleurs.` : "Un sous-bois humide où la brume adoucit toutes les couleurs." }),
 };

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { Icone } from "@/composants/Icone";
+import { MentionImageALAjout, useImagesALAjout } from "@/composants/ImagesALAjout";
 import { useMessage } from "@/composants/Messages";
 import { Panneau } from "@/composants/Panneau";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
@@ -119,6 +120,7 @@ export type IdeesDeParties = ReturnType<typeof useIdeesDeParties>;
  */
 export function useAjouterDesParties(projetId: string, idees: IdeesDeParties, apres: (premiere: string) => void) {
   const dire = useMessage();
+  const imagesALAjout = useImagesALAjout();
   const [ajout, setAjout] = useState(false);
   const ajouter = async (choisis: EnsembleIdee[]): Promise<boolean> => {
     if (ajout || !choisis.length) return false;
@@ -131,6 +133,8 @@ export function useAjouterDesParties(projetId: string, idees: IdeesDeParties, ap
     }
     idees.retirer(choisis.map((x) => x.id));
     apres(fait.parties[0]);
+    // Une image par partie, créée d'office d'après le résumé de son premier chapitre (F10.1)
+    imagesALAjout("partie", fait.parties);
     const noms = choisis.map((x) => `« ${x.partie} »`);
     dire({
       texte: `${choisis.length > 1 ? `${choisis.length} parties ajoutées` : "1 partie ajoutée"} à la fin du plan : ${noms.length > 1 ? `${noms.slice(0, -1).join(", ")} et ${noms.at(-1)}` : noms[0]}.`,
@@ -237,16 +241,19 @@ export function PanneauIdeesDeParties({
       onFermer={onFermer}
       pied={
         etat.montrees.length ? (
-          <button
-            type="button"
-            className="btn btn--primaire btn--grand ipx__ajouter"
-            disabled={ajout || pretes.length === 0 || pretes.length !== cochees.length}
-            aria-busy={ajout || undefined}
-            title={cochees.length === 0 ? "Cochez les parties à ajouter" : pretes.length !== cochees.length ? "Une partie cochée n’a pas de titre, ou son chapitre non plus" : undefined}
-            onClick={() => onAjouter(pretes)}
-          >
-            {libelleDAjoutParties(cochees.length)}
-          </button>
+          <>
+            <MentionImageALAjout className="ipx__mention" avant={onFermer} />
+            <button
+              type="button"
+              className="btn btn--primaire btn--grand ipx__ajouter"
+              disabled={ajout || pretes.length === 0 || pretes.length !== cochees.length}
+              aria-busy={ajout || undefined}
+              title={cochees.length === 0 ? "Cochez les parties à ajouter" : pretes.length !== cochees.length ? "Une partie cochée n’a pas de titre, ou son chapitre non plus" : undefined}
+              onClick={() => onAjouter(pretes)}
+            >
+              {libelleDAjoutParties(cochees.length)}
+            </button>
+          </>
         ) : undefined
       }
     >

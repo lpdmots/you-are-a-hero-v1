@@ -39,7 +39,7 @@ function Cadre({ titre, onFermer, children, pied }: { titre: string; onFermer: (
 }
 
 /** « Importer une image », ou l'une des images déjà importées dans le projet (F10-AC27). */
-function ChoisirUneImage({ services, onChoisir, focus }: { services: Services; onChoisir: (image: string) => void; focus?: boolean }) {
+function ChoisirUneImage({ services, onChoisir, focus, apresImport }: { services: Services; onChoisir: (image: string) => void; focus?: boolean; /** « ✦ Créer une image », sous l'import */ apresImport?: ReactNode }) {
   const [images, setImages] = useState<string[] | null>(null);
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -85,6 +85,7 @@ function ChoisirUneImage({ services, onChoisir, focus }: { services: Services; o
           {erreur}
         </p>
       ) : null}
+      {apresImport}
       {images?.length ? (
         <>
           <p className="cx-titre">Images du projet</p>
@@ -104,16 +105,34 @@ function ChoisirUneImage({ services, onChoisir, focus }: { services: Services; o
   );
 }
 
-/** Poser une image : la choisir, puis dire où la mettre. */
+/** Poser une image : la choisir, puis dire où la mettre ; ou la créer (F10.2). */
 export function FichePoserImage({
-  services, surLaLigne, onPoser, onFermer,
+  services, surLaLigne, onPoser, onCreer, onFermer,
 }: {
   services: Services;
   /** Le curseur est-il dans un paragraphe qui admet une image sur la ligne ? */
   surLaLigne: boolean;
-  onPoser: (image: string, ou: "bloc" | "ligne") => void; onFermer: () => void;
+  onPoser: (image: string, ou: "bloc" | "ligne") => void;
+  /** « ✦ Créer une image », ou « Préparer le prompt d'une image » sans les aides */
+  onCreer?: () => void;
+  onFermer: () => void;
 }) {
   const [image, setImage] = useState<string | null>(null);
+  const creer = onCreer ? (
+    <p className="cx__cmd ci__creer">
+      {services.imageDeScene?.ia ? (
+        <button type="button" className="btn btn--ia" onClick={onCreer}>
+          <Icone nom="ia" />
+          Créer une image
+        </button>
+      ) : (
+        <button type="button" className="lien cx-discret" onClick={onCreer}>
+          Préparer le prompt d’une image
+        </button>
+      )}
+      <span className="cx-aide">{services.imageDeScene?.ia ? "D’après la scène, avec les portraits des personnages." : "Pour un outil d’images, ailleurs."}</span>
+    </p>
+  ) : null;
   return (
     <Cadre titre="Image" onFermer={onFermer}>
       {image ? (
@@ -165,7 +184,7 @@ export function FichePoserImage({
           </div>
         </div>
       ) : (
-        <ChoisirUneImage services={services} onChoisir={setImage} focus />
+        <ChoisirUneImage services={services} onChoisir={setImage} focus apresImport={creer} />
       )}
     </Cadre>
   );
@@ -201,7 +220,11 @@ function Champ({ nom, valeur, max, aide, exemple, onChange }: { nom: string; val
   );
 }
 
-/** Les réglages d'une image en bloc : largeur, remplacement, ce qu'elle montre, légende, suppression. */
+/**
+ * Les réglages d'une image en bloc : largeur, remplacement, légende, suppression. Le texte lu à voix
+ * haute n'a plus de champ (19 octobre 2026, demande du porteur) : une image créée le reçoit de
+ * son idée, sans rien demander.
+ */
 export function FicheImageBloc({
   bloc, services, regler, supprimer, onFermer,
 }: {
@@ -275,11 +298,15 @@ export function FicheImageBloc({
         {bloc.page ? <p className="cx-aide">Dans le livre, l’image occupera seule une page.</p> : null}
       </fieldset>
       <Champ key={`l-${bloc.legende ?? ""}`} nom="Légende" valeur={bloc.legende ?? ""} max={LEGENDE_MAX} exemple="Le pont, dessiné par Chloé" aide="Facultative. Elle se lit sous l’image, dans la copie comme dans le livre." onChange={(v) => regler({ legende: v || undefined })} />
-      <Champ key={`a-${bloc.alt ?? ""}`} nom="Ce que montre l’image" valeur={bloc.alt ?? ""} max={ALT_MAX} exemple="un pont de cordes dans la brume" aide="Facultatif. Lu à voix haute à qui ne voit pas l’image ; jamais imprimé." onChange={(v) => regler({ alt: v || undefined })} />
       <p className="cx__cmd">
         <button type="button" className="btn btn--petit" aria-expanded={remplace} onClick={() => setRemplace(!remplace)}>
           Remplacer l’image
         </button>
+        {/* L'image entière, pour la garder ou la donner à un autre outil (19 octobre 2026) */}
+        <a className="lien cx-discret" href={`/images/${bloc.image}`} download="Image.jpg">
+          <Icone nom="telecharger" />
+          Télécharger
+        </a>
       </p>
       {remplace ? (
         <ChoisirUneImage
@@ -309,11 +336,11 @@ export function FicheSymbole({ image, regler, supprimer, onFermer }: { image: Im
     >
       <Champ
         key={image.alt ?? ""}
-        nom="Ce que montre l’image"
+        nom="Nom du symbole"
         valeur={image.alt ?? ""}
         max={ALT_MAX}
         exemple="lune"
-        aide="Facultatif. Lu à voix haute, et écrit entre crochets quand la phrase est copiée ailleurs : « [lune] »."
+        aide="Facultatif. Écrit entre crochets quand la phrase est copiée ailleurs : « [lune] »."
         onChange={(v) => regler({ alt: v || undefined })}
       />
     </Cadre>

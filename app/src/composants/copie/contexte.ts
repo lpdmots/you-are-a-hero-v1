@@ -3,6 +3,7 @@
 import type { Etat } from "@/domaine/etats";
 import { createContext, useContext } from "react";
 import type { Choix, Droits, Paragraphe, SigneAction } from "@/domaine/copie";
+import type { Cadrage, Candidat } from "@/domaine/illustration";
 import type { Construction, Formule, FormuleRenvoi, Objet } from "@/domaine/preparation";
 
 /**
@@ -112,7 +113,60 @@ export type Services = {
    * en une demande. Sans ce service, ni bouton ni panneau.
    */
   demanderIdees?: (demande: { orientation: string; dejaMontrees: string[] }) => Promise<ReponseIdees>;
+  /**
+   * L'image d'une scène (F10.2), pour l'adulte seul : « Ce que montre l'image », le cadrage, les
+   * badges, puis « Copier le prompt » ; et, quand les aides sont proposées, « ✦ Proposer la
+   * description » et « Créer l'image ». Sans ce service, « Ajouter une image » ne fait qu'importer.
+   */
+  imageDeScene?: ServicesImage;
 };
+
+/** Ce que le panneau « Créer une image » demande au serveur (F10.2). */
+export type ServicesImage = {
+  /** Les aides sont proposées : sinon, ni ✦ ni « Créer l'image », le prompt se copie seulement */
+  ia: boolean;
+  ouvrir: () => Promise<OuvertureImage | null>;
+  noter: (note: { idee?: string; description?: string }) => Promise<{ ok: boolean }>;
+  proposer: (d: DemandeImage) => Promise<{ ok: true; description: string; reste: string | null } | { ok: false; message: string }>;
+  /** La demande part aussitôt ; l'image se crée ensuite, et attend avec la scène (reprise du 18 octobre 2026) */
+  creer: (d: DemandeImage & { detouree: boolean; apresBloc: string | null; alt: string }) => Promise<{ ok: true; demande: string } | { ok: false; message: string }>;
+  /** Où en est une demande : en route, prête, ou échouée */
+  suivre: (demande: string) => Promise<DemandeImageLue | null>;
+  prompt: (d: DemandeImage) => Promise<{ ok: true; prompt: string } | { ok: false; erreur: string }>;
+  /** L'adresse d'une proposition, pour la montrer */
+  adresse: (proposition: string) => string;
+  /** Garde une proposition parmi les images du projet, comme une image importée */
+  garder: (proposition: string) => Promise<{ ok: true; id: string } | { ok: false; erreur: string }>;
+  /** Ferme la demande : ses propositions restantes s'effacent */
+  fermer: (demande: string) => Promise<void>;
+};
+/** Une image demandée, à poser par la copie sans que l'adulte ait à la garder lui-même. */
+export type ImageAPoser = {
+  jeton: number;
+  image: string;
+  cadrage: Cadrage | null;
+  detouree?: boolean;
+  alt: string;
+  apresBloc: string | null;
+  /** L'image déjà posée que celle-ci remplace */
+  remplace?: string;
+};
+
+/** Une demande d'image, telle que la copie la suit. */
+export type DemandeImageLue = {
+  id: string;
+  etat: "en_route" | "prete" | "posee" | "laissee" | "echec";
+  propositions: string[];
+  /** La première, déjà posée dans le texte : la proposition qui reste se met à sa place */
+  imagePosee: string | null;
+  message: string | null;
+  apresBloc: string | null;
+  cadrage: Cadrage | null;
+  detouree: boolean;
+  alt: string;
+};
+export type DemandeImage = { cadrage: Cadrage; badges: string[] };
+export type OuvertureImage = { idee: string; description: string; candidats: Candidat[]; herosAbsent: boolean; herosNonDessines: string[]; style: string; demande: DemandeImageLue | null };
 
 /** Une idée de choix telle que le serveur la rend (F13.3) : rien n'est encore créé. */
 export type IdeeRecue = {
@@ -140,6 +194,8 @@ export type FicheOuverte =
   | { sorte: "personnages"; bloc: string }
   /** Poser une image (F10), après le bloc du curseur. Régler une image en bloc, ou une image sur la ligne */
   | { sorte: "poser-image"; bloc: string }
+  /** Créer l'image d'une scène (F10.2), posée après ce bloc */
+  | { sorte: "creer-image"; bloc: string }
   | { sorte: "image"; bloc: string }
   | { sorte: "symbole"; bloc: string; symbole: string }
   /** Régler une liaison cachée (F05.1) */

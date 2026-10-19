@@ -3154,3 +3154,431 @@ kbd {
     padding-inline: 10px;
   }
 }
+
+/* ——— Créer l'image d'une scène (F10.2, étape 8, lot 8) ——— */
+.ci__creer {
+  padding: 12px 0;
+  border-block: 1px solid var(--trait);
+}
+.ci__retour {
+  justify-self: start;
+}
+.ci__retour .ic {
+  transform: rotate(90deg);
+}
+.ci__cadrages {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+.ci__cadrages legend {
+  margin-bottom: 6px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+/* Quatre cadres dessinés à leurs proportions, sur une même ligne de base */
+.ci__cadres {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+.ci__cadre {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 4px 6px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--trait);
+  background: var(--feuille);
+}
+.ci__cadre input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+.ci__dessin {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 44px;
+}
+.ci__dessin i {
+  display: block;
+  max-width: 54px;
+  max-height: 44px;
+  width: 100%;
+  border-radius: 3px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1.5px var(--graphite-3);
+}
+/* La pleine page est en hauteur : sa largeur suit sa hauteur */
+.ci__cadre:first-child .ci__dessin i {
+  width: auto;
+  height: 44px;
+}
+.ci__nom {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.ci__cadre:hover {
+  box-shadow: inset 0 0 0 1px var(--canard);
+}
+.ci__cadre:has(input:checked) {
+  box-shadow: inset 0 0 0 2px var(--canard);
+  background: var(--canard-pale);
+}
+.ci__cadre:has(input:checked) .ci__dessin i {
+  box-shadow: inset 0 0 0 2px var(--canard);
+  background: var(--feuille);
+}
+.ci__cadre:has(input:checked) .ci__nom {
+  color: var(--canard);
+}
+.ci__cadre:has(input:focus-visible) {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+.ci__cadrages .cx-aide {
+  margin-top: 6px;
+}
+/* Les badges : une étiquette par personnage ou objet, sa vignette ronde, une croix qui le retire */
+.ci__badges ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ci__badges li {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 2px 2px 2px 3px;
+  border-radius: 999px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.ci__badges .cx-aide {
+  margin-top: 6px;
+}
+.ci__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+  font-weight: 600;
+}
+.ci__vignette {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.ci__vignette img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+}
+.ci__vignette--vide {
+  box-shadow: inset 0 0 0 1px var(--graphite-3);
+  border: 1px dashed transparent;
+}
+.ci__vignette .ic {
+  width: 15px;
+  height: 15px;
+  color: var(--graphite-3);
+}
+.ci__heros {
+  padding: 0 6px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--graphite-2);
+  box-shadow: inset 0 0 0 1px var(--graphite-3);
+}
+.ci__retirer {
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  margin-left: 2px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--graphite-3);
+  cursor: pointer;
+}
+.ci__retirer .ic {
+  width: 13px;
+  height: 13px;
+}
+.ci__retirer:hover,
+.ci__retirer:focus-visible {
+  background: var(--feuille);
+  color: var(--bloque);
+}
+.ci__badges li.ci__ajout {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.ci__ajout .menu > summary.btn {
+  width: 32px;
+  min-height: 32px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+  border-style: dashed;
+}
+.ci__ajout .menu__liste button {
+  display: flex;
+  align-items: center;
+}
+.ci__description {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.ci__dessine {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.ci__attente {
+  display: grid;
+  place-items: center;
+  width: 120px;
+  max-height: 150px;
+  border-radius: 8px;
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia-trait);
+  color: var(--ia);
+}
+.ci__attente .ic {
+  width: 26px;
+  height: 26px;
+  animation: scintille 1.1s var(--ease) infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ci__attente .ic {
+    animation: none;
+  }
+}
+.ci__propositions {
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px 12px;
+}
+.ci__propositions ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ci__propositions li {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+}
+.ci__propositions img {
+  display: block;
+  width: 100%;
+  max-height: 260px;
+  object-fit: cover;
+  border-radius: 6px;
+  box-shadow: 0 0 0 1px var(--ia-trait);
+}
+.ci__pied .ci__raison {
+  flex-basis: 100%;
+}
+/* Un seul champ, « Ce que montre l'image » : l'idée, puis la description proposée qui la remplace */
+.ci__champ {
+  display: grid;
+  gap: 6px;
+}
+.ci__libelle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 8px;
+  margin: 0;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.ci__champ .ci__decrit {
+  background: var(--ia-pale);
+  border-color: var(--ia-trait);
+  line-height: 1.45;
+}
+.ci__revenir {
+  justify-self: start;
+}
+/* Sans badge, le « + » se dit en mots */
+.ci__ajout--mots .menu > summary.btn {
+  width: auto;
+  padding: 0 12px 0 8px;
+  gap: 4px;
+  border-radius: 999px;
+  font-size: var(--t-xs);
+}
+/* L'image demandée pour la scène, en route ou prête à poser (reprise du 18 octobre 2026) */
+.note--ia {
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia-trait);
+}
+.note--ia > .ic {
+  color: var(--ia);
+}
+/* Le cadre « Détourée » : un damier, le signe ordinaire de la transparence, et un rond au centre */
+.ci__dessin i.ci__damier {
+  background-color: var(--feuille);
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--graphite-3) 0 28%, transparent 29%),
+    conic-gradient(var(--trait) 25%, transparent 0 50%, var(--trait) 0 75%, transparent 0);
+  background-size: 100% 100%, 10px 10px;
+}
+.ci__cadre:has(input:checked) .ci__dessin i.ci__damier {
+  background-image:
+    radial-gradient(circle at 50% 50%, var(--canard) 0 28%, transparent 29%),
+    conic-gradient(var(--canard-pale) 25%, transparent 0 50%, var(--canard-pale) 0 75%, transparent 0);
+}
+/* Une proposition détourée se montre sur un damier, pour voir son fond transparent */
+.ci__propositions img {
+  background-color: var(--feuille);
+  background-image: conic-gradient(var(--feuille-2) 25%, transparent 0 50%, var(--feuille-2) 0 75%, transparent 0);
+  background-size: 16px 16px;
+}
+
+/* ——— Reprise du panneau « Créer une image » (18 octobre 2026, remarques du porteur) ——— */
+.ci__libelle {
+  justify-content: space-between;
+  align-items: center;
+}
+/* Le ✦ au niveau du libellé, rond, sans mot : comme « À quoi ressemble José ? » */
+.ci__ia {
+  justify-content: center;
+  width: 34px;
+  padding: 0;
+}
+.ci__ia[aria-busy="true"] .ic {
+  animation: scintille 1.1s var(--ease) infinite alternate;
+}
+.ci__zone {
+  position: relative;
+  display: block;
+}
+/* De la place pour le signe « copier », au coin du champ */
+.ci__zone .pchamp {
+  width: 100%;
+  padding-right: 40px;
+}
+.ci__copier {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--graphite-3);
+  cursor: pointer;
+}
+.ci__copier .ic {
+  width: 17px;
+  height: 17px;
+}
+.ci__copier:hover:not(:disabled),
+.ci__copier:focus-visible {
+  background: var(--feuille-2);
+  color: var(--canard);
+}
+.ci__copier:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+/* L'IA réfléchit : trois points qui battent, dans le champ */
+.ci__points {
+  position: absolute;
+  left: 14px;
+  top: 14px;
+  display: inline-flex;
+  gap: 5px;
+}
+.ci__points i {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ia);
+  animation: ci-points 1.2s ease-in-out infinite;
+}
+.ci__points i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.ci__points i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes ci-points {
+  0%,
+  80%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ci__points i,
+  .ci__ia[aria-busy="true"] .ic {
+    animation: none;
+  }
+}
+/* Les cadres : le dessin dans une hauteur fixe, le nom sur une ligne, tous alignés */
+.ci__cadre {
+  grid-template-rows: 44px auto;
+  align-content: start;
+  padding: 8px 4px 7px;
+}
+.ci__nom {
+  white-space: nowrap;
+}
+.ci__detouree {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: var(--t-s);
+  line-height: 1.3;
+  cursor: pointer;
+}
+.ci__detouree b {
+  font-weight: 700;
+}
+.ci__detouree-aide {
+  color: var(--graphite-2);
+}

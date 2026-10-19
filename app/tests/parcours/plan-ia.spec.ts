@@ -46,7 +46,7 @@ test.describe("Idées de parties (F13.5)", () => {
     await expect(titresParties(page)).toHaveCount(3);
     await expect(titresParties(page).first()).toHaveValue("Le marais des lucioles");
     await expect(panneau(page).getByRole("textbox", { name: "Titre du premier chapitre" }).first()).toHaveValue("La barque sans rames");
-    await expect(panneau(page).getByRole("textbox", { name: "Résumé du premier chapitre" }).first()).toHaveValue(/barque/);
+    await expect(panneau(page).getByRole("textbox", { name: "Résumé du premier chapitre" }).first()).toHaveValue(/lucioles/);
     expect(s.demandes).toEqual([expect.objectContaining({ sorte: "parties", orientation: "un passage près de l’eau", dejaMontres: [] })]);
     // Montrées, pas créées (F13-AC15)
     expect((await partiesDe(s.projet)).map((p) => p.titre)).toEqual(["La forêt"]);
@@ -64,7 +64,7 @@ test.describe("Idées de parties (F13.5)", () => {
 
     const parties = await partiesDe(s.projet);
     expect(parties.map((p) => p.titre)).toEqual(["La forêt", "Le marais des lucioles", "Le village englouti"]);
-    expect(await chapitresDe(parties[1].id)).toEqual([expect.objectContaining({ titre: "La barque sans rames", resume: expect.stringContaining("barque") })]);
+    expect(await chapitresDe(parties[1].id)).toEqual([expect.objectContaining({ titre: "La barque sans rames", resume: expect.stringContaining("lucioles") })]);
     expect(await chapitresDe(parties[2].id)).toEqual([expect.objectContaining({ titre: "Les cloches d’en bas", resume: expect.stringContaining("cloches") })]);
     // Ni scène ni élève
     expect(await sql("select 1 from public.scenes where chapitre_id = any($1::uuid[])", [[...(await chapitresDe(parties[1].id)), ...(await chapitresDe(parties[2].id))].map((c) => c.id)])).toHaveLength(0);
@@ -183,25 +183,19 @@ test.describe("Chapitres proposés (F13.5)", () => {
 });
 
 test.describe("Résumé proposé (F13.5)", () => {
-  test("« Proposer un résumé » rend une proposition qui ne remplace rien avant « Utiliser ce texte » ; « Annuler » rend l'ancien", async ({ page }) => {
+  test("le ✦ du résumé : le résumé proposé prend place dans le champ, modifiable ; « Annuler » rend l'ancien", async ({ page }) => {
     const s = await passeurs(page);
     await s.base.from("chapitres").update({ resume: "Lou entre dans le bois." }).eq("id", s.foret.chapitres[0].id);
     await aller(page, `/projet/${s.projet}/plan`);
     await page.getByLabel("Autres commandes du chapitre La lisière").click();
-    await page.getByRole("button", { name: "Réglages" }).click();
-    await page.getByRole("button", { name: "Proposer un autre résumé" }).click();
-    const propose = page.getByRole("textbox", { name: "Résumé proposé" });
-    await expect(propose).toHaveValue(/^Lou entre dans le bois\. Le héros y trouve/);
-    await propose.fill("Lou entre dans le bois, sa lanterne à la main.");
-    expect((await sql<{ resume: string }>("select resume from public.chapitres where id = $1", [s.foret.chapitres[0].id]))[0].resume).toBe("Lou entre dans le bois.");
-    await page.getByRole("button", { name: "Utiliser ce texte" }).click();
-    await expect(page.getByLabel("Résumé", { exact: true })).toHaveValue("Lou entre dans le bois, sa lanterne à la main.");
-    await expect.poll(async () => (await sql<{ resume: string }>("select resume from public.chapitres where id = $1", [s.foret.chapitres[0].id]))[0].resume).toBe(
-      "Lou entre dans le bois, sa lanterne à la main.",
-    );
+    await page.getByRole("button", { name: "Réglages", exact: true }).click();
+    await page.getByRole("button", { name: "Proposer un autre résumé avec l’IA" }).click();
+    const champ = page.getByLabel("Résumé", { exact: true });
+    await expect(champ).toHaveValue(/^Lou entre dans le bois\. La brume y adoucit/);
     await expect(MESSAGE(page)).toContainText("Résumé remplacé.");
+    await expect.poll(async () => (await sql<{ resume: string }>("select resume from public.chapitres where id = $1", [s.foret.chapitres[0].id]))[0].resume).toMatch(/La brume y adoucit/);
     await MESSAGE(page).getByRole("button", { name: "Annuler" }).click();
-    await expect(page.getByLabel("Résumé", { exact: true })).toHaveValue("Lou entre dans le bois.");
+    await expect(champ).toHaveValue("Lou entre dans le bois.");
     await expect.poll(async () => (await sql<{ resume: string }>("select resume from public.chapitres where id = $1", [s.foret.chapitres[0].id]))[0].resume).toBe("Lou entre dans le bois.");
   });
 });
@@ -212,7 +206,7 @@ test("aides éteintes : « Ajouter une partie » et « Ajouter un chapitre » re
   await expect(page.getByRole("button", { name: "Ajouter une partie" })).toBeVisible();
   await expect(page.getByRole("button", { name: /à l’IA/ })).toHaveCount(0);
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await expect(page.getByRole("button", { name: /Proposer un/ })).toHaveCount(0);
   await aller(page, `/projet/${s.projet}/preparation?etape=etapes`);
   await expect(page.getByRole("button", { name: "Ajouter une partie" })).toBeVisible();

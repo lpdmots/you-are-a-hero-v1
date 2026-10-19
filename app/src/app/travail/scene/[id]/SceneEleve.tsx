@@ -24,6 +24,7 @@ import {
   annulerGeste, creerSceneDepuisChoix, prendreScenes, reglerVoisines, relireNumeros, remarqueLue, remettreScene, rendreScene, retirerRemise, supprimerScene,
 } from "../../actions";
 import styles from "../../travail.module.css";
+import { IdeeDImage } from "./IdeeDImage";
 import { FicheRemarque, RemarqueEnGrand } from "./Remarque";
 
 /** Ce que l'élève vient de faire de « qui s'en occupe », dit sur place avec « Annuler » (F06-AC66). */
@@ -434,7 +435,7 @@ export function SceneEleve({
       {/* La copie reste montée sous la remarque montrée seule : rien ne s'ouvre deux fois pour écrire */}
       <div className={styles.sceneColonnes} hidden={!!remarqueSeule}>
         <section aria-label="Texte de la scène">{copie}</section>
-        {scene.consigne !== null || scene.ecriture || encouragements.length ? (
+        {scene.consigne !== null || scene.ecriture || encouragements.length || scene.idee?.trim() ? (
           <aside className="cote-copie">
             <div className="cote-copie__colle">
               <div ref={setPanneau} />
@@ -468,6 +469,7 @@ export function SceneEleve({
                     </section>
                   )
                 ) : null}
+                {scene.idee !== null ? <IdeeDImage sceneId={scene.id} idee={scene.idee} modifiable={scene.ecriture !== null} /> : null}
                 {/* Le tampon reçu, et rien quand il n'y en a pas : ni emplacement vide, ni les trois catégories en attente */}
                 {encouragements.length ? (
                   <section className="carnet-fiche carnet-fiche--encre" aria-labelledby="encouragements-t">

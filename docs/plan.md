@@ -2789,6 +2789,177 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Tests automatiques :** 2 unitaires, 3 contre la base, 9 parcours (F10-AC46, AC47 et
       ceux du lot repris) ; deux parcours de la Préparation lisent désormais le texte
       retenu des personnages dans la carte du héros.
+  - **Lot 8 — images créées : construit le 18 octobre 2026, et terminé le 19 octobre,** en local, sur instruction
+    du porteur, dans une nouvelle conversation. « ✦ Créer une image d'après le résumé » dans
+    « Choisir une image » du projet, d'une partie et d'un chapitre : une ou deux propositions,
+    celle gardée devient l'image de l'élément, parmi les images du projet. L'image d'une scène,
+    depuis « Image » de la copie (« Importer une image », puis « ✦ Créer une image ») : le
+    panneau « Créer une image » à droite du texte, « Ce que montre l'image » (l'idée de l'élève
+    s'il en a écrit une), quatre cadres dessinés, les badges des personnages et objets nommés,
+    retirés d'un clic, ajoutés par « + », « ✦ Proposer la description », puis « ✦ Créer l'image »,
+    faite avec les portraits des badges en référence, posée au curseur, ou « Copier le prompt ».
+    Aides éteintes : « Préparer le prompt d'une image », le prompt seul. « Mon idée d'image »
+    côté élève, repliée, sans aucune commande d'IA. « Le prompt de l'image de face » dans « La
+    couverture, chez l'imprimeur ». L'image créée d'office pour une partie ou un chapitre ajouté
+    depuis une proposition de l'IA, son signe d'attente sur la carte, le réglage « Créer l'image
+    des parties et chapitres ajoutés par l'IA » dans « Mon compte » (allumé), la mention « ✦ Image
+    créée à l'ajout · Régler ». Adresse `/ia/images`. Migrations, base locale seulement :
+    `20261018140000_images_creees.sql` (`scenes.idee_image` que le poste lit et écrit par
+    `eleve_noter_idee_image` avec les droits du texte, `scenes.description_image` pour l'adulte,
+    `projets.idee_couverture` et `description_couverture`, `commencer_appel_ia` remplacée pour une
+    demande à la fois par sorte) et `20261018150000_idee_et_description_de_l_image.sql` (l'écriture
+    de ces deux colonnes de scène pour l'adulte, oubliée par la première).
+    - **Point de règle annoncé au début du lot, avec sa recommandation, confirmé par le porteur le
+      18 octobre 2026 (« ok pour tes recos ») :** une demande à la fois **par sorte** (F13) : un texte
+      et une image peuvent attendre ensemble, jamais deux images ; sinon l'image d'office d'un
+      chapitre ajouté retenait 10 à 20 s le clic suivant sur « Proposer un chapitre ».
+    - **Critères fermés :** F10-AC07, AC08, AC09, AC10, AC11, AC12 (pour les prompts et images de
+      scène), F10-AC37 (la pleine page en haute qualité, le repérage et les autres cadrages en normale), F10-AC48 à AC52 (ajoutés au
+      lot) ; F11.4 pour le prompt de couverture ; les aides éteintes (pas de ✦, le prompt se copie,
+      pas d'image d'office) ; ce qui part (le résumé, la scène, l'idée, les fiches et portraits des
+      badges, le style, jamais un prénom d'élève).
+    - **Critères qui attendent :** la qualité réelle des descriptions et des images, au jugement du
+      lot 9 (un seul vrai appel d'image ici, voir plus bas).
+    - **Précisions prises en construisant, confirmées par le porteur le 18 octobre 2026, le
+      renommage « Lu à voix haute » compris ; ne plus les lui soumettre :** l'image de repérage se
+      crée sans modèle de texte, d'après le résumé (un lieu et son ambiance, sans personnage au
+      premier plan) : moins cher et plus rapide ; sans résumé, le bouton est éteint et le dit
+      (partie : un résumé d'un de ses chapitres ; projet : l'univers ou l'enjeu) ; « Ce que montre
+      l'image » est un seul champ, que la description proposée remplace, l'idée restant gardée
+      (« Revenir à l'idée de départ »), décidé après la critique ; le prompt part de la
+      description, sinon de l'idée, et sans l'une ni l'autre « Créer l'image » et « Copier le
+      prompt » sont éteints avec leur raison ; un nom d'objet compte sans son article (« sa lanterne
+      de cuivre » nomme « la lanterne de cuivre ») ; un héros absent des images n'a jamais de badge,
+      ni d'office, ni par « + », et la ligne qui le rappelle le nomme (« Lou n'est pas dessiné : au
+      plus des mains ») ; au plus quatre images de référence jointes ; l'image gardée se pose en
+      « Pleine page » au cadrage pleine page, en pleine largeur aux autres, avec l'idée pour texte
+      lu à voix haute ; le texte lu à voix haute d'une image s'appelle désormais « Lu à voix haute »,
+      pour ne pas porter le même nom que le champ de création (F10, étape 3) ; la création d'une
+      image ne se referme pas quand on se remet à écrire, pour ne pas perdre une image en route ;
+      l'idée et la dernière description restent avec la scène (et avec le projet pour la
+      couverture) ; l'élève écrit son idée sur une scène qu'il peut écrire, avec les droits du
+      texte, la lit seulement sinon, et ses camarades d'autres chapitres ne la voient pas ;
+      l'image d'office : une par partie, d'après le résumé de son premier chapitre, la partie
+      seule (son premier chapitre garde son visuel) ; les éléments passent l'un après l'autre côté
+      serveur, même si la page se ferme ; une image choisie entre-temps n'est pas remplacée ; elle
+      s'inscrit parmi les images du projet sans réduction, l'image et sa vignette étant le même JPEG
+      (pas de bibliothèque d'images côté serveur) ; « Régler » referme le panneau des idées de
+      parties et ouvre « Mon compte » sur le réglage ; le prompt de couverture est au format A5.
+    - **Écrans critiqués** en deux lectures séparées sur les captures 910 à 932 : 25/40 (informée)
+      et 25/40 (indépendante), corrigés aussitôt (voir le design).
+    - **Dépense :** un vrai appel d'image, une scène 3:2 en qualité normale avec le portrait de Lou
+      en référence : 11,7 s, 290 jetons de texte, 1 536 d'image en entrée, 343 en sortie, 0,024 dollar ;
+      portrait tenu (ciré moutarde, pull marine, bottes, lanterne de cuivre), le style « Illustration
+      2D lumineuse » aussi ; une barque à moteur, que la description n'excluait pas. Le second appel
+      autorisé n'a pas servi. Dépense de l'étape, environ 1,28 dollar (1,1 €) sur 100 €.
+    - **Tests automatiques :** 13 unitaires, 13 contre la base, 9 parcours ; parcours voisins
+      repassés (plan, préparation, images, personnages, aides : 49 sur 49) ; le parcours des images de
+      scène lit « Lu à voix haute ».
+    - **Retouches demandées par le porteur le même jour, en essayant le lot (construites, tests
+      pas encore relancés à sa demande) :** dans les réglages d'un chapitre, le résumé passe avant
+      l'image, qui se crée d'après lui (le résumé tapé s'enregistre avant d'ouvrir « Choisir une
+      image ») ; les résumés que l'IA propose décrivent le lieu et son ambiance, une ou deux phrases,
+      quarante mots au plus, sans intrigue (consignes de « resume », « parties » et « chapitres »,
+      réponses simulées refaites ; F13.5) ; la ligne sous le champ et le titre côté élève (« Où se
+      passe ce chapitre ») suivent ; une image proposée par l'IA (« Choisir une image », « Créer une
+      image ») et l'image choisie d'un projet, d'une partie ou d'un chapitre (dans ses réglages)
+      s'agrandissent d'un clic, comme un portrait (`composants/Agrandissable.tsx`, sorti de la
+      Préparation) ; « Entrer dans le chapitre » et « Fermer » au bas des réglages d'un chapitre ; la
+      carte d'un chapitre a ouvert ses réglages le 18 octobre, puis, le 19, à la demande du porteur,
+      elle ouvre de nouveau le chapitre, l'action la plus fréquente (F03-AC21) ; le ✦ du résumé d'un
+      chapitre devient un petit bouton rond au niveau du libellé, le résumé proposé prend place dans
+      le champ avec « Annuler », trois points battent pendant la demande ; le 19, à sa demande, le
+      champ « Lu à voix haute » quitte les réglages d'une image en bloc (une image créée le reçoit de
+      son idée), celui d'une image sur la ligne devenant « Nom du symbole » (« [lune] » à la copie) ; dans les réglages du projet, « Style des images » devient une grille de cartes,
+      une image d'exemple par style, le même sujet partout (un ponton au bord d'un lac, une barque,
+      une lanterne, le matin), « Autre, à décrire » en carte au crayon ; les images, carrées, sont
+      dans `public/illustrations/styles/{style}.jpg` (`exempleDuStyle`, `SUJET_DES_EXEMPLES`) ; une
+      image manquante laisse sa place vide. Les six exemples sont créés le même jour à sa demande
+      par GPT Image 2.5 Flare, carrés, en qualité normale, réduits à 360 points : six appels, 11 à
+      14 s chacun, 0,082 dollar ; dépense de l'étape, environ 1,36 dollar (1,2 €).
+    - **On demande, puis on continue son chemin, décidé par le porteur le même jour sur
+      recommandation (F10.1, F13) :** une image demandée se crée côté serveur après la réponse
+      (`after` de Next.js), suivie par une table `demandes_d_images` (migration
+      `20261018160000_images_en_route.sql`, base locale seulement : ce qui reçoit l'image, le bloc
+      où la poser pour une scène, l'état, les propositions, l'image posée, l'image ou le visuel de
+      l'élément au moment de la demande ; une seule en route par élément ; `commencer_appel_ia` ne
+      retient plus que les textes). Le repérage se pose d'office (la seconde proposition attend en
+      tête de « Choisir une image ») ; l'image d'une scène attend avec la scène, « La poser » au-dessus
+      de la copie ; une image choisie entre-temps n'est pas remplacée. Les cartes portent le signe
+      d'attente d'après la base (`SuiviDesImages`, sur chaque onglet du projet et la page d'un
+      chapitre, qui relit la page à l'arrivée). Précision : les propositions d'une demande prête ne
+      s'effacent plus passé un jour. Le portrait d'un personnage reste comme au lot 7, le panneau
+      ouvert. Dans l'en-tête du projet, le menu à trois points, qui n'avait que « Réglages du projet »,
+      devient un bouton « Réglages » visible (remarque du porteur : des réglages comme ceux de l'IA
+      s'oubliaient). Tests réécrits, pas encore relancés, à sa demande.
+    - **Télécharger une image, demandé par le porteur le même jour :** « Télécharger » sous « Choisir une
+      image » dans les réglages du projet, d'une partie et d'un chapitre quand une image est choisie
+      (« Image de La lisière.jpg »), et dans toute image agrandie d'un clic (propositions, portraits,
+      image choisie).
+    - **Le style « Illustration 2D lumineuse » réécrit, décidé par le porteur le même jour :** les images
+      créées étaient pastel et délavées à côté des visuels de l'application (la consigne demandait des
+      « aplats de couleurs claires, peu de détails », et le résumé brumeux assombrissait l'ensemble).
+      Nouvelle description : dessin animé contemporain en plein jour, ciel bleu, couleurs vives et
+      saturées, ombrages doux, profondeur, les couleurs restant vives même dans la brume
+      (`STYLES_DES_IMAGES.lumineuse`). Jugé sur deux essais réels avec les résumés de ses chapitres
+      « La rive marécageuse » et « La forêt de champignons géants » (0,023 dollar), puis l'exemple du
+      style refait (0,014 dollar) ; les images déjà créées ne changent pas. Dépense de l'étape, environ
+      1,40 dollar (1,2 €).
+    - **Styles, demandé par le porteur le même jour :** chaque exemple se voit en grand par une loupe
+      sur sa carte, sans choisir le style (`exempleDuStyle(style, true)`, images de 900 points ; l'image
+      agrandie s'ouvre désormais dans le corps de la page, pour qu'un clic dedans ne coche pas
+      l'étiquette) ; « Gouache d'album jeunesse », devenue trop proche de l'illustration 2D réécrite,
+      laisse sa place à « Photo réaliste » (migration `20261018170000_style_photo.sql`, base locale
+      seulement : un projet en gouache revient au style de l'application, la contrainte admet `photo`) ;
+      son exemple créé (0,014 dollar). Dépense de l'étape, environ 1,41 dollar. Puis, à sa demande,
+      « Papier découpé », dont l'exemple ressemblait à l'illustration 2D, laisse sa place à « Dessin
+      animé en volume », décrit par sa technique, sans nom de studio (migration
+      `20261018180000_style_volume.sql`, base locale seulement) ; trois styles candidats essayés pour
+      les deux places libres de la grille (bande dessinée à la ligne claire, pâte à modeler, pixel art),
+      quatre exemples, 0,055 dollar. Dépense de l'étape, environ 1,47 dollar. Retenus par lui : la bande
+      dessinée à la ligne claire et le pixel art (migration `20261018190000_styles_bd_pixel.sql`, base
+      locale seulement) ; la pâte à modeler, trop proche du dessin animé en volume, est écartée. La
+      grille des styles fait trois lignes de trois, « Autre » compris.
+    - **Le cadre « Détourée », décidé par le porteur le même jour sur recommandation :** un cinquième
+      cadre dans « Créer une image » d'une scène (dessiné en damier), pour le sujet seul, simplifié,
+      sans décor, sur fond transparent : l'image se crée en PNG (`background: "transparent"`), garde sa
+      transparence quand elle est gardée (comme une image importée dans une scène, F10-AC31) et se pose
+      en petite largeur ; les propositions se montrent sur un damier. Plutôt qu'un style du projet, le
+      fond transparent valant pour tous les styles. Deux vrais appels (une lanterne de cuivre, 0,029
+      dollar) : PNG à canal alpha, fond bien transparent ; le premier faisait tenir la lanterne par
+      deux mains, d'où la ligne « Le sujet seul, sans main ni personnage autour » et « au plus ses
+      mains… et seulement si la scène montre son geste » pour le héros absent. Migration
+      `20261018200000_cadrage_detouree.sql`, base locale seulement (le cadrage d'une demande). Dépense
+      de l'étape, environ 1,50 dollar (1,3 €).
+    - **Quitter vaut accord, décidé par le porteur le même jour :** l'image prête d'une scène se pose
+      d'elle-même dans le texte, par la copie de l'adulte, dès que le panneau « Créer une image » est
+      fermé (à son retour sur la scène s'il l'a quittée), après le bloc d'alors ; une seconde
+      proposition attend, « La voir », et « Mettre celle-ci à la place » remplace l'image posée
+      (`noterLaPremierePosee`, `poserLaPremiere`, props `aPoser`, `onPosee`, `onCreationDImage` de la
+      copie). Essayé en local avec un vrai appel (une image carrée, environ 1,1 centime) sur la scène
+      S097 de l'histoire d'essai, panneau refermé pendant la création : l'image s'est posée et
+      enregistrée seule.
+    - **Panneau « Créer une image » repris sur ses remarques, le même jour :** « Détourée » devient une
+      case à cocher sous les cadres (le sujet seul sur fond transparent, à tout cadrage ; migration
+      `20261018210000_image_detouree.sql`, base locale seulement : la demande la retient à part) ; le ✦,
+      rond et sans mot, au niveau de « Ce que montre l'image », qui remplace « Proposer la
+      description » ; pendant la demande, le ✦ scintille et trois points battent dans le champ, au lieu
+      de la ligne « L'IA décrit l'image… » ; « Copier le prompt » devient le petit signe « copier » au
+      coin du champ, qui passe à la coche une fois copié ; « proposée · modifiable » retiré ; les cadres
+      alignés (dessin dans une hauteur fixe, nom sur une ligne) ; au-dessus de la copie, « Image en
+      création… ». Le prompt de couverture prend les mêmes formes.
+    - **Le style par défaut rapproché des visuels de l'application, demandé par le porteur le 19 octobre :**
+      les images restaient plus détaillées et plus « peintes » que ses visuels par défaut. Comparaison
+      sur deux scènes (une rive, un moulin), quatre appels, 0,061 dollar : (A) la consigne réécrite —
+      formes simples et arrondies, contours nets, grands aplats vifs à dégradés doux, peu de détails,
+      feuillages en grandes masses, ciel bleu franc à gros nuages blancs, couleurs claires même dans la
+      brume ou au crépuscule, sans texture ni rendu de peinture détaillée ; (B) la même, avec un de ses
+      visuels joint comme référence de style. A se rapproche nettement de ses visuels ; B à peine plus,
+      pour environ 0,8 centime de plus par image : A est retenu (`STYLES_DES_IMAGES.lumineuse`), B reste
+      possible à sa demande. Exemple du style refait (0,014 dollar). Dans la copie, « Télécharger » à
+      côté de « Remplacer l'image » dans les réglages d'une image en bloc, et le signe de
+      téléchargement en haut à droite de toute image agrandie. Dépense de l'étape, environ 1,58 dollar
+      (1,4 €) sur 100 €.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.

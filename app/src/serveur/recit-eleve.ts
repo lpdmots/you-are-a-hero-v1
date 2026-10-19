@@ -257,6 +257,8 @@ export type SceneOuverte = {
   voisinesAffichees: boolean;
   /** Ce qu'il a le droit de changer dans le texte (F06.1) */
   droits: Droits;
+  /** « Mon idée d'image » (F10-AC10) : rien hors de son chapitre */
+  idee: string | null;
 };
 
 type StructureLue = {
@@ -301,7 +303,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   if (!chapitre) return null;
   const aChoix = s.recit === "choix";
   // Ce qu'il peut nommer : les scènes de son chapitre ; ailleurs, le seul titre public du chapitre
-  const [partie, voisines, destinations, numeros, jeu, autour, affichees, etatLu, relecture] = await Promise.all([
+  const [partie, voisines, destinations, numeros, jeu, autour, affichees, lue, relecture] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
@@ -316,7 +318,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     }),
     voisinesDe(base, sceneId),
     base.rpc("voisines_affichees").then((r) => r.data !== false),
-    base.from("scenes").select("etat").eq("id", sceneId).maybeSingle().then((r) => r.data?.etat as string | undefined),
+    base.from("scenes").select("etat, idee_image").eq("id", sceneId).maybeSingle().then((r) => r.data as { etat?: string; idee_image?: string } | null),
     // La relecture ne se lit que dans son chapitre : la remise et la remarque n'en sortent pas
     base.rpc("relecture_du_poste", { p_scene: sceneId }).then((r) => {
       if (r.error) throw new Error(`Scène illisible : ${r.error.message}`);
@@ -350,6 +352,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     fixes: {},
     depart: null,
   };
+  const etatLu = lue?.etat;
   const droits: Droits = { role: "eleve", profil: s.profil ?? "propositions", scenesDuChapitre: new Set(scenes.keys()) };
   const prise = priseDe(c, s.prise_par_eleve, s.prise_par_enseignant);
   // La scène dont un camarade s'occupe se lit : la prendre à son nom se fera à l'étape 4 (F06.3)
@@ -376,6 +379,8 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
         }
       : null,
     remarque: relecture?.remarque ?? null,
+    // L'idée d'image se lit dans son chapitre seulement, comme la consigne
+    idee: s.profil ? lue?.idee_image ?? "" : null,
   };
 }
 

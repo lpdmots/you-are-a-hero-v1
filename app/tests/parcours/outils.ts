@@ -1,4 +1,5 @@
 import { randomBytes, randomUUID } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
@@ -418,6 +419,23 @@ export async function semerImage(base: SupabaseClient, compte: Compte, projetId:
   const { error } = await base.from("images").insert({
     id, projet_id: projetId, enseignant_id: compte.id, chemin: `${compte.id}/${projetId}/${id}.jpg`, chemin_vignette: `${compte.id}/${projetId}/${id}-v.jpg`, largeur: 1200, hauteur: 800,
   });
+  if (error) throw new Error(error.message);
+  return id;
+}
+
+/**
+ * Une image du projet déposée pour de bon dans le stockage (étape 8, lot 8) : elle s'affiche, et
+ * sert de portrait de référence à une image de scène. Le dessin est un visuel de l'application.
+ */
+export async function semerImageDeposee(base: SupabaseClient, compte: Compte, projetId: string): Promise<string> {
+  const id = randomUUID();
+  const octets = readFileSync(resolve(__dirname, "../../public/illustrations/defaut-etang-v.jpg"));
+  const chemins = [`${compte.id}/${projetId}/${id}.jpg`, `${compte.id}/${projetId}/${id}-v.jpg`];
+  for (const chemin of chemins) {
+    const { error } = await service().storage.from("images").upload(chemin, octets, { contentType: "image/jpeg" });
+    if (error) throw new Error(error.message);
+  }
+  const { error } = await base.from("images").insert({ id, projet_id: projetId, enseignant_id: compte.id, chemin: chemins[0], chemin_vignette: chemins[1], largeur: 480, hauteur: 320, format: "jpeg" });
   if (error) throw new Error(error.message);
   return id;
 }

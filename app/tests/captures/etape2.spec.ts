@@ -68,7 +68,7 @@ test("écrans de l'étape 2 : le plan du récit", async ({ page }) => {
   await capturer(page, "attribuer-des-eleves", false);
   await page.getByRole("button", { name: "Fermer", exact: true }).last().click();
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
-  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByRole("button", { name: "Réglages", exact: true }).click();
   await capturer(page, "reglages-du-chapitre", false);
   await page.getByRole("button", { name: "Fermer", exact: true }).last().click();
   await page.getByPlaceholder("Rechercher une scène").fill("souche");

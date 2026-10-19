@@ -26,10 +26,11 @@ export const AIDES_TEXTE = [
 export type AideTexte = (typeof AIDES_TEXTE)[number];
 /**
  * Les créations d'images (F10.1, F10.2) : le portrait de référence d'un personnage, l'image de
- * référence d'un objet, puis au lot 8 l'image d'une scène et l'image de repérage. Le journal
- * les distingue pour suivre la dépense.
+ * référence d'un objet, puis au lot 8 l'image d'une scène, l'image de repérage et celle créée
+ * d'office pour une partie ou un chapitre ajouté par l'IA. Le journal les distingue pour suivre
+ * la dépense.
  */
-export const AIDES_IMAGE = ["portrait", "image-objet", "image-scene", "image-reperage"] as const;
+export const AIDES_IMAGE = ["portrait", "image-objet", "image-scene", "image-reperage", "image-ajout"] as const;
 export type AideImage = (typeof AIDES_IMAGE)[number];
 export type Aide = AideTexte | AideImage;
 
@@ -88,6 +89,12 @@ export type ReglagesIa = {
   niveaux: Niveau[];
   imagesParCreation: 1 | 2;
   qualite: QualiteDesImages;
+  /**
+   * « Créer l'image des parties et chapitres ajoutés par l'IA » (F10.1, 18 octobre 2026) : une
+   * image d'après le résumé, une seule, sans choix ; allumé par défaut, le porteur préférant
+   * l'ajout automatique.
+   */
+  imageALAjout: boolean;
 };
 
 /**
@@ -118,8 +125,8 @@ export const TAILLES_DES_IMAGES: Record<UsageDImage, string> = {
 export const qualiteDeLImage = (reglage: QualiteDesImages, usage: UsageDImage): "normale" | "haute" =>
   reglage === "auto" ? (usage === "pleine-page" ? "haute" : "normale") : reglage;
 
-/** Un compte neuf (F13, F10.2) : degré 2, aides proposées, une image, en qualité automatique. */
-export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto" };
+/** Un compte neuf (F13, F10.1, F10.2) : degré 2, aides proposées, une image, en qualité automatique, l'image créée à l'ajout. */
+export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto", imageALAjout: true };
 
 /** Ce que la base garde, relu sans confiance : un réglage absent ou abîmé reprend sa valeur habituelle. */
 export function lireReglagesIa(v: unknown): ReglagesIa {
@@ -132,6 +139,7 @@ export function lireReglagesIa(v: unknown): ReglagesIa {
     niveaux,
     imagesParCreation: o.imagesParCreation === 1 || o.imagesParCreation === 2 ? o.imagesParCreation : h.imagesParCreation,
     qualite: QUALITES.includes(o.qualite as QualiteDesImages) ? (o.qualite as QualiteDesImages) : h.qualite,
+    imageALAjout: typeof o.imageALAjout === "boolean" ? o.imageALAjout : h.imageALAjout,
   };
 }
 
