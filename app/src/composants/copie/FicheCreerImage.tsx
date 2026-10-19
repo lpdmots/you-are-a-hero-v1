@@ -202,7 +202,7 @@ export function FicheCreerImage({
     if (!demande) return;
     setGarde(proposition);
     setErreur(null);
-    const fait = await services.garder(proposition);
+    const fait = await services.garder(proposition, demande.id);
     if (!fait.ok) {
       setGarde(null);
       return setErreur(fait.erreur);

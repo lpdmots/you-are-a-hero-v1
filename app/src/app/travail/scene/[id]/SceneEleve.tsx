@@ -1,5 +1,6 @@
 "use client";
 
+import { useColonneCollee } from "@/composants/colonneCollee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
@@ -45,6 +46,7 @@ export function SceneEleve({
 }) {
   const routeur = useRouter();
   const dire = useMessage();
+  const colonneCollee = useColonneCollee();
   const c = couleurDeChapitre(scene.chapitre.couleur);
   const ref = referenceScene(scene.reference);
   const [vide, setVide] = useState(scene.vide);
@@ -437,7 +439,7 @@ export function SceneEleve({
         <section aria-label="Texte de la scène">{copie}</section>
         {scene.consigne !== null || scene.ecriture || encouragements.length || scene.idee?.trim() ? (
           <aside className="cote-copie">
-            <div className="cote-copie__colle">
+            <div className="cote-copie__colle" ref={colonneCollee}>
               <div ref={setPanneau} />
               <div className="cote-copie__fiches" hidden={reglages}>
                 {scene.etat === "reprendre" && scene.remarque ? (

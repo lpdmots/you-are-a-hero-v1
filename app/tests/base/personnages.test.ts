@@ -3,7 +3,8 @@ import { PLAFONDS, REGLAGES_IA_HABITUELS, type ReglagesIa } from "@/domaine/aide
 import { ficheVisuelle, personnages as aidePersonnages } from "@/serveur/ia/aides/images";
 import { demanderDesImages } from "@/serveur/ia/demander";
 import { SEAU } from "@/serveur/images";
-import { cheminProposition, creerLesReferences, jeterLesPropositions, preciserLaFiche, repererLesPersonnages } from "@/serveur/personnages";
+import { demanderLaReference, fermerLaDemande, type Lancee } from "@/serveur/images-creees";
+import { cheminProposition, preciserLaFiche, repererLesPersonnages } from "@/serveur/personnages";
 import { entreeDeLEtape } from "@/serveur/preparation-ia";
 import { questions as aideQuestions } from "@/serveur/ia/aides/preparation";
 import { preparationDe } from "@/serveur/recit";
@@ -20,6 +21,12 @@ import {
  */
 
 let laurent: Adulte;
+/** Une demande d'image lancée : son travail attendu, comme `after` le ferait */
+const lancee = async (l: Lancee): Promise<string> => {
+  if (!l.ok) throw new Error(l.message);
+  await l.travail();
+  return l.demande;
+};
 let martin: Adulte;
 let classe: ClasseEssai;
 let alice: EleveEssai;
@@ -165,30 +172,46 @@ describe("Fiche visuelle et images de référence (F10.2)", () => {
     const sans = await carte(projet, { nom: "Brindille" });
     expect(await preciserLaFiche(enseignantDe(laurent), "personnage", sans)).toEqual({ ok: false, message: "Décrivez d’abord le personnage en quelques mots." });
     const decrite = await carte(projet, { nom: "Maël", description: "Le père de Lou." });
-    expect(await creerLesReferences(enseignantDe(laurent), "personnage", decrite)).toEqual({ ok: false, message: "Décrivez d’abord son apparence." });
+    expect(await demanderLaReference(enseignantDe(laurent), "personnage", decrite)).toEqual({ ok: false, message: "Décrivez d’abord son apparence." });
     expect(await appels()).toEqual([]);
   });
 
-  it("F10-AC41 — « Créer son portrait », deux par création : deux images attendent dans le stockage, comptées deux au journal ; les écartées s'effacent", async () => {
+  it("F10-AC41, 19 octobre 2026 — « Créer son portrait », deux par création : la première se pose d'office à l'arrivée, la seconde attend ; comptées deux au journal", async () => {
     const projet = await passeurs();
     const lou = await carte(projet, { nom: "Lou", heros: true, description: "Fils du passeur.", fiche: "Ciré jaune, bottes vertes." });
-    const r = await creerLesReferences(avecReglages({ imagesParCreation: 2 }), "personnage", lou);
-    expect(r.ok).toBe(true);
-    if (!r.ok) return;
-    expect(r.propositions).toHaveLength(2);
-    expect((await propositionsEnStockage(projet)).sort()).toEqual(r.propositions.map((p) => `${p}.jpg`).sort());
+    const id = await lancee(await demanderLaReference(avecReglages({ imagesParCreation: 2 }), "personnage", lou));
+    const [d] = await sql<{ etat: string; propositions: string[]; image_posee: string | null; message: string | null }>("select etat, propositions, image_posee, message from demandes_d_images where id = $1", [id]);
+    expect(d).toMatchObject({ etat: "prete", message: null });
+    expect(d.propositions).toHaveLength(1);
+    expect((await sql("select portrait_id from public.personnages where id = $1", [lou]))[0].portrait_id).toBe(d.image_posee);
+    expect(await propositionsEnStockage(projet)).toEqual([`${d.propositions[0]}.jpg`]);
     expect(await appels()).toEqual([{ aide: "portrait", sorte: "image", nombre: 2, issue: "reussi" }]);
-    // Le portrait n'est posé que quand l'adulte en garde un : la carte n'a encore rien
-    expect((await sql("select portrait_id from public.personnages where id = $1", [lou]))[0].portrait_id).toBeNull();
-    await jeterLesPropositions(enseignantDe(laurent), projet, r.propositions);
+    await fermerLaDemande(enseignantDe(laurent), id);
     expect(await propositionsEnStockage(projet)).toEqual([]);
   });
 
-  it("F10-AC42 — un objet de l'histoire reçoit de même une image de référence, une seule par défaut", async () => {
+  it("19 octobre 2026 — un portrait choisi pendant que l'image se crée n'est pas remplacé : l'image arrivée reste parmi les images du projet", async () => {
+    const projet = await passeurs();
+    const lou = await carte(projet, { nom: "Lou", heros: true, description: "Fils du passeur.", fiche: "Ciré jaune." });
+    const l = await demanderLaReference(enseignantDe(laurent), "personnage", lou);
+    if (!l.ok) throw new Error(l.message);
+    const { data: image } = await service().from("images").insert({
+      projet_id: projet, enseignant_id: laurent.id, chemin: `${laurent.id}/${projet}/choisi.jpg`, chemin_vignette: `${laurent.id}/${projet}/choisi-v.jpg`, largeur: 10, hauteur: 10,
+    }).select("id").single();
+    await laurent.base.from("personnages").update({ portrait_id: image!.id }).eq("id", lou);
+    await l.travail();
+    expect((await sql("select portrait_id from public.personnages where id = $1", [lou]))[0].portrait_id).toBe(image!.id);
+    const [d] = await sql<{ etat: string; message: string }>("select etat, message from demandes_d_images where id = $1", [l.demande]);
+    expect(d).toMatchObject({ etat: "posee", message: expect.stringContaining("Vous aviez choisi une autre image") });
+  });
+
+  it("F10-AC42 — un objet de l'histoire reçoit de même une image de référence, une seule par défaut, posée d'office", async () => {
     const projet = await passeurs();
     const { data } = await laurent.base.from("objets").insert({ projet_id: projet, enseignant_id: laurent.id, nom: "la lanterne de cuivre", description: "Celle du père.", fiche: "Cuivre patiné, verre bleuté." }).select("id").single();
-    const r = await creerLesReferences(enseignantDe(laurent), "objet", data!.id);
-    expect(r.ok && r.propositions.length).toBe(1);
+    const id = await lancee(await demanderLaReference(enseignantDe(laurent), "objet", data!.id));
+    const [d] = await sql<{ etat: string; image_posee: string }>("select etat, image_posee from demandes_d_images where id = $1", [id]);
+    expect(d.etat).toBe("posee");
+    expect((await sql("select image_id from public.objets where id = $1", [data!.id]))[0].image_id).toBe(d.image_posee);
     expect(await appels()).toEqual([{ aide: "image-objet", sorte: "image", nombre: 1, issue: "reussi" }]);
     // Une image d'un autre projet ne se pose pas : la base la refuse
     const autre = await creerProjet(laurent, "personnel", "classique", "Autre");
@@ -196,7 +219,6 @@ describe("Fiche visuelle et images de référence (F10.2)", () => {
       projet_id: autre.id, enseignant_id: laurent.id, chemin: `${laurent.id}/${autre.id}/x.jpg`, chemin_vignette: `${laurent.id}/${autre.id}/x-v.jpg`, largeur: 10, hauteur: 10,
     }).select("id").single();
     expect((await laurent.base.from("objets").update({ image_id: image!.id }).eq("id", data!.id)).error).not.toBeNull();
-    if (r.ok) await jeterLesPropositions(enseignantDe(laurent), projet, r.propositions);
   });
 
   it("une proposition d'un autre adulte ne se nomme pas : le chemin se compose avec l'identité de qui demande", () => {
@@ -230,7 +252,9 @@ describe("Fiche visuelle et images de référence (F10.2)", () => {
     const lou = await carte(projet, { nom: "Lou", description: "Fils du passeur.", fiche: "Ciré jaune." });
     vi.stubEnv("IA_SIMULEE", "echec");
     try {
-      expect(await creerLesReferences(enseignantDe(laurent), "personnage", lou)).toEqual({ ok: false, message: "L'image n'a pas pu être créée. Rien n'a changé." });
+      const id = await lancee(await demanderLaReference(enseignantDe(laurent), "personnage", lou));
+      expect((await sql("select etat, message from demandes_d_images where id = $1", [id]))[0]).toEqual({ etat: "echec", message: "L'image n'a pas pu être créée. Rien n'a changé." });
+      expect((await sql("select portrait_id from public.personnages where id = $1", [lou]))[0].portrait_id).toBeNull();
     } finally {
       vi.unstubAllEnvs();
     }

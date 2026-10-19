@@ -881,6 +881,22 @@
     transform: translate(-50%, -8px);
   }
 }
+/* Écran large : le message se lit en bas, où il ne couvre ni le titre du projet ni ce qu'on est en
+   train de faire en haut de la page (lot 9 de l'étape 8) ; au téléphone, il reste en haut, le bas
+   portant le pied de la copie */
+@media (min-width: 861px) {
+  .message {
+    top: auto;
+    bottom: 24px;
+    animation-name: message-monte;
+  }
+}
+@keyframes message-monte {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 8px);
+  }
+}
 .message__act {
   padding: 6px 4px;
   border: 0;

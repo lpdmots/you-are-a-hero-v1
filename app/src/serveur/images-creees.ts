@@ -13,7 +13,7 @@ import { descriptionImage } from "./ia/aides/images";
 import { demanderDesImages, demanderUneAide } from "./ia/demander";
 import { cheminImage, cheminVignette, lireImage, SEAU, type FormatImage } from "./images";
 import { projetDe, type Projet } from "./lectures";
-import { cheminProposition, deposerLesPropositions } from "./personnages";
+import { cheminProposition, deposerLesPropositions, promptDeLaReference, type SorteDeCarte } from "./personnages";
 import { estUuid, preparationDe } from "./recit";
 import { clientService } from "./supabase";
 
@@ -77,9 +77,14 @@ async function promptDuSujet(e: Enseignant, sujet: Sujet): Promise<{ projet: Pro
 
 // ——— Les demandes d'images : on demande, puis on continue son chemin ———
 
-/** Ce qui reçoit une image : le projet, une partie, un chapitre ou une scène. */
-export type Cible = Repere | "scene";
+/** Ce qui reçoit une image : le projet, une partie, un chapitre, une scène, ou la carte d'un personnage ou d'un objet. */
+export type Cible = Repere | "scene" | SorteDeCarte;
 const TABLE_DE: Record<Repere, "projets" | "parties" | "chapitres"> = { projet: "projets", partie: "parties", chapitre: "chapitres" };
+/** La colonne de l'image de référence d'une carte (F10.2) */
+const REFERENCE_DE: Record<SorteDeCarte, { table: "personnages" | "objets"; colonne: "portrait_id" | "image_id" }> = {
+  personnage: { table: "personnages", colonne: "portrait_id" },
+  objet: { table: "objets", colonne: "image_id" },
+};
 
 /** Une demande d'image, telle que la page la lit (F10.1, F10.2, reprise du 18 octobre 2026). */
 export type DemandeDImage = {
@@ -142,7 +147,12 @@ export async function imagesEnRoute(e: Enseignant, projetId: string): Promise<st
 const ecrire = (id: string, maj: Record<string, unknown>) => clientService().from("demandes_d_images").update({ ...maj, termine_le: maj.etat === "en_route" ? null : new Date().toISOString() }).eq("id", id);
 
 /** L'image ou le visuel d'un élément maintenant : comparés à l'arrivée, ils disent si l'adulte a choisi autre chose. */
-async function repereActuel(e: Enseignant, cible: Repere, id: string): Promise<{ image: string | null; visuel: string | null } | null> {
+async function repereActuel(e: Enseignant, cible: Repere | SorteDeCarte, id: string): Promise<{ image: string | null; visuel: string | null } | null> {
+  if (cible === "personnage" || cible === "objet") {
+    const { table, colonne } = REFERENCE_DE[cible];
+    const { data } = await e.supabase.from(table).select(colonne).eq("id", id).maybeSingle();
+    return data ? { image: ((data as Record<string, unknown>)[colonne] as string | null) ?? null, visuel: null } : null;
+  }
   const { data } = await e.supabase.from(TABLE_DE[cible]).select("image_id, visuel_choisi").eq("id", id).maybeSingle();
   return data ? { image: (data.image_id as string | null) ?? null, visuel: (data.visuel_choisi as string | null) ?? null } : null;
 }
@@ -221,6 +231,47 @@ export async function demanderLeReperage(e: Enseignant, sorte: Repere, id: strin
 }
 
 /**
+ * « Créer son portrait », ou l'image de référence d'un objet (F10.2), repris le 19 octobre 2026 à la
+ * demande du porteur, comme le repérage : la demande part, l'adulte peut refermer le panneau ou
+ * quitter la page ; à l'arrivée, la première image devient la référence de la carte, sauf si
+ * l'adulte en a choisi une autre entre-temps ; la seconde attend dans le panneau de la carte.
+ */
+export async function demanderLaReference(e: Enseignant, sorte: SorteDeCarte, id: string): Promise<Lancee> {
+  if (!e.reglagesIa.proposer) return echec(MESSAGES_IA.pasDImage);
+  const lu = await promptDeLaReference(e, sorte, id);
+  if (!lu.ok) return echec(lu.message);
+  const ouverte = await ouvrir(e, { projetId: lu.projetId, cible: sorte, cibleId: id });
+  if ("ok" in ouverte) return ouverte;
+  const travail = async () => {
+    try {
+      const r = await demanderDesImages(e, { aide: sorte === "personnage" ? "portrait" : "image-objet", usage: sorte === "personnage" ? "portrait" : "objet", prompt: lu.prompt });
+      if (!r.ok) {
+        await ecrire(ouverte.id, { etat: "echec", message: r.message });
+        return;
+      }
+      const imageId = await inscrireLImage(e, lu.projetId, r.images[0]);
+      if (!imageId) {
+        await ecrire(ouverte.id, { etat: "echec", message: MESSAGES_IA.pasDImage });
+        return;
+      }
+      const { data: d } = await clientService().from("demandes_d_images").select("image_avant").eq("id", ouverte.id).single();
+      const maintenant = await repereActuel(e, sorte, id);
+      const inchange = !!maintenant && maintenant.image === (d?.image_avant ?? null);
+      if (inchange) await e.supabase.from(REFERENCE_DE[sorte].table).update({ [REFERENCE_DE[sorte].colonne]: imageId }).eq("id", id);
+      const autres = r.images.length > 1 ? await deposerLesPropositions(e.id, lu.projetId, r.images.slice(1)) : [];
+      await ecrire(ouverte.id, {
+        etat: autres.length ? "prete" : "posee", propositions: autres, image_posee: imageId,
+        message: inchange ? null : "Vous aviez choisi une autre image entre-temps : celle-ci est parmi les images du projet.",
+      });
+    } catch (erreur) {
+      console.error("Image de référence", erreur);
+      await ecrire(ouverte.id, { etat: "echec", message: MESSAGES_IA.pasDImage });
+    }
+  };
+  return { ok: true, demande: ouverte.id, travail };
+}
+
+/**
  * Inscrit parmi les images du projet une image créée sans choix (l'image d'office) : l'image et sa
  * réduction d'écran sont le même JPEG, l'application n'ayant pas de quoi réduire une image côté
  * serveur. Rend son identité, ou rien.
@@ -262,17 +313,49 @@ export async function demanderLesImagesALAjout(e: Enseignant, sorte: "partie" | 
   return { ok: true, demandes: lancees.map((l) => l.demande), travail: async () => void (await Promise.all(lancees.map((l) => l.travail()))) };
 }
 
+/** Une liste de propositions au format d'un tableau Postgres, pour comparer la ligne telle qu'on l'a lue. */
+const tableau = (liste: readonly string[]) => `{${liste.map((p) => `"${p}"`).join(",")}}`;
+
 /**
- * La première image d'une demande de scène vient d'être posée par la copie de l'adulte, à son retour
- * ou panneau fermé (« quitter vaut accord », 18 octobre 2026) : elle quitte les propositions ; la
- * seconde, s'il y en a une, attend qu'il la mette à la place ou la laisse.
+ * Réserve une proposition prête avant de la poser dans une scène : elle quitte la liste, et une seule
+ * voie l'emporte, le panneau (« Garder ») ou la pose d'office quand on a quitté le panneau. Sans quoi
+ * les deux posaient la même image (doublon signalé par le porteur le 19 octobre 2026).
  */
-export async function noterLaPremierePosee(e: Enseignant, demandeId: string, imageId: string): Promise<void> {
-  if (!estUuid(demandeId) || !estUuid(imageId)) return;
+export async function reserverLaProposition(e: Enseignant, demandeId: string, proposition: string): Promise<boolean> {
+  if (!estUuid(demandeId) || typeof proposition !== "string" || !proposition) return false;
+  const { data } = await e.supabase.from("demandes_d_images").select("propositions").eq("id", demandeId).eq("etat", "prete").maybeSingle();
+  const liste = (data?.propositions as string[] | null) ?? [];
+  if (!liste.includes(proposition)) return false;
+  const { data: prise } = await clientService()
+    .from("demandes_d_images")
+    .update({ propositions: liste.filter((p) => p !== proposition) })
+    .eq("id", demandeId)
+    .eq("etat", "prete")
+    .filter("propositions", "eq", tableau(liste))
+    .select("id");
+  return (prise?.length ?? 0) > 0;
+}
+
+/** La proposition réservée n'a pas pu se poser : elle revient en tête de la liste. */
+export async function rendreLaProposition(e: Enseignant, demandeId: string, proposition: string): Promise<void> {
+  if (!estUuid(demandeId) || typeof proposition !== "string" || !proposition) return;
+  const { data } = await e.supabase.from("demandes_d_images").select("propositions").eq("id", demandeId).eq("etat", "prete").maybeSingle();
+  if (!data) return;
+  const liste = (data.propositions as string[] | null) ?? [];
+  if (!liste.includes(proposition)) await ecrire(demandeId, { etat: "prete", propositions: [proposition, ...liste] });
+}
+
+/**
+ * Une proposition réservée vient d'être posée par la copie de l'adulte (« Garder », ou à son retour,
+ * panneau fermé : « quitter vaut accord », 18 octobre 2026) : son fichier s'efface ; l'autre, s'il y en
+ * a une, attend qu'il la mette à la place ou la laisse.
+ */
+export async function noterLaPropositionPosee(e: Enseignant, demandeId: string, proposition: string, imageId: string): Promise<void> {
+  if (!estUuid(demandeId) || !estUuid(imageId) || typeof proposition !== "string" || !proposition) return;
   const { data } = await e.supabase.from("demandes_d_images").select("projet_id, propositions").eq("id", demandeId).eq("etat", "prete").maybeSingle();
   if (!data) return;
-  const [premiere, ...autres] = (data.propositions as string[] | null) ?? [];
-  if (premiere) await clientService().storage.from(SEAU).remove([cheminProposition(e.id, data.projet_id as string, premiere)]);
+  const autres = ((data.propositions as string[] | null) ?? []).filter((p) => p !== proposition);
+  await clientService().storage.from(SEAU).remove([cheminProposition(e.id, data.projet_id as string, proposition)]);
   await ecrire(demandeId, { etat: autres.length ? "prete" : "posee", propositions: autres, image_posee: imageId });
 }
 

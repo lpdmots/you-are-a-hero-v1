@@ -1,11 +1,10 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { peutCreerSonImage, promptDeLObjet, promptDuPortrait } from "@/domaine/illustration";
 import type { Enseignant } from "./adulte";
 import { carnetDe, histoireDuProjet, type Histoire } from "./ia/aides/contexte";
 import { ficheVisuelle, personnages as aidePersonnages, type PersonnageConnu } from "./ia/aides/images";
-import { demanderDesImages, demanderUneAide } from "./ia/demander";
+import { demanderUneAide } from "./ia/demander";
 import { lireImage, SEAU, TYPE_MIME } from "./images";
 import { projetDe, type Projet } from "./lectures";
 import { estUuid, preparationDe } from "./recit";
@@ -18,9 +17,10 @@ import { clientService } from "./supabase";
  * Ne partent que la Préparation, la carte et le style : jamais un prénom d'élève, une classe ni
  * le nom de l'adulte (F13, ce qui est transmis).
  *
- * Les images créées ne sont pas encore des images du projet : elles attendent dans le stockage,
- * sous `propositions/`, que l'adulte en garde une ; la page la dépose alors comme une image
- * importée, et les autres sont effacées (F10.1 : une image écartée n'est pas conservée).
+ * Le portrait et l'image de référence passent par les demandes d'images (`images-creees.ts`,
+ * 19 octobre 2026) : la première se pose d'office, la seconde attend dans le stockage, sous
+ * `propositions/`, que l'adulte la mette à la place ou la laisse (F10.1 : une image écartée n'est
+ * pas conservée).
  */
 
 export type SorteDeCarte = "personnage" | "objet";
@@ -115,32 +115,19 @@ async function effacerLesAnciennes(enseignantId: string, projetId: string): Prom
   if (anciennes.length) await stockage.remove(anciennes);
 }
 
-export type ReponseReferences = { ok: true; propositions: string[]; reste: string | null } | { ok: false; message: string };
-
 /**
- * « Créer son portrait » (F10.2), ou l'image de référence d'un objet : une ou deux images selon
- * « Images par création », en qualité normale sous « Automatique » (F10-AC37), dans le style du
- * projet, d'après la fiche visuelle reprise mot pour mot, sans laquelle rien ne part. Les images
- * attendent dans le stockage ; la page les montre par `/images/proposition/…`.
+ * Ce que « Créer son portrait » (F10.2), ou l'image de référence d'un objet, envoie : le prompt
+ * dans le style du projet, d'après la fiche visuelle reprise mot pour mot, sans laquelle rien ne
+ * part. La demande elle-même passe par les demandes d'images (`demanderLaReference`).
  */
-export async function creerLesReferences(e: Enseignant, sorte: SorteDeCarte, id: string): Promise<ReponseReferences> {
+export async function promptDeLaReference(e: Enseignant, sorte: SorteDeCarte, id: string): Promise<{ ok: true; projetId: string; prompt: string } | { ok: false; message: string }> {
   const carte = await lireLaCarte(e, sorte, id);
   if (!carte) return { ok: false, message: INTROUVABLE };
-  if (!peutCreerSonImage(carte)) {
-    return { ok: false, message: SANS_FICHE };
-  }
+  if (!peutCreerSonImage(carte)) return { ok: false, message: SANS_FICHE };
   const projet = await projetDe(e, carte.projetId);
   if (!projet) return { ok: false, message: INTROUVABLE };
   const style = { style: projet.styleImages, autre: projet.styleAutre };
-  const r = await demanderDesImages(e, {
-    aide: sorte === "personnage" ? "portrait" : "image-objet",
-    usage: sorte === "personnage" ? "portrait" : "objet",
-    prompt: sorte === "personnage" ? promptDuPortrait(carte, style) : promptDeLObjet(carte, style),
-  });
-  if (!r.ok) return { ok: false, message: r.message };
-  const propositions = await deposerLesPropositions(e.id, carte.projetId, r.images);
-  if (!propositions.length) return { ok: false, message: MESSAGES_IA.pasDImage };
-  return { ok: true, propositions, reste: r.reste };
+  return { ok: true, projetId: carte.projetId, prompt: sorte === "personnage" ? promptDuPortrait(carte, style) : promptDeLObjet(carte, style) };
 }
 
 /**

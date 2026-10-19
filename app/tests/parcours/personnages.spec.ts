@@ -165,7 +165,7 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await expect.poll(async () => (await cartesEnBase(s.projet)).map((c) => [c.nom, c.autres_noms])).toEqual([["Maël", ["le passeur", "le vieux Maël"]]]);
   });
 
-  test("F10-AC40, F10-AC41 — la fiche proposée ne change rien avant « Utiliser ce texte » ; sans fiche, pas de portrait ; deux portraits, l'un gardé, téléchargeable, l'autre effacé", async ({ page }) => {
+  test("F10-AC40, F10-AC41 — la fiche proposée ne change rien avant « Utiliser ce texte » ; sans fiche, pas de portrait ; deux portraits, le premier posé d'office, le second mis à la place, téléchargeable", async ({ page }) => {
     const s = await passeurs(page, { imagesParCreation: 2 });
     await s.base.from("personnages").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "Lou", heros: true, description: "Fils du passeur, dix ans." });
     await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
@@ -179,20 +179,23 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await expect(MESSAGE(page)).toContainText("Son apparence est écrite.");
     await expect.poll(async () => (await cartesEnBase(s.projet))[0].fiche).toMatch(/Ciré jaune moutarde/);
 
+    // 19 octobre 2026 : la première image se pose d'office ; la seconde attend, à mettre à la place
     await PANNEAU(page).getByRole("button", { name: "Créer son portrait" }).click();
-    await expect(PANNEAU(page).getByRole("img", { name: /Proposition/ })).toHaveCount(2);
-    expect(await propositionsEnStockage(s.compte.id, s.projet)).toBe(2);
-    expect((await cartesEnBase(s.projet))[0].portrait_id).toBeNull();
-    // Un clic sur une proposition l'agrandit ; un clic la referme
-    await PANNEAU(page).getByRole("button", { name: "Voir Proposition 1 en grand" }).click();
-    await expect(page.getByRole("dialog", { name: "Proposition 1" })).toBeVisible();
-    await page.getByRole("dialog", { name: "Proposition 1" }).click();
-    await expect(page.getByRole("dialog", { name: "Proposition 1" })).toHaveCount(0);
-    await PANNEAU(page).getByRole("button", { name: "Garder celle-ci" }).first().click();
-    await expect(MESSAGE(page)).toContainText("Portrait de « Lou » gardé.");
-    await expect(PANNEAU(page).getByRole("button", { name: "Voir Portrait de Lou en grand" })).toBeVisible();
+    await expect(MESSAGE(page)).toContainText("Portrait de « Lou » posé.");
     await expect.poll(async () => (await cartesEnBase(s.projet))[0].portrait_id).not.toBeNull();
-    // L'image gardée rejoint les images du projet ; l'autre proposition n'est pas conservée
+    const premier = (await cartesEnBase(s.projet))[0].portrait_id!;
+    await expect(PANNEAU(page).getByRole("img", { name: /Proposition/ })).toHaveCount(1);
+    expect(await propositionsEnStockage(s.compte.id, s.projet)).toBe(1);
+    // Un clic sur une proposition l'agrandit ; un clic la referme
+    await PANNEAU(page).getByRole("button", { name: "Voir Proposition 2 en grand" }).click();
+    await expect(page.getByRole("dialog", { name: "Proposition 2" })).toBeVisible();
+    await page.getByRole("dialog", { name: "Proposition 2" }).click();
+    await expect(page.getByRole("dialog", { name: "Proposition 2" })).toHaveCount(0);
+    await PANNEAU(page).getByRole("button", { name: "Mettre celle-ci à la place" }).click();
+    await expect(MESSAGE(page)).toContainText("Portrait de « Lou » gardé.");
+    await expect.poll(async () => (await cartesEnBase(s.projet))[0].portrait_id).not.toBe(premier);
+    await expect(PANNEAU(page).getByRole("button", { name: "Voir Portrait de Lou en grand" })).toBeVisible();
+    // L'image gardée rejoint les images du projet ; plus aucune proposition n'attend
     await expect.poll(() => propositionsEnStockage(s.compte.id, s.projet)).toBe(0);
     const portrait = (await cartesEnBase(s.projet))[0].portrait_id!;
     expect(await sql("select 1 from public.images where id = $1 and projet_id = $2", [portrait, s.projet])).toHaveLength(1);
@@ -200,13 +203,30 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await expect(PANNEAU(page).getByRole("link", { name: "Télécharger" })).toHaveAttribute("href", `/images/${portrait}`);
     // Le héros est absent des images, par défaut : le panneau le rappelle
     await expect(PANNEAU(page)).toContainText("Le héros n’est pas dessiné dans les images de scène");
-    // Refermé avec des propositions en attente, rien n'est conservé
-    await PANNEAU(page).getByRole("button", { name: "Créer un autre portrait" }).click();
-    await expect(PANNEAU(page).getByRole("img", { name: /Proposition/ })).toHaveCount(2);
+  });
+
+  test("19 octobre 2026 — on demande un portrait et on referme le panneau : il se pose de lui-même sur la carte, et la seconde proposition attend au retour", async ({ page }) => {
+    const s = await passeurs(page, { imagesParCreation: 2 });
+    await s.base.from("personnages").insert({ projet_id: s.projet, enseignant_id: s.compte.id, nom: "Lou", heros: true, description: "Fils du passeur.", fiche: "Ciré jaune, bottes vertes." });
+    await page.route("**/ia/personnages", async (route) => {
+      await new Promise((f) => setTimeout(f, 1500));
+      await route.continue();
+    });
+    await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
+    await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
+    await PANNEAU(page).getByRole("button", { name: "Créer son portrait" }).click();
+    await expect(PANNEAU(page).getByText(/Vous pouvez continuer/)).toBeVisible();
     await PANNEAU(page).getByRole("button", { name: "Fermer", exact: true }).last().click();
+    await expect.poll(async () => (await cartesEnBase(s.projet))[0].portrait_id, { timeout: 20_000 }).not.toBeNull();
+    const portrait = (await cartesEnBase(s.projet))[0].portrait_id!;
+    // La page se relit d'elle-même : la carte montre le portrait
+    await expect(page.getByRole("button", { name: "Ouvrir la carte de Lou" }).locator("img")).toHaveAttribute("src", new RegExp(`/images/${portrait}`), { timeout: 15_000 });
+    await page.getByRole("button", { name: "Ouvrir la carte de Lou" }).click();
+    await expect(PANNEAU(page).getByRole("img", { name: /Proposition/ })).toHaveCount(1);
+    await PANNEAU(page).getByRole("button", { name: "Laisser" }).click();
+    await expect(PANNEAU(page).getByRole("img", { name: /Proposition/ })).toHaveCount(0);
     await expect.poll(() => propositionsEnStockage(s.compte.id, s.projet)).toBe(0);
     expect((await cartesEnBase(s.projet))[0].portrait_id).toBe(portrait);
-    await expect(page.getByRole("button", { name: "Ouvrir la carte de Lou" }).locator("img")).toHaveAttribute("src", `/images/${portrait}?v=1`);
   });
 
   test("F10-AC42 — un objet de l'histoire s'ouvre dans le panneau : fiche visuelle et image de référence", async ({ page }) => {
@@ -216,8 +236,7 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await page.getByRole("button", { name: "Modifier la lanterne de cuivre" }).click();
     await PANNEAU(page).getByLabel(/À quoi ressemble/).fill("Cuivre patiné, verre bleuté, grande comme une main.");
     await PANNEAU(page).getByRole("button", { name: "Créer son image" }).click();
-    await PANNEAU(page).getByRole("button", { name: "Garder" }).click();
-    await expect(MESSAGE(page)).toContainText("Image de « la lanterne de cuivre » gardée.");
+    await expect(MESSAGE(page)).toContainText("Image de « la lanterne de cuivre » posée.");
     const objet = async () => (await sql<{ fiche: string; image_id: string | null }>("select fiche, image_id from public.objets where projet_id = $1", [s.projet]))[0];
     await expect.poll(async () => (await objet()).image_id).not.toBeNull();
     expect((await objet()).fiche).toBe("Cuivre patiné, verre bleuté, grande comme une main.");

@@ -3582,3 +3582,30 @@ kbd {
 .ci__detouree-aide {
   color: var(--graphite-2);
 }
+
+/* Téléphone (lot 9 de l'étape 8) : les onglets et leur « i » sur une ligne, puis les deux pastilles
+   de l'IA ensemble sur la suivante, au lieu d'une ligne chacune */
+@media (max-width: 520px) {
+  .copie__onglets {
+    flex-wrap: nowrap;
+  }
+  .copie__onglets button {
+    padding: 0 8px;
+    white-space: nowrap;
+  }
+  .copie__aides {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 6px;
+    width: 100%;
+    margin-left: 0;
+  }
+  .corriger .outil--ia,
+  .corriger .menu--mots > summary {
+    padding-inline: 10px;
+  }
+  .copie__idees {
+    margin-left: 0;
+    padding-inline: 10px;
+  }
+}

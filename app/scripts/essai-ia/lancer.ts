@@ -9,6 +9,8 @@
  *   npm run ia:essai -- --plafond 15    s'arrête avant de dépasser 15 dollars au total (10 par défaut)
  *   npm run ia:essai -- --modeles claude-sonnet-5-5,gpt-5.6-terra   seulement ces modèles
  *   npm run ia:essai -- --a-blanc       dit seulement ce qui serait lancé
+ *   npm run ia:essai -- --jeu classe    le jugement final (lot 9) : la classe fictive de classe.ts,
+ *                                       chez le seul modèle retenu pour chaque aide, dans essais-ia/classe.json
  *
  * Les clés sont lues dans .env.local par ce seul processus, jamais affichées. Le coût affiché
  * est celui que le fournisseur annonce en jetons, au prix du tableau des modèles.
@@ -19,9 +21,10 @@ import { resolve } from "node:path";
 import { randomInt } from "node:crypto";
 import { AIDES } from "@/serveur/ia/aides";
 import { essayerUneAide } from "@/serveur/ia/demander";
-import { MODELES, type IdModele } from "@/serveur/ia/modeles";
+import { MODELES, MODELE_DES_AIDES, type IdModele } from "@/serveur/ia/modeles";
 import { DOLLARS_PAR_EURO } from "@/domaine/aides-ia";
 import { JEU_D_ESSAI, type Cas } from "./jeu";
+import { JEU_DE_LA_CLASSE } from "./classe";
 import { CANDIDATS, FICHIER_RESULTATS, type Resultat, type Resultats } from "./commun";
 
 config({ path: resolve(__dirname, "../../.env.local"), quiet: true });
@@ -37,8 +40,11 @@ const modelesChoisis = option("--modeles")?.split(",");
 const refaire = args.includes("--refaire");
 const aBlanc = args.includes("--a-blanc");
 const plafond = Number(option("--plafond") ?? 10);
+const jeuDeLaClasse = option("--jeu") === "classe";
+const jeu = jeuDeLaClasse ? JEU_DE_LA_CLASSE : JEU_D_ESSAI;
+const candidats = (cas: Cas): IdModele[] => (jeuDeLaClasse ? [MODELE_DES_AIDES[cas.aide]] : CANDIDATS(cas.aide));
 
-const chemin = resolve(__dirname, "../..", FICHIER_RESULTATS);
+const chemin = resolve(__dirname, "../..", jeuDeLaClasse ? "essais-ia/classe.json" : FICHIER_RESULTATS);
 mkdirSync(resolve(chemin, ".."), { recursive: true });
 const fichier: Resultats = existsSync(chemin) ? JSON.parse(readFileSync(chemin, "utf8")) : { resultats: [], ordres: {} };
 const garder = () => writeFileSync(chemin, JSON.stringify(fichier, null, 2));
@@ -55,9 +61,9 @@ function ordreDe(cas: Cas, modeles: IdModele[]): void {
 }
 
 const aFaire: [Cas, IdModele][] = [];
-for (const cas of JEU_D_ESSAI) {
+for (const cas of jeu) {
   if (seulement && !seulement.includes(cas.id)) continue;
-  const modeles = CANDIDATS(cas.aide);
+  const modeles = candidats(cas);
   ordreDe(cas, modeles);
   for (const m of modeles) {
     if (modelesChoisis && !modelesChoisis.includes(m)) continue;

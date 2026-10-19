@@ -189,6 +189,7 @@ export const MESSAGES_IA = {
   demain: "Les aides reviennent demain. Tout le reste fonctionne.",
   occupe: "Une autre demande attend encore sa réponse.",
   mois: "Les images reviennent le mois prochain. Tout le reste fonctionne.",
+  absentes: "Les aides IA ne sont pas installées sur ce site. Tout le reste fonctionne.",
 } as const;
 
 /** « Encore 10 demandes aujourd'hui. », seulement dans les dix dernières ; rien au-dessus. */
@@ -202,7 +203,8 @@ export function resteDuJour(sorte: "texte" | "image", restant: number): string |
 }
 
 /** Pourquoi une demande n'a rien donné ; le texte, lui, n'a jamais changé. */
-export type RefusIa = "eteint" | "occupe" | "jour" | "mois" | "delai" | "echec";
+/** « absentes » : les clés du fournisseur manquent sur ce site ; rien n'est parti ni compté. */
+export type RefusIa = "eteint" | "absentes" | "occupe" | "jour" | "mois" | "delai" | "echec";
 
 export function messageDuRefus(refus: RefusIa, sorte: "texte" | "image" = "texte"): string {
   switch (refus) {
@@ -212,6 +214,8 @@ export function messageDuRefus(refus: RefusIa, sorte: "texte" | "image" = "texte
       return MESSAGES_IA.mois;
     case "occupe":
       return MESSAGES_IA.occupe;
+    case "absentes":
+      return MESSAGES_IA.absentes;
     default:
       return sorte === "image" ? MESSAGES_IA.pasDImage : MESSAGES_IA.pasDeReponse;
   }

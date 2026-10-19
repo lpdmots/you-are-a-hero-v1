@@ -1,5 +1,6 @@
 "use client";
 
+import { useColonneCollee } from "@/composants/colonneCollee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -112,6 +113,7 @@ export function PageScene({
 }) {
   const routeur = useRouter();
   const dire = useMessage();
+  const colonneCollee = useColonneCollee();
   const scene = scenesDe(plan).find((s) => s.id === sceneId)!;
   const chapitre = chapitresDe(plan).find((c) => c.id === scene.chapitreId)!;
   const depart = departDe(plan);
@@ -1047,7 +1049,7 @@ export function PageScene({
           {copieEl}
         </section>
         <aside className="cote-copie" hidden={corrige && correction.large}>
-          <div className="cote-copie__colle">
+          <div className="cote-copie__colle" ref={colonneCollee}>
             {numero ? (
               <FicheNumero
                 sceneId={scene.id}

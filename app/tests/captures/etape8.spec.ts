@@ -60,13 +60,7 @@ test("lot 1 : « Aides IA » dans « Mon compte », et la page de jugement de l'
     await page.getByLabel("Aller au cas").selectOption({ label: (await option.textContent())!.trim() });
     await capturer(page, `essai-${cas.split(" ")[0].toLowerCase()}`);
   }
-  const propositions = page.locator("section[aria-label^='Proposition']");
-  if (await propositions.count()) {
-    await propositions.first().getByRole("button", { name: "Bonne" }).click();
-    await propositions.first().getByRole("button", { name: /Meilleure/ }).click();
-    await propositions.nth(1).getByRole("button", { name: "Passable" }).click();
-    await capturer(page, "essai-note");
-  }
+  // Noter écrirait dans essais-ia/jugements.json, les notes du porteur : la capture n'y touche pas
   await page.setViewportSize({ width: 390, height: 844 });
   await capturer(page, "essai-390");
   await page.setViewportSize({ width: 1366, height: 900 });
@@ -501,8 +495,8 @@ test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
   // Le résumé proposé, dans les réglages du chapitre
   await page.getByLabel("Autres commandes du chapitre La lisière").click();
   await page.getByRole("button", { name: "Réglages", exact: true }).click();
-  await page.getByRole("button", { name: "Proposer un autre résumé" }).click();
-  await page.getByText("Résumé proposé").waitFor();
+  await page.getByRole("button", { name: "Proposer un autre résumé avec l’IA" }).click();
+  await page.getByText("Résumé remplacé.").waitFor();
   await capturer(page, "resume-propose", false);
   await page.keyboard.press("Escape");
 
@@ -539,7 +533,7 @@ test("lot 6 : parties, chapitres et résumés (F13.5)", async ({ page }) => {
 
 test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros", async ({ page }) => {
   test.setTimeout(300_000);
-  n = 889;
+  n = 890;
   const { compte, base } = await adultePret(page);
   const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal"]);
   const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);
@@ -559,10 +553,10 @@ test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros"
   await page.locator(".panneau").getByRole("button", { name: /son apparence avec l’IA/ }).click();
   await page.getByRole("button", { name: "Utiliser ce texte" }).click();
   await page.locator(".panneau").getByRole("button", { name: "Créer son portrait" }).click();
-  await page.getByText("Deux propositions").waitFor();
+  await page.getByText("Une autre proposition").waitFor();
   await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
   await capturer(page, "heros-deux-portraits", false);
-  await page.getByRole("button", { name: "Garder celle-ci" }).first().click();
+  await page.getByRole("button", { name: "Mettre celle-ci à la place" }).click();
   await page.getByText("Portrait de « Lou » gardé.").waitFor();
   await page.locator(".panneau").getByRole("button", { name: "Fermer", exact: true }).last().click();
   await page.reload();
@@ -602,7 +596,7 @@ test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros"
   await page.getByRole("button", { name: /son apparence avec l’IA/ }).click();
   await page.getByRole("button", { name: "Utiliser ce texte" }).click();
   await page.getByRole("button", { name: "Créer son image" }).click();
-  await page.getByText("Deux propositions").waitFor();
+  await page.getByText("Une autre proposition").waitFor();
   await capturer(page, "objet-images", false);
   await page.keyboard.press("Escape");
 
@@ -793,4 +787,51 @@ test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser
   await prompt.locator(".ci__decrit").waitFor();
   await prompt.scrollIntoViewIfNeeded();
   await capturer(page, "couverture-prompt", false);
+});
+
+test("lot 9 : l'application sans les aides, en panne, et sur un site sans les clés", async ({ page, request }) => {
+  test.setTimeout(240_000);
+  n = 950;
+  const s = await classeQuiEcrit(page, ["Alice", "Bilal"]);
+  const { base, compte, projet } = s;
+  const [sentier] = s.lisiere.scenes;
+  await semerPreparation(base, compte, projet);
+  await base.from("scenes").update({ consigne: "Lou découvre le dragon endormi. Décris la grotte." }).eq("id", sentier);
+  await semerBlocs(base, sentier, [recit("Le dragon dormé dans la grote. Il était très très grand.")]);
+  await page.setViewportSize({ width: 1366, height: 900 });
+
+  // Aides éteintes : les mêmes écrans, sans un signe de l'IA
+  await base.from("enseignants").update({ reglages_ia: { proposer: false } }).eq("id", compte.id);
+  for (const [adresse, nom] of [
+    [`/projet/${projet}/preparation?etape=personnages`, "sans-ia-preparation"],
+    [`/projet/${projet}/plan`, "sans-ia-plan"],
+    [`/projet/${projet}/scene/${sentier}`, "sans-ia-scene"],
+  ]) {
+    await aller(page, adresse);
+    await capturer(page, nom, false);
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${projet}/scene/${sentier}`);
+  await capturer(page, "sans-ia-scene-390", false);
+
+  // Aides allumées, fournisseur en panne puis clés absentes
+  await base.from("enseignants").update({ reglages_ia: {} }).eq("id", compte.id);
+  try {
+    for (const [mode, nom] of [["echec", "panne"], ["sans-cle", "sans-cle"]]) {
+      await request.post("/ia/simulation", { data: { mode } });
+      for (const largeur of [1366, 390]) {
+        await page.setViewportSize({ width: largeur, height: largeur > 400 ? 900 : 844 });
+        await aller(page, `/projet/${projet}/scene/${sentier}`);
+        await page.getByRole("button", { name: "Formuler" }).click();
+        await page.locator(".message").first().waitFor();
+        await capturer(page, `${nom}-formuler${largeur < 400 ? "-390" : ""}`, false);
+      }
+      await page.setViewportSize({ width: 1366, height: 900 });
+      await page.getByRole("button", { name: "Corriger", exact: true }).click();
+      await page.waitForTimeout(800);
+      await capturer(page, `${nom}-corriger`, false);
+    }
+  } finally {
+    await request.post("/ia/simulation", { data: { mode: null } });
+  }
 });

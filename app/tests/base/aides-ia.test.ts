@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
 import { MESSAGES_IA, PLAFONDS, REGLAGES_IA_HABITUELS, lireReglagesIa } from "@/domaine/aides-ia";
-import { demanderUneAide } from "@/serveur/ia/demander";
+import { demanderDesImages, demanderUneAide } from "@/serveur/ia/demander";
 import { titre } from "@/serveur/ia/aides/titre";
 import { creerEnseignant, nettoyer, service, sql, type Adulte } from "./outils";
 
@@ -146,6 +146,29 @@ describe("Plafonds et échecs (F13)", () => {
     const r = await demanderUneAide(demandeur(laurent), titre, entreeTitre);
     expect(r).toMatchObject({ ok: false, refus: "echec", message: MESSAGES_IA.pasDeReponse });
     expect(await journal(laurent)).toMatchObject([{ issue: "echec" }]);
+  });
+
+  it("lot 9 — sans les clés du fournisseur, rien ne part ni ne compte : « Les aides IA ne sont pas installées sur ce site »", async () => {
+    process.env.IA_SIMULEE = "sans-cle";
+    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: false, refus: "absentes", message: MESSAGES_IA.absentes });
+    const image = await demanderDesImages(demandeur(laurent), { aide: "image-scene", usage: "carre", prompt: "le ponton" });
+    expect(image).toMatchObject({ ok: false, refus: "absentes", message: MESSAGES_IA.absentes });
+    expect(await journal(laurent)).toHaveLength(0);
+
+    // Sans simulation, des clés vides suffisent : le refus vient avant tout appel
+    const garde = { s: process.env.IA_SIMULEE, a: process.env.ANTHROPIC_API_KEY, o: process.env.OPENAI_API_KEY };
+    try {
+      delete process.env.IA_SIMULEE;
+      process.env.ANTHROPIC_API_KEY = "";
+      process.env.OPENAI_API_KEY = "";
+      expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: false, refus: "absentes" });
+      expect(await demanderDesImages(demandeur(laurent), { aide: "image-scene", usage: "carre", prompt: "le ponton" })).toMatchObject({ ok: false, refus: "absentes" });
+    } finally {
+      process.env.IA_SIMULEE = garde.s;
+      if (garde.a === undefined) delete process.env.ANTHROPIC_API_KEY; else process.env.ANTHROPIC_API_KEY = garde.a;
+      if (garde.o === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = garde.o;
+    }
+    expect(await journal(laurent)).toHaveLength(0);
   });
 
   it("images : vingt par jour, chaque image d'une création comptant ; trente euros par mois pour toute l'application", async () => {

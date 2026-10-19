@@ -17,6 +17,9 @@ import { MODELES, MODELE_DES_AIDES, MODELE_DES_IMAGES, coutDe, coutDesImages, ty
  *   IA_SIMULEE=1        la réponse simulée
  *   IA_SIMULEE=echec    une réponse inutilisable
  *   IA_SIMULEE=delai    aucune réponse dans le délai
+ *   IA_SIMULEE=sans-cle les clés des fournisseurs absentes, comme sur un site où on ne les a pas mises
+ * Un parcours change le mode du serveur d'essai le temps d'un test, par `/ia/simulation`
+ * (`reglerLaSimulation`), qui n'existe que si `IA_SIMULEE` est posée.
  */
 
 export type ResultatIa<S> =
@@ -27,13 +30,34 @@ export type Demandeur = { id: string; reglagesIa: ReglagesIa };
 
 const refus = <S>(r: RefusIa): ResultatIa<S> => ({ ok: false, refus: r, message: messageDuRefus(r) });
 
+export type ModeSimule = "reponse" | "echec" | "delai" | "sans-cle";
+const MODES: Record<string, ModeSimule> = { "1": "reponse", echec: "echec", delai: "delai", "sans-cle": "sans-cle" };
+const reglage = globalThis as { __iaSimulee?: ModeSimule };
+
 /** Le mode simulé est-il demandé ? Une valeur inconnue est une erreur : mieux vaut un essai qui tombe qu'un appel payé. */
-export function simulation(): "reponse" | "echec" | "delai" | null {
+export function simulation(): ModeSimule | null {
   const v = process.env.IA_SIMULEE;
   if (!v) return null;
-  if (v === "1") return "reponse";
-  if (v === "echec" || v === "delai") return v;
+  if (reglage.__iaSimulee) return reglage.__iaSimulee;
+  if (MODES[v]) return MODES[v];
   throw new Error(`IA_SIMULEE inconnue : ${v}`);
+}
+
+/** Le mode d'un serveur d'essai, le temps d'un parcours ; null le rend à `IA_SIMULEE`. Sans `IA_SIMULEE`, rien ne change. */
+export function reglerLaSimulation(mode: ModeSimule | null): boolean {
+  if (!process.env.IA_SIMULEE) return false;
+  reglage.__iaSimulee = mode ?? undefined;
+  return true;
+}
+
+/**
+ * Les clés du fournisseur sont-elles posées ? Sans elles, rien ne part et rien ne compte dans les
+ * plafonds : « Les aides IA ne sont pas installées sur ce site » (lot 9 de l'étape 8).
+ */
+function clePosee(fournisseur: "anthropic" | "openai"): boolean {
+  const simulee = simulation();
+  if (simulee) return simulee !== "sans-cle";
+  return Boolean(process.env[fournisseur === "anthropic" ? "ANTHROPIC_API_KEY" : "OPENAI_API_KEY"]);
 }
 
 const attendre = (ms: number, signal: AbortSignal) =>
@@ -50,7 +74,7 @@ type Brut = { json: unknown; jetonsEntree: number; jetonsSortie: number; fournis
 async function obtenir<E, S>(def: DefinitionAide<E, S>, entree: E, modele: IdModele, signal: AbortSignal): Promise<Brut> {
   const simulee = simulation();
   if (simulee === "reponse") return { json: def.simuler(entree), jetonsEntree: 0, jetonsSortie: 0, fournisseur: "simule" };
-  if (simulee === "echec") return { json: null, jetonsEntree: 0, jetonsSortie: 0, fournisseur: "simule" };
+  if (simulee === "echec" || simulee === "sans-cle") return { json: null, jetonsEntree: 0, jetonsSortie: 0, fournisseur: "simule" };
   if (simulee === "delai") {
     await attendre(10 * 60_000, signal);
     throw new Error("inatteignable");
@@ -72,8 +96,9 @@ export async function demanderUneAide<E, S>(
   options: { delaiMs?: number } = {},
 ): Promise<ResultatIa<S>> {
   if (!adulte.reglagesIa.proposer) return refus("eteint");
-  const base = clientService();
   const modele = MODELE_DES_AIDES[def.aide];
+  if (!clePosee(MODELES[modele].fournisseur)) return refus("absentes");
+  const base = clientService();
   const delaiMs = options.delaiMs ?? PLAFONDS.secondes * 1000;
 
   const { data: debut, error } = await base.rpc("commencer_appel_ia", {
@@ -150,6 +175,7 @@ const decoder = (b64: string) => new Uint8Array(Buffer.from(b64, "base64"));
  */
 export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImages, options: { delaiMs?: number } = {}): Promise<ResultatImages> {
   if (!adulte.reglagesIa.proposer) return refusImage("eteint");
+  if (!clePosee("openai")) return refusImage("absentes");
   const base = clientService();
   const nombre = demande.nombre ?? adulte.reglagesIa.imagesParCreation;
   const qualite = qualiteDeLImage(adulte.reglagesIa.qualite, demande.usage);
@@ -176,7 +202,7 @@ export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImag
       images = deux.slice(0, nombre).map(decoder);
     } else if (simulee === "delai") {
       await attendre(10 * 60_000, arret.signal);
-    } else if (simulee !== "echec") {
+    } else if (!simulee) {
       const r = await creerDesImages({
         prompt: demande.prompt, taille: TAILLES_DES_IMAGES[demande.usage], qualite, nombre, transparente: demande.transparente === true, references: demande.references, signal: arret.signal,
       });

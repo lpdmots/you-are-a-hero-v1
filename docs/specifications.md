@@ -6983,6 +6983,18 @@ acceptées :
   et du mois sont inchangés ; les aides de texte gardent une demande à la fois (F13).
 Les cartes des éléments qui attendent portent le signe d'attente, y compris après un rechargement.
 
+**Décidé par le porteur le 19 octobre 2026, en essayant l'étape 8 en ligne :** le portrait d'un
+personnage et l'image de référence d'un objet suivent le repérage. La demande part, l'adulte peut
+refermer le panneau de la carte ou quitter la page ; à l'arrivée, la première image devient la
+référence de la carte (« Portrait de « Lou » posé. », avec « Annuler »), sauf si l'adulte en a choisi
+une autre entre-temps ; avec « Images par création » sur deux, la seconde attend dans le panneau
+(« Une autre proposition »), jusqu'à « Mettre celle-ci à la place » ou « Laisser ». Avant, les images
+créées se perdaient quand on refermait le panneau sans en garder une. Pendant la création : « Vous
+pouvez continuer : le portrait se posera de lui-même. » Corrigé le même jour : « Garder » une image de
+scène, panneau ouvert, la posait deux fois en ligne (la pose d'office repartait avant que la page
+sache la demande fermée) ; une proposition se réserve désormais avant de se poser, et ne se pose
+qu'une fois.
+
 **Décidé par le porteur le 10 octobre 2026, après l'essai de l'étape 1 :**
 l'image de repérage se choisit dès la création d'un projet et dès celle d'un
 chapitre, et ce choix reste facultatif : on peut créer sans image, le
@@ -7398,13 +7410,14 @@ environ quatre fois plus.
   ce texte » la met dans la fiche visuelle, avec « Annuler ».
 - **F10-AC41 — Portrait de référence :** étant donné « Images par création » sur
   deux et la fiche de Lou écrite, lorsque l'adulte demande « Créer son portrait »,
-  alors deux images sont proposées, comptées deux dans le plafond du jour ; celle
-  qu'il garde devient le portrait de la carte, parmi les images du projet, et se
-  télécharge sous « Portrait de Lou.jpg » ; l'autre n'est pas conservée, ni celles
-  d'un panneau refermé sans choisir.
+  alors deux images sont créées, comptées deux dans le plafond du jour ; la première
+  devient le portrait de la carte à son arrivée, parmi les images du projet, même
+  panneau refermé, et se télécharge sous « Portrait de Lou.jpg » ; la seconde attend
+  dans le panneau, se met à la place ou se laisse, et n'est pas conservée une fois
+  laissée (révisé le 19 octobre 2026).
 - **F10-AC42 — Objet de l'histoire :** étant donné « la lanterne de cuivre »,
   lorsque l'adulte ouvre l'objet, alors son panneau porte son nom, sa description,
-  sa fiche visuelle et son image de référence, créée et gardée comme un portrait.
+  sa fiche visuelle et son image de référence, créée et posée comme un portrait.
 - **F10-AC43 — `/personnage` :** étant donné Maël, autre nom « le passeur »,
   lorsque l'adulte ou un élève tape « /personnage » dans une scène, alors la liste
   propose « Maël » et, en retrait, « le passeur » ; le nom retenu s'écrit comme du

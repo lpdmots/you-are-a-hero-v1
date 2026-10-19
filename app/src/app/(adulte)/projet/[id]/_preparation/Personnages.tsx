@@ -17,12 +17,15 @@ import { nomDeFichier } from "@/domaine/illustration";
 import { autresNomsEnTexte, DESCRIPTION_COURTE_MAX, DESCRIPTION_MAX, FICHE_MAX, lireAutresNoms, NOM_MAX, type Personnage } from "@/domaine/personnages";
 import { AUTRES_PERSONNAGES, HEROS_SANS_NOM } from "@/domaine/preparation";
 import type { PersonnageConnu } from "@/serveur/ia/aides/images";
-import type { ReponseFiche, ReponseReferences, ReponseReperage, SorteDeCarte } from "@/serveur/personnages";
+import type { DemandeDImage } from "@/serveur/images-creees";
+import type { ReponseFiche, ReponseReperage, SorteDeCarte } from "@/serveur/personnages";
+import { suivreDesImages } from "@/composants/ImagesALAjout";
+import { demandeDImage, fermerUneDemande, suivreLaDemande } from "../../actions-images-creees";
 
 /** Sans fiche visuelle, l'image de référence ne se crée pas (la même phrase que le serveur). */
 const SANS_FICHE = "Décrivez d’abord son apparence.";
 import {
-  ajouterDesPersonnages, laisserLesPropositions, poserLaReference, reglerPersonnage, remettreDesPersonnages, supprimerDesPersonnages, type CarteSaisie, type CarteSupprimee,
+  ajouterDesPersonnages, poserLaReference, reglerPersonnage, remettreDesPersonnages, supprimerDesPersonnages, type CarteSaisie, type CarteSupprimee,
 } from "../../actions-personnages";
 import styles from "./preparation.module.css";
 
@@ -741,23 +744,51 @@ export function PourLesImages({
   const [ficheProposee, setFicheProposee] = useState<string | null>(null);
   const [attenteFiche, setAttenteFiche] = useState(false);
   const [erreurFiche, setErreurFiche] = useState<string | null>(null);
-  const [propositions, setPropositions] = useState<string[] | null>(null);
-  const [attenteImages, setAttenteImages] = useState(false);
+  const routeur = useRouter();
+  // La demande d'image de la carte (19 octobre 2026) : en route, elle se suit ; arrivée, la première
+  // image est déjà posée par le serveur, la seconde attend ici, même si l'on a quitté le panneau
+  const [demande, setDemande] = useState<DemandeDImage | null>(null);
   const [erreurImages, setErreurImages] = useState<string | null>(null);
   const [reste, setReste] = useState<string | null>(null);
   const [garde, setGarde] = useState<string | null>(null);
-  const propositionsEnCours = useRef<string[] | null>(null);
-  useEffect(() => {
-    propositionsEnCours.current = propositions;
-  }, [propositions]);
+  const enRoute = demande?.etat === "en_route";
+  const propositions = demande?.etat === "prete" && demande.propositions.length ? demande.propositions : null;
+  const referenceAvant = useRef(referenceId);
 
-  // Le panneau refermé sans choisir : les images créées ne sont pas conservées (F10.1)
-  useEffect(
-    () => () => {
-      if (propositionsEnCours.current?.length) void laisserLesPropositions(projetId, propositionsEnCours.current);
-    },
-    [projetId],
-  );
+  // À l'ouverture : une image en route ou une seconde proposition qui attend
+  useEffect(() => {
+    let vivant = true;
+    void demandeDImage(sorte, id).then((d) => vivant && setDemande(d)).catch(() => {});
+    return () => {
+      vivant = false;
+    };
+  }, [sorte, id]);
+  // En route : la demande se suit ; arrivée, la page se relit pour montrer la référence posée
+  useEffect(() => {
+    if (!enRoute || !demande) return;
+    let vivant = true;
+    const minuterie = setInterval(() => {
+      void suivreLaDemande(demande.id)
+        .then((d) => {
+          if (!vivant || !d || d.etat === "en_route") return;
+          setDemande(d);
+          if (d.etat === "echec") return setErreurImages(d.message ?? MESSAGES_IA.pasDImage);
+          routeur.refresh();
+          const avant = referenceAvant.current;
+          if (d.message) dire({ texte: d.message });
+          else
+            dire({
+              texte: sorte === "personnage" ? `Portrait de « ${nom} » posé.` : `Image de « ${nom} » posée.`,
+              annuler: () => void poserLaReference(sorte, id, avant).then(() => routeur.refresh()),
+            });
+        })
+        .catch(() => {});
+    }, 2500);
+    return () => {
+      vivant = false;
+      clearInterval(minuterie);
+    };
+  }, [enRoute, demande, routeur, dire, sorte, id, nom]);
 
   const creerLibelle = sorte === "personnage" ? (referenceId ? "Créer un autre portrait" : "Créer son portrait") : referenceId ? "Créer une autre image" : "Créer son image";
 
@@ -772,20 +803,21 @@ export function PourLesImages({
   };
 
   const creer = async () => {
-    if (propositions?.length) void laisserLesPropositions(projetId, propositions);
-    setPropositions(null);
-    setAttenteImages(true);
+    if (demande?.etat === "prete") await fermerUneDemande(demande.id);
+    setDemande(null);
     setErreurImages(null);
     await avantDeDemander();
-    const r = await demanderAuxPersonnages<ReponseReferences>({ demande: "images", sorte, id }, true);
-    setAttenteImages(false);
+    const r = await demanderAuxPersonnages<{ ok: true; demande: string } | { ok: false; message: string }>({ demande: "images", sorte, id }, true);
     if (!r.ok) return setErreurImages(r.message);
-    setPropositions(r.propositions);
-    setReste(r.reste);
+    referenceAvant.current = referenceId;
+    suivreDesImages([id]);
+    setDemande({ id: r.demande, cible: sorte, cibleId: id, etat: "en_route", propositions: [], imagePosee: null, message: null, apresBloc: null, cadrage: null, detouree: false, alt: "" });
+    setReste(null);
   };
 
+  /** « Mettre celle-ci à la place » : la seconde proposition devient la référence, la demande se ferme */
   const garder = async (proposition: string) => {
-    if (!propositions) return;
+    if (!demande) return;
     setGarde(proposition);
     setErreurImages(null);
     const echec = () => {
@@ -801,17 +833,24 @@ export function PourLesImages({
       const depot = await deposer(projetId, reduite);
       if (!depot.ok) return echec();
       const avant = referenceId;
-      const fait = await poserLaReference(sorte, id, depot.id, propositions);
+      const fait = await poserLaReference(sorte, id, depot.id, [proposition]);
       if (!fait.ok) return echec();
-      setPropositions(null);
+      await fermerUneDemande(demande.id);
+      setDemande(null);
       setGarde(null);
+      routeur.refresh();
       dire({
         texte: sorte === "personnage" ? `Portrait de « ${nom} » gardé.` : `Image de « ${nom} » gardée.`,
-        annuler: () => void poserLaReference(sorte, id, avant),
+        annuler: () => void poserLaReference(sorte, id, avant).then(() => routeur.refresh()),
       });
     } catch {
       echec();
     }
+  };
+  const laisser = async () => {
+    if (!demande) return;
+    await fermerUneDemande(demande.id);
+    setDemande(null);
   };
 
   return (
@@ -888,7 +927,7 @@ export function PourLesImages({
         <p className={styles.reference__titre}>{sorte === "personnage" ? "Son portrait" : "Son image"}</p>
         {note ? <p className={styles.reference__aide}>{note}</p> : null}
         <div className={styles.reference__gardee}>
-          {attenteImages ? (
+          {enRoute ? (
             <span className={`${styles.dessine__cadre}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`} role="status" aria-label={sorte === "personnage" ? "L’IA dessine le portrait" : "L’IA dessine l’image"}>
               <Icone nom="ia" />
             </span>
@@ -905,17 +944,17 @@ export function PourLesImages({
           )}
           <span className={styles.reference__gestes}>
             {proposer ? (
-              attenteImages ? (
+              enRoute ? (
                 <span className={styles.reference__aide}>
                   L’IA dessine…
                   <br />
-                  Une demi-minute environ.
+                  Vous pouvez continuer : le portrait se posera de lui-même.
                 </span>
               ) : (
                 <>
                   <button type="button" className="btn btn--ia" onClick={() => void creer()} disabled={garde !== null || !fiche.trim()}>
                     <Icone nom="ia" />
-                    {propositions ? "En créer d’autres" : creerLibelle}
+                    {creerLibelle}
                   </button>
                   {!fiche.trim() ? <span className={styles.reference__aide}>{SANS_FICHE}</span> : reste ? <span className={styles.reference__aide}>{reste}</span> : null}
                 </>
@@ -936,34 +975,26 @@ export function PourLesImages({
           <div className={`ia-propose ${styles.propositions}`} role="group" aria-labelledby={`${ficheId}-i`}>
             <p className="ia-propose__tete" id={`${ficheId}-i`}>
               <Icone nom="ia" />
-              {propositions.length > 1 ? "Deux propositions" : "Proposition"} <span>· {propositions.length > 1 ? "gardez celle qui convient" : "gardez-la ou laissez-la"}</span>
+              Une autre proposition
             </p>
             <ul className={styles.propositions__liste}>
               {propositions.map((pr, i) => (
                 <li key={pr}>
-                  <Agrandissable src={`/images/proposition/${projetId}/${pr}`} nom={`Proposition ${i + 1}`} fichier={nomDeFichier(`Proposition ${i + 1},`, nom)}>
+                  <Agrandissable src={`/images/proposition/${projetId}/${pr}`} nom={`Proposition ${i + 2}`} fichier={nomDeFichier(`Proposition ${i + 2},`, nom)}>
                     <span className={`${styles.portrait} ${styles.portrait_grand}${sorte === "objet" ? ` ${styles.portrait_carre}` : ""}`}>
                       {/* eslint-disable-next-line @next/next/no-img-element -- image créée, en attente, servie par l'application */}
-                      <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 1}`} draggable={false} />
+                      <img src={`/images/proposition/${projetId}/${pr}`} alt={`Proposition ${i + 2}`} draggable={false} />
                     </span>
                   </Agrandissable>
                   <button type="button" className="btn btn--petit" disabled={garde !== null} aria-busy={garde === pr || undefined} onClick={() => void garder(pr)}>
                     <Icone nom="coche" />
-                    {propositions.length > 1 ? "Garder celle-ci" : "Garder"}
+                    Mettre celle-ci à la place
                   </button>
                 </li>
               ))}
             </ul>
             <span className="ia-propose__gestes">
-              <button
-                type="button"
-                className="btn btn--petit btn--discret"
-                disabled={garde !== null}
-                onClick={() => {
-                  void laisserLesPropositions(projetId, propositions);
-                  setPropositions(null);
-                }}
-              >
+              <button type="button" className="btn btn--petit btn--discret" disabled={garde !== null} onClick={() => void laisser()}>
                 Laisser
               </button>
             </span>

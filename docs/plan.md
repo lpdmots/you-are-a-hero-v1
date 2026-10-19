@@ -2045,7 +2045,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   entretien court, puis la construction après sa validation. Construction en
   local, un commit par lot ; rien n'est poussé sur `main` ni appliqué à la
   vraie base sans sa demande. Budget d'essai V17 : 100 € d'appels pour toute
-  l'étape, essais de qualité compris, le porteur prévenu avant la moitié ;
+  l'étape, ramené à 10 € par le porteur le 19 octobre 2026, essais de qualité compris, le
+  porteur prévenu avant la moitié ;
   aucun autre service payant. Les clés d'API sont fournies par le porteur dans
   `.env.local`, jamais lues ni affichées.
 - **Arbitré en entretien les 16 et 17 octobre 2026,** réponse par réponse
@@ -2078,7 +2079,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **Jeu d'essai V17 :** textes d'élèves inventés par Claude, de niveau CE2 à
   CM2, avec des fautes typiques relues par le porteur, pour construire et
   calibrer ; idées de choix, consignes et préparation tirées d'un ancien projet
-  du porteur ; jugement final sur des textes de sa classe de cette année.
+  du porteur ; jugement final sur des textes de sa classe de cette année, remplacés
+  le 19 octobre 2026, à sa demande, par une classe fictive inventée par Claude (lot 9).
 - **Validé dans son ensemble par le porteur le 17 octobre 2026** (« ok je suis
   d'accord »), avec `/personnage` en texte ordinaire et l'idée des éléments
   liés laissée de côté.
@@ -2122,7 +2124,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      chapitres ajoutés par l'IA » (allumé par défaut) dans « Mon compte », et sa
      mention « ✦ Image créée à l'ajout · Régler » dans la carte et le panneau.
   9. **Essai de bout en bout** — parcours, captures, mode d'emploi dans
-     `app/README.md`, jugement du porteur sur des textes de sa classe.
+     `app/README.md`, jugement final sur des textes d'élèves fictifs (décidé le
+     19 octobre 2026, à la place des textes de sa classe).
 - **Construction, en local, lot par lot :**
   - **Lot 1 — socle et essai de qualité : construit et terminé le 17 octobre
     2026.** Le porteur, sans le temps de tout juger, trouve les résultats
@@ -2968,9 +2971,78 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       plus les modifier. Le `git push` de `main`, refusé à Claude par le contrôle des permissions, est
       lancé par lui le même jour : en ligne jusqu'à `837bb84` ; les aides demandent `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` dans
       l'environnement de Vercel, qu'il y met lui-même.
-- **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
-  consignes de sa classe, et l'application reste entièrement utilisable sans
-  elles.
+  - **Lot 9 — essai de bout en bout : construit le 19 octobre 2026,** en local, sur instruction
+    du porteur ; une migration à la reprise du même jour (`portraits_en_route`, base locale
+    seulement). Décidé par lui au début du lot : le jugement final ne se fait
+    pas sur des textes de sa classe, mais sur des textes d'élèves fictifs que Claude invente
+    (« débrouille-toi »), et le budget de l'étape passe de 100 € à 10 €,
+    prévenu avant 5 €.
+    - **Parcours de bout en bout** (`tests/parcours/aides-de-bout-en-bout.spec.ts`, réponse
+      simulée) : avec les aides, de la Préparation au prompt de couverture (idée retenue et
+      texte rédigé, chapitre proposé et son image d'office, consigne formulée, Alice qui écrit
+      et note son idée d'image, correction au degré 1, reprise avec des pistes, titre, idée de
+      choix ajoutée, image de la scène d'après l'idée d'Alice) ; sans les aides, éteintes dans
+      « Mon compte », le même trajet à la main, sans un signe de l'IA ni une ligne au journal ;
+      fournisseur en panne, puis clés absentes : la phrase, rien ne change, la scène s'écrit.
+    - **Clés absentes, signalé au début du lot et construit :** sans la clé du fournisseur,
+      une aide répond « Les aides IA ne sont pas installées sur ce site. Tout le reste
+      fonctionne. » avant tout appel, sans rien noter au journal ni compter dans les plafonds
+      (`clePosee` dans `serveur/ia/demander.ts`, refus `absentes`). Avant, chaque ✦ échouait
+      en « L'aide n'a pas répondu » et comptait dans le plafond du jour. Pour les parcours,
+      `/ia/simulation` change le mode simulé du serveur d'essai le temps d'un test (`echec`,
+      `sans-cle`) ; l'adresse n'existe que si `IA_SIMULEE` est posée, donc jamais chez Vercel.
+    - **Captures :** `npm run captures -- etape8` refait les dix séries (lots 1 à 9, 801 à
+      960), deux scripts accordés aux écrans repris depuis (résumé proposé, page de jugement,
+      qui ne note plus rien : noter écrivait dans `essais-ia/jugements.json`, les notes du
+      porteur). Relues à 1366 et à 390 : aucune erreur, image cassée ni texte anglais ; les
+      écrans perfectibles sont listés plus bas.
+    - **Jugement final (V17), sur une classe fictive :** « La ville aux horloges arrêtées »
+      (`scripts/essai-ia/classe.ts`), histoire, personnages et sept textes d'élèves neufs, du
+      CE2 au CM2, rien de commun avec le jeu sur lequel les consignes ont été réglées ;
+      25 cas, chacun chez le seul modèle retenu (`npm run ia:essai -- --jeu classe`), aucun
+      échec, 0,20 dollar. Analyse donnée au porteur, en bref : la correction tient ses degrés
+      (le degré 1 ne touche ni à la ponctuation ni aux répétitions, un bon texte de CM2 ne
+      reçoit qu'« qu'Inès », le degré 3 ponctue le dialogue et garde « Inès pense qu'il
+      ment ») ; les idées de choix respectent les contraintes cachées (pas de code connu, Tic
+      absent) et visent des scènes existantes à bon escient ; questions, idées, parties,
+      chapitres et repérage n'inventent rien contre la préparation. Défauts vus : une fiche
+      visuelle ajoute un collier à clochette au chat, que ni la description ni l'univers ne
+      donnent mot pour mot (la consigne l'interdit déjà) ; une consigne de CE2 commence par
+      « Tu es sur la place » puis parle d'Inès ; une piste écrit « ce que Inès » ; le degré 4
+      enrichit peu ; le texte écrit par « ✦ Écrire » est d'un niveau au-dessus d'un CM2.
+      Dépense de l'étape, environ 1,8 dollar (1,55 €) sur 10 €.
+    - **Critères fermés :** la qualité réelle attendue des lots 2 à 8 (F13-AC05, AC17, AC18,
+      AC20, AC21, les idées de choix, la Préparation, les parties, les chapitres, le repérage
+      et les fiches), sur la classe fictive, au lieu des textes de la classe du porteur ; F13
+      cadre commun pour les clés absentes (test contre la base `aides-ia.test.ts`, parcours).
+    - **Repris le 19 octobre 2026, sur ses retours (« ok » pour les écrans perfectibles) :**
+      - quatre écrans relevés sur les captures : en 390 px, le titre de la scène plus petit et
+        fini par des points de suspension, les onglets et leur « i » sur une ligne, les deux
+        pastilles de l'IA sur la suivante ; la colonne de droite de la copie qui suit la place
+        restant dans la fenêtre (`useColonneCollee`), si bien que le pied du panneau « Idées de
+        choix » reste en vue ; sur écran large, le message en bas de l'écran, où il ne couvre plus
+        le titre du projet ni la carte « Chapitre proposé » (au téléphone, il reste en haut) ;
+      - **doublon :** « Garder » une image de scène, panneau ouvert, la posait deux fois en ligne.
+        Reproduit en local avec un serveur ralenti et la proposition servie par le cache du
+        navigateur : après « Garder », la page croyait encore la demande prête, la pose d'office
+        repartait et reprenait l'image dans le cache. Une proposition se réserve maintenant au
+        serveur avant de se poser (`reserverLaProposition`, une seule voie l'emporte), et la page
+        oublie la demande dès qu'elle change ;
+      - **portrait posé d'office, demandé par lui :** le portrait d'un personnage et l'image de
+        référence d'un objet suivent le repérage d'un chapitre (F10.2, F10-AC41 révisé) : la
+        demande part, la première image devient la référence à son arrivée, même panneau refermé,
+        la seconde attend dans le panneau. Migration `20261019100000_portraits_en_route.sql`, base
+        locale seulement : `demandes_d_images.cible` accepte `personnage` et `objet`.
+    - **Écran perfectible laissé :** en 390 px, l'en-tête du projet serré à côté de « Réglages »,
+      antérieur à l'étape 8.
+    - **Terminé le 19 octobre 2026 :** le porteur juge les aides utilisables telles quelles sur
+      l'analyse de la classe fictive (« oui c'est bon »), sans reprise de la consigne de la fiche
+      visuelle, clôt le lot et demande sa mise en ligne.
+- **Terminée quand :** le porteur a jugé les aides, sur l'analyse d'une classe fictive
+  (décidé le 19 octobre 2026, à la place des textes de sa classe), et l'application reste
+  entièrement utilisable sans elles.
+- **Terminée le 19 octobre 2026,** sur le jugement du porteur ; les parcours sans les aides et
+  en panne disent que l'application reste entièrement utilisable sans elles.
 
 ### Étape 9 — Ouverture à d'autres enseignants
 

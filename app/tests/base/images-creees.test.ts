@@ -6,7 +6,7 @@ import { derniereCreationSimulee } from "@/serveur/ia/demander";
 import { SCENE_1 } from "@/serveur/ia/images-simulees";
 import { SEAU } from "@/serveur/images";
 import {
-  demandeDe, demanderLeReperage, demanderLesImagesALAjout, demanderLImageDeScene, fermerLaDemande, imagesEnRoute, ouvrirLImageDeScene, promptDeLaCouverture, promptDeLImageDeScene,
+  demandeDe, demanderLeReperage, demanderLesImagesALAjout, demanderLImageDeScene, fermerLaDemande, imagesEnRoute, noterLaPropositionPosee, rendreLaProposition, reserverLaProposition, ouvrirLImageDeScene, promptDeLaCouverture, promptDeLImageDeScene,
   proposerLaCouverture, proposerLaDescription, type Lancee,
 } from "@/serveur/images-creees";
 import {
@@ -221,6 +221,26 @@ describe("L'image d'une scène (F10.2)", () => {
     expect((await ouvrirLImageDeScene(enseignantDe(laurent), s.scene))?.demande?.id).toBe(id);
     expect((await sql("select texte from scenes where id = $1", [s.scene]))[0].texte).toHaveLength(1);
     await fermerLaDemande(enseignantDe(laurent), id);
+  });
+
+  it("19 octobre 2026 — une proposition ne se pose qu'une fois : « Garder » et la pose d'office se la disputent, une seule l'emporte", async () => {
+    const s = await scene();
+    await laurent.base.from("scenes").update({ idee_image: "le passeur sur le ponton" }).eq("id", s.scene);
+    const id = await lancee(await demanderLImageDeScene(avec({ imagesParCreation: 2 }), s.scene, { cadrage: "3:2", badges: [] }));
+    const [premiere, seconde] = (await demandeEnBase(id)).propositions;
+    const prises = await Promise.all([reserverLaProposition(enseignantDe(laurent), id, premiere), reserverLaProposition(enseignantDe(laurent), id, premiere)]);
+    expect(prises.filter(Boolean)).toHaveLength(1);
+    expect((await demandeEnBase(id)).propositions).toEqual([seconde]);
+    // Le dépôt a échoué : elle revient en tête, et se réserve de nouveau
+    await rendreLaProposition(enseignantDe(laurent), id, premiere);
+    expect((await demandeEnBase(id)).propositions).toEqual([premiere, seconde]);
+    expect(await reserverLaProposition(enseignantDe(laurent), id, premiere)).toBe(true);
+    const image = randomUUID();
+    await noterLaPropositionPosee(enseignantDe(laurent), id, premiere, image);
+    expect(await demandeEnBase(id)).toMatchObject({ etat: "prete", propositions: [seconde], image_posee: image });
+    expect(await propositionsEnStockage(s.projet)).not.toContain(premiere);
+    await fermerLaDemande(enseignantDe(laurent), id);
+    expect(await demandeEnBase(id)).toMatchObject({ etat: "posee", propositions: [] });
   });
 
   it("F10-AC08 — héros absent : un badge de héros envoyé par la page est écarté, le prompt dit l'absence ; sans description, l'idée sert", async () => {

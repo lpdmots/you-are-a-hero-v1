@@ -1727,6 +1727,40 @@ F10.2.
   l'adulte. Les droits d'écriture de l'adulte sur ces deux colonnes, oubliés par `images_creees`, sont
   donnés par `idee_et_description_de_l_image` : une migration ne se modifie pas une fois écrite.
 
+### Lot 9 : essai de bout en bout (19 octobre 2026)
+
+- **Clés absentes :** `clePosee(fournisseur)` (`serveur/ia/demander.ts`) se lit avant le journal ;
+  sans la clé du fournisseur de l'aide, `demanderUneAide` et `demanderDesImages` rendent le refus
+  `absentes` (« Les aides IA ne sont pas installées sur ce site. Tout le reste fonctionne. »), sans
+  ligne au journal ni demande comptée. Avant, la clé manquante levait une erreur dans
+  `fournisseurs.ts`, notée « échec » et comptée dans le plafond du jour.
+- **Mode simulé changé pendant un parcours :** `IA_SIMULEE` reçoit aussi `sans-cle` ;
+  `reglerLaSimulation` pose un mode sur `globalThis` du serveur d'essai, que `simulation()` lit
+  d'abord, par la route `/ia/simulation` (POST `{ mode }`, `null` pour revenir à `IA_SIMULEE`). Sans
+  `IA_SIMULEE`, la route répond 404 et la fonction ne fait rien : chez Vercel, elle n'existe pas. Un
+  seul serveur `next start` sert les parcours, un seul à la fois (`workers: 1`) ; chaque test remet
+  le mode dans `afterEach`.
+- **Jugement final :** `npm run ia:essai -- --jeu classe` passe `scripts/essai-ia/classe.ts` chez le
+  seul modèle retenu de chaque aide (`MODELE_DES_AIDES`), dans `essais-ia/classe.json`, par le même
+  lanceur que l'essai V17.
+
+- **Une proposition ne se pose qu'une fois (doublon du 19 octobre 2026) :** `reserverLaProposition`
+  la retire de `demandes_d_images.propositions` par une mise à jour conditionnelle (la liste telle
+  qu'on l'a lue, `etat = 'prete'`) : de « Garder » dans le panneau et de la pose d'office, une seule
+  l'emporte ; `rendreLaProposition` la remet si le dépôt échoue ; `noterLaPropositionPosee` efface
+  son fichier et note l'image posée. `useImageDemandee` ne garde que sa dernière lecture et oublie la
+  demande dès qu'elle change. En ligne, la pose d'office relisait la proposition déjà effacée dans
+  le cache du navigateur, d'où une seconde image.
+- **Portraits en route :** `demanderLaReference` (`serveur/images-creees.ts`) ouvre une demande de
+  cible `personnage` ou `objet` (migration `portraits_en_route`), crée les images dans `after()` et
+  pose la première sur `personnages.portrait_id` ou `objets.image_id` si elle n'a pas changé
+  depuis la demande ; la seconde attend en proposition. `/ia/personnages` répond aussitôt avec la
+  demande ; le panneau la suit, `SuiviDesImages` relit la page à l'arrivée. `creerLesReferences`
+  est remplacée par `promptDeLaReference`.
+- **Colonne collée :** `useColonneCollee` (`composants/colonneCollee.ts`) règle la hauteur de
+  `cote-copie__colle` sur la place qui reste sous elle dans la fenêtre, au défilement et au
+  redimensionnement ; la feuille de style supposait la colonne déjà collée sous la barre du haut.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

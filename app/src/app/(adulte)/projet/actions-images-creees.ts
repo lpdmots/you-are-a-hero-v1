@@ -4,7 +4,7 @@ import { DESCRIPTION_IMAGE_MAX, IDEE_MAX } from "@/domaine/illustration";
 import { paragraphes } from "@/domaine/personnages";
 import { exigerEnseignant } from "@/serveur/adulte";
 import {
-  demandeDe, demandeParId, fermerLaDemande, noterLaPremierePosee, imagesEnRoute, lireDemandeDeScene, ouvrirLImageDeScene, promptDeLaCouverture, promptDeLImageDeScene, type Cible, type DemandeDeScene,
+  demandeDe, demandeParId, fermerLaDemande, noterLaPropositionPosee, rendreLaProposition, reserverLaProposition, imagesEnRoute, lireDemandeDeScene, ouvrirLImageDeScene, promptDeLaCouverture, promptDeLImageDeScene, type Cible, type DemandeDeScene,
   type DemandeDImage, type OuvertureDeLImage,
 } from "@/serveur/images-creees";
 import { estUuid } from "@/serveur/recit";
@@ -73,7 +73,7 @@ export async function promptDeCouverture(projetId: string): Promise<{ ok: true; 
 
 /** La demande d'image en route, ou prête, d'un élément (reprise du 18 octobre 2026). */
 export async function demandeDImage(cible: Cible, cibleId: string): Promise<DemandeDImage | null> {
-  if (!["projet", "partie", "chapitre", "scene"].includes(cible)) return null;
+  if (!["projet", "partie", "chapitre", "scene", "personnage", "objet"].includes(cible)) return null;
   return demandeDe(await exigerEnseignant(), cible, cibleId);
 }
 
@@ -87,9 +87,18 @@ export async function enRoute(projetId: string): Promise<string[]> {
   return imagesEnRoute(await exigerEnseignant(), projetId);
 }
 
-/** La première image d'une demande de scène est posée dans le texte par la copie. */
-export async function premiereImagePosee(demandeId: string, imageId: string): Promise<void> {
-  await noterLaPremierePosee(await exigerEnseignant(), demandeId, imageId);
+/** Une proposition réservée est posée dans le texte par la copie. */
+export async function propositionPosee(demandeId: string, proposition: string, imageId: string): Promise<void> {
+  await noterLaPropositionPosee(await exigerEnseignant(), demandeId, proposition, imageId);
+}
+
+/** Réserver une proposition avant de la poser : une seule voie l'emporte (« Garder » ou la pose d'office). */
+export async function reserverUneProposition(demandeId: string, proposition: string): Promise<boolean> {
+  return reserverLaProposition(await exigerEnseignant(), demandeId, proposition);
+}
+
+export async function rendreUneProposition(demandeId: string, proposition: string): Promise<void> {
+  await rendreLaProposition(await exigerEnseignant(), demandeId, proposition);
 }
 
 /** Garder une proposition (déjà déposée par la page) ou les laisser : la demande se ferme. */

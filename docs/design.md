@@ -2481,6 +2481,32 @@ comptant en demandes (F13) ; un message à l'arrivée de l'image d'office, jugé
 remplace le visuel) ; le résumé coupé de la carte « Ajouter un chapitre », forme du lot 6 ; l'exemple
 de légende « dessiné par Chloé » ; les états d'échec, communs aux aides (messages du lot 1).
 
+#### Lot 9 : captures relues, et ce qui reste perfectible (19 octobre 2026)
+
+Les dix séries de captures de l'étape (801 à 960, `npm run captures -- etape8`) sont relues à
+1366 et à 390 px : ni erreur, ni image cassée, ni texte anglais. Le lot 9 ajoute les écrans
+sans les aides (Préparation, plan, scène, en 390 aussi), d'où tout signe de l'IA a disparu, et
+les deux phrases d'une aide qui ne peut pas répondre, dans le message du haut :
+« L'aide n'a pas répondu. Le texte n'a pas changé. » (panne) et « Les aides IA ne sont pas
+installées sur ce site. Tout le reste fonctionne. » (clés absentes).
+
+Relevé sur les captures, puis repris le 19 octobre à sa demande (« ok ») :
+- en 390 px, le titre de la scène en taille `--t-l`, fini par des points de suspension hors saisie ;
+- en 390 px, les onglets de la copie et leur « i » sur une ligne, sans retour ; « Corriger · Degré »
+  et « Idées de choix » ensemble sur la ligne suivante, plus serrés ;
+- la colonne de droite suit la place restante dans la fenêtre : le pied « Ajouter » du panneau
+  « Idées de choix » reste en vue dès l'ouverture, sans faire défiler la page ;
+- sur écran large, le message (« … Annuler ») se lit en bas, centré ; au téléphone, il reste en haut,
+  le bas portant le pied de la copie.
+
+Laissé : en 390 px, l'en-tête du projet serré à côté de « Réglages » (antérieur à l'étape 8).
+
+Portrait d'un personnage, image d'un objet (19 octobre, demandé par le porteur) : pendant la
+création, « L'IA dessine… Vous pouvez continuer : le portrait se posera de lui-même. » ; à
+l'arrivée, le portrait prend sa place sur la carte, le message « Portrait de « Lou » posé. » avec
+« Annuler » ; la seconde image, sous « Une autre proposition », porte « Mettre celle-ci à la place »
+et « Laisser ».
+
 ### Étape 7 construite (16 octobre 2026)
 
 Ce que l'étape 7 du [plan](plan.md#étape-7--partager-et-lire-en-ligne)

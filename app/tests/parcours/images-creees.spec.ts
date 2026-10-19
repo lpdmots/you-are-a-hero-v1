@@ -134,6 +134,35 @@ test.describe("L'image d'une scène (F10.2)", () => {
     });
   });
 
+  test("19 octobre 2026 — panneau ouvert, l'image arrive, « Garder » : une seule image dans la scène, même avec un serveur lent et la proposition dans le cache du navigateur", async ({ page }) => {
+    const s = await avecPersonnages(page, { imagesParCreation: 2 });
+    // Comme en ligne : le doublon venait de la pose d'office, qui reprenait la proposition dans le cache
+    const cache = new Map<string, Buffer>();
+    await page.route("**/images/proposition/**", async (route) => {
+      const url = route.request().url();
+      if (cache.has(url)) return route.fulfill({ status: 200, contentType: "image/jpeg", body: cache.get(url)! });
+      const reponse = await route.fetch();
+      if (reponse.ok()) cache.set(url, await reponse.body());
+      await route.fulfill({ response: reponse });
+    });
+    await page.route("**/*", async (route) => {
+      const r = route.request();
+      if (r.method() === "POST" && r.headers()["next-action"]) await new Promise((f) => setTimeout(f, 700));
+      await route.fallback();
+    });
+    await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
+    await copie(page).click();
+    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await FICHE(page).getByRole("button", { name: "Créer une image" }).click();
+    await CREER(page).getByLabel("Ce que montre l’image").fill("le passeur sur le ponton");
+    await CREER(page).getByRole("button", { name: "Créer l’image" }).click();
+    await CREER(page).getByRole("button", { name: "Garder celle-ci" }).first().click();
+    await expect(copie(page).locator(".image-bloc")).toHaveCount(1);
+    await page.waitForTimeout(4000);
+    await expect(copie(page).locator(".image-bloc")).toHaveCount(1);
+    await expect.poll(async () => (await sceneEnBase(s.scene)).texte.map((b) => b.type)).toEqual(["p", "image"]);
+  });
+
   test("F10-AC07 — « Copier le prompt » : le prompt complet, style et fiches compris, dans le presse-papiers, sans appel d'image ; rien n'est inséré", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     const s = await avecPersonnages(page);

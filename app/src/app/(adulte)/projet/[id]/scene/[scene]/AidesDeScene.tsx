@@ -12,7 +12,7 @@ import type { ReponseIdees } from "@/serveur/idees-de-choix";
 import type { ServicesImage } from "@/composants/copie/contexte";
 import { demanderAuxImages, garderLaProposition } from "@/composants/imagesCreees";
 import type { DemandeDImage } from "@/serveur/images-creees";
-import { demandeDImage, fermerUneDemande, noterLImage, ouvrirLImage, premiereImagePosee, promptDeLImage, suivreLaDemande } from "../../../actions-images-creees";
+import { demandeDImage, fermerUneDemande, noterLImage, ouvrirLImage, promptDeLImage, propositionPosee, rendreUneProposition, reserverUneProposition, suivreLaDemande } from "../../../actions-images-creees";
 
 /**
  * Le ✦ du titre de scène (F05) et « ✦ Formuler » sous la consigne (F13.2), dans la page de
@@ -54,7 +54,7 @@ export function imageDeScene(projetId: string, sceneId: string, ia: boolean): Se
     suivre: (id) => suivreLaDemande(id),
     prompt: (d) => promptDeLImage(sceneId, d),
     adresse: (p) => `/images/proposition/${projetId}/${p}`,
-    garder: (p) => garderLaProposition(projetId, p, []),
+    garder: (p, demandeId) => garderReservee(projetId, demandeId, p),
     fermer: async (id) => {
       await fermerUneDemande(id);
       window.dispatchEvent(new Event("image-de-scene"));
@@ -73,18 +73,23 @@ export function useImageDemandee(sceneId: string, suivre: boolean): DemandeDImag
     if (!suivre) return;
     let vivant = true;
     let minuterie: ReturnType<typeof setTimeout> | null = null;
-    const lire = () =>
+    // Seule la dernière lecture compte : une réponse partie avant « Garder » ne ramène pas une demande fermée
+    let derniere = 0;
+    const lire = () => {
+      const numero = ++derniere;
       void demandeDImage("scene", sceneId)
         .then((d) => {
-          if (!vivant) return;
+          if (!vivant || numero !== derniere) return;
           setDemande(d);
           if (d?.etat === "en_route") minuterie = setTimeout(lire, 3000);
         })
         .catch(() => {});
+    };
     lire();
-    // Quand une demande part, se pose ou se ferme, la page la relit
+    // Quand une demande part, se pose ou se ferme, la page la relit ; l'ancienne ne vaut plus d'ici là
     const relire = () => {
       if (minuterie) clearTimeout(minuterie);
+      setDemande(null);
       lire();
     };
     window.addEventListener("image-de-scene", relire);
@@ -98,16 +103,28 @@ export function useImageDemandee(sceneId: string, suivre: boolean): DemandeDImag
 }
 
 /**
- * Pose la première image d'une demande prête : déposée comme une image importée, puis donnée à la
- * copie, qui l'écrit dans le texte ; la demande la retire de ses propositions.
+ * Garde une proposition d'une demande de scène : réservée d'abord, pour qu'elle ne se pose qu'une
+ * fois, que l'adulte la garde dans le panneau ou que la page la pose d'office ; puis déposée comme une
+ * image importée, et notée posée. Rend l'image, que la copie écrit dans le texte.
  */
+async function garderReservee(projetId: string, demandeId: string, proposition: string): Promise<{ ok: true; id: string } | { ok: false; erreur: string }> {
+  if (!(await reserverUneProposition(demandeId, proposition))) return { ok: false, erreur: DEJA_POSEE };
+  const fait = await garderLaProposition(projetId, proposition, []);
+  if (!fait.ok) {
+    await rendreUneProposition(demandeId, proposition);
+    return fait;
+  }
+  await propositionPosee(demandeId, proposition, fait.id);
+  return fait;
+}
+const DEJA_POSEE = "Cette image est déjà posée dans la scène.";
+
+/** Pose d'office la première image d'une demande prête, quand l'adulte a quitté le panneau. */
 export async function poserLaPremiere(projetId: string, demande: DemandeDImage): Promise<{ ok: true; image: string } | { ok: false }> {
   const premiere = demande.propositions[0];
   if (!premiere) return { ok: false };
-  const fait = await garderLaProposition(projetId, premiere, []);
-  if (!fait.ok) return { ok: false };
-  await premiereImagePosee(demande.id, fait.id);
-  return { ok: true, image: fait.id };
+  const fait = await garderReservee(projetId, demande.id, premiere);
+  return fait.ok ? { ok: true, image: fait.id } : { ok: false };
 }
 
 /**

@@ -135,8 +135,8 @@ export type ServicesImage = {
   prompt: (d: DemandeImage) => Promise<{ ok: true; prompt: string } | { ok: false; erreur: string }>;
   /** L'adresse d'une proposition, pour la montrer */
   adresse: (proposition: string) => string;
-  /** Garde une proposition parmi les images du projet, comme une image importée */
-  garder: (proposition: string) => Promise<{ ok: true; id: string } | { ok: false; erreur: string }>;
+  /** Garde une proposition parmi les images du projet, comme une image importée ; réservée, déposée et notée posée : une seule fois, même si la page la pose d'office en même temps */
+  garder: (proposition: string, demandeId: string) => Promise<{ ok: true; id: string } | { ok: false; erreur: string }>;
   /** Ferme la demande : ses propositions restantes s'effacent */
   fermer: (demande: string) => Promise<void>;
 };

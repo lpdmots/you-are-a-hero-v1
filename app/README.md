@@ -469,3 +469,62 @@ et « La meilleure ». Les notes s'écrivent dans `essais-ia/jugements.json`. «
 les résultats » révèle les modèles : points, coût moyen et durée, par aide et pour
 tout l'essai. La page n'existe pas chez Vercel.
 
+
+Le jugement final de l'étape (lot 9) passe un jeu neuf, une classe fictive (« La ville
+aux horloges arrêtées », `scripts/essai-ia/classe.ts`), chez le seul modèle retenu pour
+chaque aide ; les réponses vont dans `essais-ia/classe.json`, hors de Git.
+
+```bash
+npm run ia:essai -- --jeu classe --a-blanc       # ce qui serait lancé
+npm run ia:essai -- --jeu classe --plafond 2     # 25 appels, environ 0,20 dollar
+```
+
+## Essayer l'étape 8 : les aides IA
+
+L'étape 8 du plan se termine quand les aides sont jugées et que l'application reste
+entièrement utilisable sans elles. L'essai se joue d'abord en local, sur
+http://localhost:4840, avec le compte local et de vrais appels : les deux clés sont
+dans `.env.local` (`npm run env:local` les garde). Chaque demande passe au journal de
+« Mon compte » > « Aides IA », avec son coût ; une demande de texte coûte moins d'un
+centime, une image de un à cinq centimes.
+
+**1. La base locale à jour.** `npx tsx scripts/supabase.ts migration up --local`
+applique les quatorze migrations de l'étape sans rien effacer (la dernière,
+`portraits_en_route`, du lot 9) ; `npm run histoire:essai`
+charge « Les passeurs de brume » si elle n'y est pas. Un serveur local lancé avant
+l'étape garde l'ancien code : le redémarrer.
+
+**2. Le trajet, avec les aides.**
+
+| Où | Geste | Ce qui doit se voir |
+|---|---|---|
+| « Mon compte » > « Aides IA » | degré par défaut, niveaux, images | « Enregistré » ; les réglages valent pour tous les projets |
+| Préparation, une étape | ✦ des questions, des idées, « Orienter l'IA », « Rédiger d'après les idées » | une idée « à discuter », marquée ✦ ; rien ne change avant « Utiliser ce texte » |
+| Personnages | « Repérer les personnages », ✦ de la fiche, « Créer son portrait » | des cartes cochées, rien de créé avant « Ajouter 2 personnages » ; le portrait se pose de lui-même, panneau refermé compris, la seconde image attend dans le panneau |
+| Parties et chapitres | ✦ d'« Ajouter une partie », ✦ au pied d'une partie, ✦ du résumé | les propositions une à une ; ajoutée, la carte attend son image d'office |
+| Une scène | ✦ du titre, « Formuler », « Idées de choix », « Écrire » sur une scène vide | trois titres ; une consigne « Décris : » ; dix idées, trois par trois |
+| Une scène remise | « Corriger », degré, « Garder les changements », « Demander une reprise… » > « Proposer des pistes » | des marques au stylo aux degrés 1 à 3, le côte à côte aux degrés 4 et 5 ; « Annuler » rend le texte |
+| La même, côté élève | « Mon idée d'image » | aucune commande d'IA ; l'adulte retrouve l'idée en créant l'image |
+| Image d'une scène, d'un chapitre | « Créer une image », « Créer une image d'après le résumé » | on peut continuer pendant la création ; l'image se pose en quittant le panneau |
+| Livre > « Imprimer et partager » | « Le prompt de l'image de face » | la description proposée, puis le prompt copié |
+
+**3. Le même trajet, sans les aides.** Couper « Proposer les aides IA » dans « Mon
+compte » : plus un ✦ nulle part, les boutons doubles redeviennent simples, la
+consigne, la remarque et le titre s'écrivent à la main, le prompt d'une image se
+copie. Rien ne part : le journal reste vide.
+
+**4. En panne, ou sans les clés.** Sans clé, une aide répond « Les aides IA ne sont
+pas installées sur ce site. Tout le reste fonctionne. », sans rien compter dans les
+plafonds ; un fournisseur en panne, « L'aide n'a pas répondu. Le texte n'a pas
+changé. ». Dans les deux cas la scène s'écrit et s'enregistre.
+
+`npx playwright test aides-de-bout-en-bout` joue les trois trajets en raccourci, sur la
+réponse simulée ; les captures de l'étape se refont par `npm run captures -- etape8`.
+
+**5. En ligne.** Le code et les treize premières migrations y sont depuis le
+19 octobre ; le lot 9 demande la quatorzième (`npm run sauvegarder`, puis
+`npm run production:schema -- --oui`) avant son code ; les
+aides demandent `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` dans l'environnement de
+Vercel, puis un nouveau déploiement. Sans elles, l'application en ligne fonctionne ;
+tant que ce lot n'y est pas, chaque ✦ répond « L'aide n'a pas répondu » et compte dans
+le plafond du jour, puis, ce lot en ligne, il dit que les aides ne sont pas installées.
