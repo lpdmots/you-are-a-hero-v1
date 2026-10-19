@@ -2966,7 +2966,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       idée d'image repliée), vraie base sauvegardée (`sauvegardes/2026-10-19-08-26`), les treize
       migrations de l'étape (`aides_ia` à `image_detouree`) appliquées et la vérification passée — ne
       plus les modifier. Le `git push` de `main`, refusé à Claude par le contrôle des permissions, est
-      à lancer par lui ; les aides demandent `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` dans
+      lancé par lui le même jour : en ligne jusqu'à `837bb84` ; les aides demandent `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` dans
       l'environnement de Vercel, qu'il y met lui-même.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
