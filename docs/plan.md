@@ -3038,6 +3038,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     - **Terminé le 19 octobre 2026 :** le porteur juge les aides utilisables telles quelles sur
       l'analyse de la classe fictive (« oui c'est bon »), sans reprise de la consigne de la fiche
       visuelle, clôt le lot et demande sa mise en ligne.
+    - **Mis en ligne le 19 octobre 2026, à sa demande :** suite complète passée (379 parcours,
+      354 tests contre la base), vraie base sauvegardée (`sauvegardes/2026-10-19-10-53`), migration
+      `portraits_en_route` appliquée par lui (le contrôle des permissions l'a refusée à Claude) —
+      ne plus la modifier —, code poussé jusqu'à `96cbd07`, vérification de la production passée.
 - **Terminée quand :** le porteur a jugé les aides, sur l'analyse d'une classe fictive
   (décidé le 19 octobre 2026, à la place des textes de sa classe), et l'application reste
   entièrement utilisable sans elles.
