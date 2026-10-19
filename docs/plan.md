@@ -2960,6 +2960,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       côté de « Remplacer l'image » dans les réglages d'une image en bloc, et le signe de
       téléchargement en haut à droite de toute image agrandie. Dépense de l'étape, environ 1,58 dollar
       (1,4 €) sur 100 €.
+    - **Mise en ligne de l'étape 8, demandée par le porteur le 19 octobre 2026, à la clôture du lot 8,
+      pour l'essayer :** suite complète passée (374 parcours ; dix tests accordés aux écrans du lot :
+      « Réglages » exact, le bouton des réglages du projet portant aussi ce mot, résumés de lieux,
+      idée d'image repliée), vraie base sauvegardée (`sauvegardes/2026-10-19-08-26`), les treize
+      migrations de l'étape (`aides_ia` à `image_detouree`) appliquées et la vérification passée — ne
+      plus les modifier. Le `git push` de `main`, refusé à Claude par le contrôle des permissions, est
+      à lancer par lui ; les aides demandent `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` dans
+      l'environnement de Vercel, qu'il y met lui-même.
 - **Terminée quand :** le porteur a jugé chaque aide sur des textes et des
   consignes de sa classe, et l'application reste entièrement utilisable sans
   elles.
