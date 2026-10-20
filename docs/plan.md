@@ -3172,7 +3172,15 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   8. **Sauvegarde nocturne vers S3** par GitHub Actions, qui dispose de
      Docker et reprend `npm run sauvegarder`, et restauration depuis S3
      (F14-AC30, AC31). Le cron de Vercel est écarté : ses fonctions n'ont ni
-     l'outil de copie de la base ni Docker.
+     l'outil de copie de la base ni Docker. **Construit le 20 octobre 2026,** sans
+     migration : `npm run sauvegarde:nuit` (la base en trois fichiers SQL et
+     les images du stockage, dans un dossier), le workflow
+     `.github/workflows/sauvegarde-nocturne.yml` (deux déclenchements, à 1 h
+     et 2 h en temps universel, dont seul celui de 3 h à Paris sauvegarde ;
+     dépôt par l'outil d'AWS, avec un accès qui ne fait que déposer),
+     `npm run restaurer:s3` (la base par `npm run restaurer`, puis les images
+     remontées à leurs chemins) ; réglages chez AWS et GitHub dictés dans
+     `app/README.md`, « Étape 9, lot 8 ». Il tourne une fois le code poussé.
   9. **Pages publiques et textes juridiques,** « Écrit avec Il était une
      classe », mention React Flow, support (F14-AC32 à AC36), conçus avec
      impeccable et critiqués en deux lectures.

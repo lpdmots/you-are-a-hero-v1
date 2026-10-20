@@ -22,6 +22,8 @@
     "cles": "tsx scripts/cles.ts",
     "sauvegarder": "tsx scripts/sauvegarder.ts",
     "restaurer": "tsx scripts/restaurer.ts",
+    "sauvegarde:nuit": "tsx scripts/sauvegarde-nocturne.ts",
+    "restaurer:s3": "tsx scripts/restaurer-s3.ts",
     "env:local": "tsx scripts/env-local.ts",
     "verifier": "npm run types && npm run lint && npm run test",
     "compte:local": "tsx scripts/compte-local.ts",

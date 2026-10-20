@@ -1,0 +1,93 @@
+# Étape 9, lot 8 : la sauvegarde de la nuit (F14, « Sauvegarde automatique », F14-AC30).
+#
+# Chaque nuit à 3 h, heure de Paris (pendant la fermeture nocturne des classes), la base et les
+# images partent dans le seau S3 du porteur, à Paris. Les PDF ne sont pas copiés : ils se
+# refont depuis le livre. Le seau efface lui-même ce qui a plus de quatre-vingt-dix jours (règle
+# de durée réglée chez AWS) ; l'accès qui dépose ici ne peut ni lire ni effacer. Une nuit qui
+# échoue envoie le courriel d'échec de GitHub au porteur.
+#
+# GitHub compte les heures en temps universel : deux déclenchements, à 1 h et à 2 h, et seul
+# celui qui tombe à 3 h à Paris sauvegarde (heure d'été, puis d'hiver).
+
+name: Sauvegarde de la nuit
+
+on:
+  schedule:
+    - cron: "0 1 * * *"
+    - cron: "0 2 * * *"
+  # À la main, depuis l'onglet « Actions » : pour l'essayer, ou rattraper une nuit
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sauvegarde-nocturne
+  cancel-in-progress: false
+
+jobs:
+  sauvegarder:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - name: Est-ce 3 h à Paris ?
+        id: heure
+        working-directory: .
+        run: |
+          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=Europe/Paris date +%H)" != "03" ]; then
+            echo "passer=oui" >> "$GITHUB_OUTPUT"
+            echo "Pas encore 3 h à Paris : rien à faire à ce déclenchement."
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.heure.outputs.passer != 'oui'
+
+      - uses: actions/setup-node@v4
+        if: steps.heure.outputs.passer != 'oui'
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+
+      - name: Dépendances
+        if: steps.heure.outputs.passer != 'oui'
+        run: npm ci
+
+      - name: Les clés de la vraie base, le temps de la sauvegarde
+        if: steps.heure.outputs.passer != 'oui'
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_CLE_SECRETE: ${{ secrets.SUPABASE_CLE_SECRETE }}
+          SUPABASE_ADRESSE_BASE: ${{ secrets.SUPABASE_ADRESSE_BASE }}
+          SUPABASE_MOT_DE_PASSE_BASE: ${{ secrets.SUPABASE_MOT_DE_PASSE_BASE }}
+        run: |
+          umask 077
+          {
+            echo "NEXT_PUBLIC_SUPABASE_URL=$SUPABASE_URL"
+            echo "SUPABASE_CLE_SECRETE=$SUPABASE_CLE_SECRETE"
+            echo "SUPABASE_ADRESSE_BASE=$SUPABASE_ADRESSE_BASE"
+            echo "SUPABASE_MOT_DE_PASSE_BASE=$SUPABASE_MOT_DE_PASSE_BASE"
+          } > production.env
+
+      - name: La base et les images
+        if: steps.heure.outputs.passer != 'oui'
+        run: npm run sauvegarde:nuit -- --dossier "$RUNNER_TEMP/sauvegarde"
+
+      - name: Vers le seau S3, à Paris
+        if: steps.heure.outputs.passer != 'oui'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: eu-west-3
+          SEAU_S3: ${{ secrets.SEAU_S3 }}
+        run: |
+          jour="$(TZ=Europe/Paris date +%Y-%m-%d)"
+          aws s3 cp "$RUNNER_TEMP/sauvegarde" "s3://$SEAU_S3/$jour/" --recursive --only-show-errors
+          echo "Sauvegarde déposée : $jour"
+
+      - name: Rien ne reste sur la machine
+        if: always()
+        run: rm -rf production.env "$RUNNER_TEMP/sauvegarde"

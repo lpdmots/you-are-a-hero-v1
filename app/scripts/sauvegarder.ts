@@ -7,38 +7,24 @@
  * Écrit dans sauvegardes/<date>/ : roles.sql, schema.sql et donnees.sql (comptes compris).
  * Docker doit être ouvert. Les codes des élèves et les mots de passe de classe y sont
  * chiffrés : sans CLE_ACCES, gardée à part, ils ne se relisent pas. Les fichiers de
- * Supabase Storage (images, à partir de l'étape 2) ne sont pas dans cette sauvegarde.
+ * Supabase Storage ne sont pas dans cette sauvegarde : celle de la nuit les copie
+ * (`npm run sauvegarde:nuit`, étape 9).
  */
-import { execFileSync } from "node:child_process";
-import { mkdirSync, statSync } from "node:fs";
 import { resolve } from "node:path";
-import { adresseDeProduction, masquer, racine } from "./base-de-production";
-import { envDocker } from "./docker";
+import { adresseDeProduction, racine } from "./base-de-production";
+import { viderLaBase } from "./vider-la-base";
 
 const local = process.argv.includes("--local");
 const cible = local ? ["--local"] : ["--db-url", adresseDeProduction()];
 const horodatage = new Date().toISOString().replace(/[:T]/g, "-").slice(0, 16);
 const dossier = resolve(racine, "sauvegardes", `${horodatage}${local ? "-locale" : ""}`);
-mkdirSync(dossier, { recursive: true });
 
-const fichiers: [string, string[]][] = [
-  ["roles.sql", ["--role-only"]],
-  ["schema.sql", []],
-  // Les données de l'application et les comptes : les tables internes de Supabase se recréent seules
-  ["donnees.sql", ["--data-only", "--use-copy", "--schema", "public,auth"]],
-];
-
-for (const [nom, options] of fichiers) {
-  process.stdout.write(`${nom}… `);
-  try {
-    execFileSync("npx", ["supabase", "db", "dump", ...cible, ...options, "-f", resolve(dossier, nom)], { cwd: racine, stdio: ["ignore", "pipe", "pipe"], env: envDocker() });
-  } catch (erreur) {
-    const detail = erreur instanceof Error && "stderr" in erreur ? String((erreur as { stderr: Buffer }).stderr) : String(erreur);
-    console.error(`\nLa sauvegarde a échoué : ${masquer(detail).trim().split("\n").slice(-3).join(" ")}`);
-    console.error("Docker est-il ouvert ? La base répond-elle (un projet gratuit s'endort après une semaine) ?");
-    process.exit(1);
-  }
-  console.log(`${Math.max(1, Math.round(statSync(resolve(dossier, nom)).size / 1024))} Ko`);
+try {
+  viderLaBase(cible, dossier);
+} catch (erreur) {
+  console.error(`\n${erreur instanceof Error ? erreur.message : erreur}`);
+  console.error("Docker est-il ouvert ? La base répond-elle (un projet gratuit s'endort après une semaine) ?");
+  process.exit(1);
 }
 
 console.log(`\nSauvegarde écrite dans ${dossier}`);

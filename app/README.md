@@ -323,17 +323,6 @@ trente jours plus tard. À la mise en ligne, chez Vercel (Production) : `CRON_SE
 dans un terminal) ; Vercel l'envoie seul au cron, et la tournée refuse tout autre
 appel.
 
-## Étape 9, lot 7 : supprimer pour de bon
-
-La corbeille se vide (« Supprimer pour de bon », « Vider la corbeille ») ; une classe
-passée se supprime depuis sa page ; un adulte supprime son compte depuis « Mon
-compte ». Chaque jour à 4 h 30 (temps universel), le cron de Vercel (`vercel.json`)
-appelle `/taches/comptes-inactifs` : avis après cinq ans sans activité, suppression
-trente jours plus tard. À la mise en ligne, chez Vercel (Production) : `CRON_SECRET`
-= une longue chaîne au hasard, que le porteur tire lui-même (`openssl rand -hex 32`
-dans un terminal) ; Vercel l'envoie seul au cron, et la tournée refuse tout autre
-appel.
-
 ## Étape 9, lot 8 : la sauvegarde de la nuit, vers S3
 
 Chaque nuit à 3 h, heure de Paris, le workflow `.github/workflows/sauvegarde-nocturne.yml`
@@ -396,7 +385,7 @@ npm run restaurer -- sauvegardes/<date> --production   # après un accident : da
 - Un projet Supabase gratuit s'endort après une semaine sans activité : il se
   relance depuis sa console avant de sauvegarder.
 - Les images importées (Supabase Storage, seau `images`) ne sont pas dans cette
-  sauvegarde : gardez vos originaux. La base n'en garde que la liste. En local, où
+  sauvegarde : celle de la nuit les copie (étape 9, lot 8). La base n'en garde que la liste. En local, où
   la restauration remet la base à zéro, la commande met cette liste de côté avant
   et la remet après, les fichiers restant sur le disque ; dans la vraie base,
   elle n'y touche pas.
