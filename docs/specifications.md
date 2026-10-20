@@ -197,7 +197,8 @@ jusque-là :
 - **Pas d'inscription publique avant l'ouverture.** Jusqu'à l'étape 9 du
   plan, aucun écran ne crée de compte : le porteur crée le sien depuis la
   console de Supabase, avec son adresse et son mot de passe.
-  L'inscription d'autres enseignants s'écrira avec F14.
+  L'inscription d'autres enseignants est décidée le 20 octobre 2026 en
+  [F14](#f14--ouverture-offre-et-exploitation) (F14-AC01 à AC04).
 - **« Mon compte ».** Un panneau ouvert depuis le nom de l'adulte, dans la
   barre du haut : le nom affiché aux élèves de F01.1 et « Se déconnecter ».
 
@@ -244,12 +245,15 @@ déconseillé, n'est pas retenu.
   l'adresse Google n'est celle d'aucun compte, lorsqu'elle choisit
   « Continuer avec Google », alors elle revient à l'entrée enseignant, lit
   « Aucun compte ne correspond à cette adresse Google. », et aucun compte
-  n'est créé.
+  n'est créé. **Révisé le 20 octobre 2026 (F14-AC02) :** avec l'inscription
+  publique, « Continuer avec Google » crée le compte.
 
-**Reste ouvert :** la validation de l'application par Google (nom affiché à
-la place de l'adresse de Supabase sur l'écran de Google), à traiter avec le
-nom de domaine, à l'étape 9 ; l'ouverture des comptes par Google à d'autres
-enseignants, avec F14.
+**Réglé à l'entretien de l'étape 9, le 20 octobre 2026 (F14) :** Google crée
+le compte d'un nouvel enseignant ; la connexion ne demandant que l'adresse et
+le profil, Google n'exige aucune validation de l'application ni ne limite le
+nombre d'utilisateurs ; la vérification de la marque, qui fait afficher « Il
+était une classe » sur son écran, se fait avec le domaine `iletaituneclasse.fr`,
+une page d'accueil et une politique de confidentialité au même domaine.
 
 **Présentation proposée le 9 octobre 2026, sans retour du porteur :**
 « Continuer avec Google » est en tête de la carte, en bouton à contour, puis
@@ -334,7 +338,8 @@ partagé entre collègues ou écoles demanderait une gestion des transferts qui
 n'est pas retenue implicitement. La création d'une nouvelle classe ne doit pas
 être confondue avec la fin de l'ancienne : la fin d'une année et le départ
 d'un élève sont décidés le 6 octobre 2026, plus bas ; la durée de
-conservation reste à approfondir avec F14.
+conservation est réglée le 20 octobre 2026 en F14 (« Supprimer pour de bon »,
+« Compte inactif »).
 
 **Critères d'acceptation :**
 
@@ -501,8 +506,7 @@ celui d'un élève qui n'a rien écrit se fait d'un geste, avec « Annuler » ;
 l'année scolaire est proposée d'après la date et se corrige ; une classe
 sans élève ni projet se supprime, les autres se terminent.
 
-**Questions ouvertes :** la suppression définitive d'une classe passée et de
-ses profils (F14) ; l'élève qui change de classe en cours d'année chez le
+**Questions ouvertes :** l'élève qui change de classe en cours d'année chez le
 même enseignant. Les postes où la classe est ouverte au moment où l'année se
 termine ou un élève est retiré sont réglés le 8 octobre 2026 en
 [F06.4](#f064--classe-de-référence-et-postes-partagés).
@@ -1390,7 +1394,8 @@ la proposition de la maquette est retenue et précisée.
   est dans la corbeille, ou un chapitre dont la partie y est, se restaure
   après son parent : la corbeille le dit à la place de la commande.
 - **Pas de suppression définitive.** La corbeille ne propose pas de vider ni
-  d'effacer pour de bon ; la suppression définitive relève de F14.
+  d'effacer pour de bon ; révisé le 20 octobre 2026 en F14 : la corbeille se
+  vide, ou un élément s'y supprime pour de bon, après confirmation (F14-AC28).
 
 - **F03-AC27 — Restaurer rend les élèves et les liens :** étant donné « Le
   sanctuaire » supprimé, que lisaient Alice, Bilal et Chloé, et le choix de
@@ -6169,8 +6174,9 @@ enregistré : l'annulation ne survit pas à la fermeture de la page.
   compte pas dans la ligne de rappel du Suivi et n'entre ni dans le livre,
   ni dans la lecture d'essai, ni dans une version partagée. L'élève ne la
   voit pas : il appelle l'enseignant, comme pour toute demande (F07.2).
-- **Durée :** sans limite, comme la corbeille du projet ; la règle générale
-  de conservation s'écrira en F14.
+- **Durée :** sans limite, tant que le projet existe ; la règle générale de
+  conservation est écrite en F14 le 20 octobre 2026 (les versions précédentes
+  s'effacent avec le projet ou le compte).
 - **Alternatives écartées :** aucun historique, qui laisse irrécupérable un
   texte effacé par erreur ; une version à chaque enregistrement, dont la
   liste serait illisible et appellerait un écran de comparaison.
@@ -6980,7 +6986,9 @@ acceptées :
 - **Le geste le plus récent gagne :** une image choisie entre la demande et l'arrivée n'est pas
   remplacée ; l'image arrivée reste parmi les images du projet, payée.
 - **Plusieurs images en même temps,** une seule à la fois pour un même élément ; les plafonds du jour
-  et du mois sont inchangés ; les aides de texte gardent une demande à la fois (F13).
+  et du mois sont inchangés ; les aides de texte gardent une demande à la fois (F13). Révisé le
+  20 octobre 2026 (F14, « Aides IA sans quota ») : plus de plafond du jour ni du mois, les étoiles
+  bornent la dépense, et les aides de texte suivent la même règle, une demande en cours par élément.
 Les cartes des éléments qui attendent portent le signe d'attente, y compris après un rechargement.
 
 **Décidé par le porteur le 19 octobre 2026, en essayant l'étape 8 en ligne :** le portrait d'un
@@ -7778,7 +7786,8 @@ qu'ils occupent. L'adulte supprime à la main un PDF définitif dont il n'a
 plus besoin, après confirmation ; rien ne s'efface seul, selon la règle du
 8 octobre 2026 du [plan](plan.md#avant-de-saisir-des-prénoms-délèves-réels).
 Seul le dernier PDF de travail est gardé, remplacé par le suivant. La
-règle générale de conservation reste à écrire en F14, pour l'ouverture.
+règle générale de conservation est écrite en F14 le 20 octobre 2026 : rien
+d'autre ne s'efface seul qu'un compte inactif depuis cinq ans.
 Alternative écartée : garder automatiquement les trois derniers PDF
 définitifs, contraire à cette règle.
 
@@ -9742,11 +9751,13 @@ trois groupes ; les essais faux sont limités comme ceux des codes de classe
 impossible à deviner. Un code inconnu mène à la même page neutre qu'un
 partage retiré.
 
-**Approfondissements différés :** réglage des auteurs par canal, conservation des versions partagées antérieures, durée
-d'hébergement, coûts d'exploitation
-et devenir du partage après la fin d'une offre payante. La gratuité et les
-limites commerciales de la lecture restent à cadrer en F14 ; ne pas acheter
-le livre imprimé n'établit pas à lui seul toutes les conditions tarifaires.
+**Approfondissements différés :** réglage des auteurs par canal. Réglés le
+20 octobre 2026 en F14 : la lecture reste gratuite ; un livre partagé reste
+lisible tant que le compte existe et que l'adulte ne retire pas le partage ;
+seule la version actuelle est gardée ; le pass étant payé une fois, aucune
+fin d'offre ne coupe un lien ; diffuser par lien les textes et dessins des
+élèves suppose l'autorisation écrite de leurs représentants légaux, dont
+l'application fournit un modèle.
 
 ### F12.2 — Droits de diffusion et éventuelle vitrine du site
 
@@ -9945,7 +9956,7 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   Ne partent jamais : le prénom ou le nom d'un élève, la classe, l'école, le
   nom de l'adulte, les remarques, les encouragements, les codes. L'application
   tient un journal des appels sans leur contenu (date, aide, jetons, coût),
-  qui sert aux plafonds et au budget.
+  qui sert au débit des étoiles et au budget (F14).
 - **Ce qui est transmis n'est pas dit à l'écran,** décision du porteur : la
   liste figure ici et, à l'ouverture, dans la politique de confidentialité.
 - **Plafonds,** recommandation acceptée le 16 octobre 2026. Par aide : une
@@ -9957,17 +9968,15 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   le même jour, à sa demande : les images se créent en parallèle, une seule à la fois pour un
   même élément, voir F10.1, « on demande, puis on continue son chemin ») ; une
   longueur de réponse bornée ; soixante secondes au plus, après quoi « L'aide
-  n'a pas répondu. Le texte n'a pas changé. » Par adulte et par jour, heure de
-  Paris : soixante demandes de texte et vingt images (relevé de dix à vingt le
-  17 octobre 2026, chaque création en donnant deux) ; rien ne s'affiche avant les
-  dix dernières demandes, puis « Encore 10 demandes aujourd'hui. », et à la limite « Les
-  aides reviennent demain. Tout le reste fonctionne. » Pour toute
-  l'application et par mois : trente euros d'images ; côté texte, la limite du
-  compte chez le fournisseur. Les valeurs sont rangées en un seul endroit,
-  réglées à l'ouverture (F14) ; elles se comptent en demandes, plus lisibles
-  que des euros. Le financement (crédits, quotas par offre) attend F14, à
-  l'étape 9 : le journal des appels, qui garde le coût de chacun, permettra
-  alors de passer des plafonds du jour à un solde sans rien reprendre. Un échec, une absence de réponse ou une limite atteinte ne
+  n'a pas répondu. Le texte n'a pas changé. » **Révisé le 20 octobre 2026 à
+  l'entretien de l'étape 9 (F14, « Aides IA sans quota ») :** les plafonds par
+  adulte et par jour (soixante demandes de texte, vingt images, avec « Encore
+  10 demandes aujourd'hui. » et « Les aides reviennent demain. ») et celui de
+  trente euros d'images par mois sont retirés ; un solde d'étoiles par compte
+  borne la dépense, débité du coût réel d'après le journal des appels, et une
+  limite de dépense mensuelle se règle chez chaque fournisseur. La règle d'une
+  demande à la fois par sorte est remplacée par une seule demande en cours
+  pour un même élément. Un échec, une absence de réponse ou une limite atteinte ne
   modifient rien et laissent tout le travail sans IA possible.
 - **Réglages des aides,** recommandation acceptée le 16 octobre 2026 : une
   rubrique « Aides IA » dans « Mon compte », valable pour tous les projets du
@@ -10010,7 +10019,8 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
 le texte d'une scène. Cette aide complète la correction manuelle et la demande
 de reprise par l'élève décrites en F07.1.
 
-**Cadre acquis du brief :** l'assistance est facultative et plafonnée, l'application
+**Cadre acquis du brief :** l'assistance est facultative et bornée (par les étoiles
+depuis le 20 octobre 2026, F14), l'application
 reste utilisable sans elle, l'humain arbitre et aucune validation ou publication
 ne devient automatique. Dans ce parcours de classe, la demande vient de
 l'enseignant ; cela n'ouvre pas un accès IA aux élèves.
@@ -10098,7 +10108,7 @@ moment ; elle devrait relever les fautes une à une, que l'adulte corrige ou
 ignore, sans rien appliquer d'elle-même, et tolérer les noms inventés. À
 instruire avant toute décision : ce qu'un correcteur orthographique sans IA
 couvre déjà gratuitement, le coût d'exploitation d'un passage sur quarante
-scènes, sa place dans l'offre de F14, encore indéfinie.
+scènes, sa place dans l'offre de F14 (payée en étoiles, comme toute aide, si elle est retenue).
 
 **Règles confirmées :**
 
@@ -10439,7 +10449,7 @@ Les échanges peuvent être projetés pendant l'atelier collectif selon F02.
 
 **Contexte confirmé :** l'aide doit tenir compte des autres éléments pertinents
 déjà retenus pour éviter les contradictions ; la qualité réelle reste à vérifier.
-L'adulte peut poursuivre l'échange dans les limites du quota disponible.
+L'adulte peut poursuivre l'échange dans les limites de ses étoiles (F14).
 
 **Recommandations complémentaires :** distinguer le texte déjà
 retenu des idées encore discutées et signaler un changement narratif proposé. Un texte vide
@@ -10473,7 +10483,7 @@ transmis, conservation ou reprise des échanges, texte modifié pendant une
 génération, échec ou quota atteint. Recommandation : conserver dans ces cas le
 texte retenu et les réponses saisies, permettre la poursuite manuelle et ne
 pas lancer de nouvel appel sans action explicite. Répéter l'aide reste soumis
-aux quotas de F13/F14 ; aucun nombre de générations illimité n'est promis.
+aux étoiles de F14 ; aucun nombre de générations illimité n'est promis.
 La projection collective confirmée en F02 permet de montrer les échanges IA ;
 la préparation est unique et n'exige pas deux versions selon
 que l'enseignant travaille seul ou avec la classe. La sélection des éléments
@@ -10501,7 +10511,7 @@ La génération seule ne change pas le projet ;
 la confirmation ajoute seulement les ensembles retenus, chacun avec son
 chapitre initial sans scène selon F03.1, dont le résumé retenu est conservé,
 sans texte de scène, choix ni attribution automatique. L'aide reste adulte,
-facultative et soumise aux quotas ; le parcours manuel demeure disponible.
+facultative et soumise aux étoiles (F14) ; le parcours manuel demeure disponible.
 
 **Contexte recommandé :** les grands axes communs et les éléments pertinents
 du plan déjà retenu, avec possibilité de préciser l'intention de l'ajout.
@@ -10644,6 +10654,446 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
   la souche » de S016, lorsque l'adulte demande « ✦ Écrire » pour S018, alors la
   fin du texte de S016 et la phrase du choix partent avec la consigne, sans
   aucun prénom d'élève.
+
+## F14 — Ouverture, offre et exploitation
+
+Section ouverte par l'entretien de l'étape 9 du
+[plan](plan.md#étape-9--ouverture-à-dautres-enseignants), commencé le
+19 octobre 2026. Elle couvre l'inscription d'autres enseignants, l'offre, la
+conservation et la suppression des données, l'hébergement des livres partagés,
+le support, le financement des aides IA et les obligations envers d'autres
+écoles. Les faits relevés pour l'entretien (tarifs, registres, textes) datent
+du 19 octobre 2026 et se revérifient avant tout engagement.
+
+**Entretien validé dans son ensemble par le porteur le 20 octobre 2026**
+(« Je valide l'entretien »). Décidé par lui les 19 et 20 octobre 2026 :
+
+- **Ouverture possible sans encaissement.** L'application peut s'ouvrir à
+  d'autres enseignants avant que rien ne s'encaisse. Tout est construit en
+  une fois, paiement compris (« plus simple à coder que patcher par
+  derrière ») ; un interrupteur « Paiement ouvert », éteint par défaut,
+  décide si la vente et les limites gratuites s'appliquent. Éteint, l'IA
+  reste à la charge du porteur, bornée par les étoiles offertes. Le porteur
+  règle lui-même ce que son statut et l'entité qui facture demandent : ce
+  n'est pas un sujet de ce document. Alternatives écartées : construire le
+  paiement plus tard, sur une instruction à part (recommandé d'abord) ; un
+  outil toujours gratuit.
+- **Paiement.** Stripe Checkout, pour deux achats uniques : le pass, attaché
+  à un projet, et les recharges d'étoiles ; ni abonnement ni facturation
+  récurrente. Par carte seulement, celle de l'enseignant ou de la
+  coopérative ; une facture est produite à chaque paiement. Le paiement
+  d'une mairie sur bon de commande, qui passe par Chorus Pro, est hors de
+  cette livraison. Au paiement, une case obligatoire : « Je demande l'accès
+  immédiat et renonce à mon droit de rétractation. » Les prix sont réglés en
+  un seul endroit. Le compte Stripe est créé par le porteur, en mode d'essai
+  pour la construction ; allumer « Paiement ouvert » suppose l'entité qui
+  facture, un médiateur de la consommation et la relecture des conditions de
+  vente, à sa charge (avis extérieur, comptable ou juriste).
+- **Inscription libre.** Toute personne qui le souhaite crée un compte
+  d'adulte, sans invitation, sans liste d'attente ni plafond de comptes ; le
+  porteur n'attend pas un grand nombre d'inscriptions. Alternatives
+  écartées : un plafond de comptes avec liste d'attente, recommandé ;
+  l'invitation seule.
+- **Forme de l'offre : l'outil gratuit, les aides IA payantes.** Projets,
+  classes, élèves, livre, PDF, partage et lecture en ligne sont gratuits ; les
+  aides IA au-delà d'une découverte relèvent d'une formule payante.
+  Alternatives écartées : le premier livre gratuit puis une licence annuelle ;
+  le PDF définitif ou le partage payants ; un essai limité dans le temps.
+- **Limite gratuite en scènes, allumée avec « Paiement ouvert ».** Idée du porteur :
+  une taille maximale du livre dans la version gratuite, pour qu'on essaie,
+  qu'on se prenne au jeu, puis qu'on paie pour écrire davantage. Elle se
+  compte en scènes du projet, visibles dès la préparation, et non en pages,
+  qui n'existent qu'une fois le livre composé et varient avec les réglages ;
+  la formule payante la lève. Atteinte, elle empêche seulement de créer une
+  scène : écrire les scènes existantes, le livre, le PDF et le partage
+  continuent. Elle ne s'applique que « Paiement ouvert » allumé : tant qu'on
+  ne peut pas payer, une limite sans issue bloquerait un livre en cours.
+  Quarante scènes, valeur retenue avec le découpage de l'étape 9 et réglable
+  en un seul endroit ; les scènes de la corbeille ne comptent pas. Un projet
+  qui dépasse déjà la limite quand l'interrupteur s'allume garde tout et ne
+  peut plus ajouter de scène sans pass. Les projets du porteur n'ont pas de
+  limite. Alternatives écartées : la limite allumée dès l'ouverture, sans
+  moyen de payer ; levée à la main par le porteur sur demande.
+- **Formule payante : un pass par livre.** Payé une fois, il lève pour
+  toujours les limites gratuites du projet pour lequel on l'achète et donne un
+  lot de crédits d'IA ; des recharges de crédits s'achètent à tout moment.
+  Montants proposés pour fixer les idées, à décider avec le paiement : 20 € le
+  pass, 400 crédits compris ; 5 € la recharge de 100 crédits. Ce qui a de la
+  valeur pour l'enseignant est le livre entier, que l'IA complète : vendre
+  seulement des crédits ferait payer le complément et laisserait gratuit
+  l'essentiel. Alternatives écartées : un abonnement annuel par enseignant
+  (résiliation en ligne, renouvellements, même prix pour un seul livre) ; les
+  deux ensemble.
+- **Crédits d'IA.** Chaque compte a un solde de crédits, qui borne la dépense
+  d'IA à la place des quotas. Un crédit vaut un centime de coût réel chez le
+  fournisseur ; chaque demande débite son coût réel, arrondi au crédit
+  supérieur, d'après le journal des appels (le coût, facturé en dollars, est
+  converti à un taux réglé au même endroit que les prix). L'enseignant ne voit que son
+  solde, dans « Mon compte » et près des boutons d'IA quand il devient bas,
+  jamais un prix par demande. Un nouveau compte en reçoit trente, de quoi
+  essayer (une dizaine d'images ou une vingtaine de corrections) ; tant que
+  le paiement n'existe pas, il n'y en a pas d'autres. Solde épuisé : les
+  images créées d'office ne se créent pas, et l'aide demandée dit « Vous
+  n'avez plus d'étoiles. Tout le reste fonctionne. » Le compte du porteur n'a
+  pas de solde. Alternative écartée : un prix fixe par sorte d'aide, grille à
+  tenir quand les coûts changent.
+- **Les crédits s'appellent des étoiles** (« 34 ✦ »), d'après le signe de
+  l'IA, une grande étoile et deux petites ; *stars* en anglais. Le mot n'est
+  employé nulle part ailleurs dans l'application ; les encouragements des
+  élèves sont des tampons. Écartés, parmi onze propositions : étincelles,
+  lucioles, pépites, écus, éclats, jetons, entre autres.
+- **Ce que la formule lève.** Les seules limites gratuites sont le nombre de
+  scènes et, demandé par le porteur, le nombre d'images ; ni les classes, ni
+  les élèves, ni les projets, ni le PDF, ni le partage, dont la limite
+  gênerait l'essai en classe qui donne envie d'acheter. La limite d'images,
+  dix par projet gratuit, compte les images posées dans le livre (scènes et
+  pages de présentation), importées ou créées par l'IA ; elle ne compte ni les
+  images de repérage, ni les visuels par défaut, ni les portraits, qui servent
+  au travail et ne s'impriment pas. Atteinte, elle empêche seulement de poser
+  une image ; comme celle des scènes, elle ne s'applique que « Paiement
+  ouvert » allumé.
+  Une image créée par l'IA dans un projet gratuit débite des crédits et compte
+  aussi parmi les dix : deux limites distinctes, l'une sur le livre, l'autre
+  sur l'IA. La corbeille du projet reste dans l'offre gratuite : c'est un
+  filet contre les erreurs, non un service qu'on achète, et la retirer ferait
+  perdre du travail à qui essaie (idée du porteur, écartée sur
+  recommandation).
+- **Supprimer pour de bon.** Rien ne s'efface seul, sauf le compte inactif
+  plus bas. L'adulte peut :
+  - supprimer son compte depuis « Mon compte », en confirmant par la saisie
+    de son adresse : projets, classes, profils d'élèves, images et partages
+    sont effacés aussitôt, et un lien de lecture mène dès lors à la page
+    neutre de F12.1 ;
+  - supprimer une classe passée : ses profils d'élèves, leurs codes et leurs
+    inscriptions sont effacés ; les textes restent dans les projets, signés
+    du seul prénom, et le livre ne change pas (répond à la question ouverte
+    de F01.1) ;
+  - vider la corbeille du projet, ou en supprimer un élément pour de bon,
+    après confirmation (complète F03).
+- **Compte inactif.** Un compte où personne ne s'est connecté depuis cinq ans
+  reçoit un courriel ; sans connexion dans les trente jours, il est supprimé
+  comme ci-dessus. Durée choisie par le porteur, trois ans proposés lui
+  paraissant trop brefs.
+- **Livres partagés.** Un livre partagé reste lisible tant que le compte
+  existe et que l'adulte ne retire pas le partage, sans autre durée ; il
+  disparaît avec le compte, inactif compris. Les lectures des familles ne
+  comptent pas comme activité : le courriel qui précède la suppression d'un
+  compte inactif dit que ses livres partagés ne seront plus lisibles. Le pass
+  étant payé une fois, aucune fin d'offre ne coupe un lien ; seule la version
+  partagée actuelle est gardée (F12.1).
+- **Hébergement de la base.** Supabase reste en offre gratuite jusqu'au
+  premier utilisateur autre que le porteur ; il prend alors l'offre payante
+  (Pro, 25 dollars par mois au 19 octobre 2026 : une sauvegarde par jour,
+  gardée sept jours, sans mise en sommeil). Jusque-là, il veille à ce que la
+  base ne se mette pas en sommeil. Alternative écartée, plus compliquée :
+  rester en offre gratuite avec une mesure de l'usage et un seuil de passage.
+- **Sauvegarde automatique, base et images.** Les images et les PDF sont
+  stockés chez Supabase en un seul exemplaire : ni la sauvegarde à la main ni
+  celles de l'offre payante ne les copient. Une sauvegarde automatique, chaque
+  nuit à 3 h (heure de Paris, pendant la fermeture nocturne), copie la base et
+  les images dans un seau S3 du compte AWS du porteur, à Paris ; les PDF ne
+  sont pas copiés, puisqu'ils se refont depuis le livre. Les sauvegardes de
+  plus de quatre-vingt-dix jours s'effacent d'elles-mêmes, ce que dit la page
+  « Confidentialité » ; l'accès qui dépose dans le seau ne peut ni lire ni
+  effacer ; la restauration reprend une sauvegarde du seau ; une nuit
+  manquée prévient le porteur par courriel. Elle remplace la sauvegarde à la
+  main décidée le 8 octobre 2026 ; les sauvegardes quotidiennes de
+  Supabase Pro, gardées sept jours, restent à côté. AWS s'ajoute aux services
+  de la page « Confidentialité ». Le porteur crée le seau et l'accès, au
+  moment de construire. Alternatives écartées : une copie des images sur son
+  ordinateur à chaque sauvegarde à la main, qui l'ennuyait ; aucune copie.
+- **Aides IA sans quota.** Les plafonds par adulte et par jour et celui des
+  images par mois (F13) sont retirés : un enseignant qui illustre tout son
+  livre le seul jour où il en a le temps ne doit buter sur rien, et plusieurs
+  images se lancent à la fois. Le crédit d'IA, en cours d'arbitrage, borne la
+  dépense à leur place. Restent : une seule demande en cours pour un même
+  élément, contre les doublons ; une attente bornée, après laquelle l'aide
+  dit qu'elle n'a pas répondu, qui arrête une demande bloquée sans ralentir
+  les autres ; et, hors de l'application, une limite de dépense mensuelle que
+  le porteur fixe dans les consoles d'Anthropic et d'OpenAI, dernière barrière
+  si l'application se trompait.
+- **Autorisation de diffusion.** L'application fournit un modèle
+  d'autorisation de diffusion des textes et dessins des élèves, à faire
+  signer par leurs représentants légaux avant un partage par lien (F12.1).
+- **Création d'un compte.** Par une adresse et un mot de passe, le compte
+  s'ouvrant par le lien d'un courriel de confirmation ; ou par « Continuer
+  avec Google », qui crée désormais le compte quand aucun n'a cette adresse
+  (révise F01-AC32, qui tenait à l'absence d'inscription publique avant
+  l'ouverture) et ouvre toujours, comme le veut F01-AC31, le compte créé par
+  mot de passe avec la même adresse, ce que le porteur demandait le
+  9 octobre 2026. Sous les deux, une phrase : « En créant un compte, vous
+  acceptez les conditions d'utilisation et la politique de confidentialité. »,
+  avec ses deux liens, sans case à cocher. Le nom affiché aux élèves se règle
+  ensuite dans « Mon compte » ; aucun projet d'exemple n'est créé d'office.
+- **Noms et adresses : un nom par langue, une seule application.** « Il
+  était une classe » à `iletaituneclasse.fr`, `iletaituneclasse.com`
+  renvoyant vers lui ; en anglais, « Once Upon a Classroom », à
+  `onceuponaclassroom.com`, réservé dès maintenant pour qu'on ne le prenne
+  pas. Les trois adresses sont enregistrées chez OVH par le porteur le
+  20 octobre 2026 (`.fr` jusqu'au 20 octobre 2029, les deux `.com` jusqu'au
+  20 octobre 2028, titulaire masqué) ; aucune marque n'était trouvée sous ces
+  noms. L'application choisit sa
+  langue d'après l'adresse ; la version anglaise reste hors de la première
+  livraison, et réserver son nom n'y engage pas. Le porteur commande les
+  domaines lui-même. Le domaine porte aussi les courriels (envoi par
+  Amazon SES, le service de Supabase n'écrivant qu'à son équipe, deux fois par
+  heure), la vérification de la marque chez Google et les pages publiques.
+  Alternatives écartées : un seul nom valable dans les deux langues (« Fable
+  Class »), qui perd le jeu de mots ; un seul nom anglais pour tous, ce que le
+  porteur avait écarté le 9 octobre 2026 avec « You Are a Hero ».
+- **Pages publiques.** Une page d'accueil tournée vers l'enseignant et sa
+  classe : la promesse et un livre montré, le chemin en quelques temps, les
+  deux sortes de récit, qui fait quoi, l'origine du projet, l'offre (gratuit,
+  pass, étoiles) ; à côté, « Aide », « Confidentialité », « Conditions
+  d'utilisation », « Mentions légales », et les deux modèles à télécharger,
+  autorisation de diffusion et information des familles. Le livre à
+  feuilleter est celui de la classe du porteur, autorisations signées, ou à
+  défaut un livre d'essai. Sans maquette : ces pages se conçoivent avec
+  impeccable et se critiquent en deux lectures.
+- **« Écrit avec Il était une classe ».** Dans le lecteur en ligne, une
+  mention discrète au pied de la page de titre et après la fin du livre, qui
+  mène à la page d'accueil ; jamais pendant la lecture, sans réglage. Elle ne
+  figure pas dans le PDF : le livre imprimé est celui de la classe. Ce n'est
+  pas une vitrine au sens de F12.2 : le livre n'est montré nulle part ailleurs.
+- **Mention « React Flow ».** Le nom de la bibliothèque s'affiche dans un coin
+  de « Chemins », vue de l'adulte seul, comme ses auteurs le demandent à qui
+  ne prend pas leur abonnement (169 dollars par mois au 19 octobre 2026, hors
+  de proportion). Alternative écartée : la garder masquée, ce que la licence
+  permet, et les soutenir plus tard.
+- **Marque : attendre.** Aucun dépôt à l'ouverture ; il se reconsidère si
+  des collègues adoptent l'outil, après une vraie recherche de marques
+  proches, avis extérieur (conseil en propriété industrielle ou recherche de
+  l'INPI), celle d'octobre n'étant qu'un premier coup d'œil. Alternatives
+  écartées : déposer dès l'ouverture ; ne jamais déposer.
+- **Pages d'administration.** Des pages simples dans l'application, réservées
+  au compte du porteur et refusées à tout autre côté serveur : la liste des
+  comptes (inscription, dernière connexion, étoiles restantes), offrir des
+  étoiles à un compte, retirer un partage, la dépense d'IA du mois d'après le
+  journal des appels. Choix du porteur, contre la recommandation de
+  commandes, sans page ouverte sur Internet.
+- **Contenu signalé.** Qui veut signaler un livre partagé écrit à l'adresse de
+  contact, sans lien dans le lecteur (jugé inutile par le porteur) ; le
+  porteur retire le partage depuis l'administration, le lien mène alors à la
+  page neutre et l'adulte en est averti par courriel ; les conditions
+  d'utilisation disent ce qui est interdit et ce retrait possible. Lecture
+  du 20 octobre 2026, sans avis juridique : la règle européenne des services
+  numériques demande à tout hébergeur un moyen de signaler un contenu
+  illicite et un retrait rapide.
+- **Textes juridiques.** Claude rédige les conditions d'utilisation, la page
+  « Confidentialité », les mentions légales, le contrat de sous-traitance type
+  et les deux modèles destinés aux familles ; une relecture par un juriste est
+  recommandée, avis extérieur qui ne bloque pas l'ouverture. Les mentions
+  légales nomment le porteur, avec l'adresse de contact ; la publication d'une
+  adresse postale se règle à cette relecture. Alternative écartée :
+  l'anonymat permis à un particulier non professionnel, qui ne nomme que
+  l'hébergeur ; une école fait plus confiance à un enseignant qui se nomme.
+- **Support.** Une adresse de contact au nom de domaine du produit, qui
+  arrive dans la boîte du porteur ; une page « Aide » publique, petite foire
+  aux questions et cette adresse ; dans « Mon compte », un lien « Écrire au
+  créateur ». Ni discussion en direct ni délai promis : la page dit « Il
+  était une classe est fait par un enseignant qui a sa classe : la réponse
+  peut prendre quelques jours. » La foire aux questions rappelle que les
+  codes des élèves se retrouvent dans « Mes classes ».
+- **Ce qu'une école peut demander sur les données.** Le porteur tient
+  qu'aucune donnée sensible n'est en jeu ; ce qui est fourni sert à ce qu'une
+  école accepte l'outil, non à couvrir un risque. Sont fournis :
+  - une page publique « Confidentialité » : ce qui est gardé, où, combien de
+    temps, ce qui part à l'IA (la liste de F13, sans prénom d'élève), comment
+    tout supprimer ;
+  - la liste des services employés et de leur lieu de traitement : Vercel et
+    Supabase à Paris, Anthropic et OpenAI aux États-Unis ;
+  - un modèle d'information des familles, à côté du modèle d'autorisation ;
+  - les mentions légales d'un site public ;
+  - un contrat de sous-traitance type, à télécharger pour l'école qui le
+    demande, l'éditeur étant sous-traitant du responsable de traitement, qui
+    est à l'école publique le directeur académique (DASEN).
+  Rien de plus : l'analyse d'impact revient au responsable de traitement.
+  Alternatives écartées : ne rien fournir ; un contrat signé, une analyse
+  d'impact et un hébergeur européen, disproportionnés.
+
+**Critères d'acceptation.** Les exemples prennent M. Bernard, collègue qui
+découvre l'outil, et le porteur, administrateur.
+
+*Inscription et compte*
+
+- **F14-AC01 — S'inscrire par adresse :** étant donné une adresse qu'aucun
+  compte ne porte, lorsque M. Bernard s'inscrit avec elle et un mot de passe,
+  alors il reçoit un courriel de confirmation ; tant qu'il n'a pas ouvert son
+  lien, il ne peut pas entrer ; après, il arrive sur « Mes projets », vide.
+- **F14-AC02 — S'inscrire par Google :** étant donné une adresse Google
+  qu'aucun compte ne porte, lorsque M. Bernard choisit « Continuer avec
+  Google », alors un compte est créé et il arrive sur « Mes projets »
+  (révise F01-AC32) ; étant donné le compte de Mme Laurent, créé par mot de
+  passe avec son adresse Google, lorsqu'elle choisit « Continuer avec
+  Google », alors elle entre dans ce même compte, sans doublon (F01-AC31).
+- **F14-AC03 — Conditions :** étant donné l'écran d'inscription, alors on y
+  lit « En créant un compte, vous acceptez les conditions d'utilisation et la
+  politique de confidentialité. », chaque nom menant à sa page, sans case à
+  cocher.
+- **F14-AC04 — Adresse déjà prise :** étant donné un compte qui porte
+  l'adresse saisie, lorsque quelqu'un s'inscrit avec elle, alors aucun
+  second compte n'est créé et rien n'indique à un inconnu que l'adresse
+  existe : un courriel part vers cette adresse, qui propose d'entrer ou de
+  choisir un nouveau mot de passe.
+
+*Étoiles*
+
+- **F14-AC05 — Étoiles offertes après confirmation :** étant donné le compte
+  de M. Bernard tout juste créé par adresse, alors son solde est de zéro
+  tant que l'adresse n'est pas confirmée, puis de 30 ✦ ; créé par Google, il
+  a 30 ✦ aussitôt ; elles ne sont données qu'une fois par compte.
+- **F14-AC06 — Débit au coût réel :** étant donné M. Bernard à 30 ✦,
+  lorsqu'une correction coûte 0,042 euro chez le fournisseur, alors son
+  solde passe à 25 ✦ (arrondi au crédit supérieur) ; lorsqu'une aide échoue
+  ou ne répond pas, alors rien n'est débité.
+- **F14-AC07 — Solde visible :** étant donné M. Bernard à 30 ✦, alors
+  « Mon compte » affiche son solde ; aucun bouton d'IA ne montre de prix ;
+  lorsqu'il reste peu d'étoiles, alors le solde s'affiche près des boutons
+  d'IA.
+- **F14-AC08 — Solde épuisé :** étant donné M. Bernard à 0 ✦, lorsqu'il
+  demande une aide, alors aucun appel ne part et il lit « Vous n'avez plus
+  d'étoiles. Tout le reste fonctionne. » ; lorsqu'il ajoute un chapitre
+  depuis l'IA, alors le chapitre est ajouté sans image créée d'office.
+- **F14-AC09 — Aucune demande refusée faute d'étoiles en cours de route :**
+  étant donné M. Bernard à 3 ✦ qui lance cinq images à la fois, alors toutes
+  partent tant que le solde est positif au moment de chaque demande ; le
+  solde peut finir légèrement négatif, et la demande suivante est refusée.
+- **F14-AC10 — Plus de quota :** étant donné M. Bernard avec assez
+  d'étoiles, lorsqu'il crée quarante images dans la journée, alors aucune
+  n'est refusée pour un plafond du jour ou du mois ; lorsqu'il redemande une
+  image pour un élément dont l'image est en cours, alors la seconde demande
+  attend la première (F10.1).
+- **F14-AC11 — Compte du porteur :** étant donné le compte du porteur,
+  alors aucune étoile n'est débitée et aucun solde ne s'affiche.
+
+*Limites gratuites et pass*
+
+- **F14-AC12 — Interrupteur éteint :** étant donné « Paiement ouvert »
+  éteint, lorsque M. Bernard crée une 41e scène ou pose une 11e image dans
+  un projet sans pass, alors rien ne l'en empêche, et aucun pass ni recharge
+  n'est proposé.
+- **F14-AC13 — Limite de scènes :** étant donné « Paiement ouvert » allumé
+  et un projet de M. Bernard sans pass à 40 scènes, dont 2 à la corbeille,
+  lorsqu'il crée une scène, alors elle est créée ; à 40 scènes hors
+  corbeille, lorsqu'il en crée une autre, alors rien n'est créé et il lit ce
+  que le pass lève, avec le moyen de l'acheter ; il continue d'écrire les
+  scènes existantes, de faire le PDF et de partager.
+- **F14-AC14 — Limite d'images :** étant donné « Paiement ouvert » allumé et
+  un projet sans pass dont le livre porte 10 images (scènes et pages de
+  présentation), lorsque M. Bernard pose une 11e image dans une scène, alors
+  elle n'est pas posée et il lit ce que le pass lève ; lorsqu'il choisit une
+  image de repérage pour un chapitre ou crée un portrait, alors rien ne
+  l'en empêche.
+- **F14-AC15 — Projet déjà au-delà :** étant donné un projet sans pass à
+  55 scènes quand « Paiement ouvert » s'allume, alors ses 55 scènes restent
+  et s'écrivent ; seule la création d'une scène est refusée.
+- **F14-AC16 — Le pass lève les limites du projet :** étant donné le pass
+  acheté pour « Le marais », alors ce projet n'a plus de limite, pour
+  toujours, et le solde de M. Bernard gagne les étoiles du pass ; son autre
+  projet sans pass garde ses limites.
+- **F14-AC17 — Projets du porteur :** étant donné « Paiement ouvert »
+  allumé, alors les projets du porteur n'ont aucune limite.
+
+*Paiement*
+
+- **F14-AC18 — Acheter un pass :** étant donné « Paiement ouvert » allumé,
+  lorsque M. Bernard achète le pass de « Le marais » et paie, alors la page
+  de paiement de Stripe exige la case « Je demande l'accès immédiat et
+  renonce à mon droit de rétractation. » ; une fois le paiement reçu par
+  l'application, le projet a son pass et la facture lui parvient.
+- **F14-AC19 — Recharger :** étant donné « Paiement ouvert » allumé, lorsque
+  M. Bernard achète une recharge depuis « Mon compte », alors son solde gagne
+  ses étoiles une fois le paiement reçu, et une seule fois même si l'avis de
+  paiement arrive deux fois.
+- **F14-AC20 — Paiement abandonné ou refusé :** étant donné M. Bernard qui
+  quitte la page de paiement ou dont la carte est refusée, alors rien ne
+  change dans son compte et il revient où il était.
+- **F14-AC21 — Prix en un seul endroit :** étant donné le prix du pass
+  changé dans les réglages de l'application, alors la page d'accueil, l'offre
+  dans l'application et la page de paiement montrent le nouveau prix.
+
+*Administration*
+
+- **F14-AC22 — Réservée au porteur :** étant donné M. Bernard connecté,
+  lorsqu'il ouvre l'adresse d'une page d'administration ou appelle l'une de
+  ses actions, alors le serveur refuse, comme pour une page inexistante.
+- **F14-AC23 — Comptes et dépense :** étant donné le porteur sur
+  l'administration, alors il voit chaque compte avec sa date d'inscription,
+  sa dernière connexion et son solde, la dépense d'IA du mois et les ventes
+  du mois.
+- **F14-AC24 — Offrir :** étant donné le compte de M. Bernard, lorsque le
+  porteur lui offre 100 ✦ ou un pass pour « Le marais », alors son solde ou
+  son projet les reçoit, et le geste reste inscrit avec sa date.
+- **F14-AC25 — Retirer un partage :** étant donné le livre partagé de
+  M. Bernard, signalé au porteur, lorsque le porteur retire ce partage, alors
+  le lien mène à la page neutre de F12.1 et M. Bernard reçoit un courriel qui
+  le lui dit ; son projet ne change pas.
+
+*Supprimer et conserver*
+
+- **F14-AC26 — Supprimer son compte :** étant donné M. Bernard avec deux
+  projets, une classe et un livre partagé, lorsqu'il supprime son compte en
+  tapant son adresse, alors tout est effacé, images comprises, le lien de
+  lecture mène à la page neutre, et il ne peut plus entrer ; une adresse mal
+  tapée n'efface rien.
+- **F14-AC27 — Supprimer une classe passée :** étant donné « CM1 2025-2026 »
+  terminée, dont Alice a écrit S015, lorsque M. Bernard la supprime et
+  confirme, alors ses profils, codes et inscriptions sont effacés, S015 reste
+  dans le projet signée « Alice » et le livre ne change pas ; une classe en
+  cours ne propose pas cette suppression.
+- **F14-AC28 — Vider la corbeille :** étant donné deux scènes et un chapitre
+  à la corbeille, lorsque M. Bernard supprime une scène pour de bon et
+  confirme, alors elle disparaît sans retour ; lorsqu'il vide la corbeille et
+  confirme, alors il n'y reste rien ; « Restaurer » reste possible jusque-là
+  (F03).
+- **F14-AC29 — Compte inactif :** étant donné un compte où personne ne s'est
+  connecté depuis cinq ans, alors un courriel lui dit que le compte et ses
+  livres partagés seront supprimés dans trente jours ; sans connexion
+  pendant ce délai, il est supprimé comme en F14-AC26 ; une connexion
+  annule la suppression ; les lectures de ses livres partagés n'y changent
+  rien.
+
+*Sauvegarde*
+
+- **F14-AC30 — Sauvegarde de la nuit :** étant donné une nuit ordinaire,
+  alors à 3 h la base et les images partent dans le seau S3, et une
+  sauvegarde de plus de quatre-vingt-dix jours n'y est plus ; une nuit qui
+  échoue prévient le porteur par courriel.
+- **F14-AC31 — Restaurer depuis S3 :** étant donné une sauvegarde du seau,
+  lorsque le porteur la restaure en local, alors les projets, les classes et
+  les images reviennent tels qu'ils étaient cette nuit-là.
+
+*Pages publiques et mentions*
+
+- **F14-AC32 — Accueil :** étant donné un visiteur à `iletaituneclasse.fr`,
+  alors il lit la page d'accueil, qui mène à l'inscription, à l'entrée de
+  l'enseignant, à l'entrée des élèves et aux pages « Aide »,
+  « Confidentialité », « Conditions d'utilisation » et « Mentions légales » ;
+  à `iletaituneclasse.com` ou `onceuponaclassroom.com`, il arrive sur la même
+  page.
+- **F14-AC33 — Modèles à télécharger :** étant donné la page « Aide » ou
+  l'étape « Imprimer et partager », alors l'adulte télécharge le modèle
+  d'autorisation de diffusion et le modèle d'information des familles.
+- **F14-AC34 — Écrit avec Il était une classe :** étant donné un livre lu
+  par un lien de lecture, alors la mention paraît au pied de la page de titre
+  et après la fin, et mène à la page d'accueil ; elle ne paraît ni pendant la
+  lecture, ni sur la page neutre, ni dans le PDF.
+- **F14-AC35 — Mention React Flow :** étant donné « Chemins » ouvert sur un
+  grand écran, alors le nom de la bibliothèque se lit dans un coin du schéma.
+- **F14-AC36 — Écrire au créateur :** étant donné « Mon compte » ou la page
+  « Aide », alors l'adresse de contact s'y trouve, et le lien « Écrire au
+  créateur » ouvre un courriel vers elle.
+
+**Questions ouvertes :** les prix du pass et des recharges, et le nombre
+d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;
+l'entité qui facture et le médiateur de la consommation, à la charge du
+porteur ; la relecture juridique des textes ; le paiement des mairies sur bon
+de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
+et l'adresse sont retenus ; le dépôt de la marque.
+
+**Hors de cette livraison :** abonnement ; paiement sur bon de commande ou
+par mandat administratif ; version anglaise, dont seule l'adresse est
+réservée ; page de discussion avec le support.
 
 ## Suite de l'entretien et couverture restante
 
@@ -10806,10 +11256,11 @@ et propositions restent dans les sections de référence :
   montrée dans la [maquette](design.md#partage-et-lecteur-en-ligne). Restent :
   faisabilité de la reprise liée au profil de l'élève, choix des classes une
   à une, réglage des auteurs par canal.
-  Relèvent de F14 : durée d'hébergement, devenir du lien après la fin d'une
-  offre, conservation des versions antérieures, gratuité de la lecture.
-- **Assistance et exploitation :** détails et évaluation des aides de F13 ;
-  offre, coûts, conservation et support de F14 encore au niveau du brief.
+  Durée d'hébergement, devenir du lien, versions antérieures et gratuité de
+  la lecture sont réglés en F14 le 20 octobre 2026.
+- **Assistance et exploitation :** F14 est écrit et validé dans son ensemble
+  le 20 octobre 2026 (offre, étoiles, paiement, conservation, support,
+  pages publiques) ; restent ses questions ouvertes.
 
 L'assemblage de la couverture est reporté en F11.4. L'étude de
 la dictée vocale est différée en F07.4, sans décision d'inclusion ou d'exclusion
@@ -10818,6 +11269,5 @@ bibliothèque sont mis de côté à la demande du porteur en F12.2 ; le lecteur
 partagé demeure retenu en F12.1. Ces sujets ne doivent pas être considérés
 comme validés par la clôture du cadrage général.
 
-F01 à F13 sont partiellement précisés ici.
-F14 reste au niveau du brief. Aucun sujet absent de
-ce document ne doit être considéré comme arbitré ou exclu.
+F01 à F14 sont précisés ici, chacun avec ses questions ouvertes. Aucun sujet
+absent de ce document ne doit être considéré comme arbitré ou exclu.

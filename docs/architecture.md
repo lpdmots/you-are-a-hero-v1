@@ -1761,6 +1761,48 @@ F10.2.
   `cote-copie__colle` sur la place qui reste sous elle dans la fenêtre, au défilement et au
   redimensionnement ; la feuille de style supposait la colonne déjà collée sous la barre du haut.
 
+## Préparation de l'étape 9 (20 octobre 2026)
+
+Faits relevés pour l'entretien de l'étape 9, le 19 octobre 2026, dans les
+documentations officielles ; les règles qui en découlent sont en
+[F14](specifications.md#f14--ouverture-offre-et-exploitation) et l'ordre des
+lots dans le [plan](plan.md#étape-9--ouverture-à-dautres-enseignants).
+
+- **Courriels du compte.** Sans serveur d'envoi propre, Supabase Auth
+  « refuse de remettre les messages aux adresses qui ne sont pas de l'équipe
+  du projet », deux messages par heure au plus, sans garantie
+  ([SMTP de Supabase](https://supabase.com/docs/guides/auth/auth-smtp)).
+  L'inscription publique demande donc un service d'envoi : Amazon SES,
+  retenu parce que le porteur a un compte AWS, après vérification du domaine
+  et sortie du mode d'essai accordée par AWS.
+- **Sauvegardes.** Supabase Pro (25 dollars par mois) garde une sauvegarde
+  quotidienne sept jours et ne met pas un projet en sommeil ; ses
+  sauvegardes, comme `npm run sauvegarder`, ne contiennent pas les fichiers
+  du stockage ([sauvegardes](https://supabase.com/docs/guides/platform/backups)).
+  La sauvegarde nocturne tourne dans GitHub Actions, qui dispose de Docker
+  et reprend `npm run sauvegarder` (`supabase db dump`) ; une fonction de
+  Vercel, appelée par son cron, n'a ni Docker ni `pg_dump`, et demanderait un
+  export maison et sa restauration. Les images sont copiées à côté de la base
+  dans le seau S3 ; une règle de durée du seau efface ce qui a plus de
+  quatre-vingt-dix jours.
+- **Paiement.** Stripe Checkout est compris dans les frais de paiement
+  (1,5 % + 0,25 euro pour une carte standard de l'Espace économique
+  européen) ; des achats uniques évitent Billing (0,7 % du volume) ; un
+  virement ou un bon de commande, par Invoicing, n'est pas retenu. Aucune
+  intégration à Chorus Pro, obligatoire pour facturer une mairie.
+- **Google.** Avec les seules portées `openid`, `email` et `profile`, Google
+  n'exige pas de vérification de l'application ni ne limite les
+  utilisateurs ; la vérification de la marque (nom et logo sur son écran)
+  demande un domaine vérifié, une page d'accueil et une politique de
+  confidentialité sur ce domaine, ce qu'une adresse en `vercel.app` ne permet
+  pas ([vérification de la marque](https://developers.google.com/identity/protocols/oauth2/production-readiness/brand-verification)).
+- **React Flow.** La licence MIT permet de masquer la mention ; les auteurs
+  demandent un abonnement à qui la masque (169 dollars par mois au moins).
+  Elle est affichée.
+- **Coût des aides,** relevé sur les 79 vrais appels de la base locale
+  (étape 8) : de 0,003 à 0,03 dollar par demande de texte, de 0,011 à
+  0,025 dollar par image. C'est la base du débit des étoiles.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

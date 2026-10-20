@@ -609,11 +609,33 @@ projet comme une image importée, pour le repérage ou dans le texte d'une scèn
 _Éviter_ : image générée automatiquement, illustration de l'élève.
 
 **Aide IA** :
-Proposition demandée par l'adulte à un modèle d'IA, toujours facultative et
-plafonnée, qui ne change rien au projet tant qu'il ne l'a pas retenue.
+Proposition demandée par l'adulte à un modèle d'IA, toujours facultative,
+payée en étoiles, qui ne change rien au projet tant qu'il ne l'a pas retenue.
 _Éviter_ : assistant, génération automatique, IA de l'élève.
 
 **Journal des appels** :
 Trace de chaque demande faite à un fournisseur d'IA, sans son contenu : date,
-aide, modèle, jetons, coût. Il sert aux plafonds et au budget.
+aide, modèle, jetons, coût. Il sert à débiter les étoiles et au budget.
 _Éviter_ : historique des échanges, conversation.
+
+**Étoile** :
+Crédit d'IA d'un compte d'adulte, débité à chaque aide IA selon son coût ; un
+nouveau compte en reçoit quelques-unes pour essayer, le pass et les recharges
+en ajoutent.
+_Éviter_ : jeton, crédit, quota, encouragement.
+
+**Pass du livre** :
+Achat unique attaché à un projet, qui lève ses limites gratuites pour
+toujours et apporte des étoiles.
+_Éviter_ : abonnement, licence, offre premium.
+
+**Limites gratuites** :
+Nombre de scènes et nombre d'images du livre qu'un projet sans pass ne peut
+dépasser ; tout le reste de l'outil reste ouvert.
+_Éviter_ : version d'essai, quota.
+
+**Compte inactif** :
+Compte d'adulte où personne ne s'est connecté depuis cinq ans, supprimé après
+un courriel resté sans réponse ; les lectures de ses livres partagés ne
+comptent pas comme activité.
+_Éviter_ : compte fermé, compte suspendu.

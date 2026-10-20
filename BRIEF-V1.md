@@ -1,6 +1,6 @@
 # V1 — Brief produit et technique
 
-Mis à jour le 8 octobre 2026 pour l'hébergement, la base et le plan, le reste au 3 octobre · Nom : **Il était une classe**, décidé le 9 octobre 2026.
+Mis à jour le 20 octobre 2026 pour l'offre (F14), le 8 octobre pour l'hébergement, la base et le plan, le reste au 3 octobre · Nom : **Il était une classe**, décidé le 9 octobre 2026.
 
 **Synthèse produit et technique pour reprendre le projet.** Les décisions de
 l'entretien `grill-with-docs` sont consolidées et le cadrage d'ensemble est
@@ -81,8 +81,9 @@ qu'il est en anglais et enferme dans le livre-jeu ; ce nom reste celui des
 dossiers, des dépôts et du projet Vercel, et la maquette l'affiche encore ;
 l'application affiche le nouveau nom depuis le 9 octobre 2026. Le nom assume la classe, que le porteur tient pour la
 particularité du produit ; le mode personnel reste proposé, en second. Le nom
-anglais n'est pas décidé. Les adresses, la marque et les pages publiques
-relèvent de [l'étape 9 du plan](docs/plan.md#étape-9--ouverture-à-dautres-enseignants).
+anglais retenu le 20 octobre 2026 est « Once Upon a Classroom », pour la
+version anglaise à venir ; les adresses, la marque et les pages publiques sont
+réglées en [F14](docs/specifications.md#f14--ouverture-offre-et-exploitation).
 
 Deux axes indépendants, dans le même outil :
 
@@ -137,7 +138,7 @@ sans seconde liste d'étapes à convertir ou à synchroniser, selon
 | F11 | Composer le livre et ses pages de présentation, le prévisualiser, modifier les scènes et régler la composition depuis l'aperçu, réexporter un PDF avec renvois cohérents ; assemblage de couverture reporté. |
 | F12 | Dès la première livraison, partager volontairement un instantané du livre terminé, par un lien de lecture sans compte ou auprès de ses classes ; mise à jour explicite et retrait par l’adulte. |
 | F13 | Proposer une assistance IA facultative, contextualisée et plafonnée. |
-| F14 | Proposer une découverte et une offre payante adulte ; forme et limites à définir. |
+| F14 | Ouvrir l'inscription à d'autres enseignants : outil gratuit avec deux limites par projet, pass par livre et étoiles pour l'IA, paiement prêt derrière un interrupteur, conservation et suppression, sauvegarde nocturne, pages publiques ; décidé le 20 octobre 2026. |
 
 Cette liste guide la spécification ; elle ne fixe pas la priorité ni tous les détails.
 Les règles en cours de précision pour la préparation, les fiches de rédaction,
@@ -199,7 +200,7 @@ serveur. Les exports lourds sont traités en arrière-plan.
 | Graphe | **React Flow** — proposé comme représentation du récit. |
 | PDF | **Paged.js + HTML/CSS + Chromium** — retenu le 3 octobre 2026 après prototype, avec un aperçu calculé côté serveur ; Chromium de Linux et hébergement encore à éprouver. |
 | Hébergement | **Vercel** décidé le 8 octobre 2026 pour l'application, à son adresse par défaut ; région et lieu d'exécution du PDF selon le [plan](docs/plan.md#décisions-de-fournisseur) ; **Render** reste l'alternative pour le PDF. |
-| Paiement | **Stripe Checkout** — proposé pour l’ouverture commerciale. |
+| Paiement | **Stripe Checkout**, achats uniques par carte — décidé le 20 octobre 2026 (F14), derrière l'interrupteur « Paiement ouvert ». |
 | IA | API côté serveur ; fournisseur et modèle à choisir sur les tâches réelles. |
 | Vérification | **Vitest + Playwright**, complétés par inspection visuelle des PDF. |
 
@@ -247,12 +248,17 @@ accompagne sans moteur automatique : feuille d'aventure remplie par le
 lecteur, actions de jeu en texte libre et dé non interprété, selon
 [F04.2](docs/specifications.md#f042--objets-de-lhistoire). Les formats du PDF ne sont pas fixés par la V0.
 
-**Hypothèse économique à arbitrer :** découverte limitée, lecture gratuite,
-offre adulte avec élèves et réexports inclus, IA facultative payante au-delà d’un
-quota. Licence annuelle ou pass projet restent ouverts ; aucun prix retenu.
-Conservation des œuvres et coûts d’exploitation doivent être définis.
-Le bénéfice commercial à démontrer est le temps de préparation et de coordination
-économisé jusqu’au livre terminé ; la demande payante reste à vérifier.
+**Offre décidée le 20 octobre 2026**
+([F14](docs/specifications.md#f14--ouverture-offre-et-exploitation)) : l'outil
+est gratuit, lecture comprise, avec deux limites par projet (quarante scènes,
+dix images du livre) ; un pass par livre, payé une fois, les lève et apporte
+des étoiles, le crédit d'IA d'un compte, débité au coût réel et rechargeable ;
+un nouveau compte en reçoit trente. Le paiement est construit mais ne s'ouvre
+que sur décision du porteur ; les prix restent des hypothèses. La conservation,
+la suppression et les coûts d'exploitation sont réglés en F14 et dans le
+[plan](docs/plan.md#coûts). Le bénéfice commercial à démontrer reste le temps
+de préparation et de coordination économisé jusqu'au livre terminé ; la
+demande payante n'est pas vérifiée.
 
 ## 7. Questions à approfondir
 
@@ -296,7 +302,7 @@ renvoie aux sections de référence.
    de modes sont acquises pour la première livraison.
    L'aide IA aux choix et à leurs destinations est retenue selon
    [F13.3](docs/specifications.md#f133--aide-à-concevoir-les-choix-et-leurs-destinations).
-6. **Exploitation :** budget, limites, sauvegardes, support, essai, paiement et conservation.
+6. **Exploitation :** réglée en F14 le 20 octobre 2026 ; restent les prix, l'entité qui facture et la relecture juridique.
 
 Les réponses sont transformées en critères d’acceptation dans les
 spécifications ; l'ordre de construction, les deux seuils « ma classe » et

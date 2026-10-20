@@ -97,7 +97,7 @@ décidée dans un parcours validé sans que ces mots y soient.
 | [F11](specifications.md#f11--composition-et-préparation-du-livre) | Format A5 unique, aperçu, PDF de travail et PDF définitif, règles de composition, pages de présentation, ordre imprimé et « Réordonner les passages », parcours guidé, passage suggéré. | Écrit pour le format et l'agencement ; le reste décidé. Le passage suggéré (F11.3) est conditionné par les spécifications à un essai des hauteurs ; le plan le suppose concluant. |
 | [F12](specifications.md#f121--partager-une-version-du-récit) | Version partagée, lien de lecture, lecteur en ligne, lecture par les classes de l'enseignant. | Écrit. |
 | [F13](specifications.md#f13--assistance-ia-facultative) | Correction en trois intentions (F13.1), aide aux choix et à leurs destinations (F13.3). | Écrit pour ces deux aides seulement. F13.2, F13.4 et F13.5, retenues sans échéance dans les spécifications, sont placées à l'étape 8 par la validation du plan. |
-| F14 | Aucune règle. | Au niveau du brief : pas de section dans les spécifications. |
+| [F14](specifications.md#f14--ouverture-offre-et-exploitation) | Inscription publique, étoiles, limites gratuites et pass, paiement derrière un interrupteur, administration, suppressions et comptes inactifs, sauvegarde nocturne, pages publiques et textes juridiques. | Écrit et validé le 20 octobre 2026 (étape 9). |
 
 **Ordre de grandeur :** les spécifications numérotent environ 460 critères
 d'acceptation de F01 à F13, dont 95 pour F11 et près de 80 pour F06. Ce compte mesure
@@ -150,12 +150,14 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
 | --- | --- | --- |
 | Hébergement de l'application | **Vercel**, à son adresse par défaut et sans nom de domaine, décidé le 8 octobre 2026, sur un forfait Pro déclaré par le porteur et non vérifié. | Décidé. |
 | Base, comptes et fichiers | **Supabase**, en souscription directe, décidé le 8 octobre 2026 ([ADR 0004](adr/0004-vercel-et-supabase.md)). | Décidé. |
-| Offre de la base | **Offre gratuite jusqu'à l'ouverture**, décidé le 8 octobre 2026 : aucune sauvegarde automatique, mise en sommeil après une semaine sans activité, à relancer à la main. Le porteur fait lui-même une sauvegarde de temps en temps. | Décidé ; à revoir à l'étape 9. |
+| Offre de la base | **Offre gratuite jusqu'au premier utilisateur autre que le porteur, puis Supabase Pro**, décidé le 20 octobre 2026 (F14) ; jusque-là, le porteur veille à la mise en sommeil. | Décidé. |
+| Sauvegarde | **Chaque nuit vers un seau S3 du compte AWS du porteur, à Paris,** par GitHub Actions, base et images, quatre-vingt-dix jours, décidé le 20 octobre 2026 (F14). | Étape 9, lot 8. |
+| Domaines et courriels | `iletaituneclasse.fr`, `iletaituneclasse.com` et `onceuponaclassroom.com` chez OVH, enregistrés le 20 octobre 2026 ; courriels de l'application par Amazon SES. | Étape 9, lot 1. |
 | Région des données | Paris, pour la base (Supabase, `eu-west-3`) comme pour les fonctions (Vercel, `cdg1`), depuis le 9 octobre 2026. | Fait. |
 | Production du PDF et de l'aperçu | Chaîne retenue (ADR 0003), exécutée chez Vercel par hypothèse ; Render si V2 échoue. | Étape 6. |
 | Imprimeur | epubli sert de premier cas de vérification, sans exclusivité. | Étape 6 (V6). |
 | IA | Images par OpenAI ; textes par Claude (API d'Anthropic), choisi par le porteur le 17 octobre 2026 après l'essai V17 ; traitement aux États-Unis accepté le même jour. | Décidé. |
-| Paiement | Stripe Checkout proposé. | Étape 9. |
+| Paiement | **Stripe Checkout**, achats uniques par carte (pass et recharges), décidé le 20 octobre 2026 (F14), en mode d'essai jusqu'à l'interrupteur « Paiement ouvert ». | Étape 9, lot 5. |
 
 ## Avant de saisir des prénoms d'élèves réels
 
@@ -171,13 +173,14 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
   la sauvegarde lui-même de temps en temps, par une commande fournie à
   l'étape 1, et une restauration a réussi avant la première séance (V18) ;
 - rien ne s'efface seul et le porteur supprime à la main ; la règle générale
-  de conservation s'écrira en F14, pour l'ouverture.
+  de conservation est écrite en F14 le 20 octobre 2026.
 
 Le porteur estime qu'aucune donnée sensible n'est en jeu et ne demande pas
-d'autre préalable. Les documents ne contiennent aucune analyse des
-obligations de protection des données pour l'espace de travail de la classe,
-ni de l'information des familles ; cet examen reste à faire avant
-l'ouverture (étape 9).
+d'autre préalable. L'examen des obligations envers d'autres écoles est fait à
+l'entretien de l'étape 9, le 20 octobre 2026 : l'application fournit ce
+qu'une école peut demander (page « Confidentialité », liste des services,
+modèles pour les familles, contrat de sous-traitance type), sans analyse
+d'impact, qui revient au responsable de traitement (F14).
 
 ## Étapes
 
@@ -3050,53 +3053,94 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 
 ### Étape 9 — Ouverture à d'autres enseignants
 
-- **Ce qu'elle permet :** l'inscription d'autres enseignants, avec une
-  découverte et une offre.
-- **Périmètre :** F14, à spécifier en entier : offre et paiement,
-  conservation et suppression des données, durée d'hébergement des livres
-  partagés, support ; inscription publique et pages publiques ; examen des
-  obligations envers d'autres écoles ; nom de domaine.
-- **Nom et adresses, état au 9 octobre 2026 :** le produit s'appelle
-  « Il était une classe », décidé par le porteur. Aucune adresse n'est
-  réservée. Sont libres ce jour-là, d'après les registres :
-  `iletaituneclasse` en `.fr`, `.com`, `.org` et `.net`, et
-  `il-etait-une-classe` en `.fr` et `.com`. La marque n'est pas vérifiée à
-  l'INPI. Le porteur souhaite passer assez vite à l'anglais, avec un `.com`
-  en anglais ; le nom anglais n'est pas décidé. `onceuponaclass.com` est pris
-  (enregistré le 12 mai 2026 pour un an, sans site), `onceuponaclass.org` est
-  libre, et l'usage de « Once upon a class » par un autre produit n'est pas
-  vérifié. Recommandé, non décidé : un nom par langue, deux adresses pour la
-  même application, sans passer par un courtier.
-- **Pages publiques, recommandé le 9 octobre 2026, non décidé :** une seule
-  page d'accueil tournée vers l'enseignant et sa classe (la promesse et le
-  livre montré, le chemin en quelques temps, les deux sortes de récits en une
-  section, qui fait quoi, l'origine du projet, l'offre) ; des pages
-  secondaires, dont une pour le livre dont vous êtes le héros en classe et
-  une pour écrire seul ; pas de tableau des quatre combinaisons. Dit par le
-  porteur : la classe est sa particularité ; toucher des auteurs hors de
-  l'école élargirait la cible, sans qu'il en fasse un objectif ; le livre de
-  sa classe pourra servir d'exemple à feuilleter, les règles de diffusion de
-  F12.2 restant différées.
-- **Du lecteur en ligne vers le site, question du porteur le 16 octobre 2026,
-  non décidée :** aujourd'hui, l'adresse de l'application mène à l'entrée des
-  enseignants ; un lien depuis le lecteur n'y conduirait une famille qu'à une
-  page de connexion. Recommandé : rien avant l'ouverture ; avec la page
-  d'accueil publique, une mention discrète « Écrit avec Il était une classe »,
-  menant à elle, au pied de la page de titre et après la fin du livre — jamais
-  pendant la lecture, ni sur la page neutre. Le lecteur est le premier aperçu du
-  produit pour qui reçoit un lien (F04.2) : c'est le canal de découverte le plus
-  naturel. Il touche à F12.2 (le livre ne sert pas de vitrine sans accord) et
-  reste à décider avec les pages publiques.
-- **Mention « React Flow », à trancher avant l'ouverture :** la
-  bibliothèque de la vue « Chemins » affiche d'ordinaire son nom dans un coin
-  du schéma ; elle est masquée depuis le 12 octobre 2026. Sa licence le
-  permet ; ses auteurs le demandent compensé par un abonnement de soutien
-  dans un produit qui rapporte. À l'ouverture : afficher la mention pour
-  l'adulte, ou soutenir la bibliothèque
-  ([architecture](architecture.md#réalisation-de-létape-3-10-octobre-2026)).
-  Aucun achat n'est engagé.
-- **Dépend de :** toutes les étapes précédentes, et d'un entretien dédié.
-- **Terminée quand :** à définir par cet entretien.
+- **Ce qu'elle permet :** l'inscription d'autres enseignants, avec une offre
+  gratuite, des étoiles pour l'IA, un pass par livre et le paiement, prêts à
+  ouvrir.
+- **Autorisée le 19 octobre 2026,** pour elle seule, en deux temps : un
+  entretien, puis la construction après validation. **Entretien fait les 19 et
+  20 octobre 2026 et validé dans son ensemble le 20** (« Je valide
+  l'entretien ») ; les règles sont dans
+  [F14](specifications.md#f14--ouverture-offre-et-exploitation), qui fait foi,
+  avec ses critères F14-AC01 à AC36. Il révise F01-AC32 (Google crée le
+  compte), les plafonds de F13 (remplacés par les étoiles) et la sauvegarde à
+  la main du 8 octobre 2026 (remplacée par une sauvegarde nocturne vers S3).
+  Les faits relevés pour l'entretien (tarifs de Supabase, Vercel, Stripe,
+  React Flow et OVH ; registres de domaines et de marques ; textes sur la
+  protection des données à l'école) datent du 19 octobre 2026.
+- **Décidé par le porteur, en bref** (le détail et les alternatives écartées
+  sont en F14) : tout est construit en une fois, paiement compris, derrière
+  un interrupteur « Paiement ouvert » éteint par défaut ; inscription libre ;
+  l'outil gratuit, sauf deux limites par projet (40 scènes, 10 images du
+  livre) qui ne s'appliquent qu'interrupteur allumé ; un pass par livre, payé
+  une fois, et des recharges d'étoiles, par Stripe Checkout et par carte ;
+  des étoiles débitées au coût réel, 30 offertes à un nouveau compte, à la
+  place de tout quota ; Supabase Pro dès le premier utilisateur autre que le
+  porteur ; une sauvegarde chaque nuit vers un seau S3 du porteur ; un nom
+  par langue, une seule application ; des pages publiques ; des pages
+  d'administration pour le porteur ; suppression du compte, d'une classe
+  passée, de la corbeille, et des comptes inactifs depuis cinq ans.
+- **Domaines enregistrés par le porteur le 20 octobre 2026,** chez OVH :
+  `iletaituneclasse.fr` (jusqu'en 2029), `iletaituneclasse.com` et
+  `onceuponaclassroom.com` (jusqu'en 2028), avec DNSSEC et une boîte Zimbra
+  gratuite par domaine. Aucune marque n'est déposée (F14, « Marque :
+  attendre »).
+- **Construction, autorisée par la validation de l'entretien :** en local, un
+  commit par lot, rien poussé sur `main` ni appliqué à la vraie base sans sa
+  demande ; une migration ne se modifie jamais ; chaque critère a son test ;
+  suite complète des parcours à la clôture d'un lot. Rien ne s'achète, ne se
+  réserve ni ne s'ouvre chez un fournisseur (Stripe, AWS, Supabase Pro,
+  Google) sans sa demande : les réglages chez un fournisseur lui sont dictés,
+  il les fait.
+- **Lots, découpage validé le 20 octobre 2026 :**
+  1. **Domaine et courriels :** l'application à `iletaituneclasse.fr`, les
+     deux `.com` en renvoi ; Amazon SES pour les courriels du compte (le
+     service de Supabase n'écrit qu'à son équipe, deux fois par heure) ;
+     `contact@` redirigé vers la boîte du porteur ; vérification de la marque
+     chez Google.
+  2. **Inscription publique,** par adresse avec confirmation et par Google
+     (F14-AC01 à AC04).
+  3. **Étoiles :** solde, débit au coût réel, étoiles offertes après
+     confirmation, solde épuisé, fin des quotas, compte du porteur sans solde
+     (F14-AC05 à AC11). Migration.
+  4. **Limites gratuites et pass** (F14-AC12 à AC17), conçus avec impeccable
+     et critiqués en deux lectures. Migration.
+  5. **Paiement :** Stripe Checkout en mode d'essai, avis de paiement reçu une
+     seule fois, facture, case de rétractation, interrupteur (F14-AC18 à
+     AC21).
+  6. **Administration :** comptes, offrir des étoiles ou un pass, retirer un
+     partage, dépense d'IA et ventes du mois (F14-AC22 à AC25) ; conçue avec
+     impeccable, sans les deux lectures de critique, exception accordée par
+     le porteur : elle ne sert qu'à lui.
+  7. **Supprimer pour de bon :** compte, classe passée, corbeille, comptes
+     inactifs (F14-AC26 à AC29).
+  8. **Sauvegarde nocturne vers S3** par GitHub Actions, qui dispose de
+     Docker et reprend `npm run sauvegarder`, et restauration depuis S3
+     (F14-AC30, AC31). Le cron de Vercel est écarté : ses fonctions n'ont ni
+     l'outil de copie de la base ni Docker.
+  9. **Pages publiques et textes juridiques,** « Écrit avec Il était une
+     classe », mention React Flow, support (F14-AC32 à AC36), conçus avec
+     impeccable et critiqués en deux lectures.
+  10. **Essai de bout en bout,** et mode d'emploi de la mise en ligne.
+- **Terminée quand,** validé le 20 octobre 2026 :
+  - essai en ligne du porteur, « Paiement ouvert » éteint : avec une seconde
+    adresse, il crée un compte sur `iletaituneclasse.fr` par adresse puis par
+    Google, reçoit les courriels, écrit un petit livre personnel, use ses
+    30 étoiles jusqu'au message, en reçoit depuis l'administration, fait le
+    PDF et partage le livre, dont la mention mène à l'accueil ;
+  - le même compte en local, interrupteur allumé : bloqué à 40 scènes, il
+    achète le pass avec une carte d'essai de Stripe, les limites sautent, il
+    achète une recharge, la facture arrive ;
+  - l'écran de Google affiche « Il était une classe » ;
+  - une nuit de sauvegarde a tourné, et une restauration depuis S3 a réussi
+    en local ;
+  - la suppression du compte d'essai efface tout.
+  Les classes ne se rejouent pas : elles sont éprouvées aux étapes 1 à 7.
+  Supabase Pro se prend au premier vrai collègue, non pour l'essai.
+- **Reste à la charge du porteur, hors de la construction :** créer le compte
+  Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
+  DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité
+  qui facture, le médiateur de la consommation, la relecture des textes et
+  les prix définitifs (avis extérieur).
 
 ## Hors de la première livraison
 
@@ -3131,20 +3175,31 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   vitrine et bibliothèque (F12.2), mis de côté.
 - **F13 :** réécriture créative complète d'un texte écrit (l'écriture d'une scène vide d'après sa consigne y entre le 17 octobre 2026, F13.6) ; accès des élèves à l'IA ;
   relecture des coquilles du livre entier, idée non décidée.
-- **Hors identifiant :** anglais ; logiciel natif ; hors ligne complet ;
-  import de la V0.
+- **F14 :** abonnement ; paiement sur bon de commande ou par mandat
+  administratif ; dépôt de la marque, reporté.
+- **Hors identifiant :** anglais, dont l'adresse `onceuponaclassroom.com` est
+  seulement réservée ; logiciel natif ; hors ligne complet ; import de la V0.
 
 ## Coûts
 
 - **Développement :** aucun achat ; le temps du porteur, dit plus haut.
-- **Exploitation :** rien pour la base avant l'ouverture, l'offre gratuite
-  étant gardée ; l'usage de Vercel au-delà de ce que couvre le
-  forfait existant, chaque recalcul de l'aperçu étant un rendu côté serveur ;
-  un traitement séparé pour le PDF si V2 échoue ; les appels aux aides IA à
-  partir de l'étape 8 ; un exemplaire imprimé pour V6. Aucun de ces coûts
-  n'est chiffré ici.
-- **Effort commercial :** aucun avant l'étape 9. Les revenus sont
-  souhaitables, non un préalable.
+- **Exploitation :** rien pour la base avant le premier utilisateur autre
+  que le porteur, puis Supabase Pro (25 dollars par mois au 19 octobre 2026) ;
+  l'usage de Vercel au-delà de ce que couvre le forfait existant, chaque
+  recalcul de l'aperçu étant un rendu côté serveur ; un traitement séparé pour
+  le PDF si V2 échoue ; les appels aux aides IA, payés en étoiles par les
+  comptes et, pour les étoiles offertes (trente par compte, environ 0,30 euro
+  de coût), par le porteur, bornés par une limite mensuelle chez chaque
+  fournisseur ; les domaines (environ 72 euros TTC payés le 20 octobre 2026
+  pour deux à trois ans) ; les courriels par Amazon SES et le seau S3, de
+  quelques centimes par mois à l'échelle attendue ; les frais de Stripe sur
+  chaque vente ; un exemplaire imprimé pour V6. Ordres de grandeur d'après les
+  tarifs publics, non des mesures.
+- **Effort commercial :** à l'étape 9, des pages publiques, un support par
+  courriel sans délai promis, et, pour allumer « Paiement ouvert », l'entité
+  qui facture, un médiateur de la consommation et une relecture juridique.
+  Aucune démarche de vente n'est prévue ; les revenus sont souhaitables, non
+  un préalable.
 
 ## Risques
 
@@ -3158,9 +3213,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   n'est pas accordé avant l'étape.
 - **Des écrans proposés, non validés.** La plupart n'ont pas reçu de retour
   du porteur ; ses retouches viendront à l'essai de chaque étape.
-- **Des sauvegardes faites à la main.** Ce qui est écrit entre deux
-  sauvegardes n'est pas protégé ; le porteur l'accepte. Une sauvegarde après
-  chaque séance d'écriture borne la perte à une séance.
+- **Des sauvegardes faites à la main, jusqu'à l'étape 9.** Ce qui est écrit
+  entre deux sauvegardes n'est pas protégé ; le porteur l'accepte. Une
+  sauvegarde après chaque séance d'écriture borne la perte à une séance.
+  L'étape 9 la remplace par une sauvegarde chaque nuit vers S3, images
+  comprises, que ni la sauvegarde à la main ni Supabase ne copiaient.
 - **Le livre de la classe sur un outil neuf.** Entre le seuil « ma classe »
   et la fin de l'étape 6, les textes sont dans la V1 sans que le livre puisse
   en sortir. Si l'étape 6 n'aboutit pas à temps pour l'impression, repasser
@@ -3179,9 +3236,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 Celles qui bloquent une étape figurent à cette étape, sous « À régler avant
 de commencer ». Celles-ci n'en bloquent aucune.
 
-- **F01, F01.1 :** classement des projets d'une année sur l'autre ;
-  suppression définitive d'une classe passée et de ses profils, renvoyée à
-  F14 ; élève qui change de classe en cours d'année.
+- **F01, F01.1 :** classement des projets d'une année sur l'autre ; élève
+  qui change de classe en cours d'année. La suppression définitive d'une
+  classe passée est réglée en F14 le 20 octobre 2026.
 - **F03.1 :** scènes communes à plusieurs chapitres, pour lesquelles un
   chapitre ordinaire est recommandé sans retour ; arrivées regroupées dans
   « Chemins » quand de nombreux chapitres mènent au même.
