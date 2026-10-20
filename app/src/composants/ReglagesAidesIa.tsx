@@ -1,6 +1,7 @@
 "use client";
 
-import { useId } from "react";
+import { useId, useState, useTransition } from "react";
+import { acheterUneRecharge } from "@/app/(adulte)/projet/actions-paiement";
 import { DEGRES, NIVEAUX, NOMS_DES_DEGRES, QUALITES, enEtoiles, type Degre, type ReglagesIa } from "@/domaine/aides-ia";
 import styles from "./BarreAdulte.module.css";
 
@@ -9,8 +10,19 @@ import styles from "./BarreAdulte.module.css";
  * projets du compte. Une seule section, l'interrupteur en tête ; éteintes, les aides
  * disparaissent de partout et leurs réglages se replient. Une ligne d'aide au plus par réglage.
  */
-export function ReglagesAidesIa({ reglages, onChanger, etoiles = null }: { reglages: ReglagesIa; onChanger: (r: Partial<ReglagesIa>) => void; etoiles?: number | null }) {
+export function ReglagesAidesIa({
+  reglages, onChanger, etoiles = null, recharge = null,
+}: { reglages: ReglagesIa; onChanger: (r: Partial<ReglagesIa>) => void; etoiles?: number | null; recharge?: string | null }) {
   const id = useId();
+  const [enCours, lancer] = useTransition();
+  const [erreur, setErreur] = useState<string | null>(null);
+  const recharger = () =>
+    lancer(async () => {
+      setErreur(null);
+      const r = await acheterUneRecharge(`${window.location.pathname}${window.location.search}`);
+      if (r.ok) window.location.assign(r.adresse);
+      else setErreur(r.erreur);
+    });
   return (
     <section className={styles.aidesIa}>
       <h3>Aides IA</h3>
@@ -18,6 +30,14 @@ export function ReglagesAidesIa({ reglages, onChanger, etoiles = null }: { regla
       {etoiles !== null ? (
         <p className={styles.etoiles}>
           Il vous reste <strong>{enEtoiles(etoiles)}</strong> pour les aides.
+        </p>
+      ) : null}
+      {etoiles !== null && recharge ? (
+        <p className={styles.recharge}>
+          <button type="button" className="btn btn--petit" onClick={recharger} disabled={enCours} aria-busy={enCours || undefined}>
+            {recharge}
+          </button>
+          {erreur ? <span role="alert">{erreur}</span> : null}
         </p>
       ) : null}
       <label className="inter">

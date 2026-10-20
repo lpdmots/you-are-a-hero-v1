@@ -269,6 +269,34 @@ s'allume dans la table `reglages_application` (Studio, http://127.0.0.1:54323, o
 l'administration du lot 6). Les essais le règlent eux-mêmes et le rendent comme ils
 l'ont trouvé.
 
+## Étape 9, lot 5 : le paiement (Stripe, mode d'essai)
+
+Deux achats uniques par Stripe Checkout, par carte : le pass d'un projet (depuis son
+dialogue ou ses réglages) et une recharge d'étoiles (« Mon compte »). Les prix sont
+dans `reglages_application`. Un paiement s'inscrit une seule fois, par l'avis de
+Stripe ou par la page de remerciement, qui relit la session : **en local, aucun
+avis n'est nécessaire.** Les essais simulent Stripe (`STRIPE_SIMULE=1`).
+
+Réglages faits par le porteur chez Stripe, **en mode d'essai** (bascule « Test mode »),
+dans cet ordre ; aucune clé ne passe dans la conversation :
+
+1. Créer le compte Stripe, rester en mode d'essai.
+2. Settings, Business, Public details : site `https://iletaituneclasse.fr`, et
+   « Terms of service » `https://iletaituneclasse.fr/conditions` (la page vient au
+   lot 9) : la case de renonciation de la page de paiement s'appuie sur elle.
+3. Settings, Customer emails (Emails) : allumer « Successful payments » ; et, sous
+   Invoices, l'envoi des factures aux clients : la facture part à chaque paiement.
+4. Developers, API keys : copier la clé secrète d'essai (`sk_test_…`) dans
+   `.env.local`, sur une ligne `STRIPE_CLE_SECRETE=…`, puis relancer le serveur local.
+5. Pour la mise en ligne seulement : Developers, Webhooks, « Add endpoint »
+   `https://iletaituneclasse.fr/paiement/avis`, événements
+   `checkout.session.completed` et `checkout.session.async_payment_succeeded` ; son
+   secret de signature (`whsec_…`) va chez Vercel en `STRIPE_SECRET_AVIS`, la clé
+   secrète en `STRIPE_CLE_SECRETE`.
+
+Cartes d'essai de Stripe : `4242 4242 4242 4242` (acceptée), `4000 0000 0000 0002`
+(refusée), une date future et trois chiffres quelconques.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

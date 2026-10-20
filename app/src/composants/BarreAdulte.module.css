@@ -178,3 +178,9 @@
   color: var(--ia-fonce);
   font-size: var(--t-m);
 }
+.recharge {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}

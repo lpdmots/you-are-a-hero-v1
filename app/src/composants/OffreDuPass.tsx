@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { acheterLePass, offreDuProjet, type OffreDuProjet } from "@/app/(adulte)/projet/actions-offre";
+import { offreDuProjet, type OffreDuProjet } from "@/app/(adulte)/projet/actions-offre";
+import { acheterLePass } from "@/app/(adulte)/projet/actions-paiement";
 import { enEuros, type Limite, type Limites, type Offre } from "@/domaine/offre";
 import { Bulle } from "./Bulle";
 import { Dialogue } from "./Dialogue";
@@ -59,7 +60,8 @@ export function AcheterLePass({ projetId, offre, plein = true, avecPrix = true }
   const acheter = () =>
     lancer(async () => {
       setErreur(null);
-      const r = await acheterLePass(projetId);
+      // Un abandon chez Stripe ramène ici (F14-AC20)
+      const r = await acheterLePass(projetId, `${window.location.pathname}${window.location.search}`);
       if (r.ok) window.location.assign(r.adresse);
       else setErreur(r.erreur);
     });

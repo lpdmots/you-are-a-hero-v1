@@ -22,13 +22,6 @@ export async function offreDuProjet(projetId: string): Promise<OffreDuProjet | n
   return { projetId, titre: projet.titre as string, limites, offre };
 }
 
-/** « Acheter le pass » : le paiement s'ouvre au lot 5 (Stripe Checkout). */
-export async function acheterLePass(projetId: string): Promise<{ ok: true; adresse: string } | { ok: false; erreur: string }> {
-  await exigerEnseignant();
-  if (!estUuid(projetId)) return { ok: false, erreur: "Projet inconnu." };
-  return { ok: false, erreur: "Le paiement n’est pas encore ouvert." };
-}
-
 /**
  * Une image de plus tient-elle dans le livre gratuit (F14-AC14) ? Le compte du livre, moins ce que
  * la scène portait à son dernier enregistrement, plus ce que la copie porte maintenant. Une scène

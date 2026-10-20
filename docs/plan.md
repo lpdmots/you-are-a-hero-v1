@@ -3137,7 +3137,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      venue d'un collage s'enregistre sans elle.
   5. **Paiement :** Stripe Checkout en mode d'essai, avis de paiement reçu une
      seule fois, facture, case de rétractation, interrupteur (F14-AC18 à
-     AC21).
+     AC21). **Construit le 20 octobre 2026,** migration `paiements` en
+     base locale seulement : table des ventes (gardée si le compte disparaît),
+     `enregistrer_paiement` d'un seul tenant ; l'API de Stripe appelée
+     directement, sans sa bibliothèque ; un paiement s'inscrit par l'avis
+     signé ou par la page de remerciement, qui relit la session (l'essai local
+     n'a pas besoin d'avis) ; « Recharger » dans « Mon compte » ; un abandon
+     ramène à la page d'où l'on part ; Stripe simulé dans les essais. Réglages
+     chez Stripe dictés dans `app/README.md`, « Étape 9, lot 5 ».
   6. **Administration :** comptes, offrir des étoiles ou un pass, retirer un
      partage, dépense d'IA et ventes du mois (F14-AC22 à AC25) ; conçue avec
      impeccable, sans les deux lectures de critique, exception accordée par

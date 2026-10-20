@@ -10,6 +10,9 @@ const local = parse(readFileSync(resolve(__dirname, ".env.local")));
 // une chaîne vide, que Next.js ne remplace pas par celles qu'il lirait dans .env.local
 local.ANTHROPIC_API_KEY = "";
 local.OPENAI_API_KEY = "";
+// Ni Stripe : le paiement est simulé, et les avis se signent d'un secret d'essai (étape 9)
+local.STRIPE_CLE_SECRETE = "";
+local.STRIPE_SECRET_AVIS = "whsec_essai_local";
 if (!/^http:\/\/(127\.0\.0\.1|localhost)[:/]/.test(local.NEXT_PUBLIC_SUPABASE_URL ?? "")) {
   throw new Error("Les parcours ne se jouent que contre la base locale : « npm run base:demarrer » puis « npm run env:local ».");
 }
@@ -40,6 +43,6 @@ export default defineConfig({
     timeout: 240_000,
     // NEXT_PUBLIC_ESSAIS : la copie expose son éditeur aux parcours, pour y poser le curseur ;
     // IA_SIMULEE : les aides IA rendent leur réponse simulée (étape 8)
-    env: { ...local, NEXT_PUBLIC_ESSAIS: "1", IA_SIMULEE: "1" },
+    env: { ...local, NEXT_PUBLIC_ESSAIS: "1", IA_SIMULEE: "1", STRIPE_SIMULE: "1" },
   },
 });

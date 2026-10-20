@@ -252,6 +252,8 @@ export default async function PageProjet({ params, searchParams }: Props) {
   return (
     <div className="page">
       {message === "cree" ? <MessageAuChargement texte={`« ${projet.titre} » est créé. Commencez par la préparation.`} /> : null}
+      {/* Au retour du pass payé (F14-AC18) */}
+      {message === "pass" ? <MessageAuChargement texte={`Le pass est là : « ${projet.titre} » n’a plus de limite, et ses étoiles sont arrivées.`} /> : null}
       {message === "cree-sans-image" ? (
         <MessageAuChargement texte={`« ${projet.titre} » est créé, mais son image n’a pas pu être importée. Choisissez-la depuis les réglages du projet.`} />
       ) : null}

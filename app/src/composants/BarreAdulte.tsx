@@ -19,6 +19,8 @@ type Props = {
   reglagesIa: ReglagesIa;
   /** Le solde d'étoiles (F14-AC07) ; null pour le compte du porteur */
   etoiles: number | null;
+  /** « Recharger · 5 € pour 100 ✦ », quand on peut acheter des étoiles ; sinon rien (F14-AC19) */
+  recharge?: string | null;
 };
 
 const signe = (nom: string): string =>
@@ -33,7 +35,7 @@ const signe = (nom: string): string =>
  * Barre du haut de l'adulte : le nom du dernier projet ouvert, qui y ramène de
  * partout, puis « Mes projets » et « Mes classes ». Son nom ouvre « Mon compte ».
  */
-export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles }: Props) {
+export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharge = null }: Props) {
   const projet = useProjetCourant();
   const chemin = usePathname();
   const routeur = useRouter();
@@ -130,7 +132,7 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles }: Props
               enseignant(e) ».
             </p>
           </section>
-          <ReglagesAidesIa reglages={ia} onChanger={reglerIa} etoiles={etoiles} />
+          <ReglagesAidesIa reglages={ia} onChanger={reglerIa} etoiles={etoiles} recharge={recharge} />
           <section>
             <form action={seDeconnecter}>
               <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>
