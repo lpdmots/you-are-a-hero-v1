@@ -247,6 +247,20 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
+# Courriels du compte en français (étape 9, lot 1, F14) ; en production, les mêmes textes sont
+# collés dans le tableau de bord de Supabase (Authentication, Emails), voir README « Étape 9 ».
+[auth.email.template.confirmation]
+subject = "Confirmer votre adresse — Il était une classe"
+content_path = "./supabase/templates/confirmation.html"
+
+[auth.email.template.recovery]
+subject = "Choisir un nouveau mot de passe — Il était une classe"
+content_path = "./supabase/templates/recovery.html"
+
+[auth.email.template.email_change]
+subject = "Confirmer votre nouvelle adresse — Il était une classe"
+content_path = "./supabase/templates/email_change.html"
+
 # Uncomment to customize email template
 # [auth.email.template.invite]
 # subject = "You have been invited"

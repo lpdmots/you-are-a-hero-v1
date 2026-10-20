@@ -3096,7 +3096,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      deux `.com` en renvoi ; Amazon SES pour les courriels du compte (le
      service de Supabase n'écrit qu'à son équipe, deux fois par heure) ;
      `contact@` redirigé vers la boîte du porteur ; vérification de la marque
-     chez Google.
+     chez Google. **Construit le 20 octobre 2026 pour sa part de code,** sans
+     migration : courriels du compte en français (confirmation, mot de passe
+     oublié, changement d'adresse, `app/supabase/templates/`) et mode d'emploi
+     des réglages du porteur, dans l'ordre (`app/README.md`, « Étape 9,
+     lot 1 ») ; la vérification de la marque chez Google attend les pages du
+     lot 9.
   2. **Inscription publique,** par adresse avec confirmation et par Google
      (F14-AC01 à AC04).
   3. **Étoiles :** solde, débit au coût réel, étoiles offertes après

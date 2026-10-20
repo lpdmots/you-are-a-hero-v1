@@ -163,6 +163,59 @@ npm run verifier:production          # contrôle la vraie base, sans rien y écr
 
 Vercel déploie à chaque `git push` sur `main` (dossier racine : `app`).
 
+## Étape 9, lot 1 : le domaine et les courriels
+
+Réglages faits par le porteur, chez les fournisseurs, dans cet ordre ; aucune
+clé ne passe dans la conversation. Les règles sont en F14
+(`../docs/specifications.md`), le pourquoi dans l'architecture, « Préparation
+de l'étape 9 ».
+
+1. **Vercel, les adresses.** Projet `you-are-a-hero-v1`, Settings, Domains :
+   ajouter `iletaituneclasse.fr` (adresse principale) ; ajouter
+   `www.iletaituneclasse.fr`, `iletaituneclasse.com` et
+   `onceuponaclassroom.com` en « Redirect to » `iletaituneclasse.fr` (308).
+   Vercel affiche pour chacune les enregistrements DNS à poser.
+2. **OVH, la zone DNS de chaque domaine** (Web Cloud, Noms de domaine, Zone
+   DNS) : poser les enregistrements que Vercel affiche (A pour le domaine nu,
+   CNAME pour `www`) et retirer les A et CNAME de parking d'OVH qui les
+   contredisent. Ne pas toucher aux MX ni au SPF de la boîte Zimbra.
+3. **OVH, l'adresse de contact.** Activer la boîte Zimbra offerte de
+   `iletaituneclasse.fr`, `contact@iletaituneclasse.fr`, et, dans ses
+   réglages, faire suivre les messages vers la boîte startfrenchnow.
+4. **AWS, Amazon SES, région Paris (`eu-west-3`).** Identities, Create
+   identity, Domain `iletaituneclasse.fr`, Easy DKIM : poser chez OVH les
+   trois CNAME donnés. Ajouter chez OVH un TXT `_dmarc` :
+   `v=DMARC1; p=none; rua=mailto:contact@iletaituneclasse.fr`. Puis « Request
+   production access » (sortie du mode d'essai, accordée par AWS, souvent en
+   un jour) ; texte de la demande : « Courriels de service d'une application
+   pour enseignants (confirmation d'adresse, mot de passe oublié, avis de
+   suppression), quelques dizaines par mois, envoyés seulement à qui s'est
+   inscrit ; rebonds et plaintes suivis par la console. » Enfin SMTP
+   settings, Create SMTP credentials : garder l'identifiant et le mot de passe
+   pour le point 5, sans les coller ailleurs.
+5. **Supabase, la vraie base** (tableau de bord du projet) :
+   - Authentication, URL Configuration : Site URL `https://iletaituneclasse.fr` ;
+     ajouter `https://iletaituneclasse.fr/entree/confirmer` aux Redirect URLs,
+     en gardant les adresses `vercel.app` ;
+   - Authentication, Emails, SMTP Settings : Enable custom SMTP, hôte
+     `email-smtp.eu-west-3.amazonaws.com`, port `587`, l'identifiant et le mot
+     de passe SMTP de SES, expéditeur `ne-pas-repondre@iletaituneclasse.fr`,
+     nom « Il était une classe » ; puis relever la limite d'envoi
+     (Rate Limits, emails) à 30 par heure ;
+   - Authentication, Emails, Templates : pour « Confirm signup », « Reset
+     password » et « Change email address », coller le sujet et le contenu de
+     `supabase/templates/confirmation.html`, `recovery.html` et
+     `email_change.html` (sujets dans `supabase/config.toml`).
+6. **Vercel, la variable** `ADRESSE_SITE` = `https://iletaituneclasse.fr`
+   (Production), une fois le domaine servi ; elle passe dans les courriels et
+   l'affiche de la classe. Redéployer.
+7. **Google, plus tard, au lot 9** : la vérification de la marque demande la
+   page d'accueil et la page « Confidentialité » à ce domaine. Ce jour-là :
+   Search Console (TXT de vérification chez OVH), puis Google Cloud, Google
+   Auth Platform, Branding : domaine autorisé `iletaituneclasse.fr`, page
+   d'accueil, politique de confidentialité, conditions, et envoi à la
+   vérification.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop
