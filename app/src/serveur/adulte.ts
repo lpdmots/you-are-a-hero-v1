@@ -13,6 +13,10 @@ export type Enseignant = {
   aidesMasquees: string[];
   /** Réglages des aides IA, valables pour tous ses projets (F13) */
   reglagesIa: ReglagesIa;
+  /** Son solde d'étoiles (F14) ; null pour le compte du porteur, qui n'en a pas */
+  etoiles: number | null;
+  /** Le compte du porteur : ni solde ni limite, et l'administration (F14) */
+  createur: boolean;
   supabase: SupabaseClient;
 };
 
@@ -24,7 +28,7 @@ export const enseignantCourant = cache(async (): Promise<Enseignant | null> => {
   if (error || !claims?.sub || claims.role !== "authenticated" || claims.is_anonymous) return null;
   const { data: ligne } = await supabase
     .from("enseignants")
-    .select("id, nom_affiche, dernier_projet_id, aides_masquees, reglages_ia")
+    .select("id, nom_affiche, dernier_projet_id, aides_masquees, reglages_ia, etoiles, createur")
     .eq("id", claims.sub)
     .maybeSingle();
   if (!ligne) return null;
@@ -35,6 +39,8 @@ export const enseignantCourant = cache(async (): Promise<Enseignant | null> => {
     dernierProjetId: ligne.dernier_projet_id,
     aidesMasquees: ligne.aides_masquees ?? [],
     reglagesIa: lireReglagesIa(ligne.reglages_ia),
+    etoiles: ligne.createur ? null : ligne.etoiles,
+    createur: ligne.createur === true,
     supabase,
   };
 });

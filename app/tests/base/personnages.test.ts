@@ -1,5 +1,5 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
-import { PLAFONDS, REGLAGES_IA_HABITUELS, type ReglagesIa } from "@/domaine/aides-ia";
+import { REGLAGES_IA_HABITUELS, type ReglagesIa } from "@/domaine/aides-ia";
 import { ficheVisuelle, personnages as aidePersonnages } from "@/serveur/ia/aides/images";
 import { demanderDesImages } from "@/serveur/ia/demander";
 import { SEAU } from "@/serveur/images";
@@ -234,15 +234,13 @@ describe("Fiche visuelle et images de référence (F10.2)", () => {
     expect([portrait, pleine, troisDeux, normale].map((r) => r.ok && r.qualite)).toEqual(["normale", "haute", "normale", "normale"]);
   });
 
-  it("plafond des images : vingt par jour, chaque image d'une création compte ; aides éteintes, rien ne part", async () => {
+  it("F14-AC10 — plus de plafond du jour : une création de deux images passe après dix-neuf autres ; aides éteintes, rien ne part", async () => {
     await sql(
-      "insert into public.appels_ia (enseignant_id, aide, sorte, nombre, termine_le, issue, fournisseur, modele, cout_usd) select $1, 'portrait', 'image', 1, now(), 'reussi', 'simule', 'x', 0 from generate_series(1, $2)",
-      [laurent.id, PLAFONDS.imagesParJour - 1],
+      "insert into public.appels_ia (enseignant_id, aide, sorte, nombre, termine_le, issue, fournisseur, modele, cout_usd) select $1, 'portrait', 'image', 1, now(), 'reussi', 'simule', 'x', 0 from generate_series(1, 19)",
+      [laurent.id],
     );
     const deux = await demanderDesImages(avecReglages({ imagesParCreation: 2 }), { aide: "portrait", usage: "portrait", prompt: "Lou." });
-    expect(deux).toEqual({ ok: false, refus: "jour", message: "Les aides reviennent demain. Tout le reste fonctionne." });
-    const une = await demanderDesImages(enseignantDe(laurent), { aide: "portrait", usage: "portrait", prompt: "Lou." });
-    expect(une.ok && une.reste).toBe(null);
+    expect(deux.ok && deux.images.length).toBe(2);
     const eteint = await demanderDesImages(avecReglages({ proposer: false }), { aide: "portrait", usage: "portrait", prompt: "Lou." });
     expect(eteint.ok).toBe(false);
   });

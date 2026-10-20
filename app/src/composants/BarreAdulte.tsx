@@ -17,6 +17,8 @@ type Props = {
   nomAffiche: string | null;
   courriel: string | null;
   reglagesIa: ReglagesIa;
+  /** Le solde d'étoiles (F14-AC07) ; null pour le compte du porteur */
+  etoiles: number | null;
 };
 
 const signe = (nom: string): string =>
@@ -31,7 +33,7 @@ const signe = (nom: string): string =>
  * Barre du haut de l'adulte : le nom du dernier projet ouvert, qui y ramène de
  * partout, puis « Mes projets » et « Mes classes ». Son nom ouvre « Mon compte ».
  */
-export function BarreAdulte({ nomAffiche, courriel, reglagesIa }: Props) {
+export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles }: Props) {
   const projet = useProjetCourant();
   const chemin = usePathname();
   const routeur = useRouter();
@@ -128,7 +130,7 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa }: Props) {
               enseignant(e) ».
             </p>
           </section>
-          <ReglagesAidesIa reglages={ia} onChanger={reglerIa} />
+          <ReglagesAidesIa reglages={ia} onChanger={reglerIa} etoiles={etoiles} />
           <section>
             <form action={seDeconnecter}>
               <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>

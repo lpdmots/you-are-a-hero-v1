@@ -1,7 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   creerClasse, creerEnseignant, identifier, inconnu, inscrire, lire, nettoyer, ouvrirPoste,
-  type Adulte, type ClasseEssai, type EleveEssai, type PosteEssai,
+  retenir, type Adulte, type ClasseEssai, type EleveEssai, type PosteEssai,
 } from "./outils";
 
 /**
@@ -131,10 +131,14 @@ describe("Quelqu'un sans compte ni poste", () => {
     expect((await base.rpc("travail_ouvert")).error).not.toBeNull();
   });
 
-  it("F01-AC28 — ne peut pas se créer de compte", async () => {
-    const { data, error } = await inconnu().auth.signUp({ email: "quelquun@exemple.test", password: "un-mot-de-passe-long" });
-    expect(error).not.toBeNull();
-    expect(data.user).toBeNull();
+  it("F14-AC01 (révise F01-AC28) — peut se créer un compte, qui n'ouvre rien avant la confirmation de l'adresse", async () => {
+    const courriel = `essai-${crypto.randomUUID()}@exemple.test`;
+    const { data, error } = await inconnu().auth.signUp({ email: courriel, password: "un-mot-de-passe-long" });
+    expect(error).toBeNull();
+    if (data.user) retenir(data.user.id);
+    expect(data.session).toBeNull();
+    const entree = await inconnu().auth.signInWithPassword({ email: courriel, password: "un-mot-de-passe-long" });
+    expect(entree.error?.code).toBe("email_not_confirmed");
   });
 });
 

@@ -14,7 +14,7 @@ export default async function EspaceAdulte({ children }: { children: ReactNode }
     <Messages>
       <ProjetCourant depart={dernier ? { id: dernier.id, titre: dernier.titre, onglet: dernier.dernierOnglet } : null}>
         <AidesIa reglages={enseignant.reglagesIa}>
-          <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} reglagesIa={enseignant.reglagesIa} />
+          <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} reglagesIa={enseignant.reglagesIa} etoiles={enseignant.etoiles} />
           <main>{children}</main>
         </AidesIa>
       </ProjetCourant>

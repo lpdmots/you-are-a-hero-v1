@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, niveauEnMots, qualiteDeLImage, resteDuJour } from "@/domaine/aides-ia";
+import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, niveauEnMots, qualiteDeLImage, enEtoiles, resteDEtoiles } from "@/domaine/aides-ia";
 import { AIDES } from "@/serveur/ia/aides";
 import { composerConsigne, consigne } from "@/serveur/ia/aides/consigne";
 import { correction } from "@/serveur/ia/aides/correction";
@@ -46,14 +46,15 @@ describe("Réglages des aides IA (F13)", () => {
   });
 });
 
-describe("Plafonds dits à l'écran (F13)", () => {
-  it("rien au-dessus des dix dernières demandes, puis le nombre qui reste", () => {
-    expect(resteDuJour("texte", 11)).toBeNull();
-    expect(resteDuJour("texte", 10)).toBe("Encore 10 demandes aujourd'hui.");
-    expect(resteDuJour("texte", 1)).toBe("Encore 1 demande aujourd'hui.");
-    expect(resteDuJour("texte", 0)).toBeNull();
-    expect(resteDuJour("image", 5)).toBeNull();
-    expect(resteDuJour("image", 2)).toBe("Encore 2 images aujourd'hui.");
+describe("Le solde dit à l'écran (F14-AC07)", () => {
+  it("F14-AC07 — rien au-dessus de « peu », puis le solde ; rien pour le compte du porteur", () => {
+    expect(resteDEtoiles(11, 10)).toBeNull();
+    expect(resteDEtoiles(10, 10)).toBe("Il vous reste 10 ✦.");
+    expect(resteDEtoiles(1, 10)).toBe("Il vous reste 1 ✦.");
+    expect(resteDEtoiles(-2, 10)).toBe("Il ne vous reste plus d'étoiles.");
+    expect(resteDEtoiles(null, 10)).toBeNull();
+    expect(enEtoiles(34)).toBe("34 ✦");
+    expect(enEtoiles(-3)).toBe("0 ✦");
   });
 });
 

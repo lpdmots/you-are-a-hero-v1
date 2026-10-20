@@ -47,7 +47,7 @@ export type Adulte = { id: string; courriel: string; motDePasse: string; base: S
 
 /** L'adulte tel que le serveur le voit une fois connecté, pour appeler directement ses fonctions. */
 export const enseignantDe = (a: Adulte): Enseignant => ({
-  id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], reglagesIa: REGLAGES_IA_HABITUELS, supabase: a.base,
+  id: a.id, courriel: a.courriel, nomAffiche: null, dernierProjetId: null, aidesMasquees: [], reglagesIa: REGLAGES_IA_HABITUELS, etoiles: 30, createur: false, supabase: a.base,
 });
 const crees: string[] = [];
 
@@ -63,6 +63,9 @@ export async function creerEnseignant(nomAffiche?: string): Promise<Adulte> {
   if (nomAffiche) await base.from("enseignants").update({ nom_affiche: nomAffiche }).eq("id", data.user.id);
   return { id: data.user.id, courriel, motDePasse, base };
 }
+
+/** Retient pour le nettoyage un compte d'essai créé autrement que par creerEnseignant. */
+export const retenir = (id: string): void => void crees.push(id);
 
 /** Supprime les comptes d'essai, avec leurs classes, élèves et projets ; un reste fait échouer les essais. */
 export async function nettoyer(): Promise<void> {

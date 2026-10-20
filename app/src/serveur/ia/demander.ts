@@ -1,5 +1,5 @@
 import "server-only";
-import { PLAFONDS, TAILLES_DES_IMAGES, messageDuRefus, qualiteDeLImage, resteDuJour, type AideImage, type RefusIa, type ReglagesIa, type UsageDImage } from "@/domaine/aides-ia";
+import { PLAFONDS, TAILLES_DES_IMAGES, messageDuRefus, qualiteDeLImage, resteDEtoiles, type AideImage, type RefusIa, type ReglagesIa, type UsageDImage } from "@/domaine/aides-ia";
 import { clientService } from "../supabase";
 import type { DefinitionAide } from "./aide";
 import { appelerLeFournisseur, creerDesImages, jetonsDe, type RequeteImages } from "./fournisseurs";
@@ -7,10 +7,10 @@ import { OBJET_1, OBJET_2, PORTRAIT_1, PORTRAIT_2, SCENE_1, SCENE_2 } from "./im
 import { MODELES, MODELE_DES_AIDES, MODELE_DES_IMAGES, coutDe, coutDesImages, type IdModele } from "./modeles";
 
 /**
- * Demander une aide (F13, cadre commun) : une demande à la fois par adulte, sous les plafonds
- * du jour et du mois, soixante secondes au plus, notée au journal sans son contenu. Rien de
- * ce qui arrive ici ne change le travail de l'adulte : l'aide rend une proposition, ou dit
- * pourquoi elle n'en a pas.
+ * Demander une aide (F13, cadre commun ; F14, étoiles) : tant que le solde d'étoiles est positif,
+ * soixante secondes au plus, notée au journal sans son contenu ; la base débite le coût réel
+ * d'une demande réussie (`appels_ia_debit`). Rien de ce qui arrive ici ne change le travail de
+ * l'adulte : l'aide rend une proposition, ou dit pourquoi elle n'en a pas.
  *
  * Pendant les essais automatiques, `IA_SIMULEE` remplace le fournisseur par la réponse simulée
  * de l'aide : aucun test n'appelle un vrai fournisseur ni ne dépense quoi que ce soit.
@@ -23,7 +23,7 @@ import { MODELES, MODELE_DES_AIDES, MODELE_DES_IMAGES, coutDe, coutDesImages, ty
  */
 
 export type ResultatIa<S> =
-  | { ok: true; valeur: S; /** « Encore 8 demandes aujourd'hui. », ou rien */ reste: string | null }
+  | { ok: true; valeur: S; /** « Il vous reste 8 ✦. », ou rien */ reste: string | null }
   | { ok: false; refus: RefusIa; message: string };
 
 export type Demandeur = { id: string; reglagesIa: ReglagesIa };
@@ -51,8 +51,7 @@ export function reglerLaSimulation(mode: ModeSimule | null): boolean {
 }
 
 /**
- * Les clés du fournisseur sont-elles posées ? Sans elles, rien ne part et rien ne compte dans les
- * plafonds : « Les aides IA ne sont pas installées sur ce site » (lot 9 de l'étape 8).
+ * Les clés du fournisseur sont-elles posées ? Sans elles, rien ne part et rien ne se débite : « Les aides IA ne sont pas installées sur ce site » (lot 9 de l'étape 8).
  */
 function clePosee(fournisseur: "anthropic" | "openai"): boolean {
   const simulee = simulation();
@@ -86,6 +85,31 @@ async function obtenir<E, S>(def: DefinitionAide<E, S>, entree: E, modele: IdMod
 }
 
 /**
+ * Ouvre la demande au journal, sous le verrou de la ligne de l'adulte : refusée si son solde
+ * d'étoiles est épuisé (F14-AC08), jamais pour un plafond. Les plafonds d'avant ne se passent plus.
+ */
+async function commencer(adulte: string, aide: string, sorte: "texte" | "image", nombre: number, delaiMs: number): Promise<{ id?: string; refus?: RefusIa }> {
+  const { data, error } = await clientService().rpc("commencer_appel_ia", {
+    p_enseignant: adulte, p_aide: aide, p_sorte: sorte, p_nombre: nombre,
+    p_par_jour: null, p_mois_usd: null, p_attente: Math.ceil(delaiMs / 1000) + 15,
+  });
+  if (error) throw new Error(`Journal des aides : ${error.message}`);
+  const r = data as { id?: string; refus?: string };
+  return r.refus ? { refus: r.refus === "etoiles" ? "etoiles" : "echec" } : { id: r.id };
+}
+
+/** Le solde après une demande, à dire s'il en reste peu (F14-AC07) ; rien pour le porteur. */
+async function resteApres(adulte: string): Promise<string | null> {
+  const base = clientService();
+  const [{ data: compte }, { data: reglages }] = await Promise.all([
+    base.from("enseignants").select("etoiles, createur").eq("id", adulte).single(),
+    base.from("reglages_application").select("etoiles_peu").single(),
+  ]);
+  if (!compte || compte.createur) return null;
+  return resteDEtoiles(compte.etoiles as number, (reglages?.etoiles_peu as number | undefined) ?? 10);
+}
+
+/**
  * Demande une aide de texte pour l'adulte. `delai` ne sert qu'aux essais automatiques, pour ne
  * pas attendre la minute entière.
  */
@@ -101,12 +125,7 @@ export async function demanderUneAide<E, S>(
   const base = clientService();
   const delaiMs = options.delaiMs ?? PLAFONDS.secondes * 1000;
 
-  const { data: debut, error } = await base.rpc("commencer_appel_ia", {
-    p_enseignant: adulte.id, p_aide: def.aide, p_sorte: "texte", p_nombre: 1,
-    p_par_jour: PLAFONDS.textesParJour, p_mois_usd: null, p_attente: Math.ceil(delaiMs / 1000) + 15,
-  });
-  if (error) throw new Error(`Journal des aides : ${error.message}`);
-  const commence = debut as { id?: string; restant?: number; refus?: "occupe" | "jour" | "mois" };
+  const commence = await commencer(adulte.id, def.aide, "texte", 1, delaiMs);
   if (commence.refus || !commence.id) return refus(commence.refus ?? "echec");
 
   const arret = new AbortController();
@@ -137,11 +156,11 @@ export async function demanderUneAide<E, S>(
   if (fin) console.error(`Journal des aides : ${fin.message}`);
 
   if (issue !== "reussi" || valeur === null) return refus(issue === "delai" ? "delai" : "echec");
-  return { ok: true, valeur, reste: resteDuJour("texte", commence.restant ?? PLAFONDS.textesParJour) };
+  return { ok: true, valeur, reste: await resteApres(adulte.id) };
 }
 
 export type ResultatImages =
-  | { ok: true; images: Uint8Array[]; qualite: "normale" | "haute"; /** « Encore 3 images aujourd'hui. », ou rien */ reste: string | null }
+  | { ok: true; images: Uint8Array[]; qualite: "normale" | "haute"; /** « Il vous reste 8 ✦. », ou rien */ reste: string | null }
   | { ok: false; refus: RefusIa; message: string };
 
 export type DemandeDImages = {
@@ -169,8 +188,8 @@ const decoder = (b64: string) => new Uint8Array(Buffer.from(b64, "base64"));
 
 /**
  * Crée une ou deux images pour l'adulte (F10.1, F10.2), sous les mêmes règles que les aides de
- * texte : une demande à la fois, vingt images par jour (chaque image d'une création compte), le
- * plafond du mois pour toute l'application, le journal sans contenu. La qualité suit le réglage
+ * texte : un solde d'étoiles positif au départ, plusieurs créations à la fois (F14-AC09, AC10 ;
+ * une seule en route pour un même élément, `demandes_d_images`), le journal sans contenu. La qualité suit le réglage
  * du compte et l'usage (F10-AC37). Rien n'est gardé ici : la page propose, l'adulte garde.
  */
 export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImages, options: { delaiMs?: number } = {}): Promise<ResultatImages> {
@@ -181,12 +200,7 @@ export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImag
   const qualite = qualiteDeLImage(adulte.reglagesIa.qualite, demande.usage);
   const delaiMs = options.delaiMs ?? PLAFONDS.secondesImage * 1000;
 
-  const { data: debut, error } = await base.rpc("commencer_appel_ia", {
-    p_enseignant: adulte.id, p_aide: demande.aide, p_sorte: "image", p_nombre: nombre,
-    p_par_jour: PLAFONDS.imagesParJour, p_mois_usd: PLAFONDS.imagesParMoisUsd, p_attente: Math.ceil(delaiMs / 1000) + 15,
-  });
-  if (error) throw new Error(`Journal des aides : ${error.message}`);
-  const commence = debut as { id?: string; restant?: number; refus?: "occupe" | "jour" | "mois" };
+  const commence = await commencer(adulte.id, demande.aide, "image", nombre, delaiMs);
   if (commence.refus || !commence.id) return refusImage(commence.refus ?? "echec");
 
   const arret = new AbortController();
@@ -226,7 +240,7 @@ export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImag
   if (fin) console.error(`Journal des aides : ${fin.message}`);
 
   if (issue !== "reussi") return refusImage(issue === "delai" ? "delai" : "echec");
-  return { ok: true, images, qualite, reste: resteDuJour("image", commence.restant ?? PLAFONDS.imagesParJour) };
+  return { ok: true, images, qualite, reste: await resteApres(adulte.id) };
 }
 
 /**

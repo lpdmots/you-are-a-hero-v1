@@ -3115,7 +3115,13 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      « Étape 9, lot 2 ».
   3. **Étoiles :** solde, débit au coût réel, étoiles offertes après
      confirmation, solde épuisé, fin des quotas, compte du porteur sans solde
-     (F14-AC05 à AC11). Migration.
+     (F14-AC05 à AC11). Migration. **Construit le 20 octobre 2026,** migration `etoiles`
+     en base locale seulement : réglages de l'offre en une ligne
+     (`reglages_application`), solde et mouvements datés, étoiles offertes à la
+     confirmation, débit par la base à la fin d'une demande réussie, plus de
+     plafond ni de demande unique ; le solde dans « Mon compte » et, sous
+     10 ✦, après chaque aide ; le compte du porteur marqué par
+     `npm run createur`, sans solde.
   4. **Limites gratuites et pass** (F14-AC12 à AC17), conçus avec impeccable
      et critiqués en deux lectures. Migration.
   5. **Paiement :** Stripe Checkout en mode d'essai, avis de paiement reçu une

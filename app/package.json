@@ -25,6 +25,7 @@
     "env:local": "tsx scripts/env-local.ts",
     "verifier": "npm run types && npm run lint && npm run test",
     "compte:local": "tsx scripts/compte-local.ts",
+    "createur": "tsx scripts/createur.ts",
     "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
     "livre:essai": "tsx scripts/livre-d-essai.ts",

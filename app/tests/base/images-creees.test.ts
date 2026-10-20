@@ -164,13 +164,20 @@ describe("L'image créée d'office à l'ajout par l'IA (F10.1, 18 octobre 2026)"
     expect(await appels()).toEqual([]);
   });
 
-  it("une demande de texte à la fois ; les images, plusieurs en même temps", async () => {
+  it("F14-AC08 — sans étoiles, le chapitre ajouté depuis l'IA ne reçoit pas d'image d'office, sans rien dire", async () => {
+    const { chapitre } = await passeurs();
+    await laurent.base.from("chapitres").update({ resume: "Le bac traverse le lac." }).eq("id", chapitre);
+    expect((await demanderLesImagesALAjout({ ...enseignantDe(laurent), etoiles: 0 }, "chapitre", [chapitre])).demandes).toEqual([]);
+    expect(await appels()).toEqual([]);
+  });
+
+  it("F14-AC10 — plus de demande unique : textes et images partent ensemble, plusieurs à la fois", async () => {
     const commencer = (sorte: "texte" | "image") =>
-      service().rpc("commencer_appel_ia", { p_enseignant: laurent.id, p_aide: sorte === "texte" ? "titre" : "image-ajout", p_sorte: sorte, p_nombre: 1, p_par_jour: 99, p_mois_usd: null, p_attente: 120 });
+      service().rpc("commencer_appel_ia", { p_enseignant: laurent.id, p_aide: sorte === "texte" ? "titre" : "image-ajout", p_sorte: sorte, p_nombre: 1, p_par_jour: null, p_mois_usd: null, p_attente: 120 });
     expect(((await commencer("texte")).data as { id?: string }).id).toBeTruthy();
     expect(((await commencer("image")).data as { id?: string }).id).toBeTruthy();
     expect(((await commencer("image")).data as { id?: string }).id).toBeTruthy();
-    expect((await commencer("texte")).data).toEqual({ refus: "occupe" });
+    expect(((await commencer("texte")).data as { id?: string }).id).toBeTruthy();
   });
 });
 

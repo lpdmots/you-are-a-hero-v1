@@ -240,6 +240,21 @@ base :
 4. `npm run verifier:production` dit alors « Les inscriptions sont ouvertes » et « Une
    adresse se confirme avant d'entrer ».
 
+## Étape 9, lot 3 : les étoiles
+
+Les valeurs de l'offre sont dans la table `reglages_application` (une ligne) : étoiles
+offertes, taux euro-dollar, seuil sous lequel le solde se dit. Le compte du porteur
+n'a pas de solde : il est marqué par une commande, jamais par l'application.
+
+```bash
+npm run createur                                         # le compte de .compte-local, en local
+npm run createur -- --production adresse@du.compte --oui # dans la vraie base
+```
+
+À la mise en ligne, `npm run createur -- --production … --oui` se lance **juste après**
+`npm run production:schema -- --oui` : avant, le compte du porteur a un solde et serait
+débité.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

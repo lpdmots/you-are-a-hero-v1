@@ -77,6 +77,8 @@ test("Étape 8, avec les aides — préparer, organiser, formuler, corriger, rel
   await page.getByRole("button", { name: "Proposer une idée" }).click();
   await expect(IDEES(page).getByText("Il parle aux chouettes")).toBeVisible();
   await IDEES(page).getByRole("button", { name: "Retenir « Il parle aux chouettes »" }).click();
+  // L'idée retenue s'enregistre avant qu'on demande le texte : le serveur rédige d'après la base
+  await expect.poll(async () => (await sql<{ etat: string }>("select etat from public.pistes where projet_id = $1 and texte like 'Il parle aux chouettes%'", [s.projet]))[0]?.etat).toBe("retenue");
   await page.getByRole("button", { name: "Rédiger d’après les idées" }).click();
   await expect(page.getByRole("textbox", { name: "Texte proposé" })).toHaveValue(/Il parle aux chouettes/);
   await page.getByRole("button", { name: "Utiliser ce texte" }).click();

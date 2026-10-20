@@ -172,3 +172,9 @@
   font-size: var(--t-s);
   font-weight: 600;
 }
+
+/* Le solde d'étoiles, en tête des aides (F14-AC07) */
+.etoiles strong {
+  color: var(--ia-fonce);
+  font-size: var(--t-m);
+}

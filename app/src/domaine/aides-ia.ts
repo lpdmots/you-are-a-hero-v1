@@ -153,26 +153,17 @@ export function niveauEnMots(niveaux: readonly Niveau[]): string {
 
 /**
  * Les fournisseurs facturent en dollars. Taux approché, relevé le 17 octobre 2026 (l'euro
- * a valu entre 1,13 et 1,21 dollar en 2026) : il ne sert qu'à dire un plafond ou un budget
- * en euros, et se revoit avec les plafonds à l'ouverture.
+ * a valu entre 1,13 et 1,21 dollar en 2026) : il ne sert qu'à dire une dépense en euros sur la
+ * page de l'essai de qualité. Le débit des étoiles suit le taux des réglages de l'application
+ * (F14, `reglages_application`).
  */
 export const DOLLARS_PAR_EURO = 1.15;
 
 /**
- * Les plafonds, rangés en un seul endroit et réglés à l'ouverture (F14). Ils se comptent en
- * demandes, plus lisibles que des euros ; seul le plafond mensuel des images, pour toute
- * l'application, se compte en argent.
+ * Le temps d'attente des aides. Les plafonds du jour et du mois sont retirés le 20 octobre 2026
+ * (F14, « Aides IA sans quota ») : le solde d'étoiles borne la dépense.
  */
 export const PLAFONDS = {
-  /** Demandes de texte par adulte et par jour, heure de Paris */
-  textesParJour: 60,
-  /** Images par adulte et par jour : chaque image d'une création compte */
-  imagesParJour: 20,
-  /** En dessous, l'écran dit ce qu'il reste ; au-dessus, rien ne s'affiche */
-  avertirTextesSous: 10,
-  avertirImagesSous: 4,
-  /** Pour toute l'application et par mois : trente euros d'images, comptés en dollars facturés */
-  imagesParMoisUsd: 30 * DOLLARS_PAR_EURO,
   /** Au-delà, la demande est abandonnée : « L'aide n'a pas répondu. » */
   secondes: 60,
   /**
@@ -186,34 +177,31 @@ export const MESSAGES_IA = {
   pasDeReponse: "L'aide n'a pas répondu. Le texte n'a pas changé.",
   pasDImage: "L'image n'a pas pu être créée. Rien n'a changé.",
   texteChange: "Le texte a changé depuis la demande. Redemander ?",
-  demain: "Les aides reviennent demain. Tout le reste fonctionne.",
-  occupe: "Une autre demande attend encore sa réponse.",
-  mois: "Les images reviennent le mois prochain. Tout le reste fonctionne.",
+  etoiles: "Vous n'avez plus d'étoiles. Tout le reste fonctionne.",
   absentes: "Les aides IA ne sont pas installées sur ce site. Tout le reste fonctionne.",
 } as const;
 
-/** « Encore 10 demandes aujourd'hui. », seulement dans les dix dernières ; rien au-dessus. */
-export function resteDuJour(sorte: "texte" | "image", restant: number): string | null {
-  if (sorte === "texte") {
-    if (restant > PLAFONDS.avertirTextesSous || restant < 1) return null;
-    return `Encore ${restant} ${restant > 1 ? "demandes" : "demande"} aujourd'hui.`;
-  }
-  if (restant > PLAFONDS.avertirImagesSous || restant < 1) return null;
-  return `Encore ${restant} ${restant > 1 ? "images" : "image"} aujourd'hui.`;
+/** « 34 ✦ » : le solde d'étoiles, seul prix que l'enseignant voit (F14). */
+export const enEtoiles = (n: number): string => `${Math.max(n, 0)} ✦`;
+
+/**
+ * Ce qui s'affiche près d'une aide après sa réponse (F14-AC07) : le solde, quand il en reste peu ;
+ * rien au-dessus, ni pour le compte du porteur, qui n'a pas de solde (`solde` null).
+ */
+export function resteDEtoiles(solde: number | null, peu: number): string | null {
+  if (solde === null || solde > peu) return null;
+  return solde > 0 ? `Il vous reste ${enEtoiles(solde)}.` : "Il ne vous reste plus d'étoiles.";
 }
 
 /** Pourquoi une demande n'a rien donné ; le texte, lui, n'a jamais changé. */
 /** « absentes » : les clés du fournisseur manquent sur ce site ; rien n'est parti ni compté. */
-export type RefusIa = "eteint" | "absentes" | "occupe" | "jour" | "mois" | "delai" | "echec";
+/** « etoiles » : le solde est épuisé ; rien n'est parti (F14-AC08). */
+export type RefusIa = "eteint" | "absentes" | "etoiles" | "delai" | "echec";
 
 export function messageDuRefus(refus: RefusIa, sorte: "texte" | "image" = "texte"): string {
   switch (refus) {
-    case "jour":
-      return MESSAGES_IA.demain;
-    case "mois":
-      return MESSAGES_IA.mois;
-    case "occupe":
-      return MESSAGES_IA.occupe;
+    case "etoiles":
+      return MESSAGES_IA.etoiles;
     case "absentes":
       return MESSAGES_IA.absentes;
     default:

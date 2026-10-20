@@ -1,7 +1,7 @@
 "use client";
 
 import { useId } from "react";
-import { DEGRES, NIVEAUX, NOMS_DES_DEGRES, QUALITES, type Degre, type ReglagesIa } from "@/domaine/aides-ia";
+import { DEGRES, NIVEAUX, NOMS_DES_DEGRES, QUALITES, enEtoiles, type Degre, type ReglagesIa } from "@/domaine/aides-ia";
 import styles from "./BarreAdulte.module.css";
 
 /**
@@ -9,11 +9,17 @@ import styles from "./BarreAdulte.module.css";
  * projets du compte. Une seule section, l'interrupteur en tête ; éteintes, les aides
  * disparaissent de partout et leurs réglages se replient. Une ligne d'aide au plus par réglage.
  */
-export function ReglagesAidesIa({ reglages, onChanger }: { reglages: ReglagesIa; onChanger: (r: Partial<ReglagesIa>) => void }) {
+export function ReglagesAidesIa({ reglages, onChanger, etoiles = null }: { reglages: ReglagesIa; onChanger: (r: Partial<ReglagesIa>) => void; etoiles?: number | null }) {
   const id = useId();
   return (
     <section className={styles.aidesIa}>
       <h3>Aides IA</h3>
+      {/* Le solde, seul prix que l'enseignant voit ; le compte du porteur n'en a pas (F14-AC07, AC11) */}
+      {etoiles !== null ? (
+        <p className={styles.etoiles}>
+          Il vous reste <strong>{enEtoiles(etoiles)}</strong> pour les aides.
+        </p>
+      ) : null}
       <label className="inter">
         <input type="checkbox" role="switch" checked={reglages.proposer} onChange={(e) => onChanger({ proposer: e.target.checked })} />
         <span className="inter__piste" aria-hidden="true" />

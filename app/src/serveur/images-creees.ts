@@ -301,10 +301,12 @@ async function inscrireLImage(e: Enseignant, projetId: string, octets: Uint8Arra
  * L'image créée d'office pour une partie ou un chapitre ajouté depuis une proposition de l'IA
  * (F10.1, 18 octobre 2026) : une seule, sans choix, quel que soit « Images par création », quand le
  * réglage « Créer l'image des parties et chapitres ajoutés par l'IA » est allumé. Les images se
- * créent en même temps, chacune par sa demande ; un élément sans résumé n'en reçoit pas.
+ * créent en même temps, chacune par sa demande ; un élément sans résumé n'en reçoit pas. Sans
+ * étoiles, aucune ne se crée, sans rien dire : l'élément est ajouté tel quel (F14-AC08).
  */
 export async function demanderLesImagesALAjout(e: Enseignant, sorte: "partie" | "chapitre", ids: readonly string[]): Promise<{ ok: true; demandes: string[]; travail: () => Promise<void> }> {
-  if (!e.reglagesIa.proposer || !e.reglagesIa.imageALAjout) return { ok: true, demandes: [], travail: async () => {} };
+  const sansEtoiles = e.etoiles !== null && e.etoiles <= 0;
+  if (!e.reglagesIa.proposer || !e.reglagesIa.imageALAjout || sansEtoiles) return { ok: true, demandes: [], travail: async () => {} };
   const lancees: { demande: string; travail: () => Promise<void> }[] = [];
   for (const id of ids.filter(estUuid).slice(0, 10)) {
     const l = await demanderLeReperage(e, sorte, id, { dOffice: true });

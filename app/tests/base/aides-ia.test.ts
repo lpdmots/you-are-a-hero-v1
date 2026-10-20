@@ -1,13 +1,13 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
-import { MESSAGES_IA, PLAFONDS, REGLAGES_IA_HABITUELS, lireReglagesIa } from "@/domaine/aides-ia";
+import { MESSAGES_IA, REGLAGES_IA_HABITUELS, lireReglagesIa } from "@/domaine/aides-ia";
 import { demanderDesImages, demanderUneAide } from "@/serveur/ia/demander";
 import { titre } from "@/serveur/ia/aides/titre";
-import { creerEnseignant, nettoyer, service, sql, type Adulte } from "./outils";
+import { creerEnseignant, nettoyer, retenir, service, sql, type Adulte } from "./outils";
 
 /**
  * Étape 8 du plan, lot 1 : le socle des aides IA (F13, cadre commun), contre la vraie base
  * locale. Les réglages se gardent avec le compte ; chaque demande passe au journal, sans son
- * contenu ; les plafonds du jour et du mois tiennent ; une seule demande à la fois. Le
+ * contenu. Étape 9, lot 3 : les étoiles remplacent les plafonds (F14-AC05 à AC11). Le
  * fournisseur est toujours simulé (IA_SIMULEE, tests/base/preparation.ts).
  */
 
@@ -21,7 +21,24 @@ beforeAll(async () => {
 afterEach(async () => {
   process.env.IA_SIMULEE = "1";
   await sql("delete from public.appels_ia where enseignant_id = any($1)", [[laurent.id, martin.id]]);
+  await remettreLeSolde(laurent, 30);
+  await remettreLeSolde(martin, 30);
+  await sql("update public.enseignants set createur = false where id = any($1)", [[laurent.id, martin.id]]);
 });
+
+/** Remet le solde à n, par un mouvement comme un autre, pour qu'il reste la somme des mouvements. */
+async function remettreLeSolde(a: Adulte, n: number): Promise<void> {
+  const [{ etoiles }] = await sql<{ etoiles: number }>("select etoiles from public.enseignants where id = $1", [a.id]);
+  if (etoiles !== n) await sql("insert into public.mouvements_etoiles (enseignant_id, nombre, motif) values ($1, $2, 'cadeau')", [a.id, n - etoiles]);
+}
+const solde = async (a: Adulte) => (await sql<{ etoiles: number }>("select etoiles from public.enseignants where id = $1", [a.id]))[0].etoiles;
+/** Une demande au journal, puis sa fin, comme le fait l'application, avec un coût choisi. */
+async function appelFini(a: Adulte, issue: "reussi" | "echec" | "delai", coutUsd: number, sorte = "texte"): Promise<void> {
+  const { data } = await service().rpc("commencer_appel_ia", { p_enseignant: a.id, p_aide: "correction", p_sorte: sorte, p_nombre: 1, p_par_jour: null, p_mois_usd: null, p_attente: 75 });
+  const id = (data as { id: string }).id;
+  expect(id).toBeTruthy();
+  await service().rpc("terminer_appel_ia", { p_id: id, p_issue: issue, p_fournisseur: "anthropic", p_modele: "claude-sonnet-5-5", p_entree: 1000, p_sortie: 500, p_cout: coutUsd });
+}
 
 const demandeur = (a: Adulte, proposer = true) => ({ id: a.id, reglagesIa: { ...REGLAGES_IA_HABITUELS, proposer } });
 const entreeTitre = {
@@ -90,50 +107,96 @@ describe("Journal des appels, sans contenu (F13)", () => {
   });
 });
 
-describe("Plafonds et échecs (F13)", () => {
-  it("rien ne s'affiche avant les dix dernières demandes du jour, puis « Encore 10 demandes aujourd'hui. »", async () => {
-    await dejaFaites(laurent, PLAFONDS.textesParJour - 12);
-    const avant = await demanderUneAide(demandeur(laurent), titre, entreeTitre);
-    expect(avant).toMatchObject({ ok: true, reste: null });
-    await dejaFaites(laurent, 1);
-    const apres = await demanderUneAide(demandeur(laurent), titre, entreeTitre);
-    expect(apres).toMatchObject({ ok: true, reste: "Encore 9 demandes aujourd'hui." });
+describe("Étoiles (F14-AC05 à AC11)", () => {
+  it("F14-AC05 — zéro tant que l'adresse n'est pas confirmée, puis 30 ✦, une seule fois ; un compte créé confirmé, comme par Google, les a aussitôt", async () => {
+    const admin = service().auth.admin;
+    const { data } = await admin.createUser({ email: `essai-${crypto.randomUUID()}@exemple.test`, password: "un-mot-de-passe-42", email_confirm: false });
+    const id = data.user!.id;
+    retenir(id);
+    const de = async () => (await sql<{ etoiles: number }>("select etoiles from public.enseignants where id = $1", [id]))[0].etoiles;
+    expect(await de()).toBe(0);
+    await admin.updateUserById(id, { email_confirm: true });
+    expect(await de()).toBe(30);
+    // Une nouvelle adresse confirmée plus tard ne redonne rien
+    await sql("update auth.users set email_confirmed_at = null where id = $1", [id]);
+    await sql("update auth.users set email_confirmed_at = now() where id = $1", [id]);
+    expect(await de()).toBe(30);
+    expect((await sql("select motif, nombre from public.mouvements_etoiles where enseignant_id = $1", [id]))).toEqual([{ motif: "bienvenue", nombre: 30 }]);
+    // Créé confirmé (Google, ou depuis la console) : 30 ✦ d'emblée
+    expect(await solde(laurent)).toBe(30);
   });
 
-  it("à la limite du jour : « Les aides reviennent demain. Tout le reste fonctionne. », sans appel", async () => {
-    await dejaFaites(laurent, PLAFONDS.textesParJour);
-    const r = await demanderUneAide(demandeur(laurent), titre, entreeTitre);
-    expect(r).toMatchObject({ ok: false, refus: "jour", message: MESSAGES_IA.demain });
-    expect(await journal(laurent)).toHaveLength(PLAFONDS.textesParJour);
+  it("F14-AC06 — une demande qui coûte 0,042 euro débite 5 ✦ (arrondi à l'étoile supérieure) ; un échec ou un délai ne débite rien", async () => {
+    const [{ taux }] = await sql<{ taux: string }>("select euros_par_dollar::text as taux from public.reglages_application");
+    await appelFini(laurent, "reussi", Number((0.042 / Number(taux)).toFixed(6)));
+    expect(await solde(laurent)).toBe(25);
+    await appelFini(laurent, "echec", 0.05);
+    await appelFini(laurent, "delai", 0.05);
+    expect(await solde(laurent)).toBe(25);
+    // Débitée une seule fois, même si la fin est notée deux fois
+    const [{ id }] = await sql<{ id: string }>("select id from public.appels_ia where enseignant_id = $1 and issue = 'reussi'", [laurent.id]);
+    await service().rpc("terminer_appel_ia", { p_id: id, p_issue: "reussi", p_fournisseur: "anthropic", p_modele: "x", p_entree: 1, p_sortie: 1, p_cout: 1 });
+    expect(await solde(laurent)).toBe(25);
+    expect((await sql("select motif, nombre from public.mouvements_etoiles where enseignant_id = $1 and motif = 'aide'", [laurent.id]))).toEqual([{ motif: "aide", nombre: -5 }]);
   });
 
-  it("le jour se compte à l'heure de Paris : les demandes d'hier soir ne comptent plus", async () => {
-    await dejaFaites(laurent, PLAFONDS.textesParJour, "(date_trunc('day', now() at time zone 'Europe/Paris') at time zone 'Europe/Paris') - interval '10 minutes'");
-    expect((await demanderUneAide(demandeur(laurent), titre, entreeTitre)).ok).toBe(true);
+  it("F14-AC07 — après une aide, le solde se dit quand il en reste peu, jamais au-dessus ; l'adulte le lit sans pouvoir l'écrire", async () => {
+    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: true, reste: null });
+    await remettreLeSolde(laurent, 8);
+    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: true, reste: "Il vous reste 8 ✦." });
+    const { data } = await laurent.base.from("enseignants").select("etoiles, createur").eq("id", laurent.id).single();
+    expect(data).toEqual({ etoiles: 8, createur: false });
+    await laurent.base.from("enseignants").update({ etoiles: 500, createur: true }).eq("id", laurent.id);
+    await laurent.base.from("mouvements_etoiles").insert({ enseignant_id: laurent.id, nombre: 500, motif: "cadeau" });
+    expect(await solde(laurent)).toBe(8);
+    expect((await sql<{ createur: boolean }>("select createur from public.enseignants where id = $1", [laurent.id]))[0].createur).toBe(false);
+    expect((await laurent.base.from("mouvements_etoiles").select("motif")).data?.length).toBeGreaterThan(0);
+    expect((await martin.base.from("mouvements_etoiles").select("motif").eq("enseignant_id", laurent.id)).data).toEqual([]);
   });
 
-  it("les demandes d'un adulte ne comptent pas pour un autre", async () => {
-    await dejaFaites(martin, PLAFONDS.textesParJour);
-    expect((await demanderUneAide(demandeur(laurent), titre, entreeTitre)).ok).toBe(true);
+  it("F14-AC08 — à 0 ✦ : aucun appel ne part, « Vous n'avez plus d'étoiles. Tout le reste fonctionne. »", async () => {
+    await remettreLeSolde(laurent, 0);
+    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: false, refus: "etoiles", message: MESSAGES_IA.etoiles });
+    expect(await demanderDesImages(demandeur(laurent), { aide: "image-scene", usage: "carre", prompt: "le ponton" })).toMatchObject({ ok: false, refus: "etoiles", message: MESSAGES_IA.etoiles });
+    expect(await journal(laurent)).toHaveLength(0);
   });
 
-  it("une seule demande à la fois : la seconde est refusée tant que la première attend", async () => {
+  it("F14-AC09 — à 3 ✦, cinq images lancées ensemble partent toutes ; le solde finit négatif et la demande suivante est refusée", async () => {
+    await remettreLeSolde(laurent, 3);
+    const ids: string[] = [];
+    for (let i = 0; i < 5; i++) {
+      const { data } = await service().rpc("commencer_appel_ia", { p_enseignant: laurent.id, p_aide: "image-scene", p_sorte: "image", p_nombre: 1, p_par_jour: null, p_mois_usd: null, p_attente: 135 });
+      expect((data as { id?: string }).id).toBeTruthy();
+      ids.push((data as { id: string }).id);
+    }
+    for (const id of ids) {
+      await service().rpc("terminer_appel_ia", { p_id: id, p_issue: "reussi", p_fournisseur: "openai", p_modele: "gpt-image", p_entree: 1, p_sortie: 1, p_cout: 0.015 });
+    }
+    expect(await solde(laurent)).toBeLessThan(0);
+    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: false, refus: "etoiles" });
+  });
+
+  it("F14-AC10 — plus de quota : quarante images dans la journée et une demande de texte pendant qu'une autre attend passent ; les demandes d'un adulte ne comptent pas pour un autre", async () => {
+    await remettreLeSolde(laurent, 1000);
+    await dejaFaites(laurent, 40, "now()", "image");
+    await dejaFaites(laurent, 200);
     await sql("insert into public.appels_ia (enseignant_id, aide, sorte) values ($1, 'correction', 'texte')", [laurent.id]);
-    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: false, refus: "occupe" });
-    // Une demande abandonnée depuis longtemps ne retient plus l'adulte
-    await sql("update public.appels_ia set commence_le = now() - interval '5 minutes' where enseignant_id = $1", [laurent.id]);
+    expect((await demanderUneAide(demandeur(laurent), titre, entreeTitre)).ok).toBe(true);
+    expect((await demanderDesImages(demandeur(laurent), { aide: "image-scene", usage: "carre", prompt: "le ponton" })).ok).toBe(true);
+    await remettreLeSolde(martin, 0);
     expect((await demanderUneAide(demandeur(laurent), titre, entreeTitre)).ok).toBe(true);
   });
 
-  it("deux demandes parties ensemble : une seule passe", async () => {
-    process.env.IA_SIMULEE = "delai";
-    const [a, b] = await Promise.all([
-      demanderUneAide(demandeur(laurent), titre, entreeTitre, { delaiMs: 400 }),
-      demanderUneAide(demandeur(laurent), titre, entreeTitre, { delaiMs: 400 }),
-    ]);
-    expect([a, b].filter((r) => !r.ok && r.refus === "occupe")).toHaveLength(1);
+  it("F14-AC11 — le compte du porteur : rien n'est débité, rien n'est refusé, aucun solde n'est dit", async () => {
+    await sql("update public.enseignants set createur = true where id = $1", [laurent.id]);
+    await remettreLeSolde(laurent, 0);
+    await appelFini(laurent, "reussi", 0.5);
+    expect(await solde(laurent)).toBe(0);
+    expect(await demanderUneAide(demandeur(laurent), titre, entreeTitre)).toMatchObject({ ok: true, reste: null });
   });
+});
 
+describe("Échecs (F13)", () => {
   it("sans réponse dans le délai : « L'aide n'a pas répondu. Le texte n'a pas changé. », noté « délai »", async () => {
     process.env.IA_SIMULEE = "delai";
     const r = await demanderUneAide(demandeur(laurent), titre, entreeTitre, { delaiMs: 300 });
@@ -169,22 +232,5 @@ describe("Plafonds et échecs (F13)", () => {
       if (garde.o === undefined) delete process.env.OPENAI_API_KEY; else process.env.OPENAI_API_KEY = garde.o;
     }
     expect(await journal(laurent)).toHaveLength(0);
-  });
-
-  it("images : vingt par jour, chaque image d'une création comptant ; trente euros par mois pour toute l'application", async () => {
-    const commencer = (a: Adulte, nombre: number, moisUsd: number | null = PLAFONDS.imagesParMoisUsd) => service().rpc("commencer_appel_ia", {
-      p_enseignant: a.id, p_aide: "image", p_sorte: "image", p_nombre: nombre, p_par_jour: PLAFONDS.imagesParJour, p_mois_usd: moisUsd, p_attente: 75,
-    }).then((r) => r.data as { id?: string; refus?: string; restant?: number });
-    await dejaFaites(laurent, PLAFONDS.imagesParJour - 1, "now()", "image");
-    expect(await commencer(laurent, 2)).toMatchObject({ refus: "jour", restant: 1 });
-    expect(await commencer(laurent, 1)).toMatchObject({ restant: 0 });
-    // Le mois : les images de tous les adultes comptent ensemble
-    await sql("delete from public.appels_ia where enseignant_id = $1", [laurent.id]);
-    await dejaFaites(martin, 1, "now()", "image", PLAFONDS.imagesParMoisUsd);
-    expect(await commencer(laurent, 1)).toMatchObject({ refus: "mois" });
-    // Les textes n'entrent pas dans le plafond des images
-    await sql("delete from public.appels_ia where enseignant_id = $1", [martin.id]);
-    await dejaFaites(martin, 1, "now()", "texte", 500);
-    expect((await commencer(laurent, 1)).id).toBeTruthy();
   });
 });
