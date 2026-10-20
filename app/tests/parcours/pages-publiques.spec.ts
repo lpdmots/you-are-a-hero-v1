@@ -75,9 +75,9 @@ test("F14-AC33 — dans « Imprimer et partager », un projet de classe propose 
 test("F14-AC36 — « Écrire au créateur » dans « Mon compte » et l'adresse de contact dans l'aide", async ({ page }) => {
   await adultePret(page);
   await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await expect(page.getByRole("link", { name: "Écrire au créateur" })).toHaveAttribute("href", "mailto:contact@iletaituneclasse.fr");
+  await expect(page.getByRole("link", { name: "Écrire au créateur" })).toHaveAttribute("href", "mailto:contact@iletaituneclasse.com");
   await aller(page, "/aide");
-  await expect(page.getByRole("link", { name: "contact@iletaituneclasse.fr" }).first()).toHaveAttribute("href", "mailto:contact@iletaituneclasse.fr");
+  await expect(page.getByRole("link", { name: "contact@iletaituneclasse.com" }).first()).toHaveAttribute("href", "mailto:contact@iletaituneclasse.com");
   await expect(page.getByText("Il était une classe est fait par un enseignant qui a sa classe : la réponse peut prendre quelques jours.")).toBeVisible();
   await expect(page.getByText("Où retrouver les codes des élèves ?")).toBeVisible();
 });

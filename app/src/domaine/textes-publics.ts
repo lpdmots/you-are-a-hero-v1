@@ -12,8 +12,8 @@
 export const EDITEUR = {
   /** À compléter par le porteur : son prénom et son nom, tels qu'il veut les publier */
   nom: "Le créateur d'Il était une classe",
-  contact: "contact@iletaituneclasse.fr",
-  site: "iletaituneclasse.fr",
+  contact: "contact@iletaituneclasse.com",
+  site: "iletaituneclasse.com",
 } as const;
 
 export const PHRASE_DU_SUPPORT = "Il était une classe est fait par un enseignant qui a sa classe : la réponse peut prendre quelques jours.";
@@ -303,7 +303,7 @@ export const MODELES: Modele[] = [
         {
           titre: "Vos droits",
           paragraphes: [
-            "Pour toute question, ou pour demander l’accès aux données de votre enfant ou leur suppression, adressez-vous à l’enseignant(e) ou à l’école. La page « Confidentialité » du site iletaituneclasse.fr dit tout le détail.",
+            "Pour toute question, ou pour demander l’accès aux données de votre enfant ou leur suppression, adressez-vous à l’enseignant(e) ou à l’école. La page « Confidentialité » du site iletaituneclasse.com dit tout le détail.",
           ],
         },
       ],

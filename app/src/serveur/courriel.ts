@@ -35,7 +35,7 @@ export async function envoyer(c: Courriel): Promise<boolean> {
   if (!t) return false;
   try {
     await t.sendMail({
-      from: process.env.COURRIEL_EXPEDITEUR ?? "Il était une classe <ne-pas-repondre@iletaituneclasse.fr>",
+      from: process.env.COURRIEL_EXPEDITEUR ?? "Il était une classe <ne-pas-repondre@iletaituneclasse.com>",
       to: c.a,
       subject: c.sujet,
       text: c.texte,

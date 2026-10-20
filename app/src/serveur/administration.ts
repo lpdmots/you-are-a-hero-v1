@@ -172,7 +172,7 @@ export async function retirerLePartage(projetId: string): Promise<{ ok: boolean;
           `Le livre « ${titre} » a été signalé, et son partage est retiré : son lien de lecture ne mène plus au livre, et vos classes ne le lisent plus.`,
           "Votre projet n'a pas changé : rien n'est effacé.",
           "",
-          `Pour en savoir plus, répondez à ${process.env.COURRIEL_CONTACT ?? "contact@iletaituneclasse.fr"}.`,
+          `Pour en savoir plus, répondez à ${process.env.COURRIEL_CONTACT ?? "contact@iletaituneclasse.com"}.`,
           "",
           `Il était une classe — ${adresseDuSite()}`,
         ].join("\n"),

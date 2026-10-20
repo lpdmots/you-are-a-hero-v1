@@ -4,7 +4,7 @@ import { RENONCIATION, avisVerifie, lireLaSession, parametresDeLaSession, signer
 const commande = {
   achat: "pass" as const, projetId: "11111111-1111-4111-8111-111111111111", enseignantId: "22222222-2222-4222-8222-222222222222",
   courriel: "m.bernard@exemple.test", montant: 2000, libelle: "Pass du livre « Le marais »",
-  merci: "https://iletaituneclasse.fr/paiement/merci", abandon: "https://iletaituneclasse.fr/projet/x/chapitre/y",
+  merci: "https://iletaituneclasse.com/paiement/merci", abandon: "https://iletaituneclasse.com/projet/x/chapitre/y",
 };
 
 describe("Stripe Checkout (F14)", () => {
@@ -17,7 +17,7 @@ describe("Stripe Checkout (F14)", () => {
     expect(RENONCIATION).toBe("Je demande l’accès immédiat et renonce à mon droit de rétractation.");
     expect(p["invoice_creation[enabled]"]).toBe("true");
     expect(p["metadata[projet]"]).toBe(commande.projetId);
-    expect(p.success_url).toBe("https://iletaituneclasse.fr/paiement/merci?session={CHECKOUT_SESSION_ID}");
+    expect(p.success_url).toBe("https://iletaituneclasse.com/paiement/merci?session={CHECKOUT_SESSION_ID}");
   });
 
   it("F14-AC20 — un abandon ramène où l'on était", () => {

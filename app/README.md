@@ -281,15 +281,15 @@ Réglages faits par le porteur chez Stripe, **en mode d'essai** (bascule « Test
 dans cet ordre ; aucune clé ne passe dans la conversation :
 
 1. Créer le compte Stripe, rester en mode d'essai.
-2. Settings, Business, Public details : site `https://iletaituneclasse.fr`, et
-   « Terms of service » `https://iletaituneclasse.fr/conditions` (la page vient au
+2. Settings, Business, Public details : site `https://iletaituneclasse.com`, et
+   « Terms of service » `https://iletaituneclasse.com/conditions` (la page vient au
    lot 9) : la case de renonciation de la page de paiement s'appuie sur elle.
 3. Settings, Customer emails (Emails) : allumer « Successful payments » ; et, sous
    Invoices, l'envoi des factures aux clients : la facture part à chaque paiement.
 4. Developers, API keys : copier la clé secrète d'essai (`sk_test_…`) dans
    `.env.local`, sur une ligne `STRIPE_CLE_SECRETE=…`, puis relancer le serveur local.
 5. Pour la mise en ligne seulement : Developers, Webhooks, « Add endpoint »
-   `https://iletaituneclasse.fr/paiement/avis`, événements
+   `https://iletaituneclasse.com/paiement/avis`, événements
    `checkout.session.completed` et `checkout.session.async_payment_succeeded` ; son
    secret de signature (`whsec_…`) va chez Vercel en `STRIPE_SECRET_AVIS`, la clé
    secrète en `STRIPE_CLE_SECRETE`.
@@ -308,8 +308,8 @@ sauvegarde manquée) par le même serveur d'envoi que Supabase, Amazon SES. En l
 `supabase/config.toml`). À la mise en ligne, chez Vercel (Production) :
 `SMTP_HOTE` = `email-smtp.eu-west-3.amazonaws.com`, `SMTP_PORT` = `587`,
 `SMTP_UTILISATEUR` et `SMTP_MOT_DE_PASSE` = les identifiants SMTP de SES du lot 1,
-`COURRIEL_EXPEDITEUR` = `Il était une classe <ne-pas-repondre@iletaituneclasse.fr>`,
-`COURRIEL_CONTACT` = `contact@iletaituneclasse.fr`. Sans eux, rien ne part, et la page
+`COURRIEL_EXPEDITEUR` = `Il était une classe <ne-pas-repondre@iletaituneclasse.com>`,
+`COURRIEL_CONTACT` = `contact@iletaituneclasse.com`. Sans eux, rien ne part, et la page
 qui retire un partage le dit.
 
 ## Étape 9, lot 7 : supprimer pour de bon
@@ -381,9 +381,9 @@ relecture par un juriste reste recommandée.
    Production) reçoit le code d'un livre partagé par lien, les dix lettres après
    `/lire/` ; sans elle, l'accueil montre sa page de livre sans lien.
 3. **Google** (lot 1, point 7) : les pages d'accueil, « Confidentialité » et
-   « Conditions » existent désormais à `iletaituneclasse.fr` ; la vérification de la
+   « Conditions » existent désormais à `iletaituneclasse.com` ; la vérification de la
    marque peut partir.
-4. **Stripe** (lot 5, point 2) : « Terms of service » `https://iletaituneclasse.fr/conditions`.
+4. **Stripe** (lot 5, point 2) : « Terms of service » `https://iletaituneclasse.com/conditions`.
 
 ## Essayer l'étape 9, puis la mettre en ligne
 
@@ -427,7 +427,7 @@ d'essai de Stripe dans `.env.local`, lot 5) :
 
 **3. L'essai en ligne, « Paiement ouvert » éteint :**
 
-1. À `iletaituneclasse.fr`, avec la seconde adresse : « Créer un compte » par adresse ;
+1. À `iletaituneclasse.com`, avec la seconde adresse : « Créer un compte » par adresse ;
    le courriel arrive (par SES) ; puis, avec un autre compte Google, « Continuer avec
    Google » crée un compte : l'écran de Google affiche « Il était une classe » une fois la
    marque vérifiée.

@@ -78,7 +78,7 @@ export default async function Administration({ searchParams }: { searchParams: P
         <form action={chercherLePartage} className={styles.ligne}>
           <label className={`${styles.champ} ${styles.large}`}>
             <span>Lien de lecture</span>
-            <input name="lien" type="text" className="pchamp" placeholder="https://iletaituneclasse.fr/lire/…" defaultValue={demande.partage && demande.partage !== "introuvable" ? demande.partage : ""} required />
+            <input name="lien" type="text" className="pchamp" placeholder="https://iletaituneclasse.com/lire/…" defaultValue={demande.partage && demande.partage !== "introuvable" ? demande.partage : ""} required />
           </label>
           <button type="submit" className="btn">
             Chercher
