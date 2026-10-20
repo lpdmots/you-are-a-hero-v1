@@ -385,6 +385,63 @@ relecture par un juriste reste recommandée.
    marque peut partir.
 4. **Stripe** (lot 5, point 2) : « Terms of service » `https://iletaituneclasse.fr/conditions`.
 
+## Essayer l'étape 9, puis la mettre en ligne
+
+L'étape se termine sur l'essai du porteur (plan, « Terminée quand »). Le parcours
+`npx playwright test ouverture-de-bout-en-bout` en joue la part locale, Stripe simulé.
+
+**1. En local d'abord, « Paiement ouvert » allumé** (serveur local, port 4840, la clé
+d'essai de Stripe dans `.env.local`, lot 5) :
+
+1. Une seconde adresse : « Créer un compte » sur http://localhost:4840 ; le courriel de
+   confirmation arrive dans Mailpit (http://127.0.0.1:54324) ; son lien ouvre « Mes
+   projets », vide ; « Mon compte » dit 30 ✦.
+2. Un petit projet personnel, quelques scènes.
+3. Avec le compte local (le porteur) : « Mon compte », « Administration » ; « Allumer »
+   « Paiement ouvert ».
+4. `npm run essai:etape9 -- la.seconde@adresse` porte son projet à 40 scènes ; « Ajouter
+   une scène » ouvre alors le dialogue du pass.
+5. « Acheter le pass » : la page de Stripe, en mode d'essai, avec la case de renonciation ;
+   la carte `4242 4242 4242 4242`. Retour au projet : « Le pass est là », la scène suivante
+   s'ajoute, « Mon compte » a 400 ✦ de plus.
+6. « Mon compte », « Recharger » : 100 ✦ de plus.
+7. La facture : en mode d'essai, Stripe peut ne pas envoyer de courriel ; elle se lit
+   alors dans son tableau de bord, Payments, le paiement, « Invoice ».
+8. « Administration » : le compte, ses ventes du mois ; « Éteindre » ensuite.
+
+**2. La mise en ligne, à la demande du porteur, dans cet ordre :**
+
+1. Réglages du lot 1 (Vercel et ses adresses, OVH, SES, Supabase) et du lot 2 (Supabase :
+   adresses de retour, modèles, inscription et confirmation allumées).
+2. `npm run sauvegarder`, puis `npm run production:schema -- --oui` : cinq migrations
+   (`etoiles`, `limites_et_pass`, `paiements`, `administration`, `supprimer_pour_de_bon`).
+3. **Aussitôt :** `npm run createur -- --production adresse.du.porteur --oui`.
+4. Chez Vercel (Production) : `ADRESSE_SITE`, les variables SMTP du lot 6, `CRON_SECRET`
+   (lot 7), `STRIPE_CLE_SECRETE` et `STRIPE_SECRET_AVIS` en mode d'essai (lot 5),
+   `LIVRE_DE_L_ACCUEIL` si un livre est choisi (lot 9).
+5. Son nom dans `EDITEUR.nom` (lot 9), puis le code poussé sur `main`.
+6. `npm run verifier:production`.
+7. Stripe : l'adresse des avis (lot 5, point 5) ; GitHub : les secrets de la sauvegarde
+   (lot 8, point 4), puis « Run workflow » une fois ; Google : la vérification de la
+   marque (lot 1, point 7).
+
+**3. L'essai en ligne, « Paiement ouvert » éteint :**
+
+1. À `iletaituneclasse.fr`, avec la seconde adresse : « Créer un compte » par adresse ;
+   le courriel arrive (par SES) ; puis, avec un autre compte Google, « Continuer avec
+   Google » crée un compte : l'écran de Google affiche « Il était une classe » une fois la
+   marque vérifiée.
+2. Un petit livre personnel ; ses 30 ✦ s'usent jusqu'à « Vous n'avez plus d'étoiles.
+   Tout le reste fonctionne. » (vrais appels, quelques dizaines de centimes).
+3. « Administration » (compte du porteur) : lui offrir 100 ✦ ; l'aide repart.
+4. Le PDF, puis le partage par lien ; sur un téléphone, « Écrit avec Il était une
+   classe » mène à l'accueil.
+5. `iletaituneclasse.com` et `onceuponaclassroom.com` mènent à l'accueil.
+6. Le lendemain : le dossier de la nuit dans le seau S3 ; puis, en local,
+   `npm run restaurer:s3 -- <jour>` : projets, classes et images reviennent.
+7. « Mon compte », « Supprimer mon compte » : le compte, ses projets et son livre
+   partagé disparaissent ; « Administration » ne le liste plus.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

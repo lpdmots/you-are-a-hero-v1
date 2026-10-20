@@ -3195,7 +3195,14 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      en deux lectures (environ 28/40 et 26/40) et corrigés (`design.md`,
      « Étape 9 construite »). Le nom du porteur reste à écrire dans les
      mentions légales.
-  10. **Essai de bout en bout,** et mode d'emploi de la mise en ligne.
+  10. **Essai de bout en bout,** et mode d'emploi de la mise en ligne. **Construit le 20 octobre 2026,**
+     sans migration : le parcours `ouverture-de-bout-en-bout` (inscription par
+     adresse et courriel, petit livre, étoiles usées puis offertes, partage et
+     mention, pass et recharge payés par Stripe simulé, suppression du compte),
+     `npm run essai:etape9` qui porte un projet local à 40 scènes, et le mode
+     d'emploi de l'essai et de la mise en ligne, dans l'ordre (`app/README.md`,
+     « Essayer l'étape 9, puis la mettre en ligne »). La mise en ligne se fait à
+     la demande du porteur ; l'étape se termine sur son essai.
 - **Terminée quand,** validé le 20 octobre 2026 :
   - essai en ligne du porteur, « Paiement ouvert » éteint : avec une seconde
     adresse, il crée un compte sur `iletaituneclasse.com` par adresse puis par
