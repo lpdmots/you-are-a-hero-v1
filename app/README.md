@@ -170,51 +170,58 @@ clé ne passe dans la conversation. Les règles sont en F14
 (`../docs/specifications.md`), le pourquoi dans l'architecture, « Préparation
 de l'étape 9 ».
 
-1. **Vercel, les adresses.** Projet `you-are-a-hero-v1`, Settings, Domains :
-   ajouter `iletaituneclasse.fr` (adresse principale) ; ajouter
-   `www.iletaituneclasse.fr`, `iletaituneclasse.com` et
-   `onceuponaclassroom.com` en « Redirect to » `iletaituneclasse.fr` (308).
-   Vercel affiche pour chacune les enregistrements DNS à poser.
-2. **OVH, la zone DNS de chaque domaine** (Web Cloud, Noms de domaine, Zone
-   DNS) : poser les enregistrements que Vercel affiche (A pour le domaine nu,
-   CNAME pour `www`) et retirer les A et CNAME de parking d'OVH qui les
-   contredisent. Ne pas toucher aux MX ni au SPF de la boîte Zimbra.
+1. **Vercel, les adresses** (fait le 20 octobre 2026). Projet
+   `you-are-a-hero-v1`, Settings, Domains : `iletaituneclasse.com` en
+   Production (adresse principale, choisie le 20 octobre à la place du `.fr`) ;
+   `www.iletaituneclasse.com`, `iletaituneclasse.fr`, `www.iletaituneclasse.fr`,
+   `onceuponaclassroom.com` et `www.onceuponaclassroom.com` en « Redirect to »
+   `iletaituneclasse.com` (308). Un domaine vers lequel un autre renvoie ne
+   peut pas renvoyer lui-même : changer d'abord les cibles, puis l'ancien
+   domaine principal.
+2. **OVH, la zone DNS de chaque domaine** (fait le 20 octobre 2026) : les
+   enregistrements que Vercel affiche (A pour le domaine nu, CNAME pour
+   `www`), après avoir retiré le parking d'OVH (A `213.186.33.5`, TXT
+   `3|welcome` de `www`, qui empêche le CNAME, CNAME `ftp`). Garder les MX et
+   le SPF de la boîte Zimbra.
 3. **OVH, l'adresse de contact.** Activer la boîte Zimbra offerte de
-   `iletaituneclasse.fr`, `contact@iletaituneclasse.fr`, et, dans ses
-   réglages, faire suivre les messages vers la boîte startfrenchnow.
+   `iletaituneclasse.com`, `contact@iletaituneclasse.com`, et, dans ses
+   réglages, faire suivre les messages vers la boîte startfrenchnow. Aucune
+   boîte sur le `.fr` ni, avant la version anglaise, sur
+   `onceuponaclassroom.com`.
 4. **AWS, Amazon SES, région Paris (`eu-west-3`).** Identities, Create
-   identity, Domain `iletaituneclasse.fr`, Easy DKIM : poser chez OVH les
-   trois CNAME donnés. Ajouter chez OVH un TXT `_dmarc` :
-   `v=DMARC1; p=none; rua=mailto:contact@iletaituneclasse.fr`. Puis « Request
-   production access » (sortie du mode d'essai, accordée par AWS, souvent en
-   un jour) ; texte de la demande : « Courriels de service d'une application
-   pour enseignants (confirmation d'adresse, mot de passe oublié, avis de
-   suppression), quelques dizaines par mois, envoyés seulement à qui s'est
-   inscrit ; rebonds et plaintes suivis par la console. » Enfin SMTP
+   identity, Domain `iletaituneclasse.com`, Easy DKIM : poser chez OVH, dans
+   la zone du `.com`, les trois CNAME donnés. Ajouter dans la même zone un TXT
+   `_dmarc` : `v=DMARC1; p=none; rua=mailto:contact@iletaituneclasse.com`. Puis
+   « Request production access » (sortie du mode d'essai, accordée par AWS,
+   souvent en un jour) ; texte de la demande : « Courriels de service d'une
+   application pour enseignants (confirmation d'adresse, mot de passe oublié,
+   avis de suppression), quelques dizaines par mois, envoyés seulement à qui
+   s'est inscrit ; rebonds et plaintes suivis par la console. » Enfin SMTP
    settings, Create SMTP credentials : garder l'identifiant et le mot de passe
    pour le point 5, sans les coller ailleurs.
-5. **Supabase, la vraie base** (tableau de bord du projet) :
-   - Authentication, URL Configuration : Site URL `https://iletaituneclasse.fr` ;
-     ajouter `https://iletaituneclasse.fr/entree/confirmer` aux Redirect URLs,
-     en gardant les adresses `vercel.app` ;
+5. **Supabase, la vraie base** (tableau de bord du projet), **une fois l'accès
+   de production accordé par AWS** — en mode d'essai, SES n'écrit qu'aux
+   adresses vérifiées, et « Mot de passe oublié » ne partirait plus :
+   - Authentication, URL Configuration : Site URL `https://iletaituneclasse.com` ;
+     les Redirect URLs sont données au lot 2, plus bas ;
    - Authentication, Emails, SMTP Settings : Enable custom SMTP, hôte
      `email-smtp.eu-west-3.amazonaws.com`, port `587`, l'identifiant et le mot
-     de passe SMTP de SES, expéditeur `ne-pas-repondre@iletaituneclasse.fr`,
+     de passe SMTP de SES, expéditeur `ne-pas-repondre@iletaituneclasse.com`,
      nom « Il était une classe » ; puis relever la limite d'envoi
      (Rate Limits, emails) à 30 par heure ;
    - Authentication, Emails, Templates : pour « Confirm signup », « Reset
      password » et « Change email address », coller le sujet et le contenu de
      `supabase/templates/confirmation.html`, `recovery.html` et
      `email_change.html` (sujets dans `supabase/config.toml`).
-6. **Vercel, la variable** `ADRESSE_SITE` = `https://iletaituneclasse.fr`
-   (Production), une fois le domaine servi ; elle passe dans les courriels et
-   l'affiche de la classe. Redéployer.
+6. **Vercel, la variable** `ADRESSE_SITE` = `https://iletaituneclasse.com`
+   (Production) ; elle passe dans les courriels et l'affiche de la classe.
+   Redéployer.
 7. **Google, plus tard, au lot 9** : la vérification de la marque demande la
    page d'accueil et la page « Confidentialité » à ce domaine. Ce jour-là :
-   Search Console (TXT de vérification chez OVH), puis Google Cloud, Google
-   Auth Platform, Branding : domaine autorisé `iletaituneclasse.fr`, page
-   d'accueil, politique de confidentialité, conditions, et envoi à la
-   vérification.
+   Search Console (TXT de vérification chez OVH, zone du `.com`), puis Google
+   Cloud, Google Auth Platform, Branding : domaine autorisé
+   `iletaituneclasse.com`, page d'accueil, politique de confidentialité,
+   conditions, et envoi à la vérification.
 
 ## Étape 9, lot 2 : l'inscription publique
 
@@ -228,7 +235,7 @@ restent).
 courriels ne partent qu'à l'équipe du projet), dans le tableau de bord de la vraie
 base :
 
-1. Authentication, URL Configuration, Redirect URLs : `https://iletaituneclasse.fr/entree/**`
+1. Authentication, URL Configuration, Redirect URLs : `https://iletaituneclasse.com/entree/**`
    (remplace `…/entree/confirmer`), en gardant les adresses `vercel.app` sous la même
    forme `…/entree/**`.
 2. Authentication, Emails, Templates : recoller « Confirm signup » depuis

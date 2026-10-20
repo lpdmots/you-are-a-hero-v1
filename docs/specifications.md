@@ -253,7 +253,7 @@ déconseillé, n'est pas retenu.
 le compte d'un nouvel enseignant ; la connexion ne demandant que l'adresse et
 le profil, Google n'exige aucune validation de l'application ni ne limite le
 nombre d'utilisateurs ; la vérification de la marque, qui fait afficher « Il
-était une classe » sur son écran, se fait avec le domaine `iletaituneclasse.fr`,
+était une classe » sur son écran, se fait avec le domaine `iletaituneclasse.com`,
 une page d'accueil et une politique de confidentialité au même domaine.
 
 **Présentation proposée le 9 octobre 2026, sans retour du porteur :**
@@ -10827,8 +10827,11 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   avec ses deux liens, sans case à cocher. Le nom affiché aux élèves se règle
   ensuite dans « Mon compte » ; aucun projet d'exemple n'est créé d'office.
 - **Noms et adresses : un nom par langue, une seule application.** « Il
-  était une classe » à `iletaituneclasse.fr`, `iletaituneclasse.com`
-  renvoyant vers lui ; en anglais, « Once Upon a Classroom », à
+  était une classe » à `iletaituneclasse.com`, `iletaituneclasse.fr`
+  renvoyant vers lui (le `.com`, neutre, parle aussi aux enseignants
+  québécois, belges ou suisses ; choisi par le porteur le 20 octobre 2026, à
+  la place du `.fr` d'abord recommandé, quand changer ne coûtait que quelques
+  réglages) ; en anglais, « Once Upon a Classroom », à
   `onceuponaclassroom.com`, réservé dès maintenant pour qu'on ne le prenne
   pas. Les trois adresses sont enregistrées chez OVH par le porteur le
   20 octobre 2026 (`.fr` jusqu'au 20 octobre 2029, les deux `.com` jusqu'au
@@ -10836,12 +10839,16 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   noms. L'application choisit sa
   langue d'après l'adresse ; la version anglaise reste hors de la première
   livraison, et réserver son nom n'y engage pas. Le porteur commande les
-  domaines lui-même. Le domaine porte aussi les courriels (envoi par
-  Amazon SES, le service de Supabase n'écrivant qu'à son équipe, deux fois par
+  domaines lui-même. Le `.com` porte aussi les courriels
+  (`contact@iletaituneclasse.com`, qui suit vers la boîte du porteur ; envoi
+  par Amazon SES, le service de Supabase n'écrivant qu'à son équipe, deux fois par
   heure), la vérification de la marque chez Google et les pages publiques.
   Alternatives écartées : un seul nom valable dans les deux langues (« Fable
   Class »), qui perd le jeu de mots ; un seul nom anglais pour tous, ce que le
-  porteur avait écarté le 9 octobre 2026 avec « You Are a Hero ».
+  porteur avait écarté le 9 octobre 2026 avec « You Are a Hero ». Le `.com`
+  ne fait pas l'application pour d'autres pays : elle parle l'école
+  française (niveaux, responsable de traitement), et l'adapter serait un
+  travail à part.
 - **Pages publiques.** Une page d'accueil tournée vers l'enseignant et sa
   classe : la promesse et un livre montré, le chemin en quelques temps, les
   deux sortes de récit, qui fait quoi, l'origine du projet, l'offre (gratuit,
@@ -11066,11 +11073,11 @@ découvre l'outil, et le porteur, administrateur.
 
 *Pages publiques et mentions*
 
-- **F14-AC32 — Accueil :** étant donné un visiteur à `iletaituneclasse.fr`,
+- **F14-AC32 — Accueil :** étant donné un visiteur à `iletaituneclasse.com`,
   alors il lit la page d'accueil, qui mène à l'inscription, à l'entrée de
   l'enseignant, à l'entrée des élèves et aux pages « Aide »,
   « Confidentialité », « Conditions d'utilisation » et « Mentions légales » ;
-  à `iletaituneclasse.com` ou `onceuponaclassroom.com`, il arrive sur la même
+  à `iletaituneclasse.fr` ou `onceuponaclassroom.com`, il arrive sur la même
   page.
 - **F14-AC33 — Modèles à télécharger :** étant donné la page « Aide » ou
   l'étape « Imprimer et partager », alors l'adulte télécharge le modèle

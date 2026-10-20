@@ -152,7 +152,7 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
 | Base, comptes et fichiers | **Supabase**, en souscription directe, décidé le 8 octobre 2026 ([ADR 0004](adr/0004-vercel-et-supabase.md)). | Décidé. |
 | Offre de la base | **Offre gratuite jusqu'au premier utilisateur autre que le porteur, puis Supabase Pro**, décidé le 20 octobre 2026 (F14) ; jusque-là, le porteur veille à la mise en sommeil. | Décidé. |
 | Sauvegarde | **Chaque nuit vers un seau S3 du compte AWS du porteur, à Paris,** par GitHub Actions, base et images, quatre-vingt-dix jours, décidé le 20 octobre 2026 (F14). | Étape 9, lot 8. |
-| Domaines et courriels | `iletaituneclasse.fr`, `iletaituneclasse.com` et `onceuponaclassroom.com` chez OVH, enregistrés le 20 octobre 2026 ; courriels de l'application par Amazon SES. | Étape 9, lot 1. |
+| Domaines et courriels | `iletaituneclasse.com` (adresse principale, choisie le 20 octobre 2026), `iletaituneclasse.fr` et `onceuponaclassroom.com` en renvoi, chez OVH, enregistrés le 20 octobre 2026 ; courriels de l'application par Amazon SES. | Étape 9, lot 1. |
 | Région des données | Paris, pour la base (Supabase, `eu-west-3`) comme pour les fonctions (Vercel, `cdg1`), depuis le 9 octobre 2026. | Fait. |
 | Production du PDF et de l'aperçu | Chaîne retenue (ADR 0003), exécutée chez Vercel par hypothèse ; Render si V2 échoue. | Étape 6. |
 | Imprimeur | epubli sert de premier cas de vérification, sans exclusivité. | Étape 6 (V6). |
@@ -3092,10 +3092,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   Google) sans sa demande : les réglages chez un fournisseur lui sont dictés,
   il les fait.
 - **Lots, découpage validé le 20 octobre 2026 :**
-  1. **Domaine et courriels :** l'application à `iletaituneclasse.fr`, les
-     deux `.com` en renvoi ; Amazon SES pour les courriels du compte (le
+  1. **Domaine et courriels :** l'application à `iletaituneclasse.com`
+     (choisi par le porteur le 20 octobre 2026 à la place du `.fr`, pour les
+     francophones hors de France), `iletaituneclasse.fr` et
+     `onceuponaclassroom.com` en renvoi ; Amazon SES pour les courriels du compte (le
      service de Supabase n'écrit qu'à son équipe, deux fois par heure) ;
-     `contact@` redirigé vers la boîte du porteur ; vérification de la marque
+     `contact@iletaituneclasse.com` redirigé vers la boîte du porteur ; vérification de la marque
      chez Google. **Construit le 20 octobre 2026 pour sa part de code,** sans
      migration : courriels du compte en français (confirmation, mot de passe
      oublié, changement d'adresse, `app/supabase/templates/`) et mode d'emploi
@@ -3123,7 +3125,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      10 ✦, après chaque aide ; le compte du porteur marqué par
      `npm run createur`, sans solde.
   4. **Limites gratuites et pass** (F14-AC12 à AC17), conçus avec impeccable
-     et critiqués en deux lectures. Migration.
+     et critiqués en deux lectures. Migration. **Construit le 20 octobre 2026,** migration
+     `limites_et_pass` en base locale seulement : l'interrupteur, les limites
+     et les prix dans `reglages_application`, la table des pass, le refus par
+     la base d'une 41e scène ou d'une 11e image posée dans le livre (scènes du
+     livre et pages de présentation), `donner_le_pass` qui ajoute les étoiles ;
+     le dialogue du pass, ouvert d'où qu'on soit, la section « Pass du livre »
+     des réglages du projet, le décompte en ambre ; écrans critiqués en deux
+     lectures (26/40 et 24/40) et corrigés (`design.md`, « Étape 9
+     construite »). « Restaurer » reste libre à la limite ; une image en trop
+     venue d'un collage s'enregistre sans elle.
   5. **Paiement :** Stripe Checkout en mode d'essai, avis de paiement reçu une
      seule fois, facture, case de rétractation, interrupteur (F14-AC18 à
      AC21).
@@ -3143,7 +3154,7 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   10. **Essai de bout en bout,** et mode d'emploi de la mise en ligne.
 - **Terminée quand,** validé le 20 octobre 2026 :
   - essai en ligne du porteur, « Paiement ouvert » éteint : avec une seconde
-    adresse, il crée un compte sur `iletaituneclasse.fr` par adresse puis par
+    adresse, il crée un compte sur `iletaituneclasse.com` par adresse puis par
     Google, reçoit les courriels, écrit un petit livre personnel, use ses
     30 étoiles jusqu'au message, en reçoit depuis l'administration, fait le
     PDF et partage le livre, dont la mention mène à l'accueil ;
