@@ -11,7 +11,7 @@ export function LecteurParLeLien({ code, version }: { code: string; version: Ver
     const base = `/images/lire/${encodeURIComponent(code)}/${image}`;
     return symbole ? { src: `${base}?v=1` } : { src: `${base}?v=1`, srcSet: `${base}?v=1 900w, ${base} 2600w`, sizes: "(max-width: 720px) 100vw, 680px" };
   };
-  return <LecteurEnLigne version={version} source={source} memoire={{ sorte: "appareil", cle: `lecture:${code.replace(/[\s-]/g, "").toLowerCase()}` }} />;
+  return <LecteurEnLigne version={version} source={source} memoire={{ sorte: "appareil", cle: `lecture:${code.replace(/[\s-]/g, "").toLowerCase()}` }} mention />;
 }
 
 /** « Momentanément indisponible » : réessayer d'un geste, sans chercher comment recharger la page. */

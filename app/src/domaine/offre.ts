@@ -52,7 +52,8 @@ export function lireOffre(o: Record<string, unknown> | null | undefined): Offre 
 /** « 20 € », « 4,50 € » : un prix en centimes, dit en euros. */
 export function enEuros(centimes: number): string {
   const euros = centimes / 100;
-  return `${Number.isInteger(euros) ? euros : euros.toFixed(2).replace(".", ",")} €`;
+  // Une espace insécable : le prix ne se coupe pas en fin de ligne
+  return `${Number.isInteger(euros) ? euros : euros.toFixed(2).replace(".", ",")}\u00a0€`;
 }
 
 /** La phrase d'une création refusée, pour l'adulte : le dialogue du pass dit la suite (F14-AC13, AC14). */

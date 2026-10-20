@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
@@ -120,14 +121,29 @@ function CommentLire({ version, retour }: { version: VersionPartagee; retour: Re
   );
 }
 
+/**
+ * « Écrit avec Il était une classe » (F14-AC34) : au pied de la page de titre et après la fin, pour
+ * le lecteur par lien seulement ; jamais pendant la lecture, jamais dans le PDF. Elle mène à
+ * l'accueil.
+ */
+function EcritAvec() {
+  return (
+    <p className="lecteur__mention">
+      <Link href="/">Écrit avec Il était une classe</Link>
+    </p>
+  );
+}
+
 export function LecteurEnLigne({
-  version, source, memoire, bandeau,
+  version, source, memoire, bandeau, mention = false,
 }: {
   version: VersionPartagee;
   source: SourceImage;
   memoire: Memoire;
   /** Au-dessus du livre : la prévisualisation de l'adulte, le retour aux lectures de l'élève */
   bandeau?: ReactNode;
+  /** Le lien de lecture : la mention « Écrit avec Il était une classe » (F14-AC34) */
+  mention?: boolean;
 }) {
   const dire = useMessage();
   const livre = useMemo(() => livreLuDe(version), [version]);
@@ -363,6 +379,7 @@ export function LecteurEnLigne({
                     </button>
                   ) : null}
                 </div>
+                {mention ? <EcritAvec /> : null}
               </article>
               {present?.auteurs && present.auteurs.place === "debut" ? <PageDesAuteurs p={present.auteurs} source={source} /> : null}
             </>
@@ -403,6 +420,7 @@ export function LecteurEnLigne({
               </article>
               {passage.fin && present?.auteurs && present.auteurs.place === "fin" ? <PageDesAuteurs p={present.auteurs} source={source} /> : null}
               {passage.fin && present?.fin ? <PageDeFin p={present.fin} source={source} /> : null}
+              {passage.fin && mention ? <EcritAvec /> : null}
               {g && g.parcours.position > 0 ? (
                 <p className="lecteur__precedent">
                   <button type="button" className="lien" onClick={precedent}>
@@ -439,6 +457,7 @@ export function LecteurEnLigne({
                 <>
                   {present?.auteurs && present.auteurs.place === "fin" ? <PageDesAuteurs p={present.auteurs} source={source} /> : null}
                   {present?.fin ? <PageDeFin p={present.fin} source={source} /> : null}
+                  {mention ? <EcritAvec /> : null}
                 </>
               ) : null}
               <p className="lecteur__chapitres">

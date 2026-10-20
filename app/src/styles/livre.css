@@ -2087,3 +2087,23 @@
   align-items: center;
   gap: 6px 10px;
 }
+
+/* Les modèles pour les familles (F14-AC33) */
+.partager__familles p {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.partager__familles ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 22px;
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.partager__familles a {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+}

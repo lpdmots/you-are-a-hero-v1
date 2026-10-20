@@ -364,6 +364,27 @@ Réglages faits par le porteur, dans cet ordre ; aucune clé ne passe dans la co
    `aws configure` avec un accès qui lit le seau, celui du porteur), et une ligne
    `SEAU_S3=…` dans `production.env`. Docker ouvert.
 
+## Étape 9, lot 9 : les pages publiques
+
+L'accueil à `/` pour un visiteur (un adulte connecté ou un poste d'élève y gardent leur
+arrivée), « Aide », « Confidentialité », « Conditions d'utilisation », « Mentions
+légales », et les trois modèles (`/modeles/…`, à télécharger en `.rtf`). Les textes sont
+dans `src/domaine/textes-publics.ts`, en un seul endroit, rédigés par Claude : une
+relecture par un juriste reste recommandée.
+
+À faire par le porteur avant l'ouverture :
+
+1. **Son nom** dans `EDITEUR.nom` (`src/domaine/textes-publics.ts`) : les mentions
+   légales et la page « Confidentialité » le citent ; il y est provisoirement « Le
+   créateur d'Il était une classe ».
+2. **Le livre à feuilleter de l'accueil** : la variable `LIVRE_DE_L_ACCUEIL` (Vercel,
+   Production) reçoit le code d'un livre partagé par lien, les dix lettres après
+   `/lire/` ; sans elle, l'accueil montre sa page de livre sans lien.
+3. **Google** (lot 1, point 7) : les pages d'accueil, « Confidentialité » et
+   « Conditions » existent désormais à `iletaituneclasse.fr` ; la vérification de la
+   marque peut partir.
+4. **Stripe** (lot 5, point 2) : « Terms of service » `https://iletaituneclasse.fr/conditions`.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

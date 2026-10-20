@@ -1952,6 +1952,46 @@ dernière connexion, solde ; « Offrir » (étoiles avec une note pour mémoire,
 pass d'un projet) ; ses projets, leur pass et leur partage ; l'histoire de ses
 étoiles, du plus récent au plus ancien.
 
+**Lot 7 — supprimer pour de bon.** Dans les formes existantes : « Supprimer
+pour de bon », lien brique sous chaque élément de la corbeille, et « Vider la
+corbeille », bouton brique au pied du panneau, chacun après un dialogue qui dit
+ce qui disparaît ; « Supprimer la classe », bouton brique à côté de « Rouvrir la
+classe » sur une classe passée ; « Supprimer mon compte », lien brique au bas de
+« Mon compte », puis un dialogue où l'on retape son adresse (captures 931 à 933).
+
+**Lot 9 — pages publiques.** Sans maquette : conçues avec impeccable dans le
+système « Cahiers d'aventure », critiquées en deux lectures séparées sur dix
+captures Playwright (941 à 951) — 25/36 en lecture informée, les heuristiques 9
+ne s'appliquant pas (environ 28/40), et 26/40 en lecture indépendante, sans
+constat du détecteur —, puis corrigées aussitôt, sans nouvelle mesure. Le skill
+proposait de soumettre au porteur trois structures avant de construire : sa
+consigne de construire sans attendre a primé.
+
+- **L'accueil :** le nom en cursive (son seul autre emploi avec le prénom de
+  l'élève), la promesse en une phrase, « Créer un compte » plein et « Entrée
+  enseignant », « Gratuit · sans carte bancaire · aucun compte pour les élèves » ;
+  à côté, la preuve : une double page de livre posée sur le bureau,
+  l'illustration du port à gauche, le passage 12 en Vollkorn à droite avec ses
+  deux « rendez-vous au », légendée « Une page d'un livre d'essai » et, si un
+  livre est réglé, « Feuilleter le livre ». Puis les cinq temps sur des feuilles
+  numérotées en canard, deux sortes de livres, qui fait quoi et le matériel,
+  « Né dans une classe », ce que cela coûte (le gratuit, puis le pass dans la
+  même forme quand la vente est ouverte), et l'appel repris en cursive.
+- **Les textes :** une colonne de lecture, un sommaire au-delà de quatre
+  sections, l'adresse de contact en lien ; l'aide, une foire aux questions dont
+  la première est ouverte (chevron dessiné, questions du pass seulement quand la
+  vente est ouverte), les modèles, puis « Écrire au créateur ».
+- **Repris après la critique :** l'en-tête sur téléphone s'empilait en trois
+  rangées et perdait le nom (une rangée : le nom et « Créer un compte ») ;
+  « Gratuit » n'arrivait qu'en bas de page ; cinq couleurs sur les temps, contre
+  « une couleur, un rôle » (le rang en canard) ; la carte du pass, d'un autre
+  style sur l'accueil (même forme que le gratuit) ; le matériel non dit ; les
+  garanties de l'envoi aux IA et le prénom d'un camarade dans un texte corrigé ;
+  le sommaire des longues pages ; deux boutons pleins (celui de l'en-tête cerné) ;
+  « Questions fréquentes » et « Aide » (« Aide » partout) ; le prix coupé en fin
+  de ligne. Laissés : la page en cours non marquée dans l'en-tête ; le zéro barré
+  d'Atkinson dans les prix, voix de l'outil.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

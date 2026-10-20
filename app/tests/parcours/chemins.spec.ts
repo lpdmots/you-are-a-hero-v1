@@ -423,3 +423,13 @@ test("F03-AC50, AC18 — les chemins lus par un élève : le même schéma, sans
   await alice.page.waitForURL(new RegExp(`/travail/scene/${s.lisiere.scenes[0]}`));
   await alice.contexte.close();
 });
+
+test("F14-AC35 — sur un grand écran, le nom de la bibliothèque se lit dans un coin du schéma", async ({ page }) => {
+  const l = await auteur(page);
+  await semerBlocs(l.base, l.lisiere.scenes[0], [choixAuto("Continuer vers la lumière", l.lisiere.scenes[1])]);
+  await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
+  await schemaPret(page, 4);
+  const mention = page.locator(".react-flow__attribution");
+  await expect(mention).toBeVisible();
+  await expect(mention).toContainText("React Flow");
+});

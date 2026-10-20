@@ -380,7 +380,8 @@ export default function Schema({
                 selectionKeyCode={null}
                 multiSelectionKeyCode={null}
                 deleteKeyCode={null}
-                proOptions={{ hideAttribution: true }}
+                // Le nom de la bibliothèque, dans un coin, comme ses auteurs le demandent (F14-AC35)
+                proOptions={{ hideAttribution: false }}
                 ariaLabelConfig={{
                   "node.a11yDescription.default": "Entrée ou Espace : montrer les chemins de cette scène. Échap : ne plus les montrer.",
                   "node.a11yDescription.keyboardDisabled": "Entrée ou Espace : montrer les chemins de cette scène. Échap : ne plus les montrer.",

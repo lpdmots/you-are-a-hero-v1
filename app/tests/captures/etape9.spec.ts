@@ -136,3 +136,25 @@ test("lot 7 : la corbeille, et supprimer son compte", async ({ page }) => {
   await page.getByRole("button", { name: "Supprimer mon compte" }).click();
   await capturer(page, "supprimer-mon-compte");
 });
+
+test("lot 9 : les pages publiques", async ({ page }) => {
+  test.setTimeout(180_000);
+  n = 940;
+  for (const [adresse, nom] of [["/", "accueil"], ["/aide", "aide"], ["/confidentialite", "confidentialite"], ["/conditions", "conditions"], ["/mentions-legales", "mentions-legales"], ["/modeles/autorisation-de-diffusion", "modele-autorisation"]] as const) {
+    await aller(page, adresse);
+    await capturer(page, nom, true);
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const [adresse, nom] of [["/", "accueil-390"], ["/aide", "aide-390"], ["/modeles/autorisation-de-diffusion", "modele-390"]] as const) {
+    await aller(page, adresse);
+    await capturer(page, nom, true);
+  }
+  await aller(page, "/");
+  await capturer(page, "accueil-390-haut");
+  // L'offre, « Paiement ouvert » allumé
+  await page.setViewportSize({ width: 1366, height: 768 });
+  await sql("update public.reglages_application set paiement_ouvert = true");
+  await aller(page, "/");
+  await page.getByRole("heading", { name: "Ce que cela coûte" }).scrollIntoViewIfNeeded();
+  await capturer(page, "accueil-offre-paiement-ouvert");
+});

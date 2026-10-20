@@ -294,3 +294,27 @@ test("un code qui n'existe pas mène à la page neutre", async ({ browser }) => 
   await expect(lecteur.getByText("Ce livre n’est plus partagé.")).toBeVisible();
   await contexte.close();
 });
+
+test("F14-AC34 — « Écrit avec Il était une classe » au pied de la page de titre et après la fin, menant à l'accueil ; ni pendant la lecture, ni sur la page neutre", async ({ page, browser }) => {
+  const l = await phare(page);
+  const lien = await partager(page, l.projet);
+  const { contexte, lecteur } = await telephone(browser);
+  await lecteur.goto(new URL(lien).pathname);
+  const mention = lecteur.getByRole("link", { name: "Écrit avec Il était une classe" });
+  await expect(mention).toBeVisible();
+  await expect(mention).toHaveAttribute("href", "/");
+  await lecteur.getByRole("button", { name: "Commencer la lecture" }).click();
+  await expect(lecteur.getByText("La plage au matin.")).toBeVisible();
+  await expect(mention).toHaveCount(0);
+  await lecteur.getByRole("button", { name: /Rentrer à la maison/ }).click();
+  await expect(lecteur.getByText("Tu rentres chez toi.")).toBeVisible();
+  await expect(mention).toBeVisible();
+  await mention.click();
+  await expect(lecteur).toHaveURL(/\/$/);
+  await expect(lecteur.getByRole("heading", { level: 1, name: "Il était une classe" })).toBeVisible();
+  // La page neutre ne la porte pas
+  await lecteur.goto("/lire/zzzzzzzzzz");
+  await expect(lecteur).toHaveTitle("Ce livre n’est plus partagé");
+  await expect(lecteur.getByRole("link", { name: "Écrit avec Il était une classe" })).toHaveCount(0);
+  await contexte.close();
+});

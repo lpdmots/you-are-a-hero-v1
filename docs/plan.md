@@ -3183,7 +3183,18 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      `app/README.md`, « Étape 9, lot 8 ». Il tourne une fois le code poussé.
   9. **Pages publiques et textes juridiques,** « Écrit avec Il était une
      classe », mention React Flow, support (F14-AC32 à AC36), conçus avec
-     impeccable et critiqués en deux lectures.
+     impeccable et critiqués en deux lectures. **Construit le 20 octobre 2026,**
+     sans migration : l'accueil (une double page de livre en preuve, les cinq
+     temps, deux sortes de livres, qui fait quoi, l'origine, ce que cela
+     coûte, les prix lus dans les réglages), « Aide », « Confidentialité »,
+     « Conditions d'utilisation », « Mentions légales », trois modèles en page
+     et en `.rtf` (autorisation de diffusion, information des familles,
+     contrat de sous-traitance type), aussi dans « Imprimer et partager » pour
+     un projet de classe ; « Écrit avec Il était une classe » dans le lecteur
+     par lien ; la mention React Flow ; « Écrire au créateur ». Écrans critiqués
+     en deux lectures (environ 28/40 et 26/40) et corrigés (`design.md`,
+     « Étape 9 construite »). Le nom du porteur reste à écrire dans les
+     mentions légales.
   10. **Essai de bout en bout,** et mode d'emploi de la mise en ligne.
 - **Terminée quand,** validé le 20 octobre 2026 :
   - essai en ligne du porteur, « Paiement ouvert » éteint : avec une seconde

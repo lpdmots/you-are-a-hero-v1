@@ -6,6 +6,7 @@ import { useEffect, useState, useTransition, type CSSProperties } from "react";
 import { enregistrerNomAffiche, reglerAidesIa, supprimerMonCompte } from "@/app/(adulte)/actions-compte";
 import { Dialogue } from "./Dialogue";
 import type { ReglagesIa } from "@/domaine/aides-ia";
+import { EDITEUR } from "@/domaine/textes-publics";
 import { seDeconnecter } from "@/app/entree/actions";
 import { BoutonEnvoi } from "./Attente";
 import { Logo } from "./Logo";
@@ -147,6 +148,12 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharg
               </Link>
             </section>
           ) : null}
+          {/* Le support : un courriel, sans délai promis (F14-AC36) */}
+          <section>
+            <p>
+              Une question, une idée ? <a className="lien" href={`mailto:${EDITEUR.contact}`}>Écrire au créateur</a>
+            </p>
+          </section>
           <section>
             <form action={seDeconnecter}>
               <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>

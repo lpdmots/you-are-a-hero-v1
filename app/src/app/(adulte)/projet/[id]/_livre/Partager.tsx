@@ -171,6 +171,30 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
 
         <Noms projetId={projetId} p={p} />
 
+        {/* Les modèles pour les familles, à faire signer avant un partage par lien (F14-AC33) */}
+        {p.deClasse ? (
+          <section className="partager__carte partager__familles" aria-labelledby="familles-t">
+            <h3 id="familles-t" className="partager__carte-titre">
+              Pour les familles
+            </h3>
+            <p>Avant de partager par un lien, faites signer l’autorisation de diffusion.</p>
+            <ul>
+              <li>
+                <a className="lien" href="/modeles/autorisation-de-diffusion/fichier" download>
+                  <Icone nom="telecharger" />
+                  Autorisation de diffusion
+                </a>
+              </li>
+              <li>
+                <a className="lien" href="/modeles/information-des-familles/fichier" download>
+                  <Icone nom="telecharger" />
+                  Information des familles
+                </a>
+              </li>
+            </ul>
+          </section>
+        ) : null}
+
         <p className="partager__voir">
           {!partage ? (
             <Link className="btn" href={`/previsualiser/${projetId}`}>

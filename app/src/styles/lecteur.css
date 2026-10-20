@@ -453,3 +453,19 @@
   font-weight: 600;
   color: var(--graphite);
 }
+
+/* « Écrit avec Il était une classe » : discrète, au pied de la page de titre et après la fin (F14-AC34) */
+.lecteur__mention {
+  margin-top: 28px;
+  text-align: center;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+}
+.lecteur__mention a {
+  color: var(--graphite-3);
+  text-decoration: none;
+}
+.lecteur__mention a:hover {
+  color: var(--canard);
+  text-decoration: underline;
+}
