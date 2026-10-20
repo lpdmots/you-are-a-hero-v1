@@ -21,6 +21,8 @@ type Props = {
   etoiles: number | null;
   /** « Recharger · 5 € pour 100 ✦ », quand on peut acheter des étoiles ; sinon rien (F14-AC19) */
   recharge?: string | null;
+  /** Le compte du porteur : « Administration » dans « Mon compte » (F14) */
+  admin?: boolean;
 };
 
 const signe = (nom: string): string =>
@@ -35,7 +37,7 @@ const signe = (nom: string): string =>
  * Barre du haut de l'adulte : le nom du dernier projet ouvert, qui y ramène de
  * partout, puis « Mes projets » et « Mes classes ». Son nom ouvre « Mon compte ».
  */
-export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharge = null }: Props) {
+export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharge = null, admin = false }: Props) {
   const projet = useProjetCourant();
   const chemin = usePathname();
   const routeur = useRouter();
@@ -133,6 +135,13 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharg
             </p>
           </section>
           <ReglagesAidesIa reglages={ia} onChanger={reglerIa} etoiles={etoiles} recharge={recharge} />
+          {admin ? (
+            <section>
+              <Link className="btn" href="/admin" onClick={() => setCompte(false)}>
+                Administration
+              </Link>
+            </section>
+          ) : null}
           <section>
             <form action={seDeconnecter}>
               <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>

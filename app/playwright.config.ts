@@ -13,6 +13,9 @@ local.OPENAI_API_KEY = "";
 // Ni Stripe : le paiement est simulé, et les avis se signent d'un secret d'essai (étape 9)
 local.STRIPE_CLE_SECRETE = "";
 local.STRIPE_SECRET_AVIS = "whsec_essai_local";
+// Les courriels de l'application partent dans la boîte locale (Mailpit), comme ceux du compte
+local.SMTP_HOTE = "127.0.0.1";
+local.SMTP_PORT = "54325";
 if (!/^http:\/\/(127\.0\.0\.1|localhost)[:/]/.test(local.NEXT_PUBLIC_SUPABASE_URL ?? "")) {
   throw new Error("Les parcours ne se jouent que contre la base locale : « npm run base:demarrer » puis « npm run env:local ».");
 }

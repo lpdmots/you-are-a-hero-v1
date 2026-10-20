@@ -60,6 +60,9 @@ CLE_SIGNATURE_POSTES=${cleSignature}
 # Pour les essais automatiques seulement
 BASE_LOCALE_URL=${lire("DB_URL")}
 COURRIER_LOCAL_URL=${etat.get("MAILPIT_URL") ?? etat.get("INBUCKET_URL") ?? "http://127.0.0.1:54324"}
+# Les courriels de l'application (étape 9) : dans la même boîte locale
+SMTP_HOTE=127.0.0.1
+SMTP_PORT=54325
 ${clesIa.length ? `# Aides IA : clés posées à la main, gardées d'une fois sur l'autre\n${clesIa.join("\n")}\n` : ""}`,
   { mode: 0o600 },
 );

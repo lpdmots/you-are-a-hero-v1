@@ -1939,6 +1939,19 @@ constat du détecteur —, puis corrigés aussitôt, sans nouvelle mesure.
   porteur ne veut pas) ; une croix au dialogue (les autres dialogues n'en ont
   pas ; « Échap » et « Plus tard » ferment).
 
+**Lot 6 — l'administration.** Sans maquette, conçue avec impeccable sans les
+deux lectures (exception accordée par le porteur), contrôlée au détecteur et
+aux captures 921 à 923 : une page de travail, des feuilles blanches sur le
+bureau, ni cartes de chiffres ni couleur d'état. « En octobre 2026 » : la
+dépense d'IA (dollars, euros, demandes), les ventes, le nombre de comptes, puis
+l'interrupteur « Paiement ouvert » et son bouton ; « Un livre signalé » : un
+champ pour le lien, « Chercher », puis le livre trouvé et « Retirer ce
+partage », bouton brique ; « Comptes » : une table qui défile de côté sur un
+téléphone, l'adresse menant à la fiche du compte. La fiche : inscription,
+dernière connexion, solde ; « Offrir » (étoiles avec une note pour mémoire,
+pass d'un projet) ; ses projets, leur pass et leur partage ; l'histoire de ses
+étoiles, du plus récent au plus ancien.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

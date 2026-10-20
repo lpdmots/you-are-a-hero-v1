@@ -297,6 +297,21 @@ dans cet ordre ; aucune clé ne passe dans la conversation :
 Cartes d'essai de Stripe : `4242 4242 4242 4242` (acceptée), `4000 0000 0000 0002`
 (refusée), une date future et trois chiffres quelconques.
 
+## Étape 9, lot 6 : l'administration et les courriels de l'application
+
+`/admin`, ou « Administration » dans « Mon compte », pour le compte marqué par
+`npm run createur` ; tout autre compte lit « Cette page n'existe pas ».
+
+L'application écrit ses propres courriels (partage retiré, puis compte inactif et
+sauvegarde manquée) par le même serveur d'envoi que Supabase, Amazon SES. En local,
+`npm run env:local` les envoie dans Mailpit (port 54325, ouvert par
+`supabase/config.toml`). À la mise en ligne, chez Vercel (Production) :
+`SMTP_HOTE` = `email-smtp.eu-west-3.amazonaws.com`, `SMTP_PORT` = `587`,
+`SMTP_UTILISATEUR` et `SMTP_MOT_DE_PASSE` = les identifiants SMTP de SES du lot 1,
+`COURRIEL_EXPEDITEUR` = `Il était une classe <ne-pas-repondre@iletaituneclasse.fr>`,
+`COURRIEL_CONTACT` = `contact@iletaituneclasse.fr`. Sans eux, rien ne part, et la page
+qui retire un partage le dit.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

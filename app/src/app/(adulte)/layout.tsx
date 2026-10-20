@@ -23,7 +23,7 @@ export default async function EspaceAdulte({ children }: { children: ReactNode }
     <Messages>
       <ProjetCourant depart={dernier ? { id: dernier.id, titre: dernier.titre, onglet: dernier.dernierOnglet } : null}>
         <AidesIa reglages={enseignant.reglagesIa}>
-          <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} reglagesIa={enseignant.reglagesIa} etoiles={enseignant.etoiles} recharge={recharge} />
+          <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} reglagesIa={enseignant.reglagesIa} etoiles={enseignant.etoiles} recharge={recharge} admin={enseignant.createur} />
           <main>{children}</main>
           {/* Le dialogue d'une limite gratuite atteinte, ouvert d'où qu'on soit (F14-AC13, AC14) */}
           <OffreDuPass />

@@ -3148,7 +3148,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   6. **Administration :** comptes, offrir des étoiles ou un pass, retirer un
      partage, dépense d'IA et ventes du mois (F14-AC22 à AC25) ; conçue avec
      impeccable, sans les deux lectures de critique, exception accordée par
-     le porteur : elle ne sert qu'à lui.
+     le porteur : elle ne sert qu'à lui. **Construit le 20 octobre 2026,** migration
+     `administration` en base locale seulement (liste des comptes par la clé
+     de service, partages retirés) : `/admin` (le mois, l'interrupteur
+     « Paiement ouvert », ajouté pour l'essai local, un lien signalé à
+     retirer, la table des comptes) et la fiche d'un compte (offrir des
+     étoiles ou un pass, ses projets et partages, l'histoire de ses étoiles),
+     refusées à tout autre compte comme une page inexistante ; « Administration »
+     dans « Mon compte » du porteur. L'application écrit désormais ses propres
+     courriels (`nodemailer`, par le SMTP de SES ; en local, Mailpit) ; sans
+     serveur d'envoi, le retrait se fait et la page le dit.
   7. **Supprimer pour de bon :** compte, classe passée, corbeille, comptes
      inactifs (F14-AC26 à AC29).
   8. **Sauvegarde nocturne vers S3** par GitHub Actions, qui dispose de

@@ -99,3 +99,20 @@ test("lot 5 : recharger dans « Mon compte », et le retour du pass payé", asyn
   await aller(page, `/projet/${projet}/plan?message=pass`);
   await capturer(page, "retour-du-pass");
 });
+
+test("lot 6 : l'administration", async ({ page }) => {
+  test.setTimeout(120_000);
+  const { compte, base } = await adultePret(page);
+  await sql("update public.enseignants set createur = true where id = $1", [compte.id]);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Le marais des feux follets", null);
+  await sql("insert into public.mouvements_etoiles (enseignant_id, nombre, motif, note) values ($1, 100, 'cadeau', 'Essai en classe')", [compte.id]);
+  void projet;
+  n = 920;
+  await aller(page, "/admin");
+  await capturer(page, "admin", true);
+  await aller(page, `/admin/compte/${compte.id}`);
+  await capturer(page, "admin-compte", true);
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, "/admin");
+  await capturer(page, "admin-390", true);
+});

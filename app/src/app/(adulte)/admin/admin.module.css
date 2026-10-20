@@ -1,0 +1,172 @@
+/* L'administration du porteur : une page de travail, dense et sobre, dans le système « Cahiers
+   d'aventure » ; ni cartes de chiffres ni couleurs d'état, le graphite et le canard des liens. */
+.admin {
+  display: grid;
+  gap: 22px;
+  padding-bottom: 48px;
+}
+.admin h2 {
+  font-size: var(--t-l);
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+.adresse {
+  overflow-wrap: anywhere;
+}
+.fait {
+  padding: 10px 14px;
+  border-radius: var(--r-m);
+  background: var(--e-valide-f);
+  color: var(--e-valide);
+  font-weight: 600;
+}
+
+/* Le mois, puis l'interrupteur, sur une feuille */
+.mois,
+.bloc {
+  padding: 18px 20px;
+  border: 1px solid var(--trait);
+  border-radius: var(--r-l);
+  background: var(--feuille);
+}
+.chiffres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 40px;
+  margin: 0;
+}
+.chiffres dt {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+.chiffres dd {
+  margin: 2px 0 0;
+  font-size: var(--t-xl);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.chiffres dd span {
+  font-size: var(--t-s);
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.interrupteur {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+}
+.interrupteur small {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+
+/* Formulaires en ligne : le champ, puis la commande, au pied du champ */
+.ligne {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+.champ {
+  display: grid;
+  gap: 4px;
+  min-width: 140px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.large {
+  flex: 1 1 260px;
+}
+/* Une grille ne laisse pas ses enfants rétrécir sous leur contenu : la table défile, pas la page */
+.admin > * {
+  min-width: 0;
+}
+.note {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.trouve {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--trait-fort);
+  border-radius: var(--r-m);
+  background: var(--feuille-2);
+}
+
+/* Les tables : défilent de côté sur un téléphone, jamais la page */
+.table {
+  overflow-x: auto;
+}
+.table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--t-s);
+}
+.table th,
+.table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--trait);
+  text-align: left;
+  white-space: nowrap;
+}
+.table thead th {
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
+}
+.table tbody th {
+  font-weight: 600;
+}
+.nb {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.marque {
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--feuille-2);
+  border: 1px solid var(--trait);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+
+/* Les projets d'un compte */
+.liste {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.liste li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--trait);
+}
+.titre {
+  font-weight: 700;
+}
+.partage {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+.champ input,
+.champ select {
+  width: 100%;
+}
