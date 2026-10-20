@@ -18,7 +18,7 @@ const service = () => createClient(url, process.env.SUPABASE_CLE_SECRETE!, { aut
 export type Compte = { id: string; courriel: string; motDePasse: string };
 const crees: string[] = [];
 
-/** Avant l'ouverture, un compte ne se crée que depuis Supabase (F01-AC28). */
+/** Un compte prêt à entrer, créé directement dans Supabase, adresse confirmée. */
 export async function creerCompte(): Promise<Compte> {
   const courriel = `parcours-${randomUUID()}@exemple.test`;
   const motDePasse = `parcours-${randomBytes(9).toString("base64url")}`;
@@ -26,6 +26,32 @@ export async function creerCompte(): Promise<Compte> {
   if (error || !data.user) throw new Error(error?.message);
   crees.push(data.user.id);
   return { id: data.user.id, courriel, motDePasse };
+}
+
+/** Une adresse d'essai que le nettoyage reconnaît, pour un compte créé par l'inscription (F14). */
+export const adresseDEssai = (): string => `parcours-${randomUUID()}@exemple.test`;
+
+/** Retient pour le nettoyage le compte qui porte cette adresse, s'il existe. */
+export async function retenirCompte(courriel: string): Promise<string | null> {
+  const [ligne] = await sql<{ id: string }>("select id from auth.users where email = $1", [courriel]);
+  if (ligne && !crees.includes(ligne.id)) crees.push(ligne.id);
+  return ligne?.id ?? null;
+}
+
+/** Le dernier courriel reçu par cette adresse dans la boîte locale (Mailpit), dont le sujet contient ce texte. */
+export async function courrielRecu(courriel: string, sujet: string): Promise<{ sujet: string; html: string; liens: string[] }> {
+  const boite = process.env.COURRIER_LOCAL_URL!;
+  let recu = { sujet: "", html: "", liens: [] as string[] };
+  await expect(async () => {
+    const liste = await (await fetch(`${boite}/api/v1/search?query=${encodeURIComponent(`to:${courriel}`)}`)).json();
+    const trouve = (liste.messages ?? []).find((m: { Subject: string }) => m.Subject.includes(sujet));
+    expect(trouve, `courriel « ${sujet} » vers ${courriel}`).toBeTruthy();
+    const message = await (await fetch(`${boite}/api/v1/message/${trouve.ID}`)).json();
+    const html = String(message.HTML ?? "");
+    const liens = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1].replace(/&amp;/g, "&"));
+    recu = { sujet: trouve.Subject, html, liens };
+  }).toPass({ timeout: 15_000 });
+  return recu;
 }
 
 /** Supprime les comptes que le test a créés, avec leurs classes, élèves et projets ; un reste fait échouer le test. */

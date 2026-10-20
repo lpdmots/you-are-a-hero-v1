@@ -51,8 +51,10 @@ async function principal() {
 
   // Lu dans les réglages publics de Supabase Auth : aucun compte d'essai n'est créé
   const reglages = await (await fetch(`${url}/auth/v1/settings`, { headers: { apikey: publiable } })).json().catch(() => null);
-  const fermees = reglages?.disable_signup === true;
-  dire(fermees, "Les inscriptions publiques sont fermées", fermees ? "" : "à fermer dans Supabase : Authentication > Sign In / Providers > « Allow new users to sign up »");
+  const ouvertes = reglages?.disable_signup === false;
+  dire(ouvertes, "Les inscriptions sont ouvertes (étape 9, F14)", ouvertes ? "" : "Authentication > Sign In / Providers > « Allow new users to sign up »");
+  const confirmees = reglages?.mailer_autoconfirm === false;
+  dire(confirmees, "Une adresse se confirme avant d'entrer", confirmees ? "" : "Authentication > Sign In / Providers > Email > « Confirm email »");
   const google = reglages?.external?.google === true;
   dire(google, "La connexion par Google est réglée dans Supabase", google ? "" : "Authentication > Sign In / Providers > Google, avec l'identifiant et le secret créés chez Google");
   const comptes = await service.auth.admin.listUsers({ page: 1, perPage: 50 });

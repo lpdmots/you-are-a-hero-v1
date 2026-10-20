@@ -4,7 +4,8 @@ import { useActionState } from "react";
 import { BoutonEnvoi, envoyerParEntree } from "@/composants/Attente";
 import { Icone } from "@/composants/Icone";
 import { usePret } from "@/composants/Pret";
-import { choisirMotDePasse, demanderNouveauMotDePasse, entrerAvecGoogle, seConnecter, type EtatFormulaire } from "./actions";
+import Link from "next/link";
+import { choisirMotDePasse, demanderNouveauMotDePasse, entrerAvecGoogle, renvoyerConfirmation, seConnecter, sInscrire, type EtatFormulaire } from "./actions";
 import styles from "./entree.module.css";
 
 const depart: EtatFormulaire = {};
@@ -19,8 +20,9 @@ function Erreur({ texte }: { texte?: string }) {
 }
 
 const REFUS: Record<string, string> = {
-  inconnu: "Aucun compte ne correspond à cette adresse Google.",
   echec: "La connexion n’a pas abouti. Réessayez.",
+  // Un lien de confirmation déjà ouvert, ou trop ancien (F14-AC01)
+  lien: "Ce lien n’est plus valable. Si vous l’avez déjà ouvert, entrez avec votre mot de passe.",
 };
 
 /** Le « G » de Google, tel que Google demande de le montrer sur un bouton de connexion. */
@@ -32,6 +34,33 @@ function SigneGoogle() {
       <path fill="#FBBC05" d="M3.96 10.71a5.41 5.41 0 0 1 0-3.42V4.96H.96a9 9 0 0 0 0 8.08l3-2.33z" />
       <path fill="#EA4335" d="M9 3.58c1.32 0 2.5.45 3.44 1.35l2.58-2.58C13.46.89 11.43 0 9 0A9 9 0 0 0 .96 4.96l3 2.33C4.67 5.16 6.66 3.58 9 3.58z" />
     </svg>
+  );
+}
+
+/** « Renvoyer le courriel » de confirmation, à l'adresse déjà écrite. */
+function Renvoyer({ adresse }: { adresse: string }) {
+  const [etat, action] = useActionState(renvoyerConfirmation, depart);
+  if (etat.fait) return <p role="status">Un nouveau courriel vient de partir.</p>;
+  return (
+    <form action={action} className={styles.renvoi}>
+      <input type="hidden" name="email" value={adresse} />
+      {etat.erreur ? <span role="alert">{etat.erreur}</span> : null}
+      <BoutonEnvoi className="btn btn--petit">Renvoyer le courriel</BoutonEnvoi>
+    </form>
+  );
+}
+
+/** Le bouton de Google, en tête de l'entrée comme de l'inscription. */
+function ContinuerAvecGoogle({ refus }: { refus?: string }) {
+  const pret = usePret();
+  return (
+    <form action={entrerAvecGoogle}>
+      <Erreur texte={refus ? (REFUS[refus] ?? REFUS.echec) : undefined} />
+      <BoutonEnvoi className={`btn btn--grand btn--large ${styles.google}`} disabled={!pret}>
+        <SigneGoogle />
+        Continuer avec Google
+      </BoutonEnvoi>
+    </form>
   );
 }
 
@@ -55,16 +84,65 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
         <Icone nom="fleche" />
       </button>
     </form>
+    {etat.nonConfirmee && etat.adresse ? <Renvoyer adresse={etat.adresse} /> : null}
     <p className={styles.ou}>
       <span>ou</span>
     </p>
-    <form action={entrerAvecGoogle}>
-      <Erreur texte={etat.erreur ? undefined : refus ? (REFUS[refus] ?? REFUS.echec) : undefined} />
-      <BoutonEnvoi className={`btn btn--grand btn--large ${styles.google}`} disabled={!pret}>
-        <SigneGoogle />
-        Continuer avec Google
-      </BoutonEnvoi>
-    </form>
+    <ContinuerAvecGoogle refus={etat.erreur ? undefined : refus} />
+    </>
+  );
+}
+
+/** Phrase des conditions, sous les deux façons de créer un compte, sans case à cocher (F14-AC03). */
+export function PhraseDesConditions() {
+  return (
+    <p className={styles.conditions}>
+      En créant un compte, vous acceptez les <Link href="/conditions">conditions d’utilisation</Link> et la{" "}
+      <Link href="/confidentialite">politique de confidentialité</Link>.
+    </p>
+  );
+}
+
+/**
+ * Créer un compte (F14-AC01 à AC04) : Google en tête, comme à l'entrée, puis l'adresse et le
+ * mot de passe. Envoyé, le formulaire laisse place à la même phrase, que l'adresse ait déjà un
+ * compte ou non.
+ */
+export function FormulaireInscription() {
+  const [etat, action, enCours] = useActionState(sInscrire, depart);
+  const pret = usePret();
+  if (etat.fait) {
+    return (
+      <>
+        <p role="status" className={styles.envoye}>
+          Un courriel vient de partir vers <strong>{etat.adresse}</strong>. Ouvrez son lien pour entrer.
+        </p>
+        <p className={styles.conditions}>Rien reçu ? Regardez dans les indésirables, puis :</p>
+        <Renvoyer adresse={etat.adresse ?? ""} />
+      </>
+    );
+  }
+  return (
+    <>
+      <ContinuerAvecGoogle />
+      <p className={styles.ou}>
+        <span>ou</span>
+      </p>
+      <form action={action}>
+        <label className="champ champ--plein">
+          <span>Adresse électronique</span>
+          <input type="email" id="email" name="email" autoComplete="email" defaultValue={etat.adresse} onKeyDown={envoyerParEntree} required />
+        </label>
+        <label className="champ champ--plein">
+          <span>Mot de passe, huit caractères au moins</span>
+          <input type="password" id="password" name="password" autoComplete="new-password" minLength={8} onKeyDown={envoyerParEntree} required />
+        </label>
+        <Erreur texte={etat.erreur} />
+        <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
+          Créer mon compte
+        </button>
+      </form>
+      <PhraseDesConditions />
     </>
   );
 }

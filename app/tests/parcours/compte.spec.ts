@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { aller, connecter, creerClasse, creerCompte, nommer, ouvrirLaClasse, supprimerComptes, autrePoste, type Compte } from "./outils";
+import { createClient } from "@supabase/supabase-js";
+import { adresseDEssai, aller, connecter, courrielRecu, creerClasse, creerCompte, nommer, ouvrirLaClasse, retenirCompte, sql, supprimerComptes, autrePoste, type Compte } from "./outils";
 
 let compte: Compte;
 test.beforeEach(async () => {
@@ -9,10 +10,9 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
-test("F01-AC28 — aucun compte ne se crée depuis l'application, et l'espace adulte demande d'entrer", async ({ page }) => {
+test("F01-AC28 — sans être entré, l'espace adulte ramène à l'entrée enseignant", async ({ page }) => {
   await aller(page, "/entree");
   await expect(page.getByRole("heading", { level: 1, name: "Entrée enseignant" })).toBeVisible();
-  await expect(page.getByText(/inscri|créer (un|mon|votre) compte|nouveau compte/i)).toHaveCount(0);
 
   for (const adresse of ["/projets", "/classes", "/projets/nouveau"]) {
     await page.goto(adresse);
@@ -109,13 +109,10 @@ test("F01-AC31 — « Continuer avec Google » envoie chez Google par Supabase, 
   expect(demande.searchParams.get("prompt")).toBe("select_account");
 });
 
-test("F01-AC32 — un compte Google qui n'est celui d'aucun enseignant inscrit n'ouvre rien et ne crée rien", async ({ page }) => {
-  // Ce que Supabase renvoie quand les inscriptions sont fermées et que l'adresse n'a pas de compte
-  await aller(page, "/entree/confirmer?error=access_denied&error_code=signup_disabled&error_description=Signups+not+allowed+for+this+instance");
-  await expect(page).toHaveURL(/\/entree\?refus=inconnu$/);
-  await expect(page.getByRole("alert").filter({ hasText: "Aucun compte ne correspond à cette adresse Google." })).toBeVisible();
-  await page.goto("/projets");
-  await expect(page).toHaveURL(/\/entree$/);
+test("F14-AC02, F01-AC32 révisé — un retour de Google refusé ou fabriqué n'ouvre rien", async ({ page }) => {
+  await aller(page, "/entree/confirmer?error=access_denied&error_code=bad_oauth_state");
+  await expect(page).toHaveURL(/\/entree\?refus=echec$/);
+  await expect(page.getByRole("alert").filter({ hasText: "La connexion n’a pas abouti. Réessayez." })).toBeVisible();
 
   // Un retour sans code, ou avec un code fabriqué, n'ouvre rien non plus
   await aller(page, "/entree/confirmer");
@@ -124,6 +121,97 @@ test("F01-AC32 — un compte Google qui n'est celui d'aucun enseignant inscrit n
   await expect(page.getByRole("alert").filter({ hasText: "La connexion n’a pas abouti. Réessayez." })).toBeVisible();
   await page.goto("/projets");
   await expect(page).toHaveURL(/\/entree$/);
+});
+
+test("F14-AC02 — « Continuer avec Google » est offert à l'inscription, et un compte né sans mot de passe arrive sur « Mes projets », vide", async ({ page }) => {
+  await aller(page, "/entree/inscription");
+  const depart = page.waitForRequest((r) => r.url().includes("/auth/v1/authorize"));
+  await page.getByRole("button", { name: "Continuer avec Google" }).click();
+  const demande = new URL((await depart).url());
+  expect(demande.searchParams.get("provider")).toBe("google");
+  expect(demande.searchParams.get("redirect_to")).toBe("http://localhost:3100/entree/confirmer");
+
+  // Google lui-même ne se joue pas en local : un compte créé sans mot de passe, comme le
+  // crée Google, entre par un lien de Supabase et trouve sa ligne d'enseignant toute prête
+  const courriel = adresseDEssai();
+  const admin = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false } });
+  const cree = await admin.auth.admin.createUser({ email: courriel, email_confirm: true });
+  expect(cree.error).toBeNull();
+  await retenirCompte(courriel);
+  const { data } = await admin.auth.admin.generateLink({ type: "magiclink", email: courriel });
+  const lien = data.properties!.hashed_token;
+  await aller(page, `/entree/confirmer?token_hash=${lien}&type=email`);
+  await expect(page).toHaveURL(/\/projets$/);
+  await expect(page.getByRole("heading", { name: "Votre premier livre commence ici" })).toBeVisible();
+  const [ligne] = await sql<{ n: number }>("select count(*)::int as n from public.enseignants e join auth.users u on u.id = e.id where u.email = $1", [courriel]);
+  expect(ligne.n).toBe(1);
+});
+
+test("F14-AC03 — l'écran d'inscription dit qu'on accepte les conditions, sans case à cocher", async ({ page }) => {
+  await aller(page, "/entree");
+  await page.getByRole("link", { name: "Créer un compte" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Créer un compte" })).toBeVisible();
+  await expect(page.getByText("En créant un compte, vous acceptez les conditions d’utilisation et la politique de confidentialité.")).toBeVisible();
+  await expect(page.getByRole("link", { name: "conditions d’utilisation" })).toHaveAttribute("href", "/conditions");
+  await expect(page.getByRole("link", { name: "politique de confidentialité" })).toHaveAttribute("href", "/confidentialite");
+  await expect(page.getByRole("checkbox")).toHaveCount(0);
+});
+
+test("F14-AC01 — s'inscrire par adresse : un courriel de confirmation, pas d'entrée avant son lien, puis « Mes projets », vide", async ({ page, browser }) => {
+  const courriel = adresseDEssai();
+  const motDePasse = "un-mot-de-passe-42";
+  await aller(page, "/entree/inscription");
+  await page.getByLabel("Adresse électronique").fill(courriel);
+  await page.getByLabel(/Mot de passe/).fill(motDePasse);
+  await page.getByRole("button", { name: "Créer mon compte" }).click();
+  await expect(page.getByRole("status")).toContainText(`Un courriel vient de partir vers ${courriel}. Ouvrez son lien pour entrer.`);
+  expect(await retenirCompte(courriel)).toBeTruthy();
+
+  // Avant le lien, le compte n'ouvre pas, et le courriel se renvoie
+  await connecter(page, { id: "", courriel, motDePasse });
+  await expect(page.getByRole("alert").filter({ hasText: "Votre adresse n’est pas encore confirmée : ouvrez le lien du courriel reçu." })).toBeVisible();
+  await expect(page).toHaveURL(/\/entree$/);
+  await expect(page.getByRole("button", { name: "Renvoyer le courriel" })).toBeVisible();
+
+  // Le lien s'ouvre sur un autre appareil que celui de l'inscription, comme un téléphone
+  const recu = await courrielRecu(courriel, "Confirmer votre adresse");
+  expect(recu.sujet).toBe("Confirmer votre adresse — Il était une classe");
+  const lien = recu.liens.find((l) => l.includes("token_hash="))!;
+  expect(lien).toMatch(/^http:\/\/localhost:3100\/entree\/confirmer\?token_hash=.+&type=email$/);
+  const telephone = await browser.newContext();
+  const autre = await telephone.newPage();
+  await autre.goto(lien);
+  await expect(autre).toHaveURL(/\/projets$/);
+  await expect(autre.getByRole("heading", { name: "Votre premier livre commence ici" })).toBeVisible();
+
+  // Le lien a servi : rouvert, il invite à entrer avec son mot de passe, qui marche désormais
+  await autre.goto(lien);
+  await telephone.close();
+  await aller(page, lien.replace("http://localhost:3100", ""));
+  await expect(page.getByRole("alert").filter({ hasText: "Ce lien n’est plus valable. Si vous l’avez déjà ouvert, entrez avec votre mot de passe." })).toBeVisible();
+  await connecter(page, { id: "", courriel, motDePasse });
+  await expect(page).toHaveURL(/\/projets$/);
+});
+
+test("F14-AC04 — une adresse déjà prise : la même phrase, aucun second compte, et un courriel qui propose d'entrer", async ({ page }) => {
+  await aller(page, "/entree/inscription");
+  await page.getByLabel("Adresse électronique").fill(compte.courriel);
+  await page.getByLabel(/Mot de passe/).fill("un-autre-mot-de-passe");
+  await page.getByRole("button", { name: "Créer mon compte" }).click();
+  await expect(page.getByRole("status")).toContainText(`Un courriel vient de partir vers ${compte.courriel}. Ouvrez son lien pour entrer.`);
+
+  const [ligne] = await sql<{ n: number }>("select count(*)::int as n from auth.users where email = $1", [compte.courriel]);
+  expect(ligne.n).toBe(1);
+  // Le mot de passe du compte n'a pas changé
+  await connecter(page, compte);
+  await expect(page).toHaveURL(/\/projets$/);
+
+  const recu = await courrielRecu(compte.courriel, "Vous avez déjà un compte");
+  expect(recu.html).toContain("Entrer");
+  expect(recu.liens).toContain("http://localhost:3100/entree");
+  expect(recu.liens).toContain("http://localhost:3100/entree/oubli");
+  // Aucun lien du courriel n'ouvre le compte de lui-même
+  expect(recu.liens.some((l) => /verify|token|code=/.test(l))).toBe(false);
 });
 
 test("F01-AC30, F01-AC13 — « Mon compte » : le nom affiché se lit à l'entrée des élèves ; « Se déconnecter » ferme l'accès", async ({ page, browser }) => {

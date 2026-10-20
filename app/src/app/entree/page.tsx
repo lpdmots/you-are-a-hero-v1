@@ -8,7 +8,7 @@ import { FormulaireEntree } from "./FormulaireEntree";
 
 export const metadata: Metadata = { title: "Entrée enseignant" };
 
-/** Entrée de l'enseignant (F01-AC27, F01-AC28) : aucune commande ne crée de compte. */
+/** Entrée de l'enseignant (F01-AC27) ; « Créer un compte » mène à l'inscription (F14). */
 export default async function Entree({ searchParams }: { searchParams: Promise<{ refus?: string }> }) {
   if (await enseignantCourant()) redirect("/");
   const { refus } = await searchParams;
@@ -18,6 +18,9 @@ export default async function Entree({ searchParams }: { searchParams: Promise<{
       pied={
         <span className={styles.pied}>
           <Link href="/entree/oubli">Mot de passe oublié</Link>
+          <span>
+            Pas encore de compte ? <Link href="/entree/inscription">Créer un compte</Link>
+          </span>
           <span>
             Élève ? <Link href="/classe">Entre dans ta classe</Link>
           </span>

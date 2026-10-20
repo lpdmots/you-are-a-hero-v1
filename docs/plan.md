@@ -3103,7 +3103,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      lot 1 ») ; la vérification de la marque chez Google attend les pages du
      lot 9.
   2. **Inscription publique,** par adresse avec confirmation et par Google
-     (F14-AC01 à AC04).
+     (F14-AC01 à AC04). **Construit le 20 octobre 2026,** sans migration :
+     « Créer un compte » depuis l'entrée, Google qui crée le compte, phrase
+     des conditions ; le lien de confirmation s'ouvre sur tout appareil (son
+     jeton est dans le lien ; « Mot de passe oublié » reste lié à
+     l'ordinateur de la demande) ; une adresse déjà prise reçoit « Vous avez
+     déjà un compte » par le modèle du lien magique de Supabase, sans lien de
+     connexion ; entrer avant de confirmer le dit, avec « Renvoyer le
+     courriel ». En local, inscription et confirmation allumées, courriels
+     essayés dans Mailpit ; réglages de la vraie base dans `app/README.md`,
+     « Étape 9, lot 2 ».
   3. **Étoiles :** solde, débit au coût réel, étoiles offertes après
      confirmation, solde épuisé, fin des quotas, compte du porteur sans solde
      (F14-AC05 à AC11). Migration.

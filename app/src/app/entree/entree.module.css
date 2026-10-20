@@ -28,3 +28,20 @@
   flex-wrap: wrap;
   gap: 6px 24px;
 }
+
+/* phrase des conditions, sous la création d'un compte (F14-AC03) */
+.conditions {
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+.envoye {
+  font-size: var(--t-m);
+}
+/* « Renvoyer le courriel » : un lien, sous l'erreur qu'il répare */
+.renvoi {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--t-s);
+}

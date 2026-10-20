@@ -161,7 +161,7 @@ site_url = "http://localhost:3000"
 # The public URL that Auth serves on. Defaults to the API external URL with `/auth/v1` appended.
 # external_url = ""
 # A list of *exact* URLs that auth providers are permitted to redirect to post authentication.
-additional_redirect_urls = ["http://localhost:3000/entree/confirmer", "http://localhost:3100/entree/confirmer"]
+additional_redirect_urls = ["http://localhost:3000/entree/**", "http://localhost:3100/entree/**", "http://localhost:4840/entree/**"]
 # How long tokens are valid for, in seconds. Defaults to 3600 (1 hour), maximum 604,800 (1 week).
 jwt_expiry = 3600
 # JWT issuer URL. If not set, defaults to auth.external_url.
@@ -175,8 +175,8 @@ enable_refresh_token_rotation = true
 # Requires enable_refresh_token_rotation = true.
 refresh_token_reuse_interval = 10
 # Allow/disallow new user signups to your project.
-# Aucune inscription publique avant l'ouverture (F01-AC28), comme en production.
-enable_signup = false
+# Inscription publique, par adresse ou par Google (étape 9, F14-AC01, F14-AC02).
+enable_signup = true
 # Allow/disallow anonymous sign-ins to your project.
 enable_anonymous_sign_ins = false
 # Allow/disallow testing manual linking of accounts
@@ -227,7 +227,8 @@ enable_signup = true
 # addresses. If disabled, only the new email is required to confirm.
 double_confirm_changes = true
 # If enabled, users need to confirm their email address before signing in.
-enable_confirmations = false
+# L'adresse se confirme avant d'entrer (F14-AC01).
+enable_confirmations = true
 # If enabled, users will need to reauthenticate or have logged in recently to change their password.
 secure_password_change = false
 # Controls the minimum amount of time that must pass before sending another signup confirmation or password reset email.
@@ -260,6 +261,12 @@ content_path = "./supabase/templates/recovery.html"
 [auth.email.template.email_change]
 subject = "Confirmer votre nouvelle adresse — Il était une classe"
 content_path = "./supabase/templates/email_change.html"
+
+# Le « lien magique » ne sert pas à entrer : l'application l'envoie à qui s'inscrit avec une
+# adresse qui a déjà un compte (F14-AC04), et le courriel ne contient pas de lien de connexion.
+[auth.email.template.magic_link]
+subject = "Vous avez déjà un compte — Il était une classe"
+content_path = "./supabase/templates/compte_existant.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

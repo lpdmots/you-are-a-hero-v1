@@ -216,6 +216,30 @@ de l'étape 9 ».
    d'accueil, politique de confidentialité, conditions, et envoi à la
    vérification.
 
+## Étape 9, lot 2 : l'inscription publique
+
+En local, `supabase/config.toml` ouvre l'inscription et demande la confirmation de
+l'adresse ; les courriels arrivent dans Mailpit (http://127.0.0.1:54324). Après un
+changement de ce fichier ou des modèles de `supabase/templates/`, la base locale se
+redémarre (`npm run base:arreter`, puis `npm run base:demarrer` : les données
+restent).
+
+À la mise en ligne, **après** les réglages du lot 1 (SES en place, sinon les
+courriels ne partent qu'à l'équipe du projet), dans le tableau de bord de la vraie
+base :
+
+1. Authentication, URL Configuration, Redirect URLs : `https://iletaituneclasse.fr/entree/**`
+   (remplace `…/entree/confirmer`), en gardant les adresses `vercel.app` sous la même
+   forme `…/entree/**`.
+2. Authentication, Emails, Templates : recoller « Confirm signup » depuis
+   `supabase/templates/confirmation.html` (son lien a changé) ; dans « Magic Link »,
+   coller le sujet « Vous avez déjà un compte — Il était une classe » et
+   `supabase/templates/compte_existant.html`.
+3. Authentication, Sign In / Providers : allumer « Allow new users to sign up » et,
+   sous Email, « Confirm email ».
+4. `npm run verifier:production` dit alors « Les inscriptions sont ouvertes » et « Une
+   adresse se confirme avant d'entrer ».
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

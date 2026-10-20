@@ -210,7 +210,8 @@ jusque-là :
 - **F01-AC28 — Aucun compte créé depuis l'application :** étant donné une
   personne sans compte, lorsqu'elle ouvre l'entrée enseignant, alors aucune
   commande ne lui propose de s'inscrire ; lorsqu'elle ouvre l'adresse de
-  « Mes projets » sans être connectée, alors elle est ramenée à l'entrée.
+  « Mes projets » sans être connectée, alors elle est ramenée à l'entrée. **Révisé le 20 octobre 2026 (F14-AC01) :** l'entrée
+  propose « Créer un compte » ; la seconde moitié tient.
 - **F01-AC29 — Mot de passe oublié :** étant donné une adresse saisie à
   « Mot de passe oublié », lorsque l'adulte confirme, alors il lit la même
   phrase que l'adresse soit connue ou non ; si elle l'est, le lien reçu lui
