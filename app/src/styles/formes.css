@@ -144,6 +144,11 @@
 .lien:hover {
   color: var(--canard-fonce);
 }
+/* Ce qui supprime sans retour : la brique, « cela bloque ou se refait » (étape 9) */
+.lien--danger,
+.lien--danger:hover {
+  color: var(--bloque);
+}
 .lien:disabled {
   color: var(--graphite-3);
   text-decoration: none;

@@ -3159,7 +3159,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      courriels (`nodemailer`, par le SMTP de SES ; en local, Mailpit) ; sans
      serveur d'envoi, le retrait se fait et la page le dit.
   7. **Supprimer pour de bon :** compte, classe passée, corbeille, comptes
-     inactifs (F14-AC26 à AC29).
+     inactifs (F14-AC26 à AC29). **Construit le 20 octobre 2026,** migration
+     `supprimer_pour_de_bon` en base locale seulement : « Supprimer pour de
+     bon » et « Vider la corbeille », après confirmation ; « Supprimer la
+     classe » pour une classe passée (codes, inscriptions, attributions,
+     tampons et lectures effacés, l'élève sans autre classe réduit à son
+     prénom, la classe gardée vide tant qu'un projet s'y rattache, la page des
+     auteurs figée avant) ; « Supprimer mon compte » en retapant l'adresse,
+     stockage compris ; la tournée quotidienne des comptes inactifs par le cron
+     de Vercel (`/taches/comptes-inactifs`, `CRON_SECRET`), l'activité comptant
+     les passages notés une fois par jour, pas seulement les connexions.
   8. **Sauvegarde nocturne vers S3** par GitHub Actions, qui dispose de
      Docker et reprend `npm run sauvegarder`, et restauration depuis S3
      (F14-AC30, AC31). Le cron de Vercel est écarté : ses fonctions n'ont ni

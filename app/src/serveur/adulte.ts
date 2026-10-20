@@ -3,7 +3,7 @@ import { cache } from "react";
 import { redirect } from "next/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { lireReglagesIa, type ReglagesIa } from "@/domaine/aides-ia";
-import { clientAdulte } from "./supabase";
+import { clientAdulte, clientService } from "./supabase";
 
 export type Enseignant = {
   id: string;
@@ -28,10 +28,14 @@ export const enseignantCourant = cache(async (): Promise<Enseignant | null> => {
   if (error || !claims?.sub || claims.role !== "authenticated" || claims.is_anonymous) return null;
   const { data: ligne } = await supabase
     .from("enseignants")
-    .select("id, nom_affiche, dernier_projet_id, aides_masquees, reglages_ia, etoiles, createur")
+    .select("id, nom_affiche, dernier_projet_id, aides_masquees, reglages_ia, etoiles, createur, vu_le")
     .eq("id", claims.sub)
     .maybeSingle();
   if (!ligne) return null;
+  // Le passage du jour, noté une fois : un compte actif n'est jamais pris pour inactif (F14-AC29)
+  if (!ligne.vu_le || Date.parse(ligne.vu_le) < Date.now() - 86_400_000) {
+    await clientService().from("enseignants").update({ vu_le: new Date().toISOString() }).eq("id", ligne.id);
+  }
   return {
     id: ligne.id,
     courriel: typeof claims.email === "string" ? claims.email : null,

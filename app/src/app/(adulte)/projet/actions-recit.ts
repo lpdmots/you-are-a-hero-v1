@@ -267,6 +267,28 @@ export async function restaurer(sorte: Sorte, id: string): Promise<Fait<{ eleves
   return { ok: true, eleves };
 }
 
+/** « Supprimer pour de bon » un élément de la corbeille, avec ce qu'il contient : sans retour (F14-AC28). */
+export async function supprimerPourDeBon(sorte: Sorte, id: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  if (!estSorte(sorte)) return echec("Élément inconnu.");
+  const projetId = await projetDeLElement(e, sorte, id);
+  if (!projetId) return echec("Élément inconnu.");
+  const { error } = await e.supabase.rpc("supprimer_pour_de_bon", { p_sorte: sorte, p_id: id });
+  if (error) return refus(error, "La suppression n’a pas pu être faite. Réessayez.");
+  rafraichir(projetId);
+  return { ok: true };
+}
+
+/** « Vider la corbeille » : tout ce qu'elle contient, sans retour (F14-AC28). */
+export async function viderLaCorbeille(projetId: string): Promise<Fait<{ nombre: number }>> {
+  const e = await exigerEnseignant();
+  if (!estUuid(projetId)) return echec("Projet inconnu.");
+  const { data, error } = await e.supabase.rpc("vider_la_corbeille", { p_projet: projetId });
+  if (error) return refus(error, "La corbeille n’a pas pu être vidée. Réessayez.");
+  rafraichir(projetId);
+  return { ok: true, nombre: Number(data ?? 0) };
+}
+
 /**
  * « Départ du livre » (F03.2) : un seul départ, celui qu'on désigne remplace l'ancien.
  * Rend le nom du départ remplacé, pour que le message le dise et qu'« Annuler » le remette.

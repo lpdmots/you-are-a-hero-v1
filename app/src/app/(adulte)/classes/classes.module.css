@@ -184,6 +184,11 @@
 .bande :global(.btn) {
   flex: none;
 }
+.bandeCmd {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 .proposition {
   margin-top: 18px;
 }

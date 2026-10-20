@@ -35,7 +35,7 @@ type Etat = {
   erreur: string | null;
   /** Aucune demande n'a encore abouti depuis l'ouverture de la page */
   premiere: boolean;
-  /** « Encore 8 demandes aujourd'hui. », ou rien */
+  /** « Il vous reste 8 ✦. », ou rien */
   reste: string | null;
 };
 

@@ -1095,6 +1095,20 @@
   font-size: var(--t-xs);
   color: var(--graphite-2);
 }
+/* Sans retour : un lien discret, en brique, sous l'élément (F14-AC28) */
+.corbeille__pour-de-bon {
+  grid-column: 1 / -1;
+  justify-self: start;
+  font-size: var(--t-xs);
+  color: var(--bloque);
+}
+.corbeille__pied {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+}
 
 @media (max-width: 1060px) {
   .chap-bandeau {

@@ -94,7 +94,7 @@ export const ouvrirMonCompte = () => window.dispatchEvent(new CustomEvent("ouvri
 
 /**
  * « ✦ Image créée à l'ajout · Régler » : la mention discrète, là où l'on ajoute, quand le réglage
- * est allumé ; l'image coûte plus qu'un texte et compte dans le plafond des images du jour.
+ * est allumé ; l'image coûte plus qu'un texte, en étoiles (F14).
  */
 export function MentionImageALAjout({ className, avant }: { className?: string; /** Referme le panneau où elle se lit : « Mon compte » s'ouvre à sa place */ avant?: () => void }) {
   const reglages = useAidesIa();

@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState, useTransition, type CSSProperties } from "react";
-import { enregistrerNomAffiche, reglerAidesIa } from "@/app/(adulte)/actions-compte";
+import { enregistrerNomAffiche, reglerAidesIa, supprimerMonCompte } from "@/app/(adulte)/actions-compte";
+import { Dialogue } from "./Dialogue";
 import type { ReglagesIa } from "@/domaine/aides-ia";
 import { seDeconnecter } from "@/app/entree/actions";
 import { BoutonEnvoi } from "./Attente";
@@ -45,6 +46,10 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharg
   const [nom, setNom] = useState(nomAffiche ?? "");
   const [enregistre, setEnregistre] = useState(false);
   const [enCours, lancer] = useTransition();
+  // « Supprimer mon compte » : l'adresse retapée, puis la suppression (F14-AC26)
+  const [supprimer, setSupprimer] = useState<string | null>(null);
+  const [erreurSuppression, setErreurSuppression] = useState<string | null>(null);
+  const [suppressionEnCours, lancerSuppression] = useTransition();
   // Montrés aussitôt, gardés ensuite : un réglage ne doit pas attendre le serveur pour changer
   const [ia, setIa] = useState(reglagesIa);
   // « Régler », sous une mention des aides (« ✦ Image créée à l'ajout ») : « Mon compte » s'ouvre sur le réglage
@@ -147,7 +152,50 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharg
               <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>
             </form>
           </section>
+          {admin ? null : (
+            <section>
+              <button type="button" className="lien lien--danger" onClick={() => { setSupprimer(""); setErreurSuppression(null); }}>
+                Supprimer mon compte
+              </button>
+            </section>
+          )}
         </Panneau>
+      ) : null}
+      {compte && supprimer !== null ? (
+        <Dialogue
+          titre="Supprimer votre compte ?"
+          onFermer={() => setSupprimer(null)}
+          boutons={
+            <button
+              type="button"
+              className="btn btn--danger"
+              disabled={suppressionEnCours || !supprimer.trim()}
+              aria-busy={suppressionEnCours || undefined}
+              onClick={() =>
+                lancerSuppression(async () => {
+                  const r = await supprimerMonCompte(supprimer);
+                  if (r && !r.ok) setErreurSuppression(r.erreur);
+                })
+              }
+            >
+              Supprimer mon compte
+            </button>
+          }
+        >
+          <ul className="dialogue__faits">
+            <li>Vos projets, vos classes et leurs élèves, vos images et vos livres partagés sont effacés aussitôt, sans retour.</li>
+            <li>Les liens de lecture de vos livres ne mènent plus à rien.</li>
+          </ul>
+          <label className="champ champ--plein">
+            <span>Pour confirmer, écrivez votre adresse</span>
+            <input type="email" value={supprimer} autoComplete="off" onChange={(e) => setSupprimer(e.target.value)} />
+          </label>
+          {erreurSuppression ? (
+            <p className="erreur" role="alert">
+              {erreurSuppression}
+            </p>
+          ) : null}
+        </Dialogue>
       ) : null}
     </header>
   );

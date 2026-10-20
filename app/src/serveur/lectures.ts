@@ -164,6 +164,8 @@ export async function mesClasses(e: Enseignant): Promise<Classe[]> {
   const { data, error } = await e.supabase
     .from("classes")
     .select(SELECT_CLASSE)
+    // Une classe passée supprimée ne se montre plus nulle part (F14-AC27)
+    .is("supprimee_le", null)
     .order("annee_debut", { ascending: false })
     .order("cree_le", { ascending: false });
   if (error) throw new Error(error.message);
@@ -172,7 +174,7 @@ export async function mesClasses(e: Enseignant): Promise<Classe[]> {
 
 export const classeDe = cache(async (e: Enseignant, id: string): Promise<Classe | null> => {
   if (!UUID.test(id)) return null;
-  const { data, error } = await e.supabase.from("classes").select(SELECT_CLASSE).eq("id", id).maybeSingle();
+  const { data, error } = await e.supabase.from("classes").select(SELECT_CLASSE).eq("id", id).is("supprimee_le", null).maybeSingle();
   if (error) throw new Error(error.message);
   return data ? classeDepuis(data as unknown as LigneClasse) : null;
 });

@@ -116,3 +116,23 @@ test("lot 6 : l'administration", async ({ page }) => {
   await aller(page, "/admin");
   await capturer(page, "admin-390", true);
 });
+
+test("lot 7 : la corbeille, et supprimer son compte", async ({ page }) => {
+  test.setTimeout(120_000);
+  const { compte, base } = await adultePret(page);
+  const projet = await semerProjet(base, compte, "personnel", "choix", "Le marais des feux follets", null);
+  const { chapitres } = await semerPartie(base, projet, "La traversée", [{ titre: "Le dernier bac", scenes: ["Le départ", "La brume", "Le passeur"] }]);
+  await base.rpc("supprimer_element", { p_sorte: "scene", p_id: chapitres[0].scenes[1] });
+  await base.rpc("supprimer_element", { p_sorte: "scene", p_id: chapitres[0].scenes[2] });
+  n = 930;
+  await aller(page, `/projet/${projet}/plan`);
+  await page.getByRole("button", { name: /Corbeille du projet/ }).click();
+  await capturer(page, "corbeille");
+  await page.getByRole("button", { name: "Vider la corbeille" }).click();
+  await capturer(page, "corbeille-vider");
+  await page.keyboard.press("Escape");
+  await aller(page, "/projets");
+  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await page.getByRole("button", { name: "Supprimer mon compte" }).click();
+  await capturer(page, "supprimer-mon-compte");
+});

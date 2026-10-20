@@ -19,7 +19,7 @@ import { AideClasses } from "../AideClasses";
 import { horairesEnTexte } from "../MesClasses";
 import {
   annulerRetrait, changerMotDePasse, proposerMotDePasse, renommerClasse, retirerEleve, rouvrirClasse,
-  supprimerClasse, terminerAnnee, voirCodes, voirMotDePasse,
+  supprimerClasse, supprimerClassePassee, terminerAnnee, voirCodes, voirMotDePasse,
 } from "../actions";
 import styles from "../classes.module.css";
 import { PanneauEleve } from "./PanneauEleve";
@@ -32,6 +32,7 @@ type Ouvert =
   | { sorte: "terminer"; id: string; nom: string; annee: string; projets: number }
   | { sorte: "motDePasse"; neuf: string }
   | { sorte: "renommer" }
+  | { sorte: "supprimer-passee" }
   | null;
 
 const dateLongue = (iso: string): string =>
@@ -184,6 +185,13 @@ export function PageClasse({
       routeur.push("/classes?message=supprimee");
     });
 
+  const supprimerPassee = () =>
+    lancer("supprimer-passee", async () => {
+      const r = await supprimerClassePassee(classe.id);
+      if (!r.ok) return echec(r.erreur);
+      routeur.push("/classes?message=supprimee");
+    });
+
   const eleveOuvert = ouvert?.sorte === "eleve" ? classe.eleves.find((e) => e.id === ouvert.id) : undefined;
 
   return (
@@ -237,9 +245,15 @@ export function PageClasse({
               n’est supprimé.
             </p>
           </div>
-          <button type="button" className="btn" disabled={attente === "rouvrir"} aria-busy={attente === "rouvrir" || undefined} onClick={rouvrir}>
-            Rouvrir la classe
-          </button>
+          <span className={styles.bandeCmd}>
+            <button type="button" className="btn" disabled={attente === "rouvrir"} aria-busy={attente === "rouvrir" || undefined} onClick={rouvrir}>
+              Rouvrir la classe
+            </button>
+            {/* Seule une classe passée se supprime avec ses élèves (F14-AC27) */}
+            <button type="button" className="btn btn--danger" onClick={() => setOuvert({ sorte: "supprimer-passee" })}>
+              Supprimer la classe
+            </button>
+          </span>
         </div>
       ) : proposition ? (
         <div className={`alerte ${styles.proposition}`}>
@@ -458,6 +472,22 @@ export function PageClasse({
       ) : null}
       {ouvert?.sorte === "horaires" ? <PanneauHoraires classe={classe} onFermer={() => setOuvert(null)} /> : null}
 
+      {ouvert?.sorte === "supprimer-passee" ? (
+        <Dialogue
+          titre={`Supprimer ${classe.nom} ${annee} ?`}
+          onFermer={() => setOuvert(null)}
+          boutons={
+            <button type="button" className="btn btn--danger" disabled={attente === "supprimer-passee"} aria-busy={attente === "supprimer-passee" || undefined} onClick={supprimerPassee}>
+              Supprimer la classe
+            </button>
+          }
+        >
+          <ul className="dialogue__faits">
+            <li>Les profils de ses élèves, leurs codes et leurs inscriptions sont effacés, sans retour.</li>
+            <li>Leurs textes restent dans les projets, signés de leur prénom ; les livres ne changent pas.</li>
+          </ul>
+        </Dialogue>
+      ) : null}
       {ouvert?.sorte === "terminer" ? (
         <Dialogue
           titre={`Terminer l’année de ${ouvert.nom} ${ouvert.annee} ?`}

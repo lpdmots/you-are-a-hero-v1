@@ -9,12 +9,13 @@ import { FormulaireEntree } from "./FormulaireEntree";
 export const metadata: Metadata = { title: "Entrée enseignant" };
 
 /** Entrée de l'enseignant (F01-AC27) ; « Créer un compte » mène à l'inscription (F14). */
-export default async function Entree({ searchParams }: { searchParams: Promise<{ refus?: string }> }) {
+export default async function Entree({ searchParams }: { searchParams: Promise<{ refus?: string; compte?: string }> }) {
   if (await enseignantCourant()) redirect("/");
-  const { refus } = await searchParams;
+  const { refus, compte } = await searchParams;
   return (
     <EntreeIllustree
       titre="Entrée enseignant"
+      aide={compte === "supprime" ? <span role="status">Votre compte est supprimé, avec tout ce qu’il contenait.</span> : undefined}
       pied={
         <span className={styles.pied}>
           <Link href="/entree/oubli">Mot de passe oublié</Link>

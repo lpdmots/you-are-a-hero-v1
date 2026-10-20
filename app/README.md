@@ -312,6 +312,69 @@ sauvegarde manquée) par le même serveur d'envoi que Supabase, Amazon SES. En l
 `COURRIEL_CONTACT` = `contact@iletaituneclasse.fr`. Sans eux, rien ne part, et la page
 qui retire un partage le dit.
 
+## Étape 9, lot 7 : supprimer pour de bon
+
+La corbeille se vide (« Supprimer pour de bon », « Vider la corbeille ») ; une classe
+passée se supprime depuis sa page ; un adulte supprime son compte depuis « Mon
+compte ». Chaque jour à 4 h 30 (temps universel), le cron de Vercel (`vercel.json`)
+appelle `/taches/comptes-inactifs` : avis après cinq ans sans activité, suppression
+trente jours plus tard. À la mise en ligne, chez Vercel (Production) : `CRON_SECRET`
+= une longue chaîne au hasard, que le porteur tire lui-même (`openssl rand -hex 32`
+dans un terminal) ; Vercel l'envoie seul au cron, et la tournée refuse tout autre
+appel.
+
+## Étape 9, lot 7 : supprimer pour de bon
+
+La corbeille se vide (« Supprimer pour de bon », « Vider la corbeille ») ; une classe
+passée se supprime depuis sa page ; un adulte supprime son compte depuis « Mon
+compte ». Chaque jour à 4 h 30 (temps universel), le cron de Vercel (`vercel.json`)
+appelle `/taches/comptes-inactifs` : avis après cinq ans sans activité, suppression
+trente jours plus tard. À la mise en ligne, chez Vercel (Production) : `CRON_SECRET`
+= une longue chaîne au hasard, que le porteur tire lui-même (`openssl rand -hex 32`
+dans un terminal) ; Vercel l'envoie seul au cron, et la tournée refuse tout autre
+appel.
+
+## Étape 9, lot 8 : la sauvegarde de la nuit, vers S3
+
+Chaque nuit à 3 h, heure de Paris, le workflow `.github/workflows/sauvegarde-nocturne.yml`
+(GitHub Actions, qui a Docker) écrit la base et les images du stockage
+(`npm run sauvegarde:nuit`), puis les dépose dans le seau S3 du porteur, à Paris, dans un
+dossier par jour : `base/` (trois fichiers SQL) et `images/`. Les PDF ne sont pas copiés.
+Le seau efface ce qui a plus de 90 jours ; une nuit qui échoue envoie le courriel d'échec
+de GitHub. Il tourne dès que le code est poussé sur `main`.
+
+```bash
+npm run sauvegarde:nuit -- --local                 # l'essayer sur la base locale
+npm run restaurer:s3 -- 2026-10-21                 # une nuit du seau, dans la base locale
+npm run restaurer:s3 -- 2026-10-21 --production    # dans la vraie base, après un accident
+```
+
+Réglages faits par le porteur, dans cet ordre ; aucune clé ne passe dans la conversation :
+
+1. **AWS, S3, région Paris (`eu-west-3`)** : Create bucket, par exemple
+   `iletaituneclasse-sauvegardes`, « Block all public access » coché, chiffrement par
+   défaut (SSE-S3).
+2. **Le seau, Management, Create lifecycle rule** : « Effacer après 90 jours », pour tous
+   les objets, « Expire current versions of objects » après 90 jours.
+3. **IAM, Users, Create user** `sauvegarde-github`, sans accès à la console ; Permissions,
+   « Create inline policy », en JSON (le nom du seau à la place de `SEAU`) :
+   `{"Version":"2012-10-17","Statement":[{"Effect":"Allow","Action":"s3:PutObject","Resource":"arn:aws:s3:::SEAU/*"}]}`
+   — il dépose, sans pouvoir lire ni effacer. Puis Security credentials, « Create access
+   key » (Third-party service) : garder l'identifiant et le secret pour le point 4.
+4. **GitHub, le dépôt `you-are-a-hero-v1`, Settings, Secrets and variables, Actions** :
+   « New repository secret » pour `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_CLE_SECRETE`,
+   `SUPABASE_ADRESSE_BASE` et `SUPABASE_MOT_DE_PASSE_BASE` (les valeurs de
+   `production.env`), `AWS_ACCESS_KEY_ID` et `AWS_SECRET_ACCESS_KEY` (point 3), `SEAU_S3`
+   (le nom du seau).
+5. **GitHub, son compte, Settings, Notifications, Actions** : courriel, « Only notify for
+   failed workflows ».
+6. Une fois le code poussé : onglet Actions, « Sauvegarde de la nuit », « Run workflow »,
+   pour la voir tourner une fois sans attendre la nuit ; le dossier du jour paraît dans le
+   seau.
+7. **Pour restaurer** : l'outil d'AWS sur l'ordinateur (`brew install awscli`, puis
+   `aws configure` avec un accès qui lit le seau, celui du porteur), et une ligne
+   `SEAU_S3=…` dans `production.env`. Docker ouvert.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

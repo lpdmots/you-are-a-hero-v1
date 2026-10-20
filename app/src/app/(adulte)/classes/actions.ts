@@ -1,5 +1,6 @@
 "use server";
 
+import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { randomInt, randomUUID } from "node:crypto";
 import { revalidatePath } from "next/cache";
 import { autreIdentifiant, codePropose, codeValide, formerIdentifiant, identifiantValide, motDePassePropose } from "@/domaine/acces";
@@ -92,6 +93,27 @@ export async function supprimerClasse(classeId: string): Promise<Fait> {
   if (!UUID.test(classeId)) return echec("Classe inconnue.");
   const { data, error } = await enseignant.supabase.from("classes").delete().eq("id", classeId).select("id");
   if (error || !data?.length) return echec("Une classe qui a des élèves ou un projet ne se supprime pas.");
+  rafraichir();
+  return { ok: true };
+}
+
+/**
+ * Supprimer une classe passée (F14-AC27) : profils, codes et inscriptions de ses élèves
+ * s'effacent ; leurs textes restent, signés du prénom. Avant, la page des auteurs de chaque
+ * projet de la classe est figée telle qu'elle est : le livre ne change pas.
+ */
+export async function supprimerClassePassee(classeId: string): Promise<Fait> {
+  const enseignant = await exigerEnseignant();
+  if (!UUID.test(classeId)) return echec("Classe inconnue.");
+  const { data: projets } = await enseignant.supabase.from("projets").select("id, pages_du_livre").eq("classe_id", classeId);
+  for (const p of projets ?? []) {
+    const contenu = await contenuDuLivre(enseignant, p.id as string);
+    if (!contenu) continue;
+    const { error } = await enseignant.supabase.from("projets").update({ pages_du_livre: contenu.pages }).eq("id", p.id);
+    if (error) return echec("La classe n’a pas pu être supprimée. Réessayez.");
+  }
+  const { error } = await enseignant.supabase.rpc("supprimer_la_classe", { p_classe: classeId });
+  if (error) return echec(error.code === "P0001" ? error.message : "La classe n’a pas pu être supprimée. Réessayez.");
   rafraichir();
   return { ok: true };
 }

@@ -28,7 +28,7 @@ import {
 import { raisonDuReperage } from "@/domaine/illustration";
 import { pluriel } from "@/domaine/texte";
 import {
-  choisirRepere, creerChapitre, creerPartie, designerDepart, exclureDuLivre, placerChapitre, placerPartie, restaurer, supprimer,
+  choisirRepere, creerChapitre, creerPartie, designerDepart, exclureDuLivre, placerChapitre, placerPartie, restaurer, supprimer, supprimerPourDeBon, viderLaCorbeille,
 } from "../../actions-recit";
 import { orienterLIa } from "../../actions-preparation";
 import { AidePlan } from "./AidePlan";
@@ -606,7 +606,24 @@ export function Plan({
         <AttribuerEleves key={chapitreOuvert.id} chapitre={chapitreOuvert} plan={plan} eleves={eleves} classe={projet.classe} onFermer={() => setOuvert(null)} />
       ) : null}
       {ouvert?.sorte === "corbeille" ? (
-        <Corbeille corbeille={plan.corbeille} attente={attente} onRestaurer={restaurerElement} onFermer={() => setOuvert(null)} />
+        <Corbeille
+          corbeille={plan.corbeille}
+          attente={attente}
+          onRestaurer={restaurerElement}
+          onSupprimer={(x) =>
+            lancer(x.id, async () => {
+              const fait = await supprimerPourDeBon(x.sorte, x.id);
+              dire({ texte: fait.ok ? `« ${x.nom} » est supprimé pour de bon.` : fait.erreur });
+            })
+          }
+          onVider={() =>
+            lancer("vider", async () => {
+              const fait = await viderLaCorbeille(projet.id);
+              dire({ texte: fait.ok ? "La corbeille est vide." : fait.erreur });
+            })
+          }
+          onFermer={() => setOuvert(null)}
+        />
       ) : null}
       {ouvert?.sorte === "depart" ? <ChoisirDepart plan={plan} onChoisir={(id) => void choisirDepart(id)} onFermer={() => setOuvert(null)} /> : null}
       {ouvert?.sorte === "idees" ? (

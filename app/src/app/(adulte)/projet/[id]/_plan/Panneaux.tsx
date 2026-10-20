@@ -1,5 +1,6 @@
 "use client";
 
+import { Dialogue } from "@/composants/Dialogue";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
@@ -343,21 +344,34 @@ export function AttribuerEleves({
 
 const SORTE: Record<Supprime["sorte"], string> = { partie: "Partie", chapitre: "Chapitre", scene: "Scène" };
 
-/** « Corbeille du projet » (F03.1) : ce qui a été supprimé, et « Restaurer » qui le remet à sa place. */
+/**
+ * « Corbeille du projet » (F03.1) : ce qui a été supprimé, « Restaurer » qui le remet à sa place,
+ * et, sans retour, « Supprimer pour de bon » un élément ou « Vider la corbeille », après
+ * confirmation (F14-AC28).
+ */
 export function Corbeille({
-  corbeille, attente, onRestaurer, onFermer,
+  corbeille, attente, onRestaurer, onSupprimer, onVider, onFermer,
 }: {
-  corbeille: Supprime[]; attente: string | null; onRestaurer: (element: Supprime) => void; onFermer: () => void;
+  corbeille: Supprime[]; attente: string | null; onRestaurer: (element: Supprime) => void;
+  onSupprimer: (element: Supprime) => void; onVider: () => void; onFermer: () => void;
 }) {
+  const [aConfirmer, setAConfirmer] = useState<Supprime | "tout" | null>(null);
   return (
     <Panneau
       titre="Corbeille du projet"
       sous="Ce que vous supprimez attend ici, avec ses textes."
       onFermer={onFermer}
       pied={
-        <button type="button" className="btn btn--grand" onClick={onFermer}>
-          Fermer
-        </button>
+        <span className="corbeille__pied">
+          {corbeille.length ? (
+            <button type="button" className="btn btn--danger" disabled={attente !== null} onClick={() => setAConfirmer("tout")}>
+              Vider la corbeille
+            </button>
+          ) : null}
+          <button type="button" className="btn btn--grand" onClick={onFermer}>
+            Fermer
+          </button>
+        </span>
       }
     >
       <section>
@@ -385,11 +399,47 @@ export function Corbeille({
                   {x.dans ? ` · était dans « ${x.dans} »` : ""}
                 </span>
                 {x.parentSupprime ? <span className="corbeille__parent">Restaurez d’abord « {x.parentSupprime} ».</span> : null}
+                <button
+                  type="button"
+                  className="lien lien--danger corbeille__pour-de-bon"
+                  disabled={attente !== null}
+                  aria-label={`Supprimer pour de bon ${x.nom}`}
+                  onClick={() => setAConfirmer(x)}
+                >
+                  Supprimer pour de bon
+                </button>
               </li>
             ))}
           </ul>
         )}
       </section>
+      {aConfirmer ? (
+        <Dialogue
+          titre={aConfirmer === "tout" ? "Vider la corbeille ?" : `Supprimer pour de bon « ${aConfirmer.nom} » ?`}
+          onFermer={() => setAConfirmer(null)}
+          boutons={
+            <button
+              type="button"
+              className="btn btn--danger"
+              onClick={() => {
+                if (aConfirmer === "tout") onVider();
+                else onSupprimer(aConfirmer);
+                setAConfirmer(null);
+              }}
+            >
+              {aConfirmer === "tout" ? "Vider la corbeille" : "Supprimer pour de bon"}
+            </button>
+          }
+        >
+          <p>
+            {aConfirmer === "tout"
+              ? `Les ${corbeille.length} éléments de la corbeille disparaissent, avec leurs textes. On ne pourra plus les restaurer.`
+              : aConfirmer.sorte === "scene"
+                ? "La scène disparaît, avec son texte. On ne pourra plus la restaurer."
+                : `${aConfirmer.sorte === "partie" ? "La partie disparaît, avec ses chapitres et leurs scènes" : "Le chapitre disparaît, avec ses scènes"}. On ne pourra plus le restaurer.`}
+          </p>
+        </Dialogue>
+      ) : null}
     </Panneau>
   );
 }

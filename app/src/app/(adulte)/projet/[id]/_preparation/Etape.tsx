@@ -401,7 +401,7 @@ function Ajout({
   );
 }
 
-/** Ce que l'IA dit sous une liste : son échec, ou les demandes qui restent aujourd'hui. */
+/** Ce que l'IA dit sous une liste : son échec, ou le solde d'étoiles quand il en reste peu (F14). */
 function NoteIa({ attente, erreur, reste, cherche }: { attente: boolean; erreur: string | null; reste: string | null; cherche: string }) {
   if (attente)
     return (

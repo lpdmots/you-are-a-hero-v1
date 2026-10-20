@@ -110,7 +110,7 @@ export function ReglagesAidesIa({
               <span className="inter__piste" aria-hidden="true" />
               <span>Créer l’image des parties et chapitres ajoutés par l’IA</span>
             </label>
-            <p>{reglages.imageALAjout ? "Une image d’après le résumé, comptée parmi les images du jour." : "L’image se crée depuis « Choisir une image »."}</p>
+            <p>{reglages.imageALAjout ? "Une image d’après le résumé, qui use des étoiles." : "L’image se crée depuis « Choisir une image »."}</p>
           </div>
         </>
       ) : null}

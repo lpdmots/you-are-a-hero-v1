@@ -1,6 +1,8 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { supprimerLeCompte } from "@/serveur/suppression";
 import { lireReglagesIa, type ReglagesIa } from "@/domaine/aides-ia";
 import { exigerEnseignant } from "@/serveur/adulte";
 
@@ -38,4 +40,25 @@ export async function reglerAidesIa(reglages: Partial<ReglagesIa>): Promise<void
     .eq("id", enseignant.id);
   if (error) throw new Error(error.message);
   revalidatePath("/", "layout");
+}
+
+/**
+ * « Supprimer mon compte » (F14-AC26), confirmé par l'adresse retapée : projets, classes, élèves,
+ * images et partages s'effacent aussitôt, et le compte ne s'ouvre plus. Une adresse mal tapée
+ * n'efface rien. Le compte du porteur ne se supprime pas d'ici.
+ */
+export async function supprimerMonCompte(adresse: string): Promise<{ ok: false; erreur: string } | void> {
+  const enseignant = await exigerEnseignant();
+  if (enseignant.createur) return { ok: false, erreur: "Le compte du porteur ne se supprime pas d’ici." };
+  if (!enseignant.courriel || adresse.trim().toLowerCase() !== enseignant.courriel.toLowerCase()) {
+    return { ok: false, erreur: "Ce n’est pas l’adresse du compte : rien n’est supprimé." };
+  }
+  try {
+    await supprimerLeCompte(enseignant.id);
+  } catch (erreur) {
+    console.error(erreur);
+    return { ok: false, erreur: "Le compte n’a pas pu être supprimé. Réessayez, ou écrivez au créateur." };
+  }
+  await enseignant.supabase.auth.signOut({ scope: "local" });
+  redirect("/entree?compte=supprime");
 }
