@@ -8,6 +8,8 @@ import { Icone } from "@/composants/Icone";
 import { SuiviDesImages } from "@/composants/ImagesALAjout";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
+import { LivreGratuit } from "@/composants/OffreDuPass";
+import type { Limites, Offre } from "@/domaine/offre";
 import { exempleDuStyle, nomDeFichier, nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
 import { adresseRepereEnGrand } from "@/domaine/visuels";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
@@ -26,7 +28,7 @@ type Reglage = {
  * Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur
  * mise en forme, le style des images et le héros absent des images (F06-AC48, F10.1, F04.1, F10.2).
  */
-export function MenuProjet({ projet }: { projet: ProjetRegle }) {
+export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livre?: { offre: Offre; limites: Limites } | null }) {
   const [ouvert, setOuvert] = useState<"reglages" | "image" | null>(null);
   const [titre, setTitre] = useState(projet.titre);
   const [enregistre, setEnregistre] = useState(false);
@@ -120,6 +122,8 @@ export function MenuProjet({ projet }: { projet: ProjetRegle }) {
               </span>
             </div>
           </section>
+          {/* Le livre gratuit et son pass, quand « Paiement ouvert » est allumé (F14) */}
+          {livre ? <LivreGratuit projetId={projet.id} titre={projet.titre} offre={livre.offre} limites={livre.limites} /> : null}
           {projet.deClasse ? (
             <section>
               <h3>Lecture des élèves</h3>

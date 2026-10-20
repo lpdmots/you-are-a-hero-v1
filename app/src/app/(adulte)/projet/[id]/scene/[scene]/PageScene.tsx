@@ -1,5 +1,7 @@
 "use client";
 
+import { ouvrirOffreDuPass } from "@/composants/OffreDuPass";
+import { imagePossible } from "../../../actions-offre";
 import { useColonneCollee } from "@/composants/colonneCollee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -263,7 +265,17 @@ export function PageScene({
   // Ce que la copie demande au serveur : chercher une destination, créer une scène depuis un choix
   const services: Services = {
     chercher: (demande) => chercherDestinations(projet.id, demande),
-    creerScene: (chapitreId, titreScene, consigneScene) => creerSceneDepuisChoix(chapitreId, titreScene, consigneScene),
+    peutPoserUneImage: async (dansLaScene) => {
+      const possible = await imagePossible(scene.id, dansLaScene);
+      if (!possible) ouvrirOffreDuPass(projet.id, "images");
+      return possible;
+    },
+    creerScene: async (chapitreId, titreScene, consigneScene) => {
+      const fait = await creerSceneDepuisChoix(chapitreId, titreScene, consigneScene);
+      // La limite gratuite atteinte : la fiche dit que rien n'est créé, le dialogue dit la suite (F14-AC13)
+      if (!fait.ok && fait.limite) ouvrirOffreDuPass(projet.id, fait.limite);
+      return fait;
+    },
     supprimerScene: async (id) => {
       const reponse = await supprimer("scene", id);
       return reponse.ok ? { ok: true } : { ok: false, erreur: reponse.erreur };

@@ -262,6 +262,13 @@ npm run createur -- --production adresse@du.compte --oui # dans la vraie base
 `npm run production:schema -- --oui` : avant, le compte du porteur a un solde et serait
 débité.
 
+## Étape 9, lot 4 : les limites gratuites et le pass
+
+Tant que « Paiement ouvert » est éteint, ni limite ni vente. En local, pour essayer, il
+s'allume dans la table `reglages_application` (Studio, http://127.0.0.1:54323, ou
+l'administration du lot 6). Les essais le règlent eux-mêmes et le rendent comme ils
+l'ont trouvé.
+
 ## Sauvegarder et restaurer
 
 La base est en offre gratuite : aucune sauvegarde automatique. Docker Desktop

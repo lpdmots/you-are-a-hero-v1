@@ -119,6 +119,12 @@ export type Services = {
    * description » et « Créer l'image ». Sans ce service, « Ajouter une image » ne fait qu'importer.
    */
   imageDeScene?: ServicesImage;
+  /**
+   * Une image de plus tient-elle dans le livre gratuit (F14-AC14) ? `dansLaScene` : les images que
+   * la copie porte déjà. Non : rien ne s'ouvre, et la page montre le dialogue du pass. Sans ce
+   * service, rien ne se vérifie avant (l'élève ne pose pas d'image).
+   */
+  peutPoserUneImage?: (dansLaScene: number) => Promise<boolean>;
 };
 
 /** Ce que le panneau « Créer une image » demande au serveur (F10.2). */

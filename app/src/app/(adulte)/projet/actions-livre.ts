@@ -22,7 +22,7 @@ import { deplacer, rangsActuels, type Deplacement } from "@/domaine/ordre";
  * chacun : il ne se fie pas à ce que la page a montré.
  */
 
-type Fait = { ok: true } | { ok: false; erreur: string };
+type Fait = { ok: true } | { ok: false; erreur: string; limite?: "images" };
 const rafraichir = (projetId: string) => revalidatePath(`/projet/${projetId}`, "layout");
 
 /** « C'est voulu » : seulement sur un avertissement que les contrôles donnent encore. */
@@ -137,6 +137,8 @@ export async function reglerPagesDuLivre(projetId: string, brut: unknown): Promi
   const images = [pages.titre.imageId, pages.titre.illustration, pages.auteurs.imageId, pages.commentLire.imageId, pages.feuille.imageId, pages.fin.imageId].filter((x): x is string => Boolean(x));
   if (images.some((id) => !contenu.images.has(id))) return { ok: false, erreur: "Cette image n’est pas dans le projet." };
   const { data, error } = await e.supabase.from("projets").update({ pages_du_livre: pages }).eq("id", projetId).select("id");
+  // Une image de plus au-delà des images gratuites : rien n'est enregistré (F14-AC14)
+  if (error?.code === "LIM02") return { ok: false, erreur: "L’image n’a pas été posée : le livre gratuit est complet.", limite: "images" };
   if (error || !data?.length) return { ok: false, erreur: "Cela n’a pas pu être enregistré." };
   rafraichir(projetId);
   return { ok: true };

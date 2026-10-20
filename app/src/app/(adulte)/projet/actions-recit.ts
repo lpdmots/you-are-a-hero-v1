@@ -1,5 +1,6 @@
 "use server";
 
+import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
 import { estStyle, STYLE_AUTRE_MAX } from "@/domaine/illustration";
 import { revalidatePath } from "next/cache";
 import { chapitresDe, couleurNouvelle, departDe, nomScene, TITRE_CHAPITRE, TITRE_PARTIE, COULEURS, type Profil } from "@/domaine/recit";
@@ -13,15 +14,19 @@ import { numerosDuProjet } from "@/serveur/copie";
  * la base refuse de son côté ce qui touche le récit d'un autre.
  */
 
-type Echec = { ok: false; erreur: string };
+// limite : une limite gratuite atteinte ; la page ouvre le dialogue du pass (F14-AC13, AC14)
+type Echec = { ok: false; erreur: string; limite?: Limite };
 type Fait<T = object> = ({ ok: true } & T) | Echec;
 const echec = (erreur: string): Echec => ({ ok: false, erreur });
 const propre = (texte: unknown, max: number): string => String(texte ?? "").trim().replace(/\s+/g, " ").slice(0, max);
 const texteLong = (texte: unknown, max: number): string => String(texte ?? "").replace(/\r\n/g, "\n").trim().slice(0, max);
 
 // La base écrit ses refus en français pour la personne (codes P0001 à P0003) ; les autres ne se montrent pas.
-const refus = (erreur: { code?: string; message: string } | null, parDefaut: string): Echec =>
-  echec(erreur?.code && /^P000\d$/.test(erreur.code) ? erreur.message : parDefaut);
+const refus = (erreur: { code?: string; message: string } | null, parDefaut: string): Echec => {
+  const limite = erreur?.code ? CODES_DES_LIMITES[erreur.code] : undefined;
+  if (limite) return { ok: false, erreur: limite === "scenes" ? "La scène n’a pas été ajoutée : le livre gratuit est complet." : "L’image n’a pas été posée : le livre gratuit est complet.", limite };
+  return echec(erreur?.code && /^P000\d$/.test(erreur.code) ? erreur.message : parDefaut);
+};
 
 const rafraichir = (projetId: string) => {
   revalidatePath(`/projet/${projetId}`, "layout");

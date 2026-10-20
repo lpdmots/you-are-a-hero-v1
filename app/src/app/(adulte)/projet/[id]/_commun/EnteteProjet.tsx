@@ -8,6 +8,7 @@ import { pluriel } from "@/domaine/texte";
 import type { Enseignant } from "@/serveur/adulte";
 import { mesClasses, type Projet } from "@/serveur/lectures";
 import { planDe } from "@/serveur/recit";
+import { limitesDuProjet, offreActuelle } from "@/serveur/offre";
 import { ClasseDuProjet } from "../[onglet]/ClasseDuProjet";
 import styles from "../[onglet]/projet.module.css";
 import { MenuProjet } from "./MenuProjet";
@@ -15,7 +16,9 @@ import { MenuProjet } from "./MenuProjet";
 /** En-tête commun aux onglets d'un projet : son image, son titre, sa classe, ses onglets. */
 export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant: Enseignant; projet: Projet; onglet: Onglet }) {
   const deClasse = projet.organisation === "classe";
-  const [classes, plan] = await Promise.all([deClasse ? mesClasses(enseignant) : Promise.resolve([]), planDe(enseignant, projet.id)]);
+  const [classes, plan, offre, limites] = await Promise.all([
+    deClasse ? mesClasses(enseignant) : Promise.resolve([]), planDe(enseignant, projet.id), offreActuelle(), limitesDuProjet(enseignant.supabase, projet.id),
+  ]);
   const attribue = chapitresDe(plan).some((c) => c.attributions.length > 0);
   return (
     <section className={styles.histoire}>
@@ -53,6 +56,7 @@ export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant:
             imageId: projet.imageId, visuelChoisi: projet.visuelChoisi, visuelDefaut: projet.visuelDefaut,
             styleImages: projet.styleImages, styleAutre: projet.styleAutre, herosAbsent: projet.herosAbsent, consigneEcriture: projet.consigneEcriture,
           }}
+          livre={offre.paiementOuvert && limites && !enseignant.createur ? { offre, limites } : null}
         />
       </div>
       <nav className={styles.onglets} aria-label="Sections du projet">

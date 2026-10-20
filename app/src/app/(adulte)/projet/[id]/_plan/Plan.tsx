@@ -1,5 +1,7 @@
 "use client";
 
+import { ouvrirOffreDuPass } from "@/composants/OffreDuPass";
+import stylesPass from "@/composants/OffreDuPass.module.css";
 import {
   closestCenter, DndContext, DragOverlay, pointerWithin, useDroppable, type CollisionDetection, type DragEndEvent, type DragOverEvent,
 } from "@dnd-kit/core";
@@ -38,6 +40,8 @@ import { useConfirmerSuppression } from "./suppression";
 
 export type ProjetDuPlan = {
   id: string; titre: string; deClasse: boolean; aChoix: boolean; classe: { id: string; nom: string } | null;
+  /** La taille du livre gratuit, quand elle vaut pour ce projet : « 38 scènes sur 40 » (F14) */
+  scenesGratuites?: number | null;
 };
 
 type Ouvert =
@@ -360,7 +364,23 @@ export function Plan({
       <section className="reste" aria-label="Le plan de l’histoire">
         <div className="reste__texte">
           <p className="reste__titre">
-            {parties.length} partie{pluriel(parties.length)} · {chapitres.length} chapitre{pluriel(chapitres.length)} · {nbScenes} scène{pluriel(nbScenes)}
+            {parties.length} partie{pluriel(parties.length)} · {chapitres.length} chapitre{pluriel(chapitres.length)} ·{" "}
+            {projet.scenesGratuites && nbScenes >= projet.scenesGratuites ? (
+              // La taille du livre gratuit atteinte : l'ambre, et le pass à portée (F14-AC13)
+              <>
+                <span className={stylesPass.limite}>
+                  {nbScenes} scènes sur {projet.scenesGratuites}
+                </span>{" "}
+                <button type="button" className="lien" onClick={() => ouvrirOffreDuPass(projet.id, "scenes", true)}>
+                  Pass du livre
+                </button>
+              </>
+            ) : (
+              <>
+                {nbScenes} scène{pluriel(nbScenes)}
+                {projet.scenesGratuites ? ` sur ${projet.scenesGratuites}` : null}
+              </>
+            )}
           </p>
           {manques.length ? (
             <p className="reste__manques">

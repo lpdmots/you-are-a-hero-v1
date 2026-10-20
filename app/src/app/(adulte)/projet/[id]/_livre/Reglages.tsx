@@ -1,5 +1,6 @@
 "use client";
 
+import { ouvrirOffreDuPass } from "@/composants/OffreDuPass";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type ReactNode } from "react";
@@ -67,9 +68,19 @@ export function VoletReglages({
     setR(suite);
     enreg.prevoir(() => reglerMiseEnPage(projet.id, suite), 500, "reglages");
   };
+  // Les pages telles qu'enregistrées : une image refusée par la limite gratuite s'en retire (F14-AC14)
+  const enregistrees = useRef(recues);
   const reglerPages = (suite: PagesDuLivre) => {
     setPages(suite);
-    enreg.prevoir(() => reglerPagesDuLivre(projet.id, suite), 700, "pages");
+    enreg.prevoir(async () => {
+      const fait = await reglerPagesDuLivre(projet.id, suite);
+      if (fait.ok) enregistrees.current = suite;
+      else if (fait.limite) {
+        setPages(enregistrees.current);
+        ouvrirOffreDuPass(projet.id, fait.limite);
+      }
+      return fait;
+    }, 700, "pages");
   };
 
   const listePages: CleDePage[] = ["titre", ...(pages.auteurs.place === "debut" ? (["auteurs"] as const) : []), ...(projet.aChoix ? (["commentLire"] as const) : []), ...(feuille ? (["feuille"] as const) : []), ...(pages.auteurs.place === "fin" ? (["auteurs"] as const) : []), "fin"];

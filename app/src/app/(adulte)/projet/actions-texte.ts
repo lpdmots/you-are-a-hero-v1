@@ -1,5 +1,6 @@
 "use server";
 
+import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
 import { revalidatePath } from "next/cache";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { nomScene } from "@/domaine/recit";
@@ -16,11 +17,15 @@ import { enregistrerFormule, enregistrerObjet } from "./actions-preparation";
  * s'enregistre par l'adresse /copie. La base revérifie à qui est la scène.
  */
 
-type Echec = { ok: false; erreur: string };
+// limite : une limite gratuite atteinte ; la page ouvre le dialogue du pass (F14-AC13, AC14)
+type Echec = { ok: false; erreur: string; limite?: Limite };
 type Fait<T = object> = ({ ok: true } & T) | Echec;
 const echec = (erreur: string): Echec => ({ ok: false, erreur });
-const refus = (erreur: { code?: string; message: string } | null, parDefaut: string): Echec =>
-  echec(erreur?.code && /^P000\d$/.test(erreur.code) ? erreur.message : parDefaut);
+const refus = (erreur: { code?: string; message: string } | null, parDefaut: string): Echec => {
+  const limite = erreur?.code ? CODES_DES_LIMITES[erreur.code] : undefined;
+  if (limite) return { ok: false, erreur: limite === "scenes" ? "La scène n’a pas été ajoutée : le livre gratuit est complet." : "L’image n’a pas été posée : le livre gratuit est complet.", limite };
+  return echec(erreur?.code && /^P000\d$/.test(erreur.code) ? erreur.message : parDefaut);
+};
 
 const rafraichir = (projetId: string) => revalidatePath(`/projet/${projetId}`, "layout");
 

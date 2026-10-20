@@ -1,0 +1,118 @@
+/* Le pass d'un livre : une étiquette de page de garde, un ex-libris. Papier blanc, double filet,
+   titre du livre dans la voix du récit. Aucune couleur d'état : le pass n'est ni un tampon ni l'IA. */
+.carte {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 18px 20px 16px;
+  border: 1px solid var(--trait-fort);
+  border-radius: var(--r-s);
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  text-align: center;
+}
+/* Le second filet, en retrait, comme sur une étiquette imprimée */
+.carte::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid var(--trait);
+  border-radius: 3px;
+  pointer-events: none;
+}
+.nom {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.titre {
+  font-family: var(--f-recit);
+  font-size: var(--t-xl);
+  font-style: italic;
+  line-height: 1.2;
+  color: var(--graphite);
+  text-wrap: balance;
+  max-width: 30ch;
+}
+.leve {
+  display: grid;
+  gap: 4px;
+  margin: 6px 0 2px;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.leve li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.leve svg {
+  width: 15px;
+  height: 15px;
+  color: var(--graphite-3);
+}
+.prix {
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--trait-fort);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.prix strong {
+  font-size: var(--t-l);
+  color: var(--graphite);
+  font-variant-numeric: lining-nums;
+}
+.rien {
+  color: var(--graphite-2);
+}
+.erreur {
+  flex-basis: 100%;
+  color: var(--bloque);
+  font-size: var(--t-s);
+}
+
+/* Le pass reçu : l'étiquette reste, sa date à la place du prix */
+.recue .prix {
+  border-top-style: solid;
+  color: var(--e-valide);
+  font-weight: 600;
+}
+
+/* Les limites du projet, dans ses réglages : une ligne, puis le pass, sur toute la largeur */
+.etat {
+  display: grid;
+  gap: 10px;
+}
+.commandes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+/* Une limite atteinte demande l'attention : l'ambre, « cela attend » */
+.atteint,
+.compte .atteint strong {
+  color: var(--e-valider);
+  font-weight: 700;
+}
+.compte {
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.compte strong {
+  color: var(--graphite);
+}
+
+/* Dans le décompte de « Parties et chapitres » */
+.limite {
+  color: var(--e-valider);
+  font-weight: 700;
+}
+.etat .carte {
+  justify-self: stretch;
+}

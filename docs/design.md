@@ -1884,6 +1884,61 @@ d'une ligne, que rien ne distingue d'un tampon-filtre ; le titre de scène,
 cliquable sans le montrer au repos ; « Tout son chapitre » en titre de
 colonne ; la largeur des colonnes de la vue « Élèves », qui suit le contenu.
 
+### Étape 9 construite (20 octobre 2026)
+
+**Lot 2 — « Créer un compte ».** Même carte que l'entrée enseignant :
+« Continuer avec Google » en tête, « ou », l'adresse et le mot de passe
+(« huit caractères au moins » dans l'étiquette), « Créer mon compte », seul
+bouton plein, puis la phrase des conditions et ses deux liens (F14-AC03).
+Envoyé, le formulaire laisse place à « Un courriel vient de partir vers… » et
+« Renvoyer le courriel ». L'entrée gagne « Pas encore de compte ? Créer un
+compte » à son pied.
+
+**Lot 3 — le solde d'étoiles.** En tête de la rubrique « Aides IA » de
+« Mon compte » : « Il vous reste 34 ✦ pour les aides. », le nombre en canard
+foncé ; rien pour le compte du porteur. Sous 10 ✦, la réponse d'une aide
+ajoute « Il vous reste 8 ✦. » là où se disait « Encore 10 demandes
+aujourd'hui. ».
+
+**Lot 4 — limites gratuites et pass.** Sans maquette : conçus avec impeccable
+dans le système « Cahiers d'aventure », critiqués en deux lectures séparées
+sur sept captures Playwright (901 à 907, `npm run captures -- etape9`) —
+26/40 pour la lecture informée, 24/40 pour la lecture indépendante, sans
+constat du détecteur —, puis corrigés aussitôt, sans nouvelle mesure.
+
+- **Le pass, un ex-libris :** une étiquette de page de garde, papier blanc à
+  double filet, « Pass du livre » en petites capitales, le titre du livre en
+  Vollkorn italique, ce que le pass lève et donne, puis le prix « une fois,
+  pour ce livre » sous un filet pointillé ; reçu, la même étiquette porte
+  « Reçu le 20 octobre 2026 » en vert. Ni tampon ni couleur d'état : le pass
+  n'est ni un état ni l'IA.
+- **Le dialogue d'une limite atteinte**, ouvert d'où qu'on soit (chapitre,
+  nouveau choix, idée de choix, « Image », pages de présentation) : « Ce livre
+  a atteint ses 40 scènes gratuites », une phrase (ce qui n'a pas été fait,
+  tout le reste continue, ce qui ne compte pas), l'étiquette, « Acheter le
+  pass · 20 € » plein et « Plus tard ». Pour les images, la ligne « Images sans
+  limite » vient en tête. L'élève lit une phrase seulement, sans prix.
+- **Avant le clic :** dans « Parties et chapitres », le décompte devient
+  « 40 scènes sur 40 », en ambre, suivi du lien « Pass du livre » qui ouvre le
+  même dialogue sans rien dire de refusé ; en dessous de la limite, « 38
+  scènes sur 40 » en gris. « Image », dans la copie, demande au serveur avant
+  d'ouvrir le choix : à la limite, rien ne s'importe ni ne se crée.
+- **Réglages du projet :** une section « Pass du livre » : le décompte des
+  scènes et des images, en ambre quand l'une est atteinte, avec un « i »
+  (« Qu'est-ce qui compte ? ») ; l'étiquette sur toute la largeur ; « Acheter
+  le pass », bouton cerné, sans répéter le prix.
+- **Repris après la critique :** le décompte gris à la limite (ambre et lien
+  vers le pass) ; « ✦ » non nommé (« 400 étoiles ✦ ») ; « pour toujours », lu
+  comme valable pour le compte (« pour ce livre ») ; aucune issue gratuite dite
+  (la corbeille ne compte pas, dans le dialogue et dans la bulle) ; coches
+  vertes, couleur de « c'est fait » (graphite) ; prix répété dans les réglages ;
+  étiquette étroite dans le panneau ; « Livre gratuit », titre ambigu (« Pass
+  du livre ») ; pass reçu réduit à une ligne (l'étiquette datée). Écartés :
+  désactiver « Ajouter une scène » à la limite (le dialogue explique mieux
+  qu'un bouton grisé) ; un rappel dès 35 scènes (une ligne de plus, que le
+  porteur ne veut pas) ; une croix au dialogue (les autres dialogues n'en ont
+  pas ; « Échap » et « Plus tard » ferment).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

@@ -91,13 +91,43 @@ export async function sansIdentitePrise(base: SupabaseClient, sceneId: string, t
 export async function enregistrerPourAdulte(e: Enseignant, sceneId: string, version: number, brut: unknown): Promise<Enregistrement> {
   const propre = nettoyerTexte(brut);
   if (!estUuid(sceneId) || !Number.isInteger(version) || !propre) return { etat: "refuse", motif: "controle" };
-  const texte = await sansIdentitePrise(e.supabase, sceneId, propre);
-  const { data, error } = await e.supabase.rpc("enregistrer_texte", { p_scene: sceneId, p_version: version, p_texte: texte });
+  let texte = await sansIdentitePrise(e.supabase, sceneId, propre);
+  let { data, error } = await e.supabase.rpc("enregistrer_texte", { p_scene: sceneId, p_version: version, p_texte: texte });
+  // Une image de plus que le livre gratuit n'en permet, venue d'un collage : le texte s'enregistre
+  // sans elle, plutôt que de rester en attente (F14-AC14). La copie ne l'ouvre pas d'elle-même.
+  if (error?.code === "LIM02") {
+    const { data: avant } = await e.supabase.from("scenes").select("texte").eq("id", sceneId).maybeSingle();
+    texte = sansNouvellesImages(texte, (avant?.texte as Texte | null) ?? []);
+    ({ data, error } = await e.supabase.rpc("enregistrer_texte", { p_scene: sceneId, p_version: version, p_texte: texte }));
+  }
   if (error) throw new Error(`Enregistrement impossible : ${error.message}`);
   const fait = resultat(data);
   // Un premier renvoi vient d'être enregistré : son numéro doit s'afficher, l'ordre du livre s'établit (F05-AC34)
   if (fait.etat === "enregistre" && ciblesDe(texte).length) await assurerOrdreDeLaScene(e.supabase, sceneId);
   return fait;
+}
+
+/** Le texte sans les images qu'il pose et que l'ancien ne posait pas, en bloc ou sur la ligne. */
+function sansNouvellesImages(texte: Texte, avant: Texte): Texte {
+  const deja = new Set<string>();
+  const relever = (n: unknown) => {
+    if (!n || typeof n !== "object") return;
+    const o = n as { type?: string; image?: string; children?: unknown[] };
+    if ((o.type === "image" || o.type === "image-ligne") && o.image) deja.add(o.image);
+    o.children?.forEach(relever);
+  };
+  avant.forEach(relever);
+  const garder = (n: unknown): boolean => {
+    const o = n as { type?: string; image?: string };
+    return !((o?.type === "image" || o?.type === "image-ligne") && !deja.has(o.image ?? ""));
+  };
+  const nettoyer = (n: unknown): unknown => {
+    const o = n as { children?: unknown[] };
+    if (!o || typeof o !== "object" || !Array.isArray(o.children)) return n;
+    const enfants = o.children.filter(garder).map(nettoyer);
+    return { ...o, children: enfants.length ? enfants : [{ text: "" }] };
+  };
+  return texte.filter(garder).map(nettoyer) as Texte;
 }
 
 /**

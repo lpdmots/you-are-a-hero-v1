@@ -1,5 +1,6 @@
 "use server";
 
+import { LIMITE_POUR_L_ELEVE } from "@/domaine/offre";
 import { revalidatePath } from "next/cache";
 import { clientDuPoste, etatDuPoste, noterActivite } from "@/serveur/poste";
 import { estUuid } from "@/serveur/recit";
@@ -14,8 +15,9 @@ import { chercherPourLePoste, contexteEleve, numerosDuPoste, type ChapitreTrouve
 
 type Fait<T = object> = ({ ok: true } & T) | { ok: false; erreur: string };
 const REFUS = "Tu ne peux pas faire cela dans ce chapitre.";
+// Le livre a atteint sa taille gratuite : l'élève ne voit ni le pass ni son prix (F14-AC13)
 const refus = (erreur: { code?: string; message: string } | null): { ok: false; erreur: string } => ({
-  ok: false, erreur: erreur?.code === "P0001" ? erreur.message : REFUS,
+  ok: false, erreur: erreur?.code === "P0001" ? erreur.message : erreur?.code === "LIM01" ? LIMITE_POUR_L_ELEVE : REFUS,
 });
 
 async function base() {

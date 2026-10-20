@@ -1,5 +1,6 @@
 "use client";
 
+import { posesDImages } from "@/domaine/offre";
 import { BoldPlugin, ItalicPlugin, UnderlinePlugin } from "@platejs/basic-nodes/react";
 import { createPlatePlugin, ParagraphPlugin, Plate, PlateContent, usePlateEditor } from "platejs/react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
@@ -707,10 +708,12 @@ export function Copie({
     setFiche({ sorte: "personnages", bloc: ici.id });
   };
   // ——— Images (F10) ———
-  const ouvrirPoserImage = () => {
+  const ouvrirPoserImage = async () => {
     const blocs = blocsDe(e);
     const ici = blocCourant(e)?.bloc ?? blocs[blocs.length - 1];
     if (!ici) return;
+    // Au-delà des images du livre gratuit, rien ne s'ouvre : la page dit la suite (F14-AC14)
+    if (services.peutPoserUneImage && !(await services.peutPoserUneImage(posesDImages(blocs)))) return;
     setBarre(null);
     setBandeau(null);
     lacherLeTexte();

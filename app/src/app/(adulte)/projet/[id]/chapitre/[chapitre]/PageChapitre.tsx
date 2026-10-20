@@ -1,5 +1,6 @@
 "use client";
 
+import { ouvrirOffreDuPass } from "@/composants/OffreDuPass";
 import { closestCenter, DndContext, DragOverlay, type DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -75,6 +76,8 @@ export function PageChapitre({
     setAttente("scene");
     const fait = await creerScene(chapitre.id);
     setAttente(null);
+    // La limite gratuite atteinte : le dialogue du pass dit ce qui se passe et la suite (F14-AC13)
+    if (!fait.ok && fait.limite) return ouvrirOffreDuPass(projet.id, fait.limite);
     if (!fait.ok) return dire({ texte: fait.erreur });
     setDemande("");
     setMontree(fait.id);

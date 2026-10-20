@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { AidesIa } from "@/composants/AidesIa";
 import { BarreAdulte } from "@/composants/BarreAdulte";
 import { Messages } from "@/composants/Messages";
+import { OffreDuPass } from "@/composants/OffreDuPass";
 import { ProjetCourant } from "@/composants/ProjetCourant";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
@@ -16,6 +17,8 @@ export default async function EspaceAdulte({ children }: { children: ReactNode }
         <AidesIa reglages={enseignant.reglagesIa}>
           <BarreAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} reglagesIa={enseignant.reglagesIa} etoiles={enseignant.etoiles} />
           <main>{children}</main>
+          {/* Le dialogue d'une limite gratuite atteinte, ouvert d'où qu'on soit (F14-AC13, AC14) */}
+          <OffreDuPass />
         </AidesIa>
       </ProjetCourant>
     </Messages>

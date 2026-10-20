@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { limitesDuProjet } from "@/serveur/offre";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
@@ -51,13 +52,17 @@ export default async function PageProjet({ params, searchParams }: Props) {
 
   let contenu;
   if (onglet === "plan") {
-    const [plan, eleves, magasin, preparation] = await Promise.all([
+    const [plan, eleves, magasin, preparation, limites] = await Promise.all([
       planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), cookies(), preparationDe(enseignant, projet.id),
+      limitesDuProjet(enseignant.supabase, projet.id),
     ]);
     contenu = (
       <Plan
         orientation={preparation?.orientations.etapes ?? ""}
-        projet={{ id: projet.id, titre: projet.titre, deClasse, aChoix, classe: projet.classe ? { id: projet.classe.id, nom: projet.classe.nom } : null }}
+        projet={{
+          id: projet.id, titre: projet.titre, deClasse, aChoix, classe: projet.classe ? { id: projet.classe.id, nom: projet.classe.nom } : null,
+          scenesGratuites: limites?.limite ? limites.scenesGratuites : null,
+        }}
         plan={plan}
         eleves={eleves}
         aideMasquee={enseignant.aidesMasquees.includes("plan")}
