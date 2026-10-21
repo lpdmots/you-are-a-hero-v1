@@ -1,5 +1,6 @@
 import "server-only";
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+import { EDITEUR } from "@/domaine/textes-publics";
 import { clientService } from "./supabase";
 
 /**
@@ -71,6 +72,14 @@ export function parametresDeLaSession(c: Commande): Record<string, string> {
     ...(c.achat === "pass" ? { "metadata[projet]": c.projetId } : {}),
     // La facture, envoyée par Stripe à chaque paiement
     "invoice_creation[enabled]": "true",
+    // Les mentions du vendeur en tête de facture, près de son numéro, plutôt qu'au pied de page
+    // de Stripe, qui suit le total au lieu de tenir en bas : le pied du compte reste vide
+    "invoice_creation[invoice_data][custom_fields][0][name]": "Vendeur",
+    "invoice_creation[invoice_data][custom_fields][0][value]": EDITEUR.nom,
+    "invoice_creation[invoice_data][custom_fields][1][name]": "SIRET",
+    "invoice_creation[invoice_data][custom_fields][1][value]": EDITEUR.siret,
+    "invoice_creation[invoice_data][custom_fields][2][name]": "TVA",
+    "invoice_creation[invoice_data][custom_fields][2][value]": "Non applicable, art. 293 B du CGI",
     // La case obligatoire de renonciation au droit de rétractation (F14-AC18)
     "consent_collection[terms_of_service]": "required",
     "custom_text[terms_of_service_acceptance][message]": RENONCIATION,
