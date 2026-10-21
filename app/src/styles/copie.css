@@ -3160,6 +3160,11 @@ kbd {
   padding: 12px 0;
   border-block: 1px solid var(--trait);
 }
+/* Sans images du projet dessous, pas de filet qui ne sépare rien */
+.ci__creer:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
 .ci__retour {
   justify-self: start;
 }
