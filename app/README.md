@@ -374,9 +374,8 @@ relecture par un juriste reste recommandée.
 
 À faire par le porteur avant l'ouverture :
 
-1. **Son nom** dans `EDITEUR.nom` (`src/domaine/textes-publics.ts`) : les mentions
-   légales et la page « Confidentialité » le citent ; il y est provisoirement « Le
-   créateur d'Il était une classe ».
+1. Son nom est dans `EDITEUR.nom` (`src/domaine/textes-publics.ts`) depuis le
+   21 octobre 2026 : les mentions légales et la page « Confidentialité » le citent.
 2. **Le livre à feuilleter de l'accueil** : la variable `LIVRE_DE_L_ACCUEIL` (Vercel,
    Production) reçoit le code d'un livre partagé par lien, les dix lettres après
    `/lire/` ; sans elle, l'accueil montre sa page de livre sans lien.
@@ -419,7 +418,7 @@ d'essai de Stripe dans `.env.local`, lot 5) :
 4. Chez Vercel (Production) : `ADRESSE_SITE`, les variables SMTP du lot 6, `CRON_SECRET`
    (lot 7), `STRIPE_CLE_SECRETE` et `STRIPE_SECRET_AVIS` en mode d'essai (lot 5),
    `LIVRE_DE_L_ACCUEIL` si un livre est choisi (lot 9).
-5. Son nom dans `EDITEUR.nom` (lot 9), puis le code poussé sur `main`.
+5. Le code poussé sur `main`.
 6. `npm run verifier:production`.
 7. Stripe : l'adresse des avis (lot 5, point 5) ; GitHub : les secrets de la sauvegarde
    (lot 8, point 4), puis « Run workflow » une fois ; Google : la vérification de la

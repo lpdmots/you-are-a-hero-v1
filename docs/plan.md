@@ -3193,8 +3193,10 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
      un projet de classe ; « Écrit avec Il était une classe » dans le lecteur
      par lien ; la mention React Flow ; « Écrire au créateur ». Écrans critiqués
      en deux lectures (environ 28/40 et 26/40) et corrigés (`design.md`,
-     « Étape 9 construite »). Le nom du porteur reste à écrire dans les
-     mentions légales.
+     « Étape 9 construite »). Le nom du porteur est écrit dans les mentions
+     légales le 21 octobre 2026 ; la relecture des textes par un juriste est
+     reportée par lui le même jour, tant qu'on ne sait pas si le site
+     intéressera.
   10. **Essai de bout en bout,** et mode d'emploi de la mise en ligne. **Construit le 20 octobre 2026,**
      sans migration : le parcours `ouverture-de-bout-en-bout` (inscription par
      adresse et courriel, petit livre, étoiles usées puis offertes, partage et

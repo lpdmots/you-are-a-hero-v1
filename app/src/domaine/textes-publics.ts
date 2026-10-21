@@ -10,8 +10,8 @@
 
 /** L'éditeur du site, nommé par les mentions légales (F14, « Textes juridiques »). */
 export const EDITEUR = {
-  /** À compléter par le porteur : son prénom et son nom, tels qu'il veut les publier */
-  nom: "Le créateur d'Il était une classe",
+  /** Le porteur, nommé par les mentions légales (donné par lui le 21 octobre 2026) */
+  nom: "Nicolas Coussot",
   contact: "contact@iletaituneclasse.com",
   site: "iletaituneclasse.com",
 } as const;
