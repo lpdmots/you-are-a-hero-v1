@@ -25,6 +25,10 @@ export type Commande = Achat & {
   /** En centimes d'euro, lu dans les réglages de l'application */
   montant: number;
   libelle: string;
+  /** Ce que l'achat donne, écrit sous le libellé sur la page de Stripe */
+  description?: string;
+  /** L'image du projet : une adresse https que Stripe peut lire, sinon rien */
+  image?: string | null;
   /** Après le paiement, et après un abandon : les deux sur ce site */
   merci: string;
   abandon: string;
@@ -58,6 +62,8 @@ export function parametresDeLaSession(c: Commande): Record<string, string> {
     "line_items[0][price_data][currency]": "eur",
     "line_items[0][price_data][unit_amount]": String(c.montant),
     "line_items[0][price_data][product_data][name]": c.libelle,
+    ...(c.description ? { "line_items[0][price_data][product_data][description]": c.description } : {}),
+    ...(c.image?.startsWith("https://") ? { "line_items[0][price_data][product_data][images][0]": c.image } : {}),
     ...(c.courriel ? { customer_email: c.courriel } : {}),
     client_reference_id: c.enseignantId,
     "metadata[achat]": c.achat,

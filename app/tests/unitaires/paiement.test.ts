@@ -20,6 +20,14 @@ describe("Stripe Checkout (F14)", () => {
     expect(p.success_url).toBe("https://iletaituneclasse.com/paiement/merci?session={CHECKOUT_SESSION_ID}");
   });
 
+  it("F14-AC18 — la page de Stripe rappelle ce que l'achat donne, avec l'image du projet si Stripe peut la lire", () => {
+    const p = parametresDeLaSession({ ...commande, description: "Scènes et images sans limite", image: "https://iletaituneclasse.com/illustrations/defaut-montagne.jpg" });
+    expect(p["line_items[0][price_data][product_data][description]"]).toBe("Scènes et images sans limite");
+    expect(p["line_items[0][price_data][product_data][images][0]"]).toBe("https://iletaituneclasse.com/illustrations/defaut-montagne.jpg");
+    const local = parametresDeLaSession({ ...commande, image: "http://127.0.0.1:54321/storage/v1/object/sign/images/x.jpg" });
+    expect(Object.keys(local).some((k) => k.includes("[images]"))).toBe(false);
+  });
+
   it("F14-AC20 — un abandon ramène où l'on était", () => {
     expect(parametresDeLaSession(commande).cancel_url).toBe(commande.abandon);
   });
