@@ -8,6 +8,8 @@
  * attendant les consignes, les choix et la préparation d'un ancien projet du porteur, à ajouter
  * ici (source « porteur »). Aucun prénom d'élève n'y figure : il n'en part jamais.
  */
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import type { AideTexte } from "@/domaine/aides-ia";
 import type { EntreeIdeesChoix } from "@/serveur/ia/aides/idees-choix";
 import type { Carnet, Histoire, Plan } from "@/serveur/ia/aides/contexte";
@@ -25,8 +27,8 @@ export type Cas = {
   entree: any;
 };
 
-const classe: Histoire = { titre: "Les passeurs de brume", mode: "classe", recit: "choix", niveaux: ["CM1", "CM2"] };
-const ce2: Histoire = { ...classe, niveaux: ["CE2"] };
+const classe: Histoire = { titre: "Les passeurs de brume", mode: "classe", recit: "choix", age: "10-12" };
+const ce2: Histoire = { ...classe, age: "8-10" };
 const personnel: Histoire = { ...classe, mode: "personnel" };
 
 const carnet: Carnet = {
@@ -120,7 +122,7 @@ const clairiere: EntreeIdeesChoix = {
 
 // ——— Préparation : un projet qui commence, et l'histoire d'essai ———
 
-const ile: Histoire = { titre: "L'île aux dragons", mode: "classe", recit: "choix", niveaux: ["CE2", "CM1"] };
+const ile: Histoire = { titre: "L'île aux dragons", mode: "classe", recit: "choix", age: "8-10" };
 const ileCarnet: Carnet = { univers: "Une île volcanique au milieu de l'océan, où vivent des dragons de toutes tailles. Les habitants du village pêchent et élèvent des chèvres. Le volcan gronde depuis quelques jours." };
 const etapePersonnages = {
   histoire: ile, etape: "personnages", question: "Qui est notre héros, et qu'est-ce qui le rend unique ?",
@@ -163,7 +165,7 @@ export const JEU_D_ESSAI: Cas[] = [
   // Consigne (F13.2)
   { id: "consigne-1", aide: "consigne", titre: "Consigne : « le passeur apparaît sur le pont »", repere: "Une ou deux phrases au « tu », « Décris : » et deux ou trois points ; aucun personnage que l'indication, la préparation ou le chapitre ne nomment pas (F13-AC18).", source: "inventé", entree: { histoire: classe, carnet, indication: "le passeur apparaît sur le pont", chapitre: { titre: lisiere.titre, resume: lisiere.resume }, voisines: [15, 16, 17, 18].map((n) => ({ titre: lisiere.scenes.find((s) => s.ref === n)!.titre, consigne: CONSIGNES[n] })) } },
   { id: "consigne-2", aide: "consigne", titre: "Consigne : « lou tombe dans la rivière et perd sa lanterne »", source: "inventé", entree: { histoire: classe, carnet, indication: "lou tombe dans la riviere et perd sa lanterne", chapitre: { titre: "Le gué des saules", resume: RESUMES.gue }, voisines: [21, 23].map((n) => ({ titre: `Scène ${n}`, consigne: CONSIGNES[n] })) } },
-  { id: "consigne-3", aide: "consigne", titre: "Consigne pour des CE2 : « faire tourner la roue du moulin »", source: "inventé", entree: { histoire: { ...classe, niveaux: ["CE2"] }, carnet, indication: "il faut faire tourner la roue du moulin, c'est dur", chapitre: { titre: moulin.titre, resume: moulin.resume }, voisines: [] } },
+  { id: "consigne-3", aide: "consigne", titre: "Consigne pour des CE2 : « faire tourner la roue du moulin »", source: "inventé", entree: { histoire: { ...classe, age: "8-10" }, carnet, indication: "il faut faire tourner la roue du moulin, c'est dur", chapitre: { titre: moulin.titre, resume: moulin.resume }, voisines: [] } },
   { id: "consigne-personnel", aide: "consigne", titre: "Note d'intention, mode personnel : « la rencontre avec le passeur »", repere: "Une ou deux lignes pour soi, sans tutoiement ni « Décris : ».", source: "inventé", entree: { histoire: personnel, carnet, indication: "la rencontre avec le passeur sur le pont", chapitre: { titre: lisiere.titre, resume: lisiere.resume }, voisines: [] } },
 
   // Titre (F05)
@@ -196,4 +198,5 @@ export const JEU_D_ESSAI: Cas[] = [
   { id: "fiche-chouette", aide: "fiche-visuelle", titre: "Fiche visuelle : la chouette messagère", source: "inventé", entree: { histoire: classe, sorte: "personnage", nom: "La chouette messagère", description: "Une chouette aux plumes argentées, qui montre le chemin sans parler.", univers: carnet.univers } },
   { id: "image-porte", aide: "description-image", titre: "Description d'image, héros absent : « je pousse la porte de la cabane »", repere: "La porte et le lieu ; au plus des mains neutres (F10-AC08) ; ni texte ni style.", source: "inventé", entree: { histoire: classe, pour: "scene", idee: "je pousse la porte de la cabane du passeur", paragraphes: CABANE, chapitre: { titre: "Le dernier bac", resume: RESUMES.bac }, cadrage: "3:2", herosAbsent: true, badges: [{ nom: "la casquette de Marius", fiche: "Casquette de toile bleue délavée, visière usée." }] } },
   { id: "image-souche", aide: "description-image", titre: "Description d'image d'après la scène, sans idée donnée", source: "inventé", entree: { histoire: classe, pour: "scene", idee: "", paragraphes: TEXTES[16], chapitre: { titre: lisiere.titre, resume: lisiere.resume }, cadrage: "pleine-page", herosAbsent: true, badges: [{ nom: "la lanterne de secours", fiche: "Petite lanterne de fer noir à vitres rondes." }] } },
+  { id: "mots-foret", aide: "mots-cles", titre: "Mots-clés lus dans un visuel de forêt", repere: "Le lieu et ce qu'on voit, en français et en anglais ; ni nom propre ni style.", source: "inventé", entree: { image: { octets: new Uint8Array(readFileSync(resolve(process.cwd(), "public/illustrations/defaut-foret-v.jpg"))), format: "jpeg" } } },
 ];

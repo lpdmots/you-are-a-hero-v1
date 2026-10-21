@@ -40,6 +40,8 @@ test.describe("L'image de repérage d'après le résumé (F10.1)", () => {
     const autre = page.getByRole("group", { name: /Une autre proposition/ });
     await expect(autre.getByRole("img")).toHaveCount(1);
     expect(await appelsImages(s.compte.id)).toEqual([{ aide: "image-reperage", nombre: 2 }]);
+    // Un lieu, sans personnage : candidate à la bibliothèque (F10-AC55)
+    expect((await sql<{ s: boolean }>("select sans_personnage as s from demandes_d_images where cible_id = $1", [s.chapitre]))[0].s).toBe(true);
     const premiere = (await sql<{ image_id: string }>("select image_id from chapitres where id = $1", [s.chapitre]))[0].image_id;
     expect(premiere).not.toBeNull();
     await autre.getByRole("button", { name: "Garder celle-ci" }).click();
@@ -121,6 +123,8 @@ test.describe("L'image d'une scène (F10.2)", () => {
     const proposition = panneau.getByRole("group", { name: /Proposition/ });
     await expect(proposition.getByRole("img")).toHaveCount(1);
     expect(await appelsImages(s.compte.id)).toEqual([{ aide: "image-scene", nombre: 1 }]);
+    // Le passeur y figure : elle ne sera jamais proposée à la bibliothèque (F10-AC55)
+    expect((await sql<{ s: boolean }>("select sans_personnage as s from demandes_d_images where cible_id = $1", [s.scene]))[0].s).toBe(false);
     await proposition.getByRole("button", { name: "Garder" }).click();
     // Posée dans la scène, en pleine page ; ses réglages s'ouvrent à la place
     await expect(copie(page).locator(".image-bloc")).toHaveCount(1);
@@ -226,7 +230,7 @@ test.describe("L'idée d'image de l'élève (F10.2)", () => {
 });
 
 test.describe("L'image créée d'office à l'ajout par l'IA (F10.1)", () => {
-  test("F10-AC50 — un chapitre ajouté depuis une proposition de l'IA reçoit une image d'après son résumé ; la mention le dit, « Régler » ouvre « Mon compte » sur le réglage", async ({ page }) => {
+  test("F10-AC50 — un chapitre ajouté depuis une proposition de l'IA reçoit une image d'après son résumé ; la mention le dit, et s'éteint sur place", async ({ page }) => {
     const s = await passeurs(page, { imagesParCreation: 2 });
     await aller(page, `/projet/${s.projet}/plan`);
     await page.getByRole("button", { name: "Demander des chapitres à l’IA pour « La forêt »" }).click();
@@ -239,9 +243,15 @@ test.describe("L'image créée d'office à l'ajout par l'IA (F10.1)", () => {
       .poll(async () => (await sql<{ image_id: string | null }>("select image_id from chapitres where partie_id = $1 and titre = 'Le gué des saules'", [s.foret.partieId]))[0]?.image_id)
       .not.toBeNull();
     expect(await appelsImages(s.compte.id)).toEqual([{ aide: "image-ajout", nombre: 1 }]);
-    await espace.getByRole("button", { name: "Régler" }).click();
-    await expect(page.getByRole("heading", { name: "Mon compte" })).toBeVisible();
-    await expect(page.getByRole("switch", { name: "Créer l’image des parties et chapitres ajoutés par l’IA" })).toBeChecked();
+    const mention = espace.getByRole("switch", { name: "Image créée à l’ajout" });
+    await expect(mention).toBeChecked();
+    await espace.getByText("Image créée à l’ajout").click();
+    await expect(mention).not.toBeChecked();
+    await expect
+      .poll(async () => (await sql<{ r: { imageALAjout?: boolean } }>("select reglages_ia as r from enseignants where id = $1", [s.compte.id]))[0].r.imageALAjout)
+      .toBe(false);
+    await aller(page, "/compte");
+    await expect(page.getByRole("switch", { name: "Créer l’image des parties et chapitres ajoutés par l’IA" })).not.toBeChecked();
   });
 
   test("F10-AC51 — réglage éteint : ni mention ni image ; un ajout à la main ne crée jamais d'image", async ({ page }) => {

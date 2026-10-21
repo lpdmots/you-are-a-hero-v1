@@ -162,15 +162,21 @@ export type Lancee = { ok: true; demande: string; /** Le travail, à faire aprè
 /** Ouvre une demande ; une seule en route à la fois pour un même élément. */
 async function ouvrir(
   e: Enseignant,
-  d: { projetId: string; cible: Cible; cibleId: string; dOffice?: boolean; apresBloc?: string | null; cadrage?: Cadrage; detouree?: boolean; alt?: string },
+  d: {
+    projetId: string; cible: Cible; cibleId: string; dOffice?: boolean; apresBloc?: string | null; cadrage?: Cadrage; detouree?: boolean; alt?: string;
+    /** L'image d'une scène sans badge, héros absent, non détourée : candidate à la bibliothèque (F10.1) */
+    sansPersonnage?: boolean;
+  },
 ): Promise<{ id: string } | Echec> {
   const avant = d.cible === "scene" ? null : await repereActuel(e, d.cible, d.cibleId);
+  // Une image de repérage montre un lieu, jamais un personnage au premier plan ; un portrait, toujours
+  const sansPersonnage = d.cible === "projet" || d.cible === "partie" || d.cible === "chapitre" ? true : d.sansPersonnage === true;
   const { data, error } = await clientService()
     .from("demandes_d_images")
     .insert({
       enseignant_id: e.id, projet_id: d.projetId, cible: d.cible, cible_id: d.cibleId, d_office: d.dOffice === true,
       apres_bloc: d.apresBloc ?? null, cadrage: d.cadrage ?? null, detouree: d.detouree === true, alt: (d.alt ?? "").slice(0, 200),
-      image_avant: avant?.image ?? null, visuel_avant: avant?.visuel ?? null,
+      image_avant: avant?.image ?? null, visuel_avant: avant?.visuel ?? null, sans_personnage: sansPersonnage,
     })
     .select("id")
     .single();
@@ -476,7 +482,7 @@ export async function proposerLaDescription(e: Enseignant, sceneId: string, d: D
   if (!paragraphes.trim() && !prepare.scene.idee.trim()) return echec("Écrivez d’abord ce que montre l’image, ou le texte de la scène.");
   const { data: chapitre } = await e.supabase.from("chapitres").select("titre, resume").eq("id", prepare.scene.chapitreId).maybeSingle();
   const r = await demanderUneAide(e, descriptionImage, {
-    histoire: histoireDuProjet(prepare.projet, e.reglagesIa.niveaux),
+    histoire: histoireDuProjet(prepare.projet),
     pour: "scene",
     idee: prepare.scene.idee,
     paragraphes: paragraphes ? paragraphes.split("\n") : [],
@@ -515,7 +521,10 @@ export async function demanderLImageDeScene(e: Enseignant, sceneId: string, d: D
   if (!prepare.description) return echec("Décrivez d’abord ce que montre l’image, ou faites proposer la description.");
   if (!e.reglagesIa.proposer) return echec(MESSAGES_IA.pasDImage);
   const apresBloc = typeof d.apresBloc === "string" && /^[\w-]{1,64}$/.test(d.apresBloc) ? d.apresBloc : null;
-  const ouverte = await ouvrir(e, { projetId: prepare.scene.projetId, cible: "scene", cibleId: sceneId, apresBloc, cadrage: d.cadrage, detouree: d.detouree, alt: d.alt });
+  const ouverte = await ouvrir(e, {
+    projetId: prepare.scene.projetId, cible: "scene", cibleId: sceneId, apresBloc, cadrage: d.cadrage, detouree: d.detouree, alt: d.alt,
+    sansPersonnage: prepare.retenus.length === 0 && prepare.projet.herosAbsent && !d.detouree,
+  });
   if ("ok" in ouverte) return ouverte;
   const travail = async () => {
     try {
@@ -568,7 +577,7 @@ export async function proposerLaCouverture(e: Enseignant, projetId: string): Pro
   const enjeu = c.preparation?.enjeu.trim() ?? "";
   if (!c.idee.trim() && !univers && !enjeu) return echec("Écrivez d’abord ce que montre la couverture, ou l’univers dans la Préparation.");
   const r = await demanderUneAide(e, descriptionImage, {
-    histoire: histoireDuProjet(c.projet, e.reglagesIa.niveaux),
+    histoire: histoireDuProjet(c.projet),
     pour: "couverture",
     idee: c.idee,
     paragraphes: [],

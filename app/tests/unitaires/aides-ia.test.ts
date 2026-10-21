@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, niveauEnMots, qualiteDeLImage, enEtoiles, resteDEtoiles } from "@/domaine/aides-ia";
+import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, AGE_PAR_DEFAUT, eleveEnMots, lecteursEnMots, qualiteDeLImage, enEtoiles, resteDEtoiles } from "@/domaine/aides-ia";
 import { AIDES } from "@/serveur/ia/aides";
 import { composerConsigne, consigne } from "@/serveur/ia/aides/consigne";
 import { correction } from "@/serveur/ia/aides/correction";
+import { histoireDuProjet, presentation } from "@/serveur/ia/aides/contexte";
 import { ideesChoix } from "@/serveur/ia/aides/idees-choix";
 import { remarqueDesPistes } from "@/serveur/ia/aides/pistes";
 import { simulation } from "@/serveur/ia/demander";
@@ -11,13 +12,13 @@ import { MODELES, MODELE_DES_AIDES, coutDe, estUnModele } from "@/serveur/ia/mod
 
 /** Étape 8, lot 1 : les règles des aides IA sans fournisseur ni base (F13, cadre commun). */
 
-const histoire = { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, niveaux: ["CM1" as const, "CM2" as const] };
+const histoire = { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, age: "10-12" as const };
 
 describe("Réglages des aides IA (F13)", () => {
   it("F13-AC01 — sans réglage, le degré proposé est 2, « Orthographe et grammaire »", () => {
     expect(lireReglagesIa({}).degre).toBe(2);
     expect(lireReglagesIa(null)).toEqual(REGLAGES_IA_HABITUELS);
-    expect(REGLAGES_IA_HABITUELS).toEqual({ degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto", imageALAjout: true });
+    expect(REGLAGES_IA_HABITUELS).toEqual({ degre: 2, proposer: true, imagesParCreation: 1, qualite: "auto", imageALAjout: true, bibliotheque: true });
   });
 
   it("F10-AC37 — qualité automatique : haute pour une pleine page, normale ailleurs ; un choix forcé reste forcé", () => {
@@ -28,17 +29,26 @@ describe("Réglages des aides IA (F13)", () => {
     expect(lireReglagesIa({ qualite: "normale" }).qualite).toBe("normale");
   });
 
-  it("un réglage abîmé reprend sa valeur habituelle ; les niveaux gardent leur ordre", () => {
-    expect(lireReglagesIa({ degre: 7, proposer: "oui", niveaux: ["CM2", "6e", "CE2"], imagesParCreation: 3, qualite: "ultra" })).toEqual({
-      ...REGLAGES_IA_HABITUELS, niveaux: ["CE2", "CM2"],
-    });
+  it("un réglage abîmé reprend sa valeur habituelle ; les anciens niveaux ne sont plus lus", () => {
+    expect(lireReglagesIa({ degre: 7, proposer: "oui", niveaux: ["CM2", "6e", "CE2"], imagesParCreation: 3, qualite: "ultra" })).toEqual(REGLAGES_IA_HABITUELS);
     expect(lireReglagesIa({ degre: 4, proposer: false, imagesParCreation: 2, qualite: "haute" })).toMatchObject({ degre: 4, proposer: false, imagesParCreation: 2, qualite: "haute" });
   });
 
-  it("le niveau se dit en mots dans les consignes au modèle", () => {
-    expect(niveauEnMots([])).toBe("élèves d'école élémentaire");
-    expect(niveauEnMots(["CM2", "CM1"])).toBe("élèves de CM1 et de CM2");
-    expect(niveauEnMots(["CE2", "CM1", "CM2"])).toBe("élèves de CE2, de CM1 et de CM2");
+  it("F13-AC29 — l'âge des lecteurs se dit en mots dans les consignes au modèle", () => {
+    expect(lecteursEnMots("8-10")).toBe("enfants de 8 à 10 ans");
+    expect(lecteursEnMots("12-15")).toBe("adolescents de 12 à 15 ans");
+    expect(lecteursEnMots("adultes")).toBe("adultes");
+    expect(eleveEnMots("10-12")).toBe("élève de 10 à 12 ans");
+    expect(eleveEnMots("6-8", true)).toBe("élèves de 6 à 8 ans");
+    expect(eleveEnMots("adultes", true)).toBe("élèves adultes");
+    expect(AGE_PAR_DEFAUT).toBe("8-10");
+  });
+
+  it("F13-AC29 — la présentation de l'histoire dit son public ; un livre personnel pour adultes ne s'écrit plus pour des enfants", () => {
+    expect(presentation({ ...histoire, age: "10-12" })).toContain("écrit par une classe d'élèves de 10 à 12 ans avec son enseignant, pour des lecteurs du même âge");
+    expect(presentation({ ...histoire, mode: "personnel", age: "adultes" })).toContain("écrit par un adulte, pour des adultes");
+    expect(correction.systeme({ histoire: { ...histoire, age: "10-12" }, degre: 2, paragraphes: ["Il était une fois."], consigne: null, nomsPropres: [] })).toContain("écrit par un élève de 10 à 12 ans");
+    expect(histoireDuProjet({ titre: "x", organisation: "personnel", recit: "choix", ageDesLecteurs: "12-15" }).age).toBe("12-15");
   });
 
   it("degrés 1 à 3 marqués dans la copie, 4 et 5 côte à côte (F13.1)", () => {

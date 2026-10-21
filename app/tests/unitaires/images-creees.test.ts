@@ -117,7 +117,7 @@ describe("Les prompts que l'application assemble (F10.2, F10.1, F11.4)", () => {
 
   it("la description proposée par l'IA ne reçoit ni le style ni les fiches, que l'application ajoute ; le héros absent est dit au modèle", () => {
     const entree = {
-      histoire: { titre: "Les passeurs", mode: "classe" as const, recit: "choix" as const, niveaux: [] },
+      histoire: { titre: "Les passeurs", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const },
       pour: "scene" as const, idee: "la porte du château", paragraphes: ["Tu pousses la porte."], cadrage: "3:2" as const, herosAbsent: true,
       badges: [{ nom: "Maël" }],
     };

@@ -1,5 +1,5 @@
 import type { AideTexte } from "@/domaine/aides-ia";
-import type { Schema } from "./fournisseurs";
+import type { Piece, Schema } from "./fournisseurs";
 
 /**
  * Une aide qui rend du texte : sa consigne au modèle, son message, le schéma de sa réponse,
@@ -11,6 +11,8 @@ export type DefinitionAide<E, S> = {
   /** Consigne fixe ; elle varie seulement avec ce qui change la tâche (degré, mode personnel) */
   systeme: (entree: E) => string;
   message: (entree: E) => string;
+  /** Les images que le modèle regarde avec le message, s'il y en a */
+  pieces?: (entree: E) => Piece[];
   schema: Schema;
   /** Borne de la réponse, en jetons : la plus longue utile, pas davantage */
   sortieMax: number;

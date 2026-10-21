@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { listerImages } from "@/app/(adulte)/projet/actions-images";
+import { chercherDesImages, listerImages, prendreUneImage } from "@/app/(adulte)/projet/actions-images";
 import type { Repere } from "@/domaine/illustration";
 import { adresseVisuel, estVisuel, VISUELS } from "@/domaine/visuels";
 import type { DemandeDImage } from "@/serveur/images-creees";
@@ -14,6 +14,9 @@ import { demanderAuxImages, garderLaProposition } from "./imagesCreees";
 import { suivreDesImages } from "./ImagesALAjout";
 import { deposer, reduire, REFUS_IMPORT, type ImageReduite } from "./importer";
 import { Panneau } from "./Panneau";
+
+/** Sans accents ni majuscules : « foret » trouve « Forêt ». */
+const simple = (t: string) => t.normalize("NFD").replace(/\p{M}/gu, "").toLocaleLowerCase("fr").trim();
 
 export type ChoixImage = { image: string } | { visuel: string } | { defaut: true } | { locale: ImageReduite };
 
@@ -42,6 +45,29 @@ export function ChoisirImage({
   const [attente, setAttente] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const fichier = useRef<HTMLInputElement>(null);
+  // La bibliothèque d'images (F10.1, 21 octobre 2026) : un mot cherche dans les visuels et ses mots-clés
+  const [terme, setTerme] = useState("");
+  const [bibliotheque, setBibliotheque] = useState<{ id: string; mots: string[] }[]>([]);
+  const [cherche, setCherche] = useState(false);
+
+  useEffect(() => {
+    // À la création d'un projet, rien ne peut encore être copié dans le projet : visuels seulement
+    if (!projetId) return;
+    let vivant = true;
+    const minuterie = setTimeout(() => {
+      void chercherDesImages(terme)
+        .then((l) => {
+          if (!vivant) return;
+          setBibliotheque(l);
+          setCherche(true);
+        })
+        .catch(() => {});
+    }, terme ? 250 : 0);
+    return () => {
+      vivant = false;
+      clearTimeout(minuterie);
+    };
+  }, [projetId, terme]);
 
   useEffect(() => {
     if (!projetId) return;
@@ -84,6 +110,22 @@ export function ChoisirImage({
     return choisir({ image: depot.id });
   };
 
+  const prendre = async (id: string) => {
+    if (!projetId) return;
+    setErreur(null);
+    setAttente(true);
+    const r = await prendreUneImage(projetId, id);
+    if (!r.ok) {
+      setAttente(false);
+      setErreur(r.erreur);
+      return;
+    }
+    setImages((avant) => [r.id, ...avant]);
+    return choisir({ image: r.id });
+  };
+
+  const motCherche = simple(terme);
+  const visuels = VISUELS.filter((v) => !motCherche || simple(v.nom).includes(motCherche) || simple(v.cle).includes(motCherche));
   const choisie = actuel.imageId !== null || actuel.locale === true || estVisuel(actuel.visuelChoisi);
   const aides = useAidesIa();
   return (
@@ -163,8 +205,18 @@ export function ChoisirImage({
       ) : null}
       <section aria-labelledby="ci-visuels">
         <h3 id="ci-visuels">Visuels proposés</h3>
+        <input
+          className="pchamp ci-chercher"
+          type="search"
+          aria-label="Chercher un visuel"
+          placeholder="Chercher : forêt, mer, château…"
+          value={terme}
+          maxLength={60}
+          onChange={(e) => setTerme(e.target.value)}
+        />
+        {terme.trim() && (cherche || !projetId) && !visuels.length && !bibliotheque.length ? <p>Aucun visuel pour « {terme.trim()} ».</p> : null}
         <ul className="vignettes">
-          {VISUELS.map((v) => (
+          {visuels.map((v) => (
             <li key={v.cle}>
               <button
                 type="button"
@@ -177,6 +229,22 @@ export function ChoisirImage({
               >
                 {/* eslint-disable-next-line @next/next/no-img-element -- visuels livrés avec l'application */}
                 <img className="image-couvrante" src={adresseVisuel(v.cle, true)} alt="" loading="lazy" />
+              </button>
+            </li>
+          ))}
+          {/* Les images de la bibliothèque, après les visuels livrés ; prise, l'image est copiée dans le projet */}
+          {bibliotheque.map((b) => (
+            <li key={b.id}>
+              <button
+                type="button"
+                className="vignette-choix"
+                aria-label={b.mots.length ? `Image de la bibliothèque : ${b.mots.slice(0, 3).join(", ")}` : "Image de la bibliothèque"}
+                title={b.mots.slice(0, 4).join(", ") || undefined}
+                disabled={attente}
+                onClick={() => void prendre(b.id)}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element -- images servies par l'application */}
+                <img className="image-couvrante" src={`/images/bibliotheque/${b.id}?v=1`} alt="" loading="lazy" />
               </button>
             </li>
           ))}

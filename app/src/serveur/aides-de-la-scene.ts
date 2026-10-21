@@ -58,7 +58,7 @@ export async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lie
     projetId: s.projet_id as string,
     recit: projet.recit,
     eleveId: (s.prise_par_eleve as string | null) ?? null,
-    histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
+    histoire: histoireDuProjet(projet),
     scene: { ...lue(s as SceneLue), id: sceneId },
     chapitre: { titre: chapitre.data.titre as string, resume: (chapitre.data.resume as string | null)?.trim() || null },
     avant: (ici < 0 ? [] : liste.slice(0, ici)).map(lue),

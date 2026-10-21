@@ -1,7 +1,7 @@
-import { NOMS_DES_DEGRES, niveauEnMots, type Degre } from "@/domaine/aides-ia";
+import { NOMS_DES_DEGRES, type Degre } from "@/domaine/aides-ia";
 import { compterMots } from "@/domaine/correction";
 import { assembler, bloc, chaine, champs, liste, objet, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, eleve, type Histoire } from "./contexte";
 
 /**
  * Correction d'une scène (F13.1), du degré 1 (orthographe) au degré 5 (d'après la consigne).
@@ -37,7 +37,7 @@ Ne change ni le vocabulaire, ni les répétitions, ni la longueur des phrases au
   3: `Degré 3, « Phrases plus claires ». Corrige d'abord comme au degré 2, puis rends les phrases plus claires : coupe une phrase trop longue, évite une répétition gênante, remplace un mot imprécis (« truc », « faire », « il y a » répété) par le mot juste, rends clair qui fait quoi.
 Ne change RIEN à ce qui se passe, à l'ordre des événements, au point de vue ni à ce que pense un personnage : « il croit que le dragon dort » ne devient pas « le dragon dort ». Garde les mots et les tournures de l'auteur partout où ils sont clairs.`,
   4: `Degré 4, « Style ». Corrige comme au degré 3, puis améliore le style : vocabulaire plus riche et plus précis, phrases plus fluides et plus variées, liaisons plus naturelles, détails sensoriels déjà suggérés mieux rendus.
-Garde les mêmes événements, dans le même ordre, les mêmes personnages et le même point de vue. Le texte doit rester lisible et crédible pour des enfants de cet âge.`,
+Garde les mêmes événements, dans le même ordre, les mêmes personnages et le même point de vue. Le texte doit rester lisible et crédible pour un auteur de cet âge.`,
   5: `Degré 5, « D'après la consigne ». Le texte de l'auteur sert de base : corrige-le comme au degré 4 et améliore-le pour qu'il réponde bien à la consigne. Il peut recevoir ce que la consigne demande et qui manque (une description, un sentiment, un dialogue demandé).
 N'ajoute AUCUN événement ni AUCUN personnage que ni le texte ni la consigne n'apportent ; garde ce qui se passe, l'ordre, le point de vue et la fin du texte.`,
 };
@@ -69,7 +69,7 @@ export const correction: DefinitionAide<EntreeCorrection, Correction> = {
   sortieMax: 8000,
   systeme: (e) => assembler(
     REGLES_COMMUNES,
-    `Tu corriges le texte d'une scène, ${e.histoire.mode === "classe" ? `écrit par un élève (${niveauEnMots(e.histoire.niveaux)})` : "écrit par un adulte"}, au degré demandé.`,
+    `Tu corriges le texte d'une scène, ${e.histoire.mode === "classe" ? `écrit par un ${eleve(e.histoire)}` : "écrit par un adulte"}, au degré demandé.`,
     CONSIGNES_DES_DEGRES[e.degre],
     consigneDeLongueur(e),
     `Règles de tous les degrés :

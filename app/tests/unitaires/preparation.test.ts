@@ -64,7 +64,7 @@ describe("La réserve de l'IA (F13.4)", () => {
 
 describe("Ce que reçoit le modèle pour une étape (F13.4)", () => {
   const entree: EntreeEtape = {
-    histoire: { titre: "Les passeurs de brume", mode: "classe", recit: "choix", niveaux: ["CM1"] },
+    histoire: { titre: "Les passeurs de brume", mode: "classe", recit: "choix", age: "8-10" },
     etape: "personnages",
     question: "Qui est notre héros, et qu'est-ce qui le rend unique ?",
     questions: ["De quoi a-t-il peur ?"],

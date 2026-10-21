@@ -287,6 +287,7 @@ test.describe("`/personnage` et les options du projet (F10.2)", () => {
     await aller(page, `/projet/${s.projet}/preparation`);
     await page.getByRole("button", { name: "Réglages du projet" }).click();
     // Un exemple par style, le même sujet partout (18 octobre 2026)
+    await page.getByRole("button", { name: "Changer le style des images" }).click();
     const styles = page.getByRole("radiogroup", { name: "Style des images" });
     await expect(styles.getByRole("radio", { name: /Illustration 2D lumineuse/ })).toBeChecked();
     await expect(styles.getByRole("radio")).toHaveCount(9);
@@ -302,6 +303,5 @@ test.describe("`/personnage` et les options du projet (F10.2)", () => {
     await expect.poll(async () => (await sql("select consigne_ecriture from public.projets where id = $1", [s.projet]))[0].consigne_ecriture).toBe("vous, au présent");
     const projet = async () => (await sql("select style_images, style_autre, heros_absent from public.projets where id = $1", [s.projet]))[0];
     await expect.poll(projet).toEqual({ style_images: "autre", style_autre: "linogravure en deux couleurs", heros_absent: false });
-    await expect(PANNEAU(page)).toContainText("Le héros est dessiné d’après sa carte et son portrait");
   });
 });

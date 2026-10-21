@@ -242,7 +242,7 @@ export function PanneauIdeesDeParties({
       pied={
         etat.montrees.length ? (
           <>
-            <MentionImageALAjout className="ipx__mention" avant={onFermer} />
+            <MentionImageALAjout className="ipx__mention" />
             <button
               type="button"
               className="btn btn--primaire btn--grand ipx__ajouter"

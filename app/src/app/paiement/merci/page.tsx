@@ -21,7 +21,7 @@ export default async function Merci({ searchParams }: { searchParams: Promise<{ 
   }
   const { data: paiement } = await e.supabase.from("paiements").select("achat, projet_id").eq("session", session).maybeSingle();
   if (paiement?.achat === "pass") redirect(`/projet/${paiement.projet_id}/plan?message=pass`);
-  if (paiement?.achat === "recharge") redirect("/projets?message=recharge");
+  if (paiement?.achat === "recharge") redirect("/compte?message=recharge");
   return (
     <EntreeIllustree titre="Paiement reçu" aide="Stripe confirme le paiement : cela prend quelques secondes.">
       <meta httpEquiv="refresh" content="3" />

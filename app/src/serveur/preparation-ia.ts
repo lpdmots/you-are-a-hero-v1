@@ -40,7 +40,7 @@ export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rub
     const onglet = ongletDuHeros(preparation, estUuid(herosId) ? herosId : null, projet.organisation, projet.recit);
     const carnet = carnetDe(preparation);
     return {
-      histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
+      histoire: histoireDuProjet(projet),
       etape,
       question: onglet.question,
       questions: [...onglet.relances, ...onglet.questions.map((q) => q.texte)],
@@ -53,7 +53,7 @@ export async function entreeDeLEtape(e: Enseignant, projetId: string, etape: Rub
     };
   }
   return {
-    histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
+    histoire: histoireDuProjet(projet),
     etape,
     question: guide.question,
     // Les relances sont les premières questions de la liste : l'IA ne les redemande pas

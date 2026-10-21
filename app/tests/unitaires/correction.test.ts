@@ -132,7 +132,7 @@ describe("Longueur de la proposition, aux degrés 4 et 5 (F13.1)", () => {
 
   it("F13-AC21 — la consigne au modèle dit la longueur visée aux degrés 4 et 5 seulement, et allonge sans événement nouveau", async () => {
     const { correction } = await import("@/serveur/ia/aides/correction");
-    const histoire = { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, niveaux: [] };
+    const histoire = { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const };
     const entree = { histoire, paragraphes: ["Lou arrive au pont. Il a peur."], consigne: null, nomsPropres: [], cible: 14 };
     expect(correction.systeme({ ...entree, degre: 4 })).toContain("environ 14 mots en tout (le texte en compte 7)");
     expect(correction.systeme({ ...entree, degre: 4 })).toContain("n'ajoute aucun événement");

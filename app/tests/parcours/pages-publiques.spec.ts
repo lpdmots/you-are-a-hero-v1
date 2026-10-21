@@ -74,7 +74,7 @@ test("F14-AC33 — dans « Imprimer et partager », un projet de classe propose 
 
 test("F14-AC36 — « Écrire au créateur » dans « Mon compte » et l'adresse de contact dans l'aide", async ({ page }) => {
   await adultePret(page);
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await aller(page, "/compte");
   await expect(page.getByRole("link", { name: "Écrire au créateur" })).toHaveAttribute("href", "mailto:contact@iletaituneclasse.com");
   await aller(page, "/aide");
   await expect(page.getByRole("link", { name: "contact@iletaituneclasse.com" }).first()).toHaveAttribute("href", "mailto:contact@iletaituneclasse.com");

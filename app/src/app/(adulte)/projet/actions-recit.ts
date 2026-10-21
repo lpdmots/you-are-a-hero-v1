@@ -2,6 +2,7 @@
 
 import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
 import { estStyle, STYLE_AUTRE_MAX } from "@/domaine/illustration";
+import { estAge } from "@/domaine/aides-ia";
 import { revalidatePath } from "next/cache";
 import { chapitresDe, couleurNouvelle, departDe, nomScene, TITRE_CHAPITRE, TITRE_PARTIE, COULEURS, type Profil } from "@/domaine/recit";
 import { estVisuel, tirerVisuel } from "@/domaine/visuels";
@@ -388,6 +389,7 @@ export async function reglerProjet(
   projetId: string,
   valeurs: {
     titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: string; styleAutre?: string; herosAbsent?: boolean; consigneEcriture?: string;
+    ageDesLecteurs?: string;
   },
 ): Promise<Fait> {
   const e = await exigerEnseignant();
@@ -409,6 +411,11 @@ export async function reglerProjet(
   if (valeurs.herosAbsent !== undefined) maj.heros_absent = valeurs.herosAbsent === true;
   // « Pour l'IA, notre façon d'écrire » : une ligne, reprise par les aides qui écrivent (18 octobre 2026)
   if (valeurs.consigneEcriture !== undefined) maj.consigne_ecriture = propre(valeurs.consigneEcriture, 300);
+  // « Âge des lecteurs » : le public de toutes les aides (F13-AC29, 21 octobre 2026)
+  if (valeurs.ageDesLecteurs !== undefined) {
+    if (!estAge(valeurs.ageDesLecteurs)) return echec("Âge inconnu.");
+    maj.age_des_lecteurs = valeurs.ageDesLecteurs;
+  }
   if (Object.keys(maj).length === 0) return { ok: true };
   const { data, error } = await e.supabase.from("projets").update(maj).eq("id", projetId).select("id");
   if (error || !data?.length) return echec("Ce réglage n’a pas pu être enregistré.");

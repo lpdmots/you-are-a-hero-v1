@@ -90,9 +90,7 @@ test("lot 5 : recharger dans « Mon compte », et le retour du pass payé", asyn
   const projet = await semerProjet(base, compte, "personnel", "choix", "Le marais des feux follets", null);
   await semerPartie(base, projet, "La traversée", [{ titre: "Le dernier bac", scenes: ["Le départ"] }]);
   await sql("update public.reglages_application set paiement_ouvert = true");
-  await aller(page, "/projets");
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await page.getByRole("heading", { name: "Aides IA" }).scrollIntoViewIfNeeded();
+  await aller(page, "/compte");
   n = 910;
   await capturer(page, "mon-compte-recharger");
   await sql("select public.donner_le_pass($1, 'achat')", [projet]);
@@ -131,8 +129,7 @@ test("lot 7 : la corbeille, et supprimer son compte", async ({ page }) => {
   await page.getByRole("button", { name: "Vider la corbeille" }).click();
   await capturer(page, "corbeille-vider");
   await page.keyboard.press("Escape");
-  await aller(page, "/projets");
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await aller(page, "/compte");
   await page.getByRole("button", { name: "Supprimer mon compte" }).click();
   await capturer(page, "supprimer-mon-compte");
 });

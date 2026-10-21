@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
-import { aller, classeQuiEcrit, copie, ecrire, FICHE, MESSAGE, posteDe, semerTexte, sql, supprimerComptes, type Situation } from "./outils";
+import { aller, classeQuiEcrit, copie, ecrire, FICHE, MESSAGE, posteDe, semerTexte, sql, supprimerComptes, type Situation, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
  * Étape 8 du plan, lot 9 : l'essai de bout en bout des aides IA, sur la réponse simulée
@@ -35,8 +35,9 @@ async function sansIa(page: Page): Promise<void> {
 }
 
 async function ouvrirMonCompte(page: Page): Promise<void> {
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await expect(page.getByRole("heading", { name: "Mon compte" })).toBeVisible();
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("link", { name: "Mon compte" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Mon compte" })).toBeVisible();
 }
 
 /** Alice prend S001 depuis son chapitre, l'écrit et la remet. */

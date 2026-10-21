@@ -1062,7 +1062,7 @@ restés sans retour du porteur :**
 | --- | --- |
 | Entrée enseignant | La disposition d'« Ouvrir la classe » : image à gauche, carte à droite. En tête, « Continuer avec Google », bouton à contour avec le signe de Google (décision du porteur, 9 octobre 2026) ; « ou » ; puis adresse, mot de passe, « Entrer », seul bouton plein, « Mot de passe oublié », et un lien vers l'entrée des élèves. Aucune commande d'inscription. Un compte Google inconnu : « Aucun compte ne correspond à cette adresse Google. » |
 | Mot de passe oublié | La même carte : une adresse, « Recevoir le lien », puis une seule phrase, identique que l'adresse soit connue ou non. Le lien reçu mène à « Nouveau mot de passe ». |
-| Mon compte | Panneau ouvert depuis le nom de l'adulte, dans la barre du haut : le nom affiché aux élèves, avec la phrase qu'ils liront, et « Se déconnecter ». |
+| Mon compte | Panneau ouvert depuis le nom de l'adulte, dans la barre du haut : le nom affiché aux élèves, avec la phrase qu'ils liront, et « Se déconnecter ». Devenu une page le 21 octobre 2026 : voir [« Mon compte » en page](#mon-compte-en-page-21-octobre-2026). |
 | Projet à l'étape 1 | L'en-tête du projet et ses quatre onglets, trois en mode personnel. Chaque onglet dit en une phrase à quelle étape du plan il se construit : texte provisoire. |
 | Classe d'un projet | « Choisir une classe » comme dessiné ; quand une classe est choisie, « Changer de classe » à la même place, tant qu'aucun chapitre n'est attribué (F01-AC24). |
 | Renommer la classe | Un dialogue : le nom, puis la case « Identifiant », qui suit le nouveau nom quand l'identifiant en était tiré, et « Enregistrer ». Dessous, une phrase : « L'identifiant de la classe ne change pas. », ou « L'affiche sera à réimprimer, et les étiquettes qui portent l'identifiant. » avec le lien « Garder « cm1cm2 » ». Un identifiant déjà pris est refusé sous la case (F06-AC84, AC85, 9 octobre 2026). |
@@ -1991,6 +1991,90 @@ consigne de construire sans attendre a primé.
   « Questions fréquentes » et « Aide » (« Aide » partout) ; le prix coupé en fin
   de ligne. Laissés : la page en cours non marquée dans l'en-tête ; le zéro barré
   d'Atkinson dans les prix, voix de l'outil.
+
+### Mon compte en page (21 octobre 2026)
+
+Demandé par le porteur, qui jugeait le panneau « Mon compte » devenu « un vrai
+bordel illisible » : nom, solde, recharge, six réglages d'IA suivis chacun d'une
+ligne d'aide, administration, contact, déconnexion et suppression au même niveau,
+sur 380 px. Recommandé et accepté : une page et un menu court. Conçue avec
+impeccable dans le système « Cahiers d'aventure », critiquée en deux lectures sur
+neuf captures (961 à 969, `npm run captures -- compte`) : 29/40 (informée) et
+27/40 (indépendante), corrigée aussitôt, sans nouvelle mesure.
+
+- **Le menu du nom**, sous le nom de la barre du haut : le nom et l'adresse
+  (sur une ligne), le solde « 30 ✦ pour les aides » (rien pour le porteur),
+  « Mon compte », « Administration » pour le porteur, « Se déconnecter ».
+- **La page `/compte`**, une colonne de 800 px au plus : le titre ;
+  la feuille « Pour vos élèves » (le nom affiché et la phrase que liront les
+  élèves) ; la feuille « Étoiles » (le solde en grand, « Recharger » à sa
+  droite, un « i ») ; la feuille « Aides IA », son interrupteur dans l'en-tête,
+  sa phrase dans un « i » (« Que se passe-t-il si on les éteint ? »), puis
+  deux intertitres discrets, « Textes » (degré de correction) et
+  « Images » (nombre, qualité, image à l'ajout), et une ligne par réglage,
+  son nom et son « i » à gauche, sa commande à droite ; les « i » disent
+  tout en phrases complètes (reprise demandée par le porteur le même jour).
+  La feuille
+  « Connexion » : l'adresse et le mot de passe (« •••••••• », ou « Aucun :
+  vous entrez avec Google »), chacun avec « Changer », qui ouvre à sa place
+  un petit formulaire (« Envoyer le lien » ou « Enregistrer », « Annuler ») ;
+  une adresse demandée attend ses liens, en ambre, sous l'adresse actuelle. Au pied, hors des feuilles,
+  « Écrire au créateur » et « Supprimer mon compte » ; le dialogue de
+  suppression ajoute « Vos 30 ✦ restantes sont perdues. ».
+- **L'enregistrement** se dit au bout de la ligne changée (« ✓ Enregistré »,
+  qui s'efface après deux secondes et demie), ou « Pas enregistré ·
+  Réessayer » en brique.
+- **Une recharge payée** revient sur cette page, avec « Vos étoiles sont
+  arrivées. ».
+- **La mention « ✦ Image créée à l'ajout »** porte l'interrupteur du réglage, à
+  la place du lien « Régler » qui ouvrait le panneau : il s'éteint sans quitter
+  le chapitre et reste visible pour se rallumer.
+
+Laissé après la critique : la confirmation par l'adresse retapée (F14-AC26) ;
+le prix des aides en étoiles, que F14-AC07 ne montre pas ; les bascules
+choisies en graphite et les cases cochées en canard (une couleur, un rôle) ;
+les niveaux CE1 à CM2, remplacés le même jour, sur décision du porteur, par
+« Âge des lecteurs » dans les réglages du projet (F13-AC29) : une bascule de
+cinq choix (« 6–8 », « 8–10 », « 10–12 », « 12–15 », « Adultes »), sous
+« Mise en forme des élèves » et avant « Pour l'IA, notre façon d'écrire »,
+montrée quand les aides sont proposées, avec une phrase : « L'IA écrit et
+corrige pour des lecteurs de cet âge. », complétée dans un projet de classe
+par « C'est aussi l'âge des élèves qui écrivent. ». Migration
+`age_des_lecteurs`, en base locale seulement.
+
+### Réglages du projet resserrés (21 octobre 2026)
+
+Le porteur jugeait le panneau « trop rempli » : il tenait près de deux écrans
+(environ 1 490 px). Les phrases d'aide n'en faisaient qu'un dixième ; la grille
+des neuf styles (400 px) et l'étiquette du pass (240 px), le reste. Repris, sans
+règle changée, à environ 780 px : quatre ensembles sous leur intertitre — le
+titre et l'image ; « Pass du livre », en une ligne (le décompte, puis « Acheter
+le pass · 20 € », ce qu'il donne dans un « i » ; reçu : « ✓ Reçu le … : scènes
+et images sans limite pour ce livre. ») ; « Les élèves », deux interrupteurs ;
+« Pour l'IA », l'âge des lecteurs et « Notre façon d'écrire » ; « Images », le
+style choisi replié (son exemple, son nom, « Changer », qui ouvre la grille,
+refermée au choix d'un style sauf « Autre ») et « Héros absent des images ».
+Chaque explication passe dans un « i » nommé par une question, en phrases
+complètes. L'étiquette du pass reste au dialogue d'une limite atteinte.
+
+### Bibliothèque d'images (21 octobre 2026)
+
+Décidée par le porteur (F10.1, F10-AC53 à AC55), sans maquette, dans le système
+« Cahiers d'aventure » et la forme dense et sobre de l'administration. Dans
+l'administration, une feuille « Bibliothèque d'images » porte un seul bouton,
+« 15 images à relire » (ou « Ouvrir »), qui mène à sa page : « À relire (n) »,
+une phrase, puis une grille de vignettes 3:2 agrandissables d'un clic, chacune
+avec sa sorte (« Repérage d'un chapitre », « Image de scène »), « Accepter » et
+le lien « Refuser » ; « Dans la bibliothèque (n) », la même grille, avec
+« Mots-clés », « En anglais », « Enregistrer » et « Retirer de la bibliothèque »
+en brique. Un message vert d'une phrase après chaque geste. Dans « Choisir une
+image », un champ de recherche sous « Visuels proposés », au-dessus des
+vignettes ; les images de la bibliothèque suivent les visuels livrés, sans
+marque à part (leur nom au survol : leurs premiers mots-clés). Dans « Mon
+compte », une ligne « Bibliothèque d'images » sous « Image créée à l'ajout »,
+son interrupteur et un « i » (« Que devient une image proposée ? »).
+Migrations `age_des_lecteurs` et `bibliotheque_d_images`, en base locale
+seulement. Captures 980 à 984 (`npm run captures -- compte`).
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

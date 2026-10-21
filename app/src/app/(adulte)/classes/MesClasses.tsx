@@ -104,7 +104,7 @@ export function MesClasses({
             <PlacesVides nombre={7} />
           </div>
           <h2 id="vide-t">Pas encore de classe</h2>
-          <p>Créez-la quand vos élèves commencent à écrire. D’ici là, votre histoire se prépare sans elle.</p>
+          <p>Créez-la dès maintenant ou plus tard : votre histoire peut se préparer sans elle.</p>
           <button type="button" className="btn btn--primaire btn--grand" onClick={() => setPanneau(true)}>
             <Icone nom="plus" />
             Créer ma classe

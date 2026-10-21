@@ -1,7 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore, useTransition } from "react";
+import { reglerAidesIa } from "@/app/(adulte)/actions-compte";
 import { enRoute } from "@/app/(adulte)/projet/actions-images-creees";
 import { useAidesIa } from "./AidesIa";
 import { Icone } from "./Icone";
@@ -89,30 +90,34 @@ export function AttenteDImage({ id }: { id: string }) {
   );
 }
 
-/** Ouvre « Mon compte » sur ses aides IA, depuis la mention « Régler ». */
-export const ouvrirMonCompte = () => window.dispatchEvent(new CustomEvent("ouvrir-mon-compte", { detail: "aides-ia" }));
-
 /**
- * « ✦ Image créée à l'ajout · Régler » : la mention discrète, là où l'on ajoute, quand le réglage
- * est allumé ; l'image coûte plus qu'un texte, en étoiles (F14).
+ * « ✦ Image créée à l'ajout », avec son interrupteur, là où l'on ajoute, quand le réglage est allumé ;
+ * l'image coûte plus qu'un texte, en étoiles (F14). Le même réglage que dans « Mon compte », changé
+ * sur place depuis le 21 octobre 2026, pour ne pas quitter le chapitre. Éteint ici, il reste visible
+ * jusqu'à ce que le panneau se ferme, pour qu'on puisse le rallumer.
  */
-export function MentionImageALAjout({ className, avant }: { className?: string; /** Referme le panneau où elle se lit : « Mon compte » s'ouvre à sa place */ avant?: () => void }) {
+export function MentionImageALAjout({ className }: { className?: string }) {
   const reglages = useAidesIa();
-  if (!reglages.proposer || !reglages.imageALAjout) return null;
+  const routeur = useRouter();
+  const [allume, setAllume] = useState(reglages.imageALAjout);
+  const [montree] = useState(reglages.imageALAjout);
+  const [, lancer] = useTransition();
+  if (!reglages.proposer || !montree) return null;
+  const changer = (valeur: boolean) => {
+    setAllume(valeur);
+    lancer(async () => {
+      await reglerAidesIa({ imageALAjout: valeur });
+      routeur.refresh();
+    });
+  };
   return (
     <p className={`mention-ajout${className ? ` ${className}` : ""}`}>
-      <Icone nom="ia" />
-      Image créée à l’ajout ·{" "}
-      <button
-        type="button"
-        className="lien"
-        onClick={() => {
-          avant?.();
-          ouvrirMonCompte();
-        }}
-      >
-        Régler
-      </button>
+      <label className="inter inter--petit">
+        <input type="checkbox" role="switch" checked={allume} onChange={(e) => changer(e.target.checked)} />
+        <span className="inter__piste" aria-hidden="true" />
+        <Icone nom="ia" />
+        <span>Image créée à l’ajout</span>
+      </label>
     </p>
   );
 }

@@ -116,6 +116,13 @@
 .etat .carte {
   justify-self: stretch;
 }
+.recu {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--e-valide) !important;
+  font-weight: 600;
+}
 
 /* Le merci du pass : l'image du livre en bandeau, puis le solde garni */
 .image {

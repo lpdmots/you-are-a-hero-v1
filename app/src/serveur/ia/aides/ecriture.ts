@@ -1,6 +1,6 @@
 import { compterMots } from "@/domaine/correction";
 import { assembler, bloc, chaine, champs, liste, objet, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, blocCarnet, lecteurs, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, eleve, lecteurs, presentation, type Carnet, type Histoire } from "./contexte";
 
 /**
  * « ✦ Écrire » (F13.6, décidé par le porteur le 17 octobre 2026) : le texte d'une scène vide,
@@ -32,8 +32,8 @@ export const ecriture: DefinitionAide<EntreeEcriture, Ecriture> = {
   systeme: (e) => assembler(
     REGLES_COMMUNES,
     `Tu écris le texte d'une scène du livre, d'après sa consigne.${e.histoire.mode === "classe"
-      ? ` Le livre est écrit par une classe (${lecteurs(e.histoire)}) : écris comme un bon élève de cet âge pourrait le faire, avec un vocabulaire et des phrases à sa portée, vivant et clair.`
-      : " Le livre est écrit par un adulte : garde un style simple et vivant, pour des enfants."}
+      ? ` Le livre est écrit par une classe d'${eleve(e.histoire, true)} : écris comme un bon élève de cet âge pourrait le faire, avec un vocabulaire et des phrases à sa portée, vivant et clair.`
+      : ` Le livre est écrit par un adulte, pour des ${lecteurs(e.histoire)} : un style vivant, à leur portée.`}
 - Suis la consigne : ce qu'elle demande de raconter et de décrire.
 - Enchaîne avec ce qui mène à la scène, quand il est fourni : le lecteur arrive d'une de ces scènes.
 - Garde la personne et le temps du récit des scènes d'avant (le héros nommé à la troisième personne, ou « tu ») ; à défaut, la troisième personne au passé.

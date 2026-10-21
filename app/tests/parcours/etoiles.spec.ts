@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, MESSAGE, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
+import { adultePret, aller, MESSAGE, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
  * Étape 9, lot 3 : les étoiles, vues par l'enseignant (F14-AC07, AC08, AC11). Le fournisseur est
@@ -17,8 +17,9 @@ async function soldeA(compte: Compte, n: number): Promise<void> {
 }
 
 async function ouvrirMonCompte(page: Page): Promise<void> {
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await expect(page.getByRole("heading", { name: "Mon compte" })).toBeVisible();
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("link", { name: "Mon compte" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Mon compte" })).toBeVisible();
 }
 
 /** Une scène du projet personnel « Le phare », ouverte. */
@@ -35,7 +36,9 @@ test("F14-AC07 — « Mon compte » dit le solde ; aucun bouton d'IA ne montre d
   const s = await uneScene(page);
   await ouvrirMonCompte(page);
   await expect(page.getByText("Il vous reste 30 ✦ pour les aides.")).toBeVisible();
-  await page.keyboard.press("Escape");
+  // Le solde se lit aussi d'un coup d'œil, dans le menu du nom
+  await ouvrirLeMenuDuCompte(page);
+  await expect(page.locator("header").getByText("30 ✦ pour les aides")).toBeVisible();
 
   await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
   const titres = page.getByRole("button", { name: "Proposer des titres" });
@@ -74,7 +77,9 @@ test("F14-AC11 — le compte du porteur : aucun solde dans « Mon compte », l'a
   await ouvrirMonCompte(page);
   await expect(page.getByRole("heading", { name: "Aides IA" })).toBeVisible();
   await expect(page.getByText(/Il vous reste/)).toHaveCount(0);
-  await page.keyboard.press("Escape");
+  await ouvrirLeMenuDuCompte(page);
+  await expect(page.getByText(/✦ pour les aides/)).toHaveCount(0);
+  await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
   await page.getByRole("button", { name: "Proposer des titres" }).click();
   await expect(page.getByRole("group", { name: "Titres proposés" })).toBeVisible();
 });

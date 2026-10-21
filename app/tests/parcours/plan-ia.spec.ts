@@ -14,7 +14,7 @@ test.afterEach(async () => {
 async function passeurs(page: Page, options: { proposer?: boolean } = {}) {
   const { compte, base } = await adultePret(page);
   if (options.proposer === false) {
-    await base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", compte.id);
+    await base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, imagesParCreation: 1, qualite: "normale" } }).eq("id", compte.id);
   }
   const classe = await semerClasse(base, "CM1-CM2", ["Alice"]);
   const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume", classe.id);

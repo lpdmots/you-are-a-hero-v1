@@ -176,7 +176,7 @@ test.describe("Corriger une scène (F13.1)", () => {
 
   test("F13-AC01 — le degré choisi pour une scène ne change pas le défaut : la scène suivante repart du degré du compte", async ({ page }) => {
     const s = await sceneDAlice(page);
-    await s.base.from("enseignants").update({ reglages_ia: { degre: 3, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);
+    await s.base.from("enseignants").update({ reglages_ia: { degre: 3, proposer: true, imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);
     await aller(page, `/projet/${s.projet}/scene/${s.s1}`);
     await expect(degre(page)).toHaveText("Degré 3");
     await choisirDegre(page, 5);
@@ -200,7 +200,7 @@ test.describe("Corriger une scène (F13.1)", () => {
 
   test("aides éteintes : ni « Corriger », ni degré, ni « Proposer des pistes »", async ({ page }) => {
     const s = await sceneDAlice(page);
-    await s.base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);
+    await s.base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);
     await sql("update public.scenes set etat = 'valider' where id = $1", [s.s1]);
     await aller(page, `/projet/${s.projet}/scene/${s.s1}`);
     await expect(copie(page)).toBeVisible();

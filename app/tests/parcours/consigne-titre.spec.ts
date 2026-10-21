@@ -129,7 +129,7 @@ test.describe("Le ✦ du titre de scène (F05)", () => {
 
   test("aides éteintes : ni ✦ du titre, ni « Formuler »", async ({ page }) => {
     const s = await lePont(page);
-    await s.base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);
+    await s.base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, imagesParCreation: 1, qualite: "normale" } }).eq("id", s.compte.id);
     await page.reload();
     await expect(titre(page)).toBeVisible();
     await expect(page.getByRole("button", { name: /titre/ })).toHaveCount(0);

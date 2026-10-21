@@ -88,13 +88,19 @@ export async function passerAide(page: Page): Promise<void> {
   if (await commencer.isVisible().catch(() => false)) await commencer.click();
 }
 
+/** Ouvre le menu du nom de l'adulte, dans la barre du haut : le solde, « Mon compte », « Se déconnecter ». */
+export async function ouvrirLeMenuDuCompte(page: Page): Promise<void> {
+  await page.getByLabel(/^Votre compte : /).click();
+}
+
 /** Donne le nom affiché aux élèves, depuis « Mon compte ». */
 export async function nommer(page: Page, compte: Compte, nom: string): Promise<void> {
-  await page.getByRole("button", { name: new RegExp(compte.courriel.slice(0, 12)) }).click();
+  await expect(page.getByLabel(`Votre compte : ${compte.courriel}`)).toBeVisible();
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("link", { name: "Mon compte" }).click();
   await page.getByLabel("Nom affiché aux élèves").fill(nom);
   await page.getByLabel("Nom affiché aux élèves").blur();
   await expect(page.getByText("Enregistré")).toBeVisible();
-  await page.getByRole("button", { name: "Fermer", exact: true }).last().click();
 }
 
 export type ClasseCreee = { id: string; identifiant: string; motDePasse: string };
@@ -464,6 +470,31 @@ export async function semerImageDeposee(base: SupabaseClient, compte: Compte, pr
   const { error } = await base.from("images").insert({ id, projet_id: projetId, enseignant_id: compte.id, chemin: chemins[0], chemin_vignette: chemins[1], largeur: 480, hauteur: 320, format: "jpeg" });
   if (error) throw new Error(error.message);
   return id;
+}
+
+/** Une image de la bibliothèque (F10.1), son fichier déposé hors des dossiers des comptes ; rend son identité. */
+export async function semerDansLaBibliotheque(source: string, mots: string[], motsEn: string[]): Promise<string> {
+  const octets = readFileSync(resolve(__dirname, "../../public/illustrations/defaut-etang-v.jpg"));
+  const chemins = [`bibliotheque/${source}.jpg`, `bibliotheque/${source}-v.jpg`];
+  for (const chemin of chemins) {
+    const { error } = await service().storage.from("images").upload(chemin, octets, { contentType: "image/jpeg", upsert: true });
+    if (error) throw new Error(error.message);
+  }
+  const { data, error } = await service()
+    .from("bibliotheque")
+    .insert({ image_source: source, etat: "acceptee", chemin: chemins[0], chemin_vignette: chemins[1], format: "jpeg", largeur: 480, hauteur: 320, mots, mots_en: motsEn })
+    .select("id")
+    .single();
+  if (error) throw new Error(error.message);
+  return data.id as string;
+}
+
+/** Efface de la bibliothèque les images venues de ces sources, lignes et fichiers : elle survit aux comptes. */
+export async function viderLaBibliotheque(sources: string[]): Promise<void> {
+  if (!sources.length) return;
+  const { data } = await service().from("bibliotheque").delete().in("image_source", sources).select("chemin, chemin_vignette");
+  const chemins = (data ?? []).flatMap((l) => [l.chemin, l.chemin_vignette]).filter((c): c is string => !!c);
+  if (chemins.length) await service().storage.from("images").remove(chemins);
 }
 
 /** Une action de jeu (étape 3, lot 4). */

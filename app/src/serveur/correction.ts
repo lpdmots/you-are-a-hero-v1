@@ -32,7 +32,7 @@ async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | nul
   return {
     scene,
     consigne,
-    histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
+    histoire: histoireDuProjet(projet),
     // Les noms des personnages, leurs autres noms et ceux des objets ne se corrigent pas (F10.2)
     nomsPropres: nomsPropresDeLHistoire(preparation?.personnagesDeLHistoire ?? [], preparation?.objets ?? []),
     deClasse: projet.organisation === "classe",

@@ -2,6 +2,7 @@
 
 import { randomUUID } from "node:crypto";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { chercherDansLaBibliotheque, prendreDeLaBibliotheque } from "@/serveur/bibliotheque";
 import { cheminImage, cheminVignette, lireImage, POIDS_MAX_IMAGE, POIDS_MAX_VIGNETTE, SEAU } from "@/serveur/images";
 import { projetDe } from "@/serveur/lectures";
 import { estUuid, imagesDuProjet } from "@/serveur/recit";
@@ -62,4 +63,17 @@ export async function enregistrerImage(projetId: string, id: string): Promise<{ 
 export async function listerImages(projetId: string): Promise<string[]> {
   const e = await exigerEnseignant();
   return (await imagesDuProjet(e, projetId)).map((i) => i.id);
+}
+
+/** Les images de la bibliothèque (F10.1, F10-AC54), toutes ou celles d'un mot-clé : leur identité et leurs mots. */
+export async function chercherDesImages(terme: string): Promise<{ id: string; mots: string[] }[]> {
+  const e = await exigerEnseignant();
+  return (await chercherDansLaBibliotheque(e, String(terme ?? "").slice(0, 60))).map((i) => ({ id: i.id, mots: i.mots }));
+}
+
+/** Prendre une image de la bibliothèque : copiée parmi les images du projet, elle rend son identité. */
+export async function prendreUneImage(projetId: string, id: string): Promise<{ ok: true; id: string } | Echec> {
+  const e = await exigerEnseignant();
+  const imageId = await prendreDeLaBibliotheque(e, projetId, id);
+  return imageId ? { ok: true, id: imageId } : echec("Cette image n’a pas pu être prise. Réessayez.");
 }

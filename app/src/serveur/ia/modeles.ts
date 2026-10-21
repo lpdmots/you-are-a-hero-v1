@@ -68,6 +68,8 @@ export const MODELE_DES_AIDES: Record<AideTexte, IdModele> = {
   personnages: "claude-sonnet-5-5",
   "fiche-visuelle": "claude-sonnet-5-5",
   "description-image": "claude-sonnet-5-5",
+  // Lire une vignette et en tirer des mots-clés : Sonnet voit les images, pour peu
+  "mots-cles": "claude-sonnet-5-5",
 };
 
 /** Ce que coûte un appel, en dollars, d'après les jetons que le fournisseur annonce. */

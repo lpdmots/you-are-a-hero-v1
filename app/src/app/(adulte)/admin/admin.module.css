@@ -170,3 +170,63 @@
 .champ select {
   width: 100%;
 }
+
+/* La bibliothèque d'images (F10.1) : des vignettes en grille, leurs gestes dessous */
+.rate {
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+}
+.lienBloc {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 12px 0 4px;
+  padding: 0;
+  list-style: none;
+}
+.carteImage {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+}
+.vignetteImage {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-m);
+  overflow: hidden;
+  background: var(--feuille-2);
+  cursor: zoom-in;
+  aspect-ratio: 3 / 2;
+}
+.vignetteImage img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.gestes {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.mots {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.mots .champ {
+  width: 100%;
+}
+
+.lienBloc h2 {
+  margin-bottom: 0;
+}

@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adresseDEssai, aller, choixAuto, connecter, courrielRecu, recit, retenirCompte, semerBlocs, semerPartie, sql, supprimerComptes } from "./outils";
+import { adresseDEssai, aller, choixAuto, connecter, courrielRecu, recit, retenirCompte, semerBlocs, semerPartie, sql, supprimerComptes, ouvrirLeMenuDuCompte } from "./outils";
 import { createClient } from "@supabase/supabase-js";
 
 /**
@@ -132,7 +132,9 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
 
   // ——— Une recharge, depuis « Mon compte » ———
   await aller(page, "/projets");
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await ouvrirLeMenuDuCompte(page);
+  await expect(page.locator("header").getByText(/✦ pour les aides/)).toBeVisible();
+  await page.getByRole("link", { name: "Mon compte" }).click();
   await page.getByRole("button", { name: /Recharger/ }).click();
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
   await page.getByRole("button", { name: "Payer" }).click();
@@ -142,7 +144,7 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   await porteur.close();
 
   // ——— Supprimer son compte : tout est effacé, la vente reste sans nom ———
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await expect(page).toHaveURL(/\/compte$/);
   await page.getByRole("button", { name: "Supprimer mon compte" }).click();
   await DIALOGUE(page).getByLabel("Pour confirmer, écrivez votre adresse").fill(courriel);
   await DIALOGUE(page).getByRole("button", { name: "Supprimer mon compte" }).click();

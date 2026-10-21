@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, courrielRecu, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
+import { adultePret, aller, courrielRecu, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
  * Étape 9, lot 6 : l'administration du porteur (F14-AC22 à AC25). Le porteur est un compte
@@ -43,9 +43,10 @@ test("F14-AC22 — l'administration est refusée à un autre compte, comme une p
     expect(reponse?.status()).toBe(404);
     await expect(page.getByRole("heading", { name: "Cette page n’existe pas" })).toBeVisible();
   }
-  // Rien ne la propose dans « Mon compte »
+  // Rien ne la propose dans le menu du compte
   await aller(page, "/projets");
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await ouvrirLeMenuDuCompte(page);
+  await expect(page.getByRole("link", { name: "Mon compte" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Administration" })).toHaveCount(0);
 });
 
@@ -54,7 +55,7 @@ test("F14-AC23 — le porteur voit chaque compte, sa date d'inscription, sa dern
   await sql("insert into public.appels_ia (enseignant_id, aide, sorte, termine_le, issue, cout_usd) values ($1, 'correction', 'texte', now(), 'reussi', 1.5), ($1, 'image-scene', 'image', now(), 'reussi', 0.75)", [s.bernard.id]);
   await sql("insert into public.paiements (session, enseignant_id, achat, montant, etoiles) values ('cs_admin_' || gen_random_uuid(), $1, 'recharge', 500, 100)", [s.bernard.id]);
   await aller(page, "/projets");
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
+  await ouvrirLeMenuDuCompte(page);
   await page.getByRole("link", { name: "Administration" }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Administration" })).toBeVisible();
   const ligne = page.getByRole("row").filter({ hasText: s.bernard.courriel });

@@ -1,29 +1,22 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState, useTransition, type CSSProperties } from "react";
-import { enregistrerNomAffiche, reglerAidesIa, supprimerMonCompte } from "@/app/(adulte)/actions-compte";
-import { Dialogue } from "./Dialogue";
-import type { ReglagesIa } from "@/domaine/aides-ia";
-import { EDITEUR } from "@/domaine/textes-publics";
+import { usePathname } from "next/navigation";
+import type { CSSProperties } from "react";
+import { enEtoiles } from "@/domaine/aides-ia";
 import { seDeconnecter } from "@/app/entree/actions";
 import { BoutonEnvoi } from "./Attente";
 import { Logo } from "./Logo";
-import { Panneau, PiedFermer } from "./Panneau";
+import { Menu } from "./Menu";
 import { useProjetCourant } from "./ProjetCourant";
-import { ReglagesAidesIa } from "./ReglagesAidesIa";
 import styles from "./BarreAdulte.module.css";
 
 type Props = {
   nomAffiche: string | null;
   courriel: string | null;
-  reglagesIa: ReglagesIa;
   /** Le solde d'étoiles (F14-AC07) ; null pour le compte du porteur */
   etoiles: number | null;
-  /** « Recharger · 5 € pour 100 ✦ », quand on peut acheter des étoiles ; sinon rien (F14-AC19) */
-  recharge?: string | null;
-  /** Le compte du porteur : « Administration » dans « Mon compte » (F14) */
+  /** Le compte du porteur : « Administration » dans le menu du nom (F14) */
   admin?: boolean;
 };
 
@@ -37,55 +30,16 @@ const signe = (nom: string): string =>
 
 /**
  * Barre du haut de l'adulte : le nom du dernier projet ouvert, qui y ramène de
- * partout, puis « Mes projets » et « Mes classes ». Son nom ouvre « Mon compte ».
+ * partout, puis « Mes projets » et « Mes classes ». Son nom ouvre un menu court :
+ * le solde, « Mon compte » (une page, depuis le 21 octobre 2026), « Se déconnecter ».
  */
-export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharge = null, admin = false }: Props) {
+export function BarreAdulte({ nomAffiche, courriel, etoiles, admin = false }: Props) {
   const projet = useProjetCourant();
   const chemin = usePathname();
-  const routeur = useRouter();
-  const [compte, setCompte] = useState(false);
-  const [nom, setNom] = useState(nomAffiche ?? "");
-  const [enregistre, setEnregistre] = useState(false);
-  const [enCours, lancer] = useTransition();
-  // « Supprimer mon compte » : l'adresse retapée, puis la suppression (F14-AC26)
-  const [supprimer, setSupprimer] = useState<string | null>(null);
-  const [erreurSuppression, setErreurSuppression] = useState<string | null>(null);
-  const [suppressionEnCours, lancerSuppression] = useTransition();
-  // Montrés aussitôt, gardés ensuite : un réglage ne doit pas attendre le serveur pour changer
-  const [ia, setIa] = useState(reglagesIa);
-  // « Régler », sous une mention des aides (« ✦ Image créée à l'ajout ») : « Mon compte » s'ouvre sur le réglage
-  useEffect(() => {
-    const ouvrir = () => {
-      setEnregistre(false);
-      setCompte(true);
-      requestAnimationFrame(() => document.getElementById("reglage-image-ajout")?.scrollIntoView({ block: "center" }));
-    };
-    window.addEventListener("ouvrir-mon-compte", ouvrir);
-    return () => window.removeEventListener("ouvrir-mon-compte", ouvrir);
-  }, []);
-
-  const reglerIa = (changes: Partial<ReglagesIa>) => {
-    setIa((r) => ({ ...r, ...changes }));
-    setEnregistre(false);
-    lancer(async () => {
-      await reglerAidesIa(changes);
-      setEnregistre(true);
-      routeur.refresh();
-    });
-  };
 
   const reprise = projet ? `/projet/${projet.id}/${projet.onglet}` : "/projets";
   const ici = (debut: string) => (chemin.startsWith(debut) ? "page" : undefined);
   const visible = nomAffiche?.trim() || courriel || "Mon compte";
-
-  const garderNom = () => {
-    if (nom.trim() === (nomAffiche ?? "").trim()) return;
-    lancer(async () => {
-      await enregistrerNomAffiche(nom);
-      setEnregistre(true);
-      routeur.refresh();
-    });
-  };
 
   return (
     <header className={`${styles.barre} hors-impression`}>
@@ -104,106 +58,47 @@ export function BarreAdulte({ nomAffiche, courriel, reglagesIa, etoiles, recharg
         </Link>
       </nav>
       <div className={styles.droite}>
-        <button type="button" className={styles.identite} onClick={() => { setEnregistre(false); setCompte(true); }} aria-haspopup="dialog">
-          <span className="gommette" style={{ "--g": "#4A5157" } as CSSProperties} aria-hidden="true">
-            {signe(visible)}
-          </span>
-          <span className={styles.nom}>{visible}</span>
-        </button>
-      </div>
-
-      {compte ? (
-        <Panneau
-          titre="Mon compte"
-          sous={courriel ?? undefined}
-          onFermer={() => setCompte(false)}
-          pied={<PiedFermer enregistre={enregistre} enCours={enCours} onFermer={() => setCompte(false)} />}
-        >
-          <section>
-            <h3>
-              <label htmlFor="compte-nom">Nom affiché aux élèves</label>
-            </h3>
-            <input
-              className="pchamp"
-              id="compte-nom"
-              type="text"
-              value={nom}
-              maxLength={60}
-              placeholder="Mme Laurent"
-              onChange={(e) => { setNom(e.target.value); setEnregistre(false); }}
-              onBlur={garderNom}
-              onKeyDown={(e) => { if (e.key === "Enter") e.currentTarget.blur(); }}
-              data-focus
-            />
-            <p>
-              Les élèves lisent ce nom : « Demande à {nom.trim() || "ton enseignant(e)"}. » Sans nom, ils lisent « ton
-              enseignant(e) ».
-            </p>
-          </section>
-          <ReglagesAidesIa reglages={ia} onChanger={reglerIa} etoiles={etoiles} recharge={recharge} />
-          {admin ? (
-            <section>
-              <Link className="btn" href="/admin" onClick={() => setCompte(false)}>
-                Administration
-              </Link>
-            </section>
-          ) : null}
-          {/* Le support : un courriel, sans délai promis (F14-AC36) */}
-          <section>
-            <p>
-              Une question, une idée ? <a className="lien" href={`mailto:${EDITEUR.contact}`}>Écrire au créateur</a>
-            </p>
-          </section>
-          <section>
-            <form action={seDeconnecter}>
-              <BoutonEnvoi className="btn">Se déconnecter</BoutonEnvoi>
-            </form>
-          </section>
-          {admin ? null : (
-            <section>
-              <button type="button" className="lien lien--danger" onClick={() => { setSupprimer(""); setErreurSuppression(null); }}>
-                Supprimer mon compte
-              </button>
-            </section>
-          )}
-        </Panneau>
-      ) : null}
-      {compte && supprimer !== null ? (
-        <Dialogue
-          titre="Supprimer votre compte ?"
-          onFermer={() => setSupprimer(null)}
-          boutons={
-            <button
-              type="button"
-              className="btn btn--danger"
-              disabled={suppressionEnCours || !supprimer.trim()}
-              aria-busy={suppressionEnCours || undefined}
-              onClick={() =>
-                lancerSuppression(async () => {
-                  const r = await supprimerMonCompte(supprimer);
-                  if (r && !r.ok) setErreurSuppression(r.erreur);
-                })
-              }
-            >
-              Supprimer mon compte
-            </button>
+        <Menu
+          className={styles.compte}
+          libelle={`Votre compte : ${visible}`}
+          bouton={
+            <>
+              <span className="gommette" style={{ "--g": "#4A5157" } as CSSProperties} aria-hidden="true">
+                {signe(visible)}
+              </span>
+              <span className={styles.nom}>{visible}</span>
+            </>
           }
         >
-          <ul className="dialogue__faits">
-            <li>Vos projets, vos classes et leurs élèves, vos images et vos livres partagés sont effacés aussitôt, sans retour.</li>
-            <li>Les liens de lecture de vos livres ne mènent plus à rien.</li>
-          </ul>
-          <label className="champ champ--plein">
-            <span>Pour confirmer, écrivez votre adresse</span>
-            <input type="email" value={supprimer} autoComplete="off" onChange={(e) => setSupprimer(e.target.value)} />
-          </label>
-          {erreurSuppression ? (
-            <p className="erreur" role="alert">
-              {erreurSuppression}
-            </p>
-          ) : null}
-        </Dialogue>
-      ) : null}
+          {(fermer) => (
+            <>
+              <div className={styles.qui}>
+                <strong>{visible}</strong>
+                {courriel && courriel !== visible ? <span title={courriel}>{courriel}</span> : null}
+                {/* Le solde, d'un coup d'œil ; le compte du porteur n'en a pas (F14-AC07, AC11) */}
+                {etoiles !== null ? (
+                  <span className={styles.solde}>
+                    <b>{enEtoiles(etoiles)}</b> pour les aides
+                  </span>
+                ) : null}
+              </div>
+              <hr />
+              <Link href="/compte" onClick={fermer} aria-current={ici("/compte")}>
+                Mon compte
+              </Link>
+              {admin ? (
+                <Link href="/admin" onClick={fermer} aria-current={ici("/admin")}>
+                  Administration
+                </Link>
+              ) : null}
+              <hr />
+              <form action={seDeconnecter}>
+                <BoutonEnvoi>Se déconnecter</BoutonEnvoi>
+              </form>
+            </>
+          )}
+        </Menu>
+      </div>
     </header>
   );
 }

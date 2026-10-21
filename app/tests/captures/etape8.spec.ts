@@ -20,9 +20,10 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
+// « Mon compte » est une page depuis le 21 octobre 2026
 const ouvrirMonCompte = async (page: Page) => {
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await page.getByRole("heading", { name: "Mon compte" }).waitFor();
+  await aller(page, "/compte");
+  await page.getByRole("heading", { level: 1, name: "Mon compte" }).waitFor();
 };
 
 test("lot 1 : « Aides IA » dans « Mon compte », et la page de jugement de l'essai", async ({ page }) => {
@@ -31,7 +32,7 @@ test("lot 1 : « Aides IA » dans « Mon compte », et la page de jugement de l'
 
   await ouvrirMonCompte(page);
   await capturer(page, "mon-compte-aides-ia", false);
-  await page.locator(".panneau__corps").evaluate((e) => e.scrollTo(0, e.scrollHeight));
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await capturer(page, "mon-compte-aides-ia-bas", false);
   await page.getByRole("checkbox", { name: "CM1" }).check();
   await page.getByRole("checkbox", { name: "CM2" }).check();
@@ -173,7 +174,7 @@ test("lot 2 : la correction dans la page de scène, et les pistes de reprise", a
   await page.keyboard.press("Escape");
   await page.setViewportSize({ width: 1366, height: 900 });
 
-  await base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, niveaux: [], imagesParCreation: 1, qualite: "normale" } }).eq("id", compte.id);
+  await base.from("enseignants").update({ reglages_ia: { degre: 2, proposer: false, imagesParCreation: 1, qualite: "normale" } }).eq("id", compte.id);
   await aller(page, scene);
   await copie(page).waitFor();
   await capturer(page, "scene-aides-eteintes", false);
@@ -602,7 +603,8 @@ test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros"
 
   // Réglages du projet : le style des images et le héros absent
   await page.getByRole("button", { name: "Réglages du projet" }).click();
-  await page.getByRole("heading", { name: "Le héros dans les images" }).scrollIntoViewIfNeeded();
+  await page.getByRole("button", { name: "Changer le style des images" }).click();
+  await page.getByText("Héros absent des images", { exact: true }).scrollIntoViewIfNeeded();
   await capturer(page, "projet-style-images", false);
   await page.keyboard.press("Escape");
 
@@ -747,9 +749,9 @@ test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser
   await page.getByRole("button", { name: "Proposer des parties" }).click();
   await page.getByText("Image créée à l’ajout").last().waitFor();
   await capturer(page, "parties-mention", false);
-  await page.getByRole("button", { name: "Régler" }).last().click();
-  await page.getByRole("heading", { name: "Mon compte" }).waitFor();
-  await capturer(page, "mon-compte-image-ajout", false);
+  await page.getByRole("switch", { name: "Image créée à l’ajout" }).last().click();
+  await capturer(page, "mention-eteinte", false);
+  await page.getByRole("switch", { name: "Image créée à l’ajout" }).last().click();
   await page.keyboard.press("Escape");
 
   // L'idée d'image de l'élève

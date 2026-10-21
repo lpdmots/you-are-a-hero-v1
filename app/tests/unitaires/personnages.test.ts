@@ -31,7 +31,7 @@ describe("Les cartes des personnages (F10.2)", () => {
   });
 
   it("F10-AC38 — l'IA peut marquer plusieurs héros ; une carte déjà là, sous un de ses noms, n'est pas reprise ; « tu » n'est pas un personnage", () => {
-    const entree = { histoire: { titre: "x", mode: "classe" as const, recit: "choix" as const, niveaux: [] }, carnet: {}, idees: [], connus: [mael] };
+    const entree = { histoire: { titre: "x", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const }, carnet: {}, idees: [], connus: [mael] };
     const lu = aidePersonnages.lire(
       { personnages: [
         { nom: "Lou", autres_noms: ["le garçon"], description: "", heros: true },
@@ -89,10 +89,10 @@ describe("Les cartes des personnages (F10.2)", () => {
 
 describe("La façon d'écrire du livre (F13, F05, 18 octobre 2026)", () => {
   it("F13-AC28 — « Pour l'IA, notre façon d'écrire » part avec chaque aide et prime sur le « tu » ; vide, rien ne s'ajoute", () => {
-    const projet = { titre: "Les passeurs", organisation: "classe" as const, recit: "choix" as const, consigneEcriture: " vous, au présent " };
-    const h = histoireDuProjet(projet, ["CM1"]);
+    const projet = { titre: "Les passeurs", organisation: "classe" as const, recit: "choix" as const, consigneEcriture: " vous, au présent ", ageDesLecteurs: "8-10" as const };
+    const h = histoireDuProjet(projet);
     expect(presentation(h)).toContain("Façon d'écrire voulue par l'adulte, qui prime sur ce qui précède : vous, au présent");
-    expect(presentation(histoireDuProjet({ ...projet, consigneEcriture: "" }, []))).not.toContain("Façon d'écrire");
+    expect(presentation(histoireDuProjet({ ...projet, consigneEcriture: "" }))).not.toContain("Façon d'écrire");
   });
 
   it("F05-AC58 — au « vous », le renvoi dit « rendez-vous au 12 » ou « allez au 12 », et « Si tu veux » devient « Si vous voulez »", () => {

@@ -81,15 +81,20 @@ export function AcheterLePass({ projetId, offre, plein = true, avecPrix = true }
 }
 
 /**
- * Dans les réglages du projet : où en est le livre au regard des limites gratuites, puis son pass ;
- * ou le pass reçu, avec sa date. Rien d'autre : le dialogue s'ouvre seul quand une limite bloque.
+ * Dans les réglages du projet : où en est le livre au regard des limites gratuites, puis « Acheter
+ * le pass », ce qu'il donne dans un « i » ; ou le pass reçu, en une ligne datée. Resserré le
+ * 21 octobre 2026 (le panneau tenait deux écrans) : l'étiquette du pass reste au dialogue d'une
+ * limite atteinte, qui s'ouvre seul quand une limite bloque.
  */
-export function LivreGratuit({ projetId, titre, offre, limites }: { projetId: string; titre: string; offre: Offre; limites: Limites }) {
+export function LivreGratuit({ projetId, offre, limites }: { projetId: string; titre: string; offre: Offre; limites: Limites }) {
   if (limites.pass) {
     return (
       <section className={styles.etat}>
         <h3>Pass du livre</h3>
-        <CarteDuPass titre={titre} offre={offre} recuLe={limites.passLe} />
+        <p className={styles.recu}>
+          <Icone nom="coche" />
+          {limites.passLe ? `Reçu le ${jourEnMots(limites.passLe)} : ` : "Reçu : "}scènes et images sans limite pour ce livre.
+        </p>
       </section>
     );
   }
@@ -97,7 +102,13 @@ export function LivreGratuit({ projetId, titre, offre, limites }: { projetId: st
   const plein = (n: number, max: number) => (n >= max ? styles.atteint : undefined);
   return (
     <section className={styles.etat} id="pass-du-livre">
-      <h3>Pass du livre</h3>
+      <span className="reg-ligne">
+        <h3>Pass du livre</h3>
+        <Bulle question="Que donne le pass ?">
+          Payé une fois, pour ce livre : scènes et images sans limite
+          {offre.etoilesDuPass > 0 ? `, et ${offre.etoilesDuPass} étoiles ✦ pour les aides IA` : ""}. {NE_COMPTE_PAS}
+        </Bulle>
+      </span>
       <p className={styles.compte}>
         <span className={plein(limites.scenes, limites.scenesGratuites)}>
           <strong>{limites.scenes}</strong> scène{limites.scenes > 1 ? "s" : ""} sur {limites.scenesGratuites}
@@ -105,12 +116,10 @@ export function LivreGratuit({ projetId, titre, offre, limites }: { projetId: st
         {" · "}
         <span className={plein(limites.images, limites.imagesGratuites)}>
           <strong>{limites.images}</strong> image{limites.images > 1 ? "s" : ""} sur {limites.imagesGratuites}
-        </span>{" "}
-        <Bulle question="Qu’est-ce qui compte ?">{NE_COMPTE_PAS}</Bulle>
+        </span>
       </p>
-      <CarteDuPass titre={titre} offre={offre} />
       <p className={styles.commandes}>
-        <AcheterLePass projetId={projetId} offre={offre} plein={false} avecPrix={false} />
+        <AcheterLePass projetId={projetId} offre={offre} plein={false} />
       </p>
     </section>
   );

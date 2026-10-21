@@ -22,6 +22,7 @@ export const AIDES_TEXTE = [
   "personnages", // F10.2, « Repérer les personnages »
   "fiche-visuelle", // F10.2, « Préciser pour les images »
   "description-image", // F10.2, « Proposer la description »
+  "mots-cles", // F10.1, les mots-clés d'une image de la bibliothèque, lus dans l'image (21 octobre 2026)
 ] as const;
 export type AideTexte = (typeof AIDES_TEXTE)[number];
 /**
@@ -51,6 +52,7 @@ export const NOMS_DES_AIDES: Record<AideTexte, string> = {
   personnages: "Repérer les personnages",
   "fiche-visuelle": "Fiche visuelle",
   "description-image": "Description d'une image",
+  "mots-cles": "Mots-clés d'une image",
 };
 
 export const DEGRES = [1, 2, 3, 4, 5] as const;
@@ -77,16 +79,40 @@ export const ROLES_DES_DEGRES: Record<Degre, string> = {
 /** Aux degrés 1 à 3, les changements se marquent dans la copie ; aux degrés 4 et 5, côte à côte. */
 export const marquesDansLaCopie = (degre: Degre): boolean => degre <= 3;
 
-export const NIVEAUX = ["CE1", "CE2", "CM1", "CM2"] as const;
-export type Niveau = (typeof NIVEAUX)[number];
+/**
+ * « Âge des lecteurs », réglé par projet (F13, décidé par le porteur le 21 octobre 2026) : il
+ * remplace les niveaux CE1 à CM2 du compte, qui changent d'un pays à l'autre et ne disaient
+ * rien d'un livre pour adultes. Dans un projet de classe, il décrit aussi les élèves qui écrivent.
+ */
+export const AGES = ["6-8", "8-10", "10-12", "12-15", "adultes"] as const;
+export type AgeDesLecteurs = (typeof AGES)[number];
+export const AGE_PAR_DEFAUT: AgeDesLecteurs = "8-10";
+export const estAge = (v: unknown): v is AgeDesLecteurs => AGES.includes(v as AgeDesLecteurs);
+
+/** Ce que lit l'adulte : « 8 à 10 ans », « Adultes ». */
+export const NOMS_DES_AGES: Record<AgeDesLecteurs, string> = {
+  "6-8": "6 à 8 ans",
+  "8-10": "8 à 10 ans",
+  "10-12": "10 à 12 ans",
+  "12-15": "12 à 15 ans",
+  adultes: "Adultes",
+};
+
+/** Le public, pour les aides : « enfants de 8 à 10 ans », « adolescents de 12 à 15 ans », « adultes ». */
+export function lecteursEnMots(age: AgeDesLecteurs): string {
+  if (age === "adultes") return "adultes";
+  return `${age === "12-15" ? "adolescents" : "enfants"} de ${NOMS_DES_AGES[age]}`;
+}
+
+/** Un élève qui écrit, pour les aides : « élève de 8 à 10 ans », « élève adulte » ; au pluriel, « élèves… ». */
+export const eleveEnMots = (age: AgeDesLecteurs, pluriel = false): string =>
+  `élève${pluriel ? "s" : ""} ${age === "adultes" ? `adulte${pluriel ? "s" : ""}` : `de ${NOMS_DES_AGES[age]}`}`;
 
 export type ReglagesIa = {
   /** Le degré proposé à chaque demande ; une demande peut en choisir un autre sans le changer */
   degre: Degre;
   /** Éteint : aucun bouton d'IA nulle part (projection devant la classe, travail sans IA) */
   proposer: boolean;
-  /** Plusieurs pour un cours double ; aucun : « élèves d'école élémentaire » */
-  niveaux: Niveau[];
   imagesParCreation: 1 | 2;
   qualite: QualiteDesImages;
   /**
@@ -95,6 +121,12 @@ export type ReglagesIa = {
    * l'ajout automatique.
    */
   imageALAjout: boolean;
+  /**
+   * « Proposer mes images à la bibliothèque » (F10.1, 21 octobre 2026) : une image créée sans
+   * personnage peut rejoindre les visuels proposés à tous, après la relecture du porteur ;
+   * allumé par défaut, décision du porteur.
+   */
+  bibliotheque: boolean;
 };
 
 /**
@@ -126,29 +158,23 @@ export const qualiteDeLImage = (reglage: QualiteDesImages, usage: UsageDImage): 
   reglage === "auto" ? (usage === "pleine-page" ? "haute" : "normale") : reglage;
 
 /** Un compte neuf (F13, F10.1, F10.2) : degré 2, aides proposées, une image, en qualité automatique, l'image créée à l'ajout. */
-export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, niveaux: [], imagesParCreation: 1, qualite: "auto", imageALAjout: true };
+export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, imagesParCreation: 1, qualite: "auto", imageALAjout: true, bibliotheque: true };
 
-/** Ce que la base garde, relu sans confiance : un réglage absent ou abîmé reprend sa valeur habituelle. */
+/**
+ * Ce que la base garde, relu sans confiance : un réglage absent ou abîmé reprend sa valeur
+ * habituelle. Les anciens niveaux (« niveaux », jusqu'au 21 octobre 2026) ne sont plus lus.
+ */
 export function lireReglagesIa(v: unknown): ReglagesIa {
   const o = v && typeof v === "object" && !Array.isArray(v) ? (v as Record<string, unknown>) : {};
   const h = REGLAGES_IA_HABITUELS;
-  const niveaux = Array.isArray(o.niveaux) ? NIVEAUX.filter((n) => (o.niveaux as unknown[]).includes(n)) : h.niveaux;
   return {
     degre: DEGRES.includes(o.degre as Degre) ? (o.degre as Degre) : h.degre,
     proposer: typeof o.proposer === "boolean" ? o.proposer : h.proposer,
-    niveaux,
     imagesParCreation: o.imagesParCreation === 1 || o.imagesParCreation === 2 ? o.imagesParCreation : h.imagesParCreation,
     qualite: QUALITES.includes(o.qualite as QualiteDesImages) ? (o.qualite as QualiteDesImages) : h.qualite,
     imageALAjout: typeof o.imageALAjout === "boolean" ? o.imageALAjout : h.imageALAjout,
+    bibliotheque: typeof o.bibliotheque === "boolean" ? o.bibliotheque : h.bibliotheque,
   };
-}
-
-/** « élèves de CM1 et de CM2 », « élèves de CE2 », « élèves d'école élémentaire ». */
-export function niveauEnMots(niveaux: readonly Niveau[]): string {
-  const tries = NIVEAUX.filter((n) => niveaux.includes(n));
-  if (!tries.length) return "élèves d'école élémentaire";
-  if (tries.length === 1) return `élèves de ${tries[0]}`;
-  return `élèves de ${tries.slice(0, -1).join(", de ")} et de ${tries[tries.length - 1]}`;
 }
 
 /**

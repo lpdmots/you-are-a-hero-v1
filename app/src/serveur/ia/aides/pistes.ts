@@ -1,6 +1,5 @@
-import { niveauEnMots } from "@/domaine/aides-ia";
 import { assembler, bloc, chaine, champs, liste, objet, textes, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, eleve, type Histoire } from "./contexte";
 
 /**
  * « Proposer des pistes », sous la remarque de reprise (F13.1, F07.3) : deux ou trois pistes
@@ -18,7 +17,7 @@ export const pistes: DefinitionAide<EntreePistes, Pistes> = {
   sortieMax: 600,
   systeme: (e) => assembler(
     REGLES_COMMUNES,
-    `L'enseignant demande à un élève (${niveauEnMots(e.histoire.niveaux)}) de reprendre sa scène. Tu proposes deux ou trois pistes de reprise que l'élève lira lui-même.
+    `L'enseignant demande à un ${eleve(e.histoire)} de reprendre sa scène. Tu proposes deux ou trois pistes de reprise que l'élève lira lui-même.
 - Tu tutoies l'élève, avec des mots qu'il comprend seul, une phrase courte par piste.
 - Chaque piste est concrète et dit quoi faire, en s'appuyant sur son texte (« Dis ce que ressent Lou quand la barque bouge »), pas un jugement (« Ton texte est trop court »).
 - Commence par ce qui compte le plus pour répondre à la consigne ; laisse l'orthographe de côté, sauf si elle empêche de comprendre.

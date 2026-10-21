@@ -15,12 +15,17 @@ import { MODELES, MODELE_DES_IMAGES, type IdModele } from "./modeles";
 
 export type Schema = { nom: string; schema: Record<string, unknown> };
 
+/** Une image jointe au message : le modèle la regarde (les mots-clés de la bibliothèque, F10.1) */
+export type Piece = { octets: Uint8Array; format: "jpeg" | "png" | "webp" };
+
 export type Requete = {
   modele: IdModele;
   /** Consigne fixe de l'aide, la même d'un appel à l'autre */
   systeme: string;
   /** Ce qui change : le contexte et la demande */
   message: string;
+  /** Des images à regarder, placées avant le message */
+  pieces?: Piece[];
   schema: Schema;
   /** Borne de la réponse elle-même, raisonnement non compris */
   sortieMax: number;
@@ -61,7 +66,20 @@ async function appelerAnthropic(r: Requete): Promise<Reponse> {
       model: m.id,
       max_tokens: m.effort ? r.sortieMax * 2 + 2000 : r.sortieMax,
       system: r.systeme,
-      messages: [{ role: "user", content: r.message }],
+      messages: [
+        {
+          role: "user",
+          content: r.pieces?.length
+            ? [
+                ...r.pieces.map((p) => ({
+                  type: "image" as const,
+                  source: { type: "base64" as const, media_type: `image/${p.format}` as "image/jpeg" | "image/png" | "image/webp", data: Buffer.from(p.octets).toString("base64") },
+                })),
+                { type: "text" as const, text: r.message },
+              ]
+            : r.message,
+        },
+      ],
       output_config: { format: { type: "json_schema", schema: r.schema.schema }, ...(m.effort ? { effort: m.effort } : {}) },
     },
     { signal: r.signal },
@@ -79,7 +97,17 @@ async function appelerOpenAI(r: Requete): Promise<Reponse> {
     {
       model: m.id,
       instructions: r.systeme,
-      input: r.message,
+      input: r.pieces?.length
+        ? [
+            {
+              role: "user",
+              content: [
+                ...r.pieces.map((p) => ({ type: "input_image" as const, detail: "low" as const, image_url: `data:image/${p.format};base64,${Buffer.from(p.octets).toString("base64")}` })),
+                { type: "input_text" as const, text: r.message },
+              ],
+            },
+          ]
+        : r.message,
       text: { format: { type: "json_schema", name: r.schema.nom, schema: r.schema.schema, strict: true } },
       ...(m.effort ? { reasoning: { effort: m.effort } } : {}),
       max_output_tokens: m.effort ? r.sortieMax * 2 + 2000 : r.sortieMax,

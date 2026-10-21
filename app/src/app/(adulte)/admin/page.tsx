@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { enEuros } from "@/domaine/offre";
 import { codeDuLien, exigerLePorteur, partageDuLien, tableau } from "@/serveur/administration";
+import { imagesARelire } from "@/serveur/bibliotheque";
 import { basculerLePaiement, chercherLePartage, retirerPartage } from "./actions";
 import styles from "./admin.module.css";
 
@@ -24,7 +25,7 @@ const FAITS: Record<string, string> = {
  */
 export default async function Administration({ searchParams }: { searchParams: Promise<{ partage?: string; fait?: string }> }) {
   await exigerLePorteur();
-  const [t, demande] = await Promise.all([tableau(), searchParams]);
+  const [t, demande, aRelire] = await Promise.all([tableau(), searchParams, imagesARelire()]);
   const signale = demande.partage && demande.partage !== "introuvable" && codeDuLien(demande.partage) ? await partageDuLien(demande.partage) : null;
   const fait = demande.fait ? FAITS[demande.fait] : null;
 
@@ -71,6 +72,14 @@ export default async function Administration({ searchParams }: { searchParams: P
             {t.paiementOuvert ? "Éteindre" : "Allumer"}
           </button>
         </form>
+      </section>
+
+      {/* La bibliothèque d'images (F10.1) : les images à relire, sur leur page */}
+      <section className={`${styles.bloc} ${styles.lienBloc}`} aria-labelledby="adm-bibliotheque">
+        <h2 id="adm-bibliotheque">Bibliothèque d’images</h2>
+        <Link className="btn" href="/admin/bibliotheque">
+          {aRelire.length ? `${aRelire.length} image${aRelire.length > 1 ? "s" : ""} à relire` : "Ouvrir"}
+        </Link>
       </section>
 
       <section className={styles.bloc} aria-labelledby="adm-partage">

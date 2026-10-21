@@ -42,7 +42,7 @@ async function entreeDuProjet(e: Enseignant, projetId: string): Promise<{ entree
   return {
     plan,
     entree: {
-      histoire: histoireDuProjet(projet, e.reglagesIa.niveaux),
+      histoire: histoireDuProjet(projet),
       carnet: carnetDe(preparation),
       plan: planPourLesAides(plan),
     },

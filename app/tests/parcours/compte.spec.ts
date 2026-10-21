@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { createClient } from "@supabase/supabase-js";
-import { adresseDEssai, aller, connecter, courrielRecu, creerClasse, creerCompte, nommer, ouvrirLaClasse, retenirCompte, sql, supprimerComptes, autrePoste, type Compte } from "./outils";
+import { adresseDEssai, aller, connecter, courrielRecu, creerClasse, creerCompte, nommer, ouvrirLaClasse, retenirCompte, sql, supprimerComptes, autrePoste, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 
 let compte: Compte;
 test.beforeEach(async () => {
@@ -88,7 +88,7 @@ test("F01-AC29 — mot de passe oublié : même phrase pour toute adresse, puis 
   await expect(page).toHaveURL(/\/projets$/);
 
   // L'ancien est refusé, le nouveau accepté
-  await page.getByRole("button", { name: new RegExp(compte.courriel.slice(0, 12)) }).click();
+  await ouvrirLeMenuDuCompte(page);
   await page.getByRole("button", { name: "Se déconnecter" }).click();
   await expect(page).toHaveURL(/\/entree$/);
   await connecter(page, compte);
@@ -230,9 +230,84 @@ test("F01-AC30, F01-AC13 — « Mon compte » : le nom affiché se lit à l'entr
   await expect(poste.page.getByText("Classe CM1-CM2 de Mme Laurent")).toBeVisible();
   await poste.contexte.close();
 
-  await page.getByRole("button", { name: "Mme Laurent" }).click();
+  await page.getByLabel("Votre compte : Mme Laurent").click();
   await page.getByRole("button", { name: "Se déconnecter" }).click();
   await expect(page).toHaveURL(/\/entree$/);
   await page.goto("/projets");
   await expect(page).toHaveURL(/\/entree$/);
+});
+
+test("F01-AC36 — changer de mot de passe depuis « Mon compte » : l'actuel d'abord ; l'ancien est ensuite refusé", async ({ page }) => {
+  await connecter(page, compte);
+  await page.waitForURL(/\/projets$/);
+  await aller(page, "/compte");
+  await page.getByRole("button", { name: "Changer de mot de passe" }).click();
+  await page.getByLabel("Mot de passe actuel").fill("pas-le-bon-mot-de-passe");
+  await page.getByLabel("Nouveau mot de passe").fill("un-nouveau-secret");
+  await page.getByRole("button", { name: "Enregistrer" }).click();
+  await expect(page.getByText("Ce n’est pas votre mot de passe actuel.")).toBeVisible();
+
+  await page.getByLabel("Mot de passe actuel").fill(compte.motDePasse);
+  await page.getByRole("button", { name: "Enregistrer" }).click();
+  await expect(page.getByText("Mot de passe enregistré")).toBeVisible();
+  // La session de ce poste reste ouverte
+  await aller(page, "/compte");
+  await expect(page.getByRole("heading", { level: 1, name: "Mon compte" })).toBeVisible();
+
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("button", { name: "Se déconnecter" }).click();
+  await expect(page).toHaveURL(/\/entree$/);
+  await connecter(page, compte);
+  await expect(page.getByRole("alert").filter({ hasText: "L’adresse ou le mot de passe n’est pas le bon." })).toBeVisible();
+  await connecter(page, compte, "un-nouveau-secret");
+  await expect(page).toHaveURL(/\/projets$/);
+});
+
+test("F01-AC35 — changer d'adresse depuis « Mon compte » : rien ne change avant les deux liens ; ensuite on entre avec la nouvelle", async ({ page }) => {
+  const nouvelle = adresseDEssai();
+  await connecter(page, compte);
+  await page.waitForURL(/\/projets$/);
+  await aller(page, "/compte");
+  await page.getByRole("button", { name: "Changer d’adresse" }).click();
+  await page.getByLabel("Nouvelle adresse").fill(compte.courriel);
+  await page.getByRole("button", { name: "Envoyer le lien" }).click();
+  await expect(page.getByText("C’est déjà votre adresse.")).toBeVisible();
+  await page.getByLabel("Nouvelle adresse").fill(nouvelle);
+  await page.getByRole("button", { name: "Envoyer le lien" }).click();
+  await expect(page.getByRole("status").filter({ hasText: `Un lien de confirmation est parti vers ${nouvelle}.` })).toBeVisible();
+  // Rien n'a encore changé
+  expect((await sql<{ email: string }>("select email from auth.users where id = $1", [compte.id]))[0].email).toBe(compte.courriel);
+
+  // Un lien à chaque adresse : le premier ouvert demande l'autre, le second change l'adresse
+  const ancien = await courrielRecu(compte.courriel, "Confirmer votre nouvelle adresse");
+  const neuf = await courrielRecu(nouvelle, "Confirmer votre nouvelle adresse");
+  await page.goto(ancien.liens[0]);
+  await expect(page.locator(".message")).toContainText("Lien accepté. Ouvrez aussi celui envoyé à l’autre adresse.");
+  await page.goto(neuf.liens[0]);
+  await expect(page.locator(".message")).toContainText("Votre nouvelle adresse est confirmée.");
+  await expect(page.getByText(nouvelle).first()).toBeVisible();
+  expect((await sql<{ email: string }>("select email from auth.users where id = $1", [compte.id]))[0].email).toBe(nouvelle);
+
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("button", { name: "Se déconnecter" }).click();
+  await expect(page).toHaveURL(/\/entree$/);
+  await connecter(page, { ...compte, courriel: nouvelle });
+  await expect(page).toHaveURL(/\/projets$/);
+});
+
+test("F01-AC36 — un compte ouvert par Google choisit un mot de passe sans en donner d'actuel ; ensuite, le changer demande l'actuel", async ({ page }) => {
+  await connecter(page, compte);
+  await page.waitForURL(/\/projets$/);
+  // Comme un compte créé par Google : aucune identité par adresse
+  await sql("delete from auth.identities where user_id = $1 and provider = 'email'", [compte.id]);
+  await aller(page, "/compte");
+  await expect(page.getByText("Aucun : vous entrez avec Google")).toBeVisible();
+  await page.getByRole("button", { name: "Choisir un mot de passe" }).click();
+  await expect(page.getByLabel("Mot de passe actuel")).toHaveCount(0);
+  await page.getByLabel("Mot de passe", { exact: true }).fill("un-nouveau-secret");
+  await page.getByRole("button", { name: "Enregistrer" }).click();
+  await expect(page.getByText("Mot de passe enregistré")).toBeVisible();
+  await aller(page, "/compte");
+  await page.getByRole("button", { name: "Changer de mot de passe" }).click();
+  await expect(page.getByLabel("Mot de passe actuel")).toBeVisible();
 });

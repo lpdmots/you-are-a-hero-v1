@@ -180,7 +180,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     await expect(reglage).toBeChecked();
     await page.getByText("Les élèves mettent en gras, en italique, soulignent").click();
     await expect(reglage).not.toBeChecked();
-    await expect(page.getByText("Les élèves n’ont plus les trois boutons.")).toBeVisible();
+    await expect(page.getByText("Enregistré")).toBeVisible();
 
     await alice.page.reload();
     // Il lui reste « Objets » (F04.2) : plus aucun bouton de mise en forme

@@ -42,7 +42,7 @@ async function appelFini(a: Adulte, issue: "reussi" | "echec" | "delai", coutUsd
 
 const demandeur = (a: Adulte, proposer = true) => ({ id: a.id, reglagesIa: { ...REGLAGES_IA_HABITUELS, proposer } });
 const entreeTitre = {
-  histoire: { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, niveaux: [] },
+  histoire: { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const },
   consigne: "Lou arrive sur le pont de brume.", debut: null, autresTitres: [],
 };
 const journal = (a: Adulte) =>

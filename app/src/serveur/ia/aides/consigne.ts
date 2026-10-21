@@ -1,5 +1,5 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, blocCarnet, lecteurs, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, eleve, presentation, type Carnet, type Histoire } from "./contexte";
 
 /**
  * Formuler une consigne (F13.2) d'après l'indication courte de l'adulte. En classe, toujours
@@ -36,7 +36,7 @@ export const consigne: DefinitionAide<EntreeConsigne, Consigne> = {
   systeme: (e) => e.histoire.mode === "classe"
     ? assembler(
       REGLES_COMMUNES,
-      `Tu transformes l'indication courte d'un enseignant en consigne d'écriture pour un élève (${lecteurs(e.histoire)}), qui écrira seul une scène du livre.
+      `Tu transformes l'indication courte d'un enseignant en consigne d'écriture pour un ${eleve(e.histoire)}, qui écrira seul une scène du livre.
 Modèle à suivre exactement :
 - « phrases » : une ou deux phrases qui tutoient l'élève, avec le vocabulaire d'un élève de cet âge. Elles situent la scène et disent ce qu'il faut raconter.
 - « points » : deux ou trois points de quelques mots chacun, ce qu'il faudra décrire (« sa lanterne et son visage », « ce que ressent Lou »), adaptés à cette scène et différents de ceux des scènes voisines quand c'est possible.

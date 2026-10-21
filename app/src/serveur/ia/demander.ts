@@ -79,7 +79,7 @@ async function obtenir<E, S>(def: DefinitionAide<E, S>, entree: E, modele: IdMod
     throw new Error("inatteignable");
   }
   const r = await appelerLeFournisseur({
-    modele, systeme: def.systeme(entree), message: def.message(entree), schema: def.schema, sortieMax: def.sortieMax, signal,
+    modele, systeme: def.systeme(entree), message: def.message(entree), pieces: def.pieces?.(entree), schema: def.schema, sortieMax: def.sortieMax, signal,
   });
   return { ...r, fournisseur: MODELES[modele].fournisseur };
 }
@@ -254,7 +254,7 @@ export async function essayerUneAide<E, S>(def: DefinitionAide<E, S>, entree: E,
   const debut = Date.now();
   try {
     const r = await appelerLeFournisseur({
-      modele, systeme: def.systeme(entree), message: def.message(entree), schema: def.schema, sortieMax: def.sortieMax, signal: arret.signal,
+      modele, systeme: def.systeme(entree), message: def.message(entree), pieces: def.pieces?.(entree), schema: def.schema, sortieMax: def.sortieMax, signal: arret.signal,
     });
     return { brut: r.json, valeur: def.lire(r.json, entree), jetonsEntree: r.jetonsEntree, jetonsSortie: r.jetonsSortie, cout: coutDe(modele, r.jetonsEntree, r.jetonsSortie), duree: Date.now() - debut, erreur: null };
   } catch (e) {

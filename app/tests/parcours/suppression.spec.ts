@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, connecter, creerClasse, inscrire, semerAttribution, semerPartie, semerProjet, sql, supprimerComptes } from "./outils";
+import { adultePret, aller, connecter, creerClasse, inscrire, semerAttribution, semerPartie, semerProjet, sql, supprimerComptes, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
  * Étape 9, lot 7 : supprimer pour de bon, vu par l'enseignant (F14-AC26 à AC28) : son compte,
@@ -13,8 +13,9 @@ test.afterEach(async () => {
 const DIALOGUE = (page: Page) => page.getByRole("alertdialog");
 
 async function ouvrirMonCompte(page: Page): Promise<void> {
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await expect(page.getByRole("heading", { name: "Mon compte" })).toBeVisible();
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("link", { name: "Mon compte" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Mon compte" })).toBeVisible();
 }
 
 test("F14-AC26 — supprimer son compte en retapant son adresse : une adresse mal tapée n'efface rien ; la bonne efface tout, et le compte ne s'ouvre plus", async ({ page, browser }) => {

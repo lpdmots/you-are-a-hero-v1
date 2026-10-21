@@ -29,7 +29,7 @@ export const estSorteDeCarte = (v: unknown): v is SorteDeCarte => v === "personn
 const INTROUVABLE = "Cette carte n’existe plus.";
 /** Sans fiche visuelle, l'image de référence ne se crée pas : la page le dit sous le bouton éteint */
 export const SANS_FICHE = "Décrivez d’abord son apparence.";
-const histoireDe = (e: Enseignant, p: Projet): Histoire => histoireDuProjet(p, e.reglagesIa.niveaux);
+const histoireDe = (e: Enseignant, p: Projet): Histoire => histoireDuProjet(p);
 
 export type ReponseReperage = { ok: true; personnages: PersonnageConnu[]; reste: string | null } | { ok: false; message: string };
 

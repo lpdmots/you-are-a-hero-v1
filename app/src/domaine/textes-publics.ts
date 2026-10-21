@@ -77,6 +77,7 @@ export const CONDITIONS: Document = {
       paragraphes: [
         "Les aides proposent ; vous décidez. Ce qu’elles écrivent peut se tromper : relisez avant de garder. Elles s’éteignent toutes depuis « Mon compte ».",
         "Ce qu’elles reçoivent part chez leurs fournisseurs, Anthropic et OpenAI, aux États-Unis ; jamais le prénom ni le nom d’un élève. La liste est dans la page « Confidentialité ». Chaque aide use des étoiles selon ce qu’elle coûte ; une aide qui échoue n’en use pas.",
+        "Une image créée par l’IA qui ne montre aucun personnage, un lieu ou un décor, peut rejoindre la bibliothèque d’images, où tout enseignant inscrit peut la choisir pour ses projets. L’éditeur relit chaque image avant de la publier. Vous pouvez le refuser depuis « Mon compte ». Une image publiée reste dans la bibliothèque, même si vous supprimez votre compte ; écrivez au créateur pour la retirer.",
       ],
     },
     {
@@ -116,7 +117,8 @@ const TRANSMIS = [
   "– la correction : les paragraphes de la scène, sa consigne, les noms des personnages et des objets de l’histoire ;",
   "– la consigne, les idées de choix, la préparation, les parties et les chapitres, les titres : ce que l’adulte a écrit pour préparer l’histoire, et les titres et consignes des scènes ;",
   "– l’écriture d’une scène vide : sa consigne, son titre et la fin des scènes qui y mènent ;",
-  "– les images : l’idée d’illustration, le texte de la scène, le style choisi, la description et le portrait des personnages.",
+  "– les images : l’idée d’illustration, le texte de la scène, le style choisi, la description et le portrait des personnages ;",
+  "– la bibliothèque d’images : la vignette d’une image acceptée par l’éditeur, pour en tirer les mots-clés.",
 ];
 
 export const CONFIDENTIALITE: Document = {

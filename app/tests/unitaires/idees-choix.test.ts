@@ -5,7 +5,7 @@ import { ideesChoix } from "@/serveur/ia/aides/idees-choix";
 /** Étape 8, lot 4 : les idées de choix (F13.3), ce qui se vérifie sans base ni navigateur. */
 
 const entree = {
-  histoire: { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, niveaux: [] },
+  histoire: { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const },
   chapitre: { titre: "La lisière" },
   scene: { titre: "Le pont", consigne: null, paragraphes: ["Lou avance."] },
   scenes: [{ ref: "S001", titre: "Le gué" }],

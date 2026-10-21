@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { createHmac } from "node:crypto";
-import { adultePret, aller, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
+import { adultePret, aller, semerPartie, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
@@ -35,8 +35,9 @@ async function leMarais(page: Page, n = 40): Promise<{ compte: Compte; base: Sup
 }
 
 async function ouvrirMonCompte(page: Page): Promise<void> {
-  await page.locator("header button[aria-haspopup='dialog']").first().click();
-  await expect(page.getByRole("heading", { name: "Mon compte" })).toBeVisible();
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("link", { name: "Mon compte" }).click();
+  await expect(page.getByRole("heading", { level: 1, name: "Mon compte" })).toBeVisible();
 }
 
 test("F14-AC18, AC21 — acheter le pass depuis le dialogue : la page de paiement porte le prix des réglages et exige la case ; payé, le projet a son pass et ses étoiles", async ({ page }) => {
@@ -98,10 +99,9 @@ test("F14-AC19 — recharger depuis « Mon compte » ; l'avis de Stripe reçu de
   // Puis le retour par la page de paiement : rien de plus
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
   await page.getByRole("button", { name: "Payer" }).click();
-  await expect(page).toHaveURL(/\/projets/);
+  await expect(page).toHaveURL(/\/compte/);
   await expect(page.locator(".message")).toContainText("Vos étoiles sont arrivées.");
   expect(await solde(m.compte)).toBe(avantSolde + 100);
-  await ouvrirMonCompte(page);
   await expect(page.getByText(`Il vous reste ${avantSolde + 100} ✦ pour les aides.`)).toBeVisible();
 });
 

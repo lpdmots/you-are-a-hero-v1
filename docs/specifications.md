@@ -199,8 +199,17 @@ jusque-là :
   console de Supabase, avec son adresse et son mot de passe.
   L'inscription d'autres enseignants est décidée le 20 octobre 2026 en
   [F14](#f14--ouverture-offre-et-exploitation) (F14-AC01 à AC04).
-- **« Mon compte ».** Un panneau ouvert depuis le nom de l'adulte, dans la
-  barre du haut : le nom affiché aux élèves de F01.1 et « Se déconnecter ».
+- **« Mon compte ».** Le nom de l'adulte, dans la barre du haut, ouvre un
+  menu court : son nom et son adresse, son solde d'étoiles (F14),
+  « Mon compte », « Administration » pour le porteur seul, « Se
+  déconnecter ». « Mon compte » est une page : le nom affiché aux élèves de
+  F01.1, les étoiles et « Recharger » (F14), les « Aides IA » (F13), en
+  deux parties, « Textes » et « Images », la « Connexion » (adresse et mot de
+  passe, chacun derrière « Changer », demandé par le porteur le même jour),
+  puis « Écrire au créateur » et « Supprimer mon compte ». **Révisé le
+  21 octobre 2026 à la demande du porteur :** d'abord un panneau, devenu
+  illisible avec les réglages des étapes 8 et 9 ; une recharge payée revient
+  sur cette page, qui dit « Vos étoiles sont arrivées. ».
 
 - **F01-AC27 — Entrée de l'enseignant :** étant donné un compte existant,
   lorsque l'adulte saisit son adresse et son mot de passe, alors il arrive
@@ -221,6 +230,21 @@ jusque-là :
   l'entrée des élèves dit « Classe CM1-CM2 de Mme Laurent » ; lorsqu'elle
   choisit « Se déconnecter », alors « Mes projets » redemande son adresse et
   son mot de passe sur ce poste.
+- **F01-AC35 — Changer d'adresse (21 octobre 2026) :** étant donné Mme
+  Laurent connectée, lorsqu'elle écrit une nouvelle adresse dans « Mon
+  compte », alors un lien part vers la nouvelle adresse, et un autre vers
+  l'actuelle quand le fournisseur demande les deux confirmations ; rien ne
+  change avant ; le premier lien ouvert dit « Lien accepté. Ouvrez aussi
+  celui envoyé à l'autre adresse. », le second « Votre nouvelle adresse est
+  confirmée. », et elle entre ensuite avec la nouvelle ; son adresse
+  actuelle ou une adresse qui a déjà un compte sont refusées.
+- **F01-AC36 — Changer de mot de passe (21 octobre 2026) :** étant donné Mme
+  Laurent connectée, lorsqu'elle change son mot de passe dans « Mon
+  compte », alors l'actuel est demandé et vérifié, le nouveau compte huit
+  caractères au moins, la session de ce poste reste ouverte et l'ancien
+  mot de passe est ensuite refusé ; un compte ouvert par Google, sans mot de
+  passe, en choisit un sans en donner d'actuel, puis le change comme les
+  autres.
 
 **Décision du porteur le 9 octobre 2026 — connexion par Google, dès
 maintenant.** L'adulte entre aussi par « Continuer avec Google ». La
@@ -6962,8 +6986,10 @@ en donne deux, à choisir) et pour l'image d'une scène (F10.2). Un réglage des
 « Aides IA » de « Mon compte » (F13), « Créer l'image des parties et chapitres
 ajoutés par l'IA », allumé par défaut, le porteur préférant l'ajout automatique ;
 éteint, on crée l'image soi-même depuis « Choisir une image ». Quand il est allumé,
-une mention discrète le rappelle là où l'on ajoute (« ✦ Image créée à l'ajout ·
-Régler »), avec un lien vers le réglage : l'image coûte plus qu'un texte et compte
+une mention discrète le rappelle là où l'on ajoute (« ✦ Image créée à l'ajout »),
+avec l'interrupteur du réglage, qui s'éteint sur place sans quitter le chapitre et reste
+visible pour se rallumer (21 octobre 2026 ; d'abord un lien « Régler » vers « Mon
+compte ») : l'image coûte plus qu'un texte et compte
 dans le plafond des images du jour. À construire avec les images créées (étape 8,
 lot 8) ; un ajout manuel ne crée pas d'image.
 
@@ -7051,6 +7077,51 @@ construisent.
   génère des visuels de lieux variés, dans le style du
   [design](design.md), d'après des prompts ; plus elle est fournie, moins un
   visuel se répète.
+- **Bibliothèque d'images, décidée par le porteur le 21 octobre 2026,** sur son
+  idée et la recommandation de relire chaque image : les images créées par l'IA
+  qui ne montrent aucun personnage rejoignent les visuels proposés à tous les
+  adultes, après la relecture du porteur.
+  - **Candidates :** une image gardée (posée d'office ou gardée par l'adulte),
+    d'image de repérage (un lieu et son ambiance), ou d'image de scène demandée
+    sans aucun badge, héros absent des images, non détourée ; jamais un portrait
+    ni l'image d'un objet. Les images créées avant le 21 octobre ne sont
+    candidates que pour le repérage.
+  - **Accord de l'adulte :** « Bibliothèque d'images » dans « Mon compte »
+    (partie « Images » des aides), allumé par défaut, décision du porteur ;
+    éteint, aucune de ses images n'est proposée. Les conditions d'utilisation
+    le disent ; une image publiée reste dans la bibliothèque si le compte est
+    supprimé (relecture juridique reportée par le porteur).
+  - **Relecture :** une page « Bibliothèque d'images » de l'administration, où
+    mène une ligne de la page principale (« 15 images à relire ») : les images
+    candidates, les plus récentes d'abord, agrandissables, chacune avec
+    « Accepter » et « Refuser » ; puis les images acceptées, avec leurs
+    mots-clés en français et en anglais, modifiables, et « Retirer de la
+    bibliothèque ». Acceptée, l'image est copiée hors des dossiers du compte
+    d'origine, et l'IA lit sa vignette pour donner ses mots-clés (aucun texte de
+    l'histoire ne part) ; sans réponse, elle entre sans mots-clés, à écrire.
+    Refusée, elle n'est plus proposée.
+  - **Choisir :** dans « Choisir une image », un champ « Chercher : forêt, mer,
+    château… » au-dessus des visuels proposés filtre les visuels livrés par
+    leur nom et les images de la bibliothèque par leurs mots-clés, français ou
+    anglais, sans tenir compte des accents ; les images de la bibliothèque
+    suivent les visuels livrés. Prise, l'image est copiée parmi les images du
+    projet comme une image importée et devient son repère ; elle ne compte pas
+    dans les limites du livre gratuit. À la création d'un projet, seuls les
+    visuels livrés sont proposés (le projet n'existe pas encore).
+  - Gratuite, sans étoile. Restent pour plus tard : la bibliothèque dans
+    « Ajouter une image » d'une scène, les mots-clés des visuels livrés.
+  - **F10-AC53 — Relire :** étant donné l'image de repérage de « La lisière »
+    gardée par M. Bernard, lorsque le porteur l'accepte, alors elle entre dans
+    la bibliothèque avec les mots-clés lus par l'IA, qu'il peut changer ; une
+    image refusée ne lui est plus proposée.
+  - **F10-AC54 — Choisir dans la bibliothèque :** étant donné une image de la
+    bibliothèque aux mots-clés « étang, roseaux », lorsque Mme Laurent écrit
+    « roseau » dans « Choisir une image » de son projet, alors l'image paraît,
+    et un visuel livré comme « Forêt » non ; choisie, elle est copiée dans le
+    projet et devient son repère.
+  - **F10-AC55 — Ce qui n'est jamais proposé :** une image de scène où figure
+    un badge, un portrait, ou toute image d'un adulte qui a éteint
+    « Bibliothèque d'images », n'est jamais montrée au porteur.
 - **Hors de cette étape :** supprimer une image du projet ; réutiliser une
   image d'un projet à l'autre. À partir de l'étape 3, « Images du projet »
   montre aussi les illustrations importées dans les scènes.
@@ -7380,7 +7451,8 @@ choisie entre-temps n'est pas remplacée.
 - **F10-AC50 — Image créée à l'ajout :** étant donné le réglage allumé, lorsque l'adulte
   ajoute un chapitre (ou une partie) proposé par l'IA, alors une seule image d'après son
   résumé lui est créée, quel que soit « Images par création », avec un signe d'attente sur la
-  carte ; la mention « ✦ Image créée à l'ajout · Régler » le dit, « Régler » ouvre le réglage ;
+  carte ; la mention « ✦ Image créée à l'ajout » le dit, et son interrupteur éteint le
+  réglage sur place ;
   une image choisie entre-temps n'est pas remplacée.
 - **F10-AC51 — Réglage éteint :** étant donné « Créer l'image des parties et chapitres ajoutés
   par l'IA » éteint, ou les aides éteintes, lorsque l'adulte ajoute un chapitre proposé, alors
@@ -9985,8 +10057,9 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   défaut (F13.1) ; « Proposer les aides IA », allumé par défaut, qui, éteint,
   retire tous les boutons d'IA de l'application (projection devant la classe,
   travail sans IA) ; le niveau des élèves, du CE1 au CM2, plusieurs cases pour
-  un cours double, qui règle le vocabulaire des consignes et des pistes ;
-  « Images par création », une ou deux, et « Qualité des images »,
+  un cours double, qui règle le vocabulaire des consignes et des pistes
+  (remplacé le 21 octobre 2026 par « Âge des lecteurs », réglé par projet,
+  ci-dessous) ; « Images par création », une ou deux, et « Qualité des images »,
   automatique, normale ou haute (F10.2), ajoutés le 17 octobre 2026,
   « automatique » le 18.
 - **« Pour l'IA, notre façon d'écrire »,** demande du porteur du 18 octobre 2026,
@@ -10000,6 +10073,28 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   - **F13-AC28 — Façon d'écrire :** étant donné « vous, au présent » écrit dans les
     réglages du projet, lorsque l'adulte demande une aide, alors elle reçoit cette
     ligne comme la façon d'écrire voulue, qui prime ; vide, rien ne s'ajoute.
+- **« Âge des lecteurs »,** décidé par le porteur le 21 octobre 2026 sur
+  recommandation, à la place du « Niveau des élèves » de « Mon compte » : les
+  noms de classes changent d'un pays à l'autre (France, Canada…), un livre
+  personnel peut s'adresser à des adultes qui veulent un niveau relevé, et un
+  même compte tient un livre de classe et un livre à soi. Un seul choix par
+  projet, dans ses réglages, affiché quand les aides sont proposées :
+  « 6 à 8 ans », « 8 à 10 ans » (par défaut), « 10 à 12 ans », « 12 à 15 ans »,
+  « Adultes » ; un cours double prend la tranche qui le couvre. Toutes les
+  aides le reçoivent dans la présentation de l'histoire, comme public du livre ;
+  dans un projet de classe, il décrit aussi les élèves qui écrivent (correction,
+  pistes, consignes, « ✦ Écrire »). La règle commune « rien d'inadapté » suit ce
+  public : pour des enfants, rien de violent ni d'effrayant au-delà d'un frisson
+  d'aventure. À la mise en place, chaque projet reçoit la tranche la plus proche
+  des niveaux cochés de son adulte, « 8 à 10 ans » sans niveau coché. Écartés :
+  un « niveau de langage » (simple, courant, soutenu), plus abstrait que l'âge ;
+  les classes françaises doublées d'un âge, deux réglages pour une idée.
+  - **F13-AC29 — Âge des lecteurs :** étant donné « La lanterne du passeur »,
+    projet de classe réglé sur « 10 à 12 ans », lorsque l'adulte demande une
+    correction, alors l'aide lit un texte « écrit par un élève de 10 à 12 ans » ;
+    étant donné « Le grand voyage », projet personnel réglé sur « Adultes »,
+    alors les aides écrivent pour des adultes, et non plus pour des enfants ;
+    un projet neuf est réglé sur « 8 à 10 ans ».
 - **Orienter l'IA,** demande du porteur du 17 octobre 2026 : partout où l'IA
   propose plusieurs éléments (idées de choix, de parties, questions et idées de
   la préparation), un champ facultatif permet de l'orienter. Si ce texte

@@ -14,8 +14,8 @@ import type { EntreeIdeesChoix } from "@/serveur/ia/aides/idees-choix";
 import type { Carnet, Histoire, Plan } from "@/serveur/ia/aides/contexte";
 import type { Cas } from "./jeu";
 
-const classe: Histoire = { titre: "La ville aux horloges arrêtées", mode: "classe", recit: "choix", niveaux: ["CM1", "CM2"] };
-const ce2: Histoire = { ...classe, niveaux: ["CE2"] };
+const classe: Histoire = { titre: "La ville aux horloges arrêtées", mode: "classe", recit: "choix", age: "10-12" };
+const ce2: Histoire = { ...classe, age: "8-10" };
 const ecriture: Histoire = { ...classe, ecriture: "à la troisième personne, au passé simple" };
 
 const carnet: Carnet = {

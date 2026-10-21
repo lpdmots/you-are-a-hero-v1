@@ -927,6 +927,46 @@
   align-items: center;
   gap: 14px;
 }
+/* Une ligne de réglage : son nom ou son interrupteur, puis son « i » (21 octobre 2026) */
+.reg-ligne {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+.reg-ligne .bulle__i {
+  width: 26px;
+  height: 26px;
+}
+.reg-ligne--espace {
+  margin-top: 8px;
+}
+.reg-nom {
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+/* Le style choisi, replié : son exemple, son nom et « Changer » */
+.reg-style__exemple {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 72px;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  color: var(--graphite-2);
+}
+.reg-style__exemple img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.reg-style__nom {
+  font-size: var(--t-s);
+  font-weight: 700;
+}
 .reg-image__vue {
   position: relative;
   flex: none;
@@ -986,6 +1026,11 @@
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px;
   width: 100%;
+}
+/* Chercher un visuel, au-dessus des vignettes (bibliothèque d'images, 21 octobre 2026) */
+.ci-chercher {
+  width: 100%;
+  margin-bottom: 4px;
 }
 .vignette-choix {
   position: relative;
@@ -2400,8 +2445,25 @@ a.noeud__ailleurs {
   height: 13px;
   color: var(--ia);
 }
-.mention-ajout .lien {
+/* L'interrupteur de la mention, réduit à sa taille ; toute la ligne se clique */
+.inter--petit {
+  min-height: 32px;
+  gap: 6px;
   font-size: inherit;
+  font-weight: 600;
+}
+.inter--petit .inter__piste {
+  width: 28px;
+  height: 16px;
+}
+.inter--petit .inter__piste::after {
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+}
+.inter--petit input:checked + .inter__piste::after {
+  transform: translateX(12px);
 }
 
 

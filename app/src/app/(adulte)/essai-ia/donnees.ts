@@ -2,7 +2,7 @@ import "server-only";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { notFound } from "next/navigation";
-import { niveauEnMots } from "@/domaine/aides-ia";
+import { eleveEnMots } from "@/domaine/aides-ia";
 import { difference, type Morceau } from "@/domaine/difference";
 import { MODELES, type IdModele } from "@/serveur/ia/modeles";
 import { FICHIER_JUGEMENTS, FICHIER_RESULTATS, type Jugement, type Jugements, type Note, type Resultats } from "../../../../scripts/essai-ia/commun";
@@ -102,6 +102,8 @@ function affichage(cas: Cas, valeur: unknown, erreur: string | null): Affichage 
       return { sorte: "texte", texte: String(v.fiche) };
     case "description-image":
       return { sorte: "texte", texte: String(v.description) };
+    case "mots-cles":
+      return { sorte: "texte", texte: `${(v.mots as string[]).join(", ")}\n${(v.motsEn as string[]).join(", ")}` };
   }
 }
 
@@ -115,7 +117,7 @@ function demande(cas: Cas): CasAffiche["demande"] {
   switch (cas.aide) {
     case "correction":
     case "pistes":
-      ajouter("Écrit par", e.histoire.mode === "personnel" ? "un adulte, pour son livre" : niveauEnMots(e.histoire.niveaux).replace(/^élèves/, "des élèves"));
+      ajouter("Écrit par", e.histoire.mode === "personnel" ? "un adulte, pour son livre" : `des ${eleveEnMots(e.histoire.age, true)}`);
       ajouter(e.histoire.mode === "personnel" ? "Texte" : "Texte de l'élève", e.paragraphes.join("\n"));
       ajouter("Consigne", e.consigne ?? "Aucune.");
       break;
@@ -164,6 +166,9 @@ function demande(cas: Cas): CasAffiche["demande"] {
       ajouter("Idée", e.idee || "Aucune : d'après la scène.");
       ajouter("Texte de la scène", e.paragraphes.join("\n"));
       ajouter("Retenus", e.badges.map((b: { nom: string }) => b.nom).join(", "));
+      break;
+    case "mots-cles":
+      ajouter("Image", "Une vignette jointe.");
       break;
   }
   return l;

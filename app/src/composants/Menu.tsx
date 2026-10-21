@@ -10,7 +10,7 @@ import { Icone } from "./Icone";
  * le bouton, ou au-dessus quand la fenêtre n'a pas la place dessous.
  */
 export function Menu({
-  libelle, discret, bouton, agauche, tampon, fixe, children,
+  libelle, discret, bouton, agauche, tampon, fixe, className, children,
 }: {
   /** Ce que le menu commande, pour qui ne voit pas l'écran : « Autres commandes du chapitre La lisière » */
   libelle: string;
@@ -23,6 +23,8 @@ export function Menu({
   tampon?: string;
   /** Le menu est dans un cadre qui coupe ce qui dépasse (la copie) : sa liste en sort */
   fixe?: boolean;
+  /** Une classe de plus sur le menu, pour un bouton qui a sa propre forme (le nom de l'adulte) */
+  className?: string;
   children: (fermer: () => void) => ReactNode;
 }) {
   const [ouvert, setOuvert] = useState(false);
@@ -55,7 +57,7 @@ export function Menu({
 
   return (
     <details
-      className={`menu${discret ? " menu--discret" : ""}${tampon ? " menu--tampon" : bouton ? " menu--mots" : ""}`}
+      className={`menu${discret ? " menu--discret" : ""}${tampon ? " menu--tampon" : bouton ? " menu--mots" : ""}${className ? ` ${className}` : ""}`}
       ref={ref}
       open={ouvert}
       onToggle={(e) => setOuvert(e.currentTarget.open)}

@@ -1,0 +1,213 @@
+/* « Mon compte » en page (21 octobre 2026), dans le système « Cahiers d'aventure » : une colonne
+   étroite sur le bureau, une feuille par sujet, une ligne par réglage — son nom à gauche, sa commande
+   à droite, l'aide dans un « i » — et, au pied, hors des feuilles, le contact et la suppression. */
+.page {
+  max-width: 800px;
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+.tete {
+  display: block;
+  padding-bottom: 6px;
+}
+/* L'enregistrement, au bout de la ligne changée : « Enregistré » s'efface de lui-même */
+.etat {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.fait {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--e-valide);
+  animation: s-efface 0.4s var(--ease) 2.5s forwards;
+}
+@keyframes s-efface {
+  to {
+    opacity: 0;
+  }
+}
+.attente {
+  color: var(--graphite-2);
+}
+.echec {
+  color: var(--e-reprendre);
+}
+.echec :global(.lien) {
+  font-size: inherit;
+}
+
+.bloc {
+  padding: 20px 24px 8px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.bloc h2 {
+  font-size: var(--t-l);
+  font-weight: 800;
+  letter-spacing: -0.005em;
+}
+.bloc > h2 {
+  margin-bottom: 4px;
+}
+/* Le titre d'une feuille, et ce qui le suit sur sa ligne : un « i », ou l'interrupteur des aides */
+.titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  min-height: 34px;
+}
+.interTitre {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  margin-left: auto;
+}
+.note {
+  margin: 4px 0 12px;
+  max-width: 60ch;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+
+/* « Textes » et « Images » dans les aides : des intertitres discrets, sans trait */
+.sousTitre {
+  margin: 14px 0 0;
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+
+/* Une ligne par réglage, séparées d'un trait */
+.lignes {
+  display: grid;
+}
+.ligne {
+  display: grid;
+  min-height: 70px;
+  grid-template-columns: minmax(0, 15.5rem) minmax(0, 1fr);
+  align-items: center;
+  gap: 8px 24px;
+  padding: 14px 0;
+  border-top: 1px solid var(--trait);
+}
+/* Sous le titre d'une feuille, pas de trait : la première ligne commence la feuille */
+.lignes > .ligne:first-child {
+  border-top: 0;
+}
+.nomReglage {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite);
+}
+.nomReglage :global(.bulle__i),
+.titre :global(.bulle__i) {
+  width: 26px;
+  height: 26px;
+  margin-left: 4px;
+}
+.nomReglage :global(.bulle__i):focus-visible,
+.titre :global(.bulle__i):focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+/* La commande, puis son état sur la même ligne */
+.commande {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  min-width: 0;
+}
+
+.champ {
+  flex: 1 1 260px;
+  max-width: 340px;
+}
+.apercu {
+  flex-basis: 100%;
+  margin-top: -2px;
+  color: var(--graphite-2);
+  font-size: var(--t-s);
+}
+
+/* Le solde : le nombre en canard foncé, « Recharger » à sa droite */
+.solde {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 20px;
+  padding: 10px 0 16px;
+}
+.solde strong {
+  color: var(--ia-fonce);
+  font-size: var(--t-xl);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums lining-nums;
+}
+
+/* « Connexion » : la valeur, « Changer », puis un petit formulaire à la place */
+.valeur {
+  font-size: var(--t-s);
+  overflow-wrap: anywhere;
+}
+.attenteAdresse {
+  flex-basis: 100%;
+  max-width: 60ch;
+  color: var(--e-valider);
+  font-size: var(--t-s);
+}
+.formulaire {
+  display: grid;
+  gap: 10px;
+  max-width: 340px;
+}
+.champLegende {
+  display: grid;
+  gap: 4px;
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.boutons {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Au pied, hors des feuilles : le contact, puis la suppression, à l'écart */
+.pied {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 24px;
+  padding: 6px 4px 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+
+@media (max-width: 640px) {
+  .bloc {
+    padding: 16px 16px 6px;
+  }
+  .ligne {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .champ {
+    max-width: none;
+  }
+}

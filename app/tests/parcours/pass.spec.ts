@@ -85,8 +85,7 @@ test("F14-AC13, AC21 — allumé, à 40 scènes : « Ajouter une scène » ouvre
   await ouvrirReglages(page, m.projet);
   await expect(page.getByRole("heading", { name: "Pass du livre" })).toBeVisible();
   await expect(page.getByText(/40 scènes sur 40 · 0 image sur 10/)).toBeVisible();
-  await expect(page.getByText("25 € une fois, pour ce livre")).toBeVisible();
-  await expect(page.getByRole("button", { name: "Acheter le pass", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Acheter le pass · 25 €" })).toBeVisible();
 });
 
 test("F14-AC14 — allumé, livre à 10 images : « Image » ouvre le dialogue du pass, sans fiche ; une scène sans image dans un livre à 9 images en pose une", async ({ page }) => {
@@ -128,7 +127,7 @@ test("F14-AC16 — le pass reçu : plus de dialogue, « Pass du livre » dans le
   await expect(DIALOGUE(page)).toHaveCount(0);
   await ouvrirReglages(page, m.projet);
   await expect(page.getByRole("heading", { name: "Pass du livre" })).toBeVisible();
-  await expect(page.getByText(/^Reçu le \d+ \w+ 2026$/)).toBeVisible();
+  await expect(page.getByText(/^Reçu le \d+ \w+ 2026 : scènes et images sans limite pour ce livre\.$/)).toBeVisible();
   await expect(page.getByRole("button", { name: /Acheter le pass/ })).toHaveCount(0);
   await page.keyboard.press("Escape");
   await expect(page.getByText("1 partie · 1 chapitre · 41 scènes", { exact: true })).toBeVisible();

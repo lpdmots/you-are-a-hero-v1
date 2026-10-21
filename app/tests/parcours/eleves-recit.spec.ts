@@ -152,7 +152,8 @@ test("F06-AC48, F06-AC49 — la lecture ouverte laisse lire les autres chapitres
   await aller(page, `/projet/${s.projet}/plan`);
   await page.getByRole("button", { name: "Réglages du projet" }).click();
   await page.getByText("Les élèves lisent toute l’histoire").click();
-  await expect(page.getByText("Chaque élève lit les scènes de tous les chapitres. Il n’écrit que dans les siens.")).toBeVisible();
+  await expect(page.getByRole("switch", { name: "Les élèves lisent toute l’histoire" })).toBeChecked();
+  await expect(page.getByText("Enregistré")).toBeVisible();
 
   await bilal.page.reload();
   await bilal.page.getByRole("link", { name: "Ouvrir Le sanctuaire" }).click();
@@ -165,7 +166,8 @@ test("F06-AC48, F06-AC49 — la lecture ouverte laisse lire les autres chapitres
   await expect(bilal.page.getByLabel(/Autres commandes/)).toHaveCount(0);
 
   await page.getByText("Les élèves lisent toute l’histoire").click();
-  await expect(page.getByText(/chaque élève lit les scènes de ses chapitres seulement, pour garder la surprise/)).toBeVisible();
+  await expect(page.getByRole("switch", { name: "Les élèves lisent toute l’histoire" })).not.toBeChecked();
+  await expect(page.getByText("Enregistrement…")).toHaveCount(0);
   const reponse = await bilal.page.reload();
   expect(reponse?.status()).toBe(404);
   await bilal.contexte.close();

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Agrandissable } from "@/composants/Agrandissable";
+import { Bulle } from "@/composants/Bulle";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { useAidesIa } from "@/composants/AidesIa";
 import { Icone } from "@/composants/Icone";
@@ -9,6 +10,7 @@ import { SuiviDesImages } from "@/composants/ImagesALAjout";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { LivreGratuit } from "@/composants/OffreDuPass";
+import { AGES, NOMS_DES_AGES, type AgeDesLecteurs } from "@/domaine/aides-ia";
 import type { Limites, Offre } from "@/domaine/offre";
 import { exempleDuStyle, nomDeFichier, nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
 import { adresseRepereEnGrand } from "@/domaine/visuels";
@@ -17,11 +19,12 @@ import { choisirRepere, reglerProjet } from "../../actions-recit";
 type ProjetRegle = {
   id: string; titre: string; deClasse: boolean; lectureOuverte: boolean; miseEnFormeEleves: boolean;
   imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null;
-  styleImages: Style; styleAutre: string; herosAbsent: boolean; consigneEcriture: string;
+  styleImages: Style; styleAutre: string; herosAbsent: boolean; consigneEcriture: string; ageDesLecteurs: AgeDesLecteurs;
 };
 
 type Reglage = {
   titre?: string; lectureOuverte?: boolean; miseEnFormeEleves?: boolean; styleImages?: Style; styleAutre?: string; herosAbsent?: boolean; consigneEcriture?: string;
+  ageDesLecteurs?: AgeDesLecteurs;
 };
 
 /**
@@ -38,6 +41,9 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
   const [style, setStyle] = useState<Style>(projet.styleImages);
   const [styleAutre, setStyleAutre] = useState(projet.styleAutre);
   const [ecriture, setEcriture] = useState(projet.consigneEcriture);
+  const [age, setAge] = useState(projet.ageDesLecteurs);
+  // Le style des images, replié sur celui choisi : la grille des neuf ne s'ouvre qu'à la demande
+  const [stylesOuverts, setStylesOuverts] = useState(false);
   const { proposer } = useAidesIa();
 
   const regler = async (valeurs: Reglage) => {
@@ -70,6 +76,7 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
           setStyle(projet.styleImages);
           setStyleAutre(projet.styleAutre);
           setEcriture(projet.consigneEcriture);
+          setStylesOuverts(false);
           setEnregistre(false);
           setOuvert("reglages");
         }}
@@ -79,6 +86,7 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
       </button>
       {ouvert === "reglages" ? (
         <Panneau titre="Réglages du projet" sous={projet.titre} onFermer={() => setOuvert(null)} pied={<PiedFermer enregistre={enregistre} enCours={enCours} onFermer={() => setOuvert(null)} />}>
+          {/* Le projet lui-même : son titre et son image, puis son pass quand la vente est ouverte */}
           <section>
             <h3>
               <label htmlFor="projet-titre">Titre</label>
@@ -124,49 +132,82 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
           </section>
           {/* Le livre gratuit et son pass, quand « Paiement ouvert » est allumé (F14) */}
           {livre ? <LivreGratuit projetId={projet.id} titre={projet.titre} offre={livre.offre} limites={livre.limites} /> : null}
+
+          {/* Les élèves : ce qu'ils lisent et leur mise en forme ; l'explication dans un « i » (21 octobre 2026) */}
           {projet.deClasse ? (
             <section>
-              <h3>Lecture des élèves</h3>
-              <label className="inter">
-                <input type="checkbox" role="switch" checked={projet.lectureOuverte} disabled={enCours} onChange={(e) => void regler({ lectureOuverte: e.target.checked })} />
-                <span className="inter__piste" aria-hidden="true" />
-                <span>Les élèves lisent toute l’histoire</span>
-              </label>
-              <p>
-                {projet.lectureOuverte
-                  ? "Chaque élève lit les scènes de tous les chapitres. Il n’écrit que dans les siens."
-                  : "Tant que le livre n’est pas terminé, chaque élève lit les scènes de ses chapitres seulement, pour garder la surprise."}
-              </p>
+              <h3>Les élèves</h3>
+              <span className="reg-ligne">
+                <label className="inter">
+                  <input type="checkbox" role="switch" checked={projet.lectureOuverte} disabled={enCours} onChange={(e) => void regler({ lectureOuverte: e.target.checked })} />
+                  <span className="inter__piste" aria-hidden="true" />
+                  <span>Les élèves lisent toute l’histoire</span>
+                </label>
+                <Bulle question="Que lisent les élèves ?">
+                  Allumé, chaque élève lit les scènes de tous les chapitres, et n’écrit que dans les siens. Éteint, tant que le livre n’est
+                  pas terminé, il ne lit que les scènes de ses chapitres, pour garder la surprise.
+                </Bulle>
+              </span>
+              <span className="reg-ligne">
+                <label className="inter">
+                  <input type="checkbox" role="switch" checked={projet.miseEnFormeEleves} disabled={enCours} onChange={(e) => void regler({ miseEnFormeEleves: e.target.checked })} />
+                  <span className="inter__piste" aria-hidden="true" />
+                  <span>Les élèves mettent en gras, en italique, soulignent</span>
+                </label>
+                <Bulle question="Et si on l’éteint ?">
+                  Les élèves n’ont plus les trois boutons dans leurs scènes. Ce qui est déjà mis en forme le reste ; vous pouvez le retirer
+                  vous-même.
+                </Bulle>
+              </span>
             </section>
           ) : null}
-          {projet.deClasse ? (
-            <section>
-              <h3>Mise en forme des élèves</h3>
-              <label className="inter">
-                <input type="checkbox" role="switch" checked={projet.miseEnFormeEleves} disabled={enCours} onChange={(e) => void regler({ miseEnFormeEleves: e.target.checked })} />
-                <span className="inter__piste" aria-hidden="true" />
-                <span>Les élèves mettent en gras, en italique, soulignent</span>
-              </label>
-              <p>
-                {projet.miseEnFormeEleves
-                  ? "Les élèves ont les trois boutons dans leurs scènes."
-                  : "Les élèves n’ont plus les trois boutons. Ce qui est déjà mis en forme le reste ; vous pouvez le retirer vous-même."}
-              </p>
-            </section>
-          ) : null}
-          {/* Une ligne pour les aides qui écrivent : « vous, au présent » (18 octobre 2026) */}
+
+          {/* Pour l'IA : le public des aides et la façon d'écrire du livre (F13-AC28, AC29) */}
           {proposer ? (
             <section>
-              <h3>
-                <label htmlFor="projet-ecriture">Pour l’IA, notre façon d’écrire</label>
-              </h3>
+              <h3>Pour l’IA</h3>
+              <span className="reg-ligne">
+                <span className="reg-nom" id="projet-age">
+                  Âge des lecteurs
+                </span>
+                <Bulle question="À quoi sert l’âge ?">
+                  L’IA écrit et corrige pour des lecteurs de cet âge.
+                  {projet.deClasse ? " C’est aussi l’âge des élèves qui écrivent." : ""}
+                </Bulle>
+              </span>
+              <div className="bascule" role="group" aria-labelledby="projet-age">
+                {AGES.map((a) => (
+                  <button
+                    key={a}
+                    type="button"
+                    aria-pressed={age === a}
+                    aria-label={NOMS_DES_AGES[a]}
+                    disabled={enCours}
+                    onClick={() => {
+                      setAge(a);
+                      void regler({ ageDesLecteurs: a });
+                    }}
+                  >
+                    {a === "adultes" ? "Adultes" : a.replace("-", "–")}
+                  </button>
+                ))}
+              </div>
+              <span className="reg-ligne reg-ligne--espace">
+                <label className="reg-nom" htmlFor="projet-ecriture">
+                  Notre façon d’écrire
+                </label>
+                <Bulle question="À quoi sert cette ligne ?">
+                  Les aides qui écrivent ou réécrivent la suivent, avant tout le reste. Par exemple : « vous, au présent, phrases courtes ».
+                </Bulle>
+              </span>
               <input
                 className="pchamp"
                 id="projet-ecriture"
                 type="text"
+                aria-label="Pour l’IA, notre façon d’écrire"
                 maxLength={300}
                 value={ecriture}
-                placeholder="Par exemple : vous, au présent, phrases courtes"
+                placeholder="vous, au présent, phrases courtes"
                 onChange={(e) => {
                   setEcriture(e.target.value);
                   setEnregistre(false);
@@ -175,47 +216,77 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
                   if (ecriture !== projet.consigneEcriture) void regler({ consigneEcriture: ecriture });
                 }}
               />
-              <p>Les aides qui écrivent ou réécrivent la suivent.</p>
             </section>
           ) : null}
+
+          {/* Les images créées : le style, replié sur celui choisi, et le héros (F10.2) */}
           <section>
-            <h3 id="projet-style">Style des images</h3>
-            {/* Un exemple par style, le même sujet partout : on compare les techniques d'un coup d'œil */}
-            <div className="styles-images" role="radiogroup" aria-labelledby="projet-style">
-              {STYLES.map((s) => (
-                <label key={s} className="style-image">
-                  <input
-                    type="radio"
-                    name="projet-style"
-                    value={s}
-                    checked={style === s}
-                    disabled={enCours}
-                    onChange={() => {
-                      setStyle(s);
-                      void regler({ styleImages: s });
-                    }}
-                  />
-                  <span className="style-image__exemple" aria-hidden="true">
-                    {s === "autre" ? (
-                      <Icone nom="crayon" />
-                    ) : (
-                      // eslint-disable-next-line @next/next/no-img-element -- exemples livrés avec l'application
-                      <img src={exempleDuStyle(s)} alt="" loading="lazy" onError={(e) => (e.currentTarget.hidden = true)} />
-                    )}
-                  </span>
-                  {s !== "autre" ? (
-                    // Voir l'exemple en grand, sans choisir le style : un bouton dans l'étiquette ne la coche pas
-                    <Agrandissable className="style-image__loupe" src={exempleDuStyle(s, true)} nom={`l’exemple du style ${nomDuStyle(s)}`}>
-                      <Icone nom="loupe" />
-                    </Agrandissable>
-                  ) : null}
-                  <span className="style-image__nom">
-                    {s === "autre" ? "Autre, à décrire" : nomDuStyle(s)}
-                    {s === STYLE_PAR_DEFAUT ? <span className="style-image__defaut"> · par défaut</span> : null}
-                  </span>
-                </label>
-              ))}
-            </div>
+            <h3>Images</h3>
+            <span className="reg-ligne">
+              <span className="reg-nom" id="projet-style">
+                Style des images
+              </span>
+              <Bulle question="Que règle le style ?">
+                Toutes les images que l’IA crée dans ce projet le reprennent. Pour « Autre », décrivez une technique, jamais le nom d’un
+                artiste.
+              </Bulle>
+            </span>
+            {stylesOuverts ? (
+              <div className="styles-images" role="radiogroup" aria-labelledby="projet-style">
+                {STYLES.map((s) => (
+                  <label key={s} className="style-image">
+                    <input
+                      type="radio"
+                      name="projet-style"
+                      value={s}
+                      checked={style === s}
+                      disabled={enCours}
+                      onChange={() => {
+                        setStyle(s);
+                        void regler({ styleImages: s });
+                        // « Autre » attend sa description : la grille reste ouverte
+                        if (s !== "autre") setStylesOuverts(false);
+                      }}
+                    />
+                    <span className="style-image__exemple" aria-hidden="true">
+                      {s === "autre" ? (
+                        <Icone nom="crayon" />
+                      ) : (
+                        // eslint-disable-next-line @next/next/no-img-element -- exemples livrés avec l'application
+                        <img src={exempleDuStyle(s)} alt="" loading="lazy" onError={(e) => (e.currentTarget.hidden = true)} />
+                      )}
+                    </span>
+                    {s !== "autre" ? (
+                      // Voir l'exemple en grand, sans choisir le style : un bouton dans l'étiquette ne la coche pas
+                      <Agrandissable className="style-image__loupe" src={exempleDuStyle(s, true)} nom={`l’exemple du style ${nomDuStyle(s)}`}>
+                        <Icone nom="loupe" />
+                      </Agrandissable>
+                    ) : null}
+                    <span className="style-image__nom">
+                      {s === "autre" ? "Autre, à décrire" : nomDuStyle(s)}
+                      {s === STYLE_PAR_DEFAUT ? <span className="style-image__defaut"> · par défaut</span> : null}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            ) : (
+              <div className="reg-image reg-style">
+                <span className="reg-style__exemple" aria-hidden="true">
+                  {style === "autre" ? (
+                    <Icone nom="crayon" />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element -- exemples livrés avec l'application
+                    <img src={exempleDuStyle(style)} alt="" loading="lazy" onError={(e) => (e.currentTarget.hidden = true)} />
+                  )}
+                </span>
+                <span className="reg-image__gestes">
+                  <span className="reg-style__nom">{style === "autre" ? "Autre, à décrire" : nomDuStyle(style)}</span>
+                  <button type="button" className="btn btn--petit" onClick={() => setStylesOuverts(true)} aria-label="Changer le style des images">
+                    Changer
+                  </button>
+                </span>
+              </div>
+            )}
             {style === "autre" ? (
               <textarea
                 className="pchamp reg-style-autre"
@@ -233,20 +304,17 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
                 }}
               />
             ) : null}
-            <p>{style === "autre" ? "Décrivez une technique, jamais le nom d’un artiste. Reprise par toutes les images créées." : "Repris par toutes les images créées."}</p>
-          </section>
-          <section>
-            <h3>Le héros dans les images</h3>
-            <label className="inter">
-              <input type="checkbox" role="switch" checked={projet.herosAbsent} disabled={enCours} onChange={(e) => void regler({ herosAbsent: e.target.checked })} />
-              <span className="inter__piste" aria-hidden="true" />
-              <span>Héros absent des images</span>
-            </label>
-            <p>
-              {projet.herosAbsent
-                ? "Seules ses mains peuvent paraître : il ne change pas d’une image à l’autre, et chaque lecteur peut s’y voir."
-                : "Le héros est dessiné d’après sa carte et son portrait, dans la Préparation."}
-            </p>
+            <span className="reg-ligne reg-ligne--espace">
+              <label className="inter">
+                <input type="checkbox" role="switch" checked={projet.herosAbsent} disabled={enCours} onChange={(e) => void regler({ herosAbsent: e.target.checked })} />
+                <span className="inter__piste" aria-hidden="true" />
+                <span>Héros absent des images</span>
+              </label>
+              <Bulle question="Pourquoi le laisser absent ?">
+                Seules ses mains peuvent paraître : il ne change pas d’une image à l’autre, et chaque lecteur peut s’y voir. Éteint, le héros
+                est dessiné d’après sa carte et son portrait, dans la Préparation.
+              </Bulle>
+            </span>
           </section>
         </Panneau>
       ) : null}
