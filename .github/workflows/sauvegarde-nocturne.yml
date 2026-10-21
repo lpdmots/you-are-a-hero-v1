@@ -71,6 +71,9 @@ jobs:
             echo "SUPABASE_ADRESSE_BASE=$SUPABASE_ADRESSE_BASE"
             echo "SUPABASE_MOT_DE_PASSE_BASE=$SUPABASE_MOT_DE_PASSE_BASE"
           } > production.env
+          # L'outil de Supabase lit config.toml, qui demande la clé de signature de la base locale :
+          # hors de Git, elle n'existe pas ici. Une clé jetable suffit, la sauvegarde ne s'en sert pas.
+          node -e 'const c=require("crypto");const j=c.generateKeyPairSync("ec",{namedCurve:"P-256"}).privateKey.export({format:"jwk"});require("fs").writeFileSync("supabase/signing_keys.json",JSON.stringify([{kty:j.kty,kid:c.randomUUID(),use:"sig",key_ops:["sign","verify"],alg:"ES256",ext:true,d:j.d,crv:j.crv,x:j.x,y:j.y}]),{mode:0o600})'
 
       - name: La base et les images
         if: steps.heure.outputs.passer != 'oui'
@@ -90,4 +93,4 @@ jobs:
 
       - name: Rien ne reste sur la machine
         if: always()
-        run: rm -rf production.env "$RUNNER_TEMP/sauvegarde"
+        run: rm -rf production.env supabase/signing_keys.json "$RUNNER_TEMP/sauvegarde"
