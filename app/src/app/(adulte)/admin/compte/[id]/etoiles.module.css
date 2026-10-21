@@ -1,0 +1,28 @@
+/* L'histoire des étoiles : une suite d'aides en une ligne, son détail plus discret */
+.deplier {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: var(--canard);
+  cursor: pointer;
+}
+.deplier svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.15s ease;
+}
+.ouvert {
+  transform: rotate(90deg);
+}
+.detail td {
+  color: var(--graphite-3);
+  font-size: var(--t-s);
+  background: var(--feuille-2);
+}
+.detail td:nth-child(2) {
+  padding-left: 26px;
+}

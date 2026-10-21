@@ -5,7 +5,9 @@ import { Icone } from "@/composants/Icone";
 import { estUuid } from "@/serveur/recit";
 import { exigerLePorteur, ficheDuCompte } from "@/serveur/administration";
 import { offrirEtoiles, offrirPass, retirerPartage } from "../../actions";
+import { regrouperLesAides } from "@/domaine/etoiles";
 import styles from "../../admin.module.css";
+import { LignesDAides } from "./LignesDAides";
 
 export const metadata: Metadata = { title: "Un compte — Administration" };
 
@@ -20,6 +22,12 @@ const FAITS: Record<string, string> = {
   "retire-sans-courriel": "Le partage est retiré. Le courriel n’est pas parti : prévenez l’enseignant vous-même.",
   refus: "Rien n’a été fait.",
 };
+
+/** La note d'un mouvement ; une session de Stripe se raccourcit, entière au survol, pour la chercher chez Stripe. */
+function Note({ note }: { note: string | null }) {
+  if (!note) return null;
+  return note.startsWith("cs_") ? <span title={note}>Stripe · …{note.slice(-8)}</span> : <>{note}</>;
+}
 
 /** Un compte (F14-AC24, AC25) : offrir des étoiles ou un pass, retirer un partage, et l'histoire des étoiles. */
 export default async function Compte({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ fait?: string }> }) {
@@ -139,14 +147,19 @@ export default async function Compte({ params, searchParams }: { params: Promise
               </tr>
             </thead>
             <tbody>
-              {f.mouvements.map((m, i) => (
-                <tr key={i}>
-                  <td>{jour(m.quand)}</td>
-                  <td>{MOTIFS[m.motif] ?? m.motif}</td>
-                  <td className={styles.nb}>{m.nombre > 0 ? `+${m.nombre}` : m.nombre}</td>
-                  <td className={styles.note}>{m.motif === "cadeau" || m.motif === "recharge" ? (m.note ?? "") : ""}</td>
-                </tr>
-              ))}
+              {/* Les aides qui se suivent en une ligne, leur détail à déplier */}
+              {regrouperLesAides(f.mouvements).map((l, i) =>
+                l.sorte === "aides" ? (
+                  <LignesDAides key={i} total={l.total} premiere={l.premiere} derniere={l.derniere} aides={l.aides} />
+                ) : (
+                  <tr key={i}>
+                    <td>{jour(l.mouvement.quand)}</td>
+                    <td>{MOTIFS[l.mouvement.motif] ?? l.mouvement.motif}</td>
+                    <td className={styles.nb}>{l.mouvement.nombre > 0 ? `+${l.mouvement.nombre}` : l.mouvement.nombre}</td>
+                    <td className={styles.note}>{l.mouvement.motif === "cadeau" || l.mouvement.motif === "recharge" ? <Note note={l.mouvement.note} /> : null}</td>
+                  </tr>
+                ),
+              )}
             </tbody>
           </table>
         </div>
