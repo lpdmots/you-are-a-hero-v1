@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { afterAll, afterEach, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import { creerChapitre, creerEnseignant, creerPartie, creerProjet, creerScene, nettoyer, service, sql, type Adulte } from "./outils";
 
 /**
@@ -14,6 +14,8 @@ beforeAll(async () => {
   bernard = await creerEnseignant("M. Bernard");
   avant = (await sql<{ p: boolean }>("select paiement_ouvert as p from public.reglages_application"))[0].p;
 });
+// Éteint avant chaque essai aussi : l'état laissé par une autre séance ne compte pas
+beforeEach(() => interrupteur(false));
 afterEach(() => interrupteur(false));
 afterAll(async () => {
   await interrupteur(avant);
