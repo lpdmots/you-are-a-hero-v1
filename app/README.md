@@ -419,13 +419,17 @@ d'essai de Stripe dans `.env.local`, lot 5) :
    (`etoiles`, `limites_et_pass`, `paiements`, `administration`, `supprimer_pour_de_bon`).
 3. **Aussitôt :** `npm run createur -- --production adresse.du.porteur --oui`.
 4. Chez Vercel (Production) : `ADRESSE_SITE`, les variables SMTP du lot 6, `CRON_SECRET`
-   (lot 7), `STRIPE_CLE_SECRETE` et `STRIPE_SECRET_AVIS` en mode d'essai (lot 5),
-   `LIVRE_DE_L_ACCUEIL` si un livre est choisi (lot 9).
+   (lot 7), `LIVRE_DE_L_ACCUEIL` si un livre est choisi (lot 9). `STRIPE_CLE_SECRETE`
+   et `STRIPE_SECRET_AVIS` y sont déjà, **en mode réel**, posées par le porteur le
+   21 octobre 2026 : une clé restreinte `rk_live_…` (« accès complet, à l'exception des
+   opérations sensibles ») et le secret du webhook réel, déjà créé à
+   `https://iletaituneclasse.com/paiement/avis` (charge utile « instantanée »). Le compte
+   Stripe « Il était une classe » est celui de la micro-entreprise de Yohann Coussot ; le
+   porteur en est administrateur.
 5. Le code poussé sur `main`.
 6. `npm run verifier:production`.
-7. Stripe : l'adresse des avis (lot 5, point 5) ; GitHub : les secrets de la sauvegarde
-   (lot 8, point 4), puis « Run workflow » une fois ; Google : la vérification de la
-   marque (lot 1, point 7).
+7. GitHub : les secrets de la sauvegarde (lot 8, point 4), puis « Run workflow » une
+   fois ; Google : la vérification de la marque (lot 1, point 7).
 
 **3. L'essai en ligne, « Paiement ouvert » éteint :**
 
@@ -443,6 +447,11 @@ d'essai de Stripe dans `.env.local`, lot 5) :
    `npm run restaurer:s3 -- <jour>` : projets, classes et images reviennent.
 7. « Mon compte », « Supprimer mon compte » : le compte, ses projets et son livre
    partagé disparaissent ; « Administration » ne le liste plus.
+
+**4. Le jour de l'ouverture de la vente**, plus tard : les prix fixés, le médiateur de la
+consommation nommé dans les conditions, « Paiement ouvert » allumé ; puis un vrai achat
+d'une recharge, remboursé depuis Stripe : le reçu et sa facture arrivent, l'avis inscrit
+le paiement (« Administration », ventes du mois). Seuls les frais de Stripe restent dus.
 
 ## Sauvegarder et restaurer
 
