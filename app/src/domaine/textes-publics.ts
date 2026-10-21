@@ -5,13 +5,20 @@
  * bloque pas l'ouverture). Ils vivent ici, en un seul endroit, pour la page et pour le fichier
  * à télécharger.
  *
- * Ce que le porteur doit compléter avant l'ouverture est dans `EDITEUR`.
+ * Qui édite et vend le site est dans `EDITEUR`.
  */
 
-/** L'éditeur du site, nommé par les mentions légales (F14, « Textes juridiques »). */
+/**
+ * L'éditeur du site, qui vend aussi le pass et les étoiles (F14, « Textes juridiques ») : la
+ * micro-entreprise du frère du porteur, au nom de laquelle est aussi le compte Stripe (décidé
+ * par le porteur le 21 octobre 2026). Le téléphone est celui du porteur, qui répond pour le site.
+ */
 export const EDITEUR = {
-  /** Le porteur, nommé par les mentions légales (donné par lui le 21 octobre 2026) */
-  nom: "Nicolas Coussot",
+  nom: "Yohann Coussot, entrepreneur individuel",
+  adresse: "6 rue des Morands, 71210 Saint-Eusèbe, France",
+  siret: "837 766 526 00029",
+  telephone: "+33 6 86 80 54 14",
+  tva: "TVA non applicable, article 293 B du code général des impôts",
   contact: "contact@iletaituneclasse.com",
   site: "iletaituneclasse.com",
 } as const;
@@ -22,7 +29,7 @@ export const PHRASE_DU_SUPPORT = "Il était une classe est fait par un enseignan
 export type Section = { titre: string; paragraphes: string[] };
 export type Document = { titre: string; chapeau: string; misAJour: string; sections: Section[] };
 
-const MAJ = "20 octobre 2026";
+const MAJ = "21 octobre 2026";
 
 export const CONDITIONS: Document = {
   titre: "Conditions d’utilisation",
@@ -33,6 +40,7 @@ export const CONDITIONS: Document = {
       titre: "Le service",
       paragraphes: [
         "Il était une classe est un outil en ligne pour écrire un livre, seul ou avec sa classe : préparer l’histoire, faire écrire les élèves, relire, composer le livre, l’imprimer et le partager.",
+        `Il est édité et vendu par ${EDITEUR.nom}, ${EDITEUR.adresse}, SIRET ${EDITEUR.siret} ; ses coordonnées sont dans les mentions légales.`,
         "L’outil est gratuit. Des aides par l’intelligence artificielle, facultatives, s’utilisent avec des étoiles : un nouveau compte en reçoit pour essayer. Quand la vente est ouverte, un livre gratuit compte au plus 40 scènes et 10 images ; un pass, payé une fois pour un livre, lève ces limites pour ce livre et donne des étoiles. Des recharges d’étoiles s’achètent aussi.",
       ],
     },
@@ -74,6 +82,7 @@ export const CONDITIONS: Document = {
     {
       titre: "Le paiement",
       paragraphes: [
+        `Les prix sont en euros, sans TVA : ${EDITEUR.tva}.`,
         "Le paiement se fait par carte, sur la page de paiement de Stripe ; l’éditeur ne voit jamais le numéro de la carte. Une facture est envoyée à chaque paiement.",
         "Le pass et les étoiles donnent un accès immédiat : en payant, vous demandez cet accès immédiat et renoncez à votre droit de rétractation, ce que la page de paiement vous fait confirmer.",
         "Le pass vaut pour le livre pour lequel il est acheté, tant que le compte existe ; il ne s’arrête pas et ne se renouvelle pas.",
@@ -181,7 +190,11 @@ export const MENTIONS_LEGALES: Document = {
   sections: [
     {
       titre: "Édition",
-      paragraphes: [`Le site ${EDITEUR.site} est édité par ${EDITEUR.nom}, qui en est le directeur de la publication.`, `Contact : ${EDITEUR.contact}.`],
+      paragraphes: [
+        `Le site ${EDITEUR.site} est édité par ${EDITEUR.nom}, qui en est le directeur de la publication.`,
+        `Adresse : ${EDITEUR.adresse}. SIRET : ${EDITEUR.siret}. ${EDITEUR.tva}.`,
+        `Contact : ${EDITEUR.contact}, téléphone ${EDITEUR.telephone}.`,
+      ],
     },
     {
       titre: "Hébergement",
@@ -322,7 +335,7 @@ export const MODELES: Modele[] = [
           titre: "Les parties",
           paragraphes: [
             "Le responsable de traitement : ……………………………………………… (pour une école publique, la direction académique des services de l’Éducation nationale), représenté par ………………………………, ci-après « le responsable ».",
-            `Le sous-traitant : ${EDITEUR.nom}, éditeur du site ${EDITEUR.site}, ${EDITEUR.contact}, ci-après « l’éditeur ».`,
+            `Le sous-traitant : ${EDITEUR.nom}, ${EDITEUR.adresse}, SIRET ${EDITEUR.siret}, éditeur du site ${EDITEUR.site}, ${EDITEUR.contact}, ci-après « l’éditeur ».`,
           ],
         },
         {

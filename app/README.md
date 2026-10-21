@@ -374,8 +374,11 @@ relecture par un juriste reste recommandée.
 
 À faire par le porteur avant l'ouverture :
 
-1. Son nom est dans `EDITEUR.nom` (`src/domaine/textes-publics.ts`) depuis le
-   21 octobre 2026 : les mentions légales et la page « Confidentialité » le citent.
+1. L'éditeur, qui vend aussi, est dans `EDITEUR` (`src/domaine/textes-publics.ts`)
+   depuis le 21 octobre 2026 : la micro-entreprise de Yohann Coussot (adresse, SIRET,
+   franchise de TVA), avec le téléphone du porteur ; mentions légales, conditions,
+   « Confidentialité » et contrat type le citent (F14-AC37). Reste le médiateur de la
+   consommation, à nommer dans les conditions avant d'allumer « Paiement ouvert ».
 2. **Le livre à feuilleter de l'accueil** : la variable `LIVRE_DE_L_ACCUEIL` (Vercel,
    Production) reçoit le code d'un livre partagé par lien, les dix lettres après
    `/lire/` ; sans elle, l'accueil montre sa page de livre sans lien.

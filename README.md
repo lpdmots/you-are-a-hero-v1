@@ -622,8 +622,9 @@ avant de commencer » soient tranchées.
   dans leur projet
   ([F07.5](docs/specifications.md#f075--encouragements-de-lenseignant)).
 - **Restent à décider :** les questions ouvertes de chaque section ; pour
-  F14, les prix définitifs, l'entité qui facture, le médiateur et la
-  relecture juridique, avant d'allumer « Paiement ouvert ». Le développement
+  F14, les prix définitifs, le médiateur et la relecture juridique, avant
+  d'allumer « Paiement ouvert » (l'entité qui facture est réglée le
+  21 octobre 2026 : la micro-entreprise de Yohann Coussot). Le développement
   demande une instruction que le plan ne donne pas.
 
 ## Documents actifs

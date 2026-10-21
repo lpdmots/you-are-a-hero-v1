@@ -10891,10 +10891,15 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   « Confidentialité », les mentions légales, le contrat de sous-traitance type
   et les deux modèles destinés aux familles ; une relecture par un juriste est
   recommandée, avis extérieur qui ne bloque pas l'ouverture. Les mentions
-  légales nomment le porteur, avec l'adresse de contact ; la publication d'une
-  adresse postale se règle à cette relecture. Alternative écartée :
-  l'anonymat permis à un particulier non professionnel, qui ne nomme que
-  l'hébergeur ; une école fait plus confiance à un enseignant qui se nomme.
+  légales nomment l'éditeur, qui vend aussi : décidé par le porteur le
+  21 octobre 2026, la micro-entreprise de son frère, Yohann Coussot,
+  entrepreneur individuel (adresse, SIRET, franchise de TVA), au nom de
+  laquelle est aussi le compte Stripe, en attendant peut-être celle du
+  porteur ; le téléphone est celui du porteur, qui répond pour le site. Les
+  conditions d'utilisation disent qui vend et que les prix sont sans TVA.
+  Alternative écartée : l'anonymat permis à un particulier non
+  professionnel, qui ne nomme que l'hébergeur ; un site qui vend nomme son
+  vendeur.
 - **Support.** Une adresse de contact au nom de domaine du produit, qui
   arrive dans la boîte du porteur ; une page « Aide » publique, petite foire
   aux questions et cette adresse ; dans « Mon compte », un lien « Écrire au
@@ -11091,12 +11096,19 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC36 — Écrire au créateur :** étant donné « Mon compte » ou la page
   « Aide », alors l'adresse de contact s'y trouve, et le lien « Écrire au
   créateur » ouvre un courriel vers elle.
+- **F14-AC37 — L'éditeur nommé :** étant donné les mentions légales, alors
+  elles nomment Yohann Coussot, entrepreneur individuel, directeur de la
+  publication, avec son adresse, son SIRET, un téléphone et « TVA non
+  applicable, article 293 B du code général des impôts » ; les conditions
+  d'utilisation disent qui vend et que les prix sont sans TVA ; la page
+  « Confidentialité » et le contrat de sous-traitance type nomment le même
+  éditeur.
 
 **Questions ouvertes :** les prix du pass et des recharges, et le nombre
 d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;
-l'entité qui facture et le médiateur de la consommation, à la charge du
-porteur ; la relecture juridique des textes ; le paiement des mairies sur bon
-de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
+le médiateur de la consommation, à la charge du porteur (l'entité qui
+facture est réglée le 21 octobre 2026) ; la relecture juridique des
+textes ; le paiement des mairies sur bon de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
 et l'adresse sont retenus ; le dépôt de la marque.
 
 **Hors de cette livraison :** abonnement ; paiement sur bon de commande ou
