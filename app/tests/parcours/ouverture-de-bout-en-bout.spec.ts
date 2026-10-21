@@ -123,7 +123,8 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   await DIALOGUE(page).getByRole("button", { name: /Acheter le pass/ }).click();
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
   await page.getByRole("button", { name: "Payer" }).click();
-  await expect(MESSAGE(page)).toContainText("Le pass est là");
+  await expect(DIALOGUE(page).getByRole("heading", { name: "Merci ! Votre livre a son pass" })).toBeVisible();
+  await DIALOGUE(page).getByRole("button", { name: "Continuer l’écriture" }).click();
   expect(await solde(id)).toBe(avantPass + 400);
   await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}`);
   await page.getByRole("button", { name: "Ajouter une scène" }).click();

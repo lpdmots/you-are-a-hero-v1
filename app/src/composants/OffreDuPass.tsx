@@ -4,6 +4,7 @@ import { useEffect, useState, useTransition } from "react";
 import { offreDuProjet, type OffreDuProjet } from "@/app/(adulte)/projet/actions-offre";
 import { acheterLePass } from "@/app/(adulte)/projet/actions-paiement";
 import { enEuros, type Limite, type Limites, type Offre } from "@/domaine/offre";
+import { adresseRepereEnGrand } from "@/domaine/visuels";
 import { Bulle } from "./Bulle";
 import { Dialogue } from "./Dialogue";
 import { Icone } from "./Icone";
@@ -159,6 +160,54 @@ export function OffreDuPass() {
         {limite === "scenes" ? "Les scènes de la corbeille ne comptent pas." : "Les images de repérage et les portraits ne comptent pas."}
       </p>
       <CarteDuPass titre={offre.titre} offre={offre.offre} enTete={limite} />
+    </Dialogue>
+  );
+}
+
+/**
+ * Au retour du pass payé (F14-AC18) : un merci, l'image du livre, son étiquette reçue, le solde
+ * d'étoiles qui vient d'être garni et ce qu'il sert à payer. Une fois, puis l'adresse se nettoie.
+ */
+export function MerciDuPass({
+  titre, offre, repere, projetId, recuLe, solde,
+}: {
+  titre: string;
+  offre: Offre;
+  repere: { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null };
+  projetId: string;
+  recuLe: string;
+  solde: number | null;
+}) {
+  const [ouvert, setOuvert] = useState(true);
+  // L'adresse se nettoie sans relire la page : relue sans « message », elle retirerait ce merci
+  useEffect(() => {
+    window.history.replaceState(window.history.state, "", window.location.pathname);
+  }, []);
+  if (!ouvert) return null;
+  const fermer = () => setOuvert(false);
+  return (
+    <Dialogue
+      titre="Merci ! Votre livre a son pass"
+      fermer={null}
+      onFermer={fermer}
+      boutons={
+        <button type="button" className="btn btn--primaire" onClick={fermer}>
+          Continuer l’écriture
+        </button>
+      }
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element -- images servies par l'application */}
+      <img className={styles.image} src={adresseRepereEnGrand(repere, projetId)} alt="" decoding="async" />
+      <CarteDuPass titre={titre} offre={offre} recuLe={recuLe} />
+      {solde !== null && offre.etoilesDuPass > 0 ? (
+        <div className={styles.etoiles}>
+          <p>
+            <span className={styles.gain}>+{offre.etoilesDuPass} ✦</span> Votre solde : <strong>{solde} ✦</strong>
+          </p>
+          <p className={styles.usage}>Les étoiles paient les aides IA : correction, idées, images. Chacune en use quelques-unes ; le solde se lit dans « Mon compte ».</p>
+        </div>
+      ) : null}
+      <p className={styles.rien}>La facture vous arrive par courriel. Belle écriture !</p>
     </Dialogue>
   );
 }

@@ -10,8 +10,9 @@ export function Dialogue({
   children: ReactNode;
   boutons: ReactNode;
   onFermer: () => void;
-  /** Le mot du bouton qui referme : « Annuler » devant une décision, « Fermer » devant une simple information */
-  fermer?: string;
+  /** Le mot du bouton qui referme : « Annuler » devant une décision, « Fermer » devant une simple information ;
+   *  null quand le bouton de `boutons` referme lui-même */
+  fermer?: string | null;
 }) {
   const id = useId();
   const ref = useRef<HTMLHeadingElement>(null);
@@ -39,9 +40,11 @@ export function Dialogue({
         {children}
         <p className="dialogue__cmd">
           {boutons}
-          <button type="button" className="btn" onClick={onFermer}>
-            {fermer}
-          </button>
+          {fermer !== null ? (
+            <button type="button" className="btn" onClick={onFermer}>
+              {fermer}
+            </button>
+          ) : null}
         </p>
       </div>
     </div>

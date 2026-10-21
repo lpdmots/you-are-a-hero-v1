@@ -57,7 +57,12 @@ test("F14-AC18, AC21 — acheter le pass depuis le dialogue : la page de paiemen
   await page.getByRole("button", { name: "Payer" }).click();
 
   await expect(page).toHaveURL(new RegExp(`/projet/${m.projet}/plan`));
-  await expect(page.locator(".message")).toContainText("Le pass est là");
+  // Le merci du pass : son étiquette reçue, le solde garni (F14-AC18)
+  await expect(DIALOGUE(page).getByRole("heading", { name: "Merci ! Votre livre a son pass" })).toBeVisible();
+  await expect(DIALOGUE(page)).toContainText("Reçu le");
+  await expect(DIALOGUE(page)).toContainText(`Votre solde : ${avantSolde + 400} ✦`);
+  await DIALOGUE(page).getByRole("button", { name: "Continuer l’écriture" }).click();
+  await expect(DIALOGUE(page)).toHaveCount(0);
   expect((await sql("select origine from public.passes where projet_id = $1", [m.projet]))).toEqual([{ origine: "achat" }]);
   expect(await solde(m.compte)).toBe(avantSolde + 400);
   expect((await sql<{ montant: number }>("select montant from public.paiements where projet_id = $1", [m.projet]))[0].montant).toBe(2500);

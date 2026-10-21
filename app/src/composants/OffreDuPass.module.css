@@ -116,3 +116,35 @@
 .etat .carte {
   justify-self: stretch;
 }
+
+/* Le merci du pass : l'image du livre en bandeau, puis le solde garni */
+.image {
+  width: calc(100% + 52px);
+  margin: -24px -26px 0;
+  aspect-ratio: 3 / 1;
+  object-fit: cover;
+  border-radius: 16px 16px 0 0;
+  order: -1;
+}
+.etoiles {
+  display: grid;
+  gap: 4px;
+  padding: 10px 14px;
+  border-radius: var(--r-s);
+  background: var(--ia-pale, var(--canard-pale));
+}
+.etoiles p {
+  color: var(--graphite-2);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.etoiles strong {
+  color: var(--graphite);
+}
+.gain {
+  margin-right: 6px;
+  font-weight: 800;
+  color: var(--ia, var(--canard));
+}
+.usage {
+  font-size: var(--t-s);
+}

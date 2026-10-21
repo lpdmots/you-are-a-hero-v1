@@ -3,6 +3,8 @@ import { limitesDuProjet } from "@/serveur/offre";
 import { cookies, headers } from "next/headers";
 import { notFound } from "next/navigation";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
+import { MerciDuPass } from "@/composants/OffreDuPass";
+import { offreActuelle } from "@/serveur/offre";
 import { estOnglet, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
 import { referenceScene } from "@/domaine/recit";
 import { avertissementsAcceptes, conditionsDuLivre, estEtapeLivre, etatChemins, etatRelire, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
@@ -249,11 +251,19 @@ export default async function PageProjet({ params, searchParams }: Props) {
     );
   }
 
+  // Au retour du pass payé (F14-AC18) : son merci, avec l'offre et la date du pass
+  const merci = message === "pass" ? await Promise.all([offreActuelle(), limitesDuProjet(enseignant.supabase, projet.id)]) : null;
+
   return (
     <div className="page">
       {message === "cree" ? <MessageAuChargement texte={`« ${projet.titre} » est créé. Commencez par la préparation.`} /> : null}
-      {/* Au retour du pass payé (F14-AC18) */}
-      {message === "pass" ? <MessageAuChargement texte={`Le pass est là : « ${projet.titre} » n’a plus de limite, et ses étoiles sont arrivées.`} /> : null}
+      {merci?.[1]?.pass ? (
+        <MerciDuPass
+          titre={projet.titre} offre={merci[0]} projetId={projet.id} solde={enseignant.etoiles}
+          repere={{ imageId: projet.imageId, visuelChoisi: projet.visuelChoisi, visuelDefaut: projet.visuelDefaut }}
+          recuLe={merci[1].passLe ?? new Date().toISOString()}
+        />
+      ) : null}
       {message === "cree-sans-image" ? (
         <MessageAuChargement texte={`« ${projet.titre} » est créé, mais son image n’a pas pu être importée. Choisissez-la depuis les réglages du projet.`} />
       ) : null}
