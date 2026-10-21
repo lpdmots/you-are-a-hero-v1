@@ -8,10 +8,10 @@ const commande = {
 };
 
 describe("Stripe Checkout (F14)", () => {
-  it("F14-AC18 — la session exige la case de renonciation, produit la facture, se paie par carte, sans abonnement", () => {
+  it("F14-AC18 — la session exige la case de renonciation, produit la facture, sans abonnement, les moyens de paiement laissés au tableau de bord de Stripe", () => {
     const p = parametresDeLaSession(commande);
     expect(p.mode).toBe("payment");
-    expect(p["payment_method_types[0]"]).toBe("card");
+    expect(Object.keys(p).some((k) => k.startsWith("payment_method_types"))).toBe(false);
     expect(p["consent_collection[terms_of_service]"]).toBe("required");
     expect(p["custom_text[terms_of_service_acceptance][message]"]).toBe(RENONCIATION);
     expect(RENONCIATION).toBe("Je demande l’accès immédiat et renonce à mon droit de rétractation.");

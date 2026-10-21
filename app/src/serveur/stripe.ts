@@ -52,7 +52,8 @@ export function parametresDeLaSession(c: Commande): Record<string, string> {
   return {
     mode: "payment",
     locale: "fr",
-    "payment_method_types[0]": "card",
+    // Les moyens de paiement se règlent dans le tableau de bord de Stripe (la carte seule) :
+    // son API refuse désormais `payment_method_types` pour une session de paiement.
     "line_items[0][quantity]": "1",
     "line_items[0][price_data][currency]": "eur",
     "line_items[0][price_data][unit_amount]": String(c.montant),
@@ -89,7 +90,8 @@ export async function ouvrirLePaiement(c: Commande): Promise<string | null> {
     body: new URLSearchParams(parametres),
   });
   if (!reponse.ok) {
-    console.error(`Stripe : session refusée (${reponse.status})`);
+    const erreur = ((await reponse.json().catch(() => null)) as { error?: { param?: string; message?: string } } | null)?.error;
+    console.error(`Stripe : session refusée (${reponse.status}${erreur?.param ? `, ${erreur.param}` : ""}) ${erreur?.message ?? ""}`.trim());
     return null;
   }
   const json = (await reponse.json()) as { url?: string };
