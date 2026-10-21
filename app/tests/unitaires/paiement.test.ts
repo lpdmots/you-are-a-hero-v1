@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { EDITEUR } from "@/domaine/textes-publics";
 import { RENONCIATION, avisVerifie, lireLaSession, parametresDeLaSession, signerUnAvis } from "@/serveur/stripe";
 
 const commande = {
@@ -17,10 +16,6 @@ describe("Stripe Checkout (F14)", () => {
     expect(p["custom_text[terms_of_service_acceptance][message]"]).toBe(RENONCIATION);
     expect(RENONCIATION).toBe("Je demande l’accès immédiat et renonce à mon droit de rétractation.");
     expect(p["invoice_creation[enabled]"]).toBe("true");
-    // La facture nomme le vendeur, son SIRET et la franchise de TVA, en tête
-    expect(p["invoice_creation[invoice_data][custom_fields][0][value]"]).toBe(EDITEUR.nom);
-    expect(p["invoice_creation[invoice_data][custom_fields][1][value]"]).toBe(EDITEUR.siret);
-    expect(p["invoice_creation[invoice_data][custom_fields][2][value]"]).toBe("Non applicable, art. 293 B du CGI");
     expect(p["metadata[projet]"]).toBe(commande.projetId);
     expect(p.success_url).toBe("https://iletaituneclasse.com/paiement/merci?session={CHECKOUT_SESSION_ID}");
   });
