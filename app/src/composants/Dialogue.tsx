@@ -4,7 +4,7 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 
 /** Dialogue de confirmation : quelques faits, la décision, « Annuler ». */
 export function Dialogue({
-  titre, children, boutons, onFermer, fermer = "Annuler",
+  titre, children, boutons, onFermer, fermer = "Annuler", className,
 }: {
   titre: string;
   children: ReactNode;
@@ -13,6 +13,8 @@ export function Dialogue({
   /** Le mot du bouton qui referme : « Annuler » devant une décision, « Fermer » devant une simple information ;
    *  null quand le bouton de `boutons` referme lui-même */
   fermer?: string | null;
+  /** Une forme à part, pour un dialogue qui le demande */
+  className?: string;
 }) {
   const id = useId();
   const ref = useRef<HTMLHeadingElement>(null);
@@ -33,7 +35,7 @@ export function Dialogue({
 
   return (
     <div className="dialogue-voile">
-      <div className="dialogue" role="alertdialog" aria-modal="true" aria-labelledby={id}>
+      <div className={`dialogue${className ? ` ${className}` : ""}`} role="alertdialog" aria-modal="true" aria-labelledby={id}>
         <h2 id={id} tabIndex={-1} ref={ref}>
           {titre}
         </h2>

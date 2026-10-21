@@ -64,7 +64,11 @@ test("F14-AC13, AC21 — allumé, à 40 scènes : « Ajouter une scène » ouvre
   await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
   await page.getByRole("button", { name: "Ajouter une scène" }).click();
   await expect(DIALOGUE(page).getByRole("heading", { name: "Ce livre a atteint ses 40 scènes gratuites" })).toBeVisible();
-  await expect(DIALOGUE(page)).toContainText("La scène n’a pas été ajoutée. Tout le reste continue : écrire, faire le PDF, partager. Les scènes de la corbeille ne comptent pas.");
+  await expect(DIALOGUE(page)).toContainText("La scène n’a pas été ajoutée. Tout le reste continue : écrire, faire le PDF, partager.");
+  // Ce qui ne compte pas, dans la bulle ; les deux jauges, celle qui arrête en ambre
+  await expect(DIALOGUE(page).getByRole("button", { name: "Qu’est-ce qui compte ?" })).toBeVisible();
+  await expect(DIALOGUE(page)).toContainText("Scènes40 / 40");
+  await expect(DIALOGUE(page)).toContainText("Images0 / 10");
   await expect(DIALOGUE(page)).toContainText("« Le marais »");
   await expect(DIALOGUE(page)).toContainText("Scènes sans limite");
   await expect(DIALOGUE(page)).toContainText("Images sans limite");

@@ -10,16 +10,26 @@ import { posesDImages, type Limites, type Offre } from "@/domaine/offre";
  * atteinte, et ce que les réglages du projet disent. Rien quand « Paiement ouvert » est éteint :
  * ni limite ni vente (F14-AC12).
  */
-export type OffreDuProjet = { projetId: string; titre: string; limites: Limites; offre: Offre };
+export type OffreDuProjet = {
+  projetId: string;
+  titre: string;
+  limites: Limites;
+  offre: Offre;
+  /** L'image du livre, en couverture à côté du pass */
+  repere: { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null };
+};
 
 export async function offreDuProjet(projetId: string): Promise<OffreDuProjet | null> {
   const e = await exigerEnseignant();
   if (!estUuid(projetId)) return null;
-  const { data: projet } = await e.supabase.from("projets").select("id, titre").eq("id", projetId).maybeSingle();
+  const { data: projet } = await e.supabase.from("projets").select("id, titre, image_id, visuel_choisi, visuel_defaut").eq("id", projetId).maybeSingle();
   if (!projet) return null;
   const [offre, limites] = await Promise.all([offreActuelle(), limitesDuProjet(e.supabase, projetId)]);
   if (!offre.paiementOuvert || !limites) return null;
-  return { projetId, titre: projet.titre as string, limites, offre };
+  return {
+    projetId, titre: projet.titre as string, limites, offre,
+    repere: { imageId: projet.image_id ?? null, visuelChoisi: projet.visuel_choisi ?? null, visuelDefaut: projet.visuel_defaut ?? null },
+  };
 }
 
 /**

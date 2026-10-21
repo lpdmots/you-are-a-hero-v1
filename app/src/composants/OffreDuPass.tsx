@@ -129,10 +129,27 @@ export function ouvrirOffreDuPass(projetId: string, limite: Limite, rappel = fal
   window.dispatchEvent(new CustomEvent("offre-du-pass", { detail: { projetId, limite, rappel } }));
 }
 
+/** Une jauge de limite gratuite : pleine, elle passe à l'ambre (« cela attend »). */
+function Jauge({ nom, n, max }: { nom: string; n: number; max: number }) {
+  const plein = n >= max;
+  return (
+    <div className={`${styles.jauge} ${plein ? styles.jaugePleine : ""}`}>
+      <span className={styles.jaugeNom}>{nom}</span>
+      <span className={styles.jaugeTrait} aria-hidden="true">
+        <span style={{ width: `${Math.min(100, Math.round((n / Math.max(1, max)) * 100))}%` }} />
+      </span>
+      <span className={styles.jaugeCompte}>
+        <strong>{n}</strong> / {max}
+      </span>
+    </div>
+  );
+}
+
 /**
  * Le dialogue d'une limite atteinte, posé une fois dans l'espace adulte : rien n'a été créé, tout
  * le reste continue, la corbeille ne compte pas, et le pass lève la limite. Il relit l'offre du
- * projet à l'ouverture ; sans « Paiement ouvert », il ne s'ouvre pas.
+ * projet à l'ouverture ; sans « Paiement ouvert », il ne s'ouvre pas. Sa forme est celle d'une
+ * offre : la couverture du livre à côté du pass, les deux jauges au-dessus, distincte du merci.
  */
 export function OffreDuPass() {
   const [ouvert, setOuvert] = useState<{ offre: OffreDuProjet; limite: Limite; rappel: boolean } | null>(null);
@@ -146,20 +163,58 @@ export function OffreDuPass() {
     return () => window.removeEventListener("offre-du-pass", ouvrir);
   }, []);
   if (!ouvert) return null;
-  const { offre, limite, rappel } = ouvert;
+  const { offre: o, limite, rappel } = ouvert;
+  const { offre, limites } = o;
   const refuse = rappel ? "" : limite === "scenes" ? "La scène n’a pas été ajoutée. " : "L’image n’a pas été posée. ";
+  const leve = limite === "images" ? ["Images sans limite", "Scènes sans limite"] : ["Scènes sans limite", "Images sans limite"];
   return (
     <Dialogue
-      titre={TITRES[limite](offre.offre)}
+      className={styles.dialogue}
+      titre={TITRES[limite](offre)}
       fermer="Plus tard"
       onFermer={() => setOuvert(null)}
-      boutons={<AcheterLePass projetId={offre.projetId} offre={offre.offre} />}
+      boutons={
+        <>
+          <AcheterLePass projetId={o.projetId} offre={offre} />
+          <span className={styles.sur}>
+            <Icone nom="cadenas" /> Paiement par Stripe · facture par courriel
+          </span>
+        </>
+      }
     >
       <p className={styles.rien}>
         {refuse}Tout le reste continue : écrire, faire le PDF, partager.{" "}
-        {limite === "scenes" ? "Les scènes de la corbeille ne comptent pas." : "Les images de repérage et les portraits ne comptent pas."}
+        <Bulle question="Qu’est-ce qui compte ?">{NE_COMPTE_PAS}</Bulle>
       </p>
-      <CarteDuPass titre={offre.titre} offre={offre.offre} enTete={limite} />
+      <div className={styles.jauges}>
+        <Jauge nom="Scènes" n={limites.scenes} max={limites.scenesGratuites} />
+        <Jauge nom="Images" n={limites.images} max={limites.imagesGratuites} />
+      </div>
+      <div className={styles.offre}>
+        <div className={styles.couverture} aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element -- images servies par l'application */}
+          <img src={adresseRepereEnGrand(o.repere, o.projetId)} alt="" decoding="async" />
+        </div>
+        <div className={styles.offreTexte}>
+          <p className={styles.nom}>Pass du livre</p>
+          <p className={styles.offreTitre}>« {o.titre} »</p>
+          <ul className={styles.offreLeve}>
+            {leve.map((l) => (
+              <li key={l}>
+                <Icone nom="coche" /> {l}
+              </li>
+            ))}
+            {offre.etoilesDuPass > 0 ? (
+              <li>
+                <Icone nom="coche" /> {offre.etoilesDuPass} étoiles ✦ pour les aides IA
+              </li>
+            ) : null}
+          </ul>
+          <p className={styles.offrePrix}>
+            <strong>{enEuros(offre.prixDuPass)}</strong> une fois, pour ce livre
+          </p>
+        </div>
+      </div>
     </Dialogue>
   );
 }
