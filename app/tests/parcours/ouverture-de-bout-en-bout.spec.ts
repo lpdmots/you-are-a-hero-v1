@@ -15,6 +15,8 @@ import { createClient } from "@supabase/supabase-js";
 let avant: { paiement_ouvert: boolean };
 test.beforeAll(async () => {
   [avant] = await sql<{ paiement_ouvert: boolean }>("select paiement_ouvert from public.reglages_application");
+  // Le parcours part de l'interrupteur éteint, quel que soit l'état laissé par une autre séance
+  await sql("update public.reglages_application set paiement_ouvert = false");
 });
 test.afterEach(async () => {
   await sql("update public.reglages_application set paiement_ouvert = $1", [avant.paiement_ouvert]);
