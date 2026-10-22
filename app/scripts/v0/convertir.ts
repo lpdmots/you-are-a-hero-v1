@@ -319,7 +319,8 @@ export function texteDeLaScene(
         continue;
       }
       const legende = r.caption?.trim();
-      texte.push({ type: "image", id: randomUUID(), image: id, largeur: r.widthPct ?? 100, ...(legende ? { legende } : {}), children: [{ text: "" }] });
+      // Une image en pleine largeur passe à 80 % : la colonne du livre la laissait trop haute (22 octobre 2026)
+      texte.push({ type: "image", id: randomUUID(), image: id, largeur: Math.min(r.widthPct ?? 100, 80), ...(legende ? { legende } : {}), children: [{ text: "" }] });
     } else if (b._type === "outcomeCard") {
       const carte = b as Extract<BlocV0, { _type: "outcomeCard" }>;
       const c = choix.get(carte.choiceKey);

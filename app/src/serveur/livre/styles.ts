@@ -98,14 +98,15 @@ body { font-family: ${police}; font-size: var(--corps); line-height: 1.36; color
 svg.filet { width: 24mm; height: 2mm; fill: none; stroke: #2a2a2a; stroke-width: 1; }
 svg.filet path:last-child { fill: #2a2a2a; stroke: none; }
 
-/* Choix, action et fin : jamais coupés, jamais séparés du texte qui les amène (F11.3) */
-.choix-groupe { margin: 0.7em 0 0.2em; break-before: avoid; break-inside: avoid; }
+/* Choix, action et fin : chaque phrase entière, mais séparables du texte qui les amène et
+   répartis sur deux pages, pour remplir la page (F11.2, révisé le 22 octobre 2026) */
+.choix-groupe { margin: 0.7em 0 0.2em; }
 .recit p.choix { text-align: left; font-style: italic; padding-left: 1.1em; text-indent: -1.1em; margin: 0 0 0.3em; break-inside: avoid; }
 .recit p.choix::before { content: "— "; font-style: normal; }
 .recit p.choix b.renvoi { font-style: normal; font-weight: 700; }
-.recit p.action { display: flex; gap: 2.2mm; align-items: baseline; text-align: left; margin: 0.8em 0; padding: 1.6mm 2.6mm; border: 0.25mm solid #262626; border-radius: 1.6mm; font-size: 0.96em; break-inside: avoid; break-before: avoid; }
+.recit p.action { display: flex; gap: 2.2mm; align-items: baseline; text-align: left; margin: 0.8em 0; padding: 1.6mm 2.6mm; border: 0.25mm solid #262626; border-radius: 1.6mm; font-size: 0.96em; break-inside: avoid; }
 svg.signe { flex: none; width: 1.05em; height: 1.05em; position: relative; top: 0.16em; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-.recit p.fin { text-align: center; margin: 1em 0 0.6em; font-variant: small-caps; letter-spacing: 0.08em; break-before: avoid; break-inside: avoid; }
+.recit p.fin { text-align: center; margin: 1em 0 0.6em; font-variant: small-caps; letter-spacing: 0.08em; break-inside: avoid; }
 .recit p.fin::before, .recit p.fin::after { content: ""; display: inline-block; width: 8mm; border-top: 0.2mm solid currentColor; vertical-align: middle; margin: 0 2.6mm; }
 
 /* Images : là où l'auteur les a posées, jamais coupées (F10) */

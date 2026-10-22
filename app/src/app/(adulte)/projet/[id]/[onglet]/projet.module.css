@@ -125,6 +125,10 @@
   .histoire h1 {
     font-size: 1.5rem;
   }
+  /* « Lire à l'essai » et « Réglages » passent sous le titre plutôt que de déborder */
+  .titre {
+    flex-wrap: wrap;
+  }
   .onglets {
     grid-column: 1 / -1;
     margin-top: 8px;

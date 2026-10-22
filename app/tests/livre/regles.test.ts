@@ -65,21 +65,19 @@ describe("Règles de coupure, sur quatre variantes d'un livre de 48 passages (F1
     }
   });
 
-  it("F11-AC38 — un groupe de choix n'est pas coupé et reste avec les deux dernières lignes au moins de ce qui le précède ; une action aussi", () => {
+  it("F11-AC38 — une phrase de choix et une action restent entières, mais se séparent du texte qui les amène pour remplir la page", () => {
+    let separes = 0;
     for (const { livre, c } of compositions) {
       for (const passage of livre.passages) {
-        const choix = passage.blocs.filter((b) => b.type === "choix");
-        if (!choix.length) continue;
-        const pages = new Set(choix.flatMap((b) => entrees(c, b.id).map((m) => m.page)));
-        expect(pages.size, passage.reference).toBe(1);
-        const avant = passage.blocs[passage.blocs.indexOf(choix[0]) - 1];
-        const surLaPage = entrees(c, avant.id).find((m) => pages.has(m.page));
-        expect(surLaPage, passage.reference).toBeDefined();
-        if (avant.type === "p") expect(surLaPage!.h).toBeGreaterThan(2 * LIGNE_MM - 0.6);
-        const actionDuPassage = passage.blocs.find((b) => b.type === "action");
-        if (actionDuPassage) expect(entrees(c, actionDuPassage.id)).toHaveLength(1);
+        for (const b of passage.blocs.filter((x) => x.type === "choix" || x.type === "action")) expect(entrees(c, b.id), passage.reference).toHaveLength(1);
+        const premier = passage.blocs.find((b) => b.type === "choix");
+        if (!premier) continue;
+        const avant = passage.blocs[passage.blocs.indexOf(premier) - 1];
+        const pageAvant = Math.max(...entrees(c, avant.id).map((m) => m.page));
+        if (entrees(c, premier.id)[0].page > pageAvant) separes += 1;
       }
     }
+    expect(separes).toBeGreaterThan(0);
   });
 
   it("F11-AC39 — trente destinations : le groupe se coupe entre deux phrases, toutes imprimées, sans signalement", async () => {

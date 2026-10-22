@@ -36,8 +36,7 @@ export type Apercu = {
   /** Les pages peu remplies et leur blanc, en millimètres sur la page (F11.3) */
   peuRemplies: { page: number; mm: number; x: number; y: number; l: number; h: number; apres: string | null; dedans: boolean }[];
   /** Ce que mesure chaque passage, pour l'ordre des passages (F11.5) */
-  /** `choix` : la fin du passage qui ne se coupe pas ; `apresTexte` : elle suit un paragraphe, dont deux lignes l'accompagnent */
-  mesures: Record<string, { h: number; choix: number; apresTexte?: boolean; pleinePage: boolean; blocs?: [string, number][] }>;
+  mesures: Record<string, { h: number; choix: number; pleinePage: boolean; blocs?: [string, number][] }>;
   hauteurUtile: number;
   blancTotal: number;
 };
@@ -45,7 +44,7 @@ export type Apercu = {
 type Garde = Omit<Apercu, "adresse" | "empreinte"> & { version?: number };
 
 /** La façon de mesurer le livre : un aperçu gardé d'une autre version se recompose */
-export const VERSION_DE_LA_MESURE = 11;
+export const VERSION_DE_LA_MESURE = 12;
 
 export async function apercuDuLivre(e: Enseignant, projetId: string): Promise<Apercu | null> {
   const instantane = await instantaneDuLivre(e, projetId);

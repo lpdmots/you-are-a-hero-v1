@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Agrandissable } from "@/composants/Agrandissable";
 import { Bulle } from "@/composants/Bulle";
@@ -12,6 +13,7 @@ import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { LivreGratuit } from "@/composants/OffreDuPass";
 import { AGES, NOMS_DES_AGES, type AgeDesLecteurs } from "@/domaine/aides-ia";
 import type { Limites, Offre } from "@/domaine/offre";
+import type { Onglet } from "@/domaine/projets";
 import { exempleDuStyle, nomDeFichier, nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
 import { adresseRepereEnGrand } from "@/domaine/visuels";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
@@ -31,7 +33,7 @@ type Reglage = {
  * Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur
  * mise en forme, le style des images et le héros absent des images (F06-AC48, F10.1, F04.1, F10.2).
  */
-export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livre?: { offre: Offre; limites: Limites } | null }) {
+export function MenuProjet({ projet, onglet, livre = null }: { projet: ProjetRegle; onglet: Onglet; livre?: { offre: Offre; limites: Limites } | null }) {
   const [ouvert, setOuvert] = useState<"reglages" | "image" | null>(null);
   const [titre, setTitre] = useState(projet.titre);
   const [enregistre, setEnregistre] = useState(false);
@@ -65,25 +67,33 @@ export function MenuProjet({ projet, livre = null }: { projet: ProjetRegle; livr
     <>
       {/* Les images en route du projet, suivies sur chaque onglet : la page se relit à leur arrivée */}
       <SuiviDesImages projetId={projet.id} />
-      {/* Un bouton nommé plutôt qu'un menu à une seule commande : les réglages du projet (style des
-          images, façon d'écrire pour l'IA…) se voient sans chercher (18 octobre 2026, remarque du porteur) */}
-      <button
-        type="button"
-        className="btn btn--petit reglages-projet"
-        aria-label="Réglages du projet"
-        onClick={() => {
-          setTitre(projet.titre);
-          setStyle(projet.styleImages);
-          setStyleAutre(projet.styleAutre);
-          setEcriture(projet.consigneEcriture);
-          setStylesOuverts(false);
-          setEnregistre(false);
-          setOuvert("reglages");
-        }}
-      >
-        <Icone nom="reglages" />
-        Réglages
-      </button>
+      {/* La lecture d'essai, à portée de main depuis chaque onglet : « Tester la lecture » du Livre
+          était trop discret (22 octobre 2026, remarque du porteur) ; le retour ramène à l'onglet */}
+      <div className="commandes-projet">
+        <Link className="btn btn--petit" href={`/projet/${projet.id}/lecture?de=onglet&onglet=${onglet}`}>
+          <Icone nom="livre" />
+          Lire à l’essai
+        </Link>
+        {/* Un bouton nommé plutôt qu'un menu à une seule commande : les réglages du projet (style des
+            images, façon d'écrire pour l'IA…) se voient sans chercher (18 octobre 2026, remarque du porteur) */}
+        <button
+          type="button"
+          className="btn btn--petit"
+          aria-label="Réglages du projet"
+          onClick={() => {
+            setTitre(projet.titre);
+            setStyle(projet.styleImages);
+            setStyleAutre(projet.styleAutre);
+            setEcriture(projet.consigneEcriture);
+            setStylesOuverts(false);
+            setEnregistre(false);
+            setOuvert("reglages");
+          }}
+        >
+          <Icone nom="reglages" />
+          Réglages
+        </button>
+      </div>
       {ouvert === "reglages" ? (
         <Panneau titre="Réglages du projet" sous={projet.titre} onFermer={() => setOuvert(null)} pied={<PiedFermer enregistre={enregistre} enCours={enCours} onFermer={() => setOuvert(null)} />}>
           {/* Le projet lui-même : son titre et son image, puis son pass quand la vente est ouverte */}

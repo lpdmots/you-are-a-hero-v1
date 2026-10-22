@@ -2539,9 +2539,18 @@ a.noeud__ailleurs {
 }
 
 /* « Réglages » du projet, dans son en-tête : un bouton nommé, visible (18 octobre 2026) */
-.reglages-projet {
+.commandes-projet {
   align-self: start;
   flex: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+@media (max-width: 720px) {
+  .commandes-projet {
+    justify-content: flex-start;
+  }
 }
 /* Sous « Choisir une image » : « Télécharger » l'image choisie (18 octobre 2026) */
 .reg-image__gestes {

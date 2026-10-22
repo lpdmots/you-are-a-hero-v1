@@ -10,10 +10,11 @@ import type { Provenance } from "./page";
 
 /** Où « Quitter » ramène : la tâche « Tester la lecture » du Livre, ou la scène d'où l'on est parti. */
 export const adresseDeQuitter = (projetId: string, p: Provenance): string =>
-  p.de === "scene" ? `/projet/${projetId}/scene/${p.scene}` : `/projet/${projetId}/livre?etape=chemins`;
+  p.de === "scene" ? `/projet/${projetId}/scene/${p.scene}` : p.de === "onglet" ? `/projet/${projetId}/${p.onglet}` : `/projet/${projetId}/livre?etape=chemins`;
 
 /** Ce que l'adresse garde de la provenance, pour la retrouver au retour d'une scène. */
-export const requeteDeProvenance = (p: Provenance): string => (p.de === "scene" ? `de=scene&scene=${p.scene}` : "de=livre");
+export const requeteDeProvenance = (p: Provenance): string =>
+  p.de === "scene" ? `de=scene&scene=${p.scene}` : p.de === "onglet" ? `de=onglet&onglet=${p.onglet}` : "de=livre";
 
 /**
  * La lecture d'essai de l'adulte (F09.1) : la lecture commune, et son bandeau — le chapitre,

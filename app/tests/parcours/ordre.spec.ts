@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { adultePret, aller, choixAuto, recit, semerBlocs, semerImage, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
+import { action, adultePret, aller, choixAuto, recit, semerBlocs, semerImage, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
 
 /**
  * Étape 6 du plan, lot 6 : l'ordre des passages (F11.5, F11.6) — « Réordonner les passages »,
@@ -96,7 +96,11 @@ test("F11-AC86, F11-AC99 — un passage a changé de page depuis la décision : 
   expect(await rangs()).toEqual(avant);
 });
 
-/** Un passage de huit phrases laisse 59 mm de blanc : le suivant, court mais fait de six choix, ne s'y coupe pas. */
+/**
+ * Un passage de huit phrases laisse 59 mm de blanc : le suivant s'ouvre sur une longue action de
+ * jeu, qui ne se coupe pas et garde son numéro avec elle (les choix, eux, se coupent depuis le
+ * 22 octobre 2026).
+ */
 async function blancComblable(page: Page): Promise<Livre> {
   const { compte, base } = await adultePret(page);
   const projet = await semerProjet(base, compte, "personnel", "choix", "Le phare");
@@ -104,7 +108,7 @@ async function blancComblable(page: Page): Promise<Livre> {
   const s = chapitres[0].scenes;
   await base.from("projets").update({ depart_scene_id: s[0] }).eq("id", projet);
   await semerBlocs(base, s[0], [recit(PHRASE.repeat(8)), choixAuto("Continuer", s[1])]);
-  await semerBlocs(base, s[1], [recit("Lou hésite."), ...Array.from({ length: 6 }, (_, k) => choixAuto(`Option ${k + 1}`, s[2 + (k % 3)]))]);
+  await semerBlocs(base, s[1], [action(PHRASE.repeat(4)), recit("Lou hésite."), ...Array.from({ length: 6 }, (_, k) => choixAuto(`Option ${k + 1}`, s[2 + (k % 3)]))]);
   for (const i of [2, 3, 4]) await semerBlocs(base, s[i], [recit("Court."), choixAuto("Suite", s[5])]);
   await semerBlocs(base, s[5], [recit(PHRASE.repeat(4))]);
   await base.from("scenes").update({ fin: true }).eq("id", s[5]);
@@ -125,9 +129,11 @@ test("F11-AC67, F11-AC68 — sur une page peu remplie, les passages courts plus 
   await versLesBlancs(page);
   const suggestion = page.locator(".suggestion");
   await expect(suggestion).toContainText("3 passages peuvent le combler");
-  await expect(suggestion.locator(".suggestion__numero")).toHaveText(["3", "4", "5"]);
-  await expect(suggestion.locator(".suggestion__candidat").first()).toContainText("La barque");
-  await suggestion.locator(".suggestion__candidat").nth(2).getByRole("button", { name: "Placer ici" }).click();
+  // Trois passages de même hauteur, à quelques dixièmes près : leur ordre n'est pas ce qui se vérifie
+  await expect(suggestion.locator(".suggestion__numero")).toHaveCount(3);
+  expect((await suggestion.locator(".suggestion__numero").allTextContents()).sort()).toEqual(["3", "4", "5"]);
+  await expect(suggestion.locator(".suggestion__candidat").filter({ hasText: "La barque" })).toHaveCount(1);
+  await suggestion.locator(".suggestion__candidat").filter({ has: page.locator(".suggestion__numero", { hasText: /^5$/ }) }).getByRole("button", { name: "Placer ici" }).click();
   await expect(page.locator(".apercu__fait")).toContainText("Passé du n° 5 au n° 2 · les renvois suivent.");
   await page.locator(".apercu__fait").getByRole("button", { name: "Annuler" }).click();
   await expect(page.locator(".apercu__fait")).toHaveCount(0);

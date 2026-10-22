@@ -6333,8 +6333,11 @@ la page de la scène, avec « Retour au Livre ».
 - **Entrées :** pour l'adulte, la tâche « Tester la lecture » de
   « Vérifier les chemins » (F11.6), qui ouvre « Par où commencer ? », et
   « Lire à l'essai d'ici » dans le menu ⋯ de la scène, qui ouvre la lecture
-  sur cette scène. Pour l'élève, « Lire à l'essai » sur sa page d'histoire,
-  près de « Mon travail ».
+  sur cette scène. Ajouté le 22 octobre 2026, le porteur trouvant ces
+  entrées trop discrètes : « Lire à l'essai » dans l'en-tête du projet, à
+  côté de « Réglages », sur chaque onglet ; il ouvre « Par où commencer ? »,
+  et « Quitter » ramène à l'onglet d'où l'on vient. Pour l'élève, « Lire à
+  l'essai » sur sa page d'histoire, près de « Mon travail ».
 - **Point de départ de l'élève :** une carte par chapitre attribué,
   « Commencer au début de *La lisière* », qui ouvre la première scène dans
   l'ordre de lecture du chapitre, et « Depuis une scène », par sa recherche
@@ -8194,25 +8197,27 @@ le titre de chapitre imprimé suit la règle du titre de partie.
 
 - **Ni veuve ni orpheline :** un paragraphe coupé entre deux pages laisse au
   moins deux lignes en bas de l'une et deux lignes en haut de l'autre.
-- **Blocs jamais coupés :** un groupe de phrases de choix, une action de jeu,
-  une image, la marque de fin, un titre de partie et un numéro de passage ne
-  sont pas coupés entre deux pages.
+- **Blocs jamais coupés :** une phrase de choix, une action de jeu, une
+  image, la marque de fin, un titre de partie et un numéro de passage ne
+  sont pas coupés entre deux pages. Un groupe de phrases de choix se coupe
+  entre deux phrases (révisé le 22 octobre 2026).
 - **Numéro et titre jamais seuls en bas de page :** le numéro de passage, et
   le titre de partie imprimé au-dessus de lui, restent avec les deux
   premières lignes au moins du passage.
-- **Choix, action et fin jamais isolés :** un groupe de choix, une action de
-  jeu et la marque de fin restent avec le bloc qui les précède ; si c'est un
-  paragraphe, avec ses deux dernières lignes au moins. Une fin de paragraphe,
-  une action de jeu et les choix qui la suivent forment ainsi un seul ensemble.
-- **Conséquence acceptée :** un passage court ne peut être coupé nulle part ;
-  s'il ne tient pas en bas de page, il passe entier à la suivante et laisse
-  du blanc. Ce blanc se réduit par les ajustements de composition ; il est
-  préféré à un choix séparé de son texte.
+- **Choix, action et fin séparables (décidé par le porteur le 22 octobre
+  2026) :** un groupe de choix, une action de jeu et la marque de fin
+  peuvent commencer sur la page qui suit le bloc qui les précède, et les
+  choix se répartir sur deux pages. Sur un vrai livre, la règle qu'elle
+  remplace (« jamais isolés » : ils restaient avec le bloc d'avant, une image
+  entière ou les deux dernières lignes d'un paragraphe) laissait trop de
+  blanc : une image et ses choix passaient ensemble à la page suivante, un
+  court paragraphe aussi, laissant le bas de page vide. Le blanc est
+  désormais réduit au profit de la page pleine ; on cesse de regrouper.
 - **Règle impossible à tenir :** un groupe de choix plus haut qu'une page est
   coupé entre deux phrases de choix, jamais à l'intérieur d'une phrase ; une
   action de jeu plus haute qu'une page est coupée comme un paragraphe, sa
   mise en valeur se poursuivant sur la page suivante ; un ensemble plus haut
-  qu'une page se détache d'abord du paragraphe qui le précède. Aucun texte
+  qu'une page se coupe comme un autre. Aucun texte
   n'est perdu et rien n'est signalé : l'adulte n'aurait d'autre recours que
   de réécrire sa scène. Des choix posés juste après une image pleine page
   ouvrent la page suivante, selon [F10](#f10--illustrations).
@@ -8237,19 +8242,23 @@ le titre de chapitre imprimé suit la règle du titre de partie.
   lignes dont trois seulement tiennent en bas de la page 37, lorsque le livre
   est composé, alors la page 37 en porte trois et la page 38 deux ; s'il n'en
   tenait qu'une, le paragraphe commencerait page 38.
-- **F11-AC36 — Passage court d'un seul tenant :** étant donné le passage 14,
-  de trois lignes suivies de trois phrases de choix, et la place pour quatre
-  lignes en bas de la page 52, lorsque le livre est composé, alors le numéro
-  14, son texte et ses choix figurent ensemble page 53.
+- **F11-AC36 — Passage court qui remplit la page (révisé le 22 octobre
+  2026) :** étant donné le passage 14, de trois lignes suivies de trois
+  phrases de choix, et la place pour son numéro et quatre lignes en bas de
+  la page 52, lorsque le livre est composé, alors le numéro 14 et son texte
+  sont page 52, et ses choix commencent page 52 ou 53, aucune phrase de
+  choix n'étant coupée. Avant le 22 octobre, tout le passage passait page 53.
 - **F11-AC37 — Numéro jamais seul :** étant donné la place pour le numéro 21
   et une seule ligne en bas de page, lorsque le livre est composé, alors le
   numéro 21 est imprimé en haut de la page suivante, avec le titre de partie
   s'il ouvre une partie.
-- **F11-AC38 — Action et choix avec leur texte :** étant donné un paragraphe
-  suivi de l'action « Retire un point de volonté à ton héros. » puis de deux
-  choix, lorsqu'une coupure de page tombe dans ce passage, alors l'action et
-  les choix sont sur la même page que les deux dernières lignes au moins du
-  paragraphe.
+- **F11-AC38 — Action et choix entiers, séparables de leur texte (révisé le
+  22 octobre 2026) :** étant donné un paragraphe suivi de l'action « Retire
+  un point de volonté à ton héros. » puis de deux choix, lorsqu'une coupure
+  de page tombe dans ce passage, alors elle peut tomber entre le paragraphe
+  et l'action, ou entre deux choix ; l'action et chaque phrase de choix
+  restent entières sur une page. Avant le 22 octobre, l'action et les choix
+  restaient avec les deux dernières lignes du paragraphe.
 - **F11-AC39 — Groupe de choix plus haut qu'une page :** étant donné « La
   place du village » et ses trente destinations, lorsque le livre est
   composé, alors le groupe est coupé entre deux phrases de choix, toutes sont
@@ -8868,8 +8877,10 @@ porteur, pour simplifier les retouches. À l'écran, la commande s'appelle
   mesuré (texte coupé entre deux lignes, image entière, choix, action et
   fin collés au bloc d'avant) : 5 697 mm annoncés pour 5 525 réels, et
   « Réordonner » fait passer le livre de 242 à 230 pages et de 38 à 16
-  pages peu remplies. Les blancs restants sont presque tous à l'intérieur
-  d'un passage (F11-AC74) : seule une image réduite les comble.
+  pages peu remplies. Le même jour, la règle « choix, action et fin jamais
+  isolés » est retirée (F11.2) et les images en pleine largeur du livre
+  passent à 80 % : 213 pages, 9 peu remplies, toutes par une image de plus
+  de la moitié de la page à l'intérieur d'un passage (F11-AC74).
 
 - **F11-AC64 — Agencement proposé (révisé) :** étant donné un livre de
   145 pages dont douze sont peu remplies, lorsque l'adulte arrive à la

@@ -334,32 +334,17 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
   // Chaque passage mesuré, tous ses morceaux additionnés
   for (const section of document.querySelectorAll("section.passage[data-scene]")) {
     const id = section.dataset.scene;
-    const m = rapport.mesures[id] || (rapport.mesures[id] = { h: 0, choix: 0, apresTexte: false, pleinePage: false });
+    const m = rapport.mesures[id] || (rapport.mesures[id] = { h: 0, choix: 0, pleinePage: false });
     let h = section.getBoundingClientRect().height;
     const numero = section.querySelector("h2.numero:not([data-split-from])");
     if (numero && !section.dataset.splitFrom) h += parseFloat(getComputedStyle(numero).marginTop) || 0;
     m.h = Math.round((m.h + h / MM) * 10) / 10;
-    // La fin du passage qui ne se coupe pas (F11.2) : choix, actions et marque de fin restent avec le
-    // bloc qui les précède — une image entière, ou les deux dernières lignes d'un paragraphe
-    if (!section.dataset.splitTo) {
-      const collants = ".choix-groupe, p.action, p.fin";
-      const dernier = section.lastElementChild;
-      if (dernier && dernier.matches(collants)) {
-        let premier = dernier;
-        let avant = dernier.previousElementSibling;
-        while (avant && avant.matches(collants)) {
-          premier = avant;
-          avant = avant.previousElementSibling;
-        }
-        if (avant && avant.matches("figure.image:not(.page)")) premier = avant;
-        m.apresTexte = Boolean(avant && avant.matches("p.r"));
-        m.choix = Math.round(((dernier.getBoundingClientRect().bottom - premier.getBoundingClientRect().top) / MM) * 10) / 10;
-      }
-    }
+    for (const g of section.querySelectorAll(".choix-groupe")) m.choix = Math.round((m.choix + g.getBoundingClientRect().height / MM) * 10) / 10;
     if (section.querySelector("figure.image.page, .page-image")) m.pleinePage = true;
     // Ses blocs, dans l'ordre, pour que l'ordre des passages simule les coupures (F11.5) : « t » se
-    // coupe entre deux lignes, « i » ne se coupe pas, « c » colle au bloc d'avant, « n » ouvre le
-    // passage et reste avec ce qui le suit. Un bloc coupé entre deux pages additionne ses morceaux.
+    // coupe entre deux lignes (un paragraphe, un groupe de choix), « i » ne se coupe pas (image,
+    // action, fin), « n » ouvre le passage et reste avec ce qui le suit. Un bloc coupé entre deux
+    // pages additionne ses morceaux.
     m.blocs = m.blocs || [];
     const enfants = [...section.children].filter((el) => el.getBoundingClientRect().height > 0 || el.matches("h2.numero"));
     enfants.forEach((el, i) => {
@@ -368,7 +353,7 @@ export const SCRIPT_DE_LA_PAGE = String.raw`async (o) => {
       const fond = suivant ? suivant.getBoundingClientRect().top : r.bottom + (parseFloat(getComputedStyle(el).marginBottom) || 0);
       const haut = r.top - (i === 0 ? parseFloat(getComputedStyle(el).marginTop) || 0 : 0);
       const mm = Math.max(0, (fond - haut) / MM);
-      const sorte = el.matches(".choix-groupe, p.action, p.fin") ? "c" : el.matches("h2.numero, h1, h2, .separateur, .debut-scene") ? "n" : el.matches("p.r, li") ? "t" : "i";
+      const sorte = el.matches("h2.numero, h1, h2, .separateur, .debut-scene") ? "n" : el.matches("p.r, li, .choix-groupe") ? "t" : "i";
       const ref = el.dataset.splitFrom || el.dataset.ref || "";
       const deja = el.dataset.splitFrom ? m.blocs.find((b) => b[2] === ref) : null;
       if (deja) deja[1] = Math.round((deja[1] + mm) * 10) / 10;

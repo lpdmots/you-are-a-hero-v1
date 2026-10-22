@@ -12,13 +12,13 @@ import { groupesDeMelange, ouvertureDe, type PlanNumerote } from "./numeros";
 export type Mesure = {
   /** Toute sa hauteur, l'espace au-dessus de son numéro compris */
   h: number;
-  /** Ce qui ne se coupe pas à sa fin : ses choix, actions et marque de fin, avec l'image ou les deux lignes qui les précèdent */
+  /** Sans blocs mesurés (mesure ancienne) : ce qui ne se coupe pas à sa fin, son groupe de choix avec deux lignes */
   queue: number;
   /** Il porte une image pleine page */
   pleinePage: boolean;
   /**
-   * Ses blocs dans l'ordre, s'ils sont mesurés : « t » se coupe entre deux lignes, « i » ne se
-   * coupe pas, « c » (choix, action, fin) colle au bloc d'avant, « n » (numéro) reste avec ce qui
+   * Ses blocs dans l'ordre, s'ils sont mesurés : « t » se coupe entre deux lignes (paragraphe,
+   * groupe de choix), « i » ne se coupe pas (image, action, fin), « n » (numéro) reste avec ce qui
    * le suit. Sans eux, le passage s'écoule d'un seul tenant jusqu'à sa queue.
    */
   blocs?: [string, number][];
@@ -151,8 +151,8 @@ function poser(e: Etat, m: Modele, id: string, saut: boolean): { etat: Etat; bla
 
 /**
  * Les blocs d'un passage en unités : le texte qui se coupe, et ce qui ne se coupe pas. Le numéro
- * reste avec les deux premières lignes ou le bloc qui le suit ; choix, action et fin restent avec
- * le bloc d'avant — une image entière, ou les deux dernières lignes d'un paragraphe (F11.2).
+ * reste avec les deux premières lignes ou le bloc qui le suit ; rien d'autre ne se regroupe
+ * (F11.2, révisé le 22 octobre 2026).
  */
 function unites(blocs: [string, number][], ligne: number): { coupe: boolean; h: number }[] {
   const u: { coupe: boolean; h: number }[] = [];
@@ -162,21 +162,8 @@ function unites(blocs: [string, number][], ligne: number): { coupe: boolean; h: 
       tete += h;
       continue;
     }
-    const avant = u[u.length - 1];
-    if (sorte === "c" && avant) {
-      if (!avant.coupe) avant.h += h;
-      else if (avant.h <= 4 * ligne) Object.assign(avant, { coupe: false, h: avant.h + h });
-      else {
-        avant.h -= 2 * ligne;
-        u.push({ coupe: false, h: 2 * ligne + h });
-      }
-      continue;
-    }
-    if (sorte === "t" && tete && h > 4 * ligne) {
-      u.push({ coupe: false, h: tete + 2 * ligne }, { coupe: true, h: h - 2 * ligne });
-    } else {
-      u.push({ coupe: sorte === "t" && h > 4 * ligne && !tete, h: tete + h });
-    }
+    if (sorte === "t" && tete && h > 4 * ligne) u.push({ coupe: false, h: tete + 2 * ligne }, { coupe: true, h: h - 2 * ligne });
+    else u.push({ coupe: sorte === "t" && h > 4 * ligne && !tete, h: tete + h });
     tete = 0;
   }
   if (tete) u.push({ coupe: false, h: tete });
@@ -336,14 +323,10 @@ export const liensDuPlan = (liens: { sceneId: string; cibleId: string | null }[]
   return r;
 };
 
-/**
- * Ce que la composition a mesuré, mis à la forme du modèle : la fin du passage ne se coupe pas —
- * ses choix, actions et marque de fin, avec l'image qui les précède, ou les deux dernières lignes
- * du paragraphe qui les précède (`apresTexte`, absent d'une mesure ancienne).
- */
-export const mesuresDuModele = (mesures: Record<string, { h: number; choix: number; apresTexte?: boolean; pleinePage: boolean; blocs?: [string, number][] }>, ligne: number): Record<string, Mesure> =>
+/** Ce que la composition a mesuré, mis à la forme du modèle : ses blocs, ou sa hauteur et sa queue (mesure ancienne). */
+export const mesuresDuModele = (mesures: Record<string, { h: number; choix: number; pleinePage: boolean; blocs?: [string, number][] }>, ligne: number): Record<string, Mesure> =>
   Object.fromEntries(
-    Object.entries(mesures).map(([id, m]) => [id, { h: m.h, queue: m.choix > 0 ? m.choix + (m.apresTexte === false ? 0 : 2 * ligne) : 0, pleinePage: m.pleinePage, ...(m.blocs ? { blocs: m.blocs } : {}) }]),
+    Object.entries(mesures).map(([id, m]) => [id, { h: m.h, queue: m.choix > 0 ? m.choix + 2 * ligne : 0, pleinePage: m.pleinePage, ...(m.blocs ? { blocs: m.blocs } : {}) }]),
   );
 
 /**
