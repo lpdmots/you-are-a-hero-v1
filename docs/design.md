@@ -306,7 +306,8 @@ dessins selon la taille (grand avec fumée, moyen, petit pour les icônes).
 Fichiers, règles d'usage et icônes du site :
 [identité — logo](../identite/logo/README.md). L'application l'affiche
 depuis le 22 octobre 2026 (barre du haut, écrans d'entrée, icônes) ; la
-maquette non.
+maquette non. Le même jour, le dragon devient la mascotte du site :
+[Fantaisie et mascotte](#fantaisie-et-mascotte-22-octobre-2026).
 
 **Illustrations proposées :** illustration 2D contemporaine en lumière de
 jour, formes arrondies, peu de détails et un petit animal complice placé dans
@@ -2087,6 +2088,164 @@ compte », une ligne « Bibliothèque d'images » sous « Image créée à l'ajo
 son interrupteur et un « i » (« Que devient une image proposée ? »).
 Migrations `age_des_lecteurs` et `bibliotheque_d_images`, en base locale
 seulement. Captures 980 à 984 (`npm run captures -- compte`).
+
+### Fantaisie et mascotte (22 octobre 2026)
+
+Demande du porteur : « une touche de fantaisie, d'enfant » sur un site qu'il
+juge « joli mais un peu triste ». Une critique en deux lectures indépendantes
+(captures de 26 écrans, adulte, élève et public, et relevé du code) donne
+28/40 en ergonomie : le défaut est émotionnel, pas fonctionnel.
+
+**Diagnostic.** Les illustrations portent seules la gaieté ; leur cadre est
+celui d'un outil de gestion : fond `--bureau` gris partout, titres en
+grotesque noir très gras, cartes blanches, boutons cernés. Rectifié sur
+remarque du porteur le même jour : ces illustrations sont des images de
+repérage des projets et des chapitres (F10.1), visuels par défaut ou images
+choisies par chaque enseignant (importées, créées par l'IA dans l'un des huit
+styles) ; elles varient d'un compte à l'autre et ne sont pas l'identité du
+site. Les pages générales (accueil public, entrées, « Qui utilise cet
+ordinateur ? », « Mes classes », « Mon compte », aide, « Lire », pages vides)
+n'ont aucune image propre, hormis l'illustration de l'entrée. Le site
+emprunte donc sa chaleur au contenu des utilisateurs : la sienne doit venir
+de la mascotte, de l'espace élève et des moments, et tenir à côté de
+n'importe quelle image de projet (photo, dessin d'enfant, pixel). Cinq causes :
+l'élève hérite tel quel du bureau de l'adulte (même fond, même barre, mêmes
+titres) ; aucun personnage, le dragon n'étant qu'un logo de 30 px, éclipsé à
+l'entrée par le chat de l'illustration ; aucun grand moment (livre prêt en
+bandeau vert d'une ligne, remise en une phrase, « Lire » vide aux trois
+quarts, aucun état vide illustré) ; couleur confinée aux états, le système
+« Cahiers d'aventure » étant réduit à son minimum (cahier en liseré, tampon
+en petite pastille pâle) ; voix du récit (Vollkorn) absente des titres, sauf
+dans la Préparation, l'écran le plus chaleureux. À garder tel quel : les
+illustrations et cartes-cahiers, la copie à marge rouge, les prénoms en
+cursive et leurs gommettes, la page de livre de l'accueil public.
+
+**Décidé par le porteur le 22 octobre 2026, sur recommandation :**
+
+- **Où va la fantaisie.** L'espace élève, franchement (choix du prénom,
+  « Mon travail », « Lire », remise, tampons reçus), et chez l'adulte les
+  seuls seuils : premier projet, écrans d'aide, états vides, livre prêt, PDF
+  créé, partage. Les écrans de travail de l'adulte (Suivi, scène, parties et
+  chapitres, mise en page, réglages) restent tels qu'ils sont. Cela tranche la
+  piste « espace élève plus chaleureux et fantastique » de
+  [Direction visuelle retenue](#direction-visuelle-retenue-et-déclinaisons-à-préciser).
+- **Le dragon devient la mascotte du site, personnage principal**
+  (révise [F11.6](specifications.md#f116--trois-temps-pour-préparer-le-livre)).
+  Il paraît aux moments ci-dessus, jamais dans la copie ni le Suivi ; il ne
+  bouge pas en boucle, dit une phrase au plus, sans bulle qui surgit ni geste
+  obligatoire ; il n'est jamais le visage de l'IA, qui garde ses étincelles en
+  canard pâle. Les animaux des illustrations restent des figurants. Ne pas
+  reproposer une troupe de mascottes. Révisé le même jour : une souris
+  devient son acolyte, seule autre personnage récurrent (voir « Caractère du
+  dragon » plus bas).
+- **L'espace élève quitte le gris du bureau** : fond papier chaud et uni,
+  titres en Vollkorn, prénom en cursive, en grand, couleur du chapitre de
+  l'élève en bandeau. Les écrans de l'adulte gardent `--bureau` et leurs
+  titres. Un « thème enfant » complet (couleurs vives, police ronde) est
+  écarté : il infantiliserait le cycle 3 et romprait « une couleur, un rôle ».
+
+**Décidé ensuite le même jour, sur recommandation :**
+
+- **Dessin :** la mascotte est illustrée dans le style des visuels de
+  l'application (« Illustration 2D lumineuse », `domaine/illustration.ts`).
+  C'est un vrai dragon, avec de vraies ailes de dragon : les ailes en forme
+  de pages ne servent qu'au sens du logo (précisé par le porteur). Ce qu'il
+  reprend du logo : voir « Caractère du dragon ». Le porteur la génère :
+  d'abord une planche de référence, puis chaque pose avec cette planche en
+  image de référence, sur fond transparent. Si le personnage dérive d'une
+  pose à l'autre, repli sur un dessin vectoriel tiré du logo.
+- **Entrée :** l'illustration des écrans d'entrée (élève et adulte) est
+  refaite avec le dragon à la place du chat, même ville, même lumière.
+- **Mouvement :** une seule arrivée brève quand un moment s'ouvre (il se
+  pose, environ un quart de seconde), puis immobile ; supprimée si le système
+  demande moins de mouvement ; ni clignement, ni fumée au survol, ni boucle.
+
+**Caractère du dragon (bible de personnage, entretien du 22 octobre 2026) :**
+
+- **Rôle :** le premier lecteur de la classe. Il a faim d'histoires, attend
+  la suite, se réjouit d'une scène remise et du livre fini ; il n'explique
+  rien et ne juge pas les textes (l'enseignant guide et juge, l'IA aide, les
+  élèves écrivent). Écartés : guide, qui doublerait les écrans d'aide ;
+  héros, qui prendrait la place des personnages des élèves.
+- **Tempérament :** gentil, enthousiaste, un peu pataud, jamais bête. Il se
+  croit redoutable : ému, il lâche une petite fumée qui ne fait peur à
+  personne. Grand lecteur, il connaît des tas d'histoires. Écartés :
+  effrayant, bête (dévaloriserait la lecture), sage (rôle de l'enseignant).
+- **Une acolyte, la souris** (idée du porteur, qui révise le « dragon
+  seul » décidé plus tôt le même jour) : elle adore les livres, mais pour
+  les croquer, quand le dragon en prend soin ; tous deux « dévorent » les
+  livres, elle au sens propre, lui au figuré. Le dragon reste le
+  personnage principal. Elle sert aussi la place disponible : le dragon dans
+  les grands espaces (accueil, entrées, livre fini, écrans d'aide), la
+  souris dans les petits (coin d'une carte, près d'un bouton, téléphone).
+  Pas d'autre personnage récurrent : les animaux des illustrations restent
+  des figurants, les objets de la classe (crayon, gomme, encrier, cartable)
+  servent d'accessoires. Le visuel par défaut de la bibliothèque montre déjà
+  une souris : peu importe, dit le porteur, on dessine la nôtre.
+- **La souris :** gourmande, futée, sans gêne, petite, vive et ronde, d'une
+  couleur chaude qui contraste avec le bleu du dragon. Elle grignote les
+  marges, les pages blanches, les vieux papiers, un coin de couverture,
+  jamais un texte écrit par la classe : le dragon veille, et il gagne
+  toujours sur l'essentiel. Futée face au dragon pataud, petite face au
+  grand. Elle ne parle pas : poses et mimiques seulement ; seul le dragon
+  parle. Pelage noisette (caramel), ventre crème, oreilles roses : la
+  couleur opposée du bleu canard ; le gris ramènerait la tristesse, le blanc
+  disparaîtrait sur le papier.
+- **Noms :** aucun pour l'instant ; le porteur n'est pas sûr qu'il en faille
+  un, à revoir plus tard (piste : les faire baptiser par sa classe, une fois
+  pour tous). Un nom propre à chaque classe est déconseillé.
+- **Ordre :** d'abord une planche de référence par personnage (face,
+  profil, trois-quarts, quelques expressions) et une image des deux ensemble
+  pour fixer leurs tailles, générées par le porteur. Planche du dragon
+  retenue le 22 octobre 2026, au troisième essai :
+  [dragon-reference.webp](../identite/mascotte/dragon-reference.webp) (tête
+  identique dans toutes les vues, taille de tête ramenée à celle d'un jeune
+  dragon, livre rouge uni ; rendu un peu en volume, à juger à côté des
+  visuels). La recopier en image de référence pour chaque pose. Retenue le
+  même jour, une image qui relie le personnage au logo, dans sa composition :
+  [dragon-livre-ouvert.webp](../identite/mascotte/dragon-livre-ouvert.webp)
+  (tête au creux du livre, pointes des vraies ailes aux coins des pages,
+  queue en signet sous le dos ; il lève le nez de sa lecture, le livre se
+  lisant dans les deux sens comme dans le logo). Illustration, non version
+  du logo : elle ne le remplace jamais (barre, icônes, livre). Le poids de la
+  couverture rouge est à juger sur la vraie page. Planche de la souris
+  retenue le même jour, au deuxième essai, alignée sur le rendu lisse du
+  dragon (la première, au poil tracé et à l'encre, rappelait un dessin animé
+  ancien) : [souris-reference.webp](../identite/mascotte/souris-reference.webp).
+  Le lissage a adouci sa malice : chaque prompt de pose la redemande
+  (regard en coin, sourire en biais). Image des deux ensemble retenue au
+  deuxième essai, qui fixe leurs tailles : la souris debout arrive au
+  deuxième livre d'une pile de trois où le dragon est assis
+  ([dragon-et-souris.webp](../identite/mascotte/dragon-et-souris.webp)) ;
+  au premier essai, deux fois trop grande, elle effaçait le contraste du
+  duo, et le dragon avait viré au bleu roi. Les poses ensuite,
+  commandées par le plan des pages générales (accueil, aide, pages vides…)
+  que le porteur veut revoir dans un travail à part.
+- **Ce qu'ils ne font jamais :** paraître dans la copie, le Suivi, les
+  réglages ou la mise en page ; paraître aux moments de perte ou d'incident
+  (conflit de sauvegarde, texte gardé à part, enregistrement en échec) ;
+  juger un texte, comparer ou classer les élèves ; presser quelqu'un ; être
+  le visage de l'IA ou la présenter ; bouger en boucle ou bloquer un geste ;
+  entrer dans le livre ou le lecteur en ligne. Une page introuvable ou une
+  page vide restent permises, rien n'y étant perdu.
+- **Ce qu'il reprend du logo :** le bleu canard du corps (ventre crème), la
+  queue à pointe en flèche, la petite fumée, un livre comme accessoire
+  fréquent sans être obligatoire. Sa tête est celle d'un vrai dragon, sans
+  forcer la ressemblance avec le logo.
+- **Âge et taille :** un jeune dragon de la taille d'un gros chat, grands
+  yeux, ailes un peu petites pour lui : il vole mal. Ni bébé (trop jeune pour
+  le cycle 3), ni grand dragon. Précisé par le porteur sur la première
+  planche : pas de corps potelé ni de petites pattes de bébé ; l'allure et
+  les proportions de cette planche lui conviennent. Le côté pataud passe par
+  les expressions et les gestes, pas par la silhouette.
+- **Parole :** il ne parle qu'aux élèves, en les tutoyant, à la première
+  personne, une phrase au plus, avec des mots de lecteur gourmand. Chez
+  l'adulte, il figure sans parler ; les phrases restent celles de l'outil.
+
+**Reste à décider :** leurs réactions aux moments, la liste
+exacte des moments et leurs phrases, un nom
+éventuel, les valeurs (teinte du papier, tailles des titres). Rien n'est
+construit ; la construction demande l'instruction du porteur.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
@@ -4056,7 +4215,9 @@ sont proposés dans la [maquette de synthèse](#maquette-de-synthèse), sans
 
 **Pistes exprimées par le porteur, à préciser :** varier les mondes illustrés ;
 proposer un espace personnel plus sobre, éventuellement avec des images
-d'aide, et un espace élève plus chaleureux et fantastique.
+d'aide, et un espace élève plus chaleureux et fantastique. Le dernier point
+est tranché le 22 octobre 2026 : voir
+[Fantaisie et mascotte](#fantaisie-et-mascotte-22-octobre-2026).
 
 **Recommandation :** décliner la même identité selon l'espace adulte ou élève,
 plutôt que selon le seul mode personnel/classe. L'enseignant bénéficie lui

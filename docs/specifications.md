@@ -9210,9 +9210,12 @@ La réponse à « Que fait-on maintenant ? » est visible d'emblée, avec les
 tâches de l'étape ; les autres questions restent repliées. L'écran porte
 une case « Ne plus afficher », décochée au départ : tant qu'elle n'est pas
 cochée, il revient à l'ouverture de l'étape. Un bouton d'aide discret
-rouvre cet écran à tout moment. La mascotte envisagée n'est pas retenue à
-ce stade ; un personnage pourra illustrer cet écran plus tard sans en
-changer le rôle.
+rouvre cet écran à tout moment. Révisé le 22 octobre 2026 par le porteur :
+le dragon du logo devient la mascotte du site, avec une souris pour
+acolyte ; l'un ou l'autre peut illustrer cet écran, sans en changer le rôle
+ni ajouter de texte ; ni l'un ni l'autre n'est le visage de l'IA. Ses règles d'apparition sont dans le
+[design](design.md#fantaisie-et-mascotte-22-octobre-2026). La règle
+remplacée disait : « La mascotte envisagée n'est pas retenue à ce stade ».
 
 **Confirmé le 14 octobre 2026 (entretien de l'étape 5) :** une aide
 refermée par « Commencer » ne revient pas avant la visite suivante de la

@@ -113,6 +113,9 @@ les icônes du site sont tirés des maîtres avec les scripts du skill
 
 - **Marque :** non déposée ; une recherche d'antériorité (INPI, EUIPO,
   recherche d'images) est recommandée avant un dépôt.
-- **Mascotte :** le porteur envisage le dragon en mascotte du site ; cela
-  touche F11.6 (« sans mascotte à ce stade ») et se décide à part.
+- **Mascotte :** décidée le 22 octobre 2026, le dragon devient la mascotte
+  du site, avec une souris pour acolyte. C'est un vrai dragon, aux vraies
+  ailes : il reprend du logo sa couleur, sa queue en flèche et sa fumée, pas
+  ses ailes-pages. Ses poses restent à arrêter
+  ([design](../../docs/design.md#fantaisie-et-mascotte-22-octobre-2026)).
 - **Maquette :** elle n'affiche pas ce logo.

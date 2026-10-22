@@ -548,8 +548,19 @@ avant de commencer » soient tranchées.
   symbole commun aux noms français et anglais
   ([logo](identite/logo/README.md)). L'application l'affiche depuis le
   22 octobre 2026 (barre du haut, écrans d'entrée, icônes d'onglet et
-  d'écran d'accueil), en ligne jusqu'à `40b2e66` ; la maquette non. Faire du dragon
-  une mascotte (F11.6 dit « sans mascotte à ce stade ») reste à décider.
+  d'écran d'accueil), en ligne jusqu'à `40b2e66` ; la maquette non.
+- **Fantaisie et mascotte, décidées le 22 octobre 2026** après une critique
+  du site jugé « un peu triste » : la fantaisie va à l'espace élève et aux
+  seuils de l'adulte, ses écrans de travail restant sobres ; le dragon
+  devient la mascotte (F11.6 révisé), avec une souris pour seule acolyte ;
+  son caractère est fixé (premier lecteur de la classe, gentil, pataud,
+  jamais bête) ; l'espace élève quitte le gris
+  du bureau (papier chaud, titres en Vollkorn) ; la mascotte est illustrée
+  dans le style des visuels, remplace le chat de l'entrée et ne bouge qu'à
+  son arrivée. Images de référence du duo retenues le même jour
+  (`identite/mascotte/`). Restent à décider les moments, dans un plan des
+  pages générales (accueil, aide…) à venir, et un nom ; rien n'est construit
+  ([design](docs/design.md#fantaisie-et-mascotte-22-octobre-2026)).
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
