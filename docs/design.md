@@ -296,6 +296,14 @@ fonds utilisés ont été calculés au-dessus de 4,5:1 ; ce contrôle ponctuel
 ne vaut pas audit complet. Les valeurs détaillées sont dans la
 [feuille de style de la maquette](../maquettes/synthese/assets/base.css).
 
+**Logo, décidé par le porteur le 21 octobre 2026 :** le dragon-livre, un
+livre ouvert dont les pages sont les ailes et dont la queue pend du dos comme
+un signet, en bleu canard, le nom en Vollkorn SemiBold graphite ; trois
+dessins selon la taille (grand avec fumée, moyen, petit pour les icônes).
+Fichiers, règles d'usage et icônes du site :
+[identité — logo](../identite/logo/README.md). Ni l'application ni la
+maquette ne l'affichent encore.
+
 **Illustrations proposées :** illustration 2D contemporaine en lumière de
 jour, formes arrondies, peu de détails et un petit animal complice placé dans
 les deux tiers supérieurs, pour rester visible au-dessus de l'étiquette.
