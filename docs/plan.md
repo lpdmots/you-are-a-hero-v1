@@ -3271,11 +3271,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     l'Éducation nationale). Courriels du compte retouchés (lien en clair, pied
     qui nomme l'expéditeur), recollés chez Supabase. Mot d'aide à l'écran pour
     les adresses académiques proposé, refusé par le porteur.
-  - **Restent pour terminer l'étape :** l'écran de Google qui affiche « Il
-    était une classe » (vérification en cours chez Google) ; une nuit de
-    sauvegarde partie seule, à voir le 23 octobre ; la messagerie académique,
-    à réessayer vers le 29 octobre puis mi-novembre, le compte académique non
-    confirmé gardé pour cela.
+- **Terminée le 22 octobre 2026 sur décision du porteur** (« on déclare
+  l'étape 9 terminée »). Restent à constater, sans rouvrir l'étape : l'écran
+  de Google qui affiche « Il était une classe » (vérification en cours chez
+  Google) ; une nuit de sauvegarde partie seule, à voir le 23 octobre ; la
+  messagerie académique, à réessayer vers le 29 octobre puis mi-novembre, le
+  compte académique non confirmé gardé pour cela.
 - **Reste à la charge du porteur, hors de la construction :** créer le compte
   Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
   DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité
