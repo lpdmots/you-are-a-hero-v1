@@ -55,6 +55,10 @@ test("F14-AC07 — « Mon compte » dit le solde ; aucun bouton d'IA ne montre d
   await soldeA(s.compte, 8);
   await titres.click();
   await expect(MESSAGE(page)).toContainText("Il vous reste 8 ✦.");
+  // Le menu du nom relit le solde à son ouverture, sans recharger la page
+  await page.keyboard.press("Escape");
+  await ouvrirLeMenuDuCompte(page);
+  await expect(page.locator("header").getByText("8 ✦ pour les aides")).toBeVisible();
 });
 
 test("F14-AC08 — à 0 ✦, l'aide ne part pas : « Vous n'avez plus d'étoiles. Tout le reste fonctionne. »", async ({ page }) => {

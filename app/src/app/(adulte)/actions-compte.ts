@@ -9,7 +9,12 @@ import { adresseDuSite, env } from "@/serveur/env";
 import { clientService } from "@/serveur/supabase";
 import { supprimerLeCompte } from "@/serveur/suppression";
 import { lireReglagesIa, type ReglagesIa } from "@/domaine/aides-ia";
-import { exigerEnseignant } from "@/serveur/adulte";
+import { enseignantCourant, exigerEnseignant } from "@/serveur/adulte";
+
+/** Le solde d'étoiles du moment, relu à l'ouverture du menu du nom (F14-AC07) ; null pour le porteur. */
+export async function monSolde(): Promise<number | null> {
+  return (await enseignantCourant())?.etoiles ?? null;
+}
 
 /** Nom sous lequel les élèves voient l'adulte (F01-AC13, F01-AC30). */
 export async function enregistrerNomAffiche(nom: string): Promise<void> {

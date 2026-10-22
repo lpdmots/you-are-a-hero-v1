@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { CSSProperties } from "react";
+import { useEffect, useState, type CSSProperties } from "react";
 import { enEtoiles } from "@/domaine/aides-ia";
 import { seDeconnecter } from "@/app/entree/actions";
+import { monSolde } from "@/app/(adulte)/actions-compte";
 import { BoutonEnvoi } from "./Attente";
 import { Logo } from "./Logo";
 import { Menu } from "./Menu";
@@ -19,6 +20,28 @@ type Props = {
   /** Le compte du porteur : « Administration » dans le menu du nom (F14) */
   admin?: boolean;
 };
+
+/**
+ * Le solde dans le menu du nom : celui de la page au départ, relu à chaque ouverture du menu,
+ * puisque les aides et les images créées l'usent sans recharger la page.
+ */
+function Solde({ depart }: { depart: number }) {
+  const [solde, setSolde] = useState(depart);
+  useEffect(() => {
+    let actif = true;
+    void monSolde().then((s) => {
+      if (actif && s !== null) setSolde(s);
+    });
+    return () => {
+      actif = false;
+    };
+  }, []);
+  return (
+    <span className={styles.solde}>
+      <b>{enEtoiles(solde)}</b> pour les aides
+    </span>
+  );
+}
 
 const signe = (nom: string): string =>
   nom
@@ -76,11 +99,7 @@ export function BarreAdulte({ nomAffiche, courriel, etoiles, admin = false }: Pr
                 <strong>{visible}</strong>
                 {courriel && courriel !== visible ? <span title={courriel}>{courriel}</span> : null}
                 {/* Le solde, d'un coup d'œil ; le compte du porteur n'en a pas (F14-AC07, AC11) */}
-                {etoiles !== null ? (
-                  <span className={styles.solde}>
-                    <b>{enEtoiles(etoiles)}</b> pour les aides
-                  </span>
-                ) : null}
+                {etoiles !== null ? <Solde depart={etoiles} /> : null}
               </div>
               <hr />
               <Link href="/compte" onClick={fermer} aria-current={ici("/compte")}>
