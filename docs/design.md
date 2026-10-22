@@ -282,7 +282,9 @@ L'illustration crée l'ambiance ; les objets portent l'information.
 3. **Trois voix.** Atkinson Hyperlegible pour l'outil (commandes, titres de
    travail, tableaux, références en version Mono) ; Vollkorn pour le texte du
    récit, les choix proposés au lecteur, les extraits et les fiches papier ;
-   la cursive Playwrite FR seulement pour l'accueil et le prénom de l'élève.
+   la cursive Playwrite FR seulement pour l'accueil et le prénom de l'élève,
+   et pour le nom dans le logo : la cursive traditionnelle des écoles,
+   Playwrite FR Trad, partout depuis le 22 octobre 2026 (FR Moderne avant).
 4. **Une structure par niveau.** Un en-tête de projet commun à Préparation,
    Parties et chapitres et Suivi ; un bandeau de chapitre commun au chapitre
    et à ses scènes ; une seule page de scène pour écrire, reprendre, relire
@@ -298,7 +300,8 @@ ne vaut pas audit complet. Les valeurs détaillées sont dans la
 
 **Logo, décidé par le porteur le 21 octobre 2026 :** le dragon-livre, un
 livre ouvert dont les pages sont les ailes et dont la queue pend du dos comme
-un signet, en bleu canard, le nom en Vollkorn SemiBold graphite ; trois
+un signet, en bleu canard, le nom en cursive des écoles (Playwrite FR Trad,
+trait épaissi) graphite ; trois
 dessins selon la taille (grand avec fumée, moyen, petit pour les icônes).
 Fichiers, règles d'usage et icônes du site :
 [identité — logo](../identite/logo/README.md). L'application l'affiche

@@ -2,7 +2,7 @@
 import os, math, sys
 ICI = os.path.dirname(os.path.abspath(__file__)); sys.path.insert(0, ICI)
 from geom import transform, mul, T, S, bbox, stroke_outline, fmt
-from glyphs import Font, word_path
+from glyphs import Font, shaped_path
 CANARD, GRAPHITE = '#0B6A73', '#1E2226'
 import sys
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ICI, 'sortie'); os.makedirs(OUT, exist_ok=True)
@@ -59,38 +59,49 @@ for k, ds in SYMBOLS.items():
     open(f'{OUT}/dragon-{k}.svg','w').write(svg(256, 256, group(ds, CANARD, 'symbole'), f'Il était une classe — dragon {NOMS[k]}'))
 
 # ---- nom ----
-F = Font(os.environ.get('POLICE', os.path.join(ICI, '../../../app/node_modules/@fontsource/vollkorn/files/vollkorn-latin-600-normal.woff')))
-def cap_height(size):
-    c = F.contours(F.cmap[ord('H')]); return max(p[1] for cc in c for p in cc) * size / F.upm
+# Cursive traditionnelle des écoles françaises, celle de tout le site (décidé le 22 octobre 2026),
+# mise en forme par HarfBuzz et au trait épaissi d'un contour de sa couleur.
+POLICE = os.environ.get('POLICE', os.path.join(ICI, 'PlaywriteFRTrad-400.ttf'))
+F = Font(POLICE)
+EPAIS = 0.035                                      # épaississement, en fraction du corps
+def x_height(size):
+    c = F.contours(F.cmap[ord('x')]); return max(p[1] for cc in c for p in cc) * size / F.upm
+def nom(text, size, x0, base): return shaped_path(F, POLICE, text, size, x0, base)
+def groupe_nom(d, size):
+    return (f'<g id="nom" fill="{GRAPHITE}" stroke="{GRAPHITE}" stroke-width="{fmt(EPAIS*size)}" '
+            f'stroke-linejoin="round"><path d="{d}"/></g>')
 NAMES = {'fr': ('Il était une classe', ('Il était', 'une classe')), 'en': ('Once Upon a Classroom', ('Once Upon', 'a Classroom'))}
 
 def horizontal(lang, kind='moyen'):
     ds = fit(pieces(kind), pad=0, lift=0)          # symbole sans marge, hauteur 256
     sx0, sy0, sx1, sy1 = bbox(ds); sh = sy1 - sy0
     px0, py0, px1, py1 = bbox(ds[:2])              # les deux pages
-    size = 118; ch = cap_height(size)
-    base = (py0 + py1)/2 + ch/2 + 4                # capitales centrées sur le livre
-    gap = 0.16 * sh; pad = 0.12 * sh
-    d, w = word_path(F, NAMES[lang][0], size, sx1 + gap, base)
-    x0, y0, x1, y1 = sx0 - pad, sy0 - pad, sx1 + gap + w + pad, sy1 + pad
-    body = group(ds, CANARD, 'symbole') + f'<g id="nom" fill="{GRAPHITE}"><path d="{d}"/></g>'
+    size = 132; xh = x_height(size)
+    base = (py0 + py1)/2 + xh/2 + 6                # minuscules centrées sur le livre
+    gap = 0.14 * sh; pad = 0.12 * sh
+    d, w = nom(NAMES[lang][0], size, sx1 + gap, base)
+    tx0, ty0, tx1, ty1 = bbox([d]); m = EPAIS*size
+    x0, y0 = sx0 - pad, min(sy0, ty0 - m) - pad
+    x1, y1 = max(sx1 + gap + w, tx1 + m) + pad, max(sy1, ty1 + m) + pad
+    body = group(ds, CANARD, 'symbole') + groupe_nom(d, size)
     return svg(x1 - x0, y1 - y0, body, NAMES[lang][0], vb_x=x0, vb_y=y0)
 
 def stacked(lang, kind='grand'):
-    ds = fit(pieces(kind), pad=0, lift=0); sx0, sy0, sx1, sy1 = bbox(ds); sw = sx1 - sx0; scx = (sx0 + sx1)/2
-    size = 88; ch = cap_height(size); lead = size * 1.12
-    l1, l2 = NAMES[lang][1]
-    _, w1 = word_path(F, l1, size, 0, 0); _, w2 = word_path(F, l2, size, 0, 0)
-    b1 = sy1 + 0.2*(sy1 - sy0) + ch; b2 = b1 + lead
-    d1, _ = word_path(F, l1, size, scx - w1/2, b1); d2, _ = word_path(F, l2, size, scx - w2/2, b2)
-    x0 = min(sx0, scx - max(w1, w2)/2); x1 = max(sx1, scx + max(w1, w2)/2)
-    pad = 0.12 * (sy1 - sy0); y1 = b2 + 0.25*size
-    body = group(ds, CANARD, 'symbole') + f'<g id="nom" fill="{GRAPHITE}"><path d="{d1} {d2}"/></g>'
-    return svg(x1 - x0 + 2*pad, y1 - sy0 + 2*pad, body, NAMES[lang][0], vb_x=x0 - pad, vb_y=sy0 - pad)
+    ds = fit(pieces(kind), pad=0, lift=0); sx0, sy0, sx1, sy1 = bbox(ds); scx = (sx0 + sx1)/2; sh = sy1 - sy0
+    size = 104; l1, l2 = NAMES[lang][1]
+    t1, w1 = nom(l1, size, 0, 0); t2, w2 = nom(l2, size, 0, 0)
+    _, a1, _, d1_ = bbox([t1]); _, a2, _, _ = bbox([t2])   # hampes au-dessus (négatif), jambages au-dessous
+    b1 = sy1 + 0.12*sh - a1; b2 = b1 + d1_ - a2 + 0.06*size  # les lignes ne se touchent pas
+    d1, _ = nom(l1, size, scx - w1/2, b1); d2, _ = nom(l2, size, scx - w2/2, b2)
+    tx0, ty0, tx1, ty1 = bbox([d1, d2]); m = EPAIS*size; pad = 0.12 * sh
+    x0 = min(sx0, tx0 - m) - pad; x1 = max(sx1, tx1 + m) + pad; y1 = ty1 + m + pad
+    body = group(ds, CANARD, 'symbole') + groupe_nom(d1 + ' ' + d2, size)
+    return svg(x1 - x0, y1 - (sy0 - pad), body, NAMES[lang][0], vb_x=x0, vb_y=sy0 - pad)
 
 def wordmark(lang):
-    size = 118; d, w = word_path(F, NAMES[lang][0], size, 0, cap_height(size)); pad = 12
-    return svg(w + 2*pad, cap_height(size) + 0.3*size + 2*pad, f'<g id="nom" fill="{GRAPHITE}"><path d="{d}"/></g>', NAMES[lang][0], vb_x=-pad, vb_y=-pad)
+    size = 132; d, w = nom(NAMES[lang][0], size, 0, 0)
+    tx0, ty0, tx1, ty1 = bbox([d]); m = EPAIS*size + 12
+    return svg(tx1 - tx0 + 2*m, ty1 - ty0 + 2*m, groupe_nom(d, size), NAMES[lang][0], vb_x=tx0 - m, vb_y=ty0 - m)
 
 for lang, slug in (('fr', 'il-etait-une-classe'), ('en', 'once-upon-a-classroom')):
     open(f'{OUT}/{slug}-horizontal.svg','w').write(horizontal(lang))

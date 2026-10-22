@@ -21,15 +21,16 @@
   display: grid;
   gap: 14px;
 }
-/* Le logo en tête de carte : dragon grand, nom en Vollkorn SemiBold (V1/identite/logo). */
+/* Le logo en tête de carte : dragon grand, nom dans la cursive du site au trait épaissi (V1/identite/logo). */
 .marque {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 6px;
-  font-family: var(--f-recit);
-  font-weight: 600;
-  font-size: 1.6rem;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: 1.75rem;
+  -webkit-text-stroke: 0.035em currentColor;
   color: var(--graphite);
 }
 .dragon {

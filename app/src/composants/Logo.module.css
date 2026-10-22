@@ -1,14 +1,15 @@
-/* Le logo de la barre du haut : dragon moyen en bleu canard, nom en Vollkorn SemiBold graphite,
-   comme l'assemblage horizontal de V1/identite/logo. */
+/* Le logo de la barre du haut : dragon moyen en bleu canard, nom dans la cursive du site au trait
+   épaissi, en graphite, comme l'assemblage horizontal de V1/identite/logo. */
 .logo {
   display: inline-flex;
   align-items: center;
   gap: 8px;
   color: var(--graphite);
   text-decoration: none;
-  font-family: var(--f-recit);
-  font-weight: 600;
-  font-size: 1.2rem;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: 1.3rem;
+  -webkit-text-stroke: 0.035em currentColor;
   letter-spacing: 0;
   white-space: nowrap;
 }

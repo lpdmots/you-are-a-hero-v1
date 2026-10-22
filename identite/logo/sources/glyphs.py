@@ -1,15 +1,19 @@
-"""Lecteur minimal WOFF1/TrueType : contours de glyphes et crénage GPOS, pour vectoriser un mot."""
+"""Lecteur minimal TrueType (.ttf ou .woff) : contours de glyphes et crénage GPOS, pour vectoriser un mot."""
 import struct, zlib
 class Font:
     def __init__(self, path):
-        b = open(path,'rb').read()
-        assert b[:4]==b'wOFF'
-        num = struct.unpack('>H', b[12:14])[0]
-        self.t = {}
-        for i in range(num):
-            tag, off, clen, olen, _ = struct.unpack('>4sIIII', b[44+20*i:64+20*i])
-            data = b[off:off+clen]
-            self.t[tag.decode()] = zlib.decompress(data) if clen < olen else data
+        b = open(path,'rb').read(); self.t = {}
+        if b[:4] == b'wOFF':
+            num = struct.unpack('>H', b[12:14])[0]
+            for i in range(num):
+                tag, off, clen, olen, _ = struct.unpack('>4sIIII', b[44+20*i:64+20*i])
+                data = b[off:off+clen]
+                self.t[tag.decode()] = zlib.decompress(data) if clen < olen else data
+        else:  # TrueType ordinaire (.ttf)
+            num = struct.unpack('>H', b[4:6])[0]
+            for i in range(num):
+                tag, _, off, ln = struct.unpack('>4sIII', b[12+16*i:28+16*i])
+                self.t[tag.decode()] = b[off:off+ln]
         h = self.t['head']; self.upm = struct.unpack('>H', h[18:20])[0]; self.locfmt = struct.unpack('>h', h[50:52])[0]
         self.nglyphs = struct.unpack('>H', self.t['maxp'][4:6])[0]
         nhm = struct.unpack('>H', self.t['hhea'][34:36])[0]
@@ -168,4 +172,17 @@ def word_path(font, text, size, x0, baseline, tracking=0, extra=None):
         if extra and i in extra: x += extra[i]
         for c in font.contours(g): ds.append(contour_to_d(c, s, s, x0 + x*s, baseline))
         x += font.adv[g] + tracking; prev = g
+    return ' '.join(ds), x*s
+def shaped_path(font, path, text, size, x0, baseline):
+    """Comme word_path, mais mis en forme par HarfBuzz (attaques, liaisons, crénage de la police) :
+    indispensable pour une cursive. Demande le paquet Python `uharfbuzz`."""
+    import uharfbuzz as hb
+    face = hb.Face(hb.Blob.from_file_path(path)); hf = hb.Font(face)
+    buf = hb.Buffer(); buf.add_str(text); buf.guess_segment_properties()
+    hb.shape(hf, buf, {})
+    s = size / font.upm; x = 0; ds = []
+    for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+        ox, oy = x + pos.x_offset, pos.y_offset
+        for c in font.contours(info.codepoint): ds.append(contour_to_d(c, s, s, x0 + ox*s, baseline - oy*s))
+        x += pos.x_advance
     return ' '.join(ds), x*s

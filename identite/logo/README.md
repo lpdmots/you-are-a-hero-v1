@@ -61,12 +61,21 @@ version blanche ou noire, sur une zone calme.
 
 ## 5. Typographie
 
-Le nom est composé en **Vollkorn SemiBold (600)**, la police du récit dans
-l'application, sous licence SIL Open Font License, qui permet l'usage dans un
-logo. Dans les fichiers, le nom est **dessiné en tracés** : pour une
-affiche, un livre ou un document, prendre ces fichiers plutôt que de retaper
-le nom. Seule exception, l'application, qui l'écrit en texte avec la même
-police pour qu'il reste lu par les lecteurs d'écran.
+Le nom est écrit dans la **cursive traditionnelle des écoles françaises**,
+Playwrite FR Trad (décidé le 22 octobre 2026, à la place de Vollkorn), au
+**trait épaissi** d'un contour de sa couleur large de 3,5 % du corps. C'est
+aussi la cursive de tout le site (prénoms des élèves, étiquettes, accueil).
+Licence SIL Open Font License, qui permet l'usage dans un logo ; la police et
+sa licence sont dans `sources/`. Dans les fichiers, le nom est **dessiné en
+tracés**, attaques et liaisons de la police comprises : pour une affiche, un
+livre ou un document, prendre ces fichiers plutôt que de retaper le nom.
+Seule exception, l'application, qui l'écrit en texte avec la même police et
+le même épaississement, pour qu'il reste lu par les lecteurs d'écran. Le
+contour d'épaississement est un trait dans les SVG : un logiciel de dessin
+le garde tel quel, ou le « vectorise » si un imprimeur le demande.
+
+La capitale I de cette cursive est le I bouclé de l'école : un lecteur
+étranger peut y lire un J ; la version anglaise n'a pas de I.
 
 ## 6. À ne pas faire
 
@@ -93,10 +102,10 @@ les recopier. Le manifeste d'application installable n'est pas posé.
 ## 8. Refaire les fichiers
 
 Les fichiers maîtres de `svg/` sont produits par `sources/construire.py`, à
-partir du dessin écrit en coordonnées et de la police Vollkorn installée avec
-l'application (`app/node_modules/@fontsource/vollkorn`) ; le nom y est
-transformé en tracés, crénage compris. `python3 sources/construire.py`
-écrit dans `sources/sortie/`. Les versions `-noir` et `-blanc`, les PNG et
+partir du dessin écrit en coordonnées et de la police
+`sources/PlaywriteFRTrad-400.ttf` ; le nom y est mis en forme par HarfBuzz
+(paquet Python `uharfbuzz`, à installer), puis transformé en tracés.
+`python3 sources/construire.py` écrit dans `sources/sortie/`. Les versions `-noir` et `-blanc`, les PNG et
 les icônes du site sont tirés des maîtres avec les scripts du skill
 `logo-design` (`export_variants.py`, `render_png.py`).
 

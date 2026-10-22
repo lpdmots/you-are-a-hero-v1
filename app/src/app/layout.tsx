@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Andika, Atkinson_Hyperlegible_Mono, Atkinson_Hyperlegible_Next, Playwrite_FR_Moderne, Vollkorn } from "next/font/google";
+import { Andika, Atkinson_Hyperlegible_Mono, Atkinson_Hyperlegible_Next, Playwrite_FR_Trad, Vollkorn } from "next/font/google";
 import { MarquePret } from "@/composants/Pret";
 import "@/styles/jetons.css";
 import "@/styles/base.css";
@@ -15,11 +15,12 @@ import "@/styles/lecture.css";
 import "@/styles/lecteur.css";
 
 // Les trois voix du système « Cahiers d'aventure », hébergées avec l'application :
-// l'outil, le récit, la main de l'élève ; Andika pour les chiffres que l'élève lit.
+// l'outil, le récit, la main de l'élève ; Andika pour les chiffres que l'élève lit. La main est la
+// cursive traditionnelle des écoles françaises, celle aussi du nom dans le logo (22 octobre 2026).
 const outil = Atkinson_Hyperlegible_Next({ subsets: ["latin", "latin-ext"], variable: "--police-outil", display: "swap", adjustFontFallback: false });
 const code = Atkinson_Hyperlegible_Mono({ subsets: ["latin", "latin-ext"], variable: "--police-code", display: "swap", adjustFontFallback: false });
 const recit = Vollkorn({ subsets: ["latin", "latin-ext"], variable: "--police-recit", display: "swap" });
-const main = Playwrite_FR_Moderne({ weight: ["300", "400"], variable: "--police-main", display: "swap" });
+const main = Playwrite_FR_Trad({ weight: ["300", "400"], variable: "--police-main", display: "swap" });
 const chiffres = Andika({ subsets: ["latin", "latin-ext"], weight: ["400", "700"], variable: "--police-chiffres", display: "swap" });
 
 export const metadata: Metadata = {
