@@ -11,7 +11,7 @@ export const metadata: Metadata = { title: "Créer un compte" };
 export default async function Inscription() {
   if (await enseignantCourant()) redirect("/");
   return (
-    <EntreeIllustree titre="Créer un compte" pied={<span>Déjà un compte ? <Link href="/entree">Entrer</Link></span>}>
+    <EntreeIllustree titre="Créer un compte" retourAccueil pied={<span>Déjà un compte ? <Link href="/entree">Entrer</Link></span>}>
       <FormulaireInscription />
     </EntreeIllustree>
   );

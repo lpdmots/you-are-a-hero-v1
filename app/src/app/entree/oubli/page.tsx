@@ -10,6 +10,7 @@ export default async function Oubli({ searchParams }: { searchParams: Promise<{ 
   return (
     <EntreeIllustree
       titre="Mot de passe oublié"
+      retourAccueil
       aide={
         lien === "perime"
           ? "Ce lien n’est plus valable. Demandez-en un nouveau, et ouvrez-le sur cet ordinateur."

@@ -10973,14 +10973,30 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   française (niveaux, responsable de traitement), et l'adapter serait un
   travail à part.
 - **Pages publiques.** Une page d'accueil tournée vers l'enseignant et sa
-  classe : la promesse et un livre montré, le chemin en quelques temps, les
-  deux sortes de récit, qui fait quoi, l'origine du projet, l'offre (gratuit,
-  pass, étoiles) ; à côté, « Aide », « Confidentialité », « Conditions
+  classe ; à côté, « Aide », « Confidentialité », « Conditions
   d'utilisation », « Mentions légales », et les deux modèles à télécharger,
-  autorisation de diffusion et information des familles. Le livre à
-  feuilleter est celui de la classe du porteur, autorisations signées, ou à
-  défaut un livre d'essai. Sans maquette : ces pages se conçoivent avec
-  impeccable et se critiquent en deux lectures.
+  autorisation de diffusion et information des familles. Sans maquette : ces
+  pages se conçoivent avec impeccable et se critiquent en deux lectures.
+  **L'accueil, refait de zéro sur décision du porteur le 22 octobre 2026**
+  (il jugeait le premier « naze »), est un livre-jeu : chaque section est un
+  passage numéroté, et ses choix sont les liens de la page (« Si vous voulez
+  voir comment se passe un projet, rendez-vous au 12 »), « Créer un compte »
+  gardant la forme du bouton principal. Ses passages, dans l'ordre de
+  lecture : la promesse (« Votre classe écrit son livre-jeu. ») ; un projet
+  en trois temps, de quelques semaines à quelques mois ; tout ce que l'outil
+  prévoit ; deux livres écrits par la classe du porteur, à feuilleter dans le
+  lecteur en ligne (ses anciennes histoires, importées, autorisations
+  comprises) ; dans votre classe (âge des lecteurs, matériel, connexion des
+  élèves, impression, deux sortes de récit) ; l'IA, présentée comme une aide
+  de l'enseignant, et ce que cela coûte (le pass seulement quand la vente est
+  ouverte) ; né dans une classe, signé du porteur. Ce qui doit ressortir :
+  l'outil n'est pas compliqué, il guide à chaque étape et il aide. Une
+  courte visite en vidéo (une minute trente au plus, sous-titrée, hébergée
+  avec l'application, lancée par un clic seulement) s'ouvrira depuis la
+  première page quand elle existera. Les données des élèves ne font pas de
+  passage : elles vont dans l'« Aide ». Révise la liste du 20 octobre 2026
+  (promesse et livre montré, chemin, deux sortes de récit, qui fait quoi,
+  origine, offre) et le livre unique à feuilleter.
 - **« Écrit avec Il était une classe ».** Dans le lecteur en ligne, une
   mention discrète au pied de la page de titre et après la fin du livre, qui
   mène à la page d'accueil ; jamais pendant la lecture, sans réglage. Elle ne
@@ -11234,6 +11250,14 @@ découvre l'outil, et le porteur, administrateur.
   recharge (ses étoiles et son prix lus dans les réglages, « Recharger »,
   « Plus tard »), qui mène au paiement et revient sur la page ; interrupteur
   éteint, aucun dialogue ne s'ouvre, le message de l'aide suffit.
+- **F14-AC39 — Revenir à l'accueil** (demandé par le porteur le 22 octobre
+  2026) : étant donné M. Bernard connecté, lorsqu'il choisit « Se
+  déconnecter », alors il arrive sur la page d'accueil, et non plus sur
+  l'entrée enseignant ; étant donné l'entrée enseignant, « Créer un compte »
+  ou « Mot de passe oublié », alors « Retour à l'accueil », au-dessus du nom,
+  et le nom lui-même mènent à l'accueil ; à l'entrée des élèves, seul le nom
+  y mène. Une page de l'espace adulte ouverte sans être connecté mène
+  toujours à l'entrée enseignant (F01-AC28).
 
 **Questions ouvertes :** les prix du pass et des recharges, et le nombre
 d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;

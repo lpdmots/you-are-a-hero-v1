@@ -15,6 +15,7 @@ export default async function Entree({ searchParams }: { searchParams: Promise<{
   return (
     <EntreeIllustree
       titre="Entrée enseignant"
+      retourAccueil
       aide={compte === "supprime" ? <span role="status">Votre compte est supprimé, avec tout ce qu’il contenait.</span> : undefined}
       pied={
         <span className={styles.pied}>

@@ -113,5 +113,6 @@ export async function entrerAvecGoogle(): Promise<void> {
 export async function seDeconnecter(): Promise<void> {
   const supabase = await clientAdulte();
   await supabase.auth.signOut({ scope: "local" });
-  redirect("/entree");
+  // On quitte l'outil pour sa page d'accueil, d'où « Se connecter » ramène à l'entrée (22 octobre 2026)
+  redirect("/");
 }

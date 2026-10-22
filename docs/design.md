@@ -2247,6 +2247,75 @@ exacte des moments et leurs phrases, un nom
 éventuel, les valeurs (teinte du papier, tailles des titres). Rien n'est
 construit ; la construction demande l'instruction du porteur.
 
+### Accueil en livre-jeu (22 octobre 2026)
+
+Le porteur juge l'accueil du lot 9 « naze » et le fait refaire de zéro, sans
+critique de l'existant. Entretien court, puis une maquette jetable (fichier
+HTML hors de l'application, captures en 1440 et 390 px), reprise trois fois
+sur ses retours. Il en autorise la construction le même jour, à réviser
+ensemble ensuite. Règle de la page : [F14](specifications.md#f14--ouverture-offre-et-exploitation),
+« Pages publiques ».
+
+**Décidé par le porteur, sur recommandation sauf mention :**
+
+- **Promesse :** « Votre classe écrit son livre-jeu. », puis une phrase :
+  chaque élève écrit ses scènes, l'application guide à chaque étape, le livre
+  s'imprime et se lit en ligne. Écarté : « dont vous êtes le héros », nom
+  d'une collection de Gallimard. Le message à faire ressortir, de sa part :
+  « pas compliqué, entièrement guidé et assisté ».
+- **La page est un livre-jeu** (son idée) : chaque section est un passage
+  numéroté, et ses choix, dans la forme exacte des phrases de choix du livre
+  (Vollkorn italique entre deux filets, renvoi cerclé en canard), sont les
+  liens de la page ; « Créer un compte » garde la forme du bouton principal,
+  seul bouton plein. Les numéros sautent comme dans un vrai livre (1, 12, 19,
+  27, 33, 40, 52), dans l'ordre de lecture.
+- **Le premier écran :** un grand livre ouvert en image (toile bleu canard,
+  pages planes, générée par le porteur, agrandie à 2000 px), le texte et
+  l'illustration posés en HTML sur ses pages ; le dragon à côté, assis, qui
+  lit. Écartés : le dragon de la pose du logo (sa couverture rouge
+  concurrencerait le livre et la brique) ; un livre aux pages courbes, dont le
+  contenu courbé par un filtre SVG crénelait le texte, décalait les clics et
+  tenait mal dans Safari.
+- **Les autres passages : des feuillets détachés,** du papier du livre (pris
+  dans son image), de même hauteur partout (demandé par le porteur), une
+  légère inclinaison alternée, une ombre douce. Ils alternent à gauche, à
+  droite et au milieu ; hors des feuillets, des captures de l'application
+  imprimées et scotchées (ruban au rose bristol), des notes manuscrites en
+  cursive, les personnages. Écartés : la demi-page coupée au pli (« pas beau »)
+  et les feuillets déchirés (le dragon prend soin des livres, et le coin
+  grignoté de la souris n'est drôle que sur des pages intactes).
+- **Les passages :** 1, la promesse ; 12, « Un projet, en trois temps »
+  (« quelques semaines ou quelques mois », pas « une année », corrigé par le
+  porteur) ; 19, « Tout est prévu », huit lignes (son idée : une page qui
+  développe les fonctions) ; 27, ses deux livres à feuilleter, avec sa photo
+  des livres imprimés à côté ; 33, « Dans votre classe » ; 40, « L'IA, si vous
+  voulez. Et ce que cela coûte. », l'IA comme aide de l'enseignant ; 52, « Né
+  dans une classe », signé, puis « FIN ». Les données des élèves ne font pas
+  de passage (décision du porteur) : elles iront dans l'« Aide ».
+- **La visite en vidéo** (son idée) : un bouton « Le tour en 1 min 30 » sur
+  l'illustration de la première page, qui ouvre une fenêtre ; une minute
+  trente au plus, sous-titrée, hébergée avec l'application (pas YouTube, pour
+  ses traceurs), lancée par un clic seulement. Sans vidéo, pas de bouton.
+- **Les personnages :** le dragon lit à côté du livre au premier écran et dort
+  sur son livre à la fin ; la souris grignote le coin du dernier feuillet. Une
+  seule arrivée brève du dragon, puis immobile. Leurs poses définitives sont à
+  générer par le porteur ; en attendant, des découpes des planches de
+  référence.
+
+**Proposé, à juger à la révision :** le fond chaud de la table (`#f2ede3`) à la
+place du gris du bureau, sur cette page seulement ; les notes manuscrites en
+cursive (la cursive est permise à l'accueil) ; les captures, prises sur la base
+locale, que le porteur remplacera par celles qu'il préfère.
+
+**Écrans voisins, demandés le même jour (F14-AC39) :** « Se déconnecter » mène
+à l'accueil ; l'entrée enseignant, l'inscription et le mot de passe oublié
+portent « Retour à l'accueil » au-dessus du nom, qui mène aussi à l'accueil ;
+l'entrée des élèves, le nom seulement.
+
+**Notés pour plus tard, hors de l'accueil :** des documents pédagogiques à
+imprimer (réfléchir chacun à son chapitre, guides d'écriture) ; une page de
+conseils pour écrire un livre-jeu ; les données des élèves dans l'« Aide ».
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

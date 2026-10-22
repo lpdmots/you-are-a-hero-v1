@@ -90,7 +90,7 @@ test("F01-AC29 — mot de passe oublié : même phrase pour toute adresse, puis 
   // L'ancien est refusé, le nouveau accepté
   await ouvrirLeMenuDuCompte(page);
   await page.getByRole("button", { name: "Se déconnecter" }).click();
-  await expect(page).toHaveURL(/\/entree$/);
+  await expect(page).toHaveURL(/:\d+\/$/);
   await connecter(page, compte);
   await expect(page.getByRole("alert").filter({ hasText: "n’est pas le bon" })).toBeVisible();
   await connecter(page, compte, nouveau);
@@ -236,7 +236,7 @@ test("F01-AC30, F01-AC13 — « Mon compte » : le nom affiché se lit à l'entr
 
   await page.getByLabel("Votre compte : Mme Laurent").click();
   await page.getByRole("button", { name: "Se déconnecter" }).click();
-  await expect(page).toHaveURL(/\/entree$/);
+  await expect(page).toHaveURL(/:\d+\/$/);
   await page.goto("/projets");
   await expect(page).toHaveURL(/\/entree$/);
 });
@@ -260,7 +260,7 @@ test("F01-AC36 — changer de mot de passe depuis « Mon compte » : l'actuel d'
 
   await ouvrirLeMenuDuCompte(page);
   await page.getByRole("button", { name: "Se déconnecter" }).click();
-  await expect(page).toHaveURL(/\/entree$/);
+  await expect(page).toHaveURL(/:\d+\/$/);
   await connecter(page, compte);
   await expect(page.getByRole("alert").filter({ hasText: "L’adresse ou le mot de passe n’est pas le bon." })).toBeVisible();
   await connecter(page, compte, "un-nouveau-secret");
@@ -294,7 +294,7 @@ test("F01-AC35 — changer d'adresse depuis « Mon compte » : rien ne change av
 
   await ouvrirLeMenuDuCompte(page);
   await page.getByRole("button", { name: "Se déconnecter" }).click();
-  await expect(page).toHaveURL(/\/entree$/);
+  await expect(page).toHaveURL(/:\d+\/$/);
   await connecter(page, { ...compte, courriel: nouvelle });
   await expect(page).toHaveURL(/\/projets$/);
 });

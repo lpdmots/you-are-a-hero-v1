@@ -1,8 +1,9 @@
 import { expect, test } from "@playwright/test";
-import { adultePret, aller, semerProjet, sql, supprimerComptes } from "./outils";
+import { adultePret, aller, ouvrirLeMenuDuCompte, semerProjet, sql, supprimerComptes } from "./outils";
 
 /**
- * Étape 9, lot 9 : les pages publiques et les textes juridiques (F14-AC32, AC33, AC36). Les
+ * Étape 9, lot 9 : les pages publiques et les textes juridiques (F14-AC32, AC33, AC36), et le
+ * retour à l'accueil (F14-AC39, 22 octobre 2026). Les
  * adresses `.com`, qui renvoient vers le `.fr`, se règlent chez Vercel et s'essaient en ligne.
  */
 
@@ -80,4 +81,27 @@ test("F14-AC36 — « Écrire au créateur » dans « Mon compte » et l'adresse
   await expect(page.getByRole("link", { name: "contact@iletaituneclasse.com" }).first()).toHaveAttribute("href", "mailto:contact@iletaituneclasse.com");
   await expect(page.getByText("Il était une classe est fait par un enseignant qui a sa classe : la réponse peut prendre quelques jours.")).toBeVisible();
   await expect(page.getByText("Où retrouver les codes des élèves ?")).toBeVisible();
+});
+
+test("F14-AC39 — revenir à l'accueil : après « Se déconnecter », et depuis les écrans d'entrée", async ({ page }) => {
+  // Depuis l'entrée enseignant, l'inscription et le mot de passe oublié : « Retour à l'accueil » et le nom
+  for (const adresse of ["/entree", "/entree/inscription", "/entree/oubli"]) {
+    for (const lien of ["Retour à l’accueil", "Il était une classe"]) {
+      await aller(page, adresse);
+      await page.getByRole("link", { name: lien, exact: true }).click();
+      await expect(page).toHaveURL(/:\d+\/$/);
+    }
+  }
+  // L'entrée des élèves : le nom seulement
+  await aller(page, "/classe");
+  await expect(page.getByRole("link", { name: "Retour à l’accueil" })).toHaveCount(0);
+  await page.getByRole("link", { name: "Il était une classe", exact: true }).click();
+  await expect(page).toHaveURL(/:\d+\/$/);
+
+  // Se déconnecter mène à l'accueil
+  await adultePret(page);
+  await ouvrirLeMenuDuCompte(page);
+  await page.getByRole("button", { name: "Se déconnecter" }).click();
+  await expect(page).toHaveURL(/:\d+\/$/);
+  await expect(page.getByRole("link", { name: "Créer un compte" }).first()).toBeVisible();
 });

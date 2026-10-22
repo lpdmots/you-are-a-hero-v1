@@ -21,8 +21,15 @@
   display: grid;
   gap: 14px;
 }
-/* Le logo en tête de carte : dragon grand, nom dans la cursive du site au trait épaissi (V1/identite/logo). */
+/* « Retour à l'accueil », au-dessus du logo, sur les seuls écrans de l'adulte */
+.retour {
+  padding: 0;
+}
+/* Le logo en tête de carte : dragon grand, nom dans la cursive du site au trait épaissi (V1/identite/logo).
+   Il mène à l'accueil. */
 .marque {
+  justify-self: start;
+  text-decoration: none;
   display: flex;
   align-items: center;
   gap: 12px;
