@@ -29,13 +29,19 @@
   margin-bottom: 6px;
   font-family: var(--f-main);
   font-weight: 400;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
+  white-space: nowrap;
   -webkit-text-stroke: 0.035em currentColor;
   color: var(--graphite);
 }
+/* Pied du nom au pied des pages du livre, comme dans l'assemblage horizontal du logo. */
+.marque span {
+  position: relative;
+  top: 0.36em;
+}
 .dragon {
-  width: 96px;
-  height: 96px;
+  width: 80px;
+  height: 80px;
   flex: none;
   color: var(--canard);
 }

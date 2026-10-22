@@ -77,7 +77,7 @@ def horizontal(lang, kind='moyen'):
     sx0, sy0, sx1, sy1 = bbox(ds); sh = sy1 - sy0
     px0, py0, px1, py1 = bbox(ds[:2])              # les deux pages
     size = 132; xh = x_height(size)
-    base = (py0 + py1)/2 + xh/2 + 6                # minuscules centrées sur le livre
+    base = py1 - 0.11*sh                           # pied du nom au pied des pages (22 octobre 2026)
     gap = 0.14 * sh; pad = 0.12 * sh
     d, w = nom(NAMES[lang][0], size, sx1 + gap, base)
     tx0, ty0, tx1, ty1 = bbox([d]); m = EPAIS*size
