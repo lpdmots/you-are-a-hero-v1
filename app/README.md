@@ -87,6 +87,20 @@ npm run histoire:essai -- --production adresse@du.compte         # dit ce qui se
 npm run histoire:essai -- --production adresse@du.compte --oui   # le fait
 ```
 
+Les histoires de la V0, à lire en exemple, s'importent dans un projet personnel du
+compte, lues chez Sanity sans y rien changer : plan, textes, choix, actions de jeu,
+images, objets, feuille d'aventure, pages de présentation et numéros du livre
+imprimé (`scripts/histoire-v0.ts`, conversion dans `scripts/v0/convertir.ts`). Les
+scènes arrivent « prêtes », « Relire » et « Vérifier les chemins » terminées : reste
+à juger les images signalées et l'aperçu, puis à partager.
+
+```bash
+npm run histoire:v0 -- labyrinthe --essai     # convertit et dit ce qui serait importé
+npm run histoire:v0 -- labyrinthe             # dans la base locale, pour le compte local
+npm run histoire:v0 -- labyrinthe --refaire   # retire le projet importé, avec ses images, puis le recharge
+npm run histoire:v0 -- labyrinthe --production adresse@du.compte --oui
+```
+
 ## Vérifier
 
 ```bash

@@ -30,6 +30,7 @@
     "compte:local": "tsx scripts/compte-local.ts",
     "createur": "tsx scripts/createur.ts",
     "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
+    "histoire:v0": "tsx --conditions=react-server scripts/histoire-v0.ts",
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
     "livre:essai": "tsx scripts/livre-d-essai.ts",
     "livres:essai": "tsx --conditions=react-server scripts/livres-a-imprimer.ts",
