@@ -325,7 +325,8 @@ appel.
 
 ## Étape 9, lot 8 : la sauvegarde de la nuit, vers S3
 
-Chaque nuit à 3 h, heure de Paris, le workflow `.github/workflows/sauvegarde-nocturne.yml`
+Chaque nuit vers 3 h, heure de Paris (GitHub peut retarder le départ de quelques heures : la
+sauvegarde se fait alors à son arrivée), le workflow `.github/workflows/sauvegarde-nocturne.yml`
 (GitHub Actions, qui a Docker) écrit la base et les images du stockage
 (`npm run sauvegarde:nuit`), puis les dépose dans le seau S3 du porteur, à Paris, dans un
 dossier par jour : `base/` (trois fichiers SQL) et `images/`. Les PDF ne sont pas copiés.

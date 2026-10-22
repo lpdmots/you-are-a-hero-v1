@@ -10886,7 +10886,8 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
 - **Sauvegarde automatique, base et images.** Les images et les PDF sont
   stockés chez Supabase en un seul exemplaire : ni la sauvegarde à la main ni
   celles de l'offre payante ne les copient. Une sauvegarde automatique, chaque
-  nuit à 3 h (heure de Paris, pendant la fermeture nocturne), copie la base et
+  nuit vers 3 h (heure de Paris, pendant la fermeture nocturne ; GitHub peut
+  en retarder le départ de quelques heures, décidé le 22 octobre 2026), copie la base et
   les images dans un seau S3 du compte AWS du porteur, à Paris ; les PDF ne
   sont pas copiés, puisqu'ils se refont depuis le livre. Les sauvegardes de
   plus de quatre-vingt-dix jours s'effacent d'elles-mêmes, ce que dit la page
@@ -11164,7 +11165,9 @@ découvre l'outil, et le porteur, administrateur.
 *Sauvegarde*
 
 - **F14-AC30 — Sauvegarde de la nuit :** étant donné une nuit ordinaire,
-  alors à 3 h la base et les images partent dans le seau S3, et une
+  alors vers 3 h la base et les images partent dans le seau S3 (si GitHub
+  retarde le départ, la sauvegarde se fait à son arrivée, sans être sautée),
+  et une
   sauvegarde de plus de quatre-vingt-dix jours n'y est plus ; une nuit qui
   échoue prévient le porteur par courriel.
 - **F14-AC31 — Restaurer depuis S3 :** étant donné une sauvegarde du seau,

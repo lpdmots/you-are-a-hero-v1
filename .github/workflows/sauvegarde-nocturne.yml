@@ -1,20 +1,20 @@
 # Étape 9, lot 8 : la sauvegarde de la nuit (F14, « Sauvegarde automatique », F14-AC30).
 #
-# Chaque nuit à 3 h, heure de Paris (pendant la fermeture nocturne des classes), la base et les
+# Chaque nuit vers 3 h, heure de Paris (pendant la fermeture nocturne des classes), la base et les
 # images partent dans le seau S3 du porteur, à Paris. Les PDF ne sont pas copiés : ils se
 # refont depuis le livre. Le seau efface lui-même ce qui a plus de quatre-vingt-dix jours (règle
 # de durée réglée chez AWS) ; l'accès qui dépose ici ne peut ni lire ni effacer. Une nuit qui
 # échoue envoie le courriel d'échec de GitHub au porteur.
 #
-# GitHub compte les heures en temps universel : deux déclenchements, à 1 h et à 2 h, et seul
-# celui qui tombe à 3 h à Paris sauvegarde (heure d'été, puis d'hiver).
+# Un déclenchement à 1 h 17 en temps universel (3 h 17 à Paris l'été, 2 h 17 l'hiver ; les heures
+# rondes sont les plus encombrées). GitHub lance une tâche programmée « au mieux », parfois avec
+# des heures de retard : la sauvegarde se fait alors à son arrivée, jamais sautée (F14-AC30).
 
 name: Sauvegarde de la nuit
 
 on:
   schedule:
-    - cron: "0 1 * * *"
-    - cron: "0 2 * * *"
+    - cron: "17 1 * * *"
   # À la main, depuis l'onglet « Actions » : pour l'essayer, ou rattraper une nuit
   workflow_dispatch:
 
@@ -33,31 +33,18 @@ jobs:
       run:
         working-directory: app
     steps:
-      - name: Est-ce 3 h à Paris ?
-        id: heure
-        working-directory: .
-        run: |
-          if [ "${{ github.event_name }}" = "schedule" ] && [ "$(TZ=Europe/Paris date +%H)" != "03" ]; then
-            echo "passer=oui" >> "$GITHUB_OUTPUT"
-            echo "Pas encore 3 h à Paris : rien à faire à ce déclenchement."
-          fi
-
       - uses: actions/checkout@v4
-        if: steps.heure.outputs.passer != 'oui'
 
       - uses: actions/setup-node@v4
-        if: steps.heure.outputs.passer != 'oui'
         with:
           node-version: 22
           cache: npm
           cache-dependency-path: app/package-lock.json
 
       - name: Dépendances
-        if: steps.heure.outputs.passer != 'oui'
         run: npm ci
 
       - name: Les clés de la vraie base, le temps de la sauvegarde
-        if: steps.heure.outputs.passer != 'oui'
         env:
           SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_CLE_SECRETE: ${{ secrets.SUPABASE_CLE_SECRETE }}
@@ -76,11 +63,9 @@ jobs:
           node -e 'const c=require("crypto");const j=c.generateKeyPairSync("ec",{namedCurve:"P-256"}).privateKey.export({format:"jwk"});require("fs").writeFileSync("supabase/signing_keys.json",JSON.stringify([{kty:j.kty,kid:c.randomUUID(),use:"sig",key_ops:["sign","verify"],alg:"ES256",ext:true,d:j.d,crv:j.crv,x:j.x,y:j.y}]),{mode:0o600})'
 
       - name: La base et les images
-        if: steps.heure.outputs.passer != 'oui'
         run: npm run sauvegarde:nuit -- --dossier "$RUNNER_TEMP/sauvegarde"
 
       - name: Vers le seau S3, à Paris
-        if: steps.heure.outputs.passer != 'oui'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -93,4 +78,6 @@ jobs:
 
       - name: Rien ne reste sur la machine
         if: always()
-        run: rm -rf production.env supabase/signing_keys.json "$RUNNER_TEMP/sauvegarde"
+        # Depuis la racine : le dossier app peut manquer si le départ a échoué
+        working-directory: .
+        run: rm -rf app/production.env app/supabase/signing_keys.json "$RUNNER_TEMP/sauvegarde"
