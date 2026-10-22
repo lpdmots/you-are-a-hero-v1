@@ -12,10 +12,16 @@ import { groupesDeMelange, ouvertureDe, type PlanNumerote } from "./numeros";
 export type Mesure = {
   /** Toute sa hauteur, l'espace au-dessus de son numéro compris */
   h: number;
-  /** Ce qui ne se coupe pas à sa fin : son groupe de choix, avec les deux lignes qui le précèdent */
+  /** Ce qui ne se coupe pas à sa fin : ses choix, actions et marque de fin, avec l'image ou les deux lignes qui les précèdent */
   queue: number;
   /** Il porte une image pleine page */
   pleinePage: boolean;
+  /**
+   * Ses blocs dans l'ordre, s'ils sont mesurés : « t » se coupe entre deux lignes, « i » ne se
+   * coupe pas, « c » (choix, action, fin) colle au bloc d'avant, « n » (numéro) reste avec ce qui
+   * le suit. Sans eux, le passage s'écoule d'un seul tenant jusqu'à sa queue.
+   */
+  blocs?: [string, number][];
 };
 
 /** Un passage dans l'ordre imprimé, tel que l'agencement le voit */
@@ -64,6 +70,53 @@ function poser(e: Etat, m: Modele, id: string, saut: boolean): { etat: Etat; bla
     }
   };
   if (saut) nouvellePage(false);
+  if (me.blocs?.length && !me.pleinePage) {
+    // Les unités qui ne se coupent pas, et le texte qui s'écoule entre elles
+    for (const u of unites(me.blocs, m.ligne)) {
+      if (u.coupe) {
+        // Deux lignes au moins de chaque côté d'une coupure (F11-AC35)
+        let reste = u.h;
+        while (reste > 0) {
+          const place = m.hauteur - y;
+          if (reste <= place + 0.5) {
+            y += reste;
+            reste = 0;
+          } else if (place < 2 * m.ligne || reste < 4 * m.ligne) {
+            nouvellePage(true);
+            if (!pages.includes(page)) pages.push(page);
+            if (reste > m.hauteur) {
+              reste -= m.hauteur;
+              page += 1;
+              pages.push(page);
+            } else {
+              y = reste;
+              reste = 0;
+            }
+          } else {
+            const pose = Math.min(Math.floor(place / m.ligne) * m.ligne, reste - 2 * m.ligne);
+            blanc += place - pose;
+            reste -= pose;
+            page += 1;
+            y = 0;
+            pages.push(page);
+          }
+        }
+      } else {
+        if (m.hauteur - y < u.h && y > 0) nouvellePage(true);
+        if (!pages.includes(page)) pages.push(page);
+        // Plus haute qu'une page, l'unité se coupe malgré tout (« Règle impossible à tenir »)
+        y += u.h;
+        while (y > m.hauteur) {
+          y -= m.hauteur;
+          page += 1;
+          pages.push(page);
+        }
+      }
+    }
+    const ici = new Map(e.ici);
+    ici.set(id, pages.length ? pages : [page]);
+    return { etat: { page, y, blanc: e.blanc + blanc, ici }, blanc };
+  }
   const tete = Math.min(me.h, 3 * m.ligne);
   if (m.hauteur - y < tete) nouvellePage(true);
   pages.push(page);
@@ -94,6 +147,40 @@ function poser(e: Etat, m: Modele, id: string, saut: boolean): { etat: Etat; bla
   const ici = new Map(e.ici);
   ici.set(id, pages);
   return { etat: { page, y, blanc: e.blanc + blanc, ici }, blanc };
+}
+
+/**
+ * Les blocs d'un passage en unités : le texte qui se coupe, et ce qui ne se coupe pas. Le numéro
+ * reste avec les deux premières lignes ou le bloc qui le suit ; choix, action et fin restent avec
+ * le bloc d'avant — une image entière, ou les deux dernières lignes d'un paragraphe (F11.2).
+ */
+function unites(blocs: [string, number][], ligne: number): { coupe: boolean; h: number }[] {
+  const u: { coupe: boolean; h: number }[] = [];
+  let tete = 0;
+  for (const [sorte, h] of blocs) {
+    if (sorte === "n") {
+      tete += h;
+      continue;
+    }
+    const avant = u[u.length - 1];
+    if (sorte === "c" && avant) {
+      if (!avant.coupe) avant.h += h;
+      else if (avant.h <= 4 * ligne) Object.assign(avant, { coupe: false, h: avant.h + h });
+      else {
+        avant.h -= 2 * ligne;
+        u.push({ coupe: false, h: 2 * ligne + h });
+      }
+      continue;
+    }
+    if (sorte === "t" && tete && h > 4 * ligne) {
+      u.push({ coupe: false, h: tete + 2 * ligne }, { coupe: true, h: h - 2 * ligne });
+    } else {
+      u.push({ coupe: sorte === "t" && h > 4 * ligne && !tete, h: tete + h });
+    }
+    tete = 0;
+  }
+  if (tete) u.push({ coupe: false, h: tete });
+  return u;
 }
 
 /** Le passage serait-il sur la double page d'un passage qui y mène ? (F11-AC66) */
@@ -249,9 +336,15 @@ export const liensDuPlan = (liens: { sceneId: string; cibleId: string | null }[]
   return r;
 };
 
-/** Ce que la composition a mesuré, mis à la forme du modèle : le groupe de choix ne se coupe pas, avec ses deux lignes d'avant. */
-export const mesuresDuModele = (mesures: Record<string, { h: number; choix: number; pleinePage: boolean }>, ligne: number): Record<string, Mesure> =>
-  Object.fromEntries(Object.entries(mesures).map(([id, m]) => [id, { h: m.h, queue: m.choix > 0 ? m.choix + 2 * ligne : 0, pleinePage: m.pleinePage }]));
+/**
+ * Ce que la composition a mesuré, mis à la forme du modèle : la fin du passage ne se coupe pas —
+ * ses choix, actions et marque de fin, avec l'image qui les précède, ou les deux dernières lignes
+ * du paragraphe qui les précède (`apresTexte`, absent d'une mesure ancienne).
+ */
+export const mesuresDuModele = (mesures: Record<string, { h: number; choix: number; apresTexte?: boolean; pleinePage: boolean; blocs?: [string, number][] }>, ligne: number): Record<string, Mesure> =>
+  Object.fromEntries(
+    Object.entries(mesures).map(([id, m]) => [id, { h: m.h, queue: m.choix > 0 ? m.choix + (m.apresTexte === false ? 0 : 2 * ligne) : 0, pleinePage: m.pleinePage, ...(m.blocs ? { blocs: m.blocs } : {}) }]),
+  );
 
 /**
  * Les rangs gardés qui donnent un ordre : pour chaque groupe, l'ouverture en tête, puis ses

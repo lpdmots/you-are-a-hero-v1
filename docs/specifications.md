@@ -8858,7 +8858,18 @@ porteur, pour simplifier les retouches. À l'écran, la commande s'appelle
   la mise en page, non par compositions répétées ; il laisse des blancs, que
   les retouches de F11.3 réduisent ensuite. Ce modèle reste à éprouver :
   c'est la part la plus incertaine de la première livraison, et l'essai
-  n'est pas autorisé à ce stade.
+  n'est pas autorisé à ce stade. Éprouvé le 22 octobre 2026 sur un vrai
+  livre importé de la V0 (« Électro Nick », 323 passages, 152 grandes
+  images) : le modèle, qui ne connaissait que la hauteur d'un passage et
+  son groupe de choix, ignorait les images au milieu des passages et
+  l'image qui emporte les choix avec elle ; il annonçait 1 924 mm de blanc
+  pour 5 525 mm réels, et ne trouvait plus rien à améliorer. Il simule
+  désormais chaque passage bloc par bloc, tel que la composition l'a
+  mesuré (texte coupé entre deux lignes, image entière, choix, action et
+  fin collés au bloc d'avant) : 5 697 mm annoncés pour 5 525 réels, et
+  « Réordonner » fait passer le livre de 242 à 230 pages et de 38 à 16
+  pages peu remplies. Les blancs restants sont presque tous à l'intérieur
+  d'un passage (F11-AC74) : seule une image réduite les comble.
 
 - **F11-AC64 — Agencement proposé (révisé) :** étant donné un livre de
   145 pages dont douze sont peu remplies, lorsque l'adulte arrive à la

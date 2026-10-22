@@ -47,6 +47,32 @@ describe("Réordonner les passages (F11.5)", () => {
   });
 });
 
+describe("Le modèle simule les coupures, bloc par bloc (F11.2, F11.5)", () => {
+  const blocs = (id: string, b: [string, number][]): Record<string, Mesure> => ({ [id]: { h: b.reduce((n, x) => n + x[1], 0), queue: 0, pleinePage: false, blocs: b } });
+
+  it("une image et les choix qui la suivent passent ensemble à la page suivante, et laissent leur blanc", () => {
+    // 100 mm de texte, puis une image de 60 mm et ses choix de 20 mm : 70 mm restent, l'ensemble en demande 80
+    const m = modele([], { mesures: blocs("s1", [["n", 10], ["t", 90], ["i", 60], ["c", 20]]) });
+    expect(blancDe([passage(1)], m)).toBe(70);
+  });
+
+  it("une image au milieu d'un passage ne se coupe pas ; le texte, lui, s'écoule d'une page à l'autre", () => {
+    const texte = modele([], { mesures: blocs("s1", [["n", 10], ["t", 100], ["t", 100]]) });
+    expect(blancDe([passage(1)], texte)).toBe(0);
+    const image = modele([], { mesures: blocs("s1", [["n", 10], ["t", 100], ["i", 100]]) });
+    expect(blancDe([passage(1)], image)).toBe(60);
+  });
+
+  it("F11-AC64 — réordonner remplit la place qu'une image laissait vide", () => {
+    // s2 finit sur une image et des choix trop hauts pour le bas de la page ; s3, court, peut s'y loger avant
+    const mesures = { ...blocs("s1", [["n", 10], ["t", 80]]), ...blocs("s2", [["n", 10], ["t", 10], ["i", 70], ["c", 20]]), ...blocs("s3", [["n", 10], ["t", 20], ["c", 10]]) };
+    const ordre = [passage(1, { tenu: true }), passage(2), passage(3)];
+    const r = agencer(ordre, modele([], { mesures }));
+    expect(r.suites.get(0)).toEqual(["s3", "s2"]);
+    expect(r.apres).toBeLessThan(r.avant);
+  });
+});
+
 describe("Passage suggéré (F11.3)", () => {
   const ordre = [passage(12), passage(27), passage(29), passage(31), passage(35)];
   const mesures: Record<string, Mesure> = {
