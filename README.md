@@ -575,8 +575,9 @@ avant de commencer » soient tranchées.
   ([F11.2](docs/specifications.md#f112--pdf-de-travail-et-pdf-définitif)), le
   modèle de « Réordonner » simulant les coupures bloc par bloc (F11.5),
   les images pleine largeur importées à 80 %, et « Lire à l'essai » dans
-  l'en-tête du projet (F09.1). Commits locaux jusqu'à `7f399cb`, rien
-  poussé.
+  l'en-tête du projet (F09.1). En ligne jusqu'à `e2193e6`, poussé le même
+  jour à sa demande, sans le travail de l'accueil d'une autre conversation ;
+  l'import dans la vraie base est lancé par lui.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
