@@ -1,22 +1,34 @@
+/* Le logo de la barre du haut : dragon moyen en bleu canard, nom en Vollkorn SemiBold graphite,
+   comme l'assemblage horizontal de V1/identite/logo. */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 8px;
   color: var(--graphite);
   text-decoration: none;
-  font-weight: 800;
-  letter-spacing: -0.01em;
+  font-family: var(--f-recit);
+  font-weight: 600;
+  font-size: 1.2rem;
+  letter-spacing: 0;
   white-space: nowrap;
 }
 .logo:hover {
   color: var(--graphite);
 }
-.logo svg {
-  width: 28px;
-  height: 28px;
+.dragon {
+  width: 36px;
+  height: 36px;
+  flex: none;
+  color: var(--canard);
 }
+/* Sur téléphone, le dragon seul ; le nom reste lu par les lecteurs d'écran. */
 @media (max-width: 720px) {
   .logo span {
-    display: none;
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }

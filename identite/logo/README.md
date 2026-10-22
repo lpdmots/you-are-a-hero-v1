@@ -63,8 +63,10 @@ version blanche ou noire, sur une zone calme.
 
 Le nom est composé en **Vollkorn SemiBold (600)**, la police du récit dans
 l'application, sous licence SIL Open Font License, qui permet l'usage dans un
-logo. Dans les fichiers, le nom est **dessiné en tracés** : ne jamais le
-retaper avec la police.
+logo. Dans les fichiers, le nom est **dessiné en tracés** : pour une
+affiche, un livre ou un document, prendre ces fichiers plutôt que de retaper
+le nom. Seule exception, l'application, qui l'écrit en texte avec la même
+police pour qu'il reste lu par les lecteurs d'écran.
 
 ## 6. À ne pas faire
 
@@ -78,8 +80,15 @@ moins de 96 px ; poser le logo en couleur sur un fond chargé.
 `web/` contient `favicon.ico` (16, 32 et 48 px, dessin petit), `favicon.svg`,
 `apple-touch-icon.png` (180 px), `icon-192.png`, `icon-512.png`,
 `maskable-512.png` (dessin moyen, blanc sur bleu canard), `site.webmanifest`
-et les lignes à mettre dans `<head>` (`head-snippet.html`). Rien n'est encore
-intégré à l'application : cela se fait sur instruction du porteur.
+et les lignes à mettre dans `<head>` (`head-snippet.html`).
+
+Dans l'application depuis le 22 octobre 2026 : `favicon.ico`, `icon.svg` et
+`apple-icon.png` dans `app/src/app/` (conventions de Next.js, qui écrit les
+balises lui-même) ; le dragon moyen et le nom dans la barre du haut
+(`composants/Logo.tsx`, le dragon seul sur téléphone) ; le dragon grand en tête
+des écrans d'entrée (`composants/EntreeIllustree.tsx`). Les tracés y viennent
+de `svg/` (`composants/traces-du-dragon.ts`) : après un changement du dessin,
+les recopier. Le manifeste d'application installable n'est pas posé.
 
 ## 8. Refaire les fichiers
 

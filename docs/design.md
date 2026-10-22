@@ -301,8 +301,9 @@ livre ouvert dont les pages sont les ailes et dont la queue pend du dos comme
 un signet, en bleu canard, le nom en Vollkorn SemiBold graphite ; trois
 dessins selon la taille (grand avec fumée, moyen, petit pour les icônes).
 Fichiers, règles d'usage et icônes du site :
-[identité — logo](../identite/logo/README.md). Ni l'application ni la
-maquette ne l'affichent encore.
+[identité — logo](../identite/logo/README.md). L'application l'affiche
+depuis le 22 octobre 2026 (barre du haut, écrans d'entrée, icônes) ; la
+maquette non.
 
 **Illustrations proposées :** illustration 2D contemporaine en lumière de
 jour, formes arrondies, peu de détails et un petit animal complice placé dans

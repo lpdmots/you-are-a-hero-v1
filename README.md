@@ -546,9 +546,10 @@ avant de commencer » soient tranchées.
   [l'étape 9 du plan](docs/plan.md#étape-9--ouverture-à-dautres-enseignants).
 - **Logo, décidé le 21 octobre 2026 :** le dragon-livre, en bleu canard,
   symbole commun aux noms français et anglais
-  ([logo](identite/logo/README.md)). Ni l'application ni la maquette ne
-  l'affichent encore ; l'intégrer, et faire du dragon une mascotte (F11.6 dit
-  « sans mascotte à ce stade »), restent à décider.
+  ([logo](identite/logo/README.md)). L'application l'affiche depuis le
+  22 octobre 2026 (barre du haut, écrans d'entrée, icônes d'onglet et
+  d'écran d'accueil), pas encore en ligne ; la maquette non. Faire du dragon
+  une mascotte (F11.6 dit « sans mascotte à ce stade ») reste à décider.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
