@@ -13,6 +13,7 @@ import type { ServicesImage } from "@/composants/copie/contexte";
 import { demanderAuxImages, garderLaProposition } from "@/composants/imagesCreees";
 import type { DemandeDImage } from "@/serveur/images-creees";
 import { demandeDImage, fermerUneDemande, noterLImage, ouvrirLImage, promptDeLImage, propositionPosee, rendreUneProposition, reserverUneProposition, suivreLaDemande } from "../../../actions-images-creees";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /**
  * Le ✦ du titre de scène (F05) et « ✦ Formuler » sous la consigne (F13.2), dans la page de
@@ -27,7 +28,7 @@ const PAS_ENREGISTRE = "Vos dernières modifications ne sont pas encore enregist
 
 async function demander<R extends { ok: boolean }>(adresse: string, scene: string): Promise<R | { ok: false; message: string }> {
   try {
-    const reponse = await fetch(adresse, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scene }) });
+    const reponse = await appelerUneAide(adresse, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scene }) });
     if (reponse.status === 401) return { ok: false, message: "Connectez-vous de nouveau." };
     return (await reponse.json()) as R;
   } catch {
@@ -133,7 +134,7 @@ export async function poserLaPremiere(projetId: string, demande: DemandeDImage):
  */
 export async function demanderDesIdees(scene: string, demande: { orientation: string; dejaMontrees: string[] }): Promise<ReponseIdees> {
   try {
-    const reponse = await fetch("/ia/idees-choix", {
+    const reponse = await appelerUneAide("/ia/idees-choix", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ scene, orientation: demande.orientation, dejaMontrees: demande.dejaMontrees }),

@@ -306,3 +306,20 @@
     padding: 14px;
   }
 }
+
+/* La recharge d'étoiles, quand une aide est refusée : l'étiquette du pass, le nombre en grand,
+   dans la couleur de l'IA ; ni couverture ni jauges, pour qu'on ne la confonde pas avec le pass. */
+.recharge {
+  padding-block: 20px 16px;
+}
+.etoilesRecharge {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--ia, var(--canard));
+  font-variant-numeric: lining-nums;
+}
+.pourQuoi {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}

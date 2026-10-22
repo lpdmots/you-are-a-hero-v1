@@ -14,6 +14,7 @@ import type { ReponseEcriture } from "@/serveur/aides-de-la-scene";
 import type { TexteDeScene } from "@/serveur/copie";
 import { annulerLEcriture, mettreLEcriture } from "../../../actions-correction";
 import { Champ } from "./Correction";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /**
  * « ✦ Écrire » (F13.6, décidé par le porteur le 17 octobre 2026) : à la place de « Corriger »
@@ -66,7 +67,7 @@ export function useEcriture({
     const depuis = version();
     let r: ReponseEcriture;
     try {
-      const reponse = await fetch("/ia/ecriture", {
+      const reponse = await appelerUneAide("/ia/ecriture", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scene: sceneId, version: depuis, mots }),

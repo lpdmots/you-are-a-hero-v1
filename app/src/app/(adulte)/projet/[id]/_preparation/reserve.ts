@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from "react";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { prendreDansLaReserve, type Rubrique } from "@/domaine/preparation";
 import type { ReponsePreparation, SorteAidePreparation } from "@/serveur/preparation-ia";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /** Demande une aide de la Préparation par son adresse (F13.4) ; une panne se dit comme un refus. */
 export async function demanderALaPreparation(projetId: string, etape: Rubrique, sorte: SorteAidePreparation, heros: string | null = null): Promise<ReponsePreparation> {
   try {
-    const r = await fetch("/ia/preparation", {
+    const r = await appelerUneAide("/ia/preparation", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ projet: projetId, etape, sorte, heros }),

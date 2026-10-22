@@ -17,6 +17,7 @@ import { pluriel } from "@/domaine/texte";
 import type { TexteDeScene } from "@/serveur/copie";
 import type { ReponseCorrection } from "@/serveur/correction";
 import { annulerLaCorrection, garderLaCorrection } from "../../../actions-correction";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /**
  * L'aide à la correction, dans la page de scène (F13.1) : « Corriger » et son degré dans
@@ -85,7 +86,7 @@ export function useCorrection({
     const depuis = version();
     let r: ReponseCorrection;
     try {
-      const reponse = await fetch("/ia/correction", {
+      const reponse = await appelerUneAide("/ia/correction", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ scene: sceneId, version: depuis, degre: pour, selection: sur, longueur: longueurReglable(pour) ? longueur : undefined }),

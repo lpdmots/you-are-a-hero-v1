@@ -10830,7 +10830,9 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   essayer (une dizaine d'images ou une vingtaine de corrections) ; tant que
   le paiement n'existe pas, il n'y en a pas d'autres. Solde épuisé : les
   images créées d'office ne se créent pas, et l'aide demandée dit « Vous
-  n'avez plus d'étoiles. Tout le reste fonctionne. » Le compte du porteur n'a
+  n'avez plus d'étoiles. Tout le reste fonctionne. » ; « Paiement ouvert »
+  allumé, elle ouvre aussi le dialogue de la recharge, décidé par le porteur
+  le 22 octobre 2026 pendant l'essai de l'étape 9. Le compte du porteur n'a
   pas de solde. Alternative écartée : un prix fixe par sorte d'aide, grille à
   tenir quand les coûts changent.
 - **Les crédits s'appellent des étoiles** (« 34 ✦ »), d'après le signe de
@@ -11201,6 +11203,12 @@ découvre l'outil, et le porteur, administrateur.
   d'utilisation disent qui vend et que les prix sont sans TVA ; la page
   « Confidentialité » et le contrat de sous-traitance type nomment le même
   éditeur.
+- **F14-AC38 — La recharge proposée sur place :** étant donné M. Bernard à
+  0 ✦ et « Paiement ouvert » allumé, lorsqu'il demande une aide, alors aucun
+  appel ne part et un dialogue « Vous n'avez plus d'étoiles » propose la
+  recharge (ses étoiles et son prix lus dans les réglages, « Recharger »,
+  « Plus tard »), qui mène au paiement et revient sur la page ; interrupteur
+  éteint, aucun dialogue ne s'ouvre, le message de l'aide suffit.
 
 **Questions ouvertes :** les prix du pass et des recharges, et le nombre
 d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;

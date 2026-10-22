@@ -7,7 +7,15 @@ import { adultePret, aller, MESSAGE, recit, semerBlocs, semerPartie, semerProjet
  * mouvement comme un autre.
  */
 
+let avant: { paiement_ouvert: boolean };
+test.beforeAll(async () => {
+  [avant] = await sql<{ paiement_ouvert: boolean }>("select paiement_ouvert from public.reglages_application");
+});
+const interrupteur = (allume: boolean) => sql("update public.reglages_application set paiement_ouvert = $1", [allume]);
+
 test.afterEach(async () => {
+  await interrupteur(avant.paiement_ouvert);
+  await sql("delete from public.paiements where enseignant_id is null or enseignant_id in (select id from auth.users where email like 'parcours-%@exemple.test')");
   await supprimerComptes();
 });
 
@@ -63,14 +71,38 @@ test("F14-AC07 — « Mon compte » dit le solde ; aucun bouton d'IA ne montre d
 
 test("F14-AC08 — à 0 ✦, l'aide ne part pas : « Vous n'avez plus d'étoiles. Tout le reste fonctionne. »", async ({ page }) => {
   const s = await uneScene(page);
+  await interrupteur(false);
   await soldeA(s.compte, 0);
   await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
   await page.getByRole("button", { name: "Proposer des titres" }).click();
   await expect(MESSAGE(page)).toContainText("Vous n'avez plus d'étoiles. Tout le reste fonctionne.");
   await expect(page.getByRole("group", { name: "Titres proposés" })).toHaveCount(0);
+  // « Paiement ouvert » éteint : rien à vendre, aucun dialogue ne s'ouvre (F14-AC38)
+  await expect(page.getByRole("alertdialog")).toHaveCount(0);
   expect(await sql("select 1 from public.appels_ia where enseignant_id = $1", [s.compte.id])).toHaveLength(0);
   await ouvrirMonCompte(page);
   await expect(page.getByText("Il vous reste 0 ✦ pour les aides.")).toBeVisible();
+});
+
+test("F14-AC38 — « Paiement ouvert » allumé, à 0 ✦ : l'aide refusée ouvre la recharge, qui mène au paiement et revient", async ({ page }) => {
+  const s = await uneScene(page);
+  await interrupteur(true);
+  await soldeA(s.compte, 0);
+  await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
+  await page.getByRole("button", { name: "Proposer des titres" }).click();
+  const dialogue = page.getByRole("alertdialog");
+  await expect(dialogue.getByRole("heading", { name: "Vous n’avez plus d’étoiles" })).toBeVisible();
+  await expect(dialogue).toContainText("100 ✦");
+  await expect(dialogue).toContainText("pour les aides IA de tous vos projets");
+  // « Plus tard » le referme ; l'aide suivante le rouvre
+  await dialogue.getByRole("button", { name: "Plus tard" }).click();
+  await expect(dialogue).toHaveCount(0);
+  await page.getByRole("button", { name: "Proposer des titres" }).click();
+  await dialogue.getByRole("button", { name: /^Recharger · 5/ }).click();
+  await expect(page).toHaveURL(/\/paiement\/simulation\?session=cs_simule_/);
+  await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
+  await page.getByRole("button", { name: "Payer" }).click();
+  await expect.poll(async () => (await sql<{ etoiles: number }>("select etoiles from public.enseignants where id = $1", [s.compte.id]))[0].etoiles).toBe(100);
 });
 
 test("F14-AC11 — le compte du porteur : aucun solde dans « Mon compte », l'aide part à 0 ✦", async ({ page }) => {

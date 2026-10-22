@@ -8,6 +8,7 @@ import { heureEnMots, jourCourt, jourEnMots } from "@/domaine/dates";
 import type { Etat, SorteDeScene } from "@/domaine/etats";
 import { de } from "@/domaine/texte";
 import type { Remarque, Remise } from "@/serveur/relecture";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /** Ce que la fiche dit quand la page montre un autre texte que celui de la scène : elle ne décide pas. */
 export type TexteLuAilleurs = { phrase: string; /** Une correction proposée occupe la copie : la décision attend qu'on la garde ou la laisse (F13.1) */ correction?: true } | null;
@@ -199,7 +200,7 @@ function Reprise({
     setDemande(true);
     let r: ReponsePistes;
     try {
-      const reponse = await fetch("/ia/pistes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scene: pistes }) });
+      const reponse = await appelerUneAide("/ia/pistes", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ scene: pistes }) });
       r = reponse.status === 401 ? { ok: false, message: "Connectez-vous de nouveau." } : ((await reponse.json()) as ReponsePistes);
     } catch {
       r = { ok: false, message: "L’aide n’a pas répondu. Le texte n’a pas changé." };

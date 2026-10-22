@@ -28,6 +28,7 @@ import {
   ajouterDesPersonnages, poserLaReference, reglerPersonnage, remettreDesPersonnages, supprimerDesPersonnages, type CarteSaisie, type CarteSupprimee,
 } from "../../actions-personnages";
 import styles from "./preparation.module.css";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /**
  * Les personnages de l'histoire (F10.2, F02), sous « Nous retenons » de l'étape Personnages : une
@@ -40,7 +41,7 @@ import styles from "./preparation.module.css";
 async function demanderAuxPersonnages<R>(corps: Record<string, unknown>, image = false): Promise<R | { ok: false; message: string }> {
   const panne = { ok: false as const, message: image ? MESSAGES_IA.pasDImage : MESSAGES_IA.pasDeReponse };
   try {
-    const r = await fetch("/ia/personnages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
+    const r = await appelerUneAide("/ia/personnages", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
     if (!r.ok && r.status !== 401 && r.status !== 500) return panne;
     return (await r.json()) as R;
   } catch {

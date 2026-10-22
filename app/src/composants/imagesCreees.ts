@@ -3,6 +3,7 @@
 import { laisserLesPropositions } from "@/app/(adulte)/projet/actions-personnages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { deposer, reduire } from "./importer";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /**
  * Les images créées, côté navigateur (F10.1, F10.2) : la demande à `/ia/images`, puis l'image
@@ -13,7 +14,7 @@ import { deposer, reduire } from "./importer";
 export async function demanderAuxImages<R>(corps: Record<string, unknown>, image = false): Promise<R | { ok: false; message: string }> {
   const panne = { ok: false as const, message: image ? MESSAGES_IA.pasDImage : MESSAGES_IA.pasDeReponse };
   try {
-    const r = await fetch("/ia/images", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
+    const r = await appelerUneAide("/ia/images", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
     if (!r.ok && r.status !== 401 && r.status !== 500) return panne;
     return (await r.json()) as R;
   } catch {

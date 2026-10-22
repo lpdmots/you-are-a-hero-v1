@@ -68,6 +68,14 @@ export async function acheterLePass(projetId: string, retour?: string): Promise<
   return adresse ? { ok: true, adresse } : { ok: false, erreur: PAS_OUVERT };
 }
 
+/** La recharge à proposer quand une aide est refusée faute d'étoiles (F14-AC38) ; null si rien ne se vend. */
+export async function offreDeRecharge(): Promise<{ prix: number; etoiles: number } | null> {
+  const e = await exigerEnseignant();
+  const offre = await offreActuelle();
+  if (!offre.paiementOuvert || e.createur || !paiementInstalle()) return null;
+  return { prix: offre.prixDeLaRecharge, etoiles: offre.etoilesDeLaRecharge };
+}
+
 export async function acheterUneRecharge(retour?: string): Promise<Reponse> {
   const e = await exigerEnseignant();
   const offre = await offreActuelle();

@@ -11,13 +11,14 @@ import { ORIENTATION_MAX } from "@/domaine/preparation";
 import { pluriel } from "@/domaine/texte";
 import type { ReponsePlan } from "@/serveur/plan-ia";
 import { ajouterDesParties, supprimer } from "../../actions-recit";
+import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /** Demande une aide du plan par son adresse (F13.5) ; une panne se dit comme un refus. */
 export async function demanderAuPlan(corps: {
   sorte: "parties" | "chapitres" | "resume"; projet?: string; partie?: string; chapitre?: string; orientation?: string; dejaMontres?: string[];
 }): Promise<ReponsePlan> {
   try {
-    const r = await fetch("/ia/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
+    const r = await appelerUneAide("/ia/plan", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corps) });
     if (!r.ok && r.status !== 401 && r.status !== 500) return { ok: false, message: MESSAGES_IA.pasDeReponse };
     return (await r.json()) as ReponsePlan;
   } catch {
