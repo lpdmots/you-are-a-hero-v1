@@ -224,16 +224,32 @@ export function promptDeLaScene(
 ): string {
   let n = 0;
   const lignes = d.retenus.map((r) => ligneDuRetenu(r, r.reference ? ++n : null));
-  return [
-    `Illustration d'une scène de livre pour enfants, ${CADRAGES_EN_MOTS[d.cadrage]}.`,
-    d.description.trim() ? `Ce que montre l'image : ${d.description.replace(/\s+/g, " ").trim()}` : "",
+  const description = d.description.replace(/\s+/g, " ").trim();
+  const commun = [
     lignes.length ? `Personnages et objets, à dessiner tels qu'ils sont décrits :\n${lignes.join("\n")}` : "",
     n ? "Les images de référence jointes donnent l'apparence de ces personnages et objets : garder leur apparence, pas leur pose ni leur fond." : "",
+  ];
+  // Détourée : une description de scène l'emportait sur la consigne, et l'image revenait entière,
+  // décor compris (essai en ligne du 22 octobre 2026). Le sujet seul se dit d'abord, ce qu'on
+  // garde d'une idée qui décrit un lieu, et le fond transparent se redit à la fin.
+  if (d.detouree)
+    return [
+      "Illustration détourée pour un livre pour enfants : un seul sujet isolé, entier et centré, sur un fond entièrement transparent.",
+      description
+        ? `Sujet, tiré de cette idée : ${description} Si l'idée décrit un lieu ou une scène, n'en garder qu'un seul élément, le plus parlant (un personnage, un animal ou un objet), sans le lieu autour.`
+        : "",
+      ...commun,
+      d.herosAbsent ? "Le héros n'est jamais représenté, ni ses mains." : "",
+      "Sans main ni personnage autour, s'il n'est pas lui-même un personnage.",
+      `Style : ${descriptionDuStyle(style.style, style.autre)}.`,
+      REGLES_DE_L_IMAGE,
+      "Rappel : fond entièrement transparent ; aucun décor, aucun sol, aucun ciel, aucune ombre portée.",
+    ].filter(Boolean).join("\n");
+  return [
+    `Illustration d'une scène de livre pour enfants, ${CADRAGES_EN_MOTS[d.cadrage]}.`,
+    description ? `Ce que montre l'image : ${description}` : "",
+    ...commun,
     d.herosAbsent ? HEROS_ABSENT_EN_MOTS : "",
-    // Un essai réel a fait tenir la lanterne détourée par deux mains : le sujet seul, ici
-    d.detouree
-      ? "Détourée : le sujet seul, simplifié, entier et centré, sans décor ni sol ni ombre portée, sur un fond entièrement transparent ; sans main ni personnage autour, s'il n'est pas lui-même un personnage."
-      : "",
     `Style : ${descriptionDuStyle(style.style, style.autre)}.`,
     REGLES_DE_L_IMAGE,
   ].filter(Boolean).join("\n");

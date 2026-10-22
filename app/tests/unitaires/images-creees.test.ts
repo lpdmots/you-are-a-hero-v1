@@ -42,6 +42,17 @@ describe("Les badges d'une image de scène (F10.2)", () => {
     expect(candidatsDeLImage(tous, false).map((c) => c.id)).toEqual(["lou", "mina", "mael"]);
   });
 
+  it("F10.2, Détourée : le sujet seul d'abord, ce qu'on garde d'une idée de lieu, le fond transparent redit à la fin", () => {
+    const prompt = promptDeLaScene({ description: "Le désert au coucher du soleil, avec des cactus.", cadrage: "3:2", retenus: [], herosAbsent: true, detouree: true }, AQUARELLE);
+    const lignes = prompt.split("\n");
+    expect(lignes[0]).toMatch(/^Illustration détourée .*un seul sujet isolé.*fond entièrement transparent\.$/);
+    expect(prompt).toContain("Le désert au coucher du soleil, avec des cactus.");
+    expect(prompt).toContain("n'en garder qu'un seul élément");
+    expect(prompt).not.toContain("Illustration d'une scène");
+    expect(prompt).not.toContain(HEROS_ABSENT_EN_MOTS);
+    expect(lignes[lignes.length - 1]).toMatch(/^Rappel : fond entièrement transparent ; aucun décor/);
+  });
+
   it("F10-AC08 — héros absent : aucun héros parmi les badges, ni d'office, ni nommé, ni dans la liste du « + »", () => {
     const tous = [LOU, MAEL];
     expect(badgesDOffice("Lou pousse la porte ; le passeur attend.", "", tous, true)).toEqual(["mael"]);
