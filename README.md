@@ -548,7 +548,7 @@ avant de commencer » soient tranchées.
   symbole commun aux noms français et anglais
   ([logo](identite/logo/README.md)). L'application l'affiche depuis le
   22 octobre 2026 (barre du haut, écrans d'entrée, icônes d'onglet et
-  d'écran d'accueil), pas encore en ligne ; la maquette non. Faire du dragon
+  d'écran d'accueil), en ligne jusqu'à `40b2e66` ; la maquette non. Faire du dragon
   une mascotte (F11.6 dit « sans mascotte à ce stade ») reste à décider.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
