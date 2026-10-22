@@ -69,6 +69,19 @@ export type LivreV1 = {
 
 const LIBELLE_PAR_DEFAUT = "continuer";
 
+/**
+ * Ce que les données de la V0 ne disent pas, repéré à la relecture d'une histoire : l'énigme
+ * dont la réponse est un numéro (une liaison cachée de la V1, F05.1), un renvoi resté écrit
+ * « [§] » dans le récit, une scène laissée sans suite. Les scènes sont nommées par leur identité V0.
+ */
+export type Corrections = {
+  liaisons?: { de: string; vers: string; libelle: string }[];
+  /** Le paragraphe qui porte « [§] » devient une phrase de choix vers ces scènes, dans l'ordre */
+  renvoisDuTexte?: { scene: string; vers: string[] }[];
+  /** « Rends-toi au… » ajouté à la fin d'une scène sans suite */
+  suites?: { de: string; vers: string }[];
+};
+
 /** Le texte d'une scène pour le livre : la version finale, sinon le premier texte (comme la V0). */
 export const corpsDuLivre = (s: SceneV0): BlocV0[] => (s.bodyFinal?.length ? s.bodyFinal : (s.body ?? []));
 
@@ -164,8 +177,11 @@ export function phraseDeChoixV0(c: ChoixV0, l: Lexique): string {
     return majuscule(branches.join(". Sinon, ")) + ".";
   }
   if (issue?._type === "outcomeDiceCheck") {
-    const bonus = (issue.bonusComponents ?? []).map((b) => (b.kind === "skill" ? ` (+${b.value ?? 1} si ton héros est ${minuscule(l.competence(b.key ?? ""))})` : "")).join("");
-    return `Lance le dé${bonus} : si tu fais ${issue.dc ?? 4} ou plus, va au [§1]. Sinon, va au [§2].`;
+    // Comme les jets écrits à la main : la compétence nomme le jet, son bonus s'ajoute au dé
+    const competences = (issue.bonusComponents ?? []).filter((x) => x.kind === "skill" && x.key).map((x) => minuscule(l.competence(x.key!)));
+    const seuil = issue.dc ?? 4;
+    if (!competences.length) return `Lance le dé : si tu fais ${seuil} ou plus, va au [§1]. Sinon, va au [§2].`;
+    return `Fais un jet de ${competences.join(" et de ")} : lance le dé et ajoute ton bonus. Si ton total est de ${seuil} ou plus, va au [§1]. Sinon, va au [§2].`;
   }
   if (issue?._type === "outcomeRollTable") {
     const entrees = (issue.entries ?? []).map((e, i) => {
@@ -210,7 +226,7 @@ const FIN = /^\s*fin(\s+de\s+l['’]\s*histoire)?\s*[.!]*\s*$/i;
 export function texteDeLaScene(
   s: SceneV0,
   l: Lexique,
-  o: { scene: (v0: string) => string | null; image: (ref: string) => string | null; avertir: (m: string) => void; construction: () => "si" | "pour" },
+  o: { scene: (v0: string) => string | null; image: (ref: string) => string | null; avertir: (m: string) => void; construction: () => "si" | "pour"; corrections?: Corrections },
 ): { texte: BlocV1[]; fin: boolean } {
   const corps = corpsDuLivre(s);
   const choix = new Map((s.choices ?? []).map((c) => [c._key, c]));
@@ -278,7 +294,22 @@ export function texteDeLaScene(
       const bloc = b as Extract<BlocV0, { _type: "block" }>;
       numero = bloc.listItem === "number" ? numero + 1 : 0;
       const puce = bloc.listItem === "bullet" ? "• " : bloc.listItem === "number" ? `${numero}. ` : "";
-      paragraphes(bloc, puce).forEach((p) => texte.push({ type: "p", id: randomUUID(), children: p }));
+      for (const p of paragraphes(bloc, puce)) {
+        const mots = p.map((x) => x.text).join("");
+        if (!mots.includes("[§")) {
+          texte.push({ type: "p", id: randomUUID(), children: p });
+          continue;
+        }
+        // Un renvoi écrit à la main dans le récit : sa destination vient des corrections
+        const vers = o.corrections?.renvoisDuTexte?.find((r) => r.scene === s._id)?.vers;
+        if (!vers) {
+          o.avertir(`« ${s.title} » : un « [§] » écrit dans le récit reste tel quel.`);
+          texte.push({ type: "p", id: randomUUID(), children: p });
+          continue;
+        }
+        const bloc = phrasePerso({ _key: "", label: "", outcome: [{ _type: "outcomeBranch", branches: vers.map((v) => ({ toScene: { _ref: v } })) }] }, mots);
+        if (bloc) texte.push(bloc);
+      }
     } else if (b._type === "imageRef") {
       const r = b as Extract<BlocV0, { _type: "imageRef" }>;
       const ref = images.get(r.imageKey);
@@ -312,8 +343,18 @@ export function texteDeLaScene(
     if (bloc) texte.push(bloc);
   }
 
+  for (const x of o.corrections?.suites ?? []) {
+    if (x.de !== s._id) continue;
+    const bloc = phrasePerso({ _key: "", label: "Continuer", outcome: [{ _type: "outcomeDirect", toScene: { _ref: x.vers } }] }, "Rends-toi au [§].");
+    if (bloc) texte.push(bloc);
+  }
+  for (const x of o.corrections?.liaisons ?? []) {
+    if (x.de !== s._id) continue;
+    texte.push({ type: "liaison", id: randomUUID(), cible: o.scene(x.vers), libelle: x.libelle, children: [{ text: "" }] });
+  }
+
   // Une scène sans suite est une fin : « FIN DE L'HISTOIRE », écrit à la main, devient la marque de fin de la V1
-  const fin = !texte.some((b) => b.type === "choix");
+  const fin = !texte.some((b) => b.type === "choix" || b.type === "liaison");
   if (fin) {
     while (texte.length && texte[texte.length - 1].type === "p" && FIN.test((texte[texte.length - 1].children as Lettres[]).map((x) => x.text).join(""))) texte.pop();
   }
@@ -324,12 +365,14 @@ export function texteDeLaScene(
 
 export function convertir(
   d: DonneesV0,
-  o: { scene: (v0: string) => string | null; image: (ref: string) => string | null; titresDesParties: string[] },
+  o: { scene: (v0: string) => string | null; image: (ref: string) => string | null; titresDesParties: string[]; corrections?: Corrections },
 ): LivreV1 {
   const avertissements: string[] = [];
   const l = lexiqueDe(d.histoire);
   const parId = new Map(d.scenes.map((s) => [s._id, s]));
   const numeroV0 = new Map((d.plan?.paragraphs ?? []).flatMap((p) => (p.scene ? [[p.scene._ref, p.n] as const] : [])));
+  // Un livre de la V0 qui n'a pas gardé ses numéros imprime toutes ses scènes ; la V1 les numérote
+  const numerote = numeroV0.size > 0;
   const fixe = new Map((d.plan?.paragraphNumberOverrides ?? []).flatMap((x) => (x.scene ? [[x.scene._ref, x.fixedN] as const] : [])));
   let tour = 0;
   const construction = () => ((tour += 1) % 2 ? "si" : "pour") as "si" | "pour";
@@ -357,13 +400,13 @@ export function convertir(
       titre: c.title.trim().slice(0, 120),
       image: c.image?.asset?._ref ?? null,
       scenes: scenes.map((s) => {
-        const { texte, fin } = texteDeLaScene(s, l, { scene: o.scene, image: o.image, avertir: (m) => avertissements.push(m), construction });
+        const { texte, fin } = texteDeLaScene(s, l, { scene: o.scene, image: o.image, avertir: (m) => avertissements.push(m), construction, corrections: o.corrections });
         const n = numeroV0.get(s._id) ?? null;
         // Une scène que le livre de la V0 n'imprimait pas reste hors du livre
-        if (n === null) avertissements.push(`« ${s.title} » n'était pas dans le livre de la V0 : elle est importée hors du livre.`);
+        if (numerote && n === null) avertissements.push(`« ${s.title} » n'était pas dans le livre de la V0 : elle est importée hors du livre.`);
         return {
           v0: s._id, titre: s.title.trim().slice(0, 120) || "Sans titre", consigne: (s.writingPrompt ?? "").slice(0, 4000),
-          texte, fin, horsLivre: n === null, numeroV0: n, numeroFixe: fixe.get(s._id) ?? null,
+          texte, fin, horsLivre: numerote && n === null, numeroV0: n, numeroFixe: fixe.get(s._id) ?? null,
         };
       }),
     });

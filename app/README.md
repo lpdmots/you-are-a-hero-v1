@@ -99,7 +99,14 @@ npm run histoire:v0 -- labyrinthe --essai     # convertit et dit ce qui serait i
 npm run histoire:v0 -- labyrinthe             # dans la base locale, pour le compte local
 npm run histoire:v0 -- labyrinthe --refaire   # retire le projet importé, avec ses images, puis le recharge
 npm run histoire:v0 -- labyrinthe --production adresse@du.compte --oui
+npm run histoire:v0 -- robots                 # « Électro Nick » (« Alerte : Robots Rebelles » dans la V0)
 ```
+
+« Le labyrinthe oublié » garde les numéros de son livre imprimé. « Électro Nick » ne
+les avait pas gardés dans la V0 : la V1 mélange chaque partie, les huit numéros fixés
+(énigmes, sauvegardes) tenus. Les corrections faites à la relecture d'une histoire
+(énigmes à numéro en liaisons cachées, renvoi resté « [§] », scène sans suite) sont
+nommées dans `HISTOIRES`, en tête du script.
 
 ## Vérifier
 

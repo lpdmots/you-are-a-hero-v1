@@ -20,8 +20,8 @@ import { resolve } from "node:path";
 import { createClient } from "@supabase/supabase-js";
 import { config } from "dotenv";
 import { Client } from "pg";
-import { nettoyerTexte, type Lettres } from "@/domaine/copie";
-import { numeroter, type PlanNumerote } from "@/domaine/numeros";
+import { ciblesDe, nettoyerTexte, type Lettres, type Texte } from "@/domaine/copie";
+import { hasard, melangeInitial, numeroter, type PlanNumerote } from "@/domaine/numeros";
 import type { Feuille } from "@/domaine/preparation";
 import { cheminImage, cheminVignette, lireImage, POIDS_MAX_IMAGE, POIDS_MAX_VIGNETTE, SEAU } from "@/serveur/images";
 import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
@@ -31,17 +31,26 @@ import { convertir, corpsDuLivre, imagesDe, texteLeger, type DonneesV0, type Sce
 
 type Histoire = {
   id: string;
+  /** Le titre et le sous-titre imprimés, quand ils ne sont pas ceux de l'histoire dans la V0 */
+  titre?: string;
+  sousTitre?: string;
   titresDesParties: string[];
   /** La ligne et l'année de la page de titre : la classe, sans prénoms */
   ligne: string;
   annee: string;
   /** La préface qui devient « Comment lire ce livre », et le titre où commencent les règles du jeu */
   preface: string;
-  regles: string;
+  regles: { depuis: string; sansSonTitre?: true };
   /** La préface dont l'image devient la feuille d'aventure imprimée */
   ficheAventure: string;
   feuille: Feuille;
   marqueFin: string;
+  /** Les corrections de la relecture (voir `Corrections`), les scènes nommées par leur titre dans la V0 */
+  corrections?: {
+    liaisons?: { de: string; vers: string; libelle: string }[];
+    renvoisDuTexte?: { scene: string; vers: string[] }[];
+    suites?: { de: string; vers: string }[];
+  };
 };
 
 const HISTOIRES: Record<string, Histoire> = {
@@ -51,7 +60,7 @@ const HISTOIRES: Record<string, Histoire> = {
     ligne: "Les CE2-CM1-CM2 de l’école de Müllheim",
     annee: "2025-2026",
     preface: "Préface 3",
-    regles: "Règles du jeu et conseils",
+    regles: { depuis: "Règles du jeu et conseils", sansSonTitre: true },
     ficheAventure: "Fiche aventure",
     // La fiche aventure de la V0 : volonté, compétences, inventaire, notes, unités de temps, sauvegardes
     feuille: {
@@ -66,6 +75,48 @@ const HISTOIRES: Record<string, Histoire> = {
       ],
     },
     marqueFin: "Fin de l’histoire",
+  },
+  robots: {
+    id: "i1QhM64a7hK8HMMEqIfXXH",
+    // « Alerte : Robots Rebelles » dans la V0 ; le livre imprimé porte ce titre-ci
+    titre: "Électro Nick",
+    sousTitre: "Le dernier prototype",
+    titresDesParties: ["Le crash", "La traversée", "Le château", "La salle du trône", "Épilogue"],
+    ligne: "Les CE2-CM1-CM2 de l’école de Müllheim",
+    annee: "2025-2026",
+    preface: "Préface explications",
+    regles: { depuis: "La Volonté" },
+    ficheAventure: "Fiche aventure",
+    // La fiche aventure de la V0 : volonté sur 12, boulons, rations, temps, bonus aux jets, inventaire, radeau, sauvegardes
+    feuille: {
+      on: true,
+      des: 1,
+      sections: [
+        { id: "heros", type: "compteurs", titre: "Ton héros", compteurs: [
+          { id: "volonte", nom: "Volonté", depart: 12 }, { id: "boulons", nom: "Boulons", depart: 0 },
+          { id: "rations", nom: "Rations de repas", depart: 0 }, { id: "temps", nom: "Unités de temps", depart: 0 },
+        ] },
+        { id: "bonus", type: "compteurs", titre: "Bonus aux jets", compteurs: [
+          { id: "agilite", nom: "Agilité", depart: 0 }, { id: "bricolage", nom: "Bricolage", depart: 0 }, { id: "furtivite", nom: "Furtivité", depart: 0 },
+        ] },
+        { id: "inventaire", type: "liste", titre: "Inventaire", lignes: 10 },
+        { id: "notes", type: "notes", titre: "Notes" },
+        { id: "radeau", type: "notes", titre: "Mon radeau est bancal ou solide" },
+        { id: "sauvegarde", type: "notes", titre: "Sauvegarde (100, 200)" },
+      ],
+    },
+    marqueFin: "Fin",
+    corrections: {
+      // Les deux énigmes dont la réponse est un numéro : le code de la soute (0132), l'objet du tableau
+      liaisons: [
+        { de: "Trouver le digicode", vers: "La soute", libelle: "Taper le bon code" },
+        { de: "Dans les rayons", vers: "Le convertisseur d’énergie", libelle: "Trouver le convertisseur" },
+      ],
+      // « retourne au [§] » resté sans destination : le tas de ferraille, dont parle la phrase
+      renvoisDuTexte: [{ scene: "Dans les rayons", vers: ["T'intéresser au tas de ferraille"] }],
+      // La fin de la traversée du lac n'avait pas de suite : comme celle de la forêt, la bifurcation des geysers
+      suites: [{ de: "Fin de la traversée", vers: "Bifurcation geysers" }],
+    },
   },
 };
 
@@ -171,7 +222,20 @@ async function principal(): Promise<void> {
   const images = imagesDe(d, d.scenes.filter((s) => idScene.has(s._id)));
   for (const ref of [couverture, fiche]) if (ref && !images.has(ref)) images.set(ref, { dansUneScene: false });
   const idImage = new Map([...images.keys()].map((ref) => [ref, randomUUID()]));
-  const livre = convertir(d, { scene: (v0) => idScene.get(v0) ?? null, image: (ref) => idImage.get(ref) ?? null, titresDesParties: h.titresDesParties });
+  // Les corrections nomment les scènes par leur titre, qui doit être unique dans l'histoire
+  const parTitre = (titre: string): string => {
+    const trouvees = d.scenes.filter((s) => idScene.has(s._id) && s.title.trim() === titre);
+    if (trouvees.length !== 1) throw new Error(`Correction : ${trouvees.length} scènes s'appellent « ${titre} ».`);
+    return trouvees[0]._id;
+  };
+  const c = h.corrections;
+  const corrections = {
+    liaisons: c?.liaisons?.map((x) => ({ ...x, de: parTitre(x.de), vers: parTitre(x.vers) })),
+    renvoisDuTexte: c?.renvoisDuTexte?.map((x) => ({ scene: parTitre(x.scene), vers: x.vers.map(parTitre) })),
+    suites: c?.suites?.map((x) => ({ de: parTitre(x.de), vers: parTitre(x.vers) })),
+  };
+  const livre = convertir(d, { scene: (v0) => idScene.get(v0) ?? null, image: (ref) => idImage.get(ref) ?? null, titresDesParties: h.titresDesParties, corrections });
+  if (h.titre) livre.titre = h.titre;
 
   // Le même contrôle que pour un texte reçu d'un navigateur : rien que l'application ne connaisse
   const scenes = livre.parties.flatMap((p) => p.chapitres.flatMap((c) => c.scenes));
@@ -183,15 +247,22 @@ async function principal(): Promise<void> {
 
   // « Comment lire ce livre » et les règles du jeu, tirés de la préface
   const morceaux = preface ? texteLeger(preface) : [];
-  const debutRegles = morceaux.findIndex((m) => m.titre === h.regles);
+  const debutRegles = morceaux.findIndex((m) => m.titre === h.regles.depuis);
   const commentLire: Lettres[][] = (debutRegles < 0 ? morceaux : morceaux.slice(0, debutRegles)).flatMap((m) => m.paragraphes).slice(0, 40);
+  // Les règles sont du texte simple, une ligne par paragraphe : un titre se termine par deux-points
   const regles = (debutRegles < 0 ? [] : morceaux.slice(debutRegles))
-    .flatMap((m, i) => (i === 0 ? m.paragraphes.slice(1) : m.paragraphes))
-    .map((p) => p.map((l) => l.text).join("").trim())
+    .flatMap((m, i) => {
+      const lignes = m.paragraphes.map((p) => p.map((l) => l.text).join("").trim());
+      if (!m.titre) return lignes;
+      if (i === 0 && h.regles.sansSonTitre) return lignes.slice(1);
+      return [/[.!?:…]$/.test(lignes[0]) ? lignes[0] : `${lignes[0]} :`, ...lignes.slice(1)];
+    })
     .join("\n")
     .slice(0, 6000);
 
-  // Les numéros : chaque scène garde celui du livre imprimé par la V0
+  // Les numéros : chaque scène garde celui du livre imprimé par la V0 ; s'il ne les a pas
+  // gardés, la V1 mélange chaque partie, comme au premier choix (F11.5), les numéros fixés tenus
+  const numerote = scenes.some((s) => s.numeroV0 !== null);
   const rang = new Map<string, number>();
   let horsPlan = 0;
   for (const s of scenes) rang.set(idScene.get(s.v0)!, s.numeroV0 ?? 100000 + (horsPlan += 1));
@@ -206,6 +277,11 @@ async function principal(): Promise<void> {
       })),
     })),
   };
+  if (!numerote) {
+    const fratries = scenes.map((s) => ciblesDe(s.texte as unknown as Texte));
+    for (const [id, r] of melangeInitial(plan, fratries, hasard(2026))) rang.set(id, r);
+    for (const p of plan.parties) for (const ch of p.chapitres) for (const s of ch.scenes) s.rangLivre = rang.get(s.id)!;
+  }
   const numeros = numeroter(plan);
   const ecarts = scenes.filter((s) => s.numeroV0 !== null && numeros.de.get(idScene.get(s.v0)!) !== s.numeroV0);
 
@@ -213,7 +289,8 @@ async function principal(): Promise<void> {
   const choix = scenes.reduce((n, s) => n + s.texte.filter((b) => b.type === "choix").length, 0);
   const actions = scenes.reduce((n, s) => n + s.texte.filter((b) => b.type === "action").length, 0);
   console.log(`« ${livre.titre} » : ${livre.parties.length} parties, ${chapitres} chapitres, ${scenes.length} scènes (${scenes.filter((s) => s.horsLivre).length} hors du livre, ${scenes.filter((s) => s.fin).length} fins), ${choix} phrases de choix, ${actions} actions de jeu, ${images.size} images, ${livre.objets.length} objets.`);
-  console.log(`Numéros : ${numeros.total} passages, ${ecarts.length ? `${ecarts.length} différents du livre de la V0` : "tous ceux du livre de la V0"}${numeros.problemes.length ? `, ${numeros.problemes.length} problèmes` : ""}.`);
+  const fixes = scenes.filter((s) => s.numeroFixe !== null).length;
+  console.log(`Numéros : ${numeros.total} passages, ${!numerote ? `mélangés par la V1, ${fixes} numéros fixés gardés` : ecarts.length ? `${ecarts.length} différents du livre de la V0` : "tous ceux du livre de la V0"}${numeros.problemes.length ? `, ${numeros.problemes.length} problèmes` : ""}.`);
   for (const a of new Set(livre.avertissements)) console.log(`  · ${a}`);
   if (essai) return;
 
@@ -323,7 +400,7 @@ async function principal(): Promise<void> {
 
       // Les pages de présentation : la couverture sur la page de titre, la classe sans prénoms, la préface, la fiche aventure de la V0
       const pages = {
-        titre: { forme: "modele", imageId: null, sousTitre: "", ligne: h.ligne, annee: h.annee, illustration: couverture ? idImage.get(couverture) ?? null : null },
+        titre: { forme: "modele", imageId: null, sousTitre: h.sousTitre ?? "", ligne: h.ligne, annee: h.annee, illustration: couverture ? idImage.get(couverture) ?? null : null },
         auteurs: { presente: false, forme: "modele", imageId: null, place: "debut", introduction: "Ce livre a été écrit par", noms: [], conclusion: "" },
         commentLire: { presente: true, forme: "modele", imageId: null, texte: commentLire, enigmes: false },
         feuille: { forme: fiche ? "image" : "modele", imageId: fiche ? idImage.get(fiche) : null },

@@ -64,6 +64,26 @@ describe("histoire de la V0", () => {
     expect(s.texte[1]).toMatchObject({ type: "action", signe: "coeur", children: [{ text: "Si tu as la pioche, retire 1 point de volonté." }] });
   });
 
+  it("un jet de dé que la V0 calculait se lit comme les jets écrits à la main", () => {
+    const s = premiere({
+      choices: [{ _key: "x", label: "Entrer", outcome: [{ _type: "outcomeDiceCheck", dc: 4, bonusComponents: [{ kind: "skill", key: "agile", value: 1 }], successToScene: { _ref: "b" }, failToScene: { _ref: "c" } }] }],
+    });
+    const choix = s.texte[0] as unknown as { children: { type?: string; text?: string; cible?: string }[] };
+    expect(choix.children.map((e) => e.text ?? "").join("")).toBe("Fais un jet de agile : lance le dé et ajoute ton bonus. Si ton total est de 4 ou plus, va au . Sinon, va au .");
+    expect(choix.children.filter((e) => e.type === "renvoi").map((e) => e.cible)).toEqual([ID.b, ID.c]);
+  });
+
+  it("une énigme à numéro devient une liaison cachée ; un « [§] » resté dans le récit, un renvoi", () => {
+    const l = convertir(donnees({ body: [bloc("a1", "Si tu te trompes, retourne au [§].")] }), {
+      scene: (v0) => ID[v0 as keyof typeof ID] ?? null, image: () => IMAGE, titresDesParties: [],
+      corrections: { liaisons: [{ de: "a", vers: "c", libelle: "Taper le code" }], renvoisDuTexte: [{ scene: "a", vers: ["b"] }] },
+    });
+    const a = l.parties[0].chapitres[0].scenes[0];
+    expect(a.texte.map((b) => b.type)).toEqual(["choix", "liaison"]);
+    expect(a.texte[1]).toMatchObject({ cible: ID.c, libelle: "Taper le code" });
+    expect(a.fin).toBe(false);
+  });
+
   it("le livre garde les numéros de la V0, et une fin perd son « FIN DE L'HISTOIRE » au profit de la marque de fin", () => {
     const l = livre({ body: [bloc("a1", "Début.", { listItem: "bullet" })], images: [{ _key: "i", image: { asset: { _ref: "image-x-10x10-png" } } }] });
     const [a, b, c] = l.parties[0].chapitres[0].scenes;
