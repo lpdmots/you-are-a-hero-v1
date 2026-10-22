@@ -561,6 +561,22 @@ avant de commencer » soient tranchées.
   (`identite/mascotte/`). Restent à décider les moments, dans un plan des
   pages générales (accueil, aide…) à venir, et un nom ; rien n'est construit
   ([design](docs/design.md#fantaisie-et-mascotte-22-octobre-2026)).
+- **Histoires de la V0 en exemple, le 22 octobre 2026 :** à la demande du
+  porteur, « Le labyrinthe oublié » et « Électro Nick » (« Alerte : Robots
+  Rebelles » dans la V0) sont importés de Sanity, en lecture seule, comme
+  projets personnels de son compte, la classe nommée sans prénoms
+  (`npm run histoire:v0`, [`app/README.md`](app/README.md)) ; en base
+  locale seulement, il les essaie avant la mise en ligne, qu'il demandera.
+  Le Labyrinthe garde les numéros de son livre imprimé ; Électro Nick, qui
+  ne les avait pas gardés, est numéroté par la V1, ses huit numéros fixés
+  tenus, et trois trous de la V0 comblés (deux énigmes en liaisons
+  cachées, un renvoi, une suite). Sorti de ces livres et décidé par lui le
+  même jour : choix, action et fin séparables de leur texte
+  ([F11.2](docs/specifications.md#f112--pdf-de-travail-et-pdf-définitif)), le
+  modèle de « Réordonner » simulant les coupures bloc par bloc (F11.5),
+  les images pleine largeur importées à 80 %, et « Lire à l'essai » dans
+  l'en-tête du projet (F09.1). Commits locaux jusqu'à `7f399cb`, rien
+  poussé.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
