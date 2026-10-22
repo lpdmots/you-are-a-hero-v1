@@ -577,7 +577,14 @@ avant de commencer » soient tranchées.
   les images pleine largeur importées à 80 %, et « Lire à l'essai » dans
   l'en-tête du projet (F09.1). En ligne jusqu'à `e2193e6`, poussé le même
   jour à sa demande, sans le travail de l'accueil d'une autre conversation ;
-  l'import dans la vraie base est lancé par lui.
+  l'import dans la vraie base est lancé par lui. Next.js 16.4.0, en ligne,
+  porte deux failles critiques (GHSA-2464-fhr4-w9xw, GHSA-p3m5-59mp-jv5r) :
+  la 16.4.2 est installée et vérifiée en local (construction, tests
+  unitaires, du livre et de la base), non poussée ; le commit `3ab86ce`
+  de la branche `maj-next`, posé sur ce qui est en ligne, se pousse seul
+  (`git push origin maj-next:main`, puis fusionner `origin/main` dans
+  `main`), sinon elle part avec le prochain envoi de `main`. Mise en ligne
+  recommandée sans attendre.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
