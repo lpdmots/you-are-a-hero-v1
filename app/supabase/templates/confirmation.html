@@ -12,10 +12,17 @@
 <tr><td style="padding:20px 32px 8px;">
 <a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=email" style="display:inline-block;background:#0b6a73;color:#ffffff;text-decoration:none;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:16px;font-weight:bold;padding:12px 22px;border-radius:8px;">Confirmer mon adresse</a>
 </td></tr>
-<tr><td style="padding:16px 32px 28px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:13px;line-height:1.5;color:#636b72;">
+<tr><td style="padding:16px 32px 12px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:13px;line-height:1.5;color:#636b72;">
 Ce lien vaut une heure, et s’ouvre aussi sur un téléphone. Si vous n’avez pas créé de compte, ignorez ce courriel : rien ne sera ouvert.
 </td></tr>
+<tr><td style="padding:0 32px 28px;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:13px;line-height:1.5;color:#636b72;word-break:break-all;">
+Si le bouton ne s’ouvre pas, copiez ce lien dans votre navigateur :<br><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=email" style="color:#0b6a73;">{{ .RedirectTo }}?token_hash={{ .TokenHash }}&amp;type=email</a>
+</td></tr>
 </table>
+<p style="max-width:520px;margin:16px auto 0;font-family:'Atkinson Hyperlegible',system-ui,sans-serif;font-size:12px;line-height:1.5;color:#636b72;text-align:center;">
+Il était une classe · <a href="https://iletaituneclasse.com" style="color:#636b72;">iletaituneclasse.com</a> · une question : <a href="mailto:contact@iletaituneclasse.com" style="color:#636b72;">contact@iletaituneclasse.com</a><br>
+Vous recevez ce courriel parce que cette adresse a été donnée sur Il était une classe.
+</p>
 </td></tr>
 </table>
 </body>

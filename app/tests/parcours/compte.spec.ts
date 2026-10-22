@@ -178,6 +178,10 @@ test("F14-AC01 — s'inscrire par adresse : un courriel de confirmation, pas d'e
   expect(recu.sujet).toBe("Confirmer votre adresse — Il était une classe");
   const lien = recu.liens.find((l) => l.includes("token_hash="))!;
   expect(lien).toMatch(/^http:\/\/localhost:3100\/entree\/confirmer\?token_hash=.+&type=email$/);
+  // Le lien aussi en clair, et un pied qui dit qui écrit : moins suspect pour les filtres
+  expect(recu.html).toContain("Si le bouton ne s’ouvre pas, copiez ce lien");
+  expect(recu.liens.filter((l) => l === lien)).toHaveLength(2);
+  expect(recu.html).toContain("contact@iletaituneclasse.com");
   const telephone = await browser.newContext();
   const autre = await telephone.newPage();
   await autre.goto(lien);
