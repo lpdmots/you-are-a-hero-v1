@@ -26,7 +26,7 @@ afterAll(async () => {
 const stockage = () => clientDuStockage(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_CLE_SECRETE!);
 
 describe("La sauvegarde de la nuit (F14-AC30)", () => {
-  it("F14-AC30 — la base et les images partent dans un même dossier, à leurs chemins ; le workflow le dépose dans le seau à 3 h, heure de Paris", async () => {
+  it("F14-AC30 — la base et les images partent dans un même dossier, à leurs chemins ; le workflow le dépose dans le seau vers 3 h, heure de Paris, même lancé en retard", async () => {
     const projet = (await creerProjet(laurent, "personnel", "choix", "La sauvegarde de minuit")).id;
     const chemin = `${laurent.id}/${projet}/nuit.jpg`;
     await service().storage.from("images").upload(chemin, Buffer.from("une image de la nuit"), { contentType: "image/jpeg" });
@@ -36,9 +36,13 @@ describe("La sauvegarde de la nuit (F14-AC30)", () => {
     expect(readFileSync(join(dossier, "images", chemin), "utf8")).toBe("une image de la nuit");
 
     const workflow = readFileSync(resolve(__dirname, "../../../.github/workflows/sauvegarde-nocturne.yml"), "utf8");
-    expect(workflow).toContain('cron: "0 1 * * *"');
-    expect(workflow).toContain('cron: "0 2 * * *"');
-    expect(workflow).toContain('"$(TZ=Europe/Paris date +%H)" != "03"');
+    // Un seul déclenchement, à 1 h 17 en temps universel, qui sauvegarde à son arrivée : GitHub
+    // lance parfois la tâche avec des heures de retard (22 octobre 2026)
+    expect(workflow).toContain('cron: "17 1 * * *"');
+    expect(workflow.match(/cron:/g)).toHaveLength(1);
+    expect(workflow).not.toContain("TZ=Europe/Paris date +%H");
+    // Le nettoyage part de la racine : il ne bloque pas quand le dossier app manque
+    expect(workflow).toContain('rm -rf app/production.env app/supabase/signing_keys.json "$RUNNER_TEMP/sauvegarde"');
     expect(workflow).toContain("npm run sauvegarde:nuit");
     expect(workflow).toContain('aws s3 cp "$RUNNER_TEMP/sauvegarde" "s3://$SEAU_S3/$jour/" --recursive');
     expect(workflow).toContain("AWS_DEFAULT_REGION: eu-west-3");
