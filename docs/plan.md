@@ -3220,11 +3220,70 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   - la suppression du compte d'essai efface tout.
   Les classes ne se rejouent pas : elles sont éprouvées aux étapes 1 à 7.
   Supabase Pro se prend au premier vrai collègue, non pour l'essai.
+- **Essai et mise en ligne, 21 et 22 octobre 2026,** dans l'ordre de
+  `app/README.md`, élément par élément, avec le porteur :
+  - **En local, « Paiement ouvert » allumé :** compte d'une seconde adresse,
+    confirmé par Mailpit, 30 ✦ ; blocage à 40 scènes ; deux pass et deux
+    recharges payés avec la carte d'essai de Stripe ; facture ; administration
+    (ventes du mois, fiche du compte). Corrigé en chemin : l'API de Stripe
+    refuse désormais `payment_method_types` (les moyens de paiement se règlent
+    dans son tableau de bord, la carte seule) et un refus de Stripe écrit sa
+    raison au journal. Retouches demandées par le porteur : la page de Stripe
+    rappelle ce que donne l'achat, avec l'image du livre ; un dialogue de
+    remerciement au retour du pass ; le dialogue du pass refait en offre
+    (couverture du livre, jauges, prix en grand) ; dans l'administration, les
+    aides qui se suivent en une ligne dépliable. Gardés sur sa décision : la
+    case de renonciation non cochée (F14-AC18, l'accord exprès l'exige) ; la
+    règle de F10 (pas de visuels de l'application dans une scène). Les
+    mentions du vendeur (nom, adresse, SIRET, franchise de TVA) sont au bas
+    de page par défaut de la facture, réglé par lui chez Stripe dans les deux
+    modes, et non dans le code.
+  - **Mise en ligne :** réglages de SES, de Supabase (adresses de retour,
+    SMTP de SES, modèles de courriel) et de Vercel ; vraie base sauvegardée,
+    sept migrations appliquées (les cinq de l'étape et `age_des_lecteurs`,
+    `bibliotheque_d_images` de l'autre conversation, ne plus les modifier),
+    `npm run createur` aussitôt ; variables chez Vercel (SMTP, courriels,
+    `CRON_SECRET`) ; code poussé à sa demande ; inscriptions ouvertes après
+    le push ; `verifier:production` entièrement passé. Sauvegarde de la nuit :
+    seau `iletaituneclasse-sauvegardes` à Paris, règle des 90 jours, accès
+    qui ne fait que déposer, secrets chez GitHub ; deux corrections du
+    workflow (une clé de signature jetable, l'outil de Supabase la demandant ;
+    une sauvegarde à chaque déclenchement, GitHub ayant lancé la tâche de la
+    nuit avec trois heures et demie de retard, F14-AC30 révisé avec son
+    accord) ; sauvegardes des 21 et 22 octobre déposées. Marque envoyée à la
+    vérification de Google le 22 octobre, domaine validé dans Search Console.
+  - **En ligne, « Paiement ouvert » éteint :** comptes créés par Google et par
+    adresse (courriel reçu chez La Poste) ; 30 ✦ usées jusqu'au message ;
+    100 ✦ offertes depuis l'administration ; PDF, partage, mention menant à
+    l'accueil sur téléphone ; les six adresses des trois domaines mènent à
+    l'accueil ; suppression du compte d'essai, sans rien laisser (vérifié
+    dans la vraie base) ; restauration du 22 octobre depuis S3 en local,
+    mêmes chiffres que la vraie base et images revenues (la base locale
+    d'avant est gardée dans `app/sauvegardes/`). Retouches demandées : le
+    solde du menu relu à chaque ouverture ; la détourée qui rendait l'image
+    entière (prompt repris, vérifié par de vrais appels) ; décidé par lui, à
+    0 ✦ et « Paiement ouvert » allumé, un dialogue de recharge (F14-AC38).
+  - **Courriels :** authentification complète (SPF, DKIM, DMARC alignés,
+    domaine d'envoi `envoi.iletaituneclasse.com`, DMARC en `quarantine`),
+    9,3/10 chez mail-tester, seul point négatif « domaine de moins de sept
+    jours ». La confirmation arrive chez La Poste, en indésirables chez
+    Outlook, et nulle part dans la messagerie académique (filtres de
+    l'Éducation nationale). Courriels du compte retouchés (lien en clair, pied
+    qui nomme l'expéditeur), recollés chez Supabase. Mot d'aide à l'écran pour
+    les adresses académiques proposé, refusé par le porteur.
+  - **Restent pour terminer l'étape :** l'écran de Google qui affiche « Il
+    était une classe » (vérification en cours chez Google) ; une nuit de
+    sauvegarde partie seule, à voir le 23 octobre ; la messagerie académique,
+    à réessayer vers le 29 octobre puis mi-novembre, le compte académique non
+    confirmé gardé pour cela.
 - **Reste à la charge du porteur, hors de la construction :** créer le compte
   Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
   DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité
   qui facture, le médiateur de la consommation, la relecture des textes et
-  les prix définitifs (avis extérieur).
+  les prix définitifs (avis extérieur) ; chez Stripe, en mode réel, les
+  moyens de paiement (la carte, Apple Pay et Google Pay), les coordonnées
+  publiques de la micro-entreprise (nom, adresse, téléphone) et le bas de
+  page de la facture, vérifiés comme en mode d'essai.
 
 ## Hors de la première livraison
 

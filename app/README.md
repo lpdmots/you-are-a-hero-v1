@@ -199,6 +199,10 @@ de l'étape 9 ».
    s'est inscrit ; rebonds et plaintes suivis par la console. » Enfin SMTP
    settings, Create SMTP credentials : garder l'identifiant et le mot de passe
    pour le point 5, sans les coller ailleurs.
+   Ajouté le 22 octobre 2026, pour les filtres stricts : dans l'identité,
+   « Domaine MAIL FROM personnalisé » `envoi.iletaituneclasse.com` (un MX et un
+   TXT `v=spf1 include:amazonses.com ~all` chez OVH, sous-domaine `envoi`), et le
+   DMARC passé à `v=DMARC1; p=quarantine; rua=mailto:contact@iletaituneclasse.com`.
 5. **Supabase, la vraie base** (tableau de bord du projet), **une fois l'accès
    de production accordé par AWS** — en mode d'essai, SES n'écrit qu'aux
    adresses vérifiées, et « Mot de passe oublié » ne partirait plus :
@@ -286,9 +290,13 @@ dans cet ordre ; aucune clé ne passe dans la conversation :
    lot 9) : la case de renonciation de la page de paiement s'appuie sur elle.
 3. Settings, Customer emails (Emails) : allumer « Successful payments » ; et, sous
    Invoices, l'envoi des factures aux clients : la facture part à chaque paiement.
-4. Developers, API keys : copier la clé secrète d'essai (`sk_test_…`) dans
+4. Settings, Payment methods : la carte (avec Apple Pay et Google Pay), le reste
+   éteint ; l'API de Stripe ne reçoit plus les moyens de paiement de la session. Le
+   bas de page des factures (nom, adresse, SIRET, franchise de TVA) se règle aussi
+   chez Stripe. Ces réglages sont à faire dans chaque mode, essai et réel.
+5. Developers, API keys : copier la clé secrète d'essai (`sk_test_…`) dans
    `.env.local`, sur une ligne `STRIPE_CLE_SECRETE=…`, puis relancer le serveur local.
-5. Pour la mise en ligne seulement : Developers, Webhooks, « Add endpoint »
+6. Pour la mise en ligne seulement : Developers, Webhooks, « Add endpoint »
    `https://iletaituneclasse.com/paiement/avis`, événements
    `checkout.session.completed` et `checkout.session.async_payment_succeeded` ; son
    secret de signature (`whsec_…`) va chez Vercel en `STRIPE_SECRET_AVIS`, la clé
@@ -361,9 +369,14 @@ Réglages faits par le porteur, dans cet ordre ; aucune clé ne passe dans la co
 6. Une fois le code poussé : onglet Actions, « Sauvegarde de la nuit », « Run workflow »,
    pour la voir tourner une fois sans attendre la nuit ; le dossier du jour paraît dans le
    seau.
-7. **Pour restaurer** : l'outil d'AWS sur l'ordinateur (`brew install awscli`, puis
-   `aws configure` avec un accès qui lit le seau, celui du porteur), et une ligne
-   `SEAU_S3=…` dans `production.env`. Docker ouvert.
+7. **Pour restaurer** : l'outil d'AWS sur l'ordinateur (installé le 22 octobre 2026
+   dans `~/.local/bin/aws`, paquet officiel d'Amazon, sans Homebrew), réglé par
+   `aws configure` avec l'accès `restauration-locale`, qui ne fait que lire le seau
+   (`s3:ListBucket` et `s3:GetObject`), et le moteur de transfert classique
+   (`aws configure set default.s3.preferred_transfer_client classic` : l'autre échouait
+   sur une erreur d'encodage) ; la ligne `SEAU_S3=…` est dans `production.env`.
+   Docker ouvert. Une restauration locale remplace toute la base locale : la
+   sauvegarder d'abord (`npm run sauvegarde:nuit -- --local --dossier …`).
 
 ## Étape 9, lot 9 : les pages publiques
 
