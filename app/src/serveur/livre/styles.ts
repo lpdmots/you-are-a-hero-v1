@@ -135,8 +135,9 @@ figure.introuvable .manque, .recit p.vide { display: flex; align-items: center; 
 .pres__haut { padding-top: 18mm; display: grid; justify-items: center; gap: 4mm; }
 .pres__livre { font-size: 2.2em; line-height: 1.12; font-weight: 600; margin: 0; }
 .pres__sous-titre { font-style: italic; font-size: 1.1em; margin: 0 !important; text-align: center !important; }
-.pres__illustration { margin: 6mm 0; max-height: 50%; display: flex; justify-content: center; }
-.pres__illustration img { max-width: 100%; max-height: calc(var(--hauteur-utile) * 0.5); object-fit: contain; }
+/* L'illustration prend la place que laissent le titre et la ligne, la moitié de la page au plus : la page reste une seule page (F11-AC106) */
+.pres__illustration { flex: 0 1 auto; min-height: 0; max-height: 50%; margin: 6mm 0; display: flex; justify-content: center; align-items: center; }
+.pres__illustration img { display: block; width: auto; height: auto; max-width: 100%; max-height: 100%; min-height: 0; object-fit: contain; }
 .pres__bas { display: grid; gap: 1.5mm; padding-bottom: 6mm; }
 .pres__ligne, .pres__annee { margin: 0 !important; text-align: center !important; }
 .pres__annee { font-size: 0.9em; letter-spacing: 0.06em; }

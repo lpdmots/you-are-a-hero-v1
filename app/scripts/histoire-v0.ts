@@ -321,10 +321,9 @@ async function principal(): Promise<void> {
       const [ordre] = await q<{ fait: boolean }>("select public.etablir_ordre($1, $2) as fait", [projetId, JSON.stringify(Object.fromEntries(rang))]);
       if (!ordre?.fait) throw new Error("L'ordre du livre n'a pas pu être établi.");
 
-      // Les pages de présentation : la classe sans prénoms, la préface, la fiche aventure de la V0
+      // Les pages de présentation : la couverture sur la page de titre, la classe sans prénoms, la préface, la fiche aventure de la V0
       const pages = {
-        // Sans illustration : une image en largeur y fait aujourd'hui sortir le titre de la page
-        titre: { forme: "modele", imageId: null, sousTitre: "", ligne: h.ligne, annee: h.annee, illustration: null },
+        titre: { forme: "modele", imageId: null, sousTitre: "", ligne: h.ligne, annee: h.annee, illustration: couverture ? idImage.get(couverture) ?? null : null },
         auteurs: { presente: false, forme: "modele", imageId: null, place: "debut", introduction: "Ce livre a été écrit par", noms: [], conclusion: "" },
         commentLire: { presente: true, forme: "modele", imageId: null, texte: commentLire, enigmes: false },
         feuille: { forme: fiche ? "image" : "modele", imageId: fiche ? idImage.get(fiche) : null },

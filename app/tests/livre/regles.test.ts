@@ -259,6 +259,23 @@ describe("Pages de présentation, bas de page, présentation commune (F11.4, F11
     expect(c.rapport.presentation.find((x) => x.nom === "feuille")).toBeDefined();
   });
 
+  it("F11-AC106 — en largeur comme en hauteur, avec un long titre en taille « Grande », l'illustration cède la place : titre, illustration, ligne et année tiennent sur une seule page", async () => {
+    const ligne = "Les élèves de la classe de CE2-CM1-CM2 de l’école élémentaire de Müllheim";
+    for (const [largeur, hauteur] of [[1536, 1024], [1024, 1536]]) {
+      const livre = livreDe(scenes, {
+        titre: "Le mystère du labyrinthe oublié sous la vieille ville", reglages: { taille: "grande" }, images: { [imageId(2)]: { largeur, hauteur } },
+        pages: (x) => ({ ...x, titre: { ...x.titre, sousTitre: "Une aventure dont tu es le héros", ligne, annee: "2025-2026", illustration: imageId(2) } }),
+      });
+      const c = await composer(livre, { travail: true, etatDu: ETAT, lireImage: async () => ({ octets: png(largeur, hauteur), type: "image/png" }) });
+      const titre = c.rapport.presentation.find((x) => x.nom === "titre")!.page;
+      expect(c.rapport.presentation.find((x) => x.nom === "auteurs")!.page, `${largeur} × ${hauteur}`).toBe(titre + 1);
+      const page = (await lirePdf(c.pdf))[c.rapport.horsPagination + titre - 1].lignes.join(" ");
+      for (const attendu of ["VERSION DE TR", "Le mystère du", "Une aventure dont tu es le héros", "élémentaire de Müllheim", "2025-2026"]) expect(page, `${largeur} × ${hauteur}`).toContain(attendu);
+      expect(c.rapport.illustration!.mm).toBeGreaterThan(20);
+      expect(c.rapport.illustration!.mm).toBeLessThanOrEqual(c.rapport.illustration!.page / 2 + 0.5);
+    }
+  });
+
   it("F11-AC08 — la présentation commune vaut pour tout le livre : en taille « Grande », il compte plus de pages, sans qu'aucune scène change", async () => {
     const moyenne = await compose(livreDe(scenes));
     const grande = await compose(livreDe(scenes, { reglages: { taille: "grande" } }));
