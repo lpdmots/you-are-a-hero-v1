@@ -583,8 +583,20 @@ avant de commencer » soient tranchées.
   unitaires, du livre et de la base), non poussée ; le commit `3ab86ce`
   de la branche `maj-next`, posé sur ce qui est en ligne, se pousse seul
   (`git push origin maj-next:main`, puis fusionner `origin/main` dans
-  `main`), sinon elle part avec le prochain envoi de `main`. Mise en ligne
-  recommandée sans attendre.
+  `main`), sinon elle part avec le prochain envoi de `main` ; partie en
+  ligne le 23 octobre 2026 avec `bb4261b`.
+- **Accueil en livre-jeu, 22 et 23 octobre 2026 :** refait de zéro, chaque
+  passage révisé avec le porteur (1, 12, 27, 33, 40, 52), décisions dans le
+  [design](docs/design.md#accueil-en-livre-jeu-22-octobre-2026) ; les livres
+  de l'accueil se choisissent dans l'administration, avec leur face avant
+  ([F14-AC40](docs/specifications.md#f14--ouverture-offre-et-exploitation),
+  migration `livres_de_l_accueil`) ; le dragon-livre ramène à l'accueil
+  depuis le lecteur par lien (F14-AC34) ; pied des pages publiques refait.
+  En ligne le 23 octobre : vraie base sauvegardée, migration appliquée (ne
+  plus la modifier), code poussé par lui jusqu'à `bb4261b`, Next.js 16.4.2
+  compris. Restent : choisir les deux livres et déposer leurs couvertures
+  dans l'administration en ligne, retirer `LIVRES_DE_L_ACCUEIL` chez Vercel,
+  la critique finale en deux lectures.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
