@@ -2421,9 +2421,11 @@ choix à cliquer, « Un livre jusqu'à 40 scènes » (gratuit) et « Un grand li
 visibles, empilés, celui qui est choisi cerné de canard ; la fiche se réécrit au crayon, et la
 souris s'écarte dans une bouffée de fumée pour que le dragon se pose (son arrivée brève),
 l'inverse au retour, rien avant le premier clic, rien avec « réduire les animations » ; un clic sur
-l'animal passe aussi à l'autre livre (demandé par le porteur), au clavier compris. Sur
+l'animal passe aussi à l'autre livre (demandé par le porteur), au clavier compris. Sur tablette et
+téléphone, l'animal n'est pas affiché (il tombait sous la fiche, égaré : retiré à sa demande) ; les
+deux choix suffisent. Sur
 téléphone, où la fiche est sous le feuillet, choisir un livre fait descendre la page jusqu'à
-l'animal, et l'écriture comme l'arrivée attendent la fin du défilement. La fiche,
+la fiche, et l'écriture attend la fin du défilement. La fiche,
 enrichie le même jour à sa demande : pictogrammes au trait graphite devant chaque case (bourse,
 étoiles des aides, livre, cadre d'image, sac pour l'inventaire), « Aventurier : vous » au crayon
 sur un pointillé, et sur la table un dé rouge et un crayon bleu canard, illustrations générées par

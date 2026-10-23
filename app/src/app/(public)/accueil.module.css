@@ -1461,33 +1461,14 @@
 
 /* ——— Écrans moyens : le milieu perd sa colonne de gauche ——— */
 @media (max-width: 1180px) {
-  /* Le 40 : le feuillet à gauche, sur deux rangs ; à droite la fiche, et l'animal juste dessous */
+  /* Le 40 : le feuillet à gauche, la fiche à droite */
   .quarante {
     grid-template-columns: var(--page-l) minmax(0, 1fr);
-    grid-template-rows: auto auto;
-    align-items: start;
-    row-gap: 0;
   }
-  .quarante .feuillet {
-    grid-column: 1;
-    grid-row: 1 / span 2;
-  }
-  .quarante .cote {
-    grid-column: 2;
-    grid-row: 1;
-  }
+  /* Sous la fiche, l'animal semblait égaré : sur tablette et téléphone, il n'est pas là (décidé
+     par le porteur le 23 octobre 2026) ; les deux choix du feuillet suffisent */
   .quarante .mascotte {
-    grid-column: 2;
-    grid-row: 2;
-    /* À gauche, sous la fiche : le crayon posé à son coin droit reste dégagé */
-    justify-self: start;
-    align-self: start;
-    width: 200px;
-    height: 240px;
-    margin: 0;
-  }
-  .quarante .dragon40 {
-    height: 240px;
+    display: none;
   }
   /* Le 52 : la souris reste dans l'écran, sous le coin grignoté ; le dragon, plus petit */
   .souris {
@@ -1604,12 +1585,7 @@
   .feuillet:target {
     outline-offset: 3px;
   }
-  /* Le 40 : le feuillet, la mascotte, puis la fiche, toute la largeur */
-  .quarante .cote,
-  .quarante .mascotte {
-    grid-column: auto;
-    grid-row: auto;
-  }
+  /* Le 40 : le feuillet, puis la fiche, toute la largeur */
   .quarante .cote {
     justify-items: stretch;
   }
@@ -1618,19 +1594,13 @@
     padding: 24px 22px 26px;
     transform: rotate(1deg);
   }
-  /* Sur téléphone, la page descend d'abord jusqu'à l'animal : l'écriture et l'arrivée attendent
-     la fin du défilement pour être vues */
+  /* Sur téléphone, la page descend d'abord jusqu'à la fiche : l'écriture attend la fin du
+     défilement pour être vue */
   .quarante[data-touche] .boite > .crayon {
     animation-delay: 0.45s;
   }
-  .quarante[data-livre="grand"] .dragon40 {
-    transition-delay: 0.45s;
-  }
-  .quarante[data-livre="petit"] .souris40 {
-    transition-delay: 0.45s;
-  }
-  .quarante[data-touche][data-livre] .bouffee {
-    animation-delay: 0.3s;
+  .fiche {
+    scroll-margin-top: 16px;
   }
   /* Sur téléphone, les captures ne s'agrandissent pas : elles prennent déjà toute la largeur */
   .agrandir {
