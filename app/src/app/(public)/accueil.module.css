@@ -1515,6 +1515,11 @@
     font-size: 1rem;
     padding: 22px 6px 14px 4px;
   }
+  /* Le titre tient en deux lignes sur tout téléphone, « Votre classe écrit » puis « son
+     livre-jeu. » : il réduit avec la page, large de l'écran moins 122 points de bords */
+  .droite h1 {
+    font-size: min(2.3rem, (100vw - 122px) / 10);
+  }
   .droite .choix {
     margin-top: 22px;
   }
