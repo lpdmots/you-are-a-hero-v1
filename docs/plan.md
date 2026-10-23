@@ -3316,6 +3316,16 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   « Montant dû » et « Payer en ligne » même payée (son fonctionnement) ; le
   reçu, au même numéro, dit « payé ». Vu en chemin : l'objet anglais du
   modèle « Magic Link » de la vraie base, à recoller chez Supabase.
+- **« Paiement ouvert » allumé en ligne le 23 octobre 2026, sur décision du
+  porteur** (« Je laisse allumé »), après le vrai achat et les prix remis à
+  20 € et 5 € : la vente est ouverte, les limites gratuites valent. Sans
+  médiateur de la consommation, qu'il a reporté, contre la recommandation de
+  l'attendre (F14, questions ouvertes). Restent à sa charge : rembourser les
+  paiements d'essai et supprimer le compte acheteur ; recoller l'objet du
+  modèle « Magic Link » ; la couleur `#0B6A73` et le dragon-livre dans la
+  personnalisation de marque de Stripe, mode réel (la coche verte du paiement
+  réussi ne se règle pas) ; le médiateur ; lire chaque mois l'usage de
+  Supabase (F14, « Hébergement de la base »).
 
 ## Hors de la première livraison
 

@@ -11328,8 +11328,9 @@ découvre l'outil, et le porteur, administrateur.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en
-parle pas ; recommandé de ne pas allumer « Paiement ouvert » sans lui, la loi (code de la
-consommation, L612-1) l'exigeant de tout professionnel qui vend à des particuliers ; la relecture juridique des
+parle pas ; il a allumé « Paiement ouvert » en ligne le même jour sans lui, contre la
+recommandation d'attendre, la loi (code de la consommation, L612-1) l'exigeant de tout
+professionnel qui vend à des particuliers ; la relecture juridique des
 textes ; le paiement des mairies sur bon de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
 et l'adresse sont retenus ; le dépôt de la marque ; un pass pour tous les
 projets d'un enseignant, idée du porteur du 23 octobre 2026, à trancher sur
