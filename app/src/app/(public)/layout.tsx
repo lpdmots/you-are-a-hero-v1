@@ -3,10 +3,12 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/composants/Logo";
 import { EDITEUR } from "@/domaine/textes-publics";
+import { adresseDuSite } from "@/serveur/env";
 import styles from "./public.module.css";
 
-// Les pages publiques se trouvent : l'application, elle, reste hors des moteurs de recherche
-export const metadata: Metadata = { robots: { index: true, follow: true } };
+// Les pages publiques se trouvent : l'application, elle, reste hors des moteurs de recherche. Les
+// adresses de l'aperçu de partage partent de l'adresse publique du site.
+export const metadata: Metadata = { metadataBase: new URL(adresseDuSite()), robots: { index: true, follow: true } };
 
 /** Les pages publiques (F14, « Pages publiques ») : un en-tête qui mène aux entrées, un pied qui mène aux textes. */
 export default function PagesPubliques({ children }: { children: ReactNode }) {
@@ -24,8 +26,12 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
             <span className={styles.navLong}>Entrée des élèves</span>
             <span className={styles.navCourt}>Élèves</span>
           </Link>
-          <Link href="/entree" className="btn">
+          <Link href="/entree" className={styles.navConnexion}>
             Se connecter
+          </Link>
+          {/* L'inscription toujours à portée, en bouton cerné : le seul bouton plein reste celui de la page */}
+          <Link href="/entree/inscription" className={`btn ${styles.navCompte}`}>
+            Créer un compte
           </Link>
         </nav>
       </header>
@@ -57,7 +63,7 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
               </ul>
             </div>
             <div>
-              <p className={styles.piedTitre}>Besoin d’aide ?</p>
+              <p className={styles.piedTitre}>Besoin d’aide ?</p>
               <ul>
                 <li>
                   <Link href="/aide">Aide</Link>

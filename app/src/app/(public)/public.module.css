@@ -34,13 +34,8 @@
     width: 30px;
     height: 30px;
   }
-  /* Sur un téléphone, « Se connecter » devient un lien, pour tenir sur la rangée du nom */
-  .nav :global(.btn) {
-    min-height: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    box-shadow: none;
+  /* Sur un téléphone, « Se connecter » en canard, seul geste de la rangée */
+  .nav a.navConnexion.navConnexion {
     color: var(--canard);
   }
 }
@@ -144,6 +139,13 @@
   background: linear-gradient(var(--trait), var(--trait)) no-repeat top center / calc(100% - 48px) 1px;
   font-size: var(--t-xs);
   color: var(--graphite-3);
+}
+/* Sous 760 points, l'en-tête tient sur une rangée : « Créer un compte » est sous la promesse,
+   juste en dessous */
+@media (max-width: 760px) {
+  .navCompte {
+    display: none !important;
+  }
 }
 /* Sur un téléphone : la marque, puis les pages sur deux colonnes */
 @media (max-width: 760px) {

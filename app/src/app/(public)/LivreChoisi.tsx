@@ -47,19 +47,19 @@ export function LivreChoisi({ scenes, images, prix }: { scenes: number; images: 
     <div ref={groupe} className={styles.tailles} role="group" aria-label="La taille de votre livre">
       <button type="button" className={styles.taille} aria-pressed={taille === "petit"} onClick={() => choisir("petit")}>
         <span>
-          Un livre jusqu’à {scenes} scènes
+          Un livre jusqu’à {scenes} scènes{" "}
           <small>et {images} images</small>
-        </span>
+        </span>{" "}
         <span className={styles.tarif}>Gratuit</span>
       </button>
       <button type="button" className={styles.taille} aria-pressed={taille === "grand"} onClick={() => choisir("grand")}>
         <span>
-          Un grand livre
+          Un grand livre{" "}
           <small>sans limite, avec le pass du livre</small>
-        </span>
+        </span>{" "}
         <span className={styles.tarif}>
-          {prix}
-          <small>une fois</small>
+          {prix}{" "}
+          <small>par livre</small>
         </span>
       </button>
     </div>

@@ -139,13 +139,15 @@
   display: flex;
   flex-direction: column;
   /* Le texte de la page suit la taille du livre : 16 px pour un livre de 1040 px, moins quand il
-     réduit (écran étroit ou bas), pour ne jamais déborder de la page */
-  font-size: clamp(11px, 1.54cqw, 16px);
+     réduit (écran étroit ou bas), pour ne jamais déborder de la page ; sur tablette, le livre
+     s'élargit (voir plus bas) pour que ce texte reste vers 13 px */
+  font-size: clamp(12px, 1.54cqw, 16px);
 }
 .droite h1 {
   margin-top: 0.7em;
   font-family: var(--f-main);
-  font-size: 2.3em;
+  /* Le titre suit seul la largeur de la page : toujours deux lignes */
+  font-size: min(2.3em, 3.54cqw);
   font-weight: 400;
   line-height: 1.5;
   -webkit-text-stroke: 0.03em currentColor;
@@ -155,14 +157,15 @@
 .droite .recit {
   font-size: 1.04em;
   line-height: 1.5;
-  margin-top: 1.1em;
+  /* Sous le titre, la place du jambage du « j » de « livre-jeu » : il ne touche pas le texte */
+  margin-top: 1.5em;
 }
 .droite .choix :is(a:not(:global(.btn)), .principal) {
   font-size: 0.97em;
   padding: 0.5em 2px;
 }
 .droite .garanties {
-  font-size: 0.8em;
+  font-size: max(0.8em, 11.5px);
 }
 /* Le bouton principal suit aussi la taille du livre */
 .droite .principal :global(.btn) {
@@ -562,6 +565,7 @@
 }
 .capture .note {
   justify-self: center;
+  text-align: center;
 }
 /* Les morceaux découpés : deux chapitres en haut, deux scènes par-dessus, chacun son ruban */
 .collage {
@@ -645,8 +649,8 @@
   padding: 0;
 }
 .aere {
-  gap: 12px;
-  margin-top: 20px;
+  gap: 9px;
+  margin-top: 16px;
 }
 .liste li {
   display: grid;
@@ -954,7 +958,7 @@
 .quarante[data-livre="grand"] .dragon40 {
   opacity: 1;
   transform: none;
-  transition: opacity 0.24s var(--ease) 0.16s, transform 0.36s cubic-bezier(0.2, 1.3, 0.4, 1) 0.16s;
+  transition: opacity 0.24s var(--ease) 0.16s, transform 0.36s cubic-bezier(0.22, 1, 0.36, 1) 0.16s;
 }
 .quarante[data-livre="petit"] .souris40 {
   transition-delay: 0.14s;
@@ -1199,8 +1203,6 @@
   font-family: var(--f-recit);
   font-weight: 700;
   font-size: 1rem;
-  text-decoration: underline;
-  text-underline-offset: 3px;
 }
 .inventaire {
   list-style: none;
@@ -1283,7 +1285,7 @@
 .souris {
   position: absolute;
   left: -84px;
-  bottom: -210px;
+  bottom: -118px;
   width: 88px;
   height: 108px;
   background: url(/accueil/souris-dos.webp) no-repeat center bottom / contain;
@@ -1295,7 +1297,7 @@
   padding-bottom: 0;
 }
 .finale .feuillet {
-  margin-bottom: 210px;
+  margin-bottom: 118px;
 }
 /* Le dernier trait et « FIN » descendent un peu, loin du bouton */
 .dernier .principal {
@@ -1459,6 +1461,37 @@
   height: 34px;
 }
 
+/* ——— Écrans bas (portable de 657 à 760 points) : les feuillets prennent la hauteur de l'écran,
+   pour que la feuille fixe du 12 y tienne en entier, ses choix compris ——— */
+@media (min-width: 981px) and (max-height: 760px) {
+  .accueil.accueil {
+    --page-h: min(680px, max(600px, 100dvh - 30px));
+  }
+  /* La liste du 33 et les livres du 27, les plus hauts, se resserrent pour garder la hauteur commune */
+  .aere {
+    gap: 6px;
+    margin: 12px 0 16px;
+  }
+  .liste li {
+    font-size: 0.97rem;
+  }
+  .volume,
+  .livreAVenir {
+    width: min(100%, 124px);
+  }
+  .feuillet {
+    padding-top: 30px;
+    padding-bottom: 26px;
+  }
+  .feuillet h2 {
+    margin-top: 16px;
+  }
+  .temps {
+    gap: 10px;
+    margin: 14px 0 16px;
+  }
+}
+
 /* ——— Écrans moyens : le milieu perd sa colonne de gauche ——— */
 @media (max-width: 1180px) {
   /* Le 40 : le feuillet à gauche, la fiche à droite */
@@ -1469,6 +1502,15 @@
      par le porteur le 23 octobre 2026) ; les deux choix du feuillet suffisent */
   .quarante .mascotte {
     display: none;
+  }
+  /* Le premier écran : le dragon, plus petit, laisse au livre la place d'un texte lisible */
+  .scene {
+    --livre-l: min(1040px, 100% - 120px, max(860px, (100dvh - 135px) * 1.68));
+  }
+  .dragonLit {
+    width: 190px;
+    height: 176px;
+    margin: 0 0 52px -30px;
   }
   /* Le 52 : la souris reste dans l'écran, sous le coin grignoté ; le dragon, plus petit */
   .souris {

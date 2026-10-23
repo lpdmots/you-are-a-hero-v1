@@ -21,6 +21,8 @@ const FICHIERS_DU_LIVRE = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // 90 pour les captures de l'accueil, pleines de petit texte (Next 16 n'accepte que les qualités listées)
+  images: { qualities: [75, 90] },
   serverExternalPackages: ["playwright-core", "@sparticuz/chromium"],
   outputFileTracingIncludes: {
     "/livre/**": FICHIERS_DU_LIVRE,
@@ -46,9 +48,10 @@ const nextConfig: NextConfig = {
       },
       {
         // Des pages propres à chacun : ni le navigateur d'un poste partagé ni un relais ne
-        // les gardent. Les fichiers de l'application et les illustrations, eux, se gardent ; les
-        // images de repérage disent elles-mêmes qu'elles ne se gardent que chez la personne.
-        source: "/((?!_next/static|_next/image|illustrations/|images/).*)",
+        // les gardent. Les fichiers de l'application, les illustrations et les images de l'accueil,
+        // eux, se gardent ; les images de repérage disent elles-mêmes qu'elles ne se gardent que
+        // chez la personne.
+        source: "/((?!_next/static|_next/image|illustrations/|images/|accueil/).*)",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
       },
     ];

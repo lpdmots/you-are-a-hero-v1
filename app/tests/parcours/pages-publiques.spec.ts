@@ -14,7 +14,7 @@ test.afterEach(async () => {
 test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'inscription, aux deux entrées et aux quatre pages", async ({ page }) => {
   await aller(page, "/");
   await expect(page.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
-  await expect(page.getByText("l’application vous guide à chaque étape")).toBeVisible();
+  await expect(page.getByText("l’application vous guide et vous aide")).toBeVisible();
   // Les choix du passage sont les liens de la page : « rendez-vous au 12 » mène au passage 12
   await page.getByRole("link", { name: /comment se passe un projet, rendez.vous au\s*12/ }).click();
   await expect(page).toHaveURL(/#p12$/);

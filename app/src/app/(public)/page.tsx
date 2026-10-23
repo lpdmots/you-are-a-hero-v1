@@ -17,10 +17,23 @@ import { CapturesEnGrand } from "./CapturesEnGrand";
 import { LivreChoisi } from "./LivreChoisi";
 import { VisiteEnVideo } from "./VisiteEnVideo";
 
+const DESCRIPTION =
+  "Chaque élève écrit ses scènes. À chaque étape, l’application guide et aide l’enseignant. Au bout, un vrai livre, à imprimer et à lire en ligne. Gratuit.";
+
+// L'aperçu d'un lien partagé (courriel, messagerie, ENT) : l'image est opengraph-image.jpg, le premier écran
 export const metadata: Metadata = {
   title: { absolute: "Il était une classe — votre classe écrit son livre-jeu" },
-  description:
-    "Chaque élève écrit ses scènes, l'application guide l'enseignant à chaque étape, et l'histoire devient un vrai livre, à imprimer et à lire en ligne. Gratuit.",
+  description: DESCRIPTION,
+  alternates: { canonical: "/" },
+  openGraph: {
+    type: "website",
+    locale: "fr_FR",
+    siteName: "Il était une classe",
+    url: "/",
+    title: "Votre classe écrit son livre-jeu.",
+    description: DESCRIPTION,
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 /**
@@ -72,7 +85,7 @@ export default async function Accueil() {
             <Numero n={1} />
             <h1 id="p1">Votre classe écrit son livre-jeu.</h1>
             <p className={styles.recit}>
-              Chaque élève écrit ses scènes, l’application vous guide à chaque étape, et l’histoire devient un vrai livre, à imprimer et à lire en ligne.
+              Chaque élève écrit ses scènes. À chaque étape, l’application vous guide et vous aide. Au bout, un vrai livre, à imprimer et à lire en ligne.
             </p>
             <Choix>
               <ChoixCompte phrase="Si vous voulez essayer avec votre classe," />
@@ -101,8 +114,8 @@ export default async function Accueil() {
               <a href="#temps-1" className={styles.allerAuTemps} data-aller="1">
               <SigneTableau />
               <div>
-                <b>On prépare ensemble.</b>
-                <span>Projeté au tableau, étape par étape : le monde, les héros, l’enjeu. La classe propose, vous retenez.</span>
+                <b>On prépare ensemble.</b>{" "}
+                <span>Projeté au tableau, étape par étape : le monde, les héros, l’enjeu. La classe propose, vous retenez.</span>
               </div>
               </a>
             </li>
@@ -110,7 +123,7 @@ export default async function Accueil() {
               <a href="#temps-2" className={styles.allerAuTemps} data-aller="2">
               <SigneFeuille />
               <div>
-                <b>Chacun écrit ses scènes.</b>
+                <b>Chacun écrit ses scènes.</b>{" "}
                 <span>D’abord sur le cahier, puis sur les ordinateurs de la classe. Vous relisez, faites retravailler si besoin, puis validez.</span>
               </div>
               </a>
@@ -119,8 +132,8 @@ export default async function Accueil() {
               <a href="#temps-3" className={styles.allerAuTemps} data-aller="3">
               <SigneLivre />
               <div>
-                <b>Le livre se fait.</b>
-                <span>Relire, vérifier les chemins, mettre en page : trois étapes guidées, puis le PDF.</span>
+                <b>Le livre se fait.</b>{" "}
+                <span>Relire, vérifier les chemins, mettre en page : trois étapes guidées, puis le PDF.</span>
               </div>
               </a>
             </li>
@@ -149,14 +162,14 @@ export default async function Accueil() {
               {"livre" in c && livres.some((l) => l.titre === c.livre) ? (
                 <Link href={`/lire/${livres.find((l) => l.titre === c.livre)?.code}`} className={styles.lireLeLivre} aria-label={`Lire « ${c.livre} » en ligne`}>
                   <span className={styles.tirage} style={{ aspectRatio: c.ratio }}>
-                    <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 600px" />
+                    <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 680px" quality={90} />
                     <span className={styles.badgeLire}>Lire le livre →</span>
                   </span>
                 </Link>
               ) : (
                 <button type="button" className={styles.agrandir} data-agrandir={c.src} data-alt={c.alt} data-note={c.note} data-ratio={"ratio" in c ? c.ratio : undefined} aria-label={`Agrandir : ${c.alt}`}>
                   <span className={styles.tirage} style={"ratio" in c ? { aspectRatio: c.ratio } : undefined}>
-                    <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 600px" />
+                    <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 680px" quality={90} />
                   </span>
                 </button>
               )}
@@ -201,7 +214,7 @@ export default async function Accueil() {
           {PHOTO_DES_LIVRES ? (
             <Tirage
               src={PHOTO_DES_LIVRES}
-              alt="Les livres imprimés : « Électro Nick », relié, et « Le labyrinthe oublié », ouvert sur sa fiche aventure et son premier passage, avec un crayon et un dé"
+              alt="Les livres imprimés : « Électro Nick », relié, et « Le labyrinthe oublié », ouvert sur sa fiche aventure et son premier passage, avec un crayon et un dé"
               cadre="photo"
             />
           ) : EN_DEVELOPPEMENT ? (
@@ -228,7 +241,7 @@ export default async function Accueil() {
             {/* L'IA, une ligne à part, marquée de ses étincelles : facultative, et pour l'enseignant */}
             <li className={styles.ligneIa}>
               <Icone nom="ia" className={styles.coche} />
-              Si vous le voulez, un coup de pouce de l’IA : idées, corrections, illustrations.
+              Si vous le voulez, un coup de pouce de l’IA : idées, corrections, illustrations.
             </li>
           </ul>
           <Choix>
@@ -270,7 +283,7 @@ export default async function Accueil() {
             L’IA, pour vous seulement.
           </h3>
           <p className={`${styles.recit} ${styles.petit}`}>
-            Jamais pour les élèves : ils écrivent eux-mêmes. Quand vous le voulez, elle corrige une scène, propose une idée de choix et{" "}
+            Jamais pour les élèves : ils écrivent eux-mêmes. Quand vous le voulez, elle corrige une scène, propose une idée de choix et{" "}
             <strong>illustre le livre, vos héros reconnaissables d’une image à l’autre</strong>. Chaque demande se paie en{" "}
             <span className={styles.insecable}>
               étoiles <Icone nom="ia" className={styles.etoileTexte} />,
@@ -331,19 +344,17 @@ export default async function Accueil() {
 }
 
 /**
- * Les captures du passage 12, quatre par temps, choisies par le porteur le 22 octobre 2026 (les
- * originaux dans V1/identite/accueil/captures/).
+ * Les captures du passage 12, choisies par le porteur le 22 octobre 2026 (les originaux dans
+ * V1/identite/accueil/captures/) ; deux par temps depuis la critique du 23 octobre 2026, chacune
+ * lisible sans l'agrandir : les chemins, le Suivi et « Relire » sont retirés.
  */
 const CAPTURES_DES_TEMPS = [
-  { temps: "1", src: "/accueil/prep-heros.webp", ratio: "2000 / 1128", alt: "Le héros, Lou, et ce que la classe a retenu de lui, après le monde et avant l’enjeu", note: "La classe définit son histoire : le monde, le héros, l’enjeu." },
+  { temps: "1", src: "/accueil/prep-heros.webp", ratio: "2000 / 1128", alt: "Le héros, Lou, et ce que la classe a retenu de lui, après le monde et avant l’enjeu", note: "La classe définit son histoire : le monde, le héros, l’enjeu." },
   { temps: "1", collage: true, src: "", alt: "", note: "Les chapitres et les scènes, prêts à écrire." },
-  { temps: "1", src: "/accueil/prep-chemins.webp", ratio: "2000 / 1197", alt: "Les chemins d’un chapitre : chaque choix mène à une scène", note: "Et les chemins entre les scènes, d’un coup d’œil." },
-  { temps: "2", src: "/accueil/ecrire-fiche.webp", ratio: "1454 / 1390", alt: "Une fiche de rédaction imprimée : la consigne de chaque scène", note: "Chacun écrit d’abord sur son cahier, d’après sa fiche." },
-  { temps: "2", src: "/accueil/ecrire-correction.webp", ratio: "1684 / 1026", alt: "La scène recopiée par l’élève, avec la correction proposée par l’IA : chaque changement visible, que l’enseignant garde ou refuse", note: "Les élèves recopient leur scène sur l’ordinateur, puis vous corrigez." },
-  { temps: "2", src: "/accueil/ecrire-suivi.webp", ratio: "2000 / 1012", alt: "Le Suivi des élèves : qui s’occupe de quoi, ce qui reste à régler", note: "Vous voyez où en est chacun." },
-  { temps: "3", src: "/accueil/livre-relire.webp", ratio: "2000 / 1206", alt: "Relire : le livre mis en page, et la liste de ce qu’il reste à vérifier", note: "Vous relisez le livre tel qu’il sera imprimé." },
-  { temps: "3", src: "/accueil/livre-mise-en-page.webp", ratio: "2000 / 1196", alt: "La mise en page : une page peu remplie, signalée avec sa solution", note: "L’outil signale ce qui cloche, jusqu’au PDF prêt à imprimer." },
-  { temps: "3", src: "/accueil/lecture-electro-nick.webp", ratio: "1434 / 1290", livre: "Électro Nick", alt: "« Électro Nick », lu en ligne : un passage, son illustration et ses trois choix", note: "Et un lien pour le lire en ligne, en famille." },
+  { temps: "2", src: "/accueil/ecrire-fiche.webp", ratio: "1454 / 1390", alt: "Une fiche de rédaction imprimée : la consigne de chaque scène", note: "Chacun écrit d’abord sur son cahier, d’après sa fiche." },
+  { temps: "2", src: "/accueil/ecrire-correction.webp", ratio: "1684 / 1026", alt: "La scène recopiée par l’élève, avec la correction proposée par l’IA : chaque changement visible, que l’enseignant garde ou refuse", note: "Les élèves recopient leur scène sur l’ordinateur, puis vous corrigez." },
+  { temps: "3", src: "/accueil/livre-pages-peu-remplies.webp", ratio: "1000 / 1145", alt: "La mise en page : une page peu remplie, signalée avec ce qu’on peut y faire", note: "L’outil signale ce qui cloche, jusqu’au PDF prêt à imprimer." },
+  { temps: "3", src: "/accueil/lecture-electro-nick.webp", ratio: "1434 / 1290", livre: "Électro Nick", alt: "« Électro Nick », lu en ligne : un passage, son illustration et ses trois choix", note: "Et un lien pour le lire en ligne, en famille." },
 ] as const;
 
 /** La pile du passage 33, de bas en haut : chaque écran montre une ligne de la page */
@@ -355,7 +366,7 @@ const PILE = [
 ] as const;
 
 const DANS_LA_CLASSE = [
-  "Pour les jeunes auteurs, dès 6 ans : l’âge se règle pour chaque livre.",
+  "Pour les jeunes auteurs, dès 6 ans : l’âge se règle pour chaque livre.",
   "Rien à installer, et quelques postes suffisent.",
   "Chaque élève reçoit ses identifiants et se connecte seul, sans adresse.",
   "Des fiches de rédaction nominatives, pour écrire à l’école ou à la maison.",
@@ -395,7 +406,7 @@ function Renvoi({ vers, children }: { vers: number; children: ReactNode }) {
     <li>
       <a href={`#p${vers}`}>
         {/* « rendez‑vous » ne se coupe pas en fin de ligne : trait d'union insécable */}
-        <span className={styles.phrase}>{typeof children === "string" ? children.replace("rendez-vous", "rendez\u2011vous") : children}</span>
+        <span className={styles.phrase}>{typeof children === "string" ? children.replace("rendez-vous", "rendez\u2011vous") : children}</span>{" "}
         <span className={styles.renvoi}>{vers}</span>
       </a>
     </li>
@@ -471,7 +482,7 @@ function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuel
         Fiche aventure
       </p>
       <p className={styles.aventurier}>
-        Aventurier : <span className={styles.crayon}>vous</span>
+        Aventurier : <span className={styles.crayon}>vous</span>
       </p>
       <div className={styles.cases}>
         <CaseDeFiche
@@ -480,7 +491,7 @@ function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuel
               <PictoBourse /> Bourse
             </>
           }
-          petit="0 €" grand={ouvert ? { valeur: enEuros(offre.prixDuPass), note: "une fois" } : null} />
+          petit="0 €" grand={ouvert ? { valeur: enEuros(offre.prixDuPass), note: "par livre" } : null} />
         <CaseDeFiche
           nom={
             <>
@@ -523,7 +534,7 @@ function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuel
       </ul>
       {ouvert ? (
         <p className={styles.recharge}>
-          Plus d’étoiles : {enEuros(offre.prixDeLaRecharge)} les {offre.etoilesDeLaRecharge}.
+          Plus d’étoiles : {enEuros(offre.prixDeLaRecharge)} les {offre.etoilesDeLaRecharge}.
         </p>
       ) : null}
       {/* Sur la table, contre la fiche : le dé, et le crayon qui l'a remplie */}
@@ -637,7 +648,7 @@ function classeDeCapture(i: number): string {
 /** Deux chapitres et deux scènes, découpés dans l'écran et scotchés sur la table */
 function ChapitresEtScenes() {
   return (
-    <span className={styles.collage} role="img" aria-label="Deux cartes de chapitre, « La lisière » et « Le gué des saules », et deux cartes de scène">
+    <span className={styles.collage} role="img" aria-label="Deux cartes de chapitre, « La lisière » et « Le gué des saules », et deux cartes de scène">
       <span className={`${styles.morceau} ${styles.chapitre1}`}>
         <Image src="/accueil/prep-chapitre-1.webp" alt="" fill sizes="200px" />
       </span>

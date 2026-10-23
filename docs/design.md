@@ -2461,6 +2461,63 @@ bulle ; « Informations » : confidentialité, conditions, mentions légales) ; 
 « Fait par un enseignant, pour écrire avec sa classe. » et « © année Il était une classe ». Sur
 téléphone, le logo puis les colonnes sur deux.
 
+**Critique d'ensemble (23 octobre 2026), en ligne jusqu'à `2c9ffe5` :** deux lectures séparées
+sur captures Playwright (1440 × 900, 1366 × 657, 1024 × 768, 390 × 844 ; vente fermée et ouverte,
+le 40 avec chaque livre, une capture du 12 agrandie, le lecteur ouvert depuis le 27, l'aide et les
+mentions légales) : 27/40 (informée) et 29/40 (indépendante, 40 captures, 7 et 10 jugés sans objet
+puis ramenés sur 40) ; le détecteur ne relève que le rebond de l'arrivée du dragon au 40. Aucun
+défilement horizontal de 320 à 1440 points. Par niveau (informée) : persuasion 3/4, rédaction 3/4,
+direction artistique 3/4, parcours 3/4, adaptation 2/4, accessibilité 2/4, technique 2/4. Les deux
+lectures s'accordent : le parti pris du livre-jeu est tenu et sert le propos (la fiche aventure
+comme grille de prix, la photo des livres imprimés, le récit signé, « L'IA, pour vous seulement »).
+
+Corrigé aussitôt, sans changer de règle ni de contenu :
+
+- **Typographie :** espaces insécables devant « : » et « ? » et dans les guillemets, partout sur
+  la page et au pied (une légende du 12 commençait sa seconde ligne par deux-points sur téléphone).
+- **Noms lus par un lecteur d'écran :** les choix ne disent plus « rendez-vous au12 », ni les
+  livres du 40 « scèneset 10 imagesGratuit », ni les temps du 12 « ensemble.Projeté ».
+- **Portable bas (1366 × 657) :** la feuille fixe du 12 dépassait de l'écran, ses choix cachés
+  pendant tout le défilement des captures ; sous 760 points de haut, les feuillets prennent la
+  hauteur de l'écran (600 à 680 points), la liste du 33 et les livres du 27 se resserrent, tous
+  gardent la même hauteur. Le 33 dépassait de 31 points la hauteur commune : sa liste se resserre.
+- **Premier écran sur tablette :** le texte de la page tombait à 12 points (9 pour « Gratuit,
+  sans carte bancaire ») ; sous 1180 points, le dragon réduit et le livre s'élargit (texte vers
+  13 points, la mention à 11,5 au moins) ; le jambage du « j » de « livre-jeu » ne touche plus la
+  ligne suivante.
+- **Formes :** « Inventaire » n'est plus souligné (il passait pour un lien) ; la légende d'une
+  capture sur deux lignes reste centrée ; la souris du 52 se tient juste sous le coin qu'elle a
+  grignoté (le feuillet s'arrêtait 100 points plus haut) ; le dragon du 40 se pose sans rebond.
+- **Technique :** les images de l'accueil étaient servies « private, no-store », donc rechargées
+  à chaque visite (elles se gardent désormais, comme les illustrations) ; les mascottes, de
+  1 000 à 1 300 points de large pour un affichage de 90 à 330, réduites dans `public/accueil/`
+  (originaux inchangés dans `identite/`) ; les captures du 12 étaient servies à 640 points pour
+  650 affichés, en qualité 75 : elles le sont à leur taille, en qualité 90 (`images.qualities`) ;
+  images du premier chargement 990 → 580 Ko. Ajoutés : l'aperçu de partage (Open Graph, l'image
+  étant le premier écran de la page, `(public)/opengraph-image.jpg`), l'adresse canonique,
+  `metadataBase` lu sur `ADRESSE_SITE`.
+
+Décidé ensuite par le porteur, sur recommandation sauf mention : le 12 passe à **deux captures
+par temps**, chacune lisible sans l'agrandir (le héros et les chapitres découpés ; la fiche et la
+correction ; les pages peu remplies, recadrées sur leur signalement et la page qu'il désigne, et
+« Électro Nick » en ligne) : les chemins, le Suivi et « Relire » sont retirés, la page raccourcit
+d'environ 1 200 points ; le pass se dit **« 20 € par livre »**, au choix comme sur la fiche, à la
+place de « une fois ». Les données des élèves restent dans l'« Aide » seulement (sa décision,
+contre la recommandation d'une ligne au 33 ; ne pas la reproposer). « Assisté », absent du premier écran (on y était guidé, pas aidé) : la
+phrase sous le titre devient, choisie par lui parmi deux, en trois phrases courtes pour éviter
+quatre « et » : « Chaque élève écrit ses scènes. À chaque étape, l'application vous guide et vous
+aide. Au bout, un vrai livre, à imprimer et à lire en ligne. » (la description de la page aussi ;
+l'aperçu de partage refait). Laissés par lui : les livres montrés (323 et 213
+passages), loin du livre gratuit (40 scènes), sans précision d'échelle sous le choix gratuit du
+40 (« Un premier livre court », proposé, refusé : ne pas le reproposer) ; « Les passeurs de brume »,
+histoire d'essai écrite par Claude, jamais au 27. Laissés aussi : la répétition
+de « rendez-vous au » (le principe de la page) ; le lecteur sans autre retour que le dragon
+(F14-AC34) ; l'animal du 40 absent sur tablette (décision du porteur). L'en-tête des pages publiques
+devient « Aide · Entrée des élèves · Se connecter · Créer un compte » (demandé par le porteur le
+même jour) : « Se connecter » en lien, « Créer un compte » en bouton cerné, le seul bouton plein
+restant celui de la page ; sous 760 points, l'en-tête garde une rangée et l'inscription reste sous
+la promesse, juste en dessous.
+
 **Notés pour plus tard, hors de l'accueil :** des documents pédagogiques à
 imprimer (réfléchir chacun à son chapitre, guides d'écriture) ; une page de
 conseils pour écrire un livre-jeu ; les données des élèves dans l'« Aide ».
