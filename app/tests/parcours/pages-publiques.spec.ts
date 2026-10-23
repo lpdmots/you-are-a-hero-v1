@@ -11,13 +11,18 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
-test("F14-AC32 — l'accueil dit ce qu'est l'outil et mène à l'inscription, aux deux entrées et aux quatre pages", async ({ page }) => {
+test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'inscription, aux deux entrées et aux quatre pages", async ({ page }) => {
   await aller(page, "/");
-  await expect(page.getByRole("heading", { level: 1, name: "Il était une classe" })).toBeVisible();
-  await expect(page.getByText("Écrire un vrai livre avec sa classe, de la première idée au livre imprimé.")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
+  await expect(page.getByText("l’application vous guide à chaque étape")).toBeVisible();
+  // Les choix du passage sont les liens de la page : « rendez-vous au 12 » mène au passage 12
+  await page.getByRole("link", { name: /comment se passe un projet, rendez.vous au\s*12/ }).click();
+  await expect(page).toHaveURL(/#p12$/);
+  await expect(page.getByRole("heading", { level: 2, name: "Un projet, en trois temps." })).toBeInViewport();
   for (const [lien, adresse] of [
-    ["Créer un compte", /\/entree\/inscription$/], ["Entrée enseignant", /\/entree$/], ["Entrée des élèves", /\/classe$/],
-    ["Aide", /\/aide$/], ["Confidentialité", /\/confidentialite$/], ["Conditions d’utilisation", /\/conditions$/], ["Mentions légales", /\/mentions-legales$/],
+    ["Créez un compte", /\/entree\/inscription$/], ["Se connecter", /\/entree$/], ["Entrée enseignant", /\/entree$/], 
+    ["Entrée des élèves", /\/classe$/], ["Aide", /\/aide$/], ["Confidentialité", /\/confidentialite$/], ["Conditions d’utilisation", /\/conditions$/],
+    ["Mentions légales", /\/mentions-legales$/],
   ] as const) {
     await aller(page, "/");
     await page.getByRole("link", { name: lien, exact: true }).first().click();
@@ -35,7 +40,7 @@ test("F14-AC21 — le prix du pass, changé dans les réglages, se lit sur l'acc
   try {
     await sql("update public.reglages_application set paiement_ouvert = true, prix_du_pass = 2500");
     await aller(page, "/");
-    await expect(page.getByText("Le pass du livre · 25 €")).toBeVisible();
+    await expect(page.getByRole("listitem").filter({ hasText: "Le pass du livre" }).filter({ hasText: /25\s€/ })).toBeVisible();
     await sql("update public.reglages_application set paiement_ouvert = false");
     await aller(page, "/");
     await expect(page.getByText(/Le pass du livre/)).toHaveCount(0);
@@ -92,16 +97,17 @@ test("F14-AC39 — revenir à l'accueil : après « Se déconnecter », et depui
       await expect(page).toHaveURL(/:\d+\/$/);
     }
   }
-  // L'entrée des élèves : le nom seulement
-  await aller(page, "/classe");
-  await expect(page.getByRole("link", { name: "Retour à l’accueil" })).toHaveCount(0);
-  await page.getByRole("link", { name: "Il était une classe", exact: true }).click();
-  await expect(page).toHaveURL(/:\d+\/$/);
+  // L'entrée des élèves aussi
+  for (const lien of ["Retour à l’accueil", "Il était une classe"]) {
+    await aller(page, "/classe");
+    await page.getByRole("link", { name: lien, exact: true }).click();
+    await expect(page).toHaveURL(/:\d+\/$/);
+  }
 
   // Se déconnecter mène à l'accueil
   await adultePret(page);
   await ouvrirLeMenuDuCompte(page);
   await page.getByRole("button", { name: "Se déconnecter" }).click();
   await expect(page).toHaveURL(/:\d+\/$/);
-  await expect(page.getByRole("link", { name: "Créer un compte" }).first()).toBeVisible();
+  await expect(page.getByRole("link", { name: "Créez un compte" }).first()).toBeVisible();
 });

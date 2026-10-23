@@ -109,8 +109,15 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
   const secret = classe?.classes_secrets as { mot_de_passe_chiffre: string } | { mot_de_passe_chiffre: string }[] | null | undefined;
   const chiffre = Array.isArray(secret) ? secret[0]?.mot_de_passe_chiffre : secret?.mot_de_passe_chiffre;
   if (classe && chiffre) {
-    const attendu = dechiffrer(chiffre, { sorte: "classe", id: classe.id });
-    juste = memeSecret(attendu, motDePasse) && classe.terminee_le === null;
+    // Un mot de passe chiffré avec une autre clé (une base restaurée depuis la vraie, par exemple)
+    // ne se lit pas : l'élève lit alors le refus ordinaire, plutôt qu'une page d'erreur
+    let attendu: string | null = null;
+    try {
+      attendu = dechiffrer(chiffre, { sorte: "classe", id: classe.id });
+    } catch {
+      console.error(`Mot de passe de la classe ${classe.id} illisible avec la clé de ce serveur.`);
+    }
+    juste = attendu !== null && memeSecret(attendu, motDePasse) && classe.terminee_le === null;
   } else {
     memeSecret(motDePasse, "une comparaison pour rien"); // même durée, que l'identifiant existe ou non
   }

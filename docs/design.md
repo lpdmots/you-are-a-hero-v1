@@ -2286,9 +2286,10 @@ ensemble ensuite. Règle de la page : [F14](specifications.md#f14--ouverture-off
   grignoté de la souris n'est drôle que sur des pages intactes).
 - **Les passages :** 1, la promesse ; 12, « Un projet, en trois temps »
   (« quelques semaines ou quelques mois », pas « une année », corrigé par le
-  porteur) ; 19, « Tout est prévu », huit lignes (son idée : une page qui
-  développe les fonctions) ; 27, ses deux livres à feuilleter, avec sa photo
-  des livres imprimés à côté ; 33, « Dans votre classe » ; 40, « L'IA, si vous
+  porteur) ; 27, ses deux livres à feuilleter, avec sa photo
+  des livres imprimés à côté ; 33, « Dans votre classe », qui absorbe le 19,
+  « Tout est prévu » (son idée d'une page qui développe les fonctions,
+  fusionnée le même jour : la moitié de ses lignes redisait le 12) ; 40, « L'IA, si vous
   voulez. Et ce que cela coûte. », l'IA comme aide de l'enseignant ; 52, « Né
   dans une classe », signé, puis « FIN ». Les données des élèves ne font pas
   de passage (décision du porteur) : elles iront dans l'« Aide ».
@@ -2310,7 +2311,68 @@ locale, que le porteur remplacera par celles qu'il préfère.
 **Écrans voisins, demandés le même jour (F14-AC39) :** « Se déconnecter » mène
 à l'accueil ; l'entrée enseignant, l'inscription et le mot de passe oublié
 portent « Retour à l'accueil » au-dessus du nom, qui mène aussi à l'accueil ;
-l'entrée des élèves, le nom seulement.
+l'entrée des élèves aussi, à sa demande.
+
+**Construit en local le même jour, à réviser avec le porteur :** `(public)/page.tsx` et
+`accueil.module.css`, images dans `public/accueil/` (le livre maître dans
+[identite/accueil](../identite/accueil/)). L'en-tête des pages publiques devient « Aide ·
+Entrée des élèves · Se connecter » (« Élèves » sur téléphone, où le nom du site reparaît).
+Les deux livres viennent de leurs partages (`LIVRES_DE_L_ACCUEIL`, `serveur/accueil.ts`) ;
+sans eux, le passage 27 et ses renvois disparaissent. Critiqué en deux lectures sur 22
+captures Playwright (1440 et 390 px) : 28/40 (informée) et 27/40 (indépendante), aucun
+constat du détecteur ; corrigé aussitôt, sans nouvelle mesure : captures recadrées sur un
+détail lisible, une par passage ; « Créer un compte » ajouté au 40, où l'on se décide ;
+« rendez‑vous » insécable et renvoi aligné sur la dernière ligne ; choix à la suite du texte
+(la hauteur commune devient un minimum, le contenu agrandi ne déborde plus) ; ce que donnent
+les 30 étoiles ; chiffres de l'offre en Vollkorn. Laissés : la hauteur commune, qui laisse du
+blanc au bas des passages courts (règle du porteur) ; les huit lignes du 19 ; les cadres « à
+venir » (photo des livres, capture « Qui utilise cet ordinateur ? »), visibles en
+développement seulement.
+
+**Retouches du premier écran, décidées ensuite le même jour :** le titre de la première page
+dans la cursive des écoles (Playwrite FR Trad), plus grand, et lui seul (les titres des
+feuillets restent en Vollkorn, la cursive gardant les notes et la signature) ; l'image de la
+page gauche en trapèze, plus large en bas comme la page en perspective, centrée entre la
+tranche et l'ombre du pli ; le dragon, nouveau dessin retourné, tourné vers la page de droite
+sur grand écran, et penché vers le texte sur téléphone. La visite en vidéo : enregistrée par
+le porteur, de sa voix, une minute trente en quatre temps (la classe prépare au tableau, un
+élève écrit et remet, l'enseignant relit et valide, le livre se compose puis se feuillette
+imprimé) ; son bouton (« Le tour en vidéo ») ne paraît en ligne qu'avec la vidéo. L'image de
+la page gauche, qui en est l'affiche : une photo de sa classe au travail si le porteur peut
+la prendre, sans visage reconnaissable ; en attendant, une illustration créée par IA dans le
+style des visuels, jamais une fausse photo.
+
+**Le passage 12 en captures (repris le même jour, à sa demande) :** la feuille reste fixe
+sur grand écran pendant que défilent à côté trois captures par temps, choisies par lui
+(originaux dans [identite/accueil/captures](../identite/accueil/captures/)) ; le signe du
+temps montré s'allume en canard ; chaque temps est un lien vers sa première capture, le
+défilement doux s'arrête quand la feuille est fixée, sans faire clignoter les signes en
+chemin. Temps 1 : le héros (« La classe définit son histoire : le monde, le héros,
+l'enjeu. »), deux chapitres et deux scènes découpés et scotchés, les chemins ; temps 2 :
+la fiche de rédaction d'abord (on écrit sur le cahier, puis on recopie), la scène
+recopiée avec la correction proposée par l'IA, le Suivi ; temps 3 : relire, les pages
+peu remplies, le livre lu en ligne. Un porte-bloc sous la feuille du 12, son idée, essayé
+puis retiré le même jour sur avis franc : une seconde grande masse canard juste après le
+livre, plus lourde que les captures qu'elle devait servir, et qui affaiblit le bouton
+principal ; ne pas le reproposer. Sur téléphone, la feuille défile, une seule capture
+par temps (accepté), et les feuillets prennent la hauteur de leur texte : la même
+hauteur ne vaut que sur grand écran (décidé par lui). Mots écartés à sa demande :
+« reprise » et « remettre », peu clairs pour un visiteur (« faites retravailler »,
+« puis vous corrigez »).
+
+**Le passage 33 (repris le 23 octobre 2026) :** à côté de la feuille, une pile bancale de
+quatre écrans, de bas en haut : les deux sortes de récit, deux étiquettes d'élèves, le code
+secret d'un élève, ses encouragements ; au sommet, la souris en équilibre sur une patte,
+fière, tournée vers la page (identite/mascotte/souris-equilibre.webp, retournée). Pose
+recommandée et retenue : fière et sûre d'elle, ni peureuse (contre son caractère et contre
+« tout tient ») ni en train de grignoter (gag réservé à la fin). La pile, d'abord de cinq
+écrans dont l'aide d'une étape et la grille des prénoms, est réduite sur avis franc pour
+qu'on lise chaque morceau. Sur téléphone, la pile passe sous la feuille.
+
+**Retouches voisines du même jour :** le nom du logo descendu de 0,14 em (la cursive portait
+ses majuscules trop haut, à côté du dragon et des liens), dans le composant du logo, donc
+partout ; les prénoms des étiquettes imprimées ne sont plus coupés en haut ni en bas par la
+nouvelle cursive (la case ne coupe plus que sur la largeur).
 
 **Notés pour plus tard, hors de l'accueil :** des documents pédagogiques à
 imprimer (réfléchir chacun à son chapitre, guides d'écriture) ; une page de

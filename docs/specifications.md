@@ -10983,11 +10983,13 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   voir comment se passe un projet, rendez-vous au 12 »), « Créer un compte »
   gardant la forme du bouton principal. Ses passages, dans l'ordre de
   lecture : la promesse (« Votre classe écrit son livre-jeu. ») ; un projet
-  en trois temps, de quelques semaines à quelques mois ; tout ce que l'outil
-  prévoit ; deux livres écrits par la classe du porteur, à feuilleter dans le
+  en trois temps, de quelques semaines à quelques mois, montré en captures ;
+  deux livres écrits par la classe du porteur, à feuilleter dans le
   lecteur en ligne (ses anciennes histoires, importées, autorisations
-  comprises) ; dans votre classe (âge des lecteurs, matériel, connexion des
-  élèves, impression, deux sortes de récit) ; l'IA, présentée comme une aide
+  comprises) ; dans votre classe, ce que les trois temps ne disent pas (âge
+  des lecteurs, matériel, identifiants des élèves, fiches nominatives,
+  tampons, deux sortes de récit, aide à chaque étape, un coup de pouce de
+  l'IA) ; l'IA, présentée comme une aide
   de l'enseignant, et ce que cela coûte (le pass seulement quand la vente est
   ouverte) ; né dans une classe, signé du porteur. Ce qui doit ressortir :
   l'outil n'est pas compliqué, il guide à chaque étape et il aide. Une
@@ -11255,8 +11257,8 @@ découvre l'outil, et le porteur, administrateur.
   déconnecter », alors il arrive sur la page d'accueil, et non plus sur
   l'entrée enseignant ; étant donné l'entrée enseignant, « Créer un compte »
   ou « Mot de passe oublié », alors « Retour à l'accueil », au-dessus du nom,
-  et le nom lui-même mènent à l'accueil ; à l'entrée des élèves, seul le nom
-  y mène. Une page de l'espace adulte ouverte sans être connecté mène
+  et le nom lui-même mènent à l'accueil ; l'entrée des élèves aussi (révisé
+  par le porteur le même jour, qui n'y voulait d'abord que le nom). Une page de l'espace adulte ouverte sans être connecté mène
   toujours à l'entrée enseignant (F01-AC28).
 
 **Questions ouvertes :** les prix du pass et des recharges, et le nombre

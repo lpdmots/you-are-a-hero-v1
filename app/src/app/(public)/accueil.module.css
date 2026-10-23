@@ -1,0 +1,946 @@
+/* L'accueil en livre-jeu (F14, « Pages publiques » ; design.md, « Accueil en livre-jeu », 22 octobre
+   2026). Le premier passage s'écrit sur un grand livre ouvert, image du porteur ; les autres sur des
+   feuillets du même papier, de même hauteur. Les choix ont la forme des phrases de choix du livre
+   (lecture.css) ; « Créer un compte » garde celle du bouton principal. */
+
+/* La table : un fond chaud à la place du gris du bureau, sur cette page seulement (proposé) */
+:global(div):has(> .accueil) {
+  background: #f2ede3;
+}
+.accueil.accueil {
+  --papier: #fcf9f1;
+  --page-l: 520px;
+  --page-h: 680px;
+  width: min(1290px, 100%);
+  padding: 0 32px 40px;
+}
+
+/* ——— Le grand livre ouvert ——— */
+.scene {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 4px 0 34px;
+}
+.livre {
+  position: relative;
+  flex: none;
+  width: min(1040px, calc(100% - 200px));
+  aspect-ratio: 2000 / 1500;
+  background: url(/accueil/livre-ouvert.webp) no-repeat center / 100% 100%;
+  filter: drop-shadow(0 26px 30px rgba(60, 45, 20, 0.22));
+}
+/* Les zones des pages, mesurées sur l'image. La page de gauche s'élargit vers le bas, côté
+   tranche (son bord passe de x 168 en haut à 145 en bas), le pli restant droit : l'image prend
+   cette forme, un trapèze, centrée entre la tranche et l'ombre du pli. */
+.gauche {
+  position: absolute;
+  left: 10.4%;
+  top: 15.4%;
+  width: 35.88%;
+  height: 66.5%;
+  margin: 0;
+  clip-path: polygon(3.08% 0, 100% 0, 100% 100%, 0 100%);
+}
+.gauche img {
+  object-fit: cover;
+  object-position: 50% 30%;
+  border-radius: 2px;
+}
+/* Le bouton de la visite, posé sur l'image (il ne penche pas avec elle) */
+.lancerVisite {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 18px 10px 10px;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(255, 253, 248, 0.95);
+  color: var(--graphite);
+  font: 700 var(--t-m) var(--f-ui);
+  white-space: nowrap;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(30, 25, 10, 0.28);
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.lancerVisite:hover {
+  transform: translateX(-50%) translateY(-2px);
+  box-shadow: 0 10px 24px rgba(30, 25, 10, 0.32);
+}
+.lancerVisite svg {
+  width: 30px;
+  height: 30px;
+  padding: 7px 6px 7px 8px;
+  border-radius: 50%;
+  background: var(--canard);
+  color: var(--feuille);
+}
+.visite {
+  width: min(960px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-m);
+  background: #111;
+  color: #ddd;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+}
+.visite::backdrop {
+  background: rgba(30, 25, 15, 0.62);
+}
+.visite video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.visiteAVenir {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 16 / 9;
+  padding: 24px;
+  text-align: center;
+}
+.visite form {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.fermerVisite {
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--graphite);
+  font: 700 var(--t-s) var(--f-ui);
+  cursor: pointer;
+}
+.droite {
+  position: absolute;
+  left: 53.6%;
+  top: 14.4%;
+  width: 36.2%;
+  height: 68.6%;
+  display: flex;
+  flex-direction: column;
+}
+.droite h1 {
+  margin-top: 18px;
+  font-family: var(--f-main);
+  font-size: clamp(1.75rem, 2.45vw, 2.3rem);
+  font-weight: 400;
+  line-height: 1.5;
+  -webkit-text-stroke: 0.03em currentColor;
+  color: var(--graphite);
+  text-wrap: balance;
+}
+.droite .recit {
+  font-size: 1.04rem;
+  line-height: 1.5;
+  margin-top: 24px;
+}
+.droite .choix :is(a:not(:global(.btn)), .principal) {
+  font-size: 0.97rem;
+  padding: 8px 2px;
+}
+.garanties {
+  margin-top: 8px;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.dragonLit {
+  flex: none;
+  position: relative;
+  z-index: 2;
+  width: 290px;
+  height: 268px;
+  margin: 0 0 66px -52px;
+  background: url(/accueil/dragon-regarde.webp) no-repeat center bottom / contain;
+  animation: se-poser 0.32s var(--ease) both;
+}
+/* Une seule arrivée brève, puis immobile (design.md, « Fantaisie et mascotte ») */
+@keyframes se-poser {
+  from {
+    transform: translateY(-16px);
+  }
+  to {
+    transform: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dragonLit {
+    animation: none;
+  }
+}
+
+/* ——— Le passage : comme dans le livre ——— */
+.numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  font-family: var(--f-recit);
+  font-size: 1.05rem;
+  color: var(--graphite-2);
+  font-variant-numeric: lining-nums;
+}
+.numero::before,
+.numero::after {
+  content: "";
+  width: 38px;
+  height: 1px;
+  background: var(--trait-fort);
+}
+.recit {
+  font-family: var(--f-recit);
+  font-size: 1.14rem;
+  line-height: 1.55;
+  margin-top: 14px;
+  text-wrap: pretty;
+}
+.petit {
+  font-size: 1.04rem;
+  color: #333a40;
+}
+.choix {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 0;
+  border-top: 1px solid #d8d0bf;
+}
+.choix li {
+  border-bottom: 1px solid #d8d0bf;
+}
+.choix a:not(:global(.btn)),
+.principal {
+  display: flex;
+  align-items: last baseline;
+  gap: 12px;
+  padding: 11px 2px;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 1.04rem;
+  line-height: 1.4;
+  color: var(--graphite);
+  text-decoration: none;
+}
+.choix a:not(:global(.btn)):hover {
+  background: rgba(120, 95, 50, 0.06);
+}
+.phrase {
+  flex: 1 1 auto;
+}
+.renvoi {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.1em;
+  padding: 0 7px;
+  border: 1.5px solid var(--canard);
+  border-radius: 99px;
+  color: var(--canard);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.95rem;
+  font-variant-numeric: lining-nums;
+}
+.choix a:hover .renvoi {
+  background: var(--canard);
+  color: var(--feuille);
+}
+.principal {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+.principal :global(.btn) {
+  font-family: var(--f-ui);
+  font-style: normal;
+  gap: 8px;
+}
+.principal :global(.btn) svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ——— Les feuillets : détachés du livre, même papier, même hauteur ——— */
+.rangee {
+  display: grid;
+  align-items: center;
+  gap: 56px;
+  padding: 56px 0;
+}
+.aGauche {
+  grid-template-columns: var(--page-l) minmax(0, 1fr);
+}
+.aDroite {
+  grid-template-columns: minmax(0, 1fr) var(--page-l);
+}
+.aDroite .feuillet {
+  order: 2;
+}
+.auMilieu {
+  grid-template-columns: minmax(0, 1fr) var(--page-l) minmax(0, 1fr);
+  gap: 40px;
+}
+.feuillet {
+  position: relative;
+  isolation: isolate;
+  width: var(--page-l);
+  min-height: var(--page-h);
+  display: flex;
+  flex-direction: column;
+  padding: 40px 46px 34px;
+  scroll-margin-top: 24px;
+  filter: drop-shadow(0 1px 1px rgba(60, 45, 20, 0.16)) drop-shadow(0 16px 22px rgba(60, 45, 20, 0.18));
+}
+.feuillet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: url(/accueil/papier.webp) center / cover, var(--papier);
+  border-radius: 2px;
+}
+.rangee:nth-of-type(even) .feuillet {
+  transform: rotate(-0.6deg);
+}
+.rangee:nth-of-type(odd) .feuillet {
+  transform: rotate(0.5deg);
+}
+.feuillet:target {
+  outline: 2px solid var(--canard);
+  outline-offset: 6px;
+}
+.feuillet h2 {
+  margin-top: 22px;
+  font-family: var(--f-recit);
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+.feuillet .choix {
+  margin-top: 6px;
+}
+
+/* Trois temps, une liste cochée */
+.temps {
+  list-style: none;
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 22px;
+  padding: 0;
+}
+.temps li {
+  display: grid;
+}
+/* Chaque temps se clique : la page défile jusqu'à ses captures */
+.allerAuTemps {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 14px;
+  align-items: start;
+  width: 100%;
+  margin: -6px;
+  padding: 6px;
+  border: 0;
+  border-radius: var(--r-m);
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.allerAuTemps:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.allerAuTemps:hover .signe {
+  background: var(--canard-pale);
+}
+.signe {
+  width: 40px;
+  height: 40px;
+  padding: 3px;
+  border-radius: 50%;
+  color: var(--canard);
+  transition: background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+/* ——— Le passage 12 : la feuille en place, les captures qui défilent ——— */
+.defile {
+  align-items: start;
+}
+.defile .feuillet {
+  position: sticky;
+  top: max(24px, calc((100vh - var(--page-h)) / 2));
+}
+/* Le temps que montrent les captures au milieu de l'écran : son signe s'allume */
+.defile[data-actif="1"] .temps li:nth-child(1) .signe,
+.defile[data-actif="2"] .temps li:nth-child(2) .signe,
+.defile[data-actif="3"] .temps li:nth-child(3) .signe {
+  background: var(--canard);
+  color: var(--feuille);
+}
+.defilement {
+  display: grid;
+  gap: 72px;
+  /* La première capture arrive au milieu de l'écran quand la feuille se fixe */
+  padding: calc(var(--page-h) / 2 - 210px) 0 60px;
+}
+/* Un temps de plus d'écart entre deux temps */
+.debutDeTemps:not(:first-child) {
+  margin-top: 80px;
+}
+.capture {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+  /* Sans script, le lien du temps pose la capture au milieu de l'écran */
+  scroll-margin-top: 22vh;
+}
+.capture .tirage {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+}
+.capture:nth-child(odd) .tirage {
+  transform: rotate(1deg);
+}
+.capture:nth-child(even) .tirage {
+  transform: rotate(-1.2deg);
+}
+.capture .note {
+  justify-self: center;
+}
+/* Les morceaux découpés : deux chapitres en haut, deux scènes par-dessus, chacun son ruban */
+.collage {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 13.5;
+}
+.morceau {
+  position: absolute;
+  display: block;
+  border-radius: 10px;
+  background: var(--feuille);
+  box-shadow: 0 2px 4px rgba(60, 45, 20, 0.12), 0 14px 24px -12px rgba(60, 45, 20, 0.36);
+}
+.morceau > :global(img) {
+  border-radius: 10px;
+  object-fit: cover;
+}
+.morceau::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -10px;
+  left: 50%;
+  width: 70px;
+  height: 20px;
+  transform: translateX(-50%) rotate(-4deg);
+  background: rgba(232, 160, 169, 0.55);
+}
+.chapitre1 {
+  left: 4%;
+  top: 2%;
+  width: 34%;
+  aspect-ratio: 934 / 1188;
+  transform: rotate(-3deg);
+}
+.chapitre2 {
+  left: 40%;
+  top: 0;
+  width: 34%;
+  aspect-ratio: 934 / 1188;
+  transform: rotate(2.5deg);
+}
+.scene1 {
+  left: 20%;
+  top: 54%;
+  width: 62%;
+  aspect-ratio: 966 / 301;
+  transform: rotate(1.5deg);
+  z-index: 2;
+}
+.scene2 {
+  left: 36%;
+  top: 74%;
+  width: 62%;
+  aspect-ratio: 966 / 301;
+  transform: rotate(-1.8deg);
+  z-index: 3;
+}
+.scene1::before,
+.scene2::before {
+  left: 12%;
+}
+.temps b {
+  display: block;
+  font-family: var(--f-recit);
+  font-size: 1.12rem;
+}
+.temps span {
+  font-family: var(--f-recit);
+  font-size: 1rem;
+  line-height: 1.45;
+  color: #333a40;
+}
+.liste {
+  list-style: none;
+  display: grid;
+  gap: 7px;
+  margin: 16px 0 22px;
+  padding: 0;
+}
+.aere {
+  gap: 12px;
+  margin-top: 20px;
+}
+.liste li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 10px;
+  font-family: var(--f-recit);
+  font-size: 1.01rem;
+  line-height: 1.38;
+  color: #2c3338;
+}
+/* La ligne de l'IA, après celles de l'outil, un peu détachée */
+.ligneIa {
+  margin-top: 6px;
+  padding-top: 9px;
+  border-top: 1px dashed var(--trait-fort);
+}
+.coche {
+  width: 20px;
+  height: 20px;
+  margin-top: 2px;
+  color: var(--canard);
+}
+
+/* Les deux livres de la classe */
+.livres {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin: 18px 0 22px;
+  padding: 0;
+}
+.couverture {
+  display: grid;
+  gap: 8px;
+  color: var(--graphite);
+  text-decoration: none;
+}
+.objet {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  aspect-ratio: 3 / 3.6;
+  overflow: hidden;
+  border-radius: 3px 7px 7px 3px;
+  background: var(--feuille);
+  box-shadow: inset 6px 0 0 rgba(0, 0, 0, 0.06), 0 1px 2px rgba(60, 45, 20, 0.12), 0 10px 20px -8px rgba(60, 45, 20, 0.3);
+  transition: transform 0.25s var(--ease);
+}
+.couverture:hover .objet {
+  transform: translateY(-3px) rotate(-0.6deg);
+}
+.objet img,
+.sansImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--canard-pale);
+}
+.titreLivre {
+  padding: 8px 10px 10px;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.2;
+  text-align: center;
+}
+.titreLivre small {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--graphite-2);
+}
+.feuilleter {
+  font-weight: 700;
+  color: var(--canard);
+  text-align: center;
+  font-size: var(--t-s);
+}
+
+/* Ce que cela coûte */
+.offre {
+  list-style: none;
+  margin: 16px 0 22px;
+  padding: 0;
+  border-top: 1px dashed var(--trait-fort);
+}
+.offre li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px dashed var(--trait-fort);
+}
+.quoi {
+  font-family: var(--f-recit);
+  font-size: 1.04rem;
+  line-height: 1.4;
+}
+.quoi small {
+  display: block;
+  margin-top: 2px;
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--graphite-2);
+}
+.prix {
+  flex: none;
+  font-family: var(--f-recit);
+  font-variant-numeric: lining-nums;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.gratuit {
+  color: var(--canard);
+}
+
+/* La fin */
+.signature {
+  margin-top: 14px;
+  font-family: var(--f-main);
+  font-size: 1.1rem;
+  -webkit-text-stroke: 0.02em currentColor;
+}
+.fin {
+  margin-top: 16px;
+  text-align: center;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  font-size: 0.92rem;
+  color: var(--graphite-2);
+}
+/* La souris grignote le coin bas gauche du dernier feuillet : le papier y est vraiment entamé,
+   de petites morsures rondes en arc autour du coin, et l'ombre de la feuille en suit la forme */
+.dernier::before {
+  --mors: radial-gradient(circle 19px at 0 100%, transparent 95%, #000 100%),
+    radial-gradient(circle 15px at 27px 100%, transparent 95%, #000 100%),
+    radial-gradient(circle 15px at 23px calc(100% - 14px), transparent 95%, #000 100%),
+    radial-gradient(circle 15px at 14px calc(100% - 23px), transparent 95%, #000 100%),
+    radial-gradient(circle 15px at 0 calc(100% - 27px), transparent 95%, #000 100%);
+  -webkit-mask: var(--mors);
+  -webkit-mask-composite: source-in;
+  mask: var(--mors);
+  mask-composite: intersect;
+}
+.souris {
+  position: absolute;
+  left: -84px;
+  bottom: -12px;
+  width: 88px;
+  height: 108px;
+  background: url(/accueil/souris-dos.webp) no-repeat center bottom / contain;
+}
+/* Le dragon s'est endormi sur la table, au pied du dernier feuillet */
+.cote.enBas {
+  align-self: stretch;
+  align-content: end;
+  padding-bottom: 8px;
+}
+.dragonDort {
+  /* Grand, et qui déborde un peu sur la feuille : il s'est endormi contre elle */
+  position: relative;
+  z-index: 2;
+  width: 400px;
+  height: 340px;
+  margin-left: -150px;
+  background: url(/accueil/dragon-endormi.webp) no-repeat center bottom / contain;
+}
+
+/* ——— Autour des feuillets : captures imprimées et scotchées, notes à la main ——— */
+.cote {
+  position: relative;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 30px;
+  min-width: 0;
+}
+.tirage {
+  position: relative;
+  margin: 0;
+  padding: 8px;
+  max-width: 100%;
+  background: var(--feuille);
+  box-shadow: 0 2px 4px rgba(60, 45, 20, 0.12), 0 18px 30px -14px rgba(60, 45, 20, 0.38);
+}
+.tirage::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -12px;
+  left: 50%;
+  width: 92px;
+  height: 24px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(232, 160, 169, 0.55);
+}
+.tirage > :global(img) {
+  inset: 8px !important;
+  width: calc(100% - 16px) !important;
+  height: calc(100% - 16px) !important;
+  object-fit: cover;
+  object-position: left top;
+}
+/* Chaque capture est cadrée sur un détail, affiché presque à sa taille réelle pour se lire */
+.preparation {
+  width: 560px;
+  aspect-ratio: 692 / 458;
+  transform: rotate(1.4deg);
+}
+.etapes {
+  width: 580px;
+  aspect-ratio: 900 / 140;
+  margin-left: 40px;
+  transform: rotate(-1.6deg);
+}
+.aides {
+  width: 560px;
+  aspect-ratio: 830 / 420;
+  transform: rotate(-1.4deg);
+}
+.photo {
+  width: 520px;
+  height: 390px;
+  transform: rotate(-1.6deg);
+}
+.qui {
+  width: 600px;
+  aspect-ratio: 2000 / 617;
+  transform: rotate(1.2deg);
+}
+/* La pile bancale du passage 33 : des écrans empilés, chacun de travers, qui se chevauchent ;
+   au sommet, la souris en équilibre sur une patte, fière, tournée vers la page */
+.pile {
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+}
+.morceauPile {
+  position: relative;
+  display: block;
+  padding: 6px;
+  background: var(--feuille);
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(60, 45, 20, 0.14), 0 10px 18px -8px rgba(60, 45, 20, 0.34);
+}
+.morceauPile > :global(img) {
+  inset: 6px !important;
+  width: calc(100% - 12px) !important;
+  height: calc(100% - 12px) !important;
+  object-fit: cover;
+}
+/* Les écrans se recouvrent : la pile reste basse, et le haut de chacun se lit */
+/* Les écrans se recouvrent : la pile reste basse, et le haut de chacun se lit */
+.morceauPile + .morceauPile {
+  margin-bottom: -5%;
+}
+.pile1 { width: 94%; transform: rotate(1.4deg); z-index: 1; }
+.pile2 { width: 76%; transform: translateX(6%) rotate(-2.4deg); z-index: 2; }
+.pile3 { width: 40%; transform: translateX(-14%) rotate(3deg); z-index: 3; }
+.pile4 { width: 46%; transform: translateX(4%) rotate(-4deg); z-index: 4; }
+/* Les étiquettes posées un peu plus haut sur les récits, pour qu'on lise « À choix » */
+.pile1 + .pile2 {
+  margin-bottom: -2%;
+}
+/* Les encouragements mordent sur le haut du code : le prénom de Maëlys reste lisible */
+.pile3 + .pile4 {
+  margin-bottom: -2%;
+}
+.sourisPerchee {
+  position: relative;
+  z-index: 6;
+  width: 120px;
+  height: 160px;
+  margin-bottom: -8px;
+  transform: translateX(-30%);
+  background: url(/accueil/souris-fiere.webp) no-repeat center bottom / contain;
+}
+
+.aVenir {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  min-height: 80px;
+  padding: 20px;
+  border: 2px dashed #cfc5b2;
+  border-radius: 6px;
+  color: #8a7f6a;
+  font-size: var(--t-s);
+  text-align: center;
+}
+.note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 30ch;
+  font-family: var(--f-main);
+  font-size: 1.02rem;
+  line-height: 1.6;
+  color: var(--graphite-2);
+  text-wrap: balance;
+}
+.note svg {
+  flex: none;
+  width: 46px;
+  height: 34px;
+}
+
+/* ——— Écrans moyens : le milieu perd sa colonne de gauche ——— */
+@media (max-width: 1180px) {
+  .auMilieu {
+    grid-template-columns: var(--page-l) minmax(0, 1fr);
+  }
+  .avant {
+    display: none;
+  }
+}
+
+/* ——— Téléphone : une colonne ; la page 1 seule, les feuillets plus hauts, tous pareils ——— */
+@media (max-width: 980px) {
+  .accueil.accueil {
+    --page-l: 100%;
+    padding: 0 16px 32px;
+  }
+  .scene {
+    display: block;
+    position: relative;
+    padding: 108px 0 20px;
+  }
+  /* Le livre reste ouvert : il sort de l'écran à gauche, on voit le pli et le bord de la page
+     de gauche ; la page de droite, étirée par son centre uni, porte le passage */
+  .livre {
+    width: calc(100% + 34px);
+    margin-left: -34px;
+    aspect-ratio: auto;
+    background: none;
+    border-style: solid;
+    border-color: transparent;
+    border-width: 12px 52px 36px 62px;
+    border-image: url(/accueil/page-mobile.webp) 30 160 95 172 fill / 12px 52px 36px 62px;
+    filter: drop-shadow(0 14px 18px rgba(60, 45, 20, 0.2));
+  }
+  .gauche {
+    display: none;
+  }
+  .droite {
+    position: static;
+    width: auto;
+    height: auto;
+    padding: 22px 6px 14px 4px;
+  }
+  .droite .choix {
+    margin-top: 22px;
+  }
+  .dragonLit {
+    position: absolute;
+    top: 0;
+    right: 14px;
+    width: 140px;
+    height: 126px;
+    margin: 0;
+    /* Sur téléphone, perché au-dessus de la page, il se penche vers le texte */
+    background-image: url(/accueil/dragon-penche.webp);
+  }
+  .rangee,
+  .aGauche,
+  .aDroite,
+  .auMilieu {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+    padding: 28px 0;
+  }
+  .aDroite .feuillet {
+    order: 0;
+  }
+  .defile .feuillet {
+    position: relative;
+    top: 0;
+  }
+  .defilement {
+    gap: 28px;
+    padding: 0;
+  }
+  .capture:not(.debutDeTemps) {
+    display: none;
+  }
+  .debutDeTemps:not(:first-child) {
+    margin-top: 0;
+  }
+  /* Sur téléphone, chaque feuillet prend la hauteur de son texte : la même hauteur pour tous
+     y laissait de grands blancs (décidé par le porteur le 22 octobre 2026) */
+  .feuillet {
+    min-height: 0;
+    padding: 28px 22px 26px 24px;
+  }
+  .feuillet h2 {
+    font-size: 1.6rem;
+  }
+  .cote {
+    gap: 18px;
+  }
+  .tirage {
+    width: 100%;
+    margin: 0;
+    transform: none;
+  }
+  .photo {
+    height: 220px;
+  }
+  .feuillet:target {
+    outline-offset: 3px;
+  }
+  /* Proportions de leur image ensemble : la souris arrive à mi-hauteur du dragon */
+  .souris {
+    left: 10px;
+    bottom: -200px;
+    width: 62px;
+    height: 76px;
+  }
+  .dernier {
+    margin-bottom: 0;
+  }
+  /* Sous le dernier feuillet, côte à côte : la souris au coin grignoté, le dragon à droite */
+  .dragonDort {
+    width: 230px;
+    height: 180px;
+    margin-left: 0;
+  }
+  .cote.enBas {
+    justify-items: end;
+    height: 180px;
+    margin-top: -14px;
+    padding: 0 4px 0 0;
+  }
+
+}

@@ -17,14 +17,15 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
           <Logo href="/" />
         </span>
         <nav className={styles.nav} aria-label="Entrer">
-          <Link href="/classe" className={styles.navEleves}>
-            Entrée des élèves
+          <Link href="/aide" className={styles.navAide}>
+            Aide
           </Link>
-          <Link href="/entree" className={styles.navEntrer}>
-            Entrer
+          <Link href="/classe" aria-label="Entrée des élèves">
+            <span className={styles.navLong}>Entrée des élèves</span>
+            <span className={styles.navCourt}>Élèves</span>
           </Link>
-          <Link href="/entree/inscription" className="btn">
-            Créer un compte
+          <Link href="/entree" className="btn">
+            Se connecter
           </Link>
         </nav>
       </header>

@@ -7,8 +7,8 @@ import styles from "./EntreeIllustree.module.css";
 
 /**
  * Écran d'entrée : l'illustration donne l'ambiance, la carte porte le formulaire. Le nom, en tête de
- * carte, mène à l'accueil ; les écrans de l'adulte le disent aussi en clair (`retourAccueil`), pas
- * l'entrée des élèves, qu'un lien vers la page des enseignants ne servirait pas (22 octobre 2026).
+ * carte, mène à l'accueil ; les écrans d'entrée le disent aussi en clair (`retourAccueil`), celui des
+ * élèves compris, à la demande du porteur (22 octobre 2026).
  */
 export function EntreeIllustree({
   titre,

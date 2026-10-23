@@ -16,6 +16,12 @@
 .logo:hover {
   color: var(--graphite);
 }
+/* La cursive porte ses majuscules très haut : le nom paraissait monté par rapport au dragon et aux
+   liens voisins. Il descend un peu, son pied restant au niveau du bas des pages du livre-dragon */
+.logo span {
+  position: relative;
+  top: 0.14em;
+}
 .dragon {
   width: 36px;
   height: 36px;

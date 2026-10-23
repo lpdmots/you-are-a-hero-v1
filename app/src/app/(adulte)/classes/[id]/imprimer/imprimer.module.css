@@ -99,7 +99,10 @@
   font-size: 2.3cqw;
   line-height: 1.5;
   white-space: nowrap;
-  overflow: hidden;
+  /* La cursive des écoles monte et descend loin (majuscules, boucles du J ou du y) : on ne coupe
+     que sur la largeur, pour les points de suspension d'un prénom long, jamais en hauteur */
+  overflow-x: clip;
+  overflow-y: visible;
   text-overflow: ellipsis;
 }
 /* Les chiffres que l'élève lit : un zéro sans barre (F06.4, 7 octobre 2026) */

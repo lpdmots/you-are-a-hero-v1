@@ -311,7 +311,7 @@ test("F14-AC34 — « Écrit avec Il était une classe » au pied de la page de 
   await expect(mention).toBeVisible();
   await mention.click();
   await expect(lecteur).toHaveURL(/\/$/);
-  await expect(lecteur.getByRole("heading", { level: 1, name: "Il était une classe" })).toBeVisible();
+  await expect(lecteur.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
   // La page neutre ne la porte pas
   await lecteur.goto("/lire/zzzzzzzzzz");
   await expect(lecteur).toHaveTitle("Ce livre n’est plus partagé");

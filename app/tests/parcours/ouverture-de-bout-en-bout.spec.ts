@@ -35,7 +35,7 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   const courriel = adresseDEssai();
   const motDePasse = "le-livre-de-la-classe";
   await aller(page, "/");
-  await page.getByRole("link", { name: "Créer un compte" }).first().click();
+  await page.getByRole("link", { name: "Créez un compte" }).first().click();
   await page.getByLabel("Adresse électronique").fill(courriel);
   await page.getByLabel(/Mot de passe/).fill(motDePasse);
   await page.getByRole("button", { name: "Créer mon compte" }).click();
@@ -108,7 +108,7 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   const lire = await lecteur.newPage();
   await lire.goto(new URL(lien).pathname);
   await lire.getByRole("link", { name: "Écrit avec Il était une classe" }).click();
-  await expect(lire.getByRole("heading", { level: 1, name: "Il était une classe" })).toBeVisible();
+  await expect(lire.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
   await lecteur.close();
 
   // ——— « Paiement ouvert » allumé par le porteur : à 40 scènes, le dialogue du pass ———

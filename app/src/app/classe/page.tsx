@@ -14,6 +14,7 @@ export default async function EntreeDesEleves() {
   return (
     <EntreeIllustree
       titre="Bienvenue dans ta classe"
+      retourAccueil
       pied={
         <>
           Tu es enseignant(e) ? <Link href="/entree">Entrée des enseignants</Link>
