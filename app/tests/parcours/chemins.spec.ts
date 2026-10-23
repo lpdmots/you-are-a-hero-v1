@@ -318,13 +318,20 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     test.setTimeout(180_000);
     await page.setViewportSize({ width: 1024, height: 768 });
     const l = await auteur(page);
-    // Cent quatre-vingt-quinze scènes de plus, par la base : quarante dans « La lisière », le reste dans « Le marais »
-    await sql(
-      `insert into scenes (chapitre_id, projet_id, enseignant_id, reference, rang, titre)
-       select case when n <= 36 then $1::uuid else $2::uuid end, $3::uuid, (select enseignant_id from projets where id = $3), 5 + n, 10 + n, 'Scène ' || (5 + n)
-       from generate_series(1, 195) n`,
-      [l.lisiere.id, l.marais.id, l.projet],
-    );
+    // Cent quatre-vingt-quinze scènes de plus, par la base : quarante dans « La lisière », le reste dans « Le marais ».
+    // « Paiement ouvert » éteint le temps de semer, la limite gratuite refusant sinon la 41e (F14-AC13)
+    const [{ paiement_ouvert: ouvert }] = await sql<{ paiement_ouvert: boolean }>("select paiement_ouvert from public.reglages_application");
+    await sql("update public.reglages_application set paiement_ouvert = false");
+    try {
+      await sql(
+        `insert into scenes (chapitre_id, projet_id, enseignant_id, reference, rang, titre)
+         select case when n <= 36 then $1::uuid else $2::uuid end, $3::uuid, (select enseignant_id from projets where id = $3), 5 + n, 10 + n, 'Scène ' || (5 + n)
+         from generate_series(1, 195) n`,
+        [l.lisiere.id, l.marais.id, l.projet],
+      );
+    } finally {
+      await sql("update public.reglages_application set paiement_ouvert = $1", [ouvert]);
+    }
     await sql("update projets set reference_suivante = 201 where id = $1", [l.projet]);
     const scenes = await sql<{ id: string; reference: number }>("select id, reference from scenes where chapitre_id = $1 order by reference", [l.lisiere.id]);
     expect(scenes).toHaveLength(40);
