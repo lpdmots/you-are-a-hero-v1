@@ -59,6 +59,7 @@ export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant:
             ageDesLecteurs: projet.ageDesLecteurs,
           }}
           livre={offre.paiementOuvert && limites && !enseignant.createur ? { offre, limites } : null}
+          avecPass={limites?.pass === true}
         />
       </div>
       <nav className={styles.onglets} aria-label="Sections du projet">

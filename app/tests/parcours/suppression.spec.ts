@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, connecter, creerClasse, inscrire, semerAttribution, semerPartie, semerProjet, sql, supprimerComptes, ouvrirLeMenuDuCompte } from "./outils";
+import { adultePret, aller, connecter, creerClasse, inscrire, semerAttribution, semerClasse, semerImageDeposee, semerPartie, semerProjet, sql, supprimerComptes, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
  * Étape 9, lot 7 : supprimer pour de bon, vu par l'enseignant (F14-AC26 à AC28) : son compte,
- * une classe passée, la corbeille d'un projet.
+ * une classe passée, la corbeille d'un projet ; puis un projet entier (F14-AC42, 23 octobre 2026).
  */
 
 test.afterEach(async () => {
@@ -115,4 +115,52 @@ test("F14-AC28 — la corbeille : « Supprimer pour de bon » une scène, puis �
 test("F14-AC29 — la tournée des comptes inactifs ne répond qu'au cron, porteur de son secret", async ({ request }) => {
   expect((await request.get("/taches/comptes-inactifs")).status()).toBe(401);
   expect((await request.get("/taches/comptes-inactifs", { headers: { authorization: "Bearer pas-le-bon" } })).status()).toBe(401);
+});
+
+test("F14-AC42 — supprimer un projet depuis ses réglages, en retapant son titre : un titre mal tapé n'efface rien ; le bon efface le projet, ses images, son partage et son pass, et la classe reste", async ({ page, browser }) => {
+  const { compte, base } = await adultePret(page);
+  const classe = await semerClasse(base, "CM1", ["Alice"]);
+  const projet = await semerProjet(base, compte, "classe", "choix", "Le marais", classe.id);
+  await semerProjet(base, compte, "personnel", "choix", "La forêt", null);
+  await semerPartie(base, projet, "La traversée", [{ titre: "Le dernier bac", scenes: ["Le départ"] }]);
+  await semerImageDeposee(base, compte, projet);
+  await sql("select public.donner_le_pass($1, 'achat')", [projet]);
+  await sql(
+    `insert into public.partages (projet_id, enseignant_id, code, par_lien, version, etat_du, empreinte, empreinte_lecture)
+     values ($1, $2, 'zyxwvutsrq', true, '{"titre":"Le marais"}'::jsonb, now(), repeat('a', 32), repeat('b', 32))`,
+    [projet, compte.id],
+  );
+  const fichiers = () => sql("select 1 from storage.objects where bucket_id = 'images' and name like $1", [`${compte.id}/${projet}/%`]);
+  expect(await fichiers()).toHaveLength(2);
+
+  await aller(page, `/projet/${projet}/plan`);
+  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("button", { name: "Supprimer le projet" }).click();
+  await expect(DIALOGUE(page).getByRole("heading", { name: "Supprimer ce projet ?" })).toBeVisible();
+  await expect(DIALOGUE(page)).toContainText("« Le marais » est effacé aussitôt, sans retour : ses scènes, ses images et ses PDF.");
+  await expect(DIALOGUE(page)).toContainText("Son pass du livre disparaît avec lui.");
+  await expect(DIALOGUE(page)).toContainText("La classe et ses élèves restent, dans « Mes classes ».");
+  await DIALOGUE(page).getByLabel("Pour confirmer, écrivez le titre du projet").fill("Le marécage");
+  await DIALOGUE(page).getByRole("button", { name: "Supprimer le projet" }).click();
+  await expect(DIALOGUE(page).getByRole("alert")).toContainText("Ce n’est pas le titre du projet : rien n’est supprimé.");
+  expect(await sql("select 1 from public.projets where id = $1", [projet])).toHaveLength(1);
+
+  // La casse et les espaces en trop ne comptent pas
+  await DIALOGUE(page).getByLabel("Pour confirmer, écrivez le titre du projet").fill("  le  marais ");
+  await DIALOGUE(page).getByRole("button", { name: "Supprimer le projet" }).click();
+  await expect(page).toHaveURL(/\/projets$/);
+  await expect(page.locator(".message")).toContainText("Le projet est supprimé.");
+  await expect(page.getByText("Le marais", { exact: true })).toHaveCount(0);
+  await expect(page.getByText("La forêt", { exact: true })).toBeVisible();
+  expect(await sql("select 1 from public.projets where id = $1", [projet])).toHaveLength(0);
+  expect(await sql("select 1 from public.images where projet_id = $1", [projet])).toHaveLength(0);
+  expect(await sql("select 1 from public.passes where projet_id = $1", [projet])).toHaveLength(0);
+  expect(await fichiers()).toHaveLength(0);
+  expect(await sql("select 1 from public.inscriptions where classe_id = $1", [classe.id])).toHaveLength(1);
+
+  const lecteur = await browser.newContext();
+  const lire = await lecteur.newPage();
+  await lire.goto("/lire/zyxwvutsrq");
+  await expect(lire).toHaveTitle("Ce livre n’est plus partagé");
+  await lecteur.close();
 });

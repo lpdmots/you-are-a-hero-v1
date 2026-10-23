@@ -167,3 +167,36 @@ test("F14-AC41 — « Pass du livre » sur la seule carte du projet qui l'a ; ri
   await expect(carte("Le marais")).toBeVisible();
   await expect(page.getByText("Pass du livre")).toHaveCount(0);
 });
+
+test("F14-AC43 — le pass à portée avant la limite : « Pass du livre » près du décompte ouvre l'offre ; la création dit le livre gratuit, vente ouverte seulement", async ({ page }) => {
+  const m = await leMarais(page, 2);
+  await interrupteur(true);
+  await aller(page, `/projet/${m.projet}/plan`);
+  await expect(page.getByText("2 scènes sur 40", { exact: false })).toBeVisible();
+  await page.getByRole("button", { name: "Pass du livre" }).click();
+  await expect(DIALOGUE(page).getByRole("heading", { name: "Ce livre est gratuit jusqu’à 40 scènes et 10 images" })).toBeVisible();
+  await expect(DIALOGUE(page)).toContainText("Le pass les lève pour toujours, quand vous voulez.");
+  await expect(DIALOGUE(page)).not.toContainText("n’a pas été");
+  await expect(DIALOGUE(page).getByRole("button", { name: /^Acheter le pass · / })).toBeVisible();
+  await DIALOGUE(page).getByRole("button", { name: "Plus tard" }).click();
+
+  const troisiemeQuestion = async () => {
+    await aller(page, "/projets/nouveau");
+    await page.getByRole("radio", { name: /^Moi/ }).check({ force: true });
+    await page.getByRole("button", { name: "Continuer" }).click();
+    await page.getByRole("radio", { name: /^À choix/ }).check({ force: true });
+    await page.getByRole("button", { name: "Continuer" }).click();
+    await expect(page.getByLabel("Titre du projet")).toBeVisible();
+  };
+  const LIGNE = /^Gratuit jusqu’à 40 scènes et 10 images ; le pass du livre les lève \(\d+ €\), à tout moment depuis le projet\.$/;
+  await troisiemeQuestion();
+  await expect(page.getByText(LIGNE)).toBeVisible();
+  // Rien à acheter tant que le projet n'existe pas
+  await expect(page.getByRole("button", { name: /Acheter le pass/ })).toHaveCount(0);
+
+  await interrupteur(false);
+  await troisiemeQuestion();
+  await expect(page.getByText(/Gratuit jusqu’à/)).toHaveCount(0);
+  await aller(page, `/projet/${m.projet}/plan`);
+  await expect(page.getByRole("button", { name: "Pass du livre" })).toHaveCount(0);
+});

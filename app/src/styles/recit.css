@@ -2611,3 +2611,9 @@ a.noeud__ailleurs {
   height: 100%;
   object-fit: cover;
 }
+
+/* Réglages du projet : la suppression, en dernier, séparée du reste (F14-AC42) */
+.reg-supprimer {
+  padding-top: 18px;
+  border-top: 1px solid var(--trait);
+}

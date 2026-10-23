@@ -11290,6 +11290,25 @@ découvre l'outil, et le porteur, administrateur.
   lorsque M. Bernard ouvre « Mes projets », alors la carte de « Le marais » porte une petite
   marque grise « Pass du livre », et son autre projet aucune, ni « gratuit » ni « premium » ;
   interrupteur éteint, aucune carte ne la porte ; les projets du porteur ne la portent jamais.
+- **F14-AC42 — Supprimer un projet** (décidé par le porteur le 23 octobre 2026, sur
+  recommandation ; aucun geste ne le permettait) : étant donné « Le marais », projet de la classe
+  CM1, avec son pass et un livre partagé, lorsque M. Bernard choisit « Supprimer le projet » au bas
+  des réglages du projet, alors un dialogue dit ce qui disparaît (scènes, images, PDF, le lien de
+  lecture, le pass) et ce qui reste (la classe et ses élèves), et demande le titre ; un titre mal
+  tapé n'efface rien (la casse et les espaces en trop ne comptent pas) ; le bon efface aussitôt le
+  projet et ses fichiers, pour de bon, sans corbeille, et « Mes projets » dit « Le projet est
+  supprimé. » ; le lien de lecture mène à la page neutre ; la vente du pass reste dans
+  l'administration, le pass ne se reporte sur aucun autre projet (le porteur peut en offrir un).
+- **F14-AC43 — Le pass à portée avant la limite** (demandé par le porteur le 23 octobre 2026 :
+  l'achat avant la limite ne passait que par les réglages du projet) : étant donné « Paiement
+  ouvert » allumé et « Le marais » sans pass à 3 scènes, alors « Parties et chapitres » lit
+  « 3 scènes sur 40 · Pass du livre », et ce lien ouvre l'offre du pass, titrée « Ce livre est
+  gratuit jusqu'à 40 scènes et 10 images », sans rien dire de refusé ; lorsque M. Bernard crée un
+  projet, alors sa troisième question dit « Gratuit jusqu'à 40 scènes et 10 images ; le pass du
+  livre les lève (20 €), à tout moment depuis le projet. », sans rien proposer d'acheter, le projet
+  n'existant pas encore (une étape d'achat à la création, idée du porteur, écartée sur
+  recommandation : pass payé avant de savoir si le projet vivra, contraire à « essayer, puis
+  payer ») ; interrupteur éteint, ni le lien ni la phrase.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

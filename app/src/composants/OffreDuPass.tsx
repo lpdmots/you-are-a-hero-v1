@@ -131,10 +131,11 @@ const TITRES: Record<Limite, (o: Offre) => string> = {
 };
 
 /**
- * Demande, d'où qu'on soit dans un projet, le dialogue d'une limite atteinte. `rappel` : ouvert
- * depuis le décompte, sans qu'aucun geste n'ait été refusé.
+ * Demande, d'où qu'on soit dans un projet, le dialogue du pass. `limite` : celle qui vient d'arrêter
+ * l'adulte, ou null quand il ouvre l'offre avant toute limite, depuis le décompte des scènes (F14-AC43).
+ * `rappel` : ouvert depuis le décompte, sans qu'aucun geste n'ait été refusé.
  */
-export function ouvrirOffreDuPass(projetId: string, limite: Limite, rappel = false): void {
+export function ouvrirOffreDuPass(projetId: string, limite: Limite | null, rappel = false): void {
   window.dispatchEvent(new CustomEvent("offre-du-pass", { detail: { projetId, limite, rappel } }));
 }
 
@@ -161,10 +162,10 @@ function Jauge({ nom, n, max }: { nom: string; n: number; max: number }) {
  * offre : la couverture du livre à côté du pass, les deux jauges au-dessus, distincte du merci.
  */
 export function OffreDuPass() {
-  const [ouvert, setOuvert] = useState<{ offre: OffreDuProjet; limite: Limite; rappel: boolean } | null>(null);
+  const [ouvert, setOuvert] = useState<{ offre: OffreDuProjet; limite: Limite | null; rappel: boolean } | null>(null);
   useEffect(() => {
     const ouvrir = async (e: Event) => {
-      const { projetId, limite, rappel } = (e as CustomEvent<{ projetId: string; limite: Limite; rappel?: boolean }>).detail;
+      const { projetId, limite, rappel } = (e as CustomEvent<{ projetId: string; limite: Limite | null; rappel?: boolean }>).detail;
       const offre = await offreDuProjet(projetId);
       if (offre) setOuvert({ offre, limite, rappel: rappel === true });
     };
@@ -174,12 +175,12 @@ export function OffreDuPass() {
   if (!ouvert) return null;
   const { offre: o, limite, rappel } = ouvert;
   const { offre, limites } = o;
-  const refuse = rappel ? "" : limite === "scenes" ? "La scène n’a pas été ajoutée. " : "L’image n’a pas été posée. ";
+  const refuse = rappel || !limite ? "" : limite === "scenes" ? "La scène n’a pas été ajoutée. " : "L’image n’a pas été posée. ";
   const leve = limite === "images" ? ["Images sans limite", "Scènes sans limite"] : ["Scènes sans limite", "Images sans limite"];
   return (
     <Dialogue
       className={styles.dialogue}
-      titre={TITRES[limite](offre)}
+      titre={limite ? TITRES[limite](offre) : `Ce livre est gratuit jusqu’à ${offre.scenesGratuites} scènes et ${offre.imagesGratuites} images`}
       fermer="Plus tard"
       onFermer={() => setOuvert(null)}
       boutons={
@@ -192,7 +193,7 @@ export function OffreDuPass() {
       }
     >
       <p className={styles.rien}>
-        {refuse}Tout le reste continue : écrire, faire le PDF, partager.{" "}
+        {limite ? `${refuse}Tout le reste continue : écrire, faire le PDF, partager.` : "Le pass les lève pour toujours, quand vous voulez. Le PDF et le partage restent gratuits."}{" "}
         <Bulle question="Qu’est-ce qui compte ?">{NE_COMPTE_PAS}</Bulle>
       </p>
       <div className={styles.jauges}>

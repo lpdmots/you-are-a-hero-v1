@@ -87,7 +87,10 @@ function Choix<T extends Qui | Recit>({
   );
 }
 
-export function NouveauProjet({ classes, visuelDefaut }: { classes: ClasseOfferte[]; visuelDefaut: string }) {
+/** Le livre gratuit, dit à la création quand la vente est ouverte (F14-AC43) : ses limites et le prix du pass */
+type LivreGratuit = { scenes: number; images: number; prix: string };
+
+export function NouveauProjet({ classes, visuelDefaut, gratuit = null }: { classes: ClasseOfferte[]; visuelDefaut: string; gratuit?: LivreGratuit | null }) {
   const routeur = useRouter();
   const [etape, setEtape] = useState(1);
   // L'image de la carte (F10-AC21) : rien de choisi, un visuel proposé, ou une image qui attend le projet
@@ -217,6 +220,13 @@ export function NouveauProjet({ classes, visuelDefaut }: { classes: ClasseOffert
               <span className="repere">{recit === "classique" ? "Récit classique" : "Récit à choix"}</span>
               <span>ne se changent pas ensuite. {qui === "personnel" ? "Le titre, si." : "Le titre et la classe, si."}</span>
             </p>
+            {/* Pour ne pas découvrir la limite au milieu du livre ; pas d'achat ici, le projet n'existe pas encore */}
+            {gratuit ? (
+              <p className={styles.gratuit}>
+                Gratuit jusqu’à {gratuit.scenes} scènes et {gratuit.images} images ; le pass du livre les lève ({gratuit.prix}), à tout
+                moment depuis le projet.
+              </p>
+            ) : null}
             {erreur ? (
               <p className="erreur" role="alert">
                 <Icone nom="alerte" />

@@ -52,6 +52,25 @@ export async function supprimerLeCompte(id: string): Promise<void> {
   if (error) throw new Error(`Suppression du compte : ${error.message}`);
 }
 
+/**
+ * Supprimer pour de bon un projet (F14-AC42) : ses fichiers du stockage, rangés sous
+ * `compte/projet/`, puis le projet, que la base efface avec tout ce qui en dépend (scènes, images,
+ * PDF, partage, pass). Sa vente reste. La classe et ses élèves restent. L'appelant a vérifié que
+ * le projet est celui de l'adulte.
+ */
+export async function supprimerLeProjet(enseignantId: string, projetId: string): Promise<void> {
+  const base = clientService();
+  for (const seau of SEAUX) {
+    const chemins = await fichiersSous(base, seau, `${enseignantId}/${projetId}`);
+    for (let i = 0; i < chemins.length; i += 500) {
+      const { error } = await base.storage.from(seau).remove(chemins.slice(i, i + 500));
+      if (error) throw new Error(`Stockage : ${error.message}`);
+    }
+  }
+  const { error } = await base.from("projets").delete().eq("id", projetId).eq("enseignant_id", enseignantId);
+  if (error) throw new Error(`Suppression du projet : ${error.message}`);
+}
+
 export type Tournee = { prevenus: number; supprimes: number };
 
 /**

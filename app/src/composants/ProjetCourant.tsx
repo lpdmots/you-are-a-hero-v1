@@ -10,6 +10,13 @@ const Contexte = createContext<{ projet: ProjetDeLaBarre; signaler: (p: ProjetDe
 /** Le dernier projet ouvert, tel que la barre du haut le montre pendant la visite. */
 export function ProjetCourant({ depart, children }: { depart: ProjetDeLaBarre; children: ReactNode }) {
   const [projet, signaler] = useState<ProjetDeLaBarre>(depart);
+  // Le serveur change d'avis : le projet supprimé quitte la barre (F14-AC42), sans attendre une visite.
+  // Seul le changement de projet compte, pas l'objet refait à chaque rendu.
+  const [departVu, setDepartVu] = useState(depart?.id ?? null);
+  if ((depart?.id ?? null) !== departVu) {
+    setDepartVu(depart?.id ?? null);
+    signaler(depart);
+  }
   return <Contexte value={{ projet, signaler }}>{children}</Contexte>;
 }
 

@@ -370,7 +370,8 @@ export function Plan({
               <>
                 <span className={stylesPass.limite}>
                   {nbScenes} scènes sur {projet.scenesGratuites}
-                </span>{" "}
+                </span>
+                {" · "}
                 <button type="button" className="lien" onClick={() => ouvrirOffreDuPass(projet.id, "scenes", true)}>
                   Pass du livre
                 </button>
@@ -378,7 +379,15 @@ export function Plan({
             ) : (
               <>
                 {nbScenes} scène{pluriel(nbScenes)}
-                {projet.scenesGratuites ? ` sur ${projet.scenesGratuites}` : null}
+                {projet.scenesGratuites ? (
+                  // Le pass à portée avant la limite aussi : qui sait déjà qu'il écrira plus loin l'achète d'ici (F14-AC43)
+                  <>
+                    {` sur ${projet.scenesGratuites} · `}
+                    <button type="button" className="lien" onClick={() => ouvrirOffreDuPass(projet.id, null, true)}>
+                      Pass du livre
+                    </button>
+                  </>
+                ) : null}
               </>
             )}
           </p>

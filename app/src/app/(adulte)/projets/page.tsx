@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icone } from "@/composants/Icone";
+import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { libelleRecit } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
@@ -16,8 +17,10 @@ const meta = (p: Projet): string =>
   `${p.organisation === "personnel" ? "Projet personnel" : p.classe ? `Classe ${p.classe.nom}` : "Sans classe"} · ${libelleRecit(p.recit)}`;
 
 /** « Mes projets » : peu de projets, donc de grandes cartes (F06.5). */
-export default async function MesProjets() {
+export default async function MesProjets({ searchParams }: { searchParams: Promise<{ projet?: string }> }) {
   const enseignant = await exigerEnseignant();
+  // Au retour d'une suppression (F14-AC42), une phrase, puis l'adresse se nettoie
+  const supprime = (await searchParams).projet === "supprime" ? <MessageAuChargement texte="Le projet est supprimé." /> : null;
   const [projets, avancements, avecPass] = await Promise.all([
     mesProjets(enseignant),
     avancementDesProjets(enseignant),
@@ -27,6 +30,7 @@ export default async function MesProjets() {
   if (!projets.length) {
     return (
       <div className="page">
+        {supprime}
         <header className="page-tete">
           <h1>Mes projets</h1>
         </header>
@@ -60,6 +64,7 @@ export default async function MesProjets() {
 
   return (
     <div className="page">
+      {supprime}
       <header className="page-tete">
         <h1>Mes projets</h1>
         <Link className="btn" href="/projets/nouveau">

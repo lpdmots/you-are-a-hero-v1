@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { estOnglet } from "@/domaine/projets";
 import { estVisuel, tirerVisuel } from "@/domaine/visuels";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { supprimerLeProjet } from "@/serveur/suppression";
 
 export type CreationProjet = {
   organisation: "classe" | "personnel"; recit: "choix" | "classique"; titre: string; classeId: string | null;
@@ -80,4 +81,31 @@ export async function noterProjetOuvert(projetId: string, onglet: string): Promi
   if (enseignant.dernierProjetId !== projetId) {
     await enseignant.supabase.from("enseignants").update({ dernier_projet_id: projetId }).eq("id", enseignant.id);
   }
+}
+
+/** Le titre retapé, comparé sans les espaces en trop, la casse ni la forme de l'apostrophe. */
+const memeTitre = (a: string, b: string): boolean => {
+  const n = (t: string) => t.normalize("NFC").replace(/[’ʼ]/g, "'").trim().replace(/\s+/g, " ").toLocaleLowerCase("fr");
+  return n(a) === n(b);
+};
+
+/**
+ * « Supprimer le projet » (F14-AC42), depuis ses réglages, confirmé par le titre retapé : le projet
+ * et tout ce qu'il contient s'effacent aussitôt, sans corbeille ; son lien de lecture ne mène plus
+ * qu'à la page neutre ; son pass disparaît avec lui, sa vente reste. Un titre mal tapé n'efface rien.
+ */
+export async function supprimerProjet(projetId: string, titre: string): Promise<{ ok: false; erreur: string } | void> {
+  const enseignant = await exigerEnseignant();
+  // Lu avec les droits de l'adulte : le projet d'un autre n'existe pas pour lui
+  const { data: projet } = await enseignant.supabase.from("projets").select("id, titre").eq("id", projetId).maybeSingle();
+  if (!projet) return { ok: false, erreur: "Ce projet n’existe plus." };
+  if (!memeTitre(titre, projet.titre as string)) return { ok: false, erreur: "Ce n’est pas le titre du projet : rien n’est supprimé." };
+  try {
+    await supprimerLeProjet(enseignant.id, projetId);
+  } catch (erreur) {
+    console.error(erreur);
+    return { ok: false, erreur: "Le projet n’a pas pu être supprimé. Réessayez, ou écrivez au créateur." };
+  }
+  revalidatePath("/", "layout");
+  redirect("/projets?projet=supprime");
 }

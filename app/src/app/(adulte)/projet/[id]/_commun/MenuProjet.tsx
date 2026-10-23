@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { Agrandissable } from "@/composants/Agrandissable";
 import { Bulle } from "@/composants/Bulle";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
+import { Dialogue } from "@/composants/Dialogue";
 import { useAidesIa } from "@/composants/AidesIa";
 import { Icone } from "@/composants/Icone";
 import { SuiviDesImages } from "@/composants/ImagesALAjout";
@@ -17,6 +18,7 @@ import type { Onglet } from "@/domaine/projets";
 import { exempleDuStyle, nomDeFichier, nomDuStyle, STYLE_AUTRE_MAX, STYLE_PAR_DEFAUT, STYLES, type Style } from "@/domaine/illustration";
 import { adresseRepereEnGrand } from "@/domaine/visuels";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
+import { supprimerProjet } from "../../../projets/actions";
 
 type ProjetRegle = {
   id: string; titre: string; deClasse: boolean; lectureOuverte: boolean; miseEnFormeEleves: boolean;
@@ -33,8 +35,23 @@ type Reglage = {
  * Réglages du projet : son titre, son image de repérage, la lecture ouverte aux élèves et leur
  * mise en forme, le style des images et le héros absent des images (F06-AC48, F10.1, F04.1, F10.2).
  */
-export function MenuProjet({ projet, onglet, livre = null }: { projet: ProjetRegle; onglet: Onglet; livre?: { offre: Offre; limites: Limites } | null }) {
-  const [ouvert, setOuvert] = useState<"reglages" | "image" | null>(null);
+export function MenuProjet({
+  projet,
+  onglet,
+  livre = null,
+  avecPass = false,
+}: {
+  projet: ProjetRegle;
+  onglet: Onglet;
+  livre?: { offre: Offre; limites: Limites } | null;
+  /** Le projet a son pass : la suppression dit qu'il part avec lui (F14-AC42) */
+  avecPass?: boolean;
+}) {
+  const [ouvert, setOuvert] = useState<"reglages" | "image" | "supprimer" | null>(null);
+  // « Supprimer le projet » : le titre retapé, puis la suppression (F14-AC42)
+  const [titreRetape, setTitreRetape] = useState("");
+  const [erreurSuppression, setErreurSuppression] = useState<string | null>(null);
+  const [suppressionEnCours, lancerSuppression] = useTransition();
   const [titre, setTitre] = useState(projet.titre);
   const [enregistre, setEnregistre] = useState(false);
   const [enCours, setEnCours] = useState(false);
@@ -326,7 +343,60 @@ export function MenuProjet({ projet, onglet, livre = null }: { projet: ProjetReg
               </Bulle>
             </span>
           </section>
+
+          {/* À l'écart, en dernier : supprimer le projet, après confirmation (F14-AC42) */}
+          <section className="reg-supprimer">
+            <button
+              type="button"
+              className="lien lien--danger"
+              onClick={() => {
+                setTitreRetape("");
+                setErreurSuppression(null);
+                setOuvert("supprimer");
+              }}
+            >
+              Supprimer le projet
+            </button>
+          </section>
         </Panneau>
+      ) : null}
+      {ouvert === "supprimer" ? (
+        <Dialogue
+          titre="Supprimer ce projet ?"
+          onFermer={() => setOuvert("reglages")}
+          boutons={
+            <button
+              type="button"
+              className="btn btn--danger"
+              disabled={suppressionEnCours || !titreRetape.trim()}
+              aria-busy={suppressionEnCours || undefined}
+              onClick={() =>
+                lancerSuppression(async () => {
+                  const r = await supprimerProjet(projet.id, titreRetape);
+                  if (r && !r.ok) setErreurSuppression(r.erreur);
+                })
+              }
+            >
+              Supprimer le projet
+            </button>
+          }
+        >
+          <ul className="dialogue__faits">
+            <li>« {projet.titre} » est effacé aussitôt, sans retour : ses scènes, ses images et ses PDF.</li>
+            <li>Son lien de lecture, s’il est partagé, ne mène plus à rien.</li>
+            {avecPass ? <li>Son pass du livre disparaît avec lui.</li> : null}
+            {projet.deClasse ? <li>La classe et ses élèves restent, dans « Mes classes ».</li> : null}
+          </ul>
+          <label className="champ champ--plein">
+            <span>Pour confirmer, écrivez le titre du projet</span>
+            <input type="text" value={titreRetape} autoComplete="off" onChange={(e) => setTitreRetape(e.target.value)} />
+          </label>
+          {erreurSuppression ? (
+            <p className="erreur" role="alert">
+              {erreurSuppression}
+            </p>
+          ) : null}
+        </Dialogue>
       ) : null}
       {ouvert === "image" ? (
         <ChoisirImage projetId={projet.id} actuel={projet} pour="du projet" creer={{ sorte: "projet", id: projet.id }} onChoisir={choisirImage} onFermer={() => setOuvert("reglages")} />
