@@ -29,6 +29,7 @@
     "verifier": "npm run types && npm run lint && npm run test",
     "compte:local": "tsx scripts/compte-local.ts",
     "createur": "tsx scripts/createur.ts",
+    "prix": "tsx scripts/prix.ts",
     "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
     "histoire:v0": "tsx --conditions=react-server scripts/histoire-v0.ts",
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
