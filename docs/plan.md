@@ -3288,7 +3288,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 - **Reste à la charge du porteur, hors de la construction :** créer le compte
   Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
   DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité
-  qui facture, le médiateur de la consommation et la relecture des textes
+  qui facture, le médiateur de la consommation (reporté par lui le
+  23 octobre 2026, le site n'en parlant pas) et la relecture des textes
   (avis extérieur), les prix étant décidés le 23 octobre 2026 (F14) ; chez Stripe, en mode réel, les
   moyens de paiement (la carte, Apple Pay et Google Pay), les coordonnées
   publiques de la micro-entreprise (nom, adresse, téléphone) et le bas de

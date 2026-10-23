@@ -676,8 +676,8 @@ avant de commencer » soient tranchées.
   dans leur projet
   ([F07.5](docs/specifications.md#f075--encouragements-de-lenseignant)).
 - **Restent à décider :** les questions ouvertes de chaque section ; pour
-  F14, le médiateur et la relecture juridique, avant d'allumer « Paiement
-  ouvert » (prix décidés le 23 octobre 2026 : 20 € le pass et ses 400 ✦,
+  F14, le médiateur (reporté par le porteur le 23 octobre 2026) et la
+  relecture juridique, avant d'allumer « Paiement ouvert » (prix décidés le 23 octobre 2026 : 20 € le pass et ses 400 ✦,
   5 € les 100 ✦) (l'entité qui facture est réglée le
   21 octobre 2026 : la micro-entreprise de Yohann Coussot). Le développement
   demande une instruction que le plan ne donne pas.
