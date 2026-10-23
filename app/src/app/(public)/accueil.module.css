@@ -18,10 +18,15 @@
 
 /* ——— Le grand livre ouvert ——— */
 .scene {
+  /* La largeur du livre (voir .livre), connue ici pour le placer dans la hauteur de l'écran */
+  --livre-l: min(1040px, 100% - 200px, max(860px, (100dvh - 135px) * 1.68));
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  padding: 4px 0 34px;
+  /* Sur un grand écran, la partie visible du livre (0,595 fois sa largeur) se pose au centre
+     optique de la hauteur laissée sous la barre (80 points), un peu au-dessus du milieu ; sur un
+     écran bas, elle reste à une quarantaine de points de la barre */
+  padding: max(4px, (100dvh - 80px - var(--livre-l) * 0.595) * 0.42 - var(--livre-l) * 0.0375) 0 34px;
 }
 .livre {
   position: relative;
@@ -29,7 +34,6 @@
   /* Le livre tient en entier sous la barre du haut : sur un écran bas, il réduit (sa partie
      visible fait 0,595 fois sa largeur, et l'écran lui laisse sa hauteur moins 135 px), sans
      descendre sous 860 px, où le texte de la page resterait à l'aise */
-  --livre-l: min(1040px, 100% - 200px, max(860px, (100dvh - 135px) * 1.68));
   width: var(--livre-l);
   container-type: inline-size;
   /* L'image du livre a une bande vide en haut (11,7 % de sa hauteur) : le livre en remonte une
