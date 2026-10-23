@@ -9,6 +9,16 @@ export async function offreActuelle(base: SupabaseClient = clientService()): Pro
   return lireOffre(data);
 }
 
+/**
+ * Les projets de l'adulte qui ont leur pass, pour la marque de « Mes projets » : vide tant que
+ * « Paiement ouvert » est éteint et pour le porteur, dont les projets n'ont pas de limite.
+ */
+export async function projetsAvecPass(base: SupabaseClient, createur: boolean): Promise<Set<string>> {
+  if (createur || !(await offreActuelle()).paiementOuvert) return new Set();
+  const { data } = await base.from("passes").select("projet_id");
+  return new Set((data ?? []).map((p) => p.projet_id as string));
+}
+
 /** Où en est un projet de l'adulte au regard des limites gratuites ; null s'il n'est pas le sien. */
 export async function limitesDuProjet(base: SupabaseClient, projetId: string): Promise<Limites | null> {
   const [{ data, error }, { data: pass }] = await Promise.all([

@@ -11275,6 +11275,11 @@ découvre l'outil, et le porteur, administrateur.
   fermés, leur couverture ou, sans elle, leur page de titre, et mène à leur lecture ; un
   partage retiré quitte l'accueil ; sans livre choisi, le passage 27 et ses renvois
   n'existent pas. Un autre compte ne peut rien déposer.
+- **F14-AC41 — La marque du pass dans « Mes projets »** (demandé par le porteur le
+  23 octobre 2026) : étant donné « Paiement ouvert » allumé et le pass acheté pour « Le marais »,
+  lorsque M. Bernard ouvre « Mes projets », alors la carte de « Le marais » porte une petite
+  marque grise « Pass du livre », et son autre projet aucune, ni « gratuit » ni « premium » ;
+  interrupteur éteint, aucune carte ne la porte ; les projets du porteur ne la portent jamais.
 
 **Questions ouvertes :** les prix du pass et des recharges, et le nombre
 d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;

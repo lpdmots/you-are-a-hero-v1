@@ -3282,6 +3282,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   la carte d'un projet qui a son pass, dans « Mes projets » ; rien sur les
   autres, ni « gratuit » ni « premium » (un seul mot pour la chose, le pass),
   rien tant que l'interrupteur est éteint ni sur les projets du porteur.
+  **Construit le 23 octobre 2026,** sans migration (F14-AC41) : la marque au
+  pied de la carte, à droite du bouton, où elle ne décale ni la jauge ni le
+  bouton d'une carte à l'autre (`projetsAvecPass`, `serveur/offre.ts`).
 - **Reste à la charge du porteur, hors de la construction :** créer le compte
   Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
   DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité

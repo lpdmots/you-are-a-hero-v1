@@ -7,6 +7,7 @@ import { libelleRecit } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { pluriel } from "@/domaine/texte";
 import { avancementDesProjets, mesProjets, type Projet } from "@/serveur/lectures";
+import { projetsAvecPass } from "@/serveur/offre";
 import styles from "./projets.module.css";
 
 export const metadata: Metadata = { title: "Mes projets" };
@@ -17,7 +18,11 @@ const meta = (p: Projet): string =>
 /** « Mes projets » : peu de projets, donc de grandes cartes (F06.5). */
 export default async function MesProjets() {
   const enseignant = await exigerEnseignant();
-  const [projets, avancements] = await Promise.all([mesProjets(enseignant), avancementDesProjets(enseignant)]);
+  const [projets, avancements, avecPass] = await Promise.all([
+    mesProjets(enseignant),
+    avancementDesProjets(enseignant),
+    projetsAvecPass(enseignant.supabase, enseignant.createur),
+  ]);
 
   if (!projets.length) {
     return (
@@ -106,6 +111,8 @@ export default async function MesProjets() {
                   >
                     {dernier ? "Continuer" : "Ouvrir"}
                   </Link>
+                  {/* Une marque discrète, sur le seul projet qui a son pass : rien sur les autres (F14-AC41) */}
+                  {avecPass.has(p.id) ? <span className={styles.pass}>Pass du livre</span> : null}
                 </span>
               </div>
             </li>

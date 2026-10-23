@@ -143,3 +143,27 @@ test("F14-AC17 — le compte du porteur : ni limite, ni pass, ni décompte", asy
   await ouvrirReglages(page, m.projet);
   await expect(page.getByText(/Pass du livre|Acheter le pass/)).toHaveCount(0);
 });
+
+test("F14-AC41 — « Pass du livre » sur la seule carte du projet qui l'a ; rien interrupteur éteint, ni chez le porteur", async ({ page }) => {
+  const m = await leMarais(page, 2);
+  await semerProjet(m.base, m.compte, "personnel", "choix", "La forêt", null);
+  await sql("select public.donner_le_pass($1, 'achat')", [m.projet]);
+  const carte = (titre: string) => page.getByRole("listitem").filter({ has: page.getByText(titre, { exact: true }) });
+
+  await interrupteur(true);
+  await aller(page, "/projets");
+  await expect(carte("Le marais").getByText("Pass du livre", { exact: true })).toBeVisible();
+  await expect(carte("La forêt")).toBeVisible();
+  await expect(carte("La forêt")).not.toContainText(/Pass|gratuit|premium/i);
+
+  await interrupteur(false);
+  await aller(page, "/projets");
+  await expect(carte("Le marais")).toBeVisible();
+  await expect(page.getByText("Pass du livre")).toHaveCount(0);
+
+  await interrupteur(true);
+  await sql("update public.enseignants set createur = true where id = $1", [m.compte.id]);
+  await aller(page, "/projets");
+  await expect(carte("Le marais")).toBeVisible();
+  await expect(page.getByText("Pass du livre")).toHaveCount(0);
+});

@@ -49,6 +49,16 @@
 .texte span {
   color: var(--graphite-2);
 }
+.pass {
+  align-self: center;
+  margin-left: auto;
+  padding: 2px 10px;
+  color: var(--graphite-2);
+  border: 1px solid var(--trait);
+  border-radius: 99px;
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
 .faits {
   display: grid;
   gap: 10px;
@@ -98,6 +108,7 @@
 }
 .pied {
   display: flex;
+  gap: 12px;
   margin-top: auto;
   padding: 18px 22px 22px;
 }
