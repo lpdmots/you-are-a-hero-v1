@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import sharp from "sharp";
 import { adultePret, aller, courrielRecu, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
@@ -7,11 +8,12 @@ import { adultePret, aller, courrielRecu, semerProjet, sql, supprimerComptes, ty
  */
 
 let avant: boolean;
+let accueil: unknown;
 test.beforeAll(async () => {
-  avant = (await sql<{ p: boolean }>("select paiement_ouvert as p from public.reglages_application"))[0].p;
+  [{ p: avant, l: accueil }] = await sql<{ p: boolean; l: unknown }>("select paiement_ouvert as p, livres_de_l_accueil as l from public.reglages_application");
 });
 test.afterEach(async () => {
-  await sql("update public.reglages_application set paiement_ouvert = $1", [avant]);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livres_de_l_accueil = $2", [avant, JSON.stringify(accueil)]);
   await sql("delete from public.paiements where session like 'cs_admin_%'");
   await supprimerComptes();
 });
@@ -33,7 +35,7 @@ async function deuxComptes(page: Page, browser: import("@playwright/test").Brows
   await autre.close();
   const porteur = await adultePret(page);
   await marquer(porteur.compte);
-  return { bernard: bernard.compte, marais, code, porteur: porteur.compte };
+  return { bernard: bernard.compte, marais, code, porteur: porteur.compte, base: porteur.base };
 }
 
 test("F14-AC22 — l'administration est refusée à un autre compte, comme une page qui n'existe pas", async ({ page }) => {
@@ -111,4 +113,70 @@ test("F14-AC25 — retirer le partage d'un livre signalé : le lien mène à la 
   expect(recu.sujet).toBe("Votre livre « Le marais » n’est plus partagé — Il était une classe");
   expect(await sql("select titre from public.projets where id = $1", [s.marais])).toEqual([{ titre: "Le marais" }]);
   expect(await sql("select titre from public.partages_retires where projet_id = $1", [s.marais])).toEqual([{ titre: "Le marais" }]);
+});
+
+/** Partager un projet par lien, sans passer par l'écran : une version réduite au titre */
+async function partagerVite(projet: string, compte: Compte): Promise<string> {
+  const code = "mnpqrstuvw".split("").sort(() => Math.random() - 0.5).join("");
+  await sql(
+    `insert into public.partages (projet_id, enseignant_id, code, par_lien, version, etat_du, empreinte, empreinte_lecture)
+     values ($1, $2, $3, true, '{"titre":"Le phare"}'::jsonb, now(), repeat('a', 32), repeat('b', 32))`,
+    [projet, compte.id, code],
+  );
+  return code;
+}
+
+test("F14-AC40 — les livres de l'accueil se choisissent dans l'administration, parmi ceux du porteur, avec leur face avant", async ({ page, browser }) => {
+  const { code: deBernard, porteur, base } = await deuxComptes(page, browser);
+  await sql("update public.reglages_application set livres_de_l_accueil = '[]'");
+  const phare = await partagerVite(await semerProjet(base, porteur, "personnel", "choix", "Le phare", null), porteur);
+
+  // Seuls les livres du porteur, partagés par lien, se proposent
+  await aller(page, "/admin");
+  const section = page.getByRole("region", { name: "Livres de l’accueil" });
+  const ligne = section.getByRole("listitem").filter({ hasText: "Le phare" });
+  await expect(ligne).toBeVisible();
+  await expect(section.getByText("Le marais")).toHaveCount(0);
+  await ligne.getByRole("button", { name: "Mettre sur l’accueil" }).click();
+  await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("Le livre est sur l’accueil.");
+
+  // Une couverture entière : la quatrième en rouge, la face avant en bleu ; seule la bleue est gardée
+  const entiere = await sharp({ create: { width: 2000, height: 1414, channels: 3, background: "#c00000" } })
+    .composite([{ input: await sharp({ create: { width: 1000, height: 1414, channels: 3, background: "#0000c0" } }).png().toBuffer(), left: 1000, top: 0 }])
+    .png()
+    .toBuffer();
+  await ligne.locator('input[type="file"]').setInputFiles({ name: "couverture.png", mimeType: "image/png", buffer: entiere });
+  await ligne.getByRole("button", { name: "Déposer" }).click();
+  await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("La couverture est sur l’accueil.");
+
+  // Un visiteur la voit sur l'accueil, et le livre mène à sa lecture
+  const visiteur = await (await browser.newContext()).newPage();
+  await visiteur.goto("http://localhost:3100/");
+  const livre = visiteur.getByRole("link", { name: "Feuilleter « Le phare »" });
+  await expect(livre).toHaveAttribute("href", `/lire/${phare}`);
+  const adresse = await livre.locator("img").getAttribute("src");
+  const reponse = await visiteur.request.get(`http://localhost:3100${adresse}`);
+  const lue = sharp(await reponse.body());
+  const { width = 0, height = 0 } = await lue.metadata();
+  expect(width).toBeLessThan(height);
+  const { dominant } = await lue.stats();
+  expect(dominant.b).toBeGreaterThan(150);
+  expect(dominant.r).toBeLessThan(60);
+
+  // Un fichier qui n'est pas une image est refusé
+  await ligne.locator('input[type="file"]').setInputFiles({ name: "notes.txt", mimeType: "text/plain", buffer: Buffer.from("rien") });
+  await ligne.getByRole("button", { name: "Déposer" }).click();
+  await expect(page.getByRole("alert").filter({ hasText: /./ })).toHaveText("Cette image ne convient pas : JPEG, PNG ou WebP, 4 Mo au plus.");
+
+  // Un autre compte ne peut rien déposer ; la couverture d'un livre absent de l'accueil n'existe pas
+  expect((await visiteur.request.post("http://localhost:3100/admin/couverture", { multipart: { code: phare } })).status()).toBe(404);
+  expect((await visiteur.request.get(`http://localhost:3100/images/accueil/${deBernard}`)).status()).toBe(404);
+
+  // Retiré de l'accueil, le livre n'y paraît plus
+  await aller(page, "/admin");
+  await section.getByRole("listitem").filter({ hasText: "Le phare" }).getByRole("button", { name: "Retirer de l’accueil" }).click();
+  await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("Le livre a quitté l’accueil.");
+  await visiteur.goto("http://localhost:3100/");
+  await expect(visiteur.getByRole("link", { name: /Feuilleter/ })).toHaveCount(0);
+  await visiteur.context().close();
 });

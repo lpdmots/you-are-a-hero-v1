@@ -295,7 +295,7 @@ test("un code qui n'existe pas mène à la page neutre", async ({ browser }) => 
   await contexte.close();
 });
 
-test("F14-AC34 — « Écrit avec Il était une classe » au pied de la page de titre et après la fin, menant à l'accueil ; ni pendant la lecture, ni sur la page neutre", async ({ page, browser }) => {
+test("F14-AC34 — « Écrit avec Il était une classe » au pied de la page de titre et après la fin, menant à l'accueil ; ni pendant la lecture, ni sur la page neutre ; le dragon du site, dans la barre, y mène toujours", async ({ page, browser }) => {
   const l = await phare(page);
   const lien = await partager(page, l.projet);
   const { contexte, lecteur } = await telephone(browser);
@@ -306,6 +306,8 @@ test("F14-AC34 — « Écrit avec Il était une classe » au pied de la page de 
   await lecteur.getByRole("button", { name: "Commencer la lecture" }).click();
   await expect(lecteur.getByText("La plage au matin.")).toBeVisible();
   await expect(mention).toHaveCount(0);
+  // Pendant la lecture, le dragon-livre de la barre ramène à l'accueil
+  await expect(lecteur.getByRole("link", { name: "Il était une classe, accueil du site" })).toHaveAttribute("href", "/");
   await lecteur.getByRole("button", { name: /Rentrer à la maison/ }).click();
   await expect(lecteur.getByText("Tu rentres chez toi.")).toBeVisible();
   await expect(mention).toBeVisible();
@@ -317,4 +319,8 @@ test("F14-AC34 — « Écrit avec Il était une classe » au pied de la page de 
   await expect(lecteur).toHaveTitle("Ce livre n’est plus partagé");
   await expect(lecteur.getByRole("link", { name: "Écrit avec Il était une classe" })).toHaveCount(0);
   await contexte.close();
+  // Ni l'élève en classe, ni l'adulte qui prévisualise : ils ont leur bandeau de retour
+  await aller(page, `/previsualiser/${l.projet}`);
+  await expect(page.getByRole("banner").getByText("Le phare")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Il était une classe, accueil du site" })).toHaveCount(0);
 });

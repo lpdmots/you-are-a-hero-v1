@@ -11233,7 +11233,12 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC34 — Écrit avec Il était une classe :** étant donné un livre lu
   par un lien de lecture, alors la mention paraît au pied de la page de titre
   et après la fin, et mène à la page d'accueil ; elle ne paraît ni pendant la
-  lecture, ni sur la page neutre, ni dans le PDF.
+  lecture, ni sur la page neutre, ni dans le PDF. Le dragon-livre du site,
+  seul, sans le nom, ouvre la barre du lecteur par lien, avant le titre du
+  livre, et mène à l'accueil à tout moment, pendant la lecture comprise
+  (demandé par le porteur le 23 octobre 2026 : la mention seule, au pied,
+  était souvent hors de la fenêtre) ; l'élève qui lit en classe et l'adulte
+  qui prévisualise ne l'ont pas, leur bandeau ayant son retour.
 - **F14-AC35 — Mention React Flow :** étant donné « Chemins » ouvert sur un
   grand écran, alors le nom de la bibliothèque se lit dans un coin du schéma.
 - **F14-AC36 — Écrire au créateur :** étant donné « Mon compte » ou la page
@@ -11260,13 +11265,27 @@ découvre l'outil, et le porteur, administrateur.
   et le nom lui-même mènent à l'accueil ; l'entrée des élèves aussi (révisé
   par le porteur le même jour, qui n'y voulait d'abord que le nom). Une page de l'espace adulte ouverte sans être connecté mène
   toujours à l'entrée enseignant (F01-AC28).
+- **F14-AC40 — Les livres de l'accueil** (décidé par le porteur le 23 octobre 2026, à la
+  place d'une variable d'environnement) : étant donné le porteur dans l'administration, alors
+  « Livres de l'accueil » liste ses livres partagés par lien, et eux seuls ; il en met deux au
+  plus sur l'accueil, en échange l'ordre, les en retire ; pour chacun, il dépose une
+  couverture, la face avant du livre imprimé, ou la couverture entière, dont seule la face
+  avant est gardée (la quatrième, qui porte souvent les prénoms des élèves, n'est jamais
+  enregistrée). Lorsqu'un visiteur ouvre l'accueil, alors le passage 27 montre ces livres
+  fermés, leur couverture ou, sans elle, leur page de titre, et mène à leur lecture ; un
+  partage retiré quitte l'accueil ; sans livre choisi, le passage 27 et ses renvois
+  n'existent pas. Un autre compte ne peut rien déposer.
 
 **Questions ouvertes :** les prix du pass et des recharges, et le nombre
 d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;
 le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026) ; la relecture juridique des
 textes ; le paiement des mairies sur bon de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
-et l'adresse sont retenus ; le dépôt de la marque.
+et l'adresse sont retenus ; le dépôt de la marque ; un pass pour tous les
+projets d'un enseignant, idée du porteur du 23 octobre 2026, à trancher sur
+les premières ventes (l'administration dira si des enseignants achètent
+plusieurs passes) : recommandé, s'il se fait, à l'année scolaire plutôt qu'à
+vie, et sans étoiles sans fin, qui paient l'IA au coût réel.
 
 **Hors de cette livraison :** abonnement ; paiement sur bon de commande ou
 par mandat administratif ; version anglaise, dont seule l'adresse est

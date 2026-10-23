@@ -48,7 +48,31 @@
   background: var(--feuille);
   border-bottom: 1px solid var(--trait);
 }
+/* Le dragon-livre du site, avant le titre du livre, séparé de lui par un filet */
+.lecteur__site {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  margin: -4px 0 -4px -6px;
+  padding: 4px 14px 4px 6px;
+  border-right: 1px solid var(--trait);
+  border-radius: var(--r-m) 0 0 var(--r-m);
+  color: var(--canard);
+}
+.lecteur__site:hover {
+  background: var(--canard-pale);
+}
+.lecteur__site:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.lecteur__dragon {
+  width: 32px;
+  height: 32px;
+}
 .lecteur__nom {
+  /* Collé au dragon quand il est là, les outils restant à droite */
+  margin-right: auto;
   min-width: 0;
   overflow: hidden;
   padding: 4px 0;
@@ -60,6 +84,8 @@
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+button.lecteur__nom {
   cursor: pointer;
 }
 .lecteur__outils {

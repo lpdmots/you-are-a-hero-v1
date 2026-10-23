@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Dragon } from "@/composants/Dragon";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import {
@@ -268,9 +269,21 @@ export function LecteurEnLigne({
         <div className="lecteur__haut">
         {bandeau}
         <header className="lecteur__barre">
-          <button type="button" className="lecteur__nom recit" onClick={() => setEcran({ sorte: "accueil" })}>
-            {version.titre}
-          </button>
+          {/* Le lien de lecture : le dragon-livre seul, qui ramène à l'accueil du site, avant le titre
+              du livre, qui reste le nom de la barre (demandé par le porteur le 23 octobre 2026) */}
+          {mention ? (
+            <Link href="/" className="lecteur__site" aria-label="Il était une classe, accueil du site" title="Il était une classe">
+              <Dragon className="lecteur__dragon" />
+            </Link>
+          ) : null}
+          {/* Le titre ramène à la page de titre (continuer, recommencer) ; sur elle, il n'est qu'un nom */}
+          {ecran.sorte === "accueil" ? (
+            <span className="lecteur__nom recit">{version.titre}</span>
+          ) : (
+            <button type="button" className="lecteur__nom recit" title="Revenir à la page de titre" onClick={() => setEcran({ sorte: "accueil" })}>
+              {version.titre}
+            </button>
+          )}
           <nav className="lecteur__outils" aria-label="Outils de lecture">
             {commentLire ? (
               <button type="button" className="lecteur__outil" aria-pressed={ecran.sorte === "comment"} onClick={() => setEcran(ecran.sorte === "comment" ? { sorte: g ? "lecture" : "accueil" } : { sorte: "comment" })}>

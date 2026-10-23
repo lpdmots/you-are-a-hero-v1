@@ -106,7 +106,8 @@ npm run histoire:v0 -- robots                 # « Électro Nick » (« Alerte :
 les avait pas gardés dans la V0 : la V1 mélange chaque partie, les huit numéros fixés
 (énigmes, sauvegardes) tenus. Les corrections faites à la relecture d'une histoire
 (énigmes à numéro en liaisons cachées, renvoi resté « [§] », scène sans suite) sont
-nommées dans `HISTOIRES`, en tête du script.
+nommées dans `HISTOIRES`, en tête du script, comme l'étincelle du générateur d'images
+effacée du coin de la couverture d'« Électro Nick » (`scripts/v0/marque.ts`).
 
 ## Vérifier
 
@@ -414,11 +415,12 @@ relecture par un juriste reste recommandée.
    franchise de TVA), avec le téléphone du porteur ; mentions légales, conditions,
    « Confidentialité » et contrat type le citent (F14-AC37). Reste le médiateur de la
    consommation, à nommer dans les conditions avant d'allumer « Paiement ouvert ».
-2. **Les livres à feuilleter de l'accueil** : la variable `LIVRES_DE_L_ACCUEIL` (Vercel,
-   Production) reçoit les codes de deux livres partagés par lien, les dix lettres après
-   `/lire/`, séparés par une virgule (l'ancienne `LIVRE_DE_L_ACCUEIL`, d'un seul code, sert
-   encore). Titre et image viennent du partage ; sans code, l'accueil n'a pas de passage 27
-   et aucun choix n'y renvoie (22 octobre 2026).
+2. **Les livres à feuilleter de l'accueil** se choisissent dans l'administration, « Livres de
+   l'accueil » (F14-AC40, 23 octobre 2026) : deux au plus, parmi ses livres partagés par lien,
+   chacun avec sa couverture déposée (la face avant, ou la couverture entière, dont seule la
+   face avant est gardée). Titre et page de titre viennent du partage ; sans livre choisi,
+   l'accueil n'a pas de passage 27 et aucun choix n'y renvoie. La variable
+   `LIVRES_DE_L_ACCUEIL`, qui les nommait avant, ne sert plus.
 3. **Google** (lot 1, point 7) : les pages d'accueil, « Confidentialité » et
    « Conditions » existent désormais à `iletaituneclasse.com` ; la vérification de la
    marque peut partir.
@@ -456,7 +458,7 @@ d'essai de Stripe dans `.env.local`, lot 5) :
    (`etoiles`, `limites_et_pass`, `paiements`, `administration`, `supprimer_pour_de_bon`).
 3. **Aussitôt :** `npm run createur -- --production adresse.du.porteur --oui`.
 4. Chez Vercel (Production) : `ADRESSE_SITE`, les variables SMTP du lot 6, `CRON_SECRET`
-   (lot 7), `LIVRES_DE_L_ACCUEIL` si des livres sont choisis (lot 9, revu le 22 octobre 2026). `STRIPE_CLE_SECRETE`
+   (lot 7). `STRIPE_CLE_SECRETE`
    et `STRIPE_SECRET_AVIS` y sont déjà, **en mode réel**, posées par le porteur le
    21 octobre 2026 : une clé restreinte `rk_live_…` (« accès complet, à l'exception des
    opérations sensibles ») et le secret du webhook réel, déjà créé à

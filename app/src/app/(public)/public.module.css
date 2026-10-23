@@ -45,6 +45,9 @@
   }
 }
 .tete {
+  /* Au-dessus de la bande vide de l'image du livre de l'accueil, qui remonte sous elle */
+  position: relative;
+  z-index: 3;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -73,32 +76,94 @@
   color: var(--canard);
   text-decoration: underline;
 }
+/* Le pied : une bande blanche sous la table, son filet du haut pour sol ; la marque à gauche, les
+   pages en trois colonnes, puis une barre basse discrète */
 .pied {
   border-top: 1px solid var(--trait);
   background: var(--feuille);
 }
-.pied nav,
-.pied p {
+.piedHaut,
+.piedBas {
   width: min(1180px, 100%);
   margin: 0 auto;
   padding: 0 24px;
 }
-.pied nav {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  padding-top: 22px;
-  font-size: var(--t-s);
-  font-weight: 600;
+.piedHaut {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 2fr);
+  gap: 32px 48px;
+  padding-top: 40px;
+  padding-bottom: 32px;
 }
-.pied nav a {
+.piedMarque p {
+  margin-top: 10px;
+  max-width: 28ch;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 1.02rem;
   color: var(--graphite-2);
 }
-.pied p {
-  padding-top: 8px;
-  padding-bottom: 26px;
+.piedPages {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px 32px;
+}
+.piedTitre {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.piedPages ul {
+  display: grid;
+  gap: 9px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-s);
+}
+.piedPages a {
+  color: var(--graphite-2);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.piedPages a:hover {
+  color: var(--canard);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.piedBas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 24px;
+  padding-top: 16px;
+  padding-bottom: 22px;
+  /* Le filet s'arrête aux colonnes, pas aux marges */
+  background: linear-gradient(var(--trait), var(--trait)) no-repeat top center / calc(100% - 48px) 1px;
   font-size: var(--t-xs);
   color: var(--graphite-3);
+}
+/* Sur un téléphone : la marque, puis les pages sur deux colonnes */
+@media (max-width: 760px) {
+  .piedHaut {
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 32px;
+  }
+  .piedPages {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .piedHaut,
+  .piedBas {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .piedBas {
+    background-size: calc(100% - 32px) 1px;
+  }
 }
 
 @media (max-width: 560px) {

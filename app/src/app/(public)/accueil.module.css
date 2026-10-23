@@ -12,7 +12,8 @@
   --page-l: 520px;
   --page-h: 680px;
   width: min(1290px, 100%);
-  padding: 0 32px 40px;
+  /* Rien sous le dernier passage : ses personnages se posent sur la ligne du pied de page */
+  padding: 0 32px;
 }
 
 /* ——— Le grand livre ouvert ——— */
@@ -26,6 +27,9 @@
   position: relative;
   flex: none;
   width: min(1040px, calc(100% - 200px));
+  /* L'image du livre a une bande vide en haut (11,7 % de sa hauteur) : le livre remonte d'autant,
+     en partie, pour que le livre entier tienne dans l'écran */
+  margin-top: calc(min(1040px, 100% - 200px) * -0.04);
   aspect-ratio: 2000 / 1500;
   background: url(/accueil/livre-ouvert.webp) no-repeat center / 100% 100%;
   filter: drop-shadow(0 26px 30px rgba(60, 45, 20, 0.22));
@@ -195,6 +199,7 @@
 }
 .recit {
   font-family: var(--f-recit);
+  font-variant-numeric: lining-nums;
   font-size: 1.14rem;
   line-height: 1.55;
   margin-top: 14px;
@@ -310,9 +315,21 @@
 .rangee:nth-of-type(odd) .feuillet {
   transform: rotate(0.5deg);
 }
+/* Le passage où mène un choix se signale un instant, puis le cadre s'efface : il ne reste pas
+   autour de la feuille (ni autour du coin grignoté du dernier feuillet) */
 .feuillet:target {
-  outline: 2px solid var(--canard);
+  outline: 2px solid transparent;
   outline-offset: 6px;
+  animation: reperer 1.8s var(--ease) both;
+}
+@keyframes reperer {
+  0%,
+  45% {
+    outline-color: var(--canard);
+  }
+  100% {
+    outline-color: transparent;
+  }
 }
 .feuillet h2 {
   margin-top: 22px;
@@ -414,6 +431,111 @@
 }
 .capture:nth-child(even) .tirage {
   transform: rotate(-1.2deg);
+}
+/* La capture est un bouton qui l'ouvre en grand ; une loupe au survol le dit */
+.agrandir {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: zoom-in;
+}
+.agrandir:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 6px;
+}
+.agrandir .tirage::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 253, 248, 0.94)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b6a73' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6'/%3E%3Cpath d='M15 15l5 5M10.5 8v5M8 10.5h5'/%3E%3C/svg%3E")
+    no-repeat center / 22px;
+  box-shadow: 0 4px 12px rgba(30, 25, 10, 0.25);
+  opacity: 0;
+  transition: opacity 0.2s var(--ease);
+}
+.agrandir:hover .tirage::after,
+.agrandir:focus-visible .tirage::after {
+  opacity: 1;
+}
+/* La capture d'un livre de l'accueil mène à sa lecture : au survol, « Lire le livre » */
+.lireLeLivre {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+.lireLeLivre:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 6px;
+}
+.badgeLire {
+  position: absolute;
+  z-index: 1;
+  right: 16px;
+  bottom: 16px;
+  padding: 8px 14px;
+  border-radius: 99px;
+  background: var(--canard);
+  color: var(--feuille);
+  font: 700 var(--t-s) var(--f-ui);
+  box-shadow: 0 6px 16px rgba(30, 25, 10, 0.28);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.lireLeLivre:hover .badgeLire,
+.lireLeLivre:focus-visible .badgeLire {
+  opacity: 1;
+  transform: none;
+}
+@media (hover: none) {
+  .badgeLire {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* La capture en grand : seule, sur un fond sombre, sa note dessous */
+.enGrand {
+  width: min(1400px, calc(100vw - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  padding: 58px 16px 12px;
+  border: 0;
+  border-radius: var(--r-m);
+  background: #1c1e20;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+}
+.enGrand::backdrop {
+  background: rgba(30, 25, 15, 0.7);
+}
+.enGrand figure {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+}
+.enGrand img {
+  display: block;
+  width: 100%;
+  max-height: calc(100dvh - 160px);
+  object-fit: contain;
+  border-radius: 4px;
+}
+.enGrand figcaption {
+  font-family: var(--f-main);
+  font-size: 1.05rem;
+  text-align: center;
+  color: #e8e2d4;
+}
+.enGrand form {
+  position: absolute;
+  top: 12px;
+  right: 16px;
 }
 .capture .note {
   justify-self: center;
@@ -525,101 +647,585 @@
   color: var(--canard);
 }
 
-/* Les deux livres de la classe */
+/* Les deux livres de la classe, fermés, posés sur le feuillet : la couverture est la page de titre
+   (A5, comme le livre imprimé), un dos ombré à gauche, l'épaisseur des pages à droite et en bas */
 .livres {
   list-style: none;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 22px;
-  margin: 18px 0 22px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 24px;
+  margin: 10px 6px 6px 0;
   padding: 0;
 }
-.couverture {
+.livreFerme {
   display: grid;
-  gap: 8px;
+  justify-items: center;
+  gap: 4px;
   color: var(--graphite);
   text-decoration: none;
 }
-.objet {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  aspect-ratio: 3 / 3.6;
-  overflow: hidden;
-  border-radius: 3px 7px 7px 3px;
-  background: var(--feuille);
-  box-shadow: inset 6px 0 0 rgba(0, 0, 0, 0.06), 0 1px 2px rgba(60, 45, 20, 0.12), 0 10px 20px -8px rgba(60, 45, 20, 0.3);
-  transition: transform 0.25s var(--ease);
-}
-.couverture:hover .objet {
-  transform: translateY(-3px) rotate(-0.6deg);
-}
-.objet img,
-.sansImage {
+.volume {
+  position: relative;
   display: block;
+  /* Petits, comme deux livres posés sur la page : la feuille garde la hauteur des autres */
+  width: min(100%, 146px);
+  aspect-ratio: 148 / 210;
+  border-radius: 2px 4px 4px 2px;
+  background:
+    /* le dos : un pli d'ombre près de la reliure */
+    linear-gradient(90deg, rgba(60, 45, 20, 0.16), rgba(60, 45, 20, 0.04) 5%, transparent 9%, rgba(255, 255, 255, 0.5) 10%, transparent 13%),
+    #fffdf8;
+  /* l'épaisseur du livre : des feuilles qui dépassent à peine, puis l'ombre douce sur le papier */
+  box-shadow:
+    1px 1px 0 #ece5d6,
+    2px 2px 0 #fbf8f1,
+    3px 3px 0 #e3dac7,
+    4px 4px 0 #f7f3ea,
+    5px 5px 0 #d8cdb7,
+    0 2px 3px rgba(60, 45, 20, 0.14),
+    6px 16px 22px -8px rgba(60, 45, 20, 0.32);
+  transition: transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.livres li:nth-child(odd) .volume {
+  transform: rotate(-1.4deg);
+}
+.livres li:nth-child(even) .volume {
+  transform: rotate(1.2deg);
+}
+.livreFerme:hover .volume {
+  transform: translateY(-4px) rotate(0deg);
+}
+.livreFerme:focus-visible {
+  outline: none;
+}
+.livreFerme:focus-visible .volume {
+  outline: 2px solid var(--canard);
+  outline-offset: 5px;
+}
+.pleinePage {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: var(--canard-pale);
+  border-radius: inherit;
 }
-.titreLivre {
-  padding: 8px 10px 10px;
-  font-family: var(--f-recit);
-  font-weight: 700;
-  font-size: 0.98rem;
-  line-height: 1.2;
+/* La page de titre en petit, comme le lecteur l'ouvre : titre, sous-titre, illustration entière */
+.pageDeTitre {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 10% 9% 12% 13%;
   text-align: center;
 }
-.titreLivre small {
+.titreLivre {
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+.sousTitreLivre {
+  margin-top: 4px;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 0.7rem;
+  line-height: 1.25;
+  color: var(--graphite-2);
+  text-wrap: balance;
+}
+.illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 12%;
+  object-fit: cover;
+}
+.contenu {
+  margin-top: 7px;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 0.92rem;
+  color: var(--graphite-2);
+  font-variant-numeric: lining-nums;
+}
+.feuilleter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  color: var(--canard);
+  font-size: var(--t-s);
+}
+.feuilleter svg {
+  width: 15px;
+  height: 15px;
+  transition: transform 0.2s var(--ease);
+}
+.livreFerme:hover .feuilleter svg {
+  transform: translateX(3px);
+}
+.livreAVenir {
+  width: min(100%, 146px);
+  aspect-ratio: 148 / 210;
+  height: auto;
+  margin: 0 auto;
+  padding: 10px;
+  font-size: var(--t-xs);
+  overflow-wrap: anywhere;
+}
+@media (prefers-reduced-motion: reduce) {
+  .volume,
+  .feuilleter svg {
+    transition: none;
+  }
+}
+
+/* Ce que cela coûte : la réponse en grand, puis l'IA sous un intertitre */
+.reponse {
+  margin-top: 18px;
+  font-family: var(--f-recit);
+  font-size: 2.6rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--graphite);
+}
+.reponse + .recit {
+  margin-top: 10px;
+}
+.intertitre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 26px;
+  font-family: var(--f-recit);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+.intertitre + .recit {
+  margin-top: 6px;
+}
+
+/* Le passage 40 : le feuillet, la mascotte, la fiche aventure, sur trois colonnes */
+.quarante {
+  grid-template-columns: var(--page-l) 190px minmax(0, 1fr);
+  gap: 28px;
+}
+.quarante .cote {
+  justify-items: start;
+}
+
+/* Vente ouverte : deux choix, un livre jusqu'aux limites gratuites ou un grand livre ; celui qui
+   est choisi est cerné de canard, la couleur de ce qui est coché */
+.tailles {
+  display: grid;
+  gap: 10px;
+  margin-top: 20px;
+}
+.taille {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid var(--trait-fort);
+  border-radius: var(--r-m);
+  background: rgba(255, 255, 255, 0.5);
+  color: var(--graphite);
+  font: 700 1.08rem/1.25 var(--f-recit);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.2s var(--ease), background 0.2s var(--ease);
+}
+.taille small {
   display: block;
   margin-top: 2px;
   font-weight: 400;
   font-style: italic;
-  font-size: 0.8rem;
+  font-size: 0.88rem;
   color: var(--graphite-2);
 }
-.feuilleter {
-  font-weight: 700;
-  color: var(--canard);
-  text-align: center;
-  font-size: var(--t-s);
+.taille:hover {
+  background: rgba(255, 255, 255, 0.85);
+}
+.taille[aria-pressed="true"] {
+  border-color: var(--canard);
+  background: var(--canard-pale);
+}
+.taille:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.tarif {
+  flex: none;
+  font-size: 1.35rem;
+  font-variant-numeric: lining-nums;
+  text-align: right;
+}
+.tarif small {
+  font-size: 0.8rem;
 }
 
-/* Ce que cela coûte */
-.offre {
-  list-style: none;
-  margin: 16px 0 22px;
-  padding: 0;
-  border-top: 1px dashed var(--trait-fort);
+/* La mascotte, entre le feuillet et la fiche : la souris pour un livre jusqu'aux limites, le dragon
+   pour un grand livre. Au clic, la souris s'écarte, une bouffée part, le dragon se pose (son
+   arrivée brève) ; et l'inverse. Rien ne bouge avant le premier clic. */
+.mascotte {
+  position: relative;
+  /* Devant la fiche : l'aile du dragon passe sur son bord */
+  z-index: 2;
+  align-self: end;
+  height: 300px;
+  margin-bottom: 40px;
 }
-.offre li {
+/* Vente ouverte, l'animal est un bouton : il passe à l'autre livre */
+.animal {
+  scroll-margin-top: 12px;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+.animal:disabled {
+  cursor: default;
+}
+.animal:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 6px;
+  border-radius: var(--r-m);
+}
+.animal:not(:disabled):hover .souris40,
+.animal:not(:disabled):hover .dragon40 {
+  translate: 0 -3px;
+}
+.souris40,
+.dragon40 {
+  position: absolute;
+  inset: auto 0 0;
+  background: no-repeat center bottom / contain;
+}
+.souris40 {
+  height: 172px;
+  background-image: url(/accueil/souris-petit-livre.webp?v=2);
+  transition: opacity 0.22s var(--ease), transform 0.26s var(--ease);
+}
+.dragon40 {
+  height: 300px;
+  inset: auto -40px 0;
+  background-image: url(/accueil/dragon-grand-livre.webp?v=3);
+  opacity: 0;
+  transform: translateY(-18px) scale(0.94);
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.quarante[data-livre="grand"] .souris40 {
+  opacity: 0;
+  transform: translateX(-26px);
+}
+.quarante[data-livre="grand"] .dragon40 {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.24s var(--ease) 0.16s, transform 0.36s cubic-bezier(0.2, 1.3, 0.4, 1) 0.16s;
+}
+.quarante[data-livre="petit"] .souris40 {
+  transition-delay: 0.14s;
+}
+/* La bouffée : un petit nuage, comme ceux que souffle le dragon, qui s'ouvre et s'efface */
+.bouffee {
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  width: 150px;
+  height: 110px;
+  margin-left: -75px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 60%, #fffdf8 0 22%, transparent 23%),
+    radial-gradient(circle at 55% 40%, #fffdf8 0 26%, transparent 27%),
+    radial-gradient(circle at 72% 64%, #fffdf8 0 20%, transparent 21%),
+    radial-gradient(circle at 48% 70%, #f6efe2 0 24%, transparent 25%);
+  opacity: 0;
+  pointer-events: none;
+}
+.quarante[data-touche][data-livre="grand"] .bouffee {
+  animation: bouffee 0.6s var(--ease) both;
+}
+.quarante[data-touche][data-livre="petit"] .bouffee {
+  animation: bouffee-retour 0.6s var(--ease) both;
+}
+@keyframes bouffee {
+  0% { opacity: 0; transform: scale(0.4); }
+  35% { opacity: 0.95; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+@keyframes bouffee-retour {
+  0% { opacity: 0; transform: scale(0.4); }
+  35% { opacity: 0.95; transform: scale(1); }
+  100% { opacity: 0; transform: scale(1.35); }
+}
+
+/* La fiche aventure de l'enseignant : une feuille blanche imprimée, ses cases tracées, remplie
+   au crayon de papier dans la cursive des écoles */
+.fiche {
+  position: relative;
+  width: min(100%, 440px);
+  padding: 30px 34px 32px;
+  background: #fffefb;
+  border-radius: 2px;
+  box-shadow: 0 1px 2px rgba(60, 45, 20, 0.14), 0 18px 30px -14px rgba(60, 45, 20, 0.36);
+  transform: rotate(1.8deg);
+  color: #2c3338;
+  font-variant-numeric: lining-nums;
+}
+/* Le dé et le crayon, posés sur la table contre la fiche, leur ombre sur le papier */
+.de,
+.crayonPose {
+  position: absolute;
+  z-index: 1;
+  background: no-repeat center / contain;
+  filter: drop-shadow(2px 5px 5px rgba(60, 45, 20, 0.28));
+  pointer-events: none;
+}
+.de {
+  top: -26px;
+  right: -22px;
+  width: 64px;
+  height: 70px;
+  background-image: url(/accueil/de.webp);
+  transform: rotate(14deg);
+}
+.crayonPose {
+  right: -18px;
+  bottom: -46px;
+  width: 210px;
+  height: 148px;
+  background-image: url(/accueil/crayon.webp);
+  transform: rotate(-8deg);
+}
+
+/* Vente ouverte : chaque case a sa valeur pour un petit et pour un grand livre ; la nouvelle
+   s'écrit au crayon, de gauche à droite, quand le livre change */
+/* Les valeurs des deux livres occupent la même place, l'une sur l'autre : la fiche ne change pas
+   de taille, et la page ne bouge pas, quand le livre change */
+.boite > *,
+.notesCase > * {
+  grid-area: 1 / 1;
+}
+/* La cursive porte ses chiffres haut dans leur ligne : ils descendent pour tomber au milieu de la
+   case (comme le nom du logo) */
+.boite > .crayon:not(.mot) {
+  position: relative;
+  top: 0.25em;
+}
+.notesCase {
+  display: grid;
+}
+.pourGrand,
+.quarante[data-livre="grand"] .pourPetit {
+  visibility: hidden;
+}
+.quarante[data-livre="grand"] .pourGrand {
+  visibility: visible;
+}
+.quarante[data-touche] .boite > .crayon {
+  animation: ecrire 0.55s var(--ease) both;
+}
+@keyframes ecrire {
+  from { clip-path: inset(-100% 100% -100% -10%); }
+  to { clip-path: inset(-100% -10% -100% -10%); }
+}
+.crayon.mot {
+  font-size: 1.05rem;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.15;
+}
+.recharge {
+  margin-top: 16px;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--graphite-2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .souris40,
+  .dragon40,
+  .quarante[data-livre="grand"] .dragon40 {
+    transition: none;
+  }
+  .quarante[data-touche] .bouffee,
+  .quarante[data-touche] .boite > .crayon {
+    animation: none;
+  }
+}
+.ficheTitre {
+  font-family: var(--f-recit);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* « Aventurier : vous », la ligne du nom, sur son pointillé */
+.aventurier {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-top: 10px;
+  padding-bottom: 4px;
+  border-bottom: 1.5px dotted #8c8f92;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.aventurier .crayon {
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+/* Les pictogrammes au trait, devant le nom de chaque case */
+.picto {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  color: #2c3338;
+}
+.rubrique {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.cases {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: start;
+  gap: 18px 30px;
+  margin-top: 18px;
+}
+.caseFiche {
+  display: grid;
+  align-content: start;
+  justify-items: start;
+  gap: 6px;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.caseFiche > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.caseFiche small,
+.notesCase small {
+  max-width: 14ch;
+  font-weight: 400;
+  font-style: italic;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: var(--graphite-2);
+}
+/* Le signe des aides devant l'intertitre de l'IA */
+.etoileTitre {
+  flex: none;
+  width: 1.05em;
+  height: 1.05em;
+  color: var(--canard);
+}
+.insecable {
+  white-space: nowrap;
+}
+/* L'étoile des aides, dans le texte du feuillet */
+.etoileTexte {
+  display: inline-block;
+  width: 0.95em;
+  height: 0.95em;
+  vertical-align: -0.1em;
+  color: var(--canard);
+}
+.etoile {
+  width: 20px;
+  height: 20px;
+  color: var(--canard);
+}
+.boite {
+  display: inline-grid;
+  place-items: center;
+  min-width: 104px;
+  height: 66px;
+  padding: 0 14px;
+  border: 2px solid #2c3338;
+  border-radius: 7px;
+}
+/* Ce qui est écrit au crayon de papier */
+.crayon {
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: 1.8rem;
+  line-height: 1;
+  -webkit-text-stroke: 0.035em currentColor;
+  color: #3d4348;
+  white-space: nowrap;
+}
+.rubrique {
+  margin-top: 22px;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.inventaire {
+  list-style: none;
+  display: grid;
+  gap: 7px;
+  margin: 10px 0 0;
+  padding: 0;
+}
+.inventaire li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-recit);
+  font-size: 1rem;
+}
+.caseCochee {
+  flex: none;
+  width: 24px;
+  height: 24px;
+  color: #2c3338;
+}
+/* La coche, en canard : ce qui est coché */
+.caseCochee .trait {
+  stroke: var(--canard);
+}
+.achats {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+  margin: 10px 0 0;
+  padding: 0;
+}
+.achats li {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 16px;
-  padding: 11px 0;
-  border-bottom: 1px dashed var(--trait-fort);
-}
-.quoi {
+  gap: 14px;
   font-family: var(--f-recit);
-  font-size: 1.04rem;
-  line-height: 1.4;
+  font-size: 1rem;
 }
-.quoi small {
+.achats small {
   display: block;
-  margin-top: 2px;
   font-style: italic;
-  font-size: 0.92rem;
+  font-size: 0.82rem;
   color: var(--graphite-2);
 }
-.prix {
-  flex: none;
-  font-family: var(--f-recit);
-  font-variant-numeric: lining-nums;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.gratuit {
-  color: var(--canard);
+.achats .crayon {
+  font-size: 1.3rem;
 }
 
 /* La fin */
@@ -654,25 +1260,40 @@
 .souris {
   position: absolute;
   left: -84px;
-  bottom: -12px;
+  bottom: -210px;
   width: 88px;
   height: 108px;
   background: url(/accueil/souris-dos.webp) no-repeat center bottom / contain;
 }
-/* Le dragon s'est endormi sur la table, au pied du dernier feuillet */
+/* La fin : la ligne du pied de page est le sol de la table. Le dernier feuillet s'arrête juste
+   au-dessus, la souris s'y tient en grignotant son coin, le dragon y dort sur son livre */
+.finale {
+  align-items: end;
+  padding-bottom: 0;
+}
+.finale .feuillet {
+  margin-bottom: 210px;
+}
+/* Le dernier trait et « FIN » descendent un peu, loin du bouton */
+.dernier .principal {
+  padding-bottom: 24px;
+}
+.dernier .fin {
+  margin-top: 28px;
+}
 .cote.enBas {
-  align-self: stretch;
-  align-content: end;
-  padding-bottom: 8px;
+  align-self: end;
+  justify-items: start;
 }
 .dragonDort {
-  /* Grand, et qui déborde un peu sur la feuille : il s'est endormi contre elle */
   position: relative;
   z-index: 2;
-  width: 400px;
-  height: 340px;
-  margin-left: -150px;
+  width: 330px;
+  height: 250px;
+  margin-left: -60px;
   background: url(/accueil/dragon-endormi.webp) no-repeat center bottom / contain;
+  /* Un peu plus bas : son livre mord sur la ligne du pied de page */
+  transform: translateY(18px);
 }
 
 /* ——— Autour des feuillets : captures imprimées et scotchées, notes à la main ——— */
@@ -722,15 +1343,14 @@
   margin-left: 40px;
   transform: rotate(-1.6deg);
 }
-.aides {
-  width: 560px;
-  aspect-ratio: 830 / 420;
-  transform: rotate(-1.4deg);
-}
+/* La photo des livres imprimés, en 4:3 comme sa prise de vue, sur grand écran comme sur téléphone */
 .photo {
   width: 520px;
-  height: 390px;
+  aspect-ratio: 4 / 3;
   transform: rotate(-1.6deg);
+}
+.photo > :global(img) {
+  object-position: center;
 }
 .qui {
   width: 600px;
@@ -818,6 +1438,21 @@
 
 /* ——— Écrans moyens : le milieu perd sa colonne de gauche ——— */
 @media (max-width: 1180px) {
+  /* Le 40 : la mascotte passe sous la fiche */
+  .quarante {
+    grid-template-columns: var(--page-l) minmax(0, 1fr);
+  }
+  .quarante .mascotte {
+    grid-column: 2;
+    grid-row: 2;
+    justify-self: center;
+    width: 200px;
+    margin-bottom: 0;
+  }
+  .quarante .cote {
+    grid-column: 2;
+    grid-row: 1;
+  }
   .auMilieu {
     grid-template-columns: var(--page-l) minmax(0, 1fr);
   }
@@ -830,7 +1465,7 @@
 @media (max-width: 980px) {
   .accueil.accueil {
     --page-l: 100%;
-    padding: 0 16px 32px;
+    padding: 0 16px;
   }
   .scene {
     display: block;
@@ -841,6 +1476,7 @@
      de gauche ; la page de droite, étirée par son centre uni, porte le passage */
   .livre {
     width: calc(100% + 34px);
+    margin-top: 0;
     margin-left: -34px;
     aspect-ratio: auto;
     background: none;
@@ -914,11 +1550,72 @@
     margin: 0;
     transform: none;
   }
-  .photo {
-    height: 220px;
-  }
   .feuillet:target {
     outline-offset: 3px;
+  }
+  /* Le 40 : le feuillet, la mascotte, puis la fiche, toute la largeur */
+  .quarante .cote,
+  .quarante .mascotte {
+    grid-column: auto;
+    grid-row: auto;
+  }
+  .quarante .cote {
+    justify-items: stretch;
+  }
+  .fiche {
+    width: auto;
+    padding: 24px 22px 26px;
+    transform: rotate(1deg);
+  }
+  /* Sur téléphone, la page descend d'abord jusqu'à l'animal : l'écriture et l'arrivée attendent
+     la fin du défilement pour être vues */
+  .quarante[data-touche] .boite > .crayon {
+    animation-delay: 0.45s;
+  }
+  .quarante[data-livre="grand"] .dragon40 {
+    transition-delay: 0.45s;
+  }
+  .quarante[data-livre="petit"] .souris40 {
+    transition-delay: 0.45s;
+  }
+  .quarante[data-touche][data-livre] .bouffee {
+    animation-delay: 0.3s;
+  }
+  /* Sur téléphone, les captures ne s'agrandissent pas : elles prennent déjà toute la largeur */
+  .agrandir {
+    pointer-events: none;
+    cursor: default;
+  }
+  .agrandir .tirage::after {
+    display: none;
+  }
+  /* Sur téléphone, le dé et le crayon restent dans l'écran */
+  .de {
+    top: -20px;
+    right: 6px;
+    width: 52px;
+    height: 56px;
+  }
+  .crayonPose {
+    right: 4px;
+    bottom: -38px;
+    width: 160px;
+    height: 112px;
+  }
+  .mascotte {
+    justify-self: center;
+    width: 200px;
+    height: 210px;
+    margin: -10px 0 -20px;
+  }
+  .dragon40 {
+    height: 210px;
+  }
+  .souris40 {
+    height: 120px;
+  }
+  .reponse {
+    font-size: 2.2rem;
   }
   /* Proportions de leur image ensemble : la souris arrive à mi-hauteur du dragon */
   .souris {
@@ -927,7 +1624,10 @@
     width: 62px;
     height: 76px;
   }
-  .dernier {
+  .finale {
+    padding-bottom: 0;
+  }
+  .finale .feuillet {
     margin-bottom: 0;
   }
   /* Sous le dernier feuillet, côte à côte : la souris au coin grignoté, le dragon à droite */

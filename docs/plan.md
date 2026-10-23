@@ -3277,6 +3277,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   Google) ; une nuit de sauvegarde partie seule, à voir le 23 octobre ; la
   messagerie académique, à réessayer vers le 29 octobre puis mi-novembre, le
   compte académique non confirmé gardé pour cela.
+- **Reste à construire avant d'allumer « Paiement ouvert »** (demandé par le
+  porteur le 23 octobre 2026) : une petite marque grise « Pass du livre » sur
+  la carte d'un projet qui a son pass, dans « Mes projets » ; rien sur les
+  autres, ni « gratuit » ni « premium » (un seul mot pour la chose, le pass),
+  rien tant que l'interrupteur est éteint ni sur les projets du porteur.
 - **Reste à la charge du porteur, hors de la construction :** créer le compte
   Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
   DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { choisirPourLAccueil, echangerLesLivres, retirerLaCouverture } from "@/serveur/accueil";
 import { accepterLImage, changerLesMots, refuserLImage, retirerDeLaBibliotheque } from "@/serveur/bibliotheque";
 import { estUuid } from "@/serveur/recit";
 import { exigerLePorteur, offrirDesEtoiles, offrirUnPass, partageDuLien, reglerLePaiement, retirerLePartage } from "@/serveur/administration";
@@ -79,4 +80,27 @@ export async function changerLesMotsAdmin(id: string, formulaire: FormData): Pro
   const ok = await changerLesMots(id, String(formulaire.get("mots") ?? ""), String(formulaire.get("motsEn") ?? ""));
   revalidatePath("/admin/bibliotheque");
   redirect(`/admin/bibliotheque?fait=${ok ? "mots" : "refus"}`);
+}
+
+// ——— Les livres de l'accueil (F14-AC40, 23 octobre 2026) ———
+
+export async function choisirPourLAccueilAdmin(code: string, oui: boolean): Promise<void> {
+  const porteur = await exigerLePorteur();
+  const r = await choisirPourLAccueil(porteur, code, oui);
+  revalidatePath("/", "layout");
+  redirect(`/admin?fait=${r === "fait" ? (oui ? "accueil-pose" : "accueil-retire") : r === "plein" ? "accueil-plein" : "refus"}#adm-accueil`);
+}
+
+export async function echangerLesLivresAdmin(): Promise<void> {
+  await exigerLePorteur();
+  const ok = await echangerLesLivres();
+  revalidatePath("/", "layout");
+  redirect(`/admin?fait=${ok ? "accueil-ordre" : "refus"}#adm-accueil`);
+}
+
+export async function retirerLaCouvertureAdmin(code: string): Promise<void> {
+  await exigerLePorteur();
+  const ok = await retirerLaCouverture(code);
+  revalidatePath("/", "layout");
+  redirect(`/admin?fait=${ok ? "couverture-retiree" : "refus"}#adm-accueil`);
 }

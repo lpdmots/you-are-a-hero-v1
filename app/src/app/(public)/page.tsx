@@ -5,13 +5,16 @@ import { redirect } from "next/navigation";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { enEuros } from "@/domaine/offre";
-import { livresDeLAccueil } from "@/serveur/accueil";
+import { EDITEUR } from "@/domaine/textes-publics";
+import { livresDeLAccueil, type LivreDeLAccueil } from "@/serveur/accueil";
 import { enseignantCourant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
 import { offreActuelle } from "@/serveur/offre";
 import { etatDuPoste } from "@/serveur/poste";
 import styles from "./accueil.module.css";
 import { TempsQuiDefilent } from "./TempsQuiDefilent";
+import { CapturesEnGrand } from "./CapturesEnGrand";
+import { LivreChoisi } from "./LivreChoisi";
 import { VisiteEnVideo } from "./VisiteEnVideo";
 
 export const metadata: Metadata = {
@@ -27,7 +30,7 @@ export const metadata: Metadata = {
  * elle existera, design.md). Sans fichier, rien ne s'affiche à leur place, sauf en développement, où un
  * cadre en pointillé dit ce qui manque.
  */
-const PHOTO_DES_LIVRES: string | null = null;
+const PHOTO_DES_LIVRES: string | null = "/accueil/photo-des-livres.webp";
 /** La visite en vidéo, MP4 hébergé avec l'application, et ses sous-titres (WebVTT) */
 const VIDEO_DE_LA_VISITE: string | null = null;
 const SOUS_TITRES_DE_LA_VISITE: string | null = null;
@@ -90,6 +93,7 @@ export default async function Accueil() {
           défilent à côté, et le temps qu'elles montrent s'allume sur la feuille */}
       <section className={`${styles.rangee} ${styles.aGauche} ${styles.defile}`} data-actif="1">
         <TempsQuiDefilent />
+        <CapturesEnGrand />
         <Feuillet n={12} titre="Un projet, en trois temps.">
           <p className={`${styles.recit} ${styles.petit}`}>Quelques semaines ou quelques mois, selon l’histoire que vous voulez.</p>
           <ol className={styles.temps}>
@@ -141,9 +145,21 @@ export default async function Accueil() {
               className={classeDeCapture(i)}
               data-temps={c.temps}
             >
-              <span className={styles.tirage} style={"ratio" in c ? { aspectRatio: c.ratio } : undefined}>
-                <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 600px" />
-              </span>
+              {/* La capture d'un livre de l'accueil mène à sa lecture ; les autres s'ouvrent en grand (CapturesEnGrand) */}
+              {"livre" in c && livres.some((l) => l.titre === c.livre) ? (
+                <Link href={`/lire/${livres.find((l) => l.titre === c.livre)?.code}`} className={styles.lireLeLivre} aria-label={`Lire « ${c.livre} » en ligne`}>
+                  <span className={styles.tirage} style={{ aspectRatio: c.ratio }}>
+                    <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 600px" />
+                    <span className={styles.badgeLire}>Lire le livre →</span>
+                  </span>
+                </Link>
+              ) : (
+                <button type="button" className={styles.agrandir} data-agrandir={c.src} data-alt={c.alt} data-note={c.note} aria-label={`Agrandir : ${c.alt}`}>
+                  <span className={styles.tirage} style={"ratio" in c ? { aspectRatio: c.ratio } : undefined}>
+                    <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 600px" />
+                  </span>
+                </button>
+              )}
               <figcaption className={styles.note}>{c.note}</figcaption>
             </figure>
             )
@@ -155,32 +171,26 @@ export default async function Accueil() {
       {avecLivres ? (
       <section className={`${styles.rangee} ${styles.aDroite}`}>
         <Feuillet n={27} titre={livres.length === 1 ? "Un livre écrit par une classe." : "Deux livres écrits par une classe."}>
-          <p className={`${styles.recit} ${styles.petit}`}>Écrits par mes élèves, scène par scène, puis imprimés et lus par leurs familles.</p>
-          {livres.length > 0 ? (
+          <p className={`${styles.recit} ${styles.petit}`}>
+            {livres.length === 1
+              ? "Écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles."
+              : "Écrits par mes élèves, scène par scène, puis imprimés et lus par leurs familles."}
+          </p>
+          {livres.length > 0 || EN_DEVELOPPEMENT ? (
             <ul className={styles.livres}>
               {livres.map((l) => (
                 <li key={l.code}>
-                  <Link href={`/lire/${l.code}`} className={styles.couverture}>
-                    <span className={styles.objet}>
-                      {l.image ? (
-                        // L'image passe par le lien de lecture, qui la sert sans compte : pas d'optimisation de Next
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img src={l.image} alt="" loading="lazy" />
-                      ) : (
-                        <span className={styles.sansImage} />
-                      )}
-                      <span className={styles.titreLivre}>
-                        {l.titre}
-                        {l.ligne ? <small>{l.ligne}</small> : null}
-                      </span>
-                    </span>
-                    <span className={styles.feuilleter}>Feuilleter</span>
-                  </Link>
+                  <LivreFerme livre={l} />
                 </li>
               ))}
+              {EN_DEVELOPPEMENT && livres.length < 2 ? (
+                <li>
+                  <p className={`${styles.aVenir} ${styles.livreAVenir}`}>
+                    {livres.length === 0 ? "Les deux livres" : "Le second livre"} : à choisir dans l’administration
+                  </p>
+                </li>
+              ) : null}
             </ul>
-          ) : EN_DEVELOPPEMENT ? (
-            <p className={styles.aVenir}>Les deux livres : leurs codes de lecture dans LIVRES_DE_L_ACCUEIL</p>
           ) : null}
           <Choix>
             <Renvoi vers={33}>Si vous vous demandez si cela marchera dans votre classe, rendez-vous au</Renvoi>
@@ -189,7 +199,11 @@ export default async function Accueil() {
         </Feuillet>
         <div className={styles.cote}>
           {PHOTO_DES_LIVRES ? (
-            <Tirage src={PHOTO_DES_LIVRES} alt="Les deux livres imprimés de la classe" cadre="photo" />
+            <Tirage
+              src={PHOTO_DES_LIVRES}
+              alt="Les livres imprimés : « Électro Nick », relié, et « Le labyrinthe oublié », ouvert sur sa fiche aventure et son premier passage, avec un crayon et un dé"
+              cadre="photo"
+            />
           ) : EN_DEVELOPPEMENT ? (
             <div className={`${styles.tirage} ${styles.photo}`}>
               <p className={styles.aVenir}>La photo des deux livres imprimés</p>
@@ -235,60 +249,71 @@ export default async function Accueil() {
         </div>
       </section>
 
-      {/* 40 — L'IA, et ce que cela coûte */}
-      <section className={`${styles.rangee} ${styles.aDroite}`}>
-        <Feuillet n={40} titre="L’IA, si vous voulez. Et ce que cela coûte.">
+      {/* 40 — Ce que cela coûte : le feuillet à gauche, la fiche aventure de l'enseignant à droite, qui
+          porte les chiffres comme celle d'un livre-jeu ses ressources, et entre les deux la souris ;
+          vente ouverte, deux choix, un livre jusqu'aux limites gratuites ou un grand livre, que le
+          dragon vient tenir (décidé par le porteur le 23 octobre 2026) */}
+      <section className={`${styles.rangee} ${styles.quarante}`} data-livre="petit">
+        <Feuillet n={40} titre="Ce que cela coûte.">
+          {offre.paiementOuvert ? (
+            <LivreChoisi scenes={offre.scenesGratuites} images={offre.imagesGratuites} prix={enEuros(offre.prixDuPass)} />
+          ) : (
+            <>
+              <p className={styles.reponse}>Gratuit.</p>
+              <p className={`${styles.recit} ${styles.petit}`}>Tout l’outil, du premier projet au livre imprimé, sans carte bancaire.</p>
+            </>
+          )}
+          {/* L'IA est l'aide de l'enseignant seul, jamais des élèves ; les illustrations, où les héros
+              se retrouvent d'une image à l'autre d'après leur portrait, mises en avant (porteur, 23 octobre 2026) */}
+          <h3 className={styles.intertitre}>
+            <Icone nom="ia" className={styles.etoileTitre} />
+            L’IA, pour vous seulement.
+          </h3>
           <p className={`${styles.recit} ${styles.petit}`}>
-            Elle vous aide, vous, quand vous le demandez : corriger une scène, trouver une idée de choix, illustrer. Les élèves écrivent eux-mêmes.
+            Jamais pour les élèves : ils écrivent eux-mêmes. Quand vous le voulez, elle corrige une scène, propose une idée de choix et{" "}
+            <strong>illustre le livre, vos héros reconnaissables d’une image à l’autre</strong>. Chaque demande se paie en{" "}
+            <span className={styles.insecable}>
+              étoiles <Icone nom="ia" className={styles.etoileTexte} />,
+            </span>{" "}
+            et {offre.etoilesOffertes} vous sont offertes.
           </p>
-          <ul className={styles.offre}>
-            <li>
-              <span className={styles.quoi}>
-                Tout le reste
-                <small>Classes, élèves, projets, livre, PDF, lecture en ligne.</small>
-              </span>
-              <span className={`${styles.prix} ${styles.gratuit}`}>Gratuit</span>
-            </li>
-            <li>
-              <span className={styles.quoi}>
-                Les aides de l’IA
-                <small>
-                  Facultatives : de quoi faire une vingtaine de corrections ou une dizaine d’images
-                  {offre.paiementOuvert ? `, puis ${enEuros(offre.prixDeLaRecharge)} les ${offre.etoilesDeLaRecharge} étoiles.` : "."}
-                </small>
-              </span>
-              <span className={styles.prix}>{offre.etoilesOffertes} ✦ offertes</span>
-            </li>
-            {offre.paiementOuvert ? (
-              <li>
-                <span className={styles.quoi}>
-                  Le pass du livre
-                  <small>
-                    Une fois, pour un livre : au-delà de {offre.scenesGratuites} scènes et {offre.imagesGratuites} images, et {offre.etoilesDuPass} étoiles.
-                  </small>
-                </span>
-                <span className={styles.prix}>{enEuros(offre.prixDuPass)}</span>
-              </li>
-            ) : null}
-          </ul>
           <Choix>
             <ChoixCompte phrase="Si vous voulez essayer," />
             <Renvoi vers={52}>Si vous voulez savoir d’où vient cet outil, rendez-vous au</Renvoi>
           </Choix>
         </Feuillet>
+        {offre.paiementOuvert ? (
+          // Vente ouverte : un clic sur l'animal passe à l'autre livre (le script l'active)
+          <button type="button" className={`${styles.mascotte} ${styles.animal}`} data-basculer disabled aria-label="Changer de livre : un livre jusqu’à 40 scènes ou un grand livre">
+            <span className={styles.souris40} />
+            <span className={styles.bouffee} />
+            <span className={styles.dragon40} />
+          </button>
+        ) : (
+          <div className={styles.mascotte}>
+            <span className={styles.souris40} role="img" aria-label="La souris, fière de son petit livre" />
+          </div>
+        )}
         <div className={styles.cote}>
-          <Tirage src="/accueil/detail-scene.webp" alt="Dans la scène, « Corriger » et « Idées de choix », au-dessus du texte" cadre="aides" />
-          <Note>« Corriger » et « Idées de choix », au-dessus du texte.</Note>
+          <FicheAventure offre={offre} />
         </div>
       </section>
 
-      {/* 52 — Né dans une classe, et la fin */}
-      <section className={`${styles.rangee} ${styles.auMilieu}`}>
+      {/* 52 — D'où vient cet outil, et la fin : le récit du porteur, signé ; la souris et le dragon
+          posés sur la ligne du pied de page, le sol de la table (décidé par le porteur le 23 octobre 2026) */}
+      <section className={`${styles.rangee} ${styles.auMilieu} ${styles.finale}`}>
         <div className={`${styles.cote} ${styles.avant}`} />
-        <Feuillet n={52} titre="Né dans une classe." dernier>
+        <Feuillet n={52} titre="D’où vient cet outil." dernier>
           <p className={styles.recit}>
-            Depuis quatre ans, j’écris des livres-jeux avec mes élèves. J’ai construit l’outil que j’aurais voulu avoir : pour que toute la classe écrive, et que
-            chacun tienne le livre à la fin.
+            {/* Espaces insécables dans les guillemets et devant la ponctuation haute : rien ne part seul à la ligne */}
+            Enfant, je dévorais les « livres dont vous êtes le héros ». Il y a sept ans, j’ai appris seul à programmer, avec une idée : que mes
+            élèves écrivent le leur.
+          </p>
+          <p className={styles.recit}>
+            Depuis quatre ans, ma classe écrit ses livres-jeux avec les versions successives de cet outil. Celle-ci est la plus aboutie.
+          </p>
+          <p className={`${styles.recit} ${styles.petit}`}>
+            Une question, une idée ? Écrivez-moi : <a href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>
           </p>
           <p className={styles.signature}>Nicolas, professeur des écoles</p>
           <Choix>
@@ -314,11 +339,11 @@ const CAPTURES_DES_TEMPS = [
   { temps: "1", collage: true, src: "", alt: "", note: "Les chapitres et les scènes, prêts à écrire." },
   { temps: "1", src: "/accueil/prep-chemins.webp", ratio: "2000 / 1197", alt: "Les chemins d’un chapitre : chaque choix mène à une scène", note: "Et les chemins entre les scènes, d’un coup d’œil." },
   { temps: "2", src: "/accueil/ecrire-fiche.webp", ratio: "1454 / 1390", alt: "Une fiche de rédaction imprimée : la consigne de chaque scène", note: "Chacun écrit d’abord sur son cahier, d’après sa fiche." },
-  { temps: "2", src: "/accueil/ecrire-correction.webp", ratio: "1684 / 1026", alt: "La scène recopiée par l’élève, avec la correction proposée par l’IA : chaque changement visible, que l’enseignant garde ou refuse", note: "Il recopie sa scène sur l’ordinateur, puis vous corrigez." },
+  { temps: "2", src: "/accueil/ecrire-correction.webp", ratio: "1684 / 1026", alt: "La scène recopiée par l’élève, avec la correction proposée par l’IA : chaque changement visible, que l’enseignant garde ou refuse", note: "Les élèves recopient leur scène sur l’ordinateur, puis vous corrigez." },
   { temps: "2", src: "/accueil/ecrire-suivi.webp", ratio: "2000 / 1012", alt: "Le Suivi des élèves : qui s’occupe de quoi, ce qui reste à régler", note: "Vous voyez où en est chacun." },
   { temps: "3", src: "/accueil/livre-relire.webp", ratio: "2000 / 1206", alt: "Relire : le livre mis en page, et la liste de ce qu’il reste à vérifier", note: "Vous relisez le livre tel qu’il sera imprimé." },
   { temps: "3", src: "/accueil/livre-mise-en-page.webp", ratio: "2000 / 1196", alt: "La mise en page : une page peu remplie, signalée avec sa solution", note: "L’outil signale ce qui cloche, jusqu’au PDF prêt à imprimer." },
-  { temps: "3", src: "/accueil/livre-en-ligne.webp", ratio: "1694 / 1542", alt: "« Électro Nick », lu en ligne : la page de titre et « Commencer la lecture »", note: "Et un lien pour le lire en ligne, en famille." },
+  { temps: "3", src: "/accueil/lecture-electro-nick.webp", ratio: "1434 / 1290", livre: "Électro Nick", alt: "« Électro Nick », lu en ligne : un passage, son illustration et ses trois choix", note: "Et un lien pour le lire en ligne, en famille." },
 ] as const;
 
 /** La pile du passage 33, de bas en haut : chaque écran montre une ligne de la page */
@@ -390,6 +415,207 @@ function ChoixCompte({ phrase }: { phrase: string }) {
         </svg>
       </Link>
     </li>
+  );
+}
+
+/**
+ * Un livre de la classe, fermé, posé sur le feuillet : la face avant du livre imprimé, déposée dans
+ * l'administration ; sinon sa page de titre, ce que le lecteur en ligne ouvre (le titre, le
+ * sous-titre, l'illustration entière), ou l'image d'une page de titre faite à la main. Dessous, ce
+ * qu'il contient et « Feuilleter ».
+ */
+function LivreFerme({ livre }: { livre: LivreDeLAccueil }) {
+  const nom = `Feuilleter « ${livre.titre} »${livre.passages ? `, ${livre.passages} passages` : ""}`;
+  return (
+    <Link href={`/lire/${livre.code}`} className={styles.livreFerme} aria-label={nom}>
+      <span className={styles.volume}>
+        {livre.couverture ? (
+          // La face avant du livre imprimé, déposée dans l'administration (F14-AC40)
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className={styles.pleinePage} src={livre.couverture} alt="" loading="lazy" />
+        ) : livre.pleinePage && livre.image ? (
+          // L'image passe par le lien de lecture, qui la sert sans compte : pas d'optimisation de Next
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className={styles.pleinePage} src={livre.image} alt="" loading="lazy" />
+        ) : (
+          <span className={styles.pageDeTitre}>
+            <span className={styles.titreLivre}>{livre.titre}</span>
+            {livre.sousTitre ? <span className={styles.sousTitreLivre}>{livre.sousTitre}</span> : null}
+            {livre.image ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img className={styles.illustration} src={livre.image} alt="" loading="lazy" style={{ aspectRatio: livre.ratio }} />
+            ) : null}
+          </span>
+        )}
+      </span>
+      {livre.passages ? <span className={styles.contenu}>{livre.passages} passages</span> : null}
+      <span className={styles.feuilleter}>
+        Feuilleter
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M5 12h14M13 6l6 6-6 6" />
+        </svg>
+      </span>
+    </Link>
+  );
+}
+
+/**
+ * La fiche aventure de l'enseignant, à côté du passage 40 : ses ressources, remplies au crayon de
+ * papier, comme la fiche d'un livre-jeu. Les chiffres viennent des réglages de l'offre (F14-AC21).
+ */
+function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuelle>> }) {
+  const ouvert = offre.paiementOuvert;
+  return (
+    <div className={styles.fiche} role="group" aria-labelledby="fiche-t" aria-live="polite">
+      <p id="fiche-t" className={styles.ficheTitre}>
+        Fiche aventure
+      </p>
+      <p className={styles.aventurier}>
+        Aventurier : <span className={styles.crayon}>vous</span>
+      </p>
+      <div className={styles.cases}>
+        <CaseDeFiche
+          nom={
+            <>
+              <PictoBourse /> Bourse
+            </>
+          }
+          petit="0 €" grand={ouvert ? { valeur: enEuros(offre.prixDuPass), note: "une fois" } : null} />
+        <CaseDeFiche
+          nom={
+            <>
+              <Icone nom="ia" className={styles.etoile} /> Étoiles
+            </>
+          }
+          petit={String(offre.etoilesOffertes)}
+          notePetit="offertes"
+          grand={ouvert ? { valeur: String(offre.etoilesOffertes + offre.etoilesDuPass), note: `dont ${offre.etoilesDuPass} du pass` } : null}
+        />
+        {ouvert ? (
+          <>
+            <CaseDeFiche
+              nom={
+                <>
+                  <PictoScenes /> Scènes
+                </>
+              }
+              petit={String(offre.scenesGratuites)} notePetit="au plus" grand={{ valeur: "illimitées", note: "" }} />
+            <CaseDeFiche
+              nom={
+                <>
+                  <PictoImages /> Images
+                </>
+              }
+              petit={String(offre.imagesGratuites)} notePetit="au plus" grand={{ valeur: "illimitées", note: "" }} />
+          </>
+        ) : null}
+      </div>
+      <p className={styles.rubrique}>
+        <PictoSac /> Inventaire
+      </p>
+      <ul className={styles.inventaire}>
+        {INVENTAIRE.map((chose) => (
+          <li key={chose}>
+            <CaseCochee />
+            {chose}
+          </li>
+        ))}
+      </ul>
+      {ouvert ? (
+        <p className={styles.recharge}>
+          Plus d’étoiles : {enEuros(offre.prixDeLaRecharge)} les {offre.etoilesDeLaRecharge}.
+        </p>
+      ) : null}
+      {/* Sur la table, contre la fiche : le dé, et le crayon qui l'a remplie */}
+      <span className={styles.de} aria-hidden="true" />
+      <span className={styles.crayonPose} aria-hidden="true" />
+    </div>
+  );
+}
+
+/**
+ * Une case de la fiche, remplie au crayon : la valeur d'un livre jusqu'aux limites gratuites et,
+ * vente ouverte, celle d'un grand livre ; la feuille de style montre celle du livre choisi.
+ */
+function CaseDeFiche({ nom, petit, notePetit, grand }: { nom: ReactNode; petit: string; notePetit?: string; grand: { valeur: string; note: string } | null }) {
+  const mot = (v: string) => (/^[\d\s€ ]+$/.test(v) ? styles.crayon : `${styles.crayon} ${styles.mot}`);
+  return (
+    <p className={styles.caseFiche}>
+      <span>{nom}</span>
+      <span className={styles.boite}>
+        <span className={`${mot(petit)} ${grand ? styles.pourPetit : ""}`}>{petit}</span>
+        {grand ? <span className={`${mot(grand.valeur)} ${styles.pourGrand}`}>{grand.valeur}</span> : null}
+      </span>
+      {/* Les notes des deux livres, l'une sur l'autre : la case garde sa taille quand le livre change */}
+      {notePetit || grand?.note ? (
+        <span className={styles.notesCase}>
+          {notePetit ? <small className={grand ? styles.pourPetit : undefined}>{notePetit}</small> : null}
+          {grand?.note ? <small className={styles.pourGrand}>{grand.note}</small> : null}
+        </span>
+      ) : null}
+    </p>
+  );
+}
+
+// ——— Les pictogrammes de la fiche, au trait graphite, comme sur une fiche de livre-jeu imprimée ———
+
+function Picto({ children }: { children: ReactNode }) {
+  return (
+    <svg className={styles.picto} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      {children}
+    </svg>
+  );
+}
+/** Une bourse nouée, une pièce devant */
+function PictoBourse() {
+  return (
+    <Picto>
+      <path d="M9 7.5 7.4 4.2c1.6.6 3 .8 4.6.8s3-.2 4.6-.8L15 7.5" />
+      <path d="M9 7.5c-3.2 2.2-5 5.4-4.6 8.6.4 3 3.4 4.4 7.6 4.4s7.2-1.4 7.6-4.4c.4-3.2-1.4-6.4-4.6-8.6z" />
+      <path d="M8.6 7.6h6.8" />
+      <circle cx="12" cy="14.2" r="2.6" />
+    </Picto>
+  );
+}
+/** Un livre ouvert */
+function PictoScenes() {
+  return (
+    <Picto>
+      <path d="M12 6.5C10 5 6.8 4.6 3.5 5v13c3.3-.4 6.5 0 8.5 1.5 2-1.5 5.2-1.9 8.5-1.5V5c-3.3-.4-6.5 0-8.5 1.5z" />
+      <path d="M12 6.5v13" />
+    </Picto>
+  );
+}
+/** Un cadre, une montagne et un soleil */
+function PictoImages() {
+  return (
+    <Picto>
+      <rect x="3.5" y="5" width="17" height="14" rx="1.5" />
+      <path d="M4 17l5-5.5 3.5 3.8 2.5-2.6L20 17" />
+      <circle cx="15.5" cy="9" r="1.6" />
+    </Picto>
+  );
+}
+/** Un sac d'aventurier */
+function PictoSac() {
+  return (
+    <Picto>
+      <path d="M9 6.5V5a3 3 0 0 1 6 0v1.5" />
+      <path d="M6.5 9.5a3 3 0 0 1 3-3h5a3 3 0 0 1 3 3V19a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 6.5 19z" />
+      <path d="M9.5 13h5v3.5h-5z" />
+    </Picto>
+  );
+}
+
+const INVENTAIRE = ["Vos classes et vos élèves", "Vos projets", "Les fiches de rédaction", "Le livre en PDF, à imprimer", "La lecture en ligne"] as const;
+
+/** Une case de la fiche, cochée au crayon */
+function CaseCochee() {
+  return (
+    <svg className={styles.caseCochee} viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2.5" y="3.5" width="18" height="18" rx="3" stroke="currentColor" strokeWidth="1.6" />
+      <path className={styles.trait} d="M6.5 12.5l4 4.5L21 3" strokeWidth="2.4" />
+    </svg>
   );
 }
 

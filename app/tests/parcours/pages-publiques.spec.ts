@@ -40,10 +40,16 @@ test("F14-AC21 — le prix du pass, changé dans les réglages, se lit sur l'acc
   try {
     await sql("update public.reglages_application set paiement_ouvert = true, prix_du_pass = 2500");
     await aller(page, "/");
-    await expect(page.getByRole("listitem").filter({ hasText: "Le pass du livre" }).filter({ hasText: /25\s€/ })).toBeVisible();
+    // Le passage 40 : choisir « Un grand livre » remplit la fiche aventure avec le prix du pass
+    const grand = page.getByRole("button", { name: /Un grand livre.*pass du livre.*25\s€/ });
+    await expect(grand).toBeVisible();
+    await grand.click();
+    await expect(grand).toHaveAttribute("aria-pressed", "true");
+    await expect(page.getByRole("group", { name: "Fiche aventure" }).getByText(/^25\s€$/)).toBeVisible();
     await sql("update public.reglages_application set paiement_ouvert = false");
     await aller(page, "/");
-    await expect(page.getByText(/Le pass du livre/)).toHaveCount(0);
+    await expect(page.getByText(/pass du livre/)).toHaveCount(0);
+    await expect(page.getByText("Gratuit.", { exact: true })).toBeVisible();
   } finally {
     await sql("update public.reglages_application set paiement_ouvert = $1, prix_du_pass = $2", [avant.paiement_ouvert, avant.prix_du_pass]);
   }

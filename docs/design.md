@@ -2360,6 +2360,17 @@ hauteur ne vaut que sur grand écran (décidé par lui). Mots écartés à sa de
 « reprise » et « remettre », peu clairs pour un visiteur (« faites retravailler »,
 « puis vous corrigez »).
 
+**Captures du 12 en grand (23 octobre 2026, à sa demande) :** sur grand écran et tablette, un clic
+ouvre la capture seule en grand, sa note dessous, sur fond sombre (Échap, clic à côté ou
+« Fermer ») ; une loupe au survol le dit ; pas de galerie, qui doublerait le défilement des temps ;
+le collage des chapitres et des scènes ne s'agrandit pas ; rien sur téléphone, où la capture
+prend déjà toute la largeur. La dernière capture du temps 3 est un passage d'« Électro Nick » lu en ligne (texte, illustration,
+trois choix), prise dans le lecteur local ; elle mène à ce livre quand il est sur l'accueil
+(« Lire le livre » au survol), et redevient une capture qui s'agrandit sinon. Écartée : la page de
+titre d'un livre d'essai qui n'existe pas, dont le bouton « Commencer la lecture » ne se cliquait
+pas. Légende du temps 2 au pluriel : « Les élèves recopient leur scène
+sur l'ordinateur, puis vous corrigez. »
+
 **Le passage 33 (repris le 23 octobre 2026) :** à côté de la feuille, une pile bancale de
 quatre écrans, de bas en haut : les deux sortes de récit, deux étiquettes d'élèves, le code
 secret d'un élève, ses encouragements ; au sommet, la souris en équilibre sur une patte,
@@ -2373,6 +2384,80 @@ qu'on lise chaque morceau. Sur téléphone, la pile passe sous la feuille.
 ses majuscules trop haut, à côté du dragon et des liens), dans le composant du logo, donc
 partout ; les prénoms des étiquettes imprimées ne sont plus coupés en haut ni en bas par la
 nouvelle cursive (la case ne coupe plus que sur la largeur).
+
+**Le passage 27 (repris le 23 octobre 2026) :** les deux livres, posés sur le feuillet, sont
+des livres fermés au format du livre imprimé (A5), un peu de travers, dos ombré et tranche des
+pages ; leur couverture est la face avant du livre imprimé, déposée par le porteur dans
+l'administration (« Livres de l'accueil », F14-AC40, qui remplace la variable
+`LIVRES_DE_L_ACCUEIL`) ; sans elle, leur page de titre, celle que le lecteur en ligne ouvre
+(titre, sous-titre, illustration entière, ou l'image d'une page de titre faite à la main).
+Les vraies couvertures, fournies par lui le même jour, l'emportent sur la page de titre en
+petit : colorées, reconnaissables, et les mêmes que dans les mains des familles.
+Dessous, « 323 passages », lu sur le numéro du dernier passage du partage (rien en récit
+classique), et « Feuilleter ». Écartés : les cartes de la première version, image en portrait
+sur une étiquette blanche, qui rognaient l'illustration en paysage ; l'illustration plein cadre,
+rognée elle aussi et étrangère au livre comme au lecteur ; les livres en phrases de choix, trop
+petits dans le passage qui doit les montrer. Le nombre de fins n'est pas donné : seule la
+vraie fin est marquée, les autres renvoient à une sauvegarde. Les livres restent petits pour que
+le feuillet garde la hauteur commune ; la preuve en grand est la photo des livres imprimés, une
+vraie photo, jamais une image générée, prise par le porteur le 23 octobre 2026 (original dans
+[identite/accueil](../identite/accueil/photo-des-livres.jpg)) : vue de dessus, en lumière du
+jour, « Le labyrinthe oublié » ouvert sur sa fiche aventure et son premier passage, un crayon et
+un dé, « Électro Nick » relié à côté. Recadrée en 4:3 sur le livre ouvert, la couverture
+d'Électro Nick coupée de moitié, pour ne pas redire celle du livre à cliquer. La redite avec la
+dernière capture du 12 (« Électro Nick » en ligne) est gardée : là on voit le lecteur, ici on
+ouvre le livre. Les deux livres sont partagés par lien en local et en ligne depuis le
+23 octobre 2026.
+
+**Le passage 40 (repris le 23 octobre 2026) :** titre « Ce que cela coûte. », mot pour mot la
+question des phrases de choix qui y mènent ; l'IA passe à l'intérieur, sous « L'IA, pour vous
+seulement. » : l'aide de l'enseignant, jamais des élèves, qui écrivent eux-mêmes ; les
+illustrations mises en avant, les héros reconnaissables d'une image à l'autre (demandé par le
+porteur). Le feuillet à gauche, à droite la **fiche aventure de
+l'enseignant** (son idée, sur recommandation) : feuille blanche imprimée, cases tracées, valeurs
+écrites au crayon dans la cursive des écoles (bourse, étoiles), inventaire coché en canard ; entre
+les deux, la souris. Vente fermée : « Gratuit. » en grand et une phrase. Vente ouverte : deux
+choix à cliquer, « Un livre jusqu'à 40 scènes » (gratuit) et « Un grand livre » (le pass), toujours
+visibles, empilés, celui qui est choisi cerné de canard ; la fiche se réécrit au crayon, et la
+souris s'écarte dans une bouffée de fumée pour que le dragon se pose (son arrivée brève),
+l'inverse au retour, rien avant le premier clic, rien avec « réduire les animations » ; un clic sur
+l'animal passe aussi à l'autre livre (demandé par le porteur), au clavier compris. Sur
+téléphone, où la fiche est sous le feuillet, choisir un livre fait descendre la page jusqu'à
+l'animal, et l'écriture comme l'arrivée attendent la fin du défilement. La fiche,
+enrichie le même jour à sa demande : pictogrammes au trait graphite devant chaque case (bourse,
+étoiles des aides, livre, cadre d'image, sac pour l'inventaire), « Aventurier : vous » au crayon
+sur un pointillé, et sur la table un dé rouge et un crayon bleu canard, illustrations générées par
+lui dans le style des mascottes, détourées (originaux dans `identite/accueil/`). Écarté : un cadre
+décoré par l'IA, qui tirerait vers le grimoire et concurrencerait les chiffres. Arrêtés
+avec lui contre ses premières idées : un clic et non un survol (tablettes, téléphones, fiche qui
+changerait en allant vers « Créez un compte ») ; petit livre et grand livre, non gratuit et
+« premium » ou super-pouvoir, qui ferait paraître l'offre gratuite bridée ; la souris qui
+s'écarte, non une transformation, les deux personnages étant distincts ; pas de page découpée en
+deux (demi-page écartée au début, bon de réduction). La capture de l'IA est retirée (le 12 montre
+déjà la correction). La souris tient son petit livre rouge, le dragon, assis, serre un gros livre bleu (poses du
+porteur, 23 octobre 2026, détourées ; retournés tous deux pour regarder la fiche ;
+originaux dans `identite/mascotte/`).
+
+**Le passage 52 (repris le 23 octobre 2026) :** titre « D'où vient cet outil. », mot pour mot la
+question qui y mène (« Né dans une classe », jugé pas beau par le porteur, est retiré). Le récit,
+choisi par lui : le souvenir d'enfance des « livres dont vous êtes le héros », entre guillemets,
+en souvenir personnel seulement (nom d'une collection de Gallimard, à ma connaissance une marque :
+jamais en titre ni en slogan ; le nom du genre reste « livre-jeu ») ; sept ans d'apprentissage de
+la programmation en autodidacte avec cette idée ; quatre ans de livres-jeux écrits par sa classe
+avec les versions successives de l'outil ; « Écrivez-moi » et l'adresse de contact ; signé
+« Nicolas, professeur des écoles ». Les deux personnages sont posés sur la ligne du pied de page,
+le sol de la table (son idée, préférée au cul-de-lampe d'abord retenu, puisque le récit remplit
+désormais le bas du feuillet) : la souris s'y tient en grignotant le coin du feuillet, qui s'arrête
+juste au-dessus, le dragon y dort sur son livre, plus petit, contre le coin droit.
+
+**Le pied des pages publiques (repris le 23 octobre 2026, jugé « moche » par le porteur) :** une
+bande blanche dont le filet du haut est le sol de la table de l'accueil ; à gauche le logo et
+« Votre classe écrit son livre-jeu. » en Vollkorn italique ; trois colonnes de liens sans
+soulignement, coiffées de petits titres en capitales (« Commencer » : créer un compte, entrée
+enseignant, entrée des élèves ; « Besoin d'aide ? » : aide, « Écrire au créateur », l'adresse en
+bulle ; « Informations » : confidentialité, conditions, mentions légales) ; une barre basse,
+« Fait par un enseignant, pour écrire avec sa classe. » et « © année Il était une classe ». Sur
+téléphone, le logo puis les colonnes sur deux.
 
 **Notés pour plus tard, hors de l'accueil :** des documents pédagogiques à
 imprimer (réfléchir chacun à son chapitre, guides d'écriture) ; une page de

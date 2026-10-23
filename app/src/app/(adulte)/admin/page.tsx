@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { enEuros } from "@/domaine/offre";
+import { livresAChoisir } from "@/serveur/accueil";
 import { codeDuLien, exigerLePorteur, partageDuLien, tableau } from "@/serveur/administration";
 import { imagesARelire } from "@/serveur/bibliotheque";
-import { basculerLePaiement, chercherLePartage, retirerPartage } from "./actions";
+import {
+  basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerLaCouvertureAdmin, retirerPartage,
+} from "./actions";
 import styles from "./admin.module.css";
 
 export const metadata: Metadata = { title: "Administration" };
@@ -17,6 +20,17 @@ const FAITS: Record<string, string> = {
   retire: "Le partage est retiré, et l’enseignant en est averti par courriel.",
   "retire-sans-courriel": "Le partage est retiré. Le courriel n’est pas parti : prévenez l’enseignant vous-même.",
   refus: "Rien n’a été fait.",
+  "accueil-pose": "Le livre est sur l’accueil.",
+  "accueil-retire": "Le livre a quitté l’accueil.",
+  "accueil-ordre": "Les deux livres ont changé de place.",
+  "couverture-posee": "La couverture est sur l’accueil.",
+  "couverture-retiree": "La couverture est retirée : le livre montre sa page de titre.",
+};
+
+/** Ce qui n'a pas pu se faire, en brique : la raison, et que faire */
+const REFUS: Record<string, string> = {
+  "accueil-plein": "Deux livres sont déjà sur l’accueil : retirez-en un d’abord.",
+  "couverture-format": "Cette image ne convient pas : JPEG, PNG ou WebP, 4 Mo au plus.",
 };
 
 /**
@@ -24,10 +38,12 @@ const FAITS: Record<string, string> = {
  * et sobre. Le mois en une ligne, l'interrupteur, un lien signalé à retirer, puis les comptes.
  */
 export default async function Administration({ searchParams }: { searchParams: Promise<{ partage?: string; fait?: string }> }) {
-  await exigerLePorteur();
-  const [t, demande, aRelire] = await Promise.all([tableau(), searchParams, imagesARelire()]);
+  const porteur = await exigerLePorteur();
+  const [t, demande, aRelire, livres] = await Promise.all([tableau(), searchParams, imagesARelire(), livresAChoisir(porteur)]);
+  const surLAccueil = livres.filter((l) => l.surLAccueil).length;
   const signale = demande.partage && demande.partage !== "introuvable" && codeDuLien(demande.partage) ? await partageDuLien(demande.partage) : null;
   const fait = demande.fait ? FAITS[demande.fait] : null;
+  const refus = demande.fait ? REFUS[demande.fait] : null;
 
   return (
     <div className={`page ${styles.admin}`}>
@@ -37,6 +53,11 @@ export default async function Administration({ searchParams }: { searchParams: P
       {fait ? (
         <p className={styles.fait} role="status">
           {fait}
+        </p>
+      ) : null}
+      {refus ? (
+        <p className={`${styles.fait} ${styles.refus}`} role="alert">
+          {refus}
         </p>
       ) : null}
 
@@ -80,6 +101,81 @@ export default async function Administration({ searchParams }: { searchParams: P
         <Link className="btn" href="/admin/bibliotheque">
           {aRelire.length ? `${aRelire.length} image${aRelire.length > 1 ? "s" : ""} à relire` : "Ouvrir"}
         </Link>
+      </section>
+
+      {/* Les livres de l'accueil (F14-AC40) : deux au plus, parmi ceux du porteur partagés par lien */}
+      <section className={styles.bloc} id="adm-accueil" aria-labelledby="adm-accueil-t">
+        <h2 id="adm-accueil-t">Livres de l’accueil</h2>
+        {livres.length === 0 ? (
+          <p className={styles.note}>Aucun de vos livres n’est partagé par lien. Partagez-en un depuis « Imprimer et partager ».</p>
+        ) : (
+          <>
+            <p className={styles.note}>
+              Deux au plus, parmi vos livres partagés par lien. Couverture : la face avant, ou la couverture entière, dont seule la face avant est gardée.
+            </p>
+            <ul className={styles.liste}>
+              {livres.map((l) => (
+                <li key={l.code} className={styles.livreAccueil}>
+                  {l.surLAccueil ? (
+                    <span className={styles.couverture}>
+                      {l.couverture ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={l.couverture} alt={`Couverture de « ${l.titre} »`} />
+                      ) : (
+                        <span>Page de titre</span>
+                      )}
+                    </span>
+                  ) : null}
+                  <span className={styles.titre}>{l.titre}</span>
+                  <a href={`/lire/${l.code}`} target="_blank" rel="noreferrer">
+                    Lire
+                  </a>
+                  <span className={styles.partage}>
+                    {l.surLAccueil ? (
+                      <>
+                        <form action="/admin/couverture" method="post" encType="multipart/form-data" className={styles.depot}>
+                          <input type="hidden" name="code" value={l.code} />
+                          <label className={styles.champ}>
+                            <span>{l.couverture ? "Changer de couverture" : "Ajouter sa couverture"}</span>
+                            <input type="file" name="couverture" accept="image/jpeg,image/png,image/webp" required />
+                          </label>
+                          <button type="submit" className="btn btn--petit">
+                            Déposer
+                          </button>
+                        </form>
+                        {l.couverture ? (
+                          <form action={retirerLaCouvertureAdmin.bind(null, l.code)}>
+                            <button type="submit" className="lien">
+                              Retirer la couverture
+                            </button>
+                          </form>
+                        ) : null}
+                        <form action={choisirPourLAccueilAdmin.bind(null, l.code, false)}>
+                          <button type="submit" className="btn btn--petit">
+                            Retirer de l’accueil
+                          </button>
+                        </form>
+                      </>
+                    ) : (
+                      <form action={choisirPourLAccueilAdmin.bind(null, l.code, true)}>
+                        <button type="submit" className="btn btn--petit" disabled={surLAccueil >= 2} title={surLAccueil >= 2 ? "Deux livres sont déjà sur l’accueil" : undefined}>
+                          Mettre sur l’accueil
+                        </button>
+                      </form>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            {surLAccueil === 2 ? (
+              <form action={echangerLesLivresAdmin} className={styles.ligne}>
+                <button type="submit" className="btn btn--petit">
+                  Échanger leur place
+                </button>
+              </form>
+            ) : null}
+          </>
+        )}
       </section>
 
       <section className={styles.bloc} aria-labelledby="adm-partage">

@@ -30,17 +30,65 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
         </nav>
       </header>
       {children}
+      {/* Le pied (repris le 23 octobre 2026, à la demande du porteur) : la marque et sa promesse, les
+          pages rangées par sujet, puis une barre basse. Son filet du haut est le sol de la table de
+          l'accueil, où dorment les personnages. */}
       <footer className={styles.pied}>
-        <nav aria-label="Pages du site">
-          <Link href="/aide">Aide</Link>
-          <Link href="/entree">Entrée enseignant</Link>
-          <Link href="/classe">Entrée des élèves</Link>
-          <Link href="/confidentialite">Confidentialité</Link>
-          <Link href="/conditions">Conditions d’utilisation</Link>
-          <Link href="/mentions-legales">Mentions légales</Link>
-          <a href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>
-        </nav>
-        <p>Fait par un enseignant, pour écrire avec sa classe.</p>
+        <div className={styles.piedHaut}>
+          <div className={styles.piedMarque}>
+            <span className={styles.marque}>
+              <Logo href="/" />
+            </span>
+            <p>Votre classe écrit son livre-jeu.</p>
+          </div>
+          <nav className={styles.piedPages} aria-label="Pages du site">
+            <div>
+              <p className={styles.piedTitre}>Commencer</p>
+              <ul>
+                <li>
+                  <Link href="/entree/inscription">Créer un compte</Link>
+                </li>
+                <li>
+                  <Link href="/entree">Entrée enseignant</Link>
+                </li>
+                <li>
+                  <Link href="/classe">Entrée des élèves</Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p className={styles.piedTitre}>Besoin d’aide ?</p>
+              <ul>
+                <li>
+                  <Link href="/aide">Aide</Link>
+                </li>
+                <li>
+                  <a href={`mailto:${EDITEUR.contact}`} title={EDITEUR.contact}>
+                    Écrire au créateur
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p className={styles.piedTitre}>Informations</p>
+              <ul>
+                <li>
+                  <Link href="/confidentialite">Confidentialité</Link>
+                </li>
+                <li>
+                  <Link href="/conditions">Conditions d’utilisation</Link>
+                </li>
+                <li>
+                  <Link href="/mentions-legales">Mentions légales</Link>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div className={styles.piedBas}>
+          <p>Fait par un enseignant, pour écrire avec sa classe.</p>
+          <p>© {new Date().getFullYear()} Il était une classe</p>
+        </div>
       </footer>
     </div>
   );

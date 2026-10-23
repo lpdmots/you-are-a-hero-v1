@@ -25,6 +25,7 @@ import { hasard, melangeInitial, numeroter, type PlanNumerote } from "@/domaine/
 import type { Feuille } from "@/domaine/preparation";
 import { cheminImage, cheminVignette, lireImage, POIDS_MAX_IMAGE, POIDS_MAX_VIGNETTE, SEAU } from "@/serveur/images";
 import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
+import { masquerLaMarque } from "./v0/marque";
 import { convertir, corpsDuLivre, imagesDe, texteLeger, type DonneesV0, type SceneV0 } from "./v0/convertir";
 
 // ——— Les histoires de la V0, et ce qui ne se déduit pas de leurs données ———
@@ -45,6 +46,8 @@ type Histoire = {
   ficheAventure: string;
   feuille: Feuille;
   marqueFin: string;
+  /** La couverture porte l'étincelle du générateur d'images dans son coin bas droit : effacée à l'import */
+  marqueSurLaCouverture?: true;
   /** Les corrections de la relecture (voir `Corrections`), les scènes nommées par leur titre dans la V0 */
   corrections?: {
     liaisons?: { de: string; vers: string; libelle: string }[];
@@ -58,7 +61,7 @@ const HISTOIRES: Record<string, Histoire> = {
     id: "7s63ToBX20ba20OQzQ0GXv",
     titresDesParties: ["Première partie", "Deuxième partie"],
     ligne: "Les CE2-CM1-CM2 de l’école de Müllheim",
-    annee: "2025-2026",
+    annee: "2024-2025",
     preface: "Préface 3",
     regles: { depuis: "Règles du jeu et conseils", sansSonTitre: true },
     ficheAventure: "Fiche aventure",
@@ -106,6 +109,7 @@ const HISTOIRES: Record<string, Histoire> = {
       ],
     },
     marqueFin: "Fin",
+    marqueSurLaCouverture: true,
     corrections: {
       // Les deux énigmes dont la réponse est un numéro : le code de la soute (0132), l'objet du tableau
       liaisons: [
@@ -327,7 +331,8 @@ async function principal(): Promise<void> {
     for (const [ref, usage] of images) {
       // Une image posée dans une scène garde sa transparence (F10-AC31), en WebP ; les autres se posent sur du blanc
       const format = usage.dansUneScene && opaque.get(ref) === false ? "webp" : "jpg";
-      const [image, vignette] = await Promise.all([telecharger(adresseCdn(ref, 2600, format)), telecharger(adresseCdn(ref, 900, format))]);
+      let [image, vignette] = await Promise.all([telecharger(adresseCdn(ref, 2600, format)), telecharger(adresseCdn(ref, 900, format))]);
+      if (ref === couverture && h.marqueSurLaCouverture) [image, vignette] = await Promise.all([masquerLaMarque(image), masquerLaMarque(vignette)]);
       const lue = lireImage(image);
       if (!lue || image.length > POIDS_MAX_IMAGE || vignette.length > POIDS_MAX_VIGNETTE) throw new Error(`Image trop lourde ou illisible : ${ref}.`);
       const id = idImage.get(ref)!;
