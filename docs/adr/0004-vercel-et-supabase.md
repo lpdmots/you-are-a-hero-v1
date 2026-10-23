@@ -17,10 +17,11 @@ l'application.
 Ce choix a un prix accepté. Les comptes, les règles d'accès et le stockage
 sont liés à Supabase ; en changer reprendrait ces trois parties. Aucun
 fournisseur n'apporte l'accès de classe sans adresse électronique, qui reste
-à concevoir. Le porteur garde l'offre gratuite jusqu'à l'ouverture à
-d'autres enseignants : elle ne fait aucune sauvegarde et met le projet en
-sommeil après une semaine sans activité. Il fait lui-même une sauvegarde de
-temps en temps ; ce qui est écrit entre deux sauvegardes n'est pas protégé.
+à concevoir. Le porteur garde l'offre gratuite tant que l'usage le permet,
+ouverture comprise, et ne prend l'offre Pro que lorsqu'un plafond approche
+(F14, révisé le 23 octobre 2026) : l'offre gratuite ne fait aucune
+sauvegarde, que remplace la sauvegarde de la nuit vers S3, images comprises,
+et ne met le projet en sommeil qu'après une semaine sans activité.
 
 La décision serait rouverte si l'accès de classe ne pouvait pas être tenu
 avec les comptes de Supabase, ou si la production du PDF ne tenait pas chez
