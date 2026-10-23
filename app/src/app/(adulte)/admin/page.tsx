@@ -8,6 +8,7 @@ import {
   basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerLaCouvertureAdmin, retirerPartage,
 } from "./actions";
 import styles from "./admin.module.css";
+import { DeposerCouverture } from "./DeposerCouverture";
 
 export const metadata: Metadata = { title: "Administration" };
 
@@ -133,16 +134,7 @@ export default async function Administration({ searchParams }: { searchParams: P
                   <span className={styles.partage}>
                     {l.surLAccueil ? (
                       <>
-                        <form action="/admin/couverture" method="post" encType="multipart/form-data" className={styles.depot}>
-                          <input type="hidden" name="code" value={l.code} />
-                          <label className={styles.champ}>
-                            <span>{l.couverture ? "Changer de couverture" : "Ajouter sa couverture"}</span>
-                            <input type="file" name="couverture" accept="image/jpeg,image/png,image/webp" required />
-                          </label>
-                          <button type="submit" className="btn btn--petit">
-                            Déposer
-                          </button>
-                        </form>
+                        <DeposerCouverture code={l.code} remplacer={Boolean(l.couverture)} />
                         {l.couverture ? (
                           <form action={retirerLaCouvertureAdmin.bind(null, l.code)}>
                             <button type="submit" className="lien">

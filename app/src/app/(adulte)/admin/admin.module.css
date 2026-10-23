@@ -266,9 +266,25 @@
   align-items: flex-end;
   gap: 8px;
 }
-.depot input[type="file"] {
-  max-width: 230px;
-  font-size: var(--t-xs);
+/* Le champ de fichier est caché : le bouton qui l'ouvre porte le geste, et l'envoi part au choix */
+.choisirImage {
+  position: relative;
+  cursor: pointer;
+}
+.choisirImage[aria-disabled="true"] {
+  opacity: 0.7;
+  cursor: progress;
+}
+.choisirImage:focus-within {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.fichierCache {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
 }
 .livreAccueil .partage {
   flex-wrap: wrap;

@@ -145,8 +145,8 @@ test("F14-AC40 — les livres de l'accueil se choisissent dans l'administration,
     .composite([{ input: await sharp({ create: { width: 1000, height: 1414, channels: 3, background: "#0000c0" } }).png().toBuffer(), left: 1000, top: 0 }])
     .png()
     .toBuffer();
+  // Un seul geste : choisir l'image, l'envoi part aussitôt
   await ligne.locator('input[type="file"]').setInputFiles({ name: "couverture.png", mimeType: "image/png", buffer: entiere });
-  await ligne.getByRole("button", { name: "Déposer" }).click();
   await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("La couverture est sur l’accueil.");
 
   // Un visiteur la voit sur l'accueil, et le livre mène à sa lecture
@@ -165,7 +165,6 @@ test("F14-AC40 — les livres de l'accueil se choisissent dans l'administration,
 
   // Un fichier qui n'est pas une image est refusé
   await ligne.locator('input[type="file"]').setInputFiles({ name: "notes.txt", mimeType: "text/plain", buffer: Buffer.from("rien") });
-  await ligne.getByRole("button", { name: "Déposer" }).click();
   await expect(page.getByRole("alert").filter({ hasText: /./ })).toHaveText("Cette image ne convient pas : JPEG, PNG ou WebP, 4 Mo au plus.");
 
   // Un autre compte ne peut rien déposer ; la couverture d'un livre absent de l'accueil n'existe pas
