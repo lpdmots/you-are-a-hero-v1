@@ -154,7 +154,7 @@ export default async function Accueil() {
                   </span>
                 </Link>
               ) : (
-                <button type="button" className={styles.agrandir} data-agrandir={c.src} data-alt={c.alt} data-note={c.note} aria-label={`Agrandir : ${c.alt}`}>
+                <button type="button" className={styles.agrandir} data-agrandir={c.src} data-alt={c.alt} data-note={c.note} data-ratio={"ratio" in c ? c.ratio : undefined} aria-label={`Agrandir : ${c.alt}`}>
                   <span className={styles.tirage} style={"ratio" in c ? { aspectRatio: c.ratio } : undefined}>
                     <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 600px" />
                   </span>

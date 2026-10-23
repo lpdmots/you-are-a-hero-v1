@@ -26,10 +26,15 @@
 .livre {
   position: relative;
   flex: none;
-  width: min(1040px, calc(100% - 200px));
-  /* L'image du livre a une bande vide en haut (11,7 % de sa hauteur) : le livre remonte d'autant,
-     en partie, pour que le livre entier tienne dans l'écran */
-  margin-top: calc(min(1040px, 100% - 200px) * -0.04);
+  /* Le livre tient en entier sous la barre du haut : sur un écran bas, il réduit (sa partie
+     visible fait 0,595 fois sa largeur, et l'écran lui laisse sa hauteur moins 135 px), sans
+     descendre sous 860 px, où le texte de la page resterait à l'aise */
+  --livre-l: min(1040px, 100% - 200px, max(860px, (100dvh - 135px) * 1.68));
+  width: var(--livre-l);
+  container-type: inline-size;
+  /* L'image du livre a une bande vide en haut (11,7 % de sa hauteur) : le livre en remonte une
+     partie, et sa couverture s'arrête à une quarantaine de points sous la barre */
+  margin-top: calc(var(--livre-l) * -0.05);
   aspect-ratio: 2000 / 1500;
   background: url(/accueil/livre-ouvert.webp) no-repeat center / 100% 100%;
   filter: drop-shadow(0 26px 30px rgba(60, 45, 20, 0.22));
@@ -129,11 +134,14 @@
   height: 68.6%;
   display: flex;
   flex-direction: column;
+  /* Le texte de la page suit la taille du livre : 16 px pour un livre de 1040 px, moins quand il
+     réduit (écran étroit ou bas), pour ne jamais déborder de la page */
+  font-size: clamp(11px, 1.54cqw, 16px);
 }
 .droite h1 {
-  margin-top: 18px;
+  margin-top: 0.7em;
   font-family: var(--f-main);
-  font-size: clamp(1.75rem, 2.45vw, 2.3rem);
+  font-size: 2.3em;
   font-weight: 400;
   line-height: 1.5;
   -webkit-text-stroke: 0.03em currentColor;
@@ -141,13 +149,22 @@
   text-wrap: balance;
 }
 .droite .recit {
-  font-size: 1.04rem;
+  font-size: 1.04em;
   line-height: 1.5;
-  margin-top: 24px;
+  margin-top: 1.1em;
 }
 .droite .choix :is(a:not(:global(.btn)), .principal) {
-  font-size: 0.97rem;
-  padding: 8px 2px;
+  font-size: 0.97em;
+  padding: 0.5em 2px;
+}
+.droite .garanties {
+  font-size: 0.8em;
+}
+/* Le bouton principal suit aussi la taille du livre */
+.droite .principal :global(.btn) {
+  min-height: 0;
+  padding: 0.65em 1.25em;
+  font-size: 1.1em;
 }
 .garanties {
   margin-top: 8px;
@@ -520,10 +537,12 @@
   margin: 0;
 }
 .enGrand img {
+  /* Sa largeur et ses proportions viennent de la capture : sa place est prise avant le chargement */
   display: block;
-  width: 100%;
-  max-height: calc(100dvh - 160px);
+  height: auto;
+  margin: 0 auto;
   object-fit: contain;
+  background: #2a2c2e;
   border-radius: 4px;
 }
 .enGrand figcaption {
@@ -1493,6 +1512,7 @@
     position: static;
     width: auto;
     height: auto;
+    font-size: 1rem;
     padding: 22px 6px 14px 4px;
   }
   .droite .choix {

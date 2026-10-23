@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./accueil.module.css";
 
-type Capture = { src: string; alt: string; note: string };
+type Capture = { src: string; alt: string; note: string; ratio: string };
 
 /**
  * Les captures du passage 12 s'ouvrent en grand au clic (demandé par le porteur le 23 octobre
@@ -24,7 +24,7 @@ export function CapturesEnGrand() {
       // Sur téléphone, la capture prend déjà toute la largeur : l'agrandir n'apporterait rien
       if (!bouton || window.matchMedia("(max-width: 980px)").matches) return;
       aLaSouris.current = evenement.detail > 0;
-      setCapture({ src: bouton.dataset.agrandir ?? "", alt: bouton.dataset.alt ?? "", note: bouton.dataset.note ?? "" });
+      setCapture({ src: bouton.dataset.agrandir ?? "", alt: bouton.dataset.alt ?? "", note: bouton.dataset.note ?? "", ratio: bouton.dataset.ratio ?? "16 / 10" });
       fenetre.current?.showModal();
     };
     rangee.addEventListener("click", ouvrir);
@@ -55,7 +55,12 @@ export function CapturesEnGrand() {
         <figure>
           {/* L'original, sans passer par l'optimisation de Next : il se lit en grand */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={capture.src} alt={capture.alt} />
+          {/* Ses proportions réservent sa place avant qu'elle soit chargée : la légende ne saute pas */}
+          <img
+            src={capture.src}
+            alt={capture.alt}
+            style={{ aspectRatio: capture.ratio, width: `min(100%, calc((100dvh - 160px) * (${capture.ratio})))` }}
+          />
           <figcaption>{capture.note}</figcaption>
         </figure>
       ) : null}
