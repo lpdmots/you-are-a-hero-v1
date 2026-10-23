@@ -3305,6 +3305,15 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   informations publiques ; reçus et factures envoyés, pied de facture de la
   micro-entreprise. Vrai achat d'un pass et d'une recharge, remboursés, en mode
   d'emploi dans `app/README.md` (« Essayer l'étape 9 », point 4).
+  **Vrai achat fait le 23 octobre 2026,** par le porteur, avec sa carte, les
+  prix ramenés le temps de l'essai à 1 € (`npm run prix`) : un pass et une
+  recharge payés, le pass et les étoiles crédités, deux avis de Stripe reçus
+  (réponse 200), reçu et facture envoyés avec le pied de la micro-entreprise,
+  ventes du mois dans l'administration. Apple Pay ne paraît que dans Safari
+  avec une carte dans Cartes, Google Pay dans Chrome. La facture de Stripe dit
+  « Montant dû » et « Payer en ligne » même payée (son fonctionnement) ; le
+  reçu, au même numéro, dit « payé ». Vu en chemin : l'objet anglais du
+  modèle « Magic Link » de la vraie base, à recoller chez Supabase.
 
 ## Hors de la première livraison
 
