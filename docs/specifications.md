@@ -11309,6 +11309,13 @@ découvre l'outil, et le porteur, administrateur.
   n'existant pas encore (une étape d'achat à la création, idée du porteur, écartée sur
   recommandation : pass payé avant de savoir si le projet vivra, contraire à « essayer, puis
   payer ») ; interrupteur éteint, ni le lien ni la phrase.
+- **F14-AC44 — Le merci de la recharge** (demandé par le porteur le 23 octobre 2026, pendant le
+  vrai achat) : étant donné M. Bernard à 30 ✦ qui recharge depuis « Mon compte », ou depuis le
+  dialogue « Vous n'avez plus d'étoiles » ouvert dans une scène, lorsque le paiement est reçu,
+  alors il revient sur cette page même, et un dialogue « Merci ! Vos étoiles sont arrivées » dit
+  « +100 ✦ », son nouveau solde, ce que paient les étoiles et que la facture arrive par courriel,
+  avec « Continuer » ; plus court que le merci du pass, sans image de livre. Avant, la recharge
+  ramenait toujours à « Mon compte », avec une phrase passagère.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

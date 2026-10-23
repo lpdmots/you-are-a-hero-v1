@@ -103,6 +103,10 @@ test("F14-AC38 — « Paiement ouvert » allumé, à 0 ✦ : l'aide refusée ouv
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
   await page.getByRole("button", { name: "Payer" }).click();
   await expect.poll(async () => (await sql<{ etoiles: number }>("select etoiles from public.enseignants where id = $1", [s.compte.id]))[0].etoiles).toBe(100);
+  // Payée, elle revient sur la scène, où s'ouvre son merci (F14-AC44)
+  await expect(page).toHaveURL(new RegExp(`/projet/${s.projet}/scene/${s.scene}$`));
+  await expect(dialogue.getByRole("heading", { name: "Merci ! Vos étoiles sont arrivées" })).toBeVisible();
+  await expect(dialogue).toContainText("+100 ✦Votre solde : 100 ✦");
 });
 
 test("F14-AC11 — le compte du porteur : aucun solde dans « Mon compte », l'aide part à 0 ✦", async ({ page }) => {

@@ -140,7 +140,8 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   await page.getByRole("button", { name: /Recharger/ }).click();
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
   await page.getByRole("button", { name: "Payer" }).click();
-  await expect(MESSAGE(page)).toContainText("Vos étoiles sont arrivées.");
+  await expect(page.getByRole("alertdialog").getByRole("heading", { name: "Merci ! Vos étoiles sont arrivées" })).toBeVisible();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Continuer" }).click();
   expect(await solde(id)).toBe(avantPass + 500);
   expect((await sql<{ n: number }>("select count(*)::int as n from public.paiements where enseignant_id = $1", [id]))[0].n).toBe(2);
   await porteur.close();

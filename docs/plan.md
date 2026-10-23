@@ -3289,7 +3289,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   au bas des réglages du projet, le titre retapé, pour de bon (F14-AC42 ; la
   barre du haut quitte aussitôt le projet supprimé) ; le pass à portée avant
   la limite, « Pass du livre » près du décompte des scènes, et la phrase du
-  livre gratuit à la création (F14-AC43).
+  livre gratuit à la création (F14-AC43). Puis, pendant le vrai achat : le merci
+  de la recharge, sur la page d'où l'on a rechargé (F14-AC44).
 - **Reste à la charge du porteur, hors de la construction :** créer le compte
   Stripe (mode d'essai), le seau S3 et son accès limité, les réglages SES et
   DNS, la vérification chez Google ; pour allumer « Paiement ouvert », l'entité

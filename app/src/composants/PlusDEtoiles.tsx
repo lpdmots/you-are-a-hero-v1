@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { acheterUneRecharge, offreDeRecharge } from "@/app/(adulte)/projet/actions-paiement";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
@@ -82,6 +83,54 @@ export function PlusDEtoiles() {
           <strong>{enEuros(offre.prix)}</strong> une fois
         </p>
       </div>
+    </Dialogue>
+  );
+}
+
+/**
+ * Au retour d'une recharge payée (F14-AC44) : un merci, sur la page d'où l'on a rechargé, avec
+ * les étoiles reçues et le nouveau solde ; plus court que celui du pass, sans image de livre.
+ * L'adresse porte `recharge=100` ; elle se nettoie aussitôt, sans relire la page.
+ */
+export function MerciDeLaRecharge({ solde }: { solde: number | null }) {
+  const recu = useSearchParams().get("recharge");
+  const [vu, setVu] = useState<string | null>(null);
+  const [etoiles, setEtoiles] = useState<number | null>(null);
+  if (recu && recu !== vu) {
+    setVu(recu);
+    setEtoiles(/^\d{1,5}$/.test(recu) ? Number(recu) : null);
+  }
+  useEffect(() => {
+    if (!recu) return;
+    const adresse = new URL(window.location.href);
+    adresse.searchParams.delete("recharge");
+    window.history.replaceState(window.history.state, "", `${adresse.pathname}${adresse.search}`);
+  }, [recu]);
+  if (etoiles === null) return null;
+  const fermer = () => setEtoiles(null);
+  return (
+    <Dialogue
+      titre="Merci ! Vos étoiles sont arrivées"
+      fermer={null}
+      onFermer={fermer}
+      boutons={
+        <button type="button" className="btn btn--primaire" onClick={fermer}>
+          Continuer
+        </button>
+      }
+    >
+      <div className={styles.etoiles}>
+        <p>
+          <span className={styles.gain}>+{etoiles} ✦</span>
+          {solde !== null ? (
+            <>
+              Votre solde : <strong>{solde} ✦</strong>
+            </>
+          ) : null}
+        </p>
+        <p className={styles.usage}>Pour les aides IA de tous vos projets : correction, idées, images.</p>
+      </div>
+      <p className={styles.rien}>La facture vous arrive par courriel.</p>
     </Dialogue>
   );
 }

@@ -99,8 +99,13 @@ test("F14-AC19 — recharger depuis « Mon compte » ; l'avis de Stripe reçu de
   // Puis le retour par la page de paiement : rien de plus
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
   await page.getByRole("button", { name: "Payer" }).click();
-  await expect(page).toHaveURL(/\/compte/);
-  await expect(page.locator(".message")).toContainText("Vos étoiles sont arrivées.");
+  // Le merci, sur « Mon compte » d'où l'on a rechargé ; l'adresse se nettoie (F14-AC44)
+  await expect(page).toHaveURL(/\/compte$/);
+  const merci = page.getByRole("alertdialog");
+  await expect(merci.getByRole("heading", { name: "Merci ! Vos étoiles sont arrivées" })).toBeVisible();
+  await expect(merci).toContainText(`+100 ✦Votre solde : ${avantSolde + 100} ✦`);
+  await merci.getByRole("button", { name: "Continuer" }).click();
+  await expect(merci).toHaveCount(0);
   expect(await solde(m.compte)).toBe(avantSolde + 100);
   await expect(page.getByText(`Il vous reste ${avantSolde + 100} ✦ pour les aides.`)).toBeVisible();
 });

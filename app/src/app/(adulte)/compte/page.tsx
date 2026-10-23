@@ -9,7 +9,6 @@ import { MonCompte } from "./MonCompte";
 export const metadata: Metadata = { title: "Mon compte" };
 
 const MESSAGES: Record<string, string> = {
-  recharge: "Vos étoiles sont arrivées.",
   adresse: "Votre nouvelle adresse est confirmée. Entrez désormais avec elle.",
   "adresse-une": "Lien accepté. Ouvrez aussi celui envoyé à l’autre adresse.",
   "adresse-refusee": "Ce lien ne vaut plus. Demandez-en un nouveau.",
@@ -34,7 +33,7 @@ export default async function PageMonCompte({ searchParams }: { searchParams: Pr
       porteur={enseignant.createur}
       motDePasse={aUnMotDePasse(data.user)}
       adresseEnAttente={data.user?.new_email ?? null}
-      // Au retour d'une recharge payée (F14-AC19) ou d'un lien de changement d'adresse
+      // Au retour d'un lien de changement d'adresse ; le merci d'une recharge est un dialogue (F14-AC44)
       message={message ? MESSAGES[message] : undefined}
     />
   );

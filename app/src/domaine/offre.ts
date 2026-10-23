@@ -49,6 +49,18 @@ export function lireOffre(o: Record<string, unknown> | null | undefined): Offre 
   };
 }
 
+/** Une page de ce site, et rien d'autre : un retour de paiement n'envoie jamais ailleurs. */
+export const pageDuSite = (chemin: unknown, parDefaut: string): string =>
+  typeof chemin === "string" && /^\/(?!\/)[^\s\\]{0,300}$/.test(chemin) ? chemin : parDefaut;
+
+/** La page de retour, avec `cle=valeur` ajouté à ses paramètres. */
+export function avecParametre(page: string, cle: string, valeur: string): string {
+  const [chemin, recherche = ""] = page.split("?");
+  const p = new URLSearchParams(recherche);
+  p.set(cle, valeur);
+  return `${chemin}?${p.toString()}`;
+}
+
 /** « 20 € », « 4,50 € » : un prix en centimes, dit en euros. */
 export function enEuros(centimes: number): string {
   const euros = centimes / 100;

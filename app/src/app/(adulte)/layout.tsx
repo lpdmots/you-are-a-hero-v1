@@ -1,9 +1,9 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { AidesIa } from "@/composants/AidesIa";
 import { BarreAdulte } from "@/composants/BarreAdulte";
 import { Messages } from "@/composants/Messages";
 import { OffreDuPass } from "@/composants/OffreDuPass";
-import { PlusDEtoiles } from "@/composants/PlusDEtoiles";
+import { MerciDeLaRecharge, PlusDEtoiles } from "@/composants/PlusDEtoiles";
 import { ProjetCourant } from "@/composants/ProjetCourant";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { projetDe } from "@/serveur/lectures";
@@ -22,6 +22,10 @@ export default async function EspaceAdulte({ children }: { children: ReactNode }
           <OffreDuPass />
           {/* La recharge, quand une aide est refusée faute d'étoiles (F14-AC38) */}
           <PlusDEtoiles />
+          {/* Le merci d'une recharge payée, sur la page d'où l'on a rechargé (F14-AC44) */}
+          <Suspense fallback={null}>
+            <MerciDeLaRecharge solde={enseignant.etoiles} />
+          </Suspense>
         </AidesIa>
       </ProjetCourant>
     </Messages>

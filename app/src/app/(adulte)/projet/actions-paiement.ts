@@ -1,6 +1,7 @@
 "use server";
 
 import { headers } from "next/headers";
+import { pageDuSite } from "@/domaine/offre";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { adresseRepere } from "@/domaine/visuels";
 import { exigerEnseignant } from "@/serveur/adulte";
@@ -21,9 +22,6 @@ type Reponse = { ok: true; adresse: string } | { ok: false; erreur: string };
 const FERME = "Les achats ne sont pas ouverts.";
 const PAS_OUVERT = "Le paiement n’a pas pu s’ouvrir. Réessayez dans un moment.";
 
-/** Une page de ce site, et rien d'autre : un abandon n'envoie jamais ailleurs. */
-const pageDuSite = (chemin: unknown, parDefaut: string): string =>
-  typeof chemin === "string" && /^\/(?!\/)[^\s\\]{0,300}$/.test(chemin) ? chemin : parDefaut;
 
 /**
  * L'image du projet sur la page de Stripe, qui doit pouvoir la lire : l'image importée, par un
@@ -81,12 +79,14 @@ export async function acheterUneRecharge(retour?: string): Promise<Reponse> {
   const offre = await offreActuelle();
   if (!offre.paiementOuvert || e.createur || !paiementInstalle()) return { ok: false, erreur: FERME };
   const site = adresseDuSite((await headers()).get("host"));
+  // Payée, elle ramène où l'on était, avec son merci (F14-AC38, AC44) ; abandonnée, là aussi
+  const page = pageDuSite(retour, "/compte");
   const adresse = await ouvrirLePaiement({
     achat: "recharge", enseignantId: e.id, courriel: e.courriel, montant: offre.prixDeLaRecharge,
     libelle: `Recharge de ${offre.etoilesDeLaRecharge} étoiles pour les aides IA`,
     description: `${offre.etoilesDeLaRecharge} étoiles ✦ ajoutées à votre compte, pour les aides IA de tous vos projets.`,
-    merci: `${site}/paiement/merci`,
-    abandon: `${site}${pageDuSite(retour, "/projets")}`,
+    merci: `${site}/paiement/merci?retour=${encodeURIComponent(page)}`,
+    abandon: `${site}${page}`,
   });
   return adresse ? { ok: true, adresse } : { ok: false, erreur: PAS_OUVERT };
 }
