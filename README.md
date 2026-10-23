@@ -594,9 +594,10 @@ avant de commencer » soient tranchées.
   depuis le lecteur par lien (F14-AC34) ; pied des pages publiques refait.
   En ligne le 23 octobre : vraie base sauvegardée, migration appliquée (ne
   plus la modifier), code poussé par lui jusqu'à `bb4261b`, Next.js 16.4.2
-  compris. Restent : choisir les deux livres et déposer leurs couvertures
-  dans l'administration en ligne, retirer `LIVRES_DE_L_ACCUEIL` chez Vercel,
-  la critique finale en deux lectures.
+  compris, puis ses retouches (premier écran, tablette, dépôt des
+  couvertures réduit dans le navigateur) jusqu'à `2c9ffe5`. Restent :
+  déposer les deux couvertures dans l'administration en ligne, retirer
+  `LIVRES_DE_L_ACCUEIL` chez Vercel, la critique finale en deux lectures.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
