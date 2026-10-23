@@ -595,9 +595,12 @@ avant de commencer » soient tranchées.
   En ligne le 23 octobre : vraie base sauvegardée, migration appliquée (ne
   plus la modifier), code poussé par lui jusqu'à `bb4261b`, Next.js 16.4.2
   compris, puis ses retouches (premier écran, tablette, dépôt des
-  couvertures réduit dans le navigateur) jusqu'à `2c9ffe5`. Restent :
-  déposer les deux couvertures dans l'administration en ligne, retirer
-  `LIVRES_DE_L_ACCUEIL` chez Vercel, la critique finale en deux lectures.
+  couvertures réduit dans le navigateur) jusqu'à `2c9ffe5`. Critique
+  finale faite et close le 23 octobre (27/40 et 29/40 ; le 12 en six
+  captures, « vous guide et vous aide », « 20 € par livre », « Créer un
+  compte » dans l'en-tête, aperçu de partage), en ligne jusqu'à `5857338`.
+  Restent : déposer les deux couvertures dans l'administration en ligne,
+  retirer `LIVRES_DE_L_ACCUEIL` chez Vercel.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
