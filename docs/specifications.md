@@ -10838,8 +10838,18 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
 - **Formule payante : un pass par livre.** Payé une fois, il lève pour
   toujours les limites gratuites du projet pour lequel on l'achète et donne un
   lot de crédits d'IA ; des recharges de crédits s'achètent à tout moment.
-  Montants proposés pour fixer les idées, à décider avec le paiement : 20 € le
-  pass, 400 crédits compris ; 5 € la recharge de 100 crédits. Ce qui a de la
+  Montants décidés par le porteur le 23 octobre 2026, sur une analyse des coûts
+  mesurés : 20 € le pass, 400 étoiles comprises ; 5 € la recharge de 100
+  étoiles ; 30 étoiles offertes, 40 scènes et 10 images gratuites gardées.
+  Analyse : 400 étoiles coûtent au plus 4 € (une étoile ne dépasse jamais un
+  centime de coût réel ; de 1,50 à 3 € selon les aides, d'après les coûts
+  mesurés à l'étape 8) ; Stripe prend de 0,63 à 0,89 € sur un pass (carte
+  européenne standard ou premium, facture comprise, tarifs relevés le
+  23 octobre 2026), de 0,35 à 0,41 € sur une recharge ; il reste au moins
+  15 € par pass et 3,60 € par recharge avant les cotisations de la
+  micro-entreprise. Aucune donnée de marché ne fonde ces prix : les premières
+  ventes, dans l'administration, diront s'il faut les revoir, à un seul
+  endroit (F14-AC21). Ce qui a de la
   valeur pour l'enseignant est le livre entier, que l'IA complète : vendre
   seulement des crédits ferait payer le complément et laisserait gratuit
   l'essentiel. Alternatives écartées : un abonnement annuel par enseignant
@@ -11281,9 +11291,7 @@ découvre l'outil, et le porteur, administrateur.
   marque grise « Pass du livre », et son autre projet aucune, ni « gratuit » ni « premium » ;
   interrupteur éteint, aucune carte ne la porte ; les projets du porteur ne la portent jamais.
 
-**Questions ouvertes :** les prix du pass et des recharges, et le nombre
-d'étoiles du pass, hypothèses à fixer avant d'allumer « Paiement ouvert » ;
-le médiateur de la consommation, à la charge du porteur (l'entité qui
+**Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026) ; la relecture juridique des
 textes ; le paiement des mairies sur bon de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
 et l'adresse sont retenus ; le dépôt de la marque ; un pass pour tous les
