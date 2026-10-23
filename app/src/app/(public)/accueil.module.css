@@ -1368,7 +1368,7 @@
 }
 /* La photo des livres imprimés, en 4:3 comme sa prise de vue, sur grand écran comme sur téléphone */
 .photo {
-  width: 520px;
+  width: min(520px, 100%);
   aspect-ratio: 4 / 3;
   transform: rotate(-1.6deg);
 }
@@ -1446,7 +1446,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  max-width: 30ch;
+  max-width: min(30ch, 100%);
   font-family: var(--f-main);
   font-size: 1.02rem;
   line-height: 1.6;
@@ -1461,20 +1461,42 @@
 
 /* ——— Écrans moyens : le milieu perd sa colonne de gauche ——— */
 @media (max-width: 1180px) {
-  /* Le 40 : la mascotte passe sous la fiche */
+  /* Le 40 : le feuillet à gauche, sur deux rangs ; à droite la fiche, et l'animal juste dessous */
   .quarante {
     grid-template-columns: var(--page-l) minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: start;
+    row-gap: 0;
   }
-  .quarante .mascotte {
-    grid-column: 2;
-    grid-row: 2;
-    justify-self: center;
-    width: 200px;
-    margin-bottom: 0;
+  .quarante .feuillet {
+    grid-column: 1;
+    grid-row: 1 / span 2;
   }
   .quarante .cote {
     grid-column: 2;
     grid-row: 1;
+  }
+  .quarante .mascotte {
+    grid-column: 2;
+    grid-row: 2;
+    /* À gauche, sous la fiche : le crayon posé à son coin droit reste dégagé */
+    justify-self: start;
+    align-self: start;
+    width: 200px;
+    height: 240px;
+    margin: 0;
+  }
+  .quarante .dragon40 {
+    height: 240px;
+  }
+  /* Le 52 : la souris reste dans l'écran, sous le coin grignoté ; le dragon, plus petit */
+  .souris {
+    left: -6px;
+  }
+  .dragonDort {
+    width: 270px;
+    height: 205px;
+    margin-left: -40px;
   }
   .auMilieu {
     grid-template-columns: var(--page-l) minmax(0, 1fr);
