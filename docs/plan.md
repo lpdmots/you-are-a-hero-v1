@@ -150,7 +150,7 @@ du 3 octobre 2026 ; ils sont à revérifier au moment du choix.
 | --- | --- | --- |
 | Hébergement de l'application | **Vercel**, à son adresse par défaut et sans nom de domaine, décidé le 8 octobre 2026, sur un forfait Pro déclaré par le porteur et non vérifié. | Décidé. |
 | Base, comptes et fichiers | **Supabase**, en souscription directe, décidé le 8 octobre 2026 ([ADR 0004](adr/0004-vercel-et-supabase.md)). | Décidé. |
-| Offre de la base | **Offre gratuite jusqu'au premier utilisateur autre que le porteur, puis Supabase Pro**, décidé le 20 octobre 2026 (F14) ; jusque-là, le porteur veille à la mise en sommeil. | Décidé. |
+| Offre de la base | **Offre gratuite tant que l'usage le permet, Supabase Pro vers 70 % d'un plafond**, révisé le 23 octobre 2026 (F14), à la place de Pro dès le premier collègue (20 octobre) ; le porteur lit l'usage chaque mois. | Décidé. |
 | Sauvegarde | **Chaque nuit vers un seau S3 du compte AWS du porteur, à Paris,** par GitHub Actions, base et images, quatre-vingt-dix jours, décidé le 20 octobre 2026 (F14). | Étape 9, lot 8. |
 | Domaines et courriels | `iletaituneclasse.com` (adresse principale, choisie le 20 octobre 2026), `iletaituneclasse.fr` et `onceuponaclassroom.com` en renvoi, chez OVH, enregistrés le 20 octobre 2026 ; courriels de l'application par Amazon SES. | Étape 9, lot 1. |
 | Région des données | Paris, pour la base (Supabase, `eu-west-3`) comme pour les fonctions (Vercel, `cdg1`), depuis le 9 octobre 2026. | Fait. |
@@ -3075,7 +3075,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   une fois, et des recharges d'étoiles, par Stripe Checkout et par carte ;
   des étoiles débitées au coût réel, 30 offertes à un nouveau compte, à la
   place de tout quota ; Supabase Pro dès le premier utilisateur autre que le
-  porteur ; une sauvegarde chaque nuit vers un seau S3 du porteur ; un nom
+  porteur (révisé le 23 octobre 2026 : l'offre gratuite tant que l'usage le
+  permet) ; une sauvegarde chaque nuit vers un seau S3 du porteur ; un nom
   par langue, une seule application ; des pages publiques ; des pages
   d'administration pour le porteur ; suppression du compte, d'une classe
   passée, de la corbeille, et des comptes inactifs depuis cinq ans.
@@ -3219,7 +3220,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     en local ;
   - la suppression du compte d'essai efface tout.
   Les classes ne se rejouent pas : elles sont éprouvées aux étapes 1 à 7.
-  Supabase Pro se prend au premier vrai collègue, non pour l'essai.
+  Supabase Pro ne se prend que lorsqu'un plafond de l'offre gratuite
+  approche (F14, révisé le 23 octobre 2026).
 - **Essai et mise en ligne, 21 et 22 octobre 2026,** dans l'ordre de
   `app/README.md`, élément par élément, avec le porteur :
   - **En local, « Paiement ouvert » allumé :** compte d'une seconde adresse,
@@ -3356,8 +3358,8 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
 ## Coûts
 
 - **Développement :** aucun achat ; le temps du porteur, dit plus haut.
-- **Exploitation :** rien pour la base avant le premier utilisateur autre
-  que le porteur, puis Supabase Pro (25 dollars par mois au 19 octobre 2026) ;
+- **Exploitation :** rien pour la base tant que l'usage tient dans l'offre
+  gratuite, puis Supabase Pro (25 dollars par mois au 19 octobre 2026) ;
   l'usage de Vercel au-delà de ce que couvre le forfait existant, chaque
   recalcul de l'aperçu étant un rendu côté serveur ; un traitement séparé pour
   le PDF si V2 échoue ; les appels aux aides IA, payés en étoiles par les

@@ -10914,12 +10914,21 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   compte inactif dit que ses livres partagés ne seront plus lisibles. Le pass
   étant payé une fois, aucune fin d'offre ne coupe un lien ; seule la version
   partagée actuelle est gardée (F12.1).
-- **Hébergement de la base.** Supabase reste en offre gratuite jusqu'au
-  premier utilisateur autre que le porteur ; il prend alors l'offre payante
-  (Pro, 25 dollars par mois au 19 octobre 2026 : une sauvegarde par jour,
-  gardée sept jours, sans mise en sommeil). Jusque-là, il veille à ce que la
-  base ne se mette pas en sommeil. Alternative écartée, plus compliquée :
-  rester en offre gratuite avec une mesure de l'usage et un seuil de passage.
+- **Hébergement de la base : l'offre gratuite, tant que l'usage le permet.**
+  Révisé par le porteur le 23 octobre 2026, sur recommandation : Supabase
+  reste en offre gratuite, même avec d'autres enseignants, et ne passe à
+  l'offre payante (Pro, 25 dollars par mois au 19 octobre 2026) que lorsqu'un
+  de ses plafonds approche, vers 70 % : le stockage des fichiers (images et
+  PDF, le premier attendu), le trafic sortant du mois (les images des livres
+  lus en ligne) ou la taille de la base. Le porteur lit ces chiffres une fois
+  par mois dans la page « Usage » de Supabase ; les plafonds se revérifient
+  sur ses tarifs. Ce qui motivait Pro dès le premier collègue ne tient plus :
+  la sauvegarde de la nuit vers S3, images comprises, remplace ses
+  sauvegardes quotidiennes, et une base où l'on travaille chaque jour, que la
+  sauvegarde de la nuit lit aussi, ne reste pas une semaine sans activité,
+  seule cause de mise en sommeil (non vérifié chez Supabase). Révise la
+  décision du 20 octobre 2026 (Pro dès le premier utilisateur autre que le
+  porteur), qui écartait la mesure de l'usage comme plus compliquée.
 - **Sauvegarde automatique, base et images.** Les images et les PDF sont
   stockés chez Supabase en un seul exemplaire : ni la sauvegarde à la main ni
   celles de l'offre payante ne les copient. Une sauvegarde automatique, chaque
@@ -10931,8 +10940,8 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   « Confidentialité » ; l'accès qui dépose dans le seau ne peut ni lire ni
   effacer ; la restauration reprend une sauvegarde du seau ; une nuit
   manquée prévient le porteur par courriel. Elle remplace la sauvegarde à la
-  main décidée le 8 octobre 2026 ; les sauvegardes quotidiennes de
-  Supabase Pro, gardées sept jours, restent à côté. AWS s'ajoute aux services
+  main décidée le 8 octobre 2026 ; celles de Supabase Pro, gardées sept
+  jours, s'y ajouteront s'il est pris (« Hébergement de la base »). AWS s'ajoute aux services
   de la page « Confidentialité ». Le porteur crée le seau et l'accès, au
   moment de construire. Alternatives écartées : une copie des images sur son
   ordinateur à chaque sauvegarde à la main, qui l'ennuyait ; aucune copie.

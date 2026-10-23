@@ -1775,8 +1775,9 @@ lots dans le [plan](plan.md#étape-9--ouverture-à-dautres-enseignants).
   L'inscription publique demande donc un service d'envoi : Amazon SES,
   retenu parce que le porteur a un compte AWS, après vérification du domaine
   et sortie du mode d'essai accordée par AWS.
-- **Sauvegardes.** Supabase Pro (25 dollars par mois) garde une sauvegarde
-  quotidienne sept jours et ne met pas un projet en sommeil ; ses
+- **Sauvegardes.** Supabase Pro (25 dollars par mois), pris seulement quand
+  un plafond de l'offre gratuite approche (F14, 23 octobre 2026), garde une
+  sauvegarde quotidienne sept jours et ne met pas un projet en sommeil ; ses
   sauvegardes, comme `npm run sauvegarder`, ne contiennent pas les fichiers
   du stockage ([sauvegardes](https://supabase.com/docs/guides/platform/backups)).
   La sauvegarde nocturne tourne dans GitHub Actions, qui dispose de Docker
