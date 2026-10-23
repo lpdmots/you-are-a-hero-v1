@@ -487,10 +487,41 @@ d'essai de Stripe dans `.env.local`, lot 5) :
 7. « Mon compte », « Supprimer mon compte » : le compte, ses projets et son livre
    partagé disparaissent ; « Administration » ne le liste plus.
 
-**4. Le jour de l'ouverture de la vente**, plus tard : les prix fixés, le médiateur de la
-consommation nommé dans les conditions, « Paiement ouvert » allumé ; puis un vrai achat
-d'une recharge, remboursé depuis Stripe : le reçu et sa facture arrivent, l'avis inscrit
-le paiement (« Administration », ventes du mois). Seuls les frais de Stripe restent dus.
+**4. Un vrai achat en ligne, puis remboursé** (préparé le 23 octobre 2026, les prix décidés
+et Stripe vérifié en mode réel). C'est le porteur qui paie, avec sa carte. Seul un compte
+autre que le sien peut acheter, et seulement « Paiement ouvert » allumé : la vente s'ouvre
+le temps de l'essai, une quinzaine de minutes, puis se referme. Pendant ce temps, les
+limites gratuites valent pour tous les comptes.
+
+1. **Le compte acheteur.** Dans une fenêtre privée, à `iletaituneclasse.com`, « Créer un
+   compte » avec une seconde adresse (celle de La Poste) ; ouvrir le lien du courriel ;
+   « Mon compte » dit 30 ✦. Créer un projet personnel, « Essai d'achat », avec une scène.
+2. **Ouvrir la vente.** Dans la fenêtre ordinaire, avec son compte : « Mon compte »,
+   « Administration », « Paiement ouvert » : « Allumer ».
+3. **Le pass.** Fenêtre privée : « Essai d'achat », « Réglages du projet », section
+   « Pass du livre », « Acheter le pass · 20 € ». Sur la page de Stripe : 20 €, le nom du
+   livre, la case « Je demande l'accès immédiat et renonce à mon droit de rétractation »,
+   obligatoire ; payer par carte (ou Apple Pay depuis Safari). Au retour : le dialogue de
+   remerciement ; les réglages disent « Reçu le … » ; « Mes projets » montre « Pass du
+   livre » sur la carte ; « Mon compte » dit 430 ✦.
+4. **La recharge.** « Mon compte », « Recharger · 5 € pour 100 ✦ », payer : 530 ✦.
+5. **Les courriels.** Dans la boîte de la seconde adresse : deux reçus de Stripe et deux
+   factures, au nom de Yohann Coussot, avec l'adresse, le SIRET et « TVA non applicable,
+   art. 293 B du CGI ».
+6. **L'avis de Stripe.** Tableau de bord Stripe, mode réel, Développeurs, Webhooks,
+   l'adresse `https://iletaituneclasse.com/paiement/avis` : deux événements
+   `checkout.session.completed`, réponse 200. (La page de remerciement inscrit aussi le
+   paiement ; l'avis arrivé ensuite ne crédite rien une seconde fois, F14-AC19.)
+7. **L'administration.** Fenêtre ordinaire, « Administration » : ventes du mois
+   25 € (1 pass · 1 recharge) ; la fiche du compte acheteur : 530 ✦, le pass de « Essai
+   d'achat ».
+8. **Refermer la vente** : « Paiement ouvert » : « Éteindre ».
+9. **Rembourser.** Stripe, Paiements : chaque paiement, « Rembourser », montant entier.
+   L'application n'en sait rien : le pass et les étoiles restent au compte acheteur.
+   Stripe garde ses frais, environ 1 € pour les deux achats.
+10. **Effacer le compte acheteur** : fenêtre privée, « Mon compte », « Supprimer mon
+   compte ». Les deux ventes restent dans l'administration, sans nom (les ventes survivent
+   au compte, lot 5) : les 25 € d'octobre sont ceux de l'essai.
 
 ## Sauvegarder et restaurer
 

@@ -3294,6 +3294,11 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   moyens de paiement (la carte, Apple Pay et Google Pay), les coordonnées
   publiques de la micro-entreprise (nom, adresse, téléphone) et le bas de
   page de la facture, vérifiés comme en mode d'essai.
+  **Vérifié avec lui en mode réel le 23 octobre 2026 :** compte validé
+  (identité, compte bancaire) ; la carte, Apple Pay et Google Pay seuls ;
+  informations publiques ; reçus et factures envoyés, pied de facture de la
+  micro-entreprise. Vrai achat d'un pass et d'une recharge, remboursés, en mode
+  d'emploi dans `app/README.md` (« Essayer l'étape 9 », point 4).
 
 ## Hors de la première livraison
 
