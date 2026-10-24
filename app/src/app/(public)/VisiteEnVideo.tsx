@@ -10,7 +10,7 @@ import v from "./VisiteEnVideo.module.css";
  * boucle. Un clic sur l'image l'ouvre aussi, un clic hors du cadre la ferme (porteur, 24 octobre 2026). Sans fichier, la fenêtre dit qu'elle arrive (en développement seulement : l'accueil ne
  * montre pas le bouton en production tant que la vidéo n'existe pas).
  */
-export function VisiteEnVideo({ video, sousTitres, duree }: { video: string | null; sousTitres: string | null; duree?: string }) {
+export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sousTitres: string | null }) {
   const fenetre = useRef<HTMLDialogElement>(null);
   const lecteur = useRef<HTMLVideoElement>(null);
   const ouvrir = () => {
@@ -25,6 +25,7 @@ export function VisiteEnVideo({ video, sousTitres, duree }: { video: string | nu
         type="button"
         tabIndex={-1}
         aria-hidden="true"
+        className={v.zone}
         onClick={ouvrir}
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", padding: 0, border: 0, background: "transparent", cursor: "pointer" }}
       />
@@ -34,10 +35,7 @@ export function VisiteEnVideo({ video, sousTitres, duree }: { video: string | nu
             <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
           </svg>
         </span>
-        <span className={v.texte}>
-          Le tour en vidéo
-          {duree ? <span className={v.duree}>{duree}</span> : null}
-        </span>
+        <span className={v.texte}>Le tour en vidéo</span>
       </button>
       <dialog
         ref={fenetre}

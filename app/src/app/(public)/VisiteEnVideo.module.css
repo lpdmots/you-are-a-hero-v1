@@ -1,93 +1,64 @@
-/* Le bouton de la visite en vidéo, sur grand écran : un grand rond de lecture au centre de
-   l'illustration, sa durée dessous (porteur, 24 octobre 2026 : la pastille du bas se voyait mal).
-   Sur téléphone, la pastille dans le coin du bandeau (accueil.module.css) reste : le rond
-   cacherait l'ordinateur des deux enfants. */
+/* Le bouton de la visite en vidéo, sur grand écran : un rond de lecture au centre de
+   l'illustration, son nom dessous, un peu transparents au repos et nets au survol (porteur,
+   24 octobre 2026 : la pastille du bas se voyait mal, le premier grand rond était trop appuyé).
+   Sur téléphone, la pastille dans le coin du bandeau (accueil.module.css) reste : un rond au
+   centre cacherait l'ordinateur des deux enfants. */
 @media (min-width: 981px) {
   .lancer.lancer,
   .lancer.lancer:hover {
     top: 50%;
     bottom: auto;
     left: 50%;
-    transform: translate(-50%, -54%);
+    transform: translate(-50%, -50%);
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     padding: 0;
     background: none;
     box-shadow: none;
   }
+  .lancer {
+    opacity: 0.86;
+    transition: opacity 0.2s var(--ease);
+  }
+  /* survoler l'image, qui ouvre aussi la visite, allume le bouton */
+  .lancer:hover,
+  .lancer:focus-visible,
+  .zone:hover + .lancer {
+    opacity: 1;
+  }
   .rond {
-    position: relative;
     display: grid;
     place-items: center;
-    width: 96px;
-    height: 96px;
+    width: 64px;
+    height: 64px;
     border-radius: 50%;
-    background: var(--canard);
+    background: rgba(11, 106, 115, 0.82);
     box-shadow:
-      0 0 0 5px rgba(255, 253, 248, 0.92),
-      0 16px 32px rgba(20, 30, 30, 0.42);
+      0 0 0 3px rgba(255, 253, 248, 0.75),
+      0 10px 22px rgba(20, 30, 30, 0.32);
     transition:
       transform 0.2s var(--ease),
       background 0.2s var(--ease);
   }
-  .lancer:hover .rond {
-    transform: scale(1.06);
-    background: var(--canard-fonce);
+  .lancer:hover .rond,
+  .zone:hover + .lancer .rond {
+    transform: scale(1.05);
+    background: var(--canard);
   }
   .lancer.lancer svg {
-    width: 46px;
-    height: 46px;
-    margin-left: 6px;
+    width: 30px;
+    height: 30px;
+    margin-left: 4px;
     padding: 0;
     border-radius: 0;
     background: none;
     color: var(--feuille);
   }
-  /* Un halo qui part du rond, deux fois, à l'arrivée sur la page */
-  .rond::after {
-    content: "";
-    position: absolute;
-    inset: -5px;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 253, 248, 0.95);
-    opacity: 0;
-    animation: halo 1.8s var(--ease) 0.9s 2;
-  }
   .texte {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 20px 9px;
-    border-radius: 14px;
-    background: rgba(255, 253, 248, 0.95);
-    box-shadow: 0 6px 18px rgba(30, 25, 10, 0.28);
+    padding: 4px 12px 5px;
+    border-radius: 99px;
+    background: rgba(255, 253, 248, 0.88);
     color: var(--graphite);
-    font: 700 var(--t-l) var(--f-ui);
-    line-height: 1.25;
-  }
-  .duree {
-    font-weight: 600;
-    font-size: var(--t-s);
-    color: var(--graphite-2);
-  }
-}
-@media (max-width: 980px) {
-  .duree {
-    display: none;
-  }
-}
-@keyframes halo {
-  0% {
-    opacity: 0.95;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.65);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .rond::after {
-    animation: none;
+    font: 700 var(--t-s) var(--f-ui);
   }
 }
