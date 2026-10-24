@@ -3327,6 +3327,42 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   réussi ne se règle pas) ; le médiateur ; lire chaque mois l'usage de
   Supabase (F14, « Hébergement de la base »).
 
+### Après l'étape 9 — Référencement, IA et mesure
+
+Demandé par le porteur le 24 octobre 2026, décisions en F14 (« Référencement,
+réponses des IA et mesure d'audience », AC45 à AC51), sans entretien d'étape :
+un audit, trois questions, ses réponses (« ok reco »). Audit du même jour,
+contre le site en ligne : `robots.txt`, plan du site et `llms.txt` absents ;
+site encore indexé nulle part ; les adresses `vercel.app` en double, sans
+adresse canonique hors de l'accueil ; Lighthouse mobile 77, LCP 5,3 s sur le
+titre de l'accueil, dix fichiers de police préchargés (ordinateur : 98,
+1,1 s ; CLS et TBT nuls) ; accueil calculé à chaque visite (0,3 à 0,4 s
+avant le premier octet, 1,1 s à froid) ; aucune donnée structurée ; aucune
+mesure. Quatre lots, en local, un commit par lot, rien poussé sans sa
+demande ; les réglages chez Vercel, Google et Bing lui sont dictés.
+
+1. **Se faire trouver :** `robots.ts` et `sitemap.ts` ; adresse canonique sur
+   chaque page publique ; redirection des deux adresses `vercel.app` dans
+   `next.config.ts`, la tâche de la nuit exceptée ; polices préchargées
+   réduites à celles du premier écran (AC45, AC46).
+2. **Ce que lisent les IA :** `llms.txt` aux prix lus dans les réglages ;
+   données structurées de l'accueil, de l'« Aide » et de la visite en vidéo
+   (AC48). La part de l'accueil attend que l'autre conversation ait
+   enregistré ses changements de `page.tsx`.
+3. **L'accueil en cache :** les renvois de l'adulte connecté et du poste
+   passent dans `proxy.ts`, l'accueil se régénère quand l'administration
+   change ses livres ou l'offre (AC47). Même attente.
+4. **Mesurer :** Web Analytics et Speed Insights sur les pages publiques et
+   les entrées seulement, un point d'envoi `mesurer()` pour les quatre
+   conversions, la page « Confidentialité » réécrite simplement (AC49 à
+   AC51).
+
+À la charge du porteur, dans l'ordre : activer Web Analytics et Speed
+Insights (gratuit, sans « Plus ») et une alerte de dépense chez Vercel ;
+après la mise en ligne, déclarer le plan du site dans Search Console,
+demander l'indexation de l'accueil, importer le site dans Bing Webmaster
+Tools.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

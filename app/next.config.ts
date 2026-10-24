@@ -19,6 +19,9 @@ const FICHIERS_DU_LIVRE = [
   "./node_modules/playwright-core/**",
 ];
 
+/** Les adresses du site avant son nom de domaine (étape 1 et étape 7), renvoyées au .com */
+const ANCIENNES_ADRESSES = ["il-etait-une-classe.vercel.app", "you-are-a-hero-v1.vercel.app"];
+
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   // 90 pour les captures de l'accueil, pleines de petit texte (Next 16 n'accepte que les qualités listées)
@@ -27,6 +30,22 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/livre/**": FICHIERS_DU_LIVRE,
     "/diagnostic/**": FICHIERS_DU_LIVRE,
+  },
+  // Une seule adresse pour le site (F14-AC46) : les deux noms en vercel.app renvoient au .com, à la même
+  // page. La tâche de la nuit, que Vercel appelle, répond sans redirection. Les préversions, à d'autres
+  // noms, ne sont pas touchées.
+  async redirects() {
+    const site = process.env.ADRESSE_SITE?.replace(/\/$/, "");
+    if (process.env.VERCEL_ENV !== "production" || !site) return [];
+    return ANCIENNES_ADRESSES.flatMap((hote) => [
+      { source: "/", has: [{ type: "host" as const, value: hote }], destination: `${site}/`, permanent: true },
+      {
+        source: "/:chemin((?!taches(?:/|$)).+)",
+        has: [{ type: "host" as const, value: hote }],
+        destination: `${site}/:chemin`,
+        permanent: true,
+      },
+    ]);
   },
   async headers() {
     return [

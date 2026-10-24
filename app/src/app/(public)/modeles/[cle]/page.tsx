@@ -11,7 +11,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ cle: string }> }): Promise<Metadata> {
   const m = modeleDe((await params).cle);
-  return m ? { title: m.nom, description: m.pour } : {};
+  return m ? { title: m.nom, description: m.pour, alternates: { canonical: `/modeles/${m.cle}` } } : {};
 }
 
 /** Un modèle (F14-AC33) : lisible ici, à télécharger pour le compléter dans Word ou LibreOffice. */
