@@ -51,7 +51,7 @@ export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sou
         }}
       >
         {video ? (
-          <video ref={lecteur} controls playsInline preload="none">
+          <video ref={lecteur} controls playsInline preload="none" poster={video.replace(/\.mp4$/, ".webp")}>
             <source src={video} type="video/mp4" />
             {/* Sous-titres proposés par le lecteur (bouton CC), pas affichés d'office : ils couvraient l'image (porteur, 24 octobre 2026) */}
             {sousTitres ? <track kind="subtitles" src={sousTitres} srcLang="fr" label="Français" /> : null}

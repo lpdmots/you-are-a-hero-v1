@@ -14,4 +14,6 @@ node outils/mixer.mjs
 (cd "$VIDEO" && "$HOME/Projets/hyperframes-shorts/node_modules/.bin/hyperframes" render --quality high --output "../rendus/$NOM.mp4" | grep -E "completed|rror" || true)
 ffmpeg -hide_banner -loglevel error -y -i "rendus/$NOM.mp4" -c:v libx264 -preset slow -crf 21 -pix_fmt yuv420p -c:a aac -b:a 160k -movflags +faststart "rendus/$NOM-web.mp4"
 cp "$VIDEO"/*.vtt rendus/ 2>/dev/null || true
-ls -la "rendus/$NOM-web.mp4"
+# l'affiche (image d'attente du lecteur et image du VideoObject) : le titre du passage 1 écrit, rien en mouvement
+ffmpeg -hide_banner -loglevel error -y -ss "${AFFICHE:-8.45}" -i "rendus/$NOM.mp4" -frames:v 1 -c:v libwebp -quality 82 "rendus/$NOM.webp"
+ls -la "rendus/$NOM-web.mp4" "rendus/$NOM.webp"

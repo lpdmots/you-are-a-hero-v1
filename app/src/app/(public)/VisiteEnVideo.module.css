@@ -1,15 +1,15 @@
-/* Le bouton de la visite en vidéo, sur grand écran : un rond de lecture au centre de
-   l'illustration, son nom dessous, un peu transparents au repos et nets au survol (porteur,
+/* Le bouton de la visite en vidéo, sur grand écran : un rond de lecture au bas de
+   l'illustration, sur la table, plus calme que le milieu (porteur), son nom dessous, un peu transparents au repos et nets au survol (porteur,
    24 octobre 2026 : la pastille du bas se voyait mal, le premier grand rond était trop appuyé).
    Sur téléphone, la pastille dans le coin du bandeau (accueil.module.css) reste : un rond au
    centre cacherait l'ordinateur des deux enfants. */
 @media (min-width: 981px) {
   .lancer.lancer,
   .lancer.lancer:hover {
-    top: 50%;
-    bottom: auto;
+    top: auto;
+    bottom: 7%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     flex-direction: column;
     gap: 10px;
     padding: 0;
