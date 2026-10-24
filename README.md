@@ -561,6 +561,14 @@ avant de commencer » soient tranchées.
   (`identite/mascotte/`). Restent à décider les moments, dans un plan des
   pages générales (accueil, aide…) à venir, et un nom ; rien n'est construit
   ([design](docs/design.md#fantaisie-et-mascotte-22-octobre-2026)).
+- **Visite en vidéo de l'accueil, faite les 23 et 24 octobre 2026 :**
+  1 min 34 en animation sur les vrais écrans, numérotée comme un livre-jeu
+  (passages 1 à 5), voix de synthèse (Clément, ElevenLabs, choisie par le
+  porteur ; une version anglaise suivra), musique, bruitages, dragon et souris
+  en marionnettes ; durée « une minute trente environ » (F14). Branchée sur
+  « Le tour en vidéo » en local (commit `d9a61a4`, non poussé) ; sources et
+  outils dans [`video/`](video/visite/), méthode dans le skill
+  `video-du-site` (`.claude/skills/`).
 - **Histoires de la V0 en exemple, le 22 octobre 2026 :** à la demande du
   porteur, « Le labyrinthe oublié » et « Électro Nick » (« Alerte : Robots
   Rebelles » dans la V0) sont importés de Sanity, en lecture seule, comme
