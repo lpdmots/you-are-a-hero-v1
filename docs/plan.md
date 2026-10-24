@@ -3344,18 +3344,31 @@ demande ; les réglages chez Vercel, Google et Bing lui sont dictés.
 1. **Se faire trouver :** `robots.ts` et `sitemap.ts` ; adresse canonique sur
    chaque page publique ; redirection des deux adresses `vercel.app` dans
    `next.config.ts`, la tâche de la nuit exceptée ; polices préchargées
-   réduites à celles du premier écran (AC45, AC46).
-2. **Ce que lisent les IA :** `llms.txt` aux prix lus dans les réglages ;
-   données structurées de l'accueil, de l'« Aide » et de la visite en vidéo
-   (AC48). La part de l'accueil attend que l'autre conversation ait
-   enregistré ses changements de `page.tsx`.
-3. **L'accueil en cache :** les renvois de l'adulte connecté et du poste
-   passent dans `proxy.ts`, l'accueil se régénère quand l'administration
-   change ses livres ou l'offre (AC47). Même attente.
+   réduites à celles du premier écran (AC45, AC46). **Construit le
+   24 octobre 2026** (`c6a5bff`) : deux fichiers de police préchargés au lieu
+   de dix ; les entrées, `/classe` et `/lire` restent lisibles par les
+   moteurs, pour que leur « noindex » soit vu.
+2. **Ce que lisent les IA :** `llms.txt` aux prix lus dans les réglages,
+   recomposé au plus toutes les heures ; les questions de l'« Aide » en
+   données structurées (AC48). **Construit le 24 octobre 2026** (`afb0e6b`) ;
+   les données de l'accueil (organisation, site, application et offre,
+   visite en vidéo) sont prêtes dans `DonneesDeLAccueil.tsx`, posées au lot 3.
+   Google ne montre plus de résultat enrichi pour ces questions : elles
+   servent aux autres moteurs.
+3. **L'accueil en cache :** un visiteur sans témoin de session ni de poste
+   reçoit, par une réécriture du proxy, une copie de l'accueil gardée en
+   cache et régénérée par les actions de l'administration (et au plus toutes
+   les heures) ; l'accueil d'aujourd'hui, qui renvoie l'adulte connecté et le
+   poste d'une classe ouverte, reste pour les autres (AC47). Un renvoi fait
+   par le proxy lui-même, essayé d'abord, est écarté : après « Se
+   connecter » ou « Se déconnecter », une action serveur qui renvoie à `/`
+   passe par le proxy sans que l'adresse change (F06-AC53 et F14-AC39 en
+   échec). Attend que l'autre conversation ait enregistré `page.tsx`.
 4. **Mesurer :** Web Analytics et Speed Insights sur les pages publiques et
    les entrées seulement, un point d'envoi `mesurer()` pour les quatre
    conversions, la page « Confidentialité » réécrite simplement (AC49 à
-   AC51).
+   AC51). **Construit le 24 octobre 2026** (`30796d8`) : un compte compte à
+   la confirmation de son adresse, ou à sa première entrée par Google.
 
 À la charge du porteur, dans l'ordre : activer Web Analytics et Speed
 Insights (gratuit, sans « Plus ») et une alerte de dépense chez Vercel ;
