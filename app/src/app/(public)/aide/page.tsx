@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { donneesDeLAide, enJsonLd } from "@/domaine/presentation";
 import { EDITEUR, MODELES, PHRASE_DU_SUPPORT, QUESTIONS } from "@/domaine/textes-publics";
 import { offreActuelle } from "@/serveur/offre";
 import styles from "../public.module.css";
@@ -12,6 +13,8 @@ export default async function Aide() {
   const questions = QUESTIONS.filter((q) => !q.vente || offre.paiementOuvert);
   return (
     <main>
+      {/* Les questions telles qu'affichées, pour les moteurs et les IA (F14-AC48) */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: enJsonLd(donneesDeLAide(questions)) }} />
       <article className={styles.texte}>
         <h1>Aide</h1>
         <p className={styles.chapeau}>Les questions qui reviennent, les modèles pour les familles et l’école, et l’adresse pour écrire au créateur.</p>
