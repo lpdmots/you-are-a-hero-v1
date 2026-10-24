@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import styles from "./accueil.module.css";
+import v from "./VisiteEnVideo.module.css";
 
 /**
  * La visite en vidéo de l'accueil (design.md, « Accueil en livre-jeu ») : un bouton sur l'image de
@@ -9,7 +10,7 @@ import styles from "./accueil.module.css";
  * boucle. Un clic sur l'image l'ouvre aussi, un clic hors du cadre la ferme (porteur, 24 octobre 2026). Sans fichier, la fenêtre dit qu'elle arrive (en développement seulement : l'accueil ne
  * montre pas le bouton en production tant que la vidéo n'existe pas).
  */
-export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sousTitres: string | null }) {
+export function VisiteEnVideo({ video, sousTitres, duree }: { video: string | null; sousTitres: string | null; duree?: string }) {
   const fenetre = useRef<HTMLDialogElement>(null);
   const lecteur = useRef<HTMLVideoElement>(null);
   const ouvrir = () => {
@@ -27,11 +28,16 @@ export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sou
         onClick={ouvrir}
         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", padding: 0, border: 0, background: "transparent", cursor: "pointer" }}
       />
-      <button type="button" className={styles.lancerVisite} onClick={ouvrir}>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
-        </svg>
-        Le tour en vidéo
+      <button type="button" className={`${styles.lancerVisite} ${v.lancer}`} onClick={ouvrir}>
+        <span className={v.rond}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
+          </svg>
+        </span>
+        <span className={v.texte}>
+          Le tour en vidéo
+          {duree ? <span className={v.duree}>{duree}</span> : null}
+        </span>
       </button>
       <dialog
         ref={fenetre}

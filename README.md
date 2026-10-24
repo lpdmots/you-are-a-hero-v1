@@ -562,7 +562,7 @@ avant de commencer » soient tranchées.
   pages générales (accueil, aide…) à venir, et un nom ; rien n'est construit
   ([design](docs/design.md#fantaisie-et-mascotte-22-octobre-2026)).
 - **Visite en vidéo de l'accueil, faite les 23 et 24 octobre 2026 :**
-  1 min 34 en animation sur les vrais écrans, numérotée comme un livre-jeu
+  1 min 33 en animation sur les vrais écrans, numérotée comme un livre-jeu
   (passages 1 à 5), voix de synthèse (Clément, ElevenLabs, choisie par le
   porteur ; une version anglaise suivra), musique, bruitages, dragon et souris
   en marionnettes ; durée « une minute trente environ » (F14). Branchée sur

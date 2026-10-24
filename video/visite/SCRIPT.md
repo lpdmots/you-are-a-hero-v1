@@ -38,7 +38,7 @@ voyez où en est toute la classe.
 **5 — Le livre se fait**
 Vient le plus beau moment. L'application numérote les passages, vérifie que
 chaque chemin mène quelque part, et met le livre en page. Il ne reste qu'à
-l'imprimer. Et à la maison, les familles le lisent en ligne.
+l'imprimer… ou à le lire en ligne, à la maison.
 
 **6 — Fin**
 Il était une fois une classe… qui a écrit son livre.

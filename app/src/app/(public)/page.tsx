@@ -47,6 +47,7 @@ const PHOTO_DES_LIVRES: string | null = "/accueil/photo-des-livres.webp";
  * et sa fabrication : video/visite (le skill « video-du-site ») */
 const VIDEO_DE_LA_VISITE: string | null = "/accueil/visite-fr.mp4";
 const SOUS_TITRES_DE_LA_VISITE: string | null = "/accueil/visite-fr.vtt";
+const DUREE_DE_LA_VISITE = "1 min 33";
 const EN_DEVELOPPEMENT = process.env.NODE_ENV !== "production";
 
 /**
@@ -79,7 +80,7 @@ export default async function Accueil() {
         <div className={styles.livre}>
           <figure className={styles.gauche}>
             <Image src="/accueil/classe-au-travail.webp" alt="" fill sizes="(max-width: 980px) 1px, 380px" priority />
-            {VIDEO_DE_LA_VISITE || EN_DEVELOPPEMENT ? <VisiteEnVideo video={VIDEO_DE_LA_VISITE} sousTitres={SOUS_TITRES_DE_LA_VISITE} /> : null}
+            {VIDEO_DE_LA_VISITE || EN_DEVELOPPEMENT ? <VisiteEnVideo video={VIDEO_DE_LA_VISITE} sousTitres={SOUS_TITRES_DE_LA_VISITE} duree={DUREE_DE_LA_VISITE} /> : null}
           </figure>
           <div className={styles.droite}>
             <Numero n={1} />

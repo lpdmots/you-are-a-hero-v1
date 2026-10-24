@@ -85,7 +85,7 @@ window.SCENES.p34 = (tl, t0) => {
   tl.fromTo(q("lumiere"), { left: "-50%" }, { left: "120%", duration: 1.8, ease: "sine.inOut" }, tPhoto + 0.7);
 
   // « en ligne, à la maison » : un téléphone, la lecture qui défile
-  const tTel = m("maison") - 0.45;
+  const tTel = m("ligne") - 0.45;
   tl.fromTo(q("tel"), { x: 520, y: 160, rotation: 12, opacity: 0 }, { x: 0, y: 0, rotation: -3, opacity: 1, duration: 1.0, ease: "back.out(1.2)" }, tTel);
   // Une scène à la fois : on touche un choix, la scène suivante arrive
   const tTouche = tTel + 1.5;

@@ -111,7 +111,8 @@ if (opt("--prises")) {
   const ids = opt("--passages").split(",");
   for (const [i, p] of passages.entries()) {
     if (!ids.includes(p.id)) continue;
-    for (let k = 1; k <= Number(opt("--prises")); k++) await dire(p, i, k);
+    const de = Number(opt("--de", 1));
+    for (let k = de; k < de + Number(opt("--prises")); k++) await dire(p, i, k);
   }
   process.exit(0);
 }

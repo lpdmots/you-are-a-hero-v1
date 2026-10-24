@@ -30,8 +30,8 @@
       "id": "p34",
       "avant": 0.9,
       "apres": 1.1,
-      "texte": "Vient le plus beau moment. <break time=\"0.6s\" /> L'application numérote les passages, <break time=\"0.3s\" /> vérifie que chaque chemin mène quelque part, <break time=\"0.4s\" /> et met le livre en page. <break time=\"0.8s\" /> Il ne reste qu'à l'imprimer. <break time=\"0.5s\" /> Et à la maison, les familles le lisent en ligne.",
-      "prise": 3
+      "texte": "Vient le plus beau moment. <break time=\"0.6s\" /> L'application numérote les passages, <break time=\"0.3s\" /> vérifie que chaque chemin mène quelque part, <break time=\"0.4s\" /> et met le livre en page. <break time=\"0.8s\" /> Il ne reste qu'à l'imprimer… <break time=\"0.4s\" /> ou à le lire en ligne, à la maison.",
+      "prise": 6
     },
     {
       "id": "fin",
