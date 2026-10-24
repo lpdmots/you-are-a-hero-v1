@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import styles from "./accueil.module.css";
 import v from "./VisiteEnVideo.module.css";
 
@@ -18,12 +18,6 @@ export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sou
     // Lancée par ce clic seulement : la vidéo est dans la page dès le départ, mais ne part qu'ici
     void lecteur.current?.play().catch(() => undefined);
   };
-  // La note à la main au-dessus du livre (NoteDeLaVisite) l'ouvre aussi
-  useEffect(() => {
-    const surNote = () => ouvrir();
-    window.addEventListener(OUVRIR, surNote);
-    return () => window.removeEventListener(OUVRIR, surNote);
-  });
   return (
     <>
       {/* Toute l'image ouvre la visite, à la souris ; le bouton reste le repère du clavier et des lecteurs d'écran */}
@@ -73,22 +67,3 @@ export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sou
   );
 }
 
-const OUVRIR = "visite:ouvrir";
-
-/**
- * La note à la main au-dessus du livre, sur grand écran : « le tour en vidéo » et sa flèche vers
- * l'illustration, comme dans la vidéo (porteur, 24 octobre 2026). Un clic ouvre la visite ; le
- * bouton de lecture sur l'image reste le repère du clavier et des lecteurs d'écran. Elle se pose
- * dans le livre (.livre), hors de l'illustration, que son cadrage en trapèze couperait.
- */
-export function NoteDeLaVisite() {
-  return (
-    <button type="button" tabIndex={-1} aria-hidden="true" className={v.note} onClick={() => window.dispatchEvent(new Event(OUVRIR))}>
-      le tour en vidéo
-      <svg viewBox="0 0 80 66" aria-hidden="true">
-        <path d="M2 14 C 40 4, 72 18, 66 58" />
-        <path d="M53 45 L66 60 L78 44" />
-      </svg>
-    </button>
-  );
-}

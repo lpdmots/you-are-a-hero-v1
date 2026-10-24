@@ -1,113 +1,36 @@
-/* Le bouton de la visite en vidéo, sur grand écran : un rond de lecture au bas de
-   l'illustration, sur la table, plus calme que le milieu (porteur), son nom dessous, un peu transparents au repos et nets au survol (porteur,
-   24 octobre 2026 : la pastille du bas se voyait mal, le premier grand rond était trop appuyé).
-   Sur téléphone, la pastille dans le coin du bandeau (accueil.module.css) reste : un rond au
-   centre cacherait l'ordinateur des deux enfants. */
-/* Le rond enveloppe le signe de lecture : en bloc, pour que la pastille du téléphone le centre
-   verticalement (en ligne, il se posait sur la ligne de base du texte) */
+/* Le bouton de la visite en vidéo : la pastille du début (accueil.module.css), en bleu canard
+   pour se détacher de l'illustration, et un peu plus grande sur grand écran (porteur,
+   24 octobre 2026, après l'essai d'un grand rond au centre puis d'une note à la main). */
+.lancer.lancer {
+  background: var(--canard);
+  color: var(--feuille);
+  box-shadow:
+    0 0 0 2px rgba(255, 253, 248, 0.6),
+    0 8px 20px rgba(20, 30, 30, 0.35);
+}
+.lancer.lancer:hover {
+  background: var(--canard-fonce);
+}
+/* Le rond enveloppe le signe de lecture : en bloc, pour qu'il soit centré dans la pastille */
 .rond {
   display: grid;
   place-items: center;
 }
-.rond svg {
+.lancer.lancer svg {
   display: block;
-}
-/* La note n'existe que sur grand écran (voir plus bas) */
-.note {
-  display: none;
+  background: var(--feuille);
+  color: var(--canard);
 }
 @media (min-width: 981px) {
-  .lancer.lancer,
-  .lancer.lancer:hover {
-    top: auto;
-    bottom: 7%;
-    left: 50%;
-    transform: translateX(-50%);
-    flex-direction: column;
-    gap: 10px;
-    padding: 0;
-    background: none;
-    box-shadow: none;
-  }
-  .lancer {
-    opacity: 0.86;
-    transition: opacity 0.2s var(--ease);
-  }
-  /* survoler l'image, qui ouvre aussi la visite, allume le bouton */
-  .lancer:hover,
-  .lancer:focus-visible,
-  .zone:hover + .lancer {
-    opacity: 1;
-  }
-  .rond {
-    display: grid;
-    place-items: center;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: rgba(11, 106, 115, 0.82);
-    box-shadow:
-      0 0 0 3px rgba(255, 253, 248, 0.75),
-      0 10px 22px rgba(20, 30, 30, 0.32);
-    transition:
-      transform 0.2s var(--ease),
-      background 0.2s var(--ease);
-  }
-  .lancer:hover .rond,
-  .zone:hover + .lancer .rond {
-    transform: scale(1.05);
-    background: var(--canard);
+  .lancer.lancer {
+    bottom: 26px;
+    gap: 12px;
+    padding: 12px 24px 12px 12px;
+    font-size: var(--t-l);
   }
   .lancer.lancer svg {
-    width: 30px;
-    height: 30px;
-    margin-left: 4px;
-    padding: 0;
-    border-radius: 0;
-    background: none;
-    color: var(--feuille);
-  }
-  /* la note au-dessus du livre porte le nom : sur l'image, le rond seul (le nom reste lu par
-     les lecteurs d'écran) */
-  .texte {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-  /* La note : sa ligne posée juste au-dessus de la couverture (11,7 % de la hauteur du livre,
-     8,775 % de sa largeur), à l'aplomb de l'illustration ; la flèche descend dans l'image */
-  .note {
-    display: block;
-    position: absolute;
-    left: 12.5%;
-    top: calc(8.775cqw - 1.75em);
-    z-index: 2;
-    padding: 0 4px;
-    border: 0;
-    background: none;
-    color: var(--graphite-2);
-    /* à la taille du livre : la flèche tombe dans l'image même sur un livre étroit */
-    font: 400 clamp(1.15rem, 2.34cqw, 1.5rem) / 1.42 var(--f-main);
-    white-space: nowrap;
-    cursor: pointer;
-    transition: color 0.2s var(--ease);
-  }
-  .note svg {
-    position: absolute;
-    left: calc(100% + 0.17em);
-    top: 0.62em;
-    width: 3.33em;
-    height: 2.75em;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .note:hover {
-    color: var(--graphite);
+    width: 38px;
+    height: 38px;
+    padding: 9px 8px 9px 10px;
   }
 }
