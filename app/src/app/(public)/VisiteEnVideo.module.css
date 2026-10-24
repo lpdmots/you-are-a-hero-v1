@@ -3,6 +3,15 @@
    24 octobre 2026 : la pastille du bas se voyait mal, le premier grand rond était trop appuyé).
    Sur téléphone, la pastille dans le coin du bandeau (accueil.module.css) reste : un rond au
    centre cacherait l'ordinateur des deux enfants. */
+/* Le rond enveloppe le signe de lecture : en bloc, pour que la pastille du téléphone le centre
+   verticalement (en ligne, il se posait sur la ligne de base du texte) */
+.rond {
+  display: grid;
+  place-items: center;
+}
+.rond svg {
+  display: block;
+}
 @media (min-width: 981px) {
   .lancer.lancer,
   .lancer.lancer:hover {
