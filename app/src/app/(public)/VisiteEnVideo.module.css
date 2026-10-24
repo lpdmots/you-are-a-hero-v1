@@ -12,6 +12,10 @@
 .rond svg {
   display: block;
 }
+/* La note n'existe que sur grand écran (voir plus bas) */
+.note {
+  display: none;
+}
 @media (min-width: 981px) {
   .lancer.lancer,
   .lancer.lancer:hover {
@@ -63,11 +67,47 @@
     background: none;
     color: var(--feuille);
   }
+  /* la note au-dessus du livre porte le nom : sur l'image, le rond seul (le nom reste lu par
+     les lecteurs d'écran) */
   .texte {
-    padding: 4px 12px 5px;
-    border-radius: 99px;
-    background: rgba(255, 253, 248, 0.88);
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+  /* La note : sa ligne posée juste au-dessus de la couverture (11,7 % de la hauteur du livre,
+     8,775 % de sa largeur), à l'aplomb de l'illustration ; la flèche descend dans l'image */
+  .note {
+    display: block;
+    position: absolute;
+    left: 12.5%;
+    top: calc(8.775cqw - 1.75em);
+    z-index: 2;
+    padding: 0 4px;
+    border: 0;
+    background: none;
+    color: var(--graphite-2);
+    /* à la taille du livre : la flèche tombe dans l'image même sur un livre étroit */
+    font: 400 clamp(1.15rem, 2.34cqw, 1.5rem) / 1.42 var(--f-main);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s var(--ease);
+  }
+  .note svg {
+    position: absolute;
+    left: calc(100% + 0.17em);
+    top: 0.62em;
+    width: 3.33em;
+    height: 2.75em;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .note:hover {
     color: var(--graphite);
-    font: 700 var(--t-s) var(--f-ui);
   }
 }

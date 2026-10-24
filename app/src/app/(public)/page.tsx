@@ -15,7 +15,7 @@ import styles from "./accueil.module.css";
 import { TempsQuiDefilent } from "./TempsQuiDefilent";
 import { CapturesEnGrand } from "./CapturesEnGrand";
 import { LivreChoisi } from "./LivreChoisi";
-import { VisiteEnVideo } from "./VisiteEnVideo";
+import { NoteDeLaVisite, VisiteEnVideo } from "./VisiteEnVideo";
 
 const DESCRIPTION =
   "Chaque élève écrit ses scènes. À chaque étape, l’application guide et aide l’enseignant. Au bout, un vrai livre, à imprimer et à lire en ligne. Gratuit.";
@@ -77,6 +77,7 @@ export default async function Accueil() {
       {/* 1 — Le grand livre ouvert */}
       <section className={styles.scene} aria-labelledby="p1">
         <div className={styles.livre}>
+          {VIDEO_DE_LA_VISITE ? <NoteDeLaVisite /> : null}
           <figure className={styles.gauche}>
             <Image src="/accueil/classe-au-travail.webp" alt="" fill sizes="(max-width: 980px) 1px, 380px" priority />
             {VIDEO_DE_LA_VISITE || EN_DEVELOPPEMENT ? <VisiteEnVideo video={VIDEO_DE_LA_VISITE} sousTitres={SOUS_TITRES_DE_LA_VISITE} /> : null}
