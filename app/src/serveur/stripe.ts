@@ -1,5 +1,6 @@
 import "server-only";
 import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
+import { mesurer } from "./mesure";
 import { clientService } from "./supabase";
 
 /**
@@ -167,5 +168,10 @@ export async function inscrireLePaiement(s: SessionPayee): Promise<boolean> {
     p_session: s.id, p_enseignant: s.enseignant, p_achat: s.achat, p_projet: s.projet, p_montant: s.montant,
   });
   if (error) throw new Error(`Paiement : ${error.message}`);
+  // Un paiement inscrit pour la première fois, par l'avis de Stripe ou par la page de remerciement, compte une fois (F14-AC50)
+  if (data === true) {
+    const euros = s.montant / 100;
+    await mesurer(s.achat === "pass" ? { evenement: "pass_achete", euros } : { evenement: "recharge_achetee", euros }, s.enseignant);
+  }
   return data === true;
 }

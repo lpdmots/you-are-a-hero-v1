@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { Andika, Atkinson_Hyperlegible_Mono, Atkinson_Hyperlegible_Next, Playwrite_FR_Trad, Vollkorn } from "next/font/google";
+import { Mesure } from "@/composants/Mesure";
 import { MarquePret } from "@/composants/Pret";
 import "@/styles/jetons.css";
 import "@/styles/base.css";
@@ -40,6 +41,7 @@ export default function Racine({ children }: { children: ReactNode }) {
       <body>
         {children}
         <MarquePret />
+        <Mesure />
       </body>
     </html>
   );

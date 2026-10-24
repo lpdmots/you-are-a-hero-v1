@@ -124,7 +124,7 @@ const TRANSMIS = [
 export const CONFIDENTIALITE: Document = {
   titre: "Confidentialité",
   chapeau: "Ce qui est gardé, où, combien de temps, ce qui part à l’IA, et comment tout supprimer.",
-  misAJour: MAJ,
+  misAJour: "24 octobre 2026",
   sections: [
     {
       titre: "Qui fait quoi",
@@ -146,7 +146,7 @@ export const CONFIDENTIALITE: Document = {
     {
       titre: "Où",
       paragraphes: [
-        "– Vercel (le site) et Supabase (la base et les images), en Europe, à Paris ;",
+        "– Vercel (le site et la mesure d’audience) et Supabase (la base et les images), en Europe, à Paris ;",
         "– Amazon Web Services, à Paris : la sauvegarde de chaque nuit et l’envoi des courriels ;",
         "– Anthropic et OpenAI, aux États-Unis : les aides IA, seulement quand l’adulte en demande une ;",
         "– Stripe : le paiement, seulement quand l’adulte achète.",
@@ -170,9 +170,20 @@ export const CONFIDENTIALITE: Document = {
       ],
     },
     {
-      titre: "Ni publicité ni mesure d’audience",
+      titre: "Mesure d’audience, sans publicité",
       paragraphes: [
-        "Le site ne pose que les témoins nécessaires à son fonctionnement : garder l’adulte connecté, garder la classe ouverte sur un ordinateur, retenir où un lecteur en est de sa lecture. Aucune publicité, aucune mesure d’audience, aucune revente de données.",
+        "Sur l’accueil, l’aide, ces textes et les pages d’entrée de l’adulte, Vercel compte les pages vues et la vitesse d’affichage, sans témoin et sans reconnaître un visiteur d’un jour à l’autre. Il compte aussi, sans nom ni adresse, les comptes et les projets créés, et les achats.",
+        "Rien n’est mesuré dans l’espace des élèves, dans l’outil de l’adulte ni dans les livres lus en ligne. Aucune publicité, aucune revente de données.",
+      ],
+    },
+    {
+      titre: "Les témoins",
+      paragraphes: [
+        "Le site ne pose que des témoins nécessaires, sans demander d’accord :",
+        "– la connexion de l’adulte ;",
+        "– sur l’ordinateur d’une classe, la classe ouverte, et le compte des codes faux, qui bloque les essais au hasard ;",
+        "– les écrans d’aide déjà vus.",
+        "Le navigateur garde aussi, sans témoin et sans rien envoyer, où un lecteur en est de sa lecture et quelques réglages d’affichage.",
       ],
     },
     {

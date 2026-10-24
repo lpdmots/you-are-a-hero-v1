@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { mesurer } from "@/serveur/mesure";
 import { clientAdulte } from "@/serveur/supabase";
 
 /**
@@ -22,7 +23,9 @@ export async function GET(requete: NextRequest) {
   const jeton = url.searchParams.get("token_hash");
   if (jeton) {
     if (url.searchParams.get("type") !== "email") return vers("/entree?refus=echec");
-    const { error } = await supabase.auth.verifyOtp({ token_hash: jeton, type: "email" });
+    const { data: confirme, error } = await supabase.auth.verifyOtp({ token_hash: jeton, type: "email" });
+    // L'adresse confirmée une fois, le lien d'une inscription : le compte est créé (F14-AC50)
+    if (!error && confirme.user) await mesurer({ evenement: "compte_cree", methode: "adresse" }, confirme.user.id);
     // Un lien déjà ouvert (par l'antivirus d'une messagerie, souvent) a confirmé l'adresse :
     // il reste à entrer avec son mot de passe
     return vers(error ? "/entree?refus=lien" : "/");
@@ -30,8 +33,13 @@ export async function GET(requete: NextRequest) {
 
   const code = url.searchParams.get("code");
   if (!code) return vers("/entree?refus=echec");
-  const { error } = await supabase.auth.exchangeCodeForSession(code);
+  const { data: ouvert, error } = await supabase.auth.exchangeCodeForSession(code);
   if (error) return vers("/entree?refus=echec");
+  // Un compte ouvert par Google à l'instant : sa création et sa première entrée ont la même heure (F14-AC50)
+  const nouveau = ouvert.user;
+  if (nouveau?.app_metadata?.provider === "google" && nouveau.last_sign_in_at && Math.abs(Date.parse(nouveau.last_sign_in_at) - Date.parse(nouveau.created_at)) < 60_000) {
+    await mesurer({ evenement: "compte_cree", methode: "google" }, nouveau.id);
+  }
 
   // Après « Mot de passe oublié », on choisit son nouveau mot de passe ; sinon, on entre.
   const { data } = await supabase.auth.getClaims();

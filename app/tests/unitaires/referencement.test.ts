@@ -52,3 +52,15 @@ describe("référencement", () => {
     expect(["taches/comptes-inactifs", "taches"].some((c) => motif.test(c))).toBe(false);
   });
 });
+
+describe("mesure d'audience", () => {
+  it("F14-AC49 — la mesure se charge sur les pages publiques et les entrées, jamais chez les élèves, dans les livres ni dans l'outil", async () => {
+    const { estPageMesuree } = await import("@/domaine/pages-publiques");
+    for (const p of ["/", "/aide", "/confidentialite", "/conditions", "/mentions-legales", "/entree", "/entree/inscription", "/entree/oubli"]) {
+      expect(estPageMesuree(p), p).toBe(true);
+    }
+    for (const p of ["/classe", "/classe/qui", "/travail", "/travail/scene/1", "/lire/abc", "/projets", "/projet/1/suivi", "/compte", "/admin", "/entreeX", null]) {
+      expect(estPageMesuree(p), String(p)).toBe(false);
+    }
+  });
+});

@@ -64,3 +64,9 @@ export const ROBOTS_DES_IA: readonly string[] = [
   "Bytespider",
   "Amazonbot",
 ];
+
+/** Les pages où l'audience se mesure (F14-AC49) : les pages publiques et les entrées de l'adulte. */
+export function estPageMesuree(chemin: string | null): boolean {
+  if (!chemin) return false;
+  return PAGES_PUBLIQUES.includes(chemin) || chemin === "/entree" || chemin.startsWith("/entree/");
+}

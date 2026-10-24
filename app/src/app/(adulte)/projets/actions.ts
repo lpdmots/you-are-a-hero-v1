@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { estOnglet } from "@/domaine/projets";
 import { estVisuel, tirerVisuel } from "@/domaine/visuels";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { mesurer } from "@/serveur/mesure";
 import { supprimerLeProjet } from "@/serveur/suppression";
 
 export type CreationProjet = {
@@ -45,6 +46,7 @@ export async function creerProjet(demande: CreationProjet): Promise<{ erreur: st
     .single();
   if (error || !data) return { erreur: "Le projet n’a pas pu être créé. Réessayez." };
   await enseignant.supabase.from("enseignants").update({ dernier_projet_id: data.id }).eq("id", enseignant.id);
+  await mesurer({ evenement: "projet_cree", organisation: demande.organisation }, enseignant.id, enseignant.createur);
   revalidatePath("/", "layout");
   if (demande.avecImage) return { id: data.id };
   redirect(`/projet/${data.id}/preparation?message=cree`);

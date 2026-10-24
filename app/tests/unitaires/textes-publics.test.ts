@@ -24,3 +24,15 @@ describe("textes juridiques", () => {
     expect(contrat && texte(contrat)).toContain("Le sous-traitant : Yohann Coussot, entrepreneur individuel, 6 rue des Morands");
   });
 });
+
+describe("confidentialité et mesure", () => {
+  it("F14-AC51 — la page dit ce qui est compté et par qui, sans témoin, et liste les témoins du site", () => {
+    const page = texte(CONFIDENTIALITE);
+    expect(page).toContain("Vercel compte les pages vues et la vitesse d’affichage, sans témoin");
+    expect(page).toContain("Rien n’est mesuré dans l’espace des élèves, dans l’outil de l’adulte ni dans les livres lus en ligne");
+    expect(page).toContain("la connexion de l’adulte");
+    expect(page).toContain("la classe ouverte");
+    expect(page).toContain("les écrans d’aide déjà vus");
+    expect(page).not.toContain("aucune mesure d’audience");
+  });
+});
