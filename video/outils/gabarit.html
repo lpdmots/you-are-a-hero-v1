@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- Gabarit de index.html : preparer.mjs y pose les passages (scenes/*.html), leurs
+     animations (scenes/*.js) et le son. Modifier ce fichier-ci, jamais index.html. -->
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <link rel="stylesheet" href="fonts/polices.css" />
+    <link rel="stylesheet" href="commun.css" />
+    <script src="donnees/voix.js"></script>
+    <script src="commun.js"></script>
+    <script src="marionnette.js"></script>
+  </head>
+  <body>
+    <div id="racine" data-composition-id="main" data-start="0" data-duration="{{DUREE}}" data-width="1920" data-height="1080">
+<!--SCENES-->
+<!--AUDIO-->
+    </div>
+<!--SCRIPTS-->
+    <script>
+      window.poserIcones();
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      for (const [id, p] of Object.entries(window.VOIX.passages)) {
+        if (window.SCENES[id]) window.SCENES[id](tl, p.debut);
+      }
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

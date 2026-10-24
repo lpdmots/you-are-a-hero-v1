@@ -1,0 +1,8 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#f2ede3">
+<div style="position:relative;display:inline-block"><img id="i" src="../../visite/assets/dragon-regarde.webp" style="display:block;width:1440px">
+<svg id="g" style="position:absolute;inset:0;width:100%;height:100%"></svg></div>
+<script>
+const im=document.getElementById("i");im.onload=()=>{const W=im.naturalWidth,H=im.naturalHeight,k=1440/W;let h="";
+for(let i=0;i<=Math.max(W,H);i+=20){const f=i%100==0;const c=f?'rgba(0,0,180,.6)':'rgba(0,0,0,.13)';if(i<=W)h+=`<line x1="${i*k}" y1="0" x2="${i*k}" y2="${H*k}" stroke="${c}"/>`;if(i<=H)h+=`<line y1="${i*k}" x1="0" y2="${i*k}" x2="${W*k}" stroke="${c}"/>`;if(f){h+=`<text x="${i*k+2}" y="14" font-size="14" fill="blue">${i}</text><text y="${i*k+14}" x="2" font-size="14" fill="blue">${i}</text>`}}
+document.getElementById("g").innerHTML=h;document.title="ok"}
+</script></body>

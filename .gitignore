@@ -5,3 +5,11 @@ prototypes/*/test-results/
 prototypes/pdf/sorties/
 .vercel
 .env*
+# vidéos du site : rendus, fichiers régénérés par outils/preparer.mjs et mixer.mjs, mesures brutes
+video/rendus/
+video/*/index.html
+video/*/donnees/
+video/*/son/bande-son.mp3
+video/**/*.rgba
+video/essais/**/*.mp4
+video/essais/**/*.png

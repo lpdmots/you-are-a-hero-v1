@@ -11012,12 +11012,39 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   de l'enseignant, et ce que cela coûte (le pass seulement quand la vente est
   ouverte) ; né dans une classe, signé du porteur. Ce qui doit ressortir :
   l'outil n'est pas compliqué, il guide à chaque étape et il aide. Une
-  courte visite en vidéo (une minute trente au plus, sous-titrée, hébergée
-  avec l'application, lancée par un clic seulement) s'ouvrira depuis la
-  première page quand elle existera. Les données des élèves ne font pas de
+  courte visite en vidéo (une minute trente environ, un peu plus si le rythme
+  le demande, décidé par le porteur le 24 octobre 2026 ; sous-titrée, hébergée
+  avec l'application, lancée par un clic seulement) s'ouvre depuis la
+  première page (en local depuis le 24 octobre 2026). Les données des élèves ne font pas de
   passage : elles vont dans l'« Aide ». Révise la liste du 20 octobre 2026
   (promesse et livre montré, chemin, deux sortes de récit, qui fait quoi,
   origine, offre) et le livre unique à feuilleter.
+- **Référencement, réponses des IA et mesure d'audience** (décidé par le
+  porteur le 24 octobre 2026, après un audit du même jour). Les pages
+  publiques se trouvent et se citent : `robots.txt`, plan du site,
+  `llms.txt` (ce qu'est l'outil, pour qui, ses prix lus dans les réglages),
+  données structurées (l'organisation, le site, l'application et son offre,
+  les questions de l'« Aide », la visite en vidéo quand elle est en ligne),
+  adresse canonique sur chacune ; les deux adresses `vercel.app` renvoient au
+  `.com`, sauf la tâche de la nuit ; l'accueil est gardé en cache, l'adulte
+  connecté et le poste d'une classe ouverte étant renvoyés avant lui. Les
+  robots des IA, recherche et entraînement, lisent les pages publiques
+  seulement : ni l'application ni les livres de `/lire`. Mesure : Vercel Web
+  Analytics et Speed Insights gratuit, sans témoin, sur les pages publiques
+  et les entrées seulement — rien dans `/classe`, `/travail`, `/lire` ni
+  dans l'espace de l'adulte, dont l'usage se lit dans la base ; sans les
+  options payantes de Vercel (UTM, détail des Core Web Vitals) ; quatre
+  conversions envoyées par le serveur (compte créé, projet créé, pass
+  acheté, recharge achetée), hors des comptes du porteur, par un seul point
+  d'envoi où une conversion publicitaire pourra s'ajouter. Pas de bandeau
+  tant qu'aucun témoin non nécessaire n'est posé : il viendra avec Google
+  Ads. La page « Confidentialité » dit, simplement, ce qui est mesuré et
+  liste les témoins, dans le même lot que la mesure. Pas de Google
+  Analytics pour l'instant ; les pages de contenu (guides) sont remises à
+  plus tard. Faits du 24 octobre 2026, à revérifier : Google n'affiche plus
+  les questions fréquentes en résultat enrichi (depuis le 7 mai 2026) ni une
+  application sans avis notés ; Web Analytics se paie à l'événement sur le
+  crédit de l'offre Pro (0,03 $ les 1 000).
 - **« Écrit avec Il était une classe ».** Dans le lecteur en ligne, une
   mention discrète au pied de la page de titre et après la fin du livre, qui
   mène à la page d'accueil ; jamais pendant la lecture, sans réglage. Elle ne
@@ -11325,6 +11352,44 @@ découvre l'outil, et le porteur, administrateur.
   « +100 ✦ », son nouveau solde, ce que paient les étoiles et que la facture arrive par courriel,
   avec « Continuer » ; plus court que le merci du pass, sans image de livre. Avant, la recharge
   ramenait toujours à « Mon compte », avec une phrase passagère.
+
+*Référencement et mesure (décidés le 24 octobre 2026)*
+
+- **F14-AC45 — Robots et plan du site :** étant donné `/robots.txt`, alors
+  il ouvre l'accueil, l'« Aide » et les textes à tous les robots, ferme
+  l'application et `/lire` à tous, et donne le plan du site ; `/sitemap.xml`
+  liste ces pages publiques à l'adresse `iletaituneclasse.com`, et elles
+  seules.
+- **F14-AC46 — Une seule adresse :** étant donné
+  `il-etait-une-classe.vercel.app/aide` ou `you-are-a-hero-v1.vercel.app/`,
+  alors on arrive, par une redirection permanente, à la même page du `.com` ;
+  la tâche de la nuit (`/taches/…`) répond sans redirection ; chaque page
+  publique donne son adresse canonique au `.com`.
+- **F14-AC47 — L'accueil en cache :** étant donné un visiteur sans compte,
+  alors l'accueil lui est servi depuis le cache ; étant donné M. Bernard
+  connecté, ou un poste où sa classe est ouverte, lorsqu'il ouvre `/`, alors
+  il arrive comme avant à son dernier projet, à « Mes projets », à
+  `/travail` ou à `/classe/qui` (F06-AC53) ; un livre retiré de l'accueil
+  ou un prix changé y paraissent sans nouveau déploiement.
+- **F14-AC48 — Ce que lisent les IA :** étant donné `/llms.txt`, alors il
+  dit ce qu'est l'outil, pour qui, ses prix actuels et les adresses des
+  pages publiques ; l'accueil porte l'organisation, le site et l'application
+  avec son offre (gratuit, le pass, la recharge) en données structurées,
+  l'« Aide » ses questions telles qu'affichées, et la visite en vidéo, quand
+  elle est en ligne, sa description.
+- **F14-AC49 — Mesurer sans suivre :** étant donné un visiteur de l'accueil,
+  de l'« Aide » ou d'une entrée, alors sa page vue est comptée, sans témoin ;
+  dans `/classe`, `/travail`, `/lire` et l'espace de l'adulte, aucun script
+  de mesure n'est chargé.
+- **F14-AC50 — Les conversions :** étant donné M. Bernard qui crée son
+  compte, un projet, achète un pass ou une recharge, alors un événement
+  `compte_cree`, `projet_cree`, `pass_achete` ou `recharge_achetee` part du
+  serveur, sans son nom ni son adresse ; les comptes du porteur n'en
+  envoient aucun ; une mesure qui échoue n'empêche rien.
+- **F14-AC51 — La confidentialité dit la mesure :** étant donné la page
+  « Confidentialité », alors elle dit ce qui est compté et par qui, qu'aucun
+  témoin ne sert à la mesure, et liste les témoins du site ; aucun bandeau ne
+  s'affiche.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

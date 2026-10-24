@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      html, body { margin: 0; width: 1920px; height: 1080px; overflow: hidden; background: #f2ede3; }
+      #scene { position: absolute; inset: 0; background: radial-gradient(1200px 800px at 30% 10%, #fff6dc, #f2ede3 70%); }
+      #souris { position: absolute; left: 500px; top: 4px; width: 1254px; height: 1254px; transform: scale(0.85); transform-origin: 0 0; }
+      #souris .miette { position: absolute; left: 0; top: 0; width: 20px; height: 14px; background: #f3eee0; clip-path: polygon(0 20%, 40% 0, 70% 15%, 100% 5%, 90% 60%, 100% 100%, 55% 85%, 20% 100%, 5% 70%); opacity: 0; filter: drop-shadow(0 1px 0 rgba(120,100,60,0.35)); }
+    </style>
+    <script src="marionnette.js"></script>
+  </head>
+  <body>
+    <div id="racine" data-composition-id="main" data-start="0" data-duration="8" data-width="1920" data-height="1080">
+      <div id="scene" class="clip" data-start="0" data-duration="8" data-track-index="1">
+        <div id="souris-boite" style="position:absolute;inset:0"><div id="souris"></div></div>
+      </div>
+    </div>
+    <script>
+      const boite = document.getElementById("souris");
+      const m = window.marionnetteSouris(boite, "souris-grignote.png");
+      const miettes = [0, 1, 2, 3].map(() => { const d = document.createElement("i"); d.className = "miette"; boite.appendChild(d); return d; });
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.animerSouris(tl, m, 0, 8, miettes);
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

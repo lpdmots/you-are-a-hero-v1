@@ -1,0 +1,110 @@
+        <style>
+          #s-p34.scene { background: var(--papier); }
+          #s-p34 .revele { position: absolute; inset: 0; }
+          /* Les scènes, en petites cartes, puis en passages numérotés reliés par leurs chemins */
+          #s-p34 .carte {
+            position: absolute; width: 340px; height: 170px;
+            padding: 22px 24px 18px;
+            background: #fff; border-radius: 16px;
+            box-shadow: 0 2px 3px rgba(40,32,15,0.08), 0 18px 34px -14px rgba(60,45,20,0.35);
+            z-index: 2;
+          }
+          #s-p34 .carte b { display: block; margin-top: 16px; font-size: 29px; line-height: 1.22; font-weight: 700; }
+          #s-p34 .num {
+            position: absolute; left: 18px; top: -24px;
+            width: 64px; height: 48px; border-radius: 99px;
+            background: var(--canard); color: #fff;
+            font-family: var(--f-recit); font-weight: 700; font-size: 30px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px -4px rgba(11,106,115,0.5);
+          }
+          #s-p34 .num .defile { position: absolute; left: 0; right: 0; top: 0; display: flex; flex-direction: column; }
+          #s-p34 .num .defile span { height: 48px; display: grid; place-items: center; font-variant-numeric: lining-nums tabular-nums; }
+          #s-p34 .liens { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 1; overflow: visible; }
+          #s-p34 .ok { position: absolute; width: 44px; height: 44px; margin: -22px 0 0 -22px; border-radius: 99px; background: var(--e-valide); color: #fff; display: grid; place-items: center; z-index: 3; box-shadow: 0 0 0 4px var(--papier); }
+          #s-p34 .ok svg { width: 26px; height: 26px; stroke-width: 2.8; }
+          #s-p34 .verifie { position: absolute; left: 1080px; top: 860px; font-size: 32px; }
+          /* La double page */
+          #s-p34 .livre { position: absolute; left: 330px; top: 160px; width: 1260px; height: 820px; perspective: 3000px; z-index: 4; }
+          #s-p34 .page {
+            position: absolute; top: 0; width: 630px; height: 820px; padding: 46px 56px;
+            background: #fffdf8;
+            font-family: var(--f-recit); font-size: 19px; line-height: 1.4; color: var(--graphite);
+            text-align: justify; hyphens: auto;
+            overflow: hidden;
+          }
+          #s-p34 .page.g { left: 0; border-radius: 6px 0 0 6px; box-shadow: inset -40px 0 50px -30px rgba(80,60,20,0.25), 0 30px 60px -20px rgba(60,45,20,0.4); }
+          #s-p34 .page.d { left: 630px; border-radius: 0 6px 6px 0; box-shadow: inset 40px 0 50px -30px rgba(80,60,20,0.25), 0 30px 60px -20px rgba(60,45,20,0.4); }
+          #s-p34 .passage { margin-bottom: 22px; }
+          #s-p34 .page .n { display: block; text-align: center; font-weight: 700; font-size: 26px; margin-bottom: 6px; }
+          #s-p34 .page img { display: block; width: 100%; height: 230px; object-fit: cover; border-radius: 3px; margin: 4px 0 12px; }
+          #s-p34 .page .ch { text-align: left; font-style: italic; margin-top: 4px; }
+          #s-p34 .page .ch strong { font-style: normal; font-weight: 800; }
+          #s-p34 .tourne { position: absolute; left: 630px; top: 0; width: 630px; height: 820px; transform-origin: 0 50%; transform-style: preserve-3d; z-index: 5; }
+          #s-p34 .tourne .page { left: 0; backface-visibility: hidden; }
+          #s-p34 .tourne .page.dos { transform: rotateY(180deg); border-radius: 6px 0 0 6px; box-shadow: inset -40px 0 50px -30px rgba(80,60,20,0.25); }
+          /* Le livre imprimé, puis la lecture en ligne */
+          #s-p34 .photo { position: absolute; inset: 0; overflow: hidden; z-index: 6; }
+          #s-p34 .photo img { position: absolute; inset: -2%; width: 104%; height: 104%; object-fit: cover; object-position: 50% 55%; filter: brightness(1.16) contrast(0.96) saturate(1.06); }
+          #s-p34 .photo .lumiere { position: absolute; top: -20%; bottom: -20%; width: 40%; left: -50%; background: linear-gradient(100deg, rgba(255,250,235,0) 0%, rgba(255,250,235,0.45) 50%, rgba(255,250,235,0) 100%); transform: rotate(8deg); }
+          #s-p34 .telephone { position: absolute; left: 1400px; top: 150px; width: 400px; height: 820px; border-radius: 60px; background: #1d2024; padding: 16px; z-index: 7; box-shadow: 0 50px 80px -24px rgba(20,15,5,0.55); }
+          #s-p34 .tel-ecran { position: relative; width: 100%; height: 100%; border-radius: 46px; background: #fff; overflow: hidden; }
+          #s-p34 .tel-haut { height: 96px; padding: 46px 22px 0; font-family: var(--f-recit); font-weight: 600; font-size: 22px; display: flex; justify-content: space-between; border-bottom: 1.5px solid var(--trait); }
+          #s-p34 .tel-haut span { font-family: var(--f-ui); font-weight: 700; font-size: 17px; color: var(--canard); }
+          #s-p34 .tel-scene { position: absolute; left: 0; right: 0; top: 96px; bottom: 0; padding: 0 20px; background: #fff; font-family: var(--f-recit); font-size: 18px; line-height: 1.5; }
+          #s-p34 .tel-scene .n { text-align: center; font-weight: 700; font-size: 28px; padding: 18px 0 8px; }
+          #s-p34 .tel-scene img { display: block; width: calc(100% + 40px); margin: 0 -20px 12px; height: 200px; object-fit: cover; }
+          #s-p34 .tel-choix { position: relative; display: flex; align-items: center; gap: 8px; padding: 12px 2px; border-top: 1.5px solid var(--trait); font-style: italic; font-size: 17px; line-height: 1.35; }
+          #s-p34 .tel-choix b { font-style: normal; font-weight: 800; }
+          #s-p34 .tel-choix svg { flex: none; width: 20px; height: 20px; margin-left: auto; color: var(--canard); }
+          #s-p34 .toucher { position: absolute; left: 0; top: 0; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 99px; background: rgba(11,106,115,0.25); border: 3px solid rgba(11,106,115,0.6); opacity: 0; z-index: 3; }
+          #s-p34 .encoche { position: absolute; left: 50%; top: 12px; width: 110px; height: 30px; margin-left: -55px; border-radius: 20px; background: #1d2024; z-index: 2; }
+          #s-p34 .note-maison { position: absolute; left: 1060px; top: 840px; font-size: 40px; color: #fff; text-shadow: 0 2px 12px rgba(0,0,0,0.5); z-index: 7; transform: rotate(-4deg); }
+          #s-p34 .fondu { position: absolute; inset: 0; background: var(--papier); z-index: 20; opacity: 0; }
+        </style>
+        <div class="revele" id="p34-revele">
+          <div class="fond"></div>
+          <div class="camera" id="p34-camera">
+            <div class="entete" id="p34-entete" style="transform-origin: 0 0">
+              <div class="numero"><span id="p34-chiffre">5</span><span class="filet" id="p34-filet"></span></div>
+              <div class="titre" id="p34-titre">Le livre se fait.</div>
+            </div>
+            <svg class="liens" id="p34-liens" viewBox="0 0 1920 1080"></svg>
+            <div id="p34-cartes"></div>
+            <div id="p34-oks"></div>
+            <span class="tampon verifie" data-e="valide" id="p34-verifie"><i data-ic="coche"></i>Tous les chemins mènent quelque part</span>
+
+            <div class="livre" id="p34-livre">
+              <div class="page g" id="p34-pg"><div class="passage"><span class="n">12</span><p>La chouette se posa sur une branche de saule, au bord d’une rivière. Elle avait des plumes argentées qui brillaient dans la nuit. Des pierres plates dépassaient de l’eau et chacune, quand le courant la touchait, chantait une note différente.</p><p class="ch">Pour sauter de pierre en pierre, rends-toi au <strong>27</strong>.</p><p class="ch">Si tu veux appeler la chouette, rends-toi au <strong>15</strong>.</p></div><div class="passage"><span class="n">13</span><p>Le passeur pose sa lanterne au fond de la barque. « Personne ne traverse la brume sans répondre à ma question », dit-il d’une voix grave. Puis il te regarde longtemps, et sourit.</p><p class="ch">Si tu connais la réponse, rends-toi au <strong>31</strong>.</p><p class="ch">Si tu préfères te taire, rends-toi au <strong>8</strong>.</p></div><div class="passage"><span class="n">14</span><p>Les cloches de la clairière se taisent toutes en même temps. Dans le silence, tu entends un léger grattement sous la mousse.</p><p class="ch">Pour creuser, rends-toi au <strong>22</strong>.</p></div></div>
+              <div class="page d" id="p34-pd"><div class="passage"><span class="n">20</span><img src="assets/ill/sauter-pierres.jpg" alt="" /><p>La statue ouvre les yeux. « Tu cherches ton père ? Il est passé ici, il y a bien longtemps. Il portait la première lanterne. »</p><p class="ch">Pour l’écouter, rends-toi au <strong>35</strong>.</p><p class="ch">Pour lui demander la route, rends-toi au <strong>12</strong>.</p></div><div class="passage"><span class="n">21</span><p>Tu poses le pied sur la première pierre. Elle chante un do grave. La deuxième, un mi. La troisième glisse sous ta botte…</p><p class="ch">Pour garder l’équilibre, rends-toi au <strong>18</strong>.</p></div></div>
+              <div class="tourne" id="p34-tourne">
+                <div class="page d" style="left:0" id="p34-recto"><div class="passage"><span class="n">15</span><img src="assets/ill/appeler-chouette.jpg" alt="" /><p>Tu siffles doucement. La chouette se pose sur ton épaule et t’emmène jusqu’à son nid, tout en haut du saule. Entre deux brindilles brille une petite clé d’argent.</p><p class="ch">Pour prendre la clé, rends-toi au <strong>40</strong>.</p><p class="ch">Pour redescendre, rends-toi au <strong>9</strong>.</p></div><div class="passage"><span class="n">16</span><p>La barque glisse sans bruit sur l’eau noire. Au loin, la roue d’un moulin tourne… à l’envers.</p><p class="ch">Pour accoster, rends-toi au <strong>33</strong>.</p></div></div>
+                <div class="page dos"><div class="passage"><span class="n">17</span><p>La porte du moulin s’ouvre d’elle-même. À l’intérieur, des centaines de lanternes éteintes pendent du plafond, immobiles comme des chauves-souris.</p><p class="ch">Pour en allumer une, rends-toi au <strong>25</strong>.</p><p class="ch">Pour monter l’escalier, rends-toi au <strong>38</strong>.</p></div><div class="passage"><span class="n">18</span><p>Tu glisses sur la pierre mouillée et tombes à l’eau ! Le courant t’emporte jusqu’à la rive. Perds 1 point de volonté.</p><p class="ch">Pour continuer, rends-toi au <strong>24</strong>.</p></div><div class="passage"><span class="n">19</span><p>Le vent souffle si fort au sommet de la tour que ta lanterne vacille. En bas, la brume recouvre déjà le village.</p><p class="ch">Pour abriter la flamme de tes mains, rends-toi au <strong>44</strong>.</p></div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="photo" id="p34-photo"><img src="assets/photo-des-livres.jpg" alt="" /><span class="lumiere" id="p34-lumiere"></span></div>
+          <div class="telephone" id="p34-tel">
+            <div class="tel-ecran">
+              <span class="encoche"></span>
+              <div class="tel-haut">Les passeurs de brume<span>Ma feuille</span></div>
+              <div class="tel-scene" id="p34-sa">
+                <div class="n">12</div>
+                <p>La chouette se posa sur une branche de saule, au bord d’une rivière. Elle avait des plumes argentées qui brillaient dans la nuit. Des pierres plates dépassaient de l’eau et chacune, quand le courant la touchait, chantait une note différente.</p>
+                <div class="tel-choix"><span>Pour sauter de pierre en pierre, rends-toi au <b>27</b>.</span><i data-ic="fleche"></i></div>
+                <div class="tel-choix" id="p34-touche"><span>Si tu veux appeler la chouette, rends-toi au <b>15</b>.</span><i data-ic="fleche"></i></div>
+              </div>
+              <div class="tel-scene" id="p34-sb">
+                <div class="n">15</div>
+                <img src="assets/ill/appeler-chouette.jpg" alt="" />
+                <p>Tu siffles doucement. La chouette se pose sur ton épaule et t’emmène jusqu’à son nid, tout en haut du saule.</p>
+                <div class="tel-choix"><span>Pour prendre la clé, rends-toi au <b>40</b>.</span><i data-ic="fleche"></i></div>
+                <div class="tel-choix"><span>Pour redescendre, rends-toi au <b>9</b>.</span><i data-ic="fleche"></i></div>
+              </div>
+              <span class="toucher" id="p34-toucher"></span>
+            </div>
+          </div>
+        </div>
+        <div class="grand-numero" id="p34-grand">5</div>
+        <div class="fondu" id="p34-fondu"></div>

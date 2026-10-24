@@ -38,15 +38,15 @@ export const metadata: Metadata = {
 
 /**
  * Ce qui attend le porteur : ses poses du dragon et de la souris (des découpes des planches de
- * référence en attendant), l'illustration de la première page, la photo des deux livres imprimés,
- * la visite en vidéo (un bouton sur l'illustration, quand
- * elle existera, design.md). Sans fichier, rien ne s'affiche à leur place, sauf en développement, où un
- * cadre en pointillé dit ce qui manque.
+ * référence en attendant), l'illustration de la première page, la photo des deux livres imprimés.
+ * Sans fichier, rien ne s'affiche à leur place, sauf en développement, où un cadre en pointillé
+ * dit ce qui manque.
  */
 const PHOTO_DES_LIVRES: string | null = "/accueil/photo-des-livres.webp";
-/** La visite en vidéo, MP4 hébergé avec l'application, et ses sous-titres (WebVTT) */
-const VIDEO_DE_LA_VISITE: string | null = null;
-const SOUS_TITRES_DE_LA_VISITE: string | null = null;
+/** La visite en vidéo, MP4 hébergé avec l'application, et ses sous-titres (WebVTT) ; ses sources
+ * et sa fabrication : video/visite (le skill « video-du-site ») */
+const VIDEO_DE_LA_VISITE: string | null = "/accueil/visite-fr.mp4";
+const SOUS_TITRES_DE_LA_VISITE: string | null = "/accueil/visite-fr.vtt";
 const EN_DEVELOPPEMENT = process.env.NODE_ENV !== "production";
 
 /**

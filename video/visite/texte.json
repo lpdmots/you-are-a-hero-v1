@@ -1,0 +1,44 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p01",
+      "avant": 1.2,
+      "apres": 1.7,
+      "texte": "Et si, cette année, votre classe écrivait son propre livre ? <break time=\"0.5s\" /> Un vrai livre-jeu, où c'est le lecteur qui choisit son chemin."
+    },
+    {
+      "id": "p07",
+      "avant": 0.9,
+      "apres": 1.9,
+      "texte": "Tout commence au tableau. <break time=\"0.5s\" /> Étape par étape, la classe imagine le monde, les héros, ce qui est en jeu, et les grands lieux de l'aventure. <break time=\"0.6s\" /> Les élèves proposent, <break time=\"0.4s\" /> vous retenez. <break time=\"0.7s\" /> Et si l'inspiration manque, l'IA vous souffle des idées."
+    },
+    {
+      "id": "p18",
+      "avant": 0.9,
+      "apres": 1.5,
+      "texte": "Ensuite, chaque élève reçoit ses scènes, <break time=\"0.4s\" /> et les écrit, d'abord sur son cahier, <break time=\"0.5s\" /> puis sur les ordinateurs de la classe. <break time=\"0.7s\" /> Chaque scène se termine par des choix. <break time=\"0.5s\" /> Sauter de pierre en pierre ? <break time=\"0.4s\" /> Ou appeler la chouette ?",
+      "prise": 1
+    },
+    {
+      "id": "p26",
+      "avant": 0.6,
+      "apres": 1.9,
+      "texte": "L'élève vous remet sa scène. <break time=\"0.6s\" /> Vous la relisez, <break time=\"0.4s\" /> vous laissez une remarque s'il faut la reprendre, <break time=\"1.0s\" /> puis vous la validez. <break time=\"0.6s\" /> Vous l'illustrez ensuite : <break time=\"0.3s\" /> avec un dessin de la classe, ou une image créée par l'IA. <break time=\"0.8s\" /> Et d'un coup d'œil, vous voyez où en est toute la classe."
+    },
+    {
+      "id": "p34",
+      "avant": 0.9,
+      "apres": 1.1,
+      "texte": "Vient le plus beau moment. <break time=\"0.6s\" /> L'application numérote les passages, <break time=\"0.3s\" /> vérifie que chaque chemin mène quelque part, <break time=\"0.4s\" /> et met le livre en page. <break time=\"0.8s\" /> Il ne reste qu'à l'imprimer. <break time=\"0.5s\" /> Et à la maison, les familles le lisent en ligne.",
+      "prise": 3
+    },
+    {
+      "id": "fin",
+      "avant": 0.7,
+      "apres": 4.2,
+      "texte": "Il était une fois <break time=\"0.3s\" /> une classe… <break time=\"0.5s\" /> qui a écrit son livre !",
+      "prise": 1
+    }
+  ]
+}

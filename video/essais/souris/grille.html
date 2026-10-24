@@ -1,0 +1,8 @@
+<!doctype html><meta charset="utf-8"><body style="margin:0;background:#f2ede3">
+<div style="position:relative;width:1254px;height:1254px">
+<img src="../../visite/assets/souris-grignote.png" style="position:absolute;inset:0;width:1254px">
+<svg id="g" width="1254" height="1254" style="position:absolute;inset:0"></svg></div>
+<script>
+let h="";for(let i=0;i<=1250;i+=25){const fort=i%100==0;h+=`<line x1="${i}" y1="0" x2="${i}" y2="1254" stroke="${fort?'rgba(0,0,180,.55)':'rgba(0,0,0,.12)'}"/><line y1="${i}" x1="0" y2="${i}" x2="1254" stroke="${fort?'rgba(0,0,180,.55)':'rgba(0,0,0,.12)'}"/>`;if(fort)h+=`<text x="${i+2}" y="12" font-size="12" fill="blue">${i}</text><text y="${i+12}" x="2" font-size="12" fill="blue">${i}</text>`}
+document.getElementById("g").innerHTML=h;
+</script></body>

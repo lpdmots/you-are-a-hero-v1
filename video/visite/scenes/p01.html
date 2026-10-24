@@ -1,0 +1,139 @@
+        <div class="fond"></div>
+        <style>
+          #s-p01 .livre {
+            position: absolute;
+            left: 210px;
+            top: -30px;
+            width: 1500px;
+            height: 1125px;
+            background: url(assets/livre-ouvert.webp) center / 100% 100% no-repeat;
+            filter: drop-shadow(0 30px 36px rgba(60, 45, 20, 0.25));
+          }
+          /* La page qui tourne : elle part de la page de droite, pivote sur le dos du livre et se
+             pose à gauche ; son verso porte l'image */
+          /* Mesures prises sur l'image du livre (échelle 0,75) : feuillets de y 139 à 955, dos (le plus
+             sombre du pli) à x 750, bord de la page de gauche qui penche de x 127 (haut) à x 108 (bas) */
+          #s-p01 .tourne { position: absolute; left: 750px; top: 139px; width: 642px; height: 816px; transform-origin: 0 50%; transform-style: preserve-3d; }
+          #s-p01 .face { position: absolute; inset: 0; backface-visibility: hidden; background: #fbf9f2; border-radius: 0 3px 3px 0; overflow: hidden; }
+          /* posée à gauche : bord penché comme celui de la page, coins creusés près du dos */
+          #s-p01 .face.verso { transform: rotateY(180deg); border-radius: 0 26px 26px 0; clip-path: polygon(19px 0, 100% 0, 100% 100%, 0 100%); }
+          #s-p01 .face.recto { border-radius: 26px 0 0 26px; }
+          /* l'ombre du pli, côté dos, comme sur les feuillets de l'image */
+          #s-p01 .face.recto::after, #s-p01 .face.verso::after { content: ""; position: absolute; top: 0; bottom: 0; width: 46px; pointer-events: none; }
+          #s-p01 .face.recto::after { left: 0; background: linear-gradient(90deg, rgba(120,100,60,0.2), rgba(120,100,60,0)); }
+          #s-p01 .face.verso::after { right: 0; width: 96px; background: linear-gradient(270deg, rgba(100,80,45,0.38) 0, rgba(100,80,45,0.17) 28px, rgba(100,80,45,0.05) 62px, rgba(100,80,45,0) 96px); }
+          #s-p01 .face .ombre { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(90,70,30,0.35), rgba(90,70,30,0.05)); opacity: 0; }
+          #s-p01 .face.verso .ombre { background: linear-gradient(270deg, rgba(90,70,30,0.35), rgba(90,70,30,0.05)); }
+          #s-p01 .page-g {
+            position: absolute;
+            left: 45px;
+            top: 29px;
+            width: 549px;
+            height: 760px;
+            /* plus large en bas qu'en haut, parallèle au bord penché de la page */
+            clip-path: polygon(17px 0, 100% 0, 100% 100%, 0 100%);
+            overflow: hidden;
+            border-radius: 3px;
+          }
+          #s-p01 .page-g img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 50% 28%;
+          }
+          #s-p01 .page-d {
+            position: absolute;
+            left: 806px;
+            top: 190px;
+            width: 548px;
+            height: 740px;
+          }
+          #s-p01 .num-page {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            font-family: var(--f-recit);
+            font-size: 34px;
+            color: var(--graphite-2);
+          }
+          #s-p01 .num-page i {
+            width: 52px;
+            height: 2px;
+            background: var(--trait-fort);
+          }
+          #s-p01 h1 {
+            margin-top: 40px;
+            font-family: var(--f-main);
+            font-weight: 400;
+            font-size: 48px;
+            line-height: 1.72;
+            color: var(--graphite);
+          }
+          #s-p01 h1 span {
+            display: inline-block;
+          }
+          #s-p01 .recit {
+            margin-top: 26px;
+            font-family: var(--f-recit);
+            font-size: 34px;
+            line-height: 1.45;
+            color: var(--graphite);
+          }
+          #s-p01 .les-choix {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 480px;
+          }
+          #s-p01 .choix {
+            font-size: 30px;
+            padding: 0 2px;
+            gap: 12px;
+            height: 78px;
+            align-items: center;
+          }
+          #s-p01 .choix .phrase {
+            flex: 1 1 auto;
+          }
+          #s-p01 .renvoi {
+            font-size: 28px;
+            height: 46px;
+            min-width: 66px;
+            border-width: 2.5px;
+          }
+          #s-p01 .dragon {
+            position: absolute;
+            left: 1490px;
+            top: 560px;
+            width: 430px;
+            height: 397px;
+            filter: drop-shadow(0 18px 18px rgba(60, 45, 20, 0.22));
+            transform-origin: 50% 100%;
+          }
+        </style>
+        <div class="camera" id="p01-camera">
+          <div class="livre" id="p01-livre">
+            <div class="page-d">
+              <div class="num-page" id="p01-num"><i></i><span>1</span><i></i></div>
+              <h1 id="p01-titre"><span>Et si votre classe</span> <span>écrivait son</span> <span>propre livre ?</span></h1>
+              <p class="recit" id="p01-recit">Un vrai livre-jeu, où c’est le lecteur qui choisit son chemin.</p>
+              <div class="les-choix">
+                <div class="choix" id="p01-choix1"><span class="phrase">Pour voir comment, rendez-vous au</span><span class="renvoi" id="p01-sortie">2<span class="plein">2</span></span></div>
+                <div class="choix" id="p01-choix2"><span class="phrase">Pour feuilleter un livre, rendez-vous au</span><span class="renvoi">5<span class="plein">5</span></span></div>
+              </div>
+            </div>
+            <div class="tourne" id="p01-tourne">
+              <div class="face recto"><span class="ombre" id="p01-ombre-r"></span></div>
+              <div class="face verso"><div class="page-g" id="p01-image"><img src="assets/classe-au-travail.webp" alt="" /></div><span class="ombre" id="p01-ombre-v"></span></div>
+            </div>
+          </div>
+        </div>
+        <div class="dragon" id="p01-dragon"><div style="position:absolute;left:0;top:0;width:640px;height:591px;transform:scale(0.672);transform-origin:0 0"><div id="p01-dragon-m" style="position:absolute;left:0;top:0;width:640px;height:591px"></div></div></div>
+        <div class="voile" id="p01-debut"></div>
+        <div class="voile" id="p01-voile" style="opacity: 0"></div>
+        <div class="grand-numero" id="p01-sortant" style="opacity: 0">2</div>
+        <div class="clic" id="p01-clic"></div>
+        <svg class="curseur" id="p01-curseur" viewBox="0 0 24 24" style="opacity: 0"><path d="M3.2 2.2v16.6l4.4-4.1 3 6.6 2.9-1.3-3-6.5 6.1-.4z" fill="#fff" stroke="#1e2226" stroke-width="1.4" stroke-linejoin="round" /></svg>

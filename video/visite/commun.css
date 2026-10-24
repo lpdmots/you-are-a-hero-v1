@@ -1,0 +1,320 @@
+/* La visite en vidéo — formes communes. Jetons de l'application (app/src/styles/jetons.css),
+   agrandis pour l'écran vidéo : une couleur, un rôle ; trois voix typographiques. */
+:root {
+  --table: #f2ede3;
+  --papier: #fcf9f1;
+  --feuille: #ffffff;
+  --feuille-2: #f8f9f6;
+  --trait: #dcdfd8;
+  --trait-fort: #c2c7bf;
+  --trait-papier: #d8d0bf;
+  --graphite: #1e2226;
+  --graphite-2: #4a5157;
+  --graphite-3: #636b72;
+  --canard: #0b6a73;
+  --canard-fonce: #07525a;
+  --canard-pale: #e1f0ef;
+  --ia-trait: #a9d0cd;
+  --marge: #efa9a9;
+  --e-cours: #34499a;
+  --e-cours-f: #e7ebfa;
+  --e-valider: #7e5200;
+  --e-valider-f: #ffefc2;
+  --e-reprendre: #a2331a;
+  --e-reprendre-f: #fce4db;
+  --e-valide: #2b6531;
+  --e-valide-f: #e1f0dd;
+  --e-prete: #643a8a;
+  --e-prete-f: #efe6f7;
+  --chemin: #d9483b;
+  --f-ui: "Atkinson Hyperlegible Next", system-ui, sans-serif;
+  --f-recit: "Vollkorn", Georgia, serif;
+  --f-main: "Playwrite FR Trad", cursive;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 1920px;
+  height: 1080px;
+  overflow: hidden;
+  background: var(--table);
+  color: var(--graphite);
+  font-family: var(--f-ui);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ——— Une scène : la table, sa lumière, son grain ——— */
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--table);
+}
+.scene > .fond {
+  position: absolute;
+  inset: -40px;
+  background:
+    radial-gradient(1200px 820px at 18% 8%, rgba(255, 244, 214, 0.85), rgba(255, 244, 214, 0) 70%),
+    radial-gradient(1400px 900px at 92% 110%, rgba(196, 170, 120, 0.22), rgba(196, 170, 120, 0) 70%),
+    var(--table);
+}
+.scene > .fond::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(assets/papier.webp) center / 640px auto repeat;
+  opacity: 0.55;
+  mix-blend-mode: multiply;
+}
+/* La caméra : tout ce qui bouge ensemble ; on la pousse, on la fait glisser */
+.camera {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+}
+/* Le papier qui couvre l'écran pendant le passage d'un numéro à l'autre */
+.voile {
+  position: absolute;
+  inset: 0;
+  background: var(--papier);
+  z-index: 50;
+  pointer-events: none;
+}
+.voile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url(assets/papier.webp) center / 640px auto repeat;
+  opacity: 0.6;
+  mix-blend-mode: multiply;
+}
+
+/* ——— En-tête d'un passage : le numéro du livre-jeu et le titre ——— */
+.entete {
+  position: absolute;
+  left: 120px;
+  top: 92px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 10;
+}
+.numero {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  font-family: var(--f-recit);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--canard);
+  font-variant-numeric: lining-nums;
+}
+.numero .filet {
+  width: 64px;
+  height: 3px;
+  background: var(--canard);
+  opacity: 0.45;
+  transform-origin: left center;
+}
+.titre {
+  font-family: var(--f-recit);
+  font-weight: 600;
+  font-size: 76px;
+  line-height: 1.04;
+  letter-spacing: -0.015em;
+  color: var(--graphite);
+}
+/* Le grand numéro qui traverse le voile, d'un passage à l'autre */
+.grand-numero {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 60;
+  font-family: var(--f-recit);
+  font-weight: 600;
+  font-size: 44px;
+  line-height: 1;
+  color: var(--canard);
+  font-variant-numeric: lining-nums;
+  transform-origin: 50% 50%;
+  white-space: nowrap;
+}
+
+/* ——— Phrase de choix, de la forme du livre ——— */
+.choix {
+  display: flex;
+  align-items: last baseline;
+  gap: 18px;
+  padding: 16px 4px;
+  border-top: 2px solid var(--trait-papier);
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 38px;
+  line-height: 1.3;
+  color: var(--graphite);
+}
+.choix .phrase {
+  flex: 1 1 auto;
+}
+.choix + .choix {
+  border-top: 0;
+}
+.choix:last-child {
+  border-bottom: 2px solid var(--trait-papier);
+}
+.renvoi {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.1em;
+  height: 1.45em;
+  padding: 0 12px;
+  border: 3px solid var(--canard);
+  border-radius: 99px;
+  color: var(--canard);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 34px;
+  font-variant-numeric: lining-nums;
+  background: transparent;
+  position: relative;
+}
+.renvoi .plein {
+  position: absolute;
+  inset: -3px;
+  border-radius: 99px;
+  background: var(--canard);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  opacity: 0;
+}
+
+/* ——— Tampon d'état : filet double, comme un tampon encreur ——— */
+.tampon {
+  --c: var(--e-cours);
+  --f: var(--e-cours-f);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 18px 6px 13px;
+  border-radius: 10px;
+  color: var(--c);
+  background: var(--f);
+  box-shadow:
+    inset 0 0 0 3px var(--c),
+    inset 0 0 0 6px var(--f),
+    inset 0 0 0 7.5px color-mix(in srgb, var(--c) 35%, transparent);
+  font-family: var(--f-ui);
+  font-size: 30px;
+  font-weight: 700;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.tampon svg {
+  width: 1.1em;
+  height: 1.1em;
+}
+.tampon[data-e="vide"] {
+  --c: var(--graphite-3);
+  --f: var(--feuille-2);
+}
+.tampon[data-e="reprendre"] {
+  --c: var(--e-reprendre);
+  --f: var(--e-reprendre-f);
+}
+.tampon[data-e="valider"] {
+  --c: var(--e-valider);
+  --f: var(--e-valider-f);
+}
+.tampon[data-e="valide"] {
+  --c: var(--e-valide);
+  --f: var(--e-valide-f);
+}
+.tampon[data-e="prete"] {
+  --c: var(--e-prete);
+  --f: var(--e-prete-f);
+}
+.ic {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ——— Fenêtre de l'outil : une feuille blanche posée sur la table ——— */
+.ecran {
+  position: absolute;
+  background: var(--feuille);
+  border-radius: 22px;
+  box-shadow:
+    0 2px 3px rgba(40, 32, 15, 0.08),
+    0 30px 60px -18px rgba(60, 45, 20, 0.32),
+    0 60px 120px -40px rgba(60, 45, 20, 0.22);
+  overflow: hidden;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 34px;
+  border-radius: 14px;
+  background: var(--canard);
+  color: #fff;
+  font-family: var(--f-ui);
+  font-weight: 700;
+  font-size: 32px;
+  white-space: nowrap;
+}
+.btn--ia {
+  background: var(--canard-pale);
+  color: var(--canard);
+  box-shadow: inset 0 0 0 2.5px var(--ia-trait);
+  border-radius: 99px;
+}
+.pastille-ia {
+  display: inline-grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  border-radius: 99px;
+  background: var(--canard-pale);
+  color: var(--canard);
+  box-shadow: inset 0 0 0 2.5px var(--ia-trait);
+}
+
+/* ——— Le curseur ——— */
+.curseur {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 46px;
+  height: 46px;
+  z-index: 40;
+  filter: drop-shadow(0 4px 6px rgba(30, 25, 10, 0.35));
+  transform-origin: 6px 4px;
+}
+.clic {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  margin: -45px 0 0 -45px;
+  border-radius: 99px;
+  border: 4px solid var(--canard);
+  z-index: 39;
+  opacity: 0;
+  left: 0;
+  top: 0;
+}
+
+/* Main de l'élève : la cursive des écoles */
+.main {
+  font-family: var(--f-main);
+  color: #2a3a8c;
+}

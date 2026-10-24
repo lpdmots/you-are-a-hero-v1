@@ -1,0 +1,143 @@
+        <style>
+          #s-p18.scene { background: var(--papier); }
+          #s-p18 .revele { position: absolute; inset: 0; }
+          #s-p18 .camera { transform-origin: 0 0; }
+          /* Le cahier à grands carreaux (Seyès) */
+          #s-p18 .cahier {
+            position: absolute; left: 120px; top: 300px; width: 770px; height: 700px;
+            transform: rotate(-2deg);
+            border-radius: 6px;
+            background:
+              linear-gradient(90deg, rgba(0,0,0,0) 104px, #e58f9a 104px, #e58f9a 107px, rgba(0,0,0,0) 107px),
+              repeating-linear-gradient(90deg, rgba(110,120,200,0) 0 63px, rgba(110,120,200,0.32) 63px 64px),
+              repeating-linear-gradient(180deg, rgba(110,120,200,0) 0 15px, rgba(150,155,215,0.28) 15px 16px),
+              repeating-linear-gradient(180deg, rgba(90,100,190,0) 0 63px, rgba(90,100,190,0.45) 63px 64.5px),
+              #fdfdfb;
+            background-position: 0 0, 107px 0, 0 8px, 0 8px, 0 0;
+            box-shadow: 0 2px 3px rgba(40,32,15,0.1), 0 30px 50px -18px rgba(60,45,20,0.35);
+          }
+          #s-p18 .ligne {
+            position: absolute; left: 124px;
+            font-family: var(--f-main); font-size: 37px; line-height: 64px; color: #233a95;
+            white-space: nowrap;
+          }
+          #s-p18 .date { left: 380px; }
+          #s-p18 .souligne { position: absolute; left: 380px; top: 128px; width: 300px; height: 3px; background: #233a95; border-radius: 3px; transform-origin: left; }
+          #s-p18 .crayon { position: absolute; left: 0; top: 0; width: 260px; height: 180px; overflow: visible; z-index: 5; transform-origin: 4px 176px; filter: drop-shadow(6px 14px 8px rgba(40,32,15,0.28)); }
+          /* L'ordinateur de la classe */
+          #s-p18 .portable { position: absolute; left: 960px; top: 250px; width: 900px; height: 616px; }
+          #s-p18 .couvercle { position: absolute; left: 0; top: 0; width: 900px; height: 580px; border-radius: 26px; background: #262b30; box-shadow: 0 40px 70px -20px rgba(40,30,10,0.45); }
+          #s-p18 .socle { position: absolute; left: -50px; top: 578px; width: 1000px; height: 34px; border-radius: 4px 4px 22px 22px; background: linear-gradient(#d9dadc, #a9acb0); box-shadow: 0 18px 30px -10px rgba(40,30,10,0.4); }
+          #s-p18 .socle::after { content: ""; position: absolute; left: 430px; top: 0; width: 140px; height: 10px; border-radius: 0 0 10px 10px; background: #93969a; }
+          #s-p18 .ecran-pc { position: absolute; left: 22px; top: 22px; width: 856px; height: 536px; background: #f1f2ee; border-radius: 8px; overflow: hidden; }
+          #s-p18 .copie { position: absolute; left: 18px; top: 16px; right: 18px; bottom: 16px; background: #fff; border-radius: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.08); overflow: hidden; }
+          #s-p18 .copie-haut { height: 58px; display: flex; align-items: center; padding: 0 26px; font-size: 21px; font-weight: 800; color: var(--graphite-2); border-bottom: 2px solid var(--trait); }
+          #s-p18 .copie-haut span { margin-left: auto; font-weight: 700; display: flex; gap: 10px; align-items: center; }
+          #s-p18 .copie-haut span i { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--graphite-3); border-radius: 4px; }
+          #s-p18 .marge { position: absolute; left: 46px; top: 58px; bottom: 0; width: 2px; background: var(--marge); }
+          #s-p18 .texte { position: absolute; left: 72px; top: 76px; width: 720px; font-family: var(--f-recit); font-size: 23px; line-height: 1.6; color: var(--graphite); }
+          #s-p18 .texte .mot { opacity: 0; }
+          #s-p18 .choix-copie { position: absolute; left: 72px; width: 720px; height: 54px; display: flex; align-items: center; gap: 10px; border-top: 1.5px solid var(--trait); font-family: var(--f-recit); font-style: italic; font-size: 23px; }
+          #s-p18 .choix-copie b { display: inline-grid; place-items: center; min-width: 38px; height: 34px; padding: 0 6px; border: 1.5px solid var(--trait-fort); border-radius: 6px; font-style: normal; font-weight: 700; font-size: 21px; background: #fafaf8; }
+          #s-p18 .choix-copie em { margin-left: 14px; font-family: var(--f-ui); font-style: normal; font-size: 17px; color: var(--graphite-2); }
+          #s-p18 .choix-copie .fond-choix { position: absolute; inset: 2px -10px; border-radius: 8px; background: var(--canard-pale); box-shadow: inset 0 0 0 2px var(--canard); z-index: -1; opacity: 0; }
+          #s-p18 .copie-bas { position: absolute; left: 0; right: 0; bottom: 0; height: 74px; display: flex; align-items: center; padding: 0 18px 0 26px; background: #f8f8f5; border-top: 2px solid var(--trait); }
+          #s-p18 .enregistre { color: var(--e-valide); font-weight: 700; font-size: 21px; display: flex; gap: 8px; align-items: center; }
+          #s-p18 .enregistre svg { width: 22px; height: 22px; stroke-width: 2.6; }
+          #s-p18 .remettre { position: relative; margin-left: auto; display: flex; align-items: center; gap: 10px; height: 52px; padding: 0 22px; border-radius: 10px; background: var(--canard); color: #fff; font-weight: 700; font-size: 21px; }
+          #s-p18 .remettre svg { width: 22px; height: 22px; stroke-width: 2.4; }
+          /* le numéro du passage suivant, dans le bouton : le geste de l'élève mène au 4 */
+          #s-p18 .renvoi-btn { position: relative; display: inline-grid; place-items: center; min-width: 40px; height: 32px; padding: 0 8px; margin-left: 2px; border: 2px solid #fff; border-radius: 99px; font-family: var(--f-recit); font-weight: 700; font-size: 21px; }
+          #s-p18 .renvoi-btn .plein { position: absolute; inset: -2px; border-radius: 99px; background: #fff; color: var(--canard); display: grid; place-items: center; opacity: 0; }
+          /* Les deux scènes où mènent les choix */
+          #s-p18 .carte-scene {
+            position: absolute; width: 330px; padding: 14px; z-index: 6;
+            background: #fff; border-radius: 18px;
+            box-shadow: 0 2px 3px rgba(40,32,15,0.08), 0 24px 44px -14px rgba(60,45,20,0.35);
+          }
+          #s-p18 .carte-scene img { width: 100%; height: 170px; object-fit: cover; border-radius: 10px; display: block; }
+          #s-p18 .carte-scene small { display: block; margin-top: 12px; font-size: 22px; font-weight: 800; color: var(--canard); }
+          #s-p18 .carte-scene b { display: block; font-size: 26px; line-height: 1.22; font-weight: 700; }
+          #s-p18 .chemins { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; z-index: 5; pointer-events: none; }
+          #s-p18 .entete { z-index: 8; }
+          /* La répartition : le chapitre, ses scènes, et le prénom de qui s'en occupe */
+          #s-p18 .repartition { left: 250px; top: 274px; width: 1420px; height: 572px; z-index: 7; }
+          #s-p18 .repartition::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; background: #5d9b5f; }
+          #s-p18 .rep-image { position: absolute; left: 40px; top: 26px; width: 146px; height: 98px; border-radius: 12px; object-fit: cover; }
+          #s-p18 .rep-titre { position: absolute; left: 212px; top: 30px; font-family: var(--f-recit); font-weight: 600; font-size: 44px; }
+          #s-p18 .rep-sous { position: absolute; left: 214px; top: 90px; font-size: 24px; color: var(--graphite-2); }
+          #s-p18 .rep-carte { position: absolute; width: 420px; height: 160px; padding: 20px 22px; border-radius: 16px; background: var(--feuille-2); box-shadow: inset 0 0 0 2px var(--trait); }
+          #s-p18 .rep-carte b { display: block; font-size: 26px; line-height: 1.25; }
+          #s-p18 .rep-carte .libre { position: absolute; left: 22px; bottom: 18px; font-size: 22px; font-style: italic; color: var(--graphite-3); }
+          #s-p18 .rep-carte .qui { position: absolute; left: 22px; bottom: 12px; display: flex; align-items: center; gap: 12px; }
+          #s-p18 .rep-carte .qui i { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 99px; font-style: normal; font-weight: 800; font-size: 19px; color: var(--c); background: #fff; box-shadow: inset 0 0 0 2.5px var(--c); }
+          #s-p18 .rep-carte .qui .main { font-size: 32px; color: var(--graphite); }
+        </style>
+        <div class="revele" id="p18-revele">
+          <div class="fond"></div>
+          <div class="camera" id="p18-camera">
+            <div class="cahier" id="p18-cahier">
+              <div class="ligne date" id="p18-l0" style="top: 72px">Jeudi 16 octobre</div>
+              <div class="souligne" id="p18-souligne"></div>
+              <div class="ligne" id="p18-l1" style="top: 200px">La chouette se posa sur une</div>
+              <div class="ligne" id="p18-l2" style="top: 264px">branche de saule, au bord</div>
+              <div class="ligne" id="p18-l3" style="top: 328px">d’une rivière. Des pierres</div>
+              <div class="ligne" id="p18-l4" style="top: 392px">plates dépassaient de l’eau</div>
+              <div class="ligne" id="p18-l5" style="top: 456px">et chacune chantait une note…</div>
+            </div>
+            <svg class="crayon" id="p18-crayon" viewBox="0 0 260 180" aria-hidden="true">
+              <defs>
+                <linearGradient id="p18-corps" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4d6fd0" /><stop offset="0.45" stop-color="#2d4bb0" /><stop offset="1" stop-color="#1b2f7a" /></linearGradient>
+                <linearGradient id="p18-prise" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3a3f47" /><stop offset="1" stop-color="#16191d" /></linearGradient>
+                <linearGradient id="p18-metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#eef0f2" /><stop offset="0.5" stop-color="#b9bec4" /><stop offset="1" stop-color="#868c93" /></linearGradient>
+              </defs>
+              <g transform="translate(4 176) rotate(-34)">
+                <path d="M0 0 L22 -6 L22 6 Z" fill="url(#p18-metal)" />
+                <circle cx="1" cy="0" r="1.6" fill="#233a95" />
+                <rect x="22" y="-9" width="62" height="18" rx="3" fill="url(#p18-prise)" />
+                <path d="M34 -9 v18 M44 -9 v18 M54 -9 v18 M64 -9 v18 M74 -9 v18" stroke="#000" stroke-opacity="0.25" stroke-width="2" />
+                <rect x="84" y="-11" width="186" height="22" rx="6" fill="url(#p18-corps)" />
+                <rect x="92" y="-8" width="170" height="4" rx="2" fill="#fff" fill-opacity="0.35" />
+                <rect x="262" y="-11" width="20" height="22" rx="7" fill="#1b2f7a" />
+                <path d="M200 -11 L200 -19 Q200 -22 203 -22 L270 -22 Q274 -22 274 -18 L274 -11" fill="none" stroke="url(#p18-metal)" stroke-width="5" />
+              </g>
+            </svg>
+
+            <div class="portable" id="p18-portable">
+              <div class="couvercle"></div>
+              <div class="socle"></div>
+              <div class="ecran-pc">
+                <div class="copie">
+                  <div class="copie-haut">Ton texte<span><i></i>Scènes voisines</span></div>
+                  <div class="marge"></div>
+                  <p class="texte" id="p18-texte">La chouette se posa sur une branche de saule, au bord d’une rivière. Des pierres plates dépassaient de l’eau et chacune, quand le courant la touchait, chantait une note différente.</p>
+                  <div class="choix-copie" id="p18-c1" style="top: 300px"><span class="fond-choix"></span>Pour sauter de pierre en pierre, rends-toi au <b>25</b>.<em>→ Rivière</em></div>
+                  <div class="choix-copie" id="p18-c2" style="top: 354px; border-bottom: 1.5px solid var(--trait)"><span class="fond-choix"></span>Si tu veux appeler la chouette, rends-toi au <b>29</b>.<em>→ Saule</em></div>
+                  <div class="copie-bas">
+                    <span class="enregistre" id="p18-enr"><i data-ic="coche"></i>Enregistré</span>
+                    <span class="remettre" id="p18-remettre">Remettre à Mme Laurent <i data-ic="fleche"></i><span class="renvoi-btn" id="p18-sortie">4<span class="plein">4</span></span></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <svg class="chemins" id="p18-ch1" viewBox="0 0 1920 1080"><path id="p18-ch1p" d="" fill="none" stroke="#d9483b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 16" /></svg>
+          <svg class="chemins" id="p18-ch2" viewBox="0 0 1920 1080"><path id="p18-ch2p" d="" fill="none" stroke="#d9483b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 16" /></svg>
+          <div class="carte-scene" id="p18-k1"><img src="assets/ill/sauter-pierres.jpg" alt="" /><small>25</small><b>Rivière — la pierre glissante</b></div>
+          <div class="carte-scene" id="p18-k2"><img src="assets/ill/appeler-chouette.jpg" alt="" /><small>29</small><b>Saule — le nid de la chouette</b></div>
+          <div class="ecran repartition" id="p18-rep">
+            <img class="rep-image" src="assets/ill/defaut-riviere.jpg" alt="" />
+            <div class="rep-titre">Le gué des saules</div>
+            <div class="rep-sous">Chapitre · 6 scènes · Farah, Gabin, Hugo et Jade</div>
+            <div class="rep-carte" style="left:40px;top:160px"><b>Gué — les pierres qui chantent</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui0"><i style="--c:#2b6531">Fa</i><span class="main">Farah</span></span></div><div class="rep-carte" style="left:490px;top:160px"><b>Rivière — la pierre glissante</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui1"><i style="--c:#34499a">Ga</i><span class="main">Gabin</span></span></div><div class="rep-carte" style="left:940px;top:160px"><b>Saule — le nid de la chouette</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui2"><i style="--c:#7e5200">Hu</i><span class="main">Hugo</span></span></div><div class="rep-carte" style="left:40px;top:342px"><b>Rive — le moulin au loin</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui3"><i style="--c:#643a8a">Ja</i><span class="main">Jade</span></span></div><div class="rep-carte" style="left:490px;top:342px"><b>Gué — la loutre passeuse</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui4"><i style="--c:#2b6531">Fa</i><span class="main">Farah</span></span></div><div class="rep-carte" style="left:940px;top:342px"><b>Rivière — les cloches au loin</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui5"><i style="--c:#34499a">Ga</i><span class="main">Gabin</span></span></div>
+          </div>
+          <div class="entete" id="p18-entete" style="transform-origin: 0 0">
+            <div class="numero"><span id="p18-chiffre">3</span><span class="filet" id="p18-filet"></span></div>
+            <div class="titre" id="p18-titre">Chacun écrit ses scènes.</div>
+          </div>
+        </div>
+        <div class="grand-numero" id="p18-grand">3</div>
+        <div class="voile" id="p18-voile" style="opacity: 0"></div>
+        <div class="grand-numero" id="p18-sortant" style="opacity: 0">4</div>
+        <div class="clic" id="p18-clic"></div>
+        <svg class="curseur" id="p18-curseur" viewBox="0 0 24 24" style="opacity: 0"><path d="M3.2 2.2v16.6l4.4-4.1 3 6.6 2.9-1.3-3-6.5 6.1-.4z" fill="#fff" stroke="#1e2226" stroke-width="1.4" stroke-linejoin="round" /></svg>

@@ -2295,7 +2295,8 @@ ensemble ensuite. Règle de la page : [F14](specifications.md#f14--ouverture-off
   de passage (décision du porteur) : elles iront dans l'« Aide ».
 - **La visite en vidéo** (son idée) : un bouton « Le tour en 1 min 30 » sur
   l'illustration de la première page, qui ouvre une fenêtre ; une minute
-  trente au plus, sous-titrée, hébergée avec l'application (pas YouTube, pour
+  trente environ (un peu plus si le rythme le demande, décidé le 24 octobre
+  2026), sous-titrée, hébergée avec l'application (pas YouTube, pour
   ses traceurs), lancée par un clic seulement. Sans vidéo, pas de bouton.
 - **Les personnages :** le dragon lit à côté du livre au premier écran et dort
   sur son livre à la fin ; la souris grignote le coin du dernier feuillet. Une
@@ -2334,8 +2335,7 @@ dans la cursive des écoles (Playwrite FR Trad), plus grand, et lui seul (les ti
 feuillets restent en Vollkorn, la cursive gardant les notes et la signature) ; l'image de la
 page gauche en trapèze, plus large en bas comme la page en perspective, centrée entre la
 tranche et l'ombre du pli ; le dragon, nouveau dessin retourné, tourné vers la page de droite
-sur grand écran, et penché vers le texte sur téléphone. La visite en vidéo : enregistrée par
-le porteur, de sa voix, une minute trente en quatre temps (la classe prépare au tableau, un
+sur grand écran, et penché vers le texte sur téléphone. La visite en vidéo : une minute trente environ, en quatre temps (la classe prépare au tableau, un
 élève écrit et remet, l'enseignant relit et valide, le livre se compose puis se feuillette
 imprimé) ; son bouton (« Le tour en vidéo ») ne paraît en ligne qu'avec la vidéo. L'image de
 la page gauche, qui en est l'affiche : une photo de sa classe au travail si le porteur peut
