@@ -1,15 +1,11 @@
-/* Le bouton de la visite en vidéo : la pastille du début (accueil.module.css), en bleu canard
-   pour se détacher de l'illustration, à sa taille d'origine (porteur, 24 octobre 2026, après
-   l'essai d'un grand rond au centre puis d'une note à la main). */
+/* Le bouton de la visite en vidéo : la pastille claire du début (accueil.module.css), son rond de
+   lecture canard ; « Créez un compte » reste le seul bouton plein de l'écran. Une ombre un peu plus
+   marquée la détache de l'illustration (porteur, 24 octobre 2026, après l'essai d'un grand rond au
+   centre, d'une note à la main et d'une pastille canard). */
 .lancer.lancer {
-  background: var(--canard);
-  color: var(--feuille);
   box-shadow:
-    0 0 0 2px rgba(255, 253, 248, 0.6),
-    0 8px 20px rgba(20, 30, 30, 0.35);
-}
-.lancer.lancer:hover {
-  background: var(--canard-fonce);
+    0 0 0 1px rgba(30, 25, 10, 0.08),
+    0 10px 26px rgba(30, 25, 10, 0.38);
 }
 /* Le rond enveloppe le signe de lecture : en bloc, pour qu'il soit centré dans la pastille */
 .rond {
@@ -18,6 +14,4 @@
 }
 .lancer.lancer svg {
   display: block;
-  background: var(--feuille);
-  color: var(--canard);
 }
