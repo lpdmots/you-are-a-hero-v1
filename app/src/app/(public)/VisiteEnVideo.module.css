@@ -1,6 +1,6 @@
 /* Le bouton de la visite en vidéo : la pastille du début (accueil.module.css), en bleu canard
-   pour se détacher de l'illustration, et un peu plus grande sur grand écran (porteur,
-   24 octobre 2026, après l'essai d'un grand rond au centre puis d'une note à la main). */
+   pour se détacher de l'illustration, à sa taille d'origine (porteur, 24 octobre 2026, après
+   l'essai d'un grand rond au centre puis d'une note à la main). */
 .lancer.lancer {
   background: var(--canard);
   color: var(--feuille);
@@ -20,17 +20,4 @@
   display: block;
   background: var(--feuille);
   color: var(--canard);
-}
-@media (min-width: 981px) {
-  .lancer.lancer {
-    bottom: 26px;
-    gap: 12px;
-    padding: 12px 24px 12px 12px;
-    font-size: var(--t-l);
-  }
-  .lancer.lancer svg {
-    width: 38px;
-    height: 38px;
-    padding: 9px 8px 9px 10px;
-  }
 }
