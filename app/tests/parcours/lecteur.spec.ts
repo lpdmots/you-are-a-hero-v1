@@ -56,6 +56,8 @@ async function phare(page: Page): Promise<Livre> {
     sections: [{ id: "heros", type: "compteurs", titre: "Ton héros", compteurs: [{ id: "vol", nom: "Volonté", depart: 2 }] }, { id: "inv", type: "liste", titre: "Inventaire", lignes: 6 }],
   };
   await base.from("preparations").update({ feuille, rubrique_jeu: true, regles: "Lance les deux dés quand le livre le demande." }).eq("projet_id", projet);
+  // Deux objets dans la liste : seule la corde est nommée par une action (F04-AC20, AC44)
+  await base.from("objets").insert(["la corde", "la lanterne"].map((nom) => ({ projet_id: projet, enseignant_id: compte.id, nom, description: "", fiche: "" })));
   await pret(projet);
   return { compte, base, projet, s };
 }
@@ -92,7 +94,7 @@ const numeroDe = async (projet: string, scene: string): Promise<number> => {
 const texte = (p: Page) => p.locator(".lecteur__corps");
 const choix = (p: Page, libelle: string) => texte(p).getByRole("button", { name: new RegExp(libelle) });
 
-test("F12-AC01, F04-AC17, F11-AC46, F04-AC18, F04-AC20, F04-AC21, F04-AC31, F04-AC32, F12-AC13, F12-AC14, F12-AC18 — sur un téléphone, sans compte : la page de titre, le passage tel que le livre l'imprime, la feuille et les dés, l'énigme, le retour par le parcours", async ({ page, browser }) => {
+test("F12-AC01, F04-AC17, F11-AC46, F04-AC18, F04-AC20, F04-AC44, F04-AC45, F04-AC21, F04-AC31, F04-AC32, F12-AC13, F12-AC14, F12-AC18 — sur un téléphone, sans compte : la page de titre, le passage tel que le livre l'imprime, la feuille et les dés, l'énigme, le retour par le parcours", async ({ page, browser }) => {
   const l = await phare(page);
   const adresse = await partager(page, l.projet);
   const { contexte, lecteur } = await telephone(browser);
@@ -112,25 +114,41 @@ test("F12-AC01, F04-AC17, F11-AC46, F04-AC18, F04-AC20, F04-AC21, F04-AC31, F04-
   await expect(texte(lecteur).locator(".lu-action")).toHaveText("Ajoute la corde à ton inventaire.");
   expect(await lecteur.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 
-  // L'action ouvre la feuille, sans rien y noter ; la liste ne propose aucun objet
+  // L'action propose la seule corde, qu'elle nomme, jamais la liste entière ; un appui la note,
+  // un second la raye, un troisième la remet (F04-AC20, AC44)
+  await expect(texte(lecteur).locator(".lu-objet")).toHaveCount(1);
+  const corde = texte(lecteur).locator(".lu-objet");
+  await expect(corde).toHaveAccessibleName("Noter Corde dans ton inventaire");
+  await corde.click();
+  await expect(corde).toHaveAccessibleName("Corde est noté dans ton inventaire. Le rayer");
+  await corde.click();
+  await expect(corde).toHaveAccessibleName("Noter Corde dans ton inventaire");
+  await corde.click();
+  // L'action ouvre la feuille, sans rien y noter d'autre ; la feuille ne propose aucun objet
   await texte(lecteur).locator(".lu-action").click();
   const feuille = lecteur.getByRole("complementary", { name: "Feuille d’aventure" });
   await expect(feuille).toBeVisible();
-  await expect(feuille.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("");
+  await expect(feuille.locator(".fa-badge")).toHaveText(["Corde"]);
   expect(await feuille.locator("input[list], datalist").count()).toBe(0);
   for (let i = 0; i < 3; i += 1) if (await feuille.getByRole("button", { name: "Retirer un point : Volonté" }).isEnabled()) await feuille.getByRole("button", { name: "Retirer un point : Volonté" }).click();
   await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("0");
   await expect(feuille.getByRole("button", { name: "Retirer un point : Volonté" })).toBeDisabled();
-  await feuille.getByRole("textbox", { name: "Inventaire, ligne 1" }).fill("corde");
+  // Un badge se raye d'un clic, « Remettre » le rend (F04-AC45)
+  await feuille.getByRole("button", { name: "Rayer Corde" }).click();
+  await expect(feuille.locator(".fa-badge")).toHaveCount(0);
+  await feuille.getByRole("button", { name: "Remettre" }).click();
+  await expect(feuille.locator(".fa-badge")).toHaveText(["Corde"]);
   await feuille.getByRole("button", { name: "Lancer les dés" }).click();
   await expect(feuille.locator(".fa-de__resultat")).toHaveText(/^\d et \d : \d+ en tout$/);
   await feuille.getByRole("button", { name: "Ranger" }).click();
   // La barre basse : les valeurs entières, le dé à droite et son dernier lancer, le même que la feuille
   const barre = lecteur.locator(".lecteur__barre-basse");
   await expect(barre.locator(".barre-feuille__valeurs > span")).toHaveText(["Volonté 0", "Inventaire 1"]);
-  await expect(barre.locator(".barre-feuille__resultat .de-face")).toHaveCount(2);
-  await barre.getByRole("button", { name: "Lancer les dés" }).click();
-  await expect(barre.locator(".barre-feuille__total")).toHaveText(/^\d+$/);
+  const de = barre.locator(".barre-feuille__lancer");
+  await expect(de.locator(".de-face")).toHaveCount(2);
+  await expect(de).toHaveAccessibleName(/^\d et \d : \d+\. Relancer$/);
+  await de.click();
+  await expect(de.locator(".barre-feuille__total")).toHaveText(/^\d+$/);
   await expect(choix(lecteur, "Monter au phare")).toBeEnabled();
   await expect(choix(lecteur, "Rentrer à la maison")).toBeEnabled();
 
@@ -166,7 +184,8 @@ test("F12-AC19, F04-AC23, F04-AC24 — la lecture retenue sur l'appareil : conti
   await lecteur.getByRole("button", { name: "Ma feuille" }).click();
   const feuille = lecteur.getByRole("complementary", { name: "Feuille d’aventure" });
   await feuille.getByRole("button", { name: "Retirer un point : Volonté" }).click();
-  await feuille.getByRole("textbox", { name: "Inventaire, ligne 1" }).fill("corde");
+  await feuille.getByRole("textbox", { name: "Inventaire, écrire" }).fill("corde");
+  await feuille.getByRole("textbox", { name: "Inventaire, écrire" }).press("Enter");
   await feuille.getByRole("button", { name: "Ranger" }).click();
   await choix(lecteur, "Monter au phare").click();
   const porte = await numeroDe(l.projet, l.s.porte);
@@ -185,7 +204,7 @@ test("F12-AC19, F04-AC23, F04-AC24 — la lecture retenue sur l'appareil : conti
   await expect(texte(lecteur)).toContainText("Trois symboles sur la porte.");
   await lecteur.getByRole("button", { name: "Ma feuille" }).click();
   await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("1");
-  await expect(feuille.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("corde");
+  await expect(feuille.locator(".fa-badge")).toHaveText(["corde"]);
   await feuille.getByRole("button", { name: "Ranger" }).click();
 
   // Recommencer : la feuille revient à ses valeurs de départ
@@ -194,7 +213,7 @@ test("F12-AC19, F04-AC23, F04-AC24 — la lecture retenue sur l'appareil : conti
   await expect(texte(lecteur).locator(".lu-numero-passage")).toHaveText("1");
   await lecteur.getByRole("button", { name: "Ma feuille" }).click();
   await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("2");
-  await expect(feuille.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("");
+  await expect(feuille.locator(".fa-badge")).toHaveCount(0);
   await contexte.close();
 });
 

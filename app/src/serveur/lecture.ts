@@ -4,7 +4,9 @@ import { projetDe } from "./lectures";
 import { estUuid, planDe, preparationDe } from "./recit";
 import type { Texte } from "@/domaine/copie";
 import { livrePourLAdulte, livrePourLEleve, type DonneesDuPoste, type LivreDeLEleve, type LivreLu } from "@/domaine/lecture";
+import { livreAvecObjets } from "@/domaine/inventaire";
 import { feuillePropre } from "@/domaine/preparation";
+import { nomsDesObjets } from "./lecteur";
 import { clientDuPoste } from "./poste";
 import { numerosDuPoste, type ContexteEleve } from "./recit-eleve";
 import type { Plan } from "@/domaine/recit";
@@ -28,7 +30,7 @@ export async function livreALirePourLAdulte(e: Enseignant, projetId: string): Pr
     aChoix, formule: preparation?.formuleRenvoi ?? "rends", marqueFin: preparation?.marqueFin ?? "Fin",
     feuille: preparation?.feuille ?? null, regles: preparation?.regles ?? "",
   });
-  return { livre, plan, titre: projet.titre, aChoix };
+  return { livre: livreAvecObjets(livre, (preparation?.objets ?? []).map((o) => o.nom)), plan, titre: projet.titre, aChoix };
 }
 
 /**
@@ -47,5 +49,6 @@ export async function livreALirePourLEleve(c: ContexteEleve, projetId: string): 
   if (lu.error) throw new Error(`Lecture illisible : ${lu.error.message}`);
   const donnees = lu.data as DonneesDuPoste | null;
   if (!donnees || !projet.data) return null;
-  return { livre: livrePourLEleve(donnees, numeros, donnees.feuille ? feuillePropre(donnees.feuille) : null), titre: projet.data.titre as string };
+  const livre = livrePourLEleve(donnees, numeros, donnees.feuille ? feuillePropre(donnees.feuille) : null);
+  return { livre: livre.feuille ? { ...livre, ...livreAvecObjets(livre, await nomsDesObjets(projetId)) } : livre, titre: projet.data.titre as string };
 }

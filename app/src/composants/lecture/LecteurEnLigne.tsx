@@ -11,6 +11,7 @@ import {
 import { chapitresLus, livreLuDe, premiersMots, type ChapitreLu, type PresentationPartagee, type VersionPartagee } from "@/domaine/partage";
 import type { TexteLeger } from "@/domaine/pages";
 import { BarreDeLaFeuille, Feuille, useAuDessusDuClavier } from "./Feuille";
+import { basculerDansLaListe, dansLaListe, listeDesObjets } from "@/domaine/inventaire";
 import { Mots, Passage, SourceDesImages, type SourceImage } from "./Passage";
 
 /**
@@ -252,6 +253,15 @@ export function LecteurEnLigne({
     return `${p.numero ?? ""} · ${premiersMots(p)}`;
   };
 
+  // La liste où se notent les objets nommés par une action (F04-AC44)
+  const liste = listeDesObjets(livre.feuille);
+  const inventaire = liste && g
+    ? {
+        contient: (nom: string) => dansLaListe(g.feuille.listes[liste], nom),
+        basculer: (nom: string) => setG((x) => (x ? { ...x, feuille: basculerDansLaListe(x.feuille, liste, nom) } : x)),
+      }
+    : undefined;
+
   const feuille = livre.feuille && g ? (
     <Feuille
       feuille={livre.feuille}
@@ -421,6 +431,7 @@ export function LecteurEnLigne({
                   onEnigme={(e) => (e.cible.sorte === "passage" ? aller(e.cible.id, e.id) : undefined)}
                   onAction={livre.feuille ? (signe) => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille(signe === "de" && livre.feuille!.des > 0)) : undefined}
                   feuilleOuverte={feuilleOuverte}
+                  inventaire={inventaire}
                 />
                 {passage.fin ? (
                   <div className="lu-fin">

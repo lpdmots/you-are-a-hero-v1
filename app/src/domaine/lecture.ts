@@ -8,6 +8,7 @@
 
 import { estImageLigne, morceauxDe, NUMERO_VIDE, type Lettres, type Texte } from "./copie";
 import type { Etat } from "./etats";
+import type { ObjetANoter } from "./inventaire";
 import { numerosDuPlan } from "./numeros";
 import { signeDe, type Feuille, type FormuleRenvoi, type SigneAction } from "./preparation";
 import { chapitresDe, departDe, type Plan } from "./recit";
@@ -24,7 +25,8 @@ export type MorceauDeChoix = { texte: string } | { image: string; alt?: string }
 export type BlocLu =
   | { type: "p"; id: string; mots: MotLu[] }
   | { type: "image"; id: string; image: string; largeur: number; page?: true; alt?: string; legende?: string }
-  | { type: "action"; id: string; signe: SigneAction; mots: MotLu[] }
+  /** `objets` : ceux de la liste que l'action nomme, à noter ou rayer d'un geste (inventaire.ts) */
+  | { type: "action"; id: string; signe: SigneAction; mots: MotLu[]; objets?: ObjetANoter[] }
   | { type: "choix"; id: string; morceaux: MorceauDeChoix[] };
 
 /** Une liaison cachée : le numéro qu'elle attend, et où elle mène (F05.1). */

@@ -252,6 +252,59 @@
   flex: none;
   margin-top: 0.3em;
 }
+/* Sous une action qui nomme des objets de la liste : de quoi les noter ou les rayer d'un geste
+   (F04-AC44), en pastilles à la couleur de ce qui se coche */
+.lu-action-bloc {
+  display: grid;
+  gap: 8px;
+}
+.lu-objets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.lu-objet {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px 0 10px;
+  border: 1.5px solid var(--canard);
+  border-radius: 99px;
+  background: var(--feuille);
+  color: var(--canard);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+}
+.lu-objet:hover {
+  background: var(--canard-pale);
+}
+.lu-objet__signe {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.lu-objet--rayer {
+  border-color: var(--graphite-3);
+  color: var(--graphite);
+}
+.lu-objet--rayer .lu-objet__nom {
+  text-decoration: none;
+}
+.lu-objet--fait {
+  border-color: transparent;
+  background: var(--canard-pale);
+  color: var(--canard-fonce);
+}
+.lu-objet--rayer.lu-objet--fait {
+  background: none;
+  color: var(--graphite-2);
+}
+.lu-objet--rayer.lu-objet--fait .lu-objet__nom {
+  text-decoration: line-through;
+}
+
 /* Une action de jeu ouvre la feuille : le même encadré, qui se clique */
 .lu-action--feuille {
   width: 100%;
@@ -616,10 +669,58 @@ button.lu-choix:hover {
   color: var(--graphite-3);
   cursor: default;
 }
+/* Une liste en badges (F04-AC45) : un clic raye, le champ au bout en écrit un */
 .fa-liste {
   display: grid;
+  gap: 10px;
 }
-.fa-liste input {
+.fa-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fa-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 34px;
+  padding: 0 10px 0 12px;
+  border: 1px solid var(--trait);
+  border-radius: 99px;
+  background: var(--feuille);
+  font: inherit;
+  font-size: 1rem;
+  color: var(--graphite);
+  cursor: pointer;
+}
+.fa-badge svg {
+  width: 14px;
+  height: 14px;
+  color: var(--graphite-3);
+}
+.fa-badge:hover {
+  border-color: var(--graphite-3);
+}
+.fa-badge:hover svg {
+  color: var(--graphite);
+}
+.fa-raye {
+  margin: 0;
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.fa-ajout {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.fa-ajout input {
+  flex: 1;
+  min-width: 0;
   min-height: 38px;
   padding: 0 2px;
   border: 0;
@@ -704,7 +805,7 @@ button.lu-choix:hover {
 }
 /* La barre basse des deux lecteurs (BarreDeLaFeuille) : « Ma feuille » sur une ligne ; une ou deux
    valeurs, seulement celles qui tiennent entières (les autres passent à la ligne, que la hauteur
-   cache) ; le dé à droite, son dernier lancer à sa gauche (retour du porteur, 25 octobre 2026) */
+   cache) ; le dé à droite, son dernier lancer dans le bouton (retour du porteur, 25 octobre 2026) */
 .barre-feuille__ouvrir {
   flex: none;
   white-space: nowrap;
@@ -728,41 +829,32 @@ button.lu-choix:hover {
   content: "·";
   margin: 0 0.45em;
 }
-.barre-feuille__de {
-  flex: none;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
 .barre-feuille__resultat {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   animation: barre-feuille-lancer 0.32s var(--ease) both;
 }
-.barre-feuille__resultat:empty {
-  display: none;
-}
 .barre-feuille__resultat .de-face {
-  width: 32px;
-  height: 32px;
-  padding: 5px;
+  width: 28px;
+  height: 28px;
+  padding: 4px;
   gap: 2px;
   border-width: 1.5px;
-  border-radius: 7px;
+  border-radius: 6px;
 }
 .barre-feuille__total {
-  margin-left: 2px;
+  margin-left: 3px;
   font-family: var(--f-recit);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: var(--graphite);
 }
 .barre-feuille__lancer {
   flex: none;
-  width: 44px;
+  min-width: 44px;
   min-height: 44px;
-  padding: 0;
+  padding: 0 7px;
   justify-content: center;
 }
 .barre-feuille__lancer svg {

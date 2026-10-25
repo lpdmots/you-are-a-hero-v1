@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
+import type { ObjetANoter } from "@/domaine/inventaire";
 import type { SigneAction } from "@/domaine/preparation";
 import { resoudre, seulRenvoi, type BlocLu, type CibleLue, type EnigmeLue, type MorceauDeChoix, type MotLu, type PassageLu } from "@/domaine/lecture";
 
@@ -178,7 +179,7 @@ function Enigme({ passage, pourEleve, onSuivre, passer }: { passage: PassageLu; 
 }
 
 export function Passage({
-  passage, deja, pourEleve, onSuivre, onEnigme, onAction, feuilleOuverte, passerEnigme = true,
+  passage, deja, pourEleve, onSuivre, onEnigme, onAction, feuilleOuverte, passerEnigme = true, inventaire,
 }: {
   /** « Passer l'énigme » : dans la lecture d'essai seulement */
   passerEnigme?: boolean;
@@ -194,6 +195,11 @@ export function Passage({
   onAction?: (signe: SigneAction) => void;
   /** La feuille d'aventure est ouverte : une action la range (16 octobre 2026) */
   feuilleOuverte?: boolean;
+  /**
+   * La feuille a une liste où noter les objets : une action qui en nomme un propose de le noter
+   * ou de le rayer d'un geste, que l'on défait d'un second (F04-AC44)
+   */
+  inventaire?: { contient: (nom: string) => boolean; basculer: (nom: string) => void };
 }) {
   const recit = passage.blocs.filter((b) => b.type !== "choix");
   const choix = passage.blocs.filter((b): b is Extract<BlocLu, { type: "choix" }> => b.type === "choix");
@@ -207,6 +213,27 @@ export function Passage({
                 <p key={b.id}>
                   <Mots mots={b.mots} />
                 </p>
+              );
+            if (b.type === "action" && b.objets?.length && inventaire)
+              return (
+                <div key={b.id} className="lu-action-bloc">
+                  {onAction ? (
+                    <button type="button" className="lu-action lu-action--feuille" title={feuilleOuverte ? "Ranger ma feuille d’aventure" : "Ouvrir ma feuille d’aventure"} aria-expanded={feuilleOuverte ?? false} aria-controls="feuille-aventure" onClick={() => onAction(b.signe)}>
+                      <Icone nom={b.signe} />
+                      <span>
+                        <Mots mots={b.mots} />
+                      </span>
+                    </button>
+                  ) : (
+                    <p className="lu-action">
+                      <Icone nom={b.signe} />
+                      <span>
+                        <Mots mots={b.mots} />
+                      </span>
+                    </p>
+                  )}
+                  <ObjetsDeLAction objets={b.objets} inventaire={inventaire} />
+                </div>
               );
             if (b.type === "action")
               return onAction ? (
@@ -244,5 +271,30 @@ export function Passage({
       ) : null}
       {passage.enigmes.length ? <Enigme key={passage.id} passage={passage} pourEleve={pourEleve} onSuivre={onEnigme} passer={passerEnigme} /> : null}
     </>
+  );
+}
+
+/**
+ * Sous une action qui nomme des objets de la liste : un bouton par objet, « + Corde » pour le
+ * noter, « − Corde » pour le rayer ; fait, il se coche, et un second appui le défait (F04-AC44).
+ * Rien n'est vérifié : le lecteur décide (F04-AC18).
+ */
+function ObjetsDeLAction({ objets, inventaire }: { objets: ObjetANoter[]; inventaire: { contient: (nom: string) => boolean; basculer: (nom: string) => void } }) {
+  return (
+    <div className="lu-objets">
+      {objets.map((o) => {
+        const present = inventaire.contient(o.nom);
+        const fait = o.geste === "noter" ? present : !present;
+        const nom = o.geste === "noter"
+          ? present ? `${o.nom} est noté dans ton inventaire. Le rayer` : `Noter ${o.nom} dans ton inventaire`
+          : present ? `Rayer ${o.nom} de ton inventaire` : `${o.nom} est rayé de ton inventaire. Le remettre`;
+        return (
+          <button key={o.nom} type="button" className={`lu-objet${fait ? " lu-objet--fait" : ""}${o.geste === "rayer" ? " lu-objet--rayer" : ""}`} aria-label={nom} title={nom} onClick={() => inventaire.basculer(o.nom)}>
+            <span aria-hidden="true" className="lu-objet__signe">{fait ? "✓" : o.geste === "noter" ? "+" : "−"}</span>
+            <span className="lu-objet__nom">{o.nom}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 }

@@ -63,7 +63,8 @@ test("F12-AC12, F12-AC24, F12-AC26, F04-AC22 — « Lire » : l'histoire en cour
   await livres.first().click();
   await alice.page.getByRole("button", { name: "Commencer la lecture" }).click();
   await alice.page.getByRole("button", { name: "Ma feuille" }).first().click();
-  await alice.page.getByRole("textbox", { name: "Inventaire, ligne 1" }).fill("couteau");
+  await alice.page.getByRole("textbox", { name: "Inventaire, écrire" }).fill("couteau");
+  await alice.page.getByRole("button", { name: "Ajouter à Inventaire" }).click();
   await alice.page.getByRole("button", { name: "Ranger" }).click();
   await alice.page.locator(".lecteur__corps").getByRole("button", { name: /Avancer/ }).click();
   await expect(alice.page.locator(".lecteur__corps")).toContainText("Le phare : la fin.");
@@ -75,7 +76,7 @@ test("F12-AC12, F12-AC24, F12-AC26, F04-AC22 — « Lire » : l'histoire en cour
   await ailleurs.page.getByRole("link", { name: /Le phare/ }).click();
   await ailleurs.page.getByRole("button", { name: "Continuer au passage 2" }).click();
   await ailleurs.page.getByRole("button", { name: "Ma feuille" }).first().click();
-  await expect(ailleurs.page.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("couteau");
+  await expect(ailleurs.page.locator(".fa-badge")).toHaveText(["couteau"]);
   await ailleurs.contexte.close();
 
   // Bilal, sur le premier poste : sa feuille à lui, vide
@@ -89,7 +90,8 @@ test("F12-AC12, F12-AC24, F12-AC26, F04-AC22 — « Lire » : l'histoire en cour
   await expect(alice.page.getByRole("button", { name: /^Continuer/ })).toHaveCount(0);
   await alice.page.getByRole("button", { name: "Commencer la lecture" }).click();
   await alice.page.getByRole("button", { name: "Ma feuille" }).first().click();
-  await expect(alice.page.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("");
+  await expect(alice.page.locator(".fa-badge")).toHaveCount(0);
+  await expect(alice.page.getByRole("textbox", { name: "Inventaire, écrire" })).toHaveValue("");
   await alice.contexte.close();
 });
 

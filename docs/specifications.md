@@ -1848,9 +1848,22 @@ dans la première livraison, sous une forme sans vérification par l'application
   l'adulte pour le livre. Le résultat est affiché, jamais interprété : le
   lecteur lit la règle dans le passage et choisit lui-même la suite.
 
-**Différé après la première livraison :** action de jeu à effet déclaré, dont
-un bouton reporterait l'effet sur la feuille en ligne — elle pourra s'ajouter
-comme réglage des mêmes paragraphes, sans réécrire les textes ; lancer de dé
+**Révisé le 25 octobre 2026, à la demande du porteur :** dans le lecteur en
+ligne, une action de jeu qui nomme un objet de la liste de l'histoire propose
+de le noter dans l'inventaire, ou de l'en rayer, d'un geste (F04-AC44). Seuls
+les objets que l'action nomme sont proposés, jamais la liste entière, qui
+dévoilerait les objets à venir : sa demande d'ouvrir la liste des objets au
+lecteur lui a été déconseillée pour cette raison, et il a retenu ce geste.
+L'objet est reconnu à la lecture, sans réglage de l'auteur : le verbe le plus
+proche dit le geste (« ajoute », « prends », « te donne » notent ; « raye »,
+« perds », « donne au passeur », « te prend » rayent) ; une action sans tel
+verbe (« Si tu as la corde… ») ne propose rien. Rien n'est vérifié : le geste
+se défait d'un second appui. Les listes de la feuille en ligne deviennent des
+badges, rayés d'un clic (F04-AC45) ; le livre imprimé garde ses lignes.
+
+**Différé après la première livraison :** action de jeu à effet déclaré pour
+les compteurs (« Perds 2 points de volonté »), dont un bouton reporterait
+l'effet sur la feuille en ligne ; lancer de dé
 proposé à l'endroit du passage ; objet suivi dans le texte ; conditions
 vérifiées, calculs automatiques et combats, écartés comme le moteur de jeu du
 brief.
@@ -1880,7 +1893,8 @@ brief.
   aucune autre.
 - **F04-AC20 — Liste d'objets cachée au lecteur :** étant donné une histoire
   de douze objets, lorsque le lecteur remplit son inventaire en ligne, alors
-  aucun nom d'objet de la liste ne lui est proposé.
+  aucun nom d'objet de la liste ne lui est proposé, sinon ceux qu'une action
+  du passage nomme (F04-AC44, révisé le 25 octobre 2026).
 - **F04-AC21 — Dé non interprété :** étant donné un livre où le dé est activé
   et le passage « Si tu fais 4 ou plus, rends-toi au 12 », lorsque le lecteur
   lance le dé et obtient 2, alors le résultat est affiché et les deux choix du
@@ -2120,6 +2134,19 @@ d'une classe en pleine lecture pour une coquille corrigée.
   partage, alors Alice retrouve « Volonté : 2 », « couteau » et « Temps : 10 » ;
   lorsqu'il retire ensuite la section « Inventaire » et met à jour, alors la
   section disparaît de sa feuille et « Volonté » vaut toujours 2.
+- **F04-AC44 — Objet noté depuis l'action :** étant donné la liste « la
+  corde », « la lanterne » et l'action « Ajoute la corde à ton inventaire. »,
+  lorsque le lecteur en ligne lit le passage, alors un bouton « Corde » suit
+  l'action, et aucun pour la lanterne ; lorsqu'il l'appuie, alors « Corde »
+  s'inscrit dans la liste de la feuille appelée inventaire, sac ou objets (la
+  première liste à défaut) et le bouton se coche ; un second appui la raye.
+  Étant donné « Raye la corde de ton inventaire. », alors le bouton la raye ;
+  étant donné « Si tu as la corde, rends-toi au 12. », alors rien n'est
+  proposé. Le PDF et la version partagée n'en gardent rien.
+- **F04-AC45 — Inventaire en badges :** étant donné l'inventaire en ligne de
+  Lou, lorsqu'il écrit « pièce d'or » dans le champ et l'ajoute, alors un
+  badge « pièce d'or » s'affiche, et un nom déjà noté ne se répète pas ;
+  lorsqu'il clique ce badge, alors il est rayé, et « Remettre » le rend.
 
 **Questions ouvertes :** présentation de la feuille et du dé sur téléphone.
 

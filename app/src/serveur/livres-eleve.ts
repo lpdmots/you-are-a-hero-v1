@@ -1,7 +1,9 @@
 import "server-only";
+import { nomsDesObjets } from "./lecteur";
 import { clientDuPoste } from "./poste";
 import { estUuid } from "./recit";
 import type { ContexteEleve } from "./recit-eleve";
+import { versionAvecObjets } from "@/domaine/inventaire";
 import type { VersionPartagee } from "@/domaine/partage";
 
 /**
@@ -38,5 +40,5 @@ export async function livreDuPoste(c: ContexteEleve, projetId: string): Promise<
   const { data, error } = await base.rpc("livre_du_poste", { p_projet: projetId });
   if (error) throw new Error(`Livre illisible : ${error.message}`);
   const lu = data as { version: VersionPartagee | null; lecture: unknown } | null;
-  return lu?.version ? { version: lu.version, lecture: lu.lecture ?? null } : null;
+  return lu?.version ? { version: versionAvecObjets(lu.version, await nomsDesObjets(projetId)), lecture: lu.lecture ?? null } : null;
 }

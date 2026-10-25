@@ -5,6 +5,7 @@ import { SEAU, TYPE_MIME, type FormatImage } from "./images";
 import { empreinte } from "./jetons";
 import { estUuid } from "./recit";
 import { clientService } from "./supabase";
+import { versionAvecObjets } from "@/domaine/inventaire";
 import { codeSaisi, type VersionPartagee } from "@/domaine/partage";
 
 /**
@@ -45,10 +46,10 @@ export async function versionParLeLien(saisi: string): Promise<LuParLeLien> {
     if (bloque.error) return { sorte: "indisponible" };
     if (bloque.data) return { sorte: "neutre" };
     const lu = code
-      ? await service.from("partages").select("version").eq("code", code).eq("par_lien", true).not("version", "is", null).maybeSingle()
+      ? await service.from("partages").select("version, projet_id").eq("code", code).eq("par_lien", true).not("version", "is", null).maybeSingle()
       : { data: null, error: null };
     if (lu.error) return { sorte: "indisponible" };
-    if (lu.data?.version) return { sorte: "livre", version: lu.data.version as VersionPartagee };
+    if (lu.data?.version) return { sorte: "livre", version: versionAvecObjets(lu.data.version as VersionPartagee, await nomsDesObjets(lu.data.projet_id as string)) };
     await service.rpc("prendre_essai_entree", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
     return { sorte: "neutre" };
   } catch {
@@ -73,4 +74,15 @@ export async function imageParLeLien(saisi: string, imageId: string, vignette: b
   const { data, error } = await service.storage.from(SEAU).download(vignette ? image.chemin_vignette : image.chemin);
   if (error || !data) return null;
   return { octets: data, type: TYPE_MIME[image.format as FormatImage] ?? "image/jpeg" };
+}
+
+/**
+ * Les noms des objets de l'histoire, pour les actions de jeu qui en nomment (inventaire.ts) :
+ * lus avec la clé de service, seulement après que l'accès au livre a été vérifié. Le lecteur
+ * n'en reçoit que ceux que ses actions nomment déjà (F04-AC20). Une liste illisible ne prive
+ * pas de la lecture : les actions ne proposent alors rien.
+ */
+export async function nomsDesObjets(projetId: string): Promise<string[]> {
+  const { data, error } = await clientService().from("objets").select("nom").eq("projet_id", projetId);
+  return error ? [] : ((data ?? []) as { nom: string }[]).map((o) => o.nom);
 }

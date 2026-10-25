@@ -9,6 +9,7 @@ import {
 } from "@/domaine/lecture";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { BarreDeLaFeuille, Feuille, resumeCompteurs, useAuDessusDuClavier } from "./Feuille";
+import { basculerDansLaListe, dansLaListe, listeDesObjets } from "@/domaine/inventaire";
 import { Passage } from "./Passage";
 
 /**
@@ -62,6 +63,8 @@ export default function Lecture({
   // La feuille est fermée au départ : elle sert à quelques passages seulement (décidé par le porteur le 14 octobre 2026)
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const aside = useRef<HTMLElement>(null);
+  // La liste où se notent les objets nommés par une action (F04-AC44)
+  const liste = listeDesObjets(livre.feuille);
   useAuDessusDuClavier(aside, feuilleOuverte);
   const ouvrirFeuille = (versLeDe = false, versLesRegles = false) => {
     setFeuilleOuverte(true);
@@ -239,6 +242,11 @@ export default function Lecture({
                   // Une action ouvre la feuille ; un second clic la range, comme « Ma feuille »
                   onAction={livre.feuille ? (signe) => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille(signe === "de" && livre.feuille!.des > 0)) : undefined}
                   feuilleOuverte={feuilleOuverte}
+                  inventaire={
+                    liste
+                      ? { contient: (nom) => dansLaListe(g.feuille.listes[liste], nom), basculer: (nom) => setG((x) => ({ ...x, feuille: basculerDansLaListe(x.feuille, liste, nom) })) }
+                      : undefined
+                  }
                 />
                 {issue === "rien" ? (
                   <p className="lu-issue">

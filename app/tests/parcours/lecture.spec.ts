@@ -157,7 +157,7 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     const texteAvant = (await page_(page).boundingBox())!;
     await page_(page).getByRole("button", { name: /Ajoute la corde à ton inventaire/ }).click();
     await expect(feuille).toBeVisible();
-    await expect(feuille.getByRole("textbox", { name: "Inventaire, ligne 1" })).toHaveValue("");
+    await expect(feuille.locator(".fa-badge")).toHaveCount(0);
     // La feuille s'ouvre par-dessus, dans la marge : le texte n'a pas bougé
     expect((await page_(page).boundingBox())!.x).toBe(texteAvant.x);
     // Un second clic sur l'action range la feuille (16 octobre 2026)

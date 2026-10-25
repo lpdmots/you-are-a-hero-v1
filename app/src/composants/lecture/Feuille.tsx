@@ -2,13 +2,14 @@
 
 import { useEffect, useState, type RefObject } from "react";
 import { Icone } from "@/composants/Icone";
+import { ajouterALaListe, lignesEcrites, rayerDeLaListe } from "@/domaine/inventaire";
 import { changerCompteur, lancer, type EtatFeuille } from "@/domaine/lecture";
 import type { Feuille as FeuilleDuLivre } from "@/domaine/preparation";
 
 /**
  * La feuille d'aventure du lecteur (F04.2) : il la remplit lui-même, rien n'est vérifié. Ses
- * compteurs par « − » et « + », jamais sous zéro ; ses listes, une ligne de plus dès qu'elles
- * sont pleines ; ses notes ; le dé, dont le résultat est affiché, jamais interprété.
+ * compteurs par « − » et « + », jamais sous zéro ; ses listes en badges, qu'un clic raye
+ * (F04-AC45) ; ses notes ; le dé, dont le résultat est affiché, jamais interprété.
  */
 
 const POINTS: Record<number, number[]> = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
@@ -42,7 +43,7 @@ export function resumeCompteurs(feuille: FeuilleDuLivre, etat: EtatFeuille): str
 /**
  * La barre basse du téléphone et de la tablette (retour du porteur, 25 octobre 2026) : « Ma
  * feuille », puis une ou deux valeurs, celles qui tiennent entières, sans points de suspension ;
- * le dé du livre à droite, son dernier lancer à sa gauche, le même que celui de la feuille.
+ * le dé du livre à droite, qui affiche son dernier lancer, le même que celui de la feuille.
  */
 export function BarreDeLaFeuille({
   feuille, etat, ouverte, onFeuille, des, onDes,
@@ -71,30 +72,29 @@ export function BarreDeLaFeuille({
           ))}
       </span>
       {nombre ? (
-        <span className="barre-feuille__de">
-          <span key={lancers} className="barre-feuille__resultat" aria-live="polite">
-            {des ? (
-              <>
-                {des.map((v, i) => (
-                  <Face key={i} valeur={v} />
-                ))}
-                {des.length === 2 ? <span className="barre-feuille__total">{des[0] + des[1]}</span> : null}
-              </>
-            ) : null}
-          </span>
-          <button
-            type="button"
-            className="btn barre-feuille__lancer"
-            aria-label={nombre === 2 ? "Lancer les dés" : "Lancer le dé"}
-            title={nombre === 2 ? "Lancer les dés" : "Lancer le dé"}
-            onClick={() => {
-              setLancers((n) => n + 1);
-              onDes(lancer(nombre));
-            }}
-          >
+        // Le résultat s'affiche dans le bouton même (idée du porteur, 25 octobre 2026) : le dé
+        // tant qu'on n'a pas lancé, puis la face tirée ; un nouvel appui relance
+        <button
+          type="button"
+          className={`btn barre-feuille__lancer${des ? " barre-feuille__lancer--lance" : ""}`}
+          aria-label={des ? `${des.length === 2 ? `${des[0]} et ${des[1]} : ${des[0] + des[1]}` : `Tu as fait ${des[0]}`}. Relancer` : nombre === 2 ? "Lancer les dés" : "Lancer le dé"}
+          title={nombre === 2 ? "Lancer les dés" : "Lancer le dé"}
+          onClick={() => {
+            setLancers((n) => n + 1);
+            onDes(lancer(nombre));
+          }}
+        >
+          {des ? (
+            <span key={lancers} className="barre-feuille__resultat" aria-hidden="true">
+              {des.map((v, i) => (
+                <Face key={i} valeur={v} />
+              ))}
+              {des.length === 2 ? <span className="barre-feuille__total">{des[0] + des[1]}</span> : null}
+            </span>
+          ) : (
             <Icone nom="de" />
-          </button>
-        </span>
+          )}
+        </button>
       ) : null}
     </>
   );
@@ -173,31 +173,7 @@ export function Feuille({
                 );
               })
             : null}
-          {s.type === "liste"
-            ? (() => {
-                const lignes = etat.listes[s.id] ?? [];
-                // Quatre lignes, puis une de plus dès qu'elles sont pleines
-                const montrees = Math.max(4, lignes.filter((l) => l.trim()).length + 1, lignes.length);
-                return (
-                  <div className="fa-liste">
-                    {Array.from({ length: montrees }, (_, i) => (
-                      <input
-                        key={i}
-                        type="text"
-                        aria-label={`${s.titre || "Liste"}, ligne ${i + 1}`}
-                        maxLength={80}
-                        value={lignes[i] ?? ""}
-                        onChange={(ev) => {
-                          const suite = [...lignes];
-                          suite[i] = ev.target.value;
-                          onChange({ ...etat, listes: { ...etat.listes, [s.id]: suite } });
-                        }}
-                      />
-                    ))}
-                  </div>
-                );
-              })()
-            : null}
+          {s.type === "liste" ? <ListeEnBadges titre={s.titre || "Liste"} lignes={etat.listes[s.id]} onChange={(lignes) => onChange({ ...etat, listes: { ...etat.listes, [s.id]: lignes } })} /> : null}
           {s.type === "notes" ? (
             <textarea
               className="fa-notes"
@@ -241,6 +217,76 @@ export function Feuille({
           </div>
         </details>
       ) : null}
+    </div>
+  );
+}
+
+/**
+ * Une liste de la feuille, en badges (demandé par le porteur le 25 octobre 2026, F04-AC45) : un
+ * clic sur un badge le raye, « Remettre » le rend tant qu'on n'a rien changé d'autre ; un champ
+ * au bout pour en écrire un. Le livre imprimé garde ses lignes à remplir.
+ */
+function ListeEnBadges({ titre, lignes, onChange }: { titre: string; lignes: string[] | undefined; onChange: (lignes: string[]) => void }) {
+  const [saisie, setSaisie] = useState("");
+  const [raye, setRaye] = useState<{ nom: string; rang: number } | null>(null);
+  const ecrites = lignesEcrites(lignes);
+  const etat = (l: string[]): EtatFeuille => ({ compteurs: {}, listes: { l }, notes: {} });
+  const ajouter = () => {
+    const suite = ajouterALaListe(etat(ecrites), "l", saisie).listes.l;
+    if (suite !== ecrites) onChange(suite);
+    setSaisie("");
+    setRaye(null);
+  };
+  return (
+    <div className="fa-liste">
+      {ecrites.length ? (
+        <ul className="fa-badges" aria-label={titre}>
+          {ecrites.map((nom, i) => (
+            <li key={`${i}-${nom}`}>
+              <button
+                type="button"
+                className="fa-badge"
+                aria-label={`Rayer ${nom}`}
+                title="Rayer"
+                onClick={() => {
+                  setRaye({ nom, rang: ecrites.indexOf(nom) });
+                  onChange(rayerDeLaListe(etat(ecrites), "l", nom).listes.l);
+                }}
+              >
+                {nom}
+                <Icone nom="fermer" />
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : null}
+      {raye ? (
+        <p className="fa-raye" aria-live="polite">
+          {raye.nom} rayé.{" "}
+          <button
+            type="button"
+            className="lien"
+            onClick={() => {
+              onChange([...ecrites.slice(0, raye.rang), raye.nom, ...ecrites.slice(raye.rang)]);
+              setRaye(null);
+            }}
+          >
+            Remettre
+          </button>
+        </p>
+      ) : null}
+      <form
+        className="fa-ajout"
+        onSubmit={(ev) => {
+          ev.preventDefault();
+          ajouter();
+        }}
+      >
+        <input type="text" aria-label={`${titre}, écrire`} placeholder="Écrire…" maxLength={80} value={saisie} enterKeyHint="done" onChange={(ev) => setSaisie(ev.target.value)} />
+        <button type="submit" className="fa-rond" aria-label={`Ajouter à ${titre}`} disabled={!saisie.trim()}>
+          +
+        </button>
+      </form>
     </div>
   );
 }
