@@ -136,9 +136,10 @@ sans seconde liste d'étapes à convertir ou à synchroniser, selon
 | F09 | Tester la lecture ; signaler textes manquants, destinations invalides et scènes inaccessibles, y compris pour les liaisons cachées par énigme. |
 | F10 | Importer et placer des images facultatives, en bloc ou en ligne à la hauteur du texte ; opérations confiées à l'adulte pour la première livraison. Aide discrète à l'illustration par prompts prêts à copier ; images créées par l'IA pour l'adulte, en repérage et dans une scène, depuis le 17 octobre 2026. |
 | F11 | Composer le livre et ses pages de présentation, le prévisualiser, modifier les scènes et régler la composition depuis l'aperçu, réexporter un PDF avec renvois cohérents ; assemblage de couverture reporté. |
-| F12 | Dès la première livraison, partager volontairement un instantané du livre terminé, par un lien de lecture sans compte ou auprès de ses classes ; mise à jour explicite et retrait par l’adulte. |
+| F12 | Dès la première livraison, partager volontairement un instantané du livre terminé auprès de ses classes, que les élèves lisent avec leur compte, en classe ou chez eux ; mise à jour explicite et retrait par l’adulte. Le lien de lecture seul est remplacé le 25 octobre 2026 par la bibliothèque (F15). |
 | F13 | Proposer une assistance IA facultative, contextualisée et plafonnée. |
 | F14 | Ouvrir l'inscription à d'autres enseignants : outil gratuit avec deux limites par projet, pass par livre et étoiles pour l'IA, paiement prêt derrière un interrupteur, conservation et suppression, sauvegarde nocturne, pages publiques ; décidé le 20 octobre 2026. |
+| F15 | Bibliothèque publique : un livre terminé, proposé par l'adulte après les autorisations des familles, relu par l'éditeur avec l'aide de l'IA, lisible par tous, avec des cœurs ; gratuite ; décidé le 25 octobre 2026. |
 
 Cette liste guide la spécification ; elle ne fixe pas la priorité ni tous les détails.
 Les règles en cours de précision pour la préparation, les fiches de rédaction,
@@ -175,9 +176,9 @@ Créer des liens plus facilement ne garantit pas une histoire cohérente.
   retours privés ; les pages de présentation du livre, prénoms des auteurs
   compris, y figurent par défaut selon F12.1. Un lien non
   répertorié reste transmissible ; ce n’est pas un accès privé authentifié.
-  Les droits de diffusion, l'éventuelle vitrine et la bibliothèque sont mis
-  de côté pour l'instant à la demande du porteur, sans retirer le lecteur partagé,
-  selon [F12](docs/specifications.md#f122--droits-de-diffusion-et-éventuelle-vitrine-du-site).
+  La bibliothèque publique, mise de côté en F12.2, est reprise le 25 octobre
+  2026 en [F15](docs/specifications.md#f15--bibliothèque-publique-des-livres) :
+  partage privé par le compte des élèves, ou public par la bibliothèque.
 
 **Qualité indispensable :** pas d’écrasement silencieux des textes, récupération
 après incident, isolation entre classes, actions accessibles au clavier, PDF lisible
@@ -295,8 +296,7 @@ renvoie aux sections de référence.
    de composition laissées ouvertes par le prototype PDF sont décidées et
    validées dans leur ensemble le 3 octobre 2026 en F10 et F11 ; restent un premier envoi chez l'imprimeur
    et le délai de l'aperçu calculé côté serveur.
-   L'étude des droits de diffusion, de la vitrine et de la bibliothèque est différée
-   à la demande du porteur ; elle ne fait pas partie des prochains arbitrages.
+   La bibliothèque publique est décidée le 25 octobre 2026 (F15).
 5. **Périmètre V1 :** dictée vocale à étudier, détails
    des aides IA retenues et calendrier de l'anglais ; les quatre combinaisons
    de modes sont acquises pour la première livraison.

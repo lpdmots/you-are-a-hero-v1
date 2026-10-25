@@ -438,7 +438,12 @@ ne demande aucune inscription d'élève.
   l'enseignant garde tout son accès, livre et partage compris. Une classe
   dont l'année est terminée ne reçoit ni élève ni projet nouveau.
   « Rouvrir la classe » rend l'accès, avec les mêmes informations de
-  connexion et les mêmes codes.
+  connexion et les mêmes codes. **Révisé le 25 octobre 2026
+  ([F15](#f15--bibliothèque-publique-des-livres), F15-AC16) :** l'accès de
+  classe reste ouvert pour « Lire », et lui seul, jusqu'à ce que
+  l'enseignant supprime la classe ; les élèves lisent ainsi chez eux les
+  livres partagés « À mes classes », le lien de lecture seul n'existant
+  plus.
 - **Jamais d'office.** L'application propose de terminer l'année quand
   l'enseignant crée une classe pour une année suivante ; elle ne le fait pas
   seule, ni à une date. Alternatives écartées : la bascule automatique en
@@ -477,7 +482,8 @@ ne demande aucune inscription d'élève.
 - **F01-AC18 — Terminer l'année :** étant donné la classe « CM1-CM2 »
   2025-2026, deux projets et vingt-cinq élèves, lorsque l'enseignant choisit
   « Terminer l'année », alors la classe passe sous « Années passées », ses
-  informations de connexion sont refusées sur un poste, et l'enseignant
+  informations de connexion n'ouvrent plus que « Lire » (révisé le
+  25 octobre 2026, F15-AC16), et l'enseignant
   ouvre toujours ses deux projets, leurs textes et leur livre.
 - **F01-AC19 — Rouvrir :** étant donné cette classe dont l'année est
   terminée, lorsque l'enseignant choisit « Rouvrir la classe », alors elle
@@ -9519,6 +9525,14 @@ déclaration est requise pour ouvrir « Mettre en page », F11-AC63 et AC84
 
 ### F12.1 — Partager une version du récit
 
+**Révisé le 25 octobre 2026 par [F15](#f15--bibliothèque-publique-des-livres) :**
+le partage propose deux façons, privée (« À mes classes », lue par les
+élèves avec leur compte, à la maison comprise) et publique (la
+bibliothèque) ; le lien de lecture seul ne se crée plus. Les règles
+ci-dessous valent pour la version partagée privée ; ce qu'elles disent du
+lien de lecture vaut pour la lecture de `/lire`, que gardent les livres de
+la bibliothèque, et n'est plus proposé à l'adulte.
+
 **Périmètre confirmé :** le lecteur en ligne et le partage facultatif prévus
 au brief font partie de la première livraison, en complément du PDF.
 Le porteur souhaite permettre la lecture plaisir d'un livre terminé sans
@@ -9890,6 +9904,9 @@ l'application fournit un modèle.
 
 ### F12.2 — Droits de diffusion et éventuelle vitrine du site
 
+**Repris le 25 octobre 2026 en [F15](#f15--bibliothèque-publique-des-livres)**,
+pour la bibliothèque publique ; ce qui suit reste la base de cette reprise.
+
 **Sujet différé à la demande du porteur :** mettre de côté, pour l'instant,
 les droits de diffusion, la vitrine et la bibliothèque. Ces sujets quittent
 les priorités de l'entretien actuel. Cela ne valide aucune licence ni
@@ -10018,6 +10035,11 @@ sa page de titre (le nom de l'auteur, si la version partagée l'affiche) au
 lieu de « Écrit par ta classe ». Sans classe en cours, la ligne n'est pas
 proposée. Alternative écartée : le lien seul, qui ferait sortir les élèves
 de leur espace et retiendrait leur lecture sur le poste plutôt que par élève.
+
+**Révisé le 25 octobre 2026 ([F15](#f15--bibliothèque-publique-des-livres)) :**
+une classe terminée garde « Lire » jusqu'à sa suppression, et y trouve les
+livres partagés « À mes classes » ; « Lire » montre aussi, après eux, les
+livres de la bibliothèque de l'âge de la classe (F15-AC20).
 
 - **F12-AC24 — Livre personnel lu par les classes :** étant donné un récit
   personnel « Le phare » partagé « À mes classes » par un adulte qui a la
@@ -10989,6 +11011,9 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
 - **Autorisation de diffusion.** L'application fournit un modèle
   d'autorisation de diffusion des textes et dessins des élèves, à faire
   signer par leurs représentants légaux avant un partage par lien (F12.1).
+  Révisé le 25 octobre 2026 : avant de proposer le livre à la bibliothèque,
+  sa seule ligne étant « dans la bibliothèque du site »
+  ([F15](#f15--bibliothèque-publique-des-livres)).
 - **Création d'un compte.** Par une adresse et un mot de passe, le compte
   s'ouvrant par le lien d'un courriel de confirmation ; ou par « Continuer
   avec Google », qui crée désormais le compte quand aucun n'a cette adresse
@@ -11104,7 +11129,9 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   d'utilisation disent ce qui est interdit et ce retrait possible. Lecture
   du 20 octobre 2026, sans avis juridique : la règle européenne des services
   numériques demande à tout hébergeur un moyen de signaler un contenu
-  illicite et un retrait rapide.
+  illicite et un retrait rapide. Révisé le 25 octobre 2026 pour la
+  bibliothèque, publique, qui reçoit un « Signaler ce livre »
+  ([F15](#f15--bibliothèque-publique-des-livres)).
 - **Textes juridiques.** Claude rédige les conditions d'utilisation, la page
   « Confidentialité », les mentions légales, le contrat de sous-traitance type
   et les deux modèles destinés aux familles ; une relecture par un juriste est
@@ -11343,7 +11370,8 @@ découvre l'outil, et le porteur, administrateur.
   par le porteur le même jour, qui n'y voulait d'abord que le nom). Une page de l'espace adulte ouverte sans être connecté mène
   toujours à l'entrée enseignant (F01-AC28).
 - **F14-AC40 — Les livres de l'accueil** (décidé par le porteur le 23 octobre 2026, à la
-  place d'une variable d'environnement) : étant donné le porteur dans l'administration, alors
+  place d'une variable d'environnement ; révisé le 25 octobre 2026 : la liste est celle des
+  livres publiés dans la bibliothèque, de tous les comptes, F15-AC19) : étant donné le porteur dans l'administration, alors
   « Livres de l'accueil » liste ses livres partagés par lien, et eux seuls ; il en met deux au
   plus sur l'accueil, en échange l'ordre, les en retire ; pour chacun, il dépose une
   couverture, la face avant du livre imprimé, ou la couverture entière, dont seule la face
@@ -11439,6 +11467,369 @@ vie, et sans étoiles sans fin, qui paient l'IA au coût réel.
 **Hors de cette livraison :** abonnement ; paiement sur bon de commande ou
 par mandat administratif ; version anglaise, dont seule l'adresse est
 réservée ; page de discussion avec le support.
+
+## F15 — Bibliothèque publique des livres
+
+Section ouverte par un entretien court commencé le 25 octobre 2026. Elle
+reprend la vitrine et la bibliothèque mises de côté en
+[F12.2](#f122--droits-de-diffusion-et-éventuelle-vitrine-du-site) ; elle
+n'autorise aucun développement. **Entretien validé dans son ensemble par le
+porteur le 25 octobre 2026** (« je valide l'ensemble »), précisions comprises
+(tri, filtres et présentation de la liste ; adresse d'un livre fixée à la
+première publication ; une proposition en attente par projet ; la
+bibliothèque côté élève, son âge, son réglage et ses cœurs par profil).
+
+**Intention du porteur, exprimée le 25 octobre 2026 :** un enseignant
+propose un livre terminé à la bibliothèque, après avoir fait signer les
+droits aux parents. Le livre est mis de côté le temps que le porteur le fasse
+analyser par l'IA, pour vérifier que rien n'est inapproprié, puis il le
+publie sur une page dédiée, lisible par tous. Les lecteurs peuvent envoyer
+des cœurs aux histoires qu'ils préfèrent.
+
+**Faits de départ, relevés le 25 octobre 2026 :**
+
+- Le modèle d'autorisation de diffusion en ligne (F14) ne couvre que le lien
+  de lecture et dit aux familles : « Le lien n'est publié nulle part ». Il
+  ne vaut pas pour une bibliothèque publique.
+- La version partagée montre par défaut les prénoms des élèves et la ligne de
+  classe (F12.1, révisé le 3 octobre 2026) ; les pages de `/lire` sont
+  fermées aux moteurs et aux robots des IA (F12.1, F14-AC45).
+- Le signalement d'un livre partagé passe par l'adresse de contact, sans lien
+  dans le lecteur, décidé le 20 octobre 2026 pour des liens non publiés (F14,
+  « Contenu signalé »).
+- Une relecture par le porteur existe déjà dans l'administration pour la
+  bibliothèque d'images (F10.1, F10-AC53) ; le mot « bibliothèque » y est
+  déjà employé.
+
+**Décidé par le porteur le 25 octobre 2026 :**
+
+- **Une version publiée, à part du partage.** Proposer un livre à la
+  bibliothèque fige une copie à part, la version publiée, distincte de la
+  version partagée de F12.1 : c'est ce contenu précis que le porteur relit,
+  et une mise à jour du partage ne change rien en public. Proposer demande
+  les mêmes conditions que le partage, calculées par la même règle
+  ([F11.2](#f112--pdf-de-travail-et-pdf-définitif), « Une seule règle »),
+  mais pas que le lien de lecture ou la lecture par les classes soient
+  ouverts. Retirer le lien ne retire pas le livre de la bibliothèque, et
+  inversement. **Mettre à jour :** « Proposer la mise à jour » fige une
+  nouvelle copie, qui passe à son tour par la relecture ; la version publiée
+  reste lisible en attendant, puis elle est remplacée à la même adresse, et
+  le porteur voit quels passages ont changé. Les cœurs et les lectures en
+  cours suivent les passages par leur identité, comme en F12.1 (« lecture
+  en cours et mise à jour »). Alternative écartée : la bibliothèque comme
+  troisième canal de la version partagée, dont chaque mise à jour aurait
+  mis en public un contenu non relu.
+- **Vocabulaire.** « Bibliothèque » désigne l'espace public des livres ;
+  « Proposer à la bibliothèque », le geste de l'enseignant ; « livre
+  publié », ce qui y est. La bibliothèque d'images de F10.1 garde toujours
+  son nom entier.
+- **Autorisation des familles.** Le modèle d'autorisation de diffusion
+  porte la ligne « dans la bibliothèque du site », sans plus de précision,
+  décision du porteur, qui juge la formulation détaillée inutile ; la ligne
+  « par un lien de lecture », d'abord décidée à côté, tombe avec le lien
+  seul (plus bas, « Deux façons de partager »). La ligne garde la forme
+  actuelle « ☐ autorise ☐ n'autorise pas », rien n'y étant coché d'avance (une autorisation cochée d'avance se
+  conteste, et l'attestation de l'enseignant s'y appuie). Le paragraphe
+  d'explication du modèle, qui dit aujourd'hui « Le lien n'est publié nulle
+  part », est réécrit en conséquence. Le retrait
+  d'une autorisation fait quitter la bibliothèque au livre (un livre à choix
+  ne se publie pas sans les textes d'un élève).
+- **Attestation, sans dépôt.** Proposer un livre demande de cocher : « J'ai
+  l'autorisation écrite des représentants légaux de chaque élève dont un
+  texte ou un dessin figure dans ce livre. » Les formulaires signés ne sont
+  ni déposés ni gardés par le site.
+- **Conditions d'utilisation.** Une clause : en proposant un livre, l'adulte
+  permet à l'éditeur de l'afficher publiquement et gratuitement tant qu'il
+  est dans la bibliothèque. Elle rejoint la relecture juridique reportée par
+  le porteur (F14).
+- **Ce que voit le public : comme le livre partagé.** Décision du porteur,
+  qui écarte la version sans prénoms d'abord recommandée (« des prénoms, ça
+  ne veut rien dire, et dans le livre on ne sait pas qui a écrit quoi ») :
+  la version publiée montre ce que montre la version partagée, avec les
+  mêmes réglages de F12.1 (ligne de la page de titre, son texte propre au
+  partage, page des auteurs), prénoms compris par défaut. C'est l'enseignant
+  qui décide d'y mettre ou non le nom de l'école ou autre chose, en écrivant
+  la ligne de classe. Un réglage par canal reste différé, comme en F12.1.
+  Alternatives écartées : une formule imposée (« Écrit par une classe de
+  CM1 »), les pages des auteurs et de fin retirées, la page de titre en
+  image remplacée.
+- **Ce que vérifie l'IA.** À chaque proposition et à chaque mise à jour,
+  l'IA lit tout le livre, textes et images, pour l'âge des lecteurs réglé
+  dans le projet ([F13-AC29](#f13--assistance-ia-facultative)) : violence ou
+  horreur trop fortes pour cet âge, sexualité, haine et insultes, moquerie
+  visant une personne réelle, texte recopié ou personnage protégé (droits
+  d'auteur), texte écrit dans une image. Elle ne signale pas les prénoms.
+  Elle ne décide rien : ni publication, ni refus. Elle rend au porteur un
+  rapport court, rien ou quelques points, chacun avec le numéro du passage
+  et la phrase en cause ; le porteur juge sur ce rapport, sans lire le livre
+  entier.
+- **Son coût, à la charge du porteur.** Sonnet 5.5, le modèle se changeant à
+  un seul endroit comme pour les aides ; aucune étoile n'est débitée à
+  l'enseignant, et la dépense paraît dans celle de l'IA de l'administration.
+  Estimation du 25 octobre 2026, aux prix relevés le 17 octobre, non
+  mesurée : environ 0,15 dollar pour un livre de 80 passages et 20 images,
+  autant pour chaque mise à jour, l'IA relisant tout ; à peu près le double
+  avec Opus 5.5.
+- **La file de relecture.** Une page « Bibliothèque » de l'administration,
+  sur le modèle de celle de la bibliothèque d'images (F10.1), où mène une
+  ligne de la page principale (« 2 livres à relire ») : pour chaque livre,
+  le titre, le compte, la date, le rapport de l'IA, chaque point ouvrant son
+  passage dans le lecteur, puis « Publier » et « Refuser ». Une mise à jour
+  y montre aussi les passages changés.
+- **Pas de tri sur la qualité.** Le porteur refuse ce qui est inacceptable,
+  non un livre qu'il trouve faible : refuser le livre d'une classe parce
+  qu'il est moyen blesse, prend du temps et fait de lui un éditeur ; les
+  cœurs font le tri.
+- **Refus et motifs.** Le porteur écrit le motif, aidé de trois phrases
+  prêtes (contenu inadapté à l'âge des lecteurs, personnage ou texte
+  protégé, autre) ; il part par courriel à l'enseignant, qui corrige et
+  propose de nouveau. Un refus de mise à jour laisse la version publiée
+  lisible.
+- **Côté enseignant**, dans l'étape « Imprimer et partager » de
+  [F11.6](#f116--trois-temps-pour-préparer-le-livre) : « En attente de
+  relecture », « Publié », avec le lien de la page du livre, ou « Refusé »,
+  avec le motif ; un courriel à la publication. Aucun délai n'est promis,
+  comme pour le support (F14).
+
+- **Deux façons de partager, privée et publique ; plus de lien seul.**
+  Décidé par le porteur le 25 octobre 2026 : « Imprimer et partager »
+  propose deux possibilités, et plus de partage intermédiaire par un lien
+  seul.
+  - **Privé :** le compte de l'élève, c'est-à-dire la lecture par les classes
+    de [F12.3](#f123--lecture-des-anciens-livres-par-les-autres-classes)
+    (« À mes classes ») ; l'élève lit le livre à la maison, en famille, en
+    s'identifiant comme en classe. Les horaires de la classe ne la limitent
+    pas (F06-AC31).
+  - **Public :** la bibliothèque, avec un lien qui mène directement au livre.
+  - Le lien de lecture de F12.1, transmissible sans être publié, disparaît
+    comme choix proposé. Le modèle d'autorisation de diffusion ne garde que
+    la ligne de la bibliothèque, la lecture privée restant dans la classe.
+    Ce que deviennent les liens déjà ouverts, la fin de l'année et le mode
+    personnel sont à régler (questions plus bas).
+- **Les cœurs.** Sur la fiche du livre et après la fin dans le lecteur,
+  jamais pendant la lecture ; un clic donne, un autre retire ; un par livre
+  et par navigateur, sans compte. Le nombre paraît sur la fiche et sur la
+  carte de la liste, sauf à zéro, où l'on voit le seul cœur vide. Contre les
+  abus : un identifiant tiré au hasard, gardé par le navigateur pour une
+  fonction que le lecteur demande, donc sans bandeau ; et une limite large
+  par adresse réseau, de l'ordre de 40 cœurs par livre et par jour, une
+  école entière sortant par une seule adresse. Acceptés : une classe qui
+  aime son propre livre, quelqu'un qui vide ses données pour recommencer.
+  Les cœurs sont un signal, non un concours : ni prix, ni classement mis en
+  avant au-delà du tri.
+
+- **Fin d'année : « Lire » reste ouvert.** Une classe terminée garde, pour
+  ses élèves, l'accès à « Lire » et à lui seul, jusqu'à ce que l'enseignant
+  la supprime : l'élève s'identifie comme avant et lit les livres partagés
+  « À mes classes », sans rien pouvoir écrire. Le livre reste ainsi aux
+  familles sans lien. Révise « Terminer l'année »
+  ([F01.1](#f011--classes-années-et-éventuel-espace-école)), qui fermait tout
+  l'accès de classe. Alternative écartée : la lecture privée qui s'arrête en
+  juin, le PDF ou le livre imprimé restant aux familles.
+- **Délai de relecture.** Le lien public n'existe qu'une fois le livre
+  publié ; d'ici là l'étape dit « En attente de relecture », et la lecture
+  privée fonctionne aussitôt.
+- **Mode personnel admis.** Sans lien seul, un adulte qui écrit seul sans
+  classe ne pourrait plus rien partager : la bibliothèque accepte aussi les
+  livres du mode personnel, avec l'attestation « Je suis l'auteur de ce
+  livre et j'ai les droits de ses images. » La recommandation d'abord donnée
+  (livres de classe seulement) est revue sur ce fait.
+- **Les livres de l'accueil.** Les deux livres du porteur, partagés par
+  lien, deviennent des livres de la bibliothèque, qu'il publie lui-même sans
+  passer par la file. « Livres de l'accueil »
+  ([F14-AC40](#f14--ouverture-offre-et-exploitation)) les choisit désormais
+  parmi tous les livres publiés, ceux des autres comptes compris, la
+  couverture restant déposée par le porteur. Aucun autre lien de lecture
+  n'est ouvert au 25 octobre 2026 (dit par le porteur) : rien d'autre à
+  convertir.
+- **Une page indexée, des livres qui ne le sont pas.** `/bibliotheque`,
+  ouverte aux moteurs, au plan du site et à `llms.txt`, montre les livres en
+  cartes ; un tiroir de détails donne la couverture (ou la page de titre),
+  la présentation, l'âge des lecteurs, le type de récit, les cœurs et
+  « Lire ». Chaque livre a sa propre adresse,
+  `/bibliotheque/la-lanterne-du-passeur`, qui est le lien direct donné aux
+  familles : elle ouvre la bibliothèque, tiroir du livre ouvert, et reste
+  fermée aux moteurs, comme le lecteur. Motif : les clients sont des
+  enseignants, qui ne cherchent pas des titres de livres d'enfants ; une
+  fiche de deux phrases est un contenu trop mince ; la preuve que des
+  classes écrivent de vrais livres tient dans la page de la bibliothèque.
+  Si elle dépasse une trentaine de livres et que la Search Console montre
+  des recherches, ouvrir ces adresses aux moteurs ne demande qu'une règle à
+  changer. Alternative écartée : une page indexée par livre.
+- **Liste, tri, filtres.** « Les plus récents » par défaut, « Les plus
+  aimés » au choix ; filtres par âge des lecteurs (les cinq valeurs du
+  projet) et par type de récit ; recherche dans le titre et la
+  présentation. La présentation, deux ou trois phrases, s'écrit en proposant
+  le livre, avec « ✦ Proposer » payé en étoiles comme les autres aides, et
+  passe par la relecture. Un lien « Bibliothèque » sur l'accueil et au pied
+  des pages publiques. L'adresse d'un livre se tire de son titre à la
+  première publication (suffixe en cas de doublon) et ne change plus, même
+  si le titre change.
+- **Retirer.** L'enseignant choisit « Retirer de la bibliothèque » dans
+  « Imprimer et partager », à tout moment : le retrait est immédiat, sans
+  relecture, et l'adresse du livre affiche « Ce livre n'est plus dans la
+  bibliothèque », sans titre ni nom, comme une adresse inconnue. Proposé de
+  nouveau, le livre repasse par la relecture et retrouve ses cœurs. Le
+  porteur retire un livre depuis l'administration, avec un motif envoyé par
+  courriel à l'adulte, comme le retrait d'un partage (F14-AC25). Supprimer le
+  projet ou le compte le retire aussitôt (F14-AC26, AC42).
+- **Signaler.** Révise, pour la bibliothèque seulement, la décision du
+  20 octobre 2026 (F14, « Contenu signalé »), prise pour des liens non
+  publiés : la bibliothèque est publique et trouvée par les moteurs, et la
+  règle européenne des services numériques demande à tout hébergeur un moyen
+  électronique facile de signaler un contenu, avec sa place et son motif
+  (lecture de Claude, sans avis juridique, jointe à la relecture reportée).
+  Un « Signaler ce livre » discret dans le tiroir, pas dans le lecteur,
+  ouvre un court formulaire : motif (inadapté à l'âge des lecteurs, haine ou
+  insultes, vie privée, droits d'auteur, autre), numéro du passage
+  facultatif, message, adresse de réponse. L'expéditeur reçoit un accusé de
+  réception ; le porteur, un courriel et une ligne dans l'administration
+  (« 1 signalement »). Le livre reste publié jusqu'à sa décision : aucun
+  masquage automatique, que n'importe qui pourrait déclencher contre une
+  classe. La lecture privée n'a pas ce lien.
+- **Gratuite, sans lien avec le pass.** Proposer un livre et lire la
+  bibliothèque sont gratuits pour tous ; un projet sans pass, dans ses
+  limites gratuites, se propose comme un autre. Seule « ✦ Proposer » la
+  présentation use des étoiles. Une seule proposition en attente par projet.
+  Motif : la bibliothèque sert le site, vitrine et raison d'en parler ; la
+  réserver aux livres qui ont un pass la viderait, et F14 garde déjà
+  gratuits la lecture et le partage. Alternative écartée : la publication
+  comme avantage du pass, qui ferait payer la vitrine à ceux qui la
+  remplissent.
+- **La bibliothèque dans « Lire », côté élève** (idée de Claude, retenue par
+  le porteur le même jour). Les lectures de l'élève
+  ([F12.3](#f123--lecture-des-anciens-livres-par-les-autres-classes))
+  montrent, après les livres de l'enseignant, les livres de la bibliothèque
+  de l'âge de la classe. Précisions de Claude, confirmées à la validation : l'âge est celui
+  des lecteurs du projet le plus récent rattaché à la classe, « 8 à 10 ans »
+  sans projet ; un livre « Adultes » n'y paraît jamais ; l'enseignant éteint
+  cette partie dans les réglages de la classe, allumée par défaut ; un élève
+  identifié donne un cœur par livre pour son profil, le poste partagé d'une
+  classe ne retenant pas un seul cœur pour vingt-cinq élèves ; sa lecture
+  est retenue par profil, comme les autres.
+- **Mesure.** La page `/bibliotheque` est une page publique : Vercel Web
+  Analytics y compte les pages vues, sans témoin (F14-AC49) ; le tiroir et
+  le lecteur, non. Les robots des IA lisent `/bibliotheque`, non les
+  adresses des livres.
+
+**Critères d'acceptation.** Les exemples prennent Mme Laurent, enseignante de
+CM1, son livre « La lanterne du passeur », réglé sur « 8 à 10 ans », et le
+porteur, administrateur.
+
+*Proposer et relire*
+
+- **F15-AC01 — Proposer :** étant donné « La lanterne du passeur » qui
+  remplit les conditions du partage, lorsque Mme Laurent choisit « Public :
+  la bibliothèque », écrit sa présentation et coche l'attestation, alors
+  l'étape dit « En attente de relecture », le livre n'est lisible nulle part
+  en public et son adresse affiche la page neutre ; sans la coche, rien ne
+  part.
+- **F15-AC02 — Conditions :** étant donné une scène incluse rouverte aux
+  élèves, lorsque Mme Laurent propose le livre, alors la proposition est
+  refusée avec le motif, comme un partage (F12-AC09).
+- **F15-AC03 — Rapport de l'IA :** étant donné le passage 17, où un
+  personnage dit « la maîtresse Mme Dupont est bête et grosse », et une page
+  des auteurs de 25 prénoms, alors le rapport du porteur cite le passage 17
+  et sa phrase, sans rien dire des prénoms ; aucune étoile de Mme Laurent
+  n'est débitée, et le coût paraît dans la dépense d'IA de l'administration.
+- **F15-AC04 — Publier :** étant donné le livre en attente, lorsque le
+  porteur choisit « Publier », alors il paraît dans `/bibliotheque`,
+  Mme Laurent reçoit un courriel, et l'étape dit « Publié » avec l'adresse
+  `/bibliotheque/la-lanterne-du-passeur`.
+- **F15-AC05 — Refuser :** étant donné le livre en attente, lorsque le
+  porteur le refuse avec « Contenu inadapté à l'âge des lecteurs » et une
+  phrase de sa main, alors Mme Laurent reçoit ce motif par courriel et le lit
+  dans l'étape ; elle corrige et propose de nouveau.
+- **F15-AC06 — Ce que voit le public :** étant donné une version partagée
+  réglée avec la ligne « CM1 de l'école Jean-Moulin, 2026 » et la page des
+  auteurs, lorsque le livre est publié, alors le public lit cette ligne et
+  les 25 prénoms ; lorsque Mme Laurent retire la page des auteurs avant de
+  proposer, alors aucun prénom n'y paraît.
+
+*Mettre à jour et retirer*
+
+- **F15-AC07 — Mise à jour relue :** étant donné le livre publié contenant
+  « la brume s'épaissi », corrigé dans le projet, lorsque Mme Laurent
+  propose la mise à jour, alors le public lit toujours « s'épaissi », le
+  porteur voit le passage changé ; une fois publiée, la même adresse montre
+  « s'épaissit », les cœurs restent, et un lecteur arrêté au passage 38
+  continue (F12-AC25) ; refusée, l'ancienne version reste lisible.
+- **F15-AC08 — Privé et public séparés :** étant donné le livre publié et
+  ouvert « À mes classes », lorsque Mme Laurent met à jour le partage privé,
+  alors le public ne voit rien changer ; lorsqu'elle retire le partage
+  privé, alors le livre reste dans la bibliothèque, et inversement.
+- **F15-AC09 — Retirer :** étant donné le livre publié avec 12 cœurs,
+  lorsque Mme Laurent le retire, alors son adresse affiche « Ce livre n'est
+  plus dans la bibliothèque », sans titre ni nom, et il quitte la liste et
+  l'accueil ; proposé de nouveau et publié, il retrouve ses 12 cœurs.
+- **F15-AC10 — Retrait par le porteur :** étant donné un livre signalé,
+  lorsque le porteur le retire avec un motif, alors l'adulte reçoit ce motif
+  par courriel et son projet ne change pas.
+
+*Lire, chercher, aimer*
+
+- **F15-AC11 — La liste :** étant donné trois livres publiés le 2, le 5 et
+  le 9 novembre, alors `/bibliotheque` les montre du 9 au 2 ; « Les plus
+  aimés » les range par cœurs ; le filtre « 8 à 10 ans » et « À choix » ne
+  garde que les livres de cet âge et de ce type ; « lanterne » trouve « La
+  lanterne du passeur » par son titre, « passeur de brume » par sa
+  présentation.
+- **F15-AC12 — L'adresse d'un livre :** étant donné
+  `/bibliotheque/la-lanterne-du-passeur`, alors elle ouvre la bibliothèque,
+  tiroir du livre ouvert, et demande aux moteurs de ne pas l'indexer ;
+  `/bibliotheque` figure au plan du site et dans `llms.txt`, et
+  `robots.txt` l'ouvre à tous.
+- **F15-AC13 — Cœurs :** étant donné un lecteur sans compte qui finit le
+  livre, alors un cœur lui est proposé après la fin, jamais pendant la
+  lecture ; un clic le donne, un second le retire, et un autre clic sur le
+  même navigateur ne compte pas deux fois ; un livre sans cœur montre le
+  cœur vide, sans « 0 » ; au-delà d'une quarantaine de cœurs dans la journée
+  depuis une même adresse réseau pour ce livre, les suivants ne comptent
+  pas.
+- **F15-AC14 — Signaler :** étant donné le tiroir d'un livre publié,
+  lorsqu'une personne signale le passage 17 pour « haine ou insultes » avec
+  son adresse, alors elle reçoit un accusé de réception, le porteur un
+  courriel et une ligne « 1 signalement » dans l'administration, et le livre
+  reste publié jusqu'à sa décision.
+
+*Partager, fin d'année, offre*
+
+- **F15-AC15 — Deux façons de partager :** étant donné l'étape « Imprimer
+  et partager », alors elle propose « Privé » (les comptes des élèves) et
+  « Public » (la bibliothèque), et aucun lien de lecture seul.
+- **F15-AC16 — Fin d'année :** étant donné « CM1 2026-2027 » terminée en
+  juin et « La lanterne du passeur » partagée « À mes classes », lorsqu'Alice
+  s'identifie chez elle en juillet, alors elle ne voit que « Lire » et peut
+  lire le livre, sans rien écrire ; une fois la classe supprimée, ses
+  identifiants n'ouvrent plus rien.
+- **F15-AC17 — Mode personnel :** étant donné M. Bernard, sans classe, et
+  son récit personnel terminé, lorsqu'il le propose, alors l'attestation
+  demandée est « Je suis l'auteur de ce livre et j'ai les droits de ses
+  images. ».
+- **F15-AC18 — Gratuit :** étant donné « Paiement ouvert » allumé et un
+  projet sans pass de 40 scènes, alors Mme Laurent le propose sans rien
+  payer ; une seconde proposition du même projet, la première en attente,
+  n'est pas possible.
+- **F15-AC19 — Les livres de l'accueil :** étant donné « Livres de
+  l'accueil » dans l'administration, alors il liste tous les livres publiés ;
+  un livre retiré de la bibliothèque quitte l'accueil.
+- **F15-AC20 — La bibliothèque côté élève :** étant donné la classe de
+  Mme Laurent, dont le projet le plus récent est réglé sur « 8 à 10 ans »,
+  lorsqu'Alice ouvre « Lire », alors elle trouve, après les livres de son
+  enseignante, ceux de la bibliothèque de cet âge, jamais un livre
+  « Adultes » ; lorsque Mme Laurent éteint la bibliothèque dans les
+  réglages de la classe, alors cette partie disparaît.
+
+**Questions ouvertes :** la relecture juridique de l'attestation, de la
+clause des conditions d'utilisation et du signalement, reportée par le
+porteur avec les autres textes (F14) ; le coût réel de la relecture par
+l'IA, à mesurer sur les premiers livres ; l'ouverture des adresses des
+livres aux moteurs, à reconsidérer vers une trentaine de livres.
+
+**Hors de cette livraison :** des notes de lecteurs sur un passage ou une
+relecture avant publication par d'autres lecteurs (F12.2) ; un classement
+ou un prix des livres ; des comptes de lecteurs ; une bibliothèque en
+anglais.
 
 ## Suite de l'entretien et couverture restante
 

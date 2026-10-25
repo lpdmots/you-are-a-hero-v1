@@ -547,18 +547,30 @@ _Éviter_ : brouillon toujours synchronisé, PDF définitif, inscription automat
 
 **Lien de lecture** :
 Adresse stable donnant accès sans compte à la version partagée d'une histoire,
-transmissible, que l'adulte peut retirer ou remplacer.
+transmissible, que l'adulte peut retirer ou remplacer ; ne se crée plus depuis le
+25 octobre 2026, le lien public étant l'adresse du livre dans la bibliothèque.
 _Éviter_ : accès privé, accès de classe, lien propre à chaque mise à jour.
 
 **Lecture par les classes** :
 Mise à disposition de la version partagée d'une histoire aux élèves identifiés
-des classes de l'enseignant, sans lien à distribuer.
+des classes de l'enseignant, sans lien à distribuer, en classe comme à la maison ;
+c'est le partage privé.
 _Éviter_ : lecture ouverte de l'histoire, attribution, bibliothèque publique.
 
 **Lecteur en ligne** :
 Espace de consultation d'une version partagée, permettant de suivre le récit
 et ses choix éventuels sans accéder aux outils de travail du projet.
 _Éviter_ : éditeur, playtest d'un travail en cours, bibliothèque de livres, aperçu de mise en page imprimée.
+
+**Bibliothèque** :
+Espace public du site où se lisent, sans compte, les livres que des enseignants y ont proposés
+et que l'éditeur a relus.
+_Éviter_ : vitrine, catalogue, bibliothèque d'images (nom entier réservé aux visuels proposés).
+
+**Version publiée** :
+Instantané d'un livre terminé, figé quand l'adulte le propose à la bibliothèque, distinct de la
+version partagée, relu avant d'être lisible et remplacé seulement par une mise à jour relue à son tour.
+_Éviter_ : version partagée, canal du partage, livre en ligne.
 
 **Mode personnel** :
 Organisation dans laquelle un auteur adulte gère son projet.

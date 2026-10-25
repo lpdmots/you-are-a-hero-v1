@@ -162,6 +162,16 @@ le détail ; elle ne raconte pas les séances.
   Le même jour, la version partagée montre par défaut les mêmes pages de
   présentation que le livre, prénoms et ligne de classe compris : la
   désactivation par défaut du 1er octobre est remplacée.
+- **Bibliothèque publique des livres** : entretien court du 25 octobre 2026,
+  en [F15](docs/specifications.md#f15--bibliothèque-publique-des-livres),
+  qui reprend F12.2 ; validé dans son ensemble par le porteur le même jour.
+  Décidé : partage privé (comptes des élèves, à la
+  maison comprise, « Lire » gardé après la fin de l'année) ou public (la
+  bibliothèque), le lien de lecture seul ne se créant plus ; version publiée
+  à part, relue par le porteur sur un rapport de l'IA ; ce que montre le
+  livre partagé, prénoms compris ; cœurs sans compte ; une page indexée,
+  les livres non ; « Signaler ce livre » ; gratuite ; la bibliothèque dans
+  « Lire », côté élève. Aucun développement n'est autorisé.
 - **Créer et modifier les choix dans la scène** (cinquième parcours) :
   approfondi le 1er octobre 2026 en
   [F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène)
@@ -697,7 +707,7 @@ avant de commencer » soient tranchées.
 
 | Document | Rôle et contenu de référence |
 | --- | --- |
-| [Brief](BRIEF-V1.md) | Synthèse du produit, modes, F01–F14, orientations techniques et périmètre. |
+| [Brief](BRIEF-V1.md) | Synthèse du produit, modes, F01–F15, orientations techniques et périmètre. |
 | [Spécifications fonctionnelles](docs/specifications.md) | Règles, permissions, parcours, critères d'acceptation ; décisions distinguées des propositions et questions ouvertes. |
 | [Vocabulaire métier](CONTEXT.md) | Définitions canoniques, notamment histoire → partie → chapitre → scène, corbeille du projet, chemins et « à regarder », classe et année terminée, inscription, retrait de la classe, accès de classe, affiche de la classe, étiquette de l'élève, attribution, prise en charge, état de la scène, copie de récupération, version précédente, répartition des scènes sans élève, renvoi et phrase de choix, fiche de rédaction, note de l'enseignant, objet de l'histoire, feuille d'aventure, compteur, action de jeu, liaison cachée, numéro imprimé, numéro de page, page de présentation, dé imprimé, page peu remplie, agencement, temps du livre, étape d'arrivée, tâche, scène à finir, doute sur l'ordre, avertissement accepté et aperçu du livre. |
 | [Logo](identite/logo/README.md) | Dragon-livre décidé le 21 octobre 2026 : idée, trois dessins selon la taille, assemblages français et anglais, couleurs, espace libre, tailles minimales, icônes du site, fichiers SVG et PNG, script qui refait les fichiers maîtres, [présentation](identite/logo/presentation.html). |
