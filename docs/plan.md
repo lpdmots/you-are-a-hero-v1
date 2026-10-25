@@ -3431,10 +3431,12 @@ V6, le premier envoi à l'imprimeur.
    écrire en F14), avec un plafond de 3 heures par compte et par mois,
    garde-fou et non élément de l'offre (une durée maximale par
    enregistrement, 5 minutes, reste proposée) ; par ElevenLabs (Scribe), dont
-   il a un forfait, sans essai comparatif. Recommandé, sans décision : une
-   clé à part pour le site, et ElevenLabs inscrit parmi les sous-traitants
-   (page « Confidentialité » et contrat de sous-traitance type), qu'il
-   jugeait inutile.
+   il a un forfait, sans essai comparatif, avec une clé à part pour le site
+   et sa propre limite de consommation. ElevenLabs s'inscrit parmi les
+   sous-traitants (page « Confidentialité » et contrat de sous-traitance
+   type) en construisant la dictée, accepté par le porteur après qu'il l'a
+   jugé inutile : les deux textes listent les services qui reçoivent des
+   données, et le contrat promet d'informer l'école de tout changement.
 3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
    (premier essai des aides sur un livre entier), dans les limites
    gratuites (40 scènes et 10 images au plus) : un petit livre à choix de
