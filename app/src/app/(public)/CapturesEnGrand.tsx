@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./accueil.module.css";
 
-type Capture = { src: string; alt: string; note: string; ratio: string };
+type Capture = { src: string; alt: string; ratio: string };
 
 /**
  * Les captures du passage 12 s'ouvrent en grand au clic (demandé par le porteur le 23 octobre
  * 2026) : une seule à la fois, sans galerie, qui ne ferait que doubler le défilement des temps ;
  * sur grand écran et tablette seulement. Ce composant ne dessine que la fenêtre ; il écoute les
  * boutons `data-agrandir` de la rangée qui le contient. Échap, un clic à côté ou « Fermer » la
- * referment.
+ * referment. La capture seule, dans un cadre blanc, sans sa note : elle est déjà sous la vignette.
  */
 export function CapturesEnGrand() {
   const fenetre = useRef<HTMLDialogElement>(null);
@@ -24,7 +24,7 @@ export function CapturesEnGrand() {
       // Sur téléphone, la capture prend déjà toute la largeur : l'agrandir n'apporterait rien
       if (!bouton || window.matchMedia("(max-width: 980px)").matches) return;
       aLaSouris.current = evenement.detail > 0;
-      setCapture({ src: bouton.dataset.agrandir ?? "", alt: bouton.dataset.alt ?? "", note: bouton.dataset.note ?? "", ratio: bouton.dataset.ratio ?? "16 / 10" });
+      setCapture({ src: bouton.dataset.agrandir ?? "", alt: bouton.dataset.alt ?? "", ratio: bouton.dataset.ratio ?? "16 / 10" });
       fenetre.current?.showModal();
     };
     rangee.addEventListener("click", ouvrir);
@@ -52,17 +52,14 @@ export function CapturesEnGrand() {
       }}
     >
       {capture ? (
-        <figure>
-          {/* L'original, sans passer par l'optimisation de Next : il se lit en grand */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          {/* Ses proportions réservent sa place avant qu'elle soit chargée : la légende ne saute pas */}
-          <img
-            src={capture.src}
-            alt={capture.alt}
-            style={{ aspectRatio: capture.ratio, width: `min(100%, calc((100dvh - 160px) * (${capture.ratio})))` }}
-          />
-          <figcaption>{capture.note}</figcaption>
-        </figure>
+        // L'original, sans passer par l'optimisation de Next : il se lit en grand. Ses proportions
+        // réservent sa place avant qu'il soit chargé : le cadre ne saute pas
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={capture.src}
+          alt={capture.alt}
+          style={{ aspectRatio: capture.ratio, width: `min(1380px, 100vw - 84px, (100dvh - 84px) * (${capture.ratio}))` }}
+        />
       ) : null}
       <form method="dialog">
         <button type="submit" className={styles.fermerVisite} autoFocus>

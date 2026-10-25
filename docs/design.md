@@ -2365,8 +2365,9 @@ hauteur ne vaut que sur grand écran (décidé par lui). Mots écartés à sa de
 « puis vous corrigez »).
 
 **Captures du 12 en grand (23 octobre 2026, à sa demande) :** sur grand écran et tablette, un clic
-ouvre la capture seule en grand, sa note dessous, sur fond sombre (Échap, clic à côté ou
-« Fermer ») ; une loupe au survol le dit ; pas de galerie, qui doublerait le défilement des temps ;
+ouvre la capture seule en grand, dans un cadre blanc à sa taille, sur un voile, sans sa note
+(le fond noir et la légende retirés à sa demande le 25 octobre 2026), « Fermer » posé sur son coin
+(Échap, clic à côté ou « Fermer ») ; une loupe au survol le dit ; pas de galerie, qui doublerait le défilement des temps ;
 le collage des chapitres et des scènes ne s'agrandit pas ; rien sur téléphone, où la capture
 prend déjà toute la largeur. La dernière capture du temps 3 est un passage d'« Électro Nick » lu en ligne (texte, illustration,
 trois choix), prise dans le lecteur local ; elle mène à ce livre quand il est sur l'accueil
@@ -2425,11 +2426,12 @@ choix à cliquer, « Un livre jusqu'à 40 scènes » (gratuit) et « Un grand li
 visibles, empilés, celui qui est choisi cerné de canard ; la fiche se réécrit au crayon, et la
 souris s'écarte dans une bouffée de fumée pour que le dragon se pose (son arrivée brève),
 l'inverse au retour, rien avant le premier clic, rien avec « réduire les animations » ; un clic sur
-l'animal passe aussi à l'autre livre (demandé par le porteur), au clavier compris. Sur tablette et
-téléphone, l'animal n'est pas affiché (il tombait sous la fiche, égaré : retiré à sa demande) ; les
-deux choix suffisent. Sur
-téléphone, où la fiche est sous le feuillet, choisir un livre fait descendre la page jusqu'à
-la fiche, et l'écriture attend la fin du défilement. La fiche,
+l'animal passe aussi à l'autre livre (demandé par le porteur), au clavier compris. Sur tablette,
+l'animal n'est pas affiché (il tombait sous la fiche, égaré : retiré à sa demande) ; les deux
+choix suffisent. Sur téléphone, où tout est l'un sous l'autre, il est rendu le 25 octobre 2026 à sa
+demande, entre le feuillet et la fiche : un clic sur lui change de livre sans remonter aux choix ;
+choisir un livre fait descendre la page jusqu'à l'animal, et l'écriture comme l'arrivée attendent
+la fin du défilement. La fiche,
 enrichie le même jour à sa demande : pictogrammes au trait graphite devant chaque case (bourse,
 étoiles des aides, livre, cadre d'image, sac pour l'inventaire), « Aventurier : vous » au crayon
 sur un pointillé, et sur la table un dé rouge et un crayon bleu canard, illustrations générées par
@@ -4493,7 +4495,7 @@ formules, qui crée un bloc, porte le filet canard de la décision.
 | Lecteur, grand écran | La feuille est posée à droite du texte, ouverte par défaut et rangeable par « Feuille » dans la barre ; le texte reste centré dans la place restante. Compteur : nom, valeur en grand, « − » et « + » ronds, « − » inactif à zéro. Liste : lignes à écrire, une de plus dès qu'elles sont pleines, sans aucune suggestion. Notes sur papier ligné. |
 | Dé | Dans la feuille : faces dessinées, « Lancer le dé », puis « Tu as fait 2 » ou « 3 et 5 : 8 en tout », et le rappel que le dé ne décide de rien. Les choix du passage restent tous activables. |
 | Règles | « Règles » dans la barre et « Règles du jeu » au pied de la feuille mènent à « Comment lire ce livre », où les règles de l'adulte suivent le mode d'emploi de l'écran ; « Reprendre au passage n » y ramène, feuille inchangée. |
-| Lecteur, 390 px | Barre fixe en bas : « Ma feuille » et le résumé « Volonté 4 · Inventaire 2 ». Elle ouvre une feuille basse couvrant l'écran aux quatre cinquièmes, avec « Ranger ». |
+| Lecteur, 390 px | Barre fixe en bas : « Ma feuille » et le résumé « Volonté 4 · Inventaire 2 ». Elle ouvre une feuille basse couvrant l'écran aux quatre cinquièmes, avec « Ranger ». Retouches du 25 octobre 2026, sur son retour : l'en-tête et « Ranger » restent en haut de la feuille quand on la fait défiler (sur grand écran aussi) ; quand on écrit une ligne, la feuille remonte au-dessus du clavier, la ligne en cours sous les yeux. |
 | Livre à choix seuls | Ni feuille, ni dé, ni règles : le lecteur garde sa présentation précédente. |
 
 **Arbitrés par le porteur pendant la conception, le 2 octobre 2026**, et

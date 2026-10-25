@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, type RefObject } from "react";
 import { Icone } from "@/composants/Icone";
 import { changerCompteur, lancer, type EtatFeuille } from "@/domaine/lecture";
 import type { Feuille as FeuilleDuLivre } from "@/domaine/preparation";
@@ -38,6 +39,39 @@ export function resumeCompteurs(feuille: FeuilleDuLivre, etat: EtatFeuille): str
   return feuille.sections
     .flatMap((s) => (s.type === "compteurs" ? s.compteurs.map((c) => `${c.nom || "Compteur"} ${etat.compteurs[`${s.id}/${c.id}`] ?? c.depart}`) : []))
     .join(" · ");
+}
+
+/**
+ * Sur téléphone, la feuille ouverte est posée au bas de l'écran : le clavier la cachait dès qu'on
+ * écrivait une ligne (retour du porteur, 25 octobre 2026). Tant qu'elle est ouverte, elle suit la
+ * partie visible de l'écran (`--clavier`, `--visible`) et la ligne en cours reste sous les yeux.
+ */
+export function useAuDessusDuClavier(feuille: RefObject<HTMLElement | null>, ouverte: boolean) {
+  useEffect(() => {
+    const vue = window.visualViewport;
+    const el = feuille.current;
+    if (!ouverte || !vue || !el) return;
+    const suivre = () => {
+      const clavier = Math.max(0, window.innerHeight - vue.height - vue.offsetTop);
+      el.style.setProperty("--clavier", `${Math.round(clavier)}px`);
+      el.style.setProperty("--visible", `${Math.round(vue.height)}px`);
+      const champ = document.activeElement;
+      if (clavier > 0 && champ instanceof HTMLElement && el.contains(champ) && champ.matches("input, textarea")) {
+        champ.scrollIntoView({ block: "nearest" });
+      }
+    };
+    suivre();
+    vue.addEventListener("resize", suivre);
+    vue.addEventListener("scroll", suivre);
+    el.addEventListener("focusin", suivre);
+    return () => {
+      vue.removeEventListener("resize", suivre);
+      vue.removeEventListener("scroll", suivre);
+      el.removeEventListener("focusin", suivre);
+      el.style.removeProperty("--clavier");
+      el.style.removeProperty("--visible");
+    };
+  }, [feuille, ouverte]);
 }
 
 export function Feuille({

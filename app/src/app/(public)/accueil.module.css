@@ -524,44 +524,35 @@
     transform: none;
   }
 }
-/* La capture en grand : seule, sur un fond sombre, sa note dessous */
+/* La capture en grand : seule, dans un cadre blanc à sa taille, sans fond ni note (le fond noir et
+   sa légende retirés à la demande du porteur le 25 octobre 2026) ; « Fermer » posé sur son coin */
 .enGrand {
-  width: min(1400px, calc(100vw - 32px));
   max-width: none;
-  max-height: calc(100dvh - 32px);
-  padding: 58px 16px 12px;
+  max-height: none;
+  padding: 10px;
+  overflow: visible;
   border: 0;
   border-radius: var(--r-m);
-  background: #1c1e20;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+  background: var(--feuille);
+  box-shadow: 0 2px 6px rgba(60, 45, 20, 0.14), 0 30px 70px -20px rgba(30, 25, 15, 0.55);
 }
 .enGrand::backdrop {
-  background: rgba(30, 25, 15, 0.7);
-}
-.enGrand figure {
-  display: grid;
-  gap: 10px;
-  margin: 0;
+  background: rgba(30, 25, 15, 0.55);
 }
 .enGrand img {
   /* Sa largeur et ses proportions viennent de la capture : sa place est prise avant le chargement */
   display: block;
   height: auto;
-  margin: 0 auto;
-  object-fit: contain;
-  background: #2a2c2e;
   border-radius: 4px;
-}
-.enGrand figcaption {
-  font-family: var(--f-main);
-  font-size: 1.05rem;
-  text-align: center;
-  color: #e8e2d4;
 }
 .enGrand form {
   position: absolute;
-  top: 12px;
-  right: 16px;
+  top: -14px;
+  right: -14px;
+}
+.enGrand .fermerVisite {
+  background: var(--feuille);
+  box-shadow: 0 0 0 1px rgba(60, 45, 20, 0.14), 0 4px 12px rgba(30, 25, 15, 0.25);
 }
 .capture .note {
   justify-self: center;
@@ -1674,7 +1665,12 @@
   .feuillet:target {
     outline-offset: 3px;
   }
-  /* Le 40 : le feuillet, puis la fiche, toute la largeur */
+  /* Le 40 : le feuillet, l'animal, puis la fiche, toute la largeur. Les uns sous les autres,
+     l'animal retrouve sa place, et un clic passe à l'autre livre sans remonter aux choix (rendu au
+     téléphone par le porteur le 25 octobre 2026 ; la tablette, en colonnes, reste sans) */
+  .quarante .mascotte {
+    display: block;
+  }
   .quarante .cote {
     justify-items: stretch;
   }
@@ -1683,13 +1679,19 @@
     padding: 24px 22px 26px;
     transform: rotate(1deg);
   }
-  /* Sur téléphone, la page descend d'abord jusqu'à la fiche : l'écriture attend la fin du
-     défilement pour être vue */
+  /* Sur téléphone, la page descend d'abord jusqu'à l'animal : l'écriture et l'arrivée attendent
+     la fin du défilement pour être vues */
   .quarante[data-touche] .boite > .crayon {
     animation-delay: 0.45s;
   }
-  .fiche {
-    scroll-margin-top: 16px;
+  .quarante[data-livre="grand"] .dragon40 {
+    transition-delay: 0.45s;
+  }
+  .quarante[data-livre="petit"] .souris40 {
+    transition-delay: 0.45s;
+  }
+  .quarante[data-touche][data-livre] .bouffee {
+    animation-delay: 0.3s;
   }
   /* Sur téléphone, les captures ne s'agrandissent pas : elles prennent déjà toute la largeur */
   .agrandir {

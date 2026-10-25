@@ -10,7 +10,7 @@ import {
 } from "@/domaine/lecture";
 import { chapitresLus, livreLuDe, premiersMots, type ChapitreLu, type PresentationPartagee, type VersionPartagee } from "@/domaine/partage";
 import type { TexteLeger } from "@/domaine/pages";
-import { Feuille, resumeFeuille } from "./Feuille";
+import { Feuille, resumeFeuille, useAuDessusDuClavier } from "./Feuille";
 import { Mots, Passage, SourceDesImages, type SourceImage } from "./Passage";
 
 /**
@@ -169,6 +169,7 @@ export function LecteurEnLigne({
   const [parcoursOuvert, setParcoursOuvert] = useState(false);
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const aside = useRef<HTMLElement>(null);
+  useAuDessusDuClavier(aside, feuilleOuverte);
   const haut = useRef<HTMLDivElement>(null);
 
   // Ce qui change se garde : sur l'appareil, ou pour le profil de l'élève

@@ -8,7 +8,7 @@ import {
   commencer, feuilleDeDepart, issueDe, revenir, SORTIE, suivantDansLOrdre, suivre, type EtatFeuille, type LivreLu, type Parcours, type PassageLu,
 } from "@/domaine/lecture";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
-import { Feuille, resumeCompteurs, resumeFeuille } from "./Feuille";
+import { Feuille, resumeCompteurs, resumeFeuille, useAuDessusDuClavier } from "./Feuille";
 import { Passage } from "./Passage";
 
 /**
@@ -62,6 +62,7 @@ export default function Lecture({
   // La feuille est fermée au départ : elle sert à quelques passages seulement (décidé par le porteur le 14 octobre 2026)
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const aside = useRef<HTMLElement>(null);
+  useAuDessusDuClavier(aside, feuilleOuverte);
   const ouvrirFeuille = (versLeDe = false, versLesRegles = false) => {
     setFeuilleOuverte(true);
     requestAnimationFrame(() => {

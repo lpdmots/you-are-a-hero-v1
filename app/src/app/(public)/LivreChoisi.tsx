@@ -22,11 +22,12 @@ export function LivreChoisi({ scenes, images, prix }: { scenes: number; images: 
     if (!rangee) return;
     rangee.dataset.livre = t;
     rangee.dataset.touche = "";
-    // Sur téléphone, la fiche est sous le feuillet : la page descend jusqu'à elle, pour qu'on
-    // voie le changement (demandé par le porteur le 23 octobre 2026)
+    // Sur téléphone, l'animal et la fiche sont sous le feuillet : la page descend jusqu'à l'animal,
+    // la fiche dessous, pour qu'on voie le changement (demandé par le porteur le 23 octobre 2026)
     if (window.matchMedia("(max-width: 980px)").matches) {
       const doux = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      rangee.querySelector<HTMLElement>("[aria-labelledby='fiche-t']")?.scrollIntoView({ behavior: doux ? "smooth" : "auto", block: "start" });
+      const cible = rangee.querySelector<HTMLElement>("[data-basculer]") ?? rangee.querySelector<HTMLElement>("[aria-labelledby='fiche-t']");
+      cible?.scrollIntoView({ behavior: doux ? "smooth" : "auto", block: "start" });
     }
   };
   useEffect(() => {

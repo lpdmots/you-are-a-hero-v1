@@ -367,7 +367,15 @@ button.lecteur__nom {
   border-radius: 8px;
   box-shadow: inset 0 0 0 1px var(--trait), 0 12px 32px rgba(30, 40, 38, 0.18);
 }
+/* Son en-tête reste en haut quand on fait défiler la feuille : « Ranger » toujours à portée
+   (retour du porteur, 25 octobre 2026) */
 .lecteur__feuille > header {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  /* Il laisse voir le liseré du cadre */
+  margin: 1px 1px 0;
+  background: var(--feuille);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -426,9 +434,10 @@ button.lecteur__nom {
     position: fixed;
     left: 0;
     right: 0;
-    bottom: 0;
+    /* Au-dessus du clavier quand on y écrit (useAuDessusDuClavier) */
+    bottom: var(--clavier, 0px);
     z-index: 40;
-    max-height: 80vh;
+    max-height: min(80vh, var(--visible, 100vh) - 12px);
     border-radius: 14px 14px 0 0;
   }
 }
