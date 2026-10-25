@@ -1535,51 +1535,98 @@
     --page-l: 100%;
     padding: 0 16px;
   }
+  /* Le premier écran (repris le 23 octobre 2026, le livre coupé jugé « bizarre » par le porteur) :
+     comme les entrées, l'illustration en bandeau d'un bord à l'autre, puis le passage 1 sur une
+     feuille du papier des autres passages, qui monte un peu sur elle ; le dragon assis sur le bord
+     de la feuille. Le livre ouvert reste aux grands écrans. */
   .scene {
+    --bandeau: clamp(140px, 23dvh, 280px);
     display: block;
     position: relative;
-    padding: 108px 0 20px;
+    margin: 0 -16px;
+    padding: 0 0 20px;
   }
-  /* Le livre reste ouvert : il sort de l'écran à gauche, on voit le pli et le bord de la page
-     de gauche ; la page de droite, étirée par son centre uni, porte le passage */
   .livre {
-    width: calc(100% + 34px);
-    margin-top: 0;
-    margin-left: -34px;
+    width: auto;
+    margin: 0;
     aspect-ratio: auto;
+    container-type: normal;
     background: none;
-    border-style: solid;
-    border-color: transparent;
-    border-width: 12px 52px 36px 62px;
-    border-image: url(/accueil/page-mobile.webp) 30 160 95 172 fill / 12px 52px 36px 62px;
-    filter: drop-shadow(0 14px 18px rgba(60, 45, 20, 0.2));
+    filter: none;
   }
   .gauche {
-    display: none;
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: var(--bandeau);
+    clip-path: none;
+  }
+  /* Le bandeau garde les deux enfants au travail : l'ordinateur, le cahier, les mains */
+  .gauche img {
+    object-position: 50% 60%;
+    border-radius: 0;
+  }
+  /* Le bouton de la visite, dans le coin, au-dessus du bord de la feuille : il ne cache pas
+     l'ordinateur */
+  .lancerVisite,
+  .lancerVisite:hover {
+    left: 16px;
+    transform: none;
+  }
+  .lancerVisite {
+    bottom: 30px;
+    padding: 7px 14px 7px 7px;
+    font-size: var(--t-s);
+  }
+  .lancerVisite svg {
+    width: 26px;
+    height: 26px;
   }
   .droite {
-    position: static;
+    position: relative;
+    isolation: isolate;
+    inset: auto;
     width: auto;
     height: auto;
+    margin: -18px 10px 0;
+    padding: 12px 18px 14px;
     font-size: 1rem;
-    padding: 22px 6px 14px 4px;
+    filter: drop-shadow(0 1px 1px rgba(60, 45, 20, 0.16)) drop-shadow(0 10px 16px rgba(60, 45, 20, 0.16));
+  }
+  .droite::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url(/accueil/papier.webp) center / cover, var(--papier);
+    border-radius: 3px;
   }
   /* Le titre tient en deux lignes sur tout téléphone, « Votre classe écrit » puis « son
-     livre-jeu. » : il réduit avec la page, large de l'écran moins 122 points de bords */
+     livre-jeu. » : il réduit avec la feuille, large de l'écran moins 72 points de bords */
   .droite h1 {
-    font-size: min(2.3rem, (100vw - 122px) / 10);
+    margin-top: 0.15em;
+    font-size: min(2.2rem, (100vw - 72px) / 10);
+    line-height: 1.4;
+  }
+  /* Sous le titre, la place du jambage du « j » de « livre-jeu » */
+  .droite .recit {
+    margin-top: 1.5em;
+    font-size: 1rem;
   }
   .droite .choix {
-    margin-top: 22px;
+    margin-top: 16px;
   }
+  .droite .choix :is(a:not(:global(.btn)), .principal) {
+    padding: 0.45em 2px;
+  }
+  /* Assis sur le bord de la feuille, à droite, il se penche vers le texte */
   .dragonLit {
     position: absolute;
-    top: 0;
-    right: 14px;
-    width: 140px;
-    height: 126px;
+    top: calc(var(--bandeau) - 18px - 88px + 10px);
+    right: 22px;
+    width: 96px;
+    height: 88px;
     margin: 0;
-    /* Sur téléphone, perché au-dessus de la page, il se penche vers le texte */
     background-image: url(/accueil/dragon-penche.webp);
   }
   .rangee,
@@ -1706,4 +1753,15 @@
     padding: 0 4px 0 0;
   }
 
+}
+
+/* Tablette : la feuille du premier écran et son bandeau ne s'étirent pas sur toute la largeur */
+@media (min-width: 641px) and (max-width: 980px) {
+  .scene {
+    width: min(640px, 100%);
+    margin: 8px auto 0;
+  }
+  .gauche img {
+    border-radius: 6px;
+  }
 }

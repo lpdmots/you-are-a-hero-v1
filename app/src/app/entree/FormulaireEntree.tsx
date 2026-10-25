@@ -74,10 +74,17 @@ export function FormulaireEntree({ refus }: { refus?: string }) {
         <span>Adresse électronique</span>
         <input type="email" id="email" name="email" autoComplete="username" defaultValue={etat.adresse} onKeyDown={envoyerParEntree} required />
       </label>
-      <label className="champ champ--plein">
-        <span>Mot de passe</span>
-        <input type="password" id="password" name="password" autoComplete="current-password" onKeyDown={envoyerParEntree} required />
-      </label>
+      {/* « Mot de passe oublié ? » à sa place habituelle, sur la ligne du nom du champ ; les choix du
+          passage mènent aux autres entrées */}
+      <div className={styles.motDePasse}>
+        <label className="champ champ--plein">
+          <span>Mot de passe</span>
+          <input type="password" id="password" name="password" autoComplete="current-password" onKeyDown={envoyerParEntree} required />
+        </label>
+        <Link href="/entree/oubli" className={styles.oubli}>
+          Mot de passe oublié ?
+        </Link>
+      </div>
       <Erreur texte={etat.erreur} />
       <button type="submit" className="btn btn--primaire btn--grand btn--large" disabled={enCours || !pret} aria-busy={enCours || undefined}>
         Entrer

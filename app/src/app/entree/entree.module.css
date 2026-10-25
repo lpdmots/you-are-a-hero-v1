@@ -22,11 +22,17 @@
   border-top: 1px solid var(--trait);
 }
 
-/* liens du pied de l'entrée enseignant : sur une ligne, à la ligne seulement si l'écran est étroit */
-.pied {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px 24px;
+/* « Mot de passe oublié ? », à droite sur la ligne du nom du champ */
+.motDePasse {
+  position: relative;
+}
+.oubli {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 0.8em;
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 /* phrase des conditions, sous la création d'un compte (F14-AC03) */

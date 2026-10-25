@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { EntreeIllustree } from "@/composants/EntreeIllustree";
+import { EntreeIllustree, PASSAGES } from "@/composants/EntreeIllustree";
 import { enseignantCourant } from "@/serveur/adulte";
 import { FormulaireInscription } from "../FormulaireEntree";
 
@@ -11,7 +10,13 @@ export const metadata: Metadata = { title: "Créer un compte" };
 export default async function Inscription() {
   if (await enseignantCourant()) redirect("/");
   return (
-    <EntreeIllustree titre="Créer un compte" retourAccueil pied={<span>Déjà un compte ? <Link href="/entree">Entrer</Link></span>}>
+    <EntreeIllustree
+      titre="Créer un compte"
+      numero={PASSAGES.inscription.vers}
+      illustration="inscription"
+      retourAccueil
+      choix={[{ phrase: "Si vous avez déjà un compte, rendez-vous au", ...PASSAGES.enseignant }]}
+    >
       <FormulaireInscription />
     </EntreeIllustree>
   );

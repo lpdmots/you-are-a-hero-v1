@@ -2154,8 +2154,9 @@ cursive et leurs gommettes, la page de livre de l'accueil public.
   d'abord une planche de référence, puis chaque pose avec cette planche en
   image de référence, sur fond transparent. Si le personnage dérive d'une
   pose à l'autre, repli sur un dessin vectoriel tiré du logo.
-- **Entrée :** l'illustration des écrans d'entrée (élève et adulte) est
-  refaite avec le dragon à la place du chat, même ville, même lumière.
+- **Entrée :** révisé le 23 octobre 2026 (voir
+  [Entrées en livre-jeu](#entrées-en-livre-jeu-23-octobre-2026)) : plus de
+  ville, une scène du dragon par entrée, sur la page de gauche du livre.
 - **Mouvement :** une seule arrivée brève quand un moment s'ouvre (il se
   pose, environ un quart de seconde), puis immobile ; supprimée si le système
   demande moins de mouvement ; ni clignement, ni fumée au survol, ni boucle.
@@ -2337,7 +2338,10 @@ page gauche en trapèze, plus large en bas comme la page en perspective, centré
 tranche et l'ombre du pli ; le dragon, nouveau dessin retourné, tourné vers la page de droite
 sur grand écran, et penché vers le texte sur téléphone. La visite en vidéo : une minute trente environ, en quatre temps (la classe prépare au tableau, un
 élève écrit et remet, l'enseignant relit et valide, le livre se compose puis se feuillette
-imprimé) ; son bouton (« Le tour en vidéo ») ne paraît en ligne qu'avec la vidéo. L'image de
+imprimé), en animation (« motion design ») sur les vrais écrans de l'outil, dans l'univers des
+cahiers d'aventure ; voix de synthèse (ElevenLabs), décidé par le porteur le 23 octobre 2026 à
+la place de sa propre voix, une version anglaise devant suivre, la française d'abord ; sources,
+script et découpage dans [video/visite](../video/visite/) ; son bouton (« Le tour en vidéo ») ne paraît en ligne qu'avec la vidéo. L'image de
 la page gauche, qui en est l'affiche : une photo de sa classe au travail si le porteur peut
 la prendre, sans visage reconnaissable ; en attendant, une illustration créée par IA dans le
 style des visuels, jamais une fausse photo.
@@ -2521,6 +2525,55 @@ la promesse, juste en dessous.
 **Notés pour plus tard, hors de l'accueil :** des documents pédagogiques à
 imprimer (réfléchir chacun à son chapitre, guides d'écriture) ; une page de
 conseils pour écrire un livre-jeu ; les données des élèves dans l'« Aide ».
+
+**Le premier écran sur téléphone (repris le 23 octobre 2026) :** le livre coupé (tranche à
+gauche, cadre bleu à droite, page étirée en hauteur, illustration absente) est jugé « bizarre »
+par le porteur. Repris comme les entrées : l'illustration de la classe en bandeau d'un bord à
+l'autre (23 % de la hauteur, calée sur l'ordinateur, le cahier et les mains), « Le tour en
+vidéo » dans son coin, puis le passage 1 sur une feuille du papier des autres passages, qui
+monte un peu sur elle ; le dragon assis sur le bord de la feuille, à droite, penché vers le
+texte. « Créez un compte » et les deux renvois tiennent dans 390 × 664. Sur tablette, la feuille
+et son bandeau ne dépassent pas 640 points. Le livre ouvert reste aux grands écrans.
+
+### Entrées en livre-jeu (23 octobre 2026)
+
+Le porteur juge les écrans d'entrée « très communs » et leur image (le chat de
+la ville, un visuel par défaut des projets) « inintéressante ». Recommandé et
+accepté (« oui, lance ») : l'accueil se prolonge dans les entrées, construit en
+local le même jour, à juger par lui.
+
+- **Le livre de l'accueil** sur la table chaude, avec la barre du nom et
+  « Retour à l'accueil » (F14-AC39) ; l'illustration sur la page de gauche, le
+  passage sur la page de droite. Tout ce qui est sur la page suit la taille du
+  livre, pour qu'elle ne déborde jamais. Sur téléphone, d'abord le bord du
+  livre, jugé « pas très beau » et trop haut par le porteur : l'illustration en
+  bandeau bas (17 % de la hauteur), calé sur le dragon, d'un bord à l'autre,
+  puis une feuille du papier de l'accueil qui monte sur elle ; titre « Entrée
+  enseignant » sur une ligne, espaces resserrés ; tout tient sans défiler sur
+  390 × 664 (Safari et ses barres). « Mot de passe oublié ? » sur la ligne du
+  nom de son champ, à droite, partout.
+- **Chaque entrée est un passage numéroté :** 3, créer un compte ; 7, entrée
+  enseignant ; 14, entrée des élèves ; 21, mot de passe oublié. Les liens vers
+  les autres entrées sont des choix du livre (« Pour créer un compte,
+  rendez-vous au 3 », « Si vous enseignez, rendez-vous au 7 »). « Mot de passe
+  oublié ? » reste un lien près de son champ, où on le cherche. Titres en cursive, comme à l'accueil.
+- **Une scène du dragon par entrée,** générée par le porteur
+  ([identite/entree](../identite/entree/)) : la porte du livre (enseignant,
+  aussi pour le nouveau mot de passe), le livre neuf grignoté par la souris
+  (inscription), les porte-manteaux de la classe (élèves), qui annoncent les
+  étiquettes de « Qui utilise cet ordinateur ? ». Prompts : planche en
+  référence, dragon « long cou, à quatre pattes ou assis comme un chat, jamais
+  debout », tout net, aucun objet flou au premier plan — les premiers essais
+  l'avaient mis debout, ventre rond, dès qu'un geste des pattes était demandé.
+- **L'entrée des élèves :** le dragon leur parle (« — Te voilà ! J'ai hâte de
+  lire la suite de l'histoire. », « scène » étant un mot de l'outil, pas des
+  enfants, remarque du porteur), ce qui révise « sans phrase sous le titre » ;
+  « Regarde l'affiche de la classe. », puis « Écris l'identifiant de la
+  classe » et « Écris le mot de passe de la classe », les mots de l'affiche ;
+  ce qu'on tape en Andika, plus grand.
+- **Les autres pages de cette forme** (introuvable, erreur, paiement) gardent
+  le livre sans numéro ni dragon, avec la classe au travail de l'accueil : le
+  dragon ne paraît pas aux moments d'incident.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

@@ -5,6 +5,7 @@ import { envoyerParEntree } from "@/composants/Attente";
 import { Icone } from "@/composants/Icone";
 import { usePret } from "@/composants/Pret";
 import { ouvrir, type EtatOuverture } from "./actions";
+import styles from "./classe.module.css";
 
 const depart: EtatOuverture = {};
 
@@ -13,12 +14,14 @@ export function OuvrirLaClasse() {
   const pret = usePret();
   return (
     <form action={action}>
-      <label className="champ champ--plein">
-        <span>Identifiant de la classe</span>
+      {/* Les mêmes mots que l'affiche de la classe, où l'élève les trouve */}
+      <p className={styles.affiche}>Regarde l’affiche de la classe.</p>
+      <label className={`champ champ--plein ${styles.champ}`}>
+        <span>Écris l’identifiant de la classe</span>
         <input type="text" name="identifiant" defaultValue={etat.saisie?.identifiant} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} onKeyDown={envoyerParEntree} required />
       </label>
-      <label className="champ champ--plein">
-        <span>Mot de passe de la classe</span>
+      <label className={`champ champ--plein ${styles.champ}`}>
+        <span>Écris le mot de passe de la classe</span>
         <input type="text" name="mot-de-passe" defaultValue={etat.saisie?.motDePasse} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} onKeyDown={envoyerParEntree} required />
       </label>
       {etat.erreur ? (

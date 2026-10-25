@@ -1,0 +1,10 @@
+/* L'entrée des élèves : ce qu'ils tapent, en Andika, plus grand (les chiffres sans zéro barré, F06.4) */
+.champ.champ input {
+  font-family: var(--f-chiffres);
+  font-size: 1.45em;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+.affiche {
+  color: var(--graphite-2);
+}

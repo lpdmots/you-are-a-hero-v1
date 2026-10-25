@@ -73,7 +73,7 @@ export async function Accueil() {
       <section className={styles.scene} aria-labelledby="p1">
         <div className={styles.livre}>
           <figure className={styles.gauche}>
-            <Image src="/accueil/classe-au-travail.webp" alt="" fill sizes="(max-width: 980px) 1px, 380px" priority />
+            <Image src="/accueil/classe-au-travail.webp" alt="" fill sizes="(max-width: 980px) 100vw, 380px" priority />
             {VIDEO_DE_LA_VISITE || EN_DEVELOPPEMENT ? <VisiteEnVideo video={VIDEO_DE_LA_VISITE} sousTitres={SOUS_TITRES_DE_LA_VISITE} /> : null}
           </figure>
           <div className={styles.droite}>

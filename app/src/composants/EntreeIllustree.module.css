@@ -1,79 +1,337 @@
-.entree {
+/* Les écrans d'entrée en livre-jeu (design.md, « Entrées en livre-jeu », 23 octobre 2026) : la
+   table chaude et le grand livre ouvert de l'accueil ; l'illustration sur la page de gauche, le
+   passage sur celle de droite, ses choix de la forme des phrases de choix du livre. */
+.table {
   min-height: 100dvh;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(360px, 0.9fr);
+  grid-template-rows: auto 1fr;
+  background: #f2ede3;
+  /* Sur téléphone, le livre sort de l'écran à gauche, à dessein */
+  overflow-x: clip;
 }
-.image {
+
+/* ——— La barre du haut : le nom, et le retour à l'accueil ——— */
+.tete {
+  /* Au-dessus de la bande vide de l'image du livre, qui remonte sous elle */
   position: relative;
-  min-height: 240px;
-}
-.image img {
-  object-fit: cover;
-}
-.carte {
-  display: grid;
-  align-content: center;
-  gap: 14px;
-  padding: 48px clamp(24px, 5vw, 72px);
-  background: var(--feuille);
-}
-.carte form {
-  display: grid;
-  gap: 14px;
-}
-/* « Retour à l'accueil », au-dessus du logo, sur les seuls écrans de l'adulte */
-.retour {
-  padding: 0;
-}
-/* Le logo en tête de carte : dragon grand, nom dans la cursive du site au trait épaissi (V1/identite/logo).
-   Il mène à l'accueil. */
-.marque {
-  justify-self: start;
-  text-decoration: none;
+  z-index: 3;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 6px;
-  font-family: var(--f-main);
-  font-weight: 400;
-  font-size: 1.5rem;
-  white-space: nowrap;
-  -webkit-text-stroke: 0.035em currentColor;
-  color: var(--graphite);
+  justify-content: space-between;
+  gap: 12px 24px;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 18px 24px;
 }
-/* Pied du nom au pied des pages du livre, comme dans l'assemblage horizontal du logo. */
-.marque span {
-  position: relative;
-  top: 0.36em;
+/* Le nom reste lisible sur un téléphone, à côté du retour */
+.marque :global(span) {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  clip-path: none !important;
 }
-.dragon {
-  width: 80px;
-  height: 80px;
-  flex: none;
+.retour {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--canard);
+  font-size: var(--t-s);
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
 }
-.carte h1 {
-  font-size: var(--t-3xl);
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
+.retour:hover {
+  text-decoration: underline;
+}
+
+/* ——— Le grand livre ouvert ——— */
+.scene {
+  /* Le livre tient en entier sous la barre : sa partie visible fait 0,595 fois sa largeur, et
+     l'écran lui laisse sa hauteur moins 120 points ; jamais sous 860 points, où la page de droite
+     reste lisible */
+  --livre-l: min(1160px, 100% - 48px, max(860px, (100dvh - 120px) * 1.68));
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 0 28px;
+}
+.livre {
+  position: relative;
+  flex: none;
+  width: var(--livre-l);
+  aspect-ratio: 2000 / 1500;
+  /* L'image a des bandes vides en haut et en bas : le livre les reprend sous ses voisins, et sa
+     partie visible se centre dans la hauteur */
+  margin: calc(var(--livre-l) * -0.088) 0 calc(var(--livre-l) * -0.067);
+  container-type: inline-size;
+  background: url(/accueil/livre-ouvert.webp) no-repeat center / 100% 100%;
+  filter: drop-shadow(0 26px 30px rgba(60, 45, 20, 0.22));
+}
+/* Les zones des pages, mesurées sur l'image (comme à l'accueil) : la page de gauche s'élargit vers
+   le bas, côté tranche, et l'illustration en prend la forme */
+.gauche {
+  position: absolute;
+  left: 10.4%;
+  top: 15.4%;
+  width: 35.88%;
+  height: 66.5%;
+  margin: 0;
+  clip-path: polygon(3.08% 0, 100% 0, 100% 100%, 0 100%);
+}
+.gauche img {
+  object-fit: cover;
+  object-position: 50% 30%;
+  border-radius: 2px;
+}
+/* Chaque scène garde son personnage : le parquet vide du bas part le premier */
+.enseignant img {
+  object-position: 50% 10%;
+}
+.eleves img {
+  object-position: 50% 20%;
+}
+.droite {
+  position: absolute;
+  left: 53.6%;
+  top: 14.4%;
+  width: 36.2%;
+  height: 68.6%;
+  display: flex;
+  flex-direction: column;
+  /* Tout ce qui est sur la page suit la taille du livre : 16 points pour un livre de 1160, moins
+     quand il réduit, pour ne jamais déborder de la page */
+  font-size: clamp(12px, 1.38cqw, 16px);
+}
+
+/* ——— Le passage ——— */
+.numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9em;
+  font-family: var(--f-recit);
+  font-size: 1.05em;
+  color: var(--graphite-2);
+  font-variant-numeric: lining-nums;
+}
+.numero::before,
+.numero::after {
+  content: "";
+  width: 2.4em;
+  height: 1px;
+  background: var(--trait-fort);
+}
+.droite h1 {
+  margin-top: 0.45em;
+  font-family: var(--f-main);
+  font-size: 2.05em;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0;
+  /* Les jambages de la cursive (« enseignant », « compte ») ne touchent pas ce qui suit */
+  margin-bottom: 0.3em;
+  -webkit-text-stroke: 0.03em currentColor;
+  color: var(--graphite);
+  text-wrap: balance;
+}
+/* Le dragon parle aux élèves : une phrase, dans la voix du récit */
+.parole {
+  margin-top: 0.3em;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 1.12em;
+  line-height: 1.45;
+  color: var(--graphite-2);
 }
 .aide {
+  margin-top: 0.4em;
+  font-size: 0.86em;
+  line-height: 1.45;
   color: var(--graphite-2);
-  font-size: var(--t-s);
 }
-@media (max-width: 720px) {
-  .entree {
-    grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: minmax(160px, 34dvh) 1fr;
+.corps {
+  display: grid;
+  gap: 0.75em;
+  margin-top: 1.2em;
+}
+.corps form {
+  display: grid;
+  gap: 0.75em;
+}
+/* Champs et boutons à l'échelle de la page */
+.corps :global(.champ) {
+  font-size: 0.8em;
+}
+.corps :global(.champ--plein) input {
+  /* 44 points pour une page à 16 */
+  min-height: 2.75em;
+  font-size: 1.25em;
+}
+.corps :global(.btn--grand) {
+  min-height: 2.8em;
+  padding: 0.55em 1.1em;
+  font-size: 1em;
+}
+.corps :global(.erreur),
+.corps > p,
+.corps form > p {
+  font-size: 0.86em;
+}
+
+/* ——— Les choix, comme dans le livre ——— */
+.choix {
+  list-style: none;
+  margin: auto 0 0;
+  padding: 1em 0 0;
+}
+.choix li {
+  border-top: 1px solid #d8d0bf;
+}
+.choix li:last-child {
+  border-bottom: 1px solid #d8d0bf;
+}
+.choix a {
+  display: flex;
+  align-items: last baseline;
+  gap: 0.75em;
+  padding: 0.5em 2px;
+  font-family: var(--f-recit);
+  font-style: italic;
+  font-size: 1em;
+  line-height: 1.4;
+  color: var(--graphite);
+  text-decoration: none;
+}
+.choix a:hover {
+  background: rgba(120, 95, 50, 0.06);
+}
+.phrase {
+  flex: 1 1 auto;
+}
+.renvoi {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.1em;
+  padding: 0 0.45em;
+  border: 1.5px solid var(--canard);
+  border-radius: 99px;
+  color: var(--canard);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 0.92em;
+  font-variant-numeric: lining-nums;
+}
+.choix a:hover .renvoi {
+  background: var(--canard);
+  color: var(--feuille);
+}
+.choix a:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
+}
+
+/* ——— Téléphone et tablette étroite : l'illustration en tête, d'un bord à l'autre, puis une feuille
+   du papier de l'accueil qui monte un peu sur elle ; le formulaire tient dans l'écran (le bord du
+   livre, essayé d'abord, prenait de la largeur et de la hauteur : jugé « pas très beau » par le
+   porteur, 23 octobre 2026) ——— */
+@media (max-width: 980px) {
+  .tete {
+    padding: 10px 16px;
   }
-  .image {
-    min-height: 0;
+  .marque :global(a) {
+    font-size: 1.02rem;
+    gap: 6px;
   }
-  .carte {
-    padding: 24px 16px 32px;
+  .marque :global(svg) {
+    width: 30px;
+    height: 30px;
   }
-  .carte h1 {
-    font-size: 1.6rem;
+  .scene {
+    display: block;
+    padding: 0 0 24px;
+  }
+  .livre {
+    width: min(100%, 600px);
+    margin: 0 auto;
+    aspect-ratio: auto;
+    container-type: normal;
+    background: none;
+    filter: none;
+  }
+  .gauche {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    /* L'illustration cède la place au formulaire sur un écran bas */
+    height: clamp(104px, 17dvh, 200px);
+    margin: 0;
+    clip-path: none;
+  }
+  .gauche img {
+    border-radius: 0;
+    object-position: 50% 32%;
+  }
+  /* Le bandeau se cale sur le dragon */
+  .enseignant img {
+    object-position: 50% 46%;
+  }
+  .eleves img {
+    object-position: 50% 42%;
+  }
+  .droite {
+    position: relative;
+    isolation: isolate;
+    width: auto;
+    height: auto;
+    inset: auto;
+    margin: -14px 10px 0;
+    padding: 8px 16px 14px;
+    font-size: 1rem;
+    filter: drop-shadow(0 1px 1px rgba(60, 45, 20, 0.16)) drop-shadow(0 10px 16px rgba(60, 45, 20, 0.16));
+  }
+  .droite::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: url(/accueil/papier.webp) center / cover, #fcf9f1;
+    border-radius: 3px;
+  }
+  .numero {
+    font-size: 0.85rem;
+  }
+  .droite h1 {
+    margin: 0 0 0.1em;
+    font-size: min(1.75rem, 7.2vw);
+    line-height: 1.4;
+  }
+  .parole {
+    margin-top: 0;
+    font-size: 1rem;
+  }
+  .corps {
+    margin-top: 0.6em;
+    gap: 0.55em;
+  }
+  .corps form {
+    gap: 0.55em;
+  }
+  .choix {
+    margin-top: 0.8em;
+    padding: 0;
+  }
+  .choix a {
+    font-size: 0.95rem;
+    padding: 0.55em 2px;
+  }
+}
+@media (min-width: 601px) and (max-width: 980px) {
+  .scene {
+    padding-top: 8px;
+  }
+  .gauche img {
+    border-radius: 6px;
   }
 }
