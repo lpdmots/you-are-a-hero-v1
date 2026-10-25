@@ -70,6 +70,8 @@ export const MODELE_DES_AIDES: Record<AideTexte, IdModele> = {
   "description-image": "claude-sonnet-5-5",
   // Lire une vignette et en tirer des mots-clés : Sonnet voit les images, pour peu
   "mots-cles": "claude-sonnet-5-5",
+  // F15, 25 octobre 2026 : deux ou trois phrases d'après la Préparation, le plan et le début du livre
+  presentation: "claude-sonnet-5-5",
 };
 
 /** Ce que coûte un appel, en dollars, d'après les jetons que le fournisseur annonce. */

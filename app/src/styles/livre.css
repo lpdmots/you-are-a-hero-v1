@@ -1893,6 +1893,206 @@
   }
 }
 
+/* ——— Partager : deux façons, privée et publique (F15, lot 1) ———
+   Une carte par façon, son titre précédé de son signe ; dessous, l'état en une ligne, coloré par
+   son rôle (vert : c'est fait ; ambre : cela attend ou a changé ; brique : à refaire), puis le
+   geste qui suit. */
+.facon {
+  gap: 10px;
+  justify-items: start;
+}
+.facon > * {
+  max-width: 100%;
+}
+.facon__titre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  margin: 0;
+  font-size: var(--t-m);
+  font-weight: 800;
+}
+.facon__titre small {
+  font-size: var(--t-s);
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+.facon__signe {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-m);
+  background: var(--canard-pale);
+  color: var(--canard);
+}
+.facon__canal {
+  width: 100%;
+  padding: 4px 0 0;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.facon__note {
+  margin: 0;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.facon__etat {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.facon__ligne {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  padding: 8px 12px;
+  border-radius: var(--r-m);
+  font-size: var(--t-s);
+}
+.facon__ligne .ic {
+  flex: none;
+  align-self: center;
+}
+.facon__ligne--fait {
+  background: var(--e-valide-f);
+  color: var(--e-valide);
+}
+.facon__ligne--attente,
+.facon__ligne--change {
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+}
+.facon__ligne--refus {
+  background: var(--bloque-f);
+  color: var(--bloque);
+}
+.facon__refus {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  padding: 10px 14px 12px;
+  border-radius: var(--r-m);
+  background: var(--bloque-f);
+  font-size: var(--t-s);
+}
+.facon__refus p {
+  margin: 0;
+}
+.facon__refus-tete {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  color: var(--bloque);
+}
+.facon__refus-tete .ic {
+  flex: none;
+  align-self: center;
+}
+.facon__motif {
+  color: var(--graphite);
+  white-space: pre-line;
+}
+.facon__motif-suite {
+  color: var(--graphite-2);
+}
+.facon__suite {
+  font-size: var(--t-s);
+}
+.facon--ancien .facon__signe {
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+}
+
+/* Proposer à la bibliothèque, sur place : la présentation, les points à relire, l'attestation */
+.proposer {
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 600px;
+  padding: 16px 18px;
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1.5px var(--trait-fort);
+}
+.proposer .imprimer__rappel-titre {
+  color: var(--graphite);
+}
+.proposer__champ {
+  display: grid;
+  gap: 6px;
+}
+.proposer__etiquette {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: 700;
+}
+.proposer__champ textarea {
+  width: 100%;
+  resize: none;
+  font: inherit;
+  line-height: 1.45;
+}
+.proposer__compte {
+  justify-self: end;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+  font-variant-numeric: tabular-nums;
+}
+.proposer__a-savoir {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: var(--t-s);
+  color: var(--e-valider);
+}
+.proposer__a-savoir li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.proposer__a-savoir .ic {
+  flex: none;
+  align-self: center;
+}
+.proposer__attester {
+  display: grid;
+  gap: 8px;
+  justify-items: start;
+}
+.proposer__modele {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+}
+.proposer__atteste {
+  align-items: flex-start;
+  line-height: 1.4;
+}
+.proposer__atteste input {
+  flex: none;
+  margin-top: 0.15em;
+}
+.proposer__clause {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+@media (max-width: 560px) {
+  .proposer {
+    padding: 12px 14px;
+  }
+  /* Sur un téléphone, la bascule « Imprimer │ Partager » ne reste pas collée : elle recouvrait le haut des cartes */
+  .volets {
+    position: static;
+  }
+}
+
 /* ——— Ordre des passages : moins de blanc, doute, passage suggéré (étape 6, lot 6) ——— */
 .blanc {
   display: grid;

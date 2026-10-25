@@ -32,8 +32,8 @@ async function livreOuvertAuxClasses(page: Page, base: Parameters<typeof semerBl
   await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager" }).click();
-  await expect(page.getByText(/Livre partagé, à jour depuis le/)).toBeVisible();
+  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   return projet;
 }
 

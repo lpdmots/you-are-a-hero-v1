@@ -104,6 +104,8 @@ function affichage(cas: Cas, valeur: unknown, erreur: string | null): Affichage 
       return { sorte: "texte", texte: String(v.description) };
     case "mots-cles":
       return { sorte: "texte", texte: `${(v.mots as string[]).join(", ")}\n${(v.motsEn as string[]).join(", ")}` };
+    case "presentation":
+      return { sorte: "texte", texte: v.presentation as string };
   }
 }
 
@@ -169,6 +171,9 @@ function demande(cas: Cas): CasAffiche["demande"] {
       break;
     case "mots-cles":
       ajouter("Image", "Une vignette jointe.");
+      break;
+    case "presentation":
+      ajouter("Début du livre", e.debut);
       break;
   }
   return l;

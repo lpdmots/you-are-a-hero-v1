@@ -2,11 +2,13 @@
 
 import { revalidatePath } from "next/cache";
 import { exigerEnseignant } from "@/serveur/adulte";
-import { changerDeLien, couperCanal, mettreAJourLePartage, ouvrirCanal, reglerNoms, type Canal, type Refus } from "@/serveur/partage";
+import { couperCanal, mettreAJourLePartage, ouvrirCanal, reglerNoms, type Canal, type Refus } from "@/serveur/partage";
+import { proposerALaBibliotheque } from "@/serveur/publication";
 
 /**
- * Les gestes du volet « Partager » (F12.1, F12.3). Le serveur relit le livre et revérifie la
- * règle à chacun : la page ne fait que transmettre la demande et le rappel confirmé.
+ * Les gestes du volet « Partager » (F12.1, F12.3, F15) : le partage privé et la proposition à la
+ * bibliothèque. Le serveur relit le livre et revérifie la règle à chacun : la page ne fait que
+ * transmettre la demande, le rappel confirmé et l'attestation cochée.
  */
 
 type Fait = { ok: true } | Refus;
@@ -30,10 +32,10 @@ export async function mettreAJour(projetId: string, rappel: boolean): Promise<Fa
   return r;
 }
 
-export async function nouveauLien(projetId: string): Promise<Fait> {
-  const r = await changerDeLien(await exigerEnseignant(), projetId);
+export async function proposer(projetId: string, presentation: string, attestation: boolean): Promise<Fait> {
+  const r = await proposerALaBibliotheque(await exigerEnseignant(), projetId, { presentation, attestation });
   if (r.ok) rafraichir(projetId);
-  return r.ok ? { ok: true } : r;
+  return r;
 }
 
 export async function noms(projetId: string, reglage: unknown): Promise<Fait> {

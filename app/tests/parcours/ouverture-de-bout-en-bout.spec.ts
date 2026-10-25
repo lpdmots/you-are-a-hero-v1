@@ -98,15 +98,18 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
     "update projets set mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now(), mise_en_page_convient_le = now(), imprimer_ouvert_le = now() where id = $1",
     [projet],
   );
+  // Partagé « À mes classes », puis un lien ouvert avant le 25 octobre 2026, qui ne se crée plus (F15-AC15)
+  await sql("insert into classes (enseignant_id, nom, annee_debut, identifiant) values ($1, 'CM1', 2026, $2)", [id, `ouverture${Date.now().toString(36)}`]);
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Par un lien" }) }).click();
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager" }).click();
-  const lien = await page.getByRole("textbox", { name: "Lien de lecture" }).inputValue();
+  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await expect(page.getByText(/À jour depuis le/)).toBeVisible();
+  const [{ code }] = await sql<{ code: string }>("update partages set par_lien = true where projet_id = $1 returning code", [projet]);
   const lecteur = await browser.newContext();
   const lire = await lecteur.newPage();
-  await lire.goto(new URL(lien).pathname);
+  await lire.goto(`http://localhost:3100/lire/${code}`);
   await lire.getByRole("link", { name: "Écrit avec Il était une classe" }).click();
   await expect(lire.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
   await lecteur.close();
@@ -157,7 +160,7 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   expect((await sql<{ n: number }>("select count(*)::int as n from public.paiements where projet_id = $1 and enseignant_id is null", [projet]))[0].n).toBe(1);
   const neutre = await browser.newContext();
   const apres = await neutre.newPage();
-  await apres.goto(new URL(lien).pathname);
+  await apres.goto(`http://localhost:3100/lire/${code}`);
   await expect(apres).toHaveTitle("Ce livre n’est plus partagé");
   await neutre.close();
 });

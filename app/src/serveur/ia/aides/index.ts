@@ -7,6 +7,7 @@ import { ideesChoix } from "./idees-choix";
 import { motsCles } from "./mots-cles";
 import { descriptionImage, ficheVisuelle, personnages } from "./images";
 import { pistes } from "./pistes";
+import { presentation } from "./presentation";
 import { chapitres, parties, resume } from "./plan";
 import { idees, questions, retenons } from "./preparation";
 import { titre } from "./titre";
@@ -15,5 +16,5 @@ import { titre } from "./titre";
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AIDES: Record<AideTexte, DefinitionAide<any, any>> = {
   correction, pistes, consigne, titre, ecriture, "idees-choix": ideesChoix, questions, idees, retenons, parties, chapitres, resume, personnages,
-  "fiche-visuelle": ficheVisuelle, "description-image": descriptionImage, "mots-cles": motsCles,
+  "fiche-visuelle": ficheVisuelle, "description-image": descriptionImage, "mots-cles": motsCles, presentation,
 };

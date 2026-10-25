@@ -3468,6 +3468,89 @@ V6, le premier envoi à l'imprimeur.
    prompts, correction propre au français, typographie du livre, textes
    juridiques, vidéo).
 
+### Bibliothèque publique (F15)
+
+- **Autorisée le 25 octobre 2026,** pour elle seule, après l'entretien validé
+  le même jour (`90b6b5e`) ; les règles sont dans
+  [F15](specifications.md#f15--bibliothèque-publique-des-livres), qui fait
+  foi, avec ses critères F15-AC01 à AC20, et ses révisions en F01.1, F12.1,
+  F12.3 et F14.
+- **Construction :** en local, un commit par lot, rien poussé sur `main`, ni
+  migration appliquée à la vraie base, ni donnée de production modifiée sans
+  sa demande ; aucun service payant. Au début de chaque lot : ce qu'il
+  construit, le contenu de sa migration, ce qui paraît perfectible ; un
+  changement de règle se dit avant de coder. Les écrans sans maquette se
+  conçoivent avec impeccable et se critiquent en deux lectures sur des
+  captures du serveur local ; les pages d'administration, avec impeccable
+  seul.
+- **Lots, découpage proposé le 25 octobre 2026,** revu sur celui du porteur :
+  ses lots 1 et 2 réunis, parce qu'ils font un seul écran, « Imprimer et
+  partager », qui se conçoit et se critique une fois ; la fin d'année
+  déplacée avec la bibliothèque côté élève, parce que les deux changent les
+  mêmes fonctions de la base qui servent les postes.
+  1. **Partager en privé ou en public :** le volet « Partager » en deux
+     façons, « Privé » (les comptes des élèves) et « Public » (la
+     bibliothèque), sans création d'un lien seul (un lien déjà ouvert se
+     coupe, rien de plus) ; « Proposer à la bibliothèque » : la version
+     publiée figée à part, la règle des conditions du partage, la
+     présentation et « ✦ Proposer », l'attestation selon le mode, une seule
+     proposition en attente par projet, les états (en attente, publié,
+     refusé, mise à jour en attente) ; le modèle d'autorisation réduit à la
+     ligne « dans la bibliothèque du site » et la clause des conditions
+     d'utilisation (F15-AC01, AC02, AC06, AC08, AC15, AC17, AC18).
+     Migration `bibliotheque_des_livres`. **Construit le 25 octobre 2026,**
+     migration en base locale seulement : table `publications`, lue par
+     l'adulte, écrite par le serveur seul ; `domaine/bibliotheque.ts`
+     (adresse, présentation, états), `serveur/publication.ts`, l'aide
+     « presentation » (Sonnet 5.5) ; écran dans
+     [design](design.md#bibliothèque-publique-f15-construite-25-octobre-2026).
+     Précisions prises en construisant : une seule case, l'attestation, les
+     points à relire dans sa bulle ; la présentation obligatoire, 400
+     caractères ; la dernière présentation gardée après un refus
+     (`derniere_presentation`), pour la corriger plutôt que la réécrire ;
+     « Noms affichés » vaut pour les deux façons ; le rappel du partage privé
+     ne parle plus des autorisations des familles, qui ne visent que la
+     bibliothèque ; un lien ouvert avant le 25 octobre se coupe, « Changer de
+     lien » disparaît (le test de F12-AC11 avec lui) ; les parcours du lecteur
+     ouvrent un tel lien en base. Le modèle d'autorisation, sa ligne de
+     l'aide, les conditions (« La bibliothèque du site ») et la réponse de
+     l'aide sur les familles sont réécrits. Pour la critique,
+     `playwright.local.config.ts` prend les captures contre le serveur local
+     déjà lancé, sans recompiler.
+  2. **Relecture :** l'analyse par l'IA (Sonnet 5.5, dans `modeles.ts`),
+     lancée à chaque proposition, payée par le porteur sans étoile débitée,
+     comptée dans la dépense de l'administration ; la page « Bibliothèque »
+     de l'administration et sa ligne « 2 livres à relire » ; « Publier »,
+     « Refuser » avec motif et trois phrases prêtes, les courriels ; les
+     passages changés d'une mise à jour, chaque point ouvrant son passage
+     (F15-AC03 à AC05, AC07). Coût réel mesuré sur un livre d'essai.
+     Migration.
+  3. **La page `/bibliotheque` :** cartes, tiroir, adresse de chaque livre
+     tirée du titre à la première publication ; « Les plus récents » et
+     « Les plus aimés », filtres d'âge et de type, recherche ; la lecture par
+     le lecteur existant, sous `/lire` ; plan du site, `llms.txt`,
+     `robots.txt`, les adresses des livres fermées aux moteurs ; la mesure
+     sur `/bibliotheque` seule ; le lien « Bibliothèque » de l'accueil et du
+     pied des pages publiques (F15-AC11, AC12).
+  4. **Les cœurs :** dans le tiroir et après la fin, un par navigateur sans
+     compte, une limite par adresse réseau, le nombre caché à zéro
+     (F15-AC13). Migration.
+  5. **Retirer et signaler :** « Retirer de la bibliothèque » par
+     l'enseignant, le retrait par le porteur avec motif et courriel, la page
+     neutre, les cœurs retrouvés ; « Signaler ce livre » dans le tiroir,
+     l'accusé de réception, la ligne « 1 signalement » (F15-AC09, AC10,
+     AC14). Migration.
+  6. **« Lire » côté élève :** une classe terminée garde « Lire » seul
+     jusqu'à sa suppression ; après les livres de l'enseignant, ceux de la
+     bibliothèque de l'âge de la classe, jamais « Adultes » ; le réglage de
+     la classe ; les cœurs par profil (F15-AC16, AC20, F01-AC18 révisé).
+     Migration.
+  7. **Accueil, conversion et essai :** « Livres de l'accueil » choisis parmi
+     les livres publiés (F14-AC40 révisé, F15-AC19) ; la conversion des deux
+     livres du porteur, en local seulement, en ligne à sa demande ; un essai
+     de bout en bout et le mode d'emploi « Essayer la bibliothèque » dans
+     `app/README.md`. Migration.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

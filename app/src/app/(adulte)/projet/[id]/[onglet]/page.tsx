@@ -28,6 +28,9 @@ import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { nomPourEleves } from "@/domaine/eleves";
 import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
 import { aDesClassesEnCours, partageDuProjet, versionsDe } from "@/serveur/partage";
+import { publicationDuProjet, type PublicationLue } from "@/serveur/publication";
+import type { PublicationAffichee } from "../_livre/Partager";
+import { NOMS_COMME_LE_LIVRE } from "@/domaine/partage";
 import { adresseDuSite } from "@/serveur/env";
 import { codeAffiche, etatDuPartage, sortieAJour } from "@/domaine/partage";
 import styles from "./projet.module.css";
@@ -132,8 +135,13 @@ export default async function PageProjet({ params, searchParams }: Props) {
     const definitifs = pdf.filter((x) => x.sorte === "definitif");
     const aJour = conditions.pdf.possible && definitifs[0]?.empreinte === instantane.empreinte;
     // La version partagée (F12.1) : comparée à ce que le lecteur verrait aujourd'hui, et au dernier PDF définitif
-    const [partage, classesEnCours] = sortieOuverte ? await Promise.all([partageDuProjet(enseignant, projet.id), aDesClassesEnCours(enseignant)]) : [null, false];
+    const [partage, classesEnCours, publication] = sortieOuverte
+      ? await Promise.all([partageDuProjet(enseignant, projet.id), aDesClassesEnCours(enseignant), publicationDuProjet(enseignant, projet.id)])
+      : [null, false, null];
     const actuelle = partage ? versionsDe(instantane, partage.noms) : null;
+    // La version publiée (F15) : comparée à ce que le public verrait aujourd'hui, avec les mêmes noms
+    const publiable = publication?.empreinte ? (actuelle ?? versionsDe(instantane, NOMS_COMME_LE_LIVRE)).empreinte : null;
+    const adresseSite = adresseDuSite((await headers()).get("host"));
     const etatPartage = etatDuPartage(partage?.version ?? null, { empreinte: actuelle?.empreinte ?? "" }, definitifs[0] ?? null);
     const marques: Record<EtapeLivre, MarqueEtape> = {
       relire: relire.marque,
@@ -204,7 +212,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
                     ? {
                         parLien: partage.parLien,
                         auxClasses: partage.auxClasses,
-                        adresse: `${adresseDuSite((await headers()).get("host"))}/lire/${codeAffiche(partage.code)}`,
+                        adresse: `${adresseSite}/lire/${codeAffiche(partage.code)}`,
                         etatDu: etatEnMots(partage.version.etatDu).replace(/^état du /, ""),
                         aJour: etatPartage.aJour,
                         pdf: definitifs[0] && etatPartage.memeTexteQueLePdf !== null
@@ -212,6 +220,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
                           : null,
                       }
                     : null,
+                  publication: publicationAffichee(publication, publiable, adresseSite),
                 },
               }
             : null
@@ -271,4 +280,27 @@ export default async function PageProjet({ params, searchParams }: Props) {
       {contenu}
     </div>
   );
+}
+
+const jourEnMots = (iso: string) => new Intl.DateTimeFormat("fr-FR", { day: "numeric", month: "long", timeZone: "Europe/Paris" }).format(new Date(iso));
+
+/** Où en est le livre dans la bibliothèque, tel que « Imprimer et partager » le dit (F15, « Côté enseignant »). */
+function publicationAffichee(pub: PublicationLue | null, empreinteActuelle: string | null, site: string): PublicationAffichee {
+  const e = pub?.etat ?? { sorte: "aucune" as const };
+  const base = { le: null, motif: null, adresse: null, miseAJour: null, aJour: true, presentation: pub?.presentation ?? "" };
+  if (e.sorte === "aucune") return { ...base, etat: "aucune" };
+  if (e.sorte === "attente") return { ...base, etat: "attente", le: jourEnMots(e.depuis) };
+  if (e.sorte === "refusee") return { ...base, etat: "refusee", le: jourEnMots(e.le), motif: e.motif };
+  return {
+    ...base,
+    etat: "publiee",
+    le: jourEnMots(e.le),
+    adresse: `${site}/bibliotheque/${e.adresse}`,
+    aJour: !empreinteActuelle || empreinteActuelle === pub?.empreinte,
+    miseAJour: e.miseAJour
+      ? e.miseAJour.sorte === "attente"
+        ? { sorte: "attente", le: jourEnMots(e.miseAJour.depuis), motif: null }
+        : { sorte: "refusee", le: jourEnMots(e.miseAJour.le), motif: e.miseAJour.motif }
+      : null,
+  };
 }

@@ -2577,6 +2577,45 @@ local le même jour, à juger par lui.
   le livre sans numéro ni dragon, avec la classe au travail de l'accueil : le
   dragon ne paraît pas aux moments d'incident.
 
+### Bibliothèque publique (F15), construite (25 octobre 2026)
+
+Écrans sans maquette, conçus avec impeccable et critiqués en deux lectures
+séparées sur des captures du serveur local
+(`app/tests/captures/bibliotheque-des-livres.spec.ts`), puis corrigés avant
+d'être montrés au porteur. Les règles sont en
+[F15](specifications.md#f15--bibliothèque-publique-des-livres).
+
+**Lot 1, « Partager » en deux façons.** Lectures : 25/40 (informée) et
+27/40 (indépendante), corrigées sans nouvelle mesure. Le volet prévaut sur
+« Partage et lecteur en ligne » plus bas.
+
+- **Deux cartes jumelles,** « Privé · les comptes de vos élèves » et
+  « Public · la bibliothèque du site », chacune avec son signe ; la carte
+  « Privé » n'existe pas sans classe en cours. Sous chacune, l'état en une
+  ligne, coloré par son rôle : vert « Publié, version du… », ambre « En
+  attente de relecture » (sablier) ou « Le livre a changé » (triangle),
+  brique pour un refus, dont le motif tient dans le même bloc, suivi de
+  « Corrigez le livre, puis proposez-le de nouveau ».
+- **« Proposer à la bibliothèque… » s'ouvre sur place,** sans dialogue : la
+  présentation (400 caractères, compteur) avec « ✦ Écrire », puis « ✦ Autre
+  version » une fois remplie — « Proposer » reste au seul envoi, les deux
+  lectures ayant buté sur trois « Proposer » ; les avertissements « à
+  savoir » en lignes ambre ; l'attestation, seule case à cocher, les points à
+  relire dans sa bulle ; en classe, « Autorisation de diffusion à faire
+  signer » juste sous la case ; la clause des conditions en petit. Un seul
+  bouton plein, « Proposer le livre », désactivé sans la coche.
+- **Publié :** l'adresse du livre, « Copier le lien », « Ouvrir » ;
+  « Proposer une mise à jour… » en lien discret tant que le livre n'a pas
+  changé, en bouton sinon.
+- **Un lien de lecture ouvert avant** se montre à part, « Ancien lien de
+  lecture », avec « Couper le lien… » seulement.
+- **Sur un téléphone,** la bascule « Imprimer │ Partager » ne reste plus
+  collée en haut : elle recouvrait les cartes.
+- Laissés en l'état : deux lignes d'état dans la carte publiée (la version
+  publiée, puis sa mise à jour), chacune d'un seul rôle ; le bouton
+  « Proposer le livre » désactivé sans dire pourquoi, la case étant juste
+  au-dessus. « Retirer de la bibliothèque » viendra au lot 5.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

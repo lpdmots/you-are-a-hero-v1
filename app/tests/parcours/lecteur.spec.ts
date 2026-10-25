@@ -62,23 +62,34 @@ async function phare(page: Page): Promise<Livre> {
   return { compte, base, projet, s };
 }
 
-/** Partager par le lien depuis le volet « Partager », rappel confirmé ; rend l'adresse du lien. */
+/**
+ * Un lien de lecture ouvert : il ne se crée plus depuis le 25 octobre 2026 (F15-AC15), mais ceux
+ * ouverts avant restent lisibles. Le livre se partage d'abord « À mes classes » depuis le volet,
+ * rappel confirmé, puis le lien s'ouvre en base, comme avant ; rend l'adresse du lien.
+ */
 async function partager(page: Page, projet: string): Promise<string> {
+  const [{ adulte }] = await sql<{ adulte: string }>("select enseignant_id as adulte from projets where id = $1", [projet]);
+  await sql(
+    "insert into classes (enseignant_id, nom, annee_debut, identifiant) select $1, 'CM1', 2026, $2 where not exists (select 1 from classes where enseignant_id = $1 and terminee_le is null)",
+    [adulte, `lecteur${Date.now().toString(36)}`],
+  );
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Par un lien" }) }).click();
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager" }).click();
-  return page.getByRole("textbox", { name: "Lien de lecture" }).inputValue();
+  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await expect(page.getByText(/À jour depuis le/)).toBeVisible();
+  const [{ code }] = await sql<{ code: string }>("update partages set par_lien = true where projet_id = $1 returning code", [projet]);
+  return `http://localhost:3100/lire/${code.slice(0, 4)}-${code.slice(4, 7)}-${code.slice(7)}`;
 }
 
 async function mettreAJour(page: Page, projet: string): Promise<void> {
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await page.getByRole("button", { name: "Mettre à jour le partage…" }).click();
+  await page.getByRole("button", { name: "Mettre à jour…" }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
   await rappel.getByRole("button", { name: "Mettre à jour" }).click();
-  await expect(page.getByText(/Livre partagé, à jour depuis le/)).toBeVisible();
+  await expect(page.getByText(/À jour depuis le/)).toBeVisible();
 }
 
 /** Un téléphone, sans compte ni cookie de l'application. */
@@ -263,24 +274,13 @@ test("F12-AC25, F04-AC43, F12-AC10, F12-AC11 — après une mise à jour, la lec
 
   // Le lien coupé : la page neutre, sans titre ni nom, jusque dans l'onglet
   await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Par un lien" }) }).click();
-  await page.getByRole("group", { name: "Retirer le partage ?" }).getByRole("button", { name: "Retirer le partage" }).click();
-  await expect(page.getByText("Ce livre n’est pas partagé.")).toBeVisible();
+  await page.getByRole("button", { name: "Couper le lien…" }).click();
+  await page.getByRole("group", { name: "Couper ce lien ?" }).getByRole("button", { name: "Couper le lien" }).click();
+  await expect(page.getByRole("heading", { name: "Ancien lien de lecture" })).toHaveCount(0);
   await lecteur.reload();
   await expect(lecteur.getByText("Ce livre n’est plus partagé.")).toBeVisible();
   await expect(lecteur).toHaveTitle("Ce livre n’est plus partagé");
   await expect(lecteur.locator("body")).not.toContainText("phare");
-
-  // Partagé de nouveau : le même lien ; puis changé : l'ancien est neutre, le nouveau lit le livre
-  expect(await partager(page, l.projet)).toBe(adresse);
-  await page.getByRole("button", { name: "Changer de lien…" }).click();
-  await page.getByRole("group", { name: "Changer de lien ?" }).getByRole("button", { name: "Changer de lien" }).click();
-  const champ = page.getByRole("textbox", { name: "Lien de lecture" });
-  await expect(champ).not.toHaveValue(adresse);
-  await lecteur.goto(adresse);
-  await expect(lecteur.getByText("Ce livre n’est plus partagé.")).toBeVisible();
-  await lecteur.goto(await champ.inputValue());
-  await expect(lecteur.getByRole("heading", { name: "Le phare", level: 1 })).toBeVisible();
   await contexte.close();
 });
 

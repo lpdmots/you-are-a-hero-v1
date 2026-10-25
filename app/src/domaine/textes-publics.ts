@@ -34,7 +34,7 @@ const MAJ = "21 octobre 2026";
 export const CONDITIONS: Document = {
   titre: "Conditions d’utilisation",
   chapeau: "Ce que vous pouvez attendre d’Il était une classe, et ce que l’outil attend de vous.",
-  misAJour: MAJ,
+  misAJour: "25 octobre 2026",
   sections: [
     {
       titre: "Le service",
@@ -55,7 +55,7 @@ export const CONDITIONS: Document = {
       titre: "Ce que vous y mettez",
       paragraphes: [
         "Les textes, les images et les livres restent à leurs auteurs. Vous donnez seulement à l’éditeur le droit de les garder, de les afficher et de les composer pour vous, le temps que votre compte existe.",
-        "Vous êtes responsable de ce que vous et vos élèves y mettez. Avant de partager un livre par un lien, faites signer l’autorisation de diffusion par les représentants légaux des élèves : un modèle est fourni dans l’aide.",
+        "Vous êtes responsable de ce que vous et vos élèves y mettez. Avant de proposer un livre à la bibliothèque du site, faites signer l’autorisation de diffusion par les représentants légaux des élèves : un modèle est fourni dans l’aide.",
       ],
     },
     {
@@ -70,6 +70,14 @@ export const CONDITIONS: Document = {
       titre: "Signaler un livre et le retirer",
       paragraphes: [
         `Qui veut signaler un livre partagé écrit à ${EDITEUR.contact}, avec son lien. L’éditeur peut alors retirer le partage : le lien ne mène plus au livre, et l’adulte qui l’a partagé en est averti par courriel. Son projet ne change pas.`,
+      ],
+    },
+    {
+      titre: "La bibliothèque du site",
+      paragraphes: [
+        "Un livre terminé peut être proposé à la bibliothèque du site, où tout le monde le lit, sans compte. L’éditeur le relit avant de le publier, avec l’aide d’une intelligence artificielle ; il peut le refuser en disant pourquoi.",
+        "En proposant un livre, vous permettez à l’éditeur de l’afficher publiquement et gratuitement tant qu’il est dans la bibliothèque. Vous attestez avoir l’autorisation écrite des représentants légaux de chaque élève dont un texte ou un dessin y figure, ou, pour votre propre livre, en être l’auteur et avoir les droits de ses images.",
+        "Vous pouvez le retirer de la bibliothèque à tout moment ; l’éditeur aussi, en vous disant pourquoi.",
       ],
     },
     {
@@ -253,7 +261,7 @@ export const QUESTIONS: { question: string; reponse: string; vente?: boolean }[]
   },
   {
     question: "Puis-je partager le livre avec les familles ?",
-    reponse: "Oui, par un lien de lecture, à lire sur un téléphone. Avant, faites signer l’autorisation de diffusion par les représentants légaux des élèves.",
+    reponse: "Oui. Vos élèves le lisent chez eux avec leur code de classe, même après la fin de l’année. Vous pouvez aussi le proposer à la bibliothèque du site, lisible par tous, après avoir fait signer l’autorisation de diffusion par les représentants légaux des élèves.",
   },
   {
     question: "Comment tout supprimer ?",
@@ -268,11 +276,11 @@ export const MODELES: Modele[] = [
   {
     cle: "autorisation-de-diffusion",
     nom: "Autorisation de diffusion",
-    pour: "À faire signer par les représentants légaux de chaque élève, avant de partager le livre par un lien.",
+    pour: "À faire signer par les représentants légaux de chaque élève, avant de proposer le livre à la bibliothèque du site.",
     document: {
       titre: "Autorisation de diffusion des textes et dessins d’un élève",
       chapeau: "Livre écrit par la classe avec l’outil Il était une classe",
-      misAJour: MAJ,
+      misAJour: "25 octobre 2026",
       sections: [
         {
           titre: "La classe",
@@ -281,7 +289,7 @@ export const MODELES: Modele[] = [
         {
           titre: "Ce qui est demandé",
           paragraphes: [
-            "Cette année, la classe écrit un livre. Votre enfant y écrit des textes et peut y faire des dessins. Le livre sera imprimé pour la classe et, si vous l’acceptez, partagé par un lien de lecture : toute personne qui a ce lien peut le lire sur un écran, sans compte. Le lien n’est publié nulle part ; l’enseignant(e) le donne aux familles.",
+            "Cette année, la classe écrit un livre. Votre enfant y écrit des textes et peut y faire des dessins. Le livre sera imprimé pour la classe, et les élèves pourront le lire en ligne avec leur code de classe. Si vous l’acceptez, il sera aussi publié dans la bibliothèque du site Il était une classe : tout le monde pourra le lire sur un écran, sans compte, et les moteurs de recherche pourront trouver la bibliothèque.",
             "Dans le livre, votre enfant est désigné par son prénom seulement.",
           ],
         },
@@ -289,8 +297,8 @@ export const MODELES: Modele[] = [
           titre: "Votre réponse",
           paragraphes: [
             "Je soussigné(e) ……………………………………………, représentant légal de l’élève ……………………………………………,",
-            "☐ autorise ☐ n’autorise pas la diffusion, par un lien de lecture, des textes et des dessins de mon enfant dans le livre de la classe, avec son prénom.",
-            "Cette autorisation vaut pour ce livre. Je peux la retirer à tout moment en le disant à l’enseignant(e) : le partage sera alors retiré ou le livre partagé sans ses textes.",
+            "☐ autorise ☐ n’autorise pas la diffusion des textes et des dessins de mon enfant, avec son prénom, dans la bibliothèque du site.",
+            "Cette autorisation vaut pour ce livre. Je peux la retirer à tout moment en le disant à l’enseignant(e) : le livre quittera alors la bibliothèque.",
             "Fait à ……………………, le ……………………     Signature :",
           ],
         },
