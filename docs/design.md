@@ -3489,7 +3489,15 @@ les règles restent en F10, F11 et F12.1.
   déplie les quatre champs et le schéma de double page.
 - **Page de présentation modifiée :** dans le panneau à droite, comme les
   réglages d'un bloc, la petite double page suivant la saisie ; pas de
-  fenêtre par-dessus.
+  fenêtre par-dessus. Révisé le 25 octobre 2026 à sa demande pour les pages
+  qui portent un texte à écrire, « Comment lire ce livre » et la page de fin :
+  le panneau, étroit et qui défilait dans sa colonne, ne se prêtait pas à
+  l'écriture. « Modifier » les ouvre dans une grande fenêtre (modale, « Fermer »
+  ou Échap, jamais un clic à côté) : à gauche la forme de la page, l'éditeur à
+  bonne largeur, « Expliquer les énigmes » et le champ « Règles du jeu », le
+  même que dans la Préparation, qui s'allonge avec le texte ; à droite la
+  double page, qui reste en vue pendant que la fenêtre défile. Sur téléphone,
+  plein écran, une colonne. Les pages de champs courts gardent le panneau.
 - **Étape d'arrivée :** « Nouveau PDF définitif » seulement si le livre a
   changé depuis le dernier ; la liste des PDF conservés comprend le
   dernier, sans doublon au-dessus ; l'encadré de la couverture garde les

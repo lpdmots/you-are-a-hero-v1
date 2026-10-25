@@ -2107,3 +2107,92 @@
   gap: 6px;
   font-size: var(--t-s);
 }
+
+/* La grande fenêtre d'une page de texte, « Comment lire ce livre » et la page de fin (demandée par
+   le porteur le 25 octobre 2026 : le panneau étroit ne se prêtait pas à l'écriture) : l'écriture à
+   gauche, assez large, la double page à droite, qui suit la frappe ; la fenêtre défile seule. */
+.cx__reste {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.page-a-ecrire {
+  width: min(1180px, calc(100vw - 32px));
+  max-width: none;
+  height: calc(100dvh - 48px);
+  max-height: none;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  overflow: hidden;
+}
+.page-a-ecrire::backdrop {
+  background: rgba(30, 34, 38, 0.45);
+}
+.cx--large {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.cx--large .cx__tete {
+  flex: none;
+  padding: 10px 14px 10px 20px;
+}
+.cx--large .cx__tete h3 {
+  font-size: var(--t-m, 1rem);
+}
+.cx--large .cx__corps {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 460px);
+  align-items: start;
+  gap: 32px;
+  padding: 24px 24px 32px 28px;
+}
+.cx--large .cx__double {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  top: 0;
+}
+.cx--large .cx__reste {
+  grid-column: 1;
+  grid-row: 1;
+  gap: 18px;
+}
+.cx--large .editeur-leger__texte {
+  min-height: 220px;
+  font-size: 1.05rem;
+}
+.page-regles textarea {
+  /* Il s'allonge avec les règles : c'est la fenêtre qui défile, pas le champ */
+  field-sizing: content;
+  min-height: 9em;
+  resize: none;
+  font-family: var(--f-recit);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+}
+@media (max-width: 860px) {
+  .page-a-ecrire {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+  }
+  .cx--large .cx__corps {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 16px;
+  }
+  .cx--large .cx__double {
+    position: static;
+    grid-row: auto;
+    grid-column: 1;
+    max-width: 420px;
+  }
+  .cx--large .cx__reste {
+    grid-row: auto;
+  }
+}

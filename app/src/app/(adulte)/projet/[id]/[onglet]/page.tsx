@@ -224,7 +224,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
                 feuille: aChoix && contenuLivre.preparation?.feuille?.on && contenuLivre.preparation.feuille.sections.length ? contenuLivre.preparation.feuille.sections.map((x) => x.titre) : null,
                 prenoms: eleves.map((x) => nomPourEleves(x, eleves)),
                 aDesEnigmes: plan.liens.some((l) => l.cache),
-                avecRegles: Boolean(contenuLivre.preparation?.regles.trim()),
+                regles: contenuLivre.preparation?.regles ?? "",
                 ordre,
                 parties: aChoix
                   ? plan.parties.map((p) => {

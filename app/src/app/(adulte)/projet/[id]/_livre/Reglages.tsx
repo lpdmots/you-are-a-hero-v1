@@ -14,6 +14,7 @@ import { MARGE_MINIMALE, MARGES_DE_DEPART, zoneDeTexte, type Marges, type Reglag
 import { colonnesDesNoms, nomsTries, texteSimple, type FormePage, type PagesDuLivre } from "@/domaine/pages";
 import { pluriel } from "@/domaine/texte";
 import { listerImages } from "../../actions-images";
+import { reglerJeu } from "../../actions-preparation";
 import { PetiteDoublePage, type SourceApercu } from "./Apercu";
 import { annulerAgencement, garderOrdre, melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre } from "../../actions-livre";
 import type { EtatDeLOrdre, Reordonne } from "@/serveur/livre/ordre";
@@ -34,10 +35,12 @@ const NOM_DE_PAGE: Record<CleDePage, string> = {
 };
 /** Le nom que la composition donne à chaque page de présentation (`data-page`) */
 const PAGE_COMPOSEE: Record<CleDePage, string> = { titre: "titre", auteurs: "auteurs", commentLire: "comment-lire", feuille: "feuille", fin: "fin" };
+/** Les pages qui portent un texte à écrire : elles s'ouvrent en grand */
+const PAGES_A_ECRIRE: CleDePage[] = ["commentLire", "fin"];
 const EXEMPLE = "Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.";
 
 export function VoletReglages({
-  projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, avecRegles, parties, ordre, apercu, onVoirApercu,
+  projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, regles, parties, ordre, apercu, onVoirApercu,
 }: {
   projet: { id: string; aChoix: boolean; deClasse: boolean };
   titre: string;
@@ -50,7 +53,8 @@ export function VoletReglages({
   /** Les prénoms des élèves de la classe, pour la page des auteurs */
   prenoms: string[];
   aDesEnigmes: boolean;
-  avecRegles: boolean;
+  /** Les règles du jeu de la Préparation, qui suivent « Comment lire ce livre » (F04.2) */
+  regles: string;
   /** Les parties du livre à choix, pour « Ordre des passages » ; rien en récit classique */
   parties: PartieDuLivre[] | null;
   /** Ce que l'adulte a décidé de l'ordre, et le doute (F11.6) */
@@ -84,6 +88,34 @@ export function VoletReglages({
   };
 
   const listePages: CleDePage[] = ["titre", ...(pages.auteurs.place === "debut" ? (["auteurs"] as const) : []), ...(projet.aChoix ? (["commentLire"] as const) : []), ...(feuille ? (["feuille"] as const) : []), ...(pages.auteurs.place === "fin" ? (["auteurs"] as const) : []), "fin"];
+
+  // Le panneau d'une page ; « Comment lire ce livre » et la page de fin s'écrivent dans une
+  // grande fenêtre, le panneau étroit ne se prêtant pas à un texte (demandé par le porteur le 25 octobre 2026)
+  const panneau = (cle: CleDePage, large = false) => (
+    <PanneauDePage
+      key={cle}
+      cle={cle}
+      projet={projet}
+      titre={titre}
+      pages={pages}
+      zone={zoneDeTexte(r)}
+      feuille={feuille}
+      prenoms={prenoms}
+      aDesEnigmes={aDesEnigmes}
+      regles={regles}
+      large={large}
+      desImprimes={r.basDePage === "des"}
+      onChange={reglerPages}
+      onFermer={() => setOuverte(null)}
+      doublePage={
+        <PetiteDoublePage
+          source={apercu}
+          folio={apercu.charge?.apercu.presentation[PAGE_COMPOSEE[cle]] ?? null}
+          legende={`${NOM_DE_PAGE[cle]}, page ${apercu.charge?.apercu.presentation[PAGE_COMPOSEE[cle]] ?? ""}`}
+        />
+      }
+    />
+  );
 
   return (
     <div className="reglages">
@@ -190,29 +222,8 @@ export function VoletReglages({
 
       {/* La colonne de droite est réservée : le panneau d'une page y remplace le livre en petit, rien ne se déplace */}
       <aside className="reglages__cote" aria-label="Le livre en petit">
-        {ouverte ? (
-          <PanneauDePage
-            key={ouverte}
-            cle={ouverte}
-            projet={projet}
-            titre={titre}
-            pages={pages}
-            zone={zoneDeTexte(r)}
-            feuille={feuille}
-            prenoms={prenoms}
-            aDesEnigmes={aDesEnigmes}
-            avecRegles={avecRegles}
-            desImprimes={r.basDePage === "des"}
-            onChange={reglerPages}
-            onFermer={() => setOuverte(null)}
-            doublePage={
-              <PetiteDoublePage
-                source={apercu}
-                folio={apercu.charge?.apercu.presentation[PAGE_COMPOSEE[ouverte]] ?? null}
-                legende={`${NOM_DE_PAGE[ouverte]}, page ${apercu.charge?.apercu.presentation[PAGE_COMPOSEE[ouverte]] ?? ""}`}
-              />
-            }
-          />
+        {ouverte && !PAGES_A_ECRIRE.includes(ouverte) ? (
+          panneau(ouverte)
         ) : (
           <section className="cx reglages__livre">
             <PetiteDoublePage
@@ -230,6 +241,7 @@ export function VoletReglages({
           {enreg.erreur ?? (enreg.enCours ? "Enregistrement…" : enreg.enregistre ? "Enregistré" : "")}
         </p>
       </aside>
+      {ouverte && PAGES_A_ECRIRE.includes(ouverte) ? <GrandeFenetre onFermer={() => setOuverte(null)}>{panneau(ouverte, true)}</GrandeFenetre> : null}
     </div>
   );
 }
@@ -653,7 +665,7 @@ function LigneDePage({
 
 /** Le panneau d'une page : sa forme, puis son modèle ou son image (F11.4). */
 function PanneauDePage({
-  cle, projet, titre, pages, zone, feuille, prenoms, aDesEnigmes, avecRegles, desImprimes, onChange, onFermer, doublePage,
+  cle, projet, titre, pages, zone, feuille, prenoms, aDesEnigmes, regles, large = false, desImprimes, onChange, onFermer, doublePage,
 }: {
   cle: CleDePage;
   projet: { id: string; aChoix: boolean; deClasse: boolean };
@@ -663,7 +675,9 @@ function PanneauDePage({
   feuille: string[] | null;
   prenoms: string[];
   aDesEnigmes: boolean;
-  avecRegles: boolean;
+  regles: string;
+  /** Dans la grande fenêtre : l'écriture à gauche, la double page à droite */
+  large?: boolean;
   desImprimes: boolean;
   onChange: (p: PagesDuLivre) => void;
   onFermer: () => void;
@@ -678,11 +692,11 @@ function PanneauDePage({
     if (!el) return;
     el.focus({ preventScroll: true });
     // Sur un écran étroit, le panneau vient sous la liste : on le fait venir à l'écran
-    if (window.matchMedia("(max-width: 980px)").matches) el.scrollIntoView({ block: "start", behavior: "smooth" });
-  }, []);
+    if (!large && window.matchMedia("(max-width: 980px)").matches) el.scrollIntoView({ block: "start", behavior: "smooth" });
+  }, [large]);
   return (
     <section
-      className="cx cx--page"
+      className={`cx cx--page${large ? " cx--large" : ""}`}
       aria-label={NOM_DE_PAGE[cle]}
       tabIndex={-1}
       ref={tete}
@@ -695,127 +709,128 @@ function PanneauDePage({
       <header className="cx__tete">
         <Icone nom="livre" />
         <h3>{NOM_DE_PAGE[cle]}</h3>
-        <button type="button" className="btn btn--discret cx__fermer" onClick={onFermer} aria-label="Fermer le panneau">
-          <Icone nom="fermer" />
-        </button>
+        {large ? (
+          <button type="button" className="btn btn--petit" onClick={onFermer}>
+            Fermer
+          </button>
+        ) : (
+          <button type="button" className="btn btn--discret cx__fermer" onClick={onFermer} aria-label="Fermer le panneau">
+            <Icone nom="fermer" />
+          </button>
+        )}
       </header>
       <div className="cx__corps">
-        {doublePage}
-        <fieldset className="cx-issues">
-          <legend>Forme de la page</legend>
-          <div className="cx-seg" role="radiogroup" aria-label="Forme de la page">
-            {(["modele", "image"] as const).map((f) => (
-              <label key={f}>
-                <input type="radio" name={`forme-${cle}`} checked={page.forme === f} onChange={() => changer(cle, { forme: f } as Partial<PagesDuLivre[typeof cle]>)} />
-                <span>{f === "modele" ? "Modèle" : "Image pleine page"}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <div className="cx__double">{doublePage}</div>
+        <div className="cx__reste">
+          <fieldset className="cx-issues">
+            <legend>Forme de la page</legend>
+            <div className="cx-seg" role="radiogroup" aria-label="Forme de la page">
+              {(["modele", "image"] as const).map((f) => (
+                <label key={f}>
+                  <input type="radio" name={`forme-${cle}`} checked={page.forme === f} onChange={() => changer(cle, { forme: f } as Partial<PagesDuLivre[typeof cle]>)} />
+                  <span>{f === "modele" ? "Modèle" : "Image pleine page"}</span>
+                </label>
+              ))}
+            </div>
+          </fieldset>
 
-        {page.forme === "image" ? (
-          <>
-            <ChoisirImageDePage projetId={projet.id} choisie={page.imageId} onChoisir={(id) => changer(cle, { imageId: id } as Partial<PagesDuLivre[typeof cle]>)} />
-            <p className="cx-aide page-dimension">
-              Dimension utile : {Math.round(zone.largeur)} × {Math.round(zone.hauteur)} mm
-              <Bulle question="Comment dessiner la page à la bonne taille ?">
-                <span>
-                  À 300 points par pouce : {Math.round((zone.largeur / 25.4) * 300).toLocaleString("fr-FR")} × {Math.round((zone.hauteur / 25.4) * 300).toLocaleString("fr-FR")} points. Une page
-                  dessinée bord à bord est réduite pour tenir dans les marges.
+          {page.forme === "image" ? (
+            <>
+              <ChoisirImageDePage projetId={projet.id} choisie={page.imageId} onChoisir={(id) => changer(cle, { imageId: id } as Partial<PagesDuLivre[typeof cle]>)} />
+              <p className="cx-aide page-dimension">
+                Dimension utile : {Math.round(zone.largeur)} × {Math.round(zone.hauteur)} mm
+                <Bulle question="Comment dessiner la page à la bonne taille ?">
+                  <span>
+                    À 300 points par pouce : {Math.round((zone.largeur / 25.4) * 300).toLocaleString("fr-FR")} × {Math.round((zone.hauteur / 25.4) * 300).toLocaleString("fr-FR")} points. Une page
+                    dessinée bord à bord est réduite pour tenir dans les marges.
+                  </span>
+                </Bulle>
+              </p>
+              {cle === "feuille" && feuille ? (
+                <p className="cx-aide">
+                  En ligne, le lecteur garde la feuille de la préparation.
+                  <Bulle question="L’image et la feuille en ligne doivent-elles s’accorder ?">
+                    <span>Oui : dessinez les mêmes sections ({feuille.join(", ")}). L’application ne le vérifie pas.</span>
+                  </Bulle>
+                </p>
+              ) : null}
+            </>
+          ) : cle === "titre" ? (
+            <>
+              <div className="champ page-champ--fixe">
+                <span className="page-champ__tete">
+                  Titre
+                  <Bulle question="Où changer le titre ?">
+                    <span>C’est le titre du projet : il se change par le menu ⋯ à droite de son nom, en haut de la page.</span>
+                  </Bulle>
                 </span>
-              </Bulle>
-            </p>
-            {cle === "feuille" && feuille ? (
-              <p className="cx-aide">
-                En ligne, le lecteur garde la feuille de la préparation.
-                <Bulle question="L’image et la feuille en ligne doivent-elles s’accorder ?">
-                  <span>Oui : dessinez les mêmes sections ({feuille.join(", ")}). L’application ne le vérifie pas.</span>
-                </Bulle>
-              </p>
-            ) : null}
-          </>
-        ) : cle === "titre" ? (
-          <>
-            <div className="champ page-champ--fixe">
-              <span className="page-champ__tete">
-                Titre
-                <Bulle question="Où changer le titre ?">
-                  <span>C’est le titre du projet : il se change par le menu ⋯ à droite de son nom, en haut de la page.</span>
-                </Bulle>
-              </span>
-              <b className="page-titre">{titre}</b>
-            </div>
-            <Champ libelle="Sous-titre" valeur={pages.titre.sousTitre} invite="Facultatif" onChange={(v) => changer("titre", { sousTitre: v })} />
-            <Champ libelle={projet.deClasse ? "Ligne de la classe" : "Auteur"} valeur={pages.titre.ligne} onChange={(v) => changer("titre", { ligne: v })} />
-            <Champ libelle="Année" valeur={pages.titre.annee} onChange={(v) => changer("titre", { annee: v })} />
-            <div className="page-illustration">
-              <p className="cx-titre">Illustration, facultative</p>
-              <ChoisirImageDePage projetId={projet.id} choisie={pages.titre.illustration} onChoisir={(id) => changer("titre", { illustration: id })} retirable />
-            </div>
-          </>
-        ) : cle === "auteurs" ? (
-          <>
-            <Champ libelle="Phrase d’introduction" valeur={pages.auteurs.introduction} onChange={(v) => changer("auteurs", { introduction: v })} />
-            <label className="champ">
-              <span>
-                Prénoms, un par ligne
-                <small className="page-champ__note"> · imprimés par ordre alphabétique, sur {colonnesDesNoms(pages.auteurs.noms.length)} colonne{pluriel(colonnesDesNoms(pages.auteurs.noms.length))}</small>
-              </span>
-              <textarea className="pchamp" rows={8} value={pages.auteurs.noms.join("\n")} onChange={(e) => changer("auteurs", { noms: e.target.value.split("\n") })} />
-            </label>
-            {projet.deClasse && prenoms.length && nomsTries(prenoms).join("|") !== nomsTries(pages.auteurs.noms).join("|") ? (
-              <p className="cx-aide">
-                <button type="button" className="lien" onClick={() => changer("auteurs", { noms: [...prenoms] })}>
-                  Reprendre les prénoms de la classe
-                </button>
-              </p>
-            ) : null}
-            <Champ libelle="Dernière ligne" valeur={pages.auteurs.conclusion} invite="Facultative" onChange={(v) => changer("auteurs", { conclusion: v })} />
-            <fieldset className="cx-issues">
-              <legend>Place dans le livre</legend>
-              <div className="cx-seg" role="radiogroup" aria-label="Place dans le livre">
-                {(["debut", "fin"] as const).map((pl) => (
-                  <label key={pl}>
-                    <input type="radio" name="place-auteurs" checked={pages.auteurs.place === pl} onChange={() => changer("auteurs", { place: pl })} />
-                    <span>{pl === "debut" ? "Au début" : "À la fin"}</span>
-                  </label>
-                ))}
+                <b className="page-titre">{titre}</b>
               </div>
-            </fieldset>
-          </>
-        ) : cle === "commentLire" ? (
-          <>
-            <EditeurLeger libelle="Texte de « Comment lire ce livre »" valeur={pages.commentLire.texte} onChange={(t) => changer("commentLire", { texte: t })} />
-            <label className="inter">
-              <input
-                type="checkbox"
-                role="switch"
-                checked={pages.commentLire.enigmes ?? aDesEnigmes}
-                onChange={(e) => changer("commentLire", { enigmes: e.target.checked })}
-              />
-              <span className="inter__piste" aria-hidden="true" />
-              <span>Expliquer les énigmes</span>
-            </label>
+              <Champ libelle="Sous-titre" valeur={pages.titre.sousTitre} invite="Facultatif" onChange={(v) => changer("titre", { sousTitre: v })} />
+              <Champ libelle={projet.deClasse ? "Ligne de la classe" : "Auteur"} valeur={pages.titre.ligne} onChange={(v) => changer("titre", { ligne: v })} />
+              <Champ libelle="Année" valeur={pages.titre.annee} onChange={(v) => changer("titre", { annee: v })} />
+              <div className="page-illustration">
+                <p className="cx-titre">Illustration, facultative</p>
+                <ChoisirImageDePage projetId={projet.id} choisie={pages.titre.illustration} onChoisir={(id) => changer("titre", { illustration: id })} retirable />
+              </div>
+            </>
+          ) : cle === "auteurs" ? (
+            <>
+              <Champ libelle="Phrase d’introduction" valeur={pages.auteurs.introduction} onChange={(v) => changer("auteurs", { introduction: v })} />
+              <label className="champ">
+                <span>
+                  Prénoms, un par ligne
+                  <small className="page-champ__note"> · imprimés par ordre alphabétique, sur {colonnesDesNoms(pages.auteurs.noms.length)} colonne{pluriel(colonnesDesNoms(pages.auteurs.noms.length))}</small>
+                </span>
+                <textarea className="pchamp" rows={8} value={pages.auteurs.noms.join("\n")} onChange={(e) => changer("auteurs", { noms: e.target.value.split("\n") })} />
+              </label>
+              {projet.deClasse && prenoms.length && nomsTries(prenoms).join("|") !== nomsTries(pages.auteurs.noms).join("|") ? (
+                <p className="cx-aide">
+                  <button type="button" className="lien" onClick={() => changer("auteurs", { noms: [...prenoms] })}>
+                    Reprendre les prénoms de la classe
+                  </button>
+                </p>
+              ) : null}
+              <Champ libelle="Dernière ligne" valeur={pages.auteurs.conclusion} invite="Facultative" onChange={(v) => changer("auteurs", { conclusion: v })} />
+              <fieldset className="cx-issues">
+                <legend>Place dans le livre</legend>
+                <div className="cx-seg" role="radiogroup" aria-label="Place dans le livre">
+                  {(["debut", "fin"] as const).map((pl) => (
+                    <label key={pl}>
+                      <input type="radio" name="place-auteurs" checked={pages.auteurs.place === pl} onChange={() => changer("auteurs", { place: pl })} />
+                      <span>{pl === "debut" ? "Au début" : "À la fin"}</span>
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+            </>
+          ) : cle === "commentLire" ? (
+            <>
+              <EditeurLeger libelle="Texte de « Comment lire ce livre »" valeur={pages.commentLire.texte} onChange={(t) => changer("commentLire", { texte: t })} />
+              <label className="inter">
+                <input
+                  type="checkbox"
+                  role="switch"
+                  checked={pages.commentLire.enigmes ?? aDesEnigmes}
+                  onChange={(e) => changer("commentLire", { enigmes: e.target.checked })}
+                />
+                <span className="inter__piste" aria-hidden="true" />
+                <span>Expliquer les énigmes</span>
+              </label>
+              <ReglesDuJeu projetId={projet.id} depart={regles} desImprimes={desImprimes} />
+            </>
+          ) : cle === "feuille" ? (
             <p className="cx-aide">
-              {avecRegles ? "Suivie des règles du jeu" : "Les règles du jeu s’ajoutent ici"}
-              {desImprimes ? " et de la phrase des dés" : ""}, écrites dans la{" "}
+              Ses sections ({feuille?.join(", ")}) se règlent dans la{" "}
               <Link className="lien" href={`/projet/${projet.id}/preparation`}>
                 Préparation
               </Link>
               .
             </p>
-          </>
-        ) : cle === "feuille" ? (
-          <p className="cx-aide">
-            Ses sections ({feuille?.join(", ")}) se règlent dans la{" "}
-            <Link className="lien" href={`/projet/${projet.id}/preparation`}>
-              Préparation
-            </Link>
-            .
-          </p>
-        ) : (
-          <EditeurLeger libelle="Texte de la page de fin" valeur={pages.fin.texte} invite="Un texte court" onChange={(t) => changer("fin", { texte: t })} />
-        )}
+          ) : (
+            <EditeurLeger libelle="Texte de la page de fin" valeur={pages.fin.texte} invite="Un texte court" onChange={(t) => changer("fin", { texte: t })} />
+          )}
+        </div>
       </div>
     </section>
   );
@@ -893,5 +908,68 @@ function ChoisirImageDePage({ projetId, choisie, onChoisir, retirable }: { proje
         <p className="cx-aide">Aucune image dans le projet pour l’instant.</p>
       ) : null}
     </div>
+  );
+}
+
+/**
+ * Les règles du jeu, sous « Comment lire ce livre » qu'elles suivent à l'impression : le même
+ * texte que dans la Préparation, qui se corrige ici aussi, là où on le voit (décidé par le
+ * porteur le 25 octobre 2026). Un paragraphe par ligne.
+ */
+function ReglesDuJeu({ projetId, depart, desImprimes }: { projetId: string; depart: string; desImprimes: boolean }) {
+  const [texte, setTexte] = useState(depart);
+  const e = useEnregistrement();
+  return (
+    <div className="champ page-regles">
+      <span className="page-champ__tete">
+        <label htmlFor="page-regles">Règles du jeu</label>
+        <Bulle question="Où ces règles s’impriment-elles ?">
+          <span>
+            À la suite de ce texte{desImprimes ? ", avant la phrase des dés" : ""}. Ce sont les mêmes que dans la Préparation : les changer ici les change
+            là-bas. Un paragraphe par ligne.
+          </span>
+        </Bulle>
+      </span>
+      <textarea
+        id="page-regles"
+        className="pchamp"
+        rows={6}
+        maxLength={6000}
+        value={texte}
+        placeholder="Comment noter, quand lancer le dé… Facultatives."
+        onChange={(ev) => {
+          setTexte(ev.target.value);
+          e.prevoir(() => reglerJeu(projetId, { regles: ev.target.value }));
+        }}
+        onBlur={() => void e.partir()}
+      />
+      <small className="page-champ__note" role="status">
+        {e.enCours ? "Enregistrement…" : e.erreur ? e.erreur : e.enregistre ? "Enregistré" : ""}
+      </small>
+    </div>
+  );
+}
+
+/**
+ * La grande fenêtre où s'écrit une page de texte du livre : modale, fermée par « Fermer » ou
+ * Échap, jamais par un clic à côté, qui ferait perdre la place pendant qu'on écrit.
+ */
+function GrandeFenetre({ onFermer, children }: { onFermer: () => void; children: ReactNode }) {
+  const fenetre = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    const el = fenetre.current;
+    if (el && !el.open) el.showModal();
+  }, []);
+  return (
+    <dialog
+      ref={fenetre}
+      className="page-a-ecrire"
+      onCancel={(ev) => {
+        ev.preventDefault();
+        onFermer();
+      }}
+    >
+      {children}
+    </dialog>
   );
 }

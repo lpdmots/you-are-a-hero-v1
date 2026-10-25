@@ -102,6 +102,23 @@ test.describe("« Mettre en page », volet « Réglages »", () => {
     await expect(panneau).toHaveCount(0);
     await expect(ligne).toContainText("3 prénoms · à la fin");
   });
+
+  test("F11.4 — « Comment lire ce livre » s'écrit dans une grande fenêtre, la double page à côté ; ses règles du jeu s'y corrigent et changent celles de la Préparation ; Échap la ferme", async ({ page }) => {
+    const l = await phare(page);
+    await sql("update preparations set regles = 'Lance le dé.' where projet_id = $1", [l.projet]);
+    await ouvrir(page, l);
+    await page.locator(".page-du-livre").filter({ hasText: "Comment lire ce livre" }).getByRole("button", { name: "Modifier" }).click();
+    const fenetre = page.getByRole("dialog").getByRole("region", { name: "Comment lire ce livre" });
+    await expect(fenetre).toBeVisible();
+    await expect(fenetre.locator(".petite-double")).toBeVisible();
+    await expect(fenetre.getByRole("textbox", { name: "Texte de « Comment lire ce livre »" })).toBeVisible();
+    const regles = fenetre.getByRole("textbox", { name: "Règles du jeu" });
+    await expect(regles).toHaveValue("Lance le dé.");
+    await regles.fill("Lance le dé quand le livre le demande.");
+    await expect.poll(async () => (await sql<{ regles: string }>("select regles from preparations where projet_id = $1", [l.projet]))[0].regles).toBe("Lance le dé quand le livre le demande.");
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("dialog")).toHaveCount(0);
+  });
 });
 
 test("F04-AC24 — à la lecture, « Règles du jeu » ouvre les règles sans quitter le passage, et la feuille reste telle qu'elle était", async ({ page }) => {

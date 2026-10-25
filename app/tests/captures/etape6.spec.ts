@@ -68,6 +68,8 @@ test("lot 3 : « Mettre en page », réglages et pages de présentation", async 
   await capturer(page, "panneau-auteurs", false);
   await ligne("Comment lire ce livre").getByRole("button", { name: "Modifier" }).click();
   await capturer(page, "panneau-comment-lire", false);
+  // « Comment lire ce livre » s'écrit dans une grande fenêtre, qu'Échap referme (25 octobre 2026)
+  await page.keyboard.press("Escape");
   await ligne("Feuille d’aventure").getByRole("button", { name: "Modifier" }).click();
   await page.getByRole("region", { name: "Feuille d’aventure" }).getByRole("radio", { name: "Image pleine page" }).check();
   await capturer(page, "panneau-feuille-image", false);

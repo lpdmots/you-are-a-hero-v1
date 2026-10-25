@@ -1989,7 +1989,11 @@ presse-papiers :**
 - **Place de la feuille et des règles (révisé le 3 octobre 2026) :** la
   feuille d'aventure, le dé et la partie « Règles du jeu » se règlent dans
   cette même rubrique de la préparation : ils servent aux actions de jeu et
-  à la lecture d'essai bien avant la mise en page. La forme de leurs pages
+  à la lecture d'essai bien avant la mise en page. Les règles se corrigent
+  aussi dans « Mettre en page », sous le texte de « Comment lire ce livre »
+  qu'elles suivent à l'impression : c'est le même texte, ouvert à deux
+  endroits (décidé par le porteur le 25 octobre 2026, pour corriger ce que
+  l'on voit là où on le voit). La forme de leurs pages
   dans le livre (modèle ou image) reste avec les pages de présentation de
   F11.4, à la dernière tâche de « Mettre en page » selon
   [F11.6](#f116--trois-temps-pour-préparer-le-livre). La décision du
