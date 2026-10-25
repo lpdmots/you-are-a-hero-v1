@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { NePasCompterCeNavigateur } from "@/composants/Mesure";
 import { enEuros } from "@/domaine/offre";
 import { livresAChoisir } from "@/serveur/accueil";
 import { codeDuLien, exigerLePorteur, partageDuLien, tableau } from "@/serveur/administration";
@@ -48,6 +49,8 @@ export default async function Administration({ searchParams }: { searchParams: P
 
   return (
     <div className={`page ${styles.admin}`}>
+      {/* Ce navigateur est celui du porteur : ses visites de l'accueil ne se comptent plus (F14-AC49) */}
+      <NePasCompterCeNavigateur />
       <header className="page-tete">
         <h1>Administration</h1>
       </header>

@@ -11380,7 +11380,9 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC49 — Mesurer sans suivre :** étant donné un visiteur de l'accueil,
   de l'« Aide » ou d'une entrée, alors sa page vue est comptée, sans témoin ;
   dans `/classe`, `/travail`, `/lire` et l'espace de l'adulte, aucun script
-  de mesure n'est chargé.
+  de mesure n'est chargé ; un navigateur où le porteur a ouvert
+  l'administration ne compte plus ses visites (demandé par lui le
+  25 octobre 2026).
 - **F14-AC50 — Les conversions :** étant donné M. Bernard qui crée son
   compte, un projet, achète un pass ou une recharge, alors un événement
   `compte_cree`, `projet_cree`, `pass_achete` ou `recharge_achetee` part du
