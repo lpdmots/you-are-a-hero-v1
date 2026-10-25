@@ -3426,10 +3426,15 @@ V6, le premier envoi à l'imprimeur.
    système (Windows + H, ou celle de macOS) dans l'éditeur ; si elle suffit,
    un tutoriel suffit aussi. Placée tôt : c'est une aide de l'outil, et elle
    sert dès la recopie des cahiers de sa classe. Décidé par le porteur le
-   même jour : elle se construit dans l'outil. En discussion : le service
-   (OpenAI, déjà sous-traitant, ou ElevenLabs, dont il a un forfait, ou
-   Whisper) et son prix pour le compte (gratuite, décomptée en étoiles à la
-   minute, ou réservée au pass).
+   même jour : elle se construit dans l'outil, dans la page de scène
+   seulement ; gratuite pour tous les comptes, sans étoile (exception à
+   écrire en F14), avec un plafond de 3 heures par compte et par mois,
+   garde-fou et non élément de l'offre (une durée maximale par
+   enregistrement, 5 minutes, reste proposée) ; par ElevenLabs (Scribe), dont
+   il a un forfait, sans essai comparatif. Recommandé, sans décision : une
+   clé à part pour le site, et ElevenLabs inscrit parmi les sous-traitants
+   (page « Confidentialité » et contrat de sous-traitance type), qu'il
+   jugeait inutile.
 3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
    (premier essai des aides sur un livre entier), dans les limites
    gratuites (40 scènes et 10 images au plus) : un petit livre à choix de
