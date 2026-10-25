@@ -702,13 +702,81 @@ button.lu-choix:hover {
   background: var(--feuille);
   box-shadow: 0 -1px 0 var(--trait), 0 -6px 18px rgba(30, 40, 38, 0.08);
 }
-.lecture__resume {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
+/* La barre basse des deux lecteurs (BarreDeLaFeuille) : « Ma feuille » sur une ligne ; une ou deux
+   valeurs, seulement celles qui tiennent entières (les autres passent à la ligne, que la hauteur
+   cache) ; le dé à droite, son dernier lancer à sa gauche (retour du porteur, 25 octobre 2026) */
+.barre-feuille__ouvrir {
+  flex: none;
   white-space: nowrap;
+}
+.barre-feuille__valeurs {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  height: 1.5em;
+  overflow: hidden;
   font-size: var(--t-s);
+  line-height: 1.5;
   color: var(--graphite-2);
+}
+.barre-feuille__valeurs > span {
+  white-space: nowrap;
+}
+.barre-feuille__valeurs > span + span::before {
+  content: "·";
+  margin: 0 0.45em;
+}
+.barre-feuille__de {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.barre-feuille__resultat {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  animation: barre-feuille-lancer 0.32s var(--ease) both;
+}
+.barre-feuille__resultat:empty {
+  display: none;
+}
+.barre-feuille__resultat .de-face {
+  width: 32px;
+  height: 32px;
+  padding: 5px;
+  gap: 2px;
+  border-width: 1.5px;
+  border-radius: 7px;
+}
+.barre-feuille__total {
+  margin-left: 2px;
+  font-family: var(--f-recit);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--graphite);
+}
+.barre-feuille__lancer {
+  flex: none;
+  width: 44px;
+  min-height: 44px;
+  padding: 0;
+  justify-content: center;
+}
+.barre-feuille__lancer svg {
+  width: 22px;
+  height: 22px;
+}
+@keyframes barre-feuille-lancer {
+  0% { opacity: 0; transform: rotate(-25deg) scale(0.6); }
+  100% { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .barre-feuille__resultat {
+    animation: none;
+  }
 }
 @media (max-width: 1099px) {
   .lecture--feuille {

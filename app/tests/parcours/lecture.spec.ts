@@ -193,7 +193,8 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     await aller(page, `/projet/${l.projet}/lecture?depart=${l.s.depart}&de=livre`);
     const feuille = page.getByRole("complementary", { name: "Feuille d’aventure" });
     await expect(feuille).toBeHidden();
-    await expect(page.locator(".lecture__resume")).toHaveText("Volonté 1 · Inventaire 0");
+    await expect(page.locator(".barre-feuille__valeurs > span")).toHaveText(["Volonté 1", "Inventaire 0"]);
+    await expect(page.locator(".barre-feuille__ouvrir")).toHaveCSS("white-space", "nowrap");
     await page.getByRole("button", { name: "Ma feuille" }).click();
     await expect(feuille).toBeVisible();
     await feuille.getByRole("button", { name: "Ranger" }).click();

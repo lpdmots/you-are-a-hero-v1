@@ -10,7 +10,7 @@ import {
 } from "@/domaine/lecture";
 import { chapitresLus, livreLuDe, premiersMots, type ChapitreLu, type PresentationPartagee, type VersionPartagee } from "@/domaine/partage";
 import type { TexteLeger } from "@/domaine/pages";
-import { Feuille, resumeFeuille, useAuDessusDuClavier } from "./Feuille";
+import { BarreDeLaFeuille, Feuille, useAuDessusDuClavier } from "./Feuille";
 import { Mots, Passage, SourceDesImages, type SourceImage } from "./Passage";
 
 /**
@@ -514,11 +514,14 @@ export function LecteurEnLigne({
 
         {livre.feuille && g && ecran.sorte === "lecture" ? (
           <div className="lecteur__barre-basse">
-            <button type="button" className="btn" aria-expanded={feuilleOuverte} onClick={() => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille())}>
-              <Icone nom="feuille" />
-              Ma feuille
-            </button>
-            <span className="lecteur__resume">{resumeFeuille(livre.feuille, g.feuille)}</span>
+            <BarreDeLaFeuille
+              feuille={livre.feuille}
+              etat={g.feuille}
+              ouverte={feuilleOuverte}
+              onFeuille={() => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille())}
+              des={g.des}
+              onDes={(des) => setG((x) => (x ? { ...x, des } : x))}
+            />
           </div>
         ) : null}
       </div>

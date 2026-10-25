@@ -8,7 +8,7 @@ import {
   commencer, feuilleDeDepart, issueDe, revenir, SORTIE, suivantDansLOrdre, suivre, type EtatFeuille, type LivreLu, type Parcours, type PassageLu,
 } from "@/domaine/lecture";
 import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
-import { Feuille, resumeCompteurs, resumeFeuille, useAuDessusDuClavier } from "./Feuille";
+import { BarreDeLaFeuille, Feuille, resumeCompteurs, useAuDessusDuClavier } from "./Feuille";
 import { Passage } from "./Passage";
 
 /**
@@ -300,11 +300,14 @@ export default function Lecture({
 
       {livre.feuille ? (
         <div className="lecture__barre">
-          <button type="button" className="btn" aria-expanded={feuilleOuverte} onClick={() => setFeuilleOuverte(true)}>
-            <Icone nom="feuille" />
-            Ma feuille
-          </button>
-          <span className="lecture__resume">{resumeFeuille(livre.feuille, g.feuille)}</span>
+          <BarreDeLaFeuille
+            feuille={livre.feuille}
+            etat={g.feuille}
+            ouverte={feuilleOuverte}
+            onFeuille={() => setFeuilleOuverte(true)}
+            des={g.des}
+            onDes={(des) => setG((x) => ({ ...x, des }))}
+          />
         </div>
       ) : null}
     </div>

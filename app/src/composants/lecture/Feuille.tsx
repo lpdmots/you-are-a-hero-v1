@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { useEffect, useState, type RefObject } from "react";
 import { Icone } from "@/composants/Icone";
 import { changerCompteur, lancer, type EtatFeuille } from "@/domaine/lecture";
 import type { Feuille as FeuilleDuLivre } from "@/domaine/preparation";
@@ -23,15 +23,13 @@ export function Face({ valeur }: { valeur: number | null }) {
   );
 }
 
-/** « Volonté 4 · Inventaire 2 » : ce que la barre du téléphone dit de la feuille. */
-export function resumeFeuille(feuille: FeuilleDuLivre, etat: EtatFeuille): string {
-  return feuille.sections
-    .flatMap((s) => {
-      if (s.type === "compteurs") return s.compteurs.map((c) => `${c.nom || "Compteur"} ${etat.compteurs[`${s.id}/${c.id}`] ?? c.depart}`);
-      if (s.type === "liste") return [`${s.titre || "Liste"} ${(etat.listes[s.id] ?? []).filter((l) => l.trim()).length}`];
-      return [];
-    })
-    .join(" · ");
+/** « Volonté 4 », « Inventaire 2 » : les valeurs de la feuille, dans son ordre. */
+export function valeursDeLaFeuille(feuille: FeuilleDuLivre, etat: EtatFeuille): string[] {
+  return feuille.sections.flatMap((s) => {
+    if (s.type === "compteurs") return s.compteurs.map((c) => `${c.nom || "Compteur"} ${etat.compteurs[`${s.id}/${c.id}`] ?? c.depart}`);
+    if (s.type === "liste") return [`${s.titre || "Liste"} ${(etat.listes[s.id] ?? []).filter((l) => l.trim()).length}`];
+    return [];
+  });
 }
 
 /** « Volonté 4 » : les compteurs seuls, sur le bouton qui ouvre la feuille ; rien sans compteur. */
@@ -39,6 +37,67 @@ export function resumeCompteurs(feuille: FeuilleDuLivre, etat: EtatFeuille): str
   return feuille.sections
     .flatMap((s) => (s.type === "compteurs" ? s.compteurs.map((c) => `${c.nom || "Compteur"} ${etat.compteurs[`${s.id}/${c.id}`] ?? c.depart}`) : []))
     .join(" · ");
+}
+
+/**
+ * La barre basse du téléphone et de la tablette (retour du porteur, 25 octobre 2026) : « Ma
+ * feuille », puis une ou deux valeurs, celles qui tiennent entières, sans points de suspension ;
+ * le dé du livre à droite, son dernier lancer à sa gauche, le même que celui de la feuille.
+ */
+export function BarreDeLaFeuille({
+  feuille, etat, ouverte, onFeuille, des, onDes,
+}: {
+  feuille: FeuilleDuLivre;
+  etat: EtatFeuille;
+  ouverte: boolean;
+  onFeuille: () => void;
+  des: number[] | null;
+  onDes: (des: number[]) => void;
+}) {
+  // Chaque lancer rejoue l'arrivée du résultat, même quand la face ne change pas
+  const [lancers, setLancers] = useState(0);
+  const nombre = feuille.des;
+  return (
+    <>
+      <button type="button" className="btn barre-feuille__ouvrir" aria-expanded={ouverte} aria-controls="feuille-aventure" onClick={onFeuille}>
+        <Icone nom="feuille" />
+        Ma feuille
+      </button>
+      <span className="barre-feuille__valeurs">
+        {valeursDeLaFeuille(feuille, etat)
+          .slice(0, 2)
+          .map((v) => (
+            <span key={v}>{v}</span>
+          ))}
+      </span>
+      {nombre ? (
+        <span className="barre-feuille__de">
+          <span key={lancers} className="barre-feuille__resultat" aria-live="polite">
+            {des ? (
+              <>
+                {des.map((v, i) => (
+                  <Face key={i} valeur={v} />
+                ))}
+                {des.length === 2 ? <span className="barre-feuille__total">{des[0] + des[1]}</span> : null}
+              </>
+            ) : null}
+          </span>
+          <button
+            type="button"
+            className="btn barre-feuille__lancer"
+            aria-label={nombre === 2 ? "Lancer les dés" : "Lancer le dé"}
+            title={nombre === 2 ? "Lancer les dés" : "Lancer le dé"}
+            onClick={() => {
+              setLancers((n) => n + 1);
+              onDes(lancer(nombre));
+            }}
+          >
+            <Icone nom="de" />
+          </button>
+        </span>
+      ) : null}
+    </>
+  );
 }
 
 /**

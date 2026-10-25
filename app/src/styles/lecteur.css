@@ -400,14 +400,6 @@ button.lecteur__nom {
   background: var(--feuille);
   box-shadow: 0 -1px 0 var(--trait), 0 -6px 18px rgba(30, 40, 38, 0.08);
 }
-.lecteur__resume {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: var(--t-s);
-  color: var(--graphite-2);
-}
 @media (min-width: 1100px) {
   .lecteur__feuille.est-ouverte {
     display: block;

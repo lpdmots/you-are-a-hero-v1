@@ -125,6 +125,12 @@ test("F12-AC01, F04-AC17, F11-AC46, F04-AC18, F04-AC20, F04-AC21, F04-AC31, F04-
   await feuille.getByRole("button", { name: "Lancer les dés" }).click();
   await expect(feuille.locator(".fa-de__resultat")).toHaveText(/^\d et \d : \d+ en tout$/);
   await feuille.getByRole("button", { name: "Ranger" }).click();
+  // La barre basse : les valeurs entières, le dé à droite et son dernier lancer, le même que la feuille
+  const barre = lecteur.locator(".lecteur__barre-basse");
+  await expect(barre.locator(".barre-feuille__valeurs > span")).toHaveText(["Volonté 0", "Inventaire 1"]);
+  await expect(barre.locator(".barre-feuille__resultat .de-face")).toHaveCount(2);
+  await barre.getByRole("button", { name: "Lancer les dés" }).click();
+  await expect(barre.locator(".barre-feuille__total")).toHaveText(/^\d+$/);
   await expect(choix(lecteur, "Monter au phare")).toBeEnabled();
   await expect(choix(lecteur, "Rentrer à la maison")).toBeEnabled();
 
