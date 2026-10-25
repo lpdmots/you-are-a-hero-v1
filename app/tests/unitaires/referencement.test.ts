@@ -36,7 +36,8 @@ describe("référencement", () => {
     const { default: config } = await import("../../next.config");
     vi.stubEnv("ADRESSE_SITE", SITE);
     vi.stubEnv("VERCEL_ENV", "preview");
-    expect(await config.redirects!()).toEqual([]);
+    // Hors production, seule la copie de l'accueil renvoie à l'accueil (F14-AC47)
+    expect(await config.redirects!()).toEqual([{ source: "/vitrine", destination: "/", permanent: true }]);
     vi.stubEnv("VERCEL_ENV", "production");
     const regles = await config.redirects!();
     for (const hote of ["il-etait-une-classe.vercel.app", "you-are-a-hero-v1.vercel.app"]) {
@@ -62,5 +63,19 @@ describe("mesure d'audience", () => {
     for (const p of ["/classe", "/classe/qui", "/travail", "/travail/scene/1", "/lire/abc", "/projets", "/projet/1/suivi", "/compte", "/admin", "/entreeX", null]) {
       expect(estPageMesuree(p), String(p)).toBe(false);
     }
+  });
+});
+
+describe("l'accueil en cache", () => {
+  it("F14-AC47 — sans session ni poste, le proxy sert la copie gardée en cache, à la même adresse ; sinon l'accueil qui renvoie", async () => {
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_URL", "http://127.0.0.1:54321");
+    vi.stubEnv("NEXT_PUBLIC_SUPABASE_CLE_PUBLIABLE", "cle");
+    const { NextRequest } = await import("next/server");
+    const { proxy } = await import("@/proxy");
+    const demande = (cookie?: string) => new NextRequest("https://iletaituneclasse.com/?ref=x", cookie ? { headers: { cookie } } : undefined);
+    const reecrite = (r: Response) => r.headers.get("x-middleware-rewrite");
+    expect(reecrite(await proxy(demande()))).toBe("https://iletaituneclasse.com/vitrine?ref=x");
+    expect(reecrite(await proxy(demande("poste=jeton")))).toBeNull();
+    expect(reecrite(await proxy(demande("sb-abc-auth-token.0=x")))).toBeNull();
   });
 });

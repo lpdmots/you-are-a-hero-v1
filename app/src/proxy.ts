@@ -7,6 +7,12 @@ import { NextResponse, type NextRequest } from "next/server";
  * action vérifie elle-même qui demande, et la base aussi.
  */
 export async function proxy(request: NextRequest) {
+  // Sans session ni poste de classe, l'accueil est le même pour tous : sa copie gardée en cache, à la
+  // même adresse (F14-AC47). Avec l'un ou l'autre, l'accueil renvoie au projet ou à l'espace des élèves.
+  // Les parcours l'éteignent (ACCUEIL_SANS_CACHE) : ils changent la base et relisent l'accueil aussitôt.
+  if (request.nextUrl.pathname === "/" && process.env.ACCUEIL_SANS_CACHE !== "1" && !request.cookies.has("poste") && !request.cookies.getAll().some((t) => /^sb-.+-auth-token/.test(t.name))) {
+    return NextResponse.rewrite(new URL(`/vitrine${request.nextUrl.search}`, request.url));
+  }
   let reponse = NextResponse.next({ request });
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,

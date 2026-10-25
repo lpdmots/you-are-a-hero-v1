@@ -74,6 +74,8 @@ async function principal() {
     }
     await base.query("update public.reglages_application set prix_du_pass = $1, prix_de_la_recharge = $2", [apres.prix_du_pass, apres.prix_de_la_recharge]);
     console.log(`Dans ${ou} : ${dire(await lire())}.`);
+    // L'accueil et llms.txt, gardés en cache, se recomposent d'eux-mêmes (F14-AC47)
+    console.log("L'accueil et llms.txt les montreront dans les cinq minutes.");
   } catch (erreur) {
     console.error(masquer(erreur instanceof Error ? erreur.message : String(erreur)));
     process.exit(1);

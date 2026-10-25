@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
-import { Andika, Atkinson_Hyperlegible_Mono, Atkinson_Hyperlegible_Next, Playwrite_FR_Trad, Vollkorn } from "next/font/google";
+import { Andika, Atkinson_Hyperlegible_Mono, Atkinson_Hyperlegible_Next, Vollkorn } from "next/font/google";
+import localFont from "next/font/local";
 import { Mesure } from "@/composants/Mesure";
 import { MarquePret } from "@/composants/Pret";
 import "@/styles/jetons.css";
@@ -24,7 +25,10 @@ import "@/styles/lecteur.css";
 const outil = Atkinson_Hyperlegible_Next({ subsets: ["latin"], variable: "--police-outil", display: "swap", adjustFontFallback: false });
 const code = Atkinson_Hyperlegible_Mono({ subsets: ["latin"], preload: false, variable: "--police-code", display: "swap", adjustFontFallback: false });
 const recit = Vollkorn({ subsets: ["latin"], variable: "--police-recit", display: "swap" });
-const main = Playwrite_FR_Trad({ weight: ["300", "400"], variable: "--police-main", display: "swap" });
+// La main, Playwrite FR Trad (licence OFL), servie depuis le dépôt : Google ne la découpe pas par
+// alphabet, et next/font ne précharge que ce qu'il découpe. Préchargée, elle arrive avant le titre
+// de l'accueil qu'elle écrit (F14, audit du 24 octobre 2026). Un seul fichier variable, 300 et 400.
+const main = localFont({ src: [{ path: "../polices/playwrite-fr-trad.woff2", weight: "300 400", style: "normal" }], variable: "--police-main", display: "swap" });
 const chiffres = Andika({ subsets: ["latin"], preload: false, weight: ["400", "700"], variable: "--police-chiffres", display: "swap" });
 
 export const metadata: Metadata = {

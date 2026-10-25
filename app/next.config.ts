@@ -35,9 +35,11 @@ const nextConfig: NextConfig = {
   // page. La tâche de la nuit, que Vercel appelle, répond sans redirection. Les préversions, à d'autres
   // noms, ne sont pas touchées.
   async redirects() {
+    // La copie de l'accueil gardée en cache ne s'ouvre qu'à l'adresse de l'accueil (F14-AC47)
+    const vitrine = { source: "/vitrine", destination: "/", permanent: true };
     const site = process.env.ADRESSE_SITE?.replace(/\/$/, "");
-    if (process.env.VERCEL_ENV !== "production" || !site) return [];
-    return ANCIENNES_ADRESSES.flatMap((hote) => [
+    if (process.env.VERCEL_ENV !== "production" || !site) return [vitrine];
+    return [vitrine, ...ANCIENNES_ADRESSES.flatMap((hote) => [
       { source: "/", has: [{ type: "host" as const, value: hote }], destination: `${site}/`, permanent: true },
       {
         source: "/:chemin((?!taches(?:/|$)).+)",
@@ -45,7 +47,7 @@ const nextConfig: NextConfig = {
         destination: `${site}/:chemin`,
         permanent: true,
       },
-    ]);
+    ])];
   },
   async headers() {
     return [
@@ -69,8 +71,10 @@ const nextConfig: NextConfig = {
         // Des pages propres à chacun : ni le navigateur d'un poste partagé ni un relais ne
         // les gardent. Les fichiers de l'application, les illustrations et les images de l'accueil,
         // eux, se gardent ; les images de repérage disent elles-mêmes qu'elles ne se gardent que
-        // chez la personne.
-        source: "/((?!_next/static|_next/image|illustrations/|images/|accueil/).*)",
+        // chez la personne. Les pages publiques aussi, les mêmes pour tous : l'adulte connecté et le
+        // poste d'une classe sont renvoyés avant l'accueil, par le proxy (F14-AC47).
+        source:
+          "/((?!_next/static|_next/image|illustrations/|images/|accueil/|(?:vitrine|aide|confidentialite|conditions|mentions-legales|modeles/[^/]+|llms\\.txt)?$).*)",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
       },
     ];

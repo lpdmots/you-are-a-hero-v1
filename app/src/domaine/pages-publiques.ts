@@ -68,5 +68,6 @@ export const ROBOTS_DES_IA: readonly string[] = [
 /** Les pages où l'audience se mesure (F14-AC49) : les pages publiques et les entrées de l'adulte. */
 export function estPageMesuree(chemin: string | null): boolean {
   if (!chemin) return false;
-  return PAGES_PUBLIQUES.includes(chemin) || chemin === "/entree" || chemin.startsWith("/entree/");
+  // `/vitrine` : l'accueil gardé en cache, que le serveur compose sous ce nom (F14-AC47)
+  return PAGES_PUBLIQUES.includes(chemin) || chemin === "/vitrine" || chemin === "/entree" || chemin.startsWith("/entree/");
 }

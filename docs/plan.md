@@ -3363,7 +3363,17 @@ demande ; les réglages chez Vercel, Google et Bing lui sont dictés.
    par le proxy lui-même, essayé d'abord, est écarté : après « Se
    connecter » ou « Se déconnecter », une action serveur qui renvoie à `/`
    passe par le proxy sans que l'adresse change (F06-AC53 et F14-AC39 en
-   échec). Attend que l'autre conversation ait enregistré `page.tsx`.
+   échec). **Construit le 25 octobre 2026** : le contenu de l'accueil dans
+   `Accueil.tsx`, `page.tsx` qui renvoie comme avant, `vitrine/page.tsx`
+   gardée en cache et recomposée toutes les cinq minutes au plus (un prix
+   changé par `npm run prix` y paraît donc dans ce délai), `/vitrine` qui
+   renvoie à `/` ; les parcours éteignent le cache (`ACCUEIL_SANS_CACHE`),
+   la réécriture ayant son test unitaire. Les données structurées de
+   l'accueil et de la visite en vidéo (son affiche `visite-fr.webp`, 1 min 33)
+   y sont posées. La police cursive du titre, que Google ne découpe pas et
+   que `next/font/google` ne précharge donc pas, est servie depuis
+   `src/polices/` et préchargée (Lighthouse mobile, après le lot 1 :
+   LCP 4,9 s, contre 5,3 s avant).
 4. **Mesurer :** Web Analytics et Speed Insights sur les pages publiques et
    les entrées seulement, un point d'envoi `mesurer()` pour les quatre
    conversions, la page « Confidentialité » réécrite simplement (AC49 à

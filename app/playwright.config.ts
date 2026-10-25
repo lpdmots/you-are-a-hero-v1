@@ -13,6 +13,9 @@ local.OPENAI_API_KEY = "";
 // Ni Stripe : le paiement est simulé, et les avis se signent d'un secret d'essai (étape 9)
 local.STRIPE_CLE_SECRETE = "";
 local.STRIPE_SECRET_AVIS = "whsec_essai_local";
+// L'accueil se compose à chaque visite : les parcours changent la base et le relisent aussitôt, sans
+// attendre que sa copie gardée en cache se régénère (F14-AC47)
+local.ACCUEIL_SANS_CACHE = "1";
 // Les courriels de l'application partent dans la boîte locale (Mailpit), comme ceux du compte
 local.SMTP_HOTE = "127.0.0.1";
 local.SMTP_PORT = "54325";
