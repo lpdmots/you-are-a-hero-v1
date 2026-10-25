@@ -3380,6 +3380,17 @@ demande ; les réglages chez Vercel, Google et Bing lui sont dictés.
    AC51). **Construit le 24 octobre 2026** (`30796d8`) : un compte compte à
    la confirmation de son adresse, ou à sa première entrée par Google.
 
+**En ligne le 25 octobre 2026, à sa demande, jusqu'à `ad35886`** (suite
+complète passée), avec les entrées en livre-jeu de l'autre conversation,
+close : accueil servi depuis le cache (premier octet 0,1 à 0,25 s), données
+structurées vérifiées, Lighthouse mobile 81-82 (LCP de laboratoire 4,7 à
+4,9 s, sur une 4G lente simulée ; ordinateur 98, 1,0 s). Le LCP mobile reste
+à juger sur les mesures réelles de Speed Insights. Ajouté à sa demande : un
+navigateur où il ouvre l'administration ne compte plus ses visites.
+Fait par lui le 25 octobre : Web Analytics et Speed Insights activés, plan du
+site déclaré dans Search Console et l'accueil soumis, site importé dans Bing
+(plan du site lu, 8 URL). Les mots-clés sont remis à plus tard.
+
 À la charge du porteur, dans l'ordre : activer Web Analytics et Speed
 Insights (gratuit, sans « Plus ») et une alerte de dépense chez Vercel ;
 après la mise en ligne, déclarer le plan du site dans Search Console,
