@@ -3425,15 +3425,21 @@ V6, le premier envoi à l'imprimeur.
    avec la correction. Recommandé avant l'entretien : essayer la dictée du
    système (Windows + H, ou celle de macOS) dans l'éditeur ; si elle suffit,
    un tutoriel suffit aussi. Placée tôt : c'est une aide de l'outil, et elle
-   sert dès la recopie des cahiers de sa classe.
+   sert dès la recopie des cahiers de sa classe. Décidé par le porteur le
+   même jour : elle se construit dans l'outil. En discussion : le service
+   (OpenAI, déjà sous-traitant, ou ElevenLabs, dont il a un forfait, ou
+   Whisper) et son prix pour le compte (gratuite, décomptée en étoiles à la
+   minute, ou réservée au pass).
 3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
    (premier essai des aides sur un livre entier), dans les limites
    gratuites (40 scènes et 10 images au plus) : un petit livre à choix de
    cycle 2, un petit récit classique de cycle 2, et « Les passeurs de
    brume » fini pour le cycle 3 (vingt-quatre scènes écrites, une commencée,
    quinze vides à ce jour). Présentés comme des livres d'exemple du site,
-   jamais comme le travail d'une vraie classe. À définir avant d'écrire :
-   sujets, longueur des deux livres de cycle 2, images et leur budget.
+   jamais comme le travail d'une vraie classe. Décidé par le porteur le
+   25 octobre 2026 : chaque livre se définit d'abord avec lui dans une
+   conversation à part (sujet, longueur, images et leur budget), puis
+   s'écrit en local avant d'aller dans la vraie base.
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le
