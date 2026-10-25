@@ -122,8 +122,8 @@ le plan s'organise autour. Le détail est dans
 | N° | Vérification | Ce qu'elle bloque | Étape | Si elle échoue |
 | --- | --- | --- | --- | --- |
 | V1 | Chromium de Linux : mêmes pages que sur macOS, durée et mémoire réelles. Réserve de l'[ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md). | Tout le livre : F11.2 à F11.6, F11-AC30. | 6 | L'ADR 0003 se rouvre. |
-| V2 | Production du PDF chez Vercel : démarrage à froid, espace temporaire, fichier déposé dans le stockage. | Aperçu, PDF de travail et PDF définitif. | 6 | Le PDF sort d'un traitement séparé, Render par exemple : un coût d'exploitation de plus, sans reprise de la composition. |
-| V3 | Aperçu calculé côté serveur : affichage, délai ressenti, coût de chaque recalcul, éditeur de la scène ouvert à côté. | « Mettre en page » (F11.6), F11.2, F11-AC27. | 6 | L'ADR 0003 se rouvre si l'aperçu est trop lent à l'usage. |
+| V2 | Production du PDF chez Vercel : démarrage à froid, espace temporaire, fichier déposé dans le stockage. Levée le 25 octobre 2026 : PDF définitif obtenu en ligne sur les deux livres d'essai. | Aperçu, PDF de travail et PDF définitif. | 6 | Le PDF sort d'un traitement séparé, Render par exemple : un coût d'exploitation de plus, sans reprise de la composition. |
+| V3 | Aperçu calculé côté serveur : affichage, délai ressenti, coût de chaque recalcul, éditeur de la scène ouvert à côté. Levée le 25 octobre 2026 : en ligne, mise à jour dans un temps correct. | « Mettre en page » (F11.6), F11.2, F11-AC27. | 6 | L'ADR 0003 se rouvre si l'aperçu est trop lent à l'usage. |
 | V4 | Modèle approché des hauteurs, « la part la plus incertaine » selon F11.5. | « Réordonner les passages » (F11-AC64 à AC66, AC81, AC82) ; passage suggéré (F11-AC67, AC68). | 6 | Le passage suggéré est reporté, comme le prévoit F11.3 ; l'agencement demande un arbitrage. Le livre s'imprime sans eux. |
 | V5 | Règles de composition que l'essai PDF n'a pas couvertes (césure restreinte, alignement à gauche, folio absent, dés imprimés, feuille de plusieurs pages, page de présentation en image, marges modifiées, contenu hors des marges, page peu remplie). | F11.3, F11.4. | 6 | La règle concernée revient en entretien. |
 | V6 | Premier envoi chez l'imprimeur : page de 420 × 595 points, marges de départ, rognage. | Le PDF définitif déclaré prêt à imprimer (F11.3, F11.4). | 6 | Marges ou export avec rognage à revoir (F11.3). |
@@ -3396,6 +3396,64 @@ Insights (gratuit, sans « Plus ») et une alerte de dépense chez Vercel ;
 après la mise en ligne, déclarer le plan du site dans Search Console,
 demander l'indexation de l'accueil, importer le site dans Bing Webmaster
 Tools.
+
+### Suite recommandée après l'ouverture
+
+Ordre approximatif proposé le 25 octobre 2026 et validé par le porteur, sans
+calendrier ; il ne vaut pas instruction : chaque élément demande la sienne,
+et un entretien court quand une règle change. Sa classe de cette année est un
+CE2-CM1-CM2.
+
+En continu, avant le reste : ses retours d'usage sur le vrai livre de sa
+classe, en retouches ; les constats de l'étape 9 (écran de Google, une nuit de
+sauvegarde partie seule, messagerie académique) ; le LCP mobile jugé sur les
+mesures réelles de Speed Insights. V2 et V3 sont levées le 25 octobre 2026 :
+avec les deux livres d'essai chargés dans la vraie base, il obtient le PDF
+définitif chez Vercel, et l'aperçu se met à jour dans un temps correct ; reste
+V6, le premier envoi à l'imprimeur.
+
+1. **Bibliothèque publique (F15) :** finir l'entretien, commencé le
+   25 octobre 2026, puis la construire. Les livres d'exemple (point 3) seront
+   ses premiers livres.
+2. **Dictée à l'adulte (F07.4) :** précisé par le porteur le 25 octobre 2026,
+   c'est l'adulte qui lit à voix haute le texte d'un élève (écrit sur le
+   cahier ou dicté à l'adulte) pour ne pas le taper ; pas l'élève lui-même,
+   dont le résultat serait médiocre. Ce n'est donc pas un accès des élèves à
+   l'IA (F13). À trancher en entretien : la place (page de scène de
+   l'adulte), le service (transcription côté serveur, payée en étoiles, les
+   noms des personnages donnés comme indice), la ponctuation, l'enchaînement
+   avec la correction. Recommandé avant l'entretien : essayer la dictée du
+   système (Windows + H, ou celle de macOS) dans l'éditeur ; si elle suffit,
+   un tutoriel suffit aussi. Placée tôt : c'est une aide de l'outil, et elle
+   sert dès la recopie des cahiers de sa classe.
+3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
+   (premier essai des aides sur un livre entier), dans les limites
+   gratuites (40 scènes et 10 images au plus) : un petit livre à choix de
+   cycle 2, un petit récit classique de cycle 2, et « Les passeurs de
+   brume » fini pour le cycle 3 (vingt-quatre scènes écrites, une commencée,
+   quinze vides à ce jour). Présentés comme des livres d'exemple du site,
+   jamais comme le travail d'une vraie classe. À définir avant d'écrire :
+   sujets, longueur des deux livres de cycle 2, images et leur budget.
+4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
+   l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
+   une page par parcours, qui tient lieu des guides remis à plus tard pour le
+   référencement. Puis un courriel d'accueil après l'inscription, qui y
+   renvoie. Écarté le même jour : un projet d'exemple ouvert dans chaque
+   nouveau compte.
+5. **Matériel pédagogique :** page « Ressources » (déroulé type d'un projet,
+   affiches, grille de relecture, lettre aux familles…), rédigé par Claude
+   d'après son expérience et corrigé par lui ; le lien aux programmes
+   vérifié sur le Bulletin officiel en vigueur.
+6. **Cycle 2, idées non décidées :** écoute à voix haute de la consigne et du
+   livre par la synthèse vocale du navigateur ; connexion simplifiée des
+   élèves par QR code ou carte (F06.4, question ouverte). Les tablettes,
+   fréquentes en cycle 2, restent non vérifiées (V14).
+7. **Faire connaître le site :** effort commercial, pas de développement ;
+   décidé par le porteur, une fois l'outil complet avec ses aides.
+8. **Version anglaise :** en dernier, quand le français est stabilisé par
+   l'usage ; chaque changement fait ensuite coûtera deux fois (textes,
+   prompts, correction propre au français, typographie du livre, textes
+   juridiques, vidéo).
 
 ## Hors de la première livraison
 
