@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { adresseDepuisTitre, adresseLibre, etatDeLaPublication, passagesChanges, peutProposer, presentationPropre, PRESENTATION_MAX, reperesDuLivre, type LignePublication } from "@/domaine/bibliotheque";
 import type { PassagePartage, VersionPartagee } from "@/domaine/partage";
+import { chercheEnAdresse, demandeDepuis, livresDeLaListe, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { relecture } from "@/serveur/ia/aides/relecture";
 import { CONDITIONS, MODELES } from "@/domaine/textes-publics";
 
@@ -85,5 +86,30 @@ describe("La relecture (F15, lot 2)", () => {
     expect(lu).toEqual({ points: [{ repere: "P17", phrase: "la maîtresse Mme Dupont est bête et grosse", motif: "moquerie", explication: "Une personne réelle." }] });
     expect(relecture.lire({ points: [] }, e)).toEqual({ points: [] });
     expect(relecture.lire({}, e)).toBeNull();
+  });
+});
+
+describe("La liste de /bibliotheque (F15, lot 3)", () => {
+  const livre = (adresse: string, publieLe: string, x: Partial<LivrePublie> = {}): LivrePublie => ({
+    adresse, titre: adresse, sousTitre: "", ligne: "", presentation: "", age: "8-10", aChoix: true, passages: 40, image: null, publieLe, coeurs: 0, ...x,
+  });
+  const livres = [
+    livre("la-lanterne-du-passeur", "2026-11-02T10:00:00Z", { titre: "La lanterne du passeur", presentation: "Le passeur de brume attend sur le quai.", coeurs: 3 }),
+    livre("le-grand-voyage", "2026-11-05T10:00:00Z", { titre: "Le grand voyage", aChoix: false, age: "6-8", coeurs: 9 }),
+    livre("electro-nick", "2026-11-09T10:00:00Z", { titre: "Électro Nick", age: "10-12" }),
+  ];
+  const liste = (p: Record<string, string>) => livresDeLaListe(livres, demandeDepuis(p)).map((l) => l.adresse);
+
+  it("F15-AC11 — les plus récents d'abord ; les plus aimés ; l'âge et le type ; la recherche dans le titre et la présentation", () => {
+    expect(liste({})).toEqual(["electro-nick", "le-grand-voyage", "la-lanterne-du-passeur"]);
+    expect(liste({ tri: "aimes" })).toEqual(["le-grand-voyage", "la-lanterne-du-passeur", "electro-nick"]);
+    expect(liste({ age: "8-10", type: "choix" })).toEqual(["la-lanterne-du-passeur"]);
+    expect(liste({ type: "classique" })).toEqual(["le-grand-voyage"]);
+    expect(liste({ q: "lanterne" })).toEqual(["la-lanterne-du-passeur"]);
+    expect(liste({ q: "passeur de brume" })).toEqual(["la-lanterne-du-passeur"]);
+    expect(liste({ q: "electro" })).toEqual(["electro-nick"]);
+    // Une valeur inconnue ne filtre rien ; l'adresse ne garde que ce qui diffère du défaut
+    expect(liste({ age: "3-5", type: "roman", tri: "x" })).toHaveLength(3);
+    expect(chercheEnAdresse(demandeDepuis({ q: " lanterne ", tri: "recents" }))).toBe("?q=lanterne");
   });
 });

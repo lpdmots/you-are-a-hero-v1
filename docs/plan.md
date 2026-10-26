@@ -3601,7 +3601,21 @@ V6, le premier envoi à l'imprimeur.
      le lecteur existant, sous `/lire` ; plan du site, `llms.txt`,
      `robots.txt`, les adresses des livres fermées aux moteurs ; la mesure
      sur `/bibliotheque` seule ; le lien « Bibliothèque » de l'accueil et du
-     pied des pages publiques (F15-AC11, AC12).
+     pied des pages publiques (F15-AC11, AC12). **Construit le 26 octobre
+     2026,** sans migration : `domaine/bibliotheque-publique.ts` (demande,
+     tri, filtres, recherche sans accents), `serveur/bibliotheque-publique.ts`
+     (la clé de service, rien d'autre que la version publiée),
+     `(public)/bibliotheque/` et son tiroir, `/lire/bibliotheque/[adresse]`,
+     les images par `/images/publie/` ; écrans dans
+     [design](design.md#bibliothèque-publique-f15-construite-25-octobre-2026).
+     Précisions : la recherche, les filtres et le tri vivent dans l'adresse
+     (une recherche se partage, le formulaire marche sans JavaScript) ;
+     « Bibliothèque » dans l'en-tête des pages publiques, l'accueil compris,
+     et une colonne « Lire » au pied ; les robots des IA lisent
+     `/bibliotheque$` seule ; la mesure écarte toute adresse qui ne se mesure
+     pas, même atteinte sans recharger ; une adresse inconnue dit « Ce livre
+     n'est plus dans la bibliothèque. » et mène aux autres livres ; le lecteur
+     garde la lecture sur l'appareil et porte un retour « Bibliothèque ».
   4. **Les cœurs :** dans le tiroir et après la fin, un par navigateur sans
      compte, une limite par adresse réseau, le nombre caché à zéro
      (F15-AC13). Migration.

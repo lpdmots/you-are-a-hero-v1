@@ -4,13 +4,14 @@ import type { ReactNode } from "react";
 import { Logo } from "@/composants/Logo";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { adresseDuSite } from "@/serveur/env";
+import { LienDeNav } from "./LienDeNav";
 import styles from "./public.module.css";
 
 // Les pages publiques se trouvent : l'application, elle, reste hors des moteurs de recherche. Les
 // adresses de l'aperçu de partage partent de l'adresse publique du site.
 export const metadata: Metadata = { metadataBase: new URL(adresseDuSite()), robots: { index: true, follow: true } };
 
-/** Les pages publiques (F14, « Pages publiques ») : un en-tête qui mène aux entrées, un pied qui mène aux textes. */
+/** Les pages publiques (F14, « Pages publiques », F15) : un en-tête qui mène aux entrées, un pied qui mène aux textes. */
 export default function PagesPubliques({ children }: { children: ReactNode }) {
   return (
     <div className={styles.public}>
@@ -19,9 +20,13 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
           <Logo href="/" />
         </span>
         <nav className={styles.nav} aria-label="Entrer">
-          <Link href="/aide" className={styles.navAide}>
+          {/* La bibliothèque des livres (F15) : à portée depuis l'accueil et chaque page publique */}
+          <LienDeNav href="/bibliotheque" className={styles.navAide}>
+            Bibliothèque
+          </LienDeNav>
+          <LienDeNav href="/aide" className={styles.navAide}>
             Aide
-          </Link>
+          </LienDeNav>
           <Link href="/classe" aria-label="Entrée des élèves">
             <span className={styles.navLong}>Entrée des élèves</span>
             <span className={styles.navCourt}>Élèves</span>
@@ -59,6 +64,14 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
                 </li>
                 <li>
                   <Link href="/classe">Entrée des élèves</Link>
+                </li>
+              </ul>
+            </div>
+            <div>
+              <p className={styles.piedTitre}>Lire</p>
+              <ul>
+                <li>
+                  <Link href="/bibliotheque">La bibliothèque</Link>
                 </li>
               </ul>
             </div>

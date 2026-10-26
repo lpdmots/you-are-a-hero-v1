@@ -89,6 +89,13 @@ test("F15-AC03, F15-AC04 — le rapport cite le passage en cause ; publié, le l
   await expect(page.getByText(/Publié, version du/)).toBeVisible();
   await expect(page.getByRole("textbox", { name: "Adresse du livre dans la bibliothèque" })).toHaveValue(new RegExp(`/bibliotheque/${adresse}$`));
 
+  // Le public le lit, sans compte, depuis son tiroir (F15-AC04, AC06)
+  const lecteur = await (await browser.newContext()).newPage();
+  await lecteur.goto(`/bibliotheque/${adresse}`);
+  await lecteur.getByRole("link", { name: "Lire le livre" }).click();
+  await lecteur.getByRole("button", { name: "Commencer la lecture" }).click();
+  await expect(lecteur.locator(".lecteur__corps")).toContainText("La brume s’épaissi sur le fleuve.");
+  await expect(lecteur.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
 });
 
 test("F15-AC05 — refuser avec une phrase prête et une phrase de sa main : l'adulte reçoit le motif, le lit dans l'étape et propose de nouveau", async ({ page, browser }) => {
@@ -108,4 +115,48 @@ test("F15-AC05 — refuser avec une phrase prête et une phrase de sa main : l'a
   const refus = page.getByRole("group", { name: "Refusé" });
   await expect(refus).toContainText("Contenu inadapté à l’âge des lecteurs. Le passage 2 se moque d’une enseignante réelle.");
   await proposer(page, l.projet);
+});
+
+/** Trois livres publiés sans passer par l'écran : une version réduite au titre et à son récit. */
+async function publierVite(compte: Compte, base: SupabaseClient, titre: string, x: { age: string; choix: boolean; presentation: string; le: string }): Promise<string> {
+  const projet = await semerProjet(base, compte, "personnel", x.choix ? "choix" : "classique", titre);
+  const adresse = `${titre.toLowerCase().normalize("NFD").replace(/\p{M}/gu, "").replace(/[^a-z0-9]+/g, "-")}-${Date.now().toString(36)}`;
+  await sql(
+    `insert into publications (projet_id, enseignant_id, adresse, version, presentation, age, empreinte, publiee_le, mise_a_jour_le)
+     values ($1, $2, $3, jsonb_build_object('titre', $4::text, 'aChoix', $5::boolean, 'passages', '[]'::jsonb, 'images', '{}'::jsonb), $6, $7, repeat('a', 32), $8, $8)`,
+    [projet, compte.id, adresse, titre, x.choix, x.presentation, x.age, x.le],
+  );
+  return adresse;
+}
+
+test("F15-AC11, F15-AC12 — la liste, ses filtres et sa recherche ; l'adresse d'un livre ouvre son tiroir, hors des moteurs", async ({ page }) => {
+  const { compte, base } = await adultePret(page);
+  const marque = Date.now().toString(36);
+  await publierVite(compte, base, `Lanterne ${marque}`, { age: "8-10", choix: true, presentation: "Le passeur de brume attend sur le quai.", le: "2026-11-02T10:00:00Z" });
+  await publierVite(compte, base, `Voyage ${marque}`, { age: "6-8", choix: false, presentation: "Une longue route.", le: "2026-11-05T10:00:00Z" });
+  const nick = await publierVite(compte, base, `Nick ${marque}`, { age: "8-10", choix: true, presentation: "Une panne géante.", le: "2026-11-09T10:00:00Z" });
+
+  await aller(page, `/bibliotheque?q=${marque}`);
+  const titres = page.locator("ul li a span:nth-child(2)");
+  await expect(titres).toHaveText([`Nick ${marque}`, `Voyage ${marque}`, `Lanterne ${marque}`]);
+  await page.getByLabel("Âge des lecteurs").selectOption("8-10");
+  await page.getByLabel("Type de récit").selectOption("choix");
+  await expect(titres).toHaveText([`Nick ${marque}`, `Lanterne ${marque}`]);
+  await page.getByRole("searchbox", { name: "Chercher un livre" }).fill(`passeur de brume ${marque}`);
+  await expect(titres).toHaveText([`Lanterne ${marque}`]);
+  await expect(page).toHaveURL(/age=8-10/);
+
+  // L'adresse d'un livre : la bibliothèque, son tiroir ouvert, « noindex »
+  await aller(page, `/bibliotheque/${nick}`);
+  const tiroir = page.getByRole("dialog", { name: `Nick ${marque}` });
+  await expect(tiroir).toContainText("Une panne géante.");
+  await expect(tiroir.getByRole("link", { name: "Lire le livre" })).toHaveAttribute("href", `/lire/bibliotheque/${nick}`);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  await page.keyboard.press("Escape");
+  await expect(page).toHaveURL(/\/bibliotheque$/);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute("content", /^index/);
+
+  // Une adresse inconnue : la page neutre, sans titre ni nom
+  await aller(page, "/bibliotheque/un-livre-qui-n-existe-pas");
+  await expect(page.getByText("Ce livre n’est plus dans la bibliothèque.")).toBeVisible();
 });

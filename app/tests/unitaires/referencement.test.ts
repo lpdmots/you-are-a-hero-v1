@@ -79,3 +79,22 @@ describe("l'accueil en cache", () => {
     expect(reecrite(await proxy(demande("sb-abc-auth-token.0=x")))).toBeNull();
   });
 });
+
+describe("la bibliothèque (F15)", () => {
+  it("F15-AC12 — /bibliotheque au plan du site, dans llms.txt et ouverte aux robots des IA, sans les adresses de ses livres ; seule elle se mesure", async () => {
+    vi.stubEnv("ADRESSE_SITE", SITE);
+    expect(sitemap().map((u) => u.url)).toContain(`${SITE}/bibliotheque`);
+    const { rules } = robots();
+    const [tous, ia] = Array.isArray(rules) ? rules : [rules];
+    expect(tous.disallow).not.toContain("/bibliotheque");
+    expect(ia.allow).toContain("/bibliotheque$");
+    expect(ia.allow).not.toContain("/bibliotheque");
+    const { llmsTxt } = await import("@/domaine/presentation");
+    const { lireOffre } = await import("@/domaine/offre");
+    expect(llmsTxt(lireOffre({ paiement_ouvert: false }), SITE)).toContain(`(${SITE}/bibliotheque)`);
+    const { estPageMesuree } = await import("@/domaine/pages-publiques");
+    expect(estPageMesuree("/bibliotheque")).toBe(true);
+    expect(estPageMesuree("/bibliotheque/la-lanterne-du-passeur")).toBe(false);
+    expect(estPageMesuree("/lire/bibliotheque/la-lanterne-du-passeur")).toBe(false);
+  });
+});

@@ -16,8 +16,22 @@ function navigateurDuPorteur(): boolean {
   }
 }
 
-/** Sans l'adresse après « ? » : ni jeton d'un lien reçu, ni message passager ne partent à la mesure */
-const sansQuestion = <T extends { url: string }>(e: T): T | null => (navigateurDuPorteur() ? null : { ...e, url: e.url.split("?")[0] });
+/**
+ * Sans l'adresse après « ? » : ni jeton d'un lien reçu, ni message passager ne partent à la mesure.
+ * Une page qui ne se mesure pas ne part jamais, même atteinte sans recharger depuis une qui se mesure :
+ * le tiroir d'un livre ouvert depuis `/bibliotheque` n'est pas compté (F15, « Mesure »).
+ */
+const sansQuestion = <T extends { url: string }>(e: T): T | null => {
+  if (navigateurDuPorteur()) return null;
+  const url = e.url.split("?")[0];
+  let chemin: string | null = null;
+  try {
+    chemin = new URL(url, window.location.origin).pathname;
+  } catch {
+    return null;
+  }
+  return estPageMesuree(chemin) ? { ...e, url } : null;
+};
 
 /**
  * La mesure d'audience (F14-AC49) : Vercel Web Analytics et Speed Insights, sans témoin, sur les pages

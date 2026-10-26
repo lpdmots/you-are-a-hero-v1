@@ -67,6 +67,14 @@
   color: var(--graphite-2);
   text-decoration: none;
 }
+/* La page où l'on est : en graphite, soulignée de canard */
+.nav a[aria-current="page"] {
+  color: var(--graphite);
+  text-decoration: underline;
+  text-decoration-color: var(--canard);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 6px;
+}
 .nav a:not(:global(.btn)):hover {
   color: var(--canard);
   text-decoration: underline;

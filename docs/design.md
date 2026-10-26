@@ -2628,6 +2628,36 @@ la phrase citée en Vollkorn, l'explication en petit, puis « Lu : … · 0,104 
 présentation ; en pied, « Publier » et « Refuser… », qui déplie trois phrases
 prêtes, une précision et « Refuser et envoyer le motif ».
 
+**Lot 3, la page `/bibliotheque`.** Lectures : 31/40 (informée) et 29/40
+(indépendante), corrigées sans nouvelle mesure.
+
+- **Le rayon :** les livres fermés de l'accueil (page de titre en
+  couverture, dos ombré, épaisseur des pages), un peu de travers comme sur
+  une table, en rangées, deux colonnes sur un téléphone ; sous chacun, le
+  titre en Vollkorn et une ligne « 8 à 10 ans · Livre-jeu », le nombre de
+  passages réservé au tiroir. Le titre de la page en cursive, comme à
+  l'accueil, une phrase dessous.
+- **Chercher :** une rangée qui se replie : « Chercher un titre ou un
+  mot… », « Tous les âges », « Tous les types », la bascule « Les plus
+  récents │ Les plus aimés » en graphite, et le décompte, de largeur fixe
+  pour que rien ne bouge en tapant. Sans résultat : « Aucun livre ne
+  correspond. Voir tous les livres ».
+- **Le tiroir :** une feuille à droite (en bas sur un téléphone), la page
+  de titre en grand, le titre, le sous-titre, la ligne de la page de titre,
+  la présentation en Vollkorn, « Lecteurs » et « Type » (« Livre-jeu : tu
+  choisis la suite (52 passages) »), « Lire le livre » seul bouton plein ; le
+  focus va au titre, non à la croix ; Échap, le voile ou la croix ramènent à
+  la liste et à sa recherche.
+- **Le lecteur** porte « ← Bibliothèque » à la place du dragon, dans sa
+  barre, sans bandeau de plus. L'en-tête des pages publiques marque la page
+  en cours, soulignée de canard.
+- Laissés en l'état : « Les plus aimés » avant les cœurs du lot 4 ; la page
+  de titre comme couverture, pâle quand son illustration est petite (la
+  couverture déposée par le porteur viendra au lot 7) ; une adresse jamais
+  publiée dit aussi « Ce livre n'est plus dans la bibliothèque », comme le
+  veut F15 ; « Bibliothèque » absent de l'en-tête sur un téléphone, faute
+  de place, présent au pied.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

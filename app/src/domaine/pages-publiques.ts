@@ -3,10 +3,12 @@ import { MODELES } from "./textes-publics";
 /**
  * Les pages publiques (F14, « Pages publiques ») : celles que les moteurs de recherche et les robots
  * des IA peuvent lire (F14-AC45). Le plan du site, `robots.txt` et `llms.txt` partent de cette liste ;
- * le reste du site, l'application et les livres de `/lire`, n'y est pas.
+ * le reste du site, l'application et les livres de `/lire`, n'y est pas. La bibliothèque y est, non
+ * les adresses de ses livres, que leur « noindex » tient hors des moteurs (F15-AC12).
  */
 export const PAGES_PUBLIQUES: readonly string[] = [
   "/",
+  "/bibliotheque",
   "/aide",
   ...MODELES.map((m) => `/modeles/${m.cle}`),
   "/confidentialite",

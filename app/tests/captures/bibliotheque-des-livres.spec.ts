@@ -123,3 +123,29 @@ test("lot 1 : mode personnel sans classe", async ({ page }) => {
   await page.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
   await capturer(page, "partager-proposer-personnel");
 });
+
+/** Contre une base où des livres sont publiés : la base locale du porteur, ou celle d'un essai. */
+test("lot 3 : la page /bibliotheque", async ({ page }) => {
+  test.setTimeout(120_000);
+  n = 1600;
+  await page.setViewportSize({ width: 1366, height: 900 });
+  const [premier] = await sql<{ adresse: string }>("select adresse from publications where version is not null order by publiee_le desc limit 1");
+  await aller(page, "/bibliotheque");
+  await capturer(page, "bibliotheque");
+  await capturer(page, "bibliotheque-entiere", true);
+  await page.getByRole("searchbox").fill("zzzz");
+  await expect(page.getByText("Aucun livre ne correspond.")).toBeVisible();
+  await capturer(page, "bibliotheque-rien");
+  await aller(page, `/bibliotheque/${premier.adresse}`);
+  await capturer(page, "bibliotheque-tiroir");
+  await aller(page, "/bibliotheque/un-livre-inconnu");
+  await capturer(page, "bibliotheque-neutre");
+  await aller(page, `/lire/bibliotheque/${premier.adresse}`);
+  await capturer(page, "bibliotheque-lire");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, "/bibliotheque");
+  await capturer(page, "bibliotheque-390");
+  await capturer(page, "bibliotheque-390-entiere", true);
+  await aller(page, `/bibliotheque/${premier.adresse}`);
+  await capturer(page, "bibliotheque-tiroir-390");
+});

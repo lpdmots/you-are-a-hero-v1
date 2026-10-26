@@ -7,7 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const site = adresseDuSite();
   return PAGES_PUBLIQUES.map((page) => ({
     url: `${site}${page === "/" ? "" : page}`,
-    changeFrequency: page === "/" ? "weekly" : "monthly",
-    priority: page === "/" ? 1 : page === "/aide" ? 0.8 : 0.3,
+    changeFrequency: page === "/" || page === "/bibliotheque" ? "weekly" : "monthly",
+    priority: page === "/" ? 1 : page === "/aide" || page === "/bibliotheque" ? 0.8 : 0.3,
   }));
 }

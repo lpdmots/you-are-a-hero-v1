@@ -137,13 +137,15 @@ function EcritAvec() {
 }
 
 export function LecteurEnLigne({
-  version, source, memoire, bandeau, mention = false, ouvrirA = null,
+  version, source, memoire, bandeau, mention = false, ouvrirA = null, retour = null,
 }: {
   version: VersionPartagee;
   source: SourceImage;
   memoire: Memoire;
   /** Ouvrir la lecture sur ce passage, sans passer par la page de titre : la file de relecture du porteur (F15) */
   ouvrirA?: string | null;
+  /** Un retour en tête de la barre, à la place du dragon : la bibliothèque, d'où le livre s'ouvre (F15) */
+  retour?: { href: string; nom: string } | null;
   /** Au-dessus du livre : la prévisualisation de l'adulte, le retour aux lectures de l'élève */
   bandeau?: ReactNode;
   /** Le lien de lecture : la mention « Écrit avec Il était une classe » (F14-AC34) */
@@ -288,7 +290,12 @@ export function LecteurEnLigne({
         <header className="lecteur__barre">
           {/* Le lien de lecture : le dragon-livre seul, qui ramène à l'accueil du site, avant le titre
               du livre, qui reste le nom de la barre (demandé par le porteur le 23 octobre 2026) */}
-          {mention ? (
+          {retour ? (
+            <Link href={retour.href} className="lecteur__retour">
+              <Icone nom="fleche-g" />
+              <span>{retour.nom}</span>
+            </Link>
+          ) : mention ? (
             <Link href="/" className="lecteur__site" aria-label="Il était une classe, accueil du site" title="Il était une classe">
               <Dragon className="lecteur__dragon" />
             </Link>
