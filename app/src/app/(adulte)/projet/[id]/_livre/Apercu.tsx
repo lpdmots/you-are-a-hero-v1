@@ -1,12 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode, type RefObject } from "react";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import { Bulle } from "@/composants/Bulle";
 import { Icone } from "@/composants/Icone";
 import type { Apercu as DonneesApercu } from "@/serveur/livre/apercu";
 import type { BlocPlace } from "@/serveur/livre/dans-la-page";
 import { candidats, mesuresDuModele, type PassageOrdonne } from "@/domaine/agencement";
+import { abonnerAuMode, garderLeMode, modeGarde, type ModeApercu } from "./modeApercu";
 
 /**
  * L'aperçu du livre (F11.2) : les pages que le Chromium du serveur a composées, affichées telles
@@ -15,10 +16,9 @@ import { candidats, mesuresDuModele, type PassageOrdonne } from "@/domaine/agenc
  * rendue par la composition, dit ce qui se trouve sous le clic.
  */
 
-export type ModeApercu = "agrandie" | "double";
+export type { ModeApercu };
 const LARGEUR_MM = 148;
 const HAUTEUR_MM = 210;
-const CLE_MODE = "apercu-mode";
 
 type Charge = { apercu: DonneesApercu; doc: PDFDocumentProxy };
 export type SourceApercu = { charge: Charge | null; calcul: boolean; erreur: string | null; calculer: () => Promise<void> };
@@ -110,24 +110,10 @@ export function Apercu({
   };
 }) {
   const { charge, calcul, erreur, calculer } = source;
-  const [mode, setMode] = useState<ModeApercu>(() => {
-    try {
-      const garde = window.localStorage.getItem(`${CLE_MODE}-${modeParDefaut}`);
-      return garde === "agrandie" || garde === "double" ? garde : modeParDefaut;
-    } catch {
-      return modeParDefaut;
-    }
-  });
+  // Le serveur rend la présentation par défaut ; le navigateur reprend ensuite celle qu'on avait choisie
+  const mode = useSyncExternalStore(abonnerAuMode, () => modeGarde(modeParDefaut), () => modeParDefaut);
   const conteneur = useRef<HTMLDivElement>(null);
-
-  const choisirMode = (m: ModeApercu) => {
-    setMode(m);
-    try {
-      window.localStorage.setItem(`${CLE_MODE}-${modeParDefaut}`, m);
-    } catch {
-      // le choix vaut pour cette visite seulement
-    }
-  };
+  const choisirMode = (m: ModeApercu) => garderLeMode(modeParDefaut, m);
 
   const apercu = charge?.apercu ?? null;
   const premiere = apercu && limiteAuRecit ? Math.max(1, Math.min(...Object.values(apercu.pageDe), apercu.pages)) : 1;
