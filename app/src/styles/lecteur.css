@@ -497,29 +497,14 @@ button.lecteur__nom {
   text-decoration: underline;
 }
 
-/* Le livre de la bibliothèque (F15) : le retour à la bibliothèque, en tête de la barre du lecteur */
-.lecteur__retour {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex: none;
-  font-size: var(--t-s);
-  font-weight: 700;
-  color: var(--canard);
-  text-decoration: none;
-}
-.lecteur__retour:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-@media (max-width: 560px) {
-  .lecteur__retour span {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-  }
+/* Le livre de la bibliothèque (F15) : le retour à la bibliothèque, dans la case du dragon, la flèche
+   à sa taille */
+.lecteur__vers-bibliotheque .ic {
+  /* La place du dragon (32 points), la flèche au milieu */
+  display: block;
+  width: 22px;
+  height: 22px;
+  margin: 5px;
 }
 
 /* Le cœur d'un livre de la bibliothèque (F15) : vide, cerné ; donné, plein de canard — la couleur de ce

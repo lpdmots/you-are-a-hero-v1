@@ -293,9 +293,9 @@ export function LecteurEnLigne({
           {/* Le lien de lecture : le dragon-livre seul, qui ramène à l'accueil du site, avant le titre
               du livre, qui reste le nom de la barre (demandé par le porteur le 23 octobre 2026) */}
           {retour ? (
-            <Link href={retour.href} className="lecteur__retour">
+            // À la place du dragon, dans la même case, séparée du titre par le même filet : la flèche seule
+            <Link href={retour.href} className="lecteur__site lecteur__vers-bibliotheque" aria-label={`Retour à la ${retour.nom.toLowerCase()}`} title={`Retour à la ${retour.nom.toLowerCase()}`}>
               <Icone nom="fleche-g" />
-              <span>{retour.nom}</span>
             </Link>
           ) : mention ? (
             <Link href="/" className="lecteur__site" aria-label="Il était une classe, accueil du site" title="Il était une classe">
