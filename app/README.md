@@ -888,3 +888,32 @@ aides demandent `ANTHROPIC_API_KEY` et `OPENAI_API_KEY` dans l'environnement de
 Vercel, puis un nouveau déploiement. Sans elles, l'application en ligne fonctionne ;
 tant que ce lot n'y est pas, chaque ✦ répond « L'aide n'a pas répondu » et compte dans
 le plafond du jour, puis, ce lot en ligne, il dit que les aides ne sont pas installées.
+
+## Les livres d'exemple
+
+Écrits par Claude avec les aides de l'application, présentés comme des livres d'exemple
+du site (plan, « Suite recommandée après l'ouverture », point 3). Chacun est un projet
+de classe sans classe ni élève ; son contenu fini est gardé sous Git dans
+`scripts/exemples/<livre>/` (`livre.json` et ses images), et se recharge sans aucun
+appel d'IA, arrivé à « Imprimer et partager » : ordre et numéros fixes, mise en page,
+« C'est voulu » et étapes déclarées compris. Seul le PDF définitif se refait.
+
+```bash
+npm run livres:exemple -- passeurs                      # dans la base locale, pour le compte local
+npm run livres:exemple -- passeurs --refaire            # le retire, avec ses images et ses PDF, puis le recharge
+npm run livres:exemple -- passeurs --production adresse # dit ce qui serait fait dans la vraie base
+npm run livres:exemple -- passeurs --production adresse --oui
+```
+
+Pour écrire ou reprendre un livre, en local seulement :
+
+1. `npm run livres:exemple -- passeurs --brouillon --refaire` crée le projet de travail
+   d'après la conception (`scripts/exemples/passeurs-de-brume.ts`), sans IA ;
+2. `npm run livres:atelier -- passeurs corriger | ecrire | portraits | images | titre`
+   appelle les aides par les fonctions du serveur, connecté comme le compte local, et
+   garde chaque proposition ; `textes` sort les textes du moment, `appliquer` pose les
+   textes relus (`essais-ia/livres/<livre>-relus.json`), `depense` dit ce qu'ont coûté
+   les appels du compte local depuis le premier de l'atelier ;
+3. le Livre se mène dans l'application, jusqu'au PDF définitif ;
+4. `npm run livres:exemple -- passeurs --exporter` garde le projet fini dans
+   l'instantané, à relire avant de le committer.

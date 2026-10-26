@@ -3447,6 +3447,55 @@ V6, le premier envoi à l'imprimeur.
    25 octobre 2026 : chaque livre se définit d'abord avec lui dans une
    conversation à part (sujet, longueur, images et leur budget), puis
    s'écrit en local avant d'aller dans la vraie base.
+   - **« Les passeurs de brume », entretien validé le 25 octobre 2026**
+     (« ok pour tout, budget 5 € validé ») :
+     - **Textes :** les vingt-quatre textes de la maquette gardés comme base
+       (3ᵉ personne, passé simple), passés à la correction de l'application
+       et portés à 90 à 140 mots ; les scènes vides écrites par « ✦ Écrire »
+       d'après leur consigne, reprises par Claude comme un enseignant ;
+       vocabulaire simple, réglage « 8 à 10 ans ».
+     - **Plan corrigé :** S025 (la loutre, reliée à rien) et le chapitre vide
+       « Les racines » à la corbeille ; S029 mène au sanctuaire, S031 vaut
+       depuis les deux chemins ; trois parties, huit chapitres, 40 scènes
+       hors corbeille, la limite gratuite.
+     - **Jeu :** une vraie fin et trois mauvaises (perdu dans la brume, la
+       chute, plus de volonté), chacune renvoyant au départ ; la volonté
+       compte (5 au départ, environ cinq pertes et deux gains, un passage à
+       numéro fixe quand elle tombe à 0) ; quatre objets qui servent
+       (lanterne de secours, carte du passeur, clé d'argent, clochette) ;
+       le dé du 52 décide par une phrase de choix ; l'énigme « quatre lunes
+       fois neuf étoiles, plus deux clés » mène au 38.
+     - **Auteurs :** projet de classe sans classe ni élève (les aides
+       servent comme pour un enseignant), sans page des auteurs ; ligne de
+       la page de titre « Un livre d'exemple d'Il était une classe » ; la
+       page de fin dit qu'il a été écrit par une IA, Claude, avec les aides
+       de l'application, et relu par le porteur.
+     - **Images :** les dix du livre créées par les aides (page de titre,
+       trois pleines pages en haute qualité aux 14, 50 et 61, six dans le
+       texte), les portraits de Lou, Marius et la chouette en référence ;
+       budget de 5 € pour tout le livre, textes compris, le porteur prévenu
+       à 2,50 €.
+     - **Méthode :** un script appelle les aides de l'application pour le
+       gros (écriture, correction, images), le navigateur intégré sert un
+       exemplaire de chaque aide à l'écran et tout le parcours du Livre,
+       jusqu'au PDF définitif ; une analyse courte au porteur (qualité de
+       chaque aide, frictions).
+     - **Chargement :** contenu final et images sous Git
+       (`app/scripts/exemples/`), rechargé sans nouvel appel d'IA par
+       `npm run livres:exemple -- passeurs` (local), puis, à sa demande,
+       `-- --production adresse` (à blanc) et `--oui` ; le livre arrive à
+       « Imprimer et partager », ordre et numéros fixes compris. L'histoire
+       d'essai (`histoire:essai`) reste intacte.
+     - **Écrit en local les 25 et 26 octobre 2026,** rien dans la vraie base :
+       40 passages de 88 à 147 mots, 39 pages A5, 10 images, PDF définitif
+       refait après rechargement de l'instantané. Dépense des aides : environ
+       0,76 dollar (84 appels, dont une image refaite). Mode d'emploi :
+       `app/README.md`, « Les livres d'exemple ». Constats de l'essai, sans
+       décision : la correction ne reçoit pas les cartes des personnages et
+       met le héros au féminin (10 textes sur 24) ; « ✦ Écrire » suppose un
+       seul chemin d'arrivée et change parfois de temps ; une correction au
+       degré 5 a donné la réponse de l'énigme ; les aides écrivent des
+       apostrophes droites, que le livre imprime telles quelles.
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le

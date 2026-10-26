@@ -35,6 +35,8 @@
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
     "livre:essai": "tsx scripts/livre-d-essai.ts",
     "livres:essai": "tsx --conditions=react-server scripts/livres-a-imprimer.ts",
+    "livres:exemple": "tsx --conditions=react-server scripts/livres-d-exemple.ts",
+    "livres:atelier": "tsx --conditions=react-server scripts/exemples/atelier.ts",
     "partages:essai": "tsx scripts/partages-d-essai.ts",
     "captures": "playwright test --config playwright.captures.config.ts",
     "verifier:production": "tsx scripts/verifier-production.ts",
