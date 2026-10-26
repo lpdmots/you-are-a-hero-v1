@@ -4,8 +4,8 @@ import { Bulle } from "@/composants/Bulle";
 import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { prochaineOuverture } from "@/domaine/horaires";
-import { majuscule } from "@/domaine/texte";
-import { livresDuPoste, type LivrePropose } from "@/serveur/livres-eleve";
+import { de, majuscule } from "@/domaine/texte";
+import { bibliothequeDuPoste, livresDuPoste, type LivreDeLaBibliotheque, type LivrePropose } from "@/serveur/livres-eleve";
 import { contexteEleve, histoiresDuPoste } from "@/serveur/recit-eleve";
 import { EnteteEleve } from "../EnteteEleve";
 import styles from "./lecture.module.css";
@@ -20,9 +20,10 @@ export const metadata: Metadata = { title: "Lire" };
  */
 export default async function Page() {
   const contexte = await contexteEleve();
-  const [histoires, livres] = await Promise.all([
+  const [histoires, livres, bibliotheque] = await Promise.all([
     contexte.ouvert ? histoiresDuPoste(contexte).then((h) => h.filter((x) => x.parties.some((p) => p.chapitres.some((c) => c.lisible)))) : Promise.resolve([]),
     livresDuPoste(contexte),
+    bibliothequeDuPoste(contexte),
   ]);
   const rouvre = contexte.ouvert ? null : prochaineOuverture(contexte.plages, new Date());
   const [premier, ...autres] = livres;
@@ -37,7 +38,11 @@ export default async function Page() {
           <Icone nom="livre" />
           Lire
         </h1>
+        {/* L'année terminée : la page le dit, pour que rien ne paraisse en panne (F15-AC16) */}
+        {contexte.lectureSeule ? <p className={styles.finDAnnee}>L’année est finie : tu peux encore lire vos livres, ici ou chez toi.</p> : null}
 
+        {/* L'année terminée, rien ne s'écrit : l'histoire en cours n'a plus lieu d'être (F15-AC16) */}
+        {contexte.lectureSeule ? null : (
         <section className={styles.bloc} aria-labelledby="en-cours-t">
           <h2 id="en-cours-t">{histoires.length > 1 ? "Nos histoires en cours" : "Notre histoire en cours"}</h2>
           {!contexte.ouvert ? (
@@ -72,10 +77,12 @@ export default async function Page() {
             <p className={styles.rien}>Tu n’as pas encore de chapitre : il n’y a rien à lire à l’essai pour l’instant.</p>
           )}
         </section>
+        )}
 
         <section className={styles.bloc} aria-labelledby="a-lire-t">
           <h2 id="a-lire-t" className={styles.titreAvecBulle}>
-            Livres à lire
+            {/* Par leur source, pour les distinguer de la bibliothèque (critique du 26 octobre 2026) */}
+            Les livres {de(contexte.prof)}
             <Bulle question="Quels livres trouve-t-on ici ?">
               <span>Des livres terminés que {contexte.prof} te propose. Ici, tu lis pour le plaisir : rien à écrire, rien à corriger.</span>
             </Bulle>
@@ -97,6 +104,21 @@ export default async function Page() {
             </>
           )}
         </section>
+
+        {/* Après les livres de l'enseignant, ceux de la bibliothèque, de l'âge de la classe (F15-AC20) */}
+        {bibliotheque.length ? (
+          <section className={styles.bloc} aria-labelledby="bibliotheque-t">
+            <h2 id="bibliotheque-t">La bibliothèque</h2>
+            <p className={styles.sousTitre}>Des livres écrits par d’autres classes, choisis pour ton âge.</p>
+            <ul className={styles.livres}>
+              {bibliotheque.map((l) => (
+                <li key={l.adresse}>
+                  <LivrePublie livre={l} />
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </main>
     </>
   );
@@ -130,6 +152,45 @@ function Livre({ livre, grand = false }: { livre: LivrePropose; grand?: boolean 
         {!livre.deMaClasse && livre.ligne ? <span className={`${styles.propose__ligne} recit`}>{majuscule(livre.ligne)}</span> : null}
         <span className={styles.propose__meta}>{contenu}</span>
         <span className={`btn ${grand ? "btn--primaire btn--grand" : ""} ${styles.propose__lire}`}>
+          <Icone nom="livre" />
+          Lire
+        </span>
+      </span>
+    </Link>
+  );
+}
+
+/** Un livre de la bibliothèque, comme un livre proposé : sa page de titre, ce qu'il contient, ses cœurs, « Lire ». */
+function LivrePublie({ livre }: { livre: LivreDeLaBibliotheque }) {
+  const contenu = livre.aChoix ? `Livre à choix${livre.passages ? ` · ${livre.passages} passages` : ""}` : "Récit";
+  return (
+    <Link className={styles.propose} href={`/travail/lire/bibliotheque/${livre.adresse}`}>
+      <span className={styles.couverture} aria-hidden="true">
+        {livre.image ? (
+          // eslint-disable-next-line @next/next/no-img-element -- servie par l'adresse du livre publié
+          <img src={`/images/publie/${livre.adresse}/${livre.image}?v=1`} alt="" />
+        ) : null}
+        <span className={styles.couverture__titre}>{livre.titre}</span>
+        <svg viewBox="0 0 120 10">
+          <path d="M0 5h52M68 5h52" />
+          <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
+        </svg>
+      </span>
+      <span className={styles.propose__texte}>
+        <span className={styles.propose__titre}>{livre.titre}</span>
+        {/* Qui l'a écrit, comme sa page de titre le dit : une autre classe, ou un auteur */}
+        {livre.ligne ? <span className={`${styles.propose__ligne} recit`}>{majuscule(livre.ligne)}</span> : null}
+        <span className={styles.propose__meta}>
+          {contenu}
+          {livre.coeurs > 0 ? (
+            <span className={styles.coeurs} aria-label={`${livre.coeurs} cœur${livre.coeurs > 1 ? "s" : ""}`}>
+              {" · "}
+              <Icone nom="coeur" />
+              {livre.coeurs}
+            </span>
+          ) : null}
+        </span>
+        <span className={`btn ${styles.propose__lire}`}>
           <Icone nom="livre" />
           Lire
         </span>

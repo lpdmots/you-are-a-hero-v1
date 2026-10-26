@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Messages } from "@/composants/Messages";
 import { mesEncouragements } from "@/serveur/encouragements";
-import { contexteEleve, sceneDuPoste } from "@/serveur/recit-eleve";
+import { contexteDeTravail, sceneDuPoste } from "@/serveur/recit-eleve";
 import { EnteteEleve } from "../../EnteteEleve";
 import { SceneEleve } from "./SceneEleve";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Ma scène" };
  */
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const contexte = await contexteEleve();
+  const contexte = await contexteDeTravail();
   if (!contexte.ouvert) redirect("/travail");
   const scene = await sceneDuPoste(contexte, id);
   if (!scene) notFound();

@@ -458,3 +458,25 @@
     justify-self: start;
   }
 }
+
+/* Les cœurs d'un livre de la bibliothèque (F15-AC20) : le signe plein, en canard, avant le nombre */
+.coeurs :global(.ic) {
+  width: 13px;
+  height: 13px;
+  margin-right: 2px;
+  vertical-align: -2px;
+  color: var(--canard);
+  fill: currentColor;
+}
+
+/* L'année terminée : une phrase, sous le titre, sur le ton de l'élève */
+.finDAnnee {
+  margin: -6px 0 18px;
+  font-size: var(--t-m);
+  color: var(--graphite-2);
+}
+/* Sous le titre d'une partie : d'où viennent ses livres, en clair plutôt que derrière un « i » */
+.sousTitre {
+  margin: -6px 0 12px;
+  color: var(--graphite-2);
+}

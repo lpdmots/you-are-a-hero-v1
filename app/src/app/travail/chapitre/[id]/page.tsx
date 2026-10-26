@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Messages } from "@/composants/Messages";
-import { chapitreDuPoste, contexteEleve } from "@/serveur/recit-eleve";
+import { chapitreDuPoste, contexteDeTravail } from "@/serveur/recit-eleve";
 import { EnteteEleve } from "../../EnteteEleve";
 import { ChapitreEleve } from "./ChapitreEleve";
 
@@ -15,7 +15,7 @@ export const metadata: Metadata = { title: "Mon chapitre" };
 export default async function Page({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ vue?: string }> }) {
   const { id } = await params;
   const { vue } = await searchParams;
-  const contexte = await contexteEleve();
+  const contexte = await contexteDeTravail();
   if (!contexte.ouvert) redirect("/travail");
   const chapitre = await chapitreDuPoste(contexte, id, { chemins: vue === "chemins" });
   if (!chapitre) notFound();

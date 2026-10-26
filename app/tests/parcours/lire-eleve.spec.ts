@@ -50,7 +50,7 @@ test("F12-AC12, F12-AC24, F12-AC26, F04-AC22 — « Lire » : l'histoire en cour
   const enCours = alice.page.getByRole("region", { name: "Notre histoire en cours" });
   await expect(enCours).toContainText("Les passeurs de brume");
   await expect(enCours.getByRole("link", { name: "Lire à l’essai" })).toBeVisible();
-  const aLire = alice.page.getByRole("region", { name: /Livres à lire/ });
+  const aLire = alice.page.getByRole("region", { name: /Les livres de/ });
   const livres = aLire.getByRole("link");
   await expect(livres).toHaveCount(2);
   await expect(livres.first()).toContainText("Écrit par ta classe");

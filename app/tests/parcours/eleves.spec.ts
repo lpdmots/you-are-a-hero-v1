@@ -258,7 +258,7 @@ test("F06-AC78 — élève retiré : son poste revient au choix des profils, san
   await taperCode(bilal.page, "Bilal", codes.Bilal);
   await expect(bilal.page).toHaveURL(/\/travail$/);
 
-  // Année terminée : les deux postes se ferment de la même façon, et la classe ne s'ouvre plus (F01-AC18)
+  // Année terminée : les deux postes se ferment de la même façon ; la classe ne s'ouvre plus que pour « Lire » (F01-AC18, F15-AC16)
   await page.getByRole("button", { name: "Terminer l’année" }).click();
   await page.getByRole("alertdialog").getByRole("button", { name: "Terminer l’année" }).click();
   await expect(page.getByText(/Année terminée le/)).toBeVisible();
@@ -267,7 +267,12 @@ test("F06-AC78 — élève retiré : son poste revient au choix des profils, san
     await expect(entreeDeLaClasse(poste.page)).toBeVisible();
   }
   await ouvrirLaClasse(alice.page, classe.identifiant, classe.motDePasse);
-  await expect(alice.page.getByText(/Ce n’est pas le bon identifiant, ou pas le bon mot de passe\./)).toBeVisible();
+  await taperCode(alice.page, "Alice", codes.Alice);
+  await expect(alice.page).toHaveURL(/\/travail\/lecture$/);
+  await expect(alice.page.getByRole("navigation", { name: "Espace élève" }).getByRole("link", { name: "Mon travail" })).toHaveCount(0);
+  await alice.page.goto("/travail");
+  await expect(alice.page).toHaveURL(/\/travail\/lecture$/);
+  await alice.contexte.clearCookies();
 
   // Rouverte : Alice entre avec les mêmes informations de classe et le même code (F01-AC19)
   await page.getByRole("button", { name: "Rouvrir la classe" }).click();

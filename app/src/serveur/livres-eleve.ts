@@ -5,6 +5,7 @@ import { estUuid } from "./recit";
 import type { ContexteEleve } from "./recit-eleve";
 import { versionAvecObjets } from "@/domaine/inventaire";
 import type { VersionPartagee } from "@/domaine/partage";
+import { ADRESSE_VALIDE } from "@/domaine/bibliotheque";
 
 /**
  * Les livres que l'élève lit pour le plaisir (F12.3) : les versions que l'enseignant de sa
@@ -41,4 +42,44 @@ export async function livreDuPoste(c: ContexteEleve, projetId: string): Promise<
   if (error) throw new Error(`Livre illisible : ${error.message}`);
   const lu = data as { version: VersionPartagee | null; lecture: unknown } | null;
   return lu?.version ? { version: versionAvecObjets(lu.version, await nomsDesObjets(projetId)), lecture: lu.lecture ?? null } : null;
+}
+
+// ——— La bibliothèque dans « Lire » (F15-AC20) ———
+
+export type LivreDeLaBibliotheque = {
+  adresse: string;
+  titre: string;
+  aChoix: boolean;
+  presentation: string;
+  /** La ligne de sa page de titre : la classe qui l'a écrit, ou son auteur */
+  ligne: string | null;
+  /** L'image de la page de titre, servie par l'adresse du livre */
+  image: string | null;
+  passages: number;
+  coeurs: number;
+  /** Le cœur de cet élève, pour son profil */
+  donne: boolean;
+};
+
+/** Les livres de la bibliothèque de l'âge de la classe, si l'enseignant ne l'a pas éteinte ; jamais « Adultes ». */
+export async function bibliothequeDuPoste(c: ContexteEleve): Promise<LivreDeLaBibliotheque[]> {
+  const base = await clientDuPoste(c.poste);
+  const { data, error } = await base.rpc("bibliotheque_du_poste");
+  if (error) throw new Error(`Bibliothèque illisible : ${error.message}`);
+  type Ligne = { adresse: string; titre: string; a_choix: boolean; page: { image?: string | null; illustration?: string | null; ligne?: string | null } | null; dernier: number | null; presentation: string; coeurs: number; donne: boolean };
+  return ((data ?? []) as Ligne[]).map((l) => ({
+    adresse: l.adresse, titre: l.titre, aChoix: l.a_choix, presentation: l.presentation, ligne: l.page?.ligne?.trim() || null,
+    image: l.page?.image ?? l.page?.illustration ?? null, passages: l.a_choix ? (l.dernier ?? 0) : 0, coeurs: l.coeurs ?? 0, donne: l.donne === true,
+  }));
+}
+
+export async function livreDeLaBibliothequeDuPoste(c: ContexteEleve, adresse: string): Promise<{ version: VersionPartagee; lecture: unknown; coeurs: number; donne: boolean } | null> {
+  if (!ADRESSE_VALIDE.test(adresse)) return null;
+  const base = await clientDuPoste(c.poste);
+  const { data, error } = await base.rpc("livre_de_la_bibliotheque_du_poste", { p_adresse: adresse });
+  if (error) throw new Error(`Livre illisible : ${error.message}`);
+  const lu = data as { version: VersionPartagee | null; projet: string; lecture: unknown; coeurs: number; donne: boolean } | null;
+  return lu?.version
+    ? { version: versionAvecObjets(lu.version, await nomsDesObjets(lu.projet)), lecture: lu.lecture ?? null, coeurs: lu.coeurs ?? 0, donne: lu.donne === true }
+    : null;
 }

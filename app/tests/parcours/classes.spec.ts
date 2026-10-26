@@ -269,7 +269,7 @@ test("F01-AC18, F01-AC19, F01-AC26 — terminer l'année, consulter la classe en
 
   await page.getByRole("button", { name: "Terminer l’année" }).click();
   const dialogue = page.getByRole("alertdialog");
-  await expect(dialogue).toContainText("Les élèves ne pourront plus ouvrir la classe sur un ordinateur.");
+  await expect(dialogue).toContainText("Les élèves ne pourront plus écrire ; ils garderont « Lire »");
   await expect(dialogue).toContainText("Rien n’est supprimé");
   await expect(dialogue).toContainText("Vous pourrez rouvrir la classe.");
   await dialogue.getByRole("button", { name: "Terminer l’année" }).click();

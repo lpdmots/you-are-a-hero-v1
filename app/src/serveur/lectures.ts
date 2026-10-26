@@ -129,19 +129,24 @@ export type Classe = {
   /** Les élèves retirés de la classe : leur profil reste connu s'ils ont écrit (F01-AC22) */
   retires: Eleve[];
   projets: { id: string; titre: string; recit: Recit }[];
+  /** La bibliothèque dans « Lire », allumée par défaut (F15-AC20), et l'âge qu'elle montre : celui du projet le plus récent */
+  bibliothequeDansLire: boolean;
+  ageDeLaBibliotheque: AgeDesLecteurs;
+  /** Le projet qui donne cet âge, nommé dans la fiche « Lire » */
+  projetDeLAge: string | null;
 };
 
 const SELECT_CLASSE =
-  "id, nom, annee_debut, terminee_le, identifiant, horaires_limites, cree_le, " +
+  "id, nom, annee_debut, terminee_le, identifiant, horaires_limites, bibliotheque_dans_lire, cree_le, " +
   "horaires(jours, de, a, rang), " +
   "inscriptions(id, retire_le, eleves(id, prenom, nom, couleur)), " +
-  "projets(id, titre, recit, cree_le)";
+  "projets(id, titre, recit, cree_le, age_des_lecteurs)";
 
 type LigneClasse = {
-  id: string; nom: string; annee_debut: number; terminee_le: string | null; identifiant: string; horaires_limites: boolean;
+  id: string; nom: string; annee_debut: number; terminee_le: string | null; identifiant: string; horaires_limites: boolean; bibliotheque_dans_lire: boolean;
   horaires: { jours: number[]; de: string; a: string; rang: number }[];
   inscriptions: { id: string; retire_le: string | null; eleves: { id: string; prenom: string; nom: string | null; couleur: number } | null }[];
-  projets: { id: string; titre: string; recit: Recit; cree_le: string }[];
+  projets: { id: string; titre: string; recit: Recit; cree_le: string; age_des_lecteurs: AgeDesLecteurs }[];
 };
 
 function classeDepuis(c: LigneClasse): Classe {
@@ -161,6 +166,10 @@ function classeDepuis(c: LigneClasse): Classe {
       .map((i) => ({ ...i.eleves!, inscriptionId: i.id })),
     retires: (c.inscriptions ?? []).filter((i) => i.retire_le !== null && i.eleves).map((i) => i.eleves!),
     projets: [...(c.projets ?? [])].sort((x, y) => x.cree_le.localeCompare(y.cree_le)).map(({ id, titre, recit }) => ({ id, titre, recit })),
+    bibliothequeDansLire: c.bibliotheque_dans_lire !== false,
+    // Comme la base : le projet le plus récent, sinon « 8 à 10 ans »
+    ageDeLaBibliotheque: [...(c.projets ?? [])].sort((x, y) => y.cree_le.localeCompare(x.cree_le))[0]?.age_des_lecteurs ?? "8-10",
+    projetDeLAge: [...(c.projets ?? [])].sort((x, y) => y.cree_le.localeCompare(x.cree_le))[0]?.titre ?? null,
   };
 }
 

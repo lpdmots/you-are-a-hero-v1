@@ -21,11 +21,14 @@ export function EnteteEleve({ contexte, auTravail, ici = "travail" }: {
     <>
       <VeillePoste attendu="eleve" auTravail={auTravail} />
       <header className={styles.barre}>
-        <Logo href="/travail" />
+        <Logo href={contexte.lectureSeule ? "/travail/lecture" : "/travail"} />
         <nav className={styles.nav} aria-label="Espace élève">
-          <Link href="/travail" aria-current={ici === "travail" ? "page" : undefined}>
-            Mon travail
-          </Link>
+          {/* L'année terminée : « Lire » seul (F15-AC16) */}
+          {contexte.lectureSeule ? null : (
+            <Link href="/travail" aria-current={ici === "travail" ? "page" : undefined}>
+              Mon travail
+            </Link>
+          )}
           <Link href="/travail/lecture" aria-current={ici === "lecture" ? "page" : undefined}>
             Lire
           </Link>

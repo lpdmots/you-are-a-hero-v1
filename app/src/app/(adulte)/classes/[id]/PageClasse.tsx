@@ -13,13 +13,14 @@ import { formerIdentifiant, identifiantConvient, identifiantPourClasse } from "@
 import { libelleAnnee } from "@/domaine/annee";
 import { trier } from "@/domaine/eleves";
 import { libelleRecit } from "@/domaine/projets";
+import { NOMS_DES_AGES } from "@/domaine/aides-ia";
 import { pluriel } from "@/domaine/texte";
 import type { Classe } from "@/serveur/lectures";
 import { AideClasses } from "../AideClasses";
 import { horairesEnTexte } from "../MesClasses";
 import {
   annulerRetrait, changerMotDePasse, proposerMotDePasse, renommerClasse, retirerEleve, rouvrirClasse,
-  supprimerClasse, supprimerClassePassee, terminerAnnee, voirCodes, voirMotDePasse,
+  supprimerClasse, supprimerClassePassee, terminerAnnee, voirCodes, voirMotDePasse, reglerBibliotheque,
 } from "../actions";
 import styles from "../classes.module.css";
 import { PanneauEleve } from "./PanneauEleve";
@@ -424,6 +425,8 @@ export function PageClasse({
             </section>
           ) : null}
 
+          <BibliothequeDansLire classe={classe} />
+
           <section className={`carnet-fiche ${styles.fiche}`} aria-labelledby="fiche-projets">
             <header>
               <h2 id="fiche-projets">Projets de la classe</h2>
@@ -499,7 +502,7 @@ export function PageClasse({
           }
         >
           <ul className="dialogue__faits">
-            <li>Les élèves ne pourront plus ouvrir la classe sur un ordinateur.</li>
+            <li>Les élèves ne pourront plus écrire ; ils garderont « Lire », chez eux aussi, jusqu’à ce que vous supprimiez la classe.</li>
             <li>
               Rien n’est supprimé
               {ouvert.projets ? ` : vous gardez ${ouvert.projets > 1 ? `ses ${ouvert.projets} projets` : "son projet"}, les textes et les livres` : ""}.
@@ -586,5 +589,46 @@ export function PageClasse({
         </Dialogue>
       ) : null}
     </div>
+  );
+}
+
+/**
+ * « Lire » dans les réglages de la classe (F15-AC20) : après les livres de l'enseignant, les élèves
+ * trouvent ceux de la bibliothèque de leur âge ; allumée par défaut, elle s'éteint d'un geste. Une
+ * classe terminée garde « Lire » : le réglage vaut pour elle aussi.
+ */
+function BibliothequeDansLire({ classe }: { classe: Classe }) {
+  const dire = useMessage();
+  const routeur = useRouter();
+  const [oui, setOui] = useState(classe.bibliothequeDansLire);
+  const basculer = async (v: boolean) => {
+    setOui(v);
+    const r = await reglerBibliotheque(classe.id, v);
+    if (!r.ok) {
+      setOui(!v);
+      return dire({ texte: r.erreur });
+    }
+    routeur.refresh();
+  };
+  return (
+    <section className={`carnet-fiche ${styles.fiche}`} aria-labelledby="fiche-lire">
+      <header>
+        <h2 id="fiche-lire">Lire</h2>
+      </header>
+      <div className="carnet-fiche__corps">
+        <label className="inter">
+          <input type="checkbox" role="switch" checked={oui} onChange={(e) => void basculer(e.target.checked)} aria-label="La bibliothèque dans « Lire »" />
+          <span className="inter__piste" aria-hidden="true" />
+          <span>La bibliothèque dans « Lire »</span>
+        </label>
+        <p className={styles.ficheAide}>
+          {oui
+            ? classe.ageDeLaBibliotheque === "adultes"
+              ? "Votre dernier projet s’adresse à des adultes : la bibliothèque n’a rien pour vos élèves."
+              : `Après vos livres, vos élèves trouvent ceux de la bibliothèque du site pour les ${NOMS_DES_AGES[classe.ageDeLaBibliotheque]}${classe.projetDeLAge ? `, l’âge de « ${classe.projetDeLAge} »` : ""}. « Lire » reste ouvert après la fin de l’année.`
+            : "Vos élèves ne trouvent que vos livres."}
+        </p>
+      </div>
+    </section>
   );
 }

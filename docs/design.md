@@ -2690,6 +2690,26 @@ la carte, « · ♥ 12 » au bout de la ligne de l'âge et du type.
   la confirmation du retrait ; le motif de l'éditeur sans lien vers le
   passage.
 
+**Lot 6, « Lire » côté élève.** Lectures : 26/40 (informée) et 26/40
+(indépendante), corrigées sans nouvelle mesure.
+
+- **La bibliothèque** suit les livres de l'enseignante, sous son titre et
+  une phrase en clair, « Des livres écrits par d'autres classes, choisis pour
+  ton âge. », plutôt qu'un « i » qu'un enfant n'ouvre pas ; chaque livre a
+  la carte des livres proposés, sa ligne de page de titre (qui l'a écrit),
+  « Livre à choix · 52 passages · ♥ 12 », et un « Lire » cerné, le seul
+  bouton plein restant au livre de la classe. La partie de l'enseignante
+  s'appelle « Les livres de Mme Laurent ».
+- **L'année terminée :** la barre n'a plus que « Lire », la page dit
+  « L'année est finie : tu peux encore lire vos livres, ici ou chez toi. »,
+  et « Notre histoire en cours » disparaît.
+- **La fiche « Lire »** de la page de la classe, un interrupteur, et sa
+  phrase : l'âge des livres et le projet qui le donne, « « Lire » reste
+  ouvert après la fin de l'année. »
+- Laissés en l'état : aucun repère des livres commencés ou aimés dans la
+  liste ; le titre répété sous la couverture sur un téléphone ; pas de lien
+  « Voir ces livres » dans la fiche de l'enseignant.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

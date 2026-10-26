@@ -128,7 +128,7 @@ describe("Classes, années et élèves (F01.1)", () => {
     expect((await laurent.base.from("inscriptions").select("id").eq("classe_id", classe.id)).data).toEqual([]);
   });
 
-  it("F01-AC18 — terminer l'année : la classe ne s'ouvre plus sur un poste, les projets restent", async () => {
+  it("F01-AC18, F15-AC16 — terminer l'année : les postes ouverts se ferment ; la classe se rouvre pour « Lire » seul, rien n'y écrit ; les projets restent", async () => {
     const classe = await creerClasse(laurent, "CM1-CM2", 2025);
     const eleves = await inscrire(laurent, classe.id, ["Alice", "Bilal"]);
     const { data: projet } = await creerProjet(laurent, "classe", "choix", "Le phare des sept vents", classe.id);
@@ -137,9 +137,18 @@ describe("Classes, années et élèves (F01.1)", () => {
 
     expect((await laurent.base.from("classes").update({ terminee_le: new Date().toISOString() }).eq("id", classe.id)).error).toBeNull();
 
-    expect(await ouvrirPoste(classe.id)).toBeNull();
     expect(await etat(poste)).toBeNull();
-    expect((await (await poste.base()).from("classes").select("id")).data).toEqual([]);
+    // Un nouveau poste s'ouvre, en lecture : l'élève s'y identifie, la classe et ses élèves s'y lisent
+    const lecture = (await ouvrirPoste(classe.id))!;
+    expect(lecture).not.toBeNull();
+    expect(await identifier(lecture, eleves[0].inscriptionId)).toBe(true);
+    expect(await etat(lecture)).toMatchObject({ classe_id: classe.id, eleve_id: eleves[0].id, terminee: true });
+    const base = await lecture.base();
+    expect((await base.from("classes").select("id")).data).toEqual([{ id: classe.id }]);
+    // Rien de ce qui sert au travail : ni le projet, ni le travail ouvert
+    expect((await base.from("projets").select("id")).data ?? []).toEqual([]);
+    expect((await base.rpc("travail_ouvert")).data).not.toBe(true);
+
     expect((await laurent.base.from("projets").select("titre").eq("id", projet!.id).single()).data?.titre).toBe("Le phare des sept vents");
     expect((await laurent.base.from("inscriptions").select("id").eq("classe_id", classe.id)).data).toHaveLength(2);
   });

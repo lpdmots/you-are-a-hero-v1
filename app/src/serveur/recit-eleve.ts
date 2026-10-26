@@ -30,6 +30,8 @@ export type ContexteEleve = {
   moi: Eleve;
   ouvert: boolean;
   plages: Plage[];
+  /** L'année de la classe est terminée : « Lire » seul, sans rien écrire (F15-AC16) */
+  lectureSeule: boolean;
 };
 
 /** L'élève identifié sur ce poste ; sinon, la page revient à l'écran qui convient. */
@@ -57,10 +59,21 @@ export const contexteEleve = cache(async (): Promise<ContexteEleve> => {
     nomAffiche: enseignant?.nom_affiche ?? null,
     eleves,
     moi,
-    ouvert: ouvert === true,
+    ouvert: ouvert === true && !poste.lectureSeule,
     plages: (horaires ?? []).map((h) => ({ jours: h.jours, de: h.de.slice(0, 5), a: h.a.slice(0, 5) })),
+    lectureSeule: poste.lectureSeule,
   };
 });
+
+/**
+ * Une page de travail, l'année de la classe terminée : seul « Lire » reste ouvert (F15-AC16). Les
+ * pages qui écrivent ou montrent le récit y renvoient ; la base, elle, n'y ouvre déjà rien.
+ */
+export async function contexteDeTravail(): Promise<ContexteEleve> {
+  const c = await contexteEleve();
+  if (c.lectureSeule) redirect("/travail/lecture");
+  return c;
+}
 
 export type CarteChapitre = Repere & {
   id: string; titre: string; couleur: number;

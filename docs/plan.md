@@ -3650,7 +3650,23 @@ V6, le premier envoi à l'imprimeur.
      jusqu'à sa suppression ; après les livres de l'enseignant, ceux de la
      bibliothèque de l'âge de la classe, jamais « Adultes » ; le réglage de
      la classe ; les cœurs par profil (F15-AC16, AC20, F01-AC18 révisé).
-     Migration.
+     Migration. **Construit le 26 octobre 2026,** migration
+     `lire_cote_eleve` en base locale seulement : des fonctions « lisibles »
+     qui admettent une classe terminée (le travail reste gardé par
+     `classe_du_poste`, inchangée), les règles de lecture du poste réécrites
+     avec elles, `ouvrir_poste` et `etat_poste` (qui dit l'année terminée),
+     `classes.bibliotheque_dans_lire`, et quatre fonctions du poste pour la
+     bibliothèque (liste, livre, lecture gardée, cœur par profil). Côté
+     application : `contexteDeTravail` renvoie à « Lire » toute page de
+     travail d'une classe terminée, la barre n'y a plus « Mon travail » ;
+     « La bibliothèque » sous « Livres à lire » ; `/travail/lire/bibliotheque/` ;
+     la fiche « Lire » de la page de la classe. Précisions : les livres que
+     l'enseignant propose déjà ne se répètent pas dans la bibliothèque ;
+     « À mes classes » reste proposé avec une classe en cours (F12-AC24),
+     une classe terminée continuant de lire ce qui lui était ouvert ; les
+     lectures d'élèves dans les livres de la bibliothèque restent après la
+     suppression de leur classe (peu de données) ; « Terminer l'année » le
+     dit dans son dialogue.
   7. **Accueil, conversion et essai :** « Livres de l'accueil » choisis parmi
      les livres publiés (F14-AC40 révisé, F15-AC19) ; la conversion des deux
      livres du porteur, en local seulement, en ligne à sa demande ; un essai

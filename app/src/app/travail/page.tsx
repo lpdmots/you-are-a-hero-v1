@@ -5,7 +5,7 @@ import { ecrireHeure, finDePlage, prochaineOuverture } from "@/domaine/horaires"
 import { majuscule } from "@/domaine/texte";
 import type { Categorie } from "@/domaine/encouragements";
 import { mesEncouragements } from "@/serveur/encouragements";
-import { contexteEleve, histoiresDuPoste } from "@/serveur/recit-eleve";
+import { contexteDeTravail, histoiresDuPoste } from "@/serveur/recit-eleve";
 import { monTravail } from "@/serveur/travail-eleve";
 import { Encouragements } from "./Encouragements";
 import { EnteteEleve } from "./EnteteEleve";
@@ -22,7 +22,7 @@ export const metadata: Metadata = { title: "Mon travail" };
  * siennes s'ouvrent, les autres montrent leur titre et leur image (F03-AC15).
  */
 export default async function MonTravail({ searchParams }: { searchParams: Promise<{ texte?: string }> }) {
-  const contexte = await contexteEleve();
+  const contexte = await contexteDeTravail();
   // Ce que la page d'une scène vient de faire du texte en la quittant (F06-AC29, F08-AC28)
   const { texte } = await searchParams;
   // Hors des horaires, la base ne rend rien du récit : la page dit seulement quand il rouvre

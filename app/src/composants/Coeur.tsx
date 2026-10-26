@@ -42,13 +42,17 @@ const retenir = (adresse: string, oui: boolean) => {
   }
 };
 
-export function Coeur({ adresse, nombre, variante = "tiroir" }: { adresse: string; nombre: number; variante?: "tiroir" | "fin" }) {
-  const [donne, setDonne] = useState(false);
+/** Un élève identifié donne son cœur pour son profil, par son poste (F15-AC20) : ni identifiant de navigateur, ni stockage. */
+export type CoeurDuProfil = { donne: boolean; basculer: (oui: boolean) => Promise<{ ok: boolean; coeurs?: number; donne?: boolean }> };
+
+export function Coeur({ adresse, nombre, variante = "tiroir", profil }: { adresse: string; nombre: number; variante?: "tiroir" | "fin"; profil?: CoeurDuProfil }) {
+  const [donne, setDonne] = useState(profil?.donne ?? false);
   const [compte, setCompte] = useState(nombre);
   const [envoi, setEnvoi] = useState(false);
 
   // Ce que ce navigateur sait déjà, puis ce que dit la base
   useEffect(() => {
+    if (profil) return;
     // eslint-disable-next-line react-hooks/set-state-in-effect -- le navigateur n'est lisible qu'une fois la page montée
     setDonne(donnes().includes(adresse));
     let vivant = true;
@@ -63,6 +67,7 @@ export function Coeur({ adresse, nombre, variante = "tiroir" }: { adresse: strin
     return () => {
       vivant = false;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- le profil ne change pas pendant la page
   }, [adresse]);
 
   const basculer = async () => {
@@ -72,13 +77,15 @@ export function Coeur({ adresse, nombre, variante = "tiroir" }: { adresse: strin
     setDonne(oui);
     setCompte((c) => Math.max(0, c + (oui ? 1 : -1)));
     try {
-      const r = (await (
-        await fetch("/coeurs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ adresse, lecteur: lecteur(), oui }) })
-      ).json()) as { ok: boolean; coeurs?: number; donne?: boolean };
+      const r = profil
+        ? await profil.basculer(oui)
+        : ((await (
+            await fetch("/coeurs", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ adresse, lecteur: lecteur(), oui }) })
+          ).json()) as { ok: boolean; coeurs?: number; donne?: boolean });
       if (r.ok && typeof r.coeurs === "number") {
         setCompte(r.coeurs);
         setDonne(oui);
-        retenir(adresse, oui);
+        if (!profil) retenir(adresse, oui);
       }
     } catch {
       // Le cœur reste comme on l'a vu ; il se relira à la prochaine visite

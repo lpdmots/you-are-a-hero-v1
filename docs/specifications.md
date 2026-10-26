@@ -10059,7 +10059,8 @@ livres de la bibliothèque de l'âge de la classe (F15-AC20).
   classe en cours CM1-CM2, lorsqu'Alice ouvre ses lectures, alors elle y
   trouve « Le phare » sans la mention « Écrit par ta classe » ; étant donné
   un adulte sans classe en cours, alors le partage de son récit personnel ne
-  propose que le lien.
+  propose que le lien (révisé le 25 octobre 2026 par F15 : la bibliothèque,
+  le lien seul ne se créant plus).
 
 **Justification :** même terminé, un livre n'est pas nécessairement destiné
 aux autres classes ; l'enseignant peut réutiliser une intrigue dont il souhaite

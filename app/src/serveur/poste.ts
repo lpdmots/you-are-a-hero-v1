@@ -27,7 +27,11 @@ const optionsCookie = (dureeSecondes: number) => ({
   maxAge: dureeSecondes,
 });
 
-export type EtatPoste = { posteId: string; classeId: string; inscriptionId: string | null; eleveId: string | null };
+export type EtatPoste = {
+  posteId: string; classeId: string; inscriptionId: string | null; eleveId: string | null;
+  /** L'année de la classe est terminée : « Lire » seul reste ouvert, jusqu'à la suppression de la classe (F15-AC16) */
+  lectureSeule: boolean;
+};
 
 /** État du poste d'après son cookie ; null si la classe n'y est pas, ou plus, ouverte. */
 export const etatDuPoste = cache(async (): Promise<EtatPoste | null> => {
@@ -42,6 +46,7 @@ export const etatDuPoste = cache(async (): Promise<EtatPoste | null> => {
     classeId: ligne.classe_id,
     inscriptionId: ligne.inscription_id ?? null,
     eleveId: ligne.eleve_id ?? null,
+    lectureSeule: ligne.terminee === true,
   };
 });
 
@@ -101,7 +106,7 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
   const motDePasse = normaliserMotDePasse(motDePasseSaisi);
   const { data: classe } = await service
     .from("classes")
-    .select("id, terminee_le, classes_secrets(mot_de_passe_chiffre)")
+    .select("id, supprimee_le, classes_secrets(mot_de_passe_chiffre)")
     .eq("identifiant", identifiant)
     .maybeSingle();
 
@@ -117,7 +122,8 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
     } catch {
       console.error(`Mot de passe de la classe ${classe.id} illisible avec la clé de ce serveur.`);
     }
-    juste = attendu !== null && memeSecret(attendu, motDePasse) && classe.terminee_le === null;
+    // Une classe terminée s'ouvre encore, pour « Lire » seul ; une classe supprimée, jamais (F15-AC16)
+    juste = attendu !== null && memeSecret(attendu, motDePasse) && classe.supprimee_le === null;
   } else {
     memeSecret(motDePasse, "une comparaison pour rien"); // même durée, que l'identifiant existe ou non
   }
@@ -132,7 +138,7 @@ export async function ouvrirLaClasse(identifiantSaisi: string, motDePasseSaisi: 
   const jeton = nouveauJeton();
   const { data: posteId, error } = await service.rpc("ouvrir_poste", { p_classe: classe.id, p_jeton_hash: empreinte(jeton) });
   if (error) throw new Error(`La classe n'a pas pu être ouverte sur ce poste : ${error.message}`);
-  // L'année a pu être terminée à l'instant : la classe ne s'ouvre plus (F01-AC18)
+  // La classe a pu être supprimée à l'instant : elle ne s'ouvre plus
   if (!posteId) return { ok: false, raison: "faux" };
   // Le cookie dure un peu plus que l'accès : c'est la base qui ferme la classe à 3 h.
   (await cookies()).set(COOKIE_POSTE, jeton, optionsCookie(60 * 60 * 26));

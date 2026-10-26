@@ -118,7 +118,7 @@ export async function supprimerClassePassee(classeId: string): Promise<Fait> {
   return { ok: true };
 }
 
-/** « Terminer l'année » : l'accès de classe ne s'ouvre plus, rien n'est supprimé (F01-AC18). */
+/** « Terminer l'année » : l'accès de classe n'ouvre plus que « Lire », rien n'est supprimé (F01-AC18, révisé par F15-AC16). */
 export async function terminerAnnee(classeId: string): Promise<Fait> {
   const enseignant = await exigerEnseignant();
   if (!UUID.test(classeId)) return echec("Classe inconnue.");
@@ -342,4 +342,14 @@ export async function inscrireEleves(
   if (error) return echec("Les élèves n’ont pas pu être inscrits. Rien n’a été créé : réessayez.");
   rafraichir(classeId);
   return { ok: true, nombre: typeof data === "number" ? data : connus.length + lignes.length };
+}
+
+/** La bibliothèque dans « Lire » (F15-AC20) : l'enseignant l'éteint ou la rallume, classe terminée comprise. */
+export async function reglerBibliotheque(classeId: string, oui: boolean): Promise<Fait> {
+  const enseignant = await exigerEnseignant();
+  if (!UUID.test(classeId) || typeof oui !== "boolean") return echec("Cette classe est introuvable.");
+  const { data, error } = await enseignant.supabase.from("classes").update({ bibliotheque_dans_lire: oui }).eq("id", classeId).select("id");
+  if (error || !data?.length) return echec("Le réglage n’a pas pu être enregistré.");
+  revalidatePath(`/classes/${classeId}`);
+  return { ok: true };
 }

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { expect, test, type Page } from "@playwright/test";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { action, adultePret, aller, choixAuto, recit, semerBlocs, semerClasse, semerImage, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "../parcours/outils";
+import { action, adultePret, aller, autrePoste, choixAuto, classeQuiEcrit, ouvrirLaClasse, posteDe, taperCode, recit, semerBlocs, semerClasse, semerImage, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "../parcours/outils";
 
 /**
  * Captures de la bibliothèque publique des livres (F15) : npm run captures -- bibliotheque-des-livres,
@@ -215,4 +215,42 @@ test("lot 5 : retirer et signaler", async ({ page, browser }) => {
   await aller(adulte, `/projet/${projet}/livre?etape=sortie&volet=partager`);
   await capturer(adulte, "retire-par-le-porteur");
   await contexte.close();
+});
+
+test("lot 6 : « Lire » côté élève", async ({ page, browser }) => {
+  test.setTimeout(180_000);
+  n = 1900;
+  const s = await classeQuiEcrit(page);
+  // Un livre de l'enseignante, partagé à ses classes
+  const { projet } = await livreFini(s.base, s.compte, "Le phare des sept vents", s.classe.id, "chateau");
+  await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
+  await page.getByText("J’ai relu le livre sur ces points.").click();
+  await page.getByRole("button", { name: "Partager à mes classes" }).click();
+  await expect(page.getByText(/À jour depuis le/)).toBeVisible();
+
+  const alice = await posteDe(browser, s, "Alice");
+  await alice.page.setViewportSize({ width: 1366, height: 1300 });
+  await alice.page.goto("/travail/lecture");
+  await capturer(alice.page, "lire-avec-la-bibliotheque");
+  await alice.page.setViewportSize({ width: 390, height: 844 });
+  await capturer(alice.page, "lire-avec-la-bibliotheque-390", true);
+
+  // La classe dans « Mes classes » : la fiche « Lire »
+  await page.setViewportSize({ width: 1366, height: 1100 });
+  await aller(page, `/classes/${s.classe.id}`);
+  await page.getByRole("heading", { name: "Lire" }).scrollIntoViewIfNeeded();
+  await capturer(page, "classe-fiche-lire");
+
+  // L'année terminée : « Lire » seul
+  await sql("update public.classes set terminee_le = now() where id = $1", [s.classe.id]);
+  await alice.contexte.clearCookies();
+  const fin = await autrePoste(browser);
+  await ouvrirLaClasse(fin.page, s.classe.identifiant, s.classe.motDePasse);
+  await taperCode(fin.page, "Alice", s.codes.Alice);
+  await fin.page.waitForURL(/\/travail\/lecture$/);
+  await fin.page.setViewportSize({ width: 1366, height: 900 });
+  await capturer(fin.page, "lire-annee-terminee");
+  await fin.contexte.close();
+  await alice.contexte.close();
 });

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { debutDuChapitre } from "@/domaine/lecture";
 import { livreALirePourLEleve } from "@/serveur/lecture";
-import { contexteEleve, histoiresDuPoste } from "@/serveur/recit-eleve";
+import { contexteDeTravail, histoiresDuPoste } from "@/serveur/recit-eleve";
 import { Messages } from "@/composants/Messages";
 import { EnteteEleve } from "../../EnteteEleve";
 import { DepartEleve, type CahierDeDepart } from "./DepartEleve";
@@ -19,7 +19,7 @@ type Props = { params: Promise<{ projet: string }>; searchParams: Promise<{ depa
  */
 export default async function Page({ params, searchParams }: Props) {
   const { projet } = await params;
-  const contexte = await contexteEleve();
+  const contexte = await contexteDeTravail();
   if (!contexte.ouvert) redirect("/travail");
   const [lu, histoires, demande] = await Promise.all([livreALirePourLEleve(contexte, projet), histoiresDuPoste(contexte), searchParams]);
   const histoire = histoires.find((h) => h.id === projet);

@@ -1,6 +1,6 @@
 import { expect, test, type Browser, type Page } from "@playwright/test";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { adultePret, aller, choixAuto, courrielRecu, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
+import { adultePret, aller, choixAuto, classeQuiEcrit, courrielRecu, posteDe, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, type Compte } from "./outils";
 
 /**
  * Bibliothèque publique des livres (F15), de l'écran : proposer depuis « Imprimer et partager »,
@@ -282,4 +282,33 @@ test("F15-AC14, F15-AC10 — signaler depuis le tiroir : un accusé de réceptio
   await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
   await expect(page.getByRole("group", { name: "Retiré de la bibliothèque par l’éditeur" })).toContainText("se moque d’une enseignante réelle");
   expect(await sql("select titre from projets where id = $1", [l.projet])).toEqual([{ titre: `La lanterne ${marque}` }]);
+});
+
+test("F15-AC20 — dans « Lire », après les livres de l'enseignante, ceux de la bibliothèque de l'âge de la classe ; un cœur par profil ; éteinte dans la classe, la partie disparaît", async ({ page, browser }) => {
+  const marque = Date.now().toString(36);
+  // Un livre d'un autre adulte, publié pour les 8 à 10 ans
+  const autre = await (await browser.newContext()).newPage();
+  const l = await lanterne(autre, `La lanterne ${marque}`);
+  await proposer(autre, l.projet);
+  await publierLaProposition(l.projet);
+
+  const s = await classeQuiEcrit(page);
+  const alice = await posteDe(browser, s, "Alice");
+  await alice.page.getByRole("navigation", { name: "Espace élève" }).getByRole("link", { name: "Lire", exact: true }).click();
+  const rayon = alice.page.getByRole("region", { name: "La bibliothèque" });
+  await expect(rayon.getByRole("link", { name: new RegExp(`La lanterne ${marque}`) })).toBeVisible();
+  await rayon.getByRole("link", { name: new RegExp(`La lanterne ${marque}`) }).click();
+  await alice.page.getByRole("button", { name: "Commencer la lecture" }).click();
+  await alice.page.locator(".lecteur__corps").getByRole("button", { name: /Suivre le passeur/ }).click();
+  await alice.page.getByRole("button", { name: "Donner un cœur à ce livre" }).click();
+  await expect(alice.page.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("1");
+  await expect.poll(async () => (await sql<{ lecteur: string }>("select lecteur from coeurs where projet_id = $1", [l.projet])).map((c) => c.lecteur)).toEqual([`e:${s.eleves.Alice.id}`]);
+
+  // Mme Laurent l'éteint dans les réglages de la classe
+  await aller(page, `/classes/${s.classe.id}`);
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "La bibliothèque dans « Lire »" }) }).click();
+  await expect(page.getByText("Vos élèves ne trouvent que vos livres.")).toBeVisible();
+  await alice.page.goto("/travail/lecture");
+  await expect(alice.page.getByRole("region", { name: "La bibliothèque" })).toHaveCount(0);
+  await alice.contexte.close();
 });
