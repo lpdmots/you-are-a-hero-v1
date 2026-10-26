@@ -188,7 +188,12 @@ export async function Accueil() {
                 Un grand livre de sa classe et un petit (le 26 octobre 2026, « Bouquin mène l'enquête ») : le petit
                 montre un livre court, sans dire qui l'a écrit */}
             {grandEtPetit
-              ? "Le grand a été écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles. Le petit s’adresse aux plus jeunes. Les deux sont à lire en ligne, gratuitement."
+              ? (
+                  <>
+                    Le grand a été écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles. Le petit s’adresse aux plus
+                    jeunes. Les deux sont à lire en ligne, gratuitement, dans <Link href="/bibliotheque">la bibliothèque</Link>.
+                  </>
+                )
               : livres.every((l) => l.duPorteur)
               ? livres.length === 1
                 ? "Écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles."
