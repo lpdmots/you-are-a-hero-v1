@@ -23,7 +23,8 @@ export const AIDES_TEXTE = [
   "fiche-visuelle", // F10.2, « Préciser pour les images »
   "description-image", // F10.2, « Proposer la description »
   "mots-cles", // F10.1, les mots-clés d'une image de la bibliothèque, lus dans l'image (21 octobre 2026)
-  "presentation", // F15, « ✦ Proposer » la présentation d'un livre proposé à la bibliothèque
+  "presentation", // F15, « ✦ Écrire » la présentation d'un livre proposé à la bibliothèque
+  "relecture", // F15, la relecture d'un livre proposé, au compte du porteur
 ] as const;
 export type AideTexte = (typeof AIDES_TEXTE)[number];
 /**
@@ -55,6 +56,7 @@ export const NOMS_DES_AIDES: Record<AideTexte, string> = {
   "description-image": "Description d'une image",
   "mots-cles": "Mots-clés d'une image",
   presentation: "Présentation d'un livre",
+  relecture: "Relecture d'un livre proposé",
 };
 
 export const DEGRES = [1, 2, 3, 4, 5] as const;

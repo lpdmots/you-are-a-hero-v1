@@ -3573,7 +3573,24 @@ V6, le premier envoi à l'imprimeur.
      « Refuser » avec motif et trois phrases prêtes, les courriels ; les
      passages changés d'une mise à jour, chaque point ouvrant son passage
      (F15-AC03 à AC05, AC07). Coût réel mesuré sur un livre d'essai.
-     Migration.
+     Migration. **Construit le 25 octobre 2026,** migration
+     `relecture_des_livres` en base locale seulement (rapport, son état, sa
+     date, son coût) ; `serveur/relecture-des-livres.ts`, l'aide
+     « relecture » (Sonnet 5.5), la page `/admin/livres` et son lecteur
+     ouvert sur le passage d'un point. **Coût réel,** mesuré sur « Le
+     labyrinthe oublié » en local : 213 passages et 20 images, 49 900 jetons
+     lus, 0,104 dollar, 8,5 secondes. Précisions prises en construisant :
+     l'analyse part après la réponse de « Proposer » (`after`, 300 s au
+     plus), « Relancer l'analyse » sur un échec ; ni la page des auteurs ni
+     la ligne de la page de titre ne partent (la promesse « jamais un prénom
+     d'élève » de F13 tient), une photo de classe en page des auteurs n'est
+     donc relue que par le porteur ; 20 images au plus, en vignette ; un
+     point sur une image ouvre le passage qui la montre ; le rapport ne
+     s'écrit que sur la proposition qu'il a lue ; le refus combine une des
+     trois phrases prêtes et une précision ; la page « Confidentialité » dit
+     ce qui part. Premier essai réel : quatre points, tous « texte dans une
+     image » (une faute sur une pancarte, un code de cadenas qui ne
+     correspond pas à l'énigme), utiles au porteur.
   3. **La page `/bibliotheque` :** cartes, tiroir, adresse de chaque livre
      tirée du titre à la première publication ; « Les plus récents » et
      « Les plus aimés », filtres d'âge et de type, recherche ; la lecture par

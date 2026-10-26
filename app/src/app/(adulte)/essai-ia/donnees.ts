@@ -106,6 +106,8 @@ function affichage(cas: Cas, valeur: unknown, erreur: string | null): Affichage 
       return { sorte: "texte", texte: `${(v.mots as string[]).join(", ")}\n${(v.motsEn as string[]).join(", ")}` };
     case "presentation":
       return { sorte: "texte", texte: v.presentation as string };
+    case "relecture":
+      return { sorte: "liste", elements: (v.points as { repere: string; phrase: string; motif: string; explication: string }[]).map((p) => ({ titre: `${p.repere} · ${p.motif} — « ${p.phrase} »`, texte: p.explication })) };
   }
 }
 
@@ -174,6 +176,9 @@ function demande(cas: Cas): CasAffiche["demande"] {
       break;
     case "presentation":
       ajouter("Début du livre", e.debut);
+      break;
+    case "relecture":
+      ajouter("Passages", e.passages.map((p: { repere: string; texte: string }) => `[${p.repere}] ${p.texte}`).join("\n"));
       break;
   }
   return l;

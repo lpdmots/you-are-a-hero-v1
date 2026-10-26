@@ -2616,6 +2616,18 @@ d'être montrés au porteur. Les règles sont en
   « Proposer le livre » désactivé sans dire pourquoi, la case étant juste
   au-dessus. « Retirer de la bibliothèque » viendra au lot 5.
 
+**Lot 2, la file « Bibliothèque » de l'administration** (`/admin/livres`),
+conçue avec impeccable sans les deux lectures, sur le modèle de la
+bibliothèque d'images : une ligne « 2 livres à relire » sur la page
+principale ; une feuille par livre, le plus ancien d'abord : titre, marque
+« Première proposition » ou « Mise à jour », compte, date, âge, attestation,
+« Lire le livre » ; le rapport de l'IA sur fond pâle, chaque point en
+« Passage 17 » (lien vers le lecteur ouvert sur lui), sa raison en brique,
+la phrase citée en Vollkorn, l'explication en petit, puis « Lu : … · 0,104 $ » ;
+« Rien à signaler » en vert ; les passages changés d'une mise à jour ; la
+présentation ; en pied, « Publier » et « Refuser… », qui déplie trois phrases
+prêtes, une précision et « Refuser et envoyer le motif ».
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

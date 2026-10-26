@@ -42,7 +42,7 @@ test("F10-AC53, F10-AC55 — le porteur relit les images sans personnage : accep
   const porteur = await adultePret(page);
   await sql("update public.enseignants set createur = true where id = $1", [porteur.compte.id]);
   await aller(page, "/admin");
-  await page.getByRole("link", { name: /à relire/ }).click();
+  await page.getByRole("link", { name: /images? à relire/ }).click();
   await expect(page.getByRole("heading", { level: 1, name: "Bibliothèque d’images" })).toBeVisible();
   await expect(carte(page, lisiere)).toContainText("Repérage d’un chapitre");
   await expect(carte(page, pont)).toContainText("Image de scène");

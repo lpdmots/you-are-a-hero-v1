@@ -1,9 +1,11 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { after } from "next/server";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { couperCanal, mettreAJourLePartage, ouvrirCanal, reglerNoms, type Canal, type Refus } from "@/serveur/partage";
 import { proposerALaBibliotheque } from "@/serveur/publication";
+import { relireLaProposition } from "@/serveur/relecture-des-livres";
 
 /**
  * Les gestes du volet « Partager » (F12.1, F12.3, F15) : le partage privé et la proposition à la
@@ -34,7 +36,11 @@ export async function mettreAJour(projetId: string, rappel: boolean): Promise<Fa
 
 export async function proposer(projetId: string, presentation: string, attestation: boolean): Promise<Fait> {
   const r = await proposerALaBibliotheque(await exigerEnseignant(), projetId, { presentation, attestation });
-  if (r.ok) rafraichir(projetId);
+  if (r.ok) {
+    rafraichir(projetId);
+    // La relecture par l'IA, au compte du porteur, se fait après la réponse : l'adulte n'attend pas (F15-AC03)
+    after(() => relireLaProposition(projetId).catch((e) => console.error("Relecture", e)));
+  }
   return r;
 }
 

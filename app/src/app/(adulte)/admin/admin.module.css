@@ -303,3 +303,132 @@
     margin-left: 0;
   }
 }
+
+/* La file « Bibliothèque » (F15) : un livre par feuille, ce qui sert à juger d'abord — le rapport
+   de l'IA, puis les passages changés et la présentation —, la décision en pied. */
+.fileLivres {
+  display: grid;
+  gap: 16px;
+}
+.livreAJuger {
+  display: grid;
+  gap: 16px;
+}
+.livreAJuger h4 {
+  margin: 0 0 6px;
+  font-size: var(--t-s);
+  font-weight: 800;
+  color: var(--graphite-2);
+}
+.livreTete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+.livreTete h3 {
+  margin: 0;
+  font-size: var(--t-l);
+  font-weight: 800;
+}
+.livreTete .marque {
+  margin-left: 0;
+}
+.livreTete .note {
+  flex-basis: 100%;
+  margin: 0;
+}
+.rapport {
+  padding: 12px 14px;
+  border-radius: var(--r-m);
+  background: var(--feuille-2);
+}
+.points {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding-left: 1.3em;
+}
+.points li {
+  display: grid;
+  gap: 3px;
+}
+.pointTete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  font-weight: 700;
+}
+.motif {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--e-reprendre);
+}
+.citation {
+  font-family: var(--f-recit, inherit);
+  quotes: "« " " »";
+}
+.rienASignaler {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-weight: 700;
+  color: var(--e-valide);
+}
+.changes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.presentation {
+  max-width: 68ch;
+  margin: 0;
+}
+.decision {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 12px 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+}
+.refuser summary {
+  cursor: pointer;
+  padding: 6px 0;
+}
+.formRefus {
+  display: grid;
+  gap: 10px;
+  max-width: 520px;
+  margin-top: 8px;
+}
+.formRefus fieldset {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.formRefus legend {
+  margin-bottom: 4px;
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.formRefus fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.formRefus > :global(.btn) {
+  justify-self: start;
+}
+.formRefus textarea {
+  width: 100%;
+  resize: vertical;
+  font: inherit;
+}

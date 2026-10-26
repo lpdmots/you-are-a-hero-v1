@@ -5,6 +5,7 @@ import { enEuros } from "@/domaine/offre";
 import { livresAChoisir } from "@/serveur/accueil";
 import { codeDuLien, exigerLePorteur, partageDuLien, tableau } from "@/serveur/administration";
 import { imagesARelire } from "@/serveur/bibliotheque";
+import { nombreDeLivresARelire } from "@/serveur/relecture-des-livres";
 import {
   basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerLaCouvertureAdmin, retirerPartage,
 } from "./actions";
@@ -41,7 +42,7 @@ const REFUS: Record<string, string> = {
  */
 export default async function Administration({ searchParams }: { searchParams: Promise<{ partage?: string; fait?: string }> }) {
   const porteur = await exigerLePorteur();
-  const [t, demande, aRelire, livres] = await Promise.all([tableau(), searchParams, imagesARelire(), livresAChoisir(porteur)]);
+  const [t, demande, aRelire, livres, livresARelire] = await Promise.all([tableau(), searchParams, imagesARelire(), livresAChoisir(porteur), nombreDeLivresARelire()]);
   const surLAccueil = livres.filter((l) => l.surLAccueil).length;
   const signale = demande.partage && demande.partage !== "introuvable" && codeDuLien(demande.partage) ? await partageDuLien(demande.partage) : null;
   const fait = demande.fait ? FAITS[demande.fait] : null;
@@ -97,6 +98,14 @@ export default async function Administration({ searchParams }: { searchParams: P
             {t.paiementOuvert ? "Éteindre" : "Allumer"}
           </button>
         </form>
+      </section>
+
+      {/* La bibliothèque des livres (F15) : les livres proposés à relire, sur leur page */}
+      <section className={`${styles.bloc} ${styles.lienBloc}`} aria-labelledby="adm-livres">
+        <h2 id="adm-livres">Bibliothèque</h2>
+        <Link className="btn" href="/admin/livres">
+          {livresARelire ? `${livresARelire} livre${livresARelire > 1 ? "s" : ""} à relire` : "Ouvrir"}
+        </Link>
       </section>
 
       {/* La bibliothèque d'images (F10.1) : les images à relire, sur leur page */}

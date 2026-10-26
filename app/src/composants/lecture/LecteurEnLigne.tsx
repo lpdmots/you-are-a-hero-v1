@@ -137,11 +137,13 @@ function EcritAvec() {
 }
 
 export function LecteurEnLigne({
-  version, source, memoire, bandeau, mention = false,
+  version, source, memoire, bandeau, mention = false, ouvrirA = null,
 }: {
   version: VersionPartagee;
   source: SourceImage;
   memoire: Memoire;
+  /** Ouvrir la lecture sur ce passage, sans passer par la page de titre : la file de relecture du porteur (F15) */
+  ouvrirA?: string | null;
   /** Au-dessus du livre : la prévisualisation de l'adulte, le retour aux lectures de l'élève */
   bandeau?: ReactNode;
   /** Le lien de lecture : la mention « Écrit avec Il était une classe » (F14-AC34) */
@@ -165,8 +167,12 @@ export function LecteurEnLigne({
     setPret(true);
   }, [memoire, livre]);
 
-  const [ecran, setEcran] = useState<Ecran>({ sorte: "accueil" });
-  const [g, setG] = useState<LectureGardee | null>(null);
+  // Récit classique : un passage se lit dans l'écran de son chapitre
+  const cible = ouvrirA && !version.aChoix ? (chapitres.find((c) => c.passages.some((p) => p.id === ouvrirA))?.passages[0].id ?? null) : ouvrirA;
+  const [ecran, setEcran] = useState<Ecran>({ sorte: cible ? "lecture" : "accueil" });
+  const [g, setG] = useState<LectureGardee | null>(() =>
+    cible ? { parcours: commencer(cible), deja: [], feuille: feuilleDeDepart(livre.feuille), des: null } : null,
+  );
   const [parcoursOuvert, setParcoursOuvert] = useState(false);
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const aside = useRef<HTMLElement>(null);

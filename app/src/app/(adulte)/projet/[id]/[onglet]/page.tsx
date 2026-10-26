@@ -35,6 +35,9 @@ import { adresseDuSite } from "@/serveur/env";
 import { codeAffiche, etatDuPartage, sortieAJour } from "@/domaine/partage";
 import styles from "./projet.module.css";
 
+// La relecture d'un livre proposé à la bibliothèque part après la réponse de « Proposer » (F15) : un livre entier se relit en plus d'une minute
+export const maxDuration = 300;
+
 type Props = { params: Promise<{ id: string; onglet: string }>; searchParams: Promise<Record<string, string | string[] | undefined>> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

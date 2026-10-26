@@ -126,13 +126,14 @@ const TRANSMIS = [
   "– la consigne, les idées de choix, la préparation, les parties et les chapitres, les titres : ce que l’adulte a écrit pour préparer l’histoire, et les titres et consignes des scènes ;",
   "– l’écriture d’une scène vide : sa consigne, son titre et la fin des scènes qui y mènent ;",
   "– les images : l’idée d’illustration, le texte de la scène, le style choisi, la description et le portrait des personnages ;",
-  "– la bibliothèque d’images : la vignette d’une image acceptée par l’éditeur, pour en tirer les mots-clés.",
+  "– la bibliothèque d’images : la vignette d’une image acceptée par l’éditeur, pour en tirer les mots-clés ;",
+  "– la bibliothèque des livres : la présentation d’un livre proposé, d’après la préparation et son début ; puis, pour l’éditeur, le livre proposé entier, ses textes et ses images, sans la page des auteurs ni la ligne de la page de titre.",
 ];
 
 export const CONFIDENTIALITE: Document = {
   titre: "Confidentialité",
   chapeau: "Ce qui est gardé, où, combien de temps, ce qui part à l’IA, et comment tout supprimer.",
-  misAJour: "24 octobre 2026",
+  misAJour: "25 octobre 2026",
   sections: [
     {
       titre: "Qui fait quoi",

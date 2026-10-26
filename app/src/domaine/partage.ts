@@ -100,7 +100,7 @@ function presentationPartagee(p: PresentationACompose, noms: NomsDuPartage): Pre
 // ——— La version, tirée du livre composé ———
 
 /** Les images posées dans un bloc : en bloc, ou en ligne dans un paragraphe, une action ou une phrase de choix. */
-function imagesDesBlocs(blocs: BlocLu[]): string[] {
+export function imagesDesBlocs(blocs: BlocLu[]): string[] {
   return blocs.flatMap((b) => {
     if (b.type === "image") return [b.image];
     if (b.type === "p" || b.type === "action") return b.mots.flatMap((m) => ("image" in m ? [m.image] : []));

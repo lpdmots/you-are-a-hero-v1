@@ -1,5 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { adresseDepuisTitre, adresseLibre, etatDeLaPublication, peutProposer, presentationPropre, PRESENTATION_MAX, type LignePublication } from "@/domaine/bibliotheque";
+import { adresseDepuisTitre, adresseLibre, etatDeLaPublication, passagesChanges, peutProposer, presentationPropre, PRESENTATION_MAX, reperesDuLivre, type LignePublication } from "@/domaine/bibliotheque";
+import type { PassagePartage, VersionPartagee } from "@/domaine/partage";
+import { relecture } from "@/serveur/ia/aides/relecture";
 import { CONDITIONS, MODELES } from "@/domaine/textes-publics";
 
 /** Bibliothèque publique des livres (F15), sans base : l'adresse, la présentation, l'état, les textes. */
@@ -51,5 +53,37 @@ describe("Les textes (F15, « Autorisation des familles », « Conditions d'util
   it("les conditions disent la clause de la bibliothèque", () => {
     const texte = JSON.stringify(CONDITIONS);
     expect(texte).toContain("vous permettez à l’éditeur de l’afficher publiquement et gratuitement tant qu’il est dans la bibliothèque");
+  });
+});
+
+describe("La relecture (F15, lot 2)", () => {
+  const passage = (id: string, numero: number, texte: string): PassagePartage => ({
+    id, numero, partie: null, chapitre: null, separateur: false, fin: false, enigmes: [], blocs: [{ type: "p", id: `${id}-p`, mots: [{ text: texte }] }],
+  });
+  const version = (passages: PassagePartage[]): VersionPartagee => ({ titre: "La lanterne", aChoix: true, marqueFin: "Fin", passages, presentation: null, feuille: null, des: 0, images: {} });
+
+  it("F15-AC07 — les passages changés d'une mise à jour, comparés par leur identité : changé, nouveau, retiré", () => {
+    const avant = version([passage("a", 1, "La brume s’épaissi."), passage("b", 2, "Le pont."), passage("c", 3, "La fin.")]);
+    const apres = version([passage("a", 1, "La brume s’épaissit."), passage("b", 2, "Le pont."), passage("d", 3, "Une autre fin.")]);
+    expect(passagesChanges(avant, apres)).toEqual([
+      { id: "a", repere: "Passage 1", sorte: "change" },
+      { id: "d", repere: "Passage 3", sorte: "ajoute" },
+      { id: "c", repere: "Passage 3", sorte: "retire" },
+    ]);
+    expect(reperesDuLivre(apres).get("d")).toBe("P3");
+  });
+
+  it("F15-AC03 — le rapport ne garde que des repères du livre et des raisons connues ; dix points au plus", () => {
+    const e = { histoire: { titre: "La lanterne", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const }, passages: [{ repere: "P17", texte: "…" }], autour: null, images: [] };
+    const lu = relecture.lire({
+      points: [
+        { repere: "p17", phrase: "la maîtresse Mme Dupont est bête et grosse", motif: "moquerie", explication: "Une personne réelle." },
+        { repere: "P99", phrase: "hors du livre", motif: "haine", explication: "" },
+        { repere: "P17", phrase: "Alice", motif: "prenom", explication: "" },
+      ],
+    }, e);
+    expect(lu).toEqual({ points: [{ repere: "P17", phrase: "la maîtresse Mme Dupont est bête et grosse", motif: "moquerie", explication: "Une personne réelle." }] });
+    expect(relecture.lire({ points: [] }, e)).toEqual({ points: [] });
+    expect(relecture.lire({}, e)).toBeNull();
   });
 });

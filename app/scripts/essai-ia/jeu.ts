@@ -202,4 +202,17 @@ export const JEU_D_ESSAI: Cas[] = [
 
   // Bibliothèque (F15)
   { id: "presentation", aide: "presentation", titre: "Présentation de « Les passeurs de brume » pour la bibliothèque", repere: "Deux ou trois phrases qui donnent envie ; ni la fin, ni les choix, ni qui l'a écrit.", source: "inventé", entree: { histoire: classe, carnet, plan, debut: CABANE.join("\n") } },
+  {
+    id: "relecture", aide: "relecture", titre: "Relecture d'un livre proposé : une enseignante réelle moquée au P2", repere: "Le seul point : P2, la phrase sur Mme Dupont, « moquerie » ; rien sur la chute ni les prénoms.", source: "inventé",
+    entree: {
+      histoire: classe,
+      autour: "Titre : Les passeurs de brume",
+      passages: [
+        { repere: "P1", texte: CABANE.join("\n") },
+        { repere: "P2", texte: "« La maîtresse Mme Dupont est bête et grosse », ricane Marius. Lou ne répond pas et pousse la porte." },
+        { repere: "P3", texte: "Lou glisse sur la pierre mouillée et tombe dans l'eau froide. La brume l'avale. Perdu ! Retourne au 1." },
+      ],
+      images: [],
+    },
+  },
 ];

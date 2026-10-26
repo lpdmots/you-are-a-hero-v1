@@ -11569,7 +11569,8 @@ des cœurs aux histoires qu'ils préfèrent.
   Estimation du 25 octobre 2026, aux prix relevés le 17 octobre, non
   mesurée : environ 0,15 dollar pour un livre de 80 passages et 20 images,
   autant pour chaque mise à jour, l'IA relisant tout ; à peu près le double
-  avec Opus 5.5.
+  avec Opus 5.5. **Mesuré le 25 octobre 2026,** en local, sur un livre de
+  213 passages et 20 images : 0,104 dollar.
 - **La file de relecture.** Une page « Bibliothèque » de l'administration,
   sur le modèle de celle de la bibliothèque d'images (F10.1), où mène une
   ligne de la page principale (« 2 livres à relire ») : pour chaque livre,

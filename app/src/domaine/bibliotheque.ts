@@ -6,7 +6,7 @@
  */
 
 import type { MotLu } from "./lecture";
-import type { PassagePartage } from "./partage";
+import type { PassagePartage, VersionPartagee } from "./partage";
 
 /** Deux ou trois phrases : au-delà, ce n'est plus une présentation de carte (F15, « Liste, tri, filtres »). */
 export const PRESENTATION_MAX = 400;
@@ -120,4 +120,46 @@ export function texteDuPassage(p: PassagePartage): string {
     .map((l) => l.replace(/\s+/g, " ").trim())
     .filter(Boolean)
     .join("\n");
+}
+
+// ——— La relecture (F15, « Ce que vérifie l'IA », lot 2) ———
+
+/** Les raisons qu'un point du rapport de l'IA peut donner ; elle ne signale jamais les prénoms. */
+export const MOTIFS_DE_RELECTURE = ["violence", "sexualite", "haine", "moquerie", "droits", "texte-image", "autre"] as const;
+export type MotifDeRelecture = (typeof MOTIFS_DE_RELECTURE)[number];
+export const NOMS_DES_MOTIFS: Record<MotifDeRelecture, string> = {
+  violence: "Violence ou horreur",
+  sexualite: "Sexualité",
+  haine: "Haine ou insultes",
+  moquerie: "Moquerie d’une personne réelle",
+  droits: "Droits d’auteur",
+  "texte-image": "Texte dans une image",
+  autre: "Autre",
+};
+
+/**
+ * Le repère de chaque passage, tel que l'IA et le porteur le lisent : « P12 », le passage 12 d'un
+ * livre à choix ; « S7 », la septième scène d'un récit classique, qui n'a pas de numéros.
+ */
+export function reperesDuLivre(v: VersionPartagee): Map<string, string> {
+  return new Map(v.passages.map((p, i) => [p.id, v.aChoix && p.numero ? `P${p.numero}` : `S${i + 1}`]));
+}
+
+export type PassageChange = { id: string; repere: string; sorte: "change" | "ajoute" | "retire" };
+
+/**
+ * Les passages qu'une mise à jour change (F15-AC07), dans l'ordre du livre proposé, puis ceux qu'il
+ * retire : comparés par leur identité, sur ce que le lecteur lit (texte, choix, images).
+ */
+export function passagesChanges(avant: VersionPartagee, apres: VersionPartagee): PassageChange[] {
+  const nom = (v: VersionPartagee, p: PassagePartage, i: number) => (v.aChoix && p.numero ? `Passage ${p.numero}` : `Scène ${i + 1}`);
+  const anciens = new Map(avant.passages.map((p, i) => [p.id, { p, i }]));
+  const lu = (p: PassagePartage) => JSON.stringify({ blocs: p.blocs, enigmes: p.enigmes, fin: p.fin, partie: p.partie, chapitre: p.chapitre?.titre ?? null });
+  const changes: PassageChange[] = apres.passages.flatMap((p, i): PassageChange[] => {
+    const a = anciens.get(p.id);
+    if (!a) return [{ id: p.id, repere: nom(apres, p, i), sorte: "ajoute" }];
+    return lu(a.p) === lu(p) ? [] : [{ id: p.id, repere: nom(apres, p, i), sorte: "change" }];
+  });
+  const restent = new Set(apres.passages.map((p) => p.id));
+  return [...changes, ...avant.passages.flatMap((p, i): PassageChange[] => (restent.has(p.id) ? [] : [{ id: p.id, repere: nom(avant, p, i), sorte: "retire" }]))];
 }

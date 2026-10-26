@@ -78,6 +78,8 @@ export async function proposerALaBibliotheque(
     proposee: version satisfies VersionPartagee, presentation_proposee: presentation, derniere_presentation: presentation, age_propose: projet.ageDesLecteurs,
     empreinte_proposee: empreinte, proposee_le: new Date().toISOString(), attestation: attendue,
     refus_motif: null, refusee_le: null, modifie_le: new Date().toISOString(),
+    // Le rapport de l'IA vaut pour une proposition : la nouvelle sera relue (lot 2)
+    rapport: null, rapport_etat: null, rapport_le: null, rapport_cout_usd: null,
   };
   const base = clientService();
   // La règle « une seule en attente » tient aussi contre deux envois simultanés : la ligne ne change que sans proposition
