@@ -210,3 +210,76 @@ test("F15-AC13 — un cœur dans le tiroir et après la fin, jamais pendant la l
   await lecteur.goto(`/bibliotheque?q=${marque}&tri=aimes`);
   await expect(lecteur.getByRole("link", { name: /La lanterne/ })).toContainText("1");
 });
+
+test("F15-AC09 — retiré par l'adulte : son adresse dit « Ce livre n'est plus dans la bibliothèque » ; proposé de nouveau et publié, il retrouve son adresse et ses cœurs", async ({ page }) => {
+  const marque = Date.now().toString(36);
+  const l = await lanterne(page, `La lanterne ${marque}`);
+  await proposer(page, l.projet);
+  const adresse = await publierLaProposition(l.projet);
+  await sql("insert into coeurs (projet_id, lecteur, reseau) select $1, 'n:parcours-' || g, 'r:parcours-local' from generate_series(1, 12) g", [l.projet]);
+
+  await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
+  await page.getByRole("button", { name: "Retirer de la bibliothèque…" }).click();
+  const confirmer = page.getByRole("group", { name: "Retirer le livre de la bibliothèque ?" });
+  await expect(confirmer).toContainText("il retrouvera son adresse et ses cœurs");
+  await confirmer.getByRole("button", { name: "Retirer de la bibliothèque" }).click();
+  await expect(page.getByText(/par vous, le/)).toBeVisible();
+
+  const visiteur = page.context().browser()!;
+  const autre = await (await visiteur.newContext()).newPage();
+  await autre.goto(`/bibliotheque/${adresse}`);
+  await expect(autre.getByText("Ce livre n’est plus dans la bibliothèque.")).toBeVisible();
+  await expect(autre.locator("body")).not.toContainText("La lanterne");
+  await autre.goto(`/bibliotheque?q=${marque}`);
+  await expect(autre.getByText("Aucun livre ne correspond.")).toBeVisible();
+
+  // Proposé de nouveau, puis publié par le porteur : la même adresse, les mêmes cœurs
+  await proposer(page, l.projet);
+  await sql(
+    `update publications set version = proposee, presentation = presentation_proposee, age = age_propose, empreinte = empreinte_proposee, publiee_le = now(), mise_a_jour_le = now(),
+       proposee = null, presentation_proposee = null, age_propose = null, empreinte_proposee = null, proposee_le = null, attestation = null, retiree_le = null, retrait_par = null
+     where projet_id = $1`,
+    [l.projet],
+  );
+  await autre.goto(`/bibliotheque/${adresse}`);
+  await expect(autre.getByRole("dialog").getByRole("button", { name: "Donner un cœur à ce livre" })).toHaveText("12");
+});
+
+test("F15-AC14, F15-AC10 — signaler depuis le tiroir : un accusé de réception, « 1 signalement » chez le porteur, le livre reste publié ; retiré par lui avec un motif, l'adulte le reçoit", async ({ page, browser }) => {
+  const marque = Date.now().toString(36);
+  const l = await lanterne(page, `La lanterne ${marque}`);
+  await proposer(page, l.projet);
+  const adresse = await publierLaProposition(l.projet);
+
+  const parent = await (await browser.newContext()).newPage();
+  await parent.goto(`/bibliotheque/${adresse}`);
+  await parent.getByRole("button", { name: "Signaler ce livre" }).click();
+  const formulaire = parent.getByRole("form", { name: "Signaler ce livre" });
+  await formulaire.getByLabel("Haine ou insultes").check();
+  await formulaire.getByLabel("Numéro du passage (facultatif)").fill("2");
+  await formulaire.getByLabel("Ce qui pose problème").fill("Le passage 2 se moque d’une enseignante.");
+  const courriel = `parent-${marque}@exemple.test`;
+  await formulaire.getByLabel("Votre adresse électronique, pour la réponse").fill(courriel);
+  await formulaire.getByRole("button", { name: "Envoyer le signalement" }).click();
+  await expect(parent.getByRole("status")).toContainText("Votre signalement est envoyé");
+  expect((await courrielRecu(courriel, "signalement est reçu")).sujet).toBe("Votre signalement est reçu — Il était une classe");
+  await parent.goto(`/bibliotheque/${adresse}`);
+  await expect(parent.getByRole("dialog")).toContainText(`La lanterne ${marque}`);
+
+  const admin = await porteur(browser);
+  await aller(admin, "/admin");
+  await expect(admin.getByRole("link", { name: /\d+ signalements?/ })).toBeVisible();
+  await aller(admin, "/admin/livres");
+  const signale = admin.getByRole("article", { name: `Signalement de « La lanterne ${marque} »` });
+  await expect(signale).toContainText("Haine ou insultes");
+  await expect(signale).toContainText("passage 2");
+  await signale.getByText("Retirer de la bibliothèque…").click();
+  await signale.getByLabel("Motif, envoyé à l’adulte").fill("Le passage 2 se moque d’une enseignante réelle.");
+  await signale.getByRole("button", { name: "Retirer et envoyer le motif" }).click();
+  await expect(admin.getByRole("status").filter({ hasText: /\S/ })).toContainText("Le livre a quitté la bibliothèque");
+
+  expect((await courrielRecu(l.compte.courriel, "n’est plus dans la bibliothèque")).sujet).toBe(`« La lanterne ${marque} » n’est plus dans la bibliothèque — Il était une classe`);
+  await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
+  await expect(page.getByRole("group", { name: "Retiré de la bibliothèque par l’éditeur" })).toContainText("se moque d’une enseignante réelle");
+  expect(await sql("select titre from projets where id = $1", [l.projet])).toEqual([{ titre: `La lanterne ${marque}` }]);
+});

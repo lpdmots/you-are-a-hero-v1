@@ -7,6 +7,7 @@ import { Coeur } from "@/composants/Coeur";
 import { Icone } from "@/composants/Icone";
 import { nomDeLAge, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { Couverture } from "./Bibliotheque";
+import { Signaler } from "./Signaler";
 import styles from "./bibliotheque.module.css";
 
 /**
@@ -74,6 +75,7 @@ export function Tiroir({ livre, retour, pied }: { livre: LivrePublie; retour: st
               <Coeur adresse={livre.adresse} nombre={livre.coeurs} />
             </p>
             {pied}
+            <Signaler adresse={livre.adresse} aChoix={livre.aChoix} />
           </div>
         </div>
       </aside>

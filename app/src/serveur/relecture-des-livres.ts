@@ -221,6 +221,8 @@ export async function publier(projetId: string): Promise<{ ok: boolean; adresse?
         ...(l.version ? {} : { publiee_le: maintenant }), mise_a_jour_le: maintenant,
         proposee: null, presentation_proposee: null, age_propose: null, empreinte_proposee: null, proposee_le: null, attestation: null,
         refus_motif: null, refusee_le: null, rapport: null, rapport_etat: null, rapport_le: null, rapport_cout_usd: null, modifie_le: maintenant,
+        // Un livre retiré puis proposé de nouveau revient à la même adresse, avec ses cœurs (F15-AC09)
+        retiree_le: null, retrait_par: null, retrait_motif: null,
       })
       .eq("projet_id", projetId).eq("proposee_le", l.proposee_le as string)
       .select("projet_id");

@@ -28,7 +28,7 @@ export type PublicationLue = {
   empreinte: string | null;
 };
 
-const COLONNES = "adresse, version, presentation, empreinte, mise_a_jour_le, proposee, presentation_proposee, derniere_presentation, proposee_le, refus_motif, refusee_le";
+const COLONNES = "adresse, version, presentation, empreinte, mise_a_jour_le, proposee, presentation_proposee, derniere_presentation, proposee_le, refus_motif, refusee_le, retiree_le, retrait_par, retrait_motif";
 type Ligne = LignePublication & { presentation: string | null; empreinte: string | null; presentation_proposee: string | null; derniere_presentation: string | null };
 
 export async function publicationDuProjet(e: Enseignant, projetId: string): Promise<PublicationLue | null> {
@@ -119,4 +119,28 @@ export async function demanderUnePresentation(e: Enseignant, projetId: string, a
   });
   if (!r.ok) return { ok: false, message: r.message };
   return r.valeur.presentation ? { ok: true, presentation: r.valeur.presentation, reste: r.reste } : { ok: false, message: MESSAGES_IA.pasDeReponse };
+}
+
+/**
+ * « Retirer de la bibliothèque » (F15-AC09), à tout moment, sans relecture : la version publiée
+ * s'efface, et la proposition qui attendrait avec elle ; l'adresse et les cœurs restent, pour un
+ * livre proposé de nouveau. Avant toute publication, le même geste retire la proposition.
+ */
+export async function retirerDeLaBibliotheque(e: Enseignant, projetId: string): Promise<Fait> {
+  if (!estUuid(projetId) || !(await projetDe(e, projetId))) return INTROUVABLE;
+  const base = clientService();
+  const { data: l } = await base.from("publications").select("version, proposee").eq("projet_id", projetId).eq("enseignant_id", e.id).maybeSingle();
+  if (!l?.version && !l?.proposee) return { ok: true };
+  const maintenant = new Date().toISOString();
+  const sansProposition = {
+    proposee: null, presentation_proposee: null, age_propose: null, empreinte_proposee: null, proposee_le: null, attestation: null,
+    rapport: null, rapport_etat: null, rapport_le: null, rapport_cout_usd: null, modifie_le: maintenant,
+  };
+  const { error } = await base
+    .from("publications")
+    .update(l.version
+      ? { ...sansProposition, version: null, presentation: null, age: null, empreinte: null, refus_motif: null, refusee_le: null, retiree_le: maintenant, retrait_par: "adulte", retrait_motif: null }
+      : sansProposition)
+    .eq("projet_id", projetId).eq("enseignant_id", e.id);
+  return error ? { ok: false, erreur: "Le livre n’a pas pu être retiré." } : { ok: true };
 }

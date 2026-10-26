@@ -3633,7 +3633,19 @@ V6, le premier envoi à l'imprimeur.
      l'enseignant, le retrait par le porteur avec motif et courriel, la page
      neutre, les cœurs retrouvés ; « Signaler ce livre » dans le tiroir,
      l'accusé de réception, la ligne « 1 signalement » (F15-AC09, AC10,
-     AC14). Migration.
+     AC14). Migration. **Construit le 26 octobre 2026,** migration
+     `retrait_et_signalements` en base locale seulement : trois colonnes de
+     retrait sur `publications`, table `signalements` lue et écrite par le
+     serveur seul ; `serveur/signalements.ts`, le formulaire du tiroir, les
+     sections « Signalements » et « Dans la bibliothèque » de `/admin/livres`.
+     Précisions : avant toute publication, le même geste retire la
+     proposition (« Retirer la proposition… ») ; un retrait efface aussi la
+     mise à jour en attente et le dernier refus ; l'adresse de réponse est
+     demandée (sans elle, ni accusé ni réponse) ; cinq signalements par heure
+     au plus depuis une même connexion ; le retrait du porteur traite les
+     signalements du livre ; un livre republié remonte en tête des « Plus
+     récents » ; les conditions d'utilisation et la page « Confidentialité »
+     disent le signalement.
   6. **« Lire » côté élève :** une classe terminée garde « Lire » seul
      jusqu'à sa suppression ; après les livres de l'enseignant, ceux de la
      bibliothèque de l'âge de la classe, jamais « Adultes » ; le réglage de

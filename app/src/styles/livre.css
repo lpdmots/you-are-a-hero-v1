@@ -1964,6 +1964,14 @@
   background: var(--e-valider-f);
   color: var(--e-valider);
 }
+.facon__ligne--neutre {
+  background: var(--feuille-2);
+  color: var(--graphite-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.facon__ligne--neutre b {
+  color: var(--graphite);
+}
 .facon__ligne--refus {
   background: var(--bloque-f);
   color: var(--bloque);

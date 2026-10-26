@@ -69,7 +69,9 @@ export const CONDITIONS: Document = {
     {
       titre: "Signaler un livre et le retirer",
       paragraphes: [
-        `Qui veut signaler un livre partagé écrit à ${EDITEUR.contact}, avec son lien. L’éditeur peut alors retirer le partage : le lien ne mène plus au livre, et l’adulte qui l’a partagé en est averti par courriel. Son projet ne change pas.`,
+        "Un livre de la bibliothèque se signale par « Signaler ce livre », dans sa présentation : le motif, le passage s’il est connu, un message et une adresse pour la réponse. L’expéditeur reçoit un accusé de réception ; le livre reste publié jusqu’à la décision de l’éditeur.",
+        `Pour un autre livre partagé, écrivez à ${EDITEUR.contact}, avec son lien.`,
+        "L’éditeur peut retirer un livre signalé : il ne se lit plus, et l’adulte qui l’a partagé ou proposé en reçoit le motif par courriel. Son projet ne change pas.",
       ],
     },
     {
@@ -149,7 +151,8 @@ export const CONFIDENTIALITE: Document = {
         "– pour une classe : son nom et son année, le prénom de chaque élève et, s’il est donné, son nom ; les codes des élèves et le mot de passe de la classe, chiffrés ;",
         "– les histoires : textes, consignes, remarques de l’enseignant, images importées ou créées, livres composés et partagés ;",
         "– un journal des appels aux aides IA, sans leur contenu : la date, l’aide, son coût ;",
-        "– pour un achat : ce qui a été acheté, son montant et sa date ; le paiement lui-même se fait chez Stripe, qui garde les données de la carte.",
+        "– pour un achat : ce qui a été acheté, son montant et sa date ; le paiement lui-même se fait chez Stripe, qui garde les données de la carte ;",
+        "– pour un signalement d’un livre de la bibliothèque : le motif, le message et l’adresse électronique de qui l’envoie, pour lui répondre.",
       ],
     },
     {

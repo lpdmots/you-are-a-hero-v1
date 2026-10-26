@@ -265,6 +265,76 @@
   font-size: var(--t-m);
 }
 
+/* ——— Signaler : un lien discret au pied du tiroir, puis un court formulaire ——— */
+.signaler {
+  justify-self: start;
+  margin-top: 18px;
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
+}
+.signalement {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 14px 16px;
+  border-radius: var(--r-m);
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+  font-size: var(--t-s);
+}
+.signalementTitre {
+  font-weight: 800;
+}
+.signalement fieldset {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.signalement legend,
+.signalement label > span {
+  margin-bottom: 4px;
+  font-weight: 700;
+}
+.signalement fieldset label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.signalement > label {
+  display: grid;
+}
+.signalement input:not([type="radio"]),
+.signalement textarea {
+  min-height: 38px;
+  padding: 6px 10px;
+  border: 1px solid var(--trait-fort);
+  border-radius: var(--r-m);
+  background: var(--feuille);
+  font: inherit;
+}
+.signalement textarea {
+  resize: vertical;
+}
+.champCourt input {
+  width: 7em;
+}
+.signalementPied {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.signalement small {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.signalEnvoye {
+  margin-top: 18px;
+  font-size: var(--t-s);
+  color: var(--e-valide);
+}
+
 /* ——— L'adresse d'un livre retiré ou inconnu : une page neutre ——— */
 .neutre {
   display: grid;

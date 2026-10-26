@@ -72,6 +72,8 @@ export type EtatPublication =
   | { sorte: "aucune" }
   | { sorte: "attente"; depuis: string }
   | { sorte: "refusee"; le: string; motif: string }
+  /** Retiré de la bibliothèque, par l'adulte ou par le porteur, avec son motif (F15-AC09, AC10) */
+  | { sorte: "retiree"; le: string; par: "adulte" | "porteur"; motif: string | null }
   | {
       sorte: "publiee";
       adresse: string;
@@ -88,6 +90,9 @@ export type LignePublication = {
   proposee_le: string | null;
   refus_motif: string | null;
   refusee_le: string | null;
+  retiree_le?: string | null;
+  retrait_par?: string | null;
+  retrait_motif?: string | null;
 };
 
 export function etatDeLaPublication(l: LignePublication | null): EtatPublication {
@@ -95,12 +100,16 @@ export function etatDeLaPublication(l: LignePublication | null): EtatPublication
   const attente = l.proposee && l.proposee_le ? { sorte: "attente" as const, depuis: l.proposee_le } : null;
   const refus = !attente && l.refus_motif && l.refusee_le ? { sorte: "refusee" as const, le: l.refusee_le, motif: l.refus_motif } : null;
   if (l.version && l.adresse && l.mise_a_jour_le) return { sorte: "publiee", adresse: l.adresse, le: l.mise_a_jour_le, miseAJour: attente ?? refus };
-  return attente ?? refus ?? { sorte: "aucune" };
+  // Un retrait efface le refus d'avant : un refus présent est donc plus récent que lui
+  const retrait = l.retiree_le && l.retrait_par
+    ? { sorte: "retiree" as const, le: l.retiree_le, par: l.retrait_par === "porteur" ? ("porteur" as const) : ("adulte" as const), motif: l.retrait_motif ?? null }
+    : null;
+  return attente ?? refus ?? retrait ?? { sorte: "aucune" };
 }
 
 /** Une proposition peut-elle partir ? Pas tant qu'une autre attend sa relecture (F15-AC18). */
 export const peutProposer = (e: EtatPublication): boolean =>
-  e.sorte === "aucune" || e.sorte === "refusee" || (e.sorte === "publiee" && e.miseAJour?.sorte !== "attente");
+  e.sorte === "aucune" || e.sorte === "refusee" || e.sorte === "retiree" || (e.sorte === "publiee" && e.miseAJour?.sorte !== "attente");
 
 /**
  * Le texte d'un passage de la version, tel qu'un lecteur le lit, en lignes : les paragraphes, les

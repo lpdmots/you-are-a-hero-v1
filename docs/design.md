@@ -2664,6 +2664,32 @@ livre » : vide tant qu'il n'est pas donné, plein de canard ensuite, le nombre
 fin : « Ce livre t'a plu ? » en Vollkorn italique, puis le même bouton. Sur
 la carte, « · ♥ 12 » au bout de la ligne de l'âge et du type.
 
+**Lot 5, retirer et signaler.** Lectures : 28/40 (informée) et 26/40
+(indépendante), corrigées sans nouvelle mesure.
+
+- **« Signaler ce livre »,** un lien gris discret au pied du tiroir, déplie
+  un formulaire sur fond pâle, qui se montre et prend le focus : la phrase
+  qui rassure d'abord (le livre reste publié jusqu'à la décision de l'équipe
+  d'Il était une classe ; la classe ne reçoit pas le signalement), aucun
+  motif coché d'avance, le numéro du passage « (facultatif) » pour un
+  livre-jeu, le message, l'adresse de réponse ; les erreurs en français, du
+  site, non du navigateur. Envoyé : une phrase verte. Côté public,
+  « l'équipe d'Il était une classe » plutôt que « l'éditeur », qu'un parent
+  prendrait pour la classe.
+- **Côté enseignant :** « Retirer la proposition… » sous l'attente,
+  « Retirer de la bibliothèque… » en lien brique sous l'adresse, confirmés
+  sur place (« Pour le remettre, proposez-le de nouveau : après relecture,
+  il retrouvera son adresse et ses cœurs. ») ; ensuite « Retiré de la
+  bibliothèque par vous, le… » en ligne neutre avec son signe, ou, par
+  l'éditeur, le bloc brique du motif avec « Une question ? » et l'adresse de
+  contact.
+- **Dans l'administration :** les signalements en tête de `/admin/livres`,
+  puis la file, puis « Dans la bibliothèque » ; chaque livre se retire
+  derrière « Retirer de la bibliothèque… », motif à écrire.
+- Laissés en l'état : le message passager de la proposition visible pendant
+  la confirmation du retrait ; le motif de l'éditeur sans lien vers le
+  passage.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { appelerUneAide } from "@/composants/PlusDEtoiles";
 import { Bulle } from "@/composants/Bulle";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
@@ -11,8 +11,9 @@ import { useAidesIa } from "@/composants/AidesIa";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { ATTESTATIONS, CLAUSE_DE_PUBLICATION, PRESENTATION_MAX } from "@/domaine/bibliotheque";
 import { ETAPES_DU_LIVRE, type RaisonDeRefus } from "@/domaine/livre";
+import { EDITEUR } from "@/domaine/textes-publics";
 import { commeLeLivre, type NomsDuPartage } from "@/domaine/partage";
-import { couperUnCanal, mettreAJour, noms as reglerNoms, ouvrirUnCanal, proposer } from "../../actions-partage";
+import { couperUnCanal, mettreAJour, noms as reglerNoms, ouvrirUnCanal, proposer, retirer } from "../../actions-partage";
 
 /**
  * « Imprimer et partager », volet « Partager » (F12.1, F12.3, revu par F15 le 25 octobre 2026) :
@@ -24,7 +25,9 @@ import { couperUnCanal, mettreAJour, noms as reglerNoms, ouvrirUnCanal, proposer
  */
 
 export type PublicationAffichee = {
-  etat: "aucune" | "attente" | "refusee" | "publiee";
+  etat: "aucune" | "attente" | "refusee" | "publiee" | "retiree";
+  /** Retiré : par l'adulte lui-même, ou par l'éditeur avec son motif (F15-AC09, AC10) */
+  retirePar: "adulte" | "porteur" | null;
   /** « 12 novembre », la date de l'état */
   le: string | null;
   motif: string | null;
@@ -62,7 +65,7 @@ export type PartageAffiche = {
   publication: PublicationAffichee;
 };
 
-type Ouvert = "classes" | "maj" | "couper-classes" | "couper-lien" | "proposer" | null;
+type Ouvert = "classes" | "maj" | "couper-classes" | "couper-lien" | "proposer" | "retirer" | null;
 type Reponse = { ok: true } | { ok: false; erreur: string; raisons?: RaisonDeRefus[] };
 
 export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: PartageAffiche; rappels: string[] }) {
@@ -192,8 +195,26 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
             onProposer={(presentation, atteste) =>
               void faire(() => proposer(projetId, presentation, atteste), "Livre proposé : il sera relu avant d’entrer dans la bibliothèque.")
             }
+            retrait={
+              ouvert === "retirer" ? (
+                <Couper
+                  question={p.publication.etat === "publiee" ? "Retirer le livre de la bibliothèque ?" : "Retirer la proposition ?"}
+                  effet={p.publication.etat === "publiee"
+                    ? "Il ne se lira plus dans la bibliothèque ; le partage avec vos classes ne change pas. Pour le remettre, proposez-le de nouveau : après relecture, il retrouvera son adresse et ses cœurs."
+                    : "Le livre ne sera pas relu. Vous pourrez le proposer de nouveau."}
+                  action={p.publication.etat === "publiee" ? "Retirer de la bibliothèque" : "Retirer la proposition"}
+                  enCours={enCours}
+                  onConfirmer={() => void faire(() => retirer(projetId), p.publication.etat === "publiee" ? "Le livre a quitté la bibliothèque." : "La proposition est retirée.")}
+                  onAnnuler={() => setOuvert(null)}
+                />
+              ) : (
+                <button type="button" className="lien lien--danger facon__suite" onClick={() => ouvrir("retirer")}>
+                  {p.publication.etat === "publiee" ? "Retirer de la bibliothèque…" : "Retirer la proposition…"}
+                </button>
+              )
+            }
           />
-          {ouvert === "proposer" ? leRefus : null}
+          {ouvert === "proposer" || ouvert === "retirer" ? leRefus : null}
         </section>
 
         {/* Un lien ouvert avant le 25 octobre 2026 : il ne se crée plus, il se coupe */}
@@ -324,9 +345,11 @@ function EtatPrive({ projetId, p, majOuverte, onMettreAJour }: { projetId: strin
  * son rôle (ambre : cela attend ; vert : c'est fait ; brique : à refaire), puis le geste qui suit.
  * Aucun délai n'est promis.
  */
-function Publication({ projetId, p, rappels, ouvert, enCours, onOuvrir, onFermer, onProposer }: {
+function Publication({ projetId, p, rappels, ouvert, enCours, onOuvrir, onFermer, onProposer, retrait }: {
   projetId: string; p: PartageAffiche; rappels: string[]; ouvert: boolean; enCours: boolean;
   onOuvrir: () => void; onFermer: () => void; onProposer: (presentation: string, atteste: boolean) => void;
+  /** « Retirer de la bibliothèque… », ou « Retirer la proposition… » avant toute publication, et sa confirmation (F15-AC09) */
+  retrait: ReactNode;
 }) {
   const pub = p.publication;
   const formulaire = (action: string) =>
@@ -359,12 +382,32 @@ function Publication({ projetId, p, rappels, ouvert, enCours, onOuvrir, onFermer
     );
   if (pub.etat === "attente")
     return (
-      <p className="facon__ligne facon__ligne--attente">
-        <Icone nom="sablier" />
-        <span>
-          <b>En attente de relecture</b> depuis le {pub.le}. Vous recevrez un courriel.
-        </span>
-      </p>
+      <>
+        <p className="facon__ligne facon__ligne--attente">
+          <Icone nom="sablier" />
+          <span>
+            <b>En attente de relecture</b> depuis le {pub.le}. Vous recevrez un courriel.
+          </span>
+        </p>
+        {retrait}
+      </>
+    );
+  if (pub.etat === "retiree")
+    return (
+      <>
+        {pub.retirePar === "porteur" ? (
+          <Refus le={pub.le!} motif={pub.motif ?? ""} titre="Retiré de la bibliothèque par l’éditeur" question />
+        ) : (
+          <p className="facon__ligne facon__ligne--neutre">
+            <Icone nom="livre" />
+            <span>
+              <b>Retiré de la bibliothèque</b> par vous, le {pub.le}.
+            </span>
+          </p>
+        )}
+        {ouvrirLe("Proposer de nouveau…")}
+        {formulaire("Proposer de nouveau")}
+      </>
     );
   if (pub.etat === "refusee")
     return (
@@ -403,11 +446,12 @@ function Publication({ projetId, p, rappels, ouvert, enCours, onOuvrir, onFermer
       ) : null}
       {maj?.sorte !== "attente" ? (pub.aJour && !maj ? ouvrirLe("Proposer une mise à jour…", true) : ouvrirLe("Proposer la mise à jour…")) : null}
       {formulaire("Proposer la mise à jour")}
+      {ouvert ? null : retrait}
     </>
   );
 }
 
-function Refus({ le, motif, titre, suite }: { le: string; motif: string; titre: string; suite?: string }) {
+function Refus({ le, motif, titre, suite, question = false }: { le: string; motif: string; titre: string; suite?: string; question?: boolean }) {
   return (
     <div className="facon__refus" role="group" aria-label={titre}>
       <p className="facon__refus-tete">
@@ -419,7 +463,16 @@ function Refus({ le, motif, titre, suite }: { le: string; motif: string; titre: 
       <p className="facon__motif">
         <b>Motif :</b> {motif}
       </p>
-      <p className="facon__motif-suite">Corrigez le livre, puis proposez-le de nouveau.</p>
+      <p className="facon__motif-suite">
+        Corrigez le livre, puis proposez-le de nouveau.
+        {/* Un retrait par l'éditeur se discute : l'adresse de contact, à portée */}
+        {question ? (
+          <>
+            {" "}
+            Une question ? <a className="lien" href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>
+          </>
+        ) : null}
+      </p>
     </div>
   );
 }

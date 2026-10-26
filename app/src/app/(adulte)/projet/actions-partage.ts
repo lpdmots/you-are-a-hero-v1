@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { after } from "next/server";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { couperCanal, mettreAJourLePartage, ouvrirCanal, reglerNoms, type Canal, type Refus } from "@/serveur/partage";
-import { proposerALaBibliotheque } from "@/serveur/publication";
+import { proposerALaBibliotheque, retirerDeLaBibliotheque } from "@/serveur/publication";
 import { relireLaProposition } from "@/serveur/relecture-des-livres";
 
 /**
@@ -47,5 +47,15 @@ export async function proposer(projetId: string, presentation: string, attestati
 export async function noms(projetId: string, reglage: unknown): Promise<Fait> {
   const r = await reglerNoms(await exigerEnseignant(), projetId, reglage);
   if (r.ok) rafraichir(projetId);
+  return r;
+}
+
+export async function retirer(projetId: string): Promise<Fait> {
+  const r = await retirerDeLaBibliotheque(await exigerEnseignant(), projetId);
+  if (r.ok) {
+    rafraichir(projetId);
+    // La bibliothèque et l'accueil ne montrent plus le livre
+    revalidatePath("/bibliotheque", "layout");
+  }
   return r;
 }

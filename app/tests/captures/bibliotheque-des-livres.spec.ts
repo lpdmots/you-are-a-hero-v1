@@ -168,3 +168,51 @@ test("lot 4 : les cœurs", async ({ page }) => {
   await sql("delete from coeurs where lecteur like 'n:capture-%'");
   await page.getByRole("dialog").getByRole("button", { name: "Retirer mon cœur" }).click();
 });
+
+test("lot 5 : retirer et signaler", async ({ page, browser }) => {
+  test.setTimeout(180_000);
+  n = 1800;
+  const [premier] = await sql<{ adresse: string }>("select adresse from publications where version is not null order by publiee_le desc limit 1");
+  await page.setViewportSize({ width: 1366, height: 1000 });
+  await aller(page, `/bibliotheque/${premier.adresse}`);
+  await page.getByRole("button", { name: "Signaler ce livre" }).click();
+  await capturer(page, "signaler-formulaire");
+  await page.getByRole("button", { name: "Envoyer le signalement" }).click();
+  await capturer(page, "signaler-incomplet");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/bibliotheque/${premier.adresse}`);
+  await page.getByRole("button", { name: "Signaler ce livre" }).click();
+  await page.getByRole("button", { name: "Signaler ce livre" }).count();
+  await page.locator("form").getByLabel("Ce qui pose problème").scrollIntoViewIfNeeded();
+  await capturer(page, "signaler-390");
+
+  // Côté adulte : un livre publié, puis retiré par lui, puis par le porteur
+  const contexte = await browser.newContext({ viewport: { width: 1366, height: 1300 } });
+  const adulte = await contexte.newPage();
+  const { compte, base } = await adultePret(adulte);
+  const { projet } = await livreFini(base, compte, "La lanterne du passeur", null, "foret");
+  await aller(adulte, `/projet/${projet}/livre?etape=sortie&volet=partager`);
+  await adulte.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
+  await adulte.getByLabel("Présentation").fill(PRESENTATION);
+  await adulte.getByText("Je suis l’auteur de ce livre").click();
+  await adulte.getByRole("button", { name: "Proposer le livre" }).click();
+  await expect(adulte.getByText("En attente de relecture")).toBeVisible();
+  await adulte.getByRole("button", { name: "Retirer la proposition…" }).click();
+  await capturer(adulte, "retirer-proposition");
+  await sql(
+    `update publications set adresse = 'lanterne-' || substr(md5(random()::text), 1, 6), version = proposee, presentation = presentation_proposee, age = age_propose, empreinte = empreinte_proposee,
+       publiee_le = now(), mise_a_jour_le = now(), proposee = null, presentation_proposee = null, age_propose = null, empreinte_proposee = null, proposee_le = null, attestation = null
+     where projet_id = $1`,
+    [projet],
+  );
+  await aller(adulte, `/projet/${projet}/livre?etape=sortie&volet=partager`);
+  await adulte.getByRole("button", { name: "Retirer de la bibliothèque…" }).click();
+  await capturer(adulte, "retirer-publie");
+  await adulte.getByRole("group", { name: "Retirer le livre de la bibliothèque ?" }).getByRole("button", { name: "Retirer de la bibliothèque" }).click();
+  await expect(adulte.getByText(/par vous, le/)).toBeVisible();
+  await capturer(adulte, "retire-par-l-adulte");
+  await sql("update publications set retrait_par = 'porteur', retrait_motif = 'Le passage 3 se moque d’une enseignante réelle, nommée.' where projet_id = $1", [projet]);
+  await aller(adulte, `/projet/${projet}/livre?etape=sortie&volet=partager`);
+  await capturer(adulte, "retire-par-le-porteur");
+  await contexte.close();
+});

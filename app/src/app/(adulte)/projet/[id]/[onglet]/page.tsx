@@ -290,10 +290,11 @@ const jourEnMots = (iso: string) => new Intl.DateTimeFormat("fr-FR", { day: "num
 /** Où en est le livre dans la bibliothèque, tel que « Imprimer et partager » le dit (F15, « Côté enseignant »). */
 function publicationAffichee(pub: PublicationLue | null, empreinteActuelle: string | null, site: string): PublicationAffichee {
   const e = pub?.etat ?? { sorte: "aucune" as const };
-  const base = { le: null, motif: null, adresse: null, miseAJour: null, aJour: true, presentation: pub?.presentation ?? "" };
+  const base = { le: null, motif: null, adresse: null, miseAJour: null, aJour: true, presentation: pub?.presentation ?? "", retirePar: null };
   if (e.sorte === "aucune") return { ...base, etat: "aucune" };
   if (e.sorte === "attente") return { ...base, etat: "attente", le: jourEnMots(e.depuis) };
   if (e.sorte === "refusee") return { ...base, etat: "refusee", le: jourEnMots(e.le), motif: e.motif };
+  if (e.sorte === "retiree") return { ...base, etat: "retiree", le: jourEnMots(e.le), motif: e.motif, retirePar: e.par };
   return {
     ...base,
     etat: "publiee",
