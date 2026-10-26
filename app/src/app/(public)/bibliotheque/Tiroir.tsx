@@ -67,13 +67,13 @@ export function Tiroir({ livre, retour, pied }: { livre: LivrePublie; retour: st
                 </dd>
               </div>
             </dl>
-            <p className={styles.lire}>
+            <div className={styles.lire}>
               <Link className="btn btn--primaire" href={`/lire/bibliotheque/${livre.adresse}`}>
                 <Icone nom="livre" />
                 Lire le livre
               </Link>
               <Coeur adresse={livre.adresse} nombre={livre.coeurs} />
-            </p>
+            </div>
             {pied}
             <Signaler adresse={livre.adresse} aChoix={livre.aChoix} />
           </div>
