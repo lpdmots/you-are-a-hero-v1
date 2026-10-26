@@ -2167,7 +2167,8 @@ cursive et leurs gommettes, la page de livre de l'accueil public.
   la suite, se réjouit d'une scène remise et du livre fini ; il n'explique
   rien et ne juge pas les textes (l'enseignant guide et juge, l'IA aide, les
   élèves écrivent). Écartés : guide, qui doublerait les écrans d'aide ;
-  héros, qui prendrait la place des personnages des élèves.
+  héros, qui prendrait la place des personnages des élèves (sauf dans les
+  livres d'exemple du site, voir « Ce qu'ils ne font jamais »).
 - **Tempérament :** gentil, enthousiaste, un peu pataud, jamais bête. Il se
   croit redoutable : ému, il lâche une petite fumée qui ne fait peur à
   personne. Grand lecteur, il connaît des tas d'histoires. Écartés :
@@ -2227,8 +2228,13 @@ cursive et leurs gommettes, la page de livre de l'accueil public.
   (conflit de sauvegarde, texte gardé à part, enregistrement en échec) ;
   juger un texte, comparer ou classer les élèves ; presser quelqu'un ; être
   le visage de l'IA ou la présenter ; bouger en boucle ou bloquer un geste ;
-  entrer dans le livre ou le lecteur en ligne. Une page introuvable ou une
-  page vide restent permises, rien n'y étant perdu.
+  entrer dans le livre d'une classe ou son lecteur en ligne. Une page
+  introuvable ou une page vide restent permises, rien n'y étant perdu.
+  Exception décidée par le porteur le 26 octobre 2026 : les deux mascottes
+  peuvent être les personnages, héros compris, des livres d'exemple du site
+  (le petit livre à choix de cycle 2,
+  [plan](plan.md#suite-recommandée-après-louverture), point 3), jamais d'un
+  livre de classe ; sans nom propre, la souris toujours muette.
 - **Ce qu'il reprend du logo :** le bleu canard du corps (ventre crème), la
   queue à pointe en flèche, la petite fumée, un livre comme accessoire
   fréquent sans être obligatoire. Sa tête est celle d'un vrai dragon, sans

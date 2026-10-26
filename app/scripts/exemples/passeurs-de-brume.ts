@@ -13,23 +13,7 @@
  * « 8 à 10 ans ».
  */
 import type { Feuille } from "@/domaine/preparation";
-
-export type SceneExemple = {
-  ref: number;
-  titre: string;
-  consigne: string;
-  fin?: true;
-  /** Les choix : leur libellé et leur destination */
-  choix?: [libelle: string, cible: number][];
-  /** Phrase de choix écrite à la main : du texte, et le rang du choix à la place de chaque renvoi */
-  phrase?: (string | number)[];
-  /** Liaison cachée par énigme (F05.1) */
-  cachee?: { cible: number; libelle: string };
-  /** Numéro fixé dans le livre : la destination d'une énigme, ou d'une règle du jeu */
-  numero?: number;
-};
-export type ChapitreExemple = { cle: string; titre: string; couleur: number; visuel: string; resume: string; scenes: SceneExemple[] };
-export type PartieExemple = { titre: string; visuel: string; chapitres: ChapitreExemple[] };
+import type { PartieExemple } from "./conception";
 
 export const TITRE = "Les passeurs de brume";
 export const DEPART = 1;

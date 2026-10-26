@@ -29,11 +29,18 @@ import { config } from "dotenv";
 import { Client } from "pg";
 import { ciblesDe, nettoyerTexte, type Texte } from "@/domaine/copie";
 import { hasard, melangeInitial, type PlanNumerote } from "@/domaine/numeros";
+import { lireImage } from "@/serveur/images";
 import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
+import type { Conception } from "./exemples/conception";
+import { livre as dragon } from "./exemples/dragon";
 import * as passeurs from "./exemples/passeurs-de-brume";
 
-const LIVRES = { passeurs: { conception: passeurs, dossier: "passeurs-de-brume" } } as const;
+const LIVRES: Record<string, { conception: Conception; dossier: string }> = {
+  passeurs: { conception: passeurs, dossier: "passeurs-de-brume" },
+  dragon: { conception: dragon, dossier: "qui-a-pris-le-livre" },
+};
 type CleLivre = keyof typeof LIVRES;
+const TYPE_DE: Record<string, string> = { png: "image/png", webp: "image/webp", jpeg: "image/jpeg" };
 
 const locale = (adresse: string): boolean => {
   try {
@@ -133,9 +140,9 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
   const instant = (i: number) => `${i} milliseconds`;
 
   await q(
-    `insert into public.projets (id, enseignant_id, organisation, recit, titre, classe_id, visuel_choisi, age_des_lecteurs, heros_absent, style_images)
-     values ($1, $2, 'classe', 'choix', $3, null, $4, $5, false, 'lumineuse')`,
-    [projetId, compte, c.TITRE, c.VISUEL_DU_PROJET, c.AGE],
+    `insert into public.projets (id, enseignant_id, organisation, recit, titre, classe_id, visuel_choisi, age_des_lecteurs, heros_absent, style_images, style_autre, consigne_ecriture)
+     values ($1, $2, 'classe', 'choix', $3, null, $4, $5, false, $6, $7, $8)`,
+    [projetId, compte, c.TITRE, c.VISUEL_DU_PROJET, c.AGE, c.STYLE?.style ?? "lumineuse", c.STYLE?.autre ?? "", c.CONSIGNE_ECRITURE ?? ""],
   );
   const p = c.PREPARATION;
   await q(
@@ -144,9 +151,25 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
     [projetId, p.univers, p.personnages, p.enjeu, JSON.stringify(c.FEUILLE), p.regles, p.formuleRenvoi, [...p.constructions]],
   );
   for (const [i, perso] of c.PERSONNAGES.entries()) {
+    // Une planche déjà dessinée (les mascottes) devient le portrait, déposée comme à l'import
+    let portrait: string | null = null;
+    if (perso.planche) {
+      const octets = readFileSync(resolve(racine, perso.planche));
+      const lu = lireImage(new Uint8Array(octets));
+      if (!lu) throw new Error(`Planche illisible : ${perso.planche}`);
+      portrait = randomUUID();
+      const chemins = [`${compte}/${projetId}/${portrait}.jpg`, `${compte}/${projetId}/${portrait}-v.jpg`];
+      for (const ch of chemins) {
+        const { error } = await stockage().upload(ch, octets, { contentType: TYPE_DE[lu.format], upsert: true });
+        if (error) throw new Error(`Planche non déposée : ${error.message}`);
+      }
+      await q("insert into public.images (id, projet_id, enseignant_id, chemin, chemin_vignette, largeur, hauteur, format) values ($1, $2, $3, $4, $5, $6, $7, $8)", [
+        portrait, projetId, compte, chemins[0], chemins[1], lu.largeur, lu.hauteur, lu.format,
+      ]);
+    }
     await q(
-      "insert into public.personnages (projet_id, enseignant_id, nom, autres_noms, heros, description, rang, cree_le) values ($1, $2, $3, $4, $5, $6, $7, now() + $8::interval)",
-      [projetId, compte, perso.nom, perso.autresNoms, perso.heros, perso.description, i, instant(i)],
+      "insert into public.personnages (projet_id, enseignant_id, nom, autres_noms, heros, description, rang, portrait_id, cree_le) values ($1, $2, $3, $4, $5, $6, $7, $8, now() + $9::interval)",
+      [projetId, compte, perso.nom, perso.autresNoms, perso.heros, perso.description, i, portrait, instant(i)],
     );
   }
   for (const [i, [nom, description]] of c.OBJETS.entries()) {
@@ -269,7 +292,7 @@ async function exporterLeLivre(q: Q, compte: string): Promise<void> {
   for (const [n, i] of employees.entries()) {
     const { data, error } = await stockage().download(i.chemin);
     if (error || !data) throw new Error(`Image illisible : ${i.chemin}`);
-    const fichier = `${String(n + 1).padStart(2, "0")}.${i.format === "png" ? "png" : "jpg"}`;
+    const fichier = `${String(n + 1).padStart(2, "0")}.${i.format === "jpeg" ? "jpg" : i.format}`;
     writeFileSync(resolve(dossier, "images", fichier), Buffer.from(await data.arrayBuffer()));
     images.push({ id: i.id, fichier, largeur: i.largeur, hauteur: i.hauteur, format: i.format });
   }
@@ -322,7 +345,7 @@ async function chargerLeLivre(q: Q, compte: string): Promise<void> {
     const octets = readFileSync(resolve(dossier, "images", lu.images.find((a) => nouvelles.get(a.id) === i.id)!.fichier));
     const chemins = [`${compte}/${projetId}/${i.id}.jpg`, `${compte}/${projetId}/${i.id}-v.jpg`];
     for (const ch of chemins) {
-      const { error } = await stockage().upload(ch, octets, { contentType: i.format === "png" ? "image/png" : "image/jpeg", upsert: true });
+      const { error } = await stockage().upload(ch, octets, { contentType: TYPE_DE[i.format] ?? "image/jpeg", upsert: true });
       if (error) throw new Error(`Image non déposée : ${error.message}`);
     }
     await q("insert into public.images (id, projet_id, enseignant_id, chemin, chemin_vignette, largeur, hauteur, format) values ($1, $2, $3, $4, $5, $6, $7, $8)", [

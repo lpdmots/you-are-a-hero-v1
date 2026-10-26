@@ -3500,6 +3500,77 @@ V6, le premier envoi à l'imprimeur.
        des personnages partent avec la correction (F13-AC30) ; le livre
        composé imprime l'apostrophe courbe, PDF, aperçu et version partagée,
        le texte enregistré restant tel quel (F11-AC109).
+   - **Petit livre à choix de cycle 2, entretien validé le 26 octobre 2026**
+     (clé `dragon`, « Qui a pris le livre ? ») :
+     - **Personnages :** les deux mascottes, sans nom propre (« le dragon »,
+       « la souris »), exception décidée par le porteur : elles peuvent être
+       les personnages des livres d'exemple du site, jamais d'un livre de
+       classe ([design](design.md#fantaisie-et-mascotte-22-octobre-2026),
+       « Ce qu'ils ne font jamais »). La souris ne parle pas.
+     - **Histoire, idée du porteur :** chaque soir la maîtresse laisse sur son
+       bureau le livre à couverture rouge qu'elle lira le lendemain, et le
+       dragon, mascotte de la classe, figurine le jour, le lit quand tout le
+       monde est parti. Ce soir le livre a disparu : il doit retrouver la
+       souris avant qu'elle ne le grignote. Six décisions, chacune avec une
+       bonne réponse qui se trouve en réfléchissant (indice du texte ou ce
+       qu'un enfant sait) : le suspect (le chat du gardien, qui vit dans sa
+       loge ; la pie, qui l'appelle « ma poule » parce qu'il vole mal ; la
+       souris, d'après le long trait de sa queue entre les traces) ; la porte
+       (passer dessous, cracher du feu, voler en lançant le dé — 1 ou 2,
+       c'est raté —, la chaise) ; le couloir noir, où la télévision du
+       gardien fait une lueur (allumer ou avancer doucement) ; le carrefour,
+       où la trace du livre traîné exclut l'escalier et où la loge est celle
+       du chat ; l'ombre géante de la souris près de la lampe de la
+       bibliothèque ; trois traînées (confettis bleus, feuilles de classeur,
+       confettis rouges comme le livre). Une erreur ne ramène jamais en
+       arrière : le dragon comprend, et l'on continue avec du temps perdu.
+       Dénouement du porteur : dispute, le dragon arrache le livre, la souris
+       boude, il lit, elle s'approche et découvre que les livres se lisent
+       aussi ; elle le rapporte, et au matin la maîtresse trouve un coin
+       grignoté.
+     - **Jeu :** une seule valeur, « Temps », de 0 ; chaque erreur porte
+       « Ajoute 1 à ton temps. » et la phrase « Si ton temps est à 3, va au
+       20. Sinon, va au … » ; au 20 (numéro fixe), trop tard : la souris a
+       mangé la fin, le dragon en invente une et la glisse dans le livre,
+       puis « recommencer » ; un dé, une fois. Révise le « sans dé ni feuille
+       » de la demande. Pas d'énigme.
+     - **Taille :** 24 passages, une partie sans titre imprimé, trois
+       chapitres (la classe, le couloir, la bibliothèque) ; 40 à 70 mots, 30
+       à 50 pour une erreur ; présent, troisième personne, phrases de douze
+       mots au plus ; « 6 à 8 ans ».
+     - **Livre :** Andika, taille « grande », aligné à gauche (sans césure) ;
+       « va au 12 » et la seule construction « libellé, puis renvoi » ;
+       « Comment lire ce livre » en trois phrases. L'interligne fixe (1,36) se
+       juge sur le PDF ; s'il est serré, une taille « très grande » (15 points,
+       interligne 1,5) sera proposée en changement de règle de F11.3.
+     - **Images :** style « Autre », un texte proche du rendu des mascottes,
+       qui garde la nuit lisible, jugé sur les deux premières images ; les
+       planches de référence des mascottes posées par le script comme
+       portraits ; dix images (page de titre ; la classe le soir, le bureau
+       vide, le couloir, les trois traînées, la dispute, le matin, « trop
+       tard » ; l'ombre et la lecture en pleine page, haute qualité). Budget
+       de 3 € pour tout le livre, le porteur prévenu à 1,50 €.
+     - **Atelier :** chaque consigne dit d'où l'on arrive et demande un début
+       qui ne suppose pas le passage d'avant ; `textes` liste les passages qui
+       mènent à chacun ; « Pour l'IA, notre façon d'écrire » fixe le présent ;
+       un passage de décision donne l'indice, jamais la conclusion ; les
+       phrases du temps et du dé, et les rappels qui servent au raisonnement,
+       sont écrits par Claude. Aucune aide ne titre un livre (« titre » ne
+       propose que des titres de scène) : « Qui a pris le livre ? » est gardé
+       par Claude, à changer à la relecture du porteur.
+     - **Écrit en local le 26 octobre 2026,** rien dans la vraie base : 24
+       passages de 43 à 102 mots écrits par « ✦ Écrire », au présent tenu
+       partout, puis corrigés au degré 2 (trois retouches) et repris par
+       Claude sur dix passages (rappels du chat et de « ma poule », reprises
+       entre passages enchaînés, la découverte de la souris dite) ; 24 pages
+       A5 en Andika ; dix images, dont deux refaites (la souris trop grande
+       dans la dispute ; une lanterne à la place de la lampe), la page de titre
+       prenant l'image du projet (les trois lieux, sans personnage) ; PDF
+       définitif refait après rechargement de l'instantané
+       (`app/scripts/exemples/qui-a-pris-le-livre/`). Dépense des aides : 0,77
+       dollar (71 appels). Le panneau « Comment lire ce livre » ne se laisse pas
+       remplacer d'un geste au clavier du navigateur intégré : ses textes et
+       ceux de la page de fin sont posés dans la base locale.
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le

@@ -5,12 +5,14 @@
  * gardé, comme l'adulte le ferait d'un clic, et noté dans essais-ia/livres/<livre>.json (hors de
  * Git) pour l'analyse. La dépense se lit dans le journal des appels de la base locale.
  *
- *   npm run livres:atelier -- passeurs corriger [refs]   correction au degré 5, portée vers 115 mots
+ *   npm run livres:atelier -- passeurs corriger [refs]   correction (degré et longueur de la conception ; 5 et 115 mots à défaut)
  *   npm run livres:atelier -- passeurs ecrire [refs]     « ✦ Écrire » des scènes vides, dans l'ordre du récit
- *   npm run livres:atelier -- passeurs textes            les textes du moment, dans essais-ia/livres/<livre>-textes.json
+ *   npm run livres:atelier -- passeurs textes            les textes du moment, dans essais-ia/livres/<livre>-textes.json,
+ *                                                        et dans <livre>-arrivees.txt, chacun sous la fin des passages qui y mènent
  *   npm run livres:atelier -- passeurs appliquer         remplace le récit des scènes par essais-ia/livres/<livre>-relus.json
  *   npm run livres:atelier -- passeurs portraits         fiches visuelles et portraits des personnages
  *   npm run livres:atelier -- passeurs images [refs]     description puis image de chaque scène illustrée, posée
+ *   npm run livres:atelier -- passeurs images refaire 21 l'image déjà posée est retirée, puis refaite
  *   npm run livres:atelier -- passeurs titre             l'image du projet (d'après l'univers), pour la page de titre
  *   npm run livres:atelier -- passeurs depense           ce que l'atelier a coûté depuis son premier appel
  *
@@ -33,17 +35,21 @@ import { demandeParId, demanderLaReference, demanderLeReperage, demanderLImageDe
 import { cheminImage, cheminVignette, lireImage, SEAU } from "@/serveur/images";
 import { cheminProposition, preciserLaFiche } from "@/serveur/personnages";
 import { clientService } from "@/serveur/supabase";
+import type { Conception } from "./conception";
+import { livre as dragon } from "./dragon";
 import * as passeurs from "./passeurs-de-brume";
 
 const racine = resolve(__dirname, "../..");
 config({ path: resolve(racine, ".env.local"), quiet: true });
 delete process.env.IA_SIMULEE;
 
-const LIVRES = { passeurs } as const;
+const LIVRES: Record<string, Conception> = { passeurs, dragon };
 const [cle, etape, ...reste] = process.argv.slice(2);
 if (!(cle in LIVRES)) throw new Error(`Nommez le livre : ${Object.keys(LIVRES).join(", ")}.`);
-const c = LIVRES[cle as keyof typeof LIVRES];
-const refsDemandees = reste.length ? new Set(reste.flatMap((r) => r.split(",")).map(Number)) : null;
+const c = LIVRES[cle];
+const refaire = reste.includes("refaire");
+const refs = reste.filter((r) => r !== "refaire");
+const refsDemandees = refs.length ? new Set(refs.flatMap((r) => r.split(",")).map(Number)) : null;
 const voulue = (ref: number) => !refsDemandees || refsDemandees.has(ref);
 
 const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
@@ -88,13 +94,17 @@ const recit = (t: Texte) => paragraphesACorriger(t).map((p) => p.texte);
 const mots = (ps: string[]) => ps.join(" ").split(/\s+/).filter(Boolean).length;
 
 async function corriger(e: Enseignant, scenes: Map<number, Scene>) {
-  for (const ref of Object.keys(c.TEXTES_DE_BASE).map(Number).filter(voulue)) {
+  // Les textes de base ; sans eux, tous les textes écrits
+  const deBase = Object.keys(c.TEXTES_DE_BASE).map(Number);
+  const degre = c.CORRECTION?.degre ?? 5;
+  for (const ref of (deBase.length ? deBase : [...scenes.keys()].sort((a, b) => a - b)).filter(voulue)) {
     const s = scenes.get(ref)!;
     const t = await texteDeScene(e, s.id);
     if (!t) continue;
     const avant = recit(t.texte);
-    const cible = Math.max(115, Math.round(mots(avant) * 1.4));
-    const r = await demanderUneCorrection(e, s.id, t.version, 5, null, { mots: cible });
+    if (!avant.length) continue;
+    const cible = c.CORRECTION ? c.CORRECTION.mots : Math.max(115, Math.round(mots(avant) * 1.4));
+    const r = await demanderUneCorrection(e, s.id, t.version, degre, null, cible ? { mots: cible } : { facteur: 1 });
     if (!r.ok) {
       noter({ etape: "corriger", ref, message: r.message });
       console.log(`S${ref} : ${r.message}`);
@@ -112,7 +122,7 @@ async function ecrire(e: Enseignant, scenes: Map<number, Scene>) {
     const s = scenes.get(ref)!;
     const t = await texteDeScene(e, s.id);
     if (!t) continue;
-    const r = await demanderUneEcriture(e, s.id, t.version, 120);
+    const r = await demanderUneEcriture(e, s.id, t.version, c.MOTS?.[ref] ?? c.MOTS_PAR_DEFAUT ?? 120);
     if (!r.ok) {
       noter({ etape: "ecrire", ref, message: r.message });
       console.log(`S${ref} : ${r.message}`);
@@ -131,7 +141,21 @@ async function textes(e: Enseignant, scenes: Map<number, Scene>) {
     sortie[ref] = t ? recit(t.texte) : [];
   }
   writeFileSync(resolve(dossier, `${cle}-textes.json`), JSON.stringify(sortie, null, 2));
-  console.log(`${Object.keys(sortie).length} textes dans essais-ia/livres/${cle}-textes.json.`);
+  // Chaque texte sous la fin de chacun des passages qui y mènent, et le choix qui y conduit :
+  // un passage où l'on arrive de plusieurs façons ne doit supposer aucune d'elles
+  const plan = c.PARTIES.flatMap((p) => p.chapitres.flatMap((ch) => ch.scenes));
+  const lignes: string[] = [];
+  for (const s of plan) {
+    lignes.push(`=== S${s.ref} ${s.titre} (${mots(sortie[s.ref] ?? [])} mots)`);
+    for (const o of plan) {
+      for (const [libelle, vers] of o.choix ?? []) {
+        if (vers === s.ref) lignes.push(`  ← S${o.ref}, « ${libelle} » : …${(sortie[o.ref] ?? []).join(" ").slice(-160)}`);
+      }
+    }
+    lignes.push(...(sortie[s.ref] ?? []).map((p) => `  ${p}`), "");
+  }
+  writeFileSync(resolve(dossier, `${cle}-arrivees.txt`), lignes.join("\n"));
+  console.log(`${Object.keys(sortie).length} textes dans essais-ia/livres/${cle}-textes.json et ${cle}-arrivees.txt.`);
 }
 
 /** Les textes relus : le récit de chaque scène nommée est remplacé, ses autres blocs gardés à leur place. */
@@ -215,8 +239,16 @@ async function images(e: Enseignant, projetId: string, scenes: Map<number, Scene
     const s = scenes.get(im.ref)!;
     const avant = await texteDeScene(e, s.id);
     if (avant?.texte.some((b) => b.type === "image")) {
-      console.log(`S${im.ref} : déjà illustrée`);
-      continue;
+      if (!refaire || !refsDemandees) {
+        console.log(`S${im.ref} : déjà illustrée`);
+        continue;
+      }
+      // L'image reste parmi celles du projet ; seul son bloc quitte le texte
+      const r = await remplacerSiInchange(e, s.id, avant.version, avant.texte.filter((b) => b.type !== "image"));
+      if (!r.ok) {
+        console.log(`S${im.ref} : ${r.message}`);
+        continue;
+      }
     }
     const cadrage: Cadrage = im.cadrage === "page" ? "pleine-page" : "3:2";
     const badges = im.badges.flatMap((n) => idDe(n) ?? []);
@@ -260,8 +292,8 @@ async function titre(e: Enseignant, projetId: string) {
   console.log(`Image du projet : ${d?.etat}`);
 }
 
-async function depense() {
-  const { data } = await clientService().from("appels_ia").select("aide, sorte, cout_usd, commence_le, issue").gte("commence_le", journal[0]?.quand ?? new Date().toISOString());
+async function depense(e: Enseignant) {
+  const { data } = await clientService().from("appels_ia").select("aide, sorte, cout_usd, commence_le, issue").eq("enseignant_id", e.id).gte("commence_le", journal[0]?.quand ?? new Date().toISOString());
   const lignes = data ?? [];
   const total = lignes.reduce((n, l) => n + Number(l.cout_usd ?? 0), 0);
   const parAide = new Map<string, { n: number; cout: number }>();
@@ -274,8 +306,8 @@ async function depense() {
 }
 
 async function principal() {
-  if (etape === "depense") return depense();
   const e = await connecter();
+  if (etape === "depense") return depense(e);
   const { projetId, scenes } = await lePlan(e);
   if (journal.length === 0) noter({ etape: "debut" });
   if (etape === "corriger") return corriger(e, scenes);

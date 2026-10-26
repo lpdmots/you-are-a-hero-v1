@@ -896,7 +896,10 @@ du site (plan, « Suite recommandée après l'ouverture », point 3). Chacun est
 de classe sans classe ni élève ; son contenu fini est gardé sous Git dans
 `scripts/exemples/<livre>/` (`livre.json` et ses images), et se recharge sans aucun
 appel d'IA, arrivé à « Imprimer et partager » : ordre et numéros fixes, mise en page,
-« C'est voulu » et étapes déclarées compris. Seul le PDF définitif se refait.
+« C'est voulu » et étapes déclarées compris. Seul le PDF définitif se refait. Deux livres
+à ce jour : `passeurs` (« Les passeurs de brume », cycle 3) et `dragon` (« Qui a pris le
+livre ? », cycle 2, les deux mascottes, dont les planches de référence deviennent les
+portraits au brouillon).
 
 ```bash
 npm run livres:exemple -- passeurs                      # dans la base locale, pour le compte local
@@ -911,9 +914,11 @@ Pour écrire ou reprendre un livre, en local seulement :
    d'après la conception (`scripts/exemples/passeurs-de-brume.ts`), sans IA ;
 2. `npm run livres:atelier -- passeurs corriger | ecrire | portraits | images | titre`
    appelle les aides par les fonctions du serveur, connecté comme le compte local, et
-   garde chaque proposition ; `textes` sort les textes du moment, `appliquer` pose les
-   textes relus (`essais-ia/livres/<livre>-relus.json`), `depense` dit ce qu'ont coûté
-   les appels du compte local depuis le premier de l'atelier ;
+   garde chaque proposition ; `textes` sort les textes du moment, et chacun sous la fin
+   des passages qui y mènent (`<livre>-arrivees.txt`), `appliquer` pose les textes relus
+   (`essais-ia/livres/<livre>-relus.json`), `images refaire 21` retire l'image posée et la
+   refait, `depense` dit ce qu'ont coûté les appels du compte local depuis le premier de
+   l'atelier ;
 3. le Livre se mène dans l'application, jusqu'au PDF définitif ;
 4. `npm run livres:exemple -- passeurs --exporter` garde le projet fini dans
    l'instantané, à relire avant de le committer.
