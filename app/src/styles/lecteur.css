@@ -521,3 +521,65 @@ button.lecteur__nom {
     clip-path: inset(50%);
   }
 }
+
+/* Le cœur d'un livre de la bibliothèque (F15) : vide, cerné ; donné, plein de canard — la couleur de ce
+   qui est coché ; le nombre à côté, jamais « 0 » */
+.coeur {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.coeur__bouton {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 999px;
+  background: var(--feuille);
+  color: var(--graphite-2);
+  font: inherit;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: border-color 0.15s var(--ease), color 0.15s var(--ease), transform 0.15s var(--ease);
+}
+.coeur__bouton .ic {
+  width: 20px;
+  height: 20px;
+}
+.coeur__bouton:hover {
+  border-color: var(--canard);
+  color: var(--canard);
+}
+.coeur__bouton[aria-pressed="true"] {
+  border-color: var(--canard);
+  color: var(--canard);
+}
+.coeur__bouton[aria-pressed="true"] .ic {
+  fill: currentColor;
+}
+.coeur__bouton:active {
+  transform: scale(0.94);
+}
+.coeur__bouton:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 2px;
+}
+.coeur--fin {
+  flex-direction: column;
+  gap: 8px;
+  margin: 28px auto 0;
+}
+.coeur__question {
+  margin: 0;
+  font-family: var(--f-recit);
+  font-style: italic;
+  color: var(--graphite-2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .coeur__bouton {
+    transition: none;
+  }
+}

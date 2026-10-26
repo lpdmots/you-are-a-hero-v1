@@ -27,6 +27,7 @@ type Ligne = {
   images: Record<string, { largeur?: number; hauteur?: number }> | null;
   dernier: number | null;
   passages: number | null;
+  coeurs: number | null;
 };
 
 const enLivre = (l: Ligne): LivrePublie => {
@@ -44,13 +45,13 @@ const enLivre = (l: Ligne): LivrePublie => {
     passages: l.a_choix ? (l.dernier ?? 0) : 0,
     image: image ? { id: image, pleinePage: Boolean(page?.image), ratio: taille?.largeur && taille?.hauteur ? taille.largeur / taille.hauteur : 16 / 9 } : null,
     publieLe: l.publiee_le,
-    coeurs: 0,
+    coeurs: l.coeurs ?? 0,
   };
 };
 
 // Le numéro du dernier passage et la page de titre, plutôt que la version entière : quelques octets par livre
 const COLONNES =
-  "adresse, presentation, age, publiee_le, titre:version->>titre, a_choix:version->aChoix, page:version->presentation->titre, images:version->images, dernier:version->passages->-1->numero";
+  "adresse, presentation, age, publiee_le, coeurs, titre:version->>titre, a_choix:version->aChoix, page:version->presentation->titre, images:version->images, dernier:version->passages->-1->numero";
 
 /** Tous les livres publiés, pour la page ; une base qui ne répond pas laisse la page vide. */
 export const livresPublies = cache(async (): Promise<LivrePublie[] | null> => {
@@ -71,16 +72,16 @@ export async function livrePublie(adresse: string): Promise<LivrePublie | null> 
   return tous?.find((l) => l.adresse === adresse) ?? null;
 }
 
-export type LuDansLaBibliotheque = { sorte: "livre"; version: VersionPartagee } | { sorte: "neutre" } | { sorte: "indisponible" };
+export type LuDansLaBibliotheque = { sorte: "livre"; version: VersionPartagee; coeurs: number } | { sorte: "neutre" } | { sorte: "indisponible" };
 
 /** La version publiée, pour le lecteur ; les noms des objets que ses actions nomment (F04-AC20). */
 export async function versionPubliee(adresse: string): Promise<LuDansLaBibliotheque> {
   if (!ADRESSE_VALIDE.test(adresse) || adresse.length > 80) return { sorte: "neutre" };
   try {
-    const { data, error } = await clientService().from("publications").select("version, projet_id").eq("adresse", adresse).not("version", "is", null).maybeSingle();
+    const { data, error } = await clientService().from("publications").select("version, projet_id, coeurs").eq("adresse", adresse).not("version", "is", null).maybeSingle();
     if (error) return { sorte: "indisponible" };
     if (!data?.version) return { sorte: "neutre" };
-    return { sorte: "livre", version: versionAvecObjets(data.version as VersionPartagee, await nomsDesObjets(data.projet_id as string)) };
+    return { sorte: "livre", version: versionAvecObjets(data.version as VersionPartagee, await nomsDesObjets(data.projet_id as string)), coeurs: Number(data.coeurs ?? 0) };
   } catch {
     return { sorte: "indisponible" };
   }

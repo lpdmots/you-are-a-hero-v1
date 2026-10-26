@@ -160,3 +160,53 @@ test("F15-AC11, F15-AC12 — la liste, ses filtres et sa recherche ; l'adresse d
   await aller(page, "/bibliotheque/un-livre-qui-n-existe-pas");
   await expect(page.getByText("Ce livre n’est plus dans la bibliothèque.")).toBeVisible();
 });
+
+/** Publier sans passer par la file : la proposition devient la version publiée, comme « Publier ». */
+async function publierLaProposition(projet: string): Promise<string> {
+  const adresse = `lanterne-${Date.now().toString(36)}`;
+  await sql(
+    `update publications set adresse = $2, version = proposee, presentation = presentation_proposee, age = age_propose, empreinte = empreinte_proposee,
+       publiee_le = now(), mise_a_jour_le = now(), proposee = null, presentation_proposee = null, age_propose = null, empreinte_proposee = null, proposee_le = null, attestation = null
+     where projet_id = $1`,
+    [projet, adresse],
+  );
+  return adresse;
+}
+
+test("F15-AC13 — un cœur dans le tiroir et après la fin, jamais pendant la lecture ; un clic donne, un second retire ; à zéro, le cœur vide sans « 0 »", async ({ page, browser }) => {
+  const marque = Date.now().toString(36);
+  const l = await lanterne(page, `La lanterne ${marque}`);
+  await proposer(page, l.projet);
+  const adresse = await publierLaProposition(l.projet);
+
+  const lecteur = await (await browser.newContext()).newPage();
+  await lecteur.goto(`/bibliotheque/${adresse}`);
+  const coeur = lecteur.getByRole("dialog").getByRole("button", { name: "Donner un cœur à ce livre" });
+  await expect(coeur).toHaveAttribute("aria-pressed", "false");
+  await expect(coeur).toHaveText("");
+  await coeur.click();
+  const donne = lecteur.getByRole("dialog").getByRole("button", { name: "Retirer mon cœur" });
+  await expect(donne).toHaveText("1");
+  await expect.poll(async () => (await sql<{ c: number }>("select coeurs as c from publications where projet_id = $1", [l.projet]))[0].c).toBe(1);
+  // Le même navigateur ne compte pas deux fois : rechargé, le cœur est donné, toujours 1
+  await lecteur.reload();
+  await expect(donne).toHaveAttribute("aria-pressed", "true");
+  await expect(donne).toHaveText("1");
+  await donne.click();
+  await expect(coeur).toHaveText("");
+  // Le bouton change aussitôt ; la base suit la réponse du serveur
+  await expect.poll(async () => (await sql<{ c: number }>("select coeurs as c from publications where projet_id = $1", [l.projet]))[0].c).toBe(0);
+
+  // Dans le lecteur : rien pendant la lecture, la question après la fin
+  await lecteur.goto(`/lire/bibliotheque/${adresse}`);
+  await lecteur.getByRole("button", { name: "Commencer la lecture" }).click();
+  await expect(lecteur.getByText("Ce livre t’a plu ?")).toHaveCount(0);
+  await lecteur.locator(".lecteur__corps").getByRole("button", { name: /Suivre le passeur/ }).click();
+  await expect(lecteur.getByText("Ce livre t’a plu ?")).toBeVisible();
+  await lecteur.getByRole("button", { name: "Donner un cœur à ce livre" }).click();
+  await expect(lecteur.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("1");
+
+  // La carte le dit, et « Les plus aimés » le range
+  await lecteur.goto(`/bibliotheque?q=${marque}&tri=aimes`);
+  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).toContainText("1");
+});

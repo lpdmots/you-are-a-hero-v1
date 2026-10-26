@@ -137,7 +137,7 @@ function EcritAvec() {
 }
 
 export function LecteurEnLigne({
-  version, source, memoire, bandeau, mention = false, ouvrirA = null, retour = null,
+  version, source, memoire, bandeau, mention = false, ouvrirA = null, retour = null, apresLaFin = null,
 }: {
   version: VersionPartagee;
   source: SourceImage;
@@ -146,6 +146,8 @@ export function LecteurEnLigne({
   ouvrirA?: string | null;
   /** Un retour en tête de la barre, à la place du dragon : la bibliothèque, d'où le livre s'ouvre (F15) */
   retour?: { href: string; nom: string } | null;
+  /** Après la fin, jamais pendant la lecture : le cœur d'un livre de la bibliothèque (F15-AC13) */
+  apresLaFin?: ReactNode;
   /** Au-dessus du livre : la prévisualisation de l'adulte, le retour aux lectures de l'élève */
   bandeau?: ReactNode;
   /** Le lien de lecture : la mention « Écrit avec Il était une classe » (F14-AC34) */
@@ -458,6 +460,7 @@ export function LecteurEnLigne({
               </article>
               {passage.fin && present?.auteurs && present.auteurs.place === "fin" ? <PageDesAuteurs p={present.auteurs} source={source} /> : null}
               {passage.fin && present?.fin ? <PageDeFin p={present.fin} source={source} /> : null}
+              {passage.fin ? apresLaFin : null}
               {passage.fin && mention ? <EcritAvec /> : null}
               {g && g.parcours.position > 0 ? (
                 <p className="lecteur__precedent">
@@ -495,6 +498,7 @@ export function LecteurEnLigne({
                 <>
                   {present?.auteurs && present.auteurs.place === "fin" ? <PageDesAuteurs p={present.auteurs} source={source} /> : null}
                   {present?.fin ? <PageDeFin p={present.fin} source={source} /> : null}
+                  {apresLaFin}
                   {mention ? <EcritAvec /> : null}
                 </>
               ) : null}

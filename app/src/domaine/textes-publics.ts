@@ -181,7 +181,7 @@ export const CONFIDENTIALITE: Document = {
     {
       titre: "Mesure d’audience, sans publicité",
       paragraphes: [
-        "Sur l’accueil, l’aide, ces textes et les pages d’entrée de l’adulte, Vercel compte les pages vues et la vitesse d’affichage, sans témoin et sans reconnaître un visiteur d’un jour à l’autre. Il compte aussi, sans nom ni adresse, les comptes et les projets créés, et les achats.",
+        "Sur l’accueil, la bibliothèque, l’aide, ces textes et les pages d’entrée de l’adulte, Vercel compte les pages vues et la vitesse d’affichage, sans témoin et sans reconnaître un visiteur d’un jour à l’autre. Il compte aussi, sans nom ni adresse, les comptes et les projets créés, et les achats.",
         "Rien n’est mesuré dans l’espace des élèves, dans l’outil de l’adulte ni dans les livres lus en ligne. Aucune publicité, aucune revente de données.",
       ],
     },
@@ -193,6 +193,7 @@ export const CONFIDENTIALITE: Document = {
         "– sur l’ordinateur d’une classe, la classe ouverte, et le compte des codes faux, qui bloque les essais au hasard ;",
         "– les écrans d’aide déjà vus.",
         "Le navigateur garde aussi, sans témoin et sans rien envoyer, où un lecteur en est de sa lecture et quelques réglages d’affichage.",
+        "Dans la bibliothèque, pour qu’un lecteur donne un seul cœur à un livre et puisse le retirer, son navigateur garde un identifiant tiré au hasard, qui ne dit rien de lui ; le site n’en garde qu’une empreinte, avec celle de l’adresse réseau, qui sert seulement à limiter les cœurs d’une même adresse dans la journée.",
       ],
     },
     {

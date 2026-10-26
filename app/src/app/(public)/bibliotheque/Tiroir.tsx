@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
+import { Coeur } from "@/composants/Coeur";
 import { Icone } from "@/composants/Icone";
 import { nomDeLAge, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { Couverture } from "./Bibliotheque";
@@ -11,7 +12,7 @@ import styles from "./bibliotheque.module.css";
 /**
  * Le tiroir d'un livre (F15, « Une page indexée, des livres qui ne le sont pas ») : à droite sur un
  * ordinateur, en bas sur un téléphone, la page de titre en grand, la présentation, l'âge, le type
- * et « Lire le livre », seul bouton plein. Il a l'adresse du livre, le lien donné aux familles ;
+ * et « Lire le livre », seul bouton plein, son cœur à côté. Il a l'adresse du livre, le lien donné aux familles ;
  * le fermer ramène à la liste, sa recherche gardée. `pied` reçoit les cœurs et le signalement.
  */
 export function Tiroir({ livre, retour, pied }: { livre: LivrePublie; retour: string; pied?: ReactNode }) {
@@ -70,6 +71,7 @@ export function Tiroir({ livre, retour, pied }: { livre: LivrePublie; retour: st
                 <Icone nom="livre" />
                 Lire le livre
               </Link>
+              <Coeur adresse={livre.adresse} nombre={livre.coeurs} />
             </p>
             {pied}
           </div>

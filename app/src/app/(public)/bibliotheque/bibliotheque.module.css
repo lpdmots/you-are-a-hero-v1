@@ -143,6 +143,17 @@
   color: var(--graphite-2);
 }
 
+.carteCoeurs {
+  white-space: nowrap;
+}
+.carteCoeurs :global(.ic) {
+  width: 13px;
+  height: 13px;
+  margin: 0 2px 0 0;
+  vertical-align: -2px;
+  color: var(--canard);
+  fill: currentColor;
+}
 .vide {
   margin: 34px 0;
   font-family: var(--f-recit);
@@ -242,6 +253,10 @@
   font-size: var(--t-s);
 }
 .lire {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
   margin: 8px 0 0;
 }
 .lire :global(.btn) {

@@ -3618,7 +3618,17 @@ V6, le premier envoi à l'imprimeur.
      garde la lecture sur l'appareil et porte un retour « Bibliothèque ».
   4. **Les cœurs :** dans le tiroir et après la fin, un par navigateur sans
      compte, une limite par adresse réseau, le nombre caché à zéro
-     (F15-AC13). Migration.
+     (F15-AC13). Migration. **Construit le 26 octobre 2026,** migration
+     `coeurs_des_livres` en base locale seulement : table `coeurs` lue et
+     écrite par le serveur seul, nombre tenu sur `publications`, fonction
+     `donner_un_coeur` ; `serveur/coeurs.ts`, l'adresse `/coeurs`, le
+     composant `Coeur`. Précisions : l'identifiant du navigateur et l'adresse
+     réseau ne sont gardés qu'en empreinte, salée par la clé de l'application ;
+     une limite atteinte ne dit rien au lecteur ; le cœur donné est plein de
+     canard (« ce qui est coché »), non rouge ; la carte porte « · ♥ 12 », sauf
+     à zéro ; après la fin, « Ce livre t'a plu ? » et le cœur, en récit
+     classique au bout du dernier chapitre ; la page « Confidentialité » dit
+     l'identifiant et la limite.
   5. **Retirer et signaler :** « Retirer de la bibliothèque » par
      l'enseignant, le retrait par le porteur avec motif et courriel, la page
      neutre, les cœurs retrouvés ; « Signaler ce livre » dans le tiroir,

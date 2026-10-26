@@ -2658,6 +2658,12 @@ prêtes, une précision et « Refuser et envoyer le motif ».
   veut F15 ; « Bibliothèque » absent de l'en-tête sur un téléphone, faute
   de place, présent au pied.
 
+**Lot 4, les cœurs.** Un bouton en pastille, cerné, à côté de « Lire le
+livre » : vide tant qu'il n'est pas donné, plein de canard ensuite, le nombre
+à côté du cœur, jamais « 0 ». Après la fin du livre, centré sous la page de
+fin : « Ce livre t'a plu ? » en Vollkorn italique, puis le même bouton. Sur
+la carte, « · ♥ 12 » au bout de la ligne de l'âge et du type.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

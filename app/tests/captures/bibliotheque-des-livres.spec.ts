@@ -149,3 +149,22 @@ test("lot 3 : la page /bibliotheque", async ({ page }) => {
   await aller(page, `/bibliotheque/${premier.adresse}`);
   await capturer(page, "bibliotheque-tiroir-390");
 });
+
+test("lot 4 : les cœurs", async ({ page }) => {
+  test.setTimeout(120_000);
+  n = 1700;
+  const [premier] = await sql<{ adresse: string; projet_id: string }>("select adresse, projet_id from publications where version is not null order by publiee_le desc limit 1");
+  await sql("insert into coeurs (projet_id, lecteur, reseau) select $1, 'n:capture-' || g, 'r:capture-locale' from generate_series(1, 12) g on conflict do nothing", [premier.projet_id]);
+  await page.setViewportSize({ width: 1366, height: 900 });
+  await aller(page, "/bibliotheque");
+  await capturer(page, "coeurs-liste");
+  await aller(page, `/bibliotheque/${premier.adresse}`);
+  await page.getByRole("dialog").getByRole("button", { name: "Donner un cœur à ce livre" }).click();
+  await expect(page.getByRole("dialog").getByRole("button", { name: "Retirer mon cœur" })).toHaveText("13");
+  await capturer(page, "coeurs-tiroir");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/bibliotheque/${premier.adresse}`);
+  await capturer(page, "coeurs-tiroir-390");
+  await sql("delete from coeurs where lecteur like 'n:capture-%'");
+  await page.getByRole("dialog").getByRole("button", { name: "Retirer mon cœur" }).click();
+});

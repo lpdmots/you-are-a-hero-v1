@@ -83,7 +83,7 @@ describe("Proposer à la bibliothèque (F15)", () => {
     );
     await proposer(laurent, l.projet);
     const avec = JSON.stringify((await ligne(l.projet))!.proposee);
-    expect(avec).toContain("CM1 de l’école Jean-Moulin, 2026".replace("’", "'"));
+    expect(avec).toMatch(/CM1 de l['’]école Jean-Moulin, 2026/);
     expect(avec).toContain("Chloé");
 
     const autre = await livre();

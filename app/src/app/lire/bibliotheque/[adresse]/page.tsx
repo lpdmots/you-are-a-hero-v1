@@ -41,7 +41,7 @@ export default async function Page({ params }: Props) {
     );
   return (
     <Messages>
-      <LecteurDeLaBibliotheque adresse={adresse} version={lu.version} />
+      <LecteurDeLaBibliotheque adresse={adresse} version={lu.version} coeurs={lu.coeurs} />
     </Messages>
   );
 }
