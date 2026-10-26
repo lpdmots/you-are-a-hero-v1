@@ -45,7 +45,14 @@ function entreesDe(brut: unknown): EntreeDeLAccueil[] {
 
 export async function entreesActuelles(): Promise<EntreeDeLAccueil[]> {
   const { data } = await clientService().from("reglages_application").select("livres_de_l_accueil").maybeSingle();
-  return entreesDe(data?.livres_de_l_accueil);
+  const entrees = entreesDe(data?.livres_de_l_accueil);
+  if (entrees.length === 0) return entrees;
+  // Un projet supprimé (un livre d'exemple rechargé, par exemple) ne garde pas sa place ; un livre
+  // seulement retiré de la bibliothèque la garde, pour y revenir s'il est publié de nouveau
+  const { data: projets, error } = await clientService().from("projets").select("id").in("id", entrees.map((e) => e.projet));
+  if (error) return entrees;
+  const existants = new Set((projets ?? []).map((p) => p.id as string));
+  return entrees.filter((e) => existants.has(e.projet));
 }
 
 async function garderLesEntrees(entrees: EntreeDeLAccueil[]): Promise<boolean> {
