@@ -65,6 +65,10 @@ export async function Accueil() {
   const [offre, livres] = await Promise.all([offreActuelle(), livresDeLAccueil()]);
   // Sans livre réglé, le passage 27 n'existe pas, et aucun choix n'y renvoie (en développement, son cadre dit ce qui manque)
   const avecLivres = livres.length > 0 || EN_DEVELOPPEMENT;
+  // Deux livres du porteur, l'un bien plus court que l'autre (323 et 24 passages) : « le grand » et « le petit »,
+  // que les nombres de passages sous les couvertures désignent
+  const tailles = livres.map((l) => l.passages ?? 0);
+  const grandEtPetit = livres.length === 2 && livres.every((l) => l.duPorteur) && Math.min(...tailles) > 0 && Math.max(...tailles) >= 3 * Math.min(...tailles);
 
   return (
     <main className={styles.accueil}>
@@ -175,13 +179,17 @@ export async function Accueil() {
         </div>
       </section>
 
-      {/* 27 — Deux livres de la classe ; à côté, la photo des livres imprimés */}
+      {/* 27 — Deux livres à feuilleter ; à côté, la photo des livres imprimés */}
       {avecLivres ? (
       <section className={`${styles.rangee} ${styles.aDroite}`}>
-        <Feuillet n={27} titre={livres.length === 1 ? "Un livre écrit par une classe." : "Deux livres écrits par une classe."}>
+        <Feuillet n={27} titre={grandEtPetit ? "Deux livres à feuilleter." : livres.length === 1 ? "Un livre écrit par une classe." : "Deux livres écrits par une classe."}>
           <p className={`${styles.recit} ${styles.petit}`}>
-            {/* Les livres de l'accueil viennent de la bibliothèque (F15-AC19) : « mes élèves » pour ceux du porteur seulement */}
-            {livres.every((l) => l.duPorteur)
+            {/* Les livres de l'accueil viennent de la bibliothèque (F15-AC19) : « mes élèves » pour ceux du porteur seulement.
+                Un grand livre de sa classe et un petit (le 26 octobre 2026, « Bouquin mène l'enquête ») : le petit
+                montre un livre court, sans dire qui l'a écrit */}
+            {grandEtPetit
+              ? "Le grand a été écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles. Le petit se lit en quelques minutes. Les deux sont à lire en ligne, gratuitement."
+              : livres.every((l) => l.duPorteur)
               ? livres.length === 1
                 ? "Écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles."
                 : "Écrits par mes élèves, scène par scène, puis imprimés et lus par leurs familles."

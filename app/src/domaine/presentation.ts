@@ -51,7 +51,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     "## Pages",
     "",
-    `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres écrits par une classe, les prix.`,
+    `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres à feuilleter, les prix.`,
     `- [La bibliothèque](${site}/bibliotheque) : des livres écrits par des classes avec l’outil, livres-jeux et récits, à lire en ligne gratuitement, sans compte.`,
     `- [Aide](${site}/aide) : les questions fréquentes, les modèles à télécharger.`,
     `- [Confidentialité](${site}/confidentialite) : les données gardées, l’IA, la mesure d’audience.`,
