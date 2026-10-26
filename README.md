@@ -180,6 +180,16 @@ le détail ; elle ne raconte pas les séances.
   mode d'emploi dans [`app/README.md`](app/README.md), « Essayer la
   bibliothèque (F15) »). Coût réel de la relecture par l'IA : 0,104 dollar
   pour un livre de 213 passages et 20 images.
+- **Couverture faite sur le site** : entretien court du 26 octobre 2026,
+  en [F11.4](docs/specifications.md#f114--intérieur-du-livre-pages-de-présentation-et-couverture)
+  (« Couverture faite sur le site », F11-AC110 à AC117), validé dans son
+  ensemble le même jour ; construction en quatre lots, en local
+  ([plan](docs/plan.md#couverture-faite-sur-le-site-f114-f15)). Décidé :
+  un bloc « La couverture » dans « Imprimer et partager », créée par l'IA
+  (titre et textes écrits par le modèle, choisis et modifiables) ou importée ;
+  « Pour imprimer » ou « Pour le site » ; montrée dans la bibliothèque,
+  l'accueil, « Lire » et l'aperçu de partage ; figée dans la version publiée
+  et relue ; le dépôt de face avant de l'accueil (F14-AC40) retiré.
 - **Créer et modifier les choix dans la scène** (cinquième parcours) :
   approfondi le 1er octobre 2026 en
   [F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène)

@@ -3783,6 +3783,72 @@ V6, le premier envoi à l'imprimeur.
      copie en cache (cinq minutes au plus). Parcours Playwright non rejoués
      avant la mise en ligne (types, lint, tests unitaires et de base passés).
 
+### Couverture faite sur le site (F11.4, F15)
+
+- **Autorisée le 26 octobre 2026,** pour elle seule, après l'entretien validé
+  le même jour (« je valide l'ensemble ») ; les règles sont dans
+  [F11.4](specifications.md#f114--intérieur-du-livre-pages-de-présentation-et-couverture),
+  « Couverture faite sur le site », qui fait foi, avec ses critères F11-AC110
+  à AC117, et ses révisions en F10.2, F14-AC40 et F15.
+- **Construction :** en local, un commit par lot, rien poussé sur `main`, ni
+  migration appliquée à la vraie base, ni donnée de production modifiée sans
+  sa demande ; aucun service payant de plus. Au début de chaque lot : ce qu'il
+  construit, le contenu de sa migration, ce qui paraît perfectible ; un
+  changement de règle se dit avant de coder. Les tests n'appellent jamais la
+  vraie IA ; un seul vrai appel, au lot 1, mesure le coût d'une couverture.
+  Les écrans sans maquette se conçoivent avec impeccable et se critiquent en
+  deux lectures sur des captures de `npm run captures` ; la page
+  d'administration, avec impeccable seul.
+- **Lots, découpage proposé le 26 octobre 2026 :**
+  1. **La couverture du projet :** le bloc « La couverture » dans la colonne de
+     droite de « Imprimer et partager », dans les deux volets, à la place de
+     « La couverture, chez l'imprimeur » ; « Écrire sur la couverture » (cases
+     et textes modifiables, flèche ronde, aide « Dites où placer le
+     texte… ») ; « Pour imprimer » ou « Pour le site » ; « ✦ Créer la
+     couverture », une image à 1824 × 2560 ou 1024 × 1440, avec le style, le
+     héros absent, les portraits retenus et les textes mot pour mot, créée
+     côté serveur pendant qu'on continue, posée d'office avec « Annuler » ;
+     « Copier le prompt » et « ✦ Proposer la description » avec les textes ;
+     « Importer une couverture », la couverture entière coupée à sa face
+     avant ; le téléchargement JPEG, avec l'avertissement d'une image peu
+     définie (F11-AC110 à AC113 pour le bloc, AC116). Migration
+     `couverture` : dans `projets`, l'image de couverture (une image du
+     projet, `on delete set null`), ses textes demandés (`jsonb`, vide pour
+     une couverture importée), son usage (`imprimer` ou `site`) ; la cible
+     `couverture` des demandes d'images. **Coût réel d'une couverture
+     « pour imprimer » mesuré par un vrai appel**, donné en une ligne.
+  2. **La couverture dans les versions et la relecture :** la couverture
+     figée dans la version partagée et dans la version publiée (son image,
+     ses dimensions, ses textes demandés), servie avec les images de la
+     version ; son changement compte dans « le livre a changé » ; la vignette
+     et « Changer » du panneau « Proposer à la bibliothèque », ou « Sans
+     couverture, la bibliothèque montre la page de titre. » ; l'IA de la
+     relecture lit la couverture en premier, avec les textes demandés, et
+     signale celui qui en diffère ou qui est mal écrit ; « Seule la
+     couverture a changé » dans la file (F11-AC113, AC115). Sans migration
+     prévue, la version étant un `jsonb`.
+  3. **Où elle se montre, et l'accueil :** la carte et le tiroir de
+     `/bibliotheque`, l'accueil, « Lire » côté élève (livres de l'enseignant
+     et de la bibliothèque), l'aperçu de partage de
+     `/bibliotheque/[adresse]` (og:image) ; « Reprendre la couverture » dans
+     la forme « Image pleine page » de la page de titre ; le dépôt de face
+     avant retiré de l'administration, et `npm run couvertures:accueil`, qui
+     pose chaque face avant déjà déposée en couverture de son projet et de sa
+     version publiée, à blanc puis `--oui`, `--production` à sa seule demande
+     (F11-AC114, AC117). Migration seulement si la conversion la demande ;
+     la colonne de la face avant déposée reste jusqu'à la conversion en
+     ligne, retirée ensuite par une migration à part.
+  4. **Essai de bout en bout :** un parcours de la création à la
+     bibliothèque, sans vraie IA ; les captures des écrans touchés à 1366 et
+     à 390 ; le mode d'emploi « Essayer la couverture » dans `app/README.md`,
+     avec l'ordre de la mise en ligne (sauvegarde, migration, code,
+     conversion).
+- **Motifs du découpage :** le bloc est un seul écran, conçu et critiqué une
+  fois, avec ce qui le fait marcher ; les versions et la relecture changent
+  les mêmes fonctions du partage et de la publication ; tout ce qui montre la
+  couverture se change ensemble, la conversion de l'accueil avec, puisqu'elle
+  retire l'ancienne source.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

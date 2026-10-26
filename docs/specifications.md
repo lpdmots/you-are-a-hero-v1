@@ -7335,7 +7335,9 @@ en [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
   pas de réglage de langue tant que personne ne le demande.
 - **Couverture (F11.4) :** un prompt à copier seulement ; une image générée
   n'aurait pas la finesse d'une couverture imprimée, d'après les tailles
-  annoncées par le fournisseur, à vérifier.
+  annoncées par le fournisseur, à vérifier. Révisé le 26 octobre 2026 : la
+  couverture se crée aussi sur le site, le modèle acceptant la taille d'une
+  face avant à 300 points par pouce (F11.4, « Couverture faite sur le site »).
 - **Personnages de l'histoire,** idée du porteur, forme recommandée et
   acceptée : dans l'étape « Personnages » de la Préparation (F02), sous « Nous
   retenons », une carte par personnage important — nom, autres noms (« le
@@ -8637,6 +8639,162 @@ reste possible ultérieurement. Construit au lot 8 de l'étape 8 (18 octobre 202
 couverture, chez l'imprimeur » ; « Ce que montre la couverture », « ✦ Proposer la
 description » d'après l'idée, l'univers et l'enjeu, puis « Copier le prompt », qui
 marche sans IA ; l'idée et la description restent avec le projet (F10-AC52).
+
+**Couverture faite sur le site — entretien court du 26 octobre 2026,
+validé dans son ensemble par le porteur le même jour** (« je valide
+l'ensemble »). Autorisé par le porteur pour lui seul, en deux temps (entretien, puis
+construction après sa validation). Besoin : la bibliothèque (F15) montre la page
+de titre faute de couverture, et l'enseignant ne peut que copier le prompt de
+l'image de face alors que le site crée déjà des images (F10.1, F10.2). La
+couverture faite sur le site sert à la bibliothèque et à l'imprimeur, pour la
+face avant. Le dos et la quatrième restent chez l'imprimeur (décision du
+30 septembre 2026, ci-dessus). Fait nouveau qui révise le motif de F10.2
+(« une image générée n'aurait pas la finesse d'une couverture imprimée ») :
+GPT Image 2.5 Flare accepte jusqu'à 3840 points de côté et 8,3 millions de
+points, donc une face avant A5 avec 3 mm de fonds perdus (154 × 216 mm) à
+300 points par pouce, 1824 × 2560 ; à vérifier au premier vrai appel.
+
+*Décidé par le porteur le 26 octobre 2026 :*
+
+- **Un seul endroit (recommandation acceptée).** Un bloc « La couverture »
+  dans la colonne de droite de l'étape « Imprimer et partager »
+  ([F11.6](#f116--trois-temps-pour-préparer-le-livre)), visible dans les deux
+  volets, à la place de « La couverture, chez l'imprimeur » : la couverture du
+  projet, « Ce que montre la couverture », « ✦ Créer la couverture » à côté de
+  « Copier le prompt », qui reste et marche sans IA, et « Importer une
+  couverture » faite ailleurs. Le panneau « Proposer à la bibliothèque » ne la
+  crée pas : il en montre la vignette avec « Changer », qui ramène au bloc ;
+  sans couverture, il dit « Sans couverture, la bibliothèque montre la page de
+  titre. » La liste des choses à préparer chez l'imprimeur garde le texte de
+  quatrième. Alternative écartée : une section « Couverture » dans les
+  réglages de « Mettre en page », loin de ses deux usages.
+- **Le titre écrit par le modèle, dans l'image,** décision du porteur, contre
+  la recommandation d'un titre posé par l'application par-dessus (fautes
+  d'accents, correction qui fait repayer l'image) : la génération écrit bien
+  le texte demandé. L'auteur dit dans « Ce que montre la couverture » où il
+  veut le texte ; l'écran le lui rappelle. Ce qu'on écrit sur la couverture se
+  choisit (le titre, les auteurs, l'année) et part mot pour mot dans le prompt.
+  Une couverture importée l'est telle quelle. Conséquence : une faute dans
+  l'image se corrige en créant une autre couverture.
+- **Format et prix (recommandation acceptée) :** la face avant au format A5
+  avec fonds perdus ; le style du projet et la règle du héros absent ; les
+  portraits des personnages retenus en référence, comme pour l'image d'une
+  scène (F10-AC49) ; une seule image par demande, quel que soit « Images par
+  création », la couverture étant l'aide la plus chère du site ; débitée au
+  coût réel comme toute aide (F14), son coût réel mesuré à la construction.
+  Elle ne compte pas parmi les dix images gratuites d'un projet, n'étant pas
+  dans l'intérieur du livre (sauf usage en page de titre, plus bas). Ajouté
+  par le porteur : **la qualité se choisit** selon l'usage, pour le site
+  seulement ou pour imprimer le livre.
+- **Les textes de la couverture (recommandation acceptée, complétée par le
+  porteur).** Sous « Ce que montre la couverture », « Écrire sur la
+  couverture » : une case par texte, chacun repris de la page de titre — le
+  titre (coché au départ), le sous-titre s'il existe, la ligne de la classe
+  (le nom de l'auteur en mode personnel), l'année — et « Autre texte ». Une
+  case cochée montre son texte dans un champ qui se modifie, demandé par le
+  porteur quand la proposition ne convient pas ; le modifier ne change pas la
+  page de titre, et une flèche ronde reprend celui de la page de titre. Une
+  case cochée fait paraître sous le champ de la description une aide d'une
+  ligne : « Dites où placer le texte : en haut, sur le ciel… ». Le prompt
+  reprend ces textes mot pour mot et demande de n'en écrire aucun autre ;
+  « ✦ Proposer la description » en tient compte et propose leur place ;
+  « Copier le prompt » les comprend aussi.
+- **La qualité, par l'usage (recommandation acceptée) :** « Pour imprimer »,
+  par défaut, en qualité haute à 1824 × 2560 ; « Pour le site », en qualité
+  normale à 1024 × 1440, avec la seule mention « environ dix fois moins
+  d'étoiles », aucun prix par demande n'étant montré (F14). Estimations du
+  26 octobre 2026, non mesurées : 20 à 25 ✦ et 2 ✦. Motif du défaut : une
+  couverture faite pour le site ne s'agrandit pas, et la recréer donne une
+  autre image. Une couverture « pour le site » téléchargée pour l'imprimeur
+  porte l'avertissement d'une image peu définie (F10).
+- **Où elle se montre (recommandation acceptée) :** sur la carte et dans le
+  tiroir de la bibliothèque, à la place de la page de titre, donc aussi sur
+  l'accueil et dans « Lire » côté élève ; en aperçu de partage (og:image) de
+  l'adresse du livre, `/bibliotheque/la-lanterne-du-passeur`, qui reste
+  fermée aux moteurs ; en téléchargement JPEG depuis le bloc, pour
+  l'imprimeur. Elle ne devient pas la page de titre d'office : la forme
+  « Image pleine page » de la page de titre offre « Reprendre la
+  couverture », qui la pose en un clic, dans les marges comme toute page en
+  image, et compte alors parmi les dix images gratuites. Alternative écartée :
+  la couverture en page de titre d'office, qui changerait sans prévenir un
+  livre déjà mis en page.
+- **Une seule couverture par livre, l'accueil compris (recommandation
+  acceptée).** Le dépôt d'une face avant dans l'administration
+  ([F14-AC40](#f14--ouverture-offre-et-exploitation)) est retiré : « Livres de
+  l'accueil » montre la couverture du livre publié, sinon sa page de titre,
+  comme la bibliothèque. Les faces avant déjà déposées passent dans la
+  couverture de leur projet par une commande de conversion, lancée en ligne à
+  la seule demande du porteur. Conséquence acceptée : le livre d'un autre
+  compte posé sur l'accueil y montre la couverture de son auteur ; le porteur
+  peut seulement l'en retirer. Alternative écartée : le dépôt gardé comme
+  remplacement réservé à l'accueil.
+- **La couverture dans la version publiée, relue (recommandation
+  acceptée).** Elle est figée avec la version publiée de
+  [F15](#f15--bibliothèque-publique-des-livres) : une couverture changée dans
+  le projet ne change rien en public avant « Proposer la mise à jour », qui
+  passe par la file de relecture sans exception ; la ligne de la file dit
+  « Seule la couverture a changé » quand c'est le cas. L'IA lit la couverture
+  avec les critères des autres images ; elle reçoit les textes demandés et ne
+  signale que le texte qui en diffère ou qui est mal écrit. Une couverture
+  importée, sans textes demandés, est lue comme une image ordinaire, sans
+  signaler son texte. Alternative écartée : une couverture changée publiée
+  sans relecture.
+- **Importer (recommandation acceptée) :** la règle du dépôt de l'accueil.
+  Une image plus large que haute, la couverture entière, est coupée à sa face
+  avant, dos compris en marge : la quatrième, qui porte souvent les prénoms
+  des élèves, n'est jamais gardée. JPEG, PNG ou WebP, 4 Mo au plus ; une image
+  peu définie est signalée au téléchargement pour l'imprimeur, sans rien
+  bloquer.
+
+*Critères d'acceptation.* Les exemples prennent Mme Laurent et « La lanterne
+du passeur », A5, style « Illustration 2D lumineuse », Lou héros absent des
+images.
+
+- **F11-AC110 — Créer la couverture :** étant donné « le bac sur le lac au
+  lever du jour » dans « Ce que montre la couverture », le titre coché et
+  « Pour imprimer », lorsque Mme Laurent choisit « ✦ Créer la couverture »,
+  alors une seule image de 1824 × 2560 en qualité haute est demandée, même
+  réglée sur deux images par création, avec le style du projet, la règle du
+  héros absent, les portraits des personnages retenus en référence et
+  « La lanterne du passeur » mot pour mot ; son coût réel est débité en
+  étoiles, et elle ne compte pas parmi les dix images gratuites.
+- **F11-AC111 — Pour le site :** étant donné « Pour le site », lorsque la
+  couverture est créée, alors elle est demandée en 1024 × 1440, en qualité
+  normale ; téléchargée pour l'imprimeur, elle porte l'avertissement d'une
+  image peu définie.
+- **F11-AC112 — Les textes :** étant donné la page de titre « La lanterne du
+  passeur », « La classe de CM1 de Mme Laurent », « 2026-2027 », lorsque
+  Mme Laurent coche l'année et remplace le titre par « La lanterne », alors le
+  prompt demande d'écrire « La lanterne » et « 2026-2027 », et aucun autre
+  texte, la page de titre restant inchangée ; la flèche ronde rend « La
+  lanterne du passeur » ; une case cochée fait paraître « Dites où placer le
+  texte : en haut, sur le ciel… ».
+- **F11-AC113 — Un seul endroit :** étant donné l'étape « Imprimer et
+  partager », alors « La couverture » paraît dans les volets « Imprimer » et
+  « Partager » ; le panneau « Proposer à la bibliothèque » en montre la
+  vignette et « Changer », qui ramène au bloc, ou, sans couverture, « Sans
+  couverture, la bibliothèque montre la page de titre. ».
+- **F11-AC114 — Où elle se montre :** étant donné le livre publié avec sa
+  couverture, alors la carte et le tiroir de `/bibliotheque`, l'accueil s'il
+  y est posé et « Lire » côté élève la montrent à la place de la page de
+  titre, et `/bibliotheque/la-lanterne-du-passeur` la donne en aperçu de
+  partage ; le livre imprimé garde sa page de titre jusqu'à « Reprendre la
+  couverture » dans sa forme « Image pleine page », qui la pose et la compte
+  parmi les dix images gratuites.
+- **F11-AC115 — Relue avant le public :** étant donné le livre publié,
+  lorsque Mme Laurent crée une autre couverture, alors le public voit
+  l'ancienne ; « Proposer la mise à jour » la met dans la file avec « Seule la
+  couverture a changé », et une fois publiée, la même adresse montre la
+  nouvelle. Étant donné une couverture où l'image dit « La lenterne du
+  passeur », alors le rapport de l'IA le signale.
+- **F11-AC116 — Importer une couverture entière :** étant donné une image de
+  3600 × 2480 (quatrième, dos, face avant), lorsque Mme Laurent l'importe,
+  alors seule la face avant est gardée, et la quatrième ne se retrouve nulle
+  part ; un fichier de 6 Mo est refusé.
+- **F11-AC117 — L'accueil :** étant donné les livres de l'accueil du
+  porteur, alors l'administration ne propose plus de déposer une face avant ;
+  la conversion pose chaque face avant déjà déposée en couverture de son
+  projet et de sa version publiée.
 
 **Décision confirmée le 3 octobre 2026 — premier cas réel :** le parcours
 epubli sert de premier cas réel de vérification, sans promettre un fichier
@@ -11393,15 +11551,14 @@ découvre l'outil, et le porteur, administrateur.
   toujours à l'entrée enseignant (F01-AC28).
 - **F14-AC40 — Les livres de l'accueil** (décidé par le porteur le 23 octobre 2026, à la
   place d'une variable d'environnement ; révisé le 25 octobre 2026 : la liste est celle des
-  livres publiés dans la bibliothèque, de tous les comptes, F15-AC19) : étant donné le porteur dans l'administration, alors
-  « Livres de l'accueil » liste ses livres partagés par lien, et eux seuls ; il en met deux au
-  plus sur l'accueil, en échange l'ordre, les en retire ; pour chacun, il dépose une
-  couverture, la face avant du livre imprimé, ou la couverture entière, dont seule la face
-  avant est gardée (la quatrième, qui porte souvent les prénoms des élèves, n'est jamais
-  enregistrée). Lorsqu'un visiteur ouvre l'accueil, alors le passage 27 montre ces livres
+  livres publiés dans la bibliothèque, de tous les comptes, F15-AC19 ; révisé le 26 octobre
+  2026 : plus de dépôt de face avant, la couverture étant celle du livre, F11.4, « Couverture
+  faite sur le site », F11-AC117) : étant donné le porteur dans l'administration, alors
+  « Livres de l'accueil » liste les livres publiés ; il en met deux au
+  plus sur l'accueil, en échange l'ordre, les en retire. Lorsqu'un visiteur ouvre l'accueil, alors le passage 27 montre ces livres
   fermés, leur couverture ou, sans elle, leur page de titre, et mène à leur lecture ; un
-  partage retiré quitte l'accueil ; sans livre choisi, le passage 27 et ses renvois
-  n'existent pas. Un autre compte ne peut rien déposer.
+  livre retiré de la bibliothèque quitte l'accueil ; sans livre choisi, le passage 27 et ses renvois
+  n'existent pas.
 - **F14-AC41 — La marque du pass dans « Mes projets »** (demandé par le porteur le
   23 octobre 2026) : étant donné « Paiement ouvert » allumé et le pass acheté pour « Le marais »,
   lorsque M. Bernard ouvre « Mes projets », alors la carte de « Le marais » porte une petite
@@ -11580,7 +11737,10 @@ des cœurs aux histoires qu'ils préfèrent.
   dans le projet ([F13-AC29](#f13--assistance-ia-facultative)) : violence ou
   horreur trop fortes pour cet âge, sexualité, haine et insultes, moquerie
   visant une personne réelle, texte recopié ou personnage protégé (droits
-  d'auteur), texte écrit dans une image. Elle ne signale pas les prénoms.
+  d'auteur), texte écrit dans une image (sauf, sur une couverture, les
+  textes demandés, révisé le 26 octobre 2026 en
+  [F11.4](#f114--intérieur-du-livre-pages-de-présentation-et-couverture)).
+  Elle ne signale pas les prénoms.
   Elle ne décide rien : ni publication, ni refus. Elle rend au porteur un
   rapport court, rien ou quelques points, chacun avec le numéro du passage
   et la phrase en cause ; le porteur juge sur ce rapport, sans lire le livre
@@ -11662,12 +11822,15 @@ des cœurs aux histoires qu'ils préfèrent.
   passer par la file. « Livres de l'accueil »
   ([F14-AC40](#f14--ouverture-offre-et-exploitation)) les choisit désormais
   parmi tous les livres publiés, ceux des autres comptes compris, la
-  couverture restant déposée par le porteur. Aucun autre lien de lecture
+  couverture restant déposée par le porteur (révisé le 26 octobre 2026 : la
+  couverture est celle du livre, faite ou importée par son auteur, F11.4,
+  « Couverture faite sur le site »). Aucun autre lien de lecture
   n'est ouvert au 25 octobre 2026 (dit par le porteur) : rien d'autre à
   convertir.
 - **Une page indexée, des livres qui ne le sont pas.** `/bibliotheque`,
   ouverte aux moteurs, au plan du site et à `llms.txt`, montre les livres en
-  cartes ; un tiroir de détails donne la couverture (ou la page de titre),
+  cartes ; un tiroir de détails donne la couverture du livre (F11.4,
+  26 octobre 2026), ou à défaut sa page de titre,
   la présentation, l'âge des lecteurs, le type de récit, les cœurs et
   « Lire ». Chaque livre a sa propre adresse,
   `/bibliotheque/la-lanterne-du-passeur`, qui est le lien direct donné aux
