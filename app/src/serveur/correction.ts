@@ -7,7 +7,7 @@ import type { Enseignant } from "./adulte";
 import { enregistrerPourAdulte, texteDeScene, type TexteDeScene } from "./copie";
 import { correction } from "./ia/aides/correction";
 import { pistes, remarqueDesPistes } from "./ia/aides/pistes";
-import { type Histoire, histoireDuProjet } from "./ia/aides/contexte";
+import { carnetDe, type CarteDePersonnage, type Histoire, histoireDuProjet } from "./ia/aides/contexte";
 import { demanderUneAide } from "./ia/demander";
 import { projetDe } from "./lectures";
 import { estUuid, preparationDe } from "./recit";
@@ -20,7 +20,7 @@ import { estUuid, preparationDe } from "./recit";
  * remarque ni le nom de l'adulte (F13, ce qui est transmis).
  */
 
-type Lieu = { scene: TexteDeScene; consigne: string | null; histoire: Histoire; nomsPropres: string[]; deClasse: boolean };
+type Lieu = { scene: TexteDeScene; consigne: string | null; histoire: Histoire; nomsPropres: string[]; cartes: CarteDePersonnage[]; deClasse: boolean };
 
 async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | null> {
   if (!estUuid(sceneId)) return null;
@@ -35,6 +35,8 @@ async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | nul
     histoire: histoireDuProjet(projet),
     // Les noms des personnages, leurs autres noms et ceux des objets ne se corrigent pas (F10.2)
     nomsPropres: nomsPropresDeLHistoire(preparation?.personnagesDeLHistoire ?? [], preparation?.objets ?? []),
+    // Qui sont les personnages, comme « ✦ Écrire » le reçoit : un héros garde son genre (F13-AC30)
+    cartes: carnetDe(preparation)?.cartes ?? [],
     deClasse: projet.organisation === "classe",
   };
 }
@@ -65,7 +67,7 @@ export async function demanderUneCorrection(
   // Aux degrés 4 et 5, la longueur se compte sur ce que le serveur a relu, jamais sur ce que dit la page
   const cible = longueurReglable(degre) ? cibleDe(longueur, compterMots(parts.map((p) => p.texte).join(" "))) : null;
   const r = await demanderUneAide(e, correction, {
-    histoire: lieu.histoire, degre, paragraphes: parts.map((p) => p.texte), consigne: lieu.consigne, nomsPropres: lieu.nomsPropres, cible,
+    histoire: lieu.histoire, degre, paragraphes: parts.map((p) => p.texte), consigne: lieu.consigne, nomsPropres: lieu.nomsPropres, cartes: lieu.cartes, cible,
   });
   if (!r.ok) return { ok: false, message: r.message };
   // Pendant la demande, un élève a pu écrire, ou l'adulte lui-même dans une autre fenêtre

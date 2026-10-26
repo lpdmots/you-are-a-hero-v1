@@ -3490,12 +3490,16 @@ V6, le premier envoi à l'imprimeur.
        40 passages de 88 à 147 mots, 39 pages A5, 10 images, PDF définitif
        refait après rechargement de l'instantané. Dépense des aides : environ
        0,76 dollar (84 appels, dont une image refaite). Mode d'emploi :
-       `app/README.md`, « Les livres d'exemple ». Constats de l'essai, sans
-       décision : la correction ne reçoit pas les cartes des personnages et
-       met le héros au féminin (10 textes sur 24) ; « ✦ Écrire » suppose un
-       seul chemin d'arrivée et change parfois de temps ; une correction au
-       degré 5 a donné la réponse de l'énigme ; les aides écrivent des
-       apostrophes droites, que le livre imprime telles quelles.
+       `app/README.md`, « Les livres d'exemple ». Constats de l'essai : la
+       correction ne recevait pas les cartes des personnages et mettait le
+       héros au féminin (10 textes sur 24) ; « ✦ Écrire » suppose un seul
+       chemin d'arrivée et change parfois de temps ; une correction au degré
+       5 a donné la réponse de l'énigme ; les aides écrivent des apostrophes
+       droites, que le livre imprimait telles quelles. Décidé par le porteur
+       et construit en local le 26 octobre 2026, sans migration : les cartes
+       des personnages partent avec la correction (F13-AC30) ; le livre
+       composé imprime l'apostrophe courbe, PDF, aperçu et version partagée,
+       le texte enregistré restant tel quel (F11-AC109).
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le

@@ -177,3 +177,20 @@ describe("Césure posée à la composition (F11.3)", () => {
     expect(html(l)).not.toContain(CESURE);
   });
 });
+
+describe("L'apostrophe du livre (F11.3, 26 octobre 2026)", () => {
+  it("F11-AC109 — l'apostrophe tapée au clavier s'imprime courbe, partout dans le livre composé ; le texte de la scène ne change pas", () => {
+    const texte = [p("Lou s'approcha de l'eau."), choix("Monter à l'échelle", id(2))];
+    const scenes: Decrite[] = [{ ref: 1, partie: 0, texte }, { ref: 2, partie: 0, fin: true, texte: [p("C'est la fin.")] }];
+    const l = livreDe(scenes, { titre: "L'escalier de brume" });
+    const corps = sansCesure(html(l));
+    expect(corps).toContain("Lou s’approcha de l’eau.");
+    expect(corps).toContain("C’est la fin.");
+    expect(corps).not.toMatch(/\p{L}'\p{L}/u);
+    // Ce que lit la version partagée vient du même livre composé
+    expect(l.titre).toBe("L’escalier de brume");
+    expect(JSON.stringify(l.passages)).not.toMatch(/\p{L}'\p{L}/u);
+    // Le texte enregistré reste tel qu'il a été tapé
+    expect(JSON.stringify(texte)).toContain("Lou s'approcha de l'eau.");
+  });
+});

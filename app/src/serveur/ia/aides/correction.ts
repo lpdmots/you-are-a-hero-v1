@@ -1,7 +1,7 @@
 import { NOMS_DES_DEGRES, type Degre } from "@/domaine/aides-ia";
 import { compterMots } from "@/domaine/correction";
 import { assembler, bloc, chaine, champs, liste, objet, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, eleve, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocPersonnages, eleve, type CarteDePersonnage, type Histoire } from "./contexte";
 
 /**
  * Correction d'une scène (F13.1), du degré 1 (orthographe) au degré 5 (d'après la consigne).
@@ -17,6 +17,11 @@ export type EntreeCorrection = {
   consigne: string | null;
   /** Personnages, autres noms et objets de l'histoire : la correction n'y touche pas */
   nomsPropres: string[];
+  /**
+   * Les cartes des personnages (F13-AC30, 26 octobre 2026) : qui ils sont, garçon ou fille ;
+   * sans elles, la correction a mis un héros au féminin.
+   */
+  cartes?: CarteDePersonnage[];
   /** Degrés 4 et 5 : le nombre de mots visé pour l'ensemble, ou rien pour la même longueur */
   cible?: number | null;
 };
@@ -77,11 +82,13 @@ export const correction: DefinitionAide<EntreeCorrection, Correction> = {
 - Un paragraphe qui n'a rien à corriger revient identique, au caractère près.
 - Garde la personne du récit (« tu », « je », « il ») et le temps choisi, sauf une erreur évidente de temps au degré 2 ou plus.
 - Les noms propres de l'histoire s'écrivent exactement comme dans la liste fournie ; ne les modifie jamais.
+- Quand les personnages sont décrits, garde leur genre (« il » ou « elle ») et ce qu'en disent leurs cartes.
 - Garde les mots inventés exprès (formules magiques, noms de créatures) quand ils sont manifestement voulus.
 - Ne commente rien : rends seulement le texte corrigé.`,
   ),
   message: (e) => assembler(
     bloc("noms_propres", e.nomsPropres),
+    blocPersonnages(e.cartes),
     e.degre === 5 || e.degre === 4 ? bloc("consigne", e.consigne) : "",
     bloc("paragraphes", e.paragraphes.map((p, i) => `[${i + 1}] ${p}`).join("\n")),
     `Corrige ces ${e.paragraphes.length} paragraphe${e.paragraphes.length > 1 ? "s" : ""} au degré ${e.degre} (${NOMS_DES_DEGRES[e.degre]})${e.degre >= 4 && e.cible ? `, en visant environ ${e.cible} mots en tout` : ""}, sans leur numéro entre crochets.`,

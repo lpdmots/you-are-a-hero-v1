@@ -8308,6 +8308,19 @@ le titre de chapitre imprimé suit la règle du titre de partie.
   pour le livre, lorsque le livre est composé, alors aucun mot du récit n'est
   coupé en fin de ligne et les règles de coupure entre pages restent tenues.
 
+**Décidé par le porteur le 26 octobre 2026 — l'apostrophe du livre :** un
+texte tapé au clavier, par un élève, un adulte ou une aide IA, porte
+l'apostrophe droite (« l'eau ») ; le livre composé imprime l'apostrophe
+typographique (« l’eau »). Le changement se fait en composant, pour le PDF,
+l'aperçu et la version partagée, sans toucher au texte enregistré, entre
+deux lettres seulement. Constaté sur le livre d'exemple « Les passeurs de
+brume », où les deux formes se mélangeaient.
+
+- **F11-AC109 — Apostrophe typographique :** étant donné la scène « Lou
+  s'approcha de l'eau » tapée au clavier, lorsque le livre est composé, alors
+  le PDF et la version partagée portent « Lou s’approcha de l’eau », et la
+  scène garde son texte tel qu'il a été tapé.
+
 **Décisions confirmées le 3 octobre 2026 — réduire les blancs depuis
 l'aperçu :** l'image restant où l'auteur l'a posée selon
 [F10](#f10--illustrations), le blanc d'un bas de page se réduit par des
@@ -10089,7 +10102,8 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   question se reprendra si une école la pose.
 - **Ce qui est transmis,** liste confirmée le 17 octobre 2026 :
   - correction : les paragraphes de récit de la scène ou de la sélection, sa
-    consigne, les noms propres de l'histoire (personnages, objets) ;
+    consigne, les noms propres de l'histoire (personnages, objets) et, depuis
+    le 26 octobre 2026, les cartes des personnages (F13-AC30) ;
   - consigne : l'indication de l'adulte, la Préparation, les titres et
     consignes des scènes voisines, le niveau des élèves ;
   - idées de choix : la consigne, le texte de la scène, le résumé du chapitre,
@@ -10377,6 +10391,13 @@ livraison ; le degré 5, borné par la consigne, en ouvre une part le 16 octobre
   « Clarifier la formulation », car elle transforme une croyance en fait.
   Ce critère sert à évaluer la qualité des propositions ; il ne suppose pas
   qu'un contrôle automatique garantisse le respect du sens.
+- **F13-AC30 — Personnages connus de la correction :** décidé par le porteur
+  le 26 octobre 2026, après le livre d'exemple « Les passeurs de brume », où
+  la correction au degré 5, qui ne recevait que les noms, a mis Lou au
+  féminin dans 10 textes sur 24. Étant donné la carte « Lou (héros) : Lou a
+  10 ans, c'est le fils de Marius… », lorsque l'adulte demande une
+  correction, alors l'aide reçoit les cartes des personnages, comme
+  « ✦ Écrire », et garde « il » pour Lou ; sans carte, rien ne s'ajoute.
 
 **Questions ouvertes :**
 

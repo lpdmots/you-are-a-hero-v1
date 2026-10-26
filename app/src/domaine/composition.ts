@@ -199,13 +199,31 @@ export function livreACompose(e: EntreeDuLivre): LivreACompose {
     })
     .sort((a, b) => ORDRE_GRAVITE[a.gravite] - ORDRE_GRAVITE[b.gravite] || (a.numero ?? Infinity) - (b.numero ?? Infinity));
 
-  return {
+  // Ce que le livre imprime et partage, l'apostrophe redressée ; le texte enregistré ne change pas (F11-AC109)
+  return typographier({
     titre: e.titre, aChoix: e.aChoix, marqueFin: lu.marqueFin, reglages: r, passages, images: e.images, recapitulatif,
     aFinir: e.problemes.filter((p) => p.sorte === "a-finir").length,
     feuille: lu.feuille,
     des: e.aChoix && e.feuille?.on ? e.feuille.des : 0,
     presentation: e.presentation ?? null,
-  };
+  });
+}
+
+/**
+ * L'apostrophe typographique du livre (décidé le 26 octobre 2026, F11-AC109) : l'apostrophe
+ * droite tapée au clavier, par un élève, un adulte ou une aide, devient « ’ » entre deux lettres
+ * (« l'eau » → « l’eau »). Ni les identités ni les adresses n'en ont : elles ne changent pas.
+ */
+export const apostrophes = (t: string): string => t.replace(/(?<=\p{L})'(?=\p{L})/gu, "’");
+
+/** Toutes les chaînes d'un livre composé, l'apostrophe redressée ; les objets simples et les tableaux seulement. */
+function typographier<T>(v: T): T {
+  if (typeof v === "string") return apostrophes(v) as T;
+  if (Array.isArray(v)) return v.map(typographier) as T;
+  if (v !== null && typeof v === "object" && Object.getPrototypeOf(v) === Object.prototype) {
+    return Object.fromEntries(Object.entries(v).map(([k, x]) => [k, typographier(x)])) as T;
+  }
+  return v;
 }
 
 const ORDRE_GRAVITE: Record<Gravite, number> = { bloque: 0, avert: 1, info: 2 };

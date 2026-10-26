@@ -141,3 +141,16 @@ describe("Longueur de la proposition, aux degrés 4 et 5 (F13.1)", () => {
     expect(correction.systeme({ ...entree, degre: 2 })).not.toContain("mots en tout");
   });
 });
+
+describe("Les personnages connus de la correction (F13.1)", () => {
+  it("F13-AC30 — les cartes des personnages partent avec la correction ; sans carte, rien ne s'ajoute", async () => {
+    const { correction } = await import("@/serveur/ia/aides/correction");
+    const histoire = { titre: "Les passeurs de brume", mode: "classe" as const, recit: "choix" as const, age: "8-10" as const };
+    const entree = { histoire, degre: 5 as const, paragraphes: ["Lou avait peur, mais il avança."], consigne: null, nomsPropres: ["Lou"] };
+    const cartes = [{ nom: "Lou", autresNoms: ["le garçon"], description: "Lou a 10 ans, c’est le fils de Marius.", heros: true }];
+    const avec = correction.message({ ...entree, cartes });
+    expect(avec).toContain("Lou (héros ; aussi : le garçon) : Lou a 10 ans, c’est le fils de Marius.");
+    expect(correction.systeme({ ...entree, cartes })).toContain("garde leur genre");
+    expect(correction.message(entree)).not.toContain("<personnages>");
+  });
+});
