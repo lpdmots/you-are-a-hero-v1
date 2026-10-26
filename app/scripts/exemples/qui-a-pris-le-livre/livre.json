@@ -1,20 +1,20 @@
 {
  "projet": {
-  "id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+  "id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
   "organisation": "classe",
   "recit": "choix",
   "titre": "Qui a pris le livre ?",
-  "image_id": "623f3240-3e8c-4d29-8aa7-cdd08145bee3",
+  "image_id": "055f733a-292c-4a0a-97c2-b49bf385c2eb",
   "visuel_defaut": null,
   "visuel_choisi": "bibliotheque",
-  "depart_scene_id": "60d72ee7-ba94-40c3-975c-599a4ec94945",
+  "depart_scene_id": "9bac9467-47c4-42c2-8997-b03e3c3eda9f",
   "reference_suivante": 25,
   "mise_en_forme_eleves": true,
   "ordre_etabli_le": "2026-10-26T10:47:49.344Z",
   "classement_montre": false,
   "chemins_verifies_le": "2026-10-26T10:58:12.970Z",
   "livre_relu_le": "2026-10-26T10:57:37.149Z",
-  "derniere_etape_livre": "sortie",
+  "derniere_etape_livre": "page",
   "mise_en_page": {
    "marges": {
     "bas": 20,
@@ -55,7 +55,7 @@
     "ligne": "Un livre d’exemple d’Il était une classe",
     "imageId": null,
     "sousTitre": "",
-    "illustration": "623f3240-3e8c-4d29-8aa7-cdd08145bee3"
+    "illustration": "32013ebb-1858-4859-af84-85093071b5d6"
    },
    "auteurs": {
     "noms": [],
@@ -80,7 +80,7 @@
      ],
      [
       {
-       "text": "À la fin d’un passage, tu choisis ce que fait le dragon. Le numéro te dit où lire la suite."
+       "text": "À la fin d’un passage, tu choisis ce que fait Bouquin. Le numéro te dit où lire la suite."
       }
      ]
     ],
@@ -99,15 +99,15 @@
   "style_images": "autre",
   "style_autre": "Illustration douce d’album pour 5 à 7 ans, rendu lisse et légèrement en volume, formes rondes, sans contour noir, couleurs franches et chaudes, grands yeux expressifs, décors simples et peu détaillés ; la nuit reste lisible : bleus profonds et lumière chaude des lampes",
   "heros_absent": false,
-  "consigne_ecriture": "Au présent, à la troisième personne. Phrases très courtes, douze mots au plus, mots simples pour des enfants de 6 ans. Le dragon dit de courtes répliques ; la souris ne parle jamais, elle mime. Ne donne jamais la bonne réponse d’un choix avant que le lecteur choisisse.",
+  "consigne_ecriture": "Au présent, à la troisième personne. Pour des enfants de 6 ans : des mots simples, mais des phrases vivantes et variées, sans répéter « il » ; des bruits et de courtes répliques. Miette ne parle jamais, elle mime. Ne donne jamais la bonne réponse d’un choix avant que le lecteur choisisse.",
   "idee_couverture": "",
   "description_couverture": "",
   "age_des_lecteurs": "6-8"
  },
  "preparation": {
-  "univers": "Une école, le soir, quand tout le monde est parti : la classe, le couloir tout noir, la bibliothèque. Chaque soir, la maîtresse pose sur son bureau le livre à couverture rouge qu’elle lira le lendemain à ses élèves. Le gardien regarde la télévision dans sa loge, au bout du couloir.",
-  "personnages": "Le dragon, la mascotte de la classe : le jour, il fait la figurine sur l’étagère ; le soir, il lit en cachette le livre de la maîtresse.\nLa souris, gourmande, qui adore grignoter le papier.\nLe chat du gardien, qui vit dans la loge.\nLa pie de la cour, qui se moque du dragon.",
-  "enjeu": "Ce soir, le livre rouge a disparu. Le dragon doit retrouver la souris avant qu’elle ne le grignote.",
+  "univers": "Une école, le soir, quand tout le monde est parti : la classe, le couloir tout noir, la bibliothèque. Chaque soir, la maîtresse pose sur son bureau le livre à couverture rouge qu’elle lira le lendemain à ses élèves. Le concierge regarde la télévision dans sa loge, au bout du couloir.",
+  "personnages": "Bouquin, le dragon mascotte de la classe : le jour, il fait la figurine sur l’étagère ; le soir, il lit en cachette le livre de la maîtresse.\nMiette, la souris gourmande, qui adore grignoter le papier.\nPacha, le chat du concierge, qui vit dans la loge.\nJacasse, la pie de la cour, qui se moque de Bouquin.",
+  "enjeu": "Ce soir, le livre rouge a disparu. Bouquin doit retrouver Miette avant qu’elle ne le grignote.",
   "rubrique_jeu": true,
   "feuille": {
    "on": true,
@@ -116,7 +116,7 @@
     {
      "id": "dragon",
      "type": "compteurs",
-     "titre": "Le dragon",
+     "titre": "Bouquin",
      "compteurs": [
       {
        "id": "temps",
@@ -138,8 +138,8 @@
  "tables": {
   "parties": [
    {
-    "id": "6b5da654-22de-4969-ba67-9b45b5aba275",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "e113c25a-0ce4-46d2-af78-8866bbdc44a5",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "titre": "Le livre disparu",
     "rang": 0,
     "image_id": null,
@@ -151,39 +151,39 @@
   ],
   "chapitres": [
    {
-    "id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "partie_id": "6b5da654-22de-4969-ba67-9b45b5aba275",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "partie_id": "e113c25a-0ce4-46d2-af78-8866bbdc44a5",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "titre": "La classe",
     "rang": 0,
     "couleur": 5,
-    "resume": "Le soir, le livre rouge de la maîtresse a disparu de son bureau. Le dragon trouve le coupable, la souris, puis il doit ouvrir la porte de la classe.",
+    "resume": "Le soir, le livre rouge de la maîtresse a disparu de son bureau. Bouquin trouve le coupable, Miette, puis il doit ouvrir la porte de la classe.",
     "image_id": null,
     "visuel_defaut": null,
     "visuel_choisi": "bibliotheque",
     "hors_livre": false
    },
    {
-    "id": "b1b6f383-6591-4624-977d-1113659e87ce",
-    "partie_id": "6b5da654-22de-4969-ba67-9b45b5aba275",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "33ca44b8-b814-4eda-a591-4f03449efeb3",
+    "partie_id": "e113c25a-0ce4-46d2-af78-8866bbdc44a5",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "titre": "Le couloir",
     "rang": 1,
     "couleur": 3,
-    "resume": "Le dragon avance dans le couloir tout noir, sans se faire voir du gardien, puis il choisit le bon chemin au bout du couloir.",
+    "resume": "Bouquin avance dans le couloir tout noir, sans se faire voir du concierge, puis il choisit le bon chemin au bout du couloir.",
     "image_id": null,
     "visuel_defaut": null,
     "visuel_choisi": "chateau",
     "hors_livre": false
    },
    {
-    "id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "partie_id": "6b5da654-22de-4969-ba67-9b45b5aba275",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "partie_id": "e113c25a-0ce4-46d2-af78-8866bbdc44a5",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "titre": "La bibliothèque",
     "rang": 2,
     "couleur": 6,
-    "resume": "Dans la bibliothèque, une ombre géante, trois traînées, puis la souris derrière le radiateur. Ils se disputent le livre, puis le dragon lit l’histoire à la souris.",
+    "resume": "Dans la bibliothèque, une ombre géante, trois traînées, puis Miette derrière le radiateur. Ils se disputent le livre, puis Bouquin lit l’histoire à Miette.",
     "image_id": null,
     "visuel_defaut": null,
     "visuel_choisi": "bibliotheque",
@@ -192,34 +192,36 @@
   ],
   "personnages": [
    {
-    "id": "dc9a6cfa-abe3-4a56-8281-53e3a2ebdc6d",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
-    "nom": "le dragon",
+    "id": "7befd090-fe2f-407c-becd-04bb455c0393",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
+    "nom": "Bouquin",
     "autres_noms": [
+     "le dragon",
      "le petit dragon"
     ],
     "heros": true,
     "description": "La mascotte de la classe : un jeune dragon bleu canard au ventre crème, de la taille d’un gros chat, avec deux petites cornes et une queue en flèche. Le jour, il fait semblant d’être une figurine sur l’étagère ; le soir, il lit en cachette le livre de la maîtresse. Gentil, un peu pataud, il se croit redoutable, mais il ne crache qu’une petite fumée. Ses ailes sont encore trop petites : il vole mal. Il est allergique aux poils de chat.",
     "fiche": "",
-    "portrait_id": "f67254bc-bff6-4965-94d3-9a25b33fe48f",
+    "portrait_id": "e937fd2c-7253-46aa-adc7-54e4a1f0f244",
     "rang": 0
    },
    {
-    "id": "d474415f-17f3-4ee5-b812-0c3269493bd3",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
-    "nom": "la souris",
+    "id": "a382aadf-cedc-42f9-9487-9721f0d5a626",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
+    "nom": "Miette",
     "autres_noms": [
+     "la souris",
      "la petite souris"
     ],
     "heros": false,
-    "description": "Une petite souris ronde et vive, au pelage caramel, au ventre crème, aux grandes oreilles roses et à la longue queue rose. Gourmande et futée, elle adore grignoter le papier. Elle ne parle jamais : elle mime. Debout, elle arrive au genou du dragon.",
+    "description": "Une petite souris ronde et vive, au pelage caramel, au ventre crème, aux grandes oreilles roses et à la longue queue rose. Gourmande et futée, elle adore grignoter le papier. Elle ne parle jamais : elle mime. Debout, elle arrive au genou de Bouquin.",
     "fiche": "",
-    "portrait_id": "d6609483-f4c7-403e-895d-9139ec6385d0",
+    "portrait_id": "aea7295c-9d73-4679-a62a-59ef8b5e6df2",
     "rang": 1
    },
    {
-    "id": "3dd87004-2d8b-4d09-9ef3-bf79507ea753",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "d3a303d6-2bdf-42e7-907c-d89e8802821e",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "nom": "la maîtresse",
     "autres_noms": [],
     "heros": false,
@@ -229,36 +231,39 @@
     "rang": 2
    },
    {
-    "id": "dcb41b38-ff18-4a56-b76a-0b50a1fd7d1c",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
-    "nom": "le gardien",
+    "id": "9c2cfe0c-f2f8-4903-aae0-4479e2be2a8c",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
+    "nom": "le concierge",
     "autres_noms": [],
     "heros": false,
-    "description": "Le gardien de l’école. Le soir, il regarde la télévision dans sa loge, au bout du couloir.",
+    "description": "Le concierge de l’école. Le soir, il regarde la télévision dans sa loge, au bout du couloir.",
     "fiche": "",
     "portrait_id": null,
     "rang": 3
    },
    {
-    "id": "b9db2d7c-e8e1-4b31-96b2-19f235098206",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
-    "nom": "le chat",
+    "id": "f903a260-cce6-4f8e-9d6c-f2a18534994f",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
+    "nom": "Pacha",
     "autres_noms": [
-     "le chat du gardien"
+     "le chat du concierge",
+     "le chat"
     ],
     "heros": false,
-    "description": "Le gros chat gris du gardien, qui vit dans sa loge. Il fait ses griffes sur les cahiers.",
+    "description": "Le gros chat gris du concierge, qui vit dans sa loge. Il fait ses griffes sur les cahiers.",
     "fiche": "",
     "portrait_id": null,
     "rang": 4
    },
    {
-    "id": "005b1d83-5467-4af8-b278-2d19868b83db",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
-    "nom": "la pie",
-    "autres_noms": [],
+    "id": "278f20cb-9823-4bc1-922d-cb554a1b27ab",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
+    "nom": "Jacasse",
+    "autres_noms": [
+     "la pie"
+    ],
     "heros": false,
-    "description": "Une pie noire et blanche qui vit dans l’arbre de la cour. Elle se moque du dragon et l’appelle « ma poule », parce qu’il vole mal.",
+    "description": "Une pie noire et blanche qui vit dans l’arbre de la cour. Elle se moque de Bouquin et l’appelle « ma poule », parce qu’il vole mal.",
     "fiche": "",
     "portrait_id": null,
     "rang": 5
@@ -267,44 +272,62 @@
   "objets": [],
   "formules": [
    {
-    "id": "365d4416-51ac-448c-8520-1ce596712ca8",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "0fe1b93a-9db1-4abb-a01d-5f0c723ad152",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "texte": "Ajoute 1 à ton temps.",
     "signe": "crayon"
    },
    {
-    "id": "26b960d5-d28c-4401-ae64-0a7001612124",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "1a438390-a328-4f35-acfb-7a9c667eb242",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "texte": "Lance le dé.",
     "signe": "de"
    }
   ],
   "scenes": [
    {
-    "id": "60d72ee7-ba94-40c3-975c-599a4ec94945",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "9bac9467-47c4-42c2-8997-b03e3c3eda9f",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 1,
     "titre": "Classe — le livre de chaque soir",
-    "consigne": "Présente la classe, le soir. La maîtresse pose sur son bureau un livre à couverture rouge, pour le lire demain à ses élèves, puis elle s’en va. Présente le dragon, la mascotte de la classe : le jour, il fait la figurine sur l’étagère. Chaque soir, quand tout le monde est parti, il descend lire ce livre. Termine quand il voit que le bureau est vide.",
+    "consigne": "Présente la classe, le soir. La maîtresse pose sur son bureau un livre à couverture rouge, pour le lire demain à ses élèves, puis elle s’en va. Présente Bouquin, Bouquin mascotte de la classe : le jour, il fait la figurine sur l’étagère. Chaque soir, quand tout le monde est parti, il descend lire ce livre. Termine quand il voit que le bureau est vide.",
     "rang": 0,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "a3337b87-b902-483d-bc51-eeceaa196e6d",
+      "id": "167b69a7-4cdf-422b-b97d-7bb442ec2ace",
       "type": "p",
       "children": [
        {
-        "text": "Le soir, la classe est calme. La maîtresse pose un livre sur son bureau. Il a une couverture rouge. Demain, elle le lira aux élèves. Puis elle éteint et s'en va."
+        "text": "Le soir tombe sur l’école. Comme tous les soirs, la maîtresse pose un livre sur son bureau : demain, elle le lira à ses élèves. Elle range ses affaires, éteint la lumière, et la porte se referme. Clac !"
+       }
+      ]
+     },
+     {
+      "id": "b5feeb72-320e-48dd-90b5-b59dd6ec995c",
+      "type": "p",
+      "children": [
+       {
+        "text": "Sur l’étagère, une petite figurine bleue cligne des yeux. C’est Bouquin, le dragon mascotte de la classe ! Le jour, il reste sage et immobile. Mais le soir, quand tout le monde est parti, il lit en cachette le livre de la maîtresse."
+       }
+      ]
+     },
+     {
+      "id": "eb22c745-bdef-4405-9e23-60b96e041496",
+      "type": "p",
+      "children": [
+       {
+        "text": "Ce soir, il l’a repéré de loin : un gros livre rouge, tout neuf ! Bouquin descend de l’étagère, trotte jusqu’au bureau et grimpe dessus en soufflant. Mais… surprise ! Le bureau est vide."
        }
       ]
      },
      {
       "id": "ce291c0c-09b3-4c56-86f9-9ed6928abf8c",
       "type": "image",
-      "image": "79629c8b-0726-4caa-b078-ee53161df942",
+      "image": "5aa85826-c713-4b78-927c-8f0a043241af",
       "largeur": 100,
       "children": [
        {
@@ -313,28 +336,10 @@
       ]
      },
      {
-      "id": "ec0557c7-58cd-4b1e-b36c-15765121c741",
-      "type": "p",
-      "children": [
-       {
-        "text": "Sur l'étagère, une figurine bouge. C'est le dragon, la mascotte de la classe. Le jour, il ne bouge pas. Le soir, il descend en douceur. Il aime lire le livre de la maîtresse."
-       }
-      ]
-     },
-     {
-      "id": "4a6055c5-2bef-499f-8f0c-b5b07cf976a0",
-      "type": "p",
-      "children": [
-       {
-        "text": "Il trotte vers le bureau. Mais le bureau est vide !"
-       }
-      ]
-     },
-     {
       "id": "2804cc65-54d2-4101-ae4e-2e539cb15753",
       "auto": true,
       "type": "choix",
-      "cible": "8349dd10-df83-45fc-ad53-37a8504bc9eb",
+      "cible": "692ae5c6-7f09-45f2-8556-948bac88f8ef",
       "libelle": "Regarder le bureau de plus près",
       "children": [
        {
@@ -344,8 +349,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-26T10:51:23.486Z",
+    "version": 21,
+    "ecrit_le": "2026-10-26T16:39:35.639Z",
     "rang_livre": 4,
     "numero_fixe": null,
     "etat": "prete",
@@ -356,48 +361,37 @@
     "description_image": "Vue large, format horizontal, d'une salle de classe déserte au soir. La lumière dorée du couchant entre par les fenêtres et dessine de longues ombres sur les tables vides. Au centre, le bureau de la maîtresse, avec un livre à couverture rouge bien posé dessus. Sur une étagère, à gauche, le dragon est immobile comme une figurine, mais ses yeux se tournent vers le livre. Ambiance calme, douce, avec un petit frisson de mystère."
    },
    {
-    "id": "8349dd10-df83-45fc-ad53-37a8504bc9eb",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "692ae5c6-7f09-45f2-8556-948bac88f8ef",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 2,
     "titre": "Bureau — le livre a disparu",
-    "consigne": "Le livre rouge a disparu ! Sur le bureau, il y a des confettis de papier. Dans la poudre de craie, il y a de toutes petites traces de pattes, et entre elles un long trait fin. Le dragon pense à trois coupables : le chat du gardien, qui vit dans la loge et fait ses griffes sur les cahiers ; la pie de la cour, qui l’appelle « ma poule » parce qu’il vole mal ; la souris, qui adore grignoter le papier. Ne dis pas qui est le coupable. Termine par : « À ton avis, qui a pris le livre ? »",
+    "consigne": "Le livre rouge a disparu ! Sur le bureau, il y a des confettis de papier. Dans la poudre de craie, il y a de toutes petites traces de pattes, et entre elles un long trait fin. Bouquin pense à trois coupables : Pacha, le chat du concierge, qui vit dans la loge et fait ses griffes sur les cahiers ; Jacasse, Jacasse de la cour, qui l’appelle « ma poule » parce qu’il vole mal ; Miette, Miette, qui adore grignoter le papier. Ne dis pas qui est le coupable. Termine par : « À ton avis, qui a pris le livre ? »",
     "rang": 1,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "528492a0-d95e-4362-8efc-ab546c307cde",
+      "id": "c229b23d-ad00-4c6f-bd46-136baa4a9619",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon s'approche du bureau. Le livre rouge a disparu ! Il y a des confettis de papier partout. Dans la poudre de craie, il voit des traces de pattes, toutes petites. Entre elles, il y a un long trait fin."
+        "text": "Le livre rouge a disparu ! À sa place, un pot de craies renversé a laissé une poudre blanche sur le bureau. Dans cette poudre, Bouquin découvre de toutes petites traces de pattes, avec un long trait fin qui court entre elles. Tout autour traînent des miettes de papier."
        }
       ]
      },
      {
-      "id": "961679dd-d168-482f-acd8-e701b0125c31",
-      "type": "image",
-      "image": "25eec33a-3465-4306-814c-fab656650037",
-      "largeur": 100,
-      "children": [
-       {
-        "text": ""
-       }
-      ]
-     },
-     {
-      "id": "aae44ad3-f3f5-451f-8dad-131db3d94498",
+      "id": "3f82e7c1-bf0b-4021-8fde-8d4e3ca96bce",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon se gratte la corne. « Qui a pris le livre ? » Il pense au chat du gardien, qui vit dans la loge. Ce chat fait ses griffes sur les cahiers. Il pense à la pie de la cour. Elle l'appelle « ma poule », parce qu'il vole mal. Il pense aussi à la souris. Elle adore grignoter le papier."
+        "text": "« Qui a bien pu prendre le livre ? » se demande Bouquin en se grattant la corne. Il y a Pacha, le chat du concierge, qui vit dans la loge et adore faire ses griffes sur les cahiers. Il y a Jacasse, la pie de la cour, qui se moque de lui : elle l’appelle « ma poule », parce que ses ailes sont trop petites pour bien voler. Et il y a Miette, la souris, qui adore grignoter le papier."
        }
       ]
      },
      {
-      "id": "388bcf21-12e5-400f-83ac-c2c3a12050d1",
+      "id": "9946eec0-44a9-434d-bf49-64613aaf393d",
       "type": "p",
       "children": [
        {
@@ -406,11 +400,22 @@
       ]
      },
      {
+      "id": "d282e410-299c-425b-a947-f6098dd29164",
+      "type": "image",
+      "image": "4a943f25-d028-4ffe-9e0e-bf7b4373cb54",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
       "id": "d6db6c12-d09e-4bce-913f-4f058987bea1",
       "auto": true,
       "type": "choix",
-      "cible": "dbb884d3-d37b-4bf2-a400-cd49104c3ef7",
-      "libelle": "Le chat du gardien",
+      "cible": "611bcaff-eeb1-41c6-989a-57b05a7119f8",
+      "libelle": "Pacha, le chat du concierge",
       "children": [
        {
         "text": ""
@@ -422,8 +427,8 @@
       "id": "bc51e460-7169-4f6d-b9b6-8c68cf3f773c",
       "auto": true,
       "type": "choix",
-      "cible": "c5e540d5-a205-4409-895d-f3bb32fddd7e",
-      "libelle": "La pie",
+      "cible": "c42b89bd-22dd-4892-b471-06b8163e63d6",
+      "libelle": "Jacasse, la pie",
       "children": [
        {
         "text": ""
@@ -435,8 +440,8 @@
       "id": "3b0be30f-d068-41b6-8bf3-e97cbaef34b2",
       "auto": true,
       "type": "choix",
-      "cible": "341347a5-d523-4139-b91e-615105896733",
-      "libelle": "La souris",
+      "cible": "93add5ab-8497-4e10-b329-939fe74b01e1",
+      "libelle": "Miette, la souris",
       "children": [
        {
         "text": ""
@@ -445,8 +450,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:52:29.813Z",
+    "version": 22,
+    "ecrit_le": "2026-10-26T16:39:35.683Z",
     "rang_livre": 23,
     "numero_fixe": null,
     "etat": "prete",
@@ -454,35 +459,44 @@
     "etat_le": null,
     "nouvelle_page": false,
     "idee_image": "Le dragon, debout sur le bureau de la maîtresse, se penche sur de toutes petites traces de pattes dans la poudre de craie, avec un long trait fin entre elles, et des confettis de papier. Le livre n’est plus là.",
-    "description_image": "Vue légèrement plongeante, en format horizontal, sur le bureau de la maîtresse dans la classe au soir tombant. Le dragon, debout sur le bureau, se penche et regarde de près de toutes petites traces de pattes dans la poudre de craie. Un long trait fin passe entre elles. Des confettis de papier sont éparpillés autour. Une place vide montre où était le livre. Lumière dorée et douce par la fenêtre, ambiance curieuse et pleine de mystère."
+    "description_image": "Vue légèrement plongeante, en format horizontal, sur le bureau de la maîtresse dans la classe au soir tombant. Le dragon, debout sur le bureau, se penche et regarde de près de toutes petites traces de pattes dans la poudre de craie légèrement parsemée. Un long trait fin passe entre elles. Lumière dorée et douce par la fenêtre, ambiance curieuse et pleine de mystère."
    },
    {
-    "id": "dbb884d3-d37b-4bf2-a400-cd49104c3ef7",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "611bcaff-eeb1-41c6-989a-57b05a7119f8",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 3,
-    "titre": "Bureau — le chat du gardien ?",
-    "consigne": "Le dragon pense que c’est le chat du gardien. Puis il se souvient : il est allergique aux poils de chat, et il n’a pas éternué une seule fois. Ce n’est pas le chat ! Il regarde les fenêtres : elles sont toutes fermées, la pie n’a pas pu entrer. Alors c’est la souris. Les traces mènent à la porte.",
+    "titre": "Bureau — Pacha ?",
+    "consigne": "Bouquin pense que c’est Pacha. Puis il se souvient : il est allergique aux poils de chat, et il n’a pas éternué une seule fois. Ce n’est pas Pacha ! Il regarde les fenêtres : elles sont toutes fermées, Jacasse n’a pas pu entrer. Alors c’est Miette. Les traces mènent à la porte.",
     "rang": 2,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "a61eeefc-5976-4d69-a5fe-a919e11228ce",
+      "id": "58893df8-839f-4c94-9a0e-6047741d6e56",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon pense au chat du gardien. Mais attends ! Il est allergique aux poils de chat. Il n'a pas éternué une seule fois. Ce n'est pas le chat !"
+        "text": "Pacha ? Bouquin fronce le nez… et rien ! Pas le moindre atchoum. Pourtant, il est allergique aux poils de chat : si Pacha était venu, il éternuerait sans arrêt. Ce n’est donc pas lui."
        }
       ]
      },
      {
-      "id": "8b3a84fd-2429-4313-b6dd-10a6669511bb",
+      "id": "11ddbd63-042d-4cdc-9a8a-54e93791ea6c",
       "type": "p",
       "children": [
        {
-        "text": "Il regarde les fenêtres. Elles sont toutes fermées. La pie n'a pas pu entrer. « Alors, c'est la souris ! » Les traces mènent à la porte."
+        "text": "Bouquin jette un coup d’œil aux fenêtres : elles sont toutes bien fermées. Jacasse n’a pas pu entrer non plus."
+       }
+      ]
+     },
+     {
+      "id": "c42405d9-4fd9-4c0e-9148-b682979cccbf",
+      "type": "p",
+      "children": [
+       {
+        "text": "« Alors c’est Miette ! » s’écrie-t-il. Et les petites traces filent tout droit vers la porte."
        }
       ]
      },
@@ -501,27 +515,12 @@
       "libelle": "Arriver trop tard",
       "children": [
        {
-        "text": "Si ton temps est à 3, va au "
+        "text": "Suivre les traces : va au "
        },
        {
-        "id": "9ae25c12-e030-4406-b5c9-293f5174a11a",
+        "id": "508a684b-6363-415f-b934-6f69151130e6",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
-        "libelle": "Arriver trop tard",
-        "children": [
-         {
-          "text": ""
-         }
-        ]
-       },
-       {
-        "text": ". Sinon, va au "
-       },
-       {
-        "id": "7b457ce9-c8f5-4a04-bd84-4a8b12a16b7d",
-        "type": "renvoi",
-        "cible": "d1351091-b00c-45f7-a5d4-3c50bc9cc0e2",
-        "libelle": "Continuer",
+        "cible": "23da691e-e942-4ac4-bc11-bfc043fec6bd",
         "children": [
          {
           "text": ""
@@ -534,8 +533,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:05.214Z",
+    "version": 10,
+    "ecrit_le": "2026-10-26T16:39:35.707Z",
     "rang_livre": 7,
     "numero_fixe": null,
     "etat": "prete",
@@ -546,32 +545,41 @@
     "description_image": ""
    },
    {
-    "id": "c5e540d5-a205-4409-895d-f3bb32fddd7e",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "c42b89bd-22dd-4892-b471-06b8163e63d6",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 4,
-    "titre": "Bureau — la pie ?",
-    "consigne": "Le dragon pense que c’est la pie. Il va voir les fenêtres : elles sont toutes fermées, la pie n’a pas pu entrer. Et il n’a pas éternué une seule fois, lui qui est allergique aux poils de chat : ce n’est pas le chat non plus. Alors c’est la souris. Les traces mènent à la porte.",
+    "titre": "Bureau — Jacasse ?",
+    "consigne": "Bouquin pense que c’est Jacasse. Il va voir les fenêtres : elles sont toutes fermées, Jacasse n’a pas pu entrer. Et il n’a pas éternué une seule fois, lui qui est allergique aux poils de chat : ce n’est pas le chat non plus. Alors c’est Miette. Les traces mènent à la porte.",
     "rang": 3,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "02c5483f-1389-447d-acd3-f4fd14cb4aac",
+      "id": "c89b840d-cab0-4c76-91c8-1876c54515ef",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon pense à la pie. Elle se moque de lui ! Il court vers les fenêtres. Elles sont toutes fermées. La pie n'a pas pu entrer."
+        "text": "Jacasse ? Cette pie moqueuse en serait bien capable ! Bouquin court vers les fenêtres… mais elles sont toutes bien fermées. Impossible d’entrer par là."
        }
       ]
      },
      {
-      "id": "1ded9aa3-9143-4370-84b5-e0aebca6d0ad",
+      "id": "cdc0a0db-d14f-46c2-a6a2-d88582bc52a7",
       "type": "p",
       "children": [
        {
-        "text": "Il n'a pas éternué une seule fois. Il est allergique aux poils de chat. Ce n'est pas le chat non plus ! Alors c'est la souris. Les traces mènent à la porte."
+        "text": "Et Pacha ? Bouquin est allergique aux poils de chat, et pourtant il n’a pas éternué une seule fois. Le chat n’est donc pas venu."
+       }
+      ]
+     },
+     {
+      "id": "195a4345-4ac3-4d88-a2ff-f69ed659377b",
+      "type": "p",
+      "children": [
+       {
+        "text": "« Alors c’est Miette ! » Et les petites traces filent tout droit vers la porte."
        }
       ]
      },
@@ -590,26 +598,12 @@
       "libelle": "Arriver trop tard",
       "children": [
        {
-        "text": "Si ton temps est à 3, va au "
-       },
-       {
-        "id": "7e04cde8-c349-4e86-87e3-0350fdfc51da",
-        "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
-        "libelle": "Arriver trop tard",
-        "children": [
-         {
-          "text": ""
-         }
-        ]
-       },
-       {
-        "text": ". Sinon, va au "
+        "text": "Suivre les traces, va au "
        },
        {
         "id": "f2837255-e7aa-4070-9a10-dcaa48fb97e1",
         "type": "renvoi",
-        "cible": "d1351091-b00c-45f7-a5d4-3c50bc9cc0e2",
+        "cible": "23da691e-e942-4ac4-bc11-bfc043fec6bd",
         "libelle": "Continuer",
         "children": [
          {
@@ -623,8 +617,8 @@
       ]
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-26T10:50:57.752Z",
+    "version": 8,
+    "ecrit_le": "2026-10-26T16:39:35.730Z",
     "rang_livre": 2,
     "numero_fixe": null,
     "etat": "prete",
@@ -635,32 +629,32 @@
     "description_image": ""
    },
    {
-    "id": "341347a5-d523-4139-b91e-615105896733",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "93add5ab-8497-4e10-b329-939fe74b01e1",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 5,
     "titre": "Bureau — la longue queue",
-    "consigne": "Le dragon regarde les traces de près : de toutes petites pattes, et entre elles un long trait fin. Ce trait, c’est une longue queue qui traîne. C’est la souris ! Les traces mènent à la porte.",
+    "consigne": "Bouquin regarde les traces de près : de toutes petites pattes, et entre elles un long trait fin. Ce trait, c’est une longue queue qui traîne. C’est Miette ! Les traces mènent à la porte.",
     "rang": 4,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "32da4a4c-7bb6-4ce3-876e-d4268e112a75",
+      "id": "4ca0bb1b-9fe7-4615-b8b9-db546228e627",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon se penche sur la poudre de craie. Il regarde les traces de près. Ce sont de toutes petites pattes. Entre elles, il y a un long trait fin."
+        "text": "Bouquin se penche sur la poudre blanche et observe les traces de tout près. Ce sont de toutes petites pattes… et ce long trait fin, entre elles, c’est une queue qui traîne derrière !"
        }
       ]
      },
      {
-      "id": "9b9fda28-b4e1-4fcc-9553-af34a6c13fdf",
+      "id": "9e6cd638-7f3d-4bd4-81a8-f89d47759b86",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon réfléchit. Ce trait, c'est une longue queue qui traîne ! « C'est la souris ! » dit-il. Il suit les traces du bout du doigt. Elles mènent à la porte."
+        "text": "« C’est Miette ! » s’exclame-t-il. Du bout de la griffe, il suit la piste : elle mène tout droit à la porte."
        }
       ]
      },
@@ -668,7 +662,7 @@
       "id": "b6e9e6b0-9e14-40f9-a0e9-b0fac15962e1",
       "auto": true,
       "type": "choix",
-      "cible": "d1351091-b00c-45f7-a5d4-3c50bc9cc0e2",
+      "cible": "23da691e-e942-4ac4-bc11-bfc043fec6bd",
       "libelle": "Suivre les traces",
       "children": [
        {
@@ -678,8 +672,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:11.076Z",
+    "version": 4,
+    "ecrit_le": "2026-10-26T16:39:35.753Z",
     "rang_livre": 5,
     "numero_fixe": null,
     "etat": "prete",
@@ -690,32 +684,41 @@
     "description_image": ""
    },
    {
-    "id": "d1351091-b00c-45f7-a5d4-3c50bc9cc0e2",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "23da691e-e942-4ac4-bc11-bfc043fec6bd",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 6,
     "titre": "Porte — des poils caramel",
-    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Les traces mènent à la porte de la classe, qui est fermée. Sous la porte, le dragon trouve quelques poils couleur caramel, comme ceux de la souris : il est sur la bonne piste. La souris est passée dessous avec le livre, qui est tout plat. Le dragon, lui, est trop gros. La poignée est trop haute pour lui. Les chaises des élèves sont rangées tout près. Il doit ouvrir la porte, et vite !",
+    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Les traces mènent à la porte de la classe, qui est fermée. Sous la porte, Bouquin trouve quelques poils couleur caramel, comme ceux de Miette : il est sur la bonne piste. Miette est passée dessous avec le livre, qui est tout plat. Bouquin, lui, est trop gros. La poignée est trop haute pour lui. Les chaises des élèves sont rangées tout près. Il doit ouvrir la porte, et vite !",
     "rang": 5,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "a1a07aa1-a6bb-4ce2-b5e0-28d982b757f5",
+      "id": "34e350d3-b5fb-46e4-bae7-6d3c7d272614",
       "type": "p",
       "children": [
        {
-        "text": "Les traces s'arrêtent devant la porte de la classe. Elle est fermée. Le dragon se baisse. Sous la porte, il trouve des poils couleur caramel. « Ce sont ceux de la souris ! » dit-il."
+        "text": "Les traces s’arrêtent devant la porte de la classe, qui est fermée. Bouquin se baisse : sous la porte, quelques poils couleur caramel sont restés accrochés. « Ce sont ceux de Miette ! »"
        }
       ]
      },
      {
-      "id": "a44bb1bc-df6f-40de-bb6c-30eaadd3bb8e",
+      "id": "cb7fa142-eb04-413d-8a5c-8d8bfd261f78",
       "type": "p",
       "children": [
        {
-        "text": "La souris est passée dessous avec le livre tout plat. Mais le dragon est trop gros. Il lève la tête. La poignée est bien trop haute ! Près de lui, les chaises des élèves sont bien rangées. « Vite ! Je dois ouvrir ! »"
+        "text": "La petite souris s’est glissée dessous, en tirant derrière elle le livre tout plat. Mais Bouquin, lui, est bien trop gros pour passer. Il lève les yeux vers la poignée… beaucoup trop haute ! Autour de lui, les chaises des élèves attendent en silence."
+       }
+      ]
+     },
+     {
+      "id": "72610685-e78d-4a6b-a81b-e2e719eae37d",
+      "type": "p",
+      "children": [
+       {
+        "text": "« Vite, je dois ouvrir cette porte ! »"
        }
       ]
      },
@@ -723,7 +726,7 @@
       "id": "2f7b7259-b894-443c-a4a7-866dc8d0f8f6",
       "auto": true,
       "type": "choix",
-      "cible": "f97c0d34-106b-4dfa-ab02-60db30477238",
+      "cible": "cd017946-81b2-40d1-a904-6fde2ec7c80c",
       "libelle": "Passer sous la porte",
       "children": [
        {
@@ -736,7 +739,7 @@
       "id": "c457b4aa-cfae-4c28-a52f-243d1a16d2ef",
       "auto": true,
       "type": "choix",
-      "cible": "4d486472-2a76-4f70-91b7-88ba739453bc",
+      "cible": "80d4f39a-823a-41c5-a774-cef0a540c19d",
       "libelle": "Cracher du feu sur la porte",
       "children": [
        {
@@ -749,7 +752,7 @@
       "id": "2935335a-0be8-435e-bcbb-95ba1b6c6849",
       "auto": true,
       "type": "choix",
-      "cible": "374538a6-8218-40bd-a856-2690bc0311d9",
+      "cible": "d4b20a91-d9d8-4cce-811c-9142eeef5c31",
       "libelle": "Voler jusqu’à la poignée",
       "children": [
        {
@@ -762,7 +765,7 @@
       "id": "2f75d7e2-be7d-469b-a1d8-b6c76f56e5d9",
       "auto": true,
       "type": "choix",
-      "cible": "3b12c95f-cf99-4c54-87c6-9deb1aca3a47",
+      "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
       "libelle": "Pousser une chaise sous la poignée",
       "children": [
        {
@@ -772,8 +775,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:13.514Z",
+    "version": 7,
+    "ecrit_le": "2026-10-26T16:39:35.776Z",
     "rang_livre": 14,
     "numero_fixe": null,
     "etat": "prete",
@@ -784,32 +787,32 @@
     "description_image": ""
    },
    {
-    "id": "f97c0d34-106b-4dfa-ab02-60db30477238",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "cd017946-81b2-40d1-a904-6fde2ec7c80c",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 7,
     "titre": "Porte — coincé dessous",
-    "consigne": "Le dragon essaie de passer sous la porte. Sa tête reste coincée ! Il tire, il pousse, il souffle. Enfin libre, il voit les chaises des élèves. Il en pousse une sous la poignée, il grimpe, et la porte s’ouvre.",
+    "consigne": "Bouquin essaie de passer sous la porte. Sa tête reste coincée ! Il tire, il pousse, il souffle. Enfin libre, il voit les chaises des élèves. Il en pousse une sous la poignée, il grimpe, et la porte s’ouvre.",
     "rang": 6,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "032516c5-84dc-47f8-b70c-d237c6b4d9a0",
+      "id": "f3d19e66-8dad-4a10-ae23-6a62caf6325b",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon se couche par terre. Il glisse sa tête sous la porte. Oh non ! Elle reste coincée ! Il tire, il pousse, il souffle de la fumée. Pouf ! Enfin libre !"
+        "text": "Bouquin s’aplatit sur le sol et glisse la tête sous la porte. Aïe ! La voilà coincée ! Il tire, il pousse, il souffle un petit nuage de fumée… Pouf ! Enfin libre ! Quelle drôle d’idée, de vouloir passer là-dessous."
        }
       ]
      },
      {
-      "id": "596bd6b8-ec85-42ac-8368-175e74b69e0d",
+      "id": "10ca09be-1a91-4903-8681-3b6d596009b4",
       "type": "p",
       "children": [
        {
-        "text": "Il voit les chaises des élèves. Il en pousse une sous la poignée. Il grimpe dessus. Clic ! La porte s'ouvre."
+        "text": "Il pousse alors une chaise sous la poignée et grimpe dessus. Clic ! La porte s’ouvre."
        }
       ]
      },
@@ -828,26 +831,12 @@
       "libelle": "Arriver trop tard",
       "children": [
        {
-        "text": "Si ton temps est à 3, va au "
-       },
-       {
-        "id": "f75a180d-96a8-42e1-b11a-601bec2106b8",
-        "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
-        "libelle": "Arriver trop tard",
-        "children": [
-         {
-          "text": ""
-         }
-        ]
-       },
-       {
-        "text": ". Sinon, va au "
+        "text": "Continuer dans le couloir, va au "
        },
        {
         "id": "2d4364a0-0f99-4d6f-b42d-28a716ac7889",
         "type": "renvoi",
-        "cible": "3b12c95f-cf99-4c54-87c6-9deb1aca3a47",
+        "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
         "libelle": "Continuer",
         "children": [
          {
@@ -861,8 +850,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:15.666Z",
+    "version": 11,
+    "ecrit_le": "2026-10-26T16:39:35.797Z",
     "rang_livre": 19,
     "numero_fixe": null,
     "etat": "prete",
@@ -873,41 +862,32 @@
     "description_image": ""
    },
    {
-    "id": "4d486472-2a76-4f70-91b7-88ba739453bc",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "80d4f39a-823a-41c5-a774-cef0a540c19d",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 8,
     "titre": "Porte — un peu de feu ?",
-    "consigne": "Le dragon veut cracher du feu sur la porte. Il s’échauffe la voix, comme un chanteur : « Mi, mi, mi… » Juste avant de souffler, il s’arrête, un peu bête. Mettre le feu à l’école ? Quelle drôle d’idée ! Il pousse une chaise sous la poignée, il grimpe, et la porte s’ouvre.",
+    "consigne": "Bouquin veut cracher du feu sur la porte. Il s’échauffe la voix, comme un chanteur : « Mi, mi, mi… » Juste avant de souffler, il s’arrête, un peu bête. Mettre le feu à l’école ? Quelle drôle d’idée ! Il pousse une chaise sous la poignée, il grimpe, et la porte s’ouvre.",
     "rang": 7,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "21220745-14b7-45c5-854d-c08287675f19",
+      "id": "2321ef67-30c9-4f1c-80d8-9468f7fad695",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon gonfle son ventre. Il s'échauffe la voix, comme un chanteur : « Mi, mi, mi… » Il ouvre grand la gueule."
+        "text": "Bouquin gonfle son ventre et s’échauffe la voix, comme un chanteur d’opéra : « Mi, mi, miii… » Il ouvre grand la gueule et… s’arrête net. Mettre le feu à l’école ? Mais quelle drôle d’idée ! Tout à coup, il se sent un peu bête."
        }
       ]
      },
      {
-      "id": "6cae04cb-949d-4366-b3fc-5cc25a54f1d4",
+      "id": "95eba282-3ad9-4a58-a559-ced1be41b901",
       "type": "p",
       "children": [
        {
-        "text": "Soudain, il s'arrête. Mettre le feu à l'école ? Quelle drôle d'idée ! Il se sent un peu bête."
-       }
-      ]
-     },
-     {
-      "id": "bc39cc9b-8cf9-4ab4-8bf1-d6227ff5378d",
-      "type": "p",
-      "children": [
-       {
-        "text": "Alors il pousse une chaise sous la poignée. Il grimpe dessus. Clac ! La porte s'ouvre."
+        "text": "Alors il pousse une chaise sous la poignée et grimpe dessus. Clac ! La porte s’ouvre."
        }
       ]
      },
@@ -926,26 +906,12 @@
       "libelle": "Arriver trop tard",
       "children": [
        {
-        "text": "Si ton temps est à 3, va au "
-       },
-       {
-        "id": "a0e45522-0941-4887-86a1-c7469775de49",
-        "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
-        "libelle": "Arriver trop tard",
-        "children": [
-         {
-          "text": ""
-         }
-        ]
-       },
-       {
-        "text": ". Sinon, va au "
+        "text": "Continuer dans le couloir, va au "
        },
        {
         "id": "cbe5c715-e462-4df6-ae54-979cc8c5f5ff",
         "type": "renvoi",
-        "cible": "3b12c95f-cf99-4c54-87c6-9deb1aca3a47",
+        "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
         "libelle": "Continuer",
         "children": [
          {
@@ -959,8 +925,8 @@
       ]
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-26T10:49:53.139Z",
+    "version": 9,
+    "ecrit_le": "2026-10-26T16:39:35.818Z",
     "rang_livre": 3,
     "numero_fixe": null,
     "etat": "prete",
@@ -971,32 +937,32 @@
     "description_image": ""
    },
    {
-    "id": "374538a6-8218-40bd-a856-2690bc0311d9",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "d4b20a91-d9d8-4cce-811c-9142eeef5c31",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 9,
     "titre": "Porte — voler jusqu’à la poignée",
-    "consigne": "Le dragon veut voler jusqu’à la poignée. Mais ses ailes sont encore trop petites : la pie l’appelle « ma poule », parce qu’il vole mal. Il prend son élan et bat des ailes de toutes ses forces. Ne dis pas s’il réussit : le dé va le décider.",
+    "consigne": "Bouquin veut voler jusqu’à la poignée. Mais ses ailes sont encore trop petites : Jacasse l’appelle « ma poule », parce qu’il vole mal. Il prend son élan et bat des ailes de toutes ses forces. Ne dis pas s’il réussit : le dé va le décider.",
     "rang": 8,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "cd88f96e-e851-4589-8d15-bff1a6b4875a",
+      "id": "308b5ff6-646d-4d49-bf8a-7bf8093e6da0",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon lève la tête. La poignée est tout en haut. « Je vais voler ! » dit-il. Mais ses ailes sont encore toutes petites. Il vole mal, et la pie se moque de lui."
+        "text": "Bouquin fixe la poignée, tout là-haut. « Je vais voler ! » décide-t-il. Bien sûr, ses ailes sont encore toutes petites, et il vole plutôt mal… Mais qui ne tente rien n’a rien !"
        }
       ]
      },
      {
-      "id": "382bd822-616a-43ba-8546-8f16b6c89f68",
+      "id": "10d7696b-d15c-4e34-a8cd-e86d15a60ce7",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon recule. Il prend son élan. Il court et il bat des ailes de toutes ses forces. Flap, flap, flap ! Ses pattes quittent le sol."
+        "text": "Il recule, prend son élan, court et bat des ailes de toutes ses forces. Flap, flap, flap ! Ses pattes quittent le sol…"
        }
       ]
      },
@@ -1021,7 +987,7 @@
        {
         "id": "4e3d6618-fd27-44e4-a8ad-fbd10eba18e5",
         "type": "renvoi",
-        "cible": "d699be42-2251-432b-8ff8-5fce9eca18e7",
+        "cible": "9f786868-08b7-4f0c-98de-639d656fe8af",
         "libelle": "C’est raté",
         "children": [
          {
@@ -1030,12 +996,12 @@
         ]
        },
        {
-        "text": ". Si tu fais 3, 4, 5 ou 6, va au "
+        "text": ". Si tu fais 3, 4, 5 ou 6, tu réussis, va au "
        },
        {
         "id": "9e147a3f-a247-4a14-aa70-2ee31fcc810b",
         "type": "renvoi",
-        "cible": "3b12c95f-cf99-4c54-87c6-9deb1aca3a47",
+        "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
         "libelle": "C’est réussi",
         "children": [
          {
@@ -1049,8 +1015,8 @@
       ]
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-26T10:50:57.771Z",
+    "version": 9,
+    "ecrit_le": "2026-10-26T16:39:35.840Z",
     "rang_livre": 22,
     "numero_fixe": null,
     "etat": "prete",
@@ -1061,32 +1027,32 @@
     "description_image": ""
    },
    {
-    "id": "d699be42-2251-432b-8ff8-5fce9eca18e7",
-    "chapitre_id": "d78dacbb-7cbc-46d4-8282-b610170a2726",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "9f786868-08b7-4f0c-98de-639d656fe8af",
+    "chapitre_id": "aa51e2cc-1b52-4eb1-84d2-39fd0a6dee0d",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 10,
     "titre": "Porte — ma poule !",
-    "consigne": "Le dragon retombe sur les fesses, boum ! Il croit entendre la pie : « Ma poule ! » Il se relève en grognant. Il pousse une chaise sous la poignée, il grimpe, et la porte s’ouvre.",
+    "consigne": "Bouquin retombe sur les fesses, boum ! Il croit entendre Jacasse : « Ma poule ! » Il se relève en grognant. Il pousse une chaise sous la poignée, il grimpe, et la porte s’ouvre.",
     "rang": 9,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "9505861f-f8a9-4d01-80bf-481df4f9fe88",
+      "id": "9ab63825-dc76-4158-8949-cfcfca323ffe",
       "type": "p",
       "children": [
        {
-        "text": "Boum ! Le dragon retombe sur les fesses. Il croit entendre la pie : « Ma poule ! » Il se relève en grognant. « Grrr ! »"
+        "text": "Boum ! Bouquin retombe sur les fesses. Il lui semble entendre ricaner Jacasse : « Ma poule ! » Il se relève en grognant. Grrr !"
        }
       ]
      },
      {
-      "id": "539c8e80-53bd-4b04-b5fb-874fa756f61e",
+      "id": "02ef8e5f-0a4b-4dfe-a40c-f3b46a1b6104",
       "type": "p",
       "children": [
        {
-        "text": "Il pousse une chaise sous la poignée. Il grimpe dessus. Clic ! La porte s'ouvre."
+        "text": "Tant pis pour les ailes : il pousse une chaise sous la poignée et grimpe dessus. Clic ! La porte s’ouvre."
        }
       ]
      },
@@ -1105,26 +1071,12 @@
       "libelle": "Arriver trop tard",
       "children": [
        {
-        "text": "Si ton temps est à 3, va au "
-       },
-       {
-        "id": "fbdffe0c-1f05-4276-900d-f8b7790cdbc2",
-        "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
-        "libelle": "Arriver trop tard",
-        "children": [
-         {
-          "text": ""
-         }
-        ]
-       },
-       {
-        "text": ". Sinon, va au "
+        "text": "Continuer dans le couloir, va au "
        },
        {
         "id": "dd06ed9b-c494-42a1-ad6f-4fa0cce54c4d",
         "type": "renvoi",
-        "cible": "3b12c95f-cf99-4c54-87c6-9deb1aca3a47",
+        "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
         "libelle": "Continuer",
         "children": [
          {
@@ -1138,8 +1090,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:26.177Z",
+    "version": 6,
+    "ecrit_le": "2026-10-26T16:39:35.860Z",
     "rang_livre": 18,
     "numero_fixe": null,
     "etat": "prete",
@@ -1150,30 +1102,48 @@
     "description_image": ""
    },
    {
-    "id": "3b12c95f-cf99-4c54-87c6-9deb1aca3a47",
-    "chapitre_id": "b1b6f383-6591-4624-977d-1113659e87ce",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "51426bfe-0277-4ea9-b29d-7182c99413d9",
+    "chapitre_id": "33ca44b8-b814-4eda-a591-4f03449efeb3",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 11,
     "titre": "Couloir — tout noir",
-    "consigne": "On arrive ici de plusieurs façons : commence quand la porte s’ouvre, sans dire comment. Le couloir est tout noir. Tout au fond, une petite lueur bleue et le bruit d’une télévision sortent de la loge du gardien : il est encore là. On ne voit presque rien. Près de la porte, il y a l’interrupteur.",
+    "consigne": "On arrive ici de plusieurs façons : commence quand la porte s’ouvre, sans dire comment. Le couloir est tout noir. Tout au fond, une petite lueur bleue et le bruit d’une télévision sortent de la loge du concierge : il est encore là. On ne voit presque rien. Près de la porte, il y a l’interrupteur.",
     "rang": 0,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "56d1acf6-59c4-4bcc-9eec-424bf22317ed",
+      "id": "5aa7142f-00bf-404a-b5b8-d89aa5f90f27",
       "type": "p",
       "children": [
        {
-        "text": "La porte est ouverte. Le dragon avance sur la pointe des pattes. Le couloir est tout noir. Il ne voit presque rien."
+        "text": "Le voilà dans le couloir. Il y fait tout noir : Bouquin voit à peine le bout de son museau. Sur la pointe des pattes, il avance de quelques pas."
        }
       ]
      },
      {
-      "id": "eff3c04d-2ac9-4311-83fe-4cee60f7abfe",
+      "id": "9212ef9d-c91a-42ae-a592-d72fd19776d6",
+      "type": "p",
+      "children": [
+       {
+        "text": "Tout au fond, une petite lueur bleue tremblote, et on entend le bruit d’une télévision. C’est la loge du concierge, là où habite Pacha ! Le concierge est encore là."
+       }
+      ]
+     },
+     {
+      "id": "0e204162-5682-4ea1-9bb1-7b1a465295e8",
+      "type": "p",
+      "children": [
+       {
+        "text": "Bouquin retient son souffle. Juste à côté de la porte, il y a l’interrupteur…"
+       }
+      ]
+     },
+     {
+      "id": "68ddc09d-c174-4f71-9e83-0ff636493d15",
       "type": "image",
-      "image": "2bd0bb75-c4f6-42b8-a2df-cc71905ce892",
+      "image": "a3e3c7ba-a3ae-4308-999f-26d98d0a77f7",
       "largeur": 100,
       "children": [
        {
@@ -1182,28 +1152,10 @@
       ]
      },
      {
-      "id": "32e40f35-655c-457c-ac7e-6afad857c6f1",
-      "type": "p",
-      "children": [
-       {
-        "text": "Tout au fond, une petite lueur bleue brille. Il entend une télévision. Le gardien est encore là !"
-       }
-      ]
-     },
-     {
-      "id": "569244ca-20c0-4397-8a4a-03d319eecfae",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le dragon retient son souffle. Près de la porte, il y a l'interrupteur."
-       }
-      ]
-     },
-     {
       "id": "9dedb1ec-275d-4de9-b3e8-4d4ef3e7cbf3",
       "auto": true,
       "type": "choix",
-      "cible": "45ccc5e1-cfac-45a0-bd88-e736a72290e9",
+      "cible": "16d47af6-1382-4325-9e67-9c06ef8897bf",
       "libelle": "Allumer la lumière",
       "children": [
        {
@@ -1216,7 +1168,7 @@
       "id": "74450ce1-aa35-41ed-ab04-9121dffeedfb",
       "auto": true,
       "type": "choix",
-      "cible": "d0c508ee-6589-456d-8f8a-be70a5d5c442",
+      "cible": "e80dea05-6c7a-42ea-bd7b-8e602cb196d2",
       "libelle": "Avancer doucement dans le noir",
       "children": [
        {
@@ -1226,8 +1178,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:52:44.509Z",
+    "version": 10,
+    "ecrit_le": "2026-10-26T16:39:35.883Z",
     "rang_livre": 9,
     "numero_fixe": null,
     "etat": "prete",
@@ -1238,32 +1190,41 @@
     "description_image": "Vue horizontale d'un long couloir d'école plongé dans le noir, la nuit. Au premier plan à gauche, le dragon, vu de dos et de trois quarts, s'arrête sur le seuil de la classe, la tête avancée, prudent. Tout au fond, au centre, une porte entrouverte laisse filer une petite lueur bleue de télévision qui dessine un faible reflet sur le sol. Ambiance calme, mystérieuse, juste un frisson d'aventure."
    },
    {
-    "id": "45ccc5e1-cfac-45a0-bd88-e736a72290e9",
-    "chapitre_id": "b1b6f383-6591-4624-977d-1113659e87ce",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "16d47af6-1382-4325-9e67-9c06ef8897bf",
+    "chapitre_id": "33ca44b8-b814-4eda-a591-4f03449efeb3",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 12,
     "titre": "Couloir — la lumière !",
-    "consigne": "Le dragon allume la lumière. Aussitôt, la porte de la loge s’ouvre : « Qui est là ? » Le dragon ne bouge plus, comme une figurine. Le gardien regarde, se gratte la tête, éteint la lumière et retourne à sa télévision. Le dragon a eu chaud !",
+    "consigne": "Bouquin allume la lumière. Aussitôt, la porte de la loge s’ouvre : « Qui est là ? » Bouquin ne bouge plus, comme une figurine. Le concierge regarde, se gratte la tête, éteint la lumière et retourne à sa télévision. Bouquin a eu chaud !",
     "rang": 1,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "36b1bcd1-be82-42d6-9730-2db007e415dc",
+      "id": "8049365b-5034-4514-80d3-f328eb1a29df",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon appuie sur l'interrupteur. Clic ! La lumière jaillit. Aussitôt, la porte de la loge s'ouvre. « Qui est là ? » dit le gardien."
+        "text": "Clic ! Bouquin appuie sur l’interrupteur, et la lumière jaillit. Aussitôt, la porte de la loge s’ouvre. « Qui est là ? » demande le concierge."
        }
       ]
      },
      {
-      "id": "b94ebb1a-ca58-41ae-a39e-6570b5bac1e2",
+      "id": "7f7f014a-f4aa-4a11-aae7-ebd94bd320a4",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon ne bouge plus. Il fait la figurine. Le gardien regarde, se gratte la tête, puis éteint la lumière. Il retourne à sa télévision. Ouf ! Le dragon a eu chaud !"
+        "text": "Bouquin se fige, raide comme une figurine. Le concierge regarde à droite, à gauche, se gratte la tête… puis il éteint la lumière et retourne devant sa télévision."
+       }
+      ]
+     },
+     {
+      "id": "466ea3dd-b86e-4c4c-971a-1ea5f2c439b3",
+      "type": "p",
+      "children": [
+       {
+        "text": "Ouf ! Bouquin a eu chaud !"
        }
       ]
      },
@@ -1287,7 +1248,7 @@
        {
         "id": "cc336fbb-82c2-4ec1-b2f7-76e4fd95dac8",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
+        "cible": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
         "libelle": "Arriver trop tard",
         "children": [
          {
@@ -1301,7 +1262,7 @@
        {
         "id": "1812e367-fdee-45d0-8276-8955f5289e67",
         "type": "renvoi",
-        "cible": "d0c508ee-6589-456d-8f8a-be70a5d5c442",
+        "cible": "e80dea05-6c7a-42ea-bd7b-8e602cb196d2",
         "libelle": "Continuer",
         "children": [
          {
@@ -1315,8 +1276,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:30.098Z",
+    "version": 5,
+    "ecrit_le": "2026-10-26T16:39:35.904Z",
     "rang_livre": 10,
     "numero_fixe": null,
     "etat": "prete",
@@ -1327,41 +1288,41 @@
     "description_image": ""
    },
    {
-    "id": "d0c508ee-6589-456d-8f8a-be70a5d5c442",
-    "chapitre_id": "b1b6f383-6591-4624-977d-1113659e87ce",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "e80dea05-6c7a-42ea-bd7b-8e602cb196d2",
+    "chapitre_id": "33ca44b8-b814-4eda-a591-4f03449efeb3",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 13,
     "titre": "Couloir — trois chemins",
-    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Dans le noir, les yeux du dragon s’habituent. Par terre, dans la poussière, il voit une longue trace : la souris traîne le livre, bien trop lourd pour elle. Au bout du couloir, le gardien a passé le balai : la trace s’arrête là. Il y a trois chemins : l’escalier qui monte à l’étage, la loge du gardien, où vit le chat, et la porte de la bibliothèque. Ne dis pas où est allée la souris.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Dans le noir, les yeux de Bouquin s’habituent. Par terre, dans la poussière, il voit une longue trace : Miette traîne le livre, bien trop lourd pour elle. Au bout du couloir, le concierge a passé le balai : la trace s’arrête là. Il y a trois chemins : l’escalier qui monte à l’étage, la loge du concierge, où vit le chat, et la porte de la bibliothèque. Ne dis pas où est allée Miette.",
     "rang": 2,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "b465362e-d44c-4ced-b1e7-f5552e8aebd1",
+      "id": "1adbf47b-8aaa-499d-965a-6f5287278395",
       "type": "p",
       "children": [
        {
-        "text": "Les yeux du dragon s'habituent au noir. Par terre, dans la poussière, il voit une longue trace. La souris traîne le livre. Il est bien trop lourd pour elle !"
+        "text": "Peu à peu, les yeux de Bouquin s’habituent au noir. Par terre, dans la poussière, il découvre une longue trace : Miette a traîné le livre jusqu’ici. Il doit être bien lourd pour elle !"
        }
       ]
      },
      {
-      "id": "47680230-ddf1-4039-a002-addbc8fe886a",
+      "id": "10a047e5-8a9f-4fcb-8114-1838f028529c",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon suit la trace sur la pointe des pattes. Au bout du couloir, le gardien a passé le balai. La trace s'arrête là."
+        "text": "Bouquin la suit sur la pointe des pattes, jusqu’au bout du couloir. Là, le concierge a passé le balai : la trace s’arrête net."
        }
       ]
      },
      {
-      "id": "f4c2143a-9447-4761-863e-761264fe9ef2",
+      "id": "1a0e5d34-2e26-43fb-844c-c7c4d3dff39a",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon regarde autour de lui. Il y a trois chemins. L'escalier monte à l'étage. La loge du gardien est là, avec le chat. Et la porte de la bibliothèque est tout près."
+        "text": "Bouquin regarde autour de lui. Trois chemins s’offrent à lui. L’escalier monte à l’étage. Juste devant, c’est la loge du concierge, où habite Pacha. Et sur sa droite, il y a la porte de la bibliothèque."
        }
       ]
      },
@@ -1369,7 +1330,7 @@
       "id": "953dca51-4699-440c-9531-0ed9f6d690a2",
       "auto": true,
       "type": "choix",
-      "cible": "1f9191f5-d90a-4a87-b9f2-3c5e7abe6b7b",
+      "cible": "160c7a79-2d60-49cd-92e0-b89221fe6af4",
       "libelle": "Monter l’escalier",
       "children": [
        {
@@ -1382,8 +1343,8 @@
       "id": "e78f574c-106c-4d8a-9754-1dffdf0cd9e5",
       "auto": true,
       "type": "choix",
-      "cible": "df7bd9b1-6106-4894-ae0d-d42ec8f70293",
-      "libelle": "Aller à la loge du gardien",
+      "cible": "381a0cad-fe28-4ed9-911e-906a6889b17f",
+      "libelle": "Aller à la loge du concierge",
       "children": [
        {
         "text": ""
@@ -1395,7 +1356,7 @@
       "id": "f31bc14a-36ab-4ade-b3ea-3f99ee439c6c",
       "auto": true,
       "type": "choix",
-      "cible": "c6776cc2-f770-447d-9e96-64b9109e890d",
+      "cible": "8739d7f6-c40e-4140-98c8-1e1334fe6b3f",
       "libelle": "Entrer dans la bibliothèque",
       "children": [
        {
@@ -1405,8 +1366,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:34.811Z",
+    "version": 17,
+    "ecrit_le": "2026-10-26T16:39:35.925Z",
     "rang_livre": 1,
     "numero_fixe": null,
     "etat": "prete",
@@ -1417,41 +1378,41 @@
     "description_image": ""
    },
    {
-    "id": "1f9191f5-d90a-4a87-b9f2-3c5e7abe6b7b",
-    "chapitre_id": "b1b6f383-6591-4624-977d-1113659e87ce",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "160c7a79-2d60-49cd-92e0-b89221fe6af4",
+    "chapitre_id": "33ca44b8-b814-4eda-a591-4f03449efeb3",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 14,
     "titre": "Escalier — personne en haut",
-    "consigne": "Le dragon monte l’escalier. En haut, pas de trace, rien du tout. Il réfléchit : avec un livre si lourd, la souris n’a pas pu monter les marches. Et elle n’irait jamais chez le chat ! Il redescend vite et entre dans la bibliothèque.",
+    "consigne": "Bouquin monte l’escalier. En haut, pas de trace, rien du tout. Il réfléchit : avec un livre si lourd, Miette n’a pas pu monter les marches. Et elle n’irait jamais chez Pacha ! Il redescend vite et entre dans la bibliothèque.",
     "rang": 3,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "c74f7b55-cc97-486d-84f6-8af490291a62",
+      "id": "e5f69c34-7d22-4985-9ae0-4eb1a345bc43",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon monte l'escalier, marche après marche. En haut, il n'y a pas de trace. Rien du tout."
+        "text": "Bouquin grimpe l’escalier, marche après marche. En haut… rien. Pas la moindre trace."
        }
       ]
      },
      {
-      "id": "3dafc7ae-f8cf-4a4f-a7e1-49a8f4b1c281",
+      "id": "b378ced8-2b17-4bc5-a7dd-2eaed9a82fde",
       "type": "p",
       "children": [
        {
-        "text": "Il réfléchit. Le livre est trop lourd. La souris n'a pas pu monter les marches. Et elle n'irait jamais chez le chat !"
+        "text": "Il réfléchit. Avec un livre aussi lourd, Miette n’a jamais pu monter toutes ces marches ! Et elle n’irait pas non plus chez le chat, bien sûr."
        }
       ]
      },
      {
-      "id": "0cd94f4c-1d36-4c22-bf21-fca6ee448bea",
+      "id": "1ca21fb9-6c62-4475-967d-34fc5d9a3f0a",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon redescend vite. Il entre dans la bibliothèque."
+        "text": "Bouquin redescend en vitesse et se faufile dans la bibliothèque."
        }
       ]
      },
@@ -1475,7 +1436,7 @@
        {
         "id": "d276da61-9c6b-4140-bca7-1ae1d68ad286",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
+        "cible": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
         "libelle": "Arriver trop tard",
         "children": [
          {
@@ -1489,7 +1450,7 @@
        {
         "id": "f94d7945-95ca-4f81-98f4-b5ac5149747f",
         "type": "renvoi",
-        "cible": "c6776cc2-f770-447d-9e96-64b9109e890d",
+        "cible": "8739d7f6-c40e-4140-98c8-1e1334fe6b3f",
         "libelle": "Continuer",
         "children": [
          {
@@ -1503,8 +1464,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:36.966Z",
+    "version": 4,
+    "ecrit_le": "2026-10-26T16:39:35.948Z",
     "rang_livre": 15,
     "numero_fixe": null,
     "etat": "prete",
@@ -1515,41 +1476,41 @@
     "description_image": ""
    },
    {
-    "id": "df7bd9b1-6106-4894-ae0d-d42ec8f70293",
-    "chapitre_id": "b1b6f383-6591-4624-977d-1113659e87ce",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "381a0cad-fe28-4ed9-911e-906a6889b17f",
+    "chapitre_id": "33ca44b8-b814-4eda-a591-4f03449efeb3",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 15,
-    "titre": "Loge — le chat !",
-    "consigne": "Le dragon passe la tête dans la loge du gardien. Le chat ouvre un œil, puis il bondit ! Le dragon file, le chat derrière lui. Atchoum ! En courant, il comprend : une souris n’irait jamais chez le chat, et elle n’a pas pu monter l’escalier avec un si gros livre. Il se cache dans la bibliothèque, et le chat repart.",
+    "titre": "Loge — Pacha !",
+    "consigne": "Bouquin passe la tête dans la loge du concierge. Pacha ouvre un œil, puis il bondit ! Bouquin file, Pacha derrière lui. Atchoum ! En courant, il comprend : une souris n’irait jamais chez le chat, et elle n’a pas pu monter l’escalier avec un si gros livre. Il se cache dans la bibliothèque, et Pacha repart.",
     "rang": 4,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "8becb8c1-479d-4352-9563-80b199a1a6ae",
+      "id": "490bf2d9-6f3c-47a1-8d62-d2b54b3c7489",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon passe la tête dans la loge. Le gros chat gris ouvre un œil. Puis il bondit !"
+        "text": "Bouquin passe la tête dans la loge. Couché sur un coussin, Pacha, le gros chat gris, ouvre un œil… puis bondit !"
        }
       ]
      },
      {
-      "id": "0eabe45a-a0cf-48a6-abc5-965c02d31ac6",
+      "id": "9b2eb1b8-2198-4856-8970-21d728c22af6",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon file dans le couloir. Le chat court derrière lui. « Atchoum ! » Le dragon pense : « Une souris n'irait jamais chez le chat ! Et le livre est trop lourd pour l'escalier. »"
+        "text": "Bouquin détale dans le couloir, Pacha sur ses talons. Atchoum ! Atchoum ! Tout en courant, le dragon comprend son erreur : une souris n’irait jamais chez un chat ! Et avec ce gros livre, elle n’a pas pu prendre l’escalier."
        }
       ]
      },
      {
-      "id": "d8327e00-17c8-4180-a154-0cf5d3e01c75",
+      "id": "8428ed11-fc3e-4acc-9078-804edcc08f93",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon se cache dans la bibliothèque. Le chat s'arrête, puis il repart."
+        "text": "Il se réfugie dans la bibliothèque. Pacha s’arrête, s’étire, et repart en traînant les pattes."
        }
       ]
      },
@@ -1573,7 +1534,7 @@
        {
         "id": "71f6f1c7-0d86-4cf4-aecc-c01d9eb4a507",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
+        "cible": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
         "libelle": "Arriver trop tard",
         "children": [
          {
@@ -1587,7 +1548,7 @@
        {
         "id": "6513e960-84be-412c-a046-1158b72f3adb",
         "type": "renvoi",
-        "cible": "c6776cc2-f770-447d-9e96-64b9109e890d",
+        "cible": "8739d7f6-c40e-4140-98c8-1e1334fe6b3f",
         "libelle": "Continuer",
         "children": [
          {
@@ -1601,8 +1562,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:39.417Z",
+    "version": 11,
+    "ecrit_le": "2026-10-26T16:39:35.971Z",
     "rang_livre": 8,
     "numero_fixe": null,
     "etat": "prete",
@@ -1613,22 +1574,49 @@
     "description_image": ""
    },
    {
-    "id": "c6776cc2-f770-447d-9e96-64b9109e890d",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "8739d7f6-c40e-4140-98c8-1e1334fe6b3f",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 16,
     "titre": "Bibliothèque — l’ombre géante",
-    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Commence quand le dragon entre dans la bibliothèque. Une seule lampe est restée allumée, sur une table. Sur le mur, au-dessus des étagères, une ombre énorme bouge : elle tient un livre. On dirait un monstre ! Ne dis pas ce que c’est.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Commence quand Bouquin entre dans la bibliothèque. Une seule lampe est restée allumée, sur une table. Sur le mur, au-dessus des étagères, une ombre énorme bouge : elle tient un livre. On dirait un monstre ! Ne dis pas ce que c’est.",
     "rang": 0,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "064ee79d-c79d-431c-846a-e452df52378b",
-      "page": true,
+      "id": "7442c7e2-a880-4be4-bc57-26a1f560d9ab",
+      "type": "p",
+      "children": [
+       {
+        "text": "La bibliothèque est plongée dans la pénombre. Une seule petite lampe est restée allumée, sur une table."
+       }
+      ]
+     },
+     {
+      "id": "148b1e50-b36d-4197-8073-a04b8556590a",
+      "type": "p",
+      "children": [
+       {
+        "text": "Soudain, Bouquin se fige. Sur le mur, une ombre énorme bouge, plus haute que les étagères. Et elle tient un livre !"
+       }
+      ]
+     },
+     {
+      "id": "3cb39f2a-0b05-4614-8053-410e8f703855",
+      "type": "p",
+      "children": [
+       {
+        "text": "Les yeux de Bouquin s’écarquillent, son cœur bat à toute vitesse. « Un monstre ! » murmure-t-il."
+       }
+      ]
+     },
+     {
+      "id": "3e5ab039-1388-4aff-9f47-ab3c82bbfb13",
+      "alt": "Une bibliothèque d’école plongée dans la pénombre. Une seule petite lampe est allumée sur une table. Sur le mur, au-dessus des étagères, une ombre immense de souris qui tient un livre. Le dragon, de d",
       "type": "image",
-      "image": "73bd3e74-bfc1-44c9-ad7e-d9fbbffc80f7",
+      "image": "f9bc1928-cd12-42c1-be7f-d83616360131",
       "largeur": 100,
       "children": [
        {
@@ -1637,37 +1625,10 @@
       ]
      },
      {
-      "id": "9a5dc025-6dbe-4e75-81d9-5f8297d4ebb4",
-      "type": "p",
-      "children": [
-       {
-        "text": "Dans la bibliothèque, il fait sombre. Une seule lampe est allumée, sur une table."
-       }
-      ]
-     },
-     {
-      "id": "9029e747-fa91-4b1d-a7e4-83922028d582",
-      "type": "p",
-      "children": [
-       {
-        "text": "Sur le mur, une ombre énorme bouge. Elle est plus haute que les étagères. Elle tient un livre !"
-       }
-      ]
-     },
-     {
-      "id": "010b0541-75a3-412a-8b62-0ba64c0bfc5d",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le dragon ouvre grand les yeux. Son cœur bat fort. « Un monstre ! » dit-il tout bas."
-       }
-      ]
-     },
-     {
       "id": "a02a9194-c57e-44ae-b328-48e393ee6644",
       "auto": true,
       "type": "choix",
-      "cible": "5e115fca-2b9c-46c8-93fa-7310b9ed1db2",
+      "cible": "2b383023-bc8e-4249-8b41-45536f5dbcf7",
       "libelle": "S’enfuir",
       "children": [
        {
@@ -1680,7 +1641,7 @@
       "id": "99e82835-ac7c-4bad-92fc-c316435c7fa7",
       "auto": true,
       "type": "choix",
-      "cible": "8830f6a0-be41-455c-bcba-9cf2405e39e0",
+      "cible": "6c58dc8c-6fa0-4f62-86a4-6b34ded24fc2",
       "libelle": "Chercher d’où vient l’ombre",
       "children": [
        {
@@ -1690,8 +1651,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:51:44.695Z",
+    "version": 13,
+    "ecrit_le": "2026-10-26T16:39:35.989Z",
     "rang_livre": 0,
     "numero_fixe": null,
     "etat": "prete",
@@ -1699,35 +1660,35 @@
     "etat_le": null,
     "nouvelle_page": false,
     "idee_image": "Une bibliothèque d’école plongée dans la pénombre. Une seule petite lampe est allumée sur une table. Sur le mur, au-dessus des étagères, une ombre immense de souris qui tient un livre. Le dragon, de dos au premier plan, est figé de peur.",
-    "description_image": "Dans une bibliothèque d'école plongée dans la pénombre, une seule petite lampe allumée éclaire une table. Au premier plan, le dragon, vu de dos, reste figé, les yeux grands ouverts, saisi de peur. Sur le mur, au-dessus des étagères, se découpe une ombre immense de souris qui tient un livre. Lumière chaude et faible, grandes ombres, ambiance mystérieuse. Cadrage en hauteur, ombre en haut, dragon en bas."
+    "description_image": "Dans une bibliothèque d'école plongée dans la pénombre, une seule petite lampe allumée éclaire une table. Au premier plan, le dragon, vu de dos, reste figé, les yeux grands ouverts, saisi de peur. Sur le mur, au-dessus des étagères, se découpe une ombre immense de souris qui tient un livre. Elle ouvre la gueule pour croquer le livre, on voit ses deux grand dents de rongeur.\nLumière chaude et faible, grandes ombres, ambiance mystérieuse. Cadrage en hauteur, ombre en haut, dragon en bas."
    },
    {
-    "id": "5e115fca-2b9c-46c8-93fa-7310b9ed1db2",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "2b383023-bc8e-4249-8b41-45536f5dbcf7",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 17,
     "titre": "Bibliothèque — un monstre ?",
-    "consigne": "Le dragon a peur : il se cache derrière une étagère et il tremble. Puis il regarde mieux l’ombre. Elle a de petites oreilles rondes et une longue queue. Ce n’est pas un monstre ! C’est une toute petite bête, tout près de la lampe. Il revient vers la lumière.",
+    "consigne": "Bouquin a peur : il se cache derrière une étagère et il tremble. Puis il regarde mieux l’ombre. Elle a de petites oreilles rondes et une longue queue. Ce n’est pas un monstre ! C’est une toute petite bête, tout près de la lampe. Il revient vers la lumière.",
     "rang": 1,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "ff8d6656-b4cc-4dfc-9b40-238037d40819",
+      "id": "5dee2c96-1afe-4588-bdfd-2e0254c152aa",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon se cache derrière une étagère. Il tremble de la queue aux cornes. Puis il regarde mieux l'ombre. Elle a de petites oreilles rondes. Elle a une longue queue."
+        "text": "Bouquin plonge derrière une étagère et tremble de la queue jusqu’aux cornes. Puis, tout doucement, il risque un œil. L’ombre a de petites oreilles rondes… et une longue queue."
        }
       ]
      },
      {
-      "id": "71978d0e-998d-4010-8f90-42d6a9f4b18c",
+      "id": "ab9b84dc-362a-4fa5-8878-3e1c7e28c637",
       "type": "p",
       "children": [
        {
-        "text": "« Ce n'est pas un monstre ! » dit le dragon. C'est une toute petite bête, tout près de la lampe. Il revient vers la lumière."
+        "text": "« Ce n’est pas un monstre ! » souffle-t-il. C’est une toute petite bête, assise tout près de la lampe, et son ombre est devenue géante. Rassuré, Bouquin revient vers la lumière."
        }
       ]
      },
@@ -1751,7 +1712,7 @@
        {
         "id": "db2fc404-6b35-4945-8ffc-cd2ad0aabced",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
+        "cible": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
         "libelle": "Arriver trop tard",
         "children": [
          {
@@ -1765,7 +1726,7 @@
        {
         "id": "0009d77f-4509-4f79-a0bf-4669f08a6058",
         "type": "renvoi",
-        "cible": "8830f6a0-be41-455c-bcba-9cf2405e39e0",
+        "cible": "6c58dc8c-6fa0-4f62-86a4-6b34ded24fc2",
         "libelle": "Continuer",
         "children": [
          {
@@ -1779,8 +1740,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-26T10:48:44.531Z",
+    "version": 4,
+    "ecrit_le": "2026-10-26T16:39:36.009Z",
     "rang_livre": 6,
     "numero_fixe": null,
     "etat": "prete",
@@ -1791,30 +1752,49 @@
     "description_image": ""
    },
    {
-    "id": "8830f6a0-be41-455c-bcba-9cf2405e39e0",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "6c58dc8c-6fa0-4f62-86a4-6b34ded24fc2",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 18,
     "titre": "Lampe — trois traînées",
-    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Commence quand le dragon arrive près de la lampe. La souris était là : elle se réchauffait contre la lampe. Elle voit le dragon et disparaît d’un bond. Près de la lampe partent trois traînées : des confettis bleus, des feuilles de classeur et des confettis rouges. Ne dis pas laquelle est la bonne, et ne rappelle pas la couleur du livre.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Commence quand Bouquin arrive près de la lampe. Miette était là : elle se réchauffait contre la lampe. Elle voit Bouquin et disparaît d’un bond. Près de la lampe partent trois traînées : des confettis bleus, des feuilles de classeur et des confettis rouges. Ne dis pas laquelle est la bonne, et ne rappelle pas la couleur du livre.",
     "rang": 2,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "1e9fe3f8-134c-487f-9092-bc0547fd8143",
+      "id": "9e2d75dc-8268-4e71-b13e-0015dcb3ddd2",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon arrive près de la lampe. La petite souris est là. Elle se réchauffe contre la lampe. Elle voit le dragon. Hop ! Elle disparaît d'un bond."
+        "text": "Bouquin s’approche doucement de la lampe. Miette est là, blottie tout contre elle, bien au chaud ! Mais dès qu’elle aperçoit le dragon, hop ! Elle bondit et disparaît dans l’ombre."
        }
       ]
      },
      {
-      "id": "8a058b34-af90-4cca-8e27-e6d291bc46ce",
+      "id": "9bec3dac-19f7-48f8-b405-48c26b4dd4ab",
+      "type": "p",
+      "children": [
+       {
+        "text": "Au pied de la lampe, Bouquin découvre trois pistes. La première est semée de miettes de papier bleu, la deuxième de feuilles de classeur, la troisième de miettes de papier rouge."
+       }
+      ]
+     },
+     {
+      "id": "6ae3d94a-5214-4d49-88be-1750542ec7db",
+      "type": "p",
+      "children": [
+       {
+        "text": "« Par où est-elle partie ? » se demande Bouquin."
+       }
+      ]
+     },
+     {
+      "id": "58e9a082-0e3d-4120-b23a-11416bb0f320",
+      "alt": "Dans une bibliothèque d’école, la nuit, une petite lampe de bureau est allumée sur une table basse, comme celle d’à côté. Au pied de la table, trois traînées partent dans trois directions sur le sol :",
       "type": "image",
-      "image": "0b0e3796-f392-46c9-b60e-dc2c825a8ebf",
+      "image": "1140ead8-00a2-4c66-8874-52e5074d8748",
       "largeur": 100,
       "children": [
        {
@@ -1823,29 +1803,11 @@
       ]
      },
      {
-      "id": "ee947652-153b-4958-9766-c0ba254050e8",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le dragon regarde par terre. Trois traînées partent de la lampe. Il y a des confettis bleus. Il y a des feuilles de classeur. Il y a aussi des confettis rouges."
-       }
-      ]
-     },
-     {
-      "id": "e9886d4a-8414-40ad-82f7-89d2233bb1d4",
-      "type": "p",
-      "children": [
-       {
-        "text": "« Par où est-elle partie ? » dit le dragon."
-       }
-      ]
-     },
-     {
       "id": "7947a3ec-3a14-4684-b7be-e3c65fe08177",
       "auto": true,
       "type": "choix",
-      "cible": "59d07c09-fcba-4251-8681-bf37e2bbe55c",
-      "libelle": "Suivre les confettis bleus",
+      "cible": "ac173e67-48ce-4415-b8b1-e08897af6cdf",
+      "libelle": "Suivre les miettes bleues",
       "children": [
        {
         "text": ""
@@ -1857,7 +1819,7 @@
       "id": "e5a1d8af-b2af-4980-b180-46130a615ac0",
       "auto": true,
       "type": "choix",
-      "cible": "01587db5-18a0-4a8d-879a-94ed5e18dbdb",
+      "cible": "1f20d65b-6e9f-4ed6-896d-2e0a29e27fe7",
       "libelle": "Suivre les feuilles de classeur",
       "children": [
        {
@@ -1870,8 +1832,8 @@
       "id": "848f43e4-bbb4-4eed-8acc-5e5c6ba2d4be",
       "auto": true,
       "type": "choix",
-      "cible": "55f85fdf-6ab4-4c28-b65d-54c6aea1caca",
-      "libelle": "Suivre les confettis rouges",
+      "cible": "c29a908d-44a8-4e7f-86f9-b7f5c60f22a1",
+      "libelle": "Suivre les miettes rouges",
       "children": [
        {
         "text": ""
@@ -1880,8 +1842,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 6,
-    "ecrit_le": "2026-10-26T10:55:45.018Z",
+    "version": 20,
+    "ecrit_le": "2026-10-26T16:39:36.028Z",
     "rang_livre": 16,
     "numero_fixe": null,
     "etat": "prete",
@@ -1889,44 +1851,44 @@
     "etat_le": null,
     "nouvelle_page": false,
     "idee_image": "Dans une bibliothèque d’école, la nuit, une petite lampe de bureau est allumée sur une table basse, comme celle d’à côté. Au pied de la table, trois traînées partent dans trois directions sur le sol : des confettis bleus, des feuilles de classeur, des confettis rouges. Le dragon les regarde, perplexe.",
-    "description_image": "Nuit dans une bibliothèque d'école. Une petite lampe de bureau allumée sur une table basse répand une lumière chaude et douce. Au pied de la table, trois traînées partent vers trois directions sur le sol : des confettis bleus, des feuilles de classeur, des confettis rouges. Le dragon, au premier plan, penche la tête et regarde les traînées, perplexe. Vue large horizontale, étagères de livres dans l'ombre bleutée, ambiance calme et mystérieuse."
+    "description_image": "Nuit dans une bibliothèque d'école. Une petite lampe de bureau allumée sur une table basse répand une lumière chaude et douce. Au pied de la table, trois traînées partent vers trois directions sur le sol : des petits bouts de papier déchirés bleus, des petits bouts de feuilles de classeur déchirés, des petits bouts de papier déchirés rouges. C'est juste deux ou trois bouts bien espacés et déchiré comme grignotés pas plus, il n'y en a pas beaucoup. Ils partent dans des directions différents. Le dragon, au premier plan, penche la tête et regarde les traînées, perplexe. Vue large horizontale, étagères de livres dans l'ombre bleutée, ambiance calme et mystérieuse."
    },
    {
-    "id": "59d07c09-fcba-4251-8681-bf37e2bbe55c",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "ac173e67-48ce-4415-b8b1-e08897af6cdf",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 19,
     "titre": "Bac des cahiers — du bleu",
-    "consigne": "Les confettis bleus mènent au bac des vieux cahiers. Le dragon trouve un cahier bleu tout grignoté. Mais le livre de la maîtresse est rouge ! Il revient vite et suit les confettis rouges, jusqu’au radiateur.",
+    "consigne": "Les confettis bleus mènent au bac des vieux cahiers. Bouquin trouve un cahier bleu tout grignoté. Mais le livre de la maîtresse est rouge ! Il revient vite et suit les confettis rouges, jusqu’au radiateur.",
     "rang": 3,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "a9a47315-d7b2-4ca3-aba4-f0b608cd5561",
+      "id": "0ec40355-9530-476f-831c-11a21612b006",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon suit les confettis bleus. Ils mènent au bac des vieux cahiers. Il fouille dans le bac. Il trouve un cahier bleu. Il est tout grignoté !"
+        "text": "Bouquin suit les miettes bleues jusqu’au bac des vieux cahiers. Il fouille, il farfouille… et tombe sur un cahier bleu, tout grignoté."
        }
       ]
      },
      {
-      "id": "7d03c00d-163f-4ecb-841b-2b8fbcf0d4c6",
+      "id": "ba211154-0897-4930-a4ee-6239d504d4fd",
       "type": "p",
       "children": [
        {
-        "text": "« Ce n'est pas le bon ! dit le dragon. Le livre est rouge ! »"
+        "text": "« Ce n’est pas le bon ! Le livre de la maîtresse est rouge ! »"
        }
       ]
      },
      {
-      "id": "65e8749c-be70-4952-b3d9-91bd7aa72496",
+      "id": "45cd3f9a-0c3e-4ad8-aa90-48e48cb647b5",
       "type": "p",
       "children": [
        {
-        "text": "Il court vite vers la lampe. Il suit les confettis rouges jusqu'au radiateur."
+        "text": "Il retourne en courant près de la lampe et suit la piste des miettes rouges, jusqu’au radiateur."
        }
       ]
      },
@@ -1950,7 +1912,7 @@
        {
         "id": "a505d0db-664a-49ba-9f07-0b49def4472f",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
+        "cible": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
         "libelle": "Arriver trop tard",
         "children": [
          {
@@ -1964,7 +1926,7 @@
        {
         "id": "f777b5e0-66ee-48a1-81bc-951b09637823",
         "type": "renvoi",
-        "cible": "55f85fdf-6ab4-4c28-b65d-54c6aea1caca",
+        "cible": "c29a908d-44a8-4e7f-86f9-b7f5c60f22a1",
         "libelle": "Continuer",
         "children": [
          {
@@ -1978,8 +1940,8 @@
       ]
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-26T10:50:14.792Z",
+    "version": 5,
+    "ecrit_le": "2026-10-26T16:39:36.047Z",
     "rang_livre": 17,
     "numero_fixe": null,
     "etat": "prete",
@@ -1990,9 +1952,9 @@
     "description_image": ""
    },
    {
-    "id": "01587db5-18a0-4a8d-879a-94ed5e18dbdb",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "1f20d65b-6e9f-4ed6-896d-2e0a29e27fe7",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 20,
     "titre": "Corbeille — des feuilles",
     "consigne": "Les feuilles de classeur mènent à la corbeille à papier. Il n’y a que des brouillons froissés. Mais le livre de la maîtresse est rouge ! Il revient vite et suit les confettis rouges, jusqu’au radiateur.",
@@ -2002,20 +1964,29 @@
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "090fc20f-980e-4c00-885e-f828473956a4",
+      "id": "71f00902-062d-484e-9c36-b89ddb6ceaba",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon suit les feuilles de classeur. Elles mènent à la corbeille à papier. Il regarde dedans. Il n'y a que des brouillons froissés."
+        "text": "Bouquin suit les feuilles de classeur. Elles le mènent tout droit à la corbeille à papier. Il plonge le museau dedans : rien que des brouillons froissés !"
        }
       ]
      },
      {
-      "id": "25f55d6f-e327-4852-a8b9-504441835e1a",
+      "id": "7d08cd64-d1ae-4df3-8093-7df6d161ffa7",
       "type": "p",
       "children": [
        {
-        "text": "« Oh non ! dit le dragon. Le livre est rouge ! » Il revient vite près de la lampe. Il suit les confettis rouges jusqu'au radiateur."
+        "text": "« Oh non ! Le livre de la maîtresse est rouge ! »"
+       }
+      ]
+     },
+     {
+      "id": "d77acbae-1539-42dd-bcd9-9bbd78ca4570",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il retourne en courant près de la lampe et suit la piste des miettes rouges, jusqu’au radiateur."
        }
       ]
      },
@@ -2039,7 +2010,7 @@
        {
         "id": "78bcd8a8-eda7-4c30-8277-0767b9a55f0f",
         "type": "renvoi",
-        "cible": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
+        "cible": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
         "libelle": "Arriver trop tard",
         "children": [
          {
@@ -2053,7 +2024,7 @@
        {
         "id": "3b155b61-40ce-4ecc-a7b8-54997c619cce",
         "type": "renvoi",
-        "cible": "55f85fdf-6ab4-4c28-b65d-54c6aea1caca",
+        "cible": "c29a908d-44a8-4e7f-86f9-b7f5c60f22a1",
         "libelle": "Continuer",
         "children": [
          {
@@ -2067,8 +2038,8 @@
       ]
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:50:57.851Z",
+    "version": 6,
+    "ecrit_le": "2026-10-26T16:39:36.066Z",
     "rang_livre": 13,
     "numero_fixe": null,
     "etat": "prete",
@@ -2079,30 +2050,48 @@
     "description_image": ""
    },
    {
-    "id": "55f85fdf-6ab4-4c28-b65d-54c6aea1caca",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "c29a908d-44a8-4e7f-86f9-b7f5c60f22a1",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 21,
     "titre": "Radiateur — la dispute",
-    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Commence quand le dragon arrive au radiateur. Crr, crr… Derrière le radiateur, la souris ouvre déjà la bouche devant le livre rouge. Le dragon attrape le livre. La souris le tient aussi : ils tirent chacun de leur côté. Le dragon est plus fort, il arrache le livre. La souris croise les bras et boude, le dos tourné.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant. Commence quand Bouquin arrive au radiateur. Crr, crr… Derrière le radiateur, Miette ouvre déjà la bouche devant le livre rouge. Bouquin attrape le livre. Miette le tient aussi : ils tirent chacun de leur côté. Bouquin est plus fort, il arrache le livre. Miette croise les bras et boude, le dos tourné.",
     "rang": 5,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "037a33c6-21f7-40f3-b5d8-62a89b221f9e",
+      "id": "d6a6dddb-cf79-4cfe-a96b-82aa123b5cd7",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon arrive au radiateur. Crr, crr… Derrière, la souris ouvre déjà la bouche devant le livre rouge. Le dragon attrape le livre. « Non ! Lâche ça ! » dit-il."
+        "text": "Bouquin arrive au radiateur. Crr, crr… Derrière, Miette ouvre déjà grand la bouche devant le livre rouge !"
+       }
+      ]
+     },
+     {
+      "id": "28a4355b-fbea-44a5-b3fc-502410bdef48",
+      "type": "p",
+      "children": [
+       {
+        "text": "« Non ! Lâche ça ! » crie Bouquin en attrapant le livre. Mais Miette s’y accroche de toutes ses forces. Elle tire d’un côté, Bouquin tire de l’autre… Le dragon est le plus fort : d’un coup sec, il lui arrache le livre."
+       }
+      ]
+     },
+     {
+      "id": "64eb6b3c-e7c9-4312-ad5e-518ba7b09092",
+      "type": "p",
+      "children": [
+       {
+        "text": "Vexée, Miette croise les bras, tourne le dos à Bouquin et se met à bouder."
        }
       ]
      },
      {
       "id": "c56298c6-a48a-4969-9c62-36a9baab30a9",
       "type": "image",
-      "image": "a0c8b212-c97f-486a-bb84-1fb1d9fa100e",
+      "image": "9d64b162-02a6-4a0f-bcf2-5f13daf9e198",
       "largeur": 100,
       "children": [
        {
@@ -2111,28 +2100,10 @@
       ]
      },
      {
-      "id": "4ac47a80-6050-4f07-adf8-ffe7831ff507",
-      "type": "p",
-      "children": [
-       {
-        "text": "La souris le tient aussi. Elle tire fort. Le dragon tire de son côté. Il est plus fort ! Il arrache le livre d'un coup."
-       }
-      ]
-     },
-     {
-      "id": "54d4c0d1-ed5e-4c04-b7d8-cacc413ee0d2",
-      "type": "p",
-      "children": [
-       {
-        "text": "La souris croise les bras. Elle tourne le dos au dragon. Elle boude."
-       }
-      ]
-     },
-     {
       "id": "d0db9e47-ac66-410a-a0f5-f2f40e5f7b86",
       "auto": true,
       "type": "choix",
-      "cible": "8c83f3d2-837a-4cf3-8e26-ff609aeda724",
+      "cible": "d81942e5-060f-4664-8ff5-d5d0808440da",
       "libelle": "Ouvrir le livre",
       "children": [
        {
@@ -2142,8 +2113,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 5,
-    "ecrit_le": "2026-10-26T10:56:01.050Z",
+    "version": 7,
+    "ecrit_le": "2026-10-26T16:39:36.084Z",
     "rang_livre": 11,
     "numero_fixe": null,
     "etat": "prete",
@@ -2154,23 +2125,49 @@
     "description_image": "Dans une bibliothèque, au pied d'un radiateur, le dragon et la toute petite souris tirent chacun de leur côté sur un grand livre à couverture rouge. Le dragon, penché, serre le livre avec ses deux pattes. La souris lui arrive au genou, le livre est plus grand qu'elle. Elle s'accroche de toutes ses forces, les pattes crispées. Lumière chaude et douce, étagères de livres au fond, ambiance drôle. Vue large et horizontale."
    },
    {
-    "id": "8c83f3d2-837a-4cf3-8e26-ff609aeda724",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "d81942e5-060f-4664-8ff5-d5d0808440da",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 22,
     "titre": "Radiateur — l’histoire",
-    "consigne": "Le dragon s’assoit à côté de la souris, qui boude toujours. Il ouvre le livre et commence à lire à voix haute. Petit à petit, la souris tourne une oreille, puis la tête. Elle s’approche et se blottit contre lui pour écouter. Elle découvre que les livres ne sont pas seulement bons à manger : ce sont aussi de belles histoires. La souris ne parle pas : montre-le par ses gestes.",
+    "consigne": "Bouquin s’assoit à côté de Miette, qui boude toujours. Il ouvre le livre et commence à lire à voix haute. Petit à petit, Miette tourne une oreille, puis la tête. Elle s’approche et se blottit contre lui pour écouter. Elle découvre que les livres ne sont pas seulement bons à manger : ce sont aussi de belles histoires. Miette ne parle pas : montre-le par ses gestes.",
     "rang": 6,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
+      "id": "c5a19d51-42c4-4fdd-a773-ece62481865a",
+      "type": "p",
+      "children": [
+       {
+        "text": "Bouquin s’assoit à côté de Miette, qui boude toujours. Il ouvre le livre rouge et murmure : « Je vais te lire l’histoire. »"
+       }
+      ]
+     },
+     {
+      "id": "33744872-85d5-47e7-ab15-bcb21fca1c6e",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il commence à lire à voix haute. D’abord, une oreille rose se tourne vers lui. Puis la tête de Miette. Petit à petit, la souris se rapproche…"
+       }
+      ]
+     },
+     {
+      "id": "c47be56b-42ad-4acc-9e11-75a14e1d00e1",
+      "type": "p",
+      "children": [
+       {
+        "text": "Bientôt, la voilà blottie contre le dragon, les yeux brillants. Elle montre une image du bout de la patte et sourit. Un livre, ça ne se mange pas seulement : ça raconte aussi de belles histoires !"
+       }
+      ]
+     },
+     {
       "id": "f60083d6-2d3a-4251-8db3-c48844416413",
-      "page": true,
       "type": "image",
-      "image": "b7c9c3ed-b2ad-49d1-a984-c7ba64977834",
-      "largeur": 100,
+      "image": "8932779a-c8f2-4668-8857-e0dc93e2f61d",
+      "largeur": 65,
       "children": [
        {
         "text": ""
@@ -2178,37 +2175,10 @@
       ]
      },
      {
-      "id": "bc4d72ad-8d12-4f63-8173-7d544262d5d8",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le dragon s'assoit près de la souris. Elle boude encore. Il ouvre le livre rouge. « Je te lis l'histoire », dit-il doucement."
-       }
-      ]
-     },
-     {
-      "id": "83359c2a-f8ea-42e5-87d8-198df0dff173",
-      "type": "p",
-      "children": [
-       {
-        "text": "Il lit à voix haute. Une oreille rose se tourne. Puis la tête de la souris se tourne aussi. Elle se rapproche petit à petit."
-       }
-      ]
-     },
-     {
-      "id": "80b57761-09ef-4926-add9-442d7ff216cd",
-      "type": "p",
-      "children": [
-       {
-        "text": "Bientôt, elle se blottit contre lui. Ses yeux brillent. Elle montre une image du doigt. Elle sourit. Un livre, ça ne se mange pas seulement : ça raconte de belles histoires !"
-       }
-      ]
-     },
-     {
       "id": "be5879ad-d3c1-46c2-9969-6b4ee1b8141e",
       "auto": true,
       "type": "choix",
-      "cible": "5cfd3f18-d897-45ee-a44c-c28c8545c027",
+      "cible": "68773fc8-d6bd-4dce-89aa-102c16e8d490",
       "libelle": "Ramener le livre",
       "children": [
        {
@@ -2218,8 +2188,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:53:39.475Z",
+    "version": 8,
+    "ecrit_le": "2026-10-26T16:39:36.105Z",
     "rang_livre": 12,
     "numero_fixe": null,
     "etat": "prete",
@@ -2230,67 +2200,67 @@
     "description_image": "Dans un coin de la bibliothèque, le dragon est assis par terre, le dos contre un radiateur. Il tient grand ouvert un livre à couverture rouge et lit avec douceur. La souris est blottie contre lui, les yeux brillants, et montre une image du doigt en souriant. La lumière chaude d'une lampe les enveloppe. Ambiance calme et tendre. Cadre en hauteur, étagères de livres en arrière-plan."
    },
    {
-    "id": "5cfd3f18-d897-45ee-a44c-c28c8545c027",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "68773fc8-d6bd-4dce-89aa-102c16e8d490",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 23,
     "titre": "Classe — le lendemain matin",
-    "consigne": "Écris la fin heureuse. L’histoire est finie : le dragon demande à la souris de ramener le livre sur le bureau. Elle le traîne jusqu’à la classe et le pose sur le bureau. Le dragon remonte sur son étagère. Le lendemain matin, la maîtresse prend son livre : un petit coin est déchiré, grignoté. Elle ne comprend pas. Sur l’étagère, la figurine du dragon a l’air de sourire.",
+    "consigne": "Écris la fin heureuse. L’histoire est finie : Bouquin demande à Miette de ramener le livre sur le bureau. Elle le traîne jusqu’à la classe et le pose sur le bureau. Bouquin remonte sur son étagère. Le lendemain matin, la maîtresse prend son livre : un petit coin est déchiré, grignoté. Elle ne comprend pas. Sur l’étagère, la figurine de Bouquin a l’air de sourire.",
     "rang": 7,
     "fin": true,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "879ca4d7-63df-4b7a-a7b1-8710a56dc0ce",
+      "id": "18d38ea5-6234-4fb6-b1a8-39ec77b73774",
       "type": "p",
       "children": [
        {
-        "text": "« Rapporte le livre sur le bureau », dit le dragon. La souris hoche la tête. Elle traîne le gros livre rouge jusqu'à la classe. Elle le pose sur le bureau, puis elle file."
+        "text": "Quand l’histoire est finie, Bouquin dit à Miette : « Rapporte le livre sur le bureau, s’il te plaît. » La petite souris hoche la tête. Elle traîne le gros livre rouge jusqu’à la classe, le pose sur le bureau, puis file dans son trou."
+       }
+      ]
+     },
+     {
+      "id": "298764ba-1be1-4bbf-af32-6b14685b6afb",
+      "type": "p",
+      "children": [
+       {
+        "text": "Bouquin, lui, remonte sur son étagère et ne bouge plus. Le soir s’achève, la nuit passe."
+       }
+      ]
+     },
+     {
+      "id": "249b3248-6399-4b72-81cd-cee943dd0ef3",
+      "type": "p",
+      "children": [
+       {
+        "text": "Le lendemain matin, la maîtresse prend son livre et s’étonne : un petit coin est déchiré, tout grignoté ! « Qui a grignoté mon livre ? » se demande-t-elle."
+       }
+      ]
+     },
+     {
+      "id": "92fdd5c8-f442-4c5a-b1a1-1e2041ec4fce",
+      "type": "p",
+      "children": [
+       {
+        "text": "Sur l’étagère, la figurine du dragon a l’air de sourire."
        }
       ]
      },
      {
       "id": "2d3a5b73-8a0b-4bb2-a3ef-5433a95cd9d0",
       "type": "image",
-      "image": "5788a46c-c493-4692-9314-52ed2bc8a19e",
+      "image": "a0c6b13b-a5e6-43f1-956a-b955c1da93e9",
       "largeur": 100,
       "children": [
        {
         "text": ""
        }
       ]
-     },
-     {
-      "id": "dd36dbbd-5aec-4e46-8d4f-d408190330a9",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le dragon remonte sur son étagère. Il ne bouge plus. Le soir finit, la nuit passe."
-       }
-      ]
-     },
-     {
-      "id": "019b4433-8534-4333-8541-0c9bb45771a7",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le lendemain matin, la maîtresse prend son livre. Un petit coin est déchiré, tout grignoté. « Qui a grignoté mon livre ? » dit-elle. Elle ne comprend pas."
-       }
-      ]
-     },
-     {
-      "id": "81defb71-30c2-4cd1-a717-0a372c6d1346",
-      "type": "p",
-      "children": [
-       {
-        "text": "Sur l'étagère, la figurine du dragon a l'air de sourire."
-       }
-      ]
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:53:56.283Z",
+    "version": 7,
+    "ecrit_le": "2026-10-26T16:39:36.124Z",
     "rang_livre": 20,
     "numero_fixe": null,
     "etat": "prete",
@@ -2301,52 +2271,52 @@
     "description_image": "Matin lumineux dans la salle de classe, le soleil entre à flots par les fenêtres. Au premier plan, la maîtresse, debout près de son bureau, tient le gros livre à couverture rouge et regarde, étonnée, un petit coin grignoté. Au fond à droite, sur l'étagère, le dragon reste immobile, figé comme une figurine, avec un petit sourire malicieux. Ambiance douce, drôle et complice. Composition horizontale : la maîtresse à gauche, le dragon en haut à droite."
    },
    {
-    "id": "168d11f6-c3b8-46a9-a898-28a9a13fba07",
-    "chapitre_id": "7fd55684-35e4-4315-af06-e99ce18c3eb2",
-    "projet_id": "10155a2e-0d51-462f-ab98-61221dbaebfa",
+    "id": "29e03bf7-6326-448f-8a9f-369f5f3a44a4",
+    "chapitre_id": "052488ca-296d-42ae-b124-a2f842f0b129",
+    "projet_id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
     "reference": 24,
     "titre": "Radiateur — trop tard",
-    "consigne": "Écris cette fin, où le dragon arrive trop tard. On peut y arriver de n’importe quel moment de l’histoire : commence par « Le dragon a perdu trop de temps. » Quand il trouve enfin la souris, derrière le radiateur de la bibliothèque, elle a déjà mangé les dernières pages du livre, et elle dort, le ventre tout rond. Pas grave ! Le dragon prend un crayon et invente une fin. Il l’écrit sur une feuille, la glisse dans le livre pour les enfants, et remet le livre sur le bureau.",
+    "consigne": "Écris cette fin, où Bouquin arrive trop tard. On peut y arriver de n’importe quel moment de l’histoire : commence par « Bouquin a perdu trop de temps. » Quand il trouve enfin Miette, derrière le radiateur de la bibliothèque, elle a déjà mangé les dernières pages du livre, et elle dort, le ventre tout rond. Pas grave ! Bouquin prend un crayon et invente une fin. Il l’écrit sur une feuille, la glisse dans le livre pour les enfants, et remet le livre sur le bureau.",
     "rang": 8,
     "fin": true,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "f4555b9c-4536-4d8f-87be-3d8efb8fabaa",
+      "id": "87254376-5bb7-4dde-a24f-eb93881fde9e",
       "type": "p",
       "children": [
        {
-        "text": "Le dragon a perdu trop de temps. Il arrive enfin derrière le radiateur de la bibliothèque. La souris est là. Elle dort, le ventre tout rond. Elle a mangé les dernières pages du livre !"
+        "text": "Bouquin a perdu trop de temps. Quand il trouve enfin Miette, derrière le radiateur de la bibliothèque, il est trop tard : la gourmande a mangé les dernières pages du livre ! Elle dort, le ventre tout rond."
+       }
+      ]
+     },
+     {
+      "id": "5066abbf-a0a0-4421-bc03-4103d6a0ac8b",
+      "type": "p",
+      "children": [
+       {
+        "text": "Bouquin soupire… puis il sourit. « Pas grave ! »"
+       }
+      ]
+     },
+     {
+      "id": "93d07641-62d9-439e-8b1a-fc0796f802de",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il prend un crayon, invente une fin et l’écrit sur une feuille. Il glisse la feuille dans le livre, pour les enfants, et repose le livre sur le bureau de la maîtresse. Demain, la classe entendra une fin toute neuve !"
        }
       ]
      },
      {
       "id": "6222a65f-f25e-4f15-a1e5-61aa8dcd77fd",
       "type": "image",
-      "image": "daa1e7cc-0f50-41b3-850c-f3a77bec16fe",
+      "image": "b0c8cd42-c494-400d-8fcd-c379f3c68f2c",
       "largeur": 100,
       "children": [
        {
         "text": ""
-       }
-      ]
-     },
-     {
-      "id": "46d8baf5-4a5b-4b4d-b5a1-ce3273ce806f",
-      "type": "p",
-      "children": [
-       {
-        "text": "Le dragon soupire. Puis il sourit. « Pas grave ! » dit-il."
-       }
-      ]
-     },
-     {
-      "id": "4766f304-9a5f-4eab-b6dc-15ae6cb2f5d2",
-      "type": "p",
-      "children": [
-       {
-        "text": "Il prend un crayon. Il invente une fin. Il l'écrit sur une feuille. Il glisse la feuille dans le livre, pour les enfants. Puis il pose le livre sur le bureau de la maîtresse. Demain, les enfants entendront une fin toute neuve !"
        }
       ]
      },
@@ -2361,7 +2331,7 @@
        {
         "id": "90c8e280-40f4-42e0-8c12-6db5a67b71cf",
         "type": "renvoi",
-        "cible": "60d72ee7-ba94-40c3-975c-599a4ec94945",
+        "cible": "9bac9467-47c4-42c2-8997-b03e3c3eda9f",
         "libelle": "Recommencer pour arriver à temps",
         "children": [
          {
@@ -2375,8 +2345,8 @@
       ]
      }
     ],
-    "version": 4,
-    "ecrit_le": "2026-10-26T10:54:12.637Z",
+    "version": 6,
+    "ecrit_le": "2026-10-26T16:39:36.138Z",
     "rang_livre": 21,
     "numero_fixe": 20,
     "etat": "prete",
@@ -2391,85 +2361,92 @@
  },
  "images": [
   {
-   "id": "d6609483-f4c7-403e-895d-9139ec6385d0",
-   "fichier": "01.webp",
-   "largeur": 1536,
-   "hauteur": 1024,
-   "format": "webp"
-  },
-  {
-   "id": "f67254bc-bff6-4965-94d3-9a25b33fe48f",
-   "fichier": "02.webp",
-   "largeur": 1536,
-   "hauteur": 1024,
-   "format": "webp"
-  },
-  {
-   "id": "79629c8b-0726-4caa-b078-ee53161df942",
-   "fichier": "03.jpg",
+   "id": "9d64b162-02a6-4a0f-bcf2-5f13daf9e198",
+   "fichier": "01.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "73bd3e74-bfc1-44c9-ad7e-d9fbbffc80f7",
-   "fichier": "04.jpg",
-   "largeur": 1024,
-   "hauteur": 1536,
+   "id": "32013ebb-1858-4859-af84-85093071b5d6",
+   "fichier": "02.jpg",
+   "largeur": 1536,
+   "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "25eec33a-3465-4306-814c-fab656650037",
+   "id": "aea7295c-9d73-4679-a62a-59ef8b5e6df2",
+   "fichier": "03.webp",
+   "largeur": 1536,
+   "hauteur": 1024,
+   "format": "webp"
+  },
+  {
+   "id": "e937fd2c-7253-46aa-adc7-54e4a1f0f244",
+   "fichier": "04.webp",
+   "largeur": 1536,
+   "hauteur": 1024,
+   "format": "webp"
+  },
+  {
+   "id": "5aa85826-c713-4b78-927c-8f0a043241af",
    "fichier": "05.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "2bd0bb75-c4f6-42b8-a2df-cc71905ce892",
+   "id": "8932779a-c8f2-4668-8857-e0dc93e2f61d",
    "fichier": "06.jpg",
-   "largeur": 1536,
-   "hauteur": 1024,
-   "format": "jpeg"
-  },
-  {
-   "id": "b7c9c3ed-b2ad-49d1-a984-c7ba64977834",
-   "fichier": "07.jpg",
    "largeur": 1024,
    "hauteur": 1536,
    "format": "jpeg"
   },
   {
-   "id": "5788a46c-c493-4692-9314-52ed2bc8a19e",
+   "id": "a0c6b13b-a5e6-43f1-956a-b955c1da93e9",
+   "fichier": "07.jpg",
+   "largeur": 1536,
+   "hauteur": 1024,
+   "format": "jpeg"
+  },
+  {
+   "id": "b0c8cd42-c494-400d-8fcd-c379f3c68f2c",
    "fichier": "08.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "daa1e7cc-0f50-41b3-850c-f3a77bec16fe",
+   "id": "055f733a-292c-4a0a-97c2-b49bf385c2eb",
    "fichier": "09.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "623f3240-3e8c-4d29-8aa7-cdd08145bee3",
+   "id": "4a943f25-d028-4ffe-9e0e-bf7b4373cb54",
    "fichier": "10.jpg",
-   "largeur": 1536,
-   "hauteur": 1024,
+   "largeur": 1672,
+   "hauteur": 941,
    "format": "jpeg"
   },
   {
-   "id": "0b0e3796-f392-46c9-b60e-dc2c825a8ebf",
+   "id": "a3e3c7ba-a3ae-4308-999f-26d98d0a77f7",
    "fichier": "11.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "a0c8b212-c97f-486a-bb84-1fb1d9fa100e",
+   "id": "1140ead8-00a2-4c66-8874-52e5074d8748",
    "fichier": "12.jpg",
+   "largeur": 1536,
+   "hauteur": 1024,
+   "format": "jpeg"
+  },
+  {
+   "id": "f9bc1928-cd12-42c1-be7f-d83616360131",
+   "fichier": "13.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"

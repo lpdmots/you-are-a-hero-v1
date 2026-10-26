@@ -3513,12 +3513,12 @@ V6, le premier envoi à l'imprimeur.
        monde est parti. Ce soir le livre a disparu : il doit retrouver la
        souris avant qu'elle ne le grignote. Six décisions, chacune avec une
        bonne réponse qui se trouve en réfléchissant (indice du texte ou ce
-       qu'un enfant sait) : le suspect (le chat du gardien, qui vit dans sa
+       qu'un enfant sait) : le suspect (le chat du concierge, qui vit dans sa
        loge ; la pie, qui l'appelle « ma poule » parce qu'il vole mal ; la
        souris, d'après le long trait de sa queue entre les traces) ; la porte
        (passer dessous, cracher du feu, voler en lançant le dé — 1 ou 2,
        c'est raté —, la chaise) ; le couloir noir, où la télévision du
-       gardien fait une lueur (allumer ou avancer doucement) ; le carrefour,
+       concierge fait une lueur (allumer ou avancer doucement) ; le carrefour,
        où la trace du livre traîné exclut l'escalier et où la loge est celle
        du chat ; l'ombre géante de la souris près de la lampe de la
        bibliothèque ; trois traînées (confettis bleus, feuilles de classeur,
@@ -3535,9 +3535,11 @@ V6, le premier envoi à l'imprimeur.
        puis « recommencer » ; un dé, une fois. Révise le « sans dé ni feuille
        » de la demande. Pas d'énigme.
      - **Taille :** 24 passages, une partie sans titre imprimé, trois
-       chapitres (la classe, le couloir, la bibliothèque) ; 40 à 70 mots, 30
-       à 50 pour une erreur ; présent, troisième personne, phrases de douze
-       mots au plus ; « 6 à 8 ans ».
+       chapitres (la classe, le couloir, la bibliothèque) ; présent,
+       troisième personne ; « 6 à 8 ans ». Révisé par le porteur après sa
+       relecture : des phrases vivantes et variées, sans « il » répété, plutôt
+       que des phrases de douze mots au plus, « pas très intéressant » ; 40 à
+       130 mots par passage.
      - **Livre :** Andika, taille « grande », aligné à gauche (sans césure) ;
        « va au 12 » et la seule construction « libellé, puis renvoi » ;
        « Comment lire ce livre » en trois phrases. L'interligne fixe (1,36) se
@@ -3571,6 +3573,17 @@ V6, le premier envoi à l'imprimeur.
        dollar (71 appels). Le panneau « Comment lire ce livre » ne se laisse pas
        remplacer d'un geste au clavier du navigateur intégré : ses textes et
        ceux de la page de fin sont posés dans la base locale.
+     - **Repris le 26 octobre 2026, après la relecture du porteur :** noms
+       décidés par lui, Bouquin (le dragon), Miette (la souris), Pacha (le
+       chat), Jacasse (la pie), la maîtresse et le concierge sans nom ; à
+       confirmer, recommandé : les mêmes noms pour les mascottes sur tout le
+       site. Il complète les textes, puis demande à Claude de les réécrire
+       lui-même, sans les aides, « sans enlever les informations » ; trois
+       indices qu'un choix demande sont remis (le long trait entre les traces
+       au bureau, les chaises près de la porte, la trace balayée au bout du
+       couloir) ; les pistes de la bibliothèque deviennent des miettes de
+       papier. Les illustrations sont refaites à part par le porteur, d'après
+       les prompts donnés dans la conversation.
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le
