@@ -23,7 +23,9 @@ const leTemps = (suite: number) => ({
 const PLUSIEURS = "On arrive ici de plusieurs façons : commence sans rappeler ce qui s’est passé juste avant.";
 
 export const livre: Conception = {
-  TITRE: "Qui a pris le livre ?",
+  TITRE: "Bouquin mène l’enquête",
+  // Renommé par le porteur le 26 octobre 2026
+  ANCIENS_TITRES: ["Qui a pris le livre ?"],
   DEPART: 1,
   AGE: "6-8",
   VISUEL_DU_PROJET: "bibliotheque",

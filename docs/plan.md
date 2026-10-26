@@ -3501,7 +3501,7 @@ V6, le premier envoi à l'imprimeur.
        composé imprime l'apostrophe courbe, PDF, aperçu et version partagée,
        le texte enregistré restant tel quel (F11-AC109).
    - **Petit livre à choix de cycle 2, entretien validé le 26 octobre 2026**
-     (clé `dragon`, « Qui a pris le livre ? ») :
+     (clé `dragon`, « Bouquin mène l'enquête », d'abord « Qui a pris le livre ? ») :
      - **Personnages :** les deux mascottes, sans nom propre (« le dragon »,
        « la souris »), exception décidée par le porteur : elles peuvent être
        les personnages des livres d'exemple du site, jamais d'un livre de
@@ -3586,7 +3586,12 @@ V6, le premier envoi à l'imprimeur.
        les prompts donnés dans la conversation.
      - **Chargé dans la vraie base le 26 octobre 2026,** à sa demande, sur son
        compte (24 scènes, 13 images), arrivé à « Imprimer et partager » ; pas
-       encore proposé à la bibliothèque.
+       encore proposé à la bibliothèque. Renommé par lui « Bouquin mène
+       l'enquête » (clé `dragon`, dossier `app/scripts/exemples/bouquin-mene-l-enquete/`) ;
+       la première copie en ligne venait d'un instantané exporté avant ses
+       dernières retouches locales : réexporté et rechargé (`--refaire`) le
+       même jour. Avant tout chargement en production, réexporter le livre
+       local (`--exporter`).
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le

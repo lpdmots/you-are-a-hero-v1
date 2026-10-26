@@ -83,7 +83,7 @@ async function connecter(): Promise<Enseignant> {
 
 type Scene = { id: string; reference: number; version: number };
 async function lePlan(e: Enseignant): Promise<{ projetId: string; scenes: Map<number, Scene> }> {
-  const { data: projets } = await e.supabase.from("projets").select("id").eq("titre", c.TITRE).eq("organisation", "classe").is("classe_id", null);
+  const { data: projets } = await e.supabase.from("projets").select("id").in("titre", [c.TITRE, ...(c.ANCIENS_TITRES ?? [])]).eq("organisation", "classe").is("classe_id", null);
   if (projets?.length !== 1) throw new Error(`Il faut un seul « ${c.TITRE} » d'exemple dans la base locale (« npm run livres:exemple -- ${cle} --brouillon »).`);
   const projetId = projets[0].id as string;
   const { data } = await e.supabase.from("scenes").select("id, reference, version").eq("projet_id", projetId).is("supprime_le", null);

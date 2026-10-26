@@ -37,7 +37,7 @@ import * as passeurs from "./exemples/passeurs-de-brume";
 
 const LIVRES: Record<string, { conception: Conception; dossier: string }> = {
   passeurs: { conception: passeurs, dossier: "passeurs-de-brume" },
-  dragon: { conception: dragon, dossier: "qui-a-pris-le-livre" },
+  dragon: { conception: dragon, dossier: "bouquin-mene-l-enquete" },
 };
 type CleLivre = keyof typeof LIVRES;
 const TYPE_DE: Record<string, string> = { png: "image/png", webp: "image/webp", jpeg: "image/jpeg" };
@@ -106,8 +106,8 @@ type Q = <T = Record<string, unknown>>(texte: string, valeurs?: unknown[]) => Pr
 /** Le livre d'exemple sur ce compte : un projet de classe à ce titre, sans classe. */
 async function existants(q: Q, compte: string): Promise<string[]> {
   const lignes = await q<{ id: string }>(
-    "select id from public.projets where enseignant_id = $1 and titre = $2 and organisation = 'classe' and classe_id is null",
-    [compte, c.TITRE],
+    "select id from public.projets where enseignant_id = $1 and titre = any($2) and organisation = 'classe' and classe_id is null",
+    [compte, [c.TITRE, ...(c.ANCIENS_TITRES ?? [])]],
   );
   return lignes.map((l) => l.id);
 }

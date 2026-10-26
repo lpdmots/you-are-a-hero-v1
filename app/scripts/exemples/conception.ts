@@ -26,6 +26,8 @@ export type PartieExemple = { titre: string; visuel: string; chapitres: Chapitre
 
 export type Conception = {
   TITRE: string;
+  /** Les titres qu'il a portés : le livre déjà chargé sous l'un d'eux se retrouve, pour être remplacé */
+  ANCIENS_TITRES?: string[];
   DEPART: number;
   AGE: AgeDesLecteurs;
   VISUEL_DU_PROJET: string;

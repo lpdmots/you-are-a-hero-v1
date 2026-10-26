@@ -897,7 +897,7 @@ de classe sans classe ni élève ; son contenu fini est gardé sous Git dans
 `scripts/exemples/<livre>/` (`livre.json` et ses images), et se recharge sans aucun
 appel d'IA, arrivé à « Imprimer et partager » : ordre et numéros fixes, mise en page,
 « C'est voulu » et étapes déclarées compris. Seul le PDF définitif se refait. Deux livres
-à ce jour : `passeurs` (« Les passeurs de brume », cycle 3) et `dragon` (« Qui a pris le
+à ce jour : `passeurs` (« Les passeurs de brume », cycle 3) et `dragon` (« Bouquin mène l’enquête », d’abord « Qui a pris le
 livre ? », cycle 2, les deux mascottes, dont les planches de référence deviennent les
 portraits au brouillon).
 
