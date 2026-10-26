@@ -11,12 +11,12 @@ import styles from "./admin.module.css";
  * /admin/couverture, que Next ne limite pas à 1 Mo comme une action. Pendant l'envoi, le champ
  * reste actif (un champ désactivé ne part pas) ; c'est le bouton qui ne se clique plus.
  */
-export function DeposerCouverture({ code, remplacer }: { code: string; remplacer: boolean }) {
+export function DeposerCouverture({ projet, remplacer }: { projet: string; remplacer: boolean }) {
   const formulaire = useRef<HTMLFormElement>(null);
   const [envoi, setEnvoi] = useState(false);
   return (
     <form ref={formulaire} action="/admin/couverture" method="post" encType="multipart/form-data" className={styles.depot}>
-      <input type="hidden" name="code" value={code} />
+      <input type="hidden" name="projet" value={projet} />
       <label className={`btn btn--petit ${styles.choisirImage}`} aria-disabled={envoi}>
         {envoi ? "Envoi de la couverture…" : remplacer ? "Changer de couverture…" : "Déposer sa couverture…"}
         <input

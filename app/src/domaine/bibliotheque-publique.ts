@@ -46,6 +46,8 @@ export type LivrePublie = {
   image: { id: string; pleinePage: boolean; ratio: number } | null;
   publieLe: string;
   coeurs: number;
+  /** La face avant du livre imprimé, quand le porteur l'a déposée pour l'accueil (F14-AC40) : elle tient lieu de couverture */
+  couverture?: string | null;
 };
 
 export const NOM_DU_TYPE: Record<TypeDeRecit, string> = { choix: "Livre-jeu", classique: "Récit" };

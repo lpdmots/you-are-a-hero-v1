@@ -82,11 +82,11 @@ export async function changerLesMotsAdmin(id: string, formulaire: FormData): Pro
   redirect(`/admin/bibliotheque?fait=${ok ? "mots" : "refus"}`);
 }
 
-// ——— Les livres de l'accueil (F14-AC40, 23 octobre 2026) ———
+// ——— Les livres de l'accueil (F14-AC40, 23 octobre 2026 ; parmi les livres de la bibliothèque, F15-AC19) ———
 
-export async function choisirPourLAccueilAdmin(code: string, oui: boolean): Promise<void> {
-  const porteur = await exigerLePorteur();
-  const r = await choisirPourLAccueil(porteur, code, oui);
+export async function choisirPourLAccueilAdmin(projet: string, oui: boolean): Promise<void> {
+  await exigerLePorteur();
+  const r = await choisirPourLAccueil(projet, oui);
   revalidatePath("/", "layout");
   redirect(`/admin?fait=${r === "fait" ? (oui ? "accueil-pose" : "accueil-retire") : r === "plein" ? "accueil-plein" : "refus"}#adm-accueil`);
 }
@@ -98,9 +98,9 @@ export async function echangerLesLivresAdmin(): Promise<void> {
   redirect(`/admin?fait=${ok ? "accueil-ordre" : "refus"}#adm-accueil`);
 }
 
-export async function retirerLaCouvertureAdmin(code: string): Promise<void> {
+export async function retirerLaCouvertureAdmin(projet: string): Promise<void> {
   await exigerLePorteur();
-  const ok = await retirerLaCouverture(code);
+  const ok = await retirerLaCouverture(projet);
   revalidatePath("/", "layout");
   redirect(`/admin?fait=${ok ? "couverture-retiree" : "refus"}#adm-accueil`);
 }

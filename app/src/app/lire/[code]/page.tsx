@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 import { cache } from "react";
 import { Messages } from "@/composants/Messages";
 import { versionParLeLien } from "@/serveur/lecteur";
@@ -12,7 +13,7 @@ const lire = cache(versionParLeLien);
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const lu = await lire((await params).code);
   // La page neutre ne dit rien du livre, pas même dans le titre de l'onglet (F12-AC10)
-  if (lu.sorte !== "livre") return { title: { absolute: lu.sorte === "neutre" ? "Ce livre n’est plus partagé" : "Livre momentanément indisponible" } };
+  if (lu.sorte !== "livre") return { title: { absolute: lu.sorte === "indisponible" ? "Livre momentanément indisponible" : "Ce livre n’est plus partagé" } };
   return { title: { absolute: lu.version.titre } };
 }
 
@@ -23,6 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Page({ params }: Props) {
   const { code } = await params;
   const lu = await lire(code);
+  if (lu.sorte === "bibliotheque") redirect(`/bibliotheque/${lu.adresse}`);
   if (lu.sorte === "neutre")
     return (
       <main className="lecteur-seul">

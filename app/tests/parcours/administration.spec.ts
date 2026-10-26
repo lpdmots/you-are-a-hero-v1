@@ -115,28 +115,30 @@ test("F14-AC25 — retirer le partage d'un livre signalé : le lien mène à la 
   expect(await sql("select titre from public.partages_retires where projet_id = $1", [s.marais])).toEqual([{ titre: "Le marais" }]);
 });
 
-/** Partager un projet par lien, sans passer par l'écran : une version réduite au titre */
-async function partagerVite(projet: string, compte: Compte): Promise<string> {
-  const code = "mnpqrstuvw".split("").sort(() => Math.random() - 0.5).join("");
+/** Publier un projet dans la bibliothèque, sans passer par l'écran : une version réduite au titre */
+async function publierVite(projet: string, compte: Compte, titre: string): Promise<string> {
+  const adresse = `${titre.toLowerCase().replace(/[^a-z]+/g, "-")}-${Math.random().toString(36).slice(2, 8)}`;
   await sql(
-    `insert into public.partages (projet_id, enseignant_id, code, par_lien, version, etat_du, empreinte, empreinte_lecture)
-     values ($1, $2, $3, true, '{"titre":"Le phare"}'::jsonb, now(), repeat('a', 32), repeat('b', 32))`,
-    [projet, compte.id, code],
+    `insert into public.publications (projet_id, enseignant_id, adresse, version, presentation, age, empreinte, publiee_le, mise_a_jour_le)
+     values ($1, $2, $3, jsonb_build_object('titre', $4::text, 'aChoix', true, 'passages', '[]'::jsonb, 'images', '{}'::jsonb), 'Une histoire.', '8-10', repeat('a', 32), now(), now())`,
+    [projet, compte.id, adresse, titre],
   );
-  return code;
+  return adresse;
 }
 
-test("F14-AC40 — les livres de l'accueil se choisissent dans l'administration, parmi ceux du porteur, avec leur face avant", async ({ page, browser }) => {
-  const { code: deBernard, porteur, base } = await deuxComptes(page, browser);
+test("F14-AC40, F15-AC19 — les livres de l'accueil se choisissent parmi tous les livres de la bibliothèque, avec leur face avant ; retiré de la bibliothèque, un livre quitte l'accueil", async ({ page, browser }) => {
+  const { bernard, marais, porteur, base } = await deuxComptes(page, browser);
   await sql("update public.reglages_application set livres_de_l_accueil = '[]'");
-  const phare = await partagerVite(await semerProjet(base, porteur, "personnel", "choix", "Le phare", null), porteur);
+  const phare = await semerProjet(base, porteur, "personnel", "choix", "Le phare", null);
+  await publierVite(phare, porteur, "Le phare");
+  const deBernard = await publierVite(marais, bernard, "Le marais");
 
-  // Seuls les livres du porteur, partagés par lien, se proposent
+  // Tous les livres de la bibliothèque se proposent, ceux des autres comptes compris
   await aller(page, "/admin");
   const section = page.getByRole("region", { name: "Livres de l’accueil" });
-  const ligne = section.getByRole("listitem").filter({ hasText: "Le phare" });
+  const ligne = section.getByRole("listitem").filter({ hasText: "Le marais" });
   await expect(ligne).toBeVisible();
-  await expect(section.getByText("Le marais")).toHaveCount(0);
+  await expect(section.getByRole("listitem").filter({ hasText: "Le phare" })).toBeVisible();
   await ligne.getByRole("button", { name: "Mettre sur l’accueil" }).click();
   await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("Le livre est sur l’accueil.");
 
@@ -149,11 +151,11 @@ test("F14-AC40 — les livres de l'accueil se choisissent dans l'administration,
   await ligne.locator('input[type="file"]').setInputFiles({ name: "couverture.png", mimeType: "image/png", buffer: entiere });
   await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("La couverture est sur l’accueil.");
 
-  // Un visiteur la voit sur l'accueil, et le livre mène à sa lecture
+  // Un visiteur la voit sur l'accueil, et le livre mène à sa lecture dans la bibliothèque
   const visiteur = await (await browser.newContext()).newPage();
   await visiteur.goto("http://localhost:3100/");
-  const livre = visiteur.getByRole("link", { name: "Feuilleter « Le phare »" });
-  await expect(livre).toHaveAttribute("href", `/lire/${phare}`);
+  const livre = visiteur.getByRole("link", { name: "Feuilleter « Le marais »" });
+  await expect(livre).toHaveAttribute("href", `/lire/bibliotheque/${deBernard}`);
   const adresse = await livre.locator("img").getAttribute("src");
   const reponse = await visiteur.request.get(`http://localhost:3100${adresse}`);
   const lue = sharp(await reponse.body());
@@ -168,14 +170,14 @@ test("F14-AC40 — les livres de l'accueil se choisissent dans l'administration,
   await expect(page.getByRole("alert").filter({ hasText: /./ })).toHaveText("Cette image ne convient pas : JPEG, PNG ou WebP, 4 Mo au plus.");
 
   // Un autre compte ne peut rien déposer ; la couverture d'un livre absent de l'accueil n'existe pas
-  expect((await visiteur.request.post("http://localhost:3100/admin/couverture", { multipart: { code: phare } })).status()).toBe(404);
-  expect((await visiteur.request.get(`http://localhost:3100/images/accueil/${deBernard}`)).status()).toBe(404);
+  expect((await visiteur.request.post("http://localhost:3100/admin/couverture", { multipart: { projet: marais } })).status()).toBe(404);
+  expect((await visiteur.request.get(`http://localhost:3100/images/accueil/${phare}`)).status()).toBe(404);
 
-  // Retiré de l'accueil, le livre n'y paraît plus
-  await aller(page, "/admin");
-  await section.getByRole("listitem").filter({ hasText: "Le phare" }).getByRole("button", { name: "Retirer de l’accueil" }).click();
-  await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("Le livre a quitté l’accueil.");
+  // Retiré de la bibliothèque, le livre quitte l'accueil (F15-AC19)
+  await sql("update public.publications set version = null, presentation = null, age = null, empreinte = null, retiree_le = now(), retrait_par = 'adulte' where projet_id = $1", [marais]);
   await visiteur.goto("http://localhost:3100/");
   await expect(visiteur.getByRole("link", { name: /Feuilleter/ })).toHaveCount(0);
+  await aller(page, "/admin");
+  await expect(section.getByRole("listitem").filter({ hasText: "Le marais" })).toHaveCount(0);
   await visiteur.context().close();
 });

@@ -24,6 +24,8 @@ export type LuParLeLien =
   | { sorte: "livre"; version: VersionPartagee }
   /** Lien coupé, changé, inconnu, ou trop d'essais faux : la page neutre */
   | { sorte: "neutre" }
+  /** Un lien d'avant la bibliothèque, dont le livre y est publié : il y mène (F15, « Les livres de l'accueil ») */
+  | { sorte: "bibliotheque"; adresse: string }
   /** La base ne répond pas (offre gratuite en sommeil, panne) : « momentanément indisponible » */
   | { sorte: "indisponible" };
 
@@ -50,6 +52,14 @@ export async function versionParLeLien(saisi: string): Promise<LuParLeLien> {
       : { data: null, error: null };
     if (lu.error) return { sorte: "indisponible" };
     if (lu.data?.version) return { sorte: "livre", version: versionAvecObjets(lu.data.version as VersionPartagee, await nomsDesObjets(lu.data.projet_id as string)) };
+    // Un lien coupé dont le livre est dans la bibliothèque : le lien donné aux familles y mène encore
+    if (code) {
+      const { data: ancien } = await service.from("partages").select("projet_id").eq("code", code).maybeSingle();
+      const { data: publie } = ancien
+        ? await service.from("publications").select("adresse").eq("projet_id", ancien.projet_id).not("version", "is", null).maybeSingle()
+        : { data: null };
+      if (publie?.adresse) return { sorte: "bibliotheque", adresse: publie.adresse as string };
+    }
     await service.rpc("prendre_essai_entree", { p_navigateur: cles.navigateur, p_reseau: cles.reseau });
     return { sorte: "neutre" };
   } catch {

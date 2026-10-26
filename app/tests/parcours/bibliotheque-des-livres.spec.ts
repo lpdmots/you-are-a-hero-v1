@@ -312,3 +312,19 @@ test("F15-AC20 — dans « Lire », après les livres de l'enseignante, ceux de 
   await expect(alice.page.getByRole("region", { name: "La bibliothèque" })).toHaveCount(0);
   await alice.contexte.close();
 });
+
+test("F15, les livres de l'accueil — un lien de lecture d'avant la bibliothèque mène au livre une fois publié", async ({ page, browser }) => {
+  const l = await lanterne(page, `La lanterne ${Date.now().toString(36)}`);
+  const code = "pqrstuvwxy".split("").sort(() => Math.random() - 0.5).join("");
+  await sql(
+    `insert into partages (projet_id, enseignant_id, code, par_lien, version, etat_du, empreinte, empreinte_lecture)
+     values ($1, $2, $3, false, null, null, null, null)`,
+    [l.projet, l.compte.id, code],
+  );
+  await proposer(page, l.projet);
+  const adresse = await publierLaProposition(l.projet);
+  const famille = await (await browser.newContext()).newPage();
+  await famille.goto(`/lire/${code}`);
+  await expect(famille).toHaveURL(new RegExp(`/bibliotheque/${adresse}$`));
+  await expect(famille.getByRole("dialog")).toContainText("La lanterne");
+});

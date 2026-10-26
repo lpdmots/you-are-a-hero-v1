@@ -171,7 +171,15 @@ le détail ; elle ne raconte pas les séances.
   à part, relue par le porteur sur un rapport de l'IA ; ce que montre le
   livre partagé, prénoms compris ; cœurs sans compte ; une page indexée,
   les livres non ; « Signaler ce livre » ; gratuite ; la bibliothèque dans
-  « Lire », côté élève. Aucun développement n'est autorisé.
+  « Lire », côté élève. Sa construction est autorisée le 25 octobre 2026,
+  pour elle seule ; ses sept lots sont construits en local les 25 et
+  26 octobre 2026, un commit par lot, six migrations en base locale
+  seulement, rien poussé ni appliqué à la vraie base
+  ([plan](docs/plan.md#bibliothèque-publique-f15),
+  [design](docs/design.md#bibliothèque-publique-f15-construite-25-octobre-2026),
+  mode d'emploi dans [`app/README.md`](app/README.md), « Essayer la
+  bibliothèque (F15) »). Coût réel de la relecture par l'IA : 0,104 dollar
+  pour un livre de 213 passages et 20 images.
 - **Créer et modifier les choix dans la scène** (cinquième parcours) :
   approfondi le 1er octobre 2026 en
   [F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène)

@@ -155,7 +155,7 @@ export async function Accueil() {
             >
               {/* La capture d'un livre de l'accueil mène à sa lecture ; les autres s'ouvrent en grand (CapturesEnGrand) */}
               {"livre" in c && livres.some((l) => l.titre === c.livre) ? (
-                <Link href={`/lire/${livres.find((l) => l.titre === c.livre)?.code}`} className={styles.lireLeLivre} aria-label={`Lire « ${c.livre} » en ligne`}>
+                <Link href={`/lire/bibliotheque/${livres.find((l) => l.titre === c.livre)?.adresse}`} className={styles.lireLeLivre} aria-label={`Lire « ${c.livre} » en ligne`}>
                   <span className={styles.tirage} style={{ aspectRatio: c.ratio }}>
                     <Image src={c.src} alt={c.alt} fill sizes="(max-width: 980px) 100vw, 680px" quality={90} />
                     <span className={styles.badgeLire}>Lire le livre →</span>
@@ -180,14 +180,19 @@ export async function Accueil() {
       <section className={`${styles.rangee} ${styles.aDroite}`}>
         <Feuillet n={27} titre={livres.length === 1 ? "Un livre écrit par une classe." : "Deux livres écrits par une classe."}>
           <p className={`${styles.recit} ${styles.petit}`}>
-            {livres.length === 1
-              ? "Écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles."
-              : "Écrits par mes élèves, scène par scène, puis imprimés et lus par leurs familles."}
+            {/* Les livres de l'accueil viennent de la bibliothèque (F15-AC19) : « mes élèves » pour ceux du porteur seulement */}
+            {livres.every((l) => l.duPorteur)
+              ? livres.length === 1
+                ? "Écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles."
+                : "Écrits par mes élèves, scène par scène, puis imprimés et lus par leurs familles."
+              : livres.length === 1
+                ? "Écrit par des élèves, scène par scène, et publié dans la bibliothèque du site."
+                : "Écrits par des élèves, scène par scène, et publiés dans la bibliothèque du site."}
           </p>
           {livres.length > 0 || EN_DEVELOPPEMENT ? (
             <ul className={styles.livres}>
               {livres.map((l) => (
-                <li key={l.code}>
+                <li key={l.adresse}>
                   <LivreFerme livre={l} />
                 </li>
               ))}
@@ -433,7 +438,7 @@ function ChoixCompte({ phrase }: { phrase: string }) {
 function LivreFerme({ livre }: { livre: LivreDeLAccueil }) {
   const nom = `Feuilleter « ${livre.titre} »${livre.passages ? `, ${livre.passages} passages` : ""}`;
   return (
-    <Link href={`/lire/${livre.code}`} className={styles.livreFerme} aria-label={nom}>
+    <Link href={`/lire/bibliotheque/${livre.adresse}`} className={styles.livreFerme} aria-label={nom}>
       <span className={styles.volume}>
         {livre.couverture ? (
           // La face avant du livre imprimé, déposée dans l'administration (F14-AC40)

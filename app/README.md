@@ -917,3 +917,60 @@ Pour écrire ou reprendre un livre, en local seulement :
 3. le Livre se mène dans l'application, jusqu'au PDF définitif ;
 4. `npm run livres:exemple -- passeurs --exporter` garde le projet fini dans
    l'instantané, à relire avant de le committer.
+
+## Essayer la bibliothèque (F15)
+
+La bibliothèque publique des livres se construit en sept lots (`docs/plan.md`,
+« Bibliothèque publique (F15) »). L'essai se joue d'abord en local, sur
+http://localhost:4840, avec le compte local, qui est le compte du porteur ; la
+vraie base n'est pas touchée.
+
+**1. La base locale à jour.** Les six migrations de F15 (`bibliotheque_des_livres`,
+`relecture_des_livres`, `coeurs_des_livres`, `retrait_et_signalements`,
+`lire_cote_eleve`, `accueil_depuis_la_bibliotheque`) : `npx tsx
+scripts/supabase.ts migration up --local` les applique sans rien effacer. Puis
+`npm run bibliotheque:accueil` publie les deux livres de l'accueil, avec leur
+présentation (écrite dans le script), et coupe leur lien, qui mène désormais à
+leur adresse dans la bibliothèque. La commande se relance sans risque.
+
+**2. Proposer un livre.** Un livre arrivé à « Imprimer et partager » (`npm run
+livres:essai -- --refaire` puis `npm run partages:essai`), volet « Partager » :
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| L'ouverture du volet | deux cartes, « Privé » (s'il y a une classe en cours) et « Public », aucun lien seul |
+| « Proposer à la bibliothèque… » | la présentation, « ✦ Écrire » puis « ✦ Autre version », l'attestation selon le mode, sous elle l'autorisation à faire signer en classe, la clause des conditions |
+| « Proposer le livre » | « En attente de relecture », « Retirer la proposition… » |
+| `/admin/livres` (le compte local) | le livre, son rapport, « Lu : n passages, n images · coût », « Publier », « Refuser… » |
+| « Publier » | un courriel (Mailpit, http://127.0.0.1:54324), « Publié, version du… » et l'adresse dans l'étape |
+| Une coquille corrigée, « Proposer la mise à jour… » | dans la file, « Mise à jour » et les passages changés |
+| « Refuser… », une phrase prête et une précision | le motif par courriel et dans l'étape, « Proposer de nouveau… » |
+| « Retirer de la bibliothèque… » | l'adresse dit « Ce livre n'est plus dans la bibliothèque. » ; proposé et publié de nouveau, il retrouve son adresse et ses cœurs |
+
+L'analyse par l'IA part après « Proposer », avec les vraies clés de `.env.local` :
+elle coûte environ 0,10 dollar pour un livre de 200 passages et 20 images, au
+compte du porteur.
+
+**3. La bibliothèque, sans compte.** Une fenêtre privée sur
+http://localhost:4840/bibliotheque : la recherche, l'âge, le type, « Les plus
+aimés » ; un livre ouvre son tiroir à sa propre adresse ; « Lire le livre », puis,
+après la fin, « Ce livre t'a plu ? » et le cœur ; un second clic le retire ;
+« Signaler ce livre », au pied du tiroir, et l'accusé de réception dans Mailpit ;
+le signalement en tête de `/admin/livres`.
+
+**4. Depuis la classe.** Un poste de « CM1-CM2 d'essai » (comme pour l'étape 7) :
+« Lire », après « Les livres de … », « La bibliothèque » avec les livres de l'âge
+de la classe ; « Mes classes » > la classe > fiche « Lire » l'éteint. « Terminer
+l'année », puis rouvrir la classe sur un poste : « Lire » seul, et la phrase
+« L'année est finie ».
+
+`npx playwright test bibliotheque` joue les parcours, dont celui de bout en bout
+(`bibliotheque-de-bout-en-bout`) ; les captures se refont par `npm run captures --
+bibliotheque-des-livres`, ou contre le serveur local déjà lancé par `npx
+playwright test --config playwright.local.config.ts bibliotheque-des-livres`.
+
+**5. En ligne, à la demande seulement.** `npm run sauvegarder`, puis `npm run
+production:schema -- --oui`, qui applique les six migrations à la vraie base ;
+`npm run bibliotheque:accueil -- --production` (à blanc), puis `-- --production
+--oui`, juste après la mise en ligne du code, pour que l'accueil retrouve ses deux
+livres.

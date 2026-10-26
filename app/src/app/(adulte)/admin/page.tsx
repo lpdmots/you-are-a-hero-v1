@@ -43,7 +43,7 @@ const REFUS: Record<string, string> = {
  */
 export default async function Administration({ searchParams }: { searchParams: Promise<{ partage?: string; fait?: string }> }) {
   const porteur = await exigerLePorteur();
-  const [t, demande, aRelire, livres, livresARelire, signales] = await Promise.all([tableau(), searchParams, imagesARelire(), livresAChoisir(porteur), nombreDeLivresARelire(), nombreDeSignalements()]);
+  const [t, demande, aRelire, livres, livresARelire, signales] = await Promise.all([tableau(), searchParams, imagesARelire(), livresAChoisir(), nombreDeLivresARelire(), nombreDeSignalements()]);
   const surLAccueil = livres.filter((l) => l.surLAccueil).length;
   const signale = demande.partage && demande.partage !== "introuvable" && codeDuLien(demande.partage) ? await partageDuLien(demande.partage) : null;
   const fait = demande.fait ? FAITS[demande.fait] : null;
@@ -120,19 +120,19 @@ export default async function Administration({ searchParams }: { searchParams: P
         </Link>
       </section>
 
-      {/* Les livres de l'accueil (F14-AC40) : deux au plus, parmi ceux du porteur partagés par lien */}
+      {/* Les livres de l'accueil (F14-AC40, F15-AC19) : deux au plus, parmi tous les livres de la bibliothèque */}
       <section className={styles.bloc} id="adm-accueil" aria-labelledby="adm-accueil-t">
         <h2 id="adm-accueil-t">Livres de l’accueil</h2>
         {livres.length === 0 ? (
-          <p className={styles.note}>Aucun de vos livres n’est partagé par lien. Partagez-en un depuis « Imprimer et partager ».</p>
+          <p className={styles.note}>La bibliothèque n’a encore aucun livre. Publiez-en un depuis la file « Bibliothèque ».</p>
         ) : (
           <>
             <p className={styles.note}>
-              Deux au plus, parmi vos livres partagés par lien. Couverture : la face avant, ou la couverture entière, dont seule la face avant est gardée.
+              Deux au plus, parmi les livres de la bibliothèque. Couverture : la face avant, ou la couverture entière, dont seule la face avant est gardée.
             </p>
             <ul className={styles.liste}>
               {livres.map((l) => (
-                <li key={l.code} className={styles.livreAccueil}>
+                <li key={l.projet} className={styles.livreAccueil}>
                   {l.surLAccueil ? (
                     <span className={styles.couverture}>
                       {l.couverture ? (
@@ -144,28 +144,29 @@ export default async function Administration({ searchParams }: { searchParams: P
                     </span>
                   ) : null}
                   <span className={styles.titre}>{l.titre}</span>
-                  <a href={`/lire/${l.code}`} target="_blank" rel="noreferrer">
-                    Lire
+                  <span className={styles.note}>{l.courriel ?? "compte sans adresse"}</span>
+                  <a href={`/bibliotheque/${l.adresse}`} target="_blank" rel="noreferrer">
+                    Ouvrir
                   </a>
                   <span className={styles.partage}>
                     {l.surLAccueil ? (
                       <>
-                        <DeposerCouverture code={l.code} remplacer={Boolean(l.couverture)} />
+                        <DeposerCouverture projet={l.projet} remplacer={Boolean(l.couverture)} />
                         {l.couverture ? (
-                          <form action={retirerLaCouvertureAdmin.bind(null, l.code)}>
+                          <form action={retirerLaCouvertureAdmin.bind(null, l.projet)}>
                             <button type="submit" className="lien">
                               Retirer la couverture
                             </button>
                           </form>
                         ) : null}
-                        <form action={choisirPourLAccueilAdmin.bind(null, l.code, false)}>
+                        <form action={choisirPourLAccueilAdmin.bind(null, l.projet, false)}>
                           <button type="submit" className="btn btn--petit">
                             Retirer de l’accueil
                           </button>
                         </form>
                       </>
                     ) : (
-                      <form action={choisirPourLAccueilAdmin.bind(null, l.code, true)}>
+                      <form action={choisirPourLAccueilAdmin.bind(null, l.projet, true)}>
                         <button type="submit" className="btn btn--petit" disabled={surLAccueil >= 2} title={surLAccueil >= 2 ? "Deux livres sont déjà sur l’accueil" : undefined}>
                           Mettre sur l’accueil
                         </button>

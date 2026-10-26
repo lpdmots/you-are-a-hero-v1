@@ -3671,7 +3671,19 @@ V6, le premier envoi à l'imprimeur.
      les livres publiés (F14-AC40 révisé, F15-AC19) ; la conversion des deux
      livres du porteur, en local seulement, en ligne à sa demande ; un essai
      de bout en bout et le mode d'emploi « Essayer la bibliothèque » dans
-     `app/README.md`. Migration.
+     `app/README.md`. Migration. **Construit le 26 octobre 2026,** migration
+     `accueil_depuis_la_bibliotheque` en base locale seulement : chaque livre
+     de l'accueil se désigne par son projet ; l'administration propose tous
+     les livres publiés, de tous les comptes ; l'accueil mène à
+     `/lire/bibliotheque/…`, et la couverture déposée sert aussi dans la
+     bibliothèque. `npm run bibliotheque:accueil` publie les deux livres du
+     porteur avec leur présentation (dans le script, à lui faire valider) et
+     coupe leur lien, dont le code mène désormais à leur adresse ; essayé en
+     local. Parcours `bibliotheque-de-bout-en-bout` ; mode d'emploi dans
+     `app/README.md`, « Essayer la bibliothèque (F15) ». Précision : le texte
+     du passage 27 de l'accueil ne garde « mes élèves » que pour des livres du
+     porteur. **Rien n'est en ligne :** six migrations à appliquer à la vraie
+     base, puis la conversion, à sa demande.
 
 ## Hors de la première livraison
 

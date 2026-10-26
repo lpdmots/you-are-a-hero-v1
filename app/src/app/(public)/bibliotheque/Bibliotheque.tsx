@@ -88,7 +88,11 @@ export function Couverture({ livre, grand = false, enfants }: { livre: LivrePubl
   const image = livre.image ? `/images/publie/${livre.adresse}/${livre.image.id}?v=1` : null;
   return (
     <span className={`${accueil.volume} ${styles.volume} ${grand ? styles.volumeGrand : ""}`}>
-      {livre.image?.pleinePage && image ? (
+      {livre.couverture ? (
+        // La face avant du livre imprimé, déposée par le porteur pour l'accueil
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className={accueil.pleinePage} src={livre.couverture} alt="" loading="lazy" />
+      ) : livre.image?.pleinePage && image ? (
         // Servie par l'application, d'après la version publiée : pas d'optimisation de Next
         // eslint-disable-next-line @next/next/no-img-element
         <img className={accueil.pleinePage} src={image} alt="" loading="lazy" />

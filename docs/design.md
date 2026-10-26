@@ -2710,6 +2710,13 @@ la carte, « · ♥ 12 » au bout de la ligne de l'âge et du type.
   liste ; le titre répété sous la couverture sur un téléphone ; pas de lien
   « Voir ces livres » dans la fiche de l'enseignant.
 
+**Lot 7, l'accueil.** « Livres de l'accueil » dans l'administration liste tous
+les livres de la bibliothèque, avec l'adresse du compte, « Ouvrir » et « Mettre
+sur l'accueil » ; sur l'accueil, un livre fermé mène à sa lecture dans la
+bibliothèque. La phrase du passage 27 reste « Écrits par mes élèves » pour les
+livres du porteur, « Écrits par des élèves… et publiés dans la bibliothèque du
+site » sinon.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

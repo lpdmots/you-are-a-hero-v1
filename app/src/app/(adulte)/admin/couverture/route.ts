@@ -10,9 +10,9 @@ export async function POST(requete: Request) {
   const e = await enseignantCourant();
   if (!e?.createur) return new Response(null, { status: 404 });
   const formulaire = await requete.formData().catch(() => null);
-  const code = String(formulaire?.get("code") ?? "");
+  const projet = String(formulaire?.get("projet") ?? "");
   const fichier = formulaire?.get("couverture");
-  const r = fichier instanceof File ? await deposerLaCouverture(code, fichier) : "format";
+  const r = fichier instanceof File ? await deposerLaCouverture(projet, fichier) : "format";
   revalidatePath("/", "layout");
   const fait = r === "fait" ? "couverture-posee" : r === "format" ? "couverture-format" : "refus";
   return Response.redirect(new URL(`/admin?fait=${fait}#adm-accueil`, requete.url), 303);
