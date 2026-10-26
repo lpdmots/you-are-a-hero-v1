@@ -3584,6 +3584,9 @@ V6, le premier envoi à l'imprimeur.
        couloir) ; les pistes de la bibliothèque deviennent des miettes de
        papier. Les illustrations sont refaites à part par le porteur, d'après
        les prompts donnés dans la conversation.
+     - **Chargé dans la vraie base le 26 octobre 2026,** à sa demande, sur son
+       compte (24 scènes, 13 images), arrivé à « Imprimer et partager » ; pas
+       encore proposé à la bibliothèque.
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le
@@ -3766,8 +3769,14 @@ V6, le premier envoi à l'imprimeur.
      local. Parcours `bibliotheque-de-bout-en-bout` ; mode d'emploi dans
      `app/README.md`, « Essayer la bibliothèque (F15) ». Précision : le texte
      du passage 27 de l'accueil ne garde « mes élèves » que pour des livres du
-     porteur. **Rien n'est en ligne :** six migrations à appliquer à la vraie
-     base, puis la conversion, à sa demande.
+     porteur. **En ligne le 26 octobre 2026, à sa demande :** vraie base
+     sauvegardée, les six migrations appliquées par Claude (ne plus les
+     modifier), code poussé jusqu'à `9a18596`, vérification passée ; la
+     conversion (`bibliotheque:accueil -- --production --oui`), refusée à
+     Claude par le contrôle des permissions, lancée par lui : les deux livres
+     publiés, l'accueil les montre de nouveau après la régénération de sa
+     copie en cache (cinq minutes au plus). Parcours Playwright non rejoués
+     avant la mise en ligne (types, lint, tests unitaires et de base passés).
 
 ## Hors de la première livraison
 
