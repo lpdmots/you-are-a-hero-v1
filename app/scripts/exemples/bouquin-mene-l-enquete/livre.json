@@ -3,8 +3,8 @@
   "id": "463923ed-1cd9-484c-85e6-ffbd60fce389",
   "organisation": "classe",
   "recit": "choix",
-  "titre": "Qui a pris le livre ?",
-  "image_id": "055f733a-292c-4a0a-97c2-b49bf385c2eb",
+  "titre": "Bouquin mène l’enquête",
+  "image_id": "bced7d0d-76fc-4da8-ac5e-999c8b58e5b7",
   "visuel_defaut": null,
   "visuel_choisi": "bibliotheque",
   "depart_scene_id": "9bac9467-47c4-42c2-8997-b03e3c3eda9f",
@@ -377,7 +377,7 @@
       "type": "p",
       "children": [
        {
-        "text": "Le livre rouge a disparu ! À sa place, un pot de craies renversé a laissé une poudre blanche sur le bureau. Dans cette poudre, Bouquin découvre de toutes petites traces de pattes, avec un long trait fin qui court entre elles. Tout autour traînent des miettes de papier."
+        "text": "Le livre rouge a disparu ! À sa place, un pot de craies renversé a laissé une poudre blanche sur le bureau. Dans cette poudre, Bouquin découvre de toutes petites traces de pattes, avec un long trait fin qui court entre elles."
        }
       ]
      },
@@ -386,7 +386,7 @@
       "type": "p",
       "children": [
        {
-        "text": "« Qui a bien pu prendre le livre ? » se demande Bouquin en se grattant la corne. Il y a Pacha, le chat du concierge, qui vit dans la loge et adore faire ses griffes sur les cahiers. Il y a Jacasse, la pie de la cour, qui se moque de lui : elle l’appelle « ma poule », parce que ses ailes sont trop petites pour bien voler. Et il y a Miette, la souris, qui adore grignoter le papier."
+        "text": "« Qui a bien pu prendre le livre ? » se demande Bouquin en se grattant la corne. Il y a Pacha, le chat du concierge, qui vit dans la loge et adore faire ses griffes sur les cahiers. Il y a Miette, la souris, qui adore grignoter le papier. Et il y a Jacasse, la pie de la cour, qui se moque de lui : elle l’appelle « ma poule », parce que ses ailes sont trop petites pour bien voler. "
        }
       ]
      },
@@ -395,7 +395,7 @@
       "type": "p",
       "children": [
        {
-        "text": "À ton avis, qui a pris le livre ?"
+        "text": "Il n'y a pas de temps à perdre ! À ton avis, qui a pris le livre ?"
        }
       ]
      },
@@ -424,19 +424,6 @@
       "construction": "neutre"
      },
      {
-      "id": "bc51e460-7169-4f6d-b9b6-8c68cf3f773c",
-      "auto": true,
-      "type": "choix",
-      "cible": "c42b89bd-22dd-4892-b471-06b8163e63d6",
-      "libelle": "Jacasse, la pie",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
-     },
-     {
       "id": "3b0be30f-d068-41b6-8bf3-e97cbaef34b2",
       "auto": true,
       "type": "choix",
@@ -448,10 +435,23 @@
        }
       ],
       "construction": "neutre"
+     },
+     {
+      "id": "bc51e460-7169-4f6d-b9b6-8c68cf3f773c",
+      "auto": true,
+      "type": "choix",
+      "cible": "c42b89bd-22dd-4892-b471-06b8163e63d6",
+      "libelle": "Jacasse, la pie",
+      "children": [
+       {
+        "text": ""
+       }
+      ],
+      "construction": "neutre"
      }
     ],
-    "version": 22,
-    "ecrit_le": "2026-10-26T16:39:35.683Z",
+    "version": 30,
+    "ecrit_le": "2026-10-26T17:12:26.642Z",
     "rang_livre": 23,
     "numero_fixe": null,
     "etat": "prete",
@@ -709,7 +709,7 @@
       "type": "p",
       "children": [
        {
-        "text": "La petite souris s’est glissée dessous, en tirant derrière elle le livre tout plat. Mais Bouquin, lui, est bien trop gros pour passer. Il lève les yeux vers la poignée… beaucoup trop haute ! Autour de lui, les chaises des élèves attendent en silence."
+        "text": "La petite souris s’est glissée dessous, en tirant derrière elle le livre tout plat. Il lève les yeux vers la poignée… beaucoup trop haute !"
        }
       ]
      },
@@ -728,6 +728,19 @@
       "type": "choix",
       "cible": "cd017946-81b2-40d1-a904-6fde2ec7c80c",
       "libelle": "Passer sous la porte",
+      "children": [
+       {
+        "text": ""
+       }
+      ],
+      "construction": "neutre"
+     },
+     {
+      "id": "2f75d7e2-be7d-469b-a1d8-b6c76f56e5d9",
+      "auto": true,
+      "type": "choix",
+      "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
+      "libelle": "Pousser une chaise sous la poignée",
       "children": [
        {
         "text": ""
@@ -760,23 +773,10 @@
        }
       ],
       "construction": "neutre"
-     },
-     {
-      "id": "2f75d7e2-be7d-469b-a1d8-b6c76f56e5d9",
-      "auto": true,
-      "type": "choix",
-      "cible": "51426bfe-0277-4ea9-b29d-7182c99413d9",
-      "libelle": "Pousser une chaise sous la poignée",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
      }
     ],
-    "version": 7,
-    "ecrit_le": "2026-10-26T16:39:35.776Z",
+    "version": 10,
+    "ecrit_le": "2026-10-26T17:13:07.087Z",
     "rang_livre": 14,
     "numero_fixe": null,
     "etat": "prete",
@@ -1152,19 +1152,6 @@
       ]
      },
      {
-      "id": "9dedb1ec-275d-4de9-b3e8-4d4ef3e7cbf3",
-      "auto": true,
-      "type": "choix",
-      "cible": "16d47af6-1382-4325-9e67-9c06ef8897bf",
-      "libelle": "Allumer la lumière",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
-     },
-     {
       "id": "74450ce1-aa35-41ed-ab04-9121dffeedfb",
       "auto": true,
       "type": "choix",
@@ -1176,10 +1163,23 @@
        }
       ],
       "construction": "neutre"
+     },
+     {
+      "id": "9dedb1ec-275d-4de9-b3e8-4d4ef3e7cbf3",
+      "auto": true,
+      "type": "choix",
+      "cible": "16d47af6-1382-4325-9e67-9c06ef8897bf",
+      "libelle": "Allumer la lumière",
+      "children": [
+       {
+        "text": ""
+       }
+      ],
+      "construction": "neutre"
      }
     ],
-    "version": 10,
-    "ecrit_le": "2026-10-26T16:39:35.883Z",
+    "version": 11,
+    "ecrit_le": "2026-10-26T17:13:36.653Z",
     "rang_livre": 9,
     "numero_fixe": null,
     "etat": "prete",
@@ -1625,19 +1625,6 @@
       ]
      },
      {
-      "id": "a02a9194-c57e-44ae-b328-48e393ee6644",
-      "auto": true,
-      "type": "choix",
-      "cible": "2b383023-bc8e-4249-8b41-45536f5dbcf7",
-      "libelle": "S’enfuir",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
-     },
-     {
       "id": "99e82835-ac7c-4bad-92fc-c316435c7fa7",
       "auto": true,
       "type": "choix",
@@ -1649,10 +1636,23 @@
        }
       ],
       "construction": "neutre"
+     },
+     {
+      "id": "a02a9194-c57e-44ae-b328-48e393ee6644",
+      "auto": true,
+      "type": "choix",
+      "cible": "2b383023-bc8e-4249-8b41-45536f5dbcf7",
+      "libelle": "S’enfuir",
+      "children": [
+       {
+        "text": ""
+       }
+      ],
+      "construction": "neutre"
      }
     ],
-    "version": 13,
-    "ecrit_le": "2026-10-26T16:39:35.989Z",
+    "version": 14,
+    "ecrit_le": "2026-10-26T17:13:59.243Z",
     "rang_livre": 0,
     "numero_fixe": null,
     "etat": "prete",
@@ -1768,7 +1768,7 @@
       "type": "p",
       "children": [
        {
-        "text": "Bouquin s’approche doucement de la lampe. Miette est là, blottie tout contre elle, bien au chaud ! Mais dès qu’elle aperçoit le dragon, hop ! Elle bondit et disparaît dans l’ombre."
+        "text": "Bouquin s’approche doucement de la lampe. Miette est là, blottie tout contre elle, bien au chaud ! Elle grignote la couverture du livre ! Mais dès qu’elle aperçoit le dragon, hop ! Elle bondit et disparaît dans l’ombre avec l'ouvrage."
        }
       ]
      },
@@ -1842,8 +1842,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 20,
-    "ecrit_le": "2026-10-26T16:39:36.028Z",
+    "version": 27,
+    "ecrit_le": "2026-10-26T17:04:41.184Z",
     "rang_livre": 16,
     "numero_fixe": null,
     "etat": "prete",
@@ -2080,22 +2080,22 @@
       ]
      },
      {
+      "id": "aaf49143-ea28-47b4-bdf0-7fe2f60f3db0",
+      "type": "image",
+      "image": "d3d82de0-29d2-4e02-b34e-20fa3bc419b3",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
       "id": "64eb6b3c-e7c9-4312-ad5e-518ba7b09092",
       "type": "p",
       "children": [
        {
         "text": "Vexée, Miette croise les bras, tourne le dos à Bouquin et se met à bouder."
-       }
-      ]
-     },
-     {
-      "id": "c56298c6-a48a-4969-9c62-36a9baab30a9",
-      "type": "image",
-      "image": "9d64b162-02a6-4a0f-bcf2-5f13daf9e198",
-      "largeur": 100,
-      "children": [
-       {
-        "text": ""
        }
       ]
      },
@@ -2113,8 +2113,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 7,
-    "ecrit_le": "2026-10-26T16:39:36.084Z",
+    "version": 10,
+    "ecrit_le": "2026-10-26T17:11:00.624Z",
     "rang_livre": 11,
     "numero_fixe": null,
     "etat": "prete",
@@ -2361,94 +2361,94 @@
  },
  "images": [
   {
-   "id": "9d64b162-02a6-4a0f-bcf2-5f13daf9e198",
+   "id": "32013ebb-1858-4859-af84-85093071b5d6",
    "fichier": "01.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "32013ebb-1858-4859-af84-85093071b5d6",
-   "fichier": "02.jpg",
-   "largeur": 1536,
-   "hauteur": 1024,
-   "format": "jpeg"
-  },
-  {
    "id": "aea7295c-9d73-4679-a62a-59ef8b5e6df2",
-   "fichier": "03.webp",
+   "fichier": "02.webp",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "webp"
   },
   {
    "id": "e937fd2c-7253-46aa-adc7-54e4a1f0f244",
-   "fichier": "04.webp",
+   "fichier": "03.webp",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "webp"
   },
   {
    "id": "5aa85826-c713-4b78-927c-8f0a043241af",
-   "fichier": "05.jpg",
+   "fichier": "04.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
    "id": "8932779a-c8f2-4668-8857-e0dc93e2f61d",
-   "fichier": "06.jpg",
+   "fichier": "05.jpg",
    "largeur": 1024,
    "hauteur": 1536,
    "format": "jpeg"
   },
   {
    "id": "a0c6b13b-a5e6-43f1-956a-b955c1da93e9",
-   "fichier": "07.jpg",
+   "fichier": "06.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
    "id": "b0c8cd42-c494-400d-8fcd-c379f3c68f2c",
-   "fichier": "08.jpg",
-   "largeur": 1536,
-   "hauteur": 1024,
-   "format": "jpeg"
-  },
-  {
-   "id": "055f733a-292c-4a0a-97c2-b49bf385c2eb",
-   "fichier": "09.jpg",
+   "fichier": "07.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
    "id": "4a943f25-d028-4ffe-9e0e-bf7b4373cb54",
-   "fichier": "10.jpg",
+   "fichier": "08.jpg",
    "largeur": 1672,
    "hauteur": 941,
    "format": "jpeg"
   },
   {
    "id": "a3e3c7ba-a3ae-4308-999f-26d98d0a77f7",
-   "fichier": "11.jpg",
+   "fichier": "09.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
    "id": "1140ead8-00a2-4c66-8874-52e5074d8748",
-   "fichier": "12.jpg",
+   "fichier": "10.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
    "id": "f9bc1928-cd12-42c1-be7f-d83616360131",
-   "fichier": "13.jpg",
+   "fichier": "11.jpg",
    "largeur": 1536,
    "hauteur": 1024,
+   "format": "jpeg"
+  },
+  {
+   "id": "d3d82de0-29d2-4e02-b34e-20fa3bc419b3",
+   "fichier": "12.jpg",
+   "largeur": 1536,
+   "hauteur": 1024,
+   "format": "jpeg"
+  },
+  {
+   "id": "bced7d0d-76fc-4da8-ac5e-999c8b58e5b7",
+   "fichier": "13.jpg",
+   "largeur": 1024,
+   "hauteur": 1536,
    "format": "jpeg"
   }
  ]
