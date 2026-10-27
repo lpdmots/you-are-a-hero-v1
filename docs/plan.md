@@ -3905,7 +3905,14 @@ V6, le premier envoi à l'imprimeur.
   `couverture` et `couverture_dans_lire`, en base locale seulement ; rien
   poussé sur `main` ni appliqué à la vraie base ; la conversion des faces
   avant essayée en local seulement. Coût réel d'une couverture « pour
-  imprimer » : 0,084 dollar, environ 8 ✦.
+  imprimer » : 0,084 dollar, environ 8 ✦. **En ligne le 27 octobre 2026, à sa
+  demande :** vraie base sauvegardée (`sauvegardes/2026-10-27-10-42`), les deux
+  migrations appliquées par Claude (ne plus les modifier), code poussé jusqu'à
+  `650439d` (avec trois commits du passage 27 de l'accueil, d'une autre
+  conversation), puis `couvertures:accueil -- --production --oui` : « Électro
+  Nick » et « Bouquin mène l'enquête » ont leur face avant pour couverture ;
+  la bibliothèque, l'aperçu de partage et l'accueil (après sa copie en cache,
+  cinq minutes) les montrent.
 - **Aides sans indication (F13, « Jamais de refus faute de texte »),**
   décidé par le porteur le 27 octobre 2026, lot à part après le lot 1 : les
   aides qui refusent aujourd'hui quand rien n'est écrit proposent d'après le

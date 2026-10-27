@@ -197,7 +197,9 @@ le détail ; elle ne raconte pas les séances.
   base locale seulement, rien poussé ni appliqué à la vraie base ; mise en
   ligne dans l'ordre dit par [`app/README.md`](app/README.md), « Essayer la
   couverture (F11.4) ». Coût réel d'une couverture « pour imprimer » :
-  0,084 dollar, environ 8 ✦.
+  0,084 dollar, environ 8 ✦. **En ligne le 27 octobre 2026** à sa demande
+  (vraie base sauvegardée, deux migrations appliquées, code jusqu'à `650439d`,
+  faces avant de l'accueil converties).
 - **Créer et modifier les choix dans la scène** (cinquième parcours) :
   approfondi le 1er octobre 2026 en
   [F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène)
