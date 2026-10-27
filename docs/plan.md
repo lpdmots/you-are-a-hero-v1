@@ -3500,6 +3500,112 @@ V6, le premier envoi à l'imprimeur.
        des personnages partent avec la correction (F13-AC30) ; le livre
        composé imprime l'apostrophe courbe, PDF, aperçu et version partagée,
        le texte enregistré restant tel quel (F11-AC109).
+     - **Repris de zéro, décidé par le porteur le 26 octobre 2026** après sa
+       lecture : choix bizarres, explications manquantes (le père, la
+       lanterne), volonté perdue sans choix, enchaînements douteux (la nuit,
+       puis le plein jour). Cause : les textes de la maquette, jamais pensés
+       comme une histoire, rapiécés au lieu d'une logique d'ensemble.
+       L'instantané committé est caduc ; un nouveau projet de travail est
+       créé dans le site local, où le porteur valide ou modifie la
+       Préparation. Décidé les 26 et 27 octobre 2026 :
+       - **Monde :** le Gardien de la Lanterne, charge transmise des
+         parents aux enfants, ranime à chaque pleine lune la Première
+         Lanterne, en haut de la Tour des Brumes, d'où toutes les lanternes
+         tirent leur flamme ; seule sa famille connaît le chant ; les
+         lanternes brûlent de l'huile de lune ; sans lumière, la brume prend
+         la voix ; les feux follets, farceurs, ont peur des lanternes. Le
+         lecteur découvre ces règles en chemin. Si la Première Lanterne
+         s'éteint, plus aucune lanterne, plus de traversée, une brume qui ne
+         se lève plus et prend la voix de tous : « le pays du silence ».
+       - **Histoire, une seule nuit :** Marius, le Gardien, décroche la
+         lanterne de sa barque pour l'escalier ; elle s'y éteint, la brume
+         lui prend la voix ; en bas, la barque restée dans le noir, les
+         feux follets la dénouent. Lou ne sait rien : les lanternes
+         faiblissent, Plume revient seule ; il trouve en chemin la barque
+         vide de son père ; il le retrouve, sans voix, en haut de la tour,
+         chante, et Marius raconte. La barque de Lou reste à trouver, une
+         épreuve.
+       - **Jeu :** une seule valeur, la « Réserve d'huile » (départ 3, à
+         affiner selon le nombre d'obstacles) : la lanterne a juste assez
+         d'huile pour le voyage, on ne compte que ce qu'on gaspille. Chaque
+         perte se vérifie dans son passage (« Raye une réserve. S'il ne t'en
+         restait plus, rends-toi au … »), si bien qu'on ne lit jamais sans
+         savoir qu'on a perdu. Un seul choix d'économie, dans un passage sans
+         brume : garder la lanterne allumée (une réserve) ou l'éteindre, et
+         un tour des feux follets qui, non déjoué, coûte une réserve (ils
+         égarent Lou dans la brume ; pas la barque dénouée, déjà le tour fait
+         au père), en deux scènes : la lumière s'éloigne et disparaît ;
+         insister et la suivre oblige à rallumer, une réserve perdue pour
+         rien. L'huile de lune ne se recueille qu'à la pleine lune, quand la
+         Première Lanterne est ranimée : ce soir-là, tout le pays vit sur ses
+         réserves. Retenus : une réserve donnée au passeur en panne,
+         récompensée plus loin ; une réserve regagnée dans la barque vide du
+         père. Pas de dé ni d'objet. Trois fins : la bonne, et la
+         lanterne vide avant la tour ou dans la tour (Lou retrouve son père,
+         sans voix). Pertes proposées, chacune d'un choix : temps perdu,
+         huile renversée, lanterne allumée pour rien, lanterne mouillée,
+         feux follets.
+       - **Parcours et épreuves, arrêtés le 27 octobre 2026.** Une erreur
+         mène à une courte scène d'échec qui rejoint la suite (on progresse
+         toujours) ; chaque décision a deux ou trois options tentantes, la
+         bonne se trouve en réfléchissant, d'après un indice amené plus tôt
+         sans être flagrant. Pas d'épreuve de l'huile au départ (laissée de
+         côté) ; réserve de départ à équilibrer sur les chemins.
+         1. **Ouverture :** les lanternes faiblissent, Plume revient seule ;
+            Lou part à pied, par peur de l'eau. La règle de la voix est sue
+            dès là, phrase de Marius à chaque départ : « Ne reste jamais dans
+            la brume sans lumière : elle te prendrait ta voix. » Autre phrase
+            de Marius, qui servira : « L'eau qui frissonne cache des dents. »
+            Plume, au fil des textes, montre le chemin et rassure Lou.
+         2. **Le raccourci :** par la tourbière (court, mais la brume naît
+            sur l'eau qui dort, conseil de son père qui lui revient : monter
+            la flamme, −1) ou par le chemin des saules (rien).
+         3. **Le vieil homme,** qui revient du pont effondré par la crue (un
+            tronc emporté) : lui donner une dose (−1 ; il raconte la lueur
+            bleutée des feux follets et parle d'une barque échouée à l'est du
+            pont, que Lou craint être celle de son père ; il dit qu'il veut
+            bien finir sans voix, il est seul, mais craint les feux follets)
+            ou refuser poliment (rien, « Alors dépêche-toi »).
+         4. **Le pont effondré :** longer la rive vers l'est (seulement si
+            l'on a entendu le vieil homme) jusqu'à la barque de Marius ; Lou
+            surmonte sa peur, monte à bord, trouve sous le banc une réserve
+            (+1) et continue avec elle ; ou sauter sur les restes du pont, les
+            planches claires et sèches tiennent, les sombres et luisantes
+            glissent (chute, lanterne mouillée, −1) ; image pleine page de
+            l'énigme faite par le porteur, le texte seul à écrire. Après le
+            pont, le chemin est inondé par la crue (endroit souvent inondé) :
+            barque de secours au ponton des Gardiens ; sur le lac, on voit au
+            loin la barque vide du père.
+         5. **Sur la barque, le courant (après la crue) :** suivre le bras où
+            vole Plume (bon) ; monter la flamme pour lire les balises des
+            passeurs (bonne direction, mais −1 pour rien) ; ou le bras le plus
+            large, plus facile à ramer (le plus long, −1).
+         6. **Encore sur la barque :** couper par l'eau qui frissonne, tout
+            droit (rochers, la barque racle, −1) ou contourner par l'eau calme
+            et noire, qui fait peur (bon).
+         7. **L'îlot sans brume,** près de l'arrivée et du phare : garder la
+            lanterne allumée (−1, on passe tranquille) ou l'éteindre (rien,
+            mais les feux follets).
+         8. **Les feux follets,** si l'on a éteint, en deux scènes : une
+            lumière comme une lanterne ; appeler « Papa ? » et la suivre (elle
+            recule et disparaît), ou rester l'observer (bleutée, elle tremble :
+            avec l'indice du vieil homme, Lou la reconnaît, rien de perdu) ;
+            puis, dans la brume, insister et rallumer (−1 pour rien) ou
+            revenir à l'îlot (rien).
+         9. **La tour, l'escalier :** la lanterne de Marius, cassée, sur une
+            marche, provoque la panique et l'envie de courir, qu'il faut
+            réfréner : courir éteint la flamme, il faut la rallumer (−1) ;
+            se calmer et abriter sa flamme (rien).
+         10. **Le sommet et les fins :** Lou chante, rejoint par son père qui
+             retrouve sa voix, une sorte de passation (la bonne fin) ; ou Lou
+             arrive sans lumière, donc sans voix, et ils rentrent ensemble,
+             rassurés (réserve vide dans la tour) ; la troisième fin, plus
+             tôt, si la réserve se vide avant la tour.
+       - **Réalisation, décidée par le porteur le 27 octobre 2026 :** sans
+         intervention de sa part avant la fin ; feu vert pour les aides IA
+         et les images. Organisation : un seul rédacteur pour tous les
+         textes, deux relecteurs (liaisons entre scènes ; lecteur de
+         9 ans), un agent des images, le plan vérifié par script.
    - **Petit livre à choix de cycle 2, entretien validé le 26 octobre 2026**
      (clé `dragon`, « Bouquin mène l'enquête », d'abord « Qui a pris le livre ? ») :
      - **Personnages :** les deux mascottes, sans nom propre (« le dragon »,
