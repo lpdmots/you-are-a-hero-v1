@@ -13,7 +13,7 @@ const url = process.env.NEXT_PUBLIC_SUPABASE_URL ?? "";
 if (!/^http:\/\/(127\.0\.0\.1|localhost)[:/]/.test(url)) {
   throw new Error("Les parcours ne se jouent que contre la base locale : « npm run base:demarrer » puis « npm run env:local ».");
 }
-const service = () => createClient(url, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false, autoRefreshToken: false } });
+export const service = () => createClient(url, process.env.SUPABASE_CLE_SECRETE!, { auth: { persistSession: false, autoRefreshToken: false } });
 
 export type Compte = { id: string; courriel: string; motDePasse: string };
 const crees: string[] = [];

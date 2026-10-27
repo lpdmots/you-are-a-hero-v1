@@ -8,21 +8,26 @@ import { Icone } from "@/composants/Icone";
 import { ETAPES_DU_LIVRE, type RaisonDeRefus } from "@/domaine/livre";
 import { supprimerPdf } from "../../actions-livre";
 import { VoletPartager, type PartageAffiche } from "./Partager";
-import { PromptCouverture } from "./PromptCouverture";
+import type { CouvertureDuProjet } from "@/serveur/images-creees";
+import { BlocCouverture } from "./Couverture";
 
 /**
  * « Imprimer et partager », volet « Imprimer » (F11.2, F11.6) : le PDF définitif, refusé tant
  * que la règle unique ne le permet pas, sans contournement (F09-AC10) ; les avertissements
  * rappelés à sa demande ; les PDF définitifs conservés, le plus récent en tête (F11-AC101) ;
- * la couverture à préparer chez l'imprimeur (F10.2). Le volet « Partager » est dans `Partager.tsx`.
+ * le volet « Partager » est dans `Partager.tsx`. « La couverture » (F11.4, 26 octobre 2026) est à
+ * droite des deux volets, puisqu'elle sert à l'imprimeur et à la bibliothèque.
  */
 
 export type DefinitifAffiche = { id: string; etat: string; pages: number; taille: number; aJour: boolean };
 
 export function EtapeImprimer({
-  projetId, possible, raisons, rappels, definitifs, placeOccupee, partager, voletDemande,
+  projetId, titre, possible, raisons, rappels, definitifs, placeOccupee, partager, voletDemande, couverture,
 }: {
   projetId: string;
+  /** Le titre du livre : la couverture vide le montre, son fichier le porte */
+  titre: string;
+  couverture: CouvertureDuProjet | null;
   /** Le volet « Partager » (étape 7) */
   partager: PartageAffiche;
   /** Le volet ouvert d'abord : « Partager » quand l'adresse le demande */
@@ -53,11 +58,14 @@ export function EtapeImprimer({
           ))}
         </div>
       </div>
-      {volet === "imprimer" ? (
-        <VoletImprimer projetId={projetId} possible={possible} raisons={raisons} rappels={rappels} definitifs={definitifs} placeOccupee={placeOccupee} />
-      ) : (
-        <VoletPartager projetId={projetId} p={partager} rappels={rappels} />
-      )}
+      <div className="sortie">
+        {volet === "imprimer" ? (
+          <VoletImprimer projetId={projetId} possible={possible} raisons={raisons} rappels={rappels} definitifs={definitifs} placeOccupee={placeOccupee} />
+        ) : (
+          <VoletPartager projetId={projetId} p={partager} rappels={rappels} />
+        )}
+        {couverture ? <BlocCouverture projetId={projetId} titre={titre} initiale={couverture} /> : null}
+      </div>
     </>
   );
 }
@@ -209,12 +217,12 @@ function VoletImprimer({
               <h3>Et maintenant ?</h3>
               <ol>
                 <li>
-                  Préparez la couverture chez votre imprimeur.
-                  <Bulle question="Pourquoi la couverture se fait-elle chez l’imprimeur ?">
-                    <span>Son format dépend du papier et du nombre de pages : l’imprimeur le donne. Le PDF définitif est l’intérieur du livre.</span>
+                  Préparez la couverture, ici ou chez votre imprimeur.
+                  <Bulle question="Que fait l’imprimeur de la couverture ?">
+                    <span>Il compose le dos et la quatrième d’après son format, qui dépend du papier et du nombre de pages. Le PDF définitif est l’intérieur du livre.</span>
                   </Bulle>
                 </li>
-                <li>Envoyez-lui le PDF définitif et la couverture.</li>
+                <li>Envoyez-lui le PDF définitif et la face avant.</li>
               </ol>
             </div>
           ) : null}
@@ -223,28 +231,6 @@ function VoletImprimer({
         {definitifs.length ? <PdfConserves definitifs={definitifs} placeOccupee={placeOccupee} /> : null}
       </div>
 
-      <aside className="couverture" aria-labelledby="couverture-t">
-        <h2 id="couverture-t" className="couverture__titre">
-          <Icone nom="image" />
-          La couverture, chez l’imprimeur
-          <Bulle question="Que préparer pour la couverture ?">
-            <span>L’imprimeur compose la couverture d’après son format : apportez-lui ces trois éléments.</span>
-          </Bulle>
-        </h2>
-        <p>À préparer :</p>
-        <ul>
-          <li>
-            une <b>image de face</b> au format A5 ;
-          </li>
-          <li>
-            le <b>titre</b> et le nom de la classe ou de l’auteur ;
-          </li>
-          <li>
-            le <b>texte de quatrième</b>.
-          </li>
-        </ul>
-        <PromptCouverture projetId={projetId} />
-      </aside>
     </div>
   );
 }

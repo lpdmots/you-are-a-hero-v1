@@ -117,8 +117,8 @@ describe("Les prompts que l'application assemble (F10.2, F10.1, F11.4)", () => {
     expect(raisonDuReperage({ chapitres: [{ resume: "" }] })).toBe("Écrivez d’abord le résumé d’un de ses chapitres.");
   });
 
-  it("F10-AC52 — la couverture : un prompt au format du livre, sans texte, de la place pour le titre, le héros absent selon le réglage", () => {
-    const prompt = promptDeCouverture({ titre: "Les passeurs de brume", description: "Un lac noyé de brume au lever du jour.", herosAbsent: true, format: "A5, 148 × 210 mm" }, AQUARELLE);
+  it("F10-AC52 — la couverture sans texte coché : un prompt au format du livre, sans texte, de la place pour le titre, le héros absent selon le réglage", () => {
+    const prompt = promptDeCouverture({ titre: "Les passeurs de brume", description: "Un lac noyé de brume au lever du jour.", textes: [], herosAbsent: true, format: "A5, 148 × 210 mm" }, AQUARELLE);
     expect(prompt).toContain("« Les passeurs de brume »");
     expect(prompt).toContain("au format A5, 148 × 210 mm");
     expect(prompt).toContain("Laisser de la place en haut pour le titre");

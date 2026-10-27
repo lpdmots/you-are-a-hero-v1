@@ -3817,6 +3817,27 @@ V6, le premier envoi à l'imprimeur.
      une couverture importée), son usage (`imprimer` ou `site`) ; la cible
      `couverture` des demandes d'images. **Coût réel d'une couverture
      « pour imprimer » mesuré par un vrai appel**, donné en une ligne.
+     **Construit le 26 octobre 2026,** migration `couverture` en base locale
+     seulement (dans `projets` : `couverture_id`, une image du projet par la
+     même clé que l'image de repérage, et `couverture_cases` ; dans `images` :
+     `textes_demandes` ; la cible `couverture`) ; `domaine/couverture.ts`, la
+     partie « couverture » de `serveur/images-creees.ts`, l'aide d'image
+     `couverture`, `_livre/Couverture.tsx` à la place de
+     `PromptCouverture.tsx`. **Coût réel :** 0,084 dollar et 22 secondes pour
+     une couverture « pour imprimer », environ 8 ✦ (estimée à 20 à 25). Écran
+     critiqué en deux lectures (28/40 et 25/40) et corrigé : l'import sous la
+     vignette, « Trop floue pour l'imprimeur » avec sa bulle et « La recréer
+     pour imprimer », « Assez fine pour l'imprimeur » sinon, le bouton qui dit
+     « Création en cours… », le lien avec le PDF dans la bulle du titre.
+     Précisions prises en construisant : avec des textes cochés, le prompt ne
+     rappelle plus le titre du livre (le modèle l'écrirait à la place d'un
+     titre retouché) ; « Retirer » la couverture et « Importer une autre »,
+     avec « Annuler » ; une couverture créée a sa vignette réduite côté
+     serveur (sharp) ; jamais proposée à la bibliothèque d'images ; une
+     demande de couverture ne met pas le signe d'attente sur la carte du
+     projet ; quatre minutes au plus pour la créer ; le sous-titre ne se
+     propose que si la page de titre en a un ; le prix par demande reste
+     caché (F14), malgré les deux lectures qui le demandaient.
   2. **La couverture dans les versions et la relecture :** la couverture
      figée dans la version partagée et dans la version publiée (son image,
      ses dimensions, ses textes demandés), servie avec les images de la
@@ -3843,6 +3864,14 @@ V6, le premier envoi à l'imprimeur.
      à 390 ; le mode d'emploi « Essayer la couverture » dans `app/README.md`,
      avec l'ordre de la mise en ligne (sauvegarde, migration, code,
      conversion).
+- **Aides sans indication (F13, « Jamais de refus faute de texte »),**
+  décidé par le porteur le 27 octobre 2026, lot à part après le lot 1 : les
+  aides qui refusent aujourd'hui quand rien n'est écrit proposent d'après le
+  contexte — description d'une image de scène, « ✦ Formuler » la consigne,
+  ✦ du titre, idées de choix, « ✦ Écrire » une scène vide, « Repérer les
+  personnages », fiche visuelle ; les boutons qui créent une image restent
+  éteints sans prompt écrit (deux clics, d'abord le prompt). La couverture
+  l'applique déjà au lot 1. Un test par aide, contre la base et l'IA simulée.
 - **Motifs du découpage :** le bloc est un seul écran, conçu et critiqué une
   fois, avec ce qui le fait marcher ; les versions et la relecture changent
   les mêmes fonctions du partage et de la publication ; tout ce qui montre la

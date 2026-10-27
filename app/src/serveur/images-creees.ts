@@ -1,20 +1,26 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
+import sharp from "sharp";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { paragraphesACorriger } from "@/domaine/correction";
+import {
+  FORMAT_DE_LA_COUVERTURE, casesPropres, retenusDeLaCouverture, textesDemandes, textesDemandesPropres, textesProposes, type CasesDeCouverture, type SorteDeTexte, type UsageDeLaCouverture,
+} from "@/domaine/couverture";
 import type { Texte } from "@/domaine/copie";
 import {
   REFERENCES_MAX, candidatsDeLImage, estCadrage, nomDuStyle, promptDeCouverture, promptDeLaScene, promptDuReperage, type Cadrage, type Candidat, type Repere, type Retenu, type StyleDuProjet,
 } from "@/domaine/illustration";
-import { PAGE } from "@/domaine/mise-en-page";
+import { pagesParDefaut, pagesPropres } from "@/domaine/pages";
 import type { Enseignant } from "./adulte";
-import { histoireDuProjet } from "./ia/aides/contexte";
+import { carnetDe, histoireDuProjet } from "./ia/aides/contexte";
+import { anneeScolaireEnCours } from "./livre/contenu";
 import { descriptionImage } from "./ia/aides/images";
 import { demanderDesImages, demanderUneAide } from "./ia/demander";
 import { cheminImage, cheminVignette, lireImage, SEAU, type FormatImage } from "./images";
 import { projetDe, type Projet } from "./lectures";
 import { cheminProposition, deposerLesPropositions, promptDeLaReference, type SorteDeCarte } from "./personnages";
-import { estUuid, preparationDe } from "./recit";
+import { planPourLesAides } from "./plan-ia";
+import { estUuid, planDe, preparationDe } from "./recit";
 import { clientService } from "./supabase";
 
 /**
@@ -78,7 +84,7 @@ async function promptDuSujet(e: Enseignant, sujet: Sujet): Promise<{ projet: Pro
 // ——— Les demandes d'images : on demande, puis on continue son chemin ———
 
 /** Ce qui reçoit une image : le projet, une partie, un chapitre, une scène, ou la carte d'un personnage ou d'un objet. */
-export type Cible = Repere | "scene" | SorteDeCarte;
+export type Cible = Repere | "scene" | SorteDeCarte | "couverture";
 const TABLE_DE: Record<Repere, "projets" | "parties" | "chapitres"> = { projet: "projets", partie: "parties", chapitre: "chapitres" };
 /** La colonne de l'image de référence d'une carte (F10.2) */
 const REFERENCE_DE: Record<SorteDeCarte, { table: "personnages" | "objets"; colonne: "portrait_id" | "image_id" }> = {
@@ -140,14 +146,18 @@ export async function demandeParId(e: Enseignant, id: string): Promise<DemandeDI
 /** Les éléments d'un projet dont l'image est en route : leurs cartes portent le signe d'attente. */
 export async function imagesEnRoute(e: Enseignant, projetId: string): Promise<string[]> {
   if (!estUuid(projetId)) return [];
-  const { data } = await e.supabase.from("demandes_d_images").select("cible_id").eq("projet_id", projetId).eq("etat", "en_route");
+  const { data } = await e.supabase.from("demandes_d_images").select("cible_id").eq("projet_id", projetId).eq("etat", "en_route").neq("cible", "couverture");
   return ((data ?? []) as { cible_id: string }[]).map((d) => d.cible_id);
 }
 
 const ecrire = (id: string, maj: Record<string, unknown>) => clientService().from("demandes_d_images").update({ ...maj, termine_le: maj.etat === "en_route" ? null : new Date().toISOString() }).eq("id", id);
 
 /** L'image ou le visuel d'un élément maintenant : comparés à l'arrivée, ils disent si l'adulte a choisi autre chose. */
-async function repereActuel(e: Enseignant, cible: Repere | SorteDeCarte, id: string): Promise<{ image: string | null; visuel: string | null } | null> {
+async function repereActuel(e: Enseignant, cible: Repere | SorteDeCarte | "couverture", id: string): Promise<{ image: string | null; visuel: string | null } | null> {
+  if (cible === "couverture") {
+    const { data } = await e.supabase.from("projets").select("couverture_id").eq("id", id).maybeSingle();
+    return data ? { image: (data.couverture_id as string | null) ?? null, visuel: null } : null;
+  }
   if (cible === "personnage" || cible === "objet") {
     const { table, colonne } = REFERENCE_DE[cible];
     const { data } = await e.supabase.from(table).select(colonne).eq("id", id).maybeSingle();
@@ -544,48 +554,208 @@ export async function demanderLImageDeScene(e: Enseignant, sceneId: string, d: D
   return { ok: true, demande: ouverte.id, travail };
 }
 
-// ——— La couverture (F11.4) ———
+// ——— La couverture (F11.4, « Couverture faite sur le site », 26 octobre 2026) ———
 
-/** Le format unique de la première livraison (F11.3) : la couverture en a la face. */
-const FORMAT_DU_LIVRE = `A5, ${PAGE.largeur} × ${PAGE.hauteur} mm`;
+/** Ce que le bloc « La couverture » reçoit en s'ouvrant : rien n'est demandé à l'IA. */
+export type CouvertureDuProjet = {
+  /** La couverture posée : une image du projet, avec les textes que le modèle devait écrire (aucun pour une importée) */
+  image: { id: string; largeur: number; hauteur: number; textes: string[] | null } | null;
+  idee: string;
+  description: string;
+  cases: CasesDeCouverture;
+  /** Ce que propose la page de titre pour chaque case */
+  proposes: Record<SorteDeTexte, string>;
+  /** « Avec les portraits de Maël et de la lanterne. » : les noms retenus d'après la description */
+  portraits: string[];
+  /** La couverture en route, s'il y en a une */
+  demande: DemandeDImage | null;
+};
 
-async function laCouverture(e: Enseignant, projetId: string) {
+type LaCouverture = {
+  projet: Projet;
+  idee: string;
+  description: string;
+  cases: CasesDeCouverture;
+  proposes: Record<SorteDeTexte, string>;
+  couvertureId: string | null;
+};
+
+/** La page de titre du livre, ses textes seuls : le titre du projet, le sous-titre, la ligne, l'année (F11.4). */
+async function laCouverture(e: Enseignant, projetId: string): Promise<LaCouverture | null> {
   if (!estUuid(projetId)) return null;
-  const [projet, preparation, { data }] = await Promise.all([
+  const [projet, { data }] = await Promise.all([
     projetDe(e, projetId),
-    preparationDe(e, projetId),
-    e.supabase.from("projets").select("idee_couverture, description_couverture").eq("id", projetId).maybeSingle(),
+    e.supabase.from("projets").select("idee_couverture, description_couverture, couverture_cases, couverture_id, pages_du_livre").eq("id", projetId).maybeSingle(),
   ]);
   if (!projet || !data) return null;
-  return { projet, preparation, idee: (data.idee_couverture as string) ?? "", description: (data.description_couverture as string) ?? "" };
+  const pages = pagesPropres(
+    data.pages_du_livre,
+    pagesParDefaut({
+      aChoix: projet.recit === "choix", deClasse: projet.organisation === "classe", adulte: e.nomAffiche ?? "",
+      classe: projet.classe ? { nom: projet.classe.nom, anneeDebut: projet.classe.anneeDebut } : null, prenoms: [], annee: anneeScolaireEnCours(),
+    }),
+  );
+  return {
+    projet, idee: (data.idee_couverture as string) ?? "", description: (data.description_couverture as string) ?? "",
+    cases: casesPropres(data.couverture_cases),
+    proposes: textesProposes({ titre: projet.titre, sousTitre: pages.titre.sousTitre, ligne: pages.titre.ligne, annee: pages.titre.annee }),
+    couvertureId: (data.couverture_id as string | null) ?? null,
+  };
 }
 
-/** « Copier le prompt » de la couverture, sans IA : d'après la description, sinon l'idée. */
+/** Le prompt de la couverture et les images de référence à joindre, d'après ce que le projet garde. */
+async function preparerLaCouverture(e: Enseignant, c: LaCouverture) {
+  const description = c.description.trim() || c.idee.trim();
+  const { retenus, joints } = retenusDeLaCouverture(description, await candidatsDu(e, c.projet.id), c.projet.herosAbsent);
+  const lignes: Retenu[] = retenus.map((r) => ({ nom: r.nom, sorte: r.sorte, fiche: r.fiche, reference: joints.includes(r.id) }));
+  const textes = textesDemandes(c.cases, c.proposes);
+  const prompt = promptDeCouverture({ titre: c.projet.titre, description, textes, retenus: lignes, herosAbsent: c.projet.herosAbsent, format: FORMAT_DE_LA_COUVERTURE }, styleDe(c.projet));
+  return { description, retenus, references: joints.map((id) => retenus.find((r) => r.id === id)!.referenceId!), textes, prompt };
+}
+
+/** Les noms dont le portrait ou l'image de référence part avec la demande. */
+const portraitsJoints = ({ retenus, joints }: { retenus: Candidat[]; joints: string[] }): string[] => retenus.filter((r) => joints.includes(r.id)).map((r) => r.nom);
+
+export async function couvertureDuProjet(e: Enseignant, projetId: string): Promise<CouvertureDuProjet | null> {
+  const c = await laCouverture(e, projetId);
+  if (!c) return null;
+  const [image, candidats, demande] = await Promise.all([
+    c.couvertureId ? e.supabase.from("images").select("id, largeur, hauteur, textes_demandes").eq("id", c.couvertureId).maybeSingle() : Promise.resolve({ data: null }),
+    candidatsDu(e, projetId),
+    demandeDe(e, "couverture", projetId),
+  ]);
+  const i = image.data as { id: string; largeur: number; hauteur: number; textes_demandes: unknown } | null;
+  return {
+    image: i ? { id: i.id, largeur: i.largeur, hauteur: i.hauteur, textes: textesDemandesPropres(i.textes_demandes) } : null,
+    idee: c.idee, description: c.description, cases: c.cases, proposes: c.proposes,
+    portraits: portraitsJoints(retenusDeLaCouverture(c.description.trim() || c.idee.trim(), candidats, c.projet.herosAbsent)),
+    demande: demande?.etat === "en_route" ? demande : null,
+  };
+}
+
+/** Les cases de « Écrire sur la couverture », gardées avec le projet d'une demande à l'autre. */
+export async function noterLesCasesDeLaCouverture(e: Enseignant, projetId: string, cases: unknown): Promise<boolean> {
+  if (!estUuid(projetId)) return false;
+  const { error, count } = await e.supabase.from("projets").update({ couverture_cases: casesPropres(cases) }, { count: "exact" }).eq("id", projetId);
+  return !error && count === 1;
+}
+
+/** « Copier le prompt » de la couverture, sans IA : d'après la description, sinon l'idée, avec les textes cochés (F10-AC52, F11-AC112). */
 export async function promptDeLaCouverture(e: Enseignant, projetId: string): Promise<{ ok: true; prompt: string } | Echec> {
   const c = await laCouverture(e, projetId);
   if (!c) return echec(PERDU);
-  const description = c.description.trim() || c.idee.trim();
-  if (!description) return echec("Décrivez d’abord ce que montre la couverture.");
-  return { ok: true, prompt: promptDeCouverture({ titre: c.projet.titre, description, herosAbsent: c.projet.herosAbsent, format: FORMAT_DU_LIVRE }, styleDe(c.projet)) };
+  if (!c.description.trim() && !c.idee.trim()) return echec("Décrivez d’abord ce que montre la couverture.");
+  return { ok: true, prompt: (await preparerLaCouverture(e, c)).prompt };
 }
 
-/** « ✦ Proposer la description » de la couverture : d'après l'idée, l'univers et l'enjeu. */
+/** « ✦ Proposer la description » de la couverture : d'après l'idée, l'univers et l'enjeu, avec la place des textes cochés. */
 export async function proposerLaCouverture(e: Enseignant, projetId: string): Promise<{ ok: true; description: string; reste: string | null } | Echec> {
   const c = await laCouverture(e, projetId);
   if (!c) return echec(PERDU);
-  const univers = c.preparation?.univers.trim() ?? "";
-  const enjeu = c.preparation?.enjeu.trim() ?? "";
-  if (!c.idee.trim() && !univers && !enjeu) return echec("Écrivez d’abord ce que montre la couverture, ou l’univers dans la Préparation.");
+  // Jamais de refus faute de texte (F13, 27 octobre 2026) : sans idée, l'IA part de toute la
+  // Préparation et du plan ; avec rien d'autre que le titre, elle part du titre
+  const [preparation, plan] = await Promise.all([preparationDe(e, projetId), planDe(e, projetId)]);
   const r = await demanderUneAide(e, descriptionImage, {
     histoire: histoireDuProjet(c.projet),
     pour: "couverture",
     idee: c.idee,
     paragraphes: [],
-    univers: univers.slice(0, 3000) || undefined,
-    enjeu: enjeu.slice(0, 3000) || undefined,
+    carnet: preparation ? carnetDe(preparation) : undefined,
+    plan: planPourLesAides(plan),
     cadrage: "couverture",
     herosAbsent: c.projet.herosAbsent,
     badges: [],
+    textes: textesDemandes(c.cases, c.proposes),
   });
   return r.ok ? { ok: true, description: r.valeur.description, reste: r.reste } : echec(r.message);
+}
+
+/**
+ * Inscrit la couverture créée parmi les images du projet, avec sa réduction d'écran (la vignette
+ * des cartes de la bibliothèque) et les textes que le modèle devait écrire.
+ */
+async function inscrireLaCouverture(e: Enseignant, projetId: string, octets: Uint8Array, textes: string[]): Promise<string | null> {
+  const lu = lireImage(octets);
+  if (!lu) return null;
+  const id = randomUUID();
+  const chemins = [cheminImage(e.id, projetId, id), cheminVignette(e.id, projetId, id)];
+  const vignette = await sharp(octets).resize({ width: 900, withoutEnlargement: true }).jpeg({ quality: 84 }).toBuffer();
+  const stockage = clientService().storage.from(SEAU);
+  const deposes = await Promise.all([
+    stockage.upload(chemins[0], octets, { contentType: "image/jpeg", upsert: false }),
+    stockage.upload(chemins[1], vignette, { contentType: "image/jpeg", upsert: false }),
+  ]);
+  if (deposes.some((d) => d.error)) {
+    await stockage.remove(chemins);
+    return null;
+  }
+  const { error } = await e.supabase.from("images").insert({
+    id, projet_id: projetId, enseignant_id: e.id, chemin: chemins[0], chemin_vignette: chemins[1], largeur: lu.largeur, hauteur: lu.hauteur, format: lu.format,
+    textes_demandes: textes,
+  });
+  if (error) {
+    await stockage.remove(chemins);
+    return null;
+  }
+  return id;
+}
+
+/** Une couverture créée met plus de temps qu'une image de scène : quatre minutes au plus, dans les cinq de la route. */
+const DELAI_DE_LA_COUVERTURE_MS = 240_000;
+
+/**
+ * « ✦ Créer la couverture » (F11-AC110, AC111) : une seule image, quel que soit « Images par
+ * création », au format de la face avant ; haute qualité « pour imprimer », normale « pour le
+ * site ». La demande part, l'adulte continue ; à l'arrivée, la couverture se pose d'office, sauf si
+ * l'adulte en a posé une autre entre-temps (elle reste alors parmi les images du projet).
+ */
+export async function demanderLaCouverture(e: Enseignant, projetId: string, usage: UsageDeLaCouverture): Promise<Lancee> {
+  const c = await laCouverture(e, projetId);
+  if (!c) return echec(PERDU);
+  if (!c.description.trim() && !c.idee.trim()) return echec("Décrivez d’abord ce que montre la couverture, ou faites proposer la description.");
+  if (!e.reglagesIa.proposer) return echec(MESSAGES_IA.pasDImage);
+  const prepare = await preparerLaCouverture(e, c);
+  const ouverte = await ouvrir(e, { projetId, cible: "couverture", cibleId: projetId });
+  if ("ok" in ouverte) return ouverte.message.startsWith("Une image est déjà en route") ? echec("Une couverture est déjà en route.") : ouverte;
+  const travail = async () => {
+    try {
+      const references = await lesReferences(e, projetId, prepare.references);
+      const r = await demanderDesImages(
+        e,
+        { aide: "couverture", usage: usage === "site" ? "couverture-site" : "couverture", prompt: prepare.prompt, nombre: 1, references },
+        { delaiMs: DELAI_DE_LA_COUVERTURE_MS },
+      );
+      if (!r.ok) {
+        await ecrire(ouverte.id, { etat: "echec", message: r.message });
+        return;
+      }
+      const imageId = await inscrireLaCouverture(e, projetId, r.images[0], prepare.textes);
+      if (!imageId) {
+        await ecrire(ouverte.id, { etat: "echec", message: MESSAGES_IA.pasDImage });
+        return;
+      }
+      const { data: d } = await clientService().from("demandes_d_images").select("image_avant").eq("id", ouverte.id).single();
+      const maintenant = await repereActuel(e, "couverture", projetId);
+      const inchange = !!maintenant && maintenant.image === (d?.image_avant ?? null);
+      if (inchange) await e.supabase.from("projets").update({ couverture_id: imageId }).eq("id", projetId);
+      await ecrire(ouverte.id, {
+        etat: "posee", propositions: [], image_posee: imageId,
+        message: inchange ? null : "Vous aviez posé une autre couverture entre-temps : celle-ci est parmi les images du projet.",
+      });
+    } catch (erreur) {
+      console.error("Couverture", erreur);
+      await ecrire(ouverte.id, { etat: "echec", message: MESSAGES_IA.pasDImage });
+    }
+  };
+  return { ok: true, demande: ouverte.id, travail };
+}
+
+/**
+ * Poser une couverture (importée, ou remise par « Annuler »), ou la retirer : une image du projet
+ * seulement, la clé étrangère le garantit.
+ */
+export async function poserLaCouverture(e: Enseignant, projetId: string, imageId: string | null): Promise<boolean> {
+  if (!estUuid(projetId) || (imageId !== null && !estUuid(imageId))) return false;
+  const { error, count } = await e.supabase.from("projets").update({ couverture_id: imageId }, { count: "exact" }).eq("id", projetId);
+  return !error && count === 1;
 }

@@ -171,8 +171,7 @@ test("Étape 8, avec les aides — préparer, organiser, formuler, corriger, rel
   // ——— Le livre : le prompt de la couverture ———
   await sql("update projets set mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now(), mise_en_page_convient_le = now(), imprimer_ouvert_le = now() where id = $1", [s.projet]);
   await aller(page, `/projet/${s.projet}/livre?etape=sortie`);
-  const couverture = page.locator("details.couverture__prompt");
-  await couverture.locator("summary").click();
+  const couverture = page.locator("aside.couverture");
   await couverture.getByLabel("Ce que montre la couverture").fill("le dragon et Lou au bord du lac");
   await couverture.getByRole("button", { name: "Proposer la description" }).click();
   await expect(couverture.getByLabel("Ce que montre la couverture")).toHaveValue(/le dragon et Lou au bord du lac, dans une lumière/);
@@ -263,7 +262,8 @@ test("Étape 8, sans les aides — éteintes dans « Mon compte », tout le traj
   await sql("update projets set mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now(), mise_en_page_convient_le = now(), imprimer_ouvert_le = now() where id = $1", [s.projet]);
   await aller(page, `/projet/${s.projet}/livre?etape=sortie`);
   await sansIa(page);
-  await expect(page.locator("details.couverture__prompt")).toBeVisible();
+  await expect(page.locator("aside.couverture").getByRole("button", { name: "Copier le prompt" })).toBeVisible();
+  await expect(page.locator("aside.couverture").getByRole("button", { name: "Créer la couverture" })).toHaveCount(0);
 
   // Rien n'est parti chez un fournisseur
   expect(await aidesAppelees(s.compte.id)).toEqual([]);

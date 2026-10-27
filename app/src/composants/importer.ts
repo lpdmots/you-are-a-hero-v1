@@ -51,11 +51,24 @@ function aDeLaTransparence(source: ImageBitmap): boolean {
  * Réduit le fichier choisi ; null s'il n'est pas d'un format accepté, trop lourd ou illisible.
  * Pour une image posée dans une scène, `garderLaTransparence` conserve un fond transparent.
  */
-export async function reduire(fichier: File, garderLaTransparence = false): Promise<ImageReduite | null> {
+export async function reduire(
+  fichier: File,
+  garderLaTransparence = false,
+  /** La part de l'image à garder (la face avant d'une couverture entière, F11-AC116) : le reste ne quitte pas le poste */
+  cadre?: (largeur: number, hauteur: number) => { gauche: number; largeur: number; hauteur: number },
+): Promise<ImageReduite | null> {
   if (!FORMATS.includes(fichier.type) || fichier.size > POIDS_MAX || fichier.size === 0) return null;
   let source: ImageBitmap;
   try {
     source = await createImageBitmap(fichier, { imageOrientation: "from-image" });
+    if (cadre) {
+      const c = cadre(source.width, source.height);
+      if (c.gauche > 0 || c.largeur < source.width) {
+        const entiere = source;
+        source = await createImageBitmap(entiere, c.gauche, 0, c.largeur, c.hauteur);
+        entiere.close();
+      }
+    }
   } catch {
     return null;
   }

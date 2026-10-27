@@ -128,6 +128,7 @@ const TRANSMIS = [
   "– la consigne, les idées de choix, la préparation, les parties et les chapitres, les titres : ce que l’adulte a écrit pour préparer l’histoire, et les titres et consignes des scènes ;",
   "– l’écriture d’une scène vide : sa consigne, son titre et la fin des scènes qui y mènent ;",
   "– les images : l’idée d’illustration, le texte de la scène, le style choisi, la description et le portrait des personnages ;",
+  "– la couverture : ce qu’elle montre, le style, les portraits des personnages nommés, et les textes que l’adulte coche pour les écrire dessus, ligne de la classe comprise s’il la coche ;",
   "– la bibliothèque d’images : la vignette d’une image acceptée par l’éditeur, pour en tirer les mots-clés ;",
   "– la bibliothèque des livres : la présentation d’un livre proposé, d’après la préparation et son début ; puis, pour l’éditeur, le livre proposé entier, ses textes et ses images, sans la page des auteurs ni la ligne de la page de titre.",
 ];
@@ -135,7 +136,7 @@ const TRANSMIS = [
 export const CONFIDENTIALITE: Document = {
   titre: "Confidentialité",
   chapeau: "Ce qui est gardé, où, combien de temps, ce qui part à l’IA, et comment tout supprimer.",
-  misAJour: "25 octobre 2026",
+  misAJour: "26 octobre 2026",
   sections: [
     {
       titre: "Qui fait quoi",
@@ -169,7 +170,7 @@ export const CONFIDENTIALITE: Document = {
       paragraphes: [
         "Seulement quand l’adulte demande une aide, et seulement ce dont elle a besoin :",
         ...TRANSMIS,
-        "Ne partent jamais : le prénom ou le nom d’un élève, la classe, l’école, le nom de l’adulte, les remarques, les encouragements, les codes. Les élèves n’ont accès à aucune aide IA.",
+        "Ne partent jamais : le prénom ou le nom d’un élève, la classe, l’école, le nom de l’adulte (sauf ce qu’il coche pour sa couverture), les remarques, les encouragements, les codes. Les élèves n’ont accès à aucune aide IA.",
         "Le texte d’une scène envoyé à la correction peut contenir le prénom d’un camarade, si l’élève l’a écrit dans son histoire : l’enseignant le voit avant de demander l’aide.",
         "Ces fournisseurs n’utilisent pas ce qu’ils reçoivent ainsi pour entraîner leurs modèles, selon leurs conditions d’utilisation de l’API, et ne le gardent que le temps de contrôler les abus.",
       ],

@@ -1460,11 +1460,17 @@
 }
 
 /* ——— « Imprimer et partager », volet « Imprimer » (étape 6, lot 5) ——— */
-.imprimer {
+/* Les deux volets à gauche, « La couverture » à droite (F11.4, 26 octobre 2026) */
+.sortie {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   gap: 28px;
   align-items: start;
+}
+.imprimer {
+  display: grid;
+  gap: 28px;
+  min-width: 0;
 }
 .imprimer__principal {
   display: grid;
@@ -1658,17 +1664,10 @@
   font-weight: 800;
 }
 .couverture p {
-  margin: 4px 0 0;
-}
-.couverture ul {
-  display: grid;
-  gap: 6px;
   margin: 0;
-  padding-left: 1.2em;
-  font-size: var(--t-s);
 }
 @media (max-width: 900px) {
-  .imprimer {
+  .sortie {
     grid-template-columns: minmax(0, 1fr);
   }
   .conserve {
@@ -2239,61 +2238,203 @@
   flex-basis: 100%;
 }
 
-/* Le prompt de l'image de face (F11.4, étape 8, lot 8) : replié sous les trois choses à préparer */
-.couverture__prompt {
-  margin-top: 8px;
-  padding-top: 10px;
-  border-top: 1px solid var(--trait);
+/* « La couverture » (F11.4, « Couverture faite sur le site », 26 octobre 2026) : la face avant
+   en petit livre, puis ce qu'elle montre, ses textes, et sa création */
+.couverture {
+  gap: 16px;
 }
-.couverture__prompt > summary {
+.couverture__objet {
+  display: grid;
+  grid-template-columns: 104px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+.couverture__livre {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 154 / 216;
+  overflow: hidden;
+  border-radius: 2px 6px 6px 2px;
+  background: var(--feuille-2);
+  box-shadow:
+    0 1px 1px rgba(30, 40, 38, 0.12),
+    0 8px 18px -8px rgba(30, 40, 38, 0.35);
+}
+/* Le dos du livre : une ombre le long de la reliure */
+.couverture__livre::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 7px;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0.04) 70%, transparent);
+  pointer-events: none;
+}
+.couverture__livre img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+a.couverture__livre:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 3px;
+}
+.couverture__livre--vide {
+  padding: 12px 10px;
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1px var(--trait),
+    0 8px 18px -10px rgba(30, 40, 38, 0.3);
+  font-family: var(--f-recit);
+  font-size: 0.8rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--graphite-3);
+  text-wrap: balance;
+}
+.couverture__livre--attente {
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia-trait);
+  color: var(--ia);
+}
+.couverture__livre--attente::after {
+  display: none;
+}
+.couverture__livre--attente .ic {
+  width: 28px;
+  height: 28px;
+  animation: scintille 1.1s var(--ease) infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .couverture__livre--attente .ic {
+    animation: none;
+  }
+}
+.couverture__etat {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  min-width: 0;
+}
+.couverture__etat .cx-aide {
+  margin: 0;
+}
+.couverture__floue {
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
+  margin: 0;
+  font-size: var(--t-xs);
+  color: var(--e-valider);
+}
+.couverture__floue .ic {
+  flex: none;
+  width: 15px;
+  height: 15px;
+}
+.couverture__champ {
+  display: grid;
+  gap: 6px;
+}
+.couverture__textes {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.couverture__textes legend {
+  margin-bottom: 4px;
+  padding: 0;
+}
+.couverture__texte {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.couverture__texte--coche + .couverture__texte {
+  margin-top: 4px;
+}
+.couverture__case {
+  display: flex;
+  align-items: baseline;
+  padding-top: 5px;
+  gap: 8px;
+  min-width: 0;
+  min-height: 26px;
   font-size: var(--t-s);
-  font-weight: 700;
-  color: var(--canard);
-  list-style: none;
+  cursor: pointer;
 }
-.couverture__prompt > summary::-webkit-details-marker {
-  display: none;
+.couverture__case .case {
+  flex: none;
+  align-self: flex-start;
 }
-.couverture__prompt > summary::after {
-  content: "";
-  width: 7px;
-  height: 7px;
-  margin-left: 2px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg) translate(-2px, -2px);
+.couverture__case > span:first-of-type {
+  flex: none;
+  font-weight: 600;
 }
-.couverture__prompt[open] > summary::after {
-  transform: rotate(-135deg) translate(-2px, -2px);
+.couverture__apercu {
+  flex: 1;
+  min-width: 0;
+  color: var(--graphite-3);
 }
-.couverture__prompt > summary .ic {
+.couverture__saisie {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 26px;
+}
+.couverture__saisie .pchamp {
+  flex: 1;
+  min-width: 0;
+}
+.couverture__creer {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+}
+.couverture__creer .cx-aide {
+  margin: 0;
+}
+.couverture__creer .btn--ia {
+  margin-top: 2px;
+}
+.couverture__importer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
+}
+.couverture__importer .ic {
   width: 16px;
   height: 16px;
 }
-.couverture__prompt > summary:focus-visible {
-  outline: 3px solid var(--canard);
-  outline-offset: 2px;
-  border-radius: 4px;
+.couverture__nette {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-xs);
+  color: var(--e-valide);
 }
-.couverture__prompt-corps {
-  display: grid;
-  justify-items: start;
-  gap: 10px;
-  margin-top: 10px;
+.couverture__nette .ic {
+  width: 15px;
+  height: 15px;
 }
-.couverture__prompt-corps > .champ,
-.couverture__prompt-corps > .ia-propose {
-  width: 100%;
+.couverture__recreer {
+  font-size: var(--t-s);
 }
-.couverture__copier {
+.couverture__gestes {
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 10px;
+  gap: 4px 14px;
+}
+.couverture__imprimeur {
+  margin: 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--trait);
 }
 
 /* Les modèles pour les familles (F14-AC33) */

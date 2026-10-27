@@ -77,7 +77,7 @@ export const contenuDuLivre = cache(async (e: Enseignant, projetId: string): Pro
 });
 
 /** L'année scolaire en cours : une année commencée en septembre. */
-function anneeScolaireEnCours(): number {
+export function anneeScolaireEnCours(): number {
   const maintenant = new Date();
   return maintenant.getMonth() >= 7 ? maintenant.getFullYear() : maintenant.getFullYear() - 1;
 }

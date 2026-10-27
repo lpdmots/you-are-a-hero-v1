@@ -270,7 +270,7 @@ test.describe("L'image créée d'office à l'ajout par l'IA (F10.1)", () => {
 });
 
 test.describe("Le prompt de couverture (F11.4)", () => {
-  test("F10-AC52 — « Le prompt de l'image de face », replié : l'idée, la description proposée, puis le prompt au format du livre dans le presse-papiers", async ({ page, context }) => {
+  test("F10-AC52 — dans « La couverture » : l'idée, la description proposée, puis le prompt au format du livre dans le presse-papiers, sans image créée", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     const s = await passeurs(page);
     await sql(
@@ -278,9 +278,7 @@ test.describe("Le prompt de couverture (F11.4)", () => {
       [s.projet],
     );
     await aller(page, `/projet/${s.projet}/livre?etape=sortie`);
-    const prompt = page.locator("details.couverture__prompt");
-    await expect(prompt).not.toHaveAttribute("open", "");
-    await prompt.locator("summary").click();
+    const prompt = page.locator("aside.couverture");
     await prompt.getByLabel("Ce que montre la couverture").fill("le bac sur le lac au lever du jour");
     await prompt.getByRole("button", { name: "Proposer la description" }).click();
     await expect(prompt.getByLabel("Ce que montre la couverture")).toHaveValue(/le bac sur le lac au lever du jour, dans une lumière/);
@@ -288,7 +286,7 @@ test.describe("Le prompt de couverture (F11.4)", () => {
     await expect(MESSAGE(page)).toContainText("Prompt copié");
     const texte = await page.evaluate(() => navigator.clipboard.readText());
     expect(texte).toContain("Illustration de couverture");
-    expect(texte).toContain("A5, 148 × 210 mm");
+    expect(texte).toContain("A5 (148 × 210 mm), avec 3 mm de fonds perdus");
     expect(texte).toContain("le bac sur le lac");
     expect(await appelsImages(s.compte.id)).toEqual([]);
   });

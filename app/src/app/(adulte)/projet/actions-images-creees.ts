@@ -4,7 +4,7 @@ import { DESCRIPTION_IMAGE_MAX, IDEE_MAX } from "@/domaine/illustration";
 import { paragraphes } from "@/domaine/personnages";
 import { exigerEnseignant } from "@/serveur/adulte";
 import {
-  demandeDe, demandeParId, fermerLaDemande, noterLaPropositionPosee, rendreLaProposition, reserverLaProposition, imagesEnRoute, lireDemandeDeScene, ouvrirLImageDeScene, promptDeLaCouverture, promptDeLImageDeScene, type Cible, type DemandeDeScene,
+  couvertureDuProjet, demandeDe, demandeParId, fermerLaDemande, noterLesCasesDeLaCouverture, poserLaCouverture, type CouvertureDuProjet, noterLaPropositionPosee, rendreLaProposition, reserverLaProposition, imagesEnRoute, lireDemandeDeScene, ouvrirLImageDeScene, promptDeLaCouverture, promptDeLImageDeScene, type Cible, type DemandeDeScene,
   type DemandeDImage, type OuvertureDeLImage,
 } from "@/serveur/images-creees";
 import { estUuid } from "@/serveur/recit";
@@ -57,12 +57,19 @@ export async function noterLaCouverture(projetId: string, note: NoteDImage): Pro
   return error || !data?.length ? echec(NON_ENREGISTRE) : { ok: true };
 }
 
-/** L'idée et la description de couverture gardées, à l'ouverture du prompt de couverture. */
-export async function lireLaCouverture(projetId: string): Promise<{ idee: string; description: string } | null> {
-  const e = await exigerEnseignant();
-  if (!estUuid(projetId)) return null;
-  const { data } = await e.supabase.from("projets").select("idee_couverture, description_couverture").eq("id", projetId).maybeSingle();
-  return data ? { idee: (data.idee_couverture as string) ?? "", description: (data.description_couverture as string) ?? "" } : null;
+/** Le bloc « La couverture » (F11.4, 26 octobre 2026) relu après une demande ou un import. */
+export async function lireLaCouverture(projetId: string): Promise<CouvertureDuProjet | null> {
+  return couvertureDuProjet(await exigerEnseignant(), projetId);
+}
+
+/** Les cases de « Écrire sur la couverture » (F11-AC112), gardées avec le projet. */
+export async function noterLesCases(projetId: string, cases: unknown): Promise<{ ok: true } | Echec> {
+  return (await noterLesCasesDeLaCouverture(await exigerEnseignant(), projetId, cases)) ? { ok: true } : echec(NON_ENREGISTRE);
+}
+
+/** Poser une couverture importée, remettre la précédente (« Annuler »), ou la retirer. */
+export async function poserUneCouverture(projetId: string, imageId: string | null): Promise<{ ok: true } | Echec> {
+  return (await poserLaCouverture(await exigerEnseignant(), projetId, imageId)) ? { ok: true } : echec("La couverture n’a pas pu être posée. Réessayez.");
 }
 
 /** « Copier le prompt » de la couverture, sans IA (F11.4). */
@@ -73,7 +80,7 @@ export async function promptDeCouverture(projetId: string): Promise<{ ok: true; 
 
 /** La demande d'image en route, ou prête, d'un élément (reprise du 18 octobre 2026). */
 export async function demandeDImage(cible: Cible, cibleId: string): Promise<DemandeDImage | null> {
-  if (!["projet", "partie", "chapitre", "scene", "personnage", "objet"].includes(cible)) return null;
+  if (!["projet", "partie", "chapitre", "scene", "personnage", "objet", "couverture"].includes(cible)) return null;
   return demandeDe(await exigerEnseignant(), cible, cibleId);
 }
 

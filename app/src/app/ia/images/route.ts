@@ -1,8 +1,9 @@
 import { after } from "next/server";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
+import { estUsageDeLaCouverture } from "@/domaine/couverture";
 import { enseignantCourant } from "@/serveur/adulte";
 import {
-  demanderLeReperage, demanderLesImagesALAjout, demanderLImageDeScene, lireDemandeDeScene, proposerLaCouverture, proposerLaDescription, type Lancee,
+  demanderLaCouverture, demanderLeReperage, demanderLesImagesALAjout, demanderLImageDeScene, lireDemandeDeScene, proposerLaCouverture, proposerLaDescription, type Lancee,
 } from "@/serveur/images-creees";
 
 /**
@@ -14,7 +15,8 @@ import {
  *   { demande: "a-l-ajout", sorte: "partie" | "chapitre", ids }
  *   { demande: "description", scene, cadrage, badges }
  *   { demande: "image-scene", scene, cadrage, badges, apresBloc, alt }
- *   { demande: "couverture", projet }
+ *   { demande: "couverture", projet }  (la description de la couverture)
+ *   { demande: "creer-couverture", projet, usage: "imprimer" | "site" }  (F11-AC110, AC111)
  * Le résumé, la scène, l'idée et la description sont relus par le serveur. Une image ne se fait
  * pas attendre : la réponse part aussitôt avec la demande, l'image se crée ensuite (`after`), que
  * la page reste ouverte ou non, et la page suit la demande.
@@ -56,6 +58,9 @@ export async function POST(requete: Request): Promise<Response> {
       if (!d) return new Response(null, { status: 400 });
       if (demande === "description") return Response.json(await proposerLaDescription(e, corps.scene, d), pasDeCache);
       return lancer(await demanderLImageDeScene(e, corps.scene, { ...d, apresBloc: typeof corps.apresBloc === "string" ? corps.apresBloc : null, alt: typeof corps.alt === "string" ? corps.alt : "" }));
+    }
+    if (demande === "creer-couverture" && typeof corps.projet === "string" && estUsageDeLaCouverture(corps.usage)) {
+      return lancer(await demanderLaCouverture(e, corps.projet, corps.usage));
     }
     if (demande === "couverture" && typeof corps.projet === "string") {
       return Response.json(await proposerLaCouverture(e, corps.projet), pasDeCache);

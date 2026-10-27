@@ -298,18 +298,34 @@ export function raisonDuReperage(element: { resume: string } | { chapitres: { re
 }
 
 /**
- * Le prompt de l'illustration de couverture (F11.4, F10.2), à copier pour l'outil de l'imprimeur :
- * l'image de face au format du livre, sans texte, de la place en haut pour le titre.
+ * Le prompt de la couverture (F11.4, « Couverture faite sur le site », 26 octobre 2026), pour la
+ * créer sur le site ou la copier : la face avant en hauteur, au format du livre avec ses fonds
+ * perdus ; les textes cochés, mot pour mot, que le modèle écrit lui-même (décision du porteur),
+ * et aucun autre ; sans texte coché, de la place en haut pour le titre, que l'imprimeur ajoutera.
+ * Les personnages et objets nommés dans la description, avec leur fiche, comme pour une scène.
  */
 export function promptDeCouverture(
-  c: { titre: string; description: string; herosAbsent: boolean; format: string },
+  c: { titre: string; description: string; textes: readonly string[]; retenus?: readonly Retenu[]; herosAbsent: boolean; format: string },
   style: StyleDuProjet,
 ): string {
+  let n = 0;
+  const lignes = (c.retenus ?? []).map((r) => ligneDuRetenu(r, r.reference ? ++n : null));
+  const textes = c.textes.map((t) => t.replace(/\s+/g, " ").trim()).filter(Boolean);
   return [
-    `Illustration de couverture d'un livre pour enfants, « ${c.titre.trim()} » : image de face en hauteur, au format ${c.format}. Laisser de la place en haut pour le titre, que l'imprimeur ajoutera.`,
+    // Avec des textes à écrire, le titre du livre n'est pas rappelé : le modèle l'écrirait à la place d'un titre retouché
+    textes.length
+      ? `Illustration de couverture d'un livre pour enfants : face avant en hauteur, au format ${c.format}.`
+      : `Illustration de couverture d'un livre pour enfants, « ${c.titre.trim()} » : face avant en hauteur, au format ${c.format}.`,
     c.description.trim() ? `Ce que montre la couverture : ${c.description.replace(/\s+/g, " ").trim()}` : "",
+    lignes.length ? `Personnages et objets, à dessiner tels qu'ils sont décrits :\n${lignes.join("\n")}` : "",
+    n ? "Les images de référence jointes donnent l'apparence de ces personnages et objets : garder leur apparence, pas leur pose ni leur fond." : "",
     c.herosAbsent ? HEROS_ABSENT_EN_MOTS : "",
     `Style : ${descriptionDuStyle(style.style, style.autre)}.`,
-    REGLES_DE_L_IMAGE,
+    textes.length
+      ? [
+          `Écrire sur la couverture, en lettres grandes et bien lisibles, exactement ces textes, sans rien changer à leur orthographe, à leurs accents ni à leur ponctuation :\n${textes.map((t) => `- « ${t} »`).join("\n")}`,
+          "N'écrire aucun autre texte : ni lettre, ni chiffre, ni signature en dehors de ceux-là. Le titre domine ; les autres textes sont plus petits. Garder une marge de 1 cm autour des textes, que l'imprimeur peut rogner. Image pour un livre d'enfants.",
+        ].join("\n")
+      : `Laisser de la place en haut pour le titre, que l'imprimeur ajoutera. ${REGLES_DE_L_IMAGE}`,
   ].filter(Boolean).join("\n");
 }

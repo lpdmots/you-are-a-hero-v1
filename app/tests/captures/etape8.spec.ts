@@ -782,8 +782,7 @@ test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser
   );
   await aller(page, `/projet/${projet}/livre?etape=sortie`);
   await capturer(page, "couverture-replie", false);
-  const prompt = page.locator("details.couverture__prompt");
-  await prompt.locator("summary").click();
+  const prompt = page.locator("aside.couverture");
   await prompt.getByLabel("Ce que montre la couverture").fill("le bac sur le lac au lever du jour");
   await prompt.getByRole("button", { name: "Proposer la description" }).click();
   await prompt.locator(".ci__decrit").waitFor();

@@ -2723,6 +2723,38 @@ bibliothèque. La phrase du passage 27 reste « Écrits par mes élèves » pour
 livres du porteur, « Écrits par des élèves… et publiés dans la bibliothèque du
 site » sinon.
 
+### Couverture faite sur le site, lot 1 (26 octobre 2026)
+
+Règles en [F11.4](specifications.md#f114--intérieur-du-livre-pages-de-présentation-et-couverture),
+« Couverture faite sur le site ». Écran sans maquette, conçu avec impeccable,
+captures 1701 à 1708 (`npm run captures -- couverture`).
+
+- **Place :** « Imprimer et partager » met les deux volets à gauche et « La
+  couverture » à droite, la même carte qu'avant (filet bristol), visible dans
+  les deux ; sous 900 points, elle passe dessous.
+- **En tête :** la face avant en petit livre (proportions 154 × 216, ombre de
+  la reliure) ; vide, le titre en police du récit sur papier blanc. À côté :
+  vide, « Sans couverture, la bibliothèque montre la page de titre. » et
+  « Importer la mienne » ; posée, « Télécharger », « Assez fine pour
+  l'imprimeur. » en vert ou « Trop floue pour l'imprimeur. » en ambre avec sa
+  bulle (les points par pouce) et « La recréer pour imprimer », puis
+  « Importer une autre » et « Retirer » en liens discrets ; en route, les
+  étincelles dans le livre et « L'IA dessine… Vous pouvez continuer : elle se
+  posera d'elle-même. »
+- **Ensuite :** « Ce que montre la couverture », le champ de l'image d'une
+  scène (✦ rond, copie du prompt au coin, « Revenir à l'idée de départ »),
+  l'aide « Dites où placer le texte… » et la ligne des portraits joints ;
+  « Écrire sur la couverture », une case par texte, le texte proposé en gris
+  à côté d'une case décochée, un champ sous une case cochée, la flèche ronde
+  quand il diffère de la page de titre ; la bascule graphite « Pour imprimer »
+  ou « Pour le site » et sa ligne, puis « ✦ Créer la couverture », pastille
+  d'IA (le seul bouton plein reste celui du PDF) ; au pied, le texte du dos à
+  préparer chez l'imprimeur.
+- **Critique :** deux lectures, 28/40 (informée) et 25/40 (indépendante),
+  corrigées sans nouvelle mesure. Gardé malgré elles : pas de prix sur le
+  bouton (F14), le bloc entier dans le volet « Partager » (F11-AC113), le rond
+  ✦ et la copie au coin du champ, communs à l'image d'une scène.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

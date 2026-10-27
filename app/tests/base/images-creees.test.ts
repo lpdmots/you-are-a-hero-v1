@@ -314,13 +314,14 @@ describe("L'idée d'image de l'élève (F10-AC10)", () => {
 });
 
 describe("Le prompt de couverture (F11.4)", () => {
-  it("F10-AC52 — la couverture : un prompt à copier au format du livre, d'après l'idée ou la description proposée ; aucune image créée", async () => {
+  it("F10-AC52 — la couverture : un prompt à copier au format du livre, d'après l'idée ou la description proposée, le titre coché à écrire (révisé par F11-AC112) ; aucune image créée", async () => {
     const { projet } = await passeurs();
     expect(await promptDeLaCouverture(enseignantDe(laurent), projet)).toEqual({ ok: false, message: "Décrivez d’abord ce que montre la couverture." });
     await laurent.base.from("projets").update({ idee_couverture: "le bac sur le lac au lever du jour" }).eq("id", projet);
     const r = await promptDeLaCouverture(enseignantDe(laurent), projet);
     expect(r.ok && r.prompt).toContain("le bac sur le lac au lever du jour");
-    expect(r.ok && r.prompt).toContain("A5, 148 × 210 mm");
+    expect(r.ok && r.prompt).toContain("A5 (148 × 210 mm), avec 3 mm de fonds perdus");
+    expect(r.ok && r.prompt).toContain("- « Les passeurs de brume »");
     const d = await proposerLaCouverture(enseignantDe(laurent), projet);
     expect(d.ok && d.description).toContain("le bac sur le lac");
     expect(await appels()).toEqual([{ aide: "description-image", sorte: "texte", nombre: 1 }]);

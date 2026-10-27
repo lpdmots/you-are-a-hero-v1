@@ -7503,7 +7503,10 @@ choisie entre-temps n'est pas remplacée.
   écrit dans « Le prompt de l'image de face » (« La couverture, chez l'imprimeur »), lorsque
   l'adulte demande « ✦ Proposer la description » puis « Copier le prompt », alors le
   presse-papiers reçoit un prompt de couverture au format A5, sans texte, de la place pour le
-  titre, le style et la règle du héros absent ; aucune image n'est créée.
+  titre, le style et la règle du héros absent ; aucune image n'est créée. Révisé le 26 octobre
+  2026 (F11.4, « Couverture faite sur le site », F11-AC112) : le prompt copié demande aussi
+  d'écrire mot pour mot les textes cochés, le titre au départ, au format A5 avec ses fonds
+  perdus ; sans texte coché, il garde la place du titre.
 
 **Construit au lot 7 de l'étape 8 (18 octobre 2026) — personnages et objets :**
 écrans dans le [design](design.md), précisions à confirmer dans le
@@ -8703,7 +8706,9 @@ points, donc une face avant A5 avec 3 mm de fonds perdus (154 × 216 mm) à
   par défaut, en qualité haute à 1824 × 2560 ; « Pour le site », en qualité
   normale à 1024 × 1440, avec la seule mention « environ dix fois moins
   d'étoiles », aucun prix par demande n'étant montré (F14). Estimations du
-  26 octobre 2026, non mesurées : 20 à 25 ✦ et 2 ✦. Motif du défaut : une
+  26 octobre 2026, non mesurées : 20 à 25 ✦ et 2 ✦. **Mesuré le même jour**
+  par un vrai appel « pour imprimer » (1824 × 2560, qualité haute, titre et
+  année écrits sans faute) : 0,084 dollar, 22 secondes, soit environ 8 ✦. Motif du défaut : une
   couverture faite pour le site ne s'agrandit pas, et la recréer donne une
   autre image. Une couverture « pour le site » téléchargée pour l'imprimeur
   porte l'avertissement d'une image peu définie (F10).
@@ -8742,9 +8747,23 @@ points, donc une face avant A5 avec 3 mm de fonds perdus (154 × 216 mm) à
 - **Importer (recommandation acceptée) :** la règle du dépôt de l'accueil.
   Une image plus large que haute, la couverture entière, est coupée à sa face
   avant, dos compris en marge : la quatrième, qui porte souvent les prénoms
-  des élèves, n'est jamais gardée. JPEG, PNG ou WebP, 4 Mo au plus ; une image
-  peu définie est signalée au téléchargement pour l'imprimeur, sans rien
-  bloquer.
+  des élèves, n'est jamais gardée. Précisé avant de construire (26 octobre
+  2026) : par l'import ordinaire des images (F10), JPEG, PNG ou WebP de moins
+  de 20 Mo, réduite dans le navigateur, qui coupe aussi la face avant, si bien
+  que la quatrième ne quitte jamais le poste ; une image peu définie est
+  signalée au téléchargement pour l'imprimeur, sans rien bloquer.
+- **Les portraits en référence, d'office (précisé avant de construire) :**
+  sans badges, pour garder le bloc léger : ceux des personnages et des objets
+  nommés dans « Ce que montre la couverture », quatre au plus, le héros absent
+  des images excepté ; une ligne discrète les nomme (« Avec les portraits de
+  Maël et de la lanterne. »).
+- **La classe et le nom de l'adulte vers l'IA (décidé par le porteur le
+  26 octobre 2026, sur recommandation) :** la case de la ligne de la classe
+  envoie ce texte au fournisseur d'images, par exception à la liste de
+  [F13](#f13--assistance-ia-facultative) (« Ce qui est transmis »), parce que
+  l'adulte le coche en le lisant ; la page « Confidentialité » le dit.
+  Alternative écartée : retirer cette case, l'adulte l'écrivant de toute façon
+  dans « Autre texte ».
 
 *Critères d'acceptation.* Les exemples prennent Mme Laurent et « La lanterne
 du passeur », A5, style « Illustration 2D lumineuse », Lou héros absent des
@@ -8790,7 +8809,7 @@ images.
 - **F11-AC116 — Importer une couverture entière :** étant donné une image de
   3600 × 2480 (quatrième, dos, face avant), lorsque Mme Laurent l'importe,
   alors seule la face avant est gardée, et la quatrième ne se retrouve nulle
-  part ; un fichier de 6 Mo est refusé.
+  part ; un fichier de 25 Mo est refusé.
 - **F11-AC117 — L'accueil :** étant donné les livres de l'accueil du
   porteur, alors l'administration ne propose plus de déposer une face avant ;
   la conversion pose chaque face avant déjà déposée en couverture de son
@@ -10275,12 +10294,39 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
     la consigne, plus le titre de la scène et la fin du texte des scènes qui y
     mènent, avec la phrase du choix ;
   - images : l'idée d'illustration (écrite parfois par un élève), le texte de
-    la scène, le style, les fiches et portraits des personnages retenus.
+    la scène, le style, les fiches et portraits des personnages retenus ;
+  - couverture (décidé par le porteur le 26 octobre 2026, F11.4) : en plus de
+    ce que reçoit une image, les textes que l'adulte coche pour les écrire sur
+    la couverture, en les lisant, ligne de la classe comprise ; rien ne part
+    sans ce geste, la case de la ligne étant décochée au départ.
 
   Ne partent jamais : le prénom ou le nom d'un élève, la classe, l'école, le
-  nom de l'adulte, les remarques, les encouragements, les codes. L'application
+  nom de l'adulte (sauf les textes cochés pour la couverture, plus haut), les remarques, les encouragements, les codes. L'application
   tient un journal des appels sans leur contenu (date, aide, jetons, coût),
   qui sert au débit des étoiles et au budget (F14).
+- **Jamais de refus faute de texte** (décidé par le porteur le 27 octobre
+  2026, sur sa demande et sur recommandation) : une aide ne refuse jamais
+  parce que rien n'est écrit ; sans indication, elle propose d'après ce que
+  le projet sait déjà (Préparation, plan, chapitre et résumé, titre et
+  consigne de la scène, scènes qui y mènent), et l'adulte retouche. Les
+  propositions faites ainsi sont plus génériques, ce qui est accepté.
+  **Les images partent seulement avec un prompt :** une image (scène,
+  couverture, portrait, image d'un objet, repérage) ne se crée que d'après
+  une description, une fiche visuelle ou un résumé écrits ; le bouton qui la
+  crée reste éteint sans eux, et l'aide qui les écrit, elle, ne demande plus
+  quelques mots. Deux clics donc, voulus par le porteur : d'abord le prompt,
+  puis l'image. Cela révise les refus « Écrivez d'abord… » de F10.2 (fiche
+  visuelle, description d'une image), de F13.2 à F13.6 et de la couverture
+  (F11.4) ; le portrait sans fiche reste refusé (lot 7 de l'étape 8), sa
+  fiche pouvant désormais se faire proposer sans description. Appliqué à la
+  couverture au lot 1 de « Couverture faite sur le site » ; les autres aides
+  forment un lot à part ([plan](plan.md#couverture-faite-sur-le-site-f114-f15)).
+- **F13-AC31 — Proposer sans indication :** étant donné « La lanterne du
+  passeur », dont « Ce que montre la couverture » est vide et la Préparation
+  sans univers, lorsque l'adulte demande « ✦ Proposer la description », alors
+  une description est proposée d'après le titre, le plan et ce que la
+  Préparation contient, sans message « Écrivez d'abord… » ; « ✦ Créer la
+  couverture » reste éteint tant que le champ est vide.
 - **Ce qui est transmis n'est pas dit à l'écran,** décision du porteur : la
   liste figure ici et, à l'ouverture, dans la politique de confidentialité.
 - **Plafonds,** recommandation acceptée le 16 octobre 2026. Par aide : une

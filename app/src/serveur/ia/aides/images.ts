@@ -1,7 +1,7 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
 import { CADRAGES_EN_MOTS, DESCRIPTION_IMAGE_MAX, type Cadrage } from "@/domaine/illustration";
 import { lireAutresNoms } from "@/domaine/personnages";
-import { REGLES_COMMUNES, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, blocPlan, presentation, type Carnet, type Histoire, type Plan } from "./contexte";
 
 /**
  * Les aides de texte qui préparent les images (F10.2) : repérer les personnages, préciser une
@@ -120,11 +120,19 @@ export type EntreeDescription = {
   /** Pour la couverture : l'univers et l'enjeu que la Préparation retient */
   univers?: string;
   enjeu?: string;
+  /**
+   * Pour la couverture, sans rien d'écrit qui la décrive (27 octobre 2026, F13 « jamais de refus
+   * faute de texte ») : toute la Préparation et le plan, d'où l'IA tire elle-même l'image
+   */
+  carnet?: Carnet;
+  plan?: Plan;
   cadrage: Cadrage | "couverture";
   /** Le héros n'est pas représenté : au plus des mains neutres (F10-AC08) */
   herosAbsent: boolean;
   /** Personnages et objets retenus par leurs badges ; leur fiche est ajoutée par l'application */
   badges: { nom: string }[];
+  /** Pour la couverture : les textes que le modèle d'images écrira (F11-AC112), dont la description dit la place */
+  textes?: string[];
 };
 
 /**
@@ -139,21 +147,25 @@ export const descriptionImage: DefinitionAide<EntreeDescription, { description: 
     e.pour === "couverture"
       ? `Tu décris l'illustration de couverture d'un livre, en français, comme on la demanderait à un illustrateur : ce qu'on voit, où, la lumière, l'ambiance, la composition.
 - Une image qui donne envie d'ouvrir le livre, tirée de son univers et de son enjeu, sans rien dévoiler de la fin.
-- Laisse le haut de l'image assez calme pour le titre.`
+- Sans idée donnée, choisis toi-même le lieu ou le moment le plus parlant de l'histoire, d'après ce qu'on t'en dit.
+${e.textes?.length ? `- La couverture portera ces textes, que l'application ajoutera mot pour mot : dis seulement où les placer (en haut, sur le ciel…), dans un endroit calme de l'image, sans les recopier ni en inventer d'autres.` : "- Laisse le haut de l'image assez calme pour le titre."}`
       : `Tu décris l'image à créer pour une scène du livre, en français, comme on le demanderait à un illustrateur : ce qu'on voit, où, la lumière, l'ambiance, la composition.
 - Une image ne montre qu'un instant : choisis le moment le plus parlant de la scène, ou celui que décrit l'idée donnée.
 - Les personnages et objets retenus apparaissent ; nomme-les, sans redécrire leur apparence, que l'application ajoutera.`,
     `- ${e.herosAbsent ? "Le héros n'est PAS représenté : ni son visage ni son corps. Au plus, ses mains, neutres (sans bijou, ni manche distinctive, ni couleur de peau marquée), quand il agit sur un objet." : "Le héros est représenté, comme un personnage retenu."}
-- Aucun texte, lettre ni chiffre dans l'image. Pas de style de dessin : l'application l'ajoutera.
+- ${e.pour === "couverture" && e.textes?.length ? "Aucun autre texte, lettre ni chiffre dans l'image." : "Aucun texte, lettre ni chiffre dans l'image."} Pas de style de dessin : l'application l'ajoutera.
 - Au plus quatre-vingts mots.`,
   ),
   message: (e) => assembler(
     presentation(e.histoire),
     e.chapitre ? bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`) : "",
     bloc("univers", e.univers), bloc("enjeu", e.enjeu),
+    e.carnet ? blocCarnet(e.carnet) : "",
+    e.plan ? blocPlan(e.plan) : "",
     e.paragraphes.length ? bloc("texte_de_la_scene", e.paragraphes.join("\n")) : "",
     bloc("idee", e.idee),
     bloc("retenus", e.badges.map((b) => b.nom)),
+    e.textes?.length ? bloc("textes_de_la_couverture", e.textes) : "",
     bloc("cadrage", e.cadrage === "couverture" ? "couverture, image de face en hauteur" : CADRAGES_EN_MOTS[e.cadrage]),
     e.pour === "couverture" ? "Décris l'illustration de couverture." : "Décris l'image.",
   ),

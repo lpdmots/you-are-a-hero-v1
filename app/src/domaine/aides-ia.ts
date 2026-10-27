@@ -33,7 +33,7 @@ export type AideTexte = (typeof AIDES_TEXTE)[number];
  * d'office pour une partie ou un chapitre ajouté par l'IA. Le journal les distingue pour suivre
  * la dépense.
  */
-export const AIDES_IMAGE = ["portrait", "image-objet", "image-scene", "image-reperage", "image-ajout"] as const;
+export const AIDES_IMAGE = ["portrait", "image-objet", "image-scene", "image-reperage", "image-ajout", "couverture"] as const;
 export type AideImage = (typeof AIDES_IMAGE)[number];
 export type Aide = AideTexte | AideImage;
 
@@ -141,7 +141,8 @@ export type ReglagesIa = {
 export const QUALITES = ["auto", "normale", "haute"] as const;
 export type QualiteDesImages = (typeof QUALITES)[number];
 /** Ce pour quoi une image est créée : le cadrage d'une image de scène, l'image de repérage, le portrait de référence */
-export type UsageDImage = "pleine-page" | "3:2" | "16:9" | "carre" | "reperage" | "portrait" | "objet";
+/** La couverture (F11.4, 26 octobre 2026) : « couverture » pour imprimer, « couverture-site » pour le site */
+export type UsageDImage = "pleine-page" | "3:2" | "16:9" | "carre" | "reperage" | "portrait" | "objet" | "couverture" | "couverture-site";
 
 /**
  * La taille demandée au fournisseur pour chaque usage, en points, multiples de 16. Le portrait
@@ -155,11 +156,15 @@ export const TAILLES_DES_IMAGES: Record<UsageDImage, string> = {
   reperage: "1536x1024",
   portrait: "1024x1536",
   objet: "1024x1024",
+  // La face avant A5 avec ses fonds perdus (154 × 216 mm) : 300 points par pouce pour imprimer
+  couverture: "1824x2560",
+  "couverture-site": "1024x1440",
 };
 
 /** La qualité demandée au fournisseur pour une image, d'après le réglage du compte. */
+/** La couverture a sa qualité, choisie par son usage, quel que soit le réglage (F11-AC110, AC111). */
 export const qualiteDeLImage = (reglage: QualiteDesImages, usage: UsageDImage): "normale" | "haute" =>
-  reglage === "auto" ? (usage === "pleine-page" ? "haute" : "normale") : reglage;
+  usage === "couverture" ? "haute" : usage === "couverture-site" ? "normale" : reglage === "auto" ? (usage === "pleine-page" ? "haute" : "normale") : reglage;
 
 /** Un compte neuf (F13, F10.1, F10.2) : degré 2, aides proposées, une image, en qualité automatique, l'image créée à l'ajout. */
 export const REGLAGES_IA_HABITUELS: ReglagesIa = { degre: 2, proposer: true, imagesParCreation: 1, qualite: "auto", imageALAjout: true, bibliotheque: true };

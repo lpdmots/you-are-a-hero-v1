@@ -28,6 +28,7 @@ import { contenuDuLivre } from "@/serveur/livre/contenu";
 import { nomPourEleves } from "@/domaine/eleves";
 import { etatEnMots, pdfDuProjet } from "@/serveur/livre/pdf";
 import { aDesClassesEnCours, partageDuProjet, versionsDe } from "@/serveur/partage";
+import { couvertureDuProjet } from "@/serveur/images-creees";
 import { publicationDuProjet, type PublicationLue } from "@/serveur/publication";
 import type { PublicationAffichee } from "../_livre/Partager";
 import { NOMS_COMME_LE_LIVRE } from "@/domaine/partage";
@@ -138,9 +139,9 @@ export default async function PageProjet({ params, searchParams }: Props) {
     const definitifs = pdf.filter((x) => x.sorte === "definitif");
     const aJour = conditions.pdf.possible && definitifs[0]?.empreinte === instantane.empreinte;
     // La version partagée (F12.1) : comparée à ce que le lecteur verrait aujourd'hui, et au dernier PDF définitif
-    const [partage, classesEnCours, publication] = sortieOuverte
-      ? await Promise.all([partageDuProjet(enseignant, projet.id), aDesClassesEnCours(enseignant), publicationDuProjet(enseignant, projet.id)])
-      : [null, false, null];
+    const [partage, classesEnCours, publication, couverture] = sortieOuverte
+      ? await Promise.all([partageDuProjet(enseignant, projet.id), aDesClassesEnCours(enseignant), publicationDuProjet(enseignant, projet.id), couvertureDuProjet(enseignant, projet.id)])
+      : [null, false, null, null];
     const actuelle = partage ? versionsDe(instantane, partage.noms) : null;
     // La version publiée (F15) : comparée à ce que le public verrait aujourd'hui, avec les mêmes noms
     const publiable = publication?.empreinte ? (actuelle ?? versionsDe(instantane, NOMS_COMME_LE_LIVRE)).empreinte : null;
@@ -193,6 +194,8 @@ export default async function PageProjet({ params, searchParams }: Props) {
         imprimer={
           sortieOuverte
             ? {
+                titre: projet.titre,
+                couverture,
                 possible: conditions.pdf.possible,
                 raisons: conditions.pdf.raisons,
                 rappels: conditions.rappels.map((p) => rappelDe(p, noms)),

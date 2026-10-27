@@ -180,7 +180,7 @@ export type DemandeDImages = {
  * Ce que la dernière création simulée a reçu (`IA_SIMULEE`) : le prompt, l'usage, la qualité et le
  * nombre d'images de référence, pour que les essais vérifient ce qui serait parti sans rien payer.
  */
-let derniereSimulee: { prompt: string; usage: UsageDImage; qualite: "normale" | "haute"; nombre: number; references: number } | null = null;
+let derniereSimulee: { prompt: string; usage: UsageDImage; taille: string; qualite: "normale" | "haute"; nombre: number; references: number } | null = null;
 export const derniereCreationSimulee = () => derniereSimulee;
 
 const refusImage = (r: RefusIa): ResultatImages => ({ ok: false, refus: r, message: messageDuRefus(r, "image") });
@@ -210,7 +210,7 @@ export async function demanderDesImages(adulte: Demandeur, demande: DemandeDImag
   let images: Uint8Array[] = [];
   const simulee = simulation();
   try {
-    if (simulee) derniereSimulee = { prompt: demande.prompt, usage: demande.usage, qualite, nombre, references: demande.references?.length ?? 0 };
+    if (simulee) derniereSimulee = { prompt: demande.prompt, usage: demande.usage, taille: TAILLES_DES_IMAGES[demande.usage], qualite, nombre, references: demande.references?.length ?? 0 };
     if (simulee === "reponse") {
       const deux = demande.usage === "objet" ? [OBJET_1, OBJET_2] : demande.usage === "portrait" ? [PORTRAIT_1, PORTRAIT_2] : [SCENE_1, SCENE_2];
       images = deux.slice(0, nombre).map(decoder);
