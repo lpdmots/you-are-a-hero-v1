@@ -8,10 +8,9 @@ import { imagesARelire } from "@/serveur/bibliotheque";
 import { nombreDeLivresARelire } from "@/serveur/relecture-des-livres";
 import { nombreDeSignalements } from "@/serveur/signalements";
 import {
-  basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerLaCouvertureAdmin, retirerPartage,
+  basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerPartage,
 } from "./actions";
 import styles from "./admin.module.css";
-import { DeposerCouverture } from "./DeposerCouverture";
 
 export const metadata: Metadata = { title: "Administration" };
 
@@ -27,14 +26,11 @@ const FAITS: Record<string, string> = {
   "accueil-pose": "Le livre est sur l’accueil.",
   "accueil-retire": "Le livre a quitté l’accueil.",
   "accueil-ordre": "Les deux livres ont changé de place.",
-  "couverture-posee": "La couverture est sur l’accueil.",
-  "couverture-retiree": "La couverture est retirée : le livre montre sa page de titre.",
 };
 
 /** Ce qui n'a pas pu se faire, en brique : la raison, et que faire */
 const REFUS: Record<string, string> = {
   "accueil-plein": "Deux livres sont déjà sur l’accueil : retirez-en un d’abord.",
-  "couverture-format": "Cette image ne convient pas : JPEG, PNG ou WebP, 4 Mo au plus.",
 };
 
 /**
@@ -128,7 +124,7 @@ export default async function Administration({ searchParams }: { searchParams: P
         ) : (
           <>
             <p className={styles.note}>
-              Deux au plus, parmi les livres de la bibliothèque. Couverture : la face avant, ou la couverture entière, dont seule la face avant est gardée.
+              Deux au plus, parmi les livres de la bibliothèque. Chacun montre la couverture que son auteur a faite, ou sa page de titre.
             </p>
             <ul className={styles.liste}>
               {livres.map((l) => (
@@ -151,14 +147,6 @@ export default async function Administration({ searchParams }: { searchParams: P
                   <span className={styles.partage}>
                     {l.surLAccueil ? (
                       <>
-                        <DeposerCouverture projet={l.projet} remplacer={Boolean(l.couverture)} />
-                        {l.couverture ? (
-                          <form action={retirerLaCouvertureAdmin.bind(null, l.projet)}>
-                            <button type="submit" className="lien">
-                              Retirer la couverture
-                            </button>
-                          </form>
-                        ) : null}
                         <form action={choisirPourLAccueilAdmin.bind(null, l.projet, false)}>
                           <button type="submit" className="btn btn--petit">
                             Retirer de l’accueil

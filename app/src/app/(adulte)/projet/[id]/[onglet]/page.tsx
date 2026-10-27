@@ -171,7 +171,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
     );
     contenu = (
       <Livre
-        projet={{ id: projet.id, aChoix, deClasse }}
+        projet={{ id: projet.id, aChoix, deClasse, couverture: instantane.couverture?.id ?? null }}
         etape={etape}
         marques={marques}
         chemins={chemins ? afficherChemins(chemins, plan, projet.id) : null}

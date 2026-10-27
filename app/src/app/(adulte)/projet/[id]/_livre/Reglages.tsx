@@ -42,7 +42,7 @@ const EXEMPLE = "Plus il avançait, plus la brume s’épaississait autour de lu
 export function VoletReglages({
   projet, titre, reglages: recus, pages: recues, des, feuille, prenoms, aDesEnigmes, regles, parties, ordre, apercu, onVoirApercu,
 }: {
-  projet: { id: string; aChoix: boolean; deClasse: boolean };
+  projet: { id: string; aChoix: boolean; deClasse: boolean; couverture?: string | null };
   titre: string;
   reglages: ReglagesDuLivre;
   pages: PagesDuLivre;
@@ -668,7 +668,7 @@ function PanneauDePage({
   cle, projet, titre, pages, zone, feuille, prenoms, aDesEnigmes, regles, large = false, desImprimes, onChange, onFermer, doublePage,
 }: {
   cle: CleDePage;
-  projet: { id: string; aChoix: boolean; deClasse: boolean };
+  projet: { id: string; aChoix: boolean; deClasse: boolean; couverture?: string | null };
   titre: string;
   pages: PagesDuLivre;
   zone: { largeur: number; hauteur: number };
@@ -736,6 +736,14 @@ function PanneauDePage({
 
           {page.forme === "image" ? (
             <>
+              {/* La couverture du projet, posée en page de titre d'un clic, jamais d'office (F11-AC114) */}
+              {cle === "titre" && projet.couverture && page.imageId !== projet.couverture ? (
+                <p className="cx__cmd">
+                  <button type="button" className="lien" onClick={() => changer(cle, { imageId: projet.couverture } as Partial<PagesDuLivre[typeof cle]>)}>
+                    Reprendre la couverture
+                  </button>
+                </p>
+              ) : null}
               <ChoisirImageDePage projetId={projet.id} choisie={page.imageId} onChoisir={(id) => changer(cle, { imageId: id } as Partial<PagesDuLivre[typeof cle]>)} />
               <p className="cx-aide page-dimension">
                 Dimension utile : {Math.round(zone.largeur)} × {Math.round(zone.hauteur)} mm

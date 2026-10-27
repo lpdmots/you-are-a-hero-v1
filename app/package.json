@@ -39,6 +39,7 @@
     "livres:atelier": "tsx --conditions=react-server scripts/exemples/atelier.ts",
     "partages:essai": "tsx scripts/partages-d-essai.ts",
     "bibliotheque:accueil": "tsx scripts/bibliotheque-accueil.ts",
+    "couvertures:accueil": "tsx scripts/couvertures-accueil.ts",
     "captures": "playwright test --config playwright.captures.config.ts",
     "verifier:production": "tsx scripts/verifier-production.ts",
     "cle:copier": "tsx scripts/presse-papiers.ts",

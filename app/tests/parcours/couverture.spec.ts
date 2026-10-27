@@ -130,3 +130,23 @@ test("F11-AC116 — une couverture entière importée est coupée à sa face ava
   await expect(bloc(page).getByRole("alert")).toContainText("moins de 20 Mo");
   expect(await couvertureEnBase(projet)).toBe(id);
 });
+
+test("F11-AC114 — la page de titre reprend la couverture d'un clic, dans sa forme « Image pleine page », jamais d'office", async ({ page }) => {
+  const { compte, base } = await adultePret(page);
+  const projet = await livreFini(base, compte);
+  await aller(page, `/projet/${projet}/livre?etape=sortie`);
+  await bloc(page).locator('input[type="file"]').setInputFiles({
+    name: "couverture.jpg", mimeType: "image/jpeg", buffer: readFileSync(resolve(__dirname, "../../public/illustrations/defaut-foret.jpg")),
+  });
+  await expect(MESSAGE(page)).toContainText("Couverture importée.");
+  const id = await couvertureEnBase(projet);
+  // Rien d'office : la page de titre reste un modèle
+  expect((await sql<{ p: { titre?: { forme?: string } } | null }>("select pages_du_livre as p from projets where id = $1", [projet]))[0].p?.titre?.forme ?? "modele").toBe("modele");
+
+  await aller(page, `/projet/${projet}/livre?etape=page`);
+  await page.locator(".page-du-livre").filter({ hasText: "Page de titre" }).getByRole("button", { name: "Modifier" }).click();
+  await page.getByRole("radio", { name: "Image pleine page" }).check();
+  await page.getByRole("button", { name: "Reprendre la couverture" }).click();
+  await expect.poll(async () => (await sql<{ i: string | null }>("select pages_du_livre->'titre'->>'imageId' as i from projets where id = $1", [projet]))[0].i).toBe(id);
+  await expect(page.getByRole("button", { name: "Reprendre la couverture" })).toHaveCount(0);
+});

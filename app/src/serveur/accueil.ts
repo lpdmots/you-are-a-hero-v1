@@ -1,13 +1,12 @@
 import "server-only";
-import sharp from "sharp";
-import { PAGE } from "@/domaine/mise-en-page";
 import type { PresentationPartagee } from "@/domaine/partage";
-import { lireImage, SEAU } from "./images";
+import { SEAU } from "./images";
 import { clientService } from "./supabase";
 
 /**
- * Un livre posé sur le feuillet 27, fermé (design.md, « Le passage 27 ») : sa couverture déposée
- * dans l'administration, la face avant du livre imprimé (`couverture`) ; sinon sa page de titre,
+ * Un livre posé sur le feuillet 27, fermé (design.md, « Le passage 27 ») : la couverture de sa
+ * version publiée (`couverture`, F11-AC114, AC117 ; depuis le 27 octobre 2026 il n'y a plus de
+ * face avant déposée dans l'administration) ; sinon sa page de titre,
  * l'image d'une page de titre faite à la main qui la remplit (`pleinePage`), ou le titre, le
  * sous-titre et l'illustration entière, dans ses proportions (`ratio`, largeur sur hauteur). Depuis
  * le 25 octobre 2026 (F14-AC40 révisé, F15-AC19), c'est un livre de la bibliothèque : il se lit à
@@ -28,10 +27,12 @@ export type LivreDeLAccueil = {
   duPorteur: boolean;
 };
 
-/** Ce que les réglages gardent de chaque livre de l'accueil (F14-AC40), deux au plus, dans l'ordre : son projet. */
+/**
+ * Ce que les réglages gardent de chaque livre de l'accueil (F14-AC40), deux au plus, dans l'ordre :
+ * son projet ; et, jusqu'à la conversion par `npm run couvertures:accueil` (F11-AC117), le chemin
+ * de la face avant déposée autrefois, que plus rien n'affiche.
+ */
 export type EntreeDeLAccueil = { projet: string; couverture: string | null };
-
-export const POIDS_MAX_COUVERTURE = 4 * 1024 * 1024;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 function entreesDe(brut: unknown): EntreeDeLAccueil[] {
@@ -60,9 +61,9 @@ async function garderLesEntrees(entrees: EntreeDeLAccueil[]): Promise<boolean> {
   return !error;
 }
 
-/** L'adresse de la couverture déposée : son nom de fichier change à chaque dépôt, l'adresse aussi, et aucun cache ne garde l'ancienne. */
-export const adresseDeCouverture = (e: EntreeDeLAccueil): string | null =>
-  e.couverture ? `/images/accueil/${e.projet}?c=${encodeURIComponent(e.couverture.slice("accueil/".length))}` : null;
+/** La couverture figée dans la version publiée, servie par l'adresse du livre (F11-AC114). */
+const adresseDeLaCouverture = (adresse: string, c: { id?: unknown } | null | undefined): string | null =>
+  typeof c?.id === "string" && UUID.test(c.id) ? `/images/publie/${adresse}/${c.id}?v=1` : null;
 
 type Publiee = {
   projet_id: string;
@@ -72,6 +73,7 @@ type Publiee = {
   presentation: PresentationPartagee | null;
   images: Record<string, { largeur?: number; hauteur?: number }> | null;
   dernier: number | null;
+  couverture: { id?: unknown } | null;
 };
 
 /**
@@ -87,7 +89,7 @@ export async function livresDeLAccueil(): Promise<LivreDeLAccueil[]> {
     const { data, error } = await clientService()
       .from("publications")
       // Le numéro du dernier passage, plutôt que les passages entiers : quelques octets au lieu de centaines de kilo-octets
-      .select("projet_id, enseignant_id, adresse, titre:version->>titre, presentation:version->presentation, images:version->images, dernier:version->passages->-1->numero")
+      .select("projet_id, enseignant_id, adresse, titre:version->>titre, presentation:version->presentation, images:version->images, dernier:version->passages->-1->numero, couverture:version->couverture")
       .in("projet_id", entrees.map((e) => e.projet))
       .not("version", "is", null);
     if (error || !data) return [];
@@ -106,7 +108,7 @@ export async function livresDeLAccueil(): Promise<LivreDeLAccueil[]> {
           adresse: lu.adresse,
           titre: page?.titre?.trim() || lu.titre?.trim() || "Un livre de la classe",
           sousTitre: page?.sousTitre?.trim() ?? "",
-          couverture: adresseDeCouverture(entree),
+          couverture: adresseDeLaCouverture(lu.adresse, lu.couverture),
           image: image ? `/images/publie/${lu.adresse}/${image}?v=1` : null,
           pleinePage: Boolean(page?.image),
           ratio: taille?.largeur && taille?.hauteur ? taille.largeur / taille.hauteur : 16 / 9,
@@ -129,9 +131,9 @@ export async function livresAChoisir(): Promise<LivreAChoisir[]> {
   const base = clientService();
   const [entrees, { data }] = await Promise.all([
     entreesActuelles(),
-    base.from("publications").select("projet_id, enseignant_id, adresse, titre:version->>titre").not("version", "is", null).order("publiee_le", { ascending: false }).limit(500),
+    base.from("publications").select("projet_id, enseignant_id, adresse, titre:version->>titre, couverture:version->couverture").not("version", "is", null).order("publiee_le", { ascending: false }).limit(500),
   ]);
-  const publies = (data ?? []) as unknown as { projet_id: string; enseignant_id: string; adresse: string; titre: string | null }[];
+  const publies = (data ?? []) as unknown as { projet_id: string; enseignant_id: string; adresse: string; titre: string | null; couverture: { id?: unknown } | null }[];
   const rang = (projet: string) => {
     const i = entrees.findIndex((e) => e.projet === projet);
     return i < 0 ? 99 : i;
@@ -141,7 +143,7 @@ export async function livresAChoisir(): Promise<LivreAChoisir[]> {
     return {
       projet: p.projet_id, adresse: p.adresse, titre: p.titre?.trim() || "Sans titre",
       courriel: (await base.auth.admin.getUserById(p.enseignant_id)).data.user?.email ?? null,
-      surLAccueil: Boolean(entree), couverture: entree ? adresseDeCouverture(entree) : null,
+      surLAccueil: Boolean(entree), couverture: adresseDeLaCouverture(p.adresse, p.couverture),
     };
   }));
   return livres.sort((a, b) => rang(a.projet) - rang(b.projet));
@@ -169,57 +171,4 @@ export async function choisirPourLAccueil(projet: string, oui: boolean): Promise
 export async function echangerLesLivres(): Promise<boolean> {
   const entrees = await entreesActuelles();
   return entrees.length === 2 ? garderLesEntrees([entrees[1], entrees[0]]) : true;
-}
-
-/**
- * La couverture d'un livre de l'accueil : la face avant seule. Une couverture entière, plus large
- * que haute (quatrième, dos, face avant), est coupée à sa moitié droite, dos compris en marge :
- * la quatrième, qui porte souvent les prénoms des élèves, n'est jamais gardée.
- */
-export async function deposerLaCouverture(projet: string, fichier: File): Promise<"fait" | "format" | "refus"> {
-  // 4 Mo au plus : un envoi chez Vercel ne dépasse pas 4,5 Mo
-  if (!UUID.test(projet) || fichier.size === 0 || fichier.size > POIDS_MAX_COUVERTURE) return "format";
-  const octets = new Uint8Array(await fichier.arrayBuffer());
-  const lue = lireImage(octets);
-  if (!lue) return "format";
-  const entrees = await entreesActuelles();
-  const entree = entrees.find((e) => e.projet === projet);
-  if (!entree) return "refus";
-  let image = sharp(octets).rotate();
-  if (lue.largeur > lue.hauteur) {
-    // Le dos tient au plus 4 % de la largeur : la face avant commence après lui
-    const largeur = Math.round(lue.largeur * 0.48);
-    image = image.extract({ left: lue.largeur - largeur, top: 0, width: largeur, height: lue.hauteur });
-  }
-  const sortie = await image.resize({ width: Math.round(PAGE.largeur * 4.5), withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
-  const chemin = `accueil/${projet}-${Date.now().toString(36)}.webp`;
-  const stockage = clientService().storage.from(SEAU);
-  const { error } = await stockage.upload(chemin, sortie, { contentType: "image/webp", upsert: false });
-  if (error) return "refus";
-  if (!(await garderLesEntrees(entrees.map((e) => (e.projet === projet ? { ...e, couverture: chemin } : e))))) {
-    await stockage.remove([chemin]);
-    return "refus";
-  }
-  if (entree.couverture) await stockage.remove([entree.couverture]);
-  return "fait";
-}
-
-export async function retirerLaCouverture(projet: string): Promise<boolean> {
-  const entrees = await entreesActuelles();
-  const entree = entrees.find((e) => e.projet === projet);
-  if (!entree?.couverture) return true;
-  if (!(await garderLesEntrees(entrees.map((e) => (e.projet === projet ? { ...e, couverture: null } : e))))) return false;
-  await clientService().storage.from(SEAU).remove([entree.couverture]);
-  return true;
-}
-
-/** Le fichier de la couverture, pour tous : seulement celle d'un livre de l'accueil encore dans la bibliothèque. */
-export async function fichierDeCouverture(projet: string): Promise<Blob | null> {
-  if (!UUID.test(projet)) return null;
-  const entree = (await entreesActuelles()).find((e) => e.projet === projet);
-  if (!entree?.couverture) return null;
-  const { data: publie } = await clientService().from("publications").select("projet_id").eq("projet_id", projet).not("version", "is", null).maybeSingle();
-  if (!publie) return null;
-  const { data } = await clientService().storage.from(SEAU).download(entree.couverture);
-  return data ?? null;
 }

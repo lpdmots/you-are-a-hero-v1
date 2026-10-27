@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { choisirPourLAccueil, echangerLesLivres, retirerLaCouverture } from "@/serveur/accueil";
+import { choisirPourLAccueil, echangerLesLivres } from "@/serveur/accueil";
 import { accepterLImage, changerLesMots, refuserLImage, retirerDeLaBibliotheque } from "@/serveur/bibliotheque";
 import { estUuid } from "@/serveur/recit";
 import { exigerLePorteur, offrirDesEtoiles, offrirUnPass, partageDuLien, reglerLePaiement, retirerLePartage } from "@/serveur/administration";
@@ -96,11 +96,4 @@ export async function echangerLesLivresAdmin(): Promise<void> {
   const ok = await echangerLesLivres();
   revalidatePath("/", "layout");
   redirect(`/admin?fait=${ok ? "accueil-ordre" : "refus"}#adm-accueil`);
-}
-
-export async function retirerLaCouvertureAdmin(projet: string): Promise<void> {
-  await exigerLePorteur();
-  const ok = await retirerLaCouverture(projet);
-  revalidatePath("/", "layout");
-  redirect(`/admin?fait=${ok ? "couverture-retiree" : "refus"}#adm-accueil`);
 }

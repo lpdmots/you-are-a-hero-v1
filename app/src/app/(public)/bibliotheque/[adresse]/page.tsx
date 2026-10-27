@@ -15,7 +15,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // L'adresse d'un livre reste hors des moteurs : la page indexée est la bibliothèque (F15-AC12)
   const robots = { index: false, follow: true };
   if (!livre) return { title: "Ce livre n’est plus dans la bibliothèque", robots };
-  return { title: livre.titre, description: livre.presentation, robots, alternates: { canonical: `/bibliotheque/${livre.adresse}` } };
+  // L'aperçu d'un lien envoyé aux familles : la couverture du livre, en entier (F11-AC114)
+  const couverture = livre.couvertureId ? `/images/publie/${livre.adresse}/${livre.couvertureId}` : null;
+  return {
+    title: livre.titre, description: livre.presentation, robots, alternates: { canonical: `/bibliotheque/${livre.adresse}` },
+    ...(couverture
+      ? {
+          openGraph: { type: "book", locale: "fr_FR", siteName: "Il était une classe", url: `/bibliotheque/${livre.adresse}`, title: livre.titre, description: livre.presentation, images: [{ url: couverture, alt: `Couverture de « ${livre.titre} »` }] },
+          twitter: { card: "summary_large_image", images: [couverture] },
+        }
+      : {}),
+  };
 }
 
 /**

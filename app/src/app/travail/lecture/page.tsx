@@ -129,17 +129,25 @@ function Livre({ livre, grand = false }: { livre: LivrePropose; grand?: boolean 
   const contenu = livre.aChoix ? `Livre à choix · ${livre.passages} passages` : `Récit · ${livre.chapitres} chapitre${livre.chapitres > 1 ? "s" : ""}`;
   return (
     <Link className={`${styles.propose}${grand ? ` ${styles.proposeGrand}` : ""}`} href={`/travail/lire/${livre.projetId}`}>
-      <span className={styles.couverture} aria-hidden="true">
-        {livre.image ? (
-          // eslint-disable-next-line @next/next/no-img-element -- servie par l'application, d'après la version partagée
-          <img src={`/images/classe/${livre.projetId}/${livre.image}?v=1`} alt="" />
-        ) : null}
-        <span className={styles.couverture__titre}>{livre.titre}</span>
-        <svg viewBox="0 0 120 10">
-          <path d="M0 5h52M68 5h52" />
-          <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
-        </svg>
-      </span>
+      {livre.couverture ? (
+        // La couverture du livre (F11-AC114), à la place de sa page de titre
+        <span className={`${styles.couverture} ${styles.couvertureImage}`} aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element -- servie par l'application, d'après la version partagée */}
+          <img src={`/images/classe/${livre.projetId}/${livre.couverture}?v=1`} alt="" />
+        </span>
+      ) : (
+        <span className={styles.couverture} aria-hidden="true">
+          {livre.image ? (
+            // eslint-disable-next-line @next/next/no-img-element -- servie par l'application, d'après la version partagée
+            <img src={`/images/classe/${livre.projetId}/${livre.image}?v=1`} alt="" />
+          ) : null}
+          <span className={styles.couverture__titre}>{livre.titre}</span>
+          <svg viewBox="0 0 120 10">
+            <path d="M0 5h52M68 5h52" />
+            <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
+          </svg>
+        </span>
+      )}
       <span className={styles.propose__texte}>
         {livre.deMaClasse ? (
           <span className={styles.tampon}>
@@ -165,17 +173,24 @@ function LivrePublie({ livre }: { livre: LivreDeLaBibliotheque }) {
   const contenu = livre.aChoix ? `Livre à choix${livre.passages ? ` · ${livre.passages} passages` : ""}` : "Récit";
   return (
     <Link className={styles.propose} href={`/travail/lire/bibliotheque/${livre.adresse}`}>
-      <span className={styles.couverture} aria-hidden="true">
-        {livre.image ? (
-          // eslint-disable-next-line @next/next/no-img-element -- servie par l'adresse du livre publié
-          <img src={`/images/publie/${livre.adresse}/${livre.image}?v=1`} alt="" />
-        ) : null}
-        <span className={styles.couverture__titre}>{livre.titre}</span>
-        <svg viewBox="0 0 120 10">
-          <path d="M0 5h52M68 5h52" />
-          <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
-        </svg>
-      </span>
+      {livre.couverture ? (
+        <span className={`${styles.couverture} ${styles.couvertureImage}`} aria-hidden="true">
+          {/* eslint-disable-next-line @next/next/no-img-element -- servie par l'adresse du livre publié */}
+          <img src={`/images/publie/${livre.adresse}/${livre.couverture}?v=1`} alt="" />
+        </span>
+      ) : (
+        <span className={styles.couverture} aria-hidden="true">
+          {livre.image ? (
+            // eslint-disable-next-line @next/next/no-img-element -- servie par l'adresse du livre publié
+            <img src={`/images/publie/${livre.adresse}/${livre.image}?v=1`} alt="" />
+          ) : null}
+          <span className={styles.couverture__titre}>{livre.titre}</span>
+          <svg viewBox="0 0 120 10">
+            <path d="M0 5h52M68 5h52" />
+            <path d="M60 1.5l3.5 3.5L60 8.5 56.5 5z" />
+          </svg>
+        </span>
+      )}
       <span className={styles.propose__texte}>
         <span className={styles.propose__titre}>{livre.titre}</span>
         {/* Qui l'a écrit, comme sa page de titre le dit : une autre classe, ou un auteur */}

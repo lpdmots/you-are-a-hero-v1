@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import sharp from "sharp";
-import { adultePret, aller, courrielRecu, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
+import { adultePret, aller, courrielRecu, semerProjet, service, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 
 /**
  * Étape 9, lot 6 : l'administration du porteur (F14-AC22 à AC25). Le porteur est un compte
@@ -126,14 +126,29 @@ async function publierVite(projet: string, compte: Compte, titre: string): Promi
   return adresse;
 }
 
-test("F14-AC40, F15-AC19 — les livres de l'accueil se choisissent parmi tous les livres de la bibliothèque, avec leur face avant ; retiré de la bibliothèque, un livre quitte l'accueil", async ({ page, browser }) => {
+test("F14-AC40, F15-AC19, F11-AC117 — les livres de l'accueil se choisissent parmi tous les livres de la bibliothèque, avec la couverture de leur auteur ; retiré de la bibliothèque, un livre quitte l'accueil", async ({ page, browser }) => {
   const { bernard, marais, porteur, base } = await deuxComptes(page, browser);
   await sql("update public.reglages_application set livres_de_l_accueil = '[]'");
   const phare = await semerProjet(base, porteur, "personnel", "choix", "Le phare", null);
   await publierVite(phare, porteur, "Le phare");
   const deBernard = await publierVite(marais, bernard, "Le marais");
+  // La couverture que M. Bernard a faite, figée dans sa version publiée (F11-AC114)
+  const couverture = crypto.randomUUID();
+  const bleue = await sharp({ create: { width: 616, height: 864, channels: 3, background: "#0000c0" } }).jpeg().toBuffer();
+  for (const chemin of [`${bernard.id}/${marais}/${couverture}.jpg`, `${bernard.id}/${marais}/${couverture}-v.jpg`]) {
+    await service().storage.from("images").upload(chemin, bleue, { contentType: "image/jpeg", upsert: true });
+  }
+  await sql(
+    "insert into public.images (id, projet_id, enseignant_id, chemin, chemin_vignette, largeur, hauteur, format) values ($1, $2, $3, $4, $5, 616, 864, 'jpeg')",
+    [couverture, marais, bernard.id, `${bernard.id}/${marais}/${couverture}.jpg`, `${bernard.id}/${marais}/${couverture}-v.jpg`],
+  );
+  await sql(
+    `update public.publications set version = version || jsonb_build_object('couverture', jsonb_build_object('id', $2::text, 'largeur', 616, 'hauteur', 864, 'textes', null),
+       'images', jsonb_build_object($2::text, jsonb_build_object('largeur', 616, 'hauteur', 864))) where projet_id = $1`,
+    [marais, couverture],
+  );
 
-  // Tous les livres de la bibliothèque se proposent, ceux des autres comptes compris
+  // Tous les livres de la bibliothèque se proposent, ceux des autres comptes compris, sans rien à déposer
   await aller(page, "/admin");
   const section = page.getByRole("region", { name: "Livres de l’accueil" });
   const ligne = section.getByRole("listitem").filter({ hasText: "Le marais" });
@@ -141,15 +156,8 @@ test("F14-AC40, F15-AC19 — les livres de l'accueil se choisissent parmi tous l
   await expect(section.getByRole("listitem").filter({ hasText: "Le phare" })).toBeVisible();
   await ligne.getByRole("button", { name: "Mettre sur l’accueil" }).click();
   await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("Le livre est sur l’accueil.");
-
-  // Une couverture entière : la quatrième en rouge, la face avant en bleu ; seule la bleue est gardée
-  const entiere = await sharp({ create: { width: 2000, height: 1414, channels: 3, background: "#c00000" } })
-    .composite([{ input: await sharp({ create: { width: 1000, height: 1414, channels: 3, background: "#0000c0" } }).png().toBuffer(), left: 1000, top: 0 }])
-    .png()
-    .toBuffer();
-  // Un seul geste : choisir l'image, l'envoi part aussitôt
-  await ligne.locator('input[type="file"]').setInputFiles({ name: "couverture.png", mimeType: "image/png", buffer: entiere });
-  await expect(page.getByRole("status").filter({ hasText: /./ })).toHaveText("La couverture est sur l’accueil.");
+  await expect(ligne.getByRole("img", { name: "Couverture de « Le marais »" })).toBeVisible();
+  await expect(section.locator('input[type="file"]')).toHaveCount(0);
 
   // Un visiteur la voit sur l'accueil, et le livre mène à sa lecture dans la bibliothèque
   const visiteur = await (await browser.newContext()).newPage();
@@ -157,20 +165,13 @@ test("F14-AC40, F15-AC19 — les livres de l'accueil se choisissent parmi tous l
   const livre = visiteur.getByRole("link", { name: "Feuilleter « Le marais »" });
   await expect(livre).toHaveAttribute("href", `/lire/bibliotheque/${deBernard}`);
   const adresse = await livre.locator("img").getAttribute("src");
+  expect(adresse).toBe(`/images/publie/${deBernard}/${couverture}?v=1`);
   const reponse = await visiteur.request.get(`http://localhost:3100${adresse}`);
-  const lue = sharp(await reponse.body());
-  const { width = 0, height = 0 } = await lue.metadata();
-  expect(width).toBeLessThan(height);
-  const { dominant } = await lue.stats();
+  const { dominant } = await sharp(await reponse.body()).stats();
   expect(dominant.b).toBeGreaterThan(150);
-  expect(dominant.r).toBeLessThan(60);
 
-  // Un fichier qui n'est pas une image est refusé
-  await ligne.locator('input[type="file"]').setInputFiles({ name: "notes.txt", mimeType: "text/plain", buffer: Buffer.from("rien") });
-  await expect(page.getByRole("alert").filter({ hasText: /./ })).toHaveText("Cette image ne convient pas : JPEG, PNG ou WebP, 4 Mo au plus.");
-
-  // Un autre compte ne peut rien déposer ; la couverture d'un livre absent de l'accueil n'existe pas
-  expect((await visiteur.request.post("http://localhost:3100/admin/couverture", { multipart: { projet: marais } })).status()).toBe(404);
+  // Plus de dépôt de face avant : ni l'adresse du dépôt, ni celle des faces avant déposées
+  expect((await visiteur.request.post("http://localhost:3100/admin/couverture", { multipart: { projet: marais } })).status()).toBeGreaterThanOrEqual(400);
   expect((await visiteur.request.get(`http://localhost:3100/images/accueil/${phare}`)).status()).toBe(404);
 
   // Retiré de la bibliothèque, le livre quitte l'accueil (F15-AC19)

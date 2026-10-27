@@ -31,7 +31,8 @@ import type { CheminsAffiches, PointAffiche, RelireAffiche, TacheAffichee, Tache
 export function Livre({
   projet, etape, marques, chemins, relire, pdfDeTravail, empreinte, noms, numeros, miseEnPage, convient, douteOrdre, passages, imprimer, aideMasquee, aideVue,
 }: {
-  projet: { id: string; aChoix: boolean; deClasse: boolean };
+  /** `couverture` : celle du projet, que la page de titre peut reprendre (F11-AC114) */
+  projet: { id: string; aChoix: boolean; deClasse: boolean; couverture?: string | null };
   etape: EtapeLivre;
   marques: Record<EtapeLivre, MarqueEtape>;
   /** « Vérifier les chemins » ; rien en récit classique, qui n'a pas cette étape */

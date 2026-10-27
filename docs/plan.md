@@ -3870,7 +3870,24 @@ V6, le premier envoi à l'imprimeur.
      version publiée, à blanc puis `--oui`, `--production` à sa seule demande
      (F11-AC114, AC117). Migration seulement si la conversion la demande ;
      la colonne de la face avant déposée reste jusqu'à la conversion en
-     ligne, retirée ensuite par une migration à part.
+     ligne, retirée ensuite par une migration à part. **Construit le
+     27 octobre 2026,** migration `couverture_dans_lire` en base locale
+     seulement (`livres_du_poste` et `bibliotheque_du_poste` refaites, avec
+     la couverture de la version) ; la bibliothèque, son tiroir et l'accueil
+     lisent `version->couverture`, servie par `/images/publie/…` ; l'adresse
+     d'un livre la donne en `og:image` ; « Lire » la montre seule, bord à
+     bord, à la place de la page de titre ; « Reprendre la couverture » dans
+     la forme « Image pleine page » de la page de titre ; le dépôt de
+     l'administration, son adresse et `/images/accueil/…` retirés ;
+     `npm run couvertures:accueil` (à blanc en `--production`, puis `--oui`)
+     inscrit chaque face avant en JPEG parmi les images de son projet, la
+     pose en couverture du projet et de sa version publiée, sans relecture
+     (elle était déjà en public), puis l'oublie et l'efface ; un projet qui a
+     déjà sa couverture la garde. Essayé en local : « Électro Nick » et
+     « Bouquin mène l'enquête » ont reçu leur face avant. Précision : les
+     faces avant déposées font 666 points de large, assez pour le site, trop
+     peu pour l'imprimeur (l'avertissement le dit). La colonne
+     `livres_de_l_accueil` garde ses entrées sans la face avant.
   4. **Essai de bout en bout :** un parcours de la création à la
      bibliothèque, sans vraie IA ; les captures des écrans touchés à 1366 et
      à 390 ; le mode d'emploi « Essayer la couverture » dans `app/README.md`,

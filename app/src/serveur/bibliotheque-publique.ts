@@ -1,6 +1,5 @@
 import "server-only";
 import { cache } from "react";
-import { adresseDeCouverture, entreesActuelles } from "./accueil";
 import { nomsDesObjets } from "./lecteur";
 import { SEAU, TYPE_MIME, type FormatImage } from "./images";
 import { estUuid } from "./recit";
@@ -29,6 +28,7 @@ type Ligne = {
   dernier: number | null;
   passages: number | null;
   coeurs: number | null;
+  couverture: { id?: unknown } | null;
 };
 
 const enLivre = (l: Ligne): LivrePublie => {
@@ -47,12 +47,17 @@ const enLivre = (l: Ligne): LivrePublie => {
     image: image ? { id: image, pleinePage: Boolean(page?.image), ratio: taille?.largeur && taille?.hauteur ? taille.largeur / taille.hauteur : 16 / 9 } : null,
     publieLe: l.publiee_le,
     coeurs: l.coeurs ?? 0,
+    ...couvertureDe(l.adresse, l.couverture),
   };
 };
 
+/** La couverture figée dans la version publiée (F11-AC114), servie par l'adresse du livre ; la vignette suffit aux cartes et au tiroir. */
+const couvertureDe = (adresse: string, c: { id?: unknown } | null): { couverture: string | null; couvertureId: string | null } =>
+  typeof c?.id === "string" && estUuid(c.id) ? { couverture: `/images/publie/${adresse}/${c.id}?v=1`, couvertureId: c.id } : { couverture: null, couvertureId: null };
+
 // Le numéro du dernier passage et la page de titre, plutôt que la version entière : quelques octets par livre
 const COLONNES =
-  "projet_id, adresse, presentation, age, publiee_le, coeurs, titre:version->>titre, a_choix:version->aChoix, page:version->presentation->titre, images:version->images, dernier:version->passages->-1->numero";
+  "projet_id, adresse, presentation, age, publiee_le, coeurs, titre:version->>titre, a_choix:version->aChoix, page:version->presentation->titre, images:version->images, dernier:version->passages->-1->numero, couverture:version->couverture";
 
 /** Tous les livres publiés, pour la page ; une base qui ne répond pas laisse la page vide. */
 export const livresPublies = cache(async (): Promise<LivrePublie[] | null> => {
@@ -61,12 +66,7 @@ export const livresPublies = cache(async (): Promise<LivrePublie[] | null> => {
     if (error) return null;
     // Le typage de supabase-js ne lit pas l'indice négatif « ->-1 », que PostgREST accepte
     const lignes = data as unknown as (Ligne & { projet_id: string })[];
-    // Un livre de l'accueil montre la couverture que le porteur y a déposée
-    const entrees = await entreesActuelles().catch(() => []);
-    return lignes.map((l) => {
-      const entree = entrees.find((e) => e.projet === l.projet_id);
-      return { ...enLivre(l), couverture: entree ? adresseDeCouverture(entree) : null };
-    });
+    return lignes.map(enLivre);
   } catch {
     return null;
   }

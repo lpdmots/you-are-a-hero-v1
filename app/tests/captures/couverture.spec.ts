@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
 import type { SupabaseClient } from "@supabase/supabase-js";
-import { action, adultePret, aller, choixAuto, recit, semerBlocs, semerClasse, semerPartie, semerProjet, service, sql, supprimerComptes, type Compte } from "../parcours/outils";
+import { action, adultePret, aller, choixAuto, classeQuiEcrit, posteDe, recit, semerBlocs, semerClasse, semerPartie, semerProjet, service, sql, supprimerComptes, type Compte } from "../parcours/outils";
 
 /**
  * Captures de la couverture faite sur le site (F11.4, lot 1) : npm run captures -- couverture.
@@ -127,4 +127,34 @@ test("lot 2 : la couverture dans « Proposer à la bibliothèque »", async ({ p
   await aller(page, partager);
   await page.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
   await capturer(page, "proposer-avec-couverture");
+});
+
+test("lot 3 : la couverture dans « Lire », la bibliothèque et la page de titre", async ({ page, browser }) => {
+  test.setTimeout(180_000);
+  n = 1730;
+  const s = await classeQuiEcrit(page);
+  await page.setViewportSize(HAUTE);
+  const projet = await livreFini(s.base, s.compte, s.classe.id);
+  const id = await couverture(s.base, s.compte, projet);
+  await s.base.from("projets").update({ couverture_id: id }).eq("id", projet);
+  await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
+  await page.getByText("J’ai relu le livre sur ces points.").click();
+  await page.getByRole("button", { name: "Partager à mes classes" }).click();
+  await expect(page.getByText(/À jour depuis le/)).toBeVisible();
+
+  const alice = await posteDe(browser, s, "Alice");
+  await alice.page.setViewportSize({ width: 1366, height: 1300 });
+  await alice.page.goto("/travail/lecture");
+  await capturer(alice.page, "lire-avec-couverture");
+  await alice.page.setViewportSize({ width: 390, height: 844 });
+  await capturer(alice.page, "lire-avec-couverture-390", true);
+
+  await aller(page, "/bibliotheque");
+  await capturer(page, "bibliotheque-avec-couvertures");
+
+  await aller(page, `/projet/${projet}/livre?etape=page`);
+  await page.locator(".page-du-livre").filter({ hasText: "Page de titre" }).getByRole("button", { name: "Modifier" }).click();
+  await page.getByRole("radio", { name: "Image pleine page" }).check();
+  await capturer(page, "page-de-titre-reprendre");
 });

@@ -81,15 +81,16 @@ function Carte({ livre, href }: { livre: LivrePublie; href: string }) {
 }
 
 /**
- * La page de titre en couverture, comme le lecteur l'ouvre : l'image d'une page faite à la main, ou
- * le titre, le sous-titre et l'illustration entière. `grand` pour le tiroir.
+ * La couverture du livre (F11-AC114) ; sans elle, la page de titre, comme le lecteur l'ouvre :
+ * l'image d'une page faite à la main, ou le titre, le sous-titre et l'illustration entière.
+ * `grand` pour le tiroir.
  */
 export function Couverture({ livre, grand = false, enfants }: { livre: LivrePublie; grand?: boolean; enfants?: ReactNode }) {
   const image = livre.image ? `/images/publie/${livre.adresse}/${livre.image.id}?v=1` : null;
   return (
     <span className={`${accueil.volume} ${styles.volume} ${grand ? styles.volumeGrand : ""}`}>
       {livre.couverture ? (
-        // La face avant du livre imprimé, déposée par le porteur pour l'accueil
+        // La couverture figée dans la version publiée, faite ou importée par son auteur
         // eslint-disable-next-line @next/next/no-img-element
         <img className={accueil.pleinePage} src={livre.couverture} alt="" loading="lazy" />
       ) : livre.image?.pleinePage && image ? (

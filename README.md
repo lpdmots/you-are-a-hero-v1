@@ -635,8 +635,10 @@ avant de commencer » soient tranchées.
   finale faite et close le 23 octobre (27/40 et 29/40 ; le 12 en six
   captures, « vous guide et vous aide », « 20 € par livre », « Créer un
   compte » dans l'en-tête, aperçu de partage), en ligne jusqu'à `5857338`.
-  Restent : déposer les deux couvertures dans l'administration en ligne,
-  retirer `LIVRES_DE_L_ACCUEIL` chez Vercel.
+  Restent : retirer `LIVRES_DE_L_ACCUEIL` chez Vercel. Le dépôt des
+  couvertures dans l'administration est retiré le 27 octobre 2026 (F11-AC117) :
+  la couverture est celle du livre, et `npm run couvertures:accueil` convertit
+  les faces avant déjà déposées.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,
