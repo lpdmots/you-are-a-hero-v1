@@ -10321,6 +10321,17 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   fiche pouvant désormais se faire proposer sans description. Appliqué à la
   couverture au lot 1 de « Couverture faite sur le site » ; les autres aides
   forment un lot à part ([plan](plan.md#couverture-faite-sur-le-site-f114-f15)).
+- **F13-AC32 — Toutes les aides, sans indication** (lot « Aides sans
+  indication », 27 octobre 2026) : étant donné « Le pont de brume », une scène
+  sans consigne ni texte, lorsque l'adulte demande « ✦ Formuler », le ✦ du
+  titre, les idées de choix, « ✦ Écrire » ou « ✦ Proposer la description » de
+  son image, alors chacune propose d'après le titre, les choix qui y mènent,
+  le chapitre et la Préparation ; étant donné une Préparation vide,
+  « Repérer les personnages » cherche dans le plan ; étant donné la carte
+  « Brindille » sans description, « ✦ Préciser pour les images » propose une
+  fiche ; « Créer son portrait » reste refusé tant qu'elle n'a pas de fiche,
+  et une image de repérage tant que le chapitre n'a pas de résumé (« ✦ Proposer
+  un résumé » y pourvoit).
 - **F13-AC31 — Proposer sans indication :** étant donné « La lanterne du
   passeur », dont « Ce que montre la couverture » est vide et la Préparation
   sans univers, lorsque l'adulte demande « ✦ Proposer la description », alors
@@ -11036,10 +11047,11 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
   sa consigne, lorsque l'adulte demande « ✦ Écrire », alors il reçoit un texte
   de récit d'environ la longueur demandée, et la scène reste vide tant qu'il ne
   l'a pas mis dans la scène.
-- **F13-AC23 — Seulement une scène sans récit, avec sa consigne :** étant donné
-  une scène qui a un paragraphe de récit écrit, ou une scène vide sans
-  consigne, lorsque l'aide est demandée, alors rien ne part chez le
-  fournisseur.
+- **F13-AC23 — Seulement une scène sans récit :** étant donné
+  une scène qui a un paragraphe de récit écrit, lorsque l'aide est demandée,
+  alors rien ne part chez le fournisseur. Révisé le 27 octobre 2026 (« Jamais
+  de refus faute de texte », F13-AC32) : une scène vide sans consigne
+  s'écrit d'après son titre, ce qui y mène et le chapitre.
 - **F13-AC26 — Des choix déjà là (18 octobre 2026) :** étant donné une scène
   sans récit qui a deux choix, ajoutés par les idées de choix, lorsque l'adulte
   demande « ✦ Écrire » et met le texte dans la scène, alors les paragraphes

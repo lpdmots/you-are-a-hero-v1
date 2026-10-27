@@ -1,7 +1,7 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { ideesChoix } from "@/serveur/ia/aides/idees-choix";
-import { demanderDesIdees, finPourLesIdees, lireDejaMontrees, PAS_DE_CHOIX, SANS_DE_QUOI_PROPOSER } from "@/serveur/idees-de-choix";
+import { demanderDesIdees, finPourLesIdees, lireDejaMontrees, PAS_DE_CHOIX } from "@/serveur/idees-de-choix";
 import {
   attribuer, creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, enseignantDe, inscrire, nettoyer, sql,
   type Adulte, type ClasseEssai, type EleveEssai,
@@ -111,13 +111,14 @@ describe("Idées de choix (F13.3)", () => {
     expect(r.idees.some((i) => i.destination.sorte === "existante" && i.destination.sceneId === gue)).toBe(false);
   });
 
-  it("sans consigne ni texte, rien ne part ; en récit classique, pas d'idées de choix", async () => {
-    const { ici } = await lisiere();
-    await laurent.base.from("scenes").update({ consigne: "" }).eq("id", ici);
-    expect(await demanderDesIdees(enseignantDe(laurent), ici)).toEqual({ ok: false, message: SANS_DE_QUOI_PROPOSER });
+  it("F13-AC32 — sans consigne ni texte, des idées se proposent d'après le titre et le chapitre ; en récit classique, pas d'idées de choix", async () => {
     const classique = await lisiere("classique");
     expect(await demanderDesIdees(enseignantDe(laurent), classique.ici)).toEqual({ ok: false, message: PAS_DE_CHOIX });
     expect(await sql("select 1 from public.appels_ia where enseignant_id = $1", [laurent.id])).toHaveLength(0);
+    const { ici } = await lisiere();
+    await laurent.base.from("scenes").update({ consigne: "" }).eq("id", ici);
+    const r = await demanderDesIdees(enseignantDe(laurent), ici);
+    expect(r.ok && r.idees.length).toBeGreaterThan(0);
   });
 
   it("une réponse inutilisable ne change rien et le dit", async () => {

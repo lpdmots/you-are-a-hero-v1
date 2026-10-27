@@ -81,11 +81,10 @@ describe("Les cartes des personnages (F10.2)", () => {
     expect((await appels()).map((a) => a.aide)).toEqual(["personnages"]);
   });
 
-  it("sans texte retenu ni idée retenue, rien ne part, et la page dit quoi faire", async () => {
+  it("F13-AC32 — sans texte retenu ni idée retenue, l'IA cherche quand même, dans la Préparation et le plan", async () => {
     const projet = (await creerProjet(laurent, "classe", "choix", "Vide", classe.id)).id;
-    const r = await repererLesPersonnages(enseignantDe(laurent), projet);
-    expect(r).toEqual({ ok: false, message: "Écrivez d’abord dans « Nous retenons » d’un héros qui il croise, ou retenez des idées." });
-    expect(await appels()).toEqual([]);
+    await repererLesPersonnages(enseignantDe(laurent), projet);
+    expect((await appels()).map((a) => a.aide)).toEqual(["personnages"]);
   });
 
   it("F10-AC39 — plusieurs héros : la Préparation les rend tous, et les aides reçoivent leur liste et leurs compétences", async () => {
@@ -167,10 +166,12 @@ describe("Fiche visuelle et images de référence (F10.2)", () => {
     for (const absent of ["Alice", "Laurent"]) expect(parti).not.toContain(absent);
   });
 
-  it("une carte sans description ni fiche ne part pas ; sans fiche visuelle, aucun portrait ne se crée", async () => {
+  it("F13-AC32 — une carte sans description reçoit quand même sa fiche proposée ; sans fiche visuelle, aucun portrait ne se crée", async () => {
     const projet = await passeurs();
     const sans = await carte(projet, { nom: "Brindille" });
-    expect(await preciserLaFiche(enseignantDe(laurent), "personnage", sans)).toEqual({ ok: false, message: "Décrivez d’abord le personnage en quelques mots." });
+    const fiche = await preciserLaFiche(enseignantDe(laurent), "personnage", sans);
+    expect(fiche.ok).toBe(true);
+    await sql("delete from public.appels_ia where enseignant_id = $1", [laurent.id]);
     const decrite = await carte(projet, { nom: "Maël", description: "Le père de Lou." });
     expect(await demanderLaReference(enseignantDe(laurent), "personnage", decrite)).toEqual({ ok: false, message: "Décrivez d’abord son apparence." });
     expect(await appels()).toEqual([]);

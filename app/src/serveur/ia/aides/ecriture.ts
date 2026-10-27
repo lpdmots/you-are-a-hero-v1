@@ -11,6 +11,7 @@ import { REGLES_COMMUNES, blocCarnet, eleve, lecteurs, presentation, type Carnet
  */
 export type EntreeEcriture = {
   histoire: Histoire;
+  /** Vide : l'IA écrit d'après le titre, ce qui mène ici et le chapitre (F13, « Jamais de refus faute de texte ») */
   consigne: string;
   titre?: string;
   carnet?: Carnet;
@@ -34,7 +35,7 @@ export const ecriture: DefinitionAide<EntreeEcriture, Ecriture> = {
     `Tu écris le texte d'une scène du livre, d'après sa consigne.${e.histoire.mode === "classe"
       ? ` Le livre est écrit par une classe d'${eleve(e.histoire, true)} : écris comme un bon élève de cet âge pourrait le faire, avec un vocabulaire et des phrases à sa portée, vivant et clair.`
       : ` Le livre est écrit par un adulte, pour des ${lecteurs(e.histoire)} : un style vivant, à leur portée.`}
-- Suis la consigne : ce qu'elle demande de raconter et de décrire.
+- Suis la consigne : ce qu'elle demande de raconter et de décrire. Sans consigne, pars du titre de la scène, des choix qui y mènent et du chapitre, et raconte seulement ce qu'ils annoncent.
 - Enchaîne avec ce qui mène à la scène, quand il est fourni : le lecteur arrive d'une de ces scènes.
 - Garde la personne et le temps du récit des scènes d'avant (le héros nommé à la troisième personne, ou « tu ») ; à défaut, la troisième personne au passé.
 - N'invente aucun personnage important ni aucun événement que la consigne, la préparation ou le chapitre n'annoncent pas ; tu peux ajouter des détails de lieu, de sensation, de pensée et de dialogue.
@@ -66,7 +67,7 @@ export const ecriture: DefinitionAide<EntreeEcriture, Ecriture> = {
   },
   simuler: (e) => {
     const paragraphes = [
-      `${e.consigne.split("\n")[0].replace(/^(Raconte|Décris)[^:]*:?\s*/i, "")}`,
+      `${(e.consigne.split("\n")[0].replace(/^(Raconte|Décris)[^:]*:?\s*/i, "") || e.titre) ?? "Lou avançait."}`,
       "La brume glissait doucement sur l'eau. Lou retenait son souffle.",
     ];
     while (compterMots(paragraphes.join(" ")) < e.cible) paragraphes[1] += " Le vent faisait frissonner les roseaux.";

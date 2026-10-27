@@ -278,12 +278,11 @@ export function useTitreIa({
  * La proposition se retouche sur place avant « Utiliser » (F13-AC07).
  */
 export function useConsigneIa({
-  sceneId, avantDePartir, deClasse, actuelle, onUtiliser, onSansIndication, onDemande,
+  sceneId, avantDePartir, deClasse, actuelle, onUtiliser, onDemande,
 }: Commun & {
   deClasse: boolean;
   actuelle: string;
   onUtiliser: (consigne: string) => void;
-  onSansIndication: () => void;
   /** Une demande part : l'autre proposition ouverte se referme */
   onDemande: () => void;
 }) {
@@ -300,10 +299,6 @@ export function useConsigneIa({
 
   const formuler = async () => {
     if (demande) return;
-    if (!actuelle.trim()) {
-      onSansIndication();
-      return dire({ texte: "Écrivez d’abord en quelques mots ce que la scène doit raconter." });
-    }
     setDemande(true);
     onDemande();
     if (!(await avantDePartir())) {

@@ -35,7 +35,6 @@ export type IdeeProposee = {
 
 export type ReponseIdees = { ok: true; idees: IdeeProposee[]; reste: string | null } | { ok: false; message: string };
 
-export const SANS_DE_QUOI_PROPOSER = "Écrivez d’abord une consigne ou le début du texte.";
 export const PAS_DE_CHOIX = "Ce récit se lit du début à la fin : il n’a pas de choix.";
 
 /** La fin d'un texte, en paragraphes entiers, `max` lettres environ. */
@@ -86,7 +85,7 @@ export async function demanderDesIdees(
   if (lieu.recit !== "choix") return { ok: false, message: PAS_DE_CHOIX };
   const paragraphes = finPourLesIdees(paragraphesACorriger(texte.texte).map((p) => p.texte));
   const consigne = lieu.scene.consigne?.slice(0, 1500) ?? null;
-  if (!consigne && !paragraphes.length) return { ok: false, message: SANS_DE_QUOI_PROPOSER };
+  // Sans consigne ni texte, le titre de la scène, le chapitre et la Préparation suffisent (F13, 27 octobre 2026)
 
   const [preparation, scenes] = await Promise.all([
     preparationDe(e, lieu.projetId),

@@ -3872,6 +3872,15 @@ V6, le premier envoi à l'imprimeur.
   personnages », fiche visuelle ; les boutons qui créent une image restent
   éteints sans prompt écrit (deux clics, d'abord le prompt). La couverture
   l'applique déjà au lot 1. Un test par aide, contre la base et l'IA simulée.
+  **Construit le 27 octobre 2026,** sans migration : les refus « Écrivez
+  d'abord… » retirés côté serveur (consigne, titre, écriture, idées de choix,
+  description d'une image de scène, repérage des personnages, fiche visuelle)
+  et côté page (« Formuler », « Écrire ») ; la consigne et le titre reçoivent
+  les phrases des choix qui mènent à la scène, l'écriture et la description
+  le titre de la scène, la description aussi sa consigne, le repérage des
+  personnages le plan et ses résumés ; la consigne et l'écriture sans
+  indication restent au plus près du titre et des choix, sans inventer la
+  suite (F13-AC32 ; F13-AC07 et AC23 révisés).
 - **Motifs du découpage :** le bloc est un seul écran, conçu et critiqué une
   fois, avec ce qui le fait marcher ; les versions et la relecture changent
   les mêmes fonctions du partage et de la publication ; tout ce qui montre la

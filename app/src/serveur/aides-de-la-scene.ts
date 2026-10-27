@@ -95,7 +95,6 @@ export function debutDuTexte(paragraphes: string[], max = DEBUT_ENVOYE): string 
 
 export type ReponseConsigne = { ok: true; consigne: string; reste: string | null } | { ok: false; message: string };
 
-export const SANS_INDICATION = "Écrivez d’abord en quelques mots ce que la scène doit raconter.";
 
 /**
  * « ✦ Formuler » (F13.2) : d'après l'indication de l'adulte, c'est-à-dire la consigne telle
@@ -105,13 +104,15 @@ export const SANS_INDICATION = "Écrivez d’abord en quelques mots ce que la sc
 export async function demanderUneConsigne(e: Enseignant, sceneId: string): Promise<ReponseConsigne> {
   const lieu = await lieuDeLaScene(e, sceneId);
   if (!lieu) return { ok: false, message: "Cette scène n’existe plus." };
-  const indication = lieu.scene.consigne;
-  if (!indication) return { ok: false, message: SANS_INDICATION };
-  const preparation = await preparationDe(e, lieu.projetId);
+  // Jamais de refus faute de texte (F13, 27 octobre 2026) : sans indication, le titre et les choix qui mènent ici
+  const indication = lieu.scene.consigne ?? "";
+  const [preparation, menent] = await Promise.all([preparationDe(e, lieu.projetId), choixQuiMenentIci(e, lieu)]);
   const carnet: Carnet | undefined = carnetDe(preparation);
   const r = await demanderUneAide(e, aideConsigne, {
     histoire: lieu.histoire,
     indication: indication.slice(0, 1500),
+    titre: lieu.scene.titre ?? undefined,
+    menent,
     carnet,
     chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },
     voisines: voisinesDe(lieu.avant, lieu.apres)
@@ -123,7 +124,6 @@ export async function demanderUneConsigne(e: Enseignant, sceneId: string): Promi
 
 export type ReponseTitres = { ok: true; titres: string[]; reste: string | null } | { ok: false; message: string };
 
-export const RIEN_POUR_UN_TITRE = "Écrivez d’abord une consigne ou le début du texte.";
 
 /**
  * Le ✦ du titre de scène (F05) : trois titres en une demande, d'après la consigne et le début
@@ -135,8 +135,9 @@ export async function demanderDesTitres(e: Enseignant, sceneId: string): Promise
   const texte = await texteDeScene(e, sceneId);
   const debut = texte ? debutDuTexte(paragraphesACorriger(texte.texte).map((p) => p.texte)) : null;
   const consigne = lieu.scene.consigne?.slice(0, 1500) ?? null;
-  if (!consigne && !debut) return { ok: false, message: RIEN_POUR_UN_TITRE };
+  const menent = consigne || debut ? [] : await choixQuiMenentIci(e, lieu);
   const r = await demanderUneAide(e, aideTitre, {
+    menent,
     histoire: lieu.histoire,
     consigne,
     debut,
@@ -162,8 +163,14 @@ export type ReponseEcriture =
   | { ok: true; version: number; paragraphes: string[]; reste: string | null }
   | { ok: false; change?: boolean; message: string };
 
-export const SANS_CONSIGNE = "Écrivez d’abord la consigne de la scène : l’IA écrit d’après elle.";
 export const DEJA_ECRITE = "La scène a déjà un texte.";
+
+/** Les phrases des choix qui mènent à la scène, en récit à choix : de quoi proposer sans indication (F13, 27 octobre 2026). */
+async function choixQuiMenentIci(e: Enseignant, lieu: Lieu): Promise<string[]> {
+  if (lieu.recit !== "choix" || !lieu.scene.id) return [];
+  const { data } = await e.supabase.from("liens").select("libelle").eq("cible_id", lieu.scene.id).order("rang").limit(6);
+  return [...new Set(((data ?? []) as { libelle: string | null }[]).map((l) => l.libelle?.trim() ?? "").filter(Boolean))].slice(0, 4);
+}
 
 /**
  * Ce qui mène à la scène, pour que le récit s'enchaîne (F13.6) : en récit à choix, la fin des
@@ -204,11 +211,10 @@ export async function demanderUneEcriture(e: Enseignant, sceneId: string, versio
   if (!texte) return { ok: false, message: "Cette scène n’existe plus." };
   if (texte.version !== version) return { ok: false, change: true, message: MESSAGES_IA.texteChange };
   if (!sansRecit(texte.texte)) return { ok: false, message: DEJA_ECRITE };
-  if (!lieu.scene.consigne) return { ok: false, message: SANS_CONSIGNE };
   const [preparation, avant] = await Promise.all([preparationDe(e, lieu.projetId), ceQuiMeneIci(e, lieu)]);
   const r = await demanderUneAide(e, aideEcriture, {
     histoire: lieu.histoire,
-    consigne: lieu.scene.consigne.slice(0, 1500),
+    consigne: (lieu.scene.consigne ?? "").slice(0, 1500),
     titre: lieu.scene.titre ?? undefined,
     carnet: carnetDe(preparation),
     chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },

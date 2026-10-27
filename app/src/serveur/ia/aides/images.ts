@@ -12,7 +12,8 @@ import { REGLES_COMMUNES, blocCarnet, blocPlan, presentation, type Carnet, type 
 
 export type PersonnageConnu = { nom: string; autresNoms: string[]; description: string; heros: boolean };
 
-export type EntreePersonnages = { histoire: Histoire; carnet: Carnet; idees: string[]; connus: PersonnageConnu[] };
+/** `plan` : les chapitres et leurs résumés, qui nomment aussi des personnages (F13, « Jamais de refus faute de texte », 27 octobre 2026) */
+export type EntreePersonnages = { histoire: Histoire; carnet: Carnet; idees: string[]; connus: PersonnageConnu[]; plan?: Plan };
 
 export const personnages: DefinitionAide<EntreePersonnages, { personnages: PersonnageConnu[] }> = {
   aide: "personnages",
@@ -22,7 +23,7 @@ export const personnages: DefinitionAide<EntreePersonnages, { personnages: Perso
     `Tu repères les personnages importants d'une histoire d'après ce que la préparation en retient, pour en faire des cartes.
 Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les autres façons de le désigner dans l'histoire : « le passeur », « le vieux Maël »), « description » en quelques mots tirés de la préparation, « heros » vrai pour le personnage que le lecteur suit ou incarne.
 - Plusieurs héros seulement si la préparation en retient plusieurs (au choix du lecteur, en groupe…) ; leur description dit ce que chacun sait faire, si la préparation le dit.
-- Seulement les personnages que la préparation nomme ou décrit ; n'en invente aucun et n'ajoute rien à leur description.
+- Seulement les personnages que la préparation ou le plan nomment ou décrivent ; n'en invente aucun et n'ajoute rien à leur description.
 - Une seule carte par personnage : le héros a la sienne sous son nom ; ne crée pas de carte « Le héros » ni « tu » à part. Seulement si le héros n'a aucun nom, sa carte s'appelle « Le héros ».
 - Ne reprends pas les personnages qui ont déjà leur carte, sous leur nom ou l'un de leurs autres noms.`,
   ),
@@ -31,6 +32,7 @@ Pour chacun : « nom » (le nom qu'on emploie le plus), « autres_noms » (les a
     bloc("personnages_retenus", e.carnet.personnages),
     bloc("univers", e.carnet.univers), bloc("enjeu", e.carnet.enjeu),
     bloc("idees_retenues", e.idees),
+    e.plan ? blocPlan(e.plan) : "",
     // Les héros ont chacun leur texte retenu (18 octobre 2026) : les personnages s'y nomment aussi
     bloc("cartes_existantes", e.connus.map((p) => `${[p.nom, ...p.autresNoms].join(", ")}${p.heros ? " (héros)" : ""}${p.description.trim() ? ` : ${p.description.trim()}` : ""}`)),
     "Repère les personnages.",
@@ -84,7 +86,7 @@ export const ficheVisuelle: DefinitionAide<EntreeFiche, { fiche: string }> = {
 Dans cet ordre, quand cela s'applique : âge apparent, silhouette, visage, cheveux ou pelage ou plumage, vêtements et leurs couleurs, objet fétiche. Omets sans le dire ce qui ne s'applique pas (une chouette n'a pas de vêtements).
 Un objet fétiche ou un accessoire seulement si la description ou l'univers en donnent un : n'en invente pas.`
       : `Tu écris la fiche visuelle d'un objet : une description de son apparence (forme, taille, matière, couleurs, détails distinctifs), reprise mot pour mot dans chaque image pour qu'il reste le même.`,
-    `- Pars de la description de l'adulte : garde tout ce qu'elle dit, précise ce qu'elle laisse ouvert, de façon simple et cohérente avec l'univers.
+    `- Pars de la description de l'adulte : garde tout ce qu'elle dit, précise ce qu'elle laisse ouvert, de façon simple et cohérente avec l'univers. Sans description, imagine une apparence simple, d'après son nom, l'univers et ce que la préparation en retient.
 - Des traits concrets et visibles ; pas d'émotion, d'histoire ni de style de dessin.
 - Au plus soixante-dix mots, en phrases simples.`,
   ),
@@ -117,6 +119,8 @@ export type EntreeDescription = {
   /** Les paragraphes de récit de la scène ; pour la couverture, rien */
   paragraphes: string[];
   chapitre?: { titre: string; resume?: string };
+  /** Pour une scène : son titre et sa consigne, de quoi décrire l'image sans texte ni idée (F13, 27 octobre 2026) */
+  scene?: { titre?: string; consigne?: string };
   /** Pour la couverture : l'univers et l'enjeu que la Préparation retient */
   univers?: string;
   enjeu?: string;
@@ -150,7 +154,7 @@ export const descriptionImage: DefinitionAide<EntreeDescription, { description: 
 - Sans idée donnée, choisis toi-même le lieu ou le moment le plus parlant de l'histoire, d'après ce qu'on t'en dit.
 ${e.textes?.length ? `- La couverture portera ces textes, que l'application ajoutera mot pour mot : dis seulement où les placer (en haut, sur le ciel…), dans un endroit calme de l'image, sans les recopier ni en inventer d'autres.` : "- Laisse le haut de l'image assez calme pour le titre."}`
       : `Tu décris l'image à créer pour une scène du livre, en français, comme on le demanderait à un illustrateur : ce qu'on voit, où, la lumière, l'ambiance, la composition.
-- Une image ne montre qu'un instant : choisis le moment le plus parlant de la scène, ou celui que décrit l'idée donnée.
+- Une image ne montre qu'un instant : choisis le moment le plus parlant de la scène, ou celui que décrit l'idée donnée. Sans texte ni idée, pars du titre et de la consigne de la scène, et du chapitre.
 - Les personnages et objets retenus apparaissent ; nomme-les, sans redécrire leur apparence, que l'application ajoutera.`,
     `- ${e.herosAbsent ? "Le héros n'est PAS représenté : ni son visage ni son corps. Au plus, ses mains, neutres (sans bijou, ni manche distinctive, ni couleur de peau marquée), quand il agit sur un objet." : "Le héros est représenté, comme un personnage retenu."}
 - ${e.pour === "couverture" && e.textes?.length ? "Aucun autre texte, lettre ni chiffre dans l'image." : "Aucun texte, lettre ni chiffre dans l'image."} Pas de style de dessin : l'application l'ajoutera.
@@ -162,6 +166,8 @@ ${e.textes?.length ? `- La couverture portera ces textes, que l'application ajou
     bloc("univers", e.univers), bloc("enjeu", e.enjeu),
     e.carnet ? blocCarnet(e.carnet) : "",
     e.plan ? blocPlan(e.plan) : "",
+    e.scene?.titre ? bloc("titre_de_la_scene", e.scene.titre) : "",
+    e.scene?.consigne ? bloc("consigne_de_la_scene", e.scene.consigne) : "",
     e.paragraphes.length ? bloc("texte_de_la_scene", e.paragraphes.join("\n")) : "",
     bloc("idee", e.idee),
     bloc("retenus", e.badges.map((b) => b.nom)),

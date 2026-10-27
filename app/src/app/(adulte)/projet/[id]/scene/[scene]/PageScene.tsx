@@ -228,7 +228,6 @@ export function PageScene({
       enregistrer({ consigne: c });
       void envoyer();
     },
-    onSansIndication: () => document.getElementById("scene-consigne")?.focus(),
     onDemande: () => titreIa.fermer(),
   });
   // Quitter la page n'abandonne pas ce qui attendait
@@ -380,7 +379,6 @@ export function PageScene({
   const ecriture = useEcriture({
     sceneId: scene.id,
     version: () => versionLue.current,
-    consigne,
     eleve: scene.priseParEleve && eleveDeLaScene ? nomPourEleves(eleveDeLaScene, eleves) : null,
     avantDePartir,
     enAttente: () => sauvegardeTenue.current !== "enregistre",
@@ -392,10 +390,6 @@ export function PageScene({
     onRemplace: (suite) => {
       remplacer(suite);
       setOnglet("scene");
-    },
-    onSansConsigne: () => {
-      setConsigneOuverte(true);
-      setTimeout(() => document.getElementById("scene-consigne")?.focus(), 0);
     },
   });
   const ecrit = !aCote && onglet === "scene" && !recit;

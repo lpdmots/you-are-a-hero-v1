@@ -287,8 +287,10 @@ describe("L'image d'une scène (F10.2)", () => {
     expect(r.ok && r.description).toContain("la barque dans la brume");
     expect(await appels()).toEqual([{ aide: "description-image", sorte: "texte", nombre: 1 }]);
     expect((await sql("select description_image from scenes where id = $1", [s.scene]))[0].description_image).toBe("");
+    // F13-AC32 : sans texte ni idée, la description se propose d'après le titre de la scène et le chapitre
     const vide = await scene();
-    expect(await proposerLaDescription(enseignantDe(laurent), vide.scene, { cadrage: "16:9", badges: [] })).toEqual({ ok: false, message: "Écrivez d’abord ce que montre l’image, ou le texte de la scène." });
+    const sansRien = await proposerLaDescription(enseignantDe(laurent), vide.scene, { cadrage: "16:9", badges: [] });
+    expect(sansRien.ok && sansRien.description.length).toBeGreaterThan(10);
   });
 });
 

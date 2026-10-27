@@ -7,7 +7,8 @@ import { ficheVisuelle, personnages as aidePersonnages, type PersonnageConnu } f
 import { demanderUneAide } from "./ia/demander";
 import { lireImage, SEAU, TYPE_MIME } from "./images";
 import { projetDe, type Projet } from "./lectures";
-import { estUuid, preparationDe } from "./recit";
+import { planPourLesAides } from "./plan-ia";
+import { estUuid, planDe, preparationDe } from "./recit";
 import { clientService } from "./supabase";
 
 /**
@@ -44,13 +45,10 @@ export async function repererLesPersonnages(e: Enseignant, projetId: string): Pr
   if (!projet || !preparation) return { ok: false, message: "Ce projet n’existe plus." };
   const carnet = carnetDe(preparation);
   const idees = preparation.pistes.filter((p) => p.rubrique === "personnages" && p.etat === "retenue").map((p) => p.texte);
-  // Le texte retenu de chaque héros nomme souvent ceux qu'il croise (18 octobre 2026)
-  const herosDecrits = preparation.personnagesDeLHistoire.some((p) => p.heros && p.description.trim());
-  if (!carnet.personnages?.trim() && !idees.length && !herosDecrits) {
-    return { ok: false, message: "Écrivez d’abord dans « Nous retenons » d’un héros qui il croise, ou retenez des idées." };
-  }
+  // Jamais de refus faute de texte (F13, 27 octobre 2026) : la Préparation, puis le plan et ses résumés
+  const plan = await planDe(e, projetId);
   const connus = preparation.personnagesDeLHistoire.map((p) => ({ nom: p.nom, autresNoms: p.autresNoms, description: p.description, heros: p.heros }));
-  const r = await demanderUneAide(e, aidePersonnages, { histoire: histoireDe(e, projet), carnet, idees, connus });
+  const r = await demanderUneAide(e, aidePersonnages, { histoire: histoireDe(e, projet), carnet, idees, connus, plan: planPourLesAides(plan) });
   if (!r.ok) return { ok: false, message: r.message };
   if (!r.valeur.personnages.length) return { ok: false, message: "L’IA n’a pas trouvé d’autre personnage dans ce que vous retenez." };
   return { ok: true, personnages: r.valeur.personnages, reste: r.reste };
@@ -78,9 +76,7 @@ export type ReponseFiche = { ok: true; fiche: string; reste: string | null } | {
 export async function preciserLaFiche(e: Enseignant, sorte: SorteDeCarte, id: string): Promise<ReponseFiche> {
   const carte = await lireLaCarte(e, sorte, id);
   if (!carte) return { ok: false, message: INTROUVABLE };
-  if (!carte.description.trim() && !carte.fiche.trim()) {
-    return { ok: false, message: sorte === "personnage" ? "Décrivez d’abord le personnage en quelques mots." : "Décrivez d’abord l’objet en quelques mots." };
-  }
+  // Sans description, la fiche s'imagine d'après le nom, l'univers et la Préparation (F13, 27 octobre 2026)
   const [projet, preparation] = await Promise.all([projetDe(e, carte.projetId), preparationDe(e, carte.projetId)]);
   if (!projet) return { ok: false, message: INTROUVABLE };
   const r = await demanderUneAide(e, ficheVisuelle, {

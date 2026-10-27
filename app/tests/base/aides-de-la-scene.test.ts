@@ -3,7 +3,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { compterMots } from "@/domaine/correction";
 import {
-  annulerUneEcriture, DEJA_ECRITE, demanderDesTitres, demanderUneConsigne, demanderUneEcriture, mettreUneEcriture, RIEN_POUR_UN_TITRE, SANS_CONSIGNE, SANS_INDICATION,
+  annulerUneEcriture, DEJA_ECRITE, demanderDesTitres, demanderUneConsigne, demanderUneEcriture, mettreUneEcriture,
 } from "@/serveur/aides-de-la-scene";
 import { consigne } from "@/serveur/ia/aides/consigne";
 import { ecriture } from "@/serveur/ia/aides/ecriture";
@@ -110,12 +110,14 @@ describe("Formuler une consigne (F13.2)", () => {
     expect(envoye(consigne, simuler)).toContain("note d'intention");
   });
 
-  it("sans indication, rien ne part", async () => {
+  it("F13-AC32 — sans indication, la consigne se propose d'après le titre de la scène et le chapitre", async () => {
     const { ici } = await lisiere();
-    await laurent.base.from("scenes").update({ consigne: "  " }).eq("id", ici);
+    await laurent.base.from("scenes").update({ consigne: "  ", titre: "Le pont de brume" }).eq("id", ici);
     const simuler = vi.spyOn(consigne, "simuler");
-    expect(await demanderUneConsigne(enseignantDe(laurent), ici)).toEqual({ ok: false, message: SANS_INDICATION });
-    expect(simuler).not.toHaveBeenCalled();
+    const r = await demanderUneConsigne(enseignantDe(laurent), ici);
+    expect(r.ok && r.consigne).toContain("Le pont de brume");
+    expect(simuler).toHaveBeenCalled();
+    expect(envoye(consigne, simuler)).toContain("titre_de_la_scene");
   });
 
   it("les aides éteintes ne demandent rien ; une réponse inutilisable ne change rien", async () => {
@@ -168,12 +170,13 @@ describe("Le ✦ du titre de scène (F05)", () => {
     expect(r.ok && r.titres).toEqual(["La lanterne qui tremble", "Rencontre sur le pont"]);
   });
 
-  it("sans consigne ni texte, rien ne part", async () => {
+  it("F13-AC32 — sans consigne ni texte, des titres se proposent d'après le chapitre", async () => {
     const { ici } = await lisiere();
     await laurent.base.from("scenes").update({ consigne: "" }).eq("id", ici);
     const simuler = vi.spyOn(titre, "simuler");
-    expect(await demanderDesTitres(enseignantDe(laurent), ici)).toEqual({ ok: false, message: RIEN_POUR_UN_TITRE });
-    expect(simuler).not.toHaveBeenCalled();
+    const r = await demanderDesTitres(enseignantDe(laurent), ici);
+    expect(r.ok && r.titres.length).toBeGreaterThan(0);
+    expect(simuler).toHaveBeenCalled();
   });
 
   it("chaque demande se note au journal, sans son contenu", async () => {
@@ -202,10 +205,16 @@ describe("« ✦ Écrire » une scène vide (F13.6)", () => {
     await ecrire(ici, [{ type: "p", id: randomUUID(), children: [{ text: "Déjà écrit." }] }]);
     const v = (await ligne(ici)).version as number;
     expect(await demanderUneEcriture(enseignantDe(laurent), ici, v, 150)).toEqual({ ok: false, message: DEJA_ECRITE });
-    const { ici: autre } = await lisiere();
-    await laurent.base.from("scenes").update({ consigne: "" }).eq("id", autre);
-    expect(await demanderUneEcriture(enseignantDe(laurent), autre, (await ligne(autre)).version as number, 150)).toEqual({ ok: false, message: SANS_CONSIGNE });
     expect(simuler).not.toHaveBeenCalled();
+  });
+
+  it("F13-AC32 — « ✦ Écrire » sans consigne : le texte s'écrit d'après le titre de la scène et ce qui y mène", async () => {
+    const { ici } = await lisiere();
+    await laurent.base.from("scenes").update({ consigne: "", titre: "Le pont de brume" }).eq("id", ici);
+    const simuler = vi.spyOn(ecriture, "simuler");
+    const r = await demanderUneEcriture(enseignantDe(laurent), ici, (await ligne(ici)).version as number, 150);
+    expect(r.ok && r.paragraphes[0]).toBe("Le pont de brume");
+    expect(simuler).toHaveBeenCalled();
   });
 
   it("F13-AC25 — la fin de la scène d'où l'on vient et la phrase du choix partent, sans prénom d'élève", async () => {

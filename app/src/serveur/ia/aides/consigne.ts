@@ -9,7 +9,11 @@ import { REGLES_COMMUNES, blocCarnet, eleve, presentation, type Carnet, type His
  */
 export type EntreeConsigne = {
   histoire: Histoire;
+  /** Vide : la consigne se tire du titre, des choix qui mènent ici et du chapitre (F13, « Jamais de refus faute de texte ») */
   indication: string;
+  titre?: string;
+  /** Les phrases des choix qui mènent à la scène */
+  menent?: string[];
   carnet?: Carnet;
   chapitre?: { titre: string; resume?: string };
   /** Les scènes voisines : leur titre et leur consigne, pour ne pas répéter les mêmes points */
@@ -41,19 +45,23 @@ Modèle à suivre exactement :
 - « phrases » : une ou deux phrases qui tutoient l'élève, avec le vocabulaire d'un élève de cet âge. Elles situent la scène et disent ce qu'il faut raconter.
 - « points » : deux ou trois points de quelques mots chacun, ce qu'il faudra décrire (« sa lanterne et son visage », « ce que ressent Lou »), adaptés à cette scène et différents de ceux des scènes voisines quand c'est possible.
 Tu n'inventes AUCUN événement ni AUCUN personnage que l'indication, la préparation ou le chapitre ne nomment pas ; tu ne décides pas de la suite à la place de l'élève.
-N'écris pas « Décris : » toi-même ; pas de tiret ni de numéro dans les points, qui commencent par une minuscule.`,
+N'écris pas « Décris : » toi-même ; pas de tiret ni de numéro dans les points, qui commencent par une minuscule.
+Sans indication écrite, pars du titre de la scène, des choix qui y mènent et du chapitre ; reste au plus près de ce qu'ils disent.`,
     )
     : assembler(
       REGLES_COMMUNES,
       `Tu transformes l'indication courte d'un adulte, qui écrit son propre livre, en note d'intention pour lui-même, sur ce modèle : « La rencontre avec le passeur ; à faire sentir : sa lanterne, sa voix, la peur de Lou. »
 Une ou deux lignes, sans tutoiement ni « Décris : ». Tu n'inventes aucun événement ni personnage absent de l'indication, de la préparation ou du chapitre.
-Rends la note dans « phrases » et laisse « points » vide.`,
+Rends la note dans « phrases » et laisse « points » vide.
+Sans indication écrite, pars du titre de la scène, des choix qui y mènent et du chapitre ; reste au plus près de ce qu'ils disent.`,
     ),
   message: (e) => assembler(
     presentation(e.histoire),
     blocCarnet(e.carnet),
     e.chapitre ? bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`) : "",
     bloc("scenes_voisines", e.voisines.map((v) => `${v.titre}${v.consigne ? ` — consigne : ${v.consigne.replace(/\n/g, " ")}` : ""}`)),
+    e.titre ? bloc("titre_de_la_scene", e.titre) : "",
+    bloc("choix_qui_menent_ici", e.menent ?? []),
     bloc("indication", e.indication),
     "Écris la consigne de cette scène.",
   ),
@@ -67,7 +75,10 @@ Rends la note dans « phrases » et laisse « points » vide.`,
     if (!points || points.length < 2) return null;
     return { texte: composerConsigne(phrases.replace(/\s*Décris\s*:?\s*$/i, ""), points.slice(0, 3)) };
   },
-  simuler: (e) => e.histoire.mode === "classe"
-    ? { phrases: `${e.indication.charAt(0).toLocaleUpperCase("fr")}${e.indication.slice(1)}. Raconte ce qui se passe.`, points: ["le lieu", "ce que ressent ton héros"] }
-    : { phrases: `${e.indication} ; à faire sentir : le lieu, l'émotion.`, points: [] },
+  simuler: (e) => {
+    const depart = e.indication.trim() || e.titre?.trim() || "la scène";
+    return e.histoire.mode === "classe"
+      ? { phrases: `${depart.charAt(0).toLocaleUpperCase("fr")}${depart.slice(1)}. Raconte ce qui se passe.`, points: ["le lieu", "ce que ressent ton héros"] }
+      : { phrases: `${depart} ; à faire sentir : le lieu, l'émotion.`, points: [] };
+  },
 };

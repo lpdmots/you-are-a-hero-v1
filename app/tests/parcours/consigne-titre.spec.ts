@@ -52,11 +52,11 @@ test.describe("« ✦ Formuler » sous la consigne (F13.2)", () => {
     await expect.poll(() => consigneEnBase(s.pont)).toBe("le passeur apparaît sur le pont");
   });
 
-  test("F13-AC07 — « Laisser » retire la proposition, la consigne ne change pas ; sans indication, rien ne part", async ({ page }) => {
+  test("F13-AC07, F13-AC32 — « Laisser » retire la proposition, la consigne ne change pas ; sans indication, une consigne se propose quand même", async ({ page }) => {
     const s = await lePont(page);
     await page.getByRole("button", { name: "Formuler" }).click();
-    await expect(MESSAGE(page)).toContainText("Écrivez d’abord en quelques mots ce que la scène doit raconter.");
-    await expect(champConsigne(page)).toBeFocused();
+    await expect(page.getByRole("textbox", { name: "Consigne proposée" })).toBeVisible();
+    await page.getByRole("button", { name: "Laisser" }).click();
 
     await champConsigne(page).fill("lou hésite");
     await page.getByRole("button", { name: "Formuler" }).click();
@@ -182,12 +182,12 @@ test.describe("« ✦ Écrire » une scène vide (F13.6)", () => {
     expect(await mots(s.grotte)).toBe("");
   });
 
-  test("F13-AC23 — sans consigne, rien ne part : le champ de la consigne s'ouvre", async ({ page }) => {
+  test("F13-AC23, F13-AC32 — sans consigne, « Écrire » propose quand même un texte, d'après le titre et ce qui mène à la scène", async ({ page }) => {
     const s = await grotteVide(page, false);
     await s.base.from("scenes").update({ consigne: "" }).eq("id", s.grotte);
     await page.reload();
     await page.getByRole("button", { name: "Écrire", exact: true }).click();
-    await expect(MESSAGE(page)).toContainText("Écrivez d’abord la consigne de la scène");
-    await expect(champConsigne(page)).toBeFocused();
+    await expect(page.getByRole("textbox", { name: "Paragraphe proposé" }).first()).toBeVisible();
+    expect(await mots(s.grotte)).toBe("");
   });
 });

@@ -14,6 +14,8 @@ export type EntreeTitre = {
   /** Les titres des autres scènes du chapitre, pour garder la même forme et ne pas les répéter */
   autresTitres: string[];
   titreActuel?: string;
+  /** Les phrases des choix qui mènent à la scène : sans consigne ni texte, le titre s'en tire (F13, 27 octobre 2026) */
+  menent?: string[];
 };
 export type Titres = { titres: string[] };
 
@@ -26,7 +28,8 @@ export const titre: DefinitionAide<EntreeTitre, Titres> = {
 - De deux à sept mots, sans point final.
 - Il nomme le lieu, le moment ou ce qui arrive au début de la scène, sans dévoiler comment elle finit ni ce que le lecteur va choisir.
 - Si les autres titres du chapitre suivent une forme (« Lieu — ce qui arrive »), suis-la.
-- Ne répète pas un titre existant.`,
+- Ne répète pas un titre existant.
+- Sans consigne ni texte, pars des choix qui mènent à la scène et du chapitre.`,
   ),
   message: (e) => assembler(
     presentation(e.histoire),
@@ -35,6 +38,7 @@ export const titre: DefinitionAide<EntreeTitre, Titres> = {
     e.titreActuel ? bloc("titre_actuel", e.titreActuel) : "",
     bloc("consigne", e.consigne),
     bloc("debut_du_texte", e.debut),
+    bloc("choix_qui_menent_ici", e.menent ?? []),
     "Propose trois titres.",
   ),
   schema: { nom: "titres", schema: objet({ titres: liste(chaine) }) },

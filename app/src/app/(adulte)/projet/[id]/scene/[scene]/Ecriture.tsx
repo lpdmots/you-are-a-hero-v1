@@ -18,7 +18,7 @@ import { appelerUneAide } from "@/composants/PlusDEtoiles";
 
 /**
  * « ✦ Écrire » (F13.6, décidé par le porteur le 17 octobre 2026) : à la place de « Corriger »
- * quand le texte de la scène est vide, l'IA écrit le récit d'après la consigne, environ
+ * quand le texte de la scène est vide, l'IA écrit le récit d'après la consigne (sans elle, d'après le titre et ce qui mène ici), environ
  * 150 mots par défaut. La proposition se retouche dans la copie, puis « Mettre ce texte dans
  * la scène » ou « Laisser ». Si un élève s'occupe de la scène, l'adulte en est prévenu avant
  * la demande : en gardant le texte, la scène lui revient et l'élève ne l'écrit plus.
@@ -32,18 +32,16 @@ type Revue = { version: number; paragraphes: string[]; mots: number; reste: stri
 type Phase = null | { sorte: "prevenir" } | { sorte: "demande" } | { sorte: "change" } | ({ sorte: "revue" } & Revue);
 
 export function useEcriture({
-  sceneId, version, consigne, eleve, avantDePartir, enAttente, relire, onRemplace, onSansConsigne,
+  sceneId, version, eleve, avantDePartir, enAttente, relire, onRemplace,
 }: {
   sceneId: string;
   version: () => number;
-  consigne: string;
   /** L'élève qui s'occupe de la scène : il ne l'écrira plus si l'adulte garde le texte */
   eleve: string | null;
   avantDePartir: () => Promise<boolean>;
   enAttente: () => boolean;
   relire: () => Promise<void>;
   onRemplace: (suite: TexteDeScene) => void;
-  onSansConsigne: () => void;
 }) {
   const aides = useAidesIa();
   const dire = useMessage();
@@ -54,10 +52,6 @@ export function useEcriture({
 
   const ecrire = async (prevenu = false) => {
     if (phase?.sorte === "demande") return;
-    if (!consigne.trim()) {
-      onSansConsigne();
-      return dire({ texte: "Écrivez d’abord la consigne de la scène : l’IA écrit d’après elle." });
-    }
     if (eleve && !prevenu) return setPhase({ sorte: "prevenir" });
     setPhase({ sorte: "demande" });
     if (!(await avantDePartir())) {
@@ -118,7 +112,7 @@ export function useEcriture({
       <button
         type="button"
         className="outil outil--texte outil--ia"
-        title="Demander à l’IA d’écrire la scène d’après sa consigne"
+        title="Demander à l’IA d’écrire la scène, d’après sa consigne s’il y en a une"
         disabled={demande}
         aria-busy={demande}
         onClick={() => void ecrire()}
