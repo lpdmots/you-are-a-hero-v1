@@ -979,3 +979,47 @@ production:schema -- --oui`, qui applique les six migrations à la vraie base ;
 `npm run bibliotheque:accueil -- --production` (à blanc), puis `-- --production
 --oui`, juste après la mise en ligne du code, pour que l'accueil retrouve ses deux
 livres.
+
+## Essayer la couverture (F11.4)
+
+La couverture faite sur le site se construit en quatre lots, plus le lot « Aides sans
+indication » (`docs/plan.md`, « Couverture faite sur le site (F11.4, F15) »). L'essai se
+joue en local, sur http://localhost:4840, avec le compte local ; la vraie base n'est pas
+touchée.
+
+**1. La base locale à jour.** Les deux migrations, `couverture` et `couverture_dans_lire` :
+`npx tsx scripts/supabase.ts migration up --local` les applique sans rien effacer. Puis
+`npm run couvertures:accueil` pose les faces avant déjà déposées pour l'accueil en
+couverture de leur livre ; la commande se relance sans risque.
+
+**2. Faire la couverture.** Un livre arrivé à « Imprimer et partager » : « La couverture »,
+à droite des deux volets.
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| L'ouverture | le petit livre vide au titre, « Sans couverture, la bibliothèque montre la page de titre. », « Importer la mienne » |
+| « ✦ » de « Ce que montre la couverture », le champ vide | une description proposée d'après la Préparation et le plan, sans « Écrivez d'abord… » |
+| « Écrire sur la couverture » : cocher l'année, retoucher le titre | les champs sous les cases, la flèche ronde qui reprend le titre de la page de titre |
+| « Pour imprimer », « ✦ Créer la couverture » | les étincelles dans le petit livre, « Création en cours… », puis « Couverture posée. » et « Annuler » ; un vrai appel coûte environ 8 ✦ (0,084 dollar mesuré) |
+| « Pour le site » | « Trop floue pour l'imprimer, environ dix fois moins d'étoiles. » ; posée, « Trop floue pour l'imprimeur. » et « La recréer pour imprimer » |
+| « Importer une autre », une couverture entière (plus large que haute) | seule la face avant est gardée |
+| « Télécharger » | le fichier « Couverture - <titre>.jpg » |
+
+**3. Partager et publier.** Volet « Partager », « Proposer à la bibliothèque… » : la
+vignette et « Changer » ; publié, la bibliothèque, son tiroir, l'accueil (s'il y est posé)
+et « Lire » côté élève montrent la couverture ; l'adresse du livre la donne en aperçu de
+partage. Une autre couverture ne change rien en public avant « Proposer la mise à jour » ;
+dans `/admin/livres`, « Seule la couverture a changé ». « Mettre en page » > « Page de
+titre » > « Image pleine page » : « Reprendre la couverture ».
+
+`npx playwright test couverture` joue les parcours ; les captures se refont par `npm run
+captures -- couverture`.
+
+**4. En ligne, à la demande seulement, dans cet ordre.**
+1. `npm run sauvegarder` ;
+2. `npm run production:schema -- --oui`, qui applique les deux migrations à la vraie base
+   (ne plus les modifier ensuite) ;
+3. le code, par le `git push` de `main` ;
+4. juste après, `npm run couvertures:accueil -- --production` (à blanc), puis
+   `npm run couvertures:accueil -- --production --oui` : l'accueil montre de nouveau la
+   face avant de ses livres, devenue leur couverture.

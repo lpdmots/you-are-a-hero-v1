@@ -3892,7 +3892,20 @@ V6, le premier envoi à l'imprimeur.
      bibliothèque, sans vraie IA ; les captures des écrans touchés à 1366 et
      à 390 ; le mode d'emploi « Essayer la couverture » dans `app/README.md`,
      avec l'ordre de la mise en ligne (sauvegarde, migration, code,
-     conversion).
+     conversion). **Construit le 27 octobre 2026,** sans migration ni code de
+     l'application : `couverture-de-bout-en-bout` (décrire sans rien écrire,
+     créer, partager, proposer avec la vignette, publier, retrouver la
+     couverture dans la bibliothèque, en `og:image` et dans « Lire ») ; les
+     captures 1701 à 1734 (`npm run captures -- couverture`) ; le mode
+     d'emploi « Essayer la couverture (F11.4) » dans `app/README.md`. La suite
+     complète n'est pas rejouée : le code n'a pas changé depuis celle du lot 3
+     (443 parcours passés, la séance d'essai rejouée seule).
+- **État au 27 octobre 2026 :** les quatre lots et le lot « Aides sans
+  indication » construits en local, un commit par lot ; deux migrations,
+  `couverture` et `couverture_dans_lire`, en base locale seulement ; rien
+  poussé sur `main` ni appliqué à la vraie base ; la conversion des faces
+  avant essayée en local seulement. Coût réel d'une couverture « pour
+  imprimer » : 0,084 dollar, environ 8 ✦.
 - **Aides sans indication (F13, « Jamais de refus faute de texte »),**
   décidé par le porteur le 27 octobre 2026, lot à part après le lot 1 : les
   aides qui refusent aujourd'hui quand rien n'est écrit proposent d'après le
