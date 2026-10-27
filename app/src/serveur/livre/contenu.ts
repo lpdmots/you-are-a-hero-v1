@@ -9,7 +9,8 @@ import { livreACompose, presentationDe, type LivreACompose } from "@/domaine/com
 import type { Texte } from "@/domaine/copie";
 import type { ContenuAControler, Probleme } from "@/domaine/controles";
 import { nomPourEleves } from "@/domaine/eleves";
-import { NOMS_COMME_LE_LIVRE, versionDuLivre, type VersionPartagee } from "@/domaine/partage";
+import { textesDemandesPropres } from "@/domaine/couverture";
+import { NOMS_COMME_LE_LIVRE, versionDuLivre, type CouvertureDeLaVersion, type VersionPartagee } from "@/domaine/partage";
 import { reglagesPropres, type ReglagesDuLivre } from "@/domaine/mise-en-page";
 import { imagesDesPages, pagesParDefaut, pagesPropres, type PagesDuLivre } from "@/domaine/pages";
 import type { Preparation } from "@/domaine/preparation";
@@ -36,6 +37,8 @@ export type ContenuDuLivre = {
   pages: PagesDuLivre;
   /** Les pages telles que l'adulte les a laissées, sans les valeurs proposées : rien si jamais réglées */
   pagesGardees: unknown;
+  /** La couverture du projet (F11.4) : hors du livre composé, elle ne change pas l'empreinte du PDF */
+  couverture: CouvertureDeLaVersion | null;
   scenesAvecActions: Set<string>;
   empreinte: string;
 };
@@ -49,14 +52,15 @@ export const contenuDuLivre = cache(async (e: Enseignant, projetId: string): Pro
     planDe(e, projetId),
     preparationDe(e, projetId),
     e.supabase.from("scenes").select("id, texte").eq("projet_id", projetId).is("supprime_le", null),
-    e.supabase.from("images").select("id, chemin, chemin_vignette, format, largeur, hauteur").eq("projet_id", projetId),
-    e.supabase.from("projets").select("mise_en_page, pages_du_livre").eq("id", projetId).maybeSingle(),
+    e.supabase.from("images").select("id, chemin, chemin_vignette, format, largeur, hauteur, textes_demandes").eq("projet_id", projetId),
+    e.supabase.from("projets").select("mise_en_page, pages_du_livre, couverture_id").eq("id", projetId).maybeSingle(),
     elevesDeLaClasse(e, projet.classe?.id ?? null),
   ]);
   const erreur = textes.error ?? images.error ?? gardes.error;
   if (erreur) throw new Error(`Livre illisible : ${erreur.message}`);
   const lesTextes = new Map(((textes.data ?? []) as { id: string; texte: Texte | null }[]).map((s) => [s.id, s.texte ?? []]));
-  const lignes = (images.data ?? []) as { id: string; chemin: string; chemin_vignette: string; format: ImageDuProjet["format"]; largeur: number; hauteur: number }[];
+  const lignes = (images.data ?? []) as { id: string; chemin: string; chemin_vignette: string; format: ImageDuProjet["format"]; largeur: number; hauteur: number; textes_demandes: unknown }[];
+  const couverture = lignes.find((i) => i.id === gardes.data?.couverture_id) ?? null;
   const feuille = preparation?.feuille ?? null;
   const reglages = reglagesPropres(gardes.data?.mise_en_page, { aChoix, des: feuille?.on ? feuille.des : 0 });
   const deClasse = projet.organisation === "classe";
@@ -71,6 +75,7 @@ export const contenuDuLivre = cache(async (e: Enseignant, projetId: string): Pro
     projet, aChoix, plan, preparation, textes: lesTextes,
     images: new Map(lignes.map((i) => [i.id, { chemin: i.chemin, vignette: i.chemin_vignette, format: i.format, largeur: i.largeur, hauteur: i.hauteur }])),
     reglages, pages, pagesGardees: gardes.data?.pages_du_livre ?? null,
+    couverture: couverture ? { id: couverture.id, largeur: couverture.largeur, hauteur: couverture.hauteur, textes: textesDemandesPropres(couverture.textes_demandes) } : null,
     scenesAvecActions: new Set([...lesTextes].filter(([, t]) => t.some((b) => b.type === "action")).map(([id]) => id)),
   };
   return { ...contenu, empreinte: createHash("sha256").update(JSON.stringify(livreDuContenu(contenu, []))).digest("hex") };

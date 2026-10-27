@@ -51,7 +51,9 @@ async function entreeDe(projetId: string, version: VersionPartagee, titre: strin
   // Les images, dans l'ordre du livre, avec l'endroit où elles paraissent
   const ou = new Map<string, string>();
   const passageDe = new Map<string, string>();
-  if (pr?.titre.image) ou.set(pr.titre.image, "en page de titre");
+  // La couverture d'abord (F11-AC115) : elle est toujours relue, avec ses textes demandés
+  if (version.couverture) ou.set(version.couverture.id, "en couverture");
+  if (pr?.titre.image && !ou.has(pr.titre.image)) ou.set(pr.titre.image, "en page de titre");
   if (pr?.titre.illustration) ou.set(pr.titre.illustration, "en page de titre");
   for (const p of version.passages)
     for (const i of imagesDesBlocs(p.blocs))
@@ -81,6 +83,7 @@ async function entreeDe(projetId: string, version: VersionPartagee, titre: strin
     passages,
     autour: autour || null,
     images,
+    couverture: version.couverture && images[0]?.ou === "en couverture" ? { repere: images[0].repere, textes: version.couverture.textes } : null,
   };
 }
 
@@ -144,6 +147,8 @@ export type LivreARelire = {
   attestation: "classe" | "auteur";
   rapport: { etat: "en_cours" | "fait" | "echec" | null; points: PointDuRapport[]; lu: { passages: number; images: number } | null; coutUsd: number | null };
   changes: PassageChange[];
+  /** La couverture d'une mise à jour diffère de celle publiée (F11-AC115) */
+  couvertureChangee: boolean;
 };
 
 /** Les livres qui attendent la relecture du porteur, le plus ancien d'abord. */
@@ -177,6 +182,7 @@ export async function livresARelire(): Promise<LivreARelire[]> {
         coutUsd: l.rapport_cout_usd === null ? null : Number(l.rapport_cout_usd),
       },
       changes: publiee ? passagesChanges(publiee, proposee) : [],
+      couvertureChangee: Boolean(publiee) && (publiee?.couverture?.id ?? null) !== (proposee.couverture?.id ?? null),
     };
   }));
 }

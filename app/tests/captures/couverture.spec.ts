@@ -110,3 +110,21 @@ test("lot 1 : le bloc « La couverture »", async ({ page }) => {
   await aller(page, imprimer);
   await capturer(page, "couverture-sans-aides");
 });
+
+test("lot 2 : la couverture dans « Proposer à la bibliothèque »", async ({ page }) => {
+  test.setTimeout(120_000);
+  n = 1720;
+  const { compte, base } = await adultePret(page);
+  await page.setViewportSize(HAUTE);
+  const classe = await semerClasse(base, "CM1-CM2", ["Alice", "Bilal"]);
+  const projet = await livreFini(base, compte, classe.id);
+  const partager = `/projet/${projet}/livre?etape=sortie&volet=partager`;
+  await aller(page, partager);
+  await page.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
+  await capturer(page, "proposer-sans-couverture");
+  const id = await couverture(base, compte, projet);
+  await base.from("projets").update({ couverture_id: id }).eq("id", projet);
+  await aller(page, partager);
+  await page.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
+  await capturer(page, "proposer-avec-couverture");
+});

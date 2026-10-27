@@ -227,6 +227,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
                       }
                     : null,
                   publication: publicationAffichee(publication, publiable, adresseSite),
+                  couverture: couverture?.image ? { id: couverture.image.id } : null,
                 },
               }
             : null

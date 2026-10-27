@@ -20,6 +20,11 @@ export type EntreeRelecture = {
   autour: string | null;
   /** « I3 » : la troisième image du livre, avec le repère du passage qui la montre */
   images: (ImageARelire & { ou: string; /** Le passage qui la montre d'abord ; rien pour une page de présentation */ passage?: string | null })[];
+  /**
+   * La couverture (F11-AC115) : son repère parmi les images, et les textes que le modèle d'images
+   * devait y écrire ; rien pour une couverture importée, dont le titre est attendu
+   */
+  couverture?: { repere: string; textes: string[] | null } | null;
 };
 export type PointDeRelecture = { repere: string; phrase: string; motif: MotifDeRelecture; explication: string };
 export type Relecture = { points: PointDeRelecture[] };
@@ -60,6 +65,11 @@ Un même problème répété ne fait qu'un point. Au plus dix points, les plus g
     bloc("passages", e.passages.map((p) => `[${p.repere}]\n${p.texte}`).join("\n\n")),
     e.images.length ? bloc("images", e.images.map((i) => `${i.repere} : montrée ${i.ou}`)) : "",
     e.images.length ? "Les images sont jointes dans cet ordre." : "",
+    e.couverture
+      ? e.couverture.textes?.length
+        ? `${e.couverture.repere} est la couverture. Elle doit porter exactement ces textes : ${e.couverture.textes.map((t) => `« ${t} »`).join(", ")}. Ne signale pas ces textes eux-mêmes ; signale, avec la raison « texte-image », un texte de la couverture qui en diffère, qui est mal écrit, ou qui s'y ajoute.`
+        : `${e.couverture.repere} est la couverture, faite par l'enseignant : son titre et ses textes sont attendus, ne les signale pas comme texte écrit dans une image.`
+      : "",
     "Rends le rapport.",
   ),
   pieces: (e) => e.images.map((i) => i.piece),

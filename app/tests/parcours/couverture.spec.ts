@@ -45,6 +45,24 @@ test("F11-AC113 — « La couverture » paraît dans les deux volets de « Impri
   await expect(page.getByText("La couverture, chez l’imprimeur")).toHaveCount(0);
 });
 
+test("F11-AC113 — le panneau « Proposer à la bibliothèque » montre la couverture, ou dit qu'il n'y en a pas, et mène au bloc", async ({ page }) => {
+  const { compte, base } = await adultePret(page);
+  const projet = await livreFini(base, compte);
+  await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
+  await page.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
+  const panneau = page.getByRole("group", { name: "Proposer à la bibliothèque" });
+  await expect(panneau).toContainText("Sans couverture, la bibliothèque montre la page de titre.");
+  await panneau.getByRole("button", { name: "Faire la couverture" }).click();
+  await expect(bloc(page).getByLabel("Ce que montre la couverture")).toBeFocused();
+
+  await bloc(page).locator('input[type="file"]').setInputFiles({
+    name: "couverture.jpg", mimeType: "image/jpeg", buffer: readFileSync(resolve(__dirname, "../../public/illustrations/defaut-foret.jpg")),
+  });
+  await expect(MESSAGE(page)).toContainText("Couverture importée.");
+  await expect(panneau.getByRole("img", { name: "La couverture proposée" })).toBeVisible();
+  await expect(panneau.getByRole("button", { name: "Changer" })).toBeVisible();
+});
+
 test("F11-AC110 — « ✦ Créer la couverture » : elle se crée pendant qu'on continue, se pose d'office, s'annule ; elle se télécharge", async ({ page }) => {
   const { compte, base } = await adultePret(page);
   const projet = await livreFini(base, compte);

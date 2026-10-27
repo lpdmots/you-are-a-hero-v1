@@ -2437,6 +2437,23 @@ a.couverture__livre:focus-visible {
   border-top: 1px solid var(--trait);
 }
 
+/* La couverture dans « Proposer à la bibliothèque » (F11-AC113) : sa vignette, ou la phrase qui dit qu'il n'y en a pas */
+.proposer__couverture {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.proposer__vignette {
+  width: 44px;
+  aspect-ratio: 154 / 216;
+  object-fit: cover;
+  border-radius: 2px 4px 4px 2px;
+  box-shadow: 0 4px 10px -6px rgba(30, 40, 38, 0.4);
+}
+
 /* Les modèles pour les familles (F14-AC33) */
 .partager__familles p {
   color: var(--graphite-2);

@@ -3847,7 +3847,19 @@ V6, le premier envoi à l'imprimeur.
      relecture lit la couverture en premier, avec les textes demandés, et
      signale celui qui en diffère ou qui est mal écrit ; « Seule la
      couverture a changé » dans la file (F11-AC113, AC115). Sans migration
-     prévue, la version étant un `jsonb`.
+     prévue, la version étant un `jsonb`. **Construit le 27 octobre 2026,**
+     sans migration : `couverture` dans la version (`domaine/partage.ts`),
+     lue par `contenuDuLivre` et portée par l'instantané, ajoutée par
+     `versionsDe` avec son image ; l'empreinte de lecture, que garde le PDF,
+     l'ignore (le PDF ne contient pas la couverture) ; la relecture la met en
+     tête des images, « en couverture », et dit au modèle ses textes demandés,
+     ou qu'une couverture importée porte ses textes ; la file dit « Seule la
+     couverture a changé », ou « La couverture a changé aussi » ; le panneau
+     « Proposer » montre sa vignette et « Changer », ou « Sans couverture… » et
+     « Faire la couverture », qui ramènent au champ du bloc ; la page
+     « Confidentialité » dit que la couverture part à la relecture avec ses
+     textes. Précision : une version figée avant ce lot n'a pas de couverture,
+     ce qui revient à « sans couverture ».
   3. **Où elle se montre, et l'accueil :** la carte et le tiroir de
      `/bibliotheque`, l'accueil, « Lire » côté élève (livres de l'enseignant
      et de la bibliothèque), l'aperçu de partage de

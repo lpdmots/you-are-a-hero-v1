@@ -54,7 +54,13 @@ export async function partageDuProjet(e: Enseignant, projetId: string): Promise<
  * qui imprime les noms du livre, F12-AC22).
  */
 export function versionsDe(i: Instantane, noms: NomsDuPartage): { version: VersionPartagee; empreinte: string; empreinteLecture: string } {
-  const version = versionDuLivre(i.livre, noms, i.chapitres);
+  const sansCouverture = versionDuLivre(i.livre, noms, i.chapitres);
+  // La couverture se fige avec la version (F11.4, lot 2) : servie avec ses images, et son changement
+  // dit « le livre a changé » ; l'empreinte de lecture, qui se compare au PDF, l'ignore
+  const c = i.couverture;
+  const version: VersionPartagee = c
+    ? { ...sansCouverture, couverture: c, images: { ...sansCouverture.images, [c.id]: { largeur: c.largeur, hauteur: c.hauteur } } }
+    : { ...sansCouverture, couverture: null };
   return { version, empreinte: empreinteDeLaVersion(version), empreinteLecture: empreinteDeLecture(i.livre, i.chapitres) };
 }
 

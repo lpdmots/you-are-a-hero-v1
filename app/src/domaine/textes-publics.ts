@@ -130,7 +130,7 @@ const TRANSMIS = [
   "– les images : l’idée d’illustration, le texte de la scène, le style choisi, la description et le portrait des personnages ;",
   "– la couverture : ce qu’elle montre, le style, les portraits des personnages nommés, et les textes que l’adulte coche pour les écrire dessus, ligne de la classe comprise s’il la coche ;",
   "– la bibliothèque d’images : la vignette d’une image acceptée par l’éditeur, pour en tirer les mots-clés ;",
-  "– la bibliothèque des livres : la présentation d’un livre proposé, d’après la préparation et son début ; puis, pour l’éditeur, le livre proposé entier, ses textes et ses images, sans la page des auteurs ni la ligne de la page de titre.",
+  "– la bibliothèque des livres : la présentation d’un livre proposé, d’après la préparation et son début ; puis, pour l’éditeur, le livre proposé entier, ses textes et ses images, couverture comprise avec les textes demandés pour elle, sans la page des auteurs ni la ligne de la page de titre.",
 ];
 
 export const CONFIDENTIALITE: Document = {

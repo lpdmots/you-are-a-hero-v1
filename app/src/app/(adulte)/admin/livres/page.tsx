@@ -212,9 +212,12 @@ function LivreAJuger({ l }: { l: LivreARelire }) {
                 </li>
               ))}
             </ul>
+          ) : l.couvertureChangee ? (
+            <p className={styles.note}>Seule la couverture a changé.</p>
           ) : (
             <p className={styles.note}>Aucun passage ne change ; la mise à jour touche la présentation ou les pages autour.</p>
           )}
+          {l.changes.length && l.couvertureChangee ? <p className={styles.note}>La couverture a changé aussi.</p> : null}
         </section>
       ) : null}
 

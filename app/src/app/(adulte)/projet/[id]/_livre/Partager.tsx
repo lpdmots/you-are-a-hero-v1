@@ -63,6 +63,8 @@ export type PartageAffiche = {
     pdf: { etatDu: string; memeTexte: boolean | "inconnu" } | null;
   } | null;
   publication: PublicationAffichee;
+  /** La couverture du projet (F11-AC113) : le panneau « Proposer » en montre la vignette */
+  couverture: { id: string } | null;
 };
 
 type Ouvert = "classes" | "maj" | "couper-classes" | "couper-lien" | "proposer" | "retirer" | null;
@@ -354,7 +356,7 @@ function Publication({ projetId, p, rappels, ouvert, enCours, onOuvrir, onFermer
   const pub = p.publication;
   const formulaire = (action: string) =>
     ouvert ? (
-      <Proposer projetId={projetId} deClasse={p.deClasse} rappels={rappels} initiale={pub.presentation} action={action} enCours={enCours} onProposer={onProposer} onAnnuler={onFermer} />
+      <Proposer projetId={projetId} deClasse={p.deClasse} couverture={p.couverture} rappels={rappels} initiale={pub.presentation} action={action} enCours={enCours} onProposer={onProposer} onAnnuler={onFermer} />
     ) : null;
   const ouvrirLe = (libelle: string, discret = false) =>
     ouvert ? null : p.possible ? (
@@ -507,8 +509,8 @@ function AdresseDuLivre({ adresse }: { adresse: string }) {
  * phrases, avec « ✦ Proposer » ; les points à relire ; l'attestation selon le mode, seule case à
  * cocher ; la clause des conditions d'utilisation. Sans la coche, rien ne part.
  */
-function Proposer({ projetId, deClasse, rappels, initiale, action, enCours, onProposer, onAnnuler }: {
-  projetId: string; deClasse: boolean; rappels: string[]; initiale: string; action: string; enCours: boolean;
+function Proposer({ projetId, deClasse, couverture, rappels, initiale, action, enCours, onProposer, onAnnuler }: {
+  projetId: string; deClasse: boolean; couverture: { id: string } | null; rappels: string[]; initiale: string; action: string; enCours: boolean;
   onProposer: (presentation: string, atteste: boolean) => void; onAnnuler: () => void;
 }) {
   const aides = useAidesIa();
@@ -541,6 +543,27 @@ function Proposer({ projetId, deClasse, rappels, initiale, action, enCours, onPr
       <p id="proposer-t" className="imprimer__rappel-titre">
         Proposer à la bibliothèque
       </p>
+      {/* La couverture que la bibliothèque montrera : elle se fait dans « La couverture », à côté (F11-AC113) */}
+      <div className="proposer__couverture">
+        {couverture ? (
+          // Une image du projet, servie par l'application : pas d'optimisation de Next
+          // eslint-disable-next-line @next/next/no-img-element
+          <img className="proposer__vignette" src={`/images/${couverture.id}?v=1`} alt="La couverture proposée" />
+        ) : null}
+        <span>{couverture ? "La bibliothèque montrera cette couverture." : "Sans couverture, la bibliothèque montre la page de titre."}</span>
+        <button
+          type="button"
+          className="lien"
+          onClick={() => {
+            const bloc = document.querySelector<HTMLElement>("aside.couverture");
+            bloc?.scrollIntoView({ behavior: "smooth", block: "start" });
+            bloc?.querySelector<HTMLElement>("textarea")?.focus({ preventScroll: true });
+          }}
+        >
+          {couverture ? "Changer" : "Faire la couverture"}
+        </button>
+      </div>
+
       <div className="proposer__champ">
         <span className="proposer__etiquette">
           <label htmlFor="presentation-livre">Présentation</label>

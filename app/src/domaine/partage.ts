@@ -57,7 +57,15 @@ export type VersionPartagee = {
   des: 0 | 1 | 2;
   /** Les images que la version montre, avec leurs dimensions : le lecteur n'en sert pas d'autres */
   images: Record<string, { largeur: number; hauteur: number }>;
+  /**
+   * La couverture (F11.4, « Couverture faite sur le site », lot 2) : figée avec la version comme
+   * le reste ; ses textes demandés servent à la relecture (F11-AC115). Absente des versions
+   * figées avant le 27 octobre 2026.
+   */
+  couverture?: CouvertureDeLaVersion | null;
 };
+
+export type CouvertureDeLaVersion = { id: string; largeur: number; hauteur: number; /** Rien pour une couverture importée */ textes: string[] | null };
 
 // ——— Ce que la version montre des auteurs (F12.1) ———
 

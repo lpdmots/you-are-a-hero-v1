@@ -6,6 +6,7 @@ import { estUuid } from "../recit";
 import { clientService } from "../supabase";
 import { SEAU as SEAU_DES_IMAGES, TYPE_MIME } from "../images";
 import type { LivreACompose } from "@/domaine/composition";
+import type { CouvertureDeLaVersion } from "@/domaine/partage";
 import type { Probleme } from "@/domaine/controles";
 import { conditionsDuLivre, type RaisonDeRefus } from "@/domaine/livre";
 import type { Composition } from "./composer";
@@ -30,6 +31,8 @@ export type Instantane = {
   problemes: Probleme[];
   /** Le chapitre de chaque scène : le récit classique se lit en ligne un chapitre par écran (F12.1) */
   chapitres: Map<string, { id: string; titre: string }>;
+  /** La couverture du projet, que les versions partagée et publiée figent avec elles (F11.4) */
+  couverture: CouvertureDeLaVersion | null;
 };
 
 export async function instantaneDuLivre(e: Enseignant, projetId: string): Promise<Instantane | null> {
@@ -38,7 +41,7 @@ export async function instantaneDuLivre(e: Enseignant, projetId: string): Promis
   const [contenu, problemes] = await Promise.all([contenuDuLivre(e, projetId), controlesDuLivre(e, projetId)]);
   if (!contenu) return null;
   const chapitres = new Map(contenu.plan.parties.flatMap((p) => p.chapitres.flatMap((c) => c.scenes.map((s) => [s.id, { id: c.id, titre: c.titre }] as const))));
-  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images, problemes: problemes ?? [], chapitres };
+  return { livre: livreDuContenu(contenu, problemes ?? []), etatDu, empreinte: contenu.empreinte, images: contenu.images, problemes: problemes ?? [], chapitres, couverture: contenu.couverture };
 }
 
 /**
