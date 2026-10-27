@@ -919,8 +919,11 @@ Pour écrire ou reprendre un livre, en local seulement :
    (`essais-ia/livres/<livre>-relus.json`), `images refaire 21` retire l'image posée et la
    refait, `depense` dit ce qu'ont coûté les appels du compte local depuis le premier de
    l'atelier ;
-3. le Livre se mène dans l'application, jusqu'au PDF définitif ;
-4. `npm run livres:exemple -- passeurs --exporter` garde le projet fini dans
+3. pour un livre à réserve (« Les passeurs de brume »), `npx tsx scripts/exemples/verifier-reserve.ts
+   passeurs` joue tous les chemins de la conception : scènes atteintes, vérification là où la
+   réserve peut être vide (et seulement là), erreurs qui passent ou vident la réserve ;
+4. le Livre se mène dans l'application, jusqu'au PDF définitif ;
+5. `npm run livres:exemple -- passeurs --exporter` garde le projet fini dans
    l'instantané, à relire avant de le committer.
 
 ## Essayer la bibliothèque (F15)

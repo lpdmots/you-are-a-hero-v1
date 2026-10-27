@@ -14,8 +14,10 @@ export type SceneExemple = {
   fin?: true;
   /** Les choix : leur libellé et leur destination */
   choix?: [libelle: string, cible: number][];
-  /** Phrase de choix écrite à la main : du texte, et le rang du choix à la place de chaque renvoi */
+  /** Phrase de choix écrite à la main : du texte, et le rang du choix à la place de chaque renvoi ; les choix qu'elle ne nomme pas gardent leur phrase automatique, avant elle */
   phrase?: (string | number)[];
+  /** Un choix réservé au lecteur passé par une autre scène, ce que dit sa phrase (« Si le vieil homme t'a parlé… ») */
+  condition?: { choix: number; apres: number };
   /** Liaison cachée par énigme (F05.1) */
   cachee?: { cible: number; libelle: string };
   /** Numéro fixé dans le livre : la destination d'une énigme, ou d'une règle du jeu */

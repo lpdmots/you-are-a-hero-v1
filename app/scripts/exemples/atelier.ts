@@ -37,7 +37,7 @@ import { cheminProposition, preciserLaFiche } from "@/serveur/personnages";
 import { clientService } from "@/serveur/supabase";
 import type { Conception } from "./conception";
 import { livre as dragon } from "./dragon";
-import * as passeurs from "./passeurs-de-brume";
+import { livre as passeurs } from "./passeurs-de-brume";
 
 const racine = resolve(__dirname, "../..");
 config({ path: resolve(racine, ".env.local"), quiet: true });
@@ -252,7 +252,12 @@ async function images(e: Enseignant, projetId: string, scenes: Map<number, Scene
     }
     const cadrage: Cadrage = im.cadrage === "page" ? "pleine-page" : "3:2";
     const badges = im.badges.flatMap((n) => idDe(n) ?? []);
-    await e.supabase.from("scenes").update({ idee_image: im.idee }).eq("id", s.id);
+    // L'idée a sa limite de longueur dans la base : refusée, elle ne doit pas partir en silence
+    const idee = await e.supabase.from("scenes").update({ idee_image: im.idee }).eq("id", s.id);
+    if (idee.error) {
+      console.log(`S${im.ref} : idée non enregistrée (${idee.error.message})`);
+      continue;
+    }
     const d = await proposerLaDescription(e, s.id, { cadrage, badges });
     if (!d.ok) {
       console.log(`S${im.ref} : ${d.message}`);

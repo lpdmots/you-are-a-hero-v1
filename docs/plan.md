@@ -3606,6 +3606,40 @@ V6, le premier envoi à l'imprimeur.
          et les images. Organisation : un seul rédacteur pour tous les
          textes, deux relecteurs (liaisons entre scènes ; lecteur de
          9 ans), un agent des images, le plan vérifié par script.
+       - **Écrit en local le 27 octobre 2026,** rien dans la vraie base ni
+         poussé. La Préparation du porteur est recopiée telle quelle dans la
+         conception (`app/scripts/exemples/passeurs-de-brume.ts`), vérifiée
+         champ par champ avant que `--brouillon --refaire` remplace son
+         projet. 31 passages (30 prévus ; un passage pour la bonne réponse de
+         l'énigme, demandé par le lecteur de 9 ans), trois parties, sept
+         chapitres ; bonne fin au numéro fixe 31 ; réserve de départ 3 (la
+         règle du porteur), vérifiée par
+         `npx tsx scripts/exemples/verifier-reserve.ts passeurs` sur les 474
+         chemins : chaque scène atteinte, une vérification dans six passages
+         (ceux où la réserve peut être vide), aucune dans les trois premières
+         pertes ; deux erreurs passent toujours, la réserve lâche à la
+         troisième (don au vieil homme puis le pont) ou à la quatrième (refus,
+         ou don puis la barque). Arbitré par Claude en chemin : la phrase de
+         vérification devient « Si tu n'avais plus de réserve à rayer,
+         rends-toi au … » (« S'il ne t'en restait plus », lu par un enfant
+         après avoir rayé, envoyait à la fin avec une réserve en main) ; la
+         barque échouée offerte par « Si le vieil homme t'a dit ce qu'il a vu
+         près du pont » ; « de pilier en pilier » et « Monter marche après
+         marche » pour ne pas souffler la réponse ; au 25, l'huile renversée
+         dans la chute ; Marius voit d'en haut les feux follets autour de sa
+         barque. Textes de 67 à 192 mots, écrits par un seul agent, deux
+         relectures et un dernier passage. Neuf images par les aides (huit de
+         scène, dont S27 en pleine page, et l'image du projet en page de
+         titre), trois portraits ; l'énigme du pont (S8) est la dixième, à
+         faire par le porteur, qui refera ensuite « Mettre en page » et le PDF
+         (son image pleine page décale les pages). Bon passage : de pilier en
+         pilier, sur les planches claires ; la rambarde et la poutre ont des
+         planches sombres et luisantes. Dépense de l'atelier : 0,75 dollar
+         (37 appels, dont deux images refaites deux fois). PDF définitif refait
+         après rechargement de l'instantané : A5, 31 pages ; une page peu
+         remplie laissée en fin de partie 2. Constat : une idée d'image de
+         plus de 400 caractères était refusée par la base sans message ;
+         l'atelier le dit désormais.
    - **Petit livre à choix de cycle 2, entretien validé le 26 octobre 2026**
      (clé `dragon`, « Bouquin mène l'enquête », d'abord « Qui a pris le livre ? ») :
      - **Personnages :** les deux mascottes, sans nom propre (« le dragon »,

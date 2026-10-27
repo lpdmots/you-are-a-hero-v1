@@ -33,7 +33,7 @@ import { lireImage } from "@/serveur/images";
 import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
 import type { Conception } from "./exemples/conception";
 import { livre as dragon } from "./exemples/dragon";
-import * as passeurs from "./exemples/passeurs-de-brume";
+import { livre as passeurs } from "./exemples/passeurs-de-brume";
 
 const LIVRES: Record<string, { conception: Conception; dossier: string }> = {
   passeurs: { conception: passeurs, dossier: "passeurs-de-brume" },
@@ -217,17 +217,18 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
       blocs.push({ type: "action", id: randomUUID(), ...(signe ? { signe } : {}), children: [{ text: t }] });
     }
     const choix = s.choix ?? [];
+    // Les choix que la phrase écrite à la main ne nomme pas gardent leur phrase automatique, avant elle
+    const dansLaPhrase = new Set((s.phrase ?? []).filter((m): m is number => typeof m === "number"));
+    for (const [libelle, vers] of choix.filter((_, i) => !dansLaPhrase.has(i))) {
+      const construction = p.constructions[poses % p.constructions.length];
+      poses += 1;
+      blocs.push({ type: "choix", id: randomUUID(), auto: true, libelle, construction, cible: id(vers), children: [{ text: "" }] });
+    }
     if (s.phrase) {
       blocs.push({
-        type: "choix", id: randomUUID(), libelle: choix[0]?.[0] ?? "",
+        type: "choix", id: randomUUID(), libelle: choix[[...dansLaPhrase][0] ?? 0]?.[0] ?? "",
         children: s.phrase.map((m) => (typeof m === "string" ? { text: m } : { type: "renvoi", id: randomUUID(), cible: id(choix[m][1]), libelle: choix[m][0], children: [{ text: "" }] })),
       });
-    } else {
-      for (const [libelle, vers] of choix) {
-        const construction = p.constructions[poses % p.constructions.length];
-        poses += 1;
-        blocs.push({ type: "choix", id: randomUUID(), auto: true, libelle, construction, cible: id(vers), children: [{ text: "" }] });
-      }
     }
     if (s.cachee) blocs.push({ type: "liaison", id: randomUUID(), cible: id(s.cachee.cible), libelle: s.cachee.libelle, children: [{ text: "" }] });
     const propre = nettoyerTexte(blocs) as Texte | null;
