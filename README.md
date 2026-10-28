@@ -654,8 +654,8 @@ avant de commencer » soient tranchées.
   Belgique et Suisse à part) ; « livre dont vous êtes le héros » en tête,
   « livre-jeu » en second, « histoire interactive » en appui, un mot-clé
   principal par page ([F14](docs/specifications.md#f14--ouverture-offre-et-exploitation),
-  « Mots-clés et pages »). Accueil, bibliothèque, « Aide », `llms.txt` repris
-  en local, non poussés. À venir : le guide (autre conversation), puis la page
+  « Mots-clés et pages »). Accueil, bibliothèque, « Aide », `llms.txt` repris,
+  en ligne le 28 octobre 2026 jusqu'à `21ccd90`. À venir : le guide (autre conversation), puis la page
   pédagogique. Skills ajoutés : `content-strategy`, `site-architecture`,
   `copywriting`, `link-building`.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
