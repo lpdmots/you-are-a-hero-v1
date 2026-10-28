@@ -5,7 +5,7 @@ import { Bibliotheque } from "./Bibliotheque";
 
 export const metadata: Metadata = {
   title: "Histoires dont vous êtes le héros à lire en ligne",
-  description: "Des histoires dont vous êtes le héros et des récits, écrits avec Il était une classe : des livres-jeux pour les enfants, à lire en ligne gratuitement, sans compte.",
+  description: "Des histoires dont vous êtes le héros et des récits écrits par des classes de l’école élémentaire : des livres-jeux pour les enfants, à lire en ligne gratuitement, sans compte.",
   alternates: { canonical: "/bibliotheque" },
 };
 

@@ -11380,9 +11380,9 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   officiel, séquence, documents à télécharger, en texte sur la page et en
   PDF ; c'est la page « Ressources » du plan) ; un comparatif des outils
   seulement si la Search Console montre ces recherches. Une page ne vise pas
-  le mot-clé principal d'une autre. Ce qui se dit des livres de la
-  bibliothèque ne laisse pas croire qu'ils viennent tous de classes : les
-  livres d'exemple du site en sont.
+  le mot-clé principal d'une autre. La bibliothèque se présente comme
+  « écrits par des classes », décidé par lui : ce sera l'essentiel de ses
+  livres, et les livres d'exemple du site le disent dans leur tiroir.
 - **« Écrit avec Il était une classe ».** Dans le lecteur en ligne, une
   mention discrète au pied de la page de titre et après la fin du livre, qui
   mène à la page d'accueil ; jamais pendant la lecture, sans réglage. Elle ne
