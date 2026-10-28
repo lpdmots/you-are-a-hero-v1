@@ -3668,8 +3668,10 @@ V6, le premier envoi à l'imprimeur.
          disent plus l'heure (F10.2) ; la lecture montre les choix à leur place
          (F09.1) ; un curseur dans une phrase de choix écrite à la main ne fait
          plus d'erreur ; une idée d'image trop longue est signalée. Méthode
-         consignée dans le skill `livres-d-exemple`. Pas encore chargé dans la
-         vraie base.
+         consignée dans le skill `livres-d-exemple`. Chargé dans la vraie base le
+         28 octobre 2026, à sa demande, sur son compte (33 scènes, 14 images) ; le
+         PDF définitif s'y refait dans « Imprimer et partager » ; pas encore
+         proposé à la bibliothèque.
    - **Petit livre à choix de cycle 2, entretien validé le 26 octobre 2026**
      (clé `dragon`, « Bouquin mène l'enquête », d'abord « Qui a pris le livre ? ») :
      - **Personnages :** les deux mascottes, sans nom propre (« le dragon »,
