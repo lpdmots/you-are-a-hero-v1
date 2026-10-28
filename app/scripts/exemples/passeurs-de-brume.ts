@@ -12,36 +12,33 @@
  * Tour des Brumes. Une seule valeur, la réserve d'huile (3 au départ) : on ne compte que ce qu'on
  * gaspille. Une erreur mène à une courte scène qui rejoint la suite ; une perte qui peut trouver
  * la réserve vide se vérifie dans son passage (`verifier`). Trois fins : la bonne (S028, numéro
- * fixe 31), sans voix au sommet (S029), la lanterne vide avant la tour (S030). Le plan se vérifie
+ * fixe 33), sans voix au sommet (S029), la lanterne vide avant la tour (S030). Le plan se vérifie
  * par `npx tsx scripts/exemples/verifier-reserve.ts passeurs`.
  */
 import type { Conception } from "./conception";
 
-/** Après « Raye une réserve d'huile. » : la fin si la réserve était déjà vide, sinon la suite. */
+/** Après « Retire une réserve d'huile. » : la fin si la réserve était déjà vide, sinon la suite. */
 const verifier = (fin: number, suite: number, libelle: string) => ({
   choix: [["La lanterne s’éteint", fin], [libelle, suite]] as [string, number][],
-  phrase: ["Si tu n’avais plus de réserve à rayer, rends-toi au ", 0, ". Sinon, rends-toi au ", 1, "."],
+  phrase: ["Si tu n’avais plus de réserve à retirer, rends-toi au ", 0, ". Sinon, rends-toi au ", 1, "."],
 });
 /** Ce que dit la consigne d'un passage où l'on arrive de plusieurs façons */
 const PLUSIEURS = "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant.";
-const RAYE = "Raye une réserve d’huile.";
+const RAYE = "Retire une réserve d’huile.";
 
 export const livre: Conception = {
   TITRE: "Les passeurs de brume",
-  DEPART: 1,
+  DEPART: 33,
   AGE: "8-10",
   VISUEL_DU_PROJET: "riviere",
-  STYLE: {
-    style: "autre",
-    autre: "Illustration d’album jeunesse peinte, douce et lumineuse, formes simples, sans contour noir. Nuit de pleine lune : bleus profonds, argent de la lune, brume laiteuse, lumière chaude et dorée des lanternes ; jamais de noir bouché, les visages restent lisibles.",
-  },
+  // Le style par défaut, choisi par le porteur le 27 octobre 2026 (ses nuits restent des nuits depuis que les styles ne disent plus l'heure)
   CONSIGNE_ECRITURE: "Au passé simple et à l’imparfait, à la troisième personne. Pour des lecteurs de 8 à 10 ans : des mots simples, des phrases vivantes et variées, des sensations (froid, bruits, lumière). Ne donne jamais la bonne réponse d’un choix avant que le lecteur choisisse.",
 
   PREPARATION: {
-    univers: "Le pays des Mille Lacs est fait d’eau, d’îles et de forêts. Chaque soir, une brume épaisse monte des lacs : on n’y voit plus à trois pas, et les chemins semblent changer de place.\nPour traverser, on appelle les passeurs. Leurs barques portent une lanterne dont la flamme chasse la brume tout autour d’elles. Les lanternes brûlent de l’huile de lune : tant qu’elle brûle, la brume recule et les feux follets n’osent pas approcher. Cette huile ne se recueille qu’une fois par mois, au moment où la Première Lanterne est ranimée, à la pleine lune. Juste avant, tout le pays vit sur ses dernières réserves, et chaque goutte compte.\nToutes ces lanternes tirent leur flamme d’une seule : la Première Lanterne, en haut de la Tour des Brumes, sur une île au milieu du Grand Lac. Chaque nuit de pleine lune, le Gardien de la Lanterne traverse le lac et monte la ranimer en chantant le chant des lanternes. Sans ce chant, sa flamme faiblit, et toutes les lanternes du pays avec elle. Le titre de Gardien passe des parents aux enfants, et seule la famille du Gardien connaît le chant.\nLa brume a une règle : celui qui s’y trouve sans lumière perd peu à peu sa voix, jusqu’au lever du soleil.\nDans la brume vivent des choses étranges, mais pas méchantes : des feux follets farceurs qui égarent les voyageurs et adorent jouer des tours ; ils ont peur des lanternes et n’approchent jamais d’une flamme, des pierres qui chantent quand l’eau les touche, des cloches qui sonnent toutes seules.\nLe lecteur découvre ces règles peu à peu, au fil de l’histoire : au départ, il sait seulement que l’huile de lune fait reculer la brume.",
+    univers: "Le pays des Mille Lacs est fait d’eau, d’îles et de forêts. Chaque soir, une brume épaisse monte des lacs : on n’y voit plus à trois pas, et les chemins semblent changer de place.\nPour traverser, on appelle les passeurs. Leurs barques portent une lanterne dont la flamme chasse la brume tout autour d’elles. Les lanternes brûlent de l’huile de lune : tant qu’elle brûle, la brume recule et les feux follets n’osent pas approcher. Cette huile ne se recueille qu’une fois par mois, au moment où la Première Lanterne est ranimée, à la pleine lune. Juste avant, tout le pays vit sur ses dernières réserves, et chaque goutte compte.\nToutes ces lanternes tirent leur flamme d’une seule : la Première Lanterne, en haut de la Tour des Brumes, sur une île au milieu du Grand Lac. Chaque nuit de pleine lune, le Gardien de la Lanterne traverse le lac et monte la ranimer en chantant le chant des lanternes. Sans ce chant, sa flamme faiblit, et toutes les lanternes du pays avec elle. Le titre de Gardien passe des parents aux enfants, et seule la famille du Gardien connaît le chant.\nLa brume a une règle : celui qui s’y trouve sans lumière perd peu à peu sa voix, jusqu’au lever du soleil.\nDans la brume vivent des choses étranges, mais pas méchantes : des feux follets farceurs qui égarent les voyageurs et adorent jouer des tours ; ils ont peur des lanternes et n’approchent jamais d’une flamme, des pierres qui chantent quand l’eau les touche, des cloches qui sonnent toutes seules.\nUn passage d’introduction présente le monde avant l’aventure (la brume et la voix, les feux follets farceurs, l’huile de lune et les réserves, la Première Lanterne, le Gardien et son chant) ; les règles qui servent d’indices aux décisions se découvrent en chemin.",
     personnages: "",
     enjeu: "C’est une nuit de pleine lune. Comme chaque mois, Marius est parti en barque ranimer la Première Lanterne. Mais ce soir, la brume est plus épaisse que jamais.\nCe qui lui arrive (le lecteur ne l’apprend qu’à la fin) : au pied de la Tour des Brumes, il attache sa barque, en décroche la lanterne pour éclairer l’escalier et commence à monter. Dans l’escalier, un souffle de brume éteint sa lanterne. Il monte dans le noir, et la brume lui prend sa voix : arrivé en haut, il ne peut plus chanter. En bas, la barque est restée sans lumière : les feux follets, qui ne craignent plus rien, ont osé s’en approcher, ont dénoué sa corde pour jouer, et le courant l’a emportée. Seul sur l’île, sans voix et sans barque, il envoie Plume chercher de l’aide.\nVers minuit, les lanternes du village faiblissent, et Plume revient seule frapper à la fenêtre de Lou, inquiète. Lou ne sait rien de plus, mais il comprend que son père n’a pas pu chanter et qu’il a besoin d’aide, et il sait où le trouver : en haut de la tour. En chemin, il découvrira la barque de son père qui dérive, vide.\nLou doit traverser le lac et la brume, monter en haut de la tour et chanter avant le lever du jour. S’il réussit, la Première Lanterne se rallume, toutes les lanternes du pays avec elle, Marius retrouve sa voix et raconte enfin ce qui lui est arrivé. S’il échoue, toutes les lanternes du pays s’éteindront, puisqu’elles tirent leur flamme de la Première. Plus aucun passeur ne pourra traverser : les îles et les villages seront coupés les uns des autres, les barques de pêche resteront au port. La brume ne se lèvera plus au matin ; elle gagnera les rives, puis les rues et les maisons, et prendra peu à peu la voix des habitants. Marius ne retrouverait jamais la sienne, et le pays des Mille Lacs deviendrait le pays du silence.\nToute l’histoire se passe pendant cette seule nuit.",
-    regles: "Avant de commencer, prends ta feuille d’aventure. La lanterne de Lou a juste assez d’huile de lune pour le voyage, plus 3 doses de réserve : écris-les. Lou ne doit pas traîner en route !\nQuand un passage te le demande, raye ou ajoute une réserve. S’il te faut en rayer une et qu’il ne t’en reste plus, le passage te dit où aller.",
+    regles: "Avant de commencer, prends ta feuille d’aventure. La lanterne de Lou a juste assez d’huile de lune pour le voyage, plus 3 doses de réserve : écris-les. Lou ne doit pas traîner en route !\nQuand un passage te le demande, retire ou ajoute une réserve. S’il te faut en retirer une et qu’il ne t’en reste plus, le passage te dit où aller.",
     formuleRenvoi: "rends",
     constructions: ["neutre"],
   },
@@ -54,7 +51,7 @@ export const livre: Conception = {
 
   OBJETS: [],
   FORMULES: [
-    ["Raye une réserve d’huile.", "crayon"],
+    ["Retire une réserve d’huile.", "crayon"],
     ["Ajoute une réserve d’huile.", "crayon"],
   ],
   FEUILLE: {
@@ -63,7 +60,7 @@ export const livre: Conception = {
     sections: [{ id: "lanterne", type: "compteurs", titre: "La lanterne de Lou", compteurs: [{ id: "reserve", nom: "Réserve d’huile", depart: 3 }] }],
   },
   ACTIONS: {
-    4: [RAYE], 6: [RAYE], 9: ["Ajoute une réserve d’huile."], 10: [RAYE],
+    4: [RAYE], 6: [RAYE], 9: ["Ajoute une réserve d’huile."], 10: [RAYE], 32: [RAYE],
     13: [RAYE], 14: [RAYE], 16: [RAYE], 18: [RAYE], 22: [RAYE], 25: [RAYE],
   },
 
@@ -73,16 +70,21 @@ export const livre: Conception = {
       chapitres: [
         {
           cle: "village", titre: "Le village", couleur: 5, visuel: "village",
-          resume: "À minuit, les lanternes du village faiblissent et Plume revient seule. Lou comprend que son père n’a pas pu chanter, et part à pied rejoindre le ponton des Gardiens.",
+          resume: "Une nuit de pleine lune, Plume vient frapper à la vitre de Lou et les lanternes faiblissent : il est arrivé quelque chose à son père. Lou part à pied vers la tour, en le cherchant en chemin.",
           scenes: [
             {
-              ref: 1, titre: "Village — la nuit de pleine lune",
-              consigne: "Ouverture. Nuit de pleine lune, vers minuit, au village du bord du Grand Lac. Lou, dix ans, ne dort pas. Au crépuscule, son père Marius, le Gardien de la Lanterne, est parti en barque ranimer la Première Lanterne, en haut de la Tour des Brumes, comme chaque mois ; en partant, il a redit ses deux phrases de chaque départ : « Ne reste jamais dans la brume sans lumière : elle te prendrait ta voix. » et « L’eau qui frissonne cache des dents. » Par la fenêtre, Lou regarde les lanternes du village : d’habitude leur flamme est dorée, calme, bien droite ; ce soir elle baisse, toutes ensemble. La brume est montée comme chaque soir, d’abord des mares et des étangs, là où l’eau dort, puis partout. On frappe au carreau : Plume, la chouette de son père, revient seule, les plumes ébouriffées, inquiète. Lou comprend : si les lanternes baissent et que Plume revient seule, son père n’a pas pu chanter ; la Première Lanterne donne leur flamme à toutes les lanternes du pays, celles des maisons comme celles des barques des passeurs, et il faut la ranimer avant le lever du soleil ; personne d’autre au village ne connaît le chant, seulement le Gardien et Lou, à qui il l’apprend depuis toujours. Il sait où trouver son père : en haut de la tour. Glisse les deux phrases et la couleur des flammes dans le récit, sans insister.",
+              ref: 33, titre: "Ouverture — le pays des Mille Lacs",
+              consigne: "Introduction du monde, avant l’aventure, décidée par le porteur le 28 octobre 2026 : la brume de chaque soir et la voix perdue sans lumière, des feux follets farceurs (sans dire comment les reconnaître ni ce qui les fait fuir), les passeurs et l’huile de lune qui fait reculer la brume, recueillie seulement à la pleine lune d’où les réserves, la Première Lanterne ranimée avant le lever du soleil par le chant du Gardien, que seule sa famille connaît, Marius et Lou. Aucun indice de décision (ni l’eau qui dort, ni la lueur bleutée, ni l’eau qui frissonne).",
+              choix: [["Commencer l’aventure", 1]],
+            },
+            {
+              ref: 1, titre: "Village — la nuit de pleine lune", numero: 2,
+              consigne: "Nuit de pleine lune. Des coups à la vitre réveillent Lou : Plume, la chouette de son père, agitée. Dehors, une brume plus épaisse que jamais. Son père est parti au crépuscule ranimer la Première Lanterne ; les lanternes devraient briller plus fort que jamais, et ne sont que de petites lueurs. Il est arrivé quelque chose à son père. Le monde (voix, Gardien, chant, réserves) est présenté par l’introduction, S033 : ne pas le redire.",
               choix: [["Partir aider son père", 2]],
             },
             {
               ref: 2, titre: "Village — le départ",
-              consigne: "Lou se prépare vite : sa petite lanterne, cadeau de son père, remplie d’huile de lune, et trois petites fioles de réserve dans son sac en toile ; il sait que l’huile est rare ce soir, la veille de la pleine lune tout le pays vit sur ses réserves. Il part à pied : il a peur de l’eau profonde et nage mal ; il longera la rive jusqu’au ponton des Gardiens, d’où la traversée vers la tour est la plus courte. À la porte, un courant d’air fait trembler la flamme : il la protège de sa main, elle se redresse. Sur les planches du quai, il glisse sur une planche sombre et luisante, mouillée ; les claires, sèches, ne glissent pas — un détail de quelques mots, sans en tirer de leçon. Plume vole au-dessus de lui. Termine à la sortie du village, la lanterne allumée, dans la brume qui recule autour de sa flamme.",
+              consigne: "Lou se prépare vite : sa petite lanterne, cadeau de son père, remplie d’huile de lune (en l’allumant, sa flamme dorée, calme, bien droite), et trois petites fioles de réserve dans son sac en toile ; l’huile est rare ce soir. À la porte, un courant d’air fait trembler la flamme : il la protège de sa main. Il ne sait pas où est son père : il part vers la tour en le cherchant en chemin. Il part à pied, par peur de l’eau profonde : il longera la rive jusqu’au ponton des Gardiens, d’où la traversée est la plus courte. En quittant le village, la brume monte plus épaisse des mares et des fossés où l’eau dort ; au quai, les barques des passeurs immobiles. Plume, qui connaît tous les chemins du lac et retrouve toujours son père, vole au-dessus de lui. Indices glissés sans les souligner.",
               choix: [["Prendre le chemin du lac", 3]],
             },
           ],
@@ -103,17 +105,17 @@ export const livre: Conception = {
             },
             {
               ref: 5, titre: "Chemin — le vieil homme",
-              consigne: `${PLUSIEURS} Lou marche sur le chemin de la rive. Un vieil homme vient vers lui, une lanterne presque vide à la main, la flamme minuscule. Il revient du pont, plus loin : la crue a emporté un tronc d’arbre qui l’a brisé ; on ne peut plus passer qu’en sautant sur ce qu’il en reste. Il demande à Lou un peu d’huile de lune pour rentrer chez lui. Perdre sa voix, dit-il, il s’en moque : il vit seul, il n’a plus personne à qui parler. Mais sans lumière, les feux follets viendront lui jouer des tours ; ils ont peur des lanternes. Lou pense à son père, à l’huile qu’il lui faut. Ne laisse pas entendre ce que le vieil homme dirait d’autre.`,
+              consigne: `${PLUSIEURS} Lou marche sur le chemin de la rive. Un vieil homme vient vers lui, une lanterne presque vide à la main, la flamme minuscule. Il revient du pont, plus loin : la crue a emporté un tronc d’arbre qui l’a brisé ; on ne peut plus passer qu’en sautant sur ce qu’il en reste. Inquiet, il ajoute que la brume est anormalement épaisse cette nuit, et qu’il a dû brûler plus d’huile que d’habitude. Il demande à Lou un peu d’huile de lune pour rentrer chez lui. Perdre sa voix, dit-il, il s’en moque : il vit seul, il n’a plus personne à qui parler. Mais sans lumière, les feux follets viendront lui jouer des tours ; ils ont peur des lanternes. Lou pense à son père, à l’huile qu’il lui faut. Ne laisse pas entendre ce que le vieil homme dirait d’autre.`,
               choix: [["Lui donner une réserve d’huile", 6], ["Refuser poliment", 7]],
             },
             {
               ref: 6, titre: "Chemin — une fiole pour le vieil homme",
-              consigne: "Lou donne une de ses fioles. Le vieil homme remplit sa lanterne, et sa reconnaissance le rend bavard : il le met en garde contre les feux follets, qui imitent la lueur d’une lanterne pour égarer les voyageurs ; on les reconnaît à leur lumière bleutée, qui tremble et sautille. Et il a vu tout à l’heure, sur cette rive, un peu plus loin que le pont, une barque échouée dans les roseaux, sans personne et sans lanterne. Lou a peur que ce soit celle de son père. Termine quand ils se quittent, Lou en route vers le pont.",
+              consigne: "Lou donne une de ses fioles. Le vieil homme remplit sa lanterne, et sa reconnaissance le rend bavard : il raconte en riant qu’à l’âge de Lou, une nuit de brume, il a suivi une petite lueur bleutée qu’il prenait pour la lanterne de son grand-père, et fini dans la vase pendant qu’elle s’en allait en dansant : les feux follets avaient bien ri de lui (une anecdote, pas une leçon sur la façon de les reconnaître). Et il a vu tout à l’heure, sur cette rive, un peu plus loin que le pont, une barque échouée dans les roseaux, sans personne et sans lanterne. Lou a peur que ce soit celle de son père. Termine quand ils se quittent, Lou en route vers le pont.",
               choix: [["Aller jusqu’au pont", 8]],
             },
             {
-              ref: 7, titre: "Chemin — « Alors dépêche-toi »",
-              consigne: "Lou refuse poliment, gêné : il explique qu’il en a besoin pour son père. Le vieil homme hausse les épaules, un peu vexé : « Alors dépêche-toi. » Il s’éloigne sans rien ajouter. Lou repart vers le pont, le cœur serré de l’avoir laissé. Court.",
+              ref: 7, titre: "Chemin — bon courage",
+              consigne: "Lou refuse poliment, gêné : il explique qu’il en a besoin pour son père. Le vieil homme comprend et lui souhaite bon courage, puis se dépêche de rentrer, car il n’a presque plus d’huile. Lou repart vers le pont. Court.",
               choix: [["Aller jusqu’au pont", 8]],
             },
           ],
@@ -125,13 +127,14 @@ export const livre: Conception = {
             {
               ref: 8, titre: "Pont — l’énigme du pont effondré",
               consigne: `${PLUSIEURS} L’énigme du pont, illustrée par une image pleine page faite par le porteur. Lou arrive au pont effondré sur la rivière en crue qui se jette dans le lac : un tronc l’a brisé, il n’en reste que des planches éparses posées entre les piliers. Trois passages : le long de la rambarde ; sur la grande poutre du milieu ; de pilier en pilier. Certaines planches sont claires, d’autres sombres et luisantes (ne dis pas lesquelles sont sèches ou mouillées). Dis au lecteur de bien regarder l’image avant de choisir, sans dire quelles planches tiennent ni lequel est le bon (le bon : de pilier en pilier). Lou a peur de l’eau noire qui gronde dessous.`,
-              choix: [["Passer le long de la rambarde", 10], ["Marcher sur la grande poutre", 10], ["Sauter de pilier en pilier", 31], ["Longer la rive jusqu’aux roseaux", 9]],
+              // Les choix réécrits par le porteur le 27 octobre 2026 dans l’application (la phrase de la barque entre deux paragraphes)
+              choix: [["Sauter sur la pierre située à 1m22", 31], ["Sauter sur la pierre située à 1,5m", 10], ["Sauter sur la pierre située à 135cm", 32], ["Longer la rive jusqu’aux roseaux", 9]],
               phrase: ["Si le vieil homme t’a dit ce qu’il a vu près du pont, tu peux aussi longer la rive : rends-toi au ", 3, "."],
               condition: { choix: 3, apres: 6 },
             },
             {
               ref: 9, titre: "Pont — la barque dans les roseaux",
-              consigne: "Lou longe la rive, de ce côté de la rivière, jusqu’aux roseaux. Une barque échouée, sans personne : celle de son père, il la reconnaît à la chouette sculptée à la proue. Peur : son père est-il tombé à l’eau ? Mais la barque n’est pas chavirée, et le crochet de la lanterne est vide : son père a emporté sa lanterne. La corde pend, son nœud défait, pas coupée ; un nœud de Gardien ne se défait pas tout seul. Sous le banc, Lou trouve une fiole d’huile de lune. Il surmonte sa peur de l’eau, pousse la barque et prend les rames, Plume perchée à la proue. Ne donne aucune explication sur le nœud.",
+              consigne: "Lou longe la rive, de ce côté de la rivière, jusqu’aux roseaux. Une barque échouée, sans personne : celle de son père, il la reconnaît à la chouette sculptée à la proue. Peur : son père est-il tombé à l’eau ? Mais la barque n’est pas chavirée, et le crochet de la lanterne est vide : son père a emporté sa lanterne. La corde pend, son nœud défait, pas coupée ; un nœud de Gardien ne se défait pas tout seul. Sous le banc, Lou trouve une fiole d’huile de lune. Il surmonte sa peur de l’eau, pousse la barque et prend les rames, Plume perchée à la proue ; en ramant, le souvenir de son père qui lui apprenait à ramer : « L’eau qui frissonne cache des dents. », sans annoncer qu’elle servira. Ne donne aucune explication sur le nœud.",
               choix: [["Ramer vers la Tour des Brumes", 12]],
             },
             {
@@ -145,8 +148,13 @@ export const livre: Conception = {
               choix: [["Continuer sur la rive", 11]],
             },
             {
+              ref: 32, titre: "Pont — la pierre à 135 cm",
+              consigne: "Courte scène d’erreur, différente de la glissade (S010) : Lou vise la pierre à 135 cm, la touche de la pointe de la botte, bascule en arrière dans l’eau glacée ; il se hisse, passe les autres pierres jusqu’à l’autre rive ; la mèche noyée se rallume avec de l’huile neuve.",
+              choix: [["Continuer sur la rive", 11]],
+            },
+            {
               ref: 11, titre: "Rive — le chemin inondé",
-              consigne: `${PLUSIEURS} Lou est de l’autre côté de la rivière. Plus loin, la crue a noyé le chemin de la rive, comme souvent à cette saison. Au petit ponton des Gardiens, une barque de secours attend, amarrée pour ces nuits-là. Lou a peur de l’eau profonde ; Plume se pose à la proue et le rassure. Il monte, prend les rames. En longeant la rive noyée, par une trouée de la brume, il aperçoit à quelques coups de rame, de l’autre côté de l’embouchure, prise dans les roseaux, une barque sans lumière, vide : celle de son père, reconnaissable à la chouette sculptée à la proue. Le courant de la crue l’en éloigne ; son cœur se serre. Il rame vers la tour.`,
+              consigne: `${PLUSIEURS} Lou est de l’autre côté de la rivière. Plus loin, la crue a noyé le chemin de la rive, comme souvent à cette saison. Au petit ponton des Gardiens, une barque de secours attend, amarrée pour ces nuits-là. Lou a peur de l’eau profonde ; Plume se pose à la proue et le rassure. Il monte, prend les rames ; le souvenir de son père qui lui apprenait à ramer : « L’eau qui frissonne cache des dents. », sans annoncer qu’elle servira. En longeant la rive noyée, par une trouée de la brume, il aperçoit à quelques coups de rame, de l’autre côté de l’embouchure, prise dans les roseaux, une barque sans lumière, vide : celle de son père, reconnaissable à la chouette sculptée à la proue. Le courant de la crue l’en éloigne ; son cœur se serre. Il rame vers la tour.`,
               choix: [["Ramer vers la Tour des Brumes", 12]],
             },
           ],
@@ -177,54 +185,54 @@ export const livre: Conception = {
             },
             {
               ref: 15, titre: "Lac — l’eau qui frissonne",
-              consigne: `${PLUSIEURS} Lou rame vers la tour ; on la devine maintenant, une ombre haute dans la brume. Entre lui et elle, deux passages : tout droit, une eau qui frissonne, pleine de petites rides qui scintillent sous la lune, le plus court ; ou un détour par une eau sombre, lisse et profonde, qui coule lentement (ce n’est pas de l’eau qui dort), qui lui fait peur, à lui qui nage mal. Ne rappelle pas la phrase de Marius sur l’eau qui frissonne : le lecteur doit s’en souvenir.`,
+              consigne: `${PLUSIEURS} Lou rame vers la tour ; on la devine maintenant, une ombre haute dans la brume. Entre lui et elle, deux passages : tout droit, une eau qui frissonne, pleine de petites rides qui scintillent sous la lune, le plus court ; ou un détour par une eau sombre, lisse et profonde, qui coule lentement (ce n’est pas de l’eau qui dort), qui lui fait peur, à lui qui nage mal. Ne rappelle pas la phrase de Marius sur l’eau qui frissonne (souvenir du 9 ou du 11) : le lecteur doit s’en souvenir.`,
               choix: [["Couper tout droit par l’eau qui frissonne", 16], ["Contourner par l’eau sombre et profonde", 17]],
             },
             {
               ref: 16, titre: "Lac — les dents du lac",
-              consigne: "Courte scène d’erreur. L’eau frissonne parce que des rochers affleurent juste dessous. La barque racle, se coince ; Lou pousse avec une rame, longtemps, pendant que la lanterne brûle. Il comprend la phrase de son père : « L’eau qui frissonne cache des dents. » Il se dégage enfin. Termine en route vers la tour.",
+              consigne: "Courte scène d’erreur. L’eau frissonne parce que des rochers affleurent juste dessous. La barque racle, se coince ; Lou pousse avec une rame, longtemps, pendant que la lanterne brûle. Il comprend la phrase de son père, entendue en souvenir en prenant les rames : « L’eau qui frissonne cache des dents. » Il se dégage enfin. Termine en route vers la tour.",
               ...verifier(30, 17, "Repartir vers la tour"),
             },
             {
               ref: 30, titre: "Lac — la dernière goutte (fin)",
-              consigne: "Fin : la lanterne vide avant la tour. On y arrive de plusieurs endroits (sur la barque ou sur l’îlot) : ne dis pas où est Lou. La flamme pâlit, crachote et s’éteint ; plus une goutte d’huile. La brume se referme sur lui. Il essaie d’appeler, de chanter : sa voix devient un souffle, puis plus rien. Plume se pose contre lui, toute chaude ; au matin gris, elle le guide jusqu’au village. Il devine que, là-bas, la Première Lanterne s’éteint, et avec elle toutes les lanternes du pays : cette nuit, le pays des Mille Lacs entre dans le silence. Aucun conseil de jeu à la fin (rien qui oriente un choix). Doux pour des enfants, sans peur inutile ; termine en invitant à reprendre l’aventure au début.",
+              consigne: "Fin : la lanterne vide avant la tour. On y arrive de plusieurs endroits (sur la barque ou à pied sur l’île de la tour) : ne dis pas où est Lou. La flamme pâlit, crachote et s’éteint ; plus une goutte d’huile. La brume se referme sur lui. Il essaie d’appeler : sa voix devient un souffle, puis plus rien (pas de chant : le lecteur qui perd sur le lac ne le connaît pas encore). Plume se pose contre lui, toute chaude ; au matin gris, elle le guide jusqu’au village. Il devine que, là-bas, la Première Lanterne s’éteint, et avec elle toutes les lanternes du pays : cette nuit, le pays des Mille Lacs entre dans le silence : la brume ne se lèvera plus avant la prochaine pleine lune et le prochain chant. Aucun conseil de jeu à la fin (rien qui oriente un choix). Doux pour des enfants, sans peur inutile ; termine en invitant à reprendre l’aventure au début.",
               fin: true,
             },
           ],
         },
         {
-          cle: "ilot", titre: "L’îlot aux pierres qui chantent", couleur: 6, visuel: "etang",
-          resume: "Sur un îlot où la brume ne vient pas, Lou attend le retour de Plume. Une lumière apparaît dans la brume.",
+          cle: "ilot", titre: "La clairière aux pierres", couleur: 6, visuel: "etang",
+          resume: "Sur l’île de la tour, Lou marche en chantant le chant des lanternes et arrive dans une clairière où la brume n’entre pas. Une lumière apparaît au bord de la brume.",
           scenes: [
             {
-              ref: 17, titre: "Îlot — les pierres qui chantent",
-              consigne: `${PLUSIEURS} Tout près de la tour, Lou aborde un petit îlot entouré de pierres qui chantent quand l’eau les touche ; la brume n’y entre pas, comme si elle n’aimait pas leur chant. La pleine lune l’éclaire. Plume s’envole vers le haut de la tour pour trouver le passage et Marius ; Lou doit l’attendre ici. Sa lanterne brûle toujours, et il reste toute la tour à monter. Il hésite : la garder allumée, ou l’éteindre en attendant. Ne dis pas ce qu’il vaut mieux faire ; ne rappelle ni la règle de la brume ni la peur qu’ont les feux follets des lanternes.`,
+              ref: 17, titre: "Île — la clairière aux pierres",
+              consigne: `${PLUSIEURS} Lou aborde l’île de la Tour des Brumes. Il amarre la barque à l’anneau de fer où son père attache toujours la sienne : l’anneau est vide. Plume s’envole vers le haut de la tour. Il reste un bout de chemin à pied jusqu’à la tour, dans la brume, lanterne levée. Pour se donner du courage, Lou fredonne le chant des lanternes (présenté dans l’introduction) ; si les lanternes baissent, son père n’a sans doute pas pu le chanter ; il faut le chanter avant le lever du soleil, et la nuit avance. Alors qu’il chante, il traverse une vaste clairière semée de grandes pierres dressées (pas en cercle), un lieu qui semble imprégné de magie, où la brume ne pénètre pas ; la pleine lune éclaire tout. Sa lanterne brûle toujours, et il reste toute la tour à monter. Il hésite : la garder allumée pour traverser la clairière, ou l’éteindre. Ne dis pas ce qu’il vaut mieux faire ; ne rappelle ni la règle de la brume ni la peur qu’ont les feux follets des lanternes. Rien d’un îlot ni d’une attente.`,
               choix: [["Garder la lanterne allumée", 18], ["Éteindre la lanterne", 19]],
             },
             {
-              ref: 18, titre: "Îlot — la flamme qui veille",
-              consigne: "Courte scène d’erreur, calme. Lou garde la lanterne allumée et attend ; rien ne se passe, aucune brume ici, la lune suffisait à y voir. Il regarde la flamme boire l’huile pour rien. Plume revient enfin : elle a trouvé le chemin. Termine quand ils repartent vers la tour.",
-              ...verifier(30, 23, "Repartir vers la tour"),
+              ref: 18, titre: "Île — la flamme qui veille",
+              consigne: "Courte scène d’erreur, calme. Lou garde la lanterne allumée et traverse la clairière, immense, longue à traverser ; rien ne se passe, aucune brume ici, la lune suffisait à y voir. Il regarde la flamme boire l’huile pour rien. Au bout de la clairière, le chemin replonge dans la brume vers la tour. Termine quand il reprend le chemin.",
+              ...verifier(30, 23, "Reprendre le chemin de la tour"),
             },
             {
-              ref: 19, titre: "Îlot — la lumière dans la brume",
-              consigne: "Lou éteint sa lanterne pour l’économiser ; la lune suffit sur l’îlot. Il attend, assis sur une pierre qui chante doucement. Soudain, dans la brume, au-delà de l’eau, une lumière apparaît : on dirait une lanterne qu’on porte. Elle bouge de droite et de gauche, s’approche un peu. Lou pense à son père. Ne décris ni sa couleur ni le détail de ses mouvements ; ne dis pas ce que c’est.",
+              ref: 19, titre: "Île — la lumière dans la brume",
+              consigne: "Lou éteint sa lanterne pour l’économiser ; la lune suffit dans la clairière. Il avance au clair de lune. Soudain, au bord de la clairière, dans la brume, une lumière apparaît : on dirait une lanterne qu’on porte. Elle bouge de droite et de gauche, s’approche un peu. Lou pense à son père. Ne décris ni sa couleur ni le détail de ses mouvements ; ne dis pas ce que c’est.",
               choix: [["Appeler « Papa ? » et la suivre", 20], ["Rester immobile et l’observer", 21]],
             },
             {
-              ref: 20, titre: "Îlot — la lumière qui recule",
-              consigne: "Lou appelle « Papa ? » et court vers la lumière, jusqu’au bord de l’îlot, les pieds dans l’eau, au seuil de la brume. La lumière recule à mesure qu’il avance, puis disparaît d’un coup. Il est au bord de la brume, sans lumière ; il sent son souffle froid sur sa gorge, sa voix tremble un peu. Derrière lui, tout près, il entend chanter les pierres de l’îlot. Ne dis pas ce qu’il doit faire.",
-              choix: [["Rallumer la lanterne pour chercher encore", 22], ["Revenir au milieu de l’îlot et attendre Plume", 23]],
+              ref: 20, titre: "Île — la lumière qui recule",
+              consigne: "Lou appelle « Papa ? » et court vers la lumière, jusqu’au bord de la clairière, au seuil de la brume. La lumière recule à mesure qu’il avance, puis disparaît d’un coup. Il est au bord de la brume, sans lumière ; il sent le souffle froid de la brume sur sa gorge, sa voix tremble un peu. Derrière lui, tout près, la clairière baigne dans la lune. Ne dis pas ce qu’il doit faire.",
+              choix: [["Rallumer la lanterne pour chercher encore", 22], ["Revenir dans la clairière", 23]],
             },
             {
-              ref: 21, titre: "Îlot — la lumière bleutée",
-              consigne: "Lou ne bouge pas et regarde. La lumière est bleutée ; elle tremble et sautille par petits bonds, autrement qu’une lanterne qu’on porte ; personne ne la tient. Une lanterne d’huile de lune a une flamme dorée, calme, bien droite : ce n’est pas une lanterne. Un feu follet ! Comme Lou a éteint la sienne, il n’a plus peur et s’approche : il tourne autour de sa barque, tire sur la corde pour jouer. Lou attrape la corde, la renoue solidement. Plume revient : elle a trouvé le chemin. Lou rallume sa lanterne ; le feu follet s’enfuit. Termine quand ils repartent vers la tour.",
-              choix: [["Repartir vers la tour", 23]],
+              ref: 21, titre: "Île — la lumière bleutée",
+              consigne: "Lou ne bouge pas et regarde. La lumière est bleutée ; elle tremble et sautille par petits bonds, autrement qu’une lanterne qu’on porte ; personne ne la tient. Ce n’est pas une lanterne : un feu follet ! Comme la lanterne de Lou est éteinte, il n’a pas peur et s’approche, danse autour de lui pour l’attirer dans la brume. Lou rallume sa lanterne : le feu follet s’enfuit. Termine quand il reprend le chemin de la tour.",
+              choix: [["Reprendre le chemin de la tour", 23]],
             },
             {
-              ref: 22, titre: "Îlot — pour rien",
-              consigne: "Courte scène d’erreur. Lou rallume sa lanterne, monte la flamme, remonte dans la barque et rame dans la brume pour chercher (il ne s’avance pas à pied dans l’eau). Rien : la lumière ne revient pas. Il comprend qu’on s’est moqué de lui, peut-être un feu follet. Il revient sur l’îlot, au chant des pierres. Plume revient : elle a trouvé le chemin. Termine quand ils repartent vers la tour.",
-              ...verifier(30, 23, "Repartir vers la tour"),
+              ref: 22, titre: "Île — pour rien",
+              consigne: "Courte scène d’erreur. Lou rallume sa lanterne, monte la flamme et entre dans la brume pour chercher. Rien : la lumière ne revient pas. Il comprend qu’on s’est moqué de lui, peut-être un feu follet. Il revient sur le chemin, guidé par la lueur de la clairière. Termine quand il reprend le chemin de la tour.",
+              ...verifier(30, 23, "Reprendre le chemin de la tour"),
             },
           ],
         },
@@ -239,7 +247,7 @@ export const livre: Conception = {
           scenes: [
             {
               ref: 23, titre: "Tour — le pied de la tour",
-              consigne: `${PLUSIEURS} Plume est revenue de la tour : elle a trouvé le passage (le dire en une phrase, sans raconter le retour, qui l’est déjà sur certains chemins). Lanterne allumée à l’avant (ne dis pas s’il l’a rallumée), Lou rame derrière elle jusqu’à l’île de la tour. Il amarre la barque à l’anneau de fer où son père attache toujours la sienne : l’anneau est vide. La porte de la tour est ouverte. Dedans, un escalier en colimaçon monte dans le noir ; des fentes dans le mur laissent entrer des souffles de brume et de vent, qui sifflent. Plume s’envole par dehors vers le sommet. Lou commence à monter, la lanterne levée. Termine dans l’escalier.`,
+              consigne: `${PLUSIEURS} Lou arrive au pied de la tour, sa lanterne allumée (ne dis pas s’il l’a rallumée). Plume l’attend, perchée au-dessus de la porte, puis s’envole par dehors vers le sommet. La porte est ouverte. Dedans, un escalier en colimaçon monte dans le noir ; des fentes dans le mur laissent entrer des souffles de brume et de vent, qui sifflent. Lou commence à monter, la lanterne levée. Termine dans l’escalier. (L’anneau vide et le retour de Plume ne sont plus ici : l’anneau est au passage 17.)`,
               choix: [["Monter l’escalier", 24]],
             },
             {
@@ -271,7 +279,7 @@ export const livre: Conception = {
             {
               ref: 28, titre: "Tour — ce que Marius raconte (fin)",
               consigne: "Bonne fin. À l’aube, Marius raconte enfin : dans l’escalier, un souffle de brume a éteint sa lanterne ; il est monté dans le noir, et la brume lui a pris sa voix ; arrivé en haut, il ne pouvait plus chanter. De là-haut, il a vu en bas, dans la brume, des lueurs bleutées danser autour de sa barque restée sans lumière : les feux follets, qui ne craignaient plus rien, ont dénoué sa corde pour jouer, et le courant l’a emportée. Seul, sans voix et sans barque, il a envoyé Plume chercher de l’aide. Puis il regarde Lou, fier : ce soir, c’est lui qui a ranimé la Première Lanterne ; un jour, il sera Gardien. Ils redescendent ensemble et rentrent dans la barque de Lou, sous le soleil levant, Plume à la proue. Chaleureux, sans morale appuyée.",
-              fin: true, numero: 31,
+              fin: true, numero: 33,
             },
             {
               ref: 29, titre: "Tour — le silence de la tour (fin)",
@@ -287,13 +295,13 @@ export const livre: Conception = {
   TEXTES_DE_BASE: {},
   A_ECRIRE: [],
   IMAGES: [
-    { ref: 1, cadrage: "moitie", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Dans sa chambre, Lou, en pull bleu marine, à la fenêtre fermée ; dehors, derrière le carreau, Plume frappe du bec ; au loin, les lanternes du village faiblissent dans la brume." },
-    { ref: 9, cadrage: "moitie", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Avant que Lou monte à bord : dans les roseaux, une barque de bois VIDE échouée, chouette sculptée à la proue, crochet de lanterne vide, corde dénouée dans l’eau. Lou, debout sur la rive, hors de la barque, lève sa petite lanterne vers elle. Plume vole au-dessus." },
-    { ref: 11, cadrage: "moitie", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Au petit ponton des Gardiens, Lou monte dans une barque de bois simple, inquiet devant l’eau profonde, sa petite lanterne allumée ; Plume posée à la proue. La rive est noyée par la crue." },
-    { ref: 17, cadrage: "moitie", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Un îlot herbeux bordé de pierres rondes, clair de lune, sans brume ; autour, la brume se dresse comme un mur. Barque attachée à un rocher. Lou assis, sa petite lanterne allumée à côté de lui ; Plume s’envole vers une haute tour devinée dans la brume." },
-    { ref: 21, cadrage: "moitie", badges: ["Lou"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Sur l’îlot au clair de lune, un seul feu follet, petite lumière bleutée qui sautille, tire sur la corde de la barque pour jouer. Lou, accroupi, sa petite lanterne éteinte près de lui, l’observe sans bouger." },
-    { ref: 24, cadrage: "moitie", badges: ["Lou"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Escalier de pierre en colimaçon dans la tour, un rayon de lune et des filets de brume par une fente. Lou, seul, découvre sur une marche une grande lanterne éteinte au verre brisé ; sa petite lanterne dorée éclaire la scène. Personne d’autre." },
+    { ref: 1, cadrage: "16:9", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Lou, tout juste réveillé, en pyjama, pieds nus, cheveux en bataille, sans ciré, sans sac ni lanterne, à la fenêtre de sa chambre ; derrière le carreau, Plume frappe du bec ; au loin, les lanternes du village faiblissent." },
+    { ref: 9, cadrage: "16:9", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Avant que Lou monte à bord : dans les roseaux, une barque de bois VIDE échouée, chouette sculptée à la proue, crochet de lanterne vide, corde dénouée dans l’eau. Lou, debout sur la rive, hors de la barque, lève sa petite lanterne vers elle. Plume vole au-dessus." },
+    { ref: 11, cadrage: "16:9", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Au petit ponton des Gardiens, Lou monte dans une barque de bois simple, inquiet devant l’eau profonde, sa petite lanterne allumée ; Plume posée à la proue. La rive est noyée par la crue." },
+    { ref: 17, cadrage: "16:9", badges: ["Lou", "Plume"], idee: "Nuit de pleine lune, couleurs vives et lisibles. Sur une île, une clairière semée de grandes pierres dressées, comme magique, où la brume ne pénètre pas, la brume tout autour comme un mur ; Lou y entre en marchant, sa lanterne allumée levée, la bouche ouverte, il chante ; au loin, une haute tour de pierre dans la brume ; Plume vole vers son sommet." },
+    { ref: 21, cadrage: "16:9", badges: ["Lou"], idee: "Nuit de pleine lune, couleurs vives et lisibles. Dans une clairière dressées sans brume, Lou, accroupi, sa lanterne éteinte posée près de lui, observe sans bouger une petite lumière bleutée, un feu follet, qui sautille et danse devant lui au bord de la brume." },
+    { ref: 24, cadrage: "16:9", badges: ["Lou"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Escalier de pierre en colimaçon dans la tour, un rayon de lune et des filets de brume par une fente. Lou, seul, découvre sur une marche une grande lanterne éteinte au verre brisé ; sa petite lanterne dorée éclaire la scène. Personne d’autre." },
     { ref: 27, cadrage: "page", badges: ["Lou", "Marius", "Plume"], idee: "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Au sommet de la tour, en plein air : la Première Lanterne, immense, plus haute que Marius, flamme dorée comme un petit soleil. Devant elle, Lou et son père Marius, sans lanterne, chantent ensemble ; Lou bien plus petit. Plume sur le parapet. Au loin, les lanternes du lac se rallument." },
-    { ref: 28, cadrage: "moitie", badges: ["Lou", "Marius", "Plume"], idee: "À l’aube, plus de nuit : ciel rose et doré, soleil levant, eau qui scintille, dernières brumes qui se lèvent. Lou et son père Marius, sans lanterne, rentrent dans une barque de bois simple sur le Grand Lac, Marius aux rames ; Plume à la proue. Au loin derrière eux, la tour sur son île." },
+    { ref: 28, cadrage: "16:9", badges: ["Lou", "Marius", "Plume"], idee: "À l’aube, plus de nuit : ciel rose et doré, soleil levant, eau qui scintille, dernières brumes qui se lèvent. Lou et son père Marius, sans lanterne, rentrent dans une barque de bois simple sur le Grand Lac, Marius aux rames ; Plume à la proue. Au loin derrière eux, la tour sur son île." },
   ],
 };

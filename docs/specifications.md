@@ -6311,6 +6311,10 @@ suivant les choix comme un lecteur, dans le périmètre de la personne qui teste
   numéro à saisir, avec « Passer l'énigme » (plus bas).
 - **Commandes de base :** revenir au passage précédent, consulter l'historique
   du parcours et y revenir à une étape, recommencer.
+- **Ordre des blocs, décidé par le porteur le 27 octobre 2026 :** la lecture
+  d'essai et la lecture en ligne montrent les phrases de choix à leur place
+  dans la scène, entre les paragraphes si l'auteur les y a mises, comme le
+  livre composé ; elles ne sont plus regroupées à la fin du passage.
 
 **Décisions du 14 octobre 2026 (entretien de l'étape 5 du
 [plan](plan.md#étape-5--lire-le-récit-à-lessai-et-contrôler-les-chemins)) —
@@ -7240,6 +7244,11 @@ du porteur du 30 septembre 2026.
 - **Style de l'histoire :** l'adulte choisit un style parmi une liste prédéfinie.
   Le style reste celui du projet jusqu'à son remplacement explicite, comme les
   repères de F10.1, et tous les prompts proposés le reprennent.
+  Décidé par le porteur le 27 octobre 2026 : un style vaut pour toutes les
+  images qu'on lui demande ; il décrit la technique (trait, couleurs, matière),
+  jamais l'heure, le temps qu'il fait ni la lumière, qui viennent de ce que
+  montre l'image. Une nuit de pleine lune demandée dans le style par défaut
+  reste une nuit, lisible, sans noir bouché.
 - **Héros absent des images, réglage activé par défaut :** pour éviter qu'il
   change d'apparence d'une image à l'autre, les prompts proposés ne représentent
   pas le héros. L'adulte peut désactiver ce réglage dans les options du projet,

@@ -201,13 +201,29 @@ export function Passage({
    */
   inventaire?: { contient: (nom: string) => boolean; basculer: (nom: string) => void };
 }) {
-  const recit = passage.blocs.filter((b) => b.type !== "choix");
-  const choix = passage.blocs.filter((b): b is Extract<BlocLu, { type: "choix" }> => b.type === "choix");
+  // Les blocs dans l'ordre de la scène : le récit par morceaux, et chaque suite de phrases de choix
+  // à sa place, comme dans le livre composé (27 octobre 2026, demande du porteur)
+  type ChoixLu = Extract<BlocLu, { type: "choix" }>;
+  const suites: ({ choix: false; blocs: BlocLu[] } | { choix: true; blocs: ChoixLu[] })[] = [];
+  for (const b of passage.blocs) {
+    const derniere = suites.at(-1);
+    if (b.type === "choix") {
+      if (derniere?.choix) derniere.blocs.push(b);
+      else suites.push({ choix: true, blocs: [b] });
+    } else if (derniere && !derniere.choix) derniere.blocs.push(b);
+    else suites.push({ choix: false, blocs: [b] });
+  }
   return (
     <>
-      {recit.length ? (
-        <div className="lu-texte recit">
-          {recit.map((b) => {
+      {suites.map((suite) => suite.choix ? (
+        <ul key={suite.blocs[0].id} className="lu-choix-liste recit" aria-label="Choix">
+          {suite.blocs.map((b) => (
+            <PhraseDeChoix key={b.id} bloc={b} deja={deja} pourEleve={pourEleve} onSuivre={onSuivre} />
+          ))}
+        </ul>
+      ) : (
+        <div key={suite.blocs[0].id} className="lu-texte recit">
+          {suite.blocs.map((b) => {
             if (b.type === "p")
               return (
                 <p key={b.id}>
@@ -261,14 +277,7 @@ export function Passage({
             return null;
           })}
         </div>
-      ) : null}
-      {choix.length ? (
-        <ul className="lu-choix-liste recit" aria-label="Choix">
-          {choix.map((b) => (
-            <PhraseDeChoix key={b.id} bloc={b} deja={deja} pourEleve={pourEleve} onSuivre={onSuivre} />
-          ))}
-        </ul>
-      ) : null}
+      ))}
       {passage.enigmes.length ? <Enigme key={passage.id} passage={passage} pourEleve={pourEleve} onSuivre={onEnigme} passer={passerEnigme} /> : null}
     </>
   );

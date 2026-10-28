@@ -524,6 +524,20 @@ export const ReglesPlugin = createPlatePlugin({
           if (bloc && ((estReserve(bloc, droits) && (dedans || dessus)) || fusion)) return;
         }
         apply(op as never);
+        // Un bloc fermé ne dessine que son premier texte : un curseur posé plus loin dans une phrase de
+        // choix personnalisée (clic sur le bloc, qui le prend jusqu'à sa fin) n'aurait rien à l'écran, et
+        // l'éditeur échouerait à le reprendre. Il revient au bout de ce premier texte, toujours dans le bloc.
+        const sel = e.selection;
+        if (op.type !== "set_selection" || !sel) return;
+        const ramener = (p: { path: number[]; offset: number }) => {
+          const bloc = blocsDe(e)[p.path[0]];
+          if (!bloc || !ferme(bloc) || (p.path.length === 2 && p.path[1] === 0)) return p;
+          const premier = (bloc.children as { text?: string }[])[0];
+          return { path: [p.path[0], 0], offset: premier?.text?.length ?? 0 };
+        };
+        const anchor = ramener(sel.anchor);
+        const focus = ramener(sel.focus);
+        if (anchor !== sel.anchor || focus !== sel.focus) apply({ type: "set_selection", properties: sel, newProperties: { anchor, focus } } as never);
       },
     },
   };

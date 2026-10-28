@@ -65,5 +65,6 @@ export type Conception = {
   /** Le nombre de mots demandé à « ✦ Écrire », par scène, et à défaut */
   MOTS?: Record<number, number>;
   MOTS_PAR_DEFAUT?: number;
-  IMAGES: { ref: number; cadrage: "page" | "moitie"; badges: string[]; idee: string }[];
+  /** « page » : pleine page ; « moitie » : 3:2 dans le texte ; « 16:9 » : bandeau dans le texte */
+  IMAGES: { ref: number; cadrage: "page" | "moitie" | "16:9"; badges: string[]; idee: string }[];
 };

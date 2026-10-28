@@ -9,6 +9,10 @@
  * Les styles proposés, décrits par leur technique, jamais par le nom d'un artiste ni d'un
  * studio (F10.2, 17 octobre 2026). « Illustration 2D lumineuse » est le style des images de
  * l'application, proposé par défaut.
+ *
+ * Un style vaut pour toutes les images qu'on lui demande (27 octobre 2026, demande du porteur) :
+ * il dit la technique, jamais l'heure, le temps qu'il fait ni la lumière de la scène, qui viennent
+ * de ce que montre l'image (une nuit de pleine lune ne doit pas sortir en plein jour).
  */
 export const STYLES = ["lumineuse", "aquarelle", "crayons", "photo", "volume", "bd", "pixel", "encre", "autre"] as const;
 export type Style = (typeof STYLES)[number];
@@ -22,11 +26,11 @@ export const STYLES_DES_IMAGES: Record<Exclude<Style, "autre">, { nom: string; p
     // Réécrit les 18 et 19 octobre 2026 à la demande du porteur, pour rejoindre les visuels de
     // l'application : d'abord trop pastel (« couleurs claires »), puis trop chargé et peint ; ici simple,
     // lisse, vif, peu détaillé, jugé sur des essais à côté de ses visuels
-    prompt: "illustration numérique de livre jeunesse, nette et lisse, façon dessin animé moderne : formes simples et arrondies, contours nets, grands aplats de couleurs vives avec des dégradés doux, peu de détails, aucune texture fine, feuillages et herbes simplifiés en grandes masses, ciel bleu franc avec de gros nuages blancs moelleux, lumière chaude de plein jour ; même dans la brume ou au crépuscule, les couleurs restent claires et vives ; sans effet vieilli, sans texture d'impression, sans rendu de peinture détaillée",
+    prompt: "illustration numérique de livre jeunesse, nette et lisse, façon dessin animé moderne : formes simples et arrondies, contours nets, grands aplats de couleurs vives avec des dégradés doux, peu de détails, aucune texture fine, feuillages et herbes simplifiés en grandes masses, nuages simplifiés en formes moelleuses ; de jour comme de nuit, dans la brume ou au crépuscule, les couleurs restent vives et lisibles, jamais de noir bouché ; sans effet vieilli, sans texture d'impression, sans rendu de peinture détaillée",
   },
   aquarelle: {
     nom: "Aquarelle douce",
-    prompt: "aquarelle douce, couleurs transparentes et légères, bords qui se fondent, grain du papier visible, lumière claire",
+    prompt: "aquarelle douce, couleurs transparentes et légères, bords qui se fondent, grain du papier visible",
   },
   crayons: {
     nom: "Crayons de couleur",
@@ -35,12 +39,12 @@ export const STYLES_DES_IMAGES: Record<Exclude<Style, "autre">, { nom: string; p
   // À la place de la gouache, trop proche de l'illustration 2D réécrite (18 octobre 2026, demande du porteur)
   photo: {
     nom: "Photo réaliste",
-    prompt: "image photoréaliste, comme une photographie prise sur place, lumière naturelle de jour, couleurs fidèles, matières et détails nets, légère profondeur de champ",
+    prompt: "image photoréaliste, comme une photographie prise sur place, lumière naturelle, couleurs fidèles, matières et détails nets, légère profondeur de champ",
   },
   // À la place du papier découpé, dont l'exemple ressemblait à l'illustration 2D (18 octobre 2026, demande du porteur)
   volume: {
     nom: "Dessin animé en volume",
-    prompt: "rendu en volume de film d'animation, formes rondes et douces, personnages aux grands yeux expressifs, matières lisses et légèrement brillantes, couleurs vives, éclairage chaud de cinéma avec des ombres douces",
+    prompt: "rendu en volume de film d'animation, formes rondes et douces, personnages aux grands yeux expressifs, matières lisses et légèrement brillantes, couleurs vives, éclairage de cinéma avec des ombres douces",
   },
   // Ajoutés le 18 octobre 2026 à la demande du porteur, pour remplir la grille de trois sur trois
   bd: {

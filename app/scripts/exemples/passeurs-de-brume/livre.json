@@ -1,14 +1,14 @@
 {
  "projet": {
-  "id": "38b4d126-4998-4479-ba0c-430351901326",
+  "id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
   "organisation": "classe",
   "recit": "choix",
   "titre": "Les passeurs de brume",
-  "image_id": "626b64ac-336f-4cd2-9663-868baf904a30",
+  "image_id": "5e2c784e-10c9-47f0-ab3c-c4b0cf869d46",
   "visuel_defaut": null,
   "visuel_choisi": "riviere",
-  "depart_scene_id": "48dca91e-1902-4e77-8cc7-44cd41afaee4",
-  "reference_suivante": 32,
+  "depart_scene_id": "0ee83536-03c3-435f-9f5b-05cf52aedeb0",
+  "reference_suivante": 34,
   "mise_en_forme_eleves": true,
   "ordre_etabli_le": "2026-10-27T13:34:19.647Z",
   "classement_montre": false,
@@ -40,7 +40,7 @@
     "ligne": "Un livre d’exemple d’Il était une classe",
     "imageId": null,
     "sousTitre": "",
-    "illustration": "626b64ac-336f-4cd2-9663-868baf904a30"
+    "illustration": "5e2c784e-10c9-47f0-ab3c-c4b0cf869d46"
    },
    "auteurs": {
     "noms": [],
@@ -77,54 +77,77 @@
   "mise_en_page_ouverte_le": "2026-10-27T13:45:03.476Z",
   "mise_en_page_convient_le": "2026-10-27T13:47:06.041Z",
   "imprimer_ouvert_le": "2026-10-27T13:47:06.041Z",
-  "ordre_decision": "reordonne",
+  "ordre_decision": "garde",
   "ordre_pages": {
-   "07bf1896-1539-4d7d-9324-f5b7370744e4": 20,
-   "0c035b43-f66c-4050-a6fd-c1e81d8dba86": 29,
-   "1df9f817-f8b7-4264-aa3d-0fe6a3c3392f": 9,
-   "28eda377-a16c-42e5-bbb2-b22a14080c06": 22,
-   "3a9a7c23-2d89-4b28-9811-9ae48db9c8b8": 17,
-   "4029f27c-9675-4198-864e-94d95eafb58d": 19,
-   "407c845c-c913-4b87-880b-0d87d93812ae": 6,
-   "41417042-091a-454b-bb04-fd6f62d963f5": 8,
-   "47fe7ee6-7c6a-4654-9f6f-8cf0c72ba822": 15,
-   "48dca91e-1902-4e77-8cc7-44cd41afaee4": 5,
-   "48ea1a9d-fc99-4e9b-afe9-edaf4a8d8481": 11,
-   "530d194b-0d73-4701-916a-e5fdab218905": 7,
-   "5e9d0740-47c1-42e1-bb59-6fd80804bfb5": 6,
-   "640a5676-228a-4351-bf87-e453f172ed3d": 28,
-   "6af58c0f-d85a-4c40-ae8d-cc80c3641236": 8,
-   "6d3cf17d-93b7-4264-ad08-2f8e8ff7a117": 18,
-   "6de61982-68fe-4591-8ced-101643c74c72": 13,
-   "70d72cf1-1b66-4c8c-8aa0-9221fc87ec5e": 24,
-   "77830320-8fbf-4f6a-8b85-33c418df15c2": 16,
-   "788c0387-5804-4646-be8c-83dedaed5dd9": 21,
-   "82b98425-42d0-404d-8a22-272e0049f01b": 19,
-   "875bd30f-30a9-4a78-9819-c3a46e16738a": 18,
-   "8e6d5c2e-a62a-4d10-92a1-67c98b47c501": 11,
-   "98f06e95-cb0e-4280-95c4-e665d099b474": 27,
-   "9e382946-d7eb-4e0e-9c96-89f36b3170fd": 28,
-   "a4184d84-ea91-455b-8061-4544012024b1": 10,
-   "a6ce5226-80b8-4744-9488-7b294a7de60a": 9,
-   "d5681863-1ce1-428e-b721-368866ff816d": 17,
-   "e6b79e91-d4a5-4237-a8a8-ae44e018fc56": 16,
-   "e7097705-0e1d-490c-b237-e4676445aa5f": 26,
-   "fce27e98-7bba-455a-b4e5-da2602a383aa": 25
+   "0501a822-64c6-4c89-87f9-b8ddebdb3332": 28,
+   "0ee83536-03c3-435f-9f5b-05cf52aedeb0": 5,
+   "1321ade3-7f13-4994-bb67-4d7a39ae59d3": 15,
+   "18870821-f31f-4212-b4a4-0a682045fdf8": 18,
+   "1d62beb5-85d7-4442-b7f3-b94908d3998b": 20,
+   "1e90fe61-8936-4e9a-b395-6eb06760d91c": 7,
+   "287e2ed6-7ed8-48d4-8ae0-9a2a207abff8": 9,
+   "293ea8f2-d541-4219-868a-6d0f2d9ad38d": 13,
+   "344ec28e-b8af-4e77-abed-3c1b60f67e81": 14,
+   "374a6c97-ebd3-4ad4-8758-9acd35bcd4d2": 20,
+   "3985e2f1-503f-44b8-8a6b-f256b383b723": 16,
+   "482f3d14-bece-4d07-b2c9-3d75b4a9df69": 27,
+   "49498664-004a-498e-a9b8-1e2e1eb4a687": 17,
+   "5aa3ad5b-e213-498e-b9c0-9430c86ee1b5": 7,
+   "601dbac6-1ebc-4790-8603-4806a152b755": 12,
+   "661d0384-ec48-4959-b2d0-a66d1957a251": 22,
+   "6dbd01af-bd78-47cb-8d43-97eadbed0563": 11,
+   "6dc8f93b-2800-41f6-aba8-8de8f3a46fac": 30,
+   "70114b5a-57ee-4772-8c54-f4fe37bd77e2": 17,
+   "7861bef5-d15a-4418-8a6e-2705d7711695": 8,
+   "7e8e3020-cd21-4f01-aa5c-1f499c2ec8d8": 10,
+   "8c962203-a194-42fc-93e5-bef3ef9dac94": 19,
+   "9cb3c290-40f9-428e-ac25-9f621e415aff": 25,
+   "b34823ae-d699-4f39-8403-585795adf076": 29,
+   "b52e403a-4c18-4fa7-8b99-910b4214e3d8": 19,
+   "b6088aab-e436-4500-a224-24e247d187a1": 6,
+   "b6778467-2708-4b7a-8212-7b49e79c3b8e": 23,
+   "c4dbafd4-a6b5-44ff-96f5-3ab626ebd491": 11,
+   "f4036a34-e9b9-4646-addd-8404728ba1cb": 18,
+   "f456f1f0-51e8-47ab-b575-a0a5b0835a89": 21,
+   "f9b3bc53-e697-4a45-9bd2-3273a9eeb3fc": 8,
+   "faa7b246-cf3e-4237-b26a-c021810fea5d": 27,
+   "fe4b896c-25df-4c50-9a20-5e2213af511a": 25
   },
   "ordre_retouche_le": null,
   "ordre_agence_le": "2026-10-27T13:45:50.496Z",
-  "style_images": "autre",
-  "style_autre": "Illustration d’album jeunesse peinte, douce et lumineuse, formes simples, sans contour noir. Nuit de pleine lune : bleus profonds, argent de la lune, brume laiteuse, lumière chaude et dorée des lanternes ; jamais de noir bouché, les visages restent lisibles.",
+  "style_images": "lumineuse",
+  "style_autre": "",
   "heros_absent": false,
   "consigne_ecriture": "Au passé simple et à l’imparfait, à la troisième personne. Pour des lecteurs de 8 à 10 ans : des mots simples, des phrases vivantes et variées, des sensations (froid, bruits, lumière). Ne donne jamais la bonne réponse d’un choix avant que le lecteur choisisse.",
   "idee_couverture": "",
-  "description_couverture": "",
+  "description_couverture": "Au centre, Lou, dix ans, de dos ou de trois quarts, debout à l'avant d'une petite barque, tient sa petite lanterne dont la flamme dorée chasse la brume en un halo rond. Un sac en toile sur l'épaule. Plume, la chouette aux plumes argentées vole en direction de la tour. Autour, un lac immense, des îles sombres, et au loin la Tour des Brumes, éclairée par une lueur faible, sous une grande pleine lune. Quelques feux follets pâles dansent au bord de la brume, sans approcher. Ambiance mystérieuse et chaleureuse. Le titre se place en haut, sur le ciel calme et dégagé.",
   "age_des_lecteurs": "8-10",
-  "couverture_id": null,
-  "couverture_cases": {}
+  "couverture_id": "f6390aa6-df15-4a0c-a6e7-289700a231cf",
+  "couverture_cases": {
+   "annee": {
+    "coche": false,
+    "texte": null
+   },
+   "autre": {
+    "coche": false,
+    "texte": null
+   },
+   "ligne": {
+    "coche": true,
+    "texte": "Il était une classe"
+   },
+   "titre": {
+    "coche": true,
+    "texte": null
+   },
+   "sousTitre": {
+    "coche": false,
+    "texte": null
+   }
+  }
  },
  "preparation": {
-  "univers": "Le pays des Mille Lacs est fait d’eau, d’îles et de forêts. Chaque soir, une brume épaisse monte des lacs : on n’y voit plus à trois pas, et les chemins semblent changer de place.\nPour traverser, on appelle les passeurs. Leurs barques portent une lanterne dont la flamme chasse la brume tout autour d’elles. Les lanternes brûlent de l’huile de lune : tant qu’elle brûle, la brume recule et les feux follets n’osent pas approcher. Cette huile ne se recueille qu’une fois par mois, au moment où la Première Lanterne est ranimée, à la pleine lune. Juste avant, tout le pays vit sur ses dernières réserves, et chaque goutte compte.\nToutes ces lanternes tirent leur flamme d’une seule : la Première Lanterne, en haut de la Tour des Brumes, sur une île au milieu du Grand Lac. Chaque nuit de pleine lune, le Gardien de la Lanterne traverse le lac et monte la ranimer en chantant le chant des lanternes. Sans ce chant, sa flamme faiblit, et toutes les lanternes du pays avec elle. Le titre de Gardien passe des parents aux enfants, et seule la famille du Gardien connaît le chant.\nLa brume a une règle : celui qui s’y trouve sans lumière perd peu à peu sa voix, jusqu’au lever du soleil.\nDans la brume vivent des choses étranges, mais pas méchantes : des feux follets farceurs qui égarent les voyageurs et adorent jouer des tours ; ils ont peur des lanternes et n’approchent jamais d’une flamme, des pierres qui chantent quand l’eau les touche, des cloches qui sonnent toutes seules.\nLe lecteur découvre ces règles peu à peu, au fil de l’histoire : au départ, il sait seulement que l’huile de lune fait reculer la brume.",
+  "univers": "Le pays des Mille Lacs est fait d’eau, d’îles et de forêts. Chaque soir, une brume épaisse monte des lacs : on n’y voit plus à trois pas, et les chemins semblent changer de place.\nPour traverser, on appelle les passeurs. Leurs barques portent une lanterne dont la flamme chasse la brume tout autour d’elles. Les lanternes brûlent de l’huile de lune : tant qu’elle brûle, la brume recule et les feux follets n’osent pas approcher. Cette huile ne se recueille qu’une fois par mois, au moment où la Première Lanterne est ranimée, à la pleine lune. Juste avant, tout le pays vit sur ses dernières réserves, et chaque goutte compte.\nToutes ces lanternes tirent leur flamme d’une seule : la Première Lanterne, en haut de la Tour des Brumes, sur une île au milieu du Grand Lac. Chaque nuit de pleine lune, le Gardien de la Lanterne traverse le lac et monte la ranimer en chantant le chant des lanternes. Sans ce chant, sa flamme faiblit, et toutes les lanternes du pays avec elle. Le titre de Gardien passe des parents aux enfants, et seule la famille du Gardien connaît le chant.\nLa brume a une règle : celui qui s’y trouve sans lumière perd peu à peu sa voix, jusqu’au lever du soleil.\nDans la brume vivent des choses étranges, mais pas méchantes : des feux follets farceurs qui égarent les voyageurs et adorent jouer des tours ; ils ont peur des lanternes et n’approchent jamais d’une flamme, des pierres qui chantent quand l’eau les touche, des cloches qui sonnent toutes seules.\nUn passage d’introduction présente le monde avant l’aventure (la brume et la voix, les feux follets farceurs, l’huile de lune et les réserves, la Première Lanterne, le Gardien et son chant) ; les règles qui servent d’indices aux décisions se découvrent en chemin.",
   "personnages": "",
   "enjeu": "C’est une nuit de pleine lune. Comme chaque mois, Marius est parti en barque ranimer la Première Lanterne. Mais ce soir, la brume est plus épaisse que jamais.\nCe qui lui arrive (le lecteur ne l’apprend qu’à la fin) : au pied de la Tour des Brumes, il attache sa barque, en décroche la lanterne pour éclairer l’escalier et commence à monter. Dans l’escalier, un souffle de brume éteint sa lanterne. Il monte dans le noir, et la brume lui prend sa voix : arrivé en haut, il ne peut plus chanter. En bas, la barque est restée sans lumière : les feux follets, qui ne craignent plus rien, ont osé s’en approcher, ont dénoué sa corde pour jouer, et le courant l’a emportée. Seul sur l’île, sans voix et sans barque, il envoie Plume chercher de l’aide.\nVers minuit, les lanternes du village faiblissent, et Plume revient seule frapper à la fenêtre de Lou, inquiète. Lou ne sait rien de plus, mais il comprend que son père n’a pas pu chanter et qu’il a besoin d’aide, et il sait où le trouver : en haut de la tour. En chemin, il découvrira la barque de son père qui dérive, vide.\nLou doit traverser le lac et la brume, monter en haut de la tour et chanter avant le lever du jour. S’il réussit, la Première Lanterne se rallume, toutes les lanternes du pays avec elle, Marius retrouve sa voix et raconte enfin ce qui lui est arrivé. S’il échoue, toutes les lanternes du pays s’éteindront, puisqu’elles tirent leur flamme de la Première. Plus aucun passeur ne pourra traverser : les îles et les villages seront coupés les uns des autres, les barques de pêche resteront au port. La brume ne se lèvera plus au matin ; elle gagnera les rives, puis les rues et les maisons, et prendra peu à peu la voix des habitants. Marius ne retrouverait jamais la sienne, et le pays des Mille Lacs deviendrait le pays du silence.\nToute l’histoire se passe pendant cette seule nuit.",
   "rubrique_jeu": true,
@@ -146,7 +169,7 @@
     }
    ]
   },
-  "regles": "Avant de commencer, prends ta feuille d’aventure. La lanterne de Lou a juste assez d’huile de lune pour le voyage, plus 3 doses de réserve : écris-les. Lou ne doit pas traîner en route !\nQuand un passage te le demande, raye ou ajoute une réserve. S’il te faut en rayer une et qu’il ne t’en reste plus, le passage te dit où aller.",
+  "regles": "Avant de commencer, prends ta feuille d’aventure. La lanterne de Lou a juste assez d’huile de lune pour le voyage, plus 3 doses de réserve : écris-les. Lou ne doit pas traîner en route !\nQuand un passage te le demande, retire ou ajoute une réserve. S’il te faut en retirer une et qu’il ne t’en reste plus, le passage te dit où aller.",
   "formule_renvoi": "rends",
   "constructions": [
    "neutre"
@@ -157,8 +180,8 @@
  "tables": {
   "parties": [
    {
-    "id": "01924cf7-0d7f-42fb-b8ed-e64d9e03b694",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "2afb395f-6991-4aed-8f62-455ef00de766",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "La rive",
     "rang": 0,
     "image_id": null,
@@ -168,8 +191,8 @@
     "ouverture_scene_id": null
    },
    {
-    "id": "6a83963f-c8cf-44f6-8071-543a0ec90350",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "cef8aefc-b085-498b-a0c1-4409a6b733b5",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "Le Grand Lac",
     "rang": 1,
     "image_id": null,
@@ -179,8 +202,8 @@
     "ouverture_scene_id": null
    },
    {
-    "id": "5b7e19e1-1e30-42bb-b279-7d6977b7ae6f",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "251acb02-2d63-44a2-81ea-9dd19a9c358f",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "La Tour des Brumes",
     "rang": 2,
     "image_id": null,
@@ -192,9 +215,9 @@
   ],
   "chapitres": [
    {
-    "id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "partie_id": "6a83963f-c8cf-44f6-8071-543a0ec90350",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "partie_id": "cef8aefc-b085-498b-a0c1-4409a6b733b5",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "La crue",
     "rang": 0,
     "couleur": 2,
@@ -205,22 +228,9 @@
     "hors_livre": false
    },
    {
-    "id": "2e0ed2a4-0bf8-4089-ba98-9d3e6e76f7ad",
-    "partie_id": "01924cf7-0d7f-42fb-b8ed-e64d9e03b694",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
-    "titre": "Le village",
-    "rang": 0,
-    "couleur": 5,
-    "resume": "À minuit, les lanternes du village faiblissent et Plume revient seule. Lou comprend que son père n’a pas pu chanter, et part à pied rejoindre le ponton des Gardiens.",
-    "image_id": null,
-    "visuel_defaut": null,
-    "visuel_choisi": "village",
-    "hors_livre": false
-   },
-   {
-    "id": "7853188c-ddf7-4423-8583-7b30ce53e944",
-    "partie_id": "5b7e19e1-1e30-42bb-b279-7d6977b7ae6f",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "db705947-7fe1-4e4c-a17e-4cdff55b3436",
+    "partie_id": "251acb02-2d63-44a2-81ea-9dd19a9c358f",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "L’escalier",
     "rang": 0,
     "couleur": 7,
@@ -231,35 +241,22 @@
     "hors_livre": false
    },
    {
-    "id": "1aa4491c-4ab9-4969-901d-92b34581d35c",
-    "partie_id": "5b7e19e1-1e30-42bb-b279-7d6977b7ae6f",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
-    "titre": "Le sommet",
-    "rang": 1,
-    "couleur": 0,
-    "resume": "En haut de la tour, Lou retrouve son père sans voix et chante le chant des lanternes.",
+    "id": "262d72cd-fae5-4d5b-8272-5f6f50bd539c",
+    "partie_id": "2afb395f-6991-4aed-8f62-455ef00de766",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "titre": "Le village",
+    "rang": 0,
+    "couleur": 5,
+    "resume": "Une nuit de pleine lune, Plume vient frapper à la vitre de Lou et les lanternes faiblissent : il est arrivé quelque chose à son père. Lou part à pied vers la tour, en le cherchant en chemin.",
     "image_id": null,
     "visuel_defaut": null,
-    "visuel_choisi": "ciel",
+    "visuel_choisi": "village",
     "hors_livre": false
    },
    {
-    "id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "partie_id": "6a83963f-c8cf-44f6-8071-543a0ec90350",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
-    "titre": "L’îlot aux pierres qui chantent",
-    "rang": 1,
-    "couleur": 6,
-    "resume": "Sur un îlot où la brume ne vient pas, Lou attend le retour de Plume. Une lumière apparaît dans la brume.",
-    "image_id": null,
-    "visuel_defaut": null,
-    "visuel_choisi": "etang",
-    "hors_livre": false
-   },
-   {
-    "id": "6e830fc1-943c-418c-b090-072a3581f404",
-    "partie_id": "01924cf7-0d7f-42fb-b8ed-e64d9e03b694",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "29761cc6-8953-4071-b11f-6bb239938141",
+    "partie_id": "2afb395f-6991-4aed-8f62-455ef00de766",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "Le chemin du lac",
     "rang": 1,
     "couleur": 4,
@@ -270,9 +267,35 @@
     "hors_livre": false
    },
    {
-    "id": "dcabab4d-c74e-4693-897c-b79602b4db02",
-    "partie_id": "01924cf7-0d7f-42fb-b8ed-e64d9e03b694",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "eda81ea4-75ad-432b-b0dd-4c5cb13b44ed",
+    "partie_id": "251acb02-2d63-44a2-81ea-9dd19a9c358f",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "titre": "Le sommet",
+    "rang": 1,
+    "couleur": 0,
+    "resume": "En haut de la tour, Lou retrouve son père sans voix et chante le chant des lanternes.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "ciel",
+    "hors_livre": false
+   },
+   {
+    "id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "partie_id": "cef8aefc-b085-498b-a0c1-4409a6b733b5",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "titre": "La clairière aux pierres",
+    "rang": 1,
+    "couleur": 6,
+    "resume": "Sur l’île de la tour, Lou marche en chantant le chant des lanternes et traverse une clairière où la brume ne pénètre pas. Une lumière apparaît au bord de la brume.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "etang",
+    "hors_livre": false
+   },
+   {
+    "id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "partie_id": "2afb395f-6991-4aed-8f62-455ef00de766",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "titre": "Le pont effondré",
     "rang": 2,
     "couleur": 3,
@@ -285,8 +308,8 @@
   ],
   "personnages": [
    {
-    "id": "df3343d8-4317-4e40-9522-2b7e6299754f",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "14075b1b-929b-4992-abfe-40bf68b9cdb8",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "nom": "Lou",
     "autres_noms": [
      "le garçon"
@@ -294,12 +317,12 @@
     "heros": true,
     "description": "Lou a dix ans. C’est le fils de Marius, le Gardien de la Lanterne, et il sera Gardien à son tour un jour. Il connaît par cœur le chant des lanternes : son père le lui apprend depuis qu’il est tout petit.\nLou est curieux et têtu, et il n’abandonne pas facilement. Mais il a peur de l’eau profonde, car il nage mal.\nIl ne se sépare jamais de sa petite lanterne, un cadeau de son père, ni de son sac en toile.",
     "fiche": "Garçon de dix ans, mince et plutôt petit pour son âge. Visage rond, joues rosées, yeux noisette, nez un peu retroussé. Cheveux bruns, courts et ébouriffés. Il porte un gros pull de laine bleu marine, un pantalon brun, des bottes de caoutchouc vertes et un ciré jaune. Il a toujours une petite lanterne en cuivre à la main et un sac en toile beige en bandoulière.",
-    "portrait_id": "b8aa0bee-8082-4462-ac66-4674d180881b",
+    "portrait_id": "18656572-4f24-449c-8acc-721a2d41a94b",
     "rang": 0
    },
    {
-    "id": "d43c99a4-4991-458c-87b0-06f281d73c2f",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "f0dac6e5-009f-40af-a453-ee69b1469789",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "nom": "Marius",
     "autres_noms": [
      "le père de Lou",
@@ -309,12 +332,12 @@
     "heros": false,
     "description": "Le Gardien de la Lanterne, comme son père avant lui. Calme et courageux, il traverse le Grand Lac à chaque pleine lune pour ranimer la Première Lanterne.",
     "fiche": "Homme d'une cinquantaine d'années, grand et solide, aux épaules larges. Visage buriné, nez droit, yeux gris, courte barbe poivre et sel. Cheveux gris, mi-longs, attachés derrière la nuque. Il porte un long manteau bleu nuit à capuche, une chemise de laine beige, un pantalon brun et de hautes bottes en cuir noir. Une écharpe de laine grise est nouée à son cou.",
-    "portrait_id": "82aa6b84-cab3-419a-95a0-906df07c7552",
+    "portrait_id": "1f4a79d1-6838-4579-a606-172a5ca8a38f",
     "rang": 1
    },
    {
-    "id": "a56cade3-cd77-43e8-b337-ae098f4e7ab2",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "86368d76-d4e6-4d37-b1c2-a77f3e0f48aa",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "nom": "Plume",
     "autres_noms": [
      "la chouette",
@@ -323,51 +346,78 @@
     "heros": false,
     "description": "La chouette de Marius, aux plumes argentées. Elle ne parle pas, mais elle connaît tous les chemins du lac et sait toujours retrouver Marius.",
     "fiche": "Petite chouette de taille moyenne, au corps rond et compact. Visage clair en forme de cœur, grands yeux ronds orange foncé, petit bec crochu gris clair. Plumes argentées, douces et fines, avec de légères rayures gris perle sur la poitrine et des ailes un peu plus sombres, bordées d'argent clair. Pattes couvertes de petites plumes claires, griffes gris foncé.",
-    "portrait_id": "735bb7dd-8c5f-4a55-8a43-0ff09085de90",
+    "portrait_id": "8fc0a0c6-cd16-4679-8d34-697fb05f5d8e",
     "rang": 2
    }
   ],
   "objets": [],
   "formules": [
    {
-    "id": "6de19f22-0876-4584-a4cb-7b4f840c3806",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
-    "texte": "Raye une réserve d’huile.",
+    "id": "b6462e89-e25b-4361-9bde-41b98697572a",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "texte": "Ajoute une réserve d’huile.",
     "signe": "crayon"
    },
    {
-    "id": "323520de-2f23-445b-af45-a010d0805e75",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
-    "texte": "Ajoute une réserve d’huile.",
+    "id": "b47c63ab-e1b5-4f8c-a1d2-4307267235a4",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "texte": "Retire une réserve d’huile.",
     "signe": "crayon"
    }
   ],
   "scenes": [
    {
-    "id": "48dca91e-1902-4e77-8cc7-44cd41afaee4",
-    "chapitre_id": "2e0ed2a4-0bf8-4089-ba98-9d3e6e76f7ad",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "b6088aab-e436-4500-a224-24e247d187a1",
+    "chapitre_id": "262d72cd-fae5-4d5b-8272-5f6f50bd539c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 1,
     "titre": "Village — la nuit de pleine lune",
-    "consigne": "Ouverture. Nuit de pleine lune, vers minuit, au village du bord du Grand Lac. Lou, dix ans, ne dort pas. Au crépuscule, son père Marius, le Gardien de la Lanterne, est parti en barque ranimer la Première Lanterne, en haut de la Tour des Brumes, comme chaque mois ; en partant, il a redit ses deux phrases de chaque départ : « Ne reste jamais dans la brume sans lumière : elle te prendrait ta voix. » et « L’eau qui frissonne cache des dents. » Par la fenêtre, Lou regarde les lanternes du village : d’habitude leur flamme est dorée, calme, bien droite ; ce soir elle baisse, toutes ensemble. La brume est montée comme chaque soir, d’abord des mares et des étangs, là où l’eau dort, puis partout. On frappe au carreau : Plume, la chouette de son père, revient seule, les plumes ébouriffées, inquiète. Lou comprend : si les lanternes baissent et que Plume revient seule, son père n’a pas pu chanter ; la Première Lanterne donne leur flamme à toutes les lanternes du pays, celles des maisons comme celles des barques des passeurs, et il faut la ranimer avant le lever du soleil ; personne d’autre au village ne connaît le chant, seulement le Gardien et Lou, à qui il l’apprend depuis toujours. Il sait où trouver son père : en haut de la tour. Glisse les deux phrases et la couleur des flammes dans le récit, sans insister.",
-    "rang": 0,
+    "consigne": "Nuit de pleine lune. Des coups à la vitre réveillent Lou : Plume, la chouette de son père, agitée. Dehors, une brume plus épaisse que jamais. Son père est parti au crépuscule ranimer la Première Lanterne ; les lanternes devraient briller plus fort que jamais, et ne sont que de petites lueurs. Il est arrivé quelque chose à son père. Le monde (voix, Gardien, chant, réserves) est présenté par l’introduction, S033 : ne pas le redire.",
+    "rang": 1,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "75b222b5-8666-460c-9a7b-8cd28d64c98b",
+      "id": "af7e3019-5861-4239-b471-f1a7de9eda2f",
       "type": "p",
       "children": [
        {
-        "text": "Minuit approchait, cette nuit de pleine lune, et Lou ne dormait pas. Son père Marius, le Gardien de la Lanterne, était parti en barque vers la Tour des Brumes, ranimer la Première Lanterne avec le chant des lanternes, comme chaque mois. En partant, il avait redit ses deux phrases : « Ne reste jamais dans la brume sans lumière : elle te prendrait ta voix. » Et : « L’eau qui frissonne cache des dents. »"
+        "text": "Des coups contre la vitre réveillèrent Lou. Toc, toc, toc. Dans le clair de lune, une chouette aux plumes argentées tapait du bec contre le carreau : Plume, la chouette de son père. Lou ouvrit. Elle entra, se posa sur le lit, puis repartit vers la fenêtre en claquant du bec. Elle ne tenait pas en place."
        }
       ]
      },
      {
-      "id": "596fea18-017d-453d-895d-f96fa4a7172b",
+      "id": "41391954-87ac-4b85-9329-d2219726d024",
+      "type": "p",
+      "children": [
+       {
+        "text": "Dehors, la brume avait tout avalé : les toits, le quai, le lac. Jamais Lou ne l’avait vue si épaisse."
+       }
+      ]
+     },
+     {
+      "id": "d1e48ee2-1568-4549-9801-523ce9b679b1",
+      "type": "p",
+      "children": [
+       {
+        "text": "C’était la nuit de pleine lune. Comme chaque mois, son père était parti au crépuscule ranimer la Première Lanterne. Cette nuit, toutes les lanternes auraient dû briller plus fort que jamais. Mais au village, elles n’étaient plus que de petites lueurs tremblantes."
+       }
+      ]
+     },
+     {
+      "id": "a5e00909-26ce-4996-892e-b140d2c1c77e",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il était arrivé quelque chose à son père."
+       }
+      ]
+     },
+     {
+      "id": "c8acf8d5-c884-4b24-ad01-eea157357f5b",
       "type": "image",
-      "image": "2b0c4421-5956-45f0-8b52-d2a89eecb983",
+      "image": "09057a1c-39a8-4a7b-8ca7-9c122f72c90b",
       "largeur": 100,
       "children": [
        {
@@ -376,28 +426,10 @@
       ]
      },
      {
-      "id": "e639a0e7-ebaa-4fc4-b88c-0a1e5425d8c8",
-      "type": "p",
-      "children": [
-       {
-        "text": "Lou regardait les lanternes du village. D’habitude, leur flamme était dorée, calme, bien droite. Ce soir, elles baissaient toutes ensemble. La brume était montée, d’abord sur les mares et les étangs, là où l’eau dormait, puis partout."
-       }
-      ]
-     },
-     {
-      "id": "7eaa2ec7-5bde-40a4-97ea-62eafb78d62c",
-      "type": "p",
-      "children": [
-       {
-        "text": "On frappa au carreau : Plume, la chouette de son père, qui connaissait tous les chemins du lac et savait toujours le retrouver. Elle revenait seule, inquiète. Lou comprit : son père n’avait pas pu chanter. Car la Première Lanterne donnait leur flamme à toutes les autres, jusqu’à celles des passeurs, qui faisaient traverser la brume. Il fallait la ranimer avant le lever du soleil, et personne d’autre que le Gardien et Lou ne connaissait le chant. Lou savait où trouver son père : en haut de la tour."
-       }
-      ]
-     },
-     {
       "id": "b3d36117-516b-4377-b163-802a19e0fefc",
       "auto": true,
       "type": "choix",
-      "cible": "a4184d84-ea91-455b-8061-4544012024b1",
+      "cible": "c4dbafd4-a6b5-44ff-96f5-3ab626ebd491",
       "libelle": "Partir aider son père",
       "children": [
        {
@@ -407,53 +439,53 @@
       "construction": "neutre"
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-27T13:37:27.428Z",
+    "version": 21,
+    "ecrit_le": "2026-10-28T08:14:30.159Z",
     "rang_livre": 11,
-    "numero_fixe": null,
+    "numero_fixe": 2,
     "etat": "prete",
     "tour": 0,
     "etat_le": null,
     "nouvelle_page": false,
-    "idee_image": "",
-    "description_image": "Vue de l'intérieur d'une petite chambre, la nuit de pleine lune. Au premier plan, Lou, de dos, le visage près de la fenêtre, regarde dehors. Sur le rebord, de l'autre côté du carreau, Plume la chouette frappe du bec, les plumes ébouriffées. Dehors, les lanternes du village aux flammes dorées baissent, et la brume blanche monte entre les toits. Au loin, la Tour des Brumes se devine sur le lac. Lumière bleutée de la lune, ambiance inquiète."
+    "idee_image": "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Lou, tout juste réveillé, en pyjama, pieds nus, cheveux en bataille, sans ciré, sans sac ni lanterne, à la fenêtre de sa chambre ; derrière le carreau, Plume frappe du bec ; au loin, les lanternes du village faiblissent.",
+    "description_image": "Dans sa chambre, Lou, tout juste réveillé, en pyjama, pieds nus, les cheveux en bataille, se tient à la fenêtre, sans ciré, sans sac ni lanterne. De l'autre côté du carreau, Plume, agitée, frappe du bec contre la vitre. Dehors, une brume laiteuse avale les toits et le lac sous la pleine lune. Au loin, les lanternes dorées du village ne sont que de petites lueurs tremblantes. Bleus profonds, argent de lune, lumière douce, ambiance inquiète. Composition en largeur, Lou à gauche, Plume au centre, village au fond."
    },
    {
-    "id": "a4184d84-ea91-455b-8061-4544012024b1",
-    "chapitre_id": "2e0ed2a4-0bf8-4089-ba98-9d3e6e76f7ad",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "c4dbafd4-a6b5-44ff-96f5-3ab626ebd491",
+    "chapitre_id": "262d72cd-fae5-4d5b-8272-5f6f50bd539c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 2,
     "titre": "Village — le départ",
-    "consigne": "Lou se prépare vite : sa petite lanterne, cadeau de son père, remplie d’huile de lune, et trois petites fioles de réserve dans son sac en toile ; il sait que l’huile est rare ce soir, la veille de la pleine lune tout le pays vit sur ses réserves. Il part à pied : il a peur de l’eau profonde et nage mal ; il longera la rive jusqu’au ponton des Gardiens, d’où la traversée vers la tour est la plus courte. À la porte, un courant d’air fait trembler la flamme : il la protège de sa main, elle se redresse. Sur les planches du quai, il glisse sur une planche sombre et luisante, mouillée ; les claires, sèches, ne glissent pas — un détail de quelques mots, sans en tirer de leçon. Plume vole au-dessus de lui. Termine à la sortie du village, la lanterne allumée, dans la brume qui recule autour de sa flamme.",
-    "rang": 1,
+    "consigne": "Lou se prépare vite : sa petite lanterne, cadeau de son père, remplie d’huile de lune (en l’allumant, sa flamme dorée, calme, bien droite), et trois petites fioles de réserve dans son sac en toile ; l’huile est rare ce soir. À la porte, un courant d’air fait trembler la flamme : il la protège de sa main. Il ne sait pas où est son père : il part vers la tour en le cherchant en chemin. Il part à pied, par peur de l’eau profonde : il longera la rive jusqu’au ponton des Gardiens, d’où la traversée est la plus courte. En quittant le village, la brume monte plus épaisse des mares et des fossés où l’eau dort ; au quai, les barques des passeurs immobiles. Plume, qui connaît tous les chemins du lac et retrouve toujours son père, vole au-dessus de lui. Indices glissés sans les souligner.",
+    "rang": 2,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "ba6d9544-0100-4711-80cd-178436f0b66a",
+      "id": "b25996db-c7a3-4d23-8e8d-312eaf43e460",
       "type": "p",
       "children": [
        {
-        "text": "Lou s’habilla en vitesse. Il remplit d’huile de lune sa petite lanterne, un cadeau de son père, et glissa trois petites fioles de réserve dans son sac en toile. L’huile était rare : tant que la Première Lanterne n’était pas ranimée, tout le pays vivait sur ses dernières gouttes."
+        "text": "Lou remplit d’huile de lune sa petite lanterne, un cadeau de son père, et glissa trois fioles de réserve dans son sac en toile ; ce soir, l’huile était rare. Allumée, sa flamme était dorée, calme et bien droite. À la porte, un courant d’air la fit trembler ; Lou la protégea de sa main, et elle se redressa."
        }
       ]
      },
      {
-      "id": "5cde9741-8302-4abd-b8ae-6012711b454e",
+      "id": "0f86100d-49a7-4976-a6ad-dbf9056ea1a2",
       "type": "p",
       "children": [
        {
-        "text": "Il irait à pied : il avait peur de l’eau profonde et nageait mal. Il longerait la rive et passerait la rivière sur le vieux pont, jusqu’au ponton des Gardiens : de là, la traversée vers la tour était la plus courte."
+        "text": "Où était son père ? Il avait besoin d'aide, Lou le savait. Il partit en direction de la tour, à pied, car il avait peur de l’eau profonde et nageait mal. Il longerait la rive jusqu’au vieux pont. Au quai, les barques des passeurs attendaient, leurs lanternes presque éteintes."
        }
       ]
      },
      {
-      "id": "bb044994-4db9-4c9a-bba5-d33cb281d451",
+      "id": "8e209584-3e7f-45d4-bcb2-c8872b3ee136",
       "type": "p",
       "children": [
        {
-        "text": "À la porte, un courant d’air fit trembler la flamme. Lou la protégea de sa main, et elle se redressa. Sur le quai, il glissa sur une planche sombre et luisante, mouillée, et continua sur les claires, bien sèches. Plume volait au-dessus de lui. À la sortie du village, la brume l’attendait, blanche comme du lait. Elle recula autour de sa flamme."
+        "text": "Plume volait devant lui, elle qui connaissait tous les chemins du lac et retrouvait toujours son père. À la sortie du village, la brume montait plus épaisse des mares et des fossés, là où l’eau dormait. Elle recula autour de sa flamme."
        }
       ]
      },
@@ -461,7 +493,7 @@
       "id": "8dcc8593-eb65-43a2-8ff7-3bc2693be03c",
       "auto": true,
       "type": "choix",
-      "cible": "530d194b-0d73-4701-916a-e5fdab218905",
+      "cible": "f9b3bc53-e697-4a45-9bd2-3273a9eeb3fc",
       "libelle": "Prendre le chemin du lac",
       "children": [
        {
@@ -471,8 +503,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.426Z",
+    "version": 9,
+    "ecrit_le": "2026-10-27T16:39:50.448Z",
     "rang_livre": 7,
     "numero_fixe": null,
     "etat": "prete",
@@ -483,9 +515,9 @@
     "description_image": ""
    },
    {
-    "id": "530d194b-0d73-4701-916a-e5fdab218905",
-    "chapitre_id": "6e830fc1-943c-418c-b090-072a3581f404",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "f9b3bc53-e697-4a45-9bd2-3273a9eeb3fc",
+    "chapitre_id": "29761cc6-8953-4071-b11f-6bb239938141",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 3,
     "titre": "Chemin — la fourche",
     "consigne": "Hors du village, le chemin se sépare. À gauche, il coupe tout droit par la tourbière : de l’eau immobile entre des touffes d’herbe, le plus court. À droite, le chemin des saules longe la rive sur de la terre ferme, sous les branches : plus long. Plume ne l’aide pas ici : elle n’a pas besoin de chemin, elle tourne au-dessus de lui. Lou pense au temps qui presse. Ne dis pas lequel est le bon, ne rappelle pas d’où naît la brume.",
@@ -495,41 +527,51 @@
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "6e454e49-713c-4766-9711-0057d3249e0b",
+      "id": "905eee01-6ae1-49ce-98b6-b5ef882d98f5",
       "type": "p",
       "children": [
        {
-        "text": "Après les dernières maisons, le chemin se séparait en deux. À gauche, il filait tout droit à travers la tourbière : des touffes d’herbe, et entre elles une eau noire et immobile qui ne faisait pas un bruit. C’était le plus court. À droite, le chemin des saules longeait la rive sur de la bonne terre ferme, sous de longues branches qui pendaient jusqu’au sol. Mais il faisait un grand détour."
+        "text": "Après les dernières maisons, le chemin se séparait en deux. À gauche, il filait tout droit à travers la tourbière : des touffes d’herbe, et entre elles une eau noire et immobile qui ne faisait pas un bruit. À droite, le chemin des saules longeait la rive sur de la terre ferme, sous de longues branches qui pendaient jusqu’au sol."
        }
       ]
      },
      {
-      "id": "51e6b703-b3ad-48b6-8e57-a0caf8d4ccb7",
+      "id": "0fc072d9-9c49-4f4b-8c09-2cd7516347a7",
       "type": "p",
       "children": [
        {
-        "text": "Lou leva les yeux vers Plume. La chouette tournait au-dessus de lui sans se presser : elle n’avait pas besoin de chemin, elle. Lou pensa à son père, seul là-haut, et aux lanternes qui baissaient. Chaque minute comptait. Il serra la poignée de sa lanterne et regarda à gauche, puis à droite."
+        "text": "Lou leva les yeux vers Plume. La chouette tournait au-dessus de lui sans se presser : elle n’avait pas besoin de chemin, elle. Lou pensa à son père, quelque part dans cette brume, et aux lanternes qui baissaient. Chaque minute comptait. Il serra la poignée de sa lanterne et regarda à gauche, puis à droite."
        }
       ]
      },
      {
       "id": "a9b0d37b-f657-4d27-9f33-50d2b8eec43f",
-      "auto": true,
       "type": "choix",
-      "cible": "5e9d0740-47c1-42e1-bb59-6fd80804bfb5",
       "libelle": "Couper par la tourbière",
       "children": [
        {
-        "text": ""
+        "text": "Prendre par la tourbière : rends-toi au "
+       },
+       {
+        "id": "816a2dcd-9cd8-448a-9bb1-f71d31700c12",
+        "type": "renvoi",
+        "cible": "5aa3ad5b-e213-498e-b9c0-9430c86ee1b5",
+        "children": [
+         {
+          "text": ""
+         }
+        ]
+       },
+       {
+        "text": "."
        }
-      ],
-      "construction": "neutre"
+      ]
      },
      {
       "id": "5fc391f7-6019-489d-be8f-86097ae00972",
       "auto": true,
       "type": "choix",
-      "cible": "1df9f817-f8b7-4264-aa3d-0fe6a3c3392f",
+      "cible": "6dbd01af-bd78-47cb-8d43-97eadbed0563",
       "libelle": "Suivre le chemin des saules",
       "children": [
        {
@@ -539,8 +581,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.448Z",
+    "version": 5,
+    "ecrit_le": "2026-10-27T16:56:26.446Z",
     "rang_livre": 2,
     "numero_fixe": null,
     "etat": "prete",
@@ -551,9 +593,9 @@
     "description_image": ""
    },
    {
-    "id": "5e9d0740-47c1-42e1-bb59-6fd80804bfb5",
-    "chapitre_id": "6e830fc1-943c-418c-b090-072a3581f404",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "5aa3ad5b-e213-498e-b9c0-9430c86ee1b5",
+    "chapitre_id": "29761cc6-8953-4071-b11f-6bb239938141",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 4,
     "titre": "Chemin — la tourbière",
     "consigne": "Courte scène d’erreur. Dans la tourbière, l’eau dort, et la brume naît justement sur l’eau qui dort : elle monte, épaisse, de partout, jusqu’à étouffer la flamme. Le conseil de son père lui revient trop tard. Pour la faire reculer, Lou doit monter la flamme de sa lanterne, ce qui brûle de l’huile. Il ressort de l’autre côté, sur le chemin de la rive. Termine sur le chemin, en route vers le pont.",
@@ -585,7 +627,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -593,7 +635,7 @@
       "id": "cb4a76c6-f81b-48f2-9240-238e8db44c2c",
       "auto": true,
       "type": "choix",
-      "cible": "1df9f817-f8b7-4264-aa3d-0fe6a3c3392f",
+      "cible": "6dbd01af-bd78-47cb-8d43-97eadbed0563",
       "libelle": "Reprendre le chemin de la rive",
       "children": [
        {
@@ -615,19 +657,19 @@
     "description_image": ""
    },
    {
-    "id": "1df9f817-f8b7-4264-aa3d-0fe6a3c3392f",
-    "chapitre_id": "6e830fc1-943c-418c-b090-072a3581f404",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "6dbd01af-bd78-47cb-8d43-97eadbed0563",
+    "chapitre_id": "29761cc6-8953-4071-b11f-6bb239938141",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 5,
     "titre": "Chemin — le vieil homme",
-    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou marche sur le chemin de la rive. Un vieil homme vient vers lui, une lanterne presque vide à la main, la flamme minuscule. Il revient du pont, plus loin : la crue a emporté un tronc d’arbre qui l’a brisé ; on ne peut plus passer qu’en sautant sur ce qu’il en reste. Il demande à Lou un peu d’huile de lune pour rentrer chez lui. Perdre sa voix, dit-il, il s’en moque : il vit seul, il n’a plus personne à qui parler. Mais sans lumière, les feux follets viendront lui jouer des tours ; ils ont peur des lanternes. Lou pense à son père, à l’huile qu’il lui faut. Ne laisse pas entendre ce que le vieil homme dirait d’autre.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou marche sur le chemin de la rive. Un vieil homme vient vers lui, une lanterne presque vide à la main, la flamme minuscule. Il revient du pont, plus loin : la crue a emporté un tronc d’arbre qui l’a brisé ; on ne peut plus passer qu’en sautant sur ce qu’il en reste. Inquiet, il ajoute que la brume est anormalement épaisse cette nuit, et qu’il a dû brûler plus d’huile que d’habitude. Il demande à Lou un peu d’huile de lune pour rentrer chez lui. Perdre sa voix, dit-il, il s’en moque : il vit seul, il n’a plus personne à qui parler. Mais sans lumière, les feux follets viendront lui jouer des tours ; ils ont peur des lanternes. Lou pense à son père, à l’huile qu’il lui faut. Ne laisse pas entendre ce que le vieil homme dirait d’autre.",
     "rang": 2,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "7c504b4c-e42e-42bc-8703-d895253269f4",
+      "id": "565ca230-51f3-407b-b576-06291b85d0fc",
       "type": "p",
       "children": [
        {
@@ -636,29 +678,29 @@
       ]
      },
      {
-      "id": "ce60c299-fd0a-4941-a138-34c8cdb8a122",
+      "id": "b0ca31b5-aec5-4a9c-9882-c36eb6bae86b",
       "type": "p",
       "children": [
        {
-        "text": "« Je reviens du pont, dit-il. La crue a emporté un tronc d’arbre, et il l’a brisé. On ne peut plus passer qu’en sautant sur ce qu’il en reste. »"
+        "text": "« Je reviens du pont, dit-il. La crue a emporté un tronc d’arbre, et il l’a brisé. On ne peut plus passer qu’en sautant sur ce qu’il en reste. » Il jeta autour de lui un regard inquiet. « Et cette brume… Jamais je ne l’ai vue si épaisse. J’ai dû monter ma flamme tout le long du chemin, j’ai brûlé bien plus d’huile que d’habitude. »"
        }
       ]
      },
      {
-      "id": "025f6e75-cba9-44f9-928b-2be1138e0736",
+      "id": "738df4a2-6f9c-4698-8b7a-f26fb710c2d4",
       "type": "p",
       "children": [
        {
-        "text": "Il leva sa lanterne. « Tu n’aurais pas un peu d’huile de lune, petit ? Juste de quoi rentrer chez moi. Perdre ma voix, je m’en moque : je vis seul, je n’ai plus personne à qui parler. Mais sans lumière, les feux follets viendront me jouer des tours. Il n’y a que les lanternes qui leur fassent peur. »"
+        "text": "Il leva sa lanterne. « Tu n’aurais pas un peu d’huile de lune, petit ? Juste de quoi rentrer chez moi. »"
        }
       ]
      },
      {
-      "id": "492bdc5d-9b9c-4b1e-a276-7ae152fb5057",
+      "id": "6c7c8281-ad54-41a5-a60d-01704a6d1e3c",
       "type": "p",
       "children": [
        {
-        "text": "Lou pensa à son père, là-haut, et aux fioles qui l’attendaient au fond de son sac. Chacune comptait."
+        "text": "Lou pensa à son père, perdu quelque part dans la brume, et aux réserves qui l’attendaient au fond de son sac. Chacune comptait."
        }
       ]
      },
@@ -666,7 +708,7 @@
       "id": "d0ef5e71-f597-4652-ab73-07f2347c15f6",
       "auto": true,
       "type": "choix",
-      "cible": "407c845c-c913-4b87-880b-0d87d93812ae",
+      "cible": "1e90fe61-8936-4e9a-b395-6eb06760d91c",
       "libelle": "Lui donner une réserve d’huile",
       "children": [
        {
@@ -679,7 +721,7 @@
       "id": "77ce8742-7f8b-4153-8f45-9d8bf4572fa7",
       "auto": true,
       "type": "choix",
-      "cible": "a6ce5226-80b8-4744-9488-7b294a7de60a",
+      "cible": "7e8e3020-cd21-4f01-aa5c-1f499c2ec8d8",
       "libelle": "Refuser poliment",
       "children": [
        {
@@ -689,8 +731,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.490Z",
+    "version": 8,
+    "ecrit_le": "2026-10-27T17:16:00.124Z",
     "rang_livre": 6,
     "numero_fixe": null,
     "etat": "prete",
@@ -701,19 +743,19 @@
     "description_image": ""
    },
    {
-    "id": "407c845c-c913-4b87-880b-0d87d93812ae",
-    "chapitre_id": "6e830fc1-943c-418c-b090-072a3581f404",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "1e90fe61-8936-4e9a-b395-6eb06760d91c",
+    "chapitre_id": "29761cc6-8953-4071-b11f-6bb239938141",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 6,
     "titre": "Chemin — une fiole pour le vieil homme",
-    "consigne": "Lou donne une de ses fioles. Le vieil homme remplit sa lanterne, et sa reconnaissance le rend bavard : il le met en garde contre les feux follets, qui imitent la lueur d’une lanterne pour égarer les voyageurs ; on les reconnaît à leur lumière bleutée, qui tremble et sautille. Et il a vu tout à l’heure, sur cette rive, un peu plus loin que le pont, une barque échouée dans les roseaux, sans personne et sans lanterne. Lou a peur que ce soit celle de son père. Termine quand ils se quittent, Lou en route vers le pont.",
+    "consigne": "Lou donne une de ses fioles. Le vieil homme remplit sa lanterne, et sa reconnaissance le rend bavard : il raconte en riant qu’à l’âge de Lou, une nuit de brume, il a suivi une petite lueur bleutée qu’il prenait pour la lanterne de son grand-père, et fini dans la vase pendant qu’elle s’en allait en dansant : les feux follets avaient bien ri de lui (une anecdote, pas une leçon sur la façon de les reconnaître). Et il a vu tout à l’heure, sur cette rive, un peu plus loin que le pont, une barque échouée dans les roseaux, sans personne et sans lanterne. Lou a peur que ce soit celle de son père. Termine quand ils se quittent, Lou en route vers le pont.",
     "rang": 3,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "c83e1a8b-1212-4338-b0bd-2cd3f6217a41",
+      "id": "5822a72a-187d-4bdd-8ad1-7bf461f300ea",
       "type": "p",
       "children": [
        {
@@ -722,16 +764,16 @@
       ]
      },
      {
-      "id": "e6bc5ec8-3981-4017-be3b-53f62b3f595e",
+      "id": "ab57ddcd-e33a-416f-ada4-fa51f7d1aa40",
       "type": "p",
       "children": [
        {
-        "text": "« Merci, petit. Alors écoute-moi bien. Méfie-toi des feux follets : ils imitent la lueur d’une lanterne pour égarer les voyageurs. Mais on les reconnaît. Leur lumière est bleutée, et elle tremble, elle sautille, comme si elle ne tenait pas en place. » Il se gratta la barbe. « Autre chose. Tout à l’heure, sur cette rive, un peu plus loin que le pont, j’ai vu une barque échouée dans les roseaux. Personne dedans, et pas de lanterne. »"
+        "text": "« Merci, petit. » Il eut un petit rire. « Perdre ma voix, je m’en moque : je voyage seul ! Mais sans lumière, les feux follets viendront me jouer des tours. Ces petites lueurs bleutées adorent faire des farces… et bien souvent, elles sont les seules à en rire ! Seules les lanternes leur font peur. » Il se gratta la barbe. « Autre chose. Tout à l’heure, sur cette rive, un peu plus loin que le pont, j’ai vu une barque échouée dans les roseaux. Personne dedans, et pas de lanterne. »"
        }
       ]
      },
      {
-      "id": "f82d8d48-9f3b-4cc9-a054-871cc68cc0c2",
+      "id": "d1c126d9-73a4-42d2-a153-d9c7f09fae28",
       "type": "p",
       "children": [
        {
@@ -744,7 +786,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -752,7 +794,7 @@
       "id": "015237d5-1186-4b57-a45a-12e210119b60",
       "auto": true,
       "type": "choix",
-      "cible": "41417042-091a-454b-bb04-fd6f62d963f5",
+      "cible": "287e2ed6-7ed8-48d4-8ae0-9a2a207abff8",
       "libelle": "Aller jusqu’au pont",
       "children": [
        {
@@ -762,8 +804,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.511Z",
+    "version": 12,
+    "ecrit_le": "2026-10-27T17:18:58.422Z",
     "rang_livre": 1,
     "numero_fixe": null,
     "etat": "prete",
@@ -774,41 +816,41 @@
     "description_image": ""
    },
    {
-    "id": "a6ce5226-80b8-4744-9488-7b294a7de60a",
-    "chapitre_id": "6e830fc1-943c-418c-b090-072a3581f404",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "7e8e3020-cd21-4f01-aa5c-1f499c2ec8d8",
+    "chapitre_id": "29761cc6-8953-4071-b11f-6bb239938141",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 7,
-    "titre": "Chemin — « Alors dépêche-toi »",
-    "consigne": "Lou refuse poliment, gêné : il explique qu’il en a besoin pour son père. Le vieil homme hausse les épaules, un peu vexé : « Alors dépêche-toi. » Il s’éloigne sans rien ajouter. Lou repart vers le pont, le cœur serré de l’avoir laissé. Court.",
+    "titre": "Chemin — bon courage",
+    "consigne": "Lou refuse poliment, gêné : il explique qu’il en a besoin pour son père. Le vieil homme comprend et lui souhaite bon courage, puis se dépêche de rentrer, car il n’a presque plus d’huile. Lou repart vers le pont. Court.",
     "rang": 4,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "2dc33e57-832d-4047-a4cb-81a9e4c80421",
+      "id": "fee1e852-af19-4243-bfd5-9dc5a3e3d0f0",
       "type": "p",
       "children": [
        {
-        "text": "Lou baissa les yeux, les joues brûlantes. « Je suis désolé. J’en ai besoin pour mon père. Il est en haut de la tour, et il lui faut de l’aide. »"
+        "text": "Lou baissa les yeux, les joues brûlantes. « Je suis désolé. J’en ai besoin pour mon père. Il lui est arrivé quelque chose, et je dois le retrouver. »"
        }
       ]
      },
      {
-      "id": "6ec94164-5538-4be8-957a-dbd558bb67b2",
+      "id": "e985637d-9acd-43f9-b2c8-380eeda520ae",
       "type": "p",
       "children": [
        {
-        "text": "Le vieil homme haussa les épaules, un peu vexé. « Alors dépêche-toi. »"
+        "text": "Le vieil homme hocha la tête. « Tu as raison, mon garçon. Ton père passe avant un vieux bonhomme comme moi. Bon courage ! »"
        }
       ]
      },
      {
-      "id": "e2ab8661-0d0e-4c3a-b9ff-c1965805eff9",
+      "id": "6c8fafa6-8634-42b5-9d0e-b9f43bcfe24d",
       "type": "p",
       "children": [
        {
-        "text": "Il s’éloigna sans rien ajouter, et sa flamme minuscule se perdit dans la brume. Le cœur serré de l’avoir laissé partir ainsi, Lou reprit le chemin du pont."
+        "text": "Il serra sa lanterne contre lui et s’éloigna à grands pas, pressé d’arriver chez lui avant que sa flamme minuscule ne s’éteigne. Lou le regarda disparaître dans la brume, puis reprit le chemin du pont."
        }
       ]
      },
@@ -816,7 +858,7 @@
       "id": "375b0d46-e2bd-4040-86b1-7025b88448a3",
       "auto": true,
       "type": "choix",
-      "cible": "41417042-091a-454b-bb04-fd6f62d963f5",
+      "cible": "287e2ed6-7ed8-48d4-8ae0-9a2a207abff8",
       "libelle": "Aller jusqu’au pont",
       "children": [
        {
@@ -826,8 +868,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.530Z",
+    "version": 4,
+    "ecrit_le": "2026-10-27T16:12:12.184Z",
     "rang_livre": 5,
     "numero_fixe": null,
     "etat": "prete",
@@ -838,9 +880,9 @@
     "description_image": ""
    },
    {
-    "id": "41417042-091a-454b-bb04-fd6f62d963f5",
-    "chapitre_id": "dcabab4d-c74e-4693-897c-b79602b4db02",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "287e2ed6-7ed8-48d4-8ae0-9a2a207abff8",
+    "chapitre_id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 8,
     "titre": "Pont — l’énigme du pont effondré",
     "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. L’énigme du pont, illustrée par une image pleine page faite par le porteur. Lou arrive au pont effondré sur la rivière en crue qui se jette dans le lac : un tronc l’a brisé, il n’en reste que des planches éparses posées entre les piliers. Trois passages : le long de la rambarde ; sur la grande poutre du milieu ; de pilier en pilier. Certaines planches sont claires, d’autres sombres et luisantes (ne dis pas lesquelles sont sèches ou mouillées). Dis au lecteur de bien regarder l’image avant de choisir, sans dire quelles planches tiennent ni lequel est le bon (le bon : de pilier en pilier). Lou a peur de l’eau noire qui gronde dessous.",
@@ -859,61 +901,24 @@
       ]
      },
      {
+      "id": "9550091b-635f-41b7-93a6-5c2850afaaf9",
+      "type": "image",
+      "image": "8a9f64e7-b155-495c-90ed-001a4f8c6b85",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
       "id": "b4f3c10b-e4ff-40c1-b782-909356fa7662",
       "type": "p",
       "children": [
        {
-        "text": "Lou leva sa lanterne. Il voyait trois façons de passer : le long de la rambarde, sur ce qui tenait encore ; sur la grande poutre du milieu ; ou de pilier en pilier, en sautant d’une planche à l’autre. Certaines planches étaient claires, d’autres sombres et luisantes."
+        "text": "Lou leva sa lanterne. Il ne voyait qu’une solution pour traverser : sauter de pierre en pierre. Certaines étaient proches, d’autres plus éloignées. "
        }
       ]
-     },
-     {
-      "id": "bcbb7d3a-441e-4263-94fe-9544b5c9bdc0",
-      "type": "p",
-      "children": [
-       {
-        "text": "En dessous, l’eau grondait, profonde et glacée. Lou sentit ses jambes devenir toutes molles. Regarde bien l’image avant de choisir : par où passerais-tu, toi ?"
-       }
-      ]
-     },
-     {
-      "id": "ae7c263b-d5e1-4ec9-9a8c-d442cd3eb038",
-      "auto": true,
-      "type": "choix",
-      "cible": "8e6d5c2e-a62a-4d10-92a1-67c98b47c501",
-      "libelle": "Passer le long de la rambarde",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
-     },
-     {
-      "id": "053f7f74-9ca4-420c-97ca-bc06828958c3",
-      "auto": true,
-      "type": "choix",
-      "cible": "8e6d5c2e-a62a-4d10-92a1-67c98b47c501",
-      "libelle": "Marcher sur la grande poutre",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
-     },
-     {
-      "id": "22287064-db21-44f9-878c-79849f347248",
-      "auto": true,
-      "type": "choix",
-      "cible": "6af58c0f-d85a-4c40-ae8d-cc80c3641236",
-      "libelle": "Sauter de pilier en pilier",
-      "children": [
-       {
-        "text": ""
-       }
-      ],
-      "construction": "neutre"
      },
      {
       "id": "2ff2a538-6291-403e-a995-9e2184266140",
@@ -926,8 +931,95 @@
        {
         "id": "8335cefd-ff39-4f93-835d-45b9f1432b6f",
         "type": "renvoi",
-        "cible": "6de61982-68fe-4591-8ced-101643c74c72",
+        "cible": "344ec28e-b8af-4e77-abed-3c1b60f67e81",
         "libelle": "Longer la rive jusqu’aux roseaux",
+        "children": [
+         {
+          "text": ""
+         }
+        ]
+       },
+       {
+        "text": "."
+       }
+      ]
+     },
+     {
+      "id": "483699db-6ee7-4277-b878-9cbb93a37e94",
+      "type": "p",
+      "children": [
+       {
+        "text": "En dessous, l’eau grondait, profonde et glacée. Lou sentit ses jambes devenir toutes molles. Par où passerais-tu, toi ?"
+       }
+      ]
+     },
+     {
+      "id": "d22874ad-3927-45a8-9259-7fe909725f06",
+      "type": "p",
+      "children": [
+       {
+        "text": "Le saut le plus difficile serait le premier. Devant lui, trois pierres semblaient presque à la même distance. Laquelle était la plus proche ? "
+       }
+      ]
+     },
+     {
+      "id": "22287064-db21-44f9-878c-79849f347248",
+      "type": "choix",
+      "libelle": "Sauter de pilier en pilier",
+      "children": [
+       {
+        "text": "Sauter sur la pierre située à 1m22 : rends-toi au "
+       },
+       {
+        "id": "003db5be-c30e-4ed2-8913-818d31f9d317",
+        "type": "renvoi",
+        "cible": "7861bef5-d15a-4418-8a6e-2705d7711695",
+        "children": [
+         {
+          "text": ""
+         }
+        ]
+       },
+       {
+        "text": "."
+       }
+      ]
+     },
+     {
+      "id": "ae7c263b-d5e1-4ec9-9a8c-d442cd3eb038",
+      "type": "choix",
+      "libelle": "Passer le long de la rambarde",
+      "children": [
+       {
+        "text": "Sauter sur la pierre située à 1,5m : rends-toi au "
+       },
+       {
+        "id": "4dd5f7c2-c2c0-43d3-9a40-f82addbb75d2",
+        "type": "renvoi",
+        "cible": "601dbac6-1ebc-4790-8603-4806a152b755",
+        "children": [
+         {
+          "text": ""
+         }
+        ]
+       },
+       {
+        "text": "."
+       }
+      ]
+     },
+     {
+      "id": "053f7f74-9ca4-420c-97ca-bc06828958c3",
+      "type": "choix",
+      "libelle": "Marcher sur la grande poutre",
+      "children": [
+       {
+        "text": "Sauter sur la pierre située à 135cm : rends-toi au "
+       },
+       {
+        "id": "421f6bf3-424e-47a3-bda0-4a099274a6e6",
+        "type": "renvoi",
+        "cible": "1321ade3-7f13-4994-bb67-4d7a39ae59d3",
         "children": [
          {
           "text": ""
@@ -940,8 +1032,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.549Z",
+    "version": 55,
+    "ecrit_le": "2026-10-27T19:59:46.271Z",
     "rang_livre": 4,
     "numero_fixe": null,
     "etat": "prete",
@@ -952,30 +1044,30 @@
     "description_image": ""
    },
    {
-    "id": "6de61982-68fe-4591-8ced-101643c74c72",
-    "chapitre_id": "dcabab4d-c74e-4693-897c-b79602b4db02",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "344ec28e-b8af-4e77-abed-3c1b60f67e81",
+    "chapitre_id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 9,
     "titre": "Pont — la barque dans les roseaux",
-    "consigne": "Lou longe la rive, de ce côté de la rivière, jusqu’aux roseaux. Une barque échouée, sans personne : celle de son père, il la reconnaît à la chouette sculptée à la proue. Peur : son père est-il tombé à l’eau ? Mais la barque n’est pas chavirée, et le crochet de la lanterne est vide : son père a emporté sa lanterne. La corde pend, son nœud défait, pas coupée ; un nœud de Gardien ne se défait pas tout seul. Sous le banc, Lou trouve une fiole d’huile de lune. Il surmonte sa peur de l’eau, pousse la barque et prend les rames, Plume perchée à la proue. Ne donne aucune explication sur le nœud.",
+    "consigne": "Lou longe la rive, de ce côté de la rivière, jusqu’aux roseaux. Une barque échouée, sans personne : celle de son père, il la reconnaît à la chouette sculptée à la proue. Peur : son père est-il tombé à l’eau ? Mais la barque n’est pas chavirée, et le crochet de la lanterne est vide : son père a emporté sa lanterne. La corde pend, son nœud défait, pas coupée ; un nœud de Gardien ne se défait pas tout seul. Sous le banc, Lou trouve une fiole d’huile de lune. Il surmonte sa peur de l’eau, pousse la barque et prend les rames, Plume perchée à la proue ; en ramant, le souvenir de son père qui lui apprenait à ramer : « L’eau qui frissonne cache des dents. », sans annoncer qu’elle servira. Ne donne aucune explication sur le nœud.",
     "rang": 1,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "3e73ae25-ba43-47d3-a5f4-0883c9b0e05b",
+      "id": "f86d00ea-de7d-48a6-8e92-4a4731249230",
       "type": "p",
       "children": [
        {
-        "text": "Lou longea la rive, de ce côté de la rivière, jusqu’aux roseaux. Une barque était là, échouée dans la vase, avec une chouette sculptée à la proue. Lou la reconnut aussitôt. C’était la barque de son père."
+        "text": "Lou longea la rive, de ce côté de la rivière, jusqu’aux roseaux. Une barque était là, échouée dans la vase, avec une chouette sculptée à la proue. C’était la barque de son père."
        }
       ]
      },
      {
-      "id": "88c51f7c-078e-4c68-bf83-860af9bba90f",
+      "id": "07861a2e-dd70-42e2-86d5-878198ca9824",
       "type": "image",
-      "image": "e553673b-c255-4365-8499-b5bb124f798d",
+      "image": "39ac8939-f34f-42b5-b70f-8125001ddc9a",
       "largeur": 100,
       "children": [
        {
@@ -984,7 +1076,7 @@
       ]
      },
      {
-      "id": "2c545fa9-995b-4c26-9dbb-2f83adcb65af",
+      "id": "4279a5b8-0671-4f33-8012-f3ff61b9b16b",
       "type": "p",
       "children": [
        {
@@ -993,11 +1085,11 @@
       ]
      },
      {
-      "id": "d102d25b-265b-4403-a7d3-5413c31c5ab6",
+      "id": "a15020c3-0201-478a-8f98-21caa18d6887",
       "type": "p",
       "children": [
        {
-        "text": "Sous le banc, quelque chose brillait : une fiole d’huile de lune ! Lou la glissa dans son sac. Puis il prit une grande inspiration, poussa la barque vers l’eau profonde et saisit les rames, les mains un peu tremblantes. Plume se posa à la proue, juste à côté de la chouette de bois."
+        "text": "Sous le banc, quelque chose brillait : une fiole d’huile de lune ! Lou la glissa dans son sac. Puis il prit une grande inspiration, poussa la barque vers l’eau profonde et saisit les rames. Il revit son père lui apprendre à ramer, l’été dernier, et lui répéter de sa voix calme : « L’eau qui frissonne cache des dents. » Plume se posa à la proue."
        }
       ]
      },
@@ -1014,7 +1106,7 @@
       "id": "a40bab34-c90c-48b1-8978-97235e5819e7",
       "auto": true,
       "type": "choix",
-      "cible": "47fe7ee6-7c6a-4654-9f6f-8cf0c72ba822",
+      "cible": "3985e2f1-503f-44b8-8a6b-f256b383b723",
       "libelle": "Ramer vers la Tour des Brumes",
       "children": [
        {
@@ -1024,8 +1116,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 7,
-    "ecrit_le": "2026-10-27T13:43:06.200Z",
+    "version": 12,
+    "ecrit_le": "2026-10-27T20:19:23.782Z",
     "rang_livre": 10,
     "numero_fixe": null,
     "etat": "prete",
@@ -1033,12 +1125,12 @@
     "etat_le": null,
     "nouvelle_page": false,
     "idee_image": "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Avant que Lou monte à bord : dans les roseaux, une barque de bois VIDE échouée, chouette sculptée à la proue, crochet de lanterne vide, corde dénouée dans l’eau. Lou, debout sur la rive, hors de la barque, lève sa petite lanterne vers elle. Plume vole au-dessus.",
-    "description_image": "Nuit de pleine lune, sur la rive d'une rivière noyée de brume laiteuse. Lou, debout sur la berge, hors de la barque, lève sa petite lanterne dorée vers une barque de bois vide, échouée dans les roseaux. À la proue, une chouette sculptée ; le crochet de lanterne est vide et une corde dénouée pend dans l'eau. Plume vole au-dessus de lui. Bleus profonds, reflets d'argent sur l'eau, ambiance calme et un peu inquiète. Vue large, horizontale."
+    "description_image": "Nuit de pleine lune au bord de la rivière, dans des bleus profonds et un argent de lune, sous une brume laiteuse. Au bord de l'eau, dans les roseaux, une barque de bois vide est échouée dans la vase : chouette sculptée à la proue, crochet de lanterne vide, corde dénouée qui traîne dans l'eau. Lou, debout sur la rive, hors de la barque, lève sa petite lanterne dorée vers elle. Plume vole au-dessus. Vue large en bandeau, sans noir bouché."
    },
    {
-    "id": "8e6d5c2e-a62a-4d10-92a1-67c98b47c501",
-    "chapitre_id": "dcabab4d-c74e-4693-897c-b79602b4db02",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "601dbac6-1ebc-4790-8603-4806a152b755",
+    "chapitre_id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 10,
     "titre": "Pont — la glissade",
     "consigne": "Courte scène d’erreur, où l’on arrive par la rambarde ou par la poutre : dis seulement que Lou s’avance sur les planches. Une planche sombre et luisante glisse sous son pied ; il tombe dans l’eau peu profonde près de la berge, s’agrippe, ressort trempé de l’autre côté. Sa lanterne a pris l’eau : la mèche crachote. Il doit la sécher et la rallumer avec de l’huile neuve. Termine de l’autre côté de la rivière, grelottant, en route.",
@@ -1048,20 +1140,20 @@
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "5f4d6c74-a241-442d-a6da-d5019404de84",
+      "id": "9f16e8ad-13f0-442f-9f49-352c9246e6e7",
       "type": "p",
       "children": [
        {
-        "text": "Lou s’avança sur les planches, tout doucement. Il avait presque traversé quand une planche sombre et luisante glissa sous son pied. Plouf ! L’eau était glacée, mais peu profonde si près de la berge. Il s’agrippa à un pilier, se hissa et ressortit de l’autre côté, trempé jusqu’aux os."
+        "text": "Lou recula de deux pas, serra sa lanterne contre lui et regarda le premier rocher. C’était le plus loin de tous. Il compta jusqu’à trois et s’élança… Il s’en fallut d’un rien : sa botte heurta le bord de la pierre et glissa. Plouf ! L’eau était glacée, mais peu profonde au pied du rocher. Lou s’y agrippa, se hissa dessus, puis passa sur les autres, d’un bond à chaque fois, jusqu’à l’autre rive. Il était trempé jusqu’aux os."
        }
       ]
      },
      {
-      "id": "3fd3b71e-d5ab-4f41-97f6-9c84d9eceb08",
+      "id": "6bbcea99-7bbb-4ca0-84c4-01e7464105fa",
       "type": "p",
       "children": [
        {
-        "text": "Sa lanterne avait bu la tasse : la mèche crachotait. Il dut la sécher, puis la rallumer avec de l’huile neuve. Grelottant, il se remit en route."
+        "text": "Sa lanterne avait bu la tasse : la mèche crachotait. Il dut la sécher, puis la rallumer avec de l’huile neuve. Grelottant, il se remit en route."
        }
       ]
      },
@@ -1070,7 +1162,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -1078,7 +1170,7 @@
       "id": "a09d3328-0ac6-470c-b538-30d9436dee01",
       "auto": true,
       "type": "choix",
-      "cible": "48ea1a9d-fc99-4e9b-afe9-edaf4a8d8481",
+      "cible": "293ea8f2-d541-4219-868a-6d0f2d9ad38d",
       "libelle": "Continuer sur la rive",
       "children": [
        {
@@ -1088,8 +1180,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.589Z",
+    "version": 3,
+    "ecrit_le": "2026-10-27T20:06:06.634Z",
     "rang_livre": 8,
     "numero_fixe": null,
     "etat": "prete",
@@ -1100,30 +1192,30 @@
     "description_image": ""
    },
    {
-    "id": "48ea1a9d-fc99-4e9b-afe9-edaf4a8d8481",
-    "chapitre_id": "dcabab4d-c74e-4693-897c-b79602b4db02",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "293ea8f2-d541-4219-868a-6d0f2d9ad38d",
+    "chapitre_id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 11,
     "titre": "Rive — le chemin inondé",
-    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou est de l’autre côté de la rivière. Plus loin, la crue a noyé le chemin de la rive, comme souvent à cette saison. Au petit ponton des Gardiens, une barque de secours attend, amarrée pour ces nuits-là. Lou a peur de l’eau profonde ; Plume se pose à la proue et le rassure. Il monte, prend les rames. En longeant la rive noyée, par une trouée de la brume, il aperçoit à quelques coups de rame, de l’autre côté de l’embouchure, prise dans les roseaux, une barque sans lumière, vide : celle de son père, reconnaissable à la chouette sculptée à la proue. Le courant de la crue l’en éloigne ; son cœur se serre. Il rame vers la tour.",
-    "rang": 4,
+    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou est de l’autre côté de la rivière. Plus loin, la crue a noyé le chemin de la rive, comme souvent à cette saison. Au petit ponton des Gardiens, une barque de secours attend, amarrée pour ces nuits-là. Lou a peur de l’eau profonde ; Plume se pose à la proue et le rassure. Il monte, prend les rames ; le souvenir de son père qui lui apprenait à ramer : « L’eau qui frissonne cache des dents. », sans annoncer qu’elle servira. En longeant la rive noyée, par une trouée de la brume, il aperçoit à quelques coups de rame, de l’autre côté de l’embouchure, prise dans les roseaux, une barque sans lumière, vide : celle de son père, reconnaissable à la chouette sculptée à la proue. Le courant de la crue l’en éloigne ; son cœur se serre. Il rame vers la tour.",
+    "rang": 5,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "8dd32b87-3e46-4f84-930a-cff16d037abd",
+      "id": "ef098c21-6d4b-4bb9-a2b3-909d808b8478",
       "type": "p",
       "children": [
        {
-        "text": "Lou avait passé la rivière ; derrière lui, l’eau grondait toujours. Plus loin, la crue avait noyé le chemin de la rive. Heureusement, au petit ponton des Gardiens, une barque de secours attendait, amarrée pour les nuits comme celle-ci."
+        "text": "Lou avait passé la rivière. Plus loin, la crue avait noyé le chemin de la rive. Au petit ponton des Gardiens, une barque de secours attendait, amarrée pour les nuits comme celle-ci."
        }
       ]
      },
      {
-      "id": "02d762a6-d2ae-4b88-a473-2333cdd21ed7",
+      "id": "89c8e38b-6eb0-4b43-acf4-d0c2a92b18c9",
       "type": "image",
-      "image": "fd6fee12-828e-4bc9-99b8-e51cb833b16b",
+      "image": "10ecb1ec-b5bc-4d9d-afe7-5232bbefabe3",
       "largeur": 100,
       "children": [
        {
@@ -1132,20 +1224,20 @@
       ]
      },
      {
-      "id": "90ce10e8-b1ce-4d20-af97-2480f8e03262",
+      "id": "acfba9f3-38a4-42c7-a29a-3a3d00838824",
       "type": "p",
       "children": [
        {
-        "text": "Lou regarda l’eau noire et profonde, et ses mains se mirent à trembler. Plume se posa à la proue et le fixa de ses grands yeux tranquilles, comme pour dire : « Je suis là. » Alors il monta, détacha la corde et prit les rames."
+        "text": "Lou regarda l’eau noire et profonde, les mains tremblantes. Plume se posa à la proue et le fixa de ses grands yeux tranquilles. Alors il monta et prit les rames. Il revit son père lui apprendre à ramer, l’été dernier, et lui répéter de sa voix calme : « L’eau qui frissonne cache des dents. »"
        }
       ]
      },
      {
-      "id": "3fc2e151-4fff-413b-b076-c3e1a58451e0",
+      "id": "5d220f56-0ec3-483f-aeee-b6744148eabc",
       "type": "p",
       "children": [
        {
-        "text": "Il longeait la rive noyée quand, par une trouée de la brume, il aperçut, de l’autre côté de l’embouchure, une barque prise dans les roseaux, sans lumière. Vide. Une chouette était sculptée à sa proue : la barque de son père ! Lou voulut ramer vers elle, mais le courant de la crue l’en éloignait, et la brume se referma. Le cœur serré, il tourna la proue vers la tour."
+        "text": "Il longeait la rive noyée quand, par une trouée de la brume, il aperçut, de l’autre côté de l’embouchure, une barque prise dans les roseaux, sans lumière. Vide. Une chouette était sculptée à sa proue : la barque de son père ! Lou voulut ramer vers elle, mais le courant l’en éloignait, et la brume se referma. Le cœur serré, il tourna la proue vers la tour."
        }
       ]
      },
@@ -1153,7 +1245,7 @@
       "id": "1de0bd6b-1367-47d2-bd8f-5c759d93d524",
       "auto": true,
       "type": "choix",
-      "cible": "47fe7ee6-7c6a-4654-9f6f-8cf0c72ba822",
+      "cible": "3985e2f1-503f-44b8-8a6b-f256b383b723",
       "libelle": "Ramer vers la Tour des Brumes",
       "children": [
        {
@@ -1163,21 +1255,21 @@
       "construction": "neutre"
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-27T13:38:00.917Z",
+    "version": 8,
+    "ecrit_le": "2026-10-27T20:19:38.981Z",
     "rang_livre": 9,
     "numero_fixe": null,
     "etat": "prete",
     "tour": 0,
     "etat_le": null,
     "nouvelle_page": false,
-    "idee_image": "",
-    "description_image": "Au crépuscule, sur une rivière en crue noyée de brume, Lou rame dans la barque de secours, le visage tourné vers une trouée dans la brume. Plume est posé à la proue. Au loin, de l'autre côté de l'embouchure, une barque vide et sans lumière est prise dans les roseaux, avec une petite chouette sculptée à la proue. L'eau est noire et profonde, la rive inondée se devine à gauche. Lumière pâle et froide, ambiance silencieuse et mélancolique. Plan large horizontal, Lou au premier plan, la barque lointaine au fond."
+    "idee_image": "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Au petit ponton des Gardiens, Lou monte dans une barque de bois simple, inquiet devant l’eau profonde, sa petite lanterne allumée ; Plume posée à la proue. La rive est noyée par la crue.",
+    "description_image": "Nuit de pleine lune, au petit ponton des Gardiens. Lou, hésitant, monte dans une simple barque de bois et regarde l'eau profonde, sa petite lanterne dorée à la main. Plume est posée à la proue, calme. Autour, la rive noyée par la crue, des roseaux, une brume laiteuse. Bleus profonds, reflets d'argent sur l'eau, lueur chaude de la lanterne. Plan large en bandeau, ponton à gauche, eau et brume qui s'ouvrent à droite."
    },
    {
-    "id": "47fe7ee6-7c6a-4654-9f6f-8cf0c72ba822",
-    "chapitre_id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "3985e2f1-503f-44b8-8a6b-f256b383b723",
+    "chapitre_id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 12,
     "titre": "Lac — le courant",
     "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou rame sur le Grand Lac, dans la brume que sa lanterne repousse ; dis seulement « la barque », sans dire laquelle. La crue a creusé des courants ; devant lui, l’eau se partage en trois bras entre les îlots. Plume s’envole et file au-dessus du bras le plus étroit, entre les roseaux. À droite, de vieilles balises des passeurs, des perches peintes, montrent le chemin, mais on ne lit leurs signes qu’en montant la flamme. À gauche, le bras le plus large, calme, facile à ramer. Lou est fatigué. Ne dis pas lequel est le bon ; Plume, qui connaît tous les chemins du lac et retrouve toujours Marius, ne fait que voler, sans insister.",
@@ -1187,50 +1279,82 @@
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "631cf6d4-3811-4df5-b1f7-4d4feb22cdcb",
+      "id": "6a4d0215-d853-411a-b6d8-98c58a445a87",
       "type": "p",
       "children": [
        {
-        "text": "Lou ramait sur le Grand Lac. Autour de la barque, la brume reculait devant sa lanterne, puis se refermait derrière lui comme un rideau. La crue avait creusé des courants partout, et bientôt l’eau se partagea en trois bras, entre des îlots couverts de roseaux."
+        "text": "Lou ramait sur le Grand Lac. Autour de sa barque, la brume s’écartait devant sa lanterne, puis se refermait derrière lui comme un rideau."
        }
       ]
      },
      {
-      "id": "7b924a51-5009-4f4b-9192-ae0992a764bc",
+      "id": "78afe75c-3531-49b8-9871-5fe5933873bb",
       "type": "p",
       "children": [
        {
-        "text": "Plume s’envola de la proue et fila au-dessus du bras le plus étroit, là où les roseaux se touchaient presque. À droite, de vieilles perches peintes sortaient de l’eau : des balises des passeurs. Elles montraient le chemin, mais leurs signes étaient trop pâles ; pour les lire, il faudrait monter la flamme. À gauche s’ouvrait le bras le plus large, calme, où l’on ramait sans peine."
+        "text": "La crue avait créé de forts courants. Bientôt, l’eau se sépara en deux passages."
        }
       ]
      },
      {
-      "id": "da4ce75f-6b8f-45a3-870c-4e517eb15ef0",
+      "id": "f2b49a75-d9a0-45f1-9b13-5c291927fcc9",
       "type": "p",
       "children": [
        {
-        "text": "Lou avait mal aux bras et aux épaules. Il souffla sur ses mains glacées et regarda les trois passages, l’un après l’autre."
+        "text": "À gauche, le passage était étroit, bordé de roseaux. Plume vint se poser sur l’un d’eux et observa Lou de son regard perçant."
        }
       ]
      },
      {
-      "id": "dc209587-d1dc-42fc-b8d1-815eb2619875",
-      "auto": true,
-      "type": "choix",
-      "cible": "6d3cf17d-93b7-4264-ad08-2f8e8ff7a117",
-      "libelle": "Suivre le bras où vole Plume",
+      "id": "1b69dfaa-07b2-4066-90f2-6ffcbf65325b",
+      "type": "p",
       "children": [
        {
-        "text": ""
+        "text": "À droite, le passage était beaucoup plus large. L’eau y était calme et il semblait facile d’y ramer."
        }
-      ],
-      "construction": "neutre"
+      ]
+     },
+     {
+      "id": "b50ef85b-f36f-4d5c-b9c4-83136c851a84",
+      "type": "p",
+      "children": [
+       {
+        "text": "Entre les deux passages, sur un petit îlot, de vieux poteaux peints sortaient de terre. C’étaient les balises des passeurs ! Elles indiquaient le bon chemin."
+       }
+      ]
+     },
+     {
+      "id": "ba307df6-2dea-4986-9c8b-3e81b738e6b0",
+      "type": "p",
+      "children": [
+       {
+        "text": "Mais la brume était trop épaisse pour lire les marques peintes sur les poteaux. Et le courant était trop fort pour s’en approcher. Lou pourrait faire grandir la flamme de sa lanterne pour mieux les voir."
+       }
+      ]
+     },
+     {
+      "id": "b294bbd9-1313-422d-bf6b-cd106dd482d8",
+      "type": "p",
+      "children": [
+       {
+        "text": "Ses bras et ses épaules lui faisaient mal. Il souffla sur ses mains glacées, puis regarda les deux passages, l’un après l’autre."
+       }
+      ]
+     },
+     {
+      "id": "852c348f-7006-4a99-9ac8-d6d746a11bbd",
+      "type": "p",
+      "children": [
+       {
+        "text": "Lequel devait-il choisir ?"
+       }
+      ]
      },
      {
       "id": "6e1fb1fc-b6a1-49b3-9756-5d1bb4251a88",
       "auto": true,
       "type": "choix",
-      "cible": "82b98425-42d0-404d-8a22-272e0049f01b",
+      "cible": "1d62beb5-85d7-4442-b7f3-b94908d3998b",
       "libelle": "Monter la flamme pour lire les balises",
       "children": [
        {
@@ -1240,21 +1364,54 @@
       "construction": "neutre"
      },
      {
-      "id": "3ae195f8-ab8d-445a-9371-05c5aaf122bc",
-      "auto": true,
+      "id": "dc209587-d1dc-42fc-b8d1-815eb2619875",
       "type": "choix",
-      "cible": "77830320-8fbf-4f6a-8b85-33c418df15c2",
+      "libelle": "Suivre le bras où vole Plume",
+      "children": [
+       {
+        "text": "Suivre le bras entouré de roseaux : rends-toi au "
+       },
+       {
+        "id": "7b0804ee-133c-4d56-9def-fd6e727e3142",
+        "type": "renvoi",
+        "cible": "b52e403a-4c18-4fa7-8b99-910b4214e3d8",
+        "children": [
+         {
+          "text": ""
+         }
+        ]
+       },
+       {
+        "text": "."
+       }
+      ]
+     },
+     {
+      "id": "3ae195f8-ab8d-445a-9371-05c5aaf122bc",
+      "type": "choix",
       "libelle": "Prendre le bras le plus large",
       "children": [
        {
-        "text": ""
+        "text": "Prendre le bras le plus large : rends-toi au "
+       },
+       {
+        "id": "1f2ef80f-f792-4066-b68f-f126ca6608e1",
+        "type": "renvoi",
+        "cible": "49498664-004a-498e-a9b8-1e2e1eb4a687",
+        "children": [
+         {
+          "text": ""
+         }
+        ]
+       },
+       {
+        "text": "."
        }
-      ],
-      "construction": "neutre"
+      ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.629Z",
+    "version": 31,
+    "ecrit_le": "2026-10-27T20:29:31.833Z",
     "rang_livre": 0,
     "numero_fixe": null,
     "etat": "prete",
@@ -1265,9 +1422,9 @@
     "description_image": ""
    },
    {
-    "id": "82b98425-42d0-404d-8a22-272e0049f01b",
-    "chapitre_id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "1d62beb5-85d7-4442-b7f3-b94908d3998b",
+    "chapitre_id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 13,
     "titre": "Lac — les balises",
     "consigne": "Courte scène d’erreur. Lou monte la flamme ; la lanterne boit l’huile. Il déchiffre les signes peints sur les perches : ils montrent… le bras où volait Plume. Il se sent bête : Plume le savait. Il baisse la flamme et s’engage dans le bras étroit. Termine sur l’eau, la barque filant entre les roseaux.",
@@ -1281,7 +1438,7 @@
       "type": "p",
       "children": [
        {
-        "text": "Lou monta la flamme. La lanterne se mit à boire l’huile, et sa lumière grandit jusqu’aux perches. Plissant les yeux, il déchiffra les signes peints : ils montraient… le bras étroit. Celui où volait Plume."
+        "text": "Lou monta la flamme. La lanterne se mit à boire l’huile, et sa lumière grandit jusqu’aux perches, repoussant la brume. Plissant les yeux, il déchiffra les signes peints : ils montraient… le bras étroit. Celui où volait Plume."
        }
       ]
      },
@@ -1299,7 +1456,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -1309,12 +1466,12 @@
       "libelle": "La lanterne s’éteint",
       "children": [
        {
-        "text": "Si tu n’avais plus de réserve à rayer, rends-toi au "
+        "text": "Si tu n’avais plus de réserve à retirer, rends-toi au "
        },
        {
         "id": "429dddcf-1ecd-461c-8824-5040ed4993d7",
         "type": "renvoi",
-        "cible": "28eda377-a16c-42e5-bbb2-b22a14080c06",
+        "cible": "b6778467-2708-4b7a-8212-7b49e79c3b8e",
         "libelle": "La lanterne s’éteint",
         "children": [
          {
@@ -1328,7 +1485,7 @@
        {
         "id": "09105181-fd12-4633-a164-204e3e46ef2a",
         "type": "renvoi",
-        "cible": "6d3cf17d-93b7-4264-ad08-2f8e8ff7a117",
+        "cible": "b52e403a-4c18-4fa7-8b99-910b4214e3d8",
         "libelle": "Rejoindre Plume",
         "children": [
          {
@@ -1342,8 +1499,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.652Z",
+    "version": 3,
+    "ecrit_le": "2026-10-27T20:30:28.543Z",
     "rang_livre": 7,
     "numero_fixe": null,
     "etat": "prete",
@@ -1354,9 +1511,9 @@
     "description_image": ""
    },
    {
-    "id": "77830320-8fbf-4f6a-8b85-33c418df15c2",
-    "chapitre_id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "49498664-004a-498e-a9b8-1e2e1eb4a687",
+    "chapitre_id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 14,
     "titre": "Lac — le grand bras",
     "consigne": "Courte scène d’erreur. Le grand bras est facile à ramer, mais il fait un immense détour autour des îlots ; le temps passe, la lanterne brûle, la lune glisse dans le ciel. Lou finit par retrouver Plume qui l’attend, perchée sur une souche. Termine en route, tous deux de nouveau ensemble.",
@@ -1375,6 +1532,15 @@
       ]
      },
      {
+      "id": "5c9fc240-7395-4557-82da-ff1fc5668f1d",
+      "type": "action",
+      "children": [
+       {
+        "text": "Retire une réserve d’huile."
+       }
+      ]
+     },
+     {
       "id": "10766b1a-9d5b-4fb2-8313-c1e9ff31b743",
       "type": "p",
       "children": [
@@ -1384,26 +1550,17 @@
       ]
      },
      {
-      "id": "5c9fc240-7395-4557-82da-ff1fc5668f1d",
-      "type": "action",
-      "children": [
-       {
-        "text": "Raye une réserve d’huile."
-       }
-      ]
-     },
-     {
       "id": "c1925a63-f6d0-4ecb-af96-d8d8bed1bca0",
       "type": "choix",
       "libelle": "La lanterne s’éteint",
       "children": [
        {
-        "text": "Si tu n’avais plus de réserve à rayer, rends-toi au "
+        "text": "Si tu n’avais plus de réserve à retirer, rends-toi au "
        },
        {
         "id": "e6cadccf-7ef0-4960-ad9c-adc7e5c6c986",
         "type": "renvoi",
-        "cible": "28eda377-a16c-42e5-bbb2-b22a14080c06",
+        "cible": "b6778467-2708-4b7a-8212-7b49e79c3b8e",
         "libelle": "La lanterne s’éteint",
         "children": [
          {
@@ -1417,7 +1574,7 @@
        {
         "id": "70be4446-3731-48a5-b00f-ee7308e1b48a",
         "type": "renvoi",
-        "cible": "6d3cf17d-93b7-4264-ad08-2f8e8ff7a117",
+        "cible": "b52e403a-4c18-4fa7-8b99-910b4214e3d8",
         "libelle": "Repartir avec Plume",
         "children": [
          {
@@ -1431,8 +1588,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.674Z",
+    "version": 3,
+    "ecrit_le": "2026-10-27T20:35:33.860Z",
     "rang_livre": 2,
     "numero_fixe": null,
     "etat": "prete",
@@ -1443,12 +1600,12 @@
     "description_image": ""
    },
    {
-    "id": "6d3cf17d-93b7-4264-ad08-2f8e8ff7a117",
-    "chapitre_id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "b52e403a-4c18-4fa7-8b99-910b4214e3d8",
+    "chapitre_id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 15,
     "titre": "Lac — l’eau qui frissonne",
-    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou rame vers la tour ; on la devine maintenant, une ombre haute dans la brume. Entre lui et elle, deux passages : tout droit, une eau qui frissonne, pleine de petites rides qui scintillent sous la lune, le plus court ; ou un détour par une eau sombre, lisse et profonde, qui coule lentement (ce n’est pas de l’eau qui dort), qui lui fait peur, à lui qui nage mal. Ne rappelle pas la phrase de Marius sur l’eau qui frissonne : le lecteur doit s’en souvenir.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou rame vers la tour ; on la devine maintenant, une ombre haute dans la brume. Entre lui et elle, deux passages : tout droit, une eau qui frissonne, pleine de petites rides qui scintillent sous la lune, le plus court ; ou un détour par une eau sombre, lisse et profonde, qui coule lentement (ce n’est pas de l’eau qui dort), qui lui fait peur, à lui qui nage mal. Ne rappelle pas la phrase de Marius sur l’eau qui frissonne (souvenir du 9 ou du 11) : le lecteur doit s’en souvenir.",
     "rang": 3,
     "fin": false,
     "hors_livre": false,
@@ -1468,7 +1625,7 @@
       "type": "p",
       "children": [
        {
-        "text": "Entre la tour et lui, il y avait deux passages. Tout droit, l’eau frissonnait, couverte de petites rides qui scintillaient sous la lune comme des milliers d’écailles d’argent. C’était le plus court. Sur le côté, il pouvait faire un détour par une eau sombre, lisse et profonde, qui coulait lentement. On n’en verrait jamais le fond."
+        "text": "Entre la tour et lui, il y avait deux passages. Tout droit, l’eau frissonnait, couverte de petites rides qui scintillaient sous la lune comme des milliers d’écailles d’argent. Le spectacle était magnifique. Sur le côté, il pouvait faire un détour par une eau sombre, lisse et profonde. On n’en verrait jamais le fond."
        }
       ]
      },
@@ -1477,7 +1634,7 @@
       "type": "p",
       "children": [
        {
-        "text": "Lou serra les rames. Lui qui nageait si mal, il n’aimait pas du tout cette eau-là. Mais la tour était juste devant, et le temps filait."
+        "text": "Lou serra les rames. Lui qui nageait si mal, il n’aimait pas du tout cette eau-là. La tour était juste devant, et le temps filait."
        }
       ]
      },
@@ -1485,7 +1642,7 @@
       "id": "d8012bd5-2dba-4f92-9981-fe3e2539b7a7",
       "auto": true,
       "type": "choix",
-      "cible": "3a9a7c23-2d89-4b28-9811-9ae48db9c8b8",
+      "cible": "f4036a34-e9b9-4646-addd-8404728ba1cb",
       "libelle": "Couper tout droit par l’eau qui frissonne",
       "children": [
        {
@@ -1498,7 +1655,7 @@
       "id": "cf5d22d3-e534-40cb-b9f9-1ad208c0aa19",
       "auto": true,
       "type": "choix",
-      "cible": "788c0387-5804-4646-be8c-83dedaed5dd9",
+      "cible": "661d0384-ec48-4959-b2d0-a66d1957a251",
       "libelle": "Contourner par l’eau sombre et profonde",
       "children": [
        {
@@ -1508,8 +1665,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.697Z",
+    "version": 7,
+    "ecrit_le": "2026-10-27T20:37:57.596Z",
     "rang_livre": 6,
     "numero_fixe": null,
     "etat": "prete",
@@ -1520,12 +1677,12 @@
     "description_image": ""
    },
    {
-    "id": "3a9a7c23-2d89-4b28-9811-9ae48db9c8b8",
-    "chapitre_id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "f4036a34-e9b9-4646-addd-8404728ba1cb",
+    "chapitre_id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 16,
     "titre": "Lac — les dents du lac",
-    "consigne": "Courte scène d’erreur. L’eau frissonne parce que des rochers affleurent juste dessous. La barque racle, se coince ; Lou pousse avec une rame, longtemps, pendant que la lanterne brûle. Il comprend la phrase de son père : « L’eau qui frissonne cache des dents. » Il se dégage enfin. Termine en route vers la tour.",
+    "consigne": "Courte scène d’erreur. L’eau frissonne parce que des rochers affleurent juste dessous. La barque racle, se coince ; Lou pousse avec une rame, longtemps, pendant que la lanterne brûle. Il comprend la phrase de son père, entendue en souvenir en prenant les rames : « L’eau qui frissonne cache des dents. » Il se dégage enfin. Termine en route vers la tour.",
     "rang": 4,
     "fin": false,
     "hors_livre": false,
@@ -1554,7 +1711,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -1564,12 +1721,12 @@
       "libelle": "La lanterne s’éteint",
       "children": [
        {
-        "text": "Si tu n’avais plus de réserve à rayer, rends-toi au "
+        "text": "Si tu n’avais plus de réserve à retirer, rends-toi au "
        },
        {
         "id": "003f075f-56fa-4bc7-92ff-c82795b78738",
         "type": "renvoi",
-        "cible": "28eda377-a16c-42e5-bbb2-b22a14080c06",
+        "cible": "b6778467-2708-4b7a-8212-7b49e79c3b8e",
         "libelle": "La lanterne s’éteint",
         "children": [
          {
@@ -1583,7 +1740,7 @@
        {
         "id": "27e2d212-021e-4d6d-975c-514d0f876689",
         "type": "renvoi",
-        "cible": "788c0387-5804-4646-be8c-83dedaed5dd9",
+        "cible": "661d0384-ec48-4959-b2d0-a66d1957a251",
         "libelle": "Repartir vers la tour",
         "children": [
          {
@@ -1609,30 +1766,66 @@
     "description_image": ""
    },
    {
-    "id": "788c0387-5804-4646-be8c-83dedaed5dd9",
-    "chapitre_id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "661d0384-ec48-4959-b2d0-a66d1957a251",
+    "chapitre_id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 17,
-    "titre": "Îlot — les pierres qui chantent",
-    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Tout près de la tour, Lou aborde un petit îlot entouré de pierres qui chantent quand l’eau les touche ; la brume n’y entre pas, comme si elle n’aimait pas leur chant. La pleine lune l’éclaire. Plume s’envole vers le haut de la tour pour trouver le passage et Marius ; Lou doit l’attendre ici. Sa lanterne brûle toujours, et il reste toute la tour à monter. Il hésite : la garder allumée, ou l’éteindre en attendant. Ne dis pas ce qu’il vaut mieux faire ; ne rappelle ni la règle de la brume ni la peur qu’ont les feux follets des lanternes.",
+    "titre": "Île — la clairière aux pierres",
+    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou aborde l’île de la Tour des Brumes. Il amarre la barque à l’anneau de fer où son père attache toujours la sienne : l’anneau est vide. Plume s’envole vers le haut de la tour. Il reste un bout de chemin à pied jusqu’à la tour, dans la brume, lanterne levée. Pour se donner du courage, Lou fredonne le chant des lanternes (présenté dans l’introduction) ; si les lanternes baissent, son père n’a sans doute pas pu le chanter ; il faut le chanter avant le lever du soleil, et la nuit avance. Alors qu’il chante, il traverse une vaste clairière semée de grandes pierres dressées (pas en cercle), un lieu qui semble imprégné de magie, où la brume ne pénètre pas ; la pleine lune éclaire tout. Sa lanterne brûle toujours, et il reste toute la tour à monter. Il hésite : la garder allumée pour traverser la clairière, ou l’éteindre. Ne dis pas ce qu’il vaut mieux faire ; ne rappelle ni la règle de la brume ni la peur qu’ont les feux follets des lanternes. Rien d’un îlot ni d’une attente.",
     "rang": 0,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "1e05c100-55b8-42aa-91e2-f73708fc59f6",
+      "id": "eb5b0eab-6366-4da2-85b5-b05afecac07b",
       "type": "p",
       "children": [
        {
-        "text": "Tout près de la tour, Lou aborda un petit îlot. Des pierres rondes l’entouraient, et chaque fois qu’une vague les touchait, elles chantaient, une note douce comme celle d’une flûte. Étrangement, la brume n’entrait pas sur l’îlot. Elle restait au bord, comme si elle n’aimait pas ce chant. La pleine lune éclairait tout : les pierres, l’herbe, la barque que Lou attacha à un gros rocher."
+        "text": "La barque toucha enfin l’île de la Tour des Brumes. Dans la pierre était scellé un anneau de fer : celui où son père attachait toujours sa barque. L’anneau était vide. Lou y amarra la barque."
        }
       ]
      },
      {
-      "id": "71e92a03-02f2-4721-9ffb-5834c2a87ff0",
+      "id": "62be2024-1978-4772-9cfb-e9451eaa80f2",
+      "type": "p",
+      "children": [
+       {
+        "text": "Plume s’envola vers le haut de la tour. Il restait un bout de chemin à pied. Lou leva sa lanterne et s’enfonça dans la brume."
+       }
+      ]
+     },
+     {
+      "id": "79cae063-448d-4077-b296-00d96f0230a5",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pour se donner du courage, il fredonna le chant des lanternes. Si les lanternes baissaient, son père n’avait sans doute pas pu le chanter. Et il fallait le chanter avant le lever du soleil : la nuit avançait."
+       }
+      ]
+     },
+     {
+      "id": "f5bff7de-9fb3-425c-a47b-d42ef21d9d9d",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il chantait encore quand le chemin déboucha dans une vaste clairière, semée de grandes pierres dressées. L’endroit semblait imprégné de magie : la brume n’y pénétrait pas. La pleine lune éclairait tout."
+       }
+      ]
+     },
+     {
+      "id": "3cea030b-3504-46be-93fb-0547e115a491",
+      "type": "p",
+      "children": [
+       {
+        "text": "Sa lanterne brûlait toujours, et il restait toute la tour à monter. Fallait-il la garder allumée pour traverser la clairière, ou l’éteindre ?"
+       }
+      ]
+     },
+     {
+      "id": "d393b6c0-f68a-459b-a18c-76a6504d026d",
       "type": "image",
-      "image": "da872c0d-59af-440f-ba16-b767f04ebdde",
+      "image": "a952f926-aa5e-499a-9074-874665efd264",
       "largeur": 100,
       "children": [
        {
@@ -1641,28 +1834,10 @@
       ]
      },
      {
-      "id": "a0afaf83-3d89-40ff-bc47-4668cb4aeae3",
-      "type": "p",
-      "children": [
-       {
-        "text": "Plume tourna deux fois au-dessus de lui, puis s’envola vers le haut de la tour, pour trouver le passage, et Marius. Lou comprit qu’il devait l’attendre ici."
-       }
-      ]
-     },
-     {
-      "id": "1651ed3d-8194-4c51-a8a3-4a4553790f9d",
-      "type": "p",
-      "children": [
-       {
-        "text": "Il s’assit. À côté de lui, sa lanterne brûlait toujours. Sa petite flamme lui tenait compagnie, mais elle buvait l’huile, goutte après goutte, et il restait encore toute la tour à monter. Fallait-il la garder allumée, ou l’éteindre en attendant le retour de Plume ?"
-       }
-      ]
-     },
-     {
       "id": "13aa53be-602b-4c94-8fae-e407a568f108",
       "auto": true,
       "type": "choix",
-      "cible": "4029f27c-9675-4198-864e-94d95eafb58d",
+      "cible": "374a6c97-ebd3-4ad4-8758-9acd35bcd4d2",
       "libelle": "Garder la lanterne allumée",
       "children": [
        {
@@ -1675,7 +1850,7 @@
       "id": "d58fb60d-42d9-4e4d-9c26-58162cb12abc",
       "auto": true,
       "type": "choix",
-      "cible": "d5681863-1ce1-428e-b721-368866ff816d",
+      "cible": "18870821-f31f-4212-b4a4-0a682045fdf8",
       "libelle": "Éteindre la lanterne",
       "children": [
        {
@@ -1685,44 +1860,44 @@
       "construction": "neutre"
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-27T13:38:18.132Z",
+    "version": 15,
+    "ecrit_le": "2026-10-28T08:14:30.196Z",
     "rang_livre": 10,
     "numero_fixe": null,
     "etat": "prete",
     "tour": 0,
     "etat_le": null,
     "nouvelle_page": false,
-    "idee_image": "",
-    "description_image": "Sur un petit îlot baigné par la pleine lune, Lou est assis dans l'herbe, près de sa lanterne allumée, et lève les yeux. Plume, tout petit dans le ciel, s'éloigne vers le sommet d'une haute tour sombre. Autour de l'îlot, des pierres rondes luisent au bord de l'eau. Plus loin, la brume forme un mur blanc qui n'entre pas. Barque attachée à un gros rocher. Lumière argentée, ambiance calme et mystérieuse. Vue large."
+    "idee_image": "Nuit de pleine lune, couleurs vives et lisibles. Sur une île, un cercle de grandes pierres dressées où la brume n’entre pas, la brume tout autour comme un mur ; Lou y entre en marchant, sa lanterne allumée levée, la bouche ouverte, il chante ; au loin, une haute tour de pierre dans la brume ; Plume vole vers son sommet.",
+    "description_image": "Nuit de pleine lune, couleurs vives et lisibles. Sur l'île, Lou entre dans un cercle de grandes pierres dressées, sa lanterne allumée levée devant lui, la bouche ouverte : il chante. La brume forme un mur épais tout autour du cercle sans y pénétrer. La lune éclaire l'herbe et les pierres. Au loin, une haute tour de pierre se dresse dans la brume, et Plume vole vers son sommet. Vue large en bandeau, Lou au premier plan."
    },
    {
-    "id": "4029f27c-9675-4198-864e-94d95eafb58d",
-    "chapitre_id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "374a6c97-ebd3-4ad4-8758-9acd35bcd4d2",
+    "chapitre_id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 18,
-    "titre": "Îlot — la flamme qui veille",
-    "consigne": "Courte scène d’erreur, calme. Lou garde la lanterne allumée et attend ; rien ne se passe, aucune brume ici, la lune suffisait à y voir. Il regarde la flamme boire l’huile pour rien. Plume revient enfin : elle a trouvé le chemin. Termine quand ils repartent vers la tour.",
+    "titre": "Île — la flamme qui veille",
+    "consigne": "Courte scène d’erreur, calme. Lou garde la lanterne allumée et traverse la clairière, immense, longue à traverser ; rien ne se passe, aucune brume ici, la lune suffisait à y voir. Il regarde la flamme boire l’huile pour rien. Au bout de la clairière, le chemin replonge dans la brume vers la tour. Termine quand il reprend le chemin.",
     "rang": 1,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "4c8e9194-a33b-4075-b767-fae24df5ed4c",
+      "id": "260527b9-0be7-4916-86bd-0b07447ca509",
       "type": "p",
       "children": [
        {
-        "text": "Lou garda la lanterne allumée et attendit. Rien ne se passa. Pas un souffle de brume ne franchit le cercle des pierres, et la lune éclairait si bien qu’il y voyait presque comme en plein jour. La petite flamme buvait l’huile pour rien, et Lou la regardait faire en soupirant."
+        "text": "Lou garda la lanterne allumée et traversa la clairière. Elle était immense : il lui fallut longtemps pour en voir le bout. Rien ne se passa. Pas un souffle de brume n’y pénétra, et la lune éclairait si bien qu’il y voyait presque comme en plein jour. La petite flamme buvait l’huile, et Lou la regardait faire en soupirant."
        }
       ]
      },
      {
-      "id": "d13ef9f8-9544-4331-bba7-17bff283613e",
+      "id": "2e9c01ba-6edc-4040-bb48-c073f18c0bed",
       "type": "p",
       "children": [
        {
-        "text": "Enfin, un battement d’ailes : Plume était de retour ! À sa façon de tourner vers la tour, Lou comprit qu’elle avait trouvé le chemin. Il détacha la barque, et ils repartirent."
+        "text": "Au bout de la clairière, le chemin replongeait dans la brume, vers la tour. Lou le reprit."
        }
       ]
      },
@@ -1731,7 +1906,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -1741,12 +1916,12 @@
       "libelle": "La lanterne s’éteint",
       "children": [
        {
-        "text": "Si tu n’avais plus de réserve à rayer, rends-toi au "
+        "text": "Si tu n’avais plus de réserve à retirer, rends-toi au "
        },
        {
         "id": "dbfa84ff-75ce-40cf-a825-1f0b4c79a493",
         "type": "renvoi",
-        "cible": "28eda377-a16c-42e5-bbb2-b22a14080c06",
+        "cible": "b6778467-2708-4b7a-8212-7b49e79c3b8e",
         "libelle": "La lanterne s’éteint",
         "children": [
          {
@@ -1760,8 +1935,8 @@
        {
         "id": "8069ab7b-5449-4db6-a53e-5bcbfec091a6",
         "type": "renvoi",
-        "cible": "70d72cf1-1b66-4c8c-8aa0-9221fc87ec5e",
-        "libelle": "Repartir vers la tour",
+        "cible": "9cb3c290-40f9-428e-ac25-9f621e415aff",
+        "libelle": "Reprendre le chemin de la tour",
         "children": [
          {
           "text": ""
@@ -1774,8 +1949,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.760Z",
+    "version": 7,
+    "ecrit_le": "2026-10-27T21:36:21.220Z",
     "rang_livre": 8,
     "numero_fixe": null,
     "etat": "prete",
@@ -1786,41 +1961,41 @@
     "description_image": ""
    },
    {
-    "id": "d5681863-1ce1-428e-b721-368866ff816d",
-    "chapitre_id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "18870821-f31f-4212-b4a4-0a682045fdf8",
+    "chapitre_id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 19,
-    "titre": "Îlot — la lumière dans la brume",
-    "consigne": "Lou éteint sa lanterne pour l’économiser ; la lune suffit sur l’îlot. Il attend, assis sur une pierre qui chante doucement. Soudain, dans la brume, au-delà de l’eau, une lumière apparaît : on dirait une lanterne qu’on porte. Elle bouge de droite et de gauche, s’approche un peu. Lou pense à son père. Ne décris ni sa couleur ni le détail de ses mouvements ; ne dis pas ce que c’est.",
+    "titre": "Île — la lumière dans la brume",
+    "consigne": "Lou éteint sa lanterne pour l’économiser ; la lune suffit dans la clairière. Il avance au clair de lune. Soudain, au bord de la clairière, dans la brume, une lumière apparaît : on dirait une lanterne qu’on porte. Elle bouge de droite et de gauche, s’approche un peu. Lou pense à son père. Ne décris ni sa couleur ni le détail de ses mouvements ; ne dis pas ce que c’est.",
     "rang": 2,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "ab043404-9335-480e-9418-b2906f7a6b47",
+      "id": "504bef1f-4ec0-4a20-896b-b2753d8d8b79",
       "type": "p",
       "children": [
        {
-        "text": "Lou éteignit sa lanterne pour l’économiser : sur l’îlot, la lune suffisait. Il s’assit sur une grosse pierre qui chantait tout doucement chaque fois que l’eau venait la lécher, et il attendit, les genoux serrés contre lui."
+        "text": "Lou éteignit sa lanterne pour l’économiser : dans la clairière, la lune suffisait. Il avança au clair de lune, entre les grandes pierres dressées, silencieuses."
        }
       ]
      },
      {
-      "id": "034cbed4-f62c-4036-a095-5f8c4819739d",
+      "id": "1e981b5c-a039-47be-b5aa-b517d4c6c220",
       "type": "p",
       "children": [
        {
-        "text": "Le temps passa. Soudain, au-delà de l’eau, dans la brume, une lumière apparut. On aurait dit une lanterne qu’on porte. Elle bougeait de droite et de gauche, et s’approcha un peu."
+        "text": "Soudain, au bord de la clairière, dans la brume, une lumière apparut. On aurait dit une lanterne qu’on porte. Elle bougeait de droite et de gauche, et s’approcha un peu."
        }
       ]
      },
      {
-      "id": "8cc3bdc8-8696-4313-b746-6756379fef06",
+      "id": "c2a03c47-1530-4033-94b4-41a8d73f952e",
       "type": "p",
       "children": [
        {
-        "text": "Lou se leva d’un bond. Son père ? Son père qui avait vu Plume arriver, et qui descendait à sa rencontre ? Le cœur battant, il fixait la lumière sans oser respirer."
+        "text": "Lou s’arrêta net. Son père ? Son père qui avait vu Plume arriver, et qui descendait à sa rencontre ? Le cœur battant, il fixait la lumière sans oser respirer."
        }
       ]
      },
@@ -1828,7 +2003,7 @@
       "id": "73edbeb3-92a6-4d26-a1c0-bcb459ca5260",
       "auto": true,
       "type": "choix",
-      "cible": "e6b79e91-d4a5-4237-a8a8-ae44e018fc56",
+      "cible": "70114b5a-57ee-4772-8c54-f4fe37bd77e2",
       "libelle": "Appeler « Papa ? » et la suivre",
       "children": [
        {
@@ -1841,7 +2016,7 @@
       "id": "490ade3e-dab9-4a68-993f-85e2f5383193",
       "auto": true,
       "type": "choix",
-      "cible": "07bf1896-1539-4d7d-9324-f5b7370744e4",
+      "cible": "f456f1f0-51e8-47ab-b575-a0a5b0835a89",
       "libelle": "Rester immobile et l’observer",
       "children": [
        {
@@ -1851,8 +2026,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.779Z",
+    "version": 4,
+    "ecrit_le": "2026-10-27T20:56:56.950Z",
     "rang_livre": 3,
     "numero_fixe": null,
     "etat": "prete",
@@ -1863,41 +2038,41 @@
     "description_image": ""
    },
    {
-    "id": "e6b79e91-d4a5-4237-a8a8-ae44e018fc56",
-    "chapitre_id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "70114b5a-57ee-4772-8c54-f4fe37bd77e2",
+    "chapitre_id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 20,
-    "titre": "Îlot — la lumière qui recule",
-    "consigne": "Lou appelle « Papa ? » et court vers la lumière, jusqu’au bord de l’îlot, les pieds dans l’eau, au seuil de la brume. La lumière recule à mesure qu’il avance, puis disparaît d’un coup. Il est au bord de la brume, sans lumière ; il sent son souffle froid sur sa gorge, sa voix tremble un peu. Derrière lui, tout près, il entend chanter les pierres de l’îlot. Ne dis pas ce qu’il doit faire.",
+    "titre": "Île — la lumière qui recule",
+    "consigne": "Lou appelle « Papa ? » et court vers la lumière, jusqu’au bord de la clairière, au seuil de la brume. La lumière recule à mesure qu’il avance, puis disparaît d’un coup. Il est au bord de la brume, sans lumière ; il sent le souffle froid de la brume sur sa gorge, sa voix tremble un peu. Derrière lui, tout près, la clairière baigne dans la lune. Ne dis pas ce qu’il doit faire.",
     "rang": 3,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "a3db9c78-b1f9-4133-8c6f-b4751fcf17dd",
+      "id": "916cce34-dbef-4d6a-873d-db230b1a055b",
       "type": "p",
       "children": [
        {
-        "text": "« Papa ? » Lou courut vers la lumière, jusqu’au bord de l’îlot. Ses pieds entrèrent dans l’eau froide, jusqu’aux chevilles. Devant lui commençait la brume, épaisse et blanche. Mais plus il avançait, plus la lumière reculait. Encore un pas, puis un autre… Et d’un coup, elle disparut."
+        "text": "« Papa ? » Lou courut vers la lumière, jusqu’au bord de la clairière. Devant lui commençait la brume, épaisse et blanche. Mais plus il avançait, plus la lumière, légèrement bleutée, reculait. Encore un pas, puis un autre… Et d’un coup, elle disparut."
        }
       ]
      },
      {
-      "id": "dd466ed3-8bb8-4c67-afc6-c0b866a7dc58",
+      "id": "86f9b8d1-9b93-42b2-ba9d-9f9ec5dcd621",
       "type": "p",
       "children": [
        {
-        "text": "Lou resta là, au bord de la brume, sans lumière. Devant lui, il n’y avait plus que du blanc. Il sentit le souffle froid de la brume glisser sur sa gorge, comme une main glacée. « Papa ? » répéta-t-il. Sa voix trembla un peu."
+        "text": "Lou resta là, au seuil de la brume, sans lumière. Devant lui, il n’y avait plus que du blanc. Il sentit le souffle froid de la brume glisser sur sa gorge, comme une main glacée. « Papa ? » répéta-t-il. Sa voix trembla un peu."
        }
       ]
      },
      {
-      "id": "1204b6f6-f651-4efd-b7d9-864a34d53880",
+      "id": "92a1b688-c332-4f00-934c-7528d9c2157f",
       "type": "p",
       "children": [
        {
-        "text": "Derrière lui, tout près, les pierres de l’îlot chantaient doucement."
+        "text": "Derrière lui, tout près, la clairière baignait dans la lune."
        }
       ]
      },
@@ -1905,7 +2080,7 @@
       "id": "18f35436-4c64-4230-8b77-fa00c25c15b2",
       "auto": true,
       "type": "choix",
-      "cible": "875bd30f-30a9-4a78-9819-c3a46e16738a",
+      "cible": "8c962203-a194-42fc-93e5-bef3ef9dac94",
       "libelle": "Rallumer la lanterne pour chercher encore",
       "children": [
        {
@@ -1918,8 +2093,8 @@
       "id": "604355b0-f5cd-4a21-b624-9ae10b983774",
       "auto": true,
       "type": "choix",
-      "cible": "70d72cf1-1b66-4c8c-8aa0-9221fc87ec5e",
-      "libelle": "Revenir au milieu de l’îlot et attendre Plume",
+      "cible": "9cb3c290-40f9-428e-ac25-9f621e415aff",
+      "libelle": "Revenir dans la clairière",
       "children": [
        {
         "text": ""
@@ -1928,8 +2103,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.801Z",
+    "version": 9,
+    "ecrit_le": "2026-10-27T21:05:02.298Z",
     "rang_livre": 1,
     "numero_fixe": null,
     "etat": "prete",
@@ -1940,19 +2115,19 @@
     "description_image": ""
    },
    {
-    "id": "07bf1896-1539-4d7d-9324-f5b7370744e4",
-    "chapitre_id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "f456f1f0-51e8-47ab-b575-a0a5b0835a89",
+    "chapitre_id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 21,
-    "titre": "Îlot — la lumière bleutée",
-    "consigne": "Lou ne bouge pas et regarde. La lumière est bleutée ; elle tremble et sautille par petits bonds, autrement qu’une lanterne qu’on porte ; personne ne la tient. Une lanterne d’huile de lune a une flamme dorée, calme, bien droite : ce n’est pas une lanterne. Un feu follet ! Comme Lou a éteint la sienne, il n’a plus peur et s’approche : il tourne autour de sa barque, tire sur la corde pour jouer. Lou attrape la corde, la renoue solidement. Plume revient : elle a trouvé le chemin. Lou rallume sa lanterne ; le feu follet s’enfuit. Termine quand ils repartent vers la tour.",
+    "titre": "Île — la lumière bleutée",
+    "consigne": "Lou ne bouge pas et regarde. La lumière est bleutée ; elle tremble et sautille par petits bonds, autrement qu’une lanterne qu’on porte ; personne ne la tient. Ce n’est pas une lanterne : un feu follet ! Comme la lanterne de Lou est éteinte, il n’a pas peur et s’approche, danse autour de lui pour l’attirer dans la brume. Lou rallume sa lanterne : le feu follet s’enfuit. Termine quand il reprend le chemin de la tour.",
     "rang": 4,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "c97f9071-6a0f-498e-bbc2-5334cae1b46e",
+      "id": "758834a5-2873-4b50-95fc-24df2370ec09",
       "type": "p",
       "children": [
        {
@@ -1961,9 +2136,27 @@
       ]
      },
      {
-      "id": "777c16fc-8427-4b20-a736-b69acc305b09",
+      "id": "f078ebc0-0c5c-459f-b355-fbd4ced9640e",
+      "type": "p",
+      "children": [
+       {
+        "text": "Comme Lou avait éteint la sienne, le feu follet n’avait plus peur de rien. Il s’approcha en dansant, tourna autour du garçon, fila vers la brume, puis revint, comme pour l’inviter à le suivre. Mais Lou ne tomberait pas dans le piège."
+       }
+      ]
+     },
+     {
+      "id": "4e191b46-13f6-426e-8b1e-e1d7bc26186f",
+      "type": "p",
+      "children": [
+       {
+        "text": "Lou ralluma sa lanterne. Aussitôt, le feu follet s’enfuit dans la brume sans se retourner. Il reprit le chemin de la tour."
+       }
+      ]
+     },
+     {
+      "id": "5d4a8b17-727b-46af-849b-3fc766bd5bfd",
       "type": "image",
-      "image": "5d9b16da-c025-4c4a-bf36-0af762673154",
+      "image": "5cc6e244-5adb-4283-a7d3-ce41bab2f21d",
       "largeur": 100,
       "children": [
        {
@@ -1972,29 +2165,11 @@
       ]
      },
      {
-      "id": "3910e834-79b5-41f4-9717-f2589d0e4db7",
-      "type": "p",
-      "children": [
-       {
-        "text": "Comme Lou avait éteint la sienne, le feu follet n’avait plus peur de rien. Il s’approcha en dansant, tourna autour de la barque et se mit à tirer sur la corde, pour jouer. Lou bondit, attrapa la corde et la renoua solidement."
-       }
-      ]
-     },
-     {
-      "id": "fa289801-0526-4816-a498-0e376d622982",
-      "type": "p",
-      "children": [
-       {
-        "text": "À ce moment, Plume revint : elle avait trouvé le chemin. Lou ralluma sa lanterne, et le feu follet fila dans la brume sans se retourner. Puis Lou remonta dans la barque, et ils repartirent vers la tour."
-       }
-      ]
-     },
-     {
       "id": "2fcb32db-1936-4623-9718-06f305dacc66",
       "auto": true,
       "type": "choix",
-      "cible": "70d72cf1-1b66-4c8c-8aa0-9221fc87ec5e",
-      "libelle": "Repartir vers la tour",
+      "cible": "9cb3c290-40f9-428e-ac25-9f621e415aff",
+      "libelle": "Reprendre le chemin de la tour",
       "children": [
        {
         "text": ""
@@ -2003,44 +2178,44 @@
       "construction": "neutre"
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-27T13:38:35.647Z",
+    "version": 15,
+    "ecrit_le": "2026-10-27T21:36:21.244Z",
     "rang_livre": 9,
     "numero_fixe": null,
     "etat": "prete",
     "tour": 0,
     "etat_le": null,
     "nouvelle_page": false,
-    "idee_image": "",
-    "description_image": "Sur un îlot rocheux où la brume ne monte pas, Lou, debout près de sa barque amarrée, s'est figé et regarde un petit feu follet bleuté qui danse en tournant autour de la barque et tire sur la corde. Lou tend déjà la main vers la corde. Sa lanterne éteinte pend à son autre main. Autour, la brume pâle forme un mur au loin. Nuit calme, lueur bleue froide sur les pierres et l'eau, ambiance de mystère et de jeu. Vue large, Lou à gauche, la lumière au centre."
+    "idee_image": "Nuit de pleine lune, couleurs vives et lisibles. Dans un cercle de pierres dressées sans brume, Lou, accroupi, sa lanterne éteinte posée près de lui, observe sans bouger une petite lumière bleutée, un feu follet, qui sautille et danse devant lui au bord de la brume.",
+    "description_image": "Nuit de pleine lune, dans un cercle de pierres dressées où la brume n'entre pas. Au premier plan, Lou, accroupi, observe sans bouger, sa lanterne éteinte posée près de lui. Face à lui, au bord d'un mur de brume épaisse, un petit feu follet bleuté sautille et danse en l'air. Sa lueur éclaire les pierres et l'herbe froide. Ambiance de mystère, avec un frisson d'aventure. Couleurs vives, composition en largeur."
    },
    {
-    "id": "875bd30f-30a9-4a78-9819-c3a46e16738a",
-    "chapitre_id": "60433045-f778-49fa-86f7-5d5b9a018c2b",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "8c962203-a194-42fc-93e5-bef3ef9dac94",
+    "chapitre_id": "bab5601b-6070-4ff1-9343-61c12571ec4c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 22,
-    "titre": "Îlot — pour rien",
-    "consigne": "Courte scène d’erreur. Lou rallume sa lanterne, monte la flamme, remonte dans la barque et rame dans la brume pour chercher (il ne s’avance pas à pied dans l’eau). Rien : la lumière ne revient pas. Il comprend qu’on s’est moqué de lui, peut-être un feu follet. Il revient sur l’îlot, au chant des pierres. Plume revient : elle a trouvé le chemin. Termine quand ils repartent vers la tour.",
+    "titre": "Île — pour rien",
+    "consigne": "Courte scène d’erreur. Lou rallume sa lanterne, monte la flamme et entre dans la brume pour chercher. Rien : la lumière ne revient pas. Il comprend qu’on s’est moqué de lui, peut-être un feu follet. Il revient sur le chemin, guidé par la lueur de la clairière. Termine quand il reprend le chemin de la tour.",
     "rang": 5,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "5f7b0fec-2ec2-4099-98fc-abb63f9d544b",
+      "id": "32397f4c-dae9-4e2f-9eb8-eac94293abb8",
       "type": "p",
       "children": [
        {
-        "text": "Lou ralluma sa lanterne, monta la flamme bien haut, remonta dans la barque et s’enfonça dans la brume à coups de rame. Il chercha à droite, à gauche, appela encore. Rien. La lumière ne revint pas. Il finit par comprendre qu’on s’était moqué de lui. Un feu follet, peut-être."
+        "text": "Lou ralluma sa lanterne, monta la flamme bien haut et entra dans la brume. Il chercha à droite, à gauche, appela encore. Rien. La lumière ne revint pas. Il finit par comprendre qu’on s’était moqué de lui. Un feu follet, sans doute."
        }
       ]
      },
      {
-      "id": "32fce91d-6be4-41ed-add9-29ff4658266e",
+      "id": "60db29f3-1099-4ffa-8b0d-c0af03605ed4",
       "type": "p",
       "children": [
        {
-        "text": "Guidé par le chant des pierres, il revint vers l’îlot. Plume l’y attendait : elle avait trouvé le chemin. Ensemble, ils repartirent vers la tour."
+        "text": "Guidé par la lueur de la clairière, il retrouva le chemin et reprit la route de la tour."
        }
       ]
      },
@@ -2049,7 +2224,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -2059,12 +2234,12 @@
       "libelle": "La lanterne s’éteint",
       "children": [
        {
-        "text": "Si tu n’avais plus de réserve à rayer, rends-toi au "
+        "text": "Si tu n’avais plus de réserve à retirer, rends-toi au "
        },
        {
         "id": "0cce35d3-bbfe-4172-9345-6da5a57cc7a1",
         "type": "renvoi",
-        "cible": "28eda377-a16c-42e5-bbb2-b22a14080c06",
+        "cible": "b6778467-2708-4b7a-8212-7b49e79c3b8e",
         "libelle": "La lanterne s’éteint",
         "children": [
          {
@@ -2078,8 +2253,8 @@
        {
         "id": "1bb3d92b-0808-4a9c-86f8-27e726071605",
         "type": "renvoi",
-        "cible": "70d72cf1-1b66-4c8c-8aa0-9221fc87ec5e",
-        "libelle": "Repartir vers la tour",
+        "cible": "9cb3c290-40f9-428e-ac25-9f621e415aff",
+        "libelle": "Reprendre le chemin de la tour",
         "children": [
          {
           "text": ""
@@ -2092,8 +2267,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.847Z",
+    "version": 5,
+    "ecrit_le": "2026-10-27T21:02:52.881Z",
     "rang_livre": 5,
     "numero_fixe": null,
     "etat": "prete",
@@ -2104,41 +2279,41 @@
     "description_image": ""
    },
    {
-    "id": "70d72cf1-1b66-4c8c-8aa0-9221fc87ec5e",
-    "chapitre_id": "7853188c-ddf7-4423-8583-7b30ce53e944",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "9cb3c290-40f9-428e-ac25-9f621e415aff",
+    "chapitre_id": "db705947-7fe1-4e4c-a17e-4cdff55b3436",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 23,
     "titre": "Tour — le pied de la tour",
-    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Plume est revenue de la tour : elle a trouvé le passage (le dire en une phrase, sans raconter le retour, qui l’est déjà sur certains chemins). Lanterne allumée à l’avant (ne dis pas s’il l’a rallumée), Lou rame derrière elle jusqu’à l’île de la tour. Il amarre la barque à l’anneau de fer où son père attache toujours la sienne : l’anneau est vide. La porte de la tour est ouverte. Dedans, un escalier en colimaçon monte dans le noir ; des fentes dans le mur laissent entrer des souffles de brume et de vent, qui sifflent. Plume s’envole par dehors vers le sommet. Lou commence à monter, la lanterne levée. Termine dans l’escalier.",
+    "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou arrive au pied de la tour, sa lanterne allumée (ne dis pas s’il l’a rallumée). Plume l’attend, perchée au-dessus de la porte, puis s’envole par dehors vers le sommet. La porte est ouverte. Dedans, un escalier en colimaçon monte dans le noir ; des fentes dans le mur laissent entrer des souffles de brume et de vent, qui sifflent. Lou commence à monter, la lanterne levée. Termine dans l’escalier. (L’anneau vide et le retour de Plume ne sont plus ici : l’anneau est au passage 17.)",
     "rang": 0,
     "fin": false,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "54adfce9-7858-4bbc-88a4-74c1206d1836",
+      "id": "9dd95251-6697-4a7c-a08c-a9070ec23125",
       "type": "p",
       "children": [
        {
-        "text": "Plume était revenue de la tour : elle avait trouvé le passage. La lanterne allumée à l’avant, Lou rama derrière elle, entre les rochers, jusqu’à ce que l’île de la tour sorte de la brume."
+        "text": "Au bout du chemin, la Tour des Brumes se dressa devant Lou, immense et noire. Sa lanterne allumée éclairait les premières pierres du mur. Au-dessus de la porte, Plume l’attendait, perchée sur une corniche. Elle le regarda de ses grands yeux ronds, puis s’envola par dehors, vers le sommet."
        }
       ]
      },
      {
-      "id": "aa47f4f6-fc42-4513-937c-6b9f638aed58",
+      "id": "187324d0-193e-490a-a4a6-bb3180aa8487",
       "type": "p",
       "children": [
        {
-        "text": "Dans la pierre était scellé un anneau de fer : celui où son père attachait toujours sa barque. L’anneau était vide. Lou y amarra la barque, avec soin."
+        "text": "La porte de la tour était ouverte. Dedans, un escalier en colimaçon montait dans le noir. Par des fentes dans le mur, des souffles de brume et de vent entraient en sifflant."
        }
       ]
      },
      {
-      "id": "35eb6915-b2c3-483b-ba58-052ff9471bab",
+      "id": "e01e75fc-78b3-498f-b630-91ecbbc24250",
       "type": "p",
       "children": [
        {
-        "text": "La porte de la tour était ouverte. Dedans, un escalier en colimaçon montait dans le noir. Par des fentes dans le mur, des souffles de brume et de vent entraient en sifflant. Plume s’envola par dehors, vers le sommet. Lou leva sa lanterne et commença à monter, une marche, puis une autre."
+        "text": "Lou prit une grande inspiration, leva sa lanterne et commença à monter, une marche, puis une autre."
        }
       ]
      },
@@ -2146,7 +2321,7 @@
       "id": "50d6ee1b-f271-4e33-af5a-e90d1b2ca6c1",
       "auto": true,
       "type": "choix",
-      "cible": "98f06e95-cb0e-4280-95c4-e665d099b474",
+      "cible": "482f3d14-bece-4d07-b2c9-3d75b4a9df69",
       "libelle": "Monter l’escalier",
       "children": [
        {
@@ -2156,8 +2331,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.868Z",
+    "version": 3,
+    "ecrit_le": "2026-10-27T20:48:50.761Z",
     "rang_livre": 0,
     "numero_fixe": null,
     "etat": "prete",
@@ -2168,9 +2343,9 @@
     "description_image": ""
    },
    {
-    "id": "98f06e95-cb0e-4280-95c4-e665d099b474",
-    "chapitre_id": "7853188c-ddf7-4423-8583-7b30ce53e944",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "482f3d14-bece-4d07-b2c9-3d75b4a9df69",
+    "chapitre_id": "db705947-7fe1-4e4c-a17e-4cdff55b3436",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 24,
     "titre": "Tour — la lanterne brisée",
     "consigne": "Plus haut dans l’escalier, sur une marche, Lou trouve la lanterne de son père : le verre brisé, la mèche froide. Panique : son père est-il tombé ? Est-il blessé, là-haut, dans le noir ? Il a envie de courir, de monter les marches quatre à quatre en criant. Le vent siffle par les fentes. Ne dis pas ce qu’il vaut mieux faire ; ne rappelle pas la main devant la flamme.",
@@ -2189,9 +2364,10 @@
       ]
      },
      {
-      "id": "84cc6237-ca1d-4443-83e8-97e77ae29f7c",
+      "id": "cb176492-d809-4f05-9b03-24c164c6903f",
+      "alt": "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Escalier de pierre en colimaçon dans la tour, un rayon de lune et des filets de brume par une",
       "type": "image",
-      "image": "973b0bda-c496-4d40-b225-f9ea25492cb9",
+      "image": "da0ba57a-9e4c-4043-a980-8227a4d42413",
       "largeur": 100,
       "children": [
        {
@@ -2221,7 +2397,7 @@
       "id": "73e3b4f9-3b2d-4fd8-9ca2-9ed7d5caffb8",
       "auto": true,
       "type": "choix",
-      "cible": "e7097705-0e1d-490c-b237-e4676445aa5f",
+      "cible": "faa7b246-cf3e-4237-b26a-c021810fea5d",
       "libelle": "Courir jusqu’en haut",
       "children": [
        {
@@ -2234,7 +2410,7 @@
       "id": "b7609ada-6f5d-4cd0-9a6e-c184cd0525eb",
       "auto": true,
       "type": "choix",
-      "cible": "9e382946-d7eb-4e0e-9c96-89f36b3170fd",
+      "cible": "0501a822-64c6-4c89-87f9-b8ddebdb3332",
       "libelle": "Monter marche après marche",
       "children": [
        {
@@ -2244,21 +2420,21 @@
       "construction": "neutre"
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-27T13:38:51.125Z",
+    "version": 10,
+    "ecrit_le": "2026-10-27T21:11:33.440Z",
     "rang_livre": 3,
     "numero_fixe": null,
     "etat": "prete",
     "tour": 0,
     "etat_le": null,
     "nouvelle_page": false,
-    "idee_image": "",
-    "description_image": "Dans un étroit escalier de pierre en colimaçon, rempli de brume, Lou s'est arrêté net, penché vers une marche où repose la lanterne de son père, le verre brisé en éclats, la mèche éteinte. Vu légèrement de côté, Lou a le visage pâle, inquiet, le regard levé vers les marches sombres qui montent. Une lueur grise filtre par les fentes des murs et la brume s'enroule autour de ses pieds. Ambiance froide et silencieuse. Composition horizontale, la lanterne au premier plan."
+    "idee_image": "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Escalier de pierre en colimaçon dans la tour, un rayon de lune et des filets de brume par une fente. Lou, seul, découvre sur une marche une grande lanterne éteinte au verre brisé ; sa petite lanterne dorée éclaire la scène. Personne d’autre.",
+    "description_image": "Dans l'escalier de pierre en colimaçon d'une tour, Lou, seul, s'est arrêté net, penché sur une marche où gît une grande lanterne éteinte, au verre brisé et à la mèche froide. Sa petite lanterne dorée éclaire des éclats de verre. Un rayon de lune argenté et des filets de brume laiteuse entrent par une fente du mur. Bleus profonds, ambiance inquiète. Vue large en bandeau, l'escalier montant en spirale vers le haut."
    },
    {
-    "id": "e7097705-0e1d-490c-b237-e4676445aa5f",
-    "chapitre_id": "7853188c-ddf7-4423-8583-7b30ce53e944",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "faa7b246-cf3e-4237-b26a-c021810fea5d",
+    "chapitre_id": "db705947-7fe1-4e4c-a17e-4cdff55b3436",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 25,
     "titre": "Tour — le souffle",
     "consigne": "Courte scène d’erreur. Lou court ; dans le tournant, un souffle par une fente fait danser la flamme, il veut l’abriter, trébuche, la lanterne heurte une marche, son huile se répand et la flamme meurt. Noir complet ; la brume glisse sur les marches, froide, vers sa gorge. Il fouille son sac pour rallumer, et se promet de monter ensuite marche après marche, sans courir ; ne dis pas s’il lui reste de l’huile (la suite le dit : la fin S029 si sa réserve est vide, sinon le sommet).",
@@ -2290,7 +2466,7 @@
       "type": "action",
       "children": [
        {
-        "text": "Raye une réserve d’huile."
+        "text": "Retire une réserve d’huile."
        }
       ]
      },
@@ -2300,12 +2476,12 @@
       "libelle": "La lanterne s’éteint",
       "children": [
        {
-        "text": "Si tu n’avais plus de réserve à rayer, rends-toi au "
+        "text": "Si tu n’avais plus de réserve à retirer, rends-toi au "
        },
        {
         "id": "91fce862-0dfe-4a7e-b365-f5d531ee01b7",
         "type": "renvoi",
-        "cible": "640a5676-228a-4351-bf87-e453f172ed3d",
+        "cible": "b34823ae-d699-4f39-8403-585795adf076",
         "libelle": "La lanterne s’éteint",
         "children": [
          {
@@ -2319,7 +2495,7 @@
        {
         "id": "998e36ad-9340-464d-a3e3-dc61faf8b702",
         "type": "renvoi",
-        "cible": "9e382946-d7eb-4e0e-9c96-89f36b3170fd",
+        "cible": "0501a822-64c6-4c89-87f9-b8ddebdb3332",
         "libelle": "Reprendre la montée",
         "children": [
          {
@@ -2345,9 +2521,9 @@
     "description_image": ""
    },
    {
-    "id": "9e382946-d7eb-4e0e-9c96-89f36b3170fd",
-    "chapitre_id": "1aa4491c-4ab9-4969-901d-92b34581d35c",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "0501a822-64c6-4c89-87f9-b8ddebdb3332",
+    "chapitre_id": "eda81ea4-75ad-432b-b0dd-4c5cb13b44ed",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 26,
     "titre": "Tour — le sommet",
     "consigne": "On arrive ici de plusieurs façons : commence sans supposer le passage d’avant. Lou arrive au sommet, sa lanterne allumée. La Première Lanterne, immense, n’a plus qu’une petite flamme pâle qui tremble. Assis contre elle, son père, épuisé, Plume sur l’épaule. Marius serre Lou dans ses bras ; il ouvre la bouche, mais aucun son ne sort : la brume lui a pris sa voix. Il montre la lanterne, puis Lou. Lou comprend : c’est à lui de chanter, le chant que son père lui apprend depuis qu’il est tout petit. Le ciel pâlit à peine à l’est : il est encore temps.",
@@ -2387,7 +2563,7 @@
       "id": "255716a5-c55f-4061-bc81-6f2087f4059d",
       "auto": true,
       "type": "choix",
-      "cible": "fce27e98-7bba-455a-b4e5-da2602a383aa",
+      "cible": "fe4b896c-25df-4c50-9a20-5e2213af511a",
       "libelle": "Chanter le chant des lanternes",
       "children": [
        {
@@ -2409,9 +2585,9 @@
     "description_image": ""
    },
    {
-    "id": "fce27e98-7bba-455a-b4e5-da2602a383aa",
-    "chapitre_id": "1aa4491c-4ab9-4969-901d-92b34581d35c",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "fe4b896c-25df-4c50-9a20-5e2213af511a",
+    "chapitre_id": "eda81ea4-75ad-432b-b0dd-4c5cb13b44ed",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 27,
     "titre": "Tour — le chant des lanternes",
     "consigne": "Lou chante, d’abord d’une petite voix qui tremble, puis plus fort. La flamme de la Première Lanterne grandit, devient dorée ; la brume recule autour de la tour. Au milieu du chant, une deuxième voix le rejoint : son père a retrouvé la sienne, et ils chantent ensemble, à deux voix. Au loin, les lanternes du pays se rallument une à une, sur les rives, les îles, au village. Termine sur le chant qui s’achève, la lanterne rallumée.",
@@ -2420,18 +2596,6 @@
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
-     {
-      "id": "8825dade-61c1-45d8-b41f-6b6b349967e0",
-      "page": true,
-      "type": "image",
-      "image": "5e9ff169-b735-454e-a690-f5de74f5bdba",
-      "largeur": 100,
-      "children": [
-       {
-        "text": ""
-       }
-      ]
-     },
      {
       "id": "908e4177-56c2-473c-959f-6ddea9e89fcf",
       "type": "p",
@@ -2451,6 +2615,18 @@
       ]
      },
      {
+      "id": "c398e908-d882-421a-a48a-b561532dbaf9",
+      "page": true,
+      "type": "image",
+      "image": "e54fb700-0ee1-45cf-9602-799e709bee27",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
       "id": "17bb393c-2be3-45c7-952a-ff2569dee45e",
       "type": "p",
       "children": [
@@ -2463,7 +2639,7 @@
       "id": "7d03d8d0-c650-45fd-be50-04274367bc98",
       "auto": true,
       "type": "choix",
-      "cible": "0c035b43-f66c-4050-a6fd-c1e81d8dba86",
+      "cible": "6dc8f93b-2800-41f6-aba8-8de8f3a46fac",
       "libelle": "Écouter ce que Marius raconte",
       "children": [
        {
@@ -2473,8 +2649,8 @@
       "construction": "neutre"
      }
     ],
-    "version": 7,
-    "ecrit_le": "2026-10-27T13:43:32.857Z",
+    "version": 10,
+    "ecrit_le": "2026-10-27T21:16:16.060Z",
     "rang_livre": 1,
     "numero_fixe": null,
     "etat": "prete",
@@ -2482,12 +2658,12 @@
     "etat_le": null,
     "nouvelle_page": false,
     "idee_image": "Nuit de pleine lune : bleus profonds, argent de lune, brume laiteuse, lanternes dorées, sans noir bouché. Au sommet de la tour, en plein air : la Première Lanterne, immense, plus haute que Marius, flamme dorée comme un petit soleil. Devant elle, Lou et son père Marius, sans lanterne, chantent ensemble ; Lou bien plus petit. Plume sur le parapet. Au loin, les lanternes du lac se rallument.",
-    "description_image": "Nuit de pleine lune, au sommet de la tour, en plein air. Au centre, la Première Lanterne, immense, plus haute que Marius, dont la flamme dorée brille comme un petit soleil. Devant elle, Lou, bien plus petit, et son père Marius chantent côte à côte, le visage tourné vers la lumière. Plume est perchée sur le parapet. La brume laiteuse recule autour de la tour. Au loin, les lanternes du lac se rallument une à une. Bleus profonds, argent de lune, or chaud. Vue en hauteur."
+    "description_image": "Nuit de pleine lune, au sommet de la tour, en plein air. Au centre, la Première Lanterne, immense, plus haute que Marius, sa flamme dorée brille comme un petit soleil. Devant elle, Lou, bien plus petit, et son père Marius chantent côte à côte, le visage levé, la bouche ouverte. Plume est posée sur le parapet. La brume laiteuse recule autour de la tour. Au loin, les lanternes du lac se rallument une à une. Bleus profonds, argent de lune, points dorés, sans noir bouché. Vue en hauteur."
    },
    {
-    "id": "0c035b43-f66c-4050-a6fd-c1e81d8dba86",
-    "chapitre_id": "1aa4491c-4ab9-4969-901d-92b34581d35c",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "6dc8f93b-2800-41f6-aba8-8de8f3a46fac",
+    "chapitre_id": "eda81ea4-75ad-432b-b0dd-4c5cb13b44ed",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 28,
     "titre": "Tour — ce que Marius raconte (fin)",
     "consigne": "Bonne fin. À l’aube, Marius raconte enfin : dans l’escalier, un souffle de brume a éteint sa lanterne ; il est monté dans le noir, et la brume lui a pris sa voix ; arrivé en haut, il ne pouvait plus chanter. De là-haut, il a vu en bas, dans la brume, des lueurs bleutées danser autour de sa barque restée sans lumière : les feux follets, qui ne craignaient plus rien, ont dénoué sa corde pour jouer, et le courant l’a emportée. Seul, sans voix et sans barque, il a envoyé Plume chercher de l’aide. Puis il regarde Lou, fier : ce soir, c’est lui qui a ranimé la Première Lanterne ; un jour, il sera Gardien. Ils redescendent ensemble et rentrent dans la barque de Lou, sous le soleil levant, Plume à la proue. Chaleureux, sans morale appuyée.",
@@ -2502,17 +2678,6 @@
       "children": [
        {
         "text": "Le jour se levait quand Marius raconta enfin. Dans l’escalier, un souffle de brume avait éteint sa lanterne ; elle lui avait échappé des mains et s’était brisée sur une marche. Il était monté dans le noir, et la brume lui avait pris sa voix. Arrivé en haut, il ne pouvait plus chanter."
-       }
-      ]
-     },
-     {
-      "id": "cc7f05ee-b6b8-4c2e-b6d7-3d4434c0e452",
-      "type": "image",
-      "image": "f1d6e95b-b308-4e74-8327-435af4ddade3",
-      "largeur": 100,
-      "children": [
-       {
-        "text": ""
        }
       ]
      },
@@ -2542,23 +2707,34 @@
         "text": "Ils redescendirent ensemble et montèrent dans la barque qui avait amené Lou. Sous le soleil levant, ils rentrèrent au village, Plume à la proue."
        }
       ]
+     },
+     {
+      "id": "487f97dd-a444-48c2-9c38-9140f47b94e9",
+      "type": "image",
+      "image": "14a75d8c-d1d7-41d9-82ab-6772a0d18006",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
      }
     ],
-    "version": 3,
-    "ecrit_le": "2026-10-27T13:39:36.026Z",
+    "version": 8,
+    "ecrit_le": "2026-10-27T21:18:58.617Z",
     "rang_livre": 6,
-    "numero_fixe": 31,
+    "numero_fixe": 33,
     "etat": "prete",
     "tour": 0,
     "etat_le": null,
     "nouvelle_page": false,
-    "idee_image": "",
-    "description_image": "Au lever du soleil, sur l'eau calme, une petite barque glisse vers le village qu'on devine au loin dans une brume dorée qui se dissipe. Lou, le héros, est assis à l'arrière près de son père Marius, qui lui pose la main sur l'épaule en le regardant avec fierté. Plume est installé à la proue, face à la lumière. Derrière eux, la haute tour se détache dans le ciel rose et or. Lumière chaude et douce, reflets sur l'eau, ambiance paisible et tendre. Plan large, horizontal."
+    "idee_image": "À l’aube, plus de nuit : ciel rose et doré, soleil levant, eau qui scintille, dernières brumes qui se lèvent. Lou et son père Marius, sans lanterne, rentrent dans une barque de bois simple sur le Grand Lac, Marius aux rames ; Plume à la proue. Au loin derrière eux, la tour sur son île.",
+    "description_image": "Au lever du soleil, Lou et son père Marius rentrent sur le Grand Lac dans une petite barque de bois simple. Marius tient les rames et sourit, Lou est assis près de lui, apaisé et heureux. Plume est installé à la proue, tourné vers l'horizon. Le ciel est rose et doré, l'eau scintille, les dernières brumes se lèvent. Loin derrière eux, la tour se dresse sur son île. Plan large en bandeau, lumière douce et chaleureuse."
    },
    {
-    "id": "640a5676-228a-4351-bf87-e453f172ed3d",
-    "chapitre_id": "1aa4491c-4ab9-4969-901d-92b34581d35c",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "b34823ae-d699-4f39-8403-585795adf076",
+    "chapitre_id": "eda81ea4-75ad-432b-b0dd-4c5cb13b44ed",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 29,
     "titre": "Tour — le silence de la tour (fin)",
     "consigne": "Fin : plus d’huile pour rallumer, dans l’escalier ; le sac est vide. Lou monte dans le noir, la main contre le mur ; la brume lui prend la voix peu à peu. Au sommet, il trouve son père, épuisé, sans voix lui aussi, près de la Première Lanterne qui n’a plus qu’une petite flamme pâle. Ils se serrent dans les bras, soulagés d’être ensemble. Lou essaie de chanter : pas un son. La flamme s’éteint, et toutes les lanternes du pays avec elle. Ils redescendent main dans la main, Plume devant eux, rassurés d’être ensemble, mais le pays entre dans le silence. Doux, sans peur inutile ; termine en invitant à reprendre l’aventure au début.",
@@ -2616,19 +2792,19 @@
     "description_image": ""
    },
    {
-    "id": "28eda377-a16c-42e5-bbb2-b22a14080c06",
-    "chapitre_id": "4031bf6e-3fd6-4562-bf95-db2138b8f449",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "b6778467-2708-4b7a-8212-7b49e79c3b8e",
+    "chapitre_id": "5ae64556-639b-456b-8e46-8c05ce968794",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 30,
     "titre": "Lac — la dernière goutte (fin)",
-    "consigne": "Fin : la lanterne vide avant la tour. On y arrive de plusieurs endroits (sur la barque ou sur l’îlot) : ne dis pas où est Lou. La flamme pâlit, crachote et s’éteint ; plus une goutte d’huile. La brume se referme sur lui. Il essaie d’appeler, de chanter : sa voix devient un souffle, puis plus rien. Plume se pose contre lui, toute chaude ; au matin gris, elle le guide jusqu’au village. Il devine que, là-bas, la Première Lanterne s’éteint, et avec elle toutes les lanternes du pays : cette nuit, le pays des Mille Lacs entre dans le silence. Aucun conseil de jeu à la fin (rien qui oriente un choix). Doux pour des enfants, sans peur inutile ; termine en invitant à reprendre l’aventure au début.",
+    "consigne": "Fin : la lanterne vide avant la tour. On y arrive de plusieurs endroits (sur la barque ou à pied sur l’île de la tour) : ne dis pas où est Lou. La flamme pâlit, crachote et s’éteint ; plus une goutte d’huile. La brume se referme sur lui. Il essaie d’appeler : sa voix devient un souffle, puis plus rien (pas de chant : le lecteur qui perd sur le lac ne le connaît pas encore). Plume se pose contre lui, toute chaude ; au matin gris, elle le guide jusqu’au village. Il devine que, là-bas, la Première Lanterne s’éteint, et avec elle toutes les lanternes du pays : cette nuit, le pays des Mille Lacs entre dans le silence : la brume ne se lèvera plus avant la prochaine pleine lune et le prochain chant. Aucun conseil de jeu à la fin (rien qui oriente un choix). Doux pour des enfants, sans peur inutile ; termine en invitant à reprendre l’aventure au début.",
     "rang": 5,
     "fin": true,
     "hors_livre": false,
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "0c62db3c-a7af-4f5c-a536-21c5de8f821a",
+      "id": "4ea691bb-f72c-4c0b-b188-ffb59a0b971c",
       "type": "p",
       "children": [
        {
@@ -2637,25 +2813,25 @@
       ]
      },
      {
-      "id": "91664397-b929-467d-bbf4-6b5b9cc428a8",
+      "id": "f9f06d2b-308f-4a75-a84e-88bf444635ae",
       "type": "p",
       "children": [
        {
-        "text": "« Papa ! » appela-t-il. Puis il essaya de chanter le chant des lanternes. Mais sa voix devint un souffle, un murmure, puis plus rien du tout. Plume vint se poser contre lui, toute chaude, et Lou la serra contre sa joue. Au moins, il n’était pas seul."
+        "text": "« Papa ! » appela-t-il. Il voulut appeler encore, mais sa voix devint un souffle, un murmure, puis plus rien du tout. Plume vint se poser contre lui, toute chaude, et Lou la serra contre sa joue. Au moins, il n’était pas seul."
        }
       ]
      },
      {
-      "id": "2a67f178-da24-4581-aaa8-f136edd9e0ab",
+      "id": "23b7008a-38a7-4d94-b6f5-6f64da0f81ec",
       "type": "p",
       "children": [
        {
-        "text": "Autour de lui, la nuit devint plus noire encore. Il devina que là-bas, en haut de la tour, la Première Lanterne s’éteignait, et avec elle toutes les lanternes du pays. Cette nuit-là, le pays des Mille Lacs entra dans le silence. Au matin gris, Plume le guida jusqu’au village."
+        "text": "Autour de lui, la nuit devint plus noire encore. Il devina que là-bas, en haut de la tour, la Première Lanterne s’éteignait, et avec elle toutes les lanternes du pays. Cette nuit-là, un grand silence tomba sur le pays des Mille Lacs : la brume ne se lèverait plus avant la prochaine pleine lune, et le prochain chant. Au matin gris, Plume le guida jusqu’au village."
        }
       ]
      },
      {
-      "id": "f7a89293-2a8f-435e-9853-6595846ec8e7",
+      "id": "2e65c98c-1c21-4346-965d-fa3faa196ce4",
       "type": "p",
       "children": [
        {
@@ -2664,8 +2840,8 @@
       ]
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:20.986Z",
+    "version": 7,
+    "ecrit_le": "2026-10-27T21:36:21.267Z",
     "rang_livre": 11,
     "numero_fixe": null,
     "etat": "prete",
@@ -2676,9 +2852,9 @@
     "description_image": ""
    },
    {
-    "id": "6af58c0f-d85a-4c40-ae8d-cc80c3641236",
-    "chapitre_id": "dcabab4d-c74e-4693-897c-b79602b4db02",
-    "projet_id": "38b4d126-4998-4479-ba0c-430351901326",
+    "id": "7861bef5-d15a-4418-8a6e-2705d7711695",
+    "chapitre_id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
     "reference": 31,
     "titre": "Pont — de pilier en pilier",
     "consigne": "La bonne réponse de l’énigme, racontée. Lou saute de pilier en pilier, en ne posant le pied que sur les planches claires ; sous lui, l’eau noire gronde ; un saut plus long que les autres, le cœur qui bat ; il arrive de l’autre côté, sec, fier, Plume qui tourne au-dessus de lui. Court. Termine de l’autre côté de la rivière, en route.",
@@ -2688,20 +2864,20 @@
     "prise_par_enseignant": true,
     "texte": [
      {
-      "id": "bd8e33a0-ac52-49bd-b8c4-5ed452a62883",
+      "id": "eafadf94-25c7-48e7-a785-bdc744d3619c",
       "type": "p",
       "children": [
        {
-        "text": "D’un bond, Lou atterrit sur le premier pilier. Puis sur un autre, et encore un autre. Il ne posait le pied que sur les planches claires, pendant que l’eau noire grondait dessous."
+        "text": "Lou recula de deux pas, serra sa lanterne contre lui et regarda la pierre. Le premier saut était le plus long de tous. Il compta jusqu’à trois et s’élança, le cœur battant à tout rompre. Ses bottes claquèrent sur la pierre ; il vacilla, battit des bras… et tint bon."
        }
       ]
      },
      {
-      "id": "36d618d2-4ddd-4f3f-bc12-0c0d037277c6",
+      "id": "6738e56f-231e-4215-9b71-fe6664dbfaf8",
       "type": "p",
       "children": [
        {
-        "text": "Le dernier saut était plus long que les autres. Lou serra sa lanterne contre lui, compta jusqu’à trois et s’élança, le cœur battant à tout rompre. Il retomba sur la berge, sec des pieds à la tête, et sourit, tout fier. Au-dessus de lui, Plume tournait en rond. Il se remit en route."
+        "text": "Après celui-là, les autres lui parurent tout proches. D’un bond, il passa sur le suivant, puis sur un autre, et encore un autre, pendant que l’eau noire grondait dessous. Il retomba sur la rive d’en face, sec des pieds à la tête, et sourit, tout fier. Au-dessus de lui, Plume tournait en rond. Il se remit en route."
        }
       ]
      },
@@ -2709,7 +2885,7 @@
       "id": "3fd2742a-e8e1-46c7-a941-7a1e1ecba09a",
       "auto": true,
       "type": "choix",
-      "cible": "48ea1a9d-fc99-4e9b-afe9-edaf4a8d8481",
+      "cible": "293ea8f2-d541-4219-868a-6d0f2d9ad38d",
       "libelle": "Continuer sur la rive",
       "children": [
        {
@@ -2719,9 +2895,146 @@
       "construction": "neutre"
      }
     ],
-    "version": 2,
-    "ecrit_le": "2026-10-27T13:34:21.000Z",
+    "version": 9,
+    "ecrit_le": "2026-10-27T21:36:21.284Z",
     "rang_livre": 3,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": ""
+   },
+   {
+    "id": "1321ade3-7f13-4994-bb67-4d7a39ae59d3",
+    "chapitre_id": "e37393e2-4ddc-4193-9324-11e006291144",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "reference": 32,
+    "titre": "Pont — la pierre à 135 cm",
+    "consigne": "Courte scène d’erreur, différente de la glissade (S010) : Lou vise la pierre à 135 cm, la touche de la pointe de la botte, bascule en arrière dans l’eau glacée ; il se hisse, passe les autres pierres jusqu’à l’autre rive ; la mèche noyée se rallume avec de l’huile neuve.",
+    "rang": 4,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "a543f6bc-cca9-4071-b39d-595a92af9c5f",
+      "type": "p",
+      "children": [
+       {
+        "text": "Lou plia les genoux, serra sa lanterne contre lui et visa la pierre. Il s’élança de toutes ses forces… La pointe de sa botte toucha la pierre, mais pas son talon. Il battit des bras, une seconde, deux secondes… et bascula en arrière. Plouf ! L’eau glacée lui arrivait à la taille. Accroché à la pierre, il se hissa dessus, puis franchit les autres d’un bond à chaque fois, jusqu’à l’autre rive."
+       }
+      ]
+     },
+     {
+      "id": "45aeed11-137a-413d-919a-9cee4b088f45",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il ruisselait de partout, et sa lanterne aussi : la flamme s’était noyée. Il sécha la mèche avec un coin de son pull, puis la ralluma avec de l’huile neuve. Les dents serrées, il se remit en route."
+       }
+      ]
+     },
+     {
+      "id": "3b537a38-568d-4558-b777-a4737cf37b66",
+      "type": "action",
+      "children": [
+       {
+        "text": "Retire une réserve d’huile."
+       }
+      ]
+     },
+     {
+      "id": "10450f83-c383-43ee-be7f-623483979a74",
+      "auto": true,
+      "type": "choix",
+      "cible": "293ea8f2-d541-4219-868a-6d0f2d9ad38d",
+      "libelle": "Continuer sur la rive",
+      "children": [
+       {
+        "text": ""
+       }
+      ],
+      "construction": "neutre"
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-10-27T20:12:01.948Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": ""
+   },
+   {
+    "id": "0ee83536-03c3-435f-9f5b-05cf52aedeb0",
+    "chapitre_id": "262d72cd-fae5-4d5b-8272-5f6f50bd539c",
+    "projet_id": "ddf6c879-dbe8-4c7b-9967-e9ecd3f5c553",
+    "reference": 33,
+    "titre": "Ouverture — le pays des Mille Lacs",
+    "consigne": "Introduction du monde, avant l’aventure, décidée par le porteur le 28 octobre 2026 : la brume de chaque soir et la voix perdue sans lumière, des feux follets farceurs (sans dire comment les reconnaître ni ce qui les fait fuir), les passeurs et l’huile de lune qui fait reculer la brume, recueillie seulement à la pleine lune d’où les réserves, la Première Lanterne ranimée avant le lever du soleil par le chant du Gardien, que seule sa famille connaît, Marius et Lou. Aucun indice de décision (ni l’eau qui dort, ni la lueur bleutée, ni l’eau qui frissonne).",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "df9fdc11-3dae-40b5-99d7-e7f423363d1e",
+      "type": "p",
+      "children": [
+       {
+        "text": "Au pays des Mille Lacs, il y avait plus d’eau que de terre. Chaque soir, une brume épaisse montait des lacs : on n’y voyait plus à trois pas, et les chemins semblaient changer de place. Celui qui restait dans la brume sans lumière y perdait peu à peu sa voix, jusqu’au lever du soleil. Et des feux follets farceurs y vivaient, qui adoraient jouer des tours."
+       }
+      ]
+     },
+     {
+      "id": "c2632ef4-a59b-476b-94f2-e1283edef521",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pour traverser, on appelait les passeurs. Leurs barques portaient une lanterne qui brûlait de l’huile de lune : tant que sa flamme brillait, la brume reculait. Mais cette huile ne se recueillait qu’à la pleine lune. Jusque-là, tout le pays vivait sur ses réserves, et chaque goutte comptait."
+       }
+      ]
+     },
+     {
+      "id": "ffba530d-9173-4101-83e4-c023f04e308d",
+      "type": "p",
+      "children": [
+       {
+        "text": "Toutes les lanternes tiraient leur flamme d’une seule : la Première Lanterne, en haut de la Tour des Brumes, sur une île du Grand Lac. Chaque nuit de pleine lune, avant le lever du soleil, le Gardien de la Lanterne montait la ranimer en chantant le chant des lanternes. Sans ce chant, toutes les lanternes du pays s’éteignaient. Seule la famille du Gardien le connaissait."
+       }
+      ]
+     },
+     {
+      "id": "78d3bdaa-889f-498e-94f7-e5909004b380",
+      "type": "p",
+      "children": [
+       {
+        "text": "Le Gardien s’appelait Marius. Son fils, Lou, avait dix ans, et depuis qu’il était tout petit, son père lui apprenait le chant."
+       }
+      ]
+     },
+     {
+      "id": "6a5428ed-c905-4ac7-9c1c-4673255f4174",
+      "auto": true,
+      "type": "choix",
+      "cible": "b6088aab-e436-4500-a224-24e247d187a1",
+      "libelle": "Commencer l’aventure",
+      "children": [
+       {
+        "text": ""
+       }
+      ],
+      "construction": "neutre"
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-10-28T08:14:19.456Z",
+    "rang_livre": null,
     "numero_fixe": null,
     "etat": "prete",
     "tour": 0,
@@ -2735,87 +3048,101 @@
  },
  "images": [
   {
-   "id": "b8aa0bee-8082-4462-ac66-4674d180881b",
+   "id": "8a9f64e7-b155-495c-90ed-001a4f8c6b85",
    "fichier": "01.jpg",
-   "largeur": 1024,
-   "hauteur": 1536,
+   "largeur": 1672,
+   "hauteur": 941,
    "format": "jpeg"
   },
   {
-   "id": "82aa6b84-cab3-419a-95a0-906df07c7552",
+   "id": "18656572-4f24-449c-8acc-721a2d41a94b",
    "fichier": "02.jpg",
    "largeur": 1024,
    "hauteur": 1536,
    "format": "jpeg"
   },
   {
-   "id": "735bb7dd-8c5f-4a55-8a43-0ff09085de90",
+   "id": "1f4a79d1-6838-4579-a606-172a5ca8a38f",
    "fichier": "03.jpg",
    "largeur": 1024,
    "hauteur": 1536,
    "format": "jpeg"
   },
   {
-   "id": "2b0c4421-5956-45f0-8b52-d2a89eecb983",
+   "id": "8fc0a0c6-cd16-4679-8d34-697fb05f5d8e",
    "fichier": "04.jpg",
-   "largeur": 1536,
-   "hauteur": 1024,
+   "largeur": 1024,
+   "hauteur": 1536,
    "format": "jpeg"
   },
   {
-   "id": "fd6fee12-828e-4bc9-99b8-e51cb833b16b",
+   "id": "e54fb700-0ee1-45cf-9602-799e709bee27",
    "fichier": "05.jpg",
-   "largeur": 1536,
-   "hauteur": 1024,
+   "largeur": 1024,
+   "hauteur": 1536,
    "format": "jpeg"
   },
   {
-   "id": "da872c0d-59af-440f-ba16-b767f04ebdde",
+   "id": "39ac8939-f34f-42b5-b70f-8125001ddc9a",
    "fichier": "06.jpg",
    "largeur": 1536,
-   "hauteur": 1024,
+   "hauteur": 864,
    "format": "jpeg"
   },
   {
-   "id": "5d9b16da-c025-4c4a-bf36-0af762673154",
+   "id": "10ecb1ec-b5bc-4d9d-afe7-5232bbefabe3",
    "fichier": "07.jpg",
    "largeur": 1536,
-   "hauteur": 1024,
+   "hauteur": 864,
    "format": "jpeg"
   },
   {
-   "id": "973b0bda-c496-4d40-b225-f9ea25492cb9",
+   "id": "14a75d8c-d1d7-41d9-82ab-6772a0d18006",
    "fichier": "08.jpg",
    "largeur": 1536,
-   "hauteur": 1024,
+   "hauteur": 864,
    "format": "jpeg"
   },
   {
-   "id": "f1d6e95b-b308-4e74-8327-435af4ddade3",
+   "id": "5e2c784e-10c9-47f0-ab3c-c4b0cf869d46",
    "fichier": "09.jpg",
    "largeur": 1536,
    "hauteur": 1024,
    "format": "jpeg"
   },
   {
-   "id": "626b64ac-336f-4cd2-9663-868baf904a30",
+   "id": "09057a1c-39a8-4a7b-8ca7-9c122f72c90b",
    "fichier": "10.jpg",
    "largeur": 1536,
-   "hauteur": 1024,
+   "hauteur": 864,
    "format": "jpeg"
   },
   {
-   "id": "e553673b-c255-4365-8499-b5bb124f798d",
+   "id": "a952f926-aa5e-499a-9074-874665efd264",
    "fichier": "11.jpg",
    "largeur": 1536,
-   "hauteur": 1024,
+   "hauteur": 864,
    "format": "jpeg"
   },
   {
-   "id": "5e9ff169-b735-454e-a690-f5de74f5bdba",
+   "id": "5cc6e244-5adb-4283-a7d3-ce41bab2f21d",
    "fichier": "12.jpg",
+   "largeur": 1536,
+   "hauteur": 864,
+   "format": "jpeg"
+  },
+  {
+   "id": "da0ba57a-9e4c-4043-a980-8227a4d42413",
+   "fichier": "13.jpg",
+   "largeur": 1536,
+   "hauteur": 864,
+   "format": "jpeg"
+  },
+  {
+   "id": "f6390aa6-df15-4a0c-a6e7-289700a231cf",
+   "fichier": "14.jpg",
    "largeur": 1024,
-   "hauteur": 1536,
+   "hauteur": 1440,
    "format": "jpeg"
   }
  ]

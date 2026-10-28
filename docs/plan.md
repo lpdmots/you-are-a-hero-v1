@@ -2907,7 +2907,9 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
       « aplats de couleurs claires, peu de détails », et le résumé brumeux assombrissait l'ensemble).
       Nouvelle description : dessin animé contemporain en plein jour, ciel bleu, couleurs vives et
       saturées, ombrages doux, profondeur, les couleurs restant vives même dans la brume
-      (`STYLES_DES_IMAGES.lumineuse`). Jugé sur deux essais réels avec les résumés de ses chapitres
+      (`STYLES_DES_IMAGES.lumineuse`). Révisé le 27 octobre 2026 à sa demande : plus de « plein jour »
+      ni de ciel bleu dans aucun style (aquarelle, photo et volume compris), l'heure et la lumière venant
+      de la scène (F10.2). Jugé sur deux essais réels avec les résumés de ses chapitres
       « La rive marécageuse » et « La forêt de champignons géants » (0,023 dollar), puis l'exemple du
       style refait (0,014 dollar) ; les images déjà créées ne changent pas. Dépense de l'étape, environ
       1,40 dollar (1,2 €).
@@ -3640,6 +3642,34 @@ V6, le premier envoi à l'imprimeur.
          remplie laissée en fin de partie 2. Constat : une idée d'image de
          plus de 400 caractères était refusée par la base sans message ;
          l'atelier le dit désormais.
+       - **Repris après la relecture du porteur, les 27 et 28 octobre 2026,** en
+         local : ses corrections appliquées directement (sa demande). Ouverture
+         réécrite sur son déroulé (la chouette qui frappe, la brume anormale,
+         « Il était arrivé quelque chose à son père ») ; les indices quittent
+         l'ouverture (la planche du quai retirée, l'énigme lui revenant ;
+         « L'eau qui frissonne cache des dents » rappelé en prenant les rames) ;
+         le vieil homme comprend Lou s'il refuse, et parle des feux follets par
+         une anecdote ; « Retire une réserve d'huile » à la place de « Raye »
+         (lecture en ligne) ; l'énigme du pont, faite par lui (image et trois
+         pierres à 1 m 22, 1,5 m et 135 cm), avec une scène d'échec par mauvaise
+         pierre (S032) ; plus d'îlot ni d'attente de Plume : Lou aborde l'île de
+         la tour et traverse une vaste clairière où la brume ne pénètre pas.
+         Décidé le 28 octobre : un passage d'introduction du monde au n° 1 (S033,
+         sans image ni indice de décision ; sa Préparation révisée en ce sens),
+         l'ouverture au n° 2, la bonne fin au n° 33. Images refaites dans le style
+         par défaut, qu'il préfère, en 16:9 dans le texte (portraits compris ;
+         S027 en pleine page) ; il a fait la couverture. 33 passages, 10 images
+         (dont son énigme et l'illustration de la page de titre), 32 pages A5 ;
+         jeu vérifié sur les vrais liens (`essais-ia/outils/livre-depuis-la-base.ts`,
+         hors Git). Dépense de l'atelier : 1,57 dollar (77 appels). Instantané
+         exporté et rechargé, PDF définitif refait ; le chargeur pose désormais
+         la couverture avec les images (la base refusait le projet avant elle).
+         Corrections de l'application trouvées en chemin : les styles d'image ne
+         disent plus l'heure (F10.2) ; la lecture montre les choix à leur place
+         (F09.1) ; un curseur dans une phrase de choix écrite à la main ne fait
+         plus d'erreur ; une idée d'image trop longue est signalée. Méthode
+         consignée dans le skill `livres-d-exemple`. Pas encore chargé dans la
+         vraie base.
    - **Petit livre à choix de cycle 2, entretien validé le 26 octobre 2026**
      (clé `dragon`, « Bouquin mène l'enquête », d'abord « Qui a pris le livre ? ») :
      - **Personnages :** les deux mascottes, sans nom propre (« le dragon »,

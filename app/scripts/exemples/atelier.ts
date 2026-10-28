@@ -250,7 +250,7 @@ async function images(e: Enseignant, projetId: string, scenes: Map<number, Scene
         continue;
       }
     }
-    const cadrage: Cadrage = im.cadrage === "page" ? "pleine-page" : "3:2";
+    const cadrage: Cadrage = im.cadrage === "page" ? "pleine-page" : im.cadrage === "16:9" ? "16:9" : "3:2";
     const badges = im.badges.flatMap((n) => idDe(n) ?? []);
     // L'idée a sa limite de longueur dans la base : refusée, elle ne doit pas partir en silence
     const idee = await e.supabase.from("scenes").update({ idee_image: im.idee }).eq("id", s.id);

@@ -3,7 +3,7 @@
  * chemins depuis le départ, sans base ni IA :
  *   npx tsx scripts/exemples/verifier-reserve.ts passeurs
  *
- * Une action « Raye … » retire une réserve, « Ajoute … » en ajoute une. Une perte qui peut trouver
+ * Une action « Retire … » retire une réserve, « Ajoute … » en ajoute une. Une perte qui peut trouver
  * la réserve vide doit porter sa vérification (un choix vers une fin, pris si la réserve était
  * vide) ; une perte qui ne le peut jamais n'en porte pas (« les premières pertes ne demandent
  * rien »). Dit aussi : chaque scène atteinte, chaque fin atteinte, et combien d'erreurs mènent à
@@ -18,7 +18,7 @@ if (!c) throw new Error(`Nommez le livre : ${Object.keys(LIVRES).join(", ")}.`);
 
 const scenes = new Map<number, SceneExemple>(c.PARTIES.flatMap((p) => p.chapitres.flatMap((ch) => ch.scenes)).map((s) => [s.ref, s]));
 const depart = c.FEUILLE.sections.flatMap((s) => (s.type === "compteurs" ? s.compteurs : []))[0]?.depart ?? 0;
-const delta = (ref: number) => (c.ACTIONS[ref] ?? []).reduce((n, a) => n + (/^Raye/.test(a) ? -1 : /^Ajoute/.test(a) ? 1 : 0), 0);
+const delta = (ref: number) => (c.ACTIONS[ref] ?? []).reduce((n, a) => n + (/^(Raye|Retire)/.test(a) ? -1 : /^Ajoute/.test(a) ? 1 : 0), 0);
 const estFin = (ref: number) => scenes.get(ref)?.fin === true;
 const versFin = (s: SceneExemple) => (s.choix ?? []).find(([, v]) => estFin(v))?.[1];
 

@@ -334,7 +334,8 @@ async function chargerLeLivre(q: Q, compte: string): Promise<void> {
   };
 
   // Le projet d'abord, sans ce qui renvoie à ses scènes ni aux pages, posés à la fin
-  const finDuProjet = ["depart_scene_id", "image_id", "mise_en_page", "pages_du_livre", "ordre_pages"];
+  // La couverture (F11.4) renvoie à une image du projet : posée avec elles, à la fin
+  const finDuProjet = ["depart_scene_id", "image_id", "couverture_id", "mise_en_page", "pages_du_livre", "ordre_pages"];
   await inserer("projets", { ...s.projet, classe_id: null }, finDuProjet);
   const prep = Object.entries(s.preparation).filter(([k]) => colonnes.get("preparations")!.has(k));
   await q(`update public.preparations set ${prep.map(([k], i) => `${k} = $${i + 2}`).join(", ")} where projet_id = $1`, [
