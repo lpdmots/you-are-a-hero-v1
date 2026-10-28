@@ -20,7 +20,7 @@ export function Bibliotheque({ livres, demande, ouvert }: { livres: LivrePublie[
     <main className={styles.bibliotheque}>
       <header className={styles.tete}>
         <h1 className={styles.titre}>La bibliothèque</h1>
-        <p className={styles.chapeau}>Des livres écrits par des classes, et quelques-uns par des adultes, avec Il était une classe. À lire en ligne, gratuitement, sans compte.</p>
+        <p className={styles.chapeau}>Des histoires dont vous êtes le héros et des récits, écrits avec Il était une classe. À lire en ligne, gratuitement, sans compte.</p>
       </header>
 
       {livres === null ? (

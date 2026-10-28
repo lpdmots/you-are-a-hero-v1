@@ -3391,7 +3391,12 @@ structurées vérifiées, Lighthouse mobile 81-82 (LCP de laboratoire 4,7 à
 navigateur où il ouvre l'administration ne compte plus ses visites.
 Fait par lui le 25 octobre : Web Analytics et Speed Insights activés, plan du
 site déclaré dans Search Console et l'accueil soumis, site importé dans Bing
-(plan du site lu, 8 URL). Les mots-clés sont remis à plus tard.
+(plan du site lu, 8 URL). Les mots-clés sont remis à plus tard, puis
+arrêtés le 28 octobre 2026 avec lui (F14, « Mots-clés et pages ») : le même
+jour, en local, titres, descriptions et premières phrases de l'accueil, de la
+bibliothèque et de l'« Aide » repris, quatre questions ajoutées à l'« Aide »,
+`llms.txt` et données structurées alignés (définition du genre). Le guide
+s'écrit dans une autre conversation ; la page pédagogique vient ensuite.
 
 À la charge du porteur, dans l'ordre : activer Web Analytics et Speed
 Insights (gratuit, sans « Plus ») et une alerte de dépense chez Vercel ;

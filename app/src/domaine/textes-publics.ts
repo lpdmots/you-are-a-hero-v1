@@ -244,6 +244,23 @@ export const QUESTIONS: { question: string; reponse: string; vente?: boolean }[]
     question: "Comment commencer ?",
     reponse: "Créez un compte, puis votre premier projet : il s’ouvre sur sa préparation. La classe se crée quand les élèves commencent à écrire.",
   },
+  // Les quatre suivantes répondent à ce que cherchent les enseignants (mots-clés du 28 octobre 2026, F14)
+  {
+    question: "Qu’est-ce qu’un livre dont vous êtes le héros ?",
+    reponse: "Un livre-jeu : le récit est découpé en passages numérotés, et à la fin de chacun le lecteur choisit la suite (« Si tu ouvres la porte, rendez-vous au 12 »). Chaque lecture est une aventure différente. L’outil permet aussi d’écrire un récit classique.",
+  },
+  {
+    question: "À partir de quel âge ?",
+    reponse: "Les élèves écrivent dès 6 ans. Vous réglez pour chaque livre l’âge de ses lecteurs, que la bibliothèque affiche.",
+  },
+  {
+    question: "Combien de temps dure un projet ?",
+    reponse: "Quelques semaines pour un livre court d’une vingtaine de scènes, quelques mois pour un grand livre de plusieurs centaines de passages.",
+  },
+  {
+    question: "De quel matériel ai-je besoin ?",
+    reponse: "D’un navigateur, sur les ordinateurs ou les tablettes de la classe : plusieurs élèves écrivent en même temps, chacun sur son poste, ou à tour de rôle sur un seul.",
+  },
   {
     question: "Où retrouver les codes des élèves ?",
     reponse: "Dans « Mes classes », en ouvrant la classe : chaque élève a son code, et l’affiche de la classe et les étiquettes s’impriment de là.",
@@ -262,16 +279,17 @@ export const QUESTIONS: { question: string; reponse: string; vente?: boolean }[]
     vente: true,
   },
   {
-    question: "De quel matériel ai-je besoin ?",
-    reponse: "D’un navigateur, sur les ordinateurs ou les tablettes de la classe : plusieurs élèves écrivent en même temps, chacun sur son poste, ou à tour de rôle sur un seul.",
-  },
-  {
     question: "Puis-je partager le livre avec les familles ?",
     reponse: "Oui. Vos élèves le lisent chez eux avec leur code de classe, même après la fin de l’année. Vous pouvez aussi le proposer à la bibliothèque du site, lisible par tous, après avoir fait signer l’autorisation de diffusion par les représentants légaux des élèves.",
   },
   {
     question: "Comment tout supprimer ?",
     reponse: "Depuis « Mon compte », « Supprimer mon compte » efface aussitôt vos projets, vos classes, vos images et vos livres partagés.",
+  },
+  // Le visiteur qui compare les outils, et l'IA à qui l'on demande lequel choisir
+  {
+    question: "Quelle différence avec Twine ou Book Creator ?",
+    reponse: "Twine sert à écrire une fiction interactive à l’écran, Book Creator à faire des livres numériques illustrés. Il était une classe est fait pour écrire à plusieurs une histoire à choix : chaque élève écrit ses scènes, vous relisez et validez, l’outil vérifie les chemins et compose un livre à imprimer.",
   },
 ];
 

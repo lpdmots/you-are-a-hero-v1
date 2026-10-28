@@ -10,7 +10,11 @@ import { EDITEUR, MODELES } from "./textes-publics";
 export const NOM = "Il était une classe";
 export const PROMESSE = "Votre classe écrit son livre-jeu.";
 export const DESCRIPTION =
-  "Application web pour écrire un livre-jeu, une histoire dont vous êtes le héros, avec sa classe d’école élémentaire : chaque élève écrit ses scènes, l’application guide l’enseignant à chaque étape, et le livre s’imprime en PDF et se lit en ligne.";
+  "Application web pour écrire avec sa classe d’école élémentaire un livre dont vous êtes le héros (un livre-jeu, une histoire interactive à choix) : chaque élève écrit ses scènes, l’application guide l’enseignant à chaque étape, et le livre s’imprime en PDF et se lit en ligne.";
+
+/** La définition du genre, en une phrase qu'un moteur ou une IA peut citer telle quelle. */
+export const DEFINITION =
+  "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en passages numérotés : à la fin de chacun, le lecteur choisit la suite et se rend au passage indiqué, si bien que chaque lecture est une aventure différente. On parle aussi d’histoire interactive ou de fiction interactive.";
 
 const prix = (centimes: number) => enEuros(centimes).replace(" ", " ");
 
@@ -27,6 +31,10 @@ export function llmsTxt(offre: Offre, site: string): string {
     `# ${NOM}`,
     "",
     `> ${DESCRIPTION}`,
+    "",
+    "## Livre dont vous êtes le héros",
+    "",
+    DEFINITION,
     "",
     "## Pour qui",
     "",
@@ -52,8 +60,8 @@ export function llmsTxt(offre: Offre, site: string): string {
     "## Pages",
     "",
     `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres à feuilleter, les prix.`,
-    `- [La bibliothèque](${site}/bibliotheque) : des livres écrits par des classes avec l’outil, livres-jeux et récits, à lire en ligne gratuitement, sans compte.`,
-    `- [Aide](${site}/aide) : les questions fréquentes, les modèles à télécharger.`,
+    `- [La bibliothèque](${site}/bibliotheque) : des histoires dont vous êtes le héros et des récits écrits par des classes avec l’outil, à lire en ligne gratuitement, sans compte.`,
+    `- [Aide](${site}/aide) : les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
     `- [Confidentialité](${site}/confidentialite) : les données gardées, l’IA, la mesure d’audience.`,
     `- [Conditions d’utilisation](${site}/conditions)`,
     `- [Mentions légales](${site}/mentions-legales)`,

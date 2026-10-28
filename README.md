@@ -649,6 +649,15 @@ avant de commencer » soient tranchées.
   couvertures dans l'administration est retiré le 27 octobre 2026 (F11-AC117) :
   la couverture est celle du livre, et `npm run couvertures:accueil` convertit
   les faces avant déjà déposées.
+- **Mots-clés et pages publiques, 28 octobre 2026 :** volumes relevés par le
+  porteur dans l'outil de planification de Google Ads (France ; Canada,
+  Belgique et Suisse à part) ; « livre dont vous êtes le héros » en tête,
+  « livre-jeu » en second, « histoire interactive » en appui, un mot-clé
+  principal par page ([F14](docs/specifications.md#f14--ouverture-offre-et-exploitation),
+  « Mots-clés et pages »). Accueil, bibliothèque, « Aide », `llms.txt` repris
+  en local, non poussés. À venir : le guide (autre conversation), puis la page
+  pédagogique. Skills ajoutés : `content-strategy`, `site-architecture`,
+  `copywriting`, `link-building`.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,

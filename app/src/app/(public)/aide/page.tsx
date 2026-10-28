@@ -5,7 +5,7 @@ import { EDITEUR, MODELES, PHRASE_DU_SUPPORT, QUESTIONS } from "@/domaine/textes
 import { offreActuelle } from "@/serveur/offre";
 import styles from "../public.module.css";
 
-export const metadata: Metadata = { title: "Aide", description: "Questions fréquentes, modèles à télécharger, et l’adresse pour écrire au créateur.", alternates: { canonical: "/aide" } };
+export const metadata: Metadata = { title: "Aide et questions fréquentes", description: "Âge des élèves, durée d’un projet, matériel, codes de la classe, prix : les réponses aux questions fréquentes, et les modèles pour les familles et l’école.", alternates: { canonical: "/aide" } };
 
 /** « Aide » (F14, « Support », F14-AC33, AC36) : une petite foire aux questions, les modèles, l'adresse de contact. */
 export default async function Aide() {

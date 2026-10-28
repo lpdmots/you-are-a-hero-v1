@@ -15,12 +15,14 @@ import { VisiteEnVideo } from "./VisiteEnVideo";
 import { DonneesDeLAccueil } from "./DonneesDeLAccueil";
 import type { Video } from "@/domaine/presentation";
 
+// Le titre et la description visent « écrire un livre dont vous êtes le héros avec sa classe » ; le
+// grand titre garde « livre-jeu », aussi cherché (mots-clés du 28 octobre 2026, F14)
 const DESCRIPTION =
-  "Chaque élève écrit ses scènes. À chaque étape, l’application guide et aide l’enseignant. Au bout, un vrai livre, à imprimer et à lire en ligne. Gratuit.";
+  "Créez avec votre classe un livre dont vous êtes le héros : chaque élève écrit ses scènes, l’outil vous guide, le livre s’imprime et se lit en ligne. Gratuit.";
 
 // L'aperçu d'un lien partagé (courriel, messagerie, ENT) : l'image est opengraph-image.jpg, le premier écran
 export const METADATA_ACCUEIL: Metadata = {
-  title: { absolute: "Il était une classe — votre classe écrit son livre-jeu" },
+  title: { absolute: "Écrire un livre dont vous êtes le héros avec sa classe — Il était une classe" },
   description: DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
@@ -84,7 +86,7 @@ export async function Accueil() {
             <Numero n={1} />
             <h1 id="p1">Votre classe écrit son livre-jeu.</h1>
             <p className={styles.recit}>
-              Chaque élève écrit ses scènes. À chaque étape, l’application vous guide et vous aide. Au bout, un vrai livre, à imprimer et à lire en ligne.
+              Un livre dont vous êtes le héros, écrit par vos élèves, scène par scène. À chaque étape, l’application vous guide et vous aide. Au bout, un vrai livre, à imprimer et à lire en ligne.
             </p>
             <Choix>
               <ChoixCompte phrase="Si vous voulez essayer avec votre classe," />
@@ -384,7 +386,7 @@ const DANS_LA_CLASSE = [
   "Chaque élève reçoit ses identifiants et se connecte seul, sans adresse.",
   "Des fiches de rédaction nominatives, pour écrire à l’école ou à la maison.",
   "Des tampons pour encourager.",
-  "Une histoire à choix, ou un récit classique.",
+  "Une histoire interactive à choix, ou un récit classique.",
   "Une aide à chaque étape.",
 ] as const;
 

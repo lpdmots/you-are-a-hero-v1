@@ -11343,11 +11343,46 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   tant qu'aucun témoin non nécessaire n'est posé : il viendra avec Google
   Ads. La page « Confidentialité » dit, simplement, ce qui est mesuré et
   liste les témoins, dans le même lot que la mesure. Pas de Google
-  Analytics pour l'instant ; les pages de contenu (guides) sont remises à
-  plus tard. Faits du 24 octobre 2026, à revérifier : Google n'affiche plus
+  Analytics pour l'instant ; les pages de contenu, d'abord remises à plus
+  tard, sont décidées le 28 octobre 2026 (« Mots-clés et pages »). Faits du
+  24 octobre 2026, à revérifier : Google n'affiche plus
   les questions fréquentes en résultat enrichi (depuis le 7 mai 2026) ni une
   application sans avis notés ; Web Analytics se paie à l'événement sur le
   crédit de l'offre Pro (0,03 $ les 1 000).
+- **Mots-clés et pages** (décidé par le porteur le 28 octobre 2026, sur les
+  volumes de l'outil de planification des mots-clés de Google Ads, 1er
+  octobre 2025 au 30 septembre 2026, en fourchettes faute de campagne
+  active). En France, par mois : « livre dont vous êtes le héros » et
+  « livre jeu », 1 000 à 10 000 chacun, surtout des lecteurs et des
+  acheteurs ; « livre dont tu es le héros » et « histoire interactive »,
+  100 à 1 000 ; « production d'écrit » CE2 (1 000 à 10 000), CM1, CM2,
+  cycle 3 (100 à 1 000), le plus grand réservoir d'enseignants ; créer,
+  écrire ou « comment écrire un livre dont vous êtes le héros », « créer une
+  histoire interactive (en ligne) », « projet d'écriture » CM1, CM2,
+  cycle 3, 10 à 100 chacun, les recherches qui mènent à des clients, sans
+  page d'outil qui y réponde (des PDF académiques et des outils généraux,
+  Twine, InkleWriter). Au Canada, en Belgique et en Suisse, « livre dont
+  vous êtes le héros » pèse autant, « production d'écrit » presque rien,
+  « fiction interactive » 100 à 1 000. Le site parle d'âge, pas de niveaux,
+  et vaut pour tous les francophones. Hiérarchie des mots sur les pages
+  publiques : « livre dont vous êtes le héros » en tête, « livre-jeu » en
+  second (même volume, nom du genre dans l'outil ; le grand titre de
+  l'accueil le garde), « histoire interactive » en appui ; « La classe dont
+  tu es le héros », collection de Hatier, n'est pas employé. Un mot-clé
+  principal par page : l'accueil, « écrire un livre dont vous êtes le héros
+  avec sa classe » ; la bibliothèque, « histoires dont vous êtes le héros à
+  lire en ligne » (ses livres restent fermés aux moteurs, F15) ; l'« Aide »,
+  ses questions (définition, âge, durée d'un projet, matériel, différence
+  avec Twine ou Book Creator) ; puis, une page à la fois : un guide, « comment
+  écrire un livre dont vous êtes le héros » (la méthode, tirée de sa classe,
+  sans documents pédagogiques), et une page pédagogique, « production
+  d'écrit et projet d'écriture » (programmes vérifiés sur le Bulletin
+  officiel, séquence, documents à télécharger, en texte sur la page et en
+  PDF ; c'est la page « Ressources » du plan) ; un comparatif des outils
+  seulement si la Search Console montre ces recherches. Une page ne vise pas
+  le mot-clé principal d'une autre. Ce qui se dit des livres de la
+  bibliothèque ne laisse pas croire qu'ils viennent tous de classes : les
+  livres d'exemple du site en sont.
 - **« Écrit avec Il était une classe ».** Dans le lecteur en ligne, une
   mention discrète au pied de la page de titre et après la fin du livre, qui
   mène à la page d'accueil ; jamais pendant la lecture, sans réglage. Elle ne
