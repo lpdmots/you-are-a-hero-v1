@@ -26,8 +26,8 @@ idées.
 
 **3 — Chacun écrit ses scènes**
 Ensuite, chaque élève reçoit ses scènes et les écrit, d'abord sur son cahier,
-puis sur les ordinateurs de la classe. Chaque scène se termine par des choix : sauter de
-pierre en pierre… ou appeler la chouette ?
+puis sur les ordinateurs de la classe. Chaque scène se termine par des choix. Suivre la
+lumière dans la brume ? Ou rester immobile.
 
 **4 — Vous relisez et validez**
 L'élève vous remet sa scène. Vous la relisez, vous laissez une remarque s'il

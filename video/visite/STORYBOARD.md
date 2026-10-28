@@ -71,7 +71,8 @@ L'écran projeté de l'illustration s'agrandit jusqu'à remplir le cadre et
 devient la Préparation. La rangée des étapes : Univers, Personnages, Enjeu,
 Grandes étapes se cochent une à une, au mot près. Sur « les héros », la carte
 de Lou et son portrait ; sur « les grands lieux », les trois parties tombent
-en cascade dans « Nous retenons… ». « Les élèves proposent » : des idées
+en cascade dans « Nous retenons… » (La rive, Le Grand Lac, La Tour des Brumes :
+l'histoire d'exemple reprise le 26 octobre 2026). « Les élèves proposent » : des idées
 arrivent en petites cartes ; « vous retenez » : l'une reçoit la coche verte et
 rejoint la liste. « L'IA vous souffle des idées » : la pastille ✦ pâle palpite,
 trois idées s'ouvrent en éventail. Choix : « Pour voir la classe écrire,
@@ -79,17 +80,17 @@ rendez-vous au 3. »
 
 ## Passage 3 — Chacun écrit ses scènes (≈ 25 – 39 s)
 
-*« Ensuite, chacun écrit ses scènes, d'abord sur son cahier, puis sur les
-ordinateurs de la classe. Chaque scène se termine par des choix : sauter de
-pierre en pierre… ou appeler la chouette ? »*
+*« Ensuite, chaque élève reçoit ses scènes, et les écrit, d'abord sur son
+cahier, puis sur les ordinateurs de la classe. Chaque scène se termine par des
+choix. Suivre la lumière dans la brume ? Ou rester immobile. »*
 
 Un cahier à grands carreaux (Seyès) : la cursive écrit le début de la scène,
 trait après trait. La caméra glisse vers l'ordinateur : le même texte dans la
-copie de l'élève, filet rose de la marge, Vollkorn. Les deux phrases de choix
-se posent (25 et 29). Sur « sauter de pierre en pierre », la première
-s'allume et un chemin en pointillé rouge, celui de la carte au trésor de
-l'illustration, part vers sa scène ; sur « appeler la chouette », la seconde,
-vers une autre. L'élève clique « Remettre à Mme Laurent ».
+copie de l'élève, filet rose de la marge, Vollkorn. La scène est « Île — la lumière dans la
+brume », du chapitre « La clairière aux pierres ». Les deux phrases de choix
+se posent (20 et 21). Sur « suivre la lumière », la première s'allume et un
+chemin en pointillé rouge part vers sa scène ; sur « rester immobile », la
+seconde, vers « la lumière bleutée » (le feu follet). L'élève clique « Remettre à Mme Laurent ».
 
 ## Passage 4 — Vous relisez et validez (≈ 39 – 56 s)
 
@@ -99,7 +100,7 @@ où en est toute la classe. »*
 
 La scène arrive chez l'enseignant avec le tampon « À valider » (sablier
 ambre). Un trait de lecture parcourt les lignes. La remarque s'écrit en
-cursive dans la marge, « Décris-nous la chouette ! », et le tampon « À
+cursive dans la marge, « Et Lou, que ressent-il ? », et le tampon « À
 reprendre » (brique) frappe. Une ligne s'ajoute au texte, surlignée ;
 « Validé » (vert) frappe à son tour, le papier tressaille. Sur « toute la
 classe », la caméra recule : la scène devient une carte du Suivi parmi une
@@ -115,7 +116,11 @@ qu'à l'imprimer… ou à le lire en ligne, à la maison. »*
 Les cartes des scènes s'envolent et s'empilent ; leurs numéros défilent puis
 s'arrêtent, 1, 2, 3… Sur « chaque chemin », la vue « Chemins » se trace,
 flèche après flèche, une coche verte au bout de chacune. Sur « met le livre en
-page », les pages se rangent en doubles pages, l'une tourne. « L'imprimer » :
+page », les pages se rangent en doubles pages, l'une tourne. Les pages feuilletées
+portent les vrais passages du livre d'exemple (22 à 27, avec les images du
+feu follet et de la clairière), numéros et renvois
+compris, coulés par `outils/pages-du-livre.mjs` ; le téléphone, le passage 18
+puis le début du 24 et son image. « L'imprimer » :
 la photo des deux livres imprimés, un reflet de lumière la traverse. « En
 ligne, à la maison » : un téléphone glisse à droite, la lecture défile.
 

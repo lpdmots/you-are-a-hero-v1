@@ -17,8 +17,8 @@
       "id": "p18",
       "avant": 0.9,
       "apres": 1.5,
-      "texte": "Ensuite, chaque élève reçoit ses scènes, <break time=\"0.4s\" /> et les écrit, d'abord sur son cahier, <break time=\"0.5s\" /> puis sur les ordinateurs de la classe. <break time=\"0.7s\" /> Chaque scène se termine par des choix. <break time=\"0.5s\" /> Sauter de pierre en pierre ? <break time=\"0.4s\" /> Ou appeler la chouette ?",
-      "prise": 1
+      "texte": "Ensuite, chaque élève reçoit ses scènes, <break time=\"0.4s\" /> et les écrit, d'abord sur son cahier, <break time=\"0.5s\" /> puis sur les ordinateurs de la classe. <break time=\"0.7s\" /> Chaque scène se termine par des choix. <break time=\"0.5s\" /> Suivre la lumière dans la brume ? <break time=\"0.4s\" /> Ou rester immobile.",
+      "prise": 11
     },
     {
       "id": "p26",

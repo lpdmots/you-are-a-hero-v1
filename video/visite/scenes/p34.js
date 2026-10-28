@@ -15,13 +15,13 @@ window.SCENES.p34 = (tl, t0) => {
 
   // Les scènes du chapitre et leurs chemins (histoire d'essai)
   const cartes = {
-    A: [130, 470, "Gué — les pierres qui chantent", 1],
-    B: [560, 290, "Rivière — la pierre glissante", 14],
-    C: [560, 670, "Saule — le nid de la chouette", 7],
-    E: [990, 210, "Clairière — les cloches muettes", 3],
-    D: [990, 560, "Rive — le moulin au loin", 22],
-    G: [1420, 210, "Clocher — l’écho du passeur", 18],
-    F: [1420, 560, "Moulin — la roue noyée", 31],
+    A: [130, 470, "Île — la lumière dans la brume", 18],
+    B: [560, 290, "Île — la lumière qui recule", 16],
+    C: [560, 670, "Île — la lumière bleutée", 24],
+    E: [990, 210, "Île — pour rien", 20],
+    D: [990, 560, "Tour — le pied de la tour", 27],
+    G: [1420, 210, "Lac — la dernière goutte (fin)", 26],
+    F: [1420, 560, "Tour — la lanterne brisée", 30],
   };
   const liens = [["A", "B"], ["A", "C"], ["B", "E"], ["B", "D"], ["C", "D"], ["E", "G"], ["D", "F"]];
   const zone = document.querySelector(q("cartes"));

@@ -66,8 +66,8 @@
           #s-p18 .rep-image { position: absolute; left: 40px; top: 26px; width: 146px; height: 98px; border-radius: 12px; object-fit: cover; }
           #s-p18 .rep-titre { position: absolute; left: 212px; top: 30px; font-family: var(--f-recit); font-weight: 600; font-size: 44px; }
           #s-p18 .rep-sous { position: absolute; left: 214px; top: 90px; font-size: 24px; color: var(--graphite-2); }
-          #s-p18 .rep-carte { position: absolute; width: 420px; height: 160px; padding: 20px 22px; border-radius: 16px; background: var(--feuille-2); box-shadow: inset 0 0 0 2px var(--trait); }
-          #s-p18 .rep-carte b { display: block; font-size: 26px; line-height: 1.25; }
+          #s-p18 .rep-carte { position: absolute; width: 432px; height: 160px; padding: 20px 22px; border-radius: 16px; background: var(--feuille-2); box-shadow: inset 0 0 0 2px var(--trait); }
+          #s-p18 .rep-carte b { display: block; font-size: 25px; line-height: 1.25; white-space: nowrap; }
           #s-p18 .rep-carte .libre { position: absolute; left: 22px; bottom: 18px; font-size: 22px; font-style: italic; color: var(--graphite-3); }
           #s-p18 .rep-carte .qui { position: absolute; left: 22px; bottom: 12px; display: flex; align-items: center; gap: 12px; }
           #s-p18 .rep-carte .qui i { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 99px; font-style: normal; font-weight: 800; font-size: 19px; color: var(--c); background: #fff; box-shadow: inset 0 0 0 2.5px var(--c); }
@@ -79,11 +79,11 @@
             <div class="cahier" id="p18-cahier">
               <div class="ligne date" id="p18-l0" style="top: 72px">Jeudi 16 octobre</div>
               <div class="souligne" id="p18-souligne"></div>
-              <div class="ligne" id="p18-l1" style="top: 200px">La chouette se posa sur une</div>
-              <div class="ligne" id="p18-l2" style="top: 264px">branche de saule, au bord</div>
-              <div class="ligne" id="p18-l3" style="top: 328px">d’une rivière. Des pierres</div>
-              <div class="ligne" id="p18-l4" style="top: 392px">plates dépassaient de l’eau</div>
-              <div class="ligne" id="p18-l5" style="top: 456px">et chacune chantait une note…</div>
+              <div class="ligne" id="p18-l1" style="top: 200px">Lou éteignit sa lanterne.</div>
+              <div class="ligne" id="p18-l2" style="top: 264px">Soudain, dans la brume,</div>
+              <div class="ligne" id="p18-l3" style="top: 328px">une lumière apparut. On</div>
+              <div class="ligne" id="p18-l4" style="top: 392px">aurait dit une lanterne</div>
+              <div class="ligne" id="p18-l5" style="top: 456px">qu’on porte. Son père ?</div>
             </div>
             <svg class="crayon" id="p18-crayon" viewBox="0 0 260 180" aria-hidden="true">
               <defs>
@@ -110,9 +110,9 @@
                 <div class="copie">
                   <div class="copie-haut">Ton texte<span><i></i>Scènes voisines</span></div>
                   <div class="marge"></div>
-                  <p class="texte" id="p18-texte">La chouette se posa sur une branche de saule, au bord d’une rivière. Des pierres plates dépassaient de l’eau et chacune, quand le courant la touchait, chantait une note différente.</p>
-                  <div class="choix-copie" id="p18-c1" style="top: 300px"><span class="fond-choix"></span>Pour sauter de pierre en pierre, rends-toi au <b>25</b>.<em>→ Rivière</em></div>
-                  <div class="choix-copie" id="p18-c2" style="top: 354px; border-bottom: 1.5px solid var(--trait)"><span class="fond-choix"></span>Si tu veux appeler la chouette, rends-toi au <b>29</b>.<em>→ Saule</em></div>
+                  <p class="texte" id="p18-texte">Lou éteignit sa lanterne : dans la clairière, la lune suffisait. Soudain, dans la brume, une lumière apparut. On aurait dit une lanterne qu’on porte. Son père ?</p>
+                  <div class="choix-copie" id="p18-c1" style="top: 300px"><span class="fond-choix"></span>Pour suivre la lumière, rends-toi au <b>20</b>.<em>→ Île</em></div>
+                  <div class="choix-copie" id="p18-c2" style="top: 354px; border-bottom: 1.5px solid var(--trait)"><span class="fond-choix"></span>Pour rester immobile, rends-toi au <b>21</b>.<em>→ Île</em></div>
                   <div class="copie-bas">
                     <span class="enregistre" id="p18-enr"><i data-ic="coche"></i>Enregistré</span>
                     <span class="remettre" id="p18-remettre">Remettre à Mme Laurent <i data-ic="fleche"></i><span class="renvoi-btn" id="p18-sortie">4<span class="plein">4</span></span></span>
@@ -123,13 +123,13 @@
           </div>
           <svg class="chemins" id="p18-ch1" viewBox="0 0 1920 1080"><path id="p18-ch1p" d="" fill="none" stroke="#d9483b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 16" /></svg>
           <svg class="chemins" id="p18-ch2" viewBox="0 0 1920 1080"><path id="p18-ch2p" d="" fill="none" stroke="#d9483b" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 16" /></svg>
-          <div class="carte-scene" id="p18-k1"><img src="assets/ill/sauter-pierres.jpg" alt="" /><small>25</small><b>Rivière — la pierre glissante</b></div>
-          <div class="carte-scene" id="p18-k2"><img src="assets/ill/appeler-chouette.jpg" alt="" /><small>29</small><b>Saule — le nid de la chouette</b></div>
+          <div class="carte-scene" id="p18-k1"><img src="assets/ill/lumiere-qui-recule.jpg" alt="" /><small>20</small><b>Île — la lumière qui recule</b></div>
+          <div class="carte-scene" id="p18-k2"><img src="assets/ill/feu-follet.jpg" alt="" /><small>21</small><b>Île — la lumière bleutée</b></div>
           <div class="ecran repartition" id="p18-rep">
-            <img class="rep-image" src="assets/ill/defaut-riviere.jpg" alt="" />
-            <div class="rep-titre">Le gué des saules</div>
+            <img class="rep-image" src="assets/ill/clairiere.jpg" alt="" />
+            <div class="rep-titre">La clairière aux pierres</div>
             <div class="rep-sous">Chapitre · 6 scènes · Farah, Gabin, Hugo et Jade</div>
-            <div class="rep-carte" style="left:40px;top:160px"><b>Gué — les pierres qui chantent</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui0"><i style="--c:#2b6531">Fa</i><span class="main">Farah</span></span></div><div class="rep-carte" style="left:490px;top:160px"><b>Rivière — la pierre glissante</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui1"><i style="--c:#34499a">Ga</i><span class="main">Gabin</span></span></div><div class="rep-carte" style="left:940px;top:160px"><b>Saule — le nid de la chouette</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui2"><i style="--c:#7e5200">Hu</i><span class="main">Hugo</span></span></div><div class="rep-carte" style="left:40px;top:342px"><b>Rive — le moulin au loin</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui3"><i style="--c:#643a8a">Ja</i><span class="main">Jade</span></span></div><div class="rep-carte" style="left:490px;top:342px"><b>Gué — la loutre passeuse</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui4"><i style="--c:#2b6531">Fa</i><span class="main">Farah</span></span></div><div class="rep-carte" style="left:940px;top:342px"><b>Rivière — les cloches au loin</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui5"><i style="--c:#34499a">Ga</i><span class="main">Gabin</span></span></div>
+            <div class="rep-carte" style="left:34px;top:160px"><b>Île — la clairière aux pierres</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui0"><i style="--c:#34499a">Ga</i><span class="main">Gabin</span></span></div><div class="rep-carte" style="left:488px;top:160px"><b>Île — la flamme qui veille</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui1"><i style="--c:#7e5200">Hu</i><span class="main">Hugo</span></span></div><div class="rep-carte" style="left:942px;top:160px"><b>Île — la lumière dans la brume</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui2"><i style="--c:#2b6531">Fa</i><span class="main">Farah</span></span></div><div class="rep-carte" style="left:34px;top:342px"><b>Île — la lumière qui recule</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui3"><i style="--c:#643a8a">Ja</i><span class="main">Jade</span></span></div><div class="rep-carte" style="left:488px;top:342px"><b>Île — la lumière bleutée</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui4"><i style="--c:#34499a">Ga</i><span class="main">Gabin</span></span></div><div class="rep-carte" style="left:942px;top:342px"><b>Île — pour rien</b><span class="libre">Pas encore prise</span><span class="qui" id="p18-qui5"><i style="--c:#7e5200">Hu</i><span class="main">Hugo</span></span></div>
           </div>
           <div class="entete" id="p18-entete" style="transform-origin: 0 0">
             <div class="numero"><span id="p18-chiffre">3</span><span class="filet" id="p18-filet"></span></div>

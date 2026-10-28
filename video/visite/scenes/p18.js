@@ -43,11 +43,11 @@ window.SCENES.p18 = (tl, t0) => {
   };
   const lignes = [
     ["l0", 380, 72, 16],
-    ["l1", 124, 200, 27],
-    ["l2", 124, 264, 25],
-    ["l3", 124, 328, 25],
-    ["l4", 124, 392, 27],
-    ["l5", 124, 456, 29],
+    ["l1", 124, 200, 25],
+    ["l2", 124, 264, 23],
+    ["l3", 124, 328, 23],
+    ["l4", 124, 392, 23],
+    ["l5", 124, 456, 23],
   ];
   let t = tEcrit + 0.95;
   window.bruit("stylo", t, 0.5);
@@ -83,8 +83,8 @@ window.SCENES.p18 = (tl, t0) => {
   gsap.set(q("k1"), { left: K1.x, top: K1.y });
   gsap.set(q("k2"), { left: K2.x, top: K2.y });
   const choix = [
-    ["c1", "ch1", "k1", m("pierre") - 0.15],
-    ["c2", "ch2", "k2", m("chouette") - 0.15],
+    ["c1", "ch1", "k1", m("lumiere") - 0.15],
+    ["c2", "ch2", "k2", m("immobile") - 0.15],
   ];
   choix.forEach(([c, ch, k, tc], i) => {
     tl.fromTo(`${q(c)} .fond-choix`, { opacity: 0 }, { opacity: 1, duration: 0.25 }, tc);

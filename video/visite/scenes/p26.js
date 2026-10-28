@@ -9,22 +9,22 @@ window.SCENES.p26 = (tl, t0) => {
 
   // Les rangées du Suivi (élèves fictifs de l'histoire d'essai)
   const rangees = [
-    ["Quai — la sirène du dernier bac", "Chloé", "valide"],
-    ["Passerelle — le bac s’éloigne", "Dylan", "valide"],
-    ["Quai — la lanterne qui clignote", "Emma", "valider"],
-    ["Cabane — la carte oubliée", "Chloé", "valide"],
-    ["Cabane — la carte s’anime", "Dylan", "reprendre"],
-    ["Lisière — les lanternes s’éteignent", "Inès", "valide"],
-    ["Sentier — le chant des fougères", "Alice", "cours"],
-    ["Souche — la lanterne de secours", "Bilal", "valider"],
-    ["Souche — la chouette messagère", "Bilal", "valide"],
-    ["Gué — les pierres qui chantent", "Farah", "valide"],
-    ["Rivière — la pierre glissante", "Gabin", "cours"],
-    ["Saule — le nid de la chouette", "Hugo", "valider"],
-    ["Clairière — les cloches muettes", "Kenza", "valide"],
-    ["Clocher — l’écho du passeur", "Léo", "reprendre"],
-    ["Silence — la voix sous la mousse", "Lina", "cours"],
-    ["Sanctuaire — mille lucioles", "Malo", "valide"],
+    ["Village — la nuit de pleine lune", "Chloé", "valide"],
+    ["Village — le départ", "Dylan", "valide"],
+    ["Chemin — la fourche", "Emma", "valider"],
+    ["Chemin — le vieil homme", "Chloé", "valide"],
+    ["Pont — l’énigme du pont effondré", "Dylan", "reprendre"],
+    ["Pont — la barque dans les roseaux", "Inès", "valide"],
+    ["Lac — le courant", "Alice", "cours"],
+    ["Lac — l’eau qui frissonne", "Bilal", "valider"],
+    ["Île — la clairière aux pierres", "Gabin", "valide"],
+    ["Île — la lumière dans la brume", "Farah", "valide"],
+    ["Île — la lumière qui recule", "Jade", "cours"],
+    ["Île — la lumière bleutée", "Gabin", "valider"],
+    ["Tour — le pied de la tour", "Kenza", "valide"],
+    ["Tour — la lanterne brisée", "Léo", "reprendre"],
+    ["Tour — le sommet", "Lina", "cours"],
+    ["Tour — le chant des lanternes", "Malo", "valide"],
   ];
   const NOM = { valide: "Validé", valider: "À valider", reprendre: "À reprendre", cours: "En cours" };
   const SIGNE = { valide: "coche", valider: "sablier", reprendre: "demi-tour", cours: "crayon" };
@@ -56,7 +56,7 @@ window.SCENES.p26 = (tl, t0) => {
   tl.fromTo(q("feuille"), { scale: 1 }, { scale: 1.07, duration: m("coup") - 0.25 - T(0.6), ease: "sine.inOut" }, T(0.6));
 
   // On relit : un trait de lecture passe sur les lignes
-  ["lu1", "lu2", "lu3", "lu4"].forEach((k, i) => {
+  ["lu1", "lu2", "lu3"].forEach((k, i) => {
     const t = m("relisez") - 0.1 + i * 0.32;
     tl.fromTo(q(k), { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.34, ease: "none" }, t);
     tl.to(q(k), { opacity: 0, duration: 0.35 }, t + 0.5);
