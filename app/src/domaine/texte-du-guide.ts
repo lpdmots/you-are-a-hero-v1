@@ -150,7 +150,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Je commence par la série [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow), idéale pour découvrir les choix et leurs conséquences, puis nous passons à [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/) (Larousse Jeunesse), aux règles plus élaborées. Nous décortiquons ensuite un *Ma première aventure* et comparons les choix des Larousse. Les livres de mes anciennes classes servent aussi de modèles. Je consacre généralement une période d’APC au projet, pour ceux qui ont besoin de plus de temps, et des volontaires continuent d’écrire à la maison, sur leurs feuilles de brouillon."
+          "texte": "Je commence par la série [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow), idéale pour découvrir les choix et leurs conséquences, puis nous passons à [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/) (Larousse Jeunesse), aux règles plus élaborées. Nous décortiquons ensuite un *Ma première aventure* et comparons les choix des Larousse. Les livres de mes anciennes classes servent aussi de modèles. Une fois l’écriture lancée, je consacre généralement une période d’APC à écrire, pour ceux qui ont besoin de plus de temps, et des volontaires continuent à la maison, sur leurs feuilles d’écriture, qui portent les consignes."
         }
       ]
     },

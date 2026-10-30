@@ -463,10 +463,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/)
 > (Larousse Jeunesse), aux règles plus élaborées. Nous
 > décortiquons ensuite un *Ma première aventure* et comparons les choix des
-> Larousse. Les livres de mes anciennes classes servent aussi de modèles. Je
-> consacre généralement une période d'APC au projet, pour ceux qui ont
-> besoin de plus de temps, et des volontaires continuent d'écrire à la
-> maison, sur leurs feuilles de brouillon.
+> Larousse. Les livres de mes anciennes classes servent aussi de modèles.
+> Une fois l'écriture lancée, je consacre généralement une période d'APC à
+> écrire, pour ceux qui ont besoin de plus de temps, et des volontaires
+> continuent à la maison, sur leurs feuilles d'écriture, qui portent les
+> consignes.
 
 ### 4. Inventer l'histoire ensemble
 
