@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { PAGES_PUBLIQUES } from "@/domaine/pages-publiques";
+import { ADRESSE_DU_GUIDE, PAGES_PUBLIQUES } from "@/domaine/pages-publiques";
 import { adresseDuSite } from "@/serveur/env";
 
 /** Le plan du site (F14-AC45) : les pages publiques, à l'adresse du site, et elles seules. */
@@ -8,6 +8,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return PAGES_PUBLIQUES.map((page) => ({
     url: `${site}${page === "/" ? "" : page}`,
     changeFrequency: page === "/" || page === "/bibliotheque" ? "weekly" : "monthly",
-    priority: page === "/" ? 1 : page === "/aide" || page === "/bibliotheque" ? 0.8 : 0.3,
+    priority: page === "/" ? 1 : page === "/aide" || page === "/bibliotheque" || page === ADRESSE_DU_GUIDE ? 0.8 : 0.3,
   }));
 }

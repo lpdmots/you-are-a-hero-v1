@@ -1,5 +1,8 @@
 import { MODELES } from "./textes-publics";
 
+/** Le guide « Comment écrire un livre dont vous êtes le héros avec sa classe » (F14-AC52, AC53) */
+export const ADRESSE_DU_GUIDE = "/guide/ecrire-un-livre-dont-vous-etes-le-heros";
+
 /**
  * Les pages publiques (F14, « Pages publiques ») : celles que les moteurs de recherche et les robots
  * des IA peuvent lire (F14-AC45). Le plan du site, `robots.txt` et `llms.txt` partent de cette liste ;
@@ -10,6 +13,7 @@ export const PAGES_PUBLIQUES: readonly string[] = [
   "/",
   "/bibliotheque",
   "/aide",
+  ADRESSE_DU_GUIDE,
   ...MODELES.map((m) => `/modeles/${m.cle}`),
   "/confidentialite",
   "/conditions",
@@ -18,9 +22,10 @@ export const PAGES_PUBLIQUES: readonly string[] = [
 
 /**
  * Ce que les robots des IA lisent en plus des pages : `llms.txt`, les fichiers de l'application et les
- * images de l'accueil (les couvertures de ses livres comprises), sans lesquels une page ne s'affiche pas.
+ * images de l'accueil (les couvertures de ses livres comprises) et du guide, sans lesquels une page ne
+ * s'affiche pas.
  */
-export const RESSOURCES_PUBLIQUES: readonly string[] = ["/llms.txt", "/_next/", "/accueil/", "/images/accueil/"];
+export const RESSOURCES_PUBLIQUES: readonly string[] = ["/llms.txt", "/_next/", "/accueil/", "/images/accueil/", "/guide/"];
 
 /**
  * L'application, fermée à tous les robots : des pages de compte ou d'élève, qui ne mènent à rien sans

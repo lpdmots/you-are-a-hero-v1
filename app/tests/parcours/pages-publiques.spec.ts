@@ -117,3 +117,46 @@ test("F14-AC39 — revenir à l'accueil : après « Se déconnecter », et depui
   await expect(page).toHaveURL(/:\d+\/$/);
   await expect(page.getByRole("link", { name: "Créez un compte" }).first()).toBeVisible();
 });
+
+const GUIDE = "/guide/ecrire-un-livre-dont-vous-etes-le-heros";
+
+test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la lecture ; sur téléphone, le bouton « Sommaire » paraît une fois le sommaire dépassé", async ({ page }) => {
+  await aller(page, GUIDE);
+  await expect(page.getByRole("heading", { level: 1, name: "Comment écrire un livre dont vous êtes le héros avec sa classe" })).toBeVisible();
+  await expect(page.getByText("Par Nicolas Coussot, professeur des écoles. Mis à jour le")).toBeVisible();
+  await expect(page.getByRole("heading", { level: 2, name: "En bref" })).toBeVisible();
+  // Grand écran : le sommaire collant, à côté du texte
+  const sommaire = page.getByRole("navigation", { name: "Sommaire" }).first();
+  await expect(sommaire.getByRole("link")).toHaveCount(13);
+  await sommaire.getByRole("link", { name: /Comment vérifier que tous les chemins/ }).click();
+  await expect(page).toHaveURL(/#chemins$/);
+  await expect(page.getByRole("heading", { level: 2, name: /Comment vérifier que tous les chemins/ })).toBeInViewport();
+  await expect(sommaire.getByRole("link", { name: /Comment vérifier que tous les chemins/ })).toHaveAttribute("aria-current", "location");
+  // Un renvoi de la partie 13 mène à sa question
+  await page.getByRole("link", { name: "question 11" }).click();
+  await expect(page).toHaveURL(/#temps$/);
+  // Ni « Ressources » ni page à venir
+  await expect(page.getByText("Ressources")).toHaveCount(0);
+
+  // Téléphone : le sommaire sous « En bref », le bouton une fois dépassé
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, GUIDE);
+  const bouton = page.getByRole("link", { name: /^Sommaire/ });
+  await expect(bouton).toBeHidden();
+  await page.locator("#temps").scrollIntoViewIfNeeded();
+  await expect(bouton).toBeVisible();
+  await expect(bouton).toContainText("11 / 13");
+  await bouton.click();
+  await expect(page).toHaveURL(/#sommaire$/);
+});
+
+test("F14-AC53 — le guide se trouve : le pied des pages publiques y mène, son titre d'onglet, son adresse canonique, ses données d'article", async ({ page }) => {
+  await aller(page, "/aide");
+  await page.getByRole("contentinfo").getByRole("link", { name: "Écrire un livre dont vous êtes le héros" }).click();
+  await expect(page).toHaveURL(new RegExp(`${GUIDE}$`));
+  await expect(page).toHaveTitle("Comment écrire un livre dont vous êtes le héros avec sa classe");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`${GUIDE}$`));
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /opengraph-image/);
+  const donnees = JSON.parse((await page.locator('script[type="application/ld+json"]').first().textContent()) ?? "{}");
+  expect(donnees["@graph"][0]).toMatchObject({ "@type": "Article", author: { name: "Nicolas Coussot" } });
+});

@@ -33,6 +33,7 @@
     "histoire:essai": "tsx --conditions=react-server scripts/histoire-d-essai.ts",
     "histoire:v0": "tsx --conditions=react-server scripts/histoire-v0.ts",
     "chemins:essai": "tsx scripts/chapitre-chemins.ts",
+    "guide:texte": "tsx scripts/guide-texte.ts",
     "livre:essai": "tsx scripts/livre-d-essai.ts",
     "livres:essai": "tsx --conditions=react-server scripts/livres-a-imprimer.ts",
     "livres:exemple": "tsx --conditions=react-server scripts/livres-d-exemple.ts",

@@ -1,0 +1,726 @@
+/* Le guide « Comment écrire un livre dont vous êtes le héros avec sa classe » (design.md, « Guide… :
+   maquettes », A2 validée le 30 octobre 2026) : la table chaude et le papier de l'accueil, une page de
+   titre où le dragon tient son livre, le sommaire collant, une colonne de lecture en Vollkorn d'où
+   débordent les images ; « Dans ma classe » sur la copie à marge rouge. */
+
+/* La table : le fond chaud de l'accueil, sur cette page aussi (décidé par le porteur) */
+:global(div):has(> .guide) {
+  background: #f2ede3;
+}
+.guide.guide {
+  --papier: #fcf9f1;
+  --trait-chaud: #e3dccd;
+  --ombre-feuillet: 0 1px 2px rgba(60, 45, 20, 0.08), 0 14px 30px -14px rgba(60, 45, 20, 0.28);
+  padding-top: 8px;
+  padding-bottom: 96px;
+  font-variant-numeric: lining-nums;
+}
+.guide ::selection {
+  background: rgba(11, 106, 115, 0.18);
+}
+.guide a {
+  text-underline-offset: 3px;
+}
+
+/* ——— Page de titre ——— */
+.titre {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 230px;
+  gap: 32px;
+  align-items: end;
+  padding: 52px 56px 44px 64px;
+  background: url(/accueil/papier.webp) center / cover, var(--papier);
+  border-radius: 2px;
+  box-shadow: var(--ombre-feuillet);
+}
+.titre h1 {
+  margin: 0;
+  max-width: 19ch;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.5vw, 2.85rem);
+  line-height: 1.62;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.definition {
+  margin-top: 22px;
+  max-width: 60ch;
+  font-family: var(--f-recit);
+  font-size: 1.24rem;
+  line-height: 1.58;
+}
+.auteur {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--graphite-3);
+}
+.dragon {
+  width: 230px;
+  height: auto;
+  margin-bottom: -18px;
+  filter: drop-shadow(0 12px 14px rgba(60, 45, 20, 0.22));
+}
+
+/* ——— Sommaire collant et colonne de lecture ——— */
+.grille {
+  display: grid;
+  grid-template-columns: 236px minmax(0, 1fr);
+  gap: 56px;
+  margin-top: 56px;
+  align-items: start;
+}
+.sommaire {
+  position: sticky;
+  top: 20px;
+  max-height: calc(100vh - 40px);
+  overflow: auto;
+  padding: 4px 0 12px;
+}
+.sommaireTitre {
+  margin-bottom: 10px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.sommaireListe {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.sommaireListe a {
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 8px;
+  padding: 6px 10px 6px 8px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  line-height: 1.3;
+  color: var(--graphite-2);
+  text-decoration: none;
+  transition:
+    background 0.2s var(--ease),
+    color 0.2s var(--ease);
+}
+.sommaireListe a:hover {
+  color: var(--canard);
+  background: rgba(255, 255, 255, 0.55);
+}
+.sommaireListe a[aria-current] {
+  color: var(--graphite);
+  font-weight: 700;
+  background: var(--feuille);
+  box-shadow: 0 1px 2px rgba(60, 45, 20, 0.08);
+}
+.n {
+  font-family: var(--f-recit);
+  font-weight: 700;
+  color: var(--canard);
+  text-align: right;
+}
+.sommaireCourt {
+  display: none;
+}
+
+.article {
+  font-family: var(--f-recit);
+  font-size: 1.13rem;
+  line-height: 1.68;
+}
+/* La colonne garde sa mesure ; seules les images prennent toute la largeur */
+.article > *,
+.partie > * {
+  max-width: 700px;
+}
+.article > .partie,
+.partie > .large,
+.partie > .encartPortrait,
+.partie > .encartPaysage {
+  max-width: none;
+}
+.partie > p + p,
+.partie > p + .tableau,
+.partie > .tableau + p,
+.partie > .large + p {
+  margin-top: 0.85em;
+}
+.partie h3 {
+  margin: 1.5em 0 0;
+  font-size: 1.13rem;
+  font-weight: 700;
+}
+
+/* En bref : le chiffre en canard, puis la phrase entière */
+.bref {
+  padding: 24px 30px 26px;
+  background: var(--feuille);
+  border-radius: 14px;
+  box-shadow: var(--ombre-cahier);
+}
+.bref h2 {
+  margin: 0 0 6px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--bristol);
+  font-family: var(--f-ui);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-2);
+}
+.bref ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.bref li {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 18px;
+  align-items: baseline;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--trait);
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+.bref li:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.chiffre {
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.1;
+  color: var(--canard);
+  white-space: nowrap;
+}
+
+/* Les questions */
+.partie {
+  margin-top: 80px;
+  scroll-margin-top: 20px;
+}
+.partie > h2 {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: baseline;
+  margin: 0 0 22px;
+  font-size: clamp(1.55rem, 2.6vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.numero {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid var(--canard);
+  border-radius: 50%;
+  font-size: max(0.62em, 0.95rem);
+  color: var(--canard);
+  transform: translateY(-0.18em);
+}
+
+/* Dans ma classe : la copie, feuille blanche et marge rouge ; la main pour le titre */
+.classe {
+  margin: 1.7em 0;
+  padding: 18px 24px 20px 52px;
+  background:
+    linear-gradient(var(--marge), var(--marge)) 34px 0 / 1.5px 100% no-repeat,
+    var(--feuille);
+  border-radius: 3px;
+  box-shadow:
+    0 1px 2px rgba(60, 45, 20, 0.08),
+    0 10px 22px -14px rgba(60, 45, 20, 0.35);
+}
+.classeTitre {
+  margin-bottom: 6px;
+  font-family: var(--f-main);
+  font-size: 1.05rem;
+}
+.classe p:last-child {
+  font-style: italic;
+}
+
+/* L'encart de l'outil : discret, la voix de l'outil, la petite marque du dragon-livre */
+.encart {
+  display: grid;
+  grid-template-columns: 36px minmax(0, 1fr);
+  gap: 4px 14px;
+  margin: 1.8em 0 0.4em;
+  padding: 16px 20px 18px 16px;
+  border: 1px solid var(--trait-chaud);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.6);
+  font-family: var(--f-ui);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--graphite-2);
+}
+.encartSigne {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--feuille);
+  border: 1px solid var(--trait-chaud);
+  color: var(--canard);
+}
+.encartSigne svg {
+  width: 22px;
+  height: 22px;
+}
+.encartImage {
+  grid-column: 2;
+  width: 100%;
+  height: auto;
+  margin-top: 12px;
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+  box-shadow: 0 6px 16px -10px rgba(60, 45, 20, 0.4);
+}
+.encartPortrait .encartImage {
+  max-width: 280px;
+}
+@media (min-width: 900px) {
+  .encartPortrait {
+    grid-template-columns: 36px minmax(0, 1fr) 250px;
+  }
+  .encartPortrait .encartImage {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    margin-top: 0;
+  }
+}
+
+/* Les images en grand */
+.large {
+  margin: 2em 0;
+}
+.photo {
+  margin: 0;
+}
+.photo img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  box-shadow: var(--ombre-feuillet);
+}
+.photoPortrait {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: 28px;
+  align-items: end;
+}
+.photoPortrait img {
+  border-radius: 2px;
+}
+.photo figcaption,
+.couvertures figcaption {
+  margin-top: 12px;
+  font-family: var(--f-ui);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--graphite-3);
+}
+.photoPortrait figcaption {
+  max-width: 30ch;
+}
+.couvertures {
+  margin: 0;
+}
+.couvRang {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 180px));
+  gap: 36px;
+}
+.couv {
+  display: grid;
+  gap: 2px;
+  color: var(--graphite);
+  text-decoration: none;
+}
+.couv img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow:
+    inset 4px 0 6px -3px rgba(0, 0, 0, 0.35),
+    0 16px 26px -14px rgba(60, 45, 20, 0.55);
+  transition: transform 0.3s var(--ease);
+}
+.couv:hover img {
+  transform: translateY(-4px);
+}
+.couv:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+.couvTitre {
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+.couvNote {
+  font-family: var(--f-ui);
+  font-size: 0.8rem;
+  color: var(--graphite-3);
+}
+@media (prefers-reduced-motion: reduce) {
+  .couv img {
+    transition: none;
+  }
+}
+
+/* Les formes d'un chapitre (partie 6) */
+.schemas {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  padding: 30px 28px 24px;
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: var(--ombre-cahier);
+}
+.schema {
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+}
+.schema svg {
+  width: 100%;
+  max-width: 200px;
+  height: auto;
+  color: var(--graphite-2);
+  overflow: visible;
+}
+.schema span {
+  font-family: var(--f-ui);
+  font-size: 0.86rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.schemaEcarte span {
+  font-weight: 600;
+  color: var(--graphite-3);
+  text-decoration: line-through;
+  text-decoration-color: var(--e-reprendre);
+  text-decoration-thickness: 1.5px;
+}
+.scScene {
+  fill: var(--feuille);
+  stroke: var(--graphite-2);
+  stroke-width: 1.4;
+}
+.scBout {
+  fill: var(--canard);
+  stroke: var(--canard);
+}
+.scCentre {
+  fill: var(--canard-pale);
+  stroke: var(--canard);
+  stroke-width: 1.8;
+}
+.scTrait {
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+.scGris {
+  stroke: var(--trait-fort);
+  stroke-width: 1.4;
+}
+.scPoint {
+  fill: var(--trait-fort);
+}
+.scTexte {
+  font: 600 11px var(--f-ui);
+  fill: var(--graphite-3);
+}
+.scFin {
+  stroke: var(--graphite-2);
+  stroke-width: 2.4;
+  stroke-linecap: round;
+}
+
+/* Le tableau de la partie 11 */
+.tableau {
+  margin-top: 12px;
+  border-radius: 12px;
+  background: var(--feuille);
+  box-shadow: var(--ombre-cahier);
+  overflow: hidden;
+}
+.tableau table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--f-ui);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.tableau th,
+.tableau td {
+  padding: 11px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--trait);
+}
+.tableau thead th {
+  border-top: 0;
+  background: var(--papier);
+  font-size: 0.74rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.tableau tbody th {
+  font-weight: 600;
+}
+.tableau td {
+  color: var(--graphite-2);
+  white-space: nowrap;
+}
+
+/* Les erreurs : une croix brique, les renvois cerclés vers la question */
+.erreurs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--trait-chaud);
+}
+.erreurs li {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--trait-chaud);
+  font-size: 1.06rem;
+  line-height: 1.58;
+}
+.croix {
+  width: 22px;
+  height: 22px;
+  margin-top: 0.22em;
+}
+.croix circle {
+  fill: var(--e-reprendre-f);
+}
+.croix path {
+  stroke: var(--e-reprendre);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.voir {
+  color: var(--graphite-2);
+  text-decoration-color: var(--trait-fort);
+}
+.insecable {
+  white-space: nowrap;
+}
+.renvoi {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.9em;
+  height: 1.5em;
+  margin-left: 0.3em;
+  padding: 0 0.35em;
+  border: 1.5px solid var(--canard);
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.84em;
+  color: var(--canard);
+  text-decoration: none;
+  vertical-align: 0.06em;
+}
+.renvoi:hover {
+  background: var(--canard);
+  color: #fff;
+}
+
+/* Pour aller plus loin : une ligne de choix comme à l'accueil, un seul bouton plein */
+.plusLoin {
+  margin-top: 88px;
+}
+.plusLoin h2 {
+  margin: 0 0 8px;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.choix {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 2px;
+  border-top: 1px solid var(--trait-fort);
+  border-bottom: 1px solid var(--trait-fort);
+  font-style: italic;
+  font-size: 1.12rem;
+}
+.choix a {
+  color: var(--graphite);
+  text-decoration: none;
+}
+.choix a:hover {
+  color: var(--canard);
+  text-decoration: underline;
+}
+.choix span {
+  font-family: var(--f-ui);
+  font-style: normal;
+  color: var(--canard);
+}
+.essayer {
+  margin-top: 24px;
+  font-family: var(--f-ui);
+}
+.versSommaire {
+  display: none;
+}
+
+/* ——— Tablette et téléphone ——— */
+@media (max-width: 1040px) {
+  .grille {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 36px;
+  }
+  .sommaire {
+    display: none;
+  }
+  .sommaireCourt {
+    display: block;
+    margin-top: 36px;
+  }
+  .sommaireCourt .sommaireListe a {
+    padding-left: 0;
+    font-size: 1rem;
+  }
+  .versSommaire {
+    display: inline-flex;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 20;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--feuille);
+    border: 1px solid var(--trait-fort);
+    box-shadow: var(--ombre-cahier);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--graphite);
+    text-decoration: none;
+  }
+  .versSommaire[hidden] {
+    display: none;
+  }
+  .ou {
+    margin-left: 0.35em;
+    font-weight: 400;
+    color: var(--graphite-3);
+  }
+}
+@media (max-width: 720px) {
+  .titre {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 32px 22px 28px;
+  }
+  .dragon {
+    position: absolute;
+    right: 10px;
+    top: -26px;
+    width: 92px;
+    margin: 0;
+  }
+  .titre h1 {
+    padding-right: 64px;
+  }
+}
+@media (max-width: 560px) {
+  .guide.guide {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .titre {
+    margin: 0 -4px;
+  }
+  .titre h1 {
+    font-size: 1.62rem;
+    line-height: 1.6;
+  }
+  .definition {
+    font-size: 1.1rem;
+  }
+  .article {
+    font-size: 1.06rem;
+    line-height: 1.64;
+  }
+  .bref {
+    padding: 18px 18px 20px;
+  }
+  .bref li {
+    grid-template-columns: 82px 1fr;
+    gap: 12px;
+  }
+  .chiffre {
+    font-size: 1.22rem;
+  }
+  .partie {
+    margin-top: 60px;
+  }
+  .classe {
+    padding: 14px 16px 16px 40px;
+    background-position:
+      24px 0,
+      0 0;
+  }
+  .encart {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .encartImage {
+    grid-column: 1;
+  }
+  .photoPortrait {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .couvRang {
+    gap: 12px;
+  }
+  .couvTitre {
+    font-size: 0.84rem;
+  }
+  .schemas {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+    padding: 22px 14px 18px;
+  }
+  .tableau th,
+  .tableau td {
+    padding: 10px 12px;
+  }
+  .tableau td {
+    white-space: normal;
+  }
+}

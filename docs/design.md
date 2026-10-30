@@ -2821,6 +2821,17 @@ le dossier comme pistes écartées.
   phrase commençant déjà par « Dans Il était une classe » ; sa capture à
   droite du texte.
 
+**Construit en local le 30 octobre 2026**, à sa demande (« tu peux construire
+la page guide, on verra après pour les retouches textuelles ») :
+`(public)/guide/ecrire-un-livre-dont-vous-etes-le-heros/`, texte tiré du
+document par `npm run guide:texte`, images dans `public/guide/` ; critères
+F14-AC52 et AC53. Écarts avec la maquette : les espaces insécables avant
+« ? : ; ! » sont pleines, comme ailleurs sur le site (la fine manquait aux
+polices) ; une image de partage propre, recadrée dans la photo des livres ;
+« Écrire un livre dont vous êtes le héros » dans le pied de toutes les pages
+publiques, sous « Besoin d'aide ? ». Pas de lien vers « Ressources » tant que
+la page n'existe pas.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

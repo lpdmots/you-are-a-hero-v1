@@ -11741,6 +11741,25 @@ découvre l'outil, et le porteur, administrateur.
   témoin ne sert à la mesure, et liste les témoins du site ; aucun bandeau ne
   s'affiche.
 
+*Le guide (construit le 30 octobre 2026, maquette A2 de
+[design.md](design.md#guide--écrire-un-livre-dont-vous-êtes-le-héros---maquettes-30-octobre-2026))*
+
+- **F14-AC52 — Le guide se lit :** étant donné un visiteur qui ouvre
+  `/guide/ecrire-un-livre-dont-vous-etes-le-heros`, alors il lit le titre, la
+  définition, l'auteur et la date de mise à jour, « En bref », puis un
+  sommaire des treize questions dont chaque ligne mène à sa question ; sur
+  grand écran, le sommaire reste à côté du texte et marque la question qu'on
+  lit ; sur téléphone, un bouton « Sommaire » paraît une fois le sommaire
+  dépassé ; le texte est celui du
+  [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md)
+  (`npm run guide:texte`), six encarts de l'outil au plus, et il ne renvoie à
+  aucune page qui n'existe pas encore (« Ressources »).
+- **F14-AC53 — Le guide se trouve :** étant donné le plan du site,
+  `robots.txt` et `llms.txt`, alors le guide y est, ses images ouvertes aux
+  robots des IA ; le pied de chaque page publique y mène ; il porte son titre
+  d'onglet sans le nom du site, son adresse canonique, son image de partage et
+  ses données d'article (auteur, date, questions).
+
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en
 parle pas ; il a allumé « Paiement ouvert » en ligne le même jour sans lui, contre la

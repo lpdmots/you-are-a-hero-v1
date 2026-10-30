@@ -1,9 +1,15 @@
 # Guide « Comment écrire un livre dont vous êtes le héros avec sa classe »
 
 Document de travail de la page guide publique : cadrage, plan, matière par
-partie, sources. Commencé le 28 octobre 2026. Rien n'est construit ; la page
-demandera son instruction. Le texte de la page s'écrira ici, partie par partie,
-pendant l'entretien avec le porteur.
+partie, sources. Commencé le 28 octobre 2026. Le texte de la page est ici, dans
+les « Premier jet » : il en reste la seule source. Page construite en local le
+30 octobre 2026 (maquette A2, [design](design.md#guide--écrire-un-livre-dont-vous-êtes-le-héros---maquettes-30-octobre-2026)),
+à l'adresse `/guide/ecrire-un-livre-dont-vous-etes-le-heros` ; après une
+retouche du texte ici, `npm run guide:texte` (dans `app/`) le reporte dans
+l'application. Tant que la page « Ressources » n'existe pas, le guide n'y
+renvoie pas (`SANS_RESSOURCES`, `app/scripts/guide-texte.ts`) : la phrase de
+la partie 1 qui y mène est retirée, le modèle d'autorisation de la partie 12
+mène à celui de l'Aide, et le pied ne garde que la bibliothèque et l'accueil.
 
 ## Cadrage
 
