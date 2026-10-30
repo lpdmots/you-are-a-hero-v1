@@ -2792,6 +2792,32 @@ Git). Propositions, rien n'est retenu.
   espaces insécables avant « ? : ; ! » et dans les guillemets, chiffres
   alignés (Vollkorn les met en bas de casse par défaut).
 
+**Décidé par le porteur le 30 octobre 2026 :** la direction A, l'article, avec
+le meilleur des deux autres (avis d'un second modèle, GPT, qui classait A,
+puis C, puis B : A pour retrouver un conseil, C pour ses chiffres et ses
+images, B pour sa continuité avec l'accueil, trop chargée sur treize
+parties). Reprise en A2, `guide-a2.html`, proposition à juger :
+
+- **Le haut :** la table chaude de l'accueil à la place du bureau ; une page
+  de titre sur le papier des feuillets, le titre en cursive (comme l'accueil
+  et la bibliothèque), le dragon qui tient son livre à côté, sans parole ;
+  plus de vide à gauche du titre ni de mot au-dessus.
+- **« En bref » :** le chiffre de chaque ligne en canard (« 4 ans »,
+  « 2 × 1 h », « 1 ou 2 », « 20 h », « 5 à 30 € »), la phrase entière à côté,
+  dans une fiche à filet bristol.
+- **La lecture :** le sommaire collant de A ; la colonne garde sa mesure
+  (700 points), les images en prennent toute la largeur (couvertures,
+  schémas, fiche aventure, photo). Sur téléphone, le bouton « Sommaire » ne
+  paraît qu'une fois le sommaire dépassé et dit la question en cours
+  (« 6 / 13 »).
+- **Repris de B :** « Dans ma classe » en copie, feuille blanche à marge
+  rouge, titre à la main ; les renvois cerclés de la partie 13 ; « Pour aller
+  plus loin » en deux lignes de choix et un seul bouton plein, « Essayer Il
+  était une classe ».
+- **L'encart :** sans intitulé, la petite marque du dragon-livre suffit, la
+  phrase commençant déjà par « Dans Il était une classe » ; sa capture à
+  droite du texte.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

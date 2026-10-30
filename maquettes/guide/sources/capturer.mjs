@@ -4,7 +4,7 @@ import { chromium } from "../../../app/node_modules/playwright/index.mjs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 const racine = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const pages = [["a", "guide-a-article.html"], ["b", "guide-b-livre-jeu.html"], ["c", "guide-c-aere.html"]];
+const pages = [["a", "guide-a-article.html"], ["b", "guide-b-livre-jeu.html"], ["c", "guide-c-aere.html"], ["a2", "guide-a2.html"]];
 const vues = [["haut", null], ["commencer", "#commencer"], ["combien", "#combien"], ["objets", "#objets"], ["chemins", "#chemins"], ["temps", "#temps"], ["erreurs", "#erreurs"], ["fin", "END"]];
 const seules = process.argv.slice(2);
 const b = await chromium.launch();
