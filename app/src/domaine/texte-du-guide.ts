@@ -14,7 +14,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     },
     {
       "chiffre": "20 h",
-      "texte": "de travail pour vous : mettre en place les chapitres, les scènes et les consignes, relier, relire, ajouter les illustrations ; pas seulement corriger des textes.",
+      "texte": "de travail pour vous : préparer le plan du livre et les consignes, relire, ajouter les illustrations ; pas seulement corriger des textes.",
       "partie": 11
     },
     {

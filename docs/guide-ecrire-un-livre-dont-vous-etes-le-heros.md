@@ -123,9 +123,9 @@ Décidé le 30 octobre 2026.
 >
 > - **1 à 3 mois** avec la classe : une période pour un premier livre, trois
 >   mois pour un grand. (partie 11)
-> - **20 h** de travail pour vous : mettre en place les chapitres, les scènes
->   et les consignes, relier, relire, ajouter les illustrations ; pas
->   seulement corriger des textes. (partie 11)
+> - **20 h** de travail pour vous : préparer le plan du livre et les
+>   consignes, relire, ajouter les illustrations ; pas seulement corriger des
+>   textes. (partie 11)
 > - **4 étapes** pour mener le projet : découvrir le genre, préparer
 >   l'histoire, écrire, relire. (partie 3)
 > - **80 scènes** pour un premier livre, soit une vingtaine d'obstacles :
