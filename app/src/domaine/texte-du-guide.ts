@@ -105,7 +105,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Du CE2 au CM2 (8-11 ans).",
-          "texte": "Chaque élève peut écrire seul ses scènes. Si la classe débute, avancez par étapes, au fil de l’année ou d’une année sur l’autre : d’abord une histoire écrite tous ensemble, puis en groupes, puis chacun ses scènes."
+          "texte": "Dès le CE2, chaque élève écrit ses propres scènes."
         },
         {
           "sorte": "paragraphe",
