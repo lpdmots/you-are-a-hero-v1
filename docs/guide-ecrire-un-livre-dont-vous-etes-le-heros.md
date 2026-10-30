@@ -343,9 +343,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > vous écrivez au tableau. Passez ensuite aux groupes, toujours en dictée à
 > l'adulte. Gardez des choix simples et une histoire courte.
 >
-> **Du CE2 au CM2 (8-11 ans).** Chaque élève écrit ses scènes. Vous passez de l'un à
-> l'autre au fil de l'année, ou au fil des années : toute la classe, puis des
-> groupes, puis chacun sa scène.
+> **Du CE2 au CM2 (8-11 ans).** Chaque élève peut écrire seul ses scènes. Si
+> la classe débute, avancez par étapes, au fil de l'année ou d'une année sur
+> l'autre : d'abord une histoire écrite tous ensemble, puis en groupes, puis
+> chacun ses scènes.
 >
 > **Au collège (11-15 ans).** La méthode vaut jusqu'en 3e, et vous pouvez confier
 > davantage aux élèves : organiser eux-mêmes leur chapitre et ses choix,
