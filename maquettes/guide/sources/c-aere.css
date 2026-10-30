@@ -1,0 +1,521 @@
+/* C — l'aérée : feuille blanche, grands numéros, la question tenue à gauche, les preuves en grand. */
+body {
+  background: var(--feuille);
+}
+.tete {
+  border-bottom: 1px solid var(--trait);
+  width: 100%;
+  padding-left: max(24px, calc((100% - 1180px) / 2 + 24px));
+  padding-right: max(24px, calc((100% - 1180px) / 2 + 24px));
+}
+.c {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 0 24px 96px;
+}
+
+/* ——— Le haut : le titre à gauche, la définition à droite ——— */
+.c-haut {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: end;
+  padding: 72px 0 56px;
+}
+.c-sur,
+.c-bref h2,
+.c-sommaire h2,
+.c-plusloin-titre {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--canard);
+}
+.c-haut h1 {
+  margin: 14px 0 0;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: clamp(2.1rem, 3.9vw, 3.15rem);
+  line-height: 1.62;
+  text-wrap: balance;
+}
+.c-def {
+  font-family: var(--f-recit);
+  font-size: 1.32rem;
+  line-height: 1.55;
+}
+.c-auteur {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--graphite-3);
+}
+.c-auteur em {
+  font-style: normal;
+}
+.c-initiales {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--canard-pale);
+  color: var(--canard);
+  font-weight: 800;
+  font-size: 0.86rem;
+}
+
+/* ——— En bref : cinq chiffres ——— */
+.c-bref {
+  padding: 40px 0 48px;
+  border-top: 1px solid var(--graphite);
+}
+.c-bref ul {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 28px;
+}
+.c-bref li {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  font-family: var(--f-recit);
+  font-size: 0.98rem;
+  line-height: 1.45;
+  color: var(--graphite-2);
+}
+.c-chiffre {
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 2.3rem;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: var(--graphite);
+  font-variant-numeric: lining-nums;
+}
+
+/* ——— Sommaire en grille ——— */
+.c-sommaire {
+  padding: 40px 0 24px;
+  border-top: 1px solid var(--trait);
+}
+.c-sommaire ol {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 40px;
+}
+.c-sommaire a {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--trait);
+  font-family: var(--f-recit);
+  font-size: 1.06rem;
+  line-height: 1.35;
+  color: var(--graphite);
+  text-decoration: none;
+}
+.c-sommaire a:hover span:last-child {
+  color: var(--canard);
+}
+.c-n {
+  font-weight: 700;
+  color: var(--canard);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* ——— Les parties : la question tenue à gauche ——— */
+.c-partie {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+  gap: 64px;
+  padding: 96px 0 0;
+  scroll-margin-top: 0;
+}
+.c-gauche {
+  position: sticky;
+  top: 32px;
+  align-self: start;
+}
+.c-numero {
+  font-family: var(--f-recit);
+  font-weight: 800;
+  font-size: 5.5rem;
+  line-height: 0.9;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--canard);
+  font-variant-numeric: lining-nums;
+}
+.c-gauche h2 {
+  margin: 18px 0 0;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  line-height: 1.15;
+  text-wrap: balance;
+}
+.c-haut-lien {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+.c-droite {
+  font-family: var(--f-recit);
+  font-size: 1.16rem;
+  line-height: 1.7;
+  padding-top: 8px;
+}
+.c-droite > p + p,
+.c-droite > p + .c-tableau {
+  margin-top: 0.9em;
+}
+.c-chapeau {
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+.c-sous {
+  margin-top: 1.6em !important;
+  font-weight: 700;
+}
+
+/* Les images débordent sur la colonne de gauche */
+.c-large {
+  margin: 2em 0 2em calc(-400% / 7 - 64px);
+}
+.c-large .photo {
+  margin: 0;
+}
+.c-large .photo img {
+  width: 100%;
+  border-radius: 4px;
+}
+.c-large .photo--portrait {
+  display: grid;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
+  gap: 32px;
+  align-items: end;
+}
+.c-large .photo--portrait img {
+  border: 1px solid var(--trait);
+}
+.photo figcaption,
+.couvertures figcaption {
+  margin-top: 12px;
+  font-family: var(--f-ui);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--graphite-3);
+}
+.couvertures {
+  margin: 0;
+}
+.couv-rang {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 190px));
+  justify-content: center;
+  gap: 48px;
+  padding: 44px 48px 36px;
+  background: var(--table);
+}
+.couv {
+  display: grid;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--graphite);
+}
+.couv img {
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow: inset 4px 0 6px -3px rgba(0, 0, 0, 0.35), 0 16px 28px -14px rgba(60, 45, 20, 0.55);
+  margin-bottom: 10px;
+  transition: transform 0.25s var(--ease);
+}
+.couv:hover img {
+  transform: translateY(-4px);
+}
+.couv-titre {
+  font-family: var(--f-recit);
+  font-weight: 700;
+}
+.couv-note {
+  font-size: 0.82rem;
+  color: var(--graphite-3);
+}
+.schemas {
+  padding: 36px 32px 28px;
+  background: var(--bureau);
+  gap: 28px;
+}
+.schema span {
+  font-size: 0.9rem;
+}
+
+/* Dans ma classe : une citation, la main pour le titre */
+.c-classe {
+  margin: 2em 0;
+  padding: 4px 0 4px 28px;
+  border-left: 3px solid var(--bristol);
+}
+.c-classe-titre {
+  font-family: var(--f-main);
+  font-size: 1.05rem;
+  margin-bottom: 10px;
+}
+.c-classe p:last-child {
+  font-style: italic;
+  font-size: 1.28rem;
+  line-height: 1.55;
+}
+
+/* L'encart : un filet canard, la voix de l'outil */
+.c-encart {
+  margin: 2.2em 0 0;
+  padding: 18px 0 0;
+  border-top: 3px solid var(--canard);
+  font-family: var(--f-ui);
+  font-size: 0.96rem;
+  line-height: 1.55;
+  color: var(--graphite-2);
+}
+.c-encart-titre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--canard);
+}
+.c-encart--img {
+  display: grid;
+  gap: 18px;
+}
+.c-encart--portrait {
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 28px;
+  align-items: start;
+}
+.c-encart-img {
+  border: 1px solid var(--trait);
+  border-radius: 6px;
+}
+
+/* Le tableau, large et calme */
+.c-tableau {
+  margin-top: 12px;
+}
+.c-tableau table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1.02rem;
+}
+.c-tableau th,
+.c-tableau td {
+  padding: 13px 0;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--trait);
+  line-height: 1.4;
+}
+.c-tableau thead th {
+  border-bottom: 1px solid var(--graphite);
+  font-family: var(--f-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.c-tableau tbody th {
+  font-weight: 400;
+  padding-right: 24px;
+}
+.c-tableau td {
+  font-style: italic;
+  color: var(--graphite-2);
+  white-space: nowrap;
+}
+
+/* Les erreurs en cartes */
+.c-erreurs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.c-erreurs li {
+  padding: 20px 22px;
+  background: var(--bureau);
+  border-radius: 12px;
+  font-size: 1.02rem;
+  line-height: 1.55;
+}
+.c-erreurs strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 1.12rem;
+  color: var(--brique);
+}
+
+/* Pour aller plus loin */
+.c-plusloin {
+  margin-top: 120px;
+  padding: 40px 0 0;
+  border-top: 1px solid var(--graphite);
+}
+.c-plusloin ul {
+  list-style: none;
+  margin: 18px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+}
+.c-plusloin a {
+  display: block;
+  padding: 22px 0;
+  border-bottom: 1px solid var(--trait-fort);
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: var(--graphite);
+  text-decoration: none;
+}
+.c-plusloin a::after {
+  content: " →";
+  color: var(--canard);
+}
+.c-plusloin a:hover {
+  color: var(--canard);
+}
+
+/* ——— Tablette et téléphone ——— */
+@media (max-width: 960px) {
+  .c-haut {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    padding-top: 48px;
+  }
+  .c-bref ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .c-sommaire ol {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .c-partie {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    padding-top: 72px;
+  }
+  .c-gauche {
+    position: static;
+  }
+  .c-haut-lien {
+    display: none;
+  }
+  .c-large {
+    margin-left: 0;
+  }
+}
+@media (max-width: 560px) {
+  .tete {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .c {
+    padding: 0 16px 72px;
+  }
+  .c-haut h1 {
+    font-size: 1.85rem;
+  }
+  .c-def {
+    font-size: 1.14rem;
+  }
+  .c-bref ul {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+  .c-bref li {
+    grid-template-columns: 112px 1fr;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .c-chiffre {
+    font-size: 1.65rem;
+  }
+  .c-sommaire ol {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .c-numero {
+    font-size: 3.6rem;
+  }
+  .c-droite {
+    font-size: 1.06rem;
+    line-height: 1.64;
+  }
+  .c-chapeau {
+    font-size: 1.14rem;
+  }
+  .c-large {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+  .c-large .photo figcaption,
+  .c-large .couvertures figcaption {
+    padding: 0 16px;
+  }
+  .c-large .photo--portrait {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 16px;
+  }
+  .couv-rang {
+    gap: 14px;
+    padding: 24px 16px;
+  }
+  .couv-titre {
+    font-size: 0.86rem;
+  }
+  .schemas {
+    padding: 24px 16px;
+  }
+  .c-encart--portrait {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .c-encart-img {
+    max-width: 280px;
+  }
+  .c-classe p:last-child {
+    font-size: 1.12rem;
+  }
+  .c-erreurs {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .c-tableau td {
+    white-space: normal;
+  }
+  .c-plusloin ul {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+  }
+  .c-plusloin a {
+    font-size: 1.25rem;
+  }
+}

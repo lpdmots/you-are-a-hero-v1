@@ -1,0 +1,554 @@
+/* B — le livre-jeu : la table de l'accueil, des feuillets de papier numérotés, les preuves à côté. */
+body {
+  background: var(--table);
+}
+.b {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 24px 24px 64px;
+  font-family: var(--f-recit);
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* Papier des feuillets, comme sur l'accueil */
+.b-titre,
+.b-feuillet,
+.b-bref,
+.b-table {
+  position: relative;
+  background: url(../images/papier.webp) center / cover, var(--papier);
+  box-shadow: var(--ombre-feuillet);
+  border-radius: 2px;
+}
+
+/* ——— Page de titre ——— */
+.b-titre {
+  max-width: 900px;
+  margin: 20px auto 0;
+  padding: 64px 72px 52px;
+  text-align: center;
+}
+.b-titre h1 {
+  margin: 0;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: clamp(2rem, 4.2vw, 3.15rem);
+  line-height: 1.5;
+  text-wrap: balance;
+}
+.b-orn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 26px 0 22px;
+  color: var(--canard);
+  font-size: 0.9rem;
+}
+.b-orn span {
+  width: 72px;
+  height: 1px;
+  background: var(--trait-fort);
+}
+.b-def {
+  max-width: 58ch;
+  margin: 0 auto;
+  font-size: 1.24rem;
+  line-height: 1.6;
+}
+.b-auteur {
+  margin-top: 22px;
+  font-family: var(--f-ui);
+  font-size: 0.9rem;
+  color: var(--graphite-3);
+}
+.b-auteur em {
+  font-style: normal;
+}
+
+/* ——— En bref et sommaire, côte à côte ——— */
+.b-ouverture {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 40px;
+  max-width: 1080px;
+  margin: 48px auto 0;
+  align-items: start;
+}
+.b-bref,
+.b-table {
+  padding: 34px 38px 32px;
+}
+.b-bref {
+  transform: rotate(-0.6deg);
+}
+.b-table {
+  transform: rotate(0.4deg);
+}
+.b-bref h2,
+.b-table h2 {
+  margin: 0 0 18px;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1.05rem;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: var(--graphite-2);
+}
+.b-bref ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* Les lignes de la fiche, comme une feuille d'aventure */
+.b-bref li {
+  padding: 10px 0 10px 28px;
+  border-bottom: 1px solid var(--trait-chaud);
+  font-size: 1.04rem;
+  line-height: 1.5;
+  position: relative;
+}
+.b-bref li:first-child {
+  border-top: 1px solid var(--trait-chaud);
+}
+.b-bref li::before {
+  content: "✦";
+  position: absolute;
+  left: 4px;
+  top: 11px;
+  font-size: 0.8rem;
+  color: var(--canard);
+}
+.b-table ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.b-table a {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--graphite);
+  text-decoration: none;
+  font-size: 1.02rem;
+  line-height: 1.35;
+}
+.b-table a:hover .b-q {
+  color: var(--canard);
+  text-decoration: underline;
+}
+.b-q {
+  max-width: 34ch;
+}
+.b-pts {
+  border-bottom: 2px dotted var(--trait-fort);
+  margin-bottom: 0.4em;
+  min-width: 16px;
+}
+
+/* Le renvoi cerclé de canard, le même que les choix de l'accueil */
+.b-renvoi {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2em;
+  height: 1.55em;
+  padding: 0 0.35em;
+  border: 1.5px solid var(--canard);
+  border-radius: 999px;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 0.86em;
+  font-variant-numeric: lining-nums;
+  color: var(--canard);
+  text-decoration: none;
+  vertical-align: 0.05em;
+  margin-left: 0.25em;
+}
+
+/* ——— Les parties : le feuillet à gauche, ce qui le prouve à droite ——— */
+.b-partie {
+  display: grid;
+  grid-template-columns: minmax(0, 720px) minmax(0, 340px);
+  gap: 56px;
+  justify-content: center;
+  align-items: start;
+  margin-top: 72px;
+  scroll-margin-top: 16px;
+}
+.b-partie:not(:has(.b-cote)) {
+  grid-template-columns: minmax(0, 720px) 340px;
+}
+.b-feuillet {
+  padding: 40px 56px 36px;
+  font-size: 1.12rem;
+  line-height: 1.66;
+}
+.b-numero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: var(--graphite-2);
+  font-size: 1.05rem;
+}
+.b-numero::before,
+.b-numero::after {
+  content: "";
+  width: 44px;
+  height: 1px;
+  background: var(--trait-fort);
+}
+.b-feuillet h2 {
+  margin: 14px 0 24px;
+  font-size: clamp(1.5rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+.b-feuillet p + p,
+.b-feuillet p + table,
+.b-feuillet table + p {
+  margin-top: 0.8em;
+}
+.b-sous {
+  margin-top: 1.4em !important;
+  font-weight: 700;
+}
+
+/* La ligne de choix au bas du feuillet : la question suivante */
+.b-choix {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 30px !important;
+  padding: 12px 2px;
+  border-top: 1px solid var(--trait-fort);
+  border-bottom: 1px solid var(--trait-fort);
+  font-size: 1.02rem;
+  line-height: 1.4;
+}
+.b-choix a:first-child {
+  color: var(--graphite);
+  text-decoration: none;
+}
+.b-choix a:first-child:hover {
+  color: var(--canard);
+}
+.b-rdv {
+  font-style: italic;
+  color: var(--graphite-2);
+}
+.b-rdv::before {
+  content: " ";
+}
+.b-fin {
+  margin-top: 34px !important;
+  text-align: center;
+  font-variant: small-caps;
+  letter-spacing: 0.2em;
+  font-size: 1.2rem;
+  color: var(--graphite-2);
+}
+
+/* Le tableau : des lignes pointillées, comme une table des matières */
+.b-etapes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.b-etapes th,
+.b-etapes td {
+  padding: 7px 0;
+  vertical-align: bottom;
+  font-size: 1.02rem;
+  line-height: 1.4;
+}
+.b-etapes th {
+  font-weight: 400;
+  text-align: left;
+  background: linear-gradient(to right, var(--trait-fort) 40%, transparent 0) repeat-x 0 calc(100% - 0.42em) / 6px 2px;
+}
+.b-etapes th span {
+  background: var(--papier);
+  padding-right: 8px;
+}
+.b-etapes td {
+  padding-left: 8px;
+  text-align: right;
+  font-style: italic;
+  white-space: nowrap;
+  width: 1%;
+}
+
+/* Les erreurs */
+.b-erreurs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.b-erreurs li {
+  position: relative;
+  padding: 12px 0 12px 34px;
+  border-bottom: 1px solid var(--trait-chaud);
+}
+.b-erreurs li:first-child {
+  border-top: 1px solid var(--trait-chaud);
+}
+.b-erreurs li::before {
+  content: "✕";
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  font-family: var(--f-ui);
+  font-weight: 700;
+  color: var(--brique);
+}
+.voir {
+  color: var(--graphite-2);
+}
+
+/* ——— À côté : la copie, les captures scotchées, l'encart ——— */
+.b-cote {
+  display: grid;
+  gap: 40px;
+  padding-top: 24px;
+  position: sticky;
+  top: 16px;
+}
+.b-copie {
+  position: relative;
+  padding: 26px 22px 22px 46px;
+  background: linear-gradient(var(--marge), var(--marge)) 30px 0 / 1.5px 100% no-repeat, var(--feuille);
+  box-shadow: var(--ombre-feuillet);
+  transform: rotate(var(--r));
+  font-size: 1.02rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+.b-copie::before,
+.b-tirage::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -11px;
+  left: 50%;
+  width: 84px;
+  height: 22px;
+  transform: translateX(-50%) rotate(-3deg);
+  background: rgba(232, 160, 169, 0.55);
+}
+.b-copie-titre {
+  font-family: var(--f-main);
+  font-style: normal;
+  font-size: 1.02rem;
+  color: var(--graphite);
+  margin-bottom: 2px;
+}
+.b-tirage {
+  position: relative;
+  margin: 0;
+  padding: 8px;
+  background: var(--feuille);
+  box-shadow: 0 2px 4px rgba(60, 45, 20, 0.12), 0 18px 30px -14px rgba(60, 45, 20, 0.38);
+  transform: rotate(var(--r));
+}
+.b-tirage--portrait {
+  max-width: 280px;
+  justify-self: center;
+}
+.b-note {
+  margin-top: -18px;
+  font-family: var(--f-ui);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--graphite-2);
+  text-align: center;
+}
+.b-encart {
+  display: grid;
+  gap: 22px;
+}
+.b-encart-carte {
+  padding: 14px 18px 16px;
+  border: 1px solid var(--trait-chaud);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.7);
+  font-family: var(--f-ui);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--graphite-2);
+}
+.b-encart-titre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--canard);
+}
+.b-schemas .schemas {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 10px;
+  padding: 20px 14px 16px;
+  background: var(--feuille);
+  box-shadow: var(--ombre-feuillet);
+  transform: rotate(0.8deg);
+}
+.couvertures {
+  margin: 0;
+}
+.couv-rang {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 0;
+}
+.couv {
+  display: block;
+  width: 118px;
+  margin: 0 -10px;
+  text-decoration: none;
+  color: var(--graphite);
+}
+.couv:nth-child(1) {
+  transform: rotate(-5deg);
+}
+.couv:nth-child(2) {
+  transform: rotate(2deg) translateY(-8px);
+  z-index: 1;
+}
+.couv:nth-child(3) {
+  transform: rotate(6deg);
+}
+.couv img {
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 2px 5px 5px 2px;
+  box-shadow: inset 4px 0 6px -3px rgba(0, 0, 0, 0.35), 0 10px 18px -8px rgba(60, 45, 20, 0.5);
+}
+.couv-titre,
+.couv-note {
+  display: none;
+}
+.couvertures figcaption {
+  margin-top: 16px;
+  font-family: var(--f-ui);
+  font-size: 0.84rem;
+  color: var(--graphite-2);
+  text-align: center;
+}
+
+/* ——— La fin ——— */
+.b-fin-livre {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 520px);
+  gap: 40px;
+  justify-content: center;
+  align-items: center;
+  margin-top: 88px;
+}
+.b-plusloin-titre {
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  font-weight: 700;
+  color: var(--graphite-2);
+  margin-bottom: 4px;
+}
+.b-choix--lien {
+  margin-top: 0 !important;
+  border-top: 0;
+}
+.b-plusloin .b-choix--lien:first-of-type {
+  border-top: 1px solid var(--trait-fort);
+}
+.b-choix--lien a {
+  font-style: italic;
+  color: var(--graphite) !important;
+}
+.b-fleche {
+  color: var(--canard);
+  font-family: var(--f-ui);
+}
+
+/* ——— Tablette et téléphone ——— */
+@media (max-width: 1100px) {
+  .b-partie,
+  .b-partie:not(:has(.b-cote)) {
+    grid-template-columns: minmax(0, 720px);
+    gap: 28px;
+  }
+  .b-cote {
+    position: static;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    align-items: start;
+    padding: 0 12px;
+  }
+}
+@media (max-width: 860px) {
+  .b-ouverture {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+@media (max-width: 560px) {
+  .b {
+    padding: 8px 12px 48px;
+  }
+  .b-titre {
+    padding: 40px 22px 32px;
+  }
+  .b-titre h1 {
+    font-size: 1.62rem;
+    line-height: 1.55;
+  }
+  .b-def {
+    font-size: 1.08rem;
+  }
+  .b-bref,
+  .b-table {
+    padding: 24px 20px;
+    transform: none;
+  }
+  .b-feuillet {
+    padding: 28px 20px 24px;
+    font-size: 1.04rem;
+    line-height: 1.62;
+    transform: none;
+  }
+  .b-partie {
+    margin-top: 44px;
+  }
+  .b-cote {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding: 0 8px;
+  }
+  .b-q {
+    max-width: none;
+  }
+  .b-fin-livre {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    margin-top: 56px;
+  }
+  .b-fin-livre img {
+    max-width: 220px;
+    margin: 0 auto;
+  }
+  .b-etapes td {
+    white-space: normal;
+    width: 34%;
+  }
+}

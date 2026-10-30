@@ -2755,6 +2755,43 @@ captures 1701 à 1708 (`npm run captures -- couverture`).
   bouton (F14), le bloc entier dans le volet « Partager » (F11-AC113), le rond
   ✦ et la copie au coin du champ, communs à l'image d'une scène.
 
+### Guide « Écrire un livre dont vous êtes le héros » : maquettes (30 octobre 2026)
+
+Texte : [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md),
+« Premier jet », repris tel quel. Trois directions en HTML statique, hors de
+l'application, dans [maquettes/guide](../maquettes/guide/) : `node
+sources/construire.mjs` les régénère depuis le document, `node
+sources/capturer.mjs` les capture en 1440 et 390 px (`captures/`, hors de
+Git). Propositions, rien n'est retenu.
+
+- **A, l'article :** fond du bureau comme l'Aide et la bibliothèque, titre en
+  Vollkorn, une colonne de lecture, le sommaire collant à gauche qui suit la
+  lecture ; « En bref » en fiche à filet bristol, « Dans ma classe » sur fond
+  rose pâle, titre en cursive.
+- **B, le livre-jeu :** la table chaude et le papier des feuillets de
+  l'accueil, titre en cursive sur une page de titre, sommaire en table des
+  passages à points de conduite et renvois cerclés ; chaque question sur un
+  feuillet numéroté qui finit par la question suivante en ligne de choix ; à
+  côté, les preuves : captures scotchées, « Dans ma classe » en copie à marge
+  rouge, l'encart ; le dragon endormi à la fin.
+- **C, l'aérée :** la feuille blanche, titre en cursive à gauche et
+  définition à droite, « En bref » en cinq chiffres, sommaire en grille, grand
+  numéro en creux et question tenus à gauche pendant la lecture, images en
+  pleine largeur.
+- **Images, une par partie au plus, communes aux trois :** 3, les couvertures
+  de la bibliothèque (deux livres de classe, « Bouquin » nommé livre
+  d'exemple) ; 4, la Préparation, « Nous retenons » (encart) ; 6, quatre
+  schémas en SVG (l'arbre barré, les branches qui se rejoignent, le carrefour,
+  le goulot) ; 9, la fiche aventure imprimée d'« Électro Nick » ; 10,
+  « Vérifier les chemins » de la classe d'essai (encart) ; 12, la photo des
+  livres imprimés. Légendes proposées, hors du texte arrêté. Aucune image
+  générée : aucune ne manquait. Mise à l'écart : le passage 4 d'« Électro
+  Nick » en lecture (`images/carrefour-electro-nick.jpg`), un vrai carrefour,
+  mais ses phrases de choix changent de forme, contre la partie 7.
+- **Typographie appliquée sans changer le texte :** apostrophe courbe,
+  espaces insécables avant « ? : ; ! » et dans les guillemets, chiffres
+  alignés (Vollkorn les met en bas de casse par défaut).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

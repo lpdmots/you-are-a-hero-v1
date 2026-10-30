@@ -1,0 +1,521 @@
+/* A — l'article : le bureau des pages de texte, une colonne de lecture en Vollkorn, le sommaire collant. */
+body {
+  background: var(--bureau);
+}
+.a {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 24px 24px 96px;
+}
+
+/* ——— Le haut ——— */
+.a-haut {
+  max-width: 860px;
+  margin: 12px 0 0 calc(240px + 64px);
+}
+.a-sur {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--canard);
+}
+.a-haut h1 {
+  margin: 10px 0 0;
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: clamp(2.1rem, 4.2vw, 3.3rem);
+  line-height: 1.08;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+}
+.a-def {
+  margin-top: 22px;
+  max-width: 62ch;
+  font-family: var(--f-recit);
+  font-size: 1.28rem;
+  line-height: 1.55;
+  color: var(--graphite);
+}
+.a-auteur {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: var(--graphite-3);
+}
+.a-auteur em {
+  font-style: normal;
+}
+
+/* ——— La grille : sommaire collant, colonne de lecture ——— */
+.a-grille {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 700px);
+  gap: 64px;
+  margin-top: 48px;
+  align-items: start;
+}
+.a-sommaire {
+  position: sticky;
+  top: 24px;
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  padding: 4px 0 12px;
+}
+.a-sommaire-titre {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+  margin-bottom: 10px;
+}
+.a-sommaire-liste {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2px;
+}
+.a-sommaire-liste a {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  padding: 6px 10px 6px 8px;
+  border-left: 2px solid transparent;
+  border-radius: 0 6px 6px 0;
+  font-size: 0.86rem;
+  line-height: 1.3;
+  color: var(--graphite-2);
+  text-decoration: none;
+}
+.a-sommaire-liste a:hover {
+  color: var(--canard);
+  background: rgba(11, 106, 115, 0.05);
+}
+.a-sommaire-liste a[aria-current] {
+  color: var(--graphite);
+  font-weight: 700;
+  border-left-color: var(--canard);
+  background: var(--feuille);
+}
+.a-n {
+  font-family: var(--f-recit);
+  font-weight: 600;
+  color: var(--canard);
+  text-align: right;
+}
+.a-sommaire-court {
+  display: none;
+}
+
+/* ——— Le texte ——— */
+.a-article {
+  font-family: var(--f-recit);
+  font-size: 1.13rem;
+  line-height: 1.68;
+}
+.a-article p + p,
+.a-article p + .a-tableau,
+.a-article .a-tableau + p {
+  margin-top: 0.85em;
+}
+.a-tete {
+  font-weight: 700;
+}
+.a-tete--seule {
+  display: block;
+  margin-top: 1.4em;
+}
+
+/* En bref : une fiche, filet rose sous son titre */
+.a-bref {
+  background: var(--feuille);
+  border: 1px solid var(--trait);
+  border-radius: 14px;
+  padding: 22px 28px 24px;
+  box-shadow: var(--ombre-cahier);
+}
+.a-bref h2 {
+  margin: 0 0 14px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--bristol);
+  font-family: var(--f-ui);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-2);
+}
+.a-bref ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.a-bref li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 1.04rem;
+  line-height: 1.5;
+}
+.a-bref li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 0.62em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid var(--canard);
+}
+
+/* Les parties */
+.a-partie {
+  margin-top: 72px;
+  scroll-margin-top: 24px;
+}
+.a-partie h2 {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: baseline;
+  margin: 0 0 22px;
+  font-size: clamp(1.55rem, 2.6vw, 1.95rem);
+  font-weight: 700;
+  line-height: 1.18;
+  text-wrap: balance;
+}
+.a-num {
+  display: inline-grid;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid var(--canard);
+  border-radius: 50%;
+  font-size: 0.62em;
+  font-weight: 700;
+  color: var(--canard);
+  transform: translateY(-0.18em);
+}
+
+/* Dans ma classe : la voix du « je », rose du bristol et main de l'écolier pour le titre */
+.a-classe {
+  margin: 1.6em 0;
+  padding: 18px 24px 20px;
+  border-left: 3px solid var(--bristol);
+  background: rgba(232, 160, 169, 0.1);
+  border-radius: 0 12px 12px 0;
+}
+.a-classe-titre {
+  font-family: var(--f-main);
+  font-size: 1.05rem;
+  color: var(--graphite);
+  margin-bottom: 8px;
+}
+.a-classe p:last-child {
+  font-style: italic;
+}
+
+/* L'encart de l'outil : discret, dans la voix de l'outil */
+.a-encart {
+  margin: 1.8em 0 0.6em;
+  padding: 16px 20px 18px;
+  border: 1px solid var(--trait);
+  border-radius: 12px;
+  background: var(--feuille);
+  font-family: var(--f-ui);
+  font-size: 0.95rem;
+  line-height: 1.55;
+  color: var(--graphite-2);
+}
+.a-encart-titre {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--canard);
+}
+.a-encart-corps {
+  display: grid;
+  gap: 14px;
+}
+.a-encart-img {
+  border: 1px solid var(--trait);
+  border-radius: 8px;
+}
+.a-encart-img--portrait {
+  max-width: 300px;
+}
+@media (min-width: 720px) {
+  .a-encart-corps:has(.a-encart-img--portrait) {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    align-items: start;
+  }
+}
+
+/* Images */
+.photo {
+  margin: 1.6em 0;
+}
+.photo img {
+  border-radius: 10px;
+  box-shadow: var(--ombre-cahier);
+}
+.photo--portrait img {
+  max-width: 360px;
+  border: 1px solid var(--trait);
+}
+.photo figcaption,
+.couvertures figcaption {
+  margin-top: 10px;
+  font-family: var(--f-ui);
+  font-size: 0.84rem;
+  line-height: 1.45;
+  color: var(--graphite-3);
+}
+.couvertures {
+  margin: 1.4em 0 1.6em;
+}
+.couv-rang {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 150px));
+  gap: 20px;
+}
+.couv {
+  display: grid;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--graphite);
+}
+.couv img {
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 3px 6px 6px 3px;
+  box-shadow: var(--ombre-cahier), inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 6px;
+  transition: transform 0.25s var(--ease);
+}
+.couv:hover img {
+  transform: translateY(-3px);
+}
+.couv-titre {
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.25;
+}
+.couv-note {
+  font-family: var(--f-ui);
+  font-size: 0.78rem;
+  color: var(--graphite-3);
+}
+.schemas {
+  margin: 1.6em 0;
+  padding: 22px 18px 18px;
+  background: var(--feuille);
+  border: 1px solid var(--trait);
+  border-radius: 12px;
+}
+
+/* Le tableau de la partie 11 */
+.a-tableau {
+  margin-top: 12px;
+  border: 1px solid var(--trait);
+  border-radius: 12px;
+  background: var(--feuille);
+  overflow: hidden;
+}
+.a-tableau table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--f-ui);
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.a-tableau th,
+.a-tableau td {
+  padding: 11px 18px;
+  text-align: left;
+  vertical-align: top;
+  border-top: 1px solid var(--trait);
+}
+.a-tableau thead th {
+  border-top: 0;
+  background: var(--bureau);
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.a-tableau tbody th {
+  font-weight: 600;
+}
+.a-tableau td {
+  color: var(--graphite-2);
+  white-space: nowrap;
+}
+
+/* Les erreurs : une liste de six, la brique pour ce qu'on évite */
+.a-erreurs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+  counter-reset: e;
+}
+.a-erreurs li {
+  position: relative;
+  padding: 14px 18px 14px 54px;
+  background: var(--feuille);
+  border: 1px solid var(--trait);
+  border-radius: 12px;
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+.a-erreurs li::before {
+  content: "";
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--brique-f)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M7.5 7.5l7 7M14.5 7.5l-7 7' stroke='%23a2331a' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E")
+    center / 22px no-repeat;
+}
+
+
+/* Pour aller plus loin */
+.a-plusloin {
+  margin-top: 72px;
+  padding-top: 24px;
+  border-top: 1px solid var(--trait-fort);
+  font-family: var(--f-ui);
+}
+.a-plusloin > p {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+  margin-bottom: 12px;
+}
+.a-plusloin ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 12px;
+}
+.a-plusloin a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 8px;
+  background: var(--feuille);
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--graphite);
+}
+.a-plusloin li:last-child a {
+  background: var(--canard);
+  border-color: var(--canard);
+  color: #fff;
+}
+.a-vers-sommaire {
+  display: none;
+}
+
+/* ——— Téléphone et tablette ——— */
+@media (max-width: 1040px) {
+  .a-haut {
+    margin-left: 0;
+  }
+  .a-grille {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 32px;
+  }
+  .a-sommaire {
+    display: none;
+  }
+  .a-sommaire-court {
+    display: block;
+    margin-top: 32px;
+  }
+  .a-sommaire-court .a-sommaire-liste a {
+    background: transparent;
+    border-left: 0;
+    padding-left: 0;
+    font-size: 0.98rem;
+  }
+  .a-vers-sommaire {
+    display: inline-flex;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 20;
+    align-items: center;
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--feuille);
+    border: 1px solid var(--trait-fort);
+    box-shadow: var(--ombre-cahier);
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--graphite);
+  }
+}
+@media (max-width: 560px) {
+  .a {
+    padding: 12px 16px 80px;
+  }
+  .a-def {
+    font-size: 1.14rem;
+  }
+  .a-article {
+    font-size: 1.06rem;
+    line-height: 1.64;
+  }
+  .a-bref {
+    padding: 18px 18px 20px;
+  }
+  .a-partie {
+    margin-top: 56px;
+  }
+  .a-classe {
+    padding: 14px 16px 16px;
+  }
+  .a-tableau th,
+  .a-tableau td {
+    padding: 10px 12px;
+  }
+  .a-tableau td {
+    white-space: normal;
+  }
+  .couv-rang {
+    gap: 12px;
+  }
+  .photo--portrait img {
+    max-width: 100%;
+  }
+  .a-erreurs li {
+    padding: 12px 14px 12px 46px;
+  }
+  .a-erreurs li::before {
+    left: 13px;
+    top: 15px;
+  }
+}
