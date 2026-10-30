@@ -48,7 +48,7 @@ export type Morceau =
   | { sorte: "texte"; texte: string }
   | { sorte: "gras"; texte: string }
   | { sorte: "italique"; texte: string }
-  | { sorte: "lien"; texte: string; adresse: string }
+  | { sorte: "lien"; texte: string; adresse: string; italique?: boolean }
   | { sorte: "renvoi"; titre: string; numero: number };
 
 /** Découpe un texte du guide ; « (voir « Titre ? ») » devient un renvoi à la question de ce titre. */
@@ -58,7 +58,11 @@ export function morceaux(texte: string, parties: Pick<Partie, "numero" | "titre"
   let fin = 0;
   for (const m of texte.matchAll(motif)) {
     if (m.index > fin) out.push({ sorte: "texte", texte: texte.slice(fin, m.index) });
-    if (m[1]) out.push({ sorte: "lien", texte: m[1], adresse: m[2] });
+    if (m[1]) {
+      // Un titre d'œuvre en italique peut être le texte du lien : « [*Titre*](adresse) »
+      const titre = m[1].match(/^\*([^*]+)\*$/);
+      out.push(titre ? { sorte: "lien", texte: titre[1], adresse: m[2], italique: true } : { sorte: "lien", texte: m[1], adresse: m[2] });
+    }
     else if (m[3]) out.push({ sorte: "gras", texte: m[3] });
     else if (m[4]) out.push({ sorte: "italique", texte: m[4] });
     else {

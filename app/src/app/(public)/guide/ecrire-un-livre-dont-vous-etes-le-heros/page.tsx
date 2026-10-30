@@ -44,11 +44,11 @@ function EnLigne({ texte }: { texte: string }) {
       case "lien":
         return m.adresse.startsWith("/") ? (
           <Link key={i} href={m.adresse}>
-            {m.texte}
+            {m.italique ? <em>{m.texte}</em> : m.texte}
           </Link>
         ) : (
           <a key={i} href={m.adresse} rel="noopener">
-            {m.texte}
+            {m.italique ? <em>{m.texte}</em> : m.texte}
           </a>
         );
       case "renvoi":

@@ -52,6 +52,9 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
       { sorte: "lien", texte: "la bibliothèque", adresse: "/bibliotheque" },
       { sorte: "texte", texte: "." },
     ]);
+    expect(morceaux("[*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/)", T.parties)).toEqual([
+      { sorte: "lien", texte: "Tu es le héros", adresse: "https://www.editions-larousse.fr/livres-tu-es-le-heros/", italique: true },
+    ]);
   });
 
   it("F14-AC53 — au plan du site, ouvert aux robots des IA avec ses images, dans llms.txt, mesuré", () => {
