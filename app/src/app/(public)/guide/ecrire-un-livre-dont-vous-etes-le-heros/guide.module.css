@@ -256,6 +256,10 @@
 .classe li {
   font-style: italic;
 }
+/* Dans un texte en italique, un titre d'œuvre repasse en romain */
+.classe em {
+  font-style: normal;
+}
 /* Une liste dans la copie : chaque ligne commence par un tiret, sur les lignes du cahier */
 .classe ul {
   margin: 0;
@@ -578,6 +582,19 @@
 }
 .insecable {
   white-space: nowrap;
+}
+/* Le signe d'un lien vers un autre site, qui s'ouvre dans un nouvel onglet */
+.externe {
+  display: inline-block;
+  width: 0.62em;
+  height: 0.62em;
+  margin-left: 0.18em;
+  vertical-align: 0.32em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 .renvoi {
   display: inline-grid;

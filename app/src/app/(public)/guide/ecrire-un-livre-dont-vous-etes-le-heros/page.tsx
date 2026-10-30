@@ -47,8 +47,13 @@ function EnLigne({ texte }: { texte: string }) {
             {m.italique ? <em>{m.texte}</em> : m.texte}
           </Link>
         ) : (
-          <a key={i} href={m.adresse} rel="noopener">
+          // Un lien vers un autre site s'ouvre dans un nouvel onglet, pour ne pas perdre sa place dans le guide ; il le dit
+          <a key={i} href={m.adresse} target="_blank" rel="noopener noreferrer">
             {m.italique ? <em>{m.texte}</em> : m.texte}
+            <svg className={styles.externe} viewBox="0 0 12 12" aria-hidden="true">
+              <path d="M4.5 2.5h5v5M9.5 2.5 3 9" />
+            </svg>
+            <span className="vh"> (nouvel onglet)</span>
           </a>
         );
       case "renvoi":

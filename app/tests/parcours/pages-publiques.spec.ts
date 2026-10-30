@@ -138,6 +138,10 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   await expect(page).toHaveURL(/#temps$/);
   // Ni « Ressources » ni page à venir
   await expect(page.getByText("Ressources")).toHaveCount(0);
+  // Un lien vers un autre site s'ouvre dans un nouvel onglet, et le dit
+  const larousse = page.getByRole("link", { name: /Tu es le héros.*\(nouvel onglet\)/ });
+  await expect(larousse).toHaveAttribute("target", "_blank");
+  await expect(larousse).toHaveAttribute("rel", "noopener noreferrer");
 
   // Téléphone : le sommaire sous « En bref », le bouton une fois dépassé
   await page.setViewportSize({ width: 390, height: 844 });
