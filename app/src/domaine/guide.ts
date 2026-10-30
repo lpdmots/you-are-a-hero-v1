@@ -128,8 +128,6 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
   },
 };
 
-export const LEGENDE_DES_COUVERTURES = "Dans la bibliothèque : deux livres de classe et un livre d’exemple du site.";
-
 // ——— Ce que lisent les moteurs et les IA (F14-AC53) ———
 
 /** Le texte brut d'un texte du guide, sans ses marques, pour les données structurées */

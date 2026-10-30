@@ -11,7 +11,6 @@ import {
   DESCRIPTION_DU_GUIDE,
   donneesDuGuide,
   IMAGES_DU_GUIDE,
-  LEGENDE_DES_COUVERTURES,
   morceaux,
   type Bloc,
   type ImageDuGuide,
@@ -96,7 +95,6 @@ function Couvertures() {
           </Link>
         ))}
       </div>
-      <figcaption>{LEGENDE_DES_COUVERTURES}</figcaption>
     </figure>
   );
 }
