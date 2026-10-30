@@ -333,40 +333,48 @@ chaque partie pendant l'entretien et prime sur les sources.
   écrit ses propres scènes, dès le CE2 ; le passage par l'écriture
   collective puis en groupes ne vaut que pour le cycle 2. Développé ensuite
   à sa demande : un livre plus grand, un système de jeu plus complexe.
+- Réécrit le même jour d'après une version qu'il apporte, analysée : la
+  question d'autonomie plutôt que d'âge ; en CP-CE1, quelques phrases
+  écrites seuls par les plus autonomes avec un glossaire de l'histoire,
+  qu'il reprend à son compte ; la différenciation gardée au CE2 (« parfois
+  c'est dur pour des CE2 ») ; le collège réduit à ce qui le distingue (la
+  construction confiée aux élèves) ; « Dans ma classe » retiré, jugé peu
+  concret ; un seul conseil de commencer simple, en fin de partie.
 
 #### Premier jet
 
 > ## À partir de quel âge ?
 >
-> Ce n'est pas tant une question d'âge que de savoir qui tient le crayon. À
-> tout âge, la classe invente l'univers et décide des choix ; ce qui change,
-> c'est qui écrit. Dès qu'un élève sait écrire seul un court paragraphe, il
-> peut écrire ses scènes. Avant, l'adulte écrit sous la dictée.
+> Ce n'est pas tant une question d'âge que d'autonomie dans l'écriture. À
+> tous les niveaux, la classe imagine l'univers, invente l'histoire et décide
+> des choix ; seule la manière de rédiger change : dictée à l'adulte, petits
+> groupes ou écriture autonome.
 >
-> **En CP et en CE1 (6-7 ans).** Écrivez d'abord tous ensemble : la classe imagine,
-> vous écrivez au tableau. Passez ensuite aux groupes, toujours en dictée à
-> l'adulte. Gardez des choix simples et une histoire courte.
+> **En CP et en CE1 (6-8 ans).** Construisez le cadre de l'histoire tous
+> ensemble : les élèves proposent, vous écrivez au tableau. Rédigez ensuite
+> les scènes en petits groupes, avec votre aide. Les plus autonomes peuvent
+> écrire quelques phrases seuls, avec un petit glossaire de l'histoire :
+> personnages, lieux, objets, mots utiles. Gardez une aventure courte, aux
+> choix simples.
 >
 > **Du CE2 au CM2 (8-11 ans).** Dès le CE2, chaque élève écrit ses propres
-> scènes. C'est l'âge où le livre peut grandir : plus de chapitres, jusqu'à
-> deux ou trois cents scènes avec une classe habituée, et un système de jeu
-> plus riche, avec des objets à trouver, une jauge, des énigmes, parfois un
-> dé. Commencez simple la première fois ; le livre suivant ira plus loin
-> (voir « Faut-il des objets, des énigmes ou un dé ? »).
+> scènes, avec plus ou moins d'aide selon son autonomie. Le livre peut alors
+> grandir : jusqu'à deux ou trois cents scènes avec une classe habituée, des
+> objets, des énigmes, une jauge, parfois un dé (voir « Faut-il des objets,
+> des énigmes ou un dé ? »).
 >
-> **Au collège (11-15 ans).** La méthode vaut jusqu'en 3e, et vous pouvez confier
-> davantage aux élèves : organiser eux-mêmes leur chapitre et ses choix,
-> ajouter des objets ou des énigmes, vérifier que tous les chemins mènent
-> quelque part.
+> **Au collège (11-15 ans).** Les élèves prennent en main la construction :
+> ils imaginent les embranchements de leur chapitre, organisent les fins et
+> vérifient que tous les chemins mènent quelque part.
 >
-> **Une classe à plusieurs niveaux, un seul livre.** Le même projet réunit
-> tout le monde : les plus grands écrivent davantage ou prennent les scènes
-> délicates, les plus jeunes écrivent moins, et tous sont auteurs du même
-> livre.
+> **Une classe à plusieurs niveaux, un seul livre.** Les plus autonomes
+> écrivent des chapitres plus longs ou les passages délicats, les autres des
+> scènes plus courtes, avec davantage d'aide. Les chapitres n'ont pas besoin
+> d'avoir la même longueur.
 >
-> **Dans ma classe.** J'ai écrit des livres avec des élèves de CE2, de CM1
-> et de CM2, et, plus simplement, avec des plus jeunes : tous ensemble, puis
-> par groupes, sous la dictée.
+> **Un dernier conseil.** Quel que soit l'âge, mieux vaut réussir un premier
+> livre aux choix simples que se perdre dans une histoire trop ambitieuse :
+> le suivant ira plus loin.
 
 ### 3. Par quoi commencer
 
