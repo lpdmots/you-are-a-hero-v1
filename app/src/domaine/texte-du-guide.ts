@@ -23,8 +23,8 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "partie": 3
     },
     {
-      "chiffre": "40 scènes",
-      "texte": "pour un premier livre, soit une dizaine d’obstacles.",
+      "chiffre": "80 scènes",
+      "texte": "pour un premier livre, soit une vingtaine d’obstacles : un par élève dans une classe ordinaire.",
       "partie": 6
     },
     {
@@ -268,8 +268,8 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "paragraphe",
-          "tete": "Pour un premier livre, une quarantaine de scènes,",
-          "texte": "soit une dizaine d’obstacles. Par deux ou trois, chaque groupe d’élèves en écrit un, avec sa résolution."
+          "tete": "Pour un premier livre, environ 80 scènes,",
+          "texte": "soit une vingtaine d’obstacles : dans une classe ordinaire, chaque élève en écrit un, avec sa résolution."
         },
         {
           "sorte": "paragraphe",

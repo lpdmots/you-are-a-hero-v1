@@ -101,7 +101,10 @@ Décidé le 30 octobre 2026.
   20 h pour l'enseignant, sans la moitié qu'il compte avec le site,
   l'outil restant aux encarts (partie 11) ; 4 étapes ; 40 scènes ; 10 €
   en couleur pour un livre moyen. Ses quatre ans de livres passent dans la
-  ligne d'auteur, en version courte.
+  ligne d'auteur, en version courte. Puis, le même jour, 80 scènes au lieu
+  de 40 pour un premier livre, soit une vingtaine d'obstacles, un par élève
+  dans une classe ordinaire, qui va avec les 10 € d'un livre moyen (partie 6
+  alignée).
 
 #### Premier jet
 
@@ -125,8 +128,8 @@ Décidé le 30 octobre 2026.
 >   seulement corriger des textes. (partie 11)
 > - **4 étapes** pour mener le projet : découvrir le genre, préparer
 >   l'histoire, écrire, relire. (partie 3)
-> - **40 scènes** pour un premier livre, soit une dizaine d'obstacles.
->   (partie 6)
+> - **80 scènes** pour un premier livre, soit une vingtaine d'obstacles :
+>   un par élève dans une classe ordinaire. (partie 6)
 > - **10 €** environ l'exemplaire en couleur d'un livre moyen, d'une
 >   vingtaine d'images. Décidez du format à l'avance : le prix monte vite.
 >   (partie 12)
@@ -703,9 +706,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > beaucoup, et c'est tant mieux : un choix à chaque scène épuise le lecteur.
 > Vous connaissez ainsi la taille du livre avant d'écrire.
 >
-> **Pour un premier livre, une quarantaine de scènes,** soit une dizaine
-> d'obstacles. Par deux ou trois, chaque groupe d'élèves en écrit un, avec
-> sa résolution.
+> **Pour un premier livre, environ 80 scènes,** soit une vingtaine
+> d'obstacles : dans une classe ordinaire, chaque élève en écrit un, avec sa
+> résolution.
 >
 > **Prévoyez que ça débordera.** Les idées des enfants poussent l'histoire :
 > c'est bon signe, mais ne laissez pas le livre grossir sans fin. N'ajoutez

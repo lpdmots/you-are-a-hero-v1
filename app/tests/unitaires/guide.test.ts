@@ -17,7 +17,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
     expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
     // « En bref » : un chiffre, sa phrase, la question qui le développe
-    expect(T.enBref.map((l) => l.chiffre)).toEqual(["1 à 3 mois", "20 h", "4 étapes", "40 scènes", "10 €"]);
+    expect(T.enBref.map((l) => l.chiffre)).toEqual(["1 à 3 mois", "20 h", "4 étapes", "80 scènes", "10 €"]);
     expect(T.enBref.every((l) => l.texte && l.partie >= 1 && l.partie <= 13)).toBe(true);
     expect(T.parties.map((p) => p.numero)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
     expect(T.parties.every((p) => p.titre.endsWith("?") || p.numero === 13)).toBe(true);
