@@ -150,7 +150,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Je commence par [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow), puis [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/) (Larousse Jeunesse), aux règles plus complexes. Nous étudions ensuite leur construction et les différents types de choix. Les livres de mes anciennes classes servent aussi de modèles. Pendant le projet, je propose des APC pour aider ceux qui ont besoin de plus de temps. Les volontaires peuvent également avancer à la maison grâce à leurs feuilles d’écriture, qui contiennent les consignes."
+          "texte": "Je commence par [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow), puis [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/) (Larousse Jeunesse), aux règles plus complexes. Nous étudions ensuite leur construction et les différents types de choix. Les livres de mes anciennes classes servent aussi de modèles."
         }
       ]
     },
@@ -244,7 +244,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Quand un élève peine à finir son chapitre, les volontaires en avance se proposent d’eux-mêmes et s’arrangent avec lui."
+          "texte": "Quand un élève peine à finir son chapitre, les volontaires en avance se proposent d’eux-mêmes et s’arrangent avec lui. Je propose aussi des APC à ceux qui ont besoin de plus de temps, et des volontaires avancent à la maison grâce à leurs feuilles d’écriture, qui contiennent les consignes."
         }
       ]
     },

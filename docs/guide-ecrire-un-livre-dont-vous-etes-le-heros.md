@@ -462,10 +462,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/)
 > (Larousse Jeunesse), aux règles plus complexes. Nous étudions ensuite leur
 > construction et les différents types de choix. Les livres de mes anciennes
-> classes servent aussi de modèles. Pendant le projet, je propose des APC pour
-> aider ceux qui ont besoin de plus de temps. Les volontaires peuvent
-> également avancer à la maison grâce à leurs feuilles d'écriture, qui
-> contiennent les consignes.
+> classes servent aussi de modèles.
 
 ### 4. Inventer l'histoire ensemble
 
@@ -656,7 +653,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > et l'ouverture si vous ne l'écrivez pas ensemble.
 >
 > **Dans ma classe.** Quand un élève peine à finir son chapitre, les
-> volontaires en avance se proposent d'eux-mêmes et s'arrangent avec lui.
+> volontaires en avance se proposent d'eux-mêmes et s'arrangent avec lui. Je
+> propose aussi des APC à ceux qui ont besoin de plus de temps, et des
+> volontaires avancent à la maison grâce à leurs feuilles d'écriture, qui
+> contiennent les consignes.
 
 ### 6. Combien de chapitres, de scènes et de choix
 
