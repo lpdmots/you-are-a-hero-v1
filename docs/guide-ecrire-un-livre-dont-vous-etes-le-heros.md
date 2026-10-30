@@ -419,39 +419,48 @@ chaque partie pendant l'entretien et prime sur les sources.
   première aventure* et de *Tu es le héros* (Larousse Jeunesse) ; ce que la
   bibliothèque contient alors (livres de classes ou seulement d'exemple),
   pour ajuster la phrase qui y renvoie.
+- Repris le 30 octobre 2026 d'après une version qu'il apporte, analysée :
+  rejouer pour explorer d'autres chemins ; démonter le mécanisme (chemins
+  qui se séparent et se rejoignent, objets, choix), avec la comparaison des
+  sortes de choix et la liste de ce que la classe veut ou non, gardées ;
+  pas de liste des livres de la bibliothèque, que les couvertures montrent ;
+  le rythme réduit à une phrase qui renvoie à la partie 11 (le support est
+  en partie 5). Confirmé par lui : une période d'APC consacrée au projet,
+  des volontaires qui écrivent à la maison.
 
 #### Premier jet
 
 > ## Par quoi commencer ?
 >
-> **Lisez et jouez des livres-jeux, tous ensemble.** Avant d'écrire, lisez
-> à voix haute des livres à choix ; à chaque choix, la classe vote. C'est un
-> moment détendu : on joue, on n'analyse pas encore. Commencez par des
-> livres au fonctionnement très simple, puis passez à des livres au système
-> de jeu plus riche, avec des objets, des énigmes, des pièges.
+> **Jouez ensemble.** Lisez des livres-jeux à voix haute et laissez la
+> classe voter à chaque choix ; rejouez-en certains pour explorer d'autres
+> chemins. Pour l'instant, on joue sans analyser. Partez de livres très
+> simples, puis passez à des règles plus riches, avec des objets, des
+> énigmes ou des pièges.
 >
-> **Puis démontez-en un.** Dans une séance à part, reprenez un livre simple
-> et regardez comment il marche : les numéros, les choix, les fins. Comparez
-> les sortes de choix rencontrées. Demandez à la classe ce qu'elle a aimé et
-> ce qu'elle ne veut pas dans son propre livre : cette liste lui servira à
-> fixer ses règles.
+> **Puis démontez le mécanisme.** Dans une séance à part, reprenez un livre
+> simple : où les chemins se séparent et se rejoignent, comment marchent les
+> objets, où mènent les choix. Comparez les sortes de choix rencontrées.
+> Demandez à la classe ce qu'elle a aimé et ce qu'elle ne veut pas dans son
+> livre : cette liste lui servira à fixer ses règles.
 >
-> **Montrez que c'est possible.** Un livre écrit par une autre classe
-> répond tout de suite au « c'est pour les écrivains ». Si vous n'avez pas
-> encore de livres des années précédentes, la bibliothèque d'Il était une
-> classe en propose à lire en ligne.
+> **Montrez que c'est possible.** Rien de tel qu'un livre écrit par une
+> autre classe pour donner envie de se lancer : feuilletez-le ensemble. Si
+> vous n'en avez pas encore, la bibliothèque d'Il était une classe en
+> propose à lire en ligne.
 >
-> **Avant de vous lancer, décidez de trois choses.** Le rythme : deux
-> séances par semaine tiennent bien. Le support : brouillon sur papier, puis
-> recopie à l'ordinateur si la classe en a. Et la façon de rattraper les
-> retards : des feuilles en devoirs, des séances d'APC. Selon sa taille, un
-> livre prend une période ou plusieurs.
+> **Prévoyez le rythme.** Deux séances par semaine gardent le fil de
+> l'histoire. Décidez aussi comment rattraper les retards : feuilles à finir
+> à la maison, séances d'APC (voir « Combien de temps faut-il ? »).
 >
-> **Dans ma classe.** Je lis d'abord la série *Ma première aventure*, pour
-> la mécanique la plus simple, puis la série *Tu es le héros* de Larousse
-> Jeunesse, au système de jeu plus évolué. On décortique ensuite un *Ma
-> première aventure*, simple et répétitif, et on étudie les choix des
-> Larousse. Les livres de mes classes précédentes servent aussi de modèles.
+> **Dans ma classe.** Je commence par la série *Ma première aventure*,
+> idéale pour découvrir les choix et leurs conséquences, puis nous passons à
+> *Tu es le héros* de Larousse Jeunesse, aux règles plus élaborées. Nous
+> décortiquons ensuite un *Ma première aventure* et comparons les choix des
+> Larousse. Les livres de mes anciennes classes servent aussi de modèles. Je
+> consacre généralement une période d'APC au projet, pour ceux qui ont
+> besoin de plus de temps, et des volontaires continuent d'écrire à la
+> maison, sur leurs feuilles de brouillon.
 
 ### 4. Inventer l'histoire ensemble
 

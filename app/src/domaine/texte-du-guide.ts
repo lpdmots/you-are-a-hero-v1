@@ -130,27 +130,27 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Lisez et jouez des livres-jeux, tous ensemble.",
-          "texte": "Avant d’écrire, lisez à voix haute des livres à choix ; à chaque choix, la classe vote. C’est un moment détendu : on joue, on n’analyse pas encore. Commencez par des livres au fonctionnement très simple, puis passez à des livres au système de jeu plus riche, avec des objets, des énigmes, des pièges."
+          "tete": "Jouez ensemble.",
+          "texte": "Lisez des livres-jeux à voix haute et laissez la classe voter à chaque choix ; rejouez-en certains pour explorer d’autres chemins. Pour l’instant, on joue sans analyser. Partez de livres très simples, puis passez à des règles plus riches, avec des objets, des énigmes ou des pièges."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Puis démontez-en un.",
-          "texte": "Dans une séance à part, reprenez un livre simple et regardez comment il marche : les numéros, les choix, les fins. Comparez les sortes de choix rencontrées. Demandez à la classe ce qu’elle a aimé et ce qu’elle ne veut pas dans son propre livre : cette liste lui servira à fixer ses règles."
+          "tete": "Puis démontez le mécanisme.",
+          "texte": "Dans une séance à part, reprenez un livre simple : où les chemins se séparent et se rejoignent, comment marchent les objets, où mènent les choix. Comparez les sortes de choix rencontrées. Demandez à la classe ce qu’elle a aimé et ce qu’elle ne veut pas dans son livre : cette liste lui servira à fixer ses règles."
         },
         {
           "sorte": "paragraphe",
           "tete": "Montrez que c’est possible.",
-          "texte": "Un livre écrit par une autre classe répond tout de suite au « c’est pour les écrivains ». Si vous n’avez pas encore de livres des années précédentes, la bibliothèque d’Il était une classe en propose à lire en ligne."
+          "texte": "Rien de tel qu’un livre écrit par une autre classe pour donner envie de se lancer : feuilletez-le ensemble. Si vous n’en avez pas encore, la bibliothèque d’Il était une classe en propose à lire en ligne."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Avant de vous lancer, décidez de trois choses.",
-          "texte": "Le rythme : deux séances par semaine tiennent bien. Le support : brouillon sur papier, puis recopie à l’ordinateur si la classe en a. Et la façon de rattraper les retards : des feuilles en devoirs, des séances d’APC. Selon sa taille, un livre prend une période ou plusieurs."
+          "tete": "Prévoyez le rythme.",
+          "texte": "Deux séances par semaine gardent le fil de l’histoire. Décidez aussi comment rattraper les retards : feuilles à finir à la maison, séances d’APC (voir « Combien de temps faut-il ? »)."
         },
         {
           "sorte": "classe",
-          "texte": "Je lis d’abord la série *Ma première aventure*, pour la mécanique la plus simple, puis la série *Tu es le héros* de Larousse Jeunesse, au système de jeu plus évolué. On décortique ensuite un *Ma première aventure*, simple et répétitif, et on étudie les choix des Larousse. Les livres de mes classes précédentes servent aussi de modèles."
+          "texte": "Je commence par la série *Ma première aventure*, idéale pour découvrir les choix et leurs conséquences, puis nous passons à *Tu es le héros* de Larousse Jeunesse, aux règles plus élaborées. Nous décortiquons ensuite un *Ma première aventure* et comparons les choix des Larousse. Les livres de mes anciennes classes servent aussi de modèles. Je consacre généralement une période d’APC au projet, pour ceux qui ont besoin de plus de temps, et des volontaires continuent d’écrire à la maison, sur leurs feuilles de brouillon."
         }
       ]
     },
