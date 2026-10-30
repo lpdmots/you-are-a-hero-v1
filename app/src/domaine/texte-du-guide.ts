@@ -55,7 +55,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Nos premières histoires ne se jouaient qu’à l’écran. C’est pour que chaque élève reparte avec un vrai livre, le sien, que j’ai voulu les imprimer."
+          "texte": "Nos premières histoires ne se jouaient qu’à l’écran : l’adresse s’oubliait vite, et l’histoire disparaissait avec elle. C’est pour que chaque élève reparte avec un vrai livre, le sien, que j’ai voulu les imprimer."
         },
         {
           "sorte": "paragraphe",

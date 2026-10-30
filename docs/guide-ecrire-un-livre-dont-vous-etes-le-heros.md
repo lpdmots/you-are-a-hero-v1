@@ -229,7 +229,8 @@ chaque partie pendant l'entretien et prime sur les sources.
   l'ouverture sur la production d'écrits qui passe à la trappe, jugée « pas
   terrible », est retirée ; la partie s'ouvre sur le vrai livre, qui l'a
   fait passer d'une histoire jouée à l'écran seulement à un livre imprimé
-  (« Dans ma classe », à faire confirmer), puis tout le monde auteur et la
+  (« Dans ma classe » : l'adresse s'oubliait vite et l'histoire
+  disparaissait, précisé par lui le même jour), puis tout le monde auteur et la
   classe qui travaille ensemble, les vrais lecteurs et le livre qui vit après
   la classe, et un projet qui ne se limite pas à l'écriture (quatre points
   repris de Que faites-vous ; les deux premiers y sont nommés en partie 7,
@@ -245,9 +246,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > rend possible : une scène tient en une demi-page, un morceau court et fini.
 > Pas besoin d'écrire un roman pour être auteur.
 >
-> **Dans ma classe.** Nos premières histoires ne se jouaient qu'à l'écran.
-> C'est pour que chaque élève reparte avec un vrai livre, le sien, que j'ai
-> voulu les imprimer.
+> **Dans ma classe.** Nos premières histoires ne se jouaient qu'à l'écran :
+> l'adresse s'oubliait vite, et l'histoire disparaissait avec elle. C'est
+> pour que chaque élève reparte avec un vrai livre, le sien, que j'ai voulu
+> les imprimer.
 >
 > **Tout le monde est auteur.** C'est un projet pour toute la classe :
 > qu'un élève écrive deux ou trois scènes ou deux ou trois chapitres, chacun
