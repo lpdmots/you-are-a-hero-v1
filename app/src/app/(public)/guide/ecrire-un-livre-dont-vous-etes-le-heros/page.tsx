@@ -131,6 +131,17 @@ function Corps({ partie }: { partie: Partie }) {
           </h3>
         );
       case "liste":
+        // Une liste ordinaire, sauf celle des erreurs à éviter (partie 13), marquée d'une croix
+        if (ancreDe(partie.numero) !== "erreurs")
+          return (
+            <ul key={i} className={styles.liste}>
+              {b.elements.map((e) => (
+                <li key={e}>
+                  <EnLigne texte={e} />
+                </li>
+              ))}
+            </ul>
+          );
         return (
           <ol key={i} className={styles.erreurs}>
             {b.elements.map((e) => (

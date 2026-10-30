@@ -502,6 +502,30 @@
   white-space: nowrap;
 }
 
+/* Une liste ordinaire : un rond canard, comme « En bref » */
+.partie > .liste {
+  margin: 0.6em 0 0;
+  padding: 0;
+  list-style: none;
+}
+.liste li {
+  position: relative;
+  padding-left: 26px;
+}
+.liste li + li {
+  margin-top: 0.25em;
+}
+.liste li::before {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 0.72em;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  border: 2px solid var(--canard);
+}
+
 /* Les erreurs : une croix brique, les renvois cerclés vers la question */
 .erreurs {
   list-style: none;

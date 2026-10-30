@@ -50,23 +50,36 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": null,
-          "texte": "La production d’écrits demande beaucoup de travail, et elle passe souvent à la trappe. Un livre dont vous êtes le héros change la donne : c’est un projet qui porte la classe pendant des mois et qui vous oblige à tenir le rythme. La classe attend son livre ; on ne saute plus les séances d’écriture."
+          "tete": "Un vrai livre, à leur portée.",
+          "texte": "Pour un enfant, écrire un livre, c’est pour les écrivains. À la fin du projet, il en tient un entre les mains, avec son nom dedans ; il en est fier et le garde toute sa vie. Le format le rend possible : une scène tient en une demi-page, un morceau court et fini. Pas besoin d’écrire un roman pour être auteur."
         },
         {
-          "sorte": "paragraphe",
-          "tete": "Un vrai livre, à leur portée.",
-          "texte": "Pour un enfant, écrire un livre, c’est pour les écrivains. À la fin du projet, il en tient un entre les mains, avec son nom dedans ; il en est fier et le garde toute sa vie. Le format le rend possible : une scène tient en une demi-page, un morceau court et fini qui compte autant que les autres. Pas besoin d’écrire un roman pour être auteur."
+          "sorte": "classe",
+          "texte": "Nos premières histoires ne se jouaient qu’à l’écran. C’est pour que chaque élève reparte avec un vrai livre, le sien, que j’ai voulu les imprimer."
         },
         {
           "sorte": "paragraphe",
           "tete": "Tout le monde est auteur.",
-          "texte": "Les élèves les plus en difficulté écrivent volontiers et se sentent autant dans le livre que les autres, même avec moins de scènes. Pour un élève accompagné, réduisez la quantité, guidez davantage la consigne, proposez une image pour lancer l’imagination ; il peut aussi devenir l’illustrateur de l’équipe."
+          "texte": "C’est un projet pour toute la classe : qu’un élève écrive deux ou trois scènes ou deux ou trois chapitres, chacun s’y sent impliqué et fier de la même façon. Chacun apporte ce qu’il sait faire : l’écriture, l’imagination, les illustrations. Les élèves en difficulté écrivent volontiers ; pour un élève accompagné, réduisez la quantité, guidez davantage la consigne, proposez une image pour lancer l’imagination, ou confiez-lui les illustrations."
         },
         {
           "sorte": "paragraphe",
           "tete": "Des lecteurs qui joueront le livre.",
-          "texte": "On soigne et on relit parce que quelqu’un va jouer : un chemin qui ne tient pas bloque le lecteur, et les élèves le prennent au sérieux. Et un livre-jeu ne se lit pas qu’une fois : on y revient pour tenter un autre chemin, il passe en famille, chez les frères et sœurs, dans les autres classes."
+          "texte": "On soigne et on relit parce que quelqu’un va jouer : un chemin qui ne tient pas bloque le lecteur, et les élèves le prennent au sérieux. Et un livre-jeu ne se lit pas qu’une fois : on y revient pour tenter un autre chemin, il passe en famille, chez les frères et sœurs, dans les autres classes, à la bibliothèque de l’école."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Plus qu’un projet d’écriture.",
+          "texte": "Contrairement à un récit linéaire, une histoire interactive oblige l’élève à anticiper, à structurer, à penser plusieurs possibilités : il ne s’agit plus seulement d’écrire, mais de construire un système de choix cohérent. Le projet permet ainsi de :"
+        },
+        {
+          "sorte": "liste",
+          "elements": [
+            "développer la logique narrative ;",
+            "travailler la compréhension des conséquences ;",
+            "stimuler l’engagement des élèves ;",
+            "favoriser la coopération."
+          ]
         },
         {
           "sorte": "classe",

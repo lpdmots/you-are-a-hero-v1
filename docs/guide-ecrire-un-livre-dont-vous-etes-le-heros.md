@@ -225,35 +225,53 @@ chaque partie pendant l'entretien et prime sur les sources.
   l'élève ne voit pas (surprise ; voir partie 5).
 - Écarté : l'effectif de la classe ; toute phrase sur ce que le projet ne
   promet pas ; le projet ULIS/UPE2A d'un autre enseignant.
+- Repris le 30 octobre 2026, après la construction, sur sa demande :
+  l'ouverture sur la production d'écrits qui passe à la trappe, jugée « pas
+  terrible », est retirée ; la partie s'ouvre sur le vrai livre, qui l'a
+  fait passer d'une histoire jouée à l'écran seulement à un livre imprimé
+  (« Dans ma classe », à faire confirmer), puis tout le monde auteur et la
+  classe qui travaille ensemble, les vrais lecteurs et le livre qui vit après
+  la classe, et un projet qui ne se limite pas à l'écriture (quatre points
+  repris de Que faites-vous ; les deux premiers y sont nommés en partie 7,
+  qui le cite).
 
 #### Premier jet
 
 > ## Pourquoi écrire un livre-jeu avec sa classe ?
 >
-> La production d'écrits demande beaucoup de travail, et elle passe souvent
-> à la trappe. Un livre dont vous êtes le héros change la donne : c'est un
-> projet qui porte la classe pendant des mois et qui vous oblige à tenir le
-> rythme. La classe attend son livre ; on ne saute plus les séances
-> d'écriture.
->
 > **Un vrai livre, à leur portée.** Pour un enfant, écrire un livre, c'est
 > pour les écrivains. À la fin du projet, il en tient un entre les mains,
 > avec son nom dedans ; il en est fier et le garde toute sa vie. Le format le
-> rend possible : une scène tient en une demi-page, un morceau court et fini
-> qui compte autant que les autres. Pas besoin d'écrire un roman pour être
-> auteur.
+> rend possible : une scène tient en une demi-page, un morceau court et fini.
+> Pas besoin d'écrire un roman pour être auteur.
 >
-> **Tout le monde est auteur.** Les élèves les plus en difficulté écrivent
-> volontiers et se sentent autant dans le livre que les autres, même avec
-> moins de scènes. Pour un élève accompagné, réduisez la quantité, guidez
-> davantage la consigne, proposez une image pour lancer l'imagination ; il
-> peut aussi devenir l'illustrateur de l'équipe.
+> **Dans ma classe.** Nos premières histoires ne se jouaient qu'à l'écran.
+> C'est pour que chaque élève reparte avec un vrai livre, le sien, que j'ai
+> voulu les imprimer.
+>
+> **Tout le monde est auteur.** C'est un projet pour toute la classe :
+> qu'un élève écrive deux ou trois scènes ou deux ou trois chapitres, chacun
+> s'y sent impliqué et fier de la même façon. Chacun apporte ce qu'il sait
+> faire : l'écriture, l'imagination, les illustrations. Les élèves en
+> difficulté écrivent volontiers ; pour un élève accompagné, réduisez la
+> quantité, guidez davantage la consigne, proposez une image pour lancer
+> l'imagination, ou confiez-lui les illustrations.
 >
 > **Des lecteurs qui joueront le livre.** On soigne et on relit parce que
 > quelqu'un va jouer : un chemin qui ne tient pas bloque le lecteur, et les
 > élèves le prennent au sérieux. Et un livre-jeu ne se lit pas qu'une fois :
 > on y revient pour tenter un autre chemin, il passe en famille, chez les
-> frères et sœurs, dans les autres classes.
+> frères et sœurs, dans les autres classes, à la bibliothèque de l'école.
+>
+> **Plus qu'un projet d'écriture.** Contrairement à un récit linéaire, une
+> histoire interactive oblige l'élève à anticiper, à structurer, à penser
+> plusieurs possibilités : il ne s'agit plus seulement d'écrire, mais de
+> construire un système de choix cohérent. Le projet permet ainsi de :
+>
+> - développer la logique narrative ;
+> - travailler la compréhension des conséquences ;
+> - stimuler l'engagement des élèves ;
+> - favoriser la coopération.
 >
 > **Dans ma classe.** Une fois, nous avons écrit deux heures d'affilée, en
 > silence, sans une plainte et sans discipline à faire : brouillon sur feuille, saisie à
