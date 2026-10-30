@@ -23,7 +23,7 @@ export type Bloc =
   | { sorte: "intertitre"; texte: string }
   | { sorte: "liste"; elements: string[] }
   | { sorte: "tableau"; entete: string[]; rangs: string[][] }
-  | { sorte: "classe"; texte: string }
+  | { sorte: "classe"; texte: string; elements?: string[] }
   | { sorte: "encart"; texte: string };
 
 export type Partie = { numero: number; titre: string; blocs: Bloc[] };

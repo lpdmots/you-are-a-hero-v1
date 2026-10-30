@@ -121,8 +121,8 @@ Décidé le 30 octobre 2026.
 > - **1 à 3 mois** avec la classe : une période pour un premier livre, trois
 >   mois pour un grand. (partie 11)
 > - **20 h** de travail pour vous : mettre en place les chapitres, les scènes
->   et les consignes, relier, relire ; pas seulement corriger des textes.
->   (partie 11)
+>   et les consignes, relier, relire, ajouter les illustrations ; pas
+>   seulement corriger des textes. (partie 11)
 > - **4 étapes** pour mener le projet : découvrir le genre, préparer
 >   l'histoire, écrire, relire. (partie 3)
 > - **40 scènes** pour un premier livre, soit une dizaine d'obstacles.
@@ -235,57 +235,72 @@ chaque partie pendant l'entretien et prime sur les sources.
   la classe, et un projet qui ne se limite pas à l'écriture (quatre points
   repris de Que faites-vous ; les deux premiers y sont nommés en partie 7,
   qui le cite).
+- Repris de nouveau le même jour, d'après sa propre version : « C'est un
+  livre ! Un vrai. » et « C'est un jeu ! », les deux mots du genre ; la classe
+  qui a l'avantage du nombre ; ses signes qu'un projet fonctionne, en liste
+  (entraide des plus rapides gardée, plusieurs anciens élèves montrant leur
+  livre l'année suivante, confirmé par lui) ; « Plus qu'un projet
+  d'écriture » fondu dans « Et les programmes ? ». Programme vérifié le
+  30 octobre 2026 dans l'annexe du BO n° 16 du 17 avril 2025 (en vigueur en
+  CM1 à la rentrée 2025, en CM2 à la rentrée 2026) : au cours moyen, « dans
+  l'année », chaque élève « participe à des activités de production d'écrit
+  collaboratif », « produit des écrits longs de manière de plus en plus
+  autonome », « s'approprie différents usages du brouillon », « élabore des
+  stratégies pour réviser ses textes » ; « les projets d'écriture artistique
+  et créative sont encouragés », comme « l'écriture collective, guidée par le
+  professeur ».
 
 #### Premier jet
 
 > ## Pourquoi écrire un livre-jeu avec sa classe ?
 >
-> **Un vrai livre, à leur portée.** Pour un enfant, écrire un livre, c'est
-> pour les écrivains. À la fin du projet, il en tient un entre les mains,
-> avec son nom dedans ; il en est fier et le garde toute sa vie. Le format le
-> rend possible : une scène tient en une demi-page, un morceau court et fini.
-> Pas besoin d'écrire un roman pour être auteur.
+> **C'est un livre ! Un vrai.** Pour beaucoup d'enfants, écrire un livre,
+> c'est une affaire d'écrivains. Mais la classe a l'avantage du nombre.
+> Chacun apporte ses idées et écrit quelques scènes. Mis bout à bout, tous
+> ces petits textes deviennent une histoire complète, bien plus ambitieuse
+> que ce qu'un élève aurait pu créer seul. Les élèves en difficulté écrivent
+> volontiers et en sont aussi fiers que les autres. Et à la fin du projet,
+> chacun tient entre ses mains un véritable livre, avec son nom à
+> l'intérieur.
 >
-> **Dans ma classe.** Nos premières histoires ne se jouaient qu'à l'écran :
-> l'adresse s'oubliait vite, et l'histoire disparaissait avec elle. C'est
-> pour que chaque élève reparte avec un vrai livre, le sien, que j'ai voulu
-> les imprimer.
+> **Dans ma classe.** Au départ, nos histoires se jouaient uniquement sur
+> écran. Mais l'adresse finissait par s'oublier, et l'histoire avec elle.
+> C'est pour que chaque élève reparte avec un livre à garder, à montrer et à
+> partager que j'ai voulu les imprimer.
 >
-> **Tout le monde est auteur.** C'est un projet pour toute la classe :
-> qu'un élève écrive deux ou trois scènes ou deux ou trois chapitres, chacun
-> s'y sent impliqué et fier de la même façon. Chacun apporte ce qu'il sait
-> faire : l'écriture, l'imagination, les illustrations. Les élèves en
-> difficulté écrivent volontiers ; pour un élève accompagné, réduisez la
-> quantité, guidez davantage la consigne, proposez une image pour lancer
-> l'imagination, ou confiez-lui les illustrations.
+> **C'est un jeu !** Inventer des chemins secrets, tendre des pièges aux
+> lecteurs, imaginer des choix difficiles et des fins surprenantes… Les
+> élèves ne se contentent plus de raconter une histoire : ils créent une
+> aventure dans laquelle d'autres vont jouer. Et si un chemin ne mène nulle
+> part, le lecteur reste bloqué : on reprend son texte sans rechigner.
+> L'écriture devient elle-même un jeu, et l'envie de découvrir les chapitres
+> des camarades donne une bonne raison de poursuivre le projet, séance après
+> séance.
 >
-> **Des lecteurs qui joueront le livre.** On soigne et on relit parce que
-> quelqu'un va jouer : un chemin qui ne tient pas bloque le lecteur, et les
-> élèves le prennent au sérieux. Et un livre-jeu ne se lit pas qu'une fois :
-> on y revient pour tenter un autre chemin, il passe en famille, chez les
-> frères et sœurs, dans les autres classes, à la bibliothèque de l'école.
+> **Dans ma classe.** Je sais qu'un projet fonctionne quand :
 >
-> **Plus qu'un projet d'écriture.** Contrairement à un récit linéaire, une
-> histoire interactive oblige l'élève à anticiper, à structurer, à penser
-> plusieurs possibilités : il ne s'agit plus seulement d'écrire, mais de
-> construire un système de choix cohérent. Le projet permet ainsi de :
+> - une séance d'écriture se prolonge pendant deux heures sans que personne
+>   ne demande à arrêter ;
+> - toutes les mains se lèvent quand je propose de continuer en APC ;
+> - les plus rapides proposent leur aide à ceux qui peinent à finir leur
+>   chapitre, plutôt que de considérer leur travail terminé ;
+> - l'année suivante, des élèves montrent fièrement leur livre à leurs
+>   nouveaux professeurs.
 >
-> - développer la logique narrative ;
-> - travailler la compréhension des conséquences ;
-> - stimuler l'engagement des élèves ;
-> - favoriser la coopération.
+> **Et les programmes ?** Au cours moyen, le
+> [programme de français du cycle 3](https://www.education.gouv.fr/sites/default/files/ensel620_annexe1.pdf)
+> (Bulletin officiel du 17 avril 2025) demande que chaque élève participe
+> dans l'année à des productions d'écrit collaboratives, produise des écrits
+> longs, apprenne à se servir du brouillon et à réviser ses textes ; il
+> encourage les projets d'écriture créatifs et l'écriture collective guidée
+> par le professeur. Un livre-jeu réunit tout cela, et fait travailler :
 >
-> **Dans ma classe.** Une fois, nous avons écrit deux heures d'affilée, en
-> silence, sans une plainte et sans discipline à faire : brouillon sur feuille, saisie à
-> l'ordinateur, remarque du maître, reprise, validation, scène suivante.
-> Toute la classe a levé la main pour venir en APC continuer à écrire. Les
-> plus rapides proposent d'eux-mêmes d'aider ceux qui peinent à finir leur
-> chapitre, au lieu de considérer qu'ils ont terminé. Et une ancienne élève
-> de CM2 a apporté le livre, l'année suivante, en cours de français de 6e.
->
-> **Et les programmes ?** En CM, le programme de français du cycle 3 demande
-> des écrits longs, écrits à plusieurs, avec brouillons et révisions : un
-> livre-jeu en est un. Le détail est sur la page « Ressources ».
+> - la construction du récit et l'anticipation des conséquences de chaque
+>   choix ;
+> - la cohérence entre les personnages, les lieux et les événements ;
+> - le vocabulaire, la syntaxe et l'orthographe, à travers la réécriture ;
+> - la coopération, en confrontant les idées pour construire une histoire
+>   commune.
 
 ### 2. Âge
 
@@ -1295,8 +1310,9 @@ formulations à revérifier à la source avant publication.
 
 ## À vérifier avant publication
 
-- Les références exactes des programmes, sur le Bulletin officiel (cycle 3,
-  cycle 2 au BO n° 41 du 31 octobre 2024, EMC, compétences numériques).
+- Les références exactes des programmes, sur le Bulletin officiel (cycle 2
+  au BO n° 41 du 31 octobre 2024, EMC, compétences numériques) ; le cycle 3
+  est vérifié pour la partie 1 le 30 octobre 2026.
 - Les sources non lues : Éduscol « Réinventer la fiction », Édubase (Twine),
   Odidoc n° 8, « Quêtes et péripéties », Canopé, académie de Nice, mémoires
   universitaires.

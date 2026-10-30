@@ -20,7 +20,6 @@ const cible = path.resolve(import.meta.dirname, "../src/domaine/texte-du-guide.t
  * d'ici le jour où la page est en ligne.
  */
 const SANS_RESSOURCES: [string, string][] = [
-  [" Le détail est sur la page « Ressources ».", ""],
   ["un modèle d’autorisation est sur la page « Ressources ».", "un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."],
 ];
 
@@ -64,8 +63,19 @@ type Bloc =
   | { sorte: "intertitre"; texte: string }
   | { sorte: "liste"; elements: string[] }
   | { sorte: "tableau"; entete: string[]; rangs: string[][] }
-  | { sorte: "classe"; texte: string }
+  | { sorte: "classe"; texte: string; elements?: string[] }
   | { sorte: "encart"; texte: string };
+
+/** Une liste qui suit « Dans ma classe » lui appartient : elle reste dans sa copie */
+function rattacher(blocs: Bloc[]): Bloc[] {
+  const out: Bloc[] = [];
+  for (const b of blocs) {
+    const avant = out[out.length - 1];
+    if (b.sorte === "liste" && avant?.sorte === "classe" && !avant.elements) avant.elements = b.elements;
+    else out.push(b);
+  }
+  return out;
+}
 
 function classer(m: string[]): Bloc {
   const t = sansRessources(m.join(" "));
@@ -112,7 +122,7 @@ const texte = {
     }),
   parties: jets.slice(1).map((bloc, k) => {
     const ms = morceaux(bloc);
-    return { numero: k + 1, titre: ms[0][0].replace(/^## /, ""), blocs: ms.slice(1).map(classer) };
+    return { numero: k + 1, titre: ms[0][0].replace(/^## /, ""), blocs: rattacher(ms.slice(1).map(classer)) };
   }),
 };
 

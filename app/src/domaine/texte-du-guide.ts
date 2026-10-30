@@ -14,7 +14,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     },
     {
       "chiffre": "20 h",
-      "texte": "de travail pour vous : mettre en place les chapitres, les scènes et les consignes, relier, relire ; pas seulement corriger des textes.",
+      "texte": "de travail pour vous : mettre en place les chapitres, les scènes et les consignes, relier, relire, ajouter les illustrations ; pas seulement corriger des textes.",
       "partie": 11
     },
     {
@@ -50,45 +50,41 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Un vrai livre, à leur portée.",
-          "texte": "Pour un enfant, écrire un livre, c’est pour les écrivains. À la fin du projet, il en tient un entre les mains, avec son nom dedans ; il en est fier et le garde toute sa vie. Le format le rend possible : une scène tient en une demi-page, un morceau court et fini. Pas besoin d’écrire un roman pour être auteur."
+          "tete": "C’est un livre ! Un vrai.",
+          "texte": "Pour beaucoup d’enfants, écrire un livre, c’est une affaire d’écrivains. Mais la classe a l’avantage du nombre. Chacun apporte ses idées et écrit quelques scènes. Mis bout à bout, tous ces petits textes deviennent une histoire complète, bien plus ambitieuse que ce qu’un élève aurait pu créer seul. Les élèves en difficulté écrivent volontiers et en sont aussi fiers que les autres. Et à la fin du projet, chacun tient entre ses mains un véritable livre, avec son nom à l’intérieur."
         },
         {
           "sorte": "classe",
-          "texte": "Nos premières histoires ne se jouaient qu’à l’écran : l’adresse s’oubliait vite, et l’histoire disparaissait avec elle. C’est pour que chaque élève reparte avec un vrai livre, le sien, que j’ai voulu les imprimer."
+          "texte": "Au départ, nos histoires se jouaient uniquement sur écran. Mais l’adresse finissait par s’oublier, et l’histoire avec elle. C’est pour que chaque élève reparte avec un livre à garder, à montrer et à partager que j’ai voulu les imprimer."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Tout le monde est auteur.",
-          "texte": "C’est un projet pour toute la classe : qu’un élève écrive deux ou trois scènes ou deux ou trois chapitres, chacun s’y sent impliqué et fier de la même façon. Chacun apporte ce qu’il sait faire : l’écriture, l’imagination, les illustrations. Les élèves en difficulté écrivent volontiers ; pour un élève accompagné, réduisez la quantité, guidez davantage la consigne, proposez une image pour lancer l’imagination, ou confiez-lui les illustrations."
+          "tete": "C’est un jeu !",
+          "texte": "Inventer des chemins secrets, tendre des pièges aux lecteurs, imaginer des choix difficiles et des fins surprenantes… Les élèves ne se contentent plus de raconter une histoire : ils créent une aventure dans laquelle d’autres vont jouer. Et si un chemin ne mène nulle part, le lecteur reste bloqué : on reprend son texte sans rechigner. L’écriture devient elle-même un jeu, et l’envie de découvrir les chapitres des camarades donne une bonne raison de poursuivre le projet, séance après séance."
         },
         {
-          "sorte": "paragraphe",
-          "tete": "Des lecteurs qui joueront le livre.",
-          "texte": "On soigne et on relit parce que quelqu’un va jouer : un chemin qui ne tient pas bloque le lecteur, et les élèves le prennent au sérieux. Et un livre-jeu ne se lit pas qu’une fois : on y revient pour tenter un autre chemin, il passe en famille, chez les frères et sœurs, dans les autres classes, à la bibliothèque de l’école."
-        },
-        {
-          "sorte": "paragraphe",
-          "tete": "Plus qu’un projet d’écriture.",
-          "texte": "Contrairement à un récit linéaire, une histoire interactive oblige l’élève à anticiper, à structurer, à penser plusieurs possibilités : il ne s’agit plus seulement d’écrire, mais de construire un système de choix cohérent. Le projet permet ainsi de :"
-        },
-        {
-          "sorte": "liste",
+          "sorte": "classe",
+          "texte": "Je sais qu’un projet fonctionne quand :",
           "elements": [
-            "développer la logique narrative ;",
-            "travailler la compréhension des conséquences ;",
-            "stimuler l’engagement des élèves ;",
-            "favoriser la coopération."
+            "une séance d’écriture se prolonge pendant deux heures sans que personne ne demande à arrêter ;",
+            "toutes les mains se lèvent quand je propose de continuer en APC ;",
+            "les plus rapides proposent leur aide à ceux qui peinent à finir leur chapitre, plutôt que de considérer leur travail terminé ;",
+            "l’année suivante, des élèves montrent fièrement leur livre à leurs nouveaux professeurs."
           ]
-        },
-        {
-          "sorte": "classe",
-          "texte": "Une fois, nous avons écrit deux heures d’affilée, en silence, sans une plainte et sans discipline à faire : brouillon sur feuille, saisie à l’ordinateur, remarque du maître, reprise, validation, scène suivante. Toute la classe a levé la main pour venir en APC continuer à écrire. Les plus rapides proposent d’eux-mêmes d’aider ceux qui peinent à finir leur chapitre, au lieu de considérer qu’ils ont terminé. Et une ancienne élève de CM2 a apporté le livre, l’année suivante, en cours de français de 6e."
         },
         {
           "sorte": "paragraphe",
           "tete": "Et les programmes ?",
-          "texte": "En CM, le programme de français du cycle 3 demande des écrits longs, écrits à plusieurs, avec brouillons et révisions : un livre-jeu en est un."
+          "texte": "Au cours moyen, le [programme de français du cycle 3](https://www.education.gouv.fr/sites/default/files/ensel620_annexe1.pdf) (Bulletin officiel du 17 avril 2025) demande que chaque élève participe dans l’année à des productions d’écrit collaboratives, produise des écrits longs, apprenne à se servir du brouillon et à réviser ses textes ; il encourage les projets d’écriture créatifs et l’écriture collective guidée par le professeur. Un livre-jeu réunit tout cela, et fait travailler :"
+        },
+        {
+          "sorte": "liste",
+          "elements": [
+            "la construction du récit et l’anticipation des conséquences de chaque choix ;",
+            "la cohérence entre les personnages, les lieux et les événements ;",
+            "le vocabulaire, la syntaxe et l’orthographe, à travers la réécriture ;",
+            "la coopération, en confrontant les idées pour construire une histoire commune."
+          ]
         }
       ]
     },

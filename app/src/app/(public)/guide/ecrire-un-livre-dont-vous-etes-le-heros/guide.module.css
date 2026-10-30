@@ -252,8 +252,25 @@
   font-family: var(--f-main);
   font-size: 1.05rem;
 }
-.classe p:last-child {
+.classe p:not(.classeTitre),
+.classe li {
   font-style: italic;
+}
+/* Une liste dans la copie : chaque ligne commence par un tiret, sur les lignes du cahier */
+.classe ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.classe li {
+  position: relative;
+  padding-left: 1.1em;
+}
+.classe li::before {
+  content: "–";
+  position: absolute;
+  left: 0;
+  color: var(--graphite-3);
 }
 
 /* L'encart de l'outil : discret, la voix de l'outil, la petite marque du dragon-livre */

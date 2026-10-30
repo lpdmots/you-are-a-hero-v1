@@ -194,6 +194,15 @@ function Corps({ partie }: { partie: Partie }) {
               <p>
                 <EnLigne texte={b.texte} />
               </p>
+              {b.elements ? (
+                <ul>
+                  {b.elements.map((e) => (
+                    <li key={e}>
+                      <EnLigne texte={e} />
+                    </li>
+                  ))}
+                </ul>
+              ) : null}
             </aside>
           </Fragment>
         );
