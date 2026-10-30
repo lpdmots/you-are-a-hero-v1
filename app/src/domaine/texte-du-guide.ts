@@ -160,8 +160,8 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Construisez l’histoire par étapes.",
-          "texte": "Commencez par l’univers, les personnages et le héros, puis définissez sa quête et les grandes étapes de l’aventure. À chaque étape, les élèves proposent leurs idées, vous les regroupez au tableau, puis la classe discute et vote si nécessaire. À vous de trancher lorsque les idées ne sont pas compatibles. Gardez les décisions affichées pendant tout le projet : elles serviront de référence à chacun. Les idées écartées pourront toujours resservir pour inventer un lieu, un personnage ou un obstacle."
+          "tete": "Construisez l’histoire par étapes :",
+          "texte": "l’univers, les personnages et le héros, sa quête, puis les grandes étapes de l’aventure. À chaque étape, les élèves proposent leurs idées, vous les regroupez au tableau, puis la classe discute et vote si nécessaire. À vous de trancher lorsque les idées ne sont pas compatibles. Gardez les décisions affichées pendant tout le projet : c’est la référence de tous. Les idées écartées pourront toujours resservir pour inventer un lieu, un personnage ou un obstacle."
         },
         {
           "sorte": "paragraphe",
@@ -171,7 +171,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Gardez quelques surprises.",
-          "texte": "Écrivez vous-même certaines scènes que les élèves découvriront plus tard : une quête secondaire, ou le moyen de vaincre le méchant, que vous seul connaissez. Même en connaissant les grandes lignes de l’histoire, ils auront le plaisir de se laisser surprendre."
+          "texte": "Écrivez vous-même certaines scènes que les élèves découvriront plus tard : une quête secondaire, un secret, un rebondissement. Même en connaissant les grandes lignes de l’histoire, ils auront le plaisir de se laisser surprendre."
         },
         {
           "sorte": "paragraphe",
@@ -186,7 +186,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Et la première scène ?",
-          "texte": "Imaginez ensemble la situation de départ : qui est le héros, où il se trouve, ce qui lance l’aventure. La rédaction peut attendre : confiez-la plus tard à un élève à l’aise, quand le reste de l’histoire a pris forme."
+          "texte": "Imaginez ensemble la situation de départ, puis confiez sa rédaction plus tard à un élève à l’aise, quand le reste de l’histoire a pris forme."
         },
         {
           "sorte": "classe",

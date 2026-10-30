@@ -513,12 +513,12 @@ chaque partie pendant l'entretien et prime sur les sources.
 
 > ## Comment inventer l'histoire ensemble ?
 >
-> **Construisez l'histoire par étapes.** Commencez par l'univers, les
-> personnages et le héros, puis définissez sa quête et les grandes étapes de
-> l'aventure. À chaque étape, les élèves proposent leurs idées, vous les
-> regroupez au tableau, puis la classe discute et vote si nécessaire. À vous
-> de trancher lorsque les idées ne sont pas compatibles. Gardez les décisions
-> affichées pendant tout le projet : elles serviront de référence à chacun.
+> **Construisez l'histoire par étapes :** l'univers, les personnages et le
+> héros, sa quête, puis les grandes étapes de l'aventure. À chaque étape, les
+> élèves proposent leurs idées, vous les regroupez au tableau, puis la classe
+> discute et vote si nécessaire. À vous de trancher lorsque les idées ne sont
+> pas compatibles. Gardez les décisions affichées pendant tout le projet :
+> c'est la référence de tous.
 > Les idées écartées pourront toujours resservir pour inventer un lieu, un
 > personnage ou un obstacle.
 >
@@ -529,8 +529,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > détours et les solutions inattendues. La toute fin peut attendre.
 >
 > **Gardez quelques surprises.** Écrivez vous-même certaines scènes que les
-> élèves découvriront plus tard : une quête secondaire, ou le moyen de vaincre
-> le méchant, que vous seul connaissez. Même en connaissant les grandes
+> élèves découvriront plus tard : une quête secondaire, un secret, un
+> rebondissement. Même en connaissant les grandes
 > lignes de l'histoire, ils auront le plaisir de se laisser surprendre.
 >
 > **Décidez des règles communes.** Un héros ou plusieurs ? À quelle personne
@@ -546,9 +546,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > devient responsable : il en imagine les obstacles et la façon de les
 > surmonter (voir « Comment répartir l'écriture entre les élèves ? »).
 >
-> **Et la première scène ?** Imaginez ensemble la situation de départ : qui
-> est le héros, où il se trouve, ce qui lance l'aventure. La rédaction peut
-> attendre : confiez-la plus tard à un élève à l'aise, quand le reste de
+> **Et la première scène ?** Imaginez ensemble la situation de départ, puis
+> confiez sa rédaction plus tard à un élève à l'aise, quand le reste de
 > l'histoire a pris forme.
 >
 > **Dans ma classe.** Le moyen de vaincre le méchant, je suis seul à le
