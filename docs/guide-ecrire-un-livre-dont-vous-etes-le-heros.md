@@ -534,6 +534,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > rebondissement. Même en connaissant les grandes
 > lignes de l'histoire, ils auront le plaisir de se laisser surprendre.
 >
+> **Dans ma classe.** Dans « Électro Nick », j'étais le seul à connaître le
+> moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j'avais écrit
+> une quête secondaire.
+>
 > **Décidez des règles communes.** Un héros ou plusieurs ? À quelle personne
 > et à quel temps raconter ? Le « tu » et le présent fonctionnent bien à
 > l'élémentaire ; l'essentiel est de s'y tenir dans tout le livre. Décidez
@@ -550,10 +554,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Et la première scène ?** Imaginez ensemble la situation de départ, puis
 > confiez sa rédaction plus tard à un élève à l'aise, quand le reste de
 > l'histoire a pris forme.
->
-> **Dans ma classe.** Dans « Électro Nick », j'étais le seul à connaître le
-> moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j'avais écrit
-> une quête secondaire.
 >
 > *Encart.* La Préparation d'Il était une classe suit ces étapes : les idées
 > de chacun, ce que la classe retient, un écran à projeter.

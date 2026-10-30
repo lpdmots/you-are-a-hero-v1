@@ -174,6 +174,10 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "texte": "Écrivez vous-même certaines scènes que les élèves découvriront plus tard : une quête secondaire, un secret, un rebondissement. Même en connaissant les grandes lignes de l’histoire, ils auront le plaisir de se laisser surprendre."
         },
         {
+          "sorte": "classe",
+          "texte": "Dans « Électro Nick », j’étais le seul à connaître le moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j’avais écrit une quête secondaire."
+        },
+        {
           "sorte": "paragraphe",
           "tete": "Décidez des règles communes.",
           "texte": "Un héros ou plusieurs ? À quelle personne et à quel temps raconter ? Le « tu » et le présent fonctionnent bien à l’élémentaire ; l’essentiel est de s’y tenir dans tout le livre. Décidez aussi comment on peut échouer : pas besoin de violence pour de mauvaises fins, se perdre, manquer de temps ou rentrer bredouille suffisent."
@@ -187,10 +191,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "sorte": "paragraphe",
           "tete": "Et la première scène ?",
           "texte": "Imaginez ensemble la situation de départ, puis confiez sa rédaction plus tard à un élève à l’aise, quand le reste de l’histoire a pris forme."
-        },
-        {
-          "sorte": "classe",
-          "texte": "Dans « Électro Nick », j’étais le seul à connaître le moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j’avais écrit une quête secondaire."
         },
         {
           "sorte": "encart",
