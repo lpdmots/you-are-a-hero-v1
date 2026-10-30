@@ -550,9 +550,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > confiez sa rédaction plus tard à un élève à l'aise, quand le reste de
 > l'histoire a pris forme.
 >
-> **Dans ma classe.** Le moyen de vaincre le méchant, je suis seul à le
-> connaître. Une fois, la quête secondaire que j'avais prévue s'est révélée
-> un trop gros défi.
+> **Dans ma classe.** Dans « Électro Nick », j'étais le seul à connaître le
+> moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j'avais écrit
+> une quête secondaire, qui s'est révélée un trop gros défi.
 >
 > *Encart.* La Préparation d'Il était une classe suit ces étapes : les idées
 > de chacun, ce que la classe retient, un écran à projeter.

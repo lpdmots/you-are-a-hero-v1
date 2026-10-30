@@ -190,7 +190,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Le moyen de vaincre le méchant, je suis seul à le connaître. Une fois, la quête secondaire que j’avais prévue s’est révélée un trop gros défi."
+          "texte": "Dans « Électro Nick », j’étais le seul à connaître le moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j’avais écrit une quête secondaire, qui s’est révélée un trop gros défi."
         },
         {
           "sorte": "encart",
