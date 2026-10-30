@@ -426,7 +426,11 @@ chaque partie pendant l'entretien et prime sur les sources.
   pas de liste des livres de la bibliothèque, que les couvertures montrent ;
   le rythme réduit à une phrase qui renvoie à la partie 11 (le support est
   en partie 5). Confirmé par lui : une période d'APC consacrée au projet,
-  des volontaires qui écrivent à la maison.
+  des volontaires qui écrivent à la maison. Éditeurs vérifiés le même jour
+  et liés à leur page officielle : *Ma première aventure*, collection de
+  Game Flow (albums dès 4 ans, pages découpées en trois) ; *Tu es le héros*,
+  Larousse Jeunesse (titres de 2021 à 2025). Pas de couvertures (droits des
+  éditeurs, une image par partie déjà prise par les livres de la classe).
 
 #### Premier jet
 
@@ -453,9 +457,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > l'histoire. Décidez aussi comment rattraper les retards : feuilles à finir
 > à la maison, séances d'APC (voir « Combien de temps faut-il ? »).
 >
-> **Dans ma classe.** Je commence par la série *Ma première aventure*,
+> **Dans ma classe.** Je commence par la série
+> [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow),
 > idéale pour découvrir les choix et leurs conséquences, puis nous passons à
-> *Tu es le héros* de Larousse Jeunesse, aux règles plus élaborées. Nous
+> [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/)
+> (Larousse Jeunesse), aux règles plus élaborées. Nous
 > décortiquons ensuite un *Ma première aventure* et comparons les choix des
 > Larousse. Les livres de mes anciennes classes servent aussi de modèles. Je
 > consacre généralement une période d'APC au projet, pour ceux qui ont
@@ -1343,7 +1349,8 @@ formulations à revérifier à la source avant publication.
 - Les sources non lues : Éduscol « Réinventer la fiction », Édubase (Twine),
   Odidoc n° 8, « Quêtes et péripéties », Canopé, académie de Nice, mémoires
   universitaires.
-- Les âges et la disponibilité des livres-jeux cités.
+- Les âges et la disponibilité des livres-jeux cités (éditeurs de la
+  partie 3 vérifiés le 30 octobre 2026).
 - Chaque chiffre repris d'une source.
 - Les prix d'impression de l'« En bref » et de la partie 12 (facture de juin
   2026, TVA allemande) et la troisième version à 33,78 €, à préciser.
