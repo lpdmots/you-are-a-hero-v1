@@ -331,7 +331,8 @@ chaque partie pendant l'entretien et prime sur les sources.
   niveaux, un seul livre ; au collège, on confie davantage aux élèves.
 - Repris le 30 octobre 2026, à sa demande : du CE2 au CM2, chaque élève
   écrit ses propres scènes, dès le CE2 ; le passage par l'écriture
-  collective puis en groupes ne vaut que pour le cycle 2.
+  collective puis en groupes ne vaut que pour le cycle 2. Développé ensuite
+  à sa demande : un livre plus grand, un système de jeu plus complexe.
 
 #### Premier jet
 
@@ -347,7 +348,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > l'adulte. Gardez des choix simples et une histoire courte.
 >
 > **Du CE2 au CM2 (8-11 ans).** Dès le CE2, chaque élève écrit ses propres
-> scènes.
+> scènes. C'est l'âge où le livre peut grandir : plus de chapitres, jusqu'à
+> deux ou trois cents scènes avec une classe habituée, et un système de jeu
+> plus riche, avec des objets à trouver, une jauge, des énigmes, parfois un
+> dé. Commencez simple la première fois ; le livre suivant ira plus loin
+> (voir « Faut-il des objets, des énigmes ou un dé ? »).
 >
 > **Au collège (11-15 ans).** La méthode vaut jusqu'en 3e, et vous pouvez confier
 > davantage aux élèves : organiser eux-mêmes leur chapitre et ses choix,
