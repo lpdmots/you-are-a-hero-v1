@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
-import { ADRESSE_DU_GUIDE, ANCRES, CHIFFRES_EN_BREF, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
+import { ADRESSE_DU_GUIDE, ANCRES, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
 import { lireOffre } from "@/domaine/offre";
 import { estPageMesuree } from "@/domaine/pages-publiques";
 import { llmsTxt } from "@/domaine/presentation";
@@ -12,11 +12,13 @@ const SITE = "https://iletaituneclasse.com";
 afterEach(() => vi.unstubAllEnvs());
 
 describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa classe »", () => {
-  it("F14-AC52 — le texte du document : treize questions, chacune son ancre, six encarts au plus, aucun renvoi à « Ressources »", () => {
+  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, treize questions, chacune son ancre, six encarts au plus, aucun renvoi à « Ressources »", () => {
     expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros avec sa classe");
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
-    expect(T.auteur).toBe("Par Nicolas Coussot, professeur des écoles.");
-    expect(T.enBref).toHaveLength(CHIFFRES_EN_BREF.length);
+    expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
+    // « En bref » : un chiffre, sa phrase, la question qui le développe
+    expect(T.enBref.map((l) => l.chiffre)).toEqual(["1 à 3 mois", "20 h", "4 étapes", "40 scènes", "10 €"]);
+    expect(T.enBref.every((l) => l.texte && l.partie >= 1 && l.partie <= 13)).toBe(true);
     expect(T.parties.map((p) => p.numero)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
     expect(T.parties.every((p) => p.titre.endsWith("?") || p.numero === 13)).toBe(true);
     expect(new Set(ANCRES).size).toBe(T.parties.length);

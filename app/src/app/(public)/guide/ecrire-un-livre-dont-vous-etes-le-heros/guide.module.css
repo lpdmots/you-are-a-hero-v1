@@ -155,7 +155,7 @@
   font-weight: 700;
 }
 
-/* En bref : le chiffre en canard, puis la phrase entière */
+/* En bref : le chiffre en canard, la phrase qui le suit, la question qui le développe */
 .bref {
   padding: 24px 30px 26px;
   background: var(--feuille);
@@ -180,7 +180,7 @@
 }
 .bref li {
   display: grid;
-  grid-template-columns: 118px 1fr;
+  grid-template-columns: 150px 1fr;
   gap: 18px;
   align-items: baseline;
   padding: 12px 0;
@@ -229,20 +229,26 @@
   transform: translateY(-0.18em);
 }
 
-/* Dans ma classe : la copie, feuille blanche et marge rouge ; la main pour le titre */
+/* Dans ma classe : la copie, feuille blanche, marge rouge et lignes du cahier comme « Nous retenons »
+   dans la Préparation ; la main pour le titre, qui tient sur une ligne */
 .classe {
+  --interligne: 2.1rem;
   margin: 1.7em 0;
-  padding: 18px 24px 20px 52px;
+  padding: 14px 24px 18px 52px;
   background:
-    linear-gradient(var(--marge), var(--marge)) 34px 0 / 1.5px 100% no-repeat,
+    linear-gradient(var(--marge), var(--marge)) 34px 0 / 1.5px 100% no-repeat padding-box,
+    repeating-linear-gradient(to bottom, transparent 0 calc(var(--interligne) - 1px), var(--trait) calc(var(--interligne) - 1px) var(--interligne)) content-box,
     var(--feuille);
   border-radius: 3px;
   box-shadow:
     0 1px 2px rgba(60, 45, 20, 0.08),
     0 10px 22px -14px rgba(60, 45, 20, 0.35);
+  line-height: var(--interligne);
+}
+.classe p {
+  margin: 0;
 }
 .classeTitre {
-  margin-bottom: 6px;
   font-family: var(--f-main);
   font-size: 1.05rem;
 }
@@ -680,19 +686,22 @@
     padding: 18px 18px 20px;
   }
   .bref li {
-    grid-template-columns: 82px 1fr;
+    grid-template-columns: 92px 1fr;
     gap: 12px;
   }
   .chiffre {
     font-size: 1.22rem;
+    white-space: normal;
   }
   .partie {
     margin-top: 60px;
   }
   .classe {
-    padding: 14px 16px 16px 40px;
+    --interligne: 1.95rem;
+    padding: 12px 16px 14px 40px;
     background-position:
       24px 0,
+      0 0,
       0 0;
   }
   .encart {

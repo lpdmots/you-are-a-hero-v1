@@ -92,6 +92,16 @@ Décidé le 30 octobre 2026.
 - Pied : « Ressources » (quand la page existera), la bibliothèque, l'accueil
   (« Essayer Il était une classe ») ; les sources restent citées dans le
   texte (parties 6 et 7).
+- « En bref » repris le 30 octobre 2026, après la construction, décidé par
+  le porteur : les cinq lignes du premier jet ne répondaient pas aux
+  questions du lecteur (depuis quand il le fait, un choix d'organisation
+  personnel, un nombre d'élèves par chapitre qui dépend du livre). Un chiffre
+  par ligne, choisi par lui, la ligne finie par la partie qui le développe :
+  1 à 3 mois (et non « 3 mois », qu'on aurait lu à côté des 40 scènes) ;
+  20 h pour l'enseignant, sans la moitié qu'il compte avec le site,
+  l'outil restant aux encarts (partie 11) ; 4 étapes ; 40 scènes ; 10 €
+  en couleur pour un livre moyen. Ses quatre ans de livres passent dans la
+  ligne d'auteur, en version courte.
 
 #### Premier jet
 
@@ -103,20 +113,23 @@ Décidé le 30 octobre 2026.
 > l'aventure ensemble, puis se partager l'écriture des scènes, que
 > l'enseignant relie en un seul livre.
 >
-> *Par Nicolas Coussot, professeur des écoles. Mis à jour le …*
+> *Par Nicolas Coussot, professeur des écoles, quatre ans de livres-jeux
+> avec sa classe. Mis à jour le …*
 >
 > **En bref**
 >
-> - Quatre ans de livres écrits avec des élèves du CE2 au CM2 (8 à 11 ans),
->   dont deux de
->   213 et 323 scènes.
-> - Deux séances d'une heure par semaine : une période pour un premier
->   livre, trois mois pour un grand.
-> - Un ou deux élèves par chapitre, selon l'effectif et la taille du livre ;
->   environ trois obstacles par chapitre.
-> - Une vingtaine d'heures de travail pour l'enseignant.
-> - De 5 à 30 € l'exemplaire imprimé, selon le nombre de pages, la couleur
->   et les images.
+> - **1 à 3 mois** avec la classe : une période pour un premier livre, trois
+>   mois pour un grand. (partie 11)
+> - **20 h** de travail pour vous : mettre en place les chapitres, les scènes
+>   et les consignes, relier, relire ; pas seulement corriger des textes.
+>   (partie 11)
+> - **4 étapes** pour mener le projet : découvrir le genre, préparer
+>   l'histoire, écrire, relire. (partie 3)
+> - **40 scènes** pour un premier livre, soit une dizaine d'obstacles.
+>   (partie 6)
+> - **10 €** environ l'exemplaire en couleur d'un livre moyen, d'une
+>   vingtaine d'images. Décidez du format à l'avance : le prix monte vite.
+>   (partie 12)
 >
 > **Sommaire** : les treize questions, chacune avec son ancre.
 >
@@ -1112,6 +1125,10 @@ chaque partie pendant l'entretien et prime sur les sources.
   public, il fait signer des autorisations. Modèle sur la page « Ressources ».
 - Extensions écartées : une image qui aide à comprendre ; les auteurs qui
   mènent la partie devant une classe plus jeune.
+- Prix donnés le 30 octobre 2026 : « Les passeurs de brume » (livre
+  d'exemple du site, 32 pages), 4 € l'exemplaire en noir et blanc, 5 € en
+  couleur ; un livre moyen d'une vingtaine d'images, une dizaine d'euros.
+  Idée à faire passer : décider du format à l'avance, les prix montent vite.
 
 #### Premier jet
 
@@ -1136,8 +1153,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > Proposez le livre en précommande aux familles, avec le choix entre un
 > intérieur en noir et blanc et un intérieur en couleur. Pour notre plus
 > grand livre, plus de 300 scènes et 150 illustrations, l'exemplaire coûtait
-> en 2026 environ 12 € en noir et blanc et 29 € en couleur ; un livre plus
-> court coûte moins. Comptez une à deux semaines de livraison.
+> en 2026 environ 12 € en noir et blanc et 29 € en couleur ;
+> [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre
+> d'exemple du site de 32 pages, coûte 4 € en noir et blanc et 5 € en
+> couleur. Comptez une à deux semaines de livraison.
 >
 > **Un exemplaire d'essai d'abord.** Commandez-en un, vérifiez que tout va
 > bien, lisez-le ensemble en classe ; puis lancez l'impression pour les

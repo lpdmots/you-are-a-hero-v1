@@ -123,8 +123,9 @@ const GUIDE = "/guide/ecrire-un-livre-dont-vous-etes-le-heros";
 test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la lecture ; sur téléphone, le bouton « Sommaire » paraît une fois le sommaire dépassé", async ({ page }) => {
   await aller(page, GUIDE);
   await expect(page.getByRole("heading", { level: 1, name: "Comment écrire un livre dont vous êtes le héros avec sa classe" })).toBeVisible();
-  await expect(page.getByText("Par Nicolas Coussot, professeur des écoles. Mis à jour le")).toBeVisible();
+  await expect(page.getByText(/^Par Nicolas Coussot, professeur des écoles, .* Mis à jour le/)).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "En bref" })).toBeVisible();
+  await expect(page.getByRole("region", { name: "En bref" }).getByText("1 à 3 mois")).toBeVisible();
   // Grand écran : le sommaire collant, à côté du texte
   const sommaire = page.getByRole("navigation", { name: "Sommaire" }).first();
   await expect(sommaire.getByRole("link")).toHaveCount(13);

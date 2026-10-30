@@ -96,7 +96,12 @@ const texte = {
   definition: haut[1].join(" "),
   // La date de mise à jour se pose à part (DATE_DU_GUIDE), pas dans le texte
   auteur: auteur.replace(/\s*Mis à jour le …\s*$/, ""),
-  enBref: (classer(haut[4]) as { elements: string[] }).elements,
+  // Chaque ligne : son chiffre en gras, puis la phrase, finie par « (partie N) », la question qui la développe
+  enBref: (classer(haut[4]) as { elements: string[] }).elements.map((l) => {
+    const m = l.match(/^\*\*([^*]+)\*\*\s*(.*?)\s*\(partie\s(\d+)\)$/);
+    if (!m) throw new Error(`Ligne de « En bref » sans chiffre en gras ni « (partie N) » : ${l}`);
+    return { chiffre: m[1], texte: m[2], partie: Number(m[3]) };
+  }),
   // « Ressources » attend sa page ; « La bibliothèque » et « Essayer Il était une classe » restent
   plusLoin: plusLoin
     .split(" · ")

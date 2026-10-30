@@ -5,13 +5,33 @@ import type { TexteDuGuide } from "./guide";
 export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "titre": "Comment écrire un livre dont vous êtes le héros avec sa classe",
   "definition": "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en scènes numérotées où le lecteur choisit la suite : à la fin d’une scène, il se rend au numéro de son choix. L’écrire avec sa classe, c’est inventer l’aventure ensemble, puis se partager l’écriture des scènes, que l’enseignant relie en un seul livre.",
-  "auteur": "Par Nicolas Coussot, professeur des écoles.",
+  "auteur": "Par Nicolas Coussot, professeur des écoles, quatre ans de livres-jeux avec sa classe.",
   "enBref": [
-    "Quatre ans de livres écrits avec des élèves du CE2 au CM2 (8 à 11 ans), dont deux de 213 et 323 scènes.",
-    "Deux séances d’une heure par semaine : une période pour un premier livre, trois mois pour un grand.",
-    "Un ou deux élèves par chapitre, selon l’effectif et la taille du livre ; environ trois obstacles par chapitre.",
-    "Une vingtaine d’heures de travail pour l’enseignant.",
-    "De 5 à 30 € l’exemplaire imprimé, selon le nombre de pages, la couleur et les images."
+    {
+      "chiffre": "1 à 3 mois",
+      "texte": "avec la classe : une période pour un premier livre, trois mois pour un grand.",
+      "partie": 11
+    },
+    {
+      "chiffre": "20 h",
+      "texte": "de travail pour vous : mettre en place les chapitres, les scènes et les consignes, relier, relire ; pas seulement corriger des textes.",
+      "partie": 11
+    },
+    {
+      "chiffre": "4 étapes",
+      "texte": "pour mener le projet : découvrir le genre, préparer l’histoire, écrire, relire.",
+      "partie": 3
+    },
+    {
+      "chiffre": "40 scènes",
+      "texte": "pour un premier livre, soit une dizaine d’obstacles.",
+      "partie": 6
+    },
+    {
+      "chiffre": "10 €",
+      "texte": "environ l’exemplaire en couleur d’un livre moyen, d’une vingtaine d’images. Décidez du format à l’avance : le prix monte vite.",
+      "partie": 12
+    }
   ],
   "plusLoin": [
     {
@@ -525,7 +545,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Imprimer.",
-          "texte": "Un imprimeur en ligne qui imprime à l’exemplaire suffit. Proposez le livre en précommande aux familles, avec le choix entre un intérieur en noir et blanc et un intérieur en couleur. Pour notre plus grand livre, plus de 300 scènes et 150 illustrations, l’exemplaire coûtait en 2026 environ 12 € en noir et blanc et 29 € en couleur ; un livre plus court coûte moins. Comptez une à deux semaines de livraison."
+          "texte": "Un imprimeur en ligne qui imprime à l’exemplaire suffit. Proposez le livre en précommande aux familles, avec le choix entre un intérieur en noir et blanc et un intérieur en couleur. Pour notre plus grand livre, plus de 300 scènes et 150 illustrations, l’exemplaire coûtait en 2026 environ 12 € en noir et blanc et 29 € en couleur ; [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d’exemple du site de 32 pages, coûte 4 € en noir et blanc et 5 € en couleur. Comptez une à deux semaines de livraison."
         },
         {
           "sorte": "paragraphe",

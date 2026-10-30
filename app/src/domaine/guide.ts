@@ -32,7 +32,8 @@ export type TexteDuGuide = {
   titre: string;
   definition: string;
   auteur: string;
-  enBref: string[];
+  /** « En bref » : un chiffre, la phrase qui le suit, la question qui le développe */
+  enBref: { chiffre: string; texte: string; partie: number }[];
   plusLoin: { libelle: string; adresse: string }[];
   parties: Partie[];
 };
@@ -40,9 +41,6 @@ export type TexteDuGuide = {
 /** L'ancre de chaque question, courte et stable : le sommaire et les renvois y mènent */
 export const ANCRES = ["pourquoi", "age", "commencer", "inventer", "repartir", "combien", "choix", "relire", "objets", "chemins", "temps", "illustrer", "erreurs"] as const;
 export const ancreDe = (numero: number) => ANCRES[numero - 1];
-
-/** Le chiffre de chaque ligne de « En bref », mis en avant ; la phrase reste entière à côté (maquette A2) */
-export const CHIFFRES_EN_BREF = ["4 ans", "2 × 1 h", "1 ou 2", "20 h", "5 à 30 €"];
 
 // ——— Le texte en ligne : gras, italique, liens, renvois aux autres questions ———
 

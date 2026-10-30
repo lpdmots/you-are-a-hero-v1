@@ -6,7 +6,6 @@ import { Dragon } from "@/composants/Dragon";
 import {
   ADRESSE_DU_GUIDE,
   ancreDe,
-  CHIFFRES_EN_BREF,
   COUVERTURES_DU_GUIDE,
   DATE_DU_GUIDE,
   DESCRIPTION_DU_GUIDE,
@@ -253,13 +252,17 @@ export default function Guide() {
           <section className={styles.bref} aria-labelledby="en-bref">
             <h2 id="en-bref">En bref</h2>
             <ul>
-              {T.enBref.map((ligne, i) => (
-                <li key={ligne}>
-                  <span className={styles.chiffre} aria-hidden="true">
-                    {CHIFFRES_EN_BREF[i]}
-                  </span>
+              {T.enBref.map((ligne) => (
+                <li key={ligne.chiffre}>
+                  <span className={styles.chiffre}>{ligne.chiffre}</span>
                   <span>
-                    <EnLigne texte={ligne} />
+                    <EnLigne texte={ligne.texte} />
+                    <span className={styles.insecable}>
+                      {"\u2060"}
+                      <a className={styles.renvoi} href={`#${ancreDe(ligne.partie)}`} aria-label={`question ${ligne.partie}`}>
+                        {ligne.partie}
+                      </a>
+                    </span>
                   </span>
                 </li>
               ))}

@@ -2832,6 +2832,13 @@ polices) ; une image de partage propre, recadrée dans la photo des livres ;
 publiques, sous « Besoin d'aide ? ». Pas de lien vers « Ressources » tant que
 la page n'existe pas.
 
+**Repris le même jour, à sa demande :** « En bref » en cinq chiffres choisis
+par lui (1 à 3 mois, 20 h, 4 étapes, 40 scènes, 10 €), chacun suivi de sa
+phrase et du numéro cerclé de la question qui le développe ; ses quatre ans
+passent dans la ligne d'auteur. « Dans ma classe » prend les lignes du cahier
+de « Nous retenons » (Préparation) : une ligne par ligne de texte, le titre
+à la main sur la première.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
