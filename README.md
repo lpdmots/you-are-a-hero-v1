@@ -662,7 +662,9 @@ avant de commencer » soient tranchées.
   ([document](docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md)) ;
   maquette A2 validée le même jour ([design](docs/design.md#guide--écrire-un-livre-dont-vous-êtes-le-héros---maquettes-30-octobre-2026)),
   page construite en local le même jour (F14-AC52, AC53), non poussée ;
-  retouches du texte à venir. À
+  retouches du texte en cours ; la page ne sera terminée qu'une fois traitée
+  la place de l'IA dans le projet, peut-être en partie à part
+  ([document](docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md#reste-à-traiter-avant-publication)). À
   venir : la page pédagogique. Skills ajoutés : `content-strategy`, `site-architecture`,
   `copywriting`, `link-building`.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par

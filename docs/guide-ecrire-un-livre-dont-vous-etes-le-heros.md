@@ -1340,6 +1340,16 @@ formulations à revérifier à la source avant publication.
 - Livres jeunesse : [Hatier, La classe dont tu es le héros](https://www.editions-hatier.fr/livre/la-classe-dont-tu-es-le-heros-pole-nord-cpce1-67-ans-9782401116504) ;
   [Hatier, Le monde dont tu es le héros](https://www.livreshebdo.fr/article/hatier-jeunesse-lance-la-collection-le-monde-dont-tu-es-le-heros).
 
+## Reste à traiter avant publication
+
+- **La place de l'IA dans le projet** (demandé par le porteur le 30 octobre
+  2026) : la page ne sera terminée qu'une fois ce sujet abordé avec lui,
+  peut-être dans une partie à elle. Déjà dans le texte, éparpillé : la
+  correction de l'orthographe avec l'IA (partie 8), les images créées par IA
+  et sa préférence pour elles (partie 12). À trancher en entretien : ce que
+  l'enseignant en fait, ce que les élèves n'en font pas (ils n'ont accès à
+  aucune IA dans l'outil), ce qu'elle ne fait pas à leur place.
+
 ## À vérifier avant publication
 
 - Les références exactes des programmes, sur le Bulletin officiel (cycle 2
