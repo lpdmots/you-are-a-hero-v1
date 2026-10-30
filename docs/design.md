@@ -2796,7 +2796,10 @@ Git). Propositions, rien n'est retenu.
 le meilleur des deux autres (avis d'un second modèle, GPT, qui classait A,
 puis C, puis B : A pour retrouver un conseil, C pour ses chiffres et ses
 images, B pour sa continuité avec l'accueil, trop chargée sur treize
-parties). Reprise en A2, `guide-a2.html`, proposition à juger :
+parties). Reprise en A2, `guide-a2.html`, **validée par le porteur le
+30 octobre 2026**, dragon et fond chaud compris : elle fait foi pour la
+construction de la page, qui demande son instruction. A, B et C restent dans
+le dossier comme pistes écartées.
 
 - **Le haut :** la table chaude de l'accueil à la place du bureau ; une page
   de titre sur le papier des feuillets, le titre en cursive (comme l'accueil

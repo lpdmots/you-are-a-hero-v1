@@ -658,8 +658,10 @@ avant de commencer » soient tranchées.
   en ligne le 28 octobre 2026 jusqu'à `21ccd90`. Guide « Comment écrire un
   livre dont vous êtes le héros » : entretien partie par partie validé le
   30 octobre 2026, texte en premier jet sous chaque partie, une seule page
-  avec sommaire, six encarts de l'outil, page non construite
-  ([document](docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md)). À
+  avec sommaire, six encarts de l'outil
+  ([document](docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md)) ;
+  maquette A2 validée le même jour ([design](docs/design.md#guide--écrire-un-livre-dont-vous-êtes-le-héros---maquettes-30-octobre-2026)),
+  page non construite. À
   venir : la page pédagogique. Skills ajoutés : `content-strategy`, `site-architecture`,
   `copywriting`, `link-building`.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
