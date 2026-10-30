@@ -457,17 +457,15 @@ chaque partie pendant l'entretien et prime sur les sources.
 > l'histoire. Décidez aussi comment rattraper les retards : feuilles à finir
 > à la maison, séances d'APC (voir « Combien de temps faut-il ? »).
 >
-> **Dans ma classe.** Je commence par la série
-> [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow),
-> idéale pour découvrir les choix et leurs conséquences, puis nous passons à
+> **Dans ma classe.** Je commence par
+> [*Ma première aventure*](https://ma-premiere-aventure.fr/) (Game Flow), puis
 > [*Tu es le héros*](https://www.editions-larousse.fr/livres-tu-es-le-heros/)
-> (Larousse Jeunesse), aux règles plus élaborées. Nous
-> décortiquons ensuite un *Ma première aventure* et comparons les choix des
-> Larousse. Les livres de mes anciennes classes servent aussi de modèles.
-> Une fois l'écriture lancée, je consacre généralement une période d'APC à
-> écrire, pour ceux qui ont besoin de plus de temps, et des volontaires
-> continuent à la maison, sur leurs feuilles d'écriture, qui portent les
-> consignes.
+> (Larousse Jeunesse), aux règles plus complexes. Nous étudions ensuite leur
+> construction et les différents types de choix. Les livres de mes anciennes
+> classes servent aussi de modèles. Pendant le projet, je propose des APC pour
+> aider ceux qui ont besoin de plus de temps. Les volontaires peuvent
+> également avancer à la maison grâce à leurs feuilles d'écriture, qui
+> contiennent les consignes.
 
 ### 4. Inventer l'histoire ensemble
 
