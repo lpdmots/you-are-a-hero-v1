@@ -500,49 +500,60 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Extensions validées : ce qu'on retient reste affiché (il ne le fait pas,
   mais le juge bon) ; la première scène écrite ensemble, proposée à côté de
   sa pratique ; des fins ratées sans violence.
+- Repris le 30 octobre 2026 d'après une version qu'il apporte, analysée :
+  « Fixez l'enjeu, pas toutes les solutions », le vote si nécessaire et
+  l'arbitrage, le plaisir d'être surpris malgré les grandes lignes ; les
+  scènes définies comme les passages numérotés ; gardés le méchant que lui
+  seul sait vaincre et le chapitre dont l'élève devient responsable.
+  Retirés à sa demande : les points de volonté (dits en partie 9) ; la
+  première scène écrite ensemble, qu'il ne pratique pas. Ajouté par lui :
+  une quête secondaire prévue s'est révélée un trop gros défi.
 
 #### Premier jet
 
 > ## Comment inventer l'histoire ensemble ?
 >
-> **Avancez par étapes, dans cet ordre :** l'univers, les personnages et le
-> héros, l'enjeu, puis les grandes parties de l'aventure. À chaque étape,
-> chacun propose, on regroupe au tableau, on discute, on vote ; vous tranchez
-> quand il le faut. Écrivez ce que la classe retient et gardez-le affiché
-> pendant tout le projet : c'est la référence de tous. Une idée écartée n'est
-> pas perdue ; elle reviendra comme personnage, lieu ou obstacle d'un
-> chapitre.
+> **Construisez l'histoire par étapes.** Commencez par l'univers, les
+> personnages et le héros, puis définissez sa quête et les grandes étapes de
+> l'aventure. À chaque étape, les élèves proposent leurs idées, vous les
+> regroupez au tableau, puis la classe discute et vote si nécessaire. À vous
+> de trancher lorsque les idées ne sont pas compatibles. Gardez les décisions
+> affichées pendant tout le projet : elles serviront de référence à chacun.
+> Les idées écartées pourront toujours resservir pour inventer un lieu, un
+> personnage ou un obstacle.
 >
-> **Fixez l'enjeu avant de découper.** Décidez du problème du héros et, dans
-> les grandes lignes, de la façon de le résoudre. Tous les chapitres y
-> mènent, et les obstacles naissent d'une seule question : qu'est-ce qui
-> l'empêche d'y arriver ? La toute fin peut attendre.
+> **Fixez l'enjeu, pas toutes les solutions.** Décidez du problème du héros
+> et, dans les grandes lignes, de la façon de le résoudre. Une question fera
+> ensuite naître les obstacles : qu'est-ce qui pourrait l'empêcher de
+> réussir ? Laissez aux élèves la liberté d'imaginer les rencontres, les
+> détours et les solutions inattendues. La toute fin peut attendre.
 >
-> **Gardez-vous des surprises.** Écrivez vous-même quelques scènes que la
-> classe découvrira : une quête secondaire, ou le moyen de vaincre le
-> méchant, que vous seul connaissez. Les élèves auront, eux aussi, le
-> plaisir de la découverte.
+> **Gardez quelques surprises.** Écrivez vous-même certaines scènes que les
+> élèves découvriront plus tard : une quête secondaire, ou le moyen de vaincre
+> le méchant, que vous seul connaissez. Même en connaissant les grandes
+> lignes de l'histoire, ils auront le plaisir de se laisser surprendre.
 >
-> **Décidez des règles ensemble.** Un héros ou plusieurs ; la personne et le
-> temps du récit (« tu » et le présent conviennent bien à l'élémentaire,
-> l'essentiel étant de garder le même choix dans tout le livre) ; pas de
-> violence ; et comment on peut échouer. Sans violence, les mauvaises fins ne
-> manquent pas : se perdre, rentrer bredouille, renoncer, être rattrapé par
-> le temps. S'il faut une jauge, préférez des points de volonté à des points
-> de vie.
+> **Décidez des règles communes.** Un héros ou plusieurs ? À quelle personne
+> et à quel temps raconter ? Le « tu » et le présent fonctionnent bien à
+> l'élémentaire ; l'essentiel est de s'y tenir dans tout le livre. Décidez
+> aussi comment on peut échouer : pas besoin de violence pour de mauvaises
+> fins, se perdre, manquer de temps ou rentrer bredouille suffisent.
 >
-> **Découpez, puis confiez les chapitres.** Divisez ensemble chaque partie
-> en chapitres. Chaque élève en choisit un, qu'il l'ait proposé ou non, et en
-> devient responsable : seul ou à deux, il en précise les détails, les
-> obstacles et la façon de les surmonter.
+> **Découpez l'aventure, puis confiez les chapitres.** Définissez ensemble
+> les grandes parties et les chapitres qui les composent ; chaque chapitre se
+> compose de scènes, les passages numérotés du livre. Chaque élève choisit
+> ensuite un chapitre, qu'il l'ait proposé ou non, seul ou à deux, et en
+> devient responsable : il en imagine les obstacles et la façon de les
+> surmonter (voir « Comment répartir l'écriture entre les élèves ? »).
 >
-> **Et la première scène ?** Elle pose le héros et son but. Écrivez-la
-> ensemble, pour montrer à tous le ton avant qu'ils écrivent seuls, ou
-> confiez-la plus tard à un élève à l'aise, quand le reste a pris forme.
+> **Et la première scène ?** Imaginez ensemble la situation de départ : qui
+> est le héros, où il se trouve, ce qui lance l'aventure. La rédaction peut
+> attendre : confiez-la plus tard à un élève à l'aise, quand le reste de
+> l'histoire a pris forme.
 >
 > **Dans ma classe.** Le moyen de vaincre le méchant, je suis seul à le
-> connaître. Et je n'attribue la scène d'ouverture à personne au début : je
-> la confie ensuite à un élève qui écrit vite et bien.
+> connaître. Une fois, la quête secondaire que j'avais prévue s'est révélée
+> un trop gros défi.
 >
 > *Encart.* La Préparation d'Il était une classe suit ces étapes : les idées
 > de chacun, ce que la classe retient, un écran à projeter.
