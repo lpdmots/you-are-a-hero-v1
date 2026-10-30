@@ -5493,7 +5493,10 @@ chapitre » de ses propres consignes, usage trop rare pour un écran de plus.
 L'absence de consigne numérique ne bloque pas l'écriture selon F07.1 ; elle
 écarte la scène des fiches, selon la décision ci-dessus.
 
-**Piste différée — dictée vocale :** le porteur précise que la transcription
+**Dictée vocale, d'abord piste différée :** décidée le 25 octobre 2026, à
+construire dans l'outil, dans la page de scène de l'adulte
+([plan, « Suite recommandée », point 2](plan.md#suite-recommandée-après-louverture)),
+qui fait foi ; le paragraphe suivant en garde l'origine. Le porteur précise que la transcription
 qu'il utilisait pour les élèves en retard était de la parole vers du texte
 (speech-to-text), et non de la reconnaissance de manuscrits. Il envisage aussi
 son intérêt pour réduire la recopie lorsque les ordinateurs sont partagés.
@@ -11375,7 +11378,12 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   ses questions (définition, âge, durée d'un projet, matériel, différence
   avec Twine ou Book Creator) ; puis, une page à la fois : un guide, « comment
   écrire un livre dont vous êtes le héros » (la méthode, tirée de sa classe,
-  sans documents pédagogiques), et une page pédagogique, « production
+  sans documents pédagogiques ; une seule page avec sommaire, sans
+  sous-pages tant que la Search Console ne montre pas de recherche propre à
+  une partie ; exception décidée le 30 octobre 2026 : il nomme les niveaux et
+  les périodes de l'école française, l'âge et les mois à côté à la première
+  occurrence ; texte dans
+  [le document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md)), et une page pédagogique, « production
   d'écrit et projet d'écriture » (programmes vérifiés sur le Bulletin
   officiel, séquence, documents à télécharger, en texte sur la page et en
   PDF ; c'est la page « Ressources » du plan) ; un comparatif des outils

@@ -3444,6 +3444,9 @@ V6, le premier envoi à l'imprimeur.
    type) en construisant la dictée, accepté par le porteur après qu'il l'a
    jugé inutile : les deux textes listent les services qui reçoivent des
    données, et le contrat promet d'informer l'école de tout changement.
+   Une fois construite, le guide « Comment écrire un livre dont vous êtes le
+   héros » l'annonce en encart (partie 5), décidé le 28 octobre 2026 ;
+   F07.4 est accordé le 30 octobre 2026.
 3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
    (premier essai des aides sur un livre entier), dans les limites
    gratuites (40 scènes et 10 images au plus) : un petit livre à choix de
@@ -3789,6 +3792,16 @@ V6, le premier envoi à l'imprimeur.
    l'usage ; chaque changement fait ensuite coûtera deux fois (textes,
    prompts, correction propre au français, typographie du livre, textes
    juridiques, vidéo).
+
+Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
+
+- **Fiche récapitulative de l'histoire :** demandée le 28 octobre 2026
+  (guide « Comment écrire un livre dont vous êtes le héros », partie 8). Une
+  fiche construite à partir de la Préparation (univers, enjeu, personnages et
+  leur description, lieux, objets), à afficher ou à imprimer, qui fixe les
+  noms et les détails pour toute la classe. Rien n'est spécifié : contenu,
+  place, mise à jour quand un élève ajoute un personnage ou un objet, ce que
+  l'élève en voit, à régler par un entretien court.
 
 ### Bibliothèque publique (F15)
 
