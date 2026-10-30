@@ -506,8 +506,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   scènes définies comme les passages numérotés ; gardés le méchant que lui
   seul sait vaincre et le chapitre dont l'élève devient responsable.
   Retirés à sa demande : les points de volonté (dits en partie 9) ; la
-  première scène écrite ensemble, qu'il ne pratique pas. Ajouté par lui :
-  une quête secondaire prévue s'est révélée un trop gros défi.
+  première scène écrite ensemble, qu'il ne pratique pas. Précisé par lui :
+  le méchant d'« Électro Nick », la quête secondaire du « Labyrinthe
+  oublié ».
 
 #### Premier jet
 
@@ -552,7 +553,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Dans ma classe.** Dans « Électro Nick », j'étais le seul à connaître le
 > moyen de vaincre le méchant. Dans « Le labyrinthe oublié », j'avais écrit
-> une quête secondaire, qui s'est révélée un trop gros défi.
+> une quête secondaire.
 >
 > *Encart.* La Préparation d'Il était une classe suit ces étapes : les idées
 > de chacun, ce que la classe retient, un écran à projeter.
