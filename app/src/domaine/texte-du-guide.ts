@@ -219,11 +219,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "paragraphe",
-          "tete": "Laissez les élèves inventer les choix.",
-          "texte": "Ils décident des possibilités offertes au lecteur et de leurs conséquences. Aidez-les à les formuler, et chargez-vous des liens entre les scènes pour garantir la cohérence du livre."
-        },
-        {
-          "sorte": "paragraphe",
           "tete": "Une consigne et une liste à cocher par scène.",
           "texte": "La consigne dit en une ou deux phrases ce qui doit se passer, sans dicter toute l’histoire. Une courte liste précise les éléments d’écriture attendus : l’élève la coche en se relisant."
         },

@@ -645,11 +645,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > manière. Le plus difficile reste d'inventer des choix intéressants (voir
 > « Comment organiser les choix ? »).
 >
-> **Laissez les élèves inventer les choix.** Ils décident des possibilités
-> offertes au lecteur et de leurs conséquences. Aidez-les à les formuler, et
-> chargez-vous des liens entre les scènes pour garantir la cohérence du
-> livre.
->
 > **Une consigne et une liste à cocher par scène.** La consigne dit en une ou
 > deux phrases ce qui doit se passer, sans dicter toute l'histoire. Une courte
 > liste précise les éléments d'écriture attendus : l'élève la coche en se
