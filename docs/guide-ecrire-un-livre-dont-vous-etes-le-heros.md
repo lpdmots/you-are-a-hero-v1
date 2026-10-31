@@ -992,9 +992,12 @@ chaque partie pendant l'entretien et prime sur les sources.
 > matières, évite les files d'attente et permet à chacun de continuer à
 > travailler.
 >
-> *Encart.* Dans Il était une classe, l'élève affiche en écrivant la fin de
-> la scène précédente et le début des suivantes, et lit son chapitre à
-> l'essai ; l'aide à la correction vous propose l'orthographe corrigée.
+> *Encart.* Dans l'application Il était une classe, l'élève peut consulter la
+> fin des scènes qui mènent à la sienne et le début de celles qui la
+> suivent, afin d'assurer des transitions cohérentes. Il peut également
+> tester les différents chemins de son chapitre. De votre côté, un outil
+> d'aide à la correction vous propose une version de chaque texte avec
+> l'orthographe corrigée.
 
 ### 9. Objets, énigmes, dé
 
