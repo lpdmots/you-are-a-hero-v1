@@ -251,7 +251,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": null,
-          "texte": "Si les ordinateurs manquent, les élèves se relaient. La dictée vocale peut aider à transcrire certains textes, mais je la réserve à l’enseignant."
+          "texte": "Si les ordinateurs manquent, les élèves se relaient. La dictée vocale peut aider à transcrire certains textes et gagner du temps."
         },
         {
           "sorte": "paragraphe",

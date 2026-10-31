@@ -666,7 +666,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >    une reprise.
 >
 > Si les ordinateurs manquent, les élèves se relaient. La dictée vocale peut
-> aider à transcrire certains textes, mais je la réserve à l'enseignant.
+> aider à transcrire certains textes et gagner du temps.
 >
 > **À chacun son rythme.** Une fois ses scènes écrites, l'élève teste les
 > chemins de son chapitre. Il peut ensuite écrire d'autres scènes, décrire
