@@ -656,10 +656,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > - Écrire un court dialogue.
 > - Montrer la réaction du héros.
 >
-> **Laissez les élèves inventer les choix.** Ils en décident les
-> conséquences ; vous les aidez à les formuler et assurez les liens entre les
-> scènes.
->
 > **Du brouillon à la validation.** Chaque scène suit le même parcours :
 >
 > 1. L'élève écrit sur papier et se relit avec sa liste.

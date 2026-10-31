@@ -235,11 +235,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "paragraphe",
-          "tete": "Laissez les élèves inventer les choix.",
-          "texte": "Ils en décident les conséquences ; vous les aidez à les formuler et assurez les liens entre les scènes."
-        },
-        {
-          "sorte": "paragraphe",
           "tete": "Du brouillon à la validation.",
           "texte": "Chaque scène suit le même parcours :"
         },
