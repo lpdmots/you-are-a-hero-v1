@@ -256,7 +256,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "À chacun son rythme.",
-          "texte": "Une fois ses scènes écrites, l’élève teste les chemins de son chapitre. Il peut ensuite écrire d’autres scènes, décrire ses futures illustrations ou aider un camarade. Pour ceux qui avancent moins vite, réduisez le nombre de scènes, adaptez les consignes ou prévoyez un accompagnement supplémentaire."
+          "texte": "Une fois ses scènes écrites, l’élève teste les chemins de son chapitre. Il peut ensuite écrire d’autres scènes, décrire ses futures illustrations ou aider un camarade. Pour ceux qui avancent moins vite, réduisez le nombre de scènes, adaptez les consignes ou proposez des séances d’APC pour les accompagner dans leur écriture."
         },
         {
           "sorte": "paragraphe",

@@ -672,7 +672,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > chemins de son chapitre. Il peut ensuite écrire d'autres scènes, décrire
 > ses futures illustrations ou aider un camarade. Pour ceux qui
 > avancent moins vite, réduisez le nombre de scènes, adaptez les consignes ou
-> prévoyez un accompagnement supplémentaire.
+> proposez des séances d'APC pour les accompagner dans leur écriture.
 >
 > **Gardez une vue d'ensemble.** Un tableau de suivi aide à repérer les
 > scènes en rédaction, à corriger ou à valider.
