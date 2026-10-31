@@ -368,32 +368,32 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Fixez les noms avant d’écrire.",
-          "texte": "Tenez une fiche commune des personnages, des lieux et des objets : leur nom, une courte description. Elle naît pendant la préparation, et c’est vous qui la tenez : un élève qui veut un nouveau personnage ou un nouvel objet le demande. Sans elle, les noms dérivent d’un chapitre à l’autre et la liste d’objets s’allonge sans fin."
+          "tete": "Gardez une référence commune.",
+          "texte": "Dès la préparation, constituez une fiche de référence des personnages, des lieux et des objets, avec leurs caractéristiques essentielles. Chaque élève en possède un exemplaire. Vous tenez cette fiche à jour et validez les nouveaux éléments proposés : elle évite les contradictions entre chapitres et la multiplication incontrôlée des objets."
         },
         {
           "sorte": "paragraphe",
-          "tete": "L’histoire sur le papier, la langue à l’ordinateur.",
-          "texte": "Sur le brouillon, regardez si l’histoire tient : la consigne est-elle suivie, la scène raccorde-t-elle, le choix a-t-il une raison ? La langue se corrige une fois le texte recopié. Chaque relecture a un seul but, et l’élève ne recopie pas un texte qu’il faudra réécrire."
+          "tete": "Relisez d’abord l’histoire, puis la langue.",
+          "texte": "Sur le brouillon, vérifiez uniquement le contenu : la consigne est-elle respectée ? La scène est-elle cohérente ? Ce parti pris peut surprendre, mais inutile de corriger l’orthographe d’un passage qu’il faudra peut-être réécrire. Une fois le contenu validé, l’élève corrige sa langue avec ses outils, puis saisit son texte à l’ordinateur. Vous effectuez la dernière vérification après sa soumission."
         },
         {
           "sorte": "paragraphe",
-          "tete": "La consigne fait foi.",
-          "texte": "Les éléments qu’elle demande sont obligatoires : soulignez ceux qui manquent, l’élève complète. Refusez les textes trop courts : certains écrivent vite, pressés de passer à la scène suivante, et c’est en développant qu’ils apprennent à décrire."
+          "tete": "Faites enrichir les textes.",
+          "texte": "Certains élèves, pressés de passer à la scène suivante, écrivent le strict minimum. Plutôt que d’exiger un texte plus long, demandez-leur de développer un point précis : décrire un lieu, ajouter un dialogue, montrer une émotion… Leur liste à cocher les aide à repérer ce qui manque."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Adaptez la reprise au niveau.",
-          "texte": "Si l’élève n’a pas assez travaillé son texte, relancez-le avec une consigne de réécriture, même s’il ne s’agit que de revoir l’orthographe. S’il a fait de son mieux, corrigez le reste vous-même ou avec un correcteur ; pour les plus en difficulté, retouchez aussi un peu la grammaire, pour que le texte se comprenne. Deux reprises au plus : ensuite, finissez la scène, ou reprenez-la à côté de lui."
+          "tete": "Adaptez les reprises.",
+          "texte": "Demandez à chacun de corriger ce qui est à sa portée. Pour les erreurs plus difficiles, accompagnez l’élève ou intervenez directement. Évitez de multiplier les allers-retours : après une ou deux reprises, mieux vaut terminer le texte avec lui. L’objectif est de le faire progresser, sans le décourager ni effacer son style."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Les raccords.",
-          "texte": "En recopiant, l’élève relit la fin de la scène qui mène à la sienne ; une fois son chapitre écrit, il le lit d’un bout à l’autre comme un lecteur et corrige ce qui ne s’enchaîne pas. Entre deux chapitres, c’est vous qui vérifiez, en faisant les liens."
+          "tete": "Vérifiez les raccords.",
+          "texte": "Chaque élève relit son chapitre en empruntant tous les chemins possibles. Il contrôle les enchaînements, les choix et les conséquences. De votre côté, vérifiez les transitions entre chapitres : les personnages, les objets et les événements doivent rester cohérents, quel que soit le parcours du lecteur."
         },
         {
           "sorte": "classe",
-          "texte": "Je ne laisse aucune faute dans le livre final, ni phrase bancale. Ou alors pas volontairement !"
+          "texte": "Pendant les séances d’écriture, je suis très sollicité et les corrections peuvent vite s’accumuler. Pour organiser les passages à mon bureau, j’utilise des pinces à linge portant les prénoms des élèves, qu’ils accrochent à la suite sur un fil. Je reçois deux élèves au maximum ; les autres restent à leur place et peuvent commencer une nouvelle scène en attendant leur tour. Ce système, que j’utilise aussi dans les autres matières, évite les files d’attente et permet à chacun de continuer à travailler."
         },
         {
           "sorte": "encart",
@@ -423,7 +423,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Des objets qui servent.",
-          "texte": "Peu d’objets, chacun avec un usage prévu à l’avance et inscrit sur la fiche commune : un objet qui ouvre un choix (« Si tu as la clé, va au 31 ») ou qui évite un piège. Un objet ramassé qui ne sert à rien déçoit. Une exception amusante : le magasin, où l’on peut acheter des choses inutiles et dépenser son argent pour rien."
+          "texte": "Peu d’objets, chacun avec un usage prévu à l’avance et inscrit sur la fiche de référence : un objet qui ouvre un choix (« Si tu as la clé, va au 31 ») ou qui évite un piège. Un objet ramassé qui ne sert à rien déçoit. Une exception amusante : le magasin, où l’on peut acheter des choses inutiles et dépenser son argent pour rien."
         },
         {
           "sorte": "paragraphe",
