@@ -146,7 +146,9 @@
 .partie > p + p,
 .partie > p + .tableau,
 .partie > .tableau + p,
-.partie > .large + p {
+.partie > .large + p,
+.partie > ol + p,
+.partie > ul + p {
   margin-top: 0.85em;
 }
 .partie h3 {
@@ -545,6 +547,90 @@
   height: 7px;
   border-radius: 50%;
   border: 2px solid var(--canard);
+}
+
+/* Une liste numérotée : les étapes d'un parcours, le numéro cerclé de canard */
+.partie > .etapes {
+  margin: 0.6em 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: etape;
+}
+.etapes li {
+  position: relative;
+  padding-left: 38px;
+  counter-increment: etape;
+}
+.etapes li + li {
+  margin-top: 0.45em;
+}
+.etapes li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  display: grid;
+  place-items: center;
+  width: 1.55em;
+  height: 1.55em;
+  border: 1.5px solid var(--canard);
+  border-radius: 50%;
+  font-size: 0.82em;
+  font-weight: 700;
+  color: var(--canard);
+}
+
+/* L'exemple de consigne : la fiche que reçoit l'élève, son filet rose, ses cases à cocher */
+.partie > .fiche {
+  margin: 1.4em 0 1.2em;
+  max-width: 520px;
+  padding: 16px 24px 20px;
+  background: var(--feuille);
+  border-radius: 6px;
+  box-shadow:
+    0 1px 2px rgba(60, 45, 20, 0.08),
+    0 10px 22px -14px rgba(60, 45, 20, 0.35);
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+.ficheSorte {
+  margin: 0 -24px 12px;
+  padding: 0 24px 8px;
+  border-bottom: 2px solid var(--bristol);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.ficheTitre {
+  font-weight: 700;
+}
+.ficheRappel {
+  margin-top: 12px;
+  font-style: italic;
+  color: var(--graphite-2);
+}
+.fiche ul {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+}
+.fiche li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.case {
+  flex: none;
+  width: 0.95em;
+  height: 0.95em;
+  border: 1.5px solid var(--graphite-2);
+  border-radius: 3px;
+  transform: translateY(0.12em);
 }
 
 /* Les erreurs : une croix brique, les renvois cerclés vers la question */

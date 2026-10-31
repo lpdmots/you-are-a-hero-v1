@@ -135,6 +135,16 @@ function Corps({ partie }: { partie: Partie }) {
         );
       case "liste":
         // Une liste ordinaire, sauf celle des erreurs à éviter (partie 13), marquée d'une croix
+        if (b.ordonnee)
+          return (
+            <ol key={i} className={styles.etapes}>
+              {b.elements.map((e) => (
+                <li key={e}>
+                  <EnLigne texte={e} />
+                </li>
+              ))}
+            </ol>
+          );
         if (ancreDe(partie.numero) !== "erreurs")
           return (
             <ul key={i} className={styles.liste}>
@@ -208,6 +218,24 @@ function Corps({ partie }: { partie: Partie }) {
               ) : null}
             </aside>
           </Fragment>
+        );
+      case "exemple":
+        // La fiche de consigne que reçoit l'élève : filet rose de la consigne, cases à cocher
+        return (
+          <figure key={i} className={styles.fiche} aria-label="Exemple de consigne">
+            <p className={styles.ficheSorte}>Exemple de consigne</p>
+            <p className={styles.ficheTitre}>{b.titre.replace(/\.$/, "")}</p>
+            <p>{b.texte}</p>
+            <p className={styles.ficheRappel}>{b.rappel}</p>
+            <ul>
+              {(b.elements ?? []).map((e) => (
+                <li key={e}>
+                  <span className={styles.case} aria-hidden="true" />
+                  {e.replace(/\s*[;.]$/, "")}
+                </li>
+              ))}
+            </ul>
+          </figure>
         );
       case "encart": {
         const image = place && "dansLEncart" in place ? place.image : null;

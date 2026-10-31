@@ -21,9 +21,11 @@ export const DESCRIPTION_DU_GUIDE =
 export type Bloc =
   | { sorte: "paragraphe"; tete: string | null; texte: string }
   | { sorte: "intertitre"; texte: string }
-  | { sorte: "liste"; elements: string[] }
+  | { sorte: "liste"; elements: string[]; ordonnee?: boolean }
   | { sorte: "tableau"; entete: string[]; rangs: string[][] }
   | { sorte: "classe"; texte: string; elements?: string[] }
+  /** Un exemple de consigne, montré comme la fiche que l'élève reçoit */
+  | { sorte: "exemple"; titre: string; texte: string; rappel: string; elements?: string[] }
   | { sorte: "encart"; texte: string };
 
 export type Partie = { numero: number; titre: string; blocs: Bloc[] };

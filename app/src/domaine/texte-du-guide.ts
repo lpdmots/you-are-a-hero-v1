@@ -204,47 +204,73 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Un élève par chapitre.",
-          "texte": "C’est l’idéal : chacun connaît son chapitre, et lui seul ; il découvrira le reste en lisant le livre. Selon l’effectif ou la longueur d’un chapitre, mettez-y deux ou trois élèves : ils se répartissent les scènes, puis chacun écrit la sienne seul."
+          "tete": "Un élève par chapitre, si possible.",
+          "texte": "Chacun devient responsable de son chapitre, sans connaître le détail de ceux des autres : il aura le plaisir de découvrir le livre terminé. Selon les besoins, deux ou trois élèves peuvent partager un chapitre et se répartir les scènes, chacun rédigeant les siennes."
         },
         {
           "sorte": "paragraphe",
           "tete": "Fixez les entrées et les sorties.",
-          "texte": "Pour chaque chapitre, la classe décide d’où arrive le héros et vers où il repart. Entre les deux, le responsable est libre. Chacun lit tout son chapitre, mais ni la scène qui y mène ni celle qui en sort : la surprise reste entière."
+          "texte": "Pour chaque chapitre, définissez ensemble d’où arrive le héros et où il doit repartir. Entre les deux, l’élève est libre d’inventer son aventure. Il connaît les informations nécessaires pour assurer les transitions, sans découvrir les scènes des autres."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Préparer son chapitre, sans schéma.",
-          "texte": "Fixez le nombre d’obstacles par chapitre. L’élève choisit ceux qui arrivent au héros puis, pour chacun, les choix possibles et leurs conséquences. Une liste suffit ; un dessin en cases et en flèches est trop difficile à cet âge. C’est là que se joue le plus dur : trouver des choix qui ont un sens (voir « Comment organiser les choix ? »)."
+          "tete": "Préparez les obstacles et les choix.",
+          "texte": "Proposez aux élèves d’imaginer trois obstacles pour leur chapitre, quitte à n’en retenir que deux. Pour chacun, ils réfléchissent aux choix possibles et à leurs conséquences. Liste, schéma ou cases reliées par des flèches : chacun s’organise à sa manière. Le plus difficile reste d’inventer des choix intéressants (voir « Comment organiser les choix ? »)."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Une consigne par scène.",
-          "texte": "Elle dit ce qui doit se passer et ce qu’on doit y trouver : décrire la montagne, ce que disent les personnages, leur réaction, ce que ressent le héros. Inutile de raconter ce qui précède : l’élève connaît son chapitre. Demandez chaque fois un élément d’écriture précis, en variant au fil du projet ; en se relisant, l’élève vérifie lui-même qu’il l’a mis."
+          "tete": "Laissez les élèves inventer les choix.",
+          "texte": "Ils décident des possibilités offertes au lecteur et de leurs conséquences. Aidez-les à les formuler, et chargez-vous des liens entre les scènes pour garantir la cohérence du livre."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Vous écrivez les choix et faites les liens.",
-          "texte": "À l’école élémentaire, l’élève décide des choix de son chapitre ; vous les rédigez et reliez les scènes. Au collège, il peut organiser son chapitre lui-même."
+          "tete": "Une consigne et une liste à cocher par scène.",
+          "texte": "La consigne dit en une ou deux phrases ce qui doit se passer, sans dicter toute l’histoire. Une courte liste précise les éléments d’écriture attendus : l’élève la coche en se relisant."
+        },
+        {
+          "sorte": "exemple",
+          "titre": "La rencontre dans la forêt.",
+          "texte": "Le héros rencontre un personnage mystérieux qui lui propose son aide.",
+          "rappel": "Dans mon texte, j’ai pensé à :",
+          "elements": [
+            "décrire le personnage ;",
+            "écrire un court dialogue ;",
+            "montrer la réaction du héros."
+          ]
         },
         {
           "sorte": "paragraphe",
-          "tete": "Le parcours d’une scène.",
-          "texte": "Brouillon sur papier ; si besoin, une correction ou une demande d’amélioration sur le papier ; recopie à l’ordinateur ; puis la validation, ou une reprise. Quand les ordinateurs manquent, travaillez à deux : l’un écrit, l’autre recopie. Vous pouvez aussi lire les textes manuscrits à la dictée vocale de l’ordinateur pour épargner la recopie."
+          "tete": "Du brouillon à la validation.",
+          "texte": "Chaque scène suit le même parcours :"
+        },
+        {
+          "sorte": "liste",
+          "elements": [
+            "L’élève écrit sur papier et se relit avec sa liste.",
+            "Vous lisez l’histoire et demandez, si besoin, des améliorations. Le texte ne passe à l’ordinateur qu’avec peu d’erreurs.",
+            "L’élève le recopie à l’ordinateur et vous le remet.",
+            "La langue se corrige alors à l’écran : vous validez, corrigez vous-même ou demandez une reprise."
+          ],
+          "ordonnee": true
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": null,
+          "texte": "Quand les ordinateurs manquent, les élèves se relaient pour la saisie."
         },
         {
           "sorte": "paragraphe",
           "tete": "Les rapides et les lents.",
-          "texte": "Ceux qui ont fini écrivent les scènes hors chapitre (l’introduction, l’épilogue, une fin alternative, un point de sauvegarde), prennent une scène libre, illustrent, ou lisent leur chapitre comme un lecteur pour vérifier que tout s’enchaîne ; puis ils aident un camarade en retard, s’il le veut. Celui qui ne veut pas d’aide rattrape à la maison, avec les feuilles d’écriture, ou en APC ; tapez vous-même ses textes, pour qu’il ne passe pas son temps à recopier. Pour un élève accompagné : moins de scènes, une consigne plus guidée, une image pour lancer l’imagination ; ou le rôle d’illustrateur."
+          "texte": "Ceux qui ont fini jouent leur chapitre comme un lecteur (voir « Comment vérifier que tous les chemins mènent quelque part ? »), puis écrivent des scènes supplémentaires, décrivent les illustrations qu’ils voudraient ou aident un camarade volontaire. Pour ceux qui avancent moins vite, adaptez les consignes, réduisez le nombre de scènes ou accompagnez-les davantage."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Gardez quelques scènes pour vous :",
-          "texte": "celles qui surprendront la classe, et l’ouverture si vous ne l’écrivez pas ensemble."
+          "tete": "Gardez une vue d’ensemble.",
+          "texte": "Avec des dizaines de scènes à différents stades, un tableau de suivi devient vite indispensable : ce qui est à relire, à recopier, à valider."
         },
         {
           "sorte": "classe",
-          "texte": "Quand un élève peine à finir son chapitre, les volontaires en avance se proposent d’eux-mêmes et s’arrangent avec lui. Je propose aussi des APC à ceux qui ont besoin de plus de temps, et des volontaires avancent à la maison grâce à leurs feuilles d’écriture, qui contiennent les consignes."
+          "texte": "Le suivi a longtemps été un casse-tête : un tableur, puis une page Notion à laquelle les élèves avaient accès. C’est pour lui que j’ai commencé à développer Il était une classe. Je propose aussi des APC à ceux qui ont besoin de plus de temps, et des volontaires avancent à la maison avec leurs feuilles d’écriture, qui contiennent les consignes. Pour les élèves en retard, je saisis parfois moi-même leurs textes à la dictée vocale."
         }
       ]
     },

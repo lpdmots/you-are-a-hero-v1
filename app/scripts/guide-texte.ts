@@ -61,17 +61,18 @@ const sansRessources = (t: string) => SANS_RESSOURCES.reduce((s, [de, vers]) => 
 type Bloc =
   | { sorte: "paragraphe"; tete: string | null; texte: string }
   | { sorte: "intertitre"; texte: string }
-  | { sorte: "liste"; elements: string[] }
+  | { sorte: "liste"; elements: string[]; ordonnee?: boolean }
   | { sorte: "tableau"; entete: string[]; rangs: string[][] }
   | { sorte: "classe"; texte: string; elements?: string[] }
+  | { sorte: "exemple"; titre: string; texte: string; rappel: string; elements?: string[] }
   | { sorte: "encart"; texte: string };
 
-/** Une liste qui suit « Dans ma classe » lui appartient : elle reste dans sa copie */
+/** Une liste qui suit « Dans ma classe » ou un exemple lui appartient : elle reste dans sa copie ou sa fiche */
 function rattacher(blocs: Bloc[]): Bloc[] {
   const out: Bloc[] = [];
   for (const b of blocs) {
     const avant = out[out.length - 1];
-    if (b.sorte === "liste" && avant?.sorte === "classe" && !avant.elements) avant.elements = b.elements;
+    if (b.sorte === "liste" && (avant?.sorte === "classe" || avant?.sorte === "exemple") && !avant.elements) avant.elements = b.elements;
     else out.push(b);
   }
   return out;
@@ -79,19 +80,24 @@ function rattacher(blocs: Bloc[]): Bloc[] {
 
 function classer(m: string[]): Bloc {
   const t = sansRessources(m.join(" "));
-  if (m[0].startsWith("- ")) {
+  // Une liste à puces (« - ») ou numérotée (« 1. »), ses lignes suivantes en retrait
+  const puce = /^(- |\d+\. )/;
+  if (puce.test(m[0])) {
     const elements: string[] = [];
     for (const l of m) {
-      if (l.startsWith("- ")) elements.push(l.slice(2));
+      if (puce.test(l)) elements.push(l.replace(puce, ""));
       else elements[elements.length - 1] += " " + l.trim();
     }
-    return { sorte: "liste", elements: elements.map(sansRessources) };
+    return { sorte: "liste", elements: elements.map(sansRessources), ...(/^\d/.test(m[0]) ? { ordonnee: true } : {}) };
   }
   if (m[0].startsWith("|")) {
     const rangs = m.filter((l) => !/^\|\s*-/.test(l)).map((l) => l.split("|").slice(1, -1).map((c) => c.trim()));
     return { sorte: "tableau", entete: rangs[0], rangs: rangs.slice(1) };
   }
   if (t.startsWith("**Dans ma classe.**")) return { sorte: "classe", texte: t.replace("**Dans ma classe.**", "").trim() };
+  // « *Exemple.* **Titre.** texte. Dans mon texte, j'ai pensé à : » : une fiche de consigne, sa liste à cocher ensuite
+  const exemple = t.match(/^\*Exemple\.\*\s*\*\*([^*]+)\*\*\s*(.*?)\s*(Dans mon texte.*)$/);
+  if (exemple) return { sorte: "exemple", titre: exemple[1], texte: exemple[2], rappel: exemple[3] };
   if (t.startsWith("*Encart.*")) return { sorte: "encart", texte: t.replace("*Encart.*", "").trim() };
   const tete = t.match(/^\*\*([^*]+)\*\*\s*(.*)$/);
   if (tete) return tete[2] ? { sorte: "paragraphe", tete: tete[1], texte: tete[2] } : { sorte: "intertitre", texte: tete[1] };

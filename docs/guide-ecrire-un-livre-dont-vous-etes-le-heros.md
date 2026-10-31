@@ -610,64 +610,87 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Extensions validées : entrées et sorties de chapitre fixées ensemble ; une
   exigence d'écriture par consigne, qui sert d'autocorrection. Écartée : le
   plan du chapitre en cases et en flèches.
+- Repris le 30 octobre 2026 d'après une version qu'il apporte, analysée :
+  un exemple de consigne avec sa liste à cocher (« Dans mon texte, j'ai pensé
+  à »), montré en fiche ; le parcours d'une scène en quatre étapes ; trois
+  obstacles imaginés, deux retenus au besoin (« c'est flexible ») ; le
+  schéma permis à qui le souhaite (révise l'écart ci-dessus) ; le texte ne
+  passe à l'ordinateur qu'avec peu d'erreurs, la langue se corrigeant ensuite
+  à l'écran ; le suivi, longtemps un casse-tête (tableur, page Notion), à
+  l'origine de l'outil, dit sobrement ; la dictée vocale faite par
+  l'enseignant. Acceptés par lui : l'anecdote des volontaires qui aident,
+  les scènes hors chapitre nommées et la règle de lecture du chapitre
+  quittent cette partie.
 
 #### Premier jet
 
 > ## Comment répartir l'écriture entre les élèves ?
 >
-> **Un élève par chapitre.** C'est l'idéal : chacun connaît son chapitre, et
-> lui seul ; il découvrira le reste en lisant le livre. Selon l'effectif ou la
-> longueur d'un chapitre, mettez-y deux ou trois élèves : ils se répartissent
-> les scènes, puis chacun écrit la sienne seul.
+> **Un élève par chapitre, si possible.** Chacun devient responsable de son
+> chapitre, sans connaître le détail de ceux des autres : il aura le plaisir
+> de découvrir le livre terminé. Selon les besoins, deux ou trois élèves
+> peuvent partager un chapitre et se répartir les scènes, chacun rédigeant
+> les siennes.
 >
-> **Fixez les entrées et les sorties.** Pour chaque chapitre, la classe
-> décide d'où arrive le héros et vers où il repart. Entre les deux, le
-> responsable est libre. Chacun lit tout son chapitre, mais ni la scène qui y
-> mène ni celle qui en sort : la surprise reste entière.
+> **Fixez les entrées et les sorties.** Pour chaque chapitre, définissez
+> ensemble d'où arrive le héros et où il doit repartir. Entre les deux,
+> l'élève est libre d'inventer son aventure. Il connaît les informations
+> nécessaires pour assurer les transitions, sans découvrir les scènes des
+> autres.
 >
-> **Préparer son chapitre, sans schéma.** Fixez le nombre d'obstacles par
-> chapitre. L'élève choisit ceux qui arrivent au héros puis, pour chacun, les
-> choix possibles et leurs conséquences. Une liste suffit ; un dessin en
-> cases et en flèches est trop difficile à cet âge. C'est là que se joue le
-> plus dur : trouver des choix qui ont un sens (voir « Comment organiser les
-> choix ? »).
+> **Préparez les obstacles et les choix.** Proposez aux élèves d'imaginer
+> trois obstacles pour leur chapitre, quitte à n'en retenir que deux. Pour
+> chacun, ils réfléchissent aux choix possibles et à leurs conséquences.
+> Liste, schéma ou cases reliées par des flèches : chacun s'organise à sa
+> manière. Le plus difficile reste d'inventer des choix intéressants (voir
+> « Comment organiser les choix ? »).
 >
-> **Une consigne par scène.** Elle dit ce qui doit se passer et ce qu'on doit
-> y trouver : décrire la montagne, ce que disent les personnages, leur
-> réaction, ce que ressent le héros. Inutile de raconter ce qui précède :
-> l'élève connaît son chapitre. Demandez chaque fois un élément d'écriture
-> précis, en variant au fil du projet ; en se relisant, l'élève vérifie
-> lui-même qu'il l'a mis.
+> **Laissez les élèves inventer les choix.** Ils décident des possibilités
+> offertes au lecteur et de leurs conséquences. Aidez-les à les formuler, et
+> chargez-vous des liens entre les scènes pour garantir la cohérence du
+> livre.
 >
-> **Vous écrivez les choix et faites les liens.** À l'école élémentaire,
-> l'élève décide des choix de son chapitre ; vous les rédigez et reliez les
-> scènes. Au collège, il peut organiser son chapitre lui-même.
+> **Une consigne et une liste à cocher par scène.** La consigne dit en une ou
+> deux phrases ce qui doit se passer, sans dicter toute l'histoire. Une courte
+> liste précise les éléments d'écriture attendus : l'élève la coche en se
+> relisant.
 >
-> **Le parcours d'une scène.** Brouillon sur papier ; si besoin, une
-> correction ou une demande d'amélioration sur le papier ; recopie à
-> l'ordinateur ; puis la validation, ou une reprise. Quand les ordinateurs
-> manquent, travaillez à deux : l'un écrit, l'autre recopie. Vous pouvez
-> aussi lire les textes manuscrits à la dictée vocale de l'ordinateur pour
-> épargner la recopie.
+> *Exemple.* **La rencontre dans la forêt.** Le héros rencontre un personnage
+> mystérieux qui lui propose son aide. Dans mon texte, j'ai pensé à :
 >
-> **Les rapides et les lents.** Ceux qui ont fini écrivent les scènes hors
-> chapitre (l'introduction, l'épilogue, une fin alternative, un point de
-> sauvegarde), prennent une scène libre, illustrent, ou lisent leur chapitre
-> comme un lecteur pour vérifier que tout s'enchaîne ; puis ils aident un
-> camarade en retard, s'il le veut. Celui qui ne
-> veut pas d'aide rattrape à la maison, avec les feuilles d'écriture, ou en
-> APC ; tapez vous-même ses textes, pour qu'il ne passe pas son temps à
-> recopier. Pour un élève accompagné : moins de scènes, une consigne plus
-> guidée, une image pour lancer l'imagination ; ou le rôle d'illustrateur.
+> - décrire le personnage ;
+> - écrire un court dialogue ;
+> - montrer la réaction du héros.
 >
-> **Gardez quelques scènes pour vous :** celles qui surprendront la classe,
-> et l'ouverture si vous ne l'écrivez pas ensemble.
+> **Du brouillon à la validation.** Chaque scène suit le même parcours :
 >
-> **Dans ma classe.** Quand un élève peine à finir son chapitre, les
-> volontaires en avance se proposent d'eux-mêmes et s'arrangent avec lui. Je
-> propose aussi des APC à ceux qui ont besoin de plus de temps, et des
-> volontaires avancent à la maison grâce à leurs feuilles d'écriture, qui
-> contiennent les consignes.
+> 1. L'élève écrit sur papier et se relit avec sa liste.
+> 2. Vous lisez l'histoire et demandez, si besoin, des améliorations. Le texte
+>    ne passe à l'ordinateur qu'avec peu d'erreurs.
+> 3. L'élève le recopie à l'ordinateur et vous le remet.
+> 4. La langue se corrige alors à l'écran : vous validez, corrigez vous-même
+>    ou demandez une reprise.
+>
+> Quand les ordinateurs manquent, les élèves se relaient pour la saisie.
+>
+> **Les rapides et les lents.** Ceux qui ont fini jouent leur chapitre comme
+> un lecteur (voir « Comment vérifier que tous les chemins mènent quelque
+> part ? »), puis écrivent des scènes supplémentaires, décrivent les
+> illustrations qu'ils voudraient ou aident un camarade volontaire. Pour ceux
+> qui avancent moins vite, adaptez les consignes, réduisez le nombre de
+> scènes ou accompagnez-les davantage.
+>
+> **Gardez une vue d'ensemble.** Avec des dizaines de scènes à différents
+> stades, un tableau de suivi devient vite indispensable : ce qui est à
+> relire, à recopier, à valider.
+>
+> **Dans ma classe.** Le suivi a longtemps été un casse-tête : un tableur,
+> puis une page Notion à laquelle les élèves avaient accès. C'est pour lui
+> que j'ai commencé à développer Il était une classe. Je propose aussi des APC
+> à ceux qui ont besoin de plus de temps, et des volontaires avancent à la
+> maison avec leurs feuilles d'écriture, qui contiennent les consignes. Pour
+> les élèves en retard, je saisis parfois moi-même leurs textes à la dictée
+> vocale.
 
 ### 6. Combien de chapitres, de scènes et de choix
 
