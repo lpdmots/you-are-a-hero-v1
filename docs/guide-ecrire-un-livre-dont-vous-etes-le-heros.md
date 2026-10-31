@@ -679,10 +679,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Dans ma classe.** J'ai d'abord suivi les chapitres sur Excel, puis sur une
 > page Notion accessible aux élèves. C'est pour faciliter ce suivi que j'ai
-> commencé à développer Il était une classe. Je propose aussi une période
-> d'APC aux élèves qui ont besoin de temps supplémentaire ; certains
-> volontaires poursuivent leur écriture à la maison, grâce à leurs feuilles
-> de consignes.
+> commencé à développer Il était une classe.
 
 ### 6. Combien de chapitres, de scènes et de choix
 
