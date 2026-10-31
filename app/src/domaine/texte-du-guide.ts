@@ -219,7 +219,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "paragraphe",
-          "tete": "Une consigne et une liste à cocher par scène.",
+          "tete": "Une consigne et une liste de vérification par scène.",
           "texte": "La consigne résume ce qui doit se passer ; la liste aide l’élève à vérifier les éléments d’écriture attendus."
         },
         {
@@ -241,7 +241,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "liste",
           "elements": [
-            "L’élève écrit sur papier et se relit avec sa liste à cocher.",
+            "L’élève écrit sur papier et se relit avec sa liste de vérification.",
             "Vous vérifiez le contenu et demandez, si besoin, des améliorations.",
             "L’élève corrige son orthographe avec ses outils, puis saisit son texte à l’ordinateur.",
             "Il soumet sa scène. Plus tard, vous la validez, la corrigez ou demandez une reprise."
@@ -379,7 +379,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Faites enrichir les textes.",
-          "texte": "Certains élèves, pressés de passer à la scène suivante, écrivent le strict minimum. Plutôt que d’exiger un texte plus long, demandez-leur de développer un point précis : décrire un lieu, ajouter un dialogue, montrer une émotion… Leur liste à cocher les aide à repérer ce qui manque."
+          "texte": "Certains élèves, pressés de passer à la scène suivante, écrivent le strict minimum. Plutôt que d’exiger un texte plus long, demandez-leur de développer un point précis : décrire un lieu, ajouter un dialogue, montrer une émotion… Leur liste de vérification les aide à repérer ce qui manque."
         },
         {
           "sorte": "paragraphe",

@@ -645,7 +645,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > choisit la méthode qui lui convient (voir « Comment organiser les
 > choix ? »).
 >
-> **Une consigne et une liste à cocher par scène.** La consigne résume ce qui
+> **Une consigne et une liste de vérification par scène.** La consigne résume ce qui
 > doit se passer ; la liste aide l'élève à vérifier les éléments d'écriture
 > attendus.
 >
@@ -658,7 +658,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Du brouillon à la validation.** Chaque scène suit le même parcours :
 >
-> 1. L'élève écrit sur papier et se relit avec sa liste à cocher.
+> 1. L'élève écrit sur papier et se relit avec sa liste de vérification.
 > 2. Vous vérifiez le contenu et demandez, si besoin, des améliorations.
 > 3. L'élève corrige son orthographe avec ses outils, puis saisit son texte à
 >    l'ordinateur.
@@ -968,7 +968,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Faites enrichir les textes.** Certains élèves, pressés de passer à la
 > scène suivante, écrivent le strict minimum. Plutôt que d'exiger un texte
 > plus long, demandez-leur de développer un point précis : décrire un lieu,
-> ajouter un dialogue, montrer une émotion… Leur liste à cocher les aide à
+> ajouter un dialogue, montrer une émotion… Leur liste de vérification les aide à
 > repérer ce qui manque.
 >
 > **Adaptez les reprises.** Demandez à chacun de corriger ce qui est à sa
