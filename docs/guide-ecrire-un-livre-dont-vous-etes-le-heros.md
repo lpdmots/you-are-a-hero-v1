@@ -670,7 +670,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **À chacun son rythme.** Une fois ses scènes écrites, l'élève teste les
 > chemins de son chapitre. Il peut ensuite écrire d'autres scènes, décrire
-> ses futures illustrations ou aider un camarade volontaire. Pour ceux qui
+> ses futures illustrations ou aider un camarade. Pour ceux qui
 > avancent moins vite, réduisez le nombre de scènes, adaptez les consignes ou
 > prévoyez un accompagnement supplémentaire.
 >
