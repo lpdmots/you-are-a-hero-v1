@@ -241,7 +241,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "liste",
           "elements": [
-            "L’élève écrit sur papier et se relit avec sa liste.",
+            "L’élève écrit sur papier et se relit avec sa liste à cocher.",
             "Vous vérifiez le contenu et demandez, si besoin, des améliorations.",
             "L’élève corrige son orthographe avec ses outils, puis saisit son texte à l’ordinateur.",
             "Il soumet sa scène. Plus tard, vous la validez, la corrigez ou demandez une reprise."

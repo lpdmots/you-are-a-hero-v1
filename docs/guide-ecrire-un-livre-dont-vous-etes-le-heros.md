@@ -658,7 +658,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Du brouillon à la validation.** Chaque scène suit le même parcours :
 >
-> 1. L'élève écrit sur papier et se relit avec sa liste.
+> 1. L'élève écrit sur papier et se relit avec sa liste à cocher.
 > 2. Vous vérifiez le contenu et demandez, si besoin, des améliorations.
 > 3. L'élève corrige son orthographe avec ses outils, puis saisit son texte à
 >    l'ordinateur.
