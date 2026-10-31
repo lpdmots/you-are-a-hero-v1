@@ -767,7 +767,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > scènes à l'intérieur d'un chapitre, mais aussi des chapitres entiers entre
 > eux. Vous pouvez les combiner pour construire des aventures variées sans
 > multiplier les chemins à l'infini.
-> [Que faites-vous les présente en détail](https://www.quefaitesvous.com/blog/ecrire-une-fiction-interactive-avec-ses-eleves-chapitre-2-tuto-structurel/).
 >
 > **Comptez par obstacles.** Un obstacle occupe souvent trois ou quatre
 > scènes : le problème, les différents choix et leurs conséquences. Ajoutez
@@ -1379,6 +1378,13 @@ formulations à revérifier à la source avant publication.
   [Hatier, Le monde dont tu es le héros](https://www.livreshebdo.fr/article/hatier-jeunesse-lance-la-collection-le-monde-dont-tu-es-le-heros).
 
 ## Reste à traiter avant publication
+
+- **Une section « Pour aller plus loin » en bas de page** (idée du porteur,
+  31 octobre 2026), qui pourrait rassembler les lectures utiles : le lien
+  vers Que faites-vous sur la structure, retiré de la partie 6 le même jour
+  (pas sûr qu'il soit le plus pertinent), les sources des parties 1 et 7,
+  d'autres à choisir. Le pied du guide a déjà « Pour aller plus loin » (la
+  bibliothèque, l'accueil).
 
 - **La place de l'IA dans le projet** (demandé par le porteur le 30 octobre
   2026) : la page ne sera terminée qu'une fois ce sujet abordé avec lui,

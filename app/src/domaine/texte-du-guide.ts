@@ -294,7 +294,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": null,
-          "texte": "Ces structures fonctionnent à toutes les échelles : elles relient des scènes à l’intérieur d’un chapitre, mais aussi des chapitres entiers entre eux. Vous pouvez les combiner pour construire des aventures variées sans multiplier les chemins à l’infini. [Que faites-vous les présente en détail](https://www.quefaitesvous.com/blog/ecrire-une-fiction-interactive-avec-ses-eleves-chapitre-2-tuto-structurel/)."
+          "texte": "Ces structures fonctionnent à toutes les échelles : elles relient des scènes à l’intérieur d’un chapitre, mais aussi des chapitres entiers entre eux. Vous pouvez les combiner pour construire des aventures variées sans multiplier les chemins à l’infini."
         },
         {
           "sorte": "paragraphe",
