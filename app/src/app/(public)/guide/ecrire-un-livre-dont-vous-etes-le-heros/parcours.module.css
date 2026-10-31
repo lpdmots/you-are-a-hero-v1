@@ -1,0 +1,233 @@
+/* Le parcours d'une scène (partie 5 du guide) : quatre étapes en ligne, l'élève sur la feuille blanche,
+   vous sur le papier chaud ; la zone du papier puis celle de l'ordinateur ; les retours en pointillé
+   brique (à refaire), la scène validée en vert (c'est fait). Sur téléphone, les étapes se suivent en
+   colonne et chaque retour se dit dans sa carte. */
+.parcours {
+  --g: 30px;
+  --w: calc((100% - 3 * var(--g)) / 4);
+  margin: 0;
+  padding: 22px 24px 18px;
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: var(--ombre-cahier);
+}
+
+/* Les deux zones, au-dessus des étapes qu'elles couvrent */
+.zones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--g);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+  text-align: center;
+}
+.zones span {
+  padding-bottom: 6px;
+  border: 1.5px solid var(--trait-fort);
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  border-image: none;
+  border-left-color: transparent;
+  border-right-color: transparent;
+  background: linear-gradient(var(--trait-fort), var(--trait-fort)) left bottom / 1.5px 8px no-repeat,
+    linear-gradient(var(--trait-fort), var(--trait-fort)) right bottom / 1.5px 8px no-repeat;
+}
+
+.piste {
+  position: relative;
+  margin: 44px 0 44px;
+}
+.etapes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--g);
+}
+.etapes li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--trait);
+  background: var(--feuille);
+}
+.etapes li.vous {
+  background: #fcf9f1;
+  border-color: #e3dccd;
+}
+/* La flèche vers l'étape suivante */
+.etapes li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(-1 * var(--g) + 5px);
+  width: calc(var(--g) - 10px);
+  height: 12px;
+  transform: translateY(-50%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 12'%3E%3Cpath d='M1 6h20M16 1.5 21.5 6 16 10.5' fill='none' stroke='%234a5157' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+.qui {
+  align-self: flex-start;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  background: var(--canard-pale);
+  color: var(--canard);
+}
+.vous .qui {
+  background: #efe7d6;
+  color: var(--graphite-2);
+}
+.tete {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.icone {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: var(--canard);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.titre {
+  font-family: var(--f-recit);
+  font-weight: 700;
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+.texte {
+  font-family: var(--f-recit);
+  font-size: 0.93rem;
+  line-height: 1.45;
+  color: var(--graphite-2);
+}
+.retourCourt {
+  display: none;
+}
+.validee {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px 3px 7px;
+  border: 1.5px solid var(--e-valide);
+  border-radius: 999px;
+  background: var(--e-valide-f);
+  color: var(--e-valide);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.validee svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Les retours : une boucle en pointillé brique, de l'étape de l'adulte vers celle de l'élève */
+.boucle {
+  position: absolute;
+  left: calc(var(--w) / 2);
+  width: calc(var(--w) + var(--g));
+  height: 26px;
+  border: 1.5px dashed var(--e-reprendre);
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--e-reprendre);
+  text-align: center;
+}
+.boucle span {
+  position: absolute;
+  left: 50%;
+  padding: 0 8px;
+  transform: translateX(-50%);
+  background: var(--feuille);
+  white-space: nowrap;
+}
+.boucle::after {
+  content: "";
+  position: absolute;
+  left: -6px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+.boucleHaut {
+  top: -27px;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+}
+.boucleHaut span {
+  top: -0.75em;
+}
+.boucleHaut::after {
+  bottom: -2px;
+  border-top: 7px solid var(--e-reprendre);
+}
+.boucleBas {
+  bottom: -27px;
+  left: calc(2 * var(--w) + 2 * var(--g) + var(--w) / 2);
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+}
+.boucleBas span {
+  bottom: -0.7em;
+}
+.boucleBas::after {
+  top: -2px;
+  border-bottom: 7px solid var(--e-reprendre);
+}
+
+/* Téléphone et tablette étroite : une colonne, la flèche vers le bas, le retour dit dans la carte */
+@media (max-width: 760px) {
+  .parcours {
+    padding: 18px 16px;
+  }
+  .zones,
+  .boucle {
+    display: none;
+  }
+  .piste {
+    margin: 0;
+  }
+  .etapes {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
+  }
+  .etapes li:not(:last-child)::after {
+    top: auto;
+    right: auto;
+    left: 50%;
+    bottom: -22px;
+    width: 18px;
+    height: 18px;
+    transform: translateX(-50%) rotate(90deg);
+  }
+  .retourCourt {
+    display: block;
+    font-family: var(--f-ui);
+    font-size: var(--t-xs);
+    font-weight: 700;
+    color: var(--e-reprendre);
+  }
+}

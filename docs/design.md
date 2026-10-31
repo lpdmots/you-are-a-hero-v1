@@ -2839,6 +2839,15 @@ passent dans la ligne d'auteur. « Dans ma classe » prend les lignes du cahier
 de « Nous retenons » (Préparation) : une ligne par ligne de texte, le titre
 à la main sur la première.
 
+**Ajoutés ensuite, pendant la relecture du texte :** en partie 5, l'exemple
+de consigne en fiche (filet rose de la consigne, cases à cocher) et le
+parcours d'une scène en schéma, à sa demande : quatre étapes en ligne, l'élève
+sur la feuille blanche, l'enseignant sur le papier chaud, « Sur papier » puis
+« À l'ordinateur » au-dessus, les retours « à améliorer » et « à reprendre »
+en boucles pointillées brique, « Validée » en vert au bout ; sur téléphone,
+une colonne, chaque retour dit dans sa carte. Les liens vers d'autres sites
+s'ouvrent dans un nouvel onglet, signalés par une petite flèche.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

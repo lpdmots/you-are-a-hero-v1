@@ -19,6 +19,7 @@ import {
 import { enJsonLd } from "@/domaine/presentation";
 import { TEXTE_DU_GUIDE as T } from "@/domaine/texte-du-guide";
 import { adresseDuSite } from "@/serveur/env";
+import { Parcours } from "./Parcours";
 import { Schemas } from "./Schemas";
 import { SuiviDuSommaire } from "./SuiviDuSommaire";
 import styles from "./guide.module.css";
@@ -135,6 +136,13 @@ function Corps({ partie }: { partie: Partie }) {
         );
       case "liste":
         // Une liste ordinaire, sauf celle des erreurs à éviter (partie 13), marquée d'une croix
+        // Le parcours d'une scène (partie 5) se montre en schéma
+        if (b.ordonnee && ancreDe(partie.numero) === "repartir")
+          return (
+            <div key={i} className={styles.large}>
+              <Parcours elements={b.elements} enLigne={(t) => <EnLigne texte={t} />} />
+            </div>
+          );
         if (b.ordonnee)
           return (
             <ol key={i} className={styles.etapes}>
