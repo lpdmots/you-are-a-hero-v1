@@ -227,13 +227,15 @@ function Corps({ partie }: { partie: Partie }) {
             </aside>
           </Fragment>
         );
-      case "exemple":
-        // La fiche de consigne que reçoit l'élève : filet rose de la consigne, cases à cocher
+      case "exemple": {
+        // La feuille d'écriture que reçoit l'élève : sa consigne, puis sa liste à cocher
+        const consigne = b.texte.replace(/^Consigne\s*:\s*/, "");
         return (
-          <figure key={i} className={styles.fiche} aria-label="Exemple de consigne">
-            <p className={styles.ficheSorte}>Exemple de consigne</p>
+          <figure key={i} className={styles.fiche} aria-label={`Exemple de consigne : ${b.titre.replace(/\.$/, "")}`}>
+            <p className={styles.ficheSorte}>Exemple</p>
             <p className={styles.ficheTitre}>{b.titre.replace(/\.$/, "")}</p>
-            <p>{b.texte}</p>
+            <p className={styles.ficheEtiquette}>Consigne</p>
+            <p className={styles.ficheConsigne}>{consigne}</p>
             <p className={styles.ficheRappel}>{b.rappel}</p>
             <ul>
               {(b.elements ?? []).map((e) => (
@@ -245,6 +247,7 @@ function Corps({ partie }: { partie: Partie }) {
             </ul>
           </figure>
         );
+      }
       case "encart": {
         const image = place && "dansLEncart" in place ? place.image : null;
         return (

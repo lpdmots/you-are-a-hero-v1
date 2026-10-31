@@ -95,8 +95,8 @@ function classer(m: string[]): Bloc {
     return { sorte: "tableau", entete: rangs[0], rangs: rangs.slice(1) };
   }
   if (t.startsWith("**Dans ma classe.**")) return { sorte: "classe", texte: t.replace("**Dans ma classe.**", "").trim() };
-  // « *Exemple.* **Titre.** texte. Dans mon texte, j'ai pensé à : » : une fiche de consigne, sa liste à cocher ensuite
-  const exemple = t.match(/^\*Exemple\.\*\s*\*\*([^*]+)\*\*\s*(.*?)\s*(Dans mon texte.*)$/);
+  // « *Exemple.* **Titre.** Consigne : texte. J'ai pensé à : » : une fiche de consigne, sa liste à cocher ensuite
+  const exemple = t.match(/^\*Exemple\.\*\s*\*\*([^*]+)\*\*\s*(.*?)\s*((?:Dans mon texte|J’ai pensé).*)$/);
   if (exemple) return { sorte: "exemple", titre: exemple[1], texte: exemple[2], rappel: exemple[3] };
   if (t.startsWith("*Encart.*")) return { sorte: "encart", texte: t.replace("*Encart.*", "").trim() };
   const tete = t.match(/^\*\*([^*]+)\*\*\s*(.*)$/);

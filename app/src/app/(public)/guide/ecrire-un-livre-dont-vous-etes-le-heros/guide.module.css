@@ -580,22 +580,23 @@
   color: var(--canard);
 }
 
-/* L'exemple de consigne : la fiche que reçoit l'élève, son filet rose, ses cases à cocher */
+/* L'exemple de consigne : la feuille d'écriture de l'élève, son filet rose, la consigne, puis la liste
+   à cocher, annoncée dans la main de l'élève */
 .partie > .fiche {
-  margin: 1.4em 0 1.2em;
-  max-width: 520px;
-  padding: 16px 24px 20px;
+  margin: 1.5em 0 1.4em;
+  max-width: 540px;
+  padding: 14px 26px 20px;
   background: var(--feuille);
-  border-radius: 6px;
+  border-radius: 4px;
   box-shadow:
     0 1px 2px rgba(60, 45, 20, 0.08),
-    0 10px 22px -14px rgba(60, 45, 20, 0.35);
+    0 12px 26px -14px rgba(60, 45, 20, 0.38);
   font-size: 1.04rem;
-  line-height: 1.55;
+  line-height: 1.5;
 }
 .ficheSorte {
-  margin: 0 -24px 12px;
-  padding: 0 24px 8px;
+  margin: 0 -26px 14px;
+  padding: 0 26px 8px;
   border-bottom: 2px solid var(--bristol);
   font-family: var(--f-ui);
   font-size: var(--t-xs);
@@ -606,18 +607,37 @@
 }
 .ficheTitre {
   font-weight: 700;
+  font-size: 1.18rem;
+  line-height: 1.25;
+}
+.ficheEtiquette {
+  margin-top: 12px;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.ficheConsigne {
+  margin-top: 2px;
 }
 .ficheRappel {
-  margin-top: 12px;
-  font-style: italic;
-  color: var(--graphite-2);
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed var(--trait-fort);
+  font-family: var(--f-main);
+  font-size: 1rem;
+  line-height: 2;
+  color: var(--graphite);
 }
 .fiche ul {
-  margin: 6px 0 0;
+  /* Sous la cursive, dont les jambages descendent loin */
+  margin: 14px 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 6px;
+  gap: 7px;
 }
 .fiche li {
   display: flex;

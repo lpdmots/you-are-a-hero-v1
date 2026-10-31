@@ -205,33 +205,38 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Un élève par chapitre, si possible.",
-          "texte": "Chacun devient responsable de son chapitre, sans connaître le détail de ceux des autres : il aura le plaisir de découvrir le livre terminé. Selon les besoins, deux ou trois élèves peuvent partager un chapitre et se répartir les scènes, chacun rédigeant les siennes."
+          "texte": "Chacun devient responsable de son chapitre et garde ses scènes secrètes pour préserver la découverte du livre. Si nécessaire, deux ou trois élèves se partagent un chapitre, chacun rédigeant ses propres scènes."
         },
         {
           "sorte": "paragraphe",
           "tete": "Fixez les entrées et les sorties.",
-          "texte": "Pour chaque chapitre, définissez ensemble d’où arrive le héros et où il doit repartir. Entre les deux, l’élève est libre d’inventer son aventure. Il connaît les informations nécessaires pour assurer les transitions, sans découvrir les scènes des autres."
+          "texte": "Définissez ensemble d’où arrive le héros et où il doit repartir. L’élève connaît les informations nécessaires aux transitions, mais reste libre d’inventer ce qui se passe entre les deux."
         },
         {
           "sorte": "paragraphe",
           "tete": "Préparez les obstacles et les choix.",
-          "texte": "Proposez aux élèves d’imaginer trois obstacles pour leur chapitre, quitte à n’en retenir que deux. Pour chacun, ils réfléchissent aux choix possibles et à leurs conséquences. Liste, schéma ou cases reliées par des flèches : chacun s’organise à sa manière. Le plus difficile reste d’inventer des choix intéressants (voir « Comment organiser les choix ? »)."
+          "texte": "Trois obstacles constituent un bon point de départ, quitte à n’en conserver que deux. Pour chacun, l’élève imagine plusieurs choix et leurs conséquences. Liste, dessin ou schéma : il choisit la méthode qui lui convient (voir « Comment organiser les choix ? »)."
         },
         {
           "sorte": "paragraphe",
           "tete": "Une consigne et une liste à cocher par scène.",
-          "texte": "La consigne dit en une ou deux phrases ce qui doit se passer, sans dicter toute l’histoire. Une courte liste précise les éléments d’écriture attendus : l’élève la coche en se relisant."
+          "texte": "La consigne résume ce qui doit se passer ; la liste aide l’élève à vérifier les éléments d’écriture attendus."
         },
         {
           "sorte": "exemple",
           "titre": "La rencontre dans la forêt.",
-          "texte": "Le héros rencontre un personnage mystérieux qui lui propose son aide.",
-          "rappel": "Dans mon texte, j’ai pensé à :",
+          "texte": "Consigne : Le héros rencontre un personnage mystérieux qui lui propose son aide.",
+          "rappel": "J’ai pensé à :",
           "elements": [
-            "décrire le personnage ;",
-            "écrire un court dialogue ;",
-            "montrer la réaction du héros."
+            "Décrire le personnage.",
+            "Écrire un court dialogue.",
+            "Montrer la réaction du héros."
           ]
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Laissez les élèves inventer les choix.",
+          "texte": "Ils en décident les conséquences ; vous les aidez à les formuler et assurez les liens entre les scènes."
         },
         {
           "sorte": "paragraphe",
@@ -242,30 +247,30 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "sorte": "liste",
           "elements": [
             "L’élève écrit sur papier et se relit avec sa liste.",
-            "Vous lisez l’histoire et demandez, si besoin, des améliorations. Le texte ne passe à l’ordinateur qu’avec peu d’erreurs.",
-            "L’élève le recopie à l’ordinateur et vous le remet.",
-            "La langue se corrige alors à l’écran : vous validez, corrigez vous-même ou demandez une reprise."
+            "Vous vérifiez le contenu et demandez, si besoin, des améliorations.",
+            "L’élève corrige son orthographe avec ses outils, puis saisit son texte à l’ordinateur.",
+            "Il soumet sa scène. Plus tard, vous la validez, la corrigez ou demandez une reprise."
           ],
           "ordonnee": true
         },
         {
           "sorte": "paragraphe",
           "tete": null,
-          "texte": "Quand les ordinateurs manquent, les élèves se relaient pour la saisie."
+          "texte": "Si les ordinateurs manquent, les élèves se relaient. La dictée vocale peut aider à transcrire certains textes, mais je la réserve à l’enseignant."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Les rapides et les lents.",
-          "texte": "Ceux qui ont fini jouent leur chapitre comme un lecteur (voir « Comment vérifier que tous les chemins mènent quelque part ? »), puis écrivent des scènes supplémentaires, décrivent les illustrations qu’ils voudraient ou aident un camarade volontaire. Pour ceux qui avancent moins vite, adaptez les consignes, réduisez le nombre de scènes ou accompagnez-les davantage."
+          "tete": "À chacun son rythme.",
+          "texte": "Une fois ses scènes écrites, l’élève teste les chemins de son chapitre. Il peut ensuite écrire d’autres scènes, décrire ses futures illustrations ou aider un camarade volontaire. Pour ceux qui avancent moins vite, réduisez le nombre de scènes, adaptez les consignes ou prévoyez un accompagnement supplémentaire."
         },
         {
           "sorte": "paragraphe",
           "tete": "Gardez une vue d’ensemble.",
-          "texte": "Avec des dizaines de scènes à différents stades, un tableau de suivi devient vite indispensable : ce qui est à relire, à recopier, à valider."
+          "texte": "Un tableau de suivi aide à repérer les scènes en rédaction, à corriger ou à valider."
         },
         {
           "sorte": "classe",
-          "texte": "Le suivi a longtemps été un casse-tête : un tableur, puis une page Notion à laquelle les élèves avaient accès. C’est pour lui que j’ai commencé à développer Il était une classe. Je propose aussi des APC à ceux qui ont besoin de plus de temps, et des volontaires avancent à la maison avec leurs feuilles d’écriture, qui contiennent les consignes. Pour les élèves en retard, je saisis parfois moi-même leurs textes à la dictée vocale."
+          "texte": "J’ai d’abord suivi les chapitres sur Excel, puis sur une page Notion accessible aux élèves. C’est pour faciliter ce suivi que j’ai commencé à développer Il était une classe. Je propose aussi une période d’APC aux élèves qui ont besoin de temps supplémentaire ; certains volontaires poursuivent leur écriture à la maison, grâce à leurs feuilles de consignes."
         }
       ]
     },

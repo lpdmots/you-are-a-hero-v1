@@ -621,71 +621,72 @@ chaque partie pendant l'entretien et prime sur les sources.
   l'enseignant. Acceptés par lui : l'anecdote des volontaires qui aident,
   les scènes hors chapitre nommées et la règle de lecture du chapitre
   quittent cette partie.
+- Version finale du porteur, le 31 octobre 2026, prise telle quelle ; ses
+  quatre étapes forment le schéma du parcours d'une scène, sans être redites
+  en liste.
 
 #### Premier jet
 
 > ## Comment répartir l'écriture entre les élèves ?
 >
 > **Un élève par chapitre, si possible.** Chacun devient responsable de son
-> chapitre, sans connaître le détail de ceux des autres : il aura le plaisir
-> de découvrir le livre terminé. Selon les besoins, deux ou trois élèves
-> peuvent partager un chapitre et se répartir les scènes, chacun rédigeant
-> les siennes.
+> chapitre et garde ses scènes secrètes pour préserver la découverte du
+> livre. Si nécessaire, deux ou trois élèves se partagent un chapitre, chacun
+> rédigeant ses propres scènes.
 >
-> **Fixez les entrées et les sorties.** Pour chaque chapitre, définissez
-> ensemble d'où arrive le héros et où il doit repartir. Entre les deux,
-> l'élève est libre d'inventer son aventure. Il connaît les informations
-> nécessaires pour assurer les transitions, sans découvrir les scènes des
-> autres.
+> **Fixez les entrées et les sorties.** Définissez ensemble d'où arrive le
+> héros et où il doit repartir. L'élève connaît les informations nécessaires
+> aux transitions, mais reste libre d'inventer ce qui se passe entre les
+> deux.
 >
-> **Préparez les obstacles et les choix.** Proposez aux élèves d'imaginer
-> trois obstacles pour leur chapitre, quitte à n'en retenir que deux. Pour
-> chacun, ils réfléchissent aux choix possibles et à leurs conséquences.
-> Liste, schéma ou cases reliées par des flèches : chacun s'organise à sa
-> manière. Le plus difficile reste d'inventer des choix intéressants (voir
-> « Comment organiser les choix ? »).
+> **Préparez les obstacles et les choix.** Trois obstacles constituent un bon
+> point de départ, quitte à n'en conserver que deux. Pour chacun, l'élève
+> imagine plusieurs choix et leurs conséquences. Liste, dessin ou schéma : il
+> choisit la méthode qui lui convient (voir « Comment organiser les
+> choix ? »).
 >
-> **Une consigne et une liste à cocher par scène.** La consigne dit en une ou
-> deux phrases ce qui doit se passer, sans dicter toute l'histoire. Une courte
-> liste précise les éléments d'écriture attendus : l'élève la coche en se
-> relisant.
+> **Une consigne et une liste à cocher par scène.** La consigne résume ce qui
+> doit se passer ; la liste aide l'élève à vérifier les éléments d'écriture
+> attendus.
 >
-> *Exemple.* **La rencontre dans la forêt.** Le héros rencontre un personnage
-> mystérieux qui lui propose son aide. Dans mon texte, j'ai pensé à :
+> *Exemple.* **La rencontre dans la forêt.** Consigne : Le héros rencontre un
+> personnage mystérieux qui lui propose son aide. J'ai pensé à :
 >
-> - décrire le personnage ;
-> - écrire un court dialogue ;
-> - montrer la réaction du héros.
+> - Décrire le personnage.
+> - Écrire un court dialogue.
+> - Montrer la réaction du héros.
+>
+> **Laissez les élèves inventer les choix.** Ils en décident les
+> conséquences ; vous les aidez à les formuler et assurez les liens entre les
+> scènes.
 >
 > **Du brouillon à la validation.** Chaque scène suit le même parcours :
 >
 > 1. L'élève écrit sur papier et se relit avec sa liste.
-> 2. Vous lisez l'histoire et demandez, si besoin, des améliorations. Le texte
->    ne passe à l'ordinateur qu'avec peu d'erreurs.
-> 3. L'élève le recopie à l'ordinateur et vous le remet.
-> 4. La langue se corrige alors à l'écran : vous validez, corrigez vous-même
->    ou demandez une reprise.
+> 2. Vous vérifiez le contenu et demandez, si besoin, des améliorations.
+> 3. L'élève corrige son orthographe avec ses outils, puis saisit son texte à
+>    l'ordinateur.
+> 4. Il soumet sa scène. Plus tard, vous la validez, la corrigez ou demandez
+>    une reprise.
 >
-> Quand les ordinateurs manquent, les élèves se relaient pour la saisie.
+> Si les ordinateurs manquent, les élèves se relaient. La dictée vocale peut
+> aider à transcrire certains textes, mais je la réserve à l'enseignant.
 >
-> **Les rapides et les lents.** Ceux qui ont fini jouent leur chapitre comme
-> un lecteur (voir « Comment vérifier que tous les chemins mènent quelque
-> part ? »), puis écrivent des scènes supplémentaires, décrivent les
-> illustrations qu'ils voudraient ou aident un camarade volontaire. Pour ceux
-> qui avancent moins vite, adaptez les consignes, réduisez le nombre de
-> scènes ou accompagnez-les davantage.
+> **À chacun son rythme.** Une fois ses scènes écrites, l'élève teste les
+> chemins de son chapitre. Il peut ensuite écrire d'autres scènes, décrire
+> ses futures illustrations ou aider un camarade volontaire. Pour ceux qui
+> avancent moins vite, réduisez le nombre de scènes, adaptez les consignes ou
+> prévoyez un accompagnement supplémentaire.
 >
-> **Gardez une vue d'ensemble.** Avec des dizaines de scènes à différents
-> stades, un tableau de suivi devient vite indispensable : ce qui est à
-> relire, à recopier, à valider.
+> **Gardez une vue d'ensemble.** Un tableau de suivi aide à repérer les
+> scènes en rédaction, à corriger ou à valider.
 >
-> **Dans ma classe.** Le suivi a longtemps été un casse-tête : un tableur,
-> puis une page Notion à laquelle les élèves avaient accès. C'est pour lui
-> que j'ai commencé à développer Il était une classe. Je propose aussi des APC
-> à ceux qui ont besoin de plus de temps, et des volontaires avancent à la
-> maison avec leurs feuilles d'écriture, qui contiennent les consignes. Pour
-> les élèves en retard, je saisis parfois moi-même leurs textes à la dictée
-> vocale.
+> **Dans ma classe.** J'ai d'abord suivi les chapitres sur Excel, puis sur une
+> page Notion accessible aux élèves. C'est pour faciliter ce suivi que j'ai
+> commencé à développer Il était une classe. Je propose aussi une période
+> d'APC aux élèves qui ont besoin de temps supplémentaire ; certains
+> volontaires poursuivent leur écriture à la maison, grâce à leurs feuilles
+> de consignes.
 
 ### 6. Combien de chapitres, de scènes et de choix
 

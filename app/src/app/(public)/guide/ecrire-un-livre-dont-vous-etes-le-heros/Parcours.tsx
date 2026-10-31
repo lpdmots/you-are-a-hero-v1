@@ -46,7 +46,7 @@ const ETAPES = [
   },
   {
     qui: "vous",
-    titre: "La correction",
+    titre: "La validation",
     icone: (
       <Icone>
         <path d="M4 20l4-1 11-11-3-3L5 16z" />
