@@ -324,36 +324,41 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": null,
-          "texte": "C’est l’étape la plus difficile, pour vous comme pour les élèves. On n’y travaille pas l’écriture, mais deux compétences que nomme [Que faites-vous](https://www.quefaitesvous.com/blog/creer-un-livre-jeu-en-classe/) : développer la logique narrative et comprendre les conséquences. Un livre-jeu réussi est logique ; ce n’est pas un enchaînement de choix au hasard."
+          "texte": "C’est sans doute l’étape la plus difficile : inventer des choix intéressants, dont les conséquences restent logiques. Le lecteur ne doit pas simplement choisir au hasard, mais pouvoir réfléchir aux différentes possibilités."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Étudiez d’abord les sortes de choix.",
-          "texte": "Dans les livres lus ensemble, repérez-les : le bon choix, le piège, la réussite qui coûte (on passe, mais en laissant des plumes), l’énigme. Un choix peut aussi être une attitude : avancer discrètement ou d’un pas décidé, aider l’inconnu ou passer son chemin."
+          "tete": "Cinq pistes pour imaginer des choix.",
+          "texte": "Face à un obstacle, les élèves peuvent s’appuyer sur quelques questions pour trouver des idées :"
+        },
+        {
+          "sorte": "liste",
+          "elements": [
+            "**Explorer** — Où aller ? Visiter une grotte mystérieuse ou poursuivre son chemin.",
+            "**Changer de méthode** — Comment agir ? Escalader un mur ou convaincre le garde de nous laisser passer.",
+            "**Observer et réfléchir** — Quel indice utiliser ? Examiner les symboles d’une porte ou tenter de l’ouvrir directement.",
+            "**Faire un compromis** — Que sacrifier pour obtenir autre chose ? Traverser une zone dangereuse pour récupérer un objet ou gagner du temps en l’évitant.",
+            "**Adopter une attitude** — Comment réagir ? Aider un inconnu ou poursuivre sa mission."
+          ]
         },
         {
           "sorte": "paragraphe",
-          "tete": "Un choix de chaque sorte, puis on trie.",
-          "texte": "Devant son obstacle, l’élève cherche un choix de chaque sorte. Gardez les deux ou trois plus pertinents, avec au moins un bon choix, et souvent un mauvais. Pour vérifier, faites-lui dire chaque choix à voix haute : « si le héros fait…, alors… ». S’il ne trouve pas le « alors », le choix n’a pas encore de raison."
+          "tete": "Imaginez les conséquences.",
+          "texte": "Pour chaque obstacle, demandez à l’élève de trouver deux ou trois façons de réagir, puis d’imaginer ce qui se passe pour chacune. Faites-lui formuler ses idées à voix haute : « Si le héros fait ceci, alors… ». Un choix peut permettre de réussir, de découvrir un indice, de gagner ou de perdre une ressource, mais aussi provoquer une rencontre inattendue ou une situation comique. Toutes les erreurs n’ont pas besoin d’être punies."
         },
         {
           "sorte": "paragraphe",
           "tete": "Donnez une raison de choisir.",
-          "texte": "Un indice dans le texte, un objet trouvé plus tôt, un personnage qui prévient : le lecteur attentif doit pouvoir penser qu’une option vaut mieux que l’autre. Récompensez la curiosité : un détour facultatif peut donner l’objet ou l’indice qui servira plus loin. Le hasard n’est pas interdit, à une condition : qu’il ne punisse pas. Deux chemins pris au hasard, oui, s’ils mènent à des obstacles comparables ; une défaite par simple malchance, non."
+          "texte": "Un indice dans le texte, un objet trouvé plus tôt ou l’avertissement d’un personnage doivent permettre au lecteur attentif d’anticiper certains risques. Les choix les plus intéressants ne sont d’ailleurs pas toujours entre une bonne et une mauvaise solution : chacune peut présenter des avantages et des inconvénients. Le hasard a aussi sa place, mais évitez les défaites impossibles à prévoir."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Un mauvais choix coûte, sans tout faire perdre.",
-          "texte": "Selon le système de jeu, le héros perd du temps, de la volonté, de l’argent, ou l’huile de sa lanterne. Un piège qui ne coûte rien n’est pas un piège ; un piège qui fait tout perdre décourage."
-        },
-        {
-          "sorte": "paragraphe",
-          "tete": "La phrase du choix.",
-          "texte": "Courte, avec un verbe d’action, la même forme dans tout le livre : « Pour traverser le pont, va au 12. » Elle ne dévoile pas la suite : « traverser le pont », pas « tomber du pont pourri »."
+          "tete": "Soignez la formulation des choix.",
+          "texte": "Utilisez des phrases courtes, avec une action claire et une forme cohérente dans tout le livre. Donnez suffisamment d’informations pour décider, sans dévoiler la conséquence : « Si tu traverses le vieux pont malgré ses planches abîmées, va au 12 », plutôt que « Si tu tombes du pont, va au 12 »."
         },
         {
           "sorte": "classe",
-          "texte": "Dans « Électro Nick », traverser le désert de geysers fait perdre du temps ; mais on y gagne de la volonté, et un objet qui rapporte des boulons, la monnaie du livre."
+          "texte": "Dans « Électro Nick », visiter le laboratoire de Vortex permet de découvrir un indice précieux, mais fait perdre du temps. Au camp des esclaves, les lecteurs doivent choisir entre explorer les lieux ou profiter d’une bonne nuit de sommeil. Ce ne sont pas des choix entre le bien et le mal : chaque décision a ses avantages, et c’est au lecteur de peser le pour et le contre."
         }
       ]
     },
