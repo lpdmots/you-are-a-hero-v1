@@ -313,7 +313,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "« Le labyrinthe oublié » compte 13 chapitres, 213 scènes et quatre fins selon la réussite, plus une fin secrète. « Électro Nick » compte 19 chapitres et 323 scènes, avec des sauvegardes et des chapitres alternatifs, comme la forêt de champignons géants ou le lac d’acide. En moyenne, trois obstacles par chapitre et près de la moitié des scènes sans choix. Ces deux livres ont demandé environ trois mois de travail."
+          "texte": "« Le labyrinthe oublié » compte 13 chapitres, 213 scènes et quatre fins selon la réussite, plus une fin secrète. « Électro Nick » compte 19 chapitres et 323 scènes, avec des sauvegardes et des chapitres alternatifs, comme la forêt de champignons géants ou le lac d’acide. Ces deux livres ont demandé environ trois mois de travail."
         }
       ]
     },
