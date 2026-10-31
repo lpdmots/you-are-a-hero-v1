@@ -227,8 +227,14 @@
   border: 2px solid var(--canard);
   border-radius: 50%;
   font-size: max(0.62em, 0.95rem);
+  line-height: 1;
   color: var(--canard);
   transform: translateY(-0.18em);
+}
+/* Le chiffre centré sur sa hauteur réelle, sans le blanc de la police au-dessus et au-dessous */
+.numero > span {
+  display: block;
+  text-box: trim-both cap alphabetic;
 }
 
 /* Dans ma classe : la copie, feuille blanche, marge rouge et lignes du cahier comme « Nous retenons »
@@ -716,6 +722,11 @@
   color: var(--canard);
   text-decoration: none;
   vertical-align: 0.06em;
+}
+.renvoi > span {
+  display: block;
+  line-height: 1;
+  text-box: trim-both cap alphabetic;
 }
 .renvoi:hover {
   background: var(--canard);

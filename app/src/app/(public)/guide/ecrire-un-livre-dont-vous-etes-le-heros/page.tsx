@@ -68,7 +68,7 @@ function EnLigne({ texte }: { texte: string }) {
             <span className={styles.insecable}>
               {"\u2060"}
               <a className={styles.renvoi} href={`#${ancreDe(m.numero)}`} aria-label={`question ${m.numero}`}>
-                {m.numero}
+                <span>{m.numero}</span>
               </a>
               )
             </span>
@@ -322,7 +322,7 @@ export default function Guide() {
                     <span className={styles.insecable}>
                       {"\u2060"}
                       <a className={styles.renvoi} href={`#${ancreDe(ligne.partie)}`} aria-label={`question ${ligne.partie}`}>
-                        {ligne.partie}
+                        <span>{ligne.partie}</span>
                       </a>
                     </span>
                   </span>
@@ -338,7 +338,7 @@ export default function Guide() {
             <section key={p.numero} className={styles.partie} id={ancreDe(p.numero)} data-partie={p.numero} aria-labelledby={`${ancreDe(p.numero)}-t`}>
               <h2 id={`${ancreDe(p.numero)}-t`}>
                 <span className={styles.numero} aria-hidden="true">
-                  {p.numero}
+                  <span>{p.numero}</span>
                 </span>
                 <span>{p.titre}</span>
               </h2>
