@@ -2,8 +2,9 @@ import type { ReactNode } from "react";
 import styles from "./guide.module.css";
 
 /**
- * Les formes d'un chapitre (partie 6 du guide) : l'arbre qui ne se referme jamais, barré, puis trois
- * formes qui tiennent. Des scènes en petites cartes, l'entrée et la sortie en canard.
+ * Les formes d'un livre-jeu (partie 6 du guide) : l'arbre qui ne se referme jamais, barré, puis les
+ * branches qui se rejoignent, le carrefour et le détour facultatif. Des scènes en petites cartes,
+ * l'entrée et la sortie en canard, la scène du détour en étoile.
  */
 
 const Fleche = ({ id }: { id: string }) => (
@@ -90,23 +91,27 @@ function Carrefour() {
   );
 }
 
-function Goulot() {
-  const id = "sc-goulot";
-  const xs = [26, 76, 124, 174];
+function Detour() {
+  const id = "sc-detour";
+  // Une étoile : la scène du détour, où l'on trouve un secret ou un objet
+  const etoile = Array.from({ length: 10 }, (_, k) => {
+    const r = k % 2 ? 4.2 : 10;
+    const a = (Math.PI / 5) * k - Math.PI / 2;
+    return `${(150 + r * Math.cos(a)).toFixed(1)},${(84 + r * Math.sin(a)).toFixed(1)}`;
+  }).join(" ");
   return (
     <>
       <Fleche id={id} />
-      {xs.map((x, i) => (
-        <g key={x}>
-          <Scene x={x} y={24} />
-          <Trait de={[x, 30]} a={[x, 52]} id={id} />
-          <Scene x={x} y={58} />
-          <Trait de={[x + (x < 100 ? 6 : -6), 64]} a={[100 + (i - 1.5) * 6, 110]} id={id} />
-        </g>
-      ))}
-      <rect className={styles.scCentre} x={84} y={114} width={32} height={16} rx={4} />
-      <Trait de={[100, 130]} a={[100, 150]} id={id} />
-      <Scene x={100} y={158} bout />
+      <Trait de={[70, 26]} a={[70, 46]} id={id} />
+      <Trait de={[70, 58]} a={[70, 104]} id={id} />
+      <Trait de={[70, 116]} a={[70, 146]} id={id} />
+      <Trait de={[79, 55]} a={[140, 78]} id={id} />
+      <Trait de={[140, 91]} a={[79, 113]} id={id} />
+      <polygon className={styles.scCentre} points={etoile} />
+      <Scene x={70} y={20} bout />
+      <Scene x={70} y={52} />
+      <Scene x={70} y={110} />
+      <Scene x={70} y={152} bout />
     </>
   );
 }
@@ -115,7 +120,7 @@ const FORMES = [
   { nom: "L’arbre", dessin: <Arbre />, ecarte: true },
   { nom: "Les branches qui se rejoignent", dessin: <Branches /> },
   { nom: "Le carrefour", dessin: <Carrefour /> },
-  { nom: "Le goulot", dessin: <Goulot /> },
+  { nom: "Le détour facultatif", dessin: <Detour /> },
 ];
 
 export function Schemas() {

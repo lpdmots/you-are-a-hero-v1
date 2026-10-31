@@ -88,7 +88,7 @@ export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string
   { titre: "Bouquin mène l’enquête", note: "livre d’exemple", src: "/guide/couverture-bouquin.webp", alt: "Couverture de « Bouquin mène l’enquête »", largeur: 666, hauteur: 999 },
 ];
 
-/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres`, avant « Dans ma classe », ou dans l'encart */
+/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste qui le suit), avant « Dans ma classe », ou dans l'encart */
 export type PlaceDeLImage =
   | { apres: string; image: "couvertures" | "schemas" | ImageDuGuide }
   | { avantDansMaClasse: true; image: ImageDuGuide }
@@ -100,7 +100,7 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     dansLEncart: true,
     image: { src: "/guide/preparation-heros.webp", alt: "La Préparation d’Il était une classe : sous le héros, ce que la classe retient.", largeur: 2000, hauteur: 1128 },
   },
-  combien: { apres: "Une forme simple, qui tient sur des mois.", image: "schemas" },
+  combien: { apres: "Faites se rejoindre les chemins.", image: "schemas" },
   objets: {
     avantDansMaClasse: true,
     image: {

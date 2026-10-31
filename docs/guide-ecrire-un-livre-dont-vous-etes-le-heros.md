@@ -734,55 +734,70 @@ chaque partie pendant l'entretien et prime sur les sources.
   tôt, d'où la sauvegarde ou la fin adaptée pour ne pas tout recommencer ;
   compter par obstacles avant d'écrire, en sachant que ça débordera.
 - Écarté : les « 12 à 20 scènes » de ChatGPT.
+- Repris le 31 octobre 2026 d'après une version qu'il apporte : les trois
+  formes en liste (branches qui se rejoignent, carrefour, détour facultatif,
+  qui remplace le goulot et les chemins parallèles, schéma compris) ; elles
+  valent à toutes les échelles, scènes ou chapitres ; plus de chiffre pour un
+  premier livre ici, « trop dur à calculer, trop imprécis » (les 80 scènes
+  restent dans « En bref ») ; ses deux livres, « environ trois mois »
+  chacun, décidé par lui.
 
 #### Premier jet
 
 > ## Combien de chapitres, de scènes et de choix prévoir ?
 >
-> **Méfiez-vous de l'arbre.** Si chaque scène ouvre deux chemins qui ne se
-> rejoignent jamais, dix décisions donnent 1 024 fins : personne ne peut
-> écrire cela. Un livre-jeu qui tient fait se rejoindre ses branches.
+> **Méfiez-vous de l'arbre.** Si chaque choix ouvre deux chemins qui ne se
+> rejoignent jamais, dix décisions successives donnent 1 024 fins. Cette
+> structure fonctionne pour une histoire très courte, mais devient vite
+> ingérable pour un livre de classe.
 >
-> **Une forme simple, qui tient sur des mois.** Des chapitres qui se
-> suivent ; dans chacun, des branches qui se séparent puis se rejoignent à
-> la sortie. Variez de temps en temps : un chapitre facultatif qu'on peut
-> manquer, ou deux chapitres au choix, qui mènent au même endroit. À
-> l'intérieur d'un chapitre, quelques formes éprouvées : le carrefour, scène
-> courte où le lecteur revient et d'où partent plusieurs chemins ; les
-> chemins parallèles ; le goulot, où tout converge vers une même scène.
-> [Que faites-vous les montre en détail](https://www.quefaitesvous.com/blog/ecrire-une-fiction-interactive-avec-ses-eleves-chapitre-2-tuto-structurel/).
+> **Faites se rejoindre les chemins.** Le plus simple est d'enchaîner des
+> chapitres dans lesquels les branches se séparent puis se retrouvent. Pour
+> varier les aventures, trois structures sont particulièrement utiles :
 >
-> **Comptez par obstacles.** Un obstacle, c'est une scène et deux ou trois
-> choix, chacun avec sa conséquence : environ quatre scènes. Ajoutez les
-> scènes qui font simplement avancer l'histoire, sans choix. Il y en a
-> beaucoup, et c'est tant mieux : un choix à chaque scène épuise le lecteur.
-> Vous connaissez ainsi la taille du livre avant d'écrire.
+> - **Les branches qui se rejoignent :** plusieurs chemins différents mènent
+>   à une même scène.
+> - **Le carrefour :** le lecteur explore plusieurs directions et revient au
+>   même endroit avant de poursuivre.
+> - **Le détour facultatif :** le lecteur peut explorer un passage
+>   supplémentaire, découvrir un secret ou récupérer un objet avant de
+>   retrouver l'histoire principale.
 >
-> **Pour un premier livre, environ 80 scènes,** soit une vingtaine
-> d'obstacles : dans une classe ordinaire, chaque élève en écrit un, avec sa
-> résolution.
+> Ces structures fonctionnent à toutes les échelles : elles relient des
+> scènes à l'intérieur d'un chapitre, mais aussi des chapitres entiers entre
+> eux. Vous pouvez les combiner pour construire des aventures variées sans
+> multiplier les chemins à l'infini.
+> [Que faites-vous les présente en détail](https://www.quefaitesvous.com/blog/ecrire-une-fiction-interactive-avec-ses-eleves-chapitre-2-tuto-structurel/).
 >
-> **Prévoyez que ça débordera.** Les idées des enfants poussent l'histoire :
-> c'est bon signe, mais ne laissez pas le livre grossir sans fin. N'ajoutez
-> pas de chapitre une fois le plan posé ;
-> laissez plutôt certains chapitres grandir un peu, et gardez des scènes hors
-> chapitre pour les plus rapides : l'introduction, l'épilogue, une fin
-> alternative, un point de sauvegarde.
+> **Comptez par obstacles.** Un obstacle occupe souvent trois ou quatre
+> scènes : le problème, les différents choix et leurs conséquences. Ajoutez
+> les scènes de transition, les rencontres et les fins pour estimer la taille
+> du livre. Toutes les scènes n'ont pas besoin de proposer un choix :
+> alternez les moments de lecture et les décisions importantes. Pour un
+> premier projet, mieux vaut une aventure courte qui fonctionne qu'un livre
+> trop ambitieux.
 >
-> **Les fins.** Placez une défaite dès les premiers choix : le lecteur voit
-> que ses décisions comptent, et recommencer ne lui coûte rien. Plus loin,
-> ne lui faites pas tout reprendre. Soit tout le monde va au bout, et seule
-> la fin change selon sa réussite dans l'aventure. Soit, dans un long livre,
-> des points de sauvegarde : on repart d'un numéro, avec sa feuille
-> d'aventure telle qu'elle était à ce moment-là.
+> **Prévoyez que ça débordera.** Les idées des élèves feront naturellement
+> grandir l'histoire. Évitez toutefois de multiplier les chapitres une fois
+> le plan établi : laissez plutôt ceux qui existent s'enrichir. Gardez aussi
+> quelques scènes hors chapitre pour les plus rapides : introduction,
+> épilogue, fin alternative ou point de sauvegarde.
 >
-> **Dans ma classe.** « Le labyrinthe oublié » : 13 chapitres, 213 scènes,
-> quatre fins selon la réussite, et une fin cachée que j'avais écrite pour
-> mettre les élèves au défi. « Électro Nick » : 19 chapitres, 323 scènes,
-> des points de sauvegarde, et des chapitres au choix, la forêt de
-> champignons géants ou le lac d'acide. Environ trois obstacles par chapitre,
-> près de la moitié des scènes sans choix. Chacun a pris quatre à cinq mois ;
-> avec une classe plus nombreuse, comptez plutôt trois.
+> **Choisissez comment l'aventure se termine.** Le plus simple est de
+> laisser tous les lecteurs aller au bout, avec différentes fins selon leurs
+> réussites. Vous pouvez aussi prévoir quelques défaites prématurées,
+> notamment au début, quand recommencer est facile : le lecteur voit que ses
+> décisions comptent. Dans un livre plus long, des points de sauvegarde
+> permettent de reprendre à un passage donné, avec les objets et les points
+> conservés à ce moment-là.
+>
+> **Dans ma classe.** « Le labyrinthe oublié » compte 13 chapitres,
+> 213 scènes et quatre fins selon la réussite, plus une fin secrète.
+> « Électro Nick » compte 19 chapitres et 323 scènes, avec des sauvegardes et
+> des chapitres alternatifs, comme la forêt de champignons géants ou le lac
+> d'acide. En moyenne, trois obstacles par chapitre et près de la moitié des
+> scènes sans choix. Ces deux livres ont demandé environ trois mois de
+> travail.
 
 ### 7. Organiser les choix
 

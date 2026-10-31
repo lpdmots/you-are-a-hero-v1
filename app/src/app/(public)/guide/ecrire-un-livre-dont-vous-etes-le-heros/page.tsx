@@ -125,7 +125,6 @@ function Corps({ partie }: { partie: Partie }) {
               ) : null}
               <EnLigne texte={b.texte} />
             </p>
-            {place && "apres" in place && b.tete === place.apres ? enGrand(place.image) : null}
           </Fragment>
         );
       case "intertitre":
@@ -266,7 +265,19 @@ function Corps({ partie }: { partie: Partie }) {
       }
     }
   };
-  return <>{partie.blocs.map(bloc)}</>;
+  // L'image se pose après le paragraphe nommé, ou après la liste qui le suit
+  const apres = place && "apres" in place ? partie.blocs.findIndex((b) => b.sorte === "paragraphe" && b.tete === place.apres) : -1;
+  const ou = apres >= 0 && partie.blocs[apres + 1]?.sorte === "liste" ? apres + 1 : apres;
+  return (
+    <>
+      {partie.blocs.map((b, i) => (
+        <Fragment key={i}>
+          {bloc(b, i)}
+          {i === ou && place && "apres" in place ? enGrand(place.image) : null}
+        </Fragment>
+      ))}
+    </>
+  );
 }
 
 function Sommaire() {
