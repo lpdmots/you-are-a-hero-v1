@@ -34,7 +34,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
       const partie = T.parties[ANCRES.indexOf(ancre as (typeof ANCRES)[number])];
       if ("apres" in place) expect(partie.blocs.some((b) => b.sorte === "paragraphe" && b.tete === place.apres), ancre).toBe(true);
       if ("dansLEncart" in place) expect(partie.blocs.some((b) => b.sorte === "encart"), ancre).toBe(true);
-      if ("avantDansMaClasse" in place) expect(partie.blocs.some((b) => b.sorte === "classe"), ancre).toBe(true);
+      if ("avantDansMaClasse" in place || "apresDansMaClasse" in place) expect(partie.blocs.some((b) => b.sorte === "classe"), ancre).toBe(true);
     }
   });
 

@@ -1055,7 +1055,8 @@ chaque partie pendant l'entretien et prime sur les sources.
   seront revus ensemble à la fin). Légende de la fiche aventure : « notre
   plus long livre ». Puis : des exemples tirés d'une histoire (l'huile d'une
   lanterne, les personnes sauvées) ; « Dans ma classe » retiré ; la règle du
-  dé en schéma.
+  dé en schéma ; puis un nouveau « Dans ma classe », de lui, sur la fiche
+  d'aventure trop complète d'« Électro Nick », la fiche montrée dessous.
 
 #### Premier jet
 
@@ -1095,6 +1096,12 @@ chaque partie pendant l'entretien et prime sur les sources.
 > involontairement l'histoire. Peut-on arriver devant une porte sans avoir eu
 > la possibilité de trouver la clé ? Peut-on perdre plus de points qu'on n'en
 > possède ? Prévoyez ces situations et testez les différents parcours.
+>
+> **Dans ma classe.** Pour « Électro Nick », mon plus long livre-jeu, j'avais
+> prévu une fiche d'aventure assez complète : des points de volonté, des
+> boulons, des rations, des unités de temps, un inventaire d'objets et des
+> bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments
+> dans leurs chapitres. Avec le recul, c'était peut-être un peu trop !
 
 
 ### 10. Vérifier les chemins

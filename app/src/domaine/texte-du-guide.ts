@@ -444,6 +444,10 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "sorte": "paragraphe",
           "tete": "Vérifier que tout fonctionne.",
           "texte": "Un objet ou une jauge ne doit pas bloquer involontairement l’histoire. Peut-on arriver devant une porte sans avoir eu la possibilité de trouver la clé ? Peut-on perdre plus de points qu’on n’en possède ? Prévoyez ces situations et testez les différents parcours."
+        },
+        {
+          "sorte": "classe",
+          "texte": "Pour « Électro Nick », mon plus long livre-jeu, j’avais prévu une fiche d’aventure assez complète : des points de volonté, des boulons, des rations, des unités de temps, un inventaire d’objets et des bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments dans leurs chapitres. Avec le recul, c’était peut-être un peu trop !"
         }
       ]
     },

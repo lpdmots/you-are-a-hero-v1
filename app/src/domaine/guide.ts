@@ -88,10 +88,11 @@ export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string
   { titre: "Bouquin mène l’enquête", note: "livre d’exemple", src: "/guide/couverture-bouquin.webp", alt: "Couverture de « Bouquin mène l’enquête »", largeur: 666, hauteur: 999 },
 ];
 
-/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste qui le suit), avant « Dans ma classe », ou dans l'encart */
+/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste qui le suit), avant ou après « Dans ma classe », ou dans l'encart */
 export type PlaceDeLImage =
   | { apres: string; image: "couvertures" | "schemas" | ImageDuGuide }
   | { avantDansMaClasse: true; image: ImageDuGuide }
+  | { apresDansMaClasse: true; image: ImageDuGuide }
   | { dansLEncart: true; image: ImageDuGuide };
 
 export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLImage>> = {
@@ -102,11 +103,11 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
   },
   combien: { apres: "Faites se rejoindre les chemins.", image: "schemas" },
   objets: {
-    apres: "Des règles faciles à expliquer.",
+    apresDansMaClasse: true,
     image: {
       src: "/guide/fiche-aventure-electro-nick.webp",
       alt: "La fiche aventure d’« Électro Nick » : volonté, boulons, rations, unités de temps, bonus aux jets, inventaire.",
-      legende: "La fiche d’aventure d’« Électro Nick », notre plus long livre, imprimée au début du livre.",
+      legende: "La fiche d’aventure d’« Électro Nick », imprimée au début du livre.",
       largeur: 707,
       hauteur: 1000,
       portrait: true,

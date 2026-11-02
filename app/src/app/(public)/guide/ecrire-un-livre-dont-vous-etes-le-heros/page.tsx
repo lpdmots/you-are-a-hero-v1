@@ -225,6 +225,7 @@ function Corps({ partie }: { partie: Partie }) {
                 </ul>
               ) : null}
             </aside>
+            {place && "apresDansMaClasse" in place ? enGrand(place.image) : null}
           </Fragment>
         );
       case "exemple": {
