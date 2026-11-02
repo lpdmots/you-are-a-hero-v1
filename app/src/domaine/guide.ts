@@ -102,7 +102,7 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
   },
   combien: { apres: "Faites se rejoindre les chemins.", image: "schemas" },
   objets: {
-    avantDansMaClasse: true,
+    apres: "Des règles faciles à expliquer.",
     image: {
       src: "/guide/fiche-aventure-electro-nick.webp",
       alt: "La fiche aventure d’« Électro Nick » : volonté, boulons, rations, unités de temps, bonus aux jets, inventaire.",

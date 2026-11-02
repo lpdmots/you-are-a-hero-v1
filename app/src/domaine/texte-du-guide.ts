@@ -413,12 +413,12 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Pour un premier livre, un seul mécanisme de jeu suffit.",
-          "texte": "Une jauge de volonté, des objets à collecter ou des compétences : choisissez un système simple. On peut même commencer sans aucune règle supplémentaire, avec seulement des choix. Le dé peut attendre. Pour les projets suivants, vous pourrez enrichir les règles si l’histoire le justifie."
+          "texte": "Une jauge de volonté, des objets à collecter ou des compétences : choisissez un système simple. Vous pouvez même commencer sans aucune règle supplémentaire, avec seulement des choix. Le dé peut attendre. Pour les projets suivants, vous pourrez enrichir les règles si l’histoire le justifie."
         },
         {
           "sorte": "paragraphe",
           "tete": "Des règles qui viennent de l’histoire.",
-          "texte": "Plutôt que des points abstraits, comptez ce que l’histoire rend important : du temps, de la volonté, de l’argent. La règle se retient mieux, et chaque perte ou chaque gain se raconte."
+          "texte": "Plutôt que des points abstraits, comptez ce que l’histoire rend important : l’huile d’une lanterne, les personnes sauvées, du temps. La règle se retient mieux, et chaque perte ou chaque gain se raconte."
         },
         {
           "sorte": "paragraphe",
@@ -444,10 +444,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "sorte": "paragraphe",
           "tete": "Vérifier que tout fonctionne.",
           "texte": "Un objet ou une jauge ne doit pas bloquer involontairement l’histoire. Peut-on arriver devant une porte sans avoir eu la possibilité de trouver la clé ? Peut-on perdre plus de points qu’on n’en possède ? Prévoyez ces situations et testez les différents parcours."
-        },
-        {
-          "sorte": "classe",
-          "texte": "Une de nos histoires comptait les personnes sauvées et des unités de temps. Pour mon plus long livre, les règles étaient plus complexes, surtout pour les jets de dé ; avec du recul, c’était peut-être trop."
         }
       ]
     },

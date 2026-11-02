@@ -1056,7 +1056,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   objet ou une jauge ne bloque pas l'histoire. Retirés : le paragraphe sur
   les énigmes et l'encart de l'outil (« on verra à la fin » : les encarts
   seront revus ensemble à la fin). Légende de la fiche aventure : « notre
-  plus long livre ».
+  plus long livre ». Puis : des exemples tirés d'une histoire (l'huile d'une
+  lanterne, les personnes sauvées) ; « Dans ma classe » retiré ; la règle du
+  dé en schéma.
 
 #### Premier jet
 
@@ -1064,14 +1066,14 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Pour un premier livre, un seul mécanisme de jeu suffit.** Une jauge de
 > volonté, des objets à collecter ou des compétences : choisissez un système
-> simple. On peut même commencer sans aucune règle supplémentaire, avec
+> simple. Vous pouvez même commencer sans aucune règle supplémentaire, avec
 > seulement des choix. Le dé peut attendre. Pour les projets suivants, vous
 > pourrez enrichir les règles si l'histoire le justifie.
 >
 > **Des règles qui viennent de l'histoire.** Plutôt que des points abstraits,
-> comptez ce que l'histoire rend important : du temps, de la volonté, de
-> l'argent. La règle se retient mieux, et chaque perte ou chaque gain se
-> raconte.
+> comptez ce que l'histoire rend important : l'huile d'une lanterne, les
+> personnes sauvées, du temps. La règle se retient mieux, et chaque perte ou
+> chaque gain se raconte.
 >
 > **Des règles faciles à expliquer.** Elles se lisent au début du livre,
 > avant la première scène, et figurent en tête de la feuille d'aventure. Si
@@ -1099,11 +1101,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > involontairement l'histoire. Peut-on arriver devant une porte sans avoir eu
 > la possibilité de trouver la clé ? Peut-on perdre plus de points qu'on n'en
 > possède ? Prévoyez ces situations et testez les différents parcours.
->
-> **Dans ma classe.** Une de nos histoires comptait les personnes sauvées et
-> des unités de temps. Pour mon plus long livre, les règles étaient plus
-> complexes, surtout pour les jets de dé ; avec du recul, c'était peut-être
-> trop.
+
 
 ### 10. Vérifier les chemins
 
