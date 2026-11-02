@@ -2,8 +2,8 @@ import styles from "./jet-de-de.module.css";
 
 /**
  * La règle du dé (partie 9 du guide), en schéma : une épreuve de difficulté 5, un héros à 2 d'agilité,
- * deux lancers. 3 au dé fait 5, l'épreuve est réussie ; 2 au dé fait 4, elle est ratée et coûte un point
- * ou un détour, sans arrêter l'aventure. Les nombres sont ceux de l'exemple du texte.
+ * deux lancers. 3 au dé fait 5, l'épreuve est réussie ; 2 au dé fait 4, elle est ratée.
+ * Les nombres sont ceux de l'exemple du texte.
  */
 
 const POINTS: Record<number, [number, number][]> = {
@@ -24,7 +24,7 @@ function De({ valeur }: { valeur: 2 | 3 }) {
 
 const LANCERS = [
   { de: 3 as const, reussi: true, suite: "Réussi" },
-  { de: 2 as const, reussi: false, suite: "Raté : un point ou un détour" },
+  { de: 2 as const, reussi: false, suite: "Raté" },
 ];
 
 export function JetDeDe() {
