@@ -1092,10 +1092,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > une fois dans l'histoire.
 >
 > **Le dé, avec une seule règle.** Par exemple, le résultat du dé ajouté à une
-> compétence doit atteindre un nombre fixé. Avec 2 points d'agilité, il faut
-> obtenir au moins 3 au dé pour réussir une épreuve de difficulté 5. Un échec
-> peut coûter un point, du temps ou imposer un détour, plutôt que d'arrêter
-> net l'aventure.
+> compétence doit atteindre un nombre fixé.
 >
 > **Vérifier que tout fonctionne.** Un objet ou une jauge ne doit pas bloquer
 > involontairement l'histoire. Peut-on arriver devant une porte sans avoir eu

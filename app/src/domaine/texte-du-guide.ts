@@ -438,7 +438,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Le dé, avec une seule règle.",
-          "texte": "Par exemple, le résultat du dé ajouté à une compétence doit atteindre un nombre fixé. Avec 2 points d’agilité, il faut obtenir au moins 3 au dé pour réussir une épreuve de difficulté 5. Un échec peut coûter un point, du temps ou imposer un détour, plutôt que d’arrêter net l’aventure."
+          "texte": "Par exemple, le résultat du dé ajouté à une compétence doit atteindre un nombre fixé."
         },
         {
           "sorte": "paragraphe",
