@@ -482,7 +482,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Pour mes premiers livres-jeux, je vérifiais tous les liens dans un tableur. C’était franchement fastidieux, surtout pour retrouver les scènes et suivre leurs modifications ! C’est d’ailleurs ce problème, avec le suivi de la classe, qui m’a poussé à apprendre à programmer : je voulais créer un outil pour gérer tout cela plus facilement."
+          "texte": "Pour mon premier livre-jeu, je vérifiais tous les liens dans un tableur. C’était franchement fastidieux, surtout pour retrouver les scènes et suivre leurs modifications ! C’est d’ailleurs ce problème, avec le suivi de la classe, qui m’a poussé à apprendre à programmer : je voulais créer un outil pour gérer tout cela plus facilement."
         },
         {
           "sorte": "encart",

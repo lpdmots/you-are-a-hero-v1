@@ -1137,8 +1137,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Repris le 2 novembre 2026 d'après sa version, analysée : repères
   provisoires pendant l'écriture, dernière vérification des renvois après la
   numérotation ; le tableau à la main écarté avec humour au profit d'outils
-  gratuits nommés (Twine, diagrams.net) ; « Dans ma classe » : le tableur
-  des premiers livres, puis l'outil né de ce problème et du suivi de la
+  gratuits nommés (Twine, diagrams.net) ; « Dans ma classe » : le tableur du
+  premier livre, puis l'outil né de ce problème et du suivi de la
   classe. Écartés par lui : « le livre doit pouvoir se finir, sans être trop
   facile », la raison des numéros imposés par les énigmes.
 
@@ -1172,7 +1172,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > chapitres pour que les scènes d'un même chapitre ne se suivent pas.
 > Vérifiez une dernière fois tous les renvois.
 >
-> **Dans ma classe.** Pour mes premiers livres-jeux, je vérifiais tous les
+> **Dans ma classe.** Pour mon premier livre-jeu, je vérifiais tous les
 > liens dans un tableur. C'était franchement fastidieux, surtout pour
 > retrouver les scènes et suivre leurs modifications ! C'est d'ailleurs ce
 > problème, avec le suivi de la classe, qui m'a poussé à apprendre à
