@@ -1217,47 +1217,72 @@ chaque partie pendant l'entretien et prime sur les sources.
   l'application (son estimation, dite comme telle).
 - Extensions écartées : partir de la date de remise ; des créneaux fixes
   dans l'emploi du temps.
+- Repris le 2 novembre 2026 d'après sa version, analysée : « un bon
+  rythme » ; un premier livre d'environ 80 scènes en une ou deux périodes
+  (aligné sur « En bref », la limite gratuite de 40 scènes en devenant la
+  moitié) ; un grand livre en deux périodes d'écriture, le tableau gardant
+  « une ou deux périodes » à sa demande ; préparer les chapitres en 3 à
+  4 séances (voulu) ; une ligne « Relire et tester le livre » ; les textes
+  finis vers la mi-mai, le livre à l'impression fin mai, reçu vers la
+  mi-juin ; le temps de vacances passé dans « Dans ma classe », avec sa
+  raison ; l'encart sans « l'organisation des scènes » ni « les liens »,
+  que l'enseignant fait lui-même. Précisé par lui : une commande arrive en
+  10 jours au plus.
 
 #### Premier jet
 
 > ## Combien de temps faut-il ?
 >
-> **Deux séances d'une heure par semaine** suffisent. Alternez la feuille et
-> l'ordinateur : beaucoup d'élèves aiment taper leur texte, et pour certains,
-> c'est la récompense du brouillon fini.
+> **Deux séances d'une heure par semaine** constituent un bon rythme.
+> Alternez l'écriture sur papier et la saisie à l'ordinateur : beaucoup
+> d'élèves aiment taper leur texte, et pour certains, c'est une motivation
+> supplémentaire pour terminer leur brouillon.
 >
-> **Deux formats.** Un premier livre d'une quarantaine de scènes s'écrit en
-> une période ; un grand livre de 200 à 300 scènes, en trois mois environ.
-> Sans compter la découverte des livres-jeux, avant, ni l'impression, après.
+> **Deux formats.** Un premier livre d'environ 80 scènes peut s'écrire en
+> une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez
+> plutôt deux périodes d'écriture, auxquelles s'ajoutent la découverte des
+> livres-jeux, la préparation de l'histoire et la fabrication du livre.
 >
-> **Les étapes d'un grand livre.**
+> **Les étapes d'un grand livre.** Un calendrier possible, à adapter selon
+> l'âge et l'autonomie des élèves.
 >
 > | Étape | Durée |
 > |---|---|
-> | Découvrir des livres-jeux | une période, pendant les temps calmes |
+> | Découvrir des livres-jeux | Une période, pendant les temps calmes ou de lecture offerte |
 > | Étudier leur fonctionnement | 2 séances |
 > | Préparer l'histoire | 2 séances |
-> | Préparer les chapitres : obstacles, choix, conséquences | 2 séances |
-> | Mettre en place les scènes et les consignes (vous) | un temps de vacances |
-> | Écrire | une ou deux périodes |
-> | Mettre en page, illustrer | environ une semaine |
-> | Imprimer et recevoir les livres | moins de deux semaines |
+> | Préparer les chapitres : obstacles, choix, conséquences | 3 à 4 séances |
+> | Mettre en place les scènes et les consignes (vous) | Un temps de préparation dédié |
+> | Écrire | Une ou deux périodes |
+> | Relire et tester le livre | 2 séances |
+> | Mettre en page, illustrer | Environ une semaine |
+> | Imprimer et recevoir les livres | Prévoir environ deux semaines |
 >
-> **Dans l'année.** Découvrez les livres en période 2 (novembre-décembre),
-> préparez l'histoire en période 3 (janvier-février), écrivez en périodes 4
-> et 5 (mars à mai). Finissez l'écriture fin mai : juin reste pour la mise en
-> page, l'impression et la lecture.
+> **Dans l'année.** Découvrez les livres-jeux en période 2
+> (novembre-décembre), préparez l'histoire en période 3 (janvier-février),
+> puis écrivez en périodes 4 et 5 (mars à mai). Essayez de terminer les
+> textes vers la mi-mai pour envoyer le livre à l'impression fin mai. Vous
+> devriez ainsi le recevoir vers la mi-juin, avec une quinzaine de jours de
+> marge avant les vacances.
 >
-> **Votre temps.** Mettre en place les chapitres, les scènes et les
-> consignes est la phase la plus longue pour vous. Gardez-lui un temps de
-> vacances, pour bien faire sans courir.
+> **Votre temps.** Organiser les chapitres, préparer les scènes et rédiger
+> les consignes est sans doute l'étape la plus exigeante. On peut avoir
+> l'impression de passer beaucoup de temps sans voir le livre avancer. Mais
+> une fois ce travail terminé, le plus dur est derrière vous ! Les élèves
+> peuvent se lancer dans l'écriture, les scènes s'enchaînent et le livre
+> prend forme à vue d'œil.
 >
-> **Dans ma classe.** Je compte une vingtaine d'heures de travail de mon
-> côté, sur tout le projet.
+> **Dans ma classe.** Pour un grand livre-jeu, je compte une vingtaine
+> d'heures de travail personnel sur l'ensemble du projet. J'essaie toujours
+> de faire coïncider la préparation des scènes et des consignes avec des
+> vacances scolaires. Je peux ainsi m'y consacrer tranquillement, sans faire
+> attendre les élèves entre deux étapes.
 >
-> *Encart.* Avec Il était une classe, ce temps est à peu près divisé par
-> deux, d'après mon expérience : les liens, la numérotation et la
-> vérification des chemins se font seuls.
+> *Encart.* Avec Il était une classe, la numérotation, la vérification des
+> chemins et le suivi de la classe se font seuls. D'après mon expérience, le
+> temps de préparation et de suivi du projet est à peu près divisé par deux.
+> Il reste bien sûr à accompagner les élèves, à relire leurs textes et à
+> tester l'aventure !
 
 ### 12. Illustrer, imprimer, partager
 

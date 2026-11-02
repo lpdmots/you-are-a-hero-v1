@@ -497,16 +497,17 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Deux séances d’une heure par semaine",
-          "texte": "suffisent. Alternez la feuille et l’ordinateur : beaucoup d’élèves aiment taper leur texte, et pour certains, c’est la récompense du brouillon fini."
+          "texte": "constituent un bon rythme. Alternez l’écriture sur papier et la saisie à l’ordinateur : beaucoup d’élèves aiment taper leur texte, et pour certains, c’est une motivation supplémentaire pour terminer leur brouillon."
         },
         {
           "sorte": "paragraphe",
           "tete": "Deux formats.",
-          "texte": "Un premier livre d’une quarantaine de scènes s’écrit en une période ; un grand livre de 200 à 300 scènes, en trois mois environ. Sans compter la découverte des livres-jeux, avant, ni l’impression, après."
+          "texte": "Un premier livre d’environ 80 scènes peut s’écrire en une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez plutôt deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
         },
         {
-          "sorte": "intertitre",
-          "texte": "Les étapes d’un grand livre."
+          "sorte": "paragraphe",
+          "tete": "Les étapes d’un grand livre.",
+          "texte": "Un calendrier possible, à adapter selon l’âge et l’autonomie des élèves."
         },
         {
           "sorte": "tableau",
@@ -517,7 +518,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "rangs": [
             [
               "Découvrir des livres-jeux",
-              "une période, pendant les temps calmes"
+              "Une période, pendant les temps calmes ou de lecture offerte"
             ],
             [
               "Étudier leur fonctionnement",
@@ -529,43 +530,47 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
             ],
             [
               "Préparer les chapitres : obstacles, choix, conséquences",
-              "2 séances"
+              "3 à 4 séances"
             ],
             [
               "Mettre en place les scènes et les consignes (vous)",
-              "un temps de vacances"
+              "Un temps de préparation dédié"
             ],
             [
               "Écrire",
-              "une ou deux périodes"
+              "Une ou deux périodes"
+            ],
+            [
+              "Relire et tester le livre",
+              "2 séances"
             ],
             [
               "Mettre en page, illustrer",
-              "environ une semaine"
+              "Environ une semaine"
             ],
             [
               "Imprimer et recevoir les livres",
-              "moins de deux semaines"
+              "Prévoir environ deux semaines"
             ]
           ]
         },
         {
           "sorte": "paragraphe",
           "tete": "Dans l’année.",
-          "texte": "Découvrez les livres en période 2 (novembre-décembre), préparez l’histoire en période 3 (janvier-février), écrivez en périodes 4 et 5 (mars à mai). Finissez l’écriture fin mai : juin reste pour la mise en page, l’impression et la lecture."
+          "texte": "Découvrez les livres-jeux en période 2 (novembre-décembre), préparez l’histoire en période 3 (janvier-février), puis écrivez en périodes 4 et 5 (mars à mai). Essayez de terminer les textes vers la mi-mai pour envoyer le livre à l’impression fin mai. Vous devriez ainsi le recevoir vers la mi-juin, avec une quinzaine de jours de marge avant les vacances."
         },
         {
           "sorte": "paragraphe",
           "tete": "Votre temps.",
-          "texte": "Mettre en place les chapitres, les scènes et les consignes est la phase la plus longue pour vous. Gardez-lui un temps de vacances, pour bien faire sans courir."
+          "texte": "Organiser les chapitres, préparer les scènes et rédiger les consignes est sans doute l’étape la plus exigeante. On peut avoir l’impression de passer beaucoup de temps sans voir le livre avancer. Mais une fois ce travail terminé, le plus dur est derrière vous ! Les élèves peuvent se lancer dans l’écriture, les scènes s’enchaînent et le livre prend forme à vue d’œil."
         },
         {
           "sorte": "classe",
-          "texte": "Je compte une vingtaine d’heures de travail de mon côté, sur tout le projet."
+          "texte": "Pour un grand livre-jeu, je compte une vingtaine d’heures de travail personnel sur l’ensemble du projet. J’essaie toujours de faire coïncider la préparation des scènes et des consignes avec des vacances scolaires. Je peux ainsi m’y consacrer tranquillement, sans faire attendre les élèves entre deux étapes."
         },
         {
           "sorte": "encart",
-          "texte": "Avec Il était une classe, ce temps est à peu près divisé par deux, d’après mon expérience : les liens, la numérotation et la vérification des chemins se font seuls."
+          "texte": "Avec Il était une classe, la numérotation, la vérification des chemins et le suivi de la classe se font seuls. D’après mon expérience, le temps de préparation et de suivi du projet est à peu près divisé par deux. Il reste bien sûr à accompagner les élèves, à relire leurs textes et à tester l’aventure !"
         }
       ]
     },
