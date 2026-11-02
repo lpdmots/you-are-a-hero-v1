@@ -2847,6 +2847,10 @@ sur la feuille blanche, l'enseignant sur le papier chaud, « Sur papier » puis
 en boucles pointillées brique, « Validée » en vert au bout ; sur téléphone,
 une colonne, chaque retour dit dans sa carte. Les liens vers d'autres sites
 s'ouvrent dans un nouvel onglet, signalés par une petite flèche.
+En partie 9, à sa demande, la règle du dé en schéma sous son paragraphe :
+l'épreuve (difficulté 5, 2 d'agilité) sous le filet rose, puis deux lancers
+en équation, dé dessiné + compétence = total : 3 au dé, réussi, en vert ;
+2 au dé, raté, « un point ou un détour », en brique.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

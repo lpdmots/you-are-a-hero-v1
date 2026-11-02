@@ -1,0 +1,110 @@
+/* Le jet de dé (partie 9 du guide) : l'épreuve en tête, deux lancers en équation ; le réussi en vert
+   (c'est fait), le raté en brique (cela coûte), comme partout sur le site. */
+.jet {
+  margin: 1.6em 0 1.4em;
+  max-width: 620px;
+  padding: 16px 22px 18px;
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: var(--ombre-cahier);
+  font-family: var(--f-recit);
+}
+.epreuve {
+  margin: 0 -22px 12px;
+  padding: 0 22px 10px;
+  border-bottom: 2px solid var(--bristol);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.epreuve strong {
+  color: var(--graphite);
+}
+.lancers {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+.lancers li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+.reussi {
+  background: var(--e-valide-f);
+}
+.rate {
+  background: var(--e-reprendre-f);
+}
+.de {
+  flex: none;
+  width: 38px;
+  height: 38px;
+}
+.de rect {
+  fill: var(--feuille);
+  stroke: var(--graphite-2);
+  stroke-width: 1.8;
+}
+.de circle {
+  fill: var(--graphite);
+}
+.signe {
+  font-family: var(--f-ui);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+.competence {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--feuille);
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.competence strong {
+  font-size: 1rem;
+  color: var(--graphite);
+}
+.total {
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--graphite);
+}
+.comparaison {
+  font-family: var(--f-ui);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.issue {
+  margin-left: auto;
+  font-family: var(--f-ui);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.reussi .issue {
+  color: var(--e-valide);
+}
+.rate .issue {
+  color: var(--e-reprendre);
+}
+@media (max-width: 560px) {
+  .jet {
+    padding: 14px 14px 16px;
+  }
+  .epreuve {
+    margin: 0 -14px 12px;
+    padding: 0 14px 10px;
+  }
+  .issue {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+}
