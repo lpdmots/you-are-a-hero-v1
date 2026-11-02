@@ -354,7 +354,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Des énigmes à résoudre.",
-          "texte": "Elles sont difficiles à concevoir : cherchez des idées avec les élèves, puis aidez-les à construire une énigme dont la réponse peut être trouvée grâce aux indices. Une possibilité consiste à demander au lecteur de se rendre à la scène dont le numéro correspond à sa réponse. Pour vérifier qu’il ne s’est pas trompé, annoncez à l’avance le premier mot de la bonne scène, « Bravo » par exemple. Attention à choisir les numéros pour qu’une mauvaise réponse ne révèle pas un passage important de l’histoire."
+          "texte": "Elles sont difficiles à inventer : cherchez des idées avec les élèves, puis aidez-les à construire une énigme avec des indices clairs et une solution logique. Ne cherchez pas à tout prix à l’intégrer parfaitement à l’histoire : une situation un peu artificielle n’est pas gênante si l’énigme est amusante à résoudre."
         },
         {
           "sorte": "paragraphe",
