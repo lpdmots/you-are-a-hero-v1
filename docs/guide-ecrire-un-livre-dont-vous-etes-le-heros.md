@@ -50,7 +50,7 @@ Arrêté avec le porteur le 28 octobre 2026, modifiable si l'entretien le
 demande.
 
 - Titre, phrase de définition, auteur et date ; « En bref » : quelques
-  chiffres réels de sa pratique (quatre ans de livres, 213 et 323 passages),
+  chiffres réels de sa pratique (six ans de livres, 213 et 323 passages),
   sans l'effectif de la classe.
 1. Pourquoi écrire un livre-jeu avec sa classe ?
 2. À partir de quel âge ?
@@ -105,6 +105,8 @@ Décidé le 30 octobre 2026.
   de 40 pour un premier livre, soit une vingtaine d'obstacles, un par élève
   dans une classe ordinaire, qui va avec les 10 € d'un livre moyen (partie 6
   alignée).
+- Le 2 novembre 2026, décidé par lui : six ans de livres-jeux et non quatre
+  dans la ligne d'auteur ; les premiers, d'une autre forme, comptent.
 
 #### Premier jet
 
@@ -116,7 +118,7 @@ Décidé le 30 octobre 2026.
 > l'aventure ensemble, puis se partager l'écriture des scènes, que
 > l'enseignant relie en un seul livre.
 >
-> *Par Nicolas Coussot, professeur des écoles, quatre ans de livres-jeux
+> *Par Nicolas Coussot, professeur des écoles, six ans de livres-jeux
 > avec sa classe. Mis à jour le …*
 >
 > **En bref**
