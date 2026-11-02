@@ -3,7 +3,7 @@ import styles from "./jet-de-de.module.css";
 /**
  * La règle du dé (partie 9 du guide), en schéma : une épreuve de difficulté 5, un héros à 2 d'agilité,
  * deux lancers. 3 au dé fait 5, l'épreuve est réussie ; 2 au dé fait 4, elle est ratée.
- * Les nombres sont ceux de l'exemple du texte.
+ * Le schéma porte seul l'exemple chiffré : le texte ne donne que la règle.
  */
 
 const POINTS: Record<number, [number, number][]> = {
