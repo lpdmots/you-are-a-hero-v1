@@ -590,7 +590,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Je préfère les images faites par IA, et je fais la couverture moi-même. Mes élèves sont d’abord fiers d’avoir écrit un vrai livre : un dessin d’enfant en couverture ferait la fierté d’un seul, au détriment de celle de tous. Je veux un livre qui en jette. C’est une préférence personnelle."
+          "texte": "Je préfère les images faites par IA, et je fais la couverture moi-même. Mes élèves sont d’abord fiers d’avoir écrit un vrai livre : un dessin d’enfant en couverture ferait la fierté d’un seul. Je préfère qu’ils reçoivent un livre aussi proche que possible de ceux qu’on trouve en librairie. C’est une préférence personnelle."
         },
         {
           "sorte": "paragraphe",

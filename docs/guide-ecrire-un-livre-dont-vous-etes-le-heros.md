@@ -1329,6 +1329,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   d'exemple du site, 32 pages), 4 € l'exemplaire en noir et blanc, 5 € en
   couleur ; un livre moyen d'une vingtaine d'images, une dizaine d'euros.
   Idée à faire passer : décider du format à l'avance, les prix montent vite.
+- Le 2 novembre 2026, à sa demande : la couverture d'un élève ne ferait la
+  fierté que d'un seul ; il préfère un livre aussi proche que possible de
+  ceux de la librairie (« Je veux un livre qui en jette » retiré).
 
 #### Premier jet
 
@@ -1345,9 +1348,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Dans ma classe.** Je préfère les images faites par IA, et je fais la
 > couverture moi-même. Mes élèves sont d'abord fiers d'avoir écrit un vrai
-> livre : un dessin d'enfant en couverture ferait la fierté d'un seul, au
-> détriment de celle de tous. Je veux un livre qui en jette. C'est une
-> préférence personnelle.
+> livre : un dessin d'enfant en couverture ferait la fierté d'un seul. Je
+> préfère qu'ils reçoivent un livre aussi proche que possible de ceux qu'on
+> trouve en librairie. C'est une préférence personnelle.
 >
 > **Imprimer.** Un imprimeur en ligne qui imprime à l'exemplaire suffit.
 > Proposez le livre en précommande aux familles, avec le choix entre un
