@@ -9,7 +9,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "enBref": [
     {
       "chiffre": "1 à 3 mois",
-      "texte": "avec la classe : une période pour un premier livre, trois mois pour un grand.",
+      "texte": "avec la classe : une ou deux périodes pour un premier livre, trois mois pour un grand.",
       "partie": 11
     },
     {
@@ -550,7 +550,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
             ],
             [
               "Imprimer et recevoir les livres",
-              "Prévoir environ deux semaines"
+              "Une dizaine de jours par commande"
             ]
           ]
         },
@@ -625,7 +625,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "liste",
           "elements": [
-            "**Sous-estimer le temps.** J’ai déjà fini avec des livres livrés juste avant les vacances. Terminez l’écriture fin mai (voir « Combien de temps faut-il ? »).",
+            "**Sous-estimer le temps.** J’ai déjà fini avec des livres livrés juste avant les vacances. Envoyez le livre à l’impression fin mai (voir « Combien de temps faut-il ? »).",
             "**Un système de jeu trop compliqué.** J’en ai fait un, difficile à équilibrer. Commencez par une seule variable (voir « Faut-il des objets, des compétences ou un dé ? »).",
             "**Laisser le livre grossir avec les idées.** Plus de chapitre nouveau une fois le plan posé ; les idées en trop vont aux scènes hors chapitre (voir « Combien de chapitres, de scènes et de choix prévoir ? »).",
             "**Un choix qui sanctionne sans raison.** Gauche ou droite, oui, si les deux chemins se valent ; une défaite sans indice pour l’éviter, non (voir « Comment organiser les choix ? »).",

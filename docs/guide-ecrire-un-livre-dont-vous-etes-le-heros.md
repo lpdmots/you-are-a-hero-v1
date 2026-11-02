@@ -123,8 +123,8 @@ Décidé le 30 octobre 2026.
 >
 > **En bref**
 >
-> - **1 à 3 mois** avec la classe : une période pour un premier livre, trois
->   mois pour un grand. (partie 11)
+> - **1 à 3 mois** avec la classe : une ou deux périodes pour un premier
+>   livre, trois mois pour un grand. (partie 11)
 > - **20 h** de travail pour vous : préparer le plan du livre et les
 >   consignes, relire, ajouter les illustrations ; pas seulement corriger des
 >   textes. (partie 11)
@@ -1227,7 +1227,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   mi-juin ; le temps de vacances passé dans « Dans ma classe », avec sa
   raison ; l'encart sans « l'organisation des scènes » ni « les liens »,
   que l'enseignant fait lui-même. Précisé par lui : une commande arrive en
-  10 jours au plus.
+  10 jours au plus. Alignés ensuite : « une dizaine de jours par commande »
+  dans le tableau, « une ou deux périodes » dans « En bref », « Envoyez le
+  livre à l'impression fin mai » en partie 13.
 
 #### Premier jet
 
@@ -1256,7 +1258,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > | Écrire | Une ou deux périodes |
 > | Relire et tester le livre | 2 séances |
 > | Mettre en page, illustrer | Environ une semaine |
-> | Imprimer et recevoir les livres | Prévoir environ deux semaines |
+> | Imprimer et recevoir les livres | Une dizaine de jours par commande |
 >
 > **Dans l'année.** Découvrez les livres-jeux en période 2
 > (novembre-décembre), préparez l'histoire en période 3 (janvier-février),
@@ -1398,7 +1400,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > ## Les erreurs à éviter
 >
 > - **Sous-estimer le temps.** J'ai déjà fini avec des livres livrés juste
->   avant les vacances. Terminez l'écriture fin mai
+>   avant les vacances. Envoyez le livre à l'impression fin mai
 >   (voir « Combien de temps faut-il ? »).
 > - **Un système de jeu trop compliqué.** J'en ai fait un, difficile à
 >   équilibrer. Commencez par une seule variable
