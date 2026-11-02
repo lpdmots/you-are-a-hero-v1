@@ -107,7 +107,7 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     image: {
       src: "/guide/fiche-aventure-electro-nick.webp",
       alt: "La fiche aventure d’« Électro Nick » : volonté, boulons, rations, unités de temps, bonus aux jets, inventaire.",
-      legende: "La fiche d’aventure d’« Électro Nick », imprimée au début du livre.",
+      legende: "La fiche d’aventure d’« Électro Nick », un système riche pour un long livre.",
       largeur: 707,
       hauteur: 1000,
       portrait: true,

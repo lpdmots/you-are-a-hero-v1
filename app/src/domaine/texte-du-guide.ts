@@ -105,7 +105,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Du CE2 au CM2 (8-11 ans).",
-          "texte": "Dès le CE2, chaque élève écrit ses propres scènes, avec plus ou moins d’aide selon son autonomie. Le livre peut alors grandir : jusqu’à deux ou trois cents scènes avec une classe habituée, des objets, des énigmes, une jauge, parfois un dé (voir « Faut-il des objets, des compétences ou un dé ? »)."
+          "texte": "Dès le CE2, chaque élève écrit ses propres scènes, avec plus ou moins d’aide selon son autonomie. Le livre peut alors grandir : jusqu’à deux ou trois cents scènes avec une classe habituée, des objets, une jauge, parfois un dé (voir « Faut-il des objets, des compétences ou un dé ? »)."
         },
         {
           "sorte": "paragraphe",

@@ -360,8 +360,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Du CE2 au CM2 (8-11 ans).** Dès le CE2, chaque élève écrit ses propres
 > scènes, avec plus ou moins d'aide selon son autonomie. Le livre peut alors
 > grandir : jusqu'à deux ou trois cents scènes avec une classe habituée, des
-> objets, des énigmes, une jauge, parfois un dé (voir « Faut-il des objets,
-> des compétences ou un dé ? »).
+> objets, une jauge, parfois un dé (voir « Faut-il des objets, des
+> compétences ou un dé ? »).
 >
 > **Au collège (11-15 ans).** Les élèves prennent en main la construction :
 > ils imaginent les embranchements de leur chapitre, organisent les fins et
