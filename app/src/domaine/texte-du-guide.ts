@@ -265,7 +265,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "J’ai d’abord suivi les chapitres sur Excel, puis sur une page Notion accessible aux élèves. C’est pour faciliter ce suivi que j’ai commencé à développer Il était une classe."
+          "texte": "J’ai d’abord suivi les chapitres sur Excel, puis sur une page Notion accessible aux élèves."
         }
       ]
     },
@@ -458,31 +458,31 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Chacun teste son chapitre.",
-          "texte": "Une fois son chapitre écrit, l’élève le joue comme un lecteur, revient en arrière, essaie toutes les possibilités et corrige ce qui ne s’enchaîne pas. Il ne joue que le sien : le reste, il le découvrira dans le livre."
+          "texte": "Une fois son chapitre écrit, l’élève le joue comme un lecteur, explore tous les chemins et corrige ce qui ne fonctionne pas. Il ne teste que le sien : le reste, il le découvrira dans le livre."
         },
         {
           "sorte": "paragraphe",
           "tete": "Vous jouez le livre entier, plusieurs fois.",
-          "texte": "C’est vous qui vérifiez les raccords entre chapitres et l’équilibre du jeu : le livre doit pouvoir se finir, sans être trop facile."
+          "texte": "C’est vous qui vérifiez les raccords entre chapitres, repérez les blocages et évaluez la difficulté du jeu."
         },
         {
           "sorte": "paragraphe",
           "tete": "Contrôlez les liens.",
-          "texte": "Sur papier, faites un tableau : une ligne par scène, avec les scènes vers lesquelles elle mène ; cochez chaque scène chaque fois qu’elle apparaît comme destination. Une scène jamais cochée est orpheline ; une destination absente du tableau est un choix sans issue."
+          "texte": "Faites un tableau, listez les scènes, notez leurs destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça ! Des outils gratuits comme [Twine](https://twinery.org/) ou [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre histoire et de retrouver les scènes bien plus facilement. Il faut un peu de temps pour les apprivoiser, mais vous ne le regretterez pas !"
         },
         {
           "sorte": "paragraphe",
           "tete": "Réparez.",
-          "texte": "Les liens et les numéros, c’est vous ; un texte qui ne raccorde pas retourne à son auteur."
+          "texte": "Les erreurs de liens et de numéros, c’est vous ; un texte qui ne raccorde pas retourne à son auteur."
         },
         {
           "sorte": "paragraphe",
           "tete": "Numérotez à la toute fin.",
-          "texte": "Numéroter en cours de route oblige à tout renuméroter à chaque scène ajoutée. Une fois tout vérifié, fixez d’abord les numéros qui doivent l’être : ceux des énigmes, puisque la réponse donne le numéro, et ceux des sauvegardes. Puis mêlez plusieurs chapitres, pour que les scènes d’un même chapitre ne se retrouvent pas côte à côte, et tirez au sort."
+          "texte": "Pendant l’écriture, utilisez des repères provisoires pour identifier les scènes. Une fois le livre terminé, fixez d’abord les numéros imposés par les énigmes ou les sauvegardes (s’il y en a). Attribuez ensuite les autres au hasard, en mélangeant plusieurs chapitres pour que les scènes d’un même chapitre ne se suivent pas. Vérifiez une dernière fois tous les renvois."
         },
         {
           "sorte": "classe",
-          "texte": "J’ai vérifié les liens dans un tableur. C’était franchement fastidieux."
+          "texte": "Pour mes premiers livres-jeux, je vérifiais tous les liens dans un tableur. C’était franchement fastidieux, surtout pour retrouver les scènes et suivre leurs modifications ! C’est d’ailleurs ce problème, avec le suivi de la classe, qui m’a poussé à apprendre à programmer : je voulais créer un outil pour gérer tout cela plus facilement."
         },
         {
           "sorte": "encart",

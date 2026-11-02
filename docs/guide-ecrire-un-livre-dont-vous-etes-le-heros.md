@@ -624,6 +624,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Version finale du porteur, le 31 octobre 2026, prise telle quelle ; ses
   quatre étapes forment le schéma du parcours d'une scène, sans être redites
   en liste.
+- Le 2 novembre 2026, l'origine de l'outil quitte ce « Dans ma classe » pour
+  celui de la partie 10, qui dit les deux raisons (liens et suivi).
 
 #### Premier jet
 
@@ -678,8 +680,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > scènes en rédaction, à corriger ou à valider.
 >
 > **Dans ma classe.** J'ai d'abord suivi les chapitres sur Excel, puis sur une
-> page Notion accessible aux élèves. C'est pour faciliter ce suivi que j'ai
-> commencé à développer Il était une classe.
+> page Notion accessible aux élèves.
 
 ### 6. Combien de chapitres, de scènes et de choix
 
@@ -1133,37 +1134,50 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Va en partie 12 : la découverte du livre par la classe, lu ensemble avant
   de le recevoir ou découvert à la maison.
 - Extensions : il n'en veut pas pour cette partie.
+- Repris le 2 novembre 2026 d'après sa version, analysée : repères
+  provisoires pendant l'écriture, dernière vérification des renvois après la
+  numérotation ; le tableau à la main écarté avec humour au profit d'outils
+  gratuits nommés (Twine, diagrams.net) ; « Dans ma classe » : le tableur
+  des premiers livres, puis l'outil né de ce problème et du suivi de la
+  classe. Écartés par lui : « le livre doit pouvoir se finir, sans être trop
+  facile », la raison des numéros imposés par les énigmes.
 
 #### Premier jet
 
 > ## Comment vérifier que tous les chemins mènent quelque part ?
 >
 > **Chacun teste son chapitre.** Une fois son chapitre écrit, l'élève le
-> joue comme un lecteur, revient en arrière, essaie toutes les possibilités
-> et corrige ce qui ne s'enchaîne pas. Il ne joue que le sien : le reste, il
-> le découvrira dans le livre.
+> joue comme un lecteur, explore tous les chemins et corrige ce qui ne
+> fonctionne pas. Il ne teste que le sien : le reste, il le découvrira dans
+> le livre.
 >
 > **Vous jouez le livre entier, plusieurs fois.** C'est vous qui vérifiez
-> les raccords entre chapitres et l'équilibre du jeu : le livre doit pouvoir
-> se finir, sans être trop facile.
+> les raccords entre chapitres, repérez les blocages et évaluez la
+> difficulté du jeu.
 >
-> **Contrôlez les liens.** Sur papier, faites un tableau : une ligne par
-> scène, avec les scènes vers lesquelles elle mène ; cochez chaque scène
-> chaque fois qu'elle apparaît comme destination. Une scène jamais cochée est
-> orpheline ; une destination absente du tableau est un choix sans issue.
+> **Contrôlez les liens.** Faites un tableau, listez les scènes, notez leurs
+> destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça !
+> Des outils gratuits comme [Twine](https://twinery.org/) ou
+> [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre
+> histoire et de retrouver les scènes bien plus facilement. Il faut un peu de
+> temps pour les apprivoiser, mais vous ne le regretterez pas !
 >
-> **Réparez.** Les liens et les numéros, c'est vous ; un texte qui ne
-> raccorde pas retourne à son auteur.
+> **Réparez.** Les erreurs de liens et de numéros, c'est vous ; un texte qui
+> ne raccorde pas retourne à son auteur.
 >
-> **Numérotez à la toute fin.** Numéroter en cours de route oblige à tout
-> renuméroter à chaque scène ajoutée. Une fois tout vérifié, fixez d'abord
-> les numéros qui doivent l'être : ceux des énigmes, puisque la réponse donne
-> le numéro, et ceux des sauvegardes. Puis mêlez plusieurs chapitres, pour
-> que les scènes d'un même chapitre ne se retrouvent pas côte à côte, et
-> tirez au sort.
+> **Numérotez à la toute fin.** Pendant l'écriture, utilisez des repères
+> provisoires pour identifier les scènes. Une fois le livre terminé, fixez
+> d'abord les numéros imposés par les énigmes ou les sauvegardes (s'il y en
+> a). Attribuez ensuite les autres au hasard, en mélangeant plusieurs
+> chapitres pour que les scènes d'un même chapitre ne se suivent pas.
+> Vérifiez une dernière fois tous les renvois.
 >
-> **Dans ma classe.** J'ai vérifié les liens dans un tableur.
-> C'était franchement fastidieux.
+> **Dans ma classe.** Pour mes premiers livres-jeux, je vérifiais tous les
+> liens dans un tableur. C'était franchement fastidieux, surtout pour
+> retrouver les scènes et suivre leurs modifications ! C'est d'ailleurs ce
+> problème, avec le suivi de la classe, qui m'a poussé à apprendre à
+> programmer : je voulais créer un outil pour gérer tout cela plus
+> facilement.
 >
 > *Encart.* Dans Il était une classe, la vérification des chemins relève
 > seule les choix sans destination, les scènes que rien ne relie et celles
