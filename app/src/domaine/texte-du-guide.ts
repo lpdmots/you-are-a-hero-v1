@@ -105,7 +105,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Du CE2 au CM2 (8-11 ans).",
-          "texte": "Dès le CE2, chaque élève écrit ses propres scènes, avec plus ou moins d’aide selon son autonomie. Le livre peut alors grandir : jusqu’à deux ou trois cents scènes avec une classe habituée, des objets, des énigmes, une jauge, parfois un dé (voir « Faut-il des objets, des énigmes ou un dé ? »)."
+          "texte": "Dès le CE2, chaque élève écrit ses propres scènes, avec plus ou moins d’aide selon son autonomie. Le livre peut alors grandir : jusqu’à deux ou trois cents scènes avec une classe habituée, des objets, des énigmes, une jauge, parfois un dé (voir « Faut-il des objets, des compétences ou un dé ? »)."
         },
         {
           "sorte": "paragraphe",
@@ -403,50 +403,46 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     },
     {
       "numero": 9,
-      "titre": "Faut-il des objets, des énigmes ou un dé ?",
+      "titre": "Faut-il des objets, des compétences ou un dé ?",
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Pour un premier livre, une seule variable.",
-          "texte": "Des compétences, une jauge comme la volonté, ou des objets : choisissez-en une. Le dé peut attendre. Ensuite, laissez l’histoire décider : un livre court s’en tient à une ou deux variables, un livre long peut se permettre un système plus riche."
+          "tete": "Pour un premier livre, un seul mécanisme de jeu suffit.",
+          "texte": "Une jauge de volonté, des objets à collecter ou des compétences : choisissez un système simple. On peut même commencer sans aucune règle supplémentaire, avec seulement des choix. Le dé peut attendre. Pour les projets suivants, vous pourrez enrichir les règles si l’histoire le justifie."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Une variable qui vient de l’histoire.",
-          "texte": "Plutôt que des « points », comptez ce que l’histoire rend important : des rats sauvés, du temps, l’huile d’une lanterne, de la volonté. La règle se retient mieux, et chaque perte ou chaque gain se raconte."
+          "tete": "Des règles qui viennent de l’histoire.",
+          "texte": "Plutôt que des points abstraits, comptez ce que l’histoire rend important : du temps, de la volonté, de l’argent. La règle se retient mieux, et chaque perte ou chaque gain se raconte."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Des règles qui s’expliquent vite.",
-          "texte": "Elles se lisent au début du livre, avant la première scène, et figurent en tête de la feuille d’aventure. Si une règle ne s’explique pas simplement à un enfant de 9 ans, elle est de trop."
+          "tete": "Des règles faciles à expliquer.",
+          "texte": "Elles se lisent au début du livre, avant la première scène, et figurent en tête de la feuille d’aventure. Si une règle demande de longues explications pour être comprise, simplifiez-la."
         },
         {
           "sorte": "paragraphe",
           "tete": "Des objets qui servent.",
-          "texte": "Peu d’objets, chacun avec un usage prévu à l’avance et inscrit sur la fiche de référence : un objet qui ouvre un choix (« Si tu as la clé, va au 31 ») ou qui évite un piège. Un objet ramassé qui ne sert à rien déçoit. Une exception amusante : le magasin, où l’on peut acheter des choses inutiles et dépenser son argent pour rien."
+          "texte": "Prévoyez peu d’objets, chacun avec une utilité définie à l’avance : ouvrir un choix (« Si tu as la clé, va au 31 »), éviter un piège… Un objet ramassé qui ne sert jamais risque de décevoir. Une exception amusante : le magasin, où l’on peut acheter des choses inutiles et gaspiller son argent."
         },
         {
           "sorte": "paragraphe",
           "tete": "Construire son héros.",
-          "texte": "Proposez par exemple six compétences ; le lecteur en choisit deux. Dans l’histoire, certains choix en dépendent : « Si ton héros est courageux, tu peux… »."
+          "texte": "Proposez par exemple six compétences ; le lecteur en choisit deux. Certains choix en dépendent : « Si ton héros est courageux, tu peux… ». Veillez à ce que chaque compétence serve au moins une fois dans l’histoire."
         },
         {
           "sorte": "paragraphe",
           "tete": "Le dé, avec une seule règle.",
-          "texte": "Un jet : le dé plus la caractéristique doit atteindre un nombre fixé. Un jet raté coûte un point, du temps ou un détour, jamais la partie à lui seul, sauf si c’était le dernier point."
+          "texte": "Par exemple, le résultat du dé ajouté à une compétence doit atteindre un nombre fixé. Avec 2 points d’agilité, il faut obtenir au moins 3 au dé pour réussir une épreuve de difficulté 5. Un échec peut coûter un point, du temps ou imposer un détour, plutôt que d’arrêter net l’aventure."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Les énigmes.",
-          "texte": "Elles sont difficiles à inventer : discutez-en la forme avec les élèves, et écrivez souvent l’énigme vous-même. La réponse donne un numéro. Si c’est le bon, la scène commence par un mot annoncé à l’avance, « Bravo » par exemple ; sinon, le lecteur tombe sur une autre scène du livre et comprend qu’il s’est trompé."
+          "tete": "Vérifier que tout fonctionne.",
+          "texte": "Un objet ou une jauge ne doit pas bloquer involontairement l’histoire. Peut-on arriver devant une porte sans avoir eu la possibilité de trouver la clé ? Peut-on perdre plus de points qu’on n’en possède ? Prévoyez ces situations et testez les différents parcours."
         },
         {
           "sorte": "classe",
-          "texte": "Une de nos histoires comptait les rats sauvés, des points de volonté et des unités de temps. Pour mon plus long livre, les règles étaient plus complètes, surtout pour les jets de dé ; avec le recul, c’était peut-être trop."
-        },
-        {
-          "sorte": "encart",
-          "texte": "Dans Il était une classe, les objets et les actions de jeu (« Coche la clé sur ta feuille ») se choisissent dans une liste commune, préparée une fois pour tout le livre : rien à recopier."
+          "texte": "Une de nos histoires comptait les personnes sauvées et des unités de temps. Pour mon plus long livre, les règles étaient plus complexes, surtout pour les jets de dé ; avec du recul, c’était peut-être trop."
         }
       ]
     },
@@ -620,7 +616,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "sorte": "liste",
           "elements": [
             "**Sous-estimer le temps.** J’ai déjà fini avec des livres livrés juste avant les vacances. Terminez l’écriture fin mai (voir « Combien de temps faut-il ? »).",
-            "**Un système de jeu trop compliqué.** J’en ai fait un, difficile à équilibrer. Commencez par une seule variable (voir « Faut-il des objets, des énigmes ou un dé ? »).",
+            "**Un système de jeu trop compliqué.** J’en ai fait un, difficile à équilibrer. Commencez par une seule variable (voir « Faut-il des objets, des compétences ou un dé ? »).",
             "**Laisser le livre grossir avec les idées.** Plus de chapitre nouveau une fois le plan posé ; les idées en trop vont aux scènes hors chapitre (voir « Combien de chapitres, de scènes et de choix prévoir ? »).",
             "**Un choix qui sanctionne sans raison.** Gauche ou droite, oui, si les deux chemins se valent ; une défaite sans indice pour l’éviter, non (voir « Comment organiser les choix ? »).",
             "**Numéroter en cours de route.** Chaque scène ajoutée oblige à tout renuméroter : numérotez à la toute fin (voir « Comment vérifier que tous les chemins mènent quelque part ? »).",

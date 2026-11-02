@@ -60,7 +60,7 @@ demande.
 6. Combien de chapitres, de scènes et de choix prévoir ?
 7. Comment organiser les choix ?
 8. Comment relire et garder la cohérence ?
-9. Faut-il des objets, des énigmes ou un dé ?
+9. Faut-il des objets, des compétences ou un dé ?
 10. Comment vérifier que tous les chemins mènent quelque part ?
 11. Combien de temps faut-il ?
 12. Comment illustrer, imprimer et partager le livre ?
@@ -361,7 +361,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > scènes, avec plus ou moins d'aide selon son autonomie. Le livre peut alors
 > grandir : jusqu'à deux ou trois cents scènes avec une classe habituée, des
 > objets, des énigmes, une jauge, parfois un dé (voir « Faut-il des objets,
-> des énigmes ou un dé ? »).
+> des compétences ou un dé ? »).
 >
 > **Au collège (11-15 ans).** Les élèves prennent en main la construction :
 > ils imaginent les embranchements de leur chapitre, organisent les fins et
@@ -1040,54 +1040,60 @@ chaque partie pendant l'entretien et prime sur les sources.
   son livre le plus long ; un jet raté coûte un détour, pas la partie.
 - Va ailleurs : tester avec le héros le plus faible en partie 10 ; la
   sauvegarde en partie 6.
+- Reprise le 1er novembre 2026 d'après sa version, prise telle quelle :
+  titre « Faut-il des objets, des compétences ou un dé ? » ; un exemple
+  chiffré du jet de dé ; chaque compétence doit servir ; vérifier qu'un
+  objet ou une jauge ne bloque pas l'histoire. Retirés : le paragraphe sur
+  les énigmes et l'encart de l'outil (« on verra à la fin » : les encarts
+  seront revus ensemble à la fin). Légende de la fiche aventure : « notre
+  plus long livre ».
 
 #### Premier jet
 
-> ## Faut-il des objets, des énigmes ou un dé ?
+> ## Faut-il des objets, des compétences ou un dé ?
 >
-> **Pour un premier livre, une seule variable.** Des compétences, une jauge
-> comme la volonté, ou des objets : choisissez-en une. Le dé peut attendre.
-> Ensuite, laissez l'histoire décider : un livre court s'en tient à une ou
-> deux variables, un livre long peut se permettre un système plus riche.
+> **Pour un premier livre, un seul mécanisme de jeu suffit.** Une jauge de
+> volonté, des objets à collecter ou des compétences : choisissez un système
+> simple. On peut même commencer sans aucune règle supplémentaire, avec
+> seulement des choix. Le dé peut attendre. Pour les projets suivants, vous
+> pourrez enrichir les règles si l'histoire le justifie.
 >
-> **Une variable qui vient de l'histoire.** Plutôt que des « points »,
-> comptez ce que l'histoire rend important : des rats sauvés, du temps,
-> l'huile d'une lanterne, de la volonté. La règle se retient mieux, et chaque
-> perte ou chaque gain se raconte.
+> **Des règles qui viennent de l'histoire.** Plutôt que des points abstraits,
+> comptez ce que l'histoire rend important : du temps, de la volonté, de
+> l'argent. La règle se retient mieux, et chaque perte ou chaque gain se
+> raconte.
 >
-> **Des règles qui s'expliquent vite.** Elles se lisent au début du livre,
+> **Des règles faciles à expliquer.** Elles se lisent au début du livre,
 > avant la première scène, et figurent en tête de la feuille d'aventure. Si
-> une règle ne s'explique pas simplement à un enfant de 9 ans, elle est de
+> une règle demande de longues explications pour être comprise,
+> simplifiez-la.
+>
+> **Des objets qui servent.** Prévoyez peu d'objets, chacun avec une utilité
+> définie à l'avance : ouvrir un choix (« Si tu as la clé, va au 31 »),
+> éviter un piège… Un objet ramassé qui ne sert jamais risque de décevoir.
+> Une exception amusante : le magasin, où l'on peut acheter des choses
+> inutiles et gaspiller son argent.
+>
+> **Construire son héros.** Proposez par exemple six compétences ; le lecteur
+> en choisit deux. Certains choix en dépendent : « Si ton héros est
+> courageux, tu peux… ». Veillez à ce que chaque compétence serve au moins
+> une fois dans l'histoire.
+>
+> **Le dé, avec une seule règle.** Par exemple, le résultat du dé ajouté à une
+> compétence doit atteindre un nombre fixé. Avec 2 points d'agilité, il faut
+> obtenir au moins 3 au dé pour réussir une épreuve de difficulté 5. Un échec
+> peut coûter un point, du temps ou imposer un détour, plutôt que d'arrêter
+> net l'aventure.
+>
+> **Vérifier que tout fonctionne.** Un objet ou une jauge ne doit pas bloquer
+> involontairement l'histoire. Peut-on arriver devant une porte sans avoir eu
+> la possibilité de trouver la clé ? Peut-on perdre plus de points qu'on n'en
+> possède ? Prévoyez ces situations et testez les différents parcours.
+>
+> **Dans ma classe.** Une de nos histoires comptait les personnes sauvées et
+> des unités de temps. Pour mon plus long livre, les règles étaient plus
+> complexes, surtout pour les jets de dé ; avec du recul, c'était peut-être
 > trop.
->
-> **Des objets qui servent.** Peu d'objets, chacun avec un usage prévu à
-> l'avance et inscrit sur la fiche de référence : un objet qui ouvre un choix
-> (« Si tu as la clé, va au 31 ») ou qui évite un piège. Un objet ramassé qui
-> ne sert à rien déçoit. Une exception amusante : le magasin, où l'on peut
-> acheter des choses inutiles et dépenser son argent pour rien.
->
-> **Construire son héros.** Proposez par exemple six compétences ; le
-> lecteur en choisit deux. Dans l'histoire, certains choix en dépendent :
-> « Si ton héros est courageux, tu peux… ».
->
-> **Le dé, avec une seule règle.** Un jet : le dé plus la caractéristique
-> doit atteindre un nombre fixé. Un jet raté coûte un point, du temps ou un
-> détour, jamais la partie à lui seul, sauf si c'était le dernier point.
->
-> **Les énigmes.** Elles sont difficiles à inventer : discutez-en la forme
-> avec les élèves, et écrivez souvent l'énigme vous-même. La réponse donne un
-> numéro. Si c'est le bon, la scène commence par un mot annoncé à l'avance,
-> « Bravo » par exemple ; sinon, le lecteur tombe sur une autre scène du livre
-> et comprend qu'il s'est trompé.
->
-> **Dans ma classe.** Une de nos histoires comptait les rats sauvés, des
-> points de volonté et des unités de temps. Pour mon plus long livre, les
-> règles étaient plus complètes, surtout pour les jets de dé ; avec le recul,
-> c'était peut-être trop.
->
-> *Encart.* Dans Il était une classe, les objets et les actions de jeu
-> (« Coche la clé sur ta feuille ») se choisissent dans une liste commune,
-> préparée une fois pour tout le livre : rien à recopier.
 
 ### 10. Vérifier les chemins
 
@@ -1346,7 +1352,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >   (voir « Combien de temps faut-il ? »).
 > - **Un système de jeu trop compliqué.** J'en ai fait un, difficile à
 >   équilibrer. Commencez par une seule variable
->   (voir « Faut-il des objets, des énigmes ou un dé ? »).
+>   (voir « Faut-il des objets, des compétences ou un dé ? »).
 > - **Laisser le livre grossir avec les idées.** Plus de chapitre nouveau une
 >   fois le plan posé ; les idées en trop vont aux scènes hors chapitre
 >   (voir « Combien de chapitres, de scènes et de choix prévoir ? »).
