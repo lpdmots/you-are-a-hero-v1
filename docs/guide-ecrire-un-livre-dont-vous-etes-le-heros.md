@@ -1396,7 +1396,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > commande générale. Prévoyez cette étape suffisamment tôt : chaque commande
 > met une dizaine de jours à arriver, et il vous faudra encore le temps de
 > relire l'exemplaire et de corriger ce qui doit l'être. En attendant les
-> livres de chacun, lisez ce premier exemplaire ensemble en classe.
+> livres de chacun, vous pouvez lire ce premier exemplaire ensemble en
+> classe.
 >
 > **Un livre accessible à tous.** L'achat doit rester facultatif. Si le prix
 > est un obstacle, plusieurs solutions : choisir le noir et blanc, faire

@@ -640,7 +640,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Un exemplaire d’essai d’abord.",
-          "texte": "Commandez-en un pour vérifier la mise en page, les illustrations et la qualité d’impression avant de lancer la commande générale. Prévoyez cette étape suffisamment tôt : chaque commande met une dizaine de jours à arriver, et il vous faudra encore le temps de relire l’exemplaire et de corriger ce qui doit l’être. En attendant les livres de chacun, lisez ce premier exemplaire ensemble en classe."
+          "texte": "Commandez-en un pour vérifier la mise en page, les illustrations et la qualité d’impression avant de lancer la commande générale. Prévoyez cette étape suffisamment tôt : chaque commande met une dizaine de jours à arriver, et il vous faudra encore le temps de relire l’exemplaire et de corriger ce qui doit l’être. En attendant les livres de chacun, vous pouvez lire ce premier exemplaire ensemble en classe."
         },
         {
           "sorte": "paragraphe",
