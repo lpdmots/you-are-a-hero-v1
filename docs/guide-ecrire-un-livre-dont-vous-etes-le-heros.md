@@ -1339,6 +1339,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   8 € en noir et blanc, 17 € en couleur.
   Le livre moyen passe ensuite à 30 images et 6 € en noir et blanc, pour
   rester cohérent avec lui (« En bref » aligné : une trentaine d'images).
+- Le 3 novembre 2026, à sa demande : l'exemplaire d'essai demande le temps de
+  le relire et de corriger ; il se lit ensemble en classe, en attendant les
+  livres de chacun.
 - Repris le 3 novembre 2026 d'après sa version, analysée : style commun et
   apparence des personnages pour les images par IA, une couverture soignée,
   le travail collectif plutôt que le dessin d'un seul, les illustrations des
@@ -1391,7 +1394,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Un exemplaire d'essai d'abord.** Commandez-en un pour vérifier la mise en
 > page, les illustrations et la qualité d'impression avant de lancer la
 > commande générale. Prévoyez cette étape suffisamment tôt : chaque commande
-> met une dizaine de jours à arriver.
+> met une dizaine de jours à arriver, et il vous faudra encore le temps de
+> relire l'exemplaire et de corriger ce qui doit l'être. En attendant les
+> livres de chacun, lisez ce premier exemplaire ensemble en classe.
 >
 > **Un livre accessible à tous.** L'achat doit rester facultatif. Si le prix
 > est un obstacle, plusieurs solutions : choisir le noir et blanc, faire
