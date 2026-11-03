@@ -1332,6 +1332,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Le 2 novembre 2026, à sa demande : la couverture d'un élève ne ferait la
   fierté que d'un seul ; il préfère un livre aussi proche que possible de
   ceux de la librairie (« Je veux un livre qui en jette » retiré).
+- Le 3 novembre 2026, à sa demande : les prix en tableau (pages, images, noir
+  et blanc, couleur), avec ses chiffres : « Électro Nick », 248 pages ;
+  « Les passeurs de brume », 10 images ; un livre moyen, 80 pages, 20 images,
+  8 € en noir et blanc.
 - Repris le 3 novembre 2026 d'après sa version, analysée : style commun et
   apparence des personnages pour les images par IA, une couverture soignée,
   le travail collectif plutôt que le dessin d'un seul, les illustrations des
@@ -1370,16 +1374,15 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Imprimer.** Un imprimeur en ligne qui imprime à l'exemplaire suffit.
 > Proposez le livre en précommande aux familles, avec le choix entre un
-> intérieur en noir et blanc ou en couleur. Pour notre plus grand livre,
-> [« Électro Nick »](/bibliotheque/electro-nick) (plus de 300 scènes et
-> 150 illustrations), l'exemplaire coûtait en 2026 environ
-> 12 € en noir et blanc et 29 € en couleur.
-> [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), un livre
-> de 32 pages proposé en exemple sur le site, coûte environ 4 € en noir et
-> blanc et 5 € en couleur. Un livre moyen, d'une vingtaine d'images, revient
-> à une dizaine d'euros en couleur : décidez du format à l'avance, le prix
-> monte vite. Ces prix sont indicatifs ; pensez aussi aux frais de
-> livraison.
+> intérieur en noir et blanc ou en couleur. Décidez du format à l'avance : le
+> prix monte vite. Voici ce que coûtait un exemplaire en 2026, à titre
+> indicatif et sans les frais de livraison :
+>
+> | Livre | Pages | Images | Noir et blanc | Couleur |
+> |---|---|---|---|---|
+> | [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d'exemple du site | 32 | 10 | 4 € | 5 € |
+> | Un livre moyen | 80 | 20 | 8 € | 10 € |
+> | [« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre | 248 | 150 | 12 € | 29 € |
 >
 > **Un exemplaire d'essai d'abord.** Commandez-en un pour vérifier la mise en
 > page, les illustrations et la qualité d'impression avant de lancer la

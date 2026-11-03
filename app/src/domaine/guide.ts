@@ -88,7 +88,7 @@ export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string
   { titre: "Bouquin mène l’enquête", note: "livre d’exemple", src: "/guide/couverture-bouquin.webp", alt: "Couverture de « Bouquin mène l’enquête »", largeur: 666, hauteur: 999 },
 ];
 
-/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste qui le suit), avant ou après « Dans ma classe », ou dans l'encart */
+/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste ou le tableau qui le suit), avant ou après « Dans ma classe », ou dans l'encart */
 export type PlaceDeLImage =
   | { apres: string; image: "couvertures" | "schemas" | ImageDuGuide }
   | { avantDansMaClasse: true; image: ImageDuGuide }

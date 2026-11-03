@@ -180,7 +180,7 @@ function Corps({ partie }: { partie: Partie }) {
         );
       case "tableau":
         return (
-          <div key={i} className={styles.tableau}>
+          <div key={i} className={b.entete.length > 2 ? `${styles.tableau} ${styles.colonnes}` : styles.tableau}>
             <table>
               <thead>
                 <tr>
@@ -197,9 +197,11 @@ function Corps({ partie }: { partie: Partie }) {
                     <th scope="row">
                       <EnLigne texte={r[0]} />
                     </th>
-                    <td>
-                      <EnLigne texte={r[1]} />
-                    </td>
+                    {r.slice(1).map((c, j) => (
+                      <td key={j}>
+                        <EnLigne texte={c} />
+                      </td>
+                    ))}
                   </tr>
                 ))}
               </tbody>
@@ -267,9 +269,10 @@ function Corps({ partie }: { partie: Partie }) {
       }
     }
   };
-  // L'image se pose après le paragraphe nommé, ou après la liste qui le suit
+  // L'image se pose après le paragraphe nommé, ou après la liste ou le tableau qui le suit
   const apres = place && "apres" in place ? partie.blocs.findIndex((b) => b.sorte === "paragraphe" && b.tete === place.apres) : -1;
-  const ou = apres >= 0 && partie.blocs[apres + 1]?.sorte === "liste" ? apres + 1 : apres;
+  const suivant = partie.blocs[apres + 1]?.sorte;
+  const ou = apres >= 0 && (suivant === "liste" || suivant === "tableau") ? apres + 1 : apres;
   return (
     <>
       {partie.blocs.map((b, i) => (

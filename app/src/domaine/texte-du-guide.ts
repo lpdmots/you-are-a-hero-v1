@@ -595,7 +595,40 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Imprimer.",
-          "texte": "Un imprimeur en ligne qui imprime à l’exemplaire suffit. Proposez le livre en précommande aux familles, avec le choix entre un intérieur en noir et blanc ou en couleur. Pour notre plus grand livre, [« Électro Nick »](/bibliotheque/electro-nick) (plus de 300 scènes et 150 illustrations), l’exemplaire coûtait en 2026 environ 12 € en noir et blanc et 29 € en couleur. [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), un livre de 32 pages proposé en exemple sur le site, coûte environ 4 € en noir et blanc et 5 € en couleur. Un livre moyen, d’une vingtaine d’images, revient à une dizaine d’euros en couleur : décidez du format à l’avance, le prix monte vite. Ces prix sont indicatifs ; pensez aussi aux frais de livraison."
+          "texte": "Un imprimeur en ligne qui imprime à l’exemplaire suffit. Proposez le livre en précommande aux familles, avec le choix entre un intérieur en noir et blanc ou en couleur. Décidez du format à l’avance : le prix monte vite. Voici ce que coûtait un exemplaire en 2026, à titre indicatif et sans les frais de livraison :"
+        },
+        {
+          "sorte": "tableau",
+          "entete": [
+            "Livre",
+            "Pages",
+            "Images",
+            "Noir et blanc",
+            "Couleur"
+          ],
+          "rangs": [
+            [
+              "[« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d’exemple du site",
+              "32",
+              "10",
+              "4 €",
+              "5 €"
+            ],
+            [
+              "Un livre moyen",
+              "80",
+              "20",
+              "8 €",
+              "10 €"
+            ],
+            [
+              "[« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre",
+              "248",
+              "150",
+              "12 €",
+              "29 €"
+            ]
+          ]
         },
         {
           "sorte": "paragraphe",

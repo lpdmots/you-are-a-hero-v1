@@ -530,6 +530,34 @@
   color: var(--graphite-2);
   white-space: nowrap;
 }
+/* Un tableau de chiffres (les prix) : les nombres alignés à droite ; serré sur téléphone */
+.colonnes td {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.colonnes thead th:not(:first-child) {
+  text-align: right;
+}
+@media (max-width: 640px) {
+  .colonnes table {
+    font-size: 0.82rem;
+  }
+  .colonnes th,
+  .colonnes td {
+    padding: 10px 7px;
+  }
+  .colonnes th:first-child {
+    padding-left: 12px;
+  }
+  .colonnes td:last-child,
+  .colonnes thead th:last-child {
+    padding-right: 12px;
+  }
+  .colonnes thead th {
+    font-size: 0.64rem;
+    letter-spacing: 0.04em;
+  }
+}
 
 /* Une liste ordinaire : un rond canard, comme « En bref » */
 .partie > .liste {
