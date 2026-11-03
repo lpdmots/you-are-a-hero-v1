@@ -1,0 +1,147 @@
+/* L'année d'un grand livre (partie 11 du guide) : deux lignes sur une feuille. La classe sur la feuille
+   blanche, vous sur le papier chaud (comme le parcours d'une scène) ; la fabrication en étapes
+   fléchées, la livraison en vert (c'est fait). Sur téléphone, chaque ligne se lit de haut en bas, le
+   moment à gauche. */
+.annee {
+  --g: 22px;
+  margin: 0;
+  padding: 18px 22px 18px;
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: var(--ombre-cahier);
+  font-family: var(--f-ui);
+}
+
+.ligneTitre {
+  margin: 0 0 10px;
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.ligneTitre + ol {
+  margin: 0;
+}
+ol + .ligneTitre {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid var(--trait);
+}
+
+.classe,
+.livraison {
+  padding: 0;
+  list-style: none;
+}
+.classe li,
+.livraison li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px 11px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 8px;
+  background: var(--feuille);
+}
+
+/* Avec la classe : quatre moments côte à côte, à peu près à la mesure de leur durée */
+.classe {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.6fr 2.4fr;
+  gap: 8px;
+}
+.classe li.vous {
+  background: #fcf9f1;
+  border: 1.5px dashed #d6cbb4;
+}
+
+/* Jusqu'à la livraison : cinq étapes fléchées */
+.livraison {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--g);
+}
+.livraison li:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(-1 * var(--g) + 4px);
+  width: calc(var(--g) - 8px);
+  height: 12px;
+  transform: translateY(-50%);
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 12'%3E%3Cpath d='M1 6h20M16 1.5 21.5 6 16 10.5' fill='none' stroke='%234a5157' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+.livraison li.fait {
+  border: 1.5px solid var(--e-valide);
+  background: var(--e-valide-f);
+}
+.fait .quoi {
+  color: var(--e-valide);
+}
+
+.quand {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.quoi {
+  font-family: var(--f-recit);
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--graphite);
+}
+.precision {
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+
+.marge {
+  margin: 12px 0 0;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  text-align: right;
+  color: var(--e-valide);
+}
+
+@media (max-width: 760px) {
+  .annee {
+    padding: 14px 16px;
+  }
+  .classe,
+  .livraison {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
+  .livraison {
+    gap: 18px;
+  }
+  .classe li,
+  .livraison li {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    column-gap: 10px;
+    align-items: baseline;
+  }
+  .precision {
+    grid-column: 2;
+  }
+  /* La flèche passe sous l'étape */
+  .livraison li:not(:last-child)::after {
+    top: auto;
+    bottom: -16px;
+    right: auto;
+    left: 50%;
+    width: 14px;
+    height: 14px;
+    transform: translateX(-50%) rotate(90deg);
+  }
+  .marge {
+    text-align: left;
+  }
+}

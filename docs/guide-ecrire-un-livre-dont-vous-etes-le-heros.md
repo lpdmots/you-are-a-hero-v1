@@ -1237,6 +1237,10 @@ chaque partie pendant l'entretien et prime sur les sources.
   10 jours au plus. Alignés ensuite : « une dizaine de jours par commande »
   dans le tableau, « une ou deux périodes » dans « En bref », « Envoyez le
   livre à l'impression fin mai » en partie 13.
+- Le 3 novembre 2026, pour alléger la page : « Dans l'année » en frise sur deux
+  lignes (avec la classe, de novembre à mai, les vacances d'hiver pour vous ;
+  puis jusqu'à la livraison), son texte dans `Annee.tsx` ; le paragraphe
+  réduit à une phrase.
 
 #### Premier jet
 
@@ -1267,13 +1271,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > | Mettre en page, illustrer | Environ une semaine |
 > | Imprimer et recevoir les livres | Une dizaine de jours par commande |
 >
-> **Dans l'année.** Découvrez les livres-jeux en période 2
-> (novembre-décembre), préparez l'histoire en période 3 (janvier-février),
-> puis écrivez en périodes 4 et 5 (mars à mai). Essayez de terminer les
-> textes au début du mois de mai : l'exemplaire d'essai arrivera vers la
-> mi-mai, et vous pourrez envoyer la commande définitive fin mai. Vous
-> devriez ainsi recevoir les livres vers la mi-juin, avec une quinzaine de
-> jours de marge avant les vacances.
+> **Dans l'année.** Comptez à rebours depuis la livraison, à la mi-juin :
+> les textes doivent être terminés au début du mois de mai.
 >
 > **Votre temps.** Organiser les chapitres, préparer les scènes et rédiger
 > les consignes est sans doute l'étape la plus exigeante. On peut avoir

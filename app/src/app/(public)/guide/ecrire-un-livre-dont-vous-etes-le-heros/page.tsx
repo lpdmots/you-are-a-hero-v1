@@ -19,6 +19,7 @@ import {
 import { enJsonLd } from "@/domaine/presentation";
 import { TEXTE_DU_GUIDE as T } from "@/domaine/texte-du-guide";
 import { adresseDuSite } from "@/serveur/env";
+import { Annee } from "./Annee";
 import { Decoupage } from "./Decoupage";
 import { JetDeDe } from "./JetDeDe";
 import { Parcours } from "./Parcours";
@@ -338,6 +339,12 @@ function Corps({ partie }: { partie: Partie }) {
           {ancreDe(partie.numero) === "inventer" && b.sorte === "paragraphe" && b.tete?.startsWith("Découpez l’aventure") ? (
             <div className={styles.large}>
               <Decoupage />
+            </div>
+          ) : null}
+          {/* L'année d'un grand livre (partie 11), en frise sous « Dans l'année » */}
+          {ancreDe(partie.numero) === "temps" && b.sorte === "paragraphe" && b.tete === "Dans l’année." ? (
+            <div className={styles.large}>
+              <Annee />
             </div>
           ) : null}
           {/* La règle du dé (partie 9), en schéma sous son paragraphe */}

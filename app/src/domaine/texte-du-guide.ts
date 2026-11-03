@@ -550,7 +550,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Dans l’année.",
-          "texte": "Découvrez les livres-jeux en période 2 (novembre-décembre), préparez l’histoire en période 3 (janvier-février), puis écrivez en périodes 4 et 5 (mars à mai). Essayez de terminer les textes au début du mois de mai : l’exemplaire d’essai arrivera vers la mi-mai, et vous pourrez envoyer la commande définitive fin mai. Vous devriez ainsi recevoir les livres vers la mi-juin, avec une quinzaine de jours de marge avant les vacances."
+          "texte": "Comptez à rebours depuis la livraison, à la mi-juin : les textes doivent être terminés au début du mois de mai."
         },
         {
           "sorte": "paragraphe",
