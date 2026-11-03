@@ -936,3 +936,51 @@
     white-space: normal;
   }
 }
+
+/* Des cartes côte à côte (les niveaux, partie 2) : une fiche par cas, le titre puis l'accroche sous
+   un filet bristol, le texte ensuite ; en colonne sur téléphone */
+.cartes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  padding: 0;
+  list-style: none;
+}
+.carte {
+  padding: 16px 20px 20px;
+  background: var(--feuille);
+  border-radius: 10px;
+  box-shadow: var(--ombre-cahier);
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.carteTitre {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 10px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--bristol);
+  font-weight: 700;
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+.cartePrecision {
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--graphite-3);
+}
+.carteAccroche {
+  margin-top: 12px;
+  font-weight: 700;
+}
+.carteTexte {
+  margin-top: 6px;
+  color: var(--graphite-2);
+}
+@media (max-width: 900px) {
+  .cartes {
+    grid-template-columns: 1fr;
+  }
+}

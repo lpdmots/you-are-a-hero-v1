@@ -106,6 +106,10 @@ function Couvertures() {
   );
 }
 
+/** Une liste dont chaque ligne est « **Titre · précision** — *Accroche.* texte » se montre en cartes, dans ces questions */
+const EN_CARTES: string[] = ["age"];
+const CARTE = /^\*\*([^*]+)\*\*\s+—\s+(?:\*([^*]+)\*\s*)?(.*)$/;
+
 function Corps({ partie }: { partie: Partie }) {
   const place = IMAGES_DU_GUIDE[ancreDe(partie.numero)];
   const enGrand = (image: "couvertures" | "schemas" | ImageDuGuide) => (
@@ -152,6 +156,28 @@ function Corps({ partie }: { partie: Partie }) {
                 </li>
               ))}
             </ol>
+          );
+        // Les niveaux (partie 2) se comparent en cartes, côte à côte
+        if (EN_CARTES.includes(ancreDe(partie.numero)) && b.elements.every((e) => CARTE.test(e)))
+          return (
+            <ul key={i} className={`${styles.large} ${styles.cartes}`}>
+              {b.elements.map((e) => {
+                const [, tete, accroche, texte] = e.match(CARTE)!;
+                const [titre, precision] = tete.split(" · ");
+                return (
+                  <li key={e} className={styles.carte}>
+                    <p className={styles.carteTitre}>
+                      {titre}
+                      {precision ? <span className={styles.cartePrecision}>{precision}</span> : null}
+                    </p>
+                    {accroche ? <p className={styles.carteAccroche}>{accroche}</p> : null}
+                    <p className={styles.carteTexte}>
+                      <EnLigne texte={texte} />
+                    </p>
+                  </li>
+                );
+              })}
+            </ul>
           );
         if (ancreDe(partie.numero) !== "erreurs")
           return (
