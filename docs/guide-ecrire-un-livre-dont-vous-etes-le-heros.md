@@ -151,8 +151,8 @@ pendant l'entretien ; les détails sont à leur place de référence.
 - Quatre ans de livres avec sa classe ; cette année un CE2-CM1-CM2 de
   10 élèves, séances en salle informatique, son écran projeté.
 - Deux livres importés de la V0 : « Électro Nick » (323 passages, 152 grandes
-  images) et « Le labyrinthe oublié » (213 passages ; 20 images posées dans
-  l'import local, sans doute bien plus dans le livre selon lui : à recompter),
+  images) et « Le labyrinthe oublié » (213 passages, 140 pages, 85 images, donné
+  par lui le 3 novembre 2026),
   imprimés chez epubli ; numéros de scène seuls, sans numéros de page.
   Illustrations : il les fait par IA (dit le 29 octobre 2026) ; les « dessins
   d'élèves » d'abord notés ici sont à confirmer.
@@ -1335,7 +1335,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Le 3 novembre 2026, à sa demande : les prix en tableau (pages, images, noir
   et blanc, couleur), avec ses chiffres : « Électro Nick », 248 pages ;
   « Les passeurs de brume », 10 images ; un livre moyen, 80 pages, 20 images,
-  8 € en noir et blanc.
+  8 € en noir et blanc. Puis « Le labyrinthe oublié » : 140 pages, 85 images,
+  8 € en noir et blanc, 17 € en couleur.
 - Repris le 3 novembre 2026 d'après sa version, analysée : style commun et
   apparence des personnages pour les images par IA, une couverture soignée,
   le travail collectif plutôt que le dessin d'un seul, les illustrations des
@@ -1382,6 +1383,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > |---|---|---|---|---|
 > | [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d'exemple du site | 32 | 10 | 4 € | 5 € |
 > | Un livre moyen | 80 | 20 | 8 € | 10 € |
+> | [« Le labyrinthe oublié »](/bibliotheque/le-labyrinthe-oublie) | 140 | 85 | 8 € | 17 € |
 > | [« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre | 248 | 150 | 12 € | 29 € |
 >
 > **Un exemplaire d'essai d'abord.** Commandez-en un pour vérifier la mise en
@@ -1542,4 +1544,3 @@ formulations à revérifier à la source avant publication.
 - Les prix d'impression de l'« En bref » et de la partie 12 (facture de juin
   2026, TVA allemande) et la troisième version à 33,78 €, à préciser.
 - Ce que contient la bibliothèque à la publication (partie 3).
-- Le nombre d'images du « Labyrinthe oublié », s'il est cité.

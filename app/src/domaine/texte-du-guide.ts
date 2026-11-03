@@ -622,6 +622,13 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
               "10 €"
             ],
             [
+              "[« Le labyrinthe oublié »](/bibliotheque/le-labyrinthe-oublie)",
+              "140",
+              "85",
+              "8 €",
+              "17 €"
+            ],
+            [
               "[« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre",
               "248",
               "150",
