@@ -618,7 +618,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
               "Un livre moyen",
               "80",
               "30",
-              "7 €",
+              "6 €",
               "10 €"
             ],
             [

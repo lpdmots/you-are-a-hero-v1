@@ -1337,7 +1337,7 @@ chaque partie pendant l'entretien et prime sur les sources.
   « Les passeurs de brume », 10 images ; un livre moyen, 80 pages, 20 images,
   8 € en noir et blanc. Puis « Le labyrinthe oublié » : 140 pages, 85 images,
   8 € en noir et blanc, 17 € en couleur.
-  Le livre moyen passe ensuite à 30 images et 7 € en noir et blanc, pour
+  Le livre moyen passe ensuite à 30 images et 6 € en noir et blanc, pour
   rester cohérent avec lui (« En bref » aligné : une trentaine d'images).
 - Repris le 3 novembre 2026 d'après sa version, analysée : style commun et
   apparence des personnages pour les images par IA, une couverture soignée,
@@ -1384,7 +1384,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > | Livre | Pages | Images | Noir et blanc | Couleur |
 > |---|---|---|---|---|
 > | [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d'exemple du site | 32 | 10 | 4 € | 5 € |
-> | Un livre moyen | 80 | 30 | 7 € | 10 € |
+> | Un livre moyen | 80 | 30 | 6 € | 10 € |
 > | [« Le labyrinthe oublié »](/bibliotheque/le-labyrinthe-oublie) | 140 | 85 | 8 € | 17 € |
 > | [« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre | 248 | 150 | 12 € | 29 € |
 >
