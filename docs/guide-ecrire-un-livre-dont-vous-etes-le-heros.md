@@ -1391,13 +1391,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > | [« Le labyrinthe oublié »](/bibliotheque/le-labyrinthe-oublie) | 140 | 85 | 8 € | 17 € |
 > | [« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre | 248 | 150 | 12 € | 29 € |
 >
-> **Un exemplaire d'essai d'abord.** Commandez-en un pour vérifier la mise en
-> page, les illustrations et la qualité d'impression avant de lancer la
-> commande générale. Prévoyez cette étape suffisamment tôt : chaque commande
-> met une dizaine de jours à arriver, et il vous faudra encore le temps de
-> relire l'exemplaire et de corriger ce qui doit l'être. En attendant les
-> livres de chacun, vous pouvez lire ce premier exemplaire ensemble en
-> classe.
+> **Un exemplaire d'essai d'abord.** Commandez-en un pour vérifier le rendu
+> et corriger les dernières erreurs avant l'impression générale. Prévoyez
+> une dizaine de jours de livraison et le temps des corrections. En
+> attendant les livres des élèves, vous pourrez lire cet exemplaire ensemble
+> en classe.
 >
 > **Un livre accessible à tous.** L'achat doit rester facultatif. Si le prix
 > est un obstacle, plusieurs solutions : choisir le noir et blanc, faire
