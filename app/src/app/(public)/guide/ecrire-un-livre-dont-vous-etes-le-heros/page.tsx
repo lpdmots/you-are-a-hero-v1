@@ -7,6 +7,7 @@ import {
   ADRESSE_DU_GUIDE,
   ancreDe,
   COUVERTURES_DU_GUIDE,
+  DECOUPAGE_EN_IMAGES,
   DATE_DU_GUIDE,
   DESCRIPTION_DU_GUIDE,
   donneesDuGuide,
@@ -22,7 +23,6 @@ import { TEXTE_DU_GUIDE as T } from "@/domaine/texte-du-guide";
 import { adresseDuSite } from "@/serveur/env";
 import { Annee } from "./Annee";
 import { Choix } from "./Choix";
-import { Decoupage } from "./Decoupage";
 import { JetDeDe } from "./JetDeDe";
 import { Parcours } from "./Parcours";
 import { Schemas } from "./Schemas";
@@ -86,9 +86,19 @@ function EnLigne({ texte }: { texte: string }) {
 }
 
 function Photo({ image }: { image: ImageDuGuide }) {
+  const classe = [styles.photo, image.portrait ? styles.photoPortrait : "", image.moyenne ? styles.photoMoyenne : ""].filter(Boolean).join(" ");
   return (
-    <figure className={image.portrait ? `${styles.photo} ${styles.photoPortrait}` : styles.photo}>
-      <Image src={image.src} alt={image.alt} width={image.largeur} height={image.hauteur} sizes={image.portrait ? "(max-width: 560px) 100vw, 380px" : "(max-width: 1040px) 100vw, 830px"} />
+    <figure className={classe}>
+      <Image
+        className={image.telephone ? styles.surOrdinateur : undefined}
+        src={image.src}
+        alt={image.alt}
+        width={image.largeur}
+        height={image.hauteur}
+        sizes={image.portrait ? "(max-width: 560px) 100vw, 380px" : image.moyenne ? "(max-width: 600px) 100vw, 560px" : "(max-width: 1040px) 100vw, 830px"}
+      />
+      {/* Sur téléphone, la même capture cadrée plus serré, pour rester lisible */}
+      {image.telephone ? <Image className={styles.surTelephone} src={image.telephone.src} alt={image.alt} width={image.telephone.largeur} height={image.telephone.hauteur} sizes="100vw" /> : null}
       {image.legende ? <figcaption>{image.legende}</figcaption> : null}
     </figure>
   );
@@ -348,10 +358,12 @@ function Corps({ partie }: { partie: Partie }) {
         <Fragment key={i}>
           {bloc(b, i)}
           {i === ou && place && "apres" in place ? enGrand(place.image) : null}
-          {/* Du livre à la scène (partie 4), en boîtes emboîtées sous son paragraphe */}
+          {/* Du livre à la scène (partie 4), en deux captures de l'application sous son paragraphe */}
           {ancreDe(partie.numero) === "inventer" && b.sorte === "paragraphe" && b.tete?.startsWith("Découpez l’aventure") ? (
-            <div className={styles.large}>
-              <Decoupage />
+            <div className={`${styles.large} ${styles.suite}`}>
+              {DECOUPAGE_EN_IMAGES.map((image) => (
+                <Photo key={image.src} image={image} />
+              ))}
             </div>
           ) : null}
           {/* Un choix et ses conséquences (partie 7), sous « Donnez une raison de choisir » */}

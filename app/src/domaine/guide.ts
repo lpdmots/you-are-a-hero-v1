@@ -87,8 +87,10 @@ export type ImageDuGuide = {
   hauteur: number;
   legende?: string;
   portrait?: boolean;
-  /** Sur téléphone, la même capture cadrée plus serré (les encarts) */
+  /** Sur téléphone, la même capture cadrée plus serré */
   telephone?: { src: string; largeur: number; hauteur: number };
+  /** Une image haute (l'arbre des chemins), montrée à mi-largeur et centrée sur grand écran */
+  moyenne?: boolean;
 };
 
 export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string })[] = [
@@ -117,6 +119,18 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
       portrait: true,
     },
   },
+  // L'arbre des chemins d'un chapitre, sous « Contrôlez les liens » (partie 10)
+  chemins: {
+    apres: "Contrôlez les liens.",
+    image: {
+      src: "/guide/chemins-d-un-chapitre.webp",
+      alt: "La vue « Chemins » d’un chapitre : les scènes en cartes, reliées par des flèches qui portent les choix ; trois chemins se séparent puis se rejoignent.",
+      legende: "Les chemins d’un chapitre de « Bouquin mène l’enquête », dans la vue « Chemins » d’Il était une classe.",
+      largeur: 1000,
+      hauteur: 1560,
+      moyenne: true,
+    },
+  },
   // La photo des livres ouvre la page sur le résultat (partie 1)
   pourquoi: {
     apres: "C’est un livre\u00a0! Un vrai.",
@@ -130,9 +144,30 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
   },
 };
 
+/** Du livre à la scène (partie 4), en deux captures de l'application, sous « Découpez l'aventure » */
+export const DECOUPAGE_EN_IMAGES: ImageDuGuide[] = [
+  {
+    src: "/guide/une-partie-et-ses-chapitres.webp",
+    telephone: { src: "/guide/une-partie-et-ses-chapitres-telephone.webp", largeur: 768, hauteur: 760 },
+    alt: "Une partie et ses chapitres, chacun avec son image, son nombre de scènes et les élèves à qui il est confié.",
+    legende: "Une partie et ses chapitres, chacun confié à quelques élèves.",
+    largeur: 1600,
+    hauteur: 514,
+  },
+  {
+    src: "/guide/un-chapitre-et-ses-scenes.webp",
+    telephone: { src: "/guide/un-chapitre-et-ses-scenes-telephone.webp", largeur: 768, hauteur: 1612 },
+    alt: "Un chapitre et ses scènes, chacune avec son état et l’élève qui s’en occupe.",
+    legende: "Un chapitre et ses scènes, chacune avec l’élève qui s’en occupe.",
+    largeur: 1600,
+    hauteur: 706,
+  },
+];
+
 /**
  * La capture d'un encart, cadrée sur ce qu'il annonce (revue des encarts, 3 novembre 2026) : le Suivi,
- * les scènes voisines, les listes communes, les chemins, le livre composé. Prises sur le site local.
+ * les scènes voisines, le livre composé. Prises sur le site local ; l'encart des chemins n'en a pas,
+ * l'arbre d'un chapitre se montre sous « Contrôlez les liens ».
  */
 export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDuGuide>> = {
   repartir: {
@@ -148,20 +183,6 @@ export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDu
     alt: "Une scène en cours d’écriture, avec au-dessus la fin de la scène qui y mène et au-dessous le début de celle qui suit.",
     largeur: 1600,
     hauteur: 1207,
-  },
-  objets: {
-    src: "/guide/objets-et-formules.webp",
-    telephone: { src: "/guide/objets-et-formules-telephone.webp", largeur: 736, hauteur: 1372 },
-    alt: "Dans la Préparation, la liste des objets de l’histoire, chacun avec sa description, et celle des formules d’action.",
-    largeur: 1600,
-    hauteur: 879,
-  },
-  chemins: {
-    src: "/guide/verifier-les-chemins.webp",
-    alt: "« Vérifier les chemins » : une scène où aucun chemin ne mène, une autre dont la seule suite est une énigme.",
-    largeur: 772,
-    hauteur: 1110,
-    portrait: true,
   },
   illustrer: {
     src: "/guide/livre-compose-electro-nick.webp",

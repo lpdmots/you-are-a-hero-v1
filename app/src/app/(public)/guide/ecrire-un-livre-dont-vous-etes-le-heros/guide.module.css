@@ -1053,3 +1053,14 @@
     display: block;
   }
 }
+
+/* Une image haute (l'arbre des chemins) : à mi-largeur, centrée, sa légende dessous */
+.photoMoyenne {
+  max-width: 560px;
+  margin-inline: auto;
+}
+/* Deux captures à la suite (partie 4) */
+.suite {
+  display: grid;
+  gap: 1.6em;
+}

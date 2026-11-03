@@ -87,10 +87,13 @@ Décidé le 30 octobre 2026.
   confusion avec Nicolas Zannettacci) ; date de mise à jour à la
   publication.
 - Encarts revus le 3 novembre 2026 (nos propositions et celles de GPT,
-  « prends le meilleur ») : cinq, là où l'outil lève une difficulté concrète,
-  vécue ou rencontrée par le lecteur : parties 5 (le Suivi), 8 (les scènes
-  voisines), 9 (les listes communes d'objets et de formules), 10 (les
-  chemins et la numérotation) et 12 (le PDF et le partage). Deux phrases au
+  « prends le meilleur ») : quatre, là où l'outil lève une difficulté
+  concrète, vécue ou rencontrée par le lecteur : parties 5 (le Suivi), 8 (les
+  scènes voisines), 10 (les chemins et la numérotation, sans capture : la vue
+  « Chemins » d'un chapitre est montrée en arbre sous « Contrôlez les
+  liens ») et 12 (le PDF et le partage). Celui des listes communes (partie
+  9), d'abord ajouté, retiré le même jour : trop compliqué, il ferait peur à
+  qui veut un livre simple. Deux phrases au
   plus, puis une capture cadrée sur le bénéfice annoncé. Retirés : la
   Préparation (partie 4, que le schéma explique) et le temps gagné (partie
   11), passé dans « Dans ma classe ». Ce qui touche à l'IA (correction,
@@ -522,6 +525,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   emboîtées (le livre, une partie, le chapitre confié, avec son entrée et sa
   sortie, ses scènes aux numéros dispersés), sous « Découpez l'aventure » ;
   la définition de la scène passe dans le schéma.
+- Le même jour, à sa demande : le schéma remplacé par deux captures de
+  l'application (une partie et ses chapitres confiés aux élèves, un chapitre
+  et ses scènes), la définition de la scène revenue dans le texte.
 
 #### Premier jet
 
@@ -558,7 +564,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > fins, se perdre, manquer de temps ou rentrer bredouille suffisent.
 >
 > **Découpez l'aventure, puis confiez les chapitres.** Définissez ensemble
-> les grandes parties et les chapitres qui les composent. Chaque élève choisit
+> les grandes parties et les chapitres qui les composent ; chaque chapitre se
+> compose de scènes, les passages numérotés du livre. Chaque élève choisit
 > ensuite un chapitre, qu'il l'ait proposé ou non, seul ou à deux, et en
 > devient responsable : il en imagine les obstacles et la façon de les
 > surmonter (voir « Comment répartir l'écriture entre les élèves ? »).
@@ -1119,10 +1126,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > boulons, des rations, des unités de temps, un inventaire d'objets et des
 > bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments
 > dans leurs chapitres. Avec le recul, c'était peut-être un peu trop !
->
-> *Encart.* Dans Il était une classe, les objets et les formules d'action se
-> notent une fois dans la Préparation, puis se choisissent dans la scène : un
-> même nom et une même formule dans tout le livre.
 
 
 ### 10. Vérifier les chemins

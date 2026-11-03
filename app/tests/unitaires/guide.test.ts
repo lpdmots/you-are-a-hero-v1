@@ -35,9 +35,9 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
       if ("apres" in place) expect(partie.blocs.some((b) => b.sorte === "paragraphe" && b.tete === place.apres), ancre).toBe(true);
       if ("avantDansMaClasse" in place || "apresDansMaClasse" in place) expect(partie.blocs.some((b) => b.sorte === "classe"), ancre).toBe(true);
     }
-    // Chaque encart a sa capture, et chaque capture son encart
-    for (const [ancre, partie] of ANCRES.map((a, i) => [a, T.parties[i]] as const))
-      expect(partie.blocs.some((b) => b.sorte === "encart"), ancre).toBe(ancre in IMAGES_DES_ENCARTS);
+    // Chaque capture d'encart a son encart
+    for (const ancre of Object.keys(IMAGES_DES_ENCARTS))
+      expect(T.parties[ANCRES.indexOf(ancre as (typeof ANCRES)[number])].blocs.some((b) => b.sorte === "encart"), ancre).toBe(true);
   });
 
   it("F14-AC52 — « (voir « … ») » devient un renvoi à la question de ce titre ; liens, gras et italique se reconnaissent", () => {

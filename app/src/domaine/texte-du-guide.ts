@@ -178,7 +178,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Découpez l’aventure, puis confiez les chapitres.",
-          "texte": "Définissez ensemble les grandes parties et les chapitres qui les composent. Chaque élève choisit ensuite un chapitre, qu’il l’ait proposé ou non, seul ou à deux, et en devient responsable : il en imagine les obstacles et la façon de les surmonter (voir « Comment répartir l’écriture entre les élèves ? »)."
+          "texte": "Définissez ensemble les grandes parties et les chapitres qui les composent ; chaque chapitre se compose de scènes, les passages numérotés du livre. Chaque élève choisit ensuite un chapitre, qu’il l’ait proposé ou non, seul ou à deux, et en devient responsable : il en imagine les obstacles et la façon de les surmonter (voir « Comment répartir l’écriture entre les élèves ? »)."
         },
         {
           "sorte": "paragraphe",
@@ -441,10 +441,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "classe",
           "texte": "Pour « Électro Nick », mon plus long livre-jeu, j’avais prévu une feuille d’aventure assez complète : des points de volonté, des boulons, des rations, des unités de temps, un inventaire d’objets et des bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments dans leurs chapitres. Avec le recul, c’était peut-être un peu trop !"
-        },
-        {
-          "sorte": "encart",
-          "texte": "Dans Il était une classe, les objets et les formules d’action se notent une fois dans la Préparation, puis se choisissent dans la scène : un même nom et une même formule dans tout le livre."
         }
       ]
     },
