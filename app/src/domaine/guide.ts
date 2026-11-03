@@ -80,7 +80,16 @@ export function morceaux(texte: string, parties: Pick<Partie, "numero" | "titre"
 
 // ——— Les images : une par question au plus, aucune pour décorer (maquette A2, 30 octobre 2026) ———
 
-export type ImageDuGuide = { src: string; alt: string; largeur: number; hauteur: number; legende?: string; portrait?: boolean };
+export type ImageDuGuide = {
+  src: string;
+  alt: string;
+  largeur: number;
+  hauteur: number;
+  legende?: string;
+  portrait?: boolean;
+  /** Sur téléphone, la même capture cadrée plus serré (les encarts) */
+  telephone?: { src: string; largeur: number; hauteur: number };
+};
 
 export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string })[] = [
   { titre: "Électro Nick", note: "323 passages", src: "/guide/couverture-electro-nick.webp", alt: "Couverture d’« Électro Nick »", largeur: 960, hauteur: 1414 },
@@ -88,19 +97,14 @@ export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string
   { titre: "Bouquin mène l’enquête", note: "livre d’exemple", src: "/guide/couverture-bouquin.webp", alt: "Couverture de « Bouquin mène l’enquête »", largeur: 666, hauteur: 999 },
 ];
 
-/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste ou le tableau qui le suit), avant ou après « Dans ma classe », ou dans l'encart */
+/** Où se pose l'image d'une question : après le paragraphe qui commence par `apres` (ou la liste ou le tableau qui le suit), avant ou après « Dans ma classe » */
 export type PlaceDeLImage =
   | { apres: string; image: "couvertures" | "schemas" | ImageDuGuide }
   | { avantDansMaClasse: true; image: ImageDuGuide }
-  | { apresDansMaClasse: true; image: ImageDuGuide }
-  | { dansLEncart: true; image: ImageDuGuide };
+  | { apresDansMaClasse: true; image: ImageDuGuide };
 
 export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLImage>> = {
   commencer: { apres: "Montrez que c’est possible.", image: "couvertures" },
-  inventer: {
-    dansLEncart: true,
-    image: { src: "/guide/preparation-heros.webp", alt: "La Préparation d’Il était une classe : sous le héros, ce que la classe retient.", largeur: 2000, hauteur: 1128 },
-  },
   combien: { apres: "Faites se rejoindre les chemins.", image: "schemas" },
   objets: {
     apresDansMaClasse: true,
@@ -110,16 +114,6 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
       legende: "La feuille d’aventure d’« Électro Nick », un système riche pour un long livre.",
       largeur: 707,
       hauteur: 1000,
-      portrait: true,
-    },
-  },
-  chemins: {
-    dansLEncart: true,
-    image: {
-      src: "/guide/verifier-les-chemins.webp",
-      alt: "« Vérifier les chemins » : une scène où aucun chemin ne mène, une autre dont la seule suite est une énigme.",
-      largeur: 772,
-      hauteur: 1110,
       portrait: true,
     },
   },
@@ -133,6 +127,48 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
       largeur: 1300,
       hauteur: 975,
     },
+  },
+};
+
+/**
+ * La capture d'un encart, cadrée sur ce qu'il annonce (revue des encarts, 3 novembre 2026) : le Suivi,
+ * les scènes voisines, les listes communes, les chemins, le livre composé. Prises sur le site local.
+ */
+export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDuGuide>> = {
+  repartir: {
+    src: "/guide/suivi.webp",
+    telephone: { src: "/guide/suivi-telephone.webp", largeur: 736, hauteur: 1240 },
+    alt: "Le Suivi d’un chapitre : chaque scène avec son état (à valider, à reprendre, validée, prête, en cours) et l’élève qui s’en occupe.",
+    largeur: 1600,
+    hauteur: 807,
+  },
+  relire: {
+    src: "/guide/scenes-voisines.webp",
+    telephone: { src: "/guide/scenes-voisines-telephone.webp", largeur: 736, hauteur: 1780 },
+    alt: "Une scène en cours d’écriture, avec au-dessus la fin de la scène qui y mène et au-dessous le début de celle qui suit.",
+    largeur: 1600,
+    hauteur: 1207,
+  },
+  objets: {
+    src: "/guide/objets-et-formules.webp",
+    telephone: { src: "/guide/objets-et-formules-telephone.webp", largeur: 736, hauteur: 1372 },
+    alt: "Dans la Préparation, la liste des objets de l’histoire, chacun avec sa description, et celle des formules d’action.",
+    largeur: 1600,
+    hauteur: 879,
+  },
+  chemins: {
+    src: "/guide/verifier-les-chemins.webp",
+    alt: "« Vérifier les chemins » : une scène où aucun chemin ne mène, une autre dont la seule suite est une énigme.",
+    largeur: 772,
+    hauteur: 1110,
+    portrait: true,
+  },
+  illustrer: {
+    src: "/guide/livre-compose-electro-nick.webp",
+    telephone: { src: "/guide/livre-compose-electro-nick-telephone.webp", largeur: 800, hauteur: 640 },
+    alt: "Une double page d’« Électro Nick » composée par le site : les passages 57 à 59, leurs illustrations et leurs choix.",
+    largeur: 1600,
+    hauteur: 1135,
   },
 };
 

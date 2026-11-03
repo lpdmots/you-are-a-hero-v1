@@ -86,9 +86,15 @@ Décidé le 30 octobre 2026.
 - Auteur : Nicolas Coussot, professeur des écoles (nom complet, qui évite la
   confusion avec Nicolas Zannettacci) ; date de mise à jour à la
   publication.
-- Six encarts au plus, là où l'outil lève une difficulté vécue : parties 4,
-  8, 9, 10 (le plus développé), 11 et 12 ; ceux des parties 2, 5, 6 et 7
-  retirés.
+- Encarts revus le 3 novembre 2026 (nos propositions et celles de GPT,
+  « prends le meilleur ») : cinq, là où l'outil lève une difficulté concrète,
+  vécue ou rencontrée par le lecteur : parties 5 (le Suivi), 8 (les scènes
+  voisines), 9 (les listes communes d'objets et de formules), 10 (les
+  chemins et la numérotation) et 12 (le PDF et le partage). Deux phrases au
+  plus, puis une capture cadrée sur le bénéfice annoncé. Retirés : la
+  Préparation (partie 4, que le schéma explique) et le temps gagné (partie
+  11), passé dans « Dans ma classe ». Ce qui touche à l'IA (correction,
+  images, idées de choix) attend la partie sur l'IA.
 - Pied : « Ressources » (quand la page existera), la bibliothèque, l'accueil
   (« Essayer Il était une classe ») ; les sources restent citées dans le
   texte (parties 6 et 7).
@@ -560,9 +566,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Et la première scène ?** Imaginez ensemble la situation de départ, puis
 > confiez sa rédaction plus tard à un élève à l'aise, quand le reste de
 > l'histoire a pris forme.
->
-> *Encart.* La Préparation d'Il était une classe suit ces étapes : les idées
-> de chacun, ce que la classe retient, un écran à projeter.
 
 ### 5. Répartir l'écriture
 
@@ -687,6 +690,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Dans ma classe.** J'ai d'abord suivi les chapitres sur Excel, puis sur une
 > page Notion accessible aux élèves.
+>
+> *Encart.* Dans Il était une classe, le Suivi montre d'un coup d'œil où en
+> est chaque scène, et quel élève s'en occupe. Une scène remise se relit en
+> un clic.
 
 ### 6. Combien de chapitres, de scènes et de choix
 
@@ -1011,12 +1018,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > matières, évite les files d'attente et permet à chacun de continuer à
 > travailler.
 >
-> *Encart.* Dans l'application Il était une classe, l'élève peut consulter la
-> fin des scènes qui mènent à la sienne et le début de celles qui la
-> suivent, afin d'assurer des transitions cohérentes. Il peut également
-> tester les différents chemins de son chapitre. De votre côté, un outil
-> d'aide à la correction vous propose une version de chaque texte avec
-> l'orthographe corrigée.
+> *Encart.* Dans Il était une classe, l'élève voit en écrivant la fin de la
+> scène qui mène à la sienne et le début de celle qui suit : les raccords se
+> font au fil de l'écriture. Il joue ensuite son chapitre pour en essayer
+> tous les chemins.
 
 ### 9. Objets, énigmes, dé
 
@@ -1114,6 +1119,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > boulons, des rations, des unités de temps, un inventaire d'objets et des
 > bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments
 > dans leurs chapitres. Avec le recul, c'était peut-être un peu trop !
+>
+> *Encart.* Dans Il était une classe, les objets et les formules d'action se
+> notent une fois dans la Préparation, puis se choisissent dans la scène : un
+> même nom et une même formule dans tout le livre.
 
 
 ### 10. Vérifier les chemins
@@ -1192,9 +1201,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > *Encart.* Dans Il était une classe, la vérification des chemins relève
 > seule les choix sans destination, les scènes que rien ne relie et celles
-> qui n'ont pas de suite. La lecture d'essai permet de revenir en arrière
-> pour tout essayer. Et l'outil numérote à votre place : il garde les numéros
-> fixés, éloigne les scènes d'un même chapitre et tire le reste au sort.
+> qui n'ont pas de suite. Et l'outil numérote à votre place : il garde les
+> numéros fixés, éloigne les scènes d'un même chapitre et tire le reste au
+> sort.
 
 ### 11. Combien de temps
 
@@ -1284,16 +1293,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > prend forme à vue d'œil.
 >
 > **Dans ma classe.** Pour un grand livre-jeu, je compte une vingtaine
-> d'heures de travail personnel sur l'ensemble du projet. J'essaie toujours
+> d'heures de travail personnel sur l'ensemble du projet. Avec Il était une
+> classe, ce temps est à peu près divisé par deux. J'essaie toujours
 > de faire coïncider la préparation des scènes et des consignes avec des
 > vacances scolaires. Je peux ainsi m'y consacrer tranquillement, sans faire
 > attendre les élèves entre deux étapes.
->
-> *Encart.* Avec Il était une classe, la numérotation, la vérification des
-> chemins et le suivi de la classe se font seuls. D'après mon expérience, le
-> temps de préparation et de suivi du projet est à peu près divisé par deux.
-> Il reste bien sûr à accompagner les élèves, à relire leurs textes et à
-> tester l'aventure !
 
 ### 12. Illustrer, imprimer, partager
 
@@ -1424,11 +1428,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > publication en ligne. Un modèle d'autorisation est sur la page
 > « Ressources ».
 >
-> *Encart.* Avec Il était une classe, les élèves décrivent les illustrations
-> directement depuis leurs scènes, et vous les générez avec l'IA. Vous pouvez
-> également créer la couverture, exporter un PDF prêt pour l'impression et
-> partager le livre en privé avec les comptes des élèves ou le publier dans
-> la bibliothèque du site.
+> *Encart.* Dans Il était une classe, le livre se compose seul en un PDF prêt
+> pour l'imprimeur. Il se partage aussi en privé, avec les comptes des
+> élèves, ou dans la bibliothèque publique du site.
 
 ### 13. Erreurs à éviter
 

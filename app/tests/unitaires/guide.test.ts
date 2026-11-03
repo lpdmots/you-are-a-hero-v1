@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
-import { ADRESSE_DU_GUIDE, ANCRES, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
+import { ADRESSE_DU_GUIDE, ANCRES, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DES_ENCARTS, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
 import { lireOffre } from "@/domaine/offre";
 import { estPageMesuree } from "@/domaine/pages-publiques";
 import { llmsTxt } from "@/domaine/presentation";
@@ -33,9 +33,11 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
     for (const [ancre, place] of Object.entries(IMAGES_DU_GUIDE)) {
       const partie = T.parties[ANCRES.indexOf(ancre as (typeof ANCRES)[number])];
       if ("apres" in place) expect(partie.blocs.some((b) => b.sorte === "paragraphe" && b.tete === place.apres), ancre).toBe(true);
-      if ("dansLEncart" in place) expect(partie.blocs.some((b) => b.sorte === "encart"), ancre).toBe(true);
       if ("avantDansMaClasse" in place || "apresDansMaClasse" in place) expect(partie.blocs.some((b) => b.sorte === "classe"), ancre).toBe(true);
     }
+    // Chaque encart a sa capture, et chaque capture son encart
+    for (const [ancre, partie] of ANCRES.map((a, i) => [a, T.parties[i]] as const))
+      expect(partie.blocs.some((b) => b.sorte === "encart"), ancre).toBe(ancre in IMAGES_DES_ENCARTS);
   });
 
   it("F14-AC52 — « (voir « … ») » devient un renvoi à la question de ce titre ; liens, gras et italique se reconnaissent", () => {

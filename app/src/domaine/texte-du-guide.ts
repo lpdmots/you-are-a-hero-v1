@@ -184,10 +184,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "sorte": "paragraphe",
           "tete": "Et la première scène ?",
           "texte": "Imaginez ensemble la situation de départ, puis confiez sa rédaction plus tard à un élève à l’aise, quand le reste de l’histoire a pris forme."
-        },
-        {
-          "sorte": "encart",
-          "texte": "La Préparation d’Il était une classe suit ces étapes : les idées de chacun, ce que la classe retient, un écran à projeter."
         }
       ]
     },
@@ -259,6 +255,10 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "classe",
           "texte": "J’ai d’abord suivi les chapitres sur Excel, puis sur une page Notion accessible aux élèves."
+        },
+        {
+          "sorte": "encart",
+          "texte": "Dans Il était une classe, le Suivi montre d’un coup d’œil où en est chaque scène, et quel élève s’en occupe. Une scène remise se relit en un clic."
         }
       ]
     },
@@ -395,7 +395,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "encart",
-          "texte": "Dans l’application Il était une classe, l’élève peut consulter la fin des scènes qui mènent à la sienne et le début de celles qui la suivent, afin d’assurer des transitions cohérentes. Il peut également tester les différents chemins de son chapitre. De votre côté, un outil d’aide à la correction vous propose une version de chaque texte avec l’orthographe corrigée."
+          "texte": "Dans Il était une classe, l’élève voit en écrivant la fin de la scène qui mène à la sienne et le début de celle qui suit : les raccords se font au fil de l’écriture. Il joue ensuite son chapitre pour en essayer tous les chemins."
         }
       ]
     },
@@ -441,6 +441,10 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "classe",
           "texte": "Pour « Électro Nick », mon plus long livre-jeu, j’avais prévu une feuille d’aventure assez complète : des points de volonté, des boulons, des rations, des unités de temps, un inventaire d’objets et des bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments dans leurs chapitres. Avec le recul, c’était peut-être un peu trop !"
+        },
+        {
+          "sorte": "encart",
+          "texte": "Dans Il était une classe, les objets et les formules d’action se notent une fois dans la Préparation, puis se choisissent dans la scène : un même nom et une même formule dans tout le livre."
         }
       ]
     },
@@ -479,7 +483,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "encart",
-          "texte": "Dans Il était une classe, la vérification des chemins relève seule les choix sans destination, les scènes que rien ne relie et celles qui n’ont pas de suite. La lecture d’essai permet de revenir en arrière pour tout essayer. Et l’outil numérote à votre place : il garde les numéros fixés, éloigne les scènes d’un même chapitre et tire le reste au sort."
+          "texte": "Dans Il était une classe, la vérification des chemins relève seule les choix sans destination, les scènes que rien ne relie et celles qui n’ont pas de suite. Et l’outil numérote à votre place : il garde les numéros fixés, éloigne les scènes d’un même chapitre et tire le reste au sort."
         }
       ]
     },
@@ -559,11 +563,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Pour un grand livre-jeu, je compte une vingtaine d’heures de travail personnel sur l’ensemble du projet. J’essaie toujours de faire coïncider la préparation des scènes et des consignes avec des vacances scolaires. Je peux ainsi m’y consacrer tranquillement, sans faire attendre les élèves entre deux étapes."
-        },
-        {
-          "sorte": "encart",
-          "texte": "Avec Il était une classe, la numérotation, la vérification des chemins et le suivi de la classe se font seuls. D’après mon expérience, le temps de préparation et de suivi du projet est à peu près divisé par deux. Il reste bien sûr à accompagner les élèves, à relire leurs textes et à tester l’aventure !"
+          "texte": "Pour un grand livre-jeu, je compte une vingtaine d’heures de travail personnel sur l’ensemble du projet. Avec Il était une classe, ce temps est à peu près divisé par deux. J’essaie toujours de faire coïncider la préparation des scènes et des consignes avec des vacances scolaires. Je peux ainsi m’y consacrer tranquillement, sans faire attendre les élèves entre deux étapes."
         }
       ]
     },
@@ -652,7 +652,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "encart",
-          "texte": "Avec Il était une classe, les élèves décrivent les illustrations directement depuis leurs scènes, et vous les générez avec l’IA. Vous pouvez également créer la couverture, exporter un PDF prêt pour l’impression et partager le livre en privé avec les comptes des élèves ou le publier dans la bibliothèque du site."
+          "texte": "Dans Il était une classe, le livre se compose seul en un PDF prêt pour l’imprimeur. Il se partage aussi en privé, avec les comptes des élèves, ou dans la bibliothèque publique du site."
         }
       ]
     },

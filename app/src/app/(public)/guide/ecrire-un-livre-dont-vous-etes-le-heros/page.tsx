@@ -10,6 +10,7 @@ import {
   DATE_DU_GUIDE,
   DESCRIPTION_DU_GUIDE,
   donneesDuGuide,
+  IMAGES_DES_ENCARTS,
   IMAGES_DU_GUIDE,
   morceaux,
   type Bloc,
@@ -309,7 +310,7 @@ function Corps({ partie }: { partie: Partie }) {
         );
       }
       case "encart": {
-        const image = place && "dansLEncart" in place ? place.image : null;
+        const image = IMAGES_DES_ENCARTS[ancreDe(partie.numero)] ?? null;
         return (
           <aside key={i} className={`${styles.encart} ${image ? (image.portrait ? styles.encartPortrait : styles.encartPaysage) : ""}`} aria-label="L’outil Il était une classe">
             <span className={styles.encartSigne} aria-hidden="true">
@@ -319,7 +320,18 @@ function Corps({ partie }: { partie: Partie }) {
               <EnLigne texte={b.texte} />
             </p>
             {image ? (
-              <Image className={styles.encartImage} src={image.src} alt={image.alt} width={image.largeur} height={image.hauteur} sizes={image.portrait ? "260px" : "(max-width: 1040px) 100vw, 640px"} />
+              <Image
+                className={image.telephone ? `${styles.encartImage} ${styles.surOrdinateur}` : styles.encartImage}
+                src={image.src}
+                alt={image.alt}
+                width={image.largeur}
+                height={image.hauteur}
+                sizes={image.portrait ? "260px" : "(max-width: 1040px) 100vw, 640px"}
+              />
+            ) : null}
+            {/* Sur téléphone, la même capture cadrée plus serré, pour rester lisible */}
+            {image?.telephone ? (
+              <Image className={`${styles.encartImage} ${styles.surTelephone}`} src={image.telephone.src} alt={image.alt} width={image.telephone.largeur} height={image.telephone.hauteur} sizes="100vw" />
             ) : null}
           </aside>
         );

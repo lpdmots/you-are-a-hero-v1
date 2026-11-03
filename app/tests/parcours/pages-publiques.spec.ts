@@ -134,7 +134,7 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   await expect(page.getByRole("heading", { level: 2, name: /Comment vérifier que tous les chemins/ })).toBeInViewport();
   await expect(sommaire.getByRole("link", { name: /Comment vérifier que tous les chemins/ })).toHaveAttribute("aria-current", "location");
   // Un renvoi de la partie 13 mène à sa question
-  await page.getByRole("link", { name: "question 11" }).click();
+  await page.getByRole("region", { name: /erreurs à éviter/ }).getByRole("link", { name: "question 11" }).click();
   await expect(page).toHaveURL(/#temps$/);
   // Ni « Ressources » ni page à venir
   await expect(page.getByText("Ressources")).toHaveCount(0);
