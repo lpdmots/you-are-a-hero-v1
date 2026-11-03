@@ -147,16 +147,16 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
 /** Du livre à la scène (partie 4), en deux captures de l'application, sous « Découpez l'aventure » */
 export const DECOUPAGE_EN_IMAGES: ImageDuGuide[] = [
   {
-    src: "/guide/une-partie-et-ses-chapitres.webp",
-    telephone: { src: "/guide/une-partie-et-ses-chapitres-telephone.webp", largeur: 768, hauteur: 760 },
+    src: "/guide/partie-la-foret-engloutie.webp",
+    telephone: { src: "/guide/partie-la-foret-engloutie-telephone.webp", largeur: 768, hauteur: 760 },
     alt: "Une partie et ses chapitres, chacun avec son image, son nombre de scènes et les élèves à qui il est confié.",
     legende: "Une partie et ses chapitres, chacun confié à quelques élèves.",
     largeur: 1600,
     hauteur: 514,
   },
   {
-    src: "/guide/un-chapitre-et-ses-scenes.webp",
-    telephone: { src: "/guide/un-chapitre-et-ses-scenes-telephone.webp", largeur: 768, hauteur: 1612 },
+    src: "/guide/chapitre-la-lisiere.webp",
+    telephone: { src: "/guide/chapitre-la-lisiere-telephone.webp", largeur: 768, hauteur: 1612 },
     alt: "Un chapitre et ses scènes, chacune avec son état et l’élève qui s’en occupe.",
     legende: "Un chapitre et ses scènes, chacune avec l’élève qui s’en occupe.",
     largeur: 1600,
