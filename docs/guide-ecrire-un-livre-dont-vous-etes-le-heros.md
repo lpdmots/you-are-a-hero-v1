@@ -1370,8 +1370,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Imprimer.** Un imprimeur en ligne qui imprime à l'exemplaire suffit.
 > Proposez le livre en précommande aux familles, avec le choix entre un
-> intérieur en noir et blanc ou en couleur. Pour notre plus grand livre (plus
-> de 300 scènes et 150 illustrations), l'exemplaire coûtait en 2026 environ
+> intérieur en noir et blanc ou en couleur. Pour notre plus grand livre,
+> [« Électro Nick »](/bibliotheque/electro-nick) (plus de 300 scènes et
+> 150 illustrations), l'exemplaire coûtait en 2026 environ
 > 12 € en noir et blanc et 29 € en couleur.
 > [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), un livre
 > de 32 pages proposé en exemple sur le site, coûte environ 4 € en noir et
