@@ -29,7 +29,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     },
     {
       "chiffre": "10 €",
-      "texte": "environ l’exemplaire en couleur d’un livre moyen, d’une vingtaine d’images. Décidez du format à l’avance : le prix monte vite.",
+      "texte": "environ l’exemplaire en couleur d’un livre moyen, d’une trentaine d’images. Décidez du format à l’avance : le prix monte vite.",
       "partie": 12
     }
   ],
@@ -617,8 +617,8 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
             [
               "Un livre moyen",
               "80",
-              "20",
-              "8 €",
+              "30",
+              "7 €",
               "10 €"
             ],
             [
