@@ -20,6 +20,7 @@ import { enJsonLd } from "@/domaine/presentation";
 import { TEXTE_DU_GUIDE as T } from "@/domaine/texte-du-guide";
 import { adresseDuSite } from "@/serveur/env";
 import { Annee } from "./Annee";
+import { Choix } from "./Choix";
 import { Decoupage } from "./Decoupage";
 import { JetDeDe } from "./JetDeDe";
 import { Parcours } from "./Parcours";
@@ -339,6 +340,12 @@ function Corps({ partie }: { partie: Partie }) {
           {ancreDe(partie.numero) === "inventer" && b.sorte === "paragraphe" && b.tete?.startsWith("Découpez l’aventure") ? (
             <div className={styles.large}>
               <Decoupage />
+            </div>
+          ) : null}
+          {/* Un choix et ses conséquences (partie 7), sous « Donnez une raison de choisir » */}
+          {ancreDe(partie.numero) === "choix" && b.sorte === "paragraphe" && b.tete === "Donnez une raison de choisir." ? (
+            <div className={styles.large}>
+              <Choix />
             </div>
           ) : null}
           {/* L'année d'un grand livre (partie 11), en frise sous « Dans l'année » */}

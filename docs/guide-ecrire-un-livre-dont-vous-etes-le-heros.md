@@ -856,6 +856,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Le 3 novembre 2026, pour alléger la page : les cinq pistes en cartes, chacune
   avec son pictogramme (boussole, clé, loupe, balance, cœur), sa question en
   accroche et son exemple.
+- Le même jour : le laboratoire de Vortex en schéma sous « Donnez une raison
+  de choisir » (la situation et ce que le lecteur sait, deux phrases de choix,
+  ce que chacune fait gagner et perdre, « Aucun des deux n'est le bon
+  choix »), son texte dans `Choix.tsx` ; quittent le texte la phrase sur les
+  avantages et les inconvénients, et le laboratoire du « Dans ma classe ».
 
 #### Premier jet
 
@@ -891,10 +896,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Donnez une raison de choisir.** Un indice dans le texte, un objet trouvé
 > plus tôt ou l'avertissement d'un personnage doivent permettre au lecteur
-> attentif d'anticiper certains risques. Les choix les plus intéressants ne
-> sont d'ailleurs pas toujours entre une bonne et une mauvaise solution :
-> chacune peut présenter des avantages et des inconvénients. Le hasard a
-> aussi sa place, mais évitez les défaites impossibles à prévoir.
+> attentif d'anticiper certains risques. Le hasard a aussi sa place, mais
+> évitez les défaites impossibles à prévoir.
 >
 > **Des énigmes à résoudre.** Elles sont difficiles à inventer : cherchez
 > des idées avec les élèves, puis aidez-les à construire une énigme avec des
@@ -908,12 +911,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > « Si tu traverses le vieux pont malgré ses planches abîmées, va au 12 »,
 > plutôt que « Si tu tombes du pont, va au 12 ».
 >
-> **Dans ma classe.** Dans « Électro Nick », visiter le laboratoire de Vortex
-> permet de découvrir un indice précieux, mais fait perdre du temps. Au camp
-> des esclaves, les lecteurs doivent choisir entre explorer les lieux ou
-> profiter d'une bonne nuit de sommeil. Ce ne sont pas des choix entre le
-> bien et le mal : chaque décision a ses avantages, et c'est au lecteur de
-> peser le pour et le contre.
+> **Dans ma classe.** Dans « Électro Nick », au camp des esclaves, les
+> lecteurs doivent choisir entre explorer les lieux ou profiter d'une bonne
+> nuit de sommeil. Comme devant le laboratoire de Vortex, ce ne sont pas des
+> choix entre le bien et le mal : chaque décision a ses avantages, et c'est
+> au lecteur de peser le pour et le contre.
 
 ### 8. Relire et garder la cohérence
 

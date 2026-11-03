@@ -1,0 +1,136 @@
+/* Un choix et ses conséquences (partie 7 du guide) : la situation sur la page du livre, puis deux
+   branches côte à côte, chacune sa phrase de choix et ce qu'elle fait gagner (+) et perdre (−).
+   Sur téléphone, les branches restent côte à côte : la comparaison est le propos. */
+.choix {
+  margin: 0;
+  padding: 16px 22px 18px;
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: var(--ombre-cahier);
+  font-family: var(--f-ui);
+}
+
+.source {
+  margin: 0 0 12px;
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+
+.situation {
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 12px 18px 13px;
+  background: #fcf9f1;
+  border: 1px solid #e3dccd;
+  border-radius: 8px;
+  text-align: center;
+}
+.situationTitre {
+  margin: 0;
+  font-family: var(--f-recit);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--graphite);
+}
+.raison {
+  margin: 4px 0 0;
+  font-size: var(--t-xs);
+  line-height: 1.45;
+  color: var(--graphite-2);
+}
+.raison span {
+  font-weight: 700;
+}
+
+.branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.branches li {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+/* La flèche qui descend de la situation vers chaque choix */
+.branches li::before {
+  content: "";
+  align-self: center;
+  width: 14px;
+  height: 30px;
+  margin: 4px 0 4px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 14 30'%3E%3Cpath d='M7 1v26M2 22l5 6 5-6' fill='none' stroke='%234a5157' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/* La phrase de choix, telle qu'on la lit dans le livre */
+.phrase {
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 6px;
+  font-family: var(--f-recit);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--graphite);
+}
+
+.consequence {
+  display: grid;
+  gap: 4px;
+  margin: 10px 0 0;
+  padding: 0 4px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: var(--graphite-2);
+}
+.gain b,
+.perte b {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  margin-right: 6px;
+  border: 1.5px solid var(--graphite-2);
+  border-radius: 50%;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--graphite);
+}
+.perte b {
+  border-style: dashed;
+}
+
+.morale {
+  margin: 16px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--trait);
+  font-family: var(--f-recit);
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--graphite);
+}
+
+@media (max-width: 560px) {
+  .choix {
+    padding: 14px 14px 16px;
+  }
+  .branches {
+    gap: 10px;
+  }
+  .phrase {
+    padding: 8px 10px;
+    font-size: 0.92rem;
+  }
+  .consequence {
+    font-size: 0.85rem;
+  }
+}

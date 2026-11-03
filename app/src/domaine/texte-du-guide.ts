@@ -342,7 +342,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Donnez une raison de choisir.",
-          "texte": "Un indice dans le texte, un objet trouvé plus tôt ou l’avertissement d’un personnage doivent permettre au lecteur attentif d’anticiper certains risques. Les choix les plus intéressants ne sont d’ailleurs pas toujours entre une bonne et une mauvaise solution : chacune peut présenter des avantages et des inconvénients. Le hasard a aussi sa place, mais évitez les défaites impossibles à prévoir."
+          "texte": "Un indice dans le texte, un objet trouvé plus tôt ou l’avertissement d’un personnage doivent permettre au lecteur attentif d’anticiper certains risques. Le hasard a aussi sa place, mais évitez les défaites impossibles à prévoir."
         },
         {
           "sorte": "paragraphe",
@@ -356,7 +356,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Dans « Électro Nick », visiter le laboratoire de Vortex permet de découvrir un indice précieux, mais fait perdre du temps. Au camp des esclaves, les lecteurs doivent choisir entre explorer les lieux ou profiter d’une bonne nuit de sommeil. Ce ne sont pas des choix entre le bien et le mal : chaque décision a ses avantages, et c’est au lecteur de peser le pour et le contre."
+          "texte": "Dans « Électro Nick », au camp des esclaves, les lecteurs doivent choisir entre explorer les lieux ou profiter d’une bonne nuit de sommeil. Comme devant le laboratoire de Vortex, ce ne sont pas des choix entre le bien et le mal : chaque décision a ses avantages, et c’est au lecteur de peser le pour et le contre."
         }
       ]
     },
