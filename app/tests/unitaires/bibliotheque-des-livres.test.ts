@@ -44,9 +44,10 @@ describe("Proposer (F15)", () => {
 });
 
 describe("Les textes (F15, « Autorisation des familles », « Conditions d'utilisation »)", () => {
-  it("le modèle d'autorisation n'a plus que la ligne de la bibliothèque, rien de coché d'avance, et ne parle plus de lien", () => {
+  it("le modèle d'autorisation a la ligne de l'impression et celle de la bibliothèque, rien de coché d'avance, et ne parle plus de lien", () => {
     const modele = MODELES.find((m) => m.cle === "autorisation-de-diffusion")!;
     const texte = JSON.stringify(modele);
+    expect(texte).toContain("☐ autorise ☐ n’autorise pas l’impression des textes et des dessins de mon enfant, avec son prénom, dans le livre de la classe");
     expect(texte).toContain("☐ autorise ☐ n’autorise pas la diffusion des textes et des dessins de mon enfant, avec son prénom, dans la bibliothèque du site.");
     expect(texte).not.toMatch(/lien de lecture|n’est publié nulle part|☑|☒/);
   });

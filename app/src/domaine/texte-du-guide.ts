@@ -447,7 +447,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "Pour « Électro Nick », mon plus long livre-jeu, j’avais prévu une fiche d’aventure assez complète : des points de volonté, des boulons, des rations, des unités de temps, un inventaire d’objets et des bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments dans leurs chapitres. Avec le recul, c’était peut-être un peu trop !"
+          "texte": "Pour « Électro Nick », mon plus long livre-jeu, j’avais prévu une feuille d’aventure assez complète : des points de volonté, des boulons, des rations, des unités de temps, un inventaire d’objets et des bonus aux jets de dé. Les élèves devaient tenir compte de tous ces éléments dans leurs chapitres. Avec le recul, c’était peut-être un peu trop !"
         }
       ]
     },
@@ -581,40 +581,45 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Deux façons d’illustrer.",
-          "texte": "Les élèves dessinent : chacun illustre son chapitre, avec une règle commune (même format, même matériel) pour que le livre garde son unité. Ou vous créez les images avec une IA : le rendu est plus proche d’un vrai livre, les élèves aiment la surprise, et vous gagnez du temps. Ils peuvent décrire l’image qu’ils veulent ; c’est vous qui la créez."
+          "texte": "Les élèves dessinent : chacun illustre son chapitre, avec quelques consignes communes (format, matériel, couleurs) pour garder une unité. Ou vous créez les images avec une IA, à partir de leurs descriptions. Définissez un style commun et veillez à conserver l’apparence des personnages. Le résultat peut être très soigné, mais demande parfois quelques ajustements."
         },
         {
           "sorte": "paragraphe",
           "tete": "La couverture.",
-          "texte": "Faites-la vous-même, ou confiez-la aux élèves."
+          "texte": "Réalisez-la vous-même ou concevez-la avec les élèves. Dans tous les cas, soignez-la : c’est la première chose que les lecteurs découvriront !"
         },
         {
           "sorte": "classe",
-          "texte": "Je préfère les images faites par IA, et je fais la couverture moi-même. Mes élèves sont d’abord fiers d’avoir écrit un vrai livre : un dessin d’enfant en couverture ferait la fierté d’un seul. Je préfère qu’ils reçoivent un livre aussi proche que possible de ceux qu’on trouve en librairie. C’est une préférence personnelle."
+          "texte": "Je préfère les illustrations créées avec une IA, et je réalise moi-même la couverture. Je cherche à donner aux élèves un livre aussi proche que possible de ceux qu’ils trouvent en librairie. Je préfère aussi une couverture qui représente le travail collectif plutôt que de mettre en avant le dessin d’un seul élève. C’est un choix personnel : les illustrations des enfants ont évidemment leur place dans un projet comme celui-ci."
         },
         {
           "sorte": "paragraphe",
           "tete": "Imprimer.",
-          "texte": "Un imprimeur en ligne qui imprime à l’exemplaire suffit. Proposez le livre en précommande aux familles, avec le choix entre un intérieur en noir et blanc et un intérieur en couleur. Pour notre plus grand livre, plus de 300 scènes et 150 illustrations, l’exemplaire coûtait en 2026 environ 12 € en noir et blanc et 29 € en couleur ; [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d’exemple du site de 32 pages, coûte 4 € en noir et blanc et 5 € en couleur. Comptez une à deux semaines de livraison."
+          "texte": "Un imprimeur en ligne qui imprime à l’exemplaire suffit. Proposez le livre en précommande aux familles, avec le choix entre un intérieur en noir et blanc ou en couleur. Pour notre plus grand livre (plus de 300 scènes et 150 illustrations), l’exemplaire coûtait en 2026 environ 12 € en noir et blanc et 29 € en couleur. [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), un livre de 32 pages proposé en exemple sur le site, coûte environ 4 € en noir et blanc et 5 € en couleur. Un livre moyen, d’une vingtaine d’images, revient à une dizaine d’euros en couleur : décidez du format à l’avance, le prix monte vite. Ces prix sont indicatifs ; pensez aussi aux frais de livraison."
         },
         {
           "sorte": "paragraphe",
           "tete": "Un exemplaire d’essai d’abord.",
-          "texte": "Commandez-en un, vérifiez que tout va bien, lisez-le ensemble en classe ; puis lancez l’impression pour les élèves. Vous pouvez aussi laisser chacun découvrir le livre à la maison."
+          "texte": "Commandez-en un pour vérifier la mise en page, les illustrations et la qualité d’impression avant de lancer la commande générale. Prévoyez cette étape suffisamment tôt : chaque commande met une dizaine de jours à arriver."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Un livre accessible à tous.",
+          "texte": "L’achat doit rester facultatif. Si le prix est un obstacle, plusieurs solutions : choisir le noir et blanc, faire financer un exemplaire par la coopérative scolaire, prêter celui de la classe ou proposer une lecture en ligne. L’essentiel est que chaque élève puisse profiter du livre auquel il a participé."
         },
         {
           "sorte": "paragraphe",
           "tete": "Faites-le vivre.",
-          "texte": "Un exemplaire pour la bibliothèque de l’école, une lecture à d’autres classes, une version en ligne pour les familles qui ne peuvent pas l’acheter."
+          "texte": "Gardez un exemplaire à la bibliothèque de l’école, organisez une lecture dans une autre classe, laissez les élèves découvrir les aventures écrites par leurs camarades. Partager enfin le livre terminé est un beau moment !"
         },
         {
           "sorte": "paragraphe",
           "tete": "Les autorisations.",
-          "texte": "Les textes et les dessins appartiennent aux élèves. Avant toute diffusion publique, en ligne notamment, demandez l’accord écrit des familles ; un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."
+          "texte": "Les textes et les dessins des élèves sont protégés par le droit d’auteur. Avant d’imprimer ou de diffuser le livre, recueillez les autorisations écrites nécessaires auprès des élèves et de leurs familles, en précisant les usages prévus : impression, partage privé ou publication en ligne. Un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."
         },
         {
           "sorte": "encart",
-          "texte": "Dans Il était une classe, l’image se crée depuis la scène, d’après la description de l’élève ; la couverture se fait sur le site ; le PDF est prêt pour l’imprimeur ; et le livre se partage en privé, avec les comptes des élèves, ou dans la bibliothèque publique."
+          "texte": "Avec Il était une classe, les élèves décrivent les illustrations directement depuis leurs scènes, et vous les générez avec l’IA. Vous pouvez également créer la couverture, exporter un PDF prêt pour l’impression et partager le livre en privé avec les comptes des élèves ou le publier dans la bibliothèque du site."
         }
       ]
     },

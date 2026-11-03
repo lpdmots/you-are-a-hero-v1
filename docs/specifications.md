@@ -11842,6 +11842,11 @@ des cœurs aux histoires qu'ils préfèrent.
   part », est réécrit en conséquence. Le retrait
   d'une autorisation fait quitter la bibliothèque au livre (un livre à choix
   ne se publie pas sans les textes d'un élève).
+  Décidé par le porteur le 3 novembre 2026, avec le guide (partie 12) : le
+  modèle demande aussi l'autorisation d'imprimer les textes et les dessins
+  dans le livre de la classe et de les lire avec le code de classe, sur une
+  ligne de même forme placée avant celle de la bibliothèque ; seule celle de
+  la bibliothèque se retire après coup.
 - **Attestation, sans dépôt.** Proposer un livre demande de cocher : « J'ai
   l'autorisation écrite des représentants légaux de chaque élève dont un
   texte ou un dessin figure dans ce livre. » Les formulaires signés ne sont

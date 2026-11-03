@@ -20,7 +20,7 @@ const cible = path.resolve(import.meta.dirname, "../src/domaine/texte-du-guide.t
  * d'ici le jour où la page est en ligne.
  */
 const SANS_RESSOURCES: [string, string][] = [
-  ["un modèle d’autorisation est sur la page « Ressources ».", "un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."],
+  ["Un modèle d’autorisation est sur la page « Ressources ».", "Un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."],
 ];
 
 const typo = (l: string) =>

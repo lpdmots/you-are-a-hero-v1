@@ -300,11 +300,11 @@ export const MODELES: Modele[] = [
   {
     cle: "autorisation-de-diffusion",
     nom: "Autorisation de diffusion",
-    pour: "À faire signer par les représentants légaux de chaque élève, avant de proposer le livre à la bibliothèque du site.",
+    pour: "À faire signer par les représentants légaux de chaque élève, avant d’imprimer le livre ou de le proposer à la bibliothèque du site.",
     document: {
       titre: "Autorisation de diffusion des textes et dessins d’un élève",
       chapeau: "Livre écrit par la classe avec l’outil Il était une classe",
-      misAJour: "25 octobre 2026",
+      misAJour: "3 novembre 2026",
       sections: [
         {
           titre: "La classe",
@@ -313,7 +313,7 @@ export const MODELES: Modele[] = [
         {
           titre: "Ce qui est demandé",
           paragraphes: [
-            "Cette année, la classe écrit un livre. Votre enfant y écrit des textes et peut y faire des dessins. Le livre sera imprimé pour la classe, et les élèves pourront le lire en ligne avec leur code de classe. Si vous l’acceptez, il sera aussi publié dans la bibliothèque du site Il était une classe : tout le monde pourra le lire sur un écran, sans compte, et les moteurs de recherche pourront trouver la bibliothèque.",
+            "Cette année, la classe écrit un livre. Votre enfant y écrit des textes et peut y faire des dessins. Si vous l’acceptez, le livre sera imprimé pour la classe et les familles qui le souhaitent, et les élèves pourront le lire en ligne avec leur code de classe. Si vous l’acceptez aussi, il sera publié dans la bibliothèque du site Il était une classe : tout le monde pourra le lire sur un écran, sans compte, et les moteurs de recherche pourront trouver la bibliothèque.",
             "Dans le livre, votre enfant est désigné par son prénom seulement.",
           ],
         },
@@ -321,8 +321,9 @@ export const MODELES: Modele[] = [
           titre: "Votre réponse",
           paragraphes: [
             "Je soussigné(e) ……………………………………………, représentant légal de l’élève ……………………………………………,",
+            "☐ autorise ☐ n’autorise pas l’impression des textes et des dessins de mon enfant, avec son prénom, dans le livre de la classe, et leur lecture en ligne par les élèves de la classe.",
             "☐ autorise ☐ n’autorise pas la diffusion des textes et des dessins de mon enfant, avec son prénom, dans la bibliothèque du site.",
-            "Cette autorisation vaut pour ce livre. Je peux la retirer à tout moment en le disant à l’enseignant(e) : le livre quittera alors la bibliothèque.",
+            "Ces autorisations valent pour ce livre. Je peux retirer à tout moment celle de la bibliothèque en le disant à l’enseignant(e) : le livre la quittera alors.",
             "Fait à ……………………, le ……………………     Signature :",
           ],
         },

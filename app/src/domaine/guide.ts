@@ -106,8 +106,8 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     apresDansMaClasse: true,
     image: {
       src: "/guide/fiche-aventure-electro-nick.webp",
-      alt: "La fiche aventure d’« Électro Nick » : volonté, boulons, rations, unités de temps, bonus aux jets, inventaire.",
-      legende: "La fiche d’aventure d’« Électro Nick », un système riche pour un long livre.",
+      alt: "La feuille d’aventure d’« Électro Nick » : volonté, boulons, rations, unités de temps, bonus aux jets, inventaire.",
+      legende: "La feuille d’aventure d’« Électro Nick », un système riche pour un long livre.",
       largeur: 707,
       hauteur: 1000,
       portrait: true,
@@ -127,8 +127,8 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     apres: "Imprimer.",
     image: {
       src: "/accueil/photo-des-livres.webp",
-      alt: "« Le labyrinthe oublié » ouvert sur sa fiche aventure et son premier passage, « Électro Nick » à côté, un crayon et un dé.",
-      legende: "Deux de nos livres imprimés : « Le labyrinthe oublié », ouvert sur sa fiche aventure, et « Électro Nick ».",
+      alt: "« Le labyrinthe oublié » ouvert sur sa feuille d’aventure et son premier passage, « Électro Nick » à côté, un crayon et un dé.",
+      legende: "Deux de nos livres imprimés : « Le labyrinthe oublié », ouvert sur sa feuille d’aventure, et « Électro Nick ».",
       largeur: 1300,
       hauteur: 975,
     },
