@@ -42,7 +42,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
     const erreurs = T.parties[12].blocs[0];
     if (erreurs.sorte !== "liste") throw new Error("liste attendue");
     const renvois = erreurs.elements.flatMap((e) => morceaux(e, T.parties)).filter((m) => m.sorte === "renvoi");
-    expect(renvois.map((m) => m.sorte === "renvoi" && m.numero)).toEqual([11, 9, 6, 7, 10]);
+    expect(renvois.map((m) => m.sorte === "renvoi" && m.numero)).toEqual([11, 9, 6, 7, 10, 10]);
     expect(morceaux("Lisez **ceci**, *cela* et [la bibliothèque](/bibliotheque).", T.parties)).toEqual([
       { sorte: "texte", texte: "Lisez " },
       { sorte: "gras", texte: "ceci" },

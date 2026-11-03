@@ -64,7 +64,7 @@ demande.
 10. Comment vérifier que tous les chemins mènent quelque part ?
 11. Combien de temps faut-il ?
 12. Comment illustrer, imprimer et partager le livre ?
-13. Les erreurs à éviter.
+13. Six erreurs à éviter pour votre premier livre-jeu.
 - Pied : liens vers « Ressources », la bibliothèque et l'accueil.
 
 ## Haut et pied de la page
@@ -1263,9 +1263,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Dans l'année.** Découvrez les livres-jeux en période 2
 > (novembre-décembre), préparez l'histoire en période 3 (janvier-février),
 > puis écrivez en périodes 4 et 5 (mars à mai). Essayez de terminer les
-> textes vers la mi-mai pour envoyer le livre à l'impression fin mai. Vous
-> devriez ainsi le recevoir vers la mi-juin, avec une quinzaine de jours de
-> marge avant les vacances.
+> textes au début du mois de mai : l'exemplaire d'essai arrivera vers la
+> mi-mai, et vous pourrez envoyer la commande définitive fin mai. Vous
+> devriez ainsi recevoir les livres vers la mi-juin, avec une quinzaine de
+> jours de marge avant les vacances.
 >
 > **Votre temps.** Organiser les chapitres, préparer les scènes et rédiger
 > les consignes est sans doute l'étape la plus exigeante. On peut avoir
@@ -1440,28 +1441,38 @@ chaque partie pendant l'entretien et prime sur les sources.
   numéroter en cours de route, ne pas tester. Écartées : laisser chacun
   décrire les personnages (couvert par la fiche commune) ; « viser trop
   grand » fondu dans le livre qui grossit ; écrire sans plan.
+- Repris le 3 novembre 2026 d'après sa version, analysée : titre « Six
+  erreurs à éviter pour votre premier livre-jeu », en puces (une liste
+  numérotée ferait double emploi avec les renvois cerclés) ; l'exemplaire
+  d'essai anticipé, la commande définitive fin mai, la partie 11 avancée en
+  conséquence (textes finis début mai) ; les idées en trop dans les chapitres
+  existants, comme en partie 6 ; « Punir le lecteur au hasard » ; « Numéroter
+  trop tôt » ; un renvoi pour les tests.
 
 #### Premier jet
 
-> ## Les erreurs à éviter
+> ## Six erreurs à éviter pour votre premier livre-jeu
 >
-> - **Sous-estimer le temps.** J'ai déjà fini avec des livres livrés juste
->   avant les vacances. Envoyez le livre à l'impression fin mai
->   (voir « Combien de temps faut-il ? »).
-> - **Un système de jeu trop compliqué.** J'en ai fait un, difficile à
->   équilibrer. Commencez par une seule variable
->   (voir « Faut-il des objets, des compétences ou un dé ? »).
-> - **Laisser le livre grossir avec les idées.** Plus de chapitre nouveau une
->   fois le plan posé ; les idées en trop vont aux scènes hors chapitre
+> - **Sous-estimer le temps.** J'ai déjà reçu des livres juste avant les
+>   vacances ! Anticipez l'exemplaire d'essai et envoyez la commande
+>   définitive fin mai (voir « Combien de temps faut-il ? »).
+> - **Un système de jeu trop compliqué.** J'en ai fait l'expérience :
+>   difficile à gérer et à équilibrer. Pour commencer, un seul mécanisme
+>   suffit (voir « Faut-il des objets, des compétences ou un dé ? »).
+> - **Laisser le livre grossir au fil des idées.** Une fois le plan fixé,
+>   évitez d'ajouter des chapitres. Les nouvelles idées peuvent trouver leur
+>   place dans les chapitres existants
 >   (voir « Combien de chapitres, de scènes et de choix prévoir ? »).
-> - **Un choix qui sanctionne sans raison.** Gauche ou droite, oui, si les
->   deux chemins se valent ; une défaite sans indice pour l'éviter, non
+> - **Punir le lecteur au hasard.** Un mauvais choix peut avoir de lourdes
+>   conséquences, mais le lecteur doit avoir une chance de les anticiper
 >   (voir « Comment organiser les choix ? »).
-> - **Numéroter en cours de route.** Chaque scène ajoutée oblige à tout
->   renuméroter : numérotez à la toute fin
+> - **Numéroter trop tôt.** Les ajouts et les modifications deviennent vite
+>   un casse-tête. Attendez que toutes les scènes soient en place
 >   (voir « Comment vérifier que tous les chemins mènent quelque part ? »).
-> - **Ne pas tester.** Chaque élève joue son chapitre, et vous le livre
->   entier, plusieurs fois, avant l'impression.
+> - **Négliger les tests.** Chaque élève explore les chemins de son
+>   chapitre. De votre côté, jouez le livre entier plusieurs fois avant
+>   l'impression
+>   (voir « Comment vérifier que tous les chemins mènent quelque part ? »).
 
 ## Texte de ChatGPT reçu le 28 octobre 2026 : tri
 
