@@ -123,8 +123,9 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
       portrait: true,
     },
   },
-  illustrer: {
-    apres: "Imprimer.",
+  // La photo des livres ouvre la page sur le résultat (partie 1)
+  pourquoi: {
+    apres: "C’est un livre\u00a0! Un vrai.",
     image: {
       src: "/accueil/photo-des-livres.webp",
       alt: "« Le labyrinthe oublié » ouvert sur sa feuille d’aventure et son premier passage, « Électro Nick » à côté, un crayon et un dé.",
