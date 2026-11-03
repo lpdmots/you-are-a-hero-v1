@@ -984,3 +984,59 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* Plus de trois cartes (les cinq pistes, partie 7) : trois puis deux, centrées, sans accroche de
+   niveau ; un pictogramme au trait devant le titre */
+.cartesPetites {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.cartesPetites .carte {
+  flex: 0 0 calc((100% - 32px) / 3);
+}
+.cartesPetites .carteTitre {
+  flex-wrap: nowrap;
+  align-items: center;
+  font-size: 1.08rem;
+}
+.cartesPetites .carteAccroche {
+  font-weight: 600;
+}
+.cartePicto {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 50%;
+  background: var(--feuille-2);
+  fill: none;
+  stroke: var(--graphite-2);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (max-width: 900px) {
+  .cartesPetites .carte {
+    flex-basis: calc((100% - 16px) / 2);
+  }
+}
+@media (max-width: 560px) {
+  /* Sur téléphone, les cartes se serrent pour ne pas allonger la page plus que la liste */
+  .cartesPetites {
+    gap: 10px;
+  }
+  .cartesPetites .carte {
+    flex-basis: 100%;
+    padding: 10px 16px 12px;
+  }
+  .cartesPetites .carteTitre {
+    padding-bottom: 6px;
+  }
+  .cartesPetites .carteAccroche {
+    margin-top: 8px;
+  }
+  .cartesPetites .carteTexte {
+    margin-top: 2px;
+  }
+}

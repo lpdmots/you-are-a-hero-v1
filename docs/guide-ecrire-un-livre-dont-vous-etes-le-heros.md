@@ -853,6 +853,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   le lien vers Que faites-vous (pour la future section « Pour aller plus
   loin »). Le 1er novembre 2026, les énigmes y entrent (« Des énigmes à
   résoudre »), retirées de la partie 9.
+- Le 3 novembre 2026, pour alléger la page : les cinq pistes en cartes, chacune
+  avec son pictogramme (boussole, clé, loupe, balance, cœur), sa question en
+  accroche et son exemple.
 
 #### Premier jet
 
@@ -866,16 +869,16 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Cinq pistes pour imaginer des choix.** Face à un obstacle, les élèves
 > peuvent s'appuyer sur quelques questions pour trouver des idées :
 >
-> - **Explorer** — Où aller ? Visiter une grotte mystérieuse ou poursuivre
+> - **Explorer** — *Où aller ?* Visiter une grotte mystérieuse ou poursuivre
 >   son chemin.
-> - **Changer de méthode** — Comment agir ? Escalader un mur ou convaincre le
+> - **Changer de méthode** — *Comment agir ?* Escalader un mur ou convaincre le
 >   garde de nous laisser passer.
-> - **Observer et réfléchir** — Quel indice utiliser ? Examiner les symboles
+> - **Observer et réfléchir** — *Quel indice utiliser ?* Examiner les symboles
 >   d'une porte ou tenter de l'ouvrir directement.
-> - **Faire un compromis** — Que sacrifier pour obtenir autre chose ?
+> - **Faire un compromis** — *Que sacrifier pour obtenir autre chose ?*
 >   Traverser une zone dangereuse pour récupérer un objet ou gagner du temps
 >   en l'évitant.
-> - **Adopter une attitude** — Comment réagir ? Aider un inconnu ou
+> - **Adopter une attitude** — *Comment réagir ?* Aider un inconnu ou
 >   poursuivre sa mission.
 >
 > **Imaginez les conséquences.** Pour chaque obstacle, demandez à l'élève de

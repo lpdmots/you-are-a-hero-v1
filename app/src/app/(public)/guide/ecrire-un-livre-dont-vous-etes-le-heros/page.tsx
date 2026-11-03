@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment } from "react";
+import { Fragment, type ReactNode } from "react";
 import { Dragon } from "@/composants/Dragon";
 import {
   ADRESSE_DU_GUIDE,
@@ -108,7 +108,30 @@ function Couvertures() {
 }
 
 /** Une liste dont chaque ligne est « **Titre · précision** — *Accroche.* texte » se montre en cartes, dans ces questions */
-const EN_CARTES: string[] = ["age"];
+const EN_CARTES: string[] = ["age", "choix"];
+/** Les cinq pistes pour imaginer des choix (partie 7) : un pictogramme par carte */
+const PICTOS: Record<string, ReactNode> = {
+  Explorer: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M15.5 8.5 13 13l-4.5 2.5L11 11z" />
+    </>
+  ),
+  "Changer de méthode": (
+    <>
+      <circle cx="8" cy="16" r="4" />
+      <path d="M11 13l8-8M16 8l2 2M14 10l2 2" />
+    </>
+  ),
+  "Observer et réfléchir": (
+    <>
+      <circle cx="10.5" cy="10.5" r="6" />
+      <path d="M15 15l5 5" />
+    </>
+  ),
+  "Faire un compromis": <path d="M12 4v16M8 20h8M5 7h14M5 7l-3 6h6zM19 7l-3 6h6z" />,
+  "Adopter une attitude": <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />,
+};
 const CARTE = /^\*\*([^*]+)\*\*\s+—\s+(?:\*([^*]+)\*\s*)?(.*)$/;
 
 function Corps({ partie }: { partie: Partie }) {
@@ -161,13 +184,18 @@ function Corps({ partie }: { partie: Partie }) {
         // Les niveaux (partie 2) se comparent en cartes, côte à côte
         if (EN_CARTES.includes(ancreDe(partie.numero)) && b.elements.every((e) => CARTE.test(e)))
           return (
-            <ul key={i} className={`${styles.large} ${styles.cartes}`}>
+            <ul key={i} className={`${styles.large} ${styles.cartes} ${b.elements.length > 3 ? styles.cartesPetites : ""}`}>
               {b.elements.map((e) => {
                 const [, tete, accroche, texte] = e.match(CARTE)!;
                 const [titre, precision] = tete.split(" · ");
                 return (
                   <li key={e} className={styles.carte}>
                     <p className={styles.carteTitre}>
+                      {PICTOS[titre] ? (
+                        <svg className={styles.cartePicto} viewBox="0 0 24 24" aria-hidden="true">
+                          {PICTOS[titre]}
+                        </svg>
+                      ) : null}
                       {titre}
                       {precision ? <span className={styles.cartePrecision}>{precision}</span> : null}
                     </p>

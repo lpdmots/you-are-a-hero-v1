@@ -327,11 +327,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "liste",
           "elements": [
-            "**Explorer** — Où aller ? Visiter une grotte mystérieuse ou poursuivre son chemin.",
-            "**Changer de méthode** — Comment agir ? Escalader un mur ou convaincre le garde de nous laisser passer.",
-            "**Observer et réfléchir** — Quel indice utiliser ? Examiner les symboles d’une porte ou tenter de l’ouvrir directement.",
-            "**Faire un compromis** — Que sacrifier pour obtenir autre chose ? Traverser une zone dangereuse pour récupérer un objet ou gagner du temps en l’évitant.",
-            "**Adopter une attitude** — Comment réagir ? Aider un inconnu ou poursuivre sa mission."
+            "**Explorer** — *Où aller ?* Visiter une grotte mystérieuse ou poursuivre son chemin.",
+            "**Changer de méthode** — *Comment agir ?* Escalader un mur ou convaincre le garde de nous laisser passer.",
+            "**Observer et réfléchir** — *Quel indice utiliser ?* Examiner les symboles d’une porte ou tenter de l’ouvrir directement.",
+            "**Faire un compromis** — *Que sacrifier pour obtenir autre chose ?* Traverser une zone dangereuse pour récupérer un objet ou gagner du temps en l’évitant.",
+            "**Adopter une attitude** — *Comment réagir ?* Aider un inconnu ou poursuivre sa mission."
           ]
         },
         {
