@@ -1,0 +1,147 @@
+/* Du livre à la scène (partie 4 du guide) : des boîtes emboîtées. Le livre sur le papier chaud, les
+   parties sur la feuille blanche, le chapitre confié en canard pâle (l'entrée et la sortie en canard,
+   comme dans les schémas de la partie 6), les scènes en petites cartes numérotées. Les boîtes fermées
+   restent en pointillé. Sur téléphone, les boîtes fermées passent sous celle qui se déplie. */
+.decoupage {
+  margin: 0;
+  font-family: var(--f-ui);
+}
+
+.livre {
+  padding: 14px 16px 16px;
+  background: var(--papier);
+  border: 1.5px solid var(--trait-chaud);
+  border-radius: 12px;
+  box-shadow: var(--ombre-cahier);
+}
+
+.etiquette {
+  margin: 0 0 10px;
+  font-size: var(--t-xs);
+  line-height: 1.35;
+  color: var(--graphite-3);
+}
+.etiquette b {
+  margin-right: 6px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-2);
+}
+
+.parties {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 132px;
+  gap: 12px;
+}
+.partie {
+  padding: 12px 14px 14px;
+  background: var(--feuille);
+  border: 1px solid var(--trait);
+  border-radius: 10px;
+}
+
+.chapitres {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 120px;
+  gap: 10px;
+}
+.chapitre {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 14px 12px;
+  background: var(--canard-pale);
+  border: 2px solid var(--canard);
+  border-radius: 8px;
+}
+
+/* L'entrée en haut, la sortie en bas : par où le héros arrive dans le chapitre, par où il en repart */
+.bout {
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--canard-fonce);
+}
+.entree {
+  align-self: flex-start;
+  margin-bottom: 6px;
+}
+.entree::before {
+  content: "→ ";
+}
+.sortie {
+  align-self: flex-end;
+  margin-top: 6px;
+}
+.sortie::after {
+  content: " →";
+}
+
+.scenes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.scene {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 30px;
+  padding: 0 6px;
+  background: var(--feuille);
+  border: 1px solid var(--trait-fort);
+  border-radius: 5px;
+  font-family: var(--f-chiffres, var(--f-ui));
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--graphite);
+}
+.suite {
+  align-self: center;
+  color: var(--graphite-3);
+}
+.legende {
+  margin: 8px 0 0;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+
+/* Les boîtes qui restent fermées */
+.fermes,
+.autresParties {
+  display: grid;
+  gap: 10px;
+  align-content: start;
+}
+.ferme,
+.fermePartie {
+  display: grid;
+  place-items: center;
+  padding: 10px 8px;
+  border: 1.5px dashed var(--trait-fort);
+  border-radius: 8px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+.ferme {
+  min-height: 52px;
+}
+.fermePartie {
+  min-height: 80px;
+  background: var(--feuille);
+}
+
+@media (max-width: 640px) {
+  .parties,
+  .chapitres {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .fermes,
+  .autresParties {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ferme,
+  .fermePartie {
+    min-height: 0;
+  }
+}

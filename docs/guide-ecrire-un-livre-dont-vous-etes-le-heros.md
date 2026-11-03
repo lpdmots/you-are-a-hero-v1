@@ -512,6 +512,10 @@ chaque partie pendant l'entretien et prime sur les sources.
   première scène écrite ensemble, qu'il ne pratique pas. Précisé par lui :
   le méchant d'« Électro Nick », la quête secondaire du « Labyrinthe
   oublié ».
+- Le 3 novembre 2026, pour alléger la page : du livre à la scène en boîtes
+  emboîtées (le livre, une partie, le chapitre confié, avec son entrée et sa
+  sortie, ses scènes aux numéros dispersés), sous « Découpez l'aventure » ;
+  la définition de la scène passe dans le schéma.
 
 #### Premier jet
 
@@ -548,8 +552,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > fins, se perdre, manquer de temps ou rentrer bredouille suffisent.
 >
 > **Découpez l'aventure, puis confiez les chapitres.** Définissez ensemble
-> les grandes parties et les chapitres qui les composent ; chaque chapitre se
-> compose de scènes, les passages numérotés du livre. Chaque élève choisit
+> les grandes parties et les chapitres qui les composent. Chaque élève choisit
 > ensuite un chapitre, qu'il l'ait proposé ou non, seul ou à deux, et en
 > devient responsable : il en imagine les obstacles et la façon de les
 > surmonter (voir « Comment répartir l'écriture entre les élèves ? »).

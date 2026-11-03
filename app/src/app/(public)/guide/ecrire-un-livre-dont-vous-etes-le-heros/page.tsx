@@ -19,6 +19,7 @@ import {
 import { enJsonLd } from "@/domaine/presentation";
 import { TEXTE_DU_GUIDE as T } from "@/domaine/texte-du-guide";
 import { adresseDuSite } from "@/serveur/env";
+import { Decoupage } from "./Decoupage";
 import { JetDeDe } from "./JetDeDe";
 import { Parcours } from "./Parcours";
 import { Schemas } from "./Schemas";
@@ -305,6 +306,12 @@ function Corps({ partie }: { partie: Partie }) {
         <Fragment key={i}>
           {bloc(b, i)}
           {i === ou && place && "apres" in place ? enGrand(place.image) : null}
+          {/* Du livre à la scène (partie 4), en boîtes emboîtées sous son paragraphe */}
+          {ancreDe(partie.numero) === "inventer" && b.sorte === "paragraphe" && b.tete?.startsWith("Découpez l’aventure") ? (
+            <div className={styles.large}>
+              <Decoupage />
+            </div>
+          ) : null}
           {/* La règle du dé (partie 9), en schéma sous son paragraphe */}
           {ancreDe(partie.numero) === "objets" && b.sorte === "paragraphe" && b.tete?.startsWith("Le dé") ? <JetDeDe /> : null}
         </Fragment>
