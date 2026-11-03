@@ -95,7 +95,7 @@ function Photo({ image }: { image: ImageDuGuide }) {
         alt={image.alt}
         width={image.largeur}
         height={image.hauteur}
-        sizes={image.portrait ? "(max-width: 560px) 100vw, 380px" : image.moyenne ? "(max-width: 600px) 100vw, 560px" : "(max-width: 1040px) 100vw, 830px"}
+        sizes={image.portrait ? "(max-width: 560px) 100vw, 380px" : image.moyenne ? "(max-width: 680px) 100vw, 640px" : "(max-width: 1040px) 100vw, 830px"}
       />
       {/* Sur téléphone, la même capture cadrée plus serré, pour rester lisible */}
       {image.telephone ? <Image className={styles.surTelephone} src={image.telephone.src} alt={image.alt} width={image.telephone.largeur} height={image.telephone.hauteur} sizes="100vw" /> : null}

@@ -1054,9 +1054,9 @@
   }
 }
 
-/* Une image haute (l'arbre des chemins) : à mi-largeur, centrée, sa légende dessous */
+/* Une image moins large que la colonne (l'arbre des chemins), centrée, sa légende dessous */
 .photoMoyenne {
-  max-width: 560px;
+  max-width: 640px;
   margin-inline: auto;
 }
 /* Deux captures à la suite (partie 4) */
