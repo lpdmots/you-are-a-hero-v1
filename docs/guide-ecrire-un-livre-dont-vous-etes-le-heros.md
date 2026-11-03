@@ -1398,10 +1398,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > en classe.
 >
 > **Un livre accessible à tous.** L'achat doit rester facultatif. Si le prix
-> est un obstacle, plusieurs solutions : choisir le noir et blanc, faire
-> financer un exemplaire par la coopérative scolaire, prêter celui de la
-> classe ou proposer une lecture en ligne. L'essentiel est que chaque élève
-> puisse profiter du livre auquel il a participé.
+> est un obstacle, plusieurs solutions : choisir le noir et blanc, solliciter
+> une aide de la coopérative scolaire, emprunter l'exemplaire de la classe ou
+> lire le livre en ligne. L'essentiel est que chaque élève puisse profiter de
+> son travail.
 >
 > **Faites-le vivre.** Gardez un exemplaire à la bibliothèque de l'école,
 > organisez une lecture dans une autre classe, laissez les élèves découvrir

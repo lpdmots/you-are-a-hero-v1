@@ -645,7 +645,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Un livre accessible à tous.",
-          "texte": "L’achat doit rester facultatif. Si le prix est un obstacle, plusieurs solutions : choisir le noir et blanc, faire financer un exemplaire par la coopérative scolaire, prêter celui de la classe ou proposer une lecture en ligne. L’essentiel est que chaque élève puisse profiter du livre auquel il a participé."
+          "texte": "L’achat doit rester facultatif. Si le prix est un obstacle, plusieurs solutions : choisir le noir et blanc, solliciter une aide de la coopérative scolaire, emprunter l’exemplaire de la classe ou lire le livre en ligne. L’essentiel est que chaque élève puisse profiter de son travail."
         },
         {
           "sorte": "paragraphe",
