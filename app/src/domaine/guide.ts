@@ -119,15 +119,15 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
       portrait: true,
     },
   },
-  // L'arbre des chemins d'un chapitre, sous « Contrôlez les liens » (partie 10)
+  // Le début de l'arbre des chemins d'un chapitre, sous « Contrôlez les liens » (partie 10)
   chemins: {
     apres: "Contrôlez les liens.",
     image: {
-      src: "/guide/chemins-d-un-chapitre.webp",
+      src: "/guide/chemins-la-classe.webp",
       alt: "La vue « Chemins » d’un chapitre : les scènes en cartes, reliées par des flèches qui portent les choix ; trois chemins se séparent puis se rejoignent.",
-      legende: "Les chemins d’un chapitre de « Bouquin mène l’enquête », dans la vue « Chemins » d’Il était une classe.",
+      legende: "Le début d’un chapitre de « Bouquin mène l’enquête », dans la vue « Chemins » d’Il était une classe : trois chemins se séparent, puis se rejoignent.",
       largeur: 1000,
-      hauteur: 1560,
+      hauteur: 942,
       moyenne: true,
     },
   },
