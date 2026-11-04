@@ -1104,3 +1104,8 @@
 .lectures + .plusLoin {
   margin-top: 56px;
 }
+
+/* « Avant de commencer » : la première chose de la colonne, avant « En bref » */
+.article > .avant {
+  margin-top: 0;
+}

@@ -117,6 +117,10 @@ Décidé le 30 octobre 2026.
   alignée).
 - Le 2 novembre 2026, décidé par lui : six ans de livres-jeux et non quatre
   dans la ligne d'auteur ; les premiers, d'une autre forme, comptent.
+- Le 4 novembre 2026, à sa demande (la page lui semblait directive) : une
+  note « Avant de commencer », au « je », sous la ligne d'auteur et dans la
+  forme de « Dans ma classe » : un retour d'expérience, pas des règles. Les
+  conseils restent au « vous » et à l'impératif.
 
 #### Premier jet
 
@@ -130,6 +134,11 @@ Décidé le 30 octobre 2026.
 >
 > *Par Nicolas Coussot, professeur des écoles, six ans de livres-jeux
 > avec sa classe. Mis à jour le …*
+>
+> **Avant de commencer.** Ce guide rassemble ce que j'ai appris en six ans
+> de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont
+> pas des règles : chaque classe est différente, et vous trouverez sûrement
+> d'autres façons de faire. Prenez ce qui vous sert.
 >
 > **En bref**
 >

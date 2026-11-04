@@ -435,6 +435,13 @@ export default function Guide() {
           <Sommaire />
         </nav>
         <article className={styles.article}>
+          {/* La note de l'auteur, dans la forme de « Dans ma classe » : ce qui suit est un retour d'expérience */}
+          <aside className={`${styles.classe} ${styles.avant}`} aria-label="Avant de commencer">
+            <p className={styles.classeTitre}>Avant de commencer</p>
+            <p>
+              <EnLigne texte={T.avantDeCommencer} />
+            </p>
+          </aside>
           <section className={styles.bref} aria-labelledby="en-bref">
             <h2 id="en-bref">En bref</h2>
             <ul>

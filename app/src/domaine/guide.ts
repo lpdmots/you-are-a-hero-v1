@@ -34,6 +34,8 @@ export type TexteDuGuide = {
   titre: string;
   definition: string;
   auteur: string;
+  /** La note de l'auteur sous sa ligne : un retour d'expérience, pas des règles */
+  avantDeCommencer: string;
   /** « En bref » : un chiffre, la phrase qui le suit, la question qui le développe */
   enBref: { chiffre: string; texte: string; partie: number }[];
   /** « Pour aller plus loin » : des lectures sur d'autres sites, chacune avec ce qu'elle apporte */

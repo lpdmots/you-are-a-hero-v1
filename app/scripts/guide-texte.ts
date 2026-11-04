@@ -106,6 +106,10 @@ function classer(m: string[]): Bloc {
 
 const haut = morceaux(jets[0]);
 const auteur = haut[2].join(" ").replace(/^\*|\*$/g, "");
+// « Avant de commencer » : la note de l'auteur, sous sa ligne
+const avant = haut.find((m) => m[0].startsWith("**Avant de commencer.**"));
+if (!avant) throw new Error("« Avant de commencer » attendu sous la ligne d'auteur");
+const iBref = haut.findIndex((m) => m[0].trim() === "**En bref**");
 const plusLoin = haut.find((m) => m[0].startsWith("**Lire et essayer"))!.join(" ").replace(/^\*\*Lire et essayer\s?:\*\*\s*/, "");
 // « Pour aller plus loin » : les lectures, en liste sous le titre, après la dernière question
 const iLectures = haut.findIndex((m) => m[0].trim() === "**Pour aller plus loin**");
@@ -116,7 +120,8 @@ const texte = {
   // La date de mise à jour se pose à part (DATE_DU_GUIDE), pas dans le texte
   auteur: auteur.replace(/\s*Mis à jour le …\s*$/, ""),
   // Chaque ligne : son chiffre en gras, puis la phrase, finie par « (partie N) », la question qui la développe
-  enBref: (classer(haut[4]) as { elements: string[] }).elements.map((l) => {
+  avantDeCommencer: avant.join(" ").replace("**Avant de commencer.**", "").trim(),
+  enBref: (classer(haut[iBref + 1]) as { elements: string[] }).elements.map((l) => {
     const m = l.match(/^\*\*([^*]+)\*\*\s*(.*?)\s*\(partie\s(\d+)\)$/);
     if (!m) throw new Error(`Ligne de « En bref » sans chiffre en gras ni « (partie N) » : ${l}`);
     return { chiffre: m[1], texte: m[2], partie: Number(m[3]) };
