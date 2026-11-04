@@ -12,23 +12,23 @@ const SITE = "https://iletaituneclasse.com";
 afterEach(() => vi.unstubAllEnvs());
 
 describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa classe »", () => {
-  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, treize questions, chacune son ancre, six encarts au plus, aucun renvoi à « Ressources »", () => {
+  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, six encarts au plus, aucun renvoi à « Ressources »", () => {
     expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros avec sa classe");
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
     expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
     // « En bref » : un chiffre, sa phrase, la question qui le développe
     expect(T.enBref.map((l) => l.chiffre)).toEqual(["1 à 3 mois", "20 h", "4 étapes", "80 scènes", "10 €"]);
-    expect(T.enBref.every((l) => l.texte && l.partie >= 1 && l.partie <= 13)).toBe(true);
-    expect(T.parties.map((p) => p.numero)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]);
-    expect(T.parties.every((p) => p.titre.endsWith("?") || p.numero === 13)).toBe(true);
+    expect(T.enBref.every((l) => l.texte && l.partie >= 1 && l.partie <= 14)).toBe(true);
+    expect(T.parties.map((p) => p.numero)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+    expect(T.parties.every((p) => p.titre.endsWith("?") || p.numero === 14)).toBe(true);
     expect(new Set(ANCRES).size).toBe(T.parties.length);
     const encarts = T.parties.flatMap((p) => p.blocs).filter((b) => b.sorte === "encart");
     expect(encarts.length).toBeLessThanOrEqual(6);
     expect(JSON.stringify(T)).not.toContain("Ressources");
     expect(T.plusLoin.map((l) => l.adresse)).toEqual(["/bibliotheque", "/"]);
-    // Le tableau de la partie 11 et la liste de la partie 13
+    // Le tableau de la partie 11 et la liste de la partie 14
     expect(T.parties[10].blocs.some((b) => b.sorte === "tableau")).toBe(true);
-    expect(T.parties[12].blocs[0].sorte).toBe("liste");
+    expect(T.parties[13].blocs[0].sorte).toBe("liste");
     // Chaque image se pose sur un paragraphe qui existe
     for (const [ancre, place] of Object.entries(IMAGES_DU_GUIDE)) {
       const partie = T.parties[ANCRES.indexOf(ancre as (typeof ANCRES)[number])];
@@ -41,7 +41,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
   });
 
   it("F14-AC52 — « (voir « … ») » devient un renvoi à la question de ce titre ; liens, gras et italique se reconnaissent", () => {
-    const erreurs = T.parties[12].blocs[0];
+    const erreurs = T.parties[13].blocs[0];
     if (erreurs.sorte !== "liste") throw new Error("liste attendue");
     const renvois = erreurs.elements.flatMap((e) => morceaux(e, T.parties)).filter((m) => m.sorte === "renvoi");
     expect(renvois.map((m) => m.sorte === "renvoi" && m.numero)).toEqual([11, 9, 6, 7, 10, 10]);

@@ -40,7 +40,7 @@ for (let i = 0; i < lignes.length; i++) {
   while (j < lignes.length && lignes[j].startsWith(">")) bloc.push(typo(lignes[j++].replace(/^> ?/, "")));
   jets.push(bloc);
 }
-if (jets.length !== 14) throw new Error(`14 « Premier jet » attendus (le haut et treize parties), ${jets.length} trouvés`);
+if (jets.length !== 15) throw new Error(`15 « Premier jet » attendus (le haut et quatorze parties), ${jets.length} trouvés`);
 
 const morceaux = (bloc: string[]) => {
   const out: string[][] = [];

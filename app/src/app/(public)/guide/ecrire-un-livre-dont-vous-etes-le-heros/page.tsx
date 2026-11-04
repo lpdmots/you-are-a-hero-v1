@@ -176,7 +176,7 @@ function Corps({ partie }: { partie: Partie }) {
           </h3>
         );
       case "liste":
-        // Une liste ordinaire, sauf celle des erreurs à éviter (partie 13), marquée d'une croix
+        // Une liste ordinaire, sauf celle des erreurs à éviter (partie 14), marquée d'une croix
         // Le parcours d'une scène (partie 5) se montre en schéma
         if (b.ordonnee && ancreDe(partie.numero) === "repartir")
           return (

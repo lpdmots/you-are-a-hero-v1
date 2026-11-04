@@ -64,7 +64,8 @@ demande.
 10. Comment vérifier que tous les chemins mènent quelque part ?
 11. Combien de temps faut-il ?
 12. Comment illustrer, imprimer et partager le livre ?
-13. Six erreurs à éviter pour votre premier livre-jeu.
+13. Quelle place donner à l'IA ?
+14. Six erreurs à éviter pour votre premier livre-jeu.
 - Pied : liens vers « Ressources », la bibliothèque et l'accueil.
 
 ## Haut et pied de la page
@@ -1006,7 +1007,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Adaptez les reprises.** Demandez à chacun de corriger ce qui est à sa
 > portée. Pour les erreurs plus difficiles, accompagnez l'élève ou
-> intervenez directement. Évitez de multiplier les allers-retours : après une
+> intervenez directement (voir « Quelle place donner à l'IA ? »). Évitez de multiplier les allers-retours : après une
 > ou deux reprises, mieux vaut terminer le texte avec lui. L'objectif est de
 > le faire progresser, sans le décourager ni effacer son style.
 >
@@ -1378,7 +1379,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > **Deux façons d'illustrer.** Les élèves dessinent : chacun illustre son
 > chapitre, avec quelques consignes communes (format, matériel, couleurs)
 > pour garder une unité. Ou vous créez les images avec une IA, à partir de
-> leurs descriptions. Définissez un style commun et veillez à conserver
+> leurs descriptions (voir « Quelle place donner à l'IA ? »). Définissez un style commun et veillez à conserver
 > l'apparence des personnages. Le résultat peut être très soigné, mais
 > demande parfois quelques ajustements.
 >
@@ -1435,7 +1436,72 @@ chaque partie pendant l'entretien et prime sur les sources.
 > pour l'imprimeur. Il se partage aussi en privé, avec les comptes des
 > élèves, ou dans la bibliothèque publique du site.
 
-### 13. Erreurs à éviter
+### 13. La place de l'IA
+
+#### Expérience du porteur (4 novembre 2026)
+
+- Ce qu'il lui confie, d'abord pour gagner du temps, ensuite pour
+  s'organiser et trouver des idées : un excellent réservoir d'idées pour
+  préparer l'histoire ; des idées de choix, moins efficaces (les subtilités
+  d'un bon choix lui échappent), mais une aide quand on bloque, qui trouve
+  souvent des possibilités auxquelles on n'avait pas pensé ; la mise au
+  propre des consignes, d'après son idée générale, liste de vérification
+  comprise ; des titres de scènes, qu'il a toujours du mal à trouver ; la
+  correction de l'orthographe ; les images.
+- Le texte de l'élève reste le sien : l'IA corrige la langue au degré choisi
+  par l'enseignant, sans inventer le contenu d'une scène d'élève. Une scène
+  d'élève absent qu'il écrit lui-même ne porte plus le nom de l'élève.
+- Forme décidée : une partie à elle, en question, avant les erreurs (qui
+  deviennent la partie 14) ; les parties 8 et 12 y renvoient. Ajouts
+  proposés sans réponse explicite, écrits prudemment dans le premier jet :
+  tout ce qu'elle propose se trie ; aucun nom d'élève donné à l'IA, les
+  familles prévenues. Question restée ouverte : se sert-il de ses idées
+  devant la classe, ou seulement en préparant seul ? Le jet ne le dit pas.
+
+#### Premier jet
+
+> ## Quelle place donner à l'IA ?
+>
+> **Un assistant pour vous, pas pour les élèves.** L'intelligence
+> artificielle peut vous faire gagner beaucoup de temps dans la préparation
+> et la finition du livre. Les élèves, eux, imaginent, écrivent et se
+> corrigent : le livre reste le leur.
+>
+> **Pour préparer l'histoire.** C'est un excellent réservoir d'idées :
+> univers, personnages, obstacles, rebondissements. Pour les choix, elle est
+> moins fine, car les subtilités d'un bon choix lui échappent souvent ; mais
+> quand on bloque, elle propose des possibilités auxquelles personne n'avait
+> pensé. Dans tous les cas, triez : gardez, retouchez ou écartez.
+>
+> **Pour les consignes et les titres.** Donnez l'idée générale d'une scène :
+> l'IA la reformule en une consigne claire et prépare la liste de
+> vérification qui l'accompagne. Elle aide aussi à trouver des titres de
+> scènes, souvent le plus laborieux de l'organisation.
+>
+> **Pour la langue et les images.** Une fois le contenu validé et la langue
+> corrigée par l'élève (voir « Comment relire et garder la cohérence ? »),
+> l'IA peut proposer une version corrigée : l'orthographe seule, ou un peu
+> de grammaire pour les élèves les plus en difficulté. Elle peut aussi créer
+> les illustrations d'après les descriptions des élèves (voir « Comment
+> illustrer, imprimer et partager le livre ? »).
+>
+> **Le texte de l'élève reste le sien.** L'IA corrige la langue ; elle
+> n'invente pas le contenu d'une scène d'élève. Si vous écrivez vous-même la
+> scène d'un élève absent, elle ne porte plus son nom.
+>
+> **Et les familles ?** Ne donnez jamais à l'IA le nom d'un élève, et
+> prévenez les familles de l'usage que vous en faites.
+>
+> **Dans ma classe.** Je me sers de l'IA d'abord pour gagner du temps :
+> mettre au propre mes consignes, trouver des titres de scènes, corriger
+> l'orthographe, créer les images. Elle m'aide aussi à m'organiser et, quand
+> je bloque, à trouver des idées.
+>
+> *Encart.* Dans Il était une classe, ces aides sont réservées à l'adulte :
+> les élèves n'ont accès à aucune IA. Aucun prénom d'élève ne lui est
+> envoyé.
+
+### 14. Erreurs à éviter
 
 - Écrire sans carte ; viser trop grand d'emblée ; ajouter des passages au
   dernier moment ; numéroter à la main en cours de route ; laisser chaque
@@ -1553,12 +1619,8 @@ formulations à revérifier à la source avant publication.
   bibliothèque, l'accueil).
 
 - **La place de l'IA dans le projet** (demandé par le porteur le 30 octobre
-  2026) : la page ne sera terminée qu'une fois ce sujet abordé avec lui,
-  peut-être dans une partie à elle. Déjà dans le texte, éparpillé : la
-  correction de l'orthographe avec l'IA (partie 8), les images créées par IA
-  et sa préférence pour elles (partie 12). À trancher en entretien : ce que
-  l'enseignant en fait, ce que les élèves n'en font pas (ils n'ont accès à
-  aucune IA dans l'outil), ce qu'elle ne fait pas à leur place.
+  2026) : entretien fait le 4 novembre 2026, premier jet écrit (partie 13),
+  à relire avec lui.
 
 ## À vérifier avant publication
 

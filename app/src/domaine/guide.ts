@@ -41,7 +41,7 @@ export type TexteDuGuide = {
 };
 
 /** L'ancre de chaque question, courte et stable : le sommaire et les renvois y mènent */
-export const ANCRES = ["pourquoi", "age", "commencer", "inventer", "repartir", "combien", "choix", "relire", "objets", "chemins", "temps", "illustrer", "erreurs"] as const;
+export const ANCRES = ["pourquoi", "age", "commencer", "inventer", "repartir", "combien", "choix", "relire", "objets", "chemins", "temps", "illustrer", "ia", "erreurs"] as const;
 export const ancreDe = (numero: number) => ANCRES[numero - 1];
 
 // ——— Le texte en ligne : gras, italique, liens, renvois aux autres questions ———

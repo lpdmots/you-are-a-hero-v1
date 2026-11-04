@@ -128,12 +128,12 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   await expect(page.getByRole("region", { name: "En bref" }).getByText("1 à 3 mois")).toBeVisible();
   // Grand écran : le sommaire collant, à côté du texte
   const sommaire = page.getByRole("navigation", { name: "Sommaire" }).first();
-  await expect(sommaire.getByRole("link")).toHaveCount(13);
+  await expect(sommaire.getByRole("link")).toHaveCount(14);
   await sommaire.getByRole("link", { name: /Comment vérifier que tous les chemins/ }).click();
   await expect(page).toHaveURL(/#chemins$/);
   await expect(page.getByRole("heading", { level: 2, name: /Comment vérifier que tous les chemins/ })).toBeInViewport();
   await expect(sommaire.getByRole("link", { name: /Comment vérifier que tous les chemins/ })).toHaveAttribute("aria-current", "location");
-  // Un renvoi de la partie 13 mène à sa question
+  // Un renvoi de la partie 14 mène à sa question
   await page.getByRole("region", { name: /erreurs à éviter/ }).getByRole("link", { name: "question 11" }).click();
   await expect(page).toHaveURL(/#temps$/);
   // Ni « Ressources » ni page à venir
@@ -150,7 +150,7 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   await expect(bouton).toBeHidden();
   await page.locator("#temps").scrollIntoViewIfNeeded();
   await expect(bouton).toBeVisible();
-  await expect(bouton).toContainText("11 / 13");
+  await expect(bouton).toContainText("11 / 14");
   await bouton.click();
   await expect(page).toHaveURL(/#sommaire$/);
 });

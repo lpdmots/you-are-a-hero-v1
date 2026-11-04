@@ -382,7 +382,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Adaptez les reprises.",
-          "texte": "Demandez à chacun de corriger ce qui est à sa portée. Pour les erreurs plus difficiles, accompagnez l’élève ou intervenez directement. Évitez de multiplier les allers-retours : après une ou deux reprises, mieux vaut terminer le texte avec lui. L’objectif est de le faire progresser, sans le décourager ni effacer son style."
+          "texte": "Demandez à chacun de corriger ce qui est à sa portée. Pour les erreurs plus difficiles, accompagnez l’élève ou intervenez directement (voir « Quelle place donner à l’IA ? »). Évitez de multiplier les allers-retours : après une ou deux reprises, mieux vaut terminer le texte avec lui. L’objectif est de le faire progresser, sans le décourager ni effacer son style."
         },
         {
           "sorte": "paragraphe",
@@ -570,7 +570,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Deux façons d’illustrer.",
-          "texte": "Les élèves dessinent : chacun illustre son chapitre, avec quelques consignes communes (format, matériel, couleurs) pour garder une unité. Ou vous créez les images avec une IA, à partir de leurs descriptions. Définissez un style commun et veillez à conserver l’apparence des personnages. Le résultat peut être très soigné, mais demande parfois quelques ajustements."
+          "texte": "Les élèves dessinent : chacun illustre son chapitre, avec quelques consignes communes (format, matériel, couleurs) pour garder une unité. Ou vous créez les images avec une IA, à partir de leurs descriptions (voir « Quelle place donner à l’IA ? »). Définissez un style commun et veillez à conserver l’apparence des personnages. Le résultat peut être très soigné, mais demande parfois quelques ajustements."
         },
         {
           "sorte": "paragraphe",
@@ -654,6 +654,50 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     },
     {
       "numero": 13,
+      "titre": "Quelle place donner à l’IA ?",
+      "blocs": [
+        {
+          "sorte": "paragraphe",
+          "tete": "Un assistant pour vous, pas pour les élèves.",
+          "texte": "L’intelligence artificielle peut vous faire gagner beaucoup de temps dans la préparation et la finition du livre. Les élèves, eux, imaginent, écrivent et se corrigent : le livre reste le leur."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Pour préparer l’histoire.",
+          "texte": "C’est un excellent réservoir d’idées : univers, personnages, obstacles, rebondissements. Pour les choix, elle est moins fine, car les subtilités d’un bon choix lui échappent souvent ; mais quand on bloque, elle propose des possibilités auxquelles personne n’avait pensé. Dans tous les cas, triez : gardez, retouchez ou écartez."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Pour les consignes et les titres.",
+          "texte": "Donnez l’idée générale d’une scène : l’IA la reformule en une consigne claire et prépare la liste de vérification qui l’accompagne. Elle aide aussi à trouver des titres de scènes, souvent le plus laborieux de l’organisation."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Pour la langue et les images.",
+          "texte": "Une fois le contenu validé et la langue corrigée par l’élève (voir « Comment relire et garder la cohérence ? »), l’IA peut proposer une version corrigée : l’orthographe seule, ou un peu de grammaire pour les élèves les plus en difficulté. Elle peut aussi créer les illustrations d’après les descriptions des élèves (voir « Comment illustrer, imprimer et partager le livre ? »)."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Le texte de l’élève reste le sien.",
+          "texte": "L’IA corrige la langue ; elle n’invente pas le contenu d’une scène d’élève. Si vous écrivez vous-même la scène d’un élève absent, elle ne porte plus son nom."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Et les familles ?",
+          "texte": "Ne donnez jamais à l’IA le nom d’un élève, et prévenez les familles de l’usage que vous en faites."
+        },
+        {
+          "sorte": "classe",
+          "texte": "Je me sers de l’IA d’abord pour gagner du temps : mettre au propre mes consignes, trouver des titres de scènes, corriger l’orthographe, créer les images. Elle m’aide aussi à m’organiser et, quand je bloque, à trouver des idées."
+        },
+        {
+          "sorte": "encart",
+          "texte": "Dans Il était une classe, ces aides sont réservées à l’adulte : les élèves n’ont accès à aucune IA. Aucun prénom d’élève ne lui est envoyé."
+        }
+      ]
+    },
+    {
+      "numero": 14,
       "titre": "Six erreurs à éviter pour votre premier livre-jeu",
       "blocs": [
         {

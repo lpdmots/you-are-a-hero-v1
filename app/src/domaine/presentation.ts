@@ -63,7 +63,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres à feuilleter, les prix.`,
     `- [La bibliothèque](${site}/bibliotheque) : des histoires dont vous êtes le héros et des récits écrits par des classes avec l’outil, à lire en ligne gratuitement, sans compte.`,
     `- [Aide](${site}/aide) : les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
-    `- [Comment écrire un livre dont vous êtes le héros avec sa classe](${site}${ADRESSE_DU_GUIDE}) : la méthode d’un professeur des écoles, en treize questions, de la lecture de livres-jeux à l’impression ; avec ses chiffres réels (six ans de livres, deux livres de 213 et 323 scènes).`,
+    `- [Comment écrire un livre dont vous êtes le héros avec sa classe](${site}${ADRESSE_DU_GUIDE}) : la méthode d’un professeur des écoles, en quatorze questions, de la lecture de livres-jeux à l’impression ; avec ses chiffres réels (six ans de livres, deux livres de 213 et 323 scènes).`,
     `- [Confidentialité](${site}/confidentialite) : les données gardées, l’IA, la mesure d’audience.`,
     `- [Conditions d’utilisation](${site}/conditions)`,
     `- [Mentions légales](${site}/mentions-legales)`,
