@@ -1064,3 +1064,13 @@
   display: grid;
   gap: 1.6em;
 }
+
+/* Ce que montre un encart sur toute sa largeur, sous son texte (la fiche « Consigne », partie 13) */
+.encartLarge {
+  grid-column: 1 / -1;
+  margin-top: 14px;
+}
+/* Un encart au milieu d'une partie : le texte qui le suit reprend après un vide */
+.partie > .encart + p {
+  margin-top: 1.4em;
+}

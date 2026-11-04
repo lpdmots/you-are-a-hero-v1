@@ -330,6 +330,12 @@ function Corps({ partie }: { partie: Partie }) {
             <p>
               <EnLigne texte={b.texte} />
             </p>
+            {/* La fiche « Consigne » avant et après « Formuler » (partie 13), sur toute la largeur de l'encart */}
+            {ancreDe(partie.numero) === "ia" ? (
+              <div className={styles.encartLarge}>
+                <ConsigneDansLApp />
+              </div>
+            ) : null}
             {image ? (
               <Image
                 className={image.telephone ? `${styles.encartImage} ${styles.surOrdinateur}` : styles.encartImage}
@@ -365,12 +371,6 @@ function Corps({ partie }: { partie: Partie }) {
               {DECOUPAGE_EN_IMAGES.map((image) => (
                 <Photo key={image.src} image={image} />
               ))}
-            </div>
-          ) : null}
-          {/* La fiche « Consigne » de l'application (partie 13), sous « Pour préparer les consignes » */}
-          {ancreDe(partie.numero) === "ia" && b.sorte === "paragraphe" && b.tete === "Pour préparer les consignes." ? (
-            <div className={styles.large}>
-              <ConsigneDansLApp />
             </div>
           ) : null}
           {/* Un choix et ses conséquences (partie 7), sous « Donnez une raison de choisir » */}

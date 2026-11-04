@@ -5,7 +5,8 @@ import styles from "./consigne-dans-l-app.module.css";
  * dessinée d'après celle de l'application, avec deux ajouts que le porteur prévoit (4 novembre
  * 2026) : un bouton pour dicter la consigne, et la liste de vérification séparée de la consigne,
  * ses éléments à cocher par l'élève, modifiables et supprimables. Avant : l'idée notée vite, sans
- * liste ; après : la consigne mise au propre et sa liste. Une image, rien ne s'y règle.
+ * liste ; après : la consigne mise au propre et sa liste. Une image, rien ne s'y règle ; elle se
+ * montre dans l'encart de la partie, qui en tient lieu de légende.
  */
 
 type Etat = { titre: string; consigne: string; liste: string[]; brouillon?: boolean };
@@ -99,7 +100,6 @@ export function ConsigneDansLApp() {
         </span>
         <Fiche etat={APRES} />
       </div>
-      <figcaption>Dans Il était une classe, la fiche « Consigne » d’une scène : dictez ou tapez votre idée, l’IA la met au propre et prépare la liste de vérification, que vous retouchez.</figcaption>
     </figure>
   );
 }

@@ -47,13 +47,6 @@
     transform: rotate(90deg);
   }
 }
-.cadre figcaption {
-  margin-top: 14px;
-  font-family: var(--f-ui);
-  font-size: 0.86rem;
-  line-height: 1.45;
-  color: var(--graphite-3);
-}
 .fiche {
   background: var(--feuille);
   border-radius: 12px;

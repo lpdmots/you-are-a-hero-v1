@@ -1468,6 +1468,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   la fiche « Consigne » de l'application dessinée avant et après « ✦
   Formuler », avec deux ajouts qu'il prévoit : la dictée, et la liste de
   vérification séparée de la consigne.
+- Le même jour, à sa demande : ces fiches passent dans un encart, qui dit
+  aussi que les élèves n'ont accès à aucune aide d'IA ; l'encart de fin de
+  partie, qui ne disait que cela, est retiré.
 
 #### Premier jet
 
@@ -1483,7 +1486,11 @@ chaque partie pendant l'entretien et prime sur les sources.
 > retouchez ou écartez selon l'histoire que vous construisez avec la classe.
 >
 > **Pour préparer les consignes.** À partir de votre idée d'une scène,
-> l'IA peut proposer une consigne et sa liste de vérification. Par exemple :
+> l'IA peut proposer une consigne et sa liste de vérification.
+>
+> *Encart.* Dans Il était une classe, dictez ou tapez votre idée : « Formuler »
+> la met au propre et prépare la liste de vérification, que vous retouchez.
+> Les élèves, eux, n'ont accès à aucune aide d'IA.
 >
 > **Pour terminer les corrections.** Une fois le contenu validé et le texte
 > corrigé par l'élève (voir « Comment relire et garder la cohérence ? »),
@@ -1504,9 +1511,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > moins fines : je dois souvent les retravailler pour que les conséquences
 > soient intéressantes et cohérentes. Mais quand je bloque, elle trouve des
 > possibilités auxquelles je n'avais pas pensé.
->
-> *Encart.* Dans Il était une classe, les aides IA sont réservées à
-> l'adulte : les élèves n'y ont pas accès.
 
 ### 14. Erreurs à éviter
 

@@ -669,7 +669,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Pour préparer les consignes.",
-          "texte": "À partir de votre idée d’une scène, l’IA peut proposer une consigne et sa liste de vérification. Par exemple :"
+          "texte": "À partir de votre idée d’une scène, l’IA peut proposer une consigne et sa liste de vérification."
+        },
+        {
+          "sorte": "encart",
+          "texte": "Dans Il était une classe, dictez ou tapez votre idée : « Formuler » la met au propre et prépare la liste de vérification, que vous retouchez. Les élèves, eux, n’ont accès à aucune aide d’IA."
         },
         {
           "sorte": "paragraphe",
@@ -689,10 +693,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "classe",
           "texte": "Trouver des titres de scènes me prend toujours du temps : l’IA m’y aide beaucoup. Pour les choix, ses propositions sont moins fines : je dois souvent les retravailler pour que les conséquences soient intéressantes et cohérentes. Mais quand je bloque, elle trouve des possibilités auxquelles je n’avais pas pensé."
-        },
-        {
-          "sorte": "encart",
-          "texte": "Dans Il était une classe, les aides IA sont réservées à l’adulte : les élèves n’y ont pas accès."
         }
       ]
     },
