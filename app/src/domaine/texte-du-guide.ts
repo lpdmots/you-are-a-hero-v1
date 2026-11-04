@@ -33,6 +33,12 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "partie": 12
     }
   ],
+  "lectures": [
+    "**Un projet vécu en CM1-CM2.** [Quand les élèves écrivent un livre interactif](https://www.cafepedagogique.net/2025/11/10/nicolas-zannettacci-quand-les-eleves-ecrivent-un-livre-interactif/) : le témoignage de Nicolas Zannettacci (Café pédagogique), de la collecte des idées aux dernières corrections.",
+    "**Un autre projet, en CE2-CM2.** [Livre dont vous êtes le héros](https://lamouche.home.blog/2019/04/08/livre-dont-vous-etes-le-heros/) : à l’école de Nolay, chaque élève décrit un lieu, et les lieux reliés forment l’aventure.",
+    "**Les bases du récit à choix.** [Écrire une histoire dont vous êtes le héros avec des élèves](https://www.quefaitesvous.com/blog/ecrire-une-histoire-dont-vous-etes-le-heros-avec-des-eleves-les-bases/) (Que faites-vous) : construire les embranchements et anticiper leurs conséquences.",
+    "**D’autres structures.** [Introduction aux structures de la fiction interactive](https://www.fiction-interactive.fr/introduction-aux-structures-de-la-fiction-interactive-et-comment-les-utiliser/) (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà de la partie 6."
+  ],
   "plusLoin": [
     {
       "libelle": "La bibliothèque",
@@ -461,7 +467,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Contrôlez les liens.",
-          "texte": "Faites un tableau, listez les scènes, notez leurs destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça ! Des outils gratuits comme [Twine](https://twinery.org/) ou [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre histoire et de retrouver les scènes bien plus facilement. Il faut un peu de temps pour les apprivoiser, mais vous ne le regretterez pas !"
+          "texte": "Faites un tableau, listez les scènes, notez leurs destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça ! Des outils gratuits comme [Twine](https://twinery.org/) ou [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre histoire et de retrouver les scènes bien plus facilement. Il était une classe propose aussi une vue des chemins, directement reliée aux scènes du livre. Il faut un peu de temps pour apprivoiser ces outils, mais vous ne le regretterez pas !"
         },
         {
           "sorte": "paragraphe",

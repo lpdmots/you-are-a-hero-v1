@@ -761,7 +761,7 @@
   color: #fff;
 }
 
-/* Pour aller plus loin : une ligne de choix comme à l'accueil, un seul bouton plein */
+/* Lire et essayer : une ligne de choix comme à l'accueil, un seul bouton plein */
 .plusLoin {
   margin-top: 88px;
 }
@@ -1073,4 +1073,34 @@
 /* Un encart au milieu d'une partie : le texte qui le suit reprend après un vide */
 .partie > .encart + p {
   margin-top: 1.4em;
+}
+
+/* Pour aller plus loin : des lectures sur d'autres sites, chacune sa raison, après la dernière question */
+.lectures {
+  margin-top: 72px;
+  max-width: 700px;
+}
+.lectures h2 {
+  margin: 0 0 14px;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+.lectures ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+.lectures li {
+  padding: 0 0 14px;
+  border-bottom: 1px solid var(--trait);
+  font-size: 1.04rem;
+  line-height: 1.6;
+}
+.lectures li:last-child {
+  border-bottom: 0;
+}
+.lectures + .plusLoin {
+  margin-top: 56px;
 }

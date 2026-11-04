@@ -106,7 +106,10 @@ function classer(m: string[]): Bloc {
 
 const haut = morceaux(jets[0]);
 const auteur = haut[2].join(" ").replace(/^\*|\*$/g, "");
-const plusLoin = haut.find((m) => m[0].startsWith("**Pour aller plus loin"))!.join(" ").replace(/^\*\*Pour aller plus loin\s?:\*\*\s*/, "");
+const plusLoin = haut.find((m) => m[0].startsWith("**Lire et essayer"))!.join(" ").replace(/^\*\*Lire et essayer\s?:\*\*\s*/, "");
+// « Pour aller plus loin » : les lectures, en liste sous le titre, après la dernière question
+const iLectures = haut.findIndex((m) => m[0].trim() === "**Pour aller plus loin**");
+if (iLectures < 0) throw new Error("« Pour aller plus loin » attendu dans le haut du document");
 const texte = {
   titre: haut[0][0].replace(/^# /, ""),
   definition: haut[1].join(" "),
@@ -119,6 +122,7 @@ const texte = {
     return { chiffre: m[1], texte: m[2], partie: Number(m[3]) };
   }),
   // « Ressources » attend sa page ; « La bibliothèque » et « Essayer Il était une classe » restent
+  lectures: (classer(haut[iLectures + 1]) as { elements: string[] }).elements,
   plusLoin: plusLoin
     .split(" · ")
     .filter((l) => !l.includes("Ressources"))

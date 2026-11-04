@@ -36,6 +36,8 @@ export type TexteDuGuide = {
   auteur: string;
   /** « En bref » : un chiffre, la phrase qui le suit, la question qui le développe */
   enBref: { chiffre: string; texte: string; partie: number }[];
+  /** « Pour aller plus loin » : des lectures sur d'autres sites, chacune avec ce qu'elle apporte */
+  lectures: string[];
   plusLoin: { libelle: string; adresse: string }[];
   parties: Partie[];
 };

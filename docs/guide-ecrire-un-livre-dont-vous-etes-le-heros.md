@@ -146,11 +146,26 @@ Décidé le 30 octobre 2026.
 >   trentaine d'images. Décidez du format à l'avance : le prix monte vite.
 >   (partie 12)
 >
-> **Sommaire** : les treize questions, chacune avec son ancre.
+> **Sommaire** : les quatorze questions, chacune avec son ancre.
 >
 > …
 >
-> **Pour aller plus loin :** [Ressources](…) · [La bibliothèque](…) ·
+> **Pour aller plus loin**
+>
+> - **Un projet vécu en CM1-CM2.** [Quand les élèves écrivent un livre interactif](https://www.cafepedagogique.net/2025/11/10/nicolas-zannettacci-quand-les-eleves-ecrivent-un-livre-interactif/) :
+>   le témoignage de Nicolas Zannettacci (Café pédagogique), de la collecte
+>   des idées aux dernières corrections.
+> - **Un autre projet, en CE2-CM2.** [Livre dont vous êtes le héros](https://lamouche.home.blog/2019/04/08/livre-dont-vous-etes-le-heros/) :
+>   à l'école de Nolay, chaque élève décrit un lieu, et les lieux reliés
+>   forment l'aventure.
+> - **Les bases du récit à choix.** [Écrire une histoire dont vous êtes le héros avec des élèves](https://www.quefaitesvous.com/blog/ecrire-une-histoire-dont-vous-etes-le-heros-avec-des-eleves-les-bases/)
+>   (Que faites-vous) : construire les embranchements et anticiper leurs
+>   conséquences.
+> - **D'autres structures.** [Introduction aux structures de la fiction interactive](https://www.fiction-interactive.fr/introduction-aux-structures-de-la-fiction-interactive-et-comment-les-utiliser/)
+>   (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà
+>   de la partie 6.
+>
+> **Lire et essayer :** [Ressources](…) · [La bibliothèque](…) ·
 > [Essayer Il était une classe](/)
 
 ## Ce que l'on sait déjà de la pratique du porteur
@@ -1183,8 +1198,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 > destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça !
 > Des outils gratuits comme [Twine](https://twinery.org/) ou
 > [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre
-> histoire et de retrouver les scènes bien plus facilement. Il faut un peu de
-> temps pour les apprivoiser, mais vous ne le regretterez pas !
+> histoire et de retrouver les scènes bien plus facilement. Il était une
+> classe propose aussi une vue des chemins, directement reliée aux scènes du
+> livre. Il faut un peu de temps pour apprivoiser ces outils, mais vous ne le
+> regretterez pas !
 >
 > **Réparez.** Les erreurs de liens et de numéros, c'est vous ; un texte qui
 > ne raccorde pas retourne à son auteur.
@@ -1622,12 +1639,17 @@ formulations à revérifier à la source avant publication.
 
 ## Reste à traiter avant publication
 
-- **Une section « Pour aller plus loin » en bas de page** (idée du porteur,
-  31 octobre 2026), qui pourrait rassembler les lectures utiles : le lien
-  vers Que faites-vous sur la structure, retiré de la partie 6 le même jour
-  (pas sûr qu'il soit le plus pertinent), les sources des parties 1 et 7,
-  d'autres à choisir. Le pied du guide a déjà « Pour aller plus loin » (la
-  bibliothèque, l'accueil).
+- **La section « Pour aller plus loin »** (idée du porteur, 31 octobre
+  2026) : écrite le 4 novembre 2026, sous la partie 14, d'après nos deux
+  sélections (la sienne venue de GPT), chaque page vérifiée en ligne ce
+  jour-là : Nicolas Zannettacci (Café pédagogique, 2025), l'école de Nolay
+  (2019), Que faites-vous « Les bases » (2024), Fiction-interactive.fr sur
+  les structures (2019). Écartés : la fiche de l'académie de Nice
+  (introuvable pour lui), Éduscol « Réinventer la fiction » (hors du
+  livre-jeu, surtout collège et lycée, une section où l'élève écrit avec une
+  IA), Littéraction (pour auteurs avancés), le CM1 de Saint-Cloud (site de
+  l'académie injoignable). Le pied, qui portait ce nom, devient « Lire et
+  essayer ». À revérifier juste avant la publication.
 
 - **La place de l'IA dans le projet** (demandé par le porteur le 30 octobre
   2026) : entretien fait le 4 novembre 2026, premier jet écrit (partie 13),

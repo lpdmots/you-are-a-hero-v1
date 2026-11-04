@@ -469,8 +469,18 @@ export default function Guide() {
               <Corps partie={p} />
             </section>
           ))}
+          <section className={styles.lectures} aria-labelledby="plus-loin-t">
+            <h2 id="plus-loin-t">Pour aller plus loin</h2>
+            <ul>
+              {T.lectures.map((l) => (
+                <li key={l}>
+                  <EnLigne texte={l} />
+                </li>
+              ))}
+            </ul>
+          </section>
           <footer className={styles.plusLoin}>
-            <h2>Pour aller plus loin</h2>
+            <h2>Lire et essayer</h2>
             {T.plusLoin.map((l) =>
               l.adresse === "/" ? (
                 <p key={l.adresse} className={styles.essayer}>
