@@ -468,7 +468,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Contrôlez les liens.",
-          "texte": "Faites un tableau, listez les scènes, notez leurs destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça ! Des outils gratuits comme [Twine](https://twinery.org/) ou [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre histoire et de retrouver les scènes bien plus facilement. Il était une classe propose aussi une vue des chemins, directement reliée aux scènes du livre. Il faut un peu de temps pour apprivoiser ces outils, mais vous ne le regretterez pas !"
+          "texte": "Faites un tableau, listez les scènes, notez leurs destinations, vérifiez chaque renvoi… Non, sérieusement, épargnez-vous ça ! Des outils gratuits comme [Twine](https://twinery.org/) ou [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre histoire et de retrouver les scènes bien plus facilement. Il faut un peu de temps pour les apprivoiser, mais vous ne le regretterez pas !"
+        },
+        {
+          "sorte": "encart",
+          "texte": "Dans Il était une classe, la vue « Chemins » de chaque chapitre se dessine seule, à partir des choix écrits dans les scènes."
         },
         {
           "sorte": "paragraphe",

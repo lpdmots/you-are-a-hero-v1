@@ -129,7 +129,7 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     image: {
       src: "/guide/chemins-le-pont-effondre.webp",
       alt: "La vue « Chemins » d’un chapitre : une énigme devant un pont effondré, quatre façons de traverser ; trois chemins se rejoignent sur la rive, le quatrième passe par une barque, et tous mènent au chapitre suivant.",
-      legende: "« Le pont effondré », un chapitre du livre d’exemple « Les passeurs de brume », dans la vue « Chemins » d’Il était une classe : quatre façons de traverser, trois chemins qui se rejoignent.",
+      legende: "« Le pont effondré », un chapitre du livre d’exemple « Les passeurs de brume » : quatre façons de traverser, trois chemins qui se rejoignent.",
       largeur: 1200,
       hauteur: 947,
       moyenne: true,
