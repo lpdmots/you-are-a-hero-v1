@@ -1184,7 +1184,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 - Extensions : il n'en veut pas pour cette partie.
 - Le 4 novembre 2026, à sa demande : la phrase sur la vue des chemins
   d'Il était une classe, entrée dans « Contrôlez les liens », passe dans un
-  encart sous l'arbre du « Pont effondré ».
+  encart sous l'arbre du « Pont effondré », puis retirée à sa demande : l'encart
+  de fin de partie suffit.
 - Repris le 2 novembre 2026 d'après sa version, analysée : repères
   provisoires pendant l'écriture, dernière vérification des renvois après la
   numérotation ; le tableau à la main écarté avec humour au profit d'outils
@@ -1212,9 +1213,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > [diagrams.net](https://app.diagrams.net/) permettent de visualiser votre
 > histoire et de retrouver les scènes bien plus facilement. Il faut un peu de
 > temps pour les apprivoiser, mais vous ne le regretterez pas !
->
-> *Encart.* Dans Il était une classe, la vue « Chemins » de chaque chapitre se
-> dessine seule, à partir des choix écrits dans les scènes.
 >
 > **Réparez.** Les erreurs de liens et de numéros, c'est vous ; un texte qui
 > ne raccorde pas retourne à son auteur.
