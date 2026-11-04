@@ -1,0 +1,212 @@
+/* La fiche « Consigne » de l'application, redessinée pour le guide (partie 13) : la carte blanche à
+   filet rose, le champ de la consigne avec son micro, « ✦ Formuler » en canard pâle (le bouton d'IA
+   de l'application), puis la liste de vérification à cocher, chaque élément retirable. Les valeurs
+   sont celles de l'application (page de la scène). */
+.cadre {
+  margin: 0;
+}
+/* Avant, la flèche, après : côte à côte, alignés en haut ; l'un sous l'autre sur téléphone */
+.paire {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+  align-items: start;
+}
+.colonne {
+  min-width: 0;
+}
+.moment {
+  margin: 0 0 8px;
+  font-family: var(--f-ui);
+  font-size: var(--t-xs);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-3);
+}
+.fleche {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  color: var(--graphite-2);
+}
+.fleche svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+@media (max-width: 760px) {
+  .paire {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 6px;
+  }
+  .fleche svg {
+    transform: rotate(90deg);
+  }
+}
+.cadre figcaption {
+  margin-top: 14px;
+  font-family: var(--f-ui);
+  font-size: 0.86rem;
+  line-height: 1.45;
+  color: var(--graphite-3);
+}
+.fiche {
+  background: var(--feuille);
+  border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--trait), var(--ombre-cahier);
+  font-family: var(--f-ui);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--graphite);
+}
+
+.tete {
+  margin: 0;
+  padding: 13px 16px 11px;
+  border-bottom: 2px solid var(--bristol);
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+.tete span {
+  margin-left: 6px;
+  font-weight: 700;
+  color: var(--graphite-3);
+}
+
+.corps {
+  padding: 14px 16px 18px;
+}
+
+/* Le champ de la consigne, le micro en bas à droite */
+.champ {
+  position: relative;
+  padding: 9px 11px 36px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 8px;
+  background: var(--feuille);
+}
+.champ p {
+  margin: 0;
+  line-height: 21px;
+}
+.micro {
+  position: absolute;
+  right: 7px;
+  bottom: 7px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--trait-fort);
+  border-radius: 50%;
+  background: var(--feuille);
+  color: var(--graphite-2);
+}
+.micro svg,
+.ia svg,
+.retirer svg,
+.ajouter svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.micro svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* « ✦ Formuler », le bouton d'IA de l'application */
+.ia {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 34px;
+  margin-top: 10px;
+  padding: 0 14px 0 11px;
+  border: 1px solid var(--ia-trait);
+  border-radius: 999px;
+  background: var(--ia-pale);
+  color: var(--ia-fonce);
+  font-weight: 700;
+}
+.ia svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* La liste de vérification, à part */
+.sousTitre {
+  margin: 18px 0 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+  font-weight: 800;
+}
+.liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.liste li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--trait);
+}
+.case {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--trait-fort);
+  border-radius: 4px;
+}
+.element {
+  flex: 1;
+}
+.retirer {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  color: var(--graphite-3);
+}
+.retirer svg {
+  width: 14px;
+  height: 14px;
+}
+.ajouter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+  font-weight: 700;
+  color: var(--canard);
+}
+.ajouter svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Avant : l'idée notée vite, le micro qui vient de servir, « Formuler » sur le point d'être pressé */
+.brouillon {
+  color: var(--graphite-2);
+}
+.microActif {
+  border-color: var(--canard);
+  color: var(--canard);
+}
+.iaAppuye {
+  box-shadow: 0 0 0 3px var(--ia-pale), 0 0 0 4px var(--ia-trait);
+}
+.vide {
+  margin: 4px 0 0;
+  color: var(--graphite-3);
+  font-style: italic;
+}

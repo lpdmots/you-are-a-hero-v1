@@ -1457,49 +1457,56 @@ chaque partie pendant l'entretien et prime sur les sources.
   tout ce qu'elle propose se trie ; aucun nom d'élève donné à l'IA, les
   familles prévenues. Question restée ouverte : se sert-il de ses idées
   devant la classe, ou seulement en préparant seul ? Le jet ne le dit pas.
+- Réécrit le 4 novembre 2026 après son accord : observations personnelles
+  réunies dans « Dans ma classe », exemple d'une idée transformée en consigne,
+  préservation du texte et relecture des corrections, images ramenées à un
+  renvoi. Les mentions sur les familles et les prénoms transmis à l'IA
+  sont ensuite retirées à sa demande.
+- Le même jour, après analyse de cette version : pour les choix, l'aide
+  quand on bloque revient à côté de la réserve ; le tableau de l'exemple
+  (une consigne qui était en fait une liste de vérification) cède la place à
+  la fiche « Consigne » de l'application dessinée avant et après « ✦
+  Formuler », avec deux ajouts qu'il prévoit : la dictée, et la liste de
+  vérification séparée de la consigne.
 
 #### Premier jet
 
 > ## Quelle place donner à l'IA ?
 >
-> **Un assistant pour vous, pas pour les élèves.** L'intelligence
-> artificielle peut vous faire gagner beaucoup de temps dans la préparation
-> et la finition du livre. Les élèves, eux, imaginent, écrivent et se
-> corrigent : le livre reste le leur.
+> **Une aide pour l'enseignant.** L'intelligence artificielle peut faire
+> gagner du temps dans la préparation et la finition du livre. Les élèves
+> imaginent l'histoire, écrivent et reprennent leurs textes : le livre reste
+> le leur.
 >
-> **Pour préparer l'histoire.** C'est un excellent réservoir d'idées :
-> univers, personnages, obstacles, rebondissements. Pour les choix, elle est
-> moins fine, car les subtilités d'un bon choix lui échappent souvent ; mais
-> quand on bloque, elle propose des possibilités auxquelles personne n'avait
-> pensé. Dans tous les cas, triez : gardez, retouchez ou écartez.
+> **Pour préparer l'histoire.** Demandez-lui des pistes d'univers, de
+> personnages, d'obstacles ou de choix. Triez ses propositions : gardez,
+> retouchez ou écartez selon l'histoire que vous construisez avec la classe.
 >
-> **Pour les consignes et les titres.** Donnez l'idée générale d'une scène :
-> l'IA la reformule en une consigne claire et prépare la liste de
-> vérification qui l'accompagne. Elle aide aussi à trouver des titres de
-> scènes, souvent le plus laborieux de l'organisation.
+> **Pour préparer les consignes.** À partir de votre idée d'une scène,
+> l'IA peut proposer une consigne et sa liste de vérification. Par exemple :
 >
-> **Pour la langue et les images.** Une fois le contenu validé et la langue
-> corrigée par l'élève (voir « Comment relire et garder la cohérence ? »),
-> l'IA peut proposer une version corrigée : l'orthographe seule, ou un peu
-> de grammaire pour les élèves les plus en difficulté. Elle peut aussi créer
-> les illustrations d'après les descriptions des élèves (voir « Comment
-> illustrer, imprimer et partager le livre ? »).
+> **Pour terminer les corrections.** Une fois le contenu validé et le texte
+> corrigé par l'élève (voir « Comment relire et garder la cohérence ? »),
+> vous pouvez demander à l'IA de reprendre les erreurs restantes :
+> l'orthographe seule, ou aussi la grammaire selon les besoins.
 >
-> **Le texte de l'élève reste le sien.** L'IA corrige la langue ; elle
-> n'invente pas le contenu d'une scène d'élève. Si vous écrivez vous-même la
-> scène d'un élève absent, elle ne porte plus son nom.
+> **Préserver le texte de l'élève.** Limitez les corrections à ce qui est
+> nécessaire, en conservant ses idées et sa manière de raconter. Relisez la
+> proposition avant de la retenir : une phrase plus élégante n'est pas
+> forcément plus fidèle à son texte.
 >
-> **Et les familles ?** Ne donnez jamais à l'IA le nom d'un élève, et
-> prévenez les familles de l'usage que vous en faites.
+> **Pour les illustrations.** L'IA peut aussi créer des images à partir des
+> descriptions des élèves (voir « Comment illustrer, imprimer et partager
+> le livre ? »).
 >
-> **Dans ma classe.** Je me sers de l'IA d'abord pour gagner du temps :
-> mettre au propre mes consignes, trouver des titres de scènes, corriger
-> l'orthographe, créer les images. Elle m'aide aussi à m'organiser et, quand
-> je bloque, à trouver des idées.
+> **Dans ma classe.** Trouver des titres de scènes me prend toujours du
+> temps : l'IA m'y aide beaucoup. Pour les choix, ses propositions sont
+> moins fines : je dois souvent les retravailler pour que les conséquences
+> soient intéressantes et cohérentes. Mais quand je bloque, elle trouve des
+> possibilités auxquelles je n'avais pas pensé.
 >
-> *Encart.* Dans Il était une classe, ces aides sont réservées à l'adulte :
-> les élèves n'ont accès à aucune IA. Aucun prénom d'élève ne lui est
-> envoyé.
+> *Encart.* Dans Il était une classe, les aides IA sont réservées à
+> l'adulte : les élèves n'y ont pas accès.
 
 ### 14. Erreurs à éviter
 

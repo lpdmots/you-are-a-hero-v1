@@ -658,41 +658,41 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Un assistant pour vous, pas pour les élèves.",
-          "texte": "L’intelligence artificielle peut vous faire gagner beaucoup de temps dans la préparation et la finition du livre. Les élèves, eux, imaginent, écrivent et se corrigent : le livre reste le leur."
+          "tete": "Une aide pour l’enseignant.",
+          "texte": "L’intelligence artificielle peut faire gagner du temps dans la préparation et la finition du livre. Les élèves imaginent l’histoire, écrivent et reprennent leurs textes : le livre reste le leur."
         },
         {
           "sorte": "paragraphe",
           "tete": "Pour préparer l’histoire.",
-          "texte": "C’est un excellent réservoir d’idées : univers, personnages, obstacles, rebondissements. Pour les choix, elle est moins fine, car les subtilités d’un bon choix lui échappent souvent ; mais quand on bloque, elle propose des possibilités auxquelles personne n’avait pensé. Dans tous les cas, triez : gardez, retouchez ou écartez."
+          "texte": "Demandez-lui des pistes d’univers, de personnages, d’obstacles ou de choix. Triez ses propositions : gardez, retouchez ou écartez selon l’histoire que vous construisez avec la classe."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Pour les consignes et les titres.",
-          "texte": "Donnez l’idée générale d’une scène : l’IA la reformule en une consigne claire et prépare la liste de vérification qui l’accompagne. Elle aide aussi à trouver des titres de scènes, souvent le plus laborieux de l’organisation."
+          "tete": "Pour préparer les consignes.",
+          "texte": "À partir de votre idée d’une scène, l’IA peut proposer une consigne et sa liste de vérification. Par exemple :"
         },
         {
           "sorte": "paragraphe",
-          "tete": "Pour la langue et les images.",
-          "texte": "Une fois le contenu validé et la langue corrigée par l’élève (voir « Comment relire et garder la cohérence ? »), l’IA peut proposer une version corrigée : l’orthographe seule, ou un peu de grammaire pour les élèves les plus en difficulté. Elle peut aussi créer les illustrations d’après les descriptions des élèves (voir « Comment illustrer, imprimer et partager le livre ? »)."
+          "tete": "Pour terminer les corrections.",
+          "texte": "Une fois le contenu validé et le texte corrigé par l’élève (voir « Comment relire et garder la cohérence ? »), vous pouvez demander à l’IA de reprendre les erreurs restantes : l’orthographe seule, ou aussi la grammaire selon les besoins."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Le texte de l’élève reste le sien.",
-          "texte": "L’IA corrige la langue ; elle n’invente pas le contenu d’une scène d’élève. Si vous écrivez vous-même la scène d’un élève absent, elle ne porte plus son nom."
+          "tete": "Préserver le texte de l’élève.",
+          "texte": "Limitez les corrections à ce qui est nécessaire, en conservant ses idées et sa manière de raconter. Relisez la proposition avant de la retenir : une phrase plus élégante n’est pas forcément plus fidèle à son texte."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Et les familles ?",
-          "texte": "Ne donnez jamais à l’IA le nom d’un élève, et prévenez les familles de l’usage que vous en faites."
+          "tete": "Pour les illustrations.",
+          "texte": "L’IA peut aussi créer des images à partir des descriptions des élèves (voir « Comment illustrer, imprimer et partager le livre ? »)."
         },
         {
           "sorte": "classe",
-          "texte": "Je me sers de l’IA d’abord pour gagner du temps : mettre au propre mes consignes, trouver des titres de scènes, corriger l’orthographe, créer les images. Elle m’aide aussi à m’organiser et, quand je bloque, à trouver des idées."
+          "texte": "Trouver des titres de scènes me prend toujours du temps : l’IA m’y aide beaucoup. Pour les choix, ses propositions sont moins fines : je dois souvent les retravailler pour que les conséquences soient intéressantes et cohérentes. Mais quand je bloque, elle trouve des possibilités auxquelles je n’avais pas pensé."
         },
         {
           "sorte": "encart",
-          "texte": "Dans Il était une classe, ces aides sont réservées à l’adulte : les élèves n’ont accès à aucune IA. Aucun prénom d’élève ne lui est envoyé."
+          "texte": "Dans Il était une classe, les aides IA sont réservées à l’adulte : les élèves n’y ont pas accès."
         }
       ]
     },

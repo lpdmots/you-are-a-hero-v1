@@ -23,6 +23,7 @@ import { TEXTE_DU_GUIDE as T } from "@/domaine/texte-du-guide";
 import { adresseDuSite } from "@/serveur/env";
 import { Annee } from "./Annee";
 import { Choix } from "./Choix";
+import { ConsigneDansLApp } from "./ConsigneDansLApp";
 import { JetDeDe } from "./JetDeDe";
 import { Parcours } from "./Parcours";
 import { Schemas } from "./Schemas";
@@ -364,6 +365,12 @@ function Corps({ partie }: { partie: Partie }) {
               {DECOUPAGE_EN_IMAGES.map((image) => (
                 <Photo key={image.src} image={image} />
               ))}
+            </div>
+          ) : null}
+          {/* La fiche « Consigne » de l'application (partie 13), sous « Pour préparer les consignes » */}
+          {ancreDe(partie.numero) === "ia" && b.sorte === "paragraphe" && b.tete === "Pour préparer les consignes." ? (
+            <div className={styles.large}>
+              <ConsigneDansLApp />
             </div>
           ) : null}
           {/* Un choix et ses conséquences (partie 7), sous « Donnez une raison de choisir » */}
