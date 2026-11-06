@@ -1668,6 +1668,9 @@ formulations à revérifier à la source avant publication.
 
 ## À vérifier avant publication
 
+- La date de mise à jour (`DATE_DU_GUIDE`, `app/src/domaine/guide.ts`, encore
+  au 30 octobre 2026) : celle du jour de la publication, posée au moment de
+  pousser.
 - Les références exactes des programmes, sur le Bulletin officiel (cycle 2
   au BO n° 41 du 31 octobre 2024, EMC, compétences numériques) ; le cycle 3
   est vérifié pour la partie 1 le 30 octobre 2026.
