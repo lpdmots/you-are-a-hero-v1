@@ -240,7 +240,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
             "L’élève écrit sur papier et se relit avec sa liste de vérification.",
             "Vous vérifiez le contenu et demandez, si besoin, des améliorations.",
             "L’élève corrige son orthographe avec ses outils, puis saisit son texte à l’ordinateur.",
-            "Il soumet sa scène. Plus tard, vous la validez, la corrigez ou demandez une reprise."
+            "Il remet sa scène. Plus tard, vous la validez, la corrigez ou demandez une reprise."
           ],
           "ordonnee": true
         },
@@ -379,7 +379,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Relisez d’abord l’histoire, puis la langue.",
-          "texte": "Sur le brouillon, vérifiez uniquement le contenu : la consigne est-elle respectée ? La scène est-elle cohérente ? Ce parti pris peut surprendre, mais inutile de corriger l’orthographe d’un texte qu’il faudra peut-être réécrire. Une fois le contenu validé, l’élève corrige sa langue avec ses outils, puis saisit son texte à l’ordinateur. Vous effectuez la dernière vérification après sa soumission."
+          "texte": "Sur le brouillon, vérifiez uniquement le contenu : la consigne est-elle respectée ? La scène est-elle cohérente ? Ce parti pris peut surprendre, mais inutile de corriger l’orthographe d’un texte qu’il faudra peut-être réécrire. Une fois le contenu validé, l’élève corrige sa langue avec ses outils, puis saisit son texte à l’ordinateur. Vous effectuez la dernière vérification après sa remise."
         },
         {
           "sorte": "paragraphe",

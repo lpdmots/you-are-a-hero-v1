@@ -705,7 +705,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > 2. Vous vérifiez le contenu et demandez, si besoin, des améliorations.
 > 3. L'élève corrige son orthographe avec ses outils, puis saisit son texte à
 >    l'ordinateur.
-> 4. Il soumet sa scène. Plus tard, vous la validez, la corrigez ou demandez
+> 4. Il remet sa scène. Plus tard, vous la validez, la corrigez ou demandez
 >    une reprise.
 >
 > Si les ordinateurs manquent, les élèves se relaient. La dictée vocale peut
@@ -1021,7 +1021,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > l'orthographe d'un texte qu'il faudra peut-être réécrire. Une fois le
 > contenu validé, l'élève corrige sa langue avec ses outils, puis saisit son
 > texte à l'ordinateur. Vous effectuez la dernière vérification après sa
-> soumission.
+> remise.
 >
 > **Faites enrichir les textes.** Certains élèves, pressés de passer à la
 > scène suivante, écrivent le strict minimum. Plutôt que d'exiger un texte
