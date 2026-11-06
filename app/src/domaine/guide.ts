@@ -98,8 +98,8 @@ export type ImageDuGuide = {
 };
 
 export const COUVERTURES_DU_GUIDE: (ImageDuGuide & { titre: string; note: string })[] = [
-  { titre: "Électro Nick", note: "323 passages", src: "/guide/couverture-electro-nick.webp", alt: "Couverture d’« Électro Nick »", largeur: 960, hauteur: 1414 },
-  { titre: "Le labyrinthe oublié", note: "213 passages", src: "/guide/couverture-labyrinthe.webp", alt: "Couverture du « Labyrinthe oublié »", largeur: 960, hauteur: 1414 },
+  { titre: "Électro Nick", note: "323 scènes", src: "/guide/couverture-electro-nick.webp", alt: "Couverture d’« Électro Nick »", largeur: 960, hauteur: 1414 },
+  { titre: "Le labyrinthe oublié", note: "213 scènes", src: "/guide/couverture-labyrinthe.webp", alt: "Couverture du « Labyrinthe oublié »", largeur: 960, hauteur: 1414 },
   { titre: "Bouquin mène l’enquête", note: "livre d’exemple", src: "/guide/couverture-bouquin.webp", alt: "Couverture de « Bouquin mène l’enquête »", largeur: 666, hauteur: 999 },
 ];
 
@@ -140,7 +140,7 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     apres: "C’est un livre\u00a0! Un vrai.",
     image: {
       src: "/accueil/photo-des-livres.webp",
-      alt: "« Le labyrinthe oublié » ouvert sur sa feuille d’aventure et son premier passage, « Électro Nick » à côté, un crayon et un dé.",
+      alt: "« Le labyrinthe oublié » ouvert sur sa feuille d’aventure et sa première scène, « Électro Nick » à côté, un crayon et un dé.",
       legende: "« Le labyrinthe oublié », ouvert sur sa feuille d’aventure, et « Électro Nick », imprimés.",
       largeur: 1300,
       hauteur: 975,
@@ -191,7 +191,7 @@ export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDu
   illustrer: {
     src: "/guide/livre-compose-electro-nick.webp",
     telephone: { src: "/guide/livre-compose-electro-nick-telephone.webp", largeur: 800, hauteur: 640 },
-    alt: "Une double page d’« Électro Nick » composée par le site : les passages 57 à 59, leurs illustrations et leurs choix.",
+    alt: "Une double page d’« Électro Nick » composée par le site : les scènes 57 à 59, leurs illustrations et leurs choix.",
     largeur: 1600,
     hauteur: 1135,
   },

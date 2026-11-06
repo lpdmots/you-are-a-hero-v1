@@ -115,7 +115,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Une classe à plusieurs niveaux, un seul livre.",
-          "texte": "Les plus autonomes écrivent des chapitres plus longs ou les passages délicats, les autres des scènes plus courtes, avec davantage d’aide. Les chapitres n’ont pas besoin d’avoir la même longueur."
+          "texte": "Les plus autonomes écrivent des chapitres plus longs ou les scènes délicates, les autres des scènes plus courtes, avec davantage d’aide. Les chapitres n’ont pas besoin d’avoir la même longueur."
         },
         {
           "sorte": "paragraphe",
@@ -288,7 +288,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "elements": [
             "**Les branches qui se rejoignent :** plusieurs chemins différents mènent à une même scène.",
             "**Le carrefour :** le lecteur explore plusieurs directions et revient au même endroit avant de poursuivre.",
-            "**Le détour facultatif :** le lecteur peut explorer un passage supplémentaire, découvrir un secret ou récupérer un objet avant de retrouver l’histoire principale."
+            "**Le détour facultatif :** le lecteur peut explorer une scène supplémentaire, découvrir un secret ou récupérer un objet avant de retrouver l’histoire principale."
           ]
         },
         {
@@ -309,7 +309,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Choisissez comment l’aventure se termine.",
-          "texte": "Le plus simple est de laisser tous les lecteurs aller au bout, avec différentes fins selon leurs réussites. Vous pouvez aussi prévoir quelques défaites prématurées, notamment au début, quand recommencer est facile : le lecteur voit que ses décisions comptent. Dans un livre plus long, des points de sauvegarde permettent de reprendre à un passage donné, avec les objets et les points conservés à ce moment-là."
+          "texte": "Le plus simple est de laisser tous les lecteurs aller au bout, avec différentes fins selon leurs réussites. Vous pouvez aussi prévoir quelques défaites prématurées, notamment au début, quand recommencer est facile : le lecteur voit que ses décisions comptent. Dans un livre plus long, des points de sauvegarde permettent de reprendre à une scène donnée, avec les objets et les points conservés à ce moment-là."
         },
         {
           "sorte": "classe",
@@ -379,7 +379,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Relisez d’abord l’histoire, puis la langue.",
-          "texte": "Sur le brouillon, vérifiez uniquement le contenu : la consigne est-elle respectée ? La scène est-elle cohérente ? Ce parti pris peut surprendre, mais inutile de corriger l’orthographe d’un passage qu’il faudra peut-être réécrire. Une fois le contenu validé, l’élève corrige sa langue avec ses outils, puis saisit son texte à l’ordinateur. Vous effectuez la dernière vérification après sa soumission."
+          "texte": "Sur le brouillon, vérifiez uniquement le contenu : la consigne est-elle respectée ? La scène est-elle cohérente ? Ce parti pris peut surprendre, mais inutile de corriger l’orthographe d’un texte qu’il faudra peut-être réécrire. Une fois le contenu validé, l’élève corrige sa langue avec ses outils, puis saisit son texte à l’ordinateur. Vous effectuez la dernière vérification après sa soumission."
         },
         {
           "sorte": "paragraphe",
