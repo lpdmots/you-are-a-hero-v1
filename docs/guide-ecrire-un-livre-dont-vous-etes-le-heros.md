@@ -123,6 +123,17 @@ Décidé le 30 octobre 2026.
   note « Avant de commencer », au « je », sous la ligne d'auteur et dans la
   forme de « Dans ma classe » : un retour d'expérience, pas des règles. Les
   conseils restent au « vous » et à l'impératif.
+- Relecture finale du 6 novembre 2026, point par point avec lui. Laissés en
+  l'état, décidé par lui : l'encart de la partie 13, qui montre la dictée et
+  la liste de vérification avant qu'elles existent dans l'outil (à
+  construire très bientôt) ; un obstacle par élève dans « En bref » à côté
+  des trois par chapitre de la partie 5 ; le nom de l'outil en partie 3 (la
+  bibliothèque) et dans « Dans ma classe » de la partie 11 (le temps divisé
+  par deux), exceptions à la règle des encarts ; « prêt pour l'imprimeur »
+  avant le premier envoi (V6) ; « chacun tient entre ses mains un véritable
+  livre » malgré l'achat facultatif ; le nombre d'élèves par chapitre (« seul
+  ou à deux », « deux ou trois ») ; pas de coupe de 15 à 20 % : la longueur
+  reste celle-ci.
 
 #### Premier jet
 
