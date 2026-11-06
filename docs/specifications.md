@@ -11747,12 +11747,12 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC52 — Le guide se lit :** étant donné un visiteur qui ouvre
   `/guide/ecrire-un-livre-dont-vous-etes-le-heros`, alors il lit le titre, la
   définition, l'auteur et la date de mise à jour, « En bref », puis un
-  sommaire des treize questions dont chaque ligne mène à sa question ; sur
+  sommaire des quatorze questions dont chaque ligne mène à sa question ; sur
   grand écran, le sommaire reste à côté du texte et marque la question qu'on
   lit ; sur téléphone, un bouton « Sommaire » paraît une fois le sommaire
   dépassé ; le texte est celui du
   [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md)
-  (`npm run guide:texte`), six encarts de l'outil au plus, et il ne renvoie à
+  (`npm run guide:texte`), cinq encarts de l'outil au plus, et il ne renvoie à
   aucune page qui n'existe pas encore (« Ressources »).
 - **F14-AC53 — Le guide se trouve :** étant donné le plan du site,
   `robots.txt` et `llms.txt`, alors le guide y est, ses images ouvertes aux

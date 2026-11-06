@@ -12,7 +12,7 @@ const SITE = "https://iletaituneclasse.com";
 afterEach(() => vi.unstubAllEnvs());
 
 describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa classe »", () => {
-  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, six encarts au plus, aucun renvoi à « Ressources »", () => {
+  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, cinq encarts au plus, aucun renvoi à « Ressources »", () => {
     expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros avec sa classe");
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
     expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
@@ -23,7 +23,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa
     expect(T.parties.every((p) => p.titre.endsWith("?") || p.numero === 14)).toBe(true);
     expect(new Set(ANCRES).size).toBe(T.parties.length);
     const encarts = T.parties.flatMap((p) => p.blocs).filter((b) => b.sorte === "encart");
-    expect(encarts.length).toBeLessThanOrEqual(6);
+    expect(encarts.length).toBeLessThanOrEqual(5);
     expect(JSON.stringify(T)).not.toContain("Ressources");
     expect(T.plusLoin.map((l) => l.adresse)).toEqual(["/bibliotheque", "/"]);
     // Pour aller plus loin : des lectures sur d'autres sites, chacune avec son lien

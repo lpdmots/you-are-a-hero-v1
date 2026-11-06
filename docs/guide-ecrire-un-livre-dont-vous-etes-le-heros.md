@@ -98,7 +98,9 @@ Décidé le 30 octobre 2026.
   plus, puis une capture cadrée sur le bénéfice annoncé. Retirés : la
   Préparation (partie 4, que le schéma explique) et le temps gagné (partie
   11), passé dans « Dans ma classe ». Ce qui touche à l'IA (correction,
-  images, idées de choix) attend la partie sur l'IA.
+  images, idées de choix) attend la partie sur l'IA, qui a reçu le
+  4 novembre 2026 le cinquième encart (« Formuler » la consigne) : cinq au
+  plus, comme le vérifie le test du guide (F14-AC52).
 - Pied : « Ressources » (quand la page existera), la bibliothèque, l'accueil
   (« Essayer Il était une classe ») ; les sources restent citées dans le
   texte (parties 6 et 7).
