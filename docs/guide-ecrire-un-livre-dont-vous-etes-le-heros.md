@@ -309,11 +309,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **C'est un jeu !** Inventer des chemins secrets, tendre des pièges aux
 > lecteurs, imaginer des choix difficiles et des fins surprenantes… Les
-> élèves ne se contentent plus de raconter une histoire : ils créent une
-> aventure dans laquelle d'autres vont jouer. Et si un chemin ne mène nulle
-> part, le lecteur reste bloqué : on reprend son texte sans rechigner.
-> L'écriture devient elle-même un jeu, et l'envie de découvrir les chapitres
-> des camarades donne une bonne raison de poursuivre le projet, séance après
+> élèves créent une aventure où d'autres vont jouer. Et si un chemin ne mène
+> nulle part, le lecteur reste bloqué : on reprend son texte sans rechigner.
+> L'envie de découvrir les chapitres des camarades donne une bonne raison de poursuivre le projet, séance après
 > séance.
 >
 > **Dans ma classe.** Je sais qu'un projet fonctionne quand :
@@ -485,8 +483,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > Demandez à la classe ce qu'elle a aimé et ce qu'elle ne veut pas dans son
 > livre : cette liste lui servira à fixer ses règles.
 >
-> **Montrez que c'est possible.** Rien de tel qu'un livre écrit par une
-> autre classe pour donner envie de se lancer : feuilletez-le ensemble. Si
+> **Montrez que c'est possible.** Un livre écrit par une autre classe montre
+> que c'est possible : feuilletez-le ensemble. Si
 > vous n'en avez pas encore, la bibliothèque d'Il était une classe en
 > propose à lire en ligne.
 >
@@ -904,7 +902,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 
 > ## Comment organiser les choix ?
 >
-> C'est sans doute l'étape la plus difficile : inventer des choix
+> Pour les élèves, c'est l'étape la plus difficile : inventer des choix
 > intéressants, dont les conséquences restent logiques. Le lecteur ne doit
 > pas simplement choisir au hasard, mais pouvoir réfléchir aux différentes
 > possibilités.

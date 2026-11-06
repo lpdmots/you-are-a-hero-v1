@@ -67,7 +67,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "C’est un jeu !",
-          "texte": "Inventer des chemins secrets, tendre des pièges aux lecteurs, imaginer des choix difficiles et des fins surprenantes… Les élèves ne se contentent plus de raconter une histoire : ils créent une aventure dans laquelle d’autres vont jouer. Et si un chemin ne mène nulle part, le lecteur reste bloqué : on reprend son texte sans rechigner. L’écriture devient elle-même un jeu, et l’envie de découvrir les chapitres des camarades donne une bonne raison de poursuivre le projet, séance après séance."
+          "texte": "Inventer des chemins secrets, tendre des pièges aux lecteurs, imaginer des choix difficiles et des fins surprenantes… Les élèves créent une aventure où d’autres vont jouer. Et si un chemin ne mène nulle part, le lecteur reste bloqué : on reprend son texte sans rechigner. L’envie de découvrir les chapitres des camarades donne une bonne raison de poursuivre le projet, séance après séance."
         },
         {
           "sorte": "classe",
@@ -141,7 +141,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Montrez que c’est possible.",
-          "texte": "Rien de tel qu’un livre écrit par une autre classe pour donner envie de se lancer : feuilletez-le ensemble. Si vous n’en avez pas encore, la bibliothèque d’Il était une classe en propose à lire en ligne."
+          "texte": "Un livre écrit par une autre classe montre que c’est possible : feuilletez-le ensemble. Si vous n’en avez pas encore, la bibliothèque d’Il était une classe en propose à lire en ligne."
         },
         {
           "sorte": "paragraphe",
@@ -324,7 +324,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": null,
-          "texte": "C’est sans doute l’étape la plus difficile : inventer des choix intéressants, dont les conséquences restent logiques. Le lecteur ne doit pas simplement choisir au hasard, mais pouvoir réfléchir aux différentes possibilités."
+          "texte": "Pour les élèves, c’est l’étape la plus difficile : inventer des choix intéressants, dont les conséquences restent logiques. Le lecteur ne doit pas simplement choisir au hasard, mais pouvoir réfléchir aux différentes possibilités."
         },
         {
           "sorte": "paragraphe",
