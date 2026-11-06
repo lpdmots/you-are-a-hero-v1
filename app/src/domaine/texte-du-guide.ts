@@ -10,7 +10,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "enBref": [
     {
       "chiffre": "1 à 3 mois",
-      "texte": "d’écriture avec la classe : une ou deux périodes pour un premier livre, trois mois pour un grand.",
+      "texte": "d’écriture avec la classe : une ou deux périodes (six à sept semaines chacune) pour un premier livre, trois mois pour un grand.",
       "partie": 11
     },
     {
@@ -74,7 +74,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "texte": "Je sais qu’un projet fonctionne quand :",
           "elements": [
             "une séance d’écriture se prolonge pendant deux heures sans que personne ne demande à arrêter ;",
-            "toutes les mains se lèvent quand je propose de continuer en APC ;",
+            "toutes les mains se lèvent quand je propose de continuer en APC (activités pédagogiques complémentaires, hors du temps de classe) ;",
             "les plus rapides proposent leur aide à ceux qui peinent à finir leur chapitre, plutôt que de considérer leur travail terminé ;",
             "l’année suivante, des élèves montrent fièrement leur livre à leurs nouveaux professeurs."
           ]

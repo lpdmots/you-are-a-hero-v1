@@ -142,7 +142,7 @@ Décidé le 30 octobre 2026.
 >
 > **En bref**
 >
-> - **1 à 3 mois** d'écriture avec la classe : une ou deux périodes pour un premier
+> - **1 à 3 mois** d'écriture avec la classe : une ou deux périodes (six à sept semaines chacune) pour un premier
 >   livre, trois mois pour un grand. (partie 11)
 > - **20 h** de travail pour vous sur un grand livre : préparer le plan du livre et les
 >   consignes, relire, ajouter les illustrations ; pas seulement corriger des
@@ -320,7 +320,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > - une séance d'écriture se prolonge pendant deux heures sans que personne
 >   ne demande à arrêter ;
-> - toutes les mains se lèvent quand je propose de continuer en APC ;
+> - toutes les mains se lèvent quand je propose de continuer en APC (activités pédagogiques complémentaires, hors du temps de classe) ;
 > - les plus rapides proposent leur aide à ceux qui peinent à finir leur
 >   chapitre, plutôt que de considérer leur travail terminé ;
 > - l'année suivante, des élèves montrent fièrement leur livre à leurs
