@@ -915,7 +915,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > - **Explorer** — *Où aller ?* Visiter une grotte mystérieuse ou poursuivre
 >   son chemin.
 > - **Changer de méthode** — *Comment agir ?* Escalader un mur ou convaincre le
->   garde de nous laisser passer.
+>   garde de te laisser passer.
 > - **Observer et réfléchir** — *Quel indice utiliser ?* Examiner les symboles
 >   d'une porte ou tenter de l'ouvrir directement.
 > - **Faire un compromis** — *Que sacrifier pour obtenir autre chose ?*
