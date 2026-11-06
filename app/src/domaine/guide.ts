@@ -141,7 +141,7 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     image: {
       src: "/accueil/photo-des-livres.webp",
       alt: "« Le labyrinthe oublié » ouvert sur sa feuille d’aventure et son premier passage, « Électro Nick » à côté, un crayon et un dé.",
-      legende: "Deux de nos livres imprimés : « Le labyrinthe oublié », ouvert sur sa feuille d’aventure, et « Électro Nick ».",
+      legende: "« Le labyrinthe oublié », ouvert sur sa feuille d’aventure, et « Électro Nick », imprimés.",
       largeur: 1300,
       hauteur: 975,
     },

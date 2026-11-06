@@ -625,7 +625,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
               "17 €"
             ],
             [
-              "[« Électro Nick »](/bibliotheque/electro-nick), notre plus grand livre",
+              "[« Électro Nick »](/bibliotheque/electro-nick), un très grand livre",
               "248",
               "150",
               "12 €",
