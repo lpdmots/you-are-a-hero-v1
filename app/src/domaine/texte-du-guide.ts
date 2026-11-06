@@ -10,7 +10,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "enBref": [
     {
       "chiffre": "1 à 3 mois",
-      "texte": "avec la classe : une ou deux périodes pour un premier livre, trois mois pour un grand.",
+      "texte": "d’écriture avec la classe : une ou deux périodes pour un premier livre, trois mois pour un grand.",
       "partie": 11
     },
     {
@@ -313,7 +313,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         },
         {
           "sorte": "classe",
-          "texte": "« Le labyrinthe oublié » compte 13 chapitres, 213 scènes et quatre fins selon la réussite, plus une fin secrète. « Électro Nick » compte 19 chapitres et 323 scènes, avec des sauvegardes et des chapitres alternatifs, comme la forêt de champignons géants ou le lac d’acide. Ces deux livres ont demandé environ trois mois de travail."
+          "texte": "« Le labyrinthe oublié » compte 13 chapitres, 213 scènes et quatre fins selon la réussite, plus une fin secrète. « Électro Nick » compte 19 chapitres et 323 scènes, avec des sauvegardes et des chapitres alternatifs, comme la forêt de champignons géants ou le lac d’acide. Ces deux livres ont demandé environ trois mois d’écriture."
         }
       ]
     },
@@ -502,7 +502,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Deux formats.",
-          "texte": "Un premier livre d’environ 80 scènes peut s’écrire en une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez plutôt deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
+          "texte": "Un premier livre d’environ 80 scènes peut s’écrire en une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez plutôt une ou deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
         },
         {
           "sorte": "paragraphe",

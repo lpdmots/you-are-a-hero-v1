@@ -142,7 +142,7 @@ Décidé le 30 octobre 2026.
 >
 > **En bref**
 >
-> - **1 à 3 mois** avec la classe : une ou deux périodes pour un premier
+> - **1 à 3 mois** d'écriture avec la classe : une ou deux périodes pour un premier
 >   livre, trois mois pour un grand. (partie 11)
 > - **20 h** de travail pour vous : préparer le plan du livre et les
 >   consignes, relire, ajouter les illustrations ; pas seulement corriger des
@@ -840,7 +840,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > 213 scènes et quatre fins selon la réussite, plus une fin secrète.
 > « Électro Nick » compte 19 chapitres et 323 scènes, avec des sauvegardes et
 > des chapitres alternatifs, comme la forêt de champignons géants ou le lac
-> d'acide. Ces deux livres ont demandé environ trois mois de travail.
+> d'acide. Ces deux livres ont demandé environ trois mois d'écriture.
 
 ### 7. Organiser les choix
 
@@ -1296,7 +1296,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Deux formats.** Un premier livre d'environ 80 scènes peut s'écrire en
 > une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez
-> plutôt deux périodes d'écriture, auxquelles s'ajoutent la découverte des
+> plutôt une ou deux périodes d'écriture, auxquelles s'ajoutent la découverte des
 > livres-jeux, la préparation de l'histoire et la fabrication du livre.
 >
 > **Les étapes d'un grand livre.** Un calendrier possible, à adapter selon
