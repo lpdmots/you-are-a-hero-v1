@@ -141,7 +141,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Montrez que c’est possible.",
-          "texte": "Un livre écrit par une autre classe montre que c’est possible : feuilletez-le ensemble. Si vous n’en avez pas encore, la bibliothèque d’Il était une classe en propose à lire en ligne."
+          "texte": "Un livre écrit par une autre classe le prouve : feuilletez-le ensemble. Si vous n’en avez pas encore, la bibliothèque d’Il était une classe en propose à lire en ligne."
         },
         {
           "sorte": "paragraphe",

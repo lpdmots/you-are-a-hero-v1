@@ -497,8 +497,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 > Demandez à la classe ce qu'elle a aimé et ce qu'elle ne veut pas dans son
 > livre : cette liste lui servira à fixer ses règles.
 >
-> **Montrez que c'est possible.** Un livre écrit par une autre classe montre
-> que c'est possible : feuilletez-le ensemble. Si
+> **Montrez que c'est possible.** Un livre écrit par une autre classe le
+> prouve : feuilletez-le ensemble. Si
 > vous n'en avez pas encore, la bibliothèque d'Il était une classe en
 > propose à lire en ligne.
 >
