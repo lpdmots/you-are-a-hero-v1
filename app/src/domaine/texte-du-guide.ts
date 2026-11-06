@@ -582,7 +582,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "La couverture.",
-          "texte": "Réalisez-la vous-même ou concevez-la avec les élèves. Dans tous les cas, soignez-la : c’est la première chose que les lecteurs découvriront !"
+          "texte": "Réalisez-la vous-même ou concevez-la avec les élèves. Dans tous les cas, soignez-la."
         },
         {
           "sorte": "classe",
@@ -646,7 +646,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Faites-le vivre.",
-          "texte": "Gardez un exemplaire à la bibliothèque de l’école, organisez une lecture dans une autre classe, laissez les élèves découvrir les aventures écrites par leurs camarades. Partager enfin le livre terminé est un beau moment !"
+          "texte": "Gardez un exemplaire à la bibliothèque de l’école, organisez une lecture dans une autre classe, laissez les élèves découvrir les aventures écrites par leurs camarades."
         },
         {
           "sorte": "paragraphe",

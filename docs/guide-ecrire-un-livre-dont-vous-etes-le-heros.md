@@ -133,7 +133,8 @@ Décidé le 30 octobre 2026.
   avant le premier envoi (V6) ; « chacun tient entre ses mains un véritable
   livre » malgré l'achat facultatif ; le nombre d'élèves par chapitre (« seul
   ou à deux », « deux ou trois ») ; pas de coupe de 15 à 20 % : la longueur
-  reste celle-ci.
+  reste celle-ci. Changé ensuite : deux périodes d'écriture pour un grand
+  livre, tableau compris (il gardait « une ou deux »).
 
 #### Premier jet
 
@@ -1423,8 +1424,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > demande parfois quelques ajustements.
 >
 > **La couverture.** Réalisez-la vous-même ou concevez-la avec les élèves.
-> Dans tous les cas, soignez-la : c'est la première chose que les lecteurs
-> découvriront !
+> Dans tous les cas, soignez-la.
 >
 > **Dans ma classe.** Je préfère les illustrations créées avec une IA, et je
 > réalise moi-même la couverture. Je cherche à donner aux élèves un livre
@@ -1461,8 +1461,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Faites-le vivre.** Gardez un exemplaire à la bibliothèque de l'école,
 > organisez une lecture dans une autre classe, laissez les élèves découvrir
-> les aventures écrites par leurs camarades. Partager enfin le livre terminé
-> est un beau moment !
+> les aventures écrites par leurs camarades.
 >
 > **Les autorisations.** Les textes et les dessins des élèves sont protégés
 > par le droit d'auteur. Avant d'imprimer ou de diffuser le livre, recueillez
