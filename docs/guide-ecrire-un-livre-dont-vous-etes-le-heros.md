@@ -1433,7 +1433,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > | [« Les passeurs de brume »](/bibliotheque/les-passeurs-de-brume), livre d'exemple du site | 32 | 10 | 4 € | 5 € |
 > | Un livre moyen | 80 | 30 | 6 € | 10 € |
 > | [« Le labyrinthe oublié »](/bibliotheque/le-labyrinthe-oublie) | 140 | 85 | 8 € | 17 € |
-> | [« Électro Nick »](/bibliotheque/electro-nick), un très grand livre | 248 | 150 | 12 € | 29 € |
+> | [« Électro Nick »](/bibliotheque/electro-nick), un très long livre | 248 | 152 | 12 € | 29 € |
 >
 > **Un exemplaire d'essai d'abord.** Commandez-en un pour vérifier le rendu
 > et corriger les dernières erreurs avant l'impression générale. Prévoyez
