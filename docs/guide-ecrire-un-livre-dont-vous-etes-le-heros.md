@@ -174,7 +174,8 @@ Décidé le 30 octobre 2026.
 >   conséquences.
 > - **D'autres structures.** [Introduction aux structures de la fiction interactive](https://www.fiction-interactive.fr/introduction-aux-structures-de-la-fiction-interactive-et-comment-les-utiliser/)
 >   (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà
->   de la partie 6.
+>   des trois formes de « Combien de chapitres, de scènes et de choix
+>   prévoir ? ».
 >
 > **Lire et essayer :** [Ressources](…) · [La bibliothèque](…) ·
 > [Essayer Il était une classe](/)

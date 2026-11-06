@@ -38,7 +38,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     "**Un projet vécu en CM1-CM2.** [Quand les élèves écrivent un livre interactif](https://www.cafepedagogique.net/2025/11/10/nicolas-zannettacci-quand-les-eleves-ecrivent-un-livre-interactif/) : le témoignage de Nicolas Zannettacci (Café pédagogique), de la collecte des idées aux dernières corrections.",
     "**Un autre projet, en CE2-CM2.** [Livre dont vous êtes le héros](https://lamouche.home.blog/2019/04/08/livre-dont-vous-etes-le-heros/) : à l’école de Nolay, chaque élève décrit un lieu, et les lieux reliés forment l’aventure.",
     "**Les bases du récit à choix.** [Écrire une histoire dont vous êtes le héros avec des élèves](https://www.quefaitesvous.com/blog/ecrire-une-histoire-dont-vous-etes-le-heros-avec-des-eleves-les-bases/) (Que faites-vous) : construire les embranchements et anticiper leurs conséquences.",
-    "**D’autres structures.** [Introduction aux structures de la fiction interactive](https://www.fiction-interactive.fr/introduction-aux-structures-de-la-fiction-interactive-et-comment-les-utiliser/) (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà de la partie 6."
+    "**D’autres structures.** [Introduction aux structures de la fiction interactive](https://www.fiction-interactive.fr/introduction-aux-structures-de-la-fiction-interactive-et-comment-les-utiliser/) (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà des trois formes de « Combien de chapitres, de scènes et de choix prévoir ? »."
   ],
   "plusLoin": [
     {
