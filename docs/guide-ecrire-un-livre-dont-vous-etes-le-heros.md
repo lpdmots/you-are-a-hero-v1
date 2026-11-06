@@ -147,8 +147,8 @@ Décidé le 30 octobre 2026.
 > - **20 h** de travail pour vous : préparer le plan du livre et les
 >   consignes, relire, ajouter les illustrations ; pas seulement corriger des
 >   textes. (partie 11)
-> - **4 étapes** pour mener le projet : découvrir le genre, préparer
->   l'histoire, écrire, relire. (partie 3)
+> - **4 temps** pour mener le projet : découvrir le genre, préparer
+>   l'histoire, écrire et relire, fabriquer le livre. (partie 11)
 > - **80 scènes** pour un premier livre, soit une vingtaine d'obstacles :
 >   un par élève dans une classe ordinaire. (partie 6)
 > - **10 €** environ l'exemplaire en couleur d'un livre moyen, d'une

@@ -19,9 +19,9 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "partie": 11
     },
     {
-      "chiffre": "4 étapes",
-      "texte": "pour mener le projet : découvrir le genre, préparer l’histoire, écrire, relire.",
-      "partie": 3
+      "chiffre": "4 temps",
+      "texte": "pour mener le projet : découvrir le genre, préparer l’histoire, écrire et relire, fabriquer le livre.",
+      "partie": 11
     },
     {
       "chiffre": "80 scènes",
