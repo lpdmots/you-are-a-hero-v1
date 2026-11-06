@@ -1529,10 +1529,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > proposition avant de la retenir : une phrase plus élégante n'est pas
 > forcément plus fidèle à son texte.
 >
-> **Pour les illustrations.** L'IA peut aussi créer des images à partir des
-> descriptions des élèves (voir « Comment illustrer, imprimer et partager
-> le livre ? »).
->
 > **Dans ma classe.** Trouver des titres de scènes me prend toujours du
 > temps : l'IA m'y aide beaucoup. Pour les choix, ses propositions sont
 > moins fines : je dois souvent les retravailler pour que les conséquences

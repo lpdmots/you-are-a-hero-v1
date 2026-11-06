@@ -693,11 +693,6 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "texte": "Limitez les corrections à ce qui est nécessaire, en conservant ses idées et sa manière de raconter. Relisez la proposition avant de la retenir : une phrase plus élégante n’est pas forcément plus fidèle à son texte."
         },
         {
-          "sorte": "paragraphe",
-          "tete": "Pour les illustrations.",
-          "texte": "L’IA peut aussi créer des images à partir des descriptions des élèves (voir « Comment illustrer, imprimer et partager le livre ? »)."
-        },
-        {
           "sorte": "classe",
           "texte": "Trouver des titres de scènes me prend toujours du temps : l’IA m’y aide beaucoup. Pour les choix, ses propositions sont moins fines : je dois souvent les retravailler pour que les conséquences soient intéressantes et cohérentes. Mais quand je bloque, elle trouve des possibilités auxquelles je n’avais pas pensé."
         }
