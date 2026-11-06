@@ -502,7 +502,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Deux formats.",
-          "texte": "Un premier livre d’environ 80 scènes peut s’écrire en une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez plutôt une ou deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
+          "texte": "Un premier livre d’environ 80 scènes s’écrit en une période, parfois deux. Pour un grand livre de 200 à 300 scènes, comptez deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
         },
         {
           "sorte": "paragraphe",
@@ -538,7 +538,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
             ],
             [
               "Écrire",
-              "Une ou deux périodes"
+              "Deux périodes"
             ],
             [
               "Relire et tester le livre",

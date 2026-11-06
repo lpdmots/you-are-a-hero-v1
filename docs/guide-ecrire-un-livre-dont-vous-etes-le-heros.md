@@ -1305,9 +1305,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > d'élèves aiment taper leur texte, et pour certains, c'est une motivation
 > supplémentaire pour terminer leur brouillon.
 >
-> **Deux formats.** Un premier livre d'environ 80 scènes peut s'écrire en
-> une ou deux périodes. Pour un grand livre de 200 à 300 scènes, comptez
-> plutôt une ou deux périodes d'écriture, auxquelles s'ajoutent la découverte des
+> **Deux formats.** Un premier livre d'environ 80 scènes s'écrit en une
+> période, parfois deux. Pour un grand livre de 200 à 300 scènes, comptez
+> deux périodes d'écriture, auxquelles s'ajoutent la découverte des
 > livres-jeux, la préparation de l'histoire et la fabrication du livre.
 >
 > **Les étapes d'un grand livre.** Un calendrier possible, à adapter selon
@@ -1320,7 +1320,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > | Préparer l'histoire | 2 séances |
 > | Préparer les chapitres : obstacles, choix, conséquences | 3 à 4 séances |
 > | Mettre en place les scènes et les consignes (vous) | Un temps de préparation dédié |
-> | Écrire | Une ou deux périodes |
+> | Écrire | Deux périodes |
 > | Relire et tester le livre | 2 séances |
 > | Mettre en page, illustrer | Environ une semaine |
 > | Imprimer et recevoir les livres | Une dizaine de jours par commande |
