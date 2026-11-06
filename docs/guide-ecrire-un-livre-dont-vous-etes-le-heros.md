@@ -144,7 +144,7 @@ Décidé le 30 octobre 2026.
 >
 > - **1 à 3 mois** d'écriture avec la classe : une ou deux périodes pour un premier
 >   livre, trois mois pour un grand. (partie 11)
-> - **20 h** de travail pour vous : préparer le plan du livre et les
+> - **20 h** de travail pour vous sur un grand livre : préparer le plan du livre et les
 >   consignes, relire, ajouter les illustrations ; pas seulement corriger des
 >   textes. (partie 11)
 > - **4 temps** pour mener le projet : découvrir le genre, préparer
