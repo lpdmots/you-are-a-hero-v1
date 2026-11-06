@@ -562,8 +562,7 @@ chaque partie pendant l'entretien et prime sur les sources.
 > héros, sa quête, puis les grandes étapes de l'aventure. À chaque étape, les
 > élèves proposent leurs idées, vous les regroupez au tableau, puis la classe
 > discute et vote si nécessaire. À vous de trancher lorsque les idées ne sont
-> pas compatibles. Gardez les décisions affichées pendant tout le projet :
-> c'est la référence de tous.
+> pas compatibles. Gardez les décisions affichées pendant tout le projet.
 > Les idées écartées pourront toujours resservir pour inventer un lieu, un
 > personnage ou un obstacle.
 >
