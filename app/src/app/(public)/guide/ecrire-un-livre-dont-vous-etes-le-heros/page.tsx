@@ -429,7 +429,8 @@ export default function Guide() {
             {T.auteur} Mis à jour le <time dateTime={DATE_DU_GUIDE}>{DATE_LISIBLE}</time>.
           </p>
         </div>
-        <Image className={styles.dragon} src="/accueil/dragon-grand-livre.webp" alt="" width={500} height={620} sizes="(max-width: 720px) 92px, 230px" />
+        {/* Visible dès l'ouverture, sans être l'élément du LCP (le titre) : chargé d'emblée, sans préchargement */}
+        <Image className={styles.dragon} src="/accueil/dragon-grand-livre.webp" alt="" width={500} height={620} sizes="(max-width: 720px) 92px, 230px" loading="eager" />
       </header>
       <div className={styles.grille}>
         <nav className={styles.sommaire} aria-label="Sommaire" data-sommaire>
