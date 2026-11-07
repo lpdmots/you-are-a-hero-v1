@@ -1767,3 +1767,8 @@
     border-radius: 6px;
   }
 }
+/* La flèche d'un choix qui mène à une autre page (le guide), à la place du numéro */
+.versPage {
+  width: 1em;
+  height: 1.45em;
+}

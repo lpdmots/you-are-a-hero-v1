@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { enEuros } from "@/domaine/offre";
+import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { livresDeLAccueil, type LivreDeLAccueil } from "@/serveur/accueil";
 import { offreActuelle } from "@/serveur/offre";
@@ -262,6 +263,7 @@ export async function Accueil() {
           <Choix>
             <Renvoi vers={40}>Si vous vous demandez ce que cela coûte, rendez-vous au</Renvoi>
             <Renvoi vers={52}>Si vous voulez savoir d’où vient cet outil, rendez-vous au</Renvoi>
+            <ChoixPage href={ADRESSE_DU_GUIDE}>Si vous voulez la méthode pas à pas, lisez le guide</ChoixPage>
           </Choix>
         </Feuillet>
         <div className={styles.cote}>
@@ -424,6 +426,22 @@ function Renvoi({ vers, children }: { vers: number; children: ReactNode }) {
         <span className={styles.phrase}>{typeof children === "string" ? children.replace("rendez-vous", "rendez\u2011vous") : children}</span>{" "}
         <span className={styles.renvoi}>{vers}</span>
       </a>
+    </li>
+  );
+}
+
+/** Un choix qui mène à une autre page du site (le guide) : une flèche à la place du numéro. */
+function ChoixPage({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <li>
+      <Link href={href}>
+        <span className={styles.phrase}>{children}</span>{" "}
+        <span className={styles.renvoi} aria-hidden="true">
+          <svg className={styles.versPage} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </span>
+      </Link>
     </li>
   );
 }

@@ -25,6 +25,10 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
           <LienDeNav href="/bibliotheque" className={styles.navAide}>
             Bibliothèque
           </LienDeNav>
+          {/* Le guide (F14-AC53), page de contenu principale : dans la barre sur grand écran, au pied sur téléphone */}
+          <LienDeNav href={ADRESSE_DU_GUIDE} className={styles.navAide}>
+            Guide
+          </LienDeNav>
           <LienDeNav href="/aide" className={styles.navAide}>
             Aide
           </LienDeNav>

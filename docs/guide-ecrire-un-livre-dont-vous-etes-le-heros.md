@@ -145,7 +145,11 @@ Décidé le 30 octobre 2026.
   (un à trois mois, 80 scènes pour un premier livre), l'auteur dans
   `llms.txt` (Nicolas Coussot, six ans de livres-jeux, dont quatre avec
   l'outil). La définition donne ses synonymes (histoire interactive,
-  fiction interactive).
+  fiction interactive). Le guide est lié depuis la barre du haut
+  (« Guide », sur grand écran ; demandé par lui), depuis trois réponses de
+  l'« Aide » (définition, âge, durée, chacune vers sa question) et depuis le
+  passage 33 de l'accueil, par un choix à flèche (« Si vous voulez la
+  méthode pas à pas, lisez le guide »).
 
 #### Premier jet
 

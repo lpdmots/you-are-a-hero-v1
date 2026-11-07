@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
 import { donneesDeLAide, enJsonLd } from "@/domaine/presentation";
 import { EDITEUR, MODELES, PHRASE_DU_SUPPORT, QUESTIONS } from "@/domaine/textes-publics";
 import { offreActuelle } from "@/serveur/offre";
@@ -23,6 +24,11 @@ export default async function Aide() {
             <details key={q.question} open={i === 0}>
               <summary>{q.question}</summary>
               <p>{q.reponse}</p>
+              {q.guide !== undefined ? (
+                <p>
+                  <Link href={q.guide ? `${ADRESSE_DU_GUIDE}#${q.guide}` : ADRESSE_DU_GUIDE}>Lire le guide</Link>
+                </p>
+              ) : null}
             </details>
           ))}
         </div>

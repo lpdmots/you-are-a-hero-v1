@@ -238,8 +238,9 @@ export const MENTIONS_LEGALES: Document = {
 };
 
 /** La foire aux questions de la page « Aide » (F14, « Support »). */
-/** `vente` : la question n'a de sens que « Paiement ouvert » allumé. */
-export const QUESTIONS: { question: string; reponse: string; vente?: boolean }[] = [
+/** `vente` : la question n'a de sens que « Paiement ouvert » allumé. `guide` : la réponse mène au guide, à
+ * cette question (son ancre, ou "" pour son début), qui la développe (audit du 7 novembre 2026). */
+export const QUESTIONS: { question: string; reponse: string; vente?: boolean; guide?: string }[] = [
   {
     question: "Comment commencer ?",
     reponse: "Créez un compte, puis votre premier projet : il s’ouvre sur sa préparation. La classe se crée quand les élèves commencent à écrire.",
@@ -248,14 +249,17 @@ export const QUESTIONS: { question: string; reponse: string; vente?: boolean }[]
   {
     question: "Qu’est-ce qu’un livre dont vous êtes le héros ?",
     reponse: "Un livre-jeu : le récit est découpé en passages numérotés, et à la fin de chacun le lecteur choisit la suite (« Si tu ouvres la porte, rendez-vous au 12 »). Chaque lecture est une aventure différente. L’outil permet aussi d’écrire un récit classique.",
+    guide: "",
   },
   {
     question: "À partir de quel âge ?",
     reponse: "Les élèves écrivent dès 6 ans. Vous réglez pour chaque livre l’âge de ses lecteurs, que la bibliothèque affiche.",
+    guide: "age",
   },
   {
     question: "Combien de temps dure un projet ?",
     reponse: "Un à trois mois d’écriture : un mois et demi environ, parfois trois, pour un premier livre d’environ 80 scènes ; trois mois pour un grand livre de 200 à 300 scènes, sans compter la préparation.",
+    guide: "temps",
   },
   {
     question: "De quel matériel ai-je besoin ?",
