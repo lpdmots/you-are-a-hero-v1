@@ -47,10 +47,12 @@ const ETAPES = [
   {
     qui: "vous",
     titre: "La validation",
+    // Le sablier de « À valider », comme dans l'outil : le crayon y dit « En cours »
     icone: (
       <Icone>
-        <path d="M4 20l4-1 11-11-3-3L5 16z" />
-        <path d="M14 7l3 3" />
+        <path d="M7 4h10M7 20h10" />
+        <path d="M8 4c0 4 8 4.5 8 8s-8 4-8 8" />
+        <path d="M16 4c0 4-8 4.5-8 8s8 4 8 8" />
       </Icone>
     ),
   },
