@@ -894,13 +894,13 @@
   .bref {
     padding: 18px 18px 20px;
   }
+  /* Le chiffre au-dessus de sa phrase, qui reprend toute la largeur au lieu d'une colonne de 180 points */
   .bref li {
-    grid-template-columns: 92px 1fr;
-    gap: 12px;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
   }
   .chiffre {
-    font-size: 1.22rem;
-    white-space: normal;
+    font-size: 1.3rem;
   }
   .partie {
     margin-top: 60px;
