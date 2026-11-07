@@ -27,6 +27,8 @@ export function SuiviDuSommaire({ total }: { total: number }) {
     const placer = () => {
       attente = false;
       setDepasse(!!sommaire && sommaire.getBoundingClientRect().bottom < 0);
+      // Au-dessus de la première question (retour en haut d'un coup), aucune n'est en cours
+      if (parties[0] && parties[0].getBoundingClientRect().top > innerHeight * 0.15) setEnCours(null);
     };
     const defiler = () => {
       if (attente) return;
