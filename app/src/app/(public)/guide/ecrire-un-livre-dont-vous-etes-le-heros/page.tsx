@@ -64,8 +64,12 @@ function LienExterne({ texte, italique }: { texte: string; italique?: boolean })
   return italique ? <em>{tout}</em> : tout;
 }
 
-/** Un texte du guide, ses marques rendues : gras, italique, liens, renvois cerclés vers une question */
-function EnLigne({ texte }: { texte: string }) {
+/**
+ * Un texte du guide, ses marques rendues : gras, italique, liens, renvois cerclés vers une question. En
+ * renvoi `court` (les erreurs à éviter, partie 14), le numéro cerclé seul, son titre au survol : le gras de
+ * chaque erreur dit déjà le sujet.
+ */
+function EnLigne({ texte, court }: { texte: string; court?: boolean }) {
   return morceaux(texte, T.parties).map((m, i) => {
     switch (m.sorte) {
       case "gras":
@@ -85,6 +89,15 @@ function EnLigne({ texte }: { texte: string }) {
           </a>
         );
       case "renvoi":
+        if (court)
+          return (
+            <span key={i} className={styles.insecable}>
+              {"\u2060"}
+              <a className={`${styles.renvoi} ${styles.renvoiCourt}`} href={`#${ancreDe(m.numero)}`} aria-label={`question ${m.numero} : ${m.titre}`} title={m.titre}>
+                <span>{m.numero}</span>
+              </a>
+            </span>
+          );
         return (
           <span key={i}>
             (voir{" "}
@@ -262,7 +275,7 @@ function Corps({ partie }: { partie: Partie }) {
                   <path d="M8 8l8 8M16 8l-8 8" />
                 </svg>
                 <p>
-                  <EnLigne texte={e} />
+                  <EnLigne texte={e} court />
                 </p>
               </li>
             ))}

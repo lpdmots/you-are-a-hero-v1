@@ -781,6 +781,10 @@
   line-height: 1;
   text-box: trim-both cap alphabetic;
 }
+/* Le numéro seul suit une espace du texte : pas de marge en plus */
+.renvoiCourt {
+  margin-left: 0;
+}
 .renvoi:hover {
   background: var(--canard);
   color: #fff;
