@@ -199,10 +199,10 @@ export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDu
   },
   relire: {
     src: "/guide/scenes-voisines.webp",
-    telephone: { src: "/guide/scenes-voisines-telephone.webp", largeur: 736, hauteur: 1780 },
+    telephone: { src: "/guide/scenes-voisines-telephone.webp", largeur: 716, hauteur: 1856 },
     alt: "Une scène en cours d’écriture, avec au-dessus la fin de la scène qui y mène et au-dessous le début de celle qui suit.",
-    largeur: 1600,
-    hauteur: 1207,
+    largeur: 1660,
+    hauteur: 1265,
   },
   illustrer: {
     src: "/guide/livre-compose-electro-nick.webp",
