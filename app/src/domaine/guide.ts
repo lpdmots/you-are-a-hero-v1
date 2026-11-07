@@ -15,8 +15,9 @@ export const DATE_DU_GUIDE = "2026-10-30";
 
 export const AUTEUR_DU_GUIDE = { nom: "Nicolas Coussot", metier: "Professeur des écoles" };
 
+/** 150 signes : Google coupe une description vers 155 (audit du 7 novembre 2026) */
 export const DESCRIPTION_DU_GUIDE =
-  "La méthode d’un professeur des écoles pour écrire un livre dont vous êtes le héros avec sa classe : inventer l’histoire, répartir l’écriture, organiser les choix, vérifier les chemins, imprimer.";
+  "La méthode d’un professeur des écoles, en 14 questions, pour écrire un livre dont vous êtes le héros en classe : histoire, choix, chemins, impression.";
 
 export type Bloc =
   | { sorte: "paragraphe"; tete: string | null; texte: string }
