@@ -121,16 +121,8 @@ ol + .ligneTitre {
   .livraison {
     gap: 18px;
   }
-  .classe li,
-  .livraison li {
-    display: grid;
-    grid-template-columns: 112px minmax(0, 1fr);
-    column-gap: 10px;
-    align-items: baseline;
-  }
-  .precision {
-    grid-column: 2;
-  }
+  /* La date garde sa place au-dessus du titre, comme sur grand écran : en colonne de 112 points, « Janvier-février »
+     se coupait en deux */
   /* La flèche passe sous l'étape */
   .livraison li:not(:last-child)::after {
     top: auto;
