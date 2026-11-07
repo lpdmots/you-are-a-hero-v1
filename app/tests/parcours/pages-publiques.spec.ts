@@ -161,7 +161,7 @@ test("F14-AC53 — le guide se trouve : le pied des pages publiques y mène, son
   await expect(page).toHaveURL(new RegExp(`${GUIDE}$`));
   await expect(page).toHaveTitle("Comment écrire un livre dont vous êtes le héros en classe");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`${GUIDE}$`));
-  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /opengraph-image/);
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/guide\/partage\.jpg$/);
   const donnees = JSON.parse((await page.locator('script[type="application/ld+json"]').first().textContent()) ?? "{}");
   expect(donnees["@graph"][0]).toMatchObject({ "@type": "Article", author: { name: "Nicolas Coussot" } });
 });
