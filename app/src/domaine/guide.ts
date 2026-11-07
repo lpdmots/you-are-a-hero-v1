@@ -205,12 +205,14 @@ export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDu
     hauteur: 1265,
   },
   illustrer: {
-    src: "/guide/livre-compose-electro-nick.webp",
-    telephone: { src: "/guide/livre-compose-electro-nick-telephone.webp", largeur: 800, hauteur: 640 },
-    alt: "Une double page d’« Électro Nick » composée par le site : les scènes 57 à 59, leurs illustrations et leurs choix.",
-    largeur: 1600,
-    hauteur: 1135,
+    src: "/guide/livre-compose-electro-nick-definitif.webp",
+    // Une double page du PDF définitif, sans les marques de la version de travail
+    telephone: { src: "/guide/livre-compose-electro-nick-definitif-telephone.webp", largeur: 798, hauteur: 735 },
+    alt: "Une double page d’« Électro Nick » telle que le site l’a composée pour l’imprimeur : les passages 74 à 77, leurs illustrations, une action de jeu et les choix.",
+    largeur: 1597,
+    hauteur: 1130,
   },
+
 };
 
 // ——— Ce que lisent les moteurs et les IA (F14-AC53) ———
