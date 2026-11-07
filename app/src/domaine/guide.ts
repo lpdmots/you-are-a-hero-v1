@@ -198,8 +198,8 @@ export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDu
     hauteur: 807,
   },
   relire: {
-    src: "/guide/scenes-voisines.webp",
-    telephone: { src: "/guide/scenes-voisines-telephone.webp", largeur: 716, hauteur: 1856 },
+    src: "/guide/scenes-voisines-corrigees.webp",
+    telephone: { src: "/guide/scenes-voisines-corrigees-telephone.webp", largeur: 716, hauteur: 1856 },
     alt: "Une scène en cours d’écriture, avec au-dessus la fin de la scène qui y mène et au-dessous le début de celle qui suit.",
     largeur: 1660,
     hauteur: 1265,
