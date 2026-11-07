@@ -359,7 +359,8 @@
   display: grid;
   grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
   gap: 28px;
-  align-items: end;
+  /* La légende en face du haut de l'image, où commence la lecture, et non en bas d'un grand vide */
+  align-items: start;
 }
 .photoPortrait img {
   border-radius: 2px;
@@ -1059,10 +1060,10 @@
   }
 }
 
-/* Une image moins large que la colonne (l'arbre des chemins), centrée, sa légende dessous */
+/* Une image moins large que la colonne (l'arbre des chemins), calée sur le texte comme la fiche de consigne
+   et le dé, sa légende dessous */
 .photoMoyenne {
   max-width: 640px;
-  margin-inline: auto;
 }
 /* Deux captures à la suite (partie 4) */
 .suite {
