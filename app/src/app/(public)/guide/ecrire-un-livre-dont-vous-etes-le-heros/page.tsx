@@ -470,8 +470,10 @@ export default function Guide() {
           {T.parties.map((p) => (
             <section key={p.numero} className={styles.partie} id={ancreDe(p.numero)} data-partie={p.numero} aria-labelledby={`${ancreDe(p.numero)}-t`}>
               <h2 id={`${ancreDe(p.numero)}-t`}>
+                {/* Le numéro posé par la feuille de style : le texte de l'intertitre reste la seule question,
+                    sans « 1Pourquoi… » pour un robot qui lit le HTML (audit du 7 novembre 2026) */}
                 <span className={styles.numero} aria-hidden="true">
-                  <span>{p.numero}</span>
+                  <span data-numero={p.numero} />
                 </span>
                 <span>{p.titre}</span>
               </h2>

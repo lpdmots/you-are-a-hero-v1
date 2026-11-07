@@ -238,6 +238,9 @@
   display: block;
   text-box: trim-both cap alphabetic;
 }
+.numero > span::before {
+  content: attr(data-numero);
+}
 
 /* Dans ma classe : la copie, feuille blanche, marge rouge et lignes du cahier comme « Nous retenons »
    dans la Préparation ; la main pour le titre, qui tient sur une ligne */
