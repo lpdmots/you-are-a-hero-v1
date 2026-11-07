@@ -144,7 +144,8 @@ Décidé le 30 octobre 2026.
   autres pages disent les mêmes faits : la durée d'un projet dans l'« Aide »
   (un à trois mois, 80 scènes pour un premier livre), l'auteur dans
   `llms.txt` (Nicolas Coussot, six ans de livres-jeux, dont quatre avec
-  l'outil).
+  l'outil). La définition donne ses synonymes (histoire interactive,
+  fiction interactive).
 
 #### Premier jet
 
@@ -152,7 +153,8 @@ Décidé le 30 octobre 2026.
 >
 > Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en
 > scènes numérotées où le lecteur choisit la suite : à la fin d'une scène, il
-> se rend au numéro de son choix. L'écrire avec sa classe, c'est inventer
+> se rend au numéro de son choix. On parle aussi d'histoire interactive ou,
+> au Québec, de fiction interactive. L'écrire avec sa classe, c'est inventer
 > l'aventure ensemble, puis se partager l'écriture des scènes, que
 > l'enseignant relie en un seul livre.
 >

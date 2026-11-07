@@ -4,7 +4,7 @@ import type { TexteDuGuide } from "./guide";
 
 export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "titre": "Comment écrire un livre dont vous êtes le héros en classe",
-  "definition": "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en scènes numérotées où le lecteur choisit la suite : à la fin d’une scène, il se rend au numéro de son choix. L’écrire avec sa classe, c’est inventer l’aventure ensemble, puis se partager l’écriture des scènes, que l’enseignant relie en un seul livre.",
+  "definition": "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en scènes numérotées où le lecteur choisit la suite : à la fin d’une scène, il se rend au numéro de son choix. On parle aussi d’histoire interactive ou, au Québec, de fiction interactive. L’écrire avec sa classe, c’est inventer l’aventure ensemble, puis se partager l’écriture des scènes, que l’enseignant relie en un seul livre.",
   "auteur": "Par Nicolas Coussot, professeur des écoles, six ans de livres-jeux avec sa classe.",
   "avantDeCommencer": "Ce guide rassemble ce que j’ai appris en six ans de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont pas des règles : chaque classe est différente, et vous trouverez sûrement d’autres façons de faire. Prenez ce qui vous sert.",
   "enBref": [
