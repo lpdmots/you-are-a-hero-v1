@@ -52,6 +52,8 @@ export type TexteDuGuide = {
   enBref: { chiffre: string; texte: string; partie: number }[];
   /** « Pour aller plus loin » : des lectures sur d'autres sites, chacune avec ce qu'elle apporte */
   lectures: string[];
+  /** La fin de la page, sur la feuille qui répond à la page de titre : un titre à la main, une phrase */
+  fin: { titre: string; texte: string };
   plusLoin: { libelle: string; adresse: string }[];
   parties: Partie[];
 };

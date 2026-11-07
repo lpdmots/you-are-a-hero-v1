@@ -110,6 +110,11 @@ const auteur = haut[2].join(" ").replace(/^\*|\*$/g, "");
 const avant = haut.find((m) => m[0].startsWith("**Avant de commencer.**"));
 if (!avant) throw new Error("« Avant de commencer » attendu sous la ligne d'auteur");
 const iBref = haut.findIndex((m) => m[0].trim() === "**En bref**");
+// La fin de la page : un titre à la main et une phrase, sur la feuille qui répond à la page de titre
+const fin = haut
+  .map((m) => m.join(" ").match(/^\*\*Fin\s?:\s?([^*]+?)\.?\*\*\s*(.+)$/))
+  .find(Boolean);
+if (!fin) throw new Error("« **Fin : Titre.** phrase » attendu avant « Lire et essayer »");
 const plusLoin = haut.find((m) => m[0].startsWith("**Lire et essayer"))!.join(" ").replace(/^\*\*Lire et essayer\s?:\*\*\s*/, "");
 // « Pour aller plus loin » : les lectures, en liste sous le titre, après la dernière question
 const iLectures = haut.findIndex((m) => m[0].trim() === "**Pour aller plus loin**");
@@ -128,6 +133,7 @@ const texte = {
   }),
   // « Ressources » attend sa page ; « La bibliothèque » et « Essayer Il était une classe » restent
   lectures: (classer(haut[iLectures + 1]) as { elements: string[] }).elements,
+  fin: { titre: fin[1], texte: fin[2] },
   plusLoin: plusLoin
     .split(" · ")
     .filter((l) => !l.includes("Ressources"))

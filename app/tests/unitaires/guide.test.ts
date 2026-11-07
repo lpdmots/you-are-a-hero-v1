@@ -26,6 +26,9 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros en clas
     expect(encarts.length).toBeLessThanOrEqual(5);
     expect(JSON.stringify(T)).not.toContain("Ressources");
     expect(T.plusLoin.map((l) => l.adresse)).toEqual(["/bibliotheque", "/"]);
+    // La fin, sur la feuille qui répond à la page de titre : un titre à la main et une phrase
+    expect(T.fin.titre).not.toMatch(/\.$/);
+    expect(T.fin.texte.length).toBeGreaterThan(20);
     // Pour aller plus loin : des lectures sur d'autres sites, chacune avec son lien
     expect(T.lectures.length).toBeGreaterThanOrEqual(3);
     expect(T.lectures.every((l) => /\]\(https:\/\//.test(l))).toBe(true);

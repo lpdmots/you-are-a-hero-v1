@@ -535,8 +535,17 @@ export default function Guide() {
               ))}
             </ul>
           </section>
-          <footer className={styles.plusLoin}>
-            <h2>Lire et essayer</h2>
+        </article>
+      </div>
+      {/* La fin, sur une feuille qui répond à la page de titre : le dragon s'est endormi sur son livre ;
+          un titre à la main, une phrase, la bibliothèque et le seul bouton plein */}
+      <footer className={styles.fin} aria-labelledby="fin-t">
+        <div>
+          <h2 id="fin-t">{T.fin.titre}</h2>
+          <p className={styles.finTexte}>
+            <EnLigne texte={T.fin.texte} />
+          </p>
+          <div className={styles.finSuite}>
             {T.plusLoin.map((l) =>
               l.adresse === "/" ? (
                 <p key={l.adresse} className={styles.essayer}>
@@ -551,9 +560,10 @@ export default function Guide() {
                 </p>
               ),
             )}
-          </footer>
-        </article>
-      </div>
+          </div>
+        </div>
+        <Image className={styles.dragonEndormi} src="/accueil/dragon-endormi.webp" alt="" width={720} height={559} sizes="(max-width: 720px) 150px, 230px" />
+      </footer>
       <SuiviDuSommaire total={T.parties.length} />
     </main>
   );

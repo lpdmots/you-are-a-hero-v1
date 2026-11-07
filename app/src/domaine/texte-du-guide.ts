@@ -40,6 +40,10 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     "**Les bases du récit à choix.** [Écrire une histoire dont vous êtes le héros avec des élèves](https://www.quefaitesvous.com/blog/ecrire-une-histoire-dont-vous-etes-le-heros-avec-des-eleves-les-bases/) (Que faites-vous) : construire les embranchements et anticiper leurs conséquences.",
     "**D’autres structures.** [Introduction aux structures de la fiction interactive](https://www.fiction-interactive.fr/introduction-aux-structures-de-la-fiction-interactive-et-comment-les-utiliser/) (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà des trois formes de « Combien de chapitres, de scènes et de choix prévoir ? »."
   ],
+  "fin": {
+    "titre": "À vous d’écrire la suite",
+    "texte": "Feuilletez d’abord les livres d’autres classes : c’est souvent ce qui décide une classe à écrire le sien."
+  },
   "plusLoin": [
     {
       "libelle": "La bibliothèque",

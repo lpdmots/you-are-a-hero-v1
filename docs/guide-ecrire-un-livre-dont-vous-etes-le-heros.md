@@ -121,6 +121,12 @@ Décidé le 30 octobre 2026.
   alignée).
 - Le 2 novembre 2026, décidé par lui : six ans de livres-jeux et non quatre
   dans la ligne d'auteur ; les premiers, d'une autre forme, comptent.
+- Le 7 novembre 2026, sur la critique de design de la page, accepté par
+  lui : la page finit sur une feuille de papier qui répond à la page de
+  titre, le dragon endormi sur son livre, un titre à la main (« À vous
+  d'écrire la suite »), une phrase, puis la bibliothèque et « Essayer Il
+  était une classe ». Titre et phrase proposés par Claude, à relire par
+  lui.
 - Le 4 novembre 2026, à sa demande (la page lui semblait directive) : une
   note « Avant de commencer », au « je », sous la ligne d'auteur et dans la
   forme de « Dans ma classe » : un retour d'expérience, pas des règles. Les
@@ -207,6 +213,9 @@ Décidé le 30 octobre 2026.
 >   (Fiction-interactive.fr) : des schémas pour varier les parcours, au-delà
 >   des trois formes de « Combien de chapitres, de scènes et de choix
 >   prévoir ? ».
+>
+> **Fin : À vous d'écrire la suite.** Feuilletez d'abord les livres
+> d'autres classes : c'est souvent ce qui décide une classe à écrire le sien.
 >
 > **Lire et essayer :** [Ressources](…) · [La bibliothèque](…) ·
 > [Essayer Il était une classe](/)
