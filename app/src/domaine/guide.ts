@@ -142,6 +142,8 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
     apres: "Contrôlez les liens.",
     image: {
       src: "/guide/chemins-le-pont-effondre.webp",
+      // Sur téléphone, l'énigme et les trois chemins qui se rejoignent sur la rive : l'arbre entier y tombait à 5 points
+      telephone: { src: "/guide/chemins-le-pont-effondre-telephone.webp", largeur: 1062, hauteur: 1080 },
       alt: "La vue « Chemins » d’un chapitre : une énigme devant un pont effondré, quatre façons de traverser ; trois chemins se rejoignent sur la rive, le quatrième passe par une barque, et tous mènent au chapitre suivant.",
       legende: "« Le pont effondré », un chapitre du livre d’exemple « Les passeurs de brume » : quatre façons de traverser, trois chemins qui se rejoignent.",
       largeur: 1200,
