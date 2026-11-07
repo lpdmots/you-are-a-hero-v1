@@ -80,6 +80,8 @@
 }
 .sommaireTitre {
   margin-bottom: 10px;
+  /* La voix de l'outil, comme « En bref », aussi dans le sommaire du téléphone, posé dans la colonne en Vollkorn */
+  font-family: var(--f-ui);
   font-size: var(--t-xs);
   font-weight: 700;
   letter-spacing: 0.08em;
