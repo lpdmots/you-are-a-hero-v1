@@ -407,13 +407,13 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
           "texte": "Demandez à chacun de corriger ce qui est à sa portée. Pour les erreurs plus difficiles, accompagnez l’élève ou intervenez directement (voir « Quelle place donner à l’IA ? »). Évitez de multiplier les allers-retours : après une ou deux reprises, mieux vaut terminer le texte avec lui. L’objectif est de le faire progresser, sans le décourager ni effacer son style."
         },
         {
+          "sorte": "classe",
+          "texte": "Pendant les séances d’écriture, je suis très sollicité et les corrections peuvent vite s’accumuler. Pour organiser les passages à mon bureau, j’utilise des pinces à linge portant les prénoms des élèves, qu’ils accrochent à la suite sur un fil. Je reçois deux élèves au maximum ; les autres restent à leur place et peuvent commencer une nouvelle scène en attendant leur tour. Ce système, que j’utilise aussi dans les autres matières, évite les files d’attente et permet à chacun de continuer à travailler."
+        },
+        {
           "sorte": "paragraphe",
           "tete": "Vérifiez les raccords.",
           "texte": "Chaque élève relit son chapitre en empruntant tous les chemins possibles. Il contrôle les enchaînements, les choix et les conséquences. De votre côté, vérifiez les transitions entre chapitres : les personnages, les objets et les événements doivent rester cohérents, quel que soit le parcours du lecteur."
-        },
-        {
-          "sorte": "classe",
-          "texte": "Pendant les séances d’écriture, je suis très sollicité et les corrections peuvent vite s’accumuler. Pour organiser les passages à mon bureau, j’utilise des pinces à linge portant les prénoms des élèves, qu’ils accrochent à la suite sur un fil. Je reçois deux élèves au maximum ; les autres restent à leur place et peuvent commencer une nouvelle scène en attendant leur tour. Ce système, que j’utilise aussi dans les autres matières, évite les files d’attente et permet à chacun de continuer à travailler."
         },
         {
           "sorte": "encart",

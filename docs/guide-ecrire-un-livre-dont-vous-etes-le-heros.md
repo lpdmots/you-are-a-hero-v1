@@ -1048,6 +1048,10 @@ chaque partie pendant l'entretien et prime sur les sources.
   livre. « Dans ma classe » : l'enseignant très sollicité, les pinces à
   linge et deux élèves au plus au bureau, les autres commençant une scène
   en attendant.
+- Le 7 novembre 2026, sur la critique de design de la page, accepté par
+  lui : « Dans ma classe » passe juste après « Adaptez les reprises », dont
+  il parle, et coupe la suite de cinq paragraphes ; « Vérifiez les
+  raccords » mène droit à l'encart des scènes voisines.
 
 #### Premier jet
 
@@ -1080,12 +1084,6 @@ chaque partie pendant l'entretien et prime sur les sources.
 > ou deux reprises, mieux vaut terminer le texte avec lui. L'objectif est de
 > le faire progresser, sans le décourager ni effacer son style.
 >
-> **Vérifiez les raccords.** Chaque élève relit son chapitre en empruntant
-> tous les chemins possibles. Il contrôle les enchaînements, les choix et les
-> conséquences. De votre côté, vérifiez les transitions entre chapitres : les
-> personnages, les objets et les événements doivent rester cohérents, quel
-> que soit le parcours du lecteur.
->
 > **Dans ma classe.** Pendant les séances d'écriture, je suis très sollicité
 > et les corrections peuvent vite s'accumuler. Pour organiser les passages à
 > mon bureau, j'utilise des pinces à linge portant les prénoms des élèves,
@@ -1094,6 +1092,12 @@ chaque partie pendant l'entretien et prime sur les sources.
 > attendant leur tour. Ce système, que j'utilise aussi dans les autres
 > matières, évite les files d'attente et permet à chacun de continuer à
 > travailler.
+>
+> **Vérifiez les raccords.** Chaque élève relit son chapitre en empruntant
+> tous les chemins possibles. Il contrôle les enchaînements, les choix et les
+> conséquences. De votre côté, vérifiez les transitions entre chapitres : les
+> personnages, les objets et les événements doivent rester cohérents, quel
+> que soit le parcours du lecteur.
 >
 > *Encart.* Dans Il était une classe, l'élève voit en écrivant la fin de la
 > scène qui mène à la sienne et le début de celle qui suit : les raccords se
