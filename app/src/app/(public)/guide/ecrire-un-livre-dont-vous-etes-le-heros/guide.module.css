@@ -831,22 +831,30 @@
   filter: drop-shadow(0 12px 14px rgba(60, 45, 20, 0.22));
 }
 .choix {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 2px;
+  margin: 0;
   border-top: 1px solid var(--trait-fort);
   border-bottom: 1px solid var(--trait-fort);
   font-style: italic;
   font-size: 1.12rem;
 }
+/* Toute la ligne est le lien, comme une phrase de choix du lecteur en ligne ; au survol, le papier fonce
+   d'un ton (le gris clair du lecteur, posé sur une feuille blanche, ne se voyait pas sur le papier crème) */
 .choix a {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 6px;
   color: var(--graphite);
   text-decoration: none;
+  transition: background 0.2s var(--ease);
 }
 .choix a:hover {
-  color: var(--canard);
-  text-decoration: underline;
+  background: rgba(60, 45, 20, 0.06);
+}
+.choix a:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
 }
 .choix span {
   font-family: var(--f-ui);

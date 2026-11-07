@@ -554,9 +554,12 @@ export default function Guide() {
                   </Link>
                 </p>
               ) : (
+                // Toute la ligne mène au lien, comme une phrase de choix du lecteur en ligne
                 <p key={l.adresse} className={styles.choix}>
-                  <Link href={l.adresse}>{l.libelle}</Link>
-                  <span aria-hidden="true">→</span>
+                  <Link href={l.adresse}>
+                    {l.libelle}
+                    <span aria-hidden="true">→</span>
+                  </Link>
                 </p>
               ),
             )}
