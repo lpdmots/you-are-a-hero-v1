@@ -15,6 +15,8 @@ test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'
   await aller(page, "/");
   await expect(page.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
   await expect(page.getByText("l’application vous guide et vous aide")).toBeVisible();
+  // Un lien vers l'accueil, partagé, montre son premier écran (audit du 7 novembre 2026)
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/accueil\/partage\.jpg$/);
   // Les choix du passage sont les liens de la page : « rendez-vous au 12 » mène au passage 12
   await page.getByRole("link", { name: /comment se passe un projet, rendez.vous au\s*12/ }).click();
   await expect(page).toHaveURL(/#p12$/);

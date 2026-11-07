@@ -38,6 +38,8 @@ export const metadata: Metadata = {
   description: DESCRIPTION_DU_GUIDE,
   alternates: { canonical: ADRESSE_DU_GUIDE },
   openGraph: { type: "article", title: T.titre, description: DESCRIPTION_DU_GUIDE, url: ADRESSE_DU_GUIDE, publishedTime: DATE_DE_PUBLICATION_DU_GUIDE, modifiedTime: DATE_DU_GUIDE, authors: ["Nicolas Coussot"], images: [{ url: IMAGE_DE_PARTAGE_DU_GUIDE.src, width: IMAGE_DE_PARTAGE_DU_GUIDE.largeur, height: IMAGE_DE_PARTAGE_DU_GUIDE.hauteur, alt: IMAGE_DE_PARTAGE_DU_GUIDE.alt }] },
+  // Sa propre image aussi pour X, sans quoi il hériterait de celle des pages publiques
+  twitter: { card: "summary_large_image", images: [{ url: IMAGE_DE_PARTAGE_DU_GUIDE.src, alt: IMAGE_DE_PARTAGE_DU_GUIDE.alt }] },
 };
 
 const DATE_LISIBLE = new Date(`${DATE_DU_GUIDE}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });

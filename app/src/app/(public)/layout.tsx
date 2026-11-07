@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/composants/Logo";
-import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
+import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { adresseDuSite } from "@/serveur/env";
 import { LienDeNav } from "./LienDeNav";
@@ -10,7 +10,12 @@ import styles from "./public.module.css";
 
 // Les pages publiques se trouvent : l'application, elle, reste hors des moteurs de recherche. Les
 // adresses de l'aperçu de partage partent de l'adresse publique du site.
-export const metadata: Metadata = { metadataBase: new URL(adresseDuSite()), robots: { index: true, follow: true } };
+export const metadata: Metadata = {
+  metadataBase: new URL(adresseDuSite()),
+  robots: { index: true, follow: true },
+  openGraph: { images: [IMAGE_DE_PARTAGE] },
+  twitter: { card: "summary_large_image", images: [IMAGE_DE_PARTAGE] },
+};
 
 /** Les pages publiques (F14, « Pages publiques », F15) : un en-tête qui mène aux entrées, un pied qui mène aux textes. */
 export default function PagesPubliques({ children }: { children: ReactNode }) {

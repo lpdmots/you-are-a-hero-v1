@@ -4,7 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { enEuros } from "@/domaine/offre";
-import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
+import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { livresDeLAccueil, type LivreDeLAccueil } from "@/serveur/accueil";
 import { offreActuelle } from "@/serveur/offre";
@@ -21,7 +21,8 @@ import type { Video } from "@/domaine/presentation";
 const DESCRIPTION =
   "Créez avec votre classe un livre dont vous êtes le héros : chaque élève écrit ses scènes, l’outil vous guide, le livre s’imprime et se lit en ligne. Gratuit.";
 
-// L'aperçu d'un lien partagé (courriel, messagerie, ENT) : l'image est opengraph-image.jpg, le premier écran
+// L'aperçu d'un lien partagé (courriel, messagerie, ENT) : le premier écran, déclaré ici, ces réglages
+// remplaçant ceux qu'hérite la page
 export const METADATA_ACCUEIL: Metadata = {
   title: { absolute: "Écrire un livre dont vous êtes le héros avec sa classe — Il était une classe" },
   description: DESCRIPTION,
@@ -33,8 +34,9 @@ export const METADATA_ACCUEIL: Metadata = {
     url: "/",
     title: "Votre classe écrit son livre-jeu.",
     description: DESCRIPTION,
+    images: [IMAGE_DE_PARTAGE],
   },
-  twitter: { card: "summary_large_image" },
+  twitter: { card: "summary_large_image", images: [IMAGE_DE_PARTAGE] },
 };
 
 /**
