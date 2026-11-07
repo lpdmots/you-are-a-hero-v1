@@ -10,7 +10,10 @@ import { EDITEUR } from "./textes-publics";
 
 export { ADRESSE_DU_GUIDE };
 
-/** La date de mise à jour affichée sous le titre et donnée aux moteurs ; à changer à chaque retouche publiée */
+/** La date de publication, donnée aux moteurs : celle du jour où le guide est mis en ligne, puis fixe */
+export const DATE_DE_PUBLICATION_DU_GUIDE = "2026-10-30";
+
+/** La date de mise à jour affichée sous le titre, donnée aux moteurs et au plan du site ; à changer à chaque retouche publiée */
 export const DATE_DU_GUIDE = "2026-10-30";
 
 export const AUTEUR_DU_GUIDE = { nom: "Nicolas Coussot", metier: "Professeur des écoles" };
@@ -222,7 +225,7 @@ export function donneesDuGuide(texte: TexteDuGuide, site: string): Record<string
         url: adresse,
         mainEntityOfPage: adresse,
         inLanguage: "fr-FR",
-        datePublished: DATE_DU_GUIDE,
+        datePublished: DATE_DE_PUBLICATION_DU_GUIDE,
         dateModified: DATE_DU_GUIDE,
         image: `${site}/accueil/photo-des-livres.webp`,
         author: { "@type": "Person", name: AUTEUR_DU_GUIDE.nom, jobTitle: AUTEUR_DU_GUIDE.metier },

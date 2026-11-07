@@ -8,6 +8,7 @@ import {
   ancreDe,
   COUVERTURES_DU_GUIDE,
   DECOUPAGE_EN_IMAGES,
+  DATE_DE_PUBLICATION_DU_GUIDE,
   DATE_DU_GUIDE,
   DESCRIPTION_DU_GUIDE,
   donneesDuGuide,
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   title: { absolute: T.titre },
   description: DESCRIPTION_DU_GUIDE,
   alternates: { canonical: ADRESSE_DU_GUIDE },
-  openGraph: { type: "article", title: T.titre, description: DESCRIPTION_DU_GUIDE, url: ADRESSE_DU_GUIDE, publishedTime: DATE_DU_GUIDE, modifiedTime: DATE_DU_GUIDE, authors: ["Nicolas Coussot"] },
+  openGraph: { type: "article", title: T.titre, description: DESCRIPTION_DU_GUIDE, url: ADRESSE_DU_GUIDE, publishedTime: DATE_DE_PUBLICATION_DU_GUIDE, modifiedTime: DATE_DU_GUIDE, authors: ["Nicolas Coussot"] },
 };
 
 const DATE_LISIBLE = new Date(`${DATE_DU_GUIDE}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });

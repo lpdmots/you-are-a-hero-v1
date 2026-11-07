@@ -1705,9 +1705,10 @@ formulations à revérifier à la source avant publication.
 
 ## À vérifier avant publication
 
-- La date de mise à jour (`DATE_DU_GUIDE`, `app/src/domaine/guide.ts`, encore
-  au 30 octobre 2026) : celle du jour de la publication, posée au moment de
-  pousser.
+- Les deux dates (`app/src/domaine/guide.ts`, encore au 30 octobre 2026) :
+  `DATE_DE_PUBLICATION_DU_GUIDE` et `DATE_DU_GUIDE`, celle du jour de la
+  publication, posées au moment de pousser. Ensuite, seule `DATE_DU_GUIDE`
+  change à chaque retouche publiée ; le plan du site la donne (`lastmod`).
 - Les références exactes des programmes, sur le Bulletin officiel (cycle 2
   au BO n° 41 du 31 octobre 2024, EMC, compétences numériques) ; le cycle 3
   est vérifié pour la partie 1 le 30 octobre 2026.

@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
-import { ADRESSE_DU_GUIDE, ANCRES, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DES_ENCARTS, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
+import { ADRESSE_DU_GUIDE, ANCRES, DATE_DE_PUBLICATION_DU_GUIDE, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DES_ENCARTS, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
 import { lireOffre } from "@/domaine/offre";
 import { estPageMesuree } from "@/domaine/pages-publiques";
 import { llmsTxt } from "@/domaine/presentation";
@@ -65,6 +65,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros en clas
   it("F14-AC53 — au plan du site, ouvert aux robots des IA avec ses images, dans llms.txt, mesuré", () => {
     vi.stubEnv("ADRESSE_SITE", SITE);
     expect(sitemap().find((u) => u.url === `${SITE}${ADRESSE_DU_GUIDE}`)?.priority).toBe(0.8);
+    expect(sitemap().find((u) => u.url === `${SITE}${ADRESSE_DU_GUIDE}`)?.lastModified).toBe(DATE_DU_GUIDE);
     const { rules } = robots();
     const [, ia] = Array.isArray(rules) ? rules : [rules];
     expect(ia.allow).toEqual(expect.arrayContaining([ADRESSE_DU_GUIDE, "/guide/"]));
@@ -79,7 +80,8 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros en clas
       "@type": "Article",
       headline: T.titre,
       url: `${SITE}${ADRESSE_DU_GUIDE}`,
-      datePublished: DATE_DU_GUIDE,
+      datePublished: DATE_DE_PUBLICATION_DU_GUIDE,
+      dateModified: DATE_DU_GUIDE,
       author: { "@type": "Person", name: "Nicolas Coussot" },
       publisher: { "@id": `${SITE}/#organisation` },
     });
