@@ -251,14 +251,17 @@ function Corps({ partie }: { partie: Partie }) {
             ))}
           </ol>
         );
-      case "tableau":
+      case "tableau": {
+        // Un tableau de cinq colonnes ou plus (les prix) : sur téléphone, les colonnes du milieu (pages,
+        // images) passent sous le nom du livre, pour laisser sa largeur à la première colonne
+        const replie = (j: number) => b.entete.length >= 5 && j >= 1 && j <= b.entete.length - 3;
         return (
           <div key={i} className={b.entete.length > 2 ? `${styles.tableau} ${styles.colonnes}` : styles.tableau}>
             <table>
               <thead>
                 <tr>
-                  {b.entete.map((c) => (
-                    <th key={c} scope="col">
+                  {b.entete.map((c, j) => (
+                    <th key={c} scope="col" className={replie(j) ? styles.replie : undefined}>
                       {c}
                     </th>
                   ))}
@@ -269,9 +272,17 @@ function Corps({ partie }: { partie: Partie }) {
                   <tr key={r[0]}>
                     <th scope="row">
                       <EnLigne texte={r[0]} />
+                      {b.entete.some((_, j) => replie(j)) ? (
+                        <span className={styles.repliees}>
+                          {r
+                            .map((c, j) => (replie(j) ? `${c} ${b.entete[j].toLowerCase()}` : null))
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </span>
+                      ) : null}
                     </th>
                     {r.slice(1).map((c, j) => (
-                      <td key={j}>
+                      <td key={j} className={replie(j + 1) ? styles.replie : undefined}>
                         <EnLigne texte={c} />
                       </td>
                     ))}
@@ -281,6 +292,7 @@ function Corps({ partie }: { partie: Partie }) {
             </table>
           </div>
         );
+      }
       case "classe":
         return (
           <Fragment key={i}>

@@ -544,6 +544,10 @@
 .colonnes thead th:not(:first-child) {
   text-align: right;
 }
+/* Les colonnes repliées sous le nom du livre, sur téléphone seulement */
+.repliees {
+  display: none;
+}
 @media (max-width: 640px) {
   .colonnes table {
     font-size: 0.82rem;
@@ -562,6 +566,17 @@
   .colonnes thead th {
     font-size: 0.64rem;
     letter-spacing: 0.04em;
+  }
+}
+@media (max-width: 560px) {
+  .colonnes .replie {
+    display: none;
+  }
+  .repliees {
+    display: block;
+    margin-top: 2px;
+    font-weight: 400;
+    color: var(--graphite-3);
   }
 }
 
