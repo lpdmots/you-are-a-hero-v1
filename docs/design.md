@@ -2852,6 +2852,29 @@ l'épreuve (difficulté 5, 2 d'agilité) sous le filet rose, puis deux lancers
 en équation, dé dessiné + compétence = total : 3 au dé, réussi, en vert ;
 2 au dé, raté, « un point ou un détour », en brique.
 
+**Critique avant publication, 7 novembre 2026** (impeccable, deux lectures sur
+61 captures en 1440 et 390 px) : 29/40 pour la lecture informée, 27/40 pour
+la lecture indépendante, la cohérence à 2 dans les deux. Corrigé aussitôt :
+l'arbre des chemins calé sur la colonne, la légende de la fiche aventure en
+haut ; « En bref » et la frise de l'année empilés sur téléphone ; le tableau
+des prix replié sur téléphone (pages et images sous le nom du livre) ; la
+flèche des liens externes liée à son dernier mot ; aucune question en cours
+au-dessus de la première ; « Sommaire » dans la police de l'outil ; les
+couvertures alignées ; le sablier pour « La validation » du parcours. Puis,
+sur ses recommandations acceptées par le porteur : la version téléphone de
+l'arbre (l'énigme et les trois chemins qui se rejoignent) ; « Dans ma
+classe » de la partie 8 après « Adaptez les reprises » ; les renvois de
+« Six erreurs à éviter » réduits au numéro cerclé, titre au survol ; la
+capture des scènes voisines reprise sans les fautes voulues du texte
+d'essai, et celle du livre prise dans le PDF définitif ; la page finit sur
+une feuille de papier qui répond à la page de titre, le dragon endormi sur
+son livre, « À vous d'écrire la suite » à la main, une phrase, la
+bibliothèque et le bouton (titre et phrase proposés, à relire par lui).
+Écartés : le corps de « Dans ma classe » en romain sans lignes, le sommaire
+avant « En bref » sur téléphone, la liste des structures retirée, le bouton
+« Sommaire » masqué pendant le défilement. Une image remplacée change de
+nom : l'optimiseur d'images la garde en cache sous son adresse.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
