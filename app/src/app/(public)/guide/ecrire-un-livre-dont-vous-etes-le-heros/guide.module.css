@@ -388,6 +388,8 @@
 }
 .couv {
   display: grid;
+  /* Les lignes serrées en haut : sans quoi la hauteur en trop d'un titre court se répartit et décale les légendes */
+  align-content: start;
   gap: 2px;
   color: var(--graphite);
   text-decoration: none;
