@@ -57,6 +57,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
+          "tete": null,
+          "texte": "Écrire un livre-jeu donne envie d’écrire à toute la classe, élèves en difficulté compris : chacun écrit quelques scènes d’une aventure commune, à laquelle d’autres vont jouer, et la classe obtient à la fin un vrai livre."
+        },
+        {
+          "sorte": "paragraphe",
           "tete": "C’est un livre ! Un vrai.",
           "texte": "Pour beaucoup d’enfants, écrire un livre, c’est une affaire d’écrivains. Mais la classe a l’avantage du nombre. Chacun apporte ses idées et écrit quelques scènes. Mis bout à bout, tous ces petits textes deviennent une histoire complète, bien plus ambitieuse que ce qu’un élève aurait pu créer seul. Les élèves en difficulté écrivent volontiers et en sont aussi fiers que les autres. Et à la fin du projet, chacun tient entre ses mains un véritable livre, avec son nom à l’intérieur."
         },
@@ -102,7 +107,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": null,
-          "texte": "Ce n’est pas tant une question d’âge que d’autonomie dans l’écriture. À tous les niveaux, la classe imagine l’univers, invente l’histoire et décide des choix ; seule la manière de rédiger change : dictée à l’adulte, petits groupes ou écriture autonome."
+          "texte": "Dès 6 ans, en CP, avec l’adulte qui écrit sous la dictée ou des scènes rédigées en petits groupes ; à partir de 8 ans, en CE2, chaque élève rédige ses propres scènes. Ce n’est pas tant une question d’âge que d’autonomie dans l’écriture. À tous les niveaux, la classe imagine l’univers, invente l’histoire et décide des choix ; seule la manière de rédiger change : dictée à l’adulte, petits groupes ou écriture autonome."
         },
         {
           "sorte": "liste",
@@ -275,6 +280,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
+          "tete": null,
+          "texte": "Pour un premier livre, comptez environ 80 scènes, soit une vingtaine d’obstacles de trois ou quatre scènes, chacun avec deux ou trois choix ; un grand livre en compte 200 à 300."
+        },
+        {
+          "sorte": "paragraphe",
           "tete": "Méfiez-vous de l’arbre.",
           "texte": "Si chaque choix ouvre deux chemins qui ne se rejoignent jamais, dix décisions successives donnent 1 024 fins. Cette structure fonctionne pour une histoire très courte, mais devient vite ingérable pour un livre de classe."
         },
@@ -321,6 +331,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "numero": 7,
       "titre": "Comment organiser les choix ?",
       "blocs": [
+        {
+          "sorte": "paragraphe",
+          "tete": null,
+          "texte": "Partez de chaque obstacle : l’élève imagine deux ou trois façons de réagir et ce qui se passe pour chacune, en laissant au lecteur une raison de choisir."
+        },
         {
           "sorte": "paragraphe",
           "tete": null,
@@ -496,13 +511,13 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
       "blocs": [
         {
           "sorte": "paragraphe",
-          "tete": "Deux séances d’une heure par semaine",
-          "texte": "constituent un bon rythme. Alternez l’écriture sur papier et la saisie à l’ordinateur : beaucoup d’élèves aiment taper leur texte, et pour certains, c’est une motivation supplémentaire pour terminer leur brouillon."
+          "tete": "Deux formats.",
+          "texte": "Un premier livre d’environ 80 scènes s’écrit en une période (six à sept semaines), parfois deux. Pour un grand livre de 200 à 300 scènes, comptez deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
         },
         {
           "sorte": "paragraphe",
-          "tete": "Deux formats.",
-          "texte": "Un premier livre d’environ 80 scènes s’écrit en une période, parfois deux. Pour un grand livre de 200 à 300 scènes, comptez deux périodes d’écriture, auxquelles s’ajoutent la découverte des livres-jeux, la préparation de l’histoire et la fabrication du livre."
+          "tete": "Deux séances d’une heure par semaine",
+          "texte": "constituent un bon rythme. Alternez l’écriture sur papier et la saisie à l’ordinateur : beaucoup d’élèves aiment taper leur texte, et pour certains, c’est une motivation supplémentaire pour terminer leur brouillon."
         },
         {
           "sorte": "paragraphe",

@@ -137,6 +137,10 @@ Décidé le 30 octobre 2026.
   ou à deux », « deux ou trois ») ; pas de coupe de 15 à 20 % : la longueur
   reste celle-ci. Changé ensuite : deux périodes d'écriture pour un grand
   livre, tableau compris (il gardait « une ou deux »).
+- Audit de référencement du 7 novembre 2026, point par point avec lui :
+  chaque question s'ouvre sur sa réponse, citable seule. Une phrase-réponse
+  en tête des parties 1, 2 (l'âge en chiffres), 6 (80 scènes) et 7 ; en
+  partie 11, « Deux formats » remonté en tête, la période définie.
 
 #### Premier jet
 
@@ -310,6 +314,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 
 > ## Pourquoi écrire un livre-jeu avec sa classe ?
 >
+> Écrire un livre-jeu donne envie d'écrire à toute la classe, élèves en
+> difficulté compris : chacun écrit quelques scènes d'une aventure commune, à
+> laquelle d'autres vont jouer, et la classe obtient à la fin un vrai livre.
+>
 > **C'est un livre ! Un vrai.** Pour beaucoup d'enfants, écrire un livre,
 > c'est une affaire d'écrivains. Mais la classe a l'avantage du nombre.
 > Chacun apporte ses idées et écrit quelques scènes. Mis bout à bout, tous
@@ -400,7 +408,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 
 > ## À partir de quel âge ?
 >
-> Ce n'est pas tant une question d'âge que d'autonomie dans l'écriture. À
+> Dès 6 ans, en CP, avec l'adulte qui écrit sous la dictée ou des scènes
+> rédigées en petits groupes ; à partir de 8 ans, en CE2, chaque élève
+> rédige ses propres scènes. Ce n'est pas tant une question d'âge que d'autonomie dans l'écriture. À
 > tous les niveaux, la classe imagine l'univers, invente l'histoire et décide
 > des choix ; seule la manière de rédiger change : dictée à l'adulte, petits
 > groupes ou écriture autonome.
@@ -806,6 +816,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 
 > ## Combien de chapitres, de scènes et de choix prévoir ?
 >
+> Pour un premier livre, comptez environ 80 scènes, soit une vingtaine
+> d'obstacles de trois ou quatre scènes, chacun avec deux ou trois choix ;
+> un grand livre en compte 200 à 300.
+>
 > **Méfiez-vous de l'arbre.** Si chaque choix ouvre deux chemins qui ne se
 > rejoignent jamais, dix décisions successives donnent 1 024 fins. Cette
 > structure fonctionne pour une histoire très courte, mais devient vite
@@ -918,6 +932,10 @@ chaque partie pendant l'entretien et prime sur les sources.
 #### Premier jet
 
 > ## Comment organiser les choix ?
+>
+> Partez de chaque obstacle : l'élève imagine deux ou trois façons de
+> réagir et ce qui se passe pour chacune, en laissant au lecteur une raison
+> de choisir.
 >
 > Pour les élèves, c'est l'étape la plus difficile : inventer des choix
 > intéressants, dont les conséquences restent logiques. Le lecteur ne doit
@@ -1303,15 +1321,16 @@ chaque partie pendant l'entretien et prime sur les sources.
 
 > ## Combien de temps faut-il ?
 >
+> **Deux formats.** Un premier livre d'environ 80 scènes s'écrit en une
+> période (six à sept semaines), parfois deux. Pour un grand livre de 200 à
+> 300 scènes, comptez deux périodes d'écriture, auxquelles s'ajoutent la
+> découverte des livres-jeux, la préparation de l'histoire et la fabrication
+> du livre.
+>
 > **Deux séances d'une heure par semaine** constituent un bon rythme.
 > Alternez l'écriture sur papier et la saisie à l'ordinateur : beaucoup
 > d'élèves aiment taper leur texte, et pour certains, c'est une motivation
 > supplémentaire pour terminer leur brouillon.
->
-> **Deux formats.** Un premier livre d'environ 80 scènes s'écrit en une
-> période, parfois deux. Pour un grand livre de 200 à 300 scènes, comptez
-> deux périodes d'écriture, auxquelles s'ajoutent la découverte des
-> livres-jeux, la préparation de l'histoire et la fabrication du livre.
 >
 > **Les étapes d'un grand livre.** Un calendrier possible, à adapter selon
 > l'âge et l'autonomie des élèves.
