@@ -111,7 +111,9 @@
   color: var(--canard);
   background: rgba(255, 255, 255, 0.55);
 }
-.sommaireListe a[aria-current] {
+/* La question qu'on lit, dans le seul sommaire collant : en gras dans le sommaire du haut, déjà dépassé,
+   une ligne passée sur deux faisait sauter le texte sur téléphone (audit du 7 novembre 2026) */
+.sommaire .sommaireListe a[aria-current] {
   color: var(--graphite);
   font-weight: 700;
   background: var(--feuille);
