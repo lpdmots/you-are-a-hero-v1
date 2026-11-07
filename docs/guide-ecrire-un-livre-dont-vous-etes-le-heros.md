@@ -140,7 +140,11 @@ Décidé le 30 octobre 2026.
 - Audit de référencement du 7 novembre 2026, point par point avec lui :
   chaque question s'ouvre sur sa réponse, citable seule. Une phrase-réponse
   en tête des parties 1, 2 (l'âge en chiffres), 6 (80 scènes) et 7 ; en
-  partie 11, « Deux formats » remonté en tête, la période définie.
+  partie 11, « Deux formats » remonté en tête, la période définie. Les
+  autres pages disent les mêmes faits : la durée d'un projet dans l'« Aide »
+  (un à trois mois, 80 scènes pour un premier livre), l'auteur dans
+  `llms.txt` (Nicolas Coussot, six ans de livres-jeux, dont quatre avec
+  l'outil).
 
 #### Premier jet
 

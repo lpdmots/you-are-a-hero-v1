@@ -56,7 +56,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     "## Qui le fait",
     "",
-    `Conçu par Nicolas, professeur des écoles, dont la classe écrit ses livres-jeux avec les versions successives de l’outil depuis quatre ans. Édité par ${EDITEUR.nom}. Contact : ${EDITEUR.contact}.`,
+    `Conçu par Nicolas Coussot, professeur des écoles : six ans de livres-jeux avec sa classe, dont quatre avec les versions successives de l’outil. Édité par ${EDITEUR.nom}. Contact : ${EDITEUR.contact}.`,
     "",
     "## Pages",
     "",

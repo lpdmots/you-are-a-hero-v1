@@ -255,7 +255,7 @@ export const QUESTIONS: { question: string; reponse: string; vente?: boolean }[]
   },
   {
     question: "Combien de temps dure un projet ?",
-    reponse: "Quelques semaines pour un livre court d’une vingtaine de scènes, quelques mois pour un grand livre de plusieurs centaines de passages.",
+    reponse: "Un à trois mois d’écriture : un mois et demi environ, parfois trois, pour un premier livre d’environ 80 scènes ; trois mois pour un grand livre de 200 à 300 scènes, sans compter la préparation.",
   },
   {
     question: "De quel matériel ai-je besoin ?",
