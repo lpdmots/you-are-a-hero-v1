@@ -82,7 +82,7 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros en clas
       url: `${SITE}${ADRESSE_DU_GUIDE}`,
       datePublished: DATE_DE_PUBLICATION_DU_GUIDE,
       dateModified: DATE_DU_GUIDE,
-      author: { "@type": "Person", name: "Nicolas Coussot" },
+      author: { "@type": "Person", "@id": `${SITE}/#nicolas`, name: "Nicolas Coussot" },
       publisher: { "@id": `${SITE}/#organisation` },
     });
     expect((article.hasPart as { url: string }[]).map((p) => p.url)).toContain(`${SITE}${ADRESSE_DU_GUIDE}#chemins`);

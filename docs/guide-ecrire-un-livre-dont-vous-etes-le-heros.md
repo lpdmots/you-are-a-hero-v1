@@ -149,7 +149,10 @@ Décidé le 30 octobre 2026.
   (« Guide », sur grand écran ; demandé par lui), depuis trois réponses de
   l'« Aide » (définition, âge, durée, chacune vers sa question) et depuis le
   passage 33 de l'accueil, par un choix à flèche (« Si vous voulez la
-  méthode pas à pas, lisez le guide »).
+  méthode pas à pas, lisez le guide »). Un seul auteur dans les données
+  structurées, Nicolas Coussot, le même identifiant sur l'accueil
+  (fondateur) et le guide (auteur) ; l'image de partage passe dans
+  `public/guide/partage.jpg`, aussi image de l'article à côté de la photo.
 
 #### Premier jet
 

@@ -18,6 +18,14 @@ export const DATE_DU_GUIDE = "2026-10-30";
 
 export const AUTEUR_DU_GUIDE = { nom: "Nicolas Coussot", metier: "Professeur des écoles" };
 
+/** L'image de partage du guide, 1200 × 630, servie de `public/` : l'aperçu des réseaux et l'une des images de l'article */
+export const IMAGE_DE_PARTAGE_DU_GUIDE = {
+  src: "/guide/partage.jpg",
+  largeur: 1200,
+  hauteur: 630,
+  alt: "« Le labyrinthe oublié » ouvert sur sa feuille d’aventure, à côté d’« Électro Nick » : deux livres-jeux écrits par une classe et imprimés.",
+};
+
 /** 150 signes : Google coupe une description vers 155 (audit du 7 novembre 2026) */
 export const DESCRIPTION_DU_GUIDE =
   "La méthode d’un professeur des écoles, en 14 questions, pour écrire un livre dont vous êtes le héros en classe : histoire, choix, chemins, impression.";
@@ -227,8 +235,10 @@ export function donneesDuGuide(texte: TexteDuGuide, site: string): Record<string
         inLanguage: "fr-FR",
         datePublished: DATE_DE_PUBLICATION_DU_GUIDE,
         dateModified: DATE_DU_GUIDE,
-        image: `${site}/accueil/photo-des-livres.webp`,
-        author: { "@type": "Person", name: AUTEUR_DU_GUIDE.nom, jobTitle: AUTEUR_DU_GUIDE.metier },
+        // Deux formats, comme Google le recommande : la photo des livres (4:3) et l'image de partage (1,9:1)
+        image: [`${site}/accueil/photo-des-livres.webp`, `${site}${IMAGE_DE_PARTAGE_DU_GUIDE.src}`],
+        // Le même auteur que le fondateur de l'accueil, par son identifiant (audit du 7 novembre 2026)
+        author: { "@type": "Person", "@id": `${site}/#nicolas`, name: AUTEUR_DU_GUIDE.nom, jobTitle: AUTEUR_DU_GUIDE.metier, url: `${site}/` },
         publisher: { "@type": "Organization", "@id": `${site}/#organisation`, name: NOM, email: EDITEUR.contact },
         about: ["Livre dont vous êtes le héros", "Livre-jeu", "Écriture collaborative en classe"],
         audience: { "@type": "EducationalAudience", educationalRole: "teacher" },

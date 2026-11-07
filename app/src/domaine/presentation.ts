@@ -95,7 +95,8 @@ export function donneesDeLAccueil(offre: Offre, site: string, video: Video | nul
       url: `${site}/`,
       logo: `${site}/icon.svg`,
       email: EDITEUR.contact,
-      founder: { "@type": "Person", name: "Nicolas", jobTitle: "Professeur des écoles" },
+      // Le même auteur que celui du guide, par son identifiant (audit du 7 novembre 2026)
+      founder: { "@type": "Person", "@id": `${site}/#nicolas`, name: "Nicolas Coussot", jobTitle: "Professeur des écoles" },
     },
     { "@type": "WebSite", "@id": `${site}/#site`, name: NOM, url: `${site}/`, inLanguage: "fr-FR", publisher: { "@id": organisation } },
     {
