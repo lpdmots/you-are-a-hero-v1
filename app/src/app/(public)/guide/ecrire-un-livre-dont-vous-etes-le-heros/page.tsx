@@ -44,6 +44,26 @@ export const metadata: Metadata = {
 
 const DATE_LISIBLE = new Date(`${DATE_DU_GUIDE}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
+/** Le texte d'un lien vers un autre site et sa flèche, liée au dernier mot pour ne jamais passer seule à la ligne */
+function LienExterne({ texte, italique }: { texte: string; italique?: boolean }) {
+  const coupe = texte.lastIndexOf(" ") + 1;
+  const fin = (
+    <span className={styles.insecable}>
+      {texte.slice(coupe)}
+      <svg className={styles.externe} viewBox="0 0 12 12" aria-hidden="true">
+        <path d="M4.5 2.5h5v5M9.5 2.5 3 9" />
+      </svg>
+    </span>
+  );
+  const tout = (
+    <>
+      {texte.slice(0, coupe)}
+      {fin}
+    </>
+  );
+  return italique ? <em>{tout}</em> : tout;
+}
+
 /** Un texte du guide, ses marques rendues : gras, italique, liens, renvois cerclés vers une question */
 function EnLigne({ texte }: { texte: string }) {
   return morceaux(texte, T.parties).map((m, i) => {
@@ -60,10 +80,7 @@ function EnLigne({ texte }: { texte: string }) {
         ) : (
           // Un lien vers un autre site s'ouvre dans un nouvel onglet, pour ne pas perdre sa place dans le guide ; il le dit
           <a key={i} href={m.adresse} target="_blank" rel="noopener noreferrer">
-            {m.italique ? <em>{m.texte}</em> : m.texte}
-            <svg className={styles.externe} viewBox="0 0 12 12" aria-hidden="true">
-              <path d="M4.5 2.5h5v5M9.5 2.5 3 9" />
-            </svg>
+            <LienExterne texte={m.texte} italique={m.italique} />
             <span className="vh"> (nouvel onglet)</span>
           </a>
         );
