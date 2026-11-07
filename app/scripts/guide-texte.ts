@@ -1,5 +1,5 @@
 /**
- * Le texte du guide « Comment écrire un livre dont vous êtes le héros avec sa classe » (F14-AC52) :
+ * Le texte du guide « Comment écrire un livre dont vous êtes le héros en classe » (F14-AC52) :
  * lu dans les « Premier jet » de `docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md`, qui reste
  * sa seule source, et écrit dans `src/domaine/texte-du-guide.ts`. Après une retouche du document :
  *

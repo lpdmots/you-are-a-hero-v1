@@ -122,7 +122,7 @@ const GUIDE = "/guide/ecrire-un-livre-dont-vous-etes-le-heros";
 
 test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la lecture ; sur téléphone, le bouton « Sommaire » paraît une fois le sommaire dépassé", async ({ page }) => {
   await aller(page, GUIDE);
-  await expect(page.getByRole("heading", { level: 1, name: "Comment écrire un livre dont vous êtes le héros avec sa classe" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Comment écrire un livre dont vous êtes le héros en classe" })).toBeVisible();
   await expect(page.getByText(/^Par Nicolas Coussot, professeur des écoles, .* Mis à jour le/)).toBeVisible();
   await expect(page.getByRole("heading", { level: 2, name: "En bref" })).toBeVisible();
   await expect(page.getByRole("region", { name: "En bref" }).getByText("1 à 3 mois")).toBeVisible();
@@ -159,7 +159,7 @@ test("F14-AC53 — le guide se trouve : le pied des pages publiques y mène, son
   await aller(page, "/aide");
   await page.getByRole("contentinfo").getByRole("link", { name: "Écrire un livre dont vous êtes le héros" }).click();
   await expect(page).toHaveURL(new RegExp(`${GUIDE}$`));
-  await expect(page).toHaveTitle("Comment écrire un livre dont vous êtes le héros avec sa classe");
+  await expect(page).toHaveTitle("Comment écrire un livre dont vous êtes le héros en classe");
   await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", new RegExp(`${GUIDE}$`));
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /opengraph-image/);
   const donnees = JSON.parse((await page.locator('script[type="application/ld+json"]').first().textContent()) ?? "{}");

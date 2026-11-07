@@ -1,4 +1,4 @@
-# Guide « Comment écrire un livre dont vous êtes le héros avec sa classe »
+# Guide « Comment écrire un livre dont vous êtes le héros en classe »
 
 Document de travail de la page guide publique : cadrage, plan, matière par
 partie, sources. Commencé le 28 octobre 2026. Le texte de la page est ici, dans
@@ -26,8 +26,10 @@ mène à celui de l'Aide, et le pied ne garde que la bibliothèque et l'accueil.
   histoire dont vous êtes le héros », « en classe », « projet d'écriture
   cycle 3 / CM1 / CM2 », « livre-jeu » défini d'emblée comme synonyme,
   « fiction interactive » (le mot du Québec), « histoire interactive » ; ne
-  pas viser « … avec sa classe », qui revient à l'accueil ; titre d'onglet
-  « Comment écrire un livre dont vous êtes le héros avec sa classe » ; une
+  pas viser « … avec sa classe », qui revient à l'accueil ; titre d'onglet et
+  grand titre « Comment écrire un livre dont vous êtes le héros en classe »
+  (décidé par le porteur le 7 novembre 2026, après l'audit de référencement :
+  « … avec sa classe » reprenait le mot-clé de l'accueil) ; une
   phrase de définition citable en tête ; intertitres en questions ; chiffres
   réels de sa pratique, sans l'effectif de la classe (décidé par le porteur le
   28 octobre 2026 : trop de lecteurs croiraient que le projet tient au petit
@@ -138,7 +140,7 @@ Décidé le 30 octobre 2026.
 
 #### Premier jet
 
-> # Comment écrire un livre dont vous êtes le héros avec sa classe
+> # Comment écrire un livre dont vous êtes le héros en classe
 >
 > Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en
 > scènes numérotées où le lecteur choisit la suite : à la fin d'une scène, il

@@ -11,9 +11,9 @@ const SITE = "https://iletaituneclasse.com";
 
 afterEach(() => vi.unstubAllEnvs());
 
-describe("le guide « Comment écrire un livre dont vous êtes le héros avec sa classe »", () => {
+describe("le guide « Comment écrire un livre dont vous êtes le héros en classe »", () => {
   it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, cinq encarts au plus, aucun renvoi à « Ressources »", () => {
-    expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros avec sa classe");
+    expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros en classe");
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
     expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
     // « En bref » : un chiffre, sa phrase, la question qui le développe

@@ -409,7 +409,7 @@ function Sommaire() {
 }
 
 /**
- * Le guide « Comment écrire un livre dont vous êtes le héros avec sa classe » (F14-AC52, AC53 ;
+ * Le guide « Comment écrire un livre dont vous êtes le héros en classe » (F14-AC52, AC53 ;
  * design.md, « Guide… : maquettes », A2 validée le 30 octobre 2026) : une page de titre sur papier, le
  * sommaire collant, une colonne de lecture d'où débordent les images.
  */

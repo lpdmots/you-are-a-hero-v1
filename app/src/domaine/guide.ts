@@ -3,7 +3,7 @@ import { NOM } from "./presentation";
 import { EDITEUR } from "./textes-publics";
 
 /**
- * Le guide « Comment écrire un livre dont vous êtes le héros avec sa classe » (F14, « Mots-clés et
+ * Le guide « Comment écrire un livre dont vous êtes le héros en classe » (F14, « Mots-clés et
  * pages », F14-AC52, AC53) : la méthode, tirée de la classe du porteur, sur une seule page. Son texte
  * vient du document du guide (`npm run guide:texte`) ; ici, sa forme, ses images et ses données.
  */
