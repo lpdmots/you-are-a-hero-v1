@@ -2543,6 +2543,29 @@ monte un peu sur elle ; le dragon assis sur le bord de la feuille, à droite, pe
 texte. « Créez un compte » et les deux renvois tiennent dans 390 × 664. Sur tablette, la feuille
 et son bandeau ne dépassent pas 640 points. Le livre ouvert reste aux grands écrans.
 
+**Textes de l'accueil revus le 8 novembre 2026.** Après comparaison sur la page
+complète dans un aperçu temporaire, le porteur valide les formulations courtes :
+le lecteur choisit la suite, l'outil guide de la première idée au livre ; rédaction
+sur cahier ou directement à l'écran ; vérification, numérotation et composition du
+PDF explicites. Le 33 distingue l'âge des auteurs, leur accompagnement et leur
+connexion ; le suivi des textes remplace « Une aide à chaque étape ». Au 40,
+la gratuité désigne l'écriture, le PDF et la lecture en ligne ; l'IA reste un
+aparté facultatif réservé à l'adulte, avec les crédits et le prix de la recharge
+lus dans les réglages. Le mot « Images » de la fiche est conservé sur son choix.
+Au 27, sa formulation est reprise : « Électro Nick a été écrit par mes élèves » ;
+le petit livre est nommé sans lui attribuer une origine. La description pour les
+moteurs, les renvois, une légende, le bouton de la vidéo et le récit final sont
+accordés. Le titre, les numéros et la mise en page sont conservés. Ces textes
+remplacent les formulations antérieures décrites ci-dessus ; intégrés en local.
+Repris ensuite le même jour : l'aparté « Et l'IA ? » dit qu'elle fait gagner
+beaucoup de temps et relance l'imagination, puis, sans dire qu'elle est chère,
+que chaque demande ayant un coût, elle ne peut pas être offerte comme le reste
+(30 étoiles pour l'essayer, d'autres s'achètent) ; le prix de la recharge n'y est
+plus, la fiche le donnant ; « d'images ajoutées » devient « d'images ». La
+description pour les moteurs commence par « Créez gratuitement », `llms.txt` et
+les données structurées (`isAccessibleForFree`) suivent la gratuité, et l'aide
+gagne « Est-ce gratuit ? », tant que « Livre payant » est éteint.
+
 ### Entrées en livre-jeu (23 octobre 2026)
 
 Le porteur juge les écrans d'entrée « très communs » et leur image (le chat de

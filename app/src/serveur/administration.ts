@@ -42,6 +42,8 @@ export type Tableau = {
   /** Les ventes du mois */
   ventes: { nombre: number; montant: number; pass: number; recharges: number };
   paiementOuvert: boolean;
+  /** Tel que réglé, même vente fermée, où il ne vaut rien */
+  livrePayant: boolean;
 };
 
 /** Le tableau de l'administration (F14-AC23). */
@@ -53,7 +55,7 @@ export async function tableau(): Promise<Tableau> {
     base.from("appels_ia").select("cout_usd").gte("commence_le", debut),
     base.from("paiements").select("achat, montant").gte("recu_le", debut),
     offreActuelle(base),
-    base.from("reglages_application").select("euros_par_dollar").single(),
+    base.from("reglages_application").select("euros_par_dollar, livre_payant").single(),
   ]);
   const depenseUsd = (appels ?? []).reduce((t, a) => t + Number(a.cout_usd ?? 0), 0);
   const v = ventes ?? [];
@@ -72,6 +74,7 @@ export async function tableau(): Promise<Tableau> {
       recharges: v.filter((p) => p.achat === "recharge").length,
     },
     paiementOuvert: offre.paiementOuvert,
+    livrePayant: reglages?.livre_payant === true,
   };
 }
 
@@ -184,5 +187,14 @@ export async function retirerLePartage(projetId: string): Promise<{ ok: boolean;
 /** « Paiement ouvert » : l'interrupteur des limites et de la vente (F14). */
 export async function reglerLePaiement(ouvert: boolean): Promise<boolean> {
   const { error } = await clientService().from("reglages_application").update({ paiement_ouvert: ouvert }).eq("id", true);
+  return !error;
+}
+
+/**
+ * « Livre payant » (8 novembre 2026) : allumé, les projets créés ensuite ont les limites gratuites
+ * et le pass se vend ; ceux nés pendant que le livre était gratuit restent sans limite (F14-AC54).
+ */
+export async function reglerLeLivrePayant(payant: boolean): Promise<boolean> {
+  const { error } = await clientService().from("reglages_application").update({ livre_payant: payant }).eq("id", true);
   return !error;
 }

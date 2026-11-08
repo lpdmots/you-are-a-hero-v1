@@ -11090,13 +11090,48 @@ le support, le financement des aides IA et les obligations envers d'autres
 du 19 octobre 2026 et se revérifient avant tout engagement.
 
 **Entretien validé dans son ensemble par le porteur le 20 octobre 2026**
-(« Je valide l'entretien »). Décidé par lui les 19 et 20 octobre 2026 :
+(« Je valide l'entretien »). Décidé par lui les 19 et 20 octobre 2026, avec
+les révisions qui suivent :
+
+- **Le livre gratuit pour l'instant, l'IA toujours payante.** Décidé par le
+  porteur le 8 novembre 2026, pour faire découvrir l'outil aux collègues :
+  l'outil est gratuit sans limite de scènes ni d'images, et le pass ne se
+  vend pas ; les aides IA, qui ont un coût réel, restent payantes, avec les
+  trente étoiles offertes pour essayer et la recharge de 100 étoiles à 5 €,
+  seule vendue (une recharge de 400 étoiles à 20 € est écartée : elle ferait
+  concurrence au pass, au même prix, le jour où il reviendra). Le livre
+  payant n'est pas abandonné : un second interrupteur, « Livre payant »,
+  éteint, rallume tel quel le pass et les limites ; « Paiement ouvert » ne
+  commande plus que la vente, donc les recharges. « Livre payant » ne vaut
+  qu'avec la vente ouverte. Un projet créé pendant que le livre est gratuit
+  reste sans limite pour toujours, comme s'il avait son pass, sans les
+  étoiles du pass ; tous les projets existant le 8 novembre 2026 sont dans
+  ce cas (F14-AC54) ; ni l'accueil ni les conditions d'utilisation ne le
+  promettent, le porteur ne voulant pas s'engager sur la suite. Révise le 25 octobre 2026, où le porteur
+  gardait l'offre payante entière, et l'argument du 20 octobre contre la
+  vente des seuls crédits (« faire payer le complément et laisser gratuit
+  l'essentiel »), qu'il accepte désormais pour le temps du lancement.
+  Alternatives écartées : tout gratuit, IA comprise dans une dotation
+  offerte (recommandée d'abord) ; retirer le pass du code ; au retour du
+  pass, bloquer les projets nés gratuits au-delà des limites, avec un
+  préavis. L'accueil le dit sur le ton d'un collègue, choisi par le
+  porteur le même jour à la place de « gratuit pendant le lancement »,
+  recommandé : « Offert aux collègues tant que les frais d'hébergement
+  restent supportables. S'ils devenaient trop lourds, une formule payante
+  facultative pourrait s'ajouter. » ; il nomme l'hébergement, l'IA se payant
+  déjà en étoiles, sans rien promettre de la suite (ni sa forme, ni le sort
+  des livres commencés) ; les conditions d'utilisation disent de même. L'IA
+  y vient ensuite en aparté, plus petit, « Et l'IA ? » (texte dans le
+  [design](design.md#accueil-en-livre-jeu-22-octobre-2026), « Textes de
+  l'accueil revus le 8 novembre 2026 »).
 
 - **Ouverture possible sans encaissement.** L'application peut s'ouvrir à
   d'autres enseignants avant que rien ne s'encaisse. Tout est construit en
   une fois, paiement compris (« plus simple à coder que patcher par
   derrière ») ; un interrupteur « Paiement ouvert », éteint par défaut,
-  décide si la vente et les limites gratuites s'appliquent. Éteint, l'IA
+  décide si la vente et les limites gratuites s'appliquent (depuis le
+  8 novembre 2026, la vente seule ; les limites et le pass dépendent aussi
+  de « Livre payant »). Éteint, l'IA
   reste à la charge du porteur, bornée par les étoiles offertes. Le porteur
   règle lui-même ce que son statut et l'entité qui facture demandent : ce
   n'est pas un sujet de ce document. Alternatives écartées : construire le
@@ -11123,22 +11158,24 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   aides IA au-delà d'une découverte relèvent d'une formule payante.
   Alternatives écartées : le premier livre gratuit puis une licence annuelle ;
   le PDF définitif ou le partage payants ; un essai limité dans le temps.
-- **Limite gratuite en scènes, allumée avec « Paiement ouvert ».** Idée du porteur :
+- **Limite gratuite en scènes, allumée avec « Livre payant ».** Idée du porteur :
   une taille maximale du livre dans la version gratuite, pour qu'on essaie,
   qu'on se prenne au jeu, puis qu'on paie pour écrire davantage. Elle se
   compte en scènes du projet, visibles dès la préparation, et non en pages,
   qui n'existent qu'une fois le livre composé et varient avec les réglages ;
   la formule payante la lève. Atteinte, elle empêche seulement de créer une
   scène : écrire les scènes existantes, le livre, le PDF et le partage
-  continuent. Elle ne s'applique que « Paiement ouvert » allumé : tant qu'on
-  ne peut pas payer, une limite sans issue bloquerait un livre en cours.
+  continuent. Elle ne s'applique que « Paiement ouvert » et « Livre payant »
+  allumés, et jamais à un projet né pendant que le livre était gratuit : tant
+  qu'on ne peut pas payer, une limite sans issue bloquerait un livre en cours.
   Quarante scènes, valeur retenue avec le découpage de l'étape 9 et réglable
   en un seul endroit ; les scènes de la corbeille ne comptent pas. Un projet
   qui dépasse déjà la limite quand l'interrupteur s'allume garde tout et ne
   peut plus ajouter de scène sans pass. Les projets du porteur n'ont pas de
   limite. Alternatives écartées : la limite allumée dès l'ouverture, sans
   moyen de payer ; levée à la main par le porteur sur demande.
-- **Formule payante : un pass par livre.** Payé une fois, il lève pour
+- **Formule payante : un pass par livre** (en sommeil depuis le 8 novembre
+  2026, « Livre payant » éteint). Payé une fois, il lève pour
   toujours les limites gratuites du projet pour lequel on l'achète et donne un
   lot de crédits d'IA ; des recharges de crédits s'achètent à tout moment.
   Montants décidés par le porteur le 23 octobre 2026, sur une analyse des coûts
@@ -11187,7 +11224,7 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   images de repérage, ni les visuels par défaut, ni les portraits, qui servent
   au travail et ne s'impriment pas. Atteinte, elle empêche seulement de poser
   une image ; comme celle des scènes, elle ne s'applique que « Paiement
-  ouvert » allumé.
+  ouvert » et « Livre payant » allumés, hors des projets nés gratuits.
   Une image créée par l'IA dans un projet gratuit débite des crédits et compte
   aussi parmi les dix : deux limites distinctes, l'une sur le livre, l'autre
   sur l'IA. La corbeille du projet reste dans l'offre gratuite : c'est un
@@ -11324,7 +11361,13 @@ du 19 octobre 2026 et se revérifient avant tout engagement.
   première page (en local depuis le 24 octobre 2026). Les données des élèves ne font pas de
   passage : elles vont dans l'« Aide ». Révise la liste du 20 octobre 2026
   (promesse et livre montré, chemin, deux sortes de récit, qui fait quoi,
-  origine, offre) et le livre unique à feuilleter.
+  origine, offre) et le livre unique à feuilleter. **Textes revus et validés
+  le 8 novembre 2026**, dans leur version courte, après comparaison sur la page
+  complète : les précisions retenues et les formulations remplacées sont dans
+  le [design](design.md#accueil-en-livre-jeu-22-octobre-2026), « Textes de
+  l'accueil revus le 8 novembre 2026 ». L'âge présenté est celui des auteurs,
+  la connexion se fait par prénom et code après ouverture de la classe par
+  l'adulte, et le suivi du travail est explicite. La structure reste celle du livre-jeu.
 - **Référencement, réponses des IA et mesure d'audience** (décidé par le
   porteur le 24 octobre 2026, après un audit du même jour). Les pages
   publiques se trouvent et se citent : `robots.txt`, plan du site,
@@ -11516,36 +11559,37 @@ découvre l'outil, et le porteur, administrateur.
 
 *Limites gratuites et pass*
 
-- **F14-AC12 — Interrupteur éteint :** étant donné « Paiement ouvert »
-  éteint, lorsque M. Bernard crée une 41e scène ou pose une 11e image dans
-  un projet sans pass, alors rien ne l'en empêche, et aucun pass ni recharge
-  n'est proposé.
-- **F14-AC13 — Limite de scènes :** étant donné « Paiement ouvert » allumé
-  et un projet de M. Bernard sans pass à 40 scènes, dont 2 à la corbeille,
+- **F14-AC12 — Interrupteur éteint :** étant donné « Paiement ouvert » ou
+  « Livre payant » éteint, lorsque M. Bernard crée une 41e scène ou pose une 11e image dans
+  un projet sans pass, alors rien ne l'en empêche, et aucun pass n'est
+  proposé ; « Paiement ouvert » éteint, aucune recharge non plus.
+- **F14-AC13 — Limite de scènes :** étant donné « Paiement ouvert » et
+  « Livre payant » allumés et un projet de M. Bernard né le livre payant,
+  sans pass, à 40 scènes, dont 2 à la corbeille,
   lorsqu'il crée une scène, alors elle est créée ; à 40 scènes hors
   corbeille, lorsqu'il en crée une autre, alors rien n'est créé et il lit ce
   que le pass lève, avec le moyen de l'acheter ; il continue d'écrire les
   scènes existantes, de faire le PDF et de partager.
-- **F14-AC14 — Limite d'images :** étant donné « Paiement ouvert » allumé et
-  un projet sans pass dont le livre porte 10 images (scènes et pages de
+- **F14-AC14 — Limite d'images :** étant donné « Paiement ouvert » et
+  « Livre payant » allumés et un projet né le livre payant, sans pass, dont le livre porte 10 images (scènes et pages de
   présentation), lorsque M. Bernard pose une 11e image dans une scène, alors
   elle n'est pas posée et il lit ce que le pass lève ; lorsqu'il choisit une
   image de repérage pour un chapitre ou crée un portrait, alors rien ne
   l'en empêche.
-- **F14-AC15 — Projet déjà au-delà :** étant donné un projet sans pass à
-  55 scènes quand « Paiement ouvert » s'allume, alors ses 55 scènes restent
+- **F14-AC15 — Projet déjà au-delà :** étant donné un projet sans pass ni
+  marque « sans limite » à 55 scènes quand les limites s'allument, alors ses 55 scènes restent
   et s'écrivent ; seule la création d'une scène est refusée.
 - **F14-AC16 — Le pass lève les limites du projet :** étant donné le pass
   acheté pour « Le marais », alors ce projet n'a plus de limite, pour
   toujours, et le solde de M. Bernard gagne les étoiles du pass ; son autre
   projet sans pass garde ses limites.
-- **F14-AC17 — Projets du porteur :** étant donné « Paiement ouvert »
-  allumé, alors les projets du porteur n'ont aucune limite.
+- **F14-AC17 — Projets du porteur :** étant donné « Paiement ouvert » et
+  « Livre payant » allumés, alors les projets du porteur n'ont aucune limite.
 
 *Paiement*
 
-- **F14-AC18 — Acheter un pass :** étant donné « Paiement ouvert » allumé,
-  lorsque M. Bernard achète le pass de « Le marais » et paie, alors la page
+- **F14-AC18 — Acheter un pass :** étant donné « Paiement ouvert » et
+  « Livre payant » allumés, lorsque M. Bernard achète le pass de « Le marais » et paie, alors la page
   de paiement de Stripe exige la case « Je demande l'accès immédiat et
   renonce à mon droit de rétractation. » ; une fois le paiement reçu par
   l'application, le projet a son pass et la facture lui parvient.
@@ -11670,7 +11714,7 @@ découvre l'outil, et le porteur, administrateur.
   livre retiré de la bibliothèque quitte l'accueil ; sans livre choisi, le passage 27 et ses renvois
   n'existent pas.
 - **F14-AC41 — La marque du pass dans « Mes projets »** (demandé par le porteur le
-  23 octobre 2026) : étant donné « Paiement ouvert » allumé et le pass acheté pour « Le marais »,
+  23 octobre 2026) : étant donné « Livre payant » allumé et le pass acheté pour « Le marais »,
   lorsque M. Bernard ouvre « Mes projets », alors la carte de « Le marais » porte une petite
   marque grise « Pass du livre », et son autre projet aucune, ni « gratuit » ni « premium » ;
   interrupteur éteint, aucune carte ne la porte ; les projets du porteur ne la portent jamais.
@@ -11692,7 +11736,7 @@ découvre l'outil, et le porteur, administrateur.
   livre les lève (20 €), à tout moment depuis le projet. », sans rien proposer d'acheter, le projet
   n'existant pas encore (une étape d'achat à la création, idée du porteur, écartée sur
   recommandation : pass payé avant de savoir si le projet vivra, contraire à « essayer, puis
-  payer ») ; interrupteur éteint, ni le lien ni la phrase.
+  payer ») ; « Livre payant » éteint, ni le lien ni la phrase.
 - **F14-AC44 — Le merci de la recharge** (demandé par le porteur le 23 octobre 2026, pendant le
   vrai achat) : étant donné M. Bernard à 30 ✦ qui recharge depuis « Mon compte », ou depuis le
   dialogue « Vous n'avez plus d'étoiles » ouvert dans une scène, lorsque le paiement est reçu,
@@ -11700,6 +11744,14 @@ découvre l'outil, et le porteur, administrateur.
   « +100 ✦ », son nouveau solde, ce que paient les étoiles et que la facture arrive par courriel,
   avec « Continuer » ; plus court que le merci du pass, sans image de livre. Avant, la recharge
   ramenait toujours à « Mon compte », avec une phrase passagère.
+- **F14-AC54 — Le livre gratuit, l'IA payante** (décidé par le porteur le 8 novembre 2026) :
+  étant donné « Paiement ouvert » allumé et « Livre payant » éteint, alors M. Bernard crée une
+  41e scène et pose une 11e image, ne voit ni pass ni décompte « sur 40 », et recharge ses
+  étoiles depuis « Mon compte » ; l'accueil dit « Gratuit. », des scènes et des images
+  « illimitées » et « Plus d'étoiles : 5 € les 100. », sans pass ; lorsque le porteur allume
+  « Livre payant », alors « Le marais », créé avant, reste sans limite et sans pass, et un projet
+  créé ensuite a ses limites ; « Livre payant » allumé et « Paiement ouvert » éteint, aucune
+  limite ne vaut ; M. Bernard ne change pas la marque « sans limite » de ses projets.
 
 *Référencement et mesure (décidés le 24 octobre 2026)*
 

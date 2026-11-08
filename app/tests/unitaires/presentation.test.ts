@@ -4,7 +4,9 @@ import { donneesDeLAccueil, donneesDeLAide, enJsonLd, llmsTxt } from "@/domaine/
 import { QUESTIONS } from "@/domaine/textes-publics";
 
 const SITE = "https://iletaituneclasse.com";
-const vente = lireOffre({ paiement_ouvert: true, prix_du_pass: 2000, prix_de_la_recharge: 500 });
+const vente = lireOffre({ paiement_ouvert: true, livre_payant: true, prix_du_pass: 2000, prix_de_la_recharge: 500 });
+// Le livre gratuit, l'IA payante (8 novembre 2026)
+const livreGratuit = lireOffre({ paiement_ouvert: true, livre_payant: false, prix_du_pass: 2000, prix_de_la_recharge: 500 });
 
 describe("ce que lisent les IA", () => {
   it("F14-AC48 — llms.txt dit ce qu'est l'outil, pour qui, ses prix actuels et les pages publiques", () => {
@@ -17,6 +19,18 @@ describe("ce que lisent les IA", () => {
     expect(texte).not.toContain("/lire");
     // Vente fermée : ni pass ni recharge
     expect(llmsTxt(lireOffre({ paiement_ouvert: false }), SITE)).not.toContain("Pass du livre");
+    expect(llmsTxt(lireOffre({ paiement_ouvert: false }), SITE)).not.toContain("5 € les 100");
+  });
+
+  it("F14-AC54 — livre gratuit, vente ouverte : llms.txt et l'accueil disent l'outil sans limite et la recharge, sans pass", () => {
+    const texte = llmsTxt(livreGratuit, SITE);
+    expect(texte).toContain("Gratuit, sans limite de scènes ni d’images");
+    expect(texte).toContain("5 € les 100");
+    expect(texte).not.toContain("Pass du livre");
+    const donnees = donneesDeLAccueil(livreGratuit, SITE, null) as { "@graph": { offers?: { name: string; price: string }[] }[] };
+    expect(donnees["@graph"][2].offers?.map((o) => [o.name, o.price])).toEqual([["Gratuit", "0"], ["100 étoiles", "5.00"]]);
+    expect(donnees["@graph"][2]).toMatchObject({ isAccessibleForFree: true });
+    expect((donneesDeLAccueil(vente, SITE, null) as { "@graph": unknown[] })["@graph"][2]).toMatchObject({ isAccessibleForFree: false });
   });
 
   it("F14-AC48 — l'accueil porte l'organisation, le site, l'application et son offre ; la vidéo seulement quand elle est en ligne", () => {

@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, recit, type Compte } from "./outils";
+import { adultePret, aller, livrePayant, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, recit, type Compte } from "./outils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
@@ -9,16 +9,17 @@ import type { SupabaseClient } from "@supabase/supabase-js";
  * comme il était, avec le prix du pass.
  */
 
-let avant: { paiement_ouvert: boolean; prix_du_pass: number };
+let avant: { paiement_ouvert: boolean; livre_payant: boolean; prix_du_pass: number };
 test.beforeAll(async () => {
-  [avant] = await sql<{ paiement_ouvert: boolean; prix_du_pass: number }>("select paiement_ouvert, prix_du_pass from public.reglages_application");
+  [avant] = await sql<{ paiement_ouvert: boolean; livre_payant: boolean; prix_du_pass: number }>("select paiement_ouvert, livre_payant, prix_du_pass from public.reglages_application");
 });
 test.afterEach(async () => {
-  await sql("update public.reglages_application set paiement_ouvert = $1, prix_du_pass = $2", [avant.paiement_ouvert, avant.prix_du_pass]);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2, prix_du_pass = $3", [avant.paiement_ouvert, avant.livre_payant, avant.prix_du_pass]);
   await supprimerComptes();
 });
 
-const interrupteur = (allume: boolean) => sql("update public.reglages_application set paiement_ouvert = $1", [allume]);
+// Vente et livre payant ensemble, les projets du test nés le livre payant (F14-AC54)
+const interrupteur = livrePayant;
 const DIALOGUE = (page: Page) => page.getByRole("alertdialog");
 const BARRE = (page: Page) => page.getByRole("toolbar", { name: "Outils de la copie" });
 
@@ -47,6 +48,23 @@ test("F14-AC12 — interrupteur éteint : une 41e scène s'ajoute, et rien ne pa
   await expect(page.getByText(/Pass du livre|Acheter le pass/)).toHaveCount(0);
   await page.keyboard.press("Escape");
   await expect(page.getByText("1 partie · 1 chapitre · 41 scènes", { exact: true })).toBeVisible();
+});
+
+test("F14-AC54 — vente ouverte, livre gratuit : une 41e scène s'ajoute ; le livre devenu payant, ce projet né gratuit reste sans limite ni pass", async ({ page }) => {
+  await sql("update public.reglages_application set paiement_ouvert = true, livre_payant = false");
+  const m = await leMarais(page, 40);
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
+  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
+  await sql("update public.reglages_application set livre_payant = true");
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
+  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
+  await expect(DIALOGUE(page)).toHaveCount(0);
+  await ouvrirReglages(page, m.projet);
+  await expect(page.getByText(/Acheter le pass/)).toHaveCount(0);
+  await page.keyboard.press("Escape");
+  await expect(page.getByText("1 partie · 1 chapitre · 42 scènes", { exact: true })).toBeVisible();
 });
 
 test("F14-AC13, AC21 — allumé, à 40 scènes : « Ajouter une scène » ouvre le dialogue du pass, rien n'est créé ; le prix vient des réglages ; « Plus tard » laisse écrire", async ({ page }) => {

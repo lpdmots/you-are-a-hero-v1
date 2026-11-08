@@ -58,7 +58,7 @@ export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant:
             styleImages: projet.styleImages, styleAutre: projet.styleAutre, herosAbsent: projet.herosAbsent, consigneEcriture: projet.consigneEcriture,
             ageDesLecteurs: projet.ageDesLecteurs,
           }}
-          livre={offre.paiementOuvert && limites && !enseignant.createur ? { offre, limites } : null}
+          livre={offre.livrePayant && limites && !enseignant.createur ? { offre, limites } : null}
           avecPass={limites?.pass === true}
         />
       </div>

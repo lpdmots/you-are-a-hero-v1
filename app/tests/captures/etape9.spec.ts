@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { test, type Page } from "@playwright/test";
-import { adultePret, aller, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
+import { adultePret, aller, livrePayant, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
 
 /**
  * Captures des écrans de l'étape 9 : npm run captures -- etape9
@@ -14,12 +14,12 @@ const capturer = async (page: Page, nom: string, toute = false) => {
   await page.screenshot({ path: `${dossier}/${n}-${nom}.png`, fullPage: toute });
 };
 
-let avant: boolean;
+let avant: { p: boolean; l: boolean };
 test.beforeAll(async () => {
-  avant = (await sql<{ p: boolean }>("select paiement_ouvert as p from public.reglages_application"))[0].p;
+  [avant] = await sql<{ p: boolean; l: boolean }>("select paiement_ouvert as p, livre_payant as l from public.reglages_application");
 });
 test.afterEach(async () => {
-  await sql("update public.reglages_application set paiement_ouvert = $1", [avant]);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2", [avant.p, avant.l]);
   await supprimerComptes();
 });
 
@@ -39,7 +39,7 @@ test("lot 4 : limites gratuites et pass", async ({ page }) => {
   const bloc = (image: string) => ({ type: "image", id: randomUUID(), image, largeur: 60, children: [{ text: "" }] });
   await semerBlocs(base, chapitres[0].scenes[0], [recit("Le bac glisse sur l’eau noire."), ...images.slice(0, 7).map(bloc)]);
   await semerBlocs(base, chapitres[0].scenes[1], [recit("Les feux follets dansent au-dessus des roseaux.")]);
-  await sql("update public.reglages_application set paiement_ouvert = true");
+  await livrePayant(true);
 
   // Le décompte de « Parties et chapitres », puis les réglages du projet
   await aller(page, `/projet/${projet}/plan`);
@@ -89,7 +89,7 @@ test("lot 5 : recharger dans « Mon compte », et le retour du pass payé", asyn
   const { compte, base } = await adultePret(page);
   const projet = await semerProjet(base, compte, "personnel", "choix", "Le marais des feux follets", null);
   await semerPartie(base, projet, "La traversée", [{ titre: "Le dernier bac", scenes: ["Le départ"] }]);
-  await sql("update public.reglages_application set paiement_ouvert = true");
+  await livrePayant(true);
   await aller(page, "/compte");
   n = 910;
   await capturer(page, "mon-compte-recharger");
@@ -150,7 +150,7 @@ test("lot 9 : les pages publiques", async ({ page }) => {
   await capturer(page, "accueil-390-haut");
   // L'offre, « Paiement ouvert » allumé
   await page.setViewportSize({ width: 1366, height: 768 });
-  await sql("update public.reglages_application set paiement_ouvert = true");
+  await livrePayant(true);
   await aller(page, "/");
   await page.getByRole("heading", { name: "Ce que cela coûte" }).scrollIntoViewIfNeeded();
   await capturer(page, "accueil-offre-paiement-ouvert");

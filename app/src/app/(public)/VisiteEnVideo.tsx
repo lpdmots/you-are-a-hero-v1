@@ -35,7 +35,7 @@ export function VisiteEnVideo({ video, sousTitres }: { video: string | null; sou
             <path d="M8 5.5v13l11-6.5z" fill="currentColor" />
           </svg>
         </span>
-        <span className={v.texte}>Le tour en vidéo</span>
+        <span className={v.texte}>Découvrir l’outil en vidéo</span>
       </button>
       <dialog
         ref={fenetre}

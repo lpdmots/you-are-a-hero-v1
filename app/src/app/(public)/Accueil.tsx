@@ -19,7 +19,7 @@ import type { Video } from "@/domaine/presentation";
 // Le titre et la description visent « écrire un livre dont vous êtes le héros avec sa classe » ; le
 // grand titre garde « livre-jeu », aussi cherché (mots-clés du 28 octobre 2026, F14)
 const DESCRIPTION =
-  "Créez avec votre classe un livre dont vous êtes le héros : chaque élève écrit ses scènes, l’outil vous guide, le livre s’imprime et se lit en ligne. Gratuit.";
+  "Créez gratuitement avec votre classe un livre dont vous êtes le héros : préparation guidée, écriture des élèves, PDF et lecture en ligne. IA facultative.";
 
 // L'aperçu d'un lien partagé (courriel, messagerie, ENT) : le premier écran, déclaré ici, ces réglages
 // remplaçant ceux qu'hérite la page
@@ -74,6 +74,7 @@ export async function Accueil() {
   // que les nombres de passages sous les couvertures désignent
   const tailles = livres.map((l) => l.passages ?? 0);
   const grandEtPetit = livres.length === 2 && livres.every((l) => l.duPorteur) && Math.min(...tailles) > 0 && Math.max(...tailles) >= 3 * Math.min(...tailles);
+  const exemplesNommes = grandEtPetit && livres.some((l) => l.adresse === "electro-nick") && livres.some((l) => l.adresse === "bouquin-mene-l-enquete");
 
   return (
     <main className={styles.accueil}>
@@ -89,18 +90,19 @@ export async function Accueil() {
             <Numero n={1} />
             <h1 id="p1">Votre classe écrit son livre-jeu.</h1>
             <p className={styles.recit}>
-              Un livre dont vous êtes le héros, écrit par vos élèves, scène par scène. À chaque étape, l’application vous guide et vous aide. Au bout, un vrai livre, à imprimer et à lire en ligne.
+              Vos élèves écrivent un livre dont vous êtes le héros : le lecteur choisit la suite. L’application vous guide et vous aide,
+              de la première idée au livre à imprimer ou à lire en ligne.
             </p>
             <Choix>
-              <ChoixCompte phrase="Si vous voulez essayer avec votre classe," />
+              <ChoixCompte phrase="Pour commencer un projet avec votre classe," />
               <Renvoi vers={12}>Pour voir comment se passe un projet, rendez-vous au</Renvoi>
               {avecLivres ? (
                 <Renvoi vers={27}>Pour lire un livre écrit par une classe, rendez-vous au</Renvoi>
               ) : (
-                <Renvoi vers={33}>Pour savoir si cela marchera dans votre classe, rendez-vous au</Renvoi>
+                <Renvoi vers={33}>Pour voir comment l’utiliser dans votre classe, rendez-vous au</Renvoi>
               )}
             </Choix>
-            <p className={styles.garanties}>Gratuit, sans carte bancaire. Rien à installer.</p>
+            <p className={styles.garanties}>Écriture, PDF et lecture en ligne gratuits. Aides IA facultatives.</p>
           </div>
         </div>
         <div className={styles.dragonLit} role="img" aria-label="Le dragon de la classe, assis à côté du livre" />
@@ -128,7 +130,7 @@ export async function Accueil() {
               <SigneFeuille />
               <div>
                 <b>Chacun écrit ses scènes.</b>{" "}
-                <span>D’abord sur le cahier, puis sur les ordinateurs de la classe. Vous relisez, faites retravailler si besoin, puis validez.</span>
+                <span>Sur le cahier ou directement à l’écran, chacun écrit ses scènes. Vous relisez, faites retravailler et validez.</span>
               </div>
               </a>
             </li>
@@ -136,15 +138,15 @@ export async function Accueil() {
               <a href="#temps-3" className={styles.allerAuTemps} data-aller="3">
               <SigneLivre />
               <div>
-                <b>Le livre se fait.</b>{" "}
-                <span>Relire, vérifier les chemins, mettre en page : trois étapes guidées, puis le PDF.</span>
+                <b>Le livre prend forme.</b>{" "}
+                <span>L’application vérifie les chemins, numérote les passages et compose le PDF. Vous relisez et ajustez.</span>
               </div>
               </a>
             </li>
           </ol>
           <Choix>
             {avecLivres ? <Renvoi vers={27}>Si vous voulez voir le résultat, rendez-vous au</Renvoi> : null}
-            <Renvoi vers={33}>Si vous vous demandez si cela marchera dans votre classe, rendez-vous au</Renvoi>
+            <Renvoi vers={33}>Pour voir comment l’utiliser dans votre classe, rendez-vous au</Renvoi>
             {avecLivres ? null : <Renvoi vers={40}>Si vous vous demandez ce que cela coûte, rendez-vous au</Renvoi>}
           </Choix>
         </Feuillet>
@@ -192,7 +194,14 @@ export async function Accueil() {
             {/* Les livres de l'accueil viennent de la bibliothèque (F15-AC19) : « mes élèves » pour ceux du porteur seulement.
                 Un grand livre de sa classe et un petit (le 26 octobre 2026, « Bouquin mène l'enquête ») : le petit
                 montre un livre court, sans dire qui l'a écrit */}
-            {grandEtPetit
+            {exemplesNommes
+              ? (
+                  <>
+                    Électro Nick a été écrit par mes élèves, puis imprimé et lu par leurs familles. Bouquin mène l’enquête propose une aventure
+                    plus courte, destinée aux jeunes lecteurs. Les deux se lisent gratuitement dans <Link href="/bibliotheque">la bibliothèque</Link>.
+                  </>
+                )
+              : grandEtPetit
               ? (
                   <>
                     Le grand a été écrit par mes élèves, scène par scène, puis imprimé et lu par leurs familles. Le petit s’adresse aux plus
@@ -224,7 +233,7 @@ export async function Accueil() {
             </ul>
           ) : null}
           <Choix>
-            <Renvoi vers={33}>Si vous vous demandez si cela marchera dans votre classe, rendez-vous au</Renvoi>
+            <Renvoi vers={33}>Pour voir comment l’utiliser dans votre classe, rendez-vous au</Renvoi>
             <Renvoi vers={40}>Si vous vous demandez ce que cela coûte, rendez-vous au</Renvoi>
           </Choix>
         </Feuillet>
@@ -283,39 +292,46 @@ export async function Accueil() {
 
       {/* 40 — Ce que cela coûte : le feuillet à gauche, la fiche aventure de l'enseignant à droite, qui
           porte les chiffres comme celle d'un livre-jeu ses ressources, et entre les deux la souris ;
-          vente ouverte, deux choix, un livre jusqu'aux limites gratuites ou un grand livre, que le
-          dragon vient tenir (décidé par le porteur le 23 octobre 2026) */}
+          livre payant, deux choix, un livre jusqu'aux limites gratuites ou un grand livre, que le
+          dragon vient tenir (décidé par le porteur le 23 octobre 2026) ; livre gratuit, sans limite,
+          seules les étoiles se paient (8 novembre 2026) */}
       <section className={`${styles.rangee} ${styles.quarante}`} data-livre="petit">
         <Feuillet n={40} titre="Ce que cela coûte.">
-          {offre.paiementOuvert ? (
+          {offre.livrePayant ? (
             <LivreChoisi scenes={offre.scenesGratuites} images={offre.imagesGratuites} prix={enEuros(offre.prixDuPass)} />
           ) : (
             <>
               <p className={styles.reponse}>Gratuit.</p>
-              <p className={`${styles.recit} ${styles.petit}`}>Tout l’outil, du premier projet au livre imprimé, sans carte bancaire.</p>
+              <p className={`${styles.recit} ${styles.petit}`}>L’écriture, le PDF et la lecture en ligne sont gratuits, sans limite de scènes ni d’images.</p>
+              {/* Le ton d'un collègue, pas d'une offre, sans engagement sur la suite (porteur, 8 novembre 2026) :
+                  ce qui coûte est l'hébergement, l'IA se payant déjà en étoiles */}
+              <p className={`${styles.recit} ${styles.petit}`}>
+                Offert aux collègues tant que les frais d’hébergement restent supportables. S’ils devenaient trop lourds, une formule payante
+                facultative pourrait s’ajouter.
+              </p>
             </>
           )}
-          {/* L'IA est l'aide de l'enseignant seul, jamais des élèves ; les illustrations, où les héros
-              se retrouvent d'une image à l'autre d'après leur portrait, mises en avant (porteur, 23 octobre 2026) */}
-          <h3 className={styles.intertitre}>
-            <Icone nom="ia" className={styles.etoileTitre} />
-            L’IA, pour vous seulement.
-          </h3>
-          <p className={`${styles.recit} ${styles.petit}`}>
-            Jamais pour les élèves : ils écrivent eux-mêmes. Quand vous le voulez, elle corrige une scène, propose une idée de choix et{" "}
-            <strong>illustre le livre, vos héros reconnaissables d’une image à l’autre</strong>. Chaque demande se paie en{" "}
+          {/* L'IA en aparté, plus petite que le gratuit qu'elle ne doit pas éclipser (porteur, 8 novembre 2026) :
+              ce qu'elle apporte, qu'elle a un coût, les étoiles offertes et rachetables ; toujours l'aide de
+              l'adulte seul, jamais des élèves (23 octobre 2026) */}
+          <p className={styles.aparte}>
+            <strong className={styles.aparteTitre}>
+              <Icone nom="ia" className={styles.etoileTexte} /> Et l’IA ?
+            </strong>{" "}
+            Facultative et réservée à l’adulte, elle fait gagner beaucoup de temps et relance l’imagination : corrections, idées de
+            choix, illustrations de vos héros. Chaque demande ayant un coût, elle ne peut pas être offerte comme le reste :{" "}
             <span className={styles.insecable}>
-              étoiles <Icone nom="ia" className={styles.etoileTexte} />,
+              {offre.etoilesOffertes} étoiles <Icone nom="ia" className={styles.etoileTexte} />
             </span>{" "}
-            et {offre.etoilesOffertes} vous sont offertes.
+            vous permettent de l’essayer{offre.paiementOuvert ? ", d’autres s’achètent" : ""}.
           </p>
           <Choix>
             <ChoixCompte phrase="Si vous voulez essayer," />
             <Renvoi vers={52}>Si vous voulez savoir d’où vient cet outil, rendez-vous au</Renvoi>
           </Choix>
         </Feuillet>
-        {offre.paiementOuvert ? (
-          // Vente ouverte : un clic sur l'animal passe à l'autre livre (le script l'active)
+        {offre.livrePayant ? (
+          // Livre payant : un clic sur l'animal passe à l'autre livre (le script l'active)
           <button type="button" className={`${styles.mascotte} ${styles.animal}`} data-basculer disabled aria-label="Changer de livre : un livre jusqu’à 40 scènes ou un grand livre">
             <span className={styles.souris40} />
             <span className={styles.bouffee} />
@@ -342,7 +358,7 @@ export async function Accueil() {
             élèves écrivent le leur.
           </p>
           <p className={styles.recit}>
-            Depuis quatre ans, ma classe écrit ses livres-jeux avec les versions successives de cet outil. Celle-ci est la plus aboutie.
+            Depuis quatre ans, ma classe écrit ses livres-jeux avec cet outil. Cette version accompagne tout le projet, de l’idée au livre.
           </p>
           <p className={`${styles.recit} ${styles.petit}`}>
             Une question, une idée ? Écrivez-moi : <a href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>
@@ -372,7 +388,7 @@ const CAPTURES_DES_TEMPS = [
   { temps: "1", collage: true, src: "", alt: "", note: "Les chapitres et les scènes, prêts à écrire." },
   { temps: "2", src: "/accueil/ecrire-fiche.webp", ratio: "1454 / 1390", alt: "Une fiche de rédaction imprimée : la consigne de chaque scène", note: "Chacun écrit d’abord sur son cahier, d’après sa fiche." },
   { temps: "2", src: "/accueil/ecrire-correction.webp", ratio: "1684 / 1026", alt: "La scène recopiée par l’élève, avec la correction proposée par l’IA : chaque changement visible, que l’enseignant garde ou refuse", note: "Les élèves recopient leur scène sur l’ordinateur, puis vous corrigez." },
-  { temps: "3", src: "/accueil/livre-pages-peu-remplies.webp", ratio: "1000 / 1145", alt: "La mise en page : une page peu remplie, signalée avec ce qu’on peut y faire", note: "L’outil signale ce qui cloche, jusqu’au PDF prêt à imprimer." },
+  { temps: "3", src: "/accueil/livre-pages-peu-remplies.webp", ratio: "1000 / 1145", alt: "La mise en page : une page peu remplie, signalée avec ce qu’on peut y faire", note: "L’outil repère les pages à ajuster avant l’impression." },
   { temps: "3", src: "/accueil/lecture-electro-nick.webp", ratio: "1434 / 1290", livre: "Électro Nick", alt: "« Électro Nick », lu en ligne : un passage, son illustration et ses trois choix", note: "Et un lien pour le lire en ligne, en famille." },
 ] as const;
 
@@ -385,13 +401,13 @@ const PILE = [
 ] as const;
 
 const DANS_LA_CLASSE = [
-  "Pour les jeunes auteurs, dès 6 ans : l’âge se règle pour chaque livre.",
+  "Dès 6 ans, en écriture accompagnée ou sous la dictée à l’adulte.",
   "Rien à installer, et quelques postes suffisent.",
-  "Chaque élève reçoit ses identifiants et se connecte seul, sans adresse.",
+  "Vous ouvrez la classe ; chaque élève entre avec son prénom et son code, sans e-mail.",
   "Des fiches de rédaction nominatives, pour écrire à l’école ou à la maison.",
-  "Des tampons pour encourager.",
+  "Des tampons pour encourager après la relecture.",
   "Une histoire interactive à choix, ou un récit classique.",
-  "Une aide à chaque étape.",
+  "Un suivi des textes à écrire, relire ou reprendre.",
 ] as const;
 
 // ——— Les pièces du livre ———
@@ -510,7 +526,7 @@ function LivreFerme({ livre }: { livre: LivreDeLAccueil }) {
  * papier, comme la fiche d'un livre-jeu. Les chiffres viennent des réglages de l'offre (F14-AC21).
  */
 function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuelle>> }) {
-  const ouvert = offre.paiementOuvert;
+  const ouvert = offre.livrePayant;
   return (
     <div className={styles.fiche} role="group" aria-labelledby="fiche-t" aria-live="polite">
       <p id="fiche-t" className={styles.ficheTitre}>
@@ -537,24 +553,21 @@ function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuel
           notePetit="offertes"
           grand={ouvert ? { valeur: String(offre.etoilesOffertes + offre.etoilesDuPass), note: `dont ${offre.etoilesDuPass} du pass` } : null}
         />
-        {ouvert ? (
-          <>
-            <CaseDeFiche
-              nom={
-                <>
-                  <PictoScenes /> Scènes
-                </>
-              }
-              petit={String(offre.scenesGratuites)} notePetit="au plus" grand={{ valeur: "illimitées", note: "" }} />
-            <CaseDeFiche
-              nom={
-                <>
-                  <PictoImages /> Images
-                </>
-              }
-              petit={String(offre.imagesGratuites)} notePetit="au plus" grand={{ valeur: "illimitées", note: "" }} />
-          </>
-        ) : null}
+        {/* Livre gratuit : scènes et images sans limite, une seule valeur */}
+        <CaseDeFiche
+          nom={
+            <>
+              <PictoScenes /> Scènes
+            </>
+          }
+          petit={ouvert ? String(offre.scenesGratuites) : "illimitées"} notePetit={ouvert ? "au plus" : undefined} grand={ouvert ? { valeur: "illimitées", note: "" } : null} />
+        <CaseDeFiche
+          nom={
+            <>
+              <PictoImages /> Images
+            </>
+          }
+          petit={ouvert ? String(offre.imagesGratuites) : "illimitées"} notePetit={ouvert ? "au plus" : undefined} grand={ouvert ? { valeur: "illimitées", note: "" } : null} />
       </div>
       <p className={styles.rubrique}>
         <PictoSac /> Inventaire
@@ -567,7 +580,7 @@ function FicheAventure({ offre }: { offre: Awaited<ReturnType<typeof offreActuel
           </li>
         ))}
       </ul>
-      {ouvert ? (
+      {offre.paiementOuvert ? (
         <p className={styles.recharge}>
           Plus d’étoiles : {enEuros(offre.prixDeLaRecharge)} les {offre.etoilesDeLaRecharge}.
         </p>

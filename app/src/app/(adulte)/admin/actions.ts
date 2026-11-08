@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import { choisirPourLAccueil, echangerLesLivres } from "@/serveur/accueil";
 import { accepterLImage, changerLesMots, refuserLImage, retirerDeLaBibliotheque } from "@/serveur/bibliotheque";
 import { estUuid } from "@/serveur/recit";
-import { exigerLePorteur, offrirDesEtoiles, offrirUnPass, partageDuLien, reglerLePaiement, retirerLePartage } from "@/serveur/administration";
+import { exigerLePorteur, offrirDesEtoiles, offrirUnPass, partageDuLien, reglerLeLivrePayant, reglerLePaiement, retirerLePartage } from "@/serveur/administration";
 
 /**
  * Les gestes de l'administration (F14-AC22 à AC25). Chacun revérifie que c'est le porteur : un
@@ -15,6 +15,12 @@ import { exigerLePorteur, offrirDesEtoiles, offrirUnPass, partageDuLien, reglerL
 export async function basculerLePaiement(ouvert: boolean): Promise<void> {
   await exigerLePorteur();
   await reglerLePaiement(ouvert);
+  revalidatePath("/", "layout");
+}
+
+export async function basculerLeLivrePayant(payant: boolean): Promise<void> {
+  await exigerLePorteur();
+  await reglerLeLivrePayant(payant);
   revalidatePath("/", "layout");
 }
 

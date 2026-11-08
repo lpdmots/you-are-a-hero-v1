@@ -4,25 +4,32 @@ import { creerChapitre, creerEnseignant, creerPartie, creerProjet, creerScene, n
 
 /**
  * Étape 9, lot 4 : les limites gratuites et le pass (F14-AC12 à AC17), contre la vraie base
- * locale. L'interrupteur « Paiement ouvert » est global : chaque essai le règle, et il est remis
- * comme il était à la fin.
+ * locale ; le livre gratuit du 8 novembre 2026 (F14-AC54). Les interrupteurs « Paiement ouvert » et
+ * « Livre payant » sont globaux : chaque essai les règle, et ils sont remis comme ils étaient à la fin.
  */
 
 let bernard: Adulte;
-let avant: boolean;
+let avant: { p: boolean; l: boolean };
 beforeAll(async () => {
   bernard = await creerEnseignant("M. Bernard");
-  avant = (await sql<{ p: boolean }>("select paiement_ouvert as p from public.reglages_application"))[0].p;
+  [avant] = await sql<{ p: boolean; l: boolean }>("select paiement_ouvert as p, livre_payant as l from public.reglages_application");
 });
 // Éteint avant chaque essai aussi : l'état laissé par une autre séance ne compte pas
 beforeEach(() => interrupteur(false));
 afterEach(() => interrupteur(false));
 afterAll(async () => {
-  await interrupteur(avant);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2", [avant.p, avant.l]);
   await nettoyer();
 });
 
-const interrupteur = (allume: boolean) => sql("update public.reglages_application set paiement_ouvert = $1", [allume]);
+/**
+ * Vente et livre payant, ensemble. Allumés, les projets de M. Bernard sont traités comme nés le livre
+ * payant (sans la marque « sans limite ») : ses essais remplissent un projet avant d'allumer.
+ */
+async function interrupteur(allume: boolean) {
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $1", [allume]);
+  if (allume) await sql("update public.projets set sans_limite = false where enseignant_id = $1", [bernard.id]);
+}
 const limites = async (projet: string) => {
   const { data } = await bernard.base.rpc("limites_du_projet", { p_projet: projet });
   return (Array.isArray(data) ? data[0] : data) as { limite: boolean; pass: boolean; scenes: number; images: number };
@@ -142,5 +149,40 @@ describe("Le pass (F14-AC16, AC17)", () => {
     } finally {
       await sql("update public.enseignants set createur = false where id = $1", [bernard.id]);
     }
+  });
+});
+
+describe("Le livre gratuit, l'IA payante (F14-AC54)", () => {
+  it("F14-AC54 — vente ouverte, livre payant éteint : ni limite ni pass ; un projet né ainsi reste sans limite quand le livre devient payant, un projet né ensuite a ses limites", async () => {
+    await sql("update public.reglages_application set paiement_ouvert = true, livre_payant = false");
+    const ne = await projetDe(40);
+    expect(await limites(ne.projet)).toMatchObject({ limite: false, pass: false });
+    expect((await creer(ne.chapitre)).error).toBeNull();
+    await sql("update public.reglages_application set livre_payant = true");
+    expect(await limites(ne.projet)).toMatchObject({ limite: false, pass: false, scenes: 41 });
+    expect((await creer(ne.chapitre)).error).toBeNull();
+    const apres = (await creerProjet(bernard, "personnel", "choix", "La forêt")).id;
+    expect(await limites(apres)).toMatchObject({ limite: true });
+  });
+
+  it("F14-AC54 — livre payant allumé mais vente fermée : aucune limite, faute de pouvoir payer", async () => {
+    await sql("update public.reglages_application set paiement_ouvert = false, livre_payant = true");
+    const projet = (await creerProjet(bernard, "personnel", "choix", "Le marais")).id;
+    expect(await limites(projet)).toMatchObject({ limite: false });
+  });
+
+  it("F14-AC54 — l'enseignant ne change pas la marque de son projet, ni à la création ni après", async () => {
+    await sql("update public.reglages_application set paiement_ouvert = true, livre_payant = true");
+    const projet = await bernard.base
+      .from("projets")
+      .insert({ enseignant_id: bernard.id, organisation: "personnel", recit: "choix", titre: "Le marais", sans_limite: true })
+      .select("id")
+      .single();
+    expect(projet.error).toBeNull();
+    expect((await sql<{ s: boolean }>("select sans_limite as s from public.projets where id = $1", [projet.data!.id]))[0].s).toBe(false);
+    const m = (await creerProjet(bernard, "personnel", "choix", "La forêt")).id;
+    await bernard.base.from("projets").update({ sans_limite: true }).eq("id", m);
+    expect((await sql<{ s: boolean }>("select sans_limite as s from public.projets where id = $1", [m]))[0].s).toBe(false);
+    expect(await limites(m)).toMatchObject({ limite: true });
   });
 });

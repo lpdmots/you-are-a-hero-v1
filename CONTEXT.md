@@ -638,13 +638,26 @@ _Éviter_ : jeton, crédit, quota, encouragement.
 
 **Pass du livre** :
 Achat unique attaché à un projet, qui lève ses limites gratuites pour
-toujours et apporte des étoiles.
+toujours et apporte des étoiles ; il ne se vend que « Livre payant » allumé.
 _Éviter_ : abonnement, licence, offre premium.
 
 **Limites gratuites** :
 Nombre de scènes et nombre d'images du livre qu'un projet sans pass ne peut
-dépasser ; tout le reste de l'outil reste ouvert.
+dépasser, seulement « Livre payant » allumé et pour un projet né le livre
+payant ; tout le reste de l'outil reste ouvert.
 _Éviter_ : version d'essai, quota.
+
+**Livre payant** :
+Interrupteur de l'administration qui rallume le pass et les limites
+gratuites ; éteint depuis le 8 novembre 2026, le livre étant gratuit et l'IA
+seule payante. Il ne vaut qu'avec « Paiement ouvert », qui commande la vente.
+_Éviter_ : version premium, offre payante.
+
+**Projet sans limite** :
+Projet né pendant que le livre était gratuit : il garde pour toujours ses
+scènes et ses images sans limite, comme s'il avait son pass, sans les étoiles
+du pass. La marque se pose d'office à sa création.
+_Éviter_ : projet gratuit, projet premium, pass offert.
 
 **Compte inactif** :
 Compte d'adulte où personne ne s'est connecté depuis cinq ans, supprimé après

@@ -7,8 +7,8 @@ import { posesDImages, type Limites, type Offre } from "@/domaine/offre";
 
 /**
  * L'offre d'un projet (F14) : ce que le dialogue du pass montre quand une limite gratuite est
- * atteinte, et ce que les réglages du projet disent. Rien quand « Paiement ouvert » est éteint :
- * ni limite ni vente (F14-AC12).
+ * atteinte, et ce que les réglages du projet disent. Rien tant que le livre est gratuit (« Livre
+ * payant » éteint) : ni limite ni pass (F14-AC12).
  */
 export type OffreDuProjet = {
   projetId: string;
@@ -25,7 +25,7 @@ export async function offreDuProjet(projetId: string): Promise<OffreDuProjet | n
   const { data: projet } = await e.supabase.from("projets").select("id, titre, image_id, visuel_choisi, visuel_defaut").eq("id", projetId).maybeSingle();
   if (!projet) return null;
   const [offre, limites] = await Promise.all([offreActuelle(), limitesDuProjet(e.supabase, projetId)]);
-  if (!offre.paiementOuvert || !limites) return null;
+  if (!offre.livrePayant || !limites) return null;
   return {
     projetId, titre: projet.titre as string, limites, offre,
     repere: { imageId: projet.image_id ?? null, visuelChoisi: projet.visuel_choisi ?? null, visuelDefaut: projet.visuel_defaut ?? null },

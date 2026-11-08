@@ -14,7 +14,8 @@ import { clientService } from "@/serveur/supabase";
 
 /**
  * Acheter (F14-AC18, AC19) : le pass d'un projet ou une recharge d'étoiles, par Stripe Checkout.
- * Rien ne se vend « Paiement ouvert » éteint, ni au porteur. Le prix vient des réglages de
+ * Rien ne se vend « Paiement ouvert » éteint, ni au porteur ; le pass, seulement « Livre payant »
+ * allumé. Le prix vient des réglages de
  * l'application (F14-AC21). `retour` : la page d'où l'on part, où ramène un abandon (F14-AC20).
  */
 type Reponse = { ok: true; adresse: string } | { ok: false; erreur: string };
@@ -52,7 +53,7 @@ export async function acheterLePass(projetId: string, retour?: string): Promise<
     e.supabase.from("passes").select("projet_id").eq("projet_id", projetId).maybeSingle(),
   ]);
   if (!projet) return { ok: false, erreur: "Projet inconnu." };
-  if (!offre.paiementOuvert || e.createur || !paiementInstalle()) return { ok: false, erreur: FERME };
+  if (!offre.livrePayant || e.createur || !paiementInstalle()) return { ok: false, erreur: FERME };
   if (pass) return { ok: false, erreur: "Ce livre a déjà son pass." };
   const site = adresseDuSite((await headers()).get("host"));
   const adresse = await ouvrirLePaiement({

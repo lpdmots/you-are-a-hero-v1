@@ -53,7 +53,7 @@ async function principal() {
       const { error: e } = await adulte.rpc("creer_scene", { p_chapitre: chapitre });
       if (e) throw new Error(e.message);
     }
-    console.log(`« ${projet.titre} » a maintenant 40 scènes : la suivante fera paraître le dialogue du pass, « Paiement ouvert » allumé.`);
+    console.log(`« ${projet.titre} » a maintenant 40 scènes : la suivante fera paraître le dialogue du pass, « Paiement ouvert » et « Livre payant » allumés, si le projet est né le livre payant.`);
   } finally {
     await base.end();
   }

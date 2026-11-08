@@ -11,7 +11,7 @@ import { EDITEUR, MODELES } from "./textes-publics";
 export const NOM = "Il était une classe";
 export const PROMESSE = "Votre classe écrit son livre-jeu.";
 export const DESCRIPTION =
-  "Application web pour écrire avec sa classe d’école élémentaire un livre dont vous êtes le héros (un livre-jeu, une histoire interactive à choix) : chaque élève écrit ses scènes, l’application guide l’enseignant à chaque étape, et le livre s’imprime en PDF et se lit en ligne.";
+  "Application web gratuite pour écrire avec sa classe d’école élémentaire un livre dont vous êtes le héros (un livre-jeu, une histoire interactive à choix) : chaque élève écrit ses scènes, l’application guide l’enseignant à chaque étape, et le livre s’imprime en PDF et se lit en ligne.";
 
 /** La définition du genre, en une phrase qu'un moteur ou une IA peut citer telle quelle. */
 export const DEFINITION =
@@ -21,13 +21,16 @@ const prix = (centimes: number) => enEuros(centimes).replace(" ", " ");
 
 /** `llms.txt` (llmstxt.org) : ce qu'est l'outil, pour qui, ce qu'il coûte, et où lire la suite. */
 export function llmsTxt(offre: Offre, site: string): string {
-  const cout = offre.paiementOuvert
+  const etoiles = offre.paiementOuvert
+    ? `- Les aides de l’IA, facultatives et pour l’enseignant seulement, ont un coût à chaque demande et se paient en étoiles : ${offre.etoilesOffertes} offertes à l’inscription, ${prix(offre.prixDeLaRecharge)} les ${offre.etoilesDeLaRecharge} de plus. Pas d’abonnement.`
+    : `- Les aides de l’IA, facultatives et pour l’enseignant seulement, se paient en étoiles, dont ${offre.etoilesOffertes} offertes à l’inscription.`;
+  const cout = offre.livrePayant
     ? [
         `- Gratuit pour un livre jusqu’à ${offre.scenesGratuites} scènes et ${offre.imagesGratuites} images, sans carte bancaire.`,
         `- Pass du livre : ${prix(offre.prixDuPass)} par livre, payé une fois ; il lève ces limites pour ce livre et donne ${offre.etoilesDuPass} étoiles.`,
-        `- Les aides de l’IA, pour l’enseignant seulement, se paient en étoiles : ${offre.etoilesOffertes} offertes à l’inscription, ${prix(offre.prixDeLaRecharge)} les ${offre.etoilesDeLaRecharge} de plus. Pas d’abonnement.`,
+        etoiles,
       ]
-    : [`- Gratuit, sans carte bancaire. Les aides de l’IA se paient en étoiles, dont ${offre.etoilesOffertes} offertes à l’inscription.`];
+    : [`- Gratuit, sans limite de scènes ni d’images, sans carte bancaire : la préparation, l’écriture des élèves, le PDF et la lecture en ligne. Offert aux collègues tant que les frais d’hébergement restent supportables.`, etoiles];
   return [
     `# ${NOM}`,
     "",
@@ -39,16 +42,16 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     "## Pour qui",
     "",
-    "- Les enseignants d’école élémentaire et leur classe, en français : de jeunes auteurs dès 6 ans, l’âge des lecteurs se réglant pour chaque livre.",
+    "- Les enseignants d’école élémentaire et leur classe, en français : de jeunes auteurs dès 6 ans, en écriture accompagnée ou sous la dictée à l’adulte ; l’âge des lecteurs se règle pour chaque livre.",
     "- Un adulte seul peut aussi écrire son propre livre.",
     "",
     "## Comment se passe un projet",
     "",
     "1. On prépare ensemble, projeté au tableau, étape par étape : le monde, les héros, l’enjeu, puis les chapitres et les scènes.",
-    "2. Chaque élève écrit ses scènes, d’abord sur son cahier d’après une fiche de rédaction nominative, puis sur les ordinateurs de la classe ; l’enseignant relit, fait reprendre et valide.",
-    "3. Le livre se fait en trois étapes guidées (relire, vérifier les chemins, mettre en page), jusqu’au PDF prêt à imprimer ; les élèves le lisent en ligne avec leur code, et il peut entrer dans la bibliothèque publique du site.",
+    "2. Chaque élève écrit ses scènes, sur son cahier d’après une fiche de rédaction nominative ou directement à l’écran ; l’enseignant suit les textes à écrire, relire ou reprendre, fait retravailler et valide.",
+    "3. Le livre prend forme : l’application vérifie les chemins, numérote les passages et compose le PDF à imprimer, l’enseignant relit et ajuste ; les élèves le lisent en ligne avec leur code, et il peut entrer dans la bibliothèque publique du site.",
     "",
-    "Une histoire à choix (livre-jeu) ou un récit classique. Rien à installer ; quelques postes suffisent ; les élèves se connectent avec un code de classe, sans adresse électronique. Les élèves n’ont accès à aucune IA.",
+    "Une histoire à choix (livre-jeu) ou un récit classique. Rien à installer ; quelques postes suffisent ; l’enseignant ouvre la classe, et chaque élève entre avec son prénom et son code, sans adresse électronique. Les élèves n’ont accès à aucune IA.",
     "",
     "## Ce que cela coûte",
     "",
@@ -56,7 +59,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     "## Qui le fait",
     "",
-    `Conçu par Nicolas Coussot, professeur des écoles : six ans de livres-jeux avec sa classe, dont quatre avec les versions successives de l’outil. Édité par ${EDITEUR.nom}. Contact : ${EDITEUR.contact}.`,
+    `Conçu par Nicolas Coussot, professeur des écoles : six ans de livres-jeux avec sa classe, dont quatre avec cet outil. Édité par ${EDITEUR.nom}. Contact : ${EDITEUR.contact}.`,
     "",
     "## Pages",
     "",
@@ -81,11 +84,11 @@ type Donnee = Record<string, unknown>;
 export function donneesDeLAccueil(offre: Offre, site: string, video: Video | null): Donnee {
   const organisation = `${site}/#organisation`;
   const offres: Donnee[] = [{ "@type": "Offer", name: "Gratuit", price: "0", priceCurrency: "EUR" }];
+  if (offre.livrePayant) {
+    offres.push({ "@type": "Offer", name: "Pass du livre", price: (offre.prixDuPass / 100).toFixed(2), priceCurrency: "EUR", description: `Par livre, payé une fois : sans limite de scènes ni d’images, et ${offre.etoilesDuPass} étoiles.` });
+  }
   if (offre.paiementOuvert) {
-    offres.push(
-      { "@type": "Offer", name: "Pass du livre", price: (offre.prixDuPass / 100).toFixed(2), priceCurrency: "EUR", description: `Par livre, payé une fois : sans limite de scènes ni d’images, et ${offre.etoilesDuPass} étoiles.` },
-      { "@type": "Offer", name: `${offre.etoilesDeLaRecharge} étoiles`, price: (offre.prixDeLaRecharge / 100).toFixed(2), priceCurrency: "EUR", description: "Une recharge d’étoiles pour les aides de l’IA." },
-    );
+    offres.push({ "@type": "Offer", name: `${offre.etoilesDeLaRecharge} étoiles`, price: (offre.prixDeLaRecharge / 100).toFixed(2), priceCurrency: "EUR", description: "Une recharge d’étoiles pour les aides de l’IA." });
   }
   const graphe: Donnee[] = [
     {
@@ -108,6 +111,8 @@ export function donneesDeLAccueil(offre: Offre, site: string, video: Video | nul
       operatingSystem: "Navigateur web",
       inLanguage: "fr-FR",
       audience: { "@type": "EducationalAudience", educationalRole: "teacher" },
+      // Le livre gratuit (8 novembre 2026) : l'outil s'utilise sans payer, l'IA seule se paie
+      isAccessibleForFree: !offre.livrePayant,
       publisher: { "@id": organisation },
       offers: offres,
     },

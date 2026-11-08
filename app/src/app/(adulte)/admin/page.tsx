@@ -8,7 +8,7 @@ import { imagesARelire } from "@/serveur/bibliotheque";
 import { nombreDeLivresARelire } from "@/serveur/relecture-des-livres";
 import { nombreDeSignalements } from "@/serveur/signalements";
 import {
-  basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerPartage,
+  basculerLeLivrePayant, basculerLePaiement, chercherLePartage, choisirPourLAccueilAdmin, echangerLesLivresAdmin, retirerPartage,
 } from "./actions";
 import styles from "./admin.module.css";
 
@@ -89,10 +89,26 @@ export default async function Administration({ searchParams }: { searchParams: P
         <form action={basculerLePaiement.bind(null, !t.paiementOuvert)} className={styles.interrupteur}>
           <span>
             Paiement ouvert : <strong>{t.paiementOuvert ? "allumé" : "éteint"}</strong>
-            <small>{t.paiementOuvert ? " — limites gratuites et vente actives." : " — ni limite ni vente."}</small>
+            <small>{t.paiementOuvert ? " — les étoiles se vendent." : " — rien ne se vend."}</small>
           </span>
           <button type="submit" className="btn btn--petit">
             {t.paiementOuvert ? "Éteindre" : "Allumer"}
+          </button>
+        </form>
+        {/* Le livre payant ne vaut qu'avec la vente ouverte ; les projets nés gratuits restent sans limite (F14-AC54) */}
+        <form action={basculerLeLivrePayant.bind(null, !t.livrePayant)} className={styles.interrupteur}>
+          <span>
+            Livre payant : <strong>{t.livrePayant ? "allumé" : "éteint"}</strong>
+            <small>
+              {!t.livrePayant
+                ? " — livre gratuit, sans limite ; le pass ne se vend pas."
+                : t.paiementOuvert
+                  ? " — limites et pass pour les nouveaux projets."
+                  : " — sans effet tant que le paiement est éteint."}
+            </small>
+          </span>
+          <button type="submit" className="btn btn--petit">
+            {t.livrePayant ? "Éteindre" : "Allumer"}
           </button>
         </form>
       </section>

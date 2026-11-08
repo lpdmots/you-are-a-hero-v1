@@ -34,14 +34,15 @@ const MAJ = "21 octobre 2026";
 export const CONDITIONS: Document = {
   titre: "Conditions d’utilisation",
   chapeau: "Ce que vous pouvez attendre d’Il était une classe, et ce que l’outil attend de vous.",
-  misAJour: "25 octobre 2026",
+  misAJour: "8 novembre 2026",
   sections: [
     {
       titre: "Le service",
       paragraphes: [
         "Il était une classe est un outil en ligne pour écrire un livre, seul ou avec sa classe : préparer l’histoire, faire écrire les élèves, relire, composer le livre, l’imprimer et le partager.",
         `Il est édité et vendu par ${EDITEUR.nom}, ${EDITEUR.adresse}, SIRET ${EDITEUR.siret} ; ses coordonnées sont dans les mentions légales.`,
-        "L’outil est gratuit. Des aides par l’intelligence artificielle, facultatives, s’utilisent avec des étoiles : un nouveau compte en reçoit pour essayer. Quand la vente est ouverte, un livre gratuit compte au plus 40 scènes et 10 images ; un pass, payé une fois pour un livre, lève ces limites pour ce livre et donne des étoiles. Des recharges d’étoiles s’achètent aussi.",
+        "L’outil est gratuit, sans limite de scènes ni d’images. Des aides par l’intelligence artificielle, facultatives, s’utilisent avec des étoiles : un nouveau compte en reçoit pour essayer, et des recharges d’étoiles s’achètent.",
+        "L’éditeur pourra plus tard ajouter une formule payante facultative pour les nouveaux livres.",
       ],
     },
     {
@@ -238,9 +239,9 @@ export const MENTIONS_LEGALES: Document = {
 };
 
 /** La foire aux questions de la page « Aide » (F14, « Support »). */
-/** `vente` : la question n'a de sens que « Paiement ouvert » allumé. `guide` : la réponse mène au guide, à
+/** `pass` : la question n'a de sens que « Livre payant » allumé ; `gratuit`, que le livre gratuit. `guide` : la réponse mène au guide, à
  * cette question (son ancre, ou "" pour son début), qui la développe (audit du 7 novembre 2026). */
-export const QUESTIONS: { question: string; reponse: string; vente?: boolean; guide?: string }[] = [
+export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string }[] = [
   {
     question: "Comment commencer ?",
     reponse: "Créez un compte, puis votre premier projet : il s’ouvre sur sa préparation. La classe se crée quand les élèves commencent à écrire.",
@@ -274,13 +275,18 @@ export const QUESTIONS: { question: string; reponse: string; vente?: boolean; gu
     reponse: "Non. Vous ouvrez la classe sur un ordinateur avec son identifiant et son mot de passe ; chaque élève choisit son prénom et tape son code.",
   },
   {
+    question: "Est-ce gratuit ?",
+    reponse: "Oui : la préparation, l’écriture des élèves, le PDF et la lecture en ligne, sans limite de scènes ni d’images, sans carte bancaire. Seules les aides par l’IA, facultatives, se paient en étoiles : chaque demande a un coût, et un nouveau compte en reçoit pour essayer.",
+    gratuit: true,
+  },
+  {
     question: "Que sont les étoiles ?",
-    reponse: "Les aides par l’IA, facultatives, usent des étoiles selon ce qu’elles coûtent. Un nouveau compte en reçoit pour essayer ; votre solde est dans « Mon compte ». Tout le reste de l’outil marche sans elles.",
+    reponse: "Les aides par l’IA, facultatives, usent des étoiles selon ce qu’elles coûtent. Un nouveau compte en reçoit pour essayer, et d’autres s’achètent ; votre solde est dans « Mon compte ». Tout le reste de l’outil marche sans elles.",
   },
   {
     question: "À quoi sert le pass ?",
     reponse: "Payé une fois pour un livre, il lève les limites du livre gratuit (scènes et images) pour ce livre, pour toujours, et donne des étoiles.",
-    vente: true,
+    pass: true,
   },
   {
     question: "Puis-je partager le livre avec les familles ?",

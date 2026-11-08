@@ -59,6 +59,16 @@ export async function supprimerComptes(): Promise<void> {
   await supprimerComptesDEssai(crees.splice(0));
 }
 
+/**
+ * « Paiement ouvert » et « Livre payant », ensemble (F14). Allumés, les projets des comptes du test
+ * sont traités comme nés le livre payant, sans la marque « sans limite » (F14-AC54) : un essai
+ * remplit son projet, puis allume.
+ */
+export async function livrePayant(allume: boolean): Promise<void> {
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $1", [allume]);
+  if (allume) await sql("update public.projets set sans_limite = false where enseignant_id = any($1::uuid[])", [crees]);
+}
+
 export async function sql<T extends Record<string, unknown> = Record<string, unknown>>(requete: string, valeurs: unknown[] = []): Promise<T[]> {
   const client = new Client({ connectionString: process.env.BASE_LOCALE_URL });
   await client.connect();

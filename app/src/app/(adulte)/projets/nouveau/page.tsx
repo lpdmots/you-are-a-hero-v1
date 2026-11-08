@@ -20,9 +20,9 @@ export default async function PageNouveauProjet() {
   const classes = toutes
     .filter((c) => c.enCours)
     .map((c) => ({ id: c.id, nom: c.nom, annee: libelleAnnee(c.anneeDebut), eleves: c.eleves.length }));
-  // Les limites du livre gratuit, dites d'avance quand elles valent : vente ouverte, hors porteur (F14-AC43)
+  // Les limites du livre gratuit, dites d'avance quand elles valent : livre payant, hors porteur (F14-AC43)
   const gratuit =
-    offre.paiementOuvert && !enseignant.createur
+    offre.livrePayant && !enseignant.createur
       ? { scenes: offre.scenesGratuites, images: offre.imagesGratuites, prix: enEuros(offre.prixDuPass) }
       : null;
   return (

@@ -1,12 +1,16 @@
 /**
- * L'offre (F14) : l'outil gratuit, deux limites par projet sans pass quand « Paiement ouvert » est
- * allumé, un pass par livre et des recharges d'étoiles. Les valeurs viennent des réglages de
+ * L'offre (F14) : l'outil gratuit, les aides IA payantes en étoiles, vendues en recharges dès que
+ * « Paiement ouvert » est allumé ; « Livre payant », en plus, met deux limites aux projets sans pass
+ * ni marque « sans limite » et vend le pass (décidé par le porteur le 8 novembre 2026). Les valeurs viennent des réglages de
  * l'application (`reglages_application`), en un seul endroit (F14-AC21) ; ce fichier ne fait que
  * les lire et les dire.
  */
 
 export type Offre = {
+  /** La vente : les recharges d'étoiles */
   paiementOuvert: boolean;
+  /** Le livre payant : limites gratuites et pass, seulement avec la vente ouverte */
+  livrePayant: boolean;
   scenesGratuites: number;
   imagesGratuites: number;
   /** En centimes d'euro */
@@ -19,7 +23,7 @@ export type Offre = {
 
 /** Où en est un projet au regard des limites gratuites (F14-AC13, AC14). */
 export type Limites = {
-  /** Les limites valent pour ce projet : interrupteur allumé, sans pass, hors porteur */
+  /** Les limites valent pour ce projet : livre payant, sans pass ni marque « sans limite », hors porteur */
   limite: boolean;
   pass: boolean;
   /** Le jour où le pass a été reçu */
@@ -39,6 +43,7 @@ export function lireOffre(o: Record<string, unknown> | null | undefined): Offre 
   const n = (v: unknown, defaut: number) => (typeof v === "number" && Number.isFinite(v) ? v : defaut);
   return {
     paiementOuvert: o?.paiement_ouvert === true,
+    livrePayant: o?.paiement_ouvert === true && o?.livre_payant === true,
     scenesGratuites: n(o?.scenes_gratuites, 40),
     imagesGratuites: n(o?.images_gratuites, 10),
     prixDuPass: n(o?.prix_du_pass, 2000),

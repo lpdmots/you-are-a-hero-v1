@@ -14,7 +14,7 @@ test.afterEach(async () => {
 test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'inscription, aux deux entrées et aux quatre pages", async ({ page }) => {
   await aller(page, "/");
   await expect(page.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
-  await expect(page.getByText("l’application vous guide et vous aide")).toBeVisible();
+  await expect(page.getByText("L’application vous guide et vous aide")).toBeVisible();
   // Un lien vers l'accueil, partagé, montre son premier écran (audit du 7 novembre 2026)
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/accueil\/partage\.jpg$/);
   // Les choix du passage sont les liens de la page : « rendez-vous au 12 » mène au passage 12
@@ -37,10 +37,10 @@ test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'
   await expect(page.getByText(/Vercel Inc\./)).toBeVisible();
 });
 
-test("F14-AC21 — le prix du pass, changé dans les réglages, se lit sur l'accueil quand la vente est ouverte", async ({ page }) => {
-  const [avant] = await sql<{ paiement_ouvert: boolean; prix_du_pass: number }>("select paiement_ouvert, prix_du_pass from public.reglages_application");
+test("F14-AC21, AC54 — le prix du pass, changé dans les réglages, se lit sur l'accueil quand le livre est payant ; livre gratuit, la recharge seule", async ({ page }) => {
+  const [avant] = await sql<{ paiement_ouvert: boolean; livre_payant: boolean; prix_du_pass: number }>("select paiement_ouvert, livre_payant, prix_du_pass from public.reglages_application");
   try {
-    await sql("update public.reglages_application set paiement_ouvert = true, prix_du_pass = 2500");
+    await sql("update public.reglages_application set paiement_ouvert = true, livre_payant = true, prix_du_pass = 2500");
     await aller(page, "/");
     // Le passage 40 : choisir « Un grand livre » remplit la fiche aventure avec le prix du pass
     const grand = page.getByRole("button", { name: /Un grand livre.*pass du livre.*25\s€/ });
@@ -48,12 +48,24 @@ test("F14-AC21 — le prix du pass, changé dans les réglages, se lit sur l'acc
     await grand.click();
     await expect(grand).toHaveAttribute("aria-pressed", "true");
     await expect(page.getByRole("group", { name: "Fiche aventure" }).getByText(/^25\s€$/)).toBeVisible();
-    await sql("update public.reglages_application set paiement_ouvert = false");
+    // Livre gratuit, vente ouverte : ni pass ni limite, la recharge des étoiles se dit
+    await sql("update public.reglages_application set livre_payant = false");
     await aller(page, "/");
     await expect(page.getByText(/pass du livre/)).toHaveCount(0);
     await expect(page.getByText("Gratuit.", { exact: true })).toBeVisible();
+    const fiche = page.getByRole("group", { name: "Fiche aventure" });
+    await expect(fiche.getByText("illimitées")).toHaveCount(2);
+    await expect(fiche.getByText(/Plus d’étoiles\s:\s5\s€ les 100\./)).toBeVisible();
+    // L'aide dit la gratuité, sans la question du pass (page mise en cache : l'interrupteur de
+    // l'administration la renouvelle, pas une écriture directe dans la base)
+    await aller(page, "/aide");
+    await expect(page.getByText("Est-ce gratuit ?")).toBeVisible();
+    await expect(page.getByText("À quoi sert le pass ?")).toHaveCount(0);
+    await sql("update public.reglages_application set paiement_ouvert = false");
+    await aller(page, "/");
+    await expect(page.getByText(/Plus d’étoiles/)).toHaveCount(0);
   } finally {
-    await sql("update public.reglages_application set paiement_ouvert = $1, prix_du_pass = $2", [avant.paiement_ouvert, avant.prix_du_pass]);
+    await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2, prix_du_pass = $3", [avant.paiement_ouvert, avant.livre_payant, avant.prix_du_pass]);
   }
 });
 

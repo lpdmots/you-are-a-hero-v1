@@ -1,5 +1,5 @@
 import { test, type Page } from "@playwright/test";
-import { adultePret, aller, ouvrirLeMenuDuCompte, semerImageDeposee, semerPartie, semerProjet, sql, supprimerComptes, viderLaBibliotheque } from "../parcours/outils";
+import { adultePret, aller, livrePayant, ouvrirLeMenuDuCompte, semerImageDeposee, semerPartie, semerProjet, sql, supprimerComptes, viderLaBibliotheque } from "../parcours/outils";
 
 /**
  * Captures de « Mon compte » en page (21 octobre 2026) : npm run captures -- compte
@@ -13,19 +13,19 @@ const capturer = async (page: Page, nom: string, toute = false) => {
   await page.screenshot({ path: `${dossier}/${n}-${nom}.png`, fullPage: toute });
 };
 
-let avant: boolean;
+let avant: { p: boolean; l: boolean };
 test.beforeAll(async () => {
-  avant = (await sql<{ p: boolean }>("select paiement_ouvert as p from public.reglages_application"))[0].p;
+  [avant] = await sql<{ p: boolean; l: boolean }>("select paiement_ouvert as p, livre_payant as l from public.reglages_application");
 });
 test.afterEach(async () => {
-  await sql("update public.reglages_application set paiement_ouvert = $1", [avant]);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2", [avant.p, avant.l]);
   await supprimerComptes();
 });
 
 test("« Mon compte » en page, et le menu du nom", async ({ page }) => {
   test.setTimeout(180_000);
   const { compte, base } = await adultePret(page);
-  await sql("update public.reglages_application set paiement_ouvert = true");
+  await livrePayant(true);
   const projet = await semerProjet(base, compte, "personnel", "choix", "Le marais des feux follets", null);
   await semerPartie(base, projet, "La traversée", [{ titre: "Le dernier bac", scenes: ["Le départ"] }]);
   await base.from("enseignants").update({ nom_affiche: "Mme Laurent" }).eq("id", compte.id);
@@ -117,7 +117,7 @@ test("la bibliothèque d'images : l'administration, puis « Choisir une image »
 
 test("les réglages du projet, entiers", async ({ page }) => {
   const { compte, base } = await adultePret(page);
-  await sql("update public.reglages_application set paiement_ouvert = true");
+  await livrePayant(true);
   const projet = await semerProjet(base, compte, "classe", "choix", "Le marais des feux follets", null);
   await page.setViewportSize({ width: 1366, height: 2600 });
   await aller(page, `/projet/${projet}/plan`);

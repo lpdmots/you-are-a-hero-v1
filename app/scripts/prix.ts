@@ -56,12 +56,12 @@ async function principal() {
   try {
     const lire = async () =>
       (
-        await base.query<{ prix_du_pass: number; etoiles_du_pass: number; prix_de_la_recharge: number; etoiles_de_la_recharge: number; paiement_ouvert: boolean }>(
-          "select prix_du_pass, etoiles_du_pass, prix_de_la_recharge, etoiles_de_la_recharge, paiement_ouvert from public.reglages_application",
+        await base.query<{ prix_du_pass: number; etoiles_du_pass: number; prix_de_la_recharge: number; etoiles_de_la_recharge: number; paiement_ouvert: boolean; livre_payant: boolean }>(
+          "select prix_du_pass, etoiles_du_pass, prix_de_la_recharge, etoiles_de_la_recharge, paiement_ouvert, livre_payant from public.reglages_application",
         )
       ).rows[0];
     const dire = (r: Awaited<ReturnType<typeof lire>>) =>
-      `pass ${euros(r.prix_du_pass)} (${r.etoiles_du_pass} ✦), recharge ${euros(r.prix_de_la_recharge)} (${r.etoiles_de_la_recharge} ✦), « Paiement ouvert » ${r.paiement_ouvert ? "allumé" : "éteint"}`;
+      `pass ${euros(r.prix_du_pass)} (${r.etoiles_du_pass} ✦), recharge ${euros(r.prix_de_la_recharge)} (${r.etoiles_de_la_recharge} ✦), « Paiement ouvert » ${r.paiement_ouvert ? "allumé" : "éteint"}, « Livre payant » ${r.livre_payant ? "allumé" : "éteint"}`;
     const avant = await lire();
     if (pass === undefined && recharge === undefined) {
       console.log(`Dans ${ou} : ${dire(avant)}.`);

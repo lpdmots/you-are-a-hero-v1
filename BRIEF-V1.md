@@ -201,7 +201,7 @@ serveur. Les exports lourds sont traités en arrière-plan.
 | Graphe | **React Flow** — proposé comme représentation du récit. |
 | PDF | **Paged.js + HTML/CSS + Chromium** — retenu le 3 octobre 2026 après prototype, avec un aperçu calculé côté serveur ; Chromium de Linux et hébergement encore à éprouver. |
 | Hébergement | **Vercel** décidé le 8 octobre 2026 pour l'application, à son adresse par défaut ; région et lieu d'exécution du PDF selon le [plan](docs/plan.md#décisions-de-fournisseur) ; **Render** reste l'alternative pour le PDF. |
-| Paiement | **Stripe Checkout**, achats uniques par carte — décidé le 20 octobre 2026 (F14), derrière l'interrupteur « Paiement ouvert ». |
+| Paiement | **Stripe Checkout**, achats uniques par carte — décidé le 20 octobre 2026 (F14), derrière l'interrupteur « Paiement ouvert ». Depuis le 8 novembre 2026, seules les recharges d'étoiles se vendent : le livre est gratuit sans limite, le pass et les limites attendant l'interrupteur « Livre payant », éteint. |
 | IA | API côté serveur ; fournisseur et modèle à choisir sur les tâches réelles. |
 | Vérification | **Vitest + Playwright**, complétés par inspection visuelle des PDF. |
 

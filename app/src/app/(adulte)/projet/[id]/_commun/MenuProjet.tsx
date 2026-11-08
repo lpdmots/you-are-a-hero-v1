@@ -157,7 +157,7 @@ export function MenuProjet({
               </span>
             </div>
           </section>
-          {/* Le livre gratuit et son pass, quand « Paiement ouvert » est allumé (F14) */}
+          {/* Le livre gratuit et son pass, quand « Livre payant » est allumé (F14) */}
           {livre ? <LivreGratuit projetId={projet.id} titre={projet.titre} offre={livre.offre} limites={livre.limites} /> : null}
 
           {/* Les élèves : ce qu'ils lisent et leur mise en forme ; l'explication dans un « i » (21 octobre 2026) */}

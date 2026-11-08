@@ -34,6 +34,47 @@
   padding-left: 14px;
   box-shadow: -1px 0 0 var(--trait);
 }
+/* La place se mesure sur la liste, pas sur la fenêtre (« Aide », « Projeter » ou le titre la
+   réduisent) : quand les noms n'y tiennent plus, seule l'étape en cours garde le sien, comme sous
+   980 points. Les six de la Préparation demandent près de 57rem, les quatre de la projection 39rem. */
+.ligne ol {
+  container: etapes / inline-size;
+}
+@container etapes (max-width: 60rem) {
+  .preparation > .ligne :global(.temps__lien:not(.est-en-cours) .temps__nom) {
+    display: none;
+  }
+}
+@container etapes (max-width: 41rem) {
+  .projection__barre > .ligne :global(.temps__lien:not(.est-en-cours) .temps__nom) {
+    display: none;
+  }
+}
+/* En secours, jamais de chevauchement : les pointillés cèdent d'abord, puis les autres noms
+   s'abrègent ; si les pastilles elles-mêmes n'y tiennent pas, la ligne défile, sans barre. Le
+   retrait compensé laisse la place du contour de focus. */
+.ligne ol {
+  margin: -6px;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.ligne :global(.temps__etape),
+.ligne :global(.temps__lien),
+.ligne :global(.temps__nom) {
+  min-width: 0;
+}
+.ligne :global(.temps__nom) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.ligne :global(.temps__etape:has(.est-en-cours)),
+.ligne :global(.temps__lien.est-en-cours) {
+  min-width: auto;
+}
+.ligne :global(.temps__etape + .temps__etape)::before {
+  flex-shrink: 1000;
+}
 
 /* ——— La feuille d'une étape ——— */
 .page {
@@ -961,16 +1002,12 @@
   .ligne :global(.temps__lien.est-en-cours) {
     padding-right: 10px;
   }
-  /* Sans pointillés ni marges : la ligne tient ; si un nom long la dépasse, elle défile, sans rien chevaucher */
+  /* Sans pointillés ni marges : la ligne tient ; si un nom long la dépasse, elle défile (plus haut), sans rien chevaucher */
   .ligne :global(.temps__etape + .temps__etape):not(.premiereFacultative)::before {
     display: none;
   }
   .ligne :global(.temps__lien) {
     padding: 3px;
-  }
-  .ligne ol {
-    overflow-x: auto;
-    scrollbar-width: none;
   }
   /* On ne projette pas depuis un téléphone */
   .ligne__fin :global(.btn) {

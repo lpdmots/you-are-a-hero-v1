@@ -11,10 +11,10 @@ export async function offreActuelle(base: SupabaseClient = clientService()): Pro
 
 /**
  * Les projets de l'adulte qui ont leur pass, pour la marque de « Mes projets » : vide tant que
- * « Paiement ouvert » est éteint et pour le porteur, dont les projets n'ont pas de limite.
+ * le livre est gratuit et pour le porteur, dont les projets n'ont pas de limite.
  */
 export async function projetsAvecPass(base: SupabaseClient, createur: boolean): Promise<Set<string>> {
-  if (createur || !(await offreActuelle()).paiementOuvert) return new Set();
+  if (createur || !(await offreActuelle()).livrePayant) return new Set();
   const { data } = await base.from("passes").select("projet_id");
   return new Set((data ?? []).map((p) => p.projet_id as string));
 }

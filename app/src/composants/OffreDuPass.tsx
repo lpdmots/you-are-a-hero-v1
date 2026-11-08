@@ -158,7 +158,7 @@ function Jauge({ nom, n, max }: { nom: string; n: number; max: number }) {
 /**
  * Le dialogue d'une limite atteinte, posé une fois dans l'espace adulte : rien n'a été créé, tout
  * le reste continue, la corbeille ne compte pas, et le pass lève la limite. Il relit l'offre du
- * projet à l'ouverture ; sans « Paiement ouvert », il ne s'ouvre pas. Sa forme est celle d'une
+ * projet à l'ouverture ; sans « Livre payant », il ne s'ouvre pas. Sa forme est celle d'une
  * offre : la couverture du livre à côté du pass, les deux jauges au-dessus, distincte du merci.
  */
 export function OffreDuPass() {

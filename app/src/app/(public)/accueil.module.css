@@ -815,17 +815,21 @@
 .reponse + .recit {
   margin-top: 10px;
 }
-.intertitre {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 26px;
+/* Un aparté, sous ce qui compte : plus petit, plus pâle, séparé d'un trait fin (l'IA, au passage 40) */
+.aparte {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px dashed #d8d0bf;
   font-family: var(--f-recit);
-  font-size: 1.2rem;
-  font-weight: 700;
+  font-variant-numeric: lining-nums;
+  font-size: 0.94rem;
+  line-height: 1.5;
+  color: var(--graphite-2);
+  text-wrap: pretty;
 }
-.intertitre + .recit {
-  margin-top: 6px;
+.aparteTitre {
+  color: var(--graphite);
+  white-space: nowrap;
 }
 
 /* Le passage 40 : le feuillet, la mascotte, la fiche aventure, sur trois colonnes */
@@ -1148,12 +1152,6 @@
   color: var(--graphite-2);
 }
 /* Le signe des aides devant l'intertitre de l'IA */
-.etoileTitre {
-  flex: none;
-  width: 1.05em;
-  height: 1.05em;
-  color: var(--canard);
-}
 .insecable {
   white-space: nowrap;
 }

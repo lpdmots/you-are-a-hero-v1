@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { createHmac } from "node:crypto";
-import { adultePret, aller, semerPartie, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
+import { adultePret, aller, livrePayant, semerPartie, semerProjet, sql, supprimerComptes, type Compte, ouvrirLeMenuDuCompte } from "./outils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
@@ -10,12 +10,12 @@ import type { SupabaseClient } from "@supabase/supabase-js";
  * rejoue, signé du secret d'essai.
  */
 
-let avant: { paiement_ouvert: boolean; prix_du_pass: number };
+let avant: { paiement_ouvert: boolean; livre_payant: boolean; prix_du_pass: number };
 test.beforeAll(async () => {
-  [avant] = await sql<{ paiement_ouvert: boolean; prix_du_pass: number }>("select paiement_ouvert, prix_du_pass from public.reglages_application");
+  [avant] = await sql<{ paiement_ouvert: boolean; livre_payant: boolean; prix_du_pass: number }>("select paiement_ouvert, livre_payant, prix_du_pass from public.reglages_application");
 });
 test.afterEach(async () => {
-  await sql("update public.reglages_application set paiement_ouvert = $1, prix_du_pass = $2", [avant.paiement_ouvert, avant.prix_du_pass]);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2, prix_du_pass = $3", [avant.paiement_ouvert, avant.livre_payant, avant.prix_du_pass]);
   await sql("delete from public.paiements where enseignant_id is null or enseignant_id in (select id from auth.users where email like 'parcours-%@exemple.test')");
   await supprimerComptes();
 });
@@ -23,7 +23,8 @@ test.afterEach(async () => {
 /** Signe un avis comme Stripe le ferait (le serveur d'essai connaît le secret « whsec_essai_local »). */
 const signerUnAvis = (corps: string, secret: string, t = Math.floor(Date.now() / 1000)) =>
   `t=${t},v1=${createHmac("sha256", secret).update(`${t}.${corps}`).digest("hex")}`;
-const interrupteur = (allume: boolean) => sql("update public.reglages_application set paiement_ouvert = $1", [allume]);
+// Vente et livre payant ensemble, les projets du test nés le livre payant (F14-AC54)
+const interrupteur = livrePayant;
 const DIALOGUE = (page: Page) => page.getByRole("alertdialog");
 const solde = async (c: Compte) => (await sql<{ etoiles: number }>("select etoiles from public.enseignants where id = $1", [c.id]))[0].etoiles;
 

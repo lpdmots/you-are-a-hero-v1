@@ -3328,6 +3328,24 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
   personnalisation de marque de Stripe, mode réel (la coche verte du paiement
   réussi ne se règle pas) ; le médiateur ; lire chaque mois l'usage de
   Supabase (F14, « Hébergement de la base »).
+- **Le livre gratuit, l'IA payante, décidé par le porteur le 8 novembre
+  2026** (F14, F14-AC54), pour faire découvrir l'outil aux collègues, en
+  gardant l'idée d'un livre payant pour plus tard. Un second interrupteur,
+  « Livre payant », éteint, commande le pass et les limites gratuites ;
+  « Paiement ouvert » ne commande plus que la vente, donc la seule recharge
+  de 100 ✦ à 5 €. Un projet né pendant la gratuité reste sans limite pour
+  toujours (marque `sans_limite`, posée d'office, que l'enseignant ne change
+  pas) ; tous les projets existants la reçoivent. L'accueil dit « Gratuit. »
+  et « Offert aux collègues tant que les frais d'hébergement restent
+  supportables. S'ils devenaient trop lourds, une formule payante
+  facultative pourrait s'ajouter. », sans rien promettre de plus, l'IA en
+  aparté plus petit (« Et l'IA ? ») ; les conditions d'utilisation disent de
+  même. Construit
+  en local le même jour, migration `livre_payant` en base locale seulement,
+  sans commit ; la mise en ligne, à sa demande : sauvegarde, migration,
+  `git push`. Pour essayer les limites en local : allumer les deux
+  interrupteurs, puis créer un projet, ou ôter sa marque (`livrePayant` des
+  parcours).
 
 ### Après l'étape 9 — Référencement, IA et mesure
 
@@ -4174,7 +4192,8 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   le PDF si V2 échoue ; les appels aux aides IA, payés en étoiles par les
   comptes et, pour les étoiles offertes (trente par compte, environ 0,30 euro
   de coût), par le porteur, bornés par une limite mensuelle chez chaque
-  fournisseur ; les domaines (environ 72 euros TTC payés le 20 octobre 2026
+  fournisseur ; le stockage des images, que le livre gratuit sans limite
+  (8 novembre 2026) ne fait plus payer, et qui fera venir Supabase Pro ; les domaines (environ 72 euros TTC payés le 20 octobre 2026
   pour deux à trois ans) ; les courriels par Amazon SES et le seau S3, de
   quelques centimes par mois à l'échelle attendue ; les frais de Stripe sur
   chaque vente ; un exemplaire imprimé pour V6. Ordres de grandeur d'après les

@@ -12,14 +12,14 @@ import { createClient } from "@supabase/supabase-js";
  * ligne, par le porteur.
  */
 
-let avant: { paiement_ouvert: boolean };
+let avant: { paiement_ouvert: boolean; livre_payant: boolean };
 test.beforeAll(async () => {
-  [avant] = await sql<{ paiement_ouvert: boolean }>("select paiement_ouvert from public.reglages_application");
-  // Le parcours part de l'interrupteur éteint, quel que soit l'état laissé par une autre séance
-  await sql("update public.reglages_application set paiement_ouvert = false");
+  [avant] = await sql<{ paiement_ouvert: boolean; livre_payant: boolean }>("select paiement_ouvert, livre_payant from public.reglages_application");
+  // Le parcours part des interrupteurs éteints, quel que soit l'état laissé par une autre séance
+  await sql("update public.reglages_application set paiement_ouvert = false, livre_payant = false");
 });
 test.afterEach(async () => {
-  await sql("update public.reglages_application set paiement_ouvert = $1", [avant.paiement_ouvert]);
+  await sql("update public.reglages_application set paiement_ouvert = $1, livre_payant = $2", [avant.paiement_ouvert, avant.livre_payant]);
   await sql("delete from public.paiements where enseignant_id is null or enseignant_id in (select id from auth.users where email like 'parcours-%@exemple.test')");
   await supprimerComptes();
 });
@@ -114,11 +114,18 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   await expect(lire.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
   await lecteur.close();
 
-  // ——— « Paiement ouvert » allumé par le porteur : à 40 scènes, le dialogue du pass ———
+  // ——— « Paiement ouvert » et « Livre payant » allumés par le porteur : à 40 scènes, le dialogue du pass ———
   await aller(pagePorteur, "/admin");
-  await pagePorteur.getByRole("button", { name: "Allumer" }).click();
-  await expect(pagePorteur.getByText("allumé")).toBeVisible();
+  const paiement = pagePorteur.locator("form").filter({ hasText: "Paiement ouvert" });
+  await paiement.getByRole("button", { name: "Allumer" }).click();
+  await expect(paiement.getByText("allumé")).toBeVisible();
+  const livre = pagePorteur.locator("form").filter({ hasText: "Livre payant" });
+  await livre.getByRole("button", { name: "Allumer" }).click();
+  await expect(livre.getByText("allumé")).toBeVisible();
   await semerPartie(base, projet, "La mer", [{ titre: "Le large", scenes: Array.from({ length: 37 }, (_, i) => `Vague ${i + 1}`) }]);
+  // Né pendant que le livre était gratuit, « Le phare de minuit » n'aurait aucune limite (F14-AC54) :
+  // il est traité ici comme né le livre payant
+  await sql("update public.projets set sans_limite = false where id = $1", [projet]);
   await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}`);
   await page.getByRole("button", { name: "Ajouter une scène" }).click();
   await expect(DIALOGUE(page).getByRole("heading", { name: "Ce livre a atteint ses 40 scènes gratuites" })).toBeVisible();
