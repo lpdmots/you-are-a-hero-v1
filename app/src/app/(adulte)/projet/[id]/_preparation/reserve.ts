@@ -21,6 +21,9 @@ export async function demanderALaPreparation(projetId: string, etape: Rubrique, 
   }
 }
 
+/** Une question ou une idée qui ne vient pas : aucun texte n'était en jeu (révision de novembre 2026). */
+const PAS_DE_REPONSE = "L'aide n'a pas répondu. Réessayez dans un moment.";
+
 /**
  * La réserve de l'IA pour une liste d'une étape (F13.4) : une demande en rend six, livrées une à
  * une à chaque clic, sans nouvel appel. `jeter` la vide dès que l'étape change (une idée notée
@@ -71,13 +74,13 @@ export function useReserveIa({
     const r = await demanderALaPreparation(projetId, etape, sorte, heros);
     if (!r.ok || r.sorte === "retenons") {
       setAttente(false);
-      return setErreur(r.ok ? MESSAGES_IA.pasDeReponse : r.message);
+      return setErreur(r.ok || r.message === MESSAGES_IA.pasDeReponse ? PAS_DE_REPONSE : r.message);
     }
     setReste(r.reste);
     const recue = prendreDansLaReserve(r.elements, liste.current);
     reserve.current = recue.reste;
     if (recue.element) await livrer(recue.element);
-    else setErreur(MESSAGES_IA.pasDeReponse);
+    else setErreur(PAS_DE_REPONSE);
     setAttente(false);
   };
 

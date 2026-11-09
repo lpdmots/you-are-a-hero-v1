@@ -3018,6 +3018,59 @@ Perfectible, à juger à l'usage : la barre de la copie passait déjà sur deux
 lignes à 1366 px, « Dicter » rejoint la seconde ; sur un champ d'une ligne, le
 micro occupe toute la hauteur du champ.
 
+### Révision de l'ergonomie (novembre 2026)
+
+Révision page par page, la page choisie par le porteur, close par son « ok ».
+Pour chacune : captures à 1366 × 768 et 390 px sur « Les passeurs de brume »
+(classe de vingt-cinq élèves, états vides, IA en panne, projection), deux
+lectures notées sur 40 (la mienne, informée, et celle d'un lecteur
+indépendant, sur les seules captures), puis les corrections d'ergonomie faites
+directement ; ce qui toucherait une règle ou une décision lui est soumis.
+
+#### Préparation (9 novembre 2026)
+
+Captures : `npm run captures -- revision-preparation` (37 vues).
+**Notes : 27/40 (informée), 26/40 (indépendante).** Points faibles des deux
+lectures : la cohérence, la sobriété de « Le jeu », les messages d'erreur.
+
+**Corrigé :**
+
+- **Hauteur à 768 px :** la question sur une ligne (2 rem au plus, 40 caractères
+  de large), marges et écarts resserrés ; environ 80 px gagnés, les idées et
+  « Idées écartées » visibles sans défiler sur « Univers ». « Nous retenons »
+  part de trois lignes au lieu de cinq.
+- **Ligne d'étapes :** « Le j… » à 1366 px, colonne ouverte, alors que la place
+  suffisait : le rétrécissement prenait sur la dernière étape au lieu des
+  pointillés, et un arrondi au centième de pixel déclenchait l'abréviation. Tant
+  que les noms s'affichent, une étape ne descend plus sous sa largeur et son nom
+  ne s'abrège plus ; liens un peu resserrés.
+- **Idées :** « Écarter » et la croix ne réservent plus leur place (avec une
+  souris) ; le texte prend toute la ligne, les gestes viennent par-dessus sa fin
+  au survol, sur le fond de la ligne. Écran tactile inchangé.
+- **« Le jeu » :** une phrase par liste, le reste dans un « i » (« Qui voit cette
+  liste ? », « Où servent les formules ? ») ; un crayon gris à la place des treize
+  « Modifier » ; « + Ajouter un objet » et « + Ajouter une formule » ouvrent le
+  formulaire (Échap le referme), « Aucun objet pour l'instant. » sur un projet
+  neuf. Les formules prennent la forme de l'action de jeu au repos dans la copie
+  (fond blanc, cadre gris d'un pixel) au lieu du canard pâle à filet canard, que
+  le lecteur indépendant prenait pour l'IA ; accepté par le porteur. La copie
+  n'est pas touchée : son canard pâle ne marque que le bloc qu'on règle.
+- **IA :** « Orienter l'IA » porte le ✦ ; laissé vide, son cadre se replie après
+  la demande au lieu de repousser les questions ; une question ou une idée qui ne
+  vient pas dit « L'aide n'a pas répondu. Réessayez dans un moment. » (plus « Le
+  texte n'a pas changé », sans objet ici).
+- **Projection :** intitulés des listes à 1,15 rem et « Voir un exemple » plus grand.
+- **Supprimer une partie** qui a des scènes écrites passe par le même dialogue
+  que dans « Parties et chapitres » (F03-AC13) : la Préparation le sautait, alors
+  que F02 étend ces protections aux deux vues. Parcours ajouté.
+
+**Laissé, arrêté ou hors de la page :** « Laisser » ; les pastilles seules de la
+ligne d'étapes en 390 px ; l'IA visible par la classe en projection (F02-AC12) ;
+« Étape suivante » encore sous le bord à 768 px, la ligne d'étapes suffisant pour
+avancer (un pied collé au bas de l'écran n'est pas recommandé) ; le champ d'ajout
+d'une question qui s'ouvre au-dessus de son bouton ; « Autres personnages » qui
+passe à la ligne en 390 px.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

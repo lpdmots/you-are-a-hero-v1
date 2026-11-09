@@ -79,7 +79,10 @@ export default async function PageProjet({ params, searchParams }: Props) {
       />
     );
   } else if (onglet === "preparation") {
-    const [preparation, plan, magasin, demande] = await Promise.all([preparationDe(enseignant, projet.id), planDe(enseignant, projet.id), cookies(), searchParams]);
+    // Les élèves de la classe : supprimer une partie écrite le dit avant, comme dans « Parties et chapitres » (F03-AC13)
+    const [preparation, plan, eleves, magasin, demande] = await Promise.all([
+      preparationDe(enseignant, projet.id), planDe(enseignant, projet.id), elevesDeLaClasse(enseignant, projet.classe?.id ?? null), cookies(), searchParams,
+    ]);
     if (!preparation) notFound();
     // L'étape demandée, sinon la première étape de l'histoire sans texte retenu (F02, 17 octobre 2026)
     const etape = estEtapePreparation(demande.etape) && etapesDe(projet.recit).includes(demande.etape) ? demande.etape : etapeDOuverture(preparation, plan.parties.length);
@@ -88,6 +91,7 @@ export default async function PageProjet({ params, searchParams }: Props) {
         projet={{ id: projet.id, titre: projet.titre, organisation: projet.organisation, recit: projet.recit, herosAbsent: projet.herosAbsent }}
         preparation={preparation}
         plan={plan}
+        eleves={eleves}
         etape={etape}
         onglet={typeof demande.heros === "string" ? demande.heros : null}
         aideMasquee={enseignant.aidesMasquees.includes("preparation")}

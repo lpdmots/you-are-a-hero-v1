@@ -122,6 +122,8 @@ export function EtapeHistoire({
     }
     dejaDemande.current = true;
     setEnAttenteDOrienter(null);
+    // Laissée vide, l'orientation se replie après la demande : elle ne repousse pas les questions
+    if (!orientation.trim()) setOrienterOuvert(false);
     void (sorte === "questions" ? reserveQ.prendre() : reserveI.prendre());
   };
 
@@ -203,6 +205,7 @@ export function EtapeHistoire({
             ) : (
               <p className={styles.orienterLien}>
                 <button type="button" className="lien" onClick={() => setOrienterOuvert(true)}>
+                  <Icone nom="ia" />
                   Orienter l’IA
                 </button>
               </p>
@@ -632,7 +635,7 @@ function TexteRetenu({
         id="texte-retenu"
         className={styles.retenu__champ}
         micro="titre"
-        rows={5}
+        rows={3}
         maxLength={6000}
         value={valeur}
         placeholder={projet.organisation === "classe" ? "Ce que la classe décide." : "Ce que je décide."}

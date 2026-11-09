@@ -6,8 +6,8 @@
 .preparation {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 18px;
-  margin-top: 22px;
+  gap: 14px;
+  margin-top: 14px;
 }
 
 /* ——— Ligne d'étapes : les quatre de l'histoire, un filet, puis les deux facultatives ——— */
@@ -18,7 +18,7 @@
   flex: 0 0 1px;
   min-width: 1px;
   height: 26px;
-  margin: 0 12px 0 16px;
+  margin: 0 8px 0 10px;
   opacity: 1;
   background: var(--trait-fort);
 }
@@ -31,6 +31,31 @@
    980 points. Les six de la Préparation demandent près de 57rem, les quatre de la projection 39rem. */
 .ligne ol {
   container: etapes / inline-size;
+}
+/* Révision de novembre 2026 : à 1366 px, colonne ouverte, la ligne mesure 66rem et les noms
+   y tiennent, mais le rétrécissement prenait sur la dernière étape (« Le j… ») au lieu des
+   pointillés. Tant que les noms s'affichent, une étape ne descend plus sous sa largeur : ce sont
+   les pointillés qui cèdent. */
+.ligne :global(.temps__lien) {
+  gap: 8px;
+  padding-right: 10px;
+}
+@container etapes (min-width: 60.01rem) {
+  .preparation > .ligne :global(.temps__etape) {
+    min-width: min-content;
+  }
+  /* Le nom tient : pas d'abréviation, qu'un arrondi au centième de pixel déclenchait */
+  .preparation > .ligne :global(.temps__nom) {
+    overflow: visible;
+  }
+}
+@container etapes (min-width: 41.01rem) {
+  .projection__barre > .ligne :global(.temps__etape) {
+    min-width: min-content;
+  }
+  .projection__barre > .ligne :global(.temps__nom) {
+    overflow: visible;
+  }
 }
 @container etapes (max-width: 60rem) {
   .preparation > .ligne :global(.temps__lien:not(.est-en-cours) .temps__nom) {
@@ -70,7 +95,7 @@
 
 /* ——— La feuille d'une étape ——— */
 .page {
-  padding: 34px 40px 22px;
+  padding: 26px 40px 22px;
   border-radius: var(--r-l);
   background: var(--feuille);
   box-shadow:
@@ -79,17 +104,17 @@
 }
 .etape {
   display: grid;
-  gap: 28px;
+  gap: 22px;
 }
 .tete {
   display: grid;
-  gap: 10px;
+  gap: 6px;
 }
 .question {
-  max-width: 32ch;
+  max-width: 40ch;
   margin: 0;
   font-family: var(--f-recit);
-  font-size: clamp(1.6rem, 1.1rem + 1.3vw, 2.25rem);
+  font-size: clamp(1.5rem, 1.05rem + 1.1vw, 2rem);
   font-weight: 600;
   line-height: 1.18;
   letter-spacing: -0.01em;
@@ -123,7 +148,7 @@
 .gauche {
   position: relative;
   display: grid;
-  gap: 28px;
+  gap: 22px;
   align-content: start;
 }
 .bloc h3,
@@ -232,6 +257,28 @@
 .idees li:hover .idee__gestes,
 .idees li:focus-within .idee__gestes {
   opacity: 1;
+}
+/* Avec une souris, les gestes ne réservent pas leur place : le texte prend toute la ligne, et
+   les gestes viennent par-dessus sa fin, sur le fond de la ligne survolée. */
+@media (hover: hover) {
+  .idees li {
+    position: relative;
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .idees li.ecartee {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .idee__gestes {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    translate: 0 -50%;
+    padding-left: 18px;
+    background: linear-gradient(to right, transparent, var(--fond-ligne, var(--feuille-2)) 18px);
+  }
+  .idees li.retenue {
+    --fond-ligne: var(--e-valide-f);
+  }
 }
 @media (hover: none) {
   .idee__gestes {
@@ -373,6 +420,17 @@
   margin: 0;
   font-size: var(--t-s);
 }
+/* Le ✦ dit que ce lien règle l'IA, comme ses autres commandes */
+.orienterLien :global(.lien) {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.orienterLien :global(.ic) {
+  width: 14px;
+  height: 14px;
+  color: var(--ia);
+}
 .orienter {
   display: grid;
   gap: 6px;
@@ -418,7 +476,7 @@
 .retenu__champ {
   display: block;
   width: 100%;
-  min-height: calc(var(--interligne) * 5);
+  min-height: calc(var(--interligne) * 3);
   margin: 0;
   padding: 0;
   border: 0;
@@ -595,6 +653,9 @@
 }
 .etape_projetee .bloc h3,
 .etape_projetee .retenu h3 {
+  font-size: 1.15rem;
+}
+.etape_projetee .exemple summary {
   font-size: var(--t-m);
 }
 .etape_projetee .geste {
@@ -671,12 +732,41 @@
   vertical-align: middle;
   box-shadow: inset 0 0 0 1px rgba(30, 34, 38, 0.08);
 }
+/* « Modifier » d'un objet ou d'une formule : un crayon discret, plus une colonne de liens */
+.modifier {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin: -4px 0;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: none;
+  color: var(--graphite-3);
+  cursor: pointer;
+  align-self: center;
+}
+.modifier :global(.ic) {
+  width: 16px;
+  height: 16px;
+}
+.modifier:hover,
+.modifier:focus-visible {
+  background: rgba(30, 34, 38, 0.07);
+  color: var(--canard);
+}
+.ouvrirAjout {
+  margin: 4px 0 0;
+}
+/* Comme l'action de jeu au repos dans la copie : fond blanc, cadre gris d'un pixel. Le canard pâle
+   est à l'IA, et, dans la copie, au bloc qu'on règle (révision de novembre 2026). */
 .formule_action {
   grid-column: 1 / 3;
   padding: 4px 10px;
-  border-left: 3px solid var(--canard);
-  background: var(--canard-pale);
-  border-radius: 0 6px 6px 0;
+  border: 1px solid var(--graphite-3);
+  background: var(--feuille);
+  border-radius: 4px;
   font-size: 1rem;
   display: flex;
   align-items: baseline;

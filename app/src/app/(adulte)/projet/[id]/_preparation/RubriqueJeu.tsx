@@ -16,6 +16,7 @@ import { enregistrerFormule, enregistrerObjet, reglerJeu, supprimerFormule, supp
 import type { ProjetDuCarnet } from "./Etape";
 import styles from "./preparation.module.css";
 import { ChampTexte } from "@/composants/dictee/ChampDictable";
+import { Bulle } from "@/composants/Bulle";
 
 /**
  * L'étape facultative « Le jeu » (F04.2) : les objets de l'histoire et, dans un récit à choix,
@@ -68,6 +69,7 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
   const [ouvert, setOuvert] = useState<string | null>(null);
   const [neufNom, setNeufNom] = useState("");
   const [neufDescription, setNeufDescription] = useState("");
+  const [ajout, setAjout] = useState(false);
   const courant = objets.find((o) => o.id === ouvert) ?? null;
 
   const ajouter = async () => {
@@ -84,7 +86,10 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
         Objets de l’histoire <span className={styles.compte}>{objets.length}</span>
       </h3>
       <p className={styles.aide}>
-        Écrits comme dans une phrase, avec leur article.{deClasse ? " Les élèves les consulteront depuis la scène, sans pouvoir les modifier." : ""} Le lecteur ne voit jamais cette liste.
+        Écrits avec leur article, comme dans une phrase.{" "}
+        <Bulle question="Qui voit cette liste ?">
+          {deClasse ? "Les élèves la consultent depuis la scène, sans pouvoir la modifier. " : ""}Le lecteur du livre ne la voit jamais.
+        </Bulle>
       </p>
       <ul className={styles.liste}>
         {objets.map((o) => (
@@ -97,32 +102,45 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
               <span>{o.nom}</span>
             </span>
             <span className={styles.liste__desc}>{o.description}</span>
-            <button type="button" className="lien" aria-label={`Modifier ${o.nom}`} onClick={() => setOuvert(o.id)}>
-              Modifier
+            <button type="button" className={styles.modifier} aria-label={`Modifier ${o.nom}`} title="Modifier" onClick={() => setOuvert(o.id)}>
+              <Icone nom="crayon" />
             </button>
           </li>
         ))}
       </ul>
-      <form
-        className={styles.ajout}
-        onSubmit={(e) => {
-          e.preventDefault();
-          void ajouter();
-        }}
-      >
-        <label className={styles.champ}>
-          <span>Nouvel objet</span>
-          <input className="pchamp" type="text" maxLength={60} placeholder="la lanterne sourde" value={neufNom} onChange={(e) => setNeufNom(e.target.value)} />
-        </label>
-        <label className={styles.champ}>
-          <span>Description</span>
-          <input className="pchamp" type="text" maxLength={120} placeholder="Ce qu’il est, à quoi il sert" value={neufDescription} onChange={(e) => setNeufDescription(e.target.value)} />
-        </label>
-        <button type="submit" className="btn" disabled={!neufNom.trim()}>
-          <Icone nom="plus" />
-          Ajouter
-        </button>
-      </form>
+      {objets.length === 0 && !ajout ? <p className={styles.vide}>Aucun objet pour l’instant.</p> : null}
+      {ajout ? (
+        <form
+          className={styles.ajout}
+          onSubmit={(e) => {
+            e.preventDefault();
+            void ajouter();
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setAjout(false);
+          }}
+        >
+          <label className={styles.champ}>
+            <span>Nouvel objet</span>
+            <input className="pchamp" type="text" maxLength={60} autoFocus placeholder="la lanterne sourde" value={neufNom} onChange={(e) => setNeufNom(e.target.value)} />
+          </label>
+          <label className={styles.champ}>
+            <span>Description</span>
+            <input className="pchamp" type="text" maxLength={120} placeholder="Ce qu’il est, à quoi il sert" value={neufDescription} onChange={(e) => setNeufDescription(e.target.value)} />
+          </label>
+          <button type="submit" className="btn" disabled={!neufNom.trim()}>
+            <Icone nom="plus" />
+            Ajouter
+          </button>
+        </form>
+      ) : (
+        <p className={styles.ouvrirAjout}>
+          <button type="button" className="btn btn--petit" onClick={() => setAjout(true)}>
+            <Icone nom="plus" />
+            Ajouter un objet
+          </button>
+        </p>
+      )}
       {courant ? (
         <PanneauObjet
           key={courant.id}
@@ -235,13 +253,19 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
   const [signe, setSigne] = useState<SigneAction>("crayon");
   const [neuf, setNeuf] = useState("");
   const [signeNeuf, setSigneNeuf] = useState<SigneAction>("crayon");
+  const [ajout, setAjout] = useState(false);
   return (
     <section className={styles.col} aria-labelledby="jeu-formules">
       <h3 id="jeu-formules">
         <Icone nom="noter" />
         Formules d’action <span className={styles.compte}>{formules.length}</span>
       </h3>
-      <p className={styles.aide}>Les demandes au lecteur qui reviennent souvent. Elles seront proposées dans la scène, puis resteront modifiables dans chaque texte.</p>
+      <p className={styles.aide}>
+        Les demandes au lecteur qui reviennent souvent.{" "}
+        <Bulle question="Où servent les formules ?">
+          Elles sont proposées quand on écrit une action de jeu dans une scène. Chaque texte peut ensuite les modifier.
+        </Bulle>
+      </p>
       <ul className={styles.liste}>
         {formules.map((f) =>
           edite === f.id ? (
@@ -292,42 +316,56 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
               </span>
               <button
                 type="button"
-                className="lien"
+                className={styles.modifier}
                 aria-label={`Modifier la formule « ${f.texte} »`}
+                title="Modifier"
                 onClick={() => {
                   setTexte(f.texte);
                   setSigne(f.signe);
                   setEdite(f.id);
                 }}
               >
-                Modifier
+                <Icone nom="crayon" />
               </button>
             </li>
           ),
         )}
       </ul>
-      <form
-        className={`${styles.ajout} ${styles.ajout_une}`}
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const fait = await enregistrerFormule(projetId, null, neuf, signeNeuf);
-          if (fait.ok) {
-            setNeuf("");
-            setSigneNeuf("crayon");
-          }
-          else dire({ texte: fait.erreur });
-        }}
-      >
-        <label className={styles.champ}>
-          <span>Nouvelle formule</span>
-          <input className="pchamp" type="text" maxLength={140} placeholder="Ajoute un point de courage à ton héros." value={neuf} onChange={(e) => setNeuf(e.target.value)} />
-        </label>
-        <Signes valeur={signeNeuf} onChange={setSigneNeuf} libelle="Signe de la formule à ajouter" />
-        <button type="submit" className="btn" disabled={!neuf.trim()}>
-          <Icone nom="plus" />
-          Ajouter
-        </button>
-      </form>
+      {formules.length === 0 && !ajout ? <p className={styles.vide}>Aucune formule pour l’instant.</p> : null}
+      {ajout ? (
+        <form
+          className={`${styles.ajout} ${styles.ajout_une}`}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const fait = await enregistrerFormule(projetId, null, neuf, signeNeuf);
+            if (fait.ok) {
+              setNeuf("");
+              setSigneNeuf("crayon");
+            }
+            else dire({ texte: fait.erreur });
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Escape") setAjout(false);
+          }}
+        >
+          <label className={styles.champ}>
+            <span>Nouvelle formule</span>
+            <input className="pchamp" type="text" maxLength={140} autoFocus placeholder="Ajoute un point de courage." value={neuf} onChange={(e) => setNeuf(e.target.value)} />
+          </label>
+          <Signes valeur={signeNeuf} onChange={setSigneNeuf} libelle="Signe de la formule à ajouter" />
+          <button type="submit" className="btn" disabled={!neuf.trim()}>
+            <Icone nom="plus" />
+            Ajouter
+          </button>
+        </form>
+      ) : (
+        <p className={styles.ouvrirAjout}>
+          <button type="button" className="btn btn--petit" onClick={() => setAjout(true)}>
+            <Icone nom="plus" />
+            Ajouter une formule
+          </button>
+        </p>
+      )}
     </section>
   );
 }

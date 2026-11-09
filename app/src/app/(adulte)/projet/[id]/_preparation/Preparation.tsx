@@ -10,9 +10,10 @@ import {
   estEtapeDeLHistoire, etapeFaite, etapesDe, ETAPES_FACULTATIVES, nomEtape, questionDeLEtape, type EtapePreparation, type Preparation,
 } from "@/domaine/preparation";
 import { raisonDuReperage } from "@/domaine/illustration";
-import type { Partie, Plan } from "@/domaine/recit";
+import type { ElevePlan, Partie, Plan } from "@/domaine/recit";
 import { choisirRepere, restaurer, supprimer } from "../../actions-recit";
 import { ReglagesPartie } from "../_plan/Panneaux";
+import { useConfirmerSuppression } from "../_plan/suppression";
 import { AidePreparation } from "./AidePreparation";
 import { EtapeHistoire, Question, type ProjetDuCarnet } from "./Etape";
 import { RubriqueJeu } from "./RubriqueJeu";
@@ -25,11 +26,12 @@ import styles from "./preparation.module.css";
  * « Nous retenons » n'est pas vide. « Les choix » et « Le jeu » sont facultatives.
  */
 export function PagePreparation({
-  projet, preparation, plan, etape, onglet, aideMasquee, aideVue,
+  projet, preparation, plan, eleves, etape, onglet, aideMasquee, aideVue,
 }: {
   projet: ProjetDuCarnet;
   preparation: Preparation;
   plan: Plan;
+  eleves: ElevePlan[];
   etape: EtapePreparation;
   /** Dans l'étape Personnages, l'onglet ouvert : un héros ou les autres personnages */
   onglet?: string | null;
@@ -41,6 +43,7 @@ export function PagePreparation({
   const [aide, setAide] = useState(!aideMasquee && !aideVue);
   const [vue, setVue] = useState(aideVue);
   const [reglee, setReglee] = useState<{ id: string; image: boolean } | null>(null);
+  const confirmer = useConfirmerSuppression({ plan, eleves });
   const etapes = etapesDe(projet.recit);
   const rang = etapes.indexOf(etape);
   const suivante = etapes[rang + 1];
@@ -132,7 +135,10 @@ export function PagePreparation({
             onglet={onglet}
             preparation={preparation}
             plan={plan}
-            parties={{ regler: (p) => setReglee({ id: p.id, image: false }), supprimer: (p) => void supprimerPartie(p) }}
+            parties={{
+              regler: (p) => setReglee({ id: p.id, image: false }),
+              supprimer: (p) => confirmer.demander("partie", p.id, `« ${p.titre} »`, () => void supprimerPartie(p)),
+            }}
           />
         ) : (
           <div className={styles.etape}>
@@ -158,6 +164,7 @@ export function PagePreparation({
         </footer>
       </div>
 
+      {confirmer.dialogue}
       {partieReglee && reglee && !reglee.image ? (
         <ReglagesPartie key={partieReglee.id} partie={partieReglee} neuf={false} onImage={() => setReglee({ id: partieReglee.id, image: true })} onFermer={() => setReglee(null)} />
       ) : null}

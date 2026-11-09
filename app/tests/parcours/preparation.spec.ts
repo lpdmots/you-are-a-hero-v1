@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, autrePoste, MESSAGE, semerClasse, semerPartie, semerProjet, sql, supprimerComptes } from "./outils";
+import { adultePret, aller, autrePoste, MESSAGE, semerClasse, semerPartie, semerProjet, semerTexte, sql, supprimerComptes } from "./outils";
 
 /**
  * La Préparation en étapes (F02, décision du 17 octobre 2026) et ses aides IA (F13.4). Le
@@ -199,6 +199,19 @@ test("F02-AC14 — les chapitres et leur résumé se règlent dans « Parties et
   await expect(page.getByRole("link", { name: /La forêt/ })).toBeVisible();
 });
 
+test("F03-AC13 — depuis la préparation, supprimer une partie dont une scène a un texte le dit d'abord, comme dans « Parties et chapitres »", async ({ page }) => {
+  const { base, projet } = await projetDeClasse(page);
+  const { chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["L’entrée du bois"] }]);
+  await semerTexte(base, chapitres[0].scenes[0], ["Lou entre dans la forêt."]);
+  await aller(page, `/projet/${projet}/preparation?etape=etapes`);
+  await page.getByLabel("Autres commandes de la partie La forêt").click();
+  await page.getByRole("button", { name: "Supprimer" }).click();
+  const dialogue = page.getByRole("alertdialog", { name: "Supprimer « La forêt » ?" });
+  await expect(dialogue).toContainText("1 chapitre et 1 scène, dont 1 a un texte.");
+  await dialogue.getByRole("button", { name: "Supprimer" }).click();
+  await expect(MESSAGE(page)).toContainText("« La forêt » est supprimée.");
+});
+
 test("F02-AC05, F02-AC11, F02-AC12, F02-AC13 — « Projeter » montre la même étape en grand, sans compte d'élève, et écrit dans la même préparation", async ({ page }) => {
   const { projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation?etape=univers`);
@@ -386,17 +399,20 @@ test("F04.2 — l'étape « Le jeu » réunit les objets, les formules d'action,
   await aller(page, `/projet/${projet}/preparation?etape=jeu`);
   const jeu = page.getByRole("region", { name: "Objets et formules" });
 
+  // L'ajout s'ouvre par son bouton (révision de novembre 2026), et reste ouvert pour le suivant
+  await jeu.getByRole("button", { name: "Ajouter un objet" }).click();
   await jeu.getByLabel("Nouvel objet").fill("la lanterne sourde");
   await jeu.getByLabel("Description", { exact: true }).fill("Éclaire sans être vue.");
-  await jeu.getByRole("button", { name: "Ajouter" }).first().click();
+  await jeu.getByRole("button", { name: "Ajouter", exact: true }).first().click();
   await expect(jeu.getByText("la lanterne sourde")).toBeVisible();
+  await jeu.getByRole("button", { name: "Ajouter une formule" }).click();
   await jeu.getByLabel("Nouvelle formule").fill("Retire un point de volonté à ton héros.");
-  await jeu.getByRole("button", { name: "Ajouter" }).nth(1).click();
+  await jeu.getByRole("button", { name: "Ajouter", exact: true }).nth(1).click();
   await expect(jeu.getByText("Retire un point de volonté à ton héros.")).toBeVisible();
   // F04-AC41 — une formule porte son signe : le crayon par défaut, le dé choisi à l'ajout, changé ensuite
   await jeu.getByLabel("Nouvelle formule").fill("Lance le dé.");
   await jeu.getByRole("radiogroup", { name: "Signe de la formule à ajouter" }).getByRole("radio", { name: /^Dé/ }).click();
-  await jeu.getByRole("button", { name: "Ajouter" }).nth(1).click();
+  await jeu.getByRole("button", { name: "Ajouter", exact: true }).nth(1).click();
   await expect(jeu.getByText("Lance le dé.")).toBeVisible();
   const signes = async () => (await base.from("formules").select("texte, signe").eq("projet_id", projet).order("cree_le")).data;
   await expect.poll(signes).toEqual([{ texte: "Retire un point de volonté à ton héros.", signe: "crayon" }, { texte: "Lance le dé.", signe: "de" }]);
@@ -416,7 +432,7 @@ test("F04.2 — l'étape « Le jeu » réunit les objets, les formules d'action,
 
   await jeu.getByText("Feuille d’aventure du lecteur").click();
   await jeu.getByRole("button", { name: "Compteurs" }).click();
-  await jeu.getByRole("button", { name: "Liste" }).click();
+  await jeu.getByRole("button", { name: "Liste", exact: true }).click();
   await jeu.getByText("Dans le livre et en ligne").click();
   await expect(jeu.getByRole("switch", { name: "Dans le livre et en ligne" })).toBeChecked();
   await jeu.getByRole("radio", { name: "Deux dés" }).check();
