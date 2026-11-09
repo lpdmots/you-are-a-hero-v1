@@ -29,32 +29,32 @@ export const RELANCE_DES_HEROS = "Un seul héros, ou plusieurs ?";
 
 const CLASSE: Record<Rubrique, Guidage> = {
   univers: {
-    question: "Où se passe notre histoire, et qu’a-t-elle d’étrange ?",
-    relances: ["À quelle époque ?", "Qu’est-ce qui est dangereux, qu’est-ce qui est beau ?", "Une règle magique ou mystérieuse ?"],
+    question: "Où et quand se passe notre histoire ?",
+    relances: ["Qu’est-ce qui rend ce lieu particulier ?", "Quelle ambiance veut-on créer ?", "Quelles règles faut-il y respecter ?"],
     exemple:
-      "Un pays de lacs et de forêts noyé dans la brume. Des passeurs guident les voyageurs d’une rive à l’autre avec des lanternes. Quand les lanternes s’éteignent, les chemins changent de place.",
+      "Un pays de lacs et de forêts, avant l’électricité. Dans la brume, les passeurs suivent leurs lanternes ; si elles s’éteignent, les chemins changent de place.",
   },
   personnages: {
-    question: "Qui est notre héros, et qu’est-ce qui le rend unique ?",
-    relances: ["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", RELANCE_DES_HEROS],
-    exemple: "Lou, 10 ans, fils du dernier passeur du village. Il connaît le chant des lanternes mais a peur de l’eau.",
+    question: "Qui est notre héros ?",
+    relances: ["Que veut-il, et pourquoi ?", "Quelle force et quelle faiblesse a-t-il ?", "Qui l’aide, qui s’oppose à lui ?", RELANCE_DES_HEROS],
+    exemple: "Lou veut devenir passeur comme son père. Il connaît le chant des lanternes, mais a peur de l’eau.",
   },
   enjeu: {
-    question: "Que doit réussir notre héros, et que se passe-t-il s’il échoue ?",
-    relances: ["Qu’est-ce qui l’oblige à partir ?", "Qu’est-ce qu’il risque de perdre ?"],
-    exemple: "Retrouver son père, disparu dans la brume, avant que la dernière lanterne ne s’éteigne.",
+    question: "Que doit réussir notre héros, et que risque-t-il ?",
+    relances: ["Qu’est-ce qui l’oblige à agir maintenant ?", "Qui ou quoi l’empêche de réussir ?"],
+    exemple: "Retrouver son père avant que la dernière lanterne s’éteigne : sans elle, son père restera prisonnier de la brume.",
   },
   etapes: {
-    question: "Par quels lieux passe notre aventure ?",
-    relances: ["Où commence-t-elle ?", "Où le héros peut-il se perdre ?", "Où se termine-t-elle ?"],
-    exemple: "Le départ, au port ; la forêt, où les chemins bougent ; la montagne, où brille la dernière lanterne.",
+    question: "Quels grands moments rythment notre aventure ?",
+    relances: ["Qu’est-ce qui lance l’aventure ?", "Quels obstacles ou chemins possibles ?", "Quelles fins peut-on imaginer ?"],
+    exemple: "Le départ du port ; la traversée, par la forêt ou le lac ; le sauvetage du père.",
   },
 };
 
 const ETAPES_CLASSIQUE: Guidage = {
   question: "Que se passe-t-il, du début à la fin ?",
-  relances: ["Comment l’histoire commence-t-elle ?", "Qu’est-ce qui complique tout ?", "Comment se termine-t-elle ?"],
-  exemple: "Lou quitte le port ; il se perd dans la forêt ; il rallume la dernière lanterne et retrouve son père.",
+  relances: ["Qu’est-ce qui lance l’histoire ?", "Quels obstacles le héros surmonte-t-il ?", "Qu’est-ce qui a changé à la fin ?"],
+  exemple: "Lou quitte le port, affronte sa peur sur le lac et rallume la lanterne pour libérer son père.",
 };
 
 /** En projet personnel, le carnet s'adresse à l'auteur : « votre histoire », « votre héros ». */
@@ -72,8 +72,8 @@ export const titreSynthese = (organisation: Organisation): string => (organisati
 
 export const introCarnet = (organisation: Organisation): string =>
   organisation === "classe"
-    ? "Le carnet garde les décisions de la classe. Il sert de repère pendant l’écriture. Remplissez seulement ce qui vous sert."
-    : "Le carnet garde vos décisions. Il sert de repère pendant l’écriture. Remplissez seulement ce qui vous sert.";
+    ? "Gardez ici les décisions de la classe pour guider l’écriture. Remplissez ce qui vous sert."
+    : "Gardez ici vos décisions pour guider l’écriture. Remplissez ce qui vous sert.";
 
 export const ETATS_PISTE = ["retenue", "discuter", "ecartee"] as const;
 export type EtatPiste = (typeof ETATS_PISTE)[number];
@@ -124,9 +124,9 @@ export const titreQuestions = (organisation: Organisation): string => (organisat
 
 /** Les questions des deux étapes facultatives, en grand comme les autres. */
 export const QUESTIONS_FACULTATIVES: Record<"choix" | "jeu", (recit: Recit) => string> = {
-  choix: () => "Comment s’écrit un choix dans notre livre ?",
+  choix: () => "Comment formuler les choix dans notre livre ?",
   jeu: (recit) =>
-    recit === "choix" ? "Quels objets reviennent, et que note le lecteur ?" : "Quels objets reviennent dans l’histoire, et comment les appelle-t-on ?",
+    recit === "choix" ? "Quels objets et quelles règles pour jouer ?" : "Quels objets comptent dans l’histoire ?",
 };
 
 /** La question en grand d'une étape, quelle qu'elle soit. */
@@ -188,9 +188,9 @@ export type TypeSection = Section["type"];
 export type Feuille = { on: boolean; des: 0 | 1 | 2; sections: Section[] };
 
 export const TYPES_SECTION: Record<TypeSection, { nom: string; aide: string }> = {
-  liste: { nom: "Liste", aide: "Des lignes à remplir par le lecteur : inventaire, compétences." },
-  compteurs: { nom: "Compteurs", aide: "Un nom et une valeur de départ : volonté, temps." },
-  notes: { nom: "Notes libres", aide: "Numéros découverts, mots de passe, indices." },
+  liste: { nom: "Liste", aide: "Pour noter les objets ou les compétences acquis." },
+  compteurs: { nom: "Compteurs", aide: "Points ou temps restant, avec une valeur de départ." },
+  notes: { nom: "Notes libres", aide: "Indices, mots de passe et numéros à retenir." },
 };
 
 const borner = (n: unknown, min: number, max: number, defaut: number): number => {
@@ -333,9 +333,9 @@ export function ongletDuHeros(
   const question = nomme ? `Qui est ${nomme} ?` : "Qui est notre héros ?";
   // Les relances nomment le héros : le prénom ne dit pas si c'est une fille ou un garçon
   const relances = nomme && recit === "choix"
-    ? [`Quel âge a ${nomme}, et que sait faire ce héros ?`, `Qu’est-ce qui fait peur à ${nomme} ?`, `Qui va aider ${nomme}, qui va lui barrer la route ?`, RELANCE_DES_HEROS]
+    ? [`Que veut ${nomme}, et pourquoi ?`, `Quelle force et quelle faiblesse a ${nomme} ?`, `Qui aide ${nomme}, qui s’oppose à lui ?`, RELANCE_DES_HEROS]
     : nomme
-      ? [`Quel âge a ${nomme}, et que sait faire ce héros ?`, `Qu’est-ce qui fait peur à ${nomme} ?`, `Qui va aider ${nomme}, qui va lui barrer la route ?`]
+      ? [`Que veut ${nomme}, et pourquoi ?`, `Quelle force et quelle faiblesse a ${nomme} ?`, `Qui aide ${nomme}, qui s’oppose à lui ?`]
       : guide.relances;
   return {
     heros,

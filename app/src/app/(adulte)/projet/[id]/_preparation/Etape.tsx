@@ -335,7 +335,7 @@ function Orienter({ valeur, focus, onChange, proposer }: { valeur: string; focus
         rows={1}
         maxLength={ORIENTATION_MAX}
         value={valeur}
-        placeholder="Par exemple : des animaux qui parlent, rien de magique"
+        placeholder="Par exemple : une enquête drôle, sans magie"
         onChange={(ev) => onChange(ev.target.value)}
       />
       {proposer}
@@ -534,8 +534,8 @@ function Idees({
       ) : (
         <p className={styles.vide}>
           {deClasse
-            ? etape === "etapes" ? "Les lieux et les moments que la classe propose." : "Ce que la classe propose, à retenir ou à écarter."
-            : "Vos idées, à retenir ou à écarter."}
+            ? etape === "etapes" ? "Les grands moments proposés par la classe." : "Notez les idées de la classe, puis faites le tri."
+            : "Notez vos idées, puis faites le tri."}
         </p>
       )}
       {ajout ? <Ajout libelle="Nouvelle idée" exemple="Une idée à noter" onAjouter={onNoter} onFermer={() => setAjout(false)} /> : null}
@@ -638,7 +638,7 @@ function TexteRetenu({
         rows={3}
         maxLength={6000}
         value={valeur}
-        placeholder={projet.organisation === "classe" ? "Ce que la classe décide." : "Ce que je décide."}
+        placeholder={projet.organisation === "classe" ? "Nos repères pour écrire." : "Mes repères pour écrire."}
         onChange={(ev) => onChange(ev.target.value)}
         onBlur={() => void e.partir()}
       />
@@ -759,12 +759,12 @@ function PartiesRetenues({
           ))}
         </ol>
       ) : (
-        <p className={styles.vide}>Une partie par grand moment de l’histoire. Chacune reçoit son premier chapitre.</p>
+        <p className={styles.vide}>Une partie par grand moment de l’histoire, avec un premier chapitre créé à l’ajout.</p>
       )}
       {ajout ? (
         <Ajout
           libelle="Titre de la nouvelle partie"
-          exemple="La forêt, la montagne…"
+          exemple="Le départ, la rencontre…"
           uneSeule
           onFermer={() => setAjout(false)}
           onAjouter={async (t) => {

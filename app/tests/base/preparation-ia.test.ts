@@ -43,7 +43,7 @@ describe("Les aides d'une étape de la Préparation (F13.4)", () => {
     const r = await demanderPourLEtape(enseignantDe(laurent), projet, "personnages", "questions");
     expect(r.ok && r.sorte === "questions" && r.elements.length).toBeGreaterThan(0);
     const parti = simuler.mock.calls.map(([e]) => `${questions.systeme(e as never)}\n${questions.message(e as never)}`).join("\n");
-    for (const present of ["il ne peut pas voler (retenue)", "De quoi a-t-il peur ?", "A-t-il un animal ?", "un compagnon animal", "Un pays de brume.", "Lou, 10 ans."]) expect(parti).toContain(present);
+    for (const present of ["il ne peut pas voler (retenue)", "Quelle force et quelle faiblesse a-t-il ?", "A-t-il un animal ?", "un compagnon animal", "Un pays de brume.", "Lou, 10 ans."]) expect(parti).toContain(present);
     for (const absent of ["Alice", "Laurent", "CM1-CM2"]) expect(parti).not.toContain(absent);
     expect(await appels()).toEqual(["questions"]);
   });
@@ -78,7 +78,7 @@ describe("Les aides d'une étape de la Préparation (F13.4)", () => {
     const entree = await entreeDeLEtape(enseignantDe(laurent), projet, "etapes");
     expect(entree?.plan).toEqual([{ partie: "La forêt", chapitres: [{ titre: "La lisière", resume: undefined }] }]);
     expect(idees.message(entree!)).toContain("Partie 1 : La forêt");
-    expect(retenons.message(entree!)).toContain("Par quels lieux passe notre aventure ?");
+    expect(retenons.message(entree!)).toContain("Quels grands moments rythment notre aventure ?");
   });
 
   it("le projet d'un autre adulte : rien ne part", async () => {

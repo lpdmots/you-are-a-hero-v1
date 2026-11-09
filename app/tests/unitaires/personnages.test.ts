@@ -64,7 +64,7 @@ describe("Les cartes des personnages (F10.2)", () => {
     };
     const louOnglet = ongletDuHeros(preparation, "lou", "classe", "choix");
     expect(louOnglet.question).toBe("Qui est Lou ?");
-    expect(louOnglet.relances).toEqual(["Quel âge a Lou, et que sait faire ce héros ?", "Qu’est-ce qui fait peur à Lou ?", "Qui va aider Lou, qui va lui barrer la route ?", RELANCE_DES_HEROS]);
+    expect(louOnglet.relances).toEqual(["Que veut Lou, et pourquoi ?", "Quelle force et quelle faiblesse a Lou ?", "Qui aide Lou, qui s’oppose à lui ?", RELANCE_DES_HEROS]);
     expect(louOnglet.relances).toContain(RELANCE_DES_HEROS);
     expect(louOnglet.questions.map((x) => x.id)).toEqual(["q-lou", "q-sans"]);
     expect(louOnglet.idees.map((x) => x.id)).toEqual(["i-lou", "i-sans"]);

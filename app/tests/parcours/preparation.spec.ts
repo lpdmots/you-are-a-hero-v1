@@ -40,7 +40,7 @@ test("F02, 17 octobre 2026 — un parcours en étapes : la page s'ouvre sur la p
 
   // On saute l'enjeu : Grandes étapes s'ouvre sans rien exiger
   await etape(page, /Grandes étapes/).click();
-  await expect(page.getByRole("heading", { level: 2 })).toContainText("Par quels lieux passe notre aventure");
+  await expect(page.getByRole("heading", { level: 2 })).toContainText("Quels grands moments rythment notre aventure");
   await page.getByRole("link", { name: "Étape suivante : Les choix (facultative)" }).click();
   await expect(etape(page, /Les choix/)).toHaveAttribute("aria-current", "step");
   await page.getByRole("link", { name: "Étape suivante : Le jeu (facultative)" }).click();
@@ -79,10 +79,10 @@ test("F02-AC18 — chaque étape a sa question en grand, ses relances parmi les 
   const { projet } = await projetDeClasse(page);
   await aller(page, `/projet/${projet}/preparation?etape=personnages`);
   await expect(page.getByRole("heading", { level: 2 })).toContainText("Qui est notre héros ?");
-  await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Quel âge a-t-il ? Que sait-il faire ?", "De quoi a-t-il peur ?", "Qui va l’aider, qui va le gêner ?", "Un seul héros, ou plusieurs ?"]);
-  await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeHidden();
+  await expect(QUESTIONS(page).getByRole("listitem")).toHaveText(["Que veut-il, et pourquoi ?", "Quelle force et quelle faiblesse a-t-il ?", "Qui l’aide, qui s’oppose à lui ?", "Un seul héros, ou plusieurs ?"]);
+  await expect(page.getByText(/Lou veut devenir passeur comme son père\./)).toBeHidden();
   await page.getByText("Voir un exemple").click();
-  await expect(page.getByText(/Lou, 10 ans, fils du dernier passeur du village\./)).toBeVisible();
+  await expect(page.getByText(/Lou veut devenir passeur comme son père\./)).toBeVisible();
   // L'exemple se lit : il n'écrit rien
   await expect(RETENU(page)).toHaveValue("");
 
@@ -102,9 +102,9 @@ test("F02-AC02, F02-AC07 — l'écran d'aide ouvre la Préparation : rien n'est 
   const projet = await semerProjet(base, compte, "classe", "choix", "Les passeurs de brume");
   await aller(page, `/projet/${projet}/preparation`);
   await expect(page.getByRole("heading", { level: 2, name: "Préparation" })).toBeVisible();
-  await expect(page.getByText(/Rien n’est obligatoire : remplissez ce qui vous sert, et commencez à écrire quand vous voulez\./)).toBeVisible();
+  await expect(page.getByText(/Rien n’est obligatoire : commencez à écrire quand vous voulez, puis complétez au besoin\./)).toBeVisible();
   await page.getByText("Que fait l’IA ici ?").click();
-  await expect(page.getByText(/Cette préparation sert aussi aux aides de la suite : consignes, idées de choix, corrections\./)).toBeVisible();
+  await expect(page.getByText(/La préparation guide aussi l’IA pour les consignes, les choix et les corrections\./)).toBeVisible();
   await expect(page.getByText("Comment le faire avec la classe ?")).toBeVisible();
   await expect(page.getByText("Et « Les choix », « Le jeu » ?")).toBeVisible();
   await expect(RETENU(page)).toHaveCount(0);
@@ -219,7 +219,7 @@ test("F02-AC05, F02-AC11, F02-AC12, F02-AC13 — « Projeter » montre la même 
   await expect(page).toHaveURL(new RegExp(`/atelier/${projet}/univers$`));
   // L'écran projeté n'a ni barre de l'application ni commande d'élève : seul l'enseignant est connecté
   await expect(page.getByRole("navigation", { name: "Espace adulte" })).toHaveCount(0);
-  await expect(page.getByRole("heading", { level: 2 })).toContainText("Où se passe notre histoire");
+  await expect(page.getByRole("heading", { level: 2 })).toContainText("Où et quand se passe notre histoire");
   // Les aides IA s'y voient aussi : la classe suit l'échange (F02-AC12)
   await expect(page.getByRole("button", { name: "Demander une idée à l’IA" })).toBeVisible();
 
@@ -388,7 +388,7 @@ test("F02-AC20 — en récit classique, « Grandes étapes » demande le déroul
   await expect(LIGNE(page).locator("ol").getByRole("link", { name: /Les choix/ })).toHaveCount(0);
   await etape(page, /Les objets/).click();
   await expect(page.getByRole("region", { name: "Objets de l’histoire", exact: true })).toBeVisible();
-  for (const absent of ["Formules d’action", "Feuille d’aventure", "Règles du jeu", "Dé de la feuille"]) await expect(page.getByText(absent)).toHaveCount(0);
+  for (const absent of ["Formules d’action", "Feuille d’aventure", "Règles du jeu", "Dés à lancer en ligne"]) await expect(page.getByText(absent)).toHaveCount(0);
   // « Les choix » n'existe pas par son adresse : la page s'ouvre sur une étape de l'histoire
   await aller(page, `/projet/${projet}/preparation?etape=choix`);
   await expect(etape(page, /Univers/)).toHaveAttribute("aria-current", "step");
@@ -426,15 +426,15 @@ test("F04.2 — l'étape « Le jeu » réunit les objets, les formules d'action,
   // Depuis le lot 7 de l'étape 8, l'objet s'ouvre dans le panneau, comme un personnage
   await jeu.getByRole("button", { name: "Modifier la lanterne sourde" }).click();
   await expect(page.locator(".panneau")).toContainText("Renommer ne modifie pas les textes déjà écrits.");
-  await page.getByLabel("Nom, tel qu’il s’écrit dans une phrase").fill("la lanterne d’argent");
+  await page.getByLabel("Nom avec son article").fill("la lanterne d’argent");
   await page.locator(".panneau").getByRole("button", { name: "Fermer", exact: true }).last().click();
   await expect(jeu.getByText("la lanterne d’argent")).toBeVisible();
 
   await jeu.getByText("Feuille d’aventure du lecteur").click();
   await jeu.getByRole("button", { name: "Compteurs" }).click();
   await jeu.getByRole("button", { name: "Liste", exact: true }).click();
-  await jeu.getByText("Dans le livre et en ligne").click();
-  await expect(jeu.getByRole("switch", { name: "Dans le livre et en ligne" })).toBeChecked();
+  await jeu.getByText("Inclure la feuille dans le livre et en ligne").click();
+  await expect(jeu.getByRole("switch", { name: "Inclure la feuille dans le livre et en ligne" })).toBeChecked();
   await jeu.getByRole("radio", { name: "Deux dés" }).check();
   await jeu.getByText("Règles du jeu").click();
   await jeu.getByLabel(/Ce que le lecteur doit savoir/).fill("Note tes objets sur ta feuille d’aventure.");
@@ -453,28 +453,28 @@ test("F05, F11.5 — l'étape « Les choix » : une seule liste de phrases à co
   await expect(phrases.getByRole("radio", { name: "« rends-toi au 12 »" })).toBeChecked();
   const cases = phrases.getByRole("checkbox");
   await expect(cases).toHaveCount(4);
-  await expect(phrases.getByRole("checkbox", { name: /Plonger la main : rends-toi au 17\./ })).toBeDisabled();
-  await expect(phrases.getByRole("checkbox", { name: /Plonger la main : rends-toi au 17\./ })).toBeChecked();
+  await expect(phrases.getByRole("checkbox", { name: /Suivre la lumière : rends-toi au 17\./ })).toBeDisabled();
+  await expect(phrases.getByRole("checkbox", { name: /Suivre la lumière : rends-toi au 17\./ })).toBeChecked();
 
   await phrases.getByRole("radio", { name: "« va au 12 »" }).check();
-  await expect(phrases.getByRole("checkbox", { name: /Plonger la main : va au 17\./ })).toBeChecked();
-  await phrases.getByRole("checkbox", { name: "Pour plonger la main, va au 17." }).check();
-  await phrases.getByLabel("Marque de fin").fill("FIN");
-  await phrases.getByLabel("Marque de fin").blur();
+  await expect(phrases.getByRole("checkbox", { name: /Suivre la lumière : va au 17\./ })).toBeChecked();
+  await phrases.getByRole("checkbox", { name: "Pour suivre la lumière, va au 17." }).check();
+  await phrases.getByLabel("Texte de fin").fill("FIN");
+  await phrases.getByLabel("Texte de fin").blur();
   await expect.poll(async () => (await base.from("preparations").select("formule_renvoi, constructions, marque_fin").eq("projet_id", projet).single()).data).toEqual({
     formule_renvoi: "va", constructions: ["neutre", "pour"], marque_fin: "FIN",
   });
 
   // F05-AC43 — avec la flèche, seule la première phrase sert ; les autres sont grisées, et l'écran le dit
   await phrases.getByRole("radio", { name: "« → 12 »" }).check();
-  await expect(phrases.getByRole("checkbox", { name: /Plonger la main → 17/ })).toBeChecked();
-  for (const autre of [/^Pour plonger la main/, /^Si tu veux plonger la main/, /^Plonger la main \? /]) {
+  await expect(phrases.getByRole("checkbox", { name: /Suivre la lumière → 17/ })).toBeChecked();
+  for (const autre of [/^Pour suivre la lumière/, /^Si tu veux suivre la lumière/, /^Suivre la lumière \? /]) {
     await expect(phrases.getByRole("checkbox", { name: autre })).toBeDisabled();
     await expect(phrases.getByRole("checkbox", { name: autre })).not.toBeChecked();
   }
   await expect(phrases).toContainText("Avec « → 12 », seule la première phrase sert");
   await phrases.getByRole("radio", { name: "« rends-toi au 12 »" }).check();
-  await expect(phrases.getByRole("checkbox", { name: "Pour plonger la main, rends-toi au 17." })).toBeChecked();
+  await expect(phrases.getByRole("checkbox", { name: "Pour suivre la lumière, rends-toi au 17." })).toBeChecked();
 });
 
 test("F02-AC04 — un élève n'ouvre pas la préparation, même par son adresse", async ({ page, browser }) => {

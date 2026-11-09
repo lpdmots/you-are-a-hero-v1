@@ -152,7 +152,7 @@ export function CartesDesPersonnages({
           </ul>
         </>
       ) : (
-        <p className={styles.vide}>Ceux que les héros croisent : un nom, une ligne, un portrait si les images en ont besoin.</p>
+        <p className={styles.vide}>Alliés, adversaires, proches : un nom, un rôle dans l’histoire, un portrait si utile.</p>
       )}
 
       {ajout ? (
@@ -684,7 +684,7 @@ function PanneauPersonnage({
             rows={2}
             maxLength={heros ? DESCRIPTION_MAX : DESCRIPTION_COURTE_MAX}
             value={description}
-            placeholder="Qui il est, en une ligne."
+            placeholder="Son rôle auprès du héros."
             onChange={(ev) => {
               setDescription(ev.target.value);
               regler({ description: ev.target.value }, "description");

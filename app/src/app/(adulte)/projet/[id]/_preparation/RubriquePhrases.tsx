@@ -6,7 +6,7 @@ import { CONSTRUCTIONS, FORMULES_RENVOI, phraseDeChoix, type Construction, type 
 import { reglerPhrases } from "../../actions-preparation";
 import styles from "./preparation.module.css";
 
-const EXEMPLE = { libelle: "Plonger la main", numero: 17 };
+const EXEMPLE = { libelle: "Suivre la lumière", numero: 17 };
 
 /**
  * L'étape « Les choix » (F05, F11.5) : la formule de renvoi, les constructions proposées à
@@ -27,7 +27,7 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
               d'annoncer le numéro, qui vaut pour tout le livre et récrit les exemples (F05, F11.5). */}
           <div className={`${styles.formules} ${styles.deuxTiers}`}>
             <fieldset className={styles.renvoi}>
-              <legend>Le numéro s’annonce par</legend>
+              <legend>Renvoi vers la suite</legend>
               {(Object.keys(FORMULES_RENVOI) as FormuleRenvoi[]).map((k) => (
                 <label key={k}>
                   <input
@@ -45,7 +45,7 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
               ))}
             </fieldset>
             <fieldset className={styles.formules}>
-              <legend>Phrases proposées à la création d’un choix</legend>
+              <legend>Formulations des nouveaux choix</legend>
               {(Object.keys(CONSTRUCTIONS) as Construction[]).map((k) => (
                 <label key={k} className={styles.formule}>
                   <input
@@ -66,14 +66,14 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
               ))}
               <p className={styles.aide}>
                 {formule === "fleche"
-                  ? "Avec « → 12 », seule la première phrase sert : les autres ne se lisent pas avec une flèche."
-                  : "Avec plusieurs phrases cochées, l’une est tirée au hasard à chaque nouveau choix, puis gardée."}
+                  ? "Avec la flèche, seule la première forme est utilisée."
+                  : "À chaque nouveau choix, une des formes cochées est tirée au hasard, puis conservée."}
               </p>
             </fieldset>
           </div>
           <div className={styles.formules}>
             <label className={styles.legende} htmlFor="marque-fin">
-              Marque de fin
+              Texte de fin
             </label>
             <input
               id="marque-fin"
@@ -88,7 +88,7 @@ export function RubriquePhrases({ projetId, preparation }: { projetId: string; p
               onBlur={() => void e.partir()}
             />
             <div className={`recit ${styles.extrait}`} aria-hidden="true">
-              <p>…la carte froissée dans la main. Le dernier bac était parti.</p>
+              <p>La brume se lève. Lou et son père rentrent au port.</p>
               <p className={styles.extrait__fin}>{fin.trim() || "Fin"}</p>
             </div>
           </div>

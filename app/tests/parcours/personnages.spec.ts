@@ -64,14 +64,14 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await s.base.from("pistes").insert({ projet_id: s.projet, enseignant_id: s.compte.id, rubrique: "personnages", texte: "Il a peur de l’eau", personnage_id: lou.id });
     await aller(page, `/projet/${s.projet}/preparation?etape=personnages`);
     await expect(page.getByRole("heading", { level: 2 })).toHaveText("Qui est Lou ?");
-    await expect(QUESTIONS(page).getByRole("listitem")).toHaveText([/Quel âge a Lou/, /fait peur à Lou/, /Qui va aider Lou/, /Un seul héros, ou plusieurs/]);
+    await expect(QUESTIONS(page).getByRole("listitem")).toHaveText([/Que veut Lou/, /Quelle force et quelle faiblesse a Lou/, /Qui aide Lou/, /Un seul héros, ou plusieurs/]);
     await expect(page.getByText("Il a peur de l’eau")).toBeVisible();
     // Un autre héros : son onglet s'ouvre, vide, sans la relance des héros
     await ONGLETS(page).getByRole("button", { name: "Un autre héros" }).click();
     await page.getByRole("textbox", { name: "Nom du nouveau héros" }).fill("Mina");
     await page.keyboard.press("Enter");
     await expect(page.getByRole("heading", { level: 2 })).toHaveText(/Qui est Mina/);
-    await expect(QUESTIONS(page).getByRole("listitem")).toHaveText([/Quel âge a Mina/, /fait peur à Mina/, /Qui va aider Mina/]);
+    await expect(QUESTIONS(page).getByRole("listitem")).toHaveText([/Que veut Mina/, /Quelle force et quelle faiblesse a Mina/, /Qui aide Mina/]);
     await expect(page.getByText("Il a peur de l’eau")).toHaveCount(0);
     // Ses idées et son texte retenu sont les siens
     await page.getByRole("button", { name: "Noter une idée" }).click();

@@ -175,17 +175,17 @@ describe("Préparation (F02)", () => {
   });
 
   it("F02-AC19 — en projet personnel, le carnet parle à l'auteur ; F02-AC20 — en récit classique, « Grandes étapes » demande le déroulement", () => {
-    expect(guidage("personnages", "classe", "choix").question).toBe("Qui est notre héros, et qu’est-ce qui le rend unique ?");
-    expect(guidage("personnages", "personnel", "choix").question).toBe("Qui est votre héros, et qu’est-ce qui le rend unique ?");
+    expect(guidage("personnages", "classe", "choix").question).toBe("Qui est notre héros ?");
+    expect(guidage("personnages", "personnel", "choix").question).toBe("Qui est votre héros ?");
     expect(titreSynthese("classe")).toBe("Nous retenons…");
     expect(titreSynthese("personnel")).toBe("Je retiens…");
     expect(introCarnet("personnel")).not.toMatch(/classe/);
-    expect(guidage("etapes", "classe", "choix").question).toBe("Par quels lieux passe notre aventure ?");
+    expect(guidage("etapes", "classe", "choix").question).toBe("Quels grands moments rythment notre aventure ?");
     expect(guidage("etapes", "classe", "classique").question).toBe("Que se passe-t-il, du début à la fin ?");
   });
 
   it("F02-AC02 — l'introduction dit à quoi sert le carnet, sans promettre une aide IA qui n'existe pas encore", () => {
-    expect(introCarnet("classe")).toMatch(/repère pendant l’écriture/);
+    expect(introCarnet("classe")).toMatch(/guider l’écriture/);
     expect(introCarnet("classe")).not.toMatch(/IA/);
   });
 

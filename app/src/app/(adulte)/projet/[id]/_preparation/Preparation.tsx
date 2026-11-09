@@ -148,7 +148,7 @@ export function PagePreparation({
         )}
 
         <footer className={styles.pied}>
-          {ETAPES_FACULTATIVES.includes(etape) ? <span className={styles.pied__note}>Étape facultative : elle peut attendre que l’histoire avance.</span> : <span />}
+          {ETAPES_FACULTATIVES.includes(etape) ? <span className={styles.pied__note}>Facultatif : à préciser au fil de l’écriture.</span> : <span />}
           {suivante ? (
             <Link className="btn btn--primaire" href={adresse(suivante)}>
               Étape suivante : {nomEtape(suivante, projet.recit)}

@@ -86,9 +86,9 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
         Objets de l’histoire <span className={styles.compte}>{objets.length}</span>
       </h3>
       <p className={styles.aide}>
-        Écrits avec leur article, comme dans une phrase.{" "}
+        Nommez chaque objet avec son article : « la lanterne ».{" "}
         <Bulle question="Qui voit cette liste ?">
-          {deClasse ? "Les élèves la consultent depuis la scène, sans pouvoir la modifier. " : ""}Le lecteur du livre ne la voit jamais.
+          {deClasse ? "Les élèves la consultent pendant l’écriture, sans la modifier. " : ""}Elle n’apparaît pas dans le livre.
         </Bulle>
       </p>
       <ul className={styles.liste}>
@@ -122,11 +122,11 @@ function Objets({ projetId, objets, deClasse }: { projetId: string; objets: Obje
         >
           <label className={styles.champ}>
             <span>Nouvel objet</span>
-            <input className="pchamp" type="text" maxLength={60} autoFocus placeholder="la lanterne sourde" value={neufNom} onChange={(e) => setNeufNom(e.target.value)} />
+            <input className="pchamp" type="text" maxLength={60} autoFocus placeholder="la lanterne du passeur" value={neufNom} onChange={(e) => setNeufNom(e.target.value)} />
           </label>
           <label className={styles.champ}>
             <span>Description</span>
-            <input className="pchamp" type="text" maxLength={120} placeholder="Ce qu’il est, à quoi il sert" value={neufDescription} onChange={(e) => setNeufDescription(e.target.value)} />
+            <input className="pchamp" type="text" maxLength={120} placeholder="Son rôle dans l’histoire" value={neufDescription} onChange={(e) => setNeufDescription(e.target.value)} />
           </label>
           <button type="submit" className="btn" disabled={!neufNom.trim()}>
             <Icone nom="plus" />
@@ -179,7 +179,7 @@ function PanneauObjet({ projetId, objet, onFermer, onSupprime }: { projetId: str
     <Panneau titre={nom.trim() || objet.nom} sous="Objet de l’histoire" onFermer={fermer} pied={<PiedFermer enregistre={e.enregistre} enCours={e.enCours} onFermer={fermer} />}>
       <section>
         <h3>
-          <label htmlFor="objet-nom">Nom, tel qu’il s’écrit dans une phrase</label>
+          <label htmlFor="objet-nom">Nom avec son article</label>
         </h3>
         <input
           className="pchamp"
@@ -261,9 +261,9 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
         Formules d’action <span className={styles.compte}>{formules.length}</span>
       </h3>
       <p className={styles.aide}>
-        Les demandes au lecteur qui reviennent souvent.{" "}
+        Consignes réutilisables : noter un objet, lancer le dé…{" "}
         <Bulle question="Où servent les formules ?">
-          Elles sont proposées quand on écrit une action de jeu dans une scène. Chaque texte peut ensuite les modifier.
+          Proposées à l’ajout d’une action de jeu, elles restent modifiables dans chaque scène.
         </Bulle>
       </p>
       <ul className={styles.liste}>
@@ -278,7 +278,7 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
                 <span>Signe devant la formule</span>
                 <Signes valeur={signe} onChange={setSigne} libelle="Signe devant la formule" />
               </div>
-              <p className={styles.aide}>Corriger une formule ne modifie pas les paragraphes déjà écrits.</p>
+              <p className={styles.aide}>Modifier une formule ne change pas les actions déjà écrites.</p>
               <div className={styles.actions}>
                 <button
                   type="button"
@@ -350,7 +350,7 @@ function Formules({ projetId, formules }: { projetId: string; formules: Formule[
         >
           <label className={styles.champ}>
             <span>Nouvelle formule</span>
-            <input className="pchamp" type="text" maxLength={140} autoFocus placeholder="Ajoute un point de courage." value={neuf} onChange={(e) => setNeuf(e.target.value)} />
+            <input className="pchamp" type="text" maxLength={140} autoFocus placeholder="Note la lanterne dans ton inventaire." value={neuf} onChange={(e) => setNeuf(e.target.value)} />
           </label>
           <Signes valeur={signeNeuf} onChange={setSigneNeuf} libelle="Signe de la formule à ajouter" />
           <button type="submit" className="btn" disabled={!neuf.trim()}>
@@ -389,9 +389,9 @@ function EditionFeuille({ projetId, depart }: { projetId: string; depart: Feuill
       <label className="inter">
         <input type="checkbox" role="switch" checked={feuille.on} onChange={(ev) => changer({ ...feuille, on: ev.target.checked }, 0)} />
         <span className="inter__piste" aria-hidden="true" />
-        <span>Dans le livre et en ligne</span>
+        <span>Inclure la feuille dans le livre et en ligne</span>
       </label>
-      {feuille.sections.length === 0 ? <p className={styles.aide}>La feuille n’a encore aucune section : elle ne sera ni imprimée ni proposée en ligne.</p> : null}
+      {feuille.sections.length === 0 ? <p className={styles.aide}>Ajoutez une section pour que le lecteur puisse utiliser la feuille.</p> : null}
       <ol className={styles.sections} aria-label="Sections de la feuille">
         {feuille.sections.map((s, i) => (
           <li key={s.id}>
@@ -432,7 +432,7 @@ function EditionFeuille({ projetId, depart }: { projetId: string; depart: Feuill
                         />
                       </label>
                       <label className={`${styles.champ} ${styles.nombre}`}>
-                        <span>Départ</span>
+                        <span>Valeur initiale</span>
                         <input
                           className="pchamp"
                           type="number"
@@ -482,7 +482,7 @@ function EditionFeuille({ projetId, depart }: { projetId: string; depart: Feuill
                 />
               </label>
             ) : (
-              <p className={styles.aide}>Un cadre libre : il occupe la place qui reste sur la page.</p>
+              <p className={styles.aide}>Un espace pour les notes du lecteur, sur le reste de la page.</p>
             )}
           </li>
         ))}
@@ -499,7 +499,7 @@ function EditionFeuille({ projetId, depart }: { projetId: string; depart: Feuill
         </div>
       ) : null}
       <fieldset className={styles.des}>
-        <legend>Dé de la feuille en ligne</legend>
+        <legend>Dés à lancer en ligne</legend>
         {([0, 1, 2] as const).map((n) => (
           <label key={n}>
             <input type="radio" name="feuille-des" checked={feuille.des === n} onChange={() => changer({ ...feuille, des: n }, 0)} />
@@ -520,7 +520,7 @@ function Regles({ projetId, depart }: { projetId: string; depart: string }) {
   return (
     <div className={styles.feuille}>
       <label className={styles.aide} htmlFor="regles-du-jeu">
-        Ce que le lecteur doit savoir avant de commencer : comment noter, quand lancer le dé. Un paragraphe par ligne.
+        Expliquez comment gérer les objets et les points, et quand lancer les dés. Un paragraphe par ligne.
       </label>
       <ChampTexte
         id="regles-du-jeu"

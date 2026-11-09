@@ -25,25 +25,25 @@ export function AidePreparation({
       reponse: (
         <>
           <p>
-            {deClasse ? "On note ce que la classe décide avant d’écrire," : "On note ce que vous décidez avant d’écrire,"} une étape après
-            l’autre. Rien n’est obligatoire : remplissez ce qui vous sert, et commencez à écrire quand vous voulez.
+            {deClasse ? "Posez les repères de l’histoire avec la classe." : "Posez les repères de votre histoire."} Rien n’est obligatoire :
+            commencez à écrire quand vous voulez, puis complétez au besoin.
           </p>
           <ul className="aide-etape__taches">
-            <li>Univers : où se passe l’histoire</li>
-            <li>Personnages : qui est le héros</li>
-            <li>Enjeu : ce qu’il doit réussir</li>
-            <li>Grandes étapes : les parties du livre</li>
+            <li>Univers : le lieu, l’époque, l’ambiance</li>
+            <li>Personnages : leurs envies, leurs liens</li>
+            <li>Enjeu : le but et les risques</li>
+            <li>Grandes étapes : les moments clés</li>
           </ul>
         </>
       ),
     },
     {
-      question: "Comment avance une étape ?",
+      question: "Comment préparer une étape ?",
       reponse: (
         <p>
           {deClasse
-            ? "Posez les questions à la classe, notez ses idées, retenez celles qui plaisent. Ce que la classe décide s’écrit dans « Nous retenons » : l’étape est alors cochée."
-            : "Répondez aux questions, notez vos idées, retenez celles qui vous plaisent. Ce que vous décidez s’écrit dans « Je retiens » : l’étape est alors cochée."}
+            ? "Discutez des questions, notez les idées, puis choisissez celles qui servent l’histoire. Rassemblez vos décisions dans « Nous retenons » ; pour les grandes étapes, ajoutez les parties."
+            : "Explorez les questions, notez vos idées, puis choisissez celles qui servent l’histoire. Rassemblez vos décisions dans « Je retiens » ; pour les grandes étapes, ajoutez les parties."}
         </p>
       ),
     },
@@ -53,8 +53,8 @@ export function AidePreparation({
             question: "Comment le faire avec la classe ?",
             reponse: (
               <p>
-                « Projeter » montre l’étape en grand, sans le reste de l’application. Vous notez pendant la discussion : tout reste dans la
-                préparation. Les élèves n’ont pas besoin de se connecter.
+                « Projeter » affiche l’étape en grand pour discuter ensemble. Vos notes sont enregistrées dans la préparation ; les élèves
+                n’ont pas besoin de se connecter.
               </p>
             ),
           },
@@ -67,12 +67,12 @@ export function AidePreparation({
             reponse: (
               <>
                 <p>
-                  Le petit bouton <Icone nom="ia" /> ajoute une question ou une idée, une à la fois. Elle arrive « à discuter » : vous la
-                  retenez, l’écartez ou la supprimez. « Rédiger d’après les idées » propose un texte, qui ne remplace rien sans votre accord.
+                  Le bouton <Icone nom="ia" /> propose une question ou une idée à la fois. Vous choisissez quoi garder.
+                  « Rédiger d’après les idées » prépare un texte à relire et à modifier avant de l’utiliser.
                 </p>
                 <p>
-                  Cette préparation sert aussi aux aides de la suite : consignes, idées de choix, corrections. Plus elle est précise, mieux
-                  elles tiennent compte de l’histoire.
+                  La préparation guide aussi l’IA pour les consignes, les choix et les corrections. Des repères précis l’aident à respecter
+                  l’histoire.
                 </p>
               </>
             ),
@@ -84,8 +84,8 @@ export function AidePreparation({
       reponse: (
         <p>
           {aChoix
-            ? "Deux étapes facultatives règlent le livre-jeu : la façon d’écrire un choix, les objets, la feuille d’aventure, le dé. Elles peuvent attendre que l’histoire avance."
-            : "Une étape facultative, pour écrire toujours de la même façon le nom des objets qui reviennent. Elle peut attendre que l’histoire avance."}
+            ? "« Les choix » règle les phrases qui orientent le lecteur. « Le jeu » réunit objets, actions, feuille d’aventure et règles. Complétez ces étapes facultatives au fil de l’écriture."
+            : "Gardez les noms et les rôles des objets pour rester cohérent pendant l’écriture. Cette étape est facultative."}
         </p>
       ),
     },
