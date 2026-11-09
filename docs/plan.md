@@ -3495,7 +3495,7 @@ V6, le premier envoi à l'imprimeur.
    allégée (« Choix », « + Insérer », « Dicter ») et le correctif du logo de
    la colonne : vraie base sauvegardée, migrations `dictee` et
    `liste_de_verification` appliquées, code jusqu'à `f72f68a`. La clé
-   `ELEVENLABS_API_KEY` reste à poser chez Vercel par le porteur.
+   `ELEVENLABS_API_KEY` est posée par le porteur chez Vercel (Production).
 3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
    (premier essai des aides sur un livre entier), dans les limites
    gratuites (40 scènes et 10 images au plus) : un petit livre à choix de
