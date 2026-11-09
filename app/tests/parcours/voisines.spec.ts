@@ -1,7 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
   adultePret, aller, attendreEnBase, autrePoste, choixAuto, classeQuiEcrit, copie, enClair, liaison, note, numerosEnBase, ouvrirLaClasse, posteDe, recit,
-  sceneEnBase, selectionner, semerBlocs, semerPartie, semerProjet, supprimerComptes, taperCode,
+  sceneEnBase, selectionner, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, taperCode,
 } from "./outils";
 
 /**
@@ -140,6 +140,8 @@ test.describe("Scènes voisines, pour les élèves (F04.3)", () => {
     await CASE(alice.page).uncheck();
     await expect(alice.page.locator(".voisine")).toHaveCount(0);
     await expect(alice.page.locator(".copie__message")).toContainText("Les scènes voisines ne s’affichent plus, dans aucune de tes scènes.");
+    // La préférence part sans qu'on l'attende : le poste ne se ferme qu'une fois qu'elle est gardée
+    await expect.poll(async () => (await sql<{ v: boolean }>("select voisines as v from eleves where id = $1", [s.eleves.Alice.id]))[0].v).toBe(false);
     await alice.contexte.close();
 
     // Un autre poste, une autre scène
@@ -163,6 +165,8 @@ test.describe("Scènes voisines, pour les élèves (F04.3)", () => {
     // L'enseignante règle la sienne : elle tient d'une visite à l'autre
     await CASE(page).uncheck();
     await expect(page.locator(".copie__message")).toContainText("Les scènes voisines ne s’affichent plus, dans aucune de vos scènes.");
+    // Un chargement de page couperait l'enregistrement en vol : on attend qu'il soit gardé
+    await expect.poll(async () => (await sql<{ v: boolean }>("select voisines as v from enseignants where id = $1", [s.compte.id]))[0].v).toBe(false);
     await aller(page, sceneAdulte(s.projet, s16));
     await expect(CASE(page)).not.toBeChecked();
     await expect(page.locator(".voisine")).toHaveCount(0);

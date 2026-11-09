@@ -9,6 +9,7 @@ import type { Etat, SorteDeScene } from "@/domaine/etats";
 import { de } from "@/domaine/texte";
 import type { Remarque, Remise } from "@/serveur/relecture";
 import { appelerUneAide } from "@/composants/PlusDEtoiles";
+import { ChampTexte } from "@/composants/dictee/ChampDictable";
 
 /** Ce que la fiche dit quand la page montre un autre texte que celui de la scène : elle ne décide pas. */
 export type TexteLuAilleurs = { phrase: string; /** Une correction proposée occupe la copie : la décision attend qu'on la garde ou la laisse (F13.1) */ correction?: true } | null;
@@ -215,7 +216,7 @@ function Reprise({
       <label htmlFor="remarque" className="decision__label">
         Remarque{qui ? ` pour ${qui}` : ""} <span>facultative · lisible par les élèves du chapitre</span>
       </label>
-      <textarea id="remarque" className="pchamp" rows={5} maxLength={2000} value={remarque} autoFocus onChange={(e) => setRemarque(e.target.value)} />
+      <ChampTexte id="remarque" className="pchamp" rows={5} maxLength={2000} value={remarque} autoFocus onChange={(e) => setRemarque(e.target.value)} />
       {pistes ? (
         <button type="button" className="btn btn--petit btn--ia decision__pistes" title="Demander à l’IA des pistes de reprise" disabled={demande} aria-busy={demande} onClick={() => void proposer()}>
           <Icone nom="ia" />

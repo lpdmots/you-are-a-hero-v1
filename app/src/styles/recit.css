@@ -2663,3 +2663,173 @@ a.noeud__ailleurs {
   object-fit: cover;
 }
 
+
+/* ——— Liste de vérification sous la consigne (F13.2, F07.2), d'après la fiche « Consigne » du guide ———
+   Un trait la sépare de la consigne ; chaque élément a sa case, son libellé, sa croix. Chez l'adulte
+   le libellé se récrit sur place, la case montre ce que l'élève a coché (vert : c'est fait). */
+.verif {
+  margin: 14px 0 0;
+  padding: 12px 0 0;
+  border: 0;
+  border-top: 1px solid var(--trait);
+  min-width: 0;
+}
+.verif__titre {
+  margin: 0 0 4px;
+  padding: 0;
+  font-size: var(--t-s);
+  font-weight: 800;
+  color: var(--graphite);
+}
+.verif__liste {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.verif__liste > li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  min-height: 36px;
+  border-bottom: 1px solid var(--trait);
+}
+.verif__case {
+  flex: none;
+  margin-top: 9px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--trait-fort);
+  border-radius: 4px;
+  color: var(--feuille);
+}
+.verif__case.est-cochee {
+  border-color: var(--e-valide);
+  background: var(--e-valide);
+}
+.verif__case .ic {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.6;
+}
+.verif__champ {
+  flex: 1;
+  min-width: 0;
+  margin: 2px 0;
+  padding: 5px 4px;
+  line-height: 1.35;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+  font-size: var(--t-s);
+}
+.verif__champ:hover {
+  background: var(--feuille-2);
+}
+.verif__champ:focus {
+  outline: 2px solid var(--canard);
+  outline-offset: 0;
+  background: var(--feuille);
+}
+.verif__champ::placeholder {
+  color: var(--graphite-3);
+  font-style: italic;
+}
+.verif__retirer {
+  flex: none;
+  margin-top: 3px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--graphite-3);
+  cursor: pointer;
+}
+.verif__retirer .ic {
+  width: 15px;
+  height: 15px;
+}
+.verif__retirer:hover {
+  background: var(--feuille-2);
+  border-color: var(--trait);
+  color: var(--graphite);
+}
+.verif__vide {
+  margin: 4px 0 0;
+  font-size: var(--t-xs);
+  color: var(--graphite-3);
+}
+.verif__ajouter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 4px 2px;
+  border: 0;
+  background: transparent;
+  color: var(--canard);
+  font: inherit;
+  font-size: var(--t-s);
+  font-weight: 700;
+  cursor: pointer;
+}
+.verif__ajouter .ic {
+  width: 15px;
+  height: 15px;
+}
+.verif__ajouter:hover {
+  color: var(--canard-fonce);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+/* Dans une proposition de l'IA : la liste sur le fond de la proposition */
+.ia-propose .verif {
+  margin-top: 4px;
+}
+/* Chez l'élève : de vraies cases, grandes, que l'on coche en se relisant */
+.verif__coche {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 0;
+  font-size: var(--t-m);
+  line-height: 1.35;
+  cursor: pointer;
+}
+.verif__coche input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--e-valide);
+  cursor: pointer;
+}
+.verif__coche input:checked + span {
+  color: var(--graphite-2);
+}
+.verif--eleve:disabled .verif__coche {
+  cursor: default;
+}
+/* « 3 sur 4 cochés » sur la consigne repliée */
+.fiche-tete__coches {
+  margin-left: auto;
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+/* Le titre d'un groupe de cases se poserait sur le trait : il passe dessous, comme chez l'adulte */
+.verif--eleve > legend {
+  float: left;
+  width: 100%;
+}
+.verif--eleve > .verif__liste {
+  clear: both;
+}

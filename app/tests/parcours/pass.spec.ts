@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, livrePayant, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, recit, type Compte } from "./outils";
+import { adultePret, aller, livrePayant, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, recit, type Compte, inserer } from "./outils";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 /**
@@ -21,7 +21,6 @@ test.afterEach(async () => {
 // Vente et livre payant ensemble, les projets du test nés le livre payant (F14-AC54)
 const interrupteur = livrePayant;
 const DIALOGUE = (page: Page) => page.getByRole("alertdialog");
-const BARRE = (page: Page) => page.getByRole("toolbar", { name: "Outils de la copie" });
 
 /** « Le marais », projet personnel de n scènes dans un seul chapitre. */
 async function leMarais(page: Page, n: number): Promise<{ compte: Compte; base: SupabaseClient; projet: string; chapitre: string; scenes: string[] }> {
@@ -123,7 +122,7 @@ test("F14-AC14 — allumé, livre à 10 images : « Image » ouvre le dialogue d
   // Neuf images : la dixième se pose encore
   await aller(page, `/projet/${m.projet}/scene/${m.scenes[1]}`);
   await page.locator('.copie__texte[contenteditable="true"]').click();
-  await BARRE(page).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await expect(page.getByRole("list", { name: "Images du projet" })).toBeVisible();
   await expect(DIALOGUE(page)).toHaveCount(0);
 
@@ -131,7 +130,7 @@ test("F14-AC14 — allumé, livre à 10 images : « Image » ouvre le dialogue d
   await sql("update public.scenes set texte = texte || $2::jsonb where id = $1", [m.scenes[1], JSON.stringify([bloc(images[9])])]);
   await aller(page, `/projet/${m.projet}/scene/${m.scenes[1]}`);
   await page.locator('.copie__texte[contenteditable="true"]').click();
-  await BARRE(page).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await expect(DIALOGUE(page).getByRole("heading", { name: "Ce livre a atteint ses 10 images gratuites" })).toBeVisible();
   await expect(DIALOGUE(page)).toContainText("L’image n’a pas été posée.");
   await expect(page.getByRole("list", { name: "Images du projet" })).toHaveCount(0);

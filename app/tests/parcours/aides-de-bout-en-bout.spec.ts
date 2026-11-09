@@ -1,6 +1,8 @@
 import { expect, test, type Page } from "@playwright/test";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
-import { aller, classeQuiEcrit, copie, ecrire, FICHE, MESSAGE, posteDe, semerTexte, sql, supprimerComptes, type Situation, ouvrirLeMenuDuCompte } from "./outils";
+import {
+  aller, classeQuiEcrit, copie, ecrire, FICHE, MESSAGE, posteDe, semerTexte, sql, supprimerComptes, type Situation, ouvrirLeMenuDuCompte, inserer,
+} from "./outils";
 
 /**
  * Étape 8 du plan, lot 9 : l'essai de bout en bout des aides IA, sur la réponse simulée
@@ -16,7 +18,6 @@ test.afterEach(async ({ request }) => {
 });
 
 const DRAGON = "Le dragon dormé dans la grote. Il était très très grand.";
-const BARRE = (page: Page) => page.getByRole("toolbar", { name: "Outils de la copie" });
 const CREER = (page: Page) => page.getByRole("region", { name: "Créer une image" });
 const IDEES = (page: Page) => page.getByRole("region", { name: "Idées", exact: true });
 const RETENU = (page: Page) => page.getByRole("textbox", { name: "Nous retenons…", exact: true });
@@ -49,6 +50,8 @@ async function aliceEcritEtRemet(alice: Page, s: Situation, texte: string, avant
   await aller(alice, `/travail/scene/${s.lisiere.scenes[0]}`);
   await ecrire(alice, texte);
   await avantDeRemettre?.();
+  // « J'ai pensé à » : elle se relit et coche la liste de la consigne, sans quoi la remise le lui rappelle (F07.2)
+  for (const c of await alice.getByRole("group", { name: "J'ai pensé à :" }).getByRole("checkbox").all()) await c.check();
   await alice.getByRole("button", { name: "Remettre à Mme Laurent" }).click();
   await expect(tamponEleve(alice)).toHaveText("À valider");
 }
@@ -100,10 +103,11 @@ test("Étape 8, avec les aides — préparer, organiser, formuler, corriger, rel
   await aller(page, `/projet/${s.projet}/scene/${sentier}`);
   await CONSIGNE(page).fill("Lou découvre le dragon endormi");
   await page.getByRole("button", { name: "Formuler" }).click();
-  await expect(page.getByRole("textbox", { name: "Consigne proposée" })).toHaveValue(/Décris :/);
+  await expect(page.getByRole("textbox", { name: "Consigne proposée" })).toHaveValue(/Raconte/);
+  await expect(page.getByRole("textbox", { name: "Élément proposé" })).toHaveCount(2);
   await page.getByRole("button", { name: "Utiliser" }).click();
-  await expect(MESSAGE(page)).toContainText("Consigne remplacée.");
-  await expect.poll(async () => (await sql<{ consigne: string }>("select consigne from scenes where id = $1", [sentier]))[0].consigne).toContain("Décris :");
+  await expect(MESSAGE(page)).toContainText("Consigne et liste remplacées.");
+  await expect.poll(async () => (await sql<{ v: string[] }>("select verification as v from scenes where id = $1", [sentier]))[0].v).toEqual(["Décrire le lieu.", "Montrer ce que ressent ton héros."]);
 
   // ——— Alice écrit, note son idée d'image, remet ———
   const alice = await posteDe(browser, s, "Alice");
@@ -155,7 +159,7 @@ test("Étape 8, avec les aides — préparer, organiser, formuler, corriger, rel
   await expect.poll(async () => (await sql("select 1 from liens where scene_id = $1", [sentier])).length).toBe(1);
 
   await copie(page).click();
-  await BARRE(page).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await FICHE(page).getByRole("button", { name: "Créer une image" }).click();
   // L'idée d'Alice est là, prête à servir
   await expect(CREER(page).getByLabel("Ce que montre l’image")).toHaveValue("le dragon qui dort sur un tas de cristaux");
@@ -250,7 +254,7 @@ test("Étape 8, sans les aides — éteintes dans « Mon compte », tout le traj
   await page.getByRole("textbox", { name: "Titre de la scène" }).blur();
   await expect.poll(async () => (await sql<{ titre: string }>("select titre from scenes where id = $1", [sentier]))[0].titre).toBe("Le dragon endormi");
   await copie(page).click();
-  await BARRE(page).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await FICHE(page).getByRole("button", { name: "Préparer le prompt d’une image" }).click();
   await expect(CREER(page).locator(".btn--ia")).toHaveCount(0);
   await CREER(page).getByLabel("Ce que montre l’image").fill("le dragon endormi dans la grotte");

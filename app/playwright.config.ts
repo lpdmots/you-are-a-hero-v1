@@ -10,6 +10,7 @@ const local = parse(readFileSync(resolve(__dirname, ".env.local")));
 // une chaîne vide, que Next.js ne remplace pas par celles qu'il lirait dans .env.local
 local.ANTHROPIC_API_KEY = "";
 local.OPENAI_API_KEY = "";
+local.ELEVENLABS_API_KEY = "";
 // Ni Stripe : le paiement est simulé, et les avis se signent d'un secret d'essai (étape 9)
 local.STRIPE_CLE_SECRETE = "";
 local.STRIPE_SECRET_AVIS = "whsec_essai_local";

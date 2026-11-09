@@ -78,6 +78,19 @@ export async function noterMonIdee(sceneId: string, idee: string): Promise<Fait>
   return { ok: true };
 }
 
+/**
+ * « J'ai pensé à » (F07.2) : l'élève qui peut écrire la scène coche ou décoche un élément de la
+ * liste de vérification ; la coche reste avec la scène. La base revérifie qu'il peut écrire la
+ * scène et que l'élément est dans la liste.
+ */
+export async function cocherElement(sceneId: string, element: string, coche: boolean): Promise<Fait> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId) || typeof element !== "string") return refus(null);
+  const { error } = await poste.rpc("eleve_cocher", { p_scene: sceneId, p_element: element.slice(0, 200), p_coche: coche === true });
+  if (error) return refus(error);
+  return { ok: true };
+}
+
 /** « Scènes voisines » : la préférence de l'élève, qui le suit d'un poste à l'autre (F04-AC08). */
 export async function reglerVoisines(affiche: boolean): Promise<void> {
   const poste = await base();

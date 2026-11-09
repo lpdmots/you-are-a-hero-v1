@@ -22,9 +22,11 @@ import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
 import type { SceneOuverte } from "@/serveur/recit-eleve";
 import {
-  annulerGeste, creerSceneDepuisChoix, prendreScenes, reglerVoisines, relireNumeros, remarqueLue, remettreScene, rendreScene, retirerRemise, supprimerScene,
+  annulerGeste, cocherElement, creerSceneDepuisChoix, prendreScenes, reglerVoisines, relireNumeros, remarqueLue, remettreScene, rendreScene, retirerRemise, supprimerScene,
 } from "../../actions";
 import styles from "../../travail.module.css";
+import { ListeACocher } from "@/composants/verification/Liste";
+import { rappelARemettre, restants } from "@/domaine/verification";
 import { IdeeDImage } from "./IdeeDImage";
 import { FicheRemarque, RemarqueEnGrand } from "./Remarque";
 
@@ -60,6 +62,21 @@ export function SceneEleve({
   // Le panneau de droite : les réglages de la copie s'y ouvrent, à la place de la consigne
   const [panneau, setPanneau] = useState<HTMLElement | null>(null);
   const [reglages, setReglages] = useState(false);
+  // « J'ai pensé à » (F07.2) : les coches de la liste, gardées avec la scène ; le rappel à la remise
+  const [cochees, setCochees] = useState(scene.verification?.cochees ?? []);
+  const [rappel, setRappel] = useState(false);
+  const elements = scene.verification?.elements ?? [];
+  const aVerifier = restants(elements, cochees);
+  const cocher = async (element: string, coche: boolean) => {
+    const avant = cochees;
+    setCochees(coche ? [...cochees, element] : cochees.filter((c) => c !== element));
+    setRappel(false);
+    const fait = await cocherElement(scene.id, element, coche);
+    if (!fait.ok) {
+      setCochees(avant);
+      dire({ texte: "La case n’a pas pu être enregistrée. Réessaie." });
+    }
+  };
   // La version du texte que la page vient d'enregistrer : c'est elle que la remise présente
   const versionLue = useRef(scene.version);
   const retour = `/travail/chapitre/${scene.chapitre.id}`;
@@ -85,6 +102,9 @@ export function SceneEleve({
 
   /** « Remettre à Mme Laurent » : la dernière saisie s'enregistre d'abord, puis la base conserve ce texte (F07-AC28). */
   const remettre = async () => {
+    // Des éléments de « J'ai pensé à » restent sans coche : un rappel d'abord, sans bloquer (F07.2)
+    if (aVerifier > 0 && !rappel) return setRappel(true);
+    setRappel(false);
     setEnvoi("attente");
     if (!(await avantDePartir())) return setEnvoi("echec");
     const fait = await remettreScene(scene.id, versionLue.current);
@@ -224,6 +244,13 @@ export function SceneEleve({
                   : "Ton texte n’est pas encore enregistré. Tu peux continuer, mais ne ferme pas cette page."}
               </p>
             );
+          } else if (rappel && aVerifier > 0) {
+            dit = (
+              <p className="pied-alerte pied-alerte--attend" role="alert">
+                <Icone nom="alerte" />
+                {rappelARemettre(aVerifier)}
+              </p>
+            );
           } else if (envoi === "attente") {
             dit = (
               <p className="sauv sauv--attente" role="status">
@@ -264,7 +291,7 @@ export function SceneEleve({
             <>
               {dit}
               <button type="button" className="btn btn--primaire btn--grand" disabled={sansTexte || envoi === "attente" || occupe} onClick={() => void remettre()}>
-                Remettre à {prof}
+                {rappel && aVerifier > 0 ? "Remettre quand même" : `Remettre à ${prof}`}
                 <Icone nom="fleche" />
               </button>
             </>
@@ -460,14 +487,20 @@ export function SceneEleve({
                           <h2>La consigne</h2>
                         </header>
                       </summary>
-                      <div className="carnet-fiche__corps">{consigne(scene.consigne, prof)}</div>
+                      <div className="carnet-fiche__corps">
+                        {consigne(scene.consigne, prof)}
+                        {elements.length ? <ListeACocher elements={elements} cochees={cochees} modifiable={scene.ecriture !== null} onCocher={(e, c) => void cocher(e, c)} /> : null}
+                      </div>
                     </details>
                   ) : (
                     <section className="carnet-fiche" aria-labelledby="consigne-t">
                       <header>
                         <h2 id="consigne-t">La consigne</h2>
                       </header>
-                      <div className="carnet-fiche__corps">{consigne(scene.consigne, prof)}</div>
+                      <div className="carnet-fiche__corps">
+                        {consigne(scene.consigne, prof)}
+                        {elements.length ? <ListeACocher elements={elements} cochees={cochees} modifiable={scene.ecriture !== null} onCocher={(e, c) => void cocher(e, c)} /> : null}
+                      </div>
                     </section>
                   )
                 ) : null}

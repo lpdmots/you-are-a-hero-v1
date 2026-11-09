@@ -15,6 +15,7 @@ import { PourLesImages } from "./Personnages";
 import { enregistrerFormule, enregistrerObjet, reglerJeu, supprimerFormule, supprimerObjet } from "../../actions-preparation";
 import type { ProjetDuCarnet } from "./Etape";
 import styles from "./preparation.module.css";
+import { ChampTexte } from "@/composants/dictee/ChampDictable";
 
 /**
  * L'étape facultative « Le jeu » (F04.2) : les objets de l'histoire et, dans un récit à choix,
@@ -483,7 +484,7 @@ function Regles({ projetId, depart }: { projetId: string; depart: string }) {
       <label className={styles.aide} htmlFor="regles-du-jeu">
         Ce que le lecteur doit savoir avant de commencer : comment noter, quand lancer le dé. Un paragraphe par ligne.
       </label>
-      <textarea
+      <ChampTexte
         id="regles-du-jeu"
         className={`pchamp ${styles.texte}`}
         rows={6}

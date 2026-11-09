@@ -22,6 +22,7 @@ import {
 } from "@/domaine/recit";
 import { attribuerChapitre, reglerChapitre, reglerPartie } from "../../actions-recit";
 import { demanderAuPlan } from "./IdeesDeParties";
+import { ChampTexte } from "@/composants/dictee/ChampDictable";
 
 function ChampTitre({ id, valeur, onChange, onSortie, selectionne }: { id: string; valeur: string; onChange: (v: string) => void; onSortie: () => void; selectionne: boolean }) {
   const ref = useRef<HTMLInputElement>(null);
@@ -108,7 +109,7 @@ export function ReglagesChapitre({
           ) : null}
         </h3>
         <span className="ci__zone">
-          <textarea
+          <ChampTexte
             className="pchamp"
             id="chap-resume"
             rows={5}

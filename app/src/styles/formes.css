@@ -1423,3 +1423,99 @@
 .agrandie__telecharger:focus-visible {
   color: var(--canard);
 }
+
+/* ——— Dictée de l'adulte (F07.4) ———
+   Un petit micro gris dans le coin haut du champ, qui laisse au champ sa poignée de redimensionnement
+   en bas. Pendant l'enregistrement, il devient une bascule choisie (graphite) avec le temps qui défile ;
+   pendant la transcription, il respire. Ni étincelles ni canard pâle : ce n'est pas une aide IA. */
+.dictable {
+  position: relative;
+  display: block;
+  min-width: 0;
+  /* L'enveloppe prend la place que prenait le champ, même dans une grille ou une colonne qui
+     rangent leurs éléments au début : le champ y garde sa largeur */
+  justify-self: stretch;
+  align-self: stretch;
+}
+.dictable > textarea {
+  padding-right: 40px;
+}
+/* Sur la ligne du titre de la carte : la carte, positionnée, tient le micro ; le champ garde sa largeur */
+.dictable--titre {
+  position: static;
+}
+.dictable.dictable--titre > textarea {
+  padding-right: 0;
+}
+.dictable--titre > .dictee {
+  top: 12px;
+  right: 14px;
+}
+.dictable.est-enregistre > textarea {
+  border-color: var(--graphite-2);
+}
+.dictee {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0 5px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--graphite-3);
+  font: inherit;
+  cursor: pointer;
+}
+.dictee .ic {
+  width: 18px;
+  height: 18px;
+  flex: none;
+}
+.dictee:hover:not(:disabled) {
+  background: var(--feuille-2);
+  border-color: var(--trait);
+  color: var(--graphite);
+}
+.dictee:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 1px;
+}
+.dictee:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+.dictee.est-enregistre,
+.dictee.est-enregistre:hover:not(:disabled),
+.outil.dictee-outil.est-enregistre {
+  padding: 0 9px 0 7px;
+  background: var(--graphite);
+  border-color: var(--graphite);
+  color: var(--feuille);
+}
+.dictee.est-attente,
+.dictee-outil.est-attente {
+  opacity: 1;
+  color: var(--graphite-2);
+}
+.est-attente > .ic {
+  animation: dictee-souffle 1.2s var(--ease) infinite;
+}
+.dictee__temps {
+  font-size: var(--t-xs);
+  font-variant-numeric: tabular-nums;
+}
+@keyframes dictee-souffle {
+  50% {
+    opacity: 0.35;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .est-attente > .ic {
+    animation: none;
+  }
+}

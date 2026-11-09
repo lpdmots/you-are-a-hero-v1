@@ -3,8 +3,7 @@ import { resolve } from "node:path";
 import { deflateSync } from "node:zlib";
 import { expect, test, type Page } from "@playwright/test";
 import {
-  aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, enClair, FICHE, figure, presseTexte, posteDe,
-  recit, recitAvec, renvoi, sceneEnBase, selectionner, semerBlocs, semerImage, sql, supprimerComptes, symbole, typesEnBase,
+  aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, enClair, FICHE, figure, presseTexte, posteDe, recit, recitAvec, renvoi, sceneEnBase, selectionner, semerBlocs, semerImage, sql, supprimerComptes, symbole, typesEnBase, inserer, commandesInserer,
 } from "./outils";
 
 /**
@@ -21,7 +20,6 @@ const sceneAdulte = (projet: string, scene: string) => `/projet/${projet}/scene/
 const sceneEleve = (scene: string) => `/travail/scene/${scene}`;
 const MOD = "ControlOrMeta";
 const PHOTO = resolve(__dirname, "../../public/illustrations/defaut-desert.jpg");
-const BARRE = (page: Page) => page.getByRole("toolbar", { name: "Outils de la copie" });
 const FIGURES = (page: Page) => copie(page).locator(".image-bloc");
 const importer = (page: Page, fichier: string | { name: string; mimeType: string; buffer: Buffer }) => FICHE(page).getByLabel("Fichier de l’image").setInputFiles(fichier);
 const imagesDuProjet = (projet: string) => sql<{ id: string; format: string; largeur: number; hauteur: number }>("select id, format, largeur, hauteur from images where projet_id = $1 order by cree_le", [projet]);
@@ -93,7 +91,7 @@ test.describe("Image en bloc (F10) — V12", () => {
     await expect(FIGURES(page).locator(".figure")).toHaveAttribute("style", /width: 65%/);
 
     // La même fiche la propose ensuite parmi les images du projet
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await expect(FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button")).toHaveCount(1);
     await FICHE(page).getByRole("button", { name: "Fermer la fiche" }).click();
 
@@ -150,7 +148,7 @@ test.describe("Image en bloc (F10) — V12", () => {
 
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
-    await expect(BARRE(alice.page).getByRole("button", { name: "Image" })).toHaveCount(0);
+    expect(await commandesInserer(alice.page)).not.toContain("Image");
     await copie(alice.page).locator("p").first().click();
     await alice.page.keyboard.press(`${MOD}+a`);
     await alice.page.waitForTimeout(150);
@@ -164,7 +162,7 @@ test.describe("Image en bloc (F10) — V12", () => {
 
     const bilal = await posteDe(browser, s, "Bilal");
     await aller(bilal.page, sceneEleve(s15));
-    await expect(BARRE(bilal.page).getByRole("button", { name: "Image" })).toHaveCount(0);
+    expect(await commandesInserer(bilal.page)).not.toContain("Image");
     await selectionner(bilal.page, { bloc: 0, offset: 0 });
     await bilal.page.keyboard.type(" /");
     await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Choix/, /Action de jeu/, /Objet/, /Personnage/]);
@@ -243,7 +241,7 @@ test.describe("Image en bloc (F10) — V12", () => {
     const [s15] = s.lisiere.scenes;
     await semerBlocs(s.base, s15, [recit("Le pont se balance.")]);
     await aller(page, sceneAdulte(s.projet, s15));
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await importer(page, { name: "scan.pdf", mimeType: "application/pdf", buffer: Buffer.from("%PDF-1.7\n%%EOF") });
     await expect(FICHE(page).getByRole("alert")).toContainText("Choisissez un fichier JPEG, PNG ou WebP de moins de 20 Mo. Rien n’a été posé dans le texte.");
     // Un fichier qui se dit image sans en être une
@@ -272,7 +270,7 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await semerBlocs(s.base, s16, [recit("Si tu choisis la porte ")]);
     await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await aller(page, sceneAdulte(s.projet, s15));
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await importer(page, { name: "lune.png", mimeType: "image/png", buffer: pngDetoure() });
     await FICHE(page).getByRole("button", { name: "Dans le texte" }).click();
     await attendreEnregistre(page);
@@ -283,7 +281,7 @@ test.describe("Image sur la ligne (F10) — V12", () => {
 
     await aller(page, sceneAdulte(s.projet, s16));
     await selectionner(page, { bloc: 0, offset: 23 });
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button").click();
     await FICHE(page).getByRole("button", { name: "Sur la ligne" }).click();
     await expect(copie(page)).toBeFocused();
@@ -347,7 +345,7 @@ test.describe("Image sur la ligne (F10) — V12", () => {
     await aller(page, sceneAdulte(s.projet, s15));
     // Le curseur sur la phrase : l'image n'irait pas sur sa ligne
     await selectionner(page, { bloc: 0, offset: 0 });
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button").click();
     await expect(FICHE(page).getByRole("button", { name: "Sur la ligne" })).toBeDisabled();
     await FICHE(page).getByRole("button", { name: "Fermer la fiche" }).click();
@@ -377,10 +375,10 @@ test.describe("Image sur la ligne (F10) — V12", () => {
 
     // Dans une note, « Sur la ligne » n'est pas proposé : l'image irait en bloc
     await aller(page, sceneAdulte(s.projet, s16));
-    await BARRE(page).getByRole("button", { name: "Note" }).click();
+    await inserer(page, "Note");
     await expect(copie(page)).toBeFocused();
     await page.keyboard.type("Rappel");
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("list", { name: "Images du projet" }).getByRole("button").click();
     await expect(FICHE(page).getByRole("button", { name: "Sur la ligne" })).toBeDisabled();
     await expect(FICHE(page)).toContainText("Pour la mettre sur la ligne, placez d’abord le curseur dans un paragraphe.");

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { TITRE_ELEVE } from "@/domaine/verification";
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { poser } from "@/composants/flottant";
@@ -742,6 +743,20 @@ function PartieDeFeuille({
         <div className="fr-corps">
           <h3>{s.titre ?? chapitre.titre}</h3>
           <p className="fr-consigne">{s.consigne}</p>
+          {/* La liste de vérification, avec une case à cocher sur le papier en se relisant (F07.4, 9 novembre 2026) */}
+          {s.verification?.length ? (
+            <>
+              <p className="fr-lib">{TITRE_ELEVE.replace(/\s*:$/, "")}</p>
+              <ul className="fr-verif">
+                {s.verification.map((v) => (
+                  <li key={v}>
+                    <span className="fr-case" aria-hidden="true" />
+                    {v}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : null}
           {c?.texte.length ? (
             <>
               <p className="fr-lib">Déjà écrit</p>

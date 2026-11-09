@@ -5168,6 +5168,12 @@ et le devenir des retours après nouvelle soumission sont arbitrés ci-dessus.
 
 ### F07.4 — Fiches de rédaction pour le travail sur papier
 
+**Liste de vérification (9 novembre 2026) :** sous la consigne de chaque scène,
+la fiche imprime « J'ai pensé à » et une case vide par élément de la liste ;
+l'élève la coche au crayon en se relisant. Les règles de la liste, à l'écran
+comme sur papier, sont en [F13.2](#f132--formuler-une-consigne-et-sa-liste-de-vérification),
+critères F07-AC100 à AC105.
+
 **Besoin confirmé et retour d'usage :** l'enseignant doit pouvoir imprimer
 les consignes des scènes dont le travail de rédaction reste à faire, avec
 leur image lorsqu'elle est présente. Le porteur utilise fréquemment ces
@@ -5579,22 +5585,106 @@ chapitre » de ses propres consignes, usage trop rare pour un écran de plus.
 L'absence de consigne numérique ne bloque pas l'écriture selon F07.1 ; elle
 écarte la scène des fiches, selon la décision ci-dessus.
 
-**Dictée vocale, d'abord piste différée :** décidée le 25 octobre 2026, à
-construire dans l'outil, dans la page de scène de l'adulte
-([plan, « Suite recommandée », point 2](plan.md#suite-recommandée-après-louverture)),
-qui fait foi ; le paragraphe suivant en garde l'origine. Le porteur précise que la transcription
-qu'il utilisait pour les élèves en retard était de la parole vers du texte
-(speech-to-text), et non de la reconnaissance de manuscrits. Il envisage aussi
-son intérêt pour réduire la recopie lorsque les ordinateurs sont partagés.
-L'approfondissement de cette aide est différé ; sa présence dans la première
-livraison n'est pas encore décidée. Le parcours papier puis saisie n'en dépend pas.
+#### Dictée à l'adulte
 
-**Recommandation non arbitrée :** distinguer la dictée et la correction du
-texte obtenu, avec une relecture sans validation pédagogique automatique.
-L'utilisateur de la dictée, son insertion dans le parcours d'écriture et les
-conditions matérielles restent à préciser. La disponibilité réelle, la
-fiabilité et le gain de temps dans une classe devront être éprouvés avant
-de retenir une solution technique ; aucune technologie V0 n'est reprise.
+**Décidée par le porteur le 25 octobre 2026**, pour la page de scène seulement
+([plan, « Suite recommandée », point 2](plan.md#suite-recommandée-après-louverture)),
+**étendue par lui le 9 novembre 2026 à tous les champs que l'adulte remplit**
+et construite le même jour en local. Origine : la transcription qu'il employait
+pour les élèves en retard était de la parole vers du texte, non de la
+reconnaissance de manuscrits ; c'est l'adulte qui lit à voix haute le texte
+d'un élève (écrit sur le cahier ou dicté à l'adulte) pour ne pas le taper, pas
+l'élève lui-même, dont le résultat serait médiocre. Ce n'est donc pas un accès
+des élèves à l'IA (F13). Le parcours papier puis saisie n'en dépend pas.
+
+**Décisions confirmées :**
+
+- **Où :** un micro dans chaque champ de plusieurs lignes que l'adulte remplit
+  (consigne, remarque de relecture, Préparation, personnages, résumés, réglages
+  du projet et du livre, couverture, partage, idées de choix, images…) et
+  « Dicter » dans la barre de la copie, parmi ce qu'on insère. Aucun micro côté
+  élève, ni dans le lecteur. Pas de micro, par recommandation acceptée le
+  9 novembre 2026 : les pages d'administration et d'essai des aides, le
+  formulaire « Signaler » de la bibliothèque, la liste des noms d'auteurs (un
+  prénom par ligne, que la dictée transcrit mal) et le paragraphe proposé d'une
+  correction, qu'on retouche et ne dicte pas.
+- **Geste :** un clic enregistre, le temps défile ; un second clic arrête, et le
+  texte entendu s'écrit au curseur, ou à la place de la sélection, comme une
+  frappe : la page l'enregistre comme d'habitude, et Ctrl+Z (⌘Z) le retire.
+  Échap annule sans rien envoyer. Une seule dictée à la fois sur la page.
+  Recommandé et retenu : le texte posé une fois l'enregistrement fini, plutôt
+  qu'au fil de la parole, plus fiable pour la ponctuation et les noms.
+- **Raccord :** une espace le sépare des mots voisins ; une majuscule en début
+  de phrase ; au milieu d'une phrase, un mot courant perd sa majuscule (un nom
+  la garde) et le point final du fournisseur s'efface devant une suite en
+  minuscule. Le texte entendu n'est pas autrement changé : l'adulte le relit, et
+  la correction (F13.1) reste une demande à part.
+- **Service :** ElevenLabs (Scribe, modèle `scribe_v2`), dont le porteur a un
+  forfait, sans essai comparatif, avec une clé à part pour le site
+  (`ELEVENLABS_API_KEY`) et sa propre limite de consommation. Les noms des
+  personnages du projet ouvert, leurs autres noms et ses objets partent comme
+  indices, pour qu'ils s'écrivent juste.
+- **Prix :** gratuite pour tous les comptes, sans étoile (exception de F14).
+  **Plafond :** trois heures par compte et par mois, heure de Paris, garde-fou
+  et non élément de l'offre ; cinq minutes au plus par enregistrement, qui
+  s'arrête alors de lui-même et part à la transcription. Seule compte la durée
+  que le fournisseur a transcrite.
+- **Données :** ni le son ni le texte ne sont gardés par l'outil ; le journal ne
+  note que la date et la durée de chaque dictée transcrite, pour le plafond.
+  ElevenLabs s'inscrit parmi les sous-traitants (page « Confidentialité » et
+  contrat de sous-traitance type).
+
+**Messages :** « La dictée n'est pas installée sur ce site. » ; « Vous avez
+dicté trois heures ce mois-ci : la dictée revient le 1er du mois. » ; « La
+dictée n'a pas répondu. Le texte n'a pas changé. » ; « Rien n'a été entendu.
+Parlez plus près du micro. » ; « Le micro n'est pas autorisé pour ce site.
+Autorisez-le dans le navigateur, puis réessayez. » ; dans la copie, hors d'un
+paragraphe : « Placez le curseur dans un paragraphe du récit, puis dictez. »
+
+**Critères d'acceptation :**
+
+- **F07-AC87 — Le micro chez l'adulte seulement :** étant donné Mme Laurent sur
+  la page d'une scène, alors la consigne a son micro et la barre de la copie
+  « Dicter » ; étant donné Alice sur sa scène, aucun micro n'apparaît.
+- **F07-AC88 — Dicter, arrêter :** étant donné la consigne « Lou arrive au
+  pont. », lorsque Mme Laurent clique le micro, lit une phrase et clique de
+  nouveau, alors la phrase entendue s'écrit après la consigne, s'enregistre
+  comme une frappe, et ⌘Z la retire.
+- **F07-AC89 — Raccord :** « et » suivi de « Le pont tremble » entendu donne
+  « et le pont tremble » ; « avec » suivi de « Pipo le renard » garde la
+  majuscule de Pipo ; après « Lou avance. », la phrase entendue commence par une
+  majuscule, après une espace.
+- **F07-AC90 — Échap annule :** pendant l'enregistrement, Échap arrête sans rien
+  écrire, rien n'est envoyé et rien ne compte au plafond.
+- **F07-AC91 — Cinq minutes au plus :** au bout de cinq minutes,
+  l'enregistrement s'arrête de lui-même et part à la transcription.
+- **F07-AC92 — Plafond du mois :** étant donné trois heures dictées par Mme
+  Laurent ce mois-ci, lorsqu'elle clique un micro, alors le message du plafond
+  s'affiche avant tout enregistrement ; M. Martin dicte toujours ; les dictées
+  du mois dernier ne comptent pas.
+- **F07-AC93 — Sans clé :** sur un site où la clé n'est pas posée, le premier
+  clic dit « La dictée n'est pas installée sur ce site. » et rien ne part.
+- **F07-AC94 — Échec :** une réponse inutilisable, un délai dépassé ou un son
+  vide laissent le texte tel quel, le disent, et ne comptent pas.
+- **F07-AC95 — Noms du projet :** les personnages de « Les passeurs de brume »
+  (Lou, « la petite », Le passeur) et l'objet « Lanterne de brume » partent en
+  indices ; ceux d'un projet d'un autre adulte, jamais.
+- **F07-AC96 — Rien de gardé :** le journal ne contient que l'adulte, la date,
+  la durée et le fournisseur ; un adulte lit ses lignes, pas celles d'un autre,
+  et n'en écrit ni n'en efface aucune.
+- **F07-AC97 — Une à la fois :** pendant une dictée dans la copie, le micro de la
+  consigne attend, puis revient.
+- **F07-AC98 — Dans la copie :** le texte entendu s'écrit au curseur d'un
+  paragraphe de récit ou d'une note ; hors d'eux, le clic le dit sans
+  enregistrer.
+- **F07-AC99 — Micro refusé :** le navigateur refuse le micro : une phrase le
+  dit, rien ne s'écrit.
+
+**Questions ouvertes :** la qualité réelle en classe (bruit, voix lue
+rapidement) et le gain de temps, à constater par le porteur ; la conservation
+chez ElevenLabs (le mode sans rétention est réservé à leurs offres
+entreprise) ; une dictée au fil de la parole (Scribe Realtime), si l'attente
+de fin gêne à l'usage.
 
 ### F07.5 — Encouragements de l'enseignant
 
@@ -10726,7 +10816,7 @@ livraison ; le degré 5, borné par la consigne, en ouvre une part le 16 octobre
 - Limites d'utilisation et signalement des échecs. Fournisseur, qualité réelle,
   coût et modalités techniques seront à vérifier ultérieurement.
 
-### F13.2 — Formuler une consigne et des points pour guider la rédaction
+### F13.2 — Formuler une consigne et sa liste de vérification
 
 **Besoin confirmé :** intégrer à la V1 une aide que le porteur utilise déjà
 sur un site séparé. L'enseignant écrit une indication courte ; l'IA propose
@@ -10752,28 +10842,89 @@ qui remplaceraient les décisions de l'enseignant. La liste doit être adaptée
 à la consigne, et non imposer les mêmes descriptions dans toutes les scènes.
 La conformité réelle des propositions restera à éprouver sur des exemples.
 
-**Décision du 16 octobre 2026, entretien de l'étape 8 — modèle de consigne :**
-la proposition suit toujours le même modèle, demandé par le porteur : une ou
-deux phrases qui tutoient l'élève, d'un vocabulaire d'élémentaire, puis la
-ligne « Décris : » et deux ou trois points de quelques mots, un par ligne. Elle
-n'ajoute aucun événement ni personnage absent de l'indication. « Décris : »
-s'écrit toujours ainsi, routine que les élèves reconnaissent. La consigne reste
-un texte simple, imprimé tel quel sur les fiches de F07.4 :
+**Décision du 9 novembre 2026, par le porteur — consigne et liste de
+vérification :** la proposition rend deux éléments séparés, et non plus un seul
+texte terminé par « Décris : ». La consigne : une ou deux phrases qui tutoient
+l'élève, d'un vocabulaire d'élémentaire, sans liste. La liste de vérification :
+deux à quatre éléments courts à l'infinitif, une majuscule et un point
+(« Décrire le garde. », « Écrire le dialogue entre Lou et le passeur. »,
+« Montrer ce que ressent Lou. »), que l'élève coche en se relisant. Ni l'une ni
+l'autre n'ajoute d'événement ou de personnage absent de l'indication. La forme
+s'inspire de la fiche « Consigne » dessinée dans le guide (partie 13).
 
 > Sur le pont de brume, une silhouette apparaît : c'est le passeur. Raconte ce
 > qu'il dit à Lou.
-> Décris :
-> – sa lanterne et son visage ;
-> – sa voix ;
-> – ce que ressent Lou.
+>
+> *J'ai pensé à :*
+> ☐ Décrire sa lanterne et son visage.
+> ☐ Écrire ce qu'il dit à Lou.
+> ☐ Montrer ce que ressent Lou.
+
+Ce qui remplace le modèle du 16 octobre 2026 (« Décris : » suivi de deux ou trois
+points, un seul texte imprimé tel quel) : les consignes déjà écrites sous cette
+forme exacte sont converties à la migration `liste_de_verification`, en projet
+de classe seulement (« – sa lanterne ; » devient « Décrire sa lanterne. ») ; tout
+autre texte reste intact.
+
+**Règles de la liste (décidées le 9 novembre 2026) :**
+
+- **Où :** en projet de classe seulement, sous la consigne de la scène. En mode
+  personnel, « Formuler » rend une note d'intention, sans liste.
+- **Chez l'adulte :** chaque élément se récrit sur place ; « Ajouter un
+  élément », ou Entrée dans un élément, en ajoute un ; la croix en retire un ;
+  Retour arrière dans un élément vide le retire. Huit éléments au plus, 80
+  caractères chacun ; un élément vide ne s'enregistre pas. Pas d'ordre à
+  changer pour l'instant.
+- **« ✦ Formuler » :** l'aide reçoit la consigne et les éléments déjà notés,
+  dont elle garde l'idée. La consigne et la liste proposées se retouchent sur
+  place ; « Utiliser » remplace les deux, et « Annuler » rend les deux.
+- **Chez l'élève (F07.2) :** « J'ai pensé à : » et une case par élément, dans
+  la fiche de la consigne, seulement dans son chapitre, comme la consigne. Il
+  coche et décoche tant qu'il peut écrire la scène ; ses coches restent avec la
+  scène, d'une séance à l'autre. Une coche tient au libellé : un élément récrit
+  par l'adulte redevient à vérifier.
+- **À la remise :** s'il reste des éléments sans coche, le pied de la copie le
+  rappelle d'abord (« Il te reste 1 élément à vérifier dans « J'ai pensé
+  à ». »), le bouton devient « Remettre quand même », et un second clic remet.
+  Pas de blocage.
+- **Chez l'adulte, en relisant :** les cases de sa liste montrent en vert ce que
+  l'élève a coché (« Coché par Alice ») ; la consigne repliée porte « 1 sur 2
+  coché » quand un élève s'occupe de la scène. L'adulte ne coche pas à la place
+  de l'élève.
+- **Fiches de rédaction (F07.4) :** sous la consigne, « J'ai pensé à » et une
+  case vide par élément, que l'élève coche au crayon en se relisant sur papier.
+- **Aides IA :** « ✦ Écrire », les titres et les idées de choix lisent la
+  liste avec la consigne.
 
 **Critères d'acceptation sur les éléments confirmés :**
 
-- **F13-AC18 — Modèle de consigne :** étant donné l'indication « le passeur
+- **F13-AC18 — Consigne et liste :** étant donné l'indication « le passeur
   apparaît sur le pont », lorsque l'adulte demande l'aide, alors la proposition
-  tient en une ou deux phrases suivies de « Décris : » et de deux ou trois
-  points, sans personnage que l'indication, la préparation ou le chapitre ne
-  nomment pas.
+  tient en une ou deux phrases et en deux à quatre éléments à l'infinitif, sans
+  personnage que l'indication, la préparation ou le chapitre ne nomment pas
+  (révisé le 9 novembre 2026, à la place de « Décris : »).
+- **F13-AC33 — La liste à la main :** étant donné une scène sans liste,
+  lorsque Mme Laurent ajoute « Décrire le pont. », appuie sur Entrée, tape un
+  deuxième élément, récrit le premier et retire le second, alors la liste
+  enregistrée est celle qu'elle voit ; un élément vide ne s'enregistre pas.
+- **F07-AC100 — Alice coche :** étant donné « Le sentier », sa consigne et deux
+  éléments, lorsqu'Alice coche « Décrire le sentier. » puis rouvre la scène,
+  alors la case est toujours cochée et l'autre non.
+- **F07-AC101 — Seulement dans son chapitre :** une camarade d'un autre
+  chapitre, même en lecture ouverte, ne lit ni ne coche la liste ; une scène à
+  valider ne se coche plus.
+- **F07-AC102 — Un élément récrit redevient à vérifier :** étant donné
+  « Décrire le passeur. » coché, lorsque Mme Laurent le récrit « Décrire le
+  passeur et sa lanterne. », alors il n'est plus coché ; neuf éléments sont
+  refusés ; l'adulte n'écrit pas les coches.
+- **F07-AC103 — Rappel à la remise :** étant donné un élément sans coche,
+  lorsqu'Alice clique « Remettre à Mme Laurent », alors rien n'est remis, le
+  rappel s'affiche et « Remettre quand même » remet ; tout coché, la remise est
+  immédiate.
+- **F07-AC104 — Ce que voit l'adulte :** après la remise, la consigne repliée
+  porte « 1 sur 2 coché », et la case cochée dit « Coché par Alice ».
+- **F07-AC105 — Sur les fiches :** la fiche du « Sentier » imprime « J'ai pensé
+  à » et une case par élément sous la consigne.
 - **F13-AC06 — Deux éléments proposés :** étant donné une indication courte
   rédigée par l'enseignant, lorsqu'il demande l'aide aux consignes, alors il
   reçoit une consigne formulée pour les élèves et une courte liste de points
@@ -10785,8 +10936,9 @@ un texte simple, imprimé tel quel sur les fiches de F07.4 :
   consigne et ne modifie pas le texte du récit.
 
 **Approfondissements différés :** contexte sélectionné, informations manquantes,
-longueur et niveau de langage, nouvelle proposition et présentation à l'écran
-ou sur les fiches de F07.4. Cette aide concerne la classe en récit classique
+longueur et niveau de langage, nouvelle proposition ; la présentation à
+l'écran et sur les fiches de F07.4 est réglée le 9 novembre 2026 (liste de
+vérification, plus haut). Cette aide concerne la classe en récit classique
 comme en récit à choix ; son éventuel usage en mode personnel reste à préciser.
 L'aide itérative à la préparation confirmée est décrite en F13.4.
 
@@ -11241,7 +11393,10 @@ les révisions qui suivent :
   l'invitation seule.
 - **Forme de l'offre : l'outil gratuit, les aides IA payantes.** Projets,
   classes, élèves, livre, PDF, partage et lecture en ligne sont gratuits ; les
-  aides IA au-delà d'une découverte relèvent d'une formule payante.
+  aides IA au-delà d'une découverte relèvent d'une formule payante. La dictée
+  à l'adulte fait exception : gratuite, sans étoile, avec un plafond de trois
+  heures par compte et par mois qui n'est pas un élément de l'offre (F07.4,
+  décidé le 25 octobre 2026).
   Alternatives écartées : le premier livre gratuit puis une licence annuelle ;
   le PDF définitif ou le partage payants ; un essai limité dans le temps.
 - **Limite gratuite en scènes, allumée avec « Livre payant ».** Idée du porteur :
@@ -12456,9 +12611,8 @@ et propositions restent dans les sections de référence :
   le 20 octobre 2026 (offre, étoiles, paiement, conservation, support,
   pages publiques) ; restent ses questions ouvertes.
 
-L'assemblage de la couverture est reporté en F11.4. L'étude de
-la dictée vocale est différée en F07.4, sans décision d'inclusion ou d'exclusion
-de la première livraison. Les droits de diffusion, la vitrine et la
+L'assemblage de la couverture est reporté en F11.4. La dictée à l'adulte est
+décidée en F07.4 le 25 octobre 2026 et construite le 9 novembre 2026. Les droits de diffusion, la vitrine et la
 bibliothèque sont mis de côté à la demande du porteur en F12.2 ; le lecteur
 partagé demeure retenu en F12.1. Ces sujets ne doivent pas être considérés
 comme validés par la clôture du cadrage général.

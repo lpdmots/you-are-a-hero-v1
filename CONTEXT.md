@@ -232,6 +232,12 @@ _Éviter_ : résumé de partie, consigne de scène, résumé automatiquement tir
 Instruction donnée par l'enseignant pour guider le travail de rédaction demandé.
 _Éviter_ : texte du récit, choix proposé au lecteur.
 
+**Liste de vérification** :
+Courts éléments d'écriture attendus, à l'infinitif, posés sous la consigne
+d'une scène (« Décrire le garde. ») ; l'élève les coche en se relisant, sous
+« J'ai pensé à ». Ses coches restent avec la scène.
+_Éviter_ : critères de validation, barème, points « Décris : ».
+
 **Fiche de rédaction** :
 Feuille imprimable qui liste des scènes à écrire ou à reprendre, sous leur
 référence, avec leur consigne, une image éventuelle, le texte déjà écrit et

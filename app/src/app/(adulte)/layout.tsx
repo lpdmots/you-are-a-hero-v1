@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { Suspense, type ReactNode } from "react";
 import { AidesIa } from "@/composants/AidesIa";
+import { DicteeDeLAdulte } from "@/composants/dictee/Dictee";
 import { EspaceAdulte } from "@/composants/EspaceAdulte";
 import { TEMOIN_COLONNE, type Repli } from "@/domaine/projets";
 import { Messages } from "@/composants/Messages";
@@ -24,9 +25,12 @@ export default async function Espace({ children }: { children: ReactNode }) {
     <Messages>
       <ProjetCourant depart={colonne}>
         <AidesIa reglages={enseignant.reglagesIa}>
-          <EspaceAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} etoiles={enseignant.etoiles} admin={enseignant.createur} repli={repli}>
-            {children}
-          </EspaceAdulte>
+          {/* Le micro de la dictée, dans les champs de l'adulte et sa copie (F07.4) */}
+          <DicteeDeLAdulte>
+            <EspaceAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} etoiles={enseignant.etoiles} admin={enseignant.createur} repli={repli}>
+              {children}
+            </EspaceAdulte>
+          </DicteeDeLAdulte>
           {/* Le dialogue d'une limite gratuite atteinte, ouvert d'où qu'on soit (F14-AC13, AC14) */}
           <OffreDuPass />
           {/* La recharge, quand une aide est refusée faute d'étoiles (F14-AC38) */}

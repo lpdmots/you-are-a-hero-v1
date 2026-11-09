@@ -379,6 +379,23 @@ export async function posteDe(browser: Browser, s: Situation, prenom: string): P
   return p;
 }
 
+/**
+ * « + Insérer », dans la barre de la copie (9 novembre 2026) : ouvre le menu et lance la commande
+ * nommée — « Action de jeu », « Objet », « Personnage », « Image », « Note ». « Choix » garde son bouton.
+ */
+export async function inserer(page: Page, nom: string): Promise<void> {
+  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Insérer" }).click();
+  await page.getByRole("menu", { name: "Insérer" }).getByRole("menuitem", { name: new RegExp(`^${nom}\\b`) }).click();
+}
+
+/** Les commandes que « + Insérer » propose ici ; le menu se referme ensuite. */
+export async function commandesInserer(page: Page): Promise<string[]> {
+  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Insérer" }).click();
+  const noms = await page.getByRole("menu", { name: "Insérer" }).locator("[role=menuitem] b").allTextContents();
+  await page.keyboard.press("Escape");
+  return noms;
+}
+
 /** La copie où l'on écrit : le texte de la scène, dans l'éditeur. */
 export const copie = (page: Page): Locator => page.locator('.copie__texte[contenteditable="true"]');
 export const pied = (page: Page): Locator => page.locator(".copie__pied");

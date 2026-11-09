@@ -375,6 +375,15 @@ const TRACES = {
     </>
   ),
   menu: <path d="M4 7h16M4 12h16M4 17h16" />,
+  /** La dictée (F07.4) : le micro pour commencer, le carré pour arrêter */
+  micro: (
+    <>
+      <rect x="9" y="3.5" width="6" height="11" rx="3" />
+      <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0" />
+      <path d="M12 18v2.5" />
+    </>
+  ),
+  arreter: <rect x="7" y="7" width="10" height="10" rx="2" />,
   /**
    * Le seul geste d'IA de l'application (F13) : des étincelles, une grande étoile et deux petites
    * (choisies le 17 octobre 2026), devant chaque commande qui demande quelque chose à une aide,

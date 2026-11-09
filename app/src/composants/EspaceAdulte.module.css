@@ -40,16 +40,21 @@
 }
 .nav {
   display: grid;
+  /* La colonne garde sa largeur : un élément trop large ne l'élargit pas, il se coupe ou passe à la ligne */
+  grid-template-columns: minmax(0, 1fr);
   align-content: start;
   gap: 14px;
 }
-.logo {
+/* Rattachés à la colonne : ils l'emportent sur la taille du logo (Logo.module.css), quel que soit
+   l'ordre où les feuilles se chargent. Arrivé de la page d'entrée sans recharger, le logo prenait
+   sa taille de la barre du haut et élargissait toute la colonne (9 novembre 2026). */
+.colonne .logo {
   justify-self: start;
   margin: 0 0 4px 4px;
   font-size: 1.08rem;
   gap: 6px;
 }
-.logo svg {
+.colonne .logo svg {
   width: 32px;
   height: 32px;
 }
@@ -356,14 +361,14 @@
     width: 20px;
     height: 20px;
   }
-  .logoMince span {
+  .mince .logoMince span {
     position: absolute;
     width: 1px;
     height: 1px;
     overflow: hidden;
     clip: rect(0 0 0 0);
   }
-  .logoMince svg {
+  .mince .logoMince svg {
     width: 30px;
     height: 30px;
   }

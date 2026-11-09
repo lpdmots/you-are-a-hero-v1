@@ -18,6 +18,7 @@ import { pluriel } from "@/domaine/texte";
 import { ClasseDuProjet, type ClasseOfferte } from "../[onglet]/ClasseDuProjet";
 import { choisirRepere, reglerProjet } from "../../actions-recit";
 import { supprimerProjet } from "../../../projets/actions";
+import { ChampTexte } from "@/composants/dictee/ChampDictable";
 
 type ProjetRegle = {
   /** « Projet de classe · Récit à choix » : les deux choix de la création, qui ne se changent pas (F01-AC15) */
@@ -324,7 +325,7 @@ export function ReglagesDuProjet({
             </div>
           )}
           {style === "autre" ? (
-            <textarea
+            <ChampTexte
               className="pchamp reg-style-autre"
               aria-label="Le style, décrit par sa technique"
               rows={2}

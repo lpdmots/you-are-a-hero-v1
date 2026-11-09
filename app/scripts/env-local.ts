@@ -43,8 +43,8 @@ const chemin = resolve(racine, ".env.local");
 const avant = existsSync(chemin) ? readFileSync(chemin, "utf8") : "";
 const cleAcces = avant.match(/^CLE_ACCES=(.+)$/m)?.[1] ?? randomBytes(32).toString("base64");
 // Les clés des aides IA (étape 8) et de Stripe en mode d'essai (étape 9) : recopiées sans être
-// lues ailleurs que dans ce fichier
-const clesIa = ["ANTHROPIC_API_KEY", "OPENAI_API_KEY", "STRIPE_CLE_SECRETE", "STRIPE_SECRET_AVIS"]
+// lues ailleurs que dans ce fichier ; celle de la dictée (F07.4) aussi
+const clesIa = ["ANTHROPIC_API_KEY", "OPENAI_API_KEY", "ELEVENLABS_API_KEY", "STRIPE_CLE_SECRETE", "STRIPE_SECRET_AVIS"]
   .map((nom) => avant.match(new RegExp(`^${nom}=.*$`, "m"))?.[0])
   .filter((ligne): ligne is string => !!ligne);
 const cleSignature = JSON.stringify(JSON.parse(readFileSync(cheminCles, "utf8"))[0]);

@@ -173,6 +173,13 @@ Rien de secret n'est dans Git ni ne s'écrit dans une conversation.
   garde quand il réécrit le fichier. Aucun essai automatique ne s'en sert : les tests
   et les parcours imposent `IA_SIMULEE=1` et des clés vides, et les aides rendent
   alors une réponse simulée (`IA_SIMULEE=echec` ou `delai` simulent une panne).
+- `ELEVENLABS_API_KEY` (dictée de l'adulte, F07.4) : posée à la main par le porteur
+  dans `.env.local` le 9 novembre 2026, jamais lue ni affichée, gardée par
+  `npm run env:local` ; une clé à part pour le site, avec sa propre limite de
+  consommation chez ElevenLabs. Les essais l'effacent et simulent la dictée comme les
+  aides (`IA_SIMULEE`). Sans elle, le micro dit « La dictée n'est pas installée sur ce
+  site. » ; en ligne, elle se pose dans l'environnement de Vercel (Production), puis un
+  nouveau déploiement.
 
 ## Mettre en production
 

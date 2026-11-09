@@ -397,6 +397,8 @@
 
 /* « Nous retenons » : une page de cahier, sa marge rouge et ses lignes ; le texte, dans la voix du récit */
 .retenu {
+  /* Le micro de la dictée se pose sur la ligne de « Nous retenons » (F07.4) */
+  position: relative;
   --interligne: 1.7rem;
   padding: 16px 20px 14px 38px;
   border-radius: 12px;

@@ -44,6 +44,10 @@ export type Scene = {
   reference: number;
   titre: string | null;
   consigne: string;
+  /** La liste de vérification sous la consigne (F13.2) */
+  verification?: string[];
+  /** Les éléments que l'élève a cochés, encore dans la liste (F07.2) */
+  cochees?: string[];
   fin: boolean;
   horsLivre: boolean;
   creeParEleve: string | null;

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, copie, FICHE, MESSAGE, posteDe, recit, sceneEnBase, semerBlocs, semerImageDeposee, semerPartie, semerProjet, sql, supprimerComptes, classeQuiEcrit,
+  adultePret, aller, copie, FICHE, MESSAGE, posteDe, recit, sceneEnBase, semerBlocs, semerImageDeposee, semerPartie, semerProjet, sql, supprimerComptes, classeQuiEcrit, inserer,
 } from "./outils";
 
 /**
@@ -13,7 +13,6 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
-const BARRE = (page: Page) => page.getByRole("toolbar", { name: "Outils de la copie" });
 const CREER = (page: Page) => page.getByRole("region", { name: "Créer une image" });
 const appelsImages = (compte: string) =>
   sql<{ aide: string; nombre: number }>("select aide, nombre from public.appels_ia where enseignant_id = $1 and sorte = 'image' order by commence_le", [compte]);
@@ -102,7 +101,7 @@ test.describe("L'image d'une scène (F10.2)", () => {
     await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
     await expect(CREER(page)).toHaveCount(0);
     await copie(page).click();
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("button", { name: "Créer une image" }).click();
     const panneau = CREER(page);
     const badges = panneau.getByRole("group", { name: "Dans l’image" });
@@ -156,7 +155,7 @@ test.describe("L'image d'une scène (F10.2)", () => {
     });
     await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
     await copie(page).click();
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("button", { name: "Créer une image" }).click();
     await CREER(page).getByLabel("Ce que montre l’image").fill("le passeur sur le ponton");
     await CREER(page).getByRole("button", { name: "Créer l’image" }).click();
@@ -172,7 +171,7 @@ test.describe("L'image d'une scène (F10.2)", () => {
     const s = await avecPersonnages(page);
     await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
     await copie(page).click();
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("button", { name: "Créer une image" }).click();
     await CREER(page).getByLabel("Ce que montre l’image").fill("la grotte avec des cristaux bleus");
     await CREER(page).getByRole("button", { name: "Copier le prompt" }).click();
@@ -191,7 +190,7 @@ test.describe("L'image d'une scène (F10.2)", () => {
     const s = await avecPersonnages(page, { proposer: false });
     await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
     await copie(page).click();
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await expect(FICHE(page).getByRole("button", { name: "Créer une image" })).toHaveCount(0);
     await FICHE(page).getByRole("button", { name: "Préparer le prompt d’une image" }).click();
     const panneau = page.getByRole("region", { name: "Créer une image" });
@@ -223,7 +222,7 @@ test.describe("L'idée d'image de l'élève (F10.2)", () => {
 
     await aller(page, `/projet/${s.projet}/scene/${scene}`);
     await copie(page).click();
-    await BARRE(page).getByRole("button", { name: "Image" }).click();
+    await inserer(page, "Image");
     await FICHE(page).getByRole("button", { name: "Créer une image" }).click();
     await expect(CREER(page).getByLabel("Ce que montre l’image")).toHaveValue("une grotte pleine de cristaux bleus");
   });

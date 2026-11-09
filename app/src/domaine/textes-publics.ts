@@ -153,6 +153,7 @@ export const CONFIDENTIALITE: Document = {
         "– pour une classe : son nom et son année, le prénom de chaque élève et, s’il est donné, son nom ; les codes des élèves et le mot de passe de la classe, chiffrés ;",
         "– les histoires : textes, consignes, remarques de l’enseignant, images importées ou créées, livres composés et partagés ;",
         "– un journal des appels aux aides IA, sans leur contenu : la date, l’aide, son coût ;",
+        "– un journal des dictées : la date et la durée de chacune, ni le son ni le texte entendu ;",
         "– pour un achat : ce qui a été acheté, son montant et sa date ; le paiement lui-même se fait chez Stripe, qui garde les données de la carte ;",
         "– pour un signalement d’un livre de la bibliothèque : le motif, le message et l’adresse électronique de qui l’envoie, pour lui répondre.",
       ],
@@ -163,6 +164,7 @@ export const CONFIDENTIALITE: Document = {
         "– Vercel (le site et la mesure d’audience) et Supabase (la base et les images), en Europe, à Paris ;",
         "– Amazon Web Services, à Paris : la sauvegarde de chaque nuit et l’envoi des courriels ;",
         "– Anthropic et OpenAI, aux États-Unis : les aides IA, seulement quand l’adulte en demande une ;",
+        "– ElevenLabs, aux États-Unis : la dictée, seulement quand l’adulte dicte ; le son part pour être transcrit, et l’outil ne le garde pas ;",
         "– Stripe : le paiement, seulement quand l’adulte achète.",
       ],
     },
@@ -411,7 +413,7 @@ export const MODELES: Modele[] = [
           paragraphes: [
             "– ne traiter les données que pour fournir l’outil, sur instruction de l’enseignant ;",
             "– garder la confidentialité des données ; seul l’éditeur y a accès, pour la maintenance ;",
-            "– les héberger en Europe, à Paris (Supabase, Vercel, Amazon Web Services) ; n’envoyer aux aides IA (Anthropic, OpenAI, aux États-Unis), à la demande de l’enseignant, aucun prénom ni nom d’élève ;",
+            "– les héberger en Europe, à Paris (Supabase, Vercel, Amazon Web Services) ; n’envoyer aux aides IA (Anthropic, OpenAI, aux États-Unis), à la demande de l’enseignant, aucun prénom ni nom d’élève ; n’envoyer à la dictée (ElevenLabs, aux États-Unis) que le son que l’enseignant enregistre quand il dicte, sans le garder ;",
             "– protéger les accès : codes et mots de passe chiffrés, connexions chiffrées, sauvegarde chaque nuit, gardée quatre-vingt-dix jours ;",
             "– aider le responsable à répondre aux demandes d’exercice des droits ;",
             "– prévenir le responsable sans retard injustifié de toute violation de données dont il a connaissance ;",
@@ -422,7 +424,7 @@ export const MODELES: Modele[] = [
         {
           titre: "Sous-traitants ultérieurs",
           paragraphes: [
-            "Vercel (hébergement du site), Supabase (base de données et images), Amazon Web Services (sauvegardes et courriels), Anthropic et OpenAI (aides IA, à la demande), Stripe (paiement, sans données d’élèves). L’éditeur informe le responsable de tout changement.",
+            "Vercel (hébergement du site), Supabase (base de données et images), Amazon Web Services (sauvegardes et courriels), Anthropic et OpenAI (aides IA, à la demande), ElevenLabs (dictée de l’enseignant, à la demande), Stripe (paiement, sans données d’élèves). L’éditeur informe le responsable de tout changement.",
           ],
         },
         {

@@ -631,6 +631,7 @@ function TexteRetenu({
       <ChampQuiGrandit
         id="texte-retenu"
         className={styles.retenu__champ}
+        micro="titre"
         rows={5}
         maxLength={6000}
         value={valeur}

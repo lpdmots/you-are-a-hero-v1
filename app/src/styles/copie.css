@@ -1623,6 +1623,31 @@ kbd {
   font-size: 0.85em;
 }
 
+/* « Insérer », dans la barre : la liste de « / », sous le bouton, et le rappel du raccourci */
+.slash--inserer {
+  width: min(400px, calc(100vw - 16px));
+}
+.slash--inserer button.est-choisie {
+  background: var(--canard-pale);
+}
+.slash__astuce {
+  margin: 4px 0 0;
+  padding: 7px 10px 4px;
+  border-top: 1px solid var(--trait);
+  color: var(--graphite-3);
+  font-size: var(--t-xs);
+}
+.outil .outil__chevron {
+  width: 14px;
+  height: 14px;
+  margin-left: -2px;
+  color: var(--graphite-3);
+}
+.outil[aria-expanded="true"] {
+  background: var(--feuille-2);
+  border-color: var(--trait);
+}
+
 /* Une liste courte, ouverte au curseur comme le menu des commandes : les objets, les formules */
 .copie__liste {
   position: fixed;

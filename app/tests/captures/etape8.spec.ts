@@ -1,7 +1,6 @@
 import { test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, choixAuto, classeQuiEcrit, copie, note, posteDe, recit, selectionner, semerAttribution, semerBlocs, semerClasse, semerImageDeposee, semerPartie, semerProjet,
-  sql, supprimerComptes,
+  adultePret, aller, choixAuto, classeQuiEcrit, copie, note, posteDe, recit, selectionner, semerAttribution, semerBlocs, semerClasse, semerImageDeposee, semerPartie, semerProjet, sql, supprimerComptes, inserer,
 } from "../parcours/outils";
 
 /**
@@ -681,7 +680,7 @@ test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser
   // L'image d'une scène, dans le panneau à droite du texte
   await aller(page, `/projet/${projet}/scene/${scene}`);
   await copie(page).click();
-  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await capturer(page, "scene-ajouter-image", false);
   await page.locator(".cx").first().getByRole("button", { name: "Créer une image" }).click();
   const creer = page.getByRole("region", { name: "Créer une image" });
@@ -712,7 +711,7 @@ test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser
   await page.setViewportSize({ width: 390, height: 844 });
   await aller(page, `/projet/${projet}/scene/${s.lisiere.scenes[0]}`);
   await copie(page).click();
-  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await page.locator(".cx").first().getByRole("button", { name: "Créer une image" }).click();
   await page.getByRole("region", { name: "Créer une image" }).getByRole("group", { name: "Dans l’image" }).waitFor();
   await capturer(page, "scene-creer-390", false);
@@ -722,7 +721,7 @@ test("lot 8 : les images créées (F10.1, F10.2, F11.4)", async ({ page, browser
   await base.from("enseignants").update({ reglages_ia: { imagesParCreation: 2, proposer: false } }).eq("id", compte.id);
   await aller(page, `/projet/${projet}/scene/${s.lisiere.scenes[0]}`);
   await copie(page).click();
-  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await capturer(page, "scene-sans-ia", false);
   await page.locator(".cx").first().getByRole("button", { name: "Préparer le prompt d’une image" }).click();
   await page.getByRole("heading", { name: "Prompt d’une image" }).waitFor();

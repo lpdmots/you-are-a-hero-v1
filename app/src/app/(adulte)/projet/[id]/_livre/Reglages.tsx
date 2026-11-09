@@ -18,6 +18,7 @@ import { reglerJeu } from "../../actions-preparation";
 import { PetiteDoublePage, type SourceApercu } from "./Apercu";
 import { annulerAgencement, garderOrdre, melangerAvecPrecedente, reglerMiseEnPage, reglerPagesDuLivre } from "../../actions-livre";
 import type { EtatDeLOrdre, Reordonne } from "@/serveur/livre/ordre";
+import { ChampTexte } from "@/composants/dictee/ChampDictable";
 
 /**
  * Le volet « Réglages » de « Mettre en page » (F11.6) : « Texte et pages », puis « Pages de début
@@ -938,7 +939,7 @@ function ReglesDuJeu({ projetId, depart, desImprimes }: { projetId: string; depa
           </span>
         </Bulle>
       </span>
-      <textarea
+      <ChampTexte
         id="page-regles"
         className="pchamp"
         rows={6}

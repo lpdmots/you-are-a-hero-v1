@@ -66,13 +66,17 @@ async function ecrire(sceneId: string, texte: unknown[]) {
 }
 
 describe("Formuler une consigne (F13.2)", () => {
-  it("F13-AC06 — d'après l'indication enregistrée, une consigne pour les élèves et une courte liste de points", async () => {
+  it("F13-AC06 — d'après l'indication et la liste enregistrées, une consigne pour les élèves et sa liste de vérification", async () => {
     const { ici } = await lisiere();
+    await laurent.base.from("scenes").update({ verification: ["Décrire la brume."] }).eq("id", ici);
     const simuler = vi.spyOn(consigne, "simuler");
     const r = await demanderUneConsigne(enseignantDe(laurent), ici);
     expect(r.ok).toBe(true);
     if (!r.ok) return;
-    expect(r.consigne).toBe("Le passeur apparaît sur le pont. Raconte ce qui se passe.\nDécris :\n– le lieu ;\n– ce que ressent ton héros.");
+    expect(r.consigne).toBe("Le passeur apparaît sur le pont. Raconte ce qui se passe.");
+    expect(r.liste).toEqual(["Décrire le lieu.", "Montrer ce que ressent ton héros."]);
+    // La liste déjà notée part avec l'indication
+    expect(envoye(consigne, simuler)).toContain("Décrire la brume.");
     // L'indication, le chapitre et les scènes voisines partent ; ni l'élève, ni l'adulte, ni la classe (F13)
     const parti = envoye(consigne, simuler);
     for (const present of ["le passeur apparaît sur le pont", "rencontre le passeur", "Gué — les pierres qui chantent", "Lou traverse le gué", "Souche — la lanterne de secours"]) {
@@ -81,16 +85,15 @@ describe("Formuler une consigne (F13.2)", () => {
     for (const absent of ["Alice", "Laurent", "CM1-CM2"]) expect(parti).not.toContain(absent);
   });
 
-  it("F13-AC18 — la proposition suit le modèle : une ou deux phrases, « Décris : », deux ou trois points", async () => {
+  it("F13-AC18 — la proposition suit le modèle : une ou deux phrases, puis deux à quatre éléments à l'infinitif", async () => {
     const { ici } = await lisiere();
     const r = await demanderUneConsigne(enseignantDe(laurent), ici);
     if (!r.ok) throw new Error(r.message);
-    const [phrases, decris, ...points] = r.consigne.split("\n");
-    expect(phrases.split(/(?<=[.!?])\s/).length).toBeLessThanOrEqual(2);
-    expect(decris).toBe("Décris :");
-    expect(points.length).toBeGreaterThanOrEqual(2);
-    expect(points.length).toBeLessThanOrEqual(3);
-    expect(points.every((p) => p.startsWith("– "))).toBe(true);
+    expect(r.consigne.split(/(?<=[.!?])\s/).length).toBeLessThanOrEqual(2);
+    expect(r.consigne).not.toContain("Décris");
+    expect(r.liste.length).toBeGreaterThanOrEqual(2);
+    expect(r.liste.length).toBeLessThanOrEqual(4);
+    expect(r.liste.every((l) => /^[A-ZÉ].*\.$/.test(l))).toBe(true);
   });
 
   it("F13-AC07 — une génération seule ne change ni la consigne ni le texte de la scène", async () => {
@@ -102,11 +105,11 @@ describe("Formuler une consigne (F13.2)", () => {
     expect(await ligne(ici)).toEqual(avant);
   });
 
-  it("en mode personnel, une note d'intention pour soi, sans « Décris : »", async () => {
+  it("en mode personnel, une note d'intention pour soi, sans liste", async () => {
     const { ici } = await lisiere("personnel");
     const simuler = vi.spyOn(consigne, "simuler");
     const r = await demanderUneConsigne(enseignantDe(laurent), ici);
-    expect(r).toEqual({ ok: true, consigne: "le passeur apparaît sur le pont ; à faire sentir : le lieu, l'émotion.", reste: null });
+    expect(r).toEqual({ ok: true, consigne: "le passeur apparaît sur le pont ; à faire sentir : le lieu, l'émotion.", liste: [], reste: null });
     expect(envoye(consigne, simuler)).toContain("note d'intention");
   });
 

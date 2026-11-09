@@ -2,11 +2,14 @@
 
 import { posesDImages } from "@/domaine/offre";
 import { BoldPlugin, ItalicPlugin, UnderlinePlugin } from "@platejs/basic-nodes/react";
+import { RangeApi } from "platejs";
 import { createPlatePlugin, ParagraphPlugin, Plate, PlateContent, usePlateEditor } from "platejs/react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { poser } from "@/composants/flottant";
-import { Icone, type NomIcone } from "@/composants/Icone";
+import { BoutonDictee, useDictee, useDicteeActive } from "@/composants/dictee/Dictee";
+import { Icone } from "@/composants/Icone";
+import { MESSAGES_DICTEE, raccorder } from "@/domaine/dictee";
 import {
   ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, renvoisDe, texteOuvert, tirerConstruction,
   type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
@@ -27,6 +30,7 @@ import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
 import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets, ListePersonnages } from "./FicheJeu";
 import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
 import { FicheIdees, useIdeesDeChoix, type Idee } from "./FicheIdees";
+import { MenuInserer, type Commande } from "./MenuInserer";
 import { FicheLiaison, HorsRecit, type GestesDeLiaison } from "./Liaisons";
 import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, type Editeur, type Signal } from "./regles";
 import { ScenesVoisines } from "./ScenesVoisines";
@@ -62,7 +66,6 @@ type Bandeau = {
   actions?: { libelle: string; faire: () => void }[];
 };
 
-type Commande = { cle: string; nom: string; aide: string; icone: NomIcone; faire: () => void };
 
 export type PiedDeCopie = {
   etat: EtatTexte;
@@ -818,6 +821,26 @@ export function Copie({
     e.tf.insertText(nom);
     reprendreLeTexte();
   };
+  // ——— Dictée de l'adulte (F07.4) : le texte entendu s'écrit au curseur, dans un paragraphe de récit ou une note ———
+  const dicteeActive = useDicteeActive() && adulte;
+  const ouDicter = () => {
+    const ici = blocCourant(e);
+    return ici && e.selection && (ici.bloc.type === "p" || ici.bloc.type === "note") ? ici : null;
+  };
+  const dictee = useDictee({
+    avantDeCommencer: () => (ouDicter() ? null : MESSAGES_DICTEE.placer),
+    inserer: (entendu) => {
+      const ici = ouDicter();
+      if (!ici || !e.selection) return;
+      const [debut, fin] = RangeApi.edges(e.selection);
+      const avant = e.api.string({ anchor: e.api.start([ici.index]), focus: debut });
+      const apres = e.api.string({ anchor: fin, focus: e.api.end([ici.index]) });
+      const texte = raccorder(avant, entendu, apres);
+      if (!texte) return;
+      e.tf.insertText(texte);
+      reprendreLeTexte();
+    },
+  });
   const basculerProtection = () => {
     const ici = paragrapheCourant();
     if (!ici) return;
@@ -1217,28 +1240,9 @@ export function Copie({
                   Choix
                 </button>
               ) : null}
-              {peutChoisir ? (
-                <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ouvrirAction}>
-                  <Icone nom="crayon" />
-                  Action de jeu
-                </button>
-              ) : null}
-              <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ouvrirObjets}>
-                <Icone nom="sac" />
-                Objets
-              </button>
-              {adulte ? (
-                <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ouvrirPoserImage}>
-                  <Icone nom="image" />
-                  Image
-                </button>
-              ) : null}
-              {adulte ? (
-                <button type="button" className="outil outil--texte" onMouseDown={(ev) => ev.preventDefault()} onClick={ajouterNote}>
-                  <Icone nom="noter" />
-                  Note
-                </button>
-              ) : null}
+              {/* « Choix » garde son bouton, le geste central d'un livre-jeu ; le reste de ce que « / » propose passe par « Insérer » (9 novembre 2026) */}
+              <MenuInserer commandes={commandes.filter((c) => c.cle !== "choix")} />
+              {dicteeActive ? <BoutonDictee dictee={dictee} variante="outil" /> : null}
             </div>
           )}
         </div>

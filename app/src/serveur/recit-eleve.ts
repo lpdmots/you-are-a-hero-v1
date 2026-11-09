@@ -271,7 +271,12 @@ export type SceneOuverte = {
   /** Ce qu'il a le droit de changer dans le texte (F06.1) */
   droits: Droits;
   /** « Mon idée d'image » (F10-AC10) : rien hors de son chapitre */
-  idee: string | null;
+idee: string | null;
+  /**
+   * La liste de vérification sous la consigne et les éléments que les élèves ont cochés (F13.2,
+   * F07.2) ; rien hors de son chapitre, comme la consigne
+   */
+  verification: { elements: string[]; cochees: string[] } | null;
 };
 
 type StructureLue = {
@@ -316,7 +321,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
   if (!chapitre) return null;
   const aChoix = s.recit === "choix";
   // Ce qu'il peut nommer : les scènes de son chapitre ; ailleurs, le seul titre public du chapitre
-  const [partie, voisines, destinations, numeros, jeu, autour, affichees, lue, relecture] = await Promise.all([
+  const [partie, voisines, destinations, numeros, jeu, autour, affichees, lue, relecture, verification] = await Promise.all([
     base.from("parties").select("titre").eq("id", chapitre.partie_id).maybeSingle(),
     base.from("scenes").select("id, reference, titre, texte_vide").eq("chapitre_id", s.chapitre).order("rang"),
     aChoix ? base.rpc("destinations_de_la_scene", { p_scene: sceneId }) : Promise.resolve({ data: [] }),
@@ -337,6 +342,10 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
       if (r.error) throw new Error(`Scène illisible : ${r.error.message}`);
       return r.data as { remise: { par: string | null; le: string; texte: Texte } | null; remarque: { texte: string; le: string; lue: boolean } | null } | null;
     }),
+    // La liste de vérification, dans son chapitre seulement (F13.2)
+    s.profil
+      ? base.rpc("verification_du_poste", { p_scene: sceneId }).then((r) => (r.data as { elements: string[]; cochees: string[] } | null) ?? null)
+      : Promise.resolve(null),
   ]);
   const scenes = new Map<string, SceneConnue>(
     ((voisines.data ?? []) as { id: string; reference: number; titre: string | null; texte_vide: boolean }[]).map((v) => [
@@ -394,6 +403,7 @@ export async function sceneDuPoste(c: ContexteEleve, sceneId: string): Promise<S
     remarque: relecture?.remarque ?? null,
     // L'idée d'image se lit dans son chapitre seulement, comme la consigne
     idee: s.profil ? lue?.idee_image ?? "" : null,
+    verification: verification ? { elements: verification.elements ?? [], cochees: verification.cochees ?? [] } : null,
   };
 }
 

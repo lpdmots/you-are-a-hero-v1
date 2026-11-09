@@ -3465,6 +3465,32 @@ V6, le premier envoi à l'imprimeur.
    Une fois construite, le guide « Comment écrire un livre dont vous êtes le
    héros » l'annonce en encart (partie 5), décidé le 28 octobre 2026 ;
    F07.4 est accordé le 30 octobre 2026.
+   **Étendue le 9 novembre 2026 par le porteur à tous les champs que
+   l'adulte remplit,** la copie comprise, et construite le même jour en
+   local, sans lot ([F07.4, « Dictée à l'adulte »](specifications.md#dictée-à-ladulte),
+   F07-AC87 à AC99) : un micro dans le coin haut de chaque champ, « Dicter »
+   dans la barre de la copie, le texte posé à la fin de l'enregistrement,
+   au curseur, comme une frappe ; ElevenLabs `scribe_v2`, les noms du projet
+   en indices ; le micro ouvert par l'en-tête `Permissions-Policy` pour le
+   site, fermé côté élève et dans le lecteur ; migration `dictee` (journal
+   des durées, sans son ni texte) en base locale seulement. Clé
+   `ELEVENLABS_API_KEY` posée par lui dans `.env.local` ; à poser chez
+   Vercel avant la mise en ligne. Restent : son essai avec de vrais appels,
+   l'encart du guide une fois en ligne.
+   **Liste de vérification sous la consigne, décidée par le porteur le
+   9 novembre 2026** et construite en local le même jour, dans la foulée
+   ([F13.2](specifications.md#f132--formuler-une-consigne-et-sa-liste-de-vérification),
+   F13-AC18 révisé, F13-AC33, F07-AC100 à AC105) : « ✦ Formuler » rend la
+   consigne et deux à quatre éléments à l'infinitif à la place de
+   « Décris : » ; l'adulte écrit, récrit, ajoute et retire les éléments ;
+   l'élève coche « J'ai pensé à », ses coches gardées avec la scène, et un
+   rappel sans blocage à la remise s'il en manque ; l'adulte voit les coches ;
+   les fiches impriment une case par élément. Ses trois réponses suivent les
+   recommandations (coches gardées et rappel, liste sur les fiches,
+   conversion des consignes « Décris : »). Migration `liste_de_verification`
+   en base locale seulement ; un vrai appel de « Formuler » essayé. L'encart
+   de la partie 13 du guide, qui montrait la dictée et la liste avant qu'elles
+   existent, devient exact une fois les deux en ligne.
 3. **Livres d'exemple,** écrits par Claude avec les aides de l'application
    (premier essai des aides sur un livre entier), dans les limites
    gratuites (40 scènes et 10 images au plus) : un petit livre à choix de

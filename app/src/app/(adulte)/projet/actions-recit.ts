@@ -1,6 +1,7 @@
 "use server";
 
 import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
+import { listePropre } from "@/domaine/verification";
 import { estStyle, STYLE_AUTRE_MAX } from "@/domaine/illustration";
 import { estAge } from "@/domaine/aides-ia";
 import { revalidatePath } from "next/cache";
@@ -195,12 +196,14 @@ export async function reglerChapitre(chapitreId: string, valeurs: { titre?: stri
 }
 
 /** Titre et consigne d'une scène (F03.1, F07.1) : tous deux facultatifs. */
-export async function reglerScene(sceneId: string, valeurs: { titre?: string; consigne?: string }): Promise<Fait> {
+export async function reglerScene(sceneId: string, valeurs: { titre?: string; consigne?: string; verification?: string[] }): Promise<Fait> {
   const e = await exigerEnseignant();
   if (!estUuid(sceneId)) return echec("Scène inconnue.");
   const maj: Record<string, unknown> = {};
   if (valeurs.titre !== undefined) maj.titre = propre(valeurs.titre, 120) || null;
   if (valeurs.consigne !== undefined) maj.consigne = texteLong(valeurs.consigne, 4000);
+  // La liste de vérification (F13.2) : sans élément vide ni doublon, huit au plus
+  if (Array.isArray(valeurs.verification)) maj.verification = listePropre(valeurs.verification);
   if (Object.keys(maj).length === 0) return { ok: true };
   const { data, error } = await e.supabase.from("scenes").update(maj).eq("id", sceneId).select("projet_id");
   if (error || !data?.length) return echec("Cela n’a pas pu être enregistré.");

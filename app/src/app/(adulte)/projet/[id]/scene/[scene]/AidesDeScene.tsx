@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent as ToucheReact } from "react";
+import { ListeAModifier } from "@/composants/verification/Liste";
+import { listePropre } from "@/domaine/verification";
 import { poser } from "@/composants/flottant";
 import { useAidesIa } from "@/composants/AidesIa";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
@@ -278,17 +280,22 @@ export function useTitreIa({
  * La proposition se retouche sur place avant « Utiliser » (F13-AC07).
  */
 export function useConsigneIa({
-  sceneId, avantDePartir, deClasse, actuelle, onUtiliser, onDemande,
+  sceneId, avantDePartir, deClasse, actuelle, actuelleListe, onUtiliser, onDemande,
 }: Commun & {
   deClasse: boolean;
   actuelle: string;
-  onUtiliser: (consigne: string) => void;
+  /** La liste de vérification de la scène, rendue par « Annuler » (F13.2) */
+  actuelleListe: string[];
+  onUtiliser: (consigne: string, liste: string[]) => void;
   /** Une demande part : l'autre proposition ouverte se referme */
   onDemande: () => void;
 }) {
   const aides = useAidesIa();
   const dire = useMessage();
+  // En classe, la consigne et sa liste de vérification ; en mode personnel, la note seule (F13.2)
   const [propose, setPropose] = useState<string | null>(null);
+  const [listeProposee, setListeProposee] = useState<string[]>([]);
+  const [tirage, setTirage] = useState(0);
   const [demande, setDemande] = useState(false);
   // La proposition arrive au bas d'une colonne qui défile : elle se montre
   const cadre = useRef<HTMLDivElement>(null);
@@ -309,6 +316,8 @@ export function useConsigneIa({
     setDemande(false);
     if (!r.ok) return dire({ texte: r.message });
     setPropose(r.consigne);
+    setListeProposee(r.liste);
+    setTirage((n) => n + 1);
     if (r.reste) dire({ texte: r.reste });
   };
 
@@ -316,9 +325,10 @@ export function useConsigneIa({
     const texte = propose?.trim();
     if (!texte) return;
     const avant = actuelle;
+    const listeAvant = actuelleListe;
     setPropose(null);
-    onUtiliser(texte);
-    dire({ texte: "Consigne remplacée.", annuler: () => onUtiliser(avant) });
+    onUtiliser(texte, deClasse ? listePropre(listeProposee) : []);
+    dire({ texte: deClasse ? "Consigne et liste remplacées." : "Consigne remplacée.", annuler: () => onUtiliser(avant, listeAvant) });
   };
 
   if (!aides.proposer) return { bouton: null, proposition: null };
@@ -340,7 +350,7 @@ export function useConsigneIa({
       <div ref={cadre} className="ia-propose ia-propose--consigne" role="group" aria-labelledby="ia-consigne-t">
         <p className="ia-propose__tete" id="ia-consigne-t">
           <Icone nom="ia" />
-          Consigne proposée
+          {deClasse ? "Consigne et liste proposées" : "Consigne proposée"}
           <span>modifiable</span>
         </p>
         <ChampQuiGrandit
@@ -351,6 +361,9 @@ export function useConsigneIa({
           value={propose}
           onChange={(e) => setPropose(e.target.value)}
         />
+        {deClasse ? (
+          <ListeAModifier key={tirage} depart={listeProposee} onChange={setListeProposee} titre="Liste proposée" etiquette="Élément proposé" cases={false} />
+        ) : null}
         <span className="ia-propose__gestes">
           <button type="button" className="btn btn--petit" disabled={!propose.trim()} onClick={utiliser}>
             Utiliser

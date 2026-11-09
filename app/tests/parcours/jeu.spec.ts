@@ -1,7 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  action, adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, ecrire, enClair, FICHE, LISTE, sauv,
-  posteDe, presseTexte, recit, sceneEnBase, selectionner, semerBlocs, semerJeu, semerPartie, semerProjet, sql, supprimerComptes, typesEnBase,
+  action, adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, classeQuiEcrit, copie, copiesGardees, ecrire, enClair, FICHE, LISTE, sauv, posteDe, presseTexte, recit, sceneEnBase, selectionner, semerBlocs, semerJeu, semerPartie, semerProjet, sql, supprimerComptes, typesEnBase, inserer, commandesInserer,
 } from "./outils";
 
 /**
@@ -73,7 +72,7 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     await semerJeu(s.base, s.compte, s.projet, OBJETS, FORMULES);
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
-    await BARRE(alice.page).getByRole("button", { name: "Objets" }).click();
+    await inserer(alice.page, "Objet");
     const fiche = LISTE(alice.page);
     await expect(fiche.getByRole("option")).toHaveText([/la clé d’argent.*Ouvre la porte du sanctuaire/, /le couteau/, /la lanterne.*Éclaire la grotte/]);
     await expect(fiche).toContainText("Liste tenue par Mme Laurent");
@@ -109,7 +108,7 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     expect(page.url()).toBe(adresse);
     await attendreEnBase(s15, "Lou lève la lanterne sourde");
     // Le nouvel objet figure dans la liste, à la prochaine ouverture
-    await BARRE(page).getByRole("button", { name: "Objets" }).click();
+    await inserer(page, "Objet");
     await expect(LISTE(page).getByRole("option")).toHaveText([/la lanterne sourde.*Éclaire sans être vue/]);
     await page.keyboard.press("Escape");
     // Dans la préparation, l'étape « Le jeu » la montre
@@ -124,8 +123,8 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     const { chapitres } = await semerPartie(base, projet, "Le départ", [{ titre: "Le port", scenes: ["Le quai"] }]);
     await semerJeu(base, compte, projet, OBJETS, FORMULES);
     await aller(page, sceneAdulte(projet, chapitres[0].scenes[0]));
-    await expect(BARRE(page).getByRole("button", { name: "Objets" })).toBeVisible();
-    await expect(BARRE(page).getByRole("button", { name: /Action de jeu|Choix/ })).toHaveCount(0);
+    expect(await commandesInserer(page)).toEqual(["Objet", "Personnage", "Image", "Note"]);
+    await expect(BARRE(page).getByRole("button", { name: "Choix", exact: true })).toHaveCount(0);
     await ecrire(page, "Sur le quai, /");
     await expect(page.locator(".slash [role=option]")).toHaveText([/Objet/, /Personnage/, /Image/, /Note/]);
     await page.keyboard.type("action");
@@ -175,7 +174,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await attendreEnBase(s15, "Retire deux points de volonté");
 
     // Une formule à compléter : « … » est sélectionné, ce qu'on tape le remplace
-    await BARRE(page).getByRole("button", { name: "Action de jeu" }).click();
+    await inserer(page, "Action de jeu");
     await LISTE(page).getByRole("option").nth(2).getByRole("button").click();
     await expect(copie(page)).toBeFocused();
     await page.keyboard.type("le couteau");
@@ -198,7 +197,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await semerJeu(s.base, s.compte, s.projet, OBJETS, douze);
     await semerBlocs(s.base, s15, [recit("La lame brille.")]);
     await aller(page, sceneAdulte(s.projet, s15));
-    await BARRE(page).getByRole("button", { name: "Action de jeu" }).click();
+    await inserer(page, "Action de jeu");
     const liste = LISTE(page).getByRole("listbox");
     await expect(liste.getByRole("option")).toHaveCount(13);
     for (let i = 0; i < 12; i += 1) await page.keyboard.press("ArrowDown");
@@ -274,7 +273,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
     await semerBlocs(s.base, s15, [recit("La lame brille.")]);
     const bilal = await posteDe(browser, s, "Bilal");
     await aller(bilal.page, sceneEleve(s15));
-    await BARRE(bilal.page).getByRole("button", { name: "Action de jeu" }).click();
+    await inserer(bilal.page, "Action de jeu");
     // Les formules lui sont proposées ; la liste reste tenue par l'enseignante
     await expect(LISTE(bilal.page).getByRole("option")).toHaveText(["Paragraphe vide, à écrire", ...FORMULES]);
     await expect(LISTE(bilal.page).getByRole("button", { name: /Ajouter une formule/ })).toHaveCount(0);
@@ -289,7 +288,7 @@ test.describe("Action de jeu (F04.2) — point 14 du prototype", () => {
 
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(s15));
-    await expect(BARRE(alice.page).getByRole("button", { name: "Action de jeu" })).toHaveCount(0);
+    expect(await commandesInserer(alice.page)).not.toContain("Action de jeu");
     await selectionner(alice.page, { bloc: 0, offset: 15 });
     await alice.page.keyboard.type(" /");
     await expect(alice.page.locator(".slash [role=option]")).toHaveText([/Objet/, /Personnage/]);

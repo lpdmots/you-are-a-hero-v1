@@ -1,6 +1,6 @@
 import { randomUUID } from "node:crypto";
 import { test, type Page } from "@playwright/test";
-import { adultePret, aller, livrePayant, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
+import { adultePret, aller, livrePayant, recit, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, inserer } from "../parcours/outils";
 
 /**
  * Captures des écrans de l'étape 9 : npm run captures -- etape9
@@ -59,7 +59,7 @@ test("lot 4 : limites gratuites et pass", async ({ page }) => {
   await semerBlocs(base, chapitres[0].scenes[1], [recit("Les feux follets dansent au-dessus des roseaux."), ...images.slice(7, 10).map(bloc)]);
   await aller(page, `/projet/${projet}/scene/${chapitres[0].scenes[1]}`);
   await page.locator('.copie__texte[contenteditable="true"]').click();
-  await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Image" }).click();
+  await inserer(page, "Image");
   await page.getByRole("alertdialog").waitFor();
   await capturer(page, "dialogue-images");
 

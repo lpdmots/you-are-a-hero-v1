@@ -1,4 +1,5 @@
 import "server-only";
+import { consigneEtListe } from "@/domaine/verification";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { paragraphesACorriger } from "@/domaine/correction";
 import { lettresDe, sansRecit, type Texte } from "@/domaine/copie";
@@ -29,7 +30,11 @@ export const DEBUT_ENVOYE = 800;
 type SceneLue = { id?: string; titre: string | null; consigne: string | null };
 type Lieu = {
   histoire: Histoire;
-  scene: SceneLue & { id: string };
+  /**
+   * `consigne` : la consigne et sa liste en un texte, pour le contexte des aides ; `indication` et
+   * `liste` : séparées, pour « ✦ Formuler », qui les rend séparées (F13.2)
+   */
+  scene: SceneLue & { id: string; indication: string; liste: string[] };
   chapitre: { titre: string; resume: string | null };
   /** Les autres scènes du chapitre, dans l'ordre, la scène elle-même retirée */
   avant: SceneLue[];
@@ -43,23 +48,23 @@ type Lieu = {
 export async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | null> {
   if (!estUuid(sceneId)) return null;
   const { data: s } = await e.supabase
-    .from("scenes").select("projet_id, chapitre_id, titre, consigne, prise_par_eleve").eq("id", sceneId).is("supprime_le", null).maybeSingle();
+    .from("scenes").select("projet_id, chapitre_id, titre, consigne, verification, prise_par_eleve").eq("id", sceneId).is("supprime_le", null).maybeSingle();
   if (!s) return null;
   const [projet, chapitre, autres] = await Promise.all([
     projetDe(e, s.projet_id as string),
     e.supabase.from("chapitres").select("titre, resume").eq("id", s.chapitre_id as string).maybeSingle(),
-    e.supabase.from("scenes").select("id, titre, consigne, rang").eq("chapitre_id", s.chapitre_id as string).is("supprime_le", null).order("rang"),
+    e.supabase.from("scenes").select("id, titre, consigne, verification, rang").eq("chapitre_id", s.chapitre_id as string).is("supprime_le", null).order("rang"),
   ]);
   if (!projet || !chapitre.data) return null;
   const liste = (autres.data ?? []) as (SceneLue & { id: string })[];
   const ici = liste.findIndex((x) => x.id === sceneId);
-  const lue = (x: SceneLue): SceneLue => ({ id: x.id, titre: x.titre?.trim() || null, consigne: x.consigne?.trim() || null });
+  const lue = (x: SceneLue & { verification?: string[] | null }): SceneLue => ({ id: x.id, titre: x.titre?.trim() || null, consigne: consigneEtListe(x.consigne, x.verification) });
   return {
     projetId: s.projet_id as string,
     recit: projet.recit,
     eleveId: (s.prise_par_eleve as string | null) ?? null,
     histoire: histoireDuProjet(projet),
-    scene: { ...lue(s as SceneLue), id: sceneId },
+    scene: { ...lue(s as SceneLue), id: sceneId, indication: ((s.consigne as string | null) ?? "").trim(), liste: (s.verification as string[] | null) ?? [] },
     chapitre: { titre: chapitre.data.titre as string, resume: (chapitre.data.resume as string | null)?.trim() || null },
     avant: (ici < 0 ? [] : liste.slice(0, ici)).map(lue),
     apres: (ici < 0 ? liste : liste.slice(ici + 1)).map(lue),
@@ -93,24 +98,25 @@ export function debutDuTexte(paragraphes: string[], max = DEBUT_ENVOYE): string 
   return pris.length ? pris.join("\n") : null;
 }
 
-export type ReponseConsigne = { ok: true; consigne: string; reste: string | null } | { ok: false; message: string };
+export type ReponseConsigne = { ok: true; consigne: string; liste: string[]; reste: string | null } | { ok: false; message: string };
 
 
 /**
  * « ✦ Formuler » (F13.2) : d'après l'indication de l'adulte, c'est-à-dire la consigne telle
- * qu'elle est enregistrée. En classe, le modèle fixe (« Décris : » et deux ou trois points) ;
- * en mode personnel, une note d'intention pour soi.
+ * qu'elle est enregistrée, et la liste qu'il a déjà notée. En classe, la consigne et sa liste de
+ * vérification (9 novembre 2026) ; en mode personnel, une note d'intention pour soi.
  */
 export async function demanderUneConsigne(e: Enseignant, sceneId: string): Promise<ReponseConsigne> {
   const lieu = await lieuDeLaScene(e, sceneId);
   if (!lieu) return { ok: false, message: "Cette scène n’existe plus." };
   // Jamais de refus faute de texte (F13, 27 octobre 2026) : sans indication, le titre et les choix qui mènent ici
-  const indication = lieu.scene.consigne ?? "";
+  const indication = lieu.scene.indication;
   const [preparation, menent] = await Promise.all([preparationDe(e, lieu.projetId), choixQuiMenentIci(e, lieu)]);
   const carnet: Carnet | undefined = carnetDe(preparation);
   const r = await demanderUneAide(e, aideConsigne, {
     histoire: lieu.histoire,
     indication: indication.slice(0, 1500),
+    liste: lieu.scene.liste,
     titre: lieu.scene.titre ?? undefined,
     menent,
     carnet,
@@ -119,7 +125,7 @@ export async function demanderUneConsigne(e: Enseignant, sceneId: string): Promi
       .filter((v) => v.titre || v.consigne)
       .map((v) => ({ titre: v.titre ?? "Sans titre", consigne: v.consigne?.slice(0, 600) })),
   });
-  return r.ok ? { ok: true, consigne: r.valeur.texte, reste: r.reste } : { ok: false, message: r.message };
+  return r.ok ? { ok: true, consigne: r.valeur.texte, liste: r.valeur.liste, reste: r.reste } : { ok: false, message: r.message };
 }
 
 export type ReponseTitres = { ok: true; titres: string[]; reste: string | null } | { ok: false; message: string };

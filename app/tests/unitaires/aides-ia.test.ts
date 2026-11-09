@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { AIDES_TEXTE, REGLAGES_IA_HABITUELS, lireReglagesIa, marquesDansLaCopie, AGE_PAR_DEFAUT, eleveEnMots, lecteursEnMots, qualiteDeLImage, enEtoiles, resteDEtoiles } from "@/domaine/aides-ia";
 import { AIDES } from "@/serveur/ia/aides";
-import { composerConsigne, consigne } from "@/serveur/ia/aides/consigne";
+import { consigne, elementDeListe } from "@/serveur/ia/aides/consigne";
 import { correction } from "@/serveur/ia/aides/correction";
 import { histoireDuProjet, presentation } from "@/serveur/ia/aides/contexte";
 import { ideesChoix } from "@/serveur/ia/aides/idees-choix";
@@ -111,17 +111,28 @@ describe("Chaque aide relit sa réponse sans confiance", () => {
     expect(correction.lire({ paragraphes: ["Le dragon dormait.", ""] }, e)).toBeNull();
   });
 
-  it("F13-AC18 — la consigne suit le modèle : une ou deux phrases, « Décris : », deux ou trois points", () => {
+  it("F13-AC18 — la consigne et sa liste de vérification : une ou deux phrases, puis deux à quatre éléments à l'infinitif", () => {
     const e = { histoire, indication: "le passeur apparaît sur le pont", voisines: [] };
-    const lue = consigne.lire({ phrases: "Sur le pont de brume, une silhouette apparaît : c'est le passeur. Raconte ce qu'il dit à Lou.", points: ["– sa lanterne et son visage ;", "sa voix", "ce que ressent Lou."] }, e);
-    expect(lue?.texte).toBe("Sur le pont de brume, une silhouette apparaît : c'est le passeur. Raconte ce qu'il dit à Lou.\nDécris :\n– sa lanterne et son visage ;\n– sa voix ;\n– ce que ressent Lou.");
-    expect(consigne.lire({ phrases: "Raconte.", points: ["un seul point"] }, e)).toBeNull();
-    expect(composerConsigne("Raconte.", ["a", "b", "c", "d"].slice(0, 3)).split("\n")).toHaveLength(5);
+    const lue = consigne.lire({ consigne: "Sur le pont de brume, une silhouette apparaît : c'est le passeur. Raconte ce qu'il dit à Lou.", liste: ["– décrire sa lanterne et son visage ;", "Écrire le dialogue", "Montrer ce que ressent Lou."] }, e);
+    expect(lue).toEqual({
+      texte: "Sur le pont de brume, une silhouette apparaît : c'est le passeur. Raconte ce qu'il dit à Lou.",
+      liste: ["Décrire sa lanterne et son visage.", "Écrire le dialogue.", "Montrer ce que ressent Lou."],
+    });
+    // Moins de deux éléments : la réponse ne tient pas le modèle
+    expect(consigne.lire({ consigne: "Raconte.", liste: ["Décrire le pont."] }, e)).toBeNull();
+    // Quatre au plus ; une consigne encore écrite à l'ancienne garde ses phrases seules
+    const longue = consigne.lire({ consigne: "Raconte.\nDécris :\n– le pont.", liste: ["A", "B", "C", "D", "E"] }, e);
+    expect(longue?.texte).toBe("Raconte.");
+    expect(longue?.liste).toEqual(["A.", "B.", "C.", "D."]);
+    // L'adulte a déjà noté des éléments : l'aide les reçoit
+    expect(consigne.message({ ...e, liste: ["Décrire le garde."] })).toContain("<liste_deja_notee>\n- Décrire le garde.");
   });
 
-  it("en mode personnel, une note d'intention, sans « Décris : » (F13)", () => {
+  it("en mode personnel, une note d'intention, sans liste (F13)", () => {
     const e = { histoire: { ...histoire, mode: "personnel" as const }, indication: "la rencontre avec le passeur", voisines: [] };
-    expect(consigne.lire({ phrases: "La rencontre avec le passeur ; à faire sentir : sa lanterne, sa voix, la peur de Lou.", points: [] }, e)?.texte).not.toContain("Décris");
+    expect(consigne.lire({ consigne: "La rencontre avec le passeur ; à faire sentir : sa lanterne, sa voix, la peur de Lou.", liste: ["Décrire."] }, e)).toEqual({
+      texte: "La rencontre avec le passeur ; à faire sentir : sa lanterne, sa voix, la peur de Lou.", liste: [],
+    });
   });
 
   it("idées de choix : une scène existante seulement parmi celles du chapitre ; les idées déjà montrées ne reviennent pas (F13.3)", () => {
@@ -202,8 +213,10 @@ describe("Différence mot à mot d'une correction (F13.1)", () => {
 });
 
 describe("Retouches des réponses, d'après le premier passage de l'essai", () => {
-  it("un point de consigne commence en minuscule, sauf un nom propre", () => {
-    expect(composerConsigne("Raconte.", ["La silhouette du passeur", "Lou et sa peur"])).toBe("Raconte.\nDécris :\n– la silhouette du passeur ;\n– Lou et sa peur.");
+  it("un élément de la liste prend une majuscule et un point, sans tiret ni numéro", () => {
+    expect(elementDeListe("– décrire la silhouette du passeur ;")).toBe("Décrire la silhouette du passeur.");
+    expect(elementDeListe("2. Montrer la peur de Lou !")).toBe("Montrer la peur de Lou !");
+    expect(elementDeListe(" ; ")).toBe("");
   });
 
   it("une partie proposée perd l'étiquette « Partie : » que certains modèles recopient", async () => {

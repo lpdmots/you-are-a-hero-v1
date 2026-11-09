@@ -1,6 +1,8 @@
 "use client";
 
 import { ouvrirOffreDuPass } from "@/composants/OffreDuPass";
+import { ListeAModifier } from "@/composants/verification/Liste";
+import { decompteDesCoches } from "@/domaine/verification";
 import { imagePossible } from "../../../actions-offre";
 import { useColonneCollee } from "@/composants/colonneCollee";
 import Link from "next/link";
@@ -121,11 +123,14 @@ export function PageScene({
   const depart = departDe(plan);
   const [titre, setTitre] = useState(scene.titre ?? "");
   const [consigne, setConsigne] = useState(scene.consigne);
+  // La liste de vérification sous la consigne (F13.2) ; sa clé remonte la liste quand une proposition la remplace
+  const [verification, setVerification] = useState(scene.verification ?? []);
+  const [cleListe, setCleListe] = useState(0);
   const [etat, setEtat] = useState<"" | "attente" | "enregistre" | "erreur">("");
   const [choixDepart, setChoixDepart] = useState(false);
   const minuteur = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Ce qui attend d'être enregistré : le titre et la consigne partent ensemble, aucun ne chasse l'autre
-  const enAttente = useRef<{ titre?: string; consigne?: string }>({});
+  const enAttente = useRef<{ titre?: string; consigne?: string; verification?: string[] }>({});
   const retour = lecture
     ? `/projet/${projet.id}/lecture?reprendre=1&${lecture}`
     : venuDuLivre
@@ -200,7 +205,7 @@ export function PageScene({
     envoi.current = suite;
     return suite;
   };
-  const enregistrer = (valeurs: { titre?: string; consigne?: string }) => {
+  const enregistrer = (valeurs: { titre?: string; consigne?: string; verification?: string[] }) => {
     setEtat("attente");
     enAttente.current = { ...enAttente.current, ...valeurs };
     if (minuteur.current) clearTimeout(minuteur.current);
@@ -223,9 +228,15 @@ export function PageScene({
     avantDePartir: envoyer,
     deClasse: projet.deClasse,
     actuelle: consigne,
-    onUtiliser: (c) => {
+    actuelleListe: verification,
+    onUtiliser: (c, liste) => {
       setConsigne(c);
-      enregistrer({ consigne: c });
+      // En classe, la liste proposée remplace celle de la scène ; en mode personnel, il n'y en a pas
+      if (projet.deClasse) {
+        setVerification(liste);
+        setCleListe((n) => n + 1);
+        enregistrer({ consigne: c, verification: liste });
+      } else enregistrer({ consigne: c });
       void envoyer();
     },
     onDemande: () => titreIa.fermer(),
@@ -1115,6 +1126,10 @@ export function PageScene({
                     Consigne <span className="facultatif">facultative</span>
                   </h2>
                   {!consigneOuverte && !consigne.trim() ? <span className="fiche-tete__fin">sans consigne</span> : null}
+                  {/* La consigne repliée pendant la relecture : ce que l'élève a coché se lit d'un coup d'œil (F07.2) */}
+                  {!consigneOuverte && projet.deClasse && qui && verification.length ? (
+                    <span className="fiche-tete__coches">{decompteDesCoches(verification, scene.cochees ?? [])}</span>
+                  ) : null}
                 </header>
               </summary>
               <div className="carnet-fiche__corps">
@@ -1135,6 +1150,18 @@ export function PageScene({
                 />
                 {consigneIa.bouton}
                 {consigneIa.proposition}
+                {projet.deClasse ? (
+                  <ListeAModifier
+                    key={cleListe}
+                    depart={verification}
+                    cochees={scene.cochees ?? []}
+                    qui={qui}
+                    onChange={(liste) => {
+                      setVerification(liste);
+                      enregistrer({ verification: liste });
+                    }}
+                  />
+                ) : null}
                 <p className={styles.aide}>
                   {projet.deClasse
                     ? "Les élèves du chapitre la lisent en ouvrant la scène. Sans consigne écrite, ils suivent celle que vous leur avez donnée."

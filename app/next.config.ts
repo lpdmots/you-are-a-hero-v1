@@ -59,8 +59,14 @@ const nextConfig: NextConfig = {
           { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "same-origin" },
-          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+          // Le micro, pour la dictée de l'adulte (F07.4) : ce site seulement, jamais une page qu'il afficherait
+          { key: "Permissions-Policy", value: "camera=(), microphone=(self), geolocation=()" },
         ],
+      },
+      {
+        // Ni l'espace des élèves ni le lecteur ne dictent : le micro y reste fermé
+        source: "/:espace(classe|travail|lire)/:path*",
+        headers: [{ key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" }],
       },
       {
         // Le lien de lecture se transmet, mais ne se répertorie pas (F12.1, « Non-référencement »)

@@ -569,6 +569,27 @@
 .fr-consigne {
   white-space: pre-wrap;
 }
+/* « J'ai pensé à » : une case par élément, que l'élève coche au crayon en se relisant */
+.fr-verif {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fr-verif li {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.fr-case {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border: 1.2px solid var(--graphite-2);
+  border-radius: 2px;
+  transform: translateY(1px);
+}
 .fr-lib {
   margin-top: 3px;
   color: var(--graphite-2);

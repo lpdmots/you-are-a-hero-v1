@@ -1,8 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, choixAuto, classeQuiEcrit, copie, ecrire, enClair, FICHE, liaison,
-  liensEnBase, note, numerosEnBase, PHRASES, sauv, posteDe, presseTexte, protege, recit, sceneEnBase, selectionner, semerBlocs, semerPartie, semerProjet,
-  sql, supprimerComptes, typesEnBase, copiesGardees,
+  adultePret, aller, attendreEnBase, attendreEnregistre, BANDEAU, blocsEditeur, choixAuto, classeQuiEcrit, copie, ecrire, enClair, FICHE, liaison, liensEnBase, note, numerosEnBase, PHRASES, sauv, posteDe, presseTexte, protege, recit, sceneEnBase, selectionner, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes, typesEnBase, copiesGardees, inserer, commandesInserer,
 } from "./outils";
 
 /**
@@ -223,7 +221,7 @@ test.describe("Paragraphe protégé (F06.1) — point 8 du prototype", () => {
     await semerBlocs(a.base, a.scenes[0], [recit("Lou fit un pas.")]);
     await aller(page, sceneAdulte(a.projet, a.scenes[0]));
     const barre = page.getByRole("toolbar", { name: "Outils de la copie" });
-    await expect(barre.getByRole("button", { name: "Note" })).toBeVisible();
+    expect(await commandesInserer(page)).toContain("Note");
     await expect(barre.getByRole("button", { name: /Protéger|Retirer la protection/ })).toHaveCount(0);
     await expect(copie(page).locator(".est-protege, .bloc-prepare, .marge--crochet")).toHaveCount(0);
     await barre.getByRole("button", { name: "Choix", exact: true }).click();
@@ -339,7 +337,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     const bilal = await posteDe(browser, s, "Bilal");
     await aller(bilal.page, sceneEleve(s15));
     const barre = bilal.page.getByRole("toolbar", { name: "Outils de la copie" });
-    await expect(barre.getByRole("button", { name: "Note" })).toHaveCount(0);
+    expect(await commandesInserer(bilal.page)).not.toContain("Note");
     await expect(barre.getByRole("button", { name: /Protéger/ })).toHaveCount(0);
     await ecrire(bilal.page, " /");
     await expect(bilal.page.locator(".slash [role=option]")).toHaveText([/Choix/, /Action de jeu/, /Objet/, /Personnage/]);
@@ -352,7 +350,7 @@ test.describe("Liaison cachée par énigme (F05.1, F05.2) — point 11 du protot
     await expect(FICHE(bilal.page).getByRole("button", { name: "Lien caché (énigme)…" })).toHaveCount(0);
     // L'enseignante, elle, a les deux
     await aller(page, sceneAdulte(s.projet, s15));
-    await expect(page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Note" })).toBeVisible();
+    expect(await commandesInserer(page)).toContain("Note");
     await page.getByRole("button", { name: "Choix", exact: true }).click();
     await expect(FICHE(page).getByRole("button", { name: "Lien caché (énigme)…" })).toBeVisible();
     await bilal.contexte.close();
@@ -470,7 +468,7 @@ test.describe("Note de l'enseignant (F05.2) — point 11 du prototype", () => {
     await expect(page.locator(".tampon")).toHaveText("En cours");
 
     // Par le bouton, sous le paragraphe du curseur ; une note vidée s'efface au retour arrière
-    await page.getByRole("toolbar", { name: "Outils de la copie" }).getByRole("button", { name: "Note" }).click();
+    await inserer(page, "Note");
     await page.keyboard.type("x");
     expect((await blocsEditeur(page)).map((b) => b.type)).toEqual(["note", "p", "note"]);
     await page.keyboard.press("Backspace");

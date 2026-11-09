@@ -9,6 +9,7 @@ import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { ORIENTATION_MAX } from "@/domaine/preparation";
 import type { Partie } from "@/domaine/recit";
 import { demanderAuPlan } from "./IdeesDeParties";
+import { ChampTexte } from "@/composants/dictee/ChampDictable";
 
 export type ChapitrePropose = { titre: string; resume: string };
 type Proposition = ChapitrePropose & { id: string };
@@ -195,7 +196,7 @@ export function AjoutChapitre({
                       onChange={(e) => p.modifier(c.id, { titre: e.target.value.replace(/\n/g, " ") })}
                     />
                     {/* La carte garde sa hauteur, les flèches leur place : un long résumé défile dans son champ */}
-                    <textarea
+                    <ChampTexte
                       className="ix-intention ajout-ia__resume"
                       maxLength={4000}
                       value={c.resume}

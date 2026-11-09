@@ -2956,6 +2956,68 @@ classe, le bouton « Aide » changeait de place d'un onglet à l'autre.
 largeur rendue ; les captures du guide, de l'accueil et la vidéo de visite,
 qui montrent encore la barre du haut (à refaire, voir `plan.md`).
 
+### Barre de la copie allégée (9 novembre 2026)
+
+Idée du porteur : retirer « Objets », « Action de jeu », « Choix »… pour ne
+garder que « / ». Déconseillé (« / » ne se voit pas : un collègue qui découvre
+l'outil ou un élève de 8 ans ne le trouve pas, et « Choix » est le geste central
+d'un livre-jeu) ; retenu à la place, sur recommandation, le regroupement :
+
+- **G I S · Protéger** à gauche ; à droite **Choix** (s'il y a des choix),
+  **+ Insérer ▾** et **Dicter** (adulte). La barre tient sur une ligne à 1366 px
+  (elle en prenait deux).
+- **« + Insérer »** ouvre sous lui la liste de « / », sans « Choix » : Action de
+  jeu, Objet, Personnage, Image, Note, selon ce que la personne peut utiliser ;
+  au pied, « ou tapez / dans le texte ». Ni le bouton ni la liste ne prennent le
+  curseur au texte ; flèches, Entrée et Échap au clavier.
+- Côté élève : « Choix » avec le profil « écriture et organisation », puis
+  « + Insérer » (Objet, Personnage, et Action de jeu avec ce profil).
+
+### Liste de vérification sous la consigne (9 novembre 2026)
+
+Construite d'après la fiche « Consigne » dessinée pour le guide (partie 13),
+sur les règles de F13.2.
+
+- **Chez l'adulte :** sous la consigne et « ✦ Formuler », un trait, « Liste de
+  vérification », puis une ligne par élément : la case, le libellé qui se
+  récrit sur place et passe à la ligne s'il est long, la croix. « + Ajouter un
+  élément » en lien canard, « Aucun élément pour l'instant. » sans liste. La
+  case est vide ; verte avec une coche quand l'élève a coché (« Coché par
+  Alice ») : le vert, c'est fait. La consigne repliée porte « 1 sur 2 coché »
+  à droite de son titre, quand un élève s'occupe de la scène.
+- **Dans la proposition de l'IA :** « Consigne et liste proposées », la
+  consigne puis « Liste proposée », les mêmes lignes sans case.
+- **Chez l'élève :** « J'ai pensé à : » sous le trait, de vraies cases de
+  20 px, vertes une fois cochées, le libellé grisé ; à la remise, le rappel
+  prend la place de l'indication du pied, et le bouton dit « Remettre quand
+  même ».
+- **Fiches :** « J'AI PENSÉ À » comme « DÉJÀ ÉCRIT », une case de 9 px par
+  élément.
+
+### Micro de la dictée (9 novembre 2026)
+
+Construit sans maquette, sur les règles de F07.4 (« Dictée à l'adulte »).
+
+- **Dans un champ :** un rond de 28 px dans le coin **haut** droit, gris
+  (`--graphite-3`), sans cadre au repos ; le coin bas reste à la poignée de
+  redimensionnement des champs qui en ont une. Le champ réserve 40 px à droite
+  pour que le texte ne passe pas dessous.
+- **Dans la copie :** « Dicter », avec le micro, au bout de ce qu'on insère
+  (après « Note »), comme les autres outils.
+- **Pendant l'enregistrement :** bascule choisie, en graphite plein comme toute
+  bascule, le carré d'arrêt et le temps qui défile (« 0:42 ») ; le cadre du
+  champ fonce d'un ton. Pendant la transcription, le micro respire, inactif.
+  Le nom du bouton reste « Dicter » (lecteur d'écran) ; son titre dit comment
+  l'arrêter et qu'Échap annule.
+- **Ni étincelles ni canard pâle :** la dictée n'est pas une aide IA payée en
+  étoiles (F14), elle ne doit pas lui ressembler.
+- **Messages :** ceux de toute l'application (`Messages`), une phrase en bas
+  de l'écran.
+
+Perfectible, à juger à l'usage : la barre de la copie passait déjà sur deux
+lignes à 1366 px, « Dicter » rejoint la seconde ; sur un champ d'une ligne, le
+micro occupe toute la hauteur du champ.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
@@ -3151,6 +3213,8 @@ correction gardent le brique et le vert. Barre d'outils de la copie, à sa
 demande : la mise en forme et « Protéger » à gauche (ce qui s'applique au
 texte), les commandes qui insèrent à droite (« Choix », « Action de jeu »,
 « Objets », « Image », « Note ») ; en 390 px, la mise en forme a sa ligne.
+Révisé le 9 novembre 2026 (« Barre de la copie allégée », plus bas) : à droite,
+« Choix », « + Insérer » et « Dicter ».
 « Corriger » prend la largeur de son libellé, sans réserver celle de « Corriger
 la sélection » : la pastille, calée à droite, grandit alors vers la gauche, et le
 degré ne bouge pas (en 390 px, où elle commence la ligne, il se décale). Les

@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 process.env.IA_SIMULEE = "1";
 delete process.env.ANTHROPIC_API_KEY;
 delete process.env.OPENAI_API_KEY;
+delete process.env.ELEVENLABS_API_KEY;
 
 const alias = { "@": resolve(import.meta.dirname, "src"), "server-only": resolve(import.meta.dirname, "tests/vide.ts") };
 
