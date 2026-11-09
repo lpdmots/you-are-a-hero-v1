@@ -4185,8 +4185,10 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   sous le titre du projet (« Sans classe »), sa page n'existant plus ; toute
   modification d'une classe relit la colonne. Suite complète des parcours
   passée le 8 novembre 2026 (455, dont les reprises des sélecteurs liés à
-  l'ancienne barre) ; commit local `colonne` le 9 novembre 2026 à sa demande,
-  rien poussé ni appliqué à la vraie base.
+  l'ancienne barre) ; commitée le 9 novembre 2026 à sa demande, puis mise en
+  ligne le même jour à sa demande : vraie base sauvegardée,
+  `ouverture_des_projets` appliquée (ne plus la modifier), code jusqu'à
+  `582ce3b`, vérification de la vraie base passée.
   Repris le même jour à sa demande : « Réglages du projet » en page
   (`/projet/…/reglages`), et le schéma « Chemins », qui passait sur la
   colonne, mesuré sur la page et non sur la fenêtre ; décidé par lui sur
