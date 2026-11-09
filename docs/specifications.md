@@ -12000,7 +12000,10 @@ découvre l'outil, et le porteur, administrateur.
   il ouvre l'accueil, l'« Aide » et les textes à tous les robots, ferme
   l'application et `/lire` à tous, et donne le plan du site ; `/sitemap.xml`
   liste ces pages publiques à l'adresse `iletaituneclasse.com`, et elles
-  seules.
+  seules. Révisé le 9 novembre 2026 sur décision du porteur : les images des
+  livres de la bibliothèque (`/images/publie/`), déjà visibles de tous, sont
+  ouvertes aux moteurs de recherche, non aux robots des IA ; les adresses des
+  livres restent hors des moteurs (F15-AC12).
 - **F14-AC46 — Une seule adresse :** étant donné
   `il-etait-une-classe.vercel.app/aide` ou `you-are-a-hero-v1.vercel.app/`,
   alors on arrive, par une redirection permanente, à la même page du `.com` ;

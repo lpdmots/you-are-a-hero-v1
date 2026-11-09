@@ -17,6 +17,9 @@ describe("référencement", () => {
     expect(tous.disallow).not.toEqual(expect.arrayContaining(["/entree"]));
     expect(tous.disallow).not.toContain("/lire/");
     expect(tous.disallow).not.toContain("/classe");
+    // Les images des livres de la bibliothèque, déjà publiques, ouvertes aux moteurs (pas aux robots des IA)
+    expect(tous.allow).toContain("/images/publie/");
+    expect(ia.allow).not.toContain("/images/publie/");
     expect(ia.userAgent).toEqual(expect.arrayContaining(["GPTBot", "ClaudeBot", "Google-Extended", "PerplexityBot", "OAI-SearchBot"]));
     expect(ia.disallow).toBe("/");
     expect(ia.allow).toEqual(expect.arrayContaining(["/$", "/aide", "/confidentialite", "/conditions", "/mentions-legales", "/llms.txt"]));
