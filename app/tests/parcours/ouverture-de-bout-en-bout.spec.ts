@@ -145,7 +145,7 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   // ——— Une recharge, depuis « Mon compte » ———
   await aller(page, "/projets");
   await ouvrirLeMenuDuCompte(page);
-  await expect(page.locator("header").getByText(/✦ pour les aides/)).toBeVisible();
+  await expect(page.locator("#colonne-adulte").getByText(/✦ pour les aides/)).toBeVisible();
   await page.getByRole("link", { name: "Mon compte" }).click();
   await page.getByRole("button", { name: /Recharger/ }).click();
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();

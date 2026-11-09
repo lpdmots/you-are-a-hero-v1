@@ -1,74 +1,42 @@
-import Link from "next/link";
-import { ImageRepere } from "@/composants/ImageRepere";
+import { SuiviDesImages } from "@/composants/ImagesALAjout";
 import { ProjetOuvert } from "@/composants/ProjetCourant";
-import { libelleAnnee } from "@/domaine/annee";
-import { libelleRecit, NOM_ONGLET, ongletsDe, type Onglet } from "@/domaine/projets";
-import { chapitresDe } from "@/domaine/recit";
-import { pluriel } from "@/domaine/texte";
+import { NOM_ONGLET, type Onglet } from "@/domaine/projets";
 import type { Enseignant } from "@/serveur/adulte";
-import { mesClasses, type Projet } from "@/serveur/lectures";
-import { planDe } from "@/serveur/recit";
-import { limitesDuProjet, offreActuelle } from "@/serveur/offre";
-import { ClasseDuProjet } from "../[onglet]/ClasseDuProjet";
-import styles from "../[onglet]/projet.module.css";
-import { MenuProjet } from "./MenuProjet";
+import { projetDeLaColonne, type Projet } from "@/serveur/lectures";
 
-/** En-tête commun aux onglets d'un projet : son image, son titre, sa classe, ses onglets. */
-export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant: Enseignant; projet: Projet; onglet: Onglet }) {
-  const deClasse = projet.organisation === "classe";
-  const [classes, plan, offre, limites] = await Promise.all([
-    deClasse ? mesClasses(enseignant) : Promise.resolve([]), planDe(enseignant, projet.id), offreActuelle(), limitesDuProjet(enseignant.supabase, projet.id),
-  ]);
-  const attribue = chapitresDe(plan).some((c) => c.attributions.length > 0);
+/**
+ * Ce que toute page du projet pose (F06.5, révisé le 8 novembre 2026) : le projet dans la colonne de
+ * navigation, avec l'onglet qu'elle désigne (`actif`, celui de la page ou celui d'où l'on vient ;
+ * aucun pour ses réglages), et le suivi des images en route, la page se relisant à leur arrivée.
+ */
+export async function ColonneDuProjet({
+  enseignant, projet, actif, suivreLesImages = true,
+}: {
+  enseignant: Enseignant; projet: Projet; actif: Onglet | null;
+  /** La page du chapitre suit déjà les images en route */
+  suivreLesImages?: boolean;
+}) {
+  const colonne = await projetDeLaColonne(enseignant, projet);
   return (
-    <section className={styles.histoire}>
-      <ProjetOuvert id={projet.id} titre={projet.titre} onglet={onglet} />
-      <div className={styles.vignette}>
-        <ImageRepere repere={projet} graine={projet.id} prioritaire />
-      </div>
-      <div className={styles.titre}>
-        <div>
-          <h1>{projet.titre}</h1>
-          <div className={styles.meta}>
-            {deClasse ? (
-              <ClasseDuProjet
-                projetId={projet.id}
-                titre={projet.titre}
-                classeId={projet.classe?.id ?? null}
-                attribue={attribue}
-                libelle={
-                  projet.classe
-                    ? `Classe ${projet.classe.nom} · ${projet.classe.nombreEleves ? `${projet.classe.nombreEleves} élève${pluriel(projet.classe.nombreEleves)}` : "aucun élève inscrit"}`
-                    : "Sans classe"
-                }
-                classes={classes.filter((c) => c.enCours).map((c) => ({ id: c.id, nom: c.nom, annee: libelleAnnee(c.anneeDebut), eleves: c.eleves.length }))}
-              />
-            ) : (
-              "Projet personnel"
-            )}
-            {" · "}
-            {libelleRecit(projet.recit)}
-          </div>
-        </div>
-        <MenuProjet
-          onglet={onglet}
-          projet={{
-            id: projet.id, titre: projet.titre, deClasse, lectureOuverte: projet.lectureOuverte, miseEnFormeEleves: projet.miseEnFormeEleves,
-            imageId: projet.imageId, visuelChoisi: projet.visuelChoisi, visuelDefaut: projet.visuelDefaut,
-            styleImages: projet.styleImages, styleAutre: projet.styleAutre, herosAbsent: projet.herosAbsent, consigneEcriture: projet.consigneEcriture,
-            ageDesLecteurs: projet.ageDesLecteurs,
-          }}
-          livre={offre.livrePayant && limites && !enseignant.createur ? { offre, limites } : null}
-          avecPass={limites?.pass === true}
-        />
-      </div>
-      <nav className={styles.onglets} aria-label="Sections du projet">
-        {ongletsDe().map((o) => (
-          <Link key={o} href={`/projet/${projet.id}/${o}`} aria-current={o === onglet ? "page" : undefined}>
-            {NOM_ONGLET[o]}
-          </Link>
-        ))}
-      </nav>
-    </section>
+    <>
+      <ProjetOuvert projet={colonne} actif={actif} />
+      {suivreLesImages ? <SuiviDesImages projetId={projet.id} /> : null}
+    </>
+  );
+}
+
+/**
+ * En tête d'une page du projet : le projet dans la colonne, puis la ligne de titre de la page, son nom
+ * à gauche et, à droite, la place de son bouton « Aide » (F06-AC98, 8 novembre 2026).
+ */
+export async function EnteteProjet({ enseignant, projet, onglet }: { enseignant: Enseignant; projet: Projet; onglet: Onglet | null }) {
+  return (
+    <>
+      <ColonneDuProjet enseignant={enseignant} projet={projet} actif={onglet} />
+      <header className="page-tete page-tete--onglet">
+        <h1>{onglet ? NOM_ONGLET[onglet] : "Réglages du projet"}</h1>
+        <div className="page-tete__cmd" id="tete-de-page" />
+      </header>
+    </>
   );
 }

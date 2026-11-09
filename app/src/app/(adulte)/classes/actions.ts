@@ -29,10 +29,8 @@ async function classeEnCours(enseignant: Enseignant, classeId: string) {
   return classe?.enCours ? classe : null;
 }
 
-const rafraichir = (classeId?: string) => {
-  revalidatePath("/classes");
-  if (classeId) revalidatePath(`/classes/${classeId}`, "layout");
-};
+// Toute la mise en page se relit : la colonne de navigation porte le nom de la classe du projet en cours (F06.5)
+const rafraichir = () => revalidatePath("/", "layout");
 
 const IDENTIFIANT_MAL_FORME = "Un identifiant a de 3 à 30 lettres minuscules ou chiffres, sans espace.";
 const dejaPris = (identifiant: string) =>
@@ -77,13 +75,13 @@ export async function renommerClasse(classeId: string, nom: string, identifiant?
   if (choisi === classe.identifiant) {
     const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre }).eq("id", classeId);
     if (error) return echec("Le nom n’a pas pu être changé.");
-    rafraichir(classeId);
+    rafraichir();
     return { ok: true, identifiant: null };
   }
   if (!identifiantValide(choisi)) return echec(IDENTIFIANT_MAL_FORME, "identifiant");
   const { error } = await enseignant.supabase.from("classes").update({ nom: nomPropre, identifiant: choisi }).eq("id", classeId);
   if (error) return error.code === "23505" ? dejaPris(choisi) : echec("Le nom et l’identifiant n’ont pas pu être changés. Réessayez.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true, identifiant: choisi };
 }
 
@@ -129,7 +127,7 @@ export async function terminerAnnee(classeId: string): Promise<Fait> {
     .is("terminee_le", null)
     .select("id");
   if (error || !data?.length) return echec("L’année n’a pas pu être terminée.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true };
 }
 
@@ -139,7 +137,7 @@ export async function rouvrirClasse(classeId: string): Promise<Fait> {
   if (!UUID.test(classeId)) return echec("Classe inconnue.");
   const { data, error } = await enseignant.supabase.from("classes").update({ terminee_le: null }).eq("id", classeId).select("id");
   if (error || !data?.length) return echec("La classe n’a pas pu être rouverte.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true };
 }
 
@@ -176,7 +174,7 @@ export async function changerMotDePasse(classeId: string, nouveau: string): Prom
     .eq("classe_id", classeId)
     .select("classe_id");
   if (error || !data?.length) return echec("Le mot de passe n’a pas pu être changé.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true };
 }
 
@@ -242,7 +240,7 @@ export async function modifierEleve(classeId: string, eleveId: string, prenom: s
   }
   const { error } = await enseignant.supabase.from("eleves").update({ prenom: prenomPropre, nom: nomPropre || null }).eq("id", eleveId);
   if (error) return echec("Le nom n’a pas pu être changé.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true };
 }
 
@@ -257,7 +255,7 @@ export async function retirerEleve(classeId: string, inscriptionId: string): Pro
   if (!UUID.test(inscriptionId)) return echec("Élève inconnu.");
   const { error } = await enseignant.supabase.rpc("retirer_eleve", { p_inscription: inscriptionId });
   if (error) return echec(error.code === "P0001" ? error.message : "L’élève n’a pas pu être retiré.");
-  rafraichir(classeId);
+  rafraichir();
   revalidatePath("/projet/[id]", "layout");
   return { ok: true };
 }
@@ -268,7 +266,7 @@ export async function annulerRetrait(classeId: string, inscriptionId: string): P
   if (!UUID.test(inscriptionId)) return echec("Élève inconnu.");
   const { error } = await enseignant.supabase.rpc("annuler_retrait", { p_inscription: inscriptionId });
   if (error) return echec(error.code === "P0001" ? error.message : "Le retrait n’a pas pu être annulé.");
-  rafraichir(classeId);
+  rafraichir();
   revalidatePath("/projet/[id]", "layout");
   return { ok: true };
 }
@@ -286,7 +284,7 @@ export async function reglerHoraires(classeId: string, limites: boolean, plages:
     p_plages: limites ? plages.map((p) => ({ jours: [...p.jours].sort((a, b) => a - b), de: p.de, a: p.a })) : [],
   });
   if (error) return echec("Les horaires n’ont pas pu être enregistrés.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true };
 }
 
@@ -340,7 +338,7 @@ export async function inscrireEleves(
     }),
   });
   if (error) return echec("Les élèves n’ont pas pu être inscrits. Rien n’a été créé : réessayez.");
-  rafraichir(classeId);
+  rafraichir();
   return { ok: true, nombre: typeof data === "number" ? data : connus.length + lignes.length };
 }
 

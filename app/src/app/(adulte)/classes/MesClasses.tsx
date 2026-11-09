@@ -126,7 +126,19 @@ export function MesClasses({
                           <li>
                             <b>{n ? `${n} élève${pluriel(n)}` : "Aucun élève inscrit"}</b>
                           </li>
-                          <li>{c.projets.length ? c.projets.map((p) => p.titre).join(" · ") : "Aucun projet"}</li>
+                          {/* Le projet s'ouvre depuis sa classe (F06-AC102), au-dessus du lien de la carte */}
+                          <li className={styles.projetsDeLaClasse}>
+                            {c.projets.length
+                              ? c.projets.map((p, k) => (
+                                  <span key={p.id}>
+                                    {k ? " · " : ""}
+                                    <Link className="lien" href={`/projet/${p.id}`}>
+                                      {p.titre}
+                                    </Link>
+                                  </span>
+                                ))
+                              : "Aucun projet"}
+                          </li>
                           <li>{horairesEnTexte(c).join(" ; ")}</li>
                         </ul>
                         <Link

@@ -13,6 +13,7 @@ import { BoutonDouble } from "@/composants/BoutonDouble";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
+import { DansLaTete } from "@/composants/DansLaTete";
 import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
 import { ImageRepere } from "@/composants/ImageRepere";
@@ -421,19 +422,22 @@ export function Plan({
               <input type="search" placeholder="Rechercher une scène" value={demande} onChange={(e) => setDemande(e.target.value)} />
             </label>
           ) : null}
-          <button
-            type="button"
-            className="aide-bouton"
-            title="Que fait-on ici ?"
-            onClick={() => {
-              // Rouverte par « Aide », elle se referme par « Fermer l'aide »
-              setVue(true);
-              setAide(true);
-            }}
-          >
-            <Icone nom="aide" />
-            Aide
-          </button>
+          {/* À droite du titre de la page, comme sur chaque onglet (F06.5, 8 novembre 2026) */}
+          <DansLaTete>
+            <button
+              type="button"
+              className="aide-bouton"
+              title="Que fait-on ici ?"
+              onClick={() => {
+                // Rouverte par « Aide », elle se referme par « Fermer l'aide »
+                setVue(true);
+                setAide(true);
+              }}
+            >
+              <Icone nom="aide" />
+              Aide
+            </button>
+          </DansLaTete>
           <BoutonDouble
             primaire
             libelle="Ajouter une partie"

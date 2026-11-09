@@ -171,13 +171,12 @@ export function PageChapitre({
   return (
     <div className="sur-chapitre" style={varsCouleur(chapitre.couleur)}>
       <SuiviDesImages projetId={projet.id} />
+      {/* Un seul retour, de la même forme que celui de la scène (F06.5, 8 novembre 2026) */}
       <nav className="fil" aria-label="Fil d’Ariane">
         <Link href={venuDuLivre ? `/projet/${projet.id}/livre` : `/projet/${projet.id}/plan`}>
           <Icone nom="fleche-g" />
-          {venuDuLivre ? "Retour au Livre" : "Parties et chapitres"}
+          {venuDuLivre ? "Retour au Livre" : "Retour à Parties et chapitres"}
         </Link>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{chapitre.titre}</span>
       </nav>
 
       <header className="chap-bandeau">

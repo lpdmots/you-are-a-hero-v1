@@ -1762,12 +1762,12 @@ kbd {
   min-width: 0;
 }
 .cote-copie__colle {
-  /* Sous la barre du haut, qui reste à l'écran */
+  /* Sous ce qui reste en haut de l'écran : la barre de l'élève, la barre mince de l'adulte (F06.5) */
   position: sticky;
-  top: 70px;
+  top: calc(var(--haut-adulte, 58px) + 12px);
   display: grid;
   gap: 14px;
-  max-height: calc(100vh - 82px);
+  max-height: calc(100vh - var(--haut-adulte, 58px) - 24px);
   overflow-y: auto;
   scrollbar-width: thin;
 }

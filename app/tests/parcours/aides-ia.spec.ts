@@ -59,7 +59,7 @@ test("F13-AC29 — l'âge des lecteurs se règle avec chaque projet : « 8 à 10
   const grandVoyage = await semerProjet(base, compte, "personnel", "choix", "Le grand voyage", null);
   const lanterne = await semerProjet(base, compte, "personnel", "choix", "La lanterne du passeur", null);
   await aller(page, `/projet/${grandVoyage}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await expect(page.getByRole("button", { name: "8 à 10 ans" })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Adultes" }).click();
   await expect(page.getByRole("button", { name: "Adultes" })).toHaveAttribute("aria-pressed", "true");
@@ -71,7 +71,7 @@ test("F13-AC29 — l'âge des lecteurs se règle avec chaque projet : « 8 à 10
   // Aides éteintes : le réglage ne se montre pas
   await sql("update enseignants set reglages_ia = reglages_ia || '{\"proposer\": false}'::jsonb where id = $1", [compte.id]);
   await aller(page, `/projet/${grandVoyage}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await expect(page.getByRole("heading", { name: "Images", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Âge des lecteurs" })).toHaveCount(0);
 });

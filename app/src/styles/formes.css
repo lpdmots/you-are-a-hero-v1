@@ -647,6 +647,14 @@
   align-items: center;
   gap: 12px;
 }
+/* La ligne de titre d'un onglet du projet : son nom, puis « Aide » et ses commandes (F06.5, 8 novembre
+   2026) ; plus basse que celle de « Mes projets », le contenu de l'onglet vient aussitôt dessous */
+.page-tete--onglet {
+  padding: 18px 0 12px;
+}
+.page-tete--onglet h1 {
+  font-size: var(--t-2xl);
+}
 .aide-bouton {
   display: inline-flex;
   align-items: center;

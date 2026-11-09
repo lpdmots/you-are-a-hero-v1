@@ -334,6 +334,47 @@ const TRACES = {
       <path d="M14 10a4.5 4.5 0 00-6.4 0l-3 3a4.5 4.5 0 006.4 6.4l1.2-1.2" />
     </>
   ),
+  // La colonne de navigation de l'adulte (F06.5, 8 novembre 2026) : un signe par entrée
+  boussole: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M15.2 8.8l-1.9 4.5-4.5 1.9 1.9-4.5z" />
+    </>
+  ),
+  chapitres: (
+    <>
+      <rect x="4" y="4" width="16" height="4.5" rx="1.2" />
+      <rect x="4" y="10.5" width="16" height="4.5" rx="1.2" />
+      <path d="M4 18.5h10" />
+    </>
+  ),
+  suivi: (
+    <>
+      <path d="M4 6.5l1.5 1.5 2.5-2.5M4 12.5l1.5 1.5 2.5-2.5" />
+      <path d="M11 7h9M11 13h9M11 19h9M4.5 19h3" />
+    </>
+  ),
+  projets: (
+    <>
+      <rect x="4" y="4" width="7" height="7" rx="1.5" />
+      <rect x="13" y="4" width="7" height="7" rx="1.5" />
+      <rect x="4" y="13" width="7" height="7" rx="1.5" />
+      <rect x="13" y="13" width="7" height="7" rx="1.5" />
+    </>
+  ),
+  replier: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <path d="M9 4.5v15M15.5 9.5L13 12l2.5 2.5" />
+    </>
+  ),
+  deplier: (
+    <>
+      <rect x="3.5" y="4.5" width="17" height="15" rx="2" />
+      <path d="M9 4.5v15M13 9.5l2.5 2.5-2.5 2.5" />
+    </>
+  ),
+  menu: <path d="M4 7h16M4 12h16M4 17h16" />,
   /**
    * Le seul geste d'IA de l'application (F13) : des étincelles, une grande étoile et deux petites
    * (choisies le 17 octobre 2026), devant chaque commande qui demande quelque chose à une aide,

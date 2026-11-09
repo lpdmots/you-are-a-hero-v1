@@ -7,6 +7,7 @@ import { avantDePartir } from "@/composants/copie/sortie";
 import type { Plan } from "@/domaine/recit";
 import type { DonneesDeLaScene } from "@/serveur/scene";
 import { EcranAide } from "@/composants/EcranAide";
+import { DansLaTete } from "@/composants/DansLaTete";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import { ETAPES_DU_LIVRE, MOT_DE_MARQUE, type EtapeLivre, type MarqueEtape } from "@/domaine/livre";
@@ -189,11 +190,14 @@ export function Livre({
               );
             })}
           </ol>
+          {/* À droite du titre de la page, comme sur chaque onglet (F06.5, 8 novembre 2026) */}
           {avecAide ? (
-            <button type="button" className="aide-bouton temps__aide" title="Que fait-on maintenant ?" onClick={() => setAide(true)}>
-              <Icone nom="aide" />
-              Aide
-            </button>
+            <DansLaTete>
+              <button type="button" className="aide-bouton" title="Que fait-on maintenant ?" onClick={() => setAide(true)}>
+                <Icone nom="aide" />
+                Aide
+              </button>
+            </DansLaTete>
           ) : null}
         </nav>
 
@@ -203,7 +207,8 @@ export function Livre({
               {(["reglages", "apercu"] as const).map((v) => (
                 <button key={v} type="button" role="tab" aria-selected={volet === v} data-choisi={volet === v || undefined} onClick={() => changerDeVolet(v)}>
                   <Icone nom={v === "reglages" ? "reglages" : "livre"} />
-                  {v === "reglages" ? "Réglages" : "Aperçu"}
+                  {/* Un nom propre à chaque « Réglages » : ceux du projet sont dans la colonne (F06.5, 8 novembre 2026) */}
+                  {v === "reglages" ? "Réglages du livre" : "Aperçu"}
                   {v === "reglages" && douteOrdre ? (
                     <span className="volets__marque" title="Ordre des passages à confirmer">
                       <Icone nom="alerte" />

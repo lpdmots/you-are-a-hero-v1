@@ -3,8 +3,9 @@
    Brique : cela bloque le livre ; ambre : à confirmer ; graphite : à savoir. */
 
 .livre {
-  /* Ce qui reste collé en haut de la fenêtre passe sous la barre du site, et sous les volets de « Mettre en page » */
-  --entete: 58px;
+  /* Ce qui reste collé en haut de la fenêtre passe sous la barre mince de l'adulte sur un écran étroit
+     (rien au-dessus sur un écran large, F06.5), et sous les volets de « Mettre en page » */
+  --entete: var(--haut-adulte, 58px);
   --volets: 57px;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -123,12 +124,6 @@
 .temps__marque--attente,
 .temps__marque--fermee {
   color: var(--graphite-3);
-}
-.temps__aide {
-  flex: none;
-  padding-left: 18px;
-  box-shadow: -1px 0 0 var(--trait);
-  border-radius: 0;
 }
 
 /* ——— Fiche de l'étape ——— */
@@ -462,9 +457,6 @@
   .temps__etape + .temps__etape::before {
     min-width: 6px;
     margin: 0 2px;
-  }
-  .temps__aide {
-    padding-left: 8px;
   }
   /* Sur téléphone, les pastilles seules : le titre de la fiche dit l'étape */
   .temps__lien .temps__nom {

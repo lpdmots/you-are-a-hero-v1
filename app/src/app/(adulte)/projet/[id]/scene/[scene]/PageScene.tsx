@@ -985,8 +985,6 @@ export function PageScene({
                 ? /(^|&)livre=finir(&|$)/.test(suivi) ? "Retour aux scènes à finir" : "Retour au Suivi"
                 : `Retour à ${chapitre.titre}`}
         </Link>
-        <span aria-hidden="true">/</span>
-        <span aria-current="page">{ref}</span>
       </nav>
 
       <header className={styles.tete}>

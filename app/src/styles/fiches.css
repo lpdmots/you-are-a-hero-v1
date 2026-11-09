@@ -183,7 +183,7 @@
 /* ——— À droite : le tirage, ce qui va sortir, la feuille ——— */
 .lot-apercu {
   position: sticky;
-  top: 76px;
+  top: calc(var(--haut-adulte, 58px) + 18px);
   display: grid;
   gap: 12px;
 }

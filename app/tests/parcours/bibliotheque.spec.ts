@@ -102,7 +102,7 @@ test("F10-AC54 — dans « Choisir une image », un mot cherche dans les visuels
   await semerDansLaBibliotheque(source, ["étang", "roseaux", "matin"], ["pond", "reeds", "morning"]);
 
   await aller(page, `/projet/${phare}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("button", { name: "Choisir une image" }).click();
   const chercher = page.getByRole("searchbox", { name: "Chercher un visuel" });
   await chercher.fill("roseau");

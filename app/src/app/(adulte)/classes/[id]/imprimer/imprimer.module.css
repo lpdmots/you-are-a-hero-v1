@@ -10,7 +10,7 @@
   gap: 16px;
   justify-items: start;
   position: sticky;
-  top: 76px;
+  top: calc(var(--haut-adulte, 58px) + 18px);
 }
 .champ {
   width: 100%;

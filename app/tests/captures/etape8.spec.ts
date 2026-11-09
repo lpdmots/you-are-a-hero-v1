@@ -602,7 +602,7 @@ test("lot 7 : personnages et objets de l'histoire (F10.2), un onglet par héros"
   await page.keyboard.press("Escape");
 
   // Réglages du projet : le style des images et le héros absent
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("button", { name: "Changer le style des images" }).click();
   await page.getByText("Héros absent des images", { exact: true }).scrollIntoViewIfNeeded();
   await capturer(page, "projet-style-images", false);

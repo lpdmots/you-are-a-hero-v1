@@ -1,6 +1,6 @@
 import { resolve } from "node:path";
 import { expect, test, type Page } from "@playwright/test";
-import { adultePret, aller, autrePoste, semerPartie, semerProjet, supprimerComptes } from "./outils";
+import { adultePret, aller, autrePoste, COLONNE, semerPartie, semerProjet, supprimerComptes } from "./outils";
 
 test.afterEach(async () => {
   await supprimerComptes();
@@ -44,7 +44,8 @@ test("F10-AC21 — à la création, la carte montre le titre sur un visuel par d
   await expect(carte.getByRole("button", { name: "Choisir une image" })).toBeVisible();
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
-  await expect(page.locator("main section img").first()).toHaveAttribute("src", vignette);
+  // La vignette du projet, dans la colonne de navigation (F06.5)
+  await expect(COLONNE(page).locator("img").first()).toHaveAttribute("src", vignette);
   await aller(page, "/projets");
   await expect(page.locator("main li img").first()).toHaveAttribute("src", visuel!);
 });
@@ -67,7 +68,7 @@ test("F10-AC21 — une image importée pendant la création est celle que porte 
 
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
-  const entete = page.locator("main section img").first();
+  const entete = COLONNE(page).locator("img").first();
   await expect(entete).toHaveAttribute("src", /^\/images\/[0-9a-f-]{36}\?v=1$/);
   const reponse = await page.request.get((await entete.getAttribute("src"))!);
   expect(reponse.status()).toBe(200);
@@ -94,7 +95,7 @@ test("F10-AC03, F10-AC04, F10-AC23 — sans image, un visuel par défaut ; un vi
   await page.getByRole("link", { name: "Ouvrir La lisière", exact: true }).click();
   await expect(page.locator(".chap-bandeau__image img")).toHaveAttribute("src", "/illustrations/defaut-desert-v.jpg");
 
-  await page.getByRole("link", { name: "Parties et chapitres" }).click();
+  await page.getByRole("link", { name: "Retour à Parties et chapitres" }).click();
   await ouvrirReglages(page, "chapitre", "La lisière");
   await expect(page.getByRole("button", { name: "Désert", exact: true })).toHaveAttribute("aria-pressed", "true");
   await page.getByRole("button", { name: "Revenir au visuel par défaut" }).click();

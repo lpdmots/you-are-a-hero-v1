@@ -285,7 +285,7 @@ test.describe("`/personnage` et les options du projet (F10.2)", () => {
   test("F10-AC45 — le style des images et le héros absent se règlent dans les options du projet ; « Autre » se décrit", async ({ page }) => {
     const s = await passeurs(page);
     await aller(page, `/projet/${s.projet}/preparation`);
-    await page.getByRole("button", { name: "Réglages du projet" }).click();
+    await page.getByRole("link", { name: "Réglages du projet" }).click();
     // Un exemple par style, le même sujet partout (18 octobre 2026)
     await page.getByRole("button", { name: "Changer le style des images" }).click();
     const styles = page.getByRole("radiogroup", { name: "Style des images" });

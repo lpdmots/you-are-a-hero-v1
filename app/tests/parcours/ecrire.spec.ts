@@ -175,7 +175,7 @@ test.describe("Mise en forme et collage (F04.1) — V13", () => {
     await attendreEnBase(s15, "mots en gras");
 
     await aller(page, `/projet/${s.projet}/plan`);
-    await page.getByRole("button", { name: "Réglages du projet" }).click();
+    await page.getByRole("link", { name: "Réglages du projet" }).click();
     const reglage = page.getByRole("switch", { name: "Les élèves mettent en gras, en italique, soulignent" });
     await expect(reglage).toBeChecked();
     await page.getByText("Les élèves mettent en gras, en italique, soulignent").click();

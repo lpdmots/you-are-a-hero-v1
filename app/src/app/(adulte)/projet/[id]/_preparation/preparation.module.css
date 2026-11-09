@@ -26,14 +26,6 @@
   box-shadow: none;
   border: 1.5px dashed var(--graphite-3);
 }
-.ligne__fin {
-  display: flex;
-  flex: none;
-  align-items: center;
-  gap: 8px;
-  padding-left: 14px;
-  box-shadow: -1px 0 0 var(--trait);
-}
 /* La place se mesure sur la liste, pas sur la fenêtre (« Aide », « Projeter » ou le titre la
    réduisent) : quand les noms n'y tiennent plus, seule l'étape en cours garde le sien, comme sous
    980 points. Les six de la Préparation demandent près de 57rem, les quatre de la projection 39rem. */
@@ -980,17 +972,6 @@
   .page {
     padding: 22px 16px 16px;
   }
-  .ligne__fin {
-    padding-left: 6px;
-  }
-  /* L'aide garde son signe seul : la ligne tient dans la largeur */
-  .ligne__fin :global(.aide-bouton) {
-    font-size: 0;
-    gap: 0;
-  }
-  .ligne__fin :global(.aide-bouton .ic) {
-    font-size: var(--t-m);
-  }
   .ligne :global(.temps__etape).premiereFacultative::before {
     margin: 0 6px;
   }
@@ -1010,7 +991,7 @@
     padding: 3px;
   }
   /* On ne projette pas depuis un téléphone */
-  .ligne__fin :global(.btn) {
+  .projeter {
     display: none;
   }
   .projection {

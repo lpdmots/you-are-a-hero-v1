@@ -2898,6 +2898,64 @@ avant « En bref » sur téléphone, la liste des structures retirée, le bouton
 « Sommaire » masqué pendant le défilement. Une image remplacée change de
 nom : l'optimiseur d'images la garde en cache sous son adresse.
 
+### Colonne de navigation de l'adulte (8 novembre 2026)
+
+Décidée par le porteur après un point sur la navigation une fois connecté ;
+la règle est en [F06.5](specifications.md#f065--suivi-du-travail-et-accès-aux-scènes)
+(F06-AC98 à AC104), qui fait foi. Elle remplace la barre du haut globale du
+4 octobre et l'en-tête de projet répété sur chaque onglet ; la maquette les
+garde.
+
+**Constat (mesuré en 1366 × 768, le portable d'école courant) :** barre et
+en-tête jusqu'à 208 px, 27 % de la hauteur, avant le contenu ; plus d'un tiers
+avec la ligne d'étapes du Livre ou de la Préparation, dont la dernière étape
+était déjà tronquée ; jusqu'à quatre niveaux de navigation empilés ; le
+contenu, limité à 1280 px, occupait déjà presque toute la largeur. Le chapitre
+et la scène perdaient les onglets, leurs fils de retour n'avaient pas la même
+forme, la classe ne s'ouvrait pas depuis le projet ni le projet depuis la
+classe, le bouton « Aide » changeait de place d'un onglet à l'autre.
+
+**Formes retenues :**
+
+- Colonne de 232 px, fond `--feuille`, filet `--trait` à droite, collée sur
+  toute la hauteur et défilant seule si l'écran est bas. Repliée : 64 px,
+  icônes seules, le nom en bulle au survol et en nom accessible.
+- Le projet en tête, en bloc : vignette 16:10 sur la largeur de la colonne,
+  titre en entier (gras), classe en lien discret dessous (« Projet
+  personnel » sans lien). Puis les quatre onglets, l'actif sur fond
+  `--canard-pale`, texte `--canard-fonce` ; « Suivi » porte à droite une
+  pastille ambre de « À valider » (le sablier en est le signe), sans rien à
+  zéro. Un filet, puis « Lire à l'essai » et « Réglages du projet ».
+- Plus bas, « Mes projets » et « Mes classes » ; au pied, le compte (pastille
+  des initiales, nom), qui ouvre le même menu court qu'avant, vers le haut,
+  puis « Replier » / « Déplier ».
+- Sans projet en cours (premier usage, projet supprimé), le bloc du projet
+  disparaît.
+- La page commence par une ligne de titre : le nom de l'onglet (ou « Mes
+  projets », « Mes classes »…) à gauche, ses commandes et son bouton « Aide »
+  à droite ; dans le chapitre et la scène, le fil de retour reste au-dessus du
+  titre, sous la forme unique « ← Retour à … ».
+- Écran de moins de 900 px : barre mince de 52 px (logo, titre du projet
+  tronqué, bouton « Menu ») ; la colonne s'ouvre en tiroir par-dessus la page,
+  avec un voile, et se referme par un choix, un clic sur le voile ou Échap.
+- Les pages imprimées (fiches, affiche, étiquettes) n'impriment pas la
+  colonne ; l'écran projeté de la Préparation n'en a pas.
+- « Réglages du projet » est une page, demandée par le porteur le même jour
+  (« c'est plus simple ») : la colonne étroite de « Mon compte », une
+  feuille par sujet (Le projet, Classe, Les élèves, Pour l'IA, Images), la
+  suppression au pied, hors des feuilles ; « Enregistré » à droite du
+  titre ; le choix d'une image, de la classe et la suppression gardent leur
+  panneau ou leur dialogue. Le schéma « Chemins » prend la largeur de la
+  page, colonne exclue, et suit son repli.
+- Les trois « Réglages » portent chacun leur nom : « Réglages du projet »,
+  « Réglages du livre » (volet de « Mettre en page »), « Réglages des
+  feuilles » (page des fiches de rédaction, comme son panneau).
+
+**Ce qui reste à voir à l'essai :** la hauteur de la colonne sur un écran de
+768 px avec le compte au pied ; la ligne d'étapes de la Préparation dans la
+largeur rendue ; les captures du guide, de l'accueil et la vidéo de visite,
+qui montrent encore la barre du haut (à refaire, voir `plan.md`).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

@@ -102,7 +102,7 @@ test("la bibliothèque d'images : l'administration, puis « Choisir une image »
     await page.getByText("L’image est dans la bibliothèque").waitFor();
     await capturer(page, "admin-bibliotheque", true);
     await aller(page, `/projet/${projet}/plan`);
-    await page.getByRole("button", { name: "Réglages du projet" }).click();
+    await page.getByRole("link", { name: "Réglages du projet" }).click();
     await page.getByRole("button", { name: "Choisir une image" }).click();
     await page.getByRole("searchbox", { name: "Chercher un visuel" }).fill("brume");
     await page.getByRole("button", { name: /Image de la bibliothèque/ }).first().waitFor();
@@ -121,7 +121,7 @@ test("les réglages du projet, entiers", async ({ page }) => {
   const projet = await semerProjet(base, compte, "classe", "choix", "Le marais des feux follets", null);
   await page.setViewportSize({ width: 1366, height: 2600 });
   await aller(page, `/projet/${projet}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("heading", { name: "Images" }).waitFor();
   n = 989;
   await capturer(page, "reglages-du-projet");

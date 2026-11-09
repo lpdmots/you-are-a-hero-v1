@@ -156,7 +156,8 @@ pas implicitement. Le choix d'une classe est un préalable à l'attribution.
   enseignante sans projet ni classe, lorsqu'elle choisit « Ma classe »,
   « À choix », saisit le titre « Les passeurs de brume », garde « Choisir
   plus tard » et crée le projet, alors elle arrive sur la Préparation d'un
-  projet de classe à choix sans classe, et la barre du haut porte son titre.
+  projet de classe à choix sans classe, et la colonne de navigation porte
+  son titre (F06.5, révisé le 8 novembre 2026).
 - **F01-AC15 — Modes annoncés comme définitifs :** étant donné la troisième
   question de la création, lorsque l'adulte lit le rappel avant « Créer le
   projet », alors il y trouve « Projet de classe » ou « Projet personnel »,
@@ -199,7 +200,8 @@ jusque-là :
   console de Supabase, avec son adresse et son mot de passe.
   L'inscription d'autres enseignants est décidée le 20 octobre 2026 en
   [F14](#f14--ouverture-offre-et-exploitation) (F14-AC01 à AC04).
-- **« Mon compte ».** Le nom de l'adulte, dans la barre du haut, ouvre un
+- **« Mon compte ».** Le nom de l'adulte, au pied de la colonne de
+  navigation (F06.5, révisé le 8 novembre 2026), ouvre un
   menu court : son nom et son adresse, son solde d'étoiles (F14),
   « Mon compte », « Administration » pour le porteur seul, « Se
   déconnecter ». « Mon compte » est une page : le nom affiché aux élèves de
@@ -293,7 +295,8 @@ poste ne suffit pas à le changer.
 **Propositions de la maquette du 6 octobre 2026, sans retour du porteur :**
 
 - un projet de classe sans classe le dit sous son titre (« Sans classe »),
-  avec « Choisir une classe », dans son en-tête comme sur sa carte de « Mes
+  avec « Choisir une classe », dans ses réglages (depuis le 8 novembre 2026,
+  F06.5 ; d'abord dans son en-tête) comme sur sa carte de « Mes
   projets » ; « Attribuer des élèves », tenté avant ce choix, demande la
   classe au lieu de lister des élèves ;
 - seules les classes en cours de F01.1 sont proposées.
@@ -1293,8 +1296,13 @@ le porteur décide :
   marais des feux follets », trente-deux scènes et quarante-neuf choix, sur
   un écran de 1 366 points, lorsque l'enseignant ouvre « Chemins », alors
   chaque choix mène à une scène placée plus bas, sauf les quatre retours en
-  arrière, qui remontent et se distinguent des autres ; le schéma tient dans la largeur de la fenêtre et
-  la page défile de haut en bas.
+  arrière, qui remontent et se distinguent des autres ; le schéma tient dans la largeur de la page et
+  la page défile de haut en bas. **Révisé le 8 novembre 2026** (colonne de
+  navigation, F06.5) : sur un tel chapitre, en 1 366 points, il tient la
+  colonne repliée ; colonne ouverte (1 134 points pour la page), il défile un
+  peu de côté plutôt que de descendre sous la taille où les titres se lisent.
+  Décidé par le porteur : on replie la colonne d'un clic, rien ne se replie
+  tout seul, le seuil de lecture ne baisse pas.
 - **F03-AC44 — La carte dit l'essentiel :** étant donné « Île — le saule
   aux lanternes », en cours, lorsque l'enseignant lit sa carte, alors il y
   lit son titre et son état, sans référence, sans consigne ni liste de
@@ -4326,13 +4334,49 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
 
 **Décisions confirmées le 4 octobre 2026 — navigation de l'adulte :**
 
-- **Barre du haut globale :** elle porte le nom du dernier projet ouvert,
-  « Mes projets » et « Mes classes ». Les onglets (Préparation, Parties et
-  chapitres, Suivi, Livre) sont ceux de l'histoire. Aucune entrée de la barre
-  ne mène à un suivi.
+- **Colonne de navigation (révisé le 8 novembre 2026, décidé par le
+  porteur) :** sur un écran large, toute la navigation de l'adulte tient
+  dans une colonne à gauche, qui remplace la barre du haut et l'en-tête du
+  projet ; la page commence en haut de l'écran. De haut en bas : le logo,
+  qui mène à « Mes projets » ; le projet en cours, sa vignette, son titre
+  entier et sa classe, dont le nom ouvre la page de la classe ; ses quatre
+  onglets (Préparation, Parties et chapitres, Suivi, Livre), le Suivi
+  portant le nombre de scènes à valider, sans rien à zéro ; « Lire à
+  l'essai » et « Réglages du projet », une page comme « Mon compte »
+  (d'abord un panneau ; ouvrir ses réglages ne devient pas le dernier
+  onglet du projet) ; « Mes projets » et « Mes classes » ;
+  en bas, le compte (initiales, nom, solde d'étoiles, menu de « Mon
+  compte ») et « Replier ». Dans un chapitre ou une scène, l'onglet d'où
+  l'on vient reste désigné (Parties et chapitres, ou Suivi pour une scène
+  ouverte depuis le Suivi), et le fil de retour reste en tête du contenu.
+  Ouverte par défaut, avec les mots ; l'adulte la replie en icônes d'un
+  clic, le nom se lisant au survol, et ce choix est gardé sur cet
+  ordinateur ; rien ne se replie tout seul, sauf sur un écran de moins de
+  1200 px, où elle commence repliée. Sur un écran étroit (moins de 900 px),
+  une barre mince en haut porte le titre du projet et un bouton qui ouvre la
+  colonne par-dessus la page. Chaque page porte en tête son titre (le nom de
+  l'onglet, du chapitre, de la scène…) et, à sa droite, son bouton « Aide »
+  quand elle en a un. « Changer de classe » passe dans les réglages du
+  projet, avec la même condition (aucun chapitre attribué), comme les deux
+  choix de la création (« Projet de classe · Récit à choix »), lus en tête
+  de ces réglages ; la classe n'a
+  pas d'entrée à elle, l'enseignant l'ouvrant surtout en début d'année.
+  Aucune entrée de la colonne ne mène à un suivi de tous les projets.
+  **Raison :** sur un portable d'école (1366 × 768), la barre et l'en-tête
+  prenaient 208 px, plus du quart de la hauteur, avant le contenu, un tiers
+  avec la ligne d'étapes du Livre ou de la Préparation, sur chaque onglet ;
+  le chapitre et la scène perdaient les onglets du projet, et la classe ne
+  s'ouvrait pas depuis le projet. **Ce qu'elle remplace :** la barre du haut
+  globale du 4 octobre 2026, qui portait le nom du dernier projet ouvert,
+  « Mes projets » et « Mes classes », sous laquelle chaque onglet répétait
+  l'en-tête du projet (image, titre, classe, « Lire à l'essai »,
+  « Réglages »). **Écartés :** une colonne d'icônes seules par défaut (une
+  icône ne dit pas « Parties et chapitres » à qui découvre l'outil) ; une
+  colonne qui se replie d'elle-même sur certaines pages (l'écran ne doit pas
+  bouger sans geste) ; une entrée « La classe » dans la colonne.
 - **Reprendre sans choisir :** connecté, l'adulte arrive dans le dernier
   projet ouvert, à son dernier onglet utilisé, sans aller jusqu'à une
-  scène ; le nom du projet dans la barre y ramène de partout. Cette mémoire
+  scène ; le projet, dans la colonne, y ramène de partout. Cette mémoire
   tient au compte, non au navigateur. Sans projet, ou si ce projet n'existe
   plus, il arrive sur « Mes projets ». L'alternative d'un « projet actuel »
   à choisir est écartée : un réglage à entretenir, faux dès la rentrée
@@ -4340,7 +4384,11 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
 - **Mes projets :** peu de projets, donc de grandes cartes. Chacune montre
   l'image, le titre, la classe et le type de récit, le nombre de scènes à
   valider et le pourcentage des scènes prêtes pour le livre ; le dernier
-  projet ouvert porte « Continuer ». Ce bouton s'appelait d'abord
+  projet ouvert porte « Continuer ». Les cartes sont rangées du projet
+  ouvert le plus récemment au plus ancien (révisé le 8 novembre 2026 :
+  rangées par date de création, la carte « Continuer » pouvait tomber au
+  milieu de la deuxième rangée) ; un projet jamais ouvert prend sa date de
+  création. Ce bouton s'appelait d'abord
   « Reprendre » ; le porteur le change le 4 octobre 2026, après la deuxième
   critique : le mot voisinait avec l'état « À reprendre », qui désigne le
   travail rendu à l'élève.
@@ -4349,8 +4397,9 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
   donné Mme Laurent qui a quitté « Les passeurs de brume » sur son onglet
   Suivi, lorsqu'elle se connecte le lendemain depuis un autre ordinateur,
   alors elle arrive sur le Suivi de ce projet, sans passer par « Mes
-  projets » ; le nom du projet, dans la barre du haut, l'y ramène depuis
-  « Mes projets ».
+  projets » ; le nom du projet, dans la colonne de navigation, l'y ramène
+  depuis « Mes projets » (révisé le 8 novembre 2026 : d'abord dans la barre
+  du haut).
 - **F06-AC54 — Retour au Suivi :** étant donné le Suivi filtré sur « En
   cours » et défilé jusqu'à S034, lorsque l'enseignant ouvre S034 puis choisit
   « Retour au Suivi », alors il retrouve ce filtre et l'endroit de la liste
@@ -4394,6 +4443,43 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
   choisit « Voir » sur la carte du projet, alors elle arrive sur ces cinq
   scènes, sans écran d'aide ; lorsqu'elle rouvre plus tard le Suivi par son
   onglet, alors l'écran d'aide s'affiche.
+- **F06-AC98 — Colonne de navigation (8 novembre 2026) :** étant donné
+  Mme Laurent sur le Suivi de « Les passeurs de brume », projet de la classe
+  CM1-CM2, sur un écran de 1366 px, lorsque la page s'affiche, alors la
+  colonne à gauche porte le titre entier du projet, « CM1-CM2 », les quatre
+  onglets, Suivi désigné, « Lire à l'essai », « Réglages du projet »,
+  « Mes projets », « Mes classes » et son nom ; aucune barre ne se trouve
+  au-dessus de la page, qui commence par « Suivi » et son bouton « Aide ».
+- **F06-AC99 — L'onglet d'où l'on vient :** étant donné le Suivi, lorsque
+  Mme Laurent ouvre S001, alors l'onglet Suivi reste désigné dans la
+  colonne ; lorsqu'elle ouvre le chapitre « Le dernier bac » depuis
+  « Parties et chapitres », puis une de ses scènes, alors c'est « Parties et
+  chapitres » qui reste désigné ; de l'une ou de l'autre page, un clic sur
+  « Livre » ouvre l'onglet Livre.
+- **F06-AC100 — Les scènes à valider dans la colonne :** étant donné une
+  scène à valider dans le projet, lorsque Mme Laurent ouvre n'importe quel
+  onglet, alors « Suivi » porte « 1 » dans la colonne ; lorsqu'elle valide
+  cette scène, alors le chiffre disparaît.
+- **F06-AC101 — Replier la colonne :** étant donné la colonne ouverte,
+  lorsque Mme Laurent choisit « Replier », alors la colonne ne garde que ses
+  icônes, chaque nom se lisant au survol, et la page gagne la largeur
+  rendue ; lorsqu'elle rouvre l'application le lendemain sur le même
+  ordinateur, alors la colonne est toujours repliée, jusqu'à « Déplier ».
+- **F06-AC102 — La classe depuis le projet, et le projet depuis la
+  classe :** étant donné « Les passeurs de brume », projet de la classe
+  CM1-CM2, lorsque Mme Laurent choisit « CM1-CM2 » sous le titre, dans la
+  colonne, alors la page de la classe s'ouvre ; sur cette page comme dans
+  « Mes classes », le titre du projet ouvre le projet. « Changer de
+  classe » se trouve dans les réglages du projet tant qu'aucun chapitre
+  n'est attribué.
+- **F06-AC103 — Projets rangés par dernière ouverture :** étant donné « Le
+  bidibule ridicule », créé le dernier, et « Les passeurs de brume », plus
+  ancien mais ouvert ce matin, lorsque Mme Laurent ouvre « Mes projets »,
+  alors « Les passeurs de brume » vient en premier, avec « Continuer ».
+- **F06-AC104 — Écran étroit :** étant donné un écran de 390 px, lorsque
+  Mme Laurent ouvre un onglet du projet, alors une barre mince porte le
+  titre du projet et un bouton « Menu » ; ce bouton ouvre la colonne
+  par-dessus la page, qu'un choix ou un clic à côté referme.
 
 **Propositions de la maquette du 4 octobre 2026, sans retour du porteur :**
 

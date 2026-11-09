@@ -150,7 +150,7 @@ test("F06-AC48, F06-AC49 — la lecture ouverte laisse lire les autres chapitres
   const bilal = await poste(browser, s, "Bilal");
 
   await aller(page, `/projet/${s.projet}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByText("Les élèves lisent toute l’histoire").click();
   await expect(page.getByRole("switch", { name: "Les élèves lisent toute l’histoire" })).toBeChecked();
   await expect(page.getByText("Enregistré")).toBeVisible();

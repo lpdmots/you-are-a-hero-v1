@@ -385,7 +385,7 @@ test("lot 5 : les fiches de rédaction", async ({ page }) => {
   await capturer(page, "fiches-arrivee", true);
   const reglages = page.getByRole("dialog", { name: "Réglages des feuilles" });
   const ouvrir = async () => {
-    if (!(await reglages.isVisible())) await page.getByRole("button", { name: "Réglages", exact: true }).click();
+    if (!(await reglages.isVisible())) await page.getByRole("button", { name: "Réglages des feuilles", exact: true }).click();
     await reglages.waitFor();
   };
   // Tout le reste est derrière « Réglages »

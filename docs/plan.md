@@ -4144,6 +4144,67 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   couverture se change ensemble, la conversion de l'accueil avec, puisqu'elle
   retire l'ancienne source.
 
+### Colonne de navigation de l'adulte (F06.5, 8 novembre 2026)
+
+- **Décidée et autorisée le 8 novembre 2026** (« Je valide et tu peux aussi
+  coder »), après un point sur la navigation une fois connecté : règle en
+  [F06.5](specifications.md#f065--suivi-du-travail-et-accès-aux-scènes),
+  F06-AC98 à AC104, qui fait foi ; formes dans `design.md`, « Colonne de
+  navigation de l'adulte ». Construction en local, un seul lot, rien poussé
+  sur `main` ni appliqué à la vraie base sans sa demande.
+- **Contenu :** la colonne à gauche remplace la barre du haut et l'en-tête
+  du projet ; l'onglet d'où l'on vient désigné dans le chapitre et la scène ;
+  le nombre de scènes à valider sur « Suivi » ; la classe ouverte depuis le
+  projet et le projet depuis la classe, « Changer de classe » dans les
+  réglages du projet ; « Mes projets » rangé par dernière ouverture ; le
+  bouton « Aide » toujours à droite du titre de la page ; les trois
+  « Réglages » nommés.
+- **Migration** `ouverture_des_projets` (base locale seulement) : une date de
+  dernière ouverture sur chaque projet, posée quand l'adulte l'ouvre ; au
+  départ, seul le dernier projet ouvert de chaque compte en reçoit une.
+- **Précision prise en construisant :** le repli de la colonne est gardé sur
+  l'ordinateur (un témoin du navigateur), non sur le compte : l'enseignant
+  passe d'un portable d'école à un grand écran chez lui, et le repli dépend
+  de l'écran.
+- **Construit le 8 novembre 2026,** en local, migration appliquée à la base
+  locale seulement, rien poussé : `EspaceAdulte` (la colonne et la barre mince),
+  `ColonneDuProjet` posé par chaque page du projet avec l'onglet d'où l'on
+  vient, `DansLaTete` qui met « Aide » (et « Projeter » dans la Préparation)
+  dans la ligne de titre, parcours `colonne.spec.ts` (F06-AC98 à AC104).
+  Autres précisions prises en construisant : la colonne est un bloc et non un
+  `aside`, les panneaux restant les seuls compléments de la page ; le titre du
+  projet, dans la colonne, mène à son dernier onglet ; « Réglages du projet »,
+  hors des pages du projet (« Mes projets », une classe), ouvre le projet sur
+  son dernier onglet, réglages ouverts ; « Lire à l'essai » utilise le signe
+  de l'œil (voir), le livre restant à l'onglet Livre ; la scène ouverte
+  depuis le Suivi note « Suivi » comme dernier onglet du projet (elle notait
+  « Parties et chapitres ») ; le fil de la scène perd « / S001 », sa
+  référence étant juste dessous ; le bouton de la page des fiches devient
+  « Réglages des feuilles », comme son panneau, et le volet de « Mettre en
+  page » « Réglages du livre » ; une classe passée supprimée ne se lit plus
+  sous le titre du projet (« Sans classe »), sa page n'existant plus ; toute
+  modification d'une classe relit la colonne. Suite complète des parcours
+  passée le 8 novembre 2026 (455, dont les reprises des sélecteurs liés à
+  l'ancienne barre) ; commit local `colonne` le 9 novembre 2026 à sa demande,
+  rien poussé ni appliqué à la vraie base.
+  Repris le même jour à sa demande : « Réglages du projet » en page
+  (`/projet/…/reglages`), et le schéma « Chemins », qui passait sur la
+  colonne, mesuré sur la page et non sur la fenêtre ; décidé par lui sur
+  recommandation, F03-AC43 révisé : un chapitre aussi large que « Le marais
+  des feux follets » tient en 1 366 points la colonne repliée, et défile un
+  peu de côté colonne ouverte, sans repli d'office ni seuil de lecture
+  abaissé.
+- **À faire après la construction, avant ou avec la mise en ligne :**
+  - refaire celles des captures du guide « Écrire un livre dont vous êtes le
+    héros » (`app/public/guide/`) qui montrent la barre du haut ou l'en-tête
+    du projet ;
+  - de même pour les captures de l'interface sur l'accueil
+    (`app/public/accueil/`) ;
+  - reprendre la vidéo de visite du site (skill `video-du-site`), qui montre
+    l'ancienne navigation ;
+  - mettre à jour les captures de critique (`npm run captures`) qui
+    passent par la barre du haut.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

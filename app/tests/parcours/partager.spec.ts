@@ -120,7 +120,7 @@ test("F12-AC16, F12-AC15 — les noms du partage : la ligne remplacée, la page 
   await expect.poll(async () => (await sql<{ noms: unknown }>("select noms from partages where projet_id = $1", [l.projet]))[0]?.noms).toEqual({
     ligne: true, texte: "Un auteur de Bretagne", auteurs: false,
   });
-  await page.getByRole("button", { name: "Replier" }).click();
+  await page.getByRole("button", { name: "Replier", exact: true }).click();
   await expect(page.getByText("Modifiés pour le partage, privé et public ; le livre imprimé ne change pas.")).toBeVisible();
 
   await classes(page).click();

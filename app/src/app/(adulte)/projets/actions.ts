@@ -78,7 +78,8 @@ export async function choisirClasseDuProjet(projetId: string, classeId: string):
 export async function noterProjetOuvert(projetId: string, onglet: string): Promise<void> {
   const enseignant = await exigerEnseignant();
   if (!/^[0-9a-f-]{36}$/i.test(projetId) || !estOnglet(onglet)) return;
-  const { data } = await enseignant.supabase.from("projets").update({ dernier_onglet: onglet }).eq("id", projetId).select("id");
+  // La date d'ouverture range « Mes projets » (F06-AC103)
+  const { data } = await enseignant.supabase.from("projets").update({ dernier_onglet: onglet, ouvert_le: new Date().toISOString() }).eq("id", projetId).select("id");
   if (!data?.length) return;
   if (enseignant.dernierProjetId !== projetId) {
     await enseignant.supabase.from("enseignants").update({ dernier_projet_id: projetId }).eq("id", enseignant.id);

@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { ONGLETS, type Onglet } from "@/domaine/projets";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { projetDe } from "@/serveur/lectures";
+import { ColonneDuProjet } from "../_commun/EnteteProjet";
 import { livreALirePourLAdulte } from "@/serveur/lecture";
 import { LectureAdulte } from "./LectureAdulte";
 import { ParOuCommencer } from "./ParOuCommencer";
@@ -22,8 +23,8 @@ export type Provenance = { de: "livre" } | { de: "scene"; scene: string } | { de
 export default async function Page({ params, searchParams }: Props) {
   const { id } = await params;
   const enseignant = await exigerEnseignant();
-  const [lu, demande] = await Promise.all([livreALirePourLAdulte(enseignant, id), searchParams]);
-  if (!lu) notFound();
+  const [lu, demande, projet] = await Promise.all([livreALirePourLAdulte(enseignant, id), searchParams, projetDe(enseignant, id)]);
+  if (!lu || !projet) notFound();
   const { livre, plan, titre, aChoix } = lu;
   const provenance: Provenance =
     demande.de === "scene" && typeof demande.scene === "string" && livre.passages[demande.scene]
@@ -36,7 +37,8 @@ export default async function Page({ params, searchParams }: Props) {
   const reprise = demande.reprendre === "1" ? (depart ?? livre.departId ?? livre.ordre[0] ?? null) : null;
   return (
     <>
-      <ProjetOuvert id={id} titre={titre} onglet="livre" />
+      {/* La colonne désigne « Lire à l'essai » ; on y est venu de cet onglet */}
+      <ColonneDuProjet enseignant={enseignant} projet={projet} actif={provenance.de === "onglet" ? provenance.onglet : "livre"} />
       {depart || reprise ? (
         <LectureAdulte projetId={id} titre={titre} livre={livre} depart={(depart ?? reprise)!} reprendre={!depart} provenance={provenance} />
       ) : (

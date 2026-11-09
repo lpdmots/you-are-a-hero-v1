@@ -44,7 +44,7 @@ test("lot 4 : limites gratuites et pass", async ({ page }) => {
   // Le décompte de « Parties et chapitres », puis les réglages du projet
   await aller(page, `/projet/${projet}/plan`);
   await capturer(page, "plan-40-scenes-sur-40");
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("heading", { name: "Pass du livre" }).scrollIntoViewIfNeeded();
   await capturer(page, "reglages-livre-gratuit");
   await page.keyboard.press("Escape");
@@ -71,7 +71,7 @@ test("lot 4 : limites gratuites et pass", async ({ page }) => {
   await capturer(page, "dialogue-scenes-390");
   await page.getByRole("button", { name: "Plus tard" }).click();
   await aller(page, `/projet/${projet}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("heading", { name: "Pass du livre" }).scrollIntoViewIfNeeded();
   await capturer(page, "reglages-livre-gratuit-390");
 
@@ -79,7 +79,7 @@ test("lot 4 : limites gratuites et pass", async ({ page }) => {
   await page.setViewportSize({ width: 1366, height: 768 });
   await sql("select public.donner_le_pass($1, 'achat')", [projet]);
   await aller(page, `/projet/${projet}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("heading", { name: "Pass du livre" }).scrollIntoViewIfNeeded();
   await capturer(page, "reglages-pass");
 });

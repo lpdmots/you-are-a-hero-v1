@@ -59,7 +59,8 @@ test.describe("Destination Livre (F11.6)", () => {
     await page.context().clearCookies({ name: "aide-livre" });
     await aller(page, `/projet/${l.projet}/livre?etape=chemins`);
     await expect(fiche(page)).toBeVisible();
-    await etapes(page).getByRole("button", { name: "Aide" }).click();
+    // « Aide », à droite du titre de la page (F06.5, 8 novembre 2026)
+    await page.locator("#tete-de-page").getByRole("button", { name: "Aide" }).click();
     await expect(page.getByRole("region", { name: "Vérifier les chemins" }).getByRole("button", { name: "Fermer l’aide" })).toBeVisible();
   });
 

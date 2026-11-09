@@ -5,6 +5,7 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import { Bulle } from "@/composants/Bulle";
 import { SigneEncouragement } from "@/composants/Encouragements";
 import { Gommette } from "@/composants/Gommette";
+import { DansLaTete } from "@/composants/DansLaTete";
 import { Icone } from "@/composants/Icone";
 import { TamponScene } from "@/composants/TamponScene";
 import { nomPourEleves } from "@/domaine/eleves";
@@ -609,10 +610,13 @@ export function Suivi({
             </span>
           </Bulle>
         )}
-        <button type="button" className="aide-bouton" title="Que fait-on ici ?" onClick={() => setAide(true)}>
-          <Icone nom="aide" />
-          Aide
-        </button>
+        {/* À droite du titre de la page, comme sur chaque onglet (F06.5, 8 novembre 2026) */}
+        <DansLaTete>
+          <button type="button" className="aide-bouton" title="Que fait-on ici ?" onClick={() => setAide(true)}>
+            <Icone nom="aide" />
+            Aide
+          </button>
+        </DansLaTete>
       </div>
       {vue === "eleves" ? vueEleves : vueScenes}
     </>

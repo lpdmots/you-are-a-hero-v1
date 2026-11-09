@@ -34,7 +34,7 @@ const feuille = (page: Page) => page.locator(".fr-feuille:visible");
 /** « Réglages » : tout ce qui n'est pas le cas courant. Ouvre le panneau s'il ne l'est pas, et le rend. */
 const reglages = async (page: Page) => {
   const panneau = page.getByRole("dialog", { name: "Réglages des feuilles" });
-  if (!(await panneau.isVisible())) await page.getByRole("button", { name: "Réglages", exact: true }).click();
+  if (!(await panneau.isVisible())) await page.getByRole("button", { name: "Réglages des feuilles", exact: true }).click();
   await expect(panneau).toBeVisible();
   return panneau;
 };

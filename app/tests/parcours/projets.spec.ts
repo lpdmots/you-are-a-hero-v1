@@ -1,5 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
-import { aller, autrePoste, connecter, creerClasse, creerCompte, supprimerComptes, type Compte } from "./outils";
+import { aller, autrePoste, COLONNE, connecter, creerClasse, creerCompte, reglagesDuProjet, supprimerComptes, type Compte } from "./outils";
 
 let compte: Compte;
 test.beforeEach(async ({ page }) => {
@@ -35,12 +35,12 @@ test("F01-AC14 — une enseignante sans projet ni classe crée un projet de clas
   await expect(page).toHaveURL(/\/projets\/nouveau$/);
   await repondre(page, { qui: "Ma classe", recit: "À choix", titre: "Les passeurs de brume" });
 
-  await expect(page.getByRole("heading", { level: 1, name: "Les passeurs de brume" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Préparation" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Préparation", exact: true })).toHaveAttribute("aria-current", "page");
-  await expect(page.getByText(/Sans classe/)).toBeVisible();
-  await expect(page.getByText("Récit à choix")).toBeVisible();
-  // La barre du haut porte son titre
-  await expect(page.getByRole("navigation", { name: "Espace adulte" }).getByRole("link", { name: "Les passeurs de brume" })).toBeVisible();
+  // La colonne de navigation porte son titre et « Sans classe » (F06.5, 8 novembre 2026) ; ses réglages, ses deux choix
+  await expect(COLONNE(page).getByRole("link", { name: "Les passeurs de brume" })).toBeVisible();
+  await expect(COLONNE(page).getByText("Sans classe")).toBeVisible();
+  await expect(await reglagesDuProjet(page)).toContainText("Projet de classe · Récit à choix");
 });
 
 test("F01-AC15 — les deux choix sont annoncés comme définitifs, et « Retour » permet encore de les changer", async ({ page }) => {
@@ -68,7 +68,8 @@ test("F01-AC16 — pour un projet personnel, aucune classe n'est demandée", asy
   await expect(page.locator("p", { hasText: "ne se changent pas ensuite" })).toContainText("Projet personnel");
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
-  await expect(page.getByText(/Projet personnel · Récit classique/)).toBeVisible();
+  await expect(COLONNE(page).getByText("Projet personnel")).toBeVisible();
+  await expect(await reglagesDuProjet(page)).toContainText("Projet personnel · Récit classique");
   // Un projet personnel a les mêmes onglets, Suivi compris (F06-AC91)
   await expect(page.getByRole("navigation", { name: "Sections du projet" }).getByRole("link")).toHaveText(["Préparation", "Parties et chapitres", "Suivi", "Livre"]);
 });
@@ -108,18 +109,19 @@ test("F01-AC08, F01-AC24 — la classe se choisit après la préparation, puis s
   await creerClasse(page, "CM1-CM2");
   await creerClasse(page, "CE2");
 
+  // La classe se choisit dans les réglages du projet (F06.5, 8 novembre 2026 ; d'abord sous son titre)
   await aller(page, projet);
-  await page.getByRole("button", { name: "Choisir une classe" }).click();
+  await (await reglagesDuProjet(page)).getByRole("button", { name: "Choisir une classe" }).click();
   await page.getByRole("radio", { name: /^CM1-CM2/ }).check();
   await page.getByRole("button", { name: "Choisir cette classe" }).click();
-  await expect(page.getByText(/Classe CM1-CM2 · aucun élève inscrit/)).toBeVisible();
   await expect(page.getByText(/Les élèves commencent quand vous leur attribuez un chapitre/)).toBeVisible();
-  await expect(page.getByRole("heading", { level: 1, name: "Préparé cet été" })).toBeVisible();
+  await expect(page.locator("main")).toContainText("CM1-CM2 · aucun élève inscrit");
+  await expect(COLONNE(page).getByRole("link", { name: "CM1-CM2" })).toBeVisible();
 
-  await page.getByRole("button", { name: "Changer de classe" }).click();
+  await page.locator("main").getByRole("button", { name: "Changer de classe" }).click();
   await page.getByRole("radio", { name: /^CE2/ }).check();
   await page.getByRole("button", { name: "Choisir cette classe" }).click();
-  await expect(page.getByText(/Classe CE2 · aucun élève inscrit/)).toBeVisible();
+  await expect(page.locator("main")).toContainText("CE2 · aucun élève inscrit");
 });
 
 test("F01 — à la création, la classe en cours est proposée, avec « Choisir plus tard »", async ({ page }) => {
@@ -129,7 +131,7 @@ test("F01 — à la création, la classe en cours est proposée, avec « Choisir
   await expect(page.getByRole("radio", { name: /^Choisir plus tard/ })).toBeVisible();
   await page.getByRole("button", { name: "Créer le projet" }).click();
   await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/preparation/);
-  await expect(page.getByText(/Classe CM1-CM2/)).toBeVisible();
+  await expect(COLONNE(page).getByRole("link", { name: "CM1-CM2" })).toBeVisible();
 });
 
 test("F06-AC53 — reprendre sans choisir : le dernier projet, à son dernier onglet, depuis un autre ordinateur", async ({ page, browser }) => {
@@ -146,15 +148,15 @@ test("F06-AC53 — reprendre sans choisir : le dernier projet, à son dernier on
   const ailleurs = await autrePoste(browser);
   await connecter(ailleurs.page, compte);
   await expect(ailleurs.page).toHaveURL(new RegExp(`${suivi}$`));
-  await expect(ailleurs.page.getByRole("heading", { level: 1, name: "Les passeurs de brume" })).toBeVisible();
+  await expect(COLONNE(ailleurs.page).getByRole("link", { name: "Les passeurs de brume" })).toBeVisible();
 
-  // Depuis « Mes projets », le nom du projet dans la barre du haut y ramène
+  // Depuis « Mes projets », le nom du projet dans la colonne y ramène
   await ailleurs.page.getByRole("link", { name: "Mes projets" }).click();
   await expect(ailleurs.page).toHaveURL(/\/projets$/);
   await ailleurs.page.getByRole("navigation", { name: "Espace adulte" }).getByRole("link", { name: "Les passeurs de brume" }).click();
   await expect(ailleurs.page).toHaveURL(new RegExp(`${suivi}$`));
 
-  // Ouvrir l'autre projet le fait devenir le dernier ouvert, et la barre porte son nom
+  // Ouvrir l'autre projet le fait devenir le dernier ouvert, et la colonne porte son nom
   await ailleurs.page.getByRole("link", { name: "Mes projets" }).click();
   await ailleurs.page.getByRole("link", { name: "Ouvrir La cabane du bout du monde" }).click();
   await expect(ailleurs.page).toHaveURL(/\/preparation$/);

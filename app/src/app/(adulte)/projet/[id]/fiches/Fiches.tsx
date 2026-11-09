@@ -511,7 +511,7 @@ export function Fiches({
             <span className="lot-reglages" ref={cadreReglages}>
               <button type="button" className="btn" aria-expanded={reglages} aria-controls="lot-reglages" onClick={() => setReglages((o) => !o)}>
                 <Icone nom="reglages" />
-                <span>Réglages</span>
+                <span>Réglages des feuilles</span>
               </button>
               {reglages ? (
                 <div id="lot-reglages" className="lot-reglages__panneau flottant" role="dialog" aria-label="Réglages des feuilles" ref={panneauReglages}>

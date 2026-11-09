@@ -160,8 +160,11 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     test.setTimeout(120_000);
     const l = await avecLeMarais(page);
     await aller(page, vueChemins(l, l.feuxFollets));
+    // Un si grand chapitre tient en 1 366 points la colonne de navigation repliée (F03-AC43 révisé, F06.5)
+    await page.getByRole("button", { name: "Replier la colonne" }).click();
     await schemaPret(page, ATTENDU.scenes);
     await expect(TRAITS(page)).toHaveCount(ATTENDU.liens + 1);
+    await expect.poll(async () => (await mesurer(page)).defileDeCote).toBe(false);
     const mesure = await mesurer(page);
     // Trente-deux scènes et cinq étiquettes : deux sorties, une entrée, deux choix qui n'arrivent nulle part
     expect(mesure).toMatchObject({ cartes: ATTENDU.scenes + 5, traits: ATTENDU.liens + 1, sousUneCarte: 0, defileDeCote: false, remontent: 4 });

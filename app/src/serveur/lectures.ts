@@ -1,4 +1,5 @@
 import { avancement } from "@/domaine/suivi";
+import type { ProjetDeLaColonne } from "@/domaine/projets";
 import "server-only";
 import { AGE_PAR_DEFAUT, estAge, type AgeDesLecteurs } from "@/domaine/aides-ia";
 import { estStyle, STYLE_PAR_DEFAUT, type Style } from "@/domaine/illustration";
@@ -14,7 +15,11 @@ import { libelleAnnee } from "@/domaine/annee";
  * lui rend que ses lignes, quelle que soit la demande.
  */
 
-export type ClasseCourte = { id: string; nom: string; anneeDebut: number; enCours: boolean; nombreEleves: number };
+export type ClasseCourte = {
+  id: string; nom: string; anneeDebut: number; enCours: boolean; nombreEleves: number;
+  /** Une classe passée supprimée (F14-AC27) : ses projets la gardent, sa page n'existe plus */
+  supprimee: boolean;
+};
 export type Projet = {
   id: string;
   titre: string;
@@ -40,7 +45,7 @@ export type Projet = {
   ageDesLecteurs: AgeDesLecteurs;
 };
 
-type LigneClasseCourte = { id: string; nom: string; annee_debut: number; terminee_le: string | null; inscriptions?: { retire_le: string | null }[] };
+type LigneClasseCourte = { id: string; nom: string; annee_debut: number; terminee_le: string | null; supprimee_le?: string | null; inscriptions?: { retire_le: string | null }[] };
 const classeCourte = (c: LigneClasseCourte | null | undefined): ClasseCourte | null =>
   c
     ? {
@@ -49,12 +54,13 @@ const classeCourte = (c: LigneClasseCourte | null | undefined): ClasseCourte | n
         anneeDebut: c.annee_debut,
         enCours: c.terminee_le === null,
         nombreEleves: (c.inscriptions ?? []).filter((i) => i.retire_le === null).length,
+        supprimee: Boolean(c.supprimee_le),
       }
     : null;
 
 const SELECT_PROJET =
   "id, titre, organisation, recit, dernier_onglet, image_id, visuel_choisi, visuel_defaut, lecture_ouverte, mise_en_forme_eleves, style_images, style_autre, heros_absent, consigne_ecriture, age_des_lecteurs, " +
-  "classes(id, nom, annee_debut, terminee_le, inscriptions(retire_le))";
+  "classes(id, nom, annee_debut, terminee_le, supprimee_le, inscriptions(retire_le))";
 
 function projetDepuis(l: Record<string, unknown>): Projet {
   const classe = l.classes as LigneClasseCourte | LigneClasseCourte[] | null;
@@ -78,21 +84,28 @@ function projetDepuis(l: Record<string, unknown>): Projet {
   };
 }
 
+/**
+ * Les projets de l'adulte, du dernier ouvert au plus ancien (F06-AC103, 8 novembre 2026) : un projet
+ * jamais ouvert depuis prend sa date de création pour le rang.
+ */
 export async function mesProjets(e: Enseignant): Promise<Projet[]> {
-  const { data, error } = await e.supabase.from("projets").select(SELECT_PROJET).order("cree_le", { ascending: false });
+  const { data, error } = await e.supabase.from("projets").select(`${SELECT_PROJET}, ouvert_le, cree_le`);
   if (error) throw new Error(error.message);
-  return ((data ?? []) as unknown as Record<string, unknown>[]).map(projetDepuis);
+  const lignes = (data ?? []) as unknown as (Record<string, unknown> & { ouvert_le: string | null; cree_le: string })[];
+  const rang = (l: { ouvert_le: string | null; cree_le: string }) => Date.parse(l.ouvert_le ?? l.cree_le);
+  return [...lignes].sort((a, b) => rang(b) - rang(a)).map(projetDepuis);
 }
 
 /**
  * Ce que la carte de chaque projet dit de son avancement (F06-AC58) : les scènes à valider,
  * et la part des scènes du livre qui sont prêtes. Les scènes de la corbeille ne comptent pas.
  */
-export async function avancementDesProjets(e: Enseignant): Promise<Map<string, { aValider: number; pourCent: number }>> {
-  const { data, error } = await e.supabase
+export async function avancementDesProjets(e: Enseignant, projetId?: string): Promise<Map<string, { aValider: number; pourCent: number }>> {
+  const requete = e.supabase
     .from("scenes")
     .select("projet_id, etat, hors_livre, chapitres(hors_livre, supprime_le, parties(supprime_le))")
     .is("supprime_le", null);
+  const { data, error } = await (projetId ? requete.eq("projet_id", projetId) : requete);
   if (error) throw new Error(error.message);
   const unSeul = <T,>(v: T | T[] | null | undefined): T | null => (Array.isArray(v) ? (v[0] ?? null) : (v ?? null));
   const parProjet = new Map<string, { etat: string; horsLivre: boolean }[]>();
@@ -106,6 +119,24 @@ export async function avancementDesProjets(e: Enseignant): Promise<Map<string, {
 }
 
 const UUID = /^[0-9a-f-]{36}$/i;
+
+/**
+ * Le projet tel que la colonne de navigation le montre (F06.5, F06-AC98, AC100) : vignette, titre,
+ * classe, et le nombre de scènes à valider qui s'inscrit sur « Suivi ».
+ */
+export async function projetDeLaColonne(e: Enseignant, p: Projet): Promise<ProjetDeLaColonne> {
+  const avancements = await avancementDesProjets(e, p.id);
+  return {
+    id: p.id,
+    titre: p.titre,
+    onglet: p.dernierOnglet,
+    deClasse: p.organisation === "classe",
+    // Une classe supprimée n'a plus de page : la colonne n'y mène pas (F14-AC27)
+    classe: p.classe && !p.classe.supprimee ? { id: p.classe.id, nom: p.classe.nom } : null,
+    repere: { imageId: p.imageId, visuelChoisi: p.visuelChoisi, visuelDefaut: p.visuelDefaut },
+    aValider: avancements.get(p.id)?.aValider ?? 0,
+  };
+}
 
 /** Un projet de l'adulte ; lu une seule fois par page, quel que soit le nombre de demandes. */
 export const projetDe = cache(async (e: Enseignant, id: string): Promise<Projet | null> => {

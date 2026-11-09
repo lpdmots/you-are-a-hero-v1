@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { chapitresDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { ColonneDuProjet } from "../../_commun/EnteteProjet";
 import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe } from "@/serveur/recit";
 import { PageChapitre } from "./PageChapitre";
@@ -35,7 +35,8 @@ export default async function Page(props: Props) {
   const [eleves, demande] = await Promise.all([elevesDeLaClasse(enseignant, projet.classe?.id ?? null), props.searchParams]);
   return (
     <div className="page">
-      <ProjetOuvert id={projet.id} titre={projet.titre} onglet="plan" />
+      {/* Venu du Livre, la colonne désigne le Livre ; sinon « Parties et chapitres » (F06-AC99) */}
+      <ColonneDuProjet enseignant={enseignant} projet={projet} actif={demande.de === "livre" ? "livre" : "plan"} suivreLesImages={false} />
       <PageChapitre
         projet={{
           id: projet.id, titre: projet.titre, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix",

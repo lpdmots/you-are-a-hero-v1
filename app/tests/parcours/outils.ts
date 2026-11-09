@@ -116,6 +116,17 @@ export async function nommer(page: Page, compte: Compte, nom: string): Promise<v
 export type ClasseCreee = { id: string; identifiant: string; motDePasse: string };
 
 /** Un identifiant que personne n'a : la base locale garde les classes créées à la main. */
+/** La colonne de navigation de l'adulte (F06.5, 8 novembre 2026) : le projet en cours, ses onglets, « Mes projets »… */
+export const COLONNE = (page: Page): Locator => page.getByRole("navigation", { name: "Espace adulte" });
+
+/** « Réglages du projet », depuis la colonne : sa page (8 novembre 2026 ; d'abord un panneau). */
+export async function reglagesDuProjet(page: Page): Promise<Locator> {
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
+  await page.waitForURL(/\/projet\/[0-9a-f-]{36}\/reglages$/);
+  await expect(page.getByRole("heading", { level: 1, name: "Réglages du projet" })).toBeVisible();
+  return page.locator("main");
+}
+
 export const identifiantLibre = (): string => `essai${randomBytes(6).toString("hex")}`;
 
 /**

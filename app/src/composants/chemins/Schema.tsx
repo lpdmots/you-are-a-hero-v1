@@ -20,7 +20,15 @@ import { disposer, texteDeLEtiquette, texteDuLibelle, type Disposition, type Ele
 /** Autour du schéma, dans son cadre */
 const MARGE = 28;
 /** La barre du haut de l'application, qui reste à l'écran */
-const BARRE = 58;
+/**
+ * Ce qui reste collé en haut de l'écran au-dessus du schéma : rien sur l'écran large de l'adulte, sa
+ * barre mince sur un écran étroit, la barre de l'élève (« --sous-la-barre » de la vue Chemins).
+ */
+const barre = (): number => {
+  const vue = document.querySelector(".chemins");
+  const v = vue ? parseFloat(getComputedStyle(vue).getPropertyValue("--sous-la-barre")) : NaN;
+  return Number.isFinite(v) ? v : 58;
+};
 /** En dessous, on regarde l'ensemble : les libellés des choix ne se lisent plus et sont masqués */
 const LOIN = 0.62;
 /** « Tout voir » descend aussi bas qu'il le faut ; les boutons « − » et « + » restent entre deux tailles utiles */
@@ -188,7 +196,7 @@ export default function Schema({
 }) {
   const cadre = useRef<HTMLDivElement>(null);
   const [disposition, setDisposition] = useState<Disposition | null>(null);
-  const [place, setPlace] = useState({ gauche: 0, largeur: 0, fenetre: 0 });
+  const [place, setPlace] = useState({ gauche: 0, largeur: 0, fenetre: 0, barre: 58 });
   const [choisi, setChoisi] = useState<number | null>(null);
   const [noeuds, setNoeuds] = useState<(NoeudScene | NoeudEtiquette)[]>([]);
   const [survolee, setSurvolee] = useState<string | null>(null);
@@ -230,17 +238,30 @@ export default function Schema({
     });
   }, [disposition, chemins.liens]);
 
-  // Le schéma prend toute la largeur de la fenêtre, d'un bord à l'autre
+  // Le schéma prend toute la largeur de la page, d'un bord à l'autre : celle de la fenêtre, moins la
+  // colonne de navigation de l'adulte (F06.5), qui se replie sans que la fenêtre change
   useLayoutEffect(() => {
+    const page = cadre.current?.closest("main");
     const mesurer = () => {
       const parent = cadre.current?.parentElement;
       if (!parent) return;
-      const suite = { gauche: Math.round(parent.getBoundingClientRect().left), largeur: document.documentElement.clientWidth, fenetre: window.innerHeight };
-      setPlace((avant) => (avant.gauche === suite.gauche && avant.largeur === suite.largeur && avant.fenetre === suite.fenetre ? avant : suite));
+      const bord = page ? page.getBoundingClientRect().left : 0;
+      const suite = {
+        gauche: Math.round(parent.getBoundingClientRect().left - bord),
+        largeur: page ? page.clientWidth : document.documentElement.clientWidth,
+        fenetre: window.innerHeight,
+        barre: barre(),
+      };
+      setPlace((avant) => (avant.gauche === suite.gauche && avant.largeur === suite.largeur && avant.fenetre === suite.fenetre && avant.barre === suite.barre ? avant : suite));
     };
     mesurer();
     window.addEventListener("resize", mesurer);
-    return () => window.removeEventListener("resize", mesurer);
+    const suivi = page ? new ResizeObserver(mesurer) : null;
+    if (page) suivi?.observe(page);
+    return () => {
+      window.removeEventListener("resize", mesurer);
+      suivi?.disconnect();
+    };
   }, []);
 
   const l = disposition?.largeur ?? 0;
@@ -257,7 +278,7 @@ export default function Schema({
   const changer = (suite: number | null) => {
     const haut = hautDuSchema();
     const milieu = window.scrollY + window.innerHeight / 2;
-    ancre.current = milieu > haut && window.scrollY + BARRE > haut - MARGE ? (milieu - haut) / zoom : null;
+    ancre.current = milieu > haut && window.scrollY + barre() > haut - MARGE ? (milieu - haut) / zoom : null;
     setChoisi(suite === null ? null : arrondir(borner(suite, ZOOM.min, ZOOM.max)));
   };
   useLayoutEffect(() => {
@@ -268,12 +289,12 @@ export default function Schema({
 
   const toutVoir = () => {
     const enTete = cadre.current?.previousElementSibling?.getBoundingClientRect().height ?? 0;
-    const hauteur = window.innerHeight - BARRE - enTete - 2 * MARGE - 8;
+    const hauteur = window.innerHeight - barre() - enTete - 2 * MARGE - 8;
     ancre.current = null;
     setChoisi(Math.floor(borner(Math.min((place.largeur - 2 * MARGE) / l, hauteur / h), ZOOM.toutVoir, ZOOM.max) * 100) / 100);
     // Le haut du schéma vient sous la barre et son en-tête : on le voit alors d'un seul regard
     setTimeout(() => {
-      if (cadre.current) window.scrollTo({ top: cadre.current.getBoundingClientRect().top + window.scrollY - BARRE - enTete });
+      if (cadre.current) window.scrollTo({ top: cadre.current.getBoundingClientRect().top + window.scrollY - barre() - enTete });
     }, 0);
   };
 
@@ -299,7 +320,7 @@ export default function Schema({
     const y = places.reduce((somme, p) => somme + p.y + p.h / 2, 0) / places.length;
     const enTete = c.previousElementSibling?.getBoundingClientRect().height ?? 0;
     const doux = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
-    window.scrollTo({ top: c.getBoundingClientRect().top + window.scrollY + MARGE + y * zoom - (window.innerHeight + BARRE + enTete) / 2, behavior: doux });
+    window.scrollTo({ top: c.getBoundingClientRect().top + window.scrollY + MARGE + y * zoom - (window.innerHeight + barre() + enTete) / 2, behavior: doux });
     c.scrollTo({ left: (largeurToile - l * zoom) / 2 + x * zoom - c.clientWidth / 2, behavior: doux });
   });
   useEffect(() => {
@@ -315,7 +336,8 @@ export default function Schema({
 
   return (
     <>
-      <div className="chemins__tete">
+      {/* Son fond va d'un bord à l'autre de la page, comme le schéma, sans passer sur la colonne de l'adulte */}
+      <div className="chemins__tete" style={place.largeur ? { clipPath: `inset(0 ${-place.largeur}px 0 ${-place.gauche}px)` } : undefined}>
         {tete}
         <div className="chemins__outils">
           {zoom !== lisible ? (
@@ -393,7 +415,7 @@ export default function Schema({
           <p className="chemins__attente">Les chemins se dessinent…</p>
         )}
       </div>
-      {pret && disposition && h * zoom > 2 * (place.fenetre - BARRE) ? <MiniCarte disposition={disposition} zoom={zoom} cadre={cadre} regard={regard} noeuds={chemins.noeuds} /> : null}
+      {pret && disposition && h * zoom > 2 * (place.fenetre - place.barre) ? <MiniCarte disposition={disposition} zoom={zoom} cadre={cadre} regard={regard} noeuds={chemins.noeuds} /> : null}
     </>
   );
 }
@@ -437,10 +459,10 @@ function MiniCarte({
       const toile = c.querySelector<HTMLElement>(".chemins__toile");
       const decalage = toile ? (toile.clientWidth - disposition.largeur * zoom) / 2 : MARGE;
       // Hors de l'écran, le schéma n'a pas besoin de sa carte
-      if (r.bottom < BARRE + 80 || r.top > window.innerHeight - 80) return setVu(null);
-      const haut = (BARRE - r.top - MARGE) / zoom;
+      if (r.bottom < barre() + 80 || r.top > window.innerHeight - 80) return setVu(null);
+      const haut = (barre() - r.top - MARGE) / zoom;
       const gauche = (c.scrollLeft - decalage) / zoom;
-      setVu({ x: gauche, y: haut, l: c.clientWidth / zoom, h: (window.innerHeight - BARRE) / zoom });
+      setVu({ x: gauche, y: haut, l: c.clientWidth / zoom, h: (window.innerHeight - barre()) / zoom });
     };
     suivre();
     const c = cadre.current;
@@ -470,7 +492,7 @@ function MiniCarte({
     const y = (e.clientY - r.top) / echelle;
     const x = (e.clientX - r.left) / echelle;
     const hautDuSchema = c.getBoundingClientRect().top + window.scrollY + MARGE;
-    window.scrollTo({ top: hautDuSchema + y * zoom - (window.innerHeight + BARRE) / 2 });
+    window.scrollTo({ top: hautDuSchema + y * zoom - (window.innerHeight + barre()) / 2 });
     c.scrollTo({ left: x * zoom - c.clientWidth / 2 });
   };
   const parId = new Map(noeuds.map((n) => [n.id, n]));

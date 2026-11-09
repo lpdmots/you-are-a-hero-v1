@@ -940,6 +940,71 @@
 .reg-ligne--espace {
   margin-top: 8px;
 }
+/* La classe du projet dans ses réglages, et « Changer de classe » (F06-AC102, 8 novembre 2026) */
+.reg-classe {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+}
+/* « Réglages du projet » en page (F06.5, 8 novembre 2026), comme « Mon compte » : une colonne
+   étroite, une feuille par sujet ; au pied, hors des feuilles, la suppression */
+.reglages-projet {
+  max-width: 800px;
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+.reglages-projet > section {
+  display: grid;
+  justify-items: start;
+  gap: 8px;
+  padding: 18px 24px 22px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.reglages-projet h2 {
+  font-size: var(--t-l);
+  font-weight: 800;
+  letter-spacing: -0.005em;
+}
+.reglages-projet h3 {
+  margin-top: 6px;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.reglages-projet section > p:not(.erreur) {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.reglages-projet .pchamp {
+  max-width: 560px;
+}
+.reglages-projet__supprimer {
+  padding: 2px 4px 0;
+}
+/* « Enregistré », à droite du titre de la page */
+.page-tete__cmd .enregistre {
+  margin: 0;
+}
+@media (max-width: 720px) {
+  .reglages-projet > section {
+    padding: 16px 16px 18px;
+  }
+}
+/* En tête des réglages du projet : ses deux choix de départ, qui ne se changent pas */
+.reg-mode {
+  margin-bottom: 10px;
+  font-size: var(--t-s);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.reg-note {
+  margin-top: 6px;
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+}
 .reg-nom {
   font-size: var(--t-s);
   font-weight: 600;
@@ -1241,8 +1306,8 @@
 /* ——— Vue « Chemins » d'un chapitre (F03.1, docs/design.md « Vue Chemins reprise ») : un schéma
    de haut en bas sur un écran large, la liste des scènes sur téléphone ——— */
 .chemins {
-  /* La barre du haut reste à l'écran : l'en-tête des chemins se colle dessous */
-  --sous-la-barre: 58px;
+  /* Ce qui reste en haut de l'écran (la barre mince de l'adulte, celle de l'élève) : l'en-tête des chemins se colle dessous */
+  --sous-la-barre: var(--haut-adulte, 58px);
 }
 .chemins__tete {
   position: sticky;
@@ -2538,20 +2603,6 @@ a.noeud__ailleurs {
   cursor: progress;
 }
 
-/* « Réglages » du projet, dans son en-tête : un bouton nommé, visible (18 octobre 2026) */
-.commandes-projet {
-  align-self: start;
-  flex: none;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 8px;
-}
-@media (max-width: 720px) {
-  .commandes-projet {
-    justify-content: flex-start;
-  }
-}
 /* Sous « Choisir une image » : « Télécharger » l'image choisie (18 octobre 2026) */
 .reg-image__gestes {
   display: grid;
@@ -2612,8 +2663,3 @@ a.noeud__ailleurs {
   object-fit: cover;
 }
 
-/* Réglages du projet : la suppression, en dernier, séparée du reste (F14-AC42) */
-.reg-supprimer {
-  padding-top: 18px;
-  border-top: 1px solid var(--trait);
-}

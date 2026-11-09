@@ -33,7 +33,7 @@ async function leMarais(page: Page, n: number): Promise<{ compte: Compte; base: 
 
 async function ouvrirReglages(page: Page, projet: string): Promise<void> {
   await aller(page, `/projet/${projet}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await expect(page.getByRole("heading", { name: "Réglages du projet" })).toBeVisible();
 }
 
@@ -46,7 +46,8 @@ test("F14-AC12 — interrupteur éteint : une 41e scène s'ajoute, et rien ne pa
   await expect(DIALOGUE(page)).toHaveCount(0);
   await ouvrirReglages(page, m.projet);
   await expect(page.getByText(/Pass du livre|Acheter le pass/)).toHaveCount(0);
-  await page.keyboard.press("Escape");
+  // Les réglages sont une page : on revient aux parties et chapitres (8 novembre 2026)
+  await page.goBack();
   await expect(page.getByText("1 partie · 1 chapitre · 41 scènes", { exact: true })).toBeVisible();
 });
 
@@ -63,7 +64,8 @@ test("F14-AC54 — vente ouverte, livre gratuit : une 41e scène s'ajoute ; le l
   await expect(DIALOGUE(page)).toHaveCount(0);
   await ouvrirReglages(page, m.projet);
   await expect(page.getByText(/Acheter le pass/)).toHaveCount(0);
-  await page.keyboard.press("Escape");
+  // Les réglages sont une page : on revient aux parties et chapitres (8 novembre 2026)
+  await page.goBack();
   await expect(page.getByText("1 partie · 1 chapitre · 42 scènes", { exact: true })).toBeVisible();
 });
 
@@ -147,7 +149,8 @@ test("F14-AC16 — le pass reçu : plus de dialogue, « Pass du livre » dans le
   await expect(page.getByRole("heading", { name: "Pass du livre" })).toBeVisible();
   await expect(page.getByText(/^Reçu le \d+ \w+ 2026 : scènes et images sans limite pour ce livre\.$/)).toBeVisible();
   await expect(page.getByRole("button", { name: /Acheter le pass/ })).toHaveCount(0);
-  await page.keyboard.press("Escape");
+  // Les réglages sont une page : on revient aux parties et chapitres (8 novembre 2026)
+  await page.goBack();
   await expect(page.getByText("1 partie · 1 chapitre · 41 scènes", { exact: true })).toBeVisible();
 });
 

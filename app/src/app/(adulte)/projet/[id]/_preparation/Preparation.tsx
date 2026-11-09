@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
+import { DansLaTete } from "@/composants/DansLaTete";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import {
@@ -93,7 +94,9 @@ export function PagePreparation({
             );
           })}
         </ol>
-        <span className={styles.ligne__fin}>
+        {/* « Aide » et « Projeter » à droite du titre de la page : la ligne d'étapes garde toute sa
+            largeur (F06.5, 8 novembre 2026) */}
+        <DansLaTete>
           <button
             type="button"
             className="aide-bouton"
@@ -108,7 +111,7 @@ export function PagePreparation({
           </button>
           {deClasse ? (
             <Link
-              className="btn"
+              className={`btn ${styles.projeter}`}
               href={`/atelier/${projet.id}/${estEtapeDeLHistoire(etape) ? etape : "univers"}`}
               // Devant la classe, tout l'écran (porteur, 18 octobre 2026) ; refusé par le navigateur, rien ne change
               onClick={() => void document.documentElement.requestFullscreen?.().catch(() => undefined)}
@@ -117,7 +120,7 @@ export function PagePreparation({
               Projeter
             </Link>
           ) : null}
-        </span>
+        </DansLaTete>
       </nav>
 
       <div className={styles.page}>

@@ -134,7 +134,7 @@ test("F14-AC42 — supprimer un projet depuis ses réglages, en retapant son tit
   expect(await fichiers()).toHaveLength(2);
 
   await aller(page, `/projet/${projet}/plan`);
-  await page.getByRole("button", { name: "Réglages du projet" }).click();
+  await page.getByRole("link", { name: "Réglages du projet" }).click();
   await page.getByRole("button", { name: "Supprimer le projet" }).click();
   await expect(DIALOGUE(page).getByRole("heading", { name: "Supprimer ce projet ?" })).toBeVisible();
   await expect(DIALOGUE(page)).toContainText("« Le marais » est effacé aussitôt, sans retour : ses scènes, ses images et ses PDF.");

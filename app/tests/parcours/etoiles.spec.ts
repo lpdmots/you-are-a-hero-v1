@@ -46,7 +46,7 @@ test("F14-AC07 — « Mon compte » dit le solde ; aucun bouton d'IA ne montre d
   await expect(page.getByText("Il vous reste 30 ✦ pour les aides.")).toBeVisible();
   // Le solde se lit aussi d'un coup d'œil, dans le menu du nom
   await ouvrirLeMenuDuCompte(page);
-  await expect(page.locator("header").getByText("30 ✦ pour les aides")).toBeVisible();
+  await expect(page.locator("#colonne-adulte").getByText("30 ✦ pour les aides")).toBeVisible();
 
   await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
   const titres = page.getByRole("button", { name: "Proposer des titres" });
@@ -66,7 +66,7 @@ test("F14-AC07 — « Mon compte » dit le solde ; aucun bouton d'IA ne montre d
   // Le menu du nom relit le solde à son ouverture, sans recharger la page
   await page.keyboard.press("Escape");
   await ouvrirLeMenuDuCompte(page);
-  await expect(page.locator("header").getByText("8 ✦ pour les aides")).toBeVisible();
+  await expect(page.locator("#colonne-adulte").getByText("8 ✦ pour les aides")).toBeVisible();
 });
 
 test("F14-AC08 — à 0 ✦, l'aide ne part pas : « Vous n'avez plus d'étoiles. Tout le reste fonctionne. »", async ({ page }) => {

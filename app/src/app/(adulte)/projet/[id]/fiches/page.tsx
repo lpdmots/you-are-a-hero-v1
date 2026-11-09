@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { horsFiche, lireReglages } from "@/domaine/fiches";
 import { filtrer, filtresDepuis, lignesDuPlan } from "@/domaine/suivi";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { ColonneDuProjet } from "../_commun/EnteteProjet";
 import { contenusDesFiches } from "@/serveur/fiches";
 import { projetDe } from "@/serveur/lectures";
 import { elevesDeLaClasse, planDe } from "@/serveur/recit";
@@ -39,7 +39,7 @@ export default async function Page({ params, searchParams }: Props) {
     .map((l) => l.scene.id);
   return (
     <div className="page">
-      <ProjetOuvert id={projet.id} titre={projet.titre} onglet="suivi" />
+      <ColonneDuProjet enseignant={enseignant} projet={projet} actif="suivi" />
       <Fiches
         projet={{ id: projet.id, titre: projet.titre }}
         plan={plan}

@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, chapitresDeLaPartie, MESSAGE, scenesDuChapitre, semerAttribution, semerClasse, semerPartie, semerProjet, supprimerComptes, tirer,
+  adultePret, aller, chapitresDeLaPartie, MESSAGE, reglagesDuProjet, scenesDuChapitre, semerAttribution, semerClasse, semerPartie, semerProjet, supprimerComptes, tirer,
 } from "./outils";
 
 test.afterEach(async () => {
@@ -213,7 +213,7 @@ test("F03-AC34 — un chapitre tiré change de rang, et « Annuler » remet l'or
   // Un clic sans tirer ouvre la carte, et l'ordre ne change pas
   await page.getByRole("link", { name: "Ouvrir La lisière", exact: true }).click();
   await expect(page).toHaveURL(/\/chapitre\//);
-  await page.getByRole("link", { name: "Parties et chapitres" }).click();
+  await page.getByRole("link", { name: "Retour à Parties et chapitres" }).click();
   await expect.poll(() => chapitresDeLaPartie(page, "La forêt")).toEqual(["Le sanctuaire", "La lisière", "Les racines"]);
 });
 
@@ -384,7 +384,8 @@ test("F03-AC32, F03-AC33, F03-AC40 — le départ supprimé se dit, se choisit d
 test("F06-AC01, F06-AC11, F06-AC18 — attribuer un chapitre : les élèves cochés, leur profil dit par ce qu'il permet ; F01-AC24 — la classe ne se change plus", async ({ page }) => {
   const { base, projet, foret } = await passeursDeBrume(page);
   await aller(page, `/projet/${projet}/plan`);
-  await expect(page.getByRole("button", { name: "Changer de classe" })).toBeVisible();
+  await expect((await reglagesDuProjet(page)).getByRole("button", { name: "Changer de classe" })).toBeVisible();
+  await aller(page, `/projet/${projet}/plan`);
 
   await menuChapitre(page, "La lisière").click();
   await page.getByRole("button", { name: "Attribuer des élèves" }).click();
@@ -402,8 +403,11 @@ test("F06-AC01, F06-AC11, F06-AC18 — attribuer un chapitre : les élèves coch
   await expect(carte(page, "La lisière")).toContainText("3 élèves");
   const { data } = await base.from("attributions").select("profil").eq("chapitre_id", foret.chapitres[0].id).order("profil");
   expect(data).toEqual([{ profil: "organisation" }, { profil: "propositions" }, { profil: "propositions" }]);
-  await expect(page.getByRole("button", { name: "Changer de classe" })).toHaveCount(0);
   await expect(page.locator(".reste__manques")).toContainText("2 élèves sans chapitre");
+  // Un chapitre attribué : la classe ne se change plus, ce que ses réglages disent
+  const reglages = await reglagesDuProjet(page);
+  await expect(reglages.getByRole("button", { name: "Changer de classe" })).toHaveCount(0);
+  await expect(reglages).toContainText("Un chapitre est attribué : la classe ne change plus.");
 });
 
 test("F06-AC07, F06-AC62 — l'enseignant dit qui s'occupe d'une scène, sur sa carte comme dans sa page ; un chapitre qu'il écrit seul n'attend pas d'élève", async ({ page }) => {

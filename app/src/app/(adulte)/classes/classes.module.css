@@ -53,6 +53,11 @@
   color: var(--graphite);
   font-weight: 700;
 }
+/* Les projets de la classe : des liens posés au-dessus de celui qui couvre la carte */
+.projetsDeLaClasse a {
+  position: relative;
+  z-index: 1;
+}
 .ouvrir {
   margin-top: 20px;
   min-height: 42px;
@@ -309,7 +314,7 @@ button.eleve:hover {
 }
 .fiche {
   --filet: var(--trait-fort);
-  scroll-margin-top: 76px;
+  scroll-margin-top: calc(var(--haut-adulte, 58px) + 18px);
 }
 .finLien {
   padding: 2px 4px 0;

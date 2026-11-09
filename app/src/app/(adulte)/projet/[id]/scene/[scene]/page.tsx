@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import { ProjetOuvert } from "@/composants/ProjetCourant";
 import { nomScene, scenesDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { ColonneDuProjet } from "../../_commun/EnteteProjet";
 import { projetDe } from "@/serveur/lectures";
 import { planDe } from "@/serveur/recit";
 import { donneesDeLaScene } from "@/serveur/scene";
@@ -42,7 +42,8 @@ export default async function Page(props: Props) {
   if (!donnees) notFound();
   return (
     <div className="page">
-      <ProjetOuvert id={projet.id} titre={projet.titre} onglet="plan" />
+      {/* L'onglet d'où l'on vient reste désigné dans la colonne (F06-AC99) */}
+      <ColonneDuProjet enseignant={enseignant} projet={projet} actif={demande.de === "suivi" ? "suivi" : demande.de === "livre" || demande.de === "lecture" ? "livre" : "plan"} />
       <PageScene projet={{ id: projet.id, deClasse: projet.organisation === "classe", aChoix: projet.recit === "choix" }} plan={plan} sceneId={scene.id}
         {...donnees}
         ouvrir={typeof demande.texte === "string" ? demande.texte : undefined}
