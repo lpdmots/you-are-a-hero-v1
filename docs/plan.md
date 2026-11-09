@@ -3462,9 +3462,11 @@ V6, le premier envoi à l'imprimeur.
    type) en construisant la dictée, accepté par le porteur après qu'il l'a
    jugé inutile : les deux textes listent les services qui reçoivent des
    données, et le contrat promet d'informer l'école de tout changement.
-   Une fois construite, le guide « Comment écrire un livre dont vous êtes le
-   héros » l'annonce en encart (partie 5), décidé le 28 octobre 2026 ;
-   F07.4 est accordé le 30 octobre 2026.
+   Un encart du guide « Comment écrire un livre dont vous êtes le héros »
+   (partie 5), décidé le 28 octobre 2026, est abandonné le 9 novembre 2026
+   par le porteur : les encarts sont cinq au plus (F14-AC52), et le guide en
+   parle déjà (partie 13, phrase de la partie 5) ; F07.4 est accordé le
+   30 octobre 2026.
    **Étendue le 9 novembre 2026 par le porteur à tous les champs que
    l'adulte remplit,** la copie comprise, et construite le même jour en
    local, sans lot ([F07.4, « Dictée à l'adulte »](specifications.md#dictée-à-ladulte),
@@ -3475,8 +3477,7 @@ V6, le premier envoi à l'imprimeur.
    site, fermé côté élève et dans le lecteur ; migration `dictee` (journal
    des durées, sans son ni texte) en base locale seulement. Clé
    `ELEVENLABS_API_KEY` posée par lui dans `.env.local` ; à poser chez
-   Vercel avant la mise en ligne. Restent : son essai avec de vrais appels,
-   l'encart du guide une fois en ligne.
+   Vercel avant la mise en ligne. Restait son essai avec de vrais appels.
    **Liste de vérification sous la consigne, décidée par le porteur le
    9 novembre 2026** et construite en local le même jour, dans la foulée
    ([F13.2](specifications.md#f132--formuler-une-consigne-et-sa-liste-de-vérification),

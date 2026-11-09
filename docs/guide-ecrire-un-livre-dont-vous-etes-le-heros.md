@@ -495,8 +495,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   et 9 ; le binôme
   papier et ordinateur, l'autonomie, les devoirs et l'APC en partie 5 ; le
   rythme et la durée en partie 11 ; la dictée des textes manuscrits en
-  partie 5, par la dictée de l'ordinateur, l'encart de l'outil attendant que
-  la dictée soit construite (plan, « Suite recommandée », point 2).
+  partie 5, par la dictée de l'ordinateur, sans encart de l'outil (décidé
+  le 9 novembre 2026 : cinq encarts au plus ; la partie 13 parle de la
+  dictée).
 - Extension validée : un livre d'une autre classe prouve que c'est possible ;
   la bibliothèque du site en offre à qui n'en a pas.
 - À vérifier avant publication : éditeur, âge et disponibilité de *Ma
@@ -693,7 +694,7 @@ chaque partie pendant l'entretien et prime sur les sources.
   illustrer, et tester leur chapitre par une lecture d'essai (partie 10) ;
   quand tout cela est fait, aider les retardataires.
 - Encart de l'outil retiré le 30 octobre 2026 (scènes voisines dites en
-  partie 8) ; la dictée, une fois construite.
+  partie 8) ; pas d'encart pour la dictée (9 novembre 2026).
 - Extensions validées : entrées et sorties de chapitre fixées ensemble ; une
   exigence d'écriture par consigne, qui sert d'autocorrection. Écartée : le
   plan du chapitre en cases et en flèches.
