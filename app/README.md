@@ -1033,3 +1033,47 @@ captures -- couverture`.
 4. juste après, `npm run couvertures:accueil -- --production` (à blanc), puis
    `npm run couvertures:accueil -- --production --oui` : l'accueil montre de nouveau la
    face avant de ses livres, devenue leur couverture.
+
+## Essayer « Construire dans Chemins » (F03.1, lots 1 et 2)
+
+L'adulte construit le plan d'un chapitre à choix dans « Chemins » (`docs/plan.md`,
+« Construire dans « Chemins » et bloc de scènes »). L'essai se joue en local, sur
+http://localhost:4840, avec le compte local ; la vraie base n'est pas touchée.
+
+**1. La base locale à jour.** Les deux migrations, `ajout_du_plan` et
+`construire_dans_chemins` : `npx tsx scripts/supabase.ts migration up --local` les
+applique sans rien effacer. `npm run chemins:essai -- --refaire` recharge « Le marais
+des feux follets », trente-deux scènes, dans « Les passeurs de brume ».
+
+**2. Les gestes.** « Parties et chapitres », un chapitre, « Chemins », sur un écran large.
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| Ouvrir « Chemins » | une phrase à droite de « Scènes / Chemins » dit les deux gestes ; un « + » rond reste sous chaque scène « Sans suite » |
+| Survoler une carte, ou la cliquer | un « + » rond sous la carte |
+| « + », « Suivre le ruisseau », « Le ruisseau », Entrée | la nouvelle carte sous la première, sa flèche, « S… « Le ruisseau » est ajoutée. » et « Annuler » ; la carte d'où l'on part n'a pas bougé, la taille non plus |
+| « + », sans toucher au titre | le titre proposé suit le choix ; la scène le prend |
+| « + », puis « Relier plutôt à une scène existante » | la liste des scènes du chapitre à la place du titre ; « Relier » |
+| Tirer le « + » jusqu'à une autre carte | un trait en pointillé, la carte visée entourée ; lâché, la bulle ne demande que « Ce que fait le lecteur », le trait restant dessiné |
+| Cliquer une carte | le panneau à droite : titre, consigne (avec le micro), « Ses choix », « Supprimer la scène », « Ouvrir » ; « Enregistré » en tête après chaque changement |
+| La corbeille d'un choix, dans le panneau | le choix quitte le schéma et le texte de sa scène ; « Annuler » le remet |
+| « Supprimer la scène », sans texte | pas de confirmation, la corbeille du projet ; le choix qui y menait porte « Scène supprimée » |
+| « Supprimer la scène », écrite ou portant un choix | la confirmation habituelle |
+| « Tout voir » | les « + » des cartes ne s'offrent plus ; « Taille lisible » les rend |
+
+**3. Quelqu'un écrit la scène (F08-AC44).** Dans un second onglet, ou sur un poste
+d'élève (`npm run histoire:essai` donne la classe et ses codes), ouvrir une scène du
+chapitre et y écrire. Depuis « Chemins », lui ajouter un choix par « + ». Continuer
+d'écrire dans la scène : à l'enregistrement suivant, le choix apparaît à la fin de la
+copie, sans message ; rien n'est gardé à part.
+
+**4. Les essais.** `npm run test:base -- ajout-du-plan construire-chemins` et
+`npm test -- chemins copie` ; les captures se refont, contre le serveur local, par
+`npx playwright test --config playwright.local.config.ts construire-chemins`
+(`test-results/captures/construire-chemins/`). Aucun parcours n'est écrit pour ces
+deux lots.
+
+**5. En ligne, à la demande seulement, dans cet ordre.** `npm run sauvegarder` ;
+`npm run production:schema -- --oui`, qui applique les deux migrations à la vraie base
+(ne plus les modifier ensuite) ; puis le code, par le `git push` de `main`. Les
+migrations passent avant le code : sans elles, « + » échoue.

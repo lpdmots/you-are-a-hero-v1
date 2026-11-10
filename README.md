@@ -14,6 +14,17 @@ la construction des lots 1 et 2, en local. Règles en
 [F13.7](docs/specifications.md#f137--bloc-de-scènes-depuis-le-schéma) et
 [F08.1](docs/specifications.md#f08-ajout-du-plan) ; lots dans le
 [plan](docs/plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+Les lots 1 et 2 sont construits en local le 10 novembre 2026, un commit par
+lot : l'ajout venu du plan, dont le mécanisme tient sans repli (un choix posé
+depuis « Chemins » dans une scène qu'on écrit n'arrête personne, F08-AC44),
+puis les gestes à la main (« + » sous une scène, lien tiré, panneau du titre
+et de la consigne, suppressions, l'écran qui ne bouge pas, F03-AC52 à AC57),
+écrans critiqués en deux lectures
+([design](docs/design.md#construire-dans--chemins---écrans-construits-10-novembre-2026)) ;
+migrations `ajout_du_plan` et `construire_dans_chemins` en base locale
+seulement, rien poussé ; mode d'emploi dans [`app/README.md`](app/README.md),
+« Essayer « Construire dans Chemins » ». Les lots 3 et 4 (le bloc de scènes)
+demandent son instruction.
 
 ## État de reprise au 20 octobre 2026
 

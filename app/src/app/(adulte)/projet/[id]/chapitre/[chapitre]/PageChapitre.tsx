@@ -10,6 +10,7 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Chemins } from "@/composants/Chemins";
+import type { Construire } from "@/composants/chemins/Construire";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -22,9 +23,10 @@ import { annonces, CONSIGNES_CLAVIER, Prise, useCapteurs } from "@/composants/Ti
 import { cheminsDuPlan } from "@/domaine/chemins";
 import { raisonDuReperage } from "@/domaine/illustration";
 import { nomPourEleves } from "@/domaine/eleves";
-import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
+import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, nomScene, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
-import { choisirRepere, creerScene, exclureDuLivre, placerScene, restaurer, supprimer } from "../../../actions-recit";
+import { ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, relierDepuisLeSchema, remettreChoixDuSchema, supprimerChoixDuSchema } from "../../../actions-chemins";
+import { choisirRepere, creerScene, exclureDuLivre, placerScene, reglerScene, restaurer, supprimer } from "../../../actions-recit";
 import { useCommandesScene } from "../../_plan/commandes";
 import { useConfirmerSuppression } from "../../_plan/suppression";
 import { AttribuerEleves, ChoisirDepart, ReglagesChapitre } from "../../_plan/Panneaux";
@@ -92,8 +94,53 @@ export function PageChapitre({
     setDemande("");
     setMontree(fait.id);
     aAmener.current = fait.id;
+    // Dans « Chemins », la scène ajoutée, que rien ne relie encore, est désignée sous le schéma
+    if (vue === "chemins") {
+      routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins&scene=${fait.id}`, { scroll: false });
+      return dire({ texte: `${referenceScene(fait.reference)} est ajoutée, sous le schéma : rien n’y mène encore.` });
+    }
     dire({ texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.` });
   };
+
+  // ——— Construire dans « Chemins » (F03.1) : chaque geste est enregistré aussitôt, et se dit en une phrase ———
+  const construire: Construire | undefined = !projet.aChoix
+    ? undefined
+    : {
+        ajouterScene: async (de, libelle, titre) => {
+          const fait = await ajouterSceneDepuisLeSchema(chapitre.id, de, libelle, titre);
+          if (!fait.ok && fait.limite) ouvrirOffreDuPass(projet.id, fait.limite);
+          if (!fait.ok) return fait;
+          dire({ texte: `${nomScene(fait.scene)} est ajoutée.`, annuler: () => void annulerAjoutDuSchema([fait.choix], [fait.scene.id]).then((defait) => defait.ok || dire({ texte: defait.erreur })) });
+          return { ok: true };
+        },
+        relier: async (de, vers, libelle) => {
+          const fait = await relierDepuisLeSchema(chapitre.id, de, vers, libelle);
+          if (!fait.ok) return fait;
+          const cible = chapitre.scenes.find((s) => s.id === vers);
+          dire({
+            texte: `Le choix « ${libelle.trim()} » mène à ${cible ? nomScene(cible) : "la scène"}.`,
+            annuler: () => void annulerAjoutDuSchema([fait.choix], []).then((defait) => defait.ok || dire({ texte: defait.erreur })),
+          });
+          return { ok: true };
+        },
+        reglerScene: (sceneId, valeurs) => reglerScene(sceneId, valeurs),
+        supprimerChoix: async (lien) => {
+          const fait = await supprimerChoixDuSchema(lien.de, lien.id);
+          if (!fait.ok) {
+            dire({ texte: fait.erreur });
+            return fait;
+          }
+          dire({
+            texte: `Le choix « ${lien.libelle || "sans libellé"} » est supprimé.`,
+            annuler: () => void remettreChoixDuSchema(lien.de, fait.bloc).then((defait) => defait.ok || dire({ texte: defait.erreur })),
+          });
+          return { ok: true };
+        },
+        supprimerScene: (sceneId) => {
+          const scene = chapitre.scenes.find((s) => s.id === sceneId);
+          if (scene) commandes.supprimerScene(scene, true);
+        },
+      };
 
   const suppression = useConfirmerSuppression({ plan, eleves });
   const supprimerChapitre = () => suppression.demander("chapitre", chapitre.id, `« ${chapitre.titre} »`, () => void retirerChapitre());
@@ -272,8 +319,9 @@ export function PageChapitre({
               </div>
             ) : null}
             {/* L'ordre des cartes, dans un « i » : la phrase restait à l'écran à chaque visite (révision de novembre 2026) */}
+            {/* Dans « Chemins », l'adulte construit (F03.1) : une phrase le dit, là où l'on lisait « rien ne se règle ici » */}
             {vue === "chemins" ? (
-              <p>Les chemins viennent des choix écrits dans les scènes : rien ne se règle ici.</p>
+              <p className="chap-outils__construire">Le « + » sous une scène ajoute la suite ; tiré jusqu’à une autre scène, il les relie.</p>
             ) : projet.aChoix ? (
               <Bulle question="Que change l’ordre des cartes ?">
                 L’ordre des cartes ne sert qu’à ranger le chapitre. Dans le livre, ce sont les choix écrits dans les scènes qui mènent d’une
@@ -291,7 +339,7 @@ export function PageChapitre({
             ) : null}
           </div>
           {chemins ? (
-            <Chemins {...chemins} designee={designee} />
+            <Chemins {...chemins} designee={designee} construire={construire} />
           ) : montrees.length === 0 ? (
             <p className="aucun" aria-live="polite">
               Aucun titre de scène ne contient « {demande.trim()} » dans ce chapitre.{" "}

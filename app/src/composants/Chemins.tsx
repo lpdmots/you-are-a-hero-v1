@@ -4,9 +4,10 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import {
-  aRegarder, compteARegarder, MOT_DE_MARQUE, ordreDeLecture, type ARegarder, type Chemins as DonneesDesChemins, type EntreeDeChemin, type LienDeChemin,
+  aRegarder, compteARegarder, MOT_DE_MARQUE, ordreDeLecture, peutConstruire, type ARegarder, type Chemins as DonneesDesChemins, type EntreeDeChemin, type LienDeChemin,
   type NoeudDeChemin, type SorteARegarder,
 } from "@/domaine/chemins";
+import type { Construire } from "./chemins/Construire";
 import { referenceScene } from "@/domaine/recit";
 import { Icone } from "./Icone";
 import { TamponScene } from "./TamponScene";
@@ -14,9 +15,10 @@ import { TamponScene } from "./TamponScene";
 /**
  * La vue « Chemins » d'un chapitre (F03.1, « Vue Chemins à reprendre » ; docs/design.md,
  * « Vue Chemins reprise ») : les mêmes scènes que la vue « Scènes », reliées par leurs choix.
- * Rien ne s'y saisit : les chemins se déduisent des textes. Sur un écran large, un schéma de
- * haut en bas, qui ne se charge qu'ici ; sur téléphone, la liste des scènes, chaque choix
- * disant où il mène. En tête, ce qu'il y a « à regarder ».
+ * Les chemins se déduisent des textes. Sur un écran large, un schéma de haut en bas, qui ne se
+ * charge qu'ici ; sur téléphone, la liste des scènes, chaque choix disant où il mène. En tête,
+ * ce qu'il y a « à regarder ». L'élève et le téléphone lisent sans rien modifier ; sur un écran
+ * large, l'adulte y construit le plan (F03.1, « Construire dans Chemins », F03-AC57).
  */
 
 const ATTENTE = <p className="chemins__attente">Les chemins se dessinent…</p>;
@@ -33,12 +35,14 @@ const estEtroit = (): boolean | null => window.matchMedia(ETROIT).matches;
 const pasEncoreSu = (): boolean | null => null;
 
 export function Chemins({
-  noeuds, liens, entrees, designee, pourEleve = false,
+  noeuds, liens, entrees, designee, pourEleve = false, construire,
 }: {
   noeuds: NoeudDeChemin[]; liens: LienDeChemin[]; entrees: EntreeDeChemin[];
   /** La scène où mène le choix qu'on vient de suivre depuis un autre chapitre */
   designee?: string;
   pourEleve?: boolean;
+  /** Les gestes de l'adulte en récit à choix : ajouter une scène, relier, titre et consigne, supprimer (F03.1) */
+  construire?: Construire;
 }) {
   const etroit = useSyncExternalStore(suivreLaLargeur, estEtroit, pasEncoreSu);
   const chemins = useMemo<DonneesDesChemins>(() => ({ noeuds, liens, entrees }), [noeuds, liens, entrees]);
@@ -91,7 +95,10 @@ export function Chemins({
       ) : etroit ? (
         <Liste chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete} />
       ) : (
-        <Schema chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete} />
+        <Schema
+          chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete}
+          construire={peutConstruire({ adulte: !pourEleve, aChoix: !!construire, etroit }) ? construire : undefined}
+        />
       )}
     </div>
   );

@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { CARTE, disposer, LIBELLE, type Disposition, type Point } from "@/composants/chemins/disposer";
-import { aRegarder, compteARegarder, ordreDeLecture, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
+import { carteDeReference, figerLaTaille, garderEnPlace, resteApres } from "@/composants/chemins/ancrage";
+import { aRegarder, compteARegarder, ordreDeLecture, peutConstruire, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
+import { fautConfirmer } from "@/domaine/recit";
 import { ATTENDU, SCENES } from "../../scripts/marais-des-feux-follets";
 
 /**
@@ -216,5 +218,102 @@ describe("Le schéma, de haut en bas (F03.1)", () => {
     const trait = boucle.traits.find((t) => t.de === t.vers)!;
     expect(trait.points[0].x).toBe(carte.x + carte.l);
     expect(trait.points.every((p) => p.y > carte.y && p.y < carte.y + carte.h)).toBe(true);
+  });
+});
+
+describe("Construire dans « Chemins » (F03.1)", () => {
+  // L'écran tel que le schéma le dessine : centré dans son cadre, la page défilant de haut en bas et le cadre de côté
+  const MARGE = 28;
+  const FENETRE = { l: 1200, h: 800 };
+  const HAUT_DU_CADRE = 420;
+  const ZOOM_MAX = 1;
+  const lisible = (d: Disposition) => Math.floor(Math.min(ZOOM_MAX, Math.max(0.7, (FENETRE.l - 2 * MARGE) / d.largeur)) * 100) / 100;
+  const toile = (d: Disposition, zoom: number) => ({ l: Math.max(FENETRE.l, Math.ceil(d.largeur * zoom + 2 * MARGE)), h: Math.ceil(d.hauteur * zoom + 2 * MARGE) });
+  const aLEcran = (d: Disposition, id: string, zoom: number, defile: { x: number; y: number }) => {
+    const p = d.places.get(id)!;
+    return { x: (toile(d, zoom).l - d.largeur * zoom) / 2 + p.x * zoom - defile.x, y: HAUT_DU_CADRE + MARGE + p.y * zoom - defile.y };
+  };
+  const defilementMax = (d: Disposition, zoom: number) => ({ x: toile(d, zoom).l - FENETRE.l, y: Math.max(0, HAUT_DU_CADRE + toile(d, zoom).h - FENETRE.h) });
+
+  it("F03-AC54 — « Le marais des feux follets », la vue descendue sur ses dernières scènes : une scène ajoutée sous l'une d'elles, cette carte garde sa place à l'écran et la taille du schéma ne change pas", () => {
+    const avant = marais();
+    const d1 = disposer(avant, aRegarder(avant).marques);
+    const zoom = lisible(d1);
+    // Les dernières scènes : celles du bas du schéma. On ajoute sous chacune d'elles, tour à tour
+    const dernieres = [...avant.noeuds].sort((a, b) => d1.places.get(b.id)!.y - d1.places.get(a.id)!.y).slice(0, 6);
+    for (const origine of dernieres) {
+      const apres: Chemins = {
+        ...avant,
+        noeuds: [...avant.noeuds, noeud(999, { id: "scene-ajoutee", titre: "La scène ajoutée" })],
+        liens: [...avant.liens, { id: "nouveau-choix", de: origine.id, vers: "scene-ajoutee", libelle: "Continuer", cache: false }],
+      };
+      const d2 = disposer(apres, aRegarder(apres).marques);
+      // La vue est tout en bas de la page, là où le défilement n'a plus de marge
+      const defile = { x: defilementMax(d1, zoom).x / 2, y: defilementMax(d1, zoom).y };
+      const ou = aLEcran(d1, origine.id, zoom, defile);
+      // La taille est figée au premier geste : le schéma, devenu plus haut ou plus large, ne rétrécit pas
+      const taille = figerLaTaille(null, zoom);
+      expect(taille).toBe(zoom);
+      const deplacee = aLEcran(d2, origine.id, taille, defile);
+      const max = defilementMax(d2, taille);
+      const x = garderEnPlace(deplacee.x - ou.x, { position: defile.x, max: max.x });
+      const y = garderEnPlace(deplacee.y - ou.y, { position: defile.y, max: max.y });
+      // Le défilement corrigé reste possible : jamais avant le début, et la fin est repoussée d'autant qu'il faut
+      expect(defile.x + x.defiler).toBeGreaterThanOrEqual(0);
+      expect(defile.x + x.defiler).toBeLessThanOrEqual(max.x + x.allonger + 0.001);
+      expect(defile.y + y.defiler).toBeGreaterThanOrEqual(0);
+      expect(defile.y + y.defiler).toBeLessThanOrEqual(max.y + y.allonger + 0.001);
+      // La carte d'où l'on part est exactement où elle était
+      expect(resteApres(deplacee.x - ou.x, x)).toBeCloseTo(0, 6);
+      expect(resteApres(deplacee.y - ou.y, y)).toBeCloseTo(0, 6);
+      // La nouvelle carte existe, sous elle
+      expect(d2.places.get("scene-ajoutee")!.y).toBeGreaterThan(d2.places.get(origine.id)!.y);
+    }
+  });
+
+  it("F03-AC54 — au bout du défilement, le schéma est poussé dans son cadre ou le cadre allongé, plutôt que de laisser la carte se déplacer", () => {
+    // La carte a glissé de 40 points vers la droite : on fait défiler d'autant
+    expect(garderEnPlace(40, { position: 100, max: 500 })).toEqual({ defiler: 40, pousser: 0, allonger: 0 });
+    // Vers la gauche, alors que le défilement est presque au début : il revient à zéro, et le schéma est poussé du reste
+    const debut = garderEnPlace(-40, { position: 15, max: 500 });
+    expect(debut).toEqual({ defiler: -15, pousser: 25, allonger: 0 });
+    expect(resteApres(-40, debut)).toBe(0);
+    // Vers le bas, alors que la page est déjà tout en bas : le cadre s'allonge du reste
+    const fin = garderEnPlace(60, { position: 480, max: 500 });
+    expect(fin).toEqual({ defiler: 60, pousser: 0, allonger: 40 });
+    expect(resteApres(60, fin)).toBe(0);
+    // Rien n'a bougé : rien à faire
+    expect(garderEnPlace(0, { position: 0, max: 0 })).toEqual({ defiler: 0, pousser: 0, allonger: 0 });
+    // Une taille déjà choisie n'est pas changée par un geste
+    expect(figerLaTaille(0.5, 0.73)).toBe(0.5);
+  });
+
+  it("F03-AC54 — sans geste qui la désigne, la carte de référence est celle qu'on a cliquée, sinon la plus proche du milieu de ce qu'on voit", () => {
+    const rects = new Map([
+      ["haut", { x: 100, y: 100, l: 130, h: 56 }],
+      ["milieu", { x: 500, y: 380, l: 130, h: 56 }],
+      ["bas", { x: 900, y: 700, l: 130, h: 56 }],
+    ]);
+    const vu = { x: 0, y: 0, l: 1200, h: 800 };
+    expect(carteDeReference(rects, "bas", vu)).toBe("bas");
+    expect(carteDeReference(rects, null, vu)).toBe("milieu");
+    expect(carteDeReference(rects, "supprimee", vu)).toBe("milieu");
+    expect(carteDeReference(new Map(), null, vu)).toBeNull();
+  });
+
+  it("F03-AC57 — les gestes sont à l'adulte, en récit à choix, sur un écran large : ni l'élève, ni le téléphone, ni le récit classique", () => {
+    expect(peutConstruire({ adulte: true, aChoix: true, etroit: false })).toBe(true);
+    expect(peutConstruire({ adulte: false, aChoix: true, etroit: false })).toBe(false);
+    expect(peutConstruire({ adulte: true, aChoix: true, etroit: true })).toBe(false);
+    expect(peutConstruire({ adulte: true, aChoix: false, etroit: false })).toBe(false);
+  });
+
+  it("F03-AC56 — depuis le schéma, une scène sans texte se supprime sans confirmation, même si un choix y mène ; une scène écrite demande toujours confirmation", () => {
+    expect(fautConfirmer({ ecrites: 0, menentIci: [{}] }, true)).toBe(false);
+    expect(fautConfirmer({ ecrites: 0, menentIci: [] }, true)).toBe(false);
+    expect(fautConfirmer({ ecrites: 1, menentIci: [] }, true)).toBe(true);
+    // Ailleurs, le choix qui y mène est annoncé avant confirmation (F03-AC13)
+    expect(fautConfirmer({ ecrites: 0, menentIci: [{}] })).toBe(true);
+    expect(fautConfirmer({ ecrites: 0, menentIci: [] })).toBe(false);
   });
 });

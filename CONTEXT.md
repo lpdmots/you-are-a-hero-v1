@@ -158,6 +158,14 @@ Nom à l'écran de la vue qui montre, dans un chapitre, où mène chaque choix ;
 le 10 novembre 2026 : l'adulte y construit aussi le plan du chapitre.
 _Éviter_ : plan, ordre de lecture.
 
+**Ajout venu du plan** :
+Un choix posé à la fin du texte d'une scène depuis Chemins, sans que la
+scène soit ouverte ; celui qui l'écrit au même moment n'est pas arrêté et le
+retrouve dans sa copie à son enregistrement suivant. Un choix retiré depuis
+Chemins est repris de la même façon.
+_Éviter_ : conflit, texte gardé à part, qui sont le cas d'un autre
+changement.
+
 **Bloc de scènes** :
 Quelques scènes reliées par leurs choix, que l'IA propose d'après une
 demande de l'adulte et qu'il ajoute d'un geste au chapitre, depuis Chemins.

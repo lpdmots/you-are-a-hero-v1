@@ -4330,6 +4330,91 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     10. une page restée ouverte plus de trente jours sans rien enregistrer
         retrouve le conflit ordinaire (les notes de retouche plus anciennes
         sont effacées).
+- **Lot 2 construit le 10 novembre 2026,** en local ; migration
+  `construire_dans_chemins` en base locale seulement (une fonction,
+  `ajouter_au_plan`, aucune table), rien poussé.
+  - *Ce qui est construit :* le « + » sous la carte, cliqué (une nouvelle
+    scène et le choix qui y mène, d'un seul tenant) ou tiré jusqu'à une autre
+    carte (un choix) ; la bulle qui demande « Ce que fait le lecteur » ; le
+    panneau de la scène cliquée (titre, consigne avec le micro, « Ses
+    choix », « Supprimer la scène », « Ouvrir ») ; la suppression d'un choix
+    ou d'une scène ; l'écran qui ne bouge pas
+    ([architecture](architecture.md#lot-2--les-gestes-à-la-main-f03-ac52-à-ac57),
+    [design](design.md#construire-dans--chemins---écrans-construits-10-novembre-2026)).
+  - *Critères fermés :* F03-AC52 à AC57 — `tests/base/construire-chemins.test.ts`
+    (huit cas, contre la base locale) et `tests/unitaires/chemins.test.ts`
+    (cinq cas). F03-AC54 est tenu par le calcul (la carte d'origine revient
+    exactement à sa place, sur le chapitre de trente-deux scènes) et constaté
+    à l'écran : avant et après un ajout, la carte est au même point au
+    centième près, à la même taille. Aucun parcours Playwright n'est écrit,
+    à sa demande ; il peut en demander un.
+  - *Vérifié de bout en bout à l'écran :* un « + » fait dans « Chemins »
+    pendant que la scène est ouverte dans un autre onglet ; le choix y
+    apparaît à l'enregistrement suivant, sans message (F08-AC44).
+  - *Écrans critiqués en deux lectures* (26 captures) : 23/40 pour la lecture
+    informée, 23/40 pour la lecture indépendante, aucun point bloquant ;
+    corrigés aussitôt, sans nouvelle mesure. Captures :
+    `npx playwright test --config playwright.local.config.ts construire-chemins`.
+  - *Question de règle posée par la construction, à lui soumettre :* une
+    scène qui n'a que des choix n'est pas « Texte vide » (F07.1). Bâtie
+    depuis le schéma, elle porte donc « En cours » sans que personne y ait
+    écrit, sort du filtre « Texte vide » du Suivi, et sa suppression demande
+    confirmation. Les deux lectures l'ont relevé. Recommandé : compter comme
+    sans texte une scène sans récit, choix compris, comme « ✦ Écrire »
+    depuis le 18 octobre (F13.6) ; cela touche F07.1 (remise d'un texte
+    vide), le tampon et la suppression, et demande son accord avant d'être
+    codé.
+  - *Précisions prises en construisant, à lui faire confirmer :*
+    1. un seul « + », deux gestes : cliqué, il ajoute ; tiré, il relie. Il se
+       montre sous la carte survolée ou cliquée, et reste sous une scène
+       « Sans suite », là où le récit attend sa suite ;
+    2. la bulle du « + » offre aussi « Relier plutôt à une scène
+       existante », avec la liste des scènes du chapitre : tirer un lien vers
+       une scène deux écrans plus bas est pénible, et impossible au clavier.
+       C'est un ajout au texte de F03.1 ;
+    3. le titre de la nouvelle scène est proposé d'après le choix et se
+       remplace en l'écrivant (F05-AC12, comme dans la copie) ;
+    4. une phrase au-dessus du schéma dit les deux gestes, à la place de
+       « rien ne se règle ici » ; l'aide complète est dans le « i » ;
+    5. chaque geste se dit par le message habituel, avec « Annuler » ; un
+       ajout annulé retire le choix et met la scène créée à la corbeille ;
+    6. un choix se supprime dans le panneau de sa scène, sans confirmation ;
+       cliquer son libellé sur la flèche le désigne dans le panneau ; son
+       libellé et sa destination ne se modifient pas d'ici (on ouvre la
+       scène) — les deux lectures le regrettent, à décider ;
+    7. une phrase de choix écrite à la main qui mène à plusieurs scènes, et
+       un lien caché, ne se suppriment pas d'ici ;
+    8. depuis le schéma, une scène sans texte se supprime sans confirmation
+       même si un choix y mène (F03-AC56) ; ce choix reste, marqué « Scène
+       supprimée » ; depuis la vue « Scènes », la confirmation d'avant
+       demeure ;
+    9. un choix ne se tire que vers une autre scène : celui qui ramène à sa
+       propre scène se fait dans la copie ;
+    10. après « Tout voir », les « + » ne s'offrent plus (les cartes ne se
+        lisent pas) ; le panneau et son « Ajouter un choix » restent ;
+    11. la taille se fige au premier geste ; « Recentrer » apparaît quand le
+        schéma a dû être poussé dans son cadre pour garder la carte en place ;
+    12. un chapitre qui tient à gauche du panneau s'y centre, pour que le
+        panneau ne couvre rien ; la mini-carte s'efface tant qu'il est
+        ouvert ;
+    13. « Ajouter une scène », en haut du chapitre, désigne sous le schéma la
+        scène qu'il vient d'ajouter, que rien ne relie encore ;
+    14. « Scène existante » est une liste ordinaire du navigateur, non celle
+        de la copie (triée, avec un filtre, F05-AC56).
+  - *Ce qui reste perfectible, dit au porteur :*
+    - **Le reste du schéma peut se réorganiser.** La carte d'où l'on part ne
+      bouge pas et les autres glissent, mais dagre recalcule tout : sur le
+      chapitre de trente-deux scènes, cinq ajouts sur trente-deux
+      réordonnent une grande partie du schéma. Lui donner la disposition
+      d'avant pour repère a été essayé : c'était pire
+      ([architecture](architecture.md#lot-2--les-gestes-à-la-main-f03-ac52-à-ac57)).
+      À juger à l'usage ; c'est le défaut de la V0 qu'il ne veut pas revivre.
+    - **Le panneau couvre le bord droit d'un grand chapitre** à chaque carte
+      cliquée, même pour seulement lire ses chemins.
+    - **La taille des cartes d'un grand chapitre** (vue d'avant, inchangée) :
+      les deux lectures jugent les titres petits à la taille lisible.
+    - **Non montré aux lectures :** l'échec d'un geste, la tournée « À
+      regarder » le panneau ouvert.
 
 ## Hors de la première livraison
 

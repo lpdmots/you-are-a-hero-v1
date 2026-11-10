@@ -20,7 +20,8 @@ export function useCommandesScene({
   retirerDepart: () => void;
   basculerFin: (scene: Scene) => void;
   basculerHorsLivre: (scene: Scene) => void;
-  supprimerScene: (scene: Scene) => void;
+  /** `depuisLeSchema` : une scène sans texte part sans confirmation, même si un choix y mène (F03-AC56) */
+  supprimerScene: (scene: Scene, depuisLeSchema?: boolean) => void;
   dialogue: ReactNode;
 } {
   const dire = useMessage();
@@ -72,7 +73,7 @@ export function useCommandesScene({
     },
     // Une scène sans texte se supprime sans confirmation, avec « Annuler » ; celle qui a un
     // texte demande d'abord confirmation (F03.1)
-    supprimerScene: (scene) => suppression.demander("scene", scene.id, nomScene(scene), () => {
+    supprimerScene: (scene, depuisLeSchema = false) => suppression.demander("scene", scene.id, nomScene(scene), () => {
       const etaitDepart = depart?.id === scene.id;
       void supprimer("scene", scene.id).then((fait) => {
         if (!fait.ok) return dire({ texte: fait.erreur });
@@ -85,7 +86,7 @@ export function useCommandesScene({
         });
         apresSuppression?.();
       });
-    }),
+    }, depuisLeSchema),
     dialogue: suppression.dialogue ?? (aConfirmer ? (
       <Dialogue
         titre="Changer le départ du livre ?"

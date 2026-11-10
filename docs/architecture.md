@@ -1870,6 +1870,71 @@ posent ou se retirent, sans toucher à un paragraphe.
 retouche suivante de la scène : une page ouverte plus longtemps sans rien
 enregistrer retrouve le conflit ordinaire.
 
+### Lot 2 : les gestes à la main (F03-AC52 à AC57)
+
+**Dans la base, migration `construire_dans_chemins`.** Une fonction,
+`public.ajouter_au_plan(p_chapitre, p_scenes, p_choix)` : elle crée les
+nouvelles scènes à la fin du chapitre (`prive.ajouter_scene`, donc la limite
+du livre payant s'y applique), puis pose les choix de chaque scène d'origine
+par une seule retouche (`prive.retoucher_texte`, lot 1). Tout se fait dans la
+même opération : « + » ne laisse jamais une scène sans son choix. Une
+nouvelle scène porte une clé le temps de l'appel, pour qu'un choix parte
+d'elle ou y mène ; un choix dont un bout n'est pas une scène du chapitre fait
+refuser l'appel entier. Le bloc de scènes (F13.7) passera par la même
+fonction.
+
+**Sur le serveur,** `src/serveur/chemins.ts` : `ajouterAuPlan` construit les
+phrases de choix (construction tirée parmi celles de la Préparation, comme
+dans la copie) et établit l'ordre du livre au premier renvoi ;
+`ajouterSceneApres` est le « + » ; `retirerChoix` retrouve la phrase qui
+porte le renvoi et la retire par une retouche du plan, en la rendant pour
+« Annuler » ; `remettreChoix` et `annulerAjout` défont. Les actions
+(`actions-chemins.ts`) n'y ajoutent que la session, la traduction des refus
+et le rafraîchissement de la page. Titre et consigne passent par
+`reglerScene`, qui existait.
+
+**Dans la page,** `src/composants/chemins/` :
+
+- `Construire.tsx` : la bulle d'un geste (`BulleDuGeste`, posée par `poser`,
+  hors du schéma) et le panneau de la scène (`PanneauDeScene`, avec
+  `useEnregistrement` et le champ dictable). `Schema.tsx` les ouvre ; la page
+  du chapitre fournit les gestes (`Construire`) et dit chaque résultat par le
+  message habituel, avec « Annuler ». L'élève et le téléphone ne reçoivent
+  pas ces gestes (`peutConstruire`, `src/domaine/chemins.ts`).
+- **Le lien tiré** n'emploie pas les connexions de React Flow : le « + » suit
+  le pointeur lui-même (un clic si l'on n'a pas bougé de six points), dessine
+  un trait par-dessus la page, fait défiler la page ou le cadre près d'un
+  bord, et lit la carte sous le pointeur. Les cartes restent non déplaçables
+  et non connectables pour React Flow.
+- **L'écran qui ne bouge pas** (`ancrage.ts`, `GarderEnPlace` dans
+  `Schema.tsx`). La disposition reste celle de dagre, recalculée en entier :
+  la même pour les mêmes données, qu'on vienne d'ajouter ou qu'on recharge la
+  page. Avant de redisposer, le schéma retient où est chaque carte à l'écran
+  et fige la taille. Dès que React Flow a pris les nouvelles places (un
+  composant posé dans le schéma compare leur signature), la carte de
+  référence — celle d'où part le geste, sinon la carte cliquée, sinon la plus
+  proche du milieu — est ramenée où elle était : par le défilement de la page
+  et du cadre, et, au bout du défilement, en poussant le schéma dans son
+  cadre ou en allongeant le cadre (`garderEnPlace`). Les autres cartes
+  glissent de leur ancienne place à la nouvelle (animation par carte), les
+  flèches reviennent en fondu. `overflow-anchor: none` : le navigateur ne
+  compense pas de son côté.
+- **Le panneau** est fixé à droite de la fenêtre, entre le bas de l'en-tête
+  des chemins et le bas de l'écran ; le cadre reçoit une réserve de sa
+  largeur pour faire défiler jusqu'aux cartes qu'il couvre, et se décale de
+  lui-même si la carte cliquée est dessous.
+
+**Mesuré sur « Le marais des feux follets »** (trente-deux scènes) : une scène
+ajoutée sous chacune des trente-deux, tour à tour, la carte d'origine tenue en
+place. Dans vingt-sept cas sur trente-deux, moins du tiers des autres cartes
+changent de place de plus de cent points par rapport à elle ; dans cinq cas
+(dont la première scène du chapitre), dagre réordonne une grande partie du
+schéma. Donner à dagre la disposition d'avant pour repère a été essayé et
+écarté : le résultat était bien pire (838 déplacements de plus de cent points
+contre 158), l'arrangement obtenu n'étant pas celui d'où l'on partait. Un
+placement de la seule nouvelle carte, sans redisposer, est écarté aussi : le
+schéma changerait de forme au rechargement.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

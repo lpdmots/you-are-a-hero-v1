@@ -7,7 +7,7 @@ import { estUuid } from "./recit";
 import { clientService } from "./supabase";
 import {
   ciblesDe, controlerTexte, enMots, estAuto, estChoix, estRenvoi, horsRetouches, nettoyerTexte, renvoisDe,
-  type ChoixAuto, type Droits, type DuPlan, type Enregistrement, type Motif, type Retouche, type SceneDuPlan, type Texte,
+  type Choix, type Droits, type DuPlan, type Enregistrement, type Motif, type Retouche, type SceneDuPlan, type Texte,
 } from "@/domaine/copie";
 import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
 import type { Voisines } from "@/composants/copie/contexte";
@@ -143,7 +143,7 @@ async function nommerLesScenesDuPlan(base: SupabaseClient, fait: Enregistrement,
  * Rend la version de la scène ; la base refuse en français ce qui n'est pas permis.
  */
 export async function retoucherDepuisLePlan(
-  e: Enseignant, sceneId: string, { ajoute = [], retire = [] }: { ajoute?: ChoixAuto[]; retire?: string[] },
+  e: Enseignant, sceneId: string, { ajoute = [], retire = [] }: { ajoute?: Choix[]; retire?: string[] },
 ): Promise<{ ok: true; version: number } | { ok: false; erreur: { code?: string; message: string } | null }> {
   if (!estUuid(sceneId) || !retire.every(estUuid)) return { ok: false, erreur: null };
   // Les blocs posés passent par le même nettoyage que ceux d'une copie : la page qui écrit la

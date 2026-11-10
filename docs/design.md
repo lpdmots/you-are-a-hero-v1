@@ -1494,12 +1494,13 @@ jugée sur un chapitre d'essai de trente-deux scènes et quarante-neuf choix,
 elle remplace les dispositions que la maquette propose pour « Chemins » ; la
 maquette, elle, garde l'ancienne.
 
-Décidé le 10 novembre 2026, non construit : l'adulte y construira aussi le
-plan du chapitre et y demandera des blocs de scènes
+Décidé le 10 novembre 2026 : l'adulte y construit aussi le plan du chapitre
+et y demandera des blocs de scènes
 ([F03.1](specifications.md#f03-construire),
-[F13.7](specifications.md#f137--bloc-de-scènes-depuis-le-schéma)). Ces
-écrans ne sont pas dessinés ; ils se conçoivent et se critiquent en deux
-lectures avant d'être construits.
+[F13.7](specifications.md#f137--bloc-de-scènes-depuis-le-schéma)). Les
+gestes à la main sont construits le même jour : [Construire dans
+« Chemins » : écrans construits](#construire-dans--chemins---écrans-construits-10-novembre-2026).
+Les écrans du bloc de scènes ne sont pas dessinés.
 
 | Élément | Forme retenue |
 | --- | --- |
@@ -1567,6 +1568,49 @@ les chemins » mène ici par « Voir dans les chemins ».
   et le toucher d'une carte sont essayés en tactile simulé, dans Chromium),
   Firefox et Safari, un lecteur d'écran au-delà du clavier (Tab, Entrée,
   Échap, « Ouvrir »).
+
+
+#### Construire dans « Chemins » : écrans construits (10 novembre 2026)
+
+Sans maquette. Conçus avec le skill impeccable, en prolongeant la vue reprise
+du 12 octobre (mêmes cartes, mêmes couleurs, mêmes mots que la copie), puis
+critiqués en deux lectures séparées sur 26 captures (`app/test-results/captures/construire-chemins/`,
+en 1 440 × 900 et 1 366 × 768). Règles : [F03.1](specifications.md#f03-construire) ;
+précisions à confirmer : [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+Le lot 1 (l'ajout venu du plan) n'a aucun écran : rien ne s'affiche quand un
+choix arrive dans une copie ouverte.
+
+| Élément | Forme retenue |
+| --- | --- |
+| Le « + » | Un rond de trente points, cerné de canard, sous le bord de la carte, au milieu, là d'où partent ses flèches ; la même taille à l'écran quelle que soit celle du schéma. Il se montre sous la carte survolée ou cliquée, et reste sous une scène « Sans suite ». Plein, en canard, pendant le geste. Absent après « Tout voir ». |
+| Deux gestes | Cliqué : la bulle d'une nouvelle scène. Tiré : un trait en pointillé canard suit le pointeur et s'accroche au haut de la carte visée, cernée de canard ; près d'un bord, la page ou le cadre défile. Lâché sur une carte, la bulle du lien ; ailleurs, rien. « Échap » abandonne. |
+| La bulle | À côté de la carte, pas dessous : ses choix déjà posés restent visibles. En tête, le titre de la scène d'où l'on part et une flèche (et la scène d'arrivée pour un lien). « Ce que fait le lecteur », avec l'exemple de la copie ; « Nouvelle scène », dont le titre proposé suit le choix tant qu'on ne l'écrit pas ; « Relier plutôt à une scène existante » remplace le titre par la liste des scènes du chapitre. « Annuler », et le seul bouton plein : « Ajouter » ou « Relier », éteint tant que le choix est vide. Entrée valide. |
+| Le lien en attente | Tant que la bulle demande son libellé, le trait en pointillé reste dessiné entre les deux cartes. |
+| Le panneau | 304 points, fixé au bord droit, sous l'en-tête des chemins, jamais plus haut que la fenêtre. En tête : la référence, le tampon d'état, « Enregistré », la croix. Puis « Titre », « Consigne » (facultative, avec le micro), « Ses choix » — chacun avec sa destination et sa corbeille, « Ajouter un choix » à droite du titre —, et au pied « Supprimer la scène » (discret, brique au survol) et « Ouvrir ». Un chapitre qui tient à sa gauche s'y centre ; sinon le cadre défile jusqu'aux cartes qu'il couvre, et se décale de lui-même si la carte cliquée est dessous. |
+| Un choix dans le panneau | Son libellé en gras, sa destination dessous (« S012 « Tourbière… » », un autre chapitre, ou en ambre « Sans destination », « Scène supprimée ») ; un lien caché porte la clé et n'a pas de corbeille. Le libellé cliqué sur sa flèche teinte sa ligne un instant. |
+| L'écran qui ne bouge pas | Après un geste : la même taille, la carte d'où l'on part au même point ; les autres glissent en un quart de seconde, la nouvelle apparaît, les flèches reviennent en fondu. Un titre ou une consigne changés ne font rien clignoter. « Recentrer », en lien, quand le schéma a dû être poussé dans son cadre. |
+| Les messages | La phrase habituelle au bas de l'écran, avec « Annuler » : « S040 « La vase profonde » est ajoutée. », « Le choix « Traverser » mène à S012 « … ». », « Le choix « … » est supprimé. ». |
+| L'aide | Une phrase à droite de la bascule « Scènes / Chemins », à la place de « rien ne se règle ici » : « Le « + » sous une scène ajoute la suite ; tiré jusqu'à une autre scène, il les relie. » ; le détail dans la bulle « Comment lire ces chemins ? ». |
+| Élève, téléphone | Inchangés : ni « + », ni lien, ni panneau. |
+
+**Les deux lectures** donnent 23/40 chacune, sans point bloquant. Corrigé
+aussitôt, sans nouvelle mesure : le « + » invisible au repos et trop petit
+(il est à taille fixe, sorti de la carte, permanent sous « Sans suite », et
+une phrase l'annonce) ; la bulle qui couvrait la carte d'origine ou ses choix
+(à côté, avec son en-tête) ; la carte créée qui naissait estompée (le panneau
+suit la scène d'où part le geste) ; le petit chapitre couvert par le panneau ;
+« Taille lisible » qui surgissait après un geste ; « Supprimer » sans objet ;
+« Enregistré » qui déplaçait les boutons ; le titre proposé en gris, pris pour
+un exemple ; le lien de la bulle sans verbe ; la bulle du lien qui débordait ;
+la carte visée qui s'allumait tout entière ; « Ajouter un choix » absent après
+« Tout voir ».
+
+**Laissé en l'état,** et dit au porteur dans le plan : la scène qui n'a que
+des choix porte « En cours » (question de règle) ; le libellé et la
+destination d'un choix ne se modifient pas d'ici ; la confirmation de
+suppression nomme les scènes par leur seule référence (dialogue d'avant) ;
+le « + » et le « − » de la taille voisinent avec le « + » des cartes ; les
+titres d'un grand chapitre sont petits à la taille lisible (vue d'avant).
 
 ### Étape 4 construite (13 octobre 2026)
 

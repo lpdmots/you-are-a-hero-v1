@@ -218,6 +218,13 @@ export type Travail = {
   menentIci: Scene[];
 };
 
+/**
+ * Faut-il confirmer cette suppression ? Oui dès qu'elle emporte un texte ; oui aussi quand un
+ * choix y mène, sauf depuis le schéma des chemins, où ce choix se voit et reste marqué (F03-AC56).
+ */
+export const fautConfirmer = (t: { ecrites: number; menentIci: unknown[] }, sansTexteSansDemander = false): boolean =>
+  t.ecrites > 0 || (t.menentIci.length > 0 && !sansTexteSansDemander);
+
 export function travailDans(plan: Plan, sorte: "partie" | "chapitre" | "scene", id: string): Travail {
   const chapitres =
     sorte === "partie"

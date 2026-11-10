@@ -1433,14 +1433,41 @@
   min-width: 34px;
   justify-content: center;
 }
+/* Le schéma et, pour l'adulte, le panneau de la scène cliquée posé sur son bord droit */
+.chemins__plan {
+  --panneau-chemin: 304px;
+  position: relative;
+  /* Après un geste, c'est le schéma qui ramène la carte à sa place : le navigateur ne s'en mêle pas (F03-AC54) */
+  overflow-anchor: none;
+}
+.chemins__plan[data-panneau] {
+  min-height: 480px;
+}
 .chemins__cadre {
   position: relative;
+  display: flex;
+  align-items: flex-start;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
   background: var(--feuille-2);
   border-block: 1px solid var(--trait);
   scroll-margin-top: calc(var(--sous-la-barre) + 54px);
+}
+.chemins__plan[data-panneau] .chemins__cadre {
+  min-height: 480px;
+}
+.chemins__cadre > .chemins__toile {
+  flex: none;
+}
+.chemins__cadre > .chemins__attente {
+  flex: 1;
+}
+/* Sous le panneau, de quoi faire défiler le schéma jusqu'à ses dernières cartes */
+.chemins__reserve {
+  flex: none;
+  width: calc(var(--panneau-chemin) + 20px);
+  height: 1px;
 }
 .chemins__fleches {
   position: absolute;
@@ -1526,6 +1553,420 @@
 .carte-chemin.est-en-retrait,
 .etiquette-chemin.est-en-retrait {
   opacity: 0.55;
+}
+/* La carte d'où part le geste en cours, et celle où arrive le lien qu'on tire */
+.carte-chemin.est-reliee {
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    0 0 0 3px var(--canard),
+    var(--ombre-cahier);
+}
+
+/* ——— Construire dans « Chemins » (F03.1) : le « + », le lien tiré, la bulle, le panneau ——— */
+.noeud-chemin {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+/* Un seul signe, deux gestes : cliqué, il ajoute une scène ; tiré jusqu'à une autre carte, il relie */
+.plus-chemin {
+  position: absolute;
+  /* Sous le bord de la carte, qu'il touche à peine : ni le tampon ni la bande « Sans suite » ne sont couverts */
+  top: calc(100% - 5px);
+  left: 50%;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1.5px solid var(--canard);
+  border-radius: 50%;
+  background: var(--feuille);
+  box-shadow: 0 2px 6px -1px rgba(20, 40, 40, 0.28);
+  color: var(--canard);
+  cursor: pointer;
+  opacity: 0;
+  translate: -50% 0;
+  /* La même taille à l'écran quelle que soit celle du schéma : une cible de trente points, jamais moins */
+  scale: calc(1 / var(--zoom-chemins, 1));
+  transform-origin: center top;
+  touch-action: none;
+  transition:
+    opacity 0.14s var(--ease),
+    background 0.14s var(--ease),
+    color 0.14s var(--ease),
+    scale 0.14s var(--ease);
+}
+/* La cible reste confortable quand le schéma est réduit */
+.plus-chemin::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+}
+.plus-chemin .ic {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.4;
+}
+.react-flow__node:hover .plus-chemin,
+.carte-chemin.est-choisie + .plus-chemin,
+.noeud-chemin.est-source .plus-chemin,
+/* Une scène sans suite attend la sienne : son « + » reste à l'écran, c'est là qu'on continue le récit */
+.noeud-chemin.attend-une-suite .plus-chemin,
+.plus-chemin:focus-visible {
+  opacity: 1;
+}
+.noeud-chemin.attend-une-suite .carte-chemin.est-en-retrait + .plus-chemin {
+  opacity: 0.55;
+}
+.plus-chemin:hover,
+.noeud-chemin.est-source .plus-chemin {
+  background: var(--canard);
+  color: #fff;
+}
+.plus-chemin:hover {
+  scale: calc(1.08 / var(--zoom-chemins, 1));
+}
+.plus-chemin:active {
+  cursor: grabbing;
+  scale: calc(0.96 / var(--zoom-chemins, 1));
+}
+/* Pendant qu'on tire un lien, seule la carte d'où il part garde son « + » ; la carte visée ne montre que son cadre */
+.chemins__cadre[data-tire] .noeud-chemin:not(.est-source) .plus-chemin,
+.chemins__cadre[data-tire] .carte-chemin__ouvrir {
+  opacity: 0;
+}
+.plus-chemin:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 2px;
+}
+/* Le lien qu'on tire : en pointillé tant qu'il n'est pas un choix */
+.chemins__tire {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
+.chemins__tire path {
+  fill: none;
+  stroke: var(--canard-fonce);
+  stroke-width: 2;
+  stroke-dasharray: 7 5;
+  stroke-linecap: round;
+}
+
+/* La bulle d'un geste : ce que fait le lecteur, et où cela mène */
+.geste-chemin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 60;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+  width: 300px;
+  padding: 14px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow:
+    0 0 0 1px var(--trait),
+    var(--ombre-panneau);
+  font-size: var(--t-s);
+  animation: geste-chemin-entre 0.16s var(--ease);
+}
+@keyframes geste-chemin-entre {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+.geste-chemin__champ {
+  display: grid;
+  gap: 5px;
+}
+.geste-chemin label,
+.panneau-chemin__champ > label {
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.geste-chemin__autre {
+  justify-self: start;
+  margin-top: 2px;
+  font-size: var(--t-xs);
+  text-align: left;
+}
+.geste-chemin__liste {
+  position: relative;
+  display: block;
+}
+.geste-chemin__liste select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 32px;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.geste-chemin__liste .ic {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 15px;
+  height: 15px;
+  color: var(--graphite-2);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+.geste-chemin__trajet {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  color: var(--graphite);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.geste-chemin__trajet span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.geste-chemin__trajet .ic {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--canard);
+}
+.geste-chemin__pied {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.geste-chemin .erreur {
+  margin: 0;
+  font-size: var(--t-xs);
+}
+
+/* Le panneau de la scène cliquée : collé au bord droit du schéma, il suit le défilement de la page */
+.chemins__rail {
+  position: fixed;
+  top: var(--haut-du-panneau, 120px);
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  width: var(--panneau-chemin);
+  pointer-events: none;
+  animation: panneau-chemin-entre 0.2s var(--ease);
+}
+@keyframes panneau-chemin-entre {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+.panneau-chemin {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  box-shadow:
+    0 0 0 1px var(--trait),
+    var(--ombre-panneau);
+  font-size: var(--t-s);
+  pointer-events: auto;
+}
+.panneau-chemin__tete {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px 10px 16px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 -1px 0 var(--trait);
+}
+.panneau-chemin__tete h2 {
+  margin: 0;
+}
+.panneau-chemin__tete .enregistre {
+  margin: 0 0 0 auto;
+  font-size: var(--t-xs);
+  white-space: nowrap;
+}
+.panneau-chemin__tete .enregistre + .panneau-chemin__fermer {
+  margin-left: 0;
+}
+.panneau-chemin__fermer {
+  min-height: 34px;
+  margin-left: auto;
+  padding: 0.4rem;
+  border-radius: 99px;
+}
+.panneau-chemin__corps {
+  display: grid;
+  gap: 14px;
+  min-height: 0;
+  padding: 14px 16px 16px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.panneau-chemin__champ {
+  display: grid;
+  gap: 5px;
+}
+.panneau-chemin__champ .facultatif {
+  font-weight: 400;
+}
+.panneau-chemin__champ textarea {
+  display: block;
+  min-height: 7.2em;
+  line-height: 1.45;
+  resize: vertical;
+}
+.panneau-chemin .erreur {
+  margin: 0;
+}
+.panneau-chemin__choix {
+  display: grid;
+  gap: 8px;
+  padding-top: 14px;
+  border-top: 1px solid var(--trait);
+}
+.panneau-chemin__rang {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 32px;
+}
+.panneau-chemin__rang h3 {
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.panneau-chemin__choix ul {
+  display: grid;
+  gap: 2px;
+  margin: 0 -8px;
+  padding: 0;
+  list-style: none;
+}
+.panneau-chemin__choix li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 6px;
+  padding: 6px 2px 6px 8px;
+  border-radius: var(--r-s);
+  transition: background 0.3s var(--ease);
+}
+.panneau-chemin__choix li.est-designe {
+  background: var(--canard-pale);
+}
+.panneau-chemin__libelle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--graphite);
+  font-weight: 700;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.panneau-chemin__libelle .ic {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  color: var(--graphite-2);
+}
+.panneau-chemin__vers {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  line-height: 1.35;
+}
+.panneau-chemin__vers .ic {
+  flex: none;
+  width: 13px;
+  height: 13px;
+}
+.panneau-chemin__vers--manque {
+  gap: 7px;
+  color: var(--e-valider);
+  font-weight: 700;
+}
+.panneau-chemin__retirer {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 34px;
+  padding: 0.45rem;
+  border-radius: 99px;
+  color: var(--graphite-2);
+}
+.panneau-chemin__retirer:hover {
+  background: var(--bloque-f);
+  color: var(--bloque);
+}
+.panneau-chemin__retirer .ic {
+  width: 16px;
+  height: 16px;
+}
+.panneau-chemin__aucun {
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.panneau-chemin__pied {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px 12px 8px;
+  box-shadow: inset 0 1px 0 var(--trait);
+}
+.panneau-chemin__pied .btn {
+  white-space: nowrap;
+}
+/* La phrase qui dit ce qu'on peut faire ici : seulement là où les gestes existent, sur un écran large */
+@media (max-width: 720px) {
+  .chap-outils__construire {
+    display: none;
+  }
+}
+.panneau-chemin__supprimer {
+  color: var(--graphite-2);
+}
+.panneau-chemin__supprimer:hover {
+  background: var(--bloque-f);
+  color: var(--bloque);
+}
+/* Le libellé d'un choix, sur sa flèche : cliqué, il désigne ce choix dans le panneau de sa scène */
+.libelle-chemin.se-choisit {
+  cursor: pointer;
+}
+.libelle-chemin.se-choisit:hover {
+  box-shadow: inset 0 0 0 1.5px var(--canard);
+  color: var(--canard-fonce);
+}
+@media (prefers-reduced-motion: reduce) {
+  .geste-chemin,
+  .chemins__rail {
+    animation: none;
+  }
+  .plus-chemin {
+    transition: none;
+  }
 }
 .carte-chemin__titre {
   display: -webkit-box;

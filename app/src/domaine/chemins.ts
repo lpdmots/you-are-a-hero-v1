@@ -11,6 +11,8 @@ export type NoeudDeChemin = {
   id: string; reference: number; titre: string | null; etat: Etat; vide: boolean; depart: boolean; fin: boolean;
   /** La scène a une liaison cachée que la vue ne trace pas — celle d'un élève : elle a une suite */
   suiteCachee?: boolean;
+  /** La consigne de la scène, pour l'adulte : le panneau du schéma la montre et la modifie (F03-AC55) */
+  consigne?: string;
   /** La page de la scène */
   lien: string;
 };
@@ -41,6 +43,7 @@ export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string):
   return {
     noeuds: chapitre.scenes.map((s) => ({
       id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, depart: depart?.id === s.id, fin: s.fin,
+      consigne: s.consigne,
       lien: `/projet/${projetId}/scene/${s.id}?de=chemins`,
     })),
     liens: plan.liens
@@ -93,6 +96,13 @@ export function ordreDeLecture(noeuds: NoeudDeChemin[], liens: LienDeChemin[]): 
   const rang = new Map(noeuds.map((n, i) => [n.id, i]));
   return [...noeuds].sort((a, b) => pas.get(a.id)! - pas.get(b.id)! || rang.get(a.id)! - rang.get(b.id)!);
 }
+
+/**
+ * Construire dans « Chemins » (F03.1, F03-AC57) : les gestes sont à l'adulte seul — l'enseignant,
+ * ou l'auteur d'un projet personnel —, en récit à choix, sur un écran large. L'élève lit le même
+ * schéma sans rien y modifier ; le téléphone garde la liste.
+ */
+export const peutConstruire = ({ adulte, aChoix, etroit }: { adulte: boolean; aChoix: boolean; etroit: boolean }): boolean => adulte && aChoix && !etroit;
 
 /** Ce que la carte d'une scène porte quand elle est « à regarder ». */
 export type Marque = "rien-n-y-mene" | "sans-suite";

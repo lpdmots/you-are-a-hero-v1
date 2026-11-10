@@ -1357,7 +1357,8 @@ le porteur décide :
   les cartes se rangent en lignes dans l'ordre du plan, sans étirer la page.
 - <a id="f03-construire"></a>**Construire dans « Chemins » (décidé par le
   porteur le 10 novembre 2026, après un entretien validé dans son ensemble ;
-  non construit, la construction demandant son instruction).** Le porteur
+  les gestes à la main construits en local le même jour, lots 1 et 2 ; les
+  blocs de scènes demandent son instruction).** Le porteur
   veut donner au schéma la place centrale pour créer et parcourir un
   chapitre à choix. Cela révise « une vue d'ensemble seulement, où rien ne
   se modifie », qu'il avait demandé le 11 octobre en réaction à la V0. Ce
@@ -1407,9 +1408,26 @@ le porteur décide :
     qu'un « + » répété ; un schéma dessiné par l'utilisateur, qui serait ce
     même bloc sous une autre forme.
   - **Écrans :** sans maquette ; conçus avec le skill impeccable et
-    critiqués en deux lectures avant d'être montrés au porteur.
-  - **Question ouverte :** la vue qui s'ouvre en premier dans un chapitre à
-    choix, « Scènes » ou « Chemins », se décide après usage.
+    critiqués en deux lectures avant d'être montrés au porteur
+    ([design](design.md#construire-dans--chemins---écrans-construits-10-novembre-2026)).
+  - **Précisions prises en construisant, à faire confirmer au porteur,**
+    listées dans le [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026) :
+    un seul « + » pour ajouter (cliqué) et relier (tiré) ; « Scène
+    existante » dans sa bulle, pour relier sans tirer ; sans titre, la
+    nouvelle scène prend celui du choix
+    ([F05-AC12](#f052--créer-et-modifier-un-choix-dans-la-scène)) ; un choix
+    se supprime dans le panneau de sa scène ; chaque geste dit son résultat
+    avec « Annuler » ; une phrase écrite à la main qui mène à plusieurs
+    scènes, et un lien caché, ne se suppriment pas d'ici ; les gestes ne
+    s'offrent qu'à une taille où les cartes se lisent.
+  - **Questions ouvertes :** la vue qui s'ouvre en premier dans un chapitre à
+    choix, « Scènes » ou « Chemins », se décide après usage. Posée par la
+    construction : une scène qui n'a que des choix n'est pas « Texte vide »
+    (F07.1) ; bâtie depuis le schéma, elle porte donc « En cours » sans que
+    personne y ait écrit, et sa suppression demande confirmation.
+    Recommandé, non décidé : compter comme sans texte une scène sans récit,
+    choix compris, comme « ✦ Écrire » le fait depuis le 18 octobre 2026
+    ([F13.6](#f136--écrire-une-scène-vide-daprès-sa-consigne)).
 - **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
   « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
   carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène

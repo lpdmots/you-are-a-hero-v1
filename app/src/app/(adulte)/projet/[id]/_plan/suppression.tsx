@@ -4,7 +4,7 @@ import { useState, type ReactNode } from "react";
 import { enumerer } from "@/composants/copie/noms";
 import { Dialogue } from "@/composants/Dialogue";
 import { nomPourEleves } from "@/domaine/eleves";
-import { referenceScene, travailDans, type ElevePlan, type Plan } from "@/domaine/recit";
+import { fautConfirmer, referenceScene, travailDans, type ElevePlan, type Plan } from "@/domaine/recit";
 import { pluriel } from "@/domaine/texte";
 
 type Sorte = "partie" | "chapitre" | "scene";
@@ -17,16 +17,20 @@ type Demande = { nom: string; faits: string[]; faire: () => void };
  * dans le message.
  */
 export function useConfirmerSuppression({ plan, eleves }: { plan: Plan; eleves: ElevePlan[] }): {
-  /** nom : comme il se dit dans une phrase — « La lisière », ou « S015 « Le pont » » */
-  demander: (sorte: Sorte, id: string, nom: string, faire: () => void) => void;
+  /**
+   * nom : comme il se dit dans une phrase — « La lisière », ou « S015 « Le pont » ».
+   * `sansTexteSansDemander` : depuis le schéma des chemins, une scène sans texte part sans
+   * confirmation même si un choix y mène (F03-AC56) — sa flèche reste à l'écran, marquée.
+   */
+  demander: (sorte: Sorte, id: string, nom: string, faire: () => void, sansTexteSansDemander?: boolean) => void;
   dialogue: ReactNode;
 } {
   const [demande, setDemande] = useState<Demande | null>(null);
   return {
-    demander: (sorte, id, nom, faire) => {
+    demander: (sorte, id, nom, faire, sansTexteSansDemander = false) => {
       const t = travailDans(plan, sorte, id);
       // Sans texte et sans choix qui y mène, rien à annoncer : la suppression part tout de suite
-      if (t.ecrites === 0 && t.menentIci.length === 0) return faire();
+      if (fautConfirmer(t, sansTexteSansDemander) === false) return faire();
       const auteurs = t.auteurs.flatMap((a) => {
         const e = eleves.find((x) => x.id === a);
         return e ? [nomPourEleves(e, eleves)] : [];
