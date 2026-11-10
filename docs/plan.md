@@ -4437,6 +4437,25 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
       (`tests/parcours/chemins.spec.ts`) datent de la vue en lecture seule :
       une attente y est accordée à la main (« Texte vide » pour une scène à
       choix), d'autres peuvent demander une retouche quand il les fera jouer.
+- **Retouches du 10 novembre 2026, à sa demande** (après la construction) :
+  cadre des chemins de 480 points au moins ; bulle d'aide plus coupée sous
+  l'en-tête ; dans le panneau, « Ses choix » sous le titre, puis la consigne
+  avec « ✦ Formuler » et, en classe, la liste de vérification ; bandeau du
+  chapitre en une ligne basse dans « Chemins » ; la poussée de F03-AC54 qui
+  se rend (sans mouvement au défilement, sinon en glissant le geste fini) ;
+  plus de barre de défilement pour un chapitre qui tient à gauche du
+  panneau. ELK mesuré contre dagre et écarté
+  ([architecture](architecture.md#lot-2--les-gestes-à-la-main-f03-ac52-à-ac57)).
+- **Lots 1 et 2 en ligne le 10 novembre 2026, à sa demande :** suites
+  unitaires (440) et contre la base (441) passées, vraie base sauvegardée,
+  les cinq migrations (`ajout_du_plan`, `construire_dans_chemins`,
+  `retouches_dans_l_ordre`, `texte_vide_sans_les_choix`,
+  `texte_vide_recit_seul`) appliquées par Claude — ne plus les modifier —,
+  code poussé jusqu'à `f64c26e`, déploiement Vercel réussi. Le même envoi
+  porte la révision de l'ergonomie du 10 novembre (Parties et chapitres,
+  page de scène, page du chapitre). Restent à relire : l'aide de « Parties
+  et chapitres », le guide et la vidéo de visite, qui présentent encore
+  « Chemins » comme une vue en lecture seule.
 
 ## Hors de la première livraison
 
