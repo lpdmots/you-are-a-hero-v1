@@ -1963,6 +1963,14 @@ une phrase de choix n'est plus du texte de la scène. Migration
   choix posés depuis le plan auraient disparu sans trace dans un échange.
 - La lecture d'essai n'a rien demandé : un passage « vide » y montre déjà ses
   choix sous « Cette scène n'a pas encore de texte. ».
+- **Précisé le même jour, migration `texte_vide_recit_seul` :** une action de
+  jeu et une image ne comptent pas non plus ; `prive.texte_est_vide` et
+  `estVide` ne regardent plus que les mots des paragraphes de récit. Le sens
+  strict ne change pas. `controler` (`src/domaine/controles.ts`) a son propre
+  « vide », rien à imprimer : `texteVide`, sans action de jeu
+  (`scenesAvecActions`) ni image dans le texte (`contenu.textes`) ; il sert au
+  point « vide », à l'impasse et à l'énigme sans autre issue, qui gardent
+  ainsi pour une scène illustrée ou une action seule le comportement d'avant.
 
 ## Vérifications avant décision technique
 

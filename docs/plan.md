@@ -4368,13 +4368,19 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     depuis le schéma ([F06.5](specifications.md#f06-texte-vide), F06-AC105).
     Les deux lectures l'avaient relevé. Construit le même jour : migration
     `texte_vide_sans_les_choix`, base locale seulement (elle recalcule les
-    scènes déjà en base), `estVide` dans le domaine. Précisions prises, à lui
-    faire confirmer : cela vaut pour toute phrase de choix, automatique ou
-    réécrite à la main ; une action de jeu et une image comptent toujours ;
-    là où un texte est gardé pour ne rien perdre (version précédente,
+    scènes déjà en base), `estVide` dans le domaine. Confirmé par lui le même
+    jour : cela vaut pour toute phrase de choix, automatique ou réécrite à la
+    main ; là où un texte est gardé pour ne rien perdre (version précédente,
     « Ancien texte » d'un échange, texte montré en lecture), « vide » reste
-    strict, et la scène qui n'a que des choix y garde ses choix. Tests :
-    `tests/base/textes.test.ts`, `tests/unitaires/copie.test.ts` (F06-AC105).
+    strict. **Corrigé à sa demande :** une action de jeu et une image ne sont
+    pas du texte non plus (« non ce n'est pas du texte ») ; seul le récit
+    compte (migration `texte_vide_recit_seul`, base locale seulement).
+    Précision prise en corrigeant, à lui faire confirmer : les contrôles du
+    Livre ne disent « vide », et ne bloquent le PDF définitif, que pour une
+    scène qui n'a rien à imprimer — ni récit, ni action de jeu, ni image ;
+    sans cela, un passage fait d'une image pleine page aurait empêché
+    d'imprimer. Tests : `tests/base/textes.test.ts`,
+    `tests/unitaires/copie.test.ts`, `controles.test.ts` (F06-AC105).
   - *Précisions prises en construisant, à lui faire confirmer :*
     1. un seul « + », deux gestes : cliqué, il ajoute ; tiré, il relie. Il se
        montre sous la carte survolée ou cliquée, et reste sous une scène

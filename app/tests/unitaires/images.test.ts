@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  controlerTexte, enMots, estReserve, estVide, imagesDe, lettresDe, nettoyerTexte, phraseEnMots, type Choix, type Droits, type ImageBloc, type ImageLigne,
+  controlerTexte, enMots, estReserve, estVide, sansRien, imagesDe, lettresDe, nettoyerTexte, phraseEnMots, type Choix, type Droits, type ImageBloc, type ImageLigne,
   type Paragraphe, type Texte,
 } from "@/domaine/copie";
 import { lireImage } from "@/serveur/images";
@@ -66,9 +66,12 @@ describe("Texte simple, texte vide (F10-AC32)", () => {
     expect(phraseEnMots(phrase, "rends", () => "14")).toBe("Porte [lune] : au 14.");
   });
 
-  it("une image seule fait que la scène n'est plus « Texte vide »", () => {
-    expect(estVide([figure(LUNE)])).toBe(false);
-    expect(estVide([p("", symbole(LUNE), "")])).toBe(false);
+  it("F06-AC105 — une image seule n'est pas du texte : la scène reste « Texte vide » (10 novembre 2026) ; elle n'est pas rien pour autant", () => {
+    expect(estVide([figure(LUNE)])).toBe(true);
+    expect(estVide([p("", symbole(LUNE), "")])).toBe(true);
+    expect(estVide([p("Sous la lune, ", symbole(LUNE), "")])).toBe(false);
+    expect(sansRien([figure(LUNE)])).toBe(false);
+    expect(sansRien([p("", symbole(LUNE), "")])).toBe(false);
     expect(imagesDe([p("a", symbole(LUNE)), figure(SOLEIL), p("b")])).toEqual([LUNE, SOLEIL]);
   });
 });

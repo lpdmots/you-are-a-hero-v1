@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { aTraiter, controler, pdfDefinitifRefuse, phraseDe, type Probleme, type Sorte } from "@/domaine/controles";
+import type { Texte } from "@/domaine/copie";
 import type { Etat } from "@/domaine/etats";
+import { reglagesDeDepart } from "@/domaine/mise-en-page";
 import type { Chapitre, Lien, Plan, Scene } from "@/domaine/recit";
 
 /**
@@ -53,6 +55,18 @@ const sain: Decrite[] = [
 ];
 
 describe("Contrôles du livre (F09.2)", () => {
+  it("F06-AC105 — « vide » pour le livre : rien à imprimer. Une scène qui n'a que des choix bloque ; une scène faite d'une action de jeu ou d'une image, sans récit, s'imprime", () => {
+    // S002 n'a que son choix ; S003 porte une action de jeu ; S004 une image pleine page : aucune n'a de récit
+    const plan = livre([{ ref: 1, choix: [2, 3, 4] }, { ref: 2, vide: true, choix: [3] }, { ref: 3, vide: true, fin: true }, { ref: 4, vide: true, fin: true }]);
+    const image: Texte = [{ type: "image", id: "i", image: "x", largeur: 100, page: true, children: [{ text: "" }] }];
+    const p = controler({
+      plan, aChoix: true, scenesAvecActions: new Set([id(3)]), feuille: true,
+      contenu: { textes: new Map([[id(4), image]]), images: { x: { largeur: 2400, hauteur: 3400 } }, reglages: reglagesDeDepart(true), debordements: [], imagesDesPages: [] },
+    });
+    expect(sortes(p).filter(([sorte]) => sorte === "vide")).toEqual([["vide", 2]]);
+    expect(pdfDefinitifRefuse(p)).toBe(true);
+  });
+
   it("un livre sans défaut n'a rien à traiter, et son PDF définitif n'est pas refusé", () => {
     const p = controle(livre(sain));
     expect(p).toEqual([]);

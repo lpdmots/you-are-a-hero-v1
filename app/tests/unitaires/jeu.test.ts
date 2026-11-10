@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { controlerTexte, estReserve, estVide, lettresDe, nettoyerTexte, texteOuvert, type Action, type Droits, type Paragraphe, type Texte } from "@/domaine/copie";
+import { controlerTexte, estReserve, estVide, lettresDe, sansRien, nettoyerTexte, texteOuvert, type Action, type Droits, type Paragraphe, type Texte } from "@/domaine/copie";
 
 /** Étape 3, lot 4 : l'action de jeu (F04.2) dans le texte d'une scène, et qui a le droit d'en écrire. */
 
@@ -31,9 +31,11 @@ describe("Action de jeu (F04.2)", () => {
     expect(controlerTexte([posee], [{ ...posee, signe: "de" }], BILAL)).toBeNull();
   });
 
-  it("une action de jeu qui a des mots est du texte de la scène ; vide, elle ne compte pas", () => {
-    expect(estVide([action("Ajoute le couteau à ton inventaire.")])).toBe(false);
+  it("F06-AC105 — une action de jeu n'est pas du texte de la scène : seule, elle la laisse « Texte vide » (10 novembre 2026) ; avec des mots, elle n'est pas rien", () => {
+    expect(estVide([action("Ajoute le couteau à ton inventaire.")])).toBe(true);
     expect(estVide([action("  ")])).toBe(true);
+    expect(sansRien([action("Ajoute le couteau à ton inventaire.")])).toBe(false);
+    expect(sansRien([action("  ")])).toBe(true);
     expect(lettresDe(action("Lance le dé."))).toBe("Lance le dé.");
   });
 

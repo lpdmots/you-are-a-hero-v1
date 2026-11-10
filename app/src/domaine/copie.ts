@@ -273,13 +273,14 @@ export const motsDImage = (image: { alt?: string }): string => `[${image.alt || 
 export const enMots = (texte: Texte): string => recitDe(texte).map((b) => (b.type === "image" ? (b.legende ?? "") : lettresDe(b))).join("\n");
 
 /**
- * Une scène sans mot de récit, sans action de jeu ni image (F06.5, F07.1) : « Texte vide ». Une
- * note de l'enseignant n'est pas du texte de la scène (F05-AC51), une liaison cachée non plus ;
- * une phrase de choix non plus, depuis le 10 novembre 2026 : la scène que le plan a reliée sans
- * que personne y ait écrit reste « Texte vide » (F06-AC105). La base tient la même règle.
+ * Une scène sans mot de récit (F06.5, F07.1) : « Texte vide ». Seuls comptent les paragraphes
+ * de récit. Une note de l'enseignant n'est pas du texte de la scène (F05-AC51), une liaison
+ * cachée non plus ; depuis le 10 novembre 2026, une phrase de choix, une action de jeu et une
+ * image non plus : la scène que le plan a reliée, ou qui n'a encore que son illustration, reste
+ * « Texte vide » (F06-AC105). La base tient la même règle (prive.texte_est_vide).
  */
 export const estVide = (texte: Texte): boolean =>
-  texte.every((b) => b.type === "note" || b.type === "liaison" || b.type === "choix" || ((b.type === "p" || b.type === "action") && lettresDe(b).trim() === ""));
+  texte.every((b) => b.type !== "p" || b.children.every((e) => !("text" in e) || e.text.trim() === ""));
 
 /**
  * Rien du tout : ni mot, ni phrase de choix, ni action de jeu, ni image. C'est le sens strict,

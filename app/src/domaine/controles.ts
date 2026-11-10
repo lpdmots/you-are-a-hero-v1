@@ -12,7 +12,7 @@
 import { numerosDuPlan } from "./numeros";
 import { chapitresDe, departDe, nomScene, scenesDe, type Lien, type Plan, type Scene } from "./recit";
 import { pluriel } from "./texte";
-import type { Texte } from "./copie";
+import { estImageLigne, type Texte } from "./copie";
 import { LARGEURS_PROPOSEES, SEUIL_PPP, hauteurDeLigne, largeurImprimee, pointsParPouce, zoneDeTexte, type ReglagesDuLivre } from "./mise-en-page";
 
 export type Gravite = "bloque" | "avert" | "info";
@@ -175,7 +175,14 @@ export function controler({ plan, aChoix, scenesAvecActions, feuille, contenu }:
   const points: Point[] = [];
 
   for (const s of livre) if (s.etat !== "prete") points.push({ sorte: "a-finir", sceneId: s.id });
-  for (const s of livre) if (s.texteVide) points.push({ sorte: "vide", sceneId: s.id, prete: s.etat === "prete" });
+  /**
+   * Vide pour le livre : rien à imprimer. « Texte vide » ne compte que le récit (F06.5, 10 novembre
+   * 2026) ; mais une scène faite d'une image pleine page, ou d'une seule action de jeu, s'imprime
+   * telle quelle : elle n'est pas un point qui bloque. Des choix seuls ne font pas un passage.
+   */
+  const vide = (s: Scene): boolean =>
+    s.texteVide && !scenesAvecActions.has(s.id) && !(contenu?.textes.get(s.id) ?? []).some((b) => b.type === "image" || b.type === "action" || (b.type === "p" && b.children.some(estImageLigne)));
+  for (const s of livre) if (vide(s)) points.push({ sorte: "vide", sceneId: s.id, prete: s.etat === "prete" });
 
   if (aChoix) {
     // Les chemins de chaque scène du livre, dans l'ordre du plan
@@ -191,7 +198,7 @@ export function controler({ plan, aChoix, scenesAvecActions, feuille, contenu }:
     for (const s of livre) {
       const chemins = cheminsDe.get(s.id)!;
       // Une scène vide n'est contrôlée que comme vide : rien n'y est encore écrit
-      if (!s.texteVide && !s.fin && chemins.length === 0) points.push({ sorte: "impasse", sceneId: s.id });
+      if (!vide(s) && !s.fin && chemins.length === 0) points.push({ sorte: "impasse", sceneId: s.id });
       for (const l of chemins) {
         const chemin = { renvoiId: l.renvoiId, libelle: l.libelle, cache: l.cache };
         if (!l.cibleId) points.push({ sorte: "sans-destination", sceneId: s.id, ...chemin });
@@ -227,10 +234,10 @@ export function controler({ plan, aChoix, scenesAvecActions, feuille, contenu }:
 
     for (const s of livre) {
       const chemins = cheminsDe.get(s.id)!;
-      if (!s.texteVide && !s.fin && chemins.length > 0 && chemins.every((l) => l.cache)) points.push({ sorte: "sortie", sceneId: s.id });
+      if (!vide(s) && !s.fin && chemins.length > 0 && chemins.every((l) => l.cache)) points.push({ sorte: "sortie", sceneId: s.id });
     }
 
-    const passages = livre.filter((s) => !s.texteVide && scenesAvecActions.has(s.id)).length;
+    const passages = livre.filter((s) => scenesAvecActions.has(s.id)).length;
     if (passages && !feuille) points.push({ sorte: "jeu-sans-feuille", passages });
   }
 

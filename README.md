@@ -22,10 +22,11 @@ et de la consigne, suppressions, l'écran qui ne bouge pas, F03-AC52 à AC57),
 écrans critiqués en deux lectures
 ([design](docs/design.md#construire-dans--chemins---écrans-construits-10-novembre-2026)) ;
 migrations `ajout_du_plan`, `construire_dans_chemins`,
-`retouches_dans_l_ordre` et `texte_vide_sans_les_choix` en base locale
-seulement, rien poussé ; décidé le même jour après la construction, une
-phrase de choix n'est plus du texte de la scène, si bien qu'une scène reliée
-sans être écrite reste « Texte vide »
+`retouches_dans_l_ordre`, `texte_vide_sans_les_choix` et
+`texte_vide_recit_seul` en base locale seulement, rien poussé ; décidé le
+même jour après la construction, seul le récit fait le texte d'une scène —
+ni une phrase de choix, ni une action de jeu, ni une image —, si bien qu'une
+scène reliée sans être écrite reste « Texte vide »
 ([F06.5](docs/specifications.md#f06-texte-vide), F06-AC105) ; mode d'emploi dans [`app/README.md`](app/README.md),
 « Essayer « Construire dans Chemins » ». Les lots 3 et 4 (le bloc de scènes)
 demandent son instruction.

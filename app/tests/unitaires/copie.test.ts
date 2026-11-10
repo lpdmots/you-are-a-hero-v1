@@ -213,13 +213,22 @@ describe("« Texte vide » sans les choix (F06.5, F07.1)", () => {
   const choixAuto: Bloc = { type: "choix", id: "c1", auto: true, libelle: "Suivre le ruisseau", construction: "neutre", cible: null, children: [{ text: "" }] };
   const choixEcrit: Bloc = { type: "choix", id: "c2", libelle: "Fuir", children: [{ text: "Pour fuir, cours au " }, { type: "renvoi", id: "r1", cible: null, children: [{ text: "" }] }, { text: "." }] };
 
-  it("F06-AC105 — une scène qui n'a que des choix reste « Texte vide », qu'ils soient automatiques ou réécrits à la main ; dès qu'un mot de récit y est écrit, elle ne l'est plus", () => {
+  it("F06-AC105 — une scène qui n'a que des choix, une action de jeu ou une image reste « Texte vide » ; dès qu'un mot de récit y est écrit, elle ne l'est plus", () => {
     expect(estVide([p("a", ""), choixAuto])).toBe(true);
     expect(estVide([choixAuto, choixEcrit])).toBe(true);
     expect(estVide([p("a", "Lou hésite."), choixAuto])).toBe(false);
-    // Une action de jeu et une image comptent toujours
-    expect(estVide([{ type: "action", id: "j", children: [{ text: "Note la clé." }] }, choixAuto])).toBe(false);
-    expect(estVide([{ type: "image", id: "i", image: "x", largeur: 65, children: [{ text: "" }] }, choixAuto])).toBe(false);
+    // Une action de jeu et une image ne sont pas du texte non plus : seul le récit compte
+    const action: Bloc = { type: "action", id: "j", children: [{ text: "Note la clé." }] };
+    const image: Bloc = { type: "image", id: "i", image: "x", largeur: 65, legende: "Le pont", children: [{ text: "" }] };
+    const symbole: Bloc = { type: "p", id: "s", children: [{ text: "" }, { type: "image-ligne", id: "l", image: "y", children: [{ text: "" }] }, { text: "" }] };
+    expect(estVide([action, choixAuto])).toBe(true);
+    expect(estVide([image])).toBe(true);
+    expect(estVide([symbole])).toBe(true);
+    expect(estVide([image, p("a", "Lou hésite.")])).toBe(false);
+    // … mais ce n'est pas rien : elles se montrent et se gardent
+    expect(sansRien([action])).toBe(false);
+    expect(sansRien([image])).toBe(false);
+    expect(sansRien([symbole])).toBe(false);
   });
 
   it("F06-AC105 — un texte qui n'a que des choix n'est pas rien : il se lit avec ses choix, et se garde quand un autre le remplace", () => {

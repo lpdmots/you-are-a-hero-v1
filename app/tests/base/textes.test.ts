@@ -646,7 +646,7 @@ describe("Qui lit, qui écrit (F06.1, F06.2, F04.1)", () => {
     expect(versions.map((v) => v.texte.map((b) => b.type))).toEqual([["p", "choix"]]);
   });
 
-  it("F06-AC105 — « Texte vide » : ni mot de récit ni image ; une note de l'enseignant ne compte pas, une phrase de choix non plus (10 novembre 2026)", async () => {
+  it("F06-AC105 — « Texte vide » : aucun mot de récit ; ni une note, ni une phrase de choix, ni une action de jeu, ni une image ne comptent (10 novembre 2026)", async () => {
     const vide = async (t: unknown): Promise<boolean> => (await sql<{ v: boolean }>("select prive.texte_est_vide($1::jsonb) as v", [JSON.stringify(t)]))[0].v;
     const rien = async (t: unknown): Promise<boolean> => (await sql<{ v: boolean }>("select prive.texte_sans_rien($1::jsonb) as v", [JSON.stringify(t)]))[0].v;
     expect(await vide([])).toBe(true);
@@ -663,9 +663,16 @@ describe("Qui lit, qui écrit (F06.1, F06.2, F04.1)", () => {
     expect(await rien([automatique])).toBe(false);
     expect(await rien([ecrite])).toBe(false);
     expect(await rien(texte("", "   "))).toBe(true);
-    expect(await vide([{ type: "action", id: randomUUID(), children: [{ text: "" }] }])).toBe(false);
-    expect(await vide([{ type: "image", id: randomUUID(), children: [{ text: "" }] }])).toBe(false);
-    expect(await vide([{ type: "p", id: randomUUID(), children: [{ text: "" }, { type: "image-ligne", children: [{ text: "" }] }, { text: "" }] }])).toBe(false);
+    // Une action de jeu et une image ne sont pas du texte non plus : seul le récit compte ; elles ne sont pas rien
+    const action = { type: "action", id: randomUUID(), children: [{ text: "Note la clé." }] };
+    expect(await vide([action])).toBe(true);
+    expect(await rien([action])).toBe(false);
+    const image = [{ type: "image", id: randomUUID(), children: [{ text: "" }] }];
+    const symbole = [{ type: "p", id: randomUUID(), children: [{ text: "" }, { type: "image-ligne", children: [{ text: "" }] }, { text: "" }] }];
+    expect(await vide(image)).toBe(true);
+    expect(await rien(image)).toBe(false);
+    expect(await vide(symbole)).toBe(true);
+    expect(await rien(symbole)).toBe(false);
     expect(await vide([{ type: "note", id: randomUUID(), children: [{ text: "" }, { type: "image-ligne", children: [{ text: "" }] }, { text: "" }] }])).toBe(true);
   });
 });

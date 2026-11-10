@@ -4410,18 +4410,27 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
   compte pas « Texte vide », et une scène vide peut avoir été travaillée sur
   papier.
 - <a id="f06-texte-vide"></a>**Ce qui fait un texte (révisé par le porteur
-  le 10 novembre 2026, sur recommandation) :** le texte d'une scène est vide
-  quand elle n'a ni mot de récit, ni action de jeu, ni image. Une note de
+  le 10 novembre 2026) :** le texte d'une scène est vide tant qu'aucun
+  paragraphe de récit n'y porte un mot. Seul le récit compte. Une note de
   l'enseignant n'est pas du texte de la scène (F05.2), une liaison cachée non
-  plus ; **une phrase de choix non plus,** automatique ou réécrite à la main.
-  Jusque-là un choix comptait : depuis que le plan se construit dans
-  « Chemins » ([F03.1](#f03-construire)), les scènes reliées avant d'être
-  écrites auraient toutes porté « En cours » sans que personne y ait écrit.
-  Une scène qui n'a que des choix porte donc « Texte vide », compte parmi les
-  textes vides du Suivi et des fiches de rédaction (F07.4), ne se remet pas
-  (F07.1), ne « contient pas de travail » (F06.1), se supprime sans
-  confirmation depuis le schéma (F03-AC56), et les contrôles du Livre la
-  disent « Pas encore de texte » (F09.2).
+  plus ; **une phrase de choix non plus,** automatique ou réécrite à la main
+  (sur recommandation) ; **une action de jeu et une image non plus**
+  (précisé par lui le même jour, contre la première rédaction, qui les
+  comptait encore : « ce n'est pas du texte »). Jusque-là tout cela comptait :
+  depuis que le plan se construit dans « Chemins »
+  ([F03.1](#f03-construire)), les scènes reliées avant d'être écrites
+  auraient toutes porté « En cours » sans que personne y ait écrit. Une scène
+  qui n'a que des choix, une action de jeu ou une image porte donc « Texte
+  vide », compte parmi les textes vides du Suivi et des fiches de rédaction
+  (F07.4), ne se remet pas (F07.1), ne « contient pas de travail » (F06.1) et
+  se supprime sans confirmation depuis le schéma (F03-AC56).
+  - **Le Livre ne bloque que ce qui n'a rien à imprimer.** Pour les contrôles
+    (F09.2), une scène est « vide » quand elle n'a ni récit, ni action de
+    jeu, ni image : c'est le cas d'une scène qui n'a que des choix, dite
+    « Pas encore de texte ». Une scène faite d'une image pleine page, ou d'une
+    seule action de jeu, s'imprime telle quelle et ne bloque pas le PDF
+    définitif. Précision prise en construisant, à faire confirmer : sans
+    elle, un passage illustré sans texte aurait empêché d'imprimer le livre.
   - **Rien n'en est perdu pour autant.** Là où l'application garde un texte,
     « vide » garde son sens strict, rien du tout : une scène qui n'a que des
     choix laisse une version précédente quand on y écrit par-dessus
@@ -4429,12 +4438,12 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
     se lit avec ses choix partout où un texte se montre. La lecture d'essai
     la traverse comme avant, avec la mention « Cette scène n'a pas encore de
     texte. ».
-  - **Ce qui ne change pas :** une action de jeu et une image comptent
-    toujours comme du texte ; « ✦ Écrire » garde sa propre règle, sans récit
+  - **« ✦ Écrire »** suit désormais la même idée : tant qu'aucun récit n'est
     écrit (F13.6).
-  - **Alternative écartée :** ne compter que les phrases automatiques, et
-    garder pour du texte une phrase réécrite à la main ; la différence ne se
-    voit pas à l'écran, et la scène n'a toujours pas de récit.
+  - **Alternatives écartées :** ne compter que les phrases automatiques, et
+    garder pour du texte une phrase réécrite à la main ; garder pour du texte
+    une action de jeu et une image, d'abord rédigé ainsi. La scène n'a
+    toujours pas de récit.
 - **Scène suivante à valider (4 octobre 2026) :** juste après avoir validé
   une scène « À valider », ou y avoir demandé une reprise, l'enseignant se
   voit proposer la scène « À valider » suivante, sans repasser par la
@@ -4545,7 +4554,10 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
   « En cours », un élève ne peut pas la remettre, et elle figure parmi les
   textes vides du Suivi et des fiches ; lorsqu'un texte gardé à part y est
   mis, alors son choix se retrouve dans « Ancien texte de la scène » ; dès
-  qu'une phrase de récit y est écrite, elle porte « En cours ».
+  qu'une phrase de récit y est écrite, elle porte « En cours ». Étant donné
+  une scène qui ne porte qu'une image pleine page, ou qu'une action de jeu,
+  alors elle porte « Texte vide » elle aussi, et le Livre ne la compte pas
+  parmi les scènes vides qui bloquent le PDF définitif.
 - **F06-AC63 — Scène suivante à valider :** étant donné le Suivi filtré sur
   « À valider », qui liste S003, S016 et S021, lorsque l'enseignant ouvre
   S003 et la valide, alors « Suivante à valider : S016 » lui est proposé et
@@ -11453,9 +11465,9 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
   (F13.3) : « vide » s'entend ici sans paragraphe de récit écrit ; une scène qui
   a déjà ses choix, ses actions de jeu ou ses images garde « ✦ Écrire », et le
   texte écrit se pose au-dessus de ce qui s'y trouve, sans rien en retirer.
-  L'affichage « Texte vide » s'en est rapproché le 10 novembre 2026 : une
-  phrase de choix n'y compte plus, une action de jeu et une image y comptent
-  toujours ([F06.5](#f06-texte-vide)). La consigne est
+  L'affichage « Texte vide » l'a rejoint le 10 novembre 2026 : seul le récit
+  y compte, ni une phrase de choix, ni une action de jeu, ni une image
+  ([F06.5](#f06-texte-vide)). La consigne est
   requise : sans elle, « Écrivez d'abord la consigne de la scène : l'IA écrit
   d'après elle. »
 - **La scène d'un élève :** si un élève s'en occupe, l'adulte est prévenu avant
