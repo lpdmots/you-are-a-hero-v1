@@ -1413,8 +1413,8 @@ le porteur décide :
   - **Écrans :** sans maquette ; conçus avec le skill impeccable et
     critiqués en deux lectures avant d'être montrés au porteur
     ([design](design.md#construire-dans--chemins---écrans-construits-10-novembre-2026)).
-  - **Précisions prises en construisant, à faire confirmer au porteur,**
-    listées dans le [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026) :
+  - **Précisions prises en construisant, confirmées en bloc par le porteur le
+    10 novembre 2026,** listées dans le [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026) :
     un seul « + » pour ajouter (cliqué) et relier (tiré) ; « Scène
     existante » dans sa bulle, pour relier sans tirer ; sans titre, la
     nouvelle scène prend celui du choix
@@ -4432,7 +4432,8 @@ Suivi** (22/40 pour chacune des deux lectures, contre 29 et 27 pour le Livre) :
     jeu, ni image : c'est le cas d'une scène qui n'a que des choix, dite
     « Pas encore de texte ». Une scène faite d'une image pleine page, ou d'une
     seule action de jeu, s'imprime telle quelle et ne bloque pas le PDF
-    définitif. Précision prise en construisant, à faire confirmer : sans
+    définitif. Précision prise en construisant, confirmée par le porteur le
+    10 novembre 2026 : sans
     elle, un passage illustré sans texte aurait empêché d'imprimer le livre.
   - **Rien n'en est perdu pour autant.** Là où l'application garde un texte,
     « vide » garde son sens strict, rien du tout : une scène qui n'a que des
@@ -6408,8 +6409,8 @@ changement d'état de la scène.
   ajout venu du plan et le recolle au texte qu'il reçoit ensuite, au lieu de
   refuser ce texte ([architecture](architecture.md#construire-dans--chemins--10-novembre-2026)).
   Tout autre changement survenu entre-temps reste un conflit, comme avant.
-- **Précisions prises en construisant, à faire confirmer au porteur**
-  ([plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026)) :
+- **Précisions prises en construisant, confirmées en bloc par le porteur le
+  10 novembre 2026** ([plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026)) :
   un choix retiré depuis « Chemins » est repris de la même façon ; les choix
   se posent après la dernière ligne écrite, avant les liens cachés ; l'adulte
   qui a la scène ouverte ailleurs est traité comme l'élève ; « Remettre à… »

@@ -1576,7 +1576,7 @@ Sans maquette. Conçus avec le skill impeccable, en prolongeant la vue reprise
 du 12 octobre (mêmes cartes, mêmes couleurs, mêmes mots que la copie), puis
 critiqués en deux lectures séparées sur 26 captures (`app/test-results/captures/construire-chemins/`,
 en 1 440 × 900 et 1 366 × 768). Règles : [F03.1](specifications.md#f03-construire) ;
-précisions à confirmer : [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+précisions, confirmées en bloc par le porteur le 10 novembre 2026 : [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
 Le lot 1 (l'ajout venu du plan) n'a aucun écran : rien ne s'affiche quand un
 choix arrive dans une copie ouverte.
 

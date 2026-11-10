@@ -4308,7 +4308,7 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     toute version ancienne, donc l'élève qui remet juste après un ajout sans
     avoir retapé ; « Annuler » dans la copie aurait pu défaire le choix venu
     du plan.
-  - *Précisions prises en construisant, à lui faire confirmer :*
+  - *Précisions prises en construisant, confirmées en bloc par lui le 10 novembre 2026 (« je confirme les précisions en bloc ») — ne plus les lui soumettre :*
     1. le même mécanisme couvre un choix **retiré** depuis « Chemins »
        (lot 2) : sinon supprimer un choix arrêterait celui qui écrit ;
     2. les choix se posent après la dernière ligne écrite, avant les lignes
@@ -4375,13 +4375,13 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     strict. **Corrigé à sa demande :** une action de jeu et une image ne sont
     pas du texte non plus (« non ce n'est pas du texte ») ; seul le récit
     compte (migration `texte_vide_recit_seul`, base locale seulement).
-    Précision prise en corrigeant, à lui faire confirmer : les contrôles du
+    Précision prise en corrigeant, confirmée en bloc par lui le même jour : les contrôles du
     Livre ne disent « vide », et ne bloquent le PDF définitif, que pour une
     scène qui n'a rien à imprimer — ni récit, ni action de jeu, ni image ;
     sans cela, un passage fait d'une image pleine page aurait empêché
     d'imprimer. Tests : `tests/base/textes.test.ts`,
     `tests/unitaires/copie.test.ts`, `controles.test.ts` (F06-AC105).
-  - *Précisions prises en construisant, à lui faire confirmer :*
+  - *Précisions prises en construisant, confirmées en bloc par lui le 10 novembre 2026 (« je confirme les précisions en bloc ») — ne plus les lui soumettre :*
     1. un seul « + », deux gestes : cliqué, il ajoute ; tiré, il relie. Il se
        montre sous la carte survolée ou cliquée, et reste sous une scène
        « Sans suite », là où le récit attend sa suite ;
