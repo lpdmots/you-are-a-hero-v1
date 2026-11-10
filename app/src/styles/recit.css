@@ -897,9 +897,10 @@
   margin-top: 2px;
 }
 /*
- * Dans « Chemins », le bandeau se fait bas (demandé par le porteur, 10 novembre 2026) : une
- * vignette, le titre et sa ligne, les commandes en rang ; les élèves se lisent dans « Scènes ».
- * Le schéma, même petit, se voit dès l'ouverture, sans faire défiler.
+ * Un bandeau bas, le même dans « Scènes » et « Chemins » (demandé par le porteur, 10 novembre
+ * 2026) : une vignette, le titre, sa ligne et les élèves à la suite, les commandes en rang. Les
+ * onglets restent au même endroit d'une vue à l'autre ; le schéma se voit sans faire défiler.
+ * Un chapitre sans scène garde le grand bandeau, au-dessus de son invitation.
  */
 .chap-bandeau.chap-bandeau--compact {
   grid-template-columns: 96px minmax(0, 1fr) auto;
@@ -920,8 +921,21 @@
   font-size: 1.45rem;
   line-height: 1.2;
 }
+.chap-bandeau--compact .chap-bandeau__texte {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+.chap-bandeau--compact .chap-bandeau__texte h1 {
+  flex-basis: 100%;
+}
+.chap-bandeau--compact .chap-meta {
+  margin: 0;
+}
 .chap-bandeau--compact .chap-eleves {
-  display: none;
+  margin: 0;
+  gap: 4px 12px;
 }
 .chap-bandeau.chap-bandeau--compact .chap-actions {
   grid-column: auto;
@@ -994,12 +1008,13 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 12px 18px;
-  margin: 22px 0 16px;
+  /* Le même haut dans les deux vues : les onglets ne bougent pas ; seul le dessous change */
+  margin: 12px 0 16px;
   font-size: var(--t-s);
   color: var(--graphite-2);
 }
 .chap-outils.chap-outils--chemins {
-  margin: 12px 0 4px;
+  margin-bottom: 4px;
 }
 .vide-chap {
   display: grid;
@@ -1326,6 +1341,17 @@
   .chap-actions .menu {
     margin-left: auto;
   }
+  /* Le bandeau bas : les commandes passent sous le titre, qui garde sa ligne */
+  .chap-bandeau.chap-bandeau--compact {
+    grid-template-columns: 96px minmax(0, 1fr);
+    row-gap: 10px;
+  }
+  .chap-bandeau.chap-bandeau--compact .chap-actions {
+    grid-column: 1 / -1;
+  }
+  .chap-bandeau--compact .chap-actions .menu {
+    margin-left: auto;
+  }
   .reste__actions {
     margin-left: 0;
   }
@@ -1391,6 +1417,21 @@
   .chap-actions .btn--primaire {
     flex: 1;
     justify-content: center;
+  }
+  /* Le bandeau bas sur un téléphone : la vignette et le titre, les commandes dessous */
+  .chap-bandeau.chap-bandeau--compact {
+    grid-template-columns: 72px minmax(0, 1fr);
+    gap: 10px 12px;
+  }
+  .chap-bandeau.chap-bandeau--compact .chap-actions {
+    grid-column: 1 / -1;
+    flex-wrap: wrap;
+  }
+  .chap-bandeau--compact .chap-bandeau__image {
+    aspect-ratio: 16 / 10;
+  }
+  .chap-bandeau--compact h1 {
+    font-size: 1.3rem;
   }
   .fiches {
     grid-template-columns: 1fr;

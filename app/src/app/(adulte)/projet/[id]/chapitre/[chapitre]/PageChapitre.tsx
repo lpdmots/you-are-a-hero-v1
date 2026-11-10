@@ -238,12 +238,13 @@ export function PageChapitre({
         </Link>
       </nav>
 
-      {/* Dans « Chemins », le bandeau tient sur une ligne basse : le schéma se voit sans faire défiler */}
-      <header className={`chap-bandeau${vue === "chemins" && chapitre.scenes.length ? " chap-bandeau--compact" : ""}`}>
+      {/* Un bandeau bas, le même dans « Scènes » et « Chemins » : les onglets ne bougent pas d'une vue à
+          l'autre, et le schéma se voit sans faire défiler (demandé par le porteur, 10 novembre 2026) */}
+      <header className={`chap-bandeau${chapitre.scenes.length ? " chap-bandeau--compact" : ""}`}>
         <div className="chap-bandeau__image">
           <ImageRepere repere={chapitre} graine={chapitre.id} prioritaire />
         </div>
-        <div>
+        <div className="chap-bandeau__texte">
           <h1>{chapitre.titre}</h1>
           <p className="chap-meta">
             {partie.titre} · {compteScenes(chapitre.scenes.length).toLocaleLowerCase("fr")}
