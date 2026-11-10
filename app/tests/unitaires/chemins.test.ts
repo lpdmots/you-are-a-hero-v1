@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CARTE, disposer, LIBELLE, type Disposition, type Point } from "@/composants/chemins/disposer";
-import { carteDeReference, figerLaTaille, garderEnPlace, resteApres } from "@/composants/chemins/ancrage";
+import { aRendreSansMouvement, carteDeReference, figerLaTaille, garderEnPlace, resteApres } from "@/composants/chemins/ancrage";
 import { aRegarder, compteARegarder, ordreDeLecture, peutConstruire, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
 import { fautConfirmer } from "@/domaine/recit";
 import { ATTENDU, SCENES } from "../../scripts/marais-des-feux-follets";
@@ -286,6 +286,15 @@ describe("Construire dans « Chemins » (F03.1)", () => {
     expect(garderEnPlace(0, { position: 0, max: 0 })).toEqual({ defiler: 0, pousser: 0, allonger: 0 });
     // Une taille déjà choisie n'est pas changée par un geste
     expect(figerLaTaille(0.5, 0.73)).toBe(0.5);
+  });
+
+  it("F03-AC54 — ce qu'un geste a poussé se rend sans mouvement, pour la part déjà hors de la vue", () => {
+    // Le schéma a été poussé de 90 points ; on a fait défiler de 30 : 30 se rendent
+    expect(aRendreSansMouvement(90, 30)).toBe(30);
+    // Le début du cadre est loin hors de la vue : toute la poussée se rend
+    expect(aRendreSansMouvement(90, 400)).toBe(90);
+    // Le début du cadre est encore à l'écran : rien ne se rend sans mouvement
+    expect(aRendreSansMouvement(90, -120)).toBe(0);
   });
 
   it("F03-AC54 — sans geste qui la désigne, la carte de référence est celle qu'on a cliquée, sinon la plus proche du milieu de ce qu'on voit", () => {

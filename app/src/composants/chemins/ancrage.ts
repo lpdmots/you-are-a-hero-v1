@@ -29,6 +29,13 @@ export function garderEnPlace(ecart: number, defilement: Defilement): Correction
   return { defiler: ecart, pousser: 0, allonger: 0 };
 }
 
+/**
+ * Ce qu'un geste a poussé se rend dès qu'on le peut sans que rien bouge à l'écran : la part de
+ * la poussée qui est déjà hors de la vue, au-dessus ou à gauche (décidé le 10 novembre 2026).
+ * `cache` : de combien le début du cadre est passé hors de la vue.
+ */
+export const aRendreSansMouvement = (poussee: number, cache: number): number => Math.max(0, Math.min(poussee, cache));
+
 /** Où la carte se retrouve à l'écran, par rapport à sa place d'avant, une fois la correction faite : toujours zéro. */
 export const resteApres = (ecart: number, c: Correction): number => ecart - c.defiler + c.pousser;
 

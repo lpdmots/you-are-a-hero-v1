@@ -11,7 +11,7 @@ import { MOT_DE_MARQUE, type ARegarder, type Chemins, type NoeudDeChemin } from 
 import { Bulle } from "../Bulle";
 import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
-import { carteDeReference, figerLaTaille, garderEnPlace } from "./ancrage";
+import { aRendreSansMouvement, carteDeReference, figerLaTaille, garderEnPlace } from "./ancrage";
 import { BulleDuGeste, PanneauDeScene, type Construire, type Geste } from "./Construire";
 import { disposer, texteDeLEtiquette, texteDuLibelle, type Disposition, type Element, type Mesure } from "./disposer";
 
@@ -681,6 +681,88 @@ export default function Schema({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sceneChoisie?.id]);
 
+  // ——— Ce qu'un geste a poussé se rend (F03-AC54, précisé le 10 novembre 2026) : la carte reste en
+  // place le temps du geste, puis le schéma reprend sa place dans son cadre ———
+  const ajusteRef = useRef(ajuste);
+  useLayoutEffect(() => {
+    ajusteRef.current = ajuste;
+  });
+  const pousse = ajuste.px > 0 || ajuste.py > 0;
+  // Dès qu'on fait défiler : la part de la poussée passée hors de la vue se retire, et le défilement
+  // recule d'autant ; rien ne bouge à l'écran
+  useEffect(() => {
+    const c = cadre.current;
+    if (!pousse || !c) return;
+    const absorber = () => {
+      const a = ajusteRef.current;
+      const haut = aRendreSansMouvement(a.py, barre() + hauteurDeLEnTete() - c.getBoundingClientRect().top);
+      const gauche = aRendreSansMouvement(a.px, c.scrollLeft);
+      if (haut < 1 && gauche < 1) return;
+      const suite = { ...a, px: a.px - gauche, py: a.py - haut };
+      c.style.paddingTop = `${suite.py}px`;
+      c.style.paddingLeft = `${suite.px}px`;
+      if (haut >= 1) window.scrollTo({ top: window.scrollY - haut, behavior: "instant" });
+      if (gauche >= 1) c.scrollLeft -= gauche;
+      ajusteRef.current = suite;
+      setAjuste(suite);
+    };
+    window.addEventListener("scroll", absorber, { passive: true });
+    c.addEventListener("scroll", absorber, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", absorber);
+      c.removeEventListener("scroll", absorber);
+    };
+  }, [pousse]);
+  // Le geste fini, le reste se rend en glissant, comme « Recentrer », sans changer la taille : quand
+  // le panneau se referme, quand le pointeur quitte le schéma et son panneau, ou quand une bulle se
+  // referme alors que le pointeur n'y est plus. Pas tant qu'on travaille au même endroit.
+  const enGeste = geste !== null || tire !== null;
+  const enGesteRef = useRef(enGeste);
+  useLayoutEffect(() => {
+    enGesteRef.current = enGeste;
+  });
+  const dedans = useRef(false);
+  const minuteurRendre = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const rendre = useCallback(() => {
+    if (minuteurRendre.current) clearTimeout(minuteurRendre.current);
+    // Après le glissement des cartes du geste
+    minuteurRendre.current = setTimeout(() => {
+      const c = cadre.current;
+      const a = ajusteRef.current;
+      if (!c || enGesteRef.current || (a.px === 0 && a.py === 0 && a.ax === 0 && a.ay === 0)) return;
+      if (!sansMouvement()) {
+        c.dataset.relache = "";
+        setTimeout(() => delete c.dataset.relache, 320);
+      }
+      setAjuste(SANS_AJUSTEMENT);
+    }, 350);
+  }, []);
+  useEffect(() => {
+    const p = plan.current;
+    if (!p) return;
+    const entrer = () => {
+      dedans.current = true;
+      if (minuteurRendre.current) clearTimeout(minuteurRendre.current);
+    };
+    const sortir = () => {
+      dedans.current = false;
+      rendre();
+    };
+    p.addEventListener("pointerenter", entrer);
+    p.addEventListener("pointerleave", sortir);
+    return () => {
+      p.removeEventListener("pointerenter", entrer);
+      p.removeEventListener("pointerleave", sortir);
+      if (minuteurRendre.current) clearTimeout(minuteurRendre.current);
+    };
+  }, [rendre]);
+  const avant = useRef({ panneau: panneauOuvert, geste: enGeste });
+  useEffect(() => {
+    const { panneau, geste: etaitEnGeste } = avant.current;
+    avant.current = { panneau: panneauOuvert, geste: enGeste };
+    if ((panneau && !panneauOuvert) || (etaitEnGeste && !enGeste && !dedans.current)) rendre();
+  }, [panneauOuvert, enGeste, rendre]);
+
   const source = geste?.de ?? tire?.de ?? null;
   const cible = (geste?.sorte === "lien" ? geste.vers : null) ?? tire?.sur ?? null;
   const enTirant = tire !== null;
@@ -717,7 +799,7 @@ export default function Schema({
             <button type="button" className="lien" onClick={() => changer(null)}>
               Taille lisible
             </button>
-          ) : ajuste.px || ajuste.py || ajuste.ax || ajuste.ay ? (
+          ) : ajuste.px || ajuste.py ? (
             // Pour garder une carte en place, un geste a poussé le schéma dans son cadre : un clic le remet au milieu
             <button type="button" className="lien" onClick={() => changer(null)}>
               Recentrer

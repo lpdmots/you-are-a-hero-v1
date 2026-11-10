@@ -1513,6 +1513,10 @@
   border-block: 1px solid var(--trait);
   scroll-margin-top: calc(var(--sous-la-barre) + 54px);
 }
+/* Ce qu'un geste avait poussé se rend en glissant (F03-AC54) ; la poussée elle-même reste immédiate */
+.chemins__cadre[data-relache] {
+  transition: padding 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
 .chemins__cadre > .chemins__toile {
   flex: none;
   /* Toute la hauteur du cadre : un clic dans le vide referme le panneau, et la mention de React Flow reste au coin bas */

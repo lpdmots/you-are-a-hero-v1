@@ -1394,7 +1394,13 @@ le porteur décide :
     du rangement.
   - **L'écran ne bouge pas.** Après un ajout, la vue reste où elle était, à
     la même taille : la nouvelle carte apparaît, ses voisines glissent, la
-    scène d'où l'on part ne change pas de place à l'écran.
+    scène d'où l'on part ne change pas de place à l'écran. Précisé le
+    10 novembre 2026 à la demande du porteur : quand il a fallu pousser le
+    schéma dans son cadre pour cela (la page était déjà en haut), la
+    poussée ne reste pas. Elle se rend sans mouvement dès qu'on fait
+    défiler, pour la part passée hors de la vue ; sinon le schéma reprend
+    sa place en glissant, une fois le geste fini (panneau refermé, pointeur
+    sorti du schéma et de son panneau).
   - **Chaque geste est enregistré aussitôt,** sans bouton. Un échec se dit
     en une phrase et le schéma revient à ce qui est enregistré.
   - **Hors du chapitre :** un choix vers un autre chapitre, un lien caché,
@@ -1443,7 +1449,9 @@ le porteur décide :
 - **F03-AC54 — L'écran ne bouge pas :** étant donné « Le marais des feux
   follets », trente-deux scènes, la vue descendue sur ses dernières scènes,
   lorsque l'adulte ajoute une scène sous l'une d'elles, alors cette carte
-  garde sa place à l'écran et la taille du schéma ne change pas.
+  garde sa place à l'écran et la taille du schéma ne change pas ; si le
+  schéma a dû être poussé dans son cadre, il reprend sa place une fois le
+  geste fini, et ne laisse pas d'espace vide au-dessus des cartes.
 - **F03-AC55 — Titre et consigne dans le panneau :** étant donné « Le
   ruisseau » cliquée, lorsque l'adulte change son titre et écrit sa consigne
   dans le panneau, alors ils sont enregistrés et la carte porte le nouveau
