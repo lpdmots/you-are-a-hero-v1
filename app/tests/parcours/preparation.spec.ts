@@ -123,7 +123,7 @@ test("F02-AC02, F02-AC07 — l'écran d'aide ouvre la Préparation : rien n'est 
   const seul = await semerProjet(base, compte, "personnel", "classique", "Carnet de voyage");
   await aller(page, `/projet/${seul}/preparation`);
   await page.getByRole("button", { name: "Aide" }).click();
-  await expect(page.getByText(/On note ce que vous décidez avant d’écrire/)).toBeVisible();
+  await expect(page.getByText(/Posez les repères de votre histoire\./)).toBeVisible();
   await expect(page.getByText("Que fait l’IA ici ?")).toHaveCount(0);
   await expect(page.getByText("Comment le faire avec la classe ?")).toHaveCount(0);
   await expect(page.getByText("Et « Les objets » ?")).toBeVisible();
@@ -437,8 +437,8 @@ test("F04.2 — l'étape « Le jeu » réunit les objets, les formules d'action,
   await expect(jeu.getByRole("switch", { name: "Inclure la feuille dans le livre et en ligne" })).toBeChecked();
   await jeu.getByRole("radio", { name: "Deux dés" }).check();
   await jeu.getByText("Règles du jeu").click();
-  await jeu.getByLabel(/Ce que le lecteur doit savoir/).fill("Note tes objets sur ta feuille d’aventure.");
-  await jeu.getByLabel(/Ce que le lecteur doit savoir/).blur();
+  await jeu.getByLabel(/Expliquez comment gérer les objets et les points/).fill("Note tes objets sur ta feuille d’aventure.");
+  await jeu.getByLabel(/Expliquez comment gérer les objets et les points/).blur();
   await expect.poll(async () => (await base.from("preparations").select("feuille, regles").eq("projet_id", projet).single()).data).toMatchObject({
     regles: "Note tes objets sur ta feuille d’aventure.",
     feuille: { on: true, des: 2, sections: [{ type: "compteurs", titre: "Compteurs" }, { type: "liste", titre: "Inventaire", lignes: 6 }] },
@@ -472,7 +472,7 @@ test("F05, F11.5 — l'étape « Les choix » : une seule liste de phrases à co
     await expect(phrases.getByRole("checkbox", { name: autre })).toBeDisabled();
     await expect(phrases.getByRole("checkbox", { name: autre })).not.toBeChecked();
   }
-  await expect(phrases).toContainText("Avec « → 12 », seule la première phrase sert");
+  await expect(phrases).toContainText("Avec la flèche, seule la première forme est utilisée.");
   await phrases.getByRole("radio", { name: "« rends-toi au 12 »" }).check();
   await expect(phrases.getByRole("checkbox", { name: "Pour suivre la lumière, rends-toi au 17." })).toBeChecked();
 });

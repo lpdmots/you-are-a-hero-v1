@@ -58,7 +58,7 @@ test("Séance entière (F06.3, F07.1, F07.3, F07.5, F06.5) — Alice et Bilal pr
   await expect(filtres(page).getByRole("button", { name: /^À valider/ })).toHaveText("À valider 2");
   await filtres(page).getByRole("button", { name: /^À valider/ }).click();
   await page.getByRole("link", { name: "Relire S001" }).click();
-  await expect(decision(page)).toContainText("Alice a remis ce texte");
+  await expect(decision(page)).toContainText("Remis par Alice");
   // Une reprise pour Alice, avec une remarque
   await decision(page).getByRole("button", { name: "Demander une reprise…" }).click();
   await page.getByLabel(/^Remarque pour Alice/).fill("Dis ce que Lou entend.");
@@ -66,7 +66,7 @@ test("Séance entière (F06.3, F07.1, F07.3, F07.5, F06.5) — Alice et Bilal pr
   await expect(tamponAdulte(page)).toContainText("À reprendre");
   // La scène suivante à valider est proposée : celle de Bilal
   await decision(page).getByRole("link", { name: /^Suivante à valider : S002/ }).click();
-  await expect(decision(page)).toContainText("Bilal a remis ce texte");
+  await expect(decision(page)).toContainText("Remis par Bilal");
   await decision(page).getByRole("button", { name: "Valider le travail élève" }).click();
   await expect(tamponAdulte(page)).toContainText("Validé");
   // Un encouragement pour Bilal
@@ -96,7 +96,7 @@ test("Séance entière (F06.3, F07.1, F07.3, F07.5, F06.5) — Alice et Bilal pr
 
   // ——— L'enseignante valide Alice, puis déclare prête la scène de Bilal ———
   await aller(page, `/projet/${s.projet}/scene/${sentier}`);
-  await expect(decision(page)).toContainText("Alice a remis ce texte");
+  await expect(decision(page)).toContainText("Remis par Alice");
   await decision(page).getByRole("button", { name: "Valider le travail élève" }).click();
   await expect(tamponAdulte(page)).toContainText("Validé");
   await aller(page, `/projet/${s.projet}/scene/${pont}`);

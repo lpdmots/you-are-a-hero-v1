@@ -111,6 +111,8 @@ test.describe("Personnages de l'histoire (F10.2)", () => {
     await page.getByRole("button", { name: "Ouvrir la carte de Le héros" }).click();
     await PANNEAU(page).getByLabel("Nom", { exact: true }).fill("Lou");
     await PANNEAU(page).getByRole("button", { name: "Fermer", exact: true }).last().click();
+    // Le nom part à la fermeture du panneau : on attend qu'il soit enregistré avant de recharger
+    await expect.poll(async () => (await cartesEnBase(s.projet)).map((c) => c.nom)).toEqual(["Lou"]);
     await page.reload();
     await expect(page.getByRole("heading", { level: 2 })).toHaveText(/Qui est Lou/);
   });

@@ -101,7 +101,8 @@ test.describe("Objets de l'histoire (F04.2)", () => {
     await LISTE(page).getByRole("button", { name: "Créer un nouvel objet" }).click();
     await expect(LISTE(page)).toHaveCount(0);
     await expect(PANNEAU(page).getByRole("heading", { name: "Nouvel objet" })).toBeVisible();
-    await FICHE(page).getByLabel("Nom avec son article").fill("la lanterne sourde");
+    // Dans la scène, la fiche garde son libellé ; « Nom avec son article » est celui de la Préparation
+    await FICHE(page).getByLabel("Nom, tel qu’il s’écrit dans une phrase").fill("la lanterne sourde");
     await FICHE(page).getByLabel("Description, facultative").fill("Éclaire sans être vue");
     await FICHE(page).getByRole("button", { name: "Créer et écrire dans le texte" }).click();
     await expect(FICHE(page)).toHaveCount(0);

@@ -123,7 +123,7 @@ test("Étape 8, avec les aides — préparer, organiser, formuler, corriger, rel
 
   // ——— Mme Laurent corrige au degré 1, garde, puis demande une reprise avec des pistes ———
   await aller(page, `/projet/${s.projet}/scene/${sentier}`);
-  await expect(decision(page)).toContainText("Alice a remis ce texte");
+  await expect(decision(page)).toContainText("Remis par Alice");
   await page.locator(".corriger summary").click();
   await page.getByRole("menuitemradio", { name: /^Degré 1 ·/ }).click();
   await page.getByRole("button", { name: "Corriger", exact: true }).click();
@@ -234,7 +234,7 @@ test("Étape 8, sans les aides — éteintes dans « Mon compte », tout le traj
   const alice = await posteDe(browser, s, "Alice");
   await aliceEcritEtRemet(alice.page, s, DRAGON);
   await aller(page, `/projet/${s.projet}/scene/${sentier}`);
-  await expect(decision(page)).toContainText("Alice a remis ce texte");
+  await expect(decision(page)).toContainText("Remis par Alice");
   await expect(page.getByRole("button", { name: /Corriger/ })).toHaveCount(0);
   await decision(page).getByRole("button", { name: "Demander une reprise…" }).click();
   await expect(page.getByRole("button", { name: "Proposer des pistes" })).toHaveCount(0);

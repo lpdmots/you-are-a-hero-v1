@@ -1,6 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
-  adultePret, aller, chapitresDeLaPartie, MESSAGE, reglagesDuProjet, scenesDuChapitre, semerAttribution, semerClasse, semerPartie, semerProjet, supprimerComptes, tirer,
+  adultePret, aller, chapitresDeLaPartie, MESSAGE, reglagesDuProjet, scenesDuChapitre, semerAttribution, semerClasse, semerPartie, semerProjet, sql, supprimerComptes, tirer,
 } from "./outils";
 
 test.afterEach(async () => {
@@ -302,10 +302,11 @@ test("F03-AC24 — « À compléter » mène à la première carte concernée, s
 });
 
 test("F03.1 — la carte d'un chapitre dit où il en est : validées, prêtes, puis ce qui attend l'adulte", async ({ page }) => {
-  const { base, projet, foret } = await passeursDeBrume(page);
+  const { projet, foret } = await passeursDeBrume(page);
   const [lisiere] = foret.chapitres;
-  await base.from("scenes").update({ etat: "valide" }).eq("id", lisiere.scenes[0]);
-  await base.from("scenes").update({ etat: "valider" }).eq("id", lisiere.scenes[1]);
+  // L'état d'une scène ne s'écrit pas directement par l'adulte (il passe par « changer_etat ») : on le pose en base
+  await sql("update scenes set etat = 'valide' where id = $1", [lisiere.scenes[0]]);
+  await sql("update scenes set etat = 'valider' where id = $1", [lisiere.scenes[1]]);
   await aller(page, `/projet/${projet}/plan`);
   await expect(carte(page, "La lisière")).toContainText("3 scènes · 1 validée");
   await expect(carte(page, "La lisière")).toContainText("1 à valider");
