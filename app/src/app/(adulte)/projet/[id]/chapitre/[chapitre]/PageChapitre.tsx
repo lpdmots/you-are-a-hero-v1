@@ -106,6 +106,7 @@ export function PageChapitre({
   const construire: Construire | undefined = !projet.aChoix
     ? undefined
     : {
+        deClasse: projet.deClasse,
         ajouterScene: async (de, libelle, titre) => {
           const fait = await ajouterSceneDepuisLeSchema(chapitre.id, de, libelle, titre);
           if (!fait.ok && fait.limite) ouvrirOffreDuPass(projet.id, fait.limite);

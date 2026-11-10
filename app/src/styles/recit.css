@@ -1825,11 +1825,16 @@
 .panneau-chemin__champ .facultatif {
   font-weight: 400;
 }
+/* La consigne prend la hauteur de son texte, trois lignes au moins : la liste et les choix restent en vue */
 .panneau-chemin__champ textarea {
   display: block;
-  min-height: 7.2em;
   line-height: 1.45;
-  resize: vertical;
+}
+.panneau-chemin__champ .ia-formuler {
+  margin-top: 3px;
+}
+.panneau-chemin__champ .verif {
+  margin-top: 8px;
 }
 .panneau-chemin .erreur {
   margin: 0;

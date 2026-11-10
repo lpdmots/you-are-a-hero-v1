@@ -1382,7 +1382,10 @@ le porteur décide :
       demande le libellé du choix, et ne crée aucune scène.
     - *Un panneau à droite* pour la scène cliquée : son titre et sa
       consigne, modifiables ; « Ouvrir » mène à la scène. Le texte ne s'y
-      écrit pas.
+      écrit pas. Ajouté le 10 novembre 2026 à la demande du porteur : en
+      projet de classe, la liste de vérification sous la consigne, et
+      « ✦ Formuler », comme dans la page de scène
+      ([F13.2](#f132--formuler-une-consigne-et-sa-liste-de-vérification)).
     - *Supprimer* une scène, avec les protections et la corbeille de
       F03-AC13 et F03-AC14, ou un choix, dont le bloc quitte le texte de la
       scène d'où il part.

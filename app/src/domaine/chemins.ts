@@ -13,6 +13,9 @@ export type NoeudDeChemin = {
   suiteCachee?: boolean;
   /** La consigne de la scène, pour l'adulte : le panneau du schéma la montre et la modifie (F03-AC55) */
   consigne?: string;
+  /** Sa liste de vérification, et ce que l'élève y a coché : le panneau les montre et modifie la liste (F13.2) */
+  verification?: string[];
+  cochees?: string[];
   /** La page de la scène */
   lien: string;
 };
@@ -43,7 +46,7 @@ export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string):
   return {
     noeuds: chapitre.scenes.map((s) => ({
       id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, depart: depart?.id === s.id, fin: s.fin,
-      consigne: s.consigne,
+      consigne: s.consigne, verification: s.verification ?? [], cochees: s.cochees ?? [],
       lien: `/projet/${projetId}/scene/${s.id}?de=chemins`,
     })),
     liens: plan.liens

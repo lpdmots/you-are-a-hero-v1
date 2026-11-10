@@ -6,7 +6,9 @@ import { createPortal } from "react-dom";
 import { ordreDeLecture, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
 import { LIBELLE_MAX } from "@/domaine/copie";
 import { nomScene, referenceScene } from "@/domaine/recit";
-import { ChampTexte } from "../dictee/ChampDictable";
+import { useConsigneIa } from "@/app/(adulte)/projet/[id]/scene/[scene]/AidesDeScene";
+import { ChampQuiGrandit } from "../ChampQuiGrandit";
+import { ListeAModifier } from "../verification/Liste";
 import { useEnregistrement } from "../Enregistrement";
 import type { Placement } from "@floating-ui/dom";
 import { poser } from "../flottant";
@@ -23,12 +25,14 @@ type Resultat = { ok: true } | { ok: false; erreur: string };
 
 /** Ce que la page offre au schéma : chaque geste rend ce qu'il est devenu, la page dit le reste. */
 export type Construire = {
+  /** Un projet de classe : la consigne a sa liste de vérification (F13.2) */
+  deClasse: boolean;
   /** « + » sous une scène : une nouvelle scène et le choix qui y mène (F03-AC52) */
   ajouterScene: (de: string, libelle: string, titre: string) => Promise<Resultat>;
   /** Un lien tiré, ou « Scène existante » : un choix vers une scène du chapitre (F03-AC53) */
   relier: (de: string, vers: string, libelle: string) => Promise<Resultat>;
-  /** Titre et consigne, depuis le panneau (F03-AC55) */
-  reglerScene: (sceneId: string, valeurs: { titre?: string; consigne?: string }) => Promise<{ ok: boolean; erreur?: string }>;
+  /** Titre, consigne et liste de vérification, depuis le panneau (F03-AC55, F13.2) */
+  reglerScene: (sceneId: string, valeurs: { titre?: string; consigne?: string; verification?: string[] }) => Promise<{ ok: boolean; erreur?: string }>;
   supprimerChoix: (lien: LienDeChemin) => Promise<Resultat>;
   /** Avec les protections de la suppression, et la corbeille (F03-AC56) */
   supprimerScene: (sceneId: string) => void;
@@ -199,8 +203,9 @@ export function BulleDuGeste({
 }
 
 /**
- * Le panneau de la scène cliquée, à droite du schéma : son titre et sa consigne, qui
- * s'enregistrent en les écrivant ; ses choix, que l'on supprime ici ; « Ouvrir » mène à la scène.
+ * Le panneau de la scène cliquée, à droite du schéma : son titre, sa consigne et, en classe, sa
+ * liste de vérification, qui s'enregistrent en les écrivant, avec « ✦ Formuler » comme dans la
+ * page de scène (F13.2) ; ses choix, que l'on supprime ici ; « Ouvrir » mène à la scène.
  */
 export function PanneauDeScene({
   scene, chemins, construire, designe, onAjouter, onFermer, boutonAjouter,
@@ -215,10 +220,36 @@ export function PanneauDeScene({
   const id = useId();
   const [titre, setTitre] = useState(scene.titre ?? "");
   const [consigne, setConsigne] = useState(scene.consigne ?? "");
+  const [verification, setVerification] = useState(scene.verification ?? []);
+  // La liste ne relit sa valeur qu'au montage : une liste proposée par « Formuler » la remonte
+  const [cleListe, setCleListe] = useState(0);
   const [enRetrait, setEnRetrait] = useState<string | null>(null);
   const e = useEnregistrement();
   const choix = chemins.liens.filter((l) => l.de === scene.id);
   const parId = new Map(chemins.noeuds.map((n) => [n.id, n]));
+
+  const consigneIa = useConsigneIa({
+    sceneId: scene.id,
+    // Le serveur relit lui-même la consigne : ce qu'on vient de taper part d'abord
+    avantDePartir: async () => {
+      await e.partir();
+      return true;
+    },
+    deClasse: construire.deClasse,
+    actuelle: consigne,
+    actuelleListe: verification,
+    onUtiliser: (c, liste) => {
+      setConsigne(c);
+      const valeurs: { consigne: string; verification?: string[] } = { consigne: c };
+      if (construire.deClasse) {
+        setVerification(liste);
+        setCleListe((n) => n + 1);
+        valeurs.verification = liste;
+      }
+      e.prevoir(() => construire.reglerScene(scene.id, valeurs), 0, "consigne");
+    },
+    onDemande: () => {},
+  });
 
   const retirer = async (lien: LienDeChemin) => {
     setEnRetrait(lien.id);
@@ -270,10 +301,10 @@ export function PanneauDeScene({
           <label htmlFor={`${id}-consigne`}>
             Consigne <span className="facultatif">facultative</span>
           </label>
-          <ChampTexte
+          <ChampQuiGrandit
             id={`${id}-consigne`}
             className="pchamp"
-            rows={5}
+            rows={3}
             value={consigne}
             maxLength={4000}
             onChange={(ev) => {
@@ -282,6 +313,19 @@ export function PanneauDeScene({
             }}
             onBlur={() => void e.partir()}
           />
+          {consigneIa.bouton}
+          {consigneIa.proposition}
+          {construire.deClasse ? (
+            <ListeAModifier
+              key={cleListe}
+              depart={verification}
+              cochees={scene.cochees ?? []}
+              onChange={(liste) => {
+                setVerification(liste);
+                e.prevoir(() => construire.reglerScene(scene.id, { verification: liste }), 700, "verification");
+              }}
+            />
+          ) : null}
         </div>
         {e.erreur ? (
           <p className="erreur" role="alert">
