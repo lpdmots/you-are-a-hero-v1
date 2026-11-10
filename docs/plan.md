@@ -4451,7 +4451,8 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   les cinq migrations (`ajout_du_plan`, `construire_dans_chemins`,
   `retouches_dans_l_ordre`, `texte_vide_sans_les_choix`,
   `texte_vide_recit_seul`) appliquées par Claude — ne plus les modifier —,
-  code poussé jusqu'à `f64c26e`, déploiement Vercel réussi. Le même envoi
+  code poussé jusqu'à `f64c26e`, déploiement Vercel réussi, `npm run
+  verifier:production` passé. Le même envoi
   porte la révision de l'ergonomie du 10 novembre (Parties et chapitres,
   page de scène, page du chapitre). Restent à relire : l'aide de « Parties
   et chapitres », le guide et la vidéo de visite, qui présentent encore
