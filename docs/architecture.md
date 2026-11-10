@@ -1804,6 +1804,72 @@ lots dans le [plan](plan.md#étape-9--ouverture-à-dautres-enseignants).
   (étape 8) : de 0,003 à 0,03 dollar par demande de texte, de 0,011 à
   0,025 dollar par image. C'est la base du débit des étoiles.
 
+## Construire dans « Chemins » (10 novembre 2026)
+
+Règles : [F03.1](specifications.md#f03-construire) et
+[F08.1, « Ajout venu du plan »](specifications.md#f08-ajout-du-plan) ; lots et
+précisions dans le [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+
+### Lot 1 : l'ajout venu du plan (F08-AC44)
+
+**Le problème.** Le texte d'une scène ne s'écrit que par
+`prive.ecrire_texte`, qui compare la version que la page connaît à celle de
+la base et garde à part tout texte parti d'une version ancienne
+([étape 3](#réalisation-de-létape-3-10-octobre-2026)). Un choix posé par le
+serveur fait monter la version : l'enregistrement suivant de celui qui écrit
+la scène aurait été un conflit.
+
+**Le mécanisme, migration `ajout_du_plan`.**
+
+- `retouches_du_plan` : une ligne par retouche — la version que la scène a
+  prise, les phrases de choix ajoutées (`ajoute`, les blocs entiers), les
+  blocs retirés (`retire`, leurs identités). Sans règle d'accès : seules les
+  fonctions de la base la lisent et l'écrivent.
+- `prive.retoucher_texte` pose et retire sous le verrou de la scène, note la
+  retouche dans la même opération, garde une version précédente de l'adulte,
+  et ne touche ni à `ecrit_le`, ni à `ecrit_par`, ni à l'état. Seules des
+  phrases de choix se posent et se retirent ainsi. `public.retoucher_depuis_le_plan`
+  l'ouvre à l'adulte du projet, en récit à choix.
+- `prive.ecrire_texte`, redéfinie : elle lit les retouches postérieures à la
+  version reçue, les rejoue sur le texte reçu (`prive.rejouer_retouches`),
+  puis décide. Si la scène et ce texte sont égaux, rien n'est écrit (c'est
+  aussi la réponse perdue en route, que la page renvoie). Si le retard est
+  fait seulement de retouches (leur nombre égale l'écart des versions), le
+  texte est enregistré. Sinon c'est un conflit, et le texte gardé à part est
+  celui que la page a envoyé, sans les choix du plan. La réponse porte
+  `ajoute` et `retire`.
+- `prive.poser_a_la_fin` : après le dernier bloc qui n'est pas une ligne vide
+  non protégée, avant les liaisons cachées ; `placeALaFin`
+  (`src/domaine/copie.ts`) est la même règle pour la copie ouverte. Elle est
+  choisie pour qu'aucun bloc réservé à l'adulte ne se trouve après les choix
+  posés : l'ordre des blocs réservés, que contrôle `controlerTexte`, est
+  alors le même dans la scène enregistrée et dans la copie, où que l'élève ait
+  écrit entre-temps.
+- `public.ecriture_lire` rend aussi les retouches de la scène : le contrôle
+  des droits de l'élève, fait par le serveur de l'application avant la base,
+  les met hors de la comparaison (`horsRetouches`).
+- `public.eleve_remettre` accepte une version en retard seulement de
+  retouches du plan (`prive.en_retard_du_plan_seul`).
+
+**Dans la page.** `useEnregistrementTexte` remet `duPlan` à la copie
+(`onDuPlan`) ; `Copie` retire et pose les blocs dans l'éditeur, hors de son
+historique (`withoutSaving`), puis vide cet historique ; la garde des blocs
+réservés de `regles.ts` laisse passer ce seul geste (`reprendreDuPlan`). Le
+changement de l'éditeur part à l'envoi suivant, que la base reconnaît comme
+« rien de neuf » : aucune version de plus. La réponse nomme les scènes où
+mènent les choix reçus (`nommerLesScenesDuPlan`), pour un élève celles de son
+chapitre seulement ; sans cela la copie les afficherait « autre chapitre ».
+
+**Écarté.** Une mise à jour en direct (canal Realtime) : la règle demande
+« à son enregistrement suivant », et rien d'autre dans l'application n'en a.
+Une fusion générale de deux textes : hors de la première livraison (F08.1) ;
+ici seules des phrases de choix entières, repérées par leur identité, se
+posent ou se retirent, sans toucher à un paragraphe.
+
+**Limite connue.** Les retouches de plus de trente jours sont effacées à la
+retouche suivante de la scène : une page ouverte plus longtemps sans rien
+enregistrer retrouve le conflit ordinaire.
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

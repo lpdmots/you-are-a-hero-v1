@@ -4279,6 +4279,57 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   « Chemins » comme une vue qu'on lit sans la modifier.
 - **Reste ouvert :** la vue qui s'ouvre en premier dans un chapitre à choix,
   à décider après usage.
+- **Lot 1 construit le 10 novembre 2026,** en local (effort « high », sur
+  son accord, la session n'offrant pas « xhigh ») ; migration `ajout_du_plan`
+  en base locale seulement, rien poussé. **Le mécanisme tient :** vérifié
+  contre la base locale et à l'écran, sans repli.
+  - *Ce qui est construit :* la base note chaque retouche du plan (table
+    `retouches_du_plan`) ; un enregistrement en retard seulement de retouches
+    du plan n'est plus un conflit, elles sont rejouées sur le texte reçu
+    (`prive.ecrire_texte`) et rendues à la page, qui les pose dans la copie
+    ouverte ; `public.retoucher_depuis_le_plan`, pour l'adulte, pose des
+    choix à la fin d'une scène ou en retire sans l'ouvrir
+    ([architecture](architecture.md#construire-dans--chemins--10-novembre-2026)).
+  - *Critère fermé :* F08-AC44 (`tests/base/ajout-du-plan.test.ts`, dix cas ;
+    `tests/unitaires/copie.test.ts`, deux cas), dont dix ajouts et dix
+    enregistrements partis ensemble sans un seul texte gardé à part. Vérifié
+    aussi à la main dans le navigateur : un choix posé pendant que la scène
+    est ouverte apparaît dans la copie à l'enregistrement suivant, nommé et
+    numéroté, sans message.
+  - *Trois écueils trouvés en lisant le code, et traités :* le contrôle des
+    droits de l'élève, fait sur le serveur avant la base, aurait pris les
+    choix du plan pour des blocs préparés supprimés ; « Remettre à… » refusait
+    toute version ancienne, donc l'élève qui remet juste après un ajout sans
+    avoir retapé ; « Annuler » dans la copie aurait pu défaire le choix venu
+    du plan.
+  - *Précisions prises en construisant, à lui faire confirmer :*
+    1. le même mécanisme couvre un choix **retiré** depuis « Chemins »
+       (lot 2) : sinon supprimer un choix arrêterait celui qui écrit ;
+    2. les choix se posent après la dernière ligne écrite, avant les lignes
+       vides de la fin et les liens cachés, comme le font les idées de choix
+       (F13.3) ; une scène que personne n'a ouverte reçoit d'abord sa ligne
+       où écrire, au-dessus ;
+    3. l'adulte qui a la scène ouverte dans un autre onglet est traité comme
+       l'élève ;
+    4. les choix apparaissent dans la copie ouverte à l'enregistrement
+       suivant, pas à l'instant (aucune mise à jour en direct n'existe) ; une
+       page où l'on ne tape rien ne les montre qu'une fois rouverte ;
+    5. « Remettre à… » juste après un ajout du plan remet le texte avec ces
+       choix, même si l'élève ne les a pas encore à l'écran ;
+    6. quand des choix arrivent du plan, « Annuler » (Ctrl+Z) dans cette
+       copie ne remonte plus avant ce moment : rejouer d'anciens gestes sur
+       un texte qui a changé sous eux pouvait l'abîmer ;
+    7. une retouche du plan garde une « version précédente » de la scène
+       écrite, comme une correction de l'adulte (F08.2) ; elle ne change ni
+       l'état, ni qui s'en occupe, ni qui y a écrit ;
+    8. un autre changement survenu entre-temps (un camarade, une correction)
+       reste un conflit, texte gardé à part, comme avant ;
+    9. « Validé » ou « Prête » demandés par l'adulte depuis une page de scène
+       ouverte avant sa propre retouche lui demandent encore de relire le
+       texte, qui a changé (F07, inchangé) ;
+    10. une page restée ouverte plus de trente jours sans rien enregistrer
+        retrouve le conflit ordinaire (les notes de retouche plus anciennes
+        sont effacées).
 
 ## Hors de la première livraison
 

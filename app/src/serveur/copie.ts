@@ -6,7 +6,8 @@ import { empreinteDuPoste } from "./poste";
 import { estUuid } from "./recit";
 import { clientService } from "./supabase";
 import {
-  ciblesDe, controlerTexte, enMots, estAuto, estRenvoi, nettoyerTexte, renvoisDe, type Droits, type Enregistrement, type Motif, type Texte,
+  ciblesDe, controlerTexte, enMots, estAuto, estChoix, estRenvoi, horsRetouches, nettoyerTexte, renvoisDe,
+  type ChoixAuto, type Droits, type DuPlan, type Enregistrement, type Motif, type Retouche, type SceneDuPlan, type Texte,
 } from "@/domaine/copie";
 import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
 import type { Voisines } from "@/composants/copie/contexte";
@@ -31,9 +32,19 @@ export type CopieGardee = {
 
 export type TexteDeScene = { texte: Texte; version: number; copies: CopieGardee[] };
 
+/** Ce que le plan a retouché à l'insu de la page (F08-AC44) : des phrases de choix seulement, que la page pose ou retire. */
+const duPlan = (r: { ajoute?: unknown; retire?: unknown }): DuPlan | undefined => {
+  const ajoute = (nettoyerTexte(Array.isArray(r.ajoute) ? r.ajoute : []) ?? []).filter(estChoix);
+  const retire = Array.isArray(r.retire) ? r.retire.filter((id): id is string => typeof id === "string" && estUuid(id)) : [];
+  return ajoute.length || retire.length ? { ajoute, retire } : undefined;
+};
+
 const resultat = (data: unknown): Enregistrement => {
-  const r = (data ?? {}) as { etat?: string; version?: number; motif?: Motif; dernier?: boolean };
-  if (r.etat === "enregistre" && typeof r.version === "number") return { etat: "enregistre", version: r.version, dernier: r.dernier };
+  const r = (data ?? {}) as { etat?: string; version?: number; motif?: Motif; dernier?: boolean; ajoute?: unknown; retire?: unknown };
+  if (r.etat === "enregistre" && typeof r.version === "number") {
+    const plan = duPlan(r);
+    return plan ? { etat: "enregistre", version: r.version, dernier: r.dernier, duPlan: plan } : { etat: "enregistre", version: r.version, dernier: r.dernier };
+  }
   if (r.etat === "garde") return { etat: "garde", motif: r.motif ?? "conflit", version: r.version, dernier: r.dernier };
   if (r.etat === "ferme") return { etat: "ferme" };
   return { etat: "refuse", motif: r.motif, version: r.version, dernier: r.dernier };
@@ -104,7 +115,46 @@ export async function enregistrerPourAdulte(e: Enseignant, sceneId: string, vers
   const fait = resultat(data);
   // Un premier renvoi vient d'être enregistré : son numéro doit s'afficher, l'ordre du livre s'établit (F05-AC34)
   if (fait.etat === "enregistre" && ciblesDe(texte).length) await assurerOrdreDeLaScene(e.supabase, sceneId);
-  return fait;
+  return nommerLesScenesDuPlan(e.supabase, fait, null);
+}
+
+/**
+ * Les choix venus du plan mènent à des scènes que la page ouverte ne connaît pas toujours :
+ * la réponse les nomme. `chapitreId` : pour un élève, seulement celles du chapitre où il écrit,
+ * les seules qu'un geste du plan relie et qu'il peut lire.
+ */
+async function nommerLesScenesDuPlan(base: SupabaseClient, fait: Enregistrement, chapitreId: string | null): Promise<Enregistrement> {
+  if (fait.etat !== "enregistre" || !fait.duPlan?.ajoute.length) return fait;
+  const cibles = [...new Set(ciblesDe(fait.duPlan.ajoute))];
+  if (cibles.length === 0) return fait;
+  let demande = base.from("scenes").select("id, reference, titre, chapitre_id").in("id", cibles).is("supprime_le", null);
+  if (chapitreId) demande = demande.eq("chapitre_id", chapitreId);
+  const { data } = await demande;
+  const scenes: SceneDuPlan[] = ((data ?? []) as { id: string; reference: number; titre: string | null; chapitre_id: string }[]).map((s) => ({
+    id: s.id, reference: s.reference, titre: s.titre, chapitreId: s.chapitre_id,
+  }));
+  return { ...fait, duPlan: { ...fait.duPlan, scenes } };
+}
+
+/**
+ * Ajout venu du plan (F08.1, F08-AC44) : depuis « Chemins », l'adulte pose des phrases de choix
+ * à la fin du texte d'une scène, ou en retire, sans l'ouvrir. La base note la retouche : celui
+ * qui écrit la scène au même moment n'est pas arrêté, son enregistrement suivant la reprend.
+ * Rend la version de la scène ; la base refuse en français ce qui n'est pas permis.
+ */
+export async function retoucherDepuisLePlan(
+  e: Enseignant, sceneId: string, { ajoute = [], retire = [] }: { ajoute?: ChoixAuto[]; retire?: string[] },
+): Promise<{ ok: true; version: number } | { ok: false; erreur: { code?: string; message: string } | null }> {
+  if (!estUuid(sceneId) || !retire.every(estUuid)) return { ok: false, erreur: null };
+  // Les blocs posés passent par le même nettoyage que ceux d'une copie : la page qui écrit la
+  // scène les renverra à l'identique
+  const blocs = (nettoyerTexte(ajoute) ?? []).filter(estChoix);
+  if (blocs.length !== ajoute.length) return { ok: false, erreur: null };
+  const { data, error } = await e.supabase.rpc("retoucher_depuis_le_plan", { p_scene: sceneId, p_ajoute: blocs, p_retire: retire });
+  if (error) return { ok: false, erreur: error };
+  // Un premier renvoi vient d'être posé : l'ordre du livre s'établit, comme pour un choix écrit dans la scène (F05-AC34)
+  if (ciblesDe(blocs).length) await assurerOrdreDeLaScene(e.supabase, sceneId);
+  return { ok: true, version: (data as { version: number }).version };
 }
 
 /** Le texte sans les images qu'il pose et que l'ancien ne posait pas, en bloc ou sur la ligne. */
@@ -148,16 +198,21 @@ export async function enregistrerPourEleve(ecritureId: string, version: number, 
   const texte = await sansIdentitePrise(service, (ouverte as { scene: string }).scene, propre);
   // Ce que l'élève a le droit de changer se contrôle ici, sur le texte enregistré : choix,
   // raccords, blocs préparés (F05-AC32, F06-AC13). Un texte refusé est gardé à part (F08.2).
-  const o = ouverte as { scene: string; texte: Texte; profil: "propositions" | "organisation" | null; scenes_du_chapitre: string[]; images_vues: string[] | null };
+  const o = ouverte as {
+    scene: string; chapitre: string; texte: Texte; profil: "propositions" | "organisation" | null; scenes_du_chapitre: string[]; images_vues: string[] | null;
+    retouches?: Retouche[] | null;
+  };
   const droits: Droits = { role: "eleve", profil: o.profil ?? "propositions", scenesDuChapitre: new Set(o.scenes_du_chapitre ?? []) };
-  const refus = controlerTexte(vuParUnEleve(o.texte ?? []), texte, droits, o.images_vues ?? []);
+  // Ce que le plan a retouché à l'insu de la page n'est pas le fait de l'élève : hors du contrôle (F08-AC44)
+  const compare = horsRetouches(vuParUnEleve(o.texte ?? []), texte, o.retouches ?? [], version);
+  const refus = controlerTexte(compare.avant, compare.apres, droits, o.images_vues ?? []);
   const { data, error } = await service.rpc("ecriture_enregistrer", {
     p_ecriture: ecritureId, p_jeton_hash: jeton, p_version: version, p_texte: texte, p_refus: refus ? "controle" : null,
   });
   if (error) throw new Error(`Enregistrement impossible : ${error.message}`);
   const fait = resultat(data);
   if (fait.etat === "enregistre" && ciblesDe(texte).length) await assurerOrdreDeLaScene(service, o.scene);
-  return fait;
+  return nommerLesScenesDuPlan(service, fait, o.chapitre);
 }
 
 /** Le texte tel qu'un élève le reçoit : sans les notes de l'enseignant, que la base ne lui envoie pas. */

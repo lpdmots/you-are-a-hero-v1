@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Enregistrement, Motif, Texte } from "@/domaine/copie";
+import type { DuPlan, Enregistrement, Motif, Texte } from "@/domaine/copie";
 import { garderLaSortie } from "./sortie";
 
 /** Deux secondes après la dernière frappe, quinze au plus si la frappe ne s'arrête pas (F08.2). */
@@ -42,12 +42,17 @@ const envoi = async (cible: Cible, version: number, texte: Texte, enPartant = fa
 /**
  * Enregistrement automatique du texte d'une scène. Un seul envoi à la fois : le suivant
  * part avec la version que le précédent a rendue. Rien ici ne touche à l'éditeur, ni à son
- * curseur (F08-AC33).
+ * curseur (F08-AC33) : ce que le plan a retouché entre-temps est remis à la copie, qui le pose.
  */
 export function useEnregistrementTexte({
-  cible, version: versionInitiale, texte: texteInitial, apresRetour, onVersion,
+  cible, version: versionInitiale, texte: texteInitial, apresRetour, onVersion, onDuPlan,
 }: {
   cible: Cible; version: number; texte: Texte;
+  /**
+   * Le plan a retouché la scène à l'insu de la page (F08-AC44) : le texte envoyé est enregistré,
+   * et la copie reçoit les choix à poser ou à retirer. Ce qu'elle change part à l'envoi suivant.
+   */
+  onDuPlan?: (duPlan: DuPlan) => void;
   /** La version que la base vient de rendre : la page la présente pour changer l'état (F07-AC26) */
   onVersion?: (version: number) => void;
   /** Un échec vient d'être rattrapé : le texte est enregistré (F08-AC22) */
@@ -67,9 +72,11 @@ export function useEnregistrementTexte({
   const gardeAPart = useRef(false);
   const retour = useRef(apresRetour);
   const direVersion = useRef(onVersion);
+  const direDuPlan = useRef(onDuPlan);
   useEffect(() => {
     retour.current = apresRetour;
     direVersion.current = onVersion;
+    direDuPlan.current = onDuPlan;
     cibleRef.current = cible;
   });
 
@@ -104,6 +111,7 @@ export function useEnregistrementTexte({
         version.current = fait.version;
         direVersion.current?.(fait.version);
         enregistre.current = parti;
+        if (fait.duPlan) direDuPlan.current?.(fait.duPlan);
         if (enEchec.current) {
           enEchec.current = false;
           retour.current?.();

@@ -47,6 +47,20 @@ export type Regles = {
 export const blocsDe = (e: Editeur): Bloc[] => e.children as Bloc[];
 
 /**
+ * Les éditeurs qui reprennent en ce moment une retouche venue du plan (F08-AC44) : la garde des
+ * blocs réservés la laisse passer, le temps de ce seul geste.
+ */
+const DU_PLAN = new WeakSet<object>();
+export function reprendreDuPlan(e: Editeur, geste: () => void): void {
+  DU_PLAN.add(e);
+  try {
+    geste();
+  } finally {
+    DU_PLAN.delete(e);
+  }
+}
+
+/**
  * Un bloc fermé : pris comme un tout, le curseur n'y entre pas. C'est toute phrase de choix
  * — elle s'écrit dans le panneau, depuis le 11 octobre 2026 —, l'image en bloc, et tout bloc
  * réservé à l'adulte pour cette personne : paragraphe protégé, action préparée (F06.1).
@@ -516,7 +530,8 @@ export const ReglesPlugin = createPlatePlugin({
       /** Dernière garde : aucune opération ne touche un bloc réservé, d'où qu'elle vienne (F06.1). */
       apply(op: { type: string; path?: number[]; newProperties?: Record<string, unknown> }) {
         const { droits } = o();
-        if (droits.role !== "adulte" && op.path) {
+        // Ce que le plan a retouché entre dans la copie de quiconque, bloc réservé ou non (F08-AC44)
+        if (droits.role !== "adulte" && op.path && !DU_PLAN.has(e)) {
           const bloc = blocsDe(e)[op.path[0]];
           const dedans = op.path.length > 1 && ["insert_text", "remove_text", "insert_node", "remove_node", "set_node", "split_node", "merge_node"].includes(op.type);
           const dessus = op.path.length === 1 && ["remove_node", "set_node", "split_node", "move_node"].includes(op.type);

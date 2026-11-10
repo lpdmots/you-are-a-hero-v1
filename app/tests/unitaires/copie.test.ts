@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
-import { enMots, estVide, lireCollage, lireTexteSimple, memeTexte, nettoyerTexte, BLOCS_MAX, LETTRES_MAX, type Lettres } from "@/domaine/copie";
+import {
+  controlerTexte, enMots, estVide, horsRetouches, lireCollage, lireTexteSimple, memeTexte, nettoyerTexte, placeALaFin, BLOCS_MAX, LETTRES_MAX,
+  type Bloc, type Droits, type Lettres, type Texte,
+} from "@/domaine/copie";
 import { heureEnMots, jourEnMots } from "@/domaine/dates";
 import { travailDans, type Plan, type Scene } from "@/domaine/recit";
 
@@ -202,5 +205,38 @@ describe("Ce qu'une suppression emporterait (F03.1)", () => {
   it("un chapitre ou une scène sans texte n'emporte aucun travail : il se supprime sans confirmation", () => {
     expect(travailDans(plan, "chapitre", "c2").ecrites).toBe(0);
     expect(travailDans(plan, "scene", "s3").ecrites).toBe(0);
+  });
+});
+
+describe("Ajout venu du plan (F08.1)", () => {
+  const para = (id: string, texte: string, protege = false): Bloc => (protege ? { type: "p", id, protege: true, children: [{ text: texte }] } : { type: "p", id, children: [{ text: texte }] });
+  const choix = (id: string, libelle = "Avancer"): Bloc => ({ type: "choix", id, auto: true, libelle, construction: "neutre", cible: null, children: [{ text: "" }] });
+
+  it("F08-AC44 — les choix venus du plan se posent après la dernière ligne écrite ; une scène sans rien d'écrit garde sa ligne au-dessus", () => {
+    expect(placeALaFin([para("a", "Un récit."), para("b", ""), para("c", "")])).toBe(1);
+    expect(placeALaFin([para("a", "Un récit."), choix("x")])).toBe(2);
+    expect(placeALaFin([para("a", "")])).toBe(1);
+    expect(placeALaFin([para("a", ""), para("b", "")])).toBe(1);
+    expect(placeALaFin([])).toBe(0);
+    // Une ligne vide que l'enseignant a protégée est un bloc réservé : rien ne se pose avant elle
+    expect(placeALaFin([para("a", "Un récit."), para("b", "", true), para("c", "")])).toBe(2);
+    // Une image sur la ligne n'est pas une ligne vide
+    const image: Bloc = { type: "p", id: "i", children: [{ text: "" }, { type: "image-ligne", id: "j", image: "k", children: [{ text: "" }] }, { text: "" }] };
+    expect(placeALaFin([para("a", "Un récit."), image, para("c", "")])).toBe(2);
+  });
+
+  it("F08-AC44 — le contrôle des droits d'un élève laisse de côté ce que le plan a retouché à son insu", () => {
+    const droits: Droits = { role: "eleve", profil: "propositions", scenesDuChapitre: new Set() };
+    const [a, x, y] = [para("a", "Le début."), choix("x"), choix("y", "Reculer")];
+    const retouches = [{ version: 2, ajoute: ["x"], retire: [] }, { version: 3, ajoute: [], retire: ["y"] }];
+    // La scène enregistrée porte « x », venu du plan ; la page, partie de la version 1, a encore « y », que le plan a retiré
+    const enregistre: Texte = [a, x];
+    const envoye: Texte = [para("a", "Le début, et la suite."), y];
+    expect(controlerTexte(enregistre, envoye, droits)).not.toBeNull();
+    const hors = horsRetouches(enregistre, envoye, retouches, 1);
+    expect(controlerTexte(hors.avant, hors.apres, droits)).toBeNull();
+    // Une page à jour ne bénéficie de rien : retirer un choix préparé reste refusé
+    const aJour = horsRetouches(enregistre, [a], retouches, 3);
+    expect(controlerTexte(aJour.avant, aJour.apres, droits)).toBe("Un bloc préparé a été supprimé.");
   });
 });

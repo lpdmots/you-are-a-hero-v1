@@ -11,8 +11,8 @@ import { BoutonDictee, useDictee, useDicteeActive } from "@/composants/dictee/Di
 import { Icone } from "@/composants/Icone";
 import { MESSAGES_DICTEE, raccorder } from "@/domaine/dictee";
 import {
-  ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, recitDe, renvoisDe, texteOuvert, tirerConstruction,
-  type Choix, type Droits, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
+  ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, placeALaFin, recitDe, renvoisDe, texteOuvert, tirerConstruction,
+  type Choix, type Droits, type DuPlan, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
 } from "@/domaine/copie";
 import { compterMots } from "@/domaine/correction";
 import { constructionsUtiles } from "@/domaine/preparation";
@@ -32,7 +32,7 @@ import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, 
 import { FicheIdees, useIdeesDeChoix, type Idee } from "./FicheIdees";
 import { MenuInserer, type Commande } from "./MenuInserer";
 import { FicheLiaison, HorsRecit, type GestesDeLiaison } from "./Liaisons";
-import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, type Editeur, type Signal } from "./regles";
+import { blocCourant, blocsDe, estFerme, peutModifier, ReglesPlugin, reprendreDuPlan, type Editeur, type Signal } from "./regles";
 import { ScenesVoisines } from "./ScenesVoisines";
 import { SortieGardee } from "./SortieGardee";
 import { useEnregistrementTexte, type Cible, type EtatTexte } from "./useEnregistrementTexte";
@@ -212,7 +212,9 @@ export function Copie({
   const creation = useRef<{ choix: string; scene: SceneCreee } | null>(null);
   const ciblesRelues = useRef(ciblesDe(texte).sort().join());
   const [ouvert] = useState<Texte>(() => [...initial, ...liaisons]);
-  const sauvegarde = useEnregistrementTexte({ cible, version, texte: ouvert, apresRetour, onVersion });
+  // Ce que le plan a retouché à l'insu de la page : l'éditeur, créé plus bas, le reprend (F08-AC44)
+  const duPlanRecu = useRef<(duPlan: DuPlan) => void>(() => {});
+  const sauvegarde = useEnregistrementTexte({ cible, version, texte: ouvert, apresRetour, onVersion, onDuPlan: (d) => duPlanRecu.current(d) });
   const arrete = sauvegarde.etat.etat === "garde" || sauvegarde.etat.etat === "refuse" || sauvegarde.etat.etat === "ferme";
   const adulte = droits.role === "adulte";
   const peutChoisir = livre.aChoix && (adulte || droits.profil === "organisation");
@@ -376,11 +378,48 @@ export function Copie({
 
   /** Une scène créée depuis un choix : la copie la connaît aussitôt, sans attendre que la page relise le livre. */
   const connaitre = (creee: SceneCreee) => {
+    // Le chapitre se nomme d'après la liste de l'adulte ; pour un élève, d'après une scène qu'il en connaît déjà
     const chapitre = livre.chapitres.find((c) => c.id === creee.chapitreId);
+    const voisine = chapitre ? undefined : livre.scenes.find((x) => x.chapitreId === creee.chapitreId);
     apprendre({
-      scene: { id: creee.id, reference: creee.reference, titre: creee.titre, chapitreId: creee.chapitreId, chapitre: chapitre?.titre ?? "", partie: chapitre?.partie ?? "", vide: true },
+      scene: {
+        id: creee.id, reference: creee.reference, titre: creee.titre, chapitreId: creee.chapitreId,
+        chapitre: chapitre?.titre ?? voisine?.chapitre ?? "", partie: chapitre?.partie ?? voisine?.partie ?? "", vide: true,
+      },
     });
   };
+
+  /**
+   * Ajout venu du plan (F08-AC44) : depuis « Chemins », l'adulte a posé des choix à la fin de la
+   * scène, ou en a retiré, pendant qu'on y écrivait. L'enregistrement a réussi ; la copie reprend
+   * ces choix là où la base les a mis, sans message et sans déplacer le curseur. Ils n'entrent
+   * pas dans ce qu'« Annuler » défait : l'historique repart d'ici, pour qu'un retour en arrière
+   * ne rejoue pas d'anciens gestes sur un texte qui a changé sous eux.
+   */
+  useEffect(() => {
+    duPlanRecu.current = (duPlan) => {
+      const connues = new Set(livre.scenes.map((x) => x.id));
+      duPlan.scenes?.filter((x) => !connues.has(x.id)).forEach(connaitre);
+      reprendreDuPlan(e, () =>
+        e.tf.withoutSaving(() =>
+          e.tf.withoutNormalizing(() => {
+            for (const id of duPlan.retire) {
+              const i = indexDe(id);
+              if (i !== -1) e.tf.removeNodes({ at: [i] });
+            }
+            const presents = blocsDe(e);
+            const neufs = duPlan.ajoute.filter((b) => !presents.some((x) => x.id === b.id));
+            const ou = placeALaFin(presents);
+            neufs.forEach((b, n) => e.tf.insertNodes(b, { at: [ou + n] }));
+          }),
+        ),
+      );
+      if (editor.history) {
+        editor.history.undos = [];
+        editor.history.redos = [];
+      }
+    };
+  });
 
   // ——— Créer un choix (F05-AC13 à AC18) ———
   const ouvrirCreation = (apres?: string) => {
@@ -459,10 +498,7 @@ export function Copie({
       cible: idee.destination.sorte === "existante" ? idee.destination.sceneId : creees.find((c) => c.idee === idee.id)!.scene.id,
     }));
     // Après le dernier bloc qui n'est pas une ligne vide : une scène vide garde sa ligne où écrire, au-dessus
-    const presents = blocsDe(e);
-    let k = presents.length - 1;
-    while (k >= 0 && presents[k].type === "p" && lettresDe(presents[k]) === "") k -= 1;
-    const ou = k >= 0 ? k + 1 : Math.min(1, presents.length);
+    const ou = placeALaFin(blocsDe(e));
     e.tf.withoutNormalizing(() => blocs.forEach((b, n) => e.tf.insertNodes(b, { at: [ou + n] })));
     creees.forEach((c) => connaitre(c.scene));
     if (numeros) apprendre({ numeros });

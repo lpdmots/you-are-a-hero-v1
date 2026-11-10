@@ -392,11 +392,56 @@ export function memeTexte(a: unknown, b: unknown): boolean {
   return false;
 }
 
+// ——— Ajout venu du plan (F08.1, F08-AC44) ———
+
+/**
+ * Une ligne où écrire : un paragraphe de récit vide, que l'enseignant n'a pas protégé. La base
+ * tient la même règle (prive.ligne_vide).
+ */
+export const estLigneVide = (bloc: Bloc): boolean => bloc.type === "p" && bloc.protege !== true && lettresDe(bloc) === "";
+
+/**
+ * Où poser des blocs à la fin d'un récit : après le dernier bloc qui n'est pas une ligne vide.
+ * Un récit sans rien d'écrit garde sa première ligne au-dessus. La base pose au même endroit
+ * les choix venus du plan (prive.poser_a_la_fin) : la copie ouverte et la scène enregistrée
+ * restent le même texte.
+ */
+export function placeALaFin(recit: readonly Bloc[]): number {
+  let k = recit.length - 1;
+  while (k >= 0 && estLigneVide(recit[k])) k -= 1;
+  return k >= 0 ? k + 1 : Math.min(1, recit.length);
+}
+
+/** Une scène que le plan vient de relier : de quoi la nommer dans la copie ouverte. */
+export type SceneDuPlan = { id: string; reference: number; titre: string | null; chapitreId: string };
+
+/**
+ * Ce que le plan a fait du texte d'une scène à l'insu de la page qui l'écrit : des phrases de
+ * choix posées à sa fin, d'autres retirées. La page les reprend dans sa copie, sans message.
+ */
+export type DuPlan = { ajoute: Choix[]; retire: string[]; scenes?: SceneDuPlan[] };
+
+/** Une retouche du plan, telle que la base la note : la version que la scène a prise, les blocs ajoutés et retirés. */
+export type Retouche = { version: number; ajoute: string[]; retire: string[] };
+
+/**
+ * Avant de contrôler ce qu'un élève a changé : les retouches du plan que sa page n'a pas vues
+ * sont mises hors de la comparaison. Un choix venu du plan n'est pas un bloc préparé qu'il
+ * aurait supprimé, et un choix que le plan a retiré n'est pas un bloc qu'il aurait ajouté.
+ */
+export function horsRetouches(avant: Texte, apres: Texte, retouches: readonly Retouche[], version: number): { avant: Texte; apres: Texte } {
+  const depuis = retouches.filter((r) => r.version > version);
+  if (depuis.length === 0) return { avant, apres };
+  const ajoutes = new Set(depuis.flatMap((r) => r.ajoute));
+  const retires = new Set(depuis.flatMap((r) => r.retire));
+  return { avant: avant.filter((b) => !ajoutes.has(b.id)), apres: apres.filter((b) => !retires.has(b.id)) };
+}
+
 /** Ce que rend un enregistrement (F08.1, F08.2). */
 export type Motif = "conflit" | "scene" | "supprimee" | "acces" | "arrete" | "controle";
 export type Enregistrement =
-  /** Le texte est celui de la scène */
-  | { etat: "enregistre"; version: number; dernier?: boolean }
+  /** Le texte est celui de la scène ; `duPlan` : ce que le plan y a retouché à l'insu de la page (F08-AC44) */
+  | { etat: "enregistre"; version: number; dernier?: boolean; duPlan?: DuPlan }
   /** Refusé : ce qui n'était pas enregistré est gardé à part sur la scène */
   | { etat: "garde"; motif: Motif; version?: number; dernier?: boolean }
   /** Refusé sans rien à garder : la page n'a plus le droit d'écrire ici */

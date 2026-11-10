@@ -6324,8 +6324,8 @@ second échange, prise en charge pendant l'arrêt :**
   lui est pas proposé.
 
 <a id="f08-ajout-du-plan"></a>**Ajout venu du plan (décidé par le porteur le
-10 novembre 2026, sur recommandation ; mécanisme à vérifier en
-construisant) :** un choix ajouté à une scène depuis « Chemins », à la main
+10 novembre 2026, sur recommandation ; mécanisme vérifié le même jour en
+construisant le lot 1, sans repli) :** un choix ajouté à une scène depuis « Chemins », à la main
 ([F03.1](#f03-construire)) ou par un bloc de scènes
 ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)), se pose à la fin du texte
 enregistré, sans que la scène soit ouverte. Si quelqu'un l'écrit au même
@@ -6340,12 +6340,21 @@ changement d'état de la scène.
   la scène ; l'enregistrement suivant de celui qui l'écrit serait refusé
   comme un conflit et son texte gardé à part. Rien ne fait entrer dans une
   copie ouverte ce qui a été ajouté ailleurs.
-- **Ce qu'il faut donc construire :** le serveur reconnaît un ajout venu du
-  plan et le recolle au texte qu'il reçoit ensuite, au lieu de refuser ce
-  texte. Jugé faisable, non vérifié.
-- **Repli, seulement après l'avoir dit au porteur :** refuser l'ajout tant
-  que la scène s'écrit (« Alice écrit cette scène »). Il bloque l'enseignant
-  en pleine séance, au moment où un élève demande la suite.
+- **Ce qui est construit (10 novembre 2026) :** le serveur reconnaît un
+  ajout venu du plan et le recolle au texte qu'il reçoit ensuite, au lieu de
+  refuser ce texte ([architecture](architecture.md#construire-dans--chemins--10-novembre-2026)).
+  Tout autre changement survenu entre-temps reste un conflit, comme avant.
+- **Précisions prises en construisant, à faire confirmer au porteur**
+  ([plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026)) :
+  un choix retiré depuis « Chemins » est repris de la même façon ; les choix
+  se posent après la dernière ligne écrite, avant les liens cachés ; l'adulte
+  qui a la scène ouverte ailleurs est traité comme l'élève ; « Remettre à… »
+  juste après un ajout remet le texte avec ces choix ; « Annuler » dans la
+  copie ne remonte plus avant l'arrivée des choix ; une page où l'on ne tape
+  rien ne les montre qu'une fois rouverte.
+- **Repli écarté, le mécanisme tenant :** refuser l'ajout tant que la scène
+  s'écrit (« Alice écrit cette scène »). Il aurait bloqué l'enseignant en
+  pleine séance, au moment où un élève demande la suite.
 
 - **F08-AC44 — Ajout pendant qu'un élève écrit :** étant donné Alice
   écrivant dans « L'orée de la forêt », lorsque Mme Laurent y ajoute trois
