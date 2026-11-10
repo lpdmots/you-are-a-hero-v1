@@ -320,7 +320,13 @@ export function Copie({
   const indexDe = (id: string): number => blocsDe(e).findIndex((b) => b.id === id);
   // Une fiche qui s'ouvre prend le curseur. L'éditeur doit le lâcher pour de bon : sinon il
   // se croit encore actif et le reprend en reposant sa sélection, et la frappe part dans le texte
-  const lacherLeTexte = () => e.tf.blur();
+  // Il lâche aussi le curseur du navigateur. Resté dans le texte, celui-ci retombe au début de
+  // la ligne quand elle se redessine (après « /objet » retiré, par exemple) ; l'éditeur le suivrait,
+  // et ce qu'on insère ensuite partirait en tête de ligne. Sa propre sélection, elle, reste où elle est
+  const lacherLeTexte = () => {
+    e.tf.blur();
+    window.getSelection()?.removeAllRanges();
+  };
   // Une fois l'écran redessiné, l'éditeur sait de nouveau où poser le curseur
   useEffect(() => {
     A_REDESSINER.delete(e);
