@@ -3255,7 +3255,12 @@ porteur, que ce plan ne donne pas. Décidé le 8 octobre 2026, et fait le 9 :
     une sauvegarde à chaque déclenchement, GitHub ayant lancé la tâche de la
     nuit avec trois heures et demie de retard, F14-AC30 révisé avec son
     accord) ; sauvegardes des 21 et 22 octobre déposées. Marque envoyée à la
-    vérification de Google le 22 octobre, domaine validé dans Search Console.
+    vérification de Google le 22 octobre, domaine validé dans Search Console ;
+    refusée (domaine « pas à votre nom » : le compte de la Search Console
+    n'était pas propriétaire du projet Cloud), l'application restée en état
+    « Test » (connexion Google réservée aux utilisateurs de test). Repris le
+    9 novembre 2026 : application publiée, les deux comptes du porteur
+    propriétaires du projet Cloud ; **marque validée le 10 novembre 2026**.
   - **En ligne, « Paiement ouvert » éteint :** comptes créés par Google et par
     adresse (courriel reçu chez La Poste) ; 30 ✦ usées jusqu'au message ;
     100 ✦ offertes depuis l'administration ; PDF, partage, mention menant à
@@ -3430,8 +3435,9 @@ et un entretien court quand une règle change. Sa classe de cette année est un
 CE2-CM1-CM2.
 
 En continu, avant le reste : ses retours d'usage sur le vrai livre de sa
-classe, en retouches ; les constats de l'étape 9 (écran de Google, une nuit de
-sauvegarde partie seule, messagerie académique) ; le LCP mobile jugé sur les
+classe, en retouches ; les constats de l'étape 9 (une nuit de sauvegarde partie seule,
+messagerie académique ; l'écran de Google, marque validée le 10 novembre
+2026) ; le LCP mobile jugé sur les
 mesures réelles de Speed Insights. V2 et V3 sont levées le 25 octobre 2026 :
 avec les deux livres d'essai chargés dans la vraie base, il obtient le PDF
 définitif chez Vercel, et l'aperçu se met à jour dans un temps correct ; reste
