@@ -4456,7 +4456,9 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   porte la révision de l'ergonomie du 10 novembre (Parties et chapitres,
   page de scène, page du chapitre). Restent à relire : l'aide de « Parties
   et chapitres », le guide et la vidéo de visite, qui présentent encore
-  « Chemins » comme une vue en lecture seule.
+  « Chemins » comme une vue en lecture seule. Poussé ensuite, à sa demande,
+  le même soir : le même bandeau bas dans « Scènes » et « Chemins », pour que
+  les onglets ne bougent plus (en ligne jusqu'à `f4fb4c8`, sans migration).
 
 ## Hors de la première livraison
 
