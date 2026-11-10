@@ -4361,15 +4361,20 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     informée, 23/40 pour la lecture indépendante, aucun point bloquant ;
     corrigés aussitôt, sans nouvelle mesure. Captures :
     `npx playwright test --config playwright.local.config.ts construire-chemins`.
-  - *Question de règle posée par la construction, à lui soumettre :* une
-    scène qui n'a que des choix n'est pas « Texte vide » (F07.1). Bâtie
-    depuis le schéma, elle porte donc « En cours » sans que personne y ait
-    écrit, sort du filtre « Texte vide » du Suivi, et sa suppression demande
-    confirmation. Les deux lectures l'ont relevé. Recommandé : compter comme
-    sans texte une scène sans récit, choix compris, comme « ✦ Écrire »
-    depuis le 18 octobre (F13.6) ; cela touche F07.1 (remise d'un texte
-    vide), le tampon et la suppression, et demande son accord avant d'être
-    codé.
+  - *Règle révisée le 10 novembre 2026, sur son accord (« Oui, corrige ») :*
+    une phrase de choix n'est plus du texte de la scène. Une scène qui n'a
+    que des choix reste « Texte vide », ne se remet pas, compte parmi les
+    textes vides du Suivi et des fiches, et se supprime sans confirmation
+    depuis le schéma ([F06.5](specifications.md#f06-texte-vide), F06-AC105).
+    Les deux lectures l'avaient relevé. Construit le même jour : migration
+    `texte_vide_sans_les_choix`, base locale seulement (elle recalcule les
+    scènes déjà en base), `estVide` dans le domaine. Précisions prises, à lui
+    faire confirmer : cela vaut pour toute phrase de choix, automatique ou
+    réécrite à la main ; une action de jeu et une image comptent toujours ;
+    là où un texte est gardé pour ne rien perdre (version précédente,
+    « Ancien texte » d'un échange, texte montré en lecture), « vide » reste
+    strict, et la scène qui n'a que des choix y garde ses choix. Tests :
+    `tests/base/textes.test.ts`, `tests/unitaires/copie.test.ts` (F06-AC105).
   - *Précisions prises en construisant, à lui faire confirmer :*
     1. un seul « + », deux gestes : cliqué, il ajoute ; tiré, il relie. Il se
        montre sous la carte survolée ou cliquée, et reste sous une scène
@@ -4391,9 +4396,9 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     7. une phrase de choix écrite à la main qui mène à plusieurs scènes, et
        un lien caché, ne se suppriment pas d'ici ;
     8. depuis le schéma, une scène sans texte se supprime sans confirmation
-       même si un choix y mène (F03-AC56) ; ce choix reste, marqué « Scène
-       supprimée » ; depuis la vue « Scènes », la confirmation d'avant
-       demeure ;
+       même si un choix y mène ou en part (F03-AC56, F06-AC105) ; le choix qui
+       y menait reste, marqué « Scène supprimée » ; depuis la vue « Scènes »,
+       la confirmation d'avant demeure quand un choix y mène ;
     9. un choix ne se tire que vers une autre scène : celui qui ramène à sa
        propre scène se fait dans la copie ;
     10. après « Tout voir », les « + » ne s'offrent plus (les cartes ne se
@@ -4421,6 +4426,11 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
       les deux lectures jugent les titres petits à la taille lisible.
     - **Non montré aux lectures :** l'échec d'un geste, la tournée « À
       regarder » le panneau ouvert.
+    - **Parcours non relancés.** Aucun parcours Playwright n'a été joué
+      depuis ces lots, à sa demande. Ceux de « Chemins »
+      (`tests/parcours/chemins.spec.ts`) datent de la vue en lecture seule :
+      une attente y est accordée à la main (« Texte vide » pour une scène à
+      choix), d'autres peuvent demander une retouche quand il les fera jouer.
 
 ## Hors de la première livraison
 

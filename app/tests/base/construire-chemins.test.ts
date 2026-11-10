@@ -169,11 +169,11 @@ describe("Construire dans « Chemins » (F03.1)", () => {
     expect((await chemins(r)).liens.map((l) => l.id)).toContain(lien.choix[0].id);
     // Un choix qui n'y est plus se dit en une phrase
     expect(await retirerChoix(e, ruisseau.scenes[0].id, randomUUID())).toMatchObject({ ok: false, dit: "Ce choix n’est plus dans la scène." });
-    // Tant qu'elle porte un choix, la scène n'est pas « sans texte » (F07.1, inchangé) : sa suppression se confirme
-    expect(fautConfirmer(travailDans(await planDe(e, r.projet), "scene", ruisseau.scenes[0].id), true)).toBe(true);
-    expect((await retirerChoix(e, ruisseau.scenes[0].id, lien.choix[0].id)).ok).toBe(true);
+    // « Le ruisseau » porte de nouveau son choix « Traverser », et rien d'autre : elle reste « Texte vide »
+    // (F06-AC105), une phrase de choix n'étant pas du texte de la scène
+    expect((await scene(ruisseau.scenes[0].id)).texte_vide).toBe(true);
 
-    // La scène : sans texte, pas de confirmation depuis le schéma, même si un choix y mène ; écrite, la confirmation
+    // La scène : sans texte, pas de confirmation depuis le schéma, même si un choix y mène ou en part ; écrite, la confirmation
     const plan = await planDe(e, r.projet);
     const duRuisseau = travailDans(plan, "scene", ruisseau.scenes[0].id);
     expect(duRuisseau.menentIci.map((s) => s.id)).toEqual([r.clairiere.id]);

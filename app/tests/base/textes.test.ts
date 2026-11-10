@@ -610,13 +610,60 @@ describe("Qui lit, qui écrit (F06.1, F06.2, F04.1)", () => {
     expect((await laurent.base.from("copies_recuperation").insert({ scene_id: scene, projet_id: r.projet, enseignant_id: laurent.id, sorte: "refus", texte: [] })).error).not.toBeNull();
   });
 
-  it("« Texte vide » : ni mot ni image ; une note de l'enseignant ne compte pas, une phrase de choix compte", async () => {
+  it("F06-AC105 — une scène qui n'a que des choix : « Texte vide », elle ne se remet pas ; un échange garde ses choix dans « Ancien texte », et le premier texte écrit en garde une version précédente", async () => {
+    const r = await recit();
+    const [scene, cible] = [r.s[0].id, r.s[1].id];
+    const choix = { type: "choix", id: randomUUID(), auto: true, libelle: "Suivre le ruisseau", construction: "neutre", cible, children: [{ text: "" }] };
+    expect(await ecrireAdulte(laurent, scene, 0, [...texte(""), choix])).toMatchObject({ etat: "enregistre", version: 1 });
+    expect((await sceneEnBase(scene)).texte_vide).toBe(true);
+    // Le chemin existe : le choix se lit dans « Chemins », la scène n'en est pas moins sans texte
+    expect(await sql("select cible_id from liens where scene_id = $1", [scene])).toEqual([{ cible_id: cible }]);
+    // Alice ne peut pas la remettre : il faut d'abord écrire (F07-AC67)
+    const pa = await posteDe(classe.id, alice.inscriptionId);
+    expect((await (await pa.base()).rpc("eleve_remettre", { p_scene: scene, p_version: 1 })).data).toMatchObject({ fait: false, motif: "vide" });
+    expect((await lireScene(pa, scene))!.vide).toBe(true);
+
+    // Bilal écrit depuis une version ancienne : son texte est gardé à part. Mis dans la scène, il
+    // remplace les choix, qui ne disparaissent pas : ils sont dans « Ancien texte de la scène »
+    const pb = await posteDe(classe.id, bilal.inscriptionId);
+    const eb = (await ouvrir(pb, scene))!;
+    expect(await ecrireEleve(pb, eb, 0, texte("Bilal écrit sans les choix."))).toMatchObject({ etat: "garde", motif: "conflit" });
+    const [gardee] = await copies(scene);
+    const echange = await laurent.base.rpc("mettre_copie_dans_scene", { p_copie: gardee.id });
+    expect(echange.error).toBeNull();
+    expect((echange.data as { ancien: string | null }).ancien).toBe(gardee.id);
+    const [ancien] = await copies(scene);
+    expect(ancien).toMatchObject({ sorte: "ancien" });
+    expect((ancien.texte as unknown as { type: string }[]).map((b) => b.type)).toEqual(["p", "choix"]);
+    expect((await sceneEnBase(scene)).texte_vide).toBe(false);
+
+    // Une autre scène qui n'a que des choix : le premier texte qu'on y écrit en garde une version précédente
+    const autre = r.s[1].id;
+    const suite = { type: "choix", id: randomUUID(), auto: true, libelle: "Revenir", construction: "neutre", cible: scene, children: [{ text: "" }] };
+    await ecrireAdulte(laurent, autre, 0, [...texte(""), suite]);
+    await ecrireAdulte(laurent, autre, 1, texte("Un texte qui remplace tout."));
+    const versions = await sql<{ texte: { type: string }[] }>("select texte from versions_precedentes where scene_id = $1", [autre]);
+    expect(versions.map((v) => v.texte.map((b) => b.type))).toEqual([["p", "choix"]]);
+  });
+
+  it("F06-AC105 — « Texte vide » : ni mot de récit ni image ; une note de l'enseignant ne compte pas, une phrase de choix non plus (10 novembre 2026)", async () => {
     const vide = async (t: unknown): Promise<boolean> => (await sql<{ v: boolean }>("select prive.texte_est_vide($1::jsonb) as v", [JSON.stringify(t)]))[0].v;
+    const rien = async (t: unknown): Promise<boolean> => (await sql<{ v: boolean }>("select prive.texte_sans_rien($1::jsonb) as v", [JSON.stringify(t)]))[0].v;
     expect(await vide([])).toBe(true);
     expect(await vide(texte("", "   "))).toBe(true);
     expect(await vide(texte("", "a"))).toBe(false);
     expect(await vide([{ type: "note", id: randomUUID(), children: [{ text: "Penser à l’image." }] }])).toBe(true);
-    expect(await vide([{ type: "choix", id: randomUUID(), children: [{ text: "" }] }])).toBe(false);
+    // Une phrase de choix, automatique ou réécrite à la main, n'est pas du texte de la scène…
+    const automatique = { type: "choix", id: randomUUID(), auto: true, libelle: "Suivre le ruisseau", children: [{ text: "" }] };
+    const ecrite = { type: "choix", id: randomUUID(), libelle: "Fuir", children: [{ text: "Pour fuir, cours au " }, { type: "renvoi", id: randomUUID(), children: [{ text: "" }] }, { text: "." }] };
+    expect(await vide([automatique])).toBe(true);
+    expect(await vide([...texte(""), automatique, ecrite])).toBe(true);
+    expect(await vide([...texte("Lou hésite."), automatique])).toBe(false);
+    // … mais ce n'est pas rien : ce qui garde un texte la garde
+    expect(await rien([automatique])).toBe(false);
+    expect(await rien([ecrite])).toBe(false);
+    expect(await rien(texte("", "   "))).toBe(true);
+    expect(await vide([{ type: "action", id: randomUUID(), children: [{ text: "" }] }])).toBe(false);
     expect(await vide([{ type: "image", id: randomUUID(), children: [{ text: "" }] }])).toBe(false);
     expect(await vide([{ type: "p", id: randomUUID(), children: [{ text: "" }, { type: "image-ligne", children: [{ text: "" }] }, { text: "" }] }])).toBe(false);
     expect(await vide([{ type: "note", id: randomUUID(), children: [{ text: "" }, { type: "image-ligne", children: [{ text: "" }] }, { text: "" }] }])).toBe(true);

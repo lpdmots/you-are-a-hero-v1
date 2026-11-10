@@ -112,7 +112,8 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     await expect(page.locator(".chemins .fiche__ref")).toHaveCount(0);
     await expect(page.locator(".chemins")).not.toContainText(/S00\d/);
     await expect(carte(page, "Le sentier")).toContainText("Départ du livre");
-    await expect(carte(page, "Le sentier")).toContainText("En cours");
+    // « Le sentier » n'a que ses choix : une phrase de choix n'est pas du texte de la scène (F06-AC105)
+    await expect(carte(page, "Le sentier")).toContainText("Texte vide");
     await expect(carte(page, "Le pont")).toContainText("Fin de l’histoire");
     await expect(carte(page, "Le pont")).toContainText("Texte vide");
     // Un trait par choix, son libellé sur la flèche ; le choix sans destination et le choix vers « Le marais » ont leur étiquette

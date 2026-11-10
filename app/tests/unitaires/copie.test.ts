@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
 import {
-  controlerTexte, enMots, estVide, horsRetouches, lireCollage, lireTexteSimple, memeTexte, nettoyerTexte, placeALaFin, BLOCS_MAX, LETTRES_MAX,
+  controlerTexte, enMots, estVide, horsRetouches, lireCollage, lireTexteSimple, memeTexte, nettoyerTexte, placeALaFin, sansRien, BLOCS_MAX, LETTRES_MAX,
   type Bloc, type Droits, type Lettres, type Texte,
 } from "@/domaine/copie";
 import { heureEnMots, jourEnMots } from "@/domaine/dates";
@@ -205,6 +205,28 @@ describe("Ce qu'une suppression emporterait (F03.1)", () => {
   it("un chapitre ou une scène sans texte n'emporte aucun travail : il se supprime sans confirmation", () => {
     expect(travailDans(plan, "chapitre", "c2").ecrites).toBe(0);
     expect(travailDans(plan, "scene", "s3").ecrites).toBe(0);
+  });
+});
+
+describe("« Texte vide » sans les choix (F06.5, F07.1)", () => {
+  const p = (id: string, texte: string): Bloc => ({ type: "p", id, children: [{ text: texte }] });
+  const choixAuto: Bloc = { type: "choix", id: "c1", auto: true, libelle: "Suivre le ruisseau", construction: "neutre", cible: null, children: [{ text: "" }] };
+  const choixEcrit: Bloc = { type: "choix", id: "c2", libelle: "Fuir", children: [{ text: "Pour fuir, cours au " }, { type: "renvoi", id: "r1", cible: null, children: [{ text: "" }] }, { text: "." }] };
+
+  it("F06-AC105 — une scène qui n'a que des choix reste « Texte vide », qu'ils soient automatiques ou réécrits à la main ; dès qu'un mot de récit y est écrit, elle ne l'est plus", () => {
+    expect(estVide([p("a", ""), choixAuto])).toBe(true);
+    expect(estVide([choixAuto, choixEcrit])).toBe(true);
+    expect(estVide([p("a", "Lou hésite."), choixAuto])).toBe(false);
+    // Une action de jeu et une image comptent toujours
+    expect(estVide([{ type: "action", id: "j", children: [{ text: "Note la clé." }] }, choixAuto])).toBe(false);
+    expect(estVide([{ type: "image", id: "i", image: "x", largeur: 65, children: [{ text: "" }] }, choixAuto])).toBe(false);
+  });
+
+  it("F06-AC105 — un texte qui n'a que des choix n'est pas rien : il se lit avec ses choix, et se garde quand un autre le remplace", () => {
+    expect(sansRien([p("a", ""), choixAuto])).toBe(false);
+    expect(sansRien([choixEcrit])).toBe(false);
+    expect(sansRien([p("a", ""), { type: "note", id: "n", children: [{ text: "Penser au loup." }] }])).toBe(true);
+    expect(sansRien([])).toBe(true);
   });
 });
 

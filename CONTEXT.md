@@ -392,7 +392,9 @@ _Éviter_ : travail élève terminé, scène entièrement prête, livre déjà p
 Repère d'avancement d'une scène — « En cours », « À reprendre », « À valider »,
 « Validé » ou « Prête » —, que l'enseignant peut choisir librement ; une scène
 sans élève n'a que « En cours », « Validé » et « Prête ». « Texte vide » n'est
-qu'un affichage du Suivi.
+qu'un affichage : celui d'une scène « En cours » qui n'a ni mot de récit, ni
+action de jeu, ni image. Une note de l'enseignant, un lien caché et, depuis
+le 10 novembre 2026, une phrase de choix n'y comptent pas.
 _Éviter_ : statut du livre, étape imposée dans un ordre fixe.
 
 **Validation du travail élève** :

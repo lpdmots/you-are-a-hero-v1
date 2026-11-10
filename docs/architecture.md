@@ -1940,6 +1940,30 @@ contre 158), l'arrangement obtenu n'étant pas celui d'où l'on partait. Un
 placement de la seule nouvelle carte, sans redisposer, est écarté aussi : le
 schéma changerait de forme au rechargement.
 
+### « Texte vide » sans les choix (F06-AC105)
+
+Décidé le 10 novembre 2026 ([F06.5](specifications.md#f06-texte-vide)) :
+une phrase de choix n'est plus du texte de la scène. Migration
+`texte_vide_sans_les_choix`.
+
+- `prive.texte_est_vide`, dont dépend la colonne calculée `scenes.texte_vide`,
+  ne compte plus les phrases de choix ; `estVide` (`src/domaine/copie.ts`)
+  tient la même règle. Tout ce qui lit « vide » suit sans autre changement :
+  tampon, Suivi, fiches, remise de l'élève, « contient du travail »,
+  confirmation de suppression, contrôles du Livre.
+- La colonne se calcule à l'écriture : la migration réécrit telles quelles
+  (`set texte = texte`) les scènes déjà en base qui n'ont que des choix, sans
+  toucher à leur version.
+- **Le sens strict est gardé là où un texte se garde ou se montre :**
+  `prive.texte_sans_rien` (l'ancienne définition) dans `prive.ecrire_texte`
+  et `prive.retoucher_texte` (version précédente), dans
+  `public.mettre_copie_dans_scene` et `public.mettre_version_dans_scene`
+  (l'ancien texte d'un échange) ; `sansRien` dans `TexteLu` (« Ce texte est
+  vide. ») et dans le message d'annulation de « ✦ Écrire ». Sans cela, des
+  choix posés depuis le plan auraient disparu sans trace dans un échange.
+- La lecture d'essai n'a rien demandé : un passage « vide » y montre déjà ses
+  choix sous « Cette scène n'a pas encore de texte. ».
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

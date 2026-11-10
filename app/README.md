@@ -1027,7 +1027,7 @@ captures -- couverture`.
 
 **4. En ligne, à la demande seulement, dans cet ordre.**
 1. `npm run sauvegarder` ;
-2. `npm run production:schema -- --oui`, qui applique les trois migrations à la vraie base
+2. `npm run production:schema -- --oui`, qui applique les quatre migrations à la vraie base
    (ne plus les modifier ensuite) ;
 3. le code, par le `git push` de `main` ;
 4. juste après, `npm run couvertures:accueil -- --production` (à blanc), puis
@@ -1040,9 +1040,9 @@ L'adulte construit le plan d'un chapitre à choix dans « Chemins » (`docs/plan
 « Construire dans « Chemins » et bloc de scènes »). L'essai se joue en local, sur
 http://localhost:4840, avec le compte local ; la vraie base n'est pas touchée.
 
-**1. La base locale à jour.** Les trois migrations, `ajout_du_plan`,
-`construire_dans_chemins` et `retouches_dans_l_ordre` : `npx tsx scripts/supabase.ts
-migration up --local` les applique sans rien effacer. `npm run chemins:essai -- --refaire` recharge « Le marais
+**1. La base locale à jour.** Les quatre migrations, `ajout_du_plan`,
+`construire_dans_chemins`, `retouches_dans_l_ordre` et `texte_vide_sans_les_choix` :
+`npx tsx scripts/supabase.ts migration up --local` les applique sans rien effacer. `npm run chemins:essai -- --refaire` recharge « Le marais
 des feux follets », trente-deux scènes, dans « Les passeurs de brume ».
 
 **2. Les gestes.** « Parties et chapitres », un chapitre, « Chemins », sur un écran large.
@@ -1057,8 +1057,9 @@ des feux follets », trente-deux scènes, dans « Les passeurs de brume ».
 | Tirer le « + » jusqu'à une autre carte | un trait en pointillé, la carte visée entourée ; lâché, la bulle ne demande que « Ce que fait le lecteur », le trait restant dessiné |
 | Cliquer une carte | le panneau à droite : titre, consigne (avec le micro), « Ses choix », « Supprimer la scène », « Ouvrir » ; « Enregistré » en tête après chaque changement |
 | La corbeille d'un choix, dans le panneau | le choix quitte le schéma et le texte de sa scène ; « Annuler » le remet |
-| « Supprimer la scène », sans texte | pas de confirmation, la corbeille du projet ; le choix qui y menait porte « Scène supprimée » |
-| « Supprimer la scène », écrite ou portant un choix | la confirmation habituelle |
+| Relier une scène sans texte (« + » dessous, ou un lien tiré) | elle garde « Texte vide » : un choix n'est pas du texte (F06-AC105) |
+| « Supprimer la scène », sans texte, même avec des choix | pas de confirmation, la corbeille du projet ; le choix qui y menait porte « Scène supprimée » |
+| « Supprimer la scène », écrite | la confirmation habituelle |
 | « Tout voir » | les « + » des cartes ne s'offrent plus ; « Taille lisible » les rend |
 
 **3. Quelqu'un écrit la scène (F08-AC44).** Dans un second onglet, ou sur un poste
@@ -1074,6 +1075,6 @@ copie, sans message ; rien n'est gardé à part.
 deux lots.
 
 **5. En ligne, à la demande seulement, dans cet ordre.** `npm run sauvegarder` ;
-`npm run production:schema -- --oui`, qui applique les trois migrations à la vraie base
+`npm run production:schema -- --oui`, qui applique les quatre migrations à la vraie base
 (ne plus les modifier ensuite) ; puis le code, par le `git push` de `main`. Les
 migrations passent avant le code : sans elles, « + » échoue.

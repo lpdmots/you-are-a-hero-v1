@@ -5,7 +5,7 @@ import { Fragment, type ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { Signes } from "@/composants/Signes";
 import {
-  estImageLigne, estReserve, estVide, morceauxDe, renvoisDe, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
+  estImageLigne, estReserve, morceauxDe, renvoisDe, sansRien, signeDe, type Action, type Choix, type ImageBloc, type ImageLigne, type Lettres, type Liaison,
   type Note, type Paragraphe as ParagrapheDeRecit, type Renvoi, type Texte,
 } from "@/domaine/copie";
 import { phraseDeChoix, type FormuleRenvoi } from "@/domaine/preparation";
@@ -549,7 +549,8 @@ export function TexteLu({
 }) {
   return (
     <div className={`copie__texte copie__texte--lu${className ? ` ${className}` : ""}`} aria-label={libelle} lang="fr">
-      {estVide(texte) ? (
+      {/* Un texte qui n'a que des choix se lit avec ses choix : « vide » s'entend ici de rien du tout */}
+      {sansRien(texte) ? (
         <p className="copie__vide">Ce texte est vide.</p>
       ) : (
         texte.map((bloc) =>

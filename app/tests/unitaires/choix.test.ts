@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  ciblesDe, controlerTexte, estReserve, estVide, morceauxDe, nettoyerTexte, phraseEnMots, renvoisDe, tirerConstruction, NUMERO_VIDE,
+  ciblesDe, controlerTexte, estReserve, estVide, sansRien, morceauxDe, nettoyerTexte, phraseEnMots, renvoisDe, tirerConstruction, NUMERO_VIDE,
   type Choix, type Droits, type Texte,
 } from "@/domaine/copie";
 import { groupesDeMelange, hasard, melangeInitial, numeroter, ouvertureDe, type PartieNumerotee, type PlanNumerote } from "@/domaine/numeros";
@@ -57,8 +57,10 @@ describe("Phrase de choix et renvoi (F05)", () => {
     const choix = auto(1, "Faire demi-tour", null);
     expect(phraseEnMots(choix, "rends", numero({}))).toBe(`Faire demi-tour : rends-toi au ${NUMERO_VIDE}.`);
     expect(renvoisDe(choix)).toEqual([{ id: choix.id, cible: null, libelle: "Faire demi-tour" }]);
-    // Un choix, même sans destination, n'est pas un texte vide
-    expect(estVide([choix])).toBe(false);
+    // Une phrase de choix n'est pas du texte de la scène (F06-AC105, 10 novembre 2026) : la scène reste
+    // « Texte vide » ; mais elle n'est pas rien, et se lit, se garde avec son choix
+    expect(estVide([choix])).toBe(true);
+    expect(sansRien([choix])).toBe(false);
   });
 
   it("F05-AC15, AC33 — le texte reçu : un renvoi n'existe que dans une phrase de choix ; une phrase sans renvoi redevient du récit ; un numéro tapé reste du texte", () => {

@@ -1605,8 +1605,11 @@ un exemple ; le lien de la bulle sans verbe ; la bulle du lien qui débordait ;
 la carte visée qui s'allumait tout entière ; « Ajouter un choix » absent après
 « Tout voir ».
 
-**Laissé en l'état,** et dit au porteur dans le plan : la scène qui n'a que
-des choix porte « En cours » (question de règle) ; le libellé et la
+**Réglé le même jour, sur l'accord du porteur :** la scène qui n'a que des
+choix reste « Texte vide » ([F06.5](specifications.md#f06-texte-vide)) ; les
+deux lectures la voyaient passer « En cours » sans une ligne de récit.
+
+**Laissé en l'état,** et dit au porteur dans le plan : le libellé et la
 destination d'un choix ne se modifient pas d'ici ; la confirmation de
 suppression nomme les scènes par leur seule référence (dialogue d'avant) ;
 le « + » et le « − » de la taille voisinent avec le « + » des cartes ; les

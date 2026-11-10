@@ -9,7 +9,7 @@ import { Menu } from "@/composants/Menu";
 import { useMessage } from "@/composants/Messages";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
 import { compterMots } from "@/domaine/correction";
-import { estVide } from "@/domaine/copie";
+import { sansRien } from "@/domaine/copie";
 import type { ReponseEcriture } from "@/serveur/aides-de-la-scene";
 import type { TexteDeScene } from "@/serveur/copie";
 import { annulerLEcriture, mettreLEcriture } from "../../../actions-correction";
@@ -98,7 +98,8 @@ export function useEcriture({
           const defait = await annulerLEcriture(sceneId, apres, fait.avant.length ? fait.avant : [{ type: "p", id: crypto.randomUUID(), children: [{ text: "" }] }], fait.eleveRetire);
           if (!defait.ok) return dire({ texte: defait.message });
           onRemplace(defait.scene);
-          dire({ texte: estVide(fait.avant) ? "La scène est de nouveau vide." : "Le texte écrit est retiré ; le reste de la scène est inchangé." });
+          // « Le reste » : les choix, les actions de jeu, les images que la scène portait déjà
+          dire({ texte: sansRien(fait.avant) ? "La scène est de nouveau vide." : "Le texte écrit est retiré ; le reste de la scène est inchangé." });
         })(),
     });
   };
