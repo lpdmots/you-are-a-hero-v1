@@ -1940,6 +1940,27 @@ contre 158), l'arrangement obtenu n'étant pas celui d'où l'on partait. Un
 placement de la seule nouvelle carte, sans redisposer, est écarté aussi : le
 schéma changerait de forme au rechargement.
 
+**ELK mesuré le 10 novembre 2026, et écarté** (demandé par le porteur, avant
+les blocs de scènes) : même chapitre, mêmes trente-deux ajouts, mêmes tailles
+de cartes et de libellés, ELK « layered » de haut en bas, hors de
+l'application. Il croise bien moins les traits (1 ou 2 croisements contre 14),
+mais il est bien moins stable :
+
+| Disposition | Grands réordonnancements | Cartes déplacées en tout |
+| --- | --- | --- |
+| dagre, l'actuelle | 6 sur 32 | 226 |
+| ELK, par défaut | 26 sur 32 | 670 |
+| ELK, ordre de lecture pris en compte | 31 sur 32 | 775 |
+| ELK, ordre de lecture imposé | 18 sur 32 | 448 (16 croisements) |
+| ELK, ordre de lecture et placement simplex | 22 sur 32 | 527 |
+
+Un grand réordonnancement : au moins un tiers des autres cartes bouge de plus
+de cent points, la carte d'origine tenue en place. dagre donne ici six cas au
+lieu de cinq, la mesure se faisant sans les bandes « À regarder ». ELK place
+chaque rang de façon plus globale : un ajout fait glisser des branches
+entières de côté. Ne pas le reproposer pour la stabilité ; il ne vaudrait que
+pour réduire les croisements, au prix de ce qui compte ici.
+
 ### « Texte vide » sans les choix (F06-AC105)
 
 Décidé le 10 novembre 2026 ([F06.5](specifications.md#f06-texte-vide)) :
