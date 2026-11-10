@@ -316,7 +316,7 @@ export function FicheNouvelObjet({ nom: propose, services, onCree, onFermer }: {
         }}
       >
         <label className="champ champ--plein">
-          <span>Nom, tel qu’il s’écrit dans une phrase</span>
+          <span>Nom avec son article</span>
           <input className="pchamp" type="text" maxLength={60} autoFocus value={nom} placeholder="la clé d’argent" onChange={(e) => setNom(e.target.value)} />
         </label>
         <label className="champ champ--plein">
