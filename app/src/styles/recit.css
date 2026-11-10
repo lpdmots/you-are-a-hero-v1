@@ -734,6 +734,12 @@
   z-index: 2;
   margin-left: -4px;
 }
+/* Un menu ouvert passe au-dessus du reste de sa carte et des cartes voisines : « qui s'en
+   occupe » et la carte suivante le recouvraient (révision de novembre 2026) */
+.fiche .menu[open],
+.fiche .menu--mots[open] {
+  z-index: 10;
+}
 .fiche__qui {
   display: inline-flex;
   align-items: center;

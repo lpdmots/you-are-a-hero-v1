@@ -6,7 +6,8 @@ import { arrayMove, rectSortingStrategy, SortableContext, useSortable } from "@d
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { Bulle } from "@/composants/Bulle";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
 import { Chemins } from "@/composants/Chemins";
 import { Dialogue } from "@/composants/Dialogue";
@@ -54,6 +55,15 @@ export function PageChapitre({
   const [attente, setAttente] = useState<string | null>(null);
   const [demande, setDemande] = useState("");
   const [montree, setMontree] = useState<string | null>(null);
+  // Une scène ajoutée vient sous les yeux dès que sa carte existe (révision de novembre 2026)
+  const aAmener = useRef<string | null>(null);
+  useEffect(() => {
+    if (!aAmener.current) return;
+    const carte = document.querySelector(".fiche.est-montree");
+    if (!carte) return;
+    carte.scrollIntoView({ behavior: "smooth", block: "center" });
+    aAmener.current = null;
+  });
   const [local, setLocal] = useState<{ base: Plan; scenes: Scene[] } | null>(null);
   const [tiree, setTiree] = useState<string | null>(null);
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setOuvert("depart") });
@@ -81,6 +91,7 @@ export function PageChapitre({
     if (!fait.ok) return dire({ texte: fait.erreur });
     setDemande("");
     setMontree(fait.id);
+    aAmener.current = fait.id;
     dire({ texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.` });
   };
 
@@ -187,6 +198,8 @@ export function PageChapitre({
           <h1>{chapitre.titre}</h1>
           <p className="chap-meta">
             {partie.titre} · {compteScenes(chapitre.scenes.length).toLocaleLowerCase("fr")}
+            {/* Où en est le chapitre, avec les mots de sa carte et du Suivi (révision de novembre 2026) */}
+            {etatsDuChapitre(chapitre.scenes).map((t) => ` · ${t}`)}
             {chapitre.horsLivre ? " · hors du livre" : ""}
           </p>
           {attribues.length ? (
@@ -258,13 +271,17 @@ export function PageChapitre({
                 </button>
               </div>
             ) : null}
-            <p>
-              {vue === "chemins"
-                ? "Les chemins viennent des choix écrits dans les scènes : rien ne se règle ici."
-                : projet.aChoix
-                  ? "L’ordre des cartes range le chapitre : ce sont les choix qui relient les scènes."
-                  : "Les scènes se lisent dans cet ordre."}
-            </p>
+            {/* L'ordre des cartes, dans un « i » : la phrase restait à l'écran à chaque visite (révision de novembre 2026) */}
+            {vue === "chemins" ? (
+              <p>Les chemins viennent des choix écrits dans les scènes : rien ne se règle ici.</p>
+            ) : projet.aChoix ? (
+              <Bulle question="Que change l’ordre des cartes ?">
+                L’ordre des cartes ne sert qu’à ranger le chapitre. Dans le livre, ce sont les choix écrits dans les scènes qui mènent d’une
+                scène à l’autre.
+              </Bulle>
+            ) : (
+              <p>Les scènes se lisent dans cet ordre.</p>
+            )}
             {vue === "scenes" && chapitre.scenes.length > 3 ? (
               <label className="recherche" style={{ marginLeft: "auto" }}>
                 <span className="vh">Rechercher une scène dans ce chapitre</span>
@@ -434,4 +451,16 @@ export function FicheScene({
       ) : null}
     </article>
   );
+}
+
+/** « 2 validées · 1 prête · 1 à valider · 1 à reprendre » : seulement ce qui existe. */
+function etatsDuChapitre(scenes: Scene[]): string[] {
+  const compte = (etat: string) => scenes.filter((s) => s.etat === etat).length;
+  const [validees, pretes, aValider, aReprendre] = [compte("valide"), compte("prete"), compte("valider"), compte("reprendre")];
+  return [
+    validees ? `${validees} validée${pluriel(validees)}` : null,
+    pretes ? `${pretes} prête${pluriel(pretes)}` : null,
+    aValider ? `${aValider} à valider` : null,
+    aReprendre ? `${aReprendre} à reprendre` : null,
+  ].filter((t): t is string => t !== null);
 }

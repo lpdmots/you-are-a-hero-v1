@@ -3137,6 +3137,29 @@ avant le texte.
 4 octobre) ; « lisible par les élèves du chapitre » en petit sous la remarque ; le ✦
 du titre sans mot, nommé au survol.
 
+#### Page du chapitre, vue « Scènes » (10 novembre 2026)
+
+La vue « Chemins » est hors de la révision : elle sera retravaillée. Captures contre le
+serveur local : `npx playwright test --config playwright.local.config.ts
+revision-chapitre` (16 vues : six scènes dans leurs états, un chapitre de trente-deux
+scènes, un chapitre vide, les menus, « Attribuer », la recherche, une scène ajoutée, le
+projet personnel, 390 px). **Notes : 26/40 (informée), 26/40 (indépendante).**
+
+**Corrigé :**
+
+- **Menu d'une scène ouvert au-dessus de sa carte et des voisines** (`z-index` du menu
+  ouvert) : « qui s'en occupe » et la carte suivante se lisaient à travers.
+- **« L'ordre des cartes range le chapitre… »,** phrase permanente de la ligne d'outils,
+  devient un « i » (« Que change l'ordre des cartes ? »). En projet personnel, « Les scènes
+  se lisent dans cet ordre. » reste écrite.
+- **Le bandeau dit où en est le chapitre :** « 6 scènes · 1 validée · 1 à valider · 1 à
+  reprendre », les mots de la carte du plan et du Suivi, seulement ce qui existe.
+- **Une scène ajoutée** vient au milieu de l'écran, encadrée ; le message ne la recouvre plus.
+
+**Laissé, décidé :** « sans consigne » et « Ouvrir » sur chaque carte ; « Moi » dans « qui
+s'en occupe » ; « Supprimer » en graphite ; en 390 px, « ⋯ » avant le bouton plein et le
+bandeau encore haut (l'image y est déjà réduite à 16:6).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
