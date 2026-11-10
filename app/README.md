@@ -1027,7 +1027,7 @@ captures -- couverture`.
 
 **4. En ligne, à la demande seulement, dans cet ordre.**
 1. `npm run sauvegarder` ;
-2. `npm run production:schema -- --oui`, qui applique les deux migrations à la vraie base
+2. `npm run production:schema -- --oui`, qui applique les trois migrations à la vraie base
    (ne plus les modifier ensuite) ;
 3. le code, par le `git push` de `main` ;
 4. juste après, `npm run couvertures:accueil -- --production` (à blanc), puis
@@ -1040,9 +1040,9 @@ L'adulte construit le plan d'un chapitre à choix dans « Chemins » (`docs/plan
 « Construire dans « Chemins » et bloc de scènes »). L'essai se joue en local, sur
 http://localhost:4840, avec le compte local ; la vraie base n'est pas touchée.
 
-**1. La base locale à jour.** Les deux migrations, `ajout_du_plan` et
-`construire_dans_chemins` : `npx tsx scripts/supabase.ts migration up --local` les
-applique sans rien effacer. `npm run chemins:essai -- --refaire` recharge « Le marais
+**1. La base locale à jour.** Les trois migrations, `ajout_du_plan`,
+`construire_dans_chemins` et `retouches_dans_l_ordre` : `npx tsx scripts/supabase.ts
+migration up --local` les applique sans rien effacer. `npm run chemins:essai -- --refaire` recharge « Le marais
 des feux follets », trente-deux scènes, dans « Les passeurs de brume ».
 
 **2. Les gestes.** « Parties et chapitres », un chapitre, « Chemins », sur un écran large.
@@ -1074,6 +1074,6 @@ copie, sans message ; rien n'est gardé à part.
 deux lots.
 
 **5. En ligne, à la demande seulement, dans cet ordre.** `npm run sauvegarder` ;
-`npm run production:schema -- --oui`, qui applique les deux migrations à la vraie base
+`npm run production:schema -- --oui`, qui applique les trois migrations à la vraie base
 (ne plus les modifier ensuite) ; puis le code, par le `git push` de `main`. Les
 migrations passent avant le code : sans elles, « + » échoue.

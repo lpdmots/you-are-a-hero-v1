@@ -1838,6 +1838,11 @@ la scène aurait été un conflit.
   texte est enregistré. Sinon c'est un conflit, et le texte gardé à part est
   celui que la page a envoyé, sans les choix du plan. La réponse porte
   `ajoute` et `retire`.
+- `prive.retouches_depuis` lit les retouches dans l'ordre où elles ont été
+  faites : pour chaque bloc, le dernier geste compte (migration
+  `retouches_dans_l_ordre`, correctif du même jour). Un choix supprimé puis
+  remis par « Annuler » — retiré, puis ajouté de nouveau sous la même
+  identité — reste ainsi dans la copie de celui qui écrit.
 - `prive.poser_a_la_fin` : après le dernier bloc qui n'est pas une ligne vide
   non protégée, avant les liaisons cachées ; `placeALaFin`
   (`src/domaine/copie.ts`) est la même règle pour la copie ouverte. Elle est

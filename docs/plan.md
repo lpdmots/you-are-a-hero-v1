@@ -4290,12 +4290,18 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     ouverte ; `public.retoucher_depuis_le_plan`, pour l'adulte, pose des
     choix à la fin d'une scène ou en retire sans l'ouvrir
     ([architecture](architecture.md#construire-dans--chemins--10-novembre-2026)).
-  - *Critère fermé :* F08-AC44 (`tests/base/ajout-du-plan.test.ts`, dix cas ;
+  - *Critère fermé :* F08-AC44 (`tests/base/ajout-du-plan.test.ts`, onze cas ;
     `tests/unitaires/copie.test.ts`, deux cas), dont dix ajouts et dix
     enregistrements partis ensemble sans un seul texte gardé à part. Vérifié
     aussi à la main dans le navigateur : un choix posé pendant que la scène
     est ouverte apparaît dans la copie à l'enregistrement suivant, nommé et
     numéroté, sans message.
+  - *Correctif du même jour, trouvé à une relecture du mécanisme* (migration
+    `retouches_dans_l_ordre`, base locale seulement) : un choix supprimé
+    depuis « Chemins » puis remis par « Annuler » sortait de la copie de
+    celui qui écrivait la scène ; les retouches se lisent désormais dans
+    l'ordre, le dernier geste comptant pour chaque choix. Un onzième cas de
+    test le tient.
   - *Trois écueils trouvés en lisant le code, et traités :* le contrôle des
     droits de l'élève, fait sur le serveur avant la base, aurait pris les
     choix du plan pour des blocs préparés supprimés ; « Remettre à… » refusait

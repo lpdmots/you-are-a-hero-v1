@@ -21,8 +21,8 @@ puis les gestes à la main (« + » sous une scène, lien tiré, panneau du titr
 et de la consigne, suppressions, l'écran qui ne bouge pas, F03-AC52 à AC57),
 écrans critiqués en deux lectures
 ([design](docs/design.md#construire-dans--chemins---écrans-construits-10-novembre-2026)) ;
-migrations `ajout_du_plan` et `construire_dans_chemins` en base locale
-seulement, rien poussé ; mode d'emploi dans [`app/README.md`](app/README.md),
+migrations `ajout_du_plan`, `construire_dans_chemins` et
+`retouches_dans_l_ordre` en base locale seulement, rien poussé ; mode d'emploi dans [`app/README.md`](app/README.md),
 « Essayer « Construire dans Chemins » ». Les lots 3 et 4 (le bloc de scènes)
 demandent son instruction.
 

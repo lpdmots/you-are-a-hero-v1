@@ -201,6 +201,45 @@ describe("Ajout venu du plan (F08.1)", () => {
     expect(mots((await enBase(scene)).texte)).toEqual(["Le début.", "Elle écrit toujours.", "→ Aller à gauche", "→ Rebrousser chemin"]);
   });
 
+  it("F08-AC44 — un choix supprimé depuis « Chemins » puis remis par « Annuler » : l'élève qui écrivait le garde dans sa copie, à sa place, et rien ne lui est demandé", async () => {
+    const r = await recit();
+    const scene = r.oree.id;
+    const poste = await posteDe(classe.id, alice.inscriptionId);
+    const ecriture = await ouvrir(poste, scene);
+    const debut = p("Le début.");
+    await ecrire(poste, ecriture, 0, [debut]);
+    const [a, b] = [choix("Aller à gauche", r.s[0].id), choix("Aller à droite", r.s[1].id)];
+    await duPlan(laurent, scene, { ajoute: [a, b] });
+    const recu = await ecrire(poste, ecriture, 1, [debut, p("Elle écrit.")]);
+    expect(recu).toMatchObject({ etat: "enregistre", version: 3 });
+    const copie: Texte = [debut, p("Elle écrit."), a, b];
+    // Mme Laurent supprime « Aller à gauche », puis se ravise : « Annuler » le remet
+    await duPlan(laurent, scene, { retire: [a.id] });
+    await duPlan(laurent, scene, { ajoute: [a] });
+    expect((await enBase(scene)).version).toBe(5);
+    // Alice n'a rien vu : sa copie porte toujours les deux choix, et elle continue d'écrire
+    copie[1] = p("Elle écrit encore.", copie[1].id);
+    const fait = await ecrire(poste, ecriture, 3, copie);
+    expect(fait).toMatchObject({ etat: "enregistre", version: 6 });
+    // Rien à poser ni à retirer dans sa copie : le choix y est déjà, la réponse ne lui remet rien
+    expect(fait.etat === "enregistre" && fait.duPlan).toBeUndefined();
+    expect(mots((await enBase(scene)).texte)).toEqual(["Le début.", "Elle écrit encore.", "→ Aller à gauche", "→ Aller à droite"]);
+    expect(await gardes(scene)).toBe(0);
+    expect((await liensDe(scene)).map((l) => l.cible_id)).toEqual([r.s[0].id, r.s[1].id]);
+
+    // L'inverse : un choix ajouté puis annulé avant qu'elle n'enregistre, puis ajouté pour de bon
+    const c = choix("Rebrousser chemin", r.s[2].id);
+    await duPlan(laurent, scene, { ajoute: [c] });
+    await duPlan(laurent, scene, { retire: [c.id] });
+    await duPlan(laurent, scene, { ajoute: [c] });
+    copie[1] = p("Elle écrit toujours.", copie[1].id);
+    const apres = await ecrire(poste, ecriture, 6, copie);
+    expect(apres).toMatchObject({ etat: "enregistre", version: 10 });
+    expect(apres.etat === "enregistre" && apres.duPlan?.ajoute.map((x) => x.id)).toEqual([c.id]);
+    expect(mots((await enBase(scene)).texte)).toEqual(["Le début.", "Elle écrit toujours.", "→ Aller à gauche", "→ Aller à droite", "→ Rebrousser chemin"]);
+    expect(await gardes(scene)).toBe(0);
+  });
+
   it("F08-AC44 — l'adulte qui a la scène ouverte ailleurs n'est pas arrêté non plus, et ses notes restent à leur place pour l'élève", async () => {
     const r = await recit();
     const scene = r.oree.id;
