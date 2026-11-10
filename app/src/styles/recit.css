@@ -1440,11 +1440,11 @@
   /* Après un geste, c'est le schéma qui ramène la carte à sa place : le navigateur ne s'en mêle pas (F03-AC54) */
   overflow-anchor: none;
 }
-.chemins__plan[data-panneau] {
-  min-height: 480px;
-}
 .chemins__cadre {
   position: relative;
+  /* Un petit chapitre ne donne pas un bandeau plat ; le panneau d'une scène y tient sans que le cadre grandisse */
+  --cadre-min: 480px;
+  min-height: var(--cadre-min);
   display: flex;
   align-items: flex-start;
   overflow-x: auto;
@@ -1454,11 +1454,10 @@
   border-block: 1px solid var(--trait);
   scroll-margin-top: calc(var(--sous-la-barre) + 54px);
 }
-.chemins__plan[data-panneau] .chemins__cadre {
-  min-height: 480px;
-}
 .chemins__cadre > .chemins__toile {
   flex: none;
+  /* Toute la hauteur du cadre : un clic dans le vide referme le panneau, et la mention de React Flow reste au coin bas */
+  min-height: calc(var(--cadre-min) - 2px);
 }
 .chemins__cadre > .chemins__attente {
   flex: 1;
