@@ -297,42 +297,7 @@ export function PanneauDeScene({
             onBlur={() => void e.partir()}
           />
         </div>
-        <div className="panneau-chemin__champ">
-          <label htmlFor={`${id}-consigne`}>
-            Consigne <span className="facultatif">facultative</span>
-          </label>
-          <ChampQuiGrandit
-            id={`${id}-consigne`}
-            className="pchamp"
-            rows={3}
-            value={consigne}
-            maxLength={4000}
-            onChange={(ev) => {
-              setConsigne(ev.target.value);
-              e.prevoir(() => construire.reglerScene(scene.id, { consigne: ev.target.value }), 700, "consigne");
-            }}
-            onBlur={() => void e.partir()}
-          />
-          {consigneIa.bouton}
-          {consigneIa.proposition}
-          {construire.deClasse ? (
-            <ListeAModifier
-              key={cleListe}
-              depart={verification}
-              cochees={scene.cochees ?? []}
-              onChange={(liste) => {
-                setVerification(liste);
-                e.prevoir(() => construire.reglerScene(scene.id, { verification: liste }), 700, "verification");
-              }}
-            />
-          ) : null}
-        </div>
-        {e.erreur ? (
-          <p className="erreur" role="alert">
-            {e.erreur}
-          </p>
-        ) : null}
-
+        {/* Les choix tout de suite sous le titre : dans « Chemins », ils sont le plan */}
         <section className="panneau-chemin__choix" aria-labelledby={`${id}-choix`}>
           <div className="panneau-chemin__rang">
             <h3 id={`${id}-choix`}>Ses choix</h3>
@@ -390,6 +355,41 @@ export function PanneauDeScene({
             <p className="panneau-chemin__aucun">{scene.fin ? "Fin de l’histoire : aucun choix n’en part." : "Aucun choix n’en part encore."}</p>
           )}
         </section>
+        <div className="panneau-chemin__champ">
+          <label htmlFor={`${id}-consigne`}>
+            Consigne <span className="facultatif">facultative</span>
+          </label>
+          <ChampQuiGrandit
+            id={`${id}-consigne`}
+            className="pchamp"
+            rows={3}
+            value={consigne}
+            maxLength={4000}
+            onChange={(ev) => {
+              setConsigne(ev.target.value);
+              e.prevoir(() => construire.reglerScene(scene.id, { consigne: ev.target.value }), 700, "consigne");
+            }}
+            onBlur={() => void e.partir()}
+          />
+          {consigneIa.bouton}
+          {consigneIa.proposition}
+          {construire.deClasse ? (
+            <ListeAModifier
+              key={cleListe}
+              depart={verification}
+              cochees={scene.cochees ?? []}
+              onChange={(liste) => {
+                setVerification(liste);
+                e.prevoir(() => construire.reglerScene(scene.id, { verification: liste }), 700, "verification");
+              }}
+            />
+          ) : null}
+        </div>
+        {e.erreur ? (
+          <p className="erreur" role="alert">
+            {e.erreur}
+          </p>
+        ) : null}
       </div>
 
       <footer className="panneau-chemin__pied">

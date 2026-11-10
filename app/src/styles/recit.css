@@ -1854,8 +1854,8 @@
 .panneau-chemin__choix {
   display: grid;
   gap: 8px;
-  padding-top: 14px;
-  border-top: 1px solid var(--trait);
+  padding-block: 14px;
+  border-block: 1px solid var(--trait);
 }
 .panneau-chemin__rang {
   display: flex;
