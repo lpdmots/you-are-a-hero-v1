@@ -43,6 +43,8 @@ describe("Plan du récit (F03)", () => {
     // Chaque manque mène à la première carte concernée
     expect(manques[0]).toMatchObject({ chapitreId: "racines" });
     expect(manques[1]).toMatchObject({ chapitreId: "racines" });
+    // Cliqué de nouveau, il mène à la suivante (révision de novembre 2026)
+    expect(manques[1]).toMatchObject({ chapitreIds: ["racines", "gue"] });
     // Rien ne manque : la phrase disparaît
     expect(aCompleter(plan([chapitre("a", "A", [scene(1)], ["alice"])], "s1"), { deClasse: true, aChoix: true, eleves: [eleve("alice")] })).toEqual([]);
   });

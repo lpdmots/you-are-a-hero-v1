@@ -139,10 +139,17 @@
   border: 1px solid var(--trait);
   border-radius: 12px;
 }
+.reste--vide {
+  display: none;
+}
 .reste__texte {
   display: grid;
   gap: 4px;
   min-width: 0;
+  /* Les totaux et « À compléter » partagent la rangée de la recherche et du bouton ; la phrase
+     passe à la ligne dans sa colonne plutôt que de pousser les commandes dessous (révision de
+     novembre 2026) */
+  flex: 1 1 24rem;
 }
 .reste__titre {
   font-size: var(--t-s);
@@ -168,6 +175,7 @@
   color: var(--graphite-3);
 }
 .reste__actions {
+  flex: none;
   margin-left: auto;
   display: flex;
   flex-wrap: wrap;
@@ -371,6 +379,25 @@
 .cahier__ligne--compte {
   color: var(--graphite);
   font-weight: 600;
+}
+/* « · 2 validées · 1 prête » après le nombre de scènes, comme l'en-tête d'un chapitre au Suivi */
+.cahier__jalon {
+  font-weight: 400;
+  color: var(--graphite-2);
+}
+/* Ce qui attend l'adulte : en mots, sans ambre (l'ambre reste au tampon « À valider ») */
+.cahier__ligne--attend {
+  color: var(--graphite);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+/* Les gommettes cèdent la place au nombre d'élèves, qui ne passe jamais dessous */
+.cahier__ligne .gommettes {
+  min-width: 0;
+  overflow: hidden;
+}
+.cahier__ligne {
+  white-space: nowrap;
 }
 .gommettes {
   display: flex;
@@ -781,6 +808,17 @@
 .trouve__titre {
   font-weight: 700;
   min-width: 0;
+}
+/* Sur téléphone, une scène trouvée de l'adulte tient en deux rangées : la référence et le titre,
+   puis l'état, qui s'en occupe et « Ouvrir » (révision de novembre 2026) */
+@media (max-width: 620px) {
+  .trouve--etat {
+    flex-wrap: wrap;
+    gap: 6px 10px;
+  }
+  .trouve--etat .trouve__titre {
+    flex: 1 1 calc(100% - 4.5rem);
+  }
 }
 .aucun {
   margin-top: 26px;

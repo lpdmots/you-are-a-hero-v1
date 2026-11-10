@@ -3071,6 +3071,38 @@ avancer (un pied collé au bas de l'écran n'est pas recommandé) ; le champ d'a
 d'une question qui s'ouvre au-dessus de son bouton ; « Autres personnages » qui
 passe à la ligne en 390 px.
 
+#### Parties et chapitres (10 novembre 2026)
+
+Captures contre le serveur local, sans recompiler :
+`npx playwright test --config playwright.local.config.ts revision-plan` (21 vues :
+quatre parties, onze chapitres dont un de trente-deux scènes, vingt-cinq élèves).
+**Notes : 27/40 (informée), 29/40 (indépendante).** Points faibles : la cohérence et
+la souplesse. Depuis cette page, aucun parcours n'est joué sans la demande du porteur
+(10 novembre 2026) : typage, lint, tests unitaires et l'écran.
+
+**Corrigé :**
+
+- **Deux décisions du 6 octobre jamais construites,** remises à l'étape 4 puis
+  oubliées : la carte dit « 6 scènes · 2 validées · 1 prête », puis, s'il y en a,
+  « 1 à valider · 1 à reprendre » (les mots du Suivi, sans ambre) ; « élèves sans
+  chapitre », dans « À compléter », mène à la vue Élèves du Suivi.
+- **« À compléter » :** un même manque cliqué de nouveau passe à la carte suivante,
+  puis revient à la première (deux chapitres sans élève, on ne trouvait que le
+  premier) ; le « · » finit la ligne au lieu de la commencer.
+- **En-tête sur une rangée à 1366 px :** totaux et « À compléter » à gauche, la
+  phrase passant à la ligne dans sa colonne, recherche et « Ajouter une partie » à
+  droite ; avant, les commandes passaient dessous.
+- **Plan vide :** ni « 0 partie · 0 chapitre · 0 scène », ni bande vide, ni second
+  bouton ; la feuille « Le plan est encore vide » porte le seul bouton, plein.
+- **390 px :** une scène trouvée tient en deux rangées (référence et titre, puis état,
+  qui s'en occupe et « Ouvrir ») ; le nombre d'élèves ne passe plus sous les gommettes.
+- **« Idées de parties » :** « facultatif » seul, sans « gardé avec Grandes étapes ».
+
+**Laissé, arrêté par le porteur :** la carte en pointillé « Ajouter un chapitre » et
+sa bande ✦ sans mot, qui prend une rangée quand la précédente est pleine ; les filets
+de couleur du chapitre ; « Supprimer » en graphite dans les menus, qui passe par la
+corbeille (la brique reste à ce qui efface pour de bon).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

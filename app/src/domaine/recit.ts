@@ -140,23 +140,24 @@ export const scenesDe = (plan: Plan): Scene[] => chapitresDe(plan).flatMap((c) =
 export const departDe = (plan: Plan): Scene | null => scenesDe(plan).find((s) => s.id === plan.departSceneId) ?? null;
 
 export type Manque =
-  | { sorte: "sans-scene"; nombre: number; chapitreId: string }
-  | { sorte: "sans-eleve"; nombre: number; chapitreId: string }
+  | { sorte: "sans-scene"; nombre: number; chapitreId: string; chapitreIds: string[] }
+  | { sorte: "sans-eleve"; nombre: number; chapitreId: string; chapitreIds: string[] }
   | { sorte: "eleves-sans-chapitre"; nombre: number }
   | { sorte: "sans-depart" };
 
 /**
  * « À compléter » (F03.1) : ce qui manque au plan, chaque manque menant à la première carte
- * concernée. Les scènes sans consigne n'y comptent pas, la consigne étant facultative.
+ * concernée, puis, cliqué de nouveau, à la suivante (`chapitreIds`, révision de novembre 2026).
+ * Les scènes sans consigne n'y comptent pas, la consigne étant facultative.
  */
 export function aCompleter(plan: Plan, situation: { deClasse: boolean; aChoix: boolean; eleves: ElevePlan[] }): Manque[] {
   const chapitres = chapitresDe(plan);
   const manques: Manque[] = [];
   const sansScene = chapitres.filter((c) => c.scenes.length === 0);
-  if (sansScene.length) manques.push({ sorte: "sans-scene", nombre: sansScene.length, chapitreId: sansScene[0].id });
+  if (sansScene.length) manques.push({ sorte: "sans-scene", nombre: sansScene.length, chapitreId: sansScene[0].id, chapitreIds: sansScene.map((c) => c.id) });
   if (situation.deClasse) {
     const attendent = chapitres.filter(sansEleve);
-    if (attendent.length) manques.push({ sorte: "sans-eleve", nombre: attendent.length, chapitreId: attendent[0].id });
+    if (attendent.length) manques.push({ sorte: "sans-eleve", nombre: attendent.length, chapitreId: attendent[0].id, chapitreIds: attendent.map((c) => c.id) });
     const occupes = new Set(chapitres.flatMap((c) => c.attributions.map((a) => a.eleveId)));
     const libres = situation.eleves.filter((e) => !occupes.has(e.id)).length;
     if (libres && chapitres.length) manques.push({ sorte: "eleves-sans-chapitre", nombre: libres });

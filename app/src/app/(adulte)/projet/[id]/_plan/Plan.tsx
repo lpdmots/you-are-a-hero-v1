@@ -98,6 +98,8 @@ export function Plan({
   const [local, setLocal] = useState<{ base: PlanDuRecit; parties: Partie[] } | null>(null);
   const [tire, setTire] = useState<string | null>(null);
   const seulRefuse = useRef<string | null>(null);
+  // « À compléter » : un même manque cliqué de nouveau passe à la carte suivante, puis revient à la première
+  const dernierMontre = useRef<{ sorte: string; rang: number } | null>(null);
 
   // ——— Idées de parties (F13.5) : l'orientation gardée avec « Grandes étapes », les ensembles tenus ici ———
   const enregistrement = useEnregistrement();
@@ -253,10 +255,13 @@ export function Plan({
   const montrer = (m: Manque) => {
     if (m.sorte === "sans-depart") return setOuvert({ sorte: "depart" });
     if (m.sorte === "eleves-sans-chapitre") return;
+    const rang = dernierMontre.current?.sorte === m.sorte ? (dernierMontre.current.rang + 1) % m.chapitreIds.length : 0;
+    dernierMontre.current = { sorte: m.sorte, rang };
+    const id = m.chapitreIds[rang];
     setMontree(null);
     requestAnimationFrame(() => {
-      setMontree(m.chapitreId);
-      document.getElementById(`chapitre-${m.chapitreId}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
+      setMontree(id);
+      document.getElementById(`chapitre-${id}`)?.scrollIntoView({ behavior: "smooth", block: "center" });
     });
   };
 
@@ -362,8 +367,11 @@ export function Plan({
 
   return (
     <>
-      <section className="reste" aria-label="Le plan de l’histoire">
+      {/* Plan vide : la bande n'a rien à dire, la feuille du plan vide porte le seul bouton ;
+          « Aide » passe par la ligne du titre (DansLaTete) et reste visible */}
+      <section className={`reste${parties.length === 0 ? " reste--vide" : ""}`} aria-label="Le plan de l’histoire">
         <div className="reste__texte">
+          {parties.length === 0 ? null : (
           <p className="reste__titre">
             {parties.length} partie{pluriel(parties.length)} · {chapitres.length} chapitre{pluriel(chapitres.length)} ·{" "}
             {projet.scenesGratuites && nbScenes >= projet.scenesGratuites ? (
@@ -392,23 +400,26 @@ export function Plan({
               </>
             )}
           </p>
+          )}
           {manques.length ? (
             <p className="reste__manques">
               <b>À compléter :</b>
               {manques.map((m, i) => (
                 <span key={m.sorte}>
-                  {i ? (
-                    <span className="reste__sep" aria-hidden="true">
-                      {" · "}
-                    </span>
-                  ) : null}
                   {m.sorte === "eleves-sans-chapitre" ? (
-                    libelleManque(m)
+                    <Link className="lien" href={`/projet/${projet.id}/suivi?vue=eleves`}>
+                      {libelleManque(m)}
+                    </Link>
                   ) : (
                     <button type="button" className="lien" onClick={() => montrer(m)}>
                       {libelleManque(m)}
                     </button>
                   )}
+                  {i < manques.length - 1 ? (
+                    <span className="reste__sep" aria-hidden="true">
+                      {" ·"}
+                    </span>
+                  ) : null}
                 </span>
               ))}
             </p>
@@ -438,14 +449,16 @@ export function Plan({
               Aide
             </button>
           </DansLaTete>
-          <BoutonDouble
-            primaire
-            libelle="Ajouter une partie"
-            nomIa="Demander des idées de parties à l’IA"
-            desactive={attente === "partie"}
-            onMain={ajouterPartie}
-            onIa={() => setOuvert({ sorte: "idees" })}
-          />
+          {parties.length ? (
+            <BoutonDouble
+              primaire
+              libelle="Ajouter une partie"
+              nomIa="Demander des idées de parties à l’IA"
+              desactive={attente === "partie"}
+              onMain={ajouterPartie}
+              onIa={() => setOuvert({ sorte: "idees" })}
+            />
+          ) : null}
         </div>
       </section>
 
@@ -478,7 +491,7 @@ export function Plan({
                 </h3>
                 <ul>
                   {scenes.map((s) => (
-                    <li key={s.id} className="trouve">
+                    <li key={s.id} className="trouve trouve--etat">
                       <span className="fiche__ref">{referenceScene(s.reference)}</span>
                       <span className="trouve__titre">{s.titre ?? <span className="sans-consigne">sans titre</span>}</span>
                       <TamponScene etat={s.etat} vide={s.texteVide} />
@@ -505,6 +518,7 @@ export function Plan({
             Le plan est encore vide. Une partie regroupe des chapitres : ajoutez la première, son premier chapitre se crée avec elle.
           </p>
           <BoutonDouble
+            primaire
             libelle="Ajouter une partie"
             nomIa="Demander des idées de parties à l’IA"
             desactive={attente === "partie"}
@@ -784,6 +798,28 @@ function CarteChapitre({
 }
 
 /**
+ * Où en est un chapitre, sous le titre de sa carte, avec les mots du Suivi : les jalons après
+ * le nombre de scènes, puis, s'il y en a, ce qui attend l'adulte (décidé le 6 octobre 2026).
+ */
+function LigneDesEtats({ scenes }: { scenes: Chapitre["scenes"] }) {
+  const compte = (etat: string) => scenes.filter((s) => s.etat === etat).length;
+  const [validees, pretes, aValider, aReprendre] = [compte("valide"), compte("prete"), compte("valider"), compte("reprendre")];
+  const attend = [aValider ? `${aValider} à valider` : null, aReprendre ? `${aReprendre} à reprendre` : null].filter(Boolean);
+  return (
+    <>
+      <p className="cahier__ligne cahier__ligne--compte">
+        <span>
+          {compteScenes(scenes.length)}
+          {validees ? <span className="cahier__jalon"> · {validees} validée{pluriel(validees)}</span> : null}
+          {pretes ? <span className="cahier__jalon"> · {pretes} prête{pluriel(pretes)}</span> : null}
+        </span>
+      </p>
+      {attend.length ? <p className="cahier__ligne cahier__ligne--attend">{attend.join(" · ")}</p> : null}
+    </>
+  );
+}
+
+/**
  * La carte-cahier d'un chapitre : toute la carte entre dans le chapitre, l'action la plus fréquente
  * (F03-AC21 ; un essai du 18 octobre 2026, où la carte ouvrait les réglages, est revenu en arrière
  * le 19 à la demande du porteur). Les réglages s'ouvrent par le menu à trois points.
@@ -811,7 +847,7 @@ export function Cahier({
         <div className="cahier__couv-bas" />
       </div>
       <div className="cahier__pied">
-        {chapitre.scenes.length ? <p className="cahier__ligne cahier__ligne--compte">{compteScenes(chapitre.scenes.length)}</p> : null}
+        {chapitre.scenes.length ? <LigneDesEtats scenes={chapitre.scenes} /> : null}
         {deClasse && ecritParLEnseignant(chapitre) && !eleves.length ? <p className="cahier__ligne">Vous l’écrivez vous-même</p> : null}
         {eleves.length ? (
           <p className="cahier__ligne">

@@ -271,7 +271,7 @@ export function PanneauIdeesDeParties({
           <div className="ix__orienter">
             <label htmlFor={idOrienter}>
               Orienter l’IA{" "}
-              <span className="ix__facultatif">{depuisLEtape ? "facultatif · le même que pour les questions et les idées" : "facultatif · gardé avec Grandes étapes"}</span>
+              <span className="ix__facultatif">{depuisLEtape ? "facultatif · le même que pour les questions et les idées" : "facultatif"}</span>
             </label>
             <ChampQuiGrandit
               id={idOrienter}
