@@ -238,7 +238,8 @@ export function PageChapitre({
         </Link>
       </nav>
 
-      <header className="chap-bandeau">
+      {/* Dans « Chemins », le bandeau tient sur une ligne basse : le schéma se voit sans faire défiler */}
+      <header className={`chap-bandeau${vue === "chemins" && chapitre.scenes.length ? " chap-bandeau--compact" : ""}`}>
         <div className="chap-bandeau__image">
           <ImageRepere repere={chapitre} graine={chapitre.id} prioritaire />
         </div>
@@ -306,7 +307,7 @@ export function PageChapitre({
         </div>
       ) : (
         <>
-          <div className="chap-outils">
+          <div className={`chap-outils${vue === "chemins" ? " chap-outils--chemins" : ""}`}>
             {projet.aChoix ? (
               <div className="bascule" role="group" aria-label="Vue du chapitre">
                 <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}`, { scroll: false })}>

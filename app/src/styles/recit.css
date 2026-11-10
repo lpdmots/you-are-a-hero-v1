@@ -896,6 +896,50 @@
   color: var(--graphite-2);
   margin-top: 2px;
 }
+/*
+ * Dans « Chemins », le bandeau se fait bas (demandé par le porteur, 10 novembre 2026) : une
+ * vignette, le titre et sa ligne, les commandes en rang ; les élèves se lisent dans « Scènes ».
+ * Le schéma, même petit, se voit dès l'ouverture, sans faire défiler.
+ */
+.chap-bandeau.chap-bandeau--compact {
+  grid-template-columns: 96px minmax(0, 1fr) auto;
+  gap: 16px;
+  padding: 10px 14px 10px 22px;
+  border-radius: 12px;
+}
+.chap-bandeau--compact::before {
+  width: 6px;
+  border-radius: 12px 0 0 12px;
+}
+.chap-bandeau--compact .chap-bandeau__image {
+  aspect-ratio: 16 / 10;
+  border-radius: 7px;
+  box-shadow: none;
+}
+.chap-bandeau--compact h1 {
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+.chap-bandeau--compact .chap-eleves {
+  display: none;
+}
+.chap-bandeau.chap-bandeau--compact .chap-actions {
+  grid-column: auto;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-self: center;
+  align-items: center;
+}
+.chap-bandeau--compact .chap-actions .menu {
+  order: 3;
+  margin-left: 0;
+}
+.chap-bandeau--compact .chap-actions .btn {
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  font-size: var(--t-s);
+  white-space: nowrap;
+}
 .chap-eleves {
   list-style: none;
   margin: 12px 0 0;
@@ -953,6 +997,9 @@
   margin: 22px 0 16px;
   font-size: var(--t-s);
   color: var(--graphite-2);
+}
+.chap-outils.chap-outils--chemins {
+  margin: 12px 0 4px;
 }
 .vide-chap {
   display: grid;
