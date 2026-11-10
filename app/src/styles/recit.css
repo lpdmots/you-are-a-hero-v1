@@ -1368,10 +1368,22 @@
   min-height: 46px;
   padding: 6px 0;
   background: var(--bureau);
-  /* Le fond va d'un bord à l'autre de la fenêtre, comme le schéma qui passe dessous */
-  box-shadow: 0 0 0 100vmax var(--bureau);
-  clip-path: inset(0 -100vmax);
   font-size: var(--t-s);
+}
+/*
+ * Le fond va d'un bord à l'autre de la fenêtre, comme le schéma qui passe dessous ; le schéma le
+ * borne à la page, sans la colonne de l'adulte (« --tete-rognage »). Il est rogné sur un calque à
+ * part, et non l'en-tête : la bulle « Comment lire ces chemins ? », qui s'ouvre vers le bas, en
+ * déborde sans être coupée.
+ */
+.chemins__tete::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  box-shadow: 0 0 0 100vmax var(--bureau);
+  clip-path: var(--tete-rognage, inset(0 -100vmax));
+  pointer-events: none;
 }
 .chemins__regarder {
   display: flex;
@@ -2467,7 +2479,7 @@ a.noeud__ailleurs {
 }
 @media (max-width: 720px) {
   .chemins__tete {
-    position: static;
+    position: relative;
   }
 }
 .trouve__extrait {

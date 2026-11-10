@@ -709,7 +709,7 @@ export default function Schema({
   return (
     <>
       {/* Son fond va d'un bord à l'autre de la page, comme le schéma, sans passer sur la colonne de l'adulte */}
-      <div className="chemins__tete" ref={enTete} style={place.largeur ? { clipPath: `inset(0 ${-place.largeur}px 0 ${-place.gauche}px)` } : undefined}>
+      <div className="chemins__tete" ref={enTete} style={place.largeur ? ({ "--tete-rognage": `inset(0 ${-place.largeur}px 0 ${-place.gauche}px)` } as CSSProperties) : undefined}>
         {tete}
         <div className="chemins__outils">
           {/* Après un geste, la taille figée peut s'écarter d'un rien de la taille lisible : le lien n'apparaît pas pour si peu */}
