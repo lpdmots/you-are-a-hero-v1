@@ -1104,7 +1104,9 @@ les cas à représenter sont dans le
   autorisé contenant six scènes, lorsque l'utilisateur l'ouvre, alors il
   retrouve ses cartes dans la vue Scènes. Passer au Graphe montre les liens
   existants et permet d'ouvrir les mêmes scènes, sans modifier le récit ni
-  les prises en charge.
+  les prises en charge. Révisé le 10 novembre 2026 : passer d'une vue à
+  l'autre ne modifie rien, mais l'adulte peut construire le plan dans
+  « Chemins » ([F03-AC52 à AC57](#f03-construire)).
 - **F03-AC19 — Lecture du travail des camarades :** étant donné Alice et
   Bilal attribués au même chapitre avec des prises en charge distinctes,
   lorsque Alice ouvre ce chapitre, alors les scènes prises par Bilal restent
@@ -1174,7 +1176,9 @@ le porteur décide :
   bas, que l'on parcourt en faisant défiler la page plutôt que de côté ; des
   cartes de scène petites, réduites à l'essentiel ; les choix notés sur les
   flèches plutôt que dans les cartes ; une vue d'ensemble seulement, où rien
-  ne se modifie, à la différence de la V0, mais agréable ; les problèmes
+  ne se modifie, à la différence de la V0, mais agréable (révisé par lui le
+  10 novembre 2026 : l'adulte y construit le plan, voir
+  [« Construire dans Chemins »](#f03-construire)) ; les problèmes
   visibles rapidement. Sa tenue se juge sur un chapitre composé d'une
   trentaine de scènes. Arrêté le même jour, sur recommandation :
   - **« À regarder », et non « problèmes ».** La décision du 4 octobre
@@ -1351,6 +1355,90 @@ le porteur décide :
 - **F03-AC51 — Scènes que rien ne relie :** étant donné un chapitre de
   vingt scènes sans aucun choix, lorsque l'adulte ouvre « Chemins », alors
   les cartes se rangent en lignes dans l'ordre du plan, sans étirer la page.
+- <a id="f03-construire"></a>**Construire dans « Chemins » (décidé par le
+  porteur le 10 novembre 2026, après un entretien validé dans son ensemble ;
+  non construit, la construction demandant son instruction).** Le porteur
+  veut donner au schéma la place centrale pour créer et parcourir un
+  chapitre à choix. Cela révise « une vue d'ensemble seulement, où rien ne
+  se modifie », qu'il avait demandé le 11 octobre en réaction à la V0. Ce
+  qui a changé depuis : les aides IA existent, et monter « une scène et ses
+  trois chemins » demande encore d'ouvrir la scène, de créer trois choix, de
+  nommer trois scènes, puis de les ouvrir une à une pour leur consigne.
+  « Le chapitre est le plan, le Suivi est le travail » tient toujours : le
+  schéma est le plan.
+  - **Ce que la V0 interdit de refaire,** d'après son retour d'usage : un
+    graphe qui mêle plan et écriture ; l'ajout de plusieurs scènes d'un coup
+    à la main ; un arbre qui se redessine à chaque ajout et fait perdre la
+    vue générale ; des enregistrements incertains.
+  - **Quatre gestes à la main, pour l'adulte seul,** en récit à choix, sur
+    un écran large :
+    - *« + » sous une scène :* il demande le libellé du choix et le titre de
+      la nouvelle scène. La scène se crée à la fin du chapitre, sans texte,
+      sans consigne ni élève ; le choix se pose à la fin du texte de la scène
+      d'où l'on part, avec sa phrase automatique
+      ([F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène)).
+    - *Tirer un lien* d'une scène vers une scène existante du chapitre : il
+      demande le libellé du choix, et ne crée aucune scène.
+    - *Un panneau à droite* pour la scène cliquée : son titre et sa
+      consigne, modifiables ; « Ouvrir » mène à la scène. Le texte ne s'y
+      écrit pas.
+    - *Supprimer* une scène, avec les protections et la corbeille de
+      F03-AC13 et F03-AC14, ou un choix, dont le bloc quitte le texte de la
+      scène d'où il part.
+  - **La disposition reste calculée.** Les cartes ne se placent pas à la
+    main (confirmé le 14 octobre 2026, plus haut) : chaque ajout deviendrait
+    du rangement.
+  - **L'écran ne bouge pas.** Après un ajout, la vue reste où elle était, à
+    la même taille : la nouvelle carte apparaît, ses voisines glissent, la
+    scène d'où l'on part ne change pas de place à l'écran.
+  - **Chaque geste est enregistré aussitôt,** sans bouton. Un échec se dit
+    en une phrase et le schéma revient à ce qui est enregistré.
+  - **Hors du chapitre :** un choix vers un autre chapitre, un lien caché,
+    le départ et les fins se règlent où ils se règlent aujourd'hui (la copie,
+    le menu de la scène).
+  - **Ce qui ne change pas :** l'élève lit le même schéma sans rien y
+    modifier ; le téléphone garde la liste ; le récit classique n'a pas de
+    « Chemins » ; en mode personnel, l'auteur a les gestes de l'adulte.
+  - **Quelqu'un écrit la scène d'où l'on part :** il n'est jamais arrêté
+    ([F08.1](#f08-ajout-du-plan)).
+  - **Blocs de scènes :** plusieurs scènes d'un coup ne s'ajoutent que par
+    l'IA, d'après une demande ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)).
+    Écartés : un bloc rempli à la main, défaut de la V0, guère plus rapide
+    qu'un « + » répété ; un schéma dessiné par l'utilisateur, qui serait ce
+    même bloc sous une autre forme.
+  - **Écrans :** sans maquette ; conçus avec le skill impeccable et
+    critiqués en deux lectures avant d'être montrés au porteur.
+  - **Question ouverte :** la vue qui s'ouvre en premier dans un chapitre à
+    choix, « Scènes » ou « Chemins », se décide après usage.
+- **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
+  « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
+  carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène
+  « Le ruisseau » existe à la fin du chapitre, sans texte, consigne ni
+  élève ; le choix « Suivre le ruisseau » est à la fin du texte de
+  « Clairière » et mène à elle ; sa flèche est dessinée, sans bouton
+  d'enregistrement.
+- **F03-AC53 — Relier deux scènes :** étant donné « Le ruisseau » et « Le
+  vieux pont », lorsque l'adulte tire un lien de la première vers la seconde
+  et écrit « Traverser », alors ce choix est à la fin du texte de « Le
+  ruisseau » et mène à « Le vieux pont » ; aucune scène n'est créée.
+- **F03-AC54 — L'écran ne bouge pas :** étant donné « Le marais des feux
+  follets », trente-deux scènes, la vue descendue sur ses dernières scènes,
+  lorsque l'adulte ajoute une scène sous l'une d'elles, alors cette carte
+  garde sa place à l'écran et la taille du schéma ne change pas.
+- **F03-AC55 — Titre et consigne dans le panneau :** étant donné « Le
+  ruisseau » cliquée, lorsque l'adulte change son titre et écrit sa consigne
+  dans le panneau, alors ils sont enregistrés et la carte porte le nouveau
+  titre ; le texte de la scène ne se modifie pas ici.
+- **F03-AC56 — Supprimer depuis le schéma :** étant donné « Le ruisseau »,
+  sans texte, lorsque l'adulte la supprime, alors elle rejoint la corbeille
+  sans confirmation ; étant donné une scène écrite, alors la confirmation de
+  F03-AC13 est demandée ; étant donné le choix « Traverser », lorsqu'il le
+  supprime, alors son bloc quitte le texte de « Le ruisseau » et « Le vieux
+  pont » reste.
+- **F03-AC57 — Réservé à l'adulte, sur écran large :** étant donné Alice,
+  attribuée au chapitre, lorsqu'elle ouvre « Chemins », alors elle n'a ni
+  « + », ni lien à tirer, ni panneau à remplir ; étant donné un écran de
+  390 points, alors l'adulte lit la liste, sans ces gestes.
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
@@ -6235,6 +6323,37 @@ second échange, prise en charge pendant l'arrêt :**
   arrêtée sur S015, dont elle s'occupe, alors « Je ne m'en occupe plus » ne
   lui est pas proposé.
 
+<a id="f08-ajout-du-plan"></a>**Ajout venu du plan (décidé par le porteur le
+10 novembre 2026, sur recommandation ; mécanisme à vérifier en
+construisant) :** un choix ajouté à une scène depuis « Chemins », à la main
+([F03.1](#f03-construire)) ou par un bloc de scènes
+([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)), se pose à la fin du texte
+enregistré, sans que la scène soit ouverte. Si quelqu'un l'écrit au même
+moment, il n'est jamais arrêté : à son enregistrement suivant, son texte est
+gardé tel qu'il l'a écrit, les choix ajoutés se placent à sa fin et
+apparaissent dans sa copie, sans message, sans texte gardé à part et sans
+changement d'état de la scène.
+
+- **Fait établi le 10 novembre 2026 :** aujourd'hui, les idées de choix
+  (F13.3) posent leurs choix dans la copie ouverte de la personne qui clique,
+  donc sans conflit. Un ajout fait côté serveur ferait monter la version de
+  la scène ; l'enregistrement suivant de celui qui l'écrit serait refusé
+  comme un conflit et son texte gardé à part. Rien ne fait entrer dans une
+  copie ouverte ce qui a été ajouté ailleurs.
+- **Ce qu'il faut donc construire :** le serveur reconnaît un ajout venu du
+  plan et le recolle au texte qu'il reçoit ensuite, au lieu de refuser ce
+  texte. Jugé faisable, non vérifié.
+- **Repli, seulement après l'avoir dit au porteur :** refuser l'ajout tant
+  que la scène s'écrit (« Alice écrit cette scène »). Il bloque l'enseignant
+  en pleine séance, au moment où un élève demande la suite.
+
+- **F08-AC44 — Ajout pendant qu'un élève écrit :** étant donné Alice
+  écrivant dans « L'orée de la forêt », lorsque Mme Laurent y ajoute trois
+  choix depuis « Chemins », puis qu'Alice continue d'écrire, alors son
+  enregistrement suivant réussit, son texte est entier, les trois choix sont
+  à sa fin et se lisent dans sa copie ; aucun texte n'est gardé à part et
+  elle n'est pas arrêtée.
+
 **Proposition non décidée — garder aussi le texte sur le poste :** pour
 qu'une page fermée pendant une coupure ne perde rien, le texte non
 enregistré serait gardé sur le poste et renvoyé à la prochaine ouverture de
@@ -10481,6 +10600,10 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
   - écriture d'une scène vide (F13.6, ajouté le 17 octobre 2026) : ce que reçoit
     la consigne, plus le titre de la scène et la fin du texte des scènes qui y
     mènent, avec la phrase du choix ;
+  - bloc de scènes (F13.7, décidé le 10 novembre 2026) : la demande de
+    l'adulte et ses réponses, la Préparation, le résumé du chapitre, les
+    titres, consignes et choix de ses scènes, le texte de la scène
+    d'origine ;
   - images : l'idée d'illustration (écrite parfois par un élève), le texte de
     la scène, le style, les fiches et portraits des personnages retenus ;
   - couverture (décidé par le porteur le 26 octobre 2026, F11.4) : en plus de
@@ -11049,6 +11172,11 @@ acceptées et précisées par le porteur :**
   créées ; ensuite, un choix se supprime comme d'habitude, et une scène sans
   texte sans confirmation (F03.1). Pas d'historique des ajouts à défaire.
 
+**Confirmé par le porteur le 10 novembre 2026 :** les idées de choix restent
+telles quelles dans la copie, à côté du bloc de scènes construit depuis le
+schéma ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)) ; les fusionner est
+écarté.
+
 **Arbitrages et approfondissements restants :** prévisualisation des ajouts
 au-delà du libellé du bouton ; qualité, à éprouver (V17). Ne pas
 confondre la rapidité de génération avec le temps nécessaire pour écrire,
@@ -11316,6 +11444,155 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
   la souche » de S016, lorsque l'adulte demande « ✦ Écrire » pour S018, alors la
   fin du texte de S016 et la phrase du choix partent avec la consigne, sans
   aucun prénom d'élève.
+
+### F13.7 — Bloc de scènes depuis le schéma
+
+**Décidé par le porteur le 10 novembre 2026,** après un entretien validé
+dans son ensemble ; non construit, la construction demandant son
+instruction. Les gestes à la main du schéma sont en
+[F03.1](#f03-construire).
+
+**Objectif :** que l'IA prenne à sa charge la manipulation. L'adulte décrit
+un morceau de récit (« le héros arrive dans la forêt, où trois chemins
+s'offrent à lui : … ») ; l'IA propose les scènes, leurs choix, leurs titres
+et leurs consignes, qu'il relit sur le schéma avant de les ajouter.
+
+**Acteurs et accès :** l'adulte seul, en récit à choix, sur un écran large,
+dans « Chemins » ; le mode personnel l'offre aussi. Le bloc part d'une scène
+du schéma, ou d'un chapitre encore vide. « Proposer les aides IA » éteint le
+retire, comme les autres aides. La classe peut y assister, l'écran projeté :
+il reste lisible au tableau, sans mode à part.
+
+**Parcours :**
+
+1. **La demande,** écrite ou dictée (dictée de l'adulte,
+   [F07.4](#f074--fiches-de-rédaction-pour-le-travail-sur-papier)), dans le
+   panneau à droite du schéma. Elle se dit avec les mots d'un collègue : « une
+   scène avec trois choix » veut dire quatre scènes, et l'IA le comprend
+   ainsi.
+2. **La proposition, dessinée d'abord.** À chaque tour, le bloc s'affiche en
+   pointillé sur le schéma, sous la scène d'origine, entier à l'écran : c'est
+   lui qui montre, d'un coup d'œil, ce que l'IA a compris. Titres, libellés
+   des choix et consignes s'y retouchent ; une scène proposée se retire.
+3. **Des questions seulement pour clarifier.** Sous la proposition, trois
+   questions au plus, facultatives, quand il manque à l'IA de quoi bien
+   répondre à la demande (par exemple pour écrire une consigne). Une question
+   ne propose jamais d'agrandir l'arbre ; une demande claire n'en reçoit
+   aucune. Y répondre redessine la proposition ; les ignorer n'empêche pas
+   d'ajouter.
+4. **L'ajout.** Le bouton dit ce qu'il fait (« Ajouter 4 scènes et
+   3 choix »), et une ligne le total (« Le chapitre aura 19 scènes »). Rien
+   n'existe dans le projet avant ce geste. « Annuler » reste proposé quelques
+   secondes, comme pour les idées de choix (F13.3).
+
+**Règles :**
+
+- **Ce qui est demandé, pas plus.** Trois chemins décrits donnent la scène et
+  ses trois destinations, sans la suite de chacune. L'arbre grandit par une
+  nouvelle demande de l'adulte, depuis une des nouvelles scènes.
+- **Une demande trop large est recadrée.** Un bloc compte au plus huit
+  nouvelles scènes environ, sur deux niveaux ; le seuil n'est pas affiché.
+  Au-delà, l'IA dessine la première partie et dit en une phrase ce qu'elle
+  laisse (« J'ai construit l'arrivée dans la forêt et ses trois chemins.
+  Reste : le campement et la rivière. »). Après l'ajout, ce reste revient
+  dans le champ : l'adulte clique la scène d'où continuer et envoie, sans
+  redire. C'est une nouvelle demande.
+- **Le bloc ajoute seulement :** des choix à la fin de la scène d'origine ;
+  de nouvelles scènes, rangées à la fin du chapitre, sans texte, sans élève
+  ni image. Un chemin peut rejoindre une scène existante du chapitre si
+  l'adulte le dit, sans la dupliquer. Aucune scène, aucun choix, aucune
+  consigne existants ne sont modifiés ni supprimés ; seule exception, une
+  consigne est proposée à la scène d'origine qui n'en a pas, et l'adulte la
+  prend ou non.
+- **Deux réglages,** derrière « Réglages », gardés avec le compte comme ceux
+  des fiches :
+  - « Ce qui manque » : « Me le demander » (par défaut), où l'IA pose une
+    question ; ou « L'IA complète », où elle invente et le montre dans la
+    proposition. C'est le degré d'invention demandé par le porteur, dit par
+    son effet ;
+  - « Consignes » : avec (par défaut), chaque nouvelle scène recevant sa
+    consigne et sa liste de vérification, comme « Formuler »
+    ([F13.2](#f132--formuler-une-consigne-et-sa-liste-de-vérification)) ; ou
+    sans, les titres seuls.
+
+  Écartés : un ton, un âge ou un nombre de scènes, que portent déjà « notre
+  façon d'écrire », « Âge des lecteurs » et la demande elle-même.
+- **Des formes en exemple, sous réserve.** Sous le champ encore vide, trois
+  ou quatre petits pictogrammes (« une scène et trois choix », « deux chemins
+  qui se rejoignent », « un choix qui mène à une fin ») écrivent le début de
+  la phrase d'un clic, puis disparaissent : un collègue non initié ne sait
+  pas quoi demander. Le porteur les accepte s'ils aident vraiment ; ils se
+  jugent à la critique des écrans et sont retirés s'ils remplissent l'écran
+  pour rien.
+- **Ce qui est transmis :** la Préparation, le résumé du chapitre, les titres,
+  consignes et choix de ses scènes, le texte de la scène d'origine, les
+  réponses aux questions ; pas le texte du livre entier ; jamais un prénom
+  d'élève (cadre commun de F13).
+- **Coût :** chaque tour est une demande, débitée à son coût réel en étoiles
+  ([F14](#f14--ouverture-offre-et-exploitation)), sans tarif propre. Modèle :
+  Opus 5.5, comme ce qui construit. Estimation non mesurée : quelques étoiles
+  par tour.
+- **La proposition est gardée** tant que la page reste ouverte.
+- **Quelqu'un écrit la scène d'origine :** il n'est jamais arrêté
+  ([F08.1](#f08-ajout-du-plan)).
+- **Les idées de choix de la copie restent telles quelles** (F13.3) : là,
+  l'adulte ne sait pas quoi proposer et l'IA lit le texte écrit ; ici, il
+  sait ce qu'il veut et l'IA le construit.
+
+**Écartés :** des questions avant toute proposition (attendre sans rien
+voir) ; des questions qui développent l'arbre (« Où mène le sentier ? »),
+d'abord recommandées, retirées par le porteur ; une miniature du bloc à côté
+du bouton, qui redirait le pointillé ; un bloc rempli à la main et un schéma
+dessiné par l'utilisateur (F03.1).
+
+**Critères d'acceptation :**
+
+- **F13-AC34 — Une proposition, rien de créé :** étant donné « L'orée de la
+  forêt » dans « Chemins », lorsque l'adulte demande « trois chemins : le
+  sentier des fougères, le ruisseau, la grotte », alors trois scènes et trois
+  choix se dessinent en pointillé sous sa carte, le bouton dit « Ajouter
+  3 scènes et 3 choix », et le projet ne contient encore ni ces scènes ni ces
+  choix.
+- **F13-AC35 — Les mots d'un collègue :** étant donné « Le pont », lorsque
+  l'adulte demande « une scène dans la forêt avec trois choix », alors la
+  proposition compte quatre scènes — la forêt et ses trois destinations — et
+  le bouton dit « Ajouter 4 scènes et 4 choix ».
+- **F13-AC36 — Des questions qui clarifient :** étant donné « Ce qui
+  manque » réglé sur « Me le demander » et une demande de trois chemins dont
+  le troisième n'est pas décrit, lorsque la proposition s'affiche, alors une
+  question porte sur ce troisième chemin et aucune ne propose une scène de
+  plus ; l'adulte peut ajouter sans répondre ; une demande complète ne reçoit
+  aucune question.
+- **F13-AC37 — L'IA complète :** étant donné la même demande et « L'IA
+  complète », alors la proposition décrit le troisième chemin, sans
+  question.
+- **F13-AC38 — L'ajout :** étant donné la proposition de F13-AC34 dont
+  l'adulte retouche un titre, lorsqu'il choisit « Ajouter 3 scènes et
+  3 choix », alors les trois scènes existent à la fin du chapitre avec le
+  titre retouché, leur consigne et leur liste de vérification, sans texte,
+  élève ni image ; les trois choix sont à la fin du texte de « L'orée de la
+  forêt » ; « Annuler », aussitôt, retire le tout.
+- **F13-AC39 — Seulement ajouter :** étant donné « L'orée de la forêt », qui
+  a déjà un choix et pas de consigne, et la demande « … la grotte rejoint Le
+  vieux pont », lorsque l'adulte ajoute le bloc sans prendre la consigne
+  proposée pour la scène d'origine, alors son choix existant est inchangé,
+  elle reste sans consigne, et le chemin de la grotte mène à la scène « Le
+  vieux pont » déjà là, sans doublon.
+- **F13-AC40 — Demande trop large :** étant donné une demande décrivant la
+  forêt, ses trois chemins, un campement et une rivière avec leurs propres
+  choix, lorsque l'IA répond, alors elle dessine la première partie, huit
+  nouvelles scènes au plus, et dit ce qui reste ; après l'ajout, ce reste est
+  dans le champ.
+- **F13-AC41 — Sans consigne :** étant donné « Consignes » éteint, lorsque
+  l'adulte ajoute un bloc, alors les nouvelles scènes ont un titre et pas de
+  consigne.
+- **F13-AC42 — Pour l'adulte seul :** étant donné Alice dans « Chemins »,
+  alors rien ne lui propose un bloc ; étant donné « Proposer les aides IA »
+  éteint, alors l'adulte garde ses gestes à la main, sans le ✦.
+
+**Questions ouvertes :** la qualité des blocs et des consignes, à éprouver
+sur de vraies demandes ; le coût mesuré d'un tour ; le sort des formes en
+exemple après la critique des écrans.
 
 ## F14 — Ouverture, offre et exploitation
 

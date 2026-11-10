@@ -154,8 +154,18 @@ le projet).
 
 **Chemins** :
 Nom à l'écran de la vue qui montre, dans un chapitre, où mène chaque choix ;
-« graphe » reste le mot de travail des documents.
+« graphe » et « schéma » restent les mots de travail des documents. Décidé
+le 10 novembre 2026 : l'adulte y construit aussi le plan du chapitre.
 _Éviter_ : plan, ordre de lecture.
+
+**Bloc de scènes** :
+Quelques scènes reliées par leurs choix, que l'IA propose d'après une
+demande de l'adulte et qu'il ajoute d'un geste au chapitre, depuis Chemins.
+_Éviter_ : arbre, groupe de scènes, modèle.
+
+**Scène d'origine d'un bloc** :
+La scène du schéma d'où part un bloc de scènes ; à ne pas confondre avec la
+scène de départ du livre.
 
 **À regarder** :
 Ce que la vue Chemins signale sans le dire fautif : un choix sans

@@ -1494,6 +1494,13 @@ jugée sur un chapitre d'essai de trente-deux scènes et quarante-neuf choix,
 elle remplace les dispositions que la maquette propose pour « Chemins » ; la
 maquette, elle, garde l'ancienne.
 
+Décidé le 10 novembre 2026, non construit : l'adulte y construira aussi le
+plan du chapitre et y demandera des blocs de scènes
+([F03.1](specifications.md#f03-construire),
+[F13.7](specifications.md#f137--bloc-de-scènes-depuis-le-schéma)). Ces
+écrans ne sont pas dessinés ; ils se conçoivent et se critiquent en deux
+lectures avant d'être construits.
+
 | Élément | Forme retenue |
 | --- | --- |
 | Sens et place | De haut en bas, sur toute la largeur de la fenêtre, d'un bord à l'autre, sur un fond de feuille. La page défile normalement : le schéma prend sa hauteur, la molette ne s'y arrête pas. |

@@ -4239,6 +4239,47 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   - mettre à jour les captures de critique (`npm run captures`) qui
     passent par la barre du haut.
 
+### Construire dans « Chemins » et bloc de scènes (F03.1, F13.7, 10 novembre 2026)
+
+- **Décidé le 10 novembre 2026,** après un entretien validé dans son
+  ensemble (« ok je valide ») ; **lots 1 et 2 autorisés le même jour,** pour
+  eux seuls, en local, un commit par lot, rien poussé sur `main` ni appliqué
+  à la vraie base sans sa demande ; les lots 3 et 4 demandent son
+  instruction. Il y met de la ressource : Fable 5.2, effort « xhigh ».
+  Règles, qui font foi :
+  [F03.1, « Construire dans Chemins »](specifications.md#f03-construire)
+  (F03-AC52 à AC57), [F13.7](specifications.md#f137--bloc-de-scènes-depuis-le-schéma)
+  (F13-AC34 à AC42) et [F08.1, « Ajout venu du plan »](specifications.md#f08-ajout-du-plan)
+  (F08-AC44).
+- **Contenu :** l'adulte construit le plan d'un chapitre à choix dans
+  « Chemins » (ajouter une scène, relier, titre et consigne, supprimer),
+  et demande à l'IA un bloc de scènes qu'il relit dessiné en pointillé avant
+  de l'ajouter. Les idées de choix de la copie ne changent pas.
+- **Découpage proposé, quatre lots,** à lui dire de nouveau au début de la
+  construction, en local, un commit par lot :
+  1. **Ajout venu du plan** — le serveur pose un choix à la fin d'une scène
+     sans l'ouvrir, et celui qui l'écrit n'est pas arrêté (F08-AC44). Placé
+     en premier : c'est le seul point non vérifié, et les trois autres lots
+     en dépendent. Changement de schéma probable, à lui dire avant de
+     l'écrire. S'il ne tient pas, le lui dire avant tout repli.
+  2. **Les gestes à la main** — « + », lien tiré, panneau du titre et de la
+     consigne, suppression ; l'écran qui ne bouge pas (F03-AC52 à AC57).
+  3. **Le bloc de scènes** — la demande, écrite ou dictée, la proposition en
+     pointillé, l'ajout et « Annuler », les deux réglages gardés avec le
+     compte (F13-AC34, AC35, AC38, AC39, AC41, AC42).
+  4. **Clarifier et recadrer, puis l'essai** — les questions, « L'IA
+     complète », la demande trop large, les formes en exemple (F13-AC36,
+     AC37, AC40) ; critique des écrans en deux lectures ; essai sur de
+     vraies demandes, coût d'un tour mesuré.
+- **Écrans :** sans maquette ; conçus avec le skill impeccable, critiqués en
+  deux lectures avant de lui être montrés. Les formes en exemple sont
+  retirées si la critique les juge de remplissage.
+- **À relire avec la mise en ligne :** l'écran d'aide de « Parties et
+  chapitres », le guide et la vidéo de visite, là où ils présentent
+  « Chemins » comme une vue qu'on lit sans la modifier.
+- **Reste ouvert :** la vue qui s'ouvre en premier dans un chapitre à choix,
+  à décider après usage.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un
@@ -4339,7 +4380,9 @@ de commencer ». Celles-ci n'en bloquent aucune.
   classe passée est réglée en F14 le 20 octobre 2026.
 - **F03.1 :** scènes communes à plusieurs chapitres, pour lesquelles un
   chapitre ordinaire est recommandé sans retour ; arrivées regroupées dans
-  « Chemins » quand de nombreux chapitres mènent au même.
+  « Chemins » quand de nombreux chapitres mènent au même ; vue ouverte en
+  premier dans un chapitre à choix, « Scènes » ou « Chemins », à décider
+  après usage des gestes du schéma (10 novembre 2026).
 - **F06.3 :** changements simultanés de prise en charge ; durée pendant
   laquelle une reprise reste annulable.
 - **F06.4 :** exceptions ponctuelles aux horaires ; raccourcis par lien ou

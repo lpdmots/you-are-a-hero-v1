@@ -6,6 +6,15 @@ Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md
 Accueil, 8 novembre 2026 : les textes courts validés dans l'aperçu comparatif
 sont intégrés en local ; décisions dans le [design](docs/design.md#accueil-en-livre-jeu-22-octobre-2026).
 
+« Chemins », 10 novembre 2026 : le porteur décide, après un entretien validé
+dans son ensemble, que l'adulte construit le plan d'un chapitre à choix dans
+le schéma et y demande à l'IA des blocs de scènes ; il autorise le même jour
+la construction des lots 1 et 2, en local. Règles en
+[F03.1](docs/specifications.md#f03-construire),
+[F13.7](docs/specifications.md#f137--bloc-de-scènes-depuis-le-schéma) et
+[F08.1](docs/specifications.md#f08-ajout-du-plan) ; lots dans le
+[plan](docs/plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur
