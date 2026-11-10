@@ -3103,6 +3103,40 @@ sa bande ✦ sans mot, qui prend une rangée quand la précédente est pleine ; 
 de couleur du chapitre ; « Supprimer » en graphite dans les menus, qui passe par la
 corbeille (la brique reste à ce qui efface pour de bon).
 
+#### Page de scène de l'adulte (10 novembre 2026)
+
+Captures contre le serveur local :
+`npx playwright test --config playwright.local.config.ts revision-scene` (18 vues :
+une scène longue remise, avec action de jeu, note et deux choix ; ses menus, la
+remarque, un choix ouvert, « Insérer » ; les états ; le projet personnel ; 390 px).
+**Notes : 26/40 (informée), 27/40 (indépendante).** Points faibles : la cohérence
+(le bandeau teinté lu comme un état), la prévention des erreurs, les outils empilés
+avant le texte.
+
+**Corrigé :**
+
+- **Bandeau blanc, la couleur du chapitre au seul dos** (8 px à gauche, filet
+  `--trait`), accepté par le porteur le 10 novembre 2026 : jaune ou rouge, il se lisait
+  « attend » ou « à refaire » (déjà relevé le 4 octobre). Le même sur la page du
+  chapitre (adulte et élève, `.chap-bandeau`) et sur la scène de l'élève ; seul le
+  tampon dit l'état. Les cartes de chapitre gardent leur couverture colorée.
+- **« Scènes voisines »** à droite du titre ou des onglets de la copie, à l'écart des
+  pastilles ✦, qui prennent leur rangée (accepté par le porteur ; la copie est commune
+  avec l'élève). Aucune rangée gagnée : à 390 px la case passe à la ligne sous les onglets.
+- **Texte vide :** la fiche « Pour le livre » dit « Le texte est encore vide. » et
+  « Prête pour le livre » n'est plus plein.
+- **« Votre relecture » :** « Remis par Bilal le lundi 9 novembre. » et un « i », « Que
+  change « Valider » ? » ; la phrase « Vous pouvez le corriger vous-même » et la note
+  « Validé : l'élève a fini… » y passent, en phrases complètes.
+- **Consigne :** « Les élèves du chapitre la lisent dans la scène. », une phrase.
+- **Menu de la scène :** un filet avant « Supprimer », comme au chapitre.
+- **Téléphone :** le titre de la scène en `--t-xl` ; il reste un champ d'une ligne,
+  coupé s'il est long, entier quand on le modifie.
+
+**Laissé :** à 390 px, la décision après le texte (on lit, puis on décide, proposé le
+4 octobre) ; « lisible par les élèves du chapitre » en petit sous la remarque ; le ✦
+du titre sans mot, nommé au survol.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

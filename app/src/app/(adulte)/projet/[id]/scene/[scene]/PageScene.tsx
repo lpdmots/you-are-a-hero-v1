@@ -665,6 +665,8 @@ export function PageScene({
         <button type="button" onClick={() => { fermer(); commandes.basculerHorsLivre(scene); }}>
           {scene.horsLivre ? "Réintégrer dans le livre" : "Exclure du livre"}
         </button>
+        {/* « Supprimer » à part, comme dans le menu d'un chapitre */}
+        <hr />
         <button type="button" onClick={() => { fermer(); commandes.supprimerScene(scene); }}>
           Supprimer
         </button>
@@ -1164,7 +1166,7 @@ export function PageScene({
                 ) : null}
                 <p className={styles.aide}>
                   {projet.deClasse
-                    ? "Les élèves du chapitre la lisent en ouvrant la scène. Sans consigne écrite, ils suivent celle que vous leur avez donnée."
+                    ? "Les élèves du chapitre la lisent dans la scène."
                     : "Un rappel de ce que la scène doit raconter."}
                 </p>
               </div>

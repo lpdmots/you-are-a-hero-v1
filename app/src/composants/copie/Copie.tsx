@@ -1174,6 +1174,9 @@ export function Copie({
       <div className={`copie${arrete ? " copie--lecture" : ""}`}>
         <div className="copie__barre">
           {tete}
+          {/* « Scènes voisines » à droite du titre ou des onglets : un réglage d'affichage, à l'écart
+              des aides de l'IA (révision de novembre 2026, accepté par le porteur) */}
+          {aDesVoisines && !autre ? caseVoisines : null}
           {(aides || peutDemanderIdees) && !autre && !arrete ? (
             <div className="copie__aides">
               {aides}
@@ -1192,7 +1195,6 @@ export function Copie({
               ) : null}
             </div>
           ) : null}
-          {aDesVoisines && !autre ? caseVoisines : null}
           {autre ? (
             autre.barre
           ) : arrete ? null : (

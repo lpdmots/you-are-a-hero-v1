@@ -3,9 +3,13 @@
   align-items: center;
   gap: 12px;
   padding: 14px 16px 14px 22px;
-  background: var(--bandeau);
+  /* Blanc, la couleur du chapitre au seul dos, comme le bandeau du chapitre : seul le tampon dit
+     l'état (révision de novembre 2026, accepté par le porteur) */
+  background: var(--feuille);
   border-radius: 14px;
-  box-shadow: inset 8px 0 0 var(--dos);
+  box-shadow:
+    inset 8px 0 0 var(--dos),
+    inset 0 0 0 1px var(--trait);
 }
 .tete h1 {
   flex: 0 1 auto;
@@ -53,6 +57,13 @@
 /* Un titre trop long pour la place se finit par des points de suspension ; il se lit entier en le modifiant */
 .titre:not(:focus) {
   text-overflow: ellipsis;
+}
+/* Sur téléphone, un titre plus petit, pour qu'il se lise en entier plus souvent (révision de novembre 2026) */
+@media (max-width: 620px) {
+  .titre,
+  .champTitre::after {
+    font-size: var(--t-xl);
+  }
 }
 .titre:hover {
   border-color: color-mix(in srgb, var(--dos) 45%, transparent);

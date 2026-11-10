@@ -224,9 +224,12 @@
   align-items: center;
   gap: 12px;
   padding: 14px 18px 14px 22px;
-  background: var(--bandeau);
+  /* Blanc, la couleur du chapitre au seul dos, comme chez l'adulte (révision de novembre 2026) */
+  background: var(--feuille);
   border-radius: 14px;
-  box-shadow: inset 8px 0 0 var(--dos);
+  box-shadow:
+    inset 8px 0 0 var(--dos),
+    inset 0 0 0 1px var(--trait);
 }
 .sceneTete h1 {
   flex: 1;

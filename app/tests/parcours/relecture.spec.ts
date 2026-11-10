@@ -98,8 +98,9 @@ test.describe("État de la scène, sur son tampon (F07.1)", () => {
     await semerTexte(c.base, c.scenes[0], ["Lou s’avance sur le sentier."]);
     await remettre(c.scenes[0], c.eleves.Alice.id);
     await aller(page, sceneAdulte(c.projet, c.scenes[0]));
-    await expect(fiche(page)).toContainText("Alice a remis ce texte le");
-    await expect(fiche(page)).toContainText("Validé : l’élève a fini. Il vous restera à finir la scène pour le livre.");
+    await expect(fiche(page)).toContainText("Remis par Alice le");
+    // Ce que change « Valider » se lit dans un « i » (révision de novembre 2026)
+    await expect(fiche(page).getByRole("button", { name: "Que change « Valider » ?" })).toBeVisible();
     // « Prête pour le livre » prend la place de « Valider » : le second clic du double-clic est ignoré
     await fiche(page).getByRole("button", { name: "Valider le travail élève" }).dblclick();
     await expect(tampon(page)).toHaveText("Validé");

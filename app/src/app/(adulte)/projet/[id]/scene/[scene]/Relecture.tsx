@@ -10,6 +10,7 @@ import { de } from "@/domaine/texte";
 import type { Remarque, Remise } from "@/serveur/relecture";
 import { appelerUneAide } from "@/composants/PlusDEtoiles";
 import { ChampTexte } from "@/composants/dictee/ChampDictable";
+import { Bulle } from "@/composants/Bulle";
 
 /** Ce que la fiche dit quand la page montre un autre texte que celui de la scène : elle ne décide pas. */
 export type TexteLuAilleurs = { phrase: string; /** Une correction proposée occupe la copie : la décision attend qu'on la garde ou la laisse (F13.1) */ correction?: true } | null;
@@ -51,7 +52,7 @@ export function FicheDecision({
   const pourLivre = seul || etat === "valide" || etat === "prete";
   const ceQuiCompte = aChoix ? "le texte, l’image et les choix" : "le texte et l’image";
   const prete = (
-    <button type="button" className="btn btn--primaire btn--large" disabled={occupe} onClick={() => onEtat("prete")}>
+    <button type="button" className={`btn${vide ? "" : " btn--primaire"} btn--large`} disabled={occupe} onClick={() => onEtat("prete")}>
       <Icone nom="livre" />
       Prête pour le livre
     </button>
@@ -119,7 +120,9 @@ export function FicheDecision({
         <p>
           {etat === "valide"
             ? `Le texte est fini. Quand ${aChoix ? "l’image et les choix vous conviennent" : "l’image vous convient"} aussi :`
-            : `Quand ${ceQuiCompte} vous conviennent :`}
+            : vide
+              ? "Le texte est encore vide."
+              : `Quand ${ceQuiCompte} vous conviennent :`}
         </p>
         {prete}
       </>
@@ -130,11 +133,15 @@ export function FicheDecision({
         <p>
           {derniere ? (
             <>
-              <b>{derniere.par ?? "Un élève"}</b> a remis ce texte le {jourEnMots(derniere.le)}. Vous pouvez le corriger vous-même.
+              Remis par <b>{derniere.par ?? "un élève"}</b> le {jourEnMots(derniere.le)}.
             </>
           ) : (
-            "Cette scène attend votre relecture. Vous pouvez corriger le texte vous-même."
-          )}
+            "Cette scène attend votre relecture."
+          )}{" "}
+          <Bulle question="Que change « Valider » ?">
+            Vous pouvez d’abord corriger le texte vous-même. Une fois validée, la scène est finie pour l’élève : il ne l’écrit plus. Il
+            vous restera à la déclarer prête pour le livre.
+          </Bulle>
         </p>
         <button type="button" className="btn btn--primaire btn--large" disabled={occupe} onClick={() => onEtat("valide")}>
           <Icone nom="coche" />
@@ -144,7 +151,6 @@ export function FicheDecision({
           <Icone nom="demi-tour" />
           Demander une reprise…
         </button>
-        <p className="decision__aide">Validé : l’élève a fini. Il vous restera à finir la scène pour le livre.</p>
       </>
     );
   } else if (etat === "reprendre") {

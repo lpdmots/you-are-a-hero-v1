@@ -2426,11 +2426,9 @@ kbd {
   row-gap: 6px;
   margin-left: auto;
 }
-/* « Scènes voisines » n'a rien à voir avec l'IA : un filet l'en sépare */
-.copie__aides + .outil-case {
-  margin-left: 0;
-  padding-left: 14px;
-  border-left: 1px solid var(--trait);
+/* Les aides de l'IA passent sous le titre et « Scènes voisines » quand la rangée est pleine */
+.outil-case + .copie__aides {
+  flex-basis: 100%;
 }
 /* « Corriger » et son degré, une seule pastille aux couleurs de l'IA */
 .corriger {
@@ -2899,13 +2897,6 @@ kbd {
 .ia-propose--consigne .pchamp {
   resize: vertical;
   line-height: 1.45;
-}
-/* Sur un écran étroit, « Scènes voisines » passe à la ligne : plus besoin du filet */
-@media (max-width: 720px) {
-  .copie__aides + .outil-case {
-    padding-left: 0;
-    border-left: 0;
-  }
 }
 
 /* ——— Idées de choix (F13.3) : « ✦ Idées de choix » au bout de la barre, le panneau à droite du texte ——— */
