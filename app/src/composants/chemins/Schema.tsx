@@ -895,7 +895,8 @@ export default function Schema({
           <p className="chemins__attente">Les chemins se dessinent…</p>
         )}
         {/* La place du panneau : le cadre défile assez loin pour montrer ce qu'il couvre */}
-        {sceneChoisie ? <div className="chemins__reserve" aria-hidden="true" /> : null}
+        {/* Pas pour un chapitre qui tient à gauche du panneau : rien n'est dessous, et une barre de défilement surgirait */}
+        {sceneChoisie && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" /> : null}
       </div>
       {construire && sceneChoisie ? (
         <div className="chemins__rail" ref={rail}>
