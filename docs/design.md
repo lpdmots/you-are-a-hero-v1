@@ -1765,7 +1765,7 @@ simulée).
 
 | Élément | Forme retenue |
 | --- | --- |
-| La carte | 178 points de large au moins. Sa tête, 76 points : le titre sur deux lignes au plus, puis le tampon d'état et, à sa suite, le prénom de qui écrit, en gris, gras, 12 points, coupé s'il est long. Les coins ne coupent plus ce qui dépasse : un onglet peut grandir sous la carte. |
+| La carte | 178 points de large au moins. Sa tête, 76 points pour un titre de deux lignes, 59 pour un titre qui tient sur une ligne (sans seconde ligne vide, retouché à la demande du porteur le 11 novembre 2026) : le titre sur deux lignes au plus, puis le tampon d'état et, à sa suite, le prénom de qui écrit, en gris, gras, 12 points, coupé s'il est long. Les coins ne coupent plus ce qui dépasse : un onglet peut grandir sous la carte. |
 | D'où l'on vient, où l'on va | En tête de carte, une bande de 22 points : « Départ du livre » (canard pâle) ou « Rien n'y mène » (ambre). Au pied : les onglets ; à défaut « Fin de l'histoire » (bande graphite, texte blanc) ou « Sans suite » (ambre). |
 | Un onglet | 128 points de large quand la carte en porte plusieurs, la largeur de la carte quand il est seul ; fond de feuille grise, un trait fin entre deux onglets et au-dessus du rang. La phrase : Vollkorn italique, 14 points, interligne 17, centrée, trois lignes au plus, coupée par des points de suspension. Le rang prend la hauteur de son onglet le plus haut ; les phrases plus courtes y sont centrées. |
 | La phrase entière | Pour la carte survolée ou cliquée, chaque onglet garde sa largeur et grandit vers le bas, par-dessus ce qui est sous la carte. La note sous la phrase tient sur deux lignes au repos, et se lit en entier au survol. |

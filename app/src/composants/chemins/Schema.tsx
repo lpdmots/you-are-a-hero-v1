@@ -348,15 +348,17 @@ function policeDuRecit(): string {
 }
 /** La forme des phrases d'un onglet : la feuille de style s'y tient (recit.css, « .onglet-chemin__phrase »). */
 const PHRASE = "italic 14px";
+/** La forme du titre d'une carte : la feuille de style s'y tient (recit.css, « .carte-chemin__titre »). */
+const TITRE = "700 13.5px";
 
-/** La largeur d'un texte : la phrase d'un onglet dans la voix du récit, une étiquette dans celle de l'outil. */
+/** La largeur d'un texte : la phrase d'un onglet dans la voix du récit, une étiquette ou un titre de carte dans celle de l'outil. */
 function mesureur(): Mesure {
   const toile = document.createElement("canvas").getContext("2d");
   const outil = getComputedStyle(document.body).fontFamily;
   const recit = policeDuRecit();
   return (texte, sorte) => {
     if (!toile) return texte.length * 6.2;
-    toile.font = sorte === "onglet" ? `${PHRASE} ${recit}` : `700 12px ${outil}`;
+    toile.font = sorte === "onglet" ? `${PHRASE} ${recit}` : sorte === "titre" ? `${TITRE} ${outil}` : `700 12px ${outil}`;
     return toile.measureText(texte).width;
   };
 }

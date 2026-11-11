@@ -2198,7 +2198,8 @@
   font-weight: 600;
   font-style: italic;
 }
-/* La tête de la carte fait 76 points : 8 + deux lignes de titre (35) + 4 + 22 + 7. Le titre ne se resserre
+/* La tête de la carte fait 76 points pour un titre de deux lignes : 8 + 35 + 4 + 22 + 7 ; 59 pour un titre
+   d'une ligne, qui ne laisse pas de ligne vide (disposer.ts, « teteDeCarte »). Le titre ne se resserre
    pas : il perdait le bas de ses g et de ses p. Sous le titre, le tampon d'état puis qui écrit la scène */
 .carte-chemin__pied {
   position: relative;

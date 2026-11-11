@@ -21,7 +21,13 @@ import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type
  */
 
 /** Tailles, en points du schéma à sa taille réelle. La feuille de style s'y tient (recit.css). */
-export const CARTE = { l: 178, h: 76, bande: 22 };
+/**
+ * La carte : sa largeur au moins, la hauteur de sa tête quand le titre prend ses deux lignes, celle d'une bande
+ * (départ, fin, ce qui attend), la hauteur d'une ligne du titre et ce que ses marges prennent sur la largeur.
+ */
+export const CARTE = { l: 178, h: 76, bande: 22, ligneDeTitre: 17, margesDuTitre: 25, hautDuTitre: 8 };
+/** La tête de la carte : un titre qui tient sur une ligne ne laisse pas de seconde ligne vide (11 novembre 2026). */
+export const teteDeCarte = (lignesDuTitre: number): number => CARTE.h - (2 - Math.min(2, lignesDuTitre)) * CARTE.ligneDeTitre;
 /**
  * Un onglet : sa largeur quand la carte en porte plusieurs (seul, il prend celle de la carte), ses
  * marges, la hauteur d'une ligne de sa phrase, trois lignes au plus, et celle de la note que l'outil
@@ -76,8 +82,8 @@ export type Disposition = {
 };
 
 /** La largeur d'un texte à l'écran ; à défaut de pouvoir la mesurer, une estimation. */
-export type Mesure = (texte: string, sorte: "onglet" | "etiquette") => number;
-const estimer: Mesure = (texte, sorte) => texte.length * (sorte === "onglet" ? 6.3 : 6.6);
+export type Mesure = (texte: string, sorte: "onglet" | "etiquette" | "titre") => number;
+const estimer: Mesure = (texte, sorte) => texte.length * (sorte === "onglet" ? 6.3 : sorte === "titre" ? 7.4 : 6.6);
 
 export const texteDuLibelle = (l: { libelle: string; cache: boolean }): string => (l.cache ? "Lien caché" : l.libelle || "Choix sans libellé");
 export const texteDeLEtiquette = (e: Element): string => (e.sorte === "entree" ? `depuis ${e.chapitre}` : "");
@@ -155,9 +161,9 @@ type Prevu = { lien: LienDeChemin; sorte: SorteDOnglet; l: number; lignes: numbe
  * peu, longe les cartes par l'extérieur et entre de côté. Elle n'est montrée qu'à la demande, par-dessus
  * le schéma : elle n'a pas de place gardée entre les cartes.
  */
-function tracerLeRetour(depart: Point, de: Place, vers: Place): Point[] {
+function tracerLeRetour(depart: Point, de: Place, vers: Place, titre: number): Point[] {
   // À hauteur du titre de la scène où l'on revient : plus bas, la ligne semblerait désigner un de ses onglets
-  const milieu = vers.y + Math.min(vers.h / 2, 30);
+  const milieu = vers.y + titre;
   const dehors = (x: number): boolean => x < de.x - RETOUR.ecart / 2 || x > de.x + de.l + RETOUR.ecart / 2;
   const [aDroite, aGauche] = [vers.x + vers.l + RETOUR.ecart, vers.x - RETOUR.ecart];
   let couloir: number;
@@ -210,12 +216,18 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
   // Les scènes entrent dans l'ordre où on les rencontre depuis l'entrée. En tête de la carte, d'où l'on
   // vient (« Départ du livre », « Rien n'y mène ») ; à son pied, où l'on va : ses onglets, à défaut
   // « Fin de l'histoire » ou « Sans suite ».
+  // La tête de la carte suit son titre : une ligne, ou deux au plus. Le milieu du titre est retenu : la ligne d'un
+  // retour en arrière y entre
+  const milieuxDuTitre = new Map<string, number>();
   for (const n of ordreDeLecture(noeuds, liens)) {
     const m = marques.get(n.id) ?? [];
     const pied = prevus.get(n.id);
     const tete = n.depart || m.includes("rien-n-y-mene") ? CARTE.bande : 0;
     const bas = (n.fin ? CARTE.bande : 0) + (pied ? pied.h : m.includes("sans-suite") ? CARTE.bande : 0);
-    poser({ sorte: "scene", id: n.id, marques: m }, Math.max(CARTE.l, (pied?.onglets.length ?? 0) > 1 ? pied!.onglets.length * ONGLET.l : 0), CARTE.h + tete + bas);
+    const l = Math.max(CARTE.l, (pied?.onglets.length ?? 0) > 1 ? pied!.onglets.length * ONGLET.l : 0);
+    const lignes = Math.min(2, lignesDe(n.titre ?? "sans titre", (l - CARTE.margesDuTitre) / 1.04, (t) => mesurer(t, "titre")));
+    milieuxDuTitre.set(n.id, tete + CARTE.hautDuTitre + (lignes * CARTE.ligneDeTitre) / 2);
+    poser({ sorte: "scene", id: n.id, marques: m }, l, teteDeCarte(lignes) + tete + bas);
   }
 
   const aTracer: Atracer[] = [];
@@ -306,7 +318,7 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
     for (const o of liste) {
       if (o.sorte !== "retour" || !o.sortie) continue;
       const vers = liens.find((l) => l.id === o.id)!.vers!;
-      const points = tracerLeRetour(o.sortie, places.get(o.de)!, places.get(vers)!);
+      const points = tracerLeRetour(o.sortie, places.get(o.de)!, places.get(vers)!, milieuxDuTitre.get(vers) ?? CARTE.h / 2);
       traits.push({ id: o.id, de: o.de, vers, points, d: arrondir(points), retour: true });
     }
   }

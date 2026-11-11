@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CARTE, disposer, lignesDe, ONGLET, type Disposition, type Mesure, type Point } from "@/composants/chemins/disposer";
+import { CARTE, disposer, lignesDe, ONGLET, teteDeCarte, type Disposition, type Mesure, type Point } from "@/composants/chemins/disposer";
 import {
   adoucir, carteDeReference, centrerSur, changerDeTaille, dansLeCadre, decalerLaVue, deLoin, englober, garderAuMemePoint, montrerLaBoite, partVue, pasDuGlissement, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre,
   vueDeDepart, vueDEnsemble, type Cadre,
@@ -188,16 +188,21 @@ describe("Le schéma, de haut en bas (F03.1)", () => {
     expect(place(entree.de).y + place(entree.de).h).toBeLessThan(place("barque").y);
   });
 
-  it("F03-AC44 — la tête de la carte garde sa taille ; en tête une bande pour le départ ou « Rien n'y mène », au pied les onglets, à défaut la fin ou « Sans suite »", () => {
+  it("F03-AC44 — la tête de la carte suit son titre, une ligne ou deux ; en tête une bande pour le départ ou « Rien n'y mène », au pied les onglets, à défaut la fin ou « Sans suite »", () => {
     const pied = (cle: string) => d.onglets.get(cle)![0].h;
-    expect(place("ile")).toMatchObject({ l: 2 * ONGLET.l, h: CARTE.h + pied("ile") });
-    expect(place("trou")).toMatchObject({ l: CARTE.l, h: CARTE.h + CARTE.bande }); // une fin, sans choix
-    expect(place("crapaud").h).toBe(CARTE.h + CARTE.bande + pied("crapaud")); // rien n'y mène, et un choix
-    expect(place("allumee").h).toBe(CARTE.h + CARTE.bande); // sans suite
-    expect(place("nouvelle").h).toBe(CARTE.h + 2 * CARTE.bande); // rien n'y mène, en tête ; sans suite, au pied
+    // Mesurée sans navigateur, à 7,4 points le signe : un titre de deux lignes garde la tête entière
+    const deux = teteDeCarte(2);
+    expect(deux).toBe(CARTE.h);
+    expect(place("ile")).toMatchObject({ l: 2 * ONGLET.l, h: teteDeCarte(1) + pied("ile") }); // deux onglets : le titre tient sur une ligne
+    expect(place("trou")).toMatchObject({ l: CARTE.l, h: deux + CARTE.bande }); // une fin, sans choix
+    expect(place("crapaud").h).toBe(deux + CARTE.bande + pied("crapaud")); // rien n'y mène, et un choix
+    expect(place("allumee").h).toBe(deux + CARTE.bande); // sans suite
+    expect(place("nouvelle").h).toBe(teteDeCarte(1) + 2 * CARTE.bande); // rien n’y mène, en tête ; sans suite, au pied ; un titre court
+    // « Scène 1 » tient sur une ligne : pas de seconde ligne vide
     const depart = disposer({ noeuds: [noeud(1, { depart: true }), noeud(2, { fin: true })], liens: [lien(1, 2)], entrees: [] }, new Map());
-    expect(depart.places.get(id(1))!.h).toBe(CARTE.h + CARTE.bande + depart.onglets.get(id(1))![0].h);
-    expect(depart.places.get(id(2))!.h).toBe(CARTE.h + CARTE.bande);
+    expect(teteDeCarte(1)).toBe(CARTE.h - CARTE.ligneDeTitre);
+    expect(depart.places.get(id(1))!.h).toBe(teteDeCarte(1) + CARTE.bande + depart.onglets.get(id(1))![0].h);
+    expect(depart.places.get(id(2))!.h).toBe(teteDeCarte(1) + CARTE.bande);
   });
 
   it("F03-AC51 — vingt scènes que rien ne relie se rangent en lignes, au lieu de s'étirer sur un seul rang ; elles viennent après ce qui a des chemins", () => {
