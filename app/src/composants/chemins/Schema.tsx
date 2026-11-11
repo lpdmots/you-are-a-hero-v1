@@ -933,6 +933,21 @@ export default function Schema({
       <div className="chemins__tete" ref={enTete} style={place.largeur ? ({ "--tete-rognage": `inset(0 ${-place.largeur}px 0 ${-place.gauche}px)` } as CSSProperties) : undefined}>
         {tete}
         <div className="chemins__outils" hidden={vus.noeuds.length === 0}>
+          {/* Le bloc de scènes (F13.7), toujours en vue : depuis la scène cliquée, sinon on la clique ensuite */}
+          {services && !blocOuvert ? (
+            <button
+              type="button"
+              className="btn btn--petit btn--ia chemins__bloc"
+              onClick={() => {
+                setGeste(null);
+                const origine = sceneChoisie?.id ?? null;
+                setBloc((e) => ({ ...e, ouvert: true, origine, ...(origine && e.origine === origine ? {} : { proposition: null, demandee: "", prendre: false, reponses: {} }) }));
+              }}
+            >
+              <Icone nom="ia" />
+              Construire avec l’IA
+            </button>
+          ) : null}
           {/* Après un geste, la taille figée peut s'écarter d'un rien de la taille lisible : le lien n'apparaît pas pour si peu */}
           {Math.abs(zoom - lisible) > 0.045 ? (
             <button type="button" className="lien" onClick={() => changer(null)}>

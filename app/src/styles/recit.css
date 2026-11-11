@@ -3898,3 +3898,8 @@ textarea.bloc-ligne__titre {
     0 0 0 3.5px var(--canard),
     var(--ombre-cahier);
 }
+
+/* L'entrée du bloc dans la barre du schéma, séparée des boutons de taille */
+.chemins__outils .chemins__bloc {
+  margin-right: 10px;
+}

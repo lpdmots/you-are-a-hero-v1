@@ -4492,10 +4492,13 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     informée, 24/40 pour la lecture indépendante, sans point bloquant ;
     corrigés aussitôt, sans nouvelle mesure
     ([design](design.md#bloc-de-scènes--écrans-construits-11-novembre-2026)).
-  - *Précisions prises en construisant, à lui faire confirmer :*
+  - *Précisions prises en construisant, confirmées en bloc par lui le 11 novembre 2026 (« ok pour les précisions ») — ne plus les lui soumettre :*
     1. l'entrée est dans le panneau de la scène cliquée (« ✦ Construire la
        suite », pas pour une scène « Fin de l'histoire »), et dans
-       l'invitation d'un chapitre vide ; aucun ✦ ailleurs dans le schéma ;
+       l'invitation d'un chapitre vide. Révisé le 11 novembre 2026 sur son
+       retour (« je ne vois pas de bouton ») : « ✦ Construire avec l'IA » est
+       aussi dans la barre du schéma, toujours en vue, à côté de « Tout
+       voir » ; sans scène cliquée, le panneau demande de la cliquer ;
     2. les retouches se font dans le panneau, le bloc en arbre dans l'ordre
        où le schéma le dessine, de gauche à droite : les cartes en pointillé
        sont trop petites pour qu'on y écrive. Une carte en pointillé cliquée
@@ -4593,7 +4596,7 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
       tout droit ; « une scène avec trois choix » sans les décrire donne
       « Premier chemin »… et deux questions ; la demande trop large n'use que
       quatre des huit scènes permises.
-  - *Précisions prises en construisant, à lui faire confirmer :*
+  - *Précisions prises en construisant, confirmées en bloc par lui le 11 novembre 2026 — ne plus les lui soumettre :*
     1. les questions sont en tête de la proposition, dans le panneau (sur le
        schéma, la proposition est au-dessus d'elles) ; y répondre redessine en
        envoyant la proposition retouchée, que l'IA garde, et « Vos
