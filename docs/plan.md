@@ -4622,6 +4622,14 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   même jour : le panneau reste étroit tant qu'on écrit la demande, et ne
   s'élargit (la colonne avec) qu'une fois la proposition dessinée.
 
+- **« Chemins » en atelier, décidé par lui le 11 novembre 2026** après
+  l'essai du bloc (« ok pour les trois, tu peux coder le lot ») : règles en
+  [F03.1](specifications.md#f03-atelier). Un lot, construit dans une
+  conversation à part (Fable 5.2), en local, un commit, rien poussé sur
+  `main` ni appliqué à la vraie base sans sa demande ; écrans critiqués en
+  deux lectures avant de lui être montrés. Il remplace la page qui défile,
+  la poussée de F03-AC54 et « Recentrer » par un cadre qu'on tire.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

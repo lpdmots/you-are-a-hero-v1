@@ -1433,8 +1433,45 @@ le porteur décide :
     n'a que des choix reste « Texte vide » ([F06.5](#f06-texte-vide),
     F06-AC105). Bâtie depuis le schéma, elle ne porte plus « En cours » sans
     que personne y ait écrit, et se supprime sans confirmation.
-  - **Question ouverte :** la vue qui s'ouvre en premier dans un chapitre à
-    choix, « Scènes » ou « Chemins », se décide après usage.
+  - <a id="f03-atelier"></a>**« Chemins » en atelier (décidé par le porteur le 11 novembre
+    2026, sur recommandation, après l'essai du bloc de scènes ; non
+    construit).** Cela révise « la page défile, rien ne se déplace » du
+    12 octobre 2026, décidé pour une vue qu'on ne faisait que lire.
+    - *Un cadre qu'on tire.* Le schéma remplit toute la hauteur disponible
+      sous un en-tête réduit ; la page ne défile plus dans « Chemins ». On
+      déplace le schéma en tirant le fond, ou à la molette et à deux doigts ;
+      le zoom passe par les boutons, Ctrl + molette et le pincement. Les
+      cartes ne se déplacent toujours pas ; le « + » tiré relie toujours.
+      La mini-carte reste, et sert davantage. Un ajout garde la carte
+      d'origine au même point (F03-AC54), sans « Recentrer ».
+    - *Deux états seulement.* Le plan : colonne de navigation ouverte,
+      schéma sur toute la largeur. Le travail : un clic sur une carte, ou
+      « ✦ Construire avec l'IA », replie la colonne, rétrécit le schéma et
+      le centre sur la scène, et ouvre à droite l'espace de travail, large,
+      à côté du schéma et non par-dessus — le panneau de la scène comme celui
+      du bloc. Le passage glisse, une seule fois ; une autre carte cliquée
+      ne change que le contenu de l'espace et fait glisser le schéma jusqu'à
+      elle. La croix, Échap ou un clic dans le vide (pas un glissé) ramènent
+      au plan. L'élève reste au plan, en lecture ; le téléphone garde sa
+      liste.
+    - *Un en-tête réduit,* une seule bande : la bascule « Scènes /
+      Chemins » prend la place de « Ajouter une scène » et « Attribuer des
+      élèves » dans le bandeau du chapitre, avec son « i » ; « À regarder »
+      dessous, dans « Chemins » seulement. Les prénoms des élèves du bandeau
+      sont cliquables et ouvrent « Attribuer des élèves », qui reste aussi
+      dans le menu « … ». Dans « Scènes », « Ajouter une scène » devient la
+      dernière carte de la grille, « + Nouvelle scène » ; dans « Chemins », le
+      « + » suffit. La phrase sur le « + » passe dans le « i » et dans
+      l'écran d'aide.
+    - *Les commandes sur le cadre,* comme sur une carte routière : en haut à
+      droite « ✦ Construire avec l'IA » ; en bas à droite « Tout voir »,
+      « − », « + », au-dessus de la mini-carte.
+    - *« Chemins » s'ouvre en premier* dans un chapitre à choix, ce qui
+      tranche la question laissée ouverte « après usage ». « Scènes » garde
+      l'ordre des cartes et la vue d'ensemble des états.
+    - Écartés : l'attribution des élèves sur les cartes de scène (elle mêlait
+      « qui écrit dans ce chapitre » et « qui s'occupe de cette scène ») ; un
+      premier clic qui ne ferait que montrer les chemins.
 - **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
   « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
   carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène
