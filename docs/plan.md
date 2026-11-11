@@ -5005,7 +5005,7 @@ place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
 rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
 
 **Précisions prises en construisant, à lui faire confirmer** (trois au plus
-par échange ; les quatre premières sont confirmées, huit restent) :
+par échange ; les sept premières sont confirmées, cinq restent) :
 
 1. *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins » :
    changer « Ce que fait le lecteur » change l'onglet ; réécrire « La
@@ -5031,15 +5031,18 @@ par échange ; les quatre premières sont confirmées, huit restent) :
    « Chemins »,* y revient à sa place au prochain enregistrement : la version
    de « Chemins » l'emporte, comme pour une phrase changée des deux côtés.
    À l'inverse, modifier un choix qui n'est plus dans le texte enregistré est
-   refusé (« Ce choix n'est plus dans la scène. »).
+   refusé (« Ce choix n'est plus dans la scène. »). **Confirmé par le porteur
+   le 11 novembre 2026.**
 6. *« Supprimer ce choix », depuis l'écran du choix, emporte la phrase
    entière,* avec toutes ses destinations ; la corbeille de « Ses choix »
    refuse toujours une phrase à plusieurs destinations, et dit désormais
-   « ouvrez ce choix pour la modifier ».
+   « ouvrez ce choix pour la modifier ». **Confirmé par le porteur le
+   11 novembre 2026.**
 7. *Un seul niveau :* pas de croix sur l'écran du choix ; « ← », Échap ou
    une autre carte ramènent à la scène, un second Échap au plan. Cliquer la
    carte déjà choisie ne referme pas le choix ; cliquer le fond du schéma
-   revient au plan.
+   revient au plan. **Confirmé par le porteur le 11 novembre 2026 :** ne pas
+   lui reproposer de croix sur l'écran du choix.
 8. *La scène attend sous le choix :* son panneau garde ce qu'on y tapait, et
    au retour la ligne du choix est désignée un instant.
 9. *Une phrase à deux destinations* a ses deux onglets désignés ; chacun de

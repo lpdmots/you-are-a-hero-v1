@@ -1691,13 +1691,16 @@ le porteur décide :
     - *Un choix supprimé dans la copie pendant qu'on le modifie depuis
       « Chemins »* y revient, à sa place : la version de « Chemins »
       l'emporte. Modifier un choix qui n'est plus dans le texte enregistré
-      est refusé (« Ce choix n'est plus dans la scène. »).
+      est refusé (« Ce choix n'est plus dans la scène. »). **Confirmé par le
+      porteur le 11 novembre 2026.**
     - *Depuis l'écran du choix, « Supprimer ce choix » emporte la phrase
       entière,* avec toutes ses destinations ; la corbeille de « Ses choix »
       refuse toujours une phrase qui mène à plusieurs scènes, et renvoie à
-      l'écran du choix.
+      l'écran du choix. **Confirmé par le porteur le 11 novembre 2026.**
     - *Cliquer la carte déjà choisie* ne referme pas le choix ; « ← », Échap
       ou une autre carte le font. Cliquer le fond du schéma revient au plan.
+      Un seul niveau, sans croix sur l'écran du choix. **Confirmé par le
+      porteur le 11 novembre 2026.**
 - **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
   « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
   carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène
