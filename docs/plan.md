@@ -5092,8 +5092,9 @@ bougent plus quand elle paraît ou se replie. Ne pas les remettre au-dessus.
 **Retouche du 11 novembre 2026, à sa demande, après la mise en ligne :** les
 phrases des onglets ne disparaissent plus quand le schéma est réduit
 (« c'est bizarre ») ; onglets et ronds de sortie restent tels quels à toute
-taille (F03-AC68 révisé). Ne pas les masquer de nouveau. Commit local, pas
-encore en ligne.
+taille (F03-AC68 révisé). Ne pas les masquer de nouveau. En ligne le même
+jour à sa demande, sans migration : code jusqu'à `06e5cd8`, déploiement
+réussi.
 
 **En ligne le 11 novembre 2026, à sa demande** (« tu peux commit le tout et
 mettre en ligne si tout est bon ») : avec ce lot partent tous les commits

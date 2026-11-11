@@ -106,7 +106,8 @@ qui précède depuis `f4fb4c8` — le bloc de scènes, « Chemins » en atelier,
 choix en onglets, « un choix, un onglet », « Modifier un choix » — ; vraie
 base sauvegardée, migrations `bloc_de_scenes`, `relier_depuis_le_plan` et
 `modifier_un_choix_depuis_le_plan` appliquées (ne plus les modifier), code
-jusqu'à `403eeba`, déploiement réussi
+jusqu'à `403eeba`, puis `06e5cd8` le même jour (les onglets gardent leurs
+phrases à toute taille, F03-AC68 révisé), déploiements réussis
 ([plan](docs/plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026)).
 Les « rien poussé » et « base locale seulement » des paragraphes ci-dessus
 datent de la construction.
