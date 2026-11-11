@@ -5079,6 +5079,11 @@ volet.
 **Essai :** `app/README.md`, « Essayer « Modifier un choix depuis
 Chemins » ».
 
+**Retouche du 11 novembre 2026, à sa demande, dans la même conversation :**
+dans « Chemins », les boutons « Tout voir », « − », « + » passent sous la
+mini-carte (« c'est mieux je trouve ») ; dans le coin du cadre, ils ne
+bougent plus quand elle paraît ou se replie. Ne pas les remettre au-dessus.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

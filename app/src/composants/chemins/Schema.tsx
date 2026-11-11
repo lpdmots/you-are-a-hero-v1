@@ -1202,8 +1202,11 @@ export default function Schema({
                   }}
                 >
                   <GarderEnPlace figeRef={fige} cadreRef={cadre} />
-                  {/* Les commandes sur le cadre, comme sur une carte routière : la taille en bas à droite, au-dessus de la mini-carte */}
+                  {/* Les commandes sur le cadre, comme sur une carte routière : la mini-carte, et sous elle la taille, dans le coin bas droit — les boutons ne bougent pas quand la mini-carte paraît ou se replie (demandé par le porteur le 11 novembre 2026) */}
                   <div className="chemins__coin nopan nodrag nowheel">
+                    {/* La mini-carte, au plan, dès que le schéma dépasse du cadre : où l'on est, et un clic pour s'y rendre. Pas
+                        au travail ni dans un cadre étroit : elle couvrirait les cartes voisines de la scène ouverte */}
+                    {disposition && !travail && taille.l >= MINI_CARTE_DES && (l * zoom + MARGE > taille.l || h * zoom + MARGE > taille.h) ? <MiniCarte disposition={disposition} regard={regard} noeuds={chemins.noeuds} /> : null}
                     <div className="chemins__taille" role="group" aria-label="Taille du schéma">
                       {zoom < lisible - 0.045 ? (
                         <button type="button" className="btn btn--petit" onClick={() => changer(lisible)}>
@@ -1221,9 +1224,6 @@ export default function Schema({
                         +
                       </button>
                     </div>
-                    {/* La mini-carte, au plan, dès que le schéma dépasse du cadre : où l'on est, et un clic pour s'y rendre. Pas
-                        au travail ni dans un cadre étroit : elle couvrirait les cartes voisines de la scène ouverte */}
-                    {disposition && !travail && taille.l >= MINI_CARTE_DES && (l * zoom + MARGE > taille.l || h * zoom + MARGE > taille.h) ? <MiniCarte disposition={disposition} regard={regard} noeuds={chemins.noeuds} /> : null}
                   </div>
                 </ReactFlow>
               </Vue.Provider>

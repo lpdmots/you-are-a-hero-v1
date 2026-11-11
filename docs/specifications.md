@@ -1504,7 +1504,8 @@ le porteur décide :
       l'écran d'aide.
     - *Les commandes sur le cadre,* comme sur une carte routière : en haut à
       droite « ✦ Construire avec l'IA » ; en bas à droite « Tout voir »,
-      « − », « + », au-dessus de la mini-carte.
+      « − », « + », sous la mini-carte (demandé par le porteur le 11 novembre
+      2026 ; ils étaient au-dessus).
     - *« Chemins » s'ouvre en premier* dans un chapitre à choix, ce qui
       tranche la question laissée ouverte « après usage ». « Scènes » garde
       l'ordre des cartes et la vue d'ensemble des états.

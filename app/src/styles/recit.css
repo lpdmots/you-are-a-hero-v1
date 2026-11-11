@@ -2825,7 +2825,7 @@ a.onglet-chemin__note:hover {
 }
 
 /* La mini-carte, au-delà de deux écrans : où l'on est, et un clic pour s'y rendre */
-/* Les commandes posées sur le cadre, en bas à droite : la taille, au-dessus de la mini-carte */
+/* Les commandes posées sur le cadre, en bas à droite : la mini-carte, et sous elle la taille, qui ne bouge pas */
 .chemins__coin {
   position: absolute;
   right: 14px;
