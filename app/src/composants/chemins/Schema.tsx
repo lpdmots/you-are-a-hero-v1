@@ -17,7 +17,7 @@ import { replierLaColonnePourUnTemps } from "../EspaceAdulte";
 import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
 import {
-  carteDeReference, centrerSur, changerDeTaille, decalerLaVue, englober, montrerLaBoite, partVue, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre, vueDeDepart, vueDEnsemble,
+  adoucir, carteDeReference, centrerSur, changerDeTaille, decalerLaVue, englober, montrerLaBoite, partVue, pasDuGlissement, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre, vueDeDepart, vueDEnsemble,
   type Boite, type Cadre, type Vue as VueDuSchema,
 } from "./ancrage";
 import { PanneauDuBloc, useEtatDuBloc } from "./Bloc";
@@ -51,7 +51,7 @@ const HAUTEUR_DE_LA_SCENE = 0.42;
 /** La largeur du cadre en dessous de laquelle la mini-carte ne s'affiche pas */
 const MINI_CARTE_DES = 600;
 /** Le temps d'un glissement de la vue */
-const GLISSE = 320;
+const GLISSE = 380;
 
 type DonneesScene = NoeudDeChemin & { marques: string[]; sansSuite: boolean };
 type DonneesTrait = { d: string; texte: string; cache: boolean; remonte: boolean; libelle: Disposition["traits"][number]["libelle"]; propose?: boolean };
@@ -363,8 +363,6 @@ export default function Schema({
   // Ce que la disposition, calculée plus tard, lit de l'écran tel qu'il est à ce moment-là
   const courantRef = useRef<{ noeuds: (NoeudScene | NoeudEtiquette)[]; dessine: boolean }>({ noeuds: [], dessine: false });
   const [disposition, setDisposition] = useState<Disposition | null>(null);
-  // Où le plan se place dans la page : d'un bord à l'autre, et de son haut jusqu'au bas de la fenêtre
-  const [place, setPlace] = useState({ gauche: 0, largeur: 0, haut: 0 });
   const [noeuds, setNoeuds] = useState<(NoeudScene | NoeudEtiquette)[]>([]);
   const [survolee, setSurvolee] = useState<string | null>(null);
   // Le schéma ne se montre qu'une fois à sa place et à sa taille
@@ -456,32 +454,6 @@ export default function Schema({
     });
   }, [disposition, vus.liens]);
 
-  // Le plan va d'un bord à l'autre de la page — la fenêtre moins la colonne de navigation de l'adulte
-  // (F06.5) — et de son haut jusqu'au bas de la fenêtre : la page ne défile plus dans « Chemins »
-  useLayoutEffect(() => {
-    const page = plan.current?.closest("main");
-    const mesurer = () => {
-      const p = plan.current;
-      const parent = p?.parentElement;
-      if (!p || !parent) return;
-      const bord = page ? page.getBoundingClientRect().left : 0;
-      const suite = {
-        gauche: Math.round(parent.getBoundingClientRect().left - bord),
-        largeur: page ? page.clientWidth : document.documentElement.clientWidth,
-        haut: Math.round(p.getBoundingClientRect().top + window.scrollY),
-      };
-      setPlace((avant) => (avant.gauche === suite.gauche && avant.largeur === suite.largeur && avant.haut === suite.haut ? avant : suite));
-    };
-    mesurer();
-    window.addEventListener("resize", mesurer);
-    const suivi = page ? new ResizeObserver(mesurer) : null;
-    if (page) suivi?.observe(page);
-    return () => {
-      window.removeEventListener("resize", mesurer);
-      suivi?.disconnect();
-    };
-  }, []);
-
   const l = disposition?.largeur ?? 0;
   const h = disposition?.hauteur ?? 0;
   /** La taille lisible : le schéma tient dans la largeur du cadre, sans descendre sous une taille où les titres se lisent */
@@ -501,8 +473,17 @@ export default function Schema({
     const r = cadre.current?.getBoundingClientRect();
     return r && r.width && r.height ? { l: r.width, h: r.height } : null;
   };
+  // Le glissement vers un but, mené image par image (plus bas) : tout autre déplacement de la vue l'arrête
+  const glissement = useRef<number | null>(null);
+  const arreterLeGlissement = () => {
+    if (glissement.current !== null) cancelAnimationFrame(glissement.current);
+    glissement.current = null;
+  };
   // En ligne droite : sans cela, la vue recule puis revient pendant le trajet, comme un survol, et la taille bouge
-  const allerA = (vue: VueDuSchema, duree = GLISSE) => void flux.current?.setViewport(vue, { duration: sansMouvement() ? 0 : duree, interpolate: "linear" });
+  const allerA = (vue: VueDuSchema, duree = GLISSE) => {
+    arreterLeGlissement();
+    void flux.current?.setViewport(vue, { duration: sansMouvement() ? 0 : duree, interpolate: "linear" });
+  };
   // Changer de taille garde au milieu du cadre ce qu'on regardait
   const changer = (suite: number) => {
     const cad = cadreIci();
@@ -535,13 +516,51 @@ export default function Schema({
     if (pret && fluxPret) placer();
   }, [pret, fluxPret]);
 
-  const glisser = useEffectEvent(() => {
+  // Où était le cadre dans la page la dernière fois que la vue s'y est accordée
+  const dernier = useRef<{ x: number; y: number } | null>(null);
+  /** La vue visée, dans le cadre tel qu'il est à cet instant */
+  const destination = (): VueDuSchema | null => {
     const cad = cadreIci();
-    if (!but.current || !flux.current || !cad) return;
+    if (!but.current || !cad) return null;
     const vers = centrerSur(but.current.boite, cad, but.current.zoom, but.current.hauteur);
     // Sans montrer de vide pour rien : la première scène d'un chapitre ne descend pas au milieu du cadre
-    allerA(disposition ? sansVideInutile(vers, { l: disposition.largeur, h: disposition.hauteur }, cad, MARGE) : vers);
+    return disposition ? sansVideInutile(vers, { l: disposition.largeur, h: disposition.hauteur }, cad, MARGE) : vers;
+  };
+  /**
+   * Un seul glissement, mené image par image (F03-AC59). Le cadre change de place et de largeur pendant
+   * qu'on part — l'espace de travail s'ouvre, la colonne se replie — : à chaque image, la vue visée est
+   * relue dans le cadre tel qu'il est, et le trajet se compte dans la page. Relancer un glissement à
+   * chaque changement du cadre donnait deux saccades (retour du porteur, 11 novembre 2026).
+   */
+  const glisser = useEffectEvent(() => {
+    const c = cadre.current;
+    const vers = destination();
+    if (!flux.current || !c || !vers) return;
+    arreterLeGlissement();
+    if (sansMouvement()) return void flux.current.setViewport(vers);
+    // La vue vaut pour la place du cadre qu'elle connaît (`dernier`) : si le cadre vient de bouger, elle sera
+    // décalée d'autant avant que l'écran soit peint. Le départ et chaque pas se comptent depuis cette place-là.
+    const connu = (bords: DOMRect) => dernier.current ?? { x: bords.left + window.scrollX, y: bords.top + window.scrollY };
+    const v = flux.current.getViewport();
+    const d = connu(c.getBoundingClientRect());
+    const depart = { x: d.x + v.x, y: d.y + v.y, zoom: v.zoom };
+    const debut = performance.now();
+    const pas = (maintenant: number) => {
+      const ici = cadre.current?.getBoundingClientRect();
+      const visee = destination();
+      if (!flux.current || !ici || !visee) return void (glissement.current = null);
+      const t = Math.min(1, (maintenant - debut) / GLISSE);
+      const a = adoucir(t);
+      // Où le coin du schéma doit se trouver dans la page à cet instant, puis la vue qui l'y met
+      const place = connu(ici);
+      const coin = pasDuGlissement(depart, visee, { x: ici.left + window.scrollX, y: ici.top + window.scrollY }, a);
+      const reel = { x: coin.x + ici.left + window.scrollX, y: coin.y + ici.top + window.scrollY };
+      void flux.current.setViewport({ x: reel.x - place.x, y: reel.y - place.y, zoom: coin.zoom });
+      glissement.current = t < 1 ? requestAnimationFrame(pas) : null;
+    };
+    glissement.current = requestAnimationFrame(pas);
   });
+  useEffect(() => arreterLeGlissement, []);
   const viser = useEffectEvent((boite: Boite, hauteur: number) => {
     // La taille est celle qu'on a en partant : un glissement repris en route ne la change pas
     but.current = { boite, hauteur, zoom: but.current?.zoom ?? flux.current?.getZoom() ?? 1 };
@@ -551,7 +570,6 @@ export default function Schema({
   });
   // Le cadre change de place ou de largeur (la colonne se replie, l'espace de travail s'ouvre) : les
   // cartes restent d'abord où elles étaient à l'écran, puis la vue glisse vers son but. Une seule fois.
-  const dernier = useRef<{ x: number; y: number } | null>(null);
   useLayoutEffect(() => {
     const c = cadre.current;
     if (!c) return;
@@ -563,7 +581,8 @@ export default function Schema({
       setTaille((t) => (t.l === r.width && t.h === r.height ? t : { l: r.width, h: r.height }));
       if (!avant || !flux.current || !placee.current) return;
       if (avant.x !== ici.x || avant.y !== ici.y) void flux.current.setViewport(suivreLeCadre(flux.current.getViewport(), avant, ici));
-      glisser();
+      // Un glissement en cours relit le cadre de lui-même ; sinon, le but du moment se rejoint depuis le cadre changé
+      if (but.current && glissement.current === null) glisser();
     };
     suivre();
     const suivi = new ResizeObserver(suivre);
@@ -583,7 +602,8 @@ export default function Schema({
   useEffect(() => {
     scenePourLaTaille.current = sceneChoisie && !blocOuvert ? sceneChoisie.id : null;
   });
-  useEffect(() => {
+  // Avant que l'écran soit peint : la colonne se replie dans la même image que l'espace s'ouvre, le cadre ne change qu'une fois à l'œil
+  useLayoutEffect(() => {
     replierLaColonnePourUnTemps(travail);
     return () => replierLaColonnePourUnTemps(false);
   }, [travail]);
@@ -917,7 +937,6 @@ export default function Schema({
       <div
         className="chemins__plan"
         ref={plan}
-        style={{ ...(place.largeur ? { width: place.largeur, marginLeft: -place.gauche } : {}), ...(place.haut ? { "--haut-du-plan": `${place.haut}px` } : {}) } as CSSProperties}
         data-travail={travail ? "" : undefined}
       >
         <div className="chemins__cadre" ref={cadre} style={{ "--zoom-chemins": zoom } as CSSProperties} data-zoom={zoom} data-loin={loin || undefined} data-tire={enTirant || undefined}>
@@ -946,6 +965,10 @@ export default function Schema({
                   }}
                   onNodeMouseEnter={(_, n) => setSurvolee(n.type === "scene" ? n.id : null)}
                   onNodeMouseLeave={() => setSurvolee(null)}
+                  // La main reprend la vue : le glissement en cours s'arrête
+                  onMoveStart={(e) => {
+                    if (e) arreterLeGlissement();
+                  }}
                   onMove={(_, v) => setZoom((z) => (Math.abs(z - v.zoom) < 0.005 ? z : arrondir(v.zoom)))}
                   // On ne perd pas le schéma en le tirant : il en reste toujours un morceau dans le cadre
                   onMoveEnd={(e, v) => {

@@ -4661,7 +4661,7 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     en tête. La lecture informée la juge « à sa place, pas perdue », le vide
     dessous se lisant comme la place de la proposition ; elle trouvait le
     champ et le cadre des réglages trop lourds : réduits.
-  - *Précisions prises en construisant, à lui faire confirmer :*
+  - *Précisions prises en construisant, confirmées en bloc par lui le 11 novembre 2026 (« Je confirme tes treize précisions ») — ne plus les lui soumettre :*
     1. un clic dans le vide referme le panneau d'une scène, pas le bloc de
        l'IA, qui tient un travail en cours : il se referme par sa croix ou
        par Échap (la demande et la proposition sont gardées) ;
@@ -4719,6 +4719,22 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     - **Captures prises sur un serveur à part :** le serveur local du port
       4840 appartenait à une autre conversation et n'a pas pu être relancé en
       IA simulée ; `npm run captures` a servi, sans y toucher.
+  - *Retouches du 11 novembre 2026, sur son retour d'essai :* le cadre
+    s'arrêtait avant le bas de la fenêtre (« l'espace bottom n'est pas bon ») —
+    sa hauteur ne se mesure plus, la page du chapitre tient dans la fenêtre et
+    le plan y prend ce qui reste ; l'en-tête du panneau de la scène n'avait pas
+    de bord à gauche et se confondait avec le fond du schéma — il est sur le
+    blanc du volet, derrière un vrai trait ; l'espace qui entre en glissant ne
+    fait plus surgir une barre de défilement. **Le passage au travail se
+    faisait en deux saccades** (son diagnostic était le bon : la largeur du
+    cadre changeait pendant le glissement) : le cadre prend maintenant sa
+    largeur en une seule fois — la colonne se replie dans la même image que
+    l'espace s'ouvre, et la largeur du plan ne se mesure plus —, et le
+    glissement est un seul mouvement, mené image par image, qui relit le cadre
+    à chaque pas au lieu d'être relancé. Constaté à l'écran : la carte cliquée
+    suit une seule courbe, de sa place jusqu'au milieu, sans retour en
+    arrière (un cas de plus dans `tests/unitaires/chemins.test.ts`,
+    465 tests unitaires).
 
 ## Hors de la première livraison
 

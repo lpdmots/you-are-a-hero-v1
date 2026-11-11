@@ -2075,26 +2075,45 @@ une carte au même point quand la disposition change. Ce dernier remplace
 bord, rien n'est plus poussé ni rendu, et la taille n'a plus à être figée
 puisqu'elle n'est plus recalculée.
 
-**Les glissements vont en ligne droite.** `setViewport` reçoit
-`interpolate: "linear"`. Par défaut d3-zoom fait un « survol » (il recule
+**Les glissements vont en ligne droite.** Pour la taille et le cadrage d'un
+bloc, `setViewport` reçoit `interpolate: "linear"`. Par défaut d3-zoom fait un « survol » (il recule
 puis revient) : un glissement interrompu en route laissait le schéma à une
 taille intermédiaire. Le but d'un glissement garde aussi sa taille de départ.
 
 **Deux états, un seul glissement.** L'espace de travail est un voisin du
 cadre dans une même rangée (`.chemins__plan`, en `flex`), et non plus un
 panneau fixe par-dessus : le cadre rétrécit, et ce qu'on y voit n'est jamais
-couvert. Le passage change deux fois la place du cadre, à quelques
-millisecondes d'écart (l'espace s'ouvre, puis la colonne de navigation se
-replie par `replierLaColonnePourUnTemps`). Un `ResizeObserver` sur le cadre
-suit ces changements : il décale d'abord la vue pour que les cartes restent
-où elles étaient à l'écran (`suivreLeCadre`), puis relance le glissement vers
-le but du moment — la scène cliquée, un peu au-dessus du milieu, ou, sans
-scène, ce qui était au milieu du cadre d'avant. Le but ne tient que le temps
-du passage, pour qu'un redimensionnement de la fenêtre ne recentre rien.
+couvert. Le passage change la place et la largeur du cadre (l'espace s'ouvre,
+la colonne de navigation se replie par `replierLaColonnePourUnTemps`). Un
+`ResizeObserver` sur le cadre décale la vue pour que les cartes restent où
+elles étaient à l'écran (`suivreLeCadre`), puis la vue glisse vers le but du
+moment — la scène cliquée, un peu au-dessus du milieu, ou, sans scène, ce qui
+était au milieu du cadre d'avant. Le but ne tient que le temps du passage,
+pour qu'un redimensionnement de la fenêtre ne recentre rien.
 
-**La hauteur.** Le plan mesure son haut dans la page et prend le reste de la
-fenêtre (`--haut-du-plan`, 420 points au moins) ; la page perd son pied
-(`.page:has(.chemins__plan)`), si bien qu'elle ne défile pas. La mini-carte
+**Corrigé le 11 novembre 2026, sur le retour du porteur (« deux saccades »).**
+La première version relançait un glissement de d3-zoom à chaque changement du
+cadre, et le cadre changeait trois fois : l'espace, puis la colonne (un
+`useEffect`, donc une image plus tard), puis la largeur du plan, mesurée en
+JavaScript et arrivée une image après encore. Trois corrections : la colonne
+se replie dans un `useLayoutEffect`, donc dans la même image que l'espace
+s'ouvre ; la largeur du plan ne se mesure plus (la page perd ses marges dans
+« Chemins », et le bandeau garde sa largeur de lecture par la feuille de
+style) ; le glissement est mené image par image par le schéma lui-même
+(`pasDuGlissement`, `adoucir`), en comptant le trajet dans la page et en
+relisant le cadre à chaque pas. Le départ se compte depuis la place du cadre
+que la vue connaît déjà, et non depuis sa place du moment : entre les deux,
+le décalage de `suivreLeCadre` n'est pas encore passé. Un geste de
+l'utilisateur ou un autre déplacement de la vue arrête ce glissement.
+
+**La hauteur, sans mesure.** La page du chapitre est une colonne de la
+hauteur de la fenêtre (moins la barre qui reste en haut, `--haut-adulte`,
+58 points chez l'élève), et le plan y prend ce qui reste (`flex: 1`,
+420 points au moins) ; la page perd son pied (`.page:has(.chemins__plan)`), si
+bien qu'elle ne défile pas. Une première version mesurait le haut du plan
+(`--haut-du-plan`) : quand ce qui est au-dessus changeait de hauteur sans que
+la page change de taille, la mesure restait fausse et le cadre s'arrêtait
+avant le bas de la fenêtre (retour du porteur, 11 novembre 2026). La mini-carte
 et les boutons de taille sont des enfants de `<ReactFlow>` : la mini-carte lit
 la vue dans son magasin et la suit pendant qu'on tire.
 

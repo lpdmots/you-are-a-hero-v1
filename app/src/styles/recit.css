@@ -1573,8 +1573,34 @@
  * son haut jusqu'au bas de la fenêtre ; la page ne défile plus. Dedans, le cadre où l'on tire le
  * schéma et, en état « travail », l'espace de travail à sa droite — à côté, jamais par-dessus.
  */
+/* Le plan va d'un bord à l'autre de la page, sans rien mesurer : la page perd ses marges, et ce qui est au-dessus du
+   plan garde sa largeur de lecture. Une largeur mesurée arrivait une image trop tard quand la colonne se repliait. */
 .page:has(.chemins__plan) {
-  padding-bottom: 0;
+  max-width: none;
+  padding: 0;
+}
+.page:has(.chemins__plan) .sur-chapitre > :is(.fil, .chap-bandeau, .chap-note),
+.page:has(.chemins__plan) .chemins__tete {
+  box-sizing: border-box;
+  width: min(1232px, calc(100% - 48px));
+  margin-inline: auto;
+}
+/* La page du chapitre tient dans la fenêtre, sous la barre qui reste en haut (celle de l'élève, ou la barre mince de
+   l'adulte sur un écran étroit) ; le plan y prend tout ce qui reste sous l'en-tête, sans rien mesurer : quoi qui
+   change au-dessus de lui — le bandeau qui passe sur deux lignes, « À regarder » qui apparaît —, il va jusqu'en bas. */
+.page:has(.chemins__plan) .sur-chapitre {
+  display: flex;
+  flex-direction: column;
+  height: calc(100dvh - var(--haut-adulte, 58px));
+}
+.page:has(.chemins__plan) .sur-chapitre > * {
+  flex: none;
+}
+.page:has(.chemins__plan) .sur-chapitre > .chemins {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 .chemins {
   margin-top: 10px;
@@ -1583,8 +1609,10 @@
   --espace-chemins: clamp(440px, 44vw, 660px);
   position: relative;
   display: flex;
-  height: calc(100dvh - var(--haut-du-plan, 220px));
+  flex: 1;
   min-height: 420px;
+  /* L'espace de travail entre en glissant depuis la droite : il ne fait pas surgir une barre de défilement */
+  overflow: clip;
   background: var(--feuille-2);
   border-top: 1px solid var(--trait);
 }
@@ -1898,7 +1926,8 @@
   width: var(--espace-chemins);
   min-width: 0;
   background: var(--feuille);
-  box-shadow: inset 1px 0 0 var(--trait);
+  /* Un vrai trait, et non une ombre intérieure : l'en-tête du panneau, qui a son fond, la recouvrait */
+  border-left: 1px solid var(--trait-fort);
   animation: espace-chemins-entre 0.26s var(--ease);
 }
 @keyframes espace-chemins-entre {
@@ -1921,6 +1950,11 @@
 }
 .chemins__espace .panneau-chemin__tete {
   padding: 10px 12px 10px 22px;
+}
+/* L'en-tête de la scène sur le blanc du volet, comme son contenu : gris, il se confondait avec le fond du schéma et
+   le volet semblait commencer dessous */
+.chemins__espace .panneau-chemin:not(.panneau-bloc) > .panneau-chemin__tete {
+  background: var(--feuille);
 }
 .chemins__espace .panneau-chemin__pied {
   padding: 10px 16px 12px 14px;

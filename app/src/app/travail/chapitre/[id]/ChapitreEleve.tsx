@@ -307,7 +307,7 @@ export function ChapitreEleve({
       </header>
 
       {!chapitre.profil ? (
-        <div className={styles.outils}>
+        <div className={`${styles.outils} chap-note`}>
           <p>Ce chapitre n’est pas le tien : tu peux le lire, pas l’écrire.</p>
         </div>
       ) : null}

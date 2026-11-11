@@ -37,6 +37,21 @@ export const decalerLaVue = (vue: Vue, ecart: Point): Vue => ({ x: vue.x - ecart
 export const suivreLeCadre = (vue: Vue, avant: Point, apres: Point): Vue => ({ x: vue.x + avant.x - apres.x, y: vue.y + avant.y - apres.y, zoom: vue.zoom });
 
 /**
+ * Un seul glissement (F03-AC59), même quand le cadre change de place et de largeur en route — l'espace
+ * de travail s'ouvre, la colonne se replie. Le trajet se compte dans la page, et non dans le cadre :
+ * `depart` dit où était le coin du schéma dans la page en partant, `vers` la vue visée dans le cadre
+ * tel qu'il est maintenant, `cadre` où ce cadre se trouve dans la page. À l'avancée 0, le schéma n'a
+ * pas bougé à l'écran, où que soit passé le cadre ; à 1, il est à sa place.
+ */
+export const pasDuGlissement = (depart: Vue, vers: Vue, cadre: Point, avancee: number): Vue => ({
+  x: depart.x + (cadre.x + vers.x - depart.x) * avancee - cadre.x,
+  y: depart.y + (cadre.y + vers.y - depart.y) * avancee - cadre.y,
+  zoom: depart.zoom + (vers.zoom - depart.zoom) * avancee,
+});
+/** Le rythme du glissement : doux au départ et à l'arrivée. Le cadre finit de changer pendant le départ, où presque rien ne bouge encore. */
+export const adoucir = (t: number): number => (t <= 0 ? 0 : t >= 1 ? 1 : t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+/**
  * Amener une carte au milieu du cadre. `hauteur` : où elle se pose de haut en bas — un peu
  * au-dessus du milieu pour une scène cliquée, dont la suite se construit dessous.
  */

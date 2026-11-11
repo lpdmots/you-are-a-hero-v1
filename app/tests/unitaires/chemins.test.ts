@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { CARTE, disposer, LIBELLE, type Disposition, type Point } from "@/composants/chemins/disposer";
 import {
-  carteDeReference, centrerSur, changerDeTaille, dansLeCadre, decalerLaVue, englober, garderAuMemePoint, montrerLaBoite, partVue, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre,
+  adoucir, carteDeReference, centrerSur, changerDeTaille, dansLeCadre, decalerLaVue, englober, garderAuMemePoint, montrerLaBoite, partVue, pasDuGlissement, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre,
   vueDeDepart, vueDEnsemble, type Cadre,
 } from "@/composants/chemins/ancrage";
 import { aRegarder, compteARegarder, ordreDeLecture, peutConstruire, vueDuChapitre, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
@@ -367,6 +367,36 @@ describe("Construire dans « Chemins » (F03.1)", () => {
     // Un petit chapitre tient dans la largeur : il y reste au milieu, quelle que soit la carte cliquée
     const petit = sansVideInutile({ x: 300, y: -40, zoom: 1 }, { l: 400, h: 300 }, TRAVAIL, MARGE);
     expect(petit).toEqual({ x: (TRAVAIL.l - 400) / 2, y: -40, zoom: 1 });
+  });
+
+  it("F03-AC59 — le passage glisse une seule fois : le cadre change de place et de largeur en route (l'espace s'ouvre, la colonne se replie) sans que le schéma saute", () => {
+    // Dans la page : le cadre commence à 232 points, la vue est à 80 ; le coin du schéma est donc à 312
+    const depart = { x: 232 + 80, y: 190 + 28, zoom: 0.8 };
+    const p = { x: 300, y: 500 };
+    const dansLaPage = (cadre: { x: number; y: number }, vue: { x: number; y: number; zoom: number }) => ({ x: cadre.x + dansLeCadre(vue, p).x, y: cadre.y + dansLeCadre(vue, p).y });
+    const avant = { x: depart.x + p.x * 0.8, y: depart.y + p.y * 0.8 };
+    // Au départ, rien n'a bougé à l'écran, que le cadre soit encore à 232 ou déjà à 64, et quelle que soit la vue visée
+    for (const cadre of [{ x: 232, y: 190 }, { x: 64, y: 190 }]) {
+      for (const vers of [{ x: -40, y: -120, zoom: 0.8 }, { x: 200, y: 28, zoom: 0.8 }]) {
+        expect(dansLaPage(cadre, pasDuGlissement(depart, vers, cadre, 0))).toEqual(avant);
+      }
+    }
+    // À l'arrivée, la vue est celle qu'on visait dans le cadre tel qu'il est devenu
+    const vers = { x: -40, y: -120, zoom: 0.8 };
+    expect(pasDuGlissement(depart, vers, { x: 64, y: 190 }, 1)).toEqual(vers);
+    // En route, le cadre passe de 232 à 64 : la carte ne saute pas, elle continue son chemin d'un seul mouvement
+    const juste = dansLaPage({ x: 232, y: 190 }, pasDuGlissement(depart, { x: 128, y: -120, zoom: 0.8 }, { x: 232, y: 190 }, adoucir(0.05)));
+    const apres = dansLaPage({ x: 64, y: 190 }, pasDuGlissement(depart, vers, { x: 64, y: 190 }, adoucir(0.05)));
+    expect(Math.abs(apres.x - juste.x)).toBeLessThan(1);
+    // Le rythme : de 0 à 1, sans jamais reculer, presque immobile au départ
+    expect(adoucir(0)).toBe(0);
+    expect(adoucir(1)).toBe(1);
+    expect(adoucir(0.05)).toBeLessThan(0.001);
+    let dernier = 0;
+    for (let t = 0; t <= 1; t += 0.05) {
+      expect(adoucir(t)).toBeGreaterThanOrEqual(dernier);
+      dernier = adoucir(t);
+    }
   });
 
   it("F03-AC59 — le cadre change de place quand la colonne se replie : les cartes restent d'abord où elles étaient à l'écran", () => {
