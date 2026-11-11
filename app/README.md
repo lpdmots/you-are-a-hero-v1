@@ -1101,7 +1101,7 @@ dépenser : « application-ia-simulee », où l'IA répond d'après les mots de 
 
 | Geste | Ce qui doit se voir |
 |---|---|
-| Cliquer une carte, puis « ✦ Construire la suite » | le panneau « Construire avec l'IA » à la place de celui de la scène ; la scène d'origine cerclée ; trois formes sous le champ vide |
+| Cliquer une carte, puis « ✦ Construire avec l'IA » | le panneau « Construire avec l'IA » à la place de celui de la scène ; la scène d'origine cerclée |
 | Écrire, ou dicter, « Le héros arrive dans la forêt, où trois chemins s'offrent à lui : le sentier des fougères, le ruisseau, la grotte », « ✦ Proposer » | les scènes en pointillé sous la carte, entières à l'écran ; dans le panneau, le bloc en arbre, « Le chapitre aura… » et « Ajouter … scènes et … choix » ; rien dans « Scènes » |
 | Cliquer une carte en pointillé | sa ligne s'ouvre dans le panneau |
 | Récrire un titre, un libellé, ouvrir « Consigne et liste » | la carte prend le titre ; rien n'est encore enregistré |

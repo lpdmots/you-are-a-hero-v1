@@ -58,7 +58,7 @@ test("Bloc de scènes : la demande, la proposition en pointillé, les retouches,
   await carte(page, "L’orée de la forêt").waitFor();
   await carte(page, "L’orée de la forêt").click();
   await capturer(page, "panneau-de-la-scene");
-  await page.getByRole("button", { name: "Construire la suite" }).click();
+  await page.locator(".panneau-chemin").getByRole("button", { name: "Construire avec l’IA" }).click();
   await capturer(page, "bloc-vide");
   await panneau(page).getByRole("button", { name: "Réglages" }).click();
   await capturer(page, "bloc-reglages");
@@ -81,7 +81,7 @@ test("Bloc de scènes : la demande, la proposition en pointillé, les retouches,
 
   // ——— Lot 4 : une question, puis la réponse qui redessine ———
   await carte(page, "Le vieux pont").click();
-  await page.getByRole("button", { name: "Construire la suite" }).click();
+  await page.locator(".panneau-chemin").getByRole("button", { name: "Construire avec l’IA" }).click();
   await capturer(page, "champ-vide");
   await proposer(page, "Trois chemins : le sentier des fougères, le ruisseau, et un troisième");
   await capturer(page, "question");
@@ -115,7 +115,7 @@ test("Bloc de scènes : la demande, la proposition en pointillé, les retouches,
   await carte(page, "Ponton — la voix du héron").waitFor();
   await carte(page, "Ponton — la voix du héron").scrollIntoViewIfNeeded();
   await carte(page, "Ponton — la voix du héron").click();
-  await page.getByRole("button", { name: "Construire la suite" }).click();
+  await page.locator(".panneau-chemin").getByRole("button", { name: "Construire avec l’IA" }).click();
   await proposer(page, "Une scène dans la vase avec trois choix");
   await page.waitForTimeout(800);
   await capturer(page, "grand-chapitre-proposition");
@@ -135,7 +135,7 @@ test("Bloc de scènes : la demande, la proposition en pointillé, les retouches,
   await aller(page, chemins(lisiere.id));
   await carte(page, "Le vieux pont").waitFor();
   await carte(page, "Le vieux pont").click();
-  await page.getByRole("button", { name: "Construire la suite" }).click();
+  await page.locator(".panneau-chemin").getByRole("button", { name: "Construire avec l’IA" }).click();
   await proposer(page, "Trois chemins : la clairière, le marécage, la tour");
   await capturer(page, "1366-proposition");
 });

@@ -220,7 +220,7 @@ export function PanneauDeScene({
   /** « Ajouter » ouvre la même bulle que le « + » de la carte */
   onAjouter: () => void; onFermer: () => void;
   boutonAjouter: RefObject<HTMLButtonElement | null>;
-  /** « ✦ Construire la suite » : le panneau du bloc de scènes, depuis cette scène (F13.7) */
+  /** « ✦ Construire avec l'IA » : le panneau du bloc de scènes, depuis cette scène (F13.7) */
   onConstruireLaSuite?: () => void;
 }) {
   const id = useId();
@@ -365,7 +365,7 @@ export function PanneauDeScene({
           {onConstruireLaSuite && aides.proposer && !scene.fin ? (
             <button type="button" className="btn btn--petit btn--ia panneau-chemin__bloc" onClick={onConstruireLaSuite}>
               <Icone nom="ia" />
-              Construire la suite
+              Construire avec l’IA
             </button>
           ) : null}
         </section>

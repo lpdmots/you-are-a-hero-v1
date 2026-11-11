@@ -4470,7 +4470,7 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
 - **Lot 3 construit le 11 novembre 2026,** en local (Opus 5.5, effort
   « high ») ; migration `bloc_de_scenes` en base locale seulement (une
   colonne, `enseignants.reglages_bloc`), rien poussé.
-  - *Ce qui est construit :* « ✦ Construire la suite » dans le panneau d'une
+  - *Ce qui est construit :* « ✦ Construire avec l'IA » dans le panneau d'une
     scène, et « ✦ Construire avec l'IA » à côté de « Ajouter une scène » dans
     un chapitre vide, ouvrent le panneau du bloc à droite du schéma : la
     demande, écrite ou dictée, « ✦ Proposer » ; la proposition d'Opus 5.5 se
@@ -4493,8 +4493,8 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     corrigés aussitôt, sans nouvelle mesure
     ([design](design.md#bloc-de-scènes--écrans-construits-11-novembre-2026)).
   - *Précisions prises en construisant, confirmées en bloc par lui le 11 novembre 2026 (« ok pour les précisions ») — ne plus les lui soumettre :*
-    1. l'entrée est dans le panneau de la scène cliquée (« ✦ Construire la
-       suite », pas pour une scène « Fin de l'histoire »), et dans
+    1. l'entrée est dans le panneau de la scène cliquée (« ✦ Construire avec
+       l'IA », d'abord « Construire la suite », pas pour une scène « Fin de l'histoire »), et dans
        l'invitation d'un chapitre vide. Révisé le 11 novembre 2026 sur son
        retour (« je ne vois pas de bouton ») : « ✦ Construire avec l'IA » est
        aussi dans la barre du schéma, toujours en vue, à côté de « Tout
