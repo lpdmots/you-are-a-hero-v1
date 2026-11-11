@@ -70,10 +70,29 @@ test("Choix en onglets, l'adulte : le marais au repos, survolé, cliqué, à reg
   await capturer(page, "plan");
   await carte(page, "Ponton — le marché du héron").hover();
   await capturer(page, "plan-carte-survolee");
-  await page.mouse.wheel(0, 520);
+  // On descend en tirant le fond : la molette change la taille (F03-AC58, révisé le 11 novembre 2026)
+  const monter = async (dy: number) => {
+    // Un point du bas du cadre où il n'y a que le fond : tirer une carte ne déplace rien
+    const point = await page.evaluate(() => {
+      const r = document.querySelector(".chemins__cadre")!.getBoundingClientRect();
+      for (let y = r.bottom - 12; y > r.bottom - 200; y -= 20)
+        for (let x = r.left + 12; x < r.right - 300; x += 20)
+          if (document.elementFromPoint(x, y)?.classList.contains("react-flow__pane")) return { x, y };
+      return null;
+    });
+    if (!point) throw new Error("Aucun fond libre à tirer");
+    await page.mouse.move(point.x, point.y);
+    await page.mouse.down();
+    await page.mouse.move(point.x, point.y - dy, { steps: 10 });
+    await page.mouse.up();
+  };
+  await monter(520);
   await capturer(page, "plan-plus-bas");
-  await page.mouse.wheel(0, 620);
+  await monter(620);
   await capturer(page, "plan-encore-plus-bas");
+  // Survolée, la carte grandit tout entière pour donner la note coupée en entier (F03-AC63, retouché le 11 novembre 2026)
+  await carte(page, "Cabane — le coffre de la passeuse").hover();
+  await capturer(page, "plan-carte-depliee");
 
   // ——— « À regarder » : le parcours choisit la carte et encadre l'onglet ———
   await page.getByRole("button", { name: "Suivant" }).click();

@@ -21,7 +21,8 @@ const capturer = async (page: Page, nom: string) => {
   await page.waitForTimeout(800);
   await page.screenshot({ path: `${dossier}/${String(n).padStart(2, "0")}-${nom}.png` });
 };
-const carte = (page: Page, titre: string) => page.locator(".carte-chemin", { hasText: titre });
+// Par son titre seul : la phrase d'un onglet peut contenir le titre d'une autre scène
+const carte = (page: Page, titre: string) => page.locator(".carte-chemin", { has: page.locator(".carte-chemin__titre", { hasText: titre }) });
 const plus = (page: Page, titre: string) => page.getByRole("button", { name: `Ajouter une suite à « ${titre} »` });
 const bloc = (page: Page) => page.locator(".panneau-bloc");
 

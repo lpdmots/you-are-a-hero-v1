@@ -63,6 +63,8 @@ type OngletDeCarte = {
   id: string; sorte: SorteDOnglet; l: number; lignes: number; texte: string; cache: boolean; propose: boolean;
   /** Sous la phrase, dans la voix de l'outil : le retour, la sortie, ce qui est à regarder ; sur une ou deux lignes */
   note: string | null; lignesDeNote: number;
+  /** Ce qui se lit en entier pour la carte regardée : la phrase coupée (survolée ou cliquée), la note coupée (survolée) */
+  coupe: boolean; noteCoupee: boolean;
   /** Vers un autre chapitre : son adresse, pour qui peut s'y rendre, et ce que dit le lien */
   lien?: string; aide?: string;
   /** Un choix « Sans destination » : l'adulte le relie en tirant son onglet jusqu'à une scène (F03-AC67) */
@@ -174,7 +176,7 @@ function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
     const cle = data.propose.cle;
     // Une scène que l'IA propose, pas encore ajoutée : en pointillé ; cliquée, sa ligne s'ouvre dans le panneau
     return (
-      <div className="noeud-chemin">
+      <div className={classes("noeud-chemin", data.onglets.some((o) => o.coupe) && "se-deplie", data.onglets.some((o) => o.noteCoupee) && "se-deplie-au-survol")}>
         <button
           type="button"
           className={classes("carte-chemin carte-chemin--proposee nodrag nopan", vue.ouverteDuBloc === cle && "est-ouverte")}
@@ -202,7 +204,14 @@ function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
   const rienNyMene = data.marques.includes("rien-n-y-mene");
   const sansSuite = data.marques.includes("sans-suite");
   return (
-    <div className={classes("noeud-chemin", vue.source === id && "est-source", sansSuite && "attend-une-suite")} style={{ "--pied": `${data.pied || 22}px` } as CSSProperties}>
+    <div
+      className={classes(
+        "noeud-chemin", vue.source === id && "est-source", sansSuite && "attend-une-suite",
+        // Regardée, la carte grandit tout entière pour qu'une phrase ou une note coupée se lise en entier (F03-AC63)
+        data.onglets.some((o) => o.coupe) && "se-deplie", data.onglets.some((o) => o.noteCoupee) && "se-deplie-au-survol",
+      )}
+      style={{ "--pied": `${data.pied || 22}px` } as CSSProperties}
+    >
     <div
       className={classes(
         "carte-chemin", selected && "est-choisie", vue.candidates.has(id) && "est-candidate", vue.designee === id && "est-designee", (vue.source === id || vue.cible === id) && "est-reliee",
@@ -504,7 +513,7 @@ export default function Schema({
           const ailleurs = o.sorte === "sortie" ? l.ailleurs : undefined;
           return {
             id: o.id, sorte: o.sorte, l: o.l, lignes: o.lignes, texte: texteDuLibelle(l), cache: l.cache, propose: !!l.propose,
-            note: noteDeLOnglet(o.sorte, l, (scene) => parId.get(scene)?.titre ?? "scène sans titre"), lignesDeNote: o.note,
+            note: noteDeLOnglet(o.sorte, l, (scene) => parId.get(scene)?.titre ?? "scène sans titre"), lignesDeNote: o.note, coupe: o.coupe, noteCoupee: o.noteCoupee,
             lien: ailleurs?.lien,
             aide: ailleurs
               ? ailleurs.lien

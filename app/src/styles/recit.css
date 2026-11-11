@@ -2504,17 +2504,37 @@ a.onglet-chemin__note:hover {
 .carte-chemin--proposee .onglet-chemin + .onglet-chemin {
   border-left: 1.5px dashed var(--ia-trait);
 }
-/* Pour la scène survolée ou cliquée, chaque phrase se lit en entier : l'onglet garde sa largeur et gagne en
-   hauteur, par-dessus ce qui est sous la carte (F03-AC63) ; sa note aussi, au survol seulement — pour la scène
-   cliquée, la ligne du retour est tracée et le panneau nomme la scène en entier */
-.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .onglet-chemin {
-  position: relative;
-  z-index: 3;
-}
+/* Pour la scène survolée ou cliquée, chaque phrase se lit en entier (F03-AC63) ; sa note aussi, au survol
+   seulement — pour la scène cliquée, la ligne du retour est tracée et le panneau nomme la scène en entier.
+   C'est la carte entière qui grandit, par-dessus ce qui est sous elle : son cadre, ses coins et son ombre
+   suivent, et ses onglets s'allongent d'un bloc, à la même hauteur (retouché le 11 novembre 2026 : l'onglet
+   dépassait seul de la carte, sans bord). Ses points de sortie, qui tomberaient au milieu des onglets, se
+   masquent le temps qu'elle est dépliée ; ses traits partent de dessous elle. */
 .chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .onglet-chemin__phrase > span,
 .chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover .onglet-chemin__note > span:last-child {
   display: block;
   overflow: visible;
+}
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .se-deplie .carte-chemin,
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover .se-deplie-au-survol .carte-chemin {
+  height: auto;
+  min-height: 100%;
+}
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .se-deplie .onglets-chemin,
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover .se-deplie-au-survol .onglets-chemin {
+  height: auto !important;
+  min-height: var(--pied);
+  align-items: stretch;
+}
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .se-deplie .sortie-chemin,
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover .se-deplie-au-survol .sortie-chemin {
+  opacity: 0;
+}
+/* Dépliée, la carte passe aussi au-dessus de la ligne d'un retour en arrière (Schema.tsx, zIndex 1100) : la
+   ligne sort de dessous elle au lieu de traverser ses onglets */
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected):has(.se-deplie),
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover:has(.se-deplie-au-survol) {
+  z-index: 1101 !important;
 }
 .chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover {
   z-index: 1001 !important;

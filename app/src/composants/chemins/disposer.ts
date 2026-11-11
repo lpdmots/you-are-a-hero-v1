@@ -63,6 +63,8 @@ export type Onglet = Place & {
   lignes: number; coupe: boolean;
   /** Le nombre de lignes de sa note — le retour, la sortie, ce qui manque —, deux au plus ; aucune pour une suite */
   note: number;
+  /** Sa note dépasse ses deux lignes : elle se lit en entier au survol */
+  noteCoupee: boolean;
   /** Le point d'où part son trait, au bord bas de la carte ; rien quand aucun trait n'en part */
   sortie: Point | null;
 };
@@ -154,7 +156,7 @@ type Aposer = { element: Element; l: number; h: number };
  */
 type Atracer = { id: string; de: string; vers: string; x: number | null };
 /** L'onglet d'un choix avant que sa carte ait sa place : sa largeur, et ce que sa phrase demande */
-type Prevu = { lien: LienDeChemin; sorte: SorteDOnglet; l: number; lignes: number; coupe: boolean; note: number };
+type Prevu = { lien: LienDeChemin; sorte: SorteDOnglet; l: number; lignes: number; coupe: boolean; note: number; noteCoupee: boolean };
 
 /**
  * La ligne d'un retour en arrière, de son onglet au côté de la scène où il revient : elle descend un
@@ -206,8 +208,9 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
       const sorte = sorteDOnglet(lien, scenes, retours);
       // La note tient sur deux lignes au plus : « retour à » et le titre de la scène, qui se reconnaît à sa fin
       const texte = noteDeLOnglet(sorte, lien, (scene) => titres.get(scene) ?? "scène sans titre");
-      const note = texte === null ? 0 : Math.min(ONGLET.lignesDeNote, lignesDe(texte, (l - 2 * ONGLET.cote - ONGLET.signe) / 1.04, (t) => mesurer(t, "etiquette")));
-      return { lien, sorte, l, lignes: Math.min(ONGLET.lignes, lignes), coupe: lignes > ONGLET.lignes, note };
+      const lignesDeNote = texte === null ? 0 : lignesDe(texte, (l - 2 * ONGLET.cote - ONGLET.signe) / 1.04, (t) => mesurer(t, "etiquette"));
+      const note = Math.min(ONGLET.lignesDeNote, lignesDeNote);
+      return { lien, sorte, l, lignes: Math.min(ONGLET.lignes, lignes), coupe: lignes > ONGLET.lignes, note, noteCoupee: lignesDeNote > ONGLET.lignesDeNote };
     });
     const h = ONGLET.haut + ONGLET.bas + Math.max(...onglets.map((o) => o.lignes * ONGLET.ligne + (o.note ? ONGLET.note + (o.note - 1) * ONGLET.ligneDeNote : 0)));
     prevus.set(scene, { onglets, h });
@@ -309,7 +312,7 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
           const depart = departs.get(o.lien.id);
           const gauche = p.x + (depart === undefined ? i * o.l : depart - o.l / 2);
           const part = o.sorte === "suite" || o.sorte === "retour";
-          return { id: o.lien.id, de: scene, sorte: o.sorte, x: gauche, y: p.y + p.h - h, l: o.l, h, lignes: o.lignes, coupe: o.coupe, note: o.note, sortie: part ? { x: gauche + o.l / 2, y: p.y + p.h } : null };
+          return { id: o.lien.id, de: scene, sorte: o.sorte, x: gauche, y: p.y + p.h - h, l: o.l, h, lignes: o.lignes, coupe: o.coupe, note: o.note, noteCoupee: o.noteCoupee, sortie: part ? { x: gauche + o.l / 2, y: p.y + p.h } : null };
         })
         .sort((a, b) => a.x - b.x),
     );
