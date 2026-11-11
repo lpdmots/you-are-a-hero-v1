@@ -1590,7 +1590,10 @@ le porteur décide :
       couvrait le départ des traits (critique du 11 novembre 2026).
     - *Cliquer un onglet,* c'est cliquer sa carte ; pour l'adulte, la ligne
       de ce choix est en plus désignée un instant dans le panneau, comme le
-      faisait le libellé cliqué sur sa flèche.
+      faisait le libellé cliqué sur sa flèche. **Révisé par le porteur le
+      11 novembre 2026** ([« Modifier un choix »](#f03-modifier-un-choix)) :
+      pour l'adulte, cliquer un onglet ouvre ce choix ; pour l'élève, c'est
+      toujours cliquer sa carte.
     - *Un retour en arrière ne pèse plus dans la disposition.* C'est un
       choix qui ramène à une scène par laquelle le lecteur est passé pour
       arriver là : il ferme une boucle. Les cartes se placent comme s'il
@@ -1620,6 +1623,51 @@ le porteur décide :
       le nom de l'enseignant sur celle que celui-ci écrit ; le prénom d'un
       élève retiré reste sur la scène qu'il a remise ou finie (F06.3).
     - *De loin,* un onglet à regarder garde son ambre, sans ses mots.
+- <a id="f03-modifier-un-choix"></a>**Modifier un choix depuis « Chemins »
+  (idée du porteur le 11 novembre 2026, règle proposée sur sa demande et
+  validée le même jour, avec les trois recommandations ; non construit,
+  F03-AC70 à AC76).** Construire le plan dans « Chemins » laissait un
+  aller-retour : pour corriger la phrase d'un choix ou changer où il mène, il
+  fallait ouvrir la scène et sa copie. C'est pourtant ce qu'on retouche le
+  plus en construisant.
+  - *Ouvrir un choix.* Pour l'adulte, cliquer l'onglet d'un choix, ou sa
+    ligne dans « Ses choix », ouvre ce choix dans l'espace de travail ; la
+    carte de sa scène est choisie, et l'onglet et le trait du choix restent
+    désignés sur le schéma tant qu'il est ouvert. Cela révise la précision
+    « cliquer un onglet, c'est cliquer sa carte » de « Choix en onglets ».
+    Survoler un onglet fait toujours ressortir son trait, et tirer un onglet
+    « Sans destination » le relie toujours : un clic ouvre, un tirage relie.
+  - *L'écran du choix : les réglages de la copie, en entier.* La phrase et sa
+    flèche ronde, la ou les destinations avec « + », « Changer… » et leur
+    ordre par le repère de prise, « Cacher ce choix (énigme) » et
+    « Supprimer » — le panneau des réglages d'un choix de
+    [F05.2](#f052--créer-et-modifier-un-choix-dans-la-scène), sans version
+    réduite : un choix se modifie de la même façon partout. Une destination
+    peut être une nouvelle scène, qui se crée à la fin du chapitre comme avec
+    le « + ». Un lien caché s'ouvre de même, par son onglet « Lien caché ».
+  - *Le retour vers la scène.* En haut à gauche de l'écran du choix, « ← »
+    suivi du titre de la scène ramène à l'espace de travail de la scène ;
+    Échap fait de même. Un seul niveau : la scène, puis l'un de ses choix.
+    Cliquer une autre carte ouvre cette scène ; cliquer un autre onglet,
+    ce choix.
+  - *L'enregistrement.* Comme le titre et la consigne dans le panneau de la
+    scène : sans bouton, aussitôt la saisie posée. Le schéma suit : la phrase
+    de l'onglet, son trait, sa place. Supprimer le choix ramène à la scène et
+    dit le résultat avec « Annuler », comme la suppression d'un choix depuis
+    « Chemins ».
+  - *Celui qui écrit la scène n'est jamais arrêté*
+    ([F08.1](#f08-ajout-du-plan)) : le choix modifié reste à sa place dans le
+    texte, et la copie ouverte de la scène le reçoit au prochain
+    enregistrement. Si l'élève modifie le même choix au même moment dans sa
+    copie, la modification venue de « Chemins » l'emporte, sans texte gardé à
+    part (recommandation acceptée : rare, et simple à comprendre ; garder
+    son texte à part, avec les écrans de conflit, était lourd pour un seul
+    bloc).
+  - *Pour l'adulte seul,* aux conditions des autres gestes de « Construire
+    dans Chemins » : ni l'élève, ni le téléphone, ni la vue de loin. Changer
+    en le tirant la destination d'un onglet qui en a déjà une n'est pas
+    retenu : le geste serait trop facile à faire par erreur, et rien ne le
+    dirait à l'écran.
 - **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
   « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
   carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène
@@ -1764,6 +1812,47 @@ le porteur décide :
   trait en pointillé part de cet onglet ; les onglets se rangent comme
   partent leurs traits (F03-AC62), les scènes proposées suivant l'ordre des
   fiches (F13-AC43).
+- **F03-AC70 — Ouvrir un choix depuis son onglet :** étant donné « Marais —
+  la barque s'enlise » dans « Chemins », lorsque l'adulte clique l'onglet
+  « Longer la vieille digue », alors l'espace de travail montre les réglages
+  de ce choix, avec en haut à gauche « ← Marais — la barque s'enlise » ; la
+  carte est choisie, et l'onglet et le trait du choix restent désignés ;
+  cliquer la ligne « Longer la vieille digue » dans « Ses choix » fait de
+  même ; Hugo, élève, qui clique le même onglet, ne fait que choisir la
+  carte.
+- **F03-AC71 — Les réglages de la copie, en entier :** étant donné le choix
+  ouvert, alors on y trouve ce que donne le panneau du choix dans la copie
+  (F05.2) : la phrase et sa flèche ronde, les destinations avec « + »,
+  « Changer… » et le repère de prise, « Cacher ce choix (énigme) » et
+  « Supprimer » ; choisir « Nouvelle scène » crée la scène à la fin du
+  chapitre, sans texte ni élève, et le choix y mène.
+- **F03-AC72 — Modifier la phrase :** étant donné le choix ouvert, lorsque
+  l'adulte remplace sa phrase par « Suivre la vieille digue jusqu'au
+  bout », alors l'onglet porte la nouvelle phrase sans autre geste, la phrase
+  est notée « modifiée », et la copie de la scène, rouverte, montre la même
+  phrase à la même place.
+- **F03-AC73 — Changer de destination :** étant donné « Appeler à l'aide »,
+  qui mène à « Ponton — la voix du héron », lorsque l'adulte change sa
+  destination pour « Tourbière — le sol qui tremble », alors son trait mène
+  à cette carte, le choix garde sa place dans le texte et son onglet sa
+  phrase, sauf si elle était automatique : elle suit alors la destination,
+  comme dans la copie.
+- **F03-AC74 — Revenir à la scène :** étant donné un choix ouvert, lorsque
+  l'adulte active « ← » ou appuie sur Échap, alors l'espace de travail
+  montre de nouveau la scène, « Ses choix » dans l'ordre du texte ; cliquer
+  une autre carte ouvre cette scène ; supprimer le choix ramène à la scène,
+  le choix retiré de l'onglet et du texte, avec un message et « Annuler »,
+  qui le rend à sa place.
+- **F03-AC75 — Pendant qu'un élève écrit la scène :** étant donné Alice
+  écrivant « L'orée de la forêt », lorsque Mme Laurent modifie la phrase et
+  la destination de l'un de ses choix depuis « Chemins », puis qu'Alice
+  continue d'écrire, alors son enregistrement suivant réussit, son texte est
+  entier, le choix modifié est à sa place et se lit dans sa copie ; si Alice
+  avait changé ce même choix entre-temps, c'est la version de Mme Laurent
+  qui reste ; aucun texte n'est gardé à part et Alice n'est pas arrêtée.
+- **F03-AC76 — Ni l'élève, ni le téléphone, ni de loin :** étant donné Hugo
+  dans « Chemins », un écran de 390 points, ou le schéma après « Tout
+  voir », alors aucun choix ne s'ouvre pour être modifié.
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
@@ -6737,6 +6826,15 @@ changement d'état de la scène.
   ce que le mécanisme savait déjà faire, est écarté : son onglet aurait
   changé de place et le choix aurait quitté la sienne dans le texte
   ([architecture](architecture.md#choix-en-onglets-11-novembre-2026)).
+- **Un choix modifié depuis le plan (validé par le porteur le 11 novembre
+  2026, [« Modifier un choix »](#f03-modifier-un-choix), F03-AC75 ; non
+  construit) :** sa phrase, ses destinations, leur ordre ou son passage en
+  lien caché, changés depuis « Chemins », remplacent le bloc du choix à sa
+  place dans le texte. C'est une quatrième sorte de retouche du plan, reprise
+  comme les trois autres : celui qui écrit la scène n'est pas arrêté, et sa
+  copie reçoit le choix modifié. Pour un même choix, la dernière retouche
+  compte, y compris contre une modification du même bloc faite entre-temps
+  dans la copie ; tout le reste du texte de la copie est gardé.
 
 - **F08-AC44 — Ajout pendant qu'un élève écrit :** étant donné Alice
   écrivant dans « L'orée de la forêt », lorsque Mme Laurent y ajoute trois

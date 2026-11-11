@@ -4860,7 +4860,9 @@ le plus simple) :
 6. *Lien caché :* un onglet « Lien caché » marqué de la clé, dans la voix de
    l'outil, après les choix du texte ; son trait en pointillé.
 7. *Cliquer un onglet,* c'est cliquer sa carte ; pour l'adulte, la ligne du
-   choix est désignée un instant dans le panneau.
+   choix est désignée un instant dans le panneau. **Révisée par le porteur le
+   11 novembre 2026 :** pour l'adulte, le clic ouvre le choix
+   ([« Modifier un choix depuis Chemins »](#modifier-un-choix-depuis--chemins--f031-11-novembre-2026)).
 8. *Qui écrit, en mots :* le prénom (l'initiale pour deux mêmes prénoms),
    « Vous » pour la scène de l'enseignant ; pour l'élève « Toi » sur la
    sienne et le nom de l'enseignant sur celle que celui-ci écrit ; le prénom
@@ -4909,6 +4911,49 @@ plancher à 85 % la porterait à 12, au prix d'un marais qui défile de côté
 dans tous les cas : c'est le seuil de lecture qu'il a fixé le 8 novembre
 (F03-AC43), donc sa décision. Le liseré de la couleur du chapitre, ocre
 dans le marais, se lit comme l'ambre de ce qui attend (les deux lectures).
+
+**Retouches du 11 novembre 2026, à sa demande, dans une conversation à part
+(Opus 5.5), un commit local chacune, rien poussé :** la tête de la carte suit
+son titre, sans seconde ligne vide (59 points pour une ligne, 76 pour deux) ;
+la molette change la taille du schéma autour du pointeur, on se déplace en
+tirant le fond (F03-AC58 révisé, deux doigts sur un pavé tactile zoomant
+aussi, conséquence acceptée) ; la carte regardée grandit tout entière quand
+une phrase ou une note coupée se lit en entier, au lieu d'un onglet qui
+dépassait seul (« pas joli »). Les scripts de captures cherchent une carte
+par son titre seul et se déplacent en tirant le fond ; celui de l'atelier
+(`chemins-atelier`) n'a pas été relancé jusqu'au bout.
+
+### Modifier un choix depuis « Chemins » (F03.1, 11 novembre 2026)
+
+**Idée du porteur, règle proposée et validée le 11 novembre 2026** (« écris
+les règles »), avec les trois recommandations : le clic sur l'onglet ouvre le
+choix ; la modification venue de « Chemins » l'emporte sur celle du même
+choix faite entre-temps dans la copie ; l'écran complet du choix, sans
+version réduite. Règles : [F03.1](specifications.md#f03-modifier-un-choix),
+F03-AC70 à AC76, et [F08.1](specifications.md#f08-ajout-du-plan). Ne pas lui
+reposer : le tirage d'un onglet qui a déjà une destination, écarté.
+
+**Vérifié avant d'écrire la règle, sans rien construire :**
+
+- `FicheReglagesChoix` (`app/src/composants/copie/FicheChoix.tsx`) ne dépend
+  pas de l'éditeur Plate : il reçoit le bloc `Choix`, des `GestesDeChoix`
+  (régler, écrire, automatiser, ajouter, changer et ordonner les
+  destinations, supprimer, cacher) et le contexte de la copie (`useCopie` :
+  le livre, `pourEleve`). Le réutiliser dans l'espace de travail de
+  « Chemins » demande de lui fournir ce contexte et des gestes qui écrivent
+  dans le plan.
+- Les retouches du plan (`retouches_du_plan`) savent trois sortes :
+  `ajoute` (un bloc à la fin), `retire` (un bloc par son identité), `relie`
+  (la destination d'un renvoi, migration `relier_depuis_le_plan`). Modifier
+  un choix demande une quatrième sorte, le remplacement d'un bloc à sa
+  place (la dernière retouche compte pour un même bloc), rejouée comme les
+  autres sur le texte d'une page en retard : **une migration**, à dire au
+  porteur avant de l'écrire, en base locale seulement.
+
+**Construction :** non commencée ; lancée à sa demande dans une conversation
+à part (Fable 5.2). Un lot, un commit local, rien poussé sur `main` ni
+appliqué à la vraie base sans sa demande ; écran sans maquette : impeccable,
+critique en deux lectures seulement s'il la demande.
 
 ## Hors de la première livraison
 
