@@ -12,10 +12,11 @@ import {
 import type { Construction, FormuleRenvoi } from "./preparation";
 
 /**
- * Les onglets d'un choix dans « Chemins » (F03-AC70) : un par destination de sa phrase, sous l'identité de
- * son renvoi ; celui d'un lien caché, sous la sienne. Ce sont eux qui restent désignés tant que le choix est ouvert.
+ * Les liens d'un choix dans « Chemins » (F03-AC70) : un par destination de sa phrase, sous l'identité de
+ * son renvoi ; celui d'un lien caché, sous la sienne. Le choix n'a qu'un onglet, d'où part un trait par
+ * destination : l'onglet et ses traits restent désignés tant que le choix est ouvert.
  */
-export const ongletsDuChoix = (bloc: Choix | Liaison): string[] => (bloc.type === "liaison" ? [bloc.id] : renvoisDe(bloc).map((r) => r.id));
+export const liensDuChoix = (bloc: Choix | Liaison): string[] => (bloc.type === "liaison" ? [bloc.id] : renvoisDe(bloc).map((r) => r.id));
 
 /** « Ce que fait le lecteur » : le libellé ; une phrase automatique le reprend aussitôt. */
 export const avecLibelle = (bloc: Choix, libelle: string): Choix => ({ ...bloc, libelle });

@@ -5,7 +5,7 @@ import {
   type Bloc, type BlocPose, type Choix, type ChoixAuto, type ChoixPerso, type Droits, type Liaison, type Texte,
 } from "@/domaine/copie";
 import {
-  automatisee, avecDestination, avecDestinationsOrdonnees, avecLibelle, avecPhrase, avecUneDestinationDePlus, choixDeLaLiaison, liaisonDuChoix, ongletsDuChoix, sansRenvoi,
+  automatisee, avecDestination, avecDestinationsOrdonnees, avecLibelle, avecPhrase, avecUneDestinationDePlus, choixDeLaLiaison, liaisonDuChoix, liensDuChoix, sansRenvoi,
   seuleDestination,
 } from "@/domaine/modifier-choix";
 
@@ -25,19 +25,19 @@ const longer = auto(u(10), "Longer la vieille digue", DIGUE);
 const appeler = auto(u(11), "Appeler à l’aide", PONTON);
 
 describe("Modifier un choix depuis « Chemins » : ouvrir (F03.1)", () => {
-  it("F03-AC70 — l'onglet d'un choix s'ouvre pour l'adulte qui construit ; les onglets du choix ouvert sont ceux de ses destinations, celui d'un lien caché le sien", () => {
+  it("F03-AC70 — l'onglet d'un choix s'ouvre pour l'adulte qui construit ; le choix ouvert garde désignés son onglet et un trait par destination, le lien caché le sien", () => {
     const adulte = peutConstruire({ adulte: true, aChoix: true, etroit: false });
     expect(peutOuvrirUnChoix({ construit: adulte, loin: false })).toBe(true);
     // Hugo, élève, qui clique le même onglet, ne fait que choisir la carte
     expect(peutOuvrirUnChoix({ construit: peutConstruire({ adulte: false, aChoix: true, etroit: false }), loin: false })).toBe(false);
 
-    expect(ongletsDuChoix(longer)).toEqual([longer.id]);
+    expect(liensDuChoix(longer)).toEqual([longer.id]);
     const deux = avecUneDestinationDePlus(longer, PONTON, "rends");
-    // Une phrase à deux destinations a deux onglets : tous deux restent désignés
-    expect(ongletsDuChoix(deux)).toEqual(renvoisDe(deux).map((r) => r.id));
-    expect(ongletsDuChoix(deux)).toHaveLength(2);
+    // Une phrase à deux destinations garde un seul onglet, d'où partent deux traits : tous deux restent désignés
+    expect(liensDuChoix(deux)).toEqual(renvoisDe(deux).map((r) => r.id));
+    expect(liensDuChoix(deux)).toHaveLength(2);
     const cache: Liaison = { type: "liaison", id: u(20), cible: TOURBIERE, children: [{ text: "" }] };
-    expect(ongletsDuChoix(cache)).toEqual([cache.id]);
+    expect(liensDuChoix(cache)).toEqual([cache.id]);
   });
 
   it("F03-AC76 — ni l'élève, ni le téléphone, ni la vue de loin, ni un choix que l'IA propose : aucun choix ne s'ouvre pour être modifié", () => {

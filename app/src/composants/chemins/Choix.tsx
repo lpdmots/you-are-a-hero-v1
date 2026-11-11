@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { NoeudDeChemin } from "@/domaine/chemins";
 import { estChoix, type Choix, type Liaison } from "@/domaine/copie";
 import {
-  automatisee, avecDestination, avecDestinationsOrdonnees, avecPhrase, avecUneDestinationDePlus, ongletsDuChoix, sansRenvoi, seuleDestination,
+  automatisee, avecDestination, avecDestinationsOrdonnees, avecPhrase, avecUneDestinationDePlus, liensDuChoix, sansRenvoi, seuleDestination,
 } from "@/domaine/modifier-choix";
 import { constructionsUtiles, type Construction, type FormuleRenvoi } from "@/domaine/preparation";
 import { Contexte, type ContexteDeCopie, type Livre, type Services } from "../copie/contexte";
@@ -53,7 +53,7 @@ export function PanneauDeChoix({
   services: ServicesDuChoix;
   /** « ← » : l'espace de travail montre de nouveau la scène (F03-AC74) */
   onRevenir: () => void;
-  /** Les onglets de ce choix, tels qu'ils sont à présent : le schéma les garde désignés (F03-AC70) */
+  /** Les liens de ce choix, tels qu'ils sont à présent : le schéma garde désignés son onglet et ses traits (F03-AC70) */
   onOnglets: (ids: string[]) => void;
   /** Juste avant d'enregistrer : le schéma retient la carte qui ne doit pas bouger */
   avant: () => void;
@@ -78,7 +78,7 @@ export function PanneauDeChoix({
       if (!fait.ok) return setErreur(fait.erreur);
       setBloc(fait.bloc);
       setLu(fait);
-      onOnglets(ongletsDuChoix(fait.bloc));
+      onOnglets(liensDuChoix(fait.bloc));
     });
     retour.current?.focus({ preventScroll: true });
     return () => {
@@ -108,7 +108,7 @@ export function PanneauDeChoix({
   const changer = (suite: Choix, delai: number) => {
     if (suite === bloc) return;
     setBloc(suite);
-    onOnglets(ongletsDuChoix(suite));
+    onOnglets(liensDuChoix(suite));
     avant();
     e.prevoir(() => services.modifier(scene.id, suite), delai, "choix");
   };

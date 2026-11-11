@@ -1215,8 +1215,8 @@ avec le compte local ; la vraie base n'est pas touchée.
 | Changer « Ce que fait le lecteur », puis Entrée | « Enregistré » ; l'onglet porte le nouveau libellé, la phrase automatique aussi |
 | « Changer… », choisir « Tourbière — le sol qui tremble » | le trait mène à cette carte ; l'onglet garde sa place |
 | Écrire dans « La phrase » | « modifiée » ; l'onglet garde le libellé |
-| « + », choisir une scène | deux destinations, deux onglets cernés, deux traits |
-| « ← », ou Échap | la scène revient, « Ses choix » dans l'ordre du texte, la ligne du choix désignée un instant |
+| « + », choisir une scène | deux destinations : un seul onglet cerné, d'où partent deux traits allumés |
+| « ← », ou Échap | la scène revient, « Ses choix » dans l'ordre du texte, la ligne du choix désignée un instant, ses deux destinations dessous |
 | Cliquer le libellé d'une ligne de « Ses choix » | ce choix s'ouvre, comme par son onglet |
 | « Supprimer ce choix » | retour à la scène, l'onglet parti ; « Annuler » le rend à sa place, entre ses voisins |
 | « Cacher ce choix (énigme) » | l'onglet devient « Lien caché », son trait en points ; « Annuler » rend la phrase à sa place |

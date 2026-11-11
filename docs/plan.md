@@ -5005,7 +5005,7 @@ place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
 rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
 
 **Précisions prises en construisant, à lui faire confirmer** (trois au plus
-par échange ; les sept premières sont confirmées, cinq restent) :
+par échange ; les dix premières sont réglées, deux restent) :
 
 1. *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins » :
    changer « Ce que fait le lecteur » change l'onglet ; réécrire « La
@@ -5037,20 +5037,33 @@ par échange ; les sept premières sont confirmées, cinq restent) :
    entière,* avec toutes ses destinations ; la corbeille de « Ses choix »
    refuse toujours une phrase à plusieurs destinations, et dit désormais
    « ouvrez ce choix pour la modifier ». **Confirmé par le porteur le
-   11 novembre 2026.**
+   11 novembre 2026.** Dépassé le même jour pour la corbeille : depuis « un
+   choix, un onglet » (précision 9), la ligne de « Ses choix » est le choix
+   entier, toutes ses destinations en vue, et sa corbeille l'emporte entier
+   elle aussi (`82827e8`).
 7. *Un seul niveau :* pas de croix sur l'écran du choix ; « ← », Échap ou
    une autre carte ramènent à la scène, un second Échap au plan. Cliquer la
    carte déjà choisie ne referme pas le choix ; cliquer le fond du schéma
    revient au plan. **Confirmé par le porteur le 11 novembre 2026 :** ne pas
    lui reproposer de croix sur l'écran du choix.
 8. *La scène attend sous le choix :* son panneau garde ce qu'on y tapait, et
-   au retour la ligne du choix est désignée un instant.
-9. *Une phrase à deux destinations* a ses deux onglets désignés ; chacun de
-   ses onglets, ou chacune de ses deux lignes, ouvre la même phrase.
+   au retour la ligne du choix est désignée un instant. **Confirmé par le
+   porteur le 11 novembre 2026.**
+9. *Une phrase à deux destinations :* j'avais construit deux onglets
+   désignés et deux lignes de « Ses choix ». **Remplacé sur décision du
+   porteur le 11 novembre 2026,** construite dans une conversation parallèle
+   (`82827e8`) : un choix, un onglet ; s'il mène à plusieurs scènes, un seul
+   onglet d'où part un trait par destination, et une seule ligne dans « Ses
+   choix », ses destinations dessous. Le choix ouvert garde donc son onglet
+   cerné et tous ses traits allumés ; vérifié à l'écran avec ce lot. Ne pas
+   lui reproposer un onglet par destination. Les règles de « Choix en
+   onglets » (F03-AC62, design) ne le disent pas encore : à accorder par la
+   conversation qui l'a construit.
 10. *L'enregistrement :* aussitôt pour une destination, l'ordre, la flèche
     ronde ; à la sortie du champ ou à Entrée pour « Ce que fait le lecteur »,
     comme dans la copie ; 0,7 s après la frappe pour « La phrase ». Chaque
     enregistrement est une version de la scène, comme tout geste du plan.
+    **Confirmé par le porteur le 11 novembre 2026.**
 11. *Une nouvelle scène créée depuis « Changer… »* peut l'être dans un autre
     chapitre, comme dans la copie ; elle se crée à la fin du chapitre choisi.
 12. *Les mots :* « Modifier ce choix » et « Régler ce lien caché » en bulle
@@ -5059,10 +5072,9 @@ par échange ; les sept premières sont confirmées, cinq restent) :
 
 **À lui dire, sans décision de ma part**
 ([design](design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) :
-une phrase à deux destinations se lit comme deux choix de même libellé tant
-qu'on ne l'a pas ouverte ; « Supprimer ce choix » (cerné de brique, venu de
-la copie) et « Supprimer la scène » (gris, de « Chemins ») n'ont pas la même
-forme au même pied de volet.
+« Supprimer ce choix » (cerné de brique, venu de la copie) et « Supprimer la
+scène » (gris, de « Chemins ») n'ont pas la même forme au même pied de
+volet.
 
 **Essai :** `app/README.md`, « Essayer « Modifier un choix depuis
 Chemins » ».

@@ -1697,6 +1697,19 @@ le porteur décide :
       entière,* avec toutes ses destinations ; la corbeille de « Ses choix »
       refuse toujours une phrase qui mène à plusieurs scènes, et renvoie à
       l'écran du choix. **Confirmé par le porteur le 11 novembre 2026.**
+      Dépassé le même jour pour la corbeille : un choix qui mène à plusieurs
+      scènes n'a plus qu'un onglet et qu'une ligne dans « Ses choix », toutes
+      ses destinations en vue (décision du porteur, construite dans une
+      conversation parallèle) ; la corbeille de cette ligne l'emporte donc
+      entier, elle aussi.
+    - *Le choix ouvert garde désignés son onglet et tous ses traits,* un par
+      destination ; au retour, sa ligne est désignée un instant, et la scène
+      est telle qu'on l'avait laissée. **Confirmé par le porteur le
+      11 novembre 2026.**
+    - *L'enregistrement* se fait aussitôt pour une destination, leur ordre et
+      la flèche ronde ; à la sortie du champ ou à Entrée pour « Ce que fait le
+      lecteur » ; 0,7 seconde après la frappe pour « La phrase ». **Confirmé
+      par le porteur le 11 novembre 2026.**
     - *Cliquer la carte déjà choisie* ne referme pas le choix ; « ← », Échap
       ou une autre carte le font. Cliquer le fond du schéma revient au plan.
       Un seul niveau, sans croix sur l'écran du choix. **Confirmé par le

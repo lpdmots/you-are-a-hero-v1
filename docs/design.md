@@ -1856,17 +1856,14 @@ de la copie ouverte à côté (`app/test-results/captures/modifier-un-choix/`) ;
 | Les réglages | Ceux de la copie, dans le même ordre : le signe du choix et « Choix » en titre (1,2 rem, comme le titre de la scène) ; « Ce que fait le lecteur » ; « Destination(s) » avec son « + », « Changer… », « Retirer » et le repère de prise ; « La phrase », son « i », « modifiée » et la flèche ronde. Dans le volet, la fiche perd son cadre canard, son ombre, ses coins et sa croix : c'est le contenu du volet, pas une fiche posée sur le texte. |
 | Le pied | Celui du volet : à gauche « Cacher ce choix (énigme) », en lien avec la clé ; à droite « Supprimer ce choix », cerné de brique, jamais plein. |
 | La liste des scènes | « Changer… » ou « + » l'ouvrent sous les destinations ; le volet défile de lui-même pour qu'elle vienne en vue. |
-| L'onglet du choix ouvert | Fond canard pâle, cerné de canard (2 points), tant que le choix est ouvert ; une phrase à deux destinations a ses deux onglets cernés. Son trait est le seul en canard foncé : les autres chemins de la scène s'effacent comme ceux du reste du schéma. Le lien caché garde son trait en points ronds, plus sombre. |
-| « Ses choix », dans le panneau de la scène | Le libellé de chaque ligne est un bouton : suivi d'un petit chevron gris, il passe en canard au survol, la ligne sur fond de feuille grise, le chevron avançant de 2 points. La corbeille reste au bout de la ligne ; le lien caché n'en a pas, il se retire depuis ses réglages. Au retour d'un choix, sa ligne est désignée un instant (canard pâle). |
+| L'onglet du choix ouvert | Fond canard pâle, cerné de canard (2 points), tant que le choix est ouvert. Ses traits sont les seuls en canard foncé — un par destination, tous partis du même onglet (« un choix, un onglet », décidé par le porteur le 11 novembre 2026 et construit dans une conversation parallèle) : les autres chemins de la scène s'effacent comme ceux du reste du schéma. Le lien caché garde son trait en points ronds, plus sombre. |
+| « Ses choix », dans le panneau de la scène | Le libellé de chaque ligne est un bouton : suivi d'un petit chevron gris, il passe en canard au survol, la ligne sur fond de feuille grise, le chevron avançant de 2 points. La corbeille reste au bout de la ligne ; le lien caché n'en a pas, il se retire depuis ses réglages. Un choix qui mène à plusieurs scènes tient sur une seule ligne, ses destinations l'une sous l'autre. Au retour d'un choix, sa ligne est désignée un instant (canard pâle). |
 | Le lien caché ouvert | La fiche « Lien caché · [scène] » de la copie : la phrase d'aide, le numéro que doit donner l'énigme, « Proposer comme choix », et au pied « Retirer ce lien caché ». |
 | Les messages | Au-dessus du schéma, comme les autres gestes de « Chemins », avec « Annuler » : « Le choix « … » est supprimé. » ; « Le choix est caché : c'est maintenant un lien caché, hors du récit. S007 « … » garde le n° 33. » ; « Le lien caché est devenu une phrase de choix, à la fin du texte. » ; « Lien caché retiré. » |
 | L'ouverture qui tarde | L'en-tête est là aussitôt ; « Ouverture du choix… » ne s'écrit que si la lecture dépasse un tiers de seconde. Un choix qui n'est plus dans la scène : « Ce choix n'est plus dans la scène. », en brique, sous l'en-tête. |
 | De loin, l'élève, le téléphone | Rien ne change : l'onglet cliqué choisit sa carte, sans rien ouvrir ; l'élève n'a pas d'espace de travail ; le téléphone garde la liste. |
 
-**Ce qui paraît perfectible, à dire au porteur.** Une phrase à deux
-destinations fait deux onglets et deux lignes de « Ses choix » au même
-libellé : c'est la règle des onglets (un par choix qui mène quelque part),
-mais rien ne dit qu'ils sont une seule phrase avant de l'ouvrir. La liste
+**Ce qui paraît perfectible, à dire au porteur.** La liste
 des scènes de « Changer… », haute de 236 points, tient juste dans le volet
 en 768 points de haut : le pied et l'en-tête restent fixes, le milieu défile.
 « Supprimer ce choix » est cerné de brique ici, alors que « Supprimer la
