@@ -1674,7 +1674,8 @@ le porteur décide :
       et comme le dit la copie (F05.2 : le libellé « sert à nommer ce choix
       dans les chemins »). Changer « Ce que fait le lecteur » change donc
       l'onglet ; réécrire « La phrase » à la main la note « modifiée » et
-      laisse l'onglet tel quel. F03-AC72 se lit ainsi.
+      laisse l'onglet tel quel. **Confirmé par le porteur le 11 novembre
+      2026 ;** F03-AC72 est révisé en ce sens.
     - *« Annuler » rend un choix supprimé à sa place,* entre ses voisins, et
       non plus à la fin du texte — aussi pour la corbeille de « Ses choix »,
       qui le remettait à la fin.
@@ -1851,11 +1852,15 @@ le porteur décide :
   « Changer… » et le repère de prise, « Cacher ce choix (énigme) » et
   « Supprimer » ; choisir « Nouvelle scène » crée la scène à la fin du
   chapitre, sans texte ni élève, et le choix y mène.
-- **F03-AC72 — Modifier la phrase :** étant donné le choix ouvert, lorsque
-  l'adulte remplace sa phrase par « Suivre la vieille digue jusqu'au
-  bout », alors l'onglet porte la nouvelle phrase sans autre geste, la phrase
-  est notée « modifiée », et la copie de la scène, rouverte, montre la même
-  phrase à la même place.
+- **F03-AC72 — Modifier le libellé, modifier la phrase :** étant donné le
+  choix ouvert, lorsque l'adulte remplace « Ce que fait le lecteur » par
+  « Suivre la vieille digue jusqu'au bout », alors l'onglet porte ce libellé
+  sans autre geste, et la phrase automatique le reprend ; lorsqu'il réécrit
+  « La phrase » à la main, elle est notée « modifiée », l'onglet garde le
+  libellé, et la copie de la scène, rouverte, montre la même phrase à la même
+  place. **Révisé le 11 novembre 2026** (« on laisse « Ce que fait le
+  lecteur » ») : le critère disait d'abord que l'onglet portait la phrase
+  réécrite.
 - **F03-AC73 — Changer de destination :** étant donné « Appeler à l'aide »,
   qui mène à « Ponton — la voix du héron », lorsque l'adulte change sa
   destination pour « Tourbière — le sol qui tremble », alors son trait mène

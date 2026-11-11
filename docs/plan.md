@@ -5005,13 +5005,14 @@ place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
 rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
 
 **Précisions prises en construisant, à lui faire confirmer** (trois au plus
-par échange) :
+par échange ; la première est confirmée, onze restent) :
 
 1. *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins » :
    changer « Ce que fait le lecteur » change l'onglet ; réécrire « La
    phrase » à la main la note « modifiée » et laisse l'onglet tel quel.
-   F03-AC72, qui dit « l'onglet porte la nouvelle phrase », se lit ainsi ;
-   afficher la phrase écrite dans l'onglet changerait la règle des onglets.
+   **Confirmé par le porteur le 11 novembre 2026** (« on laisse « Ce que fait
+   le lecteur » ») ; F03-AC72, qui disait « l'onglet porte la nouvelle
+   phrase », est révisé. Ne pas lui reposer.
 2. *« Annuler » rend un choix supprimé à sa place,* entre ses voisins — aussi
    pour la corbeille de « Ses choix », qui le remettait à la fin du texte
    depuis le lot 2.

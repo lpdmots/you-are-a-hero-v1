@@ -91,7 +91,9 @@ remis par « Annuler », et fait passer les liens cachés par le plan
 [architecture](docs/architecture.md#modifier-un-choix-depuis--chemins--11-novembre-2026)) ;
 écran sans maquette, sans critique en deux lectures
 ([design](docs/design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) ;
-douze précisions à confirmer dans le
+l'onglet porte « ce que fait le lecteur », non la phrase réécrite (confirmé
+par le porteur le même jour, F03-AC72 révisé) ; onze précisions restent à
+confirmer dans le
 [plan](docs/plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026) ;
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Modifier un
 choix depuis Chemins » ».
