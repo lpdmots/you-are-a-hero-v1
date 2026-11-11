@@ -117,7 +117,7 @@ test("Chemins en atelier, l'adulte : plan, travail, bloc, « Scènes », en 1366
   await capturer(page, "marais-a-regarder-2");
   await page.keyboard.press("Escape");
   await capturer(page, "marais-retour-au-plan");
-  // On tire le fond, puis la molette
+  // On tire le fond pour se déplacer, puis la molette change la taille (F03-AC58, révisé le 11 novembre 2026)
   const fond = (await page.locator(".chemins__cadre").boundingBox())!;
   await page.mouse.move(fond.x + 60, fond.y + fond.height - 60);
   await page.mouse.down();

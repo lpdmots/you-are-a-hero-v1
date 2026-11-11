@@ -1690,7 +1690,7 @@ panneau, au bandeau, à « Recentrer » et à la phrase d'aide.
 | Le bandeau | Une bande : la vignette, le titre, sa ligne, les élèves ; à droite la bascule « Scènes / Chemins », le « i » de la vue (« Comment lire ces chemins ? » ou « Que change l'ordre des cartes ? ») et les trois points. Plus de bouton plein. Les élèves sont un seul bouton, suivi d'un petit crayon, cerné au survol ; sans élève, la phrase et le lien « Attribuer des élèves ». |
 | « À regarder » | Une ligne sous le bandeau, dans « Chemins » seulement ; absente quand il n'y a rien. |
 | « Scènes » | La recherche seule sous le bandeau, à droite, au-delà de trois scènes ; en dernière carte de la grille, « + Nouvelle scène », en pointillé, de la hauteur des autres. |
-| L'aide | Le « i » dit comment lire, comment se déplacer (« tirer le fond, ou la molette ») et, pour l'adulte, les deux gestes du « + » ; l'écran d'aide de « Parties et chapitres » gagne « Comment construire un chapitre ? ». |
+| L'aide | Le « i » dit comment lire, comment se déplacer et changer la taille (« Tirer le fond déplace le schéma ; la molette change sa taille. », depuis le 11 novembre 2026) et, pour l'adulte, les deux gestes du « + » ; l'écran d'aide de « Parties et chapitres » gagne « Comment construire un chapitre ? ». |
 | L'élève | Le même cadre, en lecture : ni « + », ni espace de travail, ni bouton d'IA ; un bandeau bas dans « Chemins », la bascule et le « i » dedans. |
 | Téléphone | Inchangé : la liste. |
 

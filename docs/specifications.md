@@ -1471,8 +1471,12 @@ le porteur décide :
     12 octobre 2026, décidé pour une vue qu'on ne faisait que lire.
     - *Un cadre qu'on tire.* Le schéma remplit toute la hauteur disponible
       sous un en-tête réduit ; la page ne défile plus dans « Chemins ». On
-      déplace le schéma en tirant le fond, ou à la molette et à deux doigts ;
-      le zoom passe par les boutons, Ctrl + molette et le pincement. Les
+      déplace le schéma en tirant le fond ; la molette, les boutons et le
+      pincement changent sa taille. **Révisé par le porteur le 11 novembre
+      2026 :** la molette zoome autour du pointeur, au lieu de déplacer ;
+      conséquence dite et acceptée, glisser à deux doigts sur un pavé
+      tactile zoome aussi, le navigateur le transmettant comme la molette.
+      Les
       cartes ne se déplacent toujours pas ; le « + » tiré relie toujours.
       La mini-carte reste, et sert davantage. Un ajout garde la carte
       d'origine au même point (F03-AC54), sans « Recentrer ».
@@ -1653,10 +1657,12 @@ le porteur décide :
 - **F03-AC58 — Un cadre qu'on tire :** étant donné « Le marais des feux
   follets » sur un écran de 1 366 × 768 points, lorsque l'adulte ouvre
   « Chemins », alors le schéma remplit la hauteur de la fenêtre sous
-  l'en-tête, à la taille lisible, et la page ne défile pas ; tirer le fond,
-  la molette ou deux doigts déplacent le schéma ; Ctrl + molette, le
-  pincement et les boutons « − » et « + » changent sa taille autour du
-  milieu du cadre ; « Tout voir » le montre entier ; aucune carte ne se
+  l'en-tête, à la taille lisible, et la page ne défile pas ; tirer le fond
+  déplace le schéma ; la molette et le pincement changent sa taille autour
+  du pointeur, les boutons « − » et « + » autour du milieu du cadre ;
+  « Tout voir » le montre entier (**révisé le 11 novembre 2026 :** la
+  molette et deux doigts déplaçaient le schéma, Ctrl + molette changeait
+  sa taille) ; aucune carte ne se
   déplace à la main, et le schéma ne peut pas être tiré entièrement hors du
   cadre. L'élève a le même cadre, en lecture.
 - **F03-AC59 — Deux états, le plan et le travail :** étant donné le plan,

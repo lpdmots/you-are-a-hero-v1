@@ -28,8 +28,8 @@ import { disposer, noteDeLOnglet, texteDeLEtiquette, texteDuLibelle, type Dispos
  * Le schéma des chemins d'un chapitre (F03.1, « Vue Chemins à reprendre », puis « Chemins en
  * atelier », 11 novembre 2026) : les scènes de haut en bas, placées par dagre, dessinées par React
  * Flow, dans un cadre qui remplit la hauteur de la fenêtre. La page ne défile plus : on tire le fond
- * pour se déplacer, la molette et deux doigts font de même, Ctrl + molette et le pincement changent
- * la taille. Aucune carte ne se déplace à la main. Ce fichier et ses deux bibliothèques ne se
+ * pour se déplacer ; la molette et le pincement changent la taille, autour du pointeur (décidé par le
+ * porteur le 11 novembre 2026 : la molette déplaçait). Aucune carte ne se déplace à la main. Ce fichier et ses deux bibliothèques ne se
  * chargent qu'à l'ouverture de « Chemins », sur un écran large.
  *
  * Chaque choix d'une scène est un onglet au pied de sa carte (F03.1, « Choix
@@ -1119,12 +1119,13 @@ export default function Schema({
                   defaultViewport={{ x: 0, y: MARGE, zoom: 1 }}
                   minZoom={ZOOM.toutVoir}
                   maxZoom={ZOOM.max}
-                  // Un cadre qu'on tire (F03.1, « Chemins en atelier ») : le fond se tire, la molette et deux
-                  // doigts déplacent, Ctrl + molette et le pincement changent la taille. Les cartes, elles, ne
-                  // se déplacent pas : leur place est calculée.
+                  // Un cadre qu'on tire (F03.1, « Chemins en atelier ») : le fond se tire pour se déplacer ; la
+                  // molette, deux doigts sur le pavé tactile compris, et le pincement changent la taille autour
+                  // du pointeur (F03-AC58, révisé le 11 novembre 2026). Les cartes, elles, ne se déplacent pas :
+                  // leur place est calculée.
                   panOnDrag
-                  panOnScroll
-                  zoomOnScroll={false}
+                  panOnScroll={false}
+                  zoomOnScroll
                   zoomOnPinch
                   zoomOnDoubleClick={false}
                   paneClickDistance={4}

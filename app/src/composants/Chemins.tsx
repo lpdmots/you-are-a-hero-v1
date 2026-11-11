@@ -45,7 +45,7 @@ export function AideDesChemins({ pourEleve = false, construit = false }: { pourE
     <Bulle question="Comment lire ces chemins ?">
       Sous chaque scène, ses choix : un trait part de chacun vers la scène où il mène. {pourEleve ? "" : "Un trait en pointillé est un lien caché. "}Un choix qui ramène le lecteur
       en arrière, qui mène dans un autre chapitre ou qui n’a pas encore de destination le dit sous sa phrase.
-      <span>Tirer le fond ou la molette déplace le schéma ; Ctrl + molette change sa taille.</span>
+      <span>Tirer le fond déplace le schéma ; la molette change sa taille.</span>
       {construit ? (
         <span>
           Pour construire : le « + » sous une scène ajoute la scène suivante ; tiré jusqu’à une autre scène, il les relie. Un choix « Sans destination » se tire lui aussi jusqu’à une scène.
