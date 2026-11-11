@@ -4542,6 +4542,70 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     le panneau (limite connue des lots 1 et 2) ; le panneau d'une grande
     proposition se fait défiler.
 
+- **Lot 4 construit le 11 novembre 2026,** en local, sans migration, rien
+  poussé.
+  - *Ce qui est construit :* sous la proposition, « Pour mieux répondre »
+    (trois questions au plus, facultatives, un champ chacune, « ✦ Redessiner
+    avec mes réponses », puis « Vos précisions : … ») ; « L'IA complète »,
+    qui invente sans question et marque « Imaginée, à vérifier » sur la carte
+    et dans le panneau ; la demande trop large, recadrée à huit nouvelles
+    scènes sur deux niveaux, avec la phrase de l'IA au-dessus du bloc et,
+    après l'ajout, le reste dans le champ, « Cliquez dans le schéma la scène
+    d'où continuer » et les scènes ajoutées cerclées
+    ([design](design.md#bloc-de-scènes--écrans-construits-11-novembre-2026)).
+  - *Critères fermés :* F13-AC36, AC37, AC40 —
+    `tests/base/bloc-de-scenes.test.ts` (quinze cas en tout) et
+    `tests/unitaires/bloc-de-scenes.test.ts` (dix-huit cas). Les questions,
+    l'invention et le recadrage tiennent dans la consigne au modèle (vérifiée
+    par les tests) et dans la relecture de sa réponse (questions retirées
+    quand l'IA complète, trois au plus, huit scènes au plus) ; leur qualité
+    réelle se juge à l'essai.
+  - *Formes en exemple retirées,* comme la règle le prévoyait : les deux
+    lectures les jugent de remplissage (un clic n'écrivait que quatre mots et
+    effaçait l'exemple complet du champ). À la place, l'exemple du champ vide
+    change d'une ouverture à l'autre : trois chemins, deux chemins qui se
+    rejoignent, un choix qui mène à une fin.
+  - *Écrans critiqués en deux lectures* (21 captures, lots 3 et 4) : 28/40
+    (informée) et 25/40 (indépendante), sans point bloquant ; corrigés
+    aussitôt : « Laisser » devenu « Abandonner » (ambigu à côté de
+    « Ajouter », relevé par les quatre lectures), le choix de la scène d'où
+    continuer guidé, les précisions gardées, l'invention marquée à part, les
+    titres et libellés qui passent à la ligne.
+  - *L'essai, sur de vraies demandes* (Opus 5.5, huit cas de
+    `scripts/essai-ia/jeu.ts`, « bloc-… », 0,25 $ en tout, environ
+    0,22 €) :
+    - **un tour coûte 3 à 4 centimes,** soit 3 ou 4 ✦ (4 000 jetons en
+      entrée, 600 à 1 150 en sortie), et prend 8 à 11 secondes ;
+    - **ce qui va :** le compte demandé est tenu (« une scène dans la forêt
+      avec trois choix » donne quatre scènes et quatre choix), titres dans la
+      forme du chapitre (« Grotte — l'entrée sombre »), consignes et listes
+      à la mesure d'un CE2, rien d'inventé hors de la demande ; « L'IA
+      complète » invente un troisième chemin cohérent (« Suivre les plumes
+      argentées », la chouette de la Préparation) et le marque ; « Me le
+      demander » pose une seule question, sur le chemin non décrit ; la
+      demande trop large est coupée après la forêt et ses trois chemins, le
+      reste dit en une phrase ; le chapitre vide démarre sur la scène
+      demandée ;
+    - **à surveiller :** « le héros arrive dans la forêt, où trois chemins…
+      » depuis une scène qui n'est pas la forêt donne quatre scènes, la forêt
+      comprise — lecture défendable ; « la grotte, qui rejoint le pont »
+      donne une scène « Grotte » qui mène au pont, et non un choix qui y mène
+      tout droit ; « une scène avec trois choix » sans les décrire donne
+      « Premier chemin »… et deux questions ; la demande trop large n'use que
+      quatre des huit scènes permises.
+  - *Précisions prises en construisant, à lui faire confirmer :*
+    1. les questions sont en tête de la proposition, dans le panneau (sur le
+       schéma, la proposition est au-dessus d'elles) ; y répondre redessine en
+       envoyant la proposition retouchée, que l'IA garde, et « Vos
+       précisions » dit ensuite ce qui a été pris en compte ;
+    2. après un ajout qui laisse un reste, aucune scène n'est choisie
+       d'office : celles qu'on vient d'ajouter sont cerclées, on clique celle
+       d'où continuer ;
+    3. « Abandonner » à la place de « Laisser » dans ce panneau, avec
+       « Annuler » ;
+    4. ce que l'IA invente porte « Imaginée, à vérifier », en pastille
+       cernée, distincte de « Proposée ».
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

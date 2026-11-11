@@ -28,8 +28,14 @@ même jour après la construction, seul le récit fait le texte d'une scène —
 ni une phrase de choix, ni une action de jeu, ni une image —, si bien qu'une
 scène reliée sans être écrite reste « Texte vide »
 ([F06.5](docs/specifications.md#f06-texte-vide), F06-AC105) ; mode d'emploi dans [`app/README.md`](app/README.md),
-« Essayer « Construire dans Chemins » ». Les lots 3 et 4 (le bloc de scènes)
-sont autorisés le 11 novembre 2026, en local.
+« Essayer « Construire dans Chemins » ». Les lots 3 et 4 (le bloc de scènes,
+[F13.7](docs/specifications.md#f137--bloc-de-scènes-depuis-le-schéma)) sont
+autorisés et construits en local le 11 novembre 2026 (migration
+`bloc_de_scenes`, base locale seulement, rien poussé) ; formes en exemple
+retirées après la critique ; essai réel fait (3 à 4 ✦ par tour) ; précisions
+à confirmer dans le [plan](docs/plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026),
+mode d'emploi dans [`app/README.md`](app/README.md), « Essayer le bloc de
+scènes ».
 
 ## État de reprise au 20 octobre 2026
 

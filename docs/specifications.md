@@ -11533,8 +11533,9 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
 
 **Décidé par le porteur le 10 novembre 2026,** après un entretien validé
 dans son ensemble ; construction autorisée le 11 novembre 2026, la
-proposition, l'ajout et les réglages construits en local le même jour
-(lot 3, précisions à confirmer dans le
+proposition, l'ajout et les réglages (lot 3), puis les questions, « L'IA
+complète » et le recadrage (lot 4) construits en local le même jour, l'essai
+fait (précisions et analyse dans le
 [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026)).
 Les gestes à la main du schéma sont en [F03.1](#f03-construire).
 
@@ -11603,7 +11604,11 @@ il reste lisible au tableau, sans mode à part.
 
   Écartés : un ton, un âge ou un nombre de scènes, que portent déjà « notre
   façon d'écrire », « Âge des lecteurs » et la demande elle-même.
-- **Des formes en exemple, sous réserve.** Sous le champ encore vide, trois
+- **Des formes en exemple, retirées après la critique des écrans (11 novembre
+  2026),** comme la règle le prévoyait : un clic n'écrivait que le début de la
+  phrase et effaçait l'exemple complet du champ. L'exemple du champ vide change
+  d'une ouverture à l'autre (trois chemins, deux chemins qui se rejoignent, un
+  choix qui mène à une fin). Règle d'origine : sous le champ encore vide, trois
   ou quatre petits pictogrammes (« une scène et trois choix », « deux chemins
   qui se rejoignent », « un choix qui mène à une fin ») écrivent le début de
   la phrase d'un clic, puis disparaissent : un collègue non initié ne sait
@@ -11676,9 +11681,10 @@ dessiné par l'utilisateur (F03.1).
   alors rien ne lui propose un bloc ; étant donné « Proposer les aides IA »
   éteint, alors l'adulte garde ses gestes à la main, sans le ✦.
 
-**Questions ouvertes :** la qualité des blocs et des consignes, à éprouver
-sur de vraies demandes ; le coût mesuré d'un tour ; le sort des formes en
-exemple après la critique des écrans.
+**Mesuré à l'essai du 11 novembre 2026 :** un tour coûte 3 à 4 centimes
+(3 ou 4 étoiles) et prend une dizaine de secondes ; la qualité, jugée sur huit
+vraies demandes, est dans le [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+**Question ouverte :** la qualité sur les demandes du porteur, à l'usage.
 
 ## F14 — Ouverture, offre et exploitation
 

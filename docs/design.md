@@ -1633,9 +1633,13 @@ précisions à confirmer : [plan](plan.md#construire-dans--chemins--et-bloc-de-s
 | Les réglages | Repliés sous « Réglages » : « Ce qui manque à ma demande : Me le demander / L'IA complète », « Consignes : Avec leur liste de vérification / Sans : les titres seuls ». |
 | La proposition sur le schéma | Cartes au bord en pointillé canard, fond canard très pâle, titre en canard foncé, « ✦ Proposée » au pied, sans tampon ni « Ouvrir » ; flèches en pointillé canard, libellés sur canard pâle. La scène d'origine cerclée de canard. Le bloc entier à l'écran. |
 | La proposition dans le panneau | « ⬚ 2 scènes et 3 choix proposés », « Retouchez si besoin, puis ajoutez. » ; en tête, la case décochée « Donner aussi une consigne à S001 « … » » ; puis le bloc en arbre, dans l'ordre du schéma : chaque choix (libellé à récrire), sa nouvelle scène (titre à récrire, corbeille, « Consigne et liste » repliée) et, retrait pointillé, ses propres choix ; un choix vers une scène existante la nomme. Les textes se récrivent sur place, soulignés au repos, cadrés au survol. |
-| Le pied | « Le chapitre aura 5 scènes. » et « Laisser » sur une ligne ; dessous, toute la largeur, le seul bouton plein : « Ajouter 2 scènes et 3 choix » (« …, 3 choix et 1 consigne » si la case est cochée). |
-| Les messages | « « Le ruisseau » est retirée de la proposition. », « La proposition est laissée. », « 2 scènes et 3 choix ajoutés. », chacun avec « Annuler ». |
+| Le pied | « Le chapitre aura 5 scènes. » et « Abandonner » (d'abord « Laisser », ambigu à côté d'« Ajouter ») sur une ligne ; dessous, toute la largeur, le seul bouton plein : « Ajouter 2 scènes et 3 choix » (« …, 3 choix et 1 consigne » si la case est cochée). |
+| Les messages | « « Le ruisseau » est retirée de la proposition. », « Proposition abandonnée. », « 2 scènes et 3 choix ajoutés. », chacun avec « Annuler ». |
 | Chapitre vide | Sans schéma, un cadre en pointillé « La proposition de l'IA se dessinera ici. », à gauche du panneau ; les boutons de taille masqués. |
+| Les questions (lot 4) | En tête de la proposition, dans un cadre en pointillé canard pâle : « Pour mieux répondre » (facultatif), chaque question et son champ, « ✦ Redessiner avec mes réponses » éteint tant que rien n'est écrit ; après, une ligne cochée « Vos précisions : … ». |
+| Ce que l'IA invente (lot 4) | « Imaginée, à vérifier » en pastille cernée de canard sur la carte, « Imaginée par l'IA, à vérifier » sous le titre dans le panneau. |
+| Une demande trop large (lot 4) | La phrase de l'IA sur canard pâle au-dessus du bloc ; après l'ajout, le reste dans le champ, « Cliquez dans le schéma la scène d'où continuer. » en bandeau canard, les scènes ajoutées cerclées. |
+| L'exemple du champ vide | Une demande entière, tirée parmi trois à chaque ouverture (trois chemins, une jonction, une fin). Les formes en exemple (trois pictogrammes) ont été construites puis retirées après la critique. |
 
 **Les deux lectures** donnent 28/40 (informée) et 24/40 (indépendante), sans
 point bloquant. Corrigé aussitôt, sans nouvelle mesure : le panneau qui
@@ -1646,9 +1650,16 @@ champs qui ne se lisaient pas comme des champs ; les réglages obscurs ; la
 scène existante rejointe par le bloc restée hors de l'écran ; les boutons de
 taille sans schéma.
 
+**Lot 4, deux lectures** sur 21 captures : 28/40 (informée) et 25/40
+(indépendante). Les deux jugent les formes en exemple de remplissage :
+retirées. Corrigé aussi : le choix de la scène d'où continuer (bandeau canard,
+scènes ajoutées cerclées), la réponse qui disparaissait, l'invention qui se
+confondait avec « Proposée », les titres coupés dans le panneau.
+
 **Laissé en l'état :** une scène du chapitre peut passer sous le panneau
 quand dagre réordonne le schéma (limite des lots 1 et 2) ; le panneau d'une
-grande proposition se fait défiler.
+grande proposition se fait défiler ; le message d'un geste reste huit
+secondes, comme partout, même si un autre geste suit.
 
 ### Étape 4 construite (13 octobre 2026)
 

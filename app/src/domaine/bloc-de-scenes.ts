@@ -165,3 +165,28 @@ export function cheminsAvecLeBloc(chemins: Chemins, p: Proposition | null): Chem
 
 /** Une question et sa réponse, telles que l'adulte les a laissées. */
 export type Reponse = { question: string; reponse: string };
+
+/**
+ * Ce qu'une demande trop large a laissé (F13-AC40), tel qu'il revient dans le champ après l'ajout :
+ * la phrase de l'IA sans ce qu'elle a construit (« Reste : le campement et la rivière. » donne
+ * « le campement et la rivière »), ou la phrase entière si elle ne suit pas cette forme.
+ */
+export function resteAReprendre(reste: string | null | undefined): string | null {
+  const t = reste?.trim();
+  if (!t) return null;
+  const apres = t.match(/Reste\s*:\s*([\s\S]+)$/i)?.[1]?.trim().replace(/[.]+$/, "");
+  if (!apres) return t;
+  return apres.charAt(0).toLocaleUpperCase("fr") + apres.slice(1);
+}
+
+/**
+ * L'exemple du champ vide (F13.7). Les formes en exemple (pictogrammes qui écrivaient le début de la
+ * phrase) ont été retirées après la critique des écrans, le 11 novembre 2026 : elles n'écrivaient
+ * que quatre mots et effaçaient l'exemple complet. Un exemple entier, qui change d'une ouverture à
+ * l'autre, montre aussi qu'on peut faire se rejoindre deux chemins ou mener à une fin.
+ */
+export const EXEMPLES = [
+  "le héros arrive dans la forêt, où trois chemins s’offrent à lui : le sentier des fougères, le ruisseau, la grotte.",
+  "deux chemins : le ruisseau et la grotte, qui se rejoignent au vieux pont.",
+  "une scène dans la tour avec deux choix : monter l’escalier, qui mène à une fin, ou redescendre.",
+] as const;

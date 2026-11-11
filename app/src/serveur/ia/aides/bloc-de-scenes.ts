@@ -238,7 +238,11 @@ export function simulerUnBloc(e: EntreeBloc): unknown {
       const [texteDuChemin, cible] = brut.split(/\s+rejoint\s+/i);
       const existante = cible ? e.scenes.find((s) => s.titre.toLocaleLowerCase("fr") === cible.trim().toLocaleLowerCase("fr")) : undefined;
       if (LIBRE.test(texteDuChemin)) {
-        if (e.reglages.manque === "completer") {
+        // L'adulte a répondu : le chemin prend ses mots
+        const reponse = e.reponses[0]?.reponse.trim().replace(/[.]+$/, "");
+        if (reponse) {
+          choix.push({ de: racine, vers: nouvelle(majuscule(reponse.split(/\s+/).slice(0, 5).join(" "))), libelle: `Aller vers ${reponse.split(/\s+/).slice(0, 5).join(" ")}`, invente: false });
+        } else if (e.reglages.manque === "completer") {
           choix.push({ de: racine, vers: nouvelle("Le chemin des ronces", true), libelle: "Prendre le chemin des ronces", invente: true });
         } else {
           choix.push({ de: racine, vers: nouvelle(`Le chemin ${i + 1}`), libelle: `Prendre le chemin ${i + 1}`, invente: false });

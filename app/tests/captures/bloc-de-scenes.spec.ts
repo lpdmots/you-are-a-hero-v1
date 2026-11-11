@@ -79,6 +79,37 @@ test("Bloc de scènes : la demande, la proposition en pointillé, les retouches,
   await page.locator(".carte-chemin--proposee").first().waitFor({ state: "detached" });
   await capturer(page, "apres-l-ajout");
 
+  // ——— Lot 4 : une question, puis la réponse qui redessine ———
+  await carte(page, "Le vieux pont").click();
+  await page.getByRole("button", { name: "Construire la suite" }).click();
+  await capturer(page, "champ-vide");
+  await proposer(page, "Trois chemins : le sentier des fougères, le ruisseau, et un troisième");
+  await capturer(page, "question");
+  await panneau(page).getByLabel(/Où mène le chemin/).fill("Une cabane de bûcheron abandonnée");
+  await panneau(page).getByRole("button", { name: "Redessiner avec mes réponses" }).click();
+  await page.locator(".carte-chemin--proposee", { hasText: "Une cabane" }).waitFor();
+  await capturer(page, "question-repondue");
+  await panneau(page).getByRole("button", { name: "Abandonner" }).click();
+
+  // « L'IA complète » : ce qu'elle invente est marqué
+  await panneau(page).getByRole("button", { name: "Réglages" }).click();
+  await panneau(page).getByLabel("L’IA complète").check();
+  await panneau(page).getByRole("button", { name: "Réglages" }).click();
+  await proposer(page, "Trois chemins : le sentier des fougères, le ruisseau, et un troisième");
+  await capturer(page, "l-ia-complete");
+  await panneau(page).getByRole("button", { name: "Abandonner" }).click();
+  await panneau(page).getByRole("button", { name: "Réglages" }).click();
+  await panneau(page).getByLabel("Me le demander").check();
+  await panneau(page).getByRole("button", { name: "Réglages" }).click();
+
+  // Une demande trop large : ce qui reste, puis dans le champ après l'ajout
+  await proposer(page, "Deux chemins : la mare, la colline puis le campement et la rivière avec leurs choix");
+  await capturer(page, "demande-trop-large");
+  await panneau(page).getByRole("button", { name: /^Ajouter \d/ }).click();
+  await page.locator(".carte-chemin--proposee").first().waitFor({ state: "detached" });
+  await capturer(page, "reste-dans-le-champ");
+  await panneau(page).getByRole("button", { name: "Fermer le panneau du bloc" }).click();
+
   // ——— Le grand chapitre : le bloc sous une scène du bas, cadré à l'écran ———
   await aller(page, chemins(marais.chapitreId));
   await carte(page, "Ponton — la voix du héron").waitFor();

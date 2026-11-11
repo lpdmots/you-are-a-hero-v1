@@ -1,8 +1,8 @@
 "use client";
 
-import { Fragment, useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { Fragment, useEffect, useId, useRef, useState, type KeyboardEvent as ToucheReact, type ReactNode } from "react";
 import {
-  BLOC, ceQuiSAjoute, estNouvelle, libelleDAjout, retirerChoix, retirerScene, totalDuChapitre,
+  BLOC, ceQuiSAjoute, EXEMPLES, estNouvelle, libelleDAjout, retirerChoix, retirerScene, totalDuChapitre,
   type ChoixPropose, type Proposition, type ReglagesBloc, type SceneProposee,
 } from "@/domaine/bloc-de-scenes";
 import { MESSAGES_IA } from "@/domaine/aides-ia";
@@ -48,9 +48,13 @@ export type EtatDuBloc = {
   /** La demande qui a donné la proposition : la changer propose de redessiner */
   demandee: string;
   prendre: boolean;
+  /** Les réponses de l'adulte aux questions de l'IA, par question (F13-AC36) */
+  reponses: Record<string, string>;
+  /** Ce qu'il a précisé, pris en compte par la proposition à l'écran */
+  precisees?: { question: string; reponse: string }[];
 };
 const memoire = new Map<string, EtatDuBloc>();
-const FERME: EtatDuBloc = { ouvert: false, origine: null, demande: "", proposition: null, demandee: "", prendre: false };
+const FERME: EtatDuBloc = { ouvert: false, origine: null, demande: "", proposition: null, demandee: "", prendre: false, reponses: {} };
 
 export function useEtatDuBloc(chapitreId: string | undefined, auDepart: boolean) {
   const [etat, setEtatLocal] = useState<EtatDuBloc>(() => {
@@ -76,8 +80,6 @@ async function demanderLeBloc(corps: Record<string, unknown>): Promise<ReponseBl
   }
 }
 
-/** L'exemple sous le champ vide : la forme d'une demande, avec les mots d'un collègue. */
-const EXEMPLE = "Par exemple : le héros arrive dans la forêt, où trois chemins s’offrent à lui : le sentier des fougères, le ruisseau, la grotte.";
 
 export function PanneauDuBloc({
   etat, setEtat, chemins, services, deClasse, ouverte, onOuvrir, onFermer, ordre,
@@ -101,6 +103,8 @@ export function PanneauDuBloc({
   const [reglages, setReglages] = useState(services.reglages);
   const [voirReglages, setVoirReglages] = useState(false);
   const corps = useRef<HTMLDivElement>(null);
+  // L'exemple du champ vide change d'une ouverture à l'autre : trois chemins, des chemins qui se rejoignent, une fin
+  const [exemple] = useState(() => EXEMPLES[Math.floor(Math.random() * EXEMPLES.length)]);
   const p = etat.proposition;
   const origine = etat.origine ? chemins.noeuds.find((n) => n.id === etat.origine) : undefined;
   const sansOrigine = !etat.origine && chemins.noeuds.some((n) => !n.propose);
@@ -115,16 +119,21 @@ export function PanneauDuBloc({
   const changerScene = (cle: string, maj: Partial<SceneProposee>) => p && changer({ ...p, scenes: p.scenes.map((s) => (s.cle === cle ? { ...s, ...maj } : s)) });
   const changerChoix = (cle: string, libelle: string) => p && changer({ ...p, choix: p.choix.map((c) => (c.cle === cle ? { ...c, libelle } : c)) });
 
-  const proposer = async () => {
-    const demande = etat.demande.trim();
+  /**
+   * `avecReponses` : l'adulte a répondu aux questions ; la proposition se redessine d'après ses
+   * réponses, en gardant ses retouches (F13.7, « Y répondre redessine la proposition »).
+   */
+  const proposer = async (avecReponses = false) => {
+    const demande = (avecReponses ? etat.demandee : etat.demande).trim();
     if (!demande || attente || sansOrigine) return;
     setAttente("proposer");
     setErreur(null);
-    const r = await demanderLeBloc({ chapitre: services.chapitreId, origine: etat.origine, demande });
+    const reponses = avecReponses && p ? p.questions.flatMap((question) => (etat.reponses[question]?.trim() ? [{ question, reponse: etat.reponses[question].trim() }] : [])) : [];
+    const r = await demanderLeBloc({ chapitre: services.chapitreId, origine: etat.origine, demande, ...(avecReponses ? { reponses, actuelle: p } : {}) });
     setAttente(null);
     if (!r.ok) return setErreur(r.message);
     onOuvrir(null);
-    setEtat((e) => ({ ...e, proposition: r.proposition, demandee: demande, prendre: false }));
+    setEtat((e) => ({ ...e, proposition: r.proposition, demandee: demande, prendre: avecReponses ? e.prendre : false, reponses: {}, precisees: avecReponses ? [...(e.precisees ?? []), ...reponses] : [] }));
     if (r.solde) dire({ texte: r.solde });
   };
 
@@ -144,6 +153,7 @@ export function PanneauDuBloc({
 
   const pret = !!p && p.scenes.every((s) => s.titre.trim()) && p.choix.every((c) => c.libelle.trim()) && (p.scenes.length > 0 || p.choix.length > 0);
   const redessiner = !!p && etat.demande.trim() !== etat.demandee;
+  const repondu = !!p && p.questions.some((q) => etat.reponses[q]?.trim());
 
   return (
     <aside className="panneau-chemin panneau-bloc" aria-labelledby={`${id}-nom`} aria-busy={attente === "proposer" || undefined}>
@@ -165,7 +175,7 @@ export function PanneauDuBloc({
                 La suite de <span className="panneau-bloc__origine">{nomScene(origine)}</span>
               </>
             ) : sansOrigine ? (
-              "Cliquez la scène d’où partir"
+              "La suite"
             ) : (
               "Le début du chapitre"
             )}
@@ -176,7 +186,7 @@ export function PanneauDuBloc({
             rows={3}
             value={etat.demande}
             maxLength={BLOC.demande}
-            placeholder={EXEMPLE}
+            placeholder={`Par exemple : ${exemple}`}
             onChange={(e) => setEtat((x) => ({ ...x, demande: e.target.value }))}
             onKeyDown={(e) => {
               if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) void proposer();
@@ -203,6 +213,12 @@ export function PanneauDuBloc({
           </button>
           )}
         </div>
+        {sansOrigine ? (
+          <p className="panneau-bloc__consigne-origine" role="status">
+            <Icone nom="chemins" />
+            Cliquez dans le schéma la scène d’où continuer.
+          </p>
+        ) : null}
         {voirReglages ? <Reglages id={`${id}-reglages`} reglages={reglages} deClasse={deClasse} onChange={regler} /> : null}
         {attente === "proposer" ? (
           <p className="panneau-bloc__attente" role="status">
@@ -220,6 +236,19 @@ export function PanneauDuBloc({
             p={p} chemins={chemins} deClasse={deClasse} ouverte={ouverte} onOuvrir={onOuvrir}
             changerScene={changerScene} changerChoix={changerChoix}
             ordre={ordre}
+            questions={
+              p.questions.length || p.reste || etat.precisees?.length ? (
+                <Precisions
+                  p={p}
+                  precisees={etat.precisees ?? []}
+                  reponses={etat.reponses}
+                  onRepondre={(question, reponse) => setEtat((e) => ({ ...e, reponses: { ...e.reponses, [question]: reponse } }))}
+                  attente={attente !== null}
+                  repondu={repondu}
+                  onRedessiner={() => void proposer(true)}
+                />
+              ) : null
+            }
             avant={p?.consigneOrigine && origine ? (
           <ConsigneDOrigine
             origine={nomScene(origine)}
@@ -254,10 +283,10 @@ export function PanneauDuBloc({
               onClick={() => {
                 const avant = etat;
                 setEtat((e) => ({ ...e, proposition: null, demandee: "" }));
-                dire({ texte: "La proposition est laissée.", annuler: () => setEtat(() => avant) });
+                dire({ texte: "Proposition abandonnée.", annuler: () => setEtat(() => avant) });
               }}
             >
-              Laisser
+              Abandonner
             </button>
           </span>
           <button type="button" className="btn btn--petit btn--primaire panneau-bloc__ajouter" disabled={!pret || attente !== null} aria-busy={attente === "ajouter" || undefined} onClick={() => void ajouter()}>
@@ -304,12 +333,14 @@ function Reglages({ id, reglages, deClasse, onChange }: { id: string; reglages: 
  * et où il arrive ; sous une nouvelle scène, sa consigne repliée et ses propres choix.
  */
 function Arbre({
-  p, chemins, deClasse, ouverte, onOuvrir, changerScene, changerChoix, retirerScene, retirerChoix, ordre, avant,
+  p, chemins, deClasse, ouverte, onOuvrir, changerScene, changerChoix, retirerScene, retirerChoix, ordre, avant, questions,
 }: {
   p: Proposition; chemins: Chemins; deClasse: boolean; ouverte: string | null; onOuvrir: (cle: string | null) => void;
   ordre: (id: string) => number;
   /** Ce qui touche la scène d'origine, en tête : la consigne qu'on peut lui donner */
   avant?: ReactNode;
+  /** Les questions de l'IA et ce qu'elle a laissé d'une demande trop large, tout en haut */
+  questions?: ReactNode;
   changerScene: (cle: string, maj: Partial<SceneProposee>) => void;
   changerChoix: (cle: string, libelle: string) => void;
   retirerScene: (cle: string) => void;
@@ -334,13 +365,16 @@ function Arbre({
   };
   const choix = (c: ChoixPropose, niveau: number): ReactNode => {
     const libelle = (
-      <input
+      <ChampQuiGrandit
         className="bloc-ligne__libelle"
         aria-label="Ce que fait le lecteur"
+        rows={1}
+        dictee={false}
         value={c.libelle}
         maxLength={LIBELLE_MAX}
         placeholder="Ce que fait le lecteur"
-        onChange={(e) => changerChoix(c.cle, e.target.value)}
+        onKeyDown={sansRetour}
+        onChange={(e) => changerChoix(c.cle, e.target.value.replace(/\s*\n\s*/g, " "))}
       />
     );
     const nouvelle = parCle.get(c.vers);
@@ -372,6 +406,7 @@ function Arbre({
         {ceQuiSAjoute(p)} proposés
         <span>Retouchez si besoin, puis ajoutez.</span>
       </p>
+      {questions}
       {avant}
       <ul className="bloc-arbre">
         {debut ? scene(debut, null, 0) : premiers.map((c) => <Fragment key={c.cle}>{choix(c, 1)}</Fragment>)}
@@ -379,6 +414,11 @@ function Arbre({
     </section>
   );
 }
+
+/** Un titre ou un libellé tient sur une ligne de sens : Entrée ne va pas à la ligne */
+const sansRetour = (e: ToucheReact<HTMLTextAreaElement>) => {
+  if (e.key === "Enter") e.preventDefault();
+};
 
 function SceneDuBloc({
   s, deClasse, ouverte, onOuvrir, onChange, onRetirer,
@@ -389,17 +429,26 @@ function SceneDuBloc({
   const id = useId();
   return (
     <div className="bloc-ligne__scene">
-      <input
+      <ChampQuiGrandit
         className="bloc-ligne__titre"
         aria-label="Titre de la nouvelle scène"
+        rows={1}
+        dictee={false}
         value={s.titre}
         maxLength={120}
         placeholder="Son titre"
-        onChange={(e) => onChange({ titre: e.target.value })}
+        onKeyDown={sansRetour}
+        onChange={(e) => onChange({ titre: e.target.value.replace(/\s*\n\s*/g, " ") })}
       />
       <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer la scène « ${s.titre || "sans titre"} »`} title="Retirer cette scène" onClick={onRetirer}>
         <Icone nom="corbeille" />
       </button>
+      {s.inventee ? (
+        <span className="bloc-ligne__imaginee">
+          <Icone nom="ia" />
+          Imaginée par l’IA, à vérifier
+        </span>
+      ) : null}
       <button type="button" className="lien bloc-ligne__deplier" aria-expanded={ouverte} aria-controls={`${id}-consigne`} onClick={() => onOuvrir(!ouverte)}>
         <Icone nom={ouverte ? "chevron-haut" : "chevron-bas"} />
         {s.consigne ? (deClasse ? "Consigne et liste" : "Consigne") : "Sans consigne"}
@@ -436,5 +485,52 @@ function ConsigneDOrigine({
         </div>
       ) : null}
     </section>
+  );
+}
+
+/**
+ * Ce que l'IA ne savait pas (F13-AC36), et ce qu'elle a laissé d'une demande trop large (F13-AC40).
+ * Les questions sont facultatives : les ignorer n'empêche pas d'ajouter.
+ */
+function Precisions({
+  p, precisees, reponses, onRepondre, attente, repondu, onRedessiner,
+}: {
+  p: Proposition; precisees: { question: string; reponse: string }[]; reponses: Record<string, string>; onRepondre: (question: string, reponse: string) => void;
+  attente: boolean; repondu: boolean; onRedessiner: () => void;
+}) {
+  const id = useId();
+  return (
+    <>
+      {p.reste ? (
+        <p className="panneau-bloc__reste">
+          <Icone nom="ia" />
+          <span>{p.reste}</span>
+        </p>
+      ) : null}
+      {/* Ce qu'il a déjà précisé reste dit : la proposition en tient compte */}
+      {precisees.length ? (
+        <p className="panneau-bloc__precisees">
+          <Icone nom="coche" />
+          <span>Vos précisions : {precisees.map((x) => x.reponse).join(" ; ")}</span>
+        </p>
+      ) : null}
+      {p.questions.length ? (
+        <section className="panneau-bloc__questions" aria-labelledby={`${id}-q`}>
+          <p className="panneau-bloc__questions-tete" id={`${id}-q`}>
+            Pour mieux répondre <span>facultatif</span>
+          </p>
+          {p.questions.map((question, i) => (
+            <div key={question} className="panneau-bloc__question">
+              <label htmlFor={`${id}-${i}`}>{question}</label>
+              <ChampQuiGrandit id={`${id}-${i}`} className="pchamp" rows={1} maxLength={BLOC.reponse} value={reponses[question] ?? ""} onChange={(e) => onRepondre(question, e.target.value)} />
+            </div>
+          ))}
+          <button type="button" className="btn btn--petit btn--ia" disabled={!repondu || attente} aria-busy={attente || undefined} onClick={onRedessiner}>
+            <Icone nom="ia" />
+            Redessiner avec mes réponses
+          </button>
+        </section>
+      ) : null}
+    </>
   );
 }

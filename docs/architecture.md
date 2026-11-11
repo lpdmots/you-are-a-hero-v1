@@ -2032,6 +2032,14 @@ puis un cadrage qui fait défiler ou réduit (jamais sous 0,62) pour montrer le
 bloc entier. L'ajout fait, la proposition reste dessinée jusqu'à ce que les
 nouvelles scènes soient dans le plan rafraîchi.
 
+**Lot 4, sans migration.** Les questions, l'invention marquée et le recadrage
+sont dans la consigne au modèle dès le lot 3 ; le lot 4 ajoute le panneau
+(« Pour mieux répondre », « Vos précisions »), le reste repris dans le champ
+(`resteAReprendre`) et l'essai : huit cas « bloc-… » dans
+`scripts/essai-ia/jeu.ts`, Opus 5.5 seul candidat
+(`npm run ia:essai -- --cas bloc-…`). Un redessin envoie les réponses et la
+proposition retouchée, relue par `lireLaProposition`.
+
 **Captures sans dépense :** la configuration « application-ia-simulee » de
 `.claude/launch.json` lance le serveur local avec `IA_SIMULEE=1` (les clés de
 `.env.local` restent posées, mais rien ne part).

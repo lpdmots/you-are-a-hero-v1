@@ -7,7 +7,7 @@ import {
   createContext, useCallback, useContext, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState,
   type CSSProperties, type PointerEvent, type ReactNode, type RefObject,
 } from "react";
-import { cheminsAvecLeBloc } from "@/domaine/bloc-de-scenes";
+import { cheminsAvecLeBloc, resteAReprendre } from "@/domaine/bloc-de-scenes";
 import { MOT_DE_MARQUE, type ARegarder, type Chemins, type NoeudDeChemin } from "@/domaine/chemins";
 import { useAidesIa } from "../AidesIa";
 import { Bulle } from "../Bulle";
@@ -73,10 +73,12 @@ const Vue = createContext<{
   /** La scène proposée par le bloc dont la ligne est ouverte dans le panneau, et le geste qui l'ouvre (F13.7) */
   ouverteDuBloc: string | null;
   ouvrirDuBloc: (cle: string) => void;
+  /** Il reste à construire : les scènes qu'on vient d'ajouter sont cerclées, on clique celle d'où continuer (F13-AC40) */
+  candidates: Set<string>;
 }>({
   active: null, choisie: null, survolee: null, voisines: new Set(), loin: false, montre: null,
   construit: false, source: null, cible: null, ouvrirAjout: () => {}, commencerLien: () => {}, choisirChoix: () => {},
-  ouverteDuBloc: null, ouvrirDuBloc: () => {},
+  ouverteDuBloc: null, ouvrirDuBloc: () => {}, candidates: new Set(),
 });
 
 const classes = (...noms: (string | false | null | undefined)[]): string => noms.filter(Boolean).join(" ");
@@ -101,9 +103,9 @@ function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
         >
           <Handle type="target" position={Position.Top} isConnectable={false} />
           <span className={classes("carte-chemin__titre", !data.titre && "carte-chemin__titre--vide")}>{titre}</span>
-          <span className="carte-chemin__pied carte-chemin__pied--proposee">
+          <span className={classes("carte-chemin__pied carte-chemin__pied--proposee", data.propose.inventee && "est-imaginee")}>
             <Icone nom="ia" />
-            {data.propose.inventee ? "Imaginée par l’IA" : "Proposée"}
+            {data.propose.inventee ? "Imaginée, à vérifier" : "Proposée"}
           </span>
           <Handle type="source" position={Position.Bottom} isConnectable={false} />
         </button>
@@ -114,7 +116,7 @@ function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
     <div className={classes("noeud-chemin", vue.source === id && "est-source", data.sansSuite && "attend-une-suite")}>
     <div
       className={classes(
-        "carte-chemin", selected && "est-choisie", vue.designee === id && "est-designee", (vue.source === id || vue.cible === id) && "est-reliee",
+        "carte-chemin", selected && "est-choisie", vue.candidates.has(id) && "est-candidate", vue.designee === id && "est-designee", (vue.source === id || vue.cible === id) && "est-reliee",
         vue.choisie && vue.choisie !== id && !vue.voisines.has(id) && vue.source !== id && vue.cible !== id && "est-en-retrait",
       )}
       data-chemin={id}
@@ -395,6 +397,7 @@ export default function Schema({
   const [bloc, setBlocBrut] = useEtatDuBloc(services?.chapitreId, !!services?.auDepart);
   const blocOuvert = !!services && bloc.ouvert;
   const [ouverteDuBloc, setOuverteDuBloc] = useState<string | null>(null);
+  const [candidates, setCandidates] = useState<Set<string>>(new Set());
   // La proposition qui change redessine le schéma : la scène d'origine garde sa place à l'écran (F03-AC54)
   const aCadrer = useRef(false);
   const setBloc: typeof setBlocBrut = (suite) =>
@@ -832,21 +835,25 @@ export default function Schema({
       // Pendant un bloc, la vue ne met en retrait rien de ce qu'il dessine : l'origine et ses scènes restent nettes
       active: blocOuvert ? null : (choisie ?? (enTirant ? null : survolee)), choisie: blocOuvert ? null : choisie, survolee: enTirant ? null : survolee,
       voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix, ouverteDuBloc, ouvrirDuBloc: setOuverteDuBloc,
+      candidates: blocOuvert && !bloc.origine ? candidates : new Set<string>(),
     }),
-    [choisie, survolee, enTirant, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix, blocOuvert, ouverteDuBloc],
+    [choisie, survolee, enTirant, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix, blocOuvert, ouverteDuBloc, candidates, bloc.origine],
   );
   // ——— Le bloc ajouté (F13-AC38) : la proposition reste dessinée jusqu'à ce que ses scènes soient dans le
   // chapitre, puis le pointillé laisse place aux vraies cartes, la scène d'origine à la même place ———
   const attendus = useRef<string[] | null>(null);
   const finirLeBloc = () => {
+    if (resteAReprendre(bloc.proposition?.reste)) setCandidates(new Set(attendus.current ?? []));
     attendus.current = null;
     setOuverteDuBloc(null);
+    // Avec un reste à construire, on clique la scène d'où continuer : aucune n'est choisie d'avance
+    if (resteAReprendre(bloc.proposition?.reste)) choisir(null);
     setBloc((e) => {
       // Une demande trop large a laissé un reste : il revient dans le champ, on clique la scène d'où continuer (F13-AC40)
-      const reste = e.proposition?.reste?.match(/Reste\s*:\s*(.+)$/i)?.[1]?.trim() ?? e.proposition?.reste ?? null;
+      const reste = resteAReprendre(e.proposition?.reste);
       return reste
-        ? { ...e, proposition: null, demandee: "", prendre: false, origine: null, demande: reste }
-        : { ...e, proposition: null, demandee: "", prendre: false, demande: "", ouvert: false };
+        ? { ...e, proposition: null, demandee: "", prendre: false, reponses: {}, origine: null, demande: reste }
+        : { ...e, proposition: null, demandee: "", prendre: false, reponses: {}, demande: "", ouvert: false };
     });
   };
   const ajouterLeBloc: NonNullable<Construire["bloc"]>["ajouter"] = async (p, prendre) => {
@@ -1072,7 +1079,7 @@ export default function Schema({
             onConstruireLaSuite={services ? () => {
               setGeste(null);
               // La proposition gardée ne revient que pour la scène d'où elle part ; la demande, elle, reste
-              setBloc((e) => ({ ...e, ouvert: true, origine: sceneChoisie.id, ...(e.origine === sceneChoisie.id ? {} : { proposition: null, demandee: "", prendre: false }) }));
+              setBloc((e) => ({ ...e, ouvert: true, origine: sceneChoisie.id, ...(e.origine === sceneChoisie.id ? {} : { proposition: null, demandee: "", prendre: false, reponses: {} }) }));
             } : undefined}
           />
         </div>

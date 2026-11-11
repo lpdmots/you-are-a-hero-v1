@@ -1080,3 +1080,48 @@ deux lots.
 `npm run production:schema -- --oui`, qui applique les cinq migrations à la vraie base
 (ne plus les modifier ensuite) ; puis le code, par le `git push` de `main`. Les
 migrations passent avant le code : sans elles, « + » échoue.
+
+## Essayer le bloc de scènes (F13.7, lots 3 et 4 de « Construire dans Chemins »)
+
+L'IA propose plusieurs scènes d'un coup, dessinées en pointillé avant tout ajout
+(`docs/plan.md`, « Construire dans « Chemins » et bloc de scènes »). En local, sur
+http://localhost:4840, avec le compte local ; la vraie base n'est pas touchée.
+
+**1. La base locale à jour.** La migration `bloc_de_scenes` :
+`npx tsx scripts/supabase.ts migration up --local`. Un chapitre où essayer :
+`npm run chemins:essai -- --refaire` (« Le marais des feux follets »), ou n'importe quel
+chapitre à choix, vide compris.
+
+**2. Le serveur.** Avec la configuration « application » de `.claude/launch.json`,
+les demandes partent vraiment chez Anthropic (Opus 5.5, 3 à 4 ✦ et une dizaine de
+secondes par tour, débités à votre compte local). Pour regarder les écrans sans rien
+dépenser : « application-ia-simulee », où l'IA répond d'après les mots de la demande
+(« trois chemins : a, b, c », « une scène … avec trois choix », « un troisième »,
+« … rejoint <titre d'une scène> », « … puis … »).
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| Cliquer une carte, puis « ✦ Construire la suite » | le panneau « Construire avec l'IA » à la place de celui de la scène ; la scène d'origine cerclée ; trois formes sous le champ vide |
+| Écrire, ou dicter, « Le héros arrive dans la forêt, où trois chemins s'offrent à lui : le sentier des fougères, le ruisseau, la grotte », « ✦ Proposer » | les scènes en pointillé sous la carte, entières à l'écran ; dans le panneau, le bloc en arbre, « Le chapitre aura… » et « Ajouter … scènes et … choix » ; rien dans « Scènes » |
+| Cliquer une carte en pointillé | sa ligne s'ouvre dans le panneau |
+| Récrire un titre, un libellé, ouvrir « Consigne et liste » | la carte prend le titre ; rien n'est encore enregistré |
+| La corbeille d'une scène proposée | elle quitte le dessin avec ses choix ; « Annuler » dans le message |
+| « Donner aussi une consigne à … » (si la scène d'origine n'en a pas) | le bouton finit par « et 1 consigne » |
+| « Ajouter … » | les vraies cartes à la place du pointillé, la scène d'origine au même endroit ; « … ajoutés. » et « Annuler », qui retire tout |
+| « Réglages », « L'IA complète », une demande avec « et un troisième » | le troisième chemin inventé, « Imaginée par l'IA », sans question |
+| « Me le demander », la même demande | « Pour mieux répondre » ; une réponse, « ✦ Redessiner avec mes réponses » ; ajouter sans répondre marche aussi |
+| Une demande très longue (une forêt, ses chemins, un campement, une rivière…) | huit nouvelles scènes au plus, la phrase de ce qui reste ; après l'ajout, ce reste dans le champ et « Cliquez la scène d'où partir » |
+| Un chapitre vide, « ✦ Construire avec l'IA » | le panneau seul, « La proposition de l'IA se dessinera ici » |
+| « Proposer les aides IA » éteint dans « Mon compte » | aucun ✦ ; les gestes à la main restent |
+
+**3. Quelqu'un écrit la scène d'origine.** Comme pour « + » : un élève qui écrit la
+scène pendant l'ajout n'est pas arrêté, les choix arrivent à la fin de sa copie.
+
+**4. Les essais.** `npm run test:base -- bloc-de-scenes` et `npm test -- bloc-de-scenes`
+(IA simulée) ; les captures, contre le serveur « application-ia-simulee » :
+`npx playwright test --config playwright.local.config.ts bloc-de-scenes`. L'essai réel :
+`npm run ia:essai -- --cas bloc-trois-chemins,bloc-collegue,bloc-question,bloc-complete,bloc-rejoint,bloc-large,bloc-sans-consigne,bloc-chapitre-vide --refaire`
+(environ 0,25 $), relu sur la page locale `/essai-ia`.
+
+**5. En ligne, à la demande seulement.** `npm run sauvegarder`, puis
+`npm run production:schema -- --oui` (la migration `bloc_de_scenes`), puis le code.

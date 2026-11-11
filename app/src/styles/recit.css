@@ -3778,3 +3778,123 @@ a.noeud__ailleurs {
   justify-self: start;
   margin-top: 6px;
 }
+
+/* ——— Lot 4 : ce que l'IA demande, ce qu'elle laisse, ce qu'elle invente ——— */
+.panneau-bloc__reste {
+  display: flex;
+  align-items: flex-start;
+  gap: 7px;
+  margin: 0;
+  padding: 8px 10px;
+  border-radius: var(--r-s);
+  background: var(--ia-pale);
+  color: var(--ia-fonce);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+}
+.panneau-bloc__reste .ic,
+.bloc-ligne__imaginee .ic {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--ia);
+}
+.panneau-bloc__questions {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1.5px dashed var(--ia-trait);
+  border-radius: var(--r-s);
+}
+.panneau-bloc__questions-tete {
+  margin: 0;
+  font-weight: 800;
+}
+.panneau-bloc__questions-tete span {
+  margin-left: 4px;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 400;
+}
+.panneau-bloc__question {
+  display: grid;
+  gap: 4px;
+}
+.panneau-bloc__question label {
+  font-size: var(--t-s);
+  line-height: 1.35;
+}
+.panneau-bloc__questions .btn--ia {
+  justify-self: start;
+  white-space: nowrap;
+}
+.bloc-ligne__imaginee {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  color: var(--ia-fonce);
+  font-size: var(--t-xs);
+  font-weight: 600;
+}
+
+/* Ce que l'IA a inventé se distingue de ce qu'elle a seulement mis en forme : à vérifier */
+.carte-chemin__pied--proposee.est-imaginee,
+.bloc-ligne__imaginee {
+  font-weight: 800;
+}
+.carte-chemin__pied--proposee.est-imaginee {
+  align-self: flex-start;
+  width: fit-content;
+  padding: 1px 6px 1px 4px;
+  border-radius: 99px;
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--ia);
+}
+.panneau-bloc__consigne-origine {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: -4px 0 0;
+  padding: 8px 10px;
+  border-radius: var(--r-s);
+  background: var(--canard-pale);
+  color: var(--canard-fonce);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.panneau-bloc__consigne-origine .ic {
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+.panneau-bloc__precisees {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+}
+.panneau-bloc__precisees .ic {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  color: var(--fait, var(--canard));
+}
+textarea.bloc-ligne__libelle,
+textarea.bloc-ligne__titre {
+  display: block;
+  line-height: 1.35;
+  resize: none;
+}
+/* Les scènes qu'on vient d'ajouter, quand il reste à construire : on clique celle d'où continuer */
+.carte-chemin.est-candidate {
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    0 0 0 2px var(--feuille),
+    0 0 0 3.5px var(--canard),
+    var(--ombre-cahier);
+}

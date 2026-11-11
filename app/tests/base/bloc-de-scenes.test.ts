@@ -240,4 +240,59 @@ describe("Bloc de scènes depuis le schéma (F13.7)", () => {
     const fait = await ajouterUnBloc(e, chapitreId, demande.proposition);
     expect(fait.ok && fait.scenes.map((s) => s.titre)).toEqual(["Bord de la rivière", "Chemin 1", "Chemin 2"]);
   });
+
+  it("F13-AC36 — « Me le demander », un troisième chemin non décrit : une question porte sur lui, aucune scène de plus ; l'adulte ajoute sans répondre ; une demande complète n'en reçoit aucune", async () => {
+    const r = await lisiere();
+    const e = enseignantDe(laurent);
+    const flou = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième" });
+    if (!flou.ok) throw new Error(flou.message);
+    expect(flou.proposition.questions).toEqual(["Où mène le chemin 3, et que s'y passe-t-il ?"]);
+    expect(flou.proposition.scenes).toHaveLength(3);
+    const fait = await ajouterUnBloc(e, r.chapitre, flou.proposition);
+    expect(fait.ok && fait.scenes).toHaveLength(3);
+    const clair = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, la grotte" });
+    expect(clair.ok && clair.proposition.questions).toEqual([]);
+  });
+
+  it("y répondre redessine : la réponse et la proposition retouchée partent avec la demande, relues sans confiance", async () => {
+    const r = await lisiere();
+    const e = enseignantDe(laurent);
+    const flou = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième" });
+    if (!flou.ok) throw new Error(flou.message);
+    const espion = vi.spyOn(demander, "demanderUneAide");
+    const retouchee = { ...flou.proposition, scenes: flou.proposition.scenes.map((s, i) => (i === 0 ? { ...s, titre: "Les fougères géantes" } : s)) };
+    const redessinee = await demanderUnBloc(e, r.chapitre, {
+      origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième",
+      reponses: [{ question: flou.proposition.questions[0], reponse: "Une cabane de bûcheron" }, { question: "", reponse: "vide" }],
+      actuelle: retouchee,
+    });
+    const entree = espion.mock.calls[0][2] as Parameters<typeof blocDeScenes.message>[0];
+    expect(entree.reponses).toEqual([{ question: "Où mène le chemin 3, et que s'y passe-t-il ?", reponse: "Une cabane de bûcheron" }]);
+    expect(entree.actuelle?.scenes[0].titre).toBe("Les fougères géantes");
+    expect(redessinee.ok && redessinee.proposition.scenes.map((s) => s.titre)).toContain("Une cabane de bûcheron");
+    expect(redessinee.ok && redessinee.proposition.questions).toEqual([]);
+  });
+
+  it("F13-AC37 — « L'IA complète » : le troisième chemin est décrit, marqué inventé, sans question", async () => {
+    const r = await lisiere();
+    const e = enseignantDe(laurent);
+    await enregistrerReglagesDuBloc(e, { manque: "completer", consignes: true });
+    const fait = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième" });
+    if (!fait.ok) throw new Error(fait.message);
+    expect(fait.proposition.questions).toEqual([]);
+    expect(fait.proposition.scenes.filter((s) => s.inventee).map((s) => s.titre)).toEqual(["Le chemin des ronces"]);
+  });
+
+  it("F13-AC40 — une demande trop large : la première partie, huit nouvelles scènes au plus, et ce qui reste ; ajouter n'ajoute que la première partie", async () => {
+    const r = await lisiere();
+    const e = enseignantDe(laurent);
+    const avant = await compter(r.projet);
+    const large = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier, le ruisseau, la grotte puis le campement et la rivière avec leurs propres choix" });
+    if (!large.ok) throw new Error(large.message);
+    expect(large.proposition.scenes.length).toBeLessThanOrEqual(8);
+    expect(large.proposition.reste).toMatch(/Reste : le campement et la rivière/);
+    const fait = await ajouterUnBloc(e, r.chapitre, large.proposition);
+    if (!fait.ok) throw new Error(fait.dit);
+    expect((await compter(r.projet)).scenes).toBe(avant.scenes + 3);
+  });
 });
