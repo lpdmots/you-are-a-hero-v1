@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
 import { exigerEnseignant } from "@/serveur/adulte";
+import { ajouterUnBloc, annulerUnBloc, enregistrerReglagesDuBloc } from "@/serveur/bloc-de-scenes";
 import { ajouterAuPlan, ajouterSceneApres, annulerAjout, remettreChoix, retirerChoix, type EchecDuPlan } from "@/serveur/chemins";
 
 /**
@@ -76,4 +77,34 @@ export async function annulerAjoutDuSchema(choix: ChoixPose[], scenes: string[])
   if (!fait.ok) return echec(fait, "L’ajout n’a pas pu être annulé.");
   rafraichir(fait.projetId);
   return { ok: true };
+}
+
+/**
+ * « Ajouter 4 scènes et 3 choix » (F13-AC38) : le bloc proposé par l'IA, tel que l'adulte l'a
+ * retouché, entre au chapitre d'un seul tenant ; la consigne proposée à la scène d'origine, s'il
+ * la prend.
+ */
+export async function ajouterBlocDepuisLeSchema(
+  chapitreId: string, proposition: unknown, prendreConsigne: boolean,
+): Promise<Fait<{ scenes: { cle: string; id: string; reference: number; titre: string | null }[]; choix: ChoixPose[]; consignePrise: string | null }>> {
+  const e = await exigerEnseignant();
+  const fait = await ajouterUnBloc(e, chapitreId, proposition, { prendreConsigne });
+  if (!fait.ok) return echec(fait, "Le bloc n’a pas pu être ajouté. Réessayez.");
+  rafraichir(fait.projetId);
+  return { ok: true, scenes: fait.scenes, choix: fait.choix, consignePrise: fait.consignePrise };
+}
+
+/** « Annuler » un bloc ajouté : ses choix quittent le texte, ses scènes la corbeille, la consigne prise s'efface. */
+export async function annulerBlocDuSchema(choix: ChoixPose[], scenes: string[], consigne?: { scene: string; texte: string }): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const fait = await annulerUnBloc(e, choix, scenes, consigne);
+  if (!fait.ok) return echec(fait, "L’ajout n’a pas pu être annulé.");
+  rafraichir(fait.projetId);
+  return { ok: true };
+}
+
+/** Les deux réglages du bloc, gardés avec le compte (F13.7). */
+export async function reglerLeBloc(reglages: unknown): Promise<Fait> {
+  const e = await exigerEnseignant();
+  return (await enregistrerReglagesDuBloc(e, reglages)) ? { ok: true } : { ok: false, erreur: "Ce réglage n’a pas pu être enregistré." };
 }

@@ -7,11 +7,14 @@ import {
   createContext, useCallback, useContext, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState,
   type CSSProperties, type PointerEvent, type ReactNode, type RefObject,
 } from "react";
+import { cheminsAvecLeBloc } from "@/domaine/bloc-de-scenes";
 import { MOT_DE_MARQUE, type ARegarder, type Chemins, type NoeudDeChemin } from "@/domaine/chemins";
+import { useAidesIa } from "../AidesIa";
 import { Bulle } from "../Bulle";
 import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
 import { aRendreSansMouvement, carteDeReference, figerLaTaille, garderEnPlace } from "./ancrage";
+import { PanneauDuBloc, useEtatDuBloc } from "./Bloc";
 import { BulleDuGeste, PanneauDeScene, type Construire, type Geste } from "./Construire";
 import { disposer, texteDeLEtiquette, texteDuLibelle, type Disposition, type Element, type Mesure } from "./disposer";
 
@@ -47,7 +50,7 @@ const LOIN = 0.62;
 const ZOOM = { toutVoir: 0.05, min: 0.2, lisible: 0.7, max: 1, pas: 0.1 };
 
 type DonneesScene = NoeudDeChemin & { marques: string[]; sansSuite: boolean };
-type DonneesTrait = { d: string; texte: string; cache: boolean; remonte: boolean; libelle: Disposition["traits"][number]["libelle"] };
+type DonneesTrait = { d: string; texte: string; cache: boolean; remonte: boolean; libelle: Disposition["traits"][number]["libelle"]; propose?: boolean };
 type NoeudScene = Node<DonneesScene, "scene">;
 type NoeudEtiquette = Node<{ element: Element }, "etiquette">;
 type Trait = Edge<DonneesTrait, "chemin">;
@@ -67,9 +70,13 @@ const Vue = createContext<{
   commencerLien: (id: string, e: PointerEvent<HTMLButtonElement>) => void;
   /** Le libellé d'un choix, cliqué : sa scène d'origine est choisie, et sa ligne désignée dans le panneau */
   choisirChoix: (lienId: string, de: string) => void;
+  /** La scène proposée par le bloc dont la ligne est ouverte dans le panneau, et le geste qui l'ouvre (F13.7) */
+  ouverteDuBloc: string | null;
+  ouvrirDuBloc: (cle: string) => void;
 }>({
   active: null, choisie: null, survolee: null, voisines: new Set(), loin: false, montre: null,
   construit: false, source: null, cible: null, ouvrirAjout: () => {}, commencerLien: () => {}, choisirChoix: () => {},
+  ouverteDuBloc: null, ouvrirDuBloc: () => {},
 });
 
 const classes = (...noms: (string | false | null | undefined)[]): string => noms.filter(Boolean).join(" ");
@@ -77,6 +84,32 @@ const classes = (...noms: (string | false | null | undefined)[]): string => noms
 function CarteScene({ id, data, selected }: NodeProps<NoeudScene>) {
   const vue = useContext(Vue);
   const titre = data.titre ?? "sans titre";
+  if (data.propose) {
+    const cle = data.propose.cle;
+    // Une scène que l'IA propose, pas encore ajoutée : en pointillé ; cliquée, sa ligne s'ouvre dans le panneau
+    return (
+      <div className="noeud-chemin">
+        <button
+          type="button"
+          className={classes("carte-chemin carte-chemin--proposee nodrag nopan", vue.ouverteDuBloc === cle && "est-ouverte")}
+          data-chemin={id}
+          aria-label={`Scène proposée : ${titre}. Retoucher dans le panneau`}
+          onClick={(e) => {
+            e.stopPropagation();
+            vue.ouvrirDuBloc(cle);
+          }}
+        >
+          <Handle type="target" position={Position.Top} isConnectable={false} />
+          <span className={classes("carte-chemin__titre", !data.titre && "carte-chemin__titre--vide")}>{titre}</span>
+          <span className="carte-chemin__pied carte-chemin__pied--proposee">
+            <Icone nom="ia" />
+            {data.propose.inventee ? "Imaginée par l’IA" : "Proposée"}
+          </span>
+          <Handle type="source" position={Position.Bottom} isConnectable={false} />
+        </button>
+      </div>
+    );
+  }
   return (
     <div className={classes("noeud-chemin", vue.source === id && "est-source", data.sansSuite && "attend-une-suite")}>
     <div
@@ -190,14 +223,14 @@ function TraitDeChemin({ id, source, target, data }: EdgeProps<Trait>) {
       <BaseEdge
         path={data.d}
         interactionWidth={0}
-        className={classes("trait-chemin", data.cache && "est-cache", data.remonte && "remonte", touche && "est-actif", efface && "est-efface")}
-        markerEnd={`url(#${touche ? "fleche-chemin-active" : data.remonte ? "fleche-chemin-retour" : "fleche-chemin"})`}
+        className={classes("trait-chemin", data.cache && "est-cache", data.propose && "est-propose", data.remonte && "remonte", touche && "est-actif", efface && !data.propose && "est-efface")}
+        markerEnd={`url(#${data.propose ? "fleche-chemin-proposee" : touche ? "fleche-chemin-active" : data.remonte ? "fleche-chemin-retour" : "fleche-chemin"})`}
       />
       {data.libelle && !vue.loin ? (
         <EdgeLabelRenderer>
           <span
-            className={classes("libelle-chemin", data.cache && "est-cache", data.remonte && "remonte", touche && "est-entier", efface && "est-efface", vue.construit && !data.cache && "se-choisit nodrag nopan")}
-            onClick={vue.construit && !data.cache ? () => vue.choisirChoix(id, source) : undefined}
+            className={classes("libelle-chemin", data.cache && "est-cache", data.propose && "est-propose", data.remonte && "remonte", touche && !data.propose && "est-entier", efface && !data.propose && "est-efface", vue.construit && !data.cache && !data.propose && "se-choisit nodrag nopan")}
+            onClick={vue.construit && !data.cache && !data.propose ? () => vue.choisirChoix(id, source) : undefined}
             // En entier, le libellé garde sa largeur et gagne en hauteur : il ne recouvre pas ses voisins
             style={{ transform: `translate(-50%, -50%) translate(${data.libelle.x}px, ${data.libelle.y}px)`, width: data.libelle.l, ...(touche ? { minHeight: data.libelle.h } : { height: data.libelle.h }) }}
             title={touche ? undefined : data.remonte ? `Retour en arrière : ${data.texte}` : data.texte}
@@ -356,13 +389,32 @@ export default function Schema({
   const [dessine, setDessine] = useState(false);
   const ancre = useRef<number | null>(null);
 
+  // ——— Le bloc de scènes (F13.7) : l'état du panneau et la proposition, gardés tant que la page reste ouverte ———
+  const aides = useAidesIa();
+  const services = construire?.bloc && aides.proposer ? construire.bloc : undefined;
+  const [bloc, setBlocBrut] = useEtatDuBloc(services?.chapitreId, !!services?.auDepart);
+  const blocOuvert = !!services && bloc.ouvert;
+  const [ouverteDuBloc, setOuverteDuBloc] = useState<string | null>(null);
+  // La proposition qui change redessine le schéma : la scène d'origine garde sa place à l'écran (F03-AC54)
+  const aCadrer = useRef(false);
+  const setBloc: typeof setBlocBrut = (suite) =>
+    setBlocBrut((avant) => {
+      const e = typeof suite === "function" ? suite(avant) : suite;
+      if (e.proposition !== avant.proposition) {
+        aGarder.current = e.origine ?? avant.origine;
+        aCadrer.current = e.proposition !== null;
+      }
+      return e;
+    });
+  const vus = useMemo(() => (blocOuvert ? cheminsAvecLeBloc(chemins, bloc.proposition) : chemins), [blocOuvert, chemins, bloc.proposition]);
+
   // La disposition se calcule une fois la police de l'outil chargée : les libellés se mesurent avec elle
   useEffect(() => {
     let vivant = true;
     void document.fonts.ready.then(() => {
       if (!vivant) return;
-      const d = disposer(chemins, regard.marques, mesureur());
-      const parId = new Map(chemins.noeuds.map((n) => [n.id, n]));
+      const d = disposer(vus, regard.marques, mesureur());
+      const parId = new Map(vus.noeuds.map((n) => [n.id, n]));
       const etat = courantRef.current;
       const choisie = etat.noeuds.find((n) => n.selected)?.id ?? null;
       const suite = d.elements.map((e) => {
@@ -370,6 +422,8 @@ export default function Schema({
         const commun = { id: e.id, position: { x: p.x, y: p.y }, width: p.l, height: p.h, draggable: false, connectable: false, deletable: false };
         if (e.sorte !== "scene") return { ...commun, type: "etiquette" as const, data: { element: e }, selectable: false, focusable: false };
         const n = parId.get(e.id)!;
+        // Une scène proposée ne se choisit pas comme les autres : elle ouvre sa ligne dans le panneau du bloc
+        if (n.propose) return { ...commun, type: "scene" as const, selectable: false, focusable: false, data: { ...n, marques: [], sansSuite: false } };
         return {
           ...commun, type: "scene" as const, selected: e.id === choisie,
           data: { ...n, marques: e.marques.map((m, i) => (i ? MOT_DE_MARQUE[m].toLocaleLowerCase("fr") : MOT_DE_MARQUE[m])), sansSuite: e.marques.includes("sans-suite") },
@@ -399,18 +453,18 @@ export default function Schema({
     return () => {
       vivant = false;
     };
-  }, [chemins, regard]);
+  }, [vus, regard]);
 
   const traits = useMemo<Trait[]>(() => {
-    const parId = new Map(chemins.liens.map((l) => [l.id, l]));
+    const parId = new Map(vus.liens.map((l) => [l.id, l]));
     return (disposition?.traits ?? []).map((t) => {
       const lien = parId.get(t.id);
       return {
         id: t.id, source: t.de, target: t.vers, type: "chemin" as const, focusable: false, selectable: false, reconnectable: false,
-        data: { d: t.d, libelle: t.libelle, texte: lien ? texteDuLibelle(lien) : "", cache: lien?.cache ?? false, remonte: t.remonte },
+        data: { d: t.d, libelle: t.libelle, texte: lien ? texteDuLibelle(lien) : "", cache: lien?.cache ?? false, remonte: t.remonte, propose: lien?.propose },
       };
     });
-  }, [disposition, chemins.liens]);
+  }, [disposition, vus.liens]);
 
   // Le schéma prend toute la largeur de la page, d'un bord à l'autre : celle de la fenêtre, moins la
   // colonne de navigation de l'adulte (F06.5), qui se replie sans que la fenêtre change
@@ -515,8 +569,8 @@ export default function Schema({
   const choisie = noeuds.find((n) => n.selected)?.id ?? null;
   const voisines = useMemo(() => new Set(choisie ? traits.flatMap((t) => (t.source === choisie ? [t.target] : t.target === choisie ? [t.source] : [])) : []), [choisie, traits]);
 
-  // ——— Construire (F03.1) : les gestes de l'adulte, à une taille où les cartes se lisent ———
-  const construit = !!construire && !loin;
+  // ——— Construire (F03.1) : les gestes de l'adulte, à une taille où les cartes se lisent ; pas pendant un bloc ———
+  const construit = !!construire && !loin && !blocOuvert;
   const choisir = useCallback((id: string | null) => setNoeuds((avant) => avant.map((n) => (!!n.selected === (n.id === id) ? n : { ...n, selected: n.id === id }))), []);
   const suivreLaSource = useCallback(
     // Un panneau est ouvert sur une autre scène : il passe à celle d'où part le geste, dont la suite ne reste pas en retrait
@@ -655,7 +709,7 @@ export default function Schema({
 
   const sceneChoisie = construire && choisie ? chemins.noeuds.find((n) => n.id === choisie) : undefined;
   // Le panneau tient toujours dans la fenêtre : sous l'en-tête des chemins une fois la page descendue, sinon au haut du schéma
-  const panneauOuvert = !!sceneChoisie;
+  const panneauOuvert = !!sceneChoisie || blocOuvert;
   useLayoutEffect(() => {
     if (!panneauOuvert) return;
     const suivre = () => {
@@ -670,11 +724,17 @@ export default function Schema({
       window.removeEventListener("resize", suivre);
     };
   }, [panneauOuvert]);
+  // Le bloc ouvert : une carte cliquée devient la scène d'où il part, tant que rien n'est proposé
+  useEffect(() => {
+    if (!blocOuvert || !choisie || bloc.proposition || choisie === bloc.origine) return;
+    setBloc((e) => ({ ...e, origine: choisie }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [blocOuvert, choisie]);
   // La carte cliquée ne reste pas sous le panneau : le cadre se décale juste assez pour la montrer
   useEffect(() => {
     const c = cadre.current;
     const panneau = rail.current?.firstElementChild;
-    if (!sceneChoisie || !c || !panneau) return;
+    if (!sceneChoisie || blocOuvert || !c || !panneau) return;
     const carte = c.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(sceneChoisie.id)}"]`)?.getBoundingClientRect();
     const depasse = carte ? carte.right + 20 - panneau.getBoundingClientRect().left : 0;
     if (depasse > 0) c.scrollBy({ left: depasse, behavior: sansMouvement() ? "auto" : "smooth" });
@@ -763,14 +823,86 @@ export default function Schema({
     if ((panneau && !panneauOuvert) || (etaitEnGeste && !enGeste && !dedans.current)) rendre();
   }, [panneauOuvert, enGeste, rendre]);
 
-  const source = geste?.de ?? tire?.de ?? null;
+  const source = geste?.de ?? tire?.de ?? (blocOuvert ? bloc.origine : null);
   const cible = (geste?.sorte === "lien" ? geste.vers : null) ?? tire?.sur ?? null;
   const enTirant = tire !== null;
   const vue = useMemo(
     // Pendant qu'on tire un lien, la carte survolée ne montre que son cadre : ni ses flèches, ni « Ouvrir »
-    () => ({ active: choisie ?? (enTirant ? null : survolee), choisie, survolee: enTirant ? null : survolee, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix }),
-    [choisie, survolee, enTirant, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix],
+    () => ({
+      // Pendant un bloc, la vue ne met en retrait rien de ce qu'il dessine : l'origine et ses scènes restent nettes
+      active: blocOuvert ? null : (choisie ?? (enTirant ? null : survolee)), choisie: blocOuvert ? null : choisie, survolee: enTirant ? null : survolee,
+      voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix, ouverteDuBloc, ouvrirDuBloc: setOuverteDuBloc,
+    }),
+    [choisie, survolee, enTirant, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, choisirChoix, blocOuvert, ouverteDuBloc],
   );
+  // ——— Le bloc ajouté (F13-AC38) : la proposition reste dessinée jusqu'à ce que ses scènes soient dans le
+  // chapitre, puis le pointillé laisse place aux vraies cartes, la scène d'origine à la même place ———
+  const attendus = useRef<string[] | null>(null);
+  const finirLeBloc = () => {
+    attendus.current = null;
+    setOuverteDuBloc(null);
+    setBloc((e) => {
+      // Une demande trop large a laissé un reste : il revient dans le champ, on clique la scène d'où continuer (F13-AC40)
+      const reste = e.proposition?.reste?.match(/Reste\s*:\s*(.+)$/i)?.[1]?.trim() ?? e.proposition?.reste ?? null;
+      return reste
+        ? { ...e, proposition: null, demandee: "", prendre: false, origine: null, demande: reste }
+        : { ...e, proposition: null, demandee: "", prendre: false, demande: "", ouvert: false };
+    });
+  };
+  const ajouterLeBloc: NonNullable<Construire["bloc"]>["ajouter"] = async (p, prendre) => {
+    if (!services) return { ok: false, erreur: "" };
+    const fait = await services.ajouter(p, prendre);
+    if (!fait.ok) return fait;
+    attendus.current = fait.scenes;
+    if (fait.scenes.every((id) => chemins.noeuds.some((n) => n.id === id))) finirLeBloc();
+    return fait;
+  };
+  useEffect(() => {
+    const a = attendus.current;
+    if (a && a.every((id) => chemins.noeuds.some((n) => n.id === id))) finirLeBloc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chemins]);
+
+  // ——— La proposition dessinée tient entière à l'écran (F13.7) : on fait défiler juste assez ; si elle
+  // est plus grande que la vue, le schéma se réduit, sans descendre sous la taille où les libellés se lisent ———
+  useEffect(() => {
+    if (!aCadrer.current || !blocOuvert || !bloc.proposition) return;
+    // Après que la scène d'origine a été tenue en place et que les cartes ont glissé (F03-AC54)
+    const attente = setTimeout(() => {
+      {
+        const c = cadre.current;
+        if (!c) return;
+        // Le bloc entier : ses scènes, la scène d'origine, et les scènes du chapitre qu'un de ses chemins rejoint
+        const propose = bloc.proposition;
+        if (!propose) return;
+        const rejointes = propose.choix.map((x) => x.vers).filter((v) => !propose.scenes.some((sc) => sc.cle === v));
+        const cartes = [...c.querySelectorAll<HTMLElement>(".carte-chemin--proposee"), ...[bloc.origine, ...rejointes].flatMap((id) => (id ? [c.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(id)}"]`)] : []))]
+          .filter((x): x is HTMLElement => x !== null)
+          .map((x) => x.getBoundingClientRect());
+        if (!cartes.length) return;
+        aCadrer.current = false;
+        const boite = { haut: Math.min(...cartes.map((r) => r.top)) - 28, bas: Math.max(...cartes.map((r) => r.bottom)) + 28, gauche: Math.min(...cartes.map((r) => r.left)) - 24, droite: Math.max(...cartes.map((r) => r.right)) + 24 };
+        const panneau = rail.current?.firstElementChild?.getBoundingClientRect();
+        const cad = c.getBoundingClientRect();
+        const vue = { haut: barre() + hauteurDeLEnTete() + 8, bas: window.innerHeight - 12, gauche: cad.left + 8, droite: (panneau ? panneau.left : cad.right) - 12 };
+        const facteur = Math.min(1, (vue.bas - vue.haut) / (boite.bas - boite.haut), (vue.droite - vue.gauche) / (boite.droite - boite.gauche));
+        if (facteur < 0.98 && zoom > LOIN + 0.01) {
+          setAjuste(SANS_AJUSTEMENT);
+          aCadrer.current = true;
+          setChoisi(arrondir(Math.max(LOIN, zoom * facteur)));
+          return;
+        }
+        const doux = sansMouvement() ? "auto" : "smooth";
+        const dy = boite.haut < vue.haut ? boite.haut - vue.haut : boite.bas > vue.bas ? Math.min(boite.bas - vue.bas, boite.haut - vue.haut) : 0;
+        const dx = boite.gauche < vue.gauche ? boite.gauche - vue.gauche : boite.droite > vue.droite ? Math.min(boite.droite - vue.droite, boite.gauche - vue.gauche) : 0;
+        if (dy) window.scrollBy({ top: dy, behavior: doux });
+        if (dx) c.scrollBy({ left: dx, behavior: doux });
+      }
+    }, 320);
+    return () => clearTimeout(attente);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [noeuds, zoom]);
+
   /** Ce près de quoi la bulle se pose : la carte d'où l'on part, celle où le lien arrive, ou le bouton du panneau */
   const repereDuGeste = (): globalThis.Element | null => {
     if (!geste) return null;
@@ -793,7 +925,7 @@ export default function Schema({
       {/* Son fond va d'un bord à l'autre de la page, comme le schéma, sans passer sur la colonne de l'adulte */}
       <div className="chemins__tete" ref={enTete} style={place.largeur ? ({ "--tete-rognage": `inset(0 ${-place.largeur}px 0 ${-place.gauche}px)` } as CSSProperties) : undefined}>
         {tete}
-        <div className="chemins__outils">
+        <div className="chemins__outils" hidden={vus.noeuds.length === 0}>
           {/* Après un geste, la taille figée peut s'écarter d'un rien de la taille lisible : le lien n'apparaît pas pour si peu */}
           {Math.abs(zoom - lisible) > 0.045 ? (
             <button type="button" className="lien" onClick={() => changer(null)}>
@@ -829,7 +961,7 @@ export default function Schema({
         className="chemins__plan"
         ref={plan}
         style={place.largeur ? { width: place.largeur, marginLeft: -place.gauche } : undefined}
-        data-panneau={sceneChoisie ? "" : undefined}
+        data-panneau={panneauOuvert ? "" : undefined}
       >
       <div
         className="chemins__cadre"
@@ -841,7 +973,7 @@ export default function Schema({
       >
         <svg className="chemins__fleches" width="0" height="0" aria-hidden="true">
           <defs>
-            {["fleche-chemin", "fleche-chemin-retour", "fleche-chemin-active"].map((id) => (
+            {["fleche-chemin", "fleche-chemin-retour", "fleche-chemin-active", "fleche-chemin-proposee"].map((id) => (
               <marker key={id} id={id} className={id} viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
                 <path d="M0.6,0.8 L9.6,5 L0.6,9.2 L2.8,5 z" fill="currentColor" />
               </marker>
@@ -891,14 +1023,35 @@ export default function Schema({
               </ReactFlow>
             </Vue.Provider>
           </div>
+        ) : vus.noeuds.length === 0 ? (
+          // Un chapitre encore vide, le bloc ouvert : sa proposition se dessinera ici (F13.7)
+          <p className="chemins__attente chemins__attente--bloc">La proposition de l’IA se dessinera ici.</p>
         ) : (
           <p className="chemins__attente">Les chemins se dessinent…</p>
         )}
         {/* La place du panneau : le cadre défile assez loin pour montrer ce qu'il couvre */}
         {/* Pas pour un chapitre qui tient à gauche du panneau : rien n'est dessous, et une barre de défilement surgirait */}
-        {sceneChoisie && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" /> : null}
+        {panneauOuvert && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" /> : null}
       </div>
-      {construire && sceneChoisie ? (
+      {services && blocOuvert ? (
+        <div className="chemins__rail" ref={rail}>
+          <PanneauDuBloc
+            etat={bloc}
+            setEtat={setBloc}
+            chemins={chemins}
+            services={{ ...services, ajouter: ajouterLeBloc }}
+            deClasse={construire?.deClasse ?? false}
+            ouverte={ouverteDuBloc}
+            onOuvrir={setOuverteDuBloc}
+            ordre={(id) => disposition?.places.get(bloc.proposition?.scenes.some((x) => x.cle === id) ? `propose:${id}` : id)?.x ?? 0}
+            onFermer={() => {
+              setOuverteDuBloc(null);
+              setBloc((e) => ({ ...e, ouvert: false }));
+              if (!chemins.noeuds.length) services.quitter?.();
+            }}
+          />
+        </div>
+      ) : construire && sceneChoisie ? (
         <div className="chemins__rail" ref={rail}>
           <PanneauDeScene
             key={sceneChoisie.id}
@@ -916,12 +1069,17 @@ export default function Schema({
             boutonAjouter={boutonAjouter}
             onAjouter={() => setGeste((avant) => (avant?.depuis === "panneau" ? null : { sorte: "ajout", de: sceneChoisie.id, depuis: "panneau" }))}
             onFermer={() => choisir(null)}
+            onConstruireLaSuite={services ? () => {
+              setGeste(null);
+              // La proposition gardée ne revient que pour la scène d'où elle part ; la demande, elle, reste
+              setBloc((e) => ({ ...e, ouvert: true, origine: sceneChoisie.id, ...(e.origine === sceneChoisie.id ? {} : { proposition: null, demandee: "", prendre: false }) }));
+            } : undefined}
           />
         </div>
       ) : null}
       </div>
       {/* Le panneau d'une scène prend le coin de la mini-carte : elle revient quand il se referme */}
-      {pret && disposition && !sceneChoisie && h * zoom > 2 * (place.fenetre - place.barre) ? (
+      {pret && disposition && !panneauOuvert && h * zoom > 2 * (place.fenetre - place.barre) ? (
         <MiniCarte disposition={disposition} zoom={zoom} cadre={cadre} toile={toile} largeurToile={largeurUtile} regard={regard} noeuds={chemins.noeuds} />
       ) : null}
       {construire ? (

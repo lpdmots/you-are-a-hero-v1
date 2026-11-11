@@ -4,10 +4,11 @@ import { chapitresDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { ColonneDuProjet } from "../../_commun/EnteteProjet";
 import { projetDe } from "@/serveur/lectures";
+import { reglagesDuBloc } from "@/serveur/bloc-de-scenes";
 import { elevesDeLaClasse, planDe } from "@/serveur/recit";
 import { PageChapitre } from "./PageChapitre";
 
-type Props = { params: Promise<{ id: string; chapitre: string }>; searchParams: Promise<{ vue?: string; scene?: string; de?: string }> };
+type Props = { params: Promise<{ id: string; chapitre: string }>; searchParams: Promise<{ vue?: string; scene?: string; de?: string; bloc?: string }> };
 
 async function lire({ params }: Props) {
   const { id, chapitre: chapitreId } = await params;
@@ -32,7 +33,7 @@ export default async function Page(props: Props) {
   const lu = await lire(props);
   if (!lu) notFound();
   const { enseignant, projet, plan, chapitre } = lu;
-  const [eleves, demande] = await Promise.all([elevesDeLaClasse(enseignant, projet.classe?.id ?? null), props.searchParams]);
+  const [eleves, demande, reglagesBloc] = await Promise.all([elevesDeLaClasse(enseignant, projet.classe?.id ?? null), props.searchParams, reglagesDuBloc(enseignant)]);
   return (
     <div className="page">
       {/* Venu du Livre, la colonne désigne le Livre ; sinon « Parties et chapitres » (F06-AC99) */}
@@ -48,6 +49,8 @@ export default async function Page(props: Props) {
         vue={demande.vue === "chemins" && projet.recit === "choix" ? "chemins" : "scenes"}
         designee={typeof demande.scene === "string" ? demande.scene : undefined}
         venuDuLivre={demande.de === "livre"}
+        reglagesBloc={reglagesBloc}
+        blocAuDepart={demande.bloc === "debut" && projet.recit === "choix"}
       />
     </div>
   );

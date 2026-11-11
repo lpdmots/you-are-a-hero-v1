@@ -3429,3 +3429,352 @@ a.noeud__ailleurs {
 .verif--eleve > .verif__liste {
   clear: both;
 }
+
+/* ——— Le bloc de scènes (F13.7) : la proposition de l'IA, en pointillé canard pâle sur le schéma,
+   et son panneau, à la place de celui de la scène. Rien de plein : l'IA ne fait que proposer. ——— */
+.carte-chemin--proposee {
+  width: 100%;
+  padding: 0;
+  border: 1.5px dashed var(--ia);
+  background: color-mix(in srgb, var(--ia-pale) 70%, var(--feuille));
+  box-shadow: none;
+  color: var(--ia-fonce);
+  font: inherit;
+  text-align: left;
+}
+.carte-chemin--proposee:hover {
+  border-style: solid;
+  box-shadow: var(--ombre-cahier);
+}
+.carte-chemin--proposee.est-ouverte {
+  border-style: solid;
+  box-shadow:
+    0 0 0 2px var(--ia),
+    var(--ombre-cahier);
+}
+.carte-chemin--proposee:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 3px;
+}
+.carte-chemin--proposee .carte-chemin__titre {
+  margin-left: 12px;
+}
+.carte-chemin__pied--proposee {
+  justify-content: flex-start;
+  gap: 5px;
+  margin-left: 11px;
+  color: var(--ia-fonce);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.carte-chemin__pied--proposee .ic {
+  width: 13px;
+  height: 13px;
+  color: var(--ia);
+}
+.chemins__toile .trait-chemin.est-propose {
+  stroke: var(--ia);
+  stroke-width: 1.75;
+  stroke-dasharray: 6 4;
+}
+.fleche-chemin-proposee {
+  color: var(--ia);
+}
+.libelle-chemin.est-propose {
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia-trait);
+  color: var(--ia-fonce);
+}
+.chemins__attente--bloc {
+  margin: 24px calc(var(--panneau-chemin) + 40px) 24px 24px;
+  border: 1.5px dashed var(--ia-trait);
+  border-radius: var(--r-l);
+  color: var(--ia-fonce);
+}
+.vide-chap__gestes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.panneau-bloc__tete h2 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--t-s);
+  font-weight: 800;
+}
+.panneau-bloc__tete h2 .ic {
+  width: 17px;
+  height: 17px;
+  color: var(--ia);
+}
+.panneau-bloc__tete {
+  background: var(--ia-pale);
+  box-shadow: inset 0 -1px 0 var(--ia-trait);
+}
+.panneau-bloc__origine {
+  color: var(--graphite);
+}
+.panneau-bloc .panneau-chemin__champ > label {
+  font-weight: 700;
+}
+.panneau-bloc__envoi {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: -6px;
+}
+.panneau-bloc__reglages {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--t-xs);
+}
+.panneau-bloc__reglages .ic {
+  width: 15px;
+  height: 15px;
+}
+.panneau-bloc__reglages-corps {
+  display: grid;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--r-s);
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.panneau-bloc__reglages-corps fieldset {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.panneau-bloc__reglages-corps legend {
+  margin-bottom: 3px;
+  padding: 0;
+  font-size: var(--t-xs);
+  font-weight: 800;
+}
+.panneau-bloc__reglages-corps label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: var(--t-s);
+}
+.panneau-bloc__reglages-corps input {
+  accent-color: var(--canard);
+}
+.panneau-bloc__attente {
+  margin: 0;
+  color: var(--ia-fonce);
+  font-size: var(--t-xs);
+}
+.panneau-bloc__propose {
+  display: grid;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--trait);
+}
+.panneau-bloc__propose-tete {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 7px;
+  margin: 0;
+  color: var(--ia-fonce);
+  font-weight: 800;
+}
+.panneau-bloc__propose-tete > span:last-child {
+  flex-basis: 100%;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  font-weight: 400;
+}
+/* Le signe de la proposition : le pointillé du schéma, en petit */
+.panneau-bloc__pointille {
+  width: 16px;
+  height: 11px;
+  border: 1.5px dashed var(--ia);
+  border-radius: 3px;
+}
+.bloc-arbre {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.bloc-arbre--sous {
+  margin: 6px 0 0 10px;
+  padding-left: 10px;
+  border-left: 1.5px dashed var(--ia-trait);
+}
+.bloc-ligne {
+  display: grid;
+  gap: 3px;
+  padding: 7px 4px 7px 8px;
+  border-radius: var(--r-s);
+  background: color-mix(in srgb, var(--ia-pale) 55%, var(--feuille));
+  scroll-margin: 12px;
+  transition: box-shadow 0.18s var(--ease);
+}
+.bloc-ligne.est-ouverte {
+  box-shadow: inset 0 0 0 1.5px var(--ia);
+}
+.bloc-arbre--sous .bloc-ligne {
+  background: transparent;
+  padding-left: 2px;
+}
+.bloc-ligne__choix {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--graphite-2);
+}
+.bloc-ligne__choix .ic {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  color: var(--ia);
+}
+/* Les textes de la proposition se récrivent sur place : un champ qui ne se montre qu'au survol */
+.bloc-ligne__libelle,
+.bloc-ligne__titre {
+  width: 100%;
+  min-width: 0;
+  min-height: 28px;
+  padding: 2px 6px;
+  border: 1px solid transparent;
+  /* Au repos, un trait sous le texte dit qu'il se récrit */
+  border-bottom-color: var(--trait-fort);
+  border-radius: 6px 6px 0 0;
+  background: transparent;
+  color: var(--graphite);
+  font: inherit;
+}
+.bloc-ligne__libelle {
+  font-size: var(--t-xs);
+  font-weight: 600;
+  color: var(--graphite-2);
+}
+.bloc-ligne__titre {
+  font-weight: 800;
+}
+.bloc-ligne__libelle:hover,
+.bloc-ligne__titre:hover {
+  border-color: var(--trait-fort);
+  background: var(--feuille);
+}
+.bloc-ligne__libelle:focus,
+.bloc-ligne__titre:focus {
+  border-color: var(--canard);
+  background: var(--feuille);
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--canard) 22%, transparent);
+}
+.bloc-ligne__libelle:placeholder-shown,
+.bloc-ligne__titre:placeholder-shown {
+  border-color: var(--bloque);
+}
+.bloc-ligne__scene {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  column-gap: 2px;
+}
+.bloc-ligne__scene .panneau-chemin__retirer {
+  grid-row: 1;
+  grid-column: 2;
+}
+.bloc-ligne__deplier {
+  grid-column: 1 / -1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 6px;
+  font-size: var(--t-xs);
+}
+.bloc-ligne__deplier .ic {
+  width: 13px;
+  height: 13px;
+}
+.bloc-ligne__consigne {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 6px;
+  margin: 6px 4px 2px 6px;
+}
+.bloc-ligne__consigne textarea {
+  line-height: 1.45;
+}
+.bloc-ligne--rejoint {
+  grid-template-columns: 1fr auto;
+  column-gap: 2px;
+}
+.bloc-ligne--rejoint .bloc-ligne__choix {
+  grid-column: 1;
+}
+.bloc-ligne--rejoint .panneau-chemin__retirer {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+.bloc-ligne__rejoint {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 24px;
+  color: var(--graphite);
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.bloc-ligne__rejoint .ic {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  color: var(--graphite-2);
+}
+.panneau-bloc__origine-consigne {
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: var(--r-s);
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.panneau-bloc__prendre {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: var(--t-s);
+  line-height: 1.35;
+}
+.panneau-bloc__prendre input {
+  margin-top: 3px;
+  accent-color: var(--canard);
+}
+.panneau-bloc__pied {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 4px;
+  padding: 8px 12px 12px 16px;
+}
+.panneau-bloc__ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.panneau-bloc__total {
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+}
+.panneau-bloc__ajouter {
+  justify-content: center;
+}
+.panneau-chemin__bloc {
+  justify-self: start;
+  margin-top: 6px;
+}

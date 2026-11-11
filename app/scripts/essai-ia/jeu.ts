@@ -12,6 +12,7 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import type { AideTexte } from "@/domaine/aides-ia";
 import type { EntreeIdeesChoix } from "@/serveur/ia/aides/idees-choix";
+import type { EntreeBloc } from "@/serveur/ia/aides/bloc-de-scenes";
 import type { Carnet, Histoire, Plan } from "@/serveur/ia/aides/contexte";
 import { CONSIGNES, OBJETS, PARTIES, PREPARATION, RESUMES, TEXTES } from "../passeurs-de-brume";
 
@@ -120,6 +121,24 @@ const clairiere: EntreeIdeesChoix = {
   scenes: scenesDe(lisiere, 18), choixExistants: ["Traverser le pont de brume"],
 };
 
+// ——— Bloc de scènes (F13.7) : de vraies demandes, depuis « La lisière » ———
+
+/** Les scènes de « La lisière » telles que le bloc les reçoit : la référence sert d'identité. */
+const lisiereDuBloc = lisiere.scenes.map((s) => ({
+  id: ref(s.ref), ref: ref(s.ref), titre: s.titre, consigne: CONSIGNES[s.ref],
+  choix: (s.choix ?? []).map(([libelle, vers]: [string, number]) => ({ libelle, vers: lisiere.scenes.some((x) => x.ref === vers) ? ref(vers) : `un autre chapitre (${ref(vers)})` })),
+}));
+const blocDepuis = (r: number, demande: string, maj: Partial<EntreeBloc> = {}): EntreeBloc => {
+  const s = lisiere.scenes.find((x) => x.ref === r)!;
+  return {
+    histoire: ce2, carnet, chapitre: { titre: lisiere.titre, resume: lisiere.resume }, scenes: lisiereDuBloc,
+    origine: { id: ref(r), ref: ref(r), titre: s.titre, consigne: CONSIGNES[r] ?? null, paragraphes: TEXTES[r] ?? [] },
+    demande, reglages: { manque: "demander", consignes: true }, reponses: [], ...maj,
+  };
+};
+const TROIS_CHEMINS = "Le héros arrive dans la forêt, où trois chemins s'offrent à lui : le sentier des fougères, le ruisseau, la grotte.";
+const UN_TROISIEME = "Trois chemins partent de la clairière : le sentier des fougères, où chante une voix, le ruisseau qui mène au moulin, et un troisième.";
+
 // ——— Préparation : un projet qui commence, et l'histoire d'essai ———
 
 const ile: Histoire = { titre: "L'île aux dragons", mode: "classe", recit: "choix", age: "8-10" };
@@ -179,6 +198,16 @@ export const JEU_D_ESSAI: Cas[] = [
   { id: "choix-souche", aide: "idees-choix", titre: "Dix idées de choix : la souche creuse (texte écrit)", repere: "Des choix vraiment différents, qui tiennent compte de la voix qui murmure ; une scène existante quand elle convient.", source: "inventé", entree: souche },
   { id: "choix-grenier", aide: "idees-choix", titre: "Dix idées de choix : enfermé au grenier, sans la clé", repere: "Aucune idée n'utilise la clé d'argent ; le couteau, la lanterne, la lucarne, appeler…", source: "inventé", entree: grenier },
   { id: "choix-clairiere", aide: "idees-choix", titre: "Dix idées de choix : scène pas encore écrite (la consigne seule)", source: "inventé", entree: clairiere },
+
+  // Bloc de scènes (F13.7), demandé le 11 novembre 2026 pour l'essai du lot 4 : Opus seul, le modèle retenu
+  { id: "bloc-trois-chemins", aide: "bloc-scenes", titre: "Bloc : « trois chemins », depuis la lanterne de secours", repere: "Trois scènes, trois choix, rien de plus ; aucune question ; consignes à la mesure d'un CE2.", source: "inventé", entree: blocDepuis(16, TROIS_CHEMINS) },
+  { id: "bloc-collegue", aide: "bloc-scenes", titre: "Bloc : « une scène dans la forêt avec trois choix », depuis la chouette", repere: "Quatre scènes, quatre choix (F13-AC35).", source: "inventé", entree: blocDepuis(17, "Une scène dans la forêt avec trois choix.") },
+  { id: "bloc-question", aide: "bloc-scenes", titre: "Bloc : un troisième chemin annoncé sans être décrit (« Me le demander »)", repere: "Une question sur le troisième chemin, aucune qui agrandit l'arbre (F13-AC36).", source: "inventé", entree: blocDepuis(18, UN_TROISIEME) },
+  { id: "bloc-complete", aide: "bloc-scenes", titre: "Bloc : le même, « L'IA complète »", repere: "Le troisième chemin inventé et marqué, aucune question (F13-AC37).", source: "inventé", entree: blocDepuis(18, UN_TROISIEME, { reglages: { manque: "completer", consignes: true } }) },
+  { id: "bloc-rejoint", aide: "bloc-scenes", titre: "Bloc : « … la grotte rejoint le pont de brume »", repere: "Le chemin de la grotte mène à S019, sans la recréer (F13-AC39).", source: "inventé", entree: blocDepuis(16, "Trois chemins : le sentier des fougères, le ruisseau, et la grotte, qui rejoint le pont de brume.") },
+  { id: "bloc-large", aide: "bloc-scenes", titre: "Bloc : une demande trop large", repere: "Huit nouvelles scènes au plus, sur deux niveaux, et une phrase qui dit ce qui reste (F13-AC40).", source: "inventé", entree: blocDepuis(16, "Le héros arrive dans la forêt, où trois chemins s'offrent à lui : le sentier des fougères, le ruisseau et la grotte. Le sentier mène à un campement de bûcherons, où il peut demander de l'aide, voler une carte ou repartir ; le ruisseau mène à une rivière, qu'il peut traverser à la nage, sur un radeau ou par un tronc ; la grotte a deux galeries, l'une vers un lac souterrain, l'autre vers un éboulement. Au campement, s'il vole la carte, les bûcherons le poursuivent.") },
+  { id: "bloc-sans-consigne", aide: "bloc-scenes", titre: "Bloc : « Consignes » éteint", repere: "Des titres seuls.", source: "inventé", entree: blocDepuis(16, TROIS_CHEMINS, { reglages: { manque: "demander", consignes: false } }) },
+  { id: "bloc-chapitre-vide", aide: "bloc-scenes", titre: "Bloc : le début d'un chapitre vide", repere: "Une première scène et ce qui en part, selon la demande.", source: "inventé", entree: { ...blocDepuis(16, "Lou arrive au moulin noyé : la roue tourne encore. Il peut entrer par la porte, grimper par la roue ou appeler le meunier."), origine: null, scenes: [], chapitre: { titre: "Le moulin noyé" } } },
 
   // Préparation (F13.4)
   { id: "questions-personnages", aide: "questions", titre: "Six questions pour la classe : étape Personnages, « il ne peut pas voler » retenu", repere: "Aucune question sur ce qui est déjà retenu (voler, l'aile) ; des questions courtes, pour des CE2-CM1, à l'oral (F13-AC14).", source: "inventé", entree: etapePersonnages },

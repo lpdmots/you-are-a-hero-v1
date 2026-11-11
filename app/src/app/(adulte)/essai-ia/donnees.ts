@@ -68,6 +68,12 @@ function affichage(cas: Cas, valeur: unknown, erreur: string | null): Affichage 
       return { sorte: "texte", texte: (v.paragraphes as string[]).join("\n\n") };
     case "questions":
       return { sorte: "liste", elements: (v.questions as string[]).map((t) => ({ titre: t })) };
+    case "bloc-scenes":
+      // F13.7 : les nouvelles scènes, chacune avec sa consigne
+      return { sorte: "liste", elements: liste(v, "scenes").map((x) => {
+        const s = x as { cle: string; titre: string; consigne: string };
+        return { titre: `${s.cle} « ${s.titre} »`, texte: s.consigne };
+      }) };
     case "idees":
       return { sorte: "liste", elements: (v.idees as string[]).map((t) => ({ titre: t })) };
     case "idees-choix":

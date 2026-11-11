@@ -13,6 +13,7 @@ export const AIDES_TEXTE = [
   "titre", // F05, ✦ du titre de scène
   "ecriture", // F13.6, « ✦ Écrire » une scène vide
   "idees-choix", // F13.3
+  "bloc-scenes", // F13.7, le bloc de scènes depuis « Chemins »
   "questions", // F13.4, questions pour la classe
   "idees", // F13.4, idées d'une étape
   "retenons", // F13.4, « Rédiger d'après les idées »
@@ -45,6 +46,7 @@ export const NOMS_DES_AIDES: Record<AideTexte, string> = {
   titre: "Titre de scène",
   ecriture: "Écriture d'une scène",
   "idees-choix": "Idées de choix",
+  "bloc-scenes": "Bloc de scènes",
   questions: "Questions pour la classe",
   idees: "Idées de la préparation",
   retenons: "« Nous retenons »",

@@ -25,7 +25,11 @@ import { raisonDuReperage } from "@/domaine/illustration";
 import { nomPourEleves } from "@/domaine/eleves";
 import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, nomScene, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
-import { ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, relierDepuisLeSchema, remettreChoixDuSchema, supprimerChoixDuSchema } from "../../../actions-chemins";
+import {
+  ajouterBlocDepuisLeSchema, ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, annulerBlocDuSchema, reglerLeBloc, relierDepuisLeSchema, remettreChoixDuSchema, supprimerChoixDuSchema,
+} from "../../../actions-chemins";
+import { useAidesIa } from "@/composants/AidesIa";
+import { ceQuiSAjoute, type ReglagesBloc } from "@/domaine/bloc-de-scenes";
 import { choisirRepere, creerScene, exclureDuLivre, placerScene, reglerScene, restaurer, supprimer } from "../../../actions-recit";
 import { useCommandesScene } from "../../_plan/commandes";
 import { useConfirmerSuppression } from "../../_plan/suppression";
@@ -40,7 +44,7 @@ type Ouvert = "reglages" | "image" | "attribuer" | "exclure" | "depart" | null;
  * est le plan, le Suivi est le travail : ni filtres d'état ni sélection ici.
  */
 export function PageChapitre({
-  projet, plan, chapitreId, eleves, vue = "scenes", designee, venuDuLivre,
+  projet, plan, chapitreId, eleves, vue = "scenes", designee, venuDuLivre, reglagesBloc, blocAuDepart,
 }: {
   projet: ProjetDuPlan; plan: Plan; chapitreId: string; eleves: ElevePlan[];
   /** Deux vues du même chapitre, en récit à choix : ses cartes, ou ses chemins (F03-AC18) */
@@ -49,7 +53,12 @@ export function PageChapitre({
   designee?: string;
   /** Arrivé par « Voir dans les chemins », depuis un point du Livre : on y revient (F09.2) */
   venuDuLivre?: boolean;
+  /** Les deux réglages du bloc de scènes, gardés avec le compte (F13.7) */
+  reglagesBloc: ReglagesBloc;
+  /** Arrivé d'un chapitre vide par « ✦ Construire avec l'IA » : le panneau du bloc s'ouvre d'office */
+  blocAuDepart?: boolean;
 }) {
+  const aides = useAidesIa();
   const dire = useMessage();
   const routeur = useRouter();
   const capteurs = useCapteurs();
@@ -140,6 +149,29 @@ export function PageChapitre({
         supprimerScene: (sceneId) => {
           const scene = chapitre.scenes.find((s) => s.id === sceneId);
           if (scene) commandes.supprimerScene(scene, true);
+        },
+        // Le bloc de scènes (F13.7) : un seul ajout, dit en une phrase avec « Annuler »
+        bloc: {
+          chapitreId: chapitre.id,
+          nombreDeScenes: chapitre.scenes.length,
+          reglages: reglagesBloc,
+          auDepart: blocAuDepart,
+          quitter: () => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}`, { scroll: false }),
+          regler: (r) => reglerLeBloc(r),
+          ajouter: async (p, prendre) => {
+            const fait = await ajouterBlocDepuisLeSchema(chapitre.id, p, prendre);
+            if (!fait.ok && fait.limite) ouvrirOffreDuPass(projet.id, fait.limite);
+            if (!fait.ok) return fait;
+            const consigne = fait.consignePrise && p.origine ? { scene: p.origine, texte: fait.consignePrise } : undefined;
+            const ajoute = ceQuiSAjoute({ scenes: fait.scenes, choix: fait.choix });
+            dire({
+              texte: `${ajoute.charAt(0).toLocaleUpperCase("fr")}${ajoute.slice(1)} ajouté${fait.scenes.length + fait.choix.length > 1 ? "s" : ""}${consigne ? ", et la consigne de la scène d’origine" : ""}.`,
+              annuler: () => void annulerBlocDuSchema(fait.choix, fait.scenes.map((x) => x.id), consigne).then((defait) => defait.ok || dire({ texte: defait.erreur })),
+            });
+            // Le début d'un chapitre vide : la page quitte son adresse d'arrivée, le bloc ne se rouvre pas d'office
+            if (blocAuDepart) routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins`, { scroll: false });
+            return { ok: true, scenes: fait.scenes.map((x) => x.id) };
+          },
         },
       };
 
@@ -298,13 +330,25 @@ export function PageChapitre({
         </div>
       </header>
 
-      {chapitre.scenes.length === 0 ? (
+      {chapitre.scenes.length === 0 && vue === "chemins" && blocAuDepart && chemins && construire ? (
+        // Un chapitre vide, le bloc demandé : le schéma attend sa proposition (F13.7)
+        <Chemins {...chemins} construire={construire} />
+      ) : chapitre.scenes.length === 0 ? (
         <div className="vide-chap">
           <p>Ce chapitre n’a pas encore de scène. Ajoutez une première scène.</p>
-          <button type="button" className="btn btn--primaire" disabled={attente === "scene"} aria-busy={attente === "scene" || undefined} onClick={() => void ajouter()}>
-            <Icone nom="plus" />
-            Ajouter une scène
-          </button>
+          <span className="vide-chap__gestes">
+            <button type="button" className="btn btn--primaire" disabled={attente === "scene"} aria-busy={attente === "scene" || undefined} onClick={() => void ajouter()}>
+              <Icone nom="plus" />
+              Ajouter une scène
+            </button>
+            {/* Plusieurs scènes d'un coup, en récit à choix : par l'IA seule (F13.7) */}
+            {projet.aChoix && aides.proposer ? (
+              <button type="button" className="btn btn--ia" onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins&bloc=debut`, { scroll: false })}>
+                <Icone nom="ia" />
+                Construire avec l’IA
+              </button>
+            ) : null}
+          </span>
         </div>
       ) : (
         <>

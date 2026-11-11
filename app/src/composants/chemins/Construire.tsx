@@ -14,6 +14,8 @@ import type { Placement } from "@floating-ui/dom";
 import { poser } from "../flottant";
 import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
+import { useAidesIa } from "../AidesIa";
+import type { ServicesDuBloc } from "./Bloc";
 
 /**
  * Construire dans « Chemins » (F03.1, F03-AC52 à AC56) : ce que l'adulte fait du plan depuis le
@@ -36,6 +38,8 @@ export type Construire = {
   supprimerChoix: (lien: LienDeChemin) => Promise<Resultat>;
   /** Avec les protections de la suppression, et la corbeille (F03-AC56) */
   supprimerScene: (sceneId: string) => void;
+  /** Le bloc de scènes proposé par l'IA (F13.7) */
+  bloc?: ServicesDuBloc;
 };
 
 /** Ce que demande la bulle : une suite depuis une scène, ou le libellé d'un lien qu'on vient de tirer. */
@@ -208,7 +212,7 @@ export function BulleDuGeste({
  * page de scène (F13.2) ; ses choix, que l'on supprime ici ; « Ouvrir » mène à la scène.
  */
 export function PanneauDeScene({
-  scene, chemins, construire, designe, onAjouter, onFermer, boutonAjouter,
+  scene, chemins, construire, designe, onAjouter, onFermer, boutonAjouter, onConstruireLaSuite,
 }: {
   scene: NoeudDeChemin; chemins: Chemins; construire: Construire;
   /** Le choix dont on vient de cliquer le libellé sur sa flèche : sa ligne se montre un instant */
@@ -216,8 +220,11 @@ export function PanneauDeScene({
   /** « Ajouter » ouvre la même bulle que le « + » de la carte */
   onAjouter: () => void; onFermer: () => void;
   boutonAjouter: RefObject<HTMLButtonElement | null>;
+  /** « ✦ Construire la suite » : le panneau du bloc de scènes, depuis cette scène (F13.7) */
+  onConstruireLaSuite?: () => void;
 }) {
   const id = useId();
+  const aides = useAidesIa();
   const [titre, setTitre] = useState(scene.titre ?? "");
   const [consigne, setConsigne] = useState(scene.consigne ?? "");
   const [verification, setVerification] = useState(scene.verification ?? []);
@@ -354,6 +361,13 @@ export function PanneauDeScene({
           ) : (
             <p className="panneau-chemin__aucun">{scene.fin ? "Fin de l’histoire : aucun choix n’en part." : "Aucun choix n’en part encore."}</p>
           )}
+          {/* Plusieurs scènes d'un coup ne s'ajoutent que par l'IA (F03.1, F13.7) */}
+          {onConstruireLaSuite && aides.proposer && !scene.fin ? (
+            <button type="button" className="btn btn--petit btn--ia panneau-chemin__bloc" onClick={onConstruireLaSuite}>
+              <Icone nom="ia" />
+              Construire la suite
+            </button>
+          ) : null}
         </section>
         <div className="panneau-chemin__champ">
           <label htmlFor={`${id}-consigne`}>

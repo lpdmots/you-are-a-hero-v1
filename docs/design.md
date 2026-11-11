@@ -1617,6 +1617,39 @@ suppression nomme les scènes par leur seule référence (dialogue d'avant) ;
 le « + » et le « − » de la taille voisinent avec le « + » des cartes ; les
 titres d'un grand chapitre sont petits à la taille lisible (vue d'avant).
 
+#### Bloc de scènes : écrans construits (11 novembre 2026)
+
+Sans maquette. Conçus avec le skill impeccable dans le prolongement des
+écrans du lot 2 (même panneau, mêmes cartes), puis critiqués en deux lectures
+séparées sur 14 captures (`app/test-results/captures/bloc-de-scenes/`, en
+1 440 × 900 et 1 366 × 768, IA simulée). Règles :
+[F13.7](specifications.md#f137--bloc-de-scènes-depuis-le-schéma) ;
+précisions à confirmer : [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+
+| Élément | Forme retenue |
+| --- | --- |
+| L'entrée | « ✦ Construire la suite », pastille d'IA sous « Ses choix » dans le panneau de la scène ; dans un chapitre vide, « ✦ Construire avec l'IA » à côté de « Ajouter une scène ». |
+| Le panneau | À la place de celui de la scène, même largeur ; en tête, sur canard pâle, « ✦ Construire avec l'IA » et la croix. « La suite de S001 « … » » (ou « Le début du chapitre »), la demande en trois lignes qui grandissent, avec le micro et un exemple dans le champ vide ; « Réglages » en lien à gauche, « ✦ Proposer » à droite ; pendant l'attente, « L'IA dessine… » et une phrase sous le bouton. |
+| Les réglages | Repliés sous « Réglages » : « Ce qui manque à ma demande : Me le demander / L'IA complète », « Consignes : Avec leur liste de vérification / Sans : les titres seuls ». |
+| La proposition sur le schéma | Cartes au bord en pointillé canard, fond canard très pâle, titre en canard foncé, « ✦ Proposée » au pied, sans tampon ni « Ouvrir » ; flèches en pointillé canard, libellés sur canard pâle. La scène d'origine cerclée de canard. Le bloc entier à l'écran. |
+| La proposition dans le panneau | « ⬚ 2 scènes et 3 choix proposés », « Retouchez si besoin, puis ajoutez. » ; en tête, la case décochée « Donner aussi une consigne à S001 « … » » ; puis le bloc en arbre, dans l'ordre du schéma : chaque choix (libellé à récrire), sa nouvelle scène (titre à récrire, corbeille, « Consigne et liste » repliée) et, retrait pointillé, ses propres choix ; un choix vers une scène existante la nomme. Les textes se récrivent sur place, soulignés au repos, cadrés au survol. |
+| Le pied | « Le chapitre aura 5 scènes. » et « Laisser » sur une ligne ; dessous, toute la largeur, le seul bouton plein : « Ajouter 2 scènes et 3 choix » (« …, 3 choix et 1 consigne » si la case est cochée). |
+| Les messages | « « Le ruisseau » est retirée de la proposition. », « La proposition est laissée. », « 2 scènes et 3 choix ajoutés. », chacun avec « Annuler ». |
+| Chapitre vide | Sans schéma, un cadre en pointillé « La proposition de l'IA se dessinera ici. », à gauche du panneau ; les boutons de taille masqués. |
+
+**Les deux lectures** donnent 28/40 (informée) et 24/40 (indépendante), sans
+point bloquant. Corrigé aussitôt, sans nouvelle mesure : le panneau qui
+listait le bloc dans l'ordre inverse du schéma ; la consigne de la scène
+d'origine cachée au bas du panneau ; le bouton plein coupé ; « Laisser » et
+le retrait d'une scène sans retour ; « Redessiner » grisé sans raison ; les
+champs qui ne se lisaient pas comme des champs ; les réglages obscurs ; la
+scène existante rejointe par le bloc restée hors de l'écran ; les boutons de
+taille sans schéma.
+
+**Laissé en l'état :** une scène du chapitre peut passer sous le panneau
+quand dagre réordonne le schéma (limite des lots 1 et 2) ; le panneau d'une
+grande proposition se fait défiler.
+
 ### Étape 4 construite (13 octobre 2026)
 
 Les écrans de l'étape 4 se construisent lot par lot dans l'application, en

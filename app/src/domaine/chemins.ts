@@ -18,6 +18,8 @@ export type NoeudDeChemin = {
   cochees?: string[];
   /** La page de la scène */
   lien: string;
+  /** Une scène du bloc proposé par l'IA, pas encore ajoutée : dessinée en pointillé (F13.7) */
+  propose?: { cle: string; inventee: boolean };
 };
 export type LienDeChemin = {
   id: string; de: string; libelle: string;
@@ -29,6 +31,8 @@ export type LienDeChemin = {
   ailleurs?: { chapitre: string; nom?: string; lien?: string };
   /** Sans destination encore, ou vers une scène supprimée */
   manque?: "sans" | "supprimee";
+  /** Un choix du bloc proposé par l'IA, pas encore ajouté (F13.7) */
+  propose?: boolean;
 };
 /** Un choix d'un autre chapitre qui mène à une scène de celui-ci */
 export type EntreeDeChemin = { vers: string; chapitre: string; lien?: string };

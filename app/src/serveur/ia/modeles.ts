@@ -59,6 +59,8 @@ export const MODELE_DES_AIDES: Record<AideTexte, IdModele> = {
   // la personne et le temps, pour moitié moins cher
   ecriture: "claude-sonnet-5-5",
   "idees-choix": "claude-opus-5-5",
+  // F13.7, 10 novembre 2026 : construire un morceau du plan, comme ce qui construit
+  "bloc-scenes": "claude-opus-5-5",
   questions: "claude-opus-5-5",
   idees: "claude-opus-5-5",
   retenons: "claude-sonnet-5-5",

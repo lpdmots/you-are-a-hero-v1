@@ -16,7 +16,8 @@ export const LOURDS: IdModele[] = ["claude-sonnet-5-5", "claude-opus-5-5", "gpt-
 export const LEGERS: IdModele[] = ["claude-haiku-4-5", "gpt-5.6-luna", "gpt-6-luna"];
 const AIDES_LEGERES: AideTexte[] = ["correction", "titre", "fiche-visuelle", "description-image"];
 
-export const CANDIDATS = (aide: AideTexte): IdModele[] => (AIDES_LEGERES.includes(aide) ? [...LOURDS, ...LEGERS] : LOURDS);
+// Le bloc de scènes (F13.7) n'a qu'un candidat : Opus 5.5, décidé avec la règle, comme ce qui construit
+export const CANDIDATS = (aide: AideTexte): IdModele[] => (aide === "bloc-scenes" ? ["claude-opus-5-5"] : AIDES_LEGERES.includes(aide) ? [...LOURDS, ...LEGERS] : LOURDS);
 
 export type Resultat = {
   cas: string;

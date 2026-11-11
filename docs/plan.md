@@ -4467,6 +4467,81 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   le même soir : le même bandeau bas dans « Scènes » et « Chemins », pour que
   les onglets ne bougent plus (en ligne jusqu'à `f4fb4c8`, sans migration).
 
+- **Lot 3 construit le 11 novembre 2026,** en local (Opus 5.5, effort
+  « high ») ; migration `bloc_de_scenes` en base locale seulement (une
+  colonne, `enseignants.reglages_bloc`), rien poussé.
+  - *Ce qui est construit :* « ✦ Construire la suite » dans le panneau d'une
+    scène, et « ✦ Construire avec l'IA » à côté de « Ajouter une scène » dans
+    un chapitre vide, ouvrent le panneau du bloc à droite du schéma : la
+    demande, écrite ou dictée, « ✦ Proposer » ; la proposition d'Opus 5.5 se
+    dessine en pointillé sous la scène d'origine et se retouche dans le
+    panneau, en arbre ; « Ajouter 3 scènes et 3 choix », la ligne « Le
+    chapitre aura 6 scènes. » et « Annuler » ; « Réglages » et ses deux
+    réglages, gardés avec le compte
+    ([architecture](architecture.md#lot-3--le-bloc-de-scènes-f137),
+    [design](design.md#bloc-de-scènes--écrans-construits-11-novembre-2026)).
+  - *Critères fermés :* F13-AC34, AC35, AC38, AC39, AC41, AC42 —
+    `tests/base/bloc-de-scenes.test.ts` (onze cas, IA simulée, dont l'élève
+    qui écrit la scène d'origine pendant l'ajout, F08-AC44) et
+    `tests/unitaires/bloc-de-scenes.test.ts` (treize cas). Aucun parcours
+    Playwright, à sa demande ; captures :
+    `npx playwright test --config playwright.local.config.ts bloc-de-scenes`,
+    contre le serveur local lancé en IA simulée (configuration
+    « application-ia-simulee » de `.claude/launch.json`, aucun appel payé).
+  - *Écrans critiqués en deux lectures* (14 captures) : 28/40 pour la lecture
+    informée, 24/40 pour la lecture indépendante, sans point bloquant ;
+    corrigés aussitôt, sans nouvelle mesure
+    ([design](design.md#bloc-de-scènes--écrans-construits-11-novembre-2026)).
+  - *Précisions prises en construisant, à lui faire confirmer :*
+    1. l'entrée est dans le panneau de la scène cliquée (« ✦ Construire la
+       suite », pas pour une scène « Fin de l'histoire »), et dans
+       l'invitation d'un chapitre vide ; aucun ✦ ailleurs dans le schéma ;
+    2. les retouches se font dans le panneau, le bloc en arbre dans l'ordre
+       où le schéma le dessine, de gauche à droite : les cartes en pointillé
+       sont trop petites pour qu'on y écrive. Une carte en pointillé cliquée
+       ouvre sa ligne ; la consigne de chaque scène y est repliée ;
+    3. une scène retirée emporte les choix qui y mènent ou en partent, et
+       les scènes qui ne tenaient au bloc que par elle ; le message a son
+       « Annuler ». « Laisser » abandonne la proposition, avec « Annuler »
+       aussi (les deux lectures trouvaient le geste sans retour) ;
+    4. la consigne proposée pour la scène d'origine est en tête de la
+       proposition, décochée : elle modifie une scène existante. Cochée, le
+       bouton le dit (« Ajouter 2 scènes, 3 choix et 1 consigne ») ; elle ne
+       se pose que si la scène n'a toujours pas de consigne, et « Annuler »
+       l'efface ;
+    5. « Proposer de nouveau » n'apparaît que si la demande a changé : la
+       nouvelle proposition remplace la précédente et ses retouches ;
+    6. tant que le panneau du bloc est ouvert, les « + » des cartes ne
+       s'offrent pas ; une carte cliquée devient la scène d'origine tant que
+       rien n'est proposé ;
+    7. la proposition tient entière à l'écran : la page défile juste assez,
+       et le schéma se réduit au besoin, jamais sous la taille où les
+       libellés se lisent ; une scène du chapitre qu'un chemin du bloc
+       rejoint compte dans ce qui doit se voir ;
+    8. la proposition reste en passant par « Scènes » et en fermant le
+       panneau (elle revient pour la même scène d'origine) ; un rechargement
+       la perd, la page étant refermée ;
+    9. l'application borne elle aussi le bloc : huit nouvelles scènes au
+       plus, sur deux niveaux sous la scène d'origine (une de plus, le
+       début, dans un chapitre vide), les choix partant seulement de la
+       scène d'origine ou d'une nouvelle scène ;
+    10. dans un chapitre vide, la première nouvelle scène est son début ;
+        elle ne devient pas le départ du livre ;
+    11. l'ajout fait, le pointillé reste jusqu'à l'arrivée des vraies
+        cartes, la scène d'origine à la même place ; le message dit
+        « 2 scènes et 3 choix ajoutés. » avec « Annuler » ;
+    12. part vers l'IA, en plus de ce que F13.7 liste, le libellé de chaque
+        choix des scènes du chapitre et la scène où il mène (« titres,
+        consignes et choix de ses scènes ») ; soixante scènes au plus ;
+    13. les réglages se lisent « Ce qui manque à ma demande : Me le demander
+        / L'IA complète » et « Consignes : Avec leur liste de vérification /
+        Sans : les titres seuls » (les deux lectures trouvaient les mots
+        nus obscurs).
+  - *Ce qui reste perfectible :* dagre peut encore réordonner le reste du
+    schéma autour de la proposition, et une scène existante peut passer sous
+    le panneau (limite connue des lots 1 et 2) ; le panneau d'une grande
+    proposition se fait défiler.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

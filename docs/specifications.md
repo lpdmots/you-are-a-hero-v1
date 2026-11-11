@@ -11532,9 +11532,11 @@ temps ou parce qu'il écrit seul, fait écrire le récit par l'IA.
 ### F13.7 — Bloc de scènes depuis le schéma
 
 **Décidé par le porteur le 10 novembre 2026,** après un entretien validé
-dans son ensemble ; non construit, la construction demandant son
-instruction. Les gestes à la main du schéma sont en
-[F03.1](#f03-construire).
+dans son ensemble ; construction autorisée le 11 novembre 2026, la
+proposition, l'ajout et les réglages construits en local le même jour
+(lot 3, précisions à confirmer dans le
+[plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026)).
+Les gestes à la main du schéma sont en [F03.1](#f03-construire).
 
 **Objectif :** que l'IA prenne à sa charge la manipulation. L'adulte décrit
 un morceau de récit (« le héros arrive dans la forêt, où trois chemins

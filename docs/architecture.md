@@ -1993,6 +1993,49 @@ une phrase de choix n'est plus du texte de la scène. Migration
   point « vide », à l'impasse et à l'énigme sans autre issue, qui gardent
   ainsi pour une scène illustrée ou une action seule le comportement d'avant.
 
+### Lot 3 : le bloc de scènes (F13.7)
+
+**Dans la base, migration `bloc_de_scenes`.** Une colonne,
+`enseignants.reglages_bloc` (jsonb, `{}` par défaut, comme
+`reglages_fiches`) : « Ce qui manque » et « Consignes ». L'ajout ne demande
+rien de neuf : il passe par `public.ajouter_au_plan` (lot 2), qui crée les
+scènes à la fin du chapitre et pose les choix de chaque scène d'origine
+d'une seule retouche du plan (lot 1, F08-AC44).
+
+**Les règles du bloc, sans base,** `src/domaine/bloc-de-scenes.ts` : la
+proposition (scènes à clé « N1 », choix de la scène d'origine ou d'une
+nouvelle scène vers une nouvelle scène ou une scène du chapitre, consigne de
+la scène d'origine, questions, reste), `elaguer` (les scènes atteintes, huit
+au plus sur deux niveaux), `retirerScene`, le libellé du bouton, la ligne du
+total, et `cheminsAvecLeBloc`, qui verse la proposition dans les chemins du
+chapitre, marquée `propose`, pour que dagre la place avec le reste.
+
+**L'aide,** `src/serveur/ia/aides/bloc-de-scenes.ts` (`bloc-scenes`, Opus
+5.5, au coût réel en étoiles) : le modèle nomme les scènes du chapitre par
+leur référence et les nouvelles par une clé ; `lireLeBloc` relit la réponse
+sans confiance et la ramène aux identités. Sa réponse simulée suit les mots
+de la demande (« trois chemins : a, b, c », « une scène … avec trois choix »,
+« … rejoint <titre> », « un troisième », « puis ») : les essais vérifient le
+chemin entier sans fournisseur. Le serveur (`src/serveur/bloc-de-scenes.ts`)
+relit lui-même le chapitre (`cheminsDuPlan`), la Préparation et la fin du
+texte de la scène d'origine ; `lireLaProposition` relit de nouveau ce que la
+page renvoie à l'ajout. La demande passe par `/ia/bloc-de-scenes` (une
+adresse, la réponse pouvant prendre près d'une minute), l'ajout, son
+« Annuler » et les réglages par des actions (`actions-chemins.ts`).
+
+**Dans la page,** `src/composants/chemins/Bloc.tsx` : le panneau, et l'état
+du bloc gardé par chapitre dans la mémoire de la page (il survit au passage
+par « Scènes », pas au rechargement). `Schema.tsx` dessine `cheminsAvecLeBloc`
+quand le panneau est ouvert : les cartes et les flèches proposées en
+pointillé, la scène d'origine tenue en place par le mécanisme de F03-AC54,
+puis un cadrage qui fait défiler ou réduit (jamais sous 0,62) pour montrer le
+bloc entier. L'ajout fait, la proposition reste dessinée jusqu'à ce que les
+nouvelles scènes soient dans le plan rafraîchi.
+
+**Captures sans dépense :** la configuration « application-ia-simulee » de
+`.claude/launch.json` lance le serveur local avec `IA_SIMULEE=1` (les clés de
+`.env.local` restent posées, mais rien ne part).
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte
