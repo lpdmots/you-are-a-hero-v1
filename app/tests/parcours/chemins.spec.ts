@@ -1,10 +1,11 @@
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { ATTENDU, poserLeMarais, type Requete } from "../../scripts/marais-des-feux-follets";
-import { adultePret, aller, choixAuto, classeQuiEcrit, liaison, posteDe, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "./outils";
+import { adultePret, aller, choixAuto, classeQuiEcrit, liaison, MESSAGE, posteDe, semerBlocs, semerPartie, semerProjet, sql, supprimerComptes } from "./outils";
 
 /**
- * La vue « Chemins » d'un chapitre (F03.1, « Vue Chemins à reprendre ») : un schéma de haut en
- * bas sur un écran large, la liste des scènes sur téléphone. Le chapitre d'essai est « Le marais
+ * La vue « Chemins » d'un chapitre (F03.1, « Vue Chemins à reprendre », puis « Chemins en atelier »,
+ * 11 novembre 2026) : un schéma de haut en bas sur un écran large, dans un cadre qu'on tire — la page
+ * ne défile plus —, la liste des scènes sur téléphone. « Chemins » s'ouvre en premier (F03-AC61). Le chapitre d'essai est « Le marais
  * des feux follets » (scripts/marais-des-feux-follets.ts) : trente-deux scènes, quarante-neuf choix.
  */
 
@@ -83,11 +84,15 @@ const mesurer = (page: Page) =>
       }
     }
     const remontent = traits.filter((points) => points[points.length - 1].y < points[0].y).length;
-    const cadre = document.querySelector(".chemins__cadre")!;
+    // Le schéma se tire dans son cadre (F03-AC58) : il « dépasse de côté » quand une carte sort du cadre à gauche ou à droite
+    const cadre = document.querySelector(".chemins__cadre")!.getBoundingClientRect();
     return {
       cartes: cartes.length, traits: traits.length, croisements, sousUneCarte, remontent,
-      defileDeCote: cadre.scrollWidth > cadre.clientWidth || document.documentElement.scrollWidth > document.documentElement.clientWidth,
-      hauteur: document.querySelector(".chemins__toile")!.getBoundingClientRect().height,
+      defileDeCote: cartes.some((r) => r.left < cadre.left - 1 || r.right > cadre.right + 1) || document.documentElement.scrollWidth > document.documentElement.clientWidth,
+      depasseEnBas: cartes.some((r) => r.bottom > cadre.bottom + 1),
+      hauteur: Math.max(...cartes.map((r) => r.bottom)) - Math.min(...cartes.map((r) => r.top)),
+      // La page elle-même ne défile pas : le cadre va jusqu'au bas de la fenêtre
+      pageDefile: document.documentElement.scrollHeight > window.innerHeight + 1 || window.scrollY > 0,
     };
   });
 
@@ -102,10 +107,11 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     await semerBlocs(l.base, l.lisiere.scenes[2], [choixAuto("Rejoindre la clairière", l.lisiere.scenes[1])]);
     const avant = await sql("select id, version, rang from scenes where projet_id = $1 order by reference", [l.projet]);
 
-    await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}`);
+    // « Scènes » reste à un clic : les mêmes scènes en cartes, puis leurs chemins
+    await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=scenes`);
     await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002", "S003", "S004"]);
     await page.getByRole("button", { name: "Chemins", exact: true }).click();
-    await page.waitForURL(/vue=chemins/);
+    await page.waitForURL(new RegExp(`/chapitre/${l.lisiere.id}$`));
     await schemaPret(page, 4);
     // Les quatre scènes du chapitre, par leur titre : ni référence, ni consigne, ni liste de choix
     expect((await page.locator(".carte-chemin__titre").allInnerTexts()).sort()).toEqual(["Clairière", "La souche", "Le pont", "Le sentier"]);
@@ -151,13 +157,13 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     await carte(page, "Le ponton").getByRole("link", { name: "Ouvrir Le ponton" }).click();
     await page.waitForURL(/\/scene\/.*de=chemins/);
     await page.getByRole("link", { name: "Retour à Le marais" }).click();
-    await page.waitForURL(/vue=chemins/);
+    await page.waitForURL(new RegExp(`/chapitre/${l.marais.id}$`));
     await expect(page.getByRole("button", { name: "Chemins", exact: true })).toHaveAttribute("aria-pressed", "true");
     // Rien n'a été modifié en regardant les chemins
     expect(await sql("select id, version, rang from scenes where projet_id = $1 order by reference", [l.projet])).toEqual(avant);
   });
 
-  test("F03-AC43, V15 — le marais, trente-deux scènes : de haut en bas dans la largeur de l'écran, la page défile ; lisibilité mesurée à l'écran — aucun trait sous une carte, peu de croisements", async ({ page }) => {
+  test("F03-AC43, AC58, V15 — le marais, trente-deux scènes : de haut en bas dans la largeur du cadre, qui remplit la fenêtre sans que la page défile ; la molette déplace le schéma ; lisibilité mesurée à l'écran — aucun trait sous une carte, peu de croisements", async ({ page }) => {
     test.setTimeout(120_000);
     const l = await avecLeMarais(page);
     await aller(page, vueChemins(l, l.feuxFollets));
@@ -175,14 +181,32 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     await expect(LIBELLES(page).filter({ hasText: "Revenir vers le ponton" })).toHaveClass(/remonte/);
     // La vue sans bibliothèque en comptait 30 sur ce chapitre, et 3 traits sous 10 cartes
     expect(mesure.croisements).toBeLessThanOrEqual(12);
-    // Les cartes gardent une taille où le titre se lit, et le chapitre dépasse l'écran : on fait défiler la page
+    // Les cartes gardent une taille où le titre se lit, et le chapitre dépasse le cadre : on y tire le schéma,
+    // la page ne défile pas (F03-AC58)
     expect(await zoom(page)).toBeGreaterThanOrEqual(0.8);
     expect(mesure.hauteur).toBeGreaterThan(768);
+    expect(mesure.depasseEnBas).toBe(true);
+    expect(mesure.pageDefile).toBe(false);
+    const y = async (titre: string) => (await carte(page, titre).boundingBox())!.y;
+    // La molette déplace le schéma dans son cadre, à la même taille
+    const taille = await zoom(page);
+    const avant = await y("Marais — la barque s’enlise");
     await page.mouse.move(683, 500);
     await page.mouse.wheel(0, 600);
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
+    await expect.poll(async () => avant - (await y("Marais — la barque s’enlise"))).toBeGreaterThan(200);
+    expect(await zoom(page)).toBe(taille);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+    // On tire le fond : le schéma suit la main, aucune carte ne se déplace par rapport aux autres
+    const ecart = (await y("Île — le saule aux lanternes")) - (await y("Marais — la barque s’enlise"));
+    const fond = (await page.locator(".chemins__cadre").boundingBox())!;
+    const haut = await y("Île — le saule aux lanternes");
+    await page.mouse.move(fond.x + 30, fond.y + fond.height - 30);
+    await page.mouse.down();
+    await page.mouse.move(fond.x + 30, fond.y + fond.height - 150, { steps: 6 });
+    await page.mouse.up();
+    await expect.poll(async () => haut - (await y("Île — le saule aux lanternes"))).toBeGreaterThan(100);
+    expect((await y("Île — le saule aux lanternes")) - (await y("Marais — la barque s’enlise"))).toBeCloseTo(ecart, 0);
     // L'entrée du chapitre est en haut, sa sortie en bas
-    const y = async (titre: string) => (await carte(page, titre).boundingBox())!.y;
     expect(await y("Marais — la barque s’enlise")).toBeLessThan(await y("Île — le saule aux lanternes"));
     expect(await y("Île — le saule aux lanternes")).toBeLessThan(await y("Écluse — la sortie du marais"));
   });
@@ -206,7 +230,8 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     // cliqué de nouveau, la suivante. Le compteur dit où l'on en est parmi les six.
     const compte = page.locator(".chemins__compte");
     const choisie = page.locator(".carte-chemin.est-choisie");
-    await expect(compte).toHaveText("– / 6");
+    // Rien tant qu’aucun cas n’est désigné (révision de novembre 2026)
+    await expect(compte).toHaveText("");
     await REGARDER(page).getByRole("button", { name: "2 scènes où rien ne mène" }).click();
     await expect(choisie).toContainText("Marais — le crapaud qui parle");
     await expect(choisie).toBeInViewport();
@@ -248,7 +273,7 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     await expect(REGARDER(page)).toHaveCount(0);
   });
 
-  test("F03-AC45, AC48 — les libellés sur les flèches, coupés après deux lignes, entiers pour la scène survolée, masqués quand on voit tout ; « Tout voir », « Taille lisible », et la mini-carte au-delà de deux écrans", async ({ page }) => {
+  test("F03-AC45, AC48 — les libellés sur les flèches, coupés après deux lignes, entiers pour la scène survolée, masqués quand on voit tout ; « Tout voir », « Taille lisible », et la mini-carte dès que le schéma dépasse du cadre", async ({ page }) => {
     test.setTimeout(120_000);
     const l = await avecLeMarais(page);
     await aller(page, vueChemins(l, l.feuxFollets));
@@ -269,39 +294,40 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     expect(await coupe(long)).toBe(false);
     await page.mouse.move(5, 300);
 
-    // Au-delà de deux écrans, la mini-carte dit où l'on est ; un clic y conduit
+    // Le schéma dépasse de son cadre : la mini-carte dit où l'on est ; un clic y conduit, sans changer la taille
     const miniCarte = page.locator(".chemins__carte");
     await expect(miniCarte).toBeVisible();
     const lisible = await zoom(page);
-    const boite = (await miniCarte.boundingBox())!;
-    await page.mouse.click(boite.x + boite.width / 2, boite.y + boite.height * 0.8);
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(600);
+    await expect(carte(page, "Marais — la barque s’enlise")).toBeInViewport();
+    const boite = (await miniCarte.getByRole("img").boundingBox())!;
+    await page.mouse.click(boite.x + boite.width / 2, boite.y + boite.height * 0.9);
+    await expect(carte(page, "Marais — la barque s’enlise")).not.toBeInViewport();
+    await expect(carte(page, "Écluse — la sortie du marais")).toBeInViewport();
+    expect(await zoom(page)).toBe(lisible);
+    expect(await page.evaluate(() => window.scrollY)).toBe(0);
     // Elle se replie d'un clic et reste repliée, même en rouvrant le chapitre (F03.1, 14 octobre 2026)
     await page.getByRole("button", { name: "Replier la mini-carte" }).click();
     await expect(miniCarte).toHaveCount(0);
     await page.reload();
     await schemaPret(page, ATTENDU.scenes);
-    await page.evaluate(() => window.scrollTo(0, 900));
     await expect(page.getByRole("button", { name: "Mini-carte" })).toBeVisible();
     await expect(miniCarte).toHaveCount(0);
     await page.getByRole("button", { name: "Mini-carte" }).click();
     await expect(miniCarte).toBeVisible();
-    await page.evaluate(() => window.scrollTo(0, 0));
 
     // « Tout voir » : le chapitre entier dans la fenêtre, sans libellés ; la carte se nomme dans une bulle
     await page.getByRole("button", { name: "Tout voir" }).click();
     await expect.poll(() => zoom(page)).toBeLessThan(0.62);
     await expect(LIBELLES(page)).toHaveCount(0);
     await expect(miniCarte).toHaveCount(0);
-    await expect
-      .poll(() => page.locator(".chemins__toile").evaluate((t) => { const r = t.getBoundingClientRect(); return r.top >= 58 && r.bottom <= window.innerHeight + 1; }))
-      .toBe(true);
+    await expect.poll(async () => { const m = await mesurer(page); return m.defileDeCote || m.depasseEnBas || m.pageDefile; }).toBe(false);
     await expect(CARTES(page).first()).toBeInViewport();
     await expect(carte(page, "Écluse — la sortie du marais")).toBeInViewport();
     await carte(page, "Île — le cercle de pierres").click();
     await expect(page.locator(".bulle-chemin")).toContainText("Île — le cercle de pierres");
     await expect(page.locator(".bulle-chemin").getByRole("link", { name: "Ouvrir" })).toBeVisible();
     await page.keyboard.press("Escape");
+    await expect(page.locator(".chemins__espace")).toHaveCount(0);
     // « Taille lisible » y ramène ; « − » et « + » changent la taille pas à pas
     await page.getByRole("button", { name: "Taille lisible" }).click();
     await expect.poll(() => zoom(page)).toBe(lisible);
@@ -353,12 +379,159 @@ test.describe("Chemins d'un chapitre : le schéma (F03.1)", () => {
     expect(mesure.sousUneCarte).toBe(0);
     // « Tout voir » ramène le chapitre dans la fenêtre, sans défilement de côté
     await page.getByRole("button", { name: "Tout voir" }).click();
-    await expect.poll(async () => (await mesurer(page)).defileDeCote).toBe(false);
-    await expect
-      .poll(() => page.locator(".chemins__toile").evaluate((t) => t.getBoundingClientRect().bottom <= window.innerHeight + 1))
-      .toBe(true);
+    await expect.poll(async () => { const m = await mesurer(page); return m.defileDeCote || m.depasseEnBas || m.pageDefile; }).toBe(false);
     await page.getByRole("button", { name: "Taille lisible" }).click();
     await expect(CARTES(page).first().getByRole("link", { name: /Ouvrir/ })).toHaveCount(1);
+  });
+});
+
+test.describe("« Chemins » en atelier (F03.1, 11 novembre 2026)", () => {
+  /** Un point du cadre où il n'y a que le fond du schéma : ni carte, ni libellé, ni commande. */
+  const pointVide = (page: Page): Promise<{ x: number; y: number }> =>
+    page.evaluate(() => {
+      const r = document.querySelector(".chemins__cadre")!.getBoundingClientRect();
+      for (let y = r.top + 14; y < r.bottom - 90; y += 22) {
+        for (let x = r.left + 14; x < r.right - 14; x += 22) {
+          if (document.elementFromPoint(x, y)?.classList.contains("react-flow__pane")) return { x, y };
+        }
+      }
+      throw new Error("Aucun point vide dans le cadre");
+    });
+
+  test("F03-AC59 — deux états : une carte cliquée replie la colonne et ouvre l'espace de travail à côté du schéma, la carte au milieu, à la même taille ; une autre carte y vient à son tour ; Échap, la croix ou un clic dans le vide — pas un glissé — ramènent au plan", async ({ page }) => {
+    test.setTimeout(120_000);
+    const l = await avecLeMarais(page);
+    await aller(page, `/projet/${l.projet}/chapitre/${l.feuxFollets}`);
+    await schemaPret(page, ATTENDU.scenes);
+    const espace = page.locator(".chemins__espace");
+    const cadre = page.locator(".chemins__cadre");
+    const colonne = page.locator("#colonne-adulte");
+    const titre = espace.locator(".panneau-chemin__champ--titre input");
+    // Le plan : colonne ouverte, schéma sur toute la largeur
+    await expect(espace).toHaveCount(0);
+    await expect(colonne).not.toHaveAttribute("data-repliee", "oui");
+    const taille = await zoom(page);
+    const largeurAuPlan = (await cadre.boundingBox())!.width;
+    const ecartAuMilieu = async (nom: string) => {
+      const c = (await cadre.boundingBox())!;
+      const k = (await carte(page, nom).boundingBox())!;
+      return Math.abs(k.x + k.width / 2 - (c.x + c.width / 2));
+    };
+
+    // Le travail : la colonne se replie, l'espace s'ouvre à droite, à côté du schéma, et la carte glisse au milieu
+    await carte(page, "Ponton — le marché du héron").click();
+    await expect(espace).toBeVisible();
+    await expect(colonne).toHaveAttribute("data-repliee", "oui");
+    await expect(titre).toHaveValue("Ponton — le marché du héron");
+    await expect.poll(() => ecartAuMilieu("Ponton — le marché du héron")).toBeLessThan(3);
+    const c = (await cadre.boundingBox())!;
+    const e = (await espace.boundingBox())!;
+    expect(e.x).toBeGreaterThanOrEqual(c.x + c.width - 1);
+    expect(c.width).toBeLessThan(largeurAuPlan);
+    expect(Math.round(e.x + e.width)).toBe(1366);
+    expect(await zoom(page)).toBe(taille);
+    expect((await mesurer(page)).pageDefile).toBe(false);
+    await expect(carte(page, "Ponton — le marché du héron")).toHaveClass(/est-choisie/);
+
+    // Une autre carte : seul le contenu de l'espace change, le schéma glisse jusqu'à elle
+    await carte(page, "Ponton — la barque du héron").click();
+    await expect(titre).toHaveValue("Ponton — la barque du héron");
+    await expect.poll(() => ecartAuMilieu("Ponton — la barque du héron")).toBeLessThan(3);
+    expect((await cadre.boundingBox())!.width).toBe(c.width);
+    expect(await zoom(page)).toBe(taille);
+
+    // Échap ramène au plan : la colonne revient comme elle était
+    await page.keyboard.press("Escape");
+    await expect(espace).toHaveCount(0);
+    await expect(colonne).not.toHaveAttribute("data-repliee", "oui");
+    await expect.poll(async () => (await cadre.boundingBox())!.width).toBe(largeurAuPlan);
+    // La croix aussi
+    await carte(page, "Ponton — la barque du héron").click();
+    await expect(espace).toBeVisible();
+    await espace.getByRole("button", { name: "Fermer le panneau de la scène" }).click();
+    await expect(espace).toHaveCount(0);
+    // Tirer le fond ne ferme rien ; un clic dans le vide, si
+    await carte(page, "Ponton — la barque du héron").click();
+    await expect(espace).toBeVisible();
+    await expect.poll(() => ecartAuMilieu("Ponton — la barque du héron")).toBeLessThan(3);
+    const prise = await pointVide(page);
+    await page.mouse.move(prise.x, prise.y);
+    await page.mouse.down();
+    await page.mouse.move(prise.x + 70, prise.y + 50, { steps: 6 });
+    await page.mouse.up();
+    await expect.poll(() => ecartAuMilieu("Ponton — la barque du héron")).toBeGreaterThan(40);
+    await expect(espace).toBeVisible();
+    const vide = await pointVide(page);
+    await page.mouse.click(vide.x, vide.y);
+    await expect(espace).toHaveCount(0);
+  });
+
+  test("F03-AC60 — l'en-tête en une bande : la bascule et son « i » dans le bandeau, sans « Ajouter une scène » ni « Attribuer des élèves » ; les prénoms ouvrent « Attribuer des élèves », que le menu offre aussi ; « À regarder » dans « Chemins » seulement ; dans « Scènes », « + Nouvelle scène » en dernière carte", async ({ page }) => {
+    test.setTimeout(120_000);
+    const s = await classeQuiEcrit(page);
+    await semerBlocs(s.base, s.lisiere.scenes[0], [choixAuto("Traverser le pont", s.lisiere.scenes[1]), choixAuto("Plus tard", null)]);
+    await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
+    await schemaPret(page, 2);
+    const bandeau = page.locator(".chap-bandeau");
+    await expect(bandeau.getByRole("group", { name: "Vue du chapitre" })).toBeVisible();
+    await expect(bandeau.getByRole("button", { name: "Comment lire ces chemins ?" })).toBeVisible();
+    await expect(page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ })).toHaveCount(0);
+    await expect(bandeau.getByRole("button", { name: "Attribuer des élèves", exact: true })).toHaveCount(0);
+    await expect(bandeau.locator(".chap-eleves--bouton")).toContainText("Alice");
+    await expect(bandeau.locator(".chap-eleves--bouton")).toContainText("Bilal");
+    // « À regarder », sous le bandeau, dans « Chemins »
+    await expect(REGARDER(page)).toContainText("1 choix sans destination");
+    // Le menu « … » offre « Attribuer des élèves »
+    await bandeau.locator(".chap-actions summary").click();
+    await expect(bandeau.getByRole("button", { name: "Attribuer des élèves", exact: true })).toBeVisible();
+    await page.keyboard.press("Escape");
+    // Les prénoms l'ouvrent
+    await bandeau.locator(".chap-eleves--bouton").click();
+    await expect(page.getByRole("complementary").filter({ hasText: "Un élève coché lit et écrit dans ce chapitre" })).toBeVisible();
+
+    // « Scènes » : pas de ligne « À regarder », et « + Nouvelle scène » en dernière carte de la grille
+    await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}?vue=scenes`);
+    await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002"]);
+    await expect(REGARDER(page)).toHaveCount(0);
+    await expect(page.locator(".chap-bandeau").getByRole("button", { name: "Que change l’ordre des cartes ?" })).toBeVisible();
+    const derniere = page.locator(".fiches > li").last();
+    await expect(derniere.getByRole("button", { name: "Nouvelle scène" })).toBeVisible();
+    await derniere.getByRole("button", { name: "Nouvelle scène" }).click();
+    await expect(MESSAGE(page)).toContainText("S004 est ajoutée à la fin du chapitre.");
+    await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002", "S004"]);
+    await expect(page.locator(".fiches > li").last().getByRole("button", { name: "Nouvelle scène" })).toBeVisible();
+  });
+
+  test("F03-AC61 — « Chemins » s'ouvre en premier dans un chapitre à choix, « Scènes » restant à un clic ; une scène ouverte depuis « Scènes » y ramène ; un récit classique s'ouvre sur ses scènes", async ({ page }) => {
+    test.setTimeout(120_000);
+    const { compte, base } = await adultePret(page);
+    const projet = await semerProjet(base, compte, "personnel", "choix", "Les passeurs de brume");
+    const { chapitres } = await semerPartie(base, projet, "La forêt", [{ titre: "La lisière", scenes: ["Le sentier", "Clairière"] }]);
+    await semerBlocs(base, chapitres[0].scenes[0], [choixAuto("Continuer vers la lumière", chapitres[0].scenes[1])]);
+    await aller(page, `/projet/${projet}/plan`);
+    await page.getByRole("link", { name: "Ouvrir La lisière", exact: true }).click();
+    await page.waitForURL(new RegExp(`/chapitre/${chapitres[0].id}$`));
+    await schemaPret(page, 2);
+    await expect(page.getByRole("button", { name: "Chemins", exact: true })).toHaveAttribute("aria-pressed", "true");
+    await expect(page.locator(".fiches")).toHaveCount(0);
+    // « Scènes » à un clic ; une scène ouverte de là y ramène
+    await page.getByRole("button", { name: "Scènes", exact: true }).click();
+    await page.waitForURL(/vue=scenes/);
+    await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002"]);
+    await page.getByRole("link", { name: /Ouvrir S002/ }).click();
+    await page.waitForURL(/\/scene\//);
+    await page.getByRole("link", { name: "Retour à La lisière" }).click();
+    await page.waitForURL(/vue=scenes/);
+    await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002"]);
+
+    // Un récit classique : ses scènes, sans bascule ni schéma
+    const classique = await semerProjet(base, compte, "personnel", "classique", "Carnet de voyage");
+    const c = await semerPartie(base, classique, "Le départ", [{ titre: "Le port", scenes: ["A", "B"] }]);
+    await aller(page, `/projet/${classique}/chapitre/${c.chapitres[0].id}`);
+    await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S002"]);
+    await expect(page.getByRole("group", { name: "Vue du chapitre" })).toHaveCount(0);
+    await expect(page.locator(".chemins__plan")).toHaveCount(0);
+    await expect(page.locator(".fiches > li").last().getByRole("button", { name: "Nouvelle scène" })).toBeVisible();
   });
 });
 
@@ -402,7 +575,7 @@ test("F03-AC49 — sur téléphone, « Chemins » est la liste des scènes, dans
   await expect(page.locator(".chemins__compte")).toHaveText("1 / 2");
 });
 
-test("F03-AC50, AC18 — les chemins lus par un élève : le même schéma, sans référence ni lien caché, un autre chapitre nommé sans qu'il puisse s'y rendre ; « À regarder » ne lui dit que ses choix", async ({ page, browser }) => {
+test("F03-AC50, AC18, AC61 — les chemins lus par un élève : le même schéma, sans référence ni lien caché, un autre chapitre nommé sans qu'il puisse s'y rendre ; « À regarder » ne lui dit que ses choix", async ({ page, browser }) => {
   test.setTimeout(150_000);
   const s = await classeQuiEcrit(page);
   await semerBlocs(s.base, s.lisiere.scenes[0], [choixAuto("Traverser le pont", s.lisiere.scenes[1]), choixAuto("Aller au sanctuaire", s.sanctuaire.scenes[0]), choixAuto("Plus tard", null)]);
@@ -414,10 +587,12 @@ test("F03-AC50, AC18 — les chemins lus par un élève : le même schéma, sans
   await expect(page.locator(".etiquette-chemin--sortie").getByRole("link", { name: "Le sanctuaire" })).toBeVisible();
 
   const alice = await posteDe(browser, s, "Alice");
+  // « Chemins » s'ouvre en premier pour l'élève aussi (F03-AC61), « Scènes » restant à un clic
   await aller(alice.page, `/travail/chapitre/${s.lisiere.id}`);
-  await alice.page.getByRole("button", { name: "Chemins", exact: true }).click();
-  await alice.page.waitForURL(/vue=chemins/);
+  await expect(alice.page.getByRole("button", { name: "Chemins", exact: true })).toHaveAttribute("aria-pressed", "true");
   await schemaPret(alice.page, 2);
+  // En lecture : ni « + », ni espace de travail, ni bouton d'IA
+  await expect(alice.page.locator(".plus-chemin, .chemins__ia")).toHaveCount(0);
   expect((await alice.page.locator(".carte-chemin__titre").allInnerTexts()).sort()).toEqual(["Le pont", "Le sentier"]);
   await expect(alice.page.locator(".chemins")).not.toContainText(/S00\d/);
   // Ses choix sur les flèches ; ni lien caché, ni marque sur les scènes
@@ -430,8 +605,15 @@ test("F03-AC50, AC18 — les chemins lus par un élève : le même schéma, sans
   await expect(alice.page.locator(".etiquette-chemin--sortie a")).toHaveCount(0);
   // « Ouvrir » mène à sa page de scène
   await carte(alice.page, "Le sentier").click();
+  await expect(alice.page.locator(".chemins__espace")).toHaveCount(0);
   await carte(alice.page, "Le sentier").getByRole("link", { name: "Ouvrir Le sentier" }).click();
   await alice.page.waitForURL(new RegExp(`/travail/scene/${s.lisiere.scenes[0]}`));
+  // Venu des chemins, il y revient ; « Scènes » reste à un clic
+  await alice.page.getByRole("link", { name: "Retour à La lisière" }).click();
+  await alice.page.waitForURL(new RegExp(`/travail/chapitre/${s.lisiere.id}$`));
+  await alice.page.getByRole("button", { name: "Scènes", exact: true }).click();
+  await alice.page.waitForURL(/vue=scenes/);
+  await expect(alice.page.locator(".fiches")).toBeVisible();
   await alice.contexte.close();
 });
 

@@ -126,8 +126,8 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   // Né pendant que le livre était gratuit, « Le phare de minuit » n'aurait aucune limite (F14-AC54) :
   // il est traité ici comme né le livre payant
   await sql("update public.projets set sans_limite = false where id = $1", [projet]);
-  await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(DIALOGUE(page).getByRole("heading", { name: "Ce livre a atteint ses 40 scènes gratuites" })).toBeVisible();
 
   // ——— Le pass, payé : les limites sautent, ses étoiles arrivent ———
@@ -138,8 +138,8 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   await expect(DIALOGUE(page).getByRole("heading", { name: "Merci ! Votre livre a son pass" })).toBeVisible();
   await DIALOGUE(page).getByRole("button", { name: "Continuer l’écriture" }).click();
   expect(await solde(id)).toBe(avantPass + 400);
-  await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(MESSAGE(page)).toContainText("est ajoutée à la fin du chapitre");
 
   // ——— Une recharge, depuis « Mon compte » ———

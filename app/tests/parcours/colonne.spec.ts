@@ -55,7 +55,7 @@ test("F06-AC99 — l'onglet d'où l'on vient reste désigné dans la scène et l
   await expect(page.getByRole("link", { name: "Retour au Suivi" })).toBeVisible();
 
   // Depuis « Parties et chapitres », le chapitre puis une scène : « Parties et chapitres »
-  await aller(page, `/projet/${projet}/chapitre/${lisiere.id}`);
+  await aller(page, `/projet/${projet}/chapitre/${lisiere.id}?vue=scenes`);
   await expect(SECTIONS(page).getByRole("link", { name: "Parties et chapitres" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("link", { name: "Retour à Parties et chapitres" })).toBeVisible();
   await page.getByRole("link", { name: /Ouvrir S002/ }).click();

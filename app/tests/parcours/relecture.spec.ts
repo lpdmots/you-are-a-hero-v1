@@ -360,7 +360,7 @@ test.describe("L'état se lit partout du même nom (F06.5, F11.1)", () => {
     await sql("update scenes set etat = 'reprendre' where id = $1", [c.scenes[0]]);
     await sql("update scenes set etat = 'valide' where id = $1", [c.scenes[1]]);
     await sql("update scenes set etat = 'prete' where id = $1", [c.scenes[2]]);
-    await aller(page, `/projet/${c.projet}/chapitre/${c.chapitre}`);
+    await aller(page, `/projet/${c.projet}/chapitre/${c.chapitre}?vue=scenes`);
     await expect(page.locator(".fiches .fiche .tampon")).toHaveText(["À reprendre", "Validé", "Prête", "Texte vide"]);
     // La page de la scène porte le même nom que sa carte
     await page.locator(".fiches .fiche").nth(1).getByRole("link").first().click();

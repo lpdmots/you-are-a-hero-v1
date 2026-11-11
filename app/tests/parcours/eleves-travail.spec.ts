@@ -16,7 +16,7 @@ test.afterEach(async () => {
 });
 
 const sceneEleve = (scene: string) => `/travail/scene/${scene}`;
-const chapitreEleve = (chapitre: string) => `/travail/chapitre/${chapitre}`;
+const chapitreEleve = (chapitre: string) => `/travail/chapitre/${chapitre}?vue=scenes`;
 const tampon = (page: Page) => page.locator("header .tampon");
 const remettre = (page: Page) => page.getByRole("button", { name: "Remettre à Mme Laurent" });
 const lecture = (page: Page) => page.locator(".copie__lecture");

@@ -142,7 +142,7 @@ test.describe("Retirer un élève de la classe (F01.1)", () => {
     await expect(page.getByRole("region", { name: "Élèves" }).getByRole("listitem")).toHaveCount(1);
 
     // Dans le chapitre : Bilal n'y est plus ; la scène validée garde son prénom, l'autre est à prendre
-    await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
+    await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}?vue=scenes`);
     const fiche = (ref: string) => page.locator(".fiche").filter({ has: page.locator(".fiche__ref", { hasText: ref }) });
     await expect(fiche("S001")).toContainText("Validé");
     await expect(fiche("S001")).toContainText("Bilal s’en occupait");

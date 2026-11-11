@@ -3,8 +3,7 @@ import { expect, test, type Browser, type Page } from "@playwright/test";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import {
   aller, autrePoste, baseDe, connecter, creerClasse, creerCompte, elevesDe, inscrire, lireCodes, masquerAides, MESSAGE, nommer, ouvrirLaClasse,
-  scenesDuChapitre, semerAttribution, semerPartie, semerProjet, supprimerComptes, taperCode, tirer, type ClasseCreee, type Compte,
-} from "./outils";
+  scenesDuChapitre, semerAttribution, semerPartie, semerProjet, supprimerComptes, taperCode, tirer, type ClasseCreee, type Compte, versLesScenes } from "./outils";
 
 test.afterEach(async () => {
   await supprimerComptes();
@@ -66,7 +65,7 @@ test("F03-AC15, F06-AC22 — l'élève voit toutes les cartes ; la sienne s'ouvr
   await expect(fiche).not.toContainText(/autel|S003/);
   await fiche.getByRole("button", { name: "Fermer" }).click();
   // Même par son adresse, le chapitre ne s'ouvre pas
-  const reponse = await alice.page.goto(`/travail/chapitre/${s.sanctuaire.id}`);
+  const reponse = await alice.page.goto(`/travail/chapitre/${s.sanctuaire.id}?vue=scenes`);
   expect(reponse?.status()).toBe(404);
   await expect(alice.page.getByText(/autel/)).toHaveCount(0);
   await alice.contexte.close();
@@ -78,6 +77,7 @@ test("F03-AC42, F06-AC20, F03-AC17 — dans son chapitre, l'élève lit toutes l
   await s.base.from("chapitres").update({ resume: "Lou entre dans la forêt et découvre que les chemins bougent." }).eq("id", s.lisiere.id);
   const alice = await poste(browser, s, "Alice");
   await alice.page.getByRole("link", { name: "Ouvrir La lisière" }).click();
+  await versLesScenes(alice.page);
   await expect(alice.page.getByRole("heading", { level: 1, name: "La lisière" })).toBeVisible();
   expect(await scenesDuChapitre(alice.page)).toEqual(["S001", "S002"]);
   await expect(alice.page.getByRole("list", { name: "Élèves du chapitre" })).toContainText("Toi");
@@ -93,8 +93,8 @@ test("F03-AC42, F06-AC20, F03-AC17 — dans son chapitre, l'élève lit toutes l
   await expect(alice.page.getByRole("button", { name: /^Déplacer/ })).toHaveCount(0);
 
   // L'enseignant ajoute une scène : l'élève la retrouve, sans avoir acquis le droit d'en créer
-  await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(MESSAGE(page)).toContainText("S004 est ajoutée");
   await alice.page.reload();
   expect(await scenesDuChapitre(alice.page)).toEqual(["S001", "S002", "S004"]);
@@ -106,6 +106,7 @@ test("F06-AC12, F06-AC86, F06-AC87, F06-AC89 — le profil « écriture et organ
   const s = await classeAuTravail(page);
   const bilal = await poste(browser, s, "Bilal");
   await bilal.page.getByRole("link", { name: "Ouvrir La lisière" }).click();
+  await versLesScenes(bilal.page);
   await bilal.page.getByRole("button", { name: "Ajouter une scène" }).click();
   await expect(MESSAGE(bilal.page)).toContainText("S004 est ajoutée à la fin du chapitre.");
   await expect.poll(() => scenesDuChapitre(bilal.page)).toEqual(["S001", "S002", "S004"]);
@@ -157,6 +158,7 @@ test("F06-AC48, F06-AC49 — la lecture ouverte laisse lire les autres chapitres
 
   await bilal.page.reload();
   await bilal.page.getByRole("link", { name: "Ouvrir Le sanctuaire" }).click();
+  await versLesScenes(bilal.page);
   await expect(bilal.page.getByText("Ce chapitre n’est pas le tien : tu peux le lire, pas l’écrire.")).toBeVisible();
   expect(await scenesDuChapitre(bilal.page)).toEqual(["S003"]);
   await expect(bilal.page.locator(".fiche")).toContainText("L’autel de pierre");
@@ -179,7 +181,7 @@ test("F06-AC18, F06-AC19, F01-AC09 — sans chapitre, l'élève n'ouvre aucune s
   await expect(dylan.page.getByText("Tu n’as pas encore de chapitre.")).toBeVisible();
   await expect(dylan.page.getByText("Mme Laurent va t’en donner un.")).toBeVisible();
   await expect(dylan.page.getByRole("link", { name: /^Ouvrir/ })).toHaveCount(0);
-  expect((await dylan.page.goto(`/travail/chapitre/${s.lisiere.id}`))?.status()).toBe(404);
+  expect((await dylan.page.goto(`/travail/chapitre/${s.lisiere.id}?vue=scenes`))?.status()).toBe(404);
 
   await aller(page, `/projet/${s.projet}/plan`);
   await page.getByLabel("Autres commandes du chapitre Le sanctuaire").click();
@@ -190,6 +192,7 @@ test("F06-AC18, F06-AC19, F01-AC09 — sans chapitre, l'élève n'ouvre aucune s
   await dylan.page.goto("/travail");
   await expect(dylan.page.getByText("Ton chapitre : Le sanctuaire, dans La forêt.")).toBeVisible();
   await dylan.page.getByRole("link", { name: "Ouvrir Le sanctuaire" }).click();
+  await versLesScenes(dylan.page);
   await expect.poll(() => scenesDuChapitre(dylan.page)).toEqual(["S003"]);
   await dylan.contexte.close();
 });
@@ -202,6 +205,7 @@ test("F06-AC04 — l'élève lit qui s'occupe de chaque scène de son chapitre :
   await s.base.from("scenes").update({ prise_par_enseignant: true }).eq("id", troisieme[0].scene_id);
   const alice = await poste(browser, s, "Alice");
   await alice.page.getByRole("link", { name: "Ouvrir La lisière" }).click();
+  await versLesScenes(alice.page);
   const fiche = (ref: string) => alice.page.locator(".fiche", { hasText: ref });
   await expect(fiche("S001")).toContainText("Tu t’en occupes");
   await expect(fiche("S002")).toContainText("Bilal s’en occupe");
@@ -220,7 +224,7 @@ test("F03-AC28 — un chapitre supprimé disparaît pour ses élèves, et revien
   await chloe.page.reload();
   await expect(chloe.page.getByText("Tu n’as pas encore de chapitre.")).toBeVisible();
   await expect(chloe.page.locator(".etiquette")).toHaveText(["La lisière"]);
-  expect((await chloe.page.goto(`/travail/chapitre/${s.sanctuaire.id}`))?.status()).toBe(404);
+  expect((await chloe.page.goto(`/travail/chapitre/${s.sanctuaire.id}?vue=scenes`))?.status()).toBe(404);
   // L'enseignante la compte de nouveau parmi les élèves sans chapitre
   await aller(page, `/projet/${s.projet}/plan`);
   await expect(page.locator(".reste__manques")).toContainText("2 élèves sans chapitre");

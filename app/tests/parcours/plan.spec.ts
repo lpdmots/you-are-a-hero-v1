@@ -113,8 +113,11 @@ test("F03-AC16 — « Ajouter une scène » donne une scène vide munie de sa r�
   await page.getByRole("link", { name: "Ouvrir Les racines", exact: true }).click();
   await expect(page.getByText("Ce chapitre n’a pas encore de scène. Ajoutez une première scène.")).toBeVisible();
   await page.getByRole("button", { name: "Ajouter une scène" }).click();
-  await expect(MESSAGE(page)).toContainText("S007 est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.");
-  expect(await scenesDuChapitre(page)).toEqual(["S007"]);
+  // En récit à choix, la première scène arrive dans « Chemins », qui s'ouvre en premier (F03-AC61) ; ses cartes sont à un clic
+  await expect(MESSAGE(page)).toContainText("S007 est ajoutée. Cliquez-la pour lui donner un titre.");
+  await expect(page.locator(".carte-chemin")).toHaveCount(1);
+  await page.getByRole("button", { name: "Scènes", exact: true }).click();
+  await expect.poll(() => scenesDuChapitre(page)).toEqual(["S007"]);
   const fiche = page.locator(".fiche");
   await expect(fiche).toContainText("sans titre");
   await expect(fiche).toContainText("sans consigne");
@@ -254,7 +257,7 @@ test("F03-AC37 — une partie tirée change de rang", async ({ page }) => {
 
 test("F03-AC23 — une scène tirée change de rang dans son chapitre ; F03-AC39 — au clavier aussi", async ({ page }) => {
   const { projet, foret } = await passeursDeBrume(page);
-  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}`);
+  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}?vue=scenes`);
   expect(await scenesDuChapitre(page)).toEqual(["S001", "S002", "S003"]);
   const fiche = (ref: string) => page.locator(".fiches > li", { hasText: ref });
   await tirer(page, fiche("S003").locator(".fiche__ref"), fiche("S002").locator(".fiche__ref"));
@@ -337,7 +340,7 @@ test("F03-AC26 — une scène se retrouve sans connaître son chapitre", async (
 test("F03-AC03 — désigner un nouveau départ nomme celui qu'il remplace ; F03-AC05, F03-AC06 — plusieurs fins, et une scène sans choix n'en est pas une", async ({ page }) => {
   const { base, projet, foret } = await passeursDeBrume(page);
   await base.from("projets").update({ depart_scene_id: foret.chapitres[0].scenes[0] }).eq("id", projet);
-  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}`);
+  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}?vue=scenes`);
   const fiche = (ref: string) => page.locator(".fiches > li", { hasText: ref });
   await expect(fiche("S001")).toContainText("Départ du livre");
   await expect(fiche("S002")).not.toContainText("Fin de l’histoire");
@@ -429,7 +432,7 @@ test("F06-AC01, F06-AC11, F06-AC18 — attribuer un chapitre : les élèves coch
 test("F06-AC07, F06-AC62 — l'enseignant dit qui s'occupe d'une scène, sur sa carte comme dans sa page ; un chapitre qu'il écrit seul n'attend pas d'élève", async ({ page }) => {
   const { base, classe, projet, foret } = await passeursDeBrume(page);
   await semerAttribution(base, foret.chapitres[0].id, [{ eleve: classe.eleves.Alice.id }, { eleve: classe.eleves.Bilal.id }]);
-  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}`);
+  await aller(page, `/projet/${projet}/chapitre/${foret.chapitres[0].id}?vue=scenes`);
   const fiche = (ref: string) => page.locator(".fiches > li", { hasText: ref });
   // Dans un chapitre attribué, une scène sans élève est « Pas encore prise »
   await expect(fiche("S001")).toContainText("Pas encore prise");
@@ -461,7 +464,7 @@ test("F06-AC07, F06-AC62 — l'enseignant dit qui s'occupe d'une scène, sur sa 
   // « Le col » n'a aucun élève : ses scènes disent « Aucun élève ». L'enseignant les prend toutes :
   // le chapitre ne compte plus parmi les chapitres sans élève
   const col = (await base.from("chapitres").select("id").eq("projet_id", projet).eq("titre", "Le col").single()).data!.id;
-  await aller(page, `/projet/${projet}/chapitre/${col}`);
+  await aller(page, `/projet/${projet}/chapitre/${col}?vue=scenes`);
   await expect(fiche("S006")).toContainText("Aucun élève");
   await fiche("S006").getByLabel(/^Qui s’occupe de S006/).click();
   await expect(fiche("S006")).toContainText("Ce chapitre n’a pas encore d’élève");
@@ -516,9 +519,9 @@ test("F03-AC41 — en projet personnel, la page du chapitre n'a ni élèves, ni 
   await expect(page.getByRole("button", { name: "Attribuer des élèves" })).toHaveCount(0);
   await page.keyboard.press("Escape");
 
-  await aller(page, `/projet/${projet}/chapitre/${partie.chapitres[0].id}`);
+  await aller(page, `/projet/${projet}/chapitre/${partie.chapitres[0].id}?vue=scenes`);
   expect(await scenesDuChapitre(page)).toHaveLength(6);
-  await expect(page.getByRole("button", { name: "Ajouter une scène" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ })).toBeVisible();
   await expect(menuChapitre(page, "La lisière")).toBeVisible();
   await expect(page.getByRole("button", { name: "Attribuer des élèves" })).toHaveCount(0);
   await expect(page.getByText(/s’en occupe/)).toHaveCount(0);
@@ -529,7 +532,7 @@ test("F03-AC41 — en projet personnel, la page du chapitre n'a ni élèves, ni 
   // Un récit classique n'a ni départ ni fin à désigner : l'ordre du plan est celui de la lecture (F03-AC20)
   const classique = await semerProjet(base, compte, "personnel", "classique", "Carnet de voyage");
   const c = await semerPartie(base, classique, "Le départ", [{ titre: "Le port", scenes: ["A", "B", "C"] }]);
-  await aller(page, `/projet/${classique}/chapitre/${c.chapitres[0].id}`);
+  await aller(page, `/projet/${classique}/chapitre/${c.chapitres[0].id}?vue=scenes`);
   await expect(page.getByText("Les scènes se lisent dans cet ordre.")).toBeVisible();
   await page.getByLabel("Autres commandes de la scène S001").click();
   await expect(page.getByRole("button", { name: "Départ du livre" })).toHaveCount(0);

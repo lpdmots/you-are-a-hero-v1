@@ -80,7 +80,7 @@ test("F14-AC27 — supprimer une classe passée : ses élèves s'effacent, la sc
   expect(JSON.stringify(pages.auteurs)).toContain("Alice");
   expect(JSON.stringify(pages.auteurs)).toContain("Bilal");
   // La scène reste à Alice
-  await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}`);
+  await aller(page, `/projet/${projet}/chapitre/${chapitres[0].id}?vue=scenes`);
   await expect(page.locator(".fiches")).toContainText("Alice");
 });
 

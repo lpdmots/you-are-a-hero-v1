@@ -1,8 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import {
   adultePret, aller, ALERTE, attendreEnBase, classeQuiEcrit, collerDepuisAilleurs, copie, copiesGardees, ecrire, enClair, MESSAGE, motsEnBase, pied, sauv,
-  posteDe, sceneEnBase, semerPartie, semerProjet, semerTexte, sql, supprimerComptes, veiller,
-} from "./outils";
+  posteDe, sceneEnBase, semerPartie, semerProjet, semerTexte, sql, supprimerComptes, veiller, versLesScenes } from "./outils";
 
 /**
  * Étape 3 du plan, lot 1 : écrire une scène, la voir s'enregistrer, régler un conflit de
@@ -245,7 +244,7 @@ test.describe("Conflit de sauvegarde, à deux postes (F08.1) — V7", () => {
     await expect(pied(bilal.page)).toContainText("Ton texte est gardé à part. Mme Laurent doit le regarder avant que tu écrives ici.");
     await expect(copie(bilal.page)).toHaveCount(0);
     // Depuis son chapitre, la même phrase, et « Lire »
-    await aller(bilal.page, `/travail/chapitre/${s.lisiere.id}`);
+    await aller(bilal.page, `/travail/chapitre/${s.lisiere.id}?vue=scenes`);
     const fiche = bilal.page.locator(".fiche").filter({ hasText: "S001" });
     await expect(fiche).toContainText("Ton texte est gardé à part. Mme Laurent doit le regarder avant que tu écrives ici.");
     await expect(fiche.locator(".fiche__ouvrir")).toHaveText("Lire");
@@ -422,6 +421,7 @@ test.describe("Côté élève : écrire, lire, perdre le réseau (F03, F06, F08.
     await s.base.from("scenes").update({ prise_par_eleve: s.eleves.Alice.id }).eq("id", s15);
     const alice = await posteDe(browser, s, "Alice");
     await alice.page.getByRole("link", { name: "Ouvrir La lisière" }).click();
+    await versLesScenes(alice.page);
     await alice.page.getByRole("link", { name: /^Écrire S001/ }).click();
     await alice.page.waitForURL(/\/travail\/scene\//);
     await expect(alice.page.getByText("Pas de consigne écrite. Suis celle que Mme Laurent t’a donnée.")).toBeVisible();
@@ -661,7 +661,7 @@ test.describe("Versions précédentes et suppression d'un texte (F08.2, F03.1)",
     await expect(page.getByRole("heading", { name: "La lisière" })).toBeVisible();
 
     // Une scène : avec texte, le dialogue ; sans texte, tout de suite
-    await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
+    await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}?vue=scenes`);
     await page.locator('summary[aria-label="Autres commandes de la scène S001"]').click();
     await page.getByRole("button", { name: "Supprimer" }).click();
     await expect(page.getByRole("alertdialog", { name: "Supprimer S001 « Le sentier » ?" }).locator("li").first()).toHaveText("Cette scène a un texte.");

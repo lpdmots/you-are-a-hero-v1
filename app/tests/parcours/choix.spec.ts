@@ -1087,7 +1087,7 @@ test.describe("Numéros et suppression (F11.5, F03.1) — la vue « Chemins » a
   test("F03-AC13, AC14 — supprimer une scène où mène un choix annonce d'abord ce lien, qui n'est redirigé nulle part ; la carte du choix dit ensuite « scène supprimée »", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [choixAuto("Continuer vers la lumière", l.lisiere.scenes[1])]);
-    await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}`);
+    await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=scenes`);
     await page.locator('summary[aria-label="Autres commandes de la scène S002"]').click();
     await page.getByRole("button", { name: "Supprimer" }).click();
     const dialogue = page.getByRole("alertdialog", { name: "Supprimer S002 « Clairière » ?" });

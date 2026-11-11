@@ -43,7 +43,7 @@ async function ouvrirMonCompte(page: Page): Promise<void> {
 
 /** Alice prend S001 depuis son chapitre, l'écrit et la remet. */
 async function aliceEcritEtRemet(alice: Page, s: Situation, texte: string, avantDeRemettre?: () => Promise<void>): Promise<void> {
-  await aller(alice, `/travail/chapitre/${s.lisiere.id}`);
+  await aller(alice, `/travail/chapitre/${s.lisiere.id}?vue=scenes`);
   await alice.getByLabel("Choisir S001 pour m’en occuper").check();
   await alice.getByRole("region", { name: "Sélection" }).getByRole("button", { name: "Je m’en occupe" }).click();
   await expect(MESSAGE(alice)).toContainText("Tu t’occupes maintenant de S001.");

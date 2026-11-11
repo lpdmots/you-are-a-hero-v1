@@ -46,8 +46,8 @@ test("F14-AC18, AC21 — acheter le pass depuis le dialogue : la page de paiemen
   await interrupteur(true);
   await sql("update public.reglages_application set prix_du_pass = 2500");
   const avantSolde = await solde(m.compte);
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await DIALOGUE(page).getByRole("button", { name: "Acheter le pass · 25 €" }).click();
 
   await expect(page).toHaveURL(/\/paiement\/simulation\?session=cs_simule_/);
@@ -69,8 +69,8 @@ test("F14-AC18, AC21 — acheter le pass depuis le dialogue : la page de paiemen
   expect(await solde(m.compte)).toBe(avantSolde + 400);
   expect((await sql<{ montant: number }>("select montant from public.paiements where projet_id = $1", [m.projet]))[0].montant).toBe(2500);
   // Le pass est là : la 41e scène s'ajoute
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
 });
 
@@ -115,8 +115,8 @@ test("F14-AC20 — quitter la page de paiement, ou une carte refusée : rien ne 
   const m = await leMarais(page);
   await interrupteur(true);
   const avantSolde = await solde(m.compte);
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await DIALOGUE(page).getByRole("button", { name: /Acheter le pass/ }).click();
   await expect(page).toHaveURL(/\/paiement\/simulation/);
   await page.getByLabel("Je demande l’accès immédiat et renonce à mon droit de rétractation.").check();
@@ -124,7 +124,7 @@ test("F14-AC20 — quitter la page de paiement, ou une carte refusée : rien ne 
   await page.getByRole("button", { name: "Payer" }).click();
   await expect(page.getByRole("alert").filter({ hasText: "carte" })).toContainText("Votre carte a été refusée.");
   await page.getByRole("link", { name: "Retour" }).click();
-  await expect(page).toHaveURL(new RegExp(`/projet/${m.projet}/chapitre/${m.chapitre}$`));
+  await expect(page).toHaveURL(new RegExp(`/projet/${m.projet}/chapitre/${m.chapitre}(\\?vue=scenes)?$`));
   expect(await sql("select 1 from public.passes where projet_id = $1", [m.projet])).toHaveLength(0);
   expect(await sql("select 1 from public.paiements where projet_id = $1", [m.projet])).toHaveLength(0);
   expect(await solde(m.compte)).toBe(avantSolde);

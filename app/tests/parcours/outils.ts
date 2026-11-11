@@ -336,6 +336,15 @@ export const scenesDuChapitre = (page: Page): Promise<string[]> => page.locator(
 
 export const MESSAGE = (page: Page) => page.locator(".message");
 
+/**
+ * « Chemins » s'ouvre en premier dans un chapitre à choix (F03-AC61) : les cartes des scènes, où
+ * l'on prend, ouvre et range les scènes, sont à un clic.
+ */
+export async function versLesScenes(page: Page): Promise<void> {
+  await page.getByRole("button", { name: "Scènes", exact: true }).click();
+  await page.waitForURL(/vue=scenes/);
+}
+
 // ——— Étape 3 : la copie d'une scène ———
 
 export type Situation = {

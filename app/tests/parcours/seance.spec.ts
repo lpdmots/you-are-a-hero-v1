@@ -34,7 +34,7 @@ test("Séance entière (F06.3, F07.1, F07.3, F07.5, F06.5) — Alice et Bilal pr
   await alice.page.getByLabel("Choisir S001 pour m’en occuper").check();
   await alice.page.getByRole("region", { name: "Sélection" }).getByRole("button", { name: "Je m’en occupe" }).click();
   await expect(MESSAGE(alice.page)).toContainText("Tu t’occupes maintenant de S001.");
-  await aller(bilal.page, `/travail/chapitre/${s.lisiere.id}`);
+  await aller(bilal.page, `/travail/chapitre/${s.lisiere.id}?vue=scenes`);
   // Bilal voit qu'Alice s'occupe de S001, et prend l'autre
   await expect(bilal.page.locator(".fiche").filter({ hasText: "S001" })).toContainText("Alice s’en occupe");
   await bilal.page.getByLabel("Choisir S002 pour m’en occuper").check();

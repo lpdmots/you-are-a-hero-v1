@@ -39,8 +39,8 @@ async function ouvrirReglages(page: Page, projet: string): Promise<void> {
 test("F14-AC12 — interrupteur éteint : une 41e scène s'ajoute, et rien ne parle de limite ni de pass", async ({ page }) => {
   const m = await leMarais(page, 40);
   await interrupteur(false);
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
   await expect(DIALOGUE(page)).toHaveCount(0);
   await ouvrirReglages(page, m.projet);
@@ -53,12 +53,12 @@ test("F14-AC12 — interrupteur éteint : une 41e scène s'ajoute, et rien ne pa
 test("F14-AC54 — vente ouverte, livre gratuit : une 41e scène s'ajoute ; le livre devenu payant, ce projet né gratuit reste sans limite ni pass", async ({ page }) => {
   await sql("update public.reglages_application set paiement_ouvert = true, livre_payant = false");
   const m = await leMarais(page, 40);
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
   await sql("update public.reglages_application set livre_payant = true");
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
   await expect(DIALOGUE(page)).toHaveCount(0);
   await ouvrirReglages(page, m.projet);
@@ -80,8 +80,8 @@ test("F14-AC13, AC21 — allumé, à 40 scènes : « Ajouter une scène » ouvre
   await expect(DIALOGUE(page)).not.toContainText("n’a pas été ajoutée");
   await page.keyboard.press("Escape");
 
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(DIALOGUE(page).getByRole("heading", { name: "Ce livre a atteint ses 40 scènes gratuites" })).toBeVisible();
   await expect(DIALOGUE(page)).toContainText("La scène n’a pas été ajoutée. Tout le reste continue : écrire, faire le PDF, partager.");
   // Ce qui ne compte pas, dans la bulle ; les deux jauges, celle qui arrête en ambre
@@ -140,8 +140,8 @@ test("F14-AC16 — le pass reçu : plus de dialogue, « Pass du livre » dans le
   const m = await leMarais(page, 40);
   await interrupteur(true);
   await sql("select public.donner_le_pass($1, 'achat')", [m.projet]);
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
   await expect(DIALOGUE(page)).toHaveCount(0);
   await ouvrirReglages(page, m.projet);
@@ -157,8 +157,8 @@ test("F14-AC17 — le compte du porteur : ni limite, ni pass, ni décompte", asy
   const m = await leMarais(page, 40);
   await sql("update public.enseignants set createur = true where id = $1", [m.compte.id]);
   await interrupteur(true);
-  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}`);
-  await page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await aller(page, `/projet/${m.projet}/chapitre/${m.chapitre}?vue=scenes`);
+  await page.getByRole("button", { name: /^(Ajouter une scène|Nouvelle scène)$/ }).click();
   await expect(page.locator(".message")).toContainText("est ajoutée à la fin du chapitre");
   await ouvrirReglages(page, m.projet);
   await expect(page.getByText(/Pass du livre|Acheter le pass/)).toHaveCount(0);
