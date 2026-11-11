@@ -1678,12 +1678,16 @@ le porteur décide :
       2026 ;** F03-AC72 est révisé en ce sens.
     - *« Annuler » rend un choix supprimé à sa place,* entre ses voisins, et
       non plus à la fin du texte — aussi pour la corbeille de « Ses choix »,
-      qui le remettait à la fin.
+      qui le remettait à la fin. **Confirmé par le porteur le 11 novembre
+      2026.**
     - *Le lien caché* s'ouvre par son onglet ou sa ligne : son numéro,
       « Proposer comme choix », « Retirer ce lien caché », avec « Annuler ».
       « Cacher ce choix (énigme) » fixe le numéro de la destination, comme
       dans la copie ; « Annuler » rend la phrase à sa place, le numéro
-      restant fixé.
+      restant fixé. « Libérer le numéro » n'est pas proposé après un retrait :
+      il reste dans le menu de la scène. **Confirmé par le porteur le
+      11 novembre 2026,** ce qui révise « un lien caché se règle dans la
+      scène » de « Choix en onglets ».
     - *Un choix supprimé dans la copie pendant qu'on le modifie depuis
       « Chemins »* y revient, à sa place : la version de « Chemins »
       l'emporte. Modifier un choix qui n'est plus dans le texte enregistré

@@ -5005,7 +5005,7 @@ place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
 rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
 
 **Précisions prises en construisant, à lui faire confirmer** (trois au plus
-par échange ; la première est confirmée, onze restent) :
+par échange ; les quatre premières sont confirmées, huit restent) :
 
 1. *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins » :
    changer « Ce que fait le lecteur » change l'onglet ; réécrire « La
@@ -5015,15 +5015,18 @@ par échange ; la première est confirmée, onze restent) :
    phrase », est révisé. Ne pas lui reposer.
 2. *« Annuler » rend un choix supprimé à sa place,* entre ses voisins — aussi
    pour la corbeille de « Ses choix », qui le remettait à la fin du texte
-   depuis le lot 2.
+   depuis le lot 2. **Confirmé par le porteur le 11 novembre 2026.**
 3. *Le lien caché entre dans ce lot :* la règle dit qu'il « s'ouvre de même ».
    Son numéro, « Proposer comme choix » et « Retirer ce lien caché » se font
    donc depuis « Chemins », avec « Annuler », et « Cacher ce choix (énigme) »
    aussi ; cela a demandé que les liens cachés passent par les retouches du
    plan. « Libérer le numéro », que la copie propose après un retrait, n'est
-   pas repris ici : il reste dans le menu de la scène.
+   pas repris ici : il reste dans le menu de la scène. **Confirmé par le
+   porteur le 11 novembre 2026,** « Libérer le numéro » compris (« pas
+   besoin ») : ne pas le lui reproposer dans le message du retrait.
 4. *« Annuler » après « Cacher ce choix »* rend la phrase à sa place ; le
-   numéro de la destination reste fixé, comme dans la copie.
+   numéro de la destination reste fixé, comme dans la copie. **Confirmé par
+   le porteur le 11 novembre 2026.**
 5. *Un choix supprimé dans la copie, pendant qu'on le modifie depuis
    « Chemins »,* y revient à sa place au prochain enregistrement : la version
    de « Chemins » l'emporte, comme pour une phrase changée des deux côtés.

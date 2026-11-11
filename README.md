@@ -92,8 +92,9 @@ remis par « Annuler », et fait passer les liens cachés par le plan
 écran sans maquette, sans critique en deux lectures
 ([design](docs/design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) ;
 l'onglet porte « ce que fait le lecteur », non la phrase réécrite (confirmé
-par le porteur le même jour, F03-AC72 révisé) ; onze précisions restent à
-confirmer dans le
+par le porteur le même jour, F03-AC72 révisé), « Annuler » rend un choix
+supprimé à sa place, et le lien caché se règle aussi depuis « Chemins »
+(confirmés de même) ; huit précisions restent à confirmer dans le
 [plan](docs/plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026) ;
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Modifier un
 choix depuis Chemins » ».
