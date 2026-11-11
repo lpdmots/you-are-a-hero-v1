@@ -577,14 +577,17 @@
   outline-offset: 2px;
 }
 
-/* ——— Bascule : la vue choisie est une pilule graphite ——— */
+/* ——— Bascule : la vue choisie est un onglet blanc sur un rail gris (révision de novembre 2026,
+   décidé par le porteur) : la pilule graphite pleine était la masse la plus lourde de l'écran et se
+   lisait comme une action. Ni canard ni couleur : le blanc, le gras et une ombre légère suffisent. */
 .bascule {
+  --rail: #e9ebe6;
   display: inline-flex;
   padding: 3px;
   gap: 3px;
   border-radius: 11px;
-  background: var(--feuille);
-  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  background: var(--rail);
+  box-shadow: inset 0 0 0 1px var(--trait);
 }
 .bascule button {
   display: inline-flex;
@@ -602,11 +605,15 @@
 }
 .bascule button:hover {
   color: var(--graphite);
-  background: var(--feuille-2);
+  background: rgba(255, 255, 255, 0.55);
 }
-.bascule button[aria-pressed="true"] {
-  background: var(--graphite);
-  color: #fff;
+.bascule button[aria-pressed="true"],
+.bascule button[data-choisi] {
+  background: var(--feuille);
+  color: var(--graphite);
+  box-shadow:
+    0 0 0 1px var(--trait-fort),
+    0 1px 3px rgba(20, 30, 30, 0.16);
 }
 
 /* ——— Fil de retour et en-tête de page ——— */

@@ -85,14 +85,15 @@
   gap: 6px;
   min-height: 38px;
 }
-/* « Dont Alice s'occupe » / « Tout son chapitre » : deux sélections, la choisie en graphite */
+/* « Dont Alice s'occupe » / « Tout son chapitre » : deux sélections, la choisie en onglet blanc sur
+   un rail gris, comme toute bascule (révision de novembre 2026) */
 .seg-mini {
   display: inline-flex;
   gap: 3px;
   padding: 3px;
   border-radius: 99px;
-  background: var(--feuille);
-  box-shadow: inset 0 0 0 1px var(--trait-fort);
+  background: #e9ebe6;
+  box-shadow: inset 0 0 0 1px var(--trait);
 }
 .seg-mini button {
   padding: 6px 12px;
@@ -111,8 +112,12 @@
   opacity: 0.75;
 }
 .seg-mini button[aria-pressed="true"] {
-  background: var(--graphite);
-  color: #fff;
+  background: var(--feuille);
+  color: var(--graphite);
+  font-weight: 700;
+  box-shadow:
+    0 0 0 1px var(--trait-fort),
+    0 1px 3px rgba(20, 30, 30, 0.16);
 }
 .suivi-outils > .aide-bouton {
   align-self: flex-end;

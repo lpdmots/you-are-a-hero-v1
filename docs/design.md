@@ -269,7 +269,9 @@ L'illustration crée l'ambiance ; les objets portent l'information.
    Bleu et violet : les seuls tampons « En cours » et « Prête », avec la
    barre des scènes prêtes de « Mes projets ». Bleu canard : le bouton
    principal, les liens et ce qui est coché ; la vue choisie dans une
-   bascule est une pilule graphite, pour ne pas imiter le bouton principal.
+   bascule est un onglet blanc sur un rail gris, sans couleur, pour ne pas
+   imiter le bouton principal (une pilule graphite jusqu'au 11 novembre
+   2026, trop lourde ; voir la révision de l'ergonomie).
    Couleur de l'élève, adoucie : sa gommette uniquement. Ce qui vient de
    l'IA (étape 8) : des pastilles en canard pâle et des propositions sur fond
    canard pâle, avec le signe des étincelles ; jamais un bouton plein, ce qui
@@ -326,7 +328,7 @@ lumière et une palette constantes.
 | Situation | Disposition |
 | --- | --- |
 | Parties et chapitres | Cartes-cahiers par partie. Toute la carte ouvre le chapitre (un essai du 18 octobre 2026, la carte ouvrant ses réglages, est revenu en arrière le 19) ; elle dit le nombre de scènes et de scènes validées, ce qui attend l'adulte, les élèves et ce qui manque. Menu à trois points pour ses commandes. En tête, la phrase « À compléter » et ses liens ; écran d'aide à l'ouverture. Détail dans [Organisation du récit reprise après critique](#organisation-du-récit-reprise-après-critique-6-octobre-2026). |
-| Chapitre | Bandeau du chapitre avec « Ajouter une scène », « Attribuer des élèves » et le menu à trois points ; une ligne d'outils : bascule Scènes/Chemins, recherche, « Voir dans le Suivi ». Cartes de scène sans case à cocher : état, liens, « qui s'en occupe » à changer sur place, menu de la scène. Le mode personnel et l'élève gardent leurs filtres. |
+| Chapitre | Bandeau du chapitre en une bande : les élèves (qui ouvrent « Attribuer des élèves »), la bascule Chemins/Scènes, son « i » et le menu à trois points. Dans « Scènes », une ligne d'outils : « Voir dans le Suivi » (projet de classe), recherche ; « + Nouvelle scène » en dernière carte. Cartes de scène sans case à cocher : état, liens, « qui s'en occupe » à changer sur place, menu de la scène. Le mode personnel et l'élève gardent leurs filtres. |
 | Chemins (vue Graphe) | Chaque lien part de la ligne du choix qui le propose ; « Départ du livre », « Fin de l'histoire » et « 2 chemins se rejoignent » écrits au-dessus de la scène ; « Sans suite » dans une scène sans choix ni fin ; choix vers les autres chapitres à leur couleur, qui ouvrent ce chapitre dans la même vue ; taille lisible par défaut, « Tout voir ». Sur mobile : disposition verticale, scène touchée marquée, encart de ses choix collé en bas. |
 | Suivi | Suivi d'un projet, sous son en-tête : rappel des élèves sans chapitre, filtres chapitre et élève, tampons d'état en filtres, tableau groupé par chapitre, vue Élèves. Détail dans [Suivi repris après critique](#suivi-repris-après-critique-4-octobre-2026). |
 | Fiches de rédaction | Sélection par partie et chapitre, ou par élève ; aperçu A4 d'une feuille par chapitre ou par élève, qui liste les scènes choisies sous leur référence : titre, consigne, image éventuelle, texte déjà écrit, demande de reprise, choix de fin sans destination. Pas de lignes pour écrire : l'élève écrit sur son cahier (F07.4, 4 octobre 2026). |
@@ -862,7 +864,7 @@ relevé et de lui soumettre ceux qui laissent un doute.
 | Geste | Forme |
 | --- | --- |
 | Revenir | Une pastille ou un lien à flèche, « Retour à… », ramène d'où l'on vient ; le fil d'Ariane dit où l'on est. La page de scène dit « Retour au Suivi », « Retour aux scènes à finir », « Retour au Livre », « Retour à la lecture d'essai », et pour l'élève venu de son accueil « Retour à Mon travail » ; sinon, le nom du chapitre. Fiches : « Retour au Suivi ». Lecteur de l'élève : « Retour aux lectures ». « Parties et chapitres » et « Mon travail » retrouvent leur position au retour d'un chapitre ou d'une scène. |
-| Montrer la sélection | La vue choisie dans une bascule est une pilule graphite (Scènes/Chemins, Scènes/Élèves, Réglages/Aperçu, Imprimer/Partager, « par chapitre / par élève », « Dont Alice s'occupe / Tout son chapitre »). Une option cochée dans un réglage garde son contour canard. Le canard plein est au seul bouton principal. |
+| Montrer la sélection | La vue choisie dans une bascule est un onglet blanc, en gras, à ombre légère, sur un rail gris (pilule graphite jusqu'au 11 novembre 2026) (Scènes/Chemins, Scènes/Élèves, Réglages/Aperçu, Imprimer/Partager, « par chapitre / par élève », « Dont Alice s'occupe / Tout son chapitre »). Une option cochée dans un réglage garde son contour canard. Le canard plein est au seul bouton principal. |
 | Bouton principal | Un par écran. À « Mettre en page », la déclaration « La mise en page me convient » ; « Réordonner les passages » et « Voir l'aperçu » sont des boutons ordinaires, « Garder cet ordre » reste plein tant que le doute bloque la déclaration. Jamais sur ce qui supprime ou fait sortir : « Supprimer » est en brique, non plein ; « Rester » est plein. |
 | Fermer un panneau | « Fermer », et la croix. |
 | Expliquer | L'écran d'aide et son bouton « Aide » au point d'interrogation ; la bulle « i », nommée par une question (« Que veut dire « à finir » ? »). Dans le lecteur, « Règles » et « Règles du jeu » portent le point d'interrogation : ils ouvrent une page, pas une bulle. |
@@ -1403,7 +1405,7 @@ règles restent celles de [F05.2](specifications.md#f052--créer-et-modifier-un-
   ([F04.2](specifications.md#f042--objets-de-lhistoire),
   F04-AC40) : sous l'action où l'on écrit, avant « Formules… » et
   « Supprimer », quatre petits boutons côte à côte — crayon, dé, sac,
-  cœur —, celui qui sert en graphite, comme une bascule ; chacun dit son
+  cœur —, celui qui sert en graphite ; chacun dit son
   usage au survol (« Dé : à lancer »). Le signe choisi remplace le crayon
   dans le cadre de l'action.
 - **Le signe d'une formule,** demandé ensuite (F04-AC41) : dans la
@@ -1590,7 +1592,7 @@ choix arrive dans une copie ouverte.
 | Le lien en attente | Tant que la bulle demande son libellé, le trait en pointillé reste dessiné entre les deux cartes. |
 | Le panneau | 304 points, fixé au bord droit, sous l'en-tête des chemins, jamais plus haut que la fenêtre. En tête : la référence, le tampon d'état, « Enregistré », la croix. Puis « Titre », « Ses choix » — chacun avec sa destination et sa corbeille, « Ajouter un choix » à droite du titre ; remontés sous le titre le 10 novembre 2026 à la demande du porteur : ce sont le plan, et la liste les poussait hors de vue en 768 px —, « Consigne » (facultative, avec le micro, trois lignes qui grandissent avec le texte), « ✦ Formuler » et, en classe, la liste de vérification, comme dans la page de scène (ajoutés à sa demande le même jour), et au pied « Supprimer la scène » (discret, brique au survol) et « Ouvrir ». Un chapitre qui tient à sa gauche s'y centre ; sinon le cadre défile jusqu'aux cartes qu'il couvre, et se décale de lui-même si la carte cliquée est dessous. |
 | Un choix dans le panneau | Son libellé en gras, sa destination dessous (« S012 « Tourbière… » », un autre chapitre, ou en ambre « Sans destination », « Scène supprimée ») ; un lien caché porte la clé et n'a pas de corbeille. Le libellé cliqué sur sa flèche teinte sa ligne un instant. |
-| Le bandeau du chapitre | Une ligne basse, la même dans « Scènes » et « Chemins » (demandé par le porteur, 10 novembre 2026 : le haut de page forçait à défiler pour voir même un petit schéma, puis les onglets sautaient d'une vue à l'autre) : une vignette de 96 points, le titre en 1,45 rem, sa ligne et les élèves à la suite, les commandes en rang à droite, les trois points au bout ; sous 1 060 points de large, les commandes passent sous le titre ; sur un téléphone, une vignette de 72 points. Les onglets « Scènes / Chemins » sont au même endroit dans les deux vues, seul le dessous change. Un chapitre sans scène garde le grand bandeau, au-dessus de son invitation. En 1 366 × 768, la première carte passe à 263 points du haut de la fenêtre. |
+| Le bandeau du chapitre | Une ligne basse, la même dans « Scènes » et « Chemins » (demandé par le porteur, 10 novembre 2026 : le haut de page forçait à défiler pour voir même un petit schéma, puis les onglets sautaient d'une vue à l'autre) : une vignette de 96 points, le titre en 1,45 rem, sa ligne et les élèves à la suite, les commandes en rang à droite, les trois points au bout ; sous 1 060 points de large, les commandes passent sous le titre ; sur un téléphone, une vignette de 72 points. Les onglets « Scènes / Chemins » sont au même endroit dans les deux vues, seul le dessous change. Un chapitre sans scène a le même bandeau depuis le 11 novembre 2026 (il gardait le grand). En 1 366 × 768, la première carte passe à 263 points du haut de la fenêtre. |
 | Le cadre | 480 points de haut au moins, le schéma compris, pour l'adulte comme pour l'élève (retouche du porteur, 10 novembre 2026) : un petit chapitre ne fait plus un bandeau plat ; le panneau y tient sans que le cadre grandisse ; un clic dans le vide sous les cartes referme le panneau. |
 | L'écran qui ne bouge pas | Après un geste : la même taille, la carte d'où l'on part au même point ; les autres glissent en un quart de seconde, la nouvelle apparaît, les flèches reviennent en fondu. Un titre ou une consigne changés ne font rien clignoter. « Recentrer », en lien, quand le schéma a dû être poussé dans son cadre ; depuis le 10 novembre 2026 (le porteur voyait un grand vide au-dessus d'un petit schéma), la poussée se rend d'elle-même : sans mouvement au défilement, pour la part hors de la vue, sinon en glissant (0,26 s) quand le panneau se referme ou que le pointeur quitte le schéma et son panneau ; « Recentrer » ne se montre plus que le temps du geste. |
 | Les messages | La phrase habituelle au bas de l'écran, avec « Annuler » : « S040 « La vase profonde » est ajoutée. », « Le choix « Traverser » mène à S012 « … ». », « Le choix « … » est supprimé. ». |
@@ -1715,7 +1717,8 @@ cadre : la lecture informée la trouve « à sa place, pas perdue ».
 **Laissé en l'état,** et dit au porteur dans le plan : un choix sans
 destination n'offre que sa corbeille ; le compteur « – / 6 » ; le « + » qui
 peut couvrir le début d'un libellé sous sa carte ; un chapitre sans scène
-garde le grand bandeau (décidé le 10 novembre) ; les commandes posées sur le
+gardait le grand bandeau (décidé le 10 novembre, compact depuis la révision du
+11 novembre) ; les commandes posées sur le
 cadre couvrent leur coin.
 
 **Retouches du 11 novembre 2026, à sa demande :** la bascule du chapitre se lit
@@ -2115,7 +2118,7 @@ stade.
   élève, à la suite de « La répartir entre les élèves du chapitre », une
   ligne « ou compléter jusqu'à 4 scènes : » et une puce par élève à qui il
   en reste moins — gommette, prénom, ce qu'il lui reste à écrire. Cliquée,
-  la puce passe en graphite, comme une bascule choisie, et dit ce qu'il
+  la puce passe en graphite et dit ce qu'il
   recevrait (« 1 + 1 ») ; un second clic la rend. Quand il ne reste plus
   de scène libre cochée, les autres puces s'éteignent et la ligne le dit.
   La place de « + 1 » est réservée dans la puce, qui ne change pas de
@@ -3080,7 +3083,7 @@ captures 1701 à 1708 (`npm run captures -- couverture`).
   l'aide « Dites où placer le texte… » et la ligne des portraits joints ;
   « Écrire sur la couverture », une case par texte, le texte proposé en gris
   à côté d'une case décochée, un champ sous une case cochée, la flèche ronde
-  quand il diffère de la page de titre ; la bascule graphite « Pour imprimer »
+  quand il diffère de la page de titre ; la bascule « Pour imprimer »
   ou « Pour le site » et sa ligne, puis « ✦ Créer la couverture », pastille
   d'IA (le seul bouton plein reste celui du PDF) ; au pied, le texte du dos à
   préparer chez l'imprimeur.
@@ -3315,8 +3318,8 @@ Construit sans maquette, sur les règles de F07.4 (« Dictée à l'adulte »).
   pour que le texte ne passe pas dessous.
 - **Dans la copie :** « Dicter », avec le micro, au bout de ce qu'on insère
   (après « Note »), comme les autres outils.
-- **Pendant l'enregistrement :** bascule choisie, en graphite plein comme toute
-  bascule, le carré d'arrêt et le temps qui défile (« 0:42 ») ; le cadre du
+- **Pendant l'enregistrement :** le bouton enfoncé, en graphite plein, le carré
+  d'arrêt et le temps qui défile (« 0:42 ») ; le cadre du
   champ fonce d'un ton. Pendant la transcription, le micro respire, inactif.
   Le nom du bouton reste « Dicter » (lecteur d'écran) ; son titre dit comment
   l'arrêter et qu'Échap annule.
@@ -3470,6 +3473,49 @@ projet personnel, 390 px). **Notes : 26/40 (informée), 26/40 (indépendante).**
 **Laissé, décidé :** « sans consigne » et « Ouvrir » sur chaque carte ; « Moi » dans « qui
 s'en occupe » ; « Supprimer » en graphite ; en 390 px, « ⋯ » avant le bouton plein et le
 bandeau encore haut (l'image y est déjà réduite à 16:6).
+
+#### Vue « Scènes » du chapitre, après « Chemins en atelier » (11 novembre 2026)
+
+Revue parce que l'atelier l'a changée après sa révision (en-tête en une bande, « + Nouvelle
+scène » en dernière carte). Captures contre le serveur local :
+`npx playwright test --config playwright.local.config.ts revision-vue-scenes` (28 vues :
+chapitres de 9, 32, 2 et 0 scènes, neuf élèves, menus, glisser, recherche, scène ajoutée,
+Suivi, 1024 px, projet personnel, 390 px). **Notes : 27/40 (informée), 27/40
+(indépendante).** Points faibles : la sobriété sur un long chapitre, la souplesse.
+
+**Corrigé :**
+
+- **« Voir dans le Suivi »** (F03.1, décidé le 6 octobre, jamais construit) : à gauche de la
+  ligne d'outils de « Scènes », en projet de classe ; il ouvre le Suivi filtré sur le chapitre,
+  sans son écran d'aide. La ligne est toujours là : sans recherche (trois scènes ou moins), les
+  cartes collaient au bandeau.
+- **Plus de cinq élèves :** les gommettes seules, à peine serrées (huit au plus, cinq au
+  téléphone), puis « 9 élèves » et le crayon ; les prénoms au survol et pour le lecteur
+  d'écran. Neuf prénoms prenaient deux lignes en 1366 px, quatre au téléphone. Vaut aussi dans
+  « Chemins », même bandeau.
+- **Scène ajoutée :** « S044 est ajoutée à la fin du chapitre. » avec « Ouvrir » dans le message.
+- **Recherche :** « Chercher un titre » ; « Aucune scène de ce chapitre n'a « dragon » dans son
+  titre. ».
+- **« Pas encore prise »** commence au bord des gommettes (menu commun avec la page de scène).
+- **Trois décisions reprises, sur avis, par le porteur le même jour :**
+  - « sans consigne » sur la carte seulement tant que le texte est vide (le récit seul compte,
+    F06-AC105) : répété 32 fois, scènes validées comprises, il ne disait plus rien
+    ([F03.1](specifications.md#f031--histoire-parties-chapitres-et-scènes)) ;
+  - la vue choisie d'une bascule devient un onglet blanc, en gras, à ombre légère, sur un rail
+    gris (`--rail`), dans toute l'application, « Dont Alice s'occupe » et la présentation de
+    l'aperçu comprises : la pilule graphite pleine était la masse la plus lourde de l'écran et
+    se lisait comme une action ;
+  - un chapitre vide prend le bandeau compact : à la première scène, rien ne se déplace ; au
+    téléphone, un « ⋯ » sans bascule va dans le coin.
+
+**Laissé, décidé :** pas de filtres dans le chapitre (le lien vers le Suivi y répond) ; « Moi »
+et « Vous vous en occupez » ; « Aucun élève » et « Pas encore prise » ; le dos de couleur ; le
+décompte limité à ce qui avance ; le « i » près de la bascule ; « + Nouvelle scène » en dernière
+carte, loin sur un long chapitre (« Chemins », ouvert en premier, a son « + »). Au téléphone,
+« Voir dans le Suivi » ajoute une ligne au-dessus de la recherche.
+
+**À voir avec leurs pages :** le filtre « Toutes » des tampons du Suivi et l'élève coché des
+fiches restent en graphite plein, plus lourds désormais que les bascules voisines.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

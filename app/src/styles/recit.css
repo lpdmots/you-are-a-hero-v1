@@ -713,7 +713,8 @@
   color: var(--graphite-3);
 }
 .qui__libre {
-  padding-left: 6px;
+  /* Sans retrait : le mot commence au bord où commence la gommette des autres cartes (révision de novembre 2026) */
+  padding-left: 0;
   color: var(--graphite-2);
   font-weight: 600;
 }
@@ -900,7 +901,8 @@
  * Un bandeau bas, le même dans « Scènes » et « Chemins » (demandé par le porteur, 10 novembre
  * 2026) : une vignette, le titre, sa ligne et les élèves à la suite, les commandes en rang. Les
  * onglets restent au même endroit d'une vue à l'autre ; le schéma se voit sans faire défiler.
- * Un chapitre sans scène garde le grand bandeau, au-dessus de son invitation.
+ * Un chapitre sans scène a le même bandeau, au-dessus de son invitation : à la première scène, rien ne
+ * se déplace (révision de novembre 2026 ; il gardait le grand bandeau).
  */
 .chap-bandeau.chap-bandeau--compact {
   grid-template-columns: 96px minmax(0, 1fr) auto;
@@ -993,6 +995,23 @@
   font-weight: 600;
   font-size: var(--t-s);
 }
+/* Au-delà de cinq élèves : les gommettes en rang serré, puis leur nombre (révision de novembre 2026) */
+.chap-eleves__gommettes {
+  display: inline-flex;
+  align-items: center;
+}
+.chap-eleves__gommettes .gommette + .gommette {
+  /* À peine serrées : les initiales restent lisibles */
+  margin-left: -2px;
+}
+.chap-eleves__gommettes .gommette {
+  box-shadow: 0 0 0 2px var(--feuille);
+}
+.chap-eleves__nombre {
+  margin-left: 8px;
+  font-weight: 600;
+  font-size: var(--t-s);
+}
 .chap-eleves--bouton > .ic {
   width: 15px;
   height: 15px;
@@ -1080,6 +1099,21 @@
   margin: 12px 0 16px;
   font-size: var(--t-s);
   color: var(--graphite-2);
+}
+/* « Voir dans le Suivi », à gauche de la ligne d'outils de « Scènes » : un lien, comme le retour du fil */
+.chap-suivi {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  text-decoration: none;
+}
+.chap-suivi:hover {
+  text-decoration: underline;
+}
+.chap-suivi .ic {
+  width: 15px;
+  height: 15px;
 }
 .vide-chap {
   display: grid;
@@ -1428,6 +1462,10 @@
   }
 }
 @media (max-width: 720px) {
+  /* Au téléphone, cinq gommettes au plus : la rangée et son nombre tiennent sur une ligne */
+  .chap-eleves__gommettes .gommette:nth-child(n + 6) {
+    display: none;
+  }
   .reste {
     padding: 12px;
   }
@@ -1497,6 +1535,15 @@
   .chap-bandeau.chap-bandeau--compact .chap-actions {
     grid-column: 1 / -1;
     flex-wrap: wrap;
+  }
+  /* Sans bascule (chapitre vide, récit classique), le « ⋯ » seul ne prend pas une ligne : il va dans le coin */
+  .chap-bandeau.chap-bandeau--compact:has(.chap-actions:not(:has(.bascule))) {
+    padding-right: 52px;
+  }
+  .chap-bandeau.chap-bandeau--compact .chap-actions:not(:has(.bascule)) {
+    position: absolute;
+    top: 8px;
+    right: 8px;
   }
   .chap-bandeau--compact .chap-bandeau__image {
     aspect-ratio: 16 / 10;

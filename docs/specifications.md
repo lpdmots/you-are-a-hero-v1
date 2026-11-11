@@ -1155,7 +1155,10 @@ le porteur décide :
   règle du Suivi s'applique, un même élément n'informe pas et ne filtre pas
   à la fois. Les scènes sans consigne n'y sont plus comptées, la consigne
   étant facultative (F07.1) : elles portent « sans consigne », comme au
-  Suivi. Les élèves sans chapitre y sont rappelés comme au Suivi, par un
+  Suivi. **Révisé par le porteur le 11 novembre 2026,** pour la carte de la
+  page du chapitre : « sans consigne » n'y paraît que tant que le texte de la
+  scène est vide (le récit seul compte, F06-AC105) ; une fois le récit écrit,
+  l'absence de consigne ne compte plus. Le Suivi n'est pas changé. Les élèves sans chapitre y sont rappelés comme au Suivi, par un
   lien. La phrase disparaît quand rien ne manque.
 - **Nom de la vue.** La vue « Graphe » s'appelle « Chemins » à l'écran, le
   mot de l'étape « Vérifier les chemins » du Livre ; les deux lectures de la

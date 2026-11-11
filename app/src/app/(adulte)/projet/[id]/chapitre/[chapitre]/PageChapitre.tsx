@@ -113,7 +113,11 @@ export function PageChapitre({
     aAmener.current = fait.id;
     // La première scène d'un chapitre à choix arrive dans « Chemins », qui s'ouvre en premier : on y clique sa carte
     if (vue === "chemins") return dire({ texte: `${referenceScene(fait.reference)} est ajoutée. Cliquez-la pour lui donner un titre.` });
-    dire({ texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.` });
+    // « Ouvrir » dans le message : la carte est en bas de la grille, la page de la scène donne son titre (révision de novembre 2026)
+    dire({
+      texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre.`,
+      autre: { libelle: "Ouvrir", faire: () => routeur.push(`/projet/${projet.id}/scene/${fait.id}`) },
+    });
   };
 
   // ——— Modifier un choix depuis « Chemins » (F03-AC70 à AC75) : le livre autour du chapitre, tel que la copie le lit ———
@@ -393,7 +397,8 @@ export function PageChapitre({
       {/* Un en-tête réduit à une seule bande (F03.1, « Chemins en atelier », 11 novembre 2026) : le chapitre, ses
           élèves, et la bascule « Scènes / Chemins » avec son « i », là où étaient « Ajouter une scène » et
           « Attribuer des élèves ». Le schéma se voit sans faire défiler, les onglets ne bougent pas d'une vue à l'autre. */}
-      <header className={`chap-bandeau${chapitre.scenes.length ? " chap-bandeau--compact" : ""}`}>
+      {/* Compact aussi pour un chapitre vide : à la première scène, rien ne se déplace (révision de novembre 2026) */}
+      <header className="chap-bandeau chap-bandeau--compact">
         <div className="chap-bandeau__image">
           <ImageRepere repere={chapitre} graine={chapitre.id} prioritaire />
         </div>
@@ -407,14 +412,36 @@ export function PageChapitre({
           </p>
           {attribues.length ? (
             // Les prénoms ouvrent « Attribuer des élèves », qui reste aussi dans le menu « … »
-            <button type="button" className="chap-eleves chap-eleves--bouton" title="Attribuer des élèves" onClick={() => setOuvert("attribuer")}>
+            // Au-delà de cinq élèves, les gommettes seules et leur nombre : les prénoms passaient sur deux à quatre lignes
+            // et repoussaient les cartes (révision de novembre 2026) ; ils restent au survol et pour le lecteur d'écran
+            <button
+              type="button"
+              className={`chap-eleves chap-eleves--bouton${attribues.length > 5 ? " chap-eleves--groupe" : ""}`}
+              title={attribues.length > 5 ? `${attribues.map(({ eleve }) => nomPourEleves(eleve, eleves)).join(", ")}. Attribuer des élèves` : "Attribuer des élèves"}
+              onClick={() => setOuvert("attribuer")}
+            >
               <span className="vh">Élèves du chapitre : </span>
-              {attribues.map(({ eleve }) => (
-                <span key={eleve.id} className="chap-eleves__un">
-                  <Gommette prenom={eleve.prenom} couleur={eleve.couleur} taille="s" />
-                  {nomPourEleves(eleve, eleves)}
-                </span>
-              ))}
+              {attribues.length > 5 ? (
+                <>
+                  <span className="chap-eleves__gommettes" aria-hidden="true">
+                    {/* Huit au plus : le nombre dit le reste, la rangée tient sur une ligne au téléphone */}
+                    {attribues.slice(0, 8).map(({ eleve }) => (
+                      <Gommette key={eleve.id} prenom={eleve.prenom} couleur={eleve.couleur} taille="s" />
+                    ))}
+                  </span>
+                  <span className="vh">{attribues.map(({ eleve }) => nomPourEleves(eleve, eleves)).join(", ")}</span>
+                  <span className="chap-eleves__nombre" aria-hidden="true">
+                    {attribues.length} élèves
+                  </span>
+                </>
+              ) : (
+                attribues.map(({ eleve }) => (
+                  <span key={eleve.id} className="chap-eleves__un">
+                    <Gommette prenom={eleve.prenom} couleur={eleve.couleur} taille="s" />
+                    {nomPourEleves(eleve, eleves)}
+                  </span>
+                ))
+              )}
               <span className="vh">. Attribuer des élèves</span>
               <Icone nom="crayon" />
             </button>
@@ -497,15 +524,22 @@ export function PageChapitre({
         </div>
       ) : (
         <>
-          {/* Sous la bande, dans « Scènes » seulement : ce que dit l'ordre en récit classique, et la recherche */}
-          {vue === "scenes" && (!projet.aChoix || chapitre.scenes.length > 3) ? (
+          {/* Sous la bande, dans « Scènes » seulement, et toujours là : le Suivi de ce chapitre en projet de classe (F03.1,
+              « le chapitre est le plan, le Suivi est le travail »), ce que dit l'ordre en récit classique, et la recherche */}
+          {vue === "scenes" ? (
             <div className="chap-outils">
+              {projet.deClasse ? (
+                <Link className="chap-suivi" href={`/projet/${projet.id}/suivi?chapitre=${chapitre.id}&direct=1`}>
+                  Voir dans le Suivi
+                  <Icone nom="fleche" />
+                </Link>
+              ) : null}
               {projet.aChoix ? null : <p>Les scènes se lisent dans cet ordre.</p>}
               {chapitre.scenes.length > 3 ? (
                 <label className="recherche" style={{ marginLeft: "auto" }}>
-                  <span className="vh">Rechercher une scène dans ce chapitre</span>
+                  <span className="vh">Chercher une scène par son titre</span>
                   <Icone nom="loupe" />
-                  <input type="search" placeholder="Rechercher dans ce chapitre" value={demande} onChange={(e) => setDemande(e.target.value)} />
+                  <input type="search" placeholder="Chercher un titre" value={demande} onChange={(e) => setDemande(e.target.value)} />
                 </label>
               ) : null}
             </div>
@@ -514,7 +548,7 @@ export function PageChapitre({
             <Chemins key={chapitre.id} {...chemins} designee={designee} construire={construire} />
           ) : montrees.length === 0 ? (
             <p className="aucun" aria-live="polite">
-              Aucun titre de scène ne contient « {demande.trim()} » dans ce chapitre.{" "}
+              Aucune scène de ce chapitre n’a « {demande.trim()} » dans son titre.{" "}
               <button type="button" className="lien" onClick={() => setDemande("")}>
                 Effacer la recherche
               </button>
@@ -667,7 +701,9 @@ export function FicheScene({
           </span>
         ) : null}
         {scene.horsLivre ? <span className="repere">hors du livre</span> : null}
-        {scene.consigne ? null : <span className="sans-consigne">sans consigne</span>}
+        {/* Seulement avant l'écriture : la consigne sert à qui commence la scène ; une fois le récit écrit,
+            son absence ne compte plus (révision de novembre 2026). Choix, actions et images ne sont pas du texte. */}
+        {scene.consigne || !scene.texteVide ? null : <span className="sans-consigne">sans consigne</span>}
       </p>
       {lien ? (
         <div className="fiche__pied">

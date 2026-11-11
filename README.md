@@ -596,7 +596,8 @@ proposés et les retours du porteur sont décrits dans le
   est réécrite plutôt que la maquette repeinte ; « remarque » désigne le
   retour de l'enseignant des deux côtés, « retour » restant le geste de
   revenir (F07.3) ; l'alignement est fait avant l'essai. Repris le même
-  jour : sélection en pilule graphite, un seul bouton plein par écran et
+  jour : sélection en pilule graphite (onglet blanc depuis le 11 novembre
+  2026), un seul bouton plein par écran et
   jamais sur ce qui supprime, retours en « Retour à… » (dont « Retour à Mon
   travail » et « Retour à la lecture d'essai »), bulles nommées par une
   question, une vingtaine de mots alignés. Le porteur confirme ensuite cinq
