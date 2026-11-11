@@ -2095,6 +2095,42 @@
   height: 15px;
   color: var(--graphite-2);
 }
+/* La ligne d'un choix l'ouvre : le libellé est le bouton, le chevron dit qu'on entre dans le choix (F03-AC70) */
+.panneau-chemin__ouvrir {
+  justify-self: start;
+  max-width: 100%;
+  margin: -2px -6px;
+  padding: 2px 6px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: none;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+.panneau-chemin__ouvrir > span {
+  min-width: 0;
+}
+.panneau-chemin__ouvrir .panneau-chemin__vers-le-choix {
+  width: 14px;
+  height: 14px;
+  color: var(--graphite-3);
+  transform: rotate(-90deg);
+  transition: transform 0.16s var(--ease);
+}
+.panneau-chemin__ouvrir:hover,
+.panneau-chemin__ouvrir:focus-visible {
+  color: var(--canard-fonce);
+}
+.panneau-chemin__ouvrir:hover .panneau-chemin__vers-le-choix,
+.panneau-chemin__ouvrir:focus-visible .panneau-chemin__vers-le-choix {
+  color: var(--canard);
+  transform: rotate(-90deg) translateY(2px);
+}
+.panneau-chemin__choix li:has(.panneau-chemin__ouvrir:hover) {
+  background: var(--feuille-2);
+}
 .panneau-chemin__vers {
   grid-column: 1;
   display: flex;
@@ -2171,10 +2207,104 @@
   background: var(--bloque-f);
   color: var(--bloque);
 }
+/*
+ * Un choix ouvert à la place de sa scène (F03-AC70 à AC74) : les réglages d'un choix de la copie, tels
+ * quels, dans le volet. Ici ce n'est plus une fiche posée sur le texte : ni cadre canard, ni ombre, ni
+ * coins ; son pied est celui du volet. « ← » ramène à la scène : la croix de la fiche n'a plus lieu d'être.
+ */
+.chemins__espace .panneau-choix > .panneau-chemin__tete {
+  min-height: 54px;
+  padding: 8px 22px 8px 12px;
+}
+.panneau-choix__retour {
+  flex: 0 1 auto;
+  gap: 8px;
+  min-width: 0;
+  min-height: 36px;
+  padding: 0.35rem 0.8rem 0.35rem 0.55rem;
+  border-radius: 99px;
+  color: var(--graphite);
+  font-weight: 700;
+}
+.panneau-choix__retour .ic {
+  flex: none;
+  width: 17px;
+  height: 17px;
+  color: var(--graphite-2);
+  transition: transform 0.16s var(--ease);
+}
+.panneau-choix__retour:hover .ic {
+  transform: translateX(-2px);
+}
+.panneau-choix__retour > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.panneau-choix__corps {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  animation: choix-chemins-entre 0.2s var(--ease);
+}
+@keyframes choix-chemins-entre {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+}
+.panneau-choix__corps > .cx {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+.panneau-choix .cx__tete {
+  padding: 18px 22px 0;
+  border-bottom: 0;
+}
+.panneau-choix .cx__tete h3 {
+  font-size: 1.2rem;
+}
+.panneau-choix .cx__fermer {
+  display: none;
+}
+.panneau-choix .cx__corps {
+  flex: 1;
+  align-content: start;
+  gap: 20px;
+  min-height: 0;
+  padding: 14px 22px 22px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+.panneau-choix .cx__pied {
+  padding: 10px 16px 12px 22px;
+  border-top: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: inset 0 1px 0 var(--trait);
+}
+.panneau-choix__corps > .erreur,
+.panneau-choix__corps > .panneau-chemin__aucun {
+  margin: 18px 22px 0;
+}
+.panneau-choix__corps > .cx + .erreur {
+  margin: 0 22px 12px;
+}
 @media (prefers-reduced-motion: reduce) {
   .geste-chemin,
-  .chemins__espace {
+  .chemins__espace,
+  .panneau-choix__corps {
     animation: none;
+  }
+  .panneau-choix__retour .ic,
+  .panneau-chemin__ouvrir .panneau-chemin__vers-le-choix {
+    transition: none;
   }
   .plus-chemin {
     transition: none;
@@ -2448,6 +2578,15 @@ a.onglet-chemin__note:hover {
 }
 .onglet-chemin.se-choisit {
   cursor: pointer;
+}
+/* Le choix ouvert dans l'espace de travail : son onglet reste cerné, dans la couleur de ce qui est choisi (F03-AC70) */
+.onglet-chemin.est-ouvert,
+.onglet-chemin.est-ouvert.se-tire:hover {
+  background: var(--canard-pale);
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.onglet-chemin.est-ouvert .onglet-chemin__note {
+  color: var(--canard-fonce);
 }
 /* L'onglet d'un choix sans destination se tire jusqu'à une scène, qu'il relie (F03-AC67) */
 .onglet-chemin.se-tire {

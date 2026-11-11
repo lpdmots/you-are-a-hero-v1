@@ -11,7 +11,7 @@ import {
   type CSSProperties, type PointerEvent, type ReactNode, type RefObject,
 } from "react";
 import { cheminsAvecLeBloc, idPropose, resteAReprendre } from "@/domaine/bloc-de-scenes";
-import { MOT_DE_MARQUE, type ARegarder, type Chemins, type Marque, type NoeudDeChemin } from "@/domaine/chemins";
+import { MOT_DE_MARQUE, peutOuvrirUnChoix, type ARegarder, type Chemins, type Marque, type NoeudDeChemin } from "@/domaine/chemins";
 import { useAidesIa } from "../AidesIa";
 import { replierLaColonnePourUnTemps } from "../EspaceAdulte";
 import { Icone } from "../Icone";
@@ -21,6 +21,7 @@ import {
   type Boite, type Cadre, type Vue as VueDuSchema,
 } from "./ancrage";
 import { PanneauDuBloc, useEtatDuBloc } from "./Bloc";
+import { PanneauDeChoix } from "./Choix";
 import { BulleDuGeste, PanneauDeScene, type Construire, type Geste } from "./Construire";
 import { disposer, noteDeLOnglet, texteDeLEtiquette, texteDuLibelle, type Disposition, type Element, type Mesure, type SorteDOnglet } from "./disposer";
 
@@ -94,8 +95,10 @@ const Vue = createContext<{
   commencerLien: (id: string, e: PointerEvent<HTMLElement>, onglet?: string) => void;
   /** L'onglet d'un choix sans destination se tire jusqu'à une scène (F03-AC67) ; `tire` : celui qu'on tire en ce moment */
   relie: boolean; tire: string | null;
-  /** L'onglet d'un choix, cliqué : sa scène est choisie, et sa ligne désignée dans le panneau */
+  /** L'onglet d'un choix, cliqué : sa scène est choisie, et ce choix s'ouvre dans l'espace de travail (F03-AC70) */
   choisirChoix: (lienId: string, de: string) => void;
+  /** Les onglets du choix ouvert : eux et leurs traits restent désignés tant qu'il l'est */
+  ouverts: Set<string>;
   /** L'onglet survolé : son trait seul ressort, pour suivre un chemin sans lire toute la carte */
   onglet: string | null; survolerOnglet: (lienId: string | null) => void;
   /** La scène proposée par le bloc dont la ligne est ouverte dans le panneau, et le geste qui l'ouvre (F13.7) */
@@ -105,11 +108,12 @@ const Vue = createContext<{
   candidates: Set<string>;
 }>({
   active: null, choisie: null, survolee: null, voisines: new Set(), loin: false, montre: null,
-  construit: false, source: null, cible: null, ouvrirAjout: () => {}, commencerLien: () => {}, relie: false, tire: null, choisirChoix: () => {}, onglet: null, survolerOnglet: () => {},
+  construit: false, source: null, cible: null, ouvrirAjout: () => {}, commencerLien: () => {}, relie: false, tire: null, choisirChoix: () => {}, ouverts: new Set(), onglet: null, survolerOnglet: () => {},
   ouverteDuBloc: null, ouvrirDuBloc: () => {}, candidates: new Set(),
 });
 
 const classes = (...noms: (string | false | null | undefined)[]): string => noms.filter(Boolean).join(" ");
+const AUCUN_ONGLET = new Set<string>();
 
 /**
  * Les onglets d'une carte, rangés comme partent leurs traits (F03-AC62) : la phrase de chaque choix dans la voix du
@@ -122,12 +126,14 @@ function Onglets({ scene, onglets, pied }: { scene: string; onglets: OngletDeCar
     <div className="onglets-chemin" style={{ height: pied }}>
       {onglets.map((o) => {
         const seTire = vue.construit && vue.relie && o.tirable;
-        const seChoisit = vue.construit && !o.cache && !o.propose;
+        // Pour l'adulte, à une taille où il se lit : le clic ouvre le choix, lien caché compris (F03-AC70, AC76)
+        const seChoisit = peutOuvrirUnChoix({ construit: vue.construit, loin: vue.loin, propose: o.propose });
         return (
           <div
             key={o.id}
             className={classes(
               "onglet-chemin", `onglet-chemin--${o.sorte}`, o.cache && "est-cache", o.propose && "est-propose", vue.montre === o.id && "est-montree", vue.tire === o.id && "est-tire",
+              vue.ouverts.has(o.id) && "est-ouvert",
               seChoisit && "se-choisit", seTire && "se-tire nodrag nopan",
             )}
             data-chemin={o.id}
@@ -327,7 +333,12 @@ function TraitDeChemin({ id, source, target, data }: EdgeProps<Trait>) {
   const vue = useContext(Vue);
   if (!data) return null;
   // Un onglet survolé n'allume que son trait ; sinon, la scène survolée ou cliquée allume tous les siens
-  const touche = vue.onglet !== null && vue.choisie === null ? id === vue.onglet : vue.active !== null && (source === vue.active || target === vue.active);
+  // Un choix ouvert garde son trait seul désigné, parmi ceux de sa scène (F03-AC70)
+  const touche = vue.ouverts.size
+    ? vue.ouverts.has(id)
+    : vue.onglet !== null && vue.choisie === null
+      ? id === vue.onglet
+      : vue.active !== null && (source === vue.active || target === vue.active);
   // Un retour en arrière s'écrit dans son onglet : sa ligne ne se montre que pour la scène survolée ou cliquée (F03-AC64)
   if (data.retour && !touche) return null;
   const efface = vue.choisie !== null && !touche;
@@ -457,6 +468,8 @@ export default function Schema({
   const [geste, setGeste] = useState<(Geste & { depuis: "carte" | "panneau"; auClavier?: boolean }) | null>(null);
   const [tire, setTire] = useState<{ de: string; sur: string | null; onglet?: string } | null>(null);
   const [designe, setDesigne] = useState<string | null>(null);
+  // Le choix ouvert dans l'espace de travail (F03-AC70) : sa scène, l'onglet cliqué, et ses onglets du moment
+  const [choixOuvert, setChoixOuvert] = useState<{ scene: string; lien: string; onglets: string[] } | null>(null);
   const vientDeTirer = useRef(false);
   const fige = useRef<Fige | null>(null);
   const aGarder = useRef<string | null>(null);
@@ -934,13 +947,25 @@ export default function Schema({
       svg.style.display = "none";
     };
   }, [lienEnAttente]);
+  const ouvreDesChoix = !!construire?.choix;
   const choisirChoix = useCallback(
     (lienId: string, de: string) => {
+      // Le clic qui suit un onglet tiré puis relâché n'ouvre rien : un clic ouvre, un tirage relie
+      if (vientDeTirer.current) return;
       choisir(de);
-      setDesigne(lienId);
+      if (ouvreDesChoix) setChoixOuvert({ scene: de, lien: lienId, onglets: [lienId] });
+      else setDesigne(lienId);
     },
-    [choisir],
+    [choisir, ouvreDesChoix],
   );
+  // Une autre carte cliquée ouvre cette scène : le choix se referme (F03-AC74)
+  if (choixOuvert && choixOuvert.scene !== choisie) setChoixOuvert(null);
+  /** « ← », Échap : l'espace de travail montre de nouveau la scène, la ligne du choix désignée un instant */
+  const revenirALaScene = () => {
+    if (choixOuvert) setDesigne(choixOuvert.onglets[0] ?? choixOuvert.lien);
+    setChoixOuvert(null);
+  };
+  const ouverts = useMemo(() => new Set(choixOuvert?.onglets ?? []), [choixOuvert]);
   // La ligne du choix désigné se montre un instant dans le panneau
   useEffect(() => {
     if (!designe) return;
@@ -966,6 +991,8 @@ export default function Schema({
   };
   const revenirAuPlan = useEffectEvent(() => {
     if (blocOuvert) fermerLeBloc();
+    // Un seul niveau : d'un choix ouvert, Échap ramène à sa scène (F03-AC74)
+    else if (choixOuvert) revenirALaScene();
     else choisir(null);
   });
   const gesteOuvert = geste !== null || tire !== null;
@@ -991,10 +1018,11 @@ export default function Schema({
     () => ({
       // Pendant un bloc, la vue ne met en retrait rien de ce qu'il dessine : l'origine et ses scènes restent nettes
       active: blocOuvert ? null : (choisie ?? (enTirant ? null : survolee)), choisie: blocOuvert ? null : choisie, survolee: enTirant ? null : survolee,
-      voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, relie, tire: ongletTire, choisirChoix, onglet: enTirant || blocOuvert ? null : ongletSurvole, survolerOnglet: setOngletSurvole, ouverteDuBloc, ouvrirDuBloc: setOuverteDuBloc,
+      voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, relie, tire: ongletTire, choisirChoix, ouverts: blocOuvert ? AUCUN_ONGLET : ouverts,
+      onglet: enTirant || blocOuvert ? null : ongletSurvole, survolerOnglet: setOngletSurvole, ouverteDuBloc, ouvrirDuBloc: setOuverteDuBloc,
       candidates: blocOuvert && !bloc.origine ? candidates : new Set<string>(),
     }),
-    [choisie, survolee, enTirant, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, relie, ongletTire, choisirChoix, ongletSurvole, blocOuvert, ouverteDuBloc, candidates, bloc.origine],
+    [choisie, survolee, enTirant, voisines, loin, designee, montre, construit, source, cible, ouvrirAjout, commencerLien, relie, ongletTire, choisirChoix, ouverts, ongletSurvole, blocOuvert, ouverteDuBloc, candidates, bloc.origine],
   );
   // ——— Le bloc ajouté (F13-AC38) : la proposition reste dessinée jusqu'à ce que ses scènes soient dans le
   // chapitre, puis le pointillé laisse place aux vraies cartes, la scène d'origine à la même place ———
@@ -1214,10 +1242,25 @@ export default function Schema({
                 onFermer={fermerLeBloc}
               />
             ) : sceneChoisie ? (
+              <>
+              {construire.choix && choixOuvert?.scene === sceneChoisie.id ? (
+                <PanneauDeChoix
+                  key={`${choixOuvert.scene}:${choixOuvert.lien}`}
+                  scene={sceneChoisie}
+                  lienId={choixOuvert.lien}
+                  services={construire.choix}
+                  onRevenir={revenirALaScene}
+                  onOnglets={(onglets) => setChoixOuvert((ouvert) => ouvert && { ...ouvert, onglets })}
+                  // Le schéma se redispose après chaque retouche : la scène du choix garde sa place à l'écran
+                  avant={() => (aGarder.current = sceneChoisie.id)}
+                />
+              ) : null}
               <PanneauDeScene
                 key={sceneChoisie.id}
                 scene={sceneChoisie}
                 chemins={chemins}
+                cache={!!construire.choix && choixOuvert?.scene === sceneChoisie.id}
+                onOuvrirChoix={construire.choix ? (lienId) => setChoixOuvert({ scene: sceneChoisie.id, lien: lienId, onglets: [lienId] }) : undefined}
                 construire={{
                   ...construire,
                   // Le schéma se redispose après chaque geste : la scène du panneau garde sa place à l'écran
@@ -1232,6 +1275,7 @@ export default function Schema({
                 onFermer={() => choisir(null)}
                 onConstruireLaSuite={services ? () => ouvrirLeBloc(sceneChoisie.id) : undefined}
               />
+              </>
             ) : null}
           </div>
         ) : null}

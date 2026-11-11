@@ -174,6 +174,14 @@ export function retoursEnArriere(noeuds: NoeudDeChemin[], liens: LienDeChemin[])
  */
 export const peutConstruire = ({ adulte, aChoix, etroit }: { adulte: boolean; aChoix: boolean; etroit: boolean }): boolean => adulte && aChoix && !etroit;
 
+/**
+ * Modifier un choix depuis « Chemins » (F03-AC70, AC76) : l'onglet d'un choix s'ouvre là où l'adulte
+ * construit, à une taille où ses mots se lisent. Ni l'élève, ni le téléphone, ni la vue de loin ; ni un
+ * choix que l'IA propose, qui n'est pas encore dans le texte.
+ */
+export const peutOuvrirUnChoix = ({ construit, loin, propose = false }: { construit: boolean; loin: boolean; propose?: boolean }): boolean =>
+  construit && !loin && !propose;
+
 /** Ce que la carte d'une scène porte quand elle est « à regarder ». */
 export type Marque = "rien-n-y-mene" | "sans-suite";
 export type SorteARegarder = "sans-destination" | "supprimee" | Marque;

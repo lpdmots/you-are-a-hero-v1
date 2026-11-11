@@ -2197,6 +2197,69 @@ retard, qui envoie encore le choix sans destination, aurait été refusée pour
 « bloc préparé modifié », et son texte gardé à part. Vérifié contre la base
 locale (`tests/base/relier-depuis-le-plan.test.ts`).
 
+### Modifier un choix depuis « Chemins » (11 novembre 2026)
+
+Règles : [F03.1](specifications.md#f03-modifier-un-choix), F03-AC70 à AC76, et
+[F08.1](specifications.md#f08-ajout-du-plan). Une migration,
+`modifier_un_choix_depuis_le_plan`.
+
+**Le même panneau que la copie.** `PanneauDeChoix`
+(`composants/chemins/Choix.tsx`) remplit l'espace de travail avec
+`FicheReglagesChoix`, ou `FicheLiaison` pour un lien caché, tels que la copie
+les emploie : il leur donne le contexte de la copie (`Contexte`) — le livre
+d'après le plan que la page a déjà, la façon d'annoncer un numéro lue avec le
+choix — et des gestes qui écrivent dans le plan. Le bloc du choix n'est pas
+dans le plan : il est lu dans le texte de la scène à l'ouverture
+(`lireChoix`), puis tenu par l'écran. Chaque geste est une règle du texte
+(`domaine/modifier-choix.ts` : le bloc d'avant, le bloc d'après, la même
+identité), que la copie applique aussi pour la phrase écrite, la destination
+de plus et le retour à l'automatique ; l'écran pose la phrase d'après et
+l'enregistre aussitôt (`useEnregistrement`, 700 ms après la frappe pour la
+phrase). L'identité du bloc est stable ; celle de ses renvois, qui nomme ses
+onglets, change quand une phrase automatique devient une phrase écrite :
+l'écran dit au schéma quels onglets sont les siens (`ongletsDuChoix`).
+
+**La pose, quatrième sorte de retouche du plan.** `retouches_du_plan` reçoit
+une colonne `pose` : le bloc entier d'une phrase de choix et ses deux voisins
+dans le récit. `prive.poser_dans_le_texte` met la phrase à la place du bloc de
+même identité ; s'il n'y est plus, après le bloc qui la précédait, sinon avant
+celui qui la suivait, sinon à la fin du récit (`ouPoser`, côté copie, tient la
+même règle). C'est aussi ce qui rend un choix supprimé à sa place par
+« Annuler » : jusque-là il revenait à la fin du texte. Une liaison cachée
+s'ajoute — tout à la fin du texte, `prive.poser_a_la_fin` — et se retire comme
+un choix, pour « Cacher ce choix » et l'onglet « Lien caché ».
+`public.retoucher_depuis_le_plan` reçoit `p_pose` ; une pose marquée
+« present » est refusée si la phrase n'est plus dans la scène (on modifie),
+sans la marque elle y revient (« Annuler »).
+
+**Rejouer dans l'ordre des gestes.** `prive.plan_depuis` remplace
+`retouches_depuis` et `liaisons_depuis` : pour chaque bloc, le dernier geste
+compte — retiré, il sort du texte de la page ; posé depuis la version de la
+page, il y remplace le sien, avec son dernier contenu ; seulement ajouté, il
+se pose à la fin s'il manque. Une liaison (`relie`) n'est rejouée que si
+aucun contenu plus récent du même choix ne l'a suivie : la pose porte déjà sa
+destination, et la rejouer après la déferait. `prive.ecrire_texte` applique
+les retraits et les ajouts, puis les poses, puis les liaisons, et rend à la
+page les seules phrases qu'elle n'a pas déjà telles quelles (`duPlan.pose`) ;
+la copie les met à leur place, et tient à part les liens cachés venus du plan.
+Rejouer les retouches une à une, dans l'ordre des versions, aurait été plus
+simple à lire ; l'effet net par bloc est gardé parce que la copie ouverte en
+dépend déjà (un choix supprimé puis rendu reste à sa place dans la copie de
+celui qui n'a rien vu).
+
+**Le contrôle des droits d'un élève** met hors de la comparaison, des deux
+côtés, les phrases que le plan a posées depuis la version de sa page
+(`horsRetouches`) : la base mettra la sienne à la place, quoi qu'il en ait
+fait. Sans cela, la page d'un élève « écriture et propositions », qui envoie
+encore l'ancienne phrase, était refusée pour « bloc préparé modifié ».
+
+**Vérifié** contre la base locale (`tests/base/modifier-un-choix.test.ts`,
+neuf cas : chaque geste, l'ordre des gestes, le choix changé des deux côtés,
+le lien caché, les refus), sans base (`tests/unitaires/modifier-choix.test.ts`)
+et dans le navigateur, deux pages ouvertes : la copie de celui qui écrit
+reçoit la phrase modifiée, perd le choix supprimé et le retrouve à sa place
+après « Annuler » (`tests/captures/modifier-un-choix.spec.ts`).
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

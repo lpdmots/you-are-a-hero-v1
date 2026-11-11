@@ -329,6 +329,23 @@ export function morceauxDe(bloc: Choix, formule: FormuleRenvoi): Morceau[] {
   return [{ texte: avant }, { renvoi: bloc.id, cible: bloc.cible }, { texte: apres }];
 }
 
+/** Le renvoi d'une phrase personnalisée, avec sa destination. */
+export const nouveauRenvoi = (cible: string | null): Renvoi => ({ type: "renvoi", id: nouvelId(), cible, children: [{ text: "" }] });
+
+/** Une phrase automatique devenue personnalisée : le même texte, que l'on peut maintenant écrire (F05-AC22). */
+export function enPersonnalisee(bloc: Choix, formule: FormuleRenvoi): Choix {
+  if (!estAuto(bloc)) return bloc;
+  const MARQUE = "\u0001";
+  const [avant, apres = ""] = phraseDeChoix(bloc.libelle || "…", MARQUE, formule, bloc.construction).split(MARQUE);
+  return { type: "choix", id: bloc.id, libelle: bloc.libelle, children: [{ text: avant }, nouveauRenvoi(bloc.cible), { text: apres }] };
+}
+
+/** La seule destination d'une phrase personnalisée à un renvoi, pour revenir à l'automatique (F05-AC23). */
+export const seulRenvoi = (bloc: Choix): Renvoi | null => {
+  const renvois = (bloc.children as unknown[]).filter(estRenvoi);
+  return renvois.length === 1 ? renvois[0] : null;
+};
+
 /** La phrase en texte simple, avec les numéros affichés : ce qui sort vers un autre logiciel (F05.2). */
 export const phraseEnMots = (bloc: Choix, formule: FormuleRenvoi, numero: (cible: string | null) => string): string =>
   morceauxDe(bloc, formule).map((m) => ("texte" in m ? m.texte : "image" in m ? motsDImage(m) : numero(m.cible))).join("");
@@ -429,7 +446,45 @@ export type SceneDuPlan = { id: string; reference: number; titre: string | null;
  * Ce que le plan a fait du texte d'une scène à l'insu de la page qui l'écrit : des phrases de
  * choix posées à sa fin, d'autres retirées. La page les reprend dans sa copie, sans message.
  */
-export type DuPlan = { ajoute: Choix[]; retire: string[]; relie?: ChoixRelie[]; scenes?: SceneDuPlan[] };
+export type DuPlan = { ajoute: (Choix | Liaison)[]; retire: string[]; relie?: ChoixRelie[]; pose?: BlocPose[]; scenes?: SceneDuPlan[] };
+
+/**
+ * Une phrase de choix que le plan a posée (F03-AC72 à AC75) : le bloc entier, mis à la place de celui qui
+ * porte son identité. `apres` et `avant` : ses voisins dans le récit, pour la remettre à sa place quand
+ * elle n'est plus dans le texte — un choix supprimé puis rendu par « Annuler ».
+ */
+export type BlocPose = { bloc: Choix; apres: string | null; avant: string | null };
+
+/** Les voisins d'un bloc dans le récit, liaisons cachées à part : la place où le remettre. */
+export function voisinsDe(texte: Texte, blocId: string): { apres: string | null; avant: string | null } {
+  const recit = recitDe(texte);
+  const i = recit.findIndex((b) => b.id === blocId);
+  return i === -1 ? { apres: null, avant: null } : { apres: recit[i - 1]?.id ?? null, avant: recit[i + 1]?.id ?? null };
+}
+
+/**
+ * Où va une phrase posée par le plan, dans un récit : à la place du bloc de même identité, qu'elle
+ * remplace ; à défaut après le bloc qui la précédait, sinon avant celui qui la suivait, sinon à la fin du
+ * récit. La base tient la même règle (prive.poser_dans_le_texte).
+ */
+export function ouPoser(recit: readonly Bloc[], pose: BlocPose): { index: number; remplace: boolean } {
+  const ici = recit.findIndex((b) => b.id === pose.bloc.id);
+  if (ici !== -1) return { index: ici, remplace: true };
+  const apres = pose.apres ? recit.findIndex((b) => b.id === pose.apres) : -1;
+  if (apres !== -1) return { index: apres + 1, remplace: false };
+  const avant = pose.avant ? recit.findIndex((b) => b.id === pose.avant) : -1;
+  return { index: avant !== -1 ? avant : placeALaFin(recit), remplace: false };
+}
+
+/** Un récit où le plan a posé des phrases de choix, l'une après l'autre. */
+export function poserDansLeRecit<T extends Bloc>(recit: readonly T[], poses: readonly BlocPose[]): (T | Choix)[] {
+  const suite: (T | Choix)[] = [...recit];
+  for (const pose of poses) {
+    const { index, remplace } = ouPoser(suite, pose);
+    suite.splice(index, remplace ? 1 : 0, pose.bloc);
+  }
+  return suite;
+}
 
 /**
  * Un choix que le plan a relié (F03-AC67) : l'identité de son renvoi, et la scène où il mène désormais —
@@ -437,8 +492,8 @@ export type DuPlan = { ajoute: Choix[]; retire: string[]; relie?: ChoixRelie[]; 
  */
 export type ChoixRelie = { id: string; cible: string | null };
 
-/** Une retouche du plan, telle que la base la note : la version que la scène a prise, les blocs ajoutés, retirés, reliés. */
-export type Retouche = { version: number; ajoute: string[]; retire: string[]; relie?: ChoixRelie[] };
+/** Une retouche du plan, telle que la base la note : la version que la scène a prise, les blocs ajoutés, retirés, reliés, posés. */
+export type Retouche = { version: number; ajoute: string[]; retire: string[]; relie?: ChoixRelie[]; pose?: string[] };
 
 /**
  * Les destinations que le plan a posées, mises dans un texte à leur place : la phrase automatique, ou le
@@ -460,15 +515,21 @@ export function relierDansLeTexte(texte: Texte, relie: readonly ChoixRelie[]): T
  * Avant de contrôler ce qu'un élève a changé : les retouches du plan que sa page n'a pas vues
  * sont mises hors de la comparaison. Un choix venu du plan n'est pas un bloc préparé qu'il
  * aurait supprimé, un choix que le plan a retiré n'est pas un bloc qu'il aurait ajouté, et un
- * choix que le plan a relié n'est pas un bloc qu'il aurait modifié.
+ * choix que le plan a relié n'est pas un bloc qu'il aurait modifié. Une phrase que le plan a posée sort
+ * de la comparaison des deux côtés : la base mettra la sienne à la place de celle de la page, quoi que
+ * l'élève en ait fait (F03-AC75).
  */
 export function horsRetouches(avant: Texte, apres: Texte, retouches: readonly Retouche[], version: number): { avant: Texte; apres: Texte } {
   const depuis = retouches.filter((r) => r.version > version);
   if (depuis.length === 0) return { avant, apres };
   const ajoutes = new Set(depuis.flatMap((r) => r.ajoute));
   const retires = new Set(depuis.flatMap((r) => r.retire));
+  const poses = new Set(depuis.flatMap((r) => r.pose ?? []));
   const relies = depuis.flatMap((r) => r.relie ?? []);
-  return { avant: avant.filter((b) => !ajoutes.has(b.id)), apres: relierDansLeTexte(apres.filter((b) => !retires.has(b.id)), relies) };
+  return {
+    avant: avant.filter((b) => !ajoutes.has(b.id) && !poses.has(b.id)),
+    apres: relierDansLeTexte(apres.filter((b) => !retires.has(b.id) && !poses.has(b.id)), relies),
+  };
 }
 
 /** Ce que rend un enregistrement (F08.1, F08.2). */

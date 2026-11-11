@@ -11,7 +11,7 @@ import { BoutonDictee, useDictee, useDicteeActive } from "@/composants/dictee/Di
 import { Icone } from "@/composants/Icone";
 import { MESSAGES_DICTEE, raccorder } from "@/domaine/dictee";
 import {
-  ciblesDe, estAuto, estImageLigne, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, paragrapheVide, placeALaFin, recitDe, renvoisDe, texteOuvert, tirerConstruction,
+  ciblesDe, estAuto, estChoix, estImageLigne, estLiaison, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, ouPoser, paragrapheVide, placeALaFin, recitDe, renvoisDe, texteOuvert, tirerConstruction,
   type Choix, type Droits, type DuPlan, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
 } from "@/domaine/copie";
 import { compterMots } from "@/domaine/correction";
@@ -28,7 +28,8 @@ import type { ImageAPoser } from "./contexte";
 import { FicheCreerImage } from "./FicheCreerImage";
 import { FicheImageBloc, FichePoserImage, FicheSymbole } from "./FicheImage";
 import { FicheNouvelleFormule, FicheNouvelObjet, ListeFormules, ListeObjets, ListePersonnages } from "./FicheJeu";
-import { enPersonnalisee, FicheNouveauChoix, FicheReglagesChoix, nouveauRenvoi, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
+import { FicheNouveauChoix, FicheReglagesChoix, seulRenvoi, type GestesDeChoix } from "./FicheChoix";
+import { automatisee, avecPhrase, avecUneDestinationDePlus } from "@/domaine/modifier-choix";
 import { FicheIdees, useIdeesDeChoix, type Idee } from "./FicheIdees";
 import { MenuInserer, type Commande } from "./MenuInserer";
 import { FicheLiaison, HorsRecit, type GestesDeLiaison } from "./Liaisons";
@@ -414,9 +415,15 @@ export function Copie({
               if (i !== -1) e.tf.removeNodes({ at: [i] });
             }
             const presents = blocsDe(e);
-            const neufs = duPlan.ajoute.filter((b) => !presents.some((x) => x.id === b.id));
+            const neufs = duPlan.ajoute.filter(estChoix).filter((b) => !presents.some((x) => x.id === b.id));
             const ou = placeALaFin(presents);
             neufs.forEach((b, n) => e.tf.insertNodes(b, { at: [ou + n] }));
+            // Une phrase que le plan a posée prend la place de celle de la copie ; rendue par « Annuler », elle revient à la sienne (F03-AC74, AC75)
+            for (const pose of duPlan.pose ?? []) {
+              const { index, remplace } = ouPoser(blocsDe(e), pose);
+              if (remplace) e.tf.removeNodes({ at: [index] });
+              e.tf.insertNodes(pose.bloc, { at: [index] });
+            }
             // Un choix que le plan a relié garde sa phrase et sa place : seule sa destination change (F03-AC67)
             for (const { id, cible } of duPlan.relie ?? []) {
               blocsDe(e).forEach((b, i) => {
@@ -433,6 +440,13 @@ export function Copie({
           }),
         ),
       );
+      // Un lien caché que le plan a posé ou retiré : la copie tient ses liaisons à part du récit (F05.1)
+      const tenues = liaisonsTenues.current;
+      const liaisonsDuPlan = [
+        ...tenues.filter((l) => !duPlan.retire.includes(l.id)),
+        ...duPlan.ajoute.filter(estLiaison).filter((l) => !tenues.some((x) => x.id === l.id)),
+      ];
+      if (liaisonsDuPlan.length !== tenues.length || liaisonsDuPlan.some((l, n) => l !== tenues[n])) changerLiaisons(liaisonsDuPlan);
       if (editor.history) {
         editor.history.undos = [];
         editor.history.redos = [];
@@ -561,12 +575,7 @@ export function Copie({
         if (k !== -1) e.tf.setNodes(valeurs, { at: [i, k], voids: true });
       },
       // La phrase s'écrit dans le panneau : le texte autour de ses numéros, qui restent à leur place
-      ecrire: (textes) => {
-        const perso = enPersonnalisee(bloc, livre.formule);
-        const puces = (perso.children as Choix["children"]).filter((x) => !("text" in x));
-        const children = [...puces.flatMap((puce, k) => [{ text: textes[k] ?? "" }, puce]), { text: textes[puces.length] ?? "" }];
-        remplacer({ ...perso, children } as Choix);
-      },
+      ecrire: (textes) => remplacer(avecPhrase(bloc, textes, livre.formule)),
       // La flèche ronde : une autre tournure pour la phrase automatique ; sinon, le retour à l'automatique
       automatiser: () => {
         const utiles = constructionsUtiles(livre.formule, livre.constructions);
@@ -575,18 +584,11 @@ export function Copie({
           if (autres.length) e.tf.setNodes({ construction: tirerConstruction(autres) }, { at: [i] });
           return;
         }
-        const renvoi = seulRenvoi(bloc);
-        if (!renvoi) return;
-        remplacer({ type: "choix", id: bloc.id, auto: true, libelle: bloc.libelle, construction: tirerConstruction(utiles), cible: renvoi.cible, children: [{ text: "" }] });
+        if (seulRenvoi(bloc)) remplacer(automatisee(bloc, utiles));
       },
       // Une destination de plus : son numéro s'ajoute à la fin de la phrase, qui s'écrit dès lors à la main
       ajouterDestination: ({ cible, creee }) => {
-        const perso = enPersonnalisee(bloc, livre.formule);
-        const enfants = perso.children as Choix["children"];
-        const dernier = enfants[enfants.length - 1];
-        const fin = "text" in dernier ? dernier.text : "";
-        const children = [...enfants.slice(0, "text" in dernier ? -1 : undefined), { text: fin && !/\s$/.test(fin) ? `${fin} ` : fin }, nouveauRenvoi(cible), { text: "" }];
-        remplacer({ ...perso, children } as Choix);
+        remplacer(avecUneDestinationDePlus(bloc, cible, livre.formule));
         if (creee) connaitre(creee);
       },
       retirerRenvoi: (renvoi) => {

@@ -4950,10 +4950,115 @@ reposer : le tirage d'un onglet qui a déjà une destination, écarté.
   autres sur le texte d'une page en retard : **une migration**, à dire au
   porteur avant de l'écrire, en base locale seulement.
 
-**Construction :** non commencée ; lancée à sa demande dans une conversation
-à part (Fable 5.2). Un lot, un commit local, rien poussé sur `main` ni
-appliqué à la vraie base sans sa demande ; écran sans maquette : impeccable,
-critique en deux lectures seulement s'il la demande.
+**Construit en local le 11 novembre 2026** (Fable 5.2), dans une
+conversation à part : un lot, un commit local, rien poussé sur `main` ni
+appliqué à la vraie base. Sans maquette : conçu avec impeccable, regardé sur
+des captures, sans critique en deux lectures (elle se fait à sa demande).
+
+**La migration, `modifier_un_choix_depuis_le_plan`,** en base locale
+seulement ([architecture](architecture.md#modifier-un-choix-depuis--chemins--11-novembre-2026)) :
+
+- une colonne `pose` sur `retouches_du_plan` — la quatrième sorte de
+  retouche : le bloc entier d'une phrase de choix et ses deux voisins ;
+- `prive.poser_dans_le_texte` : la phrase prend la place du bloc de même
+  identité ; s'il n'y est plus, elle se pose après son voisin d'avant, sinon
+  avant son voisin d'après, sinon à la fin du récit ;
+- une liaison cachée s'ajoute, tout à la fin du texte, et se retire comme un
+  choix (`prive.poser_a_la_fin`, `prive.retoucher_texte`) ;
+- `public.retoucher_depuis_le_plan` reçoit `p_pose` (la fonction à trois
+  paramètres est remplacée ; les appels qui ne posent rien restent valables) ;
+- `prive.plan_depuis` remplace `retouches_depuis` et `liaisons_depuis` : pour
+  chaque bloc le dernier geste compte, et une liaison plus ancienne qu'une
+  pose du même choix n'est pas rejouée ;
+- `prive.ecrire_texte` rejoue aussi les poses ; `ecriture_lire` les donne au
+  contrôle des droits de l'élève.
+
+**Ce qui est construit.**
+
+- *Ouvrir (F03-AC70, AC76) :* l'onglet d'un choix, ou sa ligne dans « Ses
+  choix », ouvre le choix à la place de la scène ; l'onglet et son trait
+  restent désignés ; ni l'élève, ni le téléphone, ni la vue de loin.
+- *Les réglages de la copie, en entier (F03-AC71 à AC73) :*
+  `FicheReglagesChoix` tel quel — libellé, destinations (« + », « Changer… »,
+  « Retirer », ordre), nouvelle scène, phrase et flèche ronde, « Cacher ce
+  choix (énigme) », « Supprimer ce choix » ; enregistrement sans bouton. Les
+  gestes sont des règles du texte (`domaine/modifier-choix.ts`), que la copie
+  emploie aussi.
+- *Revenir (F03-AC74) :* « ← » et le titre de la scène, Échap, une autre
+  carte ; la suppression dit son résultat avec « Annuler », qui rend le choix
+  à sa place.
+- *Pendant qu'on écrit la scène (F03-AC75) :* la copie ouverte reçoit la
+  phrase modifiée à son enregistrement suivant, sans texte gardé à part.
+- *Le lien caché :* ouvert par son onglet ou sa ligne, avec la fiche de la
+  copie.
+
+**Vérifié.** `npm run types`, `npm run lint` ; `npm test` (483 essais, dont
+`modifier-choix` : F03-AC70 à AC76, et `chemins`, `copie`) ;
+`npm run test:base` (468 essais, dont `modifier-un-choix` : neuf cas contre
+la base locale, F03-AC75 compris, et les suites `ajout-du-plan`,
+`relier-depuis-le-plan`, `construire-chemins`, `bloc-de-scenes`, inchangées
+sauf un message) ; l'écran dans le navigateur, sur le marais, par
+`npx playwright test --config playwright.local.config.ts modifier-un-choix`
+(seize captures, puis deux pages ouvertes ensemble : la copie de celui qui
+écrit reçoit la phrase modifiée, perd le choix supprimé et le retrouve à sa
+place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
+rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
+
+**Précisions prises en construisant, à lui faire confirmer** (trois au plus
+par échange) :
+
+1. *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins » :
+   changer « Ce que fait le lecteur » change l'onglet ; réécrire « La
+   phrase » à la main la note « modifiée » et laisse l'onglet tel quel.
+   F03-AC72, qui dit « l'onglet porte la nouvelle phrase », se lit ainsi ;
+   afficher la phrase écrite dans l'onglet changerait la règle des onglets.
+2. *« Annuler » rend un choix supprimé à sa place,* entre ses voisins — aussi
+   pour la corbeille de « Ses choix », qui le remettait à la fin du texte
+   depuis le lot 2.
+3. *Le lien caché entre dans ce lot :* la règle dit qu'il « s'ouvre de même ».
+   Son numéro, « Proposer comme choix » et « Retirer ce lien caché » se font
+   donc depuis « Chemins », avec « Annuler », et « Cacher ce choix (énigme) »
+   aussi ; cela a demandé que les liens cachés passent par les retouches du
+   plan. « Libérer le numéro », que la copie propose après un retrait, n'est
+   pas repris ici : il reste dans le menu de la scène.
+4. *« Annuler » après « Cacher ce choix »* rend la phrase à sa place ; le
+   numéro de la destination reste fixé, comme dans la copie.
+5. *Un choix supprimé dans la copie, pendant qu'on le modifie depuis
+   « Chemins »,* y revient à sa place au prochain enregistrement : la version
+   de « Chemins » l'emporte, comme pour une phrase changée des deux côtés.
+   À l'inverse, modifier un choix qui n'est plus dans le texte enregistré est
+   refusé (« Ce choix n'est plus dans la scène. »).
+6. *« Supprimer ce choix », depuis l'écran du choix, emporte la phrase
+   entière,* avec toutes ses destinations ; la corbeille de « Ses choix »
+   refuse toujours une phrase à plusieurs destinations, et dit désormais
+   « ouvrez ce choix pour la modifier ».
+7. *Un seul niveau :* pas de croix sur l'écran du choix ; « ← », Échap ou
+   une autre carte ramènent à la scène, un second Échap au plan. Cliquer la
+   carte déjà choisie ne referme pas le choix ; cliquer le fond du schéma
+   revient au plan.
+8. *La scène attend sous le choix :* son panneau garde ce qu'on y tapait, et
+   au retour la ligne du choix est désignée un instant.
+9. *Une phrase à deux destinations* a ses deux onglets désignés ; chacun de
+   ses onglets, ou chacune de ses deux lignes, ouvre la même phrase.
+10. *L'enregistrement :* aussitôt pour une destination, l'ordre, la flèche
+    ronde ; à la sortie du champ ou à Entrée pour « Ce que fait le lecteur »,
+    comme dans la copie ; 0,7 s après la frappe pour « La phrase ». Chaque
+    enregistrement est une version de la scène, comme tout geste du plan.
+11. *Une nouvelle scène créée depuis « Changer… »* peut l'être dans un autre
+    chapitre, comme dans la copie ; elle se crée à la fin du chapitre choisi.
+12. *Les mots :* « Modifier ce choix » et « Régler ce lien caché » en bulle
+    sur les lignes de « Ses choix » ; « Revenir à la scène (Échap) » sur la
+    flèche ; « Ouverture du choix… » si la lecture tarde.
+
+**À lui dire, sans décision de ma part**
+([design](design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) :
+une phrase à deux destinations se lit comme deux choix de même libellé tant
+qu'on ne l'a pas ouverte ; « Supprimer ce choix » (cerné de brique, venu de
+la copie) et « Supprimer la scène » (gris, de « Chemins ») n'ont pas la même
+forme au même pied de volet.
+
+**Essai :** `app/README.md`, « Essayer « Modifier un choix depuis
+Chemins » ».
 
 ## Hors de la première livraison
 

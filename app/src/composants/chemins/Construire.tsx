@@ -16,6 +16,7 @@ import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
 import { useAidesIa } from "../AidesIa";
 import type { ServicesDuBloc } from "./Bloc";
+import type { ServicesDuChoix } from "./Choix";
 
 /**
  * Construire dans « Chemins » (F03.1, F03-AC52 à AC56) : ce que l'adulte fait du plan depuis le
@@ -42,6 +43,8 @@ export type Construire = {
   supprimerScene: (sceneId: string) => void;
   /** Le bloc de scènes proposé par l'IA (F13.7) */
   bloc?: ServicesDuBloc;
+  /** Ouvrir un choix dans l'espace de travail pour le modifier (F03-AC70 à AC75) */
+  choix?: ServicesDuChoix;
 };
 
 /** Ce que demande la bulle : une suite depuis une scène, ou le libellé d'un lien qu'on vient de tirer. */
@@ -211,14 +214,18 @@ export function BulleDuGeste({
 /**
  * Le panneau de la scène cliquée, à droite du schéma : son titre, sa consigne et, en classe, sa
  * liste de vérification, qui s'enregistrent en les écrivant, avec « ✦ Formuler » comme dans la
- * page de scène (F13.2) ; ses choix, que l'on supprime ici ; « Ouvrir » mène à la scène.
+ * page de scène (F13.2) ; ses choix, que l'on ouvre ou supprime ici ; « Ouvrir » mène à la scène.
  */
 export function PanneauDeScene({
-  scene, chemins, construire, designe, onAjouter, onFermer, boutonAjouter, onConstruireLaSuite,
+  scene, chemins, construire, designe, cache, onOuvrirChoix, onAjouter, onFermer, boutonAjouter, onConstruireLaSuite,
 }: {
   scene: NoeudDeChemin; chemins: Chemins; construire: Construire;
-  /** Le choix dont on vient de cliquer l'onglet : sa ligne se montre un instant */
+  /** Le choix qu'on vient de quitter : sa ligne se montre un instant */
   designe?: string | null;
+  /** Un de ses choix est ouvert à sa place : le panneau attend, tel qu'on l'a laissé (F03-AC74) */
+  cache?: boolean;
+  /** La ligne d'un choix ouvre ce choix, comme son onglet (F03-AC70) */
+  onOuvrirChoix?: (lienId: string) => void;
   /** « Ajouter » ouvre la même bulle que le « + » de la carte */
   onAjouter: () => void; onFermer: () => void;
   boutonAjouter: RefObject<HTMLButtonElement | null>;
@@ -279,7 +286,7 @@ export function PanneauDeScene({
   };
 
   return (
-    <aside className="panneau-chemin" aria-labelledby={`${id}-nom`}>
+    <aside className="panneau-chemin" aria-labelledby={`${id}-nom`} hidden={cache}>
       <header className="panneau-chemin__tete">
         <h2 id={`${id}-nom`} className="fiche__ref">
           <span className="vh">Scène </span>
@@ -333,16 +340,30 @@ export function PanneauDeScene({
                 const cible = l.vers ? parId.get(l.vers) : undefined;
                 return (
                   <li key={l.id} data-choix={l.id} className={designe === l.id ? "est-designe" : undefined}>
-                    <span className="panneau-chemin__libelle">
-                      {l.cache ? (
-                        <>
-                          <Icone nom="cle" />
-                          Lien caché
-                        </>
-                      ) : (
-                        l.libelle || "Choix sans libellé"
-                      )}
-                    </span>
+                    {onOuvrirChoix ? (
+                      // La ligne ouvre le choix : sa phrase, ses destinations, tout ce qui le règle (F03-AC70)
+                      <button
+                        type="button"
+                        className="panneau-chemin__libelle panneau-chemin__ouvrir"
+                        title={l.cache ? "Régler ce lien caché" : "Modifier ce choix"}
+                        onClick={() => onOuvrirChoix(l.id)}
+                      >
+                        {l.cache ? <Icone nom="cle" /> : null}
+                        <span>{l.cache ? "Lien caché" : l.libelle || "Choix sans libellé"}</span>
+                        <Icone nom="chevron-bas" className="panneau-chemin__vers-le-choix" />
+                      </button>
+                    ) : (
+                      <span className="panneau-chemin__libelle">
+                        {l.cache ? (
+                          <>
+                            <Icone nom="cle" />
+                            Lien caché
+                          </>
+                        ) : (
+                          l.libelle || "Choix sans libellé"
+                        )}
+                      </span>
+                    )}
                     {l.manque ? (
                       <span className="panneau-chemin__vers panneau-chemin__vers--manque">
                         <span className="point-regarder" aria-hidden="true" />
@@ -375,7 +396,7 @@ export function PanneauDeScene({
                         {l.ailleurs ? `${l.ailleurs.chapitre}${l.ailleurs.nom ? ` · ${l.ailleurs.nom}` : ""}` : cible ? nomScene(cible) : ""}
                       </span>
                     )}
-                    {/* Un lien caché se règle dans la scène, où se lit son énigme (F03.1) */}
+                    {/* Un lien caché se retire depuis ses réglages, où se lit ce qu'il devient */}
                     {l.cache ? null : (
                       <button
                         type="button"

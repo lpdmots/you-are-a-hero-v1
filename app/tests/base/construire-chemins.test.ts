@@ -188,7 +188,7 @@ describe("Construire dans « Chemins » (F03.1)", () => {
     expect((await chemins(r)).liens.find((l) => l.de === r.clairiere.id)).toMatchObject({ vers: null, manque: "supprimee" });
   });
 
-  it("F03-AC56 — une phrase écrite à la main qui mène à deux scènes ne se supprime pas d'ici ; à une seule scène, elle part entière ; un lien caché se règle dans la scène", async () => {
+  it("F03-AC56 — une phrase écrite à la main qui mène à deux scènes ne se supprime pas d'ici ; à une seule scène, elle part entière ; un lien caché ne part pas comme un choix, il a ses propres réglages", async () => {
     const r = await recit();
     const e = enseignantDe(laurent);
     const [un, deux, seul, cache] = [randomUUID(), randomUUID(), randomUUID(), randomUUID()];
@@ -199,7 +199,7 @@ describe("Construire dans « Chemins » (F03.1)", () => {
       { type: "choix", id: randomUUID(), libelle: "Fuir", children: [{ text: "Pour fuir, cours au " }, renvoi(seul, r.pont.id), { text: "." }] },
       { type: "liaison", id: cache, cible: r.pont.id, children: [{ text: "" }] },
     ]);
-    expect(await retirerChoix(e, r.clairiere.id, un)).toMatchObject({ ok: false, dit: "Cette phrase mène à plusieurs scènes : ouvrez la scène pour la modifier." });
+    expect(await retirerChoix(e, r.clairiere.id, un)).toMatchObject({ ok: false, dit: "Cette phrase mène à plusieurs scènes : ouvrez ce choix pour la modifier." });
     expect(await retirerChoix(e, r.clairiere.id, cache)).toMatchObject({ ok: false });
     expect((await retirerChoix(e, r.clairiere.id, seul)).ok).toBe(true);
     expect((await scene(r.clairiere.id)).texte.map((b) => b.type)).toEqual(["p", "choix", "liaison"]);

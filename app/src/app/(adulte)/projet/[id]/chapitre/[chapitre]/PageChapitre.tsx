@@ -26,8 +26,13 @@ import { nomPourEleves } from "@/domaine/eleves";
 import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, nomScene, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
 import {
-  ajouterBlocDepuisLeSchema, ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, annulerBlocDuSchema, reglerLeBloc, relierChoixDuSchema, relierDepuisLeSchema, remettreChoixDuSchema, supprimerChoixDuSchema,
+  ajouterBlocDepuisLeSchema, ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, annulerBlocDuSchema, cacherChoixDuSchema, lireChoixDuSchema, modifierChoixDuSchema, proposerLiaisonDuSchema,
+  reglerLeBloc, relierChoixDuSchema, relierDepuisLeSchema, remettreChoixDuSchema, remettreLiaisonDuSchema, retirerLiaisonDuSchema, supprimerChoixDuSchema,
 } from "../../../actions-chemins";
+import { chercherDestinations, creerSceneDepuisChoix, fixerPourLiaison, libererNumero, numeroDeLaScene, relireNumeros } from "../../../actions-texte";
+import { numerosDuPlan } from "@/domaine/numeros";
+import { scenesDe } from "@/domaine/recit";
+import type { ServicesDuChoix } from "@/composants/chemins/Choix";
 import { useAidesIa } from "@/composants/AidesIa";
 import { ceQuiSAjoute, type ReglagesBloc } from "@/domaine/bloc-de-scenes";
 import { choisirRepere, creerScene, exclureDuLivre, placerScene, reglerScene, restaurer, supprimer } from "../../../actions-recit";
@@ -111,6 +116,104 @@ export function PageChapitre({
     dire({ texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.` });
   };
 
+  // ——— Modifier un choix depuis « Chemins » (F03-AC70 à AC75) : le livre autour du chapitre, tel que la copie le lit ———
+  const livre = useMemo<ServicesDuChoix["livre"] | null>(
+    () =>
+      vue === "chemins" && projet.aChoix
+        ? {
+            aChoix: true,
+            numeros: Object.fromEntries(numerosDuPlan(plan).de),
+            scenes: plan.parties.flatMap((p) =>
+              p.chapitres.flatMap((c) =>
+                c.scenes.map((s) => ({ id: s.id, reference: s.reference, titre: s.titre, chapitreId: c.id, chapitre: c.titre, partie: p.titre, vide: s.texteVide, consigne: s.consigne })),
+              ),
+            ),
+            ailleurs: {},
+            chapitres: plan.parties.flatMap((p) => p.chapitres.map((c) => ({ id: c.id, titre: c.titre, partie: p.titre }))),
+            fixes: Object.fromEntries(scenesDe(plan).flatMap((s) => (s.numeroFixe ? [[s.id, s.numeroFixe]] : []))),
+            depart: plan.departSceneId,
+          }
+        : null,
+    [vue, projet.aChoix, plan],
+  );
+  const nomDe = (sceneId: string | null): string => {
+    const s = scenesDe(plan).find((x) => x.id === sceneId);
+    return s ? nomScene(s) : "La scène";
+  };
+  const defaire = (annulation: Promise<{ ok: true } | { ok: false; erreur: string }>) => void annulation.then((defait) => defait.ok || dire({ texte: defait.erreur }));
+  const choixDuSchema: ServicesDuChoix | undefined = livre
+    ? {
+        projetId: projet.id,
+        chapitreId: chapitre.id,
+        livre,
+        // Ce que les réglages d'un choix demandent au serveur, comme dans la copie
+        services: {
+          chercher: (demande) => chercherDestinations(projet.id, demande),
+          creerScene: async (chapitreIci, titreScene, consigneScene) => {
+            const fait = await creerSceneDepuisChoix(chapitreIci, titreScene, consigneScene);
+            // La limite gratuite atteinte : la fiche dit que rien n'est créé, le dialogue dit la suite (F14-AC13)
+            if (!fait.ok && fait.limite) ouvrirOffreDuPass(projet.id, fait.limite);
+            return fait;
+          },
+          supprimerScene: async (id) => {
+            const reponse = await supprimer("scene", id);
+            return reponse.ok ? { ok: true } : { ok: false, erreur: reponse.erreur };
+          },
+          relireNumeros: async () => (await relireNumeros(projet.id)).numeros,
+          numeroDe: (id) => numeroDeLaScene(id),
+          fixerNumero: (id, n) => fixerPourLiaison(id, n),
+          libererNumero: (id) => libererNumero(id),
+        },
+        lire: (sceneId, lienId) => lireChoixDuSchema(sceneId, lienId),
+        modifier: (sceneId, bloc) => modifierChoixDuSchema(sceneId, bloc),
+        // Chaque geste qui fait partir le choix se dit en une phrase, avec « Annuler », qui le rend à sa place (F03-AC74)
+        supprimer: async (sceneId, bloc) => {
+          const fait = await supprimerChoixDuSchema(sceneId, bloc.id, true);
+          if (!fait.ok) {
+            dire({ texte: fait.erreur });
+            return fait;
+          }
+          dire({ texte: `Le choix « ${bloc.libelle || "sans libellé"} » est supprimé.`, annuler: () => defaire(remettreChoixDuSchema(sceneId, fait.bloc, fait.place)) });
+          return { ok: true };
+        },
+        cacher: async (sceneId, bloc, cible) => {
+          const fait = await cacherChoixDuSchema(sceneId, bloc.id, cible);
+          if (!fait.ok) {
+            dire({ texte: fait.erreur });
+            return fait;
+          }
+          dire({
+            texte: `Le choix est caché : c’est maintenant un lien caché, hors du récit. ${nomDe(cible)} garde le n° ${fait.numero ?? "…"}.`,
+            annuler: () => defaire(remettreChoixDuSchema(sceneId, fait.bloc, fait.place, fait.liaison)),
+          });
+          return { ok: true };
+        },
+        proposer: async (sceneId, liaison, libelle) => {
+          const fait = await proposerLiaisonDuSchema(sceneId, liaison.id, libelle);
+          if (!fait.ok) {
+            dire({ texte: fait.erreur });
+            return fait;
+          }
+          dire({ texte: "Le lien caché est devenu une phrase de choix, à la fin du texte.", annuler: () => defaire(remettreLiaisonDuSchema(sceneId, fait.liaison, fait.choix)) });
+          return { ok: true };
+        },
+        retirerLiaison: async (sceneId, liaison) => {
+          const fait = await retirerLiaisonDuSchema(sceneId, liaison.id);
+          if (!fait.ok) {
+            dire({ texte: fait.erreur });
+            return fait;
+          }
+          // La scène garde son numéro : une énigme peut rester dans un texte (F11-AC98)
+          const fixe = liaison.cible ? livre.fixes[liaison.cible] : undefined;
+          dire({
+            texte: fixe ? `Lien caché retiré. ${nomDe(liaison.cible)} garde le n° ${fixe} fixé.` : "Lien caché retiré.",
+            annuler: () => defaire(remettreLiaisonDuSchema(sceneId, fait.liaison)),
+          });
+          return { ok: true };
+        },
+      }
+    : undefined;
+
   // ——— Construire dans « Chemins » (F03.1) : chaque geste est enregistré aussitôt, et se dit en une phrase ———
   const construire: Construire | undefined = !projet.aChoix
     ? undefined
@@ -156,7 +259,8 @@ export function PageChapitre({
           }
           dire({
             texte: `Le choix « ${lien.libelle || "sans libellé"} » est supprimé.`,
-            annuler: () => void remettreChoixDuSchema(lien.de, fait.bloc).then((defait) => defait.ok || dire({ texte: defait.erreur })),
+            // « Annuler » rend le choix à sa place dans le texte, entre ses voisins (F03-AC74)
+            annuler: () => void remettreChoixDuSchema(lien.de, fait.bloc, fait.place).then((defait) => defait.ok || dire({ texte: defait.erreur })),
           });
           return { ok: true };
         },
@@ -164,6 +268,7 @@ export function PageChapitre({
           const scene = chapitre.scenes.find((s) => s.id === sceneId);
           if (scene) commandes.supprimerScene(scene, true);
         },
+        choix: choixDuSchema,
         // Le bloc de scènes (F13.7) : un seul ajout, dit en une phrase avec « Annuler »
         bloc: {
           chapitreId: chapitre.id,

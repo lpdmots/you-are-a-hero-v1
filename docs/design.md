@@ -1833,6 +1833,47 @@ dernier cas quand on clique une autre scène à la main. Pour l'élève, la lign
 « Départ du livre », une scène à quatre choix, « revient à cette scène »,
 un tirage abandonné.
 
+#### Modifier un choix depuis « Chemins » : écran construit (11 novembre 2026)
+
+Règles : [F03.1](specifications.md#f03-modifier-un-choix), F03-AC70 à AC76 ;
+précisions à confirmer : [plan](plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026).
+Cette section remplace, dans la précédente, « cliquer un onglet, c'est
+cliquer sa carte » pour l'adulte, et « un lien caché se règle dans la
+scène ».
+
+Sans maquette. Conçu avec le skill impeccable (surface de travail : précision
+et retenue), en gardant tel quel le panneau des réglages d'un choix de la
+copie ([« Panneau des réglages, à droite du texte »](#panneau-des-réglages-à-droite-du-texte-11-octobre-2026)) :
+rien n'y est redessiné, seul son habillage change pour tenir dans le volet.
+Regardé sur seize captures du marais en 1 366 × 768 et 1 024 × 768, et trois
+de la copie ouverte à côté (`app/test-results/captures/modifier-un-choix/`) ;
+**pas de critique en deux lectures,** qui se fait à la demande du porteur.
+
+| Élément | Forme retenue |
+| --- | --- |
+| Le volet | Le même espace de travail que la scène, au même endroit, à la même largeur : le choix prend la place de la scène, qui attend dessous telle qu'on l'a laissée (titre et consigne en cours de saisie compris). Le contenu entre en glissant de 14 points (0,2 s) ; au retour, la scène est là aussitôt. |
+| L'en-tête | À gauche, un bouton discret : la flèche vers la gauche et le titre de la scène, en gras, coupé par des points de suspension s'il est long (« Revenir à la scène (Échap) » en bulle) ; à droite, « Enregistrement… » puis « ✓ Enregistré », comme dans le panneau de la scène. Pas de croix : un seul niveau, la scène puis l'un de ses choix. |
+| Les réglages | Ceux de la copie, dans le même ordre : le signe du choix et « Choix » en titre (1,2 rem, comme le titre de la scène) ; « Ce que fait le lecteur » ; « Destination(s) » avec son « + », « Changer… », « Retirer » et le repère de prise ; « La phrase », son « i », « modifiée » et la flèche ronde. Dans le volet, la fiche perd son cadre canard, son ombre, ses coins et sa croix : c'est le contenu du volet, pas une fiche posée sur le texte. |
+| Le pied | Celui du volet : à gauche « Cacher ce choix (énigme) », en lien avec la clé ; à droite « Supprimer ce choix », cerné de brique, jamais plein. |
+| La liste des scènes | « Changer… » ou « + » l'ouvrent sous les destinations ; le volet défile de lui-même pour qu'elle vienne en vue. |
+| L'onglet du choix ouvert | Fond canard pâle, cerné de canard (2 points), tant que le choix est ouvert ; une phrase à deux destinations a ses deux onglets cernés. Son trait est le seul en canard foncé : les autres chemins de la scène s'effacent comme ceux du reste du schéma. Le lien caché garde son trait en points ronds, plus sombre. |
+| « Ses choix », dans le panneau de la scène | Le libellé de chaque ligne est un bouton : suivi d'un petit chevron gris, il passe en canard au survol, la ligne sur fond de feuille grise, le chevron avançant de 2 points. La corbeille reste au bout de la ligne ; le lien caché n'en a pas, il se retire depuis ses réglages. Au retour d'un choix, sa ligne est désignée un instant (canard pâle). |
+| Le lien caché ouvert | La fiche « Lien caché · [scène] » de la copie : la phrase d'aide, le numéro que doit donner l'énigme, « Proposer comme choix », et au pied « Retirer ce lien caché ». |
+| Les messages | Au-dessus du schéma, comme les autres gestes de « Chemins », avec « Annuler » : « Le choix « … » est supprimé. » ; « Le choix est caché : c'est maintenant un lien caché, hors du récit. S007 « … » garde le n° 33. » ; « Le lien caché est devenu une phrase de choix, à la fin du texte. » ; « Lien caché retiré. » |
+| L'ouverture qui tarde | L'en-tête est là aussitôt ; « Ouverture du choix… » ne s'écrit que si la lecture dépasse un tiers de seconde. Un choix qui n'est plus dans la scène : « Ce choix n'est plus dans la scène. », en brique, sous l'en-tête. |
+| De loin, l'élève, le téléphone | Rien ne change : l'onglet cliqué choisit sa carte, sans rien ouvrir ; l'élève n'a pas d'espace de travail ; le téléphone garde la liste. |
+
+**Ce qui paraît perfectible, à dire au porteur.** Une phrase à deux
+destinations fait deux onglets et deux lignes de « Ses choix » au même
+libellé : c'est la règle des onglets (un par choix qui mène quelque part),
+mais rien ne dit qu'ils sont une seule phrase avant de l'ouvrir. La liste
+des scènes de « Changer… », haute de 236 points, tient juste dans le volet
+en 768 points de haut : le pied et l'en-tête restent fixes, le milieu défile.
+« Supprimer ce choix » est cerné de brique ici, alors que « Supprimer la
+scène », au même pied du volet, est gris jusqu'au survol : l'un vient de la
+copie, l'autre de « Chemins ». Le message d'un choix caché, long, couvre le
+bas du schéma en 1 366 points.
+
 ### Étape 4 construite (13 octobre 2026)
 
 Les écrans de l'étape 4 se construisent lot par lot dans l'application, en

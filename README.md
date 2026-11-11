@@ -76,6 +76,26 @@ précisions à confirmer et parcours à accorder dans le
 [plan](docs/plan.md#choix-en-onglets-f031-11-novembre-2026) ; mode d'emploi
 dans [`app/README.md`](app/README.md), « Essayer les choix en onglets ».
 
+Modifier un choix depuis « Chemins », 11 novembre 2026 : sur l'idée du
+porteur, l'onglet d'un choix, ou sa ligne dans « Ses choix », ouvre ce choix
+dans l'espace de travail, avec les réglages de la copie en entier ; « ← » et
+le titre de la scène y ramènent ; la version de « Chemins » l'emporte sur
+celle du même choix changée entre-temps dans la copie
+([F03.1](docs/specifications.md#f03-modifier-un-choix), F03-AC70 à AC76).
+Construit en local le même jour, un commit, rien poussé ; une migration,
+`modifier_un_choix_depuis_le_plan`, en base locale seulement : une quatrième
+retouche du plan, qui met la phrase modifiée à sa place dans le texte sans
+arrêter celui qui écrit la scène, rend à sa place un choix supprimé puis
+remis par « Annuler », et fait passer les liens cachés par le plan
+([F08.1](docs/specifications.md#f08-ajout-du-plan),
+[architecture](docs/architecture.md#modifier-un-choix-depuis--chemins--11-novembre-2026)) ;
+écran sans maquette, sans critique en deux lectures
+([design](docs/design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) ;
+douze précisions à confirmer dans le
+[plan](docs/plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026) ;
+mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Modifier un
+choix depuis Chemins » ».
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur

@@ -1625,8 +1625,8 @@ le porteur décide :
     - *De loin,* un onglet à regarder garde son ambre, sans ses mots.
 - <a id="f03-modifier-un-choix"></a>**Modifier un choix depuis « Chemins »
   (idée du porteur le 11 novembre 2026, règle proposée sur sa demande et
-  validée le même jour, avec les trois recommandations ; non construit,
-  F03-AC70 à AC76).** Construire le plan dans « Chemins » laissait un
+  validée le même jour, avec les trois recommandations ; construit en local
+  le même jour, F03-AC70 à AC76).** Construire le plan dans « Chemins » laissait un
   aller-retour : pour corriger la phrase d'un choix ou changer où il mène, il
   fallait ouvrir la scène et sa copie. C'est pourtant ce qu'on retouche le
   plus en construisant.
@@ -1668,6 +1668,31 @@ le porteur décide :
     en le tirant la destination d'un onglet qui en a déjà une n'est pas
     retenu : le geste serait trop facile à faire par erreur, et rien ne le
     dirait à l'écran.
+  - *Précisions prises en construisant, à confirmer*
+    ([plan](plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026)) :
+    - *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins »
+      et comme le dit la copie (F05.2 : le libellé « sert à nommer ce choix
+      dans les chemins »). Changer « Ce que fait le lecteur » change donc
+      l'onglet ; réécrire « La phrase » à la main la note « modifiée » et
+      laisse l'onglet tel quel. F03-AC72 se lit ainsi.
+    - *« Annuler » rend un choix supprimé à sa place,* entre ses voisins, et
+      non plus à la fin du texte — aussi pour la corbeille de « Ses choix »,
+      qui le remettait à la fin.
+    - *Le lien caché* s'ouvre par son onglet ou sa ligne : son numéro,
+      « Proposer comme choix », « Retirer ce lien caché », avec « Annuler ».
+      « Cacher ce choix (énigme) » fixe le numéro de la destination, comme
+      dans la copie ; « Annuler » rend la phrase à sa place, le numéro
+      restant fixé.
+    - *Un choix supprimé dans la copie pendant qu'on le modifie depuis
+      « Chemins »* y revient, à sa place : la version de « Chemins »
+      l'emporte. Modifier un choix qui n'est plus dans le texte enregistré
+      est refusé (« Ce choix n'est plus dans la scène. »).
+    - *Depuis l'écran du choix, « Supprimer ce choix » emporte la phrase
+      entière,* avec toutes ses destinations ; la corbeille de « Ses choix »
+      refuse toujours une phrase qui mène à plusieurs scènes, et renvoie à
+      l'écran du choix.
+    - *Cliquer la carte déjà choisie* ne referme pas le choix ; « ← », Échap
+      ou une autre carte le font. Cliquer le fond du schéma revient au plan.
 - **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
   « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
   carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène
@@ -6827,14 +6852,18 @@ changement d'état de la scène.
   changé de place et le choix aurait quitté la sienne dans le texte
   ([architecture](architecture.md#choix-en-onglets-11-novembre-2026)).
 - **Un choix modifié depuis le plan (validé par le porteur le 11 novembre
-  2026, [« Modifier un choix »](#f03-modifier-un-choix), F03-AC75 ; non
-  construit) :** sa phrase, ses destinations, leur ordre ou son passage en
+  2026, [« Modifier un choix »](#f03-modifier-un-choix), F03-AC75 ; construit
+  en local le même jour,
+  [architecture](architecture.md#modifier-un-choix-depuis--chemins--11-novembre-2026)) :** sa phrase, ses destinations, leur ordre ou son passage en
   lien caché, changés depuis « Chemins », remplacent le bloc du choix à sa
   place dans le texte. C'est une quatrième sorte de retouche du plan, reprise
   comme les trois autres : celui qui écrit la scène n'est pas arrêté, et sa
   copie reçoit le choix modifié. Pour un même choix, la dernière retouche
   compte, y compris contre une modification du même bloc faite entre-temps
-  dans la copie ; tout le reste du texte de la copie est gardé.
+  dans la copie ; tout le reste du texte de la copie est gardé. La même
+  retouche rend à sa place un choix supprimé depuis « Chemins » puis remis par
+  « Annuler » (F03-AC74), et un lien caché s'ajoute et se retire depuis le
+  plan comme un choix, sans arrêter non plus celui qui écrit.
 
 - **F08-AC44 — Ajout pendant qu'un élève écrit :** étant donné Alice
   écrivant dans « L'orée de la forêt », lorsque Mme Laurent y ajoute trois

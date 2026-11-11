@@ -7,8 +7,8 @@ import { Fragment, useEffect, useId, useLayoutEffect, useMemo, useRef, useState,
 import { Bulle } from "@/composants/Bulle";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import { Prise, useCapteurs } from "@/composants/Tirer";
-import { estAuto, estRenvoi, morceauxDe, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Morceau, type Renvoi } from "@/domaine/copie";
-import { constructionsUtiles, phraseDeChoix } from "@/domaine/preparation";
+import { estAuto, morceauxDe, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Morceau } from "@/domaine/copie";
+import { constructionsUtiles } from "@/domaine/preparation";
 import { scenesProposees } from "@/domaine/proposer";
 import { referenceScene } from "@/domaine/recit";
 import { cle } from "@/domaine/texte";
@@ -897,19 +897,5 @@ export function FicheReglagesChoix({
   );
 }
 
-/** Le renvoi d'une phrase personnalisée, avec sa destination. */
-export const nouveauRenvoi = (cible: string | null): Renvoi => ({ type: "renvoi", id: nouvelId(), cible, children: [{ text: "" }] });
-
-/** Une phrase automatique devenue personnalisée : le même texte, que l'on peut maintenant écrire (F05-AC22). */
-export function enPersonnalisee(bloc: Choix, formule: Parameters<typeof phraseDeChoix>[2]): Choix {
-  if (!estAuto(bloc)) return bloc;
-  const MARQUE = "\u0001";
-  const [avant, apres = ""] = phraseDeChoix(bloc.libelle || "…", MARQUE, formule, bloc.construction).split(MARQUE);
-  return { type: "choix", id: bloc.id, libelle: bloc.libelle, children: [{ text: avant }, { ...nouveauRenvoi(bloc.cible), id: nouvelId() }, { text: apres }] };
-}
-
-/** La seule destination d'une phrase personnalisée à un renvoi, pour revenir à l'automatique (F05-AC23). */
-export const seulRenvoi = (bloc: Choix): Renvoi | null => {
-  const renvois = (bloc.children as unknown[]).filter(estRenvoi);
-  return renvois.length === 1 ? renvois[0] : null;
-};
+// Ces trois règles sont celles du texte : la copie et « Chemins » modifient un choix de la même façon
+export { enPersonnalisee, nouveauRenvoi, seulRenvoi } from "@/domaine/copie";

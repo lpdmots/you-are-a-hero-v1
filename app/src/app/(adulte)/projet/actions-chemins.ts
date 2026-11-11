@@ -4,7 +4,13 @@ import { revalidatePath } from "next/cache";
 import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { ajouterUnBloc, annulerUnBloc, enregistrerReglagesDuBloc } from "@/serveur/bloc-de-scenes";
-import { ajouterAuPlan, ajouterSceneApres, annulerAjout, relierChoix, remettreChoix, retirerChoix, type EchecDuPlan } from "@/serveur/chemins";
+import {
+  ajouterAuPlan, ajouterSceneApres, annulerAjout, cacherChoix, lireChoix, modifierChoix, proposerLiaison, relierChoix, remettreChoix, remettreLiaison, retirerChoix, retirerLiaison,
+  type EchecDuPlan, type Place,
+} from "@/serveur/chemins";
+import type { Choix, Liaison } from "@/domaine/copie";
+import type { Construction, FormuleRenvoi } from "@/domaine/preparation";
+import { fixerPourLiaison } from "./actions-texte";
 
 /**
  * Les gestes de l'adulte dans « Chemins » (F03.1, F03-AC52 à AC56). Chacun est enregistré
@@ -64,20 +70,85 @@ export async function relierChoixDuSchema(sceneId: string, renvoiId: string, ver
   return { ok: true };
 }
 
-/** « Supprimer » un choix (F03-AC56) : sa phrase quitte le texte de la scène d'où il part. */
-export async function supprimerChoixDuSchema(sceneId: string, renvoiId: string): Promise<Fait<{ bloc: unknown }>> {
+/**
+ * « Supprimer » un choix (F03-AC56) : sa phrase quitte le texte de la scène d'où il part. `entiere` : depuis
+ * l'écran du choix, la phrase part avec toutes ses destinations (F03-AC74).
+ */
+export async function supprimerChoixDuSchema(sceneId: string, renvoiId: string, entiere = false): Promise<Fait<{ bloc: unknown; place: Place }>> {
   const e = await exigerEnseignant();
-  const fait = await retirerChoix(e, sceneId, renvoiId);
+  const fait = await retirerChoix(e, sceneId, renvoiId, entiere === true);
   if (!fait.ok) return echec(fait, "Le choix n’a pas pu être supprimé. Réessayez.");
   rafraichir(fait.projetId);
-  return { ok: true, bloc: fait.bloc };
+  return { ok: true, bloc: fait.bloc, place: fait.place };
 }
 
-/** « Annuler » la suppression d'un choix : sa phrase revient à la fin du texte. */
-export async function remettreChoixDuSchema(sceneId: string, bloc: unknown): Promise<Fait> {
+/**
+ * « Annuler » la suppression d'un choix : sa phrase revient à sa place dans le texte (F03-AC74). `retire` :
+ * le lien caché qui l'avait remplacée, quand on annule « Cacher ce choix ».
+ */
+export async function remettreChoixDuSchema(sceneId: string, bloc: unknown, place?: Partial<Place>, retire?: string): Promise<Fait> {
   const e = await exigerEnseignant();
-  const fait = await remettreChoix(e, sceneId, bloc);
+  const fait = await remettreChoix(e, sceneId, bloc, place ?? {}, typeof retire === "string" ? [retire] : []);
   if (!fait.ok) return echec(fait, "Le choix n’a pas pu être remis.");
+  rafraichir(fait.projetId);
+  return { ok: true };
+}
+
+// ——— Modifier un choix depuis « Chemins » (F03-AC70 à AC75) ———
+
+/** Le choix qu'un onglet désigne, lu dans le texte de sa scène : sa phrase, ou son lien caché (F03-AC70). */
+export async function lireChoixDuSchema(sceneId: string, lienId: string): Promise<Fait<{ bloc: Choix | Liaison; formule: FormuleRenvoi; constructions: Construction[] }>> {
+  const e = await exigerEnseignant();
+  const fait = await lireChoix(e, sceneId, lienId);
+  return fait.ok ? fait : echec(fait, "Ce choix n’a pas pu être ouvert. Réessayez.");
+}
+
+/** La phrase d'un choix, ses destinations ou leur ordre, changés depuis « Chemins » : enregistrés aussitôt, à sa place dans le texte (F03-AC72, AC73). */
+export async function modifierChoixDuSchema(sceneId: string, bloc: unknown): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const fait = await modifierChoix(e, sceneId, bloc);
+  if (!fait.ok) return echec(fait, "Le choix n’a pas pu être enregistré. Réessayez.");
+  rafraichir(fait.projetId);
+  return { ok: true };
+}
+
+/**
+ * « Cacher ce choix (énigme) » : le numéro de la destination est fixé, la phrase quitte le texte et un lien
+ * caché la remplace, hors du récit (F05-AC26). Rend de quoi « Annuler ».
+ */
+export async function cacherChoixDuSchema(sceneId: string, blocId: string, cible: string): Promise<Fait<{ bloc: unknown; place: Place; liaison: string; numero: number | null }>> {
+  const e = await exigerEnseignant();
+  const fixe = await fixerPourLiaison(cible, null);
+  if (!fixe.ok) return fixe;
+  const fait = await cacherChoix(e, sceneId, blocId);
+  if (!fait.ok) return echec(fait, "Le choix n’a pas pu être caché. Réessayez.");
+  rafraichir(fait.projetId);
+  return { ok: true, bloc: fait.bloc, place: fait.place, liaison: fait.liaison.id, numero: fixe.numero };
+}
+
+/** « Proposer comme choix » : une phrase automatique reprend le lien caché, à la fin du texte (F05-AC26). */
+export async function proposerLiaisonDuSchema(sceneId: string, liaisonId: string, libelle: string): Promise<Fait<{ liaison: unknown; choix: string }>> {
+  const e = await exigerEnseignant();
+  const fait = await proposerLiaison(e, sceneId, liaisonId, libelle);
+  if (!fait.ok) return echec(fait, "Le lien caché n’a pas pu devenir un choix. Réessayez.");
+  rafraichir(fait.projetId);
+  return { ok: true, liaison: fait.liaison, choix: fait.choix.id };
+}
+
+/** « Retirer ce lien caché ». */
+export async function retirerLiaisonDuSchema(sceneId: string, liaisonId: string): Promise<Fait<{ liaison: unknown }>> {
+  const e = await exigerEnseignant();
+  const fait = await retirerLiaison(e, sceneId, liaisonId);
+  if (!fait.ok) return echec(fait, "Le lien caché n’a pas pu être retiré. Réessayez.");
+  rafraichir(fait.projetId);
+  return { ok: true, liaison: fait.liaison };
+}
+
+/** « Annuler » : le lien caché revient ; `retire` : la phrase qui l'avait remplacé. */
+export async function remettreLiaisonDuSchema(sceneId: string, liaison: unknown, retire?: string): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const fait = await remettreLiaison(e, sceneId, liaison, typeof retire === "string" ? [retire] : []);
+  if (!fait.ok) return echec(fait, "Le lien caché n’a pas pu être remis.");
   rafraichir(fait.projetId);
   return { ok: true };
 }

@@ -1195,3 +1195,40 @@ leur propre serveur compilé, IA simulée : `AVEC_IA=1 npm run captures -- choix
 `AVEC_IA`, la proposition de l'IA n'est pas demandée. Aucun parcours n'est écrit pour ce
 lot ; ceux de « Chemins » (`tests/parcours/chemins.spec.ts`) cherchent encore les libellés
 sur les flèches et demanderont une retouche quand ils seront joués.
+
+## Essayer « Modifier un choix depuis Chemins » (F03.1, 11 novembre 2026)
+
+Dans « Chemins », l'onglet d'un choix ouvre ce choix dans l'espace de travail, avec les
+réglages de la copie (`docs/plan.md`, « Modifier un choix depuis « Chemins » » ; règles en
+F03.1, ancre `f03-modifier-un-choix`, F03-AC70 à AC76). En local, sur http://localhost:4840,
+avec le compte local ; la vraie base n'est pas touchée.
+
+**1. La base locale à jour.** Une migration, `modifier_un_choix_depuis_le_plan` :
+`npx tsx scripts/supabase.ts migration up --local` l'applique sans rien effacer.
+
+**2. Ce qui doit se voir.** « Parties et chapitres », « Le marais des feux follets », sur un
+écran large.
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| Cliquer l'onglet « Longer la vieille digue » | la carte « Marais — la barque s'enlise » est choisie, l'onglet cerné de canard, son trait seul en canard foncé ; à droite, « ← Marais — la barque s'enlise », puis « Choix » et ses réglages |
+| Changer « Ce que fait le lecteur », puis Entrée | « Enregistré » ; l'onglet porte le nouveau libellé, la phrase automatique aussi |
+| « Changer… », choisir « Tourbière — le sol qui tremble » | le trait mène à cette carte ; l'onglet garde sa place |
+| Écrire dans « La phrase » | « modifiée » ; l'onglet garde le libellé |
+| « + », choisir une scène | deux destinations, deux onglets cernés, deux traits |
+| « ← », ou Échap | la scène revient, « Ses choix » dans l'ordre du texte, la ligne du choix désignée un instant |
+| Cliquer le libellé d'une ligne de « Ses choix » | ce choix s'ouvre, comme par son onglet |
+| « Supprimer ce choix » | retour à la scène, l'onglet parti ; « Annuler » le rend à sa place, entre ses voisins |
+| « Cacher ce choix (énigme) » | l'onglet devient « Lien caché », son trait en points ; « Annuler » rend la phrase à sa place |
+| Cliquer un onglet « Lien caché » | la fiche du lien caché : son numéro, « Proposer comme choix », « Retirer ce lien caché » |
+| Ouvrir la même scène dans un second onglet du navigateur, y écrire, puis modifier un de ses choix depuis « Chemins » | dans la scène, à la frappe suivante : « Enregistré », le choix modifié à sa place, aucun texte gardé à part |
+| « Tout voir », puis cliquer un onglet | la carte est choisie, aucun choix ne s'ouvre |
+| Un poste d'élève, son chapitre | cliquer un onglet choisit la carte, rien de plus |
+
+**Les essais.** `npm test -- modifier-choix chemins copie` (les gestes des réglages, la place
+d'une phrase posée, F03-AC70 à AC76) ; `npm run test:base -- modifier-un-choix ajout-du-plan
+relier-depuis-le-plan` (la phrase modifiée à sa place, l'élève qui écrit la scène n'est pas
+arrêté, le dernier geste compte). Les captures, contre le serveur local, sans aucune aide
+demandée : `npx playwright test --config playwright.local.config.ts modifier-un-choix`
+(`test-results/captures/modifier-un-choix/`, seize images du marais et trois de la copie
+ouverte à côté). Aucun parcours n'est écrit pour ce lot.

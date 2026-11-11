@@ -6,8 +6,8 @@ import { empreinteDuPoste } from "./poste";
 import { estUuid } from "./recit";
 import { clientService } from "./supabase";
 import {
-  ciblesDe, controlerTexte, enMots, estAuto, estChoix, estRenvoi, horsRetouches, nettoyerTexte, renvoisDe,
-  type Choix, type ChoixRelie, type Droits, type DuPlan, type Enregistrement, type Motif, type Retouche, type SceneDuPlan, type Texte,
+  ciblesDe, controlerTexte, enMots, estAuto, estChoix, estLiaison, estRenvoi, horsRetouches, nettoyerTexte, renvoisDe,
+  type BlocPose, type Choix, type ChoixRelie, type Droits, type DuPlan, type Enregistrement, type Liaison, type Motif, type Retouche, type SceneDuPlan, type Texte,
 } from "@/domaine/copie";
 import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
 import type { Voisines } from "@/composants/copie/contexte";
@@ -32,21 +32,31 @@ export type CopieGardee = {
 
 export type TexteDeScene = { texte: Texte; version: number; copies: CopieGardee[] };
 
-/** Ce que le plan a retouché à l'insu de la page (F08-AC44) : des phrases de choix seulement, que la page pose ou retire. */
-const duPlan = (r: { ajoute?: unknown; retire?: unknown; relie?: unknown }): DuPlan | undefined => {
-  const ajoute = (nettoyerTexte(Array.isArray(r.ajoute) ? r.ajoute : []) ?? []).filter(estChoix);
+/**
+ * Ce que le plan a retouché à l'insu de la page (F08-AC44) : des phrases de choix et des liens cachés,
+ * que la page pose, retire ou remplace.
+ */
+const duPlan = (r: { ajoute?: unknown; retire?: unknown; relie?: unknown; pose?: unknown }): DuPlan | undefined => {
+  const ajoute = (nettoyerTexte(Array.isArray(r.ajoute) ? r.ajoute : []) ?? []).filter((b): b is Choix | Liaison => estChoix(b) || estLiaison(b));
   const retire = Array.isArray(r.retire) ? r.retire.filter((id): id is string => typeof id === "string" && estUuid(id)) : [];
   // Les choix que le plan a reliés (F03-AC67) : la page pose leur destination, à leur place
   const relie = (Array.isArray(r.relie) ? r.relie : []).flatMap((x: unknown): ChoixRelie[] => {
     const { id, cible } = (x ?? {}) as { id?: unknown; cible?: unknown };
     return typeof id === "string" && estUuid(id) && (cible === null || (typeof cible === "string" && estUuid(cible))) ? [{ id, cible }] : [];
   });
-  if (!ajoute.length && !retire.length && !relie.length) return undefined;
-  return relie.length ? { ajoute, retire, relie } : { ajoute, retire };
+  // Les phrases que le plan a posées (F03-AC75) : la page met chacune à la place de la sienne
+  const pose = (Array.isArray(r.pose) ? r.pose : []).flatMap((x: unknown): BlocPose[] => {
+    const { bloc, apres, avant } = (x ?? {}) as { bloc?: unknown; apres?: unknown; avant?: unknown };
+    const [phrase] = (nettoyerTexte([bloc]) ?? []).filter(estChoix);
+    const voisin = (v: unknown): string | null => (typeof v === "string" && estUuid(v) ? v : null);
+    return phrase ? [{ bloc: phrase, apres: voisin(apres), avant: voisin(avant) }] : [];
+  });
+  if (!ajoute.length && !retire.length && !relie.length && !pose.length) return undefined;
+  return { ajoute, retire, ...(relie.length ? { relie } : {}), ...(pose.length ? { pose } : {}) };
 };
 
 const resultat = (data: unknown): Enregistrement => {
-  const r = (data ?? {}) as { etat?: string; version?: number; motif?: Motif; dernier?: boolean; ajoute?: unknown; retire?: unknown; relie?: unknown };
+  const r = (data ?? {}) as { etat?: string; version?: number; motif?: Motif; dernier?: boolean; ajoute?: unknown; retire?: unknown; relie?: unknown; pose?: unknown };
   if (r.etat === "enregistre" && typeof r.version === "number") {
     const plan = duPlan(r);
     return plan ? { etat: "enregistre", version: r.version, dernier: r.dernier, duPlan: plan } : { etat: "enregistre", version: r.version, dernier: r.dernier };
@@ -131,7 +141,9 @@ export async function enregistrerPourAdulte(e: Enseignant, sceneId: string, vers
  */
 async function nommerLesScenesDuPlan(base: SupabaseClient, fait: Enregistrement, chapitreId: string | null): Promise<Enregistrement> {
   if (fait.etat !== "enregistre" || !fait.duPlan) return fait;
-  const cibles = [...new Set([...ciblesDe(fait.duPlan.ajoute), ...(fait.duPlan.relie ?? []).flatMap((r) => (r.cible ? [r.cible] : []))])];
+  const cibles = [...new Set([
+    ...ciblesDe(fait.duPlan.ajoute), ...ciblesDe((fait.duPlan.pose ?? []).map((p) => p.bloc)), ...(fait.duPlan.relie ?? []).flatMap((r) => (r.cible ? [r.cible] : [])),
+  ])];
   if (cibles.length === 0) return fait;
   let demande = base.from("scenes").select("id, reference, titre, chapitre_id").in("id", cibles).is("supprime_le", null);
   if (chapitreId) demande = demande.eq("chapitre_id", chapitreId);
@@ -144,22 +156,33 @@ async function nommerLesScenesDuPlan(base: SupabaseClient, fait: Enregistrement,
 
 /**
  * Ajout venu du plan (F08.1, F08-AC44) : depuis « Chemins », l'adulte pose des phrases de choix
- * à la fin du texte d'une scène, ou en retire, sans l'ouvrir. La base note la retouche : celui
- * qui écrit la scène au même moment n'est pas arrêté, son enregistrement suivant la reprend.
- * Rend la version de la scène ; la base refuse en français ce qui n'est pas permis.
+ * à la fin du texte d'une scène, en retire, ou en met une à la place de celle qui porte son identité
+ * (`pose`, F03-AC72 à AC75), sans l'ouvrir ; un lien caché s'ajoute et se retire de même. La base note
+ * la retouche : celui qui écrit la scène au même moment n'est pas arrêté, son enregistrement suivant
+ * la reprend. Rend la version de la scène ; la base refuse en français ce qui n'est pas permis.
  */
 export async function retoucherDepuisLePlan(
-  e: Enseignant, sceneId: string, { ajoute = [], retire = [] }: { ajoute?: Choix[]; retire?: string[] },
+  e: Enseignant, sceneId: string,
+  { ajoute = [], retire = [], pose = [] }: {
+    ajoute?: (Choix | Liaison)[]; retire?: string[];
+    /** `present` : la phrase doit encore être dans la scène — on la modifie ; sans lui, elle y revient si elle n'y est plus */
+    pose?: (BlocPose & { present?: boolean })[];
+  },
 ): Promise<{ ok: true; version: number } | { ok: false; erreur: { code?: string; message: string } | null }> {
   if (!estUuid(sceneId) || !retire.every(estUuid)) return { ok: false, erreur: null };
   // Les blocs posés passent par le même nettoyage que ceux d'une copie : la page qui écrit la
   // scène les renverra à l'identique
-  const blocs = (nettoyerTexte(ajoute) ?? []).filter(estChoix);
-  if (blocs.length !== ajoute.length) return { ok: false, erreur: null };
-  const { data, error } = await e.supabase.rpc("retoucher_depuis_le_plan", { p_scene: sceneId, p_ajoute: blocs, p_retire: retire });
+  const blocs = (nettoyerTexte(ajoute) ?? []).filter((b) => estChoix(b) || estLiaison(b));
+  const phrases = (nettoyerTexte(pose.map((p) => p.bloc)) ?? []).filter(estChoix);
+  if (blocs.length !== ajoute.length || phrases.length !== pose.length) return { ok: false, erreur: null };
+  const voisin = (v: string | null): string | null => (v && estUuid(v) ? v : null);
+  const { data, error } = await e.supabase.rpc("retoucher_depuis_le_plan", {
+    p_scene: sceneId, p_ajoute: blocs, p_retire: retire,
+    p_pose: pose.map((p, i) => ({ bloc: phrases[i], apres: voisin(p.apres), avant: voisin(p.avant), ...(p.present ? { present: true } : {}) })),
+  });
   if (error) return { ok: false, erreur: error };
   // Un premier renvoi vient d'être posé : l'ordre du livre s'établit, comme pour un choix écrit dans la scène (F05-AC34)
-  if (ciblesDe(blocs).length) await assurerOrdreDeLaScene(e.supabase, sceneId);
+  if (ciblesDe([...blocs, ...phrases]).length) await assurerOrdreDeLaScene(e.supabase, sceneId);
   return { ok: true, version: (data as { version: number }).version };
 }
 
