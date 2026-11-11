@@ -3933,7 +3933,8 @@ textarea.bloc-ligne__titre {
 .bloc-fiches {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
-  align-items: start;
+  /* Les fiches d'une rangée ont la même hauteur, leur contenu en haut */
+  align-items: stretch;
   gap: 10px;
   margin: 0;
   padding: 0;
@@ -3941,6 +3942,7 @@ textarea.bloc-ligne__titre {
 }
 .bloc-fiche {
   display: grid;
+  align-content: start;
   gap: 4px;
   padding: 8px 8px 10px;
   border: 1.5px dashed var(--ia-trait);
