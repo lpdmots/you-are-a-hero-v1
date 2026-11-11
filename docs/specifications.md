@@ -1350,7 +1350,9 @@ le porteur décide :
   sans suite ni fin, lorsque l'enseignant ouvre « Chemins », alors une ligne
   dit « À regarder : 1 choix sans destination · 1 choix vers une scène
   supprimée · 2 scènes où rien ne mène · 2 scènes sans suite », suivie d'un
-  compteur « – / 6 » entre deux flèches ; cliquer « 2 scènes où rien ne
+  compteur entre deux flèches, vide tant qu'aucun cas n'est désigné (révisé
+  le 11 novembre 2026 : « – / 6 » ne disait rien ; il se place après les
+  flèches et s'efface au retour au plan) ; cliquer « 2 scènes où rien ne
   mène » choisit la première et l'amène à l'écran (« 3 / 6 »), puis la
   seconde (« 4 / 6 ») ; « suivant » et « précédent » passent d'un cas à
   l'autre et font le tour, sans rien masquer. Le départ du livre, une scène où mène un autre chapitre

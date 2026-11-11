@@ -456,7 +456,7 @@ function GarderEnPlace({ figeRef, cadreRef }: { figeRef: RefObject<Fige | null>;
 }
 
 export default function Schema({
-  chemins, regard, designee, montre, fois, tete, construire,
+  chemins, regard, designee, montre, fois, tete, construire, onPlan,
 }: {
   chemins: Chemins; regard: ARegarder; designee?: string;
   /** La scène ou le choix que le parcours de « À regarder » désigne, et le nombre de pas faits */
@@ -465,6 +465,8 @@ export default function Schema({
   tete: ReactNode;
   /** Les gestes de l'adulte (F03.1, « Construire dans Chemins ») ; sans eux, le schéma se lit seulement */
   construire?: Construire;
+  /** Le retour au plan : le compteur d'« À regarder » quitte le cas qu'il désignait */
+  onPlan?: () => void;
 }) {
   const cadre = useRef<HTMLDivElement>(null);
   const plan = useRef<HTMLDivElement>(null);
@@ -751,6 +753,12 @@ export default function Schema({
   // ou que le bloc est demandé. La colonne de navigation se replie pour ce temps-là, et revient comme elle était.
   const sceneChoisie = construire && choisie ? chemins.noeuds.find((n) => n.id === choisie) : undefined;
   const travail = !!sceneChoisie || blocOuvert;
+  // Revenu au plan, plus aucun cas n'est désigné (révision de novembre 2026)
+  const auTravailAvant = useRef(false);
+  useEffect(() => {
+    if (auTravailAvant.current && !travail) onPlan?.();
+    auTravailAvant.current = travail;
+  }, [travail, onPlan]);
   useEffect(() => {
     scenePourLaTaille.current = sceneChoisie && !blocOuvert ? sceneChoisie.id : null;
   });
@@ -1310,6 +1318,7 @@ export default function Schema({
           repere={repereDuGeste}
           // Au travail, à gauche de la carte : à droite, la bulle mordrait sur l'espace de travail
           cote={travail ? "left-start" : "right-start"}
+          dans={() => cadre.current}
           construire={construire}
           avant={(de) => (aGarder.current = de)}
           onFermer={fermerGeste}

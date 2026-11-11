@@ -17,13 +17,18 @@ export function poser(
   repere: Repere,
   menu: HTMLElement,
   {
-    cote = "bottom-start", ecart = 6, fixe = false, suivre = false,
+    cote = "bottom-start", ecart = 6, fixe = false, suivre = false, dans, autres,
   }: {
     cote?: Placement; ecart?: number;
     /** Hors du cadre qui le contient : pour une liste ouverte dans un cadre qui coupe ce qui dépasse */
     fixe?: boolean;
     /** Le repère se déplace sans que rien ne défile (une carte du schéma qu'on tire) : la bulle le suit à chaque image */
     suivre?: boolean;
+    /** Tenir dans ce cadre plutôt que dans la fenêtre (la bulle du « + » reste sur le schéma, sans couvrir
+        l'espace de travail ni la colonne) ; facultatif, les autres menus ne changent pas */
+    dans?: Element | null;
+    /** Les côtés à essayer, dans l'ordre, quand le côté voulu n'a pas la place */
+    autres?: Placement[];
   } = {},
 ): () => void {
   let retenu: Placement | null = null;
@@ -33,8 +38,8 @@ export function poser(
       strategy: fixe ? "fixed" : "absolute",
       middleware: [
         offset(ecart),
-        ...(retenu ? [] : [flip({ padding: MARGES })]),
-        shift({ padding: MARGES }),
+        ...(retenu ? [] : [flip({ padding: MARGES, ...(dans ? { boundary: dans } : {}), ...(autres ? { fallbackPlacements: autres } : {}) })]),
+        shift({ padding: MARGES, ...(dans ? { boundary: dans } : {}) }),
         // Ni dessus ni dessous n'ont la place : la liste défile en elle-même, pas la page
         size({
           padding: MARGES,

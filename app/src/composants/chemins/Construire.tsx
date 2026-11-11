@@ -60,13 +60,15 @@ const EXEMPLE = "Traverser le pont";
  * dont elle ne prend ni la taille ni le défilement.
  */
 export function BulleDuGeste({
-  geste, chemins, repere, cote, construire, avant, onFermer,
+  geste, chemins, repere, cote, dans, construire, avant, onFermer,
 }: {
   geste: Geste; chemins: Chemins;
   /** Ce près de quoi la bulle se pose : la carte d'où l'on part, celle où le lien arrive, ou le bouton du panneau */
   repere: () => Element | null;
   /** À côté de la carte plutôt que dessous : ses choix déjà posés restent visibles ; à gauche du panneau */
   cote: Placement;
+  /** Le cadre du schéma : la bulle s'y tient, sans mordre sur l'espace de travail ni sur la colonne */
+  dans?: () => Element | null;
   construire: Construire;
   /** Juste avant d'enregistrer : le schéma retient la carte qui ne doit pas bouger */
   avant: (de: string) => void;
@@ -91,7 +93,9 @@ export function BulleDuGeste({
   useLayoutEffect(() => {
     const r = repere();
     if (!r || !bulle.current) return;
-    return poser(r, bulle.current, { cote, ecart: 12, fixe: true, suivre: true });
+    // Au travail, à gauche de la carte, sinon dessous ; au plan, à droite, sinon à gauche, sinon dessous (révision de novembre 2026)
+    const autres: Placement[] = cote.startsWith("left") ? ["bottom-start", "top-start"] : ["left-start", "bottom-start", "top-start"];
+    return poser(r, bulle.current, { cote, ecart: 12, fixe: true, suivre: true, dans: dans?.(), autres });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {

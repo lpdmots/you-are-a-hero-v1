@@ -1593,11 +1593,13 @@
   justify-content: center;
 }
 .chemins__compte {
+  /* Après les flèches, aligné à gauche : rien ne bouge quand il paraît */
   min-width: 3.4em;
+  margin-left: 4px;
   color: var(--graphite);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  text-align: center;
+  text-align: left;
 }
 .chemins__regarder-mot {
   display: inline-flex;
@@ -1724,6 +1726,9 @@
 
 /* La carte d'une scène (F03.1, « Choix en onglets ») : son titre, son état et qui l'écrit ; en tête d'où l'on
    vient (le départ, « Rien n'y mène »), au pied où l'on va — ses choix en onglets, à défaut la fin ou « Sans suite » */
+/* Sans liseré de la couleur du chapitre (révision de novembre 2026, décidé par le porteur) : toutes les cartes du
+   schéma sont du même chapitre, il ne disait rien, et se lisait comme un état (rouge « à reprendre », ocre « attend »).
+   Le dos du bandeau garde la couleur du chapitre. Vaut aussi pour la liste du téléphone. */
 .carte-chemin {
   position: relative;
   display: flex;
@@ -1732,7 +1737,6 @@
   border-radius: var(--r-m);
   background: var(--feuille);
   box-shadow:
-    inset 5px 0 0 var(--dos),
     inset 0 0 0 1px var(--trait-fort),
     var(--ombre-cahier);
   cursor: pointer;
@@ -1742,19 +1746,16 @@
 }
 .carte-chemin:hover {
   box-shadow:
-    inset 5px 0 0 var(--dos),
     inset 0 0 0 1px var(--graphite-3),
     var(--ombre-cahier);
 }
 .carte-chemin.est-choisie {
   box-shadow:
-    inset 5px 0 0 var(--dos),
     0 0 0 2.5px var(--graphite),
     var(--ombre-panneau);
 }
 .carte-chemin.est-designee {
   box-shadow:
-    inset 5px 0 0 var(--dos),
     0 0 0 3px var(--canard),
     var(--ombre-cahier);
 }
@@ -1765,7 +1766,6 @@
 /* La carte d'où part le geste en cours, et celle où arrive le lien qu'on tire */
 .carte-chemin.est-reliee {
   box-shadow:
-    inset 5px 0 0 var(--dos),
     0 0 0 3px var(--canard),
     var(--ombre-cahier);
 }
@@ -2427,7 +2427,9 @@
   pointer-events: none;
   transition: opacity 0.14s var(--ease);
 }
-/* Le panneau de la scène porte déjà « Ouvrir » : la carte cliquée ne le répète pas, sauf sous le pointeur */
+/* Le panneau de la scène porte déjà « Ouvrir » : la carte cliquée ne le répète pas. Quand c'est un de ses choix qui
+   est ouvert (le volet n'a pas « Ouvrir »), il revient sous le pointeur (révision de novembre 2026) */
+.chemins__plan[data-travail] .carte-chemin.est-choisie:not(:has(.onglet-chemin.est-ouvert)) .carte-chemin__ouvrir,
 .chemins__plan[data-travail] .carte-chemin.est-choisie:not(:hover) .carte-chemin__ouvrir {
   opacity: 0;
   pointer-events: none;
@@ -2626,6 +2628,17 @@ a.onglet-chemin__note:hover {
 .onglet-chemin.se-choisit {
   cursor: pointer;
 }
+/* L'onglet survolé est une cible à part : le clic ouvrira ce choix, pas la scène. Il annonce, en plus pâle, l'onglet
+   ouvert ; la carte ne s'allume pas en même temps (révision de novembre 2026) */
+.onglet-chemin.se-choisit:not(.onglet-chemin--manque):hover {
+  background: color-mix(in srgb, var(--canard-pale) 55%, var(--feuille));
+  box-shadow: inset 0 0 0 1.5px color-mix(in srgb, var(--canard) 45%, var(--feuille));
+}
+.carte-chemin:hover:has(.onglet-chemin.se-choisit:hover):not(.est-choisie, .est-designee, .est-reliee, .est-candidate) {
+  box-shadow:
+    inset 0 0 0 1px var(--trait-fort),
+    var(--ombre-cahier);
+}
 /* Le choix ouvert dans l'espace de travail : son onglet reste cerné, dans la couleur de ce qui est choisi (F03-AC70) */
 .onglet-chemin.est-ouvert,
 .onglet-chemin.est-ouvert.se-tire:hover {
@@ -2789,7 +2802,6 @@ a.onglet-chemin__note:hover {
 .chemins__liste .est-montree {
   animation: none;
   box-shadow:
-    inset 5px 0 0 var(--dos),
     0 0 0 2.5px var(--graphite),
     var(--ombre-cahier);
 }
@@ -3030,13 +3042,11 @@ a.onglet-chemin__note:hover {
   border-radius: var(--r-m);
   background: var(--feuille);
   box-shadow:
-    inset 5px 0 0 var(--dos),
     inset 0 0 0 1px var(--trait),
     var(--ombre-cahier);
 }
 .noeud.est-designe .noeud__carte {
   box-shadow:
-    inset 5px 0 0 var(--dos),
     0 0 0 3px var(--canard),
     var(--ombre-cahier);
 }
@@ -4520,7 +4530,6 @@ textarea.bloc-ligne__titre {
 /* Les scènes qu'on vient d'ajouter, quand il reste à construire : on clique celle d'où continuer */
 .carte-chemin.est-candidate {
   box-shadow:
-    inset 5px 0 0 var(--dos),
     0 0 0 2px var(--feuille),
     0 0 0 3.5px var(--canard),
     var(--ombre-cahier);

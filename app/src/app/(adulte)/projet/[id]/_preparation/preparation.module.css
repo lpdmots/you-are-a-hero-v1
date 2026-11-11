@@ -1024,10 +1024,12 @@
   font-weight: 700;
   white-space: nowrap;
 }
+/* La puce choisie en canard pâle cernée de canard, comme une option cochée (révision de novembre 2026 ;
+   graphite plein avant, plus lourd que les bascules) */
 .renvoi input:checked + span {
-  background: var(--graphite);
-  color: #fff;
-  box-shadow: none;
+  background: var(--canard-pale);
+  color: var(--canard-fonce);
+  box-shadow: inset 0 0 0 1.5px var(--canard);
 }
 .renvoi input:focus-visible + span {
   outline: 3px solid var(--canard);

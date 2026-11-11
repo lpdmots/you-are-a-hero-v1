@@ -1715,7 +1715,7 @@ hauteur d'une vue à l'autre ; le bandeau qui passait sur deux lignes en
 cadre : la lecture informée la trouve « à sa place, pas perdue ».
 
 **Laissé en l'état,** et dit au porteur dans le plan : un choix sans
-destination n'offre que sa corbeille ; le compteur « – / 6 » ; le « + » qui
+destination n'offre que sa corbeille ; le compteur « – / 6 » (vide depuis la révision du 11 novembre) ; le « + » qui
 peut couvrir le début d'un libellé sous sa carte ; un chapitre sans scène
 gardait le grand bandeau (décidé le 10 novembre, compact depuis la révision du
 11 novembre) ; les commandes posées sur le
@@ -1786,7 +1786,7 @@ simulée).
 | Les traits | De simples lignes grises à angles droits arrondis, la pointe en bas ; canard foncé et plus épais pour la scène survolée ou cliquée. |
 | La mini-carte | Un onglet à regarder y est un rectangle ambre sur sa carte. |
 | L'élève | Les mêmes cartes ; « Toi » sur sa scène ; ni « + », ni onglet à tirer ; le nom d'un autre chapitre sans lien. |
-| « À regarder » | Un cas réglé quitte la liste sans que la vue parte vers le suivant ; le compteur revient à « – ». |
+| « À regarder » | Un cas réglé quitte la liste sans que la vue parte vers le suivant ; le compteur se vide (révision du 11 novembre 2026 : plus de « – »). |
 | L'ordre des onglets | Comme partent leurs traits : deux traits d'une même carte ne se croisent pas sous elle (révisé par le porteur le 11 novembre 2026, après l'essai). Un onglet sans trait garde sa place. Dans l'espace de travail, « Ses choix » restent dans l'ordre du texte. |
 | L'aide (« i ») | « Sous chaque scène, ses choix : un trait part de chacun vers la scène où il mène. […] Un choix qui ramène le lecteur en arrière, qui mène dans un autre chapitre ou qui n'a pas encore de destination le dit sous sa phrase. » ; pour l'adulte, « Un choix « Sans destination » se tire lui aussi jusqu'à une scène. » |
 
@@ -1828,7 +1828,8 @@ libellés des flèches en faisaient 8) ; relever ce plancher ferait défiler le
 marais de côté, ce que F03-AC43 a tranché — c'est une règle, pas une forme.
 Le liseré de la couleur du chapitre, ocre dans le marais, se lit comme
 l'ambre de ce qui attend, et vert chez un élève comme « fait » (les deux
-lectures) : il date de la vue reprise, et touche toutes les cartes de scène.
+lectures) : il date de la vue reprise, et touche toutes les cartes de scène
+(retiré à la révision du 11 novembre 2026, sur décision du porteur).
 Les commandes de taille et la mini-carte couvrent des cartes au bord droit
 du plan (« Chemins » en atelier). Le compteur d'« À regarder » reste sur son
 dernier cas quand on clique une autre scène à la main. Pour l'élève, la ligne
@@ -3516,6 +3517,43 @@ carte, loin sur un long chapitre (« Chemins », ouvert en premier, a son « + �
 
 **À voir avec leurs pages :** le filtre « Toutes » des tampons du Suivi et l'élève coché des
 fiches restent en graphite plein, plus lourds désormais que les bascules voisines.
+
+#### Vue « Chemins » du chapitre, l'adulte (11 novembre 2026)
+
+Captures contre le serveur local :
+`npx playwright test --config playwright.local.config.ts revision-chemins` (36 vues : un petit
+chapitre et le marais de trente-deux scènes, plan et travail, le « + », un onglet tiré, un choix
+ouvert et « Changer… », « À regarder », le fond tiré, « Tout voir », « Taille lisible », un ajout,
+un chapitre vide et le bloc ouvert d'office, 1440 et 1024 px, téléphone). Aucun bouton ✦ cliqué :
+la proposition de l'IA n'est pas couverte. **Notes : 28/40 (informée), 27/40 (indépendante).**
+Points faibles : la cohérence et la sobriété sur le grand chapitre.
+
+**Corrigé :**
+
+- **Sans liseré de la couleur du chapitre** sur les cartes du schéma et de la liste du téléphone,
+  élève compris (décidé par le porteur) : toutes du même chapitre, il ne disait rien et se lisait
+  comme un état (rouge « à reprendre », ocre « attend »). Le dos du bandeau garde la couleur.
+- **L'onglet survolé** se distingue : canard très pâle, filet canard, la carte ne s'allume pas en
+  même temps. Un clic au milieu d'une carte tombe souvent sur un onglet et ouvre le choix (règle
+  F03-AC70 gardée) : on voit maintenant avant de cliquer ce qui va s'ouvrir.
+- **La bulle du « + » et d'« Ajouter un choix »** se tient dans le cadre du schéma (option `dans` de
+  `poser`) : au travail à gauche de la carte, sinon dessous ; au plan à droite, sinon à gauche,
+  sinon dessous. Elle couvrait le titre de l'espace de travail, ou la colonne.
+- **Le compteur d'« À regarder »** est vide tant qu'aucun cas n'est désigné, placé après les
+  flèches (qui ne bougent plus), et s'efface au retour au plan.
+- **La fin de la décision des bascules :** « Scène existante / Nouvelle scène » (fiche d'un choix,
+  copie comprise) en onglet blanc sur rail gris ; les puces des scènes voisines et des renvois de
+  la Préparation, qui ne sont pas des bascules, en option cochée (canard pâle cerné de canard).
+- **Le « i » :** « Un trait en petits points est un lien caché. » (le pointillé est le trait qu'on
+  tire et la proposition de l'IA).
+- **« Ouvrir »** ne se répète plus sur la carte de la scène ouverte quand le panneau le porte ; il
+  revient au survol quand c'est un de ses choix qui est ouvert.
+
+**Laissé, décidé :** le texte petit sur un grand chapitre (F03-AC43) ; la consigne sous le pli en
+768 px (« Ses choix » sous le titre, à sa demande) ; les commandes posées sur le cadre ; l'écran
+qui ne bouge pas à l'ajout, même si la nouvelle carte naît près du panneau ; « Scène supprimée » en
+ambre, un manque comme « Sans destination » ; « Choisir… », « Changer… » et « Relier à… », chacun à
+sa place ; la croix pour la scène et « ← » pour un choix (un seul niveau).
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
