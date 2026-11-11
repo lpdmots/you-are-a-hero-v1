@@ -1183,7 +1183,7 @@ scènes, dans « Les passeurs de brume ».
 | « Écluse — la sortie du marais » | l'onglet « Passer l'écluse » nomme « Le sanctuaire », en lien vers ses chemins |
 | « À regarder », « suivant » | le premier cas choisit « Île — le cercle de pierres » et encadre l'onglet ambre « Écouter ce que disent les pierres », « Sans destination » |
 | Tirer cet onglet jusqu'à une autre scène | le choix y mène, à la même place parmi les onglets ; le message le dit, « Annuler » le rend sans destination ; la ligne « À regarder » perd ce cas sans que la vue parte ailleurs |
-| « Tout voir » | les phrases ne s'affichent plus : il reste les ronds de sortie et l'ambre de ce qui est à regarder ; « Taille lisible » rend les phrases |
+| « Tout voir » | le schéma entier, les onglets gardant leurs phrases et leurs ronds de sortie, en petit ; « Taille lisible » les rend lisibles |
 | « ✦ Construire avec l'IA », une demande | les choix proposés sont des onglets en pointillé, à la suite de ceux de la scène d'origine |
 | Un poste d'élève, son chapitre | les mêmes onglets, « Toi » sur sa scène, le prénom de ses camarades sur les leurs ; rien ne se tire |
 
@@ -1222,7 +1222,7 @@ avec le compte local ; la vraie base n'est pas touchée.
 | « Cacher ce choix (énigme) » | l'onglet devient « Lien caché », son trait en points ; « Annuler » rend la phrase à sa place |
 | Cliquer un onglet « Lien caché » | la fiche du lien caché : son numéro, « Proposer comme choix », « Retirer ce lien caché » |
 | Ouvrir la même scène dans un second onglet du navigateur, y écrire, puis modifier un de ses choix depuis « Chemins » | dans la scène, à la frappe suivante : « Enregistré », le choix modifié à sa place, aucun texte gardé à part |
-| « Tout voir », puis cliquer un onglet | la carte est choisie, aucun choix ne s'ouvre |
+| Réduire sous 62 %, puis cliquer un onglet | la carte est choisie, aucun choix ne s'ouvre ; les phrases des onglets restent en vue |
 | Un poste d'élève, son chapitre | cliquer un onglet choisit la carte, rien de plus |
 
 **Les essais.** `npm test -- modifier-choix chemins copie` (les gestes des réglages, la place

@@ -403,14 +403,14 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
     expect(cheminsDuPlan(plan, "c1", "projet").noeuds.map((n) => n.qui)).toEqual([undefined, undefined, undefined, "Vous", "Farah", undefined]);
   });
 
-  it("F03-AC68 — de loin, les phrases des onglets ne s'affichent plus : il reste les points de sortie ; à la taille lisible, elles se lisent", () => {
+  it("F03-AC68 — de loin, on regarde l'ensemble sans y construire, les onglets gardant leurs phrases et leurs points de sortie ; la taille lisible n'est jamais « de loin »", () => {
     expect(deLoin(0.3)).toBe(true);
     expect(deLoin(0.61)).toBe(true);
     expect(deLoin(0.7)).toBe(false);
     expect(deLoin(1)).toBe(false);
     // La taille lisible ne descend jamais jusque-là
     expect(deLoin(tailleLisible(d.largeur, { l: 700, h: 560 }, 28, { min: 0.7, max: 1 }))).toBe(false);
-    // Chaque suite a son point de sortie, d'où part son trait : c'est lui qui reste de loin
+    // Chaque suite a son point de sortie, d'où part son trait, à toute taille
     for (const o of [...d.onglets.values()].flat().filter((x) => x.sorte === "suite")) expect(d.traits.find((t) => t.id === o.id)!.points[0]).toEqual(o.sortie);
   });
 

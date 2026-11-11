@@ -2697,16 +2697,8 @@ a.onglet-chemin__note:hover {
 .react-flow__node.selected .sortie-chemin {
   border-color: var(--canard-fonce);
 }
-/* De loin, les phrases ne se lisent plus : il reste les points de sortie, grossis, et l'ambre d'un onglet à
-   regarder (F03-AC68) */
-.chemins__cadre[data-loin] .onglet-chemin > * {
-  visibility: hidden;
-}
-.chemins__cadre[data-loin] .sortie-chemin {
-  border-color: var(--graphite-3);
-  background: var(--graphite-3);
-  scale: calc(0.4 / var(--zoom-chemins, 1));
-}
+/* De loin, les onglets gardent leurs phrases et leurs points de sortie, à l'échelle du schéma : rien ne
+   disparaît quand on réduit (F03-AC68, révisé par le porteur le 11 novembre 2026) */
 
 /* L'étiquette : un autre chapitre d'où vient un chemin, au-dessus de la scène où il arrive */
 .etiquette-chemin {

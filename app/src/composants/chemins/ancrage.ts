@@ -5,9 +5,13 @@
  * cette vue sans la main de l'utilisateur est calculé ici, à part de l'écran, pour être vérifié.
  */
 
-/** En dessous de cette taille, on regarde l'ensemble : les phrases des onglets ne se lisent plus */
+/** En dessous de cette taille, on regarde l'ensemble : les cartes sont trop petites pour y construire */
 export const LOIN = 0.62;
-/** De loin, les onglets perdent leurs phrases : il reste leurs points de sortie, d'où partent les traits (F03-AC68). */
+/**
+ * De loin, on lit l'ensemble sans y construire : ni « + », ni choix à ouvrir (F03-AC76), et le titre d'une carte
+ * se donne dans une bulle à taille réelle. Les onglets, eux, gardent leurs phrases à toute taille (F03-AC68, révisé
+ * le 11 novembre 2026 : elles disparaissaient).
+ */
 export const deLoin = (zoom: number): boolean => zoom < LOIN;
 
 /** Le décalage du schéma dans son cadre, en points d'écran, et sa taille */

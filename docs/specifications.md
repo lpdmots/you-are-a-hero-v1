@@ -1623,7 +1623,8 @@ le porteur décide :
       l'enseignant s'est attribuée ; pour l'élève, « Toi » sur la sienne et
       le nom de l'enseignant sur celle que celui-ci écrit ; le prénom d'un
       élève retiré reste sur la scène qu'il a remise ou finie (F06.3).
-    - *De loin,* un onglet à regarder garde son ambre, sans ses mots.
+    - *De loin,* un onglet à regarder garde son ambre et ses mots (révisé
+      le 11 novembre 2026 : les mots disparaissaient, F03-AC68).
 - <a id="f03-modifier-un-choix"></a>**Modifier un choix depuis « Chemins »
   (idée du porteur le 11 novembre 2026, règle proposée sur sa demande et
   validée le même jour, avec les trois recommandations ; construit en local
@@ -1850,11 +1851,14 @@ le porteur décide :
   destination au prochain enregistrement (F08-AC44) ; l'élève, le téléphone
   et la vue de loin n'ont pas ce geste ; le « + » ajoute toujours quand on
   le clique et relie quand on le tire.
-- **F03-AC68 — De loin, les points de sortie :** étant donné le marais
-  après « Tout voir », lorsque l'adulte regarde le schéma, alors les
-  phrases des onglets ne s'affichent plus ; il reste au pied de chaque carte
-  le point de sortie de chacun de ses choix, d'où part son trait, et l'ambre
-  d'un onglet à regarder ; « Taille lisible » rend les phrases.
+- **F03-AC68 — De loin, les onglets gardent leurs phrases :** étant donné le
+  marais après « Tout voir », lorsque l'adulte regarde le schéma, alors
+  chaque onglet garde sa phrase et son point de sortie, à l'échelle du
+  schéma : rien ne disparaît quand on réduit ; « Taille lisible » les rend
+  lisibles. **Révisé par le porteur le 11 novembre 2026** (« c'est
+  bizarre ») : sous 62 %, les phrases ne s'affichaient plus et il ne restait
+  que les points de sortie, grossis. De loin, on ne construit toujours pas
+  (F03-AC76), et le titre d'une carte se lit dans une bulle.
 - **F03-AC69 — La proposition de l'IA en onglets :** étant donné un bloc
   proposé depuis « Clairière »
   ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)), alors chaque choix

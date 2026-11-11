@@ -4872,7 +4872,9 @@ le plus simple) :
 10. *« À regarder » ne part plus tout seul :* un cas réglé quitte la liste
     sans que la vue glisse vers le suivant ; le compteur revient à « – ».
 11. *De loin,* les points de sortie deviennent des points pleins, gris, et
-    un onglet à regarder garde son ambre, sans ses mots.
+    un onglet à regarder garde son ambre, sans ses mots. **Retiré par le
+    porteur le 11 novembre 2026 :** les onglets gardent leurs phrases et
+    leurs ronds à toute taille (F03-AC68 révisé).
 12. *« Fin de l'histoire » en bande sombre,* comme sur la maquette : claire,
     au pied de la carte, les deux lectures la confondaient avec « Sans
     suite ». J'avais d'abord annoncé garder la bande claire.
@@ -5086,6 +5088,12 @@ Chemins » ».
 dans « Chemins », les boutons « Tout voir », « − », « + » passent sous la
 mini-carte (« c'est mieux je trouve ») ; dans le coin du cadre, ils ne
 bougent plus quand elle paraît ou se replie. Ne pas les remettre au-dessus.
+
+**Retouche du 11 novembre 2026, à sa demande, après la mise en ligne :** les
+phrases des onglets ne disparaissent plus quand le schéma est réduit
+(« c'est bizarre ») ; onglets et ronds de sortie restent tels quels à toute
+taille (F03-AC68 révisé). Ne pas les masquer de nouveau. Commit local, pas
+encore en ligne.
 
 **En ligne le 11 novembre 2026, à sa demande** (« tu peux commit le tout et
 mettre en ligne si tout est bon ») : avec ce lot partent tous les commits
