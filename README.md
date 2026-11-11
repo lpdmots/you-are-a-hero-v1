@@ -101,6 +101,16 @@ décidé et construit dans une conversation parallèle), listées au
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Modifier un
 choix depuis Chemins » ».
 
+« Chemins », en ligne le 11 novembre 2026, à la demande du porteur : tout ce
+qui précède depuis `f4fb4c8` — le bloc de scènes, « Chemins » en atelier, les
+choix en onglets, « un choix, un onglet », « Modifier un choix » — ; vraie
+base sauvegardée, migrations `bloc_de_scenes`, `relier_depuis_le_plan` et
+`modifier_un_choix_depuis_le_plan` appliquées (ne plus les modifier), code
+jusqu'à `403eeba`, déploiement réussi
+([plan](docs/plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026)).
+Les « rien poussé » et « base locale seulement » des paragraphes ci-dessus
+datent de la construction.
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur

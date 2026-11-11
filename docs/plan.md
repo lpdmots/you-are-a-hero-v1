@@ -5087,6 +5087,23 @@ dans « Chemins », les boutons « Tout voir », « − », « + » passent sous
 mini-carte (« c'est mieux je trouve ») ; dans le coin du cadre, ils ne
 bougent plus quand elle paraît ou se replie. Ne pas les remettre au-dessus.
 
+**En ligne le 11 novembre 2026, à sa demande** (« tu peux commit le tout et
+mettre en ligne si tout est bon ») : avec ce lot partent tous les commits
+locaux de « Chemins » depuis `f4fb4c8`, qui se suivent — le bloc de scènes
+(lots 3 et 4, « Affiner »), « Chemins » en atelier, les choix en onglets et
+leurs retouches, « un choix, un onglet ». Avant de pousser : types, lint,
+484 essais unitaires, 468 essais contre la base locale et la compilation
+complète. Vraie base sauvegardée (`app/sauvegardes/2026-11-11-19-00`), trois
+migrations appliquées par Claude — `bloc_de_scenes`, `relier_depuis_le_plan`,
+`modifier_un_choix_depuis_le_plan`, **à ne plus modifier** —,
+`verifier:production` passé, code poussé jusqu'à `403eeba`, déploiement
+réussi chez Vercel, le site répond. Non vérifié en ligne : les écrans de
+« Chemins » une fois connecté, que seul son compte ouvre. Restent en local,
+non commités, seize fichiers de `app/tests/parcours/` d'une autre
+conversation ; les parcours Playwright de « Chemins » ne sont toujours pas
+accordés, et la critique en deux lectures de l'écran du choix n'est pas
+faite.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un
