@@ -850,10 +850,8 @@ export default function Schema({
   );
   // ——— Le bloc ajouté (F13-AC38) : la proposition reste dessinée jusqu'à ce que ses scènes soient dans le
   // chapitre, puis le pointillé laisse place aux vraies cartes, la scène d'origine à la même place ———
-  const attendus = useRef<string[] | null>(null);
-  const finirLeBloc = () => {
-    if (resteAReprendre(bloc.proposition?.reste)) setCandidates(new Set(attendus.current ?? []));
-    attendus.current = null;
+  const finirLeBloc = (ajoutees: string[]) => {
+    if (resteAReprendre(bloc.proposition?.reste)) setCandidates(new Set(ajoutees));
     setOuverteDuBloc(null);
     // Avec un reste à construire, on clique la scène d'où continuer : aucune n'est choisie d'avance
     if (resteAReprendre(bloc.proposition?.reste)) choisir(null);
@@ -861,23 +859,25 @@ export default function Schema({
       // Une demande trop large a laissé un reste : il revient dans le champ, on clique la scène d'où continuer (F13-AC40)
       const reste = resteAReprendre(e.proposition?.reste);
       return reste
-        ? { ...e, proposition: null, demandee: "", prendre: false, reponses: {}, origine: null, demande: reste }
-        : { ...e, proposition: null, demandee: "", prendre: false, reponses: {}, demande: "", ouvert: false };
+        ? { ...e, proposition: null, demandee: "", prendre: false, reponses: {}, origine: null, demande: reste, ajoutees: undefined }
+        : { ...e, proposition: null, demandee: "", prendre: false, reponses: {}, demande: "", ouvert: false, ajoutees: undefined };
     });
   };
   const ajouterLeBloc: NonNullable<Construire["bloc"]>["ajouter"] = async (p, prendre) => {
     if (!services) return { ok: false, erreur: "" };
     const fait = await services.ajouter(p, prendre);
     if (!fait.ok) return fait;
-    attendus.current = fait.scenes;
-    if (fait.scenes.every((id) => chemins.noeuds.some((n) => n.id === id))) finirLeBloc();
+    if (fait.scenes.every((id) => chemins.noeuds.some((n) => n.id === id))) finirLeBloc(fait.scenes);
+    else setBloc((e) => ({ ...e, ajoutees: fait.scenes }));
     return fait;
   };
   useEffect(() => {
-    const a = attendus.current;
-    if (a && a.every((id) => chemins.noeuds.some((n) => n.id === id))) finirLeBloc();
+    const a = bloc.ajoutees;
+    if (!a || !a.every((id) => chemins.noeuds.some((n) => n.id === id))) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- les scènes ajoutées n'arrivent qu'avec les chemins relus du serveur
+    finirLeBloc(a);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chemins]);
+  }, [chemins, bloc.ajoutees]);
 
 
   // ——— La proposition dessinée tient entière dans le cadre, à gauche de l'espace de travail (F13.7) :
@@ -1062,7 +1062,6 @@ export default function Schema({
                 deClasse={construire.deClasse}
                 ouverte={ouverteDuBloc}
                 onOuvrir={setOuverteDuBloc}
-                ordre={(id) => disposition?.places.get(bloc.proposition?.scenes.some((x) => x.cle === id) ? idPropose(id) : id)?.x ?? 0}
                 onFermer={fermerLeBloc}
               />
             ) : sceneChoisie ? (

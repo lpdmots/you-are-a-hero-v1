@@ -5,7 +5,7 @@ import { demanderUnBloc } from "@/serveur/bloc-de-scenes";
 /**
  * « ✦ Proposer » un bloc de scènes, depuis « Chemins » (F13.7). Une adresse plutôt qu'une action
  * serveur, comme les idées de choix : la réponse d'Opus peut prendre près d'une minute. Corps :
- * { chapitre, origine, demande, reponses?, actuelle? } ; le serveur relit lui-même le chapitre,
+ * { chapitre, origine, demande, reponses?, precision?, actuelle? } ; le serveur relit lui-même le chapitre,
  * la Préparation et le texte de la scène d'origine.
  */
 export const maxDuration = 90;
@@ -15,7 +15,7 @@ export async function POST(requete: Request): Promise<Response> {
   if (origine && origine !== new URL(requete.url).origin) return new Response(null, { status: 403 });
   const e = await enseignantCourant();
   if (!e) return Response.json({ ok: false, message: "Connectez-vous de nouveau." }, { status: 401 });
-  let corps: { chapitre?: unknown; origine?: unknown; demande?: unknown; reponses?: unknown; actuelle?: unknown };
+  let corps: { chapitre?: unknown; origine?: unknown; demande?: unknown; reponses?: unknown; precision?: unknown; actuelle?: unknown };
   try {
     corps = await requete.json();
   } catch {
@@ -23,7 +23,7 @@ export async function POST(requete: Request): Promise<Response> {
   }
   if (typeof corps.chapitre !== "string") return new Response(null, { status: 400 });
   try {
-    return Response.json(await demanderUnBloc(e, corps.chapitre, { origine: corps.origine ?? null, demande: corps.demande, reponses: corps.reponses, actuelle: corps.actuelle }), {
+    return Response.json(await demanderUnBloc(e, corps.chapitre, { origine: corps.origine ?? null, demande: corps.demande, reponses: corps.reponses, precision: corps.precision, actuelle: corps.actuelle }), {
       headers: { "Cache-Control": "no-store" },
     });
   } catch (erreur) {

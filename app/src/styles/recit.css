@@ -2172,8 +2172,9 @@
 }
 .carte-chemin__titre {
   display: -webkit-box;
-  flex: 1;
-  margin: 9px 10px 0 15px;
+  /* Jamais resserré : deux lignes entières, jambages compris */
+  flex: 1 0 auto;
+  margin: 8px 10px 0 15px;
   overflow: hidden;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -2187,13 +2188,15 @@
   font-weight: 600;
   font-style: italic;
 }
+/* La carte fait 76 points : 8 + deux lignes de titre (35) + 4 + 22 + 7. Le titre ne se resserre pas : il
+   perdait le bas de ses g et de ses p */
 .carte-chemin__pied {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 6px;
   min-height: 22px;
-  margin: 4px 9px 8px 14px;
+  margin: 4px 9px 7px 14px;
 }
 .carte-chemin__pied .tampon {
   padding: 0.06rem 0.42rem 0.06rem 0.32rem;
@@ -3589,9 +3592,11 @@ a.noeud__ailleurs {
 .carte-chemin--proposee .carte-chemin__titre {
   margin-left: 12px;
 }
+/* Sans tampon, le pied d'une carte proposée tient en 18 points : son bord en pointillé en prend 3 */
 .carte-chemin__pied--proposee {
   justify-content: flex-start;
   gap: 5px;
+  min-height: 18px;
   margin-left: 11px;
   color: var(--ia-fonce);
   font-size: 11.5px;
@@ -3932,6 +3937,62 @@ a.noeud__ailleurs {
 .panneau-bloc__ajouter {
   justify-content: center;
 }
+/* Deux gestes sous la proposition : affiner, ajouter (F13.7) ; « Ajouter » prend la place qui reste */
+.panneau-bloc__gestes {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px;
+}
+
+/* « ✦ Affiner » ouvert (F13-AC44) : la précision, les questions et leurs réponses toutes prêtes */
+.panneau-bloc__affiner {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1.5px solid var(--ia-trait);
+  border-radius: var(--r-m);
+  background: color-mix(in srgb, var(--ia-pale) 40%, var(--feuille));
+  scroll-margin: 12px;
+}
+.panneau-bloc__affiner .panneau-bloc__questions {
+  padding: 0;
+  border: 0;
+}
+.panneau-bloc__question p {
+  margin: 0;
+  font-size: var(--t-s);
+  line-height: 1.35;
+}
+.panneau-bloc__pretes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.puce-reponse {
+  min-height: 30px;
+  padding: 3px 12px;
+  border: 1px solid var(--ia-trait);
+  border-radius: 99px;
+  background: var(--feuille);
+  color: var(--ia-fonce);
+  font: inherit;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.puce-reponse:hover {
+  border-color: var(--ia);
+}
+/* Choisie : fond et contour seulement — en gras, elle s'élargirait et ferait sauter la rangée */
+.puce-reponse[aria-pressed="true"] {
+  border-color: var(--ia);
+  background: var(--ia-pale);
+  box-shadow: inset 0 0 0 1px var(--ia);
+}
+.panneau-bloc__affiner-pied {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .panneau-chemin__bloc {
   justify-self: start;
   margin-top: 6px;
@@ -4113,6 +4174,13 @@ textarea.bloc-ligne__titre {
   display: flex;
   align-items: flex-start;
   gap: 4px;
+}
+/* Le repère de prise d'une fiche de choix (F13-AC43) : discret, il s'affirme au survol de la fiche */
+.bloc-fiche__choix > .prise {
+  margin: 0 -4px;
+}
+.bloc-fiche:hover .bloc-fiche__choix > .prise {
+  opacity: 1;
 }
 .bloc-fiche__choix > .ic {
   flex: none;

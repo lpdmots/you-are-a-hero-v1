@@ -11,32 +11,34 @@ import type { Chemins, LienDeChemin, NoeudDeChemin } from "./chemins";
  * à une nouvelle scène ou à une scène du chapitre : le bloc ne fait qu'ajouter.
  */
 
-/** Les deux réglages du bloc, gardés avec le compte (F13.7, « Deux réglages »). */
+/**
+ * Le réglage du bloc, gardé avec le compte (F13.7, « Un réglage »). « Ce qui manque » est retiré le
+ * 11 novembre 2026 : l'IA complète toujours, et « Affiner » sert à préciser ; une valeur déjà
+ * enregistrée est ignorée.
+ */
 export type ReglagesBloc = {
-  /** « Me le demander » : l'IA pose une question ; « L'IA complète » : elle invente et le montre */
-  manque: "demander" | "completer";
   /** Chaque nouvelle scène reçoit sa consigne et, en classe, sa liste de vérification */
   consignes: boolean;
 };
-export const REGLAGES_BLOC_HABITUELS: ReglagesBloc = { manque: "demander", consignes: true };
+export const REGLAGES_BLOC_HABITUELS: ReglagesBloc = { consignes: true };
 
 export function lireReglagesBloc(brut: unknown): ReglagesBloc {
   const o = brut && typeof brut === "object" && !Array.isArray(brut) ? (brut as Record<string, unknown>) : {};
-  return {
-    manque: o.manque === "completer" ? "completer" : "demander",
-    consignes: o.consignes === false ? false : true,
-  };
+  return { consignes: o.consignes === false ? false : true };
 }
 
 /** Les bornes d'un bloc : environ huit nouvelles scènes, sur deux niveaux (F13.7, seuil non affiché). */
-export const BLOC = { scenes: 8, niveaux: 2, choix: 24, questions: 3, demande: 2000, reponse: 600 } as const;
+export const BLOC = { scenes: 8, niveaux: 2, choix: 24, questions: 3, reponsesPretes: 3, demande: 2000, reponse: 600, precision: 1000 } as const;
+
+/** Une question pour affiner (F13-AC36) : ce que l'IA a dû choisir, et deux ou trois réponses toutes prêtes. */
+export type QuestionDuBloc = { question: string; reponses: string[] };
 
 export type SceneProposee = {
   cle: string;
   titre: string;
   consigne: string;
   liste: string[];
-  /** Ce que l'IA a inventé faute de l'avoir lu dans la demande (« L'IA complète ») */
+  /** Ce que l'IA a imaginé faute de l'avoir lu dans la demande : « Imaginée, à vérifier » */
   inventee: boolean;
 };
 export type ChoixPropose = {
@@ -55,8 +57,8 @@ export type Proposition = {
   choix: ChoixPropose[];
   /** Une consigne proposée pour la scène d'origine, qui n'en a pas ; l'adulte la prend ou non */
   consigneOrigine: { consigne: string; liste: string[] } | null;
-  /** Ce qu'il manque à l'IA pour bien répondre (« Me le demander ») : trois au plus */
-  questions: string[];
+  /** Pour affiner (F13-AC36) : trois au plus, montrées seulement quand l'adulte choisit « Affiner » */
+  questions: QuestionDuBloc[];
   /** Ce qu'une demande trop large laisse, en une phrase */
   reste: string | null;
 };
@@ -153,7 +155,12 @@ export function cheminsAvecLeBloc(chemins: Chemins, p: Proposition | null): Chem
   if (!p || (!p.scenes.length && !p.choix.length)) return chemins;
   const ici = new Set(chemins.noeuds.map((n) => n.id));
   const bout = (id: string) => (estNouvelle(p, id) ? idPropose(id) : id);
-  const noeuds: NoeudDeChemin[] = p.scenes.map((s) => ({
+  // Les nouvelles scènes entrent dans l'ordre des choix qui y mènent : le schéma les pose de gauche à droite comme
+  // le texte les proposera, ordre que l'adulte change en tirant les fiches (F13-AC43)
+  const premier = new Map<string, number>();
+  p.choix.forEach((c, i) => premier.has(c.vers) || premier.set(c.vers, i));
+  const scenes = [...p.scenes].sort((x, y) => (premier.get(x.cle) ?? -1) - (premier.get(y.cle) ?? -1));
+  const noeuds: NoeudDeChemin[] = scenes.map((s) => ({
     id: idPropose(s.cle), reference: 0, titre: s.titre || null, etat: "cours", vide: true, depart: false, fin: false, lien: "",
     propose: { cle: s.cle, inventee: s.inventee },
   }));
@@ -161,6 +168,20 @@ export function cheminsAvecLeBloc(chemins: Chemins, p: Proposition | null): Chem
     .filter((c) => (estNouvelle(p, c.de) || ici.has(c.de)) && (estNouvelle(p, c.vers) || ici.has(c.vers)))
     .map((c) => ({ id: idPropose(c.cle), de: bout(c.de), vers: bout(c.vers), libelle: c.libelle, cache: false, propose: true }));
   return { ...chemins, noeuds: [...chemins.noeuds, ...noeuds], liens: [...chemins.liens, ...liens] };
+}
+
+/**
+ * Les choix partis d'une même scène, dans un autre ordre (F13-AC43) : c'est l'ordre où ils entreront dans son
+ * texte, et où le schéma pose leurs scènes. `cles` les donne dans l'ordre voulu ; les autres choix ne bougent pas.
+ */
+export function ordonnerLesChoix(p: Proposition, de: string, cles: string[]): Proposition {
+  const rang = (cle: string) => {
+    const i = cles.indexOf(cle);
+    return i === -1 ? cles.length : i;
+  };
+  const ranges = p.choix.filter((c) => c.de === de).sort((a, b) => rang(a.cle) - rang(b.cle));
+  let i = 0;
+  return { ...p, choix: p.choix.map((c) => (c.de === de ? ranges[i++] : c)) };
 }
 
 /** Une question et sa réponse, telles que l'adulte les a laissées. */

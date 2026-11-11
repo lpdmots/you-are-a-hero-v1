@@ -122,6 +122,12 @@ describe("Ce qu'il y a « à regarder » (F03.1)", () => {
 });
 
 describe("Le schéma, de haut en bas (F03.1)", () => {
+  it("F13-AC43 — les suites d'une scène se lisent de gauche à droite dans l'ordre de ses choix", () => {
+    const d = disposer({ noeuds: [1, 2, 3, 4].map((n) => noeud(n)), liens: [lien(1, 2, 0), lien(1, 3, 1), lien(1, 4, 2)], entrees: [] }, new Map());
+    const x = (n: number) => d.places.get(id(n))!.x;
+    expect(x(2)).toBeLessThan(x(3));
+    expect(x(3)).toBeLessThan(x(4));
+  });
   const chemins = marais();
   const d = disposer(chemins, aRegarder(chemins).marques);
   const place = (cle: string) => d.places.get(cle)!;

@@ -49,6 +49,12 @@ précisions à confirmer et parcours à accorder dans le
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Chemins » en
 atelier ».
 
+Ajustements du même jour, en local, rien commité : l'ordre des choix proposés
+par le bloc se tire (F13-AC43), le schéma suit l'ordre du texte, bascule
+« Chemins / Scènes » ; puis « ✦ Affiner » sous la proposition, le réglage
+« Ce qui manque » retiré ([F13.7](docs/specifications.md#f13-affiner),
+F13-AC44).
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur

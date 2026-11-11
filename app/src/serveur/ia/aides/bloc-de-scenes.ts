@@ -1,4 +1,4 @@
-import { BLOC, CLE_NOUVELLE, elaguer, type ChoixPropose, type Proposition, type ReglagesBloc, type Reponse, type SceneProposee } from "@/domaine/bloc-de-scenes";
+import { BLOC, CLE_NOUVELLE, elaguer, type ChoixPropose, type Proposition, type QuestionDuBloc, type ReglagesBloc, type Reponse, type SceneProposee } from "@/domaine/bloc-de-scenes";
 import { LIBELLE_MAX } from "@/domaine/copie";
 import { VERIFICATION, listePropre } from "@/domaine/verification";
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
@@ -29,9 +29,11 @@ export type EntreeBloc = {
   origine: { id: string; ref: string; titre: string; consigne: string | null; paragraphes: string[] } | null;
   demande: string;
   reglages: ReglagesBloc;
-  /** Les questions de la proposition précédente, et ce que l'adulte y a répondu */
+  /** Pour affiner : les questions de la proposition à l'écran, et ce que l'adulte y a répondu */
   reponses: Reponse[];
-  /** La proposition à l'écran, telle qu'il l'a retouchée : elle se redessine d'après les réponses */
+  /** Pour affiner : ce qui ne va pas, ou ce qu'il veut en plus, dans ses mots */
+  precision?: string;
+  /** Pour affiner : la proposition à l'écran, telle qu'il l'a retouchée ; elle se modifie, sans repartir de zéro */
   actuelle?: Proposition;
 };
 
@@ -45,10 +47,11 @@ La consigne ne décide pas de la suite à la place de l'élève et ne rédige pa
     : `Pour chaque nouvelle scène, une note d'intention pour l'adulte qui écrit son livre, une ou deux lignes sans tutoiement (« La rencontre avec le passeur ; à faire sentir : sa lanterne, sa voix. »), dans « consigne » ; « liste » reste vide.`;
 };
 
-const ceQuiManque = (e: EntreeBloc): string =>
-  e.reglages.manque === "completer"
-    ? `Si la demande ne dit pas tout ce qu'il faut pour une scène (où mène un chemin, ce qui s'y passe), invente-le toi-même, de façon cohérente avec la préparation et le chapitre, et marque « inventee » (scène) ou « invente » (choix) à true pour ce que tu as inventé. Ne pose aucune question : « questions » reste vide.`
-    : `Si la demande ne dit pas tout ce qu'il faut pour bien répondre (où mène un chemin qu'elle annonce sans le décrire, ce qui s'y passe pour écrire sa consigne), dessine quand même la scène avec un titre neutre, et pose une question courte, au plus trois en tout, dans « questions ». Une question sert seulement à bien faire ce qui est demandé : elle ne propose jamais une scène, un chemin ou une suite de plus (jamais « Où mène le sentier ? » pour un chemin dont la demande ne dit rien de la suite). Une demande claire ne reçoit aucune question. Laisse « inventee » et « invente » à false.`;
+const CE_QUI_MANQUE = `Si la demande ne dit pas tout ce qu'il faut pour une scène qu'elle annonce (où mène un chemin, ce qui s'y passe), imagine-le toi-même, de façon cohérente avec la préparation et le chapitre, et marque « inventee » (scène) ou « invente » (choix) à true pour ce que tu as imaginé.
+
+Prépare aussi, dans « questions », de quoi affiner ta proposition si l'adulte n'en est pas satisfait : au plus ${BLOC.questions} questions courtes, chacune sur un point où tu as dû choisir ou imaginer (ce qui se passe dans une scène, l'atmosphère d'un chemin, où mène un chemin annoncé sans être décrit). Pour chacune, dans « reponses », deux ou trois réponses toutes prêtes, courtes (quelques mots), qui sont de vraies alternatives, dont celle que tu as retenue. Une question sert seulement à clarifier ce qui est demandé : elle ne propose jamais une scène, un chemin ou une suite de plus (jamais « Où mène le sentier ? » pour un chemin dont la demande ne dit rien de la suite). Ne force rien : s'il n'y a rien d'utile à demander, la liste reste vide.`;
+
+const AFFINER = `Quand le message contient une proposition actuelle, l'adulte affine : pars de cette proposition, telle qu'il l'a retouchée, et modifie seulement ce que demandent sa précision et ses réponses. Garde mot pour mot les titres, libellés, consignes et listes qu'elles ne touchent pas, et les clés N1, N2… des scènes qui restent. Une scène que tu changes change en entier : son titre, sa consigne et sa liste doivent toutes lui correspondre, sans rien garder de ce qu'elle était (une liste qui parle encore de l'ancienne scène est une erreur) ; le libellé du choix qui y mène aussi. Une précision peut demander une scène ou un chemin de plus, ou de moins : suis-la, dans les bornes du bloc. Ce qui vient de sa précision ou de ses réponses n'est pas imaginé : « inventee » ou « invente » repasse à false pour ce qu'il a ainsi décidé. Ne repose pas une question à laquelle il a répondu.`;
 
 const SYSTEME = (e: EntreeBloc): string => assembler(
   REGLES_COMMUNES,
@@ -80,8 +83,9 @@ Les textes :
 ${consignesVoulues(e)}
 ${e.reglages.consignes && e.origine && !e.origine.consigne ? `La scène d'origine n'a pas de consigne : propose-lui en une dans « consigne_origine », de la même forme. Sinon laisse-la vide.` : `Laisse « consigne_origine » vide.`}
 
-${ceQuiManque(e)}
-Quand l'adulte a répondu à des questions, suis ses réponses, garde le reste de la proposition actuelle tel qu'il l'a retouché, et ne repose pas une question à laquelle il a répondu.`,
+${CE_QUI_MANQUE}
+
+${AFFINER}`,
 );
 
 const ligneDeScene = (s: SceneDuChapitre): string => {
@@ -117,8 +121,11 @@ export const blocDeScenes: DefinitionAide<EntreeBloc, Proposition> = {
       : "",
     e.actuelle ? bloc("proposition_actuelle", enClair(e.actuelle, e)) : "",
     bloc("reponses_de_l_adulte", e.reponses.map((r) => `Question : ${r.question}\nRéponse : ${r.reponse}`)),
+    e.precision ? bloc("precision_de_l_adulte", e.precision) : "",
     bloc("demande", e.demande),
-    e.origine ? `Construis le bloc qui part de ${e.origine.ref}.` : "Construis le début du chapitre.",
+    e.actuelle
+      ? "Affine la proposition actuelle d'après la précision et les réponses de l'adulte."
+      : e.origine ? `Construis le bloc qui part de ${e.origine.ref}.` : "Construis le début du chapitre.",
   ),
   schema: {
     nom: "bloc_de_scenes",
@@ -126,7 +133,7 @@ export const blocDeScenes: DefinitionAide<EntreeBloc, Proposition> = {
       scenes: liste(objet({ cle: chaine, titre: chaine, consigne: chaine, liste: liste(chaine), inventee: { type: "boolean" } })),
       choix: liste(objet({ de: chaine, vers: chaine, libelle: chaine, invente: { type: "boolean" } })),
       consigne_origine: objet({ consigne: chaine, liste: liste(chaine) }),
-      questions: liste(chaine),
+      questions: liste(objet({ question: chaine, reponses: liste(chaine) })),
       reste: chaine,
     }),
   },
@@ -162,7 +169,7 @@ export function lireLeBloc(json: unknown, e: EntreeBloc): Proposition | null {
       cle, titre,
       consigne: avecConsigne ? (texte(s?.consigne, 600) ?? "") : "",
       liste: avecConsigne ? listeDe(s?.liste, e) : [],
-      inventee: e.reglages.manque === "completer" && s?.inventee === true,
+      inventee: s?.inventee === true,
     });
   }
   const nouvelles = new Set(scenes.map((s) => s.cle));
@@ -179,7 +186,7 @@ export function lireLeBloc(json: unknown, e: EntreeBloc): Proposition | null {
     // Un choix part de la scène d'origine ou d'une nouvelle scène : le bloc ne touche à aucune autre (F13-AC39)
     if (!de || !vers || !libelle || de === vers || !(nouvelles.has(de) || de === e.origine?.id)) continue;
     if (choix.some((x) => x.de === de && (x.vers === vers || x.libelle.toLocaleLowerCase("fr") === libelle.toLocaleLowerCase("fr")))) continue;
-    choix.push({ cle: `C${choix.length + 1}`, de, vers, libelle, invente: e.reglages.manque === "completer" && c?.invente === true });
+    choix.push({ cle: `C${choix.length + 1}`, de, vers, libelle, invente: c?.invente === true });
   }
   const { bloc: tient } = elaguer({ origine: e.origine?.id ?? null, scenes, choix });
   if (!tient.scenes.length && !tient.choix.length) return null;
@@ -189,9 +196,29 @@ export function lireLeBloc(json: unknown, e: EntreeBloc): Proposition | null {
   return {
     ...tient,
     consigneOrigine: consigneOrigine ? { consigne: consigneOrigine, liste: listeDe(co?.liste, e) } : null,
-    questions: e.reglages.manque === "completer" ? [] : (textes(o.questions, 240) ?? []).slice(0, BLOC.questions),
+    questions: lireLesQuestions(o.questions, e.reponses),
     reste: texte(o.reste, 400),
   };
+}
+
+/**
+ * Les questions pour affiner (F13-AC36), relues sans confiance : trois au plus, chacune avec deux ou
+ * trois réponses toutes prêtes ; une question à laquelle l'adulte vient de répondre ne revient pas.
+ */
+function lireLesQuestions(brut: unknown, reponses: Reponse[]): QuestionDuBloc[] {
+  if (!Array.isArray(brut)) return [];
+  const dejaRepondues = new Set(reponses.map((r) => r.question.toLocaleLowerCase("fr")));
+  const questions: QuestionDuBloc[] = [];
+  for (const b of brut) {
+    // Une question seule, sans réponses toutes prêtes, se garde : la réponse libre suffit
+    const q = typeof b === "string" ? { question: b } : champs(b);
+    const question = texte(q?.question, 240);
+    if (!question || dejaRepondues.has(question.toLocaleLowerCase("fr")) || questions.some((x) => x.question === question)) continue;
+    const pretes = [...new Set((textes(q?.reponses, 80) ?? []).map((r) => r.replace(/[.]+$/, "")))].slice(0, BLOC.reponsesPretes);
+    questions.push({ question, reponses: pretes });
+    if (questions.length === BLOC.questions) break;
+  }
+  return questions;
 }
 
 /* ——— La réponse simulée des essais automatiques : elle suit les mots de la demande, sans IA ——— */
@@ -207,12 +234,13 @@ const LIBRE = /^(un|une|le|la)? ?(troisième|autre|dernier|dernière|quatrième)
  * quand l'IA complète ; ce qui suit « puis » est laissé, comme une demande trop large.
  */
 export function simulerUnBloc(e: EntreeBloc): unknown {
+  if (e.actuelle) return simulerUnAffinage(e, e.actuelle);
   const [avant, apres] = e.demande.split(/\s+puis\s+/i);
   const demande = avant.trim();
   const depart = e.origine?.ref ?? null;
   const scenes: { cle: string; titre: string; consigne: string; liste: string[]; inventee: boolean }[] = [];
   const choix: { de: string; vers: string; libelle: string; invente: boolean }[] = [];
-  const questions: string[] = [];
+  const questions: QuestionDuBloc[] = [];
   const consigne = (t: string) => (e.reglages.consignes ? `Raconte ${t.toLocaleLowerCase("fr")}.` : "");
   const listeSimulee = () => (e.reglages.consignes && e.histoire.mode === "classe" ? ["Décrire le lieu.", "Montrer ce que ressent ton héros."] : []);
   const nouvelle = (titre: string, inventee = false) => {
@@ -238,16 +266,9 @@ export function simulerUnBloc(e: EntreeBloc): unknown {
       const [texteDuChemin, cible] = brut.split(/\s+rejoint\s+/i);
       const existante = cible ? e.scenes.find((s) => s.titre.toLocaleLowerCase("fr") === cible.trim().toLocaleLowerCase("fr")) : undefined;
       if (LIBRE.test(texteDuChemin)) {
-        // L'adulte a répondu : le chemin prend ses mots
-        const reponse = e.reponses[0]?.reponse.trim().replace(/[.]+$/, "");
-        if (reponse) {
-          choix.push({ de: racine, vers: nouvelle(majuscule(reponse.split(/\s+/).slice(0, 5).join(" "))), libelle: `Aller vers ${reponse.split(/\s+/).slice(0, 5).join(" ")}`, invente: false });
-        } else if (e.reglages.manque === "completer") {
-          choix.push({ de: racine, vers: nouvelle("Le chemin des ronces", true), libelle: "Prendre le chemin des ronces", invente: true });
-        } else {
-          choix.push({ de: racine, vers: nouvelle(`Le chemin ${i + 1}`), libelle: `Prendre le chemin ${i + 1}`, invente: false });
-          questions.push(`Où mène le chemin ${i + 1}, et que s'y passe-t-il ?`);
-        }
+        // L'IA imagine le chemin, et prépare de quoi affiner
+        choix.push({ de: racine, vers: nouvelle("Le chemin des ronces", true), libelle: "Prendre le chemin des ronces", invente: true });
+        questions.push({ question: `Où mène le chemin ${i + 1}, et que s'y passe-t-il ?`, reponses: ["Le chemin des ronces", "Une cabane de bûcheron", "Un ravin"] });
         return;
       }
       // « la grotte rejoint Le vieux pont » : le chemin de la grotte mène à la scène déjà là, sans la recréer (F13-AC39)
@@ -263,7 +284,32 @@ export function simulerUnBloc(e: EntreeBloc): unknown {
   return {
     scenes, choix,
     consigne_origine: { consigne: e.reglages.consignes && e.origine && !e.origine.consigne ? `Raconte ${e.origine.titre.toLocaleLowerCase("fr")}.` : "", liste: listeSimulee() },
-    questions: e.reglages.manque === "completer" ? [] : questions,
+    questions,
     reste: apres ? `J'ai construit ${demande.toLocaleLowerCase("fr").replace(/[.]+$/, "")}. Reste : ${apres.trim().replace(/[.]+$/, "")}.` : "",
+  };
+}
+
+/**
+ * Affiner, sans IA (F13-AC44) : la proposition à l'écran revient telle qu'il l'a retouchée ; la
+ * première réponse donne son titre à la première scène imaginée, et la précision s'ajoute à la
+ * consigne de la première scène. Aucune question ne revient.
+ */
+function simulerUnAffinage(e: EntreeBloc, p: Proposition): unknown {
+  const refDe = new Map(e.scenes.map((s) => [s.id, s.ref]));
+  const nom = (id: string) => refDe.get(id) ?? id;
+  const reponse = e.reponses[0]?.reponse.trim().replace(/[.]+$/, "");
+  const imaginee = p.scenes.find((s) => s.inventee) ?? null;
+  return {
+    scenes: p.scenes.map((s, i) => ({
+      cle: s.cle,
+      titre: reponse && s === imaginee ? majuscule(reponse.split(/\s+/).slice(0, 6).join(" ")) : s.titre,
+      consigne: i === 0 && e.precision && e.reglages.consignes ? `${s.consigne} ${majuscule(e.precision.trim().replace(/[.]+$/, ""))}.`.trim() : s.consigne,
+      liste: s.liste,
+      inventee: reponse && s === imaginee ? false : s.inventee,
+    })),
+    choix: p.choix.map((c) => ({ de: nom(c.de), vers: nom(c.vers), libelle: c.libelle, invente: c.invente })),
+    consigne_origine: p.consigneOrigine ?? { consigne: "", liste: [] },
+    questions: [],
+    reste: "",
   };
 }

@@ -284,13 +284,13 @@ export function ChapitreEleve({
             {chapitre.aChoix && scenes.length > 0 ? (
               <span className="chap-actions__vue">
                 <div className="bascule" role="group" aria-label="Vue du chapitre">
-                  <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}?vue=scenes`, { scroll: false })}>
-                    <Icone nom="feuille" />
-                    Scènes
-                  </button>
                   <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}`, { scroll: false })}>
                     <Icone nom="chemins" />
                     Chemins
+                  </button>
+                  <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}?vue=scenes`, { scroll: false })}>
+                    <Icone nom="feuille" />
+                    Scènes
                   </button>
                 </div>
                 {enChemins ? <AideDesChemins pourEleve /> : null}

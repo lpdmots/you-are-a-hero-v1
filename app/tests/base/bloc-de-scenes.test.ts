@@ -208,9 +208,9 @@ describe("Bloc de scènes depuis le schéma (F13.7)", () => {
   it("F13-AC41 — « Consignes » éteint : les nouvelles scènes ont un titre et pas de consigne ; le réglage est gardé avec le compte", async () => {
     const r = await lisiere();
     const e = enseignantDe(laurent);
-    expect(await reglagesDuBloc(e)).toEqual({ manque: "demander", consignes: true });
-    expect(await enregistrerReglagesDuBloc(e, { manque: "demander", consignes: false })).toBe(true);
-    expect(await reglagesDuBloc(e)).toEqual({ manque: "demander", consignes: false });
+    expect(await reglagesDuBloc(e)).toEqual({ consignes: true });
+    expect(await enregistrerReglagesDuBloc(e, { consignes: false })).toBe(true);
+    expect(await reglagesDuBloc(e)).toEqual({ consignes: false });
     const demande = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "deux chemins : le sentier, le ruisseau" });
     if (!demande.ok) throw new Error(demande.message);
     const fait = await ajouterUnBloc(e, r.chapitre, demande.proposition, { prendreConsigne: true });
@@ -241,20 +241,21 @@ describe("Bloc de scènes depuis le schéma (F13.7)", () => {
     expect(fait.ok && fait.scenes.map((s) => s.titre)).toEqual(["Bord de la rivière", "Chemin 1", "Chemin 2"]);
   });
 
-  it("F13-AC36 — « Me le demander », un troisième chemin non décrit : une question porte sur lui, aucune scène de plus ; l'adulte ajoute sans répondre ; une demande complète n'en reçoit aucune", async () => {
+  it("F13-AC36, AC37 — un troisième chemin non décrit : l'IA l'imagine et le marque, une question porte sur lui avec ses réponses toutes prêtes, aucune scène de plus ; l'adulte ajoute sans affiner ; une demande complète n'en reçoit aucune", async () => {
     const r = await lisiere();
     const e = enseignantDe(laurent);
     const flou = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième" });
     if (!flou.ok) throw new Error(flou.message);
-    expect(flou.proposition.questions).toEqual(["Où mène le chemin 3, et que s'y passe-t-il ?"]);
+    expect(flou.proposition.questions).toEqual([{ question: "Où mène le chemin 3, et que s'y passe-t-il ?", reponses: ["Le chemin des ronces", "Une cabane de bûcheron", "Un ravin"] }]);
     expect(flou.proposition.scenes).toHaveLength(3);
+    expect(flou.proposition.scenes.filter((s) => s.inventee).map((s) => s.titre)).toEqual(["Le chemin des ronces"]);
     const fait = await ajouterUnBloc(e, r.chapitre, flou.proposition);
     expect(fait.ok && fait.scenes).toHaveLength(3);
     const clair = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, la grotte" });
     expect(clair.ok && clair.proposition.questions).toEqual([]);
   });
 
-  it("y répondre redessine : la réponse et la proposition retouchée partent avec la demande, relues sans confiance", async () => {
+  it("F13-AC44 — affiner : la précision, les réponses et la proposition retouchée partent avec la demande, relues sans confiance ; la proposition se modifie", async () => {
     const r = await lisiere();
     const e = enseignantDe(laurent);
     const flou = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième" });
@@ -263,24 +264,16 @@ describe("Bloc de scènes depuis le schéma (F13.7)", () => {
     const retouchee = { ...flou.proposition, scenes: flou.proposition.scenes.map((s, i) => (i === 0 ? { ...s, titre: "Les fougères géantes" } : s)) };
     const redessinee = await demanderUnBloc(e, r.chapitre, {
       origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième",
-      reponses: [{ question: flou.proposition.questions[0], reponse: "Une cabane de bûcheron" }, { question: "", reponse: "vide" }],
+      reponses: [{ question: flou.proposition.questions[0].question, reponse: "Une cabane de bûcheron" }, { question: "", reponse: "vide" }],
+      precision: "  le ruisseau doit être dangereux  ",
       actuelle: retouchee,
     });
     const entree = espion.mock.calls[0][2] as Parameters<typeof blocDeScenes.message>[0];
     expect(entree.reponses).toEqual([{ question: "Où mène le chemin 3, et que s'y passe-t-il ?", reponse: "Une cabane de bûcheron" }]);
+    expect(entree.precision).toBe("le ruisseau doit être dangereux");
     expect(entree.actuelle?.scenes[0].titre).toBe("Les fougères géantes");
-    expect(redessinee.ok && redessinee.proposition.scenes.map((s) => s.titre)).toContain("Une cabane de bûcheron");
+    expect(redessinee.ok && redessinee.proposition.scenes.map((s) => s.titre)).toEqual(["Les fougères géantes", "Le ruisseau", "Une cabane de bûcheron"]);
     expect(redessinee.ok && redessinee.proposition.questions).toEqual([]);
-  });
-
-  it("F13-AC37 — « L'IA complète » : le troisième chemin est décrit, marqué inventé, sans question", async () => {
-    const r = await lisiere();
-    const e = enseignantDe(laurent);
-    await enregistrerReglagesDuBloc(e, { manque: "completer", consignes: true });
-    const fait = await demanderUnBloc(e, r.chapitre, { origine: r.oree.id, demande: "trois chemins : le sentier des fougères, le ruisseau, et un troisième" });
-    if (!fait.ok) throw new Error(fait.message);
-    expect(fait.proposition.questions).toEqual([]);
-    expect(fait.proposition.scenes.filter((s) => s.inventee).map((s) => s.titre)).toEqual(["Le chemin des ronces"]);
   });
 
   it("F13-AC40 — une demande trop large : la première partie, huit nouvelles scènes au plus, et ce qui reste ; ajouter n'ajoute que la première partie", async () => {

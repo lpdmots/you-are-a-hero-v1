@@ -819,6 +819,17 @@
 .ajout_une {
   grid-template-columns: minmax(0, 1fr) auto auto;
 }
+/* L'étape « Jeu » : objets et formules, puis la feuille et les règles, chacun à sa place, sans se coller */
+.jeu {
+  display: grid;
+  gap: 14px;
+}
+.jeu > .cols + .pli {
+  margin-top: 14px;
+}
+.jeu > .pli {
+  padding-top: 14px;
+}
 .pli {
   border-top: 1px solid var(--trait);
   padding-top: 10px;

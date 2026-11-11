@@ -75,12 +75,13 @@ async function lireLeChapitre(e: Enseignant, chapitreId: string, origine: string
 
 /**
  * « ✦ Proposer » (F13-AC34) : une proposition pour le bloc qui part de `origine` (null dans un
- * chapitre vide), d'après la demande, les réponses de l'adulte et la proposition à l'écran.
+ * chapitre vide), d'après la demande. « ✦ Affiner » (F13-AC44) renvoie aussi la proposition à
+ * l'écran, la précision et les réponses : elle se modifie, sans repartir de zéro.
  */
 export async function demanderUnBloc(
   e: Enseignant,
   chapitreId: string,
-  options: { origine: unknown; demande: unknown; reponses?: unknown; actuelle?: unknown },
+  options: { origine: unknown; demande: unknown; reponses?: unknown; precision?: unknown; actuelle?: unknown },
 ): Promise<ReponseBloc> {
   const origine = typeof options.origine === "string" ? options.origine : null;
   const demande = long(options.demande, BLOC.demande);
@@ -126,6 +127,7 @@ export async function demanderUnBloc(
     demande,
     reglages,
     reponses: lireReponses(options.reponses),
+    precision: long(options.precision, BLOC.precision) || undefined,
     actuelle: options.actuelle ? (lireLaProposition(options.actuelle, contexteDe(lu.projet.id, chapitreId, origine, chemins.noeuds, noeud?.consigne)) ?? undefined) : undefined,
   };
   const r = await demanderUneAide(e, blocDeScenes, entree);

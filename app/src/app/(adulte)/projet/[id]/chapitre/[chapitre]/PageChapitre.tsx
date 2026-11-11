@@ -311,13 +311,13 @@ export function PageChapitre({
           {projet.aChoix && chapitre.scenes.length ? (
             <>
               <div className="bascule" role="group" aria-label="Vue du chapitre">
-                <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(adresse("scenes"), { scroll: false })}>
-                  <Icone nom="feuille" />
-                  Scènes
-                </button>
                 <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(adresse("chemins"), { scroll: false })}>
                   <Icone nom="chemins" />
                   Chemins
+                </button>
+                <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(adresse("scenes"), { scroll: false })}>
+                  <Icone nom="feuille" />
+                  Scènes
                 </button>
               </div>
               {vue === "chemins" ? (

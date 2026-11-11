@@ -4735,6 +4735,46 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     suit une seule courbe, de sa place jusqu'au milieu, sans retour en
     arrière (un cas de plus dans `tests/unitaires/chemins.test.ts`,
     465 tests unitaires).
+  - *Ajustements du 11 novembre 2026, à sa demande (une conversation à part,
+    sans migration, rien commité avant sa demande) :* un chapitre vide
+    construit par le bloc gardait la proposition dessinée à côté des scènes
+    ajoutées (la page remontait le schéma, qui perdait les scènes attendues :
+    elles sont gardées avec l'état du bloc, et l'espace se referme) ; l'ordre
+    des choix proposés se change en tirant leurs fiches, et le schéma range
+    partout les suites d'une scène dans l'ordre du texte (F13-AC43 ; dagre les
+    rangeait à rebours, retourné en miroir — lui donner les liens à rebours
+    gâtait le chapitre de quarante scènes) ; bascule « Chemins / Scènes » ;
+    étape « Jeu » de la Préparation espacée. Constaté à l'écran sur un
+    chapitre vide avec de vrais appels, ajouts annulés ensuite ; deux cas de
+    plus dans les tests unitaires (`chemins`, `bloc-de-scenes`).
+  - *« Affiner », décidé par lui le 11 novembre 2026 sur son idée (« ok pour
+    les trois ») et construit le même jour, sans migration :* sous la
+    proposition, « Ajouter » ou « ✦ Affiner », qui ouvre une précision libre
+    et jusqu'à trois questions de l'IA à réponses toutes prêtes ; l'IA modifie
+    la proposition à l'écran, retouches gardées ; le réglage « Ce qui manque »
+    est retiré, l'IA complète toujours (règles :
+    [F13.7](specifications.md#f13-affiner), F13-AC36 et AC37 révisés,
+    F13-AC44). Les questions viennent avec la proposition, dans le même tour.
+    Constaté à l'écran avec trois vrais tours (une proposition, deux
+    affinages) : la réponse cliquée et la précision sont suivies, le reste
+    gardé. Corrigé en route : une liste de vérification gardait son premier
+    contenu quand l'IA renvoyait une proposition (défaut déjà là avec
+    « Redessiner avec mes réponses ») ; une réponse choisie passait en gras
+    et faisait sauter sa rangée ; la consigne de l'IA demande qu'une scène
+    changée change en entier, et que ce que l'adulte a décidé ne soit plus
+    marqué « Imaginée » (ce dernier point non revérifié par un vrai tour).
+    Tests : 467 unitaires, 14 contre la base pour le bloc ; l'essai de
+    l'IA (`scripts/essai-ia/jeu.ts`) fond « Me le demander » et « L'IA
+    complète » en un seul cas.
+  - *Idée du porteur, non décidée (11 novembre 2026) :* les choix en onglets
+    au pied de la carte, chacun avec son point de sortie, à la place des
+    libellés sur les flèches ; retours en arrière et sorties écrits sur
+    l'onglet ; prénom de l'élève à côté de l'état. Avis donné : favorable
+    (elle règle les libellés qui se chevauchent sur un grand chapitre), à
+    borner en largeur et à juger sur « Le marais des feux follets » ; elle
+    révise F03.1 (choix sur les flèches, carte sans choix). Trois questions
+    restent à lui poser avant de l'écrire. Retouche du même jour : les titres
+    des cartes ne perdent plus le bas de leurs g et p.
 
 ## Hors de la première livraison
 

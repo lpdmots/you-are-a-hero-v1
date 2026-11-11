@@ -1634,7 +1634,8 @@ précisions à confirmer : [plan](plan.md#construire-dans--chemins--et-bloc-de-s
 | --- | --- |
 | L'entrée | « ✦ Construire avec l'IA », pastille d'IA dans la barre du schéma, à gauche de « Tout voir », toujours en vue (ajoutée le 11 novembre 2026 : le porteur ne trouvait pas l'entrée du panneau) ; le même « ✦ Construire avec l'IA » sous « Ses choix » dans le panneau de la scène (d'abord « Construire la suite » : un seul nom pour une seule action, à sa demande) ; dans un chapitre vide, « ✦ Construire avec l'IA » à côté de « Ajouter une scène ». |
 | Le panneau | Étroit, comme celui d'une scène, tant qu'on écrit la demande ; large dès que la proposition est dessinée (à sa demande, le même jour : le grand cadre était « bizarre » pour la seule demande). Large depuis le 11 novembre 2026 (le porteur trouvait l'espace de travail « vraiment petit ») : toute la hauteur de la fenêtre, par-dessus l'en-tête du chapitre, et 44 % de la largeur (entre 460 et 660 points) ; la colonne de navigation se replie en icônes le temps du bloc, sans toucher au choix gardé, et le schéma garde la moitié gauche, la scène d'origine et le bloc cadrés à gauche du panneau. D'abord à la place de celui de la scène, même largeur ; en tête, sur canard pâle, « ✦ Construire avec l'IA » et la croix. « La suite de S001 « … » » (ou « Le début du chapitre »), la demande en trois lignes qui grandissent, avec le micro et un exemple dans le champ vide ; « Réglages » en lien à gauche, « ✦ Proposer » à droite ; pendant l'attente, « L'IA dessine… » et une phrase sous le bouton. |
-| Les réglages | Repliés sous « Réglages » : « Ce qui manque à ma demande : Me le demander / L'IA complète », « Consignes : Avec leur liste de vérification / Sans : les titres seuls ». |
+| Les réglages | Repliés sous « Réglages » : « Consignes : Avec leur liste de vérification / Sans : les titres seuls ». « Ce qui manque à ma demande » est retiré le 11 novembre 2026 (« Affiner » le remplace). |
+| Ajouter ou affiner (11 novembre 2026, F13-AC44) | Au pied, sous la ligne du total, deux boutons en rang : « ✦ Affiner », pastille d'IA, à gauche, et « Ajouter 4 scènes et 3 choix », plein, qui prend le reste de la largeur. « Affiner » ouvre, au-dessus des fiches, un cadre canard très pâle au trait canard : « Qu'est-ce qui ne va pas, ou que voulez-vous en plus ? » (champ de deux lignes, dictée), puis « Et les questions de l'IA · facultatif », chaque question suivie de ses réponses toutes prêtes en puces arrondies (choisie : fond canard pâle et contour, sans gras, qui élargirait la puce et ferait sauter la rangée) et d'un champ « Ou une autre réponse » ; « ✦ Refaire la proposition » et « Fermer ». Le cadre vient sous les yeux, le curseur dans le champ. Ce qui a été précisé reste écrit au-dessus des fiches (« Vos précisions : … »). |
 | La proposition sur le schéma | Cartes au bord en pointillé canard, fond canard très pâle, titre en canard foncé, « ✦ Proposée » au pied, sans tampon ni « Ouvrir » ; flèches en pointillé canard, libellés sur canard pâle. La scène d'origine cerclée de canard. Le bloc entier à l'écran. |
 | La proposition dans le panneau | Depuis le panneau large : une rangée par scène d'où partent des choix (« Depuis S001 « … » », puis chaque nouvelle scène qui a les siens), des fiches côte à côte dans l'ordre du schéma ; chaque fiche dit ce que fait le lecteur, puis le titre, la consigne et la liste, visibles d'emblée, la liste resserrée ; un chemin vers une scène existante, une petite fiche qui la nomme. Avant : « ⬚ 2 scènes et 3 choix proposés », « Retouchez si besoin, puis ajoutez. » ; en tête, la case décochée « Donner aussi une consigne à S001 « … » » ; puis le bloc en arbre, dans l'ordre du schéma : chaque choix (libellé à récrire), sa nouvelle scène (titre à récrire, corbeille, « Consigne et liste » repliée) et, retrait pointillé, ses propres choix ; un choix vers une scène existante la nomme. Les textes se récrivent sur place, soulignés au repos, cadrés au survol. |
 | Le pied | « Le chapitre aura 5 scènes. » et « Abandonner » (d'abord « Laisser », ambigu à côté d'« Ajouter ») sur une ligne ; dessous, toute la largeur, le seul bouton plein : « Ajouter 2 scènes et 3 choix » (« …, 3 choix et 1 consigne » si la case est cochée). |
@@ -1716,6 +1717,15 @@ destination n'offre que sa corbeille ; le compteur « – / 6 » ; le « + » qu
 peut couvrir le début d'un libellé sous sa carte ; un chapitre sans scène
 garde le grand bandeau (décidé le 10 novembre) ; les commandes posées sur le
 cadre couvrent leur coin.
+
+**Retouches du 11 novembre 2026, à sa demande :** la bascule du chapitre se lit
+« Chemins / Scènes », la vue ouverte en premier à gauche (adulte et élève) ;
+dans le panneau du bloc, chaque fiche de choix d'une rangée qui en a plusieurs
+porte le repère de prise, en tête de sa ligne « ce que fait le lecteur », plus
+net au survol de la fiche ; tirée, elle passe avant ou après ses voisines, et
+le schéma suit (F13-AC43). Dans la Préparation, l'étape « Jeu » espace les
+objets et les formules, la feuille d'aventure et les règles (elles étaient
+collées).
 
 ### Étape 4 construite (13 octobre 2026)
 

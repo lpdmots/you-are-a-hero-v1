@@ -1537,7 +1537,9 @@ le porteur décide :
   même espace pour le bloc de scènes ; l'élève n'a pas d'espace de travail.
 - **F03-AC60 — Un en-tête en une bande :** étant donné « La lisière »,
   attribué à Alice et Bilal, lorsque l'adulte l'ouvre, alors le bandeau
-  porte le titre, les élèves, la bascule « Scènes / Chemins », son « i » et
+  porte le titre, les élèves, la bascule « Chemins / Scènes » (dans cet ordre,
+  la vue ouverte en premier à gauche, demandé par le porteur le 11 novembre
+  2026), son « i » et
   le menu « … », sans bouton « Ajouter une scène » ni « Attribuer des
   élèves » ; cliquer les prénoms ouvre « Attribuer des élèves », que le menu
   offre aussi ; dans « Scènes », la dernière carte de la grille est
@@ -10765,9 +10767,9 @@ et validation détaillée de l'entrée « Lectures » proposée dans la maquette
     la consigne, plus le titre de la scène et la fin du texte des scènes qui y
     mènent, avec la phrase du choix ;
   - bloc de scènes (F13.7, décidé le 10 novembre 2026) : la demande de
-    l'adulte et ses réponses, la Préparation, le résumé du chapitre, les
-    titres, consignes et choix de ses scènes, le texte de la scène
-    d'origine ;
+    l'adulte, la Préparation, le résumé du chapitre, les titres, consignes
+    et choix de ses scènes, le texte de la scène d'origine ; pour affiner,
+    la proposition à l'écran, sa précision et ses réponses ;
   - images : l'idée d'illustration (écrite parfois par un élève), le texte de
     la scène, le style, les fiches et portraits des personnages retenus ;
   - couverture (décidé par le porteur le 26 octobre 2026, F11.4) : en plus de
@@ -11643,12 +11645,30 @@ il reste lisible au tableau, sans mode à part.
    pointillé sur le schéma, sous la scène d'origine, entier à l'écran : c'est
    lui qui montre, d'un coup d'œil, ce que l'IA a compris. Titres, libellés
    des choix et consignes s'y retouchent ; une scène proposée se retire.
-3. **Des questions seulement pour clarifier.** Sous la proposition, trois
-   questions au plus, facultatives, quand il manque à l'IA de quoi bien
-   répondre à la demande (par exemple pour écrire une consigne). Une question
-   ne propose jamais d'agrandir l'arbre ; une demande claire n'en reçoit
-   aucune. Y répondre redessine la proposition ; les ignorer n'empêche pas
-   d'ajouter.
+3. **Ajouter ou affiner** <a id="f13-affiner"></a>(décidé par le porteur le
+   11 novembre 2026, sur son idée, après l'essai ; cela remplace les
+   questions montrées d'office et le réglage « Ce qui manque »). Sous la
+   proposition, deux gestes : « Ajouter 4 scènes et 3 choix », le principal,
+   et « ✦ Affiner », quand elle ne convient pas. Les retouches à la main
+   (un titre, une consigne, une scène ou un choix retirés, l'ordre des
+   choix) restent possibles sans l'IA. « Affiner » ouvre, au-dessus des
+   fiches :
+   - un champ « Qu'est-ce qui ne va pas, ou que voulez-vous en plus ? »,
+     écrit ou dicté ;
+   - jusqu'à trois questions de l'IA, chacune avec deux ou trois réponses
+     toutes prêtes à cliquer, ou une réponse libre. Elles portent sur ce
+     que l'IA a dû choisir ou inventer ; elles servent à clarifier, jamais
+     à proposer une scène ou un chemin de plus. Elles arrivent avec la
+     proposition, dans le même tour, sans coût de plus, et restent cachées
+     jusqu'au clic ; une IA forcée d'en trouver trois en inventerait de
+     creuses : il peut n'y en avoir aucune ;
+   - « ✦ Refaire la proposition », dès qu'une précision ou une réponse est
+     donnée. L'IA modifie la proposition à l'écran, elle ne recommence pas
+     de zéro : les retouches à la main sont gardées, et ce que la précision
+     ne touche pas reste tel quel. C'est un tour, débité comme les autres.
+   Ce qui a été précisé reste dit au-dessus des fiches (« Vos
+   précisions : … »). Le mot « reprendre » est écarté : il désigne la
+   correction de l'élève après une remarque (F07.3).
 4. **L'ajout.** Le bouton dit ce qu'il fait (« Ajouter 4 scènes et
    3 choix »), et une ligne le total (« Le chapitre aura 19 scènes »). Rien
    n'existe dans le projet avant ce geste. « Annuler » reste proposé quelques
@@ -11673,16 +11693,17 @@ il reste lisible au tableau, sans mode à part.
   consigne existants ne sont modifiés ni supprimés ; seule exception, une
   consigne est proposée à la scène d'origine qui n'en a pas, et l'adulte la
   prend ou non.
-- **Deux réglages,** derrière « Réglages », gardés avec le compte comme ceux
-  des fiches :
-  - « Ce qui manque » : « Me le demander » (par défaut), où l'IA pose une
-    question ; ou « L'IA complète », où elle invente et le montre dans la
-    proposition. C'est le degré d'invention demandé par le porteur, dit par
-    son effet ;
-  - « Consignes » : avec (par défaut), chaque nouvelle scène recevant sa
-    consigne et sa liste de vérification, comme « Formuler »
-    ([F13.2](#f132--formuler-une-consigne-et-sa-liste-de-vérification)) ; ou
-    sans, les titres seuls.
+- **Un réglage,** « Consignes », derrière « Réglages », gardé avec le compte
+  comme ceux des fiches : avec (par défaut), chaque nouvelle scène recevant
+  sa consigne et sa liste de vérification, comme « Formuler »
+  ([F13.2](#f132--formuler-une-consigne-et-sa-liste-de-vérification)) ; ou
+  sans, les titres seuls.
+- **Ce qui manque à la demande, l'IA le complète toujours,** et le montre :
+  une scène qu'elle a imaginée porte « Imaginée, à vérifier » sur le schéma.
+  « Affiner » sert à préciser. Le réglage « Ce qui manque » (« Me le
+  demander » ou « L'IA complète »), décidé le 10 novembre 2026, est retiré
+  le 11 novembre sur décision du porteur : jugé obscur par la critique des
+  écrans, il faisait double emploi avec « Affiner ».
 
   Écartés : un ton, un âge ou un nombre de scènes, que portent déjà « notre
   façon d'écrire », « Âge des lecteurs » et la demande elle-même.
@@ -11698,8 +11719,9 @@ il reste lisible au tableau, sans mode à part.
   jugent à la critique des écrans et sont retirés s'ils remplissent l'écran
   pour rien.
 - **Ce qui est transmis :** la Préparation, le résumé du chapitre, les titres,
-  consignes et choix de ses scènes, le texte de la scène d'origine, les
-  réponses aux questions ; pas le texte du livre entier ; jamais un prénom
+  consignes et choix de ses scènes, le texte de la scène d'origine, et pour
+  affiner, la proposition à l'écran avec ses retouches, la précision et les
+  réponses ; pas le texte du livre entier ; jamais un prénom
   d'élève (cadre commun de F13).
 - **Coût :** chaque tour est une demande, débitée à son coût réel en étoiles
   ([F14](#f14--ouverture-offre-et-exploitation)), sans tarif propre. Modèle :
@@ -11730,15 +11752,24 @@ dessiné par l'utilisateur (F03.1).
   l'adulte demande « une scène dans la forêt avec trois choix », alors la
   proposition compte quatre scènes — la forêt et ses trois destinations — et
   le bouton dit « Ajouter 4 scènes et 4 choix ».
-- **F13-AC36 — Des questions qui clarifient :** étant donné « Ce qui
-  manque » réglé sur « Me le demander » et une demande de trois chemins dont
-  le troisième n'est pas décrit, lorsque la proposition s'affiche, alors une
-  question porte sur ce troisième chemin et aucune ne propose une scène de
-  plus ; l'adulte peut ajouter sans répondre ; une demande complète ne reçoit
-  aucune question.
-- **F13-AC37 — L'IA complète :** étant donné la même demande et « L'IA
-  complète », alors la proposition décrit le troisième chemin, sans
-  question.
+- **F13-AC36 — Des questions qui clarifient (révisé le 11 novembre
+  2026) :** étant donné une demande de trois chemins dont le troisième n'est
+  pas décrit, lorsque l'adulte choisit « ✦ Affiner », alors une question
+  porte sur ce troisième chemin, avec deux ou trois réponses toutes prêtes,
+  et aucune ne propose une scène de plus ; trois questions au plus ; avant
+  ce clic, aucune question n'est montrée.
+- **F13-AC37 — L'IA complète (révisé le 11 novembre 2026) :** étant donné
+  la même demande, lorsque la proposition s'affiche, alors elle décrit le
+  troisième chemin, et sa scène porte « Imaginée, à vérifier ».
+- **F13-AC44 — Affiner sans repartir de zéro :** étant donné la proposition
+  de F13-AC34 dont l'adulte a retouché le titre « Le sentier » en « Le
+  sentier des fougères », lorsqu'il choisit « ✦ Affiner », clique la réponse
+  toute prête « Une cabane de bûcheron » à la question sur la grotte, écrit
+  « le ruisseau doit être dangereux » et choisit « ✦ Refaire la
+  proposition », alors la nouvelle proposition garde « Le sentier des
+  fougères », tient compte de la cabane et du ruisseau dangereux, et
+  « Vos précisions » les redit ; sans précision ni réponse, « Refaire la
+  proposition » ne part pas.
 - **F13-AC38 — L'ajout :** étant donné la proposition de F13-AC34 dont
   l'adulte retouche un titre, lorsqu'il choisit « Ajouter 3 scènes et
   3 choix », alors les trois scènes existent à la fin du chapitre avec le
@@ -11762,6 +11793,19 @@ dessiné par l'utilisateur (F03.1).
 - **F13-AC42 — Pour l'adulte seul :** étant donné Alice dans « Chemins »,
   alors rien ne lui propose un bloc ; étant donné « Proposer les aides IA »
   éteint, alors l'adulte garde ses gestes à la main, sans le ✦.
+- **F13-AC43 — L'ordre des choix proposés (demandé par le porteur le
+  11 novembre 2026) :** étant donné une proposition où « Devant le château »
+  mène à « La porte gardée », « Au bord de la douve » et « La tour en
+  ruine », lorsque l'adulte tire la fiche « Descendre vers la douve » par son
+  repère de prise avant « Avancer vers la porte gardée », alors le schéma
+  redessine les pointillés dans ce nouvel ordre, de gauche à droite, et après
+  « Ajouter », les trois choix sont dans cet ordre dans le texte de « Devant
+  le château ». Seuls les choix d'une même scène s'ordonnent entre eux ; ils
+  s'ajoutent après ceux qu'elle a déjà, que la copie réordonne comme avant.
+  Pas de boutons : le glisser-déposer, comme partout ailleurs. Partout dans
+  « Chemins », les suites d'une scène se lisent de gauche à droite dans
+  l'ordre de ses choix (dagre les rangeait à rebours ; le schéma est retourné
+  en miroir, sans autre changement de disposition).
 
 **Mesuré à l'essai du 11 novembre 2026 :** un tour coûte 3 à 4 centimes
 (3 ou 4 étoiles) et prend une dizaine de secondes ; la qualité, jugée sur huit

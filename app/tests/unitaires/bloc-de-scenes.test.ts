@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  cheminsAvecLeBloc, elaguer, EXEMPLES, libelleDAjout, lireReglagesBloc, resteAReprendre, retirerScene, totalDuChapitre, type Proposition,
+  cheminsAvecLeBloc, elaguer, EXEMPLES, libelleDAjout, lireReglagesBloc, ordonnerLesChoix, resteAReprendre, retirerScene, totalDuChapitre, type Proposition,
 } from "@/domaine/bloc-de-scenes";
 import { blocDeScenes, lireLeBloc, simulerUnBloc, type EntreeBloc } from "@/serveur/ia/aides/bloc-de-scenes";
 
@@ -18,7 +18,7 @@ const entree = (maj: Partial<EntreeBloc> = {}): EntreeBloc => ({
   ],
   origine: { id: ORIGINE, ref: "S001", titre: "L’orée de la forêt", consigne: null, paragraphes: ["Le héros arrive."] },
   demande: "trois chemins : le sentier des fougères, le ruisseau, la grotte",
-  reglages: { manque: "demander", consignes: true },
+  reglages: { consignes: true },
   reponses: [],
   ...maj,
 });
@@ -85,7 +85,7 @@ describe("La réponse de l'IA, relue sans confiance (F13.7)", () => {
   });
 
   it("F13-AC41 — « Consignes » éteint : des titres seuls, sans consigne ni liste, pas même pour la scène d'origine ; la consigne au modèle le dit", () => {
-    const e = entree({ reglages: { manque: "demander", consignes: false } });
+    const e = entree({ reglages: { consignes: false } });
     const p = lu(simulerUnBloc(e), e);
     expect(p.scenes.every((s) => s.consigne === "" && s.liste.length === 0)).toBe(true);
     expect(p.consigneOrigine).toBeNull();
@@ -142,6 +142,13 @@ describe("Le bloc, retouché sur place (F13.7, « une scène proposée se retire
     expect(vu.liens.find((l) => l.id === "propose:C1")).toMatchObject({ de: ORIGINE, vers: "propose:N1", propose: true });
     expect(cheminsAvecLeBloc(chemins, null)).toBe(chemins);
   });
+  it("F13-AC43 — les choix d'une rangée tirés dans un autre ordre : le texte et le schéma suivent, les autres rangées ne bougent pas", () => {
+    const tire = ordonnerLesChoix(p, ORIGINE, ["C2", "C1"]);
+    expect(tire.choix.map((c) => c.cle)).toEqual(["C2", "C1", "C3", "C4", "C5"]);
+    const chemins = { noeuds: [{ id: ORIGINE, reference: 1, titre: "L’orée", etat: "cours" as const, vide: false, depart: false, fin: false, lien: "/s" }], liens: [], entrees: [] };
+    expect(cheminsAvecLeBloc(chemins, tire).noeuds.filter((n) => n.propose).map((n) => n.id)).toEqual(["propose:N2", "propose:N1", "propose:N3", "propose:N4"]);
+    expect(ordonnerLesChoix(p, "N1", ["C5", "C3"]).choix.map((c) => c.cle)).toEqual(["C1", "C2", "C5", "C4", "C3"]);
+  });
   it("les bornes : huit nouvelles scènes au plus, sur deux niveaux, dans l'ordre où on les rencontre", () => {
     const scenes = Array.from({ length: 12 }, (_, i) => ({ cle: `N${i + 1}`, titre: "t", consigne: "", liste: [], inventee: false }));
     const choix = [
@@ -156,54 +163,74 @@ describe("Le bloc, retouché sur place (F13.7, « une scène proposée se retire
   });
 });
 
-describe("Les réglages du bloc, gardés avec le compte (F13.7)", () => {
-  it("« Me le demander » et les consignes par défaut ; une valeur inconnue revient au défaut", () => {
-    expect(lireReglagesBloc({})).toEqual({ manque: "demander", consignes: true });
-    expect(lireReglagesBloc({ manque: "completer", consignes: false })).toEqual({ manque: "completer", consignes: false });
-    expect(lireReglagesBloc({ manque: "n'importe", consignes: "non" })).toEqual({ manque: "demander", consignes: true });
-    expect(lireReglagesBloc(null)).toEqual({ manque: "demander", consignes: true });
+describe("Le réglage du bloc, gardé avec le compte (F13.7)", () => {
+  it("les consignes par défaut ; « Ce qui manque », retiré le 11 novembre 2026, est ignoré", () => {
+    expect(lireReglagesBloc({})).toEqual({ consignes: true });
+    expect(lireReglagesBloc({ manque: "completer", consignes: false })).toEqual({ consignes: false });
+    expect(lireReglagesBloc({ consignes: "non" })).toEqual({ consignes: true });
+    expect(lireReglagesBloc(null)).toEqual({ consignes: true });
   });
 });
 
-describe("Clarifier et recadrer (F13.7, lot 4)", () => {
+describe("Clarifier, affiner et recadrer (F13.7)", () => {
   const TROISIEME = "trois chemins : le sentier des fougères, le ruisseau, et un troisième";
   const reponse = (maj: Record<string, unknown>) => ({ scenes: [{ cle: "N1", titre: "Le sentier", consigne: "", liste: [], inventee: false }], choix: [{ de: "S001", vers: "N1", libelle: "Suivre le sentier", invente: false }], consigne_origine: { consigne: "", liste: [] }, questions: [], reste: "", ...maj });
 
-  it("F13-AC36 — « Me le demander » : un troisième chemin non décrit reçoit une question, et aucune scène de plus ; une demande complète n'en reçoit aucune ; trois questions au plus", () => {
+  it("F13-AC36 — des questions pour affiner, avec leurs réponses toutes prêtes : trois au plus, trois réponses au plus chacune, aucune qui agrandit l'arbre ; une question déjà répondue ne revient pas", () => {
     const e = entree({ demande: TROISIEME });
     const p = lu(simulerUnBloc(e), e);
     expect(p.questions).toHaveLength(1);
-    expect(p.questions[0]).toMatch(/chemin 3/);
+    expect(p.questions[0].question).toMatch(/chemin 3/);
+    expect(p.questions[0].reponses).toHaveLength(3);
     expect(p.scenes).toHaveLength(3);
     expect(lu(simulerUnBloc(entree())).questions).toEqual([]);
-    expect(lu(reponse({ questions: ["Un ?", "Deux ?", "Trois ?", "Quatre ?"] })).questions).toEqual(["Un ?", "Deux ?", "Trois ?"]);
-    // La consigne au modèle : une question ne propose jamais d'agrandir l'arbre
+    const quatre = ["Un ?", "Deux ?", "Trois ?", "Quatre ?"].map((question) => ({ question, reponses: ["a", "b", "c", "d"] }));
+    expect(lu(reponse({ questions: quatre })).questions).toEqual(quatre.slice(0, 3).map((q) => ({ ...q, reponses: ["a", "b", "c"] })));
+    // Une question seule, sans réponses toutes prêtes, se garde : la réponse libre suffit
+    expect(lu(reponse({ questions: ["Le ton ?"] })).questions).toEqual([{ question: "Le ton ?", reponses: [] }]);
+    const repondu = entree({ reponses: [{ question: "Le ton ?", reponse: "Sombre" }] });
+    expect(lu(reponse({ questions: [{ question: "Le ton ?", reponses: ["Sombre", "Gai"] }] }), repondu).questions).toEqual([]);
+    // La consigne au modèle : une question ne propose jamais d'agrandir l'arbre, et rien n'est forcé
     const systeme = blocDeScenes.systeme(e);
     expect(systeme).toContain("elle ne propose jamais une scène, un chemin ou une suite de plus");
-    expect(systeme).toContain("Une demande claire ne reçoit aucune question");
+    expect(systeme).toContain("s'il n'y a rien d'utile à demander, la liste reste vide");
   });
 
-  it("F13-AC37 — « L'IA complète » : le troisième chemin est décrit et marqué comme inventé, sans question, même si le modèle en posait", () => {
-    const e = entree({ demande: TROISIEME, reglages: { manque: "completer", consignes: true } });
+  it("F13-AC37 — l'IA complète toujours : le troisième chemin est imaginé et marqué", () => {
+    const e = entree({ demande: TROISIEME });
     const p = lu(simulerUnBloc(e), e);
-    expect(p.questions).toEqual([]);
     expect(p.scenes.find((s) => s.inventee)?.titre).toBe("Le chemin des ronces");
-    expect(lu(reponse({ questions: ["Où mène-t-il ?"] }), e).questions).toEqual([]);
-    expect(blocDeScenes.systeme(e)).toContain("invente-le toi-même");
-    // « Me le demander » : rien n'est marqué inventé, même si le modèle le prétend
-    expect(lu(reponse({ scenes: [{ cle: "N1", titre: "Le sentier", consigne: "", liste: [], inventee: true }] })).scenes[0].inventee).toBe(false);
+    expect(blocDeScenes.systeme(e)).toContain("imagine-le toi-même");
+    expect(lu(reponse({ scenes: [{ cle: "N1", titre: "Le sentier", consigne: "", liste: [], inventee: true }] })).scenes[0].inventee).toBe(true);
   });
 
-  it("y répondre redessine : la réponse et la proposition à l'écran partent avec la demande", () => {
+  it("F13-AC44 — affiner : la proposition à l'écran, retouchée, part avec la précision et les réponses, et se modifie sans repartir de zéro", () => {
     const e = entree({
-      demande: TROISIEME, reponses: [{ question: "Où mène le chemin 3 ?", reponse: "Une cabane de bûcheron" }],
-      actuelle: { origine: ORIGINE, scenes: [{ cle: "N1", titre: "Le sentier retouché", consigne: "", liste: [], inventee: false }], choix: [{ cle: "C1", de: ORIGINE, vers: "N1", libelle: "Suivre", invente: false }], consigneOrigine: null, questions: [], reste: null },
+      demande: TROISIEME,
+      reponses: [{ question: "Où mène le chemin 3 ?", reponse: "Une cabane de bûcheron" }],
+      precision: "le ruisseau doit être dangereux",
+      actuelle: {
+        origine: ORIGINE,
+        scenes: [
+          { cle: "N1", titre: "Le sentier des fougères", consigne: "Raconte le sentier.", liste: [], inventee: false },
+          { cle: "N2", titre: "Le chemin des ronces", consigne: "", liste: [], inventee: true },
+        ],
+        choix: [{ cle: "C1", de: ORIGINE, vers: "N1", libelle: "Suivre", invente: false }, { cle: "C2", de: ORIGINE, vers: "N2", libelle: "Prendre les ronces", invente: true }],
+        consigneOrigine: null, questions: [], reste: null,
+      },
     });
     const message = blocDeScenes.message(e);
     expect(message).toContain("Réponse : Une cabane de bûcheron");
-    expect(message).toContain("N1 « Le sentier retouché »");
+    expect(message).toContain("le ruisseau doit être dangereux");
+    expect(message).toContain("N1 « Le sentier des fougères »");
     expect(message).toContain("choix « Suivre » : S001 → N1");
-    expect(lu(simulerUnBloc(e), e).scenes.map((s) => s.titre)).toContain("Une cabane de bûcheron");
+    expect(message).toContain("Affine la proposition actuelle");
+    expect(blocDeScenes.systeme(e)).toContain("modifie seulement ce que demandent sa précision et ses réponses");
+    const affinee = lu(simulerUnBloc(e), e);
+    expect(affinee.scenes.map((s) => s.titre)).toEqual(["Le sentier des fougères", "Une cabane de bûcheron"]);
+    expect(affinee.scenes[0].consigne).toContain("Le ruisseau doit être dangereux.");
+    expect(affinee.choix.map((c) => c.libelle)).toEqual(["Suivre", "Prendre les ronces"]);
+    expect(affinee.questions).toEqual([]);
   });
 
   it("F13-AC40 — une demande trop large : huit nouvelles scènes au plus, la phrase de ce qui reste, et ce reste repris dans le champ après l'ajout", () => {

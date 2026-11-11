@@ -185,6 +185,16 @@ function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Disposition {
   for (const t of aTracer) g.setEdge(t.de, t.vers, t.libelle ? { width: t.libelle.l, height: t.libelle.h, labelpos: "c" } : {}, t.id);
 
   dagre.layout(g);
+  // dagre range les suites d'une scène de droite à gauche, dans l'ordre du texte : le schéma se retourne en miroir,
+  // sans rien changer d'autre, pour que les choix se lisent de gauche à droite comme dans le texte (F13-AC43).
+  // Lui donner les liens à rebours aurait le même effet, mais change la disposition, et la gâte sur un grand chapitre.
+  const bordDroit = g.graph().width ?? 0;
+  for (const v of g.nodes()) g.node(v).x = bordDroit - g.node(v).x;
+  for (const e of g.edges()) {
+    const a = g.edge(e);
+    if (typeof a.x === "number") a.x = bordDroit - a.x;
+    for (const p of (a.points ?? []) as Point[]) p.x = bordDroit - p.x;
+  }
 
   // ——— Les rangs : ceux des cartes et ceux des libellés, de haut en bas ———
   const demis = new Map<number, number>();

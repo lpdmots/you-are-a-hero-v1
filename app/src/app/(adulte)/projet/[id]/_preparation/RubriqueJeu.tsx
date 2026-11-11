@@ -29,7 +29,7 @@ export function RubriqueJeu({ projet, preparation }: { projet: ProjetDuCarnet; p
   const titre = aChoix ? "Objets et formules" : "Objets de l’histoire";
   return (
     <section className={styles.facultatif__corps} aria-label={titre}>
-      <div>
+      <div className={styles.jeu}>
         <div className={aChoix ? styles.cols : undefined}>
           <Objets projetId={projet.id} objets={preparation.objets} deClasse={deClasse} />
           {aChoix ? <Formules projetId={projet.id} formules={preparation.formules} /> : null}
