@@ -4618,7 +4618,9 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   des fiches côte à côte, consignes et listes visibles d'emblée. Le panneau
   d'une scène cliquée reste étroit. Reste possible, s'il le demande après
   essai : un « Agrandir » qui étend le panneau à toute la largeur le temps de
-  relire. Construit le même jour, sans migration.
+  relire. Construit le même jour, sans migration. Précisé à sa demande le
+  même jour : le panneau reste étroit tant qu'on écrit la demande, et ne
+  s'élargit (la colonne avec) qu'une fois la proposition dessinée.
 
 ## Hors de la première livraison
 

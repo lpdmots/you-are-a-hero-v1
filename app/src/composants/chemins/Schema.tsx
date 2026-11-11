@@ -418,11 +418,13 @@ export default function Schema({
       return e;
     });
   const vus = useMemo(() => (blocOuvert ? cheminsAvecLeBloc(chemins, bloc.proposition) : chemins), [blocOuvert, chemins, bloc.proposition]);
-  // Le temps du bloc, la colonne de navigation se replie : le schéma garde sa moitié de l'écran
+  // Le panneau ne s'élargit qu'une fois la proposition dessinée : avant, la demande tient dans le
+  // panneau ordinaire. Large, la colonne de navigation se replie et le schéma garde sa moitié de l'écran.
+  const blocLarge = blocOuvert && bloc.proposition !== null;
   useEffect(() => {
-    replierLaColonnePourUnTemps(blocOuvert);
+    replierLaColonnePourUnTemps(blocLarge);
     return () => replierLaColonnePourUnTemps(false);
-  }, [blocOuvert]);
+  }, [blocLarge]);
 
   // La disposition se calcule une fois la police de l'outil chargée : les libellés se mesurent avec elle
   useEffect(() => {
@@ -517,7 +519,7 @@ export default function Schema({
   const largeurToile = Math.max(place.largeur, Math.ceil(l * zoom + 2 * MARGE));
   const hauteurToile = Math.ceil(h * zoom + 2 * MARGE);
   // Là où l'adulte construit, un schéma qui tient à gauche du panneau s'y centre : le panneau, en s'ouvrant, ne couvre rien et rien ne bouge
-  const panneau = blocOuvert ? largeurDuBloc() : PANNEAU;
+  const panneau = blocLarge ? largeurDuBloc() : PANNEAU;
   const largeurUtile = construire && l * zoom + 2 * MARGE <= place.largeur - panneau - 24 ? place.largeur - panneau - 24 : largeurToile;
   useEffect(() => {
     courantRef.current = { noeuds, zoom, dessine: dessine && disposition !== null };
@@ -1066,10 +1068,10 @@ export default function Schema({
         )}
         {/* La place du panneau : le cadre défile assez loin pour montrer ce qu'il couvre */}
         {/* Pas pour un chapitre qui tient à gauche du panneau : rien n'est dessous, et une barre de défilement surgirait */}
-        {panneauOuvert && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" style={blocOuvert ? { width: panneau + 20 } : undefined} /> : null}
+        {panneauOuvert && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" style={blocLarge ? { width: panneau + 20 } : undefined} /> : null}
       </div>
       {services && blocOuvert ? (
-        <div className="chemins__rail chemins__rail--bloc" ref={rail} style={{ width: panneau }}>
+        <div className={`chemins__rail${blocLarge ? " chemins__rail--bloc" : ""}`} ref={rail} style={blocLarge ? { width: panneau } : undefined}>
           <PanneauDuBloc
             etat={bloc}
             setEtat={setBloc}
