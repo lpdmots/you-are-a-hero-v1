@@ -2569,7 +2569,7 @@ a.onglet-chemin__note:hover {
     inset 1px 0 0 #ecd28a,
     inset 0 1px 0 #ecd28a;
 }
-.onglet-chemin--manque .onglet-chemin__note {
+.onglet-chemin__note--manque {
   color: var(--e-valider);
 }
 /* Ce que le parcours de « À regarder » désigne garde son cadre tant qu'on n'est pas passé au suivant */

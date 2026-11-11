@@ -6,7 +6,8 @@ import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type
  * à reprendre », puis « Choix en onglets », 11 novembre 2026).
  *
  * Chaque choix d'une scène est un onglet au pied de sa carte : la carte s'élargit d'un onglet
- * par choix, et le trait part du point de sortie de son onglet. Plus rien n'est écrit sur un
+ * par choix, et le trait part du point de sortie de son onglet. Un choix qui mène à plusieurs
+ * scènes garde un seul onglet, d'où part un trait par destination (11 novembre 2026). Plus rien n'est écrit sur un
  * trait. Les onglets se rangent comme partent leurs traits, pour que ceux d'une même carte ne se
  * croisent pas sous elle (révisé par le porteur le 11 novembre 2026 : d'abord l'ordre du texte,
  * toujours) ; l'ordre du texte se lit dans l'espace de travail de la scène. Un retour en arrière s'écrit dans son onglet : il ne pèse pas dans la
@@ -55,17 +56,22 @@ export type Point = { x: number; y: number };
  * chapitre ; un choix sans destination ou vers une scène supprimée.
  */
 export type SorteDOnglet = "suite" | "retour" | "ici" | "sortie" | "manque";
+/** Une destination d'un choix : le lien, ce qu'il dit, les lignes de sa note, et le point d'où part son trait, s'il en part un */
+export type Destination = { id: string; sorte: SorteDOnglet; note: number; noteCoupee: boolean; sortie: Point | null };
 export type Onglet = Place & {
-  /** Le choix : son identité, et la scène d'où il part */
+  /** Le choix : l'identité de sa première destination, qui le désigne, et la scène d'où il part */
   id: string; de: string;
+  /** Ce que dit l'onglet : la sorte de sa destination ; à plusieurs, ce qui manque ou sort l'emporte sur une suite */
   sorte: SorteDOnglet;
+  /** Ses destinations, dans l'ordre du texte : une seule le plus souvent */
+  destinations: Destination[];
   /** Le nombre de lignes que prend sa phrase, trois au plus ; coupée, elle se lit en entier pour la scène regardée */
   lignes: number; coupe: boolean;
-  /** Le nombre de lignes de sa note — le retour, la sortie, ce qui manque —, deux au plus ; aucune pour une suite */
+  /** Le nombre de lignes de ses notes — le retour, la sortie, ce qui manque —, deux au plus par destination ; aucune pour une suite */
   note: number;
   /** Sa note dépasse ses deux lignes : elle se lit en entier au survol */
   noteCoupee: boolean;
-  /** Le point d'où part son trait, au bord bas de la carte ; rien quand aucun trait n'en part */
+  /** Le point d'où part son premier trait, au bord bas de la carte ; rien quand aucun trait n'en part */
   sortie: Point | null;
 };
 export type Trait = {
@@ -151,12 +157,21 @@ export function arrondir(points: Point[], rayon = PISTE.rayon): string {
 
 type Aposer = { element: Element; l: number; h: number };
 /**
- * `x` : où le trait quitte sa carte, compté depuis son bord gauche — le milieu de l'onglet que le choix a dans
- * l'ordre du texte, avant que les onglets de la carte soient rangés comme partent leurs traits ; rien pour une étiquette
+ * `x` : où le trait quitte sa carte, compté depuis son bord gauche — sa place dans l'onglet que le choix a dans
+ * l'ordre du texte, avant que les onglets de la carte soient rangés comme partent leurs traits ; rien pour une étiquette.
+ * `onglet` : cet onglet, son milieu dans l'ordre du texte, sa largeur, et combien de traits en partent (retours compris)
  */
-type Atracer = { id: string; de: string; vers: string; x: number | null };
+type Atracer = { id: string; de: string; vers: string; x: number | null; onglet?: { id: string; centre: number; l: number; traits: number } };
 /** L'onglet d'un choix avant que sa carte ait sa place : sa largeur, et ce que sa phrase demande */
-type Prevu = { lien: LienDeChemin; sorte: SorteDOnglet; l: number; lignes: number; coupe: boolean; note: number; noteCoupee: boolean };
+type Prevu = {
+  id: string; sorte: SorteDOnglet; l: number; lignes: number; coupe: boolean; note: number; noteCoupee: boolean;
+  destinations: { lien: LienDeChemin; sorte: SorteDOnglet; note: number; noteCoupee: boolean }[];
+};
+/** Où part le j-ième des n traits d'un onglet, depuis son bord gauche : répartis sur sa largeur, un seul au milieu */
+const placeDansLOnglet = (l: number, j: number, n: number): number => (l * (j + 1)) / (n + 1);
+/** À plusieurs destinations, l'onglet dit ce qui demande le plus l'attention */
+const PRIORITE: SorteDOnglet[] = ["manque", "sortie", "retour", "ici", "suite"];
+const partDeLOnglet = (sorte: SorteDOnglet): boolean => sorte === "suite" || sorte === "retour";
 
 /**
  * La ligne d'un retour en arrière, de son onglet au côté de la scène où il revient : elle descend un
@@ -196,23 +211,39 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
   // carte ; à plusieurs, la carte s'élargit d'un onglet par choix, sur un seul rang ———
   const retours = retoursEnArriere(noeuds, liens);
   const titres = new Map(noeuds.map((n) => [n.id, n.titre ?? "scène sans titre"]));
-  const choixDe = new Map<string, LienDeChemin[]>();
-  for (const l of liens) if (scenes.has(l.de)) choixDe.set(l.de, [...(choixDe.get(l.de) ?? []), l]);
+  // Les destinations d'un même choix se suivent dans le texte : elles partagent son onglet
+  const choixDe = new Map<string, LienDeChemin[][]>();
+  for (const l of liens) {
+    if (!scenes.has(l.de)) continue;
+    const liste = choixDe.get(l.de) ?? [];
+    const dernier = liste.at(-1);
+    if (l.choix && dernier?.[0].choix === l.choix) dernier.push(l);
+    else liste.push([l]);
+    choixDe.set(l.de, liste);
+  }
+  const hauteurDeNote = (note: number): number => (note ? ONGLET.note + (note - 1) * ONGLET.ligneDeNote : 0);
   const prevus = new Map<string, { onglets: Prevu[]; h: number }>();
   for (const [scene, choix] of choixDe) {
     const l = choix.length > 1 ? ONGLET.l : CARTE.l;
-    const onglets = choix.map((lien): Prevu => {
+    const onglets = choix.map((groupe): Prevu => {
+      const lien = groupe[0];
       // La mesure d'une phrase est juste à peu de chose près : un rien de marge évite la ligne de trop qu'on n'aurait pas prévue
       const utile = (l - 2 * ONGLET.cote - (lien.cache ? ONGLET.signe : 0)) / 1.04;
       const lignes = lignesDe(texteDuLibelle(lien), utile, (t) => mesurer(t, "onglet"));
-      const sorte = sorteDOnglet(lien, scenes, retours);
-      // La note tient sur deux lignes au plus : « retour à » et le titre de la scène, qui se reconnaît à sa fin
-      const texte = noteDeLOnglet(sorte, lien, (scene) => titres.get(scene) ?? "scène sans titre");
-      const lignesDeNote = texte === null ? 0 : lignesDe(texte, (l - 2 * ONGLET.cote - ONGLET.signe) / 1.04, (t) => mesurer(t, "etiquette"));
-      const note = Math.min(ONGLET.lignesDeNote, lignesDeNote);
-      return { lien, sorte, l, lignes: Math.min(ONGLET.lignes, lignes), coupe: lignes > ONGLET.lignes, note, noteCoupee: lignesDeNote > ONGLET.lignesDeNote };
+      const destinations = groupe.map((d) => {
+        const sorte = sorteDOnglet(d, scenes, retours);
+        // La note tient sur deux lignes au plus : « retour à » et le titre de la scène, qui se reconnaît à sa fin
+        const texte = noteDeLOnglet(sorte, d, (s) => titres.get(s) ?? "scène sans titre");
+        const lignesDeNote = texte === null ? 0 : lignesDe(texte, (l - 2 * ONGLET.cote - ONGLET.signe) / 1.04, (t) => mesurer(t, "etiquette"));
+        return { lien: d, sorte, note: Math.min(ONGLET.lignesDeNote, lignesDeNote), noteCoupee: lignesDeNote > ONGLET.lignesDeNote };
+      });
+      const sorte = PRIORITE.find((p) => destinations.some((d) => d.sorte === p))!;
+      const note = destinations.reduce((n, d) => n + d.note, 0);
+      return {
+        id: lien.id, sorte, l, lignes: Math.min(ONGLET.lignes, lignes), coupe: lignes > ONGLET.lignes, note, noteCoupee: destinations.some((d) => d.noteCoupee), destinations,
+      };
     });
-    const h = ONGLET.haut + ONGLET.bas + Math.max(...onglets.map((o) => o.lignes * ONGLET.ligne + (o.note ? ONGLET.note + (o.note - 1) * ONGLET.ligneDeNote : 0)));
+    const h = ONGLET.haut + ONGLET.bas + Math.max(...onglets.map((o) => o.lignes * ONGLET.ligne + o.destinations.reduce((n, d) => n + hauteurDeNote(d.note), 0)));
     prevus.set(scene, { onglets, h });
   }
 
@@ -246,7 +277,12 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
   // pas, une sortie et un choix à regarder se lisent dans leur onglet
   for (const { onglets } of prevus.values()) {
     onglets.forEach((o, i) => {
-      if (o.sorte === "suite") aTracer.push({ id: o.lien.id, de: o.lien.de, vers: o.lien.vers!, x: i * o.l + o.l / 2 });
+      const traits = o.destinations.filter((d) => partDeLOnglet(d.sorte)).length;
+      o.destinations
+        .filter((d) => d.sorte === "suite")
+        .forEach((d, j) =>
+          aTracer.push({ id: d.lien.id, de: d.lien.de, vers: d.lien.vers!, x: i * o.l + placeDansLOnglet(o.l, j, traits), onglet: { id: o.id, centre: i * o.l + o.l / 2, l: o.l, traits } }),
+        );
     });
   }
 
@@ -277,6 +313,7 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
   const traits: Trait[] = [];
   const onglets = new Map<string, Onglet[]>();
   const departs = new Map(disposes.flatMap((d) => [...d.departs]));
+  const centres = new Map(disposes.flatMap((d) => [...d.centres]));
   let x = 0;
   let y = 0;
   let hauteurDeLigne = 0;
@@ -309,20 +346,31 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
       scene,
       liste
         .map((o, i): Onglet => {
-          const depart = departs.get(o.lien.id);
-          const gauche = p.x + (depart === undefined ? i * o.l : depart - o.l / 2);
-          const part = o.sorte === "suite" || o.sorte === "retour";
-          return { id: o.lien.id, de: scene, sorte: o.sorte, x: gauche, y: p.y + p.h - h, l: o.l, h, lignes: o.lignes, coupe: o.coupe, note: o.note, noteCoupee: o.noteCoupee, sortie: part ? { x: gauche + o.l / 2, y: p.y + p.h } : null };
+          const centre = centres.get(o.id);
+          const gauche = p.x + (centre === undefined ? i * o.l : centre - o.l / 2);
+          // Les suites partent où leur trait a été rangé ; les retours en arrière, à la suite, dans l'ordre du texte
+          const traits = o.destinations.filter((d) => partDeLOnglet(d.sorte)).length;
+          let j = o.destinations.filter((d) => d.sorte === "suite").length;
+          const destinations = o.destinations.map((d): Destination => {
+            const depart = departs.get(d.lien.id);
+            const x = d.sorte === "suite" ? (depart === undefined ? undefined : p.x + depart) : d.sorte === "retour" ? gauche + placeDansLOnglet(o.l, j++, traits) : undefined;
+            const sortie = partDeLOnglet(d.sorte) ? { x: x ?? gauche + o.l / 2, y: p.y + p.h } : null;
+            return { id: d.lien.id, sorte: d.sorte, note: d.note, noteCoupee: d.noteCoupee, sortie };
+          });
+          const sortie = destinations.find((d) => d.sortie)?.sortie ?? null;
+          return { id: o.id, de: scene, sorte: o.sorte, destinations, x: gauche, y: p.y + p.h - h, l: o.l, h, lignes: o.lignes, coupe: o.coupe, note: o.note, noteCoupee: o.noteCoupee, sortie };
         })
         .sort((a, b) => a.x - b.x),
     );
   }
   for (const liste of onglets.values()) {
     for (const o of liste) {
-      if (o.sorte !== "retour" || !o.sortie) continue;
-      const vers = liens.find((l) => l.id === o.id)!.vers!;
-      const points = tracerLeRetour(o.sortie, places.get(o.de)!, places.get(vers)!, milieuxDuTitre.get(vers) ?? CARTE.h / 2);
-      traits.push({ id: o.id, de: o.de, vers, points, d: arrondir(points), retour: true });
+      for (const d of o.destinations) {
+        if (d.sorte !== "retour" || !d.sortie) continue;
+        const vers = liens.find((l) => l.id === d.id)!.vers!;
+        const points = tracerLeRetour(d.sortie, places.get(o.de)!, places.get(vers)!, milieuxDuTitre.get(vers) ?? CARTE.h / 2);
+        traits.push({ id: d.id, de: o.de, vers, points, d: arrondir(points), retour: true });
+      }
     }
   }
   return { largeur: Math.ceil(largeur), hauteur: Math.ceil(y + hauteurDeLigne), elements, places, traits, onglets };
@@ -364,7 +412,7 @@ function ecarterLesVerticales(traits: Trait[]): void {
 }
 
 /** Un morceau du chapitre dont toutes les scènes se tiennent par des choix : ses rangs, ses traits. */
-function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Disposition, "onglets"> & { departs: Map<string, number> } {
+function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Disposition, "onglets"> & { departs: Map<string, number>; centres: Map<string, number> } {
   const elements = aPoser.map((p) => p.element);
   const g = new dagre.graphlib.Graph({ multigraph: true });
   // Entre deux cartes d'un rang, la place du « + », à cheval sur le bord droit de la carte survolée
@@ -400,20 +448,32 @@ function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Dispositi
   const rangDe = new Map(rangs.map((r, i) => [r.k, i]));
   const rang = (y: number): number => rangDe.get(cle(y)) ?? 0;
 
-  // ——— Les onglets d'une carte se rangent comme partent leurs traits : celui dont le trait va le plus à gauche
+  // ——— Les onglets d'une carte se rangent comme partent leurs traits : celui dont les traits vont le plus à gauche
   // est le plus à gauche, si bien que deux traits d'une même carte ne se croisent pas sous elle. Ils échangent
-  // entre eux les places qu'ils avaient dans l'ordre du texte ; un onglet sans trait ne bouge pas ———
+  // entre eux les places qu'ils avaient dans l'ordre du texte ; un onglet sans trait ne bouge pas. Dans un onglet
+  // à plusieurs destinations, ses traits se rangent de même ———
   const departs = new Map<string, number>();
-  const parCarte = new Map<string, { id: string; x: number; voisin: number }[]>();
+  const centres = new Map<string, number>();
+  type DOnglet = { id: string; centre: number; l: number; traits: number; voisins: { id: string; voisin: number }[] };
+  const parCarte = new Map<string, Map<string, DOnglet>>();
   for (const t of dessines) {
-    if (t.x === null || t.de === t.vers) continue;
+    if (t.x === null || t.de === t.vers || !t.onglet) continue;
     const voisin = t.points.slice(1, -1)[0]?.x ?? g.node(t.vers).x;
-    parCarte.set(t.de, [...(parCarte.get(t.de) ?? []), { id: t.id, x: t.x, voisin }]);
+    const carte = parCarte.get(t.de) ?? new Map<string, DOnglet>();
+    const o = carte.get(t.onglet.id) ?? { ...t.onglet, voisins: [] };
+    o.voisins.push({ id: t.id, voisin });
+    carte.set(t.onglet.id, o);
+    parCarte.set(t.de, carte);
   }
-  for (const liste of parCarte.values()) {
-    const libres = liste.map((o) => o.x).sort((a, b) => a - b);
+  const moyenne = (o: DOnglet): number => o.voisins.reduce((s, v) => s + v.voisin, 0) / o.voisins.length;
+  for (const carte of parCarte.values()) {
+    const liste = [...carte.values()];
+    const libres = liste.map((o) => o.centre).sort((a, b) => a - b);
     // À égalité, l'ordre du texte : le tri garde l'ordre d'arrivée
-    [...liste].sort((a, b) => a.voisin - b.voisin).forEach((o, i) => departs.set(o.id, libres[i]));
+    [...liste].sort((a, b) => moyenne(a) - moyenne(b)).forEach((o, i) => {
+      centres.set(o.id, libres[i]);
+      [...o.voisins].sort((a, b) => a.voisin - b.voisin).forEach((v, j) => departs.set(v.id, libres[i] - o.l / 2 + placeDansLOnglet(o.l, j, o.traits)));
+    });
   }
 
   // ——— Où chaque trait s'attache : au point de sortie de son onglet, en bas de la carte qu'il quitte, et en
@@ -520,5 +580,5 @@ function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Dispositi
   ecarterLesVerticales(traits);
   for (const t of traits) t.d = arrondir(t.points);
 
-  return { largeur: Math.ceil(g.graph().width ?? 0), hauteur: Math.ceil(y), elements, places, traits, departs };
+  return { largeur: Math.ceil(g.graph().width ?? 0), hauteur: Math.ceil(y), elements, places, traits, departs, centres };
 }

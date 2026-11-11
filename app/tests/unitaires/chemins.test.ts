@@ -311,6 +311,26 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
     expect(lignesDe("Qui va là\u00a0? demande la passeuse", 100, cinq)).toBe(2);
   });
 
+  it("F03-AC62 — un choix qui mène à deux scènes garde un seul onglet, d'où partent deux traits, chacun de son point de sortie", () => {
+    const digue = { libelle: "Longer la vieille digue", choix: "barque:3" };
+    const x = disposer(
+      { noeuds: [1, 2, 3, 4].map((n) => noeud(n)), liens: [lien(1, 2, 0, digue), lien(1, 3, 1, digue), lien(1, 4, 2, { choix: "barque:4" })], entrees: [] },
+      new Map(),
+    );
+    const onglets = x.onglets.get(id(1))!;
+    expect(onglets).toHaveLength(2);
+    const double = onglets.find((o) => o.destinations.length === 2)!;
+    expect(double).toMatchObject({ id: lien(1, 2).id, sorte: "suite", l: ONGLET.l });
+    expect(x.places.get(id(1))!.l).toBe(Math.max(CARTE.l, 2 * ONGLET.l));
+    const sorties = double.destinations.map((d) => d.sortie!);
+    expect(new Set(sorties.map((p) => p.x)).size).toBe(2);
+    for (const p of sorties) {
+      expect(p.x).toBeGreaterThan(double.x);
+      expect(p.x).toBeLessThan(double.x + double.l);
+    }
+    for (const dest of double.destinations) expect(x.traits.find((t) => t.id === dest.id)!.points[0]).toEqual(dest.sortie);
+  });
+
   it("F03-AC64 — « Renoncer et revenir au cercle » : un retour en arrière, écrit dans l'onglet ; sa ligne, tracée à la demande, va de l'onglet au côté de la scène où il revient", () => {
     const o = onglet("enigme>0");
     expect(o.sorte).toBe("retour");

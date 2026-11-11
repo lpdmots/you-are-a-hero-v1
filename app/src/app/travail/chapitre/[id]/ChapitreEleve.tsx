@@ -58,8 +58,10 @@ export function ChapitreEleve({
         qui: s.prise === null ? undefined : s.prise.par === "moi" ? "Toi" : s.prise.par === "eleve" ? nomPourEleves(s.prise.eleve, eleves) : majuscule(prof),
       })),
       liens: chapitre.liens.map(
-        (l): LienDeChemin => ({
+        (l, i, tous): LienDeChemin => ({
           id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: false, vers: l.cibleId,
+          // Une phrase qui mène à plusieurs scènes : ses renvois se suivent, avec le même libellé, et gardent un seul onglet
+          choix: `${l.sceneId}:${tous.findLastIndex((m, j) => j <= i && (j === 0 || tous[j - 1].sceneId !== m.sceneId || tous[j - 1].libelle !== m.libelle))}`,
           ailleurs: l.chapitreCible ? { chapitre: l.chapitreCible } : undefined,
           manque: l.manque ?? undefined,
         }),

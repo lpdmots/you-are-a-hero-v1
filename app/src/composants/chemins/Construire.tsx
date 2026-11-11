@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useId, useLayoutEffect, useRef, useState, type RefObject } from "react";
+import { Fragment, useEffect, useId, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
 import { LIBELLE_MAX } from "@/domaine/copie";
@@ -225,7 +225,7 @@ export function PanneauDeScene({
   /** Un de ses choix est ouvert à sa place : le panneau attend, tel qu'on l'a laissé (F03-AC74) */
   cache?: boolean;
   /** La ligne d'un choix ouvre ce choix, comme son onglet (F03-AC70) */
-  onOuvrirChoix?: (lienId: string) => void;
+  onOuvrirChoix?: (lienId: string, liens?: string[]) => void;
   /** « Ajouter » ouvre la même bulle que le « + » de la carte */
   onAjouter: () => void; onFermer: () => void;
   boutonAjouter: RefObject<HTMLButtonElement | null>;
@@ -242,7 +242,15 @@ export function PanneauDeScene({
   const [enRetrait, setEnRetrait] = useState<string | null>(null);
   const e = useEnregistrement();
   // Dans l'ordre du texte, quel que soit celui des onglets sur la carte, rangés pour que les traits ne se croisent pas (F03-AC62)
-  const choix = chemins.liens.filter((l) => l.de === scene.id);
+  // Un choix qui mène à plusieurs scènes est une seule ligne : ses destinations se suivent dans le texte
+  const choix = chemins.liens
+    .filter((l) => l.de === scene.id)
+    .reduce<LienDeChemin[][]>((groupes, l) => {
+      const dernier = groupes.at(-1);
+      if (l.choix && dernier?.[0].choix === l.choix) dernier.push(l);
+      else groupes.push([l]);
+      return groupes;
+    }, []);
   const parId = new Map(chemins.noeuds.map((n) => [n.id, n]));
   // Un retour en arrière porte ici le signe qu'il a dans son onglet (F03-AC64)
   const retours = retoursEnArriere(chemins.noeuds, chemins.liens);
@@ -336,17 +344,17 @@ export function PanneauDeScene({
           </div>
           {choix.length ? (
             <ul>
-              {choix.map((l) => {
-                const cible = l.vers ? parId.get(l.vers) : undefined;
+              {choix.map((groupe) => {
+                const l = groupe[0];
                 return (
-                  <li key={l.id} data-choix={l.id} className={designe === l.id ? "est-designe" : undefined}>
+                  <li key={l.id} data-choix={l.id} className={groupe.some((d) => d.id === designe) ? "est-designe" : undefined}>
                     {onOuvrirChoix ? (
                       // La ligne ouvre le choix : sa phrase, ses destinations, tout ce qui le règle (F03-AC70)
                       <button
                         type="button"
                         className="panneau-chemin__libelle panneau-chemin__ouvrir"
                         title={l.cache ? "Régler ce lien caché" : "Modifier ce choix"}
-                        onClick={() => onOuvrirChoix(l.id)}
+                        onClick={() => onOuvrirChoix(l.id, groupe.map((d) => d.id))}
                       >
                         {l.cache ? <Icone nom="cle" /> : null}
                         <span>{l.cache ? "Lien caché" : l.libelle || "Choix sans libellé"}</span>
@@ -364,38 +372,45 @@ export function PanneauDeScene({
                         )}
                       </span>
                     )}
-                    {l.manque ? (
-                      <span className="panneau-chemin__vers panneau-chemin__vers--manque">
-                        <span className="point-regarder" aria-hidden="true" />
-                        {l.manque === "sans" ? "Sans destination" : "Scène supprimée"}
-                        {/* Le remède, là où le manque est dit : choisir la scène, ou tirer l'onglet dans le schéma */}
-                        {l.manque === "sans" && construire.relierChoix && autres.length ? (
-                          <span className="geste-chemin__liste panneau-chemin__relier">
-                            <select
-                              className="pchamp"
-                              value=""
-                              aria-label={`Relier le choix « ${l.libelle || "sans libellé"} » à une scène`}
-                              title="Ou tirez son onglet, dans le schéma, jusqu’à une scène"
-                              disabled={enLiaison !== null}
-                              onChange={(ev) => void lier(l, ev.target.value)}
-                            >
-                              <option value="">Relier à…</option>
-                              {autres.map((n) => (
-                                <option key={n.id} value={n.id}>
-                                  {nomScene(n)}
-                                </option>
-                              ))}
-                            </select>
-                            <Icone nom="chevron-bas" />
+                    {groupe.map((d) => {
+                      const cible = d.vers ? parId.get(d.vers) : undefined;
+                      return (
+                        <Fragment key={d.id}>
+                        {d.manque ? (
+                          <span className="panneau-chemin__vers panneau-chemin__vers--manque">
+                            <span className="point-regarder" aria-hidden="true" />
+                            {d.manque === "sans" ? "Sans destination" : "Scène supprimée"}
+                            {/* Le remède, là où le manque est dit : choisir la scène, ou tirer l'onglet dans le schéma */}
+                            {d.manque === "sans" && construire.relierChoix && autres.length ? (
+                              <span className="geste-chemin__liste panneau-chemin__relier">
+                                <select
+                                  className="pchamp"
+                                  value=""
+                                  aria-label={`Relier le choix « ${l.libelle || "sans libellé"} » à une scène`}
+                                  title="Ou tirez son onglet, dans le schéma, jusqu’à une scène"
+                                  disabled={enLiaison !== null}
+                                  onChange={(ev) => void lier(d, ev.target.value)}
+                                >
+                                  <option value="">Relier à…</option>
+                                  {autres.map((n) => (
+                                    <option key={n.id} value={n.id}>
+                                      {nomScene(n)}
+                                    </option>
+                                  ))}
+                                </select>
+                                <Icone nom="chevron-bas" />
+                              </span>
+                            ) : null}
                           </span>
-                        ) : null}
-                      </span>
-                    ) : (
-                      <span className="panneau-chemin__vers">
-                        <Icone nom={l.ailleurs ? "sortie" : retours.has(l.id) ? "fleche-haut" : "fleche"} />
-                        {l.ailleurs ? `${l.ailleurs.chapitre}${l.ailleurs.nom ? ` · ${l.ailleurs.nom}` : ""}` : cible ? nomScene(cible) : ""}
-                      </span>
-                    )}
+                        ) : (
+                          <span className="panneau-chemin__vers">
+                            <Icone nom={d.ailleurs ? "sortie" : retours.has(d.id) ? "fleche-haut" : "fleche"} />
+                            {d.ailleurs ? `${d.ailleurs.chapitre}${d.ailleurs.nom ? ` · ${d.ailleurs.nom}` : ""}` : cible ? nomScene(cible) : ""}
+                          </span>
+                        )}
+                        </Fragment>
+                      );
+                    })}
                     {/* Un lien caché se retire depuis ses réglages, où se lit ce qu'il devient */}
                     {l.cache ? null : (
                       <button
@@ -405,6 +420,7 @@ export function PanneauDeScene({
                         title="Supprimer ce choix"
                         disabled={enRetrait !== null}
                         aria-busy={enRetrait === l.id || undefined}
+                        style={{ gridRow: `1 / span ${groupe.length + 1}` }}
                         onClick={() => void retirer(l)}
                       >
                         <Icone nom="corbeille" />

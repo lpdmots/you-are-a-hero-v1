@@ -252,7 +252,8 @@ export function PageChapitre({
           return { ok: true };
         },
         supprimerChoix: async (lien) => {
-          const fait = await supprimerChoixDuSchema(lien.de, lien.id);
+          // La ligne du panneau est le choix entier : ses destinations partent avec sa phrase
+          const fait = await supprimerChoixDuSchema(lien.de, lien.id, true);
           if (!fait.ok) {
             dire({ texte: fait.erreur });
             return fait;

@@ -29,6 +29,8 @@ export type NoeudDeChemin = {
 };
 export type LienDeChemin = {
   id: string; de: string; libelle: string;
+  /** Le choix qui porte ce lien : les destinations d'une même phrase partagent son onglet */
+  choix?: string;
   /** Liaison cachée par énigme : une suite du récit, sans phrase dans le texte (F05.1) */
   cache: boolean;
   /** La scène d'arrivée, si elle est dans ce chapitre */
@@ -80,7 +82,7 @@ export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string, 
     liens: plan.liens
       .filter((l) => ici.has(l.sceneId))
       .map((l): LienDeChemin => {
-        const base = { id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: l.cache };
+        const base = { id: l.renvoiId, de: l.sceneId, libelle: l.libelle, cache: l.cache, choix: l.choix };
         if (!l.cibleId) return { ...base, vers: null, manque: "sans" };
         const cible = ou.get(l.cibleId);
         // Une destination partie dans la corbeille n'est redirigée nulle part : le choix le dit (F03-AC14)

@@ -126,8 +126,10 @@ export const planDe = cache(async (e: Enseignant, projetId: string): Promise<Pla
 
   return {
     parties: plan, corbeille, departSceneId: (projet.data?.depart_scene_id as string | null) ?? null,
-    liens: ((liens.data ?? []) as { scene_id: string; renvoi_id: string; cible_id: string | null; libelle: string; cache: boolean }[]).map((l) => ({
+    liens: ((liens.data ?? []) as { scene_id: string; renvoi_id: string; cible_id: string | null; libelle: string; cache: boolean; rang: number }[]).map((l) => ({
       sceneId: l.scene_id, renvoiId: l.renvoi_id, cibleId: l.cible_id, libelle: l.libelle, cache: l.cache,
+      // Le rang d'un renvoi est celui de son bloc dans le texte, fois mille, plus sa place dans la phrase
+      choix: `${l.scene_id}:${Math.floor(l.rang / 1000)}`,
     })),
   };
 });

@@ -109,7 +109,11 @@ export type Supprime = {
 };
 
 /** Un lien du récit, déduit du texte d'une scène : un renvoi vers une destination, ou une liaison cachée (F05). */
-export type Lien = { sceneId: string; renvoiId: string; cibleId: string | null; libelle: string; cache: boolean };
+export type Lien = {
+  sceneId: string; renvoiId: string; cibleId: string | null; libelle: string; cache: boolean;
+  /** Le choix qui porte ce renvoi : les destinations d'une même phrase le partagent (« Chemins », un onglet par choix) */
+  choix?: string;
+};
 
 export type Plan = {
   parties: Partie[]; corbeille: Supprime[]; departSceneId: string | null;

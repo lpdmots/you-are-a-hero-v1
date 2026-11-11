@@ -61,17 +61,19 @@ const GLISSE = 380;
 
 /** Un onglet tel que sa carte le dessine : la phrase du choix, ce que l'outil y ajoute, et d'où part son trait. */
 type OngletDeCarte = {
-  id: string; sorte: SorteDOnglet; l: number; lignes: number; texte: string; cache: boolean; propose: boolean;
-  /** Sous la phrase, dans la voix de l'outil : le retour, la sortie, ce qui est à regarder ; sur une ou deux lignes */
-  note: string | null; lignesDeNote: number;
-  /** Ce qui se lit en entier pour la carte regardée : la phrase coupée (survolée ou cliquée), la note coupée (survolée) */
+  /** `id` : sa première destination, qui désigne le choix ; `liens` : toutes ses destinations, une le plus souvent */
+  id: string; liens: string[]; sorte: SorteDOnglet; l: number; lignes: number; texte: string; cache: boolean; propose: boolean;
+  /**
+   * Sous la phrase, dans la voix de l'outil, pour chaque destination qui en a une : le retour, la sortie, ce qui est à
+   * regarder, sur une ou deux lignes ; vers un autre chapitre, son adresse pour qui peut s'y rendre, et ce que dit le lien
+   */
+  notes: { id: string; sorte: SorteDOnglet; texte: string; lignes: number; lien?: string; aide?: string }[];
+  /** Ce qui se lit en entier pour la carte regardée : la phrase coupée (survolée ou cliquée), une note coupée (survolée) */
   coupe: boolean; noteCoupee: boolean;
-  /** Vers un autre chapitre : son adresse, pour qui peut s'y rendre, et ce que dit le lien */
-  lien?: string; aide?: string;
-  /** Un choix « Sans destination » : l'adulte le relie en tirant son onglet jusqu'à une scène (F03-AC67) */
-  tirable: boolean;
-  /** Le point de sortie d'où part son trait, compté depuis le bord gauche de la carte ; rien quand aucun trait n'en part au repos */
-  point: number | null;
+  /** Sa destination « Sans destination » : l'adulte la relie en tirant l'onglet jusqu'à une scène (F03-AC67) */
+  tirable: string | null;
+  /** Les points de sortie d'où partent ses traits, comptés depuis le bord gauche de la carte ; aucun quand aucun trait n'en part au repos */
+  points: { id: string; x: number }[];
 };
 type DonneesScene = NoeudDeChemin & { marques: Marque[]; onglets: OngletDeCarte[]; pied: number };
 type DonneesTrait = { d: string; cache: boolean; retour: boolean; propose?: boolean };
@@ -96,11 +98,11 @@ const Vue = createContext<{
   /** L'onglet d'un choix sans destination se tire jusqu'à une scène (F03-AC67) ; `tire` : celui qu'on tire en ce moment */
   relie: boolean; tire: string | null;
   /** L'onglet d'un choix, cliqué : sa scène est choisie, et ce choix s'ouvre dans l'espace de travail (F03-AC70) */
-  choisirChoix: (lienId: string, de: string) => void;
+  choisirChoix: (lienId: string, de: string, liens?: string[]) => void;
   /** Les onglets du choix ouvert : eux et leurs traits restent désignés tant qu'il l'est */
   ouverts: Set<string>;
-  /** L'onglet survolé : son trait seul ressort, pour suivre un chemin sans lire toute la carte */
-  onglet: string | null; survolerOnglet: (lienId: string | null) => void;
+  /** L'onglet survolé : ses traits seuls ressortent, pour suivre un chemin sans lire toute la carte */
+  onglet: string[] | null; survolerOnglet: (liens: string[] | null) => void;
   /** La scène proposée par le bloc dont la ligne est ouverte dans le panneau, et le geste qui l'ouvre (F13.7) */
   ouverteDuBloc: string | null;
   ouvrirDuBloc: (cle: string) => void;
@@ -125,24 +127,27 @@ function Onglets({ scene, onglets, pied }: { scene: string; onglets: OngletDeCar
   return (
     <div className="onglets-chemin" style={{ height: pied }}>
       {onglets.map((o) => {
-        const seTire = vue.construit && vue.relie && o.tirable;
+        const seTire = vue.construit && vue.relie && o.tirable !== null;
+        const aUnTrait = o.points.length > 0;
         // Pour l'adulte, à une taille où il se lit : le clic ouvre le choix, lien caché compris (F03-AC70, AC76)
         const seChoisit = peutOuvrirUnChoix({ construit: vue.construit, loin: vue.loin, propose: o.propose });
         return (
           <div
             key={o.id}
             className={classes(
-              "onglet-chemin", `onglet-chemin--${o.sorte}`, o.cache && "est-cache", o.propose && "est-propose", vue.montre === o.id && "est-montree", vue.tire === o.id && "est-tire",
-              vue.ouverts.has(o.id) && "est-ouvert",
+              "onglet-chemin", `onglet-chemin--${o.sorte}`, o.cache && "est-cache", o.propose && "est-propose",
+              vue.montre !== null && o.liens.includes(vue.montre) && "est-montree", vue.tire !== null && o.liens.includes(vue.tire) && "est-tire",
+              o.liens.some((l) => vue.ouverts.has(l)) && "est-ouvert",
               seChoisit && "se-choisit", seTire && "se-tire nodrag nopan",
             )}
             data-chemin={o.id}
-            style={{ width: o.l, "--lignes": o.lignes, "--note": o.lignesDeNote } as CSSProperties}
+            data-liens={o.liens.join(" ")}
+            style={{ width: o.l, "--lignes": o.lignes } as CSSProperties}
             title={seTire ? "Tirer jusqu’à une scène pour y relier ce choix" : undefined}
-            onPointerDown={seTire ? (e) => vue.commencerLien(scene, e, o.id) : undefined}
-            onMouseEnter={o.point === null ? undefined : () => vue.survolerOnglet(o.id)}
-            onMouseLeave={o.point === null ? undefined : () => vue.survolerOnglet(null)}
-            onClick={seChoisit ? () => vue.choisirChoix(o.id, scene) : undefined}
+            onPointerDown={seTire ? (e) => vue.commencerLien(scene, e, o.tirable!) : undefined}
+            onMouseEnter={aUnTrait ? () => vue.survolerOnglet(o.liens) : undefined}
+            onMouseLeave={aUnTrait ? () => vue.survolerOnglet(null) : undefined}
+            onClick={seChoisit ? () => vue.choisirChoix(o.id, scene, o.liens) : undefined}
           >
             {/* Le repère de prise : cet onglet se tire jusqu'à une scène */}
             {seTire ? <Icone nom="prise" /> : null}
@@ -150,16 +155,18 @@ function Onglets({ scene, onglets, pied }: { scene: string; onglets: OngletDeCar
               {o.cache ? <Icone nom="cle" /> : null}
               <span>{o.texte}</span>
             </span>
-            {o.note === null ? null : o.sorte === "sortie" && o.lien ? (
-              <Link className="onglet-chemin__note nodrag nopan" href={o.lien} title={o.aide} onClick={(e) => e.stopPropagation()}>
-                <Icone nom="sortie" />
-                <span>{o.note}</span>
-              </Link>
-            ) : (
-              <span className="onglet-chemin__note" title={o.aide}>
-                {o.sorte === "manque" ? <span className="point-regarder" aria-hidden="true" /> : <Icone nom={o.sorte === "sortie" ? "sortie" : "fleche-haut"} />}
-                <span>{o.note}</span>
-              </span>
+            {o.notes.map((n) =>
+              n.sorte === "sortie" && n.lien ? (
+                <Link key={n.id} className="onglet-chemin__note nodrag nopan" href={n.lien} title={n.aide} style={{ "--note": n.lignes } as CSSProperties} onClick={(e) => e.stopPropagation()}>
+                  <Icone nom="sortie" />
+                  <span>{n.texte}</span>
+                </Link>
+              ) : (
+                <span key={n.id} className={classes("onglet-chemin__note", n.sorte === "manque" && "onglet-chemin__note--manque")} title={n.aide} style={{ "--note": n.lignes } as CSSProperties}>
+                  {n.sorte === "manque" ? <span className="point-regarder" aria-hidden="true" /> : <Icone nom={n.sorte === "sortie" ? "sortie" : "fleche-haut"} />}
+                  <span>{n.texte}</span>
+                </span>
+              ),
             )}
           </div>
         );
@@ -170,8 +177,8 @@ function Onglets({ scene, onglets, pied }: { scene: string; onglets: OngletDeCar
 
 /** Les points de sortie, à cheval sur le bord bas de la carte : d'où part le trait de chaque choix. */
 function Sorties({ onglets }: { onglets: OngletDeCarte[] }) {
-  return onglets.map((o) =>
-    o.point === null ? null : <span key={o.id} className={classes("sortie-chemin", o.cache && "est-cache", o.propose && "est-propose")} style={{ left: o.point }} aria-hidden="true" />,
+  return onglets.flatMap((o) =>
+    o.points.map((p) => <span key={p.id} className={classes("sortie-chemin", o.cache && "est-cache", o.propose && "est-propose")} style={{ left: p.x }} aria-hidden="true" />),
   );
 }
 
@@ -337,7 +344,7 @@ function TraitDeChemin({ id, source, target, data }: EdgeProps<Trait>) {
   const touche = vue.ouverts.size
     ? vue.ouverts.has(id)
     : vue.onglet !== null && vue.choisie === null
-      ? id === vue.onglet
+      ? vue.onglet.includes(id)
       : vue.active !== null && (source === vue.active || target === vue.active);
   // Un retour en arrière s'écrit dans son onglet : sa ligne ne se montre que pour la scène survolée ou cliquée (F03-AC64)
   if (data.retour && !touche) return null;
@@ -523,20 +530,29 @@ export default function Schema({
       const ongletsDe = (scene: string, gauche: number): OngletDeCarte[] =>
         (d.onglets.get(scene) ?? []).map((o) => {
           const l = liens.get(o.id)!;
-          const ailleurs = o.sorte === "sortie" ? l.ailleurs : undefined;
+          const notes = o.destinations.flatMap((dest) => {
+            const ld = liens.get(dest.id)!;
+            const texte = noteDeLOnglet(dest.sorte, ld, (s) => parId.get(s)?.titre ?? "scène sans titre");
+            if (texte === null) return [];
+            const ailleurs = dest.sorte === "sortie" ? ld.ailleurs : undefined;
+            return [
+              {
+                id: dest.id, sorte: dest.sorte, texte, lignes: dest.note, lien: ailleurs?.lien,
+                aide: ailleurs
+                  ? ailleurs.lien
+                    ? `Voir les chemins de « ${ailleurs.chapitre} »${ailleurs.nom ? `, où mène ce choix : ${ailleurs.nom}` : ""}`
+                    : `Ce choix mène à un autre chapitre : ${ailleurs.chapitre}`
+                  : dest.sorte === "retour"
+                    ? `Ce choix ramène à « ${parId.get(ld.vers!)?.titre ?? "scène sans titre"} », où le lecteur est déjà passé`
+                    : undefined,
+              },
+            ];
+          });
           return {
-            id: o.id, sorte: o.sorte, l: o.l, lignes: o.lignes, texte: texteDuLibelle(l), cache: l.cache, propose: !!l.propose,
-            note: noteDeLOnglet(o.sorte, l, (scene) => parId.get(scene)?.titre ?? "scène sans titre"), lignesDeNote: o.note, coupe: o.coupe, noteCoupee: o.noteCoupee,
-            lien: ailleurs?.lien,
-            aide: ailleurs
-              ? ailleurs.lien
-                ? `Voir les chemins de « ${ailleurs.chapitre} »${ailleurs.nom ? `, où mène ce choix : ${ailleurs.nom}` : ""}`
-                : `Ce choix mène à un autre chapitre : ${ailleurs.chapitre}`
-              : o.sorte === "retour"
-                ? `Ce choix ramène à « ${parId.get(l.vers!)?.titre ?? "scène sans titre"} », où le lecteur est déjà passé`
-                : undefined,
-            tirable: l.manque === "sans" && !l.propose,
-            point: o.sorte === "suite" && o.sortie ? o.sortie.x - gauche : null,
+            id: o.id, liens: o.destinations.map((dest) => dest.id), sorte: o.sorte, l: o.l, lignes: o.lignes, texte: texteDuLibelle(l), cache: l.cache, propose: !!l.propose,
+            notes, coupe: o.coupe, noteCoupee: o.noteCoupee,
+            tirable: l.propose ? null : (o.destinations.find((dest) => liens.get(dest.id)!.manque === "sans")?.id ?? null),
+            points: o.destinations.flatMap((dest) => (dest.sorte === "suite" && dest.sortie ? [{ id: dest.id, x: dest.sortie.x - gauche }] : [])),
           };
         });
       const etat = courantRef.current;
@@ -830,7 +846,7 @@ export default function Schema({
   const departDuLien = (de: string, onglet?: string): { x: number; y: number } | null => {
     const c = cadre.current;
     const el = onglet
-      ? c?.querySelector<HTMLElement>(`.onglet-chemin[data-chemin="${CSS.escape(onglet)}"]`)
+      ? c?.querySelector<HTMLElement>(`.onglet-chemin[data-liens~="${CSS.escape(onglet)}"]`)
       : (c?.querySelector<HTMLElement>(`.plus-chemin[data-de="${CSS.escape(de)}"]`) ?? c?.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(de)}"]`));
     const r = el?.getBoundingClientRect();
     return r ? { x: r.left + r.width / 2, y: r.bottom } : null;
@@ -949,11 +965,11 @@ export default function Schema({
   }, [lienEnAttente]);
   const ouvreDesChoix = !!construire?.choix;
   const choisirChoix = useCallback(
-    (lienId: string, de: string) => {
+    (lienId: string, de: string, liens?: string[]) => {
       // Le clic qui suit un onglet tiré puis relâché n'ouvre rien : un clic ouvre, un tirage relie
       if (vientDeTirer.current) return;
       choisir(de);
-      if (ouvreDesChoix) setChoixOuvert({ scene: de, lien: lienId, onglets: [lienId] });
+      if (ouvreDesChoix) setChoixOuvert({ scene: de, lien: lienId, onglets: liens ?? [lienId] });
       else setDesigne(lienId);
     },
     [choisir, ouvreDesChoix],
@@ -1012,7 +1028,7 @@ export default function Schema({
   const enTirant = tire !== null;
   const relie = !!construire?.relierChoix;
   const ongletTire = tire?.onglet ?? null;
-  const [ongletSurvole, setOngletSurvole] = useState<string | null>(null);
+  const [ongletSurvole, setOngletSurvole] = useState<string[] | null>(null);
   const vue = useMemo(
     // Pendant qu'on tire un lien, la carte survolée ne montre que son cadre : ni ses flèches, ni « Ouvrir »
     () => ({
@@ -1260,7 +1276,7 @@ export default function Schema({
                 scene={sceneChoisie}
                 chemins={chemins}
                 cache={!!construire.choix && choixOuvert?.scene === sceneChoisie.id}
-                onOuvrirChoix={construire.choix ? (lienId) => setChoixOuvert({ scene: sceneChoisie.id, lien: lienId, onglets: [lienId] }) : undefined}
+                onOuvrirChoix={construire.choix ? (lienId, liens) => setChoixOuvert({ scene: sceneChoisie.id, lien: lienId, onglets: liens ?? [lienId] }) : undefined}
                 construire={{
                   ...construire,
                   // Le schéma se redispose après chaque geste : la scène du panneau garde sa place à l'écran
