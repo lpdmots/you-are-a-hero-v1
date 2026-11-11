@@ -1523,11 +1523,21 @@ le porteur décide :
   - *Un onglet par choix, sous la carte, partout, élève compris.* Les
     phrases de choix quittent les traits, qui redeviennent de simples
     lignes. Chaque trait part du point de sortie de son onglet.
-  - *L'ordre du texte, toujours.* Les onglets se rangent de gauche à droite
-    dans l'ordre où les choix se lisent dans le texte de la scène. Si la
-    disposition ne suit pas, deux traits se croisent juste sous la carte :
-    c'est accepté. Ranger les onglets au-dessus de leur destination, comme
-    sur la maquette, est écarté : l'ordre changerait d'un ajout à l'autre.
+  - *Des onglets rangés pour que les traits ne se croisent pas (révisé par
+    le porteur le 11 novembre 2026, après l'essai du lot).* Les onglets
+    d'une carte se rangent comme partent leurs traits : deux traits d'une
+    même carte ne se croisent pas sous elle. L'ordre du texte, lui, se lit
+    dans l'espace de travail : quand on clique la scène, « Ses choix » y
+    sont dans l'ordre où ils se lisent dans son texte. Sa première
+    décision, le même jour, était « l'ordre du texte, toujours », un
+    croisement sous la carte étant accepté ; il juge à l'écran que le
+    croisement gêne plus que l'ordre (« ce n'est pas grave si les choix ne
+    sont pas dans l'ordre, si cela évite les croisements »). Conséquence
+    dite : l'ordre des onglets d'une carte peut changer après un ajout, la
+    disposition étant recalculée. La disposition cherche toujours à ranger
+    les suites d'une scène dans l'ordre du texte (F13-AC43) : les deux
+    ordres ne diffèrent que là où elle n'y parvient pas — nulle part sur
+    le marais.
   - *Ce qu'un onglet dit à la place d'un trait.* Un retour en arrière
     s'écrit dans l'onglet (« retour à « Digue — les planches pourries » »,
     précédé de son signe) ;
@@ -1567,7 +1577,7 @@ le porteur décide :
       d'eux.
     - *Lien caché :* un onglet « Lien caché », marqué de la clé, dans la
       voix de l'outil, puisque le texte n'a pas de phrase pour lui ; son
-      trait reste en pointillé. Il se place après les choix du texte.
+      trait reste en pointillé.
     - *Quatre choix ou plus :* la carte s'élargit d'un onglet par choix,
       sur un seul rang ; jamais deux rangs, dont le premier n'aurait pas de
       sortie. Un seul choix prend la largeur de la carte.
@@ -1674,15 +1684,19 @@ le porteur décide :
   ses chemins, « Scènes » restant à un clic ; un chapitre de récit classique
   s'ouvre sur ses scènes ; une scène ouverte depuis « Scènes » ramène à
   « Scènes », une scène ouverte depuis « Chemins » ramène à « Chemins ».
-- **F03-AC62 — Un onglet par choix, dans l'ordre du texte :** étant donné
-  « Marais — la barque s'enlise », dont le texte porte dans cet ordre
-  « Suivre les feux follets », « Longer la vieille digue » et « Appeler à
-  l'aide », lorsque l'adulte ou l'élève ouvre « Chemins », alors sa carte
-  porte ces trois onglets de gauche à droite, dans cet ordre, chaque phrase
-  dans la voix du récit ; chaque trait part du point de sortie de son
-  onglet ; aucun trait ne porte de texte. Si la disposition place la scène
-  du deuxième choix à gauche de celle du premier, les onglets gardent
-  l'ordre du texte et les deux traits se croisent sous la carte.
+- **F03-AC62 — Un onglet par choix, sans croisement sous la carte :** étant
+  donné « Marais — la barque s'enlise », dont le texte porte « Suivre les
+  feux follets », « Longer la vieille digue » et « Appeler à l'aide »,
+  lorsque l'adulte ou l'élève ouvre « Chemins », alors sa carte porte ces
+  trois onglets côte à côte, chaque phrase dans la voix du récit ; chaque
+  trait part du point de sortie de son onglet ; aucun trait ne porte de
+  texte. **Révisé le 11 novembre 2026** : si la disposition place la scène
+  du deuxième choix à gauche de celle du premier, leurs onglets échangent
+  leurs places et les deux traits ne se croisent pas ; un onglet d'où ne
+  part aucun trait garde la sienne ; dans l'espace de travail de la scène
+  cliquée, « Ses choix » restent dans l'ordre du texte. (Le critère disait
+  d'abord : les onglets gardent l'ordre du texte et les deux traits se
+  croisent sous la carte.)
 - **F03-AC63 — Un onglet borné :** étant donné « Échanger la plume argentée
   contre une barque », l'un des deux choix de « Ponton — le marché du
   héron », lorsque l'adulte regarde le schéma, alors son onglet fait
@@ -1740,9 +1754,10 @@ le porteur décide :
   proposé depuis « Clairière »
   ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)), alors chaque choix
   proposé est un onglet en pointillé, dans la couleur de l'IA, sous la carte
-  d'où il part — à la suite des choix qu'elle a déjà, pour « Clairière » —,
-  et son trait en pointillé part de cet onglet ; l'ordre des onglets suit
-  celui des fiches (F13-AC43).
+  d'où il part — avec les choix qu'elle a déjà, pour « Clairière » —, et son
+  trait en pointillé part de cet onglet ; les onglets se rangent comme
+  partent leurs traits (F03-AC62), les scènes proposées suivant l'ordre des
+  fiches (F13-AC43).
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
@@ -6714,7 +6729,7 @@ changement d'état de la scène.
   destination, et sa copie la montre. « Annuler » rend le choix sans
   destination de la même façon. Poser de nouveau le choix à la fin du texte,
   ce que le mécanisme savait déjà faire, est écarté : son onglet aurait
-  changé de place, quand les onglets suivent l'ordre du texte
+  changé de place et le choix aurait quitté la sienne dans le texte
   ([architecture](architecture.md#choix-en-onglets-11-novembre-2026)).
 
 - **F08-AC44 — Ajout pendant qu'un élève écrit :** étant donné Alice

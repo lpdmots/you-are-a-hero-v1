@@ -234,6 +234,7 @@ export function PanneauDeScene({
   const [cleListe, setCleListe] = useState(0);
   const [enRetrait, setEnRetrait] = useState<string | null>(null);
   const e = useEnregistrement();
+  // Dans l'ordre du texte, quel que soit celui des onglets sur la carte, rangés pour que les traits ne se croisent pas (F03-AC62)
   const choix = chemins.liens.filter((l) => l.de === scene.id);
   const parId = new Map(chemins.noeuds.map((n) => [n.id, n]));
   // Un retour en arrière porte ici le signe qu'il a dans son onglet (F03-AC64)

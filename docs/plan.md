@@ -4786,8 +4786,10 @@ questions d'affinage. Cela révise sa décision du 11 octobre 2026 (« choix
 notés sur les flèches », carte « sans référence ni choix »). Règles :
 [F03.1](specifications.md#f03-onglets), F03-AC62 à AC69, et
 [F08.1](specifications.md#f08-ajout-du-plan) pour le choix relié. Ne pas lui
-reposer : un onglet par choix, partout, élève compris ; l'ordre du texte,
-toujours ; le retour, la sortie et ce qui manque écrits dans l'onglet ; le
+reposer : un onglet par choix, partout, élève compris ; des onglets rangés
+pour que les traits ne se croisent pas sous la carte, l'ordre du texte se
+lisant dans l'espace de travail (révisé par lui le même jour, voir plus
+bas) ; le retour, la sortie et ce qui manque écrits dans l'onglet ; le
 tampon et le prénom de qui écrit, sans attribution depuis la carte ; l'onglet
 « Sans destination » qui se tire ; l'onglet borné, les points de sortie de
 loin ; la voix du récit pour les phrases.
@@ -4887,6 +4889,19 @@ du marais, et corrigés aussitôt, sans nouvelle mesure
 Le marais fait alors 1 657 points de large : à 1 366 points, colonne
 repliée, il tient à 74 % ; colonne ouverte, il défile un peu de côté, comme
 F03-AC43 le prévoit.
+
+**Révisé par le porteur le 11 novembre 2026, après son essai du lot** (« ce
+n'est pas grave si les choix ne sont pas dans l'ordre, si cela évite les
+croisements dans les liaisons ; par contre, quand on clique sur la scène,
+dans l'espace de travail, ils doivent l'être ») : les onglets d'une carte se
+rangent comme partent leurs traits, au lieu de garder l'ordre du texte ; un
+onglet sans trait (retour, sortie, choix à regarder) garde sa place ; « Ses
+choix », dans le panneau, restent dans l'ordre du texte, comme ils l'étaient.
+F03-AC62 et AC69 révisés, construit le même jour, sans migration, un commit.
+Dit au porteur : sur le marais, aucune carte ne change, la disposition
+suivant déjà l'ordre du texte partout ; la règle ne joue que là où elle n'y
+parvient pas (deux scènes qui mènent aux deux mêmes suites dans des ordres
+contraires), et l'ordre des onglets peut alors changer après un ajout.
 
 **À lui dire, sans décision de ma part :** à la taille lisible (70 % sur le
 marais), une phrase d'onglet fait environ 10 points à l'écran. Relever le

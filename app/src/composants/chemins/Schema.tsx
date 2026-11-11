@@ -32,7 +32,7 @@ import { disposer, noteDeLOnglet, texteDeLEtiquette, texteDuLibelle, type Dispos
  * la taille. Aucune carte ne se déplace à la main. Ce fichier et ses deux bibliothèques ne se
  * chargent qu'à l'ouverture de « Chemins », sur un écran large.
  *
- * Chaque choix d'une scène est un onglet au pied de sa carte, dans l'ordre du texte (F03.1, « Choix
+ * Chaque choix d'une scène est un onglet au pied de sa carte (F03.1, « Choix
  * en onglets », F03-AC62 à AC69) : sa phrase dans la voix du récit, et ce que l'outil y ajoute — un
  * retour en arrière, une sortie vers un autre chapitre, « Sans destination ». Le trait part du point
  * de sortie de l'onglet ; plus rien n'est écrit sur un trait.
@@ -110,7 +110,7 @@ const Vue = createContext<{
 const classes = (...noms: (string | false | null | undefined)[]): string => noms.filter(Boolean).join(" ");
 
 /**
- * Les onglets d'une carte, dans l'ordre du texte (F03-AC62) : la phrase de chaque choix dans la voix du
+ * Les onglets d'une carte, rangés comme partent leurs traits (F03-AC62) : la phrase de chaque choix dans la voix du
  * récit, bornée à trois lignes, et sous elle ce que l'outil en dit quand aucun trait n'en part.
  */
 function Onglets({ scene, onglets, pied }: { scene: string; onglets: OngletDeCarte[]; pied: number }) {

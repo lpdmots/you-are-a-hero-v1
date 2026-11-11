@@ -1740,9 +1740,11 @@ et « Scène supprimée », au retour en arrière, à la place du « + » et à
 [`maquettes/chemins/choix-en-onglets.png`](../maquettes/chemins/choix-en-onglets.png) :
 onze scènes du marais, chaque choix en onglet sous sa carte, un rond de
 sortie sous chaque onglet, les phrases en italique du récit. Trois de ses
-dispositions ne sont pas reprises, sur sa décision : elle montre l'état par
+dispositions n'ont pas été reprises d'abord, sur sa décision : elle montre l'état par
 une pastille et des mots (décidé : le tampon de l'application) ; elle range
-les onglets au-dessus de leur destination (décidé : l'ordre du texte) ; elle
+les onglets au-dessus de leur destination (d'abord décidé : l'ordre du
+texte ; révisé par lui le même jour, après l'essai : les onglets se rangent
+bien pour que les traits ne se croisent pas, comme sur la maquette) ; elle
 ne trace pas les retours (décidé : au survol ou au clic). Quatre autres ont
 été jugées perfectibles et dites au porteur avant de construire : ses traits
 courbes passent sous des cartes (l'application garde ses traits à angles
@@ -1778,11 +1780,12 @@ simulée).
 | « Ouvrir » | Une pastille de 24 points cernée de canard, posée sur le coin haut droit de la carte survolée, presque toute au-dessus d'elle ; pleine au survol. La carte cliquée ne la montre pas, le panneau portant déjà « Ouvrir » ; l'élève, qui n'a pas de panneau, la garde. |
 | De loin | Sous 62 % : les phrases et les notes ne s'affichent plus, le rang d'onglets reste, l'ambre aussi ; les ronds de sortie deviennent des points pleins, gris, à peine grossis. |
 | La proposition de l'IA | Les choix proposés : des onglets cernés d'un pointillé canard, fond canard très pâle, à la suite des onglets de la scène d'origine ; ceux d'une scène proposée, séparés par un pointillé. Leurs ronds et leurs traits en canard, les traits en pointillé. |
-| Les traits | De simples lignes grises à angles droits arrondis, la pointe en bas ; canard foncé et plus épais pour la scène survolée ou cliquée. Deux traits d'une même carte peuvent se croiser sous elle. |
+| Les traits | De simples lignes grises à angles droits arrondis, la pointe en bas ; canard foncé et plus épais pour la scène survolée ou cliquée. |
 | La mini-carte | Un onglet à regarder y est un rectangle ambre sur sa carte. |
 | L'élève | Les mêmes cartes ; « Toi » sur sa scène ; ni « + », ni onglet à tirer ; le nom d'un autre chapitre sans lien. |
 | « À regarder » | Un cas réglé quitte la liste sans que la vue parte vers le suivant ; le compteur revient à « – ». |
-| L'aide (« i ») | « Sous chaque scène, ses choix, dans l'ordre du texte : un trait part de chacun vers la scène où il mène. […] Un choix qui ramène le lecteur en arrière, qui mène dans un autre chapitre ou qui n'a pas encore de destination le dit sous sa phrase. » ; pour l'adulte, « Un choix « Sans destination » se tire lui aussi jusqu'à une scène. » |
+| L'ordre des onglets | Comme partent leurs traits : deux traits d'une même carte ne se croisent pas sous elle (révisé par le porteur le 11 novembre 2026, après l'essai). Un onglet sans trait garde sa place. Dans l'espace de travail, « Ses choix » restent dans l'ordre du texte. |
+| L'aide (« i ») | « Sous chaque scène, ses choix : un trait part de chacun vers la scène où il mène. […] Un choix qui ramène le lecteur en arrière, qui mène dans un autre chapitre ou qui n'a pas encore de destination le dit sous sa phrase. » ; pour l'adulte, « Un choix « Sans destination » se tire lui aussi jusqu'à une scène. » |
 
 **Les deux lectures** donnent 24/40 (informée) et 24/40 (indépendante), sans
 point qui empêche la tâche ; toutes deux tiennent la carte pour la réussite

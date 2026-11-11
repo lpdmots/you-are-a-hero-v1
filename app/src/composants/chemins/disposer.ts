@@ -5,9 +5,11 @@ import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type
  * Place les scènes d'un chapitre de haut en bas et trace leurs chemins (F03.1, « Vue Chemins
  * à reprendre », puis « Choix en onglets », 11 novembre 2026).
  *
- * Chaque choix d'une scène est un onglet au pied de sa carte, dans l'ordre du texte : la carte
- * s'élargit d'un onglet par choix, et le trait part du point de sortie de son onglet. Plus rien
- * n'est écrit sur un trait. Un retour en arrière s'écrit dans son onglet : il ne pèse pas dans la
+ * Chaque choix d'une scène est un onglet au pied de sa carte : la carte s'élargit d'un onglet
+ * par choix, et le trait part du point de sortie de son onglet. Plus rien n'est écrit sur un
+ * trait. Les onglets se rangent comme partent leurs traits, pour que ceux d'une même carte ne se
+ * croisent pas sous elle (révisé par le porteur le 11 novembre 2026 : d'abord l'ordre du texte,
+ * toujours) ; l'ordre du texte se lit dans l'espace de travail de la scène. Un retour en arrière s'écrit dans son onglet : il ne pèse pas dans la
  * disposition, et sa ligne, tracée à part, ne se montre qu'à la demande — tout autre trait descend.
  *
  * dagre range les scènes par rangs et ordonne chaque rang pour réduire les croisements. Les traits
@@ -69,7 +71,7 @@ export type Trait = {
 };
 export type Disposition = {
   largeur: number; hauteur: number; elements: Element[]; places: Map<string, Place>; traits: Trait[];
-  /** Par scène, ses onglets dans l'ordre du texte, de gauche à droite */
+  /** Par scène, ses onglets de gauche à droite, rangés comme partent leurs traits */
   onglets: Map<string, Onglet[]>;
 };
 
@@ -140,7 +142,10 @@ export function arrondir(points: Point[], rayon = PISTE.rayon): string {
 }
 
 type Aposer = { element: Element; l: number; h: number };
-/** `x` : où le trait quitte sa carte, compté depuis son bord gauche — le milieu de son onglet ; rien pour une étiquette */
+/**
+ * `x` : où le trait quitte sa carte, compté depuis son bord gauche — le milieu de l'onglet que le choix a dans
+ * l'ordre du texte, avant que les onglets de la carte soient rangés comme partent leurs traits ; rien pour une étiquette
+ */
 type Atracer = { id: string; de: string; vers: string; x: number | null };
 /** L'onglet d'un choix avant que sa carte ait sa place : sa largeur, et ce que sa phrase demande */
 type Prevu = { lien: LienDeChemin; sorte: SorteDOnglet; l: number; lignes: number; coupe: boolean; note: number };
@@ -179,7 +184,7 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
   };
   const etiquette = (e: Element) => poser(e, Math.min(ETIQUETTE.max, Math.ceil(mesurer(texteDeLEtiquette(e), "etiquette")) + 48), ETIQUETTE.h);
 
-  // ——— Les onglets de chaque scène, dans l'ordre du texte : un par choix. Seul, il prend la largeur de la
+  // ——— Les onglets de chaque scène : un par choix, d'abord dans l'ordre du texte. Seul, il prend la largeur de la
   // carte ; à plusieurs, la carte s'élargit d'un onglet par choix, sur un seul rang ———
   const retours = retoursEnArriere(noeuds, liens);
   const titres = new Map(noeuds.map((n) => [n.id, n.titre ?? "scène sans titre"]));
@@ -256,6 +261,7 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
   const places = new Map<string, Place>();
   const traits: Trait[] = [];
   const onglets = new Map<string, Onglet[]>();
+  const departs = new Map(disposes.flatMap((d) => [...d.departs]));
   let x = 0;
   let y = 0;
   let hauteurDeLigne = 0;
@@ -278,18 +284,22 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
     x += d.largeur + MORCEAUX.ecart;
   }
 
-  // ——— Les onglets, une fois les cartes à leur place : au pied de chacune, de gauche à droite ; puis la
-  // ligne de chaque retour en arrière, de son onglet à la scène où il revient ———
+  // ——— Les onglets, une fois les cartes à leur place : au pied de chacune, de gauche à droite. Ceux d'où part
+  // un trait ont pris la place qui évite un croisement sous la carte ; les autres gardent celle du texte. Puis
+  // la ligne de chaque retour en arrière, de son onglet à la scène où il revient ———
   for (const [scene, { onglets: liste, h }] of prevus) {
     const p = places.get(scene);
     if (!p) continue;
     onglets.set(
       scene,
-      liste.map((o, i): Onglet => {
-        const gauche = p.x + i * o.l;
-        const part = o.sorte === "suite" || o.sorte === "retour";
-        return { id: o.lien.id, de: scene, sorte: o.sorte, x: gauche, y: p.y + p.h - h, l: o.l, h, lignes: o.lignes, coupe: o.coupe, note: o.note, sortie: part ? { x: gauche + o.l / 2, y: p.y + p.h } : null };
-      }),
+      liste
+        .map((o, i): Onglet => {
+          const depart = departs.get(o.lien.id);
+          const gauche = p.x + (depart === undefined ? i * o.l : depart - o.l / 2);
+          const part = o.sorte === "suite" || o.sorte === "retour";
+          return { id: o.lien.id, de: scene, sorte: o.sorte, x: gauche, y: p.y + p.h - h, l: o.l, h, lignes: o.lignes, coupe: o.coupe, note: o.note, sortie: part ? { x: gauche + o.l / 2, y: p.y + p.h } : null };
+        })
+        .sort((a, b) => a.x - b.x),
     );
   }
   for (const liste of onglets.values()) {
@@ -304,9 +314,9 @@ export function disposer(chemins: Chemins, marques: Map<string, Marque[]>, mesur
 }
 
 /**
- * Deux traits ne descendent pas l'un sur l'autre. Le trait d'un choix part du milieu de son onglet, où
- * qu'aille sa scène : il arrive qu'un autre trait de la même carte, après son déplacement de côté,
- * redescende juste là. Celui des deux qui ne part pas d'un onglet s'écarte alors d'un pas.
+ * Deux traits ne descendent pas l'un sur l'autre. Le trait d'un choix part du milieu de son onglet : il
+ * arrive qu'un autre trait, après son déplacement de côté, redescende juste là. Celui des deux qui ne part
+ * pas d'un onglet s'écarte alors d'un pas.
  */
 function ecarterLesVerticales(traits: Trait[]): void {
   type Montant = { trait: Trait; i: number; x: number; haut: number; bas: number };
@@ -339,7 +349,7 @@ function ecarterLesVerticales(traits: Trait[]): void {
 }
 
 /** Un morceau du chapitre dont toutes les scènes se tiennent par des choix : ses rangs, ses traits. */
-function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Disposition, "onglets"> {
+function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Disposition, "onglets"> & { departs: Map<string, number> } {
   const elements = aPoser.map((p) => p.element);
   const g = new dagre.graphlib.Graph({ multigraph: true });
   // Entre deux cartes d'un rang, la place du « + », à cheval sur le bord droit de la carte survolée
@@ -375,6 +385,22 @@ function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Dispositi
   const rangDe = new Map(rangs.map((r, i) => [r.k, i]));
   const rang = (y: number): number => rangDe.get(cle(y)) ?? 0;
 
+  // ——— Les onglets d'une carte se rangent comme partent leurs traits : celui dont le trait va le plus à gauche
+  // est le plus à gauche, si bien que deux traits d'une même carte ne se croisent pas sous elle. Ils échangent
+  // entre eux les places qu'ils avaient dans l'ordre du texte ; un onglet sans trait ne bouge pas ———
+  const departs = new Map<string, number>();
+  const parCarte = new Map<string, { id: string; x: number; voisin: number }[]>();
+  for (const t of dessines) {
+    if (t.x === null || t.de === t.vers) continue;
+    const voisin = t.points.slice(1, -1)[0]?.x ?? g.node(t.vers).x;
+    parCarte.set(t.de, [...(parCarte.get(t.de) ?? []), { id: t.id, x: t.x, voisin }]);
+  }
+  for (const liste of parCarte.values()) {
+    const libres = liste.map((o) => o.x).sort((a, b) => a - b);
+    // À égalité, l'ordre du texte : le tri garde l'ordre d'arrivée
+    [...liste].sort((a, b) => a.voisin - b.voisin).forEach((o, i) => departs.set(o.id, libres[i]));
+  }
+
   // ——— Où chaque trait s'attache : au point de sortie de son onglet, en bas de la carte qu'il quitte, et en
   // haut de celle où il arrive. Les arrivées d'un même bord s'écartent, dans l'ordre d'où viennent les traits ———
   type Attache = { trait: string; bout: "debut" | "fin"; voisin: number };
@@ -386,12 +412,12 @@ function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Dispositi
     const dedans = t.points.slice(1, -1);
     const bas = g.node(t.vers).y > g.node(t.de).y;
     descend.set(t.id, bas);
-    // Le trait d'un choix part du milieu de son onglet, où qu'aille sa scène : les onglets gardent l'ordre du texte
+    // Le trait d'un choix part du milieu de son onglet
     if (t.x === null || !bas) attacher(t.de, bas ? "bas" : "haut", { trait: t.id, bout: "debut", voisin: dedans[0]?.x ?? g.node(t.vers).x });
     attacher(t.vers, bas ? "haut" : "bas", { trait: t.id, bout: "fin", voisin: dedans.at(-1)?.x ?? g.node(t.de).x });
   }
   const attaches = new Map<string, number>();
-  for (const t of dessines) if (t.x !== null && descend.get(t.id)) attaches.set(`${t.id}|debut`, g.node(t.de).x - g.node(t.de).width / 2 + t.x);
+  for (const t of dessines) if (t.x !== null && descend.get(t.id)) attaches.set(`${t.id}|debut`, g.node(t.de).x - g.node(t.de).width / 2 + (departs.get(t.id) ?? t.x));
   for (const [bord, liste] of bords) {
     const n = g.node(bord.split("|")[0]);
     const pas = liste.length > 1 ? Math.min(16, (n.width - 40) / (liste.length - 1)) : 0;
@@ -479,5 +505,5 @@ function disposerUnMorceau(aPoser: Aposer[], aTracer: Atracer[]): Omit<Dispositi
   ecarterLesVerticales(traits);
   for (const t of traits) t.d = arrondir(t.points);
 
-  return { largeur: Math.ceil(g.graph().width ?? 0), hauteur: Math.ceil(y), elements, places, traits };
+  return { largeur: Math.ceil(g.graph().width ?? 0), hauteur: Math.ceil(y), elements, places, traits, departs };
 }

@@ -1176,7 +1176,8 @@ scènes, dans « Les passeurs de brume ».
 
 | Geste | Ce qui doit se voir |
 |---|---|
-| Ouvrir le chapitre | chaque carte porte ses choix en onglets, dans l'ordre du texte ; un trait part du rond sous chaque onglet ; aucun trait ne porte de texte ; le tampon d'état est suivi du prénom de qui écrit |
+| Ouvrir le chapitre | chaque carte porte ses choix en onglets, rangés pour que ses traits ne se croisent pas sous elle ; un trait part du rond sous chaque onglet ; aucun trait ne porte de texte ; le tampon d'état est suivi du prénom de qui écrit |
+| Cliquer une carte | dans l'espace de travail, « Ses choix » sont dans l'ordre du texte, quel que soit celui des onglets |
 | Survoler une carte | ses phrases se lisent en entier ; « Ouvrir » sur son coin haut, le « + » sous son coin bas |
 | Cliquer « Cercle de pierres — l'énigme des pierres » | l'onglet « Renoncer et revenir au cercle » dit « retour à « Île — le cercle de pierres » », et sa ligne se trace jusqu'à cette scène ; l'onglet « Lien caché » a son trait en pointillé |
 | « Écluse — la sortie du marais » | l'onglet « Passer l'écluse » nomme « Le sanctuaire », en lien vers ses chemins |

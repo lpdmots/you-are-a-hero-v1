@@ -227,9 +227,20 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
   /** Une mesure fixe, pour compter les lignes d'une phrase sans navigateur : cinq points et demi par lettre */
   const mesure: Mesure = (texte) => texte.length * 5.5;
 
-  it("F03-AC62 — « Marais — la barque s'enlise » : trois onglets de gauche à droite dans l'ordre du texte ; chaque trait part du point de sortie de son onglet ; aucun trait ne porte de texte", () => {
+  /** Où va le trait d'un onglet une fois sorti de sa carte : là où il redescend après son premier déplacement de côté. */
+  const vaVers = (x: Disposition, cle: string): number => {
+    const points = x.traits.find((t) => t.id === cle)!.points;
+    return (points[2] ?? points.at(-1)!).x;
+  };
+  /** Les traits d'une carte ne se croisent pas sous elle : de gauche à droite, ses onglets vont de gauche à droite. */
+  const sansCroisement = (x: Disposition, scene: string): boolean => {
+    const vont = x.onglets.get(scene)!.filter((o) => o.sorte === "suite").map((o) => vaVers(x, o.id));
+    return vont.every((v, i) => i === 0 || vont[i - 1] <= v + 0.01);
+  };
+
+  it("F03-AC62 — « Marais — la barque s'enlise » : un onglet par choix, côte à côte au pied de la carte ; chaque trait part du point de sortie de son onglet ; aucun trait ne porte de texte", () => {
     const onglets = d.onglets.get("barque")!;
-    expect(onglets.map((o) => chemins.liens.find((l) => l.id === o.id)!.libelle)).toEqual(["Suivre les feux follets", "Longer la vieille digue", "Appeler à l’aide"]);
+    expect(onglets.map((o) => chemins.liens.find((l) => l.id === o.id)!.libelle).sort()).toEqual(["Appeler à l’aide", "Longer la vieille digue", "Suivre les feux follets"]);
     const carte = place("barque");
     expect(carte.l).toBe(3 * ONGLET.l);
     onglets.forEach((o, i) => {
@@ -238,26 +249,37 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
       expect(d.traits.find((t) => t.id === o.id)!.points[0]).toEqual(o.sortie);
     });
     for (const t of d.traits) expect(Object.keys(t).sort()).toEqual(["d", "de", "id", "points", "retour", "vers"]);
-    // Partout : les onglets d'une scène suivent l'ordre de ses choix dans le texte
-    for (const [scene, liste] of d.onglets) expect(liste.map((o) => o.id)).toEqual(chemins.liens.filter((l) => l.de === scene).map((l) => l.id));
+    // Partout : un onglet par choix de la scène, ni plus ni moins, et aucun croisement sous une carte
+    for (const [scene, liste] of d.onglets) {
+      expect(liste.map((o) => o.id).sort()).toEqual(chemins.liens.filter((l) => l.de === scene).map((l) => l.id).sort());
+      expect(sansCroisement(d, scene)).toBe(true);
+    }
   });
 
-  it("F03-AC62 — les onglets gardent l'ordre du texte même quand la disposition ne suit pas : les traits se croisent alors sous la carte", () => {
-    // « 3 » est tenue à gauche de « 2 » par une autre scène, qui mène à elle puis à « 2 »
+  it("F03-AC62 — les onglets se rangent comme partent leurs traits, pour qu'ils ne se croisent pas sous la carte ; un onglet sans trait garde sa place dans l'ordre du texte", () => {
+    // « 1 » et « 4 » mènent toutes deux à « 2 » et « 3 », l'une dans un ordre, l'autre dans l'autre : la
+    // disposition ne peut suivre l'ordre du texte que pour l'une des deux
     const noeuds = [1, 2, 3, 4].map((n) => noeud(n));
     const liens = [lien(1, 2, 0), lien(1, 3, 1), lien(4, 3, 0), lien(4, 2, 1)];
     const x = disposer({ noeuds, liens, entrees: [] }, new Map());
+    const ordre = (de: number) => x.onglets.get(id(de))!.map((o) => o.id);
+    const duTexte = (de: number) => liens.filter((l) => l.de === id(de)).map((l) => l.id);
     for (const de of [1, 4]) {
-      const [premier, second] = x.onglets.get(id(de))!;
-      expect(premier.x).toBeLessThan(second.x);
-      expect(x.traits.find((t) => t.id === premier.id)!.points[0].x).toBeLessThan(x.traits.find((t) => t.id === second.id)!.points[0].x);
+      expect(sansCroisement(x, id(de))).toBe(true);
+      // De gauche à droite, les onglets suivent la place des scènes où ils mènent
+      const scenes = x.onglets.get(id(de))!.map((o) => x.places.get(liens.find((l) => l.id === o.id)!.vers!)!.x);
+      expect(scenes[0]).toBeLessThan(scenes[1]);
     }
-    // L'une des deux scènes au moins a ses suites dans l'autre sens que ses onglets
-    const croise = [1, 4].some((de) => {
-      const [premier, second] = liens.filter((l) => l.de === id(de));
-      return x.places.get(premier.vers!)!.x > x.places.get(second.vers!)!.x;
-    });
-    expect(croise).toBe(true);
+    // L'une des deux cartes a donc ses onglets dans un autre ordre que son texte
+    expect([1, 4].filter((de) => ordre(de).join() !== duTexte(de).join())).toHaveLength(1);
+
+    // Un choix sans destination, entre deux choix qui mènent quelque part : il reste au milieu
+    const avecManque = [lien(1, 2, 0), lien(1, null, 1, { manque: "sans" }), lien(1, 3, 2), lien(4, 3, 0), lien(4, 2, 1)];
+    for (const essai of [avecManque, [avecManque[0], avecManque[1], avecManque[2], lien(4, 2, 0), lien(4, 3, 1)]]) {
+      const y = disposer({ noeuds, liens: essai, entrees: [] }, new Map());
+      expect(y.onglets.get(id(1))!.map((o) => o.sorte)).toEqual(["suite", "manque", "suite"]);
+      expect(sansCroisement(y, id(1))).toBe(true);
+    }
   });
 
   it("F03-AC63 — un onglet borné : 128 points de large et trois lignes au plus, une phrase plus longue étant coupée ; seul, il prend la largeur de sa carte ; quatre choix, une carte de quatre onglets sur un seul rang", () => {
@@ -321,8 +343,8 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
     for (const cle of ["ecluse>0", "passeur>0", "cercle>2", "coffre>0"]) expect(d.traits.some((t) => t.id === cle)).toBe(false);
     // « À regarder » compte ces deux choix comme avant, et désigne leur onglet par leur identité
     expect(aRegarder(chemins).sortes.slice(0, 2).map((s) => s.ou)).toEqual([["cercle>2"], ["coffre>0"]]);
-    // Le lien caché : un onglet après les choix du texte, et son trait
-    expect(d.onglets.get("enigme")!.map((o) => o.id)).toEqual(["enigme>0", "enigme>cache"]);
+    // Le lien caché : un onglet de plus, et son trait
+    expect(d.onglets.get("enigme")!.map((o) => o.id).sort()).toEqual(["enigme>0", "enigme>cache"]);
     expect(onglet("enigme>cache").sorte).toBe("suite");
     expect(d.traits.find((t) => t.id === "enigme>cache")).toMatchObject({ vers: "salle", retour: false });
     const eleve = marais({ pourEleve: true });
@@ -367,7 +389,7 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
     for (const o of [...d.onglets.values()].flat().filter((x) => x.sorte === "suite")) expect(d.traits.find((t) => t.id === o.id)!.points[0]).toEqual(o.sortie);
   });
 
-  it("F03-AC69 — la proposition de l'IA : ses choix sont des onglets, à la suite de ceux que la scène d'origine a déjà, dans l'ordre des fiches ; leur trait part de l'onglet", () => {
+  it("F03-AC69 — la proposition de l'IA : ses choix sont des onglets, sur la carte de la scène d'origine avec ceux qu'elle a déjà ; leur trait part de l'onglet", () => {
     const origine = id(1);
     const p: Proposition = {
       origine,
@@ -382,7 +404,7 @@ describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
     const avant: Chemins = { noeuds: [noeud(1), noeud(2)], liens: [lien(1, 2)], entrees: [] };
     const vu = cheminsAvecLeBloc(avant, p);
     const x = disposer(vu, new Map());
-    expect(x.onglets.get(origine)!.map((o) => o.id)).toEqual([lien(1, 2).id, "propose:C1", "propose:C2"]);
+    expect(x.onglets.get(origine)!.map((o) => o.id).sort()).toEqual([lien(1, 2).id, "propose:C1", "propose:C2"].sort());
     expect(x.onglets.get("propose:N1")!.map((o) => o.id)).toEqual(["propose:C3"]);
     expect(x.places.get(origine)!.l).toBe(3 * ONGLET.l);
     for (const cle of ["propose:C1", "propose:C2", "propose:C3"]) {

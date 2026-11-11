@@ -168,7 +168,9 @@ changement.
 
 **Onglet d'un choix** :
 Dans Chemins, la case qui porte la phrase d'un choix au pied de la carte de
-sa scène, dans l'ordre du texte ; son trait part de son point de sortie.
+sa scène ; son trait part de son point de sortie. Les onglets d'une carte se
+rangent pour que ses traits ne se croisent pas ; l'ordre du texte se lit dans
+l'espace de travail.
 Décidé le 11 novembre 2026 : plus rien n'est écrit sur un trait.
 _Éviter_ : libellé sur la flèche ; étiquette, qui nomme le chapitre d'où
 vient un chemin.

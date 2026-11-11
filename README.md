@@ -57,8 +57,10 @@ F13-AC44).
 
 Choix en onglets, 11 novembre 2026 : sur des maquettes de plusieurs
 représentations du schéma, le porteur décide que chaque choix d'une scène est
-un onglet sous sa carte, dans l'ordre du texte, et que plus rien n'est écrit
-sur un trait ; un retour en arrière, une sortie et un choix sans destination
+un onglet sous sa carte, et que plus rien n'est écrit sur un trait (les
+onglets se rangent pour que les traits ne se croisent pas, l'ordre du texte
+se lisant dans l'espace de travail : révisé par lui le même jour, après
+l'essai) ; un retour en arrière, une sortie et un choix sans destination
 se lisent dans l'onglet ; la carte porte son tampon et le prénom de qui
 écrit ; un onglet « Sans destination » se relie en le tirant
 ([F03.1](docs/specifications.md#f03-onglets), F03-AC62 à AC69 ; référence :

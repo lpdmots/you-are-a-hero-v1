@@ -2147,13 +2147,17 @@ des mots mesurée dans la police du récit, que la page charge exprès avant de
 mesurer. Les libellés ne sont plus des étiquettes de trait pour dagre : les
 rangs intermédiaires ne servent plus qu'au passage des traits.
 
-**Le trait part du milieu de son onglet,** où qu'aille sa scène, et non plus
-d'un point réparti sur le bord bas d'après la place des destinations. Les
-arrivées, elles, restent réparties sur le bord haut. Deux traits d'une même
-carte peuvent donc se croiser juste sous elle (accepté, F03-AC62), et un
-trait, après son déplacement de côté, pouvait redescendre sur le départ d'un
-autre : `ecarterLesVerticales` écarte alors d'un pas celui des deux qui ne
-part pas d'un onglet.
+**Le trait part du milieu de son onglet,** et non plus d'un point réparti
+sur le bord bas. Les arrivées, elles, restent réparties sur le bord haut.
+Les onglets d'une carte se rangent comme partent leurs traits (révisé par le
+porteur le 11 novembre 2026 ; d'abord l'ordre du texte, quitte à croiser) :
+la largeur de la carte ne dépend pas de leur ordre, si bien qu'il se décide
+après dagre — les onglets d'où part un trait échangent entre eux les places
+qu'ils avaient dans l'ordre du texte, triés par l'endroit où leur trait
+redescend ; les autres ne bougent pas. Un trait, après son déplacement de
+côté, peut encore redescendre sur le départ d'un autre :
+`ecarterLesVerticales` écarte alors d'un pas celui des deux qui ne part pas
+d'un onglet.
 
 **Un retour en arrière ne pèse plus dans la disposition.**
 `retoursEnArriere` (`domaine/chemins.ts`) suit le récit depuis son entrée,
