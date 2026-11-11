@@ -4250,8 +4250,9 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
 - **Décidé le 10 novembre 2026,** après un entretien validé dans son
   ensemble (« ok je valide ») ; **lots 1 et 2 autorisés le même jour,** pour
   eux seuls, en local, un commit par lot, rien poussé sur `main` ni appliqué
-  à la vraie base sans sa demande ; les lots 3 et 4 demandent son
-  instruction. Il y met de la ressource : Fable 5.2, effort « xhigh ».
+  à la vraie base sans sa demande. Il y met de la ressource : Fable 5.2,
+  effort « xhigh ». **Lots 3 et 4 autorisés le 11 novembre 2026,** aux mêmes
+  conditions, dans une conversation à part (Opus 5.5, effort « high »).
   Règles, qui font foi :
   [F03.1, « Construire dans Chemins »](specifications.md#f03-construire)
   (F03-AC52 à AC57), [F13.7](specifications.md#f137--bloc-de-scènes-depuis-le-schéma)

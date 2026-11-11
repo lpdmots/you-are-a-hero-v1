@@ -29,7 +29,7 @@ ni une phrase de choix, ni une action de jeu, ni une image —, si bien qu'une
 scène reliée sans être écrite reste « Texte vide »
 ([F06.5](docs/specifications.md#f06-texte-vide), F06-AC105) ; mode d'emploi dans [`app/README.md`](app/README.md),
 « Essayer « Construire dans Chemins » ». Les lots 3 et 4 (le bloc de scènes)
-demandent son instruction.
+sont autorisés le 11 novembre 2026, en local.
 
 ## État de reprise au 20 octobre 2026
 
