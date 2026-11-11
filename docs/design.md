@@ -1572,6 +1572,8 @@ les chemins » mène ici par « Voir dans les chemins ».
 
 #### Construire dans « Chemins » : écrans construits (10 novembre 2026)
 
+*Le cadre, le panneau, le bandeau, « Recentrer » et la phrase d'aide décrits ici sont remplacés le 11 novembre 2026 par [« Chemins » en atelier](#-chemins--en-atelier--écrans-construits-11-novembre-2026).*
+
 Sans maquette. Conçus avec le skill impeccable, en prolongeant la vue reprise
 du 12 octobre (mêmes cartes, mêmes couleurs, mêmes mots que la copie), puis
 critiqués en deux lectures séparées sur 26 captures (`app/test-results/captures/construire-chemins/`,
@@ -1619,6 +1621,8 @@ titres d'un grand chapitre sont petits à la taille lisible (vue d'avant).
 
 #### Bloc de scènes : écrans construits (11 novembre 2026)
 
+*Le cadre, le panneau, le bandeau, « Recentrer » et la phrase d'aide décrits ici sont remplacés le 11 novembre 2026 par [« Chemins » en atelier](#-chemins--en-atelier--écrans-construits-11-novembre-2026).*
+
 Sans maquette. Conçus avec le skill impeccable dans le prolongement des
 écrans du lot 2 (même panneau, mêmes cartes), puis critiqués en deux lectures
 séparées sur 14 captures (`app/test-results/captures/bloc-de-scenes/`, en
@@ -1660,6 +1664,58 @@ confondait avec « Proposée », les titres coupés dans le panneau.
 quand dagre réordonne le schéma (limite des lots 1 et 2) ; le panneau d'une
 grande proposition se fait défiler ; le message d'un geste reste huit
 secondes, comme partout, même si un autre geste suit.
+
+#### « Chemins » en atelier : écrans construits (11 novembre 2026)
+
+Sans maquette. Conçus avec le skill impeccable (surface de travail : précision
+et retenue, les formes déjà connues gardent leur place), dans le prolongement
+des deux sections précédentes, puis critiqués en deux lectures séparées sur
+38 captures (`app/test-results/captures/chemins-atelier/`, en 1 366 × 768,
+1 440 × 900, 1 024 × 768, téléphone et poste d'élève, IA simulée). Règles :
+[F03.1](specifications.md#f03-atelier), F03-AC58 à AC61 ; précisions à
+confirmer : [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026).
+Cette section remplace, dans les deux précédentes, ce qui touche au cadre, au
+panneau, au bandeau, à « Recentrer » et à la phrase d'aide.
+
+| Élément | Forme retenue |
+| --- | --- |
+| Le cadre | D'un bord à l'autre de la page, de son haut jusqu'au bas de la fenêtre (420 points au moins) ; fond de feuille grise, un trait en haut. Le pointeur est une main ouverte sur le fond, fermée pendant qu'on tire, un doigt sur les cartes. À l'ouverture : la taille lisible, le schéma au milieu de la largeur, son haut à 28 points du haut du cadre. |
+| Les commandes sur le cadre | En haut à droite, « ✦ Construire avec l'IA », pastille d'IA sur fond de feuille, en état « plan » seulement (au travail, le panneau de la scène porte le même bouton). En bas à droite, un bloc « Tout voir », « − », « + » sur fond de feuille, cerné ; « Taille lisible » prend la place de « Tout voir » tant qu'on est en dessous de cette taille ; dessous, la mini-carte (120 × 132 points au plus), avec sa croix pour la replier. La mention de React Flow passe en bas à gauche. |
+| Le plan | Colonne de navigation ouverte, schéma sur toute la largeur. |
+| Le travail | La colonne en icônes ; l'espace de travail à droite, 44 % de la fenêtre (entre 440 et 660 points ; 58 % au plus sous 1 000 points), fond de feuille, un trait à gauche, toute la hauteur du cadre ; le schéma dans ce qui reste. L'espace entre en glissant (0,26 s) pendant que la scène cliquée glisse au milieu du schéma, à 42 % de la hauteur, sa suite dessous ; en ligne droite, sans changer de taille. Une autre carte cliquée : le contenu change, le schéma glisse. Au retour, ce qui était au milieu du cadre y reste. |
+| Le panneau de la scène | Le même contenu qu'avant, en large : la référence, l'état, « Enregistré » et la croix en tête ; le titre en 1,2 rem gras ; « Ses choix », chacun sur deux lignes avec sa corbeille, et « ✦ Construire avec l'IA » ; la consigne, « ✦ Formuler », la liste ; au pied, « Supprimer la scène » et « Ouvrir ». Sans ombre ni coins ronds : c'est un volet, pas une carte posée. |
+| Le panneau du bloc, la demande seule | Sans scène choisie, en tête, sur canard pâle : « Cliquez dans le schéma la scène d'où continuer. » Puis « La suite de S003 « … » », un champ de six lignes avec son exemple et le micro ; dessous, les deux réglages en vue, côte à côte ; puis une phrase, « Les scènes se dessinent en pointillé sur le schéma. Rien n'est ajouté avant votre accord. », et « ✦ Proposer » à droite. La proposition arrivée, le champ revient à trois lignes et les réglages se rangent derrière « Réglages ». |
+| Le bloc cadré | Dans le cadre, au-dessus des boutons de taille et de la mini-carte quand il y tient ; la vue bouge juste assez, et ne se réduit que s'il le faut, jamais sous 0,62. |
+| Le bandeau | Une bande : la vignette, le titre, sa ligne, les élèves ; à droite la bascule « Scènes / Chemins », le « i » de la vue (« Comment lire ces chemins ? » ou « Que change l'ordre des cartes ? ») et les trois points. Plus de bouton plein. Les élèves sont un seul bouton, suivi d'un petit crayon, cerné au survol ; sans élève, la phrase et le lien « Attribuer des élèves ». |
+| « À regarder » | Une ligne sous le bandeau, dans « Chemins » seulement ; absente quand il n'y a rien. |
+| « Scènes » | La recherche seule sous le bandeau, à droite, au-delà de trois scènes ; en dernière carte de la grille, « + Nouvelle scène », en pointillé, de la hauteur des autres. |
+| L'aide | Le « i » dit comment lire, comment se déplacer (« tirer le fond, ou la molette ») et, pour l'adulte, les deux gestes du « + » ; l'écran d'aide de « Parties et chapitres » gagne « Comment construire un chapitre ? ». |
+| L'élève | Le même cadre, en lecture : ni « + », ni espace de travail, ni bouton d'IA ; un bandeau bas dans « Chemins », la bascule et le « i » dedans. |
+| Téléphone | Inchangé : la liste. |
+
+**Les deux lectures** donnent 28/40 (informée) et 26/40 (indépendante), sans
+point qui empêche la tâche. Corrigé aussitôt, sans nouvelle mesure : le bloc
+« taille et mini-carte » trop lourd sur le schéma rétréci, qui couvrait les
+cartes voisines de la scène ouverte (la mini-carte ne s'affiche plus au
+travail, et elle est opaque) ; « Taille lisible » qui laissait la scène
+ouverte hors du cadre (la taille change autour d'elle) ; le message d'un
+geste posé sur le pied du panneau (il se lit au-dessus du schéma) ; la bulle
+du « + » et d'« Ajouter un choix » à cheval sur l'espace de travail (à gauche
+de la carte) ; le grand vide au-dessus de la première scène amenée au milieu
+(le haut du schéma ne descend plus) ; le fond qu'on tirait presque jusqu'au
+vide (240 points du schéma restent en vue) ; le champ de la demande et le
+cadre de ses réglages trop lourds ; le bandeau de l'élève qui changeait de
+hauteur d'une vue à l'autre ; le bandeau qui passait sur deux lignes en
+1 024 points ; le « i » trop long.
+
+**La demande seule,** que le porteur avait jugée « bizarre » dans un grand
+cadre : la lecture informée la trouve « à sa place, pas perdue ».
+
+**Laissé en l'état,** et dit au porteur dans le plan : un choix sans
+destination n'offre que sa corbeille ; le compteur « – / 6 » ; le « + » qui
+peut couvrir le début d'un libellé sous sa carte ; un chapitre sans scène
+garde le grand bandeau (décidé le 10 novembre) ; les commandes posées sur le
+cadre couvrent leur coin.
 
 ### Étape 4 construite (13 octobre 2026)
 

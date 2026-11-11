@@ -137,7 +137,8 @@ export function PageScene({
     ? `/projet/${projet.id}/livre`
     : venuDuSuivi
       ? `/projet/${projet.id}/suivi?${suivi ? `${suivi}&` : ""}revenu=1`
-      : `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins ? "?vue=chemins" : ""}`;
+      : // « Chemins » s'ouvre en premier dans un chapitre à choix : venu des cartes, on revient aux cartes (F03-AC61)
+        `/projet/${projet.id}/chapitre/${chapitre.id}${venuDesChemins || !projet.aChoix ? "" : "?vue=scenes"}`;
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setChoixDepart(true), apresSuppression: () => (aCote ? aCote.onFermer() : routeur.push(retour)) });
 
   // Le texte : la page le reçoit à l'ouverture, puis ne le remplace que par un geste (échange, conflit)

@@ -86,7 +86,7 @@ export function BulleDuGeste({
   useLayoutEffect(() => {
     const r = repere();
     if (!r || !bulle.current) return;
-    return poser(r, bulle.current, { cote, ecart: 12, fixe: true });
+    return poser(r, bulle.current, { cote, ecart: 12, fixe: true, suivre: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
@@ -288,7 +288,7 @@ export function PanneauDeScene({
       </header>
 
       <div className="panneau-chemin__corps">
-        <div className="panneau-chemin__champ">
+        <div className="panneau-chemin__champ panneau-chemin__champ--titre">
           <label htmlFor={`${id}-titre`}>Titre</label>
           <input
             id={`${id}-titre`}

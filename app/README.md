@@ -1050,7 +1050,7 @@ des feux follets », trente-deux scènes, dans « Les passeurs de brume ».
 
 | Geste | Ce qui doit se voir |
 |---|---|
-| Ouvrir « Chemins » | une phrase à droite de « Scènes / Chemins » dit les deux gestes ; un « + » rond reste sous chaque scène « Sans suite » |
+| Ouvrir « Chemins » | le « i » à côté de « Scènes / Chemins » dit les deux gestes (11 novembre 2026) ; un « + » rond reste sous chaque scène « Sans suite » |
 | Survoler une carte, ou la cliquer | un « + » rond sous la carte |
 | « + », « Suivre le ruisseau », « Le ruisseau », Entrée | la nouvelle carte sous la première, sa flèche, « S… « Le ruisseau » est ajoutée. » et « Annuler » ; la carte d'où l'on part n'a pas bougé, la taille non plus |
 | « + », sans toucher au titre | le titre proposé suit le choix ; la scène le prend |
@@ -1125,3 +1125,36 @@ scène pendant l'ajout n'est pas arrêté, les choix arrivent à la fin de sa co
 
 **5. En ligne, à la demande seulement.** `npm run sauvegarder`, puis
 `npm run production:schema -- --oui` (la migration `bloc_de_scenes`), puis le code.
+
+## Essayer « Chemins » en atelier (F03.1, 11 novembre 2026)
+
+« Chemins » est un cadre qu'on tire, avec deux états, le plan et le travail
+(`docs/plan.md`, « Construire dans « Chemins » et bloc de scènes », dernière entrée ;
+règles en F03.1, ancre `f03-atelier`, F03-AC58 à AC61). En local, sur
+http://localhost:4840, avec le compte local ; aucune migration, la vraie base n'est
+pas touchée. Un grand chapitre où essayer : `npm run chemins:essai -- --refaire`
+(« Le marais des feux follets », dans « Les passeurs de brume »).
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| « Parties et chapitres », ouvrir un chapitre à choix | ses chemins, d'emblée ; le schéma remplit la hauteur, la page ne défile pas ; « Scènes » à un clic |
+| Tirer le fond ; la molette ; deux doigts | le schéma se déplace, la mini-carte suit ; on ne peut pas le sortir entièrement du cadre |
+| Ctrl + molette (Cmd sur Mac), pincer, « − », « + » | la taille change autour du milieu du cadre ; « Tout voir » montre tout, « Taille lisible » y ramène |
+| Cliquer une carte | la colonne de gauche se replie, l'espace de travail s'ouvre à droite, à côté du schéma ; la carte glisse au milieu, à la même taille |
+| Cliquer une autre carte | seul le contenu de l'espace change, le schéma glisse jusqu'à elle |
+| La croix, Échap, ou un clic dans le vide (pas un glissé) | retour au plan, la colonne comme elle était |
+| « + » sous une carte, « Suivre le ruisseau », Entrée | la nouvelle carte dessous ; la carte d'où l'on part au même point, sans « Recentrer » |
+| « ✦ Construire avec l'IA », en haut à droite du cadre | le même espace, pour le bloc : « Cliquez dans le schéma la scène d'où continuer », un grand champ, les deux réglages en vue |
+| Les prénoms du bandeau | « Attribuer des élèves », aussi dans le menu « … » |
+| « Scènes » | la dernière carte est « + Nouvelle scène » ; ouvrir une scène puis revenir ramène à « Scènes » |
+| « À regarder », « suivant » | chaque cas vient au milieu du cadre |
+| Un poste d'élève, son chapitre | « Chemins » d'abord, le même cadre, en lecture ; « Scènes » pour prendre une scène |
+
+**Les essais.** `npm test -- chemins` (les calculs de la vue, F03-AC54, AC58, AC59, AC61) ;
+`npm run test:base -- construire-chemins bloc-de-scenes`. Les captures, sur leur propre
+serveur compilé, IA simulée, sans toucher au serveur local : `npm run captures -- chemins-atelier`
+(`test-results/captures/chemins-atelier/`, 39 images). Aucun parcours n'est écrit pour ce lot ;
+ceux de « Chemins » (`tests/parcours/chemins.spec.ts`) datent de la page qui défilait et
+demanderont une retouche quand ils seront joués.
+
+**En ligne, à la demande seulement :** le code suffit, sans migration.

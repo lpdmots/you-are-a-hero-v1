@@ -13,8 +13,9 @@ export const metadata: Metadata = { title: "Ma scène" };
  * personne d'autre ne s'en occupe (F03-AC17, F06-AC20, AC62), sinon il la lit. Une scène
  * qu'il ne peut pas lire n'a pas de page (F06-AC21).
  */
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+export default async function Page({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ de?: string }> }) {
   const { id } = await params;
+  const { de } = await searchParams;
   const contexte = await contexteDeTravail();
   if (!contexte.ouvert) redirect("/travail");
   const scene = await sceneDuPoste(contexte, id);
@@ -25,7 +26,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     <Messages>
       <EnteteEleve contexte={contexte} auTravail />
       <main className="page page--eleve">
-        <SceneEleve scene={scene} prof={contexte.prof} eleves={contexte.eleves} encouragements={encouragements} />
+        <SceneEleve scene={scene} prof={contexte.prof} eleves={contexte.eleves} encouragements={encouragements} venuDesChemins={de === "chemins"} />
       </main>
     </Messages>
   );

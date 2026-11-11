@@ -168,6 +168,13 @@ export function PanneauDuBloc({
       </header>
 
       <div className="panneau-chemin__corps" ref={corps}>
+        {/* Le premier geste, en tête : sans scène d'origine, rien ne peut être proposé */}
+        {sansOrigine ? (
+          <p className="panneau-bloc__consigne-origine" role="status">
+            <Icone nom="chemins" />
+            Cliquez dans le schéma la scène d’où continuer.
+          </p>
+        ) : null}
         <div className="panneau-chemin__champ">
           <label htmlFor={`${id}-demande`}>
             {origine ? (
@@ -183,7 +190,8 @@ export function PanneauDuBloc({
           <ChampQuiGrandit
             id={`${id}-demande`}
             className="pchamp"
-            rows={3}
+            // Dans l'espace de travail, la demande seule a de la place : un champ où l'on décrit à l'aise ; il rétrécit quand la proposition arrive
+            rows={p ? 2 : 4}
             value={etat.demande}
             maxLength={BLOC.demande}
             placeholder={`Par exemple : ${exemple}`}
@@ -193,11 +201,17 @@ export function PanneauDuBloc({
             }}
           />
         </div>
+        {/* Avant toute proposition, les deux réglages sont en vue, sous la demande ; ensuite ils se rangent derrière « Réglages » */}
+        {p ? null : <Reglages id={`${id}-reglages`} reglages={reglages} deClasse={deClasse} onChange={regler} />}
         <div className="panneau-bloc__envoi">
-          <button type="button" className="lien panneau-bloc__reglages" aria-expanded={voirReglages} aria-controls={`${id}-reglages`} onClick={() => setVoirReglages(!voirReglages)}>
-            <Icone nom="reglages" />
-            Réglages
-          </button>
+          {p ? (
+            <button type="button" className="lien panneau-bloc__reglages" aria-expanded={voirReglages} aria-controls={`${id}-reglages`} onClick={() => setVoirReglages(!voirReglages)}>
+              <Icone nom="reglages" />
+              Réglages
+            </button>
+          ) : (
+            <span className="panneau-bloc__promesse">Les scènes se dessinent en pointillé sur le schéma. Rien n’est ajouté avant votre accord.</span>
+          )}
           {/* La demande inchangée, une proposition à l'écran : rien à redessiner, le bouton s'efface */}
           {p && !redessiner && attente === null ? null : (
           <button
@@ -213,13 +227,7 @@ export function PanneauDuBloc({
           </button>
           )}
         </div>
-        {sansOrigine ? (
-          <p className="panneau-bloc__consigne-origine" role="status">
-            <Icone nom="chemins" />
-            Cliquez dans le schéma la scène d’où continuer.
-          </p>
-        ) : null}
-        {voirReglages ? <Reglages id={`${id}-reglages`} reglages={reglages} deClasse={deClasse} onChange={regler} /> : null}
+        {p && voirReglages ? <Reglages id={`${id}-reglages`} reglages={reglages} deClasse={deClasse} onChange={regler} /> : null}
         {attente === "proposer" ? (
           <p className="panneau-bloc__attente" role="status">
             L’IA dessine le bloc sous {origine ? "la scène" : "le chapitre"}. Cela prend une demi-minute environ.

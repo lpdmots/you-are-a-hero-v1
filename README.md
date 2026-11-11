@@ -37,6 +37,18 @@ retirées après la critique ; essai réel fait (3 à 4 ✦ par tour) ; précisi
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer le bloc de
 scènes ».
 
+« Chemins » en atelier, 11 novembre 2026 : après l'essai du bloc, le porteur
+décide un cadre qu'on tire au lieu d'une page qui défile, deux états (le plan,
+et le travail avec son espace à côté du schéma), un en-tête en une bande et
+« Chemins » ouvert en premier ([F03.1](docs/specifications.md#f03-atelier),
+F03-AC58 à AC61). Construit en local le même jour, sans migration, un commit,
+rien poussé ; écrans critiqués en deux lectures (28/40 et 26/40) et corrigés
+([design](docs/design.md#-chemins--en-atelier--écrans-construits-11-novembre-2026)) ;
+précisions à confirmer et parcours à accorder dans le
+[plan](docs/plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026) ;
+mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Chemins » en
+atelier ».
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur

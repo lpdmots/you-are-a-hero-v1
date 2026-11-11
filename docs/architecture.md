@@ -1928,6 +1928,10 @@ et le rafraîchissement de la page. Titre et consigne passent par
   des chemins et le bas de l'écran ; le cadre reçoit une réserve de sa
   largeur pour faire défiler jusqu'aux cartes qu'il couvre, et se décale de
   lui-même si la carte cliquée est dessous.
+- **Remplacé le 11 novembre 2026** pour ces deux derniers points : la vue se
+  tire dans un cadre, la carte de référence est tenue par un décalage de la
+  vue, et le panneau est à côté du schéma
+  ([« Chemins » en atelier](#-chemins--en-atelier-11-novembre-2026)).
 
 **Mesuré sur « Le marais des feux follets »** (trente-deux scènes) : une scène
 ajoutée sous chacune des trente-deux, tour à tour, la carte d'origine tenue en
@@ -2043,6 +2047,70 @@ proposition retouchée, relue par `lireLaProposition`.
 **Captures sans dépense :** la configuration « application-ia-simulee » de
 `.claude/launch.json` lance le serveur local avec `IA_SIMULEE=1` (les clés de
 `.env.local` restent posées, mais rien ne part).
+
+### « Chemins » en atelier (11 novembre 2026)
+
+Règles : [F03.1](specifications.md#f03-atelier), F03-AC58 à AC61. Sans
+migration. Le schéma ne défile plus avec la page : il se tire dans un cadre.
+
+**La vue appartient à React Flow.** Avant ce lot, la vue était imposée
+(`viewport` fixe) et tout se déplaçait par le défilement de la page et du
+cadre ; garder une carte en place demandait de pousser le schéma dans son
+cadre ou d'allonger le cadre, puis de rendre la poussée. Désormais React Flow
+tient sa vue (`panOnDrag`, `panOnScroll`, `zoomOnPinch`, Ctrl ou Cmd +
+molette par sa touche de zoom ; `zoomOnScroll` et le double-clic éteints),
+et le code ne fait plus que la déplacer par `setViewport`. Les cartes restent
+non déplaçables ; une carte n'ayant pas la classe `nopan`, on tire aussi le
+schéma en partant d'une carte, et un clic sans glissé la choisit
+(`paneClickDistance` à 4 points pour le fond).
+
+**Les calculs de la vue, à part de l'écran,** `src/composants/chemins/ancrage.ts`,
+tous vérifiés sans navigateur (`tests/unitaires/chemins.test.ts`) : la vue de
+départ et la taille lisible, « Tout voir », le changement de taille autour du
+milieu du cadre, le centrage d'une carte, le cadrage d'un bloc (bouger le
+moins possible, réduire seulement s'il le faut), la retenue (on ne tire pas
+le schéma entièrement hors du cadre) et, pour F03-AC54, le décalage qui garde
+une carte au même point quand la disposition change. Ce dernier remplace
+`garderEnPlace`, `aRendreSansMouvement` et `figerLaTaille` : la vue n'a pas de
+bord, rien n'est plus poussé ni rendu, et la taille n'a plus à être figée
+puisqu'elle n'est plus recalculée.
+
+**Les glissements vont en ligne droite.** `setViewport` reçoit
+`interpolate: "linear"`. Par défaut d3-zoom fait un « survol » (il recule
+puis revient) : un glissement interrompu en route laissait le schéma à une
+taille intermédiaire. Le but d'un glissement garde aussi sa taille de départ.
+
+**Deux états, un seul glissement.** L'espace de travail est un voisin du
+cadre dans une même rangée (`.chemins__plan`, en `flex`), et non plus un
+panneau fixe par-dessus : le cadre rétrécit, et ce qu'on y voit n'est jamais
+couvert. Le passage change deux fois la place du cadre, à quelques
+millisecondes d'écart (l'espace s'ouvre, puis la colonne de navigation se
+replie par `replierLaColonnePourUnTemps`). Un `ResizeObserver` sur le cadre
+suit ces changements : il décale d'abord la vue pour que les cartes restent
+où elles étaient à l'écran (`suivreLeCadre`), puis relance le glissement vers
+le but du moment — la scène cliquée, un peu au-dessus du milieu, ou, sans
+scène, ce qui était au milieu du cadre d'avant. Le but ne tient que le temps
+du passage, pour qu'un redimensionnement de la fenêtre ne recentre rien.
+
+**La hauteur.** Le plan mesure son haut dans la page et prend le reste de la
+fenêtre (`--haut-du-plan`, 420 points au moins) ; la page perd son pied
+(`.page:has(.chemins__plan)`), si bien qu'elle ne défile pas. La mini-carte
+et les boutons de taille sont des enfants de `<ReactFlow>` : la mini-carte lit
+la vue dans son magasin et la suit pendant qu'on tire.
+
+**Les bulles suivent leur carte.** La bulle d'un geste se pose près d'une
+carte qui peut maintenant bouger sans que rien défile (molette) : `poser`
+(`flottant.ts`) reçoit `suivre`, qui recalcule à chaque image.
+
+**La vue ouverte en premier,** `vueDuChapitre` (`src/domaine/chemins.ts`) :
+« Chemins » en récit à choix sauf `?vue=scenes`, « Scènes » en récit
+classique. L'adresse nue d'un chapitre est donc celle de ses chemins ;
+`?vue=chemins` reste compris. Une scène ouverte depuis le schéma porte
+`?de=chemins`, côté élève aussi, pour que son retour ramène à la bonne vue.
+
+**Captures :** `npm run captures -- chemins-atelier` (serveur compilé, IA
+simulée, port 3100), ou `npx playwright test --config playwright.local.config.ts chemins-atelier`
+contre le serveur local lancé en IA simulée.
 
 ## Vérifications avant décision technique
 

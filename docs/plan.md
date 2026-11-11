@@ -4285,7 +4285,8 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   chapitres », le guide et la vidéo de visite, là où ils présentent
   « Chemins » comme une vue qu'on lit sans la modifier.
 - **Reste ouvert :** la vue qui s'ouvre en premier dans un chapitre à choix,
-  à décider après usage.
+  à décider après usage (tranché le 11 novembre 2026 : « Chemins », voir
+  « Chemins » en atelier, plus bas).
 - **Lot 1 construit le 10 novembre 2026,** en local (effort « high », sur
   son accord, la session n'offrant pas « xhigh ») ; migration `ajout_du_plan`
   en base locale seulement, rien poussé. **Le mécanisme tient :** vérifié
@@ -4629,6 +4630,95 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
   `main` ni appliqué à la vraie base sans sa demande ; écrans critiqués en
   deux lectures avant de lui être montrés. Il remplace la page qui défile,
   la poussée de F03-AC54 et « Recentrer » par un cadre qu'on tire.
+
+- **« Chemins » en atelier construit le 11 novembre 2026,** en local (Fable
+  5.2), sans migration, un commit, rien poussé.
+  - *Ce qui est construit :* le cadre qu'on tire (fond, molette, deux doigts ;
+    Ctrl + molette, pincement et boutons pour la taille), qui remplit la
+    hauteur de la fenêtre, la page ne défilant plus ; les deux états, le plan
+    et le travail, l'espace de travail large à côté du schéma, pour la scène
+    comme pour le bloc, la colonne repliée pour ce temps-là ; l'en-tête en une
+    bande (bascule et « i » dans le bandeau, prénoms cliquables, « + Nouvelle
+    scène » en dernière carte de « Scènes ») ; les commandes posées sur le
+    cadre ; « Chemins » ouvert en premier, pour l'adulte et pour l'élève. La
+    poussée de F03-AC54 et « Recentrer » sont retirés : la vue se décale
+    ([architecture](architecture.md#-chemins--en-atelier-11-novembre-2026),
+    [design](design.md#-chemins--en-atelier--écrans-construits-11-novembre-2026)).
+  - *Critères fermés :* F03-AC58 à AC61, F03-AC54 révisé —
+    `tests/unitaires/chemins.test.ts` (dix cas pour ce lot : les calculs de la
+    vue, sur le chapitre de trente-deux scènes) ; les gestes eux-mêmes (tirer,
+    molette, clic, Échap) sont constatés à l'écran et sur les captures, aucun
+    parcours n'étant écrit. Suites entières vertes : 464 unitaires, 456 contre
+    la base.
+  - *Écrans critiqués en deux lectures* (38 captures) : 28/40 (informée) et
+    26/40 (indépendante), sans point qui empêche la tâche ; corrigés aussitôt,
+    sans nouvelle mesure. Captures : `npm run captures -- chemins-atelier`.
+  - *La demande seule dans le grand espace* (il l'avait jugée « bizarre ») :
+    retenu un champ de quatre lignes, les deux réglages en vue dessous, sans
+    cadre, une phrase (« Les scènes se dessinent en pointillé sur le schéma.
+    Rien n'est ajouté avant votre accord. ») et « ✦ Proposer » ; sans scène
+    choisie, la consigne « Cliquez dans le schéma la scène d'où continuer »
+    en tête. La lecture informée la juge « à sa place, pas perdue », le vide
+    dessous se lisant comme la place de la proposition ; elle trouvait le
+    champ et le cadre des réglages trop lourds : réduits.
+  - *Précisions prises en construisant, à lui faire confirmer :*
+    1. un clic dans le vide referme le panneau d'une scène, pas le bloc de
+       l'IA, qui tient un travail en cours : il se referme par sa croix ou
+       par Échap (la demande et la proposition sont gardées) ;
+    2. la scène cliquée vient au milieu du schéma un peu au-dessus du milieu
+       (sa suite se construit dessous), sans montrer de vide pour rien : la
+       première scène d'un chapitre ne descend pas au milieu du cadre, et un
+       petit chapitre reste simplement au milieu de la largeur ;
+    3. au retour au plan, et à l'ouverture du bloc sans scène choisie, ce qui
+       était au milieu du cadre y reste ;
+    4. la mini-carte s'affiche au plan dès que le schéma dépasse du cadre
+       (avant : au-delà de deux écrans), et pas au travail, où elle couvrait
+       les cartes voisines de la scène ouverte ; repliée, elle le reste ;
+    5. « Taille lisible » prend la place de « Tout voir » tant qu'on est en
+       dessous de cette taille ; au travail, « − », « + » et « Taille
+       lisible » changent la taille autour de la scène ouverte ;
+    6. on tire aussi le schéma en partant d'une carte ; un clic sans glissé la
+       choisit ; le schéma ne peut pas être tiré entièrement hors du cadre ;
+    7. « ✦ Construire avec l'IA » est sur le cadre au plan seulement ; au
+       travail, le panneau de la scène porte le même bouton ;
+    8. « + Nouvelle scène » vaut aussi en récit classique, et ne s'affiche pas
+       parmi les résultats d'une recherche ; depuis « Chemins », une scène que
+       rien ne relie ne s'ajoute plus (on passe par « Scènes ») ;
+    9. sans élève, la phrase du bandeau est suivie du lien « Attribuer des
+       élèves » ; avec des élèves, leurs prénoms forment un seul bouton, suivi
+       d'un petit crayon ;
+    10. **pour l'élève,** « Chemins » s'ouvre en premier, mais les liens de
+        « Mon travail » qui servent à prendre une scène (« Voir », « Choisir
+        une scène ») ouvrent « Scènes », et sa bascule est dans un bandeau
+        bas, comme chez l'adulte ;
+    11. une scène ouverte depuis « Scènes » ramène à « Scènes », depuis
+        « Chemins » à « Chemins », pour l'adulte et pour l'élève ;
+    12. la bulle d'un geste se pose à gauche de la carte quand l'espace de
+        travail est ouvert, « Ajouter un choix » compris, et le message d'un
+        geste se lit au-dessus du schéma : ni l'une ni l'autre ne couvrent
+        l'espace ;
+    13. sous 600 points de cadre (écran de 1 024 points, au travail), seuls
+        les boutons de taille restent sur le schéma.
+  - *Ce qui reste perfectible, dit au porteur :*
+    - **Les parcours Playwright ne sont pas accordés.** Dix-sept fichiers de
+      `tests/parcours/` ouvrent la page d'un chapitre ; ceux qui y cliquent
+      « Ajouter une scène » ou « Attribuer des élèves », ou attendent les
+      cartes à l'ouverture d'un chapitre à choix, échoueront tant qu'ils ne
+      sont pas repris (`chemins.spec.ts` en entier : il mesure le défilement
+      de la page). Aucun n'a été joué, à sa demande ; à faire avant une mise
+      en ligne s'il veut la suite verte.
+    - **Relevé par les deux lectures, hors de ce lot :** un choix « Sans
+      destination » ou « Scène supprimée » n'offre que sa corbeille dans le
+      panneau (pas de geste pour le réparer d'ici) ; le compteur « – / 6 » de
+      « À regarder » ; tirer le « + » pour relier ne se lit que dans le
+      « i » ; « Ce qui manque à ma demande » reste obscur à qui découvre ; les
+      titres d'un grand chapitre sont petits à la taille lisible.
+    - **Les commandes posées sur le cadre couvrent toujours un coin** (les
+      boutons de taille, « ✦ Construire avec l'IA », la mention de React
+      Flow) : c'est le propre d'une carte routière ; on tire.
+    - **Captures prises sur un serveur à part :** le serveur local du port
+      4840 appartenait à une autre conversation et n'a pas pu être relancé en
+      IA simulée ; `npm run captures` a servi, sans y toucher.
 
 ## Hors de la première livraison
 

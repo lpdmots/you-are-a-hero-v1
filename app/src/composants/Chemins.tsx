@@ -9,16 +9,18 @@ import {
 } from "@/domaine/chemins";
 import type { Construire } from "./chemins/Construire";
 import { referenceScene } from "@/domaine/recit";
+import { Bulle } from "./Bulle";
 import { Icone } from "./Icone";
 import { TamponScene } from "./TamponScene";
 
 /**
  * La vue « Chemins » d'un chapitre (F03.1, « Vue Chemins à reprendre » ; docs/design.md,
  * « Vue Chemins reprise ») : les mêmes scènes que la vue « Scènes », reliées par leurs choix.
- * Les chemins se déduisent des textes. Sur un écran large, un schéma de haut en bas, qui ne se
- * charge qu'ici ; sur téléphone, la liste des scènes, chaque choix disant où il mène. En tête,
- * ce qu'il y a « à regarder ». L'élève et le téléphone lisent sans rien modifier ; sur un écran
- * large, l'adulte y construit le plan (F03.1, « Construire dans Chemins », F03-AC57).
+ * Les chemins se déduisent des textes. Sur un écran large, un schéma de haut en bas dans un
+ * cadre qu'on tire (F03.1, « Chemins en atelier »), qui ne se charge qu'ici ; sur téléphone, la
+ * liste des scènes, chaque choix disant où il mène. En tête, ce qu'il y a « à regarder ». L'élève
+ * et le téléphone lisent sans rien modifier ; sur un écran large, l'adulte y construit le plan
+ * (F03.1, « Construire dans Chemins », F03-AC57).
  */
 
 const ATTENTE = <p className="chemins__attente">Les chemins se dessinent…</p>;
@@ -33,6 +35,27 @@ const suivreLaLargeur = (prevenir: () => void) => {
 };
 const estEtroit = (): boolean | null => window.matchMedia(ETROIT).matches;
 const pasEncoreSu = (): boolean | null => null;
+
+/**
+ * Le « i » de la vue « Chemins », à côté de la bascule « Scènes / Chemins » : comment lire le
+ * schéma, s'y déplacer et, pour l'adulte d'un récit à choix, y construire.
+ */
+export function AideDesChemins({ pourEleve = false, construit = false }: { pourEleve?: boolean; construit?: boolean }) {
+  return (
+    <Bulle question="Comment lire ces chemins ?">
+      Chaque flèche est un choix : elle part de la scène où il s’écrit et porte son libellé. {pourEleve ? "" : "Une flèche en pointillé est un lien caché. "}Une flèche plus sombre, marquée d’une
+      petite flèche vers le haut, ramène le lecteur en arrière. Une étiquette nomme un autre chapitre.
+      <span>Tirer le fond ou la molette déplace le schéma ; Ctrl + molette change sa taille.</span>
+      {construit ? (
+        <span>
+          Pour construire : le « + » sous une scène ajoute la scène suivante ; tiré jusqu’à une autre scène, il les relie. Une scène cliquée ouvre son titre, sa consigne et ses choix.
+        </span>
+      ) : (
+        <span>Cliquer une scène montre ses chemins.</span>
+      )}
+    </Bulle>
+  );
+}
 
 export function Chemins({
   noeuds, liens, entrees, designee, pourEleve = false, construire,
@@ -82,9 +105,7 @@ export function Chemins({
         </button>
       </span>
     </div>
-  ) : (
-    <span />
-  );
+  ) : null;
   const montre = courant?.id ?? null;
   const fois = pas?.fois ?? 0;
 
@@ -96,7 +117,7 @@ export function Chemins({
         <Liste chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete} />
       ) : (
         <Schema
-          chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} pourEleve={pourEleve} tete={tete}
+          chemins={chemins} regard={regard} designee={designee} montre={montre} fois={fois} tete={tete}
           construire={peutConstruire({ adulte: !pourEleve, aChoix: !!construire, etroit }) ? construire : undefined}
         />
       )}

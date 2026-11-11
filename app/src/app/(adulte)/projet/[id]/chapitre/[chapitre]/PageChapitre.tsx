@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Bulle } from "@/composants/Bulle";
 import { ChoisirImage, type ChoixImage } from "@/composants/ChoisirImage";
-import { Chemins } from "@/composants/Chemins";
+import { AideDesChemins, Chemins } from "@/composants/Chemins";
 import type { Construire } from "@/composants/chemins/Construire";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
@@ -93,6 +93,9 @@ export function PageChapitre({
   const filtre = cle(demande);
   const montrees = filtre ? scenes.filter((s) => cle(`${referenceScene(s.reference)} ${s.titre ?? ""}`).includes(filtre)) : scenes;
 
+  // « Chemins » s'ouvre en premier dans un chapitre à choix : son adresse est celle du chapitre (F03.1, « Chemins en atelier »)
+  const adresse = (v: "scenes" | "chemins") => `/projet/${projet.id}/chapitre/${chapitre.id}${v === "scenes" && projet.aChoix ? "?vue=scenes" : ""}`;
+
   const ajouter = async () => {
     setAttente("scene");
     const fait = await creerScene(chapitre.id);
@@ -103,11 +106,8 @@ export function PageChapitre({
     setDemande("");
     setMontree(fait.id);
     aAmener.current = fait.id;
-    // Dans « Chemins », la scène ajoutée, que rien ne relie encore, est désignée sous le schéma
-    if (vue === "chemins") {
-      routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins&scene=${fait.id}`, { scroll: false });
-      return dire({ texte: `${referenceScene(fait.reference)} est ajoutée, sous le schéma : rien n’y mène encore.` });
-    }
+    // La première scène d'un chapitre à choix arrive dans « Chemins », qui s'ouvre en premier : on y clique sa carte
+    if (vue === "chemins") return dire({ texte: `${referenceScene(fait.reference)} est ajoutée. Cliquez-la pour lui donner un titre.` });
     dire({ texte: `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre. Ouvrez-la pour lui donner un titre.` });
   };
 
@@ -156,7 +156,7 @@ export function PageChapitre({
           nombreDeScenes: chapitre.scenes.length,
           reglages: reglagesBloc,
           auDepart: blocAuDepart,
-          quitter: () => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}`, { scroll: false }),
+          quitter: () => routeur.replace(adresse("chemins"), { scroll: false }),
           regler: (r) => reglerLeBloc(r),
           ajouter: async (p, prendre) => {
             const fait = await ajouterBlocDepuisLeSchema(chapitre.id, p, prendre);
@@ -169,7 +169,7 @@ export function PageChapitre({
               annuler: () => void annulerBlocDuSchema(fait.choix, fait.scenes.map((x) => x.id), consigne).then((defait) => defait.ok || dire({ texte: defait.erreur })),
             });
             // Le début d'un chapitre vide : la page quitte son adresse d'arrivée, le bloc ne se rouvre pas d'office
-            if (blocAuDepart) routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins`, { scroll: false });
+            if (blocAuDepart) routeur.replace(adresse("chemins"), { scroll: false });
             return { ok: true, scenes: fait.scenes.map((x) => x.id) };
           },
         },
@@ -270,8 +270,9 @@ export function PageChapitre({
         </Link>
       </nav>
 
-      {/* Un bandeau bas, le même dans « Scènes » et « Chemins » : les onglets ne bougent pas d'une vue à
-          l'autre, et le schéma se voit sans faire défiler (demandé par le porteur, 10 novembre 2026) */}
+      {/* Un en-tête réduit à une seule bande (F03.1, « Chemins en atelier », 11 novembre 2026) : le chapitre, ses
+          élèves, et la bascule « Scènes / Chemins » avec son « i », là où étaient « Ajouter une scène » et
+          « Attribuer des élèves ». Le schéma se voit sans faire défiler, les onglets ne bougent pas d'une vue à l'autre. */}
       <header className={`chap-bandeau${chapitre.scenes.length ? " chap-bandeau--compact" : ""}`}>
         <div className="chap-bandeau__image">
           <ImageRepere repere={chapitre} graine={chapitre.id} prioritaire />
@@ -285,25 +286,61 @@ export function PageChapitre({
             {chapitre.horsLivre ? " · hors du livre" : ""}
           </p>
           {attribues.length ? (
-            <ul className="chap-eleves" aria-label="Élèves du chapitre">
+            // Les prénoms ouvrent « Attribuer des élèves », qui reste aussi dans le menu « … »
+            <button type="button" className="chap-eleves chap-eleves--bouton" title="Attribuer des élèves" onClick={() => setOuvert("attribuer")}>
+              <span className="vh">Élèves du chapitre : </span>
               {attribues.map(({ eleve }) => (
-                <li key={eleve.id}>
+                <span key={eleve.id} className="chap-eleves__un">
                   <Gommette prenom={eleve.prenom} couleur={eleve.couleur} taille="s" />
                   {nomPourEleves(eleve, eleves)}
-                </li>
+                </span>
               ))}
-            </ul>
+              <span className="vh">. Attribuer des élèves</span>
+              <Icone nom="crayon" />
+            </button>
           ) : projet.deClasse ? (
-            <p className="chap-meta">{ecritParLEnseignant(chapitre) ? "Vous écrivez ce chapitre vous-même." : "Aucun élève n’écrit encore dans ce chapitre."}</p>
+            <p className="chap-meta">
+              {ecritParLEnseignant(chapitre) ? "Vous écrivez ce chapitre vous-même." : "Aucun élève n’écrit encore dans ce chapitre."}{" "}
+              <button type="button" className="lien" onClick={() => setOuvert("attribuer")}>
+                Attribuer des élèves
+              </button>
+            </p>
           ) : null}
         </div>
         <div className="chap-actions">
+          {projet.aChoix && chapitre.scenes.length ? (
+            <>
+              <div className="bascule" role="group" aria-label="Vue du chapitre">
+                <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(adresse("scenes"), { scroll: false })}>
+                  <Icone nom="feuille" />
+                  Scènes
+                </button>
+                <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(adresse("chemins"), { scroll: false })}>
+                  <Icone nom="chemins" />
+                  Chemins
+                </button>
+              </div>
+              {vue === "chemins" ? (
+                <AideDesChemins construit />
+              ) : (
+                <Bulle question="Que change l’ordre des cartes ?">
+                  L’ordre des cartes ne sert qu’à ranger le chapitre. Dans le livre, ce sont les choix écrits dans les scènes qui mènent d’une scène
+                  à l’autre.
+                </Bulle>
+              )}
+            </>
+          ) : null}
           <Menu libelle={`Autres commandes du chapitre ${chapitre.titre}`}>
             {(fermer) => (
               <>
                 <button type="button" onClick={() => { fermer(); setOuvert("reglages"); }}>
                   Réglages
                 </button>
+                {projet.deClasse ? (
+                  <button type="button" onClick={() => { fermer(); setOuvert("attribuer"); }}>
+                    Attribuer des élèves
+                  </button>
+                ) : null}
                 <button type="button" onClick={() => { fermer(); if (chapitre.horsLivre) void reintegrer(); else setOuvert("exclure"); }}>
                   {chapitre.horsLivre ? "Réintégrer dans le livre" : "Exclure du livre"}
                 </button>
@@ -315,24 +352,12 @@ export function PageChapitre({
               </>
             )}
           </Menu>
-          {chapitre.scenes.length ? (
-            <button type="button" className="btn btn--primaire" disabled={attente === "scene"} aria-busy={attente === "scene" || undefined} onClick={() => void ajouter()}>
-              <Icone nom="plus" />
-              Ajouter une scène
-            </button>
-          ) : null}
-          {projet.deClasse ? (
-            <button type="button" className="btn" onClick={() => setOuvert("attribuer")}>
-              <Icone nom="eleves" />
-              Attribuer des élèves
-            </button>
-          ) : null}
         </div>
       </header>
 
       {chapitre.scenes.length === 0 && vue === "chemins" && blocAuDepart && chemins && construire ? (
         // Un chapitre vide, le bloc demandé : le schéma attend sa proposition (F13.7)
-        <Chemins {...chemins} construire={construire} />
+        <Chemins key={chapitre.id} {...chemins} construire={construire} />
       ) : chapitre.scenes.length === 0 ? (
         <div className="vide-chap">
           <p>Ce chapitre n’a pas encore de scène. Ajoutez une première scène.</p>
@@ -343,7 +368,7 @@ export function PageChapitre({
             </button>
             {/* Plusieurs scènes d'un coup, en récit à choix : par l'IA seule (F13.7) */}
             {projet.aChoix && aides.proposer ? (
-              <button type="button" className="btn btn--ia" onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins&bloc=debut`, { scroll: false })}>
+              <button type="button" className="btn btn--ia" onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?bloc=debut`, { scroll: false })}>
                 <Icone nom="ia" />
                 Construire avec l’IA
               </button>
@@ -352,41 +377,21 @@ export function PageChapitre({
         </div>
       ) : (
         <>
-          <div className={`chap-outils${vue === "chemins" ? " chap-outils--chemins" : ""}`}>
-            {projet.aChoix ? (
-              <div className="bascule" role="group" aria-label="Vue du chapitre">
-                <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}`, { scroll: false })}>
-                  <Icone nom="feuille" />
-                  Scènes
-                </button>
-                <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(`/projet/${projet.id}/chapitre/${chapitre.id}?vue=chemins`, { scroll: false })}>
-                  <Icone nom="chemins" />
-                  Chemins
-                </button>
-              </div>
-            ) : null}
-            {/* L'ordre des cartes, dans un « i » : la phrase restait à l'écran à chaque visite (révision de novembre 2026) */}
-            {/* Dans « Chemins », l'adulte construit (F03.1) : une phrase le dit, là où l'on lisait « rien ne se règle ici » */}
-            {vue === "chemins" ? (
-              <p className="chap-outils__construire">Le « + » sous une scène ajoute la suite ; tiré jusqu’à une autre scène, il les relie.</p>
-            ) : projet.aChoix ? (
-              <Bulle question="Que change l’ordre des cartes ?">
-                L’ordre des cartes ne sert qu’à ranger le chapitre. Dans le livre, ce sont les choix écrits dans les scènes qui mènent d’une
-                scène à l’autre.
-              </Bulle>
-            ) : (
-              <p>Les scènes se lisent dans cet ordre.</p>
-            )}
-            {vue === "scenes" && chapitre.scenes.length > 3 ? (
-              <label className="recherche" style={{ marginLeft: "auto" }}>
-                <span className="vh">Rechercher une scène dans ce chapitre</span>
-                <Icone nom="loupe" />
-                <input type="search" placeholder="Rechercher dans ce chapitre" value={demande} onChange={(e) => setDemande(e.target.value)} />
-              </label>
-            ) : null}
-          </div>
+          {/* Sous la bande, dans « Scènes » seulement : ce que dit l'ordre en récit classique, et la recherche */}
+          {vue === "scenes" && (!projet.aChoix || chapitre.scenes.length > 3) ? (
+            <div className="chap-outils">
+              {projet.aChoix ? null : <p>Les scènes se lisent dans cet ordre.</p>}
+              {chapitre.scenes.length > 3 ? (
+                <label className="recherche" style={{ marginLeft: "auto" }}>
+                  <span className="vh">Rechercher une scène dans ce chapitre</span>
+                  <Icone nom="loupe" />
+                  <input type="search" placeholder="Rechercher dans ce chapitre" value={demande} onChange={(e) => setDemande(e.target.value)} />
+                </label>
+              ) : null}
+            </div>
+          ) : null}
           {chemins ? (
-            <Chemins {...chemins} designee={designee} construire={construire} />
+            <Chemins key={chapitre.id} {...chemins} designee={designee} construire={construire} />
           ) : montrees.length === 0 ? (
             <p className="aucun" aria-live="polite">
               Aucun titre de scène ne contient « {demande.trim()} » dans ce chapitre.{" "}
@@ -427,6 +432,15 @@ export function PageChapitre({
                       )}
                     </FicheTiree>
                   ))}
+                  {/* « Ajouter une scène », en dernière carte de la grille (F03.1, « Chemins en atelier ») ; pas parmi les résultats d'une recherche */}
+                  {filtre ? null : (
+                    <li>
+                      <button type="button" className="fiche-ajout" disabled={attente === "scene"} aria-busy={attente === "scene" || undefined} onClick={() => void ajouter()}>
+                        <Icone nom="plus" />
+                        Nouvelle scène
+                      </button>
+                    </li>
+                  )}
                 </ul>
               </SortableContext>
               <DragOverlay>

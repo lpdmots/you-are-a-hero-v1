@@ -6,7 +6,7 @@ import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
-import { Chemins } from "@/composants/Chemins";
+import { AideDesChemins, Chemins } from "@/composants/Chemins";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -45,12 +45,13 @@ export function ChapitreEleve({
   const vientDeTirer = useRef(false);
   const scenes = local?.base === chapitre ? local.scenes : chapitre.scenes;
   const c = couleurDeChapitre(chapitre.couleur);
+  const enChemins = vue === "chemins" && chapitre.aChoix && scenes.length > 0;
   // Les chemins tels que l'élève les lit : le départ quand la lecture est ouverte, les fins, sans lien caché tracé
   // ni chemin venu d'ailleurs (F03-AC50 révisé)
   const chemins = useMemo(
     () => ({
       noeuds: scenes.map((s) => ({
-        id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, lien: `/travail/scene/${s.id}`,
+        id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, lien: `/travail/scene/${s.id}?de=chemins`,
         depart: chapitre.reperes?.depart === s.id, fin: chapitre.reperes?.fins.includes(s.id) ?? false,
         suiteCachee: chapitre.reperes?.suitesCachees.includes(s.id) ?? false,
       })),
@@ -249,11 +250,13 @@ export function ChapitreEleve({
           Retour à Mon travail
         </Link>
       </nav>
-      <header className="chap-bandeau">
+      {/* Un bandeau bas dès que le chapitre a ses deux vues : le schéma remplit la hauteur de la fenêtre, et la bascule
+          ne bouge pas de « Scènes » à « Chemins » (F03.1, « Chemins en atelier ») */}
+      <header className={`chap-bandeau${chapitre.aChoix && scenes.length > 0 ? " chap-bandeau--compact" : ""}`}>
         <div className="chap-bandeau__image">
           <ImageRepere repere={chapitre} graine={chapitre.id} prioritaire />
         </div>
-        <div>
+        <div className="chap-bandeau__texte">
           <h1>{chapitre.titre}</h1>
           <p className="chap-meta">
             {chapitre.partie} · {compteScenes(chapitre.scenes.length).toLocaleLowerCase("fr")}
@@ -275,12 +278,30 @@ export function ChapitreEleve({
             </details>
           ) : null}
         </div>
-        {organise ? (
+        {organise || (chapitre.aChoix && scenes.length > 0) ? (
           <div className="chap-actions">
-            <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void ajouter()}>
-              <Icone nom="plus" />
-              Ajouter une scène
-            </button>
+            {/* La bascule dans le bandeau, avec son « i », comme chez l'adulte */}
+            {chapitre.aChoix && scenes.length > 0 ? (
+              <span className="chap-actions__vue">
+                <div className="bascule" role="group" aria-label="Vue du chapitre">
+                  <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}?vue=scenes`, { scroll: false })}>
+                    <Icone nom="feuille" />
+                    Scènes
+                  </button>
+                  <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}`, { scroll: false })}>
+                    <Icone nom="chemins" />
+                    Chemins
+                  </button>
+                </div>
+                {enChemins ? <AideDesChemins pourEleve /> : null}
+              </span>
+            ) : null}
+            {organise && !enChemins ? (
+              <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void ajouter()}>
+                <Icone nom="plus" />
+                Ajouter une scène
+              </button>
+            ) : null}
           </div>
         ) : null}
       </header>
@@ -291,22 +312,7 @@ export function ChapitreEleve({
         </div>
       ) : null}
 
-      {chapitre.aChoix && scenes.length > 0 ? (
-        <div className="chap-outils">
-          <div className="bascule" role="group" aria-label="Vue du chapitre">
-            <button type="button" aria-pressed={vue === "scenes"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}`, { scroll: false })}>
-              <Icone nom="feuille" />
-              Scènes
-            </button>
-            <button type="button" aria-pressed={vue === "chemins"} onClick={() => routeur.replace(`/travail/chapitre/${chapitre.id}?vue=chemins`, { scroll: false })}>
-              <Icone nom="chemins" />
-              Chemins
-            </button>
-          </div>
-        </div>
-      ) : null}
-
-      {vue === "chemins" && chapitre.aChoix && scenes.length > 0 ? (
+      {enChemins ? (
         <Chemins pourEleve {...chemins} />
       ) : scenes.length === 0 ? (
         <div className="vide-chap">

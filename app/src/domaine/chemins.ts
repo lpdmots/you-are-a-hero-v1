@@ -38,6 +38,13 @@ export type LienDeChemin = {
 export type EntreeDeChemin = { vers: string; chapitre: string; lien?: string };
 export type Chemins = { noeuds: NoeudDeChemin[]; liens: LienDeChemin[]; entrees: EntreeDeChemin[] };
 
+/**
+ * La vue qui s'ouvre dans un chapitre (F03.1, « Chemins en atelier », 11 novembre 2026) : en récit à
+ * choix, « Chemins », sauf si l'adresse demande « Scènes » ; en récit classique, « Scènes », le
+ * seul rangement qui y ait un sens.
+ */
+export const vueDuChapitre = (demandee: string | undefined, aChoix: boolean): "scenes" | "chemins" => (aChoix && demandee !== "scenes" ? "chemins" : "scenes");
+
 /** Les chemins d'un chapitre tels que l'adulte les lit, d'après le plan et ses liens. */
 export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string): Chemins {
   const chapitres = chapitresDe(plan);

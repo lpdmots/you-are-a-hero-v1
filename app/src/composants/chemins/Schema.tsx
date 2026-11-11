@@ -1,59 +1,57 @@
 "use client";
 
 import "@xyflow/react/dist/base.css";
-import { applyNodeChanges, BaseEdge, EdgeLabelRenderer, Handle, NodeToolbar, Position, ReactFlow, useStore, type Edge, type EdgeProps, type Node, type NodeChange, type NodeProps } from "@xyflow/react";
+import {
+  applyNodeChanges, BaseEdge, EdgeLabelRenderer, Handle, NodeToolbar, Position, ReactFlow, useReactFlow, useStore,
+  type Edge, type EdgeProps, type Node, type NodeChange, type NodeProps, type ReactFlowInstance,
+} from "@xyflow/react";
 import Link from "next/link";
 import {
   createContext, useCallback, useContext, useEffect, useEffectEvent, useLayoutEffect, useMemo, useRef, useState,
   type CSSProperties, type PointerEvent, type ReactNode, type RefObject,
 } from "react";
-import { cheminsAvecLeBloc, resteAReprendre } from "@/domaine/bloc-de-scenes";
+import { cheminsAvecLeBloc, idPropose, resteAReprendre } from "@/domaine/bloc-de-scenes";
 import { MOT_DE_MARQUE, type ARegarder, type Chemins, type NoeudDeChemin } from "@/domaine/chemins";
 import { useAidesIa } from "../AidesIa";
 import { replierLaColonnePourUnTemps } from "../EspaceAdulte";
-import { Bulle } from "../Bulle";
 import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
-import { aRendreSansMouvement, carteDeReference, figerLaTaille, garderEnPlace } from "./ancrage";
+import {
+  carteDeReference, centrerSur, changerDeTaille, decalerLaVue, englober, montrerLaBoite, partVue, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre, vueDeDepart, vueDEnsemble,
+  type Boite, type Cadre, type Vue as VueDuSchema,
+} from "./ancrage";
 import { PanneauDuBloc, useEtatDuBloc } from "./Bloc";
 import { BulleDuGeste, PanneauDeScene, type Construire, type Geste } from "./Construire";
 import { disposer, texteDeLEtiquette, texteDuLibelle, type Disposition, type Element, type Mesure } from "./disposer";
 
 /**
- * Le schéma des chemins d'un chapitre (F03.1, « Vue Chemins à reprendre ») : les scènes de
- * haut en bas, placées par dagre, dessinées par React Flow. La page défile normalement : le
- * schéma prend toute sa hauteur, et aucune carte ne s'y déplace à la main. Ce fichier et ses
- * deux bibliothèques ne se chargent qu'à l'ouverture de « Chemins », sur un écran large.
+ * Le schéma des chemins d'un chapitre (F03.1, « Vue Chemins à reprendre », puis « Chemins en
+ * atelier », 11 novembre 2026) : les scènes de haut en bas, placées par dagre, dessinées par React
+ * Flow, dans un cadre qui remplit la hauteur de la fenêtre. La page ne défile plus : on tire le fond
+ * pour se déplacer, la molette et deux doigts font de même, Ctrl + molette et le pincement changent
+ * la taille. Aucune carte ne se déplace à la main. Ce fichier et ses deux bibliothèques ne se
+ * chargent qu'à l'ouverture de « Chemins », sur un écran large.
  *
  * L'adulte y construit le plan (F03.1, « Construire dans Chemins ») : un « + » sous la carte
- * ajoute une scène, ou relie quand on le tire jusqu'à une autre ; la scène cliquée ouvre son
- * panneau à droite. Après chaque geste le schéma se redispose, et l'écran ne bouge pas : même
- * taille, la carte d'où l'on part à la même place (F03-AC54).
+ * ajoute une scène, ou relie quand on le tire jusqu'à une autre. Deux états : le plan, schéma sur
+ * toute la largeur ; le travail, dès qu'une carte est cliquée ou que « ✦ Construire avec l'IA » est
+ * demandé — la colonne de navigation se replie, le schéma rétrécit et glisse jusqu'à la scène, et
+ * l'espace de travail s'ouvre à droite, à côté du schéma. Après chaque geste le schéma se
+ * redispose, et l'écran ne bouge pas : même taille, la carte d'où l'on part au même point (F03-AC54).
  */
 
 /** Autour du schéma, dans son cadre */
 const MARGE = 28;
-/** La barre du haut de l'application, qui reste à l'écran */
-/**
- * Ce qui reste collé en haut de l'écran au-dessus du schéma : rien sur l'écran large de l'adulte, sa
- * barre mince sur un écran étroit, la barre de l'élève (« --sous-la-barre » de la vue Chemins).
- */
-const barre = (): number => {
-  const vue = document.querySelector(".chemins");
-  const v = vue ? parseFloat(getComputedStyle(vue).getPropertyValue("--sous-la-barre")) : NaN;
-  return Number.isFinite(v) ? v : 58;
-};
-/** La largeur du panneau de la scène cliquée, que la feuille de style reprend (« --panneau-chemin », recit.css) */
-const PANNEAU = 304;
-/**
- * Le panneau du bloc de scènes, large et de toute la hauteur (11 novembre 2026) : on y relit des
- * consignes. La feuille de style reprend la même règle (« --panneau-bloc », recit.css).
- */
-const largeurDuBloc = (): number => Math.round(Math.min(660, Math.max(460, window.innerWidth * 0.44)));
 /** En dessous, on regarde l'ensemble : les libellés des choix ne se lisent plus et sont masqués */
 const LOIN = 0.62;
 /** « Tout voir » descend aussi bas qu'il le faut ; les boutons « − » et « + » restent entre deux tailles utiles */
 const ZOOM = { toutVoir: 0.05, min: 0.2, lisible: 0.7, max: 1, pas: 0.1 };
+/** Où une scène cliquée se pose de haut en bas : un peu au-dessus du milieu, sa suite se construit dessous */
+const HAUTEUR_DE_LA_SCENE = 0.42;
+/** La largeur du cadre en dessous de laquelle la mini-carte ne s'affiche pas */
+const MINI_CARTE_DES = 600;
+/** Le temps d'un glissement de la vue */
+const GLISSE = 320;
 
 type DonneesScene = NoeudDeChemin & { marques: string[]; sansSuite: boolean };
 type DonneesTrait = { d: string; texte: string; cache: boolean; remonte: boolean; libelle: Disposition["traits"][number]["libelle"]; propose?: boolean };
@@ -279,71 +277,53 @@ type Fige = {
   /** La carte qui garde sa place : celle d'où part le geste, sinon la carte cliquée, sinon la plus proche du milieu */
   id: string | null;
   /** Où était chaque carte à l'écran */
-  rects: Map<string, { x: number; y: number; l: number; h: number }>;
+  rects: Map<string, Boite>;
   /** Les places attendues : le schéma est redessiné quand React Flow les a prises */
   signature: string;
 };
 const signatureDe = (noeuds: { id: string; position: { x: number; y: number } }[]): string => noeuds.map((n) => `${n.id}:${n.position.x},${n.position.y}`).join(";");
-const SANS_AJUSTEMENT = { px: 0, py: 0, ax: 0, ay: 0 };
 const sansMouvement = (): boolean => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /**
- * Posé dans le schéma : dès que React Flow a pris les nouvelles places, la carte de référence est
- * ramenée où elle était à l'écran — en faisant défiler, puis, au bout du défilement, en poussant
- * le schéma dans son cadre ou en allongeant le cadre — et les autres glissent vers leur place.
+ * Posé dans le schéma : dès que React Flow a pris les nouvelles places, la vue se décale pour que
+ * la carte de référence reste où elle était dans le cadre, et les autres glissent vers leur place.
  */
-function GarderEnPlace({
-  figeRef, cadreRef, toileRef, zoom, ajuste, onAjuste,
-}: {
-  figeRef: RefObject<Fige | null>; cadreRef: RefObject<HTMLDivElement | null>; toileRef: RefObject<HTMLDivElement | null>; zoom: number;
-  ajuste: typeof SANS_AJUSTEMENT; onAjuste: (a: typeof SANS_AJUSTEMENT) => void;
-}) {
+function GarderEnPlace({ figeRef, cadreRef }: { figeRef: RefObject<Fige | null>; cadreRef: RefObject<HTMLDivElement | null> }) {
   const dansLeSchema = useStore((etat) => etat.nodes);
+  const flux = useReactFlow();
   useLayoutEffect(() => {
     const f = figeRef.current;
     const c = cadreRef.current;
-    const t = toileRef.current;
-    if (!f || !c || !t || signatureDe(dansLeSchema) !== f.signature) return;
+    if (!f || !c || signatureDe(dansLeSchema) !== f.signature) return;
     figeRef.current = null;
-    const lire = () =>
-      new Map(
-        [...c.querySelectorAll<HTMLElement>(".react-flow__node")].map((el) => {
-          const r = el.getBoundingClientRect();
-          return [el.dataset.id ?? "", { el, x: r.left, y: r.top }] as const;
-        }),
-      );
-    const repere = f.id ? lire().get(f.id) : undefined;
+    const places = new Map(
+      [...c.querySelectorAll<HTMLElement>(".react-flow__node")].map((el) => {
+        const r = el.getBoundingClientRect();
+        return [el.dataset.id ?? "", { el, x: r.left, y: r.top }] as const;
+      }),
+    );
+    const repere = f.id ? places.get(f.id) : undefined;
     const avant = f.id ? f.rects.get(f.id) : undefined;
-    if (repere && avant) {
-      const x = garderEnPlace(repere.x - avant.x, { position: c.scrollLeft, max: c.scrollWidth - c.clientWidth });
-      const y = garderEnPlace(repere.y - avant.y, { position: window.scrollY, max: document.documentElement.scrollHeight - window.innerHeight });
-      if (x.pousser || x.allonger || y.pousser || y.allonger) {
-        const suite = { px: ajuste.px + x.pousser, py: ajuste.py + y.pousser, ax: ajuste.ax + x.allonger, ay: ajuste.ay + y.allonger };
-        // Tout de suite dans la page, pour que le défilement ait où aller ; l'état suit, avec les mêmes valeurs
-        c.style.paddingLeft = `${suite.px}px`;
-        c.style.paddingTop = `${suite.py}px`;
-        t.style.width = `${t.offsetWidth + x.allonger}px`;
-        t.style.height = `${t.offsetHeight + y.allonger}px`;
-        onAjuste(suite);
-      }
-      c.scrollLeft += x.defiler;
-      if (y.defiler) window.scrollTo({ top: window.scrollY + y.defiler, behavior: "instant" });
-    }
+    // De combien la carte de référence s'est déplacée à l'écran : la vue se décale d'autant, dans l'autre sens
+    const ecart = repere && avant ? { x: repere.x - avant.x, y: repere.y - avant.y } : { x: 0, y: 0 };
+    const vue = flux.getViewport();
+    if (ecart.x || ecart.y) void flux.setViewport(decalerLaVue(vue, ecart));
     if (sansMouvement()) return;
     // Chaque carte part de là où elle était et glisse vers sa place ; une carte nouvelle apparaît
     const doux = { duration: 260, easing: "cubic-bezier(0.2, 0.7, 0.2, 1)" };
-    const places = lire();
     let change = places.size !== f.rects.size;
     for (const [id, n] of places) {
       const vieux = f.rects.get(id);
       const dedans = n.el.firstElementChild;
       if (!dedans) continue;
+      // Sa place une fois la vue décalée
+      const [x, y] = [n.x - ecart.x, n.y - ecart.y];
       if (!vieux) {
         change = true;
         dedans.animate([{ opacity: 0, transform: "scale(0.94)" }, { opacity: 1, transform: "scale(1)" }], doux);
-      } else if (Math.abs(vieux.x - n.x) + Math.abs(vieux.y - n.y) > 1) {
+      } else if (Math.abs(vieux.x - x) + Math.abs(vieux.y - y) > 1) {
         change = true;
-        dedans.animate([{ transform: `translate(${(vieux.x - n.x) / zoom}px, ${(vieux.y - n.y) / zoom}px)` }, { transform: "translate(0, 0)" }], doux);
+        dedans.animate([{ transform: `translate(${(vieux.x - x) / vue.zoom}px, ${(vieux.y - y) / vue.zoom}px)` }, { transform: "translate(0, 0)" }], doux);
       }
     }
     // Les flèches ne glissent pas : elles reviennent une fois les cartes presque arrivées. Rien n'a
@@ -358,23 +338,19 @@ function GarderEnPlace({
 }
 
 export default function Schema({
-  chemins, regard, designee, montre, fois, pourEleve, tete, construire,
+  chemins, regard, designee, montre, fois, tete, construire,
 }: {
   chemins: Chemins; regard: ARegarder; designee?: string;
   /** La scène ou le choix que le parcours de « À regarder » désigne, et le nombre de pas faits */
   montre: string | null; fois: number;
-  /** Un élève ne lit pas les liens cachés : on ne lui en parle pas */
-  pourEleve: boolean;
-  /** La ligne « À regarder », que l'en-tête du schéma place à côté de ses boutons */
+  /** La ligne « À regarder », au-dessus du cadre ; rien quand il n'y a rien à regarder */
   tete: ReactNode;
   /** Les gestes de l'adulte (F03.1, « Construire dans Chemins ») ; sans eux, le schéma se lit seulement */
   construire?: Construire;
 }) {
   const cadre = useRef<HTMLDivElement>(null);
-  const toile = useRef<HTMLDivElement>(null);
-  const enTete = useRef<HTMLDivElement>(null);
-  const rail = useRef<HTMLDivElement>(null);
   const plan = useRef<HTMLDivElement>(null);
+  const espace = useRef<HTMLDivElement>(null);
   const trait = useRef<SVGSVGElement>(null);
   const boutonAjouter = useRef<HTMLButtonElement>(null);
   // Le geste en cours : la bulle ouverte, d'où elle l'a été, et la carte que vise le lien qu'on tire
@@ -382,20 +358,23 @@ export default function Schema({
   const [tire, setTire] = useState<{ de: string; sur: string | null } | null>(null);
   const [designe, setDesigne] = useState<string | null>(null);
   const vientDeTirer = useRef(false);
-  // Ce que le schéma a dû pousser ou allonger pour que l'écran ne bouge pas (F03-AC54)
-  const [ajuste, setAjuste] = useState(SANS_AJUSTEMENT);
   const fige = useRef<Fige | null>(null);
   const aGarder = useRef<string | null>(null);
   // Ce que la disposition, calculée plus tard, lit de l'écran tel qu'il est à ce moment-là
-  const courantRef = useRef<{ noeuds: (NoeudScene | NoeudEtiquette)[]; zoom: number; dessine: boolean }>({ noeuds: [], zoom: 1, dessine: false });
+  const courantRef = useRef<{ noeuds: (NoeudScene | NoeudEtiquette)[]; dessine: boolean }>({ noeuds: [], dessine: false });
   const [disposition, setDisposition] = useState<Disposition | null>(null);
-  const [place, setPlace] = useState({ gauche: 0, largeur: 0, fenetre: 0, barre: 58 });
-  const [choisi, setChoisi] = useState<number | null>(null);
+  // Où le plan se place dans la page : d'un bord à l'autre, et de son haut jusqu'au bas de la fenêtre
+  const [place, setPlace] = useState({ gauche: 0, largeur: 0, haut: 0 });
   const [noeuds, setNoeuds] = useState<(NoeudScene | NoeudEtiquette)[]>([]);
   const [survolee, setSurvolee] = useState<string | null>(null);
   // Le schéma ne se montre qu'une fois à sa place et à sa taille
   const [dessine, setDessine] = useState(false);
-  const ancre = useRef<number | null>(null);
+  // La vue du schéma dans son cadre : React Flow la tient, on la tire ; ici, sa taille et celle du cadre
+  const flux = useRef<ReactFlowInstance<NoeudScene | NoeudEtiquette, Trait> | null>(null);
+  const [fluxPret, setFluxPret] = useState(0);
+  const [zoom, setZoom] = useState(1);
+  const [taille, setTaille] = useState<Cadre>({ l: 0, h: 0 });
+  const placee = useRef(false);
 
   // ——— Le bloc de scènes (F13.7) : l'état du panneau et la proposition, gardés tant que la page reste ouverte ———
   const aides = useAidesIa();
@@ -413,18 +392,11 @@ export default function Schema({
         aGarder.current = e.origine ?? avant.origine;
         aCadrer.current = e.proposition !== null;
       }
-      // Le panneau s'ouvre, ou la scène d'origine change : elle vient à gauche du panneau
-      if ((e.ouvert && !avant.ouvert) || (e.ouvert && e.origine !== avant.origine)) aCadrer.current = true;
+      // Le panneau s'ouvre sur une proposition gardée : elle revient en vue
+      if (e.ouvert && !avant.ouvert && e.proposition) aCadrer.current = true;
       return e;
     });
   const vus = useMemo(() => (blocOuvert ? cheminsAvecLeBloc(chemins, bloc.proposition) : chemins), [blocOuvert, chemins, bloc.proposition]);
-  // Le panneau ne s'élargit qu'une fois la proposition dessinée : avant, la demande tient dans le
-  // panneau ordinaire. Large, la colonne de navigation se replie et le schéma garde sa moitié de l'écran.
-  const blocLarge = blocOuvert && bloc.proposition !== null;
-  useEffect(() => {
-    replierLaColonnePourUnTemps(blocLarge);
-    return () => replierLaColonnePourUnTemps(false);
-  }, [blocLarge]);
 
   // La disposition se calcule une fois la police de l'outil chargée : les libellés se mesurent avec elle
   useEffect(() => {
@@ -449,7 +421,7 @@ export default function Schema({
         };
       });
       // Le schéma était déjà dessiné : il se redispose sans que l'écran bouge. On retient où est
-      // chaque carte, la taille se fige, et la carte de référence retrouvera sa place (F03-AC54).
+      // chaque carte, et la carte de référence restera au même point du cadre (F03-AC54).
       const c = cadre.current;
       if (etat.dessine && c) {
         const rects = new Map(
@@ -459,10 +431,10 @@ export default function Schema({
           }),
         );
         const scenes = new Map([...rects].filter(([id]) => parId.has(id) && d.places.has(id)));
-        const vu = { x: 0, y: barre(), l: window.innerWidth, h: window.innerHeight - barre() };
+        const bords = c.getBoundingClientRect();
+        const vu = { x: bords.left, y: bords.top, l: bords.width, h: bords.height };
         const voulue = aGarder.current && scenes.has(aGarder.current) ? aGarder.current : null;
         fige.current = { id: voulue ?? carteDeReference(scenes, choisie, vu), rects, signature: signatureDe(suite) };
-        setChoisi((avant) => figerLaTaille(avant, etat.zoom));
       }
       aGarder.current = null;
       setDisposition(d);
@@ -484,21 +456,21 @@ export default function Schema({
     });
   }, [disposition, vus.liens]);
 
-  // Le schéma prend toute la largeur de la page, d'un bord à l'autre : celle de la fenêtre, moins la
-  // colonne de navigation de l'adulte (F06.5), qui se replie sans que la fenêtre change
+  // Le plan va d'un bord à l'autre de la page — la fenêtre moins la colonne de navigation de l'adulte
+  // (F06.5) — et de son haut jusqu'au bas de la fenêtre : la page ne défile plus dans « Chemins »
   useLayoutEffect(() => {
-    const page = cadre.current?.closest("main");
+    const page = plan.current?.closest("main");
     const mesurer = () => {
-      const parent = cadre.current?.parentElement?.parentElement;
-      if (!parent) return;
+      const p = plan.current;
+      const parent = p?.parentElement;
+      if (!p || !parent) return;
       const bord = page ? page.getBoundingClientRect().left : 0;
       const suite = {
         gauche: Math.round(parent.getBoundingClientRect().left - bord),
         largeur: page ? page.clientWidth : document.documentElement.clientWidth,
-        fenetre: window.innerHeight,
-        barre: barre(),
+        haut: Math.round(p.getBoundingClientRect().top + window.scrollY),
       };
-      setPlace((avant) => (avant.gauche === suite.gauche && avant.largeur === suite.largeur && avant.fenetre === suite.fenetre && avant.barre === suite.barre ? avant : suite));
+      setPlace((avant) => (avant.gauche === suite.gauche && avant.largeur === suite.largeur && avant.haut === suite.haut ? avant : suite));
     };
     mesurer();
     window.addEventListener("resize", mesurer);
@@ -512,71 +484,157 @@ export default function Schema({
 
   const l = disposition?.largeur ?? 0;
   const h = disposition?.hauteur ?? 0;
-  /** La taille lisible : le schéma tient dans la largeur, sans descendre sous une taille où les titres se lisent */
-  const lisible = l && place.largeur ? Math.floor(borner((place.largeur - 2 * MARGE) / l, ZOOM.lisible, ZOOM.max) * 100) / 100 : 1;
-  const zoom = choisi ?? lisible;
+  /** La taille lisible : le schéma tient dans la largeur du cadre, sans descendre sous une taille où les titres se lisent */
+  const lisible = tailleLisible(l, taille, MARGE, { min: ZOOM.lisible, max: ZOOM.max });
   const loin = zoom < LOIN;
-  const largeurToile = Math.max(place.largeur, Math.ceil(l * zoom + 2 * MARGE));
-  const hauteurToile = Math.ceil(h * zoom + 2 * MARGE);
-  // Là où l'adulte construit, un schéma qui tient à gauche du panneau s'y centre : le panneau, en s'ouvrant, ne couvre rien et rien ne bouge
-  const panneau = blocLarge ? largeurDuBloc() : PANNEAU;
-  const largeurUtile = construire && l * zoom + 2 * MARGE <= place.largeur - panneau - 24 ? place.largeur - panneau - 24 : largeurToile;
-  useEffect(() => {
-    courantRef.current = { noeuds, zoom, dessine: dessine && disposition !== null };
-  });
-
-  // Changer de taille garde à l'écran ce qu'on regardait
-  const hautDuSchema = () => (toile.current ? toile.current.getBoundingClientRect().top + window.scrollY + MARGE : 0);
-  const changer = (suite: number | null) => {
-    const haut = hautDuSchema();
-    const milieu = window.scrollY + window.innerHeight / 2;
-    ancre.current = milieu > haut && window.scrollY + barre() > haut - MARGE ? (milieu - haut) / zoom : null;
-    // Le schéma retrouve sa place dans son cadre : ce qu'un geste avait poussé ou allongé n'a plus lieu d'être
-    setAjuste(SANS_AJUSTEMENT);
-    setChoisi(suite === null ? null : arrondir(borner(suite, ZOOM.min, ZOOM.max)));
-  };
-  useLayoutEffect(() => {
-    if (ancre.current === null) return;
-    window.scrollTo({ top: hautDuSchema() + ancre.current * zoom - window.innerHeight / 2 });
-    ancre.current = null;
-  }, [zoom]);
-
-  const hauteurDeLEnTete = () => enTete.current?.getBoundingClientRect().height ?? 0;
-  const toutVoir = () => {
-    const tete = hauteurDeLEnTete();
-    const hauteur = window.innerHeight - barre() - tete - 2 * MARGE - 8;
-    ancre.current = null;
-    setAjuste(SANS_AJUSTEMENT);
-    setChoisi(Math.floor(borner(Math.min((place.largeur - 2 * MARGE) / l, hauteur / h), ZOOM.toutVoir, ZOOM.max) * 100) / 100);
-    // Le haut du schéma vient sous la barre et son en-tête : on le voit alors d'un seul regard
-    setTimeout(() => {
-      if (cadre.current) window.scrollTo({ top: cadre.current.getBoundingClientRect().top + window.scrollY - barre() - tete });
-    }, 0);
-  };
-
-  // La scène où mène le choix suivi depuis un autre chapitre vient au milieu de l'écran (F03-AC25)
   const pret = disposition !== null && noeuds.length > 0;
   useEffect(() => {
-    if (!pret || !designee) return;
-    const attente = requestAnimationFrame(() => cadre.current?.querySelector(`[data-chemin="${CSS.escape(designee)}"]`)?.scrollIntoView({ block: "center", inline: "center" }));
-    return () => cancelAnimationFrame(attente);
-  }, [pret, designee]);
+    courantRef.current = { noeuds, dessine: dessine && disposition !== null };
+  });
 
-  // Ce que « À regarder » désigne est choisi comme par un clic, et vient au milieu de l'écran.
+  // ——— La vue : ce qui la déplace sans la main de l'utilisateur glisse, sauf pour qui a demandé moins de mouvement ———
+  // Le but vers lequel la vue glisse : il tient le temps que le cadre finisse de changer de largeur
+  const but = useRef<{ boite: Boite; hauteur: number; zoom: number } | null>(null);
+  const finDuBut = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scenePourLaTaille = useRef<string | null>(null);
+  const cadreIci = (): Cadre | null => {
+    const r = cadre.current?.getBoundingClientRect();
+    return r && r.width && r.height ? { l: r.width, h: r.height } : null;
+  };
+  // En ligne droite : sans cela, la vue recule puis revient pendant le trajet, comme un survol, et la taille bouge
+  const allerA = (vue: VueDuSchema, duree = GLISSE) => void flux.current?.setViewport(vue, { duration: sansMouvement() ? 0 : duree, interpolate: "linear" });
+  // Changer de taille garde au milieu du cadre ce qu'on regardait
+  const changer = (suite: number) => {
+    const cad = cadreIci();
+    if (!flux.current || !cad) return;
+    but.current = null;
+    const z = arrondir(borner(suite, ZOOM.min, ZOOM.max));
+    // Une scène est ouverte dans l'espace de travail : c'est autour d'elle que la taille change, elle reste en vue
+    const ouverte = scenePourLaTaille.current ? disposition?.places.get(scenePourLaTaille.current) : undefined;
+    allerA(ouverte ? centrerSur(ouverte, cad, z, HAUTEUR_DE_LA_SCENE) : changerDeTaille(flux.current.getViewport(), cad, z), 180);
+  };
+  const toutVoir = () => {
+    const cad = cadreIci();
+    but.current = null;
+    if (cad && l && h) allerA(vueDEnsemble({ l, h }, cad, MARGE, { min: ZOOM.toutVoir, max: ZOOM.max }));
+  };
+
+  // À l'ouverture : la taille lisible, le schéma au milieu de la largeur ; ou la scène où mène le
+  // choix qu'on vient de suivre depuis un autre chapitre, au milieu du cadre (F03-AC25)
+  const placer = useEffectEvent(() => {
+    const cad = cadreIci();
+    if (!flux.current || !disposition || !cad || placee.current) return;
+    const z = tailleLisible(disposition.largeur, cad, MARGE, { min: ZOOM.lisible, max: ZOOM.max });
+    const visee = designee ? disposition.places.get(designee) : undefined;
+    void flux.current.setViewport(visee ? centrerSur(visee, cad, z) : vueDeDepart({ l: disposition.largeur, h: disposition.hauteur }, cad, MARGE, z));
+    placee.current = true;
+    setZoom(z);
+    setTimeout(() => setDessine(true), 30);
+  });
+  useEffect(() => {
+    if (pret && fluxPret) placer();
+  }, [pret, fluxPret]);
+
+  const glisser = useEffectEvent(() => {
+    const cad = cadreIci();
+    if (!but.current || !flux.current || !cad) return;
+    const vers = centrerSur(but.current.boite, cad, but.current.zoom, but.current.hauteur);
+    // Sans montrer de vide pour rien : la première scène d'un chapitre ne descend pas au milieu du cadre
+    allerA(disposition ? sansVideInutile(vers, { l: disposition.largeur, h: disposition.hauteur }, cad, MARGE) : vers);
+  });
+  const viser = useEffectEvent((boite: Boite, hauteur: number) => {
+    // La taille est celle qu'on a en partant : un glissement repris en route ne la change pas
+    but.current = { boite, hauteur, zoom: but.current?.zoom ?? flux.current?.getZoom() ?? 1 };
+    if (finDuBut.current) clearTimeout(finDuBut.current);
+    finDuBut.current = setTimeout(() => (but.current = null), GLISSE + 300);
+    glisser();
+  });
+  // Le cadre change de place ou de largeur (la colonne se replie, l'espace de travail s'ouvre) : les
+  // cartes restent d'abord où elles étaient à l'écran, puis la vue glisse vers son but. Une seule fois.
+  const dernier = useRef<{ x: number; y: number } | null>(null);
+  useLayoutEffect(() => {
+    const c = cadre.current;
+    if (!c) return;
+    const suivre = () => {
+      const r = c.getBoundingClientRect();
+      const ici = { x: r.left + window.scrollX, y: r.top + window.scrollY };
+      const avant = dernier.current;
+      dernier.current = ici;
+      setTaille((t) => (t.l === r.width && t.h === r.height ? t : { l: r.width, h: r.height }));
+      if (!avant || !flux.current || !placee.current) return;
+      if (avant.x !== ici.x || avant.y !== ici.y) void flux.current.setViewport(suivreLeCadre(flux.current.getViewport(), avant, ici));
+      glisser();
+    };
+    suivre();
+    const suivi = new ResizeObserver(suivre);
+    suivi.observe(c);
+    return () => suivi.disconnect();
+  }, []);
+
+  const changerNoeuds = useCallback((changements: NodeChange<NoeudScene | NoeudEtiquette>[]) => setNoeuds((avant) => applyNodeChanges(changements, avant)), []);
+  const choisie = noeuds.find((n) => n.selected)?.id ?? null;
+  const voisines = useMemo(() => new Set(choisie ? traits.flatMap((t) => (t.source === choisie ? [t.target] : t.target === choisie ? [t.source] : [])) : []), [choisie, traits]);
+  const choisir = useCallback((id: string | null) => setNoeuds((avant) => avant.map((n) => (!!n.selected === (n.id === id) ? n : { ...n, selected: n.id === id }))), []);
+
+  // ——— Deux états (F03.1, « Chemins en atelier ») : le plan ; le travail, dès qu'une scène est cliquée
+  // ou que le bloc est demandé. La colonne de navigation se replie pour ce temps-là, et revient comme elle était.
+  const sceneChoisie = construire && choisie ? chemins.noeuds.find((n) => n.id === choisie) : undefined;
+  const travail = !!sceneChoisie || blocOuvert;
+  useEffect(() => {
+    scenePourLaTaille.current = sceneChoisie && !blocOuvert ? sceneChoisie.id : null;
+  });
+  useEffect(() => {
+    replierLaColonnePourUnTemps(travail);
+    return () => replierLaColonnePourUnTemps(false);
+  }, [travail]);
+  // Le passage d'un état à l'autre glisse, une seule fois : ce qui était au milieu du cadre y reste, dans
+  // le cadre rétréci comme dans le cadre élargi. Une scène cliquée a son propre but : elle vient au milieu.
+  const etaitAuTravail = useRef(false);
+  useLayoutEffect(() => {
+    const avant = etaitAuTravail.current;
+    etaitAuTravail.current = travail;
+    // Ici, `taille` est encore celle du cadre d'avant : il n'a pas fini de changer de largeur
+    if (avant === travail || !flux.current || !placee.current || !taille.l) return;
+    if (travail && sceneChoisie && !blocOuvert) return;
+    const v = flux.current.getViewport();
+    viser({ x: (taille.l / 2 - v.x) / v.zoom, y: (taille.h / 2 - v.y) / v.zoom, l: 0, h: 0 }, 0.5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [travail]);
+  // La scène cliquée vient au milieu du schéma, un peu au-dessus : la vue glisse jusqu'à elle. Pas
+  // quand c'est un geste qui l'a choisie (le « + » d'une autre carte) : sa bulle s'ouvre où l'on a cliqué.
+  const sansGlisser = useRef(false);
+  const dejaChoisie = useRef<string | null>(null);
+  useEffect(() => {
+    const avant = dejaChoisie.current;
+    dejaChoisie.current = choisie;
+    if (!construire || !choisie || choisie === avant) return;
+    if (sansGlisser.current) {
+      sansGlisser.current = false;
+      return;
+    }
+    const p = disposition?.places.get(choisie);
+    if (p) viser(p, HAUTEUR_DE_LA_SCENE);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [choisie]);
+
+  // La scène où mène un choix suivi sans quitter la page vient au milieu du cadre (F03-AC25)
+  useEffect(() => {
+    const p = designee && placee.current ? disposition?.places.get(designee) : undefined;
+    if (p) viser(p, 0.5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [designee]);
+
+  // Ce que « À regarder » désigne est choisi comme par un clic, et vient au milieu du cadre.
   // Pour un choix : la scène d'où il part est choisie, et l'on se place entre elle et le bout de sa flèche.
   const montrer = useEffectEvent((id: string) => {
-    const c = cadre.current;
-    if (!c || !disposition) return;
-    const trait = disposition.traits.find((t) => t.id === id);
-    const carte = trait ? trait.de : id;
-    setNoeuds((avant) => avant.map((n) => (!!n.selected === (n.id === carte) ? n : { ...n, selected: n.id === carte })));
-    const places = [disposition.places.get(carte), trait ? disposition.places.get(trait.vers) : undefined].filter((p) => p !== undefined);
-    if (!places.length) return;
-    const x = places.reduce((somme, p) => somme + p.x + p.l / 2, 0) / places.length;
-    const y = places.reduce((somme, p) => somme + p.y + p.h / 2, 0) / places.length;
-    const doux = sansMouvement() ? "auto" : "smooth";
-    window.scrollTo({ top: hautDuSchema() + y * zoom - (window.innerHeight + barre() + hauteurDeLEnTete()) / 2, behavior: doux });
-    c.scrollTo({ left: ajuste.px + (largeurUtile - l * zoom) / 2 + x * zoom - c.clientWidth / 2, behavior: doux });
+    if (!disposition) return;
+    const fleche = disposition.traits.find((t) => t.id === id);
+    const carte = fleche ? fleche.de : id;
+    const boite = englober([disposition.places.get(carte), fleche ? disposition.places.get(fleche.vers) : undefined].filter((p) => p !== undefined));
+    if (!boite) return;
+    if (construire && choisie !== carte) sansGlisser.current = true;
+    choisir(carte);
+    viser({ x: boite.x + boite.l / 2, y: boite.y + boite.h / 2, l: 0, h: 0 }, 0.5);
   });
   useEffect(() => {
     if (!pret || !montre) return;
@@ -584,17 +642,16 @@ export default function Schema({
     return () => clearTimeout(attente);
   }, [pret, montre, fois]);
 
-  const changerNoeuds = useCallback((changements: NodeChange<NoeudScene | NoeudEtiquette>[]) => setNoeuds((avant) => applyNodeChanges(changements, avant)), []);
-  const choisie = noeuds.find((n) => n.selected)?.id ?? null;
-  const voisines = useMemo(() => new Set(choisie ? traits.flatMap((t) => (t.source === choisie ? [t.target] : t.target === choisie ? [t.source] : [])) : []), [choisie, traits]);
-
   // ——— Construire (F03.1) : les gestes de l'adulte, à une taille où les cartes se lisent ; pas pendant un bloc ———
   const construit = !!construire && !loin && !blocOuvert;
-  const choisir = useCallback((id: string | null) => setNoeuds((avant) => avant.map((n) => (!!n.selected === (n.id === id) ? n : { ...n, selected: n.id === id }))), []);
   const suivreLaSource = useCallback(
     // Un panneau est ouvert sur une autre scène : il passe à celle d'où part le geste, dont la suite ne reste pas en retrait
-    (id: string) => setNoeuds((avant) => (avant.some((n) => n.selected && n.id !== id) ? avant.map((n) => (!!n.selected === (n.id === id) ? n : { ...n, selected: n.id === id })) : avant)),
-    [],
+    (id: string) => {
+      if (!courantRef.current.noeuds.some((n) => n.selected && n.id !== id)) return;
+      sansGlisser.current = true;
+      choisir(id);
+    },
+    [choisir],
   );
   const ouvrirAjout = useCallback(
     (id: string, auClavier: boolean) => {
@@ -605,6 +662,7 @@ export default function Schema({
     },
     [suivreLaSource],
   );
+
   const carteSous = (x: number, y: number, sauf: string): string | null => {
     for (const el of document.elementsFromPoint(x, y)) {
       const carte = el.closest<HTMLElement>(".carte-chemin[data-chemin]");
@@ -614,8 +672,8 @@ export default function Schema({
   };
   /**
    * Tirer un lien depuis le « + » d'une carte (F03-AC53). Tant que le pointeur n'a pas bougé,
-   * c'est un clic. Près d'un bord, la page ou le cadre défile : la scène visée peut être plus
-   * loin que l'écran. Lâché sur une autre carte du chapitre, le lien demande son libellé.
+   * c'est un clic. Près d'un bord du cadre, la vue se décale : la scène visée peut être plus
+   * loin que ce qu'on voit. Lâché sur une autre carte du chapitre, le lien demande son libellé.
    */
   const commencerLien = useCallback((de: string, e: PointerEvent<HTMLButtonElement>) => {
     if (e.button !== 0) return;
@@ -629,13 +687,14 @@ export default function Schema({
       const svg = trait.current;
       const origine = c?.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(de)}"]`)?.getBoundingClientRect();
       if (!c || !svg || !origine) return;
-      const haut = barre() + 70;
-      const bas = window.innerHeight - 70;
-      if (pointeur.y < haut) window.scrollBy(0, -Math.min(22, (haut - pointeur.y) / 3 + 2));
-      else if (pointeur.y > bas) window.scrollBy(0, Math.min(22, (pointeur.y - bas) / 3 + 2));
+      // Près d'un bord du cadre, la vue se décale : la scène visée peut être hors de ce qu'on voit
       const bords = c.getBoundingClientRect();
-      if (pointeur.x < bords.left + 50) c.scrollLeft -= 12;
-      else if (pointeur.x > bords.right - 50) c.scrollLeft += 12;
+      const dy = pointeur.y < bords.top + 60 ? Math.min(22, (bords.top + 60 - pointeur.y) / 3 + 2) : pointeur.y > bords.bottom - 60 ? -Math.min(22, (pointeur.y - bords.bottom + 60) / 3 + 2) : 0;
+      const dx = pointeur.x < bords.left + 50 ? 12 : pointeur.x > bords.right - 50 ? -12 : 0;
+      if ((dx || dy) && flux.current) {
+        const v = flux.current.getViewport();
+        void flux.current.setViewport({ x: v.x + dx, y: v.y + dy, zoom: v.zoom });
+      }
       const visee = carteSous(pointeur.x, pointeur.y, de);
       if (visee !== sur) {
         sur = visee;
@@ -720,127 +779,41 @@ export default function Schema({
   // La ligne du choix désigné se montre un instant dans le panneau
   useEffect(() => {
     if (!designe) return;
-    const ligne = rail.current?.querySelector<HTMLElement>(`[data-choix="${CSS.escape(designe)}"]`);
+    const ligne = espace.current?.querySelector<HTMLElement>(`[data-choix="${CSS.escape(designe)}"]`);
     ligne?.scrollIntoView({ block: "nearest" });
     const fin = setTimeout(() => setDesigne(null), 1600);
     return () => clearTimeout(fin);
   }, [designe]);
 
-  const sceneChoisie = construire && choisie ? chemins.noeuds.find((n) => n.id === choisie) : undefined;
-  // Le panneau tient toujours dans la fenêtre : sous l'en-tête des chemins une fois la page descendue, sinon au haut du schéma
-  const panneauOuvert = !!sceneChoisie || blocOuvert;
-  useLayoutEffect(() => {
-    if (!panneauOuvert) return;
-    const suivre = () => {
-      const p = plan.current?.getBoundingClientRect();
-      if (p) rail.current?.style.setProperty("--haut-du-panneau", `${Math.round(Math.max(barre() + hauteurDeLEnTete(), p.top) + 10)}px`);
-    };
-    suivre();
-    window.addEventListener("scroll", suivre, { passive: true });
-    window.addEventListener("resize", suivre);
-    return () => {
-      window.removeEventListener("scroll", suivre);
-      window.removeEventListener("resize", suivre);
-    };
-  }, [panneauOuvert]);
   // Le bloc ouvert : une carte cliquée devient la scène d'où il part, tant que rien n'est proposé
   useEffect(() => {
     if (!blocOuvert || !choisie || bloc.proposition || choisie === bloc.origine) return;
     setBloc((e) => ({ ...e, origine: choisie }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blocOuvert, choisie]);
-  // La carte cliquée ne reste pas sous le panneau : le cadre se décale juste assez pour la montrer
-  useEffect(() => {
-    const c = cadre.current;
-    const panneau = rail.current?.firstElementChild;
-    if (!sceneChoisie || blocOuvert || !c || !panneau) return;
-    const carte = c.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(sceneChoisie.id)}"]`)?.getBoundingClientRect();
-    const depasse = carte ? carte.right + 20 - panneau.getBoundingClientRect().left : 0;
-    if (depasse > 0) c.scrollBy({ left: depasse, behavior: sansMouvement() ? "auto" : "smooth" });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sceneChoisie?.id]);
 
-  // ——— Ce qu'un geste a poussé se rend (F03-AC54, précisé le 10 novembre 2026) : la carte reste en
-  // place le temps du geste, puis le schéma reprend sa place dans son cadre ———
-  const ajusteRef = useRef(ajuste);
-  useLayoutEffect(() => {
-    ajusteRef.current = ajuste;
+  // Échap ramène au plan : il referme le bloc, sinon le panneau de la scène. Une bulle ou un dialogue
+  // ouverts prennent la touche avant lui.
+  const fermerLeBloc = () => {
+    setOuverteDuBloc(null);
+    setBloc((e) => ({ ...e, ouvert: false }));
+    if (!chemins.noeuds.length) services?.quitter?.();
+  };
+  const revenirAuPlan = useEffectEvent(() => {
+    if (blocOuvert) fermerLeBloc();
+    else choisir(null);
   });
-  const pousse = ajuste.px > 0 || ajuste.py > 0;
-  // Dès qu'on fait défiler : la part de la poussée passée hors de la vue se retire, et le défilement
-  // recule d'autant ; rien ne bouge à l'écran
+  const gesteOuvert = geste !== null || tire !== null;
   useEffect(() => {
-    const c = cadre.current;
-    if (!pousse || !c) return;
-    const absorber = () => {
-      const a = ajusteRef.current;
-      const haut = aRendreSansMouvement(a.py, barre() + hauteurDeLEnTete() - c.getBoundingClientRect().top);
-      const gauche = aRendreSansMouvement(a.px, c.scrollLeft);
-      if (haut < 1 && gauche < 1) return;
-      const suite = { ...a, px: a.px - gauche, py: a.py - haut };
-      c.style.paddingTop = `${suite.py}px`;
-      c.style.paddingLeft = `${suite.px}px`;
-      if (haut >= 1) window.scrollTo({ top: window.scrollY - haut, behavior: "instant" });
-      if (gauche >= 1) c.scrollLeft -= gauche;
-      ajusteRef.current = suite;
-      setAjuste(suite);
+    if (!travail || gesteOuvert) return;
+    const touche = (e: KeyboardEvent) => {
+      if (e.key !== "Escape" || e.defaultPrevented || document.querySelector("dialog[open], [aria-modal='true']")) return;
+      revenirAuPlan();
     };
-    window.addEventListener("scroll", absorber, { passive: true });
-    c.addEventListener("scroll", absorber, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", absorber);
-      c.removeEventListener("scroll", absorber);
-    };
-  }, [pousse]);
-  // Le geste fini, le reste se rend en glissant, comme « Recentrer », sans changer la taille : quand
-  // le panneau se referme, quand le pointeur quitte le schéma et son panneau, ou quand une bulle se
-  // referme alors que le pointeur n'y est plus. Pas tant qu'on travaille au même endroit.
-  const enGeste = geste !== null || tire !== null;
-  const enGesteRef = useRef(enGeste);
-  useLayoutEffect(() => {
-    enGesteRef.current = enGeste;
-  });
-  const dedans = useRef(false);
-  const minuteurRendre = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const rendre = useCallback(() => {
-    if (minuteurRendre.current) clearTimeout(minuteurRendre.current);
-    // Après le glissement des cartes du geste
-    minuteurRendre.current = setTimeout(() => {
-      const c = cadre.current;
-      const a = ajusteRef.current;
-      if (!c || enGesteRef.current || (a.px === 0 && a.py === 0 && a.ax === 0 && a.ay === 0)) return;
-      if (!sansMouvement()) {
-        c.dataset.relache = "";
-        setTimeout(() => delete c.dataset.relache, 320);
-      }
-      setAjuste(SANS_AJUSTEMENT);
-    }, 350);
-  }, []);
-  useEffect(() => {
-    const p = plan.current;
-    if (!p) return;
-    const entrer = () => {
-      dedans.current = true;
-      if (minuteurRendre.current) clearTimeout(minuteurRendre.current);
-    };
-    const sortir = () => {
-      dedans.current = false;
-      rendre();
-    };
-    p.addEventListener("pointerenter", entrer);
-    p.addEventListener("pointerleave", sortir);
-    return () => {
-      p.removeEventListener("pointerenter", entrer);
-      p.removeEventListener("pointerleave", sortir);
-      if (minuteurRendre.current) clearTimeout(minuteurRendre.current);
-    };
-  }, [rendre]);
-  const avant = useRef({ panneau: panneauOuvert, geste: enGeste });
-  useEffect(() => {
-    const { panneau, geste: etaitEnGeste } = avant.current;
-    avant.current = { panneau: panneauOuvert, geste: enGeste };
-    if ((panneau && !panneauOuvert) || (etaitEnGeste && !enGeste && !dedans.current)) rendre();
-  }, [panneauOuvert, enGeste, rendre]);
+    document.addEventListener("keydown", touche);
+    return () => document.removeEventListener("keydown", touche);
+  }, [travail, gesteOuvert]);
+
 
   const source = geste?.de ?? tire?.de ?? (blocOuvert ? bloc.origine : null);
   const cible = (geste?.sorte === "lien" ? geste.vers : null) ?? tire?.sur ?? null;
@@ -886,50 +859,40 @@ export default function Schema({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chemins]);
 
-  // ——— La proposition dessinée tient entière à l'écran (F13.7) : on fait défiler juste assez ; si elle
-  // est plus grande que la vue, le schéma se réduit, sans descendre sous la taille où les libellés se lisent ———
+
+  // ——— La proposition dessinée tient entière dans le cadre, à gauche de l'espace de travail (F13.7) :
+  // la vue bouge juste assez ; si le bloc est plus grand que le cadre, le schéma se réduit, sans
+  // descendre sous la taille où les libellés se lisent ———
   useEffect(() => {
-    if (!aCadrer.current || !blocOuvert) return;
+    if (!aCadrer.current || !blocOuvert || !disposition) return;
     // Après que la scène d'origine a été tenue en place et que les cartes ont glissé (F03-AC54)
     const attente = setTimeout(() => {
-      {
-        const c = cadre.current;
-        if (!c) return;
-        // Le bloc entier : ses scènes, la scène d'origine, et les scènes du chapitre qu'un de ses chemins rejoint
-        const propose = bloc.proposition;
-        const rejointes = propose ? propose.choix.map((x) => x.vers).filter((v) => !propose.scenes.some((sc) => sc.cle === v)) : [];
-        const cartes = [...c.querySelectorAll<HTMLElement>(".carte-chemin--proposee"), ...[bloc.origine, ...rejointes].flatMap((id) => (id ? [c.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(id)}"]`)] : []))]
-          .filter((x): x is HTMLElement => x !== null)
-          .map((x) => x.getBoundingClientRect());
-        if (!cartes.length) return;
-        aCadrer.current = false;
-        const boite = { haut: Math.min(...cartes.map((r) => r.top)) - 28, bas: Math.max(...cartes.map((r) => r.bottom)) + 28, gauche: Math.min(...cartes.map((r) => r.left)) - 24, droite: Math.max(...cartes.map((r) => r.right)) + 24 };
-        const panneau = rail.current?.firstElementChild?.getBoundingClientRect();
-        const cad = c.getBoundingClientRect();
-        const vue = { haut: barre() + hauteurDeLEnTete() + 8, bas: window.innerHeight - 12, gauche: cad.left + 8, droite: (panneau ? panneau.left : cad.right) - 12 };
-        const facteur = Math.min(1, (vue.bas - vue.haut) / (boite.bas - boite.haut), (vue.droite - vue.gauche) / (boite.droite - boite.gauche));
-        if (facteur < 0.98 && zoom > LOIN + 0.01) {
-          setAjuste(SANS_AJUSTEMENT);
-          aCadrer.current = true;
-          setChoisi(arrondir(Math.max(LOIN, zoom * facteur)));
-          return;
-        }
-        const doux = sansMouvement() ? "auto" : "smooth";
-        const dy = boite.haut < vue.haut ? boite.haut - vue.haut : boite.bas > vue.bas ? Math.min(boite.bas - vue.bas, boite.haut - vue.haut) : 0;
-        const dx = boite.gauche < vue.gauche ? boite.gauche - vue.gauche : boite.droite > vue.droite ? Math.min(boite.droite - vue.droite, boite.gauche - vue.gauche) : 0;
-        if (dy) window.scrollBy({ top: dy, behavior: doux });
-        if (dx) c.scrollBy({ left: dx, behavior: doux });
-      }
-    }, 320);
+      const cad = cadreIci();
+      const propose = bloc.proposition;
+      if (!flux.current || !cad || !propose) return;
+      // Le bloc entier : ses scènes, la scène d'origine, et les scènes du chapitre qu'un de ses chemins rejoint
+      const rejointes = propose.choix.map((x) => x.vers).filter((v) => !propose.scenes.some((sc) => sc.cle === v));
+      const boite = englober([...propose.scenes.map((sc) => idPropose(sc.cle)), bloc.origine, ...rejointes].flatMap((id) => (id ? [disposition.places.get(id)] : [])).filter((p) => p !== undefined));
+      if (!boite) return;
+      aCadrer.current = false;
+      const marge = { x: 24, y: 28 };
+      const vue = flux.current.getViewport();
+      // Les boutons de taille et la mini-carte occupent le coin bas droit : le bloc se cadre au-dessus d'eux quand il y tient
+      const coin = cadre.current?.querySelector(".chemins__coin")?.getBoundingClientRect().height ?? 0;
+      const auDessus = { l: cad.l, h: cad.h - coin - 14 };
+      const ou = coin && boite.h * vue.zoom + 2 * marge.y <= auDessus.h ? auDessus : cad;
+      const z = tailleQuiMontre(boite, ou, vue.zoom, marge, LOIN);
+      allerA(montrerLaBoite(z === vue.zoom ? vue : changerDeTaille(vue, cad, z), boite, ou, marge));
+    }, GLISSE);
     return () => clearTimeout(attente);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [noeuds, zoom, blocOuvert, bloc.origine]);
+  }, [noeuds, blocOuvert, bloc.origine, taille.l]);
 
   /** Ce près de quoi la bulle se pose : la carte d'où l'on part, celle où le lien arrive, ou le bouton du panneau */
   const repereDuGeste = (): globalThis.Element | null => {
     if (!geste) return null;
-    if (geste.depuis === "panneau") return boutonAjouter.current;
-    return cadre.current?.querySelector(`.carte-chemin[data-chemin="${CSS.escape(geste.sorte === "lien" ? geste.vers : geste.de)}"]`) ?? null;
+    // Depuis le panneau aussi, la bulle se pose près de la carte, dans le schéma : elle ne couvre pas « Ses choix »
+    return cadre.current?.querySelector(`.carte-chemin[data-chemin="${CSS.escape(geste.sorte === "lien" ? geste.vers : geste.de)}"]`) ?? (geste.depuis === "panneau" ? boutonAjouter.current : null);
   };
   const fermerGeste = () => {
     const avant = geste;
@@ -942,183 +905,166 @@ export default function Schema({
     });
   };
 
+  const ouvrirLeBloc = (origine: string | null) => {
+    setGeste(null);
+    // La proposition gardée ne revient que pour la scène d'où elle part ; la demande, elle, reste
+    setBloc((e) => ({ ...e, ouvert: true, origine, ...(origine && e.origine === origine ? {} : { proposition: null, demandee: "", prendre: false, reponses: {} }) }));
+  };
+
   return (
     <>
-      {/* Son fond va d'un bord à l'autre de la page, comme le schéma, sans passer sur la colonne de l'adulte */}
-      <div className="chemins__tete" ref={enTete} style={place.largeur ? ({ "--tete-rognage": `inset(0 ${-place.largeur}px 0 ${-place.gauche}px)` } as CSSProperties) : undefined}>
-        {tete}
-        <div className="chemins__outils" hidden={vus.noeuds.length === 0}>
-          {/* Le bloc de scènes (F13.7), toujours en vue : depuis la scène cliquée, sinon on la clique ensuite */}
-          {services && !blocOuvert ? (
-            <button
-              type="button"
-              className="btn btn--petit btn--ia chemins__bloc"
-              onClick={() => {
-                setGeste(null);
-                const origine = sceneChoisie?.id ?? null;
-                setBloc((e) => ({ ...e, ouvert: true, origine, ...(origine && e.origine === origine ? {} : { proposition: null, demandee: "", prendre: false, reponses: {} }) }));
-              }}
-            >
+      {tete ? <div className="chemins__tete">{tete}</div> : null}
+      <div
+        className="chemins__plan"
+        ref={plan}
+        style={{ ...(place.largeur ? { width: place.largeur, marginLeft: -place.gauche } : {}), ...(place.haut ? { "--haut-du-plan": `${place.haut}px` } : {}) } as CSSProperties}
+        data-travail={travail ? "" : undefined}
+      >
+        <div className="chemins__cadre" ref={cadre} style={{ "--zoom-chemins": zoom } as CSSProperties} data-zoom={zoom} data-loin={loin || undefined} data-tire={enTirant || undefined}>
+          <svg className="chemins__fleches" width="0" height="0" aria-hidden="true">
+            <defs>
+              {["fleche-chemin", "fleche-chemin-retour", "fleche-chemin-active", "fleche-chemin-proposee"].map((id) => (
+                <marker key={id} id={id} className={id} viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
+                  <path d="M0.6,0.8 L9.6,5 L0.6,9.2 L2.8,5 z" fill="currentColor" />
+                </marker>
+              ))}
+            </defs>
+          </svg>
+          {pret ? (
+            <div className="chemins__toile" data-dessine={dessine || undefined}>
+              <Vue.Provider value={vue}>
+                <ReactFlow
+                  nodes={noeuds}
+                  edges={traits}
+                  nodeTypes={SORTES_DE_NOEUD}
+                  edgeTypes={SORTES_DE_TRAIT}
+                  onNodesChange={changerNoeuds}
+                  onInit={(instance) => {
+                    flux.current = instance;
+                    placee.current = false;
+                    setFluxPret((n) => n + 1);
+                  }}
+                  onNodeMouseEnter={(_, n) => setSurvolee(n.type === "scene" ? n.id : null)}
+                  onNodeMouseLeave={() => setSurvolee(null)}
+                  onMove={(_, v) => setZoom((z) => (Math.abs(z - v.zoom) < 0.005 ? z : arrondir(v.zoom)))}
+                  // On ne perd pas le schéma en le tirant : il en reste toujours un morceau dans le cadre
+                  onMoveEnd={(e, v) => {
+                    const cad = cadreIci();
+                    if (!e || !cad || !l || !h) return;
+                    const retenue = retenirLeSchema(v, { l, h }, cad);
+                    if (retenue !== v) allerA(retenue, 220);
+                  }}
+                  defaultViewport={{ x: 0, y: MARGE, zoom: 1 }}
+                  minZoom={ZOOM.toutVoir}
+                  maxZoom={ZOOM.max}
+                  // Un cadre qu'on tire (F03.1, « Chemins en atelier ») : le fond se tire, la molette et deux
+                  // doigts déplacent, Ctrl + molette et le pincement changent la taille. Les cartes, elles, ne
+                  // se déplacent pas : leur place est calculée.
+                  panOnDrag
+                  panOnScroll
+                  zoomOnScroll={false}
+                  zoomOnPinch
+                  zoomOnDoubleClick={false}
+                  paneClickDistance={4}
+                  nodesDraggable={false}
+                  nodesConnectable={false}
+                  edgesFocusable={false}
+                  edgesReconnectable={false}
+                  // Au clavier, la carte qui prend le curseur vient dans le cadre
+                  selectionOnDrag={false}
+                  selectionKeyCode={null}
+                  multiSelectionKeyCode={null}
+                  deleteKeyCode={null}
+                  // Le nom de la bibliothèque, dans un coin, comme ses auteurs le demandent (F14-AC35)
+                  proOptions={{ hideAttribution: false }}
+                  attributionPosition="bottom-left"
+                  ariaLabelConfig={{
+                    "node.a11yDescription.default": construire
+                      ? "Entrée ou Espace : ouvrir le titre, la consigne et les choix de cette scène. Échap : revenir au plan."
+                      : "Entrée ou Espace : montrer les chemins de cette scène. Échap : ne plus les montrer.",
+                    "node.a11yDescription.keyboardDisabled": "Entrée ou Espace : montrer les chemins de cette scène. Échap : ne plus les montrer.",
+                  }}
+                >
+                  <GarderEnPlace figeRef={fige} cadreRef={cadre} />
+                  {/* Les commandes sur le cadre, comme sur une carte routière : la taille en bas à droite, au-dessus de la mini-carte */}
+                  <div className="chemins__coin nopan nodrag nowheel">
+                    <div className="chemins__taille" role="group" aria-label="Taille du schéma">
+                      {zoom < lisible - 0.045 ? (
+                        <button type="button" className="btn btn--petit" onClick={() => changer(lisible)}>
+                          Taille lisible
+                        </button>
+                      ) : (
+                        <button type="button" className="btn btn--petit" onClick={toutVoir}>
+                          Tout voir
+                        </button>
+                      )}
+                      <button type="button" className="btn btn--petit" aria-label="Réduire" disabled={zoom <= ZOOM.min} onClick={() => changer(zoom - ZOOM.pas)}>
+                        −
+                      </button>
+                      <button type="button" className="btn btn--petit" aria-label="Agrandir" disabled={zoom >= ZOOM.max} onClick={() => changer(zoom + ZOOM.pas)}>
+                        +
+                      </button>
+                    </div>
+                    {/* La mini-carte, au plan, dès que le schéma dépasse du cadre : où l'on est, et un clic pour s'y rendre. Pas
+                        au travail ni dans un cadre étroit : elle couvrirait les cartes voisines de la scène ouverte */}
+                    {disposition && !travail && taille.l >= MINI_CARTE_DES && (l * zoom + MARGE > taille.l || h * zoom + MARGE > taille.h) ? <MiniCarte disposition={disposition} regard={regard} noeuds={chemins.noeuds} /> : null}
+                  </div>
+                </ReactFlow>
+              </Vue.Provider>
+            </div>
+          ) : vus.noeuds.length === 0 ? (
+            // Un chapitre encore vide, le bloc ouvert : sa proposition se dessinera ici (F13.7)
+            <p className="chemins__attente chemins__attente--bloc">La proposition de l’IA se dessinera ici.</p>
+          ) : (
+            <p className="chemins__attente">Les chemins se dessinent…</p>
+          )}
+          {/* Le bloc de scènes (F13.7), en vue dès l'état « plan », en haut à droite du cadre : on clique ensuite la scène
+              d'où continuer. En état « travail », le panneau de la scène porte le même bouton. */}
+          {services && !travail && vus.noeuds.length ? (
+            <button type="button" className="btn btn--petit btn--ia chemins__ia" onClick={() => ouvrirLeBloc(null)}>
               <Icone nom="ia" />
               Construire avec l’IA
             </button>
           ) : null}
-          {/* Après un geste, la taille figée peut s'écarter d'un rien de la taille lisible : le lien n'apparaît pas pour si peu */}
-          {Math.abs(zoom - lisible) > 0.045 ? (
-            <button type="button" className="lien" onClick={() => changer(null)}>
-              Taille lisible
-            </button>
-          ) : ajuste.px || ajuste.py ? (
-            // Pour garder une carte en place, un geste a poussé le schéma dans son cadre : un clic le remet au milieu
-            <button type="button" className="lien" onClick={() => changer(null)}>
-              Recentrer
-            </button>
-          ) : null}
-          <button type="button" className="btn btn--petit" onClick={toutVoir}>
-            Tout voir
-          </button>
-          <button type="button" className="btn btn--petit" aria-label="Réduire" disabled={zoom <= ZOOM.min} onClick={() => changer(Math.max(ZOOM.min, zoom - ZOOM.pas))}>
-            −
-          </button>
-          <button type="button" className="btn btn--petit" aria-label="Agrandir" disabled={zoom >= ZOOM.max} onClick={() => changer(zoom + ZOOM.pas)}>
-            +
-          </button>
-          <Bulle question="Comment lire ces chemins ?">
-            Chaque flèche est un choix : elle part de la scène où il s’écrit et porte son libellé. {pourEleve ? "" : "Une flèche en pointillé est un lien caché. "}Une flèche plus sombre, marquée
-            d’une petite flèche vers le haut, ramène le lecteur en arrière. Une étiquette nomme un autre chapitre. Cliquer une scène montre ses chemins.
-            {construire ? (
-              <span>
-                Pour construire : le « + » sous une scène ajoute la scène suivante ; tiré jusqu’à une autre scène, il les relie. Une scène cliquée ouvre son titre, sa consigne et ses choix.
-              </span>
-            ) : null}
-          </Bulle>
         </div>
-      </div>
-      <div
-        className="chemins__plan"
-        ref={plan}
-        style={place.largeur ? { width: place.largeur, marginLeft: -place.gauche } : undefined}
-        data-panneau={panneauOuvert ? "" : undefined}
-      >
-      <div
-        className="chemins__cadre"
-        ref={cadre}
-        style={{ paddingLeft: ajuste.px, paddingTop: ajuste.py, "--zoom-chemins": zoom } as CSSProperties}
-        data-zoom={zoom}
-        data-loin={loin || undefined}
-        data-tire={enTirant || undefined}
-      >
-        <svg className="chemins__fleches" width="0" height="0" aria-hidden="true">
-          <defs>
-            {["fleche-chemin", "fleche-chemin-retour", "fleche-chemin-active", "fleche-chemin-proposee"].map((id) => (
-              <marker key={id} id={id} className={id} viewBox="0 0 10 10" refX="9.2" refY="5" markerWidth="12" markerHeight="12" markerUnits="userSpaceOnUse" orient="auto">
-                <path d="M0.6,0.8 L9.6,5 L0.6,9.2 L2.8,5 z" fill="currentColor" />
-              </marker>
-            ))}
-          </defs>
-        </svg>
-        {pret ? (
-          <div className="chemins__toile" ref={toile} style={{ width: largeurToile + ajuste.ax, height: hauteurToile + ajuste.ay }} data-dessine={dessine || undefined}>
-            <Vue.Provider value={vue}>
-              <ReactFlow
-                nodes={noeuds}
-                edges={traits}
-                nodeTypes={SORTES_DE_NOEUD}
-                edgeTypes={SORTES_DE_TRAIT}
-                onNodesChange={changerNoeuds}
-                onInit={() => setTimeout(() => setDessine(true), 30)}
-                onNodeMouseEnter={(_, n) => setSurvolee(n.type === "scene" ? n.id : null)}
-                onNodeMouseLeave={() => setSurvolee(null)}
-                viewport={{ x: Math.round((largeurUtile - l * zoom) / 2), y: MARGE, zoom }}
-                onViewportChange={() => {}}
-                minZoom={ZOOM.toutVoir}
-                maxZoom={ZOOM.max}
-                // Rien ne se déplace ni ne se modifie : la molette et le doigt font défiler la page
-                nodesDraggable={false}
-                nodesConnectable={false}
-                edgesFocusable={false}
-                edgesReconnectable={false}
-                panOnDrag={false}
-                panOnScroll={false}
-                zoomOnScroll={false}
-                zoomOnPinch={false}
-                zoomOnDoubleClick={false}
-                preventScrolling={false}
-                autoPanOnNodeFocus={false}
-                selectionOnDrag={false}
-                selectionKeyCode={null}
-                multiSelectionKeyCode={null}
-                deleteKeyCode={null}
-                // Le nom de la bibliothèque, dans un coin, comme ses auteurs le demandent (F14-AC35)
-                proOptions={{ hideAttribution: false }}
-                ariaLabelConfig={{
-                  "node.a11yDescription.default": "Entrée ou Espace : montrer les chemins de cette scène. Échap : ne plus les montrer.",
-                  "node.a11yDescription.keyboardDisabled": "Entrée ou Espace : montrer les chemins de cette scène. Échap : ne plus les montrer.",
+        {/* L'espace de travail, à côté du schéma et non par-dessus : le panneau de la scène, ou celui du bloc */}
+        {construire && travail ? (
+          <div className="chemins__espace" ref={espace}>
+            {services && blocOuvert ? (
+              <PanneauDuBloc
+                etat={bloc}
+                setEtat={setBloc}
+                chemins={chemins}
+                services={{ ...services, ajouter: ajouterLeBloc }}
+                deClasse={construire.deClasse}
+                ouverte={ouverteDuBloc}
+                onOuvrir={setOuverteDuBloc}
+                ordre={(id) => disposition?.places.get(bloc.proposition?.scenes.some((x) => x.cle === id) ? idPropose(id) : id)?.x ?? 0}
+                onFermer={fermerLeBloc}
+              />
+            ) : sceneChoisie ? (
+              <PanneauDeScene
+                key={sceneChoisie.id}
+                scene={sceneChoisie}
+                chemins={chemins}
+                construire={{
+                  ...construire,
+                  // Le schéma se redispose après chaque geste : la scène du panneau garde sa place à l'écran
+                  supprimerChoix: (lien) => {
+                    aGarder.current = lien.de;
+                    return construire.supprimerChoix(lien);
+                  },
                 }}
-              >
-                <GarderEnPlace figeRef={fige} cadreRef={cadre} toileRef={toile} zoom={zoom} ajuste={ajuste} onAjuste={setAjuste} />
-              </ReactFlow>
-            </Vue.Provider>
+                designe={designe}
+                boutonAjouter={boutonAjouter}
+                onAjouter={() => setGeste((avant) => (avant?.depuis === "panneau" ? null : { sorte: "ajout", de: sceneChoisie.id, depuis: "panneau" }))}
+                onFermer={() => choisir(null)}
+                onConstruireLaSuite={services ? () => ouvrirLeBloc(sceneChoisie.id) : undefined}
+              />
+            ) : null}
           </div>
-        ) : vus.noeuds.length === 0 ? (
-          // Un chapitre encore vide, le bloc ouvert : sa proposition se dessinera ici (F13.7)
-          <p className="chemins__attente chemins__attente--bloc">La proposition de l’IA se dessinera ici.</p>
-        ) : (
-          <p className="chemins__attente">Les chemins se dessinent…</p>
-        )}
-        {/* La place du panneau : le cadre défile assez loin pour montrer ce qu'il couvre */}
-        {/* Pas pour un chapitre qui tient à gauche du panneau : rien n'est dessous, et une barre de défilement surgirait */}
-        {panneauOuvert && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" style={blocLarge ? { width: panneau + 20 } : undefined} /> : null}
+        ) : null}
       </div>
-      {services && blocOuvert ? (
-        <div className={`chemins__rail${blocLarge ? " chemins__rail--bloc" : ""}`} ref={rail} style={blocLarge ? { width: panneau } : undefined}>
-          <PanneauDuBloc
-            etat={bloc}
-            setEtat={setBloc}
-            chemins={chemins}
-            services={{ ...services, ajouter: ajouterLeBloc }}
-            deClasse={construire?.deClasse ?? false}
-            ouverte={ouverteDuBloc}
-            onOuvrir={setOuverteDuBloc}
-            ordre={(id) => disposition?.places.get(bloc.proposition?.scenes.some((x) => x.cle === id) ? `propose:${id}` : id)?.x ?? 0}
-            onFermer={() => {
-              setOuverteDuBloc(null);
-              setBloc((e) => ({ ...e, ouvert: false }));
-              if (!chemins.noeuds.length) services.quitter?.();
-            }}
-          />
-        </div>
-      ) : construire && sceneChoisie ? (
-        <div className="chemins__rail" ref={rail}>
-          <PanneauDeScene
-            key={sceneChoisie.id}
-            scene={sceneChoisie}
-            chemins={chemins}
-            construire={{
-              ...construire,
-              // Le schéma se redispose après chaque geste : la scène du panneau garde sa place à l'écran
-              supprimerChoix: (lien) => {
-                aGarder.current = lien.de;
-                return construire.supprimerChoix(lien);
-              },
-            }}
-            designe={designe}
-            boutonAjouter={boutonAjouter}
-            onAjouter={() => setGeste((avant) => (avant?.depuis === "panneau" ? null : { sorte: "ajout", de: sceneChoisie.id, depuis: "panneau" }))}
-            onFermer={() => choisir(null)}
-            onConstruireLaSuite={services ? () => {
-              setGeste(null);
-              // La proposition gardée ne revient que pour la scène d'où elle part ; la demande, elle, reste
-              setBloc((e) => ({ ...e, ouvert: true, origine: sceneChoisie.id, ...(e.origine === sceneChoisie.id ? {} : { proposition: null, demandee: "", prendre: false, reponses: {} }) }));
-            } : undefined}
-          />
-        </div>
-      ) : null}
-      </div>
-      {/* Le panneau d'une scène prend le coin de la mini-carte : elle revient quand il se referme */}
-      {pret && disposition && !panneauOuvert && h * zoom > 2 * (place.fenetre - place.barre) ? (
-        <MiniCarte disposition={disposition} zoom={zoom} cadre={cadre} toile={toile} largeurToile={largeurUtile} regard={regard} noeuds={chemins.noeuds} />
-      ) : null}
       {construire ? (
         // Le lien qu'on tire, par-dessus la page : il suit le pointeur d'une carte à l'autre
         <svg className="chemins__tire" ref={trait} aria-hidden="true" style={{ display: "none" }}>
@@ -1131,7 +1077,8 @@ export default function Schema({
           geste={geste}
           chemins={chemins}
           repere={repereDuGeste}
-          cote={geste.depuis === "panneau" ? "left-start" : "right-start"}
+          // Au travail, à gauche de la carte : à droite, la bulle mordrait sur l'espace de travail
+          cote={travail ? "left-start" : "right-start"}
           construire={construire}
           avant={(de) => (aGarder.current = de)}
           onFermer={fermerGeste}
@@ -1152,19 +1099,15 @@ const lireRepliee = (): boolean => {
 };
 
 /**
- * La mini-carte, quand le chapitre dépasse deux écrans : où l'on est dans le schéma, et un
- * clic pour s'y rendre. Elle suit le défilement de la page, que le schéma ne retient pas. Elle
- * se replie d'un clic, en un petit bouton qui la rouvre : dépliée, elle couvrait un coin du schéma.
+ * La mini-carte, dès que le schéma dépasse de son cadre : ce qu'on en voit, et un clic ou un glissé
+ * pour s'y rendre. Posée dans le schéma, elle suit sa vue pendant qu'on le tire. Elle se replie
+ * d'un clic, en un petit bouton qui la rouvre.
  */
-function MiniCarte({
-  disposition, zoom, cadre, toile, largeurToile, regard, noeuds,
-}: {
-  disposition: Disposition; zoom: number; cadre: RefObject<HTMLDivElement | null>; toile: RefObject<HTMLDivElement | null>;
-  /** La largeur où le schéma se centre, sans ce qu'un geste a pu allonger */
-  largeurToile: number;
-  regard: ARegarder; noeuds: NoeudDeChemin[];
-}) {
-  const [vu, setVu] = useState<{ x: number; y: number; l: number; h: number } | null>(null);
+function MiniCarte({ disposition, regard, noeuds }: { disposition: Disposition; regard: ARegarder; noeuds: NoeudDeChemin[] }) {
+  const flux = useReactFlow();
+  const [x, y, zoom] = useStore((etat) => etat.transform);
+  const largeur = useStore((etat) => etat.width);
+  const hauteur = useStore((etat) => etat.height);
   const [repliee, setRepliee] = useState(lireRepliee);
   const plier = (oui: boolean) => {
     setRepliee(oui);
@@ -1174,33 +1117,6 @@ function MiniCarte({
       // Sans stockage, le repli tient le temps de la page
     }
   };
-  const echelle = Math.min(118 / disposition.largeur, 190 / disposition.hauteur);
-  useEffect(() => {
-    const suivre = () => {
-      const c = cadre.current;
-      if (!c) return;
-      const r = c.getBoundingClientRect();
-      // La toile, et non le cadre : un geste a pu la pousser dans son cadre (F03-AC54)
-      const t = toile.current?.getBoundingClientRect() ?? r;
-      const decalage = (largeurToile - disposition.largeur * zoom) / 2;
-      // Hors de l'écran, le schéma n'a pas besoin de sa carte
-      if (r.bottom < barre() + 80 || r.top > window.innerHeight - 80) return setVu(null);
-      const haut = (barre() - t.top - MARGE) / zoom;
-      const gauche = (r.left - t.left - decalage) / zoom;
-      setVu({ x: gauche, y: haut, l: c.clientWidth / zoom, h: (window.innerHeight - barre()) / zoom });
-    };
-    suivre();
-    const c = cadre.current;
-    window.addEventListener("scroll", suivre, { passive: true });
-    window.addEventListener("resize", suivre);
-    c?.addEventListener("scroll", suivre, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", suivre);
-      window.removeEventListener("resize", suivre);
-      c?.removeEventListener("scroll", suivre);
-    };
-  }, [cadre, toile, largeurToile, disposition, zoom]);
-  if (!vu) return null;
   if (repliee) {
     return (
       <button type="button" className="chemins__carte-ouvrir" onClick={() => plier(false)}>
@@ -1210,50 +1126,45 @@ function MiniCarte({
     );
   }
 
+  const echelle = Math.min(120 / disposition.largeur, 132 / disposition.hauteur);
   const aller = (e: PointerEvent<SVGSVGElement>) => {
-    const c = cadre.current;
-    if (!c) return;
     const r = e.currentTarget.getBoundingClientRect();
-    const y = (e.clientY - r.top) / echelle;
-    const x = (e.clientX - r.left) / echelle;
-    const t = toile.current?.getBoundingClientRect() ?? c.getBoundingClientRect();
-    const hautDuSchema = t.top + window.scrollY + MARGE;
-    window.scrollTo({ top: hautDuSchema + y * zoom - (window.innerHeight + barre()) / 2 });
-    c.scrollTo({ left: c.scrollLeft + (t.left - c.getBoundingClientRect().left) + (largeurToile - disposition.largeur * zoom) / 2 + x * zoom - c.clientWidth / 2 });
+    void flux.setViewport(centrerSur({ x: (e.clientX - r.left) / echelle, y: (e.clientY - r.top) / echelle, l: 0, h: 0 }, { l: largeur, h: hauteur }, zoom));
   };
   const parId = new Map(noeuds.map((n) => [n.id, n]));
   const borne = (v: number, max: number) => Math.min(max, Math.max(0, v));
+  const vu = partVue({ x, y, zoom }, { l: largeur, h: hauteur });
   const x1 = borne(vu.x, disposition.largeur);
   const y1 = borne(vu.y, disposition.hauteur);
   const x2 = borne(vu.x + vu.l, disposition.largeur);
   const y2 = borne(vu.y + vu.h, disposition.hauteur);
   return (
     <div className="chemins__carte">
-    <button type="button" className="chemins__carte-replier" aria-label="Replier la mini-carte" title="Replier la mini-carte" onClick={() => plier(true)}>
-      <Icone nom="fermer" />
-    </button>
-    <svg
-      role="img"
-      aria-label="Mini-carte du chapitre : cliquer pour s’y rendre"
-      width={Math.ceil(disposition.largeur * echelle)}
-      height={Math.ceil(disposition.hauteur * echelle)}
-      viewBox={`0 0 ${disposition.largeur} ${disposition.hauteur}`}
-      onPointerDown={(e) => {
-        e.currentTarget.setPointerCapture(e.pointerId);
-        aller(e);
-      }}
-      onPointerMove={(e) => {
-        if (e.buttons === 1) aller(e);
-      }}
-    >
-      {disposition.elements.map((e) => {
-        const p = disposition.places.get(e.id)!;
-        const n = parId.get(e.id);
-        const sorte = e.sorte !== "scene" ? (e.sorte === "manque" ? "regarder" : "etiquette") : regard.marques.has(e.id) ? "regarder" : n?.depart ? "depart" : n?.fin ? "fin" : "scene";
-        return <rect key={e.id} className={`chemins__carte-${sorte}`} x={p.x} y={p.y} width={p.l} height={p.h} rx={10} />;
-      })}
-      <rect className="chemins__carte-vu" x={x1} y={y1} width={Math.max(0, x2 - x1)} height={Math.max(0, y2 - y1)} rx={12} />
-    </svg>
+      <button type="button" className="chemins__carte-replier" aria-label="Replier la mini-carte" title="Replier la mini-carte" onClick={() => plier(true)}>
+        <Icone nom="fermer" />
+      </button>
+      <svg
+        role="img"
+        aria-label="Mini-carte du chapitre : cliquer pour s’y rendre"
+        width={Math.ceil(disposition.largeur * echelle)}
+        height={Math.ceil(disposition.hauteur * echelle)}
+        viewBox={`0 0 ${disposition.largeur} ${disposition.hauteur}`}
+        onPointerDown={(e) => {
+          e.currentTarget.setPointerCapture(e.pointerId);
+          aller(e);
+        }}
+        onPointerMove={(e) => {
+          if (e.buttons === 1) aller(e);
+        }}
+      >
+        {disposition.elements.map((e) => {
+          const p = disposition.places.get(e.id)!;
+          const n = parId.get(e.id);
+          const sorte = e.sorte !== "scene" ? (e.sorte === "manque" ? "regarder" : "etiquette") : regard.marques.has(e.id) ? "regarder" : n?.depart ? "depart" : n?.fin ? "fin" : "scene";
+          return <rect key={e.id} className={`chemins__carte-${sorte}`} x={p.x} y={p.y} width={p.l} height={p.h} rx={10} />;
+        })}
+        <rect className="chemins__carte-vu" x={x1} y={y1} width={Math.max(0, x2 - x1)} height={Math.max(0, y2 - y1)} rx={12} />
+      </svg>
     </div>
   );
 }

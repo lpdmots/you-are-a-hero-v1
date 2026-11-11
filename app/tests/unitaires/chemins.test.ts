@@ -1,7 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { CARTE, disposer, LIBELLE, type Disposition, type Point } from "@/composants/chemins/disposer";
-import { aRendreSansMouvement, carteDeReference, figerLaTaille, garderEnPlace, resteApres } from "@/composants/chemins/ancrage";
-import { aRegarder, compteARegarder, ordreDeLecture, peutConstruire, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
+import {
+  carteDeReference, centrerSur, changerDeTaille, dansLeCadre, decalerLaVue, englober, garderAuMemePoint, montrerLaBoite, partVue, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre,
+  vueDeDepart, vueDEnsemble, type Cadre,
+} from "@/composants/chemins/ancrage";
+import { aRegarder, compteARegarder, ordreDeLecture, peutConstruire, vueDuChapitre, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
 import { fautConfirmer } from "@/domaine/recit";
 import { ATTENDU, SCENES } from "../../scripts/marais-des-feux-follets";
 
@@ -222,23 +225,18 @@ describe("Le schéma, de haut en bas (F03.1)", () => {
 });
 
 describe("Construire dans « Chemins » (F03.1)", () => {
-  // L'écran tel que le schéma le dessine : centré dans son cadre, la page défilant de haut en bas et le cadre de côté
+  // Le cadre tel que le schéma le remplit, sur un portable de 1 366 × 768 : en état « plan », puis « travail »
   const MARGE = 28;
-  const FENETRE = { l: 1200, h: 800 };
-  const HAUT_DU_CADRE = 420;
-  const ZOOM_MAX = 1;
-  const lisible = (d: Disposition) => Math.floor(Math.min(ZOOM_MAX, Math.max(0.7, (FENETRE.l - 2 * MARGE) / d.largeur)) * 100) / 100;
-  const toile = (d: Disposition, zoom: number) => ({ l: Math.max(FENETRE.l, Math.ceil(d.largeur * zoom + 2 * MARGE)), h: Math.ceil(d.hauteur * zoom + 2 * MARGE) });
-  const aLEcran = (d: Disposition, id: string, zoom: number, defile: { x: number; y: number }) => {
-    const p = d.places.get(id)!;
-    return { x: (toile(d, zoom).l - d.largeur * zoom) / 2 + p.x * zoom - defile.x, y: HAUT_DU_CADRE + MARGE + p.y * zoom - defile.y };
-  };
-  const defilementMax = (d: Disposition, zoom: number) => ({ x: toile(d, zoom).l - FENETRE.l, y: Math.max(0, HAUT_DU_CADRE + toile(d, zoom).h - FENETRE.h) });
+  const PLAN: Cadre = { l: 1134, h: 560 };
+  const TRAVAIL: Cadre = { l: 700, h: 560 };
+  const BORNES = { min: 0.7, max: 1 };
+  const schema = (d: Disposition): Cadre => ({ l: d.largeur, h: d.hauteur });
+  const coin = (d: Disposition, id: string) => ({ x: d.places.get(id)!.x, y: d.places.get(id)!.y });
 
-  it("F03-AC54 — « Le marais des feux follets », la vue descendue sur ses dernières scènes : une scène ajoutée sous l'une d'elles, cette carte garde sa place à l'écran et la taille du schéma ne change pas", () => {
+  it("F03-AC54 — « Le marais des feux follets », la vue tirée sur ses dernières scènes : une scène ajoutée sous l'une d'elles, cette carte reste au même point du cadre et la taille du schéma ne change pas", () => {
     const avant = marais();
     const d1 = disposer(avant, aRegarder(avant).marques);
-    const zoom = lisible(d1);
+    const zoom = tailleLisible(d1.largeur, PLAN, MARGE, BORNES);
     // Les dernières scènes : celles du bas du schéma. On ajoute sous chacune d'elles, tour à tour
     const dernieres = [...avant.noeuds].sort((a, b) => d1.places.get(b.id)!.y - d1.places.get(a.id)!.y).slice(0, 6);
     for (const origine of dernieres) {
@@ -248,53 +246,34 @@ describe("Construire dans « Chemins » (F03.1)", () => {
         liens: [...avant.liens, { id: "nouveau-choix", de: origine.id, vers: "scene-ajoutee", libelle: "Continuer", cache: false }],
       };
       const d2 = disposer(apres, aRegarder(apres).marques);
-      // La vue est tout en bas de la page, là où le défilement n'a plus de marge
-      const defile = { x: defilementMax(d1, zoom).x / 2, y: defilementMax(d1, zoom).y };
-      const ou = aLEcran(d1, origine.id, zoom, defile);
-      // La taille est figée au premier geste : le schéma, devenu plus haut ou plus large, ne rétrécit pas
-      const taille = figerLaTaille(null, zoom);
-      expect(taille).toBe(zoom);
-      const deplacee = aLEcran(d2, origine.id, taille, defile);
-      const max = defilementMax(d2, taille);
-      const x = garderEnPlace(deplacee.x - ou.x, { position: defile.x, max: max.x });
-      const y = garderEnPlace(deplacee.y - ou.y, { position: defile.y, max: max.y });
-      // Le défilement corrigé reste possible : jamais avant le début, et la fin est repoussée d'autant qu'il faut
-      expect(defile.x + x.defiler).toBeGreaterThanOrEqual(0);
-      expect(defile.x + x.defiler).toBeLessThanOrEqual(max.x + x.allonger + 0.001);
-      expect(defile.y + y.defiler).toBeGreaterThanOrEqual(0);
-      expect(defile.y + y.defiler).toBeLessThanOrEqual(max.y + y.allonger + 0.001);
-      // La carte d'où l'on part est exactement où elle était
-      expect(resteApres(deplacee.x - ou.x, x)).toBeCloseTo(0, 6);
-      expect(resteApres(deplacee.y - ou.y, y)).toBeCloseTo(0, 6);
+      // La vue est tirée jusqu'à cette scène, au milieu du cadre
+      const vue = centrerSur(d1.places.get(origine.id)!, PLAN, zoom);
+      const ou = dansLeCadre(vue, coin(d1, origine.id));
+      const suite = garderAuMemePoint(vue, coin(d1, origine.id), coin(d2, origine.id));
+      // La carte d'où l'on part est exactement où elle était, et le schéma à la même taille
+      expect(dansLeCadre(suite, coin(d2, origine.id)).x).toBeCloseTo(ou.x, 6);
+      expect(dansLeCadre(suite, coin(d2, origine.id)).y).toBeCloseTo(ou.y, 6);
+      expect(suite.zoom).toBe(zoom);
+      // Lue à l'écran, la correction est la même : la carte s'y est déplacée d'un écart, la vue se décale d'autant
+      const deplacee = dansLeCadre(vue, coin(d2, origine.id));
+      const lue = decalerLaVue(vue, { x: deplacee.x - ou.x, y: deplacee.y - ou.y });
+      expect(lue.x).toBeCloseTo(suite.x, 6);
+      expect(lue.y).toBeCloseTo(suite.y, 6);
       // La nouvelle carte existe, sous elle
       expect(d2.places.get("scene-ajoutee")!.y).toBeGreaterThan(d2.places.get(origine.id)!.y);
     }
   });
 
-  it("F03-AC54 — au bout du défilement, le schéma est poussé dans son cadre ou le cadre allongé, plutôt que de laisser la carte se déplacer", () => {
-    // La carte a glissé de 40 points vers la droite : on fait défiler d'autant
-    expect(garderEnPlace(40, { position: 100, max: 500 })).toEqual({ defiler: 40, pousser: 0, allonger: 0 });
-    // Vers la gauche, alors que le défilement est presque au début : il revient à zéro, et le schéma est poussé du reste
-    const debut = garderEnPlace(-40, { position: 15, max: 500 });
-    expect(debut).toEqual({ defiler: -15, pousser: 25, allonger: 0 });
-    expect(resteApres(-40, debut)).toBe(0);
-    // Vers le bas, alors que la page est déjà tout en bas : le cadre s'allonge du reste
-    const fin = garderEnPlace(60, { position: 480, max: 500 });
-    expect(fin).toEqual({ defiler: 60, pousser: 0, allonger: 40 });
-    expect(resteApres(60, fin)).toBe(0);
+  it("F03-AC54 — la vue n'a pas de bord : au tout début du schéma comme à sa fin, la carte reste en place sans que rien soit poussé ni allongé", () => {
+    // La carte a glissé de 40 points vers la gauche dans le schéma, alors que la vue était à son début
+    const debut = garderAuMemePoint({ x: 0, y: 0, zoom: 1 }, { x: 100, y: 50 }, { x: 60, y: 50 });
+    expect(debut).toEqual({ x: 40, y: 0, zoom: 1 });
+    expect(dansLeCadre(debut, { x: 60, y: 50 })).toEqual({ x: 100, y: 50 });
+    // À une taille réduite, le décalage se compte à cette taille
+    const reduit = garderAuMemePoint({ x: -300, y: -900, zoom: 0.7 }, { x: 500, y: 1400 }, { x: 620, y: 1400 });
+    expect(dansLeCadre(reduit, { x: 620, y: 1400 })).toEqual(dansLeCadre({ x: -300, y: -900, zoom: 0.7 }, { x: 500, y: 1400 }));
     // Rien n'a bougé : rien à faire
-    expect(garderEnPlace(0, { position: 0, max: 0 })).toEqual({ defiler: 0, pousser: 0, allonger: 0 });
-    // Une taille déjà choisie n'est pas changée par un geste
-    expect(figerLaTaille(0.5, 0.73)).toBe(0.5);
-  });
-
-  it("F03-AC54 — ce qu'un geste a poussé se rend sans mouvement, pour la part déjà hors de la vue", () => {
-    // Le schéma a été poussé de 90 points ; on a fait défiler de 30 : 30 se rendent
-    expect(aRendreSansMouvement(90, 30)).toBe(30);
-    // Le début du cadre est loin hors de la vue : toute la poussée se rend
-    expect(aRendreSansMouvement(90, 400)).toBe(90);
-    // Le début du cadre est encore à l'écran : rien ne se rend sans mouvement
-    expect(aRendreSansMouvement(90, -120)).toBe(0);
+    expect(garderAuMemePoint({ x: 12, y: 34, zoom: 0.8 }, { x: 5, y: 5 }, { x: 5, y: 5 })).toEqual({ x: 12, y: 34, zoom: 0.8 });
   });
 
   it("F03-AC54 — sans geste qui la désigne, la carte de référence est celle qu'on a cliquée, sinon la plus proche du milieu de ce qu'on voit", () => {
@@ -308,6 +287,119 @@ describe("Construire dans « Chemins » (F03.1)", () => {
     expect(carteDeReference(rects, null, vu)).toBe("milieu");
     expect(carteDeReference(rects, "supprimee", vu)).toBe("milieu");
     expect(carteDeReference(new Map(), null, vu)).toBeNull();
+  });
+
+  it("F03-AC58 — un cadre qu'on tire : à l'ouverture, le marais est à la taille lisible, au milieu de la largeur, son haut en haut du cadre ; « Tout voir » le montre entier", () => {
+    const m = marais();
+    const d = disposer(m, aRegarder(m).marques);
+    const zoom = tailleLisible(d.largeur, PLAN, MARGE, BORNES);
+    // Jamais sous la taille où les titres se lisent, jamais au-dessus de la taille réelle
+    expect(zoom).toBeGreaterThanOrEqual(0.7);
+    expect(zoom).toBeLessThanOrEqual(1);
+    const depart = vueDeDepart(schema(d), PLAN, MARGE, zoom);
+    expect(depart.y).toBe(MARGE);
+    expect(depart.x + (d.largeur * zoom) / 2).toBeCloseTo(PLAN.l / 2, 0);
+    // Le marais est plus haut que le cadre : on le tire, la page ne défile pas ; « Tout voir » le fait tenir
+    expect(d.hauteur * zoom).toBeGreaterThan(PLAN.h);
+    const tout = vueDEnsemble(schema(d), PLAN, MARGE, { min: 0.05, max: 1 });
+    const vu = partVue(tout, PLAN);
+    expect(vu.x).toBeLessThanOrEqual(0);
+    expect(vu.y).toBeLessThanOrEqual(0);
+    expect(vu.x + vu.l).toBeGreaterThanOrEqual(d.largeur);
+    expect(vu.y + vu.h).toBeGreaterThanOrEqual(d.hauteur);
+    // Un chapitre de quatre scènes tient à sa taille réelle
+    const petit: Chemins = { noeuds: [noeud(1), noeud(2), noeud(3), noeud(4)], liens: [lien(1, 2), lien(1, 3, 1), lien(2, 4)], entrees: [] };
+    expect(tailleLisible(disposer(petit, aRegarder(petit).marques).largeur, PLAN, MARGE, BORNES)).toBe(1);
+  });
+
+  it("F03-AC58 — changer de taille garde au milieu du cadre ce qu'on regardait ; on ne perd pas le schéma en le tirant", () => {
+    const vue = { x: -400, y: -900, zoom: 1 };
+    const milieu = { x: (PLAN.l / 2 - vue.x) / vue.zoom, y: (PLAN.h / 2 - vue.y) / vue.zoom };
+    const reduite = changerDeTaille(vue, PLAN, 0.6);
+    expect(reduite.zoom).toBe(0.6);
+    expect(dansLeCadre(reduite, milieu).x).toBeCloseTo(PLAN.l / 2, 6);
+    expect(dansLeCadre(reduite, milieu).y).toBeCloseTo(PLAN.h / 2, 6);
+    // Tiré très loin vers la gauche et vers le haut : il en reste un morceau dans le cadre
+    const s = { l: 1500, h: 2400 };
+    const retenue = retenirLeSchema({ x: -5000, y: -9000, zoom: 1 }, s, PLAN);
+    expect(retenue.x + s.l).toBeGreaterThanOrEqual(240);
+    expect(retenue.y + s.h).toBeGreaterThanOrEqual(240);
+    // Vers la droite et vers le bas aussi
+    const autre = retenirLeSchema({ x: 5000, y: 9000, zoom: 1 }, s, PLAN);
+    expect(autre.x).toBeLessThanOrEqual(PLAN.l - 240);
+    expect(autre.y).toBeLessThanOrEqual(PLAN.h - 240);
+    // Tant qu'il se voit, la vue n'est pas touchée
+    expect(retenirLeSchema(vue, s, PLAN)).toBe(vue);
+  });
+
+  it("F03-AC59 — état « travail » : la scène cliquée vient au milieu du schéma rétréci, un peu au-dessus, à la même taille ; une autre carte cliquée y vient à son tour", () => {
+    const m = marais();
+    const d = disposer(m, aRegarder(m).marques);
+    const zoom = tailleLisible(d.largeur, PLAN, MARGE, BORNES);
+    for (const n of [m.noeuds[0], m.noeuds[12], m.noeuds[31]]) {
+      const p = d.places.get(n.id)!;
+      const vue = centrerSur(p, TRAVAIL, zoom, 0.42);
+      const centre = dansLeCadre(vue, { x: p.x + p.l / 2, y: p.y + p.h / 2 });
+      expect(centre.x).toBeCloseTo(TRAVAIL.l / 2, 6);
+      expect(centre.y).toBeCloseTo(TRAVAIL.h * 0.42, 6);
+      expect(vue.zoom).toBe(zoom);
+    }
+  });
+
+  it("F03-AC59 — la scène cliquée vient au milieu sans montrer de vide pour rien : le haut du schéma ne descend pas, un petit chapitre reste au milieu de la largeur ; le bas reste libre", () => {
+    const m = marais();
+    const d = disposer(m, aRegarder(m).marques);
+    const s = { l: d.largeur, h: d.hauteur };
+    const zoom = tailleLisible(d.largeur, PLAN, MARGE, BORNES);
+    // La première scène, tout en haut : centrée, elle laisserait un grand vide au-dessus d'elle
+    const haut = [...m.noeuds].sort((a, b) => d.places.get(a.id)!.y - d.places.get(b.id)!.y)[0];
+    const voulue = centrerSur(d.places.get(haut.id)!, TRAVAIL, zoom, 0.42);
+    expect(voulue.y).toBeGreaterThan(MARGE);
+    const tenue = sansVideInutile(voulue, s, TRAVAIL, MARGE);
+    expect(tenue.y).toBe(MARGE);
+    // Le schéma, plus large que le cadre, ne laisse pas de vide sur un côté
+    expect(tenue.x).toBeLessThanOrEqual(MARGE);
+    expect(tenue.x + s.l * zoom).toBeGreaterThanOrEqual(TRAVAIL.l - MARGE);
+    // La dernière scène, tout en bas : elle vient bien au milieu, sa suite se construira dessous
+    const bas = [...m.noeuds].sort((a, b) => d.places.get(b.id)!.y - d.places.get(a.id)!.y)[0];
+    const vers = centrerSur(d.places.get(bas.id)!, TRAVAIL, zoom, 0.42);
+    expect(sansVideInutile(vers, s, TRAVAIL, MARGE).y).toBe(vers.y);
+    // Un petit chapitre tient dans la largeur : il y reste au milieu, quelle que soit la carte cliquée
+    const petit = sansVideInutile({ x: 300, y: -40, zoom: 1 }, { l: 400, h: 300 }, TRAVAIL, MARGE);
+    expect(petit).toEqual({ x: (TRAVAIL.l - 400) / 2, y: -40, zoom: 1 });
+  });
+
+  it("F03-AC59 — le cadre change de place quand la colonne se replie : les cartes restent d'abord où elles étaient à l'écran", () => {
+    // Le cadre commençait à 232 points du bord de la fenêtre, il commence à 64 : la vue se décale d'autant
+    const vue = { x: 80, y: 28, zoom: 0.8 };
+    const suite = suivreLeCadre(vue, { x: 232, y: 190 }, { x: 64, y: 190 });
+    const p = { x: 300, y: 500 };
+    expect(64 + dansLeCadre(suite, p).x).toBe(232 + dansLeCadre(vue, p).x);
+    expect(dansLeCadre(suite, p).y).toBe(dansLeCadre(vue, p).y);
+  });
+
+  it("F13.7 — le bloc proposé tient entier dans le cadre, à gauche de l'espace de travail : la vue bouge juste assez, et le schéma ne se réduit que s'il le faut, jamais sous la taille où les libellés se lisent", () => {
+    const marge = { x: 24, y: 28 };
+    const vue = { x: 0, y: 0, zoom: 1 };
+    // Déjà en vue : rien ne bouge
+    expect(montrerLaBoite(vue, { x: 100, y: 100, l: 300, h: 200 }, TRAVAIL, marge)).toEqual(vue);
+    // Il dépasse en bas et à droite : la vue se décale de ce qu'il faut, pas plus
+    const decalee = montrerLaBoite(vue, { x: 500, y: 400, l: 300, h: 300 }, TRAVAIL, marge);
+    expect(dansLeCadre(decalee, { x: 800, y: 700 })).toEqual({ x: TRAVAIL.l - marge.x, y: TRAVAIL.h - marge.y });
+    // Plus grand que le cadre : il se réduit, sans passer sous 0,62
+    expect(tailleQuiMontre({ x: 0, y: 0, l: 900, h: 500 }, TRAVAIL, 1, marge, 0.62)).toBeLessThan(1);
+    expect(tailleQuiMontre({ x: 0, y: 0, l: 4000, h: 500 }, TRAVAIL, 1, marge, 0.62)).toBe(0.62);
+    expect(tailleQuiMontre({ x: 0, y: 0, l: 300, h: 200 }, TRAVAIL, 1, marge, 0.62)).toBe(1);
+    expect(englober([{ x: 10, y: 20, l: 100, h: 50 }, { x: 200, y: 300, l: 100, h: 50 }])).toEqual({ x: 10, y: 20, l: 290, h: 330 });
+    expect(englober([])).toBeNull();
+  });
+
+  it("F03-AC61 — « Chemins » s'ouvre en premier dans un chapitre à choix, « Scènes » restant à un clic ; en récit classique, « Scènes »", () => {
+    expect(vueDuChapitre(undefined, true)).toBe("chemins");
+    expect(vueDuChapitre("chemins", true)).toBe("chemins");
+    expect(vueDuChapitre("scenes", true)).toBe("scenes");
+    expect(vueDuChapitre(undefined, false)).toBe("scenes");
+    expect(vueDuChapitre("chemins", false)).toBe("scenes");
   });
 
   it("F03-AC57 — les gestes sont à l'adulte, en récit à choix, sur un écran large : ni l'élève, ni le téléphone, ni le récit classique", () => {

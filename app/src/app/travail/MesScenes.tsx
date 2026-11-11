@@ -65,14 +65,14 @@ export function MesScenes({ travail, prof, tampons = {} }: { travail: MonTravail
         <p key={a.chapitreId} className={styles.aPrendre}>
           <Icone nom="main" />
           <span>{phraseAPrendre(a.nombre, a.chapitre, !plusieurs)}</span>
-          <Link className="lien" href={`/travail/chapitre/${a.chapitreId}`} aria-label={`Voir les scènes à prendre dans ${a.chapitre}`}>
+          <Link className="lien" href={`/travail/chapitre/${a.chapitreId}?vue=scenes`} aria-label={`Voir les scènes à prendre dans ${a.chapitre}`}>
             Voir
           </Link>
         </p>
       ))}
       {choisir && ouChoisir ? (
         <p>
-          <Link className="btn btn--primaire btn--grand" href={`/travail/chapitre/${ouChoisir}`}>
+          <Link className="btn btn--primaire btn--grand" href={`/travail/chapitre/${ouChoisir}?vue=scenes`}>
             Choisir une scène
             <Icone nom="fleche" />
           </Link>

@@ -48,6 +48,20 @@ export function AidePlan({
           },
         ]
       : []),
+    // Le « + » des chemins, dit ici et dans le « i » du chapitre (F03.1, « Chemins en atelier »)
+    ...(aChoix
+      ? [
+          {
+            question: "Comment construire un chapitre ?",
+            reponse: (
+              <p>
+                Ouvrez-le : ses chemins se dessinent. Le « + » sous une scène ajoute la scène suivante ; tiré jusqu’à une autre scène, il les
+                relie. « Scènes » montre les mêmes scènes en cartes.
+              </p>
+            ),
+          },
+        ]
+      : []),
     {
       question: "Comment changer l’ordre ?",
       reponse: <p>Tirez une carte pour la déplacer. Un chapitre se pose aussi dans une autre partie.</p>,

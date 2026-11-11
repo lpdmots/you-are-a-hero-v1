@@ -40,8 +40,10 @@ type Geste = { sorte: "pris"; avant: Eleve | null } | { sorte: "rendu" };
  * (F07.1, F08-AC04, AC05). Selon l'état, la scène s'écrit ou se lit, et l'écran dit pourquoi.
  */
 export function SceneEleve({
-  scene, prof, eleves, encouragements = [],
+  scene, prof, eleves, encouragements = [], venuDesChemins = false,
 }: {
+  /** Ouverte depuis « Chemins », qui s'ouvre en premier dans un chapitre à choix : on y revient ; sinon, aux cartes */
+  venuDesChemins?: boolean;
   scene: SceneOuverte; prof: string; eleves: Eleve[];
   /** Les tampons que cet élève a reçus sur cette scène ; ceux d'un camarade n'arrivent jamais ici (F07-AC80, AC82) */
   encouragements?: Categorie[];
@@ -79,7 +81,7 @@ export function SceneEleve({
   };
   // La version du texte que la page vient d'enregistrer : c'est elle que la remise présente
   const versionLue = useRef(scene.version);
-  const retour = `/travail/chapitre/${scene.chapitre.id}`;
+  const retour = `/travail/chapitre/${scene.chapitre.id}${venuDesChemins ? "" : "?vue=scenes"}`;
   const laProf = majuscule(prof);
   const duChapitre = scene.profil !== null;
   const mien = scene.prise?.par === "moi";

@@ -933,6 +933,10 @@
 .chap-bandeau--compact .chap-meta {
   margin: 0;
 }
+.chap-bandeau--compact .chap-resume {
+  flex-basis: 100%;
+  margin-top: 2px;
+}
 .chap-bandeau--compact .chap-eleves {
   margin: 0;
   gap: 4px 12px;
@@ -968,6 +972,70 @@
   gap: 6px;
   font-weight: 600;
   font-size: var(--t-s);
+}
+/* Les prénoms du bandeau ouvrent « Attribuer des élèves » (F03.1, « Chemins en atelier ») */
+.chap-eleves--bouton {
+  align-items: center;
+  padding: 3px 8px 3px 4px;
+  margin-left: -4px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.chap-eleves__un {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: var(--t-s);
+}
+.chap-eleves--bouton > .ic {
+  width: 15px;
+  height: 15px;
+  color: var(--graphite-3);
+}
+.chap-eleves--bouton:hover {
+  background: var(--feuille-2);
+  box-shadow: inset 0 0 0 1px var(--trait);
+}
+.chap-eleves--bouton:hover > .ic {
+  color: var(--canard);
+}
+.chap-actions__vue {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+/* « + Nouvelle scène », dernière carte de la grille des scènes */
+.fiche-ajout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 100%;
+  min-height: 96px;
+  border: 1.5px dashed var(--trait-fort);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--graphite-2);
+  font: inherit;
+  font-weight: 700;
+  font-size: var(--t-s);
+  cursor: pointer;
+}
+.fiche-ajout:hover:not(:disabled) {
+  border-color: var(--canard);
+  background: rgba(255, 255, 255, 0.6);
+  color: var(--canard);
+}
+.fiche-ajout .ic {
+  width: 18px;
+  height: 18px;
 }
 .chap-actions {
   display: flex;
@@ -1012,9 +1080,6 @@
   margin: 12px 0 16px;
   font-size: var(--t-s);
   color: var(--graphite-2);
-}
-.chap-outils.chap-outils--chemins {
-  margin-bottom: 4px;
 }
 .vide-chap {
   display: grid;
@@ -1341,7 +1406,16 @@
   .chap-actions .menu {
     margin-left: auto;
   }
-  /* Le bandeau bas : les commandes passent sous le titre, qui garde sa ligne */
+  /* Le bandeau bas garde sa seule bande : il ne porte plus que la bascule, son « i » et le menu (11 novembre 2026) */
+  .chap-bandeau.chap-bandeau--compact .chap-actions {
+    flex-wrap: nowrap;
+  }
+  .reste__actions {
+    margin-left: 0;
+  }
+}
+/* Plus étroit, les commandes du bandeau bas passent sous le titre, qui garde sa ligne */
+@media (max-width: 860px) {
   .chap-bandeau.chap-bandeau--compact {
     grid-template-columns: 96px minmax(0, 1fr);
     row-gap: 10px;
@@ -1351,9 +1425,6 @@
   }
   .chap-bandeau--compact .chap-actions .menu {
     margin-left: auto;
-  }
-  .reste__actions {
-    margin-left: 0;
   }
 }
 @media (max-width: 720px) {
@@ -1440,38 +1511,15 @@
 
 /* ——— Vue « Chemins » d'un chapitre (F03.1, docs/design.md « Vue Chemins reprise ») : un schéma
    de haut en bas sur un écran large, la liste des scènes sur téléphone ——— */
-.chemins {
-  /* Ce qui reste en haut de l'écran (la barre mince de l'adulte, celle de l'élève) : l'en-tête des chemins se colle dessous */
-  --sous-la-barre: var(--haut-adulte, 58px);
-}
+/* « À regarder », au-dessus du cadre, dans « Chemins » seulement ; rien quand il n'y a rien à regarder */
 .chemins__tete {
-  position: sticky;
-  top: var(--sous-la-barre);
-  z-index: 6;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: 6px 18px;
-  min-height: 46px;
-  padding: 6px 0;
-  background: var(--bureau);
+  min-height: 40px;
+  padding: 4px 0;
   font-size: var(--t-s);
-}
-/*
- * Le fond va d'un bord à l'autre de la fenêtre, comme le schéma qui passe dessous ; le schéma le
- * borne à la page, sans la colonne de l'adulte (« --tete-rognage »). Il est rogné sur un calque à
- * part, et non l'en-tête : la bulle « Comment lire ces chemins ? », qui s'ouvre vers le bas, en
- * déborde sans être coupée.
- */
-.chemins__tete::before {
-  content: "";
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  box-shadow: 0 0 0 100vmax var(--bureau);
-  clip-path: var(--tete-rognage, inset(0 -100vmax));
-  pointer-events: none;
 }
 .chemins__regarder {
   display: flex;
@@ -1520,57 +1568,37 @@
   background: #e2a200;
   box-shadow: 0 0 0 2px var(--e-valider-f);
 }
-.chemins__outils {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
+/*
+ * « Chemins » en atelier (F03.1, 11 novembre 2026) : le plan va d'un bord à l'autre de la page et de
+ * son haut jusqu'au bas de la fenêtre ; la page ne défile plus. Dedans, le cadre où l'on tire le
+ * schéma et, en état « travail », l'espace de travail à sa droite — à côté, jamais par-dessus.
+ */
+.page:has(.chemins__plan) {
+  padding-bottom: 0;
 }
-.chemins__outils .lien {
-  margin-right: 8px;
+.chemins {
+  margin-top: 10px;
 }
-.chemins__outils .btn--petit {
-  min-width: 34px;
-  justify-content: center;
-}
-/* Le schéma et, pour l'adulte, le panneau de la scène cliquée posé sur son bord droit */
 .chemins__plan {
-  --panneau-chemin: 304px;
+  --espace-chemins: clamp(440px, 44vw, 660px);
   position: relative;
-  /* Après un geste, c'est le schéma qui ramène la carte à sa place : le navigateur ne s'en mêle pas (F03-AC54) */
-  overflow-anchor: none;
+  display: flex;
+  height: calc(100dvh - var(--haut-du-plan, 220px));
+  min-height: 420px;
+  background: var(--feuille-2);
+  border-top: 1px solid var(--trait);
 }
 .chemins__cadre {
   position: relative;
-  /* Un petit chapitre ne donne pas un bandeau plat ; le panneau d'une scène y tient sans que le cadre grandisse */
-  --cadre-min: 480px;
-  min-height: var(--cadre-min);
-  display: flex;
-  align-items: flex-start;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: thin;
-  background: var(--feuille-2);
-  border-block: 1px solid var(--trait);
-  scroll-margin-top: calc(var(--sous-la-barre) + 54px);
-}
-/* Ce qu'un geste avait poussé se rend en glissant (F03-AC54) ; la poussée elle-même reste immédiate */
-.chemins__cadre[data-relache] {
-  transition: padding 0.26s cubic-bezier(0.2, 0.7, 0.2, 1);
-}
-.chemins__cadre > .chemins__toile {
-  flex: none;
-  /* Toute la hauteur du cadre : un clic dans le vide referme le panneau, et la mention de React Flow reste au coin bas */
-  min-height: calc(var(--cadre-min) - 2px);
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 .chemins__cadre > .chemins__attente {
-  flex: 1;
-}
-/* Sous le panneau, de quoi faire défiler le schéma jusqu'à ses dernières cartes */
-.chemins__reserve {
-  flex: none;
-  width: calc(var(--panneau-chemin) + 20px);
-  height: 1px;
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
 }
 .chemins__fleches {
   position: absolute;
@@ -1591,6 +1619,8 @@
   text-align: center;
 }
 .chemins__toile {
+  position: absolute;
+  inset: 0;
   opacity: 0;
   transition: opacity 0.16s var(--ease);
 }
@@ -1600,13 +1630,15 @@
 .chemins__toile .react-flow {
   background: transparent;
 }
+/* Le fond se tire, comme une carte routière */
 .chemins__toile .react-flow__pane {
-  cursor: default;
-  /* React Flow retient le doigt pour déplacer son schéma ; ici il fait défiler la page */
-  touch-action: auto;
+  cursor: grab;
+}
+.chemins__toile .react-flow__pane.dragging {
+  cursor: grabbing;
 }
 .chemins__toile .react-flow__node {
-  cursor: default;
+  cursor: pointer;
   border-radius: var(--r-m);
 }
 .chemins__toile .react-flow__node:focus-visible {
@@ -1856,23 +1888,52 @@
   font-size: var(--t-xs);
 }
 
-/* Le panneau de la scène cliquée : collé au bord droit du schéma, il suit le défilement de la page */
-.chemins__rail {
-  position: fixed;
-  top: var(--haut-du-panneau, 120px);
-  right: 12px;
-  bottom: 12px;
-  z-index: 5;
+/*
+ * L'espace de travail, en état « travail » : large, de toute la hauteur, à droite du schéma. Il
+ * entre en glissant, une seule fois ; changer de scène n'en change que le contenu.
+ */
+.chemins__espace {
+  flex: none;
   display: flex;
-  align-items: flex-start;
-  width: var(--panneau-chemin);
-  pointer-events: none;
-  animation: panneau-chemin-entre 0.2s var(--ease);
+  width: var(--espace-chemins);
+  min-width: 0;
+  background: var(--feuille);
+  box-shadow: inset 1px 0 0 var(--trait);
+  animation: espace-chemins-entre 0.26s var(--ease);
 }
-@keyframes panneau-chemin-entre {
+@keyframes espace-chemins-entre {
   from {
     opacity: 0;
-    transform: translateX(14px);
+    transform: translateX(28px);
+  }
+}
+.chemins__espace > .panneau-chemin {
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: var(--t-m, 1rem);
+}
+.chemins__espace .panneau-chemin__corps {
+  gap: 18px;
+  padding: 18px 22px 22px;
+}
+.chemins__espace .panneau-chemin__tete {
+  padding: 10px 12px 10px 22px;
+}
+.chemins__espace .panneau-chemin__pied {
+  padding: 10px 16px 12px 14px;
+}
+/* Le titre se lit de loin : c'est lui qu'on vient de cliquer */
+.chemins__espace .panneau-chemin__champ--titre .pchamp {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+/* Sur un écran moyen, l'espace prend le pas : le schéma garde de quoi montrer la scène et ses voisines */
+@media (max-width: 1000px) {
+  .chemins__plan {
+    --espace-chemins: min(440px, 58vw);
   }
 }
 .panneau-chemin {
@@ -2046,12 +2107,6 @@
 .panneau-chemin__pied .btn {
   white-space: nowrap;
 }
-/* La phrase qui dit ce qu'on peut faire ici : seulement là où les gestes existent, sur un écran large */
-@media (max-width: 720px) {
-  .chap-outils__construire {
-    display: none;
-  }
-}
 .panneau-chemin__supprimer {
   color: var(--graphite-2);
 }
@@ -2067,9 +2122,14 @@
   box-shadow: inset 0 0 0 1.5px var(--canard);
   color: var(--canard-fonce);
 }
+/* Le libellé d'un choix de la scène cliquée est déjà en blanc sur canard : survolé, il le reste */
+.libelle-chemin.se-choisit.est-entier:hover {
+  box-shadow: inset 0 0 0 1.5px #fff, var(--ombre-cahier);
+  color: #fff;
+}
 @media (prefers-reduced-motion: reduce) {
   .geste-chemin,
-  .chemins__rail {
+  .chemins__espace {
     animation: none;
   }
   .plus-chemin {
@@ -2354,11 +2414,53 @@
 }
 
 /* La mini-carte, au-delà de deux écrans : où l'on est, et un clic pour s'y rendre */
+/* Les commandes posées sur le cadre, en bas à droite : la taille, au-dessus de la mini-carte */
+.chemins__coin {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 6;
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+  pointer-events: none;
+}
+.chemins__coin > * {
+  pointer-events: auto;
+}
+.chemins__taille {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 11px;
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1px var(--trait-fort),
+    var(--ombre-panneau);
+}
+.chemins__taille .btn--petit {
+  min-width: 34px;
+  justify-content: center;
+  box-shadow: none;
+  background: transparent;
+}
+.chemins__taille .btn--petit:hover:not(:disabled) {
+  background: var(--feuille-2);
+}
+/* « ✦ Construire avec l'IA », toujours en vue, en haut à droite du cadre */
+.chemins__ia {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 6;
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1px var(--ia-trait),
+    var(--ombre-panneau);
+}
 .chemins__carte {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 8;
+  position: relative;
   box-sizing: content-box;
   padding: 6px;
   border-radius: var(--r-m);
@@ -2366,8 +2468,6 @@
   box-shadow:
     inset 0 0 0 1px var(--trait-fort),
     var(--ombre-panneau);
-  opacity: 0.9;
-  transition: opacity 0.18s var(--ease);
 }
 .chemins__carte > svg {
   display: block;
@@ -2401,10 +2501,6 @@
   height: 14px;
 }
 .chemins__carte-ouvrir {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 8;
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -3485,8 +3581,8 @@ a.noeud__ailleurs {
   box-shadow: inset 0 0 0 1px var(--ia-trait);
   color: var(--ia-fonce);
 }
-.chemins__attente--bloc {
-  margin: 24px calc(var(--panneau-chemin) + 40px) 24px 24px;
+.chemins__cadre > .chemins__attente--bloc {
+  inset: 24px;
   border: 1.5px dashed var(--ia-trait);
   border-radius: var(--r-l);
   color: var(--ia-fonce);
@@ -3525,6 +3621,34 @@ a.noeud__ailleurs {
   justify-content: space-between;
   gap: 8px;
   margin-top: -6px;
+}
+.panneau-bloc__promesse {
+  flex: 1;
+  max-width: 44ch;
+  color: var(--graphite-2);
+  font-size: var(--t-xs);
+  line-height: 1.4;
+}
+/* Dans l'espace de travail, les deux réglages tiennent côte à côte */
+.chemins__espace .panneau-bloc__reglages-corps {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px 22px;
+}
+/* Avant la proposition, ils sont en vue sans cadre : une ligne discrète sous la demande, pas un second bloc */
+.chemins__espace .panneau-bloc__reglages-corps:not(.panneau-bloc__envoi ~ *) {
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+/* Le message d'un geste se lit au-dessus du schéma, sans couvrir l'espace de travail */
+@media (min-width: 861px) {
+  body:has(.chemins__plan[data-travail]) .message {
+    left: calc(64px + (100vw - 64px - clamp(440px, 44vw, 660px)) / 2);
+    max-width: calc(100vw - 64px - clamp(440px, 44vw, 660px) - 32px);
+  }
+}
+.chemins__espace .panneau-bloc__envoi {
+  margin-top: 0;
 }
 .panneau-bloc__reglages {
   display: inline-flex;
@@ -3899,18 +4023,8 @@ textarea.bloc-ligne__titre {
     var(--ombre-cahier);
 }
 
-/* L'entrée du bloc dans la barre du schéma, séparée des boutons de taille */
-.chemins__outils .chemins__bloc {
-  margin-right: 10px;
-}
-
-/* ——— Le panneau large du bloc (11 novembre 2026) : toute la hauteur, près de la moitié de la largeur,
-   les scènes proposées en fiches côte à côte, consignes visibles. Le schéma garde l'autre moitié. ——— */
-.chemins__rail--bloc {
-  top: 12px;
-  /* Au-dessus de l'en-tête des chemins, qui reste collé en haut quand la page défile */
-  z-index: 30;
-}
+/* ——— Le bloc dans l'espace de travail (11 novembre 2026) : les scènes proposées en fiches côte à côte,
+   consignes visibles ——— */
 .panneau-bloc .panneau-chemin__corps {
   gap: 12px;
   padding: 14px 18px 18px;

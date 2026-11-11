@@ -17,11 +17,13 @@ export function poser(
   repere: Repere,
   menu: HTMLElement,
   {
-    cote = "bottom-start", ecart = 6, fixe = false,
+    cote = "bottom-start", ecart = 6, fixe = false, suivre = false,
   }: {
     cote?: Placement; ecart?: number;
     /** Hors du cadre qui le contient : pour une liste ouverte dans un cadre qui coupe ce qui dépasse */
     fixe?: boolean;
+    /** Le repère se déplace sans que rien ne défile (une carte du schéma qu'on tire) : la bulle le suit à chaque image */
+    suivre?: boolean;
   } = {},
 ): () => void {
   let retenu: Placement | null = null;
@@ -47,5 +49,5 @@ export function poser(
       menu.style.top = `${y}px`;
       menu.dataset.cote = placement.split("-")[0];
     });
-  });
+  }, { animationFrame: suivre });
 }

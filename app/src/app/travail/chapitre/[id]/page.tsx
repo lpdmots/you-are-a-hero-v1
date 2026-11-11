@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { Messages } from "@/composants/Messages";
+import { vueDuChapitre } from "@/domaine/chemins";
 import { chapitreDuPoste, contexteDeTravail } from "@/serveur/recit-eleve";
 import { EnteteEleve } from "../../EnteteEleve";
 import { ChapitreEleve } from "./ChapitreEleve";
@@ -17,13 +18,14 @@ export default async function Page({ params, searchParams }: { params: Promise<{
   const { vue } = await searchParams;
   const contexte = await contexteDeTravail();
   if (!contexte.ouvert) redirect("/travail");
-  const chapitre = await chapitreDuPoste(contexte, id, { chemins: vue === "chemins" });
+  // « Chemins » s'ouvre en premier dans un chapitre à choix (F03.1, « Chemins en atelier ») : ses repères se lisent sauf si l'on demande « Scènes »
+  const chapitre = await chapitreDuPoste(contexte, id, { chemins: vue !== "scenes" });
   if (!chapitre) notFound();
   return (
     <Messages>
       <EnteteEleve contexte={contexte} auTravail />
       <main className="page page--eleve">
-        <ChapitreEleve chapitre={chapitre} prof={contexte.prof} moi={contexte.moi.id} eleves={contexte.eleves} vue={vue === "chemins" ? "chemins" : "scenes"} />
+        <ChapitreEleve chapitre={chapitre} prof={contexte.prof} moi={contexte.moi.id} eleves={contexte.eleves} vue={vueDuChapitre(vue, chapitre.aChoix)} />
       </main>
     </Messages>
   );

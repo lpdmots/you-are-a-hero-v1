@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
+import { vueDuChapitre } from "@/domaine/chemins";
 import { chapitresDe } from "@/domaine/recit";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { ColonneDuProjet } from "../../_commun/EnteteProjet";
@@ -46,7 +47,7 @@ export default async function Page(props: Props) {
         plan={plan}
         chapitreId={chapitre.id}
         eleves={eleves}
-        vue={demande.vue === "chemins" && projet.recit === "choix" ? "chemins" : "scenes"}
+        vue={vueDuChapitre(demande.vue, projet.recit === "choix")}
         designee={typeof demande.scene === "string" ? demande.scene : undefined}
         venuDuLivre={demande.de === "livre"}
         reglagesBloc={reglagesBloc}

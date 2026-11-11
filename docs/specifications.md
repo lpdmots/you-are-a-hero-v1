@@ -1301,7 +1301,8 @@ le porteur décide :
   un écran de 1 366 points, lorsque l'enseignant ouvre « Chemins », alors
   chaque choix mène à une scène placée plus bas, sauf les quatre retours en
   arrière, qui remontent et se distinguent des autres ; le schéma tient dans la largeur de la page et
-  la page défile de haut en bas. **Révisé le 8 novembre 2026** (colonne de
+  la page défile de haut en bas (révisé le 11 novembre 2026 : la page ne
+  défile plus, le schéma se tire dans son cadre, F03-AC58). **Révisé le 8 novembre 2026** (colonne de
   navigation, F06.5) : sur un tel chapitre, en 1 366 points, il tient la
   colonne repliée ; colonne ouverte (1 134 points pour la page), il défile un
   peu de côté plutôt que de descendre sous la taille où les titres se lisent.
@@ -1338,7 +1339,11 @@ le porteur décide :
   marais, plus haut que deux écrans, lorsque l'enseignant ouvre « Chemins »,
   alors une mini-carte dit où il est et un clic y conduit ; « Tout voir »
   montre le chapitre entier dans la fenêtre ; « Taille lisible » y ramène.
-  Un chapitre de quatre scènes n'a pas de mini-carte.
+  Un chapitre de quatre scènes n'a pas de mini-carte. Révisé le 11 novembre
+  2026 (« Chemins en atelier ») : la mini-carte s'affiche dès que le schéma
+  dépasse de son cadre, elle suit la vue pendant qu'on le tire, et « Taille
+  lisible » prend la place de « Tout voir » tant qu'on est en dessous de
+  cette taille.
 - **F03-AC49 — Sur téléphone, la liste :** étant donné un écran de
   390 points de large, lorsque l'enseignant ouvre « Chemins », alors les
   scènes se lisent l'une sous l'autre, chaque choix disant où il mène, avec
@@ -1434,8 +1439,10 @@ le porteur décide :
     F06-AC105). Bâtie depuis le schéma, elle ne porte plus « En cours » sans
     que personne y ait écrit, et se supprime sans confirmation.
   - <a id="f03-atelier"></a>**« Chemins » en atelier (décidé par le porteur le 11 novembre
-    2026, sur recommandation, après l'essai du bloc de scènes ; non
-    construit).** Cela révise « la page défile, rien ne se déplace » du
+    2026, sur recommandation, après l'essai du bloc de scènes ; construit en
+    local le même jour, F03-AC58 à AC61, précisions dans le
+    [plan](plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026)).**
+    Cela révise « la page défile, rien ne se déplace » du
     12 octobre 2026, décidé pour une vue qu'on ne faisait que lire.
     - *Un cadre qu'on tire.* Le schéma remplit toute la hauteur disponible
       sous un en-tête réduit ; la page ne défile plus dans « Chemins ». On
@@ -1449,7 +1456,10 @@ le porteur décide :
       « ✦ Construire avec l'IA », replie la colonne, rétrécit le schéma et
       le centre sur la scène, et ouvre à droite l'espace de travail, large,
       à côté du schéma et non par-dessus — le panneau de la scène comme celui
-      du bloc. Le passage glisse, une seule fois ; une autre carte cliquée
+      du bloc, toujours large (précisé par le porteur le 11 novembre 2026 :
+      « l'espace de droite devient systématique », ce qui remplace « le bloc
+      ne s'élargit qu'une fois la proposition dessinée »). Le passage glisse,
+      une seule fois ; une autre carte cliquée
       ne change que le contenu de l'espace et fait glisser le schéma jusqu'à
       elle. La croix, Échap ou un clic dans le vide (pas un glissé) ramènent
       au plan. L'élève reste au plan, en lecture ; le téléphone garde sa
@@ -1488,7 +1498,10 @@ le porteur décide :
   lorsque l'adulte ajoute une scène sous l'une d'elles, alors cette carte
   garde sa place à l'écran et la taille du schéma ne change pas ; si le
   schéma a dû être poussé dans son cadre, il reprend sa place une fois le
-  geste fini, et ne laisse pas d'espace vide au-dessus des cartes.
+  geste fini, et ne laisse pas d'espace vide au-dessus des cartes. **Révisé
+  le 11 novembre 2026** (« Chemins en atelier ») : la vue se décale pour que
+  la carte reste au même point du cadre ; rien n'est poussé ni allongé, et
+  « Recentrer » n'existe plus.
 - **F03-AC55 — Titre et consigne dans le panneau :** étant donné « Le
   ruisseau » cliquée, lorsque l'adulte change son titre et écrit sa consigne
   dans le panneau, alors ils sont enregistrés et la carte porte le nouveau
@@ -1503,6 +1516,38 @@ le porteur décide :
   attribuée au chapitre, lorsqu'elle ouvre « Chemins », alors elle n'a ni
   « + », ni lien à tirer, ni panneau à remplir ; étant donné un écran de
   390 points, alors l'adulte lit la liste, sans ces gestes.
+- **F03-AC58 — Un cadre qu'on tire :** étant donné « Le marais des feux
+  follets » sur un écran de 1 366 × 768 points, lorsque l'adulte ouvre
+  « Chemins », alors le schéma remplit la hauteur de la fenêtre sous
+  l'en-tête, à la taille lisible, et la page ne défile pas ; tirer le fond,
+  la molette ou deux doigts déplacent le schéma ; Ctrl + molette, le
+  pincement et les boutons « − » et « + » changent sa taille autour du
+  milieu du cadre ; « Tout voir » le montre entier ; aucune carte ne se
+  déplace à la main, et le schéma ne peut pas être tiré entièrement hors du
+  cadre. L'élève a le même cadre, en lecture.
+- **F03-AC59 — Deux états, le plan et le travail :** étant donné le plan,
+  colonne de navigation ouverte, lorsque l'adulte clique « Digue — les
+  planches pourries », alors la colonne se replie, l'espace de travail
+  s'ouvre à droite du schéma, sans le couvrir, avec le titre, les choix et la
+  consigne de la scène, et le schéma glisse jusqu'à ce que cette carte soit
+  au milieu du cadre rétréci, à la même taille ; cliquer une autre carte
+  change le contenu de l'espace et fait glisser le schéma jusqu'à elle ; la
+  croix, Échap ou un clic dans le vide — pas un glissé — ramènent au plan, la
+  colonne revenant comme elle était. « ✦ Construire avec l'IA » ouvre le
+  même espace pour le bloc de scènes ; l'élève n'a pas d'espace de travail.
+- **F03-AC60 — Un en-tête en une bande :** étant donné « La lisière »,
+  attribué à Alice et Bilal, lorsque l'adulte l'ouvre, alors le bandeau
+  porte le titre, les élèves, la bascule « Scènes / Chemins », son « i » et
+  le menu « … », sans bouton « Ajouter une scène » ni « Attribuer des
+  élèves » ; cliquer les prénoms ouvre « Attribuer des élèves », que le menu
+  offre aussi ; dans « Scènes », la dernière carte de la grille est
+  « + Nouvelle scène » ; « À regarder » n'apparaît que dans « Chemins »,
+  sous le bandeau.
+- **F03-AC61 — « Chemins » s'ouvre en premier :** étant donné un chapitre à
+  choix qui a des scènes, lorsque l'adulte ou l'élève l'ouvre, alors il voit
+  ses chemins, « Scènes » restant à un clic ; un chapitre de récit classique
+  s'ouvre sur ses scènes ; une scène ouverte depuis « Scènes » ramène à
+  « Scènes », une scène ouverte depuis « Chemins » ramène à « Chemins ».
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
