@@ -3,8 +3,9 @@
  * et ce qu'il y a « à regarder ». Rien ne s'y saisit : tout se déduit des textes.
  */
 
+import { nomPourEleves } from "./eleves";
 import type { Etat } from "./etats";
-import { chapitresDe, departDe, nomScene, type Plan } from "./recit";
+import { chapitresDe, departDe, nomScene, type ElevePlan, type Plan } from "./recit";
 import { pluriel } from "./texte";
 
 export type NoeudDeChemin = {
@@ -16,6 +17,11 @@ export type NoeudDeChemin = {
   /** Sa liste de vérification, et ce que l'élève y a coché : le panneau les montre et modifie la liste (F13.2) */
   verification?: string[];
   cochees?: string[];
+  /**
+   * Qui écrit la scène, tel que la carte le dit après son tampon (F03-AC66) : le prénom de l'élève
+   * qui s'en occupe, « Vous » ou « Toi ». On lit seulement qui écrit : rien ne s'attribue d'ici.
+   */
+  qui?: string;
   /** La page de la scène */
   lien: string;
   /** Une scène du bloc proposé par l'IA, pas encore ajoutée : dessinée en pointillé (F13.7) */
@@ -45,8 +51,11 @@ export type Chemins = { noeuds: NoeudDeChemin[]; liens: LienDeChemin[]; entrees:
  */
 export const vueDuChapitre = (demandee: string | undefined, aChoix: boolean): "scenes" | "chemins" => (aChoix && demandee !== "scenes" ? "chemins" : "scenes");
 
-/** Les chemins d'un chapitre tels que l'adulte les lit, d'après le plan et ses liens. */
-export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string): Chemins {
+/**
+ * Les chemins d'un chapitre tels que l'adulte les lit, d'après le plan et ses liens. `eleves` : la
+ * classe, pour dire sur chaque carte qui écrit la scène (F03-AC66).
+ */
+export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string, eleves: readonly ElevePlan[] = []): Chemins {
   const chapitres = chapitresDe(plan);
   const chapitre = chapitres.find((c) => c.id === chapitreId);
   if (!chapitre) return { noeuds: [], liens: [], entrees: [] };
@@ -54,10 +63,18 @@ export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string):
   const ou = new Map(chapitres.flatMap((c) => c.scenes.map((s) => [s.id, { scene: s, chapitre: c }] as const)));
   const ici = new Set(chapitre.scenes.map((s) => s.id));
   const vueChemins = (c: string, scene?: string) => `/projet/${projetId}/chapitre/${c}?vue=chemins${scene ? `&scene=${scene}` : ""}`;
+  const duChapitre = new Set(chapitre.attributions.map((a) => a.eleveId));
+  // L'enseignant qui s'est attribué la scène, l'élève du chapitre qui s'en occupe, ou celui qui n'y est plus et
+  // dont la scène remise ou finie garde le prénom (F06.3)
+  const quiEcrit = (s: (typeof chapitre.scenes)[number]): string | undefined => {
+    if (s.priseParEnseignant) return "Vous";
+    const eleve = s.priseParEleve && duChapitre.has(s.priseParEleve) ? eleves.find((e) => e.id === s.priseParEleve) : s.ancien;
+    return eleve ? nomPourEleves(eleve, eleves) : undefined;
+  };
   return {
     noeuds: chapitre.scenes.map((s) => ({
       id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, depart: depart?.id === s.id, fin: s.fin,
-      consigne: s.consigne, verification: s.verification ?? [], cochees: s.cochees ?? [],
+      qui: quiEcrit(s), consigne: s.consigne, verification: s.verification ?? [], cochees: s.cochees ?? [],
       lien: `/projet/${projetId}/scene/${s.id}?de=chemins`,
     })),
     liens: plan.liens
@@ -109,6 +126,45 @@ export function ordreDeLecture(noeuds: NoeudDeChemin[], liens: LienDeChemin[]): 
   for (const n of noeuds) parcourir(n.id);
   const rang = new Map(noeuds.map((n, i) => [n.id, i]));
   return [...noeuds].sort((a, b) => pas.get(a.id)! - pas.get(b.id)! || rang.get(a.id)! - rang.get(b.id)!);
+}
+
+/**
+ * Les retours en arrière (F03.1, « Choix en onglets », F03-AC64) : les choix qui ramènent à une scène par
+ * laquelle le lecteur est passé pour arriver là — ils ferment une boucle —, et ceux qui ramènent à leur
+ * propre scène. Le schéma les écrit dans l'onglet du choix, ne trace leur ligne qu'à la demande et place
+ * les cartes comme s'ils n'existaient pas : sans eux, tout chemin descend.
+ *
+ * On suit le récit depuis son entrée, chaque scène jusqu'au bout de ses suites, dans l'ordre du texte :
+ * un choix qui retombe sur une scène du chemin en cours est un retour.
+ */
+export function retoursEnArriere(noeuds: NoeudDeChemin[], liens: LienDeChemin[]): Set<string> {
+  const ici = new Set(noeuds.map((n) => n.id));
+  const suites = new Map<string, LienDeChemin[]>();
+  for (const l of liens) if (l.vers && ici.has(l.vers) && ici.has(l.de)) suites.set(l.de, [...(suites.get(l.de) ?? []), l]);
+  const etat = new Map<string, "en-route" | "finie">();
+  const retours = new Set<string>();
+  // Une pile plutôt qu'une fonction qui s'appelle elle-même : un chapitre peut être long
+  const suivre = (racine: string) => {
+    const pile: { id: string; reste: LienDeChemin[] }[] = [{ id: racine, reste: [...(suites.get(racine) ?? [])] }];
+    etat.set(racine, "en-route");
+    while (pile.length) {
+      const haut = pile[pile.length - 1];
+      const l = haut.reste.shift();
+      if (!l) {
+        etat.set(haut.id, "finie");
+        pile.pop();
+        continue;
+      }
+      const vers = l.vers!;
+      if (etat.get(vers) === "en-route") retours.add(l.id);
+      else if (!etat.has(vers)) {
+        etat.set(vers, "en-route");
+        pile.push({ id: vers, reste: [...(suites.get(vers) ?? [])] });
+      }
+    }
+  };
+  for (const n of ordreDeLecture(noeuds, liens)) if (!etat.has(n.id)) suivre(n.id);
+  return retours;
 }
 
 /**

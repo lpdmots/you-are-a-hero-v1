@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
-import { ordreDeLecture, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
+import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
 import { LIBELLE_MAX } from "@/domaine/copie";
 import { nomScene, referenceScene } from "@/domaine/recit";
 import { useConsigneIa } from "@/app/(adulte)/projet/[id]/scene/[scene]/AidesDeScene";
@@ -35,6 +35,8 @@ export type Construire = {
   relier: (de: string, vers: string, libelle: string) => Promise<Resultat>;
   /** Titre, consigne et liste de vérification, depuis le panneau (F03-AC55, F13.2) */
   reglerScene: (sceneId: string, valeurs: { titre?: string; consigne?: string; verification?: string[] }) => Promise<{ ok: boolean; erreur?: string }>;
+  /** L'onglet d'un choix « Sans destination », tiré jusqu'à une scène : il y mène, à sa place dans le texte (F03-AC67) */
+  relierChoix?: (lien: LienDeChemin, vers: string) => Promise<Resultat>;
   supprimerChoix: (lien: LienDeChemin) => Promise<Resultat>;
   /** Avec les protections de la suppression, et la corbeille (F03-AC56) */
   supprimerScene: (sceneId: string) => void;
@@ -215,7 +217,7 @@ export function PanneauDeScene({
   scene, chemins, construire, designe, onAjouter, onFermer, boutonAjouter, onConstruireLaSuite,
 }: {
   scene: NoeudDeChemin; chemins: Chemins; construire: Construire;
-  /** Le choix dont on vient de cliquer le libellé sur sa flèche : sa ligne se montre un instant */
+  /** Le choix dont on vient de cliquer l'onglet : sa ligne se montre un instant */
   designe?: string | null;
   /** « Ajouter » ouvre la même bulle que le « + » de la carte */
   onAjouter: () => void; onFermer: () => void;
@@ -234,6 +236,17 @@ export function PanneauDeScene({
   const e = useEnregistrement();
   const choix = chemins.liens.filter((l) => l.de === scene.id);
   const parId = new Map(chemins.noeuds.map((n) => [n.id, n]));
+  // Un retour en arrière porte ici le signe qu'il a dans son onglet (F03-AC64)
+  const retours = retoursEnArriere(chemins.noeuds, chemins.liens);
+  // Un choix « Sans destination » se relie aussi d'ici, sans tirer son onglet (F03-AC67)
+  const autres = ordreDeLecture(chemins.noeuds, chemins.liens).filter((n) => n.id !== scene.id);
+  const [enLiaison, setEnLiaison] = useState<string | null>(null);
+  const lier = async (lien: LienDeChemin, vers: string) => {
+    if (!vers || !construire.relierChoix) return;
+    setEnLiaison(lien.id);
+    await construire.relierChoix(lien, vers);
+    setEnLiaison(null);
+  };
 
   const consigneIa = useConsigneIa({
     sceneId: scene.id,
@@ -333,10 +346,31 @@ export function PanneauDeScene({
                       <span className="panneau-chemin__vers panneau-chemin__vers--manque">
                         <span className="point-regarder" aria-hidden="true" />
                         {l.manque === "sans" ? "Sans destination" : "Scène supprimée"}
+                        {/* Le remède, là où le manque est dit : choisir la scène, ou tirer l'onglet dans le schéma */}
+                        {l.manque === "sans" && construire.relierChoix && autres.length ? (
+                          <span className="geste-chemin__liste panneau-chemin__relier">
+                            <select
+                              className="pchamp"
+                              value=""
+                              aria-label={`Relier le choix « ${l.libelle || "sans libellé"} » à une scène`}
+                              title="Ou tirez son onglet, dans le schéma, jusqu’à une scène"
+                              disabled={enLiaison !== null}
+                              onChange={(ev) => void lier(l, ev.target.value)}
+                            >
+                              <option value="">Relier à…</option>
+                              {autres.map((n) => (
+                                <option key={n.id} value={n.id}>
+                                  {nomScene(n)}
+                                </option>
+                              ))}
+                            </select>
+                            <Icone nom="chevron-bas" />
+                          </span>
+                        ) : null}
                       </span>
                     ) : (
                       <span className="panneau-chemin__vers">
-                        <Icone nom={l.ailleurs ? "sortie" : "fleche"} />
+                        <Icone nom={l.ailleurs ? "sortie" : retours.has(l.id) ? "fleche-haut" : "fleche"} />
                         {l.ailleurs ? `${l.ailleurs.chapitre}${l.ailleurs.nom ? ` · ${l.ailleurs.nom}` : ""}` : cible ? nomScene(cible) : ""}
                       </span>
                     )}

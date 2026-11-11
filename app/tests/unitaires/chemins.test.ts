@@ -1,11 +1,12 @@
 import { describe, expect, it } from "vitest";
-import { CARTE, disposer, LIBELLE, type Disposition, type Point } from "@/composants/chemins/disposer";
+import { CARTE, disposer, lignesDe, ONGLET, type Disposition, type Mesure, type Point } from "@/composants/chemins/disposer";
 import {
-  adoucir, carteDeReference, centrerSur, changerDeTaille, dansLeCadre, decalerLaVue, englober, garderAuMemePoint, montrerLaBoite, partVue, pasDuGlissement, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre,
+  adoucir, carteDeReference, centrerSur, changerDeTaille, dansLeCadre, decalerLaVue, deLoin, englober, garderAuMemePoint, montrerLaBoite, partVue, pasDuGlissement, retenirLeSchema, sansVideInutile, suivreLeCadre, tailleLisible, tailleQuiMontre,
   vueDeDepart, vueDEnsemble, type Cadre,
 } from "@/composants/chemins/ancrage";
-import { aRegarder, compteARegarder, ordreDeLecture, peutConstruire, vueDuChapitre, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
-import { fautConfirmer } from "@/domaine/recit";
+import { cheminsAvecLeBloc, type Proposition } from "@/domaine/bloc-de-scenes";
+import { aRegarder, cheminsDuPlan, compteARegarder, ordreDeLecture, peutConstruire, retoursEnArriere, vueDuChapitre, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
+import { fautConfirmer, type Chapitre, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { ATTENDU, SCENES } from "../../scripts/marais-des-feux-follets";
 
 /**
@@ -43,9 +44,12 @@ const dansUneCarte = (p: Point, c: { x: number; y: number; l: number; h: number 
 /** Les segments d'un trait, deux à deux : ses points se suivent en ligne droite. */
 const segments = (points: Point[]): [Point, Point][] => points.slice(1).map((p, i) => [points[i], p]);
 
+/** Les traits dessinés au repos : la ligne d'un retour en arrière n'est tracée qu'à la demande, par-dessus le schéma. */
+const auRepos = (d: Disposition) => d.traits.filter((t) => !t.retour);
+
 /** Le nombre de traits qui passent sous une carte autre que celles qu'ils relient. */
 function traitsSousUneCarte(d: Disposition): number {
-  return d.traits.filter((t) =>
+  return auRepos(d).filter((t) =>
     [...d.places].some(([carte, place]) => {
       if (carte === t.de || carte === t.vers) return false;
       // Des points pris tout le long de chaque segment
@@ -56,7 +60,7 @@ function traitsSousUneCarte(d: Disposition): number {
 
 /** Deux traits qui suivent la même ligne sur plus de quelques points : on ne saurait plus lequel est lequel. */
 function traitsConfondus(d: Disposition): number {
-  const morceaux = d.traits.flatMap((t) => segments(t.points).map(([a, b]) => ({ trait: t.id, a, b })));
+  const morceaux = auRepos(d).flatMap((t) => segments(t.points).map(([a, b]) => ({ trait: t.id, a, b })));
   let confondus = 0;
   for (let i = 0; i < morceaux.length; i++) {
     for (let j = i + 1; j < morceaux.length; j++) {
@@ -132,19 +136,24 @@ describe("Le schéma, de haut en bas (F03.1)", () => {
   const d = disposer(chemins, aRegarder(chemins).marques);
   const place = (cle: string) => d.places.get(cle)!;
 
-  it("F03-AC43 — chaque choix mène à une scène placée plus bas, sauf les retours en arrière, qui remontent ; aucune carte n'en recouvre une autre", () => {
+  it("F03-AC43, F03-AC64 — chaque trait dessiné mène à une scène placée plus bas ; les quatre retours en arrière ne pèsent pas dans la disposition ; aucune carte n'en recouvre une autre", () => {
     expect(d.elements.filter((e) => e.sorte === "scene")).toHaveLength(ATTENDU.scenes);
-    expect(d.traits).toHaveLength(ATTENDU.liens + 1);
-    for (const t of d.traits) {
-      const [de, vers] = [place(t.de), place(t.vers)];
-      if (t.remonte) expect(vers.y + vers.h).toBeLessThan(de.y);
-      else expect(vers.y).toBeGreaterThan(de.y + de.h);
-      // Le trait part du bord de sa carte et arrive au bord de l'autre
-      expect(t.points[0].y).toBeCloseTo(t.remonte ? de.y : de.y + de.h, 5);
-      expect(t.points.at(-1)!.y).toBeCloseTo(t.remonte ? vers.y + vers.h : vers.y, 5);
-    }
     // Les retours en arrière du marais : vers le ponton, la cabane, le cercle, le récit de la passeuse
-    expect(d.traits.filter((t) => t.remonte).map((t) => `${t.de}>${t.vers}`).sort()).toEqual(["brume>ponton", "coffre>recit", "enigme>cercle", "ombre>cabane"]);
+    const retours = d.traits.filter((t) => t.retour);
+    expect(retours.map((t) => `${t.de}>${t.vers}`).sort()).toEqual(["brume>ponton", "coffre>recit", "enigme>cercle", "ombre>cabane"]);
+    // Un trait par suite dans le chapitre et un pour le chemin venu d'ailleurs : ni les deux sorties ni les deux choix à regarder n'en ont
+    expect(auRepos(d)).toHaveLength(ATTENDU.liens + 1 - 2 - 2 - retours.length);
+    for (const t of auRepos(d)) {
+      const [de, vers] = [place(t.de), place(t.vers)];
+      expect(vers.y).toBeGreaterThan(de.y + de.h);
+      // Le trait part du bord bas de sa carte et arrive au bord haut de l'autre
+      expect(t.points[0].y).toBeCloseTo(de.y + de.h, 5);
+      expect(t.points.at(-1)!.y).toBeCloseTo(vers.y, 5);
+    }
+    // Les cartes ont la place qu'elles auraient si ces quatre choix ne menaient nulle part
+    const sansRetour = new Set(retours.map((t) => t.id));
+    const sans: Chemins = { ...chemins, liens: chemins.liens.map((l) => (sansRetour.has(l.id) ? { ...l, vers: null, manque: "sans" as const } : l)) };
+    expect([...disposer(sans, aRegarder(chemins).marques).places]).toEqual([...d.places]);
     const cartes = [...d.places.values()];
     for (let i = 0; i < cartes.length; i++) {
       for (let j = i + 1; j < cartes.length; j++) {
@@ -173,39 +182,21 @@ describe("Le schéma, de haut en bas (F03.1)", () => {
     expect(traitsConfondus(dense)).toBe(0);
   });
 
-  it("F03-AC45 — le libellé d'un choix a sa place sur sa flèche : une ligne s'il est court, deux lignes s'il est long, jamais plus large que prévu", () => {
-    const libelle = (cle: string) => d.traits.find((t) => t.id === cle)!.libelle!;
-    expect(libelle("lanterne>0").h).toBe(LIBELLE.h); // « La décrocher »
-    expect(libelle("marche>0")).toMatchObject({ l: LIBELLE.max, h: LIBELLE.h2 }); // « Échanger la plume argentée contre une barque »
-    for (const t of d.traits.filter((x) => x.libelle)) {
-      // Le libellé est posé sur son trait, hors de toute carte
-      const l = t.libelle!;
-      expect(l.l).toBeLessThanOrEqual(LIBELLE.max);
-      expect(segments(t.points).some(([a, b]) => Math.abs(a.x - l.x) < 0.5 && Math.abs(b.x - l.x) < 0.5 && Math.min(a.y, b.y) <= l.y && l.y <= Math.max(a.y, b.y))).toBe(true);
-      expect([...d.places.values()].some((c) => dansUneCarte({ x: l.x, y: l.y }, c))).toBe(false);
-    }
-    // Le chemin venu d'un autre chapitre n'a pas de libellé : son étiquette suffit
-    expect(d.traits.find((t) => t.de.startsWith("entree:"))!.libelle).toBeNull();
+  it("F03-AC25, F03-AC46 — un chemin venu d'un autre chapitre garde son étiquette, au-dessus de la scène ; une sortie et un choix à regarder n'en ont plus : ils se lisent dans leur onglet", () => {
+    expect(d.elements.filter((e) => e.sorte !== "scene").map((e) => `${e.sorte} ${e.chapitre}`)).toEqual(["entree Le gué des saules"]);
+    const entree = d.traits.find((t) => t.de.startsWith("entree:"))!;
+    expect(place(entree.de).y + place(entree.de).h).toBeLessThan(place("barque").y);
   });
 
-  it("F03-AC25, F03-AC46 — un autre chapitre est une étiquette à son nom, un choix qui ne mène nulle part a la sienne ; deux choix vers la même scène d'un autre chapitre se rejoignent", () => {
-    expect(d.elements.filter((e) => e.sorte !== "scene").map((e) => (e.sorte === "manque" ? `${e.sorte} ${e.manque}` : `${e.sorte} ${e.chapitre}`)).sort()).toEqual([
-      "entree Le gué des saules", "manque sans", "manque supprimee", "sortie Le moulin noyé", "sortie Le sanctuaire",
-    ]);
-    const deux = disposer(
-      { noeuds: [noeud(1), noeud(2)], liens: [lien(1, null, 0, { ailleurs: { chapitre: "Le marais", lien: "/m?scene=5" } }), lien(2, null, 0, { ailleurs: { chapitre: "Le marais", lien: "/m?scene=5" } })], entrees: [] },
-      new Map(),
-    );
-    expect(deux.elements.filter((e) => e.sorte === "sortie")).toHaveLength(1);
-    expect(deux.traits.map((t) => t.vers)).toEqual(["sortie:/m?scene=5", "sortie:/m?scene=5"]);
-  });
-
-  it("F03-AC44 — la carte garde sa taille ; le départ ou la fin lui ajoutent une bande en tête, ce qui est à regarder une bande au pied", () => {
-    expect(place("ile")).toMatchObject({ l: CARTE.l, h: CARTE.h });
-    expect(place("trou").h).toBe(CARTE.h + CARTE.bande); // une fin
-    expect(place("crapaud").h).toBe(CARTE.h + CARTE.bande); // rien n'y mène
-    const depart = disposer({ noeuds: [noeud(1, { depart: true }), noeud(2)], liens: [lien(1, 2)], entrees: [] }, new Map([[id(2), ["sans-suite"]]]));
-    expect(depart.places.get(id(1))!.h).toBe(CARTE.h + CARTE.bande);
+  it("F03-AC44 — la tête de la carte garde sa taille ; en tête une bande pour le départ ou « Rien n'y mène », au pied les onglets, à défaut la fin ou « Sans suite »", () => {
+    const pied = (cle: string) => d.onglets.get(cle)![0].h;
+    expect(place("ile")).toMatchObject({ l: 2 * ONGLET.l, h: CARTE.h + pied("ile") });
+    expect(place("trou")).toMatchObject({ l: CARTE.l, h: CARTE.h + CARTE.bande }); // une fin, sans choix
+    expect(place("crapaud").h).toBe(CARTE.h + CARTE.bande + pied("crapaud")); // rien n'y mène, et un choix
+    expect(place("allumee").h).toBe(CARTE.h + CARTE.bande); // sans suite
+    expect(place("nouvelle").h).toBe(CARTE.h + 2 * CARTE.bande); // rien n'y mène, en tête ; sans suite, au pied
+    const depart = disposer({ noeuds: [noeud(1, { depart: true }), noeud(2, { fin: true })], liens: [lien(1, 2)], entrees: [] }, new Map());
+    expect(depart.places.get(id(1))!.h).toBe(CARTE.h + CARTE.bande + depart.onglets.get(id(1))![0].h);
     expect(depart.places.get(id(2))!.h).toBe(CARTE.h + CARTE.bande);
   });
 
@@ -221,12 +212,184 @@ describe("Le schéma, de haut en bas (F03.1)", () => {
     expect(d.largeur).toBeLessThan(1700);
   });
 
-  it("un choix qui ramène à sa propre scène fait une boucle sur le côté de la carte, sans rien déplacer", () => {
+  it("F03-AC64 — un choix qui ramène à sa propre scène le dit dans son onglet, sans trait", () => {
     const boucle = disposer({ noeuds: [noeud(1), noeud(2)], liens: [lien(1, 2), lien(1, 1, 1)], entrees: [] }, new Map());
-    const carte = boucle.places.get(id(1))!;
-    const trait = boucle.traits.find((t) => t.de === t.vers)!;
-    expect(trait.points[0].x).toBe(carte.x + carte.l);
-    expect(trait.points.every((p) => p.y > carte.y && p.y < carte.y + carte.h)).toBe(true);
+    expect(boucle.onglets.get(id(1))!.map((o) => o.sorte)).toEqual(["suite", "ici"]);
+    expect(boucle.traits.map((t) => `${t.de}>${t.vers}`)).toEqual([`${id(1)}>${id(2)}`]);
+  });
+});
+
+describe("Les choix en onglets (F03.1, 11 novembre 2026)", () => {
+  const chemins = marais();
+  const d = disposer(chemins, aRegarder(chemins).marques);
+  const place = (cle: string) => d.places.get(cle)!;
+  const onglet = (cle: string) => [...d.onglets.values()].flat().find((o) => o.id === cle)!;
+  /** Une mesure fixe, pour compter les lignes d'une phrase sans navigateur : cinq points et demi par lettre */
+  const mesure: Mesure = (texte) => texte.length * 5.5;
+
+  it("F03-AC62 — « Marais — la barque s'enlise » : trois onglets de gauche à droite dans l'ordre du texte ; chaque trait part du point de sortie de son onglet ; aucun trait ne porte de texte", () => {
+    const onglets = d.onglets.get("barque")!;
+    expect(onglets.map((o) => chemins.liens.find((l) => l.id === o.id)!.libelle)).toEqual(["Suivre les feux follets", "Longer la vieille digue", "Appeler à l’aide"]);
+    const carte = place("barque");
+    expect(carte.l).toBe(3 * ONGLET.l);
+    onglets.forEach((o, i) => {
+      // Côte à côte, au pied de la carte, sur toute sa largeur
+      expect(o).toMatchObject({ x: carte.x + i * ONGLET.l, l: ONGLET.l, y: carte.y + carte.h - o.h, sortie: { x: carte.x + i * ONGLET.l + ONGLET.l / 2, y: carte.y + carte.h } });
+      expect(d.traits.find((t) => t.id === o.id)!.points[0]).toEqual(o.sortie);
+    });
+    for (const t of d.traits) expect(Object.keys(t).sort()).toEqual(["d", "de", "id", "points", "retour", "vers"]);
+    // Partout : les onglets d'une scène suivent l'ordre de ses choix dans le texte
+    for (const [scene, liste] of d.onglets) expect(liste.map((o) => o.id)).toEqual(chemins.liens.filter((l) => l.de === scene).map((l) => l.id));
+  });
+
+  it("F03-AC62 — les onglets gardent l'ordre du texte même quand la disposition ne suit pas : les traits se croisent alors sous la carte", () => {
+    // « 3 » est tenue à gauche de « 2 » par une autre scène, qui mène à elle puis à « 2 »
+    const noeuds = [1, 2, 3, 4].map((n) => noeud(n));
+    const liens = [lien(1, 2, 0), lien(1, 3, 1), lien(4, 3, 0), lien(4, 2, 1)];
+    const x = disposer({ noeuds, liens, entrees: [] }, new Map());
+    for (const de of [1, 4]) {
+      const [premier, second] = x.onglets.get(id(de))!;
+      expect(premier.x).toBeLessThan(second.x);
+      expect(x.traits.find((t) => t.id === premier.id)!.points[0].x).toBeLessThan(x.traits.find((t) => t.id === second.id)!.points[0].x);
+    }
+    // L'une des deux scènes au moins a ses suites dans l'autre sens que ses onglets
+    const croise = [1, 4].some((de) => {
+      const [premier, second] = liens.filter((l) => l.de === id(de));
+      return x.places.get(premier.vers!)!.x > x.places.get(second.vers!)!.x;
+    });
+    expect(croise).toBe(true);
+  });
+
+  it("F03-AC63 — un onglet borné : 128 points de large et trois lignes au plus, une phrase plus longue étant coupée ; seul, il prend la largeur de sa carte ; quatre choix, une carte de quatre onglets sur un seul rang", () => {
+    const mesuree = disposer(chemins, aRegarder(chemins).marques, mesure);
+    const echanger = [...mesuree.onglets.values()].flat().find((o) => o.id === "marche>0")!; // « Échanger la plume argentée contre une barque »
+    expect(echanger).toMatchObject({ l: ONGLET.l, lignes: 3, coupe: false });
+    expect([...mesuree.onglets.values()].flat().every((o) => o.lignes <= ONGLET.lignes && o.l <= CARTE.l)).toBe(true);
+    // Le seul choix d'une scène prend la largeur de sa carte
+    expect(onglet("bocal>0").l).toBe(place("bocal").l);
+    expect(place("bocal").l).toBe(CARTE.l);
+    // Une phrase plus longue que trois lignes est coupée : elle se lira en entier pour la scène survolée ou cliquée
+    const longue = lien(1, 2, 0, { libelle: "Traverser le pont de cordes en tenant la lanterne bien haut, sans regarder l’eau noire qui tourbillonne dessous" });
+    const quatre = disposer({ noeuds: [1, 2, 3, 4, 5].map((n) => noeud(n)), liens: [longue, lien(1, 3, 1), lien(1, 4, 2), lien(1, 5, 3)], entrees: [] }, new Map(), mesure);
+    const onglets = quatre.onglets.get(id(1))!;
+    expect(onglets[0]).toMatchObject({ lignes: 3, coupe: true });
+    expect(quatre.places.get(id(1))!.l).toBe(4 * ONGLET.l);
+    expect(new Set(onglets.map((o) => o.y)).size).toBe(1);
+    expect(new Set(onglets.map((o) => o.h)).size).toBe(1);
+    // Le compte des lignes : coupé aux espaces, un mot trop long coupé où il faut, une espace insécable ne coupe pas
+    const cinq = (t: string) => t.length * 5;
+    expect(lignesDe("Appeler à l’aide", 100, cinq)).toBe(1);
+    expect(lignesDe("Les suivre de loin, sans faire de bruit", 100, cinq)).toBe(2);
+    expect(lignesDe("Anticonstitutionnellement", 100, cinq)).toBe(2);
+    expect(lignesDe("Qui va là\u00a0? demande la passeuse", 100, cinq)).toBe(2);
+  });
+
+  it("F03-AC64 — « Renoncer et revenir au cercle » : un retour en arrière, écrit dans l'onglet ; sa ligne, tracée à la demande, va de l'onglet au côté de la scène où il revient", () => {
+    const o = onglet("enigme>0");
+    expect(o.sorte).toBe("retour");
+    const ligne = d.traits.find((t) => t.id === "enigme>0")!;
+    expect(ligne).toMatchObject({ de: "enigme", vers: "cercle", retour: true });
+    expect(ligne.points[0]).toEqual(o.sortie);
+    const cercle = place("cercle");
+    const bout = ligne.points.at(-1)!;
+    expect([cercle.x, cercle.x + cercle.l]).toContain(bout.x);
+    expect(bout.y).toBeGreaterThan(cercle.y);
+    expect(bout.y).toBeLessThan(cercle.y + cercle.h);
+    // À angles droits, comme les autres traits
+    for (const [a, b] of segments(ligne.points)) expect(Math.abs(a.x - b.x) < 0.01 || Math.abs(a.y - b.y) < 0.01).toBe(true);
+  });
+
+  it("F03-AC64 — un retour en arrière ferme une boucle : il ramène à une scène par laquelle on est passé ; deux chemins qui se rejoignent n'en sont pas", () => {
+    const n = [1, 2, 3, 4].map((x) => noeud(x));
+    // 1 → 2 → 3 → 1 : seul le dernier ramène en arrière
+    const boucle = [lien(1, 2), lien(2, 3), lien(3, 1)];
+    expect([...retoursEnArriere(n, boucle)]).toEqual([boucle[2].id]);
+    // 1 → 2 → 4 et 1 → 3 → 4 : deux chemins se rejoignent, personne ne revient
+    expect(retoursEnArriere(n, [lien(1, 2, 0), lien(1, 3, 1), lien(2, 4), lien(3, 4)]).size).toBe(0);
+    // Un choix qui ramène à sa propre scène
+    const sur = lien(2, 2, 1);
+    expect([...retoursEnArriere(n, [lien(1, 2), sur])]).toEqual([sur.id]);
+    // Dans le marais, quatre
+    expect([...retoursEnArriere(chemins.noeuds, chemins.liens)].sort()).toEqual(["brume>0", "coffre>1", "enigme>0", "ombre>1"]);
+  });
+
+  it("F03-AC65 — une sortie vers un autre chapitre, un choix sans destination, un choix vers une scène supprimée : dans l'onglet, sans trait ni étiquette ; le lien caché garde son trait, que l'élève ne voit pas", () => {
+    expect(onglet("ecluse>0")).toMatchObject({ sorte: "sortie", sortie: null });
+    expect(onglet("passeur>0")).toMatchObject({ sorte: "sortie", sortie: null });
+    expect(onglet("cercle>2")).toMatchObject({ sorte: "manque", sortie: null });
+    expect(onglet("coffre>0")).toMatchObject({ sorte: "manque", sortie: null });
+    for (const cle of ["ecluse>0", "passeur>0", "cercle>2", "coffre>0"]) expect(d.traits.some((t) => t.id === cle)).toBe(false);
+    // « À regarder » compte ces deux choix comme avant, et désigne leur onglet par leur identité
+    expect(aRegarder(chemins).sortes.slice(0, 2).map((s) => s.ou)).toEqual([["cercle>2"], ["coffre>0"]]);
+    // Le lien caché : un onglet après les choix du texte, et son trait
+    expect(d.onglets.get("enigme")!.map((o) => o.id)).toEqual(["enigme>0", "enigme>cache"]);
+    expect(onglet("enigme>cache").sorte).toBe("suite");
+    expect(d.traits.find((t) => t.id === "enigme>cache")).toMatchObject({ vers: "salle", retour: false });
+    const eleve = marais({ pourEleve: true });
+    expect(disposer(eleve, new Map()).onglets.get("enigme")!.map((o) => o.id)).toEqual(["enigme>0"]);
+  });
+
+  it("F03-AC66 — l'état et qui écrit : le prénom de l'élève qui s'occupe de la scène, l'initiale pour deux mêmes prénoms, « Vous » pour celle de l'enseignant, rien quand personne ne s'en occupe", () => {
+    const eleves: ElevePlan[] = [
+      { id: "e1", prenom: "Hugo", nom: "Petit", couleur: 0 }, { id: "e2", prenom: "Hugo", nom: "Martin", couleur: 1 }, { id: "e3", prenom: "Jade", nom: null, couleur: 2 },
+      { id: "e4", prenom: "Farah", nom: null, couleur: 3 },
+    ];
+    const scene = (n: number, extra: Partial<Scene>): Scene => ({
+      id: `s${n}`, chapitreId: "c1", reference: n, titre: `Scène ${n}`, consigne: "", fin: false, horsLivre: false, creeParEleve: null, priseParEleve: null, priseParEnseignant: false, ancien: null,
+      etat: "cours", texteVide: true, ecritPar: [], rangLivre: null, numeroFixe: null, ...extra,
+    });
+    const chapitre: Chapitre = {
+      id: "c1", partieId: "p1", titre: "Le marais", couleur: 0, resume: "", horsLivre: false, imageId: null, visuelChoisi: null, visuelDefaut: "etang",
+      attributions: [{ eleveId: "e1", profil: "propositions" }, { eleveId: "e3", profil: "propositions" }],
+      scenes: [
+        scene(1, { priseParEleve: "e1", etat: "valide", texteVide: false }), scene(2, { priseParEleve: "e3" }), scene(3, {}), scene(4, { priseParEnseignant: true }),
+        // Farah n'est plus dans le chapitre : la scène qu'elle a remise garde son prénom ; celle qu'elle avait prise sans la finir, non
+        scene(5, { ancien: eleves[3], etat: "valider", texteVide: false }), scene(6, { priseParEleve: "e4" }),
+      ],
+    };
+    const plan = { parties: [{ id: "p1", titre: "La forêt", chapitres: [chapitre] }], corbeille: [], departSceneId: null, liens: [] } as unknown as Plan;
+    const lu = cheminsDuPlan(plan, "c1", "projet", eleves).noeuds;
+    expect(lu.map((n) => n.qui)).toEqual(["Hugo P.", "Jade", undefined, "Vous", "Farah", undefined]);
+    // L'état reste celui de la scène : la carte en fait son tampon
+    expect(lu.map((n) => [n.etat, n.vide])).toEqual([["valide", false], ["cours", true], ["cours", true], ["cours", true], ["valider", false], ["cours", true]]);
+    // Sans la classe, rien n'est dit de qui écrit, sauf « Vous »
+    expect(cheminsDuPlan(plan, "c1", "projet").noeuds.map((n) => n.qui)).toEqual([undefined, undefined, undefined, "Vous", "Farah", undefined]);
+  });
+
+  it("F03-AC68 — de loin, les phrases des onglets ne s'affichent plus : il reste les points de sortie ; à la taille lisible, elles se lisent", () => {
+    expect(deLoin(0.3)).toBe(true);
+    expect(deLoin(0.61)).toBe(true);
+    expect(deLoin(0.7)).toBe(false);
+    expect(deLoin(1)).toBe(false);
+    // La taille lisible ne descend jamais jusque-là
+    expect(deLoin(tailleLisible(d.largeur, { l: 700, h: 560 }, 28, { min: 0.7, max: 1 }))).toBe(false);
+    // Chaque suite a son point de sortie, d'où part son trait : c'est lui qui reste de loin
+    for (const o of [...d.onglets.values()].flat().filter((x) => x.sorte === "suite")) expect(d.traits.find((t) => t.id === o.id)!.points[0]).toEqual(o.sortie);
+  });
+
+  it("F03-AC69 — la proposition de l'IA : ses choix sont des onglets, à la suite de ceux que la scène d'origine a déjà, dans l'ordre des fiches ; leur trait part de l'onglet", () => {
+    const origine = id(1);
+    const p: Proposition = {
+      origine,
+      scenes: ["N1", "N2"].map((cle) => ({ cle, titre: cle, consigne: "", liste: [], inventee: false })),
+      choix: [
+        { cle: "C1", de: origine, vers: "N1", libelle: "Suivre le ruisseau", invente: false },
+        { cle: "C2", de: origine, vers: "N2", libelle: "Entrer dans la grotte", invente: false },
+        { cle: "C3", de: "N1", vers: "N2", libelle: "Remonter vers la grotte", invente: false },
+      ],
+      consigneOrigine: null, questions: [], reste: null,
+    };
+    const avant: Chemins = { noeuds: [noeud(1), noeud(2)], liens: [lien(1, 2)], entrees: [] };
+    const vu = cheminsAvecLeBloc(avant, p);
+    const x = disposer(vu, new Map());
+    expect(x.onglets.get(origine)!.map((o) => o.id)).toEqual([lien(1, 2).id, "propose:C1", "propose:C2"]);
+    expect(x.onglets.get("propose:N1")!.map((o) => o.id)).toEqual(["propose:C3"]);
+    expect(x.places.get(origine)!.l).toBe(3 * ONGLET.l);
+    for (const cle of ["propose:C1", "propose:C2", "propose:C3"]) {
+      const o = [...x.onglets.values()].flat().find((y) => y.id === cle)!;
+      expect(vu.liens.find((l) => l.id === cle)!.propose).toBe(true);
+      expect(x.traits.find((t) => t.id === cle)!.points[0]).toEqual(o.sortie);
+    }
   });
 });
 

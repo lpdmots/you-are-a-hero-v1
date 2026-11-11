@@ -54,6 +54,8 @@ export function ChapitreEleve({
         id: s.id, reference: s.reference, titre: s.titre, etat: s.etat, vide: s.texteVide, lien: `/travail/scene/${s.id}?de=chemins`,
         depart: chapitre.reperes?.depart === s.id, fin: chapitre.reperes?.fins.includes(s.id) ?? false,
         suiteCachee: chapitre.reperes?.suitesCachees.includes(s.id) ?? false,
+        // Qui écrit la scène, dit à l'élève (F03-AC66) : « Toi » sur la sienne, le prénom d'un camarade, le nom de l'enseignant
+        qui: s.prise === null ? undefined : s.prise.par === "moi" ? "Toi" : s.prise.par === "eleve" ? nomPourEleves(s.prise.eleve, eleves) : majuscule(prof),
       })),
       liens: chapitre.liens.map(
         (l): LienDeChemin => ({
@@ -64,7 +66,7 @@ export function ChapitreEleve({
       ),
       entrees: [],
     }),
-    [scenes, chapitre.liens, chapitre.reperes],
+    [scenes, chapitre.liens, chapitre.reperes, eleves, prof],
   );
 
   const ajouter = async () => {

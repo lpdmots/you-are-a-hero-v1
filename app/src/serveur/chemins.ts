@@ -99,6 +99,22 @@ export async function retirerChoix(e: Enseignant, sceneId: string, renvoiId: str
   return { ok: true, projetId: data.projet_id as string, bloc };
 }
 
+/**
+ * Relier un choix « Sans destination » en tirant son onglet jusqu'à une scène du chapitre (F03-AC67) :
+ * il y mène désormais, sa phrase et sa place dans le texte inchangées, et celui qui écrit la scène
+ * n'est pas arrêté (F08-AC44). Sans destination donnée, c'est « Annuler » : il redevient sans destination.
+ */
+export async function relierChoix(e: Enseignant, sceneId: string, renvoiId: string, cible: string | null): Promise<{ ok: true; projetId: string } | EchecDuPlan> {
+  if (!estUuid(sceneId) || !estUuid(renvoiId) || (cible !== null && !estUuid(cible))) return refus("Ce choix n’est plus dans la scène.");
+  const { data } = await e.supabase.from("scenes").select("projet_id").eq("id", sceneId).is("supprime_le", null).maybeSingle();
+  if (!data) return refus("Cette scène n’existe plus.");
+  const { error } = await e.supabase.rpc("relier_depuis_le_plan", { p_scene: sceneId, p_renvoi: renvoiId, p_cible: cible });
+  if (error) return { ok: false, base: error };
+  // Un premier renvoi vient d'être posé : l'ordre du livre s'établit, comme pour un choix écrit dans la scène (F05-AC34)
+  if (cible) await assurerOrdre(e.supabase, data.projet_id as string);
+  return { ok: true, projetId: data.projet_id as string };
+}
+
 /** « Annuler » la suppression d'un choix : sa phrase revient à la fin du texte de la scène. */
 export async function remettreChoix(e: Enseignant, sceneId: string, bloc: unknown): Promise<{ ok: true; projetId: string } | EchecDuPlan> {
   const phrase = (nettoyerTexte([bloc]) ?? []).filter(estChoix);

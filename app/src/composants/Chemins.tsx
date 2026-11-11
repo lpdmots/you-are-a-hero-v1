@@ -43,12 +43,13 @@ const pasEncoreSu = (): boolean | null => null;
 export function AideDesChemins({ pourEleve = false, construit = false }: { pourEleve?: boolean; construit?: boolean }) {
   return (
     <Bulle question="Comment lire ces chemins ?">
-      Chaque flèche est un choix : elle part de la scène où il s’écrit et porte son libellé. {pourEleve ? "" : "Une flèche en pointillé est un lien caché. "}Une flèche plus sombre, marquée d’une
-      petite flèche vers le haut, ramène le lecteur en arrière. Une étiquette nomme un autre chapitre.
+      Sous chaque scène, ses choix, dans l’ordre du texte : un trait part de chacun vers la scène où il mène. {pourEleve ? "" : "Un trait en pointillé est un lien caché. "}Un choix qui ramène le lecteur
+      en arrière, qui mène dans un autre chapitre ou qui n’a pas encore de destination le dit sous sa phrase.
       <span>Tirer le fond ou la molette déplace le schéma ; Ctrl + molette change sa taille.</span>
       {construit ? (
         <span>
-          Pour construire : le « + » sous une scène ajoute la scène suivante ; tiré jusqu’à une autre scène, il les relie. Une scène cliquée ouvre son titre, sa consigne et ses choix.
+          Pour construire : le « + » sous une scène ajoute la scène suivante ; tiré jusqu’à une autre scène, il les relie. Un choix « Sans destination » se tire lui aussi jusqu’à une scène.
+          Une scène cliquée ouvre son titre, sa consigne et ses choix.
         </span>
       ) : (
         <span>Cliquer une scène montre ses chemins.</span>
@@ -73,13 +74,16 @@ export function Chemins({
   const regard = useMemo(() => aRegarder(chemins, { rienNyMene: !pourEleve }), [chemins, pourEleve]);
   // Tout ce qui est à regarder, à la suite : on le parcourt comme les occurrences d'un mot dans un texte
   const aVoir = useMemo(() => regard.sortes.flatMap(({ sorte, ou }) => ou.map((id) => ({ sorte, id }))), [regard]);
-  const [pas, setPas] = useState<{ rang: number; fois: number } | null>(null);
-  const courant = pas ? (aVoir[pas.rang] ?? null) : null;
-  const aller = (rang: number) => setPas((avant) => ({ rang: ((rang % aVoir.length) + aVoir.length) % aVoir.length, fois: (avant?.fois ?? 0) + 1 }));
+  // Le pas retient le cas désigné, pas son rang : un cas réglé — un choix qu'on vient de relier, une scène qui a
+  // reçu sa suite — quitte la liste sans que la vue parte d'elle-même vers le suivant
+  const [pas, setPas] = useState<{ id: string; fois: number } | null>(null);
+  const rang = pas ? aVoir.findIndex((x) => x.id === pas.id) : -1;
+  const courant = rang === -1 ? null : aVoir[rang];
+  const aller = (vers: number) => setPas((avant) => ({ id: aVoir[((vers % aVoir.length) + aVoir.length) % aVoir.length].id, fois: (avant?.fois ?? 0) + 1 }));
   // Un compte cliqué mène au premier de sa sorte ; cliqué de nouveau, au suivant de la même sorte
   const allerA = (sorte: SorteARegarder) => {
     const rangs = aVoir.flatMap((x, i) => (x.sorte === sorte ? [i] : []));
-    const ici = courant?.sorte === sorte && pas ? rangs.indexOf(pas.rang) : -1;
+    const ici = courant?.sorte === sorte ? rangs.indexOf(rang) : -1;
     aller(rangs[(ici + 1) % rangs.length]);
   };
 
@@ -94,13 +98,13 @@ export function Chemins({
         </button>
       ))}
       <span className="chemins__pas" role="group" aria-label="Parcourir ce qui est à regarder">
-        <button type="button" className="btn btn--petit" aria-label="Précédent" onClick={() => aller(pas ? pas.rang - 1 : aVoir.length - 1)}>
+        <button type="button" className="btn btn--petit" aria-label="Précédent" onClick={() => aller(courant ? rang - 1 : aVoir.length - 1)}>
           <Icone nom="chevron-haut" />
         </button>
         <span className="chemins__compte" aria-live="polite">
-          {courant && pas ? `${pas.rang + 1} / ${aVoir.length}` : `– / ${aVoir.length}`}
+          {courant ? `${rang + 1} / ${aVoir.length}` : `– / ${aVoir.length}`}
         </span>
-        <button type="button" className="btn btn--petit" aria-label="Suivant" onClick={() => aller(pas ? pas.rang + 1 : 0)}>
+        <button type="button" className="btn btn--petit" aria-label="Suivant" onClick={() => aller(courant ? rang + 1 : 0)}>
           <Icone nom="chevron-bas" />
         </button>
       </span>

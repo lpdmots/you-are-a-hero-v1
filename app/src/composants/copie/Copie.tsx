@@ -397,7 +397,7 @@ export function Copie({
 
   /**
    * Ajout venu du plan (F08-AC44) : depuis « Chemins », l'adulte a posé des choix à la fin de la
-   * scène, ou en a retiré, pendant qu'on y écrivait. L'enregistrement a réussi ; la copie reprend
+   * scène, en a retiré ou en a relié un, pendant qu'on y écrivait. L'enregistrement a réussi ; la copie reprend
    * ces choix là où la base les a mis, sans message et sans déplacer le curseur. Ils n'entrent
    * pas dans ce qu'« Annuler » défait : l'historique repart d'ici, pour qu'un retour en arrière
    * ne rejoue pas d'anciens gestes sur un texte qui a changé sous eux.
@@ -417,6 +417,19 @@ export function Copie({
             const neufs = duPlan.ajoute.filter((b) => !presents.some((x) => x.id === b.id));
             const ou = placeALaFin(presents);
             neufs.forEach((b, n) => e.tf.insertNodes(b, { at: [ou + n] }));
+            // Un choix que le plan a relié garde sa phrase et sa place : seule sa destination change (F03-AC67)
+            for (const { id, cible } of duPlan.relie ?? []) {
+              blocsDe(e).forEach((b, i) => {
+                if (b.type !== "choix") return;
+                if (estAuto(b)) {
+                  if (b.id === id) e.tf.setNodes({ cible }, { at: [i] });
+                  return;
+                }
+                b.children.forEach((x, k) => {
+                  if (estRenvoi(x) && x.id === id) e.tf.setNodes({ cible }, { at: [i, k], voids: true });
+                });
+              });
+            }
           }),
         ),
       );

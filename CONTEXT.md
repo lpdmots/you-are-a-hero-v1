@@ -162,9 +162,22 @@ _Éviter_ : plan, ordre de lecture.
 Un choix posé à la fin du texte d'une scène depuis Chemins, sans que la
 scène soit ouverte ; celui qui l'écrit au même moment n'est pas arrêté et le
 retrouve dans sa copie à son enregistrement suivant. Un choix retiré depuis
-Chemins est repris de la même façon.
+Chemins, ou relié en tirant son onglet, est repris de la même façon.
 _Éviter_ : conflit, texte gardé à part, qui sont le cas d'un autre
 changement.
+
+**Onglet d'un choix** :
+Dans Chemins, la case qui porte la phrase d'un choix au pied de la carte de
+sa scène, dans l'ordre du texte ; son trait part de son point de sortie.
+Décidé le 11 novembre 2026 : plus rien n'est écrit sur un trait.
+_Éviter_ : libellé sur la flèche ; étiquette, qui nomme le chapitre d'où
+vient un chemin.
+
+**Retour en arrière** :
+Un choix qui ramène à une scène par laquelle le lecteur est passé pour
+arriver là. Chemins l'écrit dans l'onglet du choix et ne trace sa ligne que
+pour la scène survolée ou cliquée.
+_Éviter_ : boucle, flèche qui remonte.
 
 **Bloc de scènes** :
 Quelques scènes reliées par leurs choix, que l'IA propose d'après une

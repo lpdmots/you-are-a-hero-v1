@@ -2131,6 +2131,68 @@ classique. L'adresse nue d'un chapitre est donc celle de ses chemins ;
 simulée, port 3100), ou `npx playwright test --config playwright.local.config.ts chemins-atelier`
 contre le serveur local lancé en IA simulée.
 
+### Choix en onglets (11 novembre 2026)
+
+Règles : [F03.1](specifications.md#f03-onglets), F03-AC62 à AC69. Une
+migration, `relier_depuis_le_plan`, pour le seul geste qui relie un choix
+(F03-AC67).
+
+**La carte porte ses choix.** `disposer.ts` donne à chaque scène un onglet
+par choix, dans l'ordre de ses liens, qui est celui du texte. Un onglet seul
+prend la largeur de la carte (178 points) ; à plusieurs, chacun fait
+128 points et la carte s'élargit d'autant, sur un seul rang. La hauteur du
+rang d'onglets suit la phrase la plus longue, trois lignes au plus : le
+nombre de lignes se compte avant de disposer (`lignesDe`), sur la largeur
+des mots mesurée dans la police du récit, que la page charge exprès avant de
+mesurer. Les libellés ne sont plus des étiquettes de trait pour dagre : les
+rangs intermédiaires ne servent plus qu'au passage des traits.
+
+**Le trait part du milieu de son onglet,** où qu'aille sa scène, et non plus
+d'un point réparti sur le bord bas d'après la place des destinations. Les
+arrivées, elles, restent réparties sur le bord haut. Deux traits d'une même
+carte peuvent donc se croiser juste sous elle (accepté, F03-AC62), et un
+trait, après son déplacement de côté, pouvait redescendre sur le départ d'un
+autre : `ecarterLesVerticales` écarte alors d'un pas celui des deux qui ne
+part pas d'un onglet.
+
+**Un retour en arrière ne pèse plus dans la disposition.**
+`retoursEnArriere` (`domaine/chemins.ts`) suit le récit depuis son entrée,
+chaque scène jusqu'au bout de ses suites, dans l'ordre du texte : un choix
+qui retombe sur une scène du chemin en cours ferme une boucle. Ces choix ne
+sont pas donnés à dagre, qui reçoit donc un graphe sans boucle et fait
+descendre tous ses traits ; avant, dagre retournait lui-même certains traits
+pour casser les boucles, et le choix de ces traits lui appartenait. La ligne
+d'un retour est tracée à part (`tracerLeRetour`) : elle descend un peu sous
+son onglet, longe les cartes par l'extérieur et entre de côté dans la scène
+où elle revient. Elle n'a pas de place gardée entre les cartes et peut en
+croiser : elle n'est dessinée que pour la scène survolée ou cliquée,
+au-dessus des cartes (`zIndex` du trait).
+
+**Sorties et choix à regarder ne sont plus des éléments du schéma.** Les
+étiquettes « autre chapitre », « Sans destination » et « Scène supprimée »
+au bout d'un trait disparaissent, avec leurs traits ; il reste l'étiquette
+d'un chemin venu d'un autre chapitre. Le schéma compte donc moins de nœuds
+et de traits. Les cartes, elles, sont plus larges et plus hautes : sur le
+marais, 1 657 points de large contre 1 565, et 2 473 de haut contre 2 271
+(mesure sans navigateur).
+
+**Relier un choix à sa place.** Les retouches du plan
+([« Construire dans Chemins »](#construire-dans--chemins--10-novembre-2026))
+ne savaient que poser un choix à la fin du texte ou en retirer un. La
+migration ajoute à `retouches_du_plan` une colonne `relie` (l'identité du
+renvoi, sa destination ou rien), `prive.relier_dans_le_texte`, qui pose une
+destination sur la phrase automatique ou sur le renvoi d'une phrase écrite,
+sans toucher au reste, et `public.relier_depuis_le_plan`, réservée à
+l'adulte du projet, pour une scène du même chapitre et un choix qui n'a pas
+encore de destination (ou pour la lui retirer : « Annuler »).
+`prive.ecrire_texte` rejoue les liaisons après les choix posés et retirés,
+et les rend à la page (`duPlan.relie`), qui pose la destination dans sa
+copie (`Copie.tsx`). Le contrôle des droits d'un élève les met hors de la
+comparaison (`horsRetouches`), comme les ajouts : sans cela, sa page en
+retard, qui envoie encore le choix sans destination, aurait été refusée pour
+« bloc préparé modifié », et son texte gardé à part. Vérifié contre la base
+locale (`tests/base/relier-depuis-le-plan.test.ts`).
+
 ## Vérifications avant décision technique
 
 - **Développement :** compatibilité de l'éditeur et des choix, accès adulte

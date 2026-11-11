@@ -1175,7 +1175,9 @@ le porteur décide :
   Ses demandes : toute la largeur de l'écran ; une disposition de haut en
   bas, que l'on parcourt en faisant défiler la page plutôt que de côté ; des
   cartes de scène petites, réduites à l'essentiel ; les choix notés sur les
-  flèches plutôt que dans les cartes ; une vue d'ensemble seulement, où rien
+  flèches plutôt que dans les cartes (révisé par lui le 11 novembre 2026 :
+  chaque choix est un onglet sous sa carte, voir
+  [« Choix en onglets »](#f03-onglets)) ; une vue d'ensemble seulement, où rien
   ne se modifie, à la différence de la V0, mais agréable (révisé par lui le
   10 novembre 2026 : l'adulte y construit le plan, voir
   [« Construire dans Chemins »](#f03-construire)) ; les problèmes
@@ -1195,11 +1197,17 @@ le porteur décide :
     choix. Un clic met en valeur les chemins qui y arrivent et en partent ;
     « Ouvrir » mène à la scène. Un chemin vers un autre chapitre, ou qui en
     vient, est une petite étiquette au nom de ce chapitre, qui s'y rend
-    (F03-AC25).
+    (F03-AC25). Révisé le 11 novembre 2026
+    ([« Choix en onglets »](#f03-onglets)) : la carte porte ses choix, en
+    onglets, et le prénom de qui écrit ; un chemin vers un autre chapitre se
+    lit dans l'onglet du choix, seul un chemin qui en vient garde son
+    étiquette.
   - **Les libellés sur les flèches.** Écrits sur la flèche, raccourcis s'ils
     sont longs ; en entier pour la scène survolée ou cliquée ; masqués quand
     on dézoome pour tout voir. Tous les libellés toujours en entier est
-    écarté : sur trente scènes ils se recouvriraient.
+    écarté : sur trente scènes ils se recouvriraient. Révisé le 11 novembre
+    2026 : plus rien n'est écrit sur un trait ; la phrase est dans l'onglet,
+    bornée de la même façon, entière pour la scène survolée ou cliquée.
   - **Défilement et zoom.** Le schéma prend sa hauteur dans la page, que
     l'on fait défiler normalement ; le zoom passe par des boutons et par
     « Tout voir » ; une mini-carte ne s'affiche que si le chapitre dépasse
@@ -1211,16 +1219,21 @@ le porteur décide :
   construisant. Le porteur confirme le 13 octobre 2026 les deux lignes d'un
   libellé, les scènes que rien ne relie rangées sous le schéma et ce que
   voit un élève, puis les autres en bloc le 14 octobre 2026, à l'entretien
-  de l'étape 5, avec les reprises dites à la fin de cette liste :
+  de l'étape 5, avec les reprises dites à la fin de cette liste. Celles qui
+  parlent des libellés, des flèches et des étiquettes sont révisées le
+  11 novembre 2026 par [« Choix en onglets »](#f03-onglets), qui dit ce
+  qu'elles deviennent ; elles restent ici pour leur raison :
   - **Deux lignes pour un libellé.** Un libellé long tient sur deux lignes
     avant d'être coupé : coupé à une seule ligne, un choix sur deux ne se
-    lisait plus.
+    lisait plus. (Depuis le 11 novembre 2026 : trois lignes dans l'onglet.)
   - **Où se lit ce qui est « à regarder ».** Une scène où rien ne mène, ou
     sans suite ni fin, porte ces mots au pied de sa carte (« Rien n'y
     mène », « Sans suite »). Un choix sans destination, ou vers une scène
     supprimée, finit sur une petite étiquette qui le dit, au bout de sa
     flèche. Tout est en ambre, la couleur de ce qui attend, sans le mot
-    « problème ».
+    « problème ». (Depuis le 11 novembre 2026 : « Rien n'y mène » en tête de
+    la carte, « Sans suite » à son pied, et l'onglet du choix lui-même en
+    ambre, sans étiquette au bout d'une flèche.)
   - **Parcourir ce qui est à regarder (demandé par le porteur le
     13 octobre 2026).** Le premier essai — un clic menait près du cas, qui
     s'entourait un instant — obligeait à chercher, et rien ne disait qu'un
@@ -1230,17 +1243,20 @@ le porteur décide :
     passer d'un cas à l'autre, toutes sortes à la suite, en faisant le
     tour. Le cas désigné vient au milieu de l'écran et reste mis en valeur
     comme une scène cliquée ; pour un choix, c'est la scène d'où il part
-    qui est choisie, le bout de sa flèche étant encadré. Un compte cliqué
+    qui est choisie, le bout de sa flèche étant encadré (depuis le
+    11 novembre 2026 : son onglet). Un compte cliqué
     mène au premier cas de sa sorte, puis au suivant de la même sorte. Rien
     n'est masqué.
   - **Sens des flèches (repris le 13 octobre 2026, sur son retour).** Les
     pointes de flèche sont plus grandes ; un retour en arrière se
     distingue des autres choix par un trait plus sombre et une petite
-    flèche vers le haut sur son libellé, sans couleur de plus.
+    flèche vers le haut sur son libellé, sans couleur de plus. (Depuis le
+    11 novembre 2026 : le retour s'écrit dans l'onglet, sa ligne n'est
+    tracée qu'à la demande, et tous les traits au repos descendent.)
   - **Libellé en entier (corrigé le 13 octobre 2026, sur son retour).** Pour
     la scène survolée ou cliquée, un libellé long garde sa largeur et gagne
     en hauteur. Il s'élargissait d'abord sur une ligne et recouvrait ses
-    voisins.
+    voisins. (La règle vaut pour l'onglet.)
   - **Ce qui ne compte pas.** Le départ du livre, une scène où mène un
     choix d'un autre chapitre et une scène atteinte par un lien caché ne
     sont pas des scènes où rien ne mène. Une scène qui n'a qu'un lien caché
@@ -1249,7 +1265,9 @@ le porteur décide :
     chapitre se rejoignent sur une seule étiquette au nom de ce chapitre ;
     les chemins qui viennent d'un même chapitre ont une seule étiquette
     au-dessus de la scène, « depuis… ». Regrouper les arrivées de nombreux
-    chapitres reste à dessiner.
+    chapitres reste à dessiner. (Depuis le 11 novembre 2026 : chaque choix
+    qui sort du chapitre le dit dans son onglet, sans étiquette commune ;
+    « depuis… » ne change pas.)
   - **Scènes que rien ne relie.** Elles se rangent en lignes sous le
     schéma, dans l'ordre du plan, au lieu de l'étirer sur un seul rang : un
     chapitre préparé avant tout choix reste lisible.
@@ -1302,7 +1320,9 @@ le porteur décide :
   chaque choix mène à une scène placée plus bas, sauf les quatre retours en
   arrière, qui remontent et se distinguent des autres ; le schéma tient dans la largeur de la page et
   la page défile de haut en bas (révisé le 11 novembre 2026 : la page ne
-  défile plus, le schéma se tire dans son cadre, F03-AC58). **Révisé le 8 novembre 2026** (colonne de
+  défile plus, le schéma se tire dans son cadre, F03-AC58 ; les quatre
+  retours ne sont plus tracés au repos, et tout trait dessiné descend,
+  F03-AC64). **Révisé le 8 novembre 2026** (colonne de
   navigation, F06.5) : sur un tel chapitre, en 1 366 points, il tient la
   colonne repliée ; colonne ouverte (1 134 points pour la page), il défile un
   peu de côté plutôt que de descendre sous la taille où les titres se lisent.
@@ -1312,13 +1332,16 @@ le porteur décide :
   aux lanternes », en cours, lorsque l'enseignant lit sa carte, alors il y
   lit son titre et son état, sans référence, sans consigne ni liste de
   choix ; la scène de départ porte « Départ du livre », une fin « Fin de
-  l'histoire ».
+  l'histoire ». **Révisé le 11 novembre 2026** : la carte porte aussi ses
+  choix, en onglets (F03-AC62), et le prénom de qui écrit (F03-AC66) ;
+  toujours ni référence ni consigne.
 - **F03-AC45 — Les choix sur les flèches :** étant donné le choix
   « Échanger la plume argentée contre une barque », lorsque l'enseignant
   regarde le schéma, alors ce libellé est écrit sur sa flèche, coupé après
   deux lignes ; survoler ou cliquer la scène d'où il part le donne en
   entier, sans l'élargir ; après « Tout voir », les libellés ne s'affichent
-  plus.
+  plus. **Remplacé le 11 novembre 2026** par F03-AC62, AC63 et AC68 : la
+  phrase est dans l'onglet du choix.
 - **F03-AC46 — « À regarder » :** étant donné un choix sans destination, un
   choix vers une scène supprimée, deux scènes où rien ne mène et deux scènes
   sans suite ni fin, lorsque l'enseignant ouvre « Chemins », alors une ligne
@@ -1334,7 +1357,9 @@ le porteur décide :
   carte de « Clairière », où arrivent deux choix et d'où part un troisième,
   lorsque l'enseignant la clique, alors ces trois flèches ressortent et les
   autres s'effacent ; « Ouvrir » mène à la page de la scène ; « Échap » ne
-  montre plus rien ; rien n'est modifié.
+  montre plus rien ; rien n'est modifié. Depuis le 11 novembre 2026, les
+  retours en arrière qui partent de la scène ou y reviennent sont tracés à ce
+  moment-là (F03-AC64).
 - **F03-AC48 — Tout voir, taille lisible, mini-carte :** étant donné le
   marais, plus haut que deux écrans, lorsque l'enseignant ouvre « Chemins »,
   alors une mini-carte dit où il est et un clic y conduit ; « Tout voir »
@@ -1482,6 +1507,105 @@ le porteur décide :
     - Écartés : l'attribution des élèves sur les cartes de scène (elle mêlait
       « qui écrit dans ce chapitre » et « qui s'occupe de cette scène ») ; un
       premier clic qui ne ferait que montrer les chemins.
+- <a id="f03-onglets"></a>**Choix en onglets (décidé par le porteur le
+  11 novembre 2026, sur des maquettes de plusieurs représentations du
+  schéma ; la variante retenue a été relue par une autre conversation, dont
+  il a accepté toutes les recommandations ; construit en local le même jour,
+  F03-AC62 à AC69).** Cela révise sa demande du 11 octobre 2026, « les choix
+  notés sur les flèches plutôt que dans les cartes », et la carte « sans
+  liste de choix ». Depuis que l'adulte construit le plan dans « Chemins »,
+  les choix d'une scène sont ce qu'on y lit et ce qu'on y fait d'abord : ils
+  se lisent sur la scène où ils s'écrivent, et non plus le long d'un trait
+  qu'il faut suivre. Référence visuelle :
+  [`maquettes/chemins/choix-en-onglets.png`](../maquettes/chemins/choix-en-onglets.png),
+  dont trois dispositions ne sont pas retenues
+  ([design](design.md#choix-en-onglets--écrans-construits-11-novembre-2026)).
+  - *Un onglet par choix, sous la carte, partout, élève compris.* Les
+    phrases de choix quittent les traits, qui redeviennent de simples
+    lignes. Chaque trait part du point de sortie de son onglet.
+  - *L'ordre du texte, toujours.* Les onglets se rangent de gauche à droite
+    dans l'ordre où les choix se lisent dans le texte de la scène. Si la
+    disposition ne suit pas, deux traits se croisent juste sous la carte :
+    c'est accepté. Ranger les onglets au-dessus de leur destination, comme
+    sur la maquette, est écarté : l'ordre changerait d'un ajout à l'autre.
+  - *Ce qu'un onglet dit à la place d'un trait.* Un retour en arrière
+    s'écrit dans l'onglet (« retour à « Digue — les planches pourries » »,
+    précédé de son signe) ;
+    sa ligne n'apparaît qu'au survol ou au clic de la carte. Une sortie vers
+    un autre chapitre s'écrit dans l'onglet (« → Le sanctuaire »), en lien
+    pour qui peut s'y rendre, comme l'étiquette qu'elle remplace
+    (F03-AC25). Un choix sans destination, ou vers une scène supprimée, se
+    lit sur l'onglet lui-même, en ambre.
+  - *L'état et qui écrit.* La carte garde le tampon d'état de l'application,
+    avec son signe, suivi du prénom de l'élève qui s'occupe de la scène. On
+    lit seulement qui écrit : ce n'est pas l'attribution des élèves sur les
+    cartes, écartée le même jour (« Chemins en atelier »), et rien ne
+    s'attribue d'ici.
+  - *Relier en tirant.* Tirer l'onglet d'un choix « Sans destination »
+    jusqu'à une scène le relie : pour l'adulte seul, aux conditions des
+    autres gestes de « Construire dans Chemins ». Le choix garde sa phrase
+    et sa place dans le texte ; celui qui écrit la scène n'est pas arrêté
+    ([F08.1](#f08-ajout-du-plan)). Le « + » garde ses deux gestes.
+  - *Un onglet borné.* Environ 120 points de large (128 dans l'application),
+    trois lignes au plus ;
+    la phrase entière se lit pour la scène survolée ou cliquée. De loin,
+    sous la taille lisible, il ne reste que les points de sortie.
+  - *La voix du récit.* Les phrases des choix sont dans la voix du récit,
+    en italique, comme dans la copie ; ce que l'outil y ajoute (retour,
+    sortie, « Sans destination », « Lien caché ») reste dans la sienne.
+  - *Ce qui ne change pas :* la liste du téléphone ; « À regarder », ses
+    comptes et son parcours ; les étiquettes « depuis… » d'un chemin venu
+    d'un autre chapitre ; les gestes de « Construire dans Chemins » et le
+    cadre de l'atelier.
+  - **Précisions prises en construisant, à lui faire confirmer,** les
+    points que sa décision laissait ouverts étant tranchés par le plus
+    simple ([plan](plan.md#choix-en-onglets-f031-11-novembre-2026)) :
+    - *Le haut de la carte dit d'où l'on vient, son pied où l'on va.* En
+      tête : « Départ du livre », ou « Rien n'y mène » en ambre. Au pied :
+      les onglets ; à défaut « Fin de l'histoire », ou « Sans suite » en
+      ambre. Une fin qui a pourtant des choix garde sa bande au-dessus
+      d'eux.
+    - *Lien caché :* un onglet « Lien caché », marqué de la clé, dans la
+      voix de l'outil, puisque le texte n'a pas de phrase pour lui ; son
+      trait reste en pointillé. Il se place après les choix du texte.
+    - *Quatre choix ou plus :* la carte s'élargit d'un onglet par choix,
+      sur un seul rang ; jamais deux rangs, dont le premier n'aurait pas de
+      sortie. Un seul choix prend la largeur de la carte.
+    - *Le « + »* est à cheval sur le bord droit de la carte, à la hauteur de
+      ses onglets, où il se lit « un onglet de plus » : sous la carte, il
+      couvrait le départ des traits (critique du 11 novembre 2026).
+    - *Cliquer un onglet,* c'est cliquer sa carte ; pour l'adulte, la ligne
+      de ce choix est en plus désignée un instant dans le panneau, comme le
+      faisait le libellé cliqué sur sa flèche.
+    - *Un retour en arrière ne pèse plus dans la disposition.* C'est un
+      choix qui ramène à une scène par laquelle le lecteur est passé pour
+      arriver là : il ferme une boucle. Les cartes se placent comme s'il
+      n'existait pas, si bien que tout trait dessiné descend. Sa ligne
+      paraît pour la carte d'où il part comme pour celle où il revient. Un
+      choix qui ramène à sa propre scène dit « revient à cette scène »,
+      sans ligne. Le signe du retour est la flèche vers le haut, déjà la
+      sienne dans « Chemins » ; « ↩ », écrit dans la décision, est réservé à
+      « À reprendre ». Sa note tient sur deux lignes au plus.
+    - *Relier en tirant :* sans bulle, puisque la phrase existe ; le message
+      dit le résultat avec « Annuler ». Un onglet « Scène supprimée » ne se
+      tire pas : restaurer la scène rétablit son chemin. L'onglet qui se tire
+      porte le repère de prise ; dans le panneau de la scène, « Relier à… »
+      fait de même sans tirer, à côté de « Sans destination ».
+    - *« Ouvrir »* paraît au survol, en pastille sur le coin haut droit de la
+      carte ; au bout de la ligne de l'état, il couvrait le prénom.
+    - *« Fin de l'histoire »* est une bande sombre : claire, au pied de la
+      carte, elle se confondait avec « Sans suite » (critique).
+    - *Survoler un onglet* ne fait ressortir que son trait ; survoler ou
+      cliquer la carte, tous les siens.
+    - *Le lien caché* a un trait en points ronds, gris même pour la scène
+      regardée : les tirets canard restent à ce qui n'est pas encore là, la
+      proposition de l'IA et le lien qu'on tire.
+    - *Qui écrit, en mots :* le prénom tel qu'il s'affiche ailleurs
+      (l'initiale pour deux mêmes prénoms) ; « Vous » pour la scène que
+      l'enseignant s'est attribuée ; pour l'élève, « Toi » sur la sienne et
+      le nom de l'enseignant sur celle que celui-ci écrit ; le prénom d'un
+      élève retiré reste sur la scène qu'il a remise ou finie (F06.3).
+    - *De loin,* un onglet à regarder garde son ambre, sans ses mots.
 - **F03-AC52 — Ajouter une scène depuis le schéma :** étant donné
   « Clairière » dans « Chemins », lorsque l'adulte active « + » sous sa
   carte, écrit « Suivre le ruisseau » puis « Le ruisseau », alors la scène
@@ -1550,6 +1674,75 @@ le porteur décide :
   ses chemins, « Scènes » restant à un clic ; un chapitre de récit classique
   s'ouvre sur ses scènes ; une scène ouverte depuis « Scènes » ramène à
   « Scènes », une scène ouverte depuis « Chemins » ramène à « Chemins ».
+- **F03-AC62 — Un onglet par choix, dans l'ordre du texte :** étant donné
+  « Marais — la barque s'enlise », dont le texte porte dans cet ordre
+  « Suivre les feux follets », « Longer la vieille digue » et « Appeler à
+  l'aide », lorsque l'adulte ou l'élève ouvre « Chemins », alors sa carte
+  porte ces trois onglets de gauche à droite, dans cet ordre, chaque phrase
+  dans la voix du récit ; chaque trait part du point de sortie de son
+  onglet ; aucun trait ne porte de texte. Si la disposition place la scène
+  du deuxième choix à gauche de celle du premier, les onglets gardent
+  l'ordre du texte et les deux traits se croisent sous la carte.
+- **F03-AC63 — Un onglet borné :** étant donné « Échanger la plume argentée
+  contre une barque », l'un des deux choix de « Ponton — le marché du
+  héron », lorsque l'adulte regarde le schéma, alors son onglet fait
+  128 points de large et trois lignes au plus, une phrase plus longue étant
+  coupée ; survoler ou cliquer la carte donne chaque phrase en entier,
+  l'onglet gardant sa largeur et gagnant en hauteur ; le seul choix d'une
+  scène prend la largeur de sa carte ; une scène de quatre choix a une carte
+  large de quatre onglets, sur un seul rang.
+- **F03-AC64 — Un retour en arrière s'écrit dans l'onglet :** étant donné
+  « Renoncer et revenir au cercle », choix de « Cercle de pierres — l'énigme
+  des pierres » qui ramène à « Île — le cercle de pierres », d'où le lecteur
+  vient, lorsque l'adulte ouvre « Chemins », alors l'onglet porte sous sa
+  phrase « retour à « Île — le cercle de pierres » », précédé du signe du
+  retour, et aucun trait n'est tracé pour lui ; survoler ou cliquer l'une de
+  ces deux cartes trace sa ligne, de l'onglet au côté de la carte où il
+  revient. Le marais compte quatre
+  retours ; ses autres traits descendent tous, et ses cartes ont la place
+  qu'elles auraient sans ces retours.
+- **F03-AC65 — Sortie, choix à regarder et lien caché dans l'onglet :**
+  étant donné « Passer l'écluse », qui mène dans « Le sanctuaire », alors
+  son onglet porte « → Le sanctuaire », lien vers les chemins de ce chapitre
+  pour l'adulte (F03-AC25), simple nom pour l'élève, sans trait ni étiquette
+  au bout ; étant donné « Écouter ce que disent les pierres », sans
+  destination, et « Prendre la boussole », qui mène à une scène supprimée,
+  alors leurs onglets sont en ambre et portent « Sans destination » et
+  « Scène supprimée » ; « À regarder » les compte comme avant, et son
+  parcours choisit leur carte et encadre l'onglet ; la liaison cachée de
+  « l'énigme des pierres » est un onglet « Lien caché » marqué d'une clé,
+  son trait en pointillé, que l'élève ne voit pas.
+- **F03-AC66 — L'état et qui écrit :** étant donné « Digue — les planches
+  pourries », dont Hugo s'occupe, lorsque l'adulte lit sa carte, alors elle
+  porte son tampon d'état, avec son signe, suivi de « Hugo » ; « Tourbière —
+  le sol qui tremble », dont personne ne s'occupe, ne porte que son tampon ;
+  une scène que l'enseignant s'est attribuée porte « Vous » ; Hugo lit
+  « Toi » sur les siennes et le prénom de ses camarades sur les leurs ;
+  aucun geste de la carte n'attribue une scène.
+- **F03-AC67 — Relier en tirant un onglet « Sans destination » :** étant
+  donné « Écouter ce que disent les pierres », troisième choix de « Île — le
+  cercle de pierres », sans destination, lorsque l'adulte tire son onglet
+  jusqu'à « Saule — la lanterne verte », alors ce choix y mène, sans bulle
+  ni nouveau choix : sa phrase et sa place dans le texte de la scène ne
+  changent pas, l'onglet n'est plus en ambre et son trait est dessiné ; le
+  message le dit, avec « Annuler », qui le rend sans destination ; « Relier
+  à… », dans le panneau de la scène, fait de même sans tirer ; un élève
+  qui écrit « le cercle de pierres » n'est pas arrêté, et son texte garde la
+  destination au prochain enregistrement (F08-AC44) ; l'élève, le téléphone
+  et la vue de loin n'ont pas ce geste ; le « + » ajoute toujours quand on
+  le clique et relie quand on le tire.
+- **F03-AC68 — De loin, les points de sortie :** étant donné le marais
+  après « Tout voir », lorsque l'adulte regarde le schéma, alors les
+  phrases des onglets ne s'affichent plus ; il reste au pied de chaque carte
+  le point de sortie de chacun de ses choix, d'où part son trait, et l'ambre
+  d'un onglet à regarder ; « Taille lisible » rend les phrases.
+- **F03-AC69 — La proposition de l'IA en onglets :** étant donné un bloc
+  proposé depuis « Clairière »
+  ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)), alors chaque choix
+  proposé est un onglet en pointillé, dans la couleur de l'IA, sous la carte
+  d'où il part — à la suite des choix qu'elle a déjà, pour « Clairière » —,
+  et son trait en pointillé part de cet onglet ; l'ordre des onglets suit
+  celui des fiches (F13-AC43).
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
@@ -6512,6 +6705,17 @@ changement d'état de la scène.
 - **Repli écarté, le mécanisme tenant :** refuser l'ajout tant que la scène
   s'écrit (« Alice écrit cette scène »). Il aurait bloqué l'enseignant en
   pleine séance, au moment où un élève demande la suite.
+- **Un choix relié depuis le plan (11 novembre 2026,
+  [« Choix en onglets »](#f03-onglets), F03-AC67) :** l'onglet d'un choix
+  « Sans destination », tiré jusqu'à une scène, lui donne sa destination à sa
+  place dans le texte, sans le déplacer ni changer sa phrase. C'est une
+  troisième sorte de retouche du plan, reprise comme les deux autres : celui
+  qui écrit la scène n'est pas arrêté, son enregistrement suivant garde la
+  destination, et sa copie la montre. « Annuler » rend le choix sans
+  destination de la même façon. Poser de nouveau le choix à la fin du texte,
+  ce que le mécanisme savait déjà faire, est écarté : son onglet aurait
+  changé de place, quand les onglets suivent l'ordre du texte
+  ([architecture](architecture.md#choix-en-onglets-11-novembre-2026)).
 
 - **F08-AC44 — Ajout pendant qu'un élève écrit :** étant donné Alice
   écrivant dans « L'orée de la forêt », lorsque Mme Laurent y ajoute trois

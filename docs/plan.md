@@ -4766,15 +4766,134 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     Tests : 467 unitaires, 14 contre la base pour le bloc ; l'essai de
     l'IA (`scripts/essai-ia/jeu.ts`) fond « Me le demander » et « L'IA
     complète » en un seul cas.
-  - *Idée du porteur, non décidée (11 novembre 2026) :* les choix en onglets
-    au pied de la carte, chacun avec son point de sortie, à la place des
-    libellés sur les flèches ; retours en arrière et sorties écrits sur
-    l'onglet ; prénom de l'élève à côté de l'état. Avis donné : favorable
-    (elle règle les libellés qui se chevauchent sur un grand chapitre), à
-    borner en largeur et à juger sur « Le marais des feux follets » ; elle
-    révise F03.1 (choix sur les flèches, carte sans choix). Trois questions
-    restent à lui poser avant de l'écrire. Retouche du même jour : les titres
-    des cartes ne perdent plus le bas de leurs g et p.
+  - *Idée du porteur du 11 novembre 2026, décidée par lui le même jour
+    ([« Choix en onglets »](#choix-en-onglets-f031-11-novembre-2026), plus
+    bas) :* les choix en onglets au pied de la carte, chacun avec son point de
+    sortie, à la place des libellés sur les flèches ; retours en arrière et
+    sorties écrits sur l'onglet ; prénom de l'élève à côté de l'état. Avis
+    donné d'abord : favorable (elle règle les libellés qui se chevauchent sur
+    un grand chapitre), à borner en largeur et à juger sur « Le marais des
+    feux follets ». Retouche du même jour : les titres des cartes ne perdent
+    plus le bas de leurs g et p.
+
+### Choix en onglets (F03.1, 11 novembre 2026)
+
+**Décidé par le porteur le 11 novembre 2026,** sur des maquettes de plusieurs
+représentations du schéma ; il retient la variante « choix en onglets »
+(`maquettes/chemins/choix-en-onglets.png`), la fait relire par une autre
+conversation, puis accepte toutes ses recommandations et répond à trois
+questions d'affinage. Cela révise sa décision du 11 octobre 2026 (« choix
+notés sur les flèches », carte « sans référence ni choix »). Règles :
+[F03.1](specifications.md#f03-onglets), F03-AC62 à AC69, et
+[F08.1](specifications.md#f08-ajout-du-plan) pour le choix relié. Ne pas lui
+reposer : un onglet par choix, partout, élève compris ; l'ordre du texte,
+toujours ; le retour, la sortie et ce qui manque écrits dans l'onglet ; le
+tampon et le prénom de qui écrit, sans attribution depuis la carte ; l'onglet
+« Sans destination » qui se tire ; l'onglet borné, les points de sortie de
+loin ; la voix du récit pour les phrases.
+
+**Construit en local le 11 novembre 2026** (Fable 5.2), dans une
+conversation à part, sans prototype, un commit, rien poussé.
+
+- **Ce qui est construit.** Dans `disposer.ts` : un onglet par choix, la
+  carte qui s'élargit, le trait qui part du milieu de son onglet, les retours
+  en arrière sortis de la disposition et tracés à part. Dans `Schema.tsx` et
+  `recit.css` : la carte (tampon et prénom, onglets, onglet ambre, sortie en
+  lien, lien caché), la phrase entière pour la scène survolée ou cliquée, la
+  vue de loin, « À regarder » qui encadre un onglet, la proposition de l'IA
+  en onglets pointillés. Le geste : tirer un onglet « Sans destination »
+  jusqu'à une scène. La liste du téléphone ne change pas.
+- **Une migration, non prévue au départ : `relier_depuis_le_plan`** (base
+  locale seulement). Le mécanisme des retouches du plan ne savait que poser
+  un choix à la fin du texte ou en retirer un : relier avec lui aurait fait
+  passer le choix, et son onglet, en dernière position. La migration note la
+  liaison comme une troisième sorte de retouche, la pose à sa place dans le
+  texte et la rejoue sur le texte d'une page en retard ; dit au porteur
+  avant de l'écrire ([architecture](architecture.md#choix-en-onglets-11-novembre-2026)).
+- **Vérifié.** `tsc`, le lint, 476 tests unitaires (dont les critères
+  F03-AC62 à AC69, et F03-AC43, AC44, AC25 et AC46 accordés), 459 tests
+  contre la base locale (dont `relier-depuis-le-plan`, quatre cas : le choix
+  relié à sa place, la phrase écrite à la main, l'élève qui écrit la scène et
+  n'est pas arrêté, ce qui est refusé). À l'écran, à deux pages : la copie
+  ouverte d'une scène reçoit la destination posée depuis « Chemins » à son
+  enregistrement suivant, sans conflit ni texte gardé à part.
+- **Sur le marais :** quatre retours en arrière (vers le ponton, la cabane,
+  le cercle, le récit de la passeuse), les mêmes que dagre trouvait ; schéma
+  de 1 657 points de large (1 565 avant) et 2 473 de haut (2 271 avant), à
+  la mesure sans navigateur.
+- **Parcours Playwright : non accordés,** comme ceux de l'atelier.
+  `tests/parcours/chemins.spec.ts` cherche encore les libellés sur les
+  flèches et les étiquettes « Sans destination » ; à reprendre à sa demande.
+- **Un vrai appel d'IA, par erreur.** En prenant les captures contre le
+  serveur local, qui n'était pas en IA simulée, la capture de la proposition
+  a demandé un vrai bloc de scènes (un tour, 3 à 4 ✦, sur un compte d'essai
+  supprimé ensuite). Le script ne demande plus cette capture que si
+  `AVEC_IA=1` le dit.
+
+**Précisions prises en construisant, à lui faire confirmer** (trois au plus
+par échange ; les points que sa décision laissait ouverts sont tranchés par
+le plus simple) :
+
+1. *Le haut de la carte dit d'où l'on vient, son pied où l'on va :* « Départ
+   du livre » et « Rien n'y mène » en tête ; au pied les onglets, à défaut
+   « Fin de l'histoire » ou « Sans suite ». « Rien n'y mène » quitte donc le
+   pied de la carte, et « Fin de l'histoire » sa tête.
+2. *Un retour en arrière ne pèse plus dans la disposition :* c'est un choix
+   qui ramène à une scène par laquelle le lecteur est passé pour arriver là.
+   Sa ligne paraît pour la carte d'où il part comme pour celle où il
+   revient ; elle longe les cartes et entre de côté. Son signe est la flèche
+   vers le haut, déjà celle du retour dans « Chemins », et non « ↩ », réservé
+   à « À reprendre ».
+3. *Relier en tirant un onglet :* sans bulle, puisque la phrase existe ; le
+   message dit le résultat avec « Annuler » ; vers une scène du chapitre
+   seulement ; un onglet « Scène supprimée » ne se tire pas (restaurer la
+   scène rétablit son chemin) ; un choix qui a déjà sa destination se change
+   dans la scène.
+4. *Le « + »* à cheval sur le bord droit de la carte, à la hauteur de ses
+   onglets, et *« Ouvrir »* en pastille sur son coin haut droit, pour la
+   carte survolée : dans la carte, « Ouvrir » couvrait le prénom ; sous la
+   carte, le « + » couvrait le départ des traits (critique).
+5. *Quatre choix ou plus :* la carte s'élargit d'un onglet par choix, sur un
+   seul rang ; un seul choix prend la largeur de la carte.
+6. *Lien caché :* un onglet « Lien caché » marqué de la clé, dans la voix de
+   l'outil, après les choix du texte ; son trait en pointillé.
+7. *Cliquer un onglet,* c'est cliquer sa carte ; pour l'adulte, la ligne du
+   choix est désignée un instant dans le panneau.
+8. *Qui écrit, en mots :* le prénom (l'initiale pour deux mêmes prénoms),
+   « Vous » pour la scène de l'enseignant ; pour l'élève « Toi » sur la
+   sienne et le nom de l'enseignant sur celle que celui-ci écrit ; le prénom
+   d'un élève retiré reste sur la scène qu'il a remise ou finie.
+9. *Un choix qui ramène à sa propre scène* dit « revient à cette scène »,
+   sans ligne (il faisait une boucle sur le côté de la carte).
+10. *« À regarder » ne part plus tout seul :* un cas réglé quitte la liste
+    sans que la vue glisse vers le suivant ; le compteur revient à « – ».
+11. *De loin,* les points de sortie deviennent des points pleins, gris, et
+    un onglet à regarder garde son ambre, sans ses mots.
+12. *« Fin de l'histoire » en bande sombre,* comme sur la maquette : claire,
+    au pied de la carte, les deux lectures la confondaient avec « Sans
+    suite ». J'avais d'abord annoncé garder la bande claire.
+13. *« Relier à… » dans le panneau,* au bout de « Sans destination » : le
+    même geste que l'onglet tiré, sans tirer ; et le repère de prise sur
+    l'onglet qui se tire.
+14. *Survoler un onglet* ne fait ressortir que son trait ; *le lien caché*
+    a un trait en points ronds gris, les tirets canard restant à l'IA et au
+    lien qu'on tire.
+15. *L'onglet fait 128 points et sa phrase 14,* un peu plus que les
+    « environ 120 » décidés : la critique jugeait les phrases trop petites.
+
+**Écrans critiqués en deux lectures** (24/40 et 24/40), sur seize captures
+du marais, et corrigés aussitôt, sans nouvelle mesure
+([design](design.md#choix-en-onglets--écrans-construits-11-novembre-2026)).
+Le marais fait alors 1 657 points de large : à 1 366 points, colonne
+repliée, il tient à 74 % ; colonne ouverte, il défile un peu de côté, comme
+F03-AC43 le prévoit.
+
+**À lui dire, sans décision de ma part :** à la taille lisible (70 % sur le
+marais), une phrase d'onglet fait environ 10 points à l'écran. Relever le
+plancher à 85 % la porterait à 12, au prix d'un marais qui défile de côté
+dans tous les cas : c'est le seuil de lecture qu'il a fixé le 8 novembre
+(F03-AC43), donc sa décision. Le liseré de la couleur du chapitre, ocre
+dans le marais, se lit comme l'ambre de ce qui attend (les deux lectures).
 
 ## Hors de la première livraison
 

@@ -26,7 +26,7 @@ import { nomPourEleves } from "@/domaine/eleves";
 import { chapitresDe, compteScenes, departDe, ecritParLEnseignant, nomScene, referenceScene, type ElevePlan, type Plan, type Scene } from "@/domaine/recit";
 import { cle, pluriel } from "@/domaine/texte";
 import {
-  ajouterBlocDepuisLeSchema, ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, annulerBlocDuSchema, reglerLeBloc, relierDepuisLeSchema, remettreChoixDuSchema, supprimerChoixDuSchema,
+  ajouterBlocDepuisLeSchema, ajouterSceneDepuisLeSchema, annulerAjoutDuSchema, annulerBlocDuSchema, reglerLeBloc, relierChoixDuSchema, relierDepuisLeSchema, remettreChoixDuSchema, supprimerChoixDuSchema,
 } from "../../../actions-chemins";
 import { useAidesIa } from "@/composants/AidesIa";
 import { ceQuiSAjoute, type ReglagesBloc } from "@/domaine/bloc-de-scenes";
@@ -79,7 +79,7 @@ export function PageChapitre({
   const [tiree, setTiree] = useState<string | null>(null);
   const commandes = useCommandesScene({ projetId: projet.id, plan, eleves, onChoisirDepart: () => setOuvert("depart") });
   // Les chemins ne se recalculent pas à chaque geste : le schéma se redessinerait
-  const chemins = useMemo(() => (vue === "chemins" ? cheminsDuPlan(plan, chapitreId, projet.id) : null), [vue, plan, chapitreId, projet.id]);
+  const chemins = useMemo(() => (vue === "chemins" ? cheminsDuPlan(plan, chapitreId, projet.id, eleves) : null), [vue, plan, chapitreId, projet.id, eleves]);
 
   const chapitre = chapitresDe(plan).find((c) => c.id === chapitreId)!;
   const partie = plan.parties.find((p) => p.id === chapitre.partieId)!;
@@ -134,6 +134,20 @@ export function PageChapitre({
           return { ok: true };
         },
         reglerScene: (sceneId, valeurs) => reglerScene(sceneId, valeurs),
+        // L'onglet d'un choix « Sans destination », tiré jusqu'à une scène : sans bulle, sa phrase existe (F03-AC67)
+        relierChoix: async (lien, vers) => {
+          const fait = await relierChoixDuSchema(lien.de, lien.id, vers);
+          if (!fait.ok) {
+            dire({ texte: fait.erreur });
+            return fait;
+          }
+          const cible = chapitre.scenes.find((s) => s.id === vers);
+          dire({
+            texte: `Le choix « ${lien.libelle || "sans libellé"} » mène à ${cible ? nomScene(cible) : "la scène"}.`,
+            annuler: () => void relierChoixDuSchema(lien.de, lien.id, null).then((defait) => defait.ok || dire({ texte: defait.erreur })),
+          });
+          return { ok: true };
+        },
         supprimerChoix: async (lien) => {
           const fait = await supprimerChoixDuSchema(lien.de, lien.id);
           if (!fait.ok) {

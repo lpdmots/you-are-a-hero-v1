@@ -7,7 +7,7 @@ import { estUuid } from "./recit";
 import { clientService } from "./supabase";
 import {
   ciblesDe, controlerTexte, enMots, estAuto, estChoix, estRenvoi, horsRetouches, nettoyerTexte, renvoisDe,
-  type Choix, type Droits, type DuPlan, type Enregistrement, type Motif, type Retouche, type SceneDuPlan, type Texte,
+  type Choix, type ChoixRelie, type Droits, type DuPlan, type Enregistrement, type Motif, type Retouche, type SceneDuPlan, type Texte,
 } from "@/domaine/copie";
 import { melangeInitial, numeroter, type Numeros, type PlanNumerote } from "@/domaine/numeros";
 import type { Voisines } from "@/composants/copie/contexte";
@@ -33,14 +33,20 @@ export type CopieGardee = {
 export type TexteDeScene = { texte: Texte; version: number; copies: CopieGardee[] };
 
 /** Ce que le plan a retouché à l'insu de la page (F08-AC44) : des phrases de choix seulement, que la page pose ou retire. */
-const duPlan = (r: { ajoute?: unknown; retire?: unknown }): DuPlan | undefined => {
+const duPlan = (r: { ajoute?: unknown; retire?: unknown; relie?: unknown }): DuPlan | undefined => {
   const ajoute = (nettoyerTexte(Array.isArray(r.ajoute) ? r.ajoute : []) ?? []).filter(estChoix);
   const retire = Array.isArray(r.retire) ? r.retire.filter((id): id is string => typeof id === "string" && estUuid(id)) : [];
-  return ajoute.length || retire.length ? { ajoute, retire } : undefined;
+  // Les choix que le plan a reliés (F03-AC67) : la page pose leur destination, à leur place
+  const relie = (Array.isArray(r.relie) ? r.relie : []).flatMap((x: unknown): ChoixRelie[] => {
+    const { id, cible } = (x ?? {}) as { id?: unknown; cible?: unknown };
+    return typeof id === "string" && estUuid(id) && (cible === null || (typeof cible === "string" && estUuid(cible))) ? [{ id, cible }] : [];
+  });
+  if (!ajoute.length && !retire.length && !relie.length) return undefined;
+  return relie.length ? { ajoute, retire, relie } : { ajoute, retire };
 };
 
 const resultat = (data: unknown): Enregistrement => {
-  const r = (data ?? {}) as { etat?: string; version?: number; motif?: Motif; dernier?: boolean; ajoute?: unknown; retire?: unknown };
+  const r = (data ?? {}) as { etat?: string; version?: number; motif?: Motif; dernier?: boolean; ajoute?: unknown; retire?: unknown; relie?: unknown };
   if (r.etat === "enregistre" && typeof r.version === "number") {
     const plan = duPlan(r);
     return plan ? { etat: "enregistre", version: r.version, dernier: r.dernier, duPlan: plan } : { etat: "enregistre", version: r.version, dernier: r.dernier };
@@ -124,8 +130,8 @@ export async function enregistrerPourAdulte(e: Enseignant, sceneId: string, vers
  * les seules qu'un geste du plan relie et qu'il peut lire.
  */
 async function nommerLesScenesDuPlan(base: SupabaseClient, fait: Enregistrement, chapitreId: string | null): Promise<Enregistrement> {
-  if (fait.etat !== "enregistre" || !fait.duPlan?.ajoute.length) return fait;
-  const cibles = [...new Set(ciblesDe(fait.duPlan.ajoute))];
+  if (fait.etat !== "enregistre" || !fait.duPlan) return fait;
+  const cibles = [...new Set([...ciblesDe(fait.duPlan.ajoute), ...(fait.duPlan.relie ?? []).flatMap((r) => (r.cible ? [r.cible] : []))])];
   if (cibles.length === 0) return fait;
   let demande = base.from("scenes").select("id, reference, titre, chapitre_id").in("id", cibles).is("supprime_le", null);
   if (chapitreId) demande = demande.eq("chapitre_id", chapitreId);

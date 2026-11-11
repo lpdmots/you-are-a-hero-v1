@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { enumerer, nomDeTexte } from "@/composants/copie/noms";
 import {
-  controlerTexte, enMots, estVide, horsRetouches, lireCollage, lireTexteSimple, memeTexte, nettoyerTexte, placeALaFin, sansRien, BLOCS_MAX, LETTRES_MAX,
+  controlerTexte, enMots, estVide, horsRetouches, lireCollage, lireTexteSimple, memeTexte, nettoyerTexte, placeALaFin, relierDansLeTexte, sansRien, BLOCS_MAX, LETTRES_MAX,
   type Bloc, type Droits, type Lettres, type Texte,
 } from "@/domaine/copie";
 import { heureEnMots, jourEnMots } from "@/domaine/dates";
@@ -269,5 +269,33 @@ describe("Ajout venu du plan (F08.1)", () => {
     // Une page à jour ne bénéficie de rien : retirer un choix préparé reste refusé
     const aJour = horsRetouches(enregistre, [a], retouches, 3);
     expect(controlerTexte(aJour.avant, aJour.apres, droits)).toBe("Un bloc préparé a été supprimé.");
+  });
+
+  it("F03-AC67, F08-AC44 — un choix que le plan a relié garde sa phrase et sa place ; le contrôle des droits d'un élève n'y voit pas un bloc qu'il aurait modifié", () => {
+    const droits: Droits = { role: "eleve", profil: "propositions", scenesDuChapitre: new Set() };
+    const [a, x, y] = [para("a", "Le début."), choix("x", "Écouter les pierres"), choix("y", "Compter les pierres")];
+    const lanterne = "11111111-1111-4111-8111-111111111111";
+    // Dans le texte : seule la destination change, à sa place
+    const relie = relierDansLeTexte([a, x, y], [{ id: "x", cible: lanterne }]);
+    expect(relie.map((b) => b.id)).toEqual(["a", "x", "y"]);
+    expect(relie[1]).toEqual({ ...x, cible: lanterne });
+    expect(relie[0]).toBe(a);
+    expect(relie[2]).toBe(y);
+    // Le renvoi d'une phrase écrite à la main, de même ; pour un même renvoi, la dernière liaison compte
+    const phrase: Bloc = { type: "choix", id: "p", libelle: "Suivre la chouette", children: [{ text: "Va au " }, { type: "renvoi", id: "r", cible: null, children: [{ text: "" }] }, { text: "." }] };
+    const ecrite = relierDansLeTexte([phrase], [{ id: "r", cible: "ailleurs" }, { id: "r", cible: lanterne }])[0];
+    expect(ecrite).toEqual({ ...phrase, children: [{ text: "Va au " }, { type: "renvoi", id: "r", cible: lanterne, children: [{ text: "" }] }, { text: "." }] });
+    expect(relierDansLeTexte([a, x], [])).toEqual([a, x]);
+
+    // La scène enregistrée porte « x » relié par le plan ; la page, partie de la version 1, l'envoie encore sans destination
+    const retouches = [{ version: 2, ajoute: [], retire: [], relie: [{ id: "x", cible: lanterne }] }];
+    const enregistre: Texte = [a, { ...x, cible: lanterne } as Bloc, y];
+    const envoye: Texte = [para("a", "Le début, et la suite."), x, y];
+    expect(controlerTexte(enregistre, envoye, droits)).not.toBeNull();
+    const hors = horsRetouches(enregistre, envoye, retouches, 1);
+    expect(controlerTexte(hors.avant, hors.apres, droits)).toBeNull();
+    // Une page à jour qui retire la destination d'un choix préparé reste refusée
+    const aJour = horsRetouches(enregistre, envoye, retouches, 2);
+    expect(controlerTexte(aJour.avant, aJour.apres, droits)).toBe("Un bloc préparé a été modifié ou déplacé.");
   });
 });

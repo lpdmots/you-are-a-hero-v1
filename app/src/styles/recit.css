@@ -1634,9 +1634,6 @@
 .fleche-chemin {
   color: var(--graphite-2);
 }
-.fleche-chemin-retour {
-  color: var(--graphite);
-}
 .fleche-chemin-active {
   color: var(--canard-fonce);
 }
@@ -1678,12 +1675,13 @@
   pointer-events: none;
 }
 
-/* La carte d'une scène : son titre, son état ; en tête le départ ou la fin, au pied ce qui est à regarder */
+/* La carte d'une scène (F03.1, « Choix en onglets ») : son titre, son état et qui l'écrit ; en tête d'où l'on
+   vient (le départ, « Rien n'y mène »), au pied où l'on va — ses choix en onglets, à défaut la fin ou « Sans suite » */
 .carte-chemin {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
-  overflow: hidden;
   border-radius: var(--r-m);
   background: var(--feuille);
   box-shadow:
@@ -1734,10 +1732,12 @@
 /* Un seul signe, deux gestes : cliqué, il ajoute une scène ; tiré jusqu'à une autre carte, il relie */
 .plus-chemin {
   position: absolute;
-  /* Sous le bord de la carte, qu'il touche à peine : ni le tampon ni la bande « Sans suite » ne sont couverts */
-  top: calc(100% - 5px);
-  left: 50%;
-  z-index: 2;
+  /* À cheval sur le bord droit de la carte, à la hauteur de ses onglets : il se lit « un onglet de plus », et
+     aucun trait ne part de là. Sous la carte, il couvrait le départ des traits (critique du 11 novembre 2026) */
+  top: calc(100% - var(--pied, 22px) / 2);
+  /* Sept points dans la carte, pas plus, quelle que soit la taille du schéma : la marge de l'onglet, pas sa phrase */
+  left: calc(100% + 15px / var(--zoom-chemins, 1) - 7px);
+  z-index: 4;
   display: grid;
   place-items: center;
   width: 30px;
@@ -1750,10 +1750,10 @@
   color: var(--canard);
   cursor: pointer;
   opacity: 0;
-  translate: -50% 0;
+  translate: -50% -50%;
   /* La même taille à l'écran quelle que soit celle du schéma : une cible de trente points, jamais moins */
   scale: calc(1 / var(--zoom-chemins, 1));
-  transform-origin: center top;
+  transform-origin: center;
   touch-action: none;
   transition:
     opacity 0.14s var(--ease),
@@ -1773,15 +1773,20 @@
   height: 16px;
   stroke-width: 2.4;
 }
+/* En traversant le schéma, le « + » et « Ouvrir » ne clignotent pas de carte en carte : ils attendent un instant */
 .react-flow__node:hover .plus-chemin,
-.carte-chemin.est-choisie + .plus-chemin,
+.react-flow__node:hover .carte-chemin__ouvrir {
+  transition-delay: 0.12s;
+}
+.react-flow__node:hover .plus-chemin,
+.carte-chemin.est-choisie ~ .plus-chemin,
 .noeud-chemin.est-source .plus-chemin,
 /* Une scène sans suite attend la sienne : son « + » reste à l'écran, c'est là qu'on continue le récit */
 .noeud-chemin.attend-une-suite .plus-chemin,
 .plus-chemin:focus-visible {
   opacity: 1;
 }
-.noeud-chemin.attend-une-suite .carte-chemin.est-en-retrait + .plus-chemin {
+.noeud-chemin.attend-une-suite .carte-chemin.est-en-retrait ~ .plus-chemin {
   opacity: 0.55;
 }
 .plus-chemin:hover,
@@ -2109,6 +2114,24 @@
   color: var(--e-valider);
   font-weight: 700;
 }
+/* « Relier à… », au bout de « Sans destination » : le remède là où le manque est dit */
+.panneau-chemin__relier {
+  flex: none;
+  margin-left: 6px;
+}
+.panneau-chemin__relier select.pchamp {
+  width: auto;
+  max-width: 190px;
+  min-height: 0;
+  padding: 3px 28px 3px 9px;
+  font-size: var(--t-xs);
+  font-weight: 700;
+}
+.panneau-chemin__relier .ic {
+  right: 8px;
+  width: 13px;
+  height: 13px;
+}
 .panneau-chemin__retirer {
   grid-column: 2;
   grid-row: 1 / span 2;
@@ -2148,19 +2171,6 @@
   background: var(--bloque-f);
   color: var(--bloque);
 }
-/* Le libellé d'un choix, sur sa flèche : cliqué, il désigne ce choix dans le panneau de sa scène */
-.libelle-chemin.se-choisit {
-  cursor: pointer;
-}
-.libelle-chemin.se-choisit:hover {
-  box-shadow: inset 0 0 0 1.5px var(--canard);
-  color: var(--canard-fonce);
-}
-/* Le libellé d'un choix de la scène cliquée est déjà en blanc sur canard : survolé, il le reste */
-.libelle-chemin.se-choisit.est-entier:hover {
-  box-shadow: inset 0 0 0 1.5px #fff, var(--ombre-cahier);
-  color: #fff;
-}
 @media (prefers-reduced-motion: reduce) {
   .geste-chemin,
   .chemins__espace {
@@ -2188,29 +2198,61 @@
   font-weight: 600;
   font-style: italic;
 }
-/* La carte fait 76 points : 8 + deux lignes de titre (35) + 4 + 22 + 7. Le titre ne se resserre pas : il
-   perdait le bas de ses g et de ses p */
+/* La tête de la carte fait 76 points : 8 + deux lignes de titre (35) + 4 + 22 + 7. Le titre ne se resserre
+   pas : il perdait le bas de ses g et de ses p. Sous le titre, le tampon d'état puis qui écrit la scène */
 .carte-chemin__pied {
+  position: relative;
   display: flex;
+  flex: none;
   align-items: center;
-  justify-content: space-between;
-  gap: 6px;
+  gap: 7px;
   min-height: 22px;
   margin: 4px 9px 7px 14px;
 }
 .carte-chemin__pied .tampon {
+  flex: none;
   padding: 0.06rem 0.42rem 0.06rem 0.32rem;
   font-size: 11.5px;
 }
+.carte-chemin__qui {
+  min-width: 0;
+  overflow: hidden;
+  color: var(--graphite-2);
+  font-size: 12px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* « Ouvrir », pour la carte survolée ou cliquée : une pastille à cheval sur son coin haut droit, comme le « + »
+   l'est sous son coin bas. Dans la carte, il couvrait le prénom de qui écrit */
 .carte-chemin__ouvrir {
+  position: absolute;
+  /* Presque tout au-dessus de la carte : une bande « Rien n'y mène » ou « Départ du livre » garde ses mots */
+  top: -19px;
+  right: 8px;
+  z-index: 3;
   display: inline-flex;
   align-items: center;
   gap: 3px;
+  height: 24px;
+  padding: 0 9px 0 10px;
+  border-radius: 99px;
+  background: var(--feuille);
+  box-shadow:
+    inset 0 0 0 1.5px var(--canard),
+    0 2px 6px -1px rgba(20, 40, 40, 0.22);
   color: var(--canard);
   font-size: 12px;
   font-weight: 700;
   text-decoration: none;
   opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.14s var(--ease);
+}
+/* Le panneau de la scène porte déjà « Ouvrir » : la carte cliquée ne le répète pas, sauf sous le pointeur */
+.chemins__plan[data-travail] .carte-chemin.est-choisie:not(:hover) .carte-chemin__ouvrir {
+  opacity: 0;
+  pointer-events: none;
 }
 .carte-chemin__ouvrir .ic {
   width: 1em;
@@ -2220,9 +2262,11 @@
 .carte-chemin.est-choisie .carte-chemin__ouvrir,
 .carte-chemin__ouvrir:focus-visible {
   opacity: 1;
+  pointer-events: auto;
 }
 .carte-chemin__ouvrir:hover {
-  text-decoration: underline;
+  background: var(--canard);
+  color: #fff;
 }
 .carte-chemin__bande {
   display: flex;
@@ -2240,23 +2284,271 @@
   width: 1.05em;
   height: 1.05em;
 }
+/* En tête et au pied, la bande suit les coins de la carte, qui ne coupe plus ce qui en dépasse */
+.carte-chemin__bande--tete {
+  border-radius: var(--r-m) var(--r-m) 0 0;
+}
+.carte-chemin__bande--pied {
+  border-radius: 0 0 var(--r-m) var(--r-m);
+}
 .carte-chemin__bande--depart {
   background: #e6f2f1;
   color: var(--canard-fonce);
   box-shadow: inset 0 -1px 0 #a7d2cf;
 }
+/* Une fin voulue ne se confond pas avec « Sans suite », au même pied de carte : une bande sombre, comme sur la
+   maquette retenue, et non plus beige à côté de l'ambre (critique du 11 novembre 2026) */
 .carte-chemin__bande--fin {
-  background: #f3eee6;
-  color: #5e4a2a;
-  box-shadow: inset 0 -1px 0 #d8ccb6;
+  background: var(--graphite-2);
+  color: #fff;
 }
 .carte-chemin__bande--regarder {
   background: var(--e-valider-f);
   color: var(--e-valider);
   box-shadow: inset 0 1px 0 #ecd28a;
 }
+.carte-chemin__bande--tete.carte-chemin__bande--regarder {
+  box-shadow: inset 0 -1px 0 #ecd28a;
+}
 
-/* L'étiquette : un autre chapitre où l'on va, d'où l'on vient ; ou le bout d'un choix qui n'arrive nulle part */
+/* ——— Les choix en onglets (F03.1, F03-AC62 à AC69) : un onglet par choix au pied de la carte, dans l'ordre du
+   texte. Sa phrase est dans la voix du récit, trois lignes au plus ; ce que l'outil y ajoute, dans la sienne.
+   Les tailles sont celles de « ONGLET » (disposer.ts) ——— */
+.onglets-chemin {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  border-radius: 0 0 var(--r-m) var(--r-m);
+  background: var(--feuille-2);
+  box-shadow: inset 0 1px 0 var(--trait);
+}
+.onglet-chemin {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 7px 8px 9px;
+  background: var(--feuille-2);
+  box-shadow: inset 0 1px 0 var(--trait);
+  color: var(--graphite);
+  text-align: center;
+}
+.onglet-chemin + .onglet-chemin {
+  box-shadow:
+    inset 1px 0 0 var(--trait),
+    inset 0 1px 0 var(--trait);
+}
+.onglet-chemin:first-child {
+  border-bottom-left-radius: var(--r-m);
+}
+.onglet-chemin:last-child {
+  border-bottom-right-radius: var(--r-m);
+}
+.onglet-chemin__phrase {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+  max-width: 100%;
+  font-family: var(--f-recit);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 17px;
+}
+.onglet-chemin__phrase > span {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--lignes, 3);
+  line-clamp: var(--lignes, 3);
+  overflow-wrap: anywhere;
+}
+.onglet-chemin__phrase .ic {
+  flex: none;
+  width: 13px;
+  height: 13px;
+  margin-top: 1.5px;
+}
+/* Sous la phrase, dans la voix de l'outil : un retour en arrière, une sortie vers un autre chapitre, ce qui manque */
+.onglet-chemin__note {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  max-width: 100%;
+  min-height: 13px;
+  margin-top: 4px;
+  color: var(--graphite-2);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 13px;
+  text-decoration: none;
+}
+/* Deux lignes au plus : « retour à » et le titre de la scène, qui se reconnaît à sa fin plus qu'à son lieu */
+.onglet-chemin__note > span:last-child {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--note, 1);
+  line-clamp: var(--note, 1);
+  overflow-wrap: anywhere;
+}
+.onglet-chemin__note .ic {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  margin-top: 0.5px;
+  stroke-width: 2.4;
+}
+.onglet-chemin__note .point-regarder {
+  margin-top: 2px;
+}
+a.onglet-chemin__note {
+  color: var(--canard);
+}
+a.onglet-chemin__note > span:last-child {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+a.onglet-chemin__note:hover {
+  color: var(--canard-fonce);
+}
+/* Un lien caché n'a pas de phrase dans le texte : la voix de l'outil, et sa clé */
+.onglet-chemin.est-cache .onglet-chemin__phrase {
+  align-items: center;
+  color: var(--graphite-2);
+  font-family: var(--f-ui);
+  font-size: 11.5px;
+  font-style: normal;
+  font-weight: 700;
+}
+.onglet-chemin.est-cache .onglet-chemin__phrase .ic {
+  margin-top: 0;
+}
+/* Sans destination, ou vers une scène supprimée : l'onglet lui-même est en ambre, la couleur de ce qui attend */
+.onglet-chemin--manque {
+  background: var(--e-valider-f);
+  box-shadow: inset 0 1px 0 #ecd28a;
+}
+.onglet-chemin + .onglet-chemin--manque {
+  box-shadow:
+    inset 1px 0 0 #ecd28a,
+    inset 0 1px 0 #ecd28a;
+}
+.onglet-chemin--manque .onglet-chemin__note {
+  color: var(--e-valider);
+}
+/* Ce que le parcours de « À regarder » désigne garde son cadre tant qu'on n'est pas passé au suivant */
+.onglet-chemin.est-montree {
+  box-shadow: inset 0 0 0 2.5px var(--graphite);
+}
+.onglet-chemin.se-choisit {
+  cursor: pointer;
+}
+/* L'onglet d'un choix sans destination se tire jusqu'à une scène, qu'il relie (F03-AC67) */
+.onglet-chemin.se-tire {
+  position: relative;
+  cursor: grab;
+  touch-action: none;
+}
+.onglet-chemin.se-tire > .ic {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 11px;
+  height: 11px;
+  color: var(--e-valider);
+  opacity: 0.7;
+}
+.onglet-chemin.se-tire:hover {
+  box-shadow: inset 0 0 0 1.5px var(--e-valider);
+}
+.onglet-chemin.se-tire:active {
+  cursor: grabbing;
+}
+/* Pendant qu'on le tire : son cadre reste, et aucun « + » ne s'allume — le lien part de l'onglet */
+.onglet-chemin.est-tire {
+  box-shadow: inset 0 0 0 2px var(--canard);
+}
+.chemins__cadre[data-tire="onglet"] .noeud-chemin .plus-chemin {
+  opacity: 0;
+}
+/* Pendant qu'on tire un lien, aucune carte ne propose « Ouvrir » */
+.chemins__cadre[data-tire] .carte-chemin .carte-chemin__ouvrir {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Un choix que l'IA propose, pas encore ajouté : en pointillé, dans sa couleur (F03-AC69) */
+.onglet-chemin.est-propose {
+  background: color-mix(in srgb, var(--ia-pale) 70%, var(--feuille));
+  box-shadow: none;
+  color: var(--ia-fonce);
+  outline: 1.5px dashed var(--ia);
+  outline-offset: -1.5px;
+}
+.carte-chemin--proposee .onglets-chemin {
+  background: none;
+  box-shadow: none;
+  border-top: 1.5px dashed var(--ia-trait);
+}
+.carte-chemin--proposee .onglet-chemin {
+  flex: 1 1 0;
+  min-width: 0;
+  background: none;
+  outline: none;
+}
+.carte-chemin--proposee .onglet-chemin + .onglet-chemin {
+  border-left: 1.5px dashed var(--ia-trait);
+}
+/* Pour la scène survolée ou cliquée, chaque phrase se lit en entier : l'onglet garde sa largeur et gagne en
+   hauteur, par-dessus ce qui est sous la carte (F03-AC63) ; sa note aussi, au survol seulement — pour la scène
+   cliquée, la ligne du retour est tracée et le panneau nomme la scène en entier */
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .onglet-chemin {
+  position: relative;
+  z-index: 3;
+}
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:is(:hover, .selected) .onglet-chemin__phrase > span,
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover .onglet-chemin__note > span:last-child {
+  display: block;
+  overflow: visible;
+}
+.chemins__cadre:not([data-loin], [data-tire]) .react-flow__node:hover {
+  z-index: 1001 !important;
+}
+/* Le point de sortie d'un choix, à cheval sur le bord bas de la carte : son trait en part */
+.sortie-chemin {
+  position: absolute;
+  top: 100%;
+  z-index: 2;
+  width: 9px;
+  height: 9px;
+  border: 1.5px solid var(--graphite-3);
+  border-radius: 50%;
+  background: var(--feuille);
+  translate: -50% -50%;
+  pointer-events: none;
+}
+.sortie-chemin.est-propose {
+  border-color: var(--ia);
+}
+.react-flow__node.selected .sortie-chemin {
+  border-color: var(--canard-fonce);
+}
+/* De loin, les phrases ne se lisent plus : il reste les points de sortie, grossis, et l'ambre d'un onglet à
+   regarder (F03-AC68) */
+.chemins__cadre[data-loin] .onglet-chemin > * {
+  visibility: hidden;
+}
+.chemins__cadre[data-loin] .sortie-chemin {
+  border-color: var(--graphite-3);
+  background: var(--graphite-3);
+  scale: calc(0.4 / var(--zoom-chemins, 1));
+}
+
+/* L'étiquette : un autre chapitre d'où vient un chemin, au-dessus de la scène où il arrive */
 .etiquette-chemin {
   height: 100%;
   border-radius: 99px;
@@ -2295,15 +2587,6 @@
 .etiquette-chemin > a:hover {
   color: var(--canard-fonce);
 }
-.etiquette-chemin--manque {
-  background: var(--e-valider-f);
-  box-shadow: inset 0 0 0 1px #ecd28a;
-  color: var(--e-valider);
-}
-/* Ce que le parcours de « À regarder » désigne garde son cadre tant qu'on n'est pas passé au suivant */
-.etiquette-chemin.est-montree {
-  box-shadow: 0 0 0 2.5px var(--graphite);
-}
 .chemins__liste .est-montree {
   animation: none;
   box-shadow:
@@ -2315,7 +2598,8 @@
   box-shadow: 0 0 0 2.5px var(--graphite);
 }
 
-/* Les traits : un choix, un lien caché en pointillé ; ceux de la scène regardée ressortent */
+/* Les traits : de simples lignes, de l'onglet d'un choix à la scène où il mène ; un lien caché en pointillé ;
+   ceux de la scène regardée ressortent */
 .chemins__toile .trait-chemin {
   stroke: var(--graphite-3);
   stroke-width: 1.5;
@@ -2323,13 +2607,20 @@
     stroke 0.18s var(--ease),
     opacity 0.18s var(--ease);
 }
+/* Un lien caché existe bel et bien : des points ronds, en gris même pour la scène regardée. Les tirets canard
+   restent à ce qui n'est pas encore là — la proposition de l'IA, le lien qu'on tire */
 .chemins__toile .trait-chemin.est-cache {
-  stroke-dasharray: 5 5;
+  stroke-dasharray: 0.1 5;
+  stroke-linecap: round;
+  stroke-width: 2.4;
 }
-/* Un retour en arrière : plus sombre et un peu plus épais, sans couleur de plus — chacune a déjà son rôle */
-.chemins__toile .trait-chemin.remonte {
+.chemins__toile .trait-chemin.est-cache.est-actif {
   stroke: var(--graphite);
-  stroke-width: 2;
+  stroke-width: 3;
+}
+/* La ligne d'un retour en arrière, tracée à la demande : plus fine que les chemins de la scène regardée */
+.chemins__toile .trait-chemin.est-retour.est-actif {
+  stroke-width: 1.75;
 }
 .chemins__toile .trait-chemin.est-actif {
   stroke: var(--canard-fonce);
@@ -2345,83 +2636,6 @@
 }
 .chemins__cadre[data-loin] .trait-chemin.est-actif {
   stroke-width: 2;
-}
-.libelle-chemin {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  box-sizing: border-box;
-  min-height: 20px;
-  padding: 0 7px;
-  border-radius: 9px;
-  background: var(--feuille-2);
-  box-shadow: inset 0 0 0 1px var(--trait);
-  color: var(--graphite-2);
-  font-size: 11.5px;
-  font-weight: 600;
-  line-height: 13.5px;
-  text-align: center;
-  pointer-events: all;
-  transition: opacity 0.18s var(--ease);
-}
-/* Un libellé long tient sur deux lignes, puis se coupe ; il se lit en entier pour la scène regardée */
-.libelle-chemin > span {
-  display: -webkit-box;
-  overflow: hidden;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-}
-.libelle-chemin .ic {
-  flex: none;
-  width: 1.05em;
-  height: 1.05em;
-}
-.libelle-chemin.remonte {
-  box-shadow: inset 0 0 0 1.5px var(--graphite);
-  color: var(--graphite);
-}
-.libelle-chemin__retour {
-  position: absolute;
-  top: 50%;
-  left: -9px;
-  display: grid;
-  place-items: center;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  background: var(--graphite);
-  color: #fff;
-  transform: translateY(-50%);
-}
-.libelle-chemin__retour .ic {
-  width: 11px;
-  height: 11px;
-  stroke-width: 2.6;
-}
-.libelle-chemin.est-entier .libelle-chemin__retour {
-  background: #fff;
-  color: var(--canard-fonce);
-}
-.libelle-chemin.est-cache {
-  box-shadow: inset 0 0 0 1px var(--trait-fort);
-  font-style: italic;
-}
-.libelle-chemin.est-entier {
-  z-index: 5;
-  padding: 3px 7px;
-  background: var(--canard-fonce);
-  box-shadow: var(--ombre-cahier);
-  color: #fff;
-  overflow-wrap: anywhere;
-}
-.libelle-chemin.est-entier > span {
-  display: block;
-}
-.libelle-chemin.est-efface {
-  opacity: 0.25;
 }
 /* De loin, la carte ne se lit plus : une bulle à taille réelle dit son titre */
 .bulle-chemin {
@@ -3614,11 +3828,6 @@ a.noeud__ailleurs {
 }
 .fleche-chemin-proposee {
   color: var(--ia);
-}
-.libelle-chemin.est-propose {
-  background: var(--ia-pale);
-  box-shadow: inset 0 0 0 1px var(--ia-trait);
-  color: var(--ia-fonce);
 }
 .chemins__cadre > .chemins__attente--bloc {
   inset: 24px;

@@ -1727,6 +1727,109 @@ le schéma suit (F13-AC43). Dans la Préparation, l'étape « Jeu » espace les
 objets et les formules, la feuille d'aventure et les règles (elles étaient
 collées).
 
+#### Choix en onglets : écrans construits (11 novembre 2026)
+
+Règles : [F03.1](specifications.md#f03-onglets), F03-AC62 à AC69 ;
+précisions à confirmer : [plan](plan.md#choix-en-onglets-f031-11-novembre-2026).
+Cette section remplace, dans les quatre précédentes, ce qui touche aux
+libellés des flèches, aux étiquettes « autre chapitre », « Sans destination »
+et « Scène supprimée », au retour en arrière, à la place du « + » et à
+« Ouvrir » sur la carte.
+
+**La référence et ses trois écarts.** Le porteur a retenu
+[`maquettes/chemins/choix-en-onglets.png`](../maquettes/chemins/choix-en-onglets.png) :
+onze scènes du marais, chaque choix en onglet sous sa carte, un rond de
+sortie sous chaque onglet, les phrases en italique du récit. Trois de ses
+dispositions ne sont pas reprises, sur sa décision : elle montre l'état par
+une pastille et des mots (décidé : le tampon de l'application) ; elle range
+les onglets au-dessus de leur destination (décidé : l'ordre du texte) ; elle
+ne trace pas les retours (décidé : au survol ou au clic). Quatre autres ont
+été jugées perfectibles et dites au porteur avant de construire : ses traits
+courbes passent sous des cartes (l'application garde ses traits à angles
+droits, chacun sur sa ligne) ; sa bande « Fin de l'histoire » noire est
+l'élément le plus lourd de l'écran (la bande claire a d'abord été gardée,
+puis la critique a donné raison à la maquette, voir plus bas) ; son onglet
+ambre est en pointillé, alors que le pointillé dit ici « proposé par l'IA »
+ou « lien caché » (ambre plein) ; ses cartes de 240 à 360 points font
+craindre un schéma trop large (mesuré sur le marais : 1 657 points une fois
+les corrections de la critique faites, contre 1 565 avec les libellés sur
+les flèches).
+
+Sans maquette complète : conçu avec le skill impeccable (surface de travail :
+précision et retenue), puis critiqué en deux lectures séparées sur
+16 captures du marais (`app/test-results/captures/choix-en-onglets/`, en
+1 366 × 768 et 1 440 × 900, double densité, poste d'élève compris, IA
+simulée).
+
+| Élément | Forme retenue |
+| --- | --- |
+| La carte | 178 points de large au moins. Sa tête, 76 points : le titre sur deux lignes au plus, puis le tampon d'état et, à sa suite, le prénom de qui écrit, en gris, gras, 12 points, coupé s'il est long. Les coins ne coupent plus ce qui dépasse : un onglet peut grandir sous la carte. |
+| D'où l'on vient, où l'on va | En tête de carte, une bande de 22 points : « Départ du livre » (canard pâle) ou « Rien n'y mène » (ambre). Au pied : les onglets ; à défaut « Fin de l'histoire » (bande graphite, texte blanc) ou « Sans suite » (ambre). |
+| Un onglet | 128 points de large quand la carte en porte plusieurs, la largeur de la carte quand il est seul ; fond de feuille grise, un trait fin entre deux onglets et au-dessus du rang. La phrase : Vollkorn italique, 14 points, interligne 17, centrée, trois lignes au plus, coupée par des points de suspension. Le rang prend la hauteur de son onglet le plus haut ; les phrases plus courtes y sont centrées. |
+| La phrase entière | Pour la carte survolée ou cliquée, chaque onglet garde sa largeur et grandit vers le bas, par-dessus ce qui est sous la carte. La note sous la phrase tient sur deux lignes au repos, et se lit en entier au survol. |
+| Survoler un onglet | Son trait seul ressort, en canard foncé ; survoler ou cliquer la carte fait ressortir tous les siens. |
+| Le point de sortie | Un rond de 9 points, fond de feuille, cerné de gris, à cheval sur le bord bas de la carte, au milieu de l'onglet ; le trait en part. Seuls les choix qui mènent à une scène du chapitre en ont un. |
+| Un retour en arrière | Sous la phrase, dans la voix de l'outil (11 points, gras, gris) : la flèche vers le haut et « retour à « Titre » », sur deux lignes au plus ; pas de rond. Dans le panneau de la scène, la même flèche devant la scène où il ramène. Sa ligne, pour la carte survolée ou cliquée — celle d'où il part comme celle où il revient — : canard foncé, plus fine que les chemins de la scène (1,75 point), à angles droits ; elle descend de 18 points sous l'onglet, longe les cartes par l'extérieur et entre de côté, par une flèche, à la hauteur du titre de la scène où elle revient ; au-dessus des cartes. |
+| Une sortie vers un autre chapitre | Sous la phrase : le signe de la sortie et le nom du chapitre, en lien canard souligné pour l'adulte, en texte pour l'élève ; ni rond ni trait. |
+| Un choix à regarder | L'onglet entier en ambre pâle ; sous la phrase, le point ambre et « Sans destination » ou « Scène supprimée ». Désigné par « À regarder » : un cadre graphite dans l'onglet. Pour l'adulte, l'onglet « Sans destination » porte le repère de prise dans son coin, la main ouverte pour pointeur et un filet ambre au survol. Dans le panneau de la scène, au bout de « Sans destination », une petite liste « Relier à… » : le remède là où le manque est dit, sans tirer. |
+| Le lien caché | Un onglet « Lien caché » précédé de la clé, dans la voix de l'outil ; son rond, et son trait en points ronds, gris même pour la scène regardée. Les tirets canard restent à ce qui n'est pas encore là : la proposition de l'IA, le lien qu'on tire. |
+| Tirer un onglet | Le lien en tirets canard part du bas de l'onglet, cerné de canard pendant le geste, et s'accroche au haut de la carte visée, cerclée de canard ; aucun « + » ni « Ouvrir » ne s'allume. Relâché : le message « Le choix « … » mène à S025 « … ». » avec « Annuler ». |
+| Le « + » | À cheval sur le bord droit de la carte, à la hauteur de ses onglets (ou de sa bande « Sans suite ») : un onglet de plus, là où aucun trait ne part. Visible pour la carte survolée ou cliquée, et toujours sur une scène sans suite ; il attend un dixième de seconde au survol, pour ne pas clignoter de carte en carte. Les cartes d'un rang sont à 26 points l'une de l'autre pour lui laisser sa place. |
+| « Ouvrir » | Une pastille de 24 points cernée de canard, posée sur le coin haut droit de la carte survolée, presque toute au-dessus d'elle ; pleine au survol. La carte cliquée ne la montre pas, le panneau portant déjà « Ouvrir » ; l'élève, qui n'a pas de panneau, la garde. |
+| De loin | Sous 62 % : les phrases et les notes ne s'affichent plus, le rang d'onglets reste, l'ambre aussi ; les ronds de sortie deviennent des points pleins, gris, à peine grossis. |
+| La proposition de l'IA | Les choix proposés : des onglets cernés d'un pointillé canard, fond canard très pâle, à la suite des onglets de la scène d'origine ; ceux d'une scène proposée, séparés par un pointillé. Leurs ronds et leurs traits en canard, les traits en pointillé. |
+| Les traits | De simples lignes grises à angles droits arrondis, la pointe en bas ; canard foncé et plus épais pour la scène survolée ou cliquée. Deux traits d'une même carte peuvent se croiser sous elle. |
+| La mini-carte | Un onglet à regarder y est un rectangle ambre sur sa carte. |
+| L'élève | Les mêmes cartes ; « Toi » sur sa scène ; ni « + », ni onglet à tirer ; le nom d'un autre chapitre sans lien. |
+| « À regarder » | Un cas réglé quitte la liste sans que la vue parte vers le suivant ; le compteur revient à « – ». |
+| L'aide (« i ») | « Sous chaque scène, ses choix, dans l'ordre du texte : un trait part de chacun vers la scène où il mène. […] Un choix qui ramène le lecteur en arrière, qui mène dans un autre chapitre ou qui n'a pas encore de destination le dit sous sa phrase. » ; pour l'adulte, « Un choix « Sans destination » se tire lui aussi jusqu'à une scène. » |
+
+**Les deux lectures** donnent 24/40 (informée) et 24/40 (indépendante), sans
+point qui empêche la tâche ; toutes deux tiennent la carte pour la réussite
+du lot (« on comprend une scène sans suivre un trait ») et « À regarder »
+posé sur l'onglet fautif pour exact. Corrigé aussitôt, sans nouvelle
+mesure :
+
+- le « + », sous le coin de la carte, couvrait le départ des traits et se
+  prenait, sous un onglet ambre, pour « donner une destination à ce choix » :
+  il passe sur le bord droit, à la hauteur des onglets ;
+- « retour à « Pont… » » ne disait plus rien, trois scènes commençant par
+  « Ponton — » : la note tient sur deux lignes, entière au survol ;
+- la ligne d'un retour arrivait à la couture entre la tête de la carte et ses
+  onglets, contre un onglet voisin qu'elle semblait désigner : elle entre à
+  la hauteur du titre, et s'affine ;
+- « Fin de l'histoire », beige, et « Sans suite », ambre pâle, se
+  confondaient au même pied de carte : la fin devient une bande graphite,
+  comme sur la maquette, que j'avais d'abord jugée trop lourde ;
+- rien ne disait qu'un onglet « Sans destination » se tire, ni quoi faire du
+  manque : repère de prise sur l'onglet, « Relier à… » dans le panneau, une
+  phrase dans le « i » ;
+- le pointillé canard avait trois sens : le lien caché prend des points
+  ronds gris ;
+- les phrases, plus petites et plus pâles que sur la maquette : 14 points au
+  lieu de 13, l'onglet à 128 points ;
+- un chemin ne se suivait qu'en survolant toute la carte : survoler un onglet
+  n'allume que son trait ; les traits d'un même couloir sont à 9 points l'un
+  de l'autre au lieu de 7 ;
+- de loin, les ronds grossis pesaient plus que le reste : des points pleins,
+  gris, plus petits ;
+- « Ouvrir » était deux fois à l'écran pour la scène cliquée, et touchait la
+  bande « Rien n'y mène » : remonté, masqué quand le panneau est ouvert.
+
+**Laissé en l'état, à dire au porteur :** à la taille lisible, que le marais
+atteint à 70 %, une phrase d'onglet fait environ 10 points à l'écran (les
+libellés des flèches en faisaient 8) ; relever ce plancher ferait défiler le
+marais de côté, ce que F03-AC43 a tranché — c'est une règle, pas une forme.
+Le liseré de la couleur du chapitre, ocre dans le marais, se lit comme
+l'ambre de ce qui attend, et vert chez un élève comme « fait » (les deux
+lectures) : il date de la vue reprise, et touche toutes les cartes de scène.
+Les commandes de taille et la mini-carte couvrent des cartes au bord droit
+du plan (« Chemins » en atelier). Le compteur d'« À regarder » reste sur son
+dernier cas quand on clique une autre scène à la main. Pour l'élève, la ligne
+« À regarder » et ses flèches pour un seul cas. Non vus sur les captures :
+« Départ du livre », une scène à quatre choix, « revient à cette scène »,
+un tirage abandonné.
+
 ### Étape 4 construite (13 octobre 2026)
 
 Les écrans de l'étape 4 se construisent lot par lot dans l'application, en

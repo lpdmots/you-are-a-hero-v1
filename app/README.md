@@ -1158,3 +1158,39 @@ ceux de « Chemins » (`tests/parcours/chemins.spec.ts`) datent de la page qui d
 demanderont une retouche quand ils seront joués.
 
 **En ligne, à la demande seulement :** le code suffit, sans migration.
+
+## Essayer les choix en onglets (F03.1, 11 novembre 2026)
+
+Dans « Chemins », chaque choix d'une scène est un onglet sous sa carte, et plus rien n'est
+écrit sur un trait (`docs/plan.md`, « Choix en onglets » ; règles en F03.1, ancre
+`f03-onglets`, F03-AC62 à AC69). En local, sur http://localhost:4840, avec le compte local ;
+la vraie base n'est pas touchée.
+
+**1. La base locale à jour.** Une migration, `relier_depuis_le_plan` :
+`npx tsx scripts/supabase.ts migration up --local` l'applique sans rien effacer.
+`npm run chemins:essai -- --refaire` recharge « Le marais des feux follets », trente-deux
+scènes, dans « Les passeurs de brume ».
+
+**2. Ce qui doit se voir.** « Parties et chapitres », « Le marais des feux follets », sur un
+écran large.
+
+| Geste | Ce qui doit se voir |
+|---|---|
+| Ouvrir le chapitre | chaque carte porte ses choix en onglets, dans l'ordre du texte ; un trait part du rond sous chaque onglet ; aucun trait ne porte de texte ; le tampon d'état est suivi du prénom de qui écrit |
+| Survoler une carte | ses phrases se lisent en entier ; « Ouvrir » sur son coin haut, le « + » sous son coin bas |
+| Cliquer « Cercle de pierres — l'énigme des pierres » | l'onglet « Renoncer et revenir au cercle » dit « retour à « Île — le cercle de pierres » », et sa ligne se trace jusqu'à cette scène ; l'onglet « Lien caché » a son trait en pointillé |
+| « Écluse — la sortie du marais » | l'onglet « Passer l'écluse » nomme « Le sanctuaire », en lien vers ses chemins |
+| « À regarder », « suivant » | le premier cas choisit « Île — le cercle de pierres » et encadre l'onglet ambre « Écouter ce que disent les pierres », « Sans destination » |
+| Tirer cet onglet jusqu'à une autre scène | le choix y mène, à la même place parmi les onglets ; le message le dit, « Annuler » le rend sans destination ; la ligne « À regarder » perd ce cas sans que la vue parte ailleurs |
+| « Tout voir » | les phrases ne s'affichent plus : il reste les ronds de sortie et l'ambre de ce qui est à regarder ; « Taille lisible » rend les phrases |
+| « ✦ Construire avec l'IA », une demande | les choix proposés sont des onglets en pointillé, à la suite de ceux de la scène d'origine |
+| Un poste d'élève, son chapitre | les mêmes onglets, « Toi » sur sa scène, le prénom de ses camarades sur les leurs ; rien ne se tire |
+
+**Les essais.** `npm test -- chemins copie` (la disposition, les retours en arrière, les
+onglets, la liaison rejouée) ; `npm run test:base -- relier-depuis-le-plan ajout-du-plan`
+(un choix relié à sa place, l'élève qui écrit la scène n'est pas arrêté). Les captures, sur
+leur propre serveur compilé, IA simulée : `AVEC_IA=1 npm run captures -- choix-en-onglets`
+(`test-results/captures/choix-en-onglets/`, 16 images) ; contre le serveur local, sans
+`AVEC_IA`, la proposition de l'IA n'est pas demandée. Aucun parcours n'est écrit pour ce
+lot ; ceux de « Chemins » (`tests/parcours/chemins.spec.ts`) cherchent encore les libellés
+sur les flèches et demanderont une retouche quand ils seront joués.

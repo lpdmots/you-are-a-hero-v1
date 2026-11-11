@@ -429,22 +429,46 @@ export type SceneDuPlan = { id: string; reference: number; titre: string | null;
  * Ce que le plan a fait du texte d'une scène à l'insu de la page qui l'écrit : des phrases de
  * choix posées à sa fin, d'autres retirées. La page les reprend dans sa copie, sans message.
  */
-export type DuPlan = { ajoute: Choix[]; retire: string[]; scenes?: SceneDuPlan[] };
+export type DuPlan = { ajoute: Choix[]; retire: string[]; relie?: ChoixRelie[]; scenes?: SceneDuPlan[] };
 
-/** Une retouche du plan, telle que la base la note : la version que la scène a prise, les blocs ajoutés et retirés. */
-export type Retouche = { version: number; ajoute: string[]; retire: string[] };
+/**
+ * Un choix que le plan a relié (F03-AC67) : l'identité de son renvoi, et la scène où il mène désormais —
+ * rien, quand « Annuler » le rend sans destination. Sa phrase et sa place dans le texte ne changent pas.
+ */
+export type ChoixRelie = { id: string; cible: string | null };
+
+/** Une retouche du plan, telle que la base la note : la version que la scène a prise, les blocs ajoutés, retirés, reliés. */
+export type Retouche = { version: number; ajoute: string[]; retire: string[]; relie?: ChoixRelie[] };
+
+/**
+ * Les destinations que le plan a posées, mises dans un texte à leur place : la phrase automatique, ou le
+ * renvoi d'une phrase écrite à la main, prend sa destination ; pour un même renvoi, la dernière compte. La
+ * base fait de même (prive.relier_dans_le_texte).
+ */
+export function relierDansLeTexte(texte: Texte, relie: readonly ChoixRelie[]): Texte {
+  if (relie.length === 0) return texte;
+  const cibles = new Map(relie.map((r) => [r.id, r.cible]));
+  return texte.map((b): Bloc => {
+    if (b.type !== "choix") return b;
+    if (estAuto(b)) return cibles.has(b.id) ? { ...b, cible: cibles.get(b.id) ?? null } : b;
+    if (!b.children.some((x) => estRenvoi(x) && cibles.has(x.id))) return b;
+    return { ...b, children: b.children.map((x) => (estRenvoi(x) && cibles.has(x.id) ? { ...x, cible: cibles.get(x.id) ?? null } : x)) };
+  });
+}
 
 /**
  * Avant de contrôler ce qu'un élève a changé : les retouches du plan que sa page n'a pas vues
  * sont mises hors de la comparaison. Un choix venu du plan n'est pas un bloc préparé qu'il
- * aurait supprimé, et un choix que le plan a retiré n'est pas un bloc qu'il aurait ajouté.
+ * aurait supprimé, un choix que le plan a retiré n'est pas un bloc qu'il aurait ajouté, et un
+ * choix que le plan a relié n'est pas un bloc qu'il aurait modifié.
  */
 export function horsRetouches(avant: Texte, apres: Texte, retouches: readonly Retouche[], version: number): { avant: Texte; apres: Texte } {
   const depuis = retouches.filter((r) => r.version > version);
   if (depuis.length === 0) return { avant, apres };
   const ajoutes = new Set(depuis.flatMap((r) => r.ajoute));
   const retires = new Set(depuis.flatMap((r) => r.retire));
-  return { avant: avant.filter((b) => !ajoutes.has(b.id)), apres: apres.filter((b) => !retires.has(b.id)) };
+  const relies = depuis.flatMap((r) => r.relie ?? []);
+  return { avant: avant.filter((b) => !ajoutes.has(b.id)), apres: relierDansLeTexte(apres.filter((b) => !retires.has(b.id)), relies) };
 }
 
 /** Ce que rend un enregistrement (F08.1, F08.2). */

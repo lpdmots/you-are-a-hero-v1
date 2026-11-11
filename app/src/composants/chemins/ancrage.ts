@@ -5,6 +5,11 @@
  * cette vue sans la main de l'utilisateur est calculé ici, à part de l'écran, pour être vérifié.
  */
 
+/** En dessous de cette taille, on regarde l'ensemble : les phrases des onglets ne se lisent plus */
+export const LOIN = 0.62;
+/** De loin, les onglets perdent leurs phrases : il reste leurs points de sortie, d'où partent les traits (F03-AC68). */
+export const deLoin = (zoom: number): boolean => zoom < LOIN;
+
 /** Le décalage du schéma dans son cadre, en points d'écran, et sa taille */
 export type Vue = { x: number; y: number; zoom: number };
 type Point = { x: number; y: number };

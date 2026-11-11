@@ -55,6 +55,25 @@ par le bloc se tire (F13-AC43), le schéma suit l'ordre du texte, bascule
 « Ce qui manque » retiré ([F13.7](docs/specifications.md#f13-affiner),
 F13-AC44).
 
+Choix en onglets, 11 novembre 2026 : sur des maquettes de plusieurs
+représentations du schéma, le porteur décide que chaque choix d'une scène est
+un onglet sous sa carte, dans l'ordre du texte, et que plus rien n'est écrit
+sur un trait ; un retour en arrière, une sortie et un choix sans destination
+se lisent dans l'onglet ; la carte porte son tampon et le prénom de qui
+écrit ; un onglet « Sans destination » se relie en le tirant
+([F03.1](docs/specifications.md#f03-onglets), F03-AC62 à AC69 ; référence :
+[`maquettes/chemins/choix-en-onglets.png`](maquettes/chemins/choix-en-onglets.png)).
+Cela révise « les choix notés sur les flèches » du 11 octobre. Construit en
+local le même jour, un commit, rien poussé ; une migration,
+`relier_depuis_le_plan`, en base locale seulement, pour relier un choix à sa
+place dans le texte sans arrêter celui qui écrit la scène
+([F08.1](docs/specifications.md#f08-ajout-du-plan)) ; écrans critiqués en
+deux lectures (24/40 et 24/40) et corrigés
+([design](docs/design.md#choix-en-onglets--écrans-construits-11-novembre-2026)) ;
+précisions à confirmer et parcours à accorder dans le
+[plan](docs/plan.md#choix-en-onglets-f031-11-novembre-2026) ; mode d'emploi
+dans [`app/README.md`](app/README.md), « Essayer les choix en onglets ».
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { CODES_DES_LIMITES, type Limite } from "@/domaine/offre";
 import { exigerEnseignant } from "@/serveur/adulte";
 import { ajouterUnBloc, annulerUnBloc, enregistrerReglagesDuBloc } from "@/serveur/bloc-de-scenes";
-import { ajouterAuPlan, ajouterSceneApres, annulerAjout, remettreChoix, retirerChoix, type EchecDuPlan } from "@/serveur/chemins";
+import { ajouterAuPlan, ajouterSceneApres, annulerAjout, relierChoix, remettreChoix, retirerChoix, type EchecDuPlan } from "@/serveur/chemins";
 
 /**
  * Les gestes de l'adulte dans « Chemins » (F03.1, F03-AC52 à AC56). Chacun est enregistré
@@ -50,6 +50,18 @@ export async function relierDepuisLeSchema(chapitreId: string, de: string, vers:
   if (!fait.ok) return echec(fait, "Le choix n’a pas pu être ajouté. Réessayez.");
   rafraichir(fait.projetId);
   return { ok: true, choix: fait.choix[0] };
+}
+
+/**
+ * L'onglet d'un choix « Sans destination », tiré jusqu'à une scène du chapitre (F03-AC67) : il y mène, à sa
+ * place dans le texte. Sans scène donnée, « Annuler » : il redevient sans destination.
+ */
+export async function relierChoixDuSchema(sceneId: string, renvoiId: string, vers: string | null): Promise<Fait> {
+  const e = await exigerEnseignant();
+  const fait = await relierChoix(e, sceneId, renvoiId, vers);
+  if (!fait.ok) return echec(fait, vers ? "Le choix n’a pas pu être relié. Réessayez." : "La liaison n’a pas pu être annulée.");
+  rafraichir(fait.projetId);
+  return { ok: true };
 }
 
 /** « Supprimer » un choix (F03-AC56) : sa phrase quitte le texte de la scène d'où il part. */
