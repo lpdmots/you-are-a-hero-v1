@@ -94,9 +94,9 @@ remis par « Annuler », et fait passer les liens cachés par le plan
 l'onglet porte « ce que fait le lecteur », non la phrase réécrite (confirmé
 par le porteur le même jour, F03-AC72 révisé), « Annuler » rend un choix
 supprimé à sa place, et le lien caché se règle aussi depuis « Chemins »
-(confirmés de même, avec six autres précisions ; un choix qui mène à
-plusieurs scènes garde un seul onglet, décidé et construit dans une
-conversation parallèle) ; deux restent à confirmer dans le
+(confirmés de même, avec les autres précisions du lot, toutes réglées le
+11 novembre 2026 ; un choix qui mène à plusieurs scènes garde un seul onglet,
+décidé et construit dans une conversation parallèle), listées au
 [plan](docs/plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026) ;
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Modifier un
 choix depuis Chemins » ».

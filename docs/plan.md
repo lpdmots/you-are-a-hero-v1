@@ -5004,8 +5004,9 @@ sauf un message) ; l'écran dans le navigateur, sur le marais, par
 place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
 rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
 
-**Précisions prises en construisant, à lui faire confirmer** (trois au plus
-par échange ; les dix premières sont réglées, deux restent) :
+**Précisions prises en construisant, toutes réglées avec le porteur le
+11 novembre 2026** — onze confirmées, la neuvième remplacée par sa décision ;
+ne plus les lui soumettre :
 
 1. *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins » :
    changer « Ce que fait le lecteur » change l'onglet ; réécrire « La
@@ -5066,9 +5067,11 @@ par échange ; les dix premières sont réglées, deux restent) :
     **Confirmé par le porteur le 11 novembre 2026.**
 11. *Une nouvelle scène créée depuis « Changer… »* peut l'être dans un autre
     chapitre, comme dans la copie ; elle se crée à la fin du chapitre choisi.
+    **Confirmé par le porteur le 11 novembre 2026.**
 12. *Les mots :* « Modifier ce choix » et « Régler ce lien caché » en bulle
     sur les lignes de « Ses choix » ; « Revenir à la scène (Échap) » sur la
-    flèche ; « Ouverture du choix… » si la lecture tarde.
+    flèche ; « Ouverture du choix… » si la lecture tarde. **Confirmé par le
+    porteur le 11 novembre 2026.**
 
 **À lui dire, sans décision de ma part**
 ([design](design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) :

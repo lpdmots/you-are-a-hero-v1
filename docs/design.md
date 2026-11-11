@@ -1836,7 +1836,8 @@ un tirage abandonné.
 #### Modifier un choix depuis « Chemins » : écran construit (11 novembre 2026)
 
 Règles : [F03.1](specifications.md#f03-modifier-un-choix), F03-AC70 à AC76 ;
-précisions à confirmer : [plan](plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026).
+précisions, toutes réglées avec le porteur le 11 novembre 2026 :
+[plan](plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026).
 Cette section remplace, dans la précédente, « cliquer un onglet, c'est
 cliquer sa carte » pour l'adulte, et « un lien caché se règle dans la
 scène ».

@@ -1669,7 +1669,8 @@ le porteur décide :
     en le tirant la destination d'un onglet qui en a déjà une n'est pas
     retenu : le geste serait trop facile à faire par erreur, et rien ne le
     dirait à l'écran.
-  - *Précisions prises en construisant, à confirmer*
+  - *Précisions prises en construisant, toutes réglées avec le porteur le
+    11 novembre 2026*
     ([plan](plan.md#modifier-un-choix-depuis--chemins--f031-11-novembre-2026)) :
     - *L'onglet porte ce que fait le lecteur,* comme partout dans « Chemins »
       et comme le dit la copie (F05.2 : le libellé « sert à nommer ce choix
@@ -1711,6 +1712,9 @@ le porteur décide :
       la flèche ronde ; à la sortie du champ ou à Entrée pour « Ce que fait le
       lecteur » ; 0,7 seconde après la frappe pour « La phrase ». **Confirmé
       par le porteur le 11 novembre 2026.**
+    - *Une nouvelle scène créée depuis « Changer… »* peut l'être dans un
+      autre chapitre, comme dans la copie ; elle se crée à la fin du chapitre
+      choisi. **Confirmé par le porteur le 11 novembre 2026.**
     - *Cliquer la carte déjà choisie* ne referme pas le choix ; « ← », Échap
       ou une autre carte le font. Cliquer le fond du schéma revient au plan.
       Un seul niveau, sans croix sur l'écran du choix. **Confirmé par le
