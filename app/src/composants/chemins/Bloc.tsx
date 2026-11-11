@@ -233,7 +233,7 @@ export function PanneauDuBloc({
 
         {p ? (
           <Arbre
-            p={p} chemins={chemins} deClasse={deClasse} ouverte={ouverte} onOuvrir={onOuvrir}
+            p={p} chemins={chemins} deClasse={deClasse} ouverte={ouverte}
             changerScene={changerScene} changerChoix={changerChoix}
             ordre={ordre}
             questions={
@@ -329,13 +329,15 @@ function Reglages({ id, reglages, deClasse, onChange }: { id: string; reglages: 
 }
 
 /**
- * Le bloc en arbre, dans l'ordre où le lecteur le parcourt : chaque choix, ce que fait le lecteur
- * et où il arrive ; sous une nouvelle scène, sa consigne repliée et ses propres choix.
+ * Le bloc en fiches, dans le panneau large (11 novembre 2026) : une rangée par scène d'où partent
+ * des choix — la scène d'origine, puis chaque nouvelle scène qui a les siens —, dans l'ordre du
+ * schéma, de gauche à droite. Chaque fiche dit ce que fait le lecteur, puis la scène où il arrive :
+ * son titre, sa consigne et sa liste, visibles d'emblée.
  */
 function Arbre({
-  p, chemins, deClasse, ouverte, onOuvrir, changerScene, changerChoix, retirerScene, retirerChoix, ordre, avant, questions,
+  p, chemins, deClasse, ouverte, changerScene, changerChoix, retirerScene, retirerChoix, ordre, avant, questions,
 }: {
-  p: Proposition; chemins: Chemins; deClasse: boolean; ouverte: string | null; onOuvrir: (cle: string | null) => void;
+  p: Proposition; chemins: Chemins; deClasse: boolean; ouverte: string | null;
   ordre: (id: string) => number;
   /** Ce qui touche la scène d'origine, en tête : la consigne qu'on peut lui donner */
   avant?: ReactNode;
@@ -349,56 +351,66 @@ function Arbre({
   const parCle = new Map(p.scenes.map((s) => [s.cle, s]));
   // Dans l'ordre où le schéma les montre, de gauche à droite
   const range = (choix: ChoixPropose[]) => [...choix].sort((a, b) => ordre(a.vers) - ordre(b.vers));
-  const montrees = new Set<string>();
-  const racine = p.origine ?? p.scenes.find((s) => !p.choix.some((c) => c.vers === s.cle))?.cle ?? null;
+  const racine = p.origine ? null : (p.scenes.find((s) => !p.choix.some((c) => c.vers === s.cle)) ?? null);
+  const origine = p.origine ? chemins.noeuds.find((n) => n.id === p.origine) : undefined;
 
-  const scene = (s: SceneProposee, enTete: ReactNode, niveau: number): ReactNode => {
-    montrees.add(s.cle);
-    const suites = range(p.choix.filter((c) => c.de === s.cle));
-    return (
-      <li key={s.cle} className={`bloc-ligne${ouverte === s.cle ? " est-ouverte" : ""}`} data-bloc={s.cle}>
-        {enTete}
-        <SceneDuBloc s={s} deClasse={deClasse} ouverte={ouverte === s.cle} onOuvrir={(oui) => onOuvrir(oui ? s.cle : null)} onChange={(m) => changerScene(s.cle, m)} onRetirer={() => retirerScene(s.cle)} />
-        {suites.length && niveau < 4 ? <ul className="bloc-arbre bloc-arbre--sous">{suites.map((c) => choix(c, niveau + 1))}</ul> : null}
-      </li>
-    );
-  };
-  const choix = (c: ChoixPropose, niveau: number): ReactNode => {
+  // Les rangées : d'où partent les choix, en suivant le bloc depuis son départ
+  const rangees: { de: string; nom: string; choix: ChoixPropose[] }[] = [];
+  const vues = new Set<string>();
+  const file = [p.origine ?? racine?.cle].filter((x): x is string => !!x);
+  while (file.length) {
+    const de = file.shift()!;
+    if (vues.has(de)) continue;
+    vues.add(de);
+    const choix = range(p.choix.filter((c) => c.de === de));
+    if (choix.length) rangees.push({ de, nom: de === p.origine && origine ? nomScene(origine) : `« ${parCle.get(de)?.titre || "sans titre"} »`, choix });
+    for (const c of choix) if (parCle.has(c.vers)) file.push(c.vers);
+  }
+  const montrees = new Set<string>(racine ? [racine.cle] : []);
+
+  const fiche = (c: ChoixPropose): ReactNode => {
     const libelle = (
-      <ChampQuiGrandit
-        className="bloc-ligne__libelle"
-        aria-label="Ce que fait le lecteur"
-        rows={1}
-        dictee={false}
-        value={c.libelle}
-        maxLength={LIBELLE_MAX}
-        placeholder="Ce que fait le lecteur"
-        onKeyDown={sansRetour}
-        onChange={(e) => changerChoix(c.cle, e.target.value.replace(/\s*\n\s*/g, " "))}
-      />
+      <span className="bloc-fiche__choix">
+        <Icone nom="fleche" />
+        <ChampQuiGrandit
+          className="bloc-ligne__libelle"
+          aria-label="Ce que fait le lecteur"
+          rows={1}
+          dictee={false}
+          value={c.libelle}
+          maxLength={LIBELLE_MAX}
+          placeholder="Ce que fait le lecteur"
+          onKeyDown={sansRetour}
+          onChange={(e) => changerChoix(c.cle, e.target.value.replace(/\s*\n\s*/g, " "))}
+        />
+      </span>
     );
     const nouvelle = parCle.get(c.vers);
     if (nouvelle && !montrees.has(nouvelle.cle)) {
-      return scene(nouvelle, <span className="bloc-ligne__choix"><Icone nom="fleche" />{libelle}</span>, niveau);
+      montrees.add(nouvelle.cle);
+      return (
+        <li key={c.cle} className={`bloc-fiche${ouverte === nouvelle.cle ? " est-ouverte" : ""}`} data-bloc={nouvelle.cle}>
+          {libelle}
+          <SceneDuBloc s={nouvelle} deClasse={deClasse} onChange={(m) => changerScene(nouvelle.cle, m)} onRetirer={() => retirerScene(nouvelle.cle)} />
+        </li>
+      );
     }
-    // Vers une scène du chapitre, ou une nouvelle scène déjà montrée plus haut : le chemin la rejoint
+    // Vers une scène du chapitre, ou une nouvelle scène déjà montrée : le chemin la rejoint
     const existante = estNouvelle(p, c.vers) ? undefined : chemins.noeuds.find((n) => n.id === c.vers);
     return (
-      <li key={c.cle} className="bloc-ligne bloc-ligne--rejoint">
-        <span className="bloc-ligne__choix"><Icone nom="fleche" />{libelle}</span>
+      <li key={c.cle} className="bloc-fiche bloc-fiche--rejoint">
+        {libelle}
         <span className="bloc-ligne__rejoint">
           <Icone nom="entree" />
           {existante ? nomScene(existante) : `« ${nouvelle?.titre || "sans titre"} »`}
+          <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer le choix « ${c.libelle || "sans libellé"} »`} title="Retirer ce choix" onClick={() => retirerChoix(c.cle)}>
+            <Icone nom="corbeille" />
+          </button>
         </span>
-        <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer le choix « ${c.libelle || "sans libellé"} »`} title="Retirer ce choix" onClick={() => retirerChoix(c.cle)}>
-          <Icone nom="corbeille" />
-        </button>
       </li>
     );
   };
 
-  const premiers = p.origine ? range(p.choix.filter((c) => c.de === p.origine)) : [];
-  const debut = !p.origine && racine ? parCle.get(racine) : undefined;
   return (
     <section className="panneau-bloc__propose" aria-labelledby="bloc-propose">
       <p className="panneau-bloc__propose-tete" id="bloc-propose">
@@ -408,9 +420,24 @@ function Arbre({
       </p>
       {questions}
       {avant}
-      <ul className="bloc-arbre">
-        {debut ? scene(debut, null, 0) : premiers.map((c) => <Fragment key={c.cle}>{choix(c, 1)}</Fragment>)}
-      </ul>
+      {racine ? (
+        <div className="bloc-rangee">
+          <p className="bloc-rangee__de">Le début du chapitre</p>
+          <ul className="bloc-fiches">
+            <li className={`bloc-fiche${ouverte === racine.cle ? " est-ouverte" : ""}`} data-bloc={racine.cle}>
+              <SceneDuBloc s={racine} deClasse={deClasse} onChange={(m) => changerScene(racine.cle, m)} onRetirer={() => retirerScene(racine.cle)} />
+            </li>
+          </ul>
+        </div>
+      ) : null}
+      {rangees.map((r) => (
+        <div key={r.de} className="bloc-rangee">
+          <p className="bloc-rangee__de">
+            Depuis <b>{r.nom}</b>
+          </p>
+          <ul className="bloc-fiches">{r.choix.map((c) => <Fragment key={c.cle}>{fiche(c)}</Fragment>)}</ul>
+        </div>
+      ))}
     </section>
   );
 }
@@ -421,40 +448,38 @@ const sansRetour = (e: ToucheReact<HTMLTextAreaElement>) => {
 };
 
 function SceneDuBloc({
-  s, deClasse, ouverte, onOuvrir, onChange, onRetirer,
+  s, deClasse, onChange, onRetirer,
 }: {
-  s: SceneProposee; deClasse: boolean; ouverte: boolean; onOuvrir: (oui: boolean) => void;
+  s: SceneProposee; deClasse: boolean;
   onChange: (m: Partial<SceneProposee>) => void; onRetirer: () => void;
 }) {
-  const id = useId();
   return (
-    <div className="bloc-ligne__scene">
-      <ChampQuiGrandit
-        className="bloc-ligne__titre"
-        aria-label="Titre de la nouvelle scène"
-        rows={1}
-        dictee={false}
-        value={s.titre}
-        maxLength={120}
-        placeholder="Son titre"
-        onKeyDown={sansRetour}
-        onChange={(e) => onChange({ titre: e.target.value.replace(/\s*\n\s*/g, " ") })}
-      />
-      <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer la scène « ${s.titre || "sans titre"} »`} title="Retirer cette scène" onClick={onRetirer}>
-        <Icone nom="corbeille" />
-      </button>
+    <div className="bloc-fiche__scene">
+      <span className="bloc-fiche__titre">
+        <ChampQuiGrandit
+          className="bloc-ligne__titre"
+          aria-label="Titre de la nouvelle scène"
+          rows={1}
+          dictee={false}
+          value={s.titre}
+          maxLength={120}
+          placeholder="Son titre"
+          onKeyDown={sansRetour}
+          onChange={(e) => onChange({ titre: e.target.value.replace(/\s*\n\s*/g, " ") })}
+        />
+        <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer la scène « ${s.titre || "sans titre"} »`} title="Retirer cette scène" onClick={onRetirer}>
+          <Icone nom="corbeille" />
+        </button>
+      </span>
       {s.inventee ? (
         <span className="bloc-ligne__imaginee">
           <Icone nom="ia" />
           Imaginée par l’IA, à vérifier
         </span>
       ) : null}
-      <button type="button" className="lien bloc-ligne__deplier" aria-expanded={ouverte} aria-controls={`${id}-consigne`} onClick={() => onOuvrir(!ouverte)}>
-        <Icone nom={ouverte ? "chevron-haut" : "chevron-bas"} />
-        {s.consigne ? (deClasse ? "Consigne et liste" : "Consigne") : "Sans consigne"}
-      </button>
-      {ouverte ? (
-        <div className="bloc-ligne__consigne" id={`${id}-consigne`}>
+      {/* Les consignes se lisent d'emblée : c'est le texte qu'on relit ici ; « Consignes » éteint, le titre seul */}
+      {s.consigne || s.liste.length ? (
+        <div className="bloc-ligne__consigne">
           <ChampQuiGrandit className="pchamp" aria-label="Consigne proposée" rows={2} maxLength={4000} value={s.consigne} placeholder="Consigne facultative" onChange={(e) => onChange({ consigne: e.target.value })} />
           {deClasse ? <ListeAModifier depart={s.liste} onChange={(liste) => onChange({ liste })} titre="Liste proposée" etiquette="Élément proposé" cases={false} /> : null}
         </div>

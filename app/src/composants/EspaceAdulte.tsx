@@ -65,6 +65,15 @@ type Props = {
  * ses quatre onglets, « Lire à l'essai » et « Réglages du projet » ; puis « Mes projets » et « Mes
  * classes » ; au pied, le compte et « Replier ». Sous 900 px, une barre mince et la colonne en tiroir.
  */
+/**
+ * Replier la colonne le temps d'un travail qui demande de la place (le bloc de scènes, F13.7),
+ * sans toucher au choix gardé de l'adulte : elle revient comme elle était.
+ */
+const REPLI_POUR_UN_TEMPS = "colonne-adulte-pour-un-temps";
+export const replierLaColonnePourUnTemps = (oui: boolean): void => {
+  window.dispatchEvent(new CustomEvent<boolean>(REPLI_POUR_UN_TEMPS, { detail: oui }));
+};
+
 export function EspaceAdulte({ nomAffiche, courriel, etoiles, admin = false, repli: depart, children }: Props) {
   const { projet, actif } = useProjetCourant();
   const chemin = usePathname();
@@ -95,7 +104,13 @@ export function EspaceAdulte({ nomAffiche, courriel, etoiles, admin = false, rep
     requete.addEventListener("change", suivre);
     return () => requete.removeEventListener("change", suivre);
   }, []);
-  const repliee = repli === "repliee" || (repli === null && etroit);
+  const [pourUnTemps, setPourUnTemps] = useState(false);
+  useEffect(() => {
+    const suivre = (e: Event) => setPourUnTemps((e as CustomEvent<boolean>).detail === true);
+    window.addEventListener(REPLI_POUR_UN_TEMPS, suivre);
+    return () => window.removeEventListener(REPLI_POUR_UN_TEMPS, suivre);
+  }, []);
+  const repliee = pourUnTemps || repli === "repliee" || (repli === null && etroit);
   const basculer = () => {
     const suivant: Repli = repliee ? "ouverte" : "repliee";
     setRepli(suivant);

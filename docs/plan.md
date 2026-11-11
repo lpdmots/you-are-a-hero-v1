@@ -4609,6 +4609,17 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
     4. ce que l'IA invente porte « Imaginée, à vérifier », en pastille
        cernée, distincte de « Proposée ».
 
+- **Panneau large, décidé par lui le 11 novembre 2026** (« l'espace de
+  travail est vraiment petit, il faut scroller »), sur recommandation, contre
+  sa première idée d'un espace pleine largeur avec le seul bloc en
+  miniature, qui aurait perdu l'accroche au chapitre et révisé F13.7 : le
+  temps du bloc, le panneau prend toute la hauteur et 44 % de la largeur, la
+  colonne de navigation se replie pour un temps, les scènes proposées sont
+  des fiches côte à côte, consignes et listes visibles d'emblée. Le panneau
+  d'une scène cliquée reste étroit. Reste possible, s'il le demande après
+  essai : un « Agrandir » qui étend le panneau à toute la largeur le temps de
+  relire. Construit le même jour, sans migration.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

@@ -10,6 +10,7 @@ import {
 import { cheminsAvecLeBloc, resteAReprendre } from "@/domaine/bloc-de-scenes";
 import { MOT_DE_MARQUE, type ARegarder, type Chemins, type NoeudDeChemin } from "@/domaine/chemins";
 import { useAidesIa } from "../AidesIa";
+import { replierLaColonnePourUnTemps } from "../EspaceAdulte";
 import { Bulle } from "../Bulle";
 import { Icone } from "../Icone";
 import { TamponScene } from "../TamponScene";
@@ -44,6 +45,11 @@ const barre = (): number => {
 };
 /** La largeur du panneau de la scène cliquée, que la feuille de style reprend (« --panneau-chemin », recit.css) */
 const PANNEAU = 304;
+/**
+ * Le panneau du bloc de scènes, large et de toute la hauteur (11 novembre 2026) : on y relit des
+ * consignes. La feuille de style reprend la même règle (« --panneau-bloc », recit.css).
+ */
+const largeurDuBloc = (): number => Math.round(Math.min(660, Math.max(460, window.innerWidth * 0.44)));
 /** En dessous, on regarde l'ensemble : les libellés des choix ne se lisent plus et sont masqués */
 const LOIN = 0.62;
 /** « Tout voir » descend aussi bas qu'il le faut ; les boutons « − » et « + » restent entre deux tailles utiles */
@@ -407,9 +413,16 @@ export default function Schema({
         aGarder.current = e.origine ?? avant.origine;
         aCadrer.current = e.proposition !== null;
       }
+      // Le panneau s'ouvre, ou la scène d'origine change : elle vient à gauche du panneau
+      if ((e.ouvert && !avant.ouvert) || (e.ouvert && e.origine !== avant.origine)) aCadrer.current = true;
       return e;
     });
   const vus = useMemo(() => (blocOuvert ? cheminsAvecLeBloc(chemins, bloc.proposition) : chemins), [blocOuvert, chemins, bloc.proposition]);
+  // Le temps du bloc, la colonne de navigation se replie : le schéma garde sa moitié de l'écran
+  useEffect(() => {
+    replierLaColonnePourUnTemps(blocOuvert);
+    return () => replierLaColonnePourUnTemps(false);
+  }, [blocOuvert]);
 
   // La disposition se calcule une fois la police de l'outil chargée : les libellés se mesurent avec elle
   useEffect(() => {
@@ -504,7 +517,8 @@ export default function Schema({
   const largeurToile = Math.max(place.largeur, Math.ceil(l * zoom + 2 * MARGE));
   const hauteurToile = Math.ceil(h * zoom + 2 * MARGE);
   // Là où l'adulte construit, un schéma qui tient à gauche du panneau s'y centre : le panneau, en s'ouvrant, ne couvre rien et rien ne bouge
-  const largeurUtile = construire && l * zoom + 2 * MARGE <= place.largeur - PANNEAU - 24 ? place.largeur - PANNEAU - 24 : largeurToile;
+  const panneau = blocOuvert ? largeurDuBloc() : PANNEAU;
+  const largeurUtile = construire && l * zoom + 2 * MARGE <= place.largeur - panneau - 24 ? place.largeur - panneau - 24 : largeurToile;
   useEffect(() => {
     courantRef.current = { noeuds, zoom, dessine: dessine && disposition !== null };
   });
@@ -873,7 +887,7 @@ export default function Schema({
   // ——— La proposition dessinée tient entière à l'écran (F13.7) : on fait défiler juste assez ; si elle
   // est plus grande que la vue, le schéma se réduit, sans descendre sous la taille où les libellés se lisent ———
   useEffect(() => {
-    if (!aCadrer.current || !blocOuvert || !bloc.proposition) return;
+    if (!aCadrer.current || !blocOuvert) return;
     // Après que la scène d'origine a été tenue en place et que les cartes ont glissé (F03-AC54)
     const attente = setTimeout(() => {
       {
@@ -881,8 +895,7 @@ export default function Schema({
         if (!c) return;
         // Le bloc entier : ses scènes, la scène d'origine, et les scènes du chapitre qu'un de ses chemins rejoint
         const propose = bloc.proposition;
-        if (!propose) return;
-        const rejointes = propose.choix.map((x) => x.vers).filter((v) => !propose.scenes.some((sc) => sc.cle === v));
+        const rejointes = propose ? propose.choix.map((x) => x.vers).filter((v) => !propose.scenes.some((sc) => sc.cle === v)) : [];
         const cartes = [...c.querySelectorAll<HTMLElement>(".carte-chemin--proposee"), ...[bloc.origine, ...rejointes].flatMap((id) => (id ? [c.querySelector<HTMLElement>(`.carte-chemin[data-chemin="${CSS.escape(id)}"]`)] : []))]
           .filter((x): x is HTMLElement => x !== null)
           .map((x) => x.getBoundingClientRect());
@@ -908,7 +921,7 @@ export default function Schema({
     }, 320);
     return () => clearTimeout(attente);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [noeuds, zoom]);
+  }, [noeuds, zoom, blocOuvert, bloc.origine]);
 
   /** Ce près de quoi la bulle se pose : la carte d'où l'on part, celle où le lien arrive, ou le bouton du panneau */
   const repereDuGeste = (): globalThis.Element | null => {
@@ -1053,10 +1066,10 @@ export default function Schema({
         )}
         {/* La place du panneau : le cadre défile assez loin pour montrer ce qu'il couvre */}
         {/* Pas pour un chapitre qui tient à gauche du panneau : rien n'est dessous, et une barre de défilement surgirait */}
-        {panneauOuvert && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" /> : null}
+        {panneauOuvert && largeurUtile === largeurToile ? <div className="chemins__reserve" aria-hidden="true" style={blocOuvert ? { width: panneau + 20 } : undefined} /> : null}
       </div>
       {services && blocOuvert ? (
-        <div className="chemins__rail" ref={rail}>
+        <div className="chemins__rail chemins__rail--bloc" ref={rail} style={{ width: panneau }}>
           <PanneauDuBloc
             etat={bloc}
             setEtat={setBloc}
