@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Bulle } from "@/composants/Bulle";
+import { PointsASavoir } from "./PointsASavoir";
 import { Icone } from "@/composants/Icone";
 import { ETAPES_DU_LIVRE, type RaisonDeRefus } from "@/domaine/livre";
 import { supprimerPdf } from "../../actions-livre";
@@ -183,11 +184,7 @@ function VoletImprimer({
                   <p id="rappel-t" className="imprimer__rappel-titre">
                     À savoir avant de créer le PDF
                   </p>
-                  <ul>
-                    {rappels.map((x) => (
-                      <li key={x}>{x}</li>
-                    ))}
-                  </ul>
+                  <PointsASavoir rappels={rappels} />
                   <p className="imprimer__cmd">
                     <button type="button" className="btn btn--primaire" disabled={calcul} aria-busy={calcul || undefined} onClick={() => void creer()}>
                       <Icone nom="papier" />
@@ -281,7 +278,7 @@ function PdfConserves({ definitifs, placeOccupee }: { definitifs: DefinitifAffic
                 <a className={`btn btn--petit${i === 0 && d.aJour ? " btn--primaire" : ""}`} href={`/livre/pdf/${d.id}`}>
                   Télécharger
                 </a>
-                <button type="button" className="lien conserve__supprimer" onClick={() => setASupprimer(d.id)} aria-label={`Supprimer le PDF définitif du ${d.etat.replace(/^état du /, "")}`}>
+                <button type="button" className="lien lien--danger conserve__supprimer" onClick={() => setASupprimer(d.id)} aria-label={`Supprimer le PDF définitif du ${d.etat.replace(/^état du /, "")}`}>
                   Supprimer
                 </button>
               </span>

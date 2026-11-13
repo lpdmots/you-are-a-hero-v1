@@ -338,7 +338,7 @@ export function Livre({
                         ) : null}
                         {ouverte.point ? (
                           <ul className="points a-cote__point">
-                            <CartePoint projetId={projet.id} point={ouverte.point} sansOuvrir />
+                            <CartePoint projetId={projet.id} point={ouverte.point} sansOuvrir sansChemins={etape !== "chemins"} />
                           </ul>
                         ) : null}
                       </>
@@ -404,7 +404,8 @@ export function Livre({
                 onRenvoi={(cible, depuis) => void ouvrir(cible, { depuis: [...(ouverte?.depuis ?? []), depuis] })}
                 barre={
                   aParcourir.length ? (
-                    <span className="parcours" role="group" aria-label="Parcourir les problèmes">
+                    // Le triangle prend la couleur du point le plus grave : ambre s'il n'y a qu'à confirmer (septembre sans alerte, F11-AC89)
+                    <span className={`parcours${aParcourir.some((p) => p.gravite === "bloque") ? "" : " parcours--avert"}`} role="group" aria-label="Parcourir les problèmes">
                       <span className="parcours__nom">
                         <Icone nom="alerte" />
                         Problèmes {rangProbleme >= 0 ? `${rangProbleme + 1} / ` : ""}
@@ -663,7 +664,11 @@ function FicheChemins({ projetId, chemins, fermee }: { projetId: string; chemins
 }
 
 /** Un point : sa scène, sa phrase, et de quoi le traiter, sur une seule ligne. */
-function CartePoint({ projetId, point, sansOuvrir }: { projetId: string; point: PointAffiche; sansOuvrir?: boolean }) {
+/**
+ * Un point à traiter. Ses gestes tiennent sur une ligne ; « Voir dans les chemins », en signe des chemins au bout de la
+ * ligne, n'est proposé qu'à « Vérifier les chemins » : chaque temps n'a que ses commandes (F11.6, révision de novembre 2026).
+ */
+function CartePoint({ projetId, point, sansOuvrir, sansChemins }: { projetId: string; point: PointAffiche; sansOuvrir?: boolean; sansChemins?: boolean }) {
   const dire = useMessage();
   const ouvrirACote = use(OuvrirScene);
   const [occupe, lancer] = useTransition();
@@ -708,9 +713,9 @@ function CartePoint({ projetId, point, sansOuvrir }: { projetId: string; point: 
             Ouvrir la scène
           </Link>
         ) : null}
-        {point.chemins ? (
-          <Link className="lien" href={point.chemins}>
-            Voir dans les chemins
+        {point.chemins && !sansChemins ? (
+          <Link className="point__chemins" href={point.chemins} title="Voir dans les chemins" aria-label="Voir dans les chemins">
+            <Icone nom="chemins" />
           </Link>
         ) : null}
         {point.lien ? (
@@ -809,11 +814,8 @@ function Declaration({ projetId, chemins }: { projetId: string; chemins: Chemins
               J’ai vérifié les chemins
             </button>
           </p>
-          {chemins.declarable ? null : (
-            <p className="tache__aide">
-              {chemins.finir ? "Possible quand toutes les scènes seront prêtes pour le livre." : "Possible quand les tâches précédentes sont terminées."}
-            </p>
-          )}
+          {/* Avec des scènes à finir, la ligne à l'horloge du pied de la fiche le dit déjà */}
+          {chemins.declarable || chemins.finir ? null : <p className="tache__aide">Possible quand les tâches précédentes sont terminées.</p>}
         </>
       )}
     </>
@@ -910,7 +912,7 @@ function FicheRelire({
               {cour.points.length ? (
                 <ul className="points">
                   {cour.points.map((p) => (
-                    <CartePoint key={p.cle} projetId={projet.id} point={p} />
+                    <CartePoint key={p.cle} projetId={projet.id} point={p} sansChemins />
                   ))}
                 </ul>
               ) : cour.attente ? (
@@ -933,7 +935,7 @@ function FicheRelire({
             </summary>
             <ul className="points">
               {relire.aSavoir.map((p) => (
-                <CartePoint key={p.cle} projetId={projet.id} point={p} />
+                <CartePoint key={p.cle} projetId={projet.id} point={p} sansChemins />
               ))}
             </ul>
           </details>
@@ -982,7 +984,6 @@ function LireEtCorriger({ projet, relire, pdfDeTravail }: { projet: { id: string
           </Link>
         </p>
       )}
-      <PdfDeTravail projetId={projet.id} dernier={pdfDeTravail} />
       <div className="declaration">
         {relire.terminee ? (
           <>
@@ -1024,6 +1025,8 @@ function LireEtCorriger({ projet, relire, pdfDeTravail }: { projet: { id: string
           </>
         )}
       </div>
+      {/* Après la déclaration, qui reste en vue à 768 px : le PDF de travail est un moyen de relire, facultatif (révision de novembre 2026) */}
+      <PdfDeTravail projetId={projet.id} dernier={pdfDeTravail} />
     </>
   );
 }
@@ -1059,8 +1062,12 @@ function PdfDeTravail({ projetId, dernier }: { projetId: string; dernier: PdfAff
   }
   return (
     <div className="pdf-travail">
-      <h4 className="pdf-travail__titre">PDF de travail</h4>
-      <p className="pdf-travail__phrase">Pour relire sur papier, avec les références des scènes et les points à corriger.</p>
+      <h4 className="pdf-travail__titre">
+        PDF de travail
+        <Bulle question="À quoi sert le PDF de travail ?">
+          <span>À relire sur papier : le livre entier, avec les références des scènes et les points à corriger.</span>
+        </Bulle>
+      </h4>
       <p className="pdf-travail__cmd">
         <button type="button" className="btn" onClick={creer} disabled={calcul} aria-describedby={calcul ? "pdf-travail-etat" : undefined}>
           <Icone nom="papier" />

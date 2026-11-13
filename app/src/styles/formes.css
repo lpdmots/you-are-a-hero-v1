@@ -661,6 +661,9 @@
 }
 .page-tete--onglet h1 {
   font-size: var(--t-2xl);
+  /* La hauteur du bouton « Aide » : avec ou sans lui, le contenu de l'onglet commence au même endroit
+     (révision du Livre, novembre 2026 : la ligne d'étapes sautait de 5 points d'une étape à l'autre) */
+  line-height: 38px;
 }
 .aide-bouton {
   display: inline-flex;

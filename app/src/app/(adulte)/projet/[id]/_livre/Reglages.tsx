@@ -347,8 +347,14 @@ function MoinsDeBlanc({ projetId, ordre }: { projetId: string; ordre: EtatDeLOrd
     } catch {
       r = { ok: false, erreur: "L’ordre n’a pas pu être changé. Réessayez dans un instant." };
     }
+    if (!r.ok && r.rien) {
+      // Aucun ordre ne fait mieux : c'est une réponse, l'ordre actuel est gardé (révision de novembre 2026)
+      await garderOrdre(projetId);
+      setEnCours(false);
+      return setRien(r.erreur);
+    }
     setEnCours(false);
-    if (!r.ok) return r.rien ? setRien(r.erreur) : setErreur(r.erreur);
+    if (!r.ok) return setErreur(r.erreur);
     setFait({ annuler: r.annuler, decision: r.decision, gain: Math.max(0, r.avant - r.apres) });
     routeur.refresh();
   };
@@ -411,10 +417,11 @@ function MoinsDeBlanc({ projetId, ordre }: { projetId: string; ordre: EtatDeLOrd
         <>
           <p className="blanc__encadre">Les numéros changent, les renvois suivent.</p>
           <p className="blanc__cmd">
-            <button type="button" className={`btn${decision === null || ordre?.doute ? " btn--primaire" : ""}`} disabled={enCours} aria-busy={enCours || undefined} onClick={demander}>
+            {/* Plein seulement quand une réponse est attendue : sinon « La mise en page me convient » est le bouton principal */}
+            <button type="button" className={`btn${ordre?.doute ? " btn--primaire" : ""}`} disabled={enCours} aria-busy={enCours || undefined} onClick={demander}>
               {enCours ? "Calcul…" : decision === "reordonne" ? "Réordonner à nouveau" : "Réordonner les passages"}
             </button>
-            {decision === null || ordre?.doute ? (
+            {(decision === null && !rien) || ordre?.doute ? (
               <button type="button" className="btn" disabled={enCours} onClick={() => void garder()}>
                 Garder cet ordre
               </button>

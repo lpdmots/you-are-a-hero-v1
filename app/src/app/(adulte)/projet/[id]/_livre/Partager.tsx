@@ -5,6 +5,7 @@ import { useState, type ReactNode } from "react";
 import { appelerUneAide } from "@/composants/PlusDEtoiles";
 import { Bulle } from "@/composants/Bulle";
 import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
+import { PointsASavoir } from "./PointsASavoir";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import { useAidesIa } from "@/composants/AidesIa";
@@ -664,16 +665,7 @@ function Rappel({ rappels, action, enCours, onConfirmer, onAnnuler }: {
       <p id="rappel-partage-t" className="imprimer__rappel-titre">
         À relire avant de partager
       </p>
-      {rappels.length ? (
-        <>
-          <p className="partager__a-savoir">À savoir :</p>
-          <ul>
-            {rappels.map((x) => (
-              <li key={x}>{x}</li>
-            ))}
-          </ul>
-        </>
-      ) : null}
+      <PointsASavoir rappels={rappels} />
       <ul>
         <li>Aucun nom ni prénom réel dans le récit, sauf si vous l’avez voulu.</li>
         <li>Aucune photo où une personne est reconnaissable.</li>

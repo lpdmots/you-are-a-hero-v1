@@ -17,6 +17,12 @@ import { abonnerAuMode, garderLeMode, modeGarde, type ModeApercu } from "./modeA
  */
 
 export type { ModeApercu };
+/** « état du 13 novembre, 17 h 50 » devient « état de 17 h 50 » le jour même : la ligne reste courte (étape 6, « état de 16 h 40 »). */
+const duJour = (etat: string): string => {
+  const aujourdhui = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", timeZone: "Europe/Paris" });
+  return etat.replace(`état du ${aujourdhui}, `, "état de ");
+};
+
 const LARGEUR_MM = 148;
 const HAUTEUR_MM = 210;
 
@@ -177,7 +183,7 @@ export function Apercu({
           </span>
         ) : null}
         <span className="apercu__etat" role="status">
-          {calcul ? "Mise à jour…" : erreur ? erreur : apercu ? `${apercu.passages} passage${apercu.passages > 1 ? "s" : ""} · ${apercu.pages} pages · ${apercu.etat}` : ""}
+          {calcul ? "Mise à jour…" : erreur ? erreur : apercu ? `${apercu.passages} passage${apercu.passages > 1 ? "s" : ""} · ${apercu.pages} pages · ${duJour(apercu.etat)}` : ""}
           {erreur && !calcul ? (
             <button type="button" className="lien" onClick={() => void calculer()}>
               Réessayer

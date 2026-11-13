@@ -347,6 +347,19 @@
 .point__actions .lien {
   font-size: var(--t-s);
 }
+/* « Voir dans les chemins » : le signe des chemins au bout de la ligne, nommé au survol */
+.point__chemins {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  margin-left: auto;
+  border-radius: 7px;
+  color: var(--canard);
+}
+.point__chemins:hover {
+  background: var(--canard-pale);
+}
 
 .acceptes,
 .asavoir {
@@ -452,17 +465,37 @@
   }
   .temps__lien {
     padding: 6px;
-    gap: 6px;
+    gap: 4px;
   }
   .temps__etape + .temps__etape::before {
-    min-width: 6px;
-    margin: 0 2px;
+    flex: 1 1 4px;
+    min-width: 4px;
+    margin: 0;
   }
-  /* Sur téléphone, les pastilles seules : le titre de la fiche dit l'étape */
+  .temps__num {
+    width: 26px;
+    height: 26px;
+  }
+  /* Sur téléphone, l'étape en cours garde son nom, plus petit, coupé s'il le faut : « Mettre en page » et
+     « Imprimer et partager » n'ont pas de fiche titrée (révision de novembre 2026) ; les autres, leur pastille */
   .temps__lien .temps__nom {
     display: none;
   }
-  .temps__lien.est-en-cours .temps__nom,
+  .temps__etape:has(.est-en-cours) {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+  .temps__lien.est-en-cours {
+    min-width: 0;
+    padding-right: 8px;
+  }
+  .temps__lien.est-en-cours .temps__nom {
+    display: block;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: var(--t-xs);
+  }
   .temps__marque--fermee {
     display: none;
   }
@@ -474,13 +507,16 @@
 /* ——— PDF de travail, à « Relire » (F11.2) ——— */
 .pdf-travail {
   display: grid;
-  gap: 6px;
-  margin-top: 22px;
-  padding-top: 16px;
+  gap: 4px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid var(--trait);
 }
 .pdf-travail__titre {
-  font-size: var(--t-m);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-s);
   font-weight: 800;
 }
 .pdf-travail__phrase {
@@ -569,18 +605,31 @@
     display: flex;
     gap: 6px;
   }
+  /* La bascule de toute l'application : un onglet blanc sur un rail gris (révision de novembre 2026) */
+  .livre-plan--scene .livre-plan__onglets {
+    gap: 3px;
+    padding: 3px;
+    border-radius: 11px;
+    background: #e9ebe6;
+    box-shadow: inset 0 0 0 1px var(--trait);
+  }
   .livre-plan__onglets button {
     flex: 1;
-    padding: 8px 12px;
-    border-radius: var(--r-m);
-    border: 1px solid var(--trait);
-    background: var(--feuille);
+    padding: 7px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--graphite-2);
+    font: inherit;
+    font-size: var(--t-s);
     font-weight: 700;
   }
   .livre-plan__onglets button[aria-selected="true"] {
-    background: var(--graphite);
-    border-color: var(--graphite);
-    color: var(--feuille);
+    background: var(--feuille);
+    color: var(--graphite);
+    box-shadow:
+      0 0 0 1px var(--trait-fort),
+      0 1px 3px rgba(20, 30, 30, 0.16);
   }
   .livre-plan--scene.livre-plan--vue-scene .livre-plan__droite,
   .livre-plan--scene.livre-plan--vue-livre .livre-plan__gauche {
@@ -593,23 +642,55 @@
   display: grid;
   gap: 12px;
 }
+/* Une disposition fixe (révision de novembre 2026) : le parcours à gauche, la présentation à droite, l'état
+   dessous en petit. Le parcours qui vient ou s'en va (« Garder ainsi ») ne fait plus sauter l'aperçu d'une ligne. */
+.apercu {
+  container-type: inline-size;
+}
 .apercu__barre {
   position: sticky;
   top: var(--entete);
   z-index: 4;
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 8px 16px;
-  padding: 8px 0;
+  gap: 2px 16px;
+  padding: 8px 0 6px;
   background: var(--bureau);
 }
+.apercu__barre > .parcours {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+.apercu__barre > .segments {
+  grid-column: 2;
+  grid-row: 1;
+}
 .apercu__etat {
-  margin-left: auto;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-self: end;
   display: inline-flex;
   gap: 10px;
-  font-size: var(--t-s);
+  min-height: 1.4em;
+  font-size: var(--t-xs);
   color: var(--graphite-2);
+}
+/* Colonne étroite (scène ouverte à côté, téléphone) : la présentation passe sous le parcours, l'état à gauche */
+@container (max-width: 540px) {
+  .apercu__barre {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .apercu__barre > .segments {
+    grid-column: 1;
+    grid-row: 2;
+    justify-self: start;
+  }
+  .apercu__etat {
+    grid-row: 3;
+    justify-self: start;
+  }
 }
 /* La même forme que la bascule : un onglet blanc sur un rail gris (révision de novembre 2026) */
 .segments {
@@ -717,6 +798,9 @@
 .parcours__nom .ic {
   color: var(--bloque);
 }
+.parcours--avert .parcours__nom .ic {
+  color: var(--e-valider);
+}
 .parcours__b {
   display: grid;
   place-items: center;
@@ -743,7 +827,8 @@
   gap: 8px 10px;
 }
 .a-cote__titre {
-  flex: 1 1 auto;
+  /* Une base fixe : un long titre passe à la ligne au lieu de pousser « Fermer » sous lui (colonne étroite de « Mettre en page ») */
+  flex: 1 1 14em;
   min-width: 0;
   font-size: var(--t-l);
   font-weight: 800;
@@ -1631,6 +1716,10 @@
   align-items: center;
   justify-content: flex-end;
   gap: 8px 14px;
+}
+/* « Supprimer » efface pour de bon : en brique, à l'écart de « Télécharger » (révision de novembre 2026) */
+.conserve__cmd .conserve__supprimer {
+  margin-left: 10px;
   font-size: var(--t-s);
 }
 .conserves__place {
@@ -1794,15 +1883,25 @@
 .partager__rappel {
   margin-top: 6px;
 }
-.partager__a-savoir {
-  margin: 0;
+/* Les points déjà jugés, repliés dans les rappels du PDF définitif et du partage (révision de novembre 2026) */
+.points-a-savoir {
   font-size: var(--t-s);
+  color: var(--graphite-2);
+}
+.points-a-savoir summary {
+  cursor: pointer;
+  width: fit-content;
+}
+.points-a-savoir__revoir {
+  color: var(--canard);
   font-weight: 700;
 }
-.partager__a-savoir + ul {
+.points-a-savoir ul {
+  margin-top: 6px;
+}
+.partager__rappel .points-a-savoir {
   padding-bottom: 10px;
   border-bottom: 1px solid var(--trait);
-  color: var(--graphite-2);
 }
 .partager__relu {
   display: flex;
@@ -2224,7 +2323,8 @@
 }
 /* Le passage suggéré se tient dans la barre de l'aperçu, au-dessus de la page visée */
 .apercu__barre .suggestion {
-  flex-basis: 100%;
+  grid-column: 1 / -1;
+  grid-row: 4;
 }
 
 /* « La couverture » (F11.4, « Couverture faite sur le site », 26 octobre 2026) : la face avant

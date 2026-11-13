@@ -3555,6 +3555,55 @@ qui ne bouge pas à l'ajout, même si la nouvelle carte naît près du panneau ;
 ambre, un manque comme « Sans destination » ; « Choisir… », « Changer… » et « Relier à… », chacun à
 sa place ; la croix pour la scène et « ← » pour un choix (un seul niveau).
 
+#### Le Livre et ses étapes (13 novembre 2026)
+
+Captures contre le serveur local :
+`npx playwright test --config playwright.local.config.ts revision-livre` (56 vues : « Les passeurs de
+brume » en cours d'année, vingt-cinq élèves et le marais de trente-deux scènes ; le même livre fini, mené
+jusqu'au PDF définitif et au partage ; les écrans d'aide, une scène ouverte à côté de l'aperçu, le doute
+sur l'ordre, 390 px). Aucun bouton ✦ cliqué. **Notes : 28/40 (informée), 28/40 (indépendante).** Points
+faibles des deux lectures : la cohérence (couleur des points) et la sobriété (ce qui bouge, les redites).
+
+**Corrigé :**
+
+- **Le parcours « Problèmes »** prend la couleur du point le plus grave : ambre quand il ne reste qu'à
+  confirmer. En septembre, son triangle brique contredisait la ligne d'étapes à l'horloge (F11-AC89).
+- **La barre de l'aperçu ne bouge plus :** le parcours à gauche, « Page agrandie / Double page » à
+  droite, l'état dessous en petit (« état de 18 h 15 » le jour même). Elle passait sur deux lignes dès
+  que « Problèmes » apparaissait, et l'aperçu remontait de 44 points après « Garder ainsi ». En colonne
+  étroite, la présentation passe sous le parcours.
+- **La ligne d'étapes reste à sa place d'une étape à l'autre :** la ligne de titre d'un onglet garde la
+  hauteur du bouton « Aide », présent ou non (`.page-tete--onglet`, commun aux onglets du projet).
+- **Les cartes de points** tiennent sur une ligne ; « Voir dans les chemins » devient le signe des
+  chemins au bout de la ligne, nommé au survol, et n'est plus proposé qu'à « Vérifier les chemins »
+  (une image introuvable le proposait à « Relire »).
+- **« Lire et corriger » :** « J'ai relu le livre » vient avant le PDF de travail et reste en vue à
+  768 px ; la phrase du PDF de travail passe dans un « i ».
+- **« Tester la lecture » :** sans la phrase qui redisait la ligne à l'horloge du pied de la fiche.
+- **« Moins de blanc » :** « Réordonner les passages » n'est plein que pendant un doute, « La mise en page
+  me convient » restant le seul bouton plein ; quand aucun ordre ne fait mieux, l'ordre est gardé pour de
+  bon, et la question (encadré, « Garder cet ordre ») n'est plus reposée sous le message qui le dit.
+- **Rappels du PDF définitif et du partage, décidé par le porteur :** les points acceptés ou « à savoir »
+  y sont repliés, « 3 points à savoir · Revoir » ; les trois points de vie privée du partage restent
+  écrits. La règle de F11.6 (ils sont rappelés) ne change pas.
+- **Scène ouverte à « Mettre en page » :** un long titre passe à la ligne au lieu de pousser « Fermer »
+  sous lui.
+- **« Supprimer » un PDF définitif** en brique, à l'écart de « Télécharger » : il efface pour de bon.
+- **Téléphone :** l'étape en cours garde son nom dans la ligne d'étapes (« Mettre en page » et « Imprimer
+  et partager » n'avaient pas de fiche titrée ; laissé à l'étape 6 « à reprendre avec le reste du Livre »),
+  coupé en dernier recours ; la bascule « Scène / Dans le livre » devient l'onglet blanc sur rail gris.
+
+**Écarté, contre des décisions du porteur (proposé par la lecture indépendante) :** ne plus rappeler les
+points acceptés ; ne pas cocher « Imprimer et partager » quand le PDF existe sans partage (16 octobre) ;
+« Comment lire ce livre » dans le panneau plutôt que dans la grande fenêtre (25 octobre) ; « La mise en
+page me convient » seulement après l'aperçu (deux volets toujours visibles) ; retirer les références
+« S017 ».
+
+**Laissé :** le liseré bristol de « La couverture », objet du système ; « À savoir avant de créer le PDF »
+au-dessus de « 3 points à savoir » (titre que suivent les parcours) ; à 390 px, « Vérifier les chemi… »
+coupé quand les étapes voisines portent leur marque, la fiche disant le nom entier ; le zéro barré
+d'Atkinson ; l'aide propre à « Relire » et à « Vérifier les chemins » seulement.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
