@@ -4,8 +4,10 @@
 
 .lecture {
   --lecture-page: 680px;
-  /* La page entière, à la teinte du chapitre du passage lu : on voit qu'on change de chapitre */
-  min-height: calc(100vh - 64px);
+  /* La page entière, à la teinte du chapitre du passage lu : on voit qu'on change de chapitre. Jusqu'au bas de
+     l'écran, sous la barre du haut de l'élève ou du téléphone (l'adulte n'en a plus sur grand écran) */
+  min-height: calc(100dvh - var(--haut-adulte, 57px));
+  box-sizing: border-box;
   padding: 22px 24px 64px;
   background: var(--teinte, var(--bureau));
   transition: background 0.3s var(--ease);
@@ -55,21 +57,102 @@
   color: var(--graphite-2);
 }
 
+/* Au-dessus de la page sur un écran étroit ; à sa droite sur grand écran (lecture--cote) */
 .lecture__corps {
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 24px;
-  margin-top: 18px;
+  grid-template-columns: minmax(0, var(--lecture-page));
+  justify-content: center;
+  gap: 14px;
+}
+.lecture__cote {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
 }
 .lecture__colonne {
   display: grid;
   gap: 12px;
-  width: 100%;
-  max-width: var(--lecture-page);
-  justify-self: center;
+  min-width: 0;
 }
 .lecture__ancre {
-  scroll-margin-top: 90px;
+  scroll-margin-top: 12px;
+}
+
+/* L'en-tête : le nom de la lecture, le livre, « Quitter » ; une ligne, sans filet */
+.lu-tete {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lu-tete__nom {
+  min-width: 0;
+}
+.lu-tete h1 {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--t-xl);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.lu-tete p {
+  font-size: var(--t-s);
+  color: var(--graphite-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lu-tete .btn {
+  flex: none;
+}
+
+/* Grand écran : la page à gauche, les commandes à droite, en vue pendant la lecture ; la feuille s'ouvre à leur
+   place, dans la colonne, sans recouvrir le texte (demandé par le porteur le 13 novembre 2026) */
+.lecture--cote .lecture__corps {
+  grid-template-columns: minmax(0, var(--lecture-page)) 288px;
+  align-items: start;
+  gap: 28px;
+}
+.lecture--cote .lecture__cote {
+  grid-column: 2;
+  grid-row: 1;
+  position: sticky;
+  /* Sous la barre de l'élève, qui reste en haut ; l'adulte n'en a pas sur grand écran */
+  top: calc(var(--haut-adulte, 57px) + 16px);
+  max-height: calc(100dvh - var(--haut-adulte, 57px) - 32px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.lecture--cote .lecture__colonne {
+  grid-column: 1;
+  grid-row: 1;
+}
+.lecture--cote .lu-tete h1 {
+  font-size: var(--t-l);
+}
+.lecture--cote .lu-bandeau {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  padding: 12px 0;
+  border-top: 1px solid var(--trait-fort);
+  border-bottom: 1px solid var(--trait-fort);
+}
+.lecture--cote .lecture__liste {
+  width: 100%;
+  box-sizing: border-box;
+}
+.lecture--cote .lecture__outils {
+  flex-direction: column;
+  align-items: stretch;
+}
+.lecture--cote .lecture__parcours-b {
+  width: 100%;
+}
+.lecture--cote .lecture__parcours .lecture__parcours-b > .ic:last-child {
+  margin-left: auto;
 }
 .lecture__ancre:focus {
   outline: none;
@@ -84,6 +167,32 @@
 }
 .lecture__parcours {
   position: relative;
+}
+/* La liste du parcours se pose par-dessus : ni la page ni les autres commandes ne bougent */
+.lecture__liste {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 25;
+  display: grid;
+  gap: 6px;
+  width: max(100%, min(360px, calc(100vw - 32px)));
+  padding: 8px;
+  background: var(--feuille);
+  border-radius: var(--r-m);
+  box-shadow:
+    0 10px 26px rgba(30, 40, 38, 0.16),
+    inset 0 0 0 1px var(--trait);
+}
+.lecture__recommencer {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  justify-self: start;
+  margin: 2px 8px 4px;
+  padding-top: 8px;
+  font-size: var(--t-s);
+  font-weight: 700;
 }
 .lecture__feuille-b[aria-expanded="true"] {
   box-shadow: inset 0 0 0 2px var(--canard);
@@ -116,16 +225,17 @@
 .lecture__etapes {
   display: grid;
   gap: 2px;
-  max-height: 340px;
+  max-height: min(340px, 50vh);
   overflow-y: auto;
-  margin: 8px 0 0;
-  padding: 8px;
+  margin: 0;
+  padding: 0;
   list-style: none;
-  background: var(--feuille);
-  border-radius: var(--r-m);
-  box-shadow:
-    0 10px 26px rgba(30, 40, 38, 0.14),
-    inset 0 0 0 1px var(--trait);
+}
+.lecture__etapes + .lecture__recommencer {
+  border-top: 1px solid var(--trait);
+  margin: 0;
+  padding: 10px 8px 4px;
+  justify-self: stretch;
 }
 .lecture__etapes button {
   display: flex;
@@ -148,13 +258,6 @@
 .lecture__etapes button[aria-current] {
   background: var(--canard-pale);
   font-weight: 700;
-}
-.lecture__etape-n {
-  min-width: 1.6em;
-  text-align: right;
-  color: var(--graphite-3);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
 }
 
 /* Le bandeau de l'essai : ce que l'adulte sait de la scène, au-dessus de la page */
@@ -590,26 +693,16 @@ button.lu-choix:hover {
   gap: 4px;
   font-size: var(--t-s);
 }
-@media (min-width: 1100px) {
-  .lecture__feuille.est-ouverte {
-    display: block;
-    position: fixed;
-    /* Sous l'en-tête de la lecture : « Recommencer » et « Quitter » restent à portée */
-    top: 168px;
-    right: 16px;
-    z-index: 30;
-    /* Dans la marge à droite de la page, qui fait 680 points au centre ; sur un écran moins large, par-dessus */
-    width: clamp(300px, calc(50vw - 372px), 340px);
-    max-height: calc(100vh - 192px);
-  }
-  .lecture__barre {
-    display: none !important;
-  }
+/* Grand écran : dans la colonne de droite, à la place de « Ma feuille » et des règles, jusqu'au bas de l'écran */
+.lecture--cote .lecture__feuille.est-ouverte {
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
+  box-shadow: inset 0 0 0 1px var(--trait), 0 6px 18px rgba(30, 40, 38, 0.1);
 }
-@media (max-width: 1099px) {
-  .lecture__feuille-b {
-    display: none;
-  }
+/* Écran étroit : « Ma feuille » est dans la barre basse */
+.lecture:not(.lecture--cote) .lecture__feuille-b {
+  display: none;
 }
 .feuille-aventure {
   display: grid;
@@ -870,22 +963,21 @@ button.lu-choix:hover {
     animation: none;
   }
 }
-@media (max-width: 1099px) {
-  .lecture--feuille {
-    padding-bottom: 96px;
-  }
-  .lecture__feuille.est-ouverte {
-    display: block;
-    position: fixed;
-    left: 0;
-    right: 0;
-    /* Au-dessus du clavier quand on y écrit (useAuDessusDuClavier) */
-    bottom: var(--clavier, 0px);
-    top: auto;
-    z-index: 40;
-    max-height: min(80vh, var(--visible, 100vh) - 12px);
-    border-radius: 14px 14px 0 0;
-  }
+/* Écran étroit : la feuille en panneau bas, « Ma feuille » dans la barre basse */
+.lecture--feuille:not(.lecture--cote) {
+  padding-bottom: 96px;
+}
+.lecture:not(.lecture--cote) .lecture__feuille.est-ouverte {
+  display: block;
+  position: fixed;
+  left: 0;
+  right: 0;
+  /* Au-dessus du clavier quand on y écrit (useAuDessusDuClavier) */
+  bottom: var(--clavier, 0px);
+  top: auto;
+  z-index: 40;
+  max-height: min(80vh, var(--visible, 100vh) - 12px);
+  border-radius: 14px 14px 0 0;
 }
 @media (max-width: 720px) {
   .lecture {
@@ -900,9 +992,20 @@ button.lu-choix:hover {
   .lecture__tete h1 {
     font-size: var(--t-xl);
   }
+  /* « Parcours » et « Règles du jeu » sur une ligne */
+  .lecture__outils {
+    gap: 6px;
+  }
+  .lecture__parcours-b {
+    gap: 6px;
+    padding: 0 10px;
+  }
 }
 
 /* « Par où commencer ? » */
+.lecture__accueil-tete {
+  max-width: 880px;
+}
 .lecture__accueil {
   max-width: 880px;
   margin: 28px auto 0;

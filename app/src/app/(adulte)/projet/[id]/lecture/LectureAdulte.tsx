@@ -50,7 +50,8 @@ export function LectureAdulte({
       cle={`lecture-essai:${projetId}`}
       reprendre={reprendre}
       titre="Lecture d’essai"
-      sousTitre={`${titre} · texte courant des scènes, sans validation`}
+      sousTitre={titre}
+      aide={{ question: "Que lit-on ici ?", texte: "Le texte des scènes tel qu’il est écrit aujourd’hui, validé ou non. Lire ne change l’état d’aucune scène." }}
       quitter={adresseDeQuitter(projetId, provenance)}
       bandeau={bandeau}
     />

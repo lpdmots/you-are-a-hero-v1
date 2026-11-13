@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode, type RefObject } from "react";
+import { Bulle } from "@/composants/Bulle";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
 import {
@@ -14,7 +15,8 @@ import { Passage } from "./Passage";
 
 /**
  * Une lecture, passage après passage (F09.1, F12.1) : le parcours et ses retours, « déjà lu »,
- * la feuille d'aventure et le dé, « Recommencer ». La lecture d'essai y ajoute son bandeau.
+ * la feuille d'aventure et le dé, « Recommencer ». La lecture d'essai y ajoute son bandeau. Sur grand
+ * écran, les commandes et le bandeau se tiennent à droite de la page, et la feuille s'y ouvre.
  * Ce qu'elle a fait tient le temps de la page, et d'un aller-retour vers une scène ; « Quitter »
  * l'efface (F09-AC21).
  */
@@ -40,8 +42,33 @@ const teinte = (rang: number): CSSProperties => {
 export const nomDuPassage = (p: PassageLu, pourEleve: boolean): string =>
   [p.numero ? String(p.numero) : null, !pourEleve && p.reference ? referenceScene(p.reference) : null, p.titre ?? (pourEleve ? "Passage" : null)].filter(Boolean).join(" · ");
 
+/** La largeur où les commandes passent à droite de la page : la page (580 à 680 points), un écart, la colonne. */
+const LARGEUR_COTE = 580 + 28 + 288;
+
+/**
+ * Les commandes à côté de la page tant que la place le permet : mesuré sur la lecture elle-même, qui
+ * partage l'écran avec la colonne de l'adulte, repliée ou non. Une requête de conteneur ferait de la
+ * lecture le cadre de la feuille et de la barre basses, posées sur l'écran.
+ */
+function useCote(racine: RefObject<HTMLDivElement | null>): boolean {
+  const [cote, setCote] = useState(false);
+  useLayoutEffect(() => {
+    const el = racine.current;
+    if (!el) return;
+    const mesurer = () => {
+      const st = getComputedStyle(el);
+      setCote(el.clientWidth - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight) >= LARGEUR_COTE);
+    };
+    mesurer();
+    const obs = new ResizeObserver(mesurer);
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [racine]);
+  return cote;
+}
+
 export default function Lecture({
-  livre, depart, pourEleve, cle, reprendre, titre, sousTitre, quitter, bandeau,
+  livre, depart, pourEleve, cle, reprendre, titre, sousTitre, aide, quitter, bandeau,
 }: {
   livre: LivreLu;
   /** Le premier passage de la lecture */
@@ -53,6 +80,8 @@ export default function Lecture({
   reprendre: boolean;
   titre: string;
   sousTitre: string;
+  /** Ce que lit l'adulte, derrière un « i » */
+  aide?: { question: string; texte: string };
   quitter: string;
   /** Au-dessus du passage : ce que la lecture d'essai en dit à l'adulte */
   bandeau?: (p: PassageLu) => ReactNode;
@@ -60,26 +89,35 @@ export default function Lecture({
   const neuve = (): Garde => ({ debut: depart, parcours: commencer(depart), deja: [], feuille: feuilleDeDepart(livre.feuille), des: null });
   const [g, setG] = useState<Garde>(() => (reprendre && lireGarde(cle)) || neuve());
   const [parcoursOuvert, setParcoursOuvert] = useState(false);
-  // La feuille est fermée au départ : elle sert à quelques passages seulement (décidé par le porteur le 14 octobre 2026)
-  const [feuilleOuverte, setFeuilleOuverte] = useState(false);
+  // La feuille est fermée au départ : elle sert à quelques passages seulement (décidé par le porteur le 14 octobre 2026).
+  // Ouverte par « Règles du jeu », c'est ce bouton qui s'allume.
+  const [ouvertSur, setOuvertSur] = useState<"feuille" | "regles" | null>(null);
+  const feuilleOuverte = ouvertSur !== null;
+  const racine = useRef<HTMLDivElement>(null);
+  const cote = useCote(racine);
   const aside = useRef<HTMLElement>(null);
   // La liste où se notent les objets nommés par une action (F04-AC44)
   const liste = listeDesObjets(livre.feuille);
   useAuDessusDuClavier(aside, feuilleOuverte);
   const ouvrirFeuille = (versLeDe = false, versLesRegles = false) => {
-    setFeuilleOuverte(true);
+    setOuvertSur(versLesRegles ? "regles" : "feuille");
     requestAnimationFrame(() => {
       const regles = versLesRegles ? aside.current?.querySelector<HTMLDetailsElement>("details.fa-regles") : null;
       if (regles) regles.open = true;
-      const cible = versLeDe ? aside.current?.querySelector<HTMLElement>("#feuille-de") : regles;
-      if (cible) cible.scrollIntoView({ block: "nearest" });
-      else aside.current?.scrollTo({ top: 0 });
+      // Les règles en haut de la feuille, lisibles d'emblée ; le dé, seulement s'il est caché
+      const a = aside.current;
+      if (regles && a) {
+        const entete = a.querySelector("header")?.offsetHeight ?? 0;
+        a.scrollTo({ top: a.scrollTop + regles.getBoundingClientRect().top - a.getBoundingClientRect().top - entete - 8 });
+      }
+      else if (versLeDe) a?.querySelector<HTMLElement>("#feuille-de")?.scrollIntoView({ block: "nearest" });
+      else a?.scrollTo({ top: 0 });
     });
   };
   useEffect(() => {
     if (!feuilleOuverte) return;
     const fermer = (ev: KeyboardEvent) => {
-      if (ev.key === "Escape") setFeuilleOuverte(false);
+      if (ev.key === "Escape") setOuvertSur(null);
     };
     window.addEventListener("keydown", fermer);
     return () => window.removeEventListener("keydown", fermer);
@@ -137,93 +175,140 @@ export default function Lecture({
     />
   ) : null;
 
-  return (
-    <div className={`lecture sur-chapitre${livre.feuille ? " lecture--feuille" : ""}`} style={teinte(dernierLu?.chapitre.couleur ?? 0)}>
-      <header className="lecture__tete">
-        <div>
-          <h1>
-            <Icone nom="livre" />
-            {titre}
-          </h1>
-          <p>{sousTitre}</p>
-        </div>
-        <p className="lecture__cmd">
-          {g.parcours.etapes.length > 1 ? (
-            <button type="button" className="btn btn--petit btn--discret" onClick={recommencer}>
-              <Icone nom="refaire" />
-              Recommencer
-            </button>
-          ) : null}
-          <Link
-            className="btn btn--petit btn--discret"
-            href={quitter}
-            onClick={() => {
-              try {
-                sessionStorage.removeItem(cle);
-              } catch {
-                // Rien à effacer
-              }
-            }}
-          >
-            <Icone nom="fermer" />
-            Quitter
-          </Link>
-        </p>
-      </header>
+  const tete = (
+    <div className="lu-tete">
+      <div className="lu-tete__nom">
+        <h1>
+          {titre}
+          {aide ? <Bulle question={aide.question}>{aide.texte}</Bulle> : null}
+        </h1>
+        <p>{sousTitre}</p>
+      </div>
+      <Link
+        className="btn btn--petit btn--discret"
+        href={quitter}
+        onClick={() => {
+          try {
+            sessionStorage.removeItem(cle);
+          } catch {
+            // Rien à effacer
+          }
+        }}
+      >
+        <Icone nom="fermer" />
+        Quitter
+      </Link>
+    </div>
+  );
 
-      <div className="lecture__corps">
-        <div className="lecture__colonne">
-          <div className="lecture__outils">
-          <div className="lecture__parcours">
-            <button type="button" className="lecture__parcours-b" aria-expanded={parcoursOuvert} onClick={() => setParcoursOuvert((o) => !o)}>
-              <Icone nom="chemins" />
-              Parcours · {g.parcours.etapes.length} passage{g.parcours.etapes.length > 1 ? "s" : ""}
-              <Icone nom={parcoursOuvert ? "chevron-haut" : "chevron-bas"} />
-            </button>
-            {parcoursOuvert ? (
-              <ol className="lecture__etapes" aria-label="Parcours">
-                {g.parcours.etapes.map((e, i) => (
-                  <li key={`${i}-${e}`}>
-                    <button
-                      type="button"
-                      aria-current={i === g.parcours.position ? "step" : undefined}
-                      onClick={() => {
-                        setG((x) => ({ ...x, parcours: revenir(x.parcours, i) }));
-                        setParcoursOuvert(false);
-                      }}
-                    >
-                      <span className="lecture__etape-n">{i + 1}</span>
-                      <span>{nom(e)}</span>
-                    </button>
-                  </li>
-                ))}
-              </ol>
-            ) : null}
-          </div>
-          {livre.feuille ? (
+  // « Recommencer » vit au pied du parcours : discret, et à la même place partout (révision de novembre 2026)
+  const parcours = (
+    <div className="lecture__parcours">
+      <button type="button" className="lecture__parcours-b" aria-expanded={parcoursOuvert} onClick={() => setParcoursOuvert((o) => !o)}>
+        <Icone nom="chemins" />
+        Parcours · {g.parcours.etapes.length} passage{g.parcours.etapes.length > 1 ? "s" : ""}
+        <Icone nom={parcoursOuvert ? "chevron-haut" : "chevron-bas"} />
+      </button>
+      {parcoursOuvert ? (
+        <div className="lecture__liste">
+          <ol className="lecture__etapes" aria-label="Parcours">
+            {g.parcours.etapes.map((e, i) => (
+              <li key={`${i}-${e}`}>
+                <button
+                  type="button"
+                  aria-current={i === g.parcours.position ? "step" : undefined}
+                  onClick={() => {
+                    setG((x) => ({ ...x, parcours: revenir(x.parcours, i) }));
+                    setParcoursOuvert(false);
+                  }}
+                >
+                  {nom(e)}
+                </button>
+              </li>
+            ))}
+          </ol>
+          {g.parcours.etapes.length > 1 ? (
             <button
               type="button"
-              className="lecture__parcours-b lecture__feuille-b"
-              aria-expanded={feuilleOuverte}
-              aria-controls="feuille-aventure"
-              onClick={() => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille())}
+              className="lien lecture__recommencer"
+              onClick={() => {
+                setParcoursOuvert(false);
+                recommencer();
+              }}
             >
-              <Icone nom="feuille" />
-              Ma feuille
-              {resumeCompteurs(livre.feuille, g.feuille) ? <span className="lecture__feuille-resume">· {resumeCompteurs(livre.feuille, g.feuille)}</span> : null}
+              <Icone nom="refaire" />
+              Recommencer au début
             </button>
           ) : null}
-          {/* Les règles du jeu à portée de main, hors de la feuille aussi : on les referme sans quitter le passage (F04-AC24) */}
-          {livre.feuille && livre.regles.trim() ? (
-            <button type="button" className="lecture__parcours-b" aria-controls="feuille-aventure" onClick={() => ouvrirFeuille(false, true)}>
-              <Icone nom="cahier" />
-              Règles du jeu
-            </button>
-          ) : null}
-          </div>
+        </div>
+      ) : null}
+    </div>
+  );
 
+  const outils = (
+    <div className="lecture__outils">
+      {parcours}
+      {livre.feuille && !(cote && feuilleOuverte) ? (
+        <button
+          type="button"
+          className="lecture__parcours-b lecture__feuille-b"
+          aria-expanded={ouvertSur === "feuille"}
+          aria-controls="feuille-aventure"
+          onClick={() => (ouvertSur === "feuille" ? setOuvertSur(null) : ouvrirFeuille())}
+        >
+          <Icone nom="feuille" />
+          Ma feuille
+          {resumeCompteurs(livre.feuille, g.feuille) ? <span className="lecture__feuille-resume">· {resumeCompteurs(livre.feuille, g.feuille)}</span> : null}
+        </button>
+      ) : null}
+      {/* Les règles du jeu à portée de main, hors de la feuille aussi : on les referme sans quitter le passage (F04-AC24) */}
+      {livre.feuille && livre.regles.trim() && !(cote && feuilleOuverte) ? (
+        <button
+          type="button"
+          className="lecture__parcours-b"
+          aria-expanded={ouvertSur === "regles"}
+          aria-controls="feuille-aventure"
+          onClick={() => (ouvertSur === "regles" ? setOuvertSur(null) : ouvrirFeuille(false, true))}
+        >
+          <Icone nom="cahier" />
+          Règles du jeu
+        </button>
+      ) : null}
+    </div>
+  );
+
+  const feuilleOuvrable = feuille ? (
+    <aside ref={aside} id="feuille-aventure" className={`lecture__feuille${feuilleOuverte ? " est-ouverte" : ""}`} aria-label="Feuille d’aventure">
+      <header>
+        <h2 className="recit">Feuille d’aventure</h2>
+        <button type="button" className="lien lecture__ranger" onClick={() => setOuvertSur(null)}>
+          <Icone nom="fermer" />
+          Ranger
+        </button>
+      </header>
+      {feuille}
+    </aside>
+  ) : null;
+
+  return (
+    <div
+      ref={racine}
+      className={`lecture sur-chapitre${livre.feuille ? " lecture--feuille" : ""}${cote ? " lecture--cote" : ""}`}
+      style={teinte(dernierLu?.chapitre.couleur ?? 0)}
+    >
+      <div className="lecture__corps">
+        {/* Grand écran : à droite de la page, en vue pendant la lecture ; la feuille s'y ouvre à la place des
+            commandes, sans recouvrir le texte (demandé par le porteur le 13 novembre 2026). Sinon, au-dessus. */}
+        <div className="lecture__cote">
+          {tete}
+          {cote && passage && bandeau ? bandeau(passage) : null}
+          {outils}
+          {feuilleOuvrable}
+        </div>
+
+        <div className="lecture__colonne">
           <div ref={haut} tabIndex={-1} className="lecture__ancre" aria-label={passage ? nomDuPassage(passage, pourEleve) : "Suite à découvrir"} />
-          {passage && bandeau ? bandeau(passage) : null}
+          {!cote && passage && bandeau ? bandeau(passage) : null}
           <article className="lu-page">
             {passage ? (
               <>
@@ -240,7 +325,7 @@ export default function Lecture({
                   onSuivre={(r) => versCible(r.cible as { sorte: string; id?: string }, r.renvoi)}
                   onEnigme={(e) => versCible(e.cible as { sorte: string; id?: string }, e.id)}
                   // Une action ouvre la feuille ; un second clic la range, comme « Ma feuille »
-                  onAction={livre.feuille ? (signe) => (feuilleOuverte ? setFeuilleOuverte(false) : ouvrirFeuille(signe === "de" && livre.feuille!.des > 0)) : undefined}
+                  onAction={livre.feuille ? (signe) => (feuilleOuverte ? setOuvertSur(null) : ouvrirFeuille(signe === "de" && livre.feuille!.des > 0)) : undefined}
                   feuilleOuverte={feuilleOuverte}
                   inventaire={
                     liste
@@ -286,33 +371,20 @@ export default function Lecture({
             <p className="lecture__precedent">
               <button type="button" className="lien" onClick={precedent}>
                 <Icone nom="fleche-g" />
-                Passage précédent
+                Revenir au passage précédent
               </button>
             </p>
           ) : null}
         </div>
-
-        {feuille ? (
-          <aside ref={aside} id="feuille-aventure" className={`lecture__feuille${feuilleOuverte ? " est-ouverte" : ""}`} aria-label="Feuille d’aventure">
-            <header>
-              <h2 className="recit">Feuille d’aventure</h2>
-              <button type="button" className="lien lecture__ranger" onClick={() => setFeuilleOuverte(false)}>
-                <Icone nom="fermer" />
-                Ranger
-              </button>
-            </header>
-            {feuille}
-          </aside>
-        ) : null}
       </div>
 
-      {livre.feuille ? (
+      {livre.feuille && !cote ? (
         <div className="lecture__barre">
           <BarreDeLaFeuille
             feuille={livre.feuille}
             etat={g.feuille}
             ouverte={feuilleOuverte}
-            onFeuille={() => setFeuilleOuverte(true)}
+            onFeuille={() => setOuvertSur("feuille")}
             des={g.des}
             onDes={(des) => setG((x) => ({ ...x, des }))}
           />

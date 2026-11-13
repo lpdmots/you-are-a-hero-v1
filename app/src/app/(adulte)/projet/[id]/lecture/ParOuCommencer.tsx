@@ -22,20 +22,16 @@ export function ParOuCommencer({
   const trouvees = chercherScenes(plan, demande);
   return (
     <div className="lecture lecture--accueil">
-      <header className="lecture__tete">
-        <div>
-          <h1>
-            <Icone nom="livre" />
-            Lecture d’essai
-          </h1>
-          <p>{titre} · texte courant des scènes, sans validation</p>
+      {/* Le même en-tête que pendant la lecture */}
+      <header className="lu-tete lecture__accueil-tete">
+        <div className="lu-tete__nom">
+          <h1>Lecture d’essai</h1>
+          <p>{titre}</p>
         </div>
-        <p className="lecture__cmd">
-          <Link className="btn btn--petit btn--discret" href={adresseDeQuitter(projetId, provenance)}>
-            <Icone nom="fermer" />
-            Quitter
-          </Link>
-        </p>
+        <Link className="btn btn--petit btn--discret" href={adresseDeQuitter(projetId, provenance)}>
+          <Icone nom="fermer" />
+          Quitter
+        </Link>
       </header>
       <section className="lecture__accueil" aria-labelledby="commencer-t">
         <h2 id="commencer-t">Par où commencer ?</h2>

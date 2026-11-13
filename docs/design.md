@@ -3604,6 +3604,54 @@ au-dessus de « 3 points à savoir » (titre que suivent les parcours) ; à 390 
 coupé quand les étapes voisines portent leur marque, la fiche disant le nom entier ; le zéro barré
 d'Atkinson ; l'aide propre à « Relire » et à « Vérifier les chemins » seulement.
 
+#### La lecture (13 novembre 2026)
+
+La lecture d'essai de l'adulte et de l'élève (`Lecture.tsx`), et le lecteur partagé (`LecteurEnLigne`) : prévisualisation de
+l'adulte, « Lire » de l'élève, bibliothèque ; le partage par lien n'existe plus depuis F15. Captures contre le serveur local :
+`npx playwright test --config playwright.local.config.ts revision-lecture` (112 vues : « Les passeurs de brume » entier, un
+passage long, une image pleine page en tête de passage, une image dans le texte, une action de jeu et le dé, une énigme, une
+fin, la feuille et les règles ouvertes, le parcours ouvert, « Par où commencer ? », l'élève, la prévisualisation, un livre de
+la bibliothèque ; 1366, 1024 et 390 px). `SEULEMENT=AD` ne refait que les essais, `DOSSIER=` change le dossier. Aucun bouton
+✦ cliqué. **Notes : 27/40 (informée), 23/40 (indépendante).** Points faibles : la cohérence entre les lecteurs et la sobriété
+de ce qui précède le texte.
+
+**Décidé par le porteur :** sur grand écran, les commandes des **lectures d'essai seulement** passent dans une colonne à
+droite de la page, la lecture commençant ainsi en haut de l'écran ; le lecteur partagé et la bibliothèque gardent leur barre
+fine, qui fait déjà commencer le texte haut. Ne pas lui reproposer la colonne dans le lecteur partagé.
+
+**Corrigé :**
+
+- **Colonne à droite des lectures d'essai,** dès que la lecture a 896 points de large (page de 580 à 680 points, écart de 28,
+  colonne de 288), mesurée sur la lecture elle-même, colonne de l'adulte ouverte ou repliée : en 1366 et en 1024 px, adulte
+  comme élève. Elle reste en vue en défilant : « Lecture d'essai » (ou « Lire à l'essai ») et le titre du livre, « Quitter »,
+  le bandeau de la scène pour l'adulte (chapitre, référence et titre, état, « Ouvrir la scène »), puis « Parcours », « Ma
+  feuille », « Règles du jeu ». La première ligne du passage passe d'environ 300 à 120 points en 1366 px. Une requête de
+  conteneur a été écartée : elle ferait de la lecture le cadre de la feuille et de la barre basses, posées sur l'écran.
+- **La feuille d'aventure s'ouvre dans cette colonne,** à la place de « Ma feuille » et des règles, « Parcours » restant
+  au-dessus : elle recouvrait la fin des lignes, l'action et les choix chez l'adulte en 1366 px (la colonne de navigation ne
+  laissait que 200 points de marge pour une feuille de 310). Toujours fermée au départ, ouverte par « Ma feuille » ou par une
+  action de jeu, sans déplacer le texte (décision du 14 octobre gardée) ; la page n'est plus centrée, mais son décalage est
+  fixe. Accepté par le porteur.
+- **En dessous,** les commandes restent au-dessus de la page : une ligne de titre sans filet, « Parcours » et « Règles du jeu »
+  sur une ligne même en 390 px, le bandeau juste au-dessus de la page ; au téléphone, le texte passe d'environ 470 à 375 points.
+- **Parcours :** la liste se pose par-dessus (elle repoussait la page et « Règles du jeu ») ; un seul numéro par ligne (« 4 ·
+  S004 · … », au lieu du rang suivi du numéro) ; « Recommencer au début » à son pied, à la place du bouton de l'en-tête qui
+  apparaissait au deuxième passage. « Recommencer » reste à la fin du livre, avec son message et « Annuler ».
+- **« Règles du jeu »** ouvre la feuille sur les règles, en haut, et c'est ce bouton qui s'allume (la feuille s'ouvrait défilée
+  tout en bas, « Ma feuille » allumé).
+- **Fond teinté** jusqu'au bas de l'écran : il retranchait encore la hauteur de l'ancienne barre du haut de l'adulte.
+- **En-tête :** « texte courant des scènes, sans validation » passe dans un « i », « Que lit-on ici ? » ; « Par où commencer ? »
+  prend le même en-tête que la lecture.
+- **Mots :** « Revenir au passage précédent », comme le lecteur partagé (« Passage précédent »).
+
+**Écarté :** la proposition de la lecture indépendante — commandes en haut dans la barre fine du lecteur partagé, seul le
+bandeau de la scène dans la marge gauche — qui gagne moins de hauteur et laissait la feuille recouvrir le texte en 1366 px.
+
+**Laissé :** les écarts de forme entre lectures d'essai et lecteur partagé (pilules ou barre fine, bureau teinté ou page
+blanche, compteur du parcours), qui distinguent l'essai de la lecture publique (« Partage et lecteur en ligne ») ; « Comment
+lire ce livre », jugé long par la lecture indépendante, texte arrêté à l'étape 7 ; au téléphone, les outils du lecteur
+partagé en icônes seules (étape 7) ; la flèche seule du retour à la bibliothèque, nommée au survol (23 octobre).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
@@ -4669,7 +4717,8 @@ aussi la feuille — sur le dé quand elle porte le dé —, une bulle disant
 note lui-même (F04-AC18). Demandé par le porteur le 16 octobre 2026 : un
 second clic sur l'action range la feuille, la bulle disant alors « Ranger
 ma feuille d'aventure ». Sur téléphone, rien ne change : « Ma feuille »
-dans la barre basse. Cela remplace « la feuille à côté du texte » de la
+dans la barre basse. Depuis le 13 novembre 2026, dans les lectures d'essai sur grand écran, la feuille s'ouvre dans la
+colonne des commandes, à droite de la page (« Révision de l'ergonomie », « La lecture »). Cela remplace « la feuille à côté du texte » de la
 lecture d'essai et, pour le lecteur en ligne, la feuille « ouverte par
 défaut et rangeable » : la lecture est commune. Captures 531 à 533.
 
