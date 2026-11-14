@@ -141,13 +141,14 @@ export const IMAGES_DU_GUIDE: Partial<Record<(typeof ANCRES)[number], PlaceDeLIm
   chemins: {
     apres: "Contrôlez les liens.",
     image: {
-      src: "/guide/chemins-le-pont-effondre.webp",
+      // Les choix en onglets sous les cartes (capture du 14 novembre 2026)
+      src: "/guide/chemins-le-pont-effondre-onglets.webp",
       // Sur téléphone, l'énigme et les trois chemins qui se rejoignent sur la rive : l'arbre entier y tombait à 5 points
-      telephone: { src: "/guide/chemins-le-pont-effondre-telephone.webp", largeur: 1062, hauteur: 1080 },
-      alt: "La vue « Chemins » d’un chapitre : une énigme devant un pont effondré, quatre façons de traverser ; trois chemins se rejoignent sur la rive, le quatrième passe par une barque, et tous mènent au chapitre suivant.",
+      telephone: { src: "/guide/chemins-le-pont-effondre-onglets-telephone.webp", largeur: 1062, hauteur: 957 },
+      alt: "La vue « Chemins » d’un chapitre : une énigme devant un pont effondré et ses quatre choix, chacun en onglet sous la carte ; trois chemins se rejoignent sur la rive, le quatrième passe par une barque, et tous mènent au chapitre suivant.",
       legende: "« Le pont effondré », un chapitre du livre d’exemple « Les passeurs de brume » : quatre façons de traverser, trois chemins qui se rejoignent.",
       largeur: 1200,
-      hauteur: 947,
+      hauteur: 894,
       moyenne: true,
     },
   },
@@ -175,12 +176,12 @@ export const DECOUPAGE_EN_IMAGES: ImageDuGuide[] = [
     hauteur: 514,
   },
   {
-    src: "/guide/chapitre-la-lisiere.webp",
-    telephone: { src: "/guide/chapitre-la-lisiere-telephone.webp", largeur: 768, hauteur: 1612 },
+    src: "/guide/chapitre-la-lisiere-scenes.webp",
+    telephone: { src: "/guide/chapitre-la-lisiere-scenes-telephone.webp", largeur: 748, hauteur: 1112 },
     alt: "Un chapitre et ses scènes, chacune avec son état et l’élève qui s’en occupe.",
     legende: "Puis un chapitre et ses scènes, chacune avec l’élève qui s’en occupe.",
     largeur: 1600,
-    hauteur: 706,
+    hauteur: 668,
   },
 ];
 
@@ -198,11 +199,11 @@ export const IMAGES_DES_ENCARTS: Partial<Record<(typeof ANCRES)[number], ImageDu
     hauteur: 807,
   },
   relire: {
-    src: "/guide/scenes-voisines-corrigees.webp",
-    telephone: { src: "/guide/scenes-voisines-corrigees-telephone.webp", largeur: 716, hauteur: 1856 },
+    src: "/guide/scenes-voisines-de-la-lanterne.webp",
+    telephone: { src: "/guide/scenes-voisines-de-la-lanterne-telephone.webp", largeur: 716, hauteur: 1840 },
     alt: "Une scène en cours d’écriture, avec au-dessus la fin de la scène qui y mène et au-dessous le début de celle qui suit.",
     largeur: 1660,
-    hauteur: 1265,
+    hauteur: 1615,
   },
   illustrer: {
     src: "/guide/livre-compose-electro-nick-definitif.webp",
