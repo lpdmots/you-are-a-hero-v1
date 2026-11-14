@@ -11,7 +11,7 @@ import { BoutonDictee, useDictee, useDicteeActive } from "@/composants/dictee/Di
 import { Icone } from "@/composants/Icone";
 import { MESSAGES_DICTEE, raccorder } from "@/domaine/dictee";
 import {
-  ciblesDe, estAuto, estChoix, estImageLigne, estLiaison, estRenvoi, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, ouPoser, paragrapheVide, placeALaFin, recitDe, renvoisDe, texteOuvert, tirerConstruction,
+  ciblesDe, estAuto, estChoix, estImageLigne, estLiaison, estRenvoi, estSuite, estVide, LARGEURS, lettresDe, liaisonsDe, nouvelId, ouPoser, paragrapheVide, placeALaFin, recitDe, renvoisDe, texteOuvert, tirerConstruction,
   type Choix, type Droits, type DuPlan, type ImageBloc, type ImageLigne, type Liaison, type SigneAction, type Texte,
 } from "@/domaine/copie";
 import { compterMots } from "@/domaine/correction";
@@ -484,8 +484,10 @@ export function Copie({
       texte: creee
         ? `${nomScene(creee)} est créée${creee.chapitreId !== lieu.chapitreId ? " dans un autre chapitre" : ""}. ${vous ? "Vous restez" : "Tu restes"} dans cette scène.`
         : choix.auto && choix.cible === null
-          ? "Le choix est ajouté, sans destination : il bloquera le PDF définitif tant qu’il n’en a pas."
-          : "Le choix est ajouté.",
+          ? estSuite(choix)
+            ? "La suite est ajoutée, sans destination : elle bloquera le PDF définitif tant qu’elle n’en a pas."
+            : "Le choix est ajouté, sans destination : il bloquera le PDF définitif tant qu’il n’en a pas."
+          : estSuite(choix) ? "La suite est ajoutée." : "Le choix est ajouté.",
       annuler: true,
       actions: [{ libelle: "Ajouter un autre choix", faire: () => ouvrirCreation(choix.id) }],
     });

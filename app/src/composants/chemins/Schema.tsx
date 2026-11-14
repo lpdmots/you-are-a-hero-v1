@@ -63,6 +63,8 @@ const GLISSE = 380;
 type OngletDeCarte = {
   /** `id` : sa première destination, qui désigne le choix ; `liens` : toutes ses destinations, une le plus souvent */
   id: string; liens: string[]; sorte: SorteDOnglet; l: number; lignes: number; texte: string; cache: boolean; propose: boolean;
+  /** Un choix sans action : l'onglet dit « Suite », dans la voix de l'outil (F03-AC77) */
+  suite: boolean;
   /**
    * Sous la phrase, dans la voix de l'outil, pour chaque destination qui en a une : le retour, la sortie, ce qui est à
    * regarder, sur une ou deux lignes ; vers un autre chapitre, son adresse pour qui peut s'y rendre, et ce que dit le lien
@@ -135,7 +137,7 @@ function Onglets({ scene, onglets, pied }: { scene: string; onglets: OngletDeCar
           <div
             key={o.id}
             className={classes(
-              "onglet-chemin", `onglet-chemin--${o.sorte}`, o.cache && "est-cache", o.propose && "est-propose",
+              "onglet-chemin", `onglet-chemin--${o.sorte}`, o.cache && "est-cache", o.suite && "est-sans-action", o.propose && "est-propose",
               vue.montre !== null && o.liens.includes(vue.montre) && "est-montree", vue.tire !== null && o.liens.includes(vue.tire) && "est-tire",
               o.liens.some((l) => vue.ouverts.has(l)) && "est-ouvert",
               seChoisit && "se-choisit", seTire && "se-tire nodrag nopan",
@@ -551,7 +553,7 @@ export default function Schema({
             ];
           });
           return {
-            id: o.id, liens: o.destinations.map((dest) => dest.id), sorte: o.sorte, l: o.l, lignes: o.lignes, texte: texteDuLibelle(l), cache: l.cache, propose: !!l.propose,
+            id: o.id, liens: o.destinations.map((dest) => dest.id), sorte: o.sorte, l: o.l, lignes: o.lignes, texte: texteDuLibelle(l), cache: l.cache, suite: !l.cache && !l.libelle.trim(), propose: !!l.propose,
             notes, coupe: o.coupe, noteCoupee: o.noteCoupee,
             tirable: l.propose ? null : (o.destinations.find((dest) => liens.get(dest.id)!.manque === "sans")?.id ?? null),
             points: o.destinations.flatMap((dest) => (dest.sorte === "suite" && dest.sortie ? [{ id: dest.id, x: dest.sortie.x - gauche }] : [])),

@@ -77,6 +77,27 @@ describe("La réponse de l'IA, relue sans confiance (F13.7)", () => {
     expect(p.choix.map((c) => [c.de, c.vers, c.libelle])).toEqual([[ORIGINE, "N1", "Entrer dans la grotte"], ["N1", PONT, "Rejoindre le pont"]]);
   });
 
+  it("F13-AC45 — « la barque mène au ponton, puis le ponton se partage » : la barque porte une suite, libellé vide, et le ponton deux choix ; la consigne au modèle le demande", () => {
+    const p = lu({
+      scenes: [
+        { cle: "N1", titre: "Le ponton", consigne: "", liste: [], inventee: false },
+        { cle: "N2", titre: "Le marché", consigne: "", liste: [], inventee: false },
+        { cle: "N3", titre: "L'écluse", consigne: "", liste: [], inventee: false },
+      ],
+      choix: [
+        { de: "S001", vers: "N1", libelle: "", invente: false },
+        { de: "N1", vers: "N2", libelle: "Aller au marché", invente: false },
+        { de: "N1", vers: "N3", libelle: "Passer l'écluse", invente: false },
+      ],
+      consigne_origine: { consigne: "", liste: [] }, questions: [], reste: "",
+    });
+    expect(p.choix.map((c) => [c.de, c.vers, c.libelle])).toEqual([[ORIGINE, "N1", ""], ["N1", "N2", "Aller au marché"], ["N1", "N3", "Passer l'écluse"]]);
+    expect(libelleDAjout(p)).toBe("Ajouter 3 scènes et 3 choix");
+    expect(blocDeScenes.systeme(entree())).toContain("laisse « libelle » vide");
+    // Sans rien à décider, la simulation propose aussi une suite
+    expect(lu(simulerUnBloc(entree({ demande: "la suite de l'histoire" }))).choix.map((c) => c.libelle)).toEqual([""]);
+  });
+
   it("F13-AC39 — une consigne n'est proposée qu'à une scène d'origine qui n'en a pas", () => {
     const reponse = { scenes: [{ cle: "N1", titre: "La grotte", consigne: "", liste: [], inventee: false }], choix: [{ de: "S001", vers: "N1", libelle: "Entrer", invente: false }], consigne_origine: { consigne: "Raconte l’orée.", liste: ["Décrire les arbres."] }, questions: [], reste: "" };
     expect(lu(reponse).consigneOrigine).toEqual({ consigne: "Raconte l’orée.", liste: ["Décrire les arbres."] });

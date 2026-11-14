@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
-  ciblesDe, controlerTexte, estReserve, estVide, sansRien, morceauxDe, nettoyerTexte, phraseEnMots, renvoisDe, tirerConstruction, NUMERO_VIDE,
-  type Choix, type Droits, type Texte,
+  ciblesDe, controlerTexte, enPersonnalisee, estReserve, estSuite, estVide, leChoix, nomDuChoix, sansRien, morceauxDe, nettoyerTexte, phraseEnMots, renvoisDe, supprimeDit,
+  tirerConstruction, NUMERO_VIDE, type Choix, type Droits, type Texte,
 } from "@/domaine/copie";
+import { automatisee, avecLibelle, avecPhrase, avecUneDestinationDePlus } from "@/domaine/modifier-choix";
 import { groupesDeMelange, hasard, melangeInitial, numeroter, ouvertureDe, type PartieNumerotee, type PlanNumerote } from "@/domaine/numeros";
 import { constructionsUtiles, type Construction } from "@/domaine/preparation";
 
@@ -77,6 +78,71 @@ describe("Phrase de choix et renvoi (F05)", () => {
       type: "choix", id: id(5), libelle: "La porte",
       children: [{ text: "Va au " }, { type: "renvoi", id: id(6), cible: S53, libelle: "Ouvrir", children: [{ text: "" }] }, { text: "" }],
     });
+  });
+});
+
+describe("La suite, un choix sans action (F05.2, 14 novembre 2026)", () => {
+  it("F05-AC59 — « Juste la suite » vers S018 : le paragraphe « Rends-toi au 18. », un choix sans libellé, relié à S018", () => {
+    const suite = auto(1, "", S18, "si");
+    expect(estSuite(suite)).toBe(true);
+    expect(phraseEnMots(suite, "rends", numero({ [S18]: 18 }))).toBe("Rends-toi au 18.");
+    expect(renvoisDe(suite)).toEqual([{ id: suite.id, cible: S18, libelle: "" }]);
+    expect(ciblesDe([p(1, "La barque glisse."), suite])).toEqual([S18]);
+    // Un choix ordinaire n'en est pas une, ni une phrase écrite à deux renvois sans libellé
+    expect(estSuite(auto(2, "Fuir", S18))).toBe(false);
+    expect(estSuite(perso(3, "", "Va au ", renvoi(1, S53), " ou au ", renvoi(2, S55), "."))).toBe(false);
+    expect(estSuite(perso(4, "", "Le lendemain, rends-toi au ", renvoi(3, S53), "."))).toBe(true);
+  });
+
+  it("F05-AC60 — la formule du livre : « Rendez-vous au 18. », « Va au 18. », « → 18 » ; sans destination, le renvoi vide", () => {
+    const suite = auto(1, "", S18, "question");
+    const n = numero({ [S18]: 18 });
+    expect(phraseEnMots(suite, "rendez", n)).toBe("Rendez-vous au 18.");
+    expect(phraseEnMots(suite, "va", n)).toBe("Va au 18.");
+    expect(phraseEnMots(suite, "allez", n)).toBe("Allez au 18.");
+    expect(phraseEnMots(suite, "fleche", n)).toBe("→ 18");
+  });
+
+  it("F05-AC62 — écrire « Suivre la lumière » en fait un choix, composé avec sa construction ; effacer l'action en refait une suite", () => {
+    const suite = auto(1, "", S18, "pour");
+    const choix = avecLibelle(suite, "Suivre la lumière");
+    expect(estSuite(choix)).toBe(false);
+    expect(phraseEnMots(choix, "rends", numero({ [S18]: 18 }))).toBe("Pour suivre la lumière, rends-toi au 18.");
+    const encore = avecLibelle(choix, "");
+    expect(estSuite(encore)).toBe(true);
+    expect(phraseEnMots(encore, "rends", numero({ [S18]: 18 }))).toBe("Rends-toi au 18.");
+  });
+
+  it("F05-AC63 — « Le lendemain matin, » devant le renvoi : la phrase est modifiée, la suite reste une suite ; la flèche ronde remet « Rends-toi au 18. »", () => {
+    const suite = auto(1, "", S18);
+    const [avant, apres] = morceauxDe(enPersonnalisee(suite, "rends"), "rends").filter((m) => "texte" in m).map((m) => ("texte" in m ? m.texte : ""));
+    expect([avant, apres]).toEqual(["Rends-toi au ", "."]);
+    const modifiee = avecPhrase(suite, ["Le lendemain matin, rends-toi au ", "."], "rends");
+    expect(estSuite(modifiee)).toBe(true);
+    expect(phraseEnMots(modifiee, "rends", numero({ [S18]: 18 }))).toBe("Le lendemain matin, rends-toi au 18.");
+    // Un changement de formule ne la touche pas
+    expect(phraseEnMots(modifiee, "rendez", numero({ [S18]: 18 }))).toBe("Le lendemain matin, rends-toi au 18.");
+    const remise = automatisee(modifiee, ["neutre", "si"], () => 0);
+    expect(phraseEnMots(remise, "rends", numero({ [S18]: 18 }))).toBe("Rends-toi au 18.");
+    // Sur une suite automatique, la flèche n'a rien à faire : une seule forme
+    expect(automatisee(suite, ["neutre", "si", "pour"], () => 0.9)).toBe(suite);
+  });
+
+  it("F05-AC64 — une suite mène à une scène : une destination de plus suppose une action", () => {
+    // La règle tient dans le panneau, qui ne propose pas « + » sur une suite ; une fois l'action écrite, deux destinations s'écrivent à la main
+    const choix = avecUneDestinationDePlus(avecLibelle(auto(1, "", S18), "Choisir"), S16, "rends");
+    expect(estSuite(choix)).toBe(false);
+    expect(renvoisDe(choix).map((r) => r.cible)).toEqual([S18, S16]);
+  });
+
+  it("F05-AC65, F03-AC77 — sans destination, la phrase affiche un renvoi vide ; l'outil la nomme « Suite », ses messages « la suite »", () => {
+    expect(phraseEnMots(auto(1, "", null), "rends", numero({}))).toBe(`Rends-toi au ${NUMERO_VIDE}.`);
+    expect(nomDuChoix({ libelle: "", cache: false })).toBe("Suite");
+    expect(nomDuChoix({ libelle: "Fuir", cache: false })).toBe("Fuir");
+    expect(nomDuChoix({ libelle: "", cache: true })).toBe("Lien caché");
+    expect(leChoix({ libelle: "  " })).toBe("La suite");
+    expect(supprimeDit({ libelle: "" })).toBe("La suite est supprimée.");
+    expect(supprimeDit({ libelle: "Traverser" })).toBe("Le choix « Traverser » est supprimé.");
   });
 });
 

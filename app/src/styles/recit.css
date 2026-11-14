@@ -2136,6 +2136,10 @@
   line-height: 1.3;
   overflow-wrap: anywhere;
 }
+/* La suite, choix sans action : son nom, « Suite », plus discret qu'une phrase d'action (F03-AC77) */
+.panneau-chemin__libelle.est-sans-action {
+  color: var(--graphite-2);
+}
 .panneau-chemin__libelle .ic {
   flex: none;
   width: 15px;
@@ -2596,8 +2600,10 @@ a.onglet-chemin__note > span:last-child {
 a.onglet-chemin__note:hover {
   color: var(--canard-fonce);
 }
-/* Un lien caché n'a pas de phrase dans le texte : la voix de l'outil, et sa clé */
-.onglet-chemin.est-cache .onglet-chemin__phrase {
+/* Un lien caché n'a pas de phrase dans le texte : la voix de l'outil, et sa clé. La suite, choix sans
+   action, n'a pas de phrase d'action : « Suite », dans la même voix (F03-AC77) */
+.onglet-chemin.est-cache .onglet-chemin__phrase,
+.onglet-chemin.est-sans-action .onglet-chemin__phrase {
   align-items: center;
   color: var(--graphite-2);
   font-family: var(--f-ui);

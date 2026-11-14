@@ -6,7 +6,7 @@
  */
 
 import {
-  enPersonnalisee, estAuto, estRenvoi, nouveauRenvoi, nouvelId, renvoisDe, seulRenvoi, tirerConstruction,
+  enPersonnalisee, estAuto, estRenvoi, estSuite, nouveauRenvoi, nouvelId, renvoisDe, seulRenvoi, tirerConstruction,
   type Choix, type ChoixAuto, type ChoixPerso, type Liaison,
 } from "./copie";
 import type { Construction, FormuleRenvoi } from "./preparation";
@@ -40,6 +40,8 @@ export function avecPhrase(bloc: Choix, textes: readonly string[], formule: Form
  */
 export function automatisee(bloc: Choix, utiles: Construction[], tirage?: () => number): Choix {
   if (estAuto(bloc)) {
+    // Une suite n'a qu'une forme : sa construction attend qu'on lui écrive une action (F05-AC63)
+    if (estSuite(bloc)) return bloc;
     const autres = utiles.filter((u) => u !== bloc.construction);
     return autres.length ? { ...bloc, construction: tirerConstruction(autres, tirage) } : bloc;
   }

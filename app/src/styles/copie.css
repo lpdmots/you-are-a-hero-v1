@@ -2242,6 +2242,10 @@ kbd {
   box-shadow: 0 0 0 2px var(--canard);
   background: var(--canard-pale);
 }
+/* « Juste la suite → », sous le champ de l'action : un choix sans action, qui sert souvent (F05.2) */
+.cx-suite {
+  margin: -4px 0 0;
+}
 /* Ce qui sert rarement : un lien discret, sous le reste */
 .cx-autre {
   display: flex;

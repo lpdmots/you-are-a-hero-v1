@@ -31,6 +31,12 @@ Courte formulation de l'option, de préférence une action, servant à composer
 la phrase de choix automatique et à repérer le choix dans le graphe.
 _Éviter_ : titre de travail de la destination, phrase de choix complète.
 
+**Suite** :
+Choix sans libellé, qui mène le lecteur à une seule scène sans rien lui
+faire décider ; sa phrase automatique est le renvoi seul (« Rends-toi au
+12. »).
+_Éviter_ : choix « Continuer », enchaînement du récit classique.
+
 **Paragraphe protégé** :
 Paragraphe d'une scène que l'enseignant a soustrait à la modification et à la
 suppression par les élèves.

@@ -1,5 +1,6 @@
 import dagre from "@dagrejs/dagre";
 import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type Marque } from "@/domaine/chemins";
+import { nomDuChoix } from "@/domaine/copie";
 
 /**
  * Place les scènes d'un chapitre de haut en bas et trace leurs chemins (F03.1, « Vue Chemins
@@ -93,7 +94,8 @@ export type Disposition = {
 export type Mesure = (texte: string, sorte: "onglet" | "etiquette" | "titre") => number;
 const estimer: Mesure = (texte, sorte) => texte.length * (sorte === "onglet" ? 6.3 : sorte === "titre" ? 7.4 : 6.6);
 
-export const texteDuLibelle = (l: { libelle: string; cache: boolean }): string => (l.cache ? "Lien caché" : l.libelle || "Choix sans libellé");
+/** Ce que porte un onglet : la phrase d'action du choix, « Lien caché », ou « Suite » pour un choix sans action (F03-AC77). */
+export const texteDuLibelle = (l: { libelle: string; cache: boolean }): string => nomDuChoix(l);
 export const texteDeLEtiquette = (e: Element): string => (e.sorte === "entree" ? `depuis ${e.chapitre}` : "");
 
 /**

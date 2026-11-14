@@ -74,9 +74,10 @@ function ChoixEnAttente({ remplace }: { remplace: boolean }) {
   const { livre, apercu } = useCopie();
   if (!apercu) return null;
   const MARQUE = "\u0001";
-  const [avant, apres = ""] = phraseDeChoix(apercu.libelle || LIBELLE_EXEMPLE, MARQUE, livre.formule, apercu.construction).split(MARQUE);
+  const exemple = !apercu.libelle && !apercu.suite;
+  const [avant, apres = ""] = phraseDeChoix(exemple ? LIBELLE_EXEMPLE : apercu.libelle, MARQUE, livre.formule, apercu.construction).split(MARQUE);
   return (
-    <span className={`choix-attendu${apercu.libelle ? "" : " choix-attendu--exemple"}${remplace ? " choix-attendu--remplace" : ""}`} contentEditable={false} aria-hidden="true">
+    <span className={`choix-attendu${exemple ? " choix-attendu--exemple" : ""}${remplace ? " choix-attendu--remplace" : ""}`} contentEditable={false} aria-hidden="true">
       <span className="marge">
         <Icone nom="choix" />
       </span>

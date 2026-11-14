@@ -7,7 +7,7 @@ import { Fragment, useEffect, useId, useLayoutEffect, useMemo, useRef, useState,
 import { Bulle } from "@/composants/Bulle";
 import { Icone, type NomIcone } from "@/composants/Icone";
 import { Prise, useCapteurs } from "@/composants/Tirer";
-import { estAuto, morceauxDe, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Morceau } from "@/domaine/copie";
+import { estAuto, estSuite, morceauxDe, renvoisDe, tirerConstruction, nouvelId, type Choix, type Liaison, type Morceau } from "@/domaine/copie";
 import { constructionsUtiles } from "@/domaine/preparation";
 import { scenesProposees } from "@/domaine/proposer";
 import { referenceScene } from "@/domaine/recit";
@@ -369,13 +369,15 @@ export function FicheNouveauChoix({
   const [construction] = useState(() => tirerConstruction(constructionsUtiles(livre.formule, livre.constructions)));
   const champ = useRef<HTMLInputElement>(null);
   const [versDestination, setVersDestination] = useState(false);
+  // « Juste la suite → » : un choix sans action, « Rends-toi au 12. » (F05-AC59)
+  const [suite, setSuite] = useState(false);
   const propre = libelle.trim();
   useEffect(() => {
     if (forme === "phrase") champ.current?.focus();
   }, [forme]);
   useEffect(() => {
-    onApercu(forme === "cache" ? null : { libelle: propre, construction });
-  }, [onApercu, forme, propre, construction]);
+    onApercu(forme === "cache" ? null : { libelle: propre, construction, suite });
+  }, [onApercu, forme, propre, construction, suite]);
   useEffect(() => () => onApercu(null), [onApercu]);
 
   if (forme === "cache") {
@@ -407,23 +409,38 @@ export function FicheNouveauChoix({
           type="text"
           maxLength={200}
           value={libelle}
-          placeholder={`Par exemple : ${LIBELLE_EXEMPLE}`}
+          placeholder={suite ? "Aucune action : la suite" : `Par exemple : ${LIBELLE_EXEMPLE}`}
           onChange={(e) => setLibelle(e.target.value)}
           onKeyDown={(e) => {
             if (e.key !== "Enter") return;
             e.preventDefault();
             e.stopPropagation();
-            if (propre) setVersDestination(true);
+            if (propre || suite) setVersDestination(true);
           }}
         />
       </div>
-      {propre ? (
+      {/* Le lecteur continue, sans rien décider : la phrase sera le renvoi seul (F05.2, « la suite ») */}
+      {propre || suite ? null : (
+        <p className="cx-suite">
+          <button
+            type="button"
+            className="btn btn--petit"
+            onClick={() => {
+              setSuite(true);
+              setVersDestination(true);
+            }}
+          >
+            Juste la suite →
+          </button>
+        </p>
+      )}
+      {propre || suite ? (
         <ChoisirDestination
           key={String(versDestination)}
           libelle={libelle}
           services={services}
           focus={versDestination}
-          creer="Créer le choix et la scène"
+          creer={propre ? "Créer le choix et la scène" : "Créer la suite et la scène"}
           valider={({ cible, creee }) => onCreer({ type: "choix", id: nouvelId(), auto: true, libelle: propre, construction, cible, children: [{ text: "" }] }, creee)}
         />
       ) : null}
@@ -765,13 +782,17 @@ export function FicheReglagesChoix({
     ) : (
       `autre chapitre${livre.ailleurs[cible] ? ` · ${livre.ailleurs[cible]}` : ""}`
     );
+  // Effacer l'action fait du choix une suite, en écrire une en fait un choix (F05-AC62) ; une phrase à
+  // plusieurs destinations garde la sienne, qui la nomme dans les chemins
+  const suite = estSuite(bloc);
   const validerLibelle = () => {
     const propre = libelle.trim();
-    if (propre && propre !== bloc.libelle) gestes.regler({ libelle: propre });
+    if (propre !== bloc.libelle && (propre || !plusieurs)) gestes.regler({ libelle: propre });
     else setLibelle(bloc.libelle);
   };
-  // La flèche ronde : une autre tournure, ou le retour à l'automatique ; rien à faire avec plusieurs destinations
-  const refaire = auto ? (utiles.length > 1 ? "Autre tournure" : null) : plusieurs ? null : "Remettre la phrase automatique";
+  // La flèche ronde : une autre tournure, ou le retour à l'automatique ; rien à faire avec plusieurs
+  // destinations, ni sur une suite automatique, qui n'a qu'une forme (F05-AC63)
+  const refaire = auto ? (utiles.length > 1 && !suite ? "Autre tournure" : null) : plusieurs ? null : "Remettre la phrase automatique";
   const deplacer = ({ active, over }: DragEndEvent) => {
     const [de, vers] = [renvois.findIndex((r) => r.id === active.id), renvois.findIndex((r) => r.id === over?.id)];
     if (de === -1 || vers === -1 || de === vers) return;
@@ -780,7 +801,7 @@ export function FicheReglagesChoix({
 
   return (
     <Cadre
-      titre="Choix"
+      titre={suite ? "Suite" : "Choix"}
       onFermer={onFermer}
       pied={
         <>
@@ -792,7 +813,7 @@ export function FicheReglagesChoix({
           ) : null}
           <button type="button" className="btn btn--danger btn--petit cx__suppr" onClick={gestes.supprimer}>
             <Icone nom="corbeille" />
-            Supprimer ce choix
+            {suite ? "Supprimer cette suite" : "Supprimer ce choix"}
           </button>
         </>
       }
@@ -813,6 +834,7 @@ export function FicheReglagesChoix({
           type="text"
           maxLength={200}
           value={libelle}
+          placeholder={plusieurs ? undefined : "Aucune action : la suite"}
           onChange={(e) => setLibelle(e.target.value)}
           onBlur={validerLibelle}
           onKeyDown={(e) => {
@@ -827,16 +849,19 @@ export function FicheReglagesChoix({
       <div className="cx-dests">
         <p className="cx-titre cx-entete">
           {plusieurs ? "Destinations" : "Destination"}
-          <button
-            type="button"
-            className="cx-rond"
-            aria-label="Ajouter une destination"
-            title="Ajouter une destination"
-            aria-expanded={change === "nouvelle"}
-            onClick={() => setChange(change === "nouvelle" ? null : "nouvelle")}
-          >
-            <Icone nom="plus" />
-          </button>
+          {/* Une suite mène à une scène : qui veut deux destinations écrit d'abord une action (F05-AC64) */}
+          {suite ? null : (
+            <button
+              type="button"
+              className="cx-rond"
+              aria-label="Ajouter une destination"
+              title="Ajouter une destination"
+              aria-expanded={change === "nouvelle"}
+              onClick={() => setChange(change === "nouvelle" ? null : "nouvelle")}
+            >
+              <Icone nom="plus" />
+            </button>
+          )}
         </p>
         <DndContext sensors={capteurs} collisionDetection={closestCenter} onDragEnd={deplacer}>
           <SortableContext items={renvois.map((r) => r.id)} strategy={verticalListSortingStrategy}>

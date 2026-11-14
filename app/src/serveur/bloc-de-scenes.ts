@@ -96,7 +96,7 @@ export async function demanderUnBloc(
     id: n.id, ref: refDe.get(n.id)!, titre: n.titre?.trim() || "Sans titre",
     consigne: n.consigne?.trim().slice(0, 300) || undefined,
     choix: chemins.liens.filter((l) => l.de === n.id && !l.cache).map((l) => ({
-      libelle: l.libelle || "sans libellé",
+      libelle: l.libelle,
       vers: l.vers ? (refDe.get(l.vers) ?? "?") : l.ailleurs ? `un autre chapitre (${l.ailleurs.chapitre})` : "nulle part encore",
     })),
   }));
@@ -203,7 +203,6 @@ export async function ajouterUnBloc(
   const p = lireLaProposition(brut, { origine, scenes: new Set(lu.chapitre.scenes.map((s) => s.id)) });
   if (!p || (!p.scenes.length && !p.choix.length)) return { ok: false, dit: "Ce bloc est vide : il n’y a rien à ajouter." };
   if (p.scenes.some((s) => !s.titre)) return { ok: false, dit: "Donnez un titre à chaque nouvelle scène." };
-  if (p.choix.some((c) => !c.libelle)) return { ok: false, dit: "Écrivez ce que fait le lecteur pour chaque choix." };
 
   const fait = await ajouterAuPlan(
     e, chapitreId,

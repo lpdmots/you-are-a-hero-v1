@@ -41,6 +41,7 @@ import { useConfirmerSuppression } from "../../_plan/suppression";
 import { AttribuerEleves, ChoisirDepart, ReglagesChapitre } from "../../_plan/Panneaux";
 import { QuiSenOccupe } from "../../_plan/QuiSenOccupe";
 import { varsCouleur, type ProjetDuPlan } from "../../_plan/Plan";
+import { leChoix, supprimeDit } from "@/domaine/copie";
 
 type Ouvert = "reglages" | "image" | "attribuer" | "exclure" | "depart" | null;
 
@@ -177,7 +178,7 @@ export function PageChapitre({
             dire({ texte: fait.erreur });
             return fait;
           }
-          dire({ texte: `Le choix « ${bloc.libelle || "sans libellé"} » est supprimé.`, annuler: () => defaire(remettreChoixDuSchema(sceneId, fait.bloc, fait.place)) });
+          dire({ texte: supprimeDit(bloc), annuler: () => defaire(remettreChoixDuSchema(sceneId, fait.bloc, fait.place)) });
           return { ok: true };
         },
         cacher: async (sceneId, bloc, cible) => {
@@ -235,7 +236,7 @@ export function PageChapitre({
           if (!fait.ok) return fait;
           const cible = chapitre.scenes.find((s) => s.id === vers);
           dire({
-            texte: `Le choix « ${libelle.trim()} » mène à ${cible ? nomScene(cible) : "la scène"}.`,
+            texte: `${leChoix({ libelle })} mène à ${cible ? nomScene(cible) : "la scène"}.`,
             annuler: () => void annulerAjoutDuSchema([fait.choix], []).then((defait) => defait.ok || dire({ texte: defait.erreur })),
           });
           return { ok: true };
@@ -250,7 +251,7 @@ export function PageChapitre({
           }
           const cible = chapitre.scenes.find((s) => s.id === vers);
           dire({
-            texte: `Le choix « ${lien.libelle || "sans libellé"} » mène à ${cible ? nomScene(cible) : "la scène"}.`,
+            texte: `${leChoix(lien)} mène à ${cible ? nomScene(cible) : "la scène"}.`,
             annuler: () => void relierChoixDuSchema(lien.de, lien.id, null).then((defait) => defait.ok || dire({ texte: defait.erreur })),
           });
           return { ok: true };
@@ -263,7 +264,7 @@ export function PageChapitre({
             return fait;
           }
           dire({
-            texte: `Le choix « ${lien.libelle || "sans libellé"} » est supprimé.`,
+            texte: supprimeDit(lien),
             // « Annuler » rend le choix à sa place dans le texte, entre ses voisins (F03-AC74)
             annuler: () => void remettreChoixDuSchema(lien.de, fait.bloc, fait.place).then((defait) => defait.ok || dire({ texte: defait.erreur })),
           });

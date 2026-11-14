@@ -75,10 +75,20 @@ describe("Construire dans « Chemins » (F03.1)", () => {
     // Sans titre donné, la scène prend celui du choix, comme une scène créée depuis la copie (F05-AC12)
     const sansTitre = await ajouterSceneApres(e, r.foret, r.clairiere.id, "  Grimper à   l’arbre ", "");
     expect(sansTitre.ok && (await scene(sansTitre.scenes[0].id)).titre).toBe("Grimper à l’arbre");
-    // Un choix sans libellé ne se pose pas, et rien n'est créé
-    const avant = await nombreDeScenes(r.projet);
-    expect(await ajouterSceneApres(e, r.foret, r.clairiere.id, "   ", "Sans choix")).toMatchObject({ ok: false, dit: "Écrivez ce que fait le lecteur." });
-    expect(await nombreDeScenes(r.projet)).toBe(avant);
+  });
+
+  it("F03-AC77 — « + » sous « Clairière », « Juste la suite » puis « Le ruisseau » : « Clairière » finit par une suite vers « Le ruisseau », que les chemins nomment « Suite » ; sans titre, la nouvelle scène n'en a pas", async () => {
+    const r = await recit();
+    const e = enseignantDe(laurent);
+    const fait = await ajouterSceneApres(e, r.foret, r.clairiere.id, "   ", "Le ruisseau");
+    if (!fait.ok) throw new Error("La suite n'a pas été posée.");
+    const texte = (await scene(r.clairiere.id)).texte;
+    expect(texte.at(-1)).toMatchObject({ type: "choix", auto: true, libelle: "", cible: fait.scenes[0].id });
+    const c = await chemins(r);
+    expect(c.liens).toEqual([expect.objectContaining({ de: r.clairiere.id, vers: fait.scenes[0].id, libelle: "", cache: false })]);
+    // Une suite, ni titre ni action : la scène se nomme par sa référence (F05-AC61)
+    const sansRien = await ajouterSceneApres(e, r.foret, fait.scenes[0].id, "", "");
+    expect(sansRien.ok && (await scene(sansRien.scenes[0].id)).titre).toBeNull();
   });
 
   it("F03-AC53 — un lien tiré de « Le ruisseau » vers « Le vieux pont », « Traverser » : le choix est à la fin du texte de « Le ruisseau » et mène au pont ; aucune scène n'est créée", async () => {

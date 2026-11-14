@@ -56,8 +56,8 @@ export async function ajouterAuPlan(e: Enseignant, chapitreId: string, scenes: S
   const { data: chapitre } = await e.supabase.from("chapitres").select("projet_id").eq("id", chapitreId).maybeSingle();
   const projetId = chapitre?.projet_id as string | undefined;
   if (!projetId) return refus("Ce chapitre n’existe pas.");
+  // Un libellé vide est une suite, choix sans action : « Rends-toi au 12. » (F05.2, F03-AC77)
   const libelles = choix.map((c) => propre(c.libelle, LIBELLE_MAX));
-  if (libelles.some((l) => l === "")) return refus("Écrivez ce que fait le lecteur.");
   const utiles = await constructionsDuProjet(e, projetId);
   const blocs: ChoixAuto[] = libelles.map((libelle) => ({
     type: "choix", id: nouvelId(), auto: true, libelle, construction: tirerConstruction(utiles), cible: null, children: [{ text: "" }],

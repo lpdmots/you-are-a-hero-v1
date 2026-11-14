@@ -112,6 +112,16 @@ phrases à toute taille, F03-AC68 révisé), déploiements réussis
 Les « rien poussé » et « base locale seulement » des paragraphes ci-dessus
 datent de la construction.
 
+La suite, 14 novembre 2026 : décidée par le porteur sur recommandation,
+construite en local le même jour à sa demande, un commit, sans migration, rien
+poussé ; précisions à lui faire confirmer en F05.2. Un choix sans action mène à une seule
+scène et se lit « Rends-toi au 12. », dans la formule du livre ; il se crée par
+« Juste la suite → » dans « Nouveau choix » et dans la bulle du « + », et son
+onglet porte « Suite » ; le bloc de scènes peut en proposer, les idées de choix
+jamais ([F05.2](docs/specifications.md#f05-suite), F05-AC59 à AC65 ;
+[F03.1](docs/specifications.md#f03-suite), F03-AC77 ; F13.7, F13-AC45). La
+base acceptait déjà un choix sans libellé : aucune migration.
+
 ## État de reprise au 20 octobre 2026
 
 Le cadrage général est clôturé. Cinq parcours sont validés dans leur

@@ -1573,6 +1573,15 @@ le porteur décide :
   - *La voix du récit.* Les phrases des choix sont dans la voix du récit,
     en italique, comme dans la copie ; ce que l'outil y ajoute (retour,
     sortie, « Sans destination », « Lien caché ») reste dans la sienne.
+  - *La suite* <a id="f03-suite"></a>(décidé par le porteur le 14 novembre
+    2026, [F05.2](#f05-suite), F03-AC77) : un choix sans action a son
+    onglet, qui porte « Suite », dans la voix de l'outil et plus discret
+    qu'une phrase de choix. Il garde ce que dit un onglet : « retour à… »,
+    « → Le sanctuaire », l'ambre sans destination. On le clique pour ouvrir
+    la suite (F03-AC70), on le tire s'il est sans destination (F03-AC67).
+    Dans la bulle du « + » et du lien tiré, « Juste la suite » se tient
+    sous le champ de l'action, comme dans la copie. Écarté : aucun onglet,
+    le trait seul, qui ne laisserait rien à cliquer.
   - *Ce qui ne change pas :* la liste du téléphone ; « À regarder », ses
     comptes et son parcours ; les étiquettes « depuis… » d'un chemin venu
     d'un autre chapitre ; les gestes de « Construire dans Chemins » et le
@@ -1917,6 +1926,14 @@ le porteur décide :
 - **F03-AC76 — Ni l'élève, ni le téléphone, ni de loin :** étant donné Hugo
   dans « Chemins », un écran de 390 points, ou le schéma après « Tout
   voir », alors aucun choix ne s'ouvre pour être modifié.
+- **F03-AC77 — La suite en onglet (décidé le 14 novembre 2026) :** étant
+  donné « Clairière », dont le texte finit par « Rends-toi au 18. », suite
+  vers « Le ruisseau », lorsque l'adulte ou l'élève ouvre « Chemins »,
+  alors la carte porte un seul onglet « Suite », de la largeur de la carte,
+  d'où part le trait vers « Le ruisseau » ; lorsque l'adulte active « + »
+  sous « Le ruisseau » et choisit « Juste la suite » puis écrit « Le vieux
+  pont », alors « Le ruisseau » finit par « Rends-toi au … » vers « Le vieux
+  pont » et sa carte porte « Suite ».
 - **Aide.** Un écran d'aide s'affiche à la première ouverture de « Parties
   et chapitres », comme au Suivi et au Livre (F06.5, F11.6), avec « Ne plus
   afficher » et un bouton d'aide : parties, chapitres et scènes ; qui peut
@@ -2896,8 +2913,9 @@ phrase incomplète à l'écran lorsque le renvoi en portait le verbe.
   même texte ; seul le renvoi change de nature, numéro imprimé sur papier,
   élément activable à l'écran.
 - **Phrase automatique :** à la création d'un choix, l'auteur saisit un libellé,
-  de préférence une action à l'infinitif, par exemple « Prendre la clé ».
-  L'application compose la phrase avec une construction et la formule de renvoi
+  de préférence une action à l'infinitif, par exemple « Prendre la clé » ;
+  sans libellé, le choix est une suite, « Rends-toi au 12. »
+  ([F05.2](#f05-suite), 14 novembre 2026). L'application compose la phrase avec une construction et la formule de renvoi
   du livre de [F11.5](#f115--ordre-imprimé-et-numérotation-du-récit-à-choix) :
   « Prendre la clé : rends-toi au 12. » Tant que la phrase reste automatique,
   un changement de formule du livre s'y applique. **Ajouté le 18 octobre 2026,**
@@ -2927,10 +2945,13 @@ phrase incomplète à l'écran lorsque le renvoi en portait le verbe.
   du livre ne s'applique plus à cette phrase.
 - **Libellé conservé :** le libellé reste attaché au choix pour le graphe, la
   recherche de destination et l'aide de F13.3. Pour un renvoi inséré dans une
-  phrase personnalisée sans libellé saisi, la phrase en tient lieu.
+  phrase personnalisée sans libellé saisi, la phrase en tient lieu. Une
+  suite, choix sans libellé, se nomme « Suite », même modifiée
+  ([F05.2](#f05-suite), 14 novembre 2026).
 - **Titre prérempli :** lorsqu'une scène est créée depuis un choix, son titre
   de travail est prérempli avec le libellé. Titre et libellé évoluent ensuite
-  séparément, sans synchronisation.
+  séparément, sans synchronisation. Depuis une suite, le titre se demande
+  dans un champ vide (F05-AC61).
 - **Activation à l'écran :** une phrase de choix à un seul renvoi est
   activable en entier ; dans une phrase à plusieurs renvois,
   chaque numéro est activable.
@@ -3492,6 +3513,122 @@ confirmer par le prototype :** arbitrés à l'entretien de l'étape 3 du
   un autre. », alors ce paragraphe reste entier et sans renvoi, et la même
   phrase de choix forme un paragraphe juste en dessous, vers la même
   destination.
+
+<a id="f05-suite"></a>**Décidé par le porteur le 14 novembre 2026 — la suite, un choix sans
+action** (sur recommandation, acceptée en entier : « Oui, écris-le » ;
+construction autorisée le même jour, « Oui, construis », et faite en local,
+un commit, sans migration — la base acceptait déjà un choix sans libellé —,
+rien poussé) :
+
+**Besoin exprimé :** il arrive souvent qu'une scène ne propose rien au
+lecteur et le mène seulement à la suivante. Jusqu'ici, il fallait écrire un
+choix « Continuer », qui donne « Continuer : rends-toi au 12. », phrase
+bancale, et un onglet « Continuer » dans « Chemins » ; ou modifier la phrase
+à la main, qui ne suivait plus la formule du livre.
+
+- **Un choix sans action.** Une *suite* est un choix dont le libellé est
+  vide. Ce n'est pas un autre bloc : sa destination, son panneau, sa phrase
+  modifiable, sa suppression, ses contrôles (F09.2), sa conversion en lien
+  caché et les droits de F06.1 sont ceux d'un choix.
+- **Sa phrase automatique** est le renvoi seul, dans la formule du livre
+  (F11.5) : « Rends-toi au 12. », « Va au 12. », « Rendez-vous au 12. »,
+  « Allez au 12. », « → 12 ». Un changement de formule s'y applique tant
+  qu'elle reste automatique. Elle n'a qu'une forme : les constructions de
+  « Phrases de choix » ne la concernent pas.
+- **Dans la copie, pas de bouton de plus** (la barre a été allégée le
+  9 novembre 2026) : à la première étape de « Nouveau choix », sous le champ
+  de l'action, « Juste la suite → » passe directement à la destination, avec
+  ses trois issues. Avec « Nouvelle scène », le titre de la scène se demande
+  dans un champ vide, puisqu'il n'y a pas de libellé à reprendre ; laissé
+  vide, la scène se nomme par sa référence, comme toute scène sans titre.
+  Avec « Scène existante », la liste montre les scènes du chapitre dans leur
+  ordre, sans scène remontée en tête faute de mots à rapprocher ; le filtre
+  et le bouton des chapitres restent (F05-AC56).
+- **Dans le panneau,** le champ de l'action est vide et porte « Aucune
+  action : la suite ». Y écrire une action fait de la suite un choix
+  ordinaire, sa phrase recomposée avec une construction tirée (F05-AC11) ;
+  effacer l'action d'une phrase automatique en fait une suite. La phrase se
+  modifie comme une autre, ce qui couvre les transitions (« Le lendemain
+  matin, rends-toi au 12. ») ; la suite reste une suite tant que l'action est
+  vide. La flèche ronde ne sert que sur une suite modifiée, pour remettre
+  la phrase automatique ; ailleurs elle reste grisée, comme pour une phrase
+  à plusieurs destinations.
+- **Une seule destination :** le « + » des destinations n'est pas proposé
+  sur une suite. Qui veut deux destinations écrit d'abord une action.
+- **Lecture et livre :** rien de propre. Le texte est le même à l'écran et
+  sur le papier, et une phrase à un seul renvoi s'active en entier (F05).
+- **Dans « Chemins » :** voir [« Choix en onglets »](#f03-onglets) ;
+  l'onglet porte « Suite ».
+- **L'IA :** le bloc de scènes peut proposer une suite
+  ([F13.7](#f137--bloc-de-scènes-depuis-le-schéma)) ; les idées de choix de
+  la copie n'en proposent jamais (F13.3).
+- **Écartés :** un bouton « Continuer » ou « Page suivante » propre au
+  lecteur en ligne, qui séparerait l'écran du papier ; une suite déduite de
+  l'ordre des scènes, comme en récit classique, qui casserait au premier
+  réordonnancement et mêlerait les deux modes ; un bouton « Suite » dans la
+  barre de la copie, à reconsidérer seulement si le clic de plus gêne à
+  l'usage ; aucun onglet dans « Chemins », qui ôterait de quoi cliquer la
+  suite et la repérer sans destination. Les mots « Continuer » et « Tourner
+  la page » sont écartés pour « Suite », plus court et qui ne se lit pas
+  comme une action du lecteur.
+
+**Critères d'acceptation :**
+
+- **F05-AC59 — Créer une suite :** étant donné S015 dans un livre à la
+  formule « rends-toi au 12 », lorsque l'enseignante ouvre « Nouveau
+  choix », choisit « Juste la suite → » puis la scène existante S018, alors
+  le paragraphe « Rends-toi au 18. » s'insère après le paragraphe du
+  curseur (F05-AC13), le panneau reste ouvert, son champ d'action vide,
+  et le graphe montre le lien S015 → S018.
+- **F05-AC60 — Formule du livre :** étant donné cette suite automatique,
+  lorsque la formule du livre devient « rendez-vous au 12 », alors elle se
+  lit « Rendez-vous au 18. » ; avec « → 12 », « → 18 ».
+- **F05-AC61 — Nouvelle scène depuis une suite :** étant donné « Juste la
+  suite → » puis « Nouvelle scène », lorsque l'enseignante écrit « La
+  clairière » dans le champ du titre, alors une scène vide « La clairière »
+  existe à la fin du chapitre et la phrase y renvoie ; lorsqu'elle laisse
+  le titre vide, alors la scène est créée sans titre et se nomme par sa
+  référence.
+- **F05-AC62 — D'une suite à un choix, et retour :** étant donné la suite
+  « Rends-toi au 18. », lorsque l'enseignante écrit « Suivre la lumière »
+  dans le champ de l'action, alors la phrase devient une phrase de choix
+  composée avec une construction cochée, « Suivre la lumière : rends-toi au
+  18. » par exemple ; lorsqu'elle efface l'action, alors la phrase redevient
+  « Rends-toi au 18. ».
+- **F05-AC63 — Suite modifiée :** étant donné la suite « Rends-toi au
+  18. », lorsque l'enseignante écrit « Le lendemain matin, » devant le
+  renvoi dans le panneau, alors la phrase porte la mention « modifiée », le
+  champ de l'action reste vide, la flèche ronde apparaît et remet
+  « Rends-toi au 18. » ; un changement de formule ne touche pas la phrase
+  modifiée.
+- **F05-AC64 — Une seule destination :** étant donné une suite, lorsque
+  l'enseignante regarde ses destinations, alors aucun « + » n'est proposé ;
+  après l'écriture d'une action, le « + » apparaît.
+- **F05-AC65 — Suite sans destination :** étant donné une suite créée avec
+  « Décider plus tard », alors sa phrase affiche un renvoi vide et le PDF
+  définitif est bloqué comme pour un choix sans destination (F05-AC17).
+
+**Précisions prises en construisant (14 novembre 2026), à lui faire
+confirmer :**
+
+- le panneau d'une suite s'intitule « Suite », et son bouton « Supprimer
+  cette suite » ; les messages disent « La suite est ajoutée. », « La suite
+  est supprimée. », « La suite mène à… », et les contrôles du livre « La
+  suite ne mène nulle part. » ;
+- « Juste la suite → » est un petit bouton à contour dans la copie, où il
+  sert souvent, et un lien dans la bulle du « + », à côté de « Relier plutôt
+  à une scène existante » ; il disparaît dès qu'une action est écrite ;
+- dans la bulle, après « Juste la suite », le curseur passe au titre de la
+  nouvelle scène, ou à « Relier » ; le champ de l'action reste là, vide
+  (« Aucune action : la suite »), et y écrire refait un choix ;
+- dans le bloc de scènes, un choix dont on efface l'action devient une suite,
+  comme dans la copie (« Suite : aucune action ») : « Ajouter » ne la refuse
+  plus ; de la réponse de l'IA, une seule suite par scène est gardée, deux
+  suites vers deux scènes n'ayant pas de sens ;
+- une phrase écrite à plusieurs destinations garde son action : l'effacer
+  est refusé, le champ reprend l'ancienne ;
+- les fiches de rédaction ne listent pas les suites, comme avant pour un
+  choix sans libellé : elles n'ont rien à écrire pour l'élève.
 
 **Variantes confirmées le 1er octobre 2026 :**
 
@@ -11666,6 +11803,9 @@ proposer des raccords interchapitres pour l'enseignant, sans donner ces droits
 aux élèves. Elle ne supprime ni ne réorganise silencieusement les passages
 existants. Le récit classique n'a pas besoin de cette aide aux embranchements.
 Une correction éditoriale reste distincte de l'application de nouveaux choix.
+Elle ne propose jamais de suite, choix sans action
+([F05.2](#f05-suite), 14 novembre 2026) : son rôle est d'inventer des
+actions pour le lecteur.
 
 **Critères de qualité et cas à éprouver, proposés :**
 
@@ -12121,6 +12261,11 @@ il reste lisible au tableau, sans mode à part.
 - **La proposition est gardée** tant que la page reste ouverte.
 - **Quelqu'un écrit la scène d'origine :** il n'est jamais arrêté
   ([F08.1](#f08-ajout-du-plan)).
+- **Une suite quand il n'y a qu'une issue** (décidé par le porteur le
+  14 novembre 2026, [F05.2](#f05-suite), F13-AC45) : quand une scène
+  proposée ne mène qu'à une autre, sans rien à décider pour le lecteur, l'IA
+  propose une suite plutôt que d'inventer une action ; sa fiche et son
+  onglet portent « Suite », et l'adulte peut lui écrire une action.
 - **Les idées de choix de la copie restent telles quelles** (F13.3) : là,
   l'adulte ne sait pas quoi proposer et l'IA lit le texte écrit ; ici, il
   sait ce qu'il veut et l'IA le construit.
@@ -12197,6 +12342,13 @@ dessiné par l'utilisateur (F03.1).
   « Chemins », les suites d'une scène se lisent de gauche à droite dans
   l'ordre de ses choix (dagre les rangeait à rebours ; le schéma est retourné
   en miroir, sans autre changement de disposition).
+- **F13-AC45 — Une suite proposée (décidé le 14 novembre 2026) :** étant
+  donné la demande « la barque mène au ponton, puis le ponton se partage
+  entre le marché et l'écluse », lorsque l'IA dessine sa proposition, alors
+  « La barque » porte une suite vers « Le ponton », dont la fiche et
+  l'onglet disent « Suite », et « Le ponton » porte deux choix ; après
+  « Ajouter », le texte de « La barque » finit par « Rends-toi au … » dans
+  la formule du livre.
 
 **Mesuré à l'essai du 11 novembre 2026 :** un tour coûte 3 à 4 centimes
 (3 ou 4 étoiles) et prend une dizaine de secondes ; la qualité, jugée sur huit

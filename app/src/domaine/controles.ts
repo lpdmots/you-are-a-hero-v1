@@ -421,7 +421,7 @@ export function phraseDe(p: Point): { quoi: string; detail: string; suite?: stri
   if (p.sorte === "largeur-reduite") return { quoi: "Image réduite pour tenir dans la page.", detail: `Demandée à ${p.demandee} %, elle s’imprime à ${p.obtenue} %.` };
   if (p.sorte === "hors-marges") return { quoi: `Le texte dépasse de la marge, page ${p.page}.`, detail: "Un mot trop long pour la ligne déborde dans la marge : coupez-le, ou acceptez-le." };
   // Le choix se nomme par son libellé : trois choix d'une même scène ne font pas trois cartes pareilles
-  const lequel = (c: Chemin) => (c.cache ? "Le lien caché" : c.libelle.trim() ? `« ${c.libelle.trim()} »` : "Un choix");
+  const lequel = (c: Chemin) => (c.cache ? "Le lien caché" : c.libelle.trim() ? `« ${c.libelle.trim()} »` : "La suite");
   switch (p.sorte) {
     case "a-finir":
       return { quoi: "À finir.", detail: "La scène n’est pas encore déclarée prête pour le livre." };

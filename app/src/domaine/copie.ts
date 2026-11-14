@@ -74,6 +74,21 @@ export const estAuto = (b: Bloc): b is ChoixAuto => b.type === "choix" && b.auto
 export const estRenvoi = (n: unknown): n is Renvoi => estObjet(n) && n.type === "renvoi";
 export const estLiaison = (b: { type?: string }): b is Liaison => b.type === "liaison";
 export const estImageLigne = (n: unknown): n is ImageLigne => estObjet(n) && n.type === "image-ligne";
+/**
+ * La suite (F05.2, 14 novembre 2026) : un choix sans action, qui mène le lecteur à une seule scène
+ * sans rien lui faire décider. Ce n'est pas un autre bloc : un choix dont le libellé est vide, à un
+ * renvoi au plus — une phrase écrite à plusieurs renvois sans libellé n'en est pas une.
+ */
+export const estSuite = (b: Bloc): boolean =>
+  b.type === "choix" && !b.libelle.trim() && (estAuto(b) || b.children.filter(estRenvoi).length <= 1);
+/** Ce que dit un lien des chemins sans action : « Suite » (F03-AC77). */
+export const SUITE = "Suite";
+/** Le nom d'un choix là où l'outil le nomme — onglet, panneau, message : sa phrase d'action, ou « Suite ». */
+export const nomDuChoix = (l: { libelle: string; cache?: boolean }): string => (l.cache ? "Lien caché" : l.libelle.trim() || SUITE);
+/** Un choix dans une phrase de message : « Le choix « Traverser » », ou « La suite ». */
+export const leChoix = (l: { libelle: string }): string => (l.libelle.trim() ? `Le choix « ${l.libelle.trim()} »` : "La suite");
+/** Le message d'un choix supprimé, accordé : « Le choix « Traverser » est supprimé. », « La suite est supprimée. » */
+export const supprimeDit = (l: { libelle: string }): string => `${leChoix(l)} est ${l.libelle.trim() ? "supprimé" : "supprimée"}.`;
 export const ALT_MAX = 200;
 export const LEGENDE_MAX = 300;
 export const LIBELLE_MAX = 200;
@@ -325,7 +340,7 @@ export function morceauxDe(bloc: Choix, formule: FormuleRenvoi): Morceau[] {
     return bloc.children.map((e) => ("text" in e ? { texte: e.text } : estImageLigne(e) ? { image: e.image, alt: e.alt } : { renvoi: e.id, cible: e.cible }));
   }
   const MARQUE = "\u0001";
-  const [avant, apres = ""] = phraseDeChoix(bloc.libelle || "…", MARQUE, formule, bloc.construction).split(MARQUE);
+  const [avant, apres = ""] = phraseDeChoix(bloc.libelle, MARQUE, formule, bloc.construction).split(MARQUE);
   return [{ texte: avant }, { renvoi: bloc.id, cible: bloc.cible }, { texte: apres }];
 }
 
@@ -336,7 +351,7 @@ export const nouveauRenvoi = (cible: string | null): Renvoi => ({ type: "renvoi"
 export function enPersonnalisee(bloc: Choix, formule: FormuleRenvoi): Choix {
   if (!estAuto(bloc)) return bloc;
   const MARQUE = "\u0001";
-  const [avant, apres = ""] = phraseDeChoix(bloc.libelle || "…", MARQUE, formule, bloc.construction).split(MARQUE);
+  const [avant, apres = ""] = phraseDeChoix(bloc.libelle, MARQUE, formule, bloc.construction).split(MARQUE);
   return { type: "choix", id: bloc.id, libelle: bloc.libelle, children: [{ text: avant }, nouveauRenvoi(bloc.cible), { text: apres }] };
 }
 

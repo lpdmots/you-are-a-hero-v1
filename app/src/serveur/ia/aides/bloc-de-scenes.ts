@@ -78,6 +78,7 @@ ${e.origine ? `- la scène d'origine est ${e.origine.ref}.` : `- le chapitre est
 Les textes :
 - « titre » : deux à sept mots, dans la forme des titres du chapitre, sans dévoiler la suite ;
 - « libelle » : ce que fait le lecteur, à l'infinitif, en quelques mots (« Suivre le sentier des fougères ») ;
+- une suite : quand une scène ne mène qu'à une seule autre, sans rien à décider pour le lecteur, qui continue simplement, laisse « libelle » vide plutôt que d'inventer une action (« Continuer », « Avancer ») ; la phrase s'écrira « Rends-toi au 12. ». Une scène qui propose une vraie décision a des choix, chacun avec son libellé ;
 - tu ne rédiges pas les scènes : le texte reste celui des élèves.
 
 ${consignesVoulues(e)}
@@ -89,7 +90,7 @@ ${AFFINER}`,
 );
 
 const ligneDeScene = (s: SceneDuChapitre): string => {
-  const choix = s.choix.length ? ` ; ses choix : ${s.choix.map((c) => `« ${c.libelle} » → ${c.vers}`).join(", ")}` : "";
+  const choix = s.choix.length ? ` ; ses choix : ${s.choix.map((c) => `${c.libelle ? `« ${c.libelle} »` : "suite"} → ${c.vers}`).join(", ")}` : "";
   return `${s.ref} « ${s.titre} »${s.consigne ? ` — consigne : ${s.consigne.replace(/\s*\n\s*/g, " ")}` : ""}${choix}`;
 };
 
@@ -99,7 +100,7 @@ function enClair(p: Proposition, e: EntreeBloc): string {
   const nom = (id: string) => refDe.get(id) ?? id;
   return [
     ...p.scenes.map((s) => `${s.cle} « ${s.titre} »${s.consigne ? ` — consigne : ${s.consigne.replace(/\s*\n\s*/g, " ")}` : ""}${s.liste.length ? ` ; liste : ${s.liste.join(" ")}` : ""}`),
-    ...p.choix.map((c) => `choix « ${c.libelle} » : ${nom(c.de)} → ${nom(c.vers)}`),
+    ...p.choix.map((c) => `${c.libelle ? `choix « ${c.libelle} »` : "suite (libelle vide)"} : ${nom(c.de)} → ${nom(c.vers)}`),
   ].join("\n");
 }
 
@@ -182,9 +183,10 @@ export function lireLeBloc(json: unknown, e: EntreeBloc): Proposition | null {
     const c = champs(b);
     const de = bout(c?.de);
     const vers = bout(c?.vers);
-    const libelle = texte(c?.libelle, LIBELLE_MAX)?.replace(/[.]+$/, "");
+    // Un libellé vide est une suite, choix sans action (F13-AC45)
+    const libelle = texte(c?.libelle, LIBELLE_MAX)?.replace(/[.]+$/, "") ?? "";
     // Un choix part de la scène d'origine ou d'une nouvelle scène : le bloc ne touche à aucune autre (F13-AC39)
-    if (!de || !vers || !libelle || de === vers || !(nouvelles.has(de) || de === e.origine?.id)) continue;
+    if (!de || !vers || de === vers || !(nouvelles.has(de) || de === e.origine?.id)) continue;
     if (choix.some((x) => x.de === de && (x.vers === vers || x.libelle.toLocaleLowerCase("fr") === libelle.toLocaleLowerCase("fr")))) continue;
     choix.push({ cle: `C${choix.length + 1}`, de, vers, libelle, invente: c?.invente === true });
   }
@@ -279,7 +281,8 @@ export function simulerUnBloc(e: EntreeBloc): unknown {
     const existante = e.scenes.find((s) => s.titre.toLocaleLowerCase("fr") === rejoint[2].trim().replace(/[.]+$/, "").toLocaleLowerCase("fr"));
     if (existante) choix.push({ de: racine, vers: existante.ref, libelle: `Rejoindre ${existante.titre}`, invente: false });
   } else {
-    choix.push({ de: racine, vers: nouvelle("La suite"), libelle: "Continuer", invente: false });
+    // Sans rien à décider : une suite, choix sans action (F13-AC45)
+    choix.push({ de: racine, vers: nouvelle("La suite"), libelle: "", invente: false });
   }
   return {
     scenes, choix,

@@ -214,7 +214,8 @@ export type FicheOuverte =
   | { sorte: "idees" };
 
 /** La phrase de choix qu'on est en train de créer : la copie la montre à sa place, en attente, pendant la saisie. */
-export type ApercuDeChoix = { libelle: string; construction: Construction };
+/** La phrase en attente pendant la création ; `suite` : « Juste la suite », le renvoi seul, sans libellé d'exemple */
+export type ApercuDeChoix = { libelle: string; construction: Construction; suite?: boolean };
 
 export type ContexteDeCopie = {
   livre: Livre;

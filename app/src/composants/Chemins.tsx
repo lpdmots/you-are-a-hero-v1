@@ -12,6 +12,7 @@ import { referenceScene } from "@/domaine/recit";
 import { Bulle } from "./Bulle";
 import { Icone } from "./Icone";
 import { TamponScene } from "./TamponScene";
+import { nomDuChoix } from "@/domaine/copie";
 
 /**
  * La vue « Chemins » d'un chapitre (F03.1, « Vue Chemins à reprendre » ; docs/design.md,
@@ -219,7 +220,7 @@ function Liste({
                             Lien caché
                           </>
                         ) : (
-                          l.libelle || "Choix sans libellé"
+                          nomDuChoix(l)
                         )}
                       </span>
                       {l.manque ? (

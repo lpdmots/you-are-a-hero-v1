@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Fragment, useEffect, useId, useLayoutEffect, useRef, useState, type RefObject } from "react";
 import { createPortal } from "react-dom";
 import { ordreDeLecture, retoursEnArriere, type Chemins, type LienDeChemin, type NoeudDeChemin } from "@/domaine/chemins";
-import { LIBELLE_MAX } from "@/domaine/copie";
+import { LIBELLE_MAX, nomDuChoix } from "@/domaine/copie";
 import { nomScene, referenceScene } from "@/domaine/recit";
 import { useConsigneIa } from "@/app/(adulte)/projet/[id]/scene/[scene]/AidesDeScene";
 import { ChampQuiGrandit } from "../ChampQuiGrandit";
@@ -78,6 +78,8 @@ export function BulleDuGeste({
   const idLibelle = useId();
   const idSuite = useId();
   const [libelle, setLibelle] = useState("");
+  // « Juste la suite » : un choix sans action, qui se lit « Rends-toi au 12. » (F05.2, F03-AC77)
+  const [suite, setSuite] = useState(false);
   // Le titre proposé est celui du choix, tant qu'on ne l'a pas écrit soi-même (F05-AC12)
   const [titreEcrit, setTitreEcrit] = useState<string | null>(null);
   const titre = titreEcrit ?? libelle;
@@ -117,7 +119,7 @@ export function BulleDuGeste({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const pret = libelle.trim() !== "" && (geste.sorte === "lien" || !existante || vers !== "");
+  const pret = (libelle.trim() !== "" || suite) && (geste.sorte === "lien" || !existante || vers !== "");
   const envoyer = async () => {
     if (!pret || attente) return;
     setAttente(true);
@@ -152,7 +154,31 @@ export function BulleDuGeste({
       </p>
       <div className="geste-chemin__champ">
         <label htmlFor={idLibelle}>Ce que fait le lecteur</label>
-        <input id={idLibelle} className="pchamp" type="text" value={libelle} maxLength={LIBELLE_MAX} placeholder={`Par exemple : ${EXEMPLE}`} autoComplete="off" onChange={(e) => setLibelle(e.target.value)} />
+        <input
+          id={idLibelle}
+          className="pchamp"
+          type="text"
+          value={libelle}
+          maxLength={LIBELLE_MAX}
+          placeholder={suite ? "Aucune action : la suite" : `Par exemple : ${EXEMPLE}`}
+          autoComplete="off"
+          onChange={(e) => setLibelle(e.target.value)}
+        />
+        {/* Le lecteur continue, sans rien décider : la phrase sera le renvoi seul */}
+        {suite || libelle.trim() ? null : (
+          <button
+            type="button"
+            className="lien geste-chemin__autre"
+            onClick={(e) => {
+              setSuite(true);
+              const bulleIci = e.currentTarget.form;
+              // On passe à ce qui reste : le titre de la nouvelle scène, ou « Relier »
+              requestAnimationFrame(() => bulleIci?.querySelector<HTMLElement>(`#${CSS.escape(idSuite)}, button[type="submit"]`)?.focus());
+            }}
+          >
+            Juste la suite →
+          </button>
+        )}
       </div>
       {geste.sorte === "ajout" ? (
         <div className="geste-chemin__champ">
@@ -356,23 +382,23 @@ export function PanneauDeScene({
                       // La ligne ouvre le choix : sa phrase, ses destinations, tout ce qui le règle (F03-AC70)
                       <button
                         type="button"
-                        className="panneau-chemin__libelle panneau-chemin__ouvrir"
+                        className={`panneau-chemin__libelle panneau-chemin__ouvrir${!l.cache && !l.libelle.trim() ? " est-sans-action" : ""}`}
                         title={l.cache ? "Régler ce lien caché" : "Modifier ce choix"}
                         onClick={() => onOuvrirChoix(l.id, groupe.map((d) => d.id))}
                       >
                         {l.cache ? <Icone nom="cle" /> : null}
-                        <span>{l.cache ? "Lien caché" : l.libelle || "Choix sans libellé"}</span>
+                        <span>{nomDuChoix(l)}</span>
                         <Icone nom="chevron-bas" className="panneau-chemin__vers-le-choix" />
                       </button>
                     ) : (
-                      <span className="panneau-chemin__libelle">
+                      <span className={`panneau-chemin__libelle${!l.cache && !l.libelle.trim() ? " est-sans-action" : ""}`}>
                         {l.cache ? (
                           <>
                             <Icone nom="cle" />
                             Lien caché
                           </>
                         ) : (
-                          l.libelle || "Choix sans libellé"
+                          nomDuChoix(l)
                         )}
                       </span>
                     )}
@@ -390,7 +416,7 @@ export function PanneauDeScene({
                                 <select
                                   className="pchamp"
                                   value=""
-                                  aria-label={`Relier le choix « ${l.libelle || "sans libellé"} » à une scène`}
+                                  aria-label={`Relier ${l.libelle.trim() ? `le choix « ${l.libelle.trim()} »` : "la suite"} à une scène`}
                                   title="Ou tirez son onglet, dans le schéma, jusqu’à une scène"
                                   disabled={enLiaison !== null}
                                   onChange={(ev) => void lier(d, ev.target.value)}
@@ -420,7 +446,7 @@ export function PanneauDeScene({
                       <button
                         type="button"
                         className="btn btn--discret panneau-chemin__retirer"
-                        aria-label={`Supprimer le choix « ${l.libelle || "sans libellé"} »`}
+                        aria-label={`Supprimer ${l.libelle.trim() ? `le choix « ${l.libelle.trim()} »` : "la suite"}`}
                         title="Supprimer ce choix"
                         disabled={enRetrait !== null}
                         aria-busy={enRetrait === l.id || undefined}

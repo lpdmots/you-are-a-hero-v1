@@ -171,6 +171,16 @@ describe("Contrôles du livre (F09.2)", () => {
     expect(phraseDe(p[1]).quoi).toBe("« Choix 3 » mène à une scène supprimée.");
   });
 
+  it("F05-AC65 — une suite sans destination bloque le PDF définitif comme un choix ; le point la nomme « La suite »", () => {
+    const plan = livre([{ ref: 1, choix: [2] }, { ref: 2, choix: [null] }, { ref: 3, fin: true }]);
+    plan.liens = plan.liens.map((l) => (l.cibleId === null ? { ...l, libelle: "" } : l));
+    const p = controle(plan);
+    const sans = p.find((x) => x.sorte === "sans-destination")!;
+    expect(sans.gravite).toBe("bloque");
+    expect(pdfDefinitifRefuse(p)).toBe(true);
+    expect(phraseDe(sans)).toEqual({ quoi: "La suite ne mène nulle part.", detail: "La suite n’a pas encore de destination." });
+  });
+
   it("F09-AC15 — énigme sans issue de secours : « sortie non assurée » avertit sans bloquer ; un choix écrit à côté la fait disparaître", () => {
     const porte = livre([{ ref: 1, choix: [55] }, { ref: 55, cachees: [62] }, { ref: 62, fin: true }]);
     const p = controle(porte);

@@ -182,7 +182,8 @@ export function PanneauDuBloc({
     void services.regler(suite).then((r) => r.ok || dire({ texte: r.erreur }));
   };
 
-  const pret = !!p && p.scenes.every((s) => s.titre.trim()) && p.choix.every((c) => c.libelle.trim()) && (p.scenes.length > 0 || p.choix.length > 0);
+  // Un choix sans action est une suite (F13-AC45) : seules les nouvelles scènes demandent un titre
+  const pret = !!p && p.scenes.every((s) => s.titre.trim()) && (p.scenes.length > 0 || p.choix.length > 0);
   const redessiner = !!p && etat.demande.trim() !== etat.demandee;
 
   return (
@@ -421,7 +422,7 @@ function Arbre({
           dictee={false}
           value={c.libelle}
           maxLength={LIBELLE_MAX}
-          placeholder="Ce que fait le lecteur"
+          placeholder="Suite : aucune action"
           onKeyDown={sansRetour}
           onChange={(e) => changerChoix(c.cle, e.target.value.replace(/\s*\n\s*/g, " "))}
         />
@@ -451,7 +452,7 @@ function Arbre({
             <span className="bloc-ligne__rejoint">
               <Icone nom="entree" />
               {existante ? nomScene(existante) : `« ${nouvelle?.titre || "sans titre"} »`}
-              <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer le choix « ${c.libelle || "sans libellé"} »`} title="Retirer ce choix" onClick={() => retirerChoix(c.cle)}>
+              <button type="button" className="btn btn--discret panneau-chemin__retirer" aria-label={`Retirer ${c.libelle.trim() ? `le choix « ${c.libelle.trim()} »` : "la suite"}`} title="Retirer ce choix" onClick={() => retirerChoix(c.cle)}>
                 <Icone nom="corbeille" />
               </button>
             </span>
@@ -461,7 +462,10 @@ function Arbre({
     );
   };
   // Le nom d'une fiche, pour ce que dit le lecteur d'écran pendant qu'on la tire
-  const nomDuChoix = (cle: string | number) => `le choix « ${p.choix.find((c) => c.cle === cle)?.libelle || "sans libellé"} »`;
+  const nomDuChoix = (cle: string | number) => {
+    const dit = p.choix.find((c) => c.cle === cle)?.libelle.trim();
+    return dit ? `le choix « ${dit} »` : "la suite";
+  };
 
   return (
     <section className="panneau-bloc__propose" aria-labelledby="bloc-propose">

@@ -270,9 +270,14 @@ const minuscule = (t: string): string => t.charAt(0).toLocaleLowerCase("fr") + t
 export const constructionsUtiles = (formule: FormuleRenvoi, cochees: Construction[]): Construction[] =>
   formule === "fleche" ? ["neutre"] : cochees.includes("neutre") ? cochees : ["neutre", ...cochees];
 
-/** Phrase de choix automatique : « Prendre la clé : rends-toi au 12. » (F05). */
+/**
+ * Phrase de choix automatique : « Prendre la clé : rends-toi au 12. » (F05). Sans libellé, le choix
+ * est une suite, qui n'a qu'une forme : le renvoi seul, « Rends-toi au 12. » ou « → 12 » (F05-AC59,
+ * AC60) ; la construction tirée à sa création attend qu'on lui écrive une action.
+ */
 export function phraseDeChoix(libelle: string, numero: number | string, formule: FormuleRenvoi, construction: Construction): string {
   const renvoi = `${FORMULES_RENVOI[formule].avant}${numero}`;
+  if (!libelle.trim()) return formule === "fleche" ? renvoi : `${majuscule(renvoi)}.`;
   const gabarit = formule === "fleche"
     ? "{L} {r}"
     : construction === "si" && estAuVous(formule)
