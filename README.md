@@ -114,7 +114,7 @@ datent de la construction.
 
 La suite, 14 novembre 2026 : décidée par le porteur sur recommandation,
 construite en local le même jour à sa demande, un commit, sans migration, rien
-poussé ; précisions à lui faire confirmer en F05.2. Un choix sans action mène à une seule
+poussé ; précisions confirmées par lui le même jour (F05.2). Un choix sans action mène à une seule
 scène et se lit « Rends-toi au 12. », dans la formule du livre ; il se crée par
 « Juste la suite → » dans « Nouveau choix » et dans la bulle du « + », et son
 onglet porte « Suite » ; le bloc de scènes peut en proposer, les idées de choix

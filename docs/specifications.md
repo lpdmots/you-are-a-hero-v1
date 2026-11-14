@@ -3608,8 +3608,9 @@ bancale, et un onglet « Continuer » dans « Chemins » ; ou modifier la phrase
   « Décider plus tard », alors sa phrase affiche un renvoi vide et le PDF
   définitif est bloqué comme pour un choix sans destination (F05-AC17).
 
-**Précisions prises en construisant (14 novembre 2026), à lui faire
-confirmer :**
+**Précisions prises en construisant (14 novembre 2026), confirmées en bloc
+par le porteur le même jour (« je confirme les précisions ») — ne plus les lui
+soumettre :**
 
 - le panneau d'une suite s'intitule « Suite », et son bouton « Supprimer
   cette suite » ; les messages disent « La suite est ajoutée. », « La suite
