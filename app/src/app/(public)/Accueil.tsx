@@ -386,7 +386,7 @@ export async function Accueil() {
 const CAPTURES_DES_TEMPS = [
   { temps: "1", src: "/accueil/prep-heros.webp", ratio: "2000 / 1128", alt: "Le héros, Lou, et ce que la classe a retenu de lui, après le monde et avant l’enjeu", note: "La classe définit son histoire : le monde, le héros, l’enjeu." },
   { temps: "1", collage: true, src: "", alt: "", note: "Les chapitres et les scènes, prêts à écrire." },
-  { temps: "2", src: "/accueil/ecrire-fiche.webp", ratio: "1454 / 1390", alt: "Une fiche de rédaction imprimée : la consigne de chaque scène", note: "Chacun écrit d’abord sur son cahier, d’après sa fiche." },
+  { temps: "2", src: "/accueil/ecrire-fiche-2.webp", ratio: "1463 / 1545", alt: "Une fiche de rédaction imprimée : la consigne de chaque scène", note: "Chacun écrit d’abord sur son cahier, d’après sa fiche." },
   { temps: "2", src: "/accueil/ecrire-correction.webp", ratio: "1684 / 1026", alt: "La scène recopiée par l’élève, avec la correction proposée par l’IA : chaque changement visible, que l’enseignant garde ou refuse", note: "Les élèves recopient leur scène sur l’ordinateur, puis vous corrigez." },
   { temps: "3", src: "/accueil/livre-pages-peu-remplies.webp", ratio: "1000 / 1145", alt: "La mise en page : une page peu remplie, signalée avec ce qu’on peut y faire", note: "L’outil repère les pages à ajuster avant l’impression." },
   { temps: "3", src: "/accueil/lecture-electro-nick.webp", ratio: "1434 / 1290", livre: "Électro Nick", alt: "« Électro Nick », lu en ligne : un passage, son illustration et ses trois choix", note: "Et un lien pour le lire en ligne, en famille." },
