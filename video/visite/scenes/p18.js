@@ -10,15 +10,72 @@ window.SCENES.p18 = (tl, t0) => {
   window.entreeParNumero(tl, id, 3, t0);
   tl.fromTo(q("filet"), { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: "power3.out" }, T(0.95));
   tl.fromTo(q("titre"), { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.9, ease: "expo.out" }, T(1.0));
-  // « chaque élève reçoit ses scènes » : le chapitre et ses scènes, les prénoms s'y posent
-  tl.fromTo(q("rep"), { y: 70, opacity: 0, rotationX: 10, transformPerspective: 1800, transformOrigin: "50% 0%" }, { y: 0, opacity: 1, rotationX: 0, duration: 1.0, ease: "expo.out" }, T(1.05));
-  tl.fromTo(`${q("rep")} .rep-carte`, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: "power2.out", stagger: 0.06 }, T(1.3));
-  [0, 1, 2, 3, 4, 5].forEach((i) => {
-    const t = m("recoit") - 0.1 + i * 0.12;
-    tl.fromTo(q("qui" + i), { y: -50, opacity: 0, scale: 1.25 }, { y: 0, opacity: 1, scale: 1, duration: 0.45, ease: "back.out(2)" }, t);
-    tl.to(`${q("rep")} .rep-carte:nth-child(${i + 4}) .libre`, { opacity: 0, duration: 0.15 }, t);
+  // « chaque élève reçoit ses scènes » : la vue « Chemins » du chapitre (choix en onglets), puis le
+  // prénom de qui écrit se pose sur chaque scène, de haut en bas
+  const W = 450, H = 164;
+  const scenes = [
+    // [x, y, titre, prénom, onglets : [phrase, scène visée ou sortie]]
+    [531, 24, "Île — la clairière aux pierres", "Gabin", [["Garder la lanterne allumée", 1], ["Éteindre la lanterne", 2]]],
+    [160, 258, "Île — pour rien", "Hugo", [["Traverser la clairière", 3]]],
+    [900, 258, "Île — la lumière dans la brume", "Farah", [["Suivre la lumière", 4], ["Rester immobile", 5]]],
+    [24, 492, "Île — la flamme qui veille", "Hugo", [["Monter vers la tour", "La tour"]]],
+    [531, 492, "Île — la lumière qui recule", "Jade", [["Courir après elle", "La tour"]]],
+    [1038, 492, "Île — la lumière bleutée", "Gabin", [["Rallumer la lanterne", "La tour"]]],
+  ];
+  const zone = document.querySelector(q("zone"));
+  zone.insertAdjacentHTML(
+    "beforeend",
+    scenes
+      .map(([x, y, titre, qui, onglets], i) => `<div class="noeud" id="p18-n${i}" style="left:${x}px;top:${y}px"><div class="tete"><i class="pt"></i><b class="t">${titre}</b><span class="etat">Texte vide<span class="qui" id="p18-qui${i}">·&nbsp;<span class="nom"><span class="eclat"></span><b>${qui}</b></span></span></span></div><div class="onglets">${onglets
+        .map(([phrase, vers]) => `<span>${phrase}${typeof vers === "string" ? `<em>→ ${vers}</em>` : ""}</span>`)
+        .join("")}</div></div>`)
+      .join("")
+  );
+  const liens = document.querySelector(q("liens"));
+  const NS = "http://www.w3.org/2000/svg";
+  const traits = [];
+  scenes.forEach(([x, y, , , onglets]) => {
+    onglets.forEach(([, vers], k) => {
+      if (typeof vers !== "number") return;
+      const x1 = x + (W / onglets.length) * (k + 0.5), y1 = y + H;
+      const [xb, yb] = scenes[vers];
+      const x2 = xb + W / 2, y2 = yb - 6;
+      const p = document.createElementNS(NS, "path");
+      p.setAttribute("d", `M ${x1} ${y1} C ${x1} ${y1 + 44}, ${x2} ${y2 - 44}, ${x2} ${y2}`);
+      p.setAttribute("fill", "none");
+      p.setAttribute("stroke", "#8b9196");
+      p.setAttribute("stroke-width", "3");
+      liens.appendChild(p);
+      const pointe = document.createElementNS(NS, "path");
+      pointe.setAttribute("d", `M ${x2 - 8} ${y2 - 10} L ${x2 + 8} ${y2 - 10} L ${x2} ${y2 + 3} Z`);
+      pointe.setAttribute("fill", "#8b9196");
+      liens.appendChild(pointe);
+      const o = document.createElementNS(NS, "circle");
+      o.setAttribute("cx", x1); o.setAttribute("cy", y1); o.setAttribute("r", "6");
+      o.setAttribute("fill", "#fff"); o.setAttribute("stroke", "#8b9196"); o.setAttribute("stroke-width", "2.5");
+      liens.appendChild(o);
+      traits.push([p, o, pointe, Math.ceil(p.getTotalLength()) + 2, Math.round(y / 230)]);
+    });
   });
-  window.bruit("cartes", m("recoit"), 0.4);
+
+  tl.fromTo(q("rep"), { y: 70, opacity: 0, rotationX: 10, transformPerspective: 1800, transformOrigin: "50% 0%" }, { y: 0, opacity: 1, rotationX: 0, duration: 1.0, ease: "expo.out" }, T(1.05));
+  scenes.forEach(([, y], i) => {
+    tl.fromTo(q("n" + i), { y: 22, opacity: 0 }, { y: 0, opacity: 1, duration: 0.42, ease: "power2.out" }, T(1.25) + Math.round(y / 230) * 0.16 + i * 0.03);
+  });
+  traits.forEach(([p, o, pointe, L, rang]) => {
+    const t = T(1.45) + rang * 0.16;
+    tl.fromTo(o, { opacity: 0 }, { opacity: 1, duration: 0.15 }, t);
+    tl.fromTo(p, { strokeDasharray: L, strokeDashoffset: L }, { strokeDashoffset: 0, duration: 0.4, ease: "power2.inOut" }, t);
+    tl.fromTo(pointe, { opacity: 0 }, { opacity: 1, duration: 0.1 }, t + 0.32);
+  });
+  // les prénoms, au mot près : « chaque élève reçoit ses scènes »
+  scenes.forEach((_, i) => {
+    const t = m("eleve") - 0.05 + i * 0.11;
+    tl.fromTo(q("qui" + i), { y: -26, opacity: 0, scale: 1.7, transformOrigin: "0% 60%" }, { y: 0, opacity: 1, scale: 1, duration: 0.42, ease: "back.out(2.2)" }, t);
+    tl.fromTo(`${q("qui" + i)} .eclat`, { opacity: 0 }, { opacity: 1, duration: 0.15, immediateRender: false }, t + 0.2);
+    tl.to(`${q("qui" + i)} .eclat`, { opacity: 0, duration: 0.5, ease: "power1.in" }, t + 0.75);
+  });
+  window.bruit("cartes", m("eleve"), 0.4);
 
   // « et les écrit » : la répartition s'efface, on est déjà au-dessus du cahier
   const tEcrit = m("ecrit") - 0.35;

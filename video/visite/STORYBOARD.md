@@ -84,7 +84,11 @@ rendez-vous au 3. »
 cahier, puis sur les ordinateurs de la classe. Chaque scène se termine par des
 choix. Suivre la lumière dans la brume ? Ou rester immobile. »*
 
-Un cahier à grands carreaux (Seyès) : la cursive écrit le début de la scène,
+Sur « chaque élève reçoit ses scènes », la vue « Chemins » du chapitre « La
+clairière aux pierres » : six scènes « Texte vide » reliées par leurs choix en
+onglets ; le prénom de qui écrit se pose sur chacune, de haut en bas (retouche
+du 15 novembre 2026, à la place d'une grille de cartes). Puis un cahier à grands
+carreaux (Seyès) : la cursive écrit le début de la scène,
 trait après trait. La caméra glisse vers l'ordinateur : le même texte dans la
 copie de l'élève, filet rose de la marge, Vollkorn. La scène est « Île — la lumière dans la
 brume », du chapitre « La clairière aux pierres ». Les deux phrases de choix
