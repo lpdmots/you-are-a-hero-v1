@@ -5442,6 +5442,16 @@ concevoir : le choix des classes une à une, le réglage des auteurs par
 canal, l'état vide de « Lectures » au-delà de sa première esquisse et une
 éventuelle illustration de cette page.
 
+**« Aller au passage », construit le 15 novembre 2026**
+([F12-AC27](specifications.md#f12-aller-au-passage)) : en tête du menu
+« Parcours », sous un libellé « Aller au passage n° », un champ de chiffres
+et un bouton fléché, séparés de la liste des passages lus par un filet ; sur
+la page de titre, le lien « Aller à un passage », sous « Comment lire ce
+livre », qui ouvre le même champ, centré. Le numéro absent se dit sous le
+champ, dans le ton de « Ce n'est pas ce numéro. » de l'énigme. Le champ ne
+prend pas le curseur à l'ouverture du menu, pour ne pas ouvrir le clavier
+d'un téléphone par-dessus la liste.
+
 ### Choix dans la scène et blocs protégés
 
 **Statut :** dispositions proposées le 2 octobre 2026 pour le parcours validé

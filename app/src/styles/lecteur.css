@@ -130,22 +130,78 @@ button.lecteur__nom {
 .lecteur__parcours {
   position: relative;
 }
-.lecteur__etapes {
+.lecteur__menu {
   position: absolute;
   top: calc(100% + 6px);
   right: 0;
   z-index: 25;
-  display: grid;
-  gap: 2px;
+  display: flex;
+  flex-direction: column;
   width: min(340px, calc(100vw - 32px));
   max-height: min(60vh, 460px);
-  overflow-y: auto;
-  margin: 0;
   padding: 8px;
-  list-style: none;
   background: var(--feuille);
   border-radius: var(--r-l);
   box-shadow: var(--ombre-panneau);
+}
+.lecteur__etapes {
+  display: grid;
+  gap: 2px;
+  min-height: 0;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+/* « Aller au passage n° » (F12-AC27) : en tête du menu « Parcours », et sur la page de titre */
+.lecteur__aller {
+  display: grid;
+  gap: 6px;
+  font-family: var(--f-ui);
+}
+.lecteur__menu .lecteur__aller {
+  flex: none;
+  padding: 4px 10px 10px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid var(--trait);
+}
+.lecteur__aller label {
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite-2);
+}
+.lecteur__aller-saisie {
+  display: flex;
+  gap: 8px;
+}
+.lecteur__aller-saisie input {
+  width: 6em;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1.5px solid var(--trait-fort);
+  border-radius: 8px;
+  background: var(--feuille);
+  font-size: var(--t-l);
+}
+.lecteur__aller-saisie input[aria-invalid] {
+  border-color: var(--e-valider);
+}
+.lecteur__aller-saisie .btn {
+  min-width: 44px;
+  justify-content: center;
+}
+.lecteur__aller-absent {
+  margin: 0;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--e-valider-f);
+  color: var(--e-valider);
+  font-size: var(--t-s);
+  font-weight: 700;
+}
+.lecteur__depart .lecteur__aller {
+  justify-items: center;
+  text-align: center;
 }
 .lecteur__etapes button {
   width: 100%;

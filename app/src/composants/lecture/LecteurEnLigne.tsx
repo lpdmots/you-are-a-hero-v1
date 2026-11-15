@@ -68,6 +68,54 @@ function ImagePleinePage({ image, source, alt }: { image: string; source: Source
   return <img className="lecteur__pleine-page" src={s.src} srcSet={s.srcSet} sizes={s.sizes} alt={alt} />;
 }
 
+/**
+ * « Aller au passage n° » (F12-AC27) : le seul numéro, sans autre indication, pour retourner à une
+ * situation qu'une feuille de recherche fait étudier. Un numéro absent du livre se dit, et l'on reste.
+ */
+function AllerAuPassage({ trouver, onAller, focus = false }: { trouver: (n: number) => string | null; onAller: (id: string) => void; focus?: boolean }) {
+  const [saisie, setSaisie] = useState("");
+  const [absent, setAbsent] = useState<string | null>(null);
+  return (
+    <form
+      className="lecteur__aller"
+      onSubmit={(ev) => {
+        ev.preventDefault();
+        const id = trouver(Number(saisie));
+        if (id) onAller(id);
+        else setAbsent(saisie);
+      }}
+    >
+      <label htmlFor="aller-au-passage">Aller au passage n°</label>
+      <div className="lecteur__aller-saisie">
+        <input
+          id="aller-au-passage"
+          className="chiffres"
+          type="text"
+          inputMode="numeric"
+          autoComplete="off"
+          maxLength={4}
+          autoFocus={focus}
+          value={saisie}
+          aria-invalid={absent ? true : undefined}
+          aria-describedby={absent ? "aller-au-passage-absent" : undefined}
+          onChange={(ev) => {
+            setSaisie(ev.target.value.replace(/\D/g, ""));
+            setAbsent(null);
+          }}
+        />
+        <button type="submit" className="btn btn--primaire" disabled={!saisie} aria-label="Y aller">
+          <Icone nom="fleche" />
+        </button>
+      </div>
+      {absent ? (
+        <p className="lecteur__aller-absent" id="aller-au-passage-absent" role="alert">
+          Il n’y a pas de passage {absent} dans ce livre.
+        </p>
+      ) : null}
+    </form>
+  );
+}
+
 function PageDesAuteurs({ p, source }: { p: NonNullable<PresentationPartagee["auteurs"]>; source: SourceImage }) {
   return (
     <section className="lecteur__presentation lecteur__auteurs recit" aria-label="Les auteurs">
@@ -178,6 +226,7 @@ export function LecteurEnLigne({
     cible ? { parcours: commencer(cible), deja: [], feuille: feuilleDeDepart(livre.feuille), des: null } : null,
   );
   const [parcoursOuvert, setParcoursOuvert] = useState(false);
+  const [allerOuvert, setAllerOuvert] = useState(false);
   const [feuilleOuverte, setFeuilleOuverte] = useState(false);
   const aside = useRef<HTMLElement>(null);
   useAuDessusDuClavier(aside, feuilleOuverte);
@@ -231,6 +280,16 @@ export function LecteurEnLigne({
   const aller = (vers: string, renvoi?: string) =>
     setG((x) => (x ? { ...x, parcours: suivre(x.parcours, vers), deja: renvoi && !x.deja.includes(renvoi) ? [...x.deja, renvoi] : x.deja } : x));
   const precedent = () => setG((x) => (x ? { ...x, parcours: revenir(x.parcours, x.parcours.position - 1) } : x));
+  // « Aller au passage » (F12-AC27) : le saut compte comme un choix ; depuis la page de titre, il
+  // poursuit la lecture retenue, ou en commence une à ce numéro
+  const parNumero = (n: number) => version.passages.find((p) => p.numero === n)?.id ?? null;
+  const sauter = (vers: string) => {
+    setParcoursOuvert(false);
+    setAllerOuvert(false);
+    if (ecran.sorte === "lecture" && g) return aller(vers);
+    const base = enCours;
+    lancer(base ? { ...base, parcours: suivre(base.parcours, vers) } : { ...neuve()!, parcours: commencer(vers) });
+  };
   const ouvrirFeuille = (versLeDe = false) => {
     setFeuilleOuverte(true);
     requestAnimationFrame(() => {
@@ -331,6 +390,8 @@ export function LecteurEnLigne({
                   {version.aChoix ? <span className="lecteur__compte">{g.parcours.position + 1}</span> : null}
                 </button>
                 {parcoursOuvert ? (
+                  <div className="lecteur__menu">
+                  {version.aChoix ? <AllerAuPassage trouver={parNumero} onAller={sauter} /> : null}
                   <ol className="lecteur__etapes" aria-label={version.aChoix ? "Passages lus" : "Sommaire"}>
                     {version.aChoix
                       ? g.parcours.etapes.map((e, i) => (
@@ -362,6 +423,7 @@ export function LecteurEnLigne({
                           </li>
                         ))}
                   </ol>
+                  </div>
                 ) : null}
               </div>
             ) : null}
@@ -416,6 +478,15 @@ export function LecteurEnLigne({
                     <button type="button" className="lien" onClick={() => setEcran({ sorte: "comment" })}>
                       Comment lire ce livre
                     </button>
+                  ) : null}
+                  {pret && version.aChoix ? (
+                    allerOuvert ? (
+                      <AllerAuPassage trouver={parNumero} onAller={sauter} focus />
+                    ) : (
+                      <button type="button" className="lien" onClick={() => setAllerOuvert(true)}>
+                        Aller à un passage
+                      </button>
+                    )
                   ) : null}
                 </div>
                 {mention ? <EcritAvec /> : null}

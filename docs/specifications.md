@@ -10870,12 +10870,50 @@ de rejoindre la suite d'une liaison cachée.
   symboles » dont la liaison cachée mène au n° 38, lorsque le lecteur saisit
   36, alors il est informé que ce n'est pas le bon numéro et reste sur le
   passage ; lorsqu'il saisit 38, alors il lit « La salle des brumes ».
-- **F12-AC14 — Pas de saut par numéro :** étant donné la même scène et un
-  passage n° 12 sans liaison cachée depuis celle-ci, lorsque le lecteur saisit
-  12, alors il n'y est pas conduit.
+- **F12-AC14 — La case de l'énigme ne sert pas de saut :** étant donné la
+  même scène et un passage n° 12 sans liaison cachée depuis celle-ci,
+  lorsque le lecteur saisit 12 dans la case de l'énigme, alors il n'y est pas
+  conduit. *(Révisé le 15 novembre 2026 : le saut par numéro existe
+  désormais, à part, ci-dessous ; la case de l'énigme reste stricte.)*
 
 La disposition de la saisie est proposée dans la
 [maquette](design.md#partage-et-lecteur-en-ligne).
+
+<a id="f12-aller-au-passage"></a>
+**Décision confirmée le 15 novembre 2026 — « Aller au passage » :** dans un
+récit à choix, le lecteur en ligne permet de se rendre à un passage en
+donnant son seul numéro. Le besoin vient des feuilles de recherche : la classe
+lit le livre en ligne et y retourne pour étudier telle ou telle situation,
+citée par son numéro. Cela révise F12-AC14, qui interdisait tout saut par
+numéro pour protéger les énigmes.
+
+- **Où :** en tête du menu « Parcours », « Aller au passage n° », un champ et
+  une flèche ; sur la page de titre, un lien discret « Aller à un passage »,
+  qui ouvre le même champ et commence la lecture à ce numéro, ou poursuit
+  par lui la lecture retenue, s'il y en a une. Le récit
+  classique n'en a pas : son « Sommaire » mène déjà à chaque chapitre.
+- **Dans le parcours :** le saut compte comme un choix. Le passage rejoint
+  s'ajoute au parcours, « Revenir au passage précédent » ramène là où l'on
+  était, et la lecture retenue continue au passage rejoint. Pas de mode
+  « consultation » à part : le retour libre en tient lieu. La feuille
+  d'aventure ne change pas.
+- **Énigmes :** un lecteur peut contourner une énigme en essayant des
+  numéros, comme dans un livre imprimé, où l'on tourne les pages à sa guise.
+  C'est accepté, sans exception pour les passages qu'on n'atteint que par une
+  énigme : une feuille de recherche peut les faire étudier, et un refus
+  serait incompréhensible. La case de l'énigme reste à part et garde sa
+  règle (F12-AC13, AC14).
+- **Numéro absent :** « Il n'y a pas de passage 312 dans ce livre. », et le
+  lecteur reste où il est.
+- **Lecteurs concernés :** tous les lecteurs du livre partagé (par le lien,
+  côté élève, bibliothèque publique), sans réglage de l'adulte.
+
+- **F12-AC27 — Aller au passage :** étant donné Bilal au passage 3 d'un récit
+  à choix, lorsqu'il ouvre « Parcours » et demande le n° 14, alors il lit le
+  passage 14, et « Revenir au passage précédent » le ramène au 3 ; lorsqu'il
+  demande le n° 312, qui n'existe pas, alors une phrase le lui dit et il reste
+  sur le passage ; étant donné la page de titre, lorsqu'il demande le n° 14
+  par « Aller à un passage », alors la lecture commence au passage 14.
 
 **Décisions confirmées le 1er octobre 2026 — présentation du lecteur :**
 
