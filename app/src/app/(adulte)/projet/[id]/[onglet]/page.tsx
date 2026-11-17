@@ -32,6 +32,7 @@ import { couvertureDuProjet } from "@/serveur/images-creees";
 import { publicationDuProjet, type PublicationLue } from "@/serveur/publication";
 import type { PublicationAffichee } from "../_livre/Partager";
 import { NOMS_COMME_LE_LIVRE } from "@/domaine/partage";
+import { adresseDepuisTitre } from "@/domaine/bibliotheque";
 import { adresseDuSite } from "@/serveur/env";
 import { codeAffiche, etatDuPartage, sortieAJour } from "@/domaine/partage";
 import styles from "./projet.module.css";
@@ -211,6 +212,8 @@ export default async function PageProjet({ params, searchParams }: Props) {
                   possible: conditions.partage.possible,
                   raisons: conditions.partage.raisons,
                   classes: classesEnCours,
+                  // L'adresse que le livre aurait, montrée avant de proposer ; fixée à la première publication (F15)
+                  adresseEnBibliotheque: `${adresseSite}/bibliotheque/${adresseDepuisTitre(projet.titre)}`,
                   noms: partage?.noms ?? { ligne: true, texte: null, auteurs: true },
                   livre: {
                     titreEnImage: contenuLivre?.pages.titre.forme === "image",

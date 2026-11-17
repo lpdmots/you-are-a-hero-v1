@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { instantaneDuLivre, produirePdfDefinitif } from "@/serveur/livre/livre";
 import { pdfDuProjet } from "@/serveur/livre/pdf";
-import { couperCanal, mettreAJourLePartage, ouvrirCanal, partageDuProjet, reglerNoms, versionsDe } from "@/serveur/partage";
+import { changerDeLien, couperCanal, mettreAJourLePartage, ouvrirCanal, partageDuProjet, reglerNoms, versionsDe } from "@/serveur/partage";
 import { creerClasse, creerEnseignant, creerPartie, creerProjet, creerScene, inconnu, nettoyer, sql, type Adulte, enseignantDe } from "./outils";
 
 /**
@@ -16,7 +16,7 @@ let martin: Adulte;
 
 beforeAll(async () => {
   [laurent, martin] = await Promise.all([creerEnseignant("Mme Laurent"), creerEnseignant("M. Martin")]);
-  // Le partage privé suppose une classe en cours (F12-AC24) ; le lien seul ne s'ouvre plus (F15-AC15)
+  // « À mes classes » suppose une classe en cours (F12-AC24) ; le lien pour les familles, non (F15-AC22)
   await creerClasse(laurent, "CM1");
 });
 afterAll(nettoyer);
@@ -117,18 +117,45 @@ describe("Deux canaux (F12.3)", () => {
     expect((await partageDuProjet(enseignant(seul), l.projet))).toMatchObject({ auxClasses: true, parLien: false });
   });
 
-  it("F15-AC15 — le lien de lecture seul ne s'ouvre plus ; un lien ouvert avant se coupe, et les classes lisent toujours", async () => {
+  it("F15-AC21 — le lien pour les familles seul : il lit la version, garde son adresse à la mise à jour, se retire, et n'entre pas dans la bibliothèque", async () => {
     const l = await livre(laurent, "classe");
-    expect(await ouvrirCanal(enseignant(laurent), l.projet, "lien", true)).toMatchObject({ ok: false });
-    await ouvrirCanal(enseignant(laurent), l.projet, "classes", true);
-    const classes = (await partageDuProjet(enseignant(laurent), l.projet))!;
-    expect(classes).toMatchObject({ auxClasses: true, parLien: false });
-    // Un lien ouvert avant le 25 octobre 2026
-    await sql("update public.partages set par_lien = true where projet_id = $1", [l.projet]);
+    expect(await ouvrirCanal(enseignant(laurent), l.projet, "lien", false)).toMatchObject({ ok: false });
+    expect(await ouvrirCanal(enseignant(laurent), l.projet, "lien", true)).toEqual({ ok: true });
+    const ouvert = (await partageDuProjet(enseignant(laurent), l.projet))!;
+    expect(ouvert).toMatchObject({ parLien: true, auxClasses: false });
+    expect(ouvert.version).not.toBeNull();
+    const [{ n }] = await sql<{ n: number }>("select count(*)::int as n from public.publications where projet_id = $1", [l.projet]);
+    expect(n).toBe(0);
+    await ecrire(laurent, l.fin, [paragraphe("La lanterne s’allume enfin.")]);
+    expect(await mettreAJourLePartage(enseignant(laurent), l.projet, true)).toEqual({ ok: true });
+    const maj = (await partageDuProjet(enseignant(laurent), l.projet))!;
+    expect(maj.code).toBe(ouvert.code);
+    expect(texteDe(maj.version!.contenu)).toContain("enfin");
     expect(await couperCanal(enseignant(laurent), l.projet, "lien")).toEqual({ ok: true });
+    const retire = (await partageDuProjet(enseignant(laurent), l.projet))!;
+    expect(retire).toMatchObject({ parLien: false, auxClasses: false, version: null, code: ouvert.code });
+  });
+
+  it("F15-AC22 — un adulte sans classe partage par le lien, pas par les comptes des élèves", async () => {
+    const bernard = await creerEnseignant("M. Bernard");
+    const l = await livre(bernard);
+    expect(await ouvrirCanal(enseignant(bernard), l.projet, "classes", true)).toMatchObject({ ok: false });
+    expect(await ouvrirCanal(enseignant(bernard), l.projet, "lien", true)).toEqual({ ok: true });
+    expect(await partageDuProjet(enseignant(bernard), l.projet)).toMatchObject({ parLien: true, auxClasses: false });
+  });
+
+  it("F12-AC11 — changer de lien : un nouveau code, la même version, les classes lisent toujours", async () => {
+    const l = await livre(laurent, "classe");
+    expect(await changerDeLien(enseignant(laurent), l.projet)).toMatchObject({ ok: false });
+    await ouvrirCanal(enseignant(laurent), l.projet, "classes", true);
+    await ouvrirCanal(enseignant(laurent), l.projet, "lien", true);
+    const avant = (await partageDuProjet(enseignant(laurent), l.projet))!;
+    const r = await changerDeLien(enseignant(laurent), l.projet);
+    expect(r.ok).toBe(true);
     const apres = (await partageDuProjet(enseignant(laurent), l.projet))!;
-    expect(apres).toMatchObject({ auxClasses: true, parLien: false });
-    expect(apres.version!.etatDu).toBe(classes.version!.etatDu);
+    expect(apres.code).not.toBe(avant.code);
+    expect(apres).toMatchObject({ parLien: true, auxClasses: true });
+    expect(apres.version!.etatDu).toBe(avant.version!.etatDu);
   });
 });
 

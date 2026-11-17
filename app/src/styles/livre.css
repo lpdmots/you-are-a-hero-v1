@@ -1856,6 +1856,7 @@
   display: grid;
   gap: 6px;
   justify-items: start;
+  width: 100%;
 }
 .lien-de-lecture__ligne {
   display: flex;
@@ -2098,9 +2099,88 @@
 .facon__suite {
   font-size: var(--t-s);
 }
-.facon--ancien .facon__signe {
-  background: var(--feuille-2);
+.facon__canaux {
+  display: grid;
+  width: 100%;
+}
+.facon__canaux > .canal + .canal {
+  border-top: 1px solid var(--trait);
+}
+
+/* La bibliothèque en premier et en plus grand (F15, 17 novembre 2026) : un filet canard à gauche,
+   ses trois avantages en une ligne chacun, puis l'adresse que le livre aurait. Le privé, dessous,
+   garde la carte ordinaire. */
+.facon--vitrine {
+  gap: 12px;
+  padding: 20px 24px;
+  box-shadow: var(--ombre-cahier), inset 4px 0 0 var(--canard);
+}
+.facon--vitrine .facon__titre {
+  font-size: var(--t-l);
+}
+.vitrine__avantages {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.vitrine__avantages li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.vitrine__avantages .ic {
+  flex: none;
+  align-self: center;
+  color: var(--canard);
+}
+.vitrine__adresse {
+  margin: 0;
+  font-size: var(--t-s);
   color: var(--graphite-2);
+  overflow-wrap: anywhere;
+}
+.vitrine__adresse b {
+  color: var(--graphite);
+  font-weight: 600;
+}
+@media (max-width: 560px) {
+  .facon--vitrine {
+    padding: 14px 16px;
+  }
+}
+
+/* L'invitation, une fois, après le premier partage privé (F15-AC23) */
+.invitation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  width: 100%;
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: var(--r-m);
+  background: var(--canard-pale);
+  font-size: var(--t-s);
+}
+.invitation > .ic {
+  color: var(--canard);
+}
+.invitation__fermer {
+  display: grid;
+  place-items: center;
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: var(--r-m);
+  background: none;
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.invitation__fermer:hover {
+  background: var(--feuille);
 }
 
 /* Proposer à la bibliothèque, sur place : la présentation, les points à relire, l'attestation */

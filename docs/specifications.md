@@ -10723,7 +10723,11 @@ le partage propose deux façons, privée (« À mes classes », lue par les
 bibliothèque) ; le lien de lecture seul ne se crée plus. Les règles
 ci-dessous valent pour la version partagée privée ; ce qu'elles disent du
 lien de lecture vaut pour la lecture de `/lire`, que gardent les livres de
-la bibliothèque, et n'est plus proposé à l'adulte.
+la bibliothèque, et n'est plus proposé à l'adulte. **Révisé de nouveau le
+17 novembre 2026 ([F15](#f15-lien-familles)) :** le lien de lecture revient
+dans la voie privée, sous le nom « Lien pour les familles », à côté des
+comptes des élèves ; les règles ci-dessous sur le lien valent de nouveau
+pour lui.
 
 **Périmètre confirmé :** le lecteur en ligne et le partage facultatif prévus
 au brief font partie de la première livraison, en complément du PDF.
@@ -11271,13 +11275,18 @@ une classe terminée garde « Lire » jusqu'à sa suppression, et y trouve les
 livres partagés « À mes classes » ; « Lire » montre aussi, après eux, les
 livres de la bibliothèque de l'âge de la classe (F15-AC20).
 
+**Révisé le 17 novembre 2026 ([F15](#f15-lien-familles)) :** les deux canaux
+ci-dessus valent de nouveau, le lien de lecture s'appelant « Lien pour les
+familles » ; il est proposé même sans classe en cours.
+
 - **F12-AC24 — Livre personnel lu par les classes :** étant donné un récit
   personnel « Le phare » partagé « À mes classes » par un adulte qui a la
   classe en cours CM1-CM2, lorsqu'Alice ouvre ses lectures, alors elle y
   trouve « Le phare » sans la mention « Écrit par ta classe » ; étant donné
   un adulte sans classe en cours, alors le partage de son récit personnel ne
   propose que le lien (révisé le 25 octobre 2026 par F15 : la bibliothèque,
-  le lien seul ne se créant plus).
+  le lien seul ne se créant plus ; révisé le 17 novembre 2026 : la
+  bibliothèque ou le lien pour les familles, F15-AC22).
 
 **Justification :** même terminé, un livre n'est pas nécessairement destiné
 aux autres classes ; l'enseignant peut réutiliser une intrigue dont il souhaite
@@ -12618,7 +12627,10 @@ les révisions qui suivent :
   signer par leurs représentants légaux avant un partage par lien (F12.1).
   Révisé le 25 octobre 2026 : avant de proposer le livre à la bibliothèque,
   sa seule ligne étant « dans la bibliothèque du site »
-  ([F15](#f15--bibliothèque-publique-des-livres)).
+  ([F15](#f15--bibliothèque-publique-des-livres)). Révisé le 17 novembre
+  2026 : la première ligne du modèle (livre imprimé, lecture avec le code de
+  classe) couvre aussi le lien pour les familles, sans ligne de plus
+  ([F15](#f15-lien-familles)).
 - **Création d'un compte.** Par une adresse et un mot de passe, le compte
   s'ouvrant par le lien d'un courriel de confirmation ; ou par « Continuer
   avec Google », qui crée désormais le compte quand aucun n'a cette adresse
@@ -13208,7 +13220,9 @@ des cœurs aux histoires qu'ils préfèrent.
   porte la ligne « dans la bibliothèque du site », sans plus de précision,
   décision du porteur, qui juge la formulation détaillée inutile ; la ligne
   « par un lien de lecture », d'abord décidée à côté, tombe avec le lien
-  seul (plus bas, « Deux façons de partager »). La ligne garde la forme
+  seul (plus bas, « Deux façons de partager »). *(Le lien revient le
+  17 novembre 2026, couvert par la première ligne du modèle, sans ligne à
+  lui, [plus bas](#f15-lien-familles).)* La ligne garde la forme
   actuelle « ☐ autorise ☐ n'autorise pas », rien n'y étant coché d'avance (une autorisation cochée d'avance se
   conteste, et l'attestation de l'enseignant s'y appuie). Le paragraphe
   d'explication du modèle, qui dit aujourd'hui « Le lien n'est publié nulle
@@ -13296,6 +13310,10 @@ des cœurs aux histoires qu'ils préfèrent.
     la ligne de la bibliothèque, la lecture privée restant dans la classe.
     Ce que deviennent les liens déjà ouverts, la fin de l'année et le mode
     personnel sont à régler (questions plus bas).
+    *(Révisé le 17 novembre 2026 : le lien revient dans la voie privée, sous
+    le nom « Lien pour les familles », et la bibliothèque est mise en avant,
+    plus bas, « [Lien pour les familles et bibliothèque mise en
+    avant](#f15-lien-familles) ».)*
 - **Les cœurs.** Sur la fiche du livre et après la fin dans le lecteur,
   jamais pendant la lecture ; un clic donne, un autre retire ; un par livre
   et par navigateur, sans compte. Le nombre paraît sur la fiche et sur la
@@ -13323,7 +13341,9 @@ des cœurs aux histoires qu'ils préfèrent.
   classe ne pourrait plus rien partager : la bibliothèque accepte aussi les
   livres du mode personnel, avec l'attestation « Je suis l'auteur de ce
   livre et j'ai les droits de ses images. » La recommandation d'abord donnée
-  (livres de classe seulement) est revue sur ce fait.
+  (livres de classe seulement) est revue sur ce fait. *(Depuis le
+  17 novembre 2026, il peut aussi partager par le lien pour les familles,
+  sans classe, [plus bas](#f15-lien-familles).)*
 - **Les livres de l'accueil.** Les deux livres du porteur, partagés par
   lien, deviennent des livres de la bibliothèque, qu'il publie lui-même sans
   passer par la file. « Livres de l'accueil »
@@ -13404,6 +13424,73 @@ des cœurs aux histoires qu'ils préfèrent.
   Analytics y compte les pages vues, sans témoin (F14-AC49) ; le tiroir et
   le lecteur, non. Les robots des IA lisent `/bibliotheque`, non les
   adresses des livres.
+
+<a id="f15-lien-familles"></a>
+**Décidé par le porteur le 17 novembre 2026 — lien pour les familles et
+bibliothèque mise en avant.** Il revient sur le « plus de lien seul » du
+25 octobre : partager en ligne ne doit pas obliger à publier. Beaucoup
+d'enseignants veulent seulement que les familles lisent le livre, souvent en
+collant un lien dans l'ENT ou le cahier de liaison. Les comptes des élèves
+n'y suffisent pas toujours (grands-parents, parent séparé, famille au loin),
+et l'adulte qui écrit seul, sans classe, n'avait que la bibliothèque. Sans
+lien, ces enseignants enverraient le PDF, qui perd les choix et ne se retire
+pas. La bibliothèque reste la vitrine du site : elle est mise en avant par
+ses vrais avantages, sans rendre le privé plus pénible.
+
+- **La voie privée a deux interrupteurs indépendants :** « Comptes des
+  élèves » (« À mes classes », [F12.3](#f123--lecture-des-anciens-livres-par-les-autres-classes))
+  et « Lien pour les familles ». Les deux montrent la même version partagée
+  (F12.1). Le lien reprend les règles de F12.1 : il ne change pas d'une mise
+  à jour à l'autre, se retire ou se change, et ses pages sont fermées aux
+  moteurs. La bibliothèque garde sa version publiée à part (plus haut).
+- **Mode personnel :** le lien est proposé même sans classe.
+- **Autorisation des familles, sans alourdir :** le modèle garde ses deux
+  lignes. La première, qui couvre le livre imprimé et la lecture avec le
+  code de classe, couvre aussi le lien pour les familles. La ligne de la
+  bibliothèque reste à part.
+- **La bibliothèque en premier.** Dans « Imprimer et partager », elle occupe
+  la première et la plus grande carte, avec trois avantages en une ligne
+  chacun : « Lu par d'autres classes » (le livre paraît dans « Lire » chez
+  les élèves du même âge, F15-AC20), « Facile à retrouver » (sur le site,
+  dans la bibliothèque), « Des cœurs de vos lecteurs ». La voie privée vient
+  dessous, plus sobre. Rien n'est coché d'avance, et le privé reste aussi
+  simple à faire.
+- **L'adresse montrée plutôt que décrite :** la carte de la bibliothèque
+  montre l'adresse que le livre aurait, tirée de son titre
+  (`iletaituneclasse.com/bibliotheque/la-lanterne-du-passeur`), et le lien
+  pour les familles montre le sien. L'adresse définitive se fixe toujours à
+  la première publication (suffixe en cas de doublon).
+- **Une invitation, une fois :** après le premier partage privé d'un livre
+  qui n'a jamais été proposé, une ligne : « Votre livre pourrait aussi être
+  lu par d'autres classes. » avec « Proposer à la bibliothèque ». Elle ne
+  revient pas une fois fermée ou suivie.
+- **Une fois le livre publié,** la partie du lien conseille en une ligne de
+  donner plutôt l'adresse de la bibliothèque, plus facile à retenir. Le lien
+  reste ouvert tant que l'enseignant ne le retire pas.
+- **L'autorisation dès la rentrée :** le guide (partie 12) conseille de faire
+  signer le modèle en septembre, pour que rien ne manque au moment de
+  publier. Rien de plus dans l'application.
+- **Idée, non décidée :** « Lu par 3 autres classes » sur la carte d'un livre
+  publié. Ce décompte est nouveau ; il reste à vérifier ce que la base
+  permet de compter.
+- **Coûts :** développement estimé faible, non vérifié dans le code (le
+  lecteur `/lire` et le lien existaient avant le 25 octobre) ; exploitation
+  nulle (le lien ne passe pas par la relecture ; un signalement arrive par
+  l'adresse de contact, F14) ; aucun effort commercial.
+- **Alternatives écartées :** le statu quo (familles et adulte sans classe
+  mal servis) ; un privé rendu plus pénible pour pousser vers la
+  bibliothèque (perte de confiance, livres publiés à contrecœur).
+- **Construit en local le 17 novembre 2026,** à sa demande (« Oui,
+  construis »), un commit, sans migration (la colonne du lien existait),
+  rien poussé. Précisions prises en construisant : l'invitation ne se
+  garde pas en base ; elle paraît à l'écran juste après le partage, et un
+  rechargement la fait disparaître, ce qui tient « une fois » sans
+  migration ; le lien se crée après le même rappel que les comptes des
+  élèves ; son interrupteur se coupe par « Retirer le lien », le code restant
+  celui du projet ; la carte privée s'intitule « vos élèves et leurs
+  familles », ou « vos proches » sans classe ; le modèle d'autorisation dit
+  désormais que le livre se lit aussi par les familles, avec un lien.
+  Aucun parcours Playwright n'est écrit.
 
 **Critères d'acceptation.** Les exemples prennent Mme Laurent, enseignante de
 CM1, son livre « La lanterne du passeur », réglé sur « 8 à 10 ans », et le
@@ -13487,9 +13574,12 @@ porteur, administrateur.
 
 *Partager, fin d'année, offre*
 
-- **F15-AC15 — Deux façons de partager :** étant donné l'étape « Imprimer
-  et partager », alors elle propose « Privé » (les comptes des élèves) et
-  « Public » (la bibliothèque), et aucun lien de lecture seul.
+- **F15-AC15 — Deux façons de partager (révisé le 17 novembre 2026) :**
+  étant donné l'étape « Imprimer et partager », alors elle propose d'abord
+  « Public » (la bibliothèque), dans la plus grande carte, avec ses trois
+  avantages et l'adresse que le livre aurait, puis « Privé », avec deux
+  interrupteurs, « Comptes des élèves » et « Lien pour les familles », rien
+  n'étant coché d'avance.
 - **F15-AC16 — Fin d'année :** étant donné « CM1 2026-2027 » terminée en
   juin et « La lanterne du passeur » partagée « À mes classes », lorsqu'Alice
   s'identifie chez elle en juillet, alors elle ne voit que « Lire » et peut
@@ -13512,6 +13602,27 @@ porteur, administrateur.
   enseignante, ceux de la bibliothèque de cet âge, jamais un livre
   « Adultes » ; lorsque Mme Laurent éteint la bibliothèque dans les
   réglages de la classe, alors cette partie disparaît.
+
+*Lien pour les familles (17 novembre 2026)*
+
+- **F15-AC21 — Lien sans bibliothèque :** étant donné « La lanterne du
+  passeur », jamais proposée, lorsque Mme Laurent allume seulement « Lien
+  pour les familles », alors un lien lit le livre sans compte, le livre
+  n'est pas dans `/bibliotheque`, et le lien demande aux moteurs de ne pas
+  l'indexer ; lorsqu'elle met à jour le partage, le même lien montre la
+  nouvelle version ; lorsqu'elle le retire, il mène à la page neutre de
+  F12.1.
+- **F15-AC22 — Adulte sans classe :** étant donné M. Bernard, sans classe,
+  alors la voie privée lui propose « Lien pour les familles » et pas
+  « Comptes des élèves ».
+- **F15-AC23 — Invitation une fois :** étant donné le premier partage privé
+  du livre, alors la ligne « Votre livre pourrait aussi être lu par d'autres
+  classes. » paraît avec « Proposer à la bibliothèque » ; fermée, elle ne
+  revient pas, et un livre déjà proposé ne l'affiche pas.
+- **F15-AC24 — Publié et lien ouvert :** étant donné le livre publié et le
+  lien pour les familles ouvert, alors la partie du lien conseille l'adresse
+  `/bibliotheque/la-lanterne-du-passeur`, et le lien lit toujours la version
+  partagée.
 
 **Questions ouvertes :** la relecture juridique de l'attestation, de la
 clause des conditions d'utilisation et du signalement, reportée par le

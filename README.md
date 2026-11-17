@@ -286,7 +286,12 @@ le détail ; elle ne raconte pas les séances.
   qui reprend F12.2 ; validé dans son ensemble par le porteur le même jour.
   Décidé : partage privé (comptes des élèves, à la
   maison comprise, « Lire » gardé après la fin de l'année) ou public (la
-  bibliothèque), le lien de lecture seul ne se créant plus ; version publiée
+  bibliothèque), le lien de lecture seul ne se créant plus (révisé le
+  17 novembre 2026 : « Lien pour les familles » revient dans la voie privée,
+  et la bibliothèque est mise en avant en première carte, avec ses
+  avantages, son adresse et une invitation après un partage privé ;
+  construit en local le même jour, sans migration, rien poussé,
+  [F15](docs/specifications.md#f15-lien-familles)) ; version publiée
   à part, relue par le porteur sur un rapport de l'IA ; ce que montre le
   livre partagé, prénoms compris ; cœurs sans compte ; une page indexée,
   les livres non ; « Signaler ce livre » ; gratuite ; la bibliothèque dans

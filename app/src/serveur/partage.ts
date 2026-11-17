@@ -9,9 +9,10 @@ import { codeDepuis, nomsPropres, NOMS_COMME_LE_LIVRE, versionDuLivre, type Noms
 
 /**
  * Le partage privé d'un livre, côté adulte (F12.1, F12.3, révisés par F15) : la version figée,
- * lue par les classes de l'enseignant, sa mise à jour, son retrait et ce qu'elle montre des
- * auteurs. Le lien de lecture seul ne se crée plus ; un lien ouvert avant le 25 octobre 2026 se
- * coupe seulement. Le partage public est la bibliothèque (`publication.ts`). Chaque
+ * ses deux canaux — les comptes des élèves (« À mes classes ») et le lien pour les familles,
+ * revenu le 17 novembre 2026 (F15, « Lien pour les familles ») —, sa mise à jour, son retrait,
+ * le changement de lien et ce qu'elle montre des auteurs. Le partage public est la
+ * bibliothèque (`publication.ts`). Chaque
  * geste relit le livre et revérifie la règle unique sur l'instantané même qu'il fige, sans se
  * fier à ce que la page a montré ; aucun canal ne s'ouvre et rien n'est remplacé sans le
  * rappel confirmé (F12-AC17).
@@ -101,16 +102,16 @@ const INTROUVABLE: Refus = { ok: false, erreur: "Ce projet est introuvable." };
  */
 export async function ouvrirCanal(e: Enseignant, projetId: string, canal: Canal, rappel: boolean): Promise<Fait> {
   if (!estUuid(projetId) || (canal !== "lien" && canal !== "classes")) return INTROUVABLE;
-  // Plus de lien seul depuis le 25 octobre 2026 (F15-AC15) : un lien déjà ouvert se coupe, aucun ne s'ouvre
-  if (canal === "lien") return { ok: false, erreur: "Le lien de lecture ne se crée plus : partagez à vos classes, ou proposez le livre à la bibliothèque." };
   if (rappel !== true) return SANS_RAPPEL;
-  if (!(await aDesClassesEnCours(e))) return { ok: false, erreur: "Aucune classe en cours ne peut lire ce livre." };
+  // Le lien pour les familles s'ouvre même sans classe (F15-AC22) ; les comptes des élèves en demandent une
+  if (canal === "classes" && !(await aDesClassesEnCours(e))) return { ok: false, erreur: "Aucune classe en cours ne peut lire ce livre." };
   const actuel = await partageDuProjet(e, projetId);
+  const colonne = canal === "lien" ? "par_lien" : "aux_classes";
   if (actuel?.version) {
-    const { error } = await e.supabase.from("partages").update({ aux_classes: true, modifie_le: new Date().toISOString() }).eq("projet_id", projetId);
+    const { error } = await e.supabase.from("partages").update({ [colonne]: true, modifie_le: new Date().toISOString() }).eq("projet_id", projetId);
     return error ? { ok: false, erreur: "Le partage n’a pas pu être enregistré." } : { ok: true };
   }
-  return figer(e, projetId, actuel, { aux_classes: true });
+  return figer(e, projetId, actuel, { [colonne]: true });
 }
 
 /**
@@ -154,6 +155,16 @@ export async function couperCanal(e: Enseignant, projetId: string, canal: Canal)
     ...(retire ? { version: null, etat_du: null, empreinte: null, empreinte_lecture: null } : {}),
   }).eq("projet_id", projetId);
   return error ? { ok: false, erreur: "Le partage n’a pas pu être enregistré." } : { ok: true };
+}
+
+/** Changer de lien (F12-AC11) : un nouveau code, sans interrompre le partage ; l'ancien ne mène plus qu'à la page neutre. */
+export async function changerDeLien(e: Enseignant, projetId: string): Promise<{ ok: true; code: string } | Refus> {
+  if (!estUuid(projetId)) return INTROUVABLE;
+  const actuel = await partageDuProjet(e, projetId);
+  if (!actuel?.parLien) return { ok: false, erreur: "Le lien n’est pas ouvert." };
+  const code = nouveauCode();
+  const { error } = await e.supabase.from("partages").update({ code, modifie_le: new Date().toISOString() }).eq("projet_id", projetId);
+  return error ? { ok: false, erreur: "Le lien n’a pas pu être changé." } : { ok: true, code };
 }
 
 /**

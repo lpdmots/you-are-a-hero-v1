@@ -2931,7 +2931,13 @@ d'être montrés au porteur. Les règles sont en
 
 **Lot 1, « Partager » en deux façons.** Lectures : 25/40 (informée) et
 27/40 (indépendante), corrigées sans nouvelle mesure. Le volet prévaut sur
-« Partage et lecteur en ligne » plus bas.
+« Partage et lecteur en ligne » plus bas. *(Repris le
+17 novembre 2026, construit en local le même jour : la bibliothèque en première et plus
+grande carte, avec ses trois avantages et l'adresse du livre, puis la carte
+« Privé » avec « Comptes des élèves » et « Lien pour les familles », celle-ci
+proposée même sans classe ; règles en
+[F15](specifications.md#f15-lien-familles). Les « cartes jumelles »
+ci-dessous ne valent plus.)*
 
 - **Deux cartes jumelles,** « Privé · les comptes de vos élèves » et
   « Public · la bibliothèque du site », chacune avec son signe ; la carte

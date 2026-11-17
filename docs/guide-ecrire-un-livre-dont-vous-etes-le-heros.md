@@ -1516,11 +1516,13 @@ chaque partie pendant l'entretien et prime sur les sources.
 > les autorisations écrites nécessaires auprès des élèves et de leurs
 > familles, en précisant les usages prévus : impression, partage privé ou
 > publication en ligne. Un modèle d'autorisation est sur la page
-> « Ressources ».
+> « Ressources » : faites-le signer dès la rentrée, rien ne manquera le jour
+> où le livre sera prêt.
 >
 > *Encart.* Dans Il était une classe, le livre se compose seul en un PDF prêt
 > pour l'imprimeur. Il se partage aussi en privé, avec les comptes des
-> élèves, ou dans la bibliothèque publique du site.
+> élèves ou un lien pour les familles, ou dans la bibliothèque publique du
+> site, où d'autres classes le liront.
 
 ### 13. La place de l'IA
 

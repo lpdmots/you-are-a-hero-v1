@@ -14,15 +14,17 @@ import { ATTESTATIONS, CLAUSE_DE_PUBLICATION, PRESENTATION_MAX } from "@/domaine
 import { ETAPES_DU_LIVRE, type RaisonDeRefus } from "@/domaine/livre";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { commeLeLivre, type NomsDuPartage } from "@/domaine/partage";
-import { couperUnCanal, mettreAJour, noms as reglerNoms, ouvrirUnCanal, proposer, retirer } from "../../actions-partage";
+import { couperUnCanal, mettreAJour, noms as reglerNoms, nouveauLien, ouvrirUnCanal, proposer, retirer } from "../../actions-partage";
 
 /**
- * « Imprimer et partager », volet « Partager » (F12.1, F12.3, revu par F15 le 25 octobre 2026) :
- * deux façons, sans lien seul. « Privé », les comptes des élèves : un interrupteur, « À mes
- * classes », et sa mise à jour. « Public », la bibliothèque du site : « Proposer à la
- * bibliothèque… » ouvre sur place la présentation, les points à relire et l'attestation, puis
- * l'état dit où en est la relecture. Un seul panneau ouvert à la fois ; seul son bouton de
- * confirmation est plein. Les noms affichés valent pour les deux façons.
+ * « Imprimer et partager », volet « Partager » (F12.1, F12.3, F15 ; revu le 17 novembre 2026,
+ * « Lien pour les familles et bibliothèque mise en avant ») : la bibliothèque d'abord, dans la
+ * plus grande carte, avec ses trois avantages et l'adresse que le livre aurait ; puis « Privé »,
+ * deux interrupteurs indépendants, les comptes des élèves (« À mes classes ») et le lien pour les
+ * familles. Rien n'est coché d'avance, et le privé reste aussi simple. Après le premier partage
+ * privé d'un livre jamais proposé, une ligne invite, une fois, à le proposer. Un seul panneau
+ * ouvert à la fois ; seul son bouton de confirmation est plein. Les noms affichés valent pour
+ * toutes les façons.
  */
 
 export type PublicationAffichee = {
@@ -47,13 +49,15 @@ export type PartageAffiche = {
   /** La règle unique le permet (F11.2) */
   possible: boolean;
   raisons: RaisonDeRefus[];
-  /** Le compte a une classe en cours : « Privé » est possible (F12-AC24) */
+  /** Le compte a une classe en cours : « Comptes des élèves » est possible (F12-AC24) */
   classes: boolean;
   noms: NomsDuPartage;
   /** Ce que le livre imprime des auteurs, pour les réglages des noms */
   livre: { titreEnImage: boolean; ligne: string; annee: string; auteurs: { enImage: boolean; nombre: number } | null };
+  /** L'adresse que le livre aurait dans la bibliothèque, tirée de son titre ; fixée à la première publication */
+  adresseEnBibliotheque: string;
   partage: {
-    /** Un lien de lecture ouvert avant le 25 octobre 2026 : il se coupe, rien de plus */
+    /** Le lien pour les familles est ouvert */
     parLien: boolean;
     auxClasses: boolean;
     adresse: string;
@@ -68,22 +72,29 @@ export type PartageAffiche = {
   couverture: { id: string } | null;
 };
 
-type Ouvert = "classes" | "maj" | "couper-classes" | "couper-lien" | "proposer" | "retirer" | null;
+type Ouvert = "classes" | "lien" | "maj" | "couper-classes" | "couper-lien" | "changer-lien" | "proposer" | "retirer" | null;
 type Reponse = { ok: true } | { ok: false; erreur: string; raisons?: RaisonDeRefus[] };
+
+/** Une adresse lisible, sans « https:// » : celle qu'on dit ou qu'on recopie. */
+const lisible = (adresse: string) => adresse.replace(/^https?:\/\//, "");
 
 export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: PartageAffiche; rappels: string[] }) {
   const dire = useMessage();
   const [ouvert, setOuvert] = useState<Ouvert>(null);
   const [enCours, setEnCours] = useState(false);
   const [erreur, setErreur] = useState<{ texte: string; raisons?: RaisonDeRefus[] } | null>(null);
+  // L'invitation à la bibliothèque, une fois, juste après le premier partage privé (F15-AC23)
+  const [invitation, setInvitation] = useState(false);
   const partage = p.partage;
   const auxClasses = partage?.auxClasses ?? false;
+  const parLien = partage?.parLien ?? false;
+  const jamaisPropose = p.publication.etat === "aucune";
 
   const ouvrir = (o: Ouvert) => {
     setErreur(null);
     setOuvert(o);
   };
-  const faire = async (action: () => Promise<Reponse>, message: string) => {
+  const faire = async (action: () => Promise<Reponse>, message: string, apres?: () => void) => {
     setEnCours(true);
     setErreur(null);
     const r = await action();
@@ -91,7 +102,12 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
     if (!r.ok) return setErreur({ texte: r.erreur, raisons: r.raisons });
     setOuvert(null);
     dire({ texte: message });
+    apres?.();
   };
+  // Le premier partage privé : aucune version encore, et un livre jamais proposé
+  const premierPartage = !partage && jamaisPropose;
+  const partagerEnPrive = (canal: "classes" | "lien", message: string) =>
+    void faire(() => ouvrirUnCanal(projetId, canal, true), message, premierPartage ? () => setInvitation(true) : undefined);
   const leRefus = erreur ? (
     <div className="erreur" role="alert">
       <p>{erreur.texte}</p>
@@ -100,16 +116,22 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
   ) : null;
   // Une version privée lisible : le livre se reprend tel quel ; sinon il faut que la règle le permette
   const ouvrable = Boolean(partage) || p.possible;
+  const proposerDepuisLInvitation = () => {
+    setInvitation(false);
+    ouvrir("proposer");
+    requestAnimationFrame(() => document.getElementById("public-t")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+  };
 
   return (
     <div className="partager">
       <section className="partager__principal" aria-labelledby="partage-t">
         <h2 id="partage-t" className="imprimer__titre">
           Partager
-          <Bulle question="Quelles sont les deux façons de partager ?">
+          <Bulle question="Quelles sont les façons de partager ?">
             <span>
-              En privé, vos élèves lisent le livre avec leur compte, en classe ou chez eux. En public, il entre dans la bibliothèque du site, lisible par tous,
-              une fois relu par l’éditeur. Chacune est une copie datée : vos corrections ne la changent pas tant que vous ne la mettez pas à jour.
+              En public, le livre entre dans la bibliothèque du site, une fois relu par l’éditeur : tout le monde peut le lire, et d’autres classes le
+              découvrent. En privé, vos élèves le lisent avec leur compte, et leurs familles par un lien. Chaque partage est une copie datée : vos
+              corrections ne la changent pas tant que vous ne la mettez pas à jour.
             </span>
           </Bulle>
         </h2>
@@ -124,62 +146,8 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
           </div>
         ) : null}
 
-        {/* Privé : les comptes des élèves (F12.3) */}
-        {p.classes || auxClasses ? (
-        <section className="partager__carte facon" aria-labelledby="prive-t">
-          <h3 id="prive-t" className="facon__titre">
-            <span className="facon__signe" aria-hidden="true">
-              <Icone nom="eleves" />
-            </span>
-            Privé
-            <small>les comptes de vos élèves</small>
-          </h3>
-          {p.classes || auxClasses ? (
-            <div className="canal facon__canal">
-              <span className="canal__texte">
-                <b>À mes classes</b>
-                <small>Vos élèves le lisent dans « Lire », en classe ou chez eux, avec leur code.</small>
-              </span>
-              <label className="inter canal__inter">
-                <input
-                  type="checkbox"
-                  role="switch"
-                  checked={auxClasses}
-                  disabled={!auxClasses && !ouvrable}
-                  onChange={(e) => ouvrir(e.target.checked ? "classes" : "couper-classes")}
-                  aria-label="À mes classes"
-                />
-                <span className="inter__piste" aria-hidden="true" />
-                <span>{auxClasses ? "Activé" : "Désactivé"}</span>
-              </label>
-            </div>
-          ) : null}
-
-          {ouvert === "classes" ? (
-            <Rappel rappels={partage ? [] : rappels} action="Partager à mes classes" enCours={enCours}
-              onConfirmer={() => void faire(() => ouvrirUnCanal(projetId, "classes", true), "Vos classes peuvent lire le livre.")} onAnnuler={() => setOuvert(null)} />
-          ) : ouvert === "couper-classes" ? (
-            <Couper
-              question="Ne plus proposer le livre à vos classes ?"
-              effet="Vos élèves ne le verront plus dans « Lire ». La bibliothèque ne change pas."
-              action="Ne plus le proposer"
-              enCours={enCours}
-              onConfirmer={() => void faire(() => couperUnCanal(projetId, "classes"), "Vos classes ne voient plus le livre.")}
-              onAnnuler={() => setOuvert(null)}
-            />
-          ) : partage && auxClasses ? (
-            <EtatPrive projetId={projetId} p={p} majOuverte={ouvert === "maj"} onMettreAJour={() => ouvrir("maj")} />
-          ) : null}
-          {ouvert === "maj" ? (
-            <Rappel rappels={rappels} action="Mettre à jour" enCours={enCours}
-              onConfirmer={() => void faire(() => mettreAJour(projetId, true), "Version privée mise à jour : vos élèves lisent le livre corrigé.")} onAnnuler={() => setOuvert(null)} />
-          ) : null}
-          {ouvert === "classes" || ouvert === "couper-classes" || ouvert === "maj" ? leRefus : null}
-        </section>
-        ) : null}
-
-        {/* Public : la bibliothèque du site (F15) */}
-        <section className="partager__carte facon" aria-labelledby="public-t">
+        {/* Public : la bibliothèque du site, en premier et en plus grand (F15-AC15) */}
+        <section className="partager__carte facon facon--vitrine" aria-labelledby="public-t">
           <h3 id="public-t" className="facon__titre">
             <span className="facon__signe" aria-hidden="true">
               <Icone nom="livre" />
@@ -187,6 +155,33 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
             Public
             <small>la bibliothèque du site</small>
           </h3>
+          {jamaisPropose && ouvert !== "proposer" ? (
+            <>
+              <ul className="vitrine__avantages">
+                <li>
+                  <Icone nom="eleves" />
+                  <span>
+                    <b>Lu par d’autres classes</b> du même âge, dans leur espace « Lire ».
+                  </span>
+                </li>
+                <li>
+                  <Icone nom="loupe" />
+                  <span>
+                    <b>Facile à retrouver</b> : sur le site, dans la bibliothèque.
+                  </span>
+                </li>
+                <li>
+                  <Icone nom="coeur" />
+                  <span>
+                    <b>Des cœurs</b> de vos lecteurs.
+                  </span>
+                </li>
+              </ul>
+              <p className="vitrine__adresse">
+                <span>Son adresse :</span> <b>{lisible(p.adresseEnBibliotheque)}</b>
+              </p>
+            </>
+          ) : null}
           <Publication
             projetId={projetId}
             p={p}
@@ -196,14 +191,14 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
             onOuvrir={() => ouvrir("proposer")}
             onFermer={() => setOuvert(null)}
             onProposer={(presentation, atteste) =>
-              void faire(() => proposer(projetId, presentation, atteste), "Livre proposé : il sera relu avant d’entrer dans la bibliothèque.")
+              void faire(() => proposer(projetId, presentation, atteste), "Livre proposé : il sera relu avant d’entrer dans la bibliothèque.", () => setInvitation(false))
             }
             retrait={
               ouvert === "retirer" ? (
                 <Couper
                   question={p.publication.etat === "publiee" ? "Retirer le livre de la bibliothèque ?" : "Retirer la proposition ?"}
                   effet={p.publication.etat === "publiee"
-                    ? "Il ne se lira plus dans la bibliothèque ; le partage avec vos classes ne change pas. Pour le remettre, proposez-le de nouveau : après relecture, il retrouvera son adresse et ses cœurs."
+                    ? "Il ne se lira plus dans la bibliothèque ; le partage privé ne change pas. Pour le remettre, proposez-le de nouveau : après relecture, il retrouvera son adresse et ses cœurs."
                     : "Le livre ne sera pas relu. Vous pourrez le proposer de nouveau."}
                   action={p.publication.etat === "publiee" ? "Retirer de la bibliothèque" : "Retirer la proposition"}
                   enCours={enCours}
@@ -220,49 +215,104 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
           {ouvert === "proposer" || ouvert === "retirer" ? leRefus : null}
         </section>
 
-        {/* Un lien ouvert avant le 25 octobre 2026 : il ne se crée plus, il se coupe */}
-        {partage?.parLien ? (
-          <section className="partager__carte facon facon--ancien" aria-labelledby="ancien-t">
-            <h3 id="ancien-t" className="facon__titre">
-              <span className="facon__signe" aria-hidden="true">
-                <Icone nom="lien" />
-              </span>
-              Ancien lien de lecture
-            </h3>
-            <p className="facon__note">Ce lien ne se crée plus ; il reste ouvert tant que vous ne le coupez pas.</p>
-            <p className="lien-de-lecture__ligne">
-              <input className="champ lien-de-lecture__adresse" readOnly value={partage.adresse} aria-label="Ancien lien de lecture" onFocus={(e) => e.currentTarget.select()} />
-              <a className="btn btn--petit" href={partage.adresse} target="_blank" rel="noreferrer">
-                Ouvrir
-              </a>
-            </p>
-            {ouvert === "couper-lien" ? (
-              <Couper
-                question="Couper ce lien ?"
-                effet="Il affichera « Ce livre n’est plus partagé »."
-                action="Couper le lien"
-                enCours={enCours}
-                onConfirmer={() => void faire(() => couperUnCanal(projetId, "lien"), "Le lien est coupé.")}
-                onAnnuler={() => setOuvert(null)}
+        {/* Privé : les comptes des élèves (F12.3) et le lien pour les familles (F15-AC21) */}
+        <section className="partager__carte facon" aria-labelledby="prive-t">
+          <h3 id="prive-t" className="facon__titre">
+            <span className="facon__signe" aria-hidden="true">
+              <Icone nom="cadenas" />
+            </span>
+            Privé
+            <small>{p.classes || auxClasses ? "vos élèves et leurs familles" : "vos proches"}</small>
+          </h3>
+          <div className="facon__canaux">
+            {p.classes || auxClasses ? (
+              <Canal
+                nom="Comptes des élèves"
+                detail="Dans « Lire », en classe ou chez eux, avec leur code."
+                actif={auxClasses}
+                desactive={!auxClasses && !ouvrable}
+                onChanger={(oui) => ouvrir(oui ? "classes" : "couper-classes")}
               />
-            ) : (
-              <button type="button" className="lien lien-de-lecture__changer" onClick={() => ouvrir("couper-lien")}>
-                Couper le lien…
+            ) : null}
+            <Canal
+              nom="Lien pour les familles"
+              detail="À coller dans l’ENT ou le cahier de liaison ; qui a le lien peut lire le livre."
+              actif={parLien}
+              desactive={!parLien && !ouvrable}
+              onChanger={(oui) => ouvrir(oui ? "lien" : "couper-lien")}
+            />
+          </div>
+
+          {ouvert === "classes" ? (
+            <Rappel rappels={partage ? [] : rappels} action="Partager aux comptes des élèves" enCours={enCours}
+              onConfirmer={() => partagerEnPrive("classes", "Vos élèves peuvent lire le livre.")} onAnnuler={() => setOuvert(null)} />
+          ) : ouvert === "lien" ? (
+            <Rappel rappels={partage ? [] : rappels} action="Créer le lien" enCours={enCours}
+              onConfirmer={() => partagerEnPrive("lien", "Le lien est prêt : copiez-le pour les familles.")} onAnnuler={() => setOuvert(null)} />
+          ) : ouvert === "couper-classes" ? (
+            <Couper
+              question="Ne plus proposer le livre à vos élèves ?"
+              effet={`Ils ne le verront plus dans « Lire ».${parLien ? " Le lien pour les familles ne change pas." : ""} La bibliothèque non plus.`}
+              action="Ne plus le proposer"
+              enCours={enCours}
+              onConfirmer={() => void faire(() => couperUnCanal(projetId, "classes"), "Vos élèves ne voient plus le livre.")}
+              onAnnuler={() => setOuvert(null)}
+            />
+          ) : ouvert === "couper-lien" ? (
+            <Couper
+              question="Retirer le lien ?"
+              effet={`Il affichera « Ce livre n’est plus partagé ».${auxClasses ? " Vos élèves lisent toujours le livre." : ""}`}
+              action="Retirer le lien"
+              enCours={enCours}
+              onConfirmer={() => void faire(() => couperUnCanal(projetId, "lien"), "Le lien est retiré.")}
+              onAnnuler={() => setOuvert(null)}
+            />
+          ) : null}
+
+          {partage && parLien && ouvert !== "couper-lien" ? (
+            <LienPourLesFamilles
+              adresse={partage.adresse}
+              bibliotheque={p.publication.etat === "publiee" ? p.publication.adresse : null}
+              changer={ouvert === "changer-lien"}
+              enCours={enCours}
+              onChanger={() => ouvrir("changer-lien")}
+              onConfirmerChanger={() => void faire(() => nouveauLien(projetId), "Nouveau lien : redonnez-le aux familles.")}
+              onAnnuler={() => setOuvert(null)}
+            />
+          ) : null}
+
+          {partage && (auxClasses || parLien) && !["classes", "lien", "couper-classes", "couper-lien"].includes(ouvert ?? "") ? (
+            <EtatPrive projetId={projetId} p={p} majOuverte={ouvert === "maj"} onMettreAJour={() => ouvrir("maj")} />
+          ) : null}
+          {ouvert === "maj" ? (
+            <Rappel rappels={rappels} action="Mettre à jour" enCours={enCours}
+              onConfirmer={() => void faire(() => mettreAJour(projetId, true), "Version privée mise à jour : vos lecteurs lisent le livre corrigé.")} onAnnuler={() => setOuvert(null)} />
+          ) : null}
+
+          {invitation && jamaisPropose && ouvert === null ? (
+            <p className="invitation" role="status">
+              <Icone nom="livre" />
+              <span>Votre livre pourrait aussi être lu par d’autres classes.</span>
+              <button type="button" className="lien" onClick={proposerDepuisLInvitation}>
+                Proposer à la bibliothèque
               </button>
-            )}
-            {ouvert === "couper-lien" ? leRefus : null}
-          </section>
-        ) : null}
+              <button type="button" className="invitation__fermer" aria-label="Fermer" onClick={() => setInvitation(false)}>
+                <Icone nom="fermer" />
+              </button>
+            </p>
+          ) : null}
+          {ouvert && ["classes", "lien", "couper-classes", "couper-lien", "changer-lien", "maj"].includes(ouvert) ? leRefus : null}
+        </section>
 
         <Noms projetId={projetId} p={p} />
 
-        {/* Les modèles pour les familles, à faire signer avant de proposer le livre (F14-AC33, F15) */}
+        {/* Les modèles pour les familles, à faire signer de préférence dès la rentrée (F14-AC33, F15) */}
         {p.deClasse && ouvert !== "proposer" ? (
           <section className="partager__carte partager__familles" aria-labelledby="familles-t">
             <h3 id="familles-t" className="partager__carte-titre">
               Pour les familles
             </h3>
-            <p>Avant de proposer le livre à la bibliothèque, faites signer l’autorisation de diffusion.</p>
+            <p>L’autorisation de diffusion, à faire signer de préférence dès la rentrée.</p>
             <ul>
               <li>
                 <a className="lien" href="/modeles/autorisation-de-diffusion/fichier" download>
@@ -293,6 +343,81 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
           ) : null}
         </p>
       </section>
+    </div>
+  );
+}
+
+/** Un canal privé et son interrupteur, sans rien de coché d'avance (F15-AC15). */
+function Canal({ nom, detail, actif, desactive, onChanger }: { nom: string; detail: string; actif: boolean; desactive: boolean; onChanger: (oui: boolean) => void }) {
+  return (
+    <div className="canal facon__canal">
+      <span className="canal__texte">
+        <b>{nom}</b>
+        <small>{detail}</small>
+      </span>
+      <label className="inter canal__inter">
+        <input type="checkbox" role="switch" checked={actif} disabled={desactive} onChange={(e) => onChanger(e.target.checked)} aria-label={nom} />
+        <span className="inter__piste" aria-hidden="true" />
+        <span>{actif ? "Activé" : "Désactivé"}</span>
+      </label>
+    </div>
+  );
+}
+
+/**
+ * Le lien pour les familles (F12.1, F15-AC21, AC24) : copié ou ouvert ; changé sans interrompre
+ * le partage ; une fois le livre publié, l'adresse de la bibliothèque est conseillée, plus facile
+ * à retenir.
+ */
+function LienPourLesFamilles({ adresse, bibliotheque, changer, enCours, onChanger, onConfirmerChanger, onAnnuler }: {
+  adresse: string; bibliotheque: string | null; changer: boolean; enCours: boolean;
+  onChanger: () => void; onConfirmerChanger: () => void; onAnnuler: () => void;
+}) {
+  const dire = useMessage();
+  const copier = async () => {
+    try {
+      await navigator.clipboard.writeText(adresse);
+      dire({ texte: "Lien copié." });
+    } catch {
+      dire({ texte: "Le lien n’a pas pu être copié : sélectionnez-le à la main." });
+    }
+  };
+  return (
+    <div className="lien-de-lecture">
+      <p className="lien-de-lecture__ligne">
+        <input className="champ lien-de-lecture__adresse" readOnly value={adresse} aria-label="Lien pour les familles" onFocus={(e) => e.currentTarget.select()} />
+        <button type="button" className="btn btn--petit" onClick={() => void copier()}>
+          <Icone nom="copier" />
+          Copier le lien
+        </button>
+        <a className="btn btn--petit" href={adresse} target="_blank" rel="noreferrer">
+          Ouvrir
+        </a>
+      </p>
+      {bibliotheque ? (
+        <small className="lien-de-lecture__note">
+          Plus simple à retenir : <b>{lisible(bibliotheque)}</b>, l’adresse du livre dans la bibliothèque.
+        </small>
+      ) : null}
+      {changer ? (
+        <div className="partager__couper" role="group" aria-label="Changer de lien ?">
+          <p>
+            <b>Changer de lien ?</b> L’ancien affichera « Ce livre n’est plus partagé » ; il faudra redonner le nouveau.
+          </p>
+          <p className="imprimer__cmd">
+            <button type="button" className="btn" disabled={enCours} aria-busy={enCours || undefined} onClick={onConfirmerChanger}>
+              Changer de lien
+            </button>
+            <button type="button" className="lien" disabled={enCours} onClick={onAnnuler}>
+              Annuler
+            </button>
+          </p>
+        </div>
+      ) : (
+        <button type="button" className="lien lien-de-lecture__changer" onClick={onChanger}>
+          Changer de lien…
+        </button>
+      )}
     </div>
   );
 }
@@ -378,7 +503,7 @@ function Publication({ projetId, p, rappels, ouvert, enCours, onOuvrir, onFermer
   if (pub.etat === "aucune")
     return (
       <>
-        <p className="facon__note">Tout le monde peut le lire, une fois relu par l’éditeur.</p>
+        <p className="facon__note">Lisible par tous, une fois relu par l’éditeur.</p>
         {ouvrirLe("Proposer à la bibliothèque…")}
         {formulaire("Proposer le livre")}
       </>
