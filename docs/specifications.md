@@ -13481,8 +13481,9 @@ ses vrais avantages, sans rendre le privé plus pénible.
   mal servis) ; un privé rendu plus pénible pour pousser vers la
   bibliothèque (perte de confiance, livres publiés à contrecœur).
 - **Construit en local le 17 novembre 2026,** à sa demande (« Oui,
-  construis »), un commit, sans migration (la colonne du lien existait),
-  rien poussé. Précisions prises en construisant : l'invitation ne se
+  construis »), un commit, sans migration (la colonne du lien existait) ;
+  en ligne le même jour à sa demande (« Oui, en ligne »), code jusqu'à
+  `20631c1`, déploiement réussi. Précisions prises en construisant : l'invitation ne se
   garde pas en base ; elle paraît à l'écran juste après le partage, et un
   rechargement la fait disparaître, ce qui tient « une fois » sans
   migration ; le lien se crée après le même rappel que les comptes des

@@ -290,7 +290,7 @@ le détail ; elle ne raconte pas les séances.
   17 novembre 2026 : « Lien pour les familles » revient dans la voie privée,
   et la bibliothèque est mise en avant en première carte, avec ses
   avantages, son adresse et une invitation après un partage privé ;
-  construit en local le même jour, sans migration, rien poussé,
+  construit et en ligne le même jour, sans migration, code jusqu'à `20631c1`,
   [F15](docs/specifications.md#f15-lien-familles)) ; version publiée
   à part, relue par le porteur sur un rapport de l'IA ; ce que montre le
   livre partagé, prénoms compris ; cœurs sans compte ; une page indexée,
