@@ -159,6 +159,14 @@ export function prendreDansLaReserve(reserve: string[], deja: string[]): { eleme
 
 // ——— Rubrique « Objets et formules » (F04.2), feuille d'aventure, dé, règles du jeu ———
 
+/**
+ * Un lieu de l'histoire, à l'étape « Univers » (F02.1, 18 novembre 2026) : un nom, fixé comme celui
+ * d'un personnage, et une phrase. Sur le modèle des objets, sans image pour cette livraison.
+ */
+export type Lieu = { id: string; nom: string; phrase: string };
+export const LIEU_NOM_MAX = 60;
+export const LIEU_PHRASE_MAX = 160;
+
 /** Un objet de l'histoire ; sa fiche visuelle et son image de référence servent aux images (F10.2). */
 export type Objet = { id: string; nom: string; description: string; fiche?: string; imageId?: string | null };
 /**
@@ -304,6 +312,8 @@ export type Preparation = {
   questions: Question[];
   orientations: Partial<Record<Rubrique, string>>;
   objets: Objet[];
+  /** Les lieux de l'étape « Univers », dans l'ordre où l'adulte les a rangés (F02.1) */
+  lieux: Lieu[];
   formules: Formule[];
   /** Les cartes de l'étape « Personnages » (F10.2) ; « personnages » est le texte retenu de l'étape */
   personnagesDeLHistoire: Personnage[];

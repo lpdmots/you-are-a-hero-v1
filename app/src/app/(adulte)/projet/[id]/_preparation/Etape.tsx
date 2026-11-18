@@ -24,6 +24,7 @@ import { creerPartie } from "../../actions-recit";
 import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "../_plan/IdeesDeParties";
 import { premierHeros, reglerPersonnage } from "../../actions-personnages";
 import { CarteDuHeros, CartesDesPersonnages, OngletsDesPersonnages, SupprimerHeros } from "./Personnages";
+import { Lieux } from "./Lieux";
 import { demanderALaPreparation, useReserveIa } from "./reserve";
 
 /** Sans idée retenue ni texte, « Rédiger » ne demande rien (le serveur dit la même chose). */
@@ -291,7 +292,7 @@ export function EtapeHistoire({
                 );
               }}
             />
-
+            {etape === "univers" ? <Lieux projetId={projet.id} lieux={preparation.lieux} /> : null}
           </div>
         )}
       </div>

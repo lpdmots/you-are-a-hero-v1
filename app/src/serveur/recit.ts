@@ -159,7 +159,7 @@ export async function imagesDuProjet(e: Enseignant, projetId: string): Promise<{
 /** Le carnet de préparation du projet (F02). */
 export const preparationDe = cache(async (e: Enseignant, projetId: string): Promise<Preparation | null> => {
   if (!estUuid(projetId)) return null;
-  const [carnet, pistes, objets, formules, questions, personnages] = await Promise.all([
+  const [carnet, pistes, objets, formules, questions, personnages, lieux] = await Promise.all([
     e.supabase
       .from("preparations")
       .select("univers, personnages, enjeu, rubrique_jeu, feuille, regles, formule_renvoi, constructions, marque_fin, orientations")
@@ -176,8 +176,9 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
       .order("rang")
       .order("cree_le")
       .order("id"),
+    e.supabase.from("lieux").select("id, nom, phrase").eq("projet_id", projetId).order("rang").order("cree_le").order("id"),
   ]);
-  const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error ?? questions.error ?? personnages.error;
+  const erreur = carnet.error ?? pistes.error ?? objets.error ?? formules.error ?? questions.error ?? personnages.error ?? lieux.error;
   if (erreur) throw new Error(`Préparation illisible : ${erreur.message}`);
   const c = carnet.data;
   if (!c) return null;
@@ -203,6 +204,7 @@ export const preparationDe = cache(async (e: Enseignant, projetId: string): Prom
       id: o.id, nom: o.nom, description: o.description, fiche: o.fiche, imageId: o.image_id,
     })),
     formules: ((formules.data ?? []) as { id: string; texte: string; signe: string }[]).map((f) => ({ id: f.id, texte: f.texte, signe: signeDe(f) })),
+    lieux: ((lieux.data ?? []) as { id: string; nom: string; phrase: string }[]).map((l) => ({ id: l.id, nom: l.nom, phrase: l.phrase })),
     personnagesDeLHistoire: (
       (personnages.data ?? []) as { id: string; nom: string; autres_noms: string[] | null; heros: boolean; description: string; fiche: string; portrait_id: string | null }[]
     ).map((p) => ({

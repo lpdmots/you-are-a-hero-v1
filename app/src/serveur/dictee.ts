@@ -51,13 +51,15 @@ export async function dicteePossible(adulte: Enseignant): Promise<RefusDictee | 
 /** Les noms du projet, lus avec la session de l'adulte : un projet qui n'est pas le sien n'en donne aucun. */
 async function termesDuProjet(adulte: Enseignant, projet: string | null): Promise<string[]> {
   if (!projet) return [];
-  const [{ data: personnages }, { data: objets }] = await Promise.all([
+  const [{ data: personnages }, { data: objets }, { data: lieux }] = await Promise.all([
     adulte.supabase.from("personnages").select("nom, autres_noms, heros").eq("projet_id", projet).order("heros", { ascending: false }).order("rang"),
     adulte.supabase.from("objets").select("nom").eq("projet_id", projet),
+    adulte.supabase.from("lieux").select("nom").eq("projet_id", projet).order("rang"),
   ]);
   return termesDeLaDictee([
     ...(personnages ?? []).flatMap((p) => [p.nom as string, ...((p.autres_noms as string[] | null) ?? [])]),
     ...(objets ?? []).map((o) => o.nom as string),
+    ...(lieux ?? []).map((l) => l.nom as string),
   ]);
 }
 

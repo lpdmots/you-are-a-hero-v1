@@ -27,11 +27,14 @@ export const histoireDuProjet = (p: {
 /** Une carte de l'étape « Personnages » (F10.2), telle que les aides la reçoivent. */
 export type CarteDePersonnage = { nom: string; autresNoms: string[]; description: string; heros: boolean };
 
+/** Un lieu de l'étape « Univers » (F02.1), tel que les aides le reçoivent. */
+export type LieuDuCarnet = { nom: string; phrase: string };
+
 /**
- * Le carnet de la Préparation : le texte retenu de chaque étape de l'histoire (F02), et les
- * cartes des personnages (F10.2), héros en tête.
+ * Le carnet de la Préparation : le texte retenu de chaque étape de l'histoire (F02), les
+ * cartes des personnages (F10.2), héros en tête, et les lieux de l'Univers (F02.1).
  */
-export type Carnet = { univers?: string; personnages?: string; enjeu?: string; etapes?: string; cartes?: CarteDePersonnage[] };
+export type Carnet = { univers?: string; personnages?: string; enjeu?: string; etapes?: string; cartes?: CarteDePersonnage[]; lieux?: LieuDuCarnet[] };
 
 /** Le carnet que reçoivent les aides, d'après la Préparation ; Grandes étapes passe par le plan. */
 export function carnetDe(p: Preparation): Carnet;
@@ -41,6 +44,7 @@ export function carnetDe(p: Preparation | null | undefined): Carnet | undefined 
   return {
     univers: p.univers, personnages: p.personnages, enjeu: p.enjeu,
     cartes: p.personnagesDeLHistoire.map((c) => ({ nom: c.nom, autresNoms: c.autresNoms, description: c.description, heros: c.heros })),
+    lieux: p.lieux.map((l) => ({ nom: l.nom, phrase: l.phrase })),
   };
 }
 
@@ -59,6 +63,12 @@ export function blocPersonnages(cartes: readonly CarteDePersonnage[] | undefined
     return `${c.nom.trim()}${marques ? ` (${marques})` : ""}${description ? ` : ${description}` : ""}`;
   });
   return bloc("personnages", lignes.map((l) => `- ${l}`).join("\n"));
+}
+
+/** Les lieux de l'Univers, en lignes : « Le village des pêcheurs : au bord du lac ». */
+export function blocLieux(lieux: readonly LieuDuCarnet[] | undefined): string {
+  const lignes = (lieux ?? []).filter((l) => l.nom.trim()).slice(0, 30).map((l) => `- ${l.nom.trim()}${l.phrase.trim() ? ` : ${l.phrase.trim()}` : ""}`);
+  return lignes.length ? bloc("lieux", lignes.join("\n")) : "";
 }
 
 export const ETAPES_DU_CARNET = { univers: "Univers", personnages: "Personnages", enjeu: "Enjeu", etapes: "Grandes étapes" } as const;
@@ -85,7 +95,7 @@ export function blocCarnet(c: Carnet | undefined, sauf?: EtapeDuCarnet): string 
   const lignes = (Object.keys(ETAPES_DU_CARNET) as EtapeDuCarnet[])
     .filter((e) => e !== sauf && c[e]?.trim())
     .map((e) => `${ETAPES_DU_CARNET[e]} : ${c[e]!.trim()}`);
-  return assembler(lignes.length ? bloc("preparation", lignes.join("\n")) : "", blocPersonnages(c.cartes));
+  return assembler(lignes.length ? bloc("preparation", lignes.join("\n")) : "", blocPersonnages(c.cartes), blocLieux(c.lieux));
 }
 
 export function blocPlan(plan: Plan | undefined): string {

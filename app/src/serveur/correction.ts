@@ -33,8 +33,8 @@ async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lieu | nul
     scene,
     consigne,
     histoire: histoireDuProjet(projet),
-    // Les noms des personnages, leurs autres noms et ceux des objets ne se corrigent pas (F10.2)
-    nomsPropres: nomsPropresDeLHistoire(preparation?.personnagesDeLHistoire ?? [], preparation?.objets ?? []),
+    // Les noms des personnages, leurs autres noms, ceux des objets et des lieux ne se corrigent pas (F10.2, F02.1)
+    nomsPropres: nomsPropresDeLHistoire(preparation?.personnagesDeLHistoire ?? [], [...(preparation?.objets ?? []), ...(preparation?.lieux ?? [])]),
     // Qui sont les personnages, comme « ✦ Écrire » le reçoit : un héros garde son genre (F13-AC30)
     cartes: carnetDe(preparation)?.cartes ?? [],
     deClasse: projet.organisation === "classe",

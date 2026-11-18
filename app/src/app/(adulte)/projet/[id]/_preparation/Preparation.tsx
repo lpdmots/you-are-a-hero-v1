@@ -112,6 +112,11 @@ export function PagePreparation({
             <Icone nom="aide" />
             Aide
           </button>
+          {/* À toutes les étapes, pour l'adulte seul : la fiche que chaque élève garde près de lui (F02.1) */}
+          <Link className="btn" href={`/projet/${projet.id}/fiche-de-l-histoire`}>
+            <Icone nom="imprimer" />
+            Imprimer la fiche de l’histoire
+          </Link>
           {deClasse ? (
             <Link
               className={`btn ${styles.projeter}`}

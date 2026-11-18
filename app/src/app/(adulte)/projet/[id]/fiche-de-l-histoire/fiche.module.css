@@ -1,0 +1,308 @@
+/* La fiche de l'histoire à imprimer (F02.1). La feuille prend l'allure des documents à imprimer du
+   site (ressources/commun/feuille.css) : A4, la voix de l'élève qui lit (Andika) pour le contenu,
+   la cursive des écoles pour le titre, l'outil (Atkinson) pour ce qui s'adresse à l'adulte ;
+   graphite sur blanc, le canard en filet seulement : elle passe à la photocopie noir et blanc. */
+
+.ecran {
+  --andika: var(--police-chiffres), "Andika", system-ui, sans-serif;
+}
+.intro {
+  margin-top: 4px;
+  color: var(--graphite-2);
+}
+
+/* ——— À l'écran : le nombre de pages et « Imprimer », au-dessus de la feuille ——— */
+.barre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  max-width: 210mm;
+  margin: 8px auto 0;
+}
+.pages {
+  margin: 0;
+  font-size: var(--t-s);
+  font-weight: 700;
+  color: var(--graphite-2);
+  font-variant-numeric: tabular-nums;
+}
+.trop {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  max-width: 210mm;
+  margin: 10px auto 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: var(--e-valider-f);
+  box-shadow: inset 0 0 0 1px rgba(126, 82, 0, 0.35);
+  font-size: var(--t-s);
+  color: var(--graphite);
+}
+.trop :global(.ic) {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  margin-top: 1px;
+  color: var(--e-valider);
+}
+
+/* La feuille garde la largeur de l'impression ; sur un écran étroit, elle est réduite à l'œil
+   (la page règle la hauteur du bureau à celle de la feuille réduite) */
+.bureau {
+  margin-top: 16px;
+  padding-bottom: 12px;
+}
+.feuille {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: 14mm 15mm;
+  border-radius: 3px;
+  background: #fff;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 16px 34px -14px rgba(0, 0, 0, 0.3);
+  color: #1e2226;
+  transform-origin: top left;
+}
+.contenu {
+  position: relative;
+  display: flow-root;
+  font: 400 11pt/1.4 var(--andika);
+}
+.contenu p,
+.contenu dl,
+.contenu dd {
+  margin: 0;
+}
+
+/* ——— L'en-tête : le titre du livre en cursive, la date de la version, le dragon ——— */
+.tete {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 6mm;
+  border-bottom: 0.35mm solid #1e2226;
+}
+.titre {
+  margin: 0;
+  /* Les jambages de la cursive (le « p » de « passeurs », le « g » de « voyage ») descendent bas :
+     leur place est gardée au-dessus du filet */
+  padding-bottom: 6mm;
+  font: 400 22pt/1.55 var(--f-main);
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.dragon {
+  flex: none;
+  height: 22mm;
+  width: auto;
+  margin-bottom: 1.5mm;
+}
+.vide {
+  margin-top: 8mm !important;
+  font-size: 12pt;
+  color: #4a5157;
+}
+
+/* ——— Les rubriques : un titre et son filet, puis le texte tel qu'il est retenu ——— */
+.rubrique {
+  margin-top: 5mm;
+}
+.rubrique__titre {
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  margin: 0 0 1.8mm;
+  font: 700 12.5pt/1.2 var(--andika);
+  break-after: avoid;
+}
+/* Un filet graphite plein : le canard pâle s'effacerait à la photocopie */
+.rubrique__titre::after {
+  content: "";
+  flex: 1;
+  height: 0.3mm;
+  background: #1e2226;
+}
+.texte {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* Les héros : le portrait comme une photo collée, à gauche ; la description entière à côté */
+.heros {
+  display: grid;
+  gap: 4mm;
+}
+.unHeros {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 5mm;
+  align-items: start;
+  break-inside: avoid;
+}
+.unHeros.element_image {
+  grid-template-columns: 28mm minmax(0, 1fr);
+}
+.portrait {
+  display: block;
+  width: 28mm;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 1.5mm;
+  border: 0.3mm solid #1e2226;
+}
+.nomHeros {
+  font-size: 13pt;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.identite {
+  display: grid;
+  gap: 0.8mm;
+  min-width: 0;
+}
+.aussi {
+  font-size: 10pt;
+  color: #2c3237;
+}
+
+/* Personnages, lieux, objets : deux colonnes, un élément ne se coupe pas d'une page à l'autre */
+.grille {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3mm 7mm;
+}
+.element {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-content: start;
+  gap: 0.6mm;
+  padding-top: 1.6mm;
+  border-top: 0.25mm solid #6b7378;
+  break-inside: avoid;
+}
+.element_image {
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 3mm;
+}
+.element_image > :global(img) {
+  grid-row: 1 / span 3;
+}
+.element_image > :not(img) {
+  grid-column: 2;
+}
+.vignette {
+  display: block;
+  width: 14mm;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 1mm;
+  border: 0.25mm solid #1e2226;
+}
+.vignetteObjet {
+  display: block;
+  width: 13mm;
+  height: 13mm;
+  object-fit: cover;
+  border-radius: 1mm;
+  border: 0.25mm solid #1e2226;
+}
+.nom {
+  font-weight: 700;
+  line-height: 1.25;
+}
+.phrase {
+  font-size: 10.3pt;
+  line-height: 1.35;
+  color: #2c3237;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* La feuille d'aventure : ce que le lecteur y note, une ligne chacun, dans un cadre comme la feuille du livre */
+.feuilleDAventure {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6mm 7mm;
+  margin: 0;
+  padding: 2.6mm 4mm;
+  border: 0.35mm solid #1e2226;
+  border-radius: 1.5mm;
+  list-style: none;
+  break-inside: avoid;
+}
+.feuilleDAventure li {
+  display: flex;
+  align-items: baseline;
+  gap: 2mm;
+  font-weight: 700;
+}
+.feuilleDAventure li::before {
+  content: "";
+  flex: none;
+  width: 2.6mm;
+  height: 2.6mm;
+  border: 0.3mm solid #1e2226;
+  border-radius: 0.5mm;
+}
+
+.pied {
+  margin-top: 7mm !important;
+  padding-top: 2mm;
+  border-top: 0.25mm solid #6b7378;
+  font: 400 8.5pt/1.3 var(--f-ui);
+  color: #3a4146;
+}
+
+/* Où l'impression coupera la page : un pointillé à l'écran, absent du papier */
+.coupure {
+  position: absolute;
+  left: -15mm;
+  right: -15mm;
+  height: 0;
+  margin: 0 !important;
+  border-top: 1.5px dashed var(--canard, #0b6a73);
+  pointer-events: none;
+}
+.coupure span {
+  position: absolute;
+  right: 3mm;
+  top: 0;
+  padding: 1px 8px;
+  border-radius: 0 0 6px 6px;
+  background: var(--canard, #0b6a73);
+  font: 700 11px/1.5 var(--f-ui);
+  color: #fff;
+}
+
+@media (max-width: 899px) {
+  .barre,
+  .trop {
+    max-width: none;
+  }
+}
+
+/* ——— À l'impression : la feuille seule, sur des pages A4 aux marges de la feuille ——— */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 15mm;
+  }
+  .bureau {
+    height: auto !important;
+    margin: 0;
+    padding: 0;
+  }
+  /* Réduite à l'écran d'un téléphone, la feuille s'imprime à sa vraie taille */
+  .feuille {
+    transform: none !important;
+    width: auto;
+    min-height: 0;
+    padding: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
