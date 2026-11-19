@@ -1,5 +1,5 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, blocCarnet, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, blocChapitre, presentation, type Carnet, type ChapitreDuContexte, type Histoire } from "./contexte";
 
 /**
  * Idées de choix (F13.3) : dix idées en une demande, rangées par pertinence, montrées trois
@@ -12,7 +12,7 @@ export type SceneConnue = { ref: string; titre: string; consigne?: string };
 export type EntreeIdeesChoix = {
   histoire: Histoire;
   carnet?: Carnet;
-  chapitre: { titre: string; resume?: string };
+  chapitre: ChapitreDuContexte;
   scene: { titre: string; consigne: string | null; paragraphes: string[] };
   /** Les autres scènes du chapitre, destinations possibles */
   scenes: SceneConnue[];
@@ -52,7 +52,7 @@ Exigences :
   message: (e) => assembler(
     presentation(e.histoire),
     blocCarnet(e.carnet),
-    bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`),
+    blocChapitre(e.chapitre),
     bloc("scenes_du_chapitre", e.scenes.map((s) => `${s.ref} « ${s.titre} »${s.consigne ? ` — ${s.consigne.replace(/\n/g, " ")}` : ""}`)),
     bloc("objets_de_l_histoire", e.objets),
     bloc("scene", [`Titre : ${e.scene.titre}`, e.scene.consigne ? `Consigne : ${e.scene.consigne}` : "", e.scene.paragraphes.length ? `Texte :\n${e.scene.paragraphes.join("\n")}` : "Texte : pas encore écrit."].filter(Boolean).join("\n")),

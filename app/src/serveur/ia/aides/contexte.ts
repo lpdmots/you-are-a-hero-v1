@@ -27,14 +27,11 @@ export const histoireDuProjet = (p: {
 /** Une carte de l'étape « Personnages » (F10.2), telle que les aides la reçoivent. */
 export type CarteDePersonnage = { nom: string; autresNoms: string[]; description: string; heros: boolean };
 
-/** Un lieu de l'étape « Univers » (F02.1), tel que les aides le reçoivent. */
-export type LieuDuCarnet = { nom: string; phrase: string };
-
 /**
- * Le carnet de la Préparation : le texte retenu de chaque étape de l'histoire (F02), les
- * cartes des personnages (F10.2), héros en tête, et les lieux de l'Univers (F02.1).
+ * Le carnet de la Préparation : le texte retenu de chaque étape de l'histoire (F02), et les
+ * cartes des personnages (F10.2), héros en tête.
  */
-export type Carnet = { univers?: string; personnages?: string; enjeu?: string; etapes?: string; cartes?: CarteDePersonnage[]; lieux?: LieuDuCarnet[] };
+export type Carnet = { univers?: string; personnages?: string; enjeu?: string; etapes?: string; cartes?: CarteDePersonnage[] };
 
 /** Le carnet que reçoivent les aides, d'après la Préparation ; Grandes étapes passe par le plan. */
 export function carnetDe(p: Preparation): Carnet;
@@ -44,7 +41,6 @@ export function carnetDe(p: Preparation | null | undefined): Carnet | undefined 
   return {
     univers: p.univers, personnages: p.personnages, enjeu: p.enjeu,
     cartes: p.personnagesDeLHistoire.map((c) => ({ nom: c.nom, autresNoms: c.autresNoms, description: c.description, heros: c.heros })),
-    lieux: p.lieux.map((l) => ({ nom: l.nom, phrase: l.phrase })),
   };
 }
 
@@ -65,10 +61,29 @@ export function blocPersonnages(cartes: readonly CarteDePersonnage[] | undefined
   return bloc("personnages", lignes.map((l) => `- ${l}`).join("\n"));
 }
 
-/** Les lieux de l'Univers, en lignes : « Le village des pêcheurs : au bord du lac ». */
-export function blocLieux(lieux: readonly LieuDuCarnet[] | undefined): string {
-  const lignes = (lieux ?? []).filter((l) => l.nom.trim()).slice(0, 30).map((l) => `- ${l.nom.trim()}${l.phrase.trim() ? ` : ${l.phrase.trim()}` : ""}`);
-  return lignes.length ? bloc("lieux", lignes.join("\n")) : "";
+/**
+ * Le chapitre d'une scène, et la partie où il se trouve (F02.1, 19 novembre 2026) : la description
+ * de la partie (l'endroit, l'ambiance) part avec toute aide demandée sur une scène de cette partie,
+ * jamais en liste de toutes les parties.
+ */
+export type ChapitreDuContexte = { titre: string; resume?: string; partie?: { titre: string; description?: string } };
+
+/** La partie, si elle a une description, puis le chapitre et son résumé. */
+export function blocChapitre(c: ChapitreDuContexte | undefined): string {
+  if (!c) return "";
+  const description = c.partie?.description?.trim();
+  return assembler(
+    description ? bloc("partie", `${c.partie!.titre.trim()} : ${description}`) : "",
+    bloc("chapitre", `${c.titre}${c.resume ? ` : ${c.resume}` : ""}`),
+  );
+}
+
+/** La partie d'un chapitre telle que la base la rend, jointe au chapitre (un objet, ou une liste d'un seul). */
+export function partieJointe(brut: unknown): { titre: string; description?: string } | undefined {
+  const p = (Array.isArray(brut) ? brut[0] : brut) as { titre?: unknown; description?: unknown } | null | undefined;
+  if (!p || typeof p.titre !== "string") return undefined;
+  const description = typeof p.description === "string" && p.description.trim() ? p.description.trim() : undefined;
+  return { titre: p.titre, description };
 }
 
 export const ETAPES_DU_CARNET = { univers: "Univers", personnages: "Personnages", enjeu: "Enjeu", etapes: "Grandes étapes" } as const;
@@ -95,7 +110,7 @@ export function blocCarnet(c: Carnet | undefined, sauf?: EtapeDuCarnet): string 
   const lignes = (Object.keys(ETAPES_DU_CARNET) as EtapeDuCarnet[])
     .filter((e) => e !== sauf && c[e]?.trim())
     .map((e) => `${ETAPES_DU_CARNET[e]} : ${c[e]!.trim()}`);
-  return assembler(lignes.length ? bloc("preparation", lignes.join("\n")) : "", blocPersonnages(c.cartes), blocLieux(c.lieux));
+  return assembler(lignes.length ? bloc("preparation", lignes.join("\n")) : "", blocPersonnages(c.cartes));
 }
 
 export function blocPlan(plan: Plan | undefined): string {

@@ -11,7 +11,7 @@ import type { Enseignant } from "./adulte";
 import { ajouterAuPlan, annulerAjout, type EchecDuPlan } from "./chemins";
 import { texteDeScene } from "./copie";
 import { blocDeScenes, type EntreeBloc } from "./ia/aides/bloc-de-scenes";
-import { carnetDe, histoireDuProjet } from "./ia/aides/contexte";
+import { carnetDe, histoireDuProjet, partieJointe } from "./ia/aides/contexte";
 import { demanderUneAide } from "./ia/demander";
 import { finPourLesIdees, PAS_DE_CHOIX } from "./idees-de-choix";
 import { projetDe } from "./lectures";
@@ -62,7 +62,7 @@ type Contexte = { projetId: string; chapitreId: string; origine: string | null; 
 /** Le chapitre, en récit à choix, et sa scène d'origine si elle y est ; null sinon. */
 async function lireLeChapitre(e: Enseignant, chapitreId: string, origine: string | null) {
   if (!estUuid(chapitreId) || (origine !== null && !estUuid(origine))) return null;
-  const { data: c } = await e.supabase.from("chapitres").select("projet_id, titre, resume").eq("id", chapitreId).is("supprime_le", null).maybeSingle();
+  const { data: c } = await e.supabase.from("chapitres").select("projet_id, titre, resume, parties(titre, description)").eq("id", chapitreId).is("supprime_le", null).maybeSingle();
   if (!c) return null;
   const projet = await projetDe(e, c.projet_id as string);
   if (!projet) return null;
@@ -70,7 +70,7 @@ async function lireLeChapitre(e: Enseignant, chapitreId: string, origine: string
   const chapitre = chapitresDe(plan).find((x) => x.id === chapitreId);
   if (!chapitre) return null;
   if (origine !== null && !chapitre.scenes.some((s) => s.id === origine)) return null;
-  return { projet, plan, chapitre, resume: (c.resume as string | null)?.trim() || undefined };
+  return { projet, plan, chapitre, resume: (c.resume as string | null)?.trim() || undefined, partie: partieJointe(c.parties) };
 }
 
 /**
@@ -115,7 +115,7 @@ export async function demanderUnBloc(
   const entree: EntreeBloc = {
     histoire: histoireDuProjet(lu.projet),
     carnet: carnetDe(preparation),
-    chapitre: { titre: lu.chapitre.titre, resume: lu.resume },
+    chapitre: { titre: lu.chapitre.titre, resume: lu.resume, partie: lu.partie },
     scenes,
     origine: noeud
       ? {

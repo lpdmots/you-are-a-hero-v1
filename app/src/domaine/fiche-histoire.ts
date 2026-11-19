@@ -1,22 +1,23 @@
 /**
- * La fiche de l'histoire à imprimer (F02.1, décidée par le porteur le 18 novembre 2026) : ce que la
- * Préparation retient, dans un ordre fixe, pour que chaque élève ait sous les yeux les mêmes noms
- * et les mêmes règles d'un chapitre à l'autre. Rien n'est inventé : une rubrique vide n'apparaît
- * pas, aucun texte n'est résumé ni réécrit, et il n'y a pas d'IA. Ne s'y trouvent pas les grandes
- * étapes, les questions, les idées, les formules d'action, la fiche visuelle des images ni les
- * scènes.
+ * La fiche de l'histoire à imprimer (F02.1, décidée par le porteur le 18 novembre 2026, revue le
+ * 19) : ce que la Préparation retient, dans un ordre fixe, pour que chaque élève ait sous les yeux
+ * les mêmes noms d'un chapitre à l'autre. Rien n'est inventé : une rubrique vide n'apparaît pas,
+ * aucun texte n'est résumé ni réécrit, et il n'y a pas d'IA. Ne s'y trouvent pas les grandes étapes
+ * (seules les parties décrites, pour leur endroit et leur ambiance), les questions, les idées, les
+ * formules d'action, les règles du jeu, la fiche visuelle des images ni les scènes.
  */
 import type { Organisation, Recit } from "./projets";
 import { HEROS_SANS_NOM, type Feuille, type Preparation } from "./preparation";
+import type { Partie } from "./recit";
 
 export type PersonnageDeFiche = { id: string; nom: string; autresNoms: string[]; description: string; portraitId: string | null };
 
 export type RubriqueDeFiche =
-  | { sorte: "univers" | "enjeu" | "ecriture" | "regles"; titre: string; texte: string }
+  | { sorte: "univers" | "enjeu" | "ecriture"; titre: string; texte: string }
   | { sorte: "heros" | "autres"; titre: string; personnages: PersonnageDeFiche[] }
   /** Le texte retenu de l'étape « Personnages », quand aucune carte de héros ne le porte */
   | { sorte: "personnages"; titre: string; texte: string }
-  | { sorte: "lieux"; titre: string; lieux: { id: string; nom: string; phrase: string }[] }
+  | { sorte: "parties"; titre: string; parties: { id: string; titre: string; description: string }[] }
   | { sorte: "objets"; titre: string; objets: { id: string; nom: string; description: string; imageId: string | null }[] }
   | { sorte: "feuille"; titre: string; lignes: string[] };
 
@@ -51,11 +52,16 @@ export function lignesDeLaFeuille(feuille: Feuille): string[] {
   return lignes;
 }
 
-/** La fiche, dans l'ordre de F02.1 ; en récit classique, sans feuille d'aventure ni règles du jeu (F02-AC26). */
-export function composerLaFiche(projet: ProjetDeLaFiche, p: Preparation): FicheDeLHistoire {
+/**
+ * La fiche, dans l'ordre de F02.1 ; les parties dans l'ordre du livre. En récit classique, sans
+ * feuille d'aventure (F02-AC26).
+ */
+export function composerLaFiche(
+  projet: ProjetDeLaFiche, p: Preparation, parties: readonly Pick<Partie, "id" | "titre" | "description">[] = [],
+): FicheDeLHistoire {
   const deClasse = projet.organisation === "classe";
   const r: RubriqueDeFiche[] = [];
-  const texte = (sorte: "univers" | "enjeu" | "ecriture" | "regles", titre: string, valeur: string) => {
+  const texte = (sorte: "univers" | "enjeu" | "ecriture", titre: string, valeur: string) => {
     if (plein(valeur)) r.push({ sorte, titre, texte: plein(valeur) });
   };
   const versFiche = (c: Preparation["personnagesDeLHistoire"][number]): PersonnageDeFiche => ({
@@ -74,8 +80,9 @@ export function composerLaFiche(projet: ProjetDeLaFiche, p: Preparation): FicheD
   const autres = p.personnagesDeLHistoire.filter((c) => !c.heros).map(versFiche).filter((c) => c.nom !== "");
   if (autres.length) r.push({ sorte: "autres", titre: "Les autres personnages", personnages: autres });
 
-  const lieux = p.lieux.filter((l) => l.nom.trim()).map((l) => ({ id: l.id, nom: l.nom.trim(), phrase: plein(l.phrase) }));
-  if (lieux.length) r.push({ sorte: "lieux", titre: "Les lieux", lieux });
+  // Une partie sans description ne dirait que son titre : ce serait le plan, que la fiche ne reprend pas
+  const decrites = parties.filter((x) => plein(x.description)).map((x) => ({ id: x.id, titre: x.titre.trim(), description: plein(x.description) }));
+  if (decrites.length) r.push({ sorte: "parties", titre: "Les parties de l’aventure", parties: decrites });
 
   const objets = p.objets.filter((o) => o.nom.trim()).map((o) => ({ id: o.id, nom: o.nom.trim(), description: plein(o.description), imageId: o.imageId ?? null }));
   if (objets.length) r.push({ sorte: "objets", titre: "Les objets", objets });
@@ -84,7 +91,6 @@ export function composerLaFiche(projet: ProjetDeLaFiche, p: Preparation): FicheD
   if (projet.recit === "choix") {
     const feuille = lignesDeLaFeuille(p.feuille);
     if (feuille.length) r.push({ sorte: "feuille", titre: "La feuille d’aventure", lignes: feuille });
-    texte("regles", "Les règles du jeu", p.regles);
   }
 
   return {

@@ -100,7 +100,7 @@ export async function demanderDesIdees(
   const r = await demanderUneAide(e, aideIdees, {
     histoire: lieu.histoire,
     carnet: carnetDe(preparation),
-    chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },
+    chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined, partie: lieu.chapitre.partie },
     scene: { titre: lieu.scene.titre ?? "Sans titre", consigne, paragraphes },
     scenes: autres.map((s) => ({ ref: referenceScene(s.reference), titre: s.titre?.trim() || "Sans titre", consigne: s.consigne?.trim().slice(0, 300) || undefined })),
     objets: (preparation?.objets ?? []).map((o) => o.nom.trim()).filter(Boolean).slice(0, 40),

@@ -8,7 +8,7 @@ import { remplacerSiInchange, type Remplacement } from "./correction";
 import { texteDeScene, type TexteDeScene } from "./copie";
 import { consigne as aideConsigne } from "./ia/aides/consigne";
 import { ecriture as aideEcriture } from "./ia/aides/ecriture";
-import { carnetDe, type Carnet, type Histoire, histoireDuProjet } from "./ia/aides/contexte";
+import { carnetDe, partieJointe, type Carnet, type Histoire, histoireDuProjet } from "./ia/aides/contexte";
 import { titre as aideTitre } from "./ia/aides/titre";
 import { demanderUneAide } from "./ia/demander";
 import { projetDe } from "./lectures";
@@ -35,7 +35,7 @@ type Lieu = {
    * `liste` : séparées, pour « ✦ Formuler », qui les rend séparées (F13.2)
    */
   scene: SceneLue & { id: string; indication: string; liste: string[] };
-  chapitre: { titre: string; resume: string | null };
+  chapitre: { titre: string; resume: string | null; partie?: { titre: string; description?: string } };
   /** Les autres scènes du chapitre, dans l'ordre, la scène elle-même retirée */
   avant: SceneLue[];
   apres: SceneLue[];
@@ -52,7 +52,7 @@ export async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lie
   if (!s) return null;
   const [projet, chapitre, autres] = await Promise.all([
     projetDe(e, s.projet_id as string),
-    e.supabase.from("chapitres").select("titre, resume").eq("id", s.chapitre_id as string).maybeSingle(),
+    e.supabase.from("chapitres").select("titre, resume, parties(titre, description)").eq("id", s.chapitre_id as string).maybeSingle(),
     e.supabase.from("scenes").select("id, titre, consigne, verification, rang").eq("chapitre_id", s.chapitre_id as string).is("supprime_le", null).order("rang"),
   ]);
   if (!projet || !chapitre.data) return null;
@@ -65,7 +65,7 @@ export async function lieuDeLaScene(e: Enseignant, sceneId: string): Promise<Lie
     eleveId: (s.prise_par_eleve as string | null) ?? null,
     histoire: histoireDuProjet(projet),
     scene: { ...lue(s as SceneLue), id: sceneId, indication: ((s.consigne as string | null) ?? "").trim(), liste: (s.verification as string[] | null) ?? [] },
-    chapitre: { titre: chapitre.data.titre as string, resume: (chapitre.data.resume as string | null)?.trim() || null },
+    chapitre: { titre: chapitre.data.titre as string, resume: (chapitre.data.resume as string | null)?.trim() || null, partie: partieJointe(chapitre.data.parties) },
     avant: (ici < 0 ? [] : liste.slice(0, ici)).map(lue),
     apres: (ici < 0 ? liste : liste.slice(ici + 1)).map(lue),
   };
@@ -120,7 +120,7 @@ export async function demanderUneConsigne(e: Enseignant, sceneId: string): Promi
     titre: lieu.scene.titre ?? undefined,
     menent,
     carnet,
-    chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },
+    chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined, partie: lieu.chapitre.partie },
     voisines: voisinesDe(lieu.avant, lieu.apres)
       .filter((v) => v.titre || v.consigne)
       .map((v) => ({ titre: v.titre ?? "Sans titre", consigne: v.consigne?.slice(0, 600) })),
@@ -223,7 +223,7 @@ export async function demanderUneEcriture(e: Enseignant, sceneId: string, versio
     consigne: (lieu.scene.consigne ?? "").slice(0, 1500),
     titre: lieu.scene.titre ?? undefined,
     carnet: carnetDe(preparation),
-    chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined },
+    chapitre: { titre: lieu.chapitre.titre, resume: lieu.chapitre.resume ?? undefined, partie: lieu.chapitre.partie },
     voisines: voisinesDe(lieu.avant, lieu.apres)
       .filter((v) => v.titre || v.consigne)
       .map((v) => ({ titre: v.titre ?? "Sans titre", consigne: v.consigne?.slice(0, 600) })),

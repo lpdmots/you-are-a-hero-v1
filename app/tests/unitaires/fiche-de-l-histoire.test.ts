@@ -1,17 +1,18 @@
 import { describe, expect, it } from "vitest";
 import { composerLaFiche, HAUTEUR_UTILE_MM, lignesDeLaFeuille, messageDeLongueur, paginer, type MorceauMesure, type ProjetDeLaFiche } from "@/domaine/fiche-histoire";
 import type { Preparation } from "@/domaine/preparation";
-import { blocCarnet, carnetDe } from "@/serveur/ia/aides/contexte";
+import { blocChapitre, partieJointe } from "@/serveur/ia/aides/contexte";
 
 /**
  * La fiche de l'histoire à imprimer (F02.1) : ce que la Préparation retient, dans l'ordre de la
- * spécification, sans rubrique vide, sans résumé ni IA ; en récit classique, sans feuille
- * d'aventure ni règles du jeu. Les lieux de l'Univers entrent aussi dans le contexte des aides.
+ * spécification, sans rubrique vide, sans résumé ni IA, sans règles du jeu ; en récit classique,
+ * sans feuille d'aventure. La description d'une partie entre aussi dans le contexte des aides
+ * demandées sur une scène de cette partie (révision du 19 novembre 2026).
  */
 
 const carnetVide: Preparation = {
   univers: "", personnages: "", enjeu: "", rubriqueJeu: false, feuille: { on: false, des: 0, sections: [] }, regles: "",
-  formuleRenvoi: "rends", constructions: ["neutre"], marqueFin: "", pistes: [], questions: [], orientations: {}, objets: [], lieux: [],
+  formuleRenvoi: "rends", constructions: ["neutre"], marqueFin: "", pistes: [], questions: [], orientations: {}, objets: [],
   formules: [], personnagesDeLHistoire: [],
 };
 const classeAChoix: ProjetDeLaFiche = { titre: "Les passeurs de brume", organisation: "classe", recit: "choix", consigneEcriture: "Au présent, en « tu »." };
@@ -28,11 +29,6 @@ const complete: Preparation = {
     carte("mael", "Maël", false, "Le père, disparu."),
     carte("brindille", "Brindille", false, "Une chouette qui guide la nuit."),
   ],
-  lieux: [
-    { id: "l1", nom: "Le port", phrase: "D’où partent les barques." },
-    { id: "l2", nom: "Le lac", phrase: "Couvert de brume." },
-    { id: "l3", nom: "Le pont de brume", phrase: "" },
-  ],
   objets: [
     { id: "o1", nom: "la lanterne", description: "Elle chasse la brume.", fiche: "", imageId: "image-lanterne" },
     { id: "o2", nom: "la carte du lac", description: "" },
@@ -44,15 +40,21 @@ const complete: Preparation = {
   questions: [{ id: "q1", etape: "univers", texte: "Y a-t-il de la magie ?", origine: "main" }],
   formules: [{ id: "f1", texte: "Note le mot de passe sur ta feuille.", signe: "crayon" }],
 };
+/** Les parties du plan, dans l'ordre du livre : deux décrites, une sans description */
+const parties = [
+  { id: "p1", titre: "Le port", description: "D’où partent les barques, dans l’odeur du goudron." },
+  { id: "p2", titre: "Le départ", description: "" },
+  { id: "p3", titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place." },
+];
 
 describe("La fiche de l'histoire (F02.1)", () => {
-  it("F02-AC21 — la fiche montre les éléments retenus dans l'ordre de F02.1, remplis, sans les grandes étapes, les idées ni les formules", () => {
-    const fiche = composerLaFiche(classeAChoix, complete);
+  it("F02-AC21 — la fiche montre les éléments retenus dans l'ordre de F02.1, remplis, sans les grandes étapes, les idées, les formules ni les règles du jeu", () => {
+    const fiche = composerLaFiche(classeAChoix, complete, parties);
     expect(fiche.titre).toBe("Les passeurs de brume");
     expect(fiche.vide).toBeNull();
-    expect(fiche.rubriques.map((r) => r.sorte)).toEqual(["univers", "enjeu", "heros", "autres", "lieux", "objets", "ecriture", "feuille", "regles"]);
+    expect(fiche.rubriques.map((r) => r.sorte)).toEqual(["univers", "enjeu", "heros", "autres", "parties", "objets", "ecriture", "feuille"]);
     expect(fiche.rubriques.map((r) => r.titre)).toEqual([
-      "L’univers", "L’enjeu", "Le héros", "Les autres personnages", "Les lieux", "Les objets", "Notre façon d’écrire", "La feuille d’aventure", "Les règles du jeu",
+      "L’univers", "L’enjeu", "Le héros", "Les autres personnages", "Les parties de l’aventure", "Les objets", "Notre façon d’écrire", "La feuille d’aventure",
     ]);
     const heros = fiche.rubriques.find((r) => r.sorte === "heros");
     expect(heros && "personnages" in heros ? heros.personnages : []).toEqual([
@@ -60,14 +62,18 @@ describe("La fiche de l'histoire (F02.1)", () => {
     ]);
     const autres = fiche.rubriques.find((r) => r.sorte === "autres");
     expect(autres && "personnages" in autres ? autres.personnages.map((p) => p.nom) : []).toEqual(["Maël", "Brindille"]);
-    const lieux = fiche.rubriques.find((r) => r.sorte === "lieux");
-    expect(lieux && "lieux" in lieux ? lieux.lieux.map((l) => l.nom) : []).toEqual(["Le port", "Le lac", "Le pont de brume"]);
+    // Les parties décrites, dans l'ordre du livre ; une partie sans description n'y est pas
+    const decrites = fiche.rubriques.find((r) => r.sorte === "parties");
+    expect(decrites && "parties" in decrites ? decrites.parties : []).toEqual([
+      { id: "p1", titre: "Le port", description: "D’où partent les barques, dans l’odeur du goudron." },
+      { id: "p3", titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place." },
+    ]);
     const objets = fiche.rubriques.find((r) => r.sorte === "objets");
     expect(objets && "objets" in objets ? objets.objets.map((o) => [o.nom, o.imageId]) : []).toEqual([["la lanterne", "image-lanterne"], ["la carte du lac", null]]);
     expect(fiche.rubriques.find((r) => r.sorte === "feuille")).toMatchObject({ lignes: ["Volonté : 5 au départ", "Inventaire", "Un dé"] });
-    // Ni idées, ni questions, ni formules, ni fiche visuelle des images
+    // Ni idées, ni questions, ni formules, ni fiche visuelle des images, ni règles du jeu, ni le titre d'une partie sans description
     const tout = JSON.stringify(fiche);
-    for (const absent of ["Une île volante", "Y a-t-il de la magie", "Note le mot de passe", "Cheveux roux"]) expect(tout).not.toContain(absent);
+    for (const absent of ["Une île volante", "Y a-t-il de la magie", "Note le mot de passe", "Cheveux roux", "Lance le dé", "Le départ"]) expect(tout).not.toContain(absent);
   });
 
   it("F02-AC21 — une fiche d'une page ou de deux, recto verso, ne dit rien de sa longueur", () => {
@@ -79,11 +85,11 @@ describe("La fiche de l'histoire (F02.1)", () => {
     expect(messageDeLongueur(2)).toBeNull();
   });
 
-  it("F02-AC23 — sans objets ni lieux, ces rubriques n'y figurent pas ; une description longue s'imprime entière ; au-delà de deux pages, un message prévient", () => {
+  it("F02-AC23 — sans objets ni partie décrite, ces rubriques n'y figurent pas ; une description longue s'imprime entière ; au-delà de deux pages, un message prévient", () => {
     const longue = Array.from({ length: 60 }, (_, i) => `Phrase ${i + 1} de la description de Lou, qui ne se résume pas.`).join("\n");
-    const fiche = composerLaFiche(classeAChoix, { ...complete, objets: [], lieux: [], personnagesDeLHistoire: [carte("lou", "Lou", true, longue)] });
+    const fiche = composerLaFiche(classeAChoix, { ...complete, objets: [], personnagesDeLHistoire: [carte("lou", "Lou", true, longue)] }, [{ id: "p2", titre: "Le départ", description: " " }]);
     expect(fiche.rubriques.map((r) => r.sorte)).not.toContain("objets");
-    expect(fiche.rubriques.map((r) => r.sorte)).not.toContain("lieux");
+    expect(fiche.rubriques.map((r) => r.sorte)).not.toContain("parties");
     const heros = fiche.rubriques.find((r) => r.sorte === "heros");
     expect(heros && "personnages" in heros ? heros.personnages[0].description : "").toBe(longue);
     expect(paginer([{ haut: 0, bas: 2 * HAUTEUR_UTILE_MM + 30, sorte: "texte" }])).toHaveLength(2);
@@ -106,8 +112,8 @@ describe("La fiche de l'histoire (F02.1)", () => {
   });
 
   it("F02-AC26 — en récit classique, ni feuille d'aventure ni règles du jeu, même si elles restent écrites", () => {
-    const fiche = composerLaFiche({ ...classeAChoix, recit: "classique" }, complete);
-    expect(fiche.rubriques.map((r) => r.sorte)).toEqual(["univers", "enjeu", "heros", "autres", "lieux", "objets", "ecriture"]);
+    const fiche = composerLaFiche({ ...classeAChoix, recit: "classique" }, complete, parties);
+    expect(fiche.rubriques.map((r) => r.sorte)).toEqual(["univers", "enjeu", "heros", "autres", "parties", "objets", "ecriture"]);
   });
 
   it("la feuille d'aventure n'entre que si elle s'imprime dans le livre, et dit ses compteurs, ses listes et ses dés", () => {
@@ -121,7 +127,7 @@ describe("La fiche de l'histoire (F02.1)", () => {
 
 describe("Les pages de la fiche, comme l'impression les coupe (F02.1)", () => {
   const H = HAUTEUR_UTILE_MM;
-  it("un lieu, un objet ou un personnage ne se coupe pas : la page s'arrête au-dessus de lui", () => {
+  it("une partie, un objet ou un personnage ne se coupe pas : la page s'arrête au-dessus de lui", () => {
     expect(paginer([{ haut: 0, bas: H - 20, sorte: "texte" }, { haut: H - 10, bas: H + 15, sorte: "insecable" }])).toEqual([H - 10]);
     // Deux colonnes : la plus haute des deux cartes coupées décide
     expect(paginer([{ haut: H - 12, bas: H + 8, sorte: "insecable" }, { haut: H - 18, bas: H + 2, sorte: "insecable" }, { haut: 0, bas: H - 20, sorte: "texte" }])).toEqual([H - 18]);
@@ -135,11 +141,15 @@ describe("Les pages de la fiche, comme l'impression les coupe (F02.1)", () => {
   });
 });
 
-describe("Les lieux dans le contexte des aides (F02.1)", () => {
-  it("F02-AC25 — les lieux de l'Univers partent avec le carnet, dans leur ordre, nom et phrase", () => {
-    const parti = blocCarnet(carnetDe(complete));
-    expect(parti).toContain("<lieux>");
-    expect(parti).toContain("- Le port : D’où partent les barques.\n- Le lac : Couvert de brume.\n- Le pont de brume");
-    expect(blocCarnet(carnetDe(carnetVide))).not.toContain("<lieux>");
+describe("La description d'une partie dans le contexte des aides (F02.1)", () => {
+  it("F02-AC25 — la partie décrite part avec le chapitre de la scène ; sans description, le chapitre seul", () => {
+    const decrite = partieJointe([{ titre: "Le lac", description: "  Couvert de brume ; les chemins y changent de place. " }]);
+    expect(decrite).toEqual({ titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place." });
+    expect(blocChapitre({ titre: "La traversée", resume: "Lou traverse sans lanterne.", partie: decrite })).toBe(
+      "<partie>\nLe lac : Couvert de brume ; les chemins y changent de place.\n</partie>\n\n<chapitre>\nLa traversée : Lou traverse sans lanterne.\n</chapitre>",
+    );
+    const nue = partieJointe({ titre: "Le départ", description: "" });
+    expect(blocChapitre({ titre: "Le quai", partie: nue })).toBe("<chapitre>\nLe quai\n</chapitre>");
+    expect(partieJointe(null)).toBeUndefined();
   });
 });

@@ -169,7 +169,7 @@
   color: #2c3237;
 }
 
-/* Personnages, lieux, objets : deux colonnes, un élément ne se coupe pas d'une page à l'autre */
+/* Personnages, parties, objets : deux colonnes, un élément ne se coupe pas d'une page à l'autre */
 .grille {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

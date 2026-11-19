@@ -94,7 +94,16 @@ export type Partie = Repere & {
   groupeAvecPrecedente: boolean;
   /** Scène d'ouverture choisie par l'adulte ; sinon la première de la partie (F11.5) */
   ouvertureSceneId: string | null;
+  /**
+   * L'endroit, l'ambiance, ce qu'on y trouve : courte et facultative, ce n'est pas un résumé
+   * narratif, qui reste au chapitre (F02.1, 19 novembre 2026)
+   */
+  description?: string;
 };
+
+export const DESCRIPTION_PARTIE_MAX = 300;
+/** Ce que dit une description de partie, en exemple dans son champ vide */
+export const EXEMPLE_DESCRIPTION_PARTIE = "L’endroit, l’ambiance, ce qu’on y trouve";
 
 /** Ce que la corbeille du projet contient (F03.1) : l'élément supprimé le plus haut, et ce qui attend dessous. */
 export type Supprime = {

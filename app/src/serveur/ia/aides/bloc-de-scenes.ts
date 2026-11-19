@@ -3,7 +3,7 @@ import { LIBELLE_MAX } from "@/domaine/copie";
 import { VERIFICATION, listePropre } from "@/domaine/verification";
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
 import { elementDeListe } from "./consigne";
-import { REGLES_COMMUNES, blocCarnet, eleve, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, blocChapitre, eleve, presentation, type Carnet, type ChapitreDuContexte, type Histoire } from "./contexte";
 
 /**
  * Le bloc de scènes (F13.7) : d'après la demande de l'adulte, quelques scènes reliées par leurs
@@ -23,7 +23,7 @@ export type SceneDuChapitre = {
 export type EntreeBloc = {
   histoire: Histoire;
   carnet?: Carnet;
-  chapitre: { titre: string; resume?: string };
+  chapitre: ChapitreDuContexte;
   scenes: SceneDuChapitre[];
   /** La scène d'origine ; null dans un chapitre encore vide */
   origine: { id: string; ref: string; titre: string; consigne: string | null; paragraphes: string[] } | null;
@@ -111,7 +111,7 @@ export const blocDeScenes: DefinitionAide<EntreeBloc, Proposition> = {
   message: (e) => assembler(
     presentation(e.histoire),
     blocCarnet(e.carnet),
-    bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`),
+    blocChapitre(e.chapitre),
     bloc("scenes_du_chapitre", e.scenes.map(ligneDeScene)),
     e.origine
       ? bloc("scene_d_origine", [

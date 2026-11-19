@@ -1,6 +1,6 @@
 import { compterMots } from "@/domaine/correction";
 import { assembler, bloc, chaine, champs, liste, objet, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, blocCarnet, eleve, lecteurs, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, blocChapitre, eleve, lecteurs, presentation, type Carnet, type ChapitreDuContexte, type Histoire } from "./contexte";
 
 /**
  * « ✦ Écrire » (F13.6, décidé par le porteur le 17 octobre 2026) : le texte d'une scène vide,
@@ -15,7 +15,7 @@ export type EntreeEcriture = {
   consigne: string;
   titre?: string;
   carnet?: Carnet;
-  chapitre?: { titre: string; resume?: string };
+  chapitre?: ChapitreDuContexte;
   /** Les scènes voisines du chapitre : leur titre et leur consigne */
   voisines: { titre: string; consigne?: string }[];
   /** Ce qui mène ici : la fin du texte des scènes d'avant, et la phrase du choix */
@@ -46,7 +46,7 @@ export const ecriture: DefinitionAide<EntreeEcriture, Ecriture> = {
   message: (e) => assembler(
     presentation(e.histoire),
     blocCarnet(e.carnet),
-    e.chapitre ? bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`) : "",
+    blocChapitre(e.chapitre),
     bloc("scenes_voisines", e.voisines.map((v) => `${v.titre}${v.consigne ? ` — consigne : ${v.consigne.replace(/\n/g, " ")}` : ""}`)),
     bloc("ce_qui_mene_ici", e.avant.map((a) => `${a.fin}${a.choix ? `\n(Choix du lecteur pour arriver ici : « ${a.choix} »)` : ""}`).join("\n---\n")),
     e.titre ? bloc("titre_de_la_scene", e.titre) : "",

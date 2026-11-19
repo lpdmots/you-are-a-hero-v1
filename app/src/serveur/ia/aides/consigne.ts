@@ -1,5 +1,5 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
-import { REGLES_COMMUNES, blocCarnet, eleve, presentation, type Carnet, type Histoire } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, blocChapitre, eleve, presentation, type Carnet, type ChapitreDuContexte, type Histoire } from "./contexte";
 import { listePropre, VERIFICATION } from "@/domaine/verification";
 
 /**
@@ -19,7 +19,7 @@ export type EntreeConsigne = {
   /** Les phrases des choix qui mènent à la scène */
   menent?: string[];
   carnet?: Carnet;
-  chapitre?: { titre: string; resume?: string };
+  chapitre?: ChapitreDuContexte;
   /** Les scènes voisines : leur titre et leur consigne, pour ne pas répéter les mêmes points */
   voisines: { titre: string; consigne?: string }[];
 };
@@ -58,7 +58,7 @@ Sans indication écrite, pars du titre de la scène, des choix qui y mènent et 
   message: (e) => assembler(
     presentation(e.histoire),
     blocCarnet(e.carnet),
-    e.chapitre ? bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`) : "",
+    blocChapitre(e.chapitre),
     bloc("scenes_voisines", e.voisines.map((v) => `${v.titre}${v.consigne ? ` — consigne : ${v.consigne.replace(/\n/g, " ")}` : ""}`)),
     e.titre ? bloc("titre_de_la_scene", e.titre) : "",
     bloc("choix_qui_menent_ici", e.menent ?? []),

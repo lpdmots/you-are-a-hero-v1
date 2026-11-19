@@ -17,14 +17,13 @@ import {
   type Question, type Rubrique, type RubriqueTexte,
 } from "@/domaine/preparation";
 import type { Organisation, Recit } from "@/domaine/projets";
-import type { Partie, Plan } from "@/domaine/recit";
+import { DESCRIPTION_PARTIE_MAX, type Partie, type Plan } from "@/domaine/recit";
 import { pluriel, sansCoupureFautive } from "@/domaine/texte";
 import { ajouterPiste, ajouterQuestion, changerPiste, ecrireRubrique, orienterLIa, supprimerPiste, supprimerQuestion } from "../../actions-preparation";
-import { creerPartie } from "../../actions-recit";
+import { creerPartie, reglerPartie } from "../../actions-recit";
 import { PanneauIdeesDeParties, useAjouterDesParties, useIdeesDeParties } from "../_plan/IdeesDeParties";
 import { premierHeros, reglerPersonnage } from "../../actions-personnages";
 import { CarteDuHeros, CartesDesPersonnages, OngletsDesPersonnages, SupprimerHeros } from "./Personnages";
-import { Lieux } from "./Lieux";
 import { demanderALaPreparation, useReserveIa } from "./reserve";
 
 /** Sans idée retenue ni texte, « Rédiger » ne demande rien (le serveur dit la même chose). */
@@ -292,11 +291,35 @@ export function EtapeHistoire({
                 );
               }}
             />
-            {etape === "univers" ? <Lieux projetId={projet.id} lieux={preparation.lieux} /> : null}
           </div>
         )}
       </div>
     </div>
+  );
+}
+
+/**
+ * La description d'une partie, sous sa carte (F02.1, 19 novembre 2026) : l'endroit, l'ambiance, ce
+ * qu'on y trouve, écrits directement comme « Nous retenons ». La même que dans ses réglages.
+ */
+function DescriptionDeLaPartie({ partie }: { partie: Partie }) {
+  const e = useEnregistrement();
+  const [description, setDescription] = useState(partie.description ?? "");
+  return (
+    <ChampQuiGrandit
+      className={styles.partie__description}
+      rows={1}
+      maxLength={DESCRIPTION_PARTIE_MAX}
+      aria-label={`Description de la partie ${partie.titre}`}
+      placeholder="L’endroit, l’ambiance…"
+      value={description}
+      onChange={(ev) => {
+        const v = ev.target.value.replace(/\s*\n\s*/g, " ");
+        setDescription(v);
+        e.prevoir(() => reglerPartie(partie.id, { description: v }), 700, "description");
+      }}
+      onBlur={() => void e.partir()}
+    />
   );
 }
 
@@ -756,6 +779,7 @@ function PartiesRetenues({
                   )}
                 </Menu>
               ) : null}
+              <DescriptionDeLaPartie partie={p} />
             </li>
           ))}
         </ol>

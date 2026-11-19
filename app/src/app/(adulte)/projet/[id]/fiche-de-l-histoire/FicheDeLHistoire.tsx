@@ -156,12 +156,12 @@ function Rubrique({ rubrique: r }: { rubrique: RubriqueDeFiche }) {
           ))}
         </div>
       ) : null}
-      {r.sorte === "lieux" ? (
+      {r.sorte === "parties" ? (
         <dl className={styles.grille}>
-          {r.lieux.map((l) => (
-            <div key={l.id} className={styles.element} data-morceau="insecable">
-              <dt className={styles.nom}>{l.nom}</dt>
-              {l.phrase ? <dd className={styles.phrase}>{l.phrase}</dd> : null}
+          {r.parties.map((x) => (
+            <div key={x.id} className={styles.element} data-morceau="insecable">
+              <dt className={styles.nom}>{x.titre}</dt>
+              <dd className={styles.phrase}>{x.description}</dd>
             </div>
           ))}
         </dl>

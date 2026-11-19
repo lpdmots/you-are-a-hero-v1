@@ -12,7 +12,7 @@ import {
 } from "@/domaine/illustration";
 import { pagesParDefaut, pagesPropres } from "@/domaine/pages";
 import type { Enseignant } from "./adulte";
-import { carnetDe, histoireDuProjet } from "./ia/aides/contexte";
+import { carnetDe, histoireDuProjet, partieJointe } from "./ia/aides/contexte";
 import { anneeScolaireEnCours } from "./livre/contenu";
 import { descriptionImage } from "./ia/aides/images";
 import { demanderDesImages, demanderUneAide } from "./ia/demander";
@@ -491,7 +491,7 @@ export async function proposerLaDescription(e: Enseignant, sceneId: string, d: D
   const paragraphes = paragraphesACorriger(prepare.scene.texte).map((p) => p.texte).join("\n").slice(0, 6000);
   // Jamais de refus faute de texte (F13, 27 octobre 2026) : sans texte ni idée, le titre et la consigne de la scène, le chapitre
   const [{ data: chapitre }, { data: scene }] = await Promise.all([
-    e.supabase.from("chapitres").select("titre, resume").eq("id", prepare.scene.chapitreId).maybeSingle(),
+    e.supabase.from("chapitres").select("titre, resume, parties(titre, description)").eq("id", prepare.scene.chapitreId).maybeSingle(),
     e.supabase.from("scenes").select("titre, consigne").eq("id", sceneId).maybeSingle(),
   ]);
   const r = await demanderUneAide(e, descriptionImage, {
@@ -500,7 +500,7 @@ export async function proposerLaDescription(e: Enseignant, sceneId: string, d: D
     idee: prepare.scene.idee,
     paragraphes: paragraphes ? paragraphes.split("\n") : [],
     scene: scene ? { titre: String(scene.titre ?? "").trim() || undefined, consigne: String(scene.consigne ?? "").trim().slice(0, 1500) || undefined } : undefined,
-    chapitre: chapitre ? { titre: chapitre.titre as string, resume: String(chapitre.resume ?? "").trim() || undefined } : undefined,
+    chapitre: chapitre ? { titre: chapitre.titre as string, resume: String(chapitre.resume ?? "").trim() || undefined, partie: partieJointe(chapitre.parties) } : undefined,
     cadrage: d.cadrage,
     herosAbsent: prepare.projet.herosAbsent,
     badges: prepare.retenus.map((r) => ({ nom: r.nom })),

@@ -1,7 +1,7 @@
 import { assembler, bloc, chaine, champs, liste, objet, texte, textes, type DefinitionAide } from "../aide";
 import { CADRAGES_EN_MOTS, DESCRIPTION_IMAGE_MAX, type Cadrage } from "@/domaine/illustration";
 import { lireAutresNoms } from "@/domaine/personnages";
-import { REGLES_COMMUNES, blocCarnet, blocPlan, presentation, type Carnet, type Histoire, type Plan } from "./contexte";
+import { REGLES_COMMUNES, blocCarnet, blocChapitre, blocPlan, presentation, type Carnet, type ChapitreDuContexte, type Histoire, type Plan } from "./contexte";
 
 /**
  * Les aides de texte qui préparent les images (F10.2) : repérer les personnages, préciser une
@@ -118,7 +118,7 @@ export type EntreeDescription = {
   idee: string;
   /** Les paragraphes de récit de la scène ; pour la couverture, rien */
   paragraphes: string[];
-  chapitre?: { titre: string; resume?: string };
+  chapitre?: ChapitreDuContexte;
   /** Pour une scène : son titre et sa consigne, de quoi décrire l'image sans texte ni idée (F13, 27 octobre 2026) */
   scene?: { titre?: string; consigne?: string };
   /** Pour la couverture : l'univers et l'enjeu que la Préparation retient */
@@ -162,7 +162,7 @@ ${e.textes?.length ? `- La couverture portera ces textes, que l'application ajou
   ),
   message: (e) => assembler(
     presentation(e.histoire),
-    e.chapitre ? bloc("chapitre", `${e.chapitre.titre}${e.chapitre.resume ? ` : ${e.chapitre.resume}` : ""}`) : "",
+    blocChapitre(e.chapitre),
     bloc("univers", e.univers), bloc("enjeu", e.enjeu),
     e.carnet ? blocCarnet(e.carnet) : "",
     e.plan ? blocPlan(e.plan) : "",

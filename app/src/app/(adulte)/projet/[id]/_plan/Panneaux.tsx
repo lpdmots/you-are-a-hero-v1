@@ -5,6 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { Agrandissable } from "@/composants/Agrandissable";
+import { Bulle } from "@/composants/Bulle";
+import { ChampQuiGrandit } from "@/composants/ChampQuiGrandit";
 import { useAidesIa } from "@/composants/AidesIa";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
@@ -17,7 +19,7 @@ import { nomPourEleves } from "@/domaine/eleves";
 import { nomDeFichier } from "@/domaine/illustration";
 import { adresseRepereEnGrand } from "@/domaine/visuels";
 import {
-  chapitresDe, chercherScenes, COULEURS, departDe, referenceScene, scenesDe, type Chapitre, type ElevePlan, type Partie, type Plan,
+  chapitresDe, chercherScenes, COULEURS, departDe, DESCRIPTION_PARTIE_MAX, EXEMPLE_DESCRIPTION_PARTIE, referenceScene, scenesDe, type Chapitre, type ElevePlan, type Partie, type Plan,
   type Profil, type Supprime,
 } from "@/domaine/recit";
 import { attribuerChapitre, reglerChapitre, reglerPartie } from "../../actions-recit";
@@ -208,6 +210,7 @@ function useResumeIa(chapitreId: string, resume: string, avantDeDemander: () => 
 /** Réglages d'une partie : titre et image (F03.1, F10.1). */
 export function ReglagesPartie({ partie, neuf, onImage, onFermer }: { partie: Partie; neuf: boolean; onImage: () => void; onFermer: () => void }) {
   const [titre, setTitre] = useState(partie.titre);
+  const [description, setDescription] = useState(partie.description ?? "");
   const e = useEnregistrement();
   return (
     <Panneau titre="Réglages de la partie" sous={partie.titre} onFermer={onFermer} pied={<PiedFermer enregistre={e.enregistre} enCours={e.enCours} onFermer={onFermer} />}>
@@ -230,6 +233,29 @@ export function ReglagesPartie({ partie, neuf, onImage, onFermer }: { partie: Pa
             {e.erreur}
           </p>
         ) : null}
+      </section>
+      {/* L'endroit et l'ambiance, pour la fiche de l'histoire et l'IA ; ce qui s'y passe reste au résumé du chapitre (F02.1) */}
+      <section>
+        <h3>
+          <label htmlFor="partie-description">Description</label> <span className="facultatif">facultative</span>
+          <Bulle question="À quoi sert la description ?">
+            Elle s’imprime sur la fiche de l’histoire et guide l’IA dans les scènes de cette partie. Ce qui s’y passe s’écrit dans le résumé de chaque chapitre.
+          </Bulle>
+        </h3>
+        <ChampQuiGrandit
+          id="partie-description"
+          className="pchamp"
+          rows={2}
+          maxLength={DESCRIPTION_PARTIE_MAX}
+          placeholder={EXEMPLE_DESCRIPTION_PARTIE}
+          value={description}
+          onChange={(ev) => {
+            const v = ev.target.value.replace(/\s*\n\s*/g, " ");
+            setDescription(v);
+            e.prevoir(() => reglerPartie(partie.id, { description: v }), 700, "description");
+          }}
+          onBlur={() => void e.partir()}
+        />
       </section>
       <section>
         <h3>

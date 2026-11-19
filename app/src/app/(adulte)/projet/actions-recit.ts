@@ -5,7 +5,7 @@ import { listePropre } from "@/domaine/verification";
 import { estStyle, STYLE_AUTRE_MAX } from "@/domaine/illustration";
 import { estAge } from "@/domaine/aides-ia";
 import { revalidatePath } from "next/cache";
-import { chapitresDe, couleurNouvelle, departDe, nomScene, TITRE_CHAPITRE, TITRE_PARTIE, COULEURS, type Profil } from "@/domaine/recit";
+import { chapitresDe, couleurNouvelle, departDe, DESCRIPTION_PARTIE_MAX, nomScene, TITRE_CHAPITRE, TITRE_PARTIE, COULEURS, type Profil } from "@/domaine/recit";
 import { estVisuel, tirerVisuel } from "@/domaine/visuels";
 import { exigerEnseignant, type Enseignant } from "@/serveur/adulte";
 import { elevesDeLaClasse, estUuid, planDe } from "@/serveur/recit";
@@ -162,13 +162,20 @@ export async function creerScene(chapitreId: string): Promise<Fait<{ id: string;
 }
 
 /** Réglages d'une partie : son titre (F03.1). */
-export async function reglerPartie(partieId: string, valeurs: { titre: string }): Promise<Fait> {
+export async function reglerPartie(partieId: string, valeurs: { titre?: string; description?: string }): Promise<Fait> {
   const e = await exigerEnseignant();
-  const titre = propre(valeurs.titre, 120);
-  if (!titre) return echec("Donnez un titre à la partie.");
   if (!estUuid(partieId)) return echec("Partie inconnue.");
-  const { data, error } = await e.supabase.from("parties").update({ titre }).eq("id", partieId).select("projet_id");
-  if (error || !data?.length) return echec("Le titre n’a pas pu être enregistré.");
+  const maj: Record<string, string> = {};
+  if (valeurs.titre !== undefined) {
+    const titre = propre(valeurs.titre, 120);
+    if (!titre) return echec("Donnez un titre à la partie.");
+    maj.titre = titre;
+  }
+  // L'endroit et l'ambiance de la partie, en quelques mots (F02.1) : une ligne, comme un titre long
+  if (valeurs.description !== undefined) maj.description = propre(valeurs.description, DESCRIPTION_PARTIE_MAX);
+  if (!Object.keys(maj).length) return { ok: true };
+  const { data, error } = await e.supabase.from("parties").update(maj).eq("id", partieId).select("projet_id");
+  if (error || !data?.length) return echec(maj.titre !== undefined ? "Le titre n’a pas pu être enregistré." : "La description n’a pas pu être enregistrée.");
   rafraichir(data[0].projet_id);
   return { ok: true };
 }
