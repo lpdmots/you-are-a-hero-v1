@@ -5,14 +5,8 @@
 <title>Le déroulé du projet</title>
 <link rel="stylesheet" href="../commun/feuille.css">
 <link rel="stylesheet" href="deroule-du-projet.css">
-<!-- Les documents à imprimer n'ont pas encore d'adresse sur le site : leur lien (data-pdf) ne s'active que
-     lorsque la page est servie par le site, si bien que le PDF ne porte aucun chemin de ce poste. -->
-<script>
-  addEventListener("DOMContentLoaded", () => {
-    if (!location.protocol.startsWith("http")) return;
-    for (const a of document.querySelectorAll("a[data-pdf]")) a.href = a.dataset.pdf;
-  });
-</script>
+<!-- Les documents à imprimer sont liés à leur adresse sur le site (page « Ressources », F14-AC60) : le PDF
+     porte des liens qui marchent, hors du site comme dedans. -->
 </head>
 <body>
 
@@ -31,7 +25,7 @@
     <div class="tete-texte">
       <p class="sorte">Mener le projet · pour l’enseignant</p>
       <h1>Le déroulé du projet</h1>
-      <p class="chapeau">Quatre temps, de la découverte du genre au livre imprimé, et ce qui sert à chaque étape. La durée de chacune dépend du livre et de la classe&nbsp;: un premier livre s’écrit en une ou deux périodes, un grand livre en trois mois environ. Les liens avec les programmes sont sur une feuille à part&nbsp;: <a data-pdf="../programmes/programmes.pdf"><cite>Le livre-jeu et les programmes</cite></a>.</p>
+      <p class="chapeau">Quatre temps, de la découverte du genre au livre imprimé, et ce qui sert à chaque étape. La durée de chacune dépend du livre et de la classe&nbsp;: un premier livre s’écrit en une ou deux périodes, un grand livre en trois mois environ. Les liens avec les programmes sont sur une feuille à part&nbsp;: <a href="https://iletaituneclasse.com/ressources/programmes.pdf"><cite>Le livre-jeu et les programmes</cite></a>.</p>
     </div>
     <img src="../commun/images/dragon-deroule.webp" alt="">
   </header>
@@ -54,7 +48,7 @@
       <ul class="res">
         <li><svg class="i"><use href="#i-en-ligne"/></svg><span><a href="https://iletaituneclasse.com/bibliotheque">La bibliothèque</a>&nbsp;: des livres à lire en ligne, à projeter au tableau</span></li>
         <li><svg class="i"><use href="#i-en-ligne"/></svg><span>Livres d’exemple&nbsp;: <cite>Bouquin mène l’enquête</cite>, <cite>Les passeurs de brume</cite></span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lettre-aux-familles/lettre-aux-familles.pdf">Lettre aux familles</a>, au début du projet, l’autorisation en bas</span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/lettre-aux-familles.pdf">Lettre aux familles</a>, au début du projet, l’autorisation en bas</span></li>
       </ul>
     </div>
 
@@ -64,9 +58,9 @@
         <p>Livre ouvert, les élèves observent les chemins, les choix, les règles et les fins. Notez ce qu’ils ont aimé et ce qu’ils ne veulent pas dans leur livre&nbsp;: cette liste servira à fixer vos règles.</p>
       </div>
       <ul class="res">
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../recherche-bouquin/recherche-bouquin-a-completer.pdf">Recherche sur <cite>Bouquin mène l’enquête</cite></a></span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../recherche-passeurs/recherche-passeurs-a-completer.pdf">Recherche sur <cite>Les passeurs de brume</cite></a></span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../recherche-livre-jeu/recherche-livre-jeu-a-completer.pdf">Recherche pour tout livre‑jeu</a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/recherche-bouquin-a-completer.pdf">Recherche sur <cite>Bouquin mène l’enquête</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/recherche-passeurs-a-completer.pdf">Recherche sur <cite>Les passeurs de brume</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/recherche-livre-jeu-a-completer.pdf">Recherche pour tout livre‑jeu</a></span></li>
       </ul>
     </div>
 
@@ -76,8 +70,8 @@
         <p>La leçon structure les découvertes&nbsp;: les scènes, l’arbre et ses chemins, les fins, les règles du jeu, qui raconte. Puis les choix, leurs pistes et leurs conséquences.</p>
       </div>
       <ul class="res">
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lecon-1-livre-jeu/lecon-1-livre-jeu.pdf">Leçon 1 · <cite>Le livre dont tu es le héros</cite></a></span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lecon-2-choix/lecon-2-choix.pdf">Leçon 2 · <cite>Les choix</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/lecon-1-livre-jeu.pdf">Leçon 1 · <cite>Le livre dont tu es le héros</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/lecon-2-choix.pdf">Leçon 2 · <cite>Les choix</cite></a></span></li>
       </ul>
     </div>
   </section>
@@ -112,8 +106,8 @@
         <p>Sans rien rédiger, l’élève imagine plusieurs obstacles. Vous choisissez avec lui ceux qu’il garde&nbsp;; pour chacun, il prépare trois façons de réagir et leurs conséquences.</p>
       </div>
       <ul class="res">
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../mon-chapitre/mon-chapitre-a-completer.pdf">Fiche <cite>Mon chapitre</cite></a></span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../mon-chapitre/mon-chapitre-obstacles.pdf">Feuille <cite>Un obstacle</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/mon-chapitre-a-completer.pdf">Fiche <cite>Mon chapitre</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/mon-chapitre-obstacles.pdf">Feuille <cite>Un obstacle</cite></a></span></li>
         <li class="note">La leçon 2 reste à portée de main.</li>
       </ul>
     </div>
@@ -149,9 +143,9 @@
       </div>
       <ul class="res">
         <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Les fiches de rédaction&nbsp;: consigne et liste, par élève ou par chapitre</span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lecon-3-scene/lecon-3-scene.pdf">Leçon 3 · <cite>Écrire une scène</cite></a></span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../affiches/affiches.pdf">Quatre affiches pour la classe</a>&nbsp;: la scène, les chemins, les choix, écrire</span></li>
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../sur-le-site/sur-le-site.pdf">Fiche de l’élève <cite>J’écris sur le site</cite></a>, de l’entrée dans la classe au test du chapitre</span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/lecon-3-scene.pdf">Leçon 3 · <cite>Écrire une scène</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/affiches.pdf">Quatre affiches pour la classe</a>&nbsp;: la scène, les chemins, les choix, écrire</span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/sur-le-site.pdf">Fiche de l’élève <cite>J’écris sur le site</cite></a>, de l’entrée dans la classe au test du chapitre</span></li>
       </ul>
     </div>
 
@@ -195,7 +189,7 @@
         <p>Présentez le livre, proposez la précommande, en noir et blanc ou en couleur, l’achat restant facultatif. Vérifiez les autorisations, rendues au début du projet, avant d’imprimer ou de diffuser.</p>
       </div>
       <ul class="res">
-        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lettre-aux-familles/lettre-aux-familles.pdf">Bon de précommande</a>, la seconde feuille de la lettre aux familles</span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a href="https://iletaituneclasse.com/ressources/lettre-aux-familles.pdf">Bon de précommande</a>, la seconde feuille de la lettre aux familles</span></li>
       </ul>
     </div>
 

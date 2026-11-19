@@ -3853,11 +3853,17 @@ V6, le premier envoi à l'imprimeur.
    onze ; le reste n'est ni validé ni écarté. Les documents se fabriquent dans [`ressources/`](../ressources/)
    (une page HTML par document, `ressources/commun/` pour la feuille de
    style, les polices et les dessins ; PDF par
-   `node ressources/composer.mjs <nom>`, avec le Chromium de l'application) ;
-   la page « Ressources » du site n'est pas construite.
+   `node ressources/composer.mjs <nom>`, avec le Chromium de l'application,
+   écrit dans `app/public/ressources/` depuis le 19 novembre 2026) ;
+   la page « Ressources » du site est cadrée le 19 novembre 2026 (plus bas,
+   « Page « Ressources » »).
    **Terminés, d'après le porteur le 17 novembre 2026 :** les leçons 1, 2 et 3,
    les trois feuilles de recherche, « Mon chapitre » avec sa feuille
-   « Un obstacle », et « Le déroulé du projet ». Les mentions « premier jet » et « à relire » ci-dessous
+   « Un obstacle », et « Le déroulé du projet ».
+   **Validés par le porteur le 19 novembre 2026, après relecture :** la fiche
+   de l'élève « J'écris sur le site », les quatre affiches et « Le livre-jeu
+   et les programmes ». Tous les documents sont donc validés ; la page
+   « Ressources » est cadrée en F14 ([page « Ressources »](specifications.md#f14-ressources)). Les mentions « premier jet » et « à relire » ci-dessous
    datent de leur écriture.
    **Déroulé du projet, validé par le porteur le 17 novembre 2026 après relecture et corrections**
    (`ressources/deroule-du-projet/`) : une fiche de deux pages pour
@@ -5812,6 +5818,51 @@ compte ouvre.
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un
   projet ; changement de classe après des attributions.
 - **F01.1 :** espace partagé entre enseignants d'une école ; import avec
+### Page « Ressources » (F14, 19 novembre 2026)
+
+Entretien du 19 novembre 2026, règles en F14,
+[« Page « Ressources » »](specifications.md#f14-ressources), critères
+F14-AC55 à AC61 ; documents tous validés par le porteur (« Matériel
+pédagogique », plus haut). **Validé dans son ensemble par le porteur le
+19 novembre 2026** (« je valide »), avec le coupon seul de la lettre ;
+construction autorisée le même jour en trois lots, en local, un commit par lot, rien poussé
+sur `main` sans sa demande ; aucune migration ; aucun parcours Playwright
+sans sa demande (tsc, lint, tests unitaires et l'écran).
+
+1. **Les fichiers :** `composer.mjs` écrit les PDF et la vignette JPEG de la
+   première page de la version complète dans `app/public/ressources/`, et
+   les PDF quittent les dossiers sources (une seule copie dans Git) ; les
+   `data-pdf` du déroulé deviennent les adresses du site, son PDF recomposé ;
+   le tirage « coupon seul » de la lettre, trois par feuille ;
+   la liste des documents (temps, titre, phrase, format, versions,
+   étiquette) dans un module du domaine, avec le test qui vérifie chaque
+   fichier (F14-AC56, AC60).
+2. **La page `/ressources` :** conçue avec impeccable, textes avec
+   copywriting, critiquée en deux lectures sur des captures avant de lui
+   être montrée ; chapeau, ligne d'usage, sommaire, encart des programmes,
+   métadonnées et données de la page (F14-AC55, AC57, AC58).
+3. **Les liens et l'autorisation :** en-tête, pied, accueil, « Aide », guide
+   (document du guide puis `npm run guide:texte`), plan du site,
+   `robots.txt`, `llms.txt` ; retrait du modèle d'autorisation, renvoi de
+   son adresse, liens de l'« Aide » et de « Imprimer et partager » vers le
+   coupon de la lettre (F14-AC59, AC61, AC33 révisé).
+
+**Lot 1 construit le 19 novembre 2026** (sans migration) : `composer.mjs` écrit
+dans `app/public/ressources/` les PDF et, pour la version complète, la vignette
+JPEG de la première feuille (556 points de large, 50 à 100 Ko) ; les PDF des
+dossiers sources sont retirés ; la lettre a son tirage « coupon seul »
+(`lettre-aux-familles-coupon.pdf`, trois par feuille, le premier sans trait de
+coupe) ; les liens du déroulé mènent à `iletaituneclasse.com/ressources/…`, son
+PDF recomposé ; la liste des documents est dans `app/src/domaine/ressources.ts`
+(le bloc « Pour mener le projet » et les quatre temps ; le temps 4 n'a pas de
+document à lui, sa phrase renvoie au bon de précommande, seconde feuille de la
+lettre), et `tests/unitaires/ressources.test.ts` vérifie les fichiers, l'étiquette
+et les liens du déroulé. Pris sans lui être soumis : les libellés des boutons
+(« Version complète », « Version à compléter », « Fiche de l'élève »,
+« Corrigé », « Exemples de réponses » pour la recherche générale, « Exemple
+rempli », « Feuille vierge », « Coupon seul ») ; tous les documents recomposés
+(environ 19 Mo de plus dans l'historique, une fois).
+
   correspondance de colonnes et synchronisation avec un annuaire.
 - **F02 :** outil de collecte d'idées ou de vote.
 - **F03.1 :** déplacement d'une scène vers un autre chapitre ; ajout de

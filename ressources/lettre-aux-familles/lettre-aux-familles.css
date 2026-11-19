@@ -120,3 +120,10 @@
 .demi .coupon { margin-top: 5mm; }
 /* Le dragon, à gauche, regarde vers la lettre */
 .bas-de-lettre img { transform: scaleX(-1); }
+
+/* ————— Le coupon seul, trois par feuille A4, chacun sous son trait de coupe ————— */
+.coupons .autorisation { flex: 1; margin-top: 0; padding-top: 6mm; display: flex; flex-direction: column; }
+.coupons .autorisation:first-child { border-top: 0; padding-top: 0; }
+.coupons .autorisation:first-child .ciseaux { display: none; }
+.coupons .autorisation .ligne { margin-top: auto !important; padding-bottom: 8mm; }
+.coupons .autorisation + .pied { margin-top: 0; }

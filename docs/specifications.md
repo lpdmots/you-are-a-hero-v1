@@ -12888,6 +12888,121 @@ les révisions qui suivent :
   le mot-clé principal d'une autre. La bibliothèque se présente comme
   « écrits par des classes », décidé par lui : ce sera l'essentiel de ses
   livres, et les livres d'exemple du site le disent dans leur tiroir.
+- <a id="f14-ressources"></a>**Page « Ressources »** (entretien du
+  19 novembre 2026, validé dans son ensemble par le porteur le même jour,
+  « je valide » ; documents dans
+  [`ressources/`](../ressources/), état dans [le plan](plan.md),
+  « Matériel pédagogique »). La page présente les documents à imprimer et y
+  donne accès ; les documents font foi, la page ne les recopie pas.
+  - *Une page, à `/ressources`* (décidé le 19 novembre 2026) : un sommaire,
+    chaque document en une ligne avec ses PDF, sans sous-page par document
+    (des pages minces visant le même mot-clé) ; une sous-page ne viendrait que
+    si la Search Console montre une recherche propre à un document, comme pour
+    le guide. Le mot-clé « production d'écrit et projet d'écriture » est porté
+    par le titre d'onglet, le grand titre et la description, pas par
+    l'adresse, courte, qui est le mot du menu.
+  - *Rangement par moment du projet* (décidé le même jour) : un bloc « Pour
+    mener le projet » (le déroulé, « Le livre-jeu et les programmes »), puis
+    les quatre temps du déroulé (Découvrir le genre ; Préparer l'histoire ;
+    Écrire et relire ; Fabriquer le livre et le faire vivre), les documents
+    dans l'ordre du déroulé. Un document propre à l'outil porte l'étiquette
+    « Avec Il était une classe » et le petit dragon, à sa place dans son
+    temps, sans section à part : c'est ainsi que se distinguent les
+    ressources communes, valables pour toute classe, de celles qui servent
+    avec l'outil (décidé par lui le 18 novembre 2026). Écartés : un rangement
+    par sorte de document, un filtre (trop lourd pour onze documents).
+  - *Ce qui est en texte* (décidé le même jour) : un chapeau (ce qu'on
+    trouve, pour quel âge, gratuit, valable sans l'outil) ; une phrase par
+    temps ; par document, son titre, à quoi il sert et quand, son format
+    (A4 ou A5, pages, recto verso) et un bouton par version (« Version à
+    compléter » et « Version complète », « Fiche de l'élève » et
+    « Corrigé »…) ; un encart « Les programmes », trois ou quatre phrases sur
+    ce que le projet travaille en français aux cycles 2 et 3, avec les
+    références exactes des textes (arrêté du 22 octobre 2024, BO n° 41 du
+    31 octobre 2024 ; arrêté du 10 avril 2025, BO n° 16 du 17 avril 2025),
+    les citations mot pour mot restant dans le PDF. Le déroulé n'est pas
+    recopié sur la page : le guide porte déjà la méthode.
+  - *Accès libre* (décidé le même jour) : on télécharge sans compte ni
+    adresse, si bien que les moteurs et les IA lisent les documents et qu'une
+    feuille photocopiée mène au site (son nom est au pied de chaque
+    document). Sous le chapeau, une ligne d'usage : libres de photocopier et
+    de partager pour la classe, sans les vendre, en citant Il était une
+    classe, sous licence Creative Commons BY-NC 4.0, nommée et liée.
+    Écartés : un compte, même gratuit ; une adresse contre le téléchargement
+    (aucune lettre d'information à nourrir).
+  - *Un aperçu par document* (décidé le même jour) : la vignette de la
+    première page de la version complète, photographiée par `composer.mjs`
+    en même temps que le PDF, légère et chargée au défilement ; un clic ouvre
+    le PDF. Écartés : aucune image (un enseignant juge une fiche à son
+    allure) ; toutes les pages (c'est le rôle du PDF).
+  - *Des fichiers fixes, servis par le site* (décidé le même jour) :
+    `composer.mjs` écrit les PDF et les vignettes dans
+    `app/public/ressources/`, seule copie dans Git, et ils partent avec le
+    déploiement, à `iletaituneclasse.com/ressources/<document>.pdf`. La
+    liste des documents (titre, phrase, format, versions) est tenue dans le
+    code, et un test vérifie que chaque fichier annoncé existe. Les liens
+    `data-pdf` du déroulé deviennent ces adresses, si bien que son PDF porte
+    des liens qui marchent. Écartés : la composition à la demande par le
+    Chromium du serveur (rien ne varie d'un visiteur à l'autre) ; un seau
+    S3 public, proposé par le porteur (une seconde mise en ligne qui peut
+    diverger du code, un seau et un accès en écriture de plus chez AWS, une
+    adresse hors du site) ; à reconsidérer si le dépôt Git devient lourd ou
+    si les documents changent souvent sans la page.
+  - *Tous les documents validés* : « J'écris sur le site », les quatre
+    affiches et « Le livre-jeu et les programmes », relus et validés par le
+    porteur le 19 novembre 2026, sont sur la page avec les autres.
+  - *Où la page se trouve* (décidé le même jour) : « Ressources » dans
+    l'en-tête entre « Guide » et « Aide » sur grand écran, au pied sur
+    téléphone ; au pied, à côté du guide ; dans le guide, un renvoi au
+    chapeau et dans les seules questions où un document sert (découvrir le
+    genre, inventer les choix, écrire une scène, les familles), cinq au
+    plus ; dans l'« Aide », la question « De quel matériel ai-je besoin ? » ;
+    sur l'accueil, une ligne à côté de « lisez le guide » ; le plan du site,
+    `robots.txt` et `llms.txt`, qui liste aussi les PDF, une phrase chacun.
+    Écarté pour l'instant : un lien depuis l'espace de l'adulte, à reprendre
+    après usage.
+  - <a id="f14-autorisation-unique"></a>*Une seule autorisation, celle de
+    la lettre aux familles* (décidé par le porteur le 19 novembre 2026,
+    contre la recommandation de garder les deux) : le modèle
+    `/modeles/autorisation-de-diffusion` (deux accords séparés, en RTF à
+    modifier) est retiré ; le coupon de la lettre (un seul accord, livre
+    imprimé et en ligne, par le lien pour les familles ou dans la
+    bibliothèque, l'enseignant rayant ce qui ne sert pas) le remplace
+    partout : l'« Aide », l'étape « Imprimer et partager » (ses deux liens,
+    au partage et à la proposition à la bibliothèque), le guide et
+    `llms.txt`. L'ancienne adresse renvoie, pour de bon, à la lettre sur la
+    page « Ressources ». Les modèles « information des familles » et
+    « contrat de sous-traitance » restent dans l'« Aide ». Conséquence dite
+    au porteur : plus de texte modifiable, ni d'accords séparés pour une
+    école qui accepte l'impression et refuse la bibliothèque, sinon en
+    rayant. Les passages de F15 qui décrivent le modèle datent d'avant.
+    La lettre a un second tirage, le coupon seul, trois par feuille A4 à
+    découper (bouton « Coupon seul » sous la lettre), vers lequel mènent les
+    liens de l'outil : un enseignant arrivé à « Imprimer et partager » sans
+    avoir distribué la lettre n'a pas à donner une lettre de début de
+    projet (décidé le même jour).
+  - *Le déroulé sans étiquette* (décidé le même jour) : ses signes disent
+    déjà ce qui relève de l'outil, et c'est le premier document que lit un
+    collègue venu d'un moteur ; l'étiquette « Avec Il était une classe »
+    reste aux documents qui ne servent qu'avec l'outil (aujourd'hui « J'écris
+    sur le site »).
+  - *Titre et niveaux* (décidé le même jour) : la page nomme les cycles et
+    les niveaux de l'école française, l'âge à côté à la première occurrence,
+    comme le guide (exception du 30 octobre 2026), son mot-clé étant fait de
+    niveaux. Titre d'onglet « Production d'écrit et projet d'écriture : le
+    livre-jeu en classe » ; grand titre « Un projet d'écriture en classe : le
+    livre dont vous êtes le héros » ; description « Leçons, fiches de
+    recherche, affiches et lettre aux familles à imprimer pour mener un
+    projet d'écriture de livre-jeu, du CE1 au CM2 (7 à 11 ans), avec les
+    liens aux programmes. Gratuit. » Le CP reste à la feuille des
+    programmes. Le reste du texte se rédige à la construction.
+  - *Précisions prises sans lui être soumises* : une date de mise à jour de
+    la page, sans date par document ; l'adresse canonique, l'image de
+    partage et les données de la page (titre, description, date) comme le
+    guide ; les vignettes en JPEG, sans passer par l'optimisation d'images
+    de Vercel ; un PDF se télécharge sous son nom de dossier
+    (`lecon-1-livre-jeu-a-completer.pdf`) ; page conçue avec impeccable,
+    critiquée en deux lectures avant de lui être montrée.
 - **« Écrit avec Il était une classe ».** Dans le lecteur en ligne, une
   mention discrète au pied de la page de titre et après la fin du livre, qui
   mène à la page d'accueil ; jamais pendant la lecture, sans réglage. Elle ne
@@ -13120,8 +13235,10 @@ découvre l'outil, et le porteur, administrateur.
   à `iletaituneclasse.fr` ou `onceuponaclassroom.com`, il arrive sur la même
   page.
 - **F14-AC33 — Modèles à télécharger :** étant donné la page « Aide » ou
-  l'étape « Imprimer et partager », alors l'adulte télécharge le modèle
-  d'autorisation de diffusion et le modèle d'information des familles.
+  l'étape « Imprimer et partager », alors l'adulte télécharge la lettre aux
+  familles et son coupon d'autorisation, et le modèle d'information des
+  familles. *(Révisé le 19 novembre 2026 : le modèle d'autorisation de
+  diffusion est retiré, [plus haut](#f14-autorisation-unique).)*
 - **F14-AC34 — Écrit avec Il était une classe :** étant donné un livre lu
   par un lien de lecture, alors la mention paraît au pied de la page de titre
   et après la fin, et mène à la page d'accueil ; elle ne paraît ni pendant la
@@ -13262,7 +13379,8 @@ découvre l'outil, et le porteur, administrateur.
   dépassé ; le texte est celui du
   [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md)
   (`npm run guide:texte`), cinq encarts de l'outil au plus, et il ne renvoie à
-  aucune page qui n'existe pas encore (« Ressources »).
+  aucune page qui n'existe pas encore. *(Révisé le 19 novembre 2026 : il
+  renvoie à la page « Ressources », F14-AC59.)*
 - **F14-AC53 — Le guide se trouve :** étant donné le plan du site,
   `robots.txt` et `llms.txt`, alors le guide y est, ses images ouvertes aux
   robots des IA ; le pied de chaque page publique y mène ; il porte son titre
@@ -13280,6 +13398,51 @@ projets d'un enseignant, idée du porteur du 23 octobre 2026, à trancher sur
 les premières ventes (l'administration dira si des enseignants achètent
 plusieurs passes) : recommandé, s'il se fait, à l'année scolaire plutôt qu'à
 vie, et sans étoiles sans fin, qui paient l'IA au coût réel.
+
+*La page « Ressources » (entretien du 19 novembre 2026,
+[règles plus haut](#f14-ressources))*
+
+- **F14-AC55 — La page se lit :** étant donné un visiteur sans compte qui
+  ouvre `/ressources`, alors il lit le grand titre, le chapeau, la ligne
+  d'usage et sa licence Creative Commons BY-NC 4.0 liée, un sommaire, le bloc
+  « Pour mener le projet », puis les quatre temps du déroulé, chacun avec sa
+  phrase ; chaque document a son titre, à quoi il sert et quand, son format,
+  la vignette de sa première page et un bouton par version ; en 390 px, rien
+  ne déborde de côté et les vignettes ne se chargent qu'en approchant.
+- **F14-AC56 — Les PDF se téléchargent :** étant donné M. Bernard qui
+  clique « Version à compléter » sous la leçon 1, alors le PDF s'ouvre depuis
+  `/ressources/lecon-1-livre-jeu-a-completer.pdf`, sans connexion ; un clic
+  sur la vignette ouvre la version complète ; un test vérifie que chaque
+  PDF et chaque vignette annoncés par la liste des documents existent.
+- **F14-AC57 — Les ressources propres à l'outil se distinguent :** étant
+  donné la page, alors « J'écris sur le site » porte l'étiquette « Avec Il
+  était une classe » et le petit dragon, à sa place dans le temps 3 ; aucun
+  autre document ne la porte, déroulé compris.
+- **F14-AC58 — Les programmes en texte :** étant donné l'encart « Les
+  programmes », alors il dit en quelques phrases ce que le projet travaille
+  en français aux cycles 2 et 3, cite les deux arrêtés et leurs Bulletins
+  officiels avec leurs dates, et mène au PDF « Le livre-jeu et les
+  programmes », sans en recopier les citations.
+- **F14-AC59 — La page se trouve :** étant donné un grand écran, alors
+  « Ressources » est dans l'en-tête entre « Guide » et « Aide » ; sur
+  téléphone, au pied ; le pied de chaque page publique y mène ; le guide y
+  renvoie dans son chapeau et dans quatre questions au plus ; la question
+  « De quel matériel ai-je besoin ? » de l'« Aide » et l'accueil, à côté du
+  guide, y mènent ; le plan du site et `robots.txt` l'ouvrent, et `llms.txt`
+  la cite avec chaque PDF et sa phrase ; elle porte son titre d'onglet, sa
+  description, son adresse canonique, son image de partage et sa date de
+  mise à jour.
+- **F14-AC60 — Le déroulé relié :** étant donné le PDF du déroulé, ouvert
+  hors du site, alors chaque document qu'il cite comme à imprimer est un
+  lien qui mène à son PDF sur `iletaituneclasse.com/ressources/`.
+- **F14-AC61 — Une seule autorisation :** étant donné un ancien lien vers
+  `/modeles/autorisation-de-diffusion` (ou son fichier), alors il renvoie,
+  pour de bon, à la lettre aux familles sur la page « Ressources » ; dans
+  l'« Aide », l'étape « Imprimer et partager » (au partage et à la
+  proposition à la bibliothèque), le guide et `llms.txt`, le lien de
+  l'autorisation mène au coupon seul, trois par feuille, la page
+  « Ressources » donnant aussi la lettre entière ; le modèle d'information des
+  familles et le contrat de sous-traitance restent dans l'« Aide ».
 
 **Hors de cette livraison :** abonnement ; paiement sur bon de commande ou
 par mandat administratif ; version anglaise, dont seule l'adresse est
@@ -13340,7 +13503,11 @@ des cœurs aux histoires qu'ils préfèrent.
   « Proposer à la bibliothèque », le geste de l'enseignant ; « livre
   publié », ce qui y est. La bibliothèque d'images de F10.1 garde toujours
   son nom entier.
-- **Autorisation des familles.** Le modèle d'autorisation de diffusion
+- **Autorisation des familles.** *(Révisé le 19 novembre 2026 : le modèle
+  est retiré, le coupon de la lettre aux familles le remplace, un seul
+  accord qui couvre le lien pour les familles et la bibliothèque, F14,
+  [« Une seule autorisation »](#f14-autorisation-unique). Ce qui suit dit
+  l'ancien modèle.)* Le modèle d'autorisation de diffusion
   porte la ligne « dans la bibliothèque du site », sans plus de précision,
   décision du porteur, qui juge la formulation détaillée inutile ; la ligne
   « par un lien de lecture », d'abord décidée à côté, tombe avec le lien

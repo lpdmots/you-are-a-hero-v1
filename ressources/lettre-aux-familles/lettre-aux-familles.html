@@ -5,6 +5,9 @@
 <title>Lettre aux familles</title>
 <link rel="stylesheet" href="../commun/feuille.css">
 <link rel="stylesheet" href="lettre-aux-familles.css">
+<!-- Le coupon seul, trois par feuille (décidé par le porteur le 19 novembre 2026, F14) : pour l'enseignant arrivé au
+     partage du livre sans avoir distribué la lettre ; l'outil y mène depuis « Imprimer et partager ». -->
+<meta name="tirage" content="coupon" data-adresse="coupon">
 </head>
 <body>
 
@@ -124,6 +127,18 @@
   // Le second bon de la feuille, recopié du premier
   const bon = document.querySelector(".paysage .demi");
   bon.after(bon.cloneNode(true));
+
+  // Le coupon seul : la feuille ne garde que trois autorisations, l'une sous l'autre, et le pied
+  if (new URLSearchParams(location.search).has("coupon")) {
+    const coupon = document.querySelector(".coupon.autorisation");
+    const pied = document.querySelector(".lettre .pied");
+    const feuille = document.createElement("section");
+    feuille.className = "page lettre coupons";
+    for (let i = 0; i < 3; i++) feuille.append(coupon.cloneNode(true));
+    feuille.append(pied.cloneNode(true));
+    for (const p of document.querySelectorAll(".page")) p.remove();
+    document.body.prepend(feuille);
+  }
 </script>
 </body>
 </html>

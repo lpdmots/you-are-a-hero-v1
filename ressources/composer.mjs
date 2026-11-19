@@ -1,6 +1,7 @@
 // Compose le PDF d'un document à imprimer, avec le Chromium de Playwright (celui de l'application).
 //   node ressources/composer.mjs <nom> [dossier des images de contrôle]
-// Écrit ressources/<nom>/<nom>.pdf ; si la page a des réponses à cacher (commun/a-completer.js), aussi
+// Écrit app/public/ressources/<nom>.pdf, que le site sert tel quel (page « Ressources », F14), et <nom>.jpg, la
+// vignette de la première feuille ; si la page a des réponses à cacher (commun/a-completer.js), aussi
 // <nom>-a-completer.pdf ; pour chaque <meta name="tirage" content="x" data-adresse="…"> de la page, aussi
 // <nom>-x.pdf, tiré de la même source ouverte avec ces paramètres. Avec un second argument, une image par page et par version, en couleur et en
 // gris (ce que donnera la photocopie), pour relire la mise en page.
@@ -18,6 +19,9 @@ if (!nom) {
   process.exit(1);
 }
 const source = pathToFileURL(path.join(ici, nom, `${nom}.html`)).href;
+// Une seule copie des PDF dans Git : celle que le site sert
+const sortie = path.join(ici, "../app/public/ressources");
+fs.mkdirSync(sortie, { recursive: true });
 
 const navigateur = await chromium.launch();
 const page = await navigateur.newPage({ viewport: { width: 794, height: 1123 }, deviceScaleFactor: 2 });
@@ -42,12 +46,23 @@ for (const { suffixe, adresse } of versions) {
   // Toujours la feuille de style d'impression : en mode écran, chaque feuille garde ses marges grises
   // d'aperçu et déborde sur une seconde page
   await page.emulateMedia({ media: "print" });
-  const pdf = path.join(ici, nom, `${nom}${suffixe}.pdf`);
+  const pdf = path.join(sortie, `${nom}${suffixe}.pdf`);
   await page.pdf({ path: pdf, format: "A4", printBackground: true, preferCSSPageSize: true });
   const attendues = await page.locator(".page").count();
   const pages = (fs.readFileSync(pdf, "latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
   console.log(`PDF : ${pdf} (${pages} pages)`);
   if (pages !== attendues) console.warn(`  ${pages} pages au lieu de ${attendues} : une feuille déborde`);
+  // La vignette de la page « Ressources » : la première feuille de la version complète, assez fine pour une carte
+  // de 260 points en double densité, en JPEG (le site la sert sans l'optimisation d'images de Vercel)
+  if (suffixe === "") {
+    const petite = await navigateur.newPage({ viewport: { width: 794, height: 1123 }, deviceScaleFactor: 0.7 });
+    await petite.goto(adresse);
+    await petite.evaluate(() => document.fonts.ready);
+    await petite.waitForFunction(() => !document.querySelector('script[src$="a-completer.js"]') || document.documentElement.dataset.pret === "1");
+    await petite.emulateMedia({ media: "print" });
+    await petite.locator(".page").first().screenshot({ path: path.join(sortie, `${nom}.jpg`), type: "jpeg", quality: 80 });
+    await petite.close();
+  }
   if (!controle) continue;
   fs.mkdirSync(controle, { recursive: true });
   await page.emulateMedia({ media: "print" });
