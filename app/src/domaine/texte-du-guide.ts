@@ -6,7 +6,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "titre": "Comment écrire un livre dont vous êtes le héros en classe",
   "definition": "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en scènes numérotées où le lecteur choisit la suite : à la fin d’une scène, il se rend au numéro de son choix. On parle aussi d’histoire interactive ou, au Québec, de fiction interactive. L’écrire avec sa classe, c’est inventer l’aventure ensemble, puis se partager l’écriture des scènes, que l’enseignant relie en un seul livre.",
   "auteur": "Par Nicolas Coussot, professeur des écoles, six ans de livres-jeux avec sa classe.",
-  "avantDeCommencer": "Ce guide rassemble ce que j’ai appris en six ans de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont pas des règles : chaque classe est différente, et vous trouverez sûrement d’autres façons de faire. Prenez ce qui vous sert.",
+  "avantDeCommencer": "Ce guide rassemble ce que j’ai appris en six ans de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont pas des règles : chaque classe est différente, et vous trouverez sûrement d’autres façons de faire. Prenez ce qui vous sert. Les leçons, les fiches et les affiches à imprimer sont sur la page [Ressources](/ressources).",
   "enBref": [
     {
       "chiffre": "1 à 3 mois",
@@ -45,6 +45,10 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
     "texte": "Feuilletez d’abord les livres d’autres classes : c’est souvent ce qui décide une classe à écrire le sien."
   },
   "plusLoin": [
+    {
+      "libelle": "Les documents à imprimer",
+      "adresse": "/ressources"
+    },
     {
       "libelle": "La bibliothèque",
       "adresse": "/bibliotheque"
@@ -145,7 +149,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Puis démontez le mécanisme.",
-          "texte": "Dans une séance à part, reprenez un livre simple : où les chemins se séparent et se rejoignent, comment marchent les objets, où mènent les choix. Comparez les sortes de choix rencontrées. Demandez à la classe ce qu’elle a aimé et ce qu’elle ne veut pas dans son livre : cette liste lui servira à fixer ses règles."
+          "texte": "Dans une séance à part, reprenez un livre simple : où les chemins se séparent et se rejoignent, comment marchent les objets, où mènent les choix. Comparez les sortes de choix rencontrées. Demandez à la classe ce qu’elle a aimé et ce qu’elle ne veut pas dans son livre : cette liste lui servira à fixer ses règles. Des [feuilles de recherche et deux leçons](/ressources#decouvrir-le-genre) accompagnent cette séance."
         },
         {
           "sorte": "paragraphe",
@@ -225,7 +229,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Une consigne et une liste de vérification par scène.",
-          "texte": "La consigne résume ce qui doit se passer ; la liste aide l’élève à vérifier les éléments d’écriture attendus."
+          "texte": "La consigne résume ce qui doit se passer ; la liste aide l’élève à vérifier les éléments d’écriture attendus. La leçon [*Écrire une scène*](/ressources#lecon-3-scene) lui montre comment la construire."
         },
         {
           "sorte": "exemple",
@@ -348,7 +352,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Cinq pistes pour imaginer des choix.",
-          "texte": "Face à un obstacle, les élèves peuvent s’appuyer sur quelques questions pour trouver des idées :"
+          "texte": "Face à un obstacle, les élèves peuvent s’appuyer sur quelques questions pour trouver des idées (la leçon [*Les choix*](/ressources#lecon-2-choix) et la fiche [*Mon chapitre*](/ressources#mon-chapitre) les reprennent) :"
         },
         {
           "sorte": "liste",
@@ -670,11 +674,11 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "paragraphe",
           "tete": "Les autorisations.",
-          "texte": "Les textes et les dessins des élèves sont protégés par le droit d’auteur. Avant d’imprimer ou de diffuser le livre, recueillez les autorisations écrites nécessaires auprès des élèves et de leurs familles, en précisant les usages prévus : impression, partage privé ou publication en ligne. Un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."
+          "texte": "Les textes et les dessins des élèves sont protégés par le droit d’auteur. Avant d’imprimer ou de diffuser le livre, recueillez les autorisations écrites nécessaires auprès des élèves et de leurs familles, en précisant les usages prévus : impression, partage privé ou publication en ligne. La [lettre aux familles](/ressources#lettre-aux-familles) porte un coupon d’autorisation : faites-le signer dès la rentrée, rien ne manquera le jour où le livre sera prêt."
         },
         {
           "sorte": "encart",
-          "texte": "Dans Il était une classe, le livre se compose seul en un PDF prêt pour l’imprimeur. Il se partage aussi en privé, avec les comptes des élèves, ou dans la bibliothèque publique du site."
+          "texte": "Dans Il était une classe, le livre se compose seul en un PDF prêt pour l’imprimeur. Il se partage aussi en privé, avec les comptes des élèves ou un lien pour les familles, ou dans la bibliothèque publique du site, où d’autres classes le liront."
         }
       ]
     },

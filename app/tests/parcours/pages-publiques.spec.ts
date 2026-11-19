@@ -69,23 +69,22 @@ test("F14-AC21, AC54 — le prix du pass, changé dans les réglages, se lit sur
   }
 });
 
-test("F14-AC33 — depuis l'aide, les deux modèles pour les familles se lisent et se téléchargent ; le contrat type aussi", async ({ page, request }) => {
+test("F14-AC33, AC61 — depuis l'aide, la lettre aux familles et son autorisation, le modèle d'information et le contrat type ; l'ancien modèle mène à la lettre", async ({ page, request }) => {
   await aller(page, "/aide");
-  for (const nom of ["Autorisation de diffusion", "Information des familles", "Contrat de sous-traitance type"]) {
+  for (const nom of ["Lettre aux familles et autorisation", "Information des familles", "Contrat de sous-traitance type"]) {
     await expect(page.getByRole("link", { name: nom })).toBeVisible();
   }
-  await page.getByRole("link", { name: "Autorisation de diffusion" }).click();
-  await expect(page.getByRole("heading", { level: 1, name: "Autorisation de diffusion des textes et dessins d’un élève" })).toBeVisible();
-  const telechargement = page.waitForEvent("download");
-  await page.getByRole("link", { name: "Télécharger le modèle" }).first().click();
-  expect((await telechargement).suggestedFilename()).toBe("autorisation-de-diffusion.rtf");
+  await expect(page.getByRole("link", { name: "Lettre aux familles et autorisation" })).toHaveAttribute("href", "/ressources#lettre-aux-familles");
+  const ancien = await request.get("/modeles/autorisation-de-diffusion/fichier", { maxRedirects: 0 });
+  expect(ancien.status()).toBe(308);
+  expect(ancien.headers().location).toContain("/ressources#lettre-aux-familles");
   const fichier = await request.get("/modeles/information-des-familles/fichier");
   expect(fichier.headers()["content-type"]).toContain("application/rtf");
   expect(await fichier.text()).toMatch(/^\{\\rtf1/);
   expect((await request.get("/modeles/inconnu/fichier")).status()).toBe(404);
 });
 
-test("F14-AC33 — dans « Imprimer et partager », un projet de classe propose les deux modèles pour les familles", async ({ page }) => {
+test("F14-AC33, AC61 — dans « Imprimer et partager », un projet de classe propose le coupon d'autorisation et le modèle d'information", async ({ page }) => {
   const { compte, base } = await adultePret(page);
   const projet = await semerProjet(base, compte, "classe", "choix", "Le marais", null);
   await sql(
@@ -94,7 +93,7 @@ test("F14-AC33 — dans « Imprimer et partager », un projet de classe propose 
   );
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
   const familles = page.getByRole("region", { name: "Pour les familles" });
-  await expect(familles.getByRole("link", { name: "Autorisation de diffusion" })).toHaveAttribute("href", "/modeles/autorisation-de-diffusion/fichier");
+  await expect(familles.getByRole("link", { name: "Autorisation (coupon)" })).toHaveAttribute("href", "/ressources/lettre-aux-familles-coupon.pdf");
   await expect(familles.getByRole("link", { name: "Information des familles" })).toHaveAttribute("href", "/modeles/information-des-familles/fichier");
 });
 

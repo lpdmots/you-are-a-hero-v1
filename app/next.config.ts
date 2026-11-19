@@ -37,9 +37,12 @@ const nextConfig: NextConfig = {
   async redirects() {
     // La copie de l'accueil gardée en cache ne s'ouvre qu'à l'adresse de l'accueil (F14-AC47)
     const vitrine = { source: "/vitrine", destination: "/", permanent: true };
+    // Le modèle d'autorisation retiré le 19 novembre 2026 : son adresse et son fichier mènent à la lettre aux
+    // familles, dont le coupon le remplace (F14-AC61)
+    const autorisation = { source: "/modeles/autorisation-de-diffusion/:fichier(fichier)?", destination: "/ressources#lettre-aux-familles", permanent: true };
     const site = process.env.ADRESSE_SITE?.replace(/\/$/, "");
-    if (process.env.VERCEL_ENV !== "production" || !site) return [vitrine];
-    return [vitrine, ...ANCIENNES_ADRESSES.flatMap((hote) => [
+    if (process.env.VERCEL_ENV !== "production" || !site) return [vitrine, autorisation];
+    return [vitrine, autorisation, ...ANCIENNES_ADRESSES.flatMap((hote) => [
       { source: "/", has: [{ type: "host" as const, value: hote }], destination: `${site}/`, permanent: true },
       {
         source: "/:chemin((?!taches(?:/|$)).+)",

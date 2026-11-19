@@ -12890,7 +12890,7 @@ les révisions qui suivent :
   livres, et les livres d'exemple du site le disent dans leur tiroir.
 - <a id="f14-ressources"></a>**Page « Ressources »** (entretien du
   19 novembre 2026, validé dans son ensemble par le porteur le même jour,
-  « je valide » ; documents dans
+  « je valide », construit en local le même jour en trois lots ; documents dans
   [`ressources/`](../ressources/), état dans [le plan](plan.md),
   « Matériel pédagogique »). La page présente les documents à imprimer et y
   donne accès ; les documents font foi, la page ne les recopie pas.
@@ -13387,18 +13387,6 @@ découvre l'outil, et le porteur, administrateur.
   d'onglet sans le nom du site, son adresse canonique, son image de partage et
   ses données d'article (auteur, date, questions).
 
-**Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
-facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en
-parle pas ; il a allumé « Paiement ouvert » en ligne le même jour sans lui, contre la
-recommandation d'attendre, la loi (code de la consommation, L612-1) l'exigeant de tout
-professionnel qui vend à des particuliers ; la relecture juridique des
-textes ; le paiement des mairies sur bon de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
-et l'adresse sont retenus ; le dépôt de la marque ; un pass pour tous les
-projets d'un enseignant, idée du porteur du 23 octobre 2026, à trancher sur
-les premières ventes (l'administration dira si des enseignants achètent
-plusieurs passes) : recommandé, s'il se fait, à l'année scolaire plutôt qu'à
-vie, et sans étoiles sans fin, qui paient l'IA au coût réel.
-
 *La page « Ressources » (entretien du 19 novembre 2026,
 [règles plus haut](#f14-ressources))*
 
@@ -13443,6 +13431,18 @@ vie, et sans étoiles sans fin, qui paient l'IA au coût réel.
   l'autorisation mène au coupon seul, trois par feuille, la page
   « Ressources » donnant aussi la lettre entière ; le modèle d'information des
   familles et le contrat de sous-traitance restent dans l'« Aide ».
+
+**Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
+facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en
+parle pas ; il a allumé « Paiement ouvert » en ligne le même jour sans lui, contre la
+recommandation d'attendre, la loi (code de la consommation, L612-1) l'exigeant de tout
+professionnel qui vend à des particuliers ; la relecture juridique des
+textes ; le paiement des mairies sur bon de commande ; la version anglaise, dont le nom, « Once Upon a Classroom »,
+et l'adresse sont retenus ; le dépôt de la marque ; un pass pour tous les
+projets d'un enseignant, idée du porteur du 23 octobre 2026, à trancher sur
+les premières ventes (l'administration dira si des enseignants achètent
+plusieurs passes) : recommandé, s'il se fait, à l'année scolaire plutôt qu'à
+vie, et sans étoiles sans fin, qui paient l'IA au coût réel.
 
 **Hors de cette livraison :** abonnement ; paiement sur bon de commande ou
 par mandat administratif ; version anglaise, dont seule l'adresse est

@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/composants/Logo";
 import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
+import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { adresseDuSite } from "@/serveur/env";
 import { LienDeNav } from "./LienDeNav";
@@ -33,6 +34,10 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
           {/* Le guide (F14-AC53), page de contenu principale : dans la barre sur grand écran, au pied sur téléphone */}
           <LienDeNav href={ADRESSE_DU_GUIDE} className={styles.navAide}>
             Guide
+          </LienDeNav>
+          {/* Les documents à imprimer (F14-AC59) : comme le guide, dans la barre sur grand écran, au pied sur téléphone */}
+          <LienDeNav href={ADRESSE_DES_RESSOURCES} className={styles.navAide}>
+            Ressources
           </LienDeNav>
           <LienDeNav href="/aide" className={styles.navAide}>
             Aide
@@ -94,6 +99,10 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
                 <li>
                   {/* Le guide (F14-AC53) : lié depuis chaque page publique */}
                   <Link href={ADRESSE_DU_GUIDE}>Écrire un livre dont vous êtes le héros</Link>
+                </li>
+                <li>
+                  {/* La page « Ressources » (F14-AC59), à côté du guide */}
+                  <Link href={ADRESSE_DES_RESSOURCES}>Leçons et fiches à imprimer</Link>
                 </li>
                 <li>
                   <a href={`mailto:${EDITEUR.contact}`} title={EDITEUR.contact}>

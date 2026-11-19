@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { adresseDepuisTitre, adresseLibre, etatDeLaPublication, passagesChanges, peutProposer, presentationPropre, PRESENTATION_MAX, reperesDuLivre, type LignePublication } from "@/domaine/bibliotheque";
 import type { PassagePartage, VersionPartagee } from "@/domaine/partage";
@@ -44,12 +46,15 @@ describe("Proposer (F15)", () => {
 });
 
 describe("Les textes (F15, « Autorisation des familles », « Conditions d'utilisation »)", () => {
-  it("le modèle d'autorisation a la ligne de l'impression et celle de la bibliothèque, rien de coché d'avance, et ne parle plus de lien", () => {
-    const modele = MODELES.find((m) => m.cle === "autorisation-de-diffusion")!;
-    const texte = JSON.stringify(modele);
-    expect(texte).toContain("☐ autorise ☐ n’autorise pas l’impression des textes et des dessins de mon enfant, avec son prénom, dans le livre de la classe");
-    expect(texte).toContain("☐ autorise ☐ n’autorise pas la diffusion des textes et des dessins de mon enfant, avec son prénom, dans la bibliothèque du site.");
-    expect(texte).not.toMatch(/lien de lecture|n’est publié nulle part|☑|☒/);
+  it("F14-AC61 — le coupon de la lettre aux familles couvre le livre imprimé, le lien pour les familles et la bibliothèque, rien de coché d'avance ; le modèle d'autorisation est retiré", () => {
+    const lettre = readFileSync(path.join(process.cwd(), "../ressources/lettre-aux-familles/lettre-aux-familles.html"), "utf8");
+    const coupon = lettre.slice(lettre.indexOf('<div class="coupon autorisation">'), lettre.indexOf("</div>", lettre.indexOf('<div class="coupon autorisation">')));
+    expect(coupon).toContain("en livre imprimé et en ligne");
+    expect(coupon).toContain("avec un lien réservé aux familles");
+    expect(coupon).toContain("dans la bibliothèque publique du site Il était une classe");
+    expect(coupon).toMatch(/<span class="case"><\/span><strong>J’accepte<\/strong>/);
+    expect(coupon).not.toMatch(/☑|☒|checked/);
+    expect(MODELES.map((m) => m.cle)).not.toContain("autorisation-de-diffusion");
   });
 
   it("les conditions disent la clause de la bibliothèque", () => {

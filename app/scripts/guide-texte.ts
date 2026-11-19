@@ -6,22 +6,13 @@
  *   npm run guide:texte
  *
  * La typographie française se pose ici (apostrophe courbe, espaces insécables comme ailleurs sur le site) ; le texte ne change
- * pas, sauf les renvois à la page « Ressources », tant qu'elle n'existe pas (voir SANS_RESSOURCES).
+ * pas.
  */
 import fs from "node:fs";
 import path from "node:path";
 
 const source = path.resolve(import.meta.dirname, "../../docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md");
 const cible = path.resolve(import.meta.dirname, "../src/domaine/texte-du-guide.ts");
-
-/**
- * Tant que la page « Ressources » n'existe pas (plan, « Suite recommandée », point 5), le guide n'y
- * renvoie pas : une phrase retirée, un renvoi mené au modèle d'autorisation qui existe déjà. À retirer
- * d'ici le jour où la page est en ligne.
- */
-const SANS_RESSOURCES: [string, string][] = [
-  ["Un modèle d’autorisation est sur la page « Ressources ».", "Un [modèle d’autorisation](/modeles/autorisation-de-diffusion) est prêt à télécharger."],
-];
 
 const typo = (l: string) =>
   l
@@ -56,8 +47,6 @@ const morceaux = (bloc: string[]) => {
   return out;
 };
 
-const sansRessources = (t: string) => SANS_RESSOURCES.reduce((s, [de, vers]) => s.replace(typo(de), vers), t);
-
 type Bloc =
   | { sorte: "paragraphe"; tete: string | null; texte: string }
   | { sorte: "intertitre"; texte: string }
@@ -79,7 +68,7 @@ function rattacher(blocs: Bloc[]): Bloc[] {
 }
 
 function classer(m: string[]): Bloc {
-  const t = sansRessources(m.join(" "));
+  const t = m.join(" ");
   // Une liste à puces (« - ») ou numérotée (« 1. »), ses lignes suivantes en retrait
   const puce = /^(- |\d+\. )/;
   if (puce.test(m[0])) {
@@ -88,7 +77,7 @@ function classer(m: string[]): Bloc {
       if (puce.test(l)) elements.push(l.replace(puce, ""));
       else elements[elements.length - 1] += " " + l.trim();
     }
-    return { sorte: "liste", elements: elements.map(sansRessources), ...(/^\d/.test(m[0]) ? { ordonnee: true } : {}) };
+    return { sorte: "liste", elements, ...(/^\d/.test(m[0]) ? { ordonnee: true } : {}) };
   }
   if (m[0].startsWith("|")) {
     const rangs = m.filter((l) => !/^\|\s*-/.test(l)).map((l) => l.split("|").slice(1, -1).map((c) => c.trim()));
@@ -131,12 +120,11 @@ const texte = {
     if (!m) throw new Error(`Ligne de « En bref » sans chiffre en gras ni « (partie N) » : ${l}`);
     return { chiffre: m[1], texte: m[2], partie: Number(m[3]) };
   }),
-  // « Ressources » attend sa page ; « La bibliothèque » et « Essayer Il était une classe » restent
+  // « Ressources », « La bibliothèque » et « Essayer Il était une classe » (F14-AC59)
   lectures: (classer(haut[iLectures + 1]) as { elements: string[] }).elements,
   fin: { titre: fin[1], texte: fin[2] },
   plusLoin: plusLoin
     .split(" · ")
-    .filter((l) => !l.includes("Ressources"))
     .map((l) => {
       const [, libelle, adresse] = l.match(/^\[([^\]]+)\]\(([^)]+)\)$/)!;
       return { libelle, adresse: adresse === "…" ? "/bibliotheque" : adresse };

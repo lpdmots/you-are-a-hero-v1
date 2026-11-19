@@ -3219,6 +3219,23 @@ avant « En bref » sur téléphone, la liste des structures retirée, le bouton
 « Sommaire » masqué pendant le défilement. Une image remplacée change de
 nom : l'optimiseur d'images la garde en cache sous son adresse.
 
+### Page « Ressources » (19 novembre 2026)
+
+Sans maquette ; règles en [F14](specifications.md#f14-ressources), construction au
+[plan](plan.md#page--ressources--f14-19-novembre-2026). La sœur du guide : la table
+chaude, une page de titre sur le papier des feuillets, le grand titre en cursive et
+Bouquin qui déroule son chemin (le dessin d'en-tête du déroulé), le sommaire collant
+qui marque le temps qu'on lit. Chaque document est posé sur la table par la vignette
+de sa première feuille, un peu de travers, qui se redresse et se soulève au survol de
+ses liens : le seul mouvement de la page. À côté, sa fiche en Vollkorn (titre,
+phrase, format en voix de l'outil, boutons cernés, la feuille de l'élève d'abord) ;
+« Avec Il était une classe » en pastille canard pâle avec la marque du dragon-livre.
+« Les programmes » sur une fiche blanche à filet bristol, comme « En bref ». Une
+feuille de fin répond à la page de titre, le dragon endormi, le seul bouton plein.
+Sur téléphone, le sommaire en pastilles sous le titre, la vignette à gauche du titre
+et les boutons dessous, sur toute la largeur. Critiquée en deux lectures (28/40 et
+24/40) et corrigée, sans nouvelle mesure.
+
 ### Colonne de navigation de l'adulte (8 novembre 2026)
 
 Décidée par le porteur après un point sur la navigation une fois connecté ;

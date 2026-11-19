@@ -137,12 +137,12 @@ test("lot 7 : la corbeille, et supprimer son compte", async ({ page }) => {
 test("lot 9 : les pages publiques", async ({ page }) => {
   test.setTimeout(180_000);
   n = 940;
-  for (const [adresse, nom] of [["/", "accueil"], ["/aide", "aide"], ["/confidentialite", "confidentialite"], ["/conditions", "conditions"], ["/mentions-legales", "mentions-legales"], ["/modeles/autorisation-de-diffusion", "modele-autorisation"]] as const) {
+  for (const [adresse, nom] of [["/", "accueil"], ["/aide", "aide"], ["/confidentialite", "confidentialite"], ["/conditions", "conditions"], ["/mentions-legales", "mentions-legales"], ["/modeles/information-des-familles", "modele-information"]] as const) {
     await aller(page, adresse);
     await capturer(page, nom, true);
   }
   await page.setViewportSize({ width: 390, height: 844 });
-  for (const [adresse, nom] of [["/", "accueil-390"], ["/aide", "aide-390"], ["/modeles/autorisation-de-diffusion", "modele-390"]] as const) {
+  for (const [adresse, nom] of [["/", "accueil-390"], ["/aide", "aide-390"], ["/modeles/information-des-familles", "modele-390"]] as const) {
     await aller(page, adresse);
     await capturer(page, nom, true);
   }

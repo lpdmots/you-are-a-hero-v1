@@ -5813,11 +5813,6 @@ conversation, sans code de l'application), déploiement réussi chez Vercel, le
 site répond. Non vérifié en ligne : la fiche une fois connecté, que seul son
 compte ouvre.
 
-## Hors de la première livraison
-
-- **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un
-  projet ; changement de classe après des attributions.
-- **F01.1 :** espace partagé entre enseignants d'une école ; import avec
 ### Page « Ressources » (F14, 19 novembre 2026)
 
 Entretien du 19 novembre 2026, règles en F14,
@@ -5863,6 +5858,54 @@ et les liens du déroulé. Pris sans lui être soumis : les libellés des bouton
 rempli », « Feuille vierge », « Coupon seul ») ; tous les documents recomposés
 (environ 19 Mo de plus dans l'historique, une fois).
 
+**Lot 2 construit le 19 novembre 2026** (`5592571`, sans migration) : la page
+`(public)/ressources/`, sœur du guide (table chaude, page de titre sur papier où
+Bouquin déroule son chemin, titre en cursive, sommaire collant qui marque le temps
+qu'on lit) ; chaque document posé par la vignette de sa première feuille, un peu
+de travers, qui se redresse au survol ; l'encart « Les programmes » sur une fiche
+à filet bristol ; une feuille de fin, « Et pour écrire le livre ? », avec le seul
+bouton plein (« Créer un compte ») et le dragon endormi ; données de page
+(`CollectionPage`, un `LearningResource` par document). Le proxy ne passe plus par
+les fichiers de `/ressources/`. Conçue avec impeccable, critiquée en deux lectures
+sur 18 captures en 1440 et 390 points (28/40 informée, 24/40 indépendante) et
+corrigée aussitôt : le sommaire suit la lecture ; une seule règle pour l'ordre
+des boutons, la feuille de l'élève d'abord ; « Ouvrir le PDF » pour un document à
+une version ; la phrase du temps 1 nomme la lettre aux familles ; « Lire le livre
+en ligne » sous les deux recherches sur un livre d'exemple ; l'encart ne cite
+plus le CP ; le chapeau dit « aux classes qui n'utilisent pas Il était une
+classe » au lieu de « sans l'outil » ; sur téléphone, les boutons sous la
+vignette, sur toute la largeur ; de l'air sous la cursive de la fin. Écartés de
+la critique, contre ses décisions : une durée ou un nombre de séances par temps,
+la lettre rangée hors du temps 1, un « Tout télécharger » en archive. Captures :
+`npx playwright test --config playwright.local.config.ts ressources`.
+
+**Lot 3 construit le 19 novembre 2026** (sans migration) : « Ressources » dans
+l'en-tête entre « Guide » et « Aide » (grand écran), « Leçons et fiches à
+imprimer » au pied sous le guide, une ligne de choix sur l'accueil sous celle du
+guide ; dans l'« Aide », « Voir les documents à imprimer » sous la question du
+matériel, dont la réponse le dit en une phrase, et « Lettre aux familles et
+autorisation » en tête des modèles ; plan du site, `robots.txt` (`/ressources/`
+ouvert aux robots des IA) et `llms.txt` (la page, puis chaque PDF avec sa
+phrase). Le guide renvoie à la page dans « Avant de commencer », dans les parties
+3 (feuilles de recherche et deux leçons), 5 (leçon 3), 7 (leçon 2 et « Mon
+chapitre ») et 12 (la lettre et son coupon), et à sa fin (« Les documents à
+imprimer ») ; `SANS_RESSOURCES` est retiré de `scripts/guide-texte.ts`. Le modèle
+d'autorisation de diffusion est retiré de `MODELES` ; son adresse et son fichier
+renvoient (308) à `/ressources#lettre-aux-familles` ; « Imprimer et partager »
+mène au coupon seul (« Autorisation (coupon) », « Autorisation à faire
+signer »). Tests unitaires accordés (guide, redirections, coupon de la lettre) :
+508 passés ; `tsc` et le lint propres. Les parcours `pages-publiques.spec.ts` et
+la capture `etape9.spec.ts` sont accordés au retrait du modèle, sans avoir été
+lancés. Précisions à lui faire confirmer : les phrases ajoutées à son guide
+(cinq renvois) ; les libellés du pied (« Leçons et fiches à imprimer ») et de
+l'accueil (« Si vous cherchez des leçons et des fiches à imprimer, ouvrez les
+ressources ») ; la feuille de fin de la page et son bouton « Créer un compte ».
+
+## Hors de la première livraison
+
+- **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un
+  projet ; changement de classe après des attributions.
+- **F01.1 :** espace partagé entre enseignants d'une école ; import avec
   correspondance de colonnes et synchronisation avec un annuaire.
 - **F02 :** outil de collecte d'idées ou de vote.
 - **F03.1 :** déplacement d'une scène vers un autre chapitre ; ajout de

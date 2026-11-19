@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
+import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { donneesDeLAide, enJsonLd } from "@/domaine/presentation";
 import { EDITEUR, MODELES, PHRASE_DU_SUPPORT, QUESTIONS } from "@/domaine/textes-publics";
 import { offreActuelle } from "@/serveur/offre";
@@ -29,12 +30,24 @@ export default async function Aide() {
                   <Link href={q.guide ? `${ADRESSE_DU_GUIDE}#${q.guide}` : ADRESSE_DU_GUIDE}>Lire le guide</Link>
                 </p>
               ) : null}
+              {q.ressources ? (
+                <p>
+                  <Link href={ADRESSE_DES_RESSOURCES}>Voir les documents à imprimer</Link>
+                </p>
+              ) : null}
             </details>
           ))}
         </div>
         <section>
           <h2>Modèles à télécharger</h2>
           <ul className={styles.modeles}>
+            {/* L'autorisation des familles : le coupon de la lettre, sur la page « Ressources » (F14-AC33, AC61) */}
+            <li>
+              <Link href={`${ADRESSE_DES_RESSOURCES}#lettre-aux-familles`} className={styles.modeleNom}>
+                Lettre aux familles et autorisation
+              </Link>
+              <span>Au début du projet, la lettre et son coupon d’autorisation, à faire signer avant d’imprimer le livre ou de le proposer à la bibliothèque du site.</span>
+            </li>
             {MODELES.map((m) => (
               <li key={m.cle}>
                 <Link href={`/modeles/${m.cle}`} className={styles.modeleNom}>

@@ -243,7 +243,7 @@ export const MENTIONS_LEGALES: Document = {
 /** La foire aux questions de la page « Aide » (F14, « Support »). */
 /** `pass` : la question n'a de sens que « Livre payant » allumé ; `gratuit`, que le livre gratuit. `guide` : la réponse mène au guide, à
  * cette question (son ancre, ou "" pour son début), qui la développe (audit du 7 novembre 2026). */
-export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string }[] = [
+export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string; ressources?: boolean }[] = [
   {
     question: "Comment commencer ?",
     reponse: "Créez un compte, puis votre premier projet : il s’ouvre sur sa préparation. La classe se crée quand les élèves commencent à écrire.",
@@ -266,7 +266,8 @@ export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gra
   },
   {
     question: "De quel matériel ai-je besoin ?",
-    reponse: "D’un navigateur, sur les ordinateurs ou les tablettes de la classe : plusieurs élèves écrivent en même temps, chacun sur son poste, ou à tour de rôle sur un seul.",
+    reponse: "D’un navigateur, sur les ordinateurs ou les tablettes de la classe : plusieurs élèves écrivent en même temps, chacun sur son poste, ou à tour de rôle sur un seul. Les leçons, les fiches et les affiches à imprimer sont sur la page Ressources.",
+    ressources: true,
   },
   {
     question: "Où retrouver les codes des élèves ?",
@@ -305,43 +306,13 @@ export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gra
   },
 ];
 
-/** Les modèles à télécharger (F14-AC33, et le contrat type pour l'école qui le demande). */
-export type Modele = { cle: "autorisation-de-diffusion" | "information-des-familles" | "contrat-de-sous-traitance"; nom: string; pour: string; document: Document };
+/**
+ * Les modèles à télécharger (F14-AC33, et le contrat type pour l'école qui le demande). Le modèle d'autorisation de diffusion
+ * est retiré le 19 novembre 2026 : le coupon de la lettre aux familles le remplace (F14, « Une seule autorisation »).
+ */
+export type Modele = { cle: "information-des-familles" | "contrat-de-sous-traitance"; nom: string; pour: string; document: Document };
 
 export const MODELES: Modele[] = [
-  {
-    cle: "autorisation-de-diffusion",
-    nom: "Autorisation de diffusion",
-    pour: "À faire signer par les représentants légaux de chaque élève, avant d’imprimer le livre ou de le proposer à la bibliothèque du site.",
-    document: {
-      titre: "Autorisation de diffusion des textes et dessins d’un élève",
-      chapeau: "Livre écrit par la classe avec l’outil Il était une classe",
-      misAJour: "17 novembre 2026",
-      sections: [
-        {
-          titre: "La classe",
-          paragraphes: ["École : ……………………………………………", "Classe : ……………………………… Année scolaire : ………………", "Enseignant(e) : ……………………………………………"],
-        },
-        {
-          titre: "Ce qui est demandé",
-          paragraphes: [
-            "Cette année, la classe écrit un livre. Votre enfant y écrit des textes et peut y faire des dessins. Si vous l’acceptez, le livre sera imprimé pour la classe et les familles qui le souhaitent, et il pourra se lire en ligne, par les élèves avec leur code de classe et par les familles avec un lien que l’enseignant leur donne. Si vous l’acceptez aussi, il sera publié dans la bibliothèque du site Il était une classe : tout le monde pourra le lire sur un écran, sans compte, et les moteurs de recherche pourront trouver la bibliothèque.",
-            "Dans le livre, votre enfant est désigné par son prénom seulement.",
-          ],
-        },
-        {
-          titre: "Votre réponse",
-          paragraphes: [
-            "Je soussigné(e) ……………………………………………, représentant légal de l’élève ……………………………………………,",
-            "☐ autorise ☐ n’autorise pas l’impression des textes et des dessins de mon enfant, avec son prénom, dans le livre de la classe, et leur lecture en ligne par les élèves de la classe et leurs familles.",
-            "☐ autorise ☐ n’autorise pas la diffusion des textes et des dessins de mon enfant, avec son prénom, dans la bibliothèque du site.",
-            "Ces autorisations valent pour ce livre. Je peux retirer à tout moment celle de la bibliothèque en le disant à l’enseignant(e) : le livre la quittera alors.",
-            "Fait à ……………………, le ……………………     Signature :",
-          ],
-        },
-      ],
-    },
-  },
   {
     cle: "information-des-familles",
     nom: "Information des familles",

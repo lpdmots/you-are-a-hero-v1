@@ -39,8 +39,11 @@ describe("référencement", () => {
     const { default: config } = await import("../../next.config");
     vi.stubEnv("ADRESSE_SITE", SITE);
     vi.stubEnv("VERCEL_ENV", "preview");
-    // Hors production, seule la copie de l'accueil renvoie à l'accueil (F14-AC47)
-    expect(await config.redirects!()).toEqual([{ source: "/vitrine", destination: "/", permanent: true }]);
+    // Hors production, seules la copie de l'accueil (F14-AC47) et l'ancien modèle d'autorisation (F14-AC61) renvoient ailleurs
+    expect(await config.redirects!()).toEqual([
+      { source: "/vitrine", destination: "/", permanent: true },
+      { source: "/modeles/autorisation-de-diffusion/:fichier(fichier)?", destination: "/ressources#lettre-aux-familles", permanent: true },
+    ]);
     vi.stubEnv("VERCEL_ENV", "production");
     const regles = await config.redirects!();
     for (const hote of ["il-etait-une-classe.vercel.app", "you-are-a-hero-v1.vercel.app"]) {

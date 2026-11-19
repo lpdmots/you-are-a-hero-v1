@@ -12,7 +12,7 @@ const SITE = "https://iletaituneclasse.com";
 afterEach(() => vi.unstubAllEnvs());
 
 describe("le guide « Comment écrire un livre dont vous êtes le héros en classe »", () => {
-  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, cinq encarts au plus, aucun renvoi à « Ressources »", () => {
+  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, cinq encarts au plus, des renvois à « Ressources » (F14-AC59)", () => {
     expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros en classe");
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
     expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
@@ -24,8 +24,12 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros en clas
     expect(new Set(ANCRES).size).toBe(T.parties.length);
     const encarts = T.parties.flatMap((p) => p.blocs).filter((b) => b.sorte === "encart");
     expect(encarts.length).toBeLessThanOrEqual(5);
-    expect(JSON.stringify(T)).not.toContain("Ressources");
-    expect(T.plusLoin.map((l) => l.adresse)).toEqual(["/bibliotheque", "/"]);
+    // Un renvoi dans « Avant de commencer », quatre dans les questions au plus, et le lien de la fin (F14-AC59)
+    expect(T.avantDeCommencer).toContain("](/ressources)");
+    expect(T.parties.filter((p) => JSON.stringify(p).includes("](/ressources")).length).toBeLessThanOrEqual(4);
+    expect(T.plusLoin.map((l) => l.adresse)).toContain("/ressources");
+    expect(JSON.stringify(T)).not.toContain("/modeles/autorisation-de-diffusion");
+    expect(T.plusLoin.map((l) => l.adresse)).toEqual(["/ressources", "/bibliotheque", "/"]);
     // La fin, sur la feuille qui répond à la page de titre : un titre à la main et une phrase
     expect(T.fin.titre).not.toMatch(/\.$/);
     expect(T.fin.texte.length).toBeGreaterThan(20);

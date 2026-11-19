@@ -306,18 +306,19 @@ export function VoletPartager({ projetId, p, rappels }: { projetId: string; p: P
 
         <Noms projetId={projetId} p={p} />
 
-        {/* Les modèles pour les familles, à faire signer de préférence dès la rentrée (F14-AC33, F15) */}
+        {/* Pour les familles, à faire signer de préférence dès la rentrée : le coupon d'autorisation de la lettre aux
+            familles, seul, trois par feuille (F14-AC33, AC61), et le modèle d'information des familles */}
         {p.deClasse && ouvert !== "proposer" ? (
           <section className="partager__carte partager__familles" aria-labelledby="familles-t">
             <h3 id="familles-t" className="partager__carte-titre">
               Pour les familles
             </h3>
-            <p>L’autorisation de diffusion, à faire signer de préférence dès la rentrée.</p>
+            <p>L’autorisation, à faire signer de préférence dès la rentrée.</p>
             <ul>
               <li>
-                <a className="lien" href="/modeles/autorisation-de-diffusion/fichier" download>
+                <a className="lien" href="/ressources/lettre-aux-familles-coupon.pdf" target="_blank" rel="noopener">
                   <Icone nom="telecharger" />
-                  Autorisation de diffusion
+                  Autorisation (coupon)
                 </a>
               </li>
               <li>
@@ -739,9 +740,9 @@ function Proposer({ projetId, deClasse, couverture, rappels, initiale, action, e
           </span>
         </label>
         {deClasse ? (
-          <a className="lien proposer__modele" href="/modeles/autorisation-de-diffusion/fichier" download>
+          <a className="lien proposer__modele" href="/ressources/lettre-aux-familles-coupon.pdf" target="_blank" rel="noopener">
             <Icone nom="telecharger" />
-            Autorisation de diffusion à faire signer
+            Autorisation à faire signer
           </a>
         ) : null}
       </div>

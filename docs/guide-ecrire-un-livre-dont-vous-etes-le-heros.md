@@ -6,10 +6,10 @@ les « Premier jet » : il en reste la seule source. Page construite en local le
 30 octobre 2026 (maquette A2, [design](design.md#guide--écrire-un-livre-dont-vous-êtes-le-héros---maquettes-30-octobre-2026)),
 à l'adresse `/guide/ecrire-un-livre-dont-vous-etes-le-heros` ; après une
 retouche du texte ici, `npm run guide:texte` (dans `app/`) le reporte dans
-l'application. Tant que la page « Ressources » n'existe pas, le guide n'y
-renvoie pas (`SANS_RESSOURCES`, `app/scripts/guide-texte.ts`) : la phrase de
-la partie 1 qui y mène est retirée, le modèle d'autorisation de la partie 12
-mène à celui de l'Aide, et le pied ne garde que la bibliothèque et l'accueil.
+l'application. Depuis le 19 novembre 2026, il renvoie à la page
+« Ressources » (F14-AC59) : dans « Avant de commencer » et dans les parties 3,
+5, 7 et 12, où un document sert ; la partie 12 mène à la lettre aux familles et
+à son coupon, le modèle d'autorisation de l'Aide étant retiré.
 
 ## Cadrage
 
@@ -177,7 +177,8 @@ Décidé le 30 octobre 2026.
 > **Avant de commencer.** Ce guide rassemble ce que j'ai appris en six ans
 > de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont
 > pas des règles : chaque classe est différente, et vous trouverez sûrement
-> d'autres façons de faire. Prenez ce qui vous sert.
+> d'autres façons de faire. Prenez ce qui vous sert. Les leçons, les fiches
+> et les affiches à imprimer sont sur la page [Ressources](/ressources).
 >
 > **En bref**
 >
@@ -217,7 +218,7 @@ Décidé le 30 octobre 2026.
 > **Fin : À vous d'écrire la suite.** Feuilletez d'abord les livres
 > d'autres classes : c'est souvent ce qui décide une classe à écrire le sien.
 >
-> **Lire et essayer :** [Ressources](…) · [La bibliothèque](…) ·
+> **Lire et essayer :** [Les documents à imprimer](/ressources) · [La bibliothèque](…) ·
 > [Essayer Il était une classe](/)
 
 ## Ce que l'on sait déjà de la pratique du porteur
@@ -531,7 +532,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > simple : où les chemins se séparent et se rejoignent, comment marchent les
 > objets, où mènent les choix. Comparez les sortes de choix rencontrées.
 > Demandez à la classe ce qu'elle a aimé et ce qu'elle ne veut pas dans son
-> livre : cette liste lui servira à fixer ses règles.
+> livre : cette liste lui servira à fixer ses règles. Des
+> [feuilles de recherche et deux leçons](/ressources#decouvrir-le-genre)
+> accompagnent cette séance.
 >
 > **Montrez que c'est possible.** Un livre écrit par une autre classe le
 > prouve : feuilletez-le ensemble. Si
@@ -737,7 +740,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > **Une consigne et une liste de vérification par scène.** La consigne résume ce qui
 > doit se passer ; la liste aide l'élève à vérifier les éléments d'écriture
-> attendus.
+> attendus. La leçon [*Écrire une scène*](/ressources#lecon-3-scene) lui
+> montre comment la construire.
 >
 > *Exemple.* **La rencontre dans la forêt.** Consigne : Le héros rencontre un
 > personnage mystérieux qui lui propose son aide. J'ai pensé à :
@@ -966,7 +970,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > possibilités.
 >
 > **Cinq pistes pour imaginer des choix.** Face à un obstacle, les élèves
-> peuvent s'appuyer sur quelques questions pour trouver des idées :
+> peuvent s'appuyer sur quelques questions pour trouver des idées (la leçon
+> [*Les choix*](/ressources#lecon-2-choix) et la fiche
+> [*Mon chapitre*](/ressources#mon-chapitre) les reprennent) :
 >
 > - **Explorer** — *Où aller ?* Visiter une grotte mystérieuse ou poursuivre
 >   son chemin.
@@ -1515,9 +1521,9 @@ chaque partie pendant l'entretien et prime sur les sources.
 > par le droit d'auteur. Avant d'imprimer ou de diffuser le livre, recueillez
 > les autorisations écrites nécessaires auprès des élèves et de leurs
 > familles, en précisant les usages prévus : impression, partage privé ou
-> publication en ligne. Un modèle d'autorisation est sur la page
-> « Ressources » : faites-le signer dès la rentrée, rien ne manquera le jour
-> où le livre sera prêt.
+> publication en ligne. La [lettre aux familles](/ressources#lettre-aux-familles)
+> porte un coupon d'autorisation : faites-le signer dès la rentrée, rien ne
+> manquera le jour où le livre sera prêt.
 >
 > *Encart.* Dans Il était une classe, le livre se compose seul en un PDF prêt
 > pour l'imprimeur. Il se partage aussi en privé, avec les comptes des

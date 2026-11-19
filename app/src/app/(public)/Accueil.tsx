@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { enEuros } from "@/domaine/offre";
 import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
+import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { livresDeLAccueil, type LivreDeLAccueil } from "@/serveur/accueil";
 import { offreActuelle } from "@/serveur/offre";
@@ -275,6 +276,8 @@ export async function Accueil() {
             <Renvoi vers={40}>Si vous vous demandez ce que cela coûte, rendez-vous au</Renvoi>
             <Renvoi vers={52}>Si vous voulez savoir d’où vient cet outil, rendez-vous au</Renvoi>
             <ChoixPage href={ADRESSE_DU_GUIDE}>Si vous voulez la méthode pas à pas, lisez le guide</ChoixPage>
+            {/* La page « Ressources » (F14-AC59), à côté du guide */}
+            <ChoixPage href={ADRESSE_DES_RESSOURCES}>Si vous cherchez des leçons et des fiches à imprimer, ouvrez les ressources</ChoixPage>
           </Choix>
         </Feuillet>
         <div className={styles.cote}>
