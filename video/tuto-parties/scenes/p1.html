@@ -1,0 +1,26 @@
+        <link rel="stylesheet" href="tuto.css" />
+        <script src="captures/boites.js"></script>
+        <script src="tuto.js"></script>
+        <style>
+          #s-p1 .entete { top: 350px; flex-direction: column; align-items: flex-start; gap: 18px; }
+          #s-p1 .entete .titre { font-size: 92px; line-height: 1.02; max-width: 780px; }
+          #s-p1 .sur { position: absolute; left: 240px; top: 296px; font-size: 30px; font-weight: 700; color: var(--graphite-3); letter-spacing: 0.02em; }
+          #s-p1 .sous { position: absolute; left: 240px; top: 640px; display: flex; gap: 22px; align-items: center; font-size: 34px; color: var(--graphite-2); }
+          #s-p1 .sous b { display: inline-grid; place-items: center; width: 54px; height: 54px; border-radius: 99px; background: var(--canard-pale); color: var(--canard); font-size: 26px; box-shadow: inset 0 0 0 2.5px var(--ia-trait); }
+          #s-p1 .sous i { width: 10px; height: 10px; border-radius: 9px; background: var(--canard); opacity: 0.55; transform: translateY(5px); }
+          #s-p1 .photo { position: absolute; left: 1110px; top: 120px; width: 580px; height: 820px; border-radius: 26px; overflow: hidden; box-shadow: 0 30px 60px -18px rgba(60,45,20,0.35), 0 0 0 10px #fff; transform: rotate(2deg); }
+          #s-p1 .photo img { position: absolute; width: 1382px; height: auto; max-width: none; left: -230px; top: -216px; display: block; }
+          #s-p1 .dragon { position: absolute; left: 930px; top: 690px; width: 330px; height: auto; transform-origin: 50% 100%; filter: drop-shadow(0 16px 18px rgba(40,60,60,0.25)); }
+        </style>
+        <div class="revele" id="p1-revele">
+          <div class="fond"></div>
+          <div class="camera" id="p1-camera">
+            <div class="photo" id="p1-photo"><img alt="" /></div>
+            <img class="dragon" id="p1-dragon" src="assets/dragon-regarde.webp" alt="" />
+          </div>
+          <div class="sur" id="p1-sur">Tuto · Parties et chapitres</div>
+          <div class="entete" id="p1-entete">
+            <div class="titre" id="p1-titre">Parties et chapitres</div>
+          </div>
+          <div class="sous" id="p1-sous"><span>des parties</span><i></i><span>des chapitres</span><i></i><span>des élèves</span></div>
+        </div>

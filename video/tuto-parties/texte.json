@@ -1,0 +1,73 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 1.2,
+      "texte": "Les grandes étapes de votre histoire sont définies ? <break time=\"1.0s\" /> Voyons maintenant comment les organiser en chapitres.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 0.8,
+      "texte": "Pour commencer, rendez-vous dans « Parties et chapitres ». <break time=\"2.4s\" /> Vous y retrouvez toutes les parties imaginées avec la classe.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 4.8,
+      "texte": "Pour ajouter un chapitre, cliquez sur « Ajouter un chapitre » sous la partie de votre choix. <break time=\"1.0s\" /> Donnez-lui un titre, ajoutez un résumé si vous le souhaitez, puis choisissez une image.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 1.4,
+      "texte": "Besoin de changer l'ordre ? <break time=\"0.8s\" /> Il suffit de faire glisser les cartes. <break time=\"2.0s\" /> Vous pouvez même déplacer un chapitre d'une partie à une autre !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 0.8,
+      "texte": "Il ne reste plus qu'à répartir le travail. <break time=\"0.8s\" /> Cliquez sur « Attribuer des élèves » et sélectionnez ceux qui écriront ce chapitre. <break time=\"2.0s\" /> Chacun aura alors accès uniquement aux chapitres qui lui sont attribués.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Et voilà, vos chapitres sont prêts à accueillir leurs premières scènes ! <break time=\"1.4s\" /> Pour découvrir comment faire écrire vos élèves, rendez-vous dans le cinquième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    }
+  ]
+}
