@@ -25,7 +25,7 @@ export default async function Page({ params }: Props) {
   return (
     <div className="page">
       <ColonneDuProjet enseignant={enseignant} projet={projet} actif="preparation" />
-      <FicheDeLHistoire fiche={lue.fiche} retour={`/projet/${projet.id}/preparation`} aJourDu={aujourdhui()} />
+      <FicheDeLHistoire projetId={projet.id} fiche={lue.fiche} masquees={lue.masquees} retour={`/projet/${projet.id}/preparation`} aJourDu={aujourdhui()} />
     </div>
   );
 }

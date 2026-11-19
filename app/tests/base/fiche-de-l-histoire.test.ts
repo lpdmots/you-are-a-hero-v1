@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { demanderUneConsigne, lieuDeLaScene } from "@/serveur/aides-de-la-scene";
-import { ficheDuProjet } from "@/serveur/fiche-histoire";
+import { ficheDuProjet, garderLesRubriques } from "@/serveur/fiche-histoire";
 import { consigne } from "@/serveur/ia/aides/consigne";
 import { planDe } from "@/serveur/recit";
 import {
@@ -113,6 +113,23 @@ describe("La description des parties et la fiche de l'histoire (F02.1)", () => {
     expect(await ficheDuProjet(enseignantDe(martin), projet)).toBeNull();
     await martin.base.from("parties").update({ description: "Piraté" }).eq("id", partieId);
     expect(await partiesDeLaFiche(projet)).toEqual(["Le port : D’où partent les barques."]);
+  });
+
+  it("F02-AC27 — les rubriques décochées se gardent avec le projet, à la réouverture ; ni un élève ni un autre adulte n'y touchent", async () => {
+    const projet = await projetDeClasse();
+    expect((await ficheDuProjet(enseignantDe(laurent), projet))?.masquees).toEqual([]);
+    expect(await garderLesRubriques(enseignantDe(laurent), projet, ["objets", "ecriture", "pas-une-rubrique"])).toEqual({ ok: true });
+    expect((await ficheDuProjet(enseignantDe(laurent), projet))?.masquees).toEqual(["objets", "ecriture"]);
+    // Tout recoché
+    expect(await garderLesRubriques(enseignantDe(laurent), projet, ["ecriture"])).toEqual({ ok: true });
+    expect((await ficheDuProjet(enseignantDe(laurent), projet))?.masquees).toEqual(["ecriture"]);
+
+    expect((await garderLesRubriques(enseignantDe(martin), projet, ["univers"])).ok).toBe(false);
+    const base = await (await posteDe(classe.id, alice.inscriptionId)).base();
+    expect((await base.from("projets").select("fiche_masquee").eq("id", projet)).error).not.toBeNull();
+    expect((await ficheDuProjet(enseignantDe(laurent), projet))?.masquees).toEqual(["ecriture"]);
+    // La base refuse ce qui n'est pas une rubrique
+    expect((await laurent.base.from("projets").update({ fiche_masquee: ["regles"] }).eq("id", projet)).error).not.toBeNull();
   });
 
   it("F02-AC26 — la fiche d'un récit classique, lue dans la base, ne montre ni feuille d'aventure ni règles du jeu", async () => {

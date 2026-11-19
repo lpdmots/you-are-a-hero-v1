@@ -28,6 +28,22 @@ export type RubriqueDeFiche =
 
 export type SorteDeRubrique = RubriqueDeFiche["sorte"];
 
+/**
+ * Les rubriques qu'on coche ou décoche sous « Réglages » (19 novembre 2026) : une case par rubrique,
+ * jamais par élément. Le texte retenu des personnages, faute de carte de héros, est la case du héros.
+ */
+export const CASES_DE_LA_FICHE = ["univers", "enjeu", "heros", "autres", "parties", "objets", "ecriture", "feuille"] as const;
+export type CaseDeFiche = (typeof CASES_DE_LA_FICHE)[number];
+export const caseDe = (sorte: SorteDeRubrique): CaseDeFiche => (sorte === "personnages" ? "heros" : sorte);
+
+/** Les rubriques décochées gardées avec le projet, relues sans confiance : connues, sans doublon. */
+export const casesMasquees = (brut: unknown): CaseDeFiche[] =>
+  Array.isArray(brut) ? CASES_DE_LA_FICHE.filter((c) => brut.includes(c)) : [];
+
+/** Les rubriques que la fiche montre : celles de la Préparation, moins les décochées. */
+export const rubriquesMontrees = (fiche: Pick<FicheDeLHistoire, "rubriques">, masquees: readonly CaseDeFiche[]): RubriqueDeFiche[] =>
+  fiche.rubriques.filter((r) => !masquees.includes(caseDe(r.sorte)));
+
 export type FicheDeLHistoire = {
   titre: string;
   rubriques: RubriqueDeFiche[];

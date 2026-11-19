@@ -1,12 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { poser } from "@/composants/flottant";
+import { useMessage } from "@/composants/Messages";
 import { Icone } from "@/composants/Icone";
 import {
-  messageDeLongueur, paginer, type FicheDeLHistoire as Fiche, type MorceauMesure, type PersonnageDeFiche, type RubriqueDeFiche,
+  caseDe, messageDeLongueur, paginer, rubriquesMontrees, type CaseDeFiche, type FicheDeLHistoire as Fiche, type MorceauMesure, type PersonnageDeFiche, type RubriqueDeFiche,
 } from "@/domaine/fiche-histoire";
 import { adresseRepere } from "@/domaine/visuels";
+import { reglerLesRubriques } from "../../actions-fiche";
 import styles from "./fiche.module.css";
 
 /** Un millimètre à l'écran, en points CSS (96 points par pouce) */
@@ -23,7 +26,13 @@ type Mesure = { coupures: number[]; plusLongue: string | null };
  * l'impression (réduite à l'œil sur un écran étroit) : ses morceaux mesurés disent où les pages se
  * couperont, et un message prévient au-delà d'un recto verso, sans rien couper (F02-AC23).
  */
-export function FicheDeLHistoire({ fiche, retour, aJourDu }: { fiche: Fiche; retour: string; aJourDu: string }) {
+export function FicheDeLHistoire({
+  projetId, fiche, masquees: masqueesGardees, retour, aJourDu,
+}: { projetId: string; fiche: Fiche; masquees: CaseDeFiche[]; retour: string; aJourDu: string }) {
+  // Les rubriques décochées sous « Réglages » : la fiche suit à mesure, le projet les garde (19 novembre 2026)
+  const [masquees, setMasquees] = useState(masqueesGardees);
+  const montrees = rubriquesMontrees(fiche, masquees);
+  const rien = !fiche.vide && montrees.length === 0;
   const bureau = useRef<HTMLDivElement>(null);
   const feuille = useRef<HTMLElement>(null);
   const contenu = useRef<HTMLDivElement>(null);
@@ -82,12 +91,15 @@ export function FicheDeLHistoire({ fiche, retour, aJourDu }: { fiche: Fiche; ret
 
       <div className={`${styles.barre} hors-impression`}>
         <p className={styles.pages} role="status">
-          {fiche.vide ? "Rien à imprimer pour l’instant" : pages === null ? " " : pages === 1 ? "1 page" : pages === 2 ? "2 pages : imprimez en recto verso" : `${pages} pages`}
+          {fiche.vide ? "Rien à imprimer pour l’instant" : rien ? "Toutes les rubriques sont décochées" : pages === null ? " " : pages === 1 ? "1 page" : pages === 2 ? "2 pages : imprimez en recto verso" : `${pages} pages`}
         </p>
-        <button type="button" className="btn btn--primaire" disabled={Boolean(fiche.vide)} onClick={() => window.print()}>
-          <Icone nom="imprimer" />
-          Imprimer
-        </button>
+        <span className={styles.commandes}>
+          {fiche.vide ? null : <Reglages projetId={projetId} fiche={fiche} masquees={masquees} onChange={setMasquees} />}
+          <button type="button" className="btn btn--primaire" disabled={Boolean(fiche.vide) || rien} onClick={() => window.print()}>
+            <Icone nom="imprimer" />
+            Imprimer
+          </button>
+        </span>
       </div>
       {message ? (
         <p className={`${styles.trop} hors-impression`} role="alert">
@@ -114,7 +126,7 @@ export function FicheDeLHistoire({ fiche, retour, aJourDu }: { fiche: Fiche; ret
                 {fiche.vide}
               </p>
             ) : (
-              fiche.rubriques.map((r) => <Rubrique key={r.sorte} rubrique={r} />)
+              montrees.map((r) => <Rubrique key={r.sorte} rubrique={r} />)
             )}
             <p className={styles.pied} data-morceau="insecable">
               Fiche de l’histoire · à jour du {aJourDu} · Il était une classe
@@ -129,6 +141,77 @@ export function FicheDeLHistoire({ fiche, retour, aJourDu }: { fiche: Fiche; ret
         </article>
       </div>
     </div>
+  );
+}
+
+/**
+ * « Réglages » : une case par rubrique de la fiche, jamais par élément ; une rubrique vide n'a pas
+ * de case, puisqu'elle n'y paraît pas. Tout est coché par défaut ; chaque case se garde aussitôt.
+ */
+function Reglages({
+  projetId, fiche, masquees, onChange,
+}: { projetId: string; fiche: Fiche; masquees: CaseDeFiche[]; onChange: (m: CaseDeFiche[]) => void }) {
+  const dire = useMessage();
+  const [ouvert, setOuvert] = useState(false);
+  const cadre = useRef<HTMLSpanElement>(null);
+  const panneau = useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    const bouton = cadre.current?.querySelector("button");
+    if (!ouvert || !bouton || !panneau.current) return;
+    return poser(bouton, panneau.current, { cote: "bottom-end", ecart: 8 });
+  }, [ouvert]);
+  useEffect(() => {
+    if (!ouvert) return;
+    const dehors = (e: PointerEvent) => {
+      if (!cadre.current?.contains(e.target as Node)) setOuvert(false);
+    };
+    const touche = (e: KeyboardEvent) => {
+      if (e.key !== "Escape") return;
+      setOuvert(false);
+      cadre.current?.querySelector("button")?.focus({ preventScroll: true });
+    };
+    document.addEventListener("pointerdown", dehors);
+    document.addEventListener("keydown", touche);
+    return () => {
+      document.removeEventListener("pointerdown", dehors);
+      document.removeEventListener("keydown", touche);
+    };
+  }, [ouvert]);
+  const basculer = (c: CaseDeFiche, coche: boolean) => {
+    const avant = masquees;
+    const apres = coche ? masquees.filter((x) => x !== c) : [...masquees, c];
+    onChange(apres);
+    void reglerLesRubriques(projetId, apres).then((fait) => {
+      if (fait.ok) return;
+      onChange(avant);
+      dire({ texte: fait.erreur });
+    });
+  };
+  return (
+    <span className="lot-reglages" ref={cadre}>
+      <button type="button" className="btn" aria-expanded={ouvert} aria-controls="fiche-reglages" onClick={() => setOuvert((o) => !o)}>
+        <Icone nom="reglages" />
+        <span>Réglages</span>
+      </button>
+      {ouvert ? (
+        <div id="fiche-reglages" className={`lot-reglages__panneau flottant ${styles.reglages}`} role="dialog" aria-label="Réglages de la fiche" ref={panneau}>
+          <p className="lot-reglages__st">Rubriques imprimées</p>
+          <ul className={styles.cases}>
+            {fiche.rubriques.map((r) => {
+              const c = caseDe(r.sorte);
+              return (
+                <li key={r.sorte}>
+                  <label>
+                    <input type="checkbox" className="case" checked={!masquees.includes(c)} onChange={(e) => basculer(c, e.target.checked)} />
+                    {r.titre}
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ) : null}
+    </span>
   );
 }
 

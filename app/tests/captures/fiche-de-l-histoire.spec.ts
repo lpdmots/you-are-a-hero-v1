@@ -93,6 +93,22 @@ test("Fiche de l'histoire et description des parties (F02.1), en 1366 et 390 px,
   await capturer(page, "fiche-ecran");
   await capturer(page, "fiche-ecran-entiere", true);
 
+  // « Réglages » : une case par rubrique ; décochée, la rubrique sort de la fiche, et le projet s'en souvient
+  await page.getByRole("button", { name: "Réglages" }).click();
+  await capturer(page, "reglages-de-la-fiche");
+  await page.getByLabel("Les objets").uncheck();
+  await page.getByLabel("Notre façon d’écrire").uncheck();
+  await capturer(page, "rubriques-decochees");
+  await page.keyboard.press("Escape");
+  await page.reload();
+  await page.evaluate(() => document.fonts.ready);
+  if (await page.getByRole("heading", { name: "Les objets" }).count()) throw new Error("La rubrique décochée est revenue après le rechargement.");
+  await capturer(page, "rubriques-gardees", true);
+  await page.getByRole("button", { name: "Réglages" }).click();
+  await page.getByLabel("Les objets").check();
+  await page.getByLabel("Notre façon d’écrire").check();
+  await page.keyboard.press("Escape");
+
   // À l'impression : la feuille seule, et le vrai nombre de pages du PDF
   await page.emulateMedia({ media: "print" });
   await capturer(page, "fiche-impression", true);

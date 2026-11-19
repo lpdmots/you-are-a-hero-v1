@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { composerLaFiche, HAUTEUR_UTILE_MM, lignesDeLaFeuille, messageDeLongueur, paginer, type MorceauMesure, type ProjetDeLaFiche } from "@/domaine/fiche-histoire";
+import { casesMasquees, composerLaFiche, HAUTEUR_UTILE_MM, rubriquesMontrees, lignesDeLaFeuille, messageDeLongueur, paginer, type MorceauMesure, type ProjetDeLaFiche } from "@/domaine/fiche-histoire";
 import type { Preparation } from "@/domaine/preparation";
 import { blocChapitre, partieJointe } from "@/serveur/ia/aides/contexte";
 
@@ -124,6 +124,20 @@ describe("La fiche de l'histoire (F02.1)", () => {
       "Points — Force : 3 au départ · Temps : 12 au départ",
       "Deux dés",
     ]);
+  });
+});
+
+describe("Les rubriques à cocher (F02.1, 19 novembre 2026)", () => {
+  it("F02-AC27 — une case par rubrique : les rubriques décochées sortent de la fiche, les autres gardent leur ordre ; tout est coché par défaut", () => {
+    const fiche = composerLaFiche(classeAChoix, complete, parties);
+    expect(rubriquesMontrees(fiche, []).map((r) => r.sorte)).toEqual(["univers", "enjeu", "heros", "autres", "parties", "objets", "ecriture", "feuille"]);
+    expect(rubriquesMontrees(fiche, ["objets", "ecriture"]).map((r) => r.sorte)).toEqual(["univers", "enjeu", "heros", "autres", "parties", "feuille"]);
+    // Le texte retenu des personnages, faute de carte de héros, suit la case du héros
+    const sansCarte = composerLaFiche(classeAChoix, { ...carnetVide, personnages: "Lou, 10 ans." });
+    expect(rubriquesMontrees(sansCarte, ["heros"]).map((r) => r.sorte)).toEqual(["ecriture"]);
+    // Ce qui est gardé avec le projet se relit sans confiance
+    expect(casesMasquees(["objets", "inconnue", "objets", 3, "univers"])).toEqual(["univers", "objets"]);
+    expect(casesMasquees(null)).toEqual([]);
   });
 });
 
