@@ -1,0 +1,72 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 1.2,
+      "texte": "Avant de commencer à écrire, il faut imaginer l'histoire ensemble. <break time=\"1.0s\" /> Voyons comment préparer votre récit avec la classe.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p2",
+      "avant": 0.8,
+      "apres": 0.1,
+      "texte": "Pour cela, la préparation se fait en plusieurs étapes : l'univers, les personnages, l'enjeu, puis les grandes étapes de l'histoire.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p3",
+      "avant": 0.5,
+      "apres": 0.8,
+      "texte": "À chaque étape, une question pour lancer la réflexion. <break time=\"1.4s\" /> Projetez-la au tableau et guidez la discussion à l'aide des questions proposées.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 1.2,
+      "texte": "Au fil des échanges, notez les idées des élèves. <break time=\"2.6s\" /> Vous pouvez alors les retenir, les garder pour en reparler plus tard, ou les écarter.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 2.4,
+      "texte": "Une fois la classe d'accord, résumez ce que vous avez décidé dans « Nous retenons ». <break time=\"1.6s\" /> L'étape est alors cochée, et vous pouvez passer à la suivante.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Enfin, dans les grandes étapes, vous définissez les différentes parties de votre histoire. <break time=\"1.8s\" /> Et pour découvrir comment les organiser en chapitres, rendez-vous dans le quatrième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    }
+  ]
+}
