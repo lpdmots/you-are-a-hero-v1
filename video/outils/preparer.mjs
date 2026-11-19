@@ -78,7 +78,9 @@ async function dire(p, i, graine) {
   fs.mkdirSync(path.dirname(sortie), { recursive: true });
   const cache = sortie.replace(/\.mp3$/, ".json");
   graine ??= p.prise;
-  const empreinte = crypto.createHash("sha1").update(JSON.stringify(graine ? [p.texte, voix, modele, vitesse, graine] : [p.texte, voix, modele, vitesse])).digest("hex");
+  // "reglages" (texte.json) : les réglages de voix d'un passage, quand ceux d'ici ne lui vont pas
+  const base = [p.texte, voix, modele, vitesse, ...(p.reglages ? [p.reglages] : [])];
+  const empreinte = crypto.createHash("sha1").update(JSON.stringify(graine ? [...base, graine] : base)).digest("hex");
   if (fs.existsSync(cache) && fs.existsSync(sortie)) {
     const c = JSON.parse(fs.readFileSync(cache, "utf8"));
     if (c.empreinte === empreinte) return c.alignement;
@@ -90,7 +92,7 @@ async function dire(p, i, graine) {
     language_code: "fr",
     previous_text: sansBalises(passages[i - 1]?.texte),
     next_text: sansBalises(passages[i + 1]?.texte),
-    voice_settings: { stability: 0.55, similarity_boost: 0.8, style: 0.1, use_speaker_boost: true, ...(vitesse ? { speed: Number(vitesse) } : {}) },
+    voice_settings: { stability: 0.55, similarity_boost: 0.8, style: 0.1, use_speaker_boost: true, ...p.reglages, ...(vitesse ? { speed: Number(vitesse) } : {}) },
     ...(graine ? { seed: Number(graine) * 7919 } : {}),
   };
   const r = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voix}/with-timestamps?output_format=mp3_44100_128`, {
@@ -124,11 +126,22 @@ for (const [i, p] of passages.entries()) {
   if (estimation) {
     mots = motsEstimes(p.texte);
     voixDuree = mots.at(-1).f + 0.15;
+  } else if (p.fournie) {
+    // une prise faite par le porteur, transcrite par outils/transcrire.mjs
+    const f = JSON.parse(fs.readFileSync(path.join(VISITE, "voix", "fournies", `${p.id}.json`), "utf8"));
+    if (f.empreinte !== crypto.createHash("sha1").update(p.texte).digest("hex"))
+      throw new Error(`${p.id} : le texte a changé depuis la prise fournie ; refaire outils/transcrire.mjs, ou retirer "fournie"`);
+    mots = f.mots;
+    fichier = `voix/fournies/${f.fichier ?? `${p.id}.mp3`}`;
+    voixDuree = Math.min(duree(path.join(VISITE, fichier)), mots.at(-1).f + 0.2);
   } else {
-    mots = motsDepuisAlignement(await dire(p, i));
+    const al = await dire(p, i);
+    mots = motsDepuisAlignement(al);
     fichier = p.prise ? `voix/${voix}/prises/${p.id}-${p.prise}.mp3` : `voix/${voix}/${p.id}.mp3`;
-    // la voix s'arrête 0,3 s après son dernier mot : ce qui suit (souffle, bruit de fin) est coupé au mixage
-    voixDuree = Math.min(duree(path.join(VISITE, fichier)), mots.at(-1).f + 0.3);
+    // la voix s'arrête 0,2 s après la dernière lettre dite : ce qui suit (souffle, bruit de fin)
+    // est coupé ; le point final, qu'ElevenLabs étire parfois jusqu'au bout du fichier, ne compte pas
+    const derniere = al.characters.findLastIndex((c) => /[\p{L}\p{N}]/u.test(c));
+    voixDuree = Math.min(duree(path.join(VISITE, fichier)), al.character_end_times_seconds[derniere] + 0.2);
   }
   const total = +(p.avant + Math.max(voixDuree, mots.at(-1).f) + p.apres).toFixed(3);
   plan[p.id] = {
@@ -171,7 +184,7 @@ for (const p of Object.values(plan)) {
 }
 cues.forEach((c, i) => cues[i + 1] && (c.f = Math.min(c.f, cues[i + 1].t - 0.02)));
 fs.writeFileSync(
-  path.join(VISITE, "visite-fr.vtt"),
+  path.join(VISITE, `${path.basename(VISITE)}-fr.vtt`), // visite-fr.vtt, tuto-acces-eleves-fr.vtt…
   "WEBVTT\n\n" + cues.map((c, i) => `${i + 1}\n${hms(c.t)} --> ${hms(c.f)}\n${c.texte}\n`).join("\n"),
 );
 
@@ -193,9 +206,9 @@ const scripts = Object.keys(plan)
   .filter((id) => morceau(id, "js"))
   .map((id) => `    <script src="scenes/${id}.js"></script>`)
   .join("\n");
-const bandeSon = fs.existsSync(path.join(VISITE, "son", "bande-son.mp3"));
+const bandeSon = fs.existsSync(path.join(VISITE, "son")) && fs.readdirSync(path.join(VISITE, "son")).find((f) => /^bande-son(-[0-9a-f]{8})?\.mp3$/.test(f));
 const audio = bandeSon
-  ? `      <audio id="bande-son" src="son/bande-son.mp3" data-start="0" data-duration="${DUREE}" data-track-index="3" data-volume="1"></audio>`
+  ? `      <audio id="bande-son" src="son/${bandeSon}" data-start="0" data-duration="${DUREE}" data-track-index="3" data-volume="1"></audio>`
   : Object.entries(plan)
       .filter(([, p]) => p.voix)
       .map(([id, p]) => `      <audio id="v-${id}" src="${p.voix}" data-start="${(p.debut + p.avant).toFixed(3)}" data-duration="${p.voixDuree}" data-track-index="3" data-volume="1"></audio>`)

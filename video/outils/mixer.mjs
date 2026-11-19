@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // La bande-son : la voix de chaque passage à sa place, la musique qui s'abaisse sous la voix,
 // les bruitages posés par les passages (window.BRUITAGES), puis un volume final normalisé.
-// Lit les temps dans la composition servie par le studio (port 4850), écrit son/bande-son.mp3.
+// Lit les temps dans la composition servie par le studio (port 4850), écrit son/bande-son-<empreinte>.mp3.
 //   node outils/mixer.mjs [--musique 0.3]
 import { execFileSync } from "node:child_process";
 import fs from "node:fs";
@@ -64,6 +64,12 @@ const etiquettes = bruits.map((b, k) => {
 filtres.push(`${etiquettes.join("")}amix=inputs=${etiquettes.length}:normalize=0,apad=whole_dur=${voix.duree}[bruits]`);
 filtres.push(`[voixmix][musbas][bruits]amix=inputs=3:normalize=0,atrim=0:${voix.duree},afade=t=out:st=${(voix.duree - 1.2).toFixed(2)}:d=1.2,loudnorm=I=-16:TP=-1.5:LRA=11[sortie]`);
 
-const sortie = path.join(VISITE, "son/bande-son.mp3");
-execFileSync(FFMPEG, ["-hide_banner", "-loglevel", "error", "-y", ...entrees, "-filter_complex", filtres.join(";"), "-map", "[sortie]", "-ar", "44100", "-b:a", "192k", sortie], { stdio: "inherit" });
+// le nom porte le contenu (son/bande-son-<empreinte>.mp3) : le studio ne rejoue pas l'ancienne
+// bande-son gardée dans le cache du navigateur ; preparer.mjs prend celle qui reste
+const provisoire = path.join(VISITE, "son/bande-son-en-cours.mp3");
+execFileSync(FFMPEG, ["-hide_banner", "-loglevel", "error", "-y", ...entrees, "-filter_complex", filtres.join(";"), "-map", "[sortie]", "-ar", "44100", "-b:a", "192k", provisoire], { stdio: "inherit" });
+const { createHash } = await import("node:crypto");
+const sortie = path.join(VISITE, `son/bande-son-${createHash("sha1").update(fs.readFileSync(provisoire)).digest("hex").slice(0, 8)}.mp3`);
+for (const f of fs.readdirSync(path.join(VISITE, "son"))) if (/^bande-son(-[0-9a-f]{8})?\.mp3$/.test(f)) fs.rmSync(path.join(VISITE, "son", f));
+fs.renameSync(provisoire, sortie);
 console.log(`bande-son : ${voix.duree.toFixed(1)} s, ${voixFichiers.length} voix, ${bruits.length} bruitages → ${path.relative(process.cwd(), sortie)}`);

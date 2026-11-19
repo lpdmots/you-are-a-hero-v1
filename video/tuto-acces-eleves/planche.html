@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Tuto 1 — les écrans</title>
+<style>
+  body { margin: 0; padding: 32px; background: #f2ede3; font: 15px/1.4 "Atkinson Hyperlegible", system-ui, sans-serif; color: #2b2620; }
+  h1 { font: 600 26px/1.2 Vollkorn, Georgia, serif; margin: 0 0 4px; }
+  p.chapeau { margin: 0 0 24px; color: #6b6156; }
+  .passage { margin: 0 0 28px; }
+  .passage h2 { font: 600 18px/1.2 Vollkorn, Georgia, serif; margin: 0 0 10px; }
+  .grille { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  figure { margin: 0; background: #fff; border-radius: 8px; padding: 6px; box-shadow: 0 1px 3px #0002; }
+  figure img { width: 100%; display: block; border-radius: 4px; }
+  figcaption { font-size: 13px; color: #6b6156; padding: 4px 2px 0; }
+</style>
+</head>
+<body>
+<h1>Tuto 1 — Donner l'accès aux élèves</h1>
+<p class="chapeau">Les vrais écrans, joués sur la base locale, rangés par passage du script.</p>
+<div id="planche"></div>
+<script>
+  const passages = [
+    ["2 — La classe", ["mes-classes-vide", "nouvelle-classe", "nouvelle-classe-remplie", "classe-creee"]],
+    ["3 — Les élèves", ["inscrire-vide", "inscrire-trois", "inscrire-liste-collee", "inscrire-confirmer", "classe-eleves", "classe-codes"]],
+    ["4 — Imprimer", ["affiche", "etiquettes"]],
+    ["5 — En classe", ["poste-classe", "poste-classe-rempli", "poste-qui", "poste-code", "poste-code-moitie", "poste-dans-la-classe"]],
+    ["6 — Un code oublié", ["classe-avant-code", "code-retrouve"]],
+  ];
+  fetch("captures/boites.json").then((r) => r.json()).then(({ ecrans }) => {
+    const cles = Object.keys(ecrans);
+    const racine = document.getElementById("planche");
+    for (const [titre, noms] of passages) {
+      const s = document.createElement("section");
+      s.className = "passage";
+      s.innerHTML = `<h2>${titre}</h2><div class="grille"></div>`;
+      for (const nom of noms) {
+        const cle = cles.find((c) => c.slice(3) === nom);
+        if (!cle) continue;
+        s.querySelector(".grille").insertAdjacentHTML("beforeend", `<figure><img src="captures/${cle}.png" alt=""><figcaption>${cle}</figcaption></figure>`);
+      }
+      racine.append(s);
+    }
+  });
+</script>
+</body>
+</html>

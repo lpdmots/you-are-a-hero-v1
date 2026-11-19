@@ -1,0 +1,73 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 1.2,
+      "texte": "Prêts à écrire votre première histoire avec la classe ? <break time=\"1.0s\" /> Voyons ensemble comment créer votre projet.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p2",
+      "avant": 0.8,
+      "apres": 0.2,
+      "texte": "Pour commencer, rendez-vous dans « Mes projets » et cliquez sur « Créer mon premier projet ». <break time=\"1.2s\" /> Trois petites questions, et c'est parti !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p3",
+      "avant": 0.5,
+      "apres": 0.4,
+      "texte": "D'abord, qui va écrire ? Toute la classe, ou seulement vous ? <break time=\"1.8s\" /> Ensuite, quel type de récit ? Une histoire à choix, où le lecteur décide de la suite, ou un récit classique ? <break time=\"2.0s\" /> Attention, ces deux choix sont définitifs : prenez le temps d'y réfléchir.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 1.6,
+      "texte": "Il ne reste plus qu'à donner un titre à votre histoire et à sélectionner la classe qui participera au projet. <break time=\"1.0s\" /> Vous pourrez aussi le faire plus tard.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p5",
+      "avant": 0.8,
+      "apres": 1.4,
+      "texte": "Et voilà ! Votre projet est créé. <break time=\"0.8s\" /> Vous arrivez sur la page de préparation. <break time=\"1.4s\" /> À gauche, vous retrouvez toutes les étapes de création de votre livre : la préparation, les parties et les chapitres, le suivi de la classe, puis le livre final.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p6",
+      "avant": 0.8,
+      "apres": 6,
+      "texte": "Pour découvrir comment préparer votre histoire, rendez-vous dans le troisième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    }
+  ]
+}

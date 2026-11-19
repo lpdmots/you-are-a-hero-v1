@@ -1,0 +1,301 @@
+// Écrit par app/tests/captures/tuto-acces-eleves.spec.ts — ne pas modifier
+window.BOITES = {
+  "largeur": 1440,
+  "hauteur": 810,
+  "densite": 2,
+  "ecrans": {
+    "01-mes-classes-vide": {
+      "creer": {
+        "x": 737,
+        "y": 297,
+        "l": 183,
+        "h": 46
+      }
+    },
+    "02-nouvelle-classe": {
+      "nom": {
+        "x": 1027,
+        "y": 118,
+        "l": 376,
+        "h": 41
+      },
+      "annees": {
+        "x": 1027,
+        "y": 366,
+        "l": 229,
+        "h": 38
+      },
+      "valider": {
+        "x": 1025,
+        "y": 746,
+        "l": 380,
+        "h": 46
+      }
+    },
+    "03-nouvelle-classe-remplie": {
+      "nom": {
+        "x": 1027,
+        "y": 118,
+        "l": 376,
+        "h": 41
+      },
+      "annee": {
+        "x": 1027,
+        "y": 366,
+        "l": 112,
+        "h": 38
+      },
+      "identifiant": {
+        "x": 1027,
+        "y": 217,
+        "l": 376,
+        "h": 41
+      },
+      "valider": {
+        "x": 1025,
+        "y": 746,
+        "l": 380,
+        "h": 46
+      }
+    },
+    "04-classe-creee": {
+      "inscrire": {
+        "x": 528,
+        "y": 347,
+        "l": 204,
+        "h": 46
+      }
+    },
+    "05-inscrire-vide": {
+      "ligne1": {
+        "x": 517,
+        "y": 323,
+        "l": 305,
+        "h": 44
+      }
+    },
+    "06-inscrire-trois": {
+      "ligne1": {
+        "x": 517,
+        "y": 323,
+        "l": 305,
+        "h": 44
+      },
+      "ligne3": {
+        "x": 517,
+        "y": 423,
+        "l": 305,
+        "h": 44
+      }
+    },
+    "07-inscrire-liste-collee": {
+      "ligne4": {
+        "x": 517,
+        "y": 473,
+        "l": 305,
+        "h": 44
+      }
+    },
+    "08-inscrire-liste-entiere": {
+      "continuer": {
+        "x": 1039,
+        "y": 1608,
+        "l": 136,
+        "h": 46
+      },
+      "colonne": {
+        "x": 12,
+        "y": 14,
+        "l": 207,
+        "h": 139
+      },
+      "_page": {
+        "x": 0,
+        "y": 0,
+        "l": 1440,
+        "h": 1778
+      }
+    },
+    "09-inscrire-confirmer": {
+      "confirmer": {
+        "x": 1002,
+        "y": 640,
+        "l": 173,
+        "h": 46
+      }
+    },
+    "10-classe-eleves": {
+      "eleves": {
+        "x": 256,
+        "y": 143,
+        "l": 749,
+        "h": 648
+      },
+      "afficher": {
+        "x": 421,
+        "y": 157,
+        "l": 170,
+        "h": 38
+      }
+    },
+    "11-classe-codes": {
+      "eleves": {
+        "x": 256,
+        "y": 143,
+        "l": 749,
+        "h": 648
+      },
+      "premiere": {
+        "x": 268,
+        "y": 215,
+        "l": 353,
+        "h": 47
+      },
+      "affiche": {
+        "x": 1045,
+        "y": 374,
+        "l": 171,
+        "h": 38
+      }
+    },
+    "12-affiche": {
+      "adresse": {
+        "x": 759,
+        "y": 334,
+        "l": 512,
+        "h": 66
+      },
+      "identifiant": {
+        "x": 759,
+        "y": 441,
+        "l": 512,
+        "h": 66
+      },
+      "motDePasse": {
+        "x": 759,
+        "y": 548,
+        "l": 512,
+        "h": 66
+      }
+    },
+    "13-etiquettes": {},
+    "14-poste-classe": {
+      "identifiant": {
+        "x": 754,
+        "y": 363,
+        "l": 420,
+        "h": 51
+      },
+      "motDePasse": {
+        "x": 754,
+        "y": 450,
+        "l": 420,
+        "h": 51
+      },
+      "entrer": {
+        "x": 754,
+        "y": 513,
+        "l": 420,
+        "h": 45
+      }
+    },
+    "15-poste-classe-rempli": {
+      "identifiant": {
+        "x": 754,
+        "y": 363,
+        "l": 420,
+        "h": 51
+      },
+      "motDePasse": {
+        "x": 754,
+        "y": 450,
+        "l": 420,
+        "h": 51
+      },
+      "entrer": {
+        "x": 754,
+        "y": 513,
+        "l": 420,
+        "h": 45
+      }
+    },
+    "16-poste-qui": {
+      "eleves": {
+        "x": 97,
+        "y": 122,
+        "l": 868,
+        "h": 292
+      },
+      "prenom": {
+        "x": 623,
+        "y": 182,
+        "l": 166,
+        "h": 50
+      }
+    },
+    "17-poste-code": {
+      "cases": {
+        "x": 1040,
+        "y": 236,
+        "l": 238,
+        "h": 60
+      }
+    },
+    "18-poste-code-1": {
+      "cases": {
+        "x": 1040,
+        "y": 236,
+        "l": 238,
+        "h": 60
+      }
+    },
+    "19-poste-code-2": {
+      "cases": {
+        "x": 1040,
+        "y": 236,
+        "l": 238,
+        "h": 60
+      }
+    },
+    "20-poste-code-3": {
+      "cases": {
+        "x": 1040,
+        "y": 236,
+        "l": 238,
+        "h": 60
+      }
+    },
+    "21-poste-code-4": {
+      "cases": {
+        "x": 1040,
+        "y": 236,
+        "l": 238,
+        "h": 60
+      }
+    },
+    "22-poste-dans-la-classe": {
+      "ecrire": {
+        "x": 1121,
+        "y": 432,
+        "l": 190,
+        "h": 38
+      }
+    },
+    "23-classe-avant-code": {
+      "prenom": {
+        "x": 268,
+        "y": 591,
+        "l": 353,
+        "h": 46
+      }
+    },
+    "24-code-retrouve": {
+      "panneau": {
+        "x": 1005,
+        "y": 0,
+        "l": 420,
+        "h": 810
+      }
+    }
+  }
+};
