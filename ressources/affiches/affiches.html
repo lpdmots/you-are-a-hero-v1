@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Affiches pour la classe</title>
+<link rel="stylesheet" href="../commun/feuille.css">
+<link rel="stylesheet" href="affiches.css">
+</head>
+<body>
+
+<!-- Quatre affiches pour la classe, décidées par le porteur le 18 novembre 2026 : une idée par affiche, tirée des
+     leçons 1, 2 et 3, peu de mots, lisible de loin ; A4 portrait, agrandissable en A3 (tout est en formes, pas en
+     images, sauf la mascotte) ; toutes faites, sans version à compléter. -->
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <marker id="pointe" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+      <path d="M0 0 10 5 0 10z" fill="#1e2226"/>
+    </marker>
+  </defs>
+</svg>
+
+<!-- ————— 1. Une scène de livre-jeu ————— -->
+<section class="page affiche">
+  <header class="tete">
+    <h1>Une scène de <span class="insecable">livre-jeu</span></h1>
+    <img src="../commun/images/dragon-regarde.webp" alt="">
+  </header>
+
+  <figure class="scene" aria-label="Une scène et ses parties">
+    <p class="numero"><span class="r">A</span>12</p>
+    <p class="recit"><span class="r r-marge">B</span>Tu arrives au bord de la rivière. Le vieux pont de bois grince dans le vent, et <u class="indice">deux planches sont cassées</u>. Plus loin, une barque est attachée à un arbre.<span class="r r-droite" id="repere-indice">C</span></p>
+    <div class="choix">
+      <span class="r r-marge">D</span>
+      <p>Si tu traverses le pont, va au <b>31</b>.<span class="r">E</span></p>
+      <p>Si tu prends la barque, va au <b>8</b>.</p>
+    </div>
+  </figure>
+
+  <ol class="legende">
+    <li><span class="r">A</span><span>le <strong>numéro</strong> de la scène</span></li>
+    <li><span class="r">B</span><span>le <strong>récit</strong>&nbsp;: ce qui arrive au héros</span></li>
+    <li><span class="r">C</span><span>un <strong>indice</strong>, souligné&nbsp;: il aide à choisir</span></li>
+    <li><span class="r">D</span><span>les <strong>choix</strong>&nbsp;: le lecteur décide</span></li>
+    <li><span class="r">E</span><span>le <strong>renvoi</strong>&nbsp;: le numéro de la scène à lire ensuite</span></li>
+  </ol>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">Affiche 1 sur 4 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+<!-- ————— 2. Les chemins ————— -->
+<section class="page affiche">
+  <header class="tete">
+    <h1>Les chemins</h1>
+    <img src="../commun/images/dragon-deroule.webp" alt="">
+  </header>
+  <p class="cle">Trois façons d’organiser les chemins.</p>
+  <p class="legende-schema"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="#fff" stroke="#1e2226" stroke-width="1.5"/></svg>une scène <svg viewBox="0 0 30 20" aria-hidden="true"><path d="M2 10h22" stroke="#1e2226" stroke-width="1.5" marker-end="url(#pointe)"/></svg>un choix</p>
+
+  <div class="formes">
+    <section class="forme">
+      <svg class="schema" viewBox="0 0 200 76" aria-label="Trois chemins partent d'une scène et arrivent tous à la même scène">
+        <g fill="none" stroke="#1e2226" stroke-width="1.5" marker-end="url(#pointe)">
+          <path d="M22 34 70 16"/><path d="M23 38h46"/><path d="M22 42 70 60"/>
+          <path d="M89 16l50 18"/><path d="M89 38h49"/><path d="M89 60l50-18"/>
+          <path d="M161 38h30"/>
+        </g>
+        <g fill="#fff" stroke="#1e2226" stroke-width="1.5"><circle cx="14" cy="38" r="8"/><circle cx="80" cy="14" r="8"/><circle cx="80" cy="38" r="8"/><circle cx="80" cy="62" r="8"/></g>
+        <circle cx="150" cy="38" r="10" fill="#e1f0ef" stroke="#0b6a73" stroke-width="2.2"/>
+      </svg>
+      <div>
+        <h2>Les branches</h2>
+        <p>Les chemins se séparent, puis rejoignent <strong>une même scène</strong>.</p>
+      </div>
+    </section>
+
+    <section class="forme">
+      <svg class="schema" viewBox="0 0 200 76" aria-label="Le lecteur part d'une scène vers deux lieux, revient chaque fois, puis continue">
+        <g fill="none" stroke="#1e2226" stroke-width="1.5">
+          <path d="M22 38h42" marker-end="url(#pointe)"/>
+          <path d="M86 31 120 15" marker-start="url(#pointe)" marker-end="url(#pointe)"/>
+          <path d="M86 45l34 16" marker-start="url(#pointe)" marker-end="url(#pointe)"/>
+          <path d="M88 38h91" marker-end="url(#pointe)"/>
+        </g>
+        <g fill="#fff" stroke="#1e2226" stroke-width="1.5"><circle cx="14" cy="38" r="8"/><circle cx="129" cy="11" r="8"/><circle cx="129" cy="65" r="8"/><circle cx="189" cy="38" r="8"/></g>
+        <circle cx="76" cy="38" r="10" fill="#e1f0ef" stroke="#0b6a73" stroke-width="2.2"/>
+      </svg>
+      <div>
+        <h2>Le carrefour</h2>
+        <p>On explore, puis <strong>on revient ici</strong> avant de continuer.</p>
+      </div>
+    </section>
+
+    <section class="forme">
+      <svg class="schema" viewBox="0 0 200 76" aria-label="Le chemin principal va tout droit ; une scène de plus, facultative, rejoint le même chemin">
+        <g fill="none" stroke="#1e2226" stroke-width="1.5" marker-end="url(#pointe)">
+          <path d="M23 56h66"/><path d="M109 56h67"/>
+          <path d="M20 49l30-24"/><path d="M68 25l29 24"/>
+        </g>
+        <g fill="#fff" stroke="#1e2226" stroke-width="1.5"><circle cx="14" cy="56" r="8"/><circle cx="100" cy="56" r="8"/><circle cx="186" cy="56" r="8"/></g>
+        <circle cx="59" cy="18" r="10" fill="#e1f0ef" stroke="#0b6a73" stroke-width="2.2"/>
+        <path d="M59 12.5l1.7 3.6 3.9.5-2.9 2.7.8 3.9-3.5-1.9-3.5 1.9.8-3.9-2.9-2.7 3.9-.5z" fill="#0b6a73"/>
+      </svg>
+      <div>
+        <h2>Le détour</h2>
+        <p>Une scène en plus, au choix&nbsp;: <strong>un secret, un objet</strong>.</p>
+      </div>
+    </section>
+  </div>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">Affiche 2 sur 4 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+<!-- ————— 3. Inventer des choix ————— -->
+<section class="page affiche">
+  <header class="tete">
+    <h1>Inventer des choix</h1>
+    <img src="../commun/images/bouquin-hesite.webp" alt="">
+  </header>
+  <p class="cle">Cinq questions pour trouver des idées.</p>
+
+  <ul class="pistes">
+    <li><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5 13 13l-4.5 2.5L11 11z"/></svg><span class="question">Où aller&nbsp;?</span><span class="nom">Visiter la grotte, ou poursuivre son chemin&nbsp;?</span></li>
+    <li><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="16" r="4"/><path d="M11 13l8-8M16 8l2 2M14 10l2 2"/></svg><span class="question">Comment agir&nbsp;?</span><span class="nom">Escalader le mur, ou convaincre le garde&nbsp;?</span></li>
+    <li><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/></svg><span class="question">Quel indice utiliser&nbsp;?</span><span class="nom">«&nbsp;Méfie-toi du rouge.&nbsp;» Coffre rouge, ou coffre bleu&nbsp;?</span></li>
+    <li><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v16M8 20h8M5 7h14M5 7l-3 6h6zM19 7l-3 6h6z"/></svg><span class="question">Que sacrifier&nbsp;?</span><span class="nom">Prendre la clé, ou gagner du temps&nbsp;?</span></li>
+    <li><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg><span class="question">Comment réagir&nbsp;?</span><span class="nom">Aider l’inconnu, ou poursuivre sa route&nbsp;?</span></li>
+  </ul>
+
+  <div class="modele">
+    <p class="modele-titre">Je dis ce que le héros décide de faire, sans dévoiler ce qui lui arrivera.</p>
+    <p class="exemple oui">Si tu traverses le vieux pont, va au 31.</p>
+    <p class="exemple non">Si tu tombes du pont, va au 31.</p>
+  </div>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">Affiche 3 sur 4 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+<!-- ————— 4. J'écris ma scène ————— -->
+<section class="page affiche">
+  <header class="tete">
+    <h1 class="deux-lignes">J’écris une scène <span class="insecable">à choix</span></h1>
+    <img src="../commun/images/dragon-ecrit.webp" alt="">
+  </header>
+
+  <ol class="moments">
+    <li><span class="n">1</span><span><strong>Je raconte l’arrivée</strong> du héros&nbsp;: il fait ce que le lecteur a choisi.</span></li>
+    <li><span class="n">2</span><span><strong>Je décris ce qu’il découvre</strong>&nbsp;: ce qu’il voit, entend, trouve.</span></li>
+    <li><span class="n">3</span><span><strong>Je raconte ce qui se passe</strong>&nbsp;: une difficulté, une rencontre, une surprise.</span></li>
+    <li><span class="n">4</span><span><strong>Je prépare le prochain choix</strong>, sans dévoiler la suite.</span></li>
+  </ol>
+
+  <section class="developper">
+    <h2>Je développe</h2>
+    <div class="sens">
+      <p><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-6.5 9.5-6.5 9.5 6.5 9.5 6.5-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>je vois</p>
+      <p><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9a5 5 0 0 1 10 0c0 3-3 4-3 7a3 3 0 0 1-6 0"/><path d="M10 9.5a2 2 0 0 1 4 0c0 1.2-1.5 1.6-1.5 3"/></svg>j’entends</p>
+      <p><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 20c-2-3 2-5 0-8s2-5 0-8M12 20c-2-3 2-5 0-8s2-5 0-8M17 20c-2-3 2-5 0-8s2-5 0-8"/></svg>je sens</p>
+      <p><svg class="picto" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 13V6a1.5 1.5 0 0 1 3 0v5M11 11V4.5a1.5 1.5 0 0 1 3 0V11M14 11V6a1.5 1.5 0 0 1 3 0v7c0 4-2.5 7-6 7-2.5 0-4-1.2-5.5-3.5L3.8 13.6a1.4 1.4 0 0 1 2.3-1.6L8 14"/></svg>je touche</p>
+    </div>
+    <p class="emotion">Je montre l’émotion&nbsp;: <span class="livre">«&nbsp;Ton cœur bat très fort.&nbsp;»</span></p>
+  </section>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">Affiche 4 sur 4 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+<script>
+  // Le repère C de l'indice, dans la marge droite de la scène, à la hauteur de sa dernière ligne soulignée
+  addEventListener("load", () => {
+    const souligne = document.querySelector(".indice");
+    const repere = document.getElementById("repere-indice");
+    const recit = repere.parentElement;
+    const lignes = souligne.getClientRects();
+    const derniere = lignes[lignes.length - 1];
+    repere.style.top = `${derniere.top - recit.getBoundingClientRect().top + derniere.height / 2}px`;
+  });
+</script>
+</body>
+</html>

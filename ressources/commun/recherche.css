@@ -1,0 +1,184 @@
+/* Feuilles de recherche sur un livre d'exemple (« Bouquin mène l'enquête », « Les passeurs de brume ») :
+   la fiche de l'élève (version à compléter) et son corrigé (version complète, réponses écrites à la
+   main en canard). Quatre temps de recherche, un par page ; les classes lisent le livre en ligne et y
+   retournent. */
+
+.recherche { font-size: 11pt; line-height: 1.38; }
+.recherche h1 { font-size: 21pt; margin: 2mm 0 2.8mm; }
+.recherche .tete h1 { margin-bottom: 4mm; }
+.recherche .tete img { height: 23mm; }
+.recherche .bloc { margin-top: 4mm; }
+.page-1 .bloc:last-of-type { margin-top: 3mm; }
+
+/* Consignes, questions, repères et aides */
+.consigne { font-size: 10.5pt; color: var(--graphite); }
+.recherche .question { margin-top: 2mm; }
+.recherche .repere { font-size: 10pt; font-weight: 700; margin: 3mm 0 1mm; color: var(--canard); }
+.recherche .legende { font-size: 9.5pt; color: var(--graphite-2); margin-top: 1.6mm; }
+.recherche .banque { border: .3mm solid var(--trait); border-radius: 2mm; padding: 2mm 3mm; margin-top: 2mm; font-size: 10pt; line-height: 1.4; }
+.recherche .oral { border-left: 1mm solid var(--canard); padding: 1.5mm 0 1.5mm 3mm; margin-top: 2mm; font-size: 10.5pt; }
+.recherche p.note-corrige { font: 400 9pt/1.35 var(--f-adulte); color: var(--graphite-2); margin-top: 1mm; }
+
+/* Les réponses du corrigé : à la main, en canard */
+.recherche .reponse { display: block; font: 400 10pt/1.65 var(--f-main); color: var(--canard); min-height: 7mm; }
+.recherche .rep { font: 400 10.5pt/1.7 var(--f-main); color: var(--canard); margin-right: 1.5mm; }
+
+/* Un nombre à trouver : une case, remplie au corrigé */
+.num {
+  display: inline-grid;
+  place-items: center;
+  min-width: 13mm;
+  height: 8.5mm;
+  margin: 0 1.5mm;
+  padding: 0 1.5mm;
+  border: 0.4mm solid var(--graphite);
+  border-radius: 1.5mm;
+  font: 400 11pt/1 var(--f-main);
+  color: var(--canard);
+  vertical-align: -1.6mm;
+}
+
+/* Des cases à cocher, cochées au corrigé */
+.cases { display: inline-flex; flex-wrap: wrap; gap: 1.5mm 4mm; margin-left: 3mm; vertical-align: middle; }
+.cocher { display: inline-flex; align-items: center; gap: 1.8mm; }
+.cocher::before {
+  content: "";
+  display: inline-grid;
+  place-items: center;
+  width: 4mm;
+  height: 4mm;
+  border: 0.4mm solid var(--graphite);
+  border-radius: 1mm;
+  font: 700 10pt/1 var(--f-eleve);
+  color: var(--canard);
+}
+html:not(.a-completer) .cocher.coche::before { content: "✓"; }
+
+/* ————— Les extraits du livre (le style commun de .extrait) ————— */
+.recherche .extrait { margin: 2mm 0 2.5mm; }
+.recherche .extrait.court { padding: 2.6mm 5mm 2.8mm; }
+.recherche .extrait .numero { margin-bottom: 1.5mm; }
+.duo-textes { display: grid; grid-template-columns: 1fr 1.1fr; gap: 3mm; margin: 2mm 0; }
+.recherche .citation { font: 400 11pt/1.4 var(--f-livre); padding: 2mm; background: var(--canard-pale); margin: 0; }
+/* Au corrigé : l'indice souligné, les choix soulignés et leur numéro entouré */
+html:not(.a-completer) .extrait .indice { text-decoration: underline 0.45mm var(--canard); text-underline-offset: 1mm; }
+html:not(.a-completer) .choix-reperes p { text-decoration: underline .4mm var(--canard); text-underline-offset: 1mm; }
+html:not(.a-completer) .numero-repere { border: .4mm solid var(--canard); border-radius: 50%; padding: 0 1.2mm; }
+
+/* ————— L'arbre du début, à compléter avec le nom des scènes ————— */
+.arbre-porte { margin: 2mm 0; }
+.arbre-porte svg { display: block; width: 94%; height: auto; margin: 0 auto; }
+.arbre-porte .traits path { fill: none; stroke: #1e2226; stroke-width: 0.35; marker-end: url(#pointe); }
+.arbre-porte rect { fill: #fff; stroke: #1e2226; stroke-width: 0.35; }
+.arbre-porte rect.donnee { fill: #e1f0ef; stroke: #0b6a73; stroke-width: 0.6; }
+.arbre-porte text { text-anchor: middle; }
+.arbre-porte .donne { font: 400 3.9px "Andika", sans-serif; fill: #1e2226; }
+.arbre-porte .a-trouver text { font: 400 3.1px "Playwrite", cursive; fill: #0b6a73; }
+html:not(.a-completer) .arbre-porte rect.jonction { fill: #b8dcd8; }
+.a-completer .arbre-porte .a-trouver { display: none; }
+
+/* ————— Mon avis sur chaque choix : le choix et les cases sur une ligne, la raison dessous ————— */
+.avis { display: grid; gap: 2.5mm; margin-top: 2mm; }
+.avis-choix { display: grid; grid-template-columns: 65mm 1fr; align-items: center; gap: 1mm 2mm; border: 0.35mm solid var(--graphite); border-radius: 2mm; padding: 2mm 3mm; }
+.recherche .avis-nom { font: 700 10pt/1.3 var(--f-eleve); margin: 0; }
+.avis-choix .cases { display: flex; margin: 0; gap: 8mm; font-size: 10pt; }
+.avis-choix > .reponse { grid-column: 1 / -1; }
+
+/* ————— Les tableaux (le dé, le compteur) ————— */
+.a-completer .reponse { margin-top: 0.5mm; }
+.tableau { border-collapse: collapse; width: 100%; margin: 2.5mm 0; font-size: 10.5pt; }
+.tableau th, .tableau td { border: .3mm solid var(--trait); padding: 2mm 3mm; text-align: left; vertical-align: middle; }
+.tableau th { background: var(--canard-pale); font-weight: 700; }
+.tableau .reponse { margin: 0; }
+.tableau td:first-child { width: 33%; }
+.temps td:first-child { width: 22%; }
+.temps td:nth-child(2) { width: 28%; }
+.temps .cases { display: grid; margin: 0; }
+.a-completer .num { color: transparent; min-width: 16mm; }
+.temps .num { min-width: 18mm; height: 8mm; }
+
+/* ————— Les deux fins ————— */
+.fins { display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; margin-top: 2mm; }
+.fin { border: .3mm solid var(--trait); border-radius: 2mm; padding: 2mm 3mm; }
+.fin h3 { font-size: 10.5pt; margin: 0 0 1mm; }
+
+/* ————— Version à compléter : de la place pour écrire ————— */
+.a-completer .recherche .rep { min-width: 29mm; }
+.a-completer .reponse > i { height: 8mm; }
+
+/* ————— Corrigé : les réponses écrites un peu plus aérées ————— */
+html:not(.a-completer) .recherche .reponse { margin-top: 2mm; line-height: 1.8; }
+html:not(.a-completer) .recherche .rep { margin-left: 1.5mm; }
+html:not(.a-completer) .fin { padding-bottom: 3.5mm; }
+
+/* ————— Les questions numérotées d'un bout à l'autre de la feuille, pour corriger ensemble ————— */
+body { counter-reset: question; }
+.recherche .q { padding-left: 7mm; text-indent: -7mm; }
+.recherche .q::before { counter-increment: question; content: counter(question) "."; display: inline-block; width: 7mm; text-indent: 0; color: var(--canard); font: 700 10.5pt var(--f-eleve); }
+
+/* Dans la scène du couloir, les indices surlignés (les choix, eux, sont soulignés) */
+html:not(.a-completer) .extrait .indice.surligne { text-decoration: none; background: #b8dcd8; padding: 0 0.6mm; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.recherche .q > * { text-indent: 0; }
+.page-1 .arbre-porte svg { width: 84%; }
+.page-1 .question { margin-top: 1.4mm; }
+
+/* Un chemin qui n'est pas toujours possible (une condition), des choix sur une ligne */
+.arbre-porte .traits path.condition { stroke-dasharray: 1.4 1.1; }
+.recherche .choix-court { font-style: italic; margin-top: 1mm; }
+
+/* ————— Propres aux « Passeurs de brume » ————— */
+.passeurs .page-1 .arbre-porte svg { width: 88%; }
+.passeurs .arbre-porte .a-trouver text { font-size: 2.9px; }
+.passeurs .page-2 .bloc { margin-top: 3mm; }
+.passeurs .page-2 .reponse > i { height: 7mm; }
+/* L'énigme : trois distances converties en centimètres */
+.conversions { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 3mm; margin: 2mm 0; }
+.conversions p { margin: 0 !important; white-space: nowrap; font-size: 10pt; }
+.a-completer .conversions .rep { min-width: 12mm; width: 16mm !important; } /* plus fort que la largeur posée par a-completer.js */
+html:not(.a-completer) .distance-courte { border: .4mm solid var(--canard); border-radius: 50%; padding: 0 1mm; }
+/* Ce que révèle la suite de chaque choix */
+.consequences th, .consequences td { padding: 1.6mm 2mm; }
+.consequences td:first-child { width: 28%; }
+.consequences td:last-child { width: 18%; text-align: center; }
+.consequences th:last-child { text-align: center; }
+.consequences td .reponse { font-size: 9pt; }
+/* La réserve d'huile */
+.reserves th, .reserves td { padding: 1.5mm 2mm; }
+.reserves td:first-child { width: 12%; text-align: center; }
+.reserves td:nth-child(2) { width: 24%; }
+.reserves td:nth-child(3) { width: 25%; }
+.reserves .cases { margin: 0; display: grid; gap: 1mm; }
+.reserves .reponse { text-align: center; }
+/* Les fins comparées */
+.fins-comparees { font-size: 10pt; }
+.fins-comparees td:first-child { width: 43%; }
+.fins-comparees .cases { margin: 0; gap: 3mm; }
+
+/* Le numéro de la scène à relire, pour aller vite dans le lecteur en ligne : discret, à la fin de la question.
+   En Andika, comme tout chiffre que l'élève lit ou tape : zéro sans barre. */
+.aller { display: inline-block; margin-left: 1.2mm; padding: 0 1.2mm; border: 0.25mm solid var(--trait); border-radius: 1mm; font: 400 8pt/1.4 var(--f-eleve); font-style: normal; font-weight: 400; color: var(--graphite-2); white-space: nowrap; vertical-align: 0.4mm; text-indent: 0; letter-spacing: 0; text-transform: none; }
+/* Sur une citation, le numéro se pose sur le bord du cadre, sans faire passer le texte à la ligne */
+.recherche .citation { position: relative; }
+.citation .aller { position: absolute; top: -2.3mm; right: 1.5mm; margin: 0; background: #fff; }
+
+/* ————— Propres à la feuille générale (n'importe quel livre-jeu) ————— */
+.general .rep.large { min-width: 60mm; }
+.a-completer .general .rep.large, .a-completer .recherche .rep.large { min-width: 90mm; }
+.general .cases + .cases { margin-left: 8mm; }
+/* Le cadre où l'élève dessine un passage, avec un petit exemple dans le coin */
+.dessin { position: relative; height: 108mm; margin: 2mm 0 2.5mm; border: 0.35mm solid var(--graphite); border-radius: 2mm; }
+.exemple-dessin { position: absolute; top: 2.5mm; right: 3mm; width: 26mm; height: auto; opacity: 0.75; }
+.exemple-dessin circle { fill: #fff; stroke: #1e2226; stroke-width: 0.8; }
+.exemple-dessin path { fill: none; stroke: #1e2226; stroke-width: 0.8; }
+.exemple-dessin marker path { fill: #1e2226; stroke: none; }
+.exemple-dessin text { font: 400 5.2px "Andika", sans-serif; text-anchor: middle; fill: #1e2226; }
+.recherche p.note-corrige.dans-dessin { position: absolute; left: 4mm; right: 34mm; top: 3mm; margin: 0; }
+/* Les avis : le choix est recopié par l'élève */
+.general .avis-choix { grid-template-columns: 1fr auto; }
+.general .avis-nom .rep { font-weight: 400; }
+.a-completer .general .avis-nom .rep { min-width: 80mm; }
+/* Le tableau des fins */
+.fins-livre td:first-child { width: 18%; text-align: center; }
+.fins-livre td:nth-child(2) { width: 24%; }
+.fins-livre .cases { margin: 0; display: grid; gap: 1mm; }
+.fins-livre .num { margin: 0; }

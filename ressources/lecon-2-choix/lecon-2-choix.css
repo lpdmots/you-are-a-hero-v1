@@ -1,0 +1,161 @@
+/* Leçon 2 : ce qui lui est propre (les règles, la rivière, la méthode et les décisions du lecteur). */
+
+.premier { margin-top: 1mm; }
+
+/* 1. Les règles, numérotées */
+.regles { margin: 1mm 0 0; padding-left: 5.5mm; }
+.regles li { margin-bottom: 1.5mm; padding-left: 1mm; }
+.regles li::marker { color: var(--canard); font-weight: 700; }
+.regles .exemple { margin-left: 1mm; }
+
+/* 2. Les pistes, en trois rangées de deux */
+.cartes .question { margin-top: 0.4mm !important; }
+.cartes .livre { margin-top: 0.8mm !important; }
+
+/* 3. Ce qui complète les quatre sortes */
+.melange { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 3mm; padding: 2.6mm 3.4mm; background: var(--canard-pale); border-radius: 2.5mm; }
+.melange p { font-size: 10.3pt; margin: 0 !important; }
+
+/* 3. La scène de la rivière, puis ses quatre suites, chacune avec sa sorte de choix */
+.situation { padding: 3mm 6mm 3.2mm; }
+.situation .numero { margin-bottom: 1.4mm; }
+.choix.quatre { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6mm 6mm; }
+.choix.quatre p + p { margin-top: 0 !important; }
+/* 4. La méthode, en six étapes reliées */
+.methode { list-style: none; margin: 1.5mm 0 0; padding: 0; counter-reset: etape; }
+.methode li {
+  counter-increment: etape;
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 64mm;
+  column-gap: 6mm;
+  padding: 0 0 3.2mm 11mm;
+}
+.methode li::before {
+  content: counter(etape);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 7mm;
+  height: 7mm;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--canard);
+  color: #fff;
+  font: 700 10.5pt/1 var(--f-eleve);
+}
+/* Le fil qui relie les étapes */
+.methode li:not(:last-child)::after { content: ""; position: absolute; left: 3.3mm; top: 8mm; bottom: 0.8mm; width: 0.4mm; background: var(--canard-pale); }
+.etape { font-weight: 400; }
+.aide { grid-column: 1; color: var(--graphite-2); font-size: 10pt; margin-top: 0.3mm !important; }
+.methode .livre { grid-column: 2; grid-row: 1 / span 2; align-self: center; padding: 1.6mm 3mm; border-left: 0.6mm solid var(--canard-pale); margin: 0 !important; }
+
+/* Pages 1 et 2 : un peu d'air, la place le permet */
+.lecon .bloc { margin-top: 6mm; }
+.lecon .bloc.premier { margin-top: 1mm; }
+.cartes { gap: 4.5mm 5mm; }
+.carte { padding: 3mm 3.8mm 3.4mm; }
+
+/* ————— Lisible et facile à remplir, comme la leçon 1 (14 novembre 2026) ————— */
+.lecon { font-size: 12pt; line-height: 1.42; }
+.lecon .carte p { font-size: 11pt; line-height: 1.4; }
+.lecon .livre { font-size: 11.2pt; }
+.lecon .bloc { margin-top: 7mm; }
+.lecon .bloc.premier { margin-top: 1mm; }
+.melange p { font-size: 11pt; }
+.aide { font-size: 10.8pt; }
+
+/* Les mots à placer, sous le titre de la partie (version à compléter seulement) */
+.banque { margin: -0.4mm 0 2.4mm !important; color: var(--canard); font-size: 11pt; }
+.banque em { font-style: italic; color: var(--graphite); letter-spacing: 0.01em; }
+
+/* Des lignes hautes là où il y a un blanc, et des blancs assez longs pour une écriture d'enfant */
+.a-completer .lecon :is(p, li):has(.rep) { line-height: 2.5; }
+.a-completer .lecon .carte p:has(.rep) { line-height: 2.3; }
+.a-completer .lecon .rep { min-width: 34mm; height: 1.3em; vertical-align: -0.4em; border-bottom-width: 0.35mm; }
+.a-completer .lecon .carte p:not(.carte-titre) .rep { min-width: 27mm; max-width: 31mm; }
+.a-completer .lecon .carte-titre .rep { height: 8mm; vertical-align: baseline; min-width: 30mm; }
+.a-completer .lecon .carte-titre:has(.rep) { min-height: 10mm; line-height: 1; align-items: flex-end; }
+
+
+/* Les pistes sur trois colonnes : des colonnes égales, que les blancs ne peuvent pas élargir */
+.cartes.trois { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4mm 4mm; }
+.cartes.trois .carte { padding: 2.8mm 3.2mm 3.2mm; }
+.cartes.trois .carte-titre { flex-wrap: wrap; }
+.cartes.trois .carte-titre small { margin-left: 0; flex-basis: 100%; order: -1; font-size: 9.5pt; }
+.a-completer .lecon .cartes.trois .carte-titre .rep { max-width: calc(100% - 10mm); min-width: 26mm; }
+
+/* La méthode, moins haute : une colonne d'exemples plus étroite, des lignes un peu moins hautes */
+.methode li { grid-template-columns: 1fr 56mm; padding-bottom: 2.6mm; }
+.a-completer .lecon .methode li:has(.rep) { line-height: 1.42; }
+.a-completer .lecon .methode .etape:has(.rep) { line-height: 2.1; }
+
+/* « Observer et réfléchir » : une grande carte sur deux rangées, l'indice vu plus tôt ou l'énigme */
+.cartes.trois .carte.haute { grid-column: 3; grid-row: 1 / span 2; }
+.variante { margin-top: 2.4mm; padding-top: 2mm; border-top: 0.25mm dashed var(--trait); }
+.lecon .variante-titre { font-weight: 700; font-size: 10.6pt; margin-bottom: 0.6mm; }
+.lecon .aide-variante { font-size: 9.8pt; color: var(--graphite-2); margin-top: 1.2mm !important; }
+/* L'image à observer, à côté de sa consigne */
+.enigme-image { display: grid; grid-template-columns: 27mm 1fr; gap: 2.4mm; align-items: center; margin: 1.6mm 0 0; }
+.enigme-image svg { display: block; width: 100%; height: auto; }
+.lecon .carte.haute .livre { font-size: 10.6pt; line-height: 1.32; }
+
+/* 3. Chaque suite : sa sorte de choix, sa définition, la conséquence, l'indice */
+.consigne-exercice { margin: 3mm 0 0 !important; color: var(--canard); font-size: 11pt; }
+ol.consigne-exercice { padding-left: 5.5mm; line-height: 1.4; }
+.consigne-exercice li { padding-left: 1mm; margin-bottom: 0.8mm; }
+.consigne-exercice li::marker { font-weight: 700; }
+.consigne-exercice li:last-child { margin-bottom: 0; }
+.rencontre-precedente { margin-top: 2.5mm; padding: 2mm 3.5mm; border-left: 0.6mm solid var(--canard); background: #f2f7f6; }
+.lecon .repere-rencontre { font-size: 10.5pt; font-weight: 700; color: var(--canard); }
+.rencontre-precedente .livre { margin-top: 0.6mm; }
+.rencontre-precedente + .situation { margin-top: 2mm; }
+.carte.consequence { display: flex; flex-direction: column; }
+/* La suite, une petite scène du livre : son numéro centré en haut, comme la scène 12 */
+.mini-scene { margin-bottom: 2.6mm; padding: 2mm 3.2mm 2.6mm; border: 0.35mm solid var(--graphite); border-radius: 1.5mm; background: #fff; box-shadow: 0.9mm 0.9mm 0 var(--canard-pale); }
+.mini-numero { text-align: center; margin-bottom: 1mm !important; line-height: 1; }
+.lecon .mini-scene .livre { font-size: 10.6pt; line-height: 1.35; }
+.num-choix { display: inline-block; font: 700 14pt/1 var(--f-livre); font-variant-numeric: lining-nums; }
+.lecon .indice { margin-top: auto !important; padding-top: 2mm; display: flex; gap: 1.5mm; align-items: baseline; font-size: 10pt; color: var(--graphite-2); }
+.indice > span:first-child { font-weight: 700; color: var(--canard); flex: none; }
+/* À compléter : une case vide pour le numéro, une ligne pour l'indice */
+.a-completer .num-choix { color: transparent; width: 15mm; height: 9mm; border: 0.4mm solid var(--graphite); border-radius: 1.5mm; }
+.a-completer .lecon .indice { align-items: flex-end; }
+.a-completer .indice-texte { flex: 1; }
+.a-completer .indice-texte > i { height: 7mm; }
+
+/* De l'air entre la phrase d'introduction et la scène de la rivière */
+.situation { margin-top: 3mm; }
+
+/* Un nom de piste long : deux lignes d'écriture à côté du picto (version à compléter) */
+.a-completer .carte-titre .titre-a-ecrire { flex: 1; align-self: flex-end; }
+.a-completer .carte-titre .titre-a-ecrire > i { height: 7.2mm; border-bottom-style: dotted; border-bottom-color: var(--graphite); }
+/* Version à compléter : un peu moins d'espace entre les parties, la page 1 étant pleine */
+.a-completer .lecon .bloc { margin-top: 5mm; }
+.a-completer .lecon .bloc.premier { margin-top: 1mm; }
+
+/* Des conseils pour dépasser l'exercice de repérage des quatre conséquences. */
+.conseil { margin-top: 6mm; padding: 3.5mm 4mm; border-left: 0.6mm solid var(--canard); background: #f2f7f6; }
+.lecon .conseil-titre { margin: 0 0 2mm; font-weight: 700; color: var(--canard); }
+.conseil p { font-size: 11pt; line-height: 1.45; }
+.conseil p + p { margin-top: 2mm; }
+
+/* La page 2 à compléter : des cartes un peu plus serrées */
+.a-completer .lecon .cartes:has(.consequence) { gap: 3.5mm 5mm; margin-top: 2mm; }
+.a-completer .mini-scene { margin-bottom: 1.6mm; padding-top: 1.6mm; padding-bottom: 2.2mm; }
+.a-completer .consequence .carte-titre:has(.rep) { min-height: 9mm; }
+.a-completer .lecon .carte.consequence p:has(.rep) { line-height: 2.05; }
+.rencontre-precedente { padding-top: 1.6mm; padding-bottom: 1.6mm; }
+.a-completer .consigne-exercice { margin-top: 2mm !important; }
+.a-completer .rencontre-precedente { margin-top: 1.6mm; }
+.a-completer .num-choix { height: 8mm; }
+.a-completer .mini-numero { margin-bottom: 0.6mm !important; }
+.a-completer .lecon .cartes:has(.consequence) { gap: 3mm 5mm; }
+.a-completer .carte.consequence { padding-top: 2.6mm; padding-bottom: 2.8mm; }
+
+/* L'indice à écrire : « L'indice : » au-dessus, puis deux lignes sur toute la largeur */
+.a-completer .lecon .indice { display: block; }
+.a-completer .indice-texte { display: block; }
+.a-completer .indice-texte > i { height: 8.5mm; }
+.a-completer .indice-texte > i:first-child { height: 5.5mm; }

@@ -652,6 +652,10 @@ par ligne, avec « Annuler ».
   Il n'existe pas de deuxième version de la préparation à publier ou synchroniser.
 - La partie est une enveloppe titrée regroupant les chapitres, avec
   son image de repérage selon F10.1 ; elle ne porte pas de résumé narratif.
+  Depuis le 19 novembre 2026, elle reçoit une description facultative et
+  courte de l'endroit, de l'ambiance et de ce qu'on y trouve
+  ([F02.1](#f021--fiche-de-lhistoire-à-imprimer)), qui n'est pas un résumé :
+  ce qui s'y passe reste au chapitre.
   Le résumé et le déroulement préparé se situent au niveau du chapitre.
   L'enseignant peut les approfondir depuis la page des parties et chapitres, sur les
   mêmes éléments que dans la préparation. Le résumé est consultable par les
@@ -897,6 +901,125 @@ durée de conservation des pistes écartées. Il n'y a pas de version
 publique de la préparation à maintenir. Les étapes du guidage sont distinctes des
 parties et chapitres du plan narratif.
 
+### F02.1 — Fiche de l'histoire à imprimer
+
+**Décidé par le porteur le 18 novembre 2026, sur recommandation acceptée en
+entier (« 1 oui, 2 oui, 3 impression seule ») ; construction autorisée le
+même jour. Révisé par lui le 19 novembre 2026 (« 1 oui, 2 oui, 3 oui ») :**
+la liste « Lieux » de l'Univers est retirée, une description facultative de
+la partie la remplace, et les règles du jeu sortent de la fiche. Le guide
+demande une fiche de référence des personnages, des lieux et des objets, dont
+chaque élève a un exemplaire et que l'enseignant tient à jour, pour éviter les
+contradictions entre chapitres. Plutôt qu'une feuille papier à remplir
+(écartée : saisie en double, exemplaires vite dépassés), l'application
+compose cette fiche à partir de la Préparation, remplie et prête à imprimer.
+Un élément validé en cours de route se saisit dans la Préparation, et une
+nouvelle impression donne la fiche à jour.
+
+- **Où :** dans la Préparation, une commande « Imprimer la fiche de
+  l'histoire », à toutes les étapes, pour l'adulte seul. Elle ouvre la fiche
+  composée, avec « Imprimer ». Les élèves n'y ont pas accès, ni à l'écran ni
+  autrement (F02-AC04 inchangé) : décidé par le porteur, l'impression seule
+  pour cette livraison, sans version à l'écran pour l'élève.
+- **Ce qu'elle reprend, dans cet ordre, sur un A4 recto verso au plus :**
+  - le titre du projet ;
+  - l'univers et l'enjeu : leur « Nous retenons » ;
+  - les héros : nom, autres noms, portrait s'il existe, et leur description
+    (le « Nous retenons » de l'onglet du héros) ;
+  - les autres personnages : nom, autres noms, portrait s'il existe,
+    description ;
+  - « Les parties de l'aventure » : toutes les parties, dans l'ordre du
+    livre, chacune avec son image de repérage en vignette (environ 2,5 cm),
+    son titre et sa description si elle en a une (ci-dessous) ; pas les
+    chapitres (décidé par le porteur le 19 novembre 2026, « ok fais-le ») ;
+  - les objets de l'histoire : nom, image s'il en a une, description ;
+  - « Notre façon d'écrire » (réglages du projet), puis, dans un récit à
+    choix, la feuille d'aventure du lecteur, si elle s'imprime dans le livre.
+- **Ce qu'elle ne reprend pas :** les chapitres et le reste du plan, que
+  « Mon chapitre » couvre, les questions et les idées de l'étape « Grandes
+  étapes », les règles du jeu (« pas nécessaire », 19 novembre 2026), les questions, les
+  idées et les pistes, les formules d'action, la fiche visuelle des images,
+  les scènes.
+- **Rien d'inventé :** une rubrique vide n'apparaît pas ; aucun texte n'est
+  résumé ni réécrit, ni par l'application ni par l'IA. Pas d'IA, donc pas
+  d'étoiles. Un texte long s'imprime entier ; si la fiche dépasse deux pages,
+  un message le dit, sans rien couper.
+- **Une Préparation vide :** la commande reste visible ; la fiche dit en une
+  phrase qu'elle se remplit avec ce que la classe retient.
+- **Mise en page :** celle des documents à imprimer du site (ressources) :
+  A4, lisible en photocopie noir et blanc, prénoms et noms tels qu'ils sont
+  saisis, l'orthographe fixée étant celle de la Préparation.
+- **Modes :** en projet personnel, la même fiche (l'auteur peut la garder
+  près de lui) ; en récit classique, sans feuille d'aventure (F02-AC20).
+- **Rubriques à cocher, décidé par le porteur le 19 novembre 2026** (« Oui,
+  comme ça ») : derrière un bouton « Réglages » sur l'écran de la fiche, comme
+  sur la page des fiches de rédaction, une case par rubrique, jamais par
+  élément (écarté : l'histoire est décidée avec la classe) : l'univers,
+  l'enjeu, le héros, les autres personnages, les parties, les objets,
+  « Notre façon d'écrire », la feuille d'aventure. Tout est coché par
+  défaut ; la fiche suit à mesure qu'on coche, et le projet garde le choix
+  pour la réimpression suivante. Une rubrique vide n'a pas de case, puisqu'elle
+  n'apparaît pas. Toutes décochées, « Imprimer » s'éteint.
+
+**Description d'une partie, décidée le 19 novembre 2026, à la place d'une
+liste « Lieux » :** les parties sont le plus souvent des lieux, et une liste
+à part ferait doublon. Chaque partie reçoit une description facultative et
+courte (300 signes au plus) : l'endroit, l'ambiance, ce qu'on y trouve. Ce
+n'est pas un résumé narratif : ce qui s'y passe reste au résumé du chapitre
+(F02). Un lieu qui revient sans être une partie s'écrit dans le « Nous
+retenons » de l'Univers.
+
+- **Où elle s'écrit :** sous la carte de la partie, à l'étape « Grandes
+  étapes » de la Préparation, et dans les réglages de la partie depuis
+  « Parties et chapitres » ; c'est la même description.
+- **Pour l'IA :** elle part avec toute aide demandée sur une scène d'un
+  chapitre de cette partie (consigne, idées de choix, bloc de scènes,
+  écriture d'une scène, description d'une image de scène), jamais en liste de
+  toutes les parties.
+- **Sur la fiche :** dans « Les parties de l'aventure », à la place des lieux ;
+  une partie sans description y figure aussi, avec son titre et son image.
+- Comme la Préparation, elle ne regarde que l'adulte : le poste d'un élève ne
+  la lit pas.
+
+**Critères d'acceptation :**
+
+- **F02-AC21 — Fiche composée depuis la Préparation :** étant donné un
+  projet de classe avec l'univers et l'enjeu retenus, le héros Lou avec son
+  portrait, deux autres personnages, trois parties dont une sans
+  description, et deux objets, lorsque l'enseignant choisit « Imprimer la
+  fiche de l'histoire », alors la fiche montre ces éléments dans l'ordre de
+  F02.1, remplis, les trois parties dans l'ordre du livre avec leur image,
+  la partie sans description sous son seul titre, sans les chapitres, les
+  idées, les formules ni les règles du jeu, et tient sur un A4 recto verso.
+- **F02-AC22 — Fiche à jour :** étant donné une fiche déjà imprimée, lorsque
+  l'enseignant écrit la description de la partie « Le marais » dans la
+  Préparation puis rouvre la fiche, alors sa description y figure, sous son
+  titre, à sa place dans l'ordre du livre, sans autre geste.
+- **F02-AC23 — Rubriques vides et texte entier :** étant donné un projet sans
+  objets ni partie et un héros à la description longue, lorsque
+  l'enseignant ouvre la fiche, alors les rubriques des objets et des parties
+  n'y figurent pas, la description s'imprime entière, et un message prévient
+  si la fiche dépasse deux pages.
+- **F02-AC24 — Fiche réservée à l'adulte :** étant donné Alice connectée avec
+  son profil élève, lorsqu'elle ouvre l'adresse de la fiche, alors l'accès
+  est refusé sans rien montrer de la Préparation ; son poste ne lit pas non
+  plus la description d'une partie.
+- **F02-AC25 — Description d'une partie :** étant donné les parties « Le
+  port » et « Le lac », lorsque l'enseignant écrit la description du « Lac »
+  sous sa carte à l'étape « Grandes étapes », alors il la retrouve dans les
+  réglages de la partie depuis « Parties et chapitres », elle s'imprime sur
+  la fiche, et une aide demandée sur une scène d'un chapitre du « Lac » la
+  reçoit, quand une aide demandée sur une scène du « Port » ne la reçoit pas.
+- **F02-AC26 — Récit classique :** étant donné un projet en récit classique,
+  lorsque l'enseignant ouvre la fiche, alors elle ne montre pas de feuille
+  d'aventure.
+- **F02-AC27 — Rubriques à cocher :** étant donné une fiche où tout est coché,
+  lorsque l'enseignant ouvre « Réglages » et décoche « Les objets » et
+  « Notre façon d'écrire », alors ces deux rubriques sortent aussitôt de la
+  fiche, les autres gardent leur ordre, et elles restent décochées quand il
+  rouvre la fiche ; un élève ni un autre adulte ne lisent ni ne changent ce
+  choix.
+
 ## F03 — Organiser le récit
 
 ### F03.1 — Histoire, parties, chapitres et scènes
@@ -915,7 +1038,8 @@ chargé ni un périmètre d'accès unique à tous ses participants.
   depuis la préparation de F02. Il ne comporte pas d'élèves attribués par défaut.
 - Les attributions et profils s'appliquent uniquement aux chapitres
   selon F06. La partie regroupe ; elle ne donne pas de droits globaux
-  supplémentaires et ne porte pas de résumé narratif selon F02. Les images
+  supplémentaires et ne porte pas de résumé narratif selon F02 (sa
+  description facultative dit l'endroit et l'ambiance, F02.1). Les images
   de repérage suivent F10.1 et les couleurs de chapitres suivent le design.
 - L'ajout d'un deuxième chapitre ne transfère ni ne copie automatiquement
   les attributions du premier. Il ne change pas les droits existants et

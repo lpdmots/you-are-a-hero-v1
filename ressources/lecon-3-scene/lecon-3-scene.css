@@ -1,0 +1,148 @@
+/* Leçon 3 : écrire une scène. Trois pages, à la taille des leçons 1 et 2 (12 pt, lignes d'écriture d'enfant). */
+
+.lecon { font-size: 12pt; line-height: 1.42; }
+.lecon .bloc { margin-top: 6mm; }
+.lecon .bloc.premier { margin-top: 2mm; }
+.lecon .carte p { font-size: 11pt; line-height: 1.4; }
+.lecon .livre { font-size: 11.2pt; }
+.lecon .points li { margin-bottom: 1.6mm; }
+.lecon .points .exemple { margin-left: 0; }
+.lecon .points .contexte-exemple { display: block; margin-top: 1mm; line-height: 1.42; }
+.note { margin-top: 2mm !important; color: var(--graphite-2); font-size: 11pt; }
+.intro { margin-top: 1mm !important; color: var(--graphite-2); }
+
+/* Les mots à placer, sous le titre de la partie (version à compléter seulement) */
+.banque { margin: -0.4mm 0 2.4mm !important; color: var(--canard); font-size: 11pt; }
+.banque em { font-style: italic; color: var(--graphite); letter-spacing: 0.01em; }
+
+/* ————— 1. La scène d'avant, la mienne, les choix ————— */
+.parcours { display: grid; grid-template-columns: 1fr auto 1.25fr auto 1fr; align-items: stretch; gap: 2.5mm; margin: 1mm 0 3mm; }
+.etape-parcours { border: 0.35mm solid var(--graphite-3); border-radius: 2.5mm; padding: 2mm 3mm; }
+.etape-parcours p { font-size: 10.6pt; line-height: 1.35; }
+.etape-parcours .qui-ecrit { font: 700 8.5pt/1.2 var(--f-adulte); letter-spacing: 0.06em; text-transform: uppercase; color: var(--graphite-3); margin-bottom: 1mm !important; }
+.etape-parcours.mienne { border: 0.55mm solid var(--canard); background: var(--canard-pale); }
+.etape-parcours.mienne .qui-ecrit { color: var(--canard); }
+.etape-parcours.apres { border-style: dashed; }
+.fleche { align-self: center; font: 700 14pt/1 var(--f-eleve); color: var(--canard); }
+
+/* ————— 2. Les quatre moments : la légende à gauche, la scène à droite ————— */
+.scene { display: grid; grid-template-columns: 1fr 112mm; gap: 7mm; align-items: center; margin-top: 1mm; }
+.legende { list-style: none; margin: 0; padding: 0; }
+.legende li { display: flex; align-items: flex-start; margin-bottom: 3mm; font-size: 11pt; line-height: 1.35; }
+.legende .r { margin: 0.2mm 2.6mm 0 0; }
+.lecon .r { width: 6mm; height: 6mm; font-size: 9.5pt; }
+.extrait { padding: 3.5mm 5.5mm 4mm 12mm; font-size: 11.2pt; line-height: 1.5; }
+.extrait .numero { font-size: 18pt; margin-bottom: 1.5mm; }
+.extrait .recit + .recit { margin-top: 1.6mm; }
+.r-marge { left: -9.5mm; top: 0.2mm; }
+.choix .pose { font: 700 8pt/1.2 var(--f-adulte); font-style: normal; letter-spacing: 0.06em; text-transform: uppercase; color: var(--graphite-3); margin-bottom: 0.8mm !important; }
+
+/* À compléter : des ronds blancs assez grands pour y écrire une lettre */
+.a-completer .extrait { padding-left: 14mm; }
+.a-completer .extrait .r { width: 8.5mm; height: 8.5mm; background: #fff; border: 0.45mm solid var(--graphite); color: transparent; }
+.a-completer .r-marge { left: -12mm; top: 3.2mm; transform: translateY(-50%); }
+.a-completer .extrait .recit + .recit { margin-top: 2.6mm; }
+
+/* ————— 3. Les sens : quatre cartes sur une rangée ————— */
+.cartes.quatre { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4mm; }
+.cartes.quatre .carte { padding: 2.6mm 3mm 3mm; }
+.cartes.quatre .carte-titre { gap: 1.2mm; }
+
+/* ————— 4. Le personnage : chaque réponse correspond à un extrait précis ————— */
+.personnage { width: 100%; border-collapse: collapse; }
+.personnage td { padding: 1mm 3mm; border-bottom: 0.25mm solid var(--trait); vertical-align: middle; line-height: 1.7; }
+.personnage td:first-child { width: 70mm; }
+.conseil { margin-top: 3.5mm; padding: 2.5mm 3.5mm; border-left: 0.6mm solid var(--canard); background: #f2f7f6; }
+.lecon .conseil-titre { font-weight: 700; font-size: 11pt; color: var(--canard); margin: 0 0 1mm; }
+.conseil p { font-size: 11pt; line-height: 1.4; }
+
+/* ————— 5. Les émotions : nommer, montrer ————— */
+.emotions { width: 100%; border-collapse: collapse; margin-top: 2mm; }
+.emotions th { text-align: left; font: 700 10pt/1.2 var(--f-eleve); color: var(--canard); padding: 0 3mm 1.2mm; border-bottom: 0.35mm solid var(--graphite); }
+.emotions td { padding: 2mm 3mm; border-bottom: 0.25mm solid var(--trait); vertical-align: top; }
+.emotions th:first-child, .emotions td:first-child { width: 42mm; }
+.emotions td.non { color: var(--graphite-2); }
+.a-completer .emotions .lignes-a-ecrire { --pas: 8mm; }
+
+/* ————— Page 3 : l'entraînement, puis les règles ————— */
+.entrainement { margin-top: 5mm; padding: 3mm 4mm 3.5mm; border: 0.35mm solid var(--graphite); border-radius: 2.5mm; box-shadow: 1.2mm 1.2mm 0 var(--canard-pale); }
+.entrainement p { font-size: 11pt; }
+.entrainement .depart { margin-top: 2mm !important; padding: 1.5mm 3mm; border-left: 0.6mm solid var(--canard-pale); }
+.entrainement .reponse { margin-top: 2mm !important; font-family: var(--f-main); font-size: 10.5pt; line-height: 1.9; color: var(--graphite-2); }
+.a-completer .entrainement .lignes-a-ecrire { --pas: 8.5mm; }
+
+/* Des lignes hautes là où il y a un blanc, et des blancs assez longs pour une écriture d'enfant */
+.a-completer .lecon :is(p, li):has(.rep) { line-height: 2.5; }
+.a-completer .lecon .rep { min-width: 34mm; height: 1.3em; vertical-align: -0.4em; border-bottom-width: 0.35mm; }
+.a-completer .lecon .carte-titre .rep { height: 8mm; vertical-align: baseline; min-width: 28mm; }
+.a-completer .lecon .carte-titre:has(.rep) { min-height: 10mm; line-height: 1; align-items: flex-end; }
+.a-completer .personnage .rep { min-width: 60mm; }
+
+/* À compléter : la version vide prend plus de hauteur (blancs, ronds, lignes) ; on la resserre sans
+   descendre sous des lignes où un enfant écrit à l'aise */
+.a-completer .lecon .points li:has(.rep) { line-height: 2.15; }
+.a-completer .extrait .recit + .recit { margin-top: 1.8mm; }
+.a-completer .lecon .bloc { margin-top: 5mm; }
+.a-completer .lecon .bloc.premier { margin-top: 1.5mm; }
+.a-completer .conseil { margin-top: 2.5mm; }
+.a-completer .entrainement { margin-top: 3.5mm; }
+.a-completer .entrainement .lignes-a-ecrire { --pas: 8mm; }
+.a-completer .parcours { margin: 0.5mm 0 2mm; }
+.a-completer .extrait { padding-top: 2.5mm; padding-bottom: 3mm; }
+.a-completer .extrait .numero { margin-bottom: 0.5mm; }
+.a-completer .intro { margin-top: 0 !important; }
+.a-completer .note { margin-top: 1.2mm !important; }
+.a-completer .lecon .bloc:not(.premier) h2 { margin-bottom: 1mm; }
+.a-completer .scene { margin-top: 0; }
+.a-completer .lecon:last-child .bloc:not(.premier) { margin-top: 3.5mm; }
+.a-completer .lecon:last-child .banque { margin-bottom: 1.5mm !important; }
+
+/* Page 3 : deux petits exercices, sous la partie qu'ils font pratiquer */
+.exo { margin-top: 2.5mm; padding: 2mm 3.5mm 2.5mm; border-left: 0.6mm solid var(--canard); background: #f2f7f6; }
+.exo p { font-size: 11pt; line-height: 1.4; }
+.lecon .exo-titre { font-weight: 700; color: var(--canard); margin-bottom: 0.6mm !important; }
+.exo .livre { font-size: 11pt; }
+.exo .reponse { margin-top: 1.2mm !important; font-family: var(--f-main); font-size: 10.5pt; line-height: 1.9; color: var(--graphite-2); }
+.a-completer .exo .lignes-a-ecrire { --pas: 8.5mm; }
+
+/* Le dragon qui écrit est en largeur : un peu plus haut que dans les autres leçons, à la hauteur du titre */
+.tete img { height: 30mm; }
+
+/* Sous la légende : les moments ne suivent pas un ordre fixe (la scène 8 les mélange) */
+.ordre { margin-top: 1mm !important; font-size: 10.5pt; line-height: 1.35; color: var(--graphite-2); }
+
+/* ————— 2, à compléter : la scène 8 en morceaux de papier découpés et mélangés ————— */
+.puzzle .banque { margin: 0 0 2mm !important; line-height: 1.35; }
+.legende.en-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 1.6mm 7mm; margin-bottom: 3.5mm; }
+.legende.en-grille li { margin: 0; font-size: 10.5pt; line-height: 1.3; }
+.morceaux { position: relative; display: grid; gap: 2.6mm; padding-top: 1mm; }
+/* Les ciseaux, sur le premier trait de coupe */
+.morceaux::before { content: "✂"; position: absolute; left: 6mm; top: -2.4mm; z-index: 1; padding: 0 1mm; background: #fff; font: 13pt/1 "Apple Symbols", "Segoe UI Symbol", sans-serif; color: var(--graphite-2); }
+.morceau {
+  display: grid;
+  grid-template-columns: 9mm 1fr;
+  gap: 3.5mm;
+  align-items: center;
+  width: calc(100% - 8mm);
+  margin-left: var(--x, 0);
+  padding: 2.2mm 3.5mm;
+  border: 0.35mm dashed var(--graphite);
+  background: #fff;
+  transform: rotate(var(--r, 0deg));
+  box-shadow: 0.9mm 0.9mm 0 var(--canard-pale);
+}
+.morceau p { font: 400 11pt/1.45 var(--f-livre); font-variant-numeric: lining-nums; }
+.morceau .case, .morceau .rond { width: 9mm; height: 9mm; border: 0.45mm solid var(--graphite); background: #fff; }
+.morceau .case { border-radius: 1.2mm; }
+.morceau .rond { border-radius: 50%; }
+.fin-fixe { margin-top: 3mm; padding: 1.6mm 3.5mm 2mm; border-top: 0.35mm solid var(--graphite); }
+.fin-fixe p:not(.pose) { font: italic 400 10.8pt/1.4 var(--f-livre); font-variant-numeric: lining-nums; }
+.fin-fixe .pose { font: 700 8pt/1.2 var(--f-adulte); letter-spacing: 0.06em; text-transform: uppercase; color: var(--graphite-3); margin-bottom: 0.6mm !important; }
+.legende.en-grille { margin-bottom: 3mm; }
+.morceaux { gap: 2mm; }
+.morceau { padding: 1.6mm 3.5mm; }
+.morceau .case, .morceau .rond { width: 8.5mm; height: 8.5mm; }
+.fin-fixe { margin-top: 2.2mm; padding-top: 1.2mm; }
+
+/* Les ciseaux posés sur le trait de coupe du premier morceau, pas au-dessus */
+.morceaux::before { top: -0.4mm; line-height: 1; }

@@ -1,0 +1,61 @@
+/* Feuilles à imprimer d'« Il était une classe » : A4, photocopiables en noir et blanc.
+   Jetons repris du système « Cahiers d'aventure » (docs/design.md) ; voix : la main (Playwrite),
+   l'élève qui lit (Andika), l'extrait de livre (Vollkorn), l'outil pour l'adulte (Atkinson). */
+@font-face { font-family: "Andika"; src: url("polices/andika-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Andika"; src: url("polices/andika-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Andika"; src: url("polices/andika-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Atkinson"; src: url("polices/atkinson-hyperlegible-next-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Atkinson"; src: url("polices/atkinson-hyperlegible-next-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Vollkorn"; src: url("polices/vollkorn-latin-400-normal.woff2") format("woff2"); font-weight: 400; }
+@font-face { font-family: "Vollkorn"; src: url("polices/vollkorn-latin-400-italic.woff2") format("woff2"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Vollkorn"; src: url("polices/vollkorn-latin-700-normal.woff2") format("woff2"); font-weight: 700; }
+@font-face { font-family: "Playwrite"; src: url("polices/playwrite-fr-trad.woff2") format("woff2"); font-weight: 300 400; }
+
+:root {
+  --graphite: #1e2226;
+  --graphite-2: #4a5157;
+  --graphite-3: #636b72;
+  --trait: #9aa1a3; /* lignes d'écriture : assez sombres pour passer à la photocopie */
+  --canard: #0b6a73;
+  --canard-pale: #e1f0ef;
+  --f-eleve: "Andika", system-ui, sans-serif;
+  --f-main: "Playwrite", cursive;
+  --f-adulte: "Atkinson", system-ui, sans-serif;
+  --f-livre: "Vollkorn", Georgia, serif; /* un extrait de livre ; ses chiffres en capitales (lining-nums), le « 1 » ancien se lisant « I » */
+}
+@page { size: A4; margin: 0; }
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body { color: var(--graphite); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+.page {
+  width: 210mm;
+  height: 297mm;
+  padding: 11mm 12mm 9mm;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  position: relative;
+  background: #fff;
+}
+.page:last-child { page-break-after: auto; break-after: auto; }
+/* À l'écran, les feuilles l'une sous l'autre sur un bureau gris */
+@media screen {
+  body { background: #e9ebe7; }
+  .page { margin: 8mm auto; box-shadow: 0 2px 14px rgba(0, 0, 0, 0.18); }
+}
+
+/* Le pied : d'où vient la feuille */
+.pied {
+  margin-top: auto;
+  padding-top: 2.5mm;
+  border-top: 0.25mm solid var(--trait);
+  display: flex;
+  align-items: center;
+  gap: 3mm;
+  font: 400 7.5pt/1.2 var(--f-adulte);
+  color: var(--graphite-3);
+}
+.pied img { height: 6.5mm; width: auto; display: block; }
+.pied .droite { margin-left: auto; text-align: right; }

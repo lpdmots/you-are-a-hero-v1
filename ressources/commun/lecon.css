@@ -1,0 +1,128 @@
+/* Les leçons : la trace écrite après la recherche, en version complète et à compléter (a-completer.js). */
+
+.lecon { font: 400 11pt/1.38 var(--f-eleve); }
+.lecon p { margin: 0; }
+.lecon p + p { margin-top: 1.3mm; }
+.lecon strong { font-weight: 700; }
+/* Un blanc et la ponctuation qui le suit ne se séparent pas en fin de ligne */
+.colle { white-space: nowrap; }
+/* Un mot à trouver ne se coupe jamais : sinon le blanc qui le remplace se mesure sur toute une ligne */
+.rep { white-space: nowrap; }
+
+/* ————— L'en-tête ————— */
+.tete { display: flex; align-items: flex-end; gap: 6mm; margin-bottom: 0; }
+.tete-texte { flex: 1; min-width: 0; }
+.sorte { font: 700 8pt/1 var(--f-adulte); letter-spacing: 0.09em; text-transform: uppercase; color: var(--canard); }
+/* La cursive monte haut : de l'air entre la ligne de la leçon et son titre */
+.lecon h1 { font: 400 22pt/1.6 var(--f-main); margin: 3.5mm 0 2mm; }
+.tete img { height: 27mm; width: auto; margin-bottom: 1mm; }
+.tete.suite-de-page { margin-bottom: 1mm; }
+.tete.suite-de-page .sorte { margin-bottom: 1mm; }
+.chapeau { color: var(--graphite-2); margin-top: 1mm !important; }
+
+/* ————— Les parties ————— */
+.bloc { margin-top: 4.5mm; }
+.lecon h2 { display: flex; align-items: center; gap: 2.5mm; font: 700 13pt/1.2 var(--f-eleve); margin: 0 0 1.6mm; }
+.n {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 7mm;
+  height: 7mm;
+  border: 0.45mm solid var(--canard);
+  border-radius: 50%;
+  font: 700 10.5pt/1 var(--f-eleve);
+  color: var(--canard);
+}
+.deux { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+.points { margin: 1.2mm 0 0; padding-left: 4.6mm; }
+.points li { margin-bottom: 1.2mm; }
+.points li::marker { color: var(--canard); }
+.points.numerotes li::marker { font-weight: 700; }
+
+/* ————— Les repères a à e : la légende et l'extrait se répondent ————— */
+.r {
+  display: inline-grid;
+  place-items: center;
+  width: 4.6mm;
+  height: 4.6mm;
+  margin: 0 1mm;
+  border-radius: 50%;
+  background: var(--canard);
+  color: #fff;
+  font: 700 8pt/1 var(--f-eleve);
+  vertical-align: 0.4mm;
+  flex: none;
+}
+
+/* ————— Un extrait de livre : la voix du livre (Vollkorn), ses chiffres en capitales ————— */
+.extrait {
+  margin: 0;
+  padding: 3.5mm 6mm 4mm 8mm;
+  border: 0.35mm solid var(--graphite);
+  border-radius: 1.5mm;
+  font: 400 11pt/1.42 var(--f-livre);
+  font-variant-numeric: lining-nums;
+  box-shadow: 1.2mm 1.2mm 0 var(--canard-pale);
+}
+.extrait .numero { text-align: center; font: 700 16pt/1 var(--f-livre); font-variant-numeric: lining-nums; margin-bottom: 2mm; }
+.extrait u { text-decoration-thickness: 0.35mm; text-underline-offset: 0.8mm; text-decoration-color: var(--canard); }
+.recit, .choix { position: relative; }
+/* Le repère d'un paragraphe entier, dans la marge de l'extrait */
+.r-marge { position: absolute; left: -7.2mm; top: 0.8mm; margin: 0; }
+.choix { margin-top: 2.2mm; padding-top: 1.8mm; border-top: 0.25mm solid var(--graphite); }
+.choix p { font-style: italic; }
+.choix p + p { margin-top: 0.5mm; }
+.choix .r-marge { top: 2.6mm; }
+.livre { font: italic 400 10.6pt/1.35 var(--f-livre); font-variant-numeric: lining-nums; }
+.exemple { display: flex; align-items: baseline; gap: 2mm; margin-top: 0.8mm; font: italic 400 10.6pt/1.3 var(--f-livre); font-variant-numeric: lining-nums; }
+.exemple::before { flex: none; width: 4.4mm; font: 700 11pt/1 var(--f-eleve); text-align: center; }
+.exemple.oui::before { content: "✓"; color: var(--canard); }
+.exemple.non { color: var(--graphite-2); text-decoration: line-through; text-decoration-thickness: 0.25mm; }
+.exemple.non::before { content: "✗"; color: var(--graphite-2); }
+
+/* ————— Des cartes : un schéma ou un picto, un nom, à quoi cela sert ————— */
+.cartes { display: grid; grid-template-columns: 1fr 1fr; gap: 3.5mm 5mm; margin-top: 2.5mm; }
+.cartes.trois { grid-template-columns: repeat(3, 1fr); }
+.carte { border: 0.35mm solid var(--graphite); border-radius: 2.5mm; padding: 2.6mm 3.4mm 3mm; break-inside: avoid; }
+.carte.discrete { border-style: dashed; border-color: var(--graphite-3); }
+.carte-titre { display: flex; align-items: center; gap: 2mm; font: 700 11.5pt/1.25 var(--f-eleve); margin-bottom: 1.2mm !important; }
+.carte-titre small { font-weight: 400; font-size: 9pt; color: var(--graphite-3); margin-left: auto; white-space: nowrap; }
+.carte p { font-size: 10.3pt; line-height: 1.35; }
+.carte .question { color: var(--canard); font-weight: 700; }
+.carte svg.schema { display: block; width: 100%; height: auto; margin: 0.5mm 0 1.5mm; }
+.picto { width: 7.5mm; height: 7.5mm; flex: none; fill: none; stroke: var(--canard); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ————— La dernière ligne, comme le choix du bas d'une page de livre-jeu ————— */
+.suite {
+  margin-top: auto !important;
+  padding: 1.5mm 0;
+  border-top: 0.25mm solid var(--graphite);
+  border-bottom: 0.25mm solid var(--graphite);
+  font: 400 10.5pt/1.5 var(--f-main);
+  text-align: right;
+}
+.suite + .pied { margin-top: 3mm; }
+.pousse { margin-top: auto; }
+
+/* ————— Version à compléter ————— */
+.seul-a-completer { display: none; }
+.a-completer .seul-a-completer { display: revert; }
+.a-completer .seul-complet { display: none; }
+.a-completer .rep {
+  display: inline-block;
+  height: 1.15em;
+  vertical-align: -0.25em;
+  border-bottom: 0.3mm dotted var(--graphite);
+  color: transparent;
+}
+/* Un blanc dans le texte d'une carte reste sur la ligne de ses mots ; un titre de carte garde toute sa largeur */
+.a-completer .rep { max-width: 100%; }
+.a-completer .carte p:not(.carte-titre) .rep { max-width: 34mm; }
+/* De la hauteur pour écrire à la main là où il y a un blanc */
+.a-completer :is(p, li):has(> .rep, > strong > .rep, > span > .rep, > .colle .rep) { line-height: 1.8; }
+.a-completer .carte p:has(.rep) { line-height: 1.72; }
+.a-completer .carte-titre:has(.rep) { min-height: 8mm; }
+.lignes-a-ecrire { display: block; font-style: normal; text-decoration: none; }
+.lignes-a-ecrire > i { display: block; height: var(--pas, 8mm); border-bottom: 0.3mm solid var(--trait); }
+.lignes-a-ecrire::before { content: none !important; }

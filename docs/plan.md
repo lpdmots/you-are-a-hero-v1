@@ -3828,6 +3828,14 @@ V6, le premier envoi à l'imprimeur.
        dernières retouches locales : réexporté et rechargé (`--refaire`) le
        même jour. Avant tout chargement en production, réexporter le livre
        local (`--exporter`).
+   - **Un livre d'exemple écrit en « tu », décidé par lui le 16 novembre
+     2026, pour plus tard :** court, au présent, le lecteur étant le héros,
+     forme la plus courante du genre, qu'aucun des deux livres ne montre
+     (Bouquin : « il » au présent, le lecteur guidant le héros ; Passeurs :
+     « il » au passé). Il donnerait trois formes à comparer pour la partie 6
+     de la leçon 1. Bouquin n'est pas converti, sur mon avis : mascotte du
+     site, et sa feuille de recherche s'appuie sur la distinction du héros et
+     du lecteur. À écrire avec le skill `livres-d-exemple`.
 4. **Tutoriels :** une courte vidéo par moment de l'outil, qui s'ouvre avec
    l'écran d'aide de ce moment, idée du porteur ; `/aide` les rassemble, avec
    une page par parcours, qui tient lieu des guides remis à plus tard pour le
@@ -3838,6 +3846,544 @@ V6, le premier envoi à l'imprimeur.
    affiches, grille de relecture, lettre aux familles…), rédigé par Claude
    d'après son expérience et corrigé par lui ; le lien aux programmes
    vérifié sur le Bulletin officiel en vigueur.
+   Commencé le 13 novembre 2026, document par document, à sa demande.
+   Une liste d'une trentaine de documents, classés par moment du projet
+   (cadrer, découvrir le genre, préparer, écrire et relire, tester et
+   fabriquer, faire vivre), lui a été proposée, avec une première série de
+   onze ; le reste n'est ni validé ni écarté. Les documents se fabriquent dans [`ressources/`](../ressources/)
+   (une page HTML par document, `ressources/commun/` pour la feuille de
+   style, les polices et les dessins ; PDF par
+   `node ressources/composer.mjs <nom>`, avec le Chromium de l'application) ;
+   la page « Ressources » du site n'est pas construite.
+   **Terminés, d'après le porteur le 17 novembre 2026 :** les leçons 1, 2 et 3,
+   les trois feuilles de recherche, « Mon chapitre » avec sa feuille
+   « Un obstacle », et « Le déroulé du projet ». Les mentions « premier jet » et « à relire » ci-dessous
+   datent de leur écriture.
+   **Déroulé du projet, validé par le porteur le 17 novembre 2026 après relecture et corrections**
+   (`ressources/deroule-du-projet/`) : une fiche de deux pages pour
+   l'enseignant, tirée du guide, sans nombre de séances ni d'heures (« cela
+   varie d'un livre à l'autre », sa demande) ; quatre temps et quatorze
+   étapes, chacune avec ce qui sert, marqué par un signe (à imprimer, sur le
+   site, dans l'outil, à venir). Les documents à venir y figurent sans lien,
+   à sa demande. Les documents à imprimer ne sont liés que lorsque la page
+   est servie par le site (`data-pdf`), faute d'adresse publique : le PDF ne
+   porte que les liens du site (bibliothèque, modèle d'autorisation, guide).
+   Le lien aux programmes n'y est pas, il reste à faire, vérifié au Bulletin
+   officiel. La fiche de référence de l'histoire est
+   notée « à venir », comme la fonction prévue de l'outil. L'étape de commande
+   et de diffusion reste après la mise en page, quand le prix est connu.
+   Repris le même jour sur sa relecture : notes des versions retirées, « un
+   seul mécanisme de jeu suffit souvent » (un conseil, non une règle),
+   « l'orthographe » plutôt que « la langue », la liste « J'ai pensé à »
+   nommée, la lecture « dans votre classe ou dans une autre ». Décidé par lui,
+   sur mon avis : le signe ✦ de l'application devant les fonctions de l'outil
+   qui passent par l'IA (idées de la Préparation, scènes proposées dans
+   « Chemins », « Formuler », correction, images créées), sans ligne de plus,
+   et en légende « Avec l'IA, facultative ; les élèves n'y ont pas accès » ;
+   « payante » n'y figure pas. Nouveau dessin d'en-tête, généré par lui
+   d'après mon prompt (Bouquin qui déroule un rouleau dont le chemin mène au
+   livre) : retourné pour regarder vers la feuille, à sa suggestion, recadré
+   (`commun/images/dragon-deroule.webp`).
+   Cinq corrections approuvées et appliquées le même jour après analyse :
+   les obstacles sont sélectionnés avant de développer leurs choix, comme
+   dans « Mon chapitre » ; la relecture après remise mène à une validation
+   ou à une reprise ciblée ; une phrase précise que l'écriture, la relecture
+   et les essais se répètent au rythme de chacun ; l'étape 12 devient
+   « Préparer la commande et la diffusion » ; l'impression distingue la
+   réception de l'exemplaire d'essai, les corrections et la livraison finale,
+   sans délai chiffré. Source HTML et PDF actualisés, format de deux pages
+   conservé.
+   **Leçon 3 « Écrire une scène », validée et clôturée par le porteur le
+   17 novembre 2026 après analyse et corrections** (`ressources/lecon-3-scene/`), trois pages, en
+   version complète et à compléter. Décidé avec lui avant d'écrire : la
+   leçon n'enseigne pas l'outil (valable pour toute classe, une feuille
+   imprimée vieillit mal, l'outil a ses aides) ; la scène modèle prolonge la
+   rivière des leçons 1 et 2 (le 8, la barque) ; la ponctuation du dialogue
+   en simple rappel ; les actions de jeu posées par l'enseignant, si bien que
+   l'élève ne les écrit pas. Contenu : d'où part la scène et où elle s'arrête
+   (12, ma scène, les choix « ajoutés par l'enseignant, avec ce que le
+   lecteur gagne ou perd ») ; quatre moments, à repérer par numéro dans la
+   scène 8 (arriver, découvrir, il se passe quelque chose, préparer le
+   choix) ; développer : un lieu par les sens, un personnage (le pêcheur de
+   la leçon 2), une émotion montrée plutôt que nommée ; « Je m'entraîne »
+   (la grotte) ; rester fidèle au livre (façon de raconter et temps, noms de la fiche,
+   demander avant d'ajouter) ; glisser un indice ; se relire (consigne et
+   « J'ai pensé à », l'histoire, puis l'orthographe). Pris sans lui être
+   soumis : la lanterne trouvée à bord (la leçon 2 résume ainsi le 8), la
+   forêt plus courte mais inquiétante contre le moulin, deux petits
+   exercices en page 3 (réécrire une phrase au « tu » et au présent, un
+   indice devant deux portes). Dessin d'en-tête généré par lui
+   d'après mon prompt (Bouquin qui écrit dans un cahier, la langue tirée),
+   recadré sans être retourné, déjà tourné vers la page
+   (`commun/images/dragon-ecrit.webp`).
+   Repris le même jour sur sa relecture : les moments de la scène 8 dans
+   l'ordre A, C, B, D (l'exercice était trop facile), avec « L'ordre des
+   moments peut changer, mais la scène finit toujours au moment de
+   choisir » ; « checklist » écarté sur mon avis, accepté par lui : l'élève
+   coche « les cases « J'ai pensé à » qui sont dessous » (le titre qu'il voit
+   dans l'outil et sur la fiche), l'enseignant lit « la liste de vérification
+   de sa consigne » dans le déroulé. Puis, sur son retour (l'ordre mélangé
+   ne se voyait pas, le cadre touchait le pied de page) et son idée du
+   papier découpé : dans la version à compléter seulement, la scène 8 en
+   quatre morceaux à bord pointillé, légèrement de travers, mélangés ; les
+   choix restent à la fin, « ajoutés par l'enseignant ». Repris aussitôt à
+   sa demande : une seule chose à remplir. Les moments sont numérotés de 1
+   à 4 dans leur ordre (arriver, découvrir, il se passe quelque chose,
+   préparer le choix), la scène 8 les suit de nouveau dans cet ordre (la
+   phrase « L'ordre des moments peut changer » est retirée), et l'élève écrit
+   dans un seul rond par morceau le numéro de son moment (morceaux dans
+   l'ordre 3, 4, 1, 2). La version complète garde la scène remise dans
+   l'ordre, numérotée. Le déroulé la relie.
+   Corrections proposées après analyse et appliquées à sa demande le même
+   jour : les quatre moments deviennent un modèle de scène à choix, avec
+   les ouvertures, fins et suites directes distinguées ; lecture de la
+   consigne avant d'écrire, raccords avec toutes les arrivées et exemple du
+   pont ou de la barque ; chaque réponse sur le personnage est associée à
+   un extrait ; développer signifie ajouter des détails utiles, montrer
+   une émotion reste une possibilité, et la colère remplace la fatigue ;
+   la forêt et le moulin conduisent tous deux au village, à rejoindre avant
+   la nuit ; « façon de raconter » remplace « voix », et la grotte demande
+   « au moins deux sens ». Les deux PDF sont recomposés et vérifiés sur trois
+   pages, sans débordement, avec la taille du texte et les lignes d'écriture
+   conservées. Les deux versions sont validées et la fiche est clôturée par
+   le porteur le 17 novembre 2026.
+   **Lettre aux familles, validée et clôturée par le porteur le
+   18 novembre 2026 après analyse et correction** (`ressources/lettre-aux-familles/`) : deux feuilles en un
+   PDF, des pointillés à remplir à la main (pas de version modifiable pour
+   l'instant). Décidé par lui : la lettre au début du projet et le bon de
+   précommande à la fin, quand le prix est connu ; règlement par chèque à
+   l'ordre de la coopérative scolaire. La lettre présente le projet (ce que
+   font les élèves, pourquoi, le calendrier, comment aider, le livre) et
+   annonce comme joints l'autorisation de diffusion et l'information des
+   familles du site, sans les recopier. Le bon : titre, pages et
+   illustrations, les deux formules et leur prix, l'achat facultatif (lecture
+   en ligne, exemplaire de la classe, aide possible de la coopérative), un
+   coupon à découper. Pris sans lui être soumis : aucun renvoi aux
+   programmes, un exemplaire qui « reste dans la classe », la mascotte en
+   tête (le dragon au livre ouvert, retourné ; le dragon assis). Le déroulé
+   la relie.
+   **Regroupée le 18 novembre 2026 à sa demande** (« trop de documents, 3 à
+   donner ») : au début, une seule feuille recto verso. Au recto la lettre,
+   où un paragraphe « L'outil en ligne » résume l'information des familles
+   (pas de compte, prénom et code, prénom et textes hébergés en Europe,
+   l'IA pour l'enseignant seul et sans prénom, renvoi à la page
+   Confidentialité) ; au verso l'autorisation de diffusion, reprise mot pour
+   mot du modèle du site (à reprendre si le modèle change). Pris sans lui
+   être soumis : la famille rend la feuille entière signée, l'autorisation ne
+   pouvant se découper au dos de la lettre sans l'abîmer, si bien que
+   l'enseignant garde l'information et l'accord sur la même feuille. Le
+   déroulé place la lettre à l'étape 1 et le bon à l'étape 12, où le modèle
+   d'autorisation du site n'est plus cité.
+   **Réduite à une page le même jour, sur sa relecture** (« enlève tout le
+   blabla ») : plus de ligne « au début du projet » ni « au dos de la
+   lettre », plus de calendrier (un engagement inutile, les projets durant
+   souvent plus que prévu), plus de « Comment vous pouvez aider », plus de
+   paragraphe sur l'outil (la démarche tient dans une puce : écrire sur une
+   feuille, puis recopier sur le site qui rassemble les scènes). En bas, un
+   coupon d'autorisation à découper, la famille gardant la lettre : le livre
+   est fait pour être lu par les familles, les proches et peut-être d'autres
+   écoles, imprimé et en ligne, « avec un lien réservé aux familles » ou
+   « dans la bibliothèque publique du site », l'enseignant rayant avant de
+   photocopier ce qui ne sert pas (dit dans le pied de page) ; aucune donnée
+   personnelle en dehors du prénom ; une seule autorisation, « J'accepte » ou
+   « Je refuse », un refus laissant l'enfant participer au projet sans
+   publication de ses textes ni de ses dessins (précisé à la clôture). Le verso et sa reprise du modèle du site sont retirés ; la
+   lettre ne suit donc plus ce modèle, qui garde deux autorisations
+   distinctes. Repris ensuite sur sa relecture : « éventuels dessins » dans le
+   coupon ; dans le bon, plus de nombre de pages ni d'illustrations, plus
+   d'aide de la coopérative, le chèque « à l'ordre de … » à remplir ; le bon
+   en A5, deux exemplaires côte à côte sur une feuille A4 posée en largeur
+   (le second recopié du premier dans la page), le dragon assis à côté de
+   la signature. La lettre de début reste en A4, son texte ne tenant pas en
+   A5 sans nouvelles coupes.
+   **Clôturée le 18 novembre 2026**, après la seule correction retenue lors
+   de l'analyse : « En cas de refus, votre enfant participera au projet,
+   mais ses textes et ses éventuels dessins ne seront pas publiés. » La
+   reformulation annoncée auparavant est abandonnée ; les passages concernés
+   sont remplacés par de nouveaux textes. PDF recomposé et vérifié sur deux
+   pages, avec les deux bons A5 conservés sur la seconde feuille.
+   **Feuille de lecture d'essai, demandée par lui le 18 novembre 2026,
+   premier jet à relire** (`ressources/lecture-d-essai/`), « Je teste mon
+   chapitre ». Décidé par lui sur trois questions : l'élève désigne une scène
+   par son titre (les numéros ne sont fixés qu'à la fin) ; A5, deux par
+   feuille A4 posée en largeur ; son seul chapitre, le reste du livre se
+   découvrant à la lecture. Contenu : jouer comme un lecteur (trois étapes,
+   un rond à colorier par chemin essayé) ; ce qui ne va pas, en lettres
+   rangées selon qui répare, d'après le guide (l'élève corrige R raccord,
+   N nom ou objet, F faute ; il prévient l'enseignant pour B bloqué,
+   M mauvais endroit, A autre), puis un tableau titre de la scène, lettre,
+   réglé ; son avis de lecteur, trop facile, bien ou trop difficile, pour
+   juger la difficulté du livre. Pris sans lui être soumis : les lettres
+   plutôt que des cases (la largeur de l'A5), Bouquin à la loupe en tête,
+   sept lignes. **Retirée le même jour à sa demande** (« pas vraiment
+   utile ») : dossier supprimé, plus de lien dans le déroulé. Il lui
+   préfère une fiche qui dit en deux ou trois lignes comment vérifier, et
+   surtout comment le faire sur le site, captures à l'appui (proposée, non
+   décidée). Décidé par lui le même jour : la page « Ressources » peut
+   proposer aussi des fiches propres à l'outil, à condition de distinguer
+   clairement les ressources communes (valables pour toute classe) de
+   celles qui servent avec Il était une classe ; seul le guide reste neutre.
+   **Fiche de l'élève « J'écris sur le site », demandée par lui le même
+   jour, premier jet à relire** (`ressources/sur-le-site/`) : tout le
+   parcours de l'élève, sa portée choisie par lui (« tout le parcours »),
+   un recto verso. Sept étapes, le texte à gauche et la capture de la vraie
+   application à droite : entrer dans la classe, dire qui l'on est, trouver
+   sa scène, l'écrire (consigne, « J'ai pensé à », scène d'avant), la
+   remettre, reprendre après une remarque, tester son chapitre ; puis un
+   encadré « Je vérifie mon chapitre » en trois lignes (tous les choix ; je
+   corrige un raccord, un nom, une faute ; je dis à l'enseignant ce qui
+   bloque). Marquée « Avec Il était une classe » et du petit dragon. Les
+   captures, déjà cadrées, se refont contre le serveur local par
+   `npx playwright test --config playwright.local.config.ts fiche-eleve`
+   (`app/tests/captures/fiche-eleve.spec.ts`), qui les écrit dans
+   `ressources/sur-le-site/captures/` : une série de parcours efface
+   `test-results/`. Pris sans lui être soumis : Alice, profil ordinaire,
+   plutôt que Bilal, profil d'organisation ; un identifiant de classe
+   lisible le temps de la capture ; l'écran « Lire » recadré sur « Notre
+   histoire en cours », pour qu'aucun livre réel de la bibliothèque locale
+   n'apparaisse. Le déroulé la relie à l'étape 8.
+   **Reprise le même jour d'après une relecture de GPT qu'il a transmise**
+   (« ajuste avec les différents points »), chaque point vérifié dans le
+   code avant de l'appliquer : captures cadrées par le script sur les
+   éléments utiles, le bouton à cliquer entouré d'un repère orangé ;
+   l'étape 5 montre « Remettre » et « Modifier encore mon texte » (la
+   remise se reprend, elle n'oblige pas à attendre) ; l'étape 6 finit par
+   « je corrige mon texte en suivant la remarque, puis je clique de nouveau
+   sur Remettre » ; l'étape 7 montre « Lire », « Commencer au début »,
+   « Revenir au passage précédent » et « Parcours » ; l'adresse
+   `iletaituneclasse.com/classe` à l'étape 1 ; une étape 8, « Je laisse la
+   place » (« Changer d'élève ») ; dans l'encadré, une scène déjà validée se
+   signale à l'enseignant. L'écriture et la lecture d'essai passent sur
+   toute la largeur. Pour la capture, la scène de l'essai reçoit un choix
+   (sinon « ni choix ni fin » s'afficherait).
+   **Affiches pour la classe, demandées par lui le 18 novembre 2026,
+   premier jet à relire** (`ressources/affiches/`) : quatre affiches A4
+   portrait, une idée chacune, tirées des leçons, lisibles de loin. Décidé
+   par lui : ces quatre-là, en A4 (tout est dessiné en formes, la mascotte
+   exceptée, si bien qu'elles s'agrandissent en A3 à la photocopieuse),
+   toutes faites, sans version à compléter. Une scène de livre-jeu (la
+   rivière, ses cinq parties numérotées : numéro, récit, indice, choix,
+   renvoi) ; les chemins (branches, carrefour, détour, les schémas de la
+   leçon 1) ; inventer des choix (les cinq questions et leurs pistes, un
+   choix clair contre un choix qui dévoile) ; j'écris ma scène (les quatre
+   moments de la leçon 3, je développe par les sens, je montre l'émotion).
+   Écartée sur mon avis : une affiche « Je me relis », que doublerait la
+   liste « J'ai pensé à ». Le déroulé les relie à l'étape 8.
+   **Reprises le même jour d'après une relecture de GPT qu'il a transmise :**
+   affiche 1, repères en lettres A à E (les chiffres se mêlaient aux numéros
+   12, 31 et 8), comme dans la leçon 1, le repère de l'indice dans la marge
+   à la hauteur du passage souligné, « le renvoi : le numéro de la scène à
+   lire ensuite » ; affiche 2, « Trois façons d'organiser les chemins » (et
+   non une règle générale), une légende « une scène / un choix », « les
+   chemins se séparent, puis rejoignent une même scène » ; affiche 3, sous
+   chaque question un exemple de la leçon 2 plutôt que le nom de la piste,
+   et la règle « Je dis ce que le héros décide de faire, sans dévoiler ce
+   qui lui arrivera » ; affiche 4, « J'écris une scène à choix », l'élève
+   auteur partout (« Je raconte l'arrivée du héros », « Je décris ce qu'il
+   découvre », « Je raconte ce qui se passe », « Je prépare le prochain
+   choix »). Décidé par lui le même jour : la leçon 3 suit les affiches,
+   dans ses deux légendes (la scène modèle et les morceaux découpés). Conseil de la relecture,
+   non vérifié sur papier : l'A3 au mur, l'A4 près des élèves.
+   **Liens avec les programmes, demandés par lui le 19 novembre 2026, premier
+   jet à relire** (`ressources/programmes/`, « Le livre-jeu et les
+   programmes ») : une feuille A4 recto verso pour l'enseignant, le cycle 3
+   au recto, le cycle 2 au verso, rangée en six moments du projet (lire des
+   livres-jeux, inventer l'histoire ensemble, écrire, relire et reprendre,
+   écrire un livre à plusieurs, faire vivre le livre). À gauche notre voix,
+   à droite les programmes de français cités mot pour mot avec leur niveau
+   (la phrase du chapeau disant que les programmes ne parlent pas de
+   livre-jeu, retirée à sa demande le même jour ; reprise le même jour sur une relecture qu'il a fait faire : progression du CP au CE2 au verso, part écrite de chaque élève dans le livre à plusieurs, cohérence entre les scènes, livre-jeu nommé format et non genre, coupures marquées « […] », « En fin d'année » pour les six ou sept phrases du CE1, une étiquette de niveau par ligne ; le vocabulaire, proposé par cette relecture, n'est pas ajouté, le projet n'en faisant pas un travail à part). Textes officiels lus le même jour (cycle 2 : arrêté du
+   22 octobre 2024, BO n° 41 du 31 octobre 2024, annexe 3, en vigueur à la
+   rentrée 2025 ; cycle 3 : arrêté du 10 avril 2025, BO n° 16 du 17 avril
+   2025, CM1 à la rentrée 2025, CM2 à la rentrée 2026) ; les tableaux en
+   colonnes relus avec la position de chaque ligne, pour ne pas citer un
+   exemple de réussite comme un objectif ; les 48 citations retrouvées mot
+   pour mot par un script dans les textes. Périmètre : le français seul
+   (ni EMC, ni numérique, ni 6e). Le déroulé y renvoie dans son chapeau ;
+   ses étapes y sont un peu resserrées (la page 2 dépassait après des
+   ajouts), et sa ligne de la fiche de l'histoire dit « personnages,
+   parties, objets ».
+   **Grille d'évaluation, faite puis écartée par lui le 18 novembre 2026**
+   (« pas trop utile ») : une grille de classe, six critères reliés au
+   programme du cycle 3. Retirée, avec sa ligne dans le déroulé ; ne pas la
+   reproposer.
+   Proposés le même jour, non décidés : des affiches tirées des leçons. Déconseillés comme doublons de l'outil : une
+   fiche de l'histoire sur papier, un brouillon ou une grille de relecture
+   par scène, une feuille pour inventer l'univers.
+   - **Découvrir le genre en trois temps, décidé par lui le 13 novembre
+     2026 :** découverte (lecture de livres-jeux, « Ma première aventure »
+     par exemple), recherche (une feuille que l'élève remplit après avoir lu
+     n'importe quel livre de ce type, pour comprendre comment il marche :
+     choix, mécanismes, fins), puis leçon, qui structure ce qu'on a trouvé.
+     La leçon se fait d'abord ; la feuille de recherche se construit
+     ensuite pour faire trouver chacun de ses points.
+   - **Deux leçons, demandées par lui le 14 novembre 2026** sur la première
+     version (une page, jugée « pas mal » mais trop légère), en premier jet,
+     à relire. Chacune existe **en version complète et en version à
+     compléter**, tirées d'une même source : les mots à trouver sont marqués
+     dans la page (`commun/a-completer.js`), et `composer.mjs` sort les deux
+     PDF. Ses demandes, appliquées : « généralement » découpé en scènes
+     numérotées (pas « Ma première aventure ») ; les trois formes de chemins
+     du guide, en schémas annotés avec leur intérêt ; les choix développés
+     en leçon à part ; plusieurs héros aux compétences, en exemple imagé ;
+     les sauvegardes, brièvement.
+     - **Leçon 1 « Le livre dont tu es le héros »**
+       (`ressources/lecon-1-livre-jeu/`), reprise le 14 novembre 2026 sur
+       son retour, trois pages : le livre et une scène annotée ; les chemins
+       (l'arbre d'abord, défini à sa demande comme le dessin de tous les
+       chemins, avec l'avertissement pour un arbre dont rien ne se rejoint ;
+       puis les branches, le carrefour et le détour, pour qu'il reste petit) et les fins, avec la sauvegarde, possible et non obligatoire ;
+       les règles du jeu (objets, points, dé, le héros, qui peut être
+       plusieurs au choix), puis, demandé par lui le 14 novembre 2026, une
+       partie 6 « Qui raconte ? À quel temps ? » (le héros est le lecteur,
+       « tu », ou un personnage que l'on suit ; présent ou passé ; on garde
+       les mêmes dans tout le livre). Version à compléter, à sa demande : les mots à
+       placer en italique sous chaque titre, dans le désordre ; des blancs et
+       des lignes assez hauts pour écrire à la main ; dans la scène, des
+       ronds blancs où l'élève écrit la lettre (A à E, en majuscules) ; dans
+       les chemins, seuls les noms des cartes à compléter ; aucune
+       définition ni aucun exemple qui nomme la réponse. « Les scènes sont
+       mélangées » (pas les numéros). Corrigé : les versions à compléter
+       sortaient avec une page grise de trop par feuille (`composer.mjs`
+       imprime désormais toujours en mode impression et compte les pages).
+     - **Leçon 2 « Les choix »** (`ressources/lecon-2-choix/`), trois
+       pages : les règles d'un bon choix ; les cinq pistes du guide, plus
+       l'énigme ; quatre sortes de conséquences (bon, mauvais, risqué,
+       coûteux) et pourquoi les mélanger ; une situation, la rivière de la
+       leçon 1, avec ses quatre choix, chacun avec sa sorte et son indice ;
+       une méthode en six étapes ; une liste « Je vérifie mes choix » ;
+       « Je prépare un obstacle », rempli en exemple (le garde du château)
+       dans la version complète, vide dans l'autre.
+       Ajouts de ma part, sans demande : l'énigme, la méthode, la liste de
+       vérification et l'entraînement de la page 3.
+       Mise en page reprise le 14 novembre 2026 à sa demande, avant le
+       contenu : quatre pages (règles et pistes ; conséquences ; la
+       rivière et la méthode ; vérification et obstacle à préparer), texte
+       à 12 pt, mots à placer sous chaque titre, blancs et lignes à la
+       hauteur d'une écriture d'enfant, comme la leçon 1. Le contenu reste
+       à relire avec lui.
+       Décidé par lui le même jour : l'énigme n'est plus une carte à part ;
+       « Observer et réfléchir » devient une grande carte sur deux rangées,
+       l'indice vu plus tôt ou l'énigme à résoudre (dans le texte ou dans
+       une image), pour revenir aux cinq pistes du guide.
+       Décidé par lui le même jour, sur mon avis : la leçon repasse à trois
+       pages. Les parties 3 et 4 sont réunies : on part de la situation de
+       la rivière, et chaque suite porte sa sorte de choix, sa définition et
+       l'indice qui la laissait deviner ; dans la version à compléter,
+       l'élève écrit le numéro du choix qui y mène (les numéros ne sont plus
+       visibles), la sorte et l'indice. La méthode « Pour inventer mes
+       choix » reste dans la leçon. Retirées de la leçon pour la future
+       fiche « Mon chapitre », à reprendre là : la liste « Je vérifie mes
+       choix » (une raison de choisir ; une phrase qui ne dévoile pas la
+       suite ; des conséquences variées ; jamais de punition au hasard ;
+       chaque choix mène à une scène qui existe), qui doublait les règles
+       de la partie 1, et « Je prépare un obstacle » (un obstacle, trois
+       façons de réagir, chacune avec sa conséquence et sa sorte, en
+       schéma ; exemple : le garde du château, qui bâille avant la relève).
+       Le 14 novembre 2026, il fait réviser le contenu par GPT dans une
+       copie, puis la fait substituer à la leçon (copie supprimée) : règles
+       reformulées (« risque » au lieu de « au hasard »), rencontre du
+       pêcheur placée avant la scène 12, consigne de l'exercice en trois
+       étapes, numéros des choix permutés (barque au 8, nage au 44),
+       encadré « Donner envie d'hésiter » après la méthode.
+   - **Feuilles de recherche, demandées par lui le 14 novembre 2026 :**
+     trois feuilles sur le fonctionnement d'un livre-jeu (pas son
+     histoire), lu seul ou en classe, dont les questions mènent aux leçons
+     (arbre, choix, système de jeu, narration) ; rien encore sur le livre
+     que la classe écrira. Ordre retenu sur mon avis : « Bouquin mène
+     l'enquête », puis une feuille valable pour tout livre-jeu, puis « Les
+     passeurs de brume ».
+     - **« Bouquin mène l'enquête »** (`ressources/recherche-bouquin/`),
+       quatre pages, quatre temps de recherche (explorer les chemins,
+       examiner les choix, des indices et du hasard, jouer avec les
+       règles), vingt-trois questions numérotées. Écrite le 14 novembre
+       2026 sur ses retours, puis révisée par GPT et reprise le 15 : les
+       classes lisent le livre en ligne et y retournent, on cite des
+       passages (la mise en page du livre, choix compris) ; l'arbre du
+       début à compléter avec des scènes nommées clairement par lui ; qui
+       est le héros, « dans cette histoire » ; la scène du bout du couloir
+       (choix soulignés, numéros entourés, indices surlignés, avis bon ou
+       mauvais justifié) ; les indices du bureau, de la lampe et de la
+       lumière ; la faiblesse du héros et le dé ; le compteur de temps ;
+       les deux fins ; son avis de joueur. Neuf points visés, donnés par
+       lui le 14 novembre. Quatre pages gardées par lui (impression recto
+       verso).
+     - **« Les passeurs de brume »** (`ressources/recherche-passeurs/`),
+       faite le 15 novembre 2026 sur le même modèle, puis révisée par GPT
+       le même jour pour ne pas reprendre les mêmes questions que Bouquin
+       (sa copie a remplacé l'original, une question en doublon retirée) :
+       quatre pages, vingt et une questions ; mise en page commune aux deux
+       feuilles dans `ressources/commun/recherche.css`. Ce que la feuille
+       apporte en plus : un passage à reconstruire où un chemin n'est
+       possible que sous condition (la barque de papa, si Lou a donné une
+       fiole au vieil homme) ; « je prévois, puis je vérifie » (choisir avec
+       les seuls indices lus, puis explorer les trois suites et noter les
+       réserves perdues) ; une énigme de distances à convertir en
+       centimètres ; un indice lu plus tôt (« L'eau qui frissonne cache des
+       dents ») ; le feu follet reconnu en choisissant d'observer ; la
+       faiblesse du héros et ce qui lui permet de réussir (le chant) ; une
+       réserve d'huile qui diminue ; trois fins comparées (père retrouvé,
+       Lou peut-il chanter). La place des choix, la suite et la raison des
+       chemins qui se rejoignent ne se font ici qu'à l'oral, choix accepté
+       par lui ; les sortes de choix n'y sont pas demandées.
+     - **Numéro de la scène à relire**, ajouté le 15 novembre 2026 à sa
+       demande, pour les classes qui lisent en ligne (le lecteur permet
+       désormais d'aller vite à un numéro) : sur les deux feuilles, une
+       petite étiquette grise « n° 24 » à la fin des questions, des repères
+       et des citations qui renvoient à un passage précis, en Andika (zéro
+       sans barre). Pas d'étiquette là où elle donnerait la réponse (« quel
+       passage nous l'apprend ? », « quelle phrase lue plus tôt ? »), ni
+       sur les extraits qui portent déjà leur numéro.
+     - **Une image par page, prise dans l'histoire**, demandée par lui le
+       15 novembre 2026 : un personnage ou un objet seul, sur fond
+       transparent, dans `ressources/commun/images/`. Bouquin est le dragon
+       du site : « dragon-regarde », « bouquin-hesite », « bouquin-loupe »,
+       puis Miette (« souris-fiere »). Passeurs : Lou et sa lanterne,
+       Plume sur un roseau, le feu follet, la lanterne et ses trois fioles.
+       Les six nouvelles images sont générées par lui d'après mes prompts,
+       recadrées sur leur contenu.
+     - **Feuille générale, pour n'importe quel livre-jeu**
+       (`ressources/recherche-livre-jeu/`), faite le 15 novembre 2026 sur
+       le modèle des deux autres : quatre pages, vingt-sept questions, la
+       fiche de l'élève et une version « Ce qu'on attend » pour l'enseignant
+       (les réponses dépendent du livre lu ; numéros laissés vides). Mêmes
+       quatre temps et mêmes neuf points : le livre, un passage dessiné par
+       l'élève (ronds numérotés, flèches) et les chemins qui s'y
+       rejoignent ; une scène choisie, la place et le nombre de ses choix,
+       la façon de trouver la suite, un avis justifié sur chaque choix (bon,
+       risqué, coûteux, mauvais) ; un indice et un choix de réflexion ; les
+       règles (points, objets, dé), un choix qui dépend de quelque chose, ce
+       qu'on perd ; le héros (qui, temps du récit, force ou faiblesse) ; les
+       fins en tableau ; l'avis du joueur. Elle remplace le carnet de lecteur
+       du 13 novembre, supprimé le 17 novembre 2026 à sa demande.
+       **Révisée les 15 et 16 novembre 2026 dans une copie**, par GPT puis
+       par Claude à sa demande ; la copie a remplacé l'originale le
+       16 novembre à sa demande (copie supprimée), si bien que le premier
+       état décrit ci-dessus n'existe plus. De GPT, pour que la feuille vaille vraiment pour tout
+       livre : « Je n'en ai pas trouvé » pour toute la fiche, une scène
+       désignée par son numéro ou un petit titre, un exemple de schéma où
+       deux chemins se rejoignent et « chaque scène une seule fois »,
+       « Je prévois, puis je vérifie » (Avant, Après) à la place des quatre
+       sortes de choix, le lien entre l'indice et le choix, « je / tu /
+       il, elle », les fins en « oui / en partie / non », le héros en
+       page 4, « Repères pour l'enseignant ». De Claude : questions redites
+       en mots d'élève (celle de Bouquin pour les chemins qui se
+       rejoignent, « Dans cette histoire, qui est le héros ? ») ; « Que
+       doit-il réussir ? », dont dépend la colonne « A-t-il réussi ? » des
+       fins ; deux choix étudiés au lieu de trois, sur des lignes de 8 mm ;
+       aucun texte de l'élève sous 10 pt ; deux questions « À l'oral »
+       (les prévisions étaient-elles justes ; un choix qui tourne mal
+       fait-il toujours finir l'aventure) ; « autre : » sur la ligne des
+       cases ; vingt-huit questions, une quarantaine de lignes à écrire.
+       Version enseignant : en cursive, des exemples de réponses tirés de
+       Bouquin et des Passeurs ; en petit gris, ce qu'on regarde, dont le
+       classement à l'oral des réponses « Après », matière des quatre
+       sortes de choix de la leçon 2. Les sortes de choix ne sont donc
+       plus demandées à l'élève sur cette feuille.
+       **Reprise le même jour sur sa relecture :** « titre » et non « petit
+       titre » ; « Choisis une scène qui propose au moins deux choix » dans
+       la partie 3, plus au-dessus ; les parties 4 (« Je prévois, puis je
+       vérifie ») et 5 (« Je relie un indice à un choix ») fondues à sa
+       demande en une seule, « Je cherche des choix différents » : dans
+       tout le livre, un choix à trouver si possible pour chacune des cinq
+       questions des pistes de la leçon 2 (« Où aller ? », « Comment
+       agir ? », « Quel indice utiliser ? », « Que sacrifier ? », « Comment
+       réagir ? », sans le nom des pistes, que la leçon donne), et pour
+       chacun sa scène, sa phrase et deux rangées de cases (un indice aide à
+       choisir : dans la scène, plus tôt dans le livre, je n'en vois pas ;
+       après ce choix, le héros : avance, perd quelque chose, tente sa
+       chance ; plusieurs cases possibles). Pris sans lui être soumis : la
+       seconde rangée de cases, qui prépare les sortes de choix ; huit
+       parties au lieu de neuf, donc le héros revenu en page 3 (« Les règles
+       et le héros ») et la page 4 aux fins et à l'avis, de nouveau en deux
+       questions ; vingt-sept questions, trente-sept lignes à écrire, dont
+       douze dans le tableau des fins.
+       L'avant et l'après, l'indice recopié et la question de l'énigme ne
+       sont plus demandés à part.
+       **Dernière reprise, le 16 novembre 2026, sur sa relecture** (après
+       une retouche faite entre-temps dans la source : seconde rangée en
+       « Ce choix : fait avancer, coûte quelque chose, dépend du hasard »,
+       gardée). Plus de consigne générale (« Je n'en ai pas trouvé », scène
+       par numéro ou titre) : chaque question concernée le dit. Partie 1 :
+       « Ton livre a … pages et … scènes numérotées », pour distinguer pages
+       et numéros. Partie 2 : partir du début de l'histoire, consigne d'une
+       phrase, exemple qui part du 1 (1 → 15 ou 8 → 23) avec une légende
+       (un rond, une scène et son numéro ; une flèche, un choix), sans « … »
+       ni « fin » ; « Colorie les scènes où plusieurs chemins se rejoignent,
+       s'il y en a » ; « Dans ton livre, les chemins se rejoignent : souvent,
+       parfois, jamais » puis « À ton avis, pourquoi l'auteur a-t-il fait
+       ainsi ? ». Partie 4 : trois questions seulement (« Où aller ? »,
+       « Comment agir ? », « Comment réagir ? »), annoncées par la consigne
+       (un choix qui fait décider le héros) ; « Ce qui aide à choisir : un
+       indice, le bon sens, un objet, autre, rien » ; puis la question de
+       l'indice, venue de la partie 5 (« Souvent, un indice aide à
+       choisir… »). Partie 5 de nouveau « Je découvre les règles du jeu »,
+       avec la case « choisir son héros et ses compétences » et la
+       compétence parmi ce dont la suite peut dépendre. Question 23 : « oui /
+       non », puis « Si oui, donne un exemple ». « Rien » parmi ce qui aide
+       à choisir est de Claude (repérer un choix au hasard, que la leçon 1
+       juge injuste). Vingt-huit questions.
+   - **« Mon chapitre », demandée par lui le 15 novembre 2026**
+     (`ressources/mon-chapitre/`), premier jet, à relire : la feuille où
+     l'élève prépare son chapitre avant d'écrire, sans rien rédiger, et d'où
+     l'enseignant tire les arbres et les consignes (guide, parties 5 et 7).
+     Deux pages. Page 1, « Mon chapitre » : le chapitre en bref (où, qui,
+     ce que le héros doit réussir) ; le chemin du héros, du début à la fin
+     décidés avec la classe, avec quatre obstacles en une ligne chacun ; ce
+     que le héros peut gagner ou perdre, en lignes libres, les règles
+     changeant d'un livre à l'autre. Page 2, « Un obstacle », à photocopier
+     une fois par obstacle : ce qui empêche le héros d'avancer, puis trois
+     façons de réagir, chacune dans sa fiche (« Si le héros… », « alors… »,
+     ce qu'il gagne ou perd, l'indice, la sorte de choix à cocher), et la
+     liste « Je vérifie mes choix », reprise de la leçon 2 et réduite à
+     quatre points. Décidé par lui le même jour, sur trois questions : les
+     trois choix en blocs sur toute la largeur, l'un sous l'autre (ni
+     colonnes, ni tableau) ; après la conséquence, des cases à cocher,
+     l'élève ne traçant aucun lien ; une feuille vierge (version à
+     compléter) et un exemple rempli à la main (version complète : « La
+     route du château », l'obstacle du garde), tirés de la même source.
+     Pris sans lui être soumis : document valable pour tout livre ; le
+     rappel des cinq pistes en une ligne ; « Il gagne / perd » et
+     « L'indice » dans chaque choix ; pas de notice pour l'enseignant sur la
+     feuille.
+     Repris le même jour sur sa relecture (« du très bon travail ») :
+     « Prénom(s) » ; quatre obstacles en page 1, le nombre gardé dépendant
+     de ce qui est demandé (« J'imagine plusieurs obstacles. Ensuite, nous
+     choisirons ceux que je garde. ») ; « c'est une fin » retirée, une fin
+     n'arrivant guère qu'après un dé raté ou un point perdu : « Ensuite »
+     garde les deux suites courantes (« il continue », « il revient à
+     l'obstacle ») et une ligne « autre : » pour le reste (lancer de dé,
+     scène qui en découle, fin), sans prétendre couvrir tout l'arbre, que
+     l'enseignant construit ; dans la liste, « Un indice ou le bon sens aide
+     à choisir. ». Dans l'exemple, le troisième choix devient un choix
+     risqué, où le dé décide (les deux cases cochées).
+     Demandé par lui ensuite : un troisième PDF,
+     `mon-chapitre-obstacles.pdf`, la feuille « Un obstacle » vierge deux
+     fois, à imprimer en recto verso ; tiré de la même source (la page
+     l'annonce par une balise « tirage », que `composer.mjs` lit).
+     Page « Un obstacle » révisée par GPT dans la source, puis reprise le
+     même jour sur mon avis, qu'il accepte (« Oui, fais-le ») : gardés de
+     GPT, les choix A, B, C dans la marge, sans trait entre eux (« Le
+     lecteur en choisira une ») ; « Ce qui change » à la place de « Il
+     gagne / perd » ; « Suite » avec une case et une petite ligne par issue
+     (« continue », « revient ici », « autre »), où l'on écrit quand ou où
+     (« 4 à 6 », « 1 à 3 ») ; la liste de vérification en cinq points ;
+     l'exemple sans points de volonté. Repris : lignes d'écriture de 8 mm
+     (7 chez GPT), cases et textes à leur taille d'avant, « Ce qui aide à
+     choisir » sur une ligne, ligne « autre » d'environ 5 cm, « Les
+     conséquences sont variées » remise dans la liste, « avant la nuit »
+     remis dans le but du chapitre, une seule sorte cochée par choix dans
+     l'exemple (bon, coûteux, risqué) et « (plusieurs cases possibles) »
+     retiré, source et feuille de style réécrites en une seule couche.
+     Décidé par lui ensuite, sur son idée : « Suite » donne le numéro de
+     l'obstacle — « continue au n° __ », « recommence ici », « autre : » —,
+     les petites lignes sans étiquette n'étant pas claires. Retenu sur mon
+     avis : « recommence ici » (« recommence » seul pouvant se lire « le
+     chapitre ») ; avec un dé, les deux cases cochées, la condition étant
+     déjà dans « alors » ; au dernier obstacle, « autre : fin du
+     chapitre », à dire à l'oral. Demandé par lui aussi : le numéro de
+     l'obstacle dans un grand carré en haut à droite, à la place de la
+     souris ; le champ « Obstacle n° » de la ligne du chapitre est retiré.
 6. **Cycle 2, idées non décidées :** écoute à voix haute de la consigne et du
    livre par la synthèse vocale du navigateur ; connexion simplifiée des
    élèves par QR code ou carte (F06.4, question ouverte). Les tablettes,
@@ -5112,6 +5658,154 @@ non commités, seize fichiers de `app/tests/parcours/` d'une autre
 conversation ; les parcours Playwright de « Chemins » ne sont toujours pas
 accordés, et la critique en deux lectures de l'écran du choix n'est pas
 faite.
+
+### Fiche de l'histoire à imprimer (F02.1, 18 novembre 2026)
+
+**Révisée par le porteur le 19 novembre 2026** (« 1 oui, 2 oui, 3 oui ») :
+la liste « Lieux » est retirée, chaque partie reçoit une description
+facultative à la place (l'endroit, l'ambiance), et les règles du jeu sortent
+de la fiche ; reconstruite le même jour (plus bas, « Reprise du 19 novembre
+2026 »). Ce qui suit sur les lieux décrit la première construction, remplacée.
+
+Décidée par le porteur le 18 novembre 2026, à la place d'une fiche de
+référence sur papier prévue pour la page « Ressources » : l'application
+compose la fiche depuis la Préparation, remplie, prête à imprimer
+([F02.1](specifications.md#f021--fiche-de-lhistoire-à-imprimer), F02-AC21
+à AC26). Ses réponses, sur recommandation : une liste « Lieux » ajoutée à
+l'étape « Univers » (oui) ; le contenu proposé, sans les grandes étapes ni
+résumé par l'IA (oui) ; l'impression seule, sans version à l'écran pour
+l'élève. **Construction autorisée le même jour,** à sa demande dans une
+conversation à part, en local, un commit, rien poussé sur `main` ni appliqué
+à la vraie base sans sa demande. Une migration est attendue (les lieux).
+Écran sans maquette : impeccable et deux lectures avant de le lui montrer.
+Une fois construite, le déroulé du projet (`ressources/deroule-du-projet/`,
+étape 4) la signale comme fonction de l'outil, à la place de « Fiche de
+référence de l'histoire · à venir ».
+
+**Construite en local le 18 novembre 2026,** dans une conversation à part,
+un commit, rien poussé sur `main` ni appliqué à la vraie base :
+
+- **Migration `lieux`,** base locale seulement : la table des lieux (nom de
+  60 caractères, phrase de 160, rang), réservée à l'adulte comme la
+  Préparation, et `ordonner_lieux`, qui range la liste d'un geste.
+- **Les lieux,** sous « Nous retenons » de l'étape « Univers », projection
+  comprise : ajouter, modifier sur la ligne (« OK », Entrée ou un clic
+  ailleurs gardent ; « Annuler » ou Échap rendent), supprimer avec
+  « Annuler », qui remet le lieu à sa place, ordre tiré au repère de prise.
+  Ils entrent dans le contexte des aides de l'IA (bloc `lieux`), dans les
+  noms que la correction ne touche pas et dans les indices de la dictée.
+- **La fiche,** `/projet/…/fiche-de-l-histoire`, ouverte par « Imprimer la
+  fiche de l'histoire » à droite du titre de la Préparation, à toutes les
+  étapes : la feuille A4 telle qu'elle s'imprimera, le nombre de pages, un
+  pointillé « page 2 » là où l'impression coupera, et « Imprimer » ; au-delà
+  d'un recto verso, le message nomme la rubrique la plus longue. Allure des
+  feuilles du site (Andika, titre en cursive, dragon, filets graphite qui
+  tiennent à la photocopie), la date de la version au pied.
+- **Tests :** F02-AC21 à AC26 en unitaires (`fiche-de-l-histoire.test.ts`) et
+  contre la base (`lieux.test.ts`) ; aucun parcours Playwright. Captures :
+  `npx playwright test --config playwright.local.config.ts fiche-de-l-histoire`,
+  contre le serveur 4840, qui compte aussi les pages du vrai PDF.
+- **Écrans critiqués en deux lectures** (28/40 et 24/40) et corrigés : place
+  des jambages de la cursive sous le titre, coupure de page montrée, feuille
+  réduite sur un téléphone, même forme pour ajouter et modifier un lieu,
+  phrase dans un champ qui grandit, « i » sur les lieux.
+
+Précisions prises en construisant, **confirmées en bloc par lui le 19 novembre 2026** (« ok pour les six précisions ») — ne plus les lui soumettre :
+
+1. Phrase d'un lieu de 160 caractères (120 pour un objet) — tombée avec les
+   lieux le 19 novembre 2026.
+2. Sans carte de héros, le texte retenu de l'étape « Personnages » s'imprime
+   sous « Les personnages » ; une carte « Le héros » encore vide n'apparaît
+   pas.
+3. La feuille d'aventure n'entre que si elle s'imprime dans le livre ; elle
+   s'y lit en lignes (« Volonté : 5 au départ », « Inventaire », « Un dé »).
+4. « Notre façon d'écrire » (« Ma façon d'écrire » en projet personnel) est
+   imprimée telle quelle, bien qu'écrite pour l'IA.
+5. « Imprimer » est éteint sur une fiche vide ; la commande de la
+   Préparation reste visible.
+6. La date « à jour du… » au pied de la fiche, pour reconnaître une copie
+   dépassée.
+
+**Reprise du 19 novembre 2026,** construite en local le même jour dans la
+même conversation, un commit, rien poussé sur `main` ni appliqué à la vraie
+base :
+
+- **Migration remplacée :** `lieux`, jamais poussée, disparaît (table,
+  fonction et ligne de l'historique retirées de la base locale, sans la
+  remettre à zéro) ; `description_des_parties` ajoute aux parties une
+  description de 300 signes au plus, que le poste d'un élève ne lit pas.
+- **Les lieux sont retirés partout :** écran de l'Univers, commandes,
+  contexte de l'IA, correction, dictée, tests.
+- **La description d'une partie** s'écrit sous sa carte à l'étape « Grandes
+  étapes » (directement, comme « Nous retenons ») et dans ses réglages depuis
+  « Parties et chapitres », avec un « i » qui dit à quoi elle sert. Elle part
+  avec les aides demandées sur une scène de la partie : consigne, idées de
+  choix, bloc de scènes, écriture d'une scène et description d'une image de
+  scène (bloc `partie`, avant le chapitre).
+- **La fiche** remplace « Les lieux » par « Les parties de l'aventure » et ne
+  reprend plus les règles du jeu.
+- **Tests :** F02-AC21 à AC26 en unitaires (`fiche-de-l-histoire.test.ts`) et
+  contre la base (`tests/base/fiche-de-l-histoire.test.ts`, qui remplace
+  `lieux.test.ts`) ; aucun parcours Playwright. Écran vérifié sur le serveur
+  4840 et par les captures ; retouche d'un écran existant, sans critique en
+  deux lectures.
+
+Précisions prises en construisant, **confirmées en bloc par lui le 19 novembre 2026** (« Oui, en bloc ») — ne plus les lui soumettre :
+
+1. Seules les parties qui ont une description figurent sur la fiche : leurs
+   titres seuls redonneraient le plan, que la fiche ne reprend pas. —
+   **Révisée par lui le 19 novembre 2026** (« ok fais-le », plus bas).
+2. La description d'une partie part aussi avec la description d'une image de
+   scène, en plus des quatre aides nommées.
+3. La description tient sur une ligne qui s'allonge (un retour à la ligne
+   devient une espace), 300 signes au plus.
+
+**En ligne le 19 novembre 2026, à sa demande (« Mets en ligne ») :** types,
+503 essais unitaires, 475 sur 476 essais contre la base et la compilation
+complète passés sur une copie propre des seuls commits poussés (l'essai
+F14-AC30 de la sauvegarde de la nuit n'échoue que dans cette copie, et passe
+dans le dossier du projet ; il ne touche pas à ce lot). Vraie base
+sauvegardée (`app/sauvegardes/2026-11-19-14-53`), migration
+`description_des_parties` appliquée par Claude (**à ne plus modifier**),
+`verifier:production` passé, code poussé jusqu'à `1cea03f`, déploiement
+réussi chez Vercel, le site répond. Non vérifié en ligne : la fiche une fois
+connecté, que seul son compte ouvre.
+
+**Retouche du 19 novembre 2026, décidée par lui (« ok fais-le ») :** toutes
+les parties figurent sur la fiche, dans l'ordre du livre, chacune avec son
+image de repérage en vignette de 2,5 cm, son titre et sa description si elle
+en a une ; pas les chapitres. Une partie a toujours une image de repérage (la
+sienne ou un visuel de l'application, F10.1) : il n'y a donc jamais de case
+vide. Construite en local le même jour, sans migration, un commit, rien
+poussé ; F02.1 et F02-AC21 à AC23 révisés, tests repris. Sur l'histoire
+d'essai (quatre parties, trois personnages, quatre objets), la fiche tient
+toujours en recto verso, au PDF comme à l'écran.
+
+**Rubriques à cocher, décidées par lui le 19 novembre 2026** (« Oui, comme
+ça ») et construites en local le même jour, un commit, rien poussé : une case
+par rubrique (jamais par élément), derrière « Réglages » sur l'écran de la
+fiche, le panneau flottant de la page des fiches de rédaction ; tout coché par
+défaut, la fiche qui suit à mesure, le choix gardé avec le projet. Migration
+`rubriques_de_la_fiche` (base locale seulement) : `projets.fiche_masquee`, la
+liste des rubriques décochées, limitée aux huit rubriques, que le poste d'un
+élève ne lit pas. F02-AC27 ajouté, testé en unitaires et contre la base ; le
+script de captures décoche deux rubriques et vérifie qu'elles restent
+décochées après rechargement. Précisions **confirmées par lui le 19 novembre
+2026** (« ok pour les trois précisions ») — ne plus les lui soumettre : toutes
+décochées, « Imprimer » s'éteint ; sans carte de héros, le texte retenu des
+personnages suit la case du héros ; les cases portent le titre de la rubrique
+tel qu'il s'imprime (« Le héros » ou « Les héros », « Ma façon d'écrire » en
+projet personnel).
+
+**En ligne le 19 novembre 2026, à sa demande (« ok pour les trois
+précisions, mets en ligne ») :** les suites complètes passées (504 essais
+unitaires, 477 contre la base), vraie base sauvegardée
+(`app/sauvegardes/2026-11-19-15-21`), migration `rubriques_de_la_fiche`
+appliquée par Claude (**à ne plus modifier**), `verifier:production` passé,
+code poussé jusqu'à `e61fdc7` (avec `1f0980f`, les tutos de l'Aide d'une autre
+conversation, sans code de l'application), déploiement réussi chez Vercel, le
+site répond. Non vérifié en ligne : la fiche une fois connecté, que seul son
+compte ouvre.
 
 ## Hors de la première livraison
 

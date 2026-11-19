@@ -1,0 +1,91 @@
+/* Le déroulé du projet : une fiche pour l'enseignant, dans la voix de l'outil (Atkinson).
+   Chaque étape : ce qu'on fait à gauche, ce qui sert à droite, marqué par son signe. */
+
+.deroule { font: 400 10pt/1.38 var(--f-adulte); }
+.deroule p, .deroule ul, .deroule h2, .deroule h3 { margin: 0; }
+.deroule a { color: inherit; text-decoration: none; }
+.deroule cite { font-style: italic; }
+
+/* ————— L'en-tête ————— */
+.tete { display: flex; align-items: flex-end; gap: 6mm; }
+.tete-texte { flex: 1; min-width: 0; }
+.sorte { font: 700 8pt/1 var(--f-adulte); letter-spacing: 0.09em; text-transform: uppercase; color: var(--canard); }
+.deroule h1 { font: 400 22pt/1.6 var(--f-main); margin: 3.5mm 0 5.5mm; }
+.chapeau { color: var(--graphite-2); font-size: 10.2pt; }
+.tete img { height: 37mm; width: auto; margin-bottom: 1mm; }
+
+/* ————— Les signes et leur légende ————— */
+/* L'IA : le signe des étincelles de l'application, devant ce qui passe par elle */
+.ia { font: 400 1em/1 "Atkinson", "Apple Symbols", "Segoe UI Symbol", sans-serif; color: var(--canard); }
+.legende .ia { width: 4.2mm; text-align: center; font-size: 11pt; }
+.i { width: 4.2mm; height: 4.2mm; flex: none; fill: none; stroke: var(--graphite); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+img.i { width: 4mm; height: 4mm; }
+.a-venir .i { stroke: var(--graphite-3); }
+.legende {
+  display: flex;
+  gap: 2mm 6mm;
+  flex-wrap: wrap;
+  margin-top: 3.5mm;
+  padding: 1.8mm 3mm;
+  border-radius: 1.5mm;
+  background: var(--canard-pale);
+  font-size: 8.8pt;
+}
+.legende span { display: inline-flex; align-items: center; gap: 1.5mm; }
+
+/* ————— Un temps : son bandeau, puis ses étapes ————— */
+.temps { margin-top: 4.5mm; }
+.temps.premier { margin-top: 0; }
+.temps h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 3mm;
+  padding-bottom: 3mm;
+  border-bottom: 0.45mm solid var(--graphite);
+  font: 400 15pt/1.5 var(--f-main);
+}
+.temps h2 .t { font: 700 8pt/1 var(--f-adulte); letter-spacing: 0.09em; text-transform: uppercase; color: var(--canard); }
+.temps .rythme { margin-top: 2mm; color: var(--graphite-2); font-size: 9.4pt; }
+
+.etape {
+  display: grid;
+  grid-template-columns: 1fr 66mm;
+  gap: 6mm;
+  padding: 2.6mm 0 2.8mm;
+  border-bottom: 0.25mm solid var(--trait);
+  break-inside: avoid;
+}
+.etape:last-child { border-bottom: 0; }
+.deroule h3 { display: flex; align-items: center; gap: 2.2mm; font: 700 10.6pt/1.25 var(--f-adulte); margin-bottom: 1mm; }
+.n {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  min-width: 5.6mm;
+  height: 5.6mm;
+  padding: 0 0.9mm;
+  border: 0.4mm solid var(--canard);
+  border-radius: 2.8mm;
+  font: 700 8.5pt/1 var(--f-adulte);
+  color: var(--canard);
+}
+.qui { font: 400 8.5pt/1 var(--f-adulte); color: var(--graphite-3); border: 0.25mm solid var(--trait); border-radius: 1mm; padding: 0.6mm 1.4mm; }
+.quoi p { padding-left: 7.8mm; color: var(--graphite); }
+
+/* ————— Ce qui sert ————— */
+.res { list-style: none; padding: 0.4mm 0 0; display: grid; align-content: start; gap: 1.4mm; font-size: 9.4pt; line-height: 1.3; }
+.res li { display: flex; align-items: flex-start; gap: 1.8mm; }
+.res li .i { margin-top: -0.1mm; }
+.res a { font-weight: 700; }
+.res li.a-venir { color: var(--graphite-3); }
+.res li.a-venir span::after { content: " · à venir"; font-style: italic; }
+.res li.note { display: block; padding-left: 6mm; font-size: 8.4pt; color: var(--graphite-3); }
+
+/* ————— Le renvoi au guide ————— */
+.guide { margin-top: 3mm !important; font-size: 9.4pt; color: var(--graphite-2); }
+.guide a { font-weight: 700; color: var(--graphite); }
+.guide .adresse { color: var(--graphite-3); }
+
+/* Le 19 novembre 2026 : les étapes un peu resserrées, la page 2 dépassant de quelques lignes après les ajouts */
+.etape { padding: 1.8mm 0 2mm; }
+.temps { margin-top: 3mm; }

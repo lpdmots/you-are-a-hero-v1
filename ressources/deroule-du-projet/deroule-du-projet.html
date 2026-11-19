@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Le déroulé du projet</title>
+<link rel="stylesheet" href="../commun/feuille.css">
+<link rel="stylesheet" href="deroule-du-projet.css">
+<!-- Les documents à imprimer n'ont pas encore d'adresse sur le site : leur lien (data-pdf) ne s'active que
+     lorsque la page est servie par le site, si bien que le PDF ne porte aucun chemin de ce poste. -->
+<script>
+  addEventListener("DOMContentLoaded", () => {
+    if (!location.protocol.startsWith("http")) return;
+    for (const a of document.querySelectorAll("a[data-pdf]")) a.href = a.dataset.pdf;
+  });
+</script>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- À imprimer : une feuille qui existe -->
+  <symbol id="i-imprimer" viewBox="0 0 24 24"><path d="M7 8V3h10v5M6 17H4v-7.5h16V17h-2M7 13.5h10V21H7z"/></symbol>
+  <!-- En ligne : une page du site -->
+  <symbol id="i-en-ligne" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M3.5 12h17M12 3.5c-3 3-3 14 0 17M12 3.5c3 3 3 14 0 17"/></symbol>
+  <!-- À venir : le cercle en pointillé, comme « Texte vide » dans l'outil -->
+  <symbol id="i-a-venir" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" stroke-dasharray="2.6 2.4"/></symbol>
+</svg>
+
+<!-- ————— Page 1 : découvrir le genre, préparer l'histoire ————— -->
+<section class="page deroule">
+  <header class="tete">
+    <div class="tete-texte">
+      <p class="sorte">Mener le projet · pour l’enseignant</p>
+      <h1>Le déroulé du projet</h1>
+      <p class="chapeau">Quatre temps, de la découverte du genre au livre imprimé, et ce qui sert à chaque étape. La durée de chacune dépend du livre et de la classe&nbsp;: un premier livre s’écrit en une ou deux périodes, un grand livre en trois mois environ. Les liens avec les programmes sont sur une feuille à part&nbsp;: <a data-pdf="../programmes/programmes.pdf"><cite>Le livre-jeu et les programmes</cite></a>.</p>
+    </div>
+    <img src="../commun/images/dragon-deroule.webp" alt="">
+  </header>
+
+  <div class="legende">
+    <span><svg class="i"><use href="#i-imprimer"/></svg>À imprimer</span>
+    <span><svg class="i"><use href="#i-en-ligne"/></svg>Sur le site</span>
+    <span><img class="i" src="../commun/images/dragon-petit.svg" alt="">Dans Il était une classe</span>
+    <span><span class="ia">✦</span>Avec l’IA, facultative&nbsp;; les élèves n’y ont pas accès</span>
+  </div>
+
+  <section class="temps">
+    <h2><span class="t">Temps 1</span>Découvrir le genre</h2>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">1</span>Jouer ensemble</h3>
+        <p>Lisez des livres-jeux à voix haute&nbsp;; la classe vote à chaque choix, puis rejoue pour explorer d’autres chemins. On joue sans analyser, en partant de livres très simples.</p>
+      </div>
+      <ul class="res">
+        <li><svg class="i"><use href="#i-en-ligne"/></svg><span><a href="https://iletaituneclasse.com/bibliotheque">La bibliothèque</a>&nbsp;: des livres à lire en ligne, à projeter au tableau</span></li>
+        <li><svg class="i"><use href="#i-en-ligne"/></svg><span>Livres d’exemple&nbsp;: <cite>Bouquin mène l’enquête</cite>, <cite>Les passeurs de brume</cite></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lettre-aux-familles/lettre-aux-familles.pdf">Lettre aux familles</a>, au début du projet, l’autorisation en bas</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">2</span>Chercher comment c’est fait</h3>
+        <p>Livre ouvert, les élèves observent les chemins, les choix, les règles et les fins. Notez ce qu’ils ont aimé et ce qu’ils ne veulent pas dans leur livre&nbsp;: cette liste servira à fixer vos règles.</p>
+      </div>
+      <ul class="res">
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../recherche-bouquin/recherche-bouquin-a-completer.pdf">Recherche sur <cite>Bouquin mène l’enquête</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../recherche-passeurs/recherche-passeurs-a-completer.pdf">Recherche sur <cite>Les passeurs de brume</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../recherche-livre-jeu/recherche-livre-jeu-a-completer.pdf">Recherche pour tout livre‑jeu</a></span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">3</span>Mettre en ordre ce qu’on a trouvé</h3>
+        <p>La leçon structure les découvertes&nbsp;: les scènes, l’arbre et ses chemins, les fins, les règles du jeu, qui raconte. Puis les choix, leurs pistes et leurs conséquences.</p>
+      </div>
+      <ul class="res">
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lecon-1-livre-jeu/lecon-1-livre-jeu.pdf">Leçon 1 · <cite>Le livre dont tu es le héros</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lecon-2-choix/lecon-2-choix.pdf">Leçon 2 · <cite>Les choix</cite></a></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="temps">
+    <h2><span class="t">Temps 2</span>Préparer l’histoire</h2>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">4</span>Inventer l’histoire ensemble</h3>
+        <p>L’univers, le héros et sa quête, puis les grandes étapes de l’aventure. Fixez l’enjeu, pas toutes les solutions. Décidez des règles communes&nbsp;: un héros ou plusieurs, la personne et le temps du récit, la façon d’échouer, les règles du jeu. Pour un premier livre, un seul mécanisme de jeu suffit souvent.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>La Préparation, projetée au tableau&nbsp;: questions, <span class="ia">✦</span>&nbsp;idées proposées, ce que la classe retient</span></li>
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>La fiche de l’histoire à imprimer pour chaque élève&nbsp;: personnages, parties, objets</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">5</span>Découper et confier les chapitres</h3>
+        <p>Les grandes parties, puis les chapitres. Chaque élève en prend un, seul ou à deux. Fixez ensemble d’où arrive le héros et où il repart&nbsp;; l’élève invente ce qui se passe entre les deux.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Parties et chapitres, les élèves de chaque chapitre</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">6</span>Préparer son chapitre</h3>
+        <p>Sans rien rédiger, l’élève imagine plusieurs obstacles. Vous choisissez avec lui ceux qu’il garde&nbsp;; pour chacun, il prépare trois façons de réagir et leurs conséquences.</p>
+      </div>
+      <ul class="res">
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../mon-chapitre/mon-chapitre-a-completer.pdf">Fiche <cite>Mon chapitre</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../mon-chapitre/mon-chapitre-obstacles.pdf">Feuille <cite>Un obstacle</cite></a></span></li>
+        <li class="note">La leçon 2 reste à portée de main.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">Le déroulé du projet · page 1 sur 2 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+<!-- ————— Page 2 : écrire et relire, fabriquer ————— -->
+<section class="page deroule">
+  <section class="temps premier">
+    <h2><span class="t">Temps 3</span>Écrire et relire</h2>
+    <p class="rythme">Écriture, relecture et essais se répètent au fil des scènes&nbsp;; chacun avance à son rythme.</p>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">7</span>Mettre en place les scènes <span class="qui">vous</span></h3>
+        <p>D’après les fiches des élèves&nbsp;: les scènes de chaque chapitre, leurs liens, une consigne et une liste de vérification par scène. C’est l’étape la plus longue pour vous.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>«&nbsp;Chemins&nbsp;», pour construire les scènes et leurs liens, ou <span class="ia">✦</span>&nbsp;en proposer plusieurs d’un coup</span></li>
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>«&nbsp;<span class="ia">✦</span>&nbsp;Formuler&nbsp;»&nbsp;: la consigne et sa liste, d’après votre idée</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">8</span>Écrire une scène</h3>
+        <p>L’élève écrit au brouillon d’après sa consigne, puis se relit avec la liste de vérification de sa consigne. Vous vérifiez le contenu&nbsp;; il corrige son orthographe, puis saisit son texte sur l’ordinateur et le remet.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Les fiches de rédaction&nbsp;: consigne et liste, par élève ou par chapitre</span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lecon-3-scene/lecon-3-scene.pdf">Leçon 3 · <cite>Écrire une scène</cite></a></span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../affiches/affiches.pdf">Quatre affiches pour la classe</a>&nbsp;: la scène, les chemins, les choix, écrire</span></li>
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../sur-le-site/sur-le-site.pdf">Fiche de l’élève <cite>J’écris sur le site</cite></a>, de l’entrée dans la classe au test du chapitre</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">9</span>Relire et faire reprendre</h3>
+        <p>Après la remise, vous validez la scène ou demandez une reprise ciblée. L’histoire d’abord, l’orthographe ensuite. Plutôt qu’un texte plus long, demandez de développer un point précis&nbsp;: un lieu, un dialogue, une émotion.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Le Suivi, la remarque de reprise, <span class="ia">✦</span>&nbsp;la correction de l’orthographe</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">10</span>Tester les chemins</h3>
+        <p>Chaque élève joue son chapitre comme un lecteur et corrige ce qui ne raccorde pas. Vous jouez le livre entier, plusieurs fois&nbsp;: les liens entre chapitres, les blocages, la difficulté.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>La lecture d’essai, et «&nbsp;Vérifier les chemins&nbsp;» dans le Livre</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="temps">
+    <h2><span class="t">Temps 4</span>Fabriquer le livre et le faire vivre</h2>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">11</span>Illustrer et mettre en page</h3>
+        <p>Des dessins d’élèves ou des images créées avec l’IA, dans un style commun&nbsp;; une couverture soignée. Les numéros se fixent à la toute fin.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Les images, importées ou <span class="ia">✦</span>&nbsp;créées, la couverture, «&nbsp;Mettre en page&nbsp;» dans le Livre</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">12</span>Préparer la commande et la diffusion</h3>
+        <p>Présentez le livre, proposez la précommande, en noir et blanc ou en couleur, l’achat restant facultatif. Vérifiez les autorisations, rendues au début du projet, avant d’imprimer ou de diffuser.</p>
+      </div>
+      <ul class="res">
+        <li><svg class="i"><use href="#i-imprimer"/></svg><span><a data-pdf="../lettre-aux-familles/lettre-aux-familles.pdf">Bon de précommande</a>, la seconde feuille de la lettre aux familles</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">13</span>Imprimer</h3>
+        <p>Un exemplaire d’essai d’abord, pour vérifier et corriger. Avant les vacances d’été, prévoyez sa réception, le temps des corrections, puis la livraison de la commande finale.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Le PDF prêt pour l’imprimeur</span></li>
+      </ul>
+    </div>
+
+    <div class="etape">
+      <div class="quoi">
+        <h3><span class="n">14</span>Faire vivre le livre</h3>
+        <p>Une lecture dans votre classe ou dans une autre, un exemplaire à la bibliothèque de l’école, le livre en ligne pour ceux qui ne l’ont pas acheté.</p>
+      </div>
+      <ul class="res">
+        <li><img class="i" src="../commun/images/dragon-petit.svg" alt=""><span>Le partage privé, avec les comptes des élèves, ou dans la bibliothèque du site</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <p class="guide">La méthode en détail, étape par étape&nbsp;: <a href="https://iletaituneclasse.com/guide">le guide</a>, <span class="adresse">iletaituneclasse.com/guide</span></p>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">Le déroulé du projet · page 2 sur 2 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+</body>
+</html>

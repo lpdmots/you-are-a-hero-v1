@@ -1,0 +1,100 @@
+/* Affiches pour la classe : A4 portrait, lisibles à 3 ou 4 m. Une idée par affiche, des mots en grand (Andika),
+   le titre à la main (Playwrite), un extrait de livre en Vollkorn. Agrandissables en A3 : tout est en formes. */
+
+.affiche { padding: 14mm 15mm 10mm; font: 400 22pt/1.3 var(--f-eleve); }
+.affiche p, .affiche h1, .affiche h2, .affiche ol, .affiche ul, .affiche figure { margin: 0; }
+.affiche strong { font-weight: 700; color: var(--canard); }
+
+.tete { display: flex; align-items: center; justify-content: space-between; gap: 6mm; }
+.affiche h1 { font: 400 40pt/1.5 var(--f-main); }
+.tete img { height: 42mm; width: auto; flex: none; }
+.cle { margin-top: 6mm !important; font-size: 24pt; }
+
+/* ————— 1. La scène et ses repères ————— */
+.r {
+  display: inline-grid; place-items: center; flex: none;
+  width: 11mm; height: 11mm; margin: 0 2mm; border-radius: 50%;
+  background: var(--canard); color: #fff; font: 700 17pt/1 var(--f-eleve); vertical-align: 1mm;
+}
+.scene {
+  position: relative; margin-top: 8mm !important; padding: 7mm 10mm 8mm 22mm;
+  border: 0.6mm solid var(--graphite); border-radius: 3mm; box-shadow: 2.5mm 2.5mm 0 var(--canard-pale);
+  font: 400 21pt/1.5 var(--f-livre); font-variant-numeric: lining-nums;
+}
+.scene .numero { display: flex; align-items: center; justify-content: center; font: 700 30pt/1 var(--f-livre); margin-bottom: 5mm !important; }
+.scene .numero .r { margin-left: -14mm; margin-right: 3mm; }
+.scene .recit, .scene .choix { position: relative; }
+.scene .r-marge { position: absolute; left: -17mm; top: 1.5mm; margin: 0; }
+.scene u { text-decoration-thickness: 0.6mm; text-underline-offset: 1.5mm; text-decoration-color: var(--canard); }
+.scene .choix { margin-top: 5mm; padding-top: 4mm; border-top: 0.4mm solid var(--graphite); font-style: italic; }
+.scene .choix .r-marge { top: 5mm; }
+.scene .choix p + p { margin-top: 2mm; }
+.legende { list-style: none; padding: 0; margin-top: 11mm !important; display: grid; gap: 5mm; }
+.legende li { display: flex; align-items: center; gap: 2mm; }
+.legende .r { margin: 0 3mm 0 0; }
+
+/* ————— 2. Les trois formes de chemins ————— */
+.formes { display: grid; gap: 8mm; margin-top: 9mm; }
+.forme { display: grid; grid-template-columns: 82mm 1fr; gap: 8mm; align-items: center; padding: 6mm 7mm; border: 0.5mm solid var(--graphite); border-radius: 3mm; box-shadow: 2mm 2mm 0 var(--canard-pale); }
+.forme .schema { width: 100%; height: auto; display: block; }
+.affiche h2 { font: 700 26pt/1.2 var(--f-eleve); margin-bottom: 2mm; }
+.forme p { font-size: 20pt; line-height: 1.3; }
+
+/* ————— 3. Les cinq pistes ————— */
+.picto { width: 15mm; height: 15mm; flex: none; fill: none; stroke: var(--canard); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.pistes { list-style: none; padding: 0; margin-top: 7mm !important; display: grid; gap: 4.5mm; }
+.pistes li { display: grid; grid-template-columns: 15mm 1fr; column-gap: 6mm; align-items: center; padding: 3.5mm 6mm; border: 0.45mm solid var(--graphite); border-radius: 3mm; }
+.pistes .picto { grid-row: 1 / span 2; }
+.pistes .question { font: 700 26pt/1.2 var(--f-eleve); }
+.pistes .nom { font-size: 17pt; color: var(--graphite-2); }
+.modele { margin-top: 9mm; padding: 6mm 8mm; border-left: 1.2mm solid var(--canard); background: var(--canard-pale); }
+.modele-titre { font-weight: 700; font-size: 20pt; margin-bottom: 3mm !important; }
+.exemple { display: flex; align-items: baseline; gap: 4mm; font: italic 400 21pt/1.4 var(--f-livre); font-variant-numeric: lining-nums; }
+.exemple + .exemple { margin-top: 2mm !important; }
+.exemple::before { flex: none; width: 8mm; font: 700 22pt/1 var(--f-eleve); text-align: center; }
+.exemple.oui::before { content: "✓"; color: var(--canard); }
+.exemple.non { color: var(--graphite-2); text-decoration: line-through; text-decoration-thickness: 0.4mm; }
+.exemple.non::before { content: "✗"; color: var(--graphite-2); }
+
+/* ————— 4. Les quatre moments, puis développer ————— */
+.moments { list-style: none; padding: 0; margin-top: 7mm !important; display: grid; gap: 5mm; }
+.moments li { display: flex; align-items: flex-start; gap: 5mm; font-size: 22pt; line-height: 1.3; }
+.n { display: inline-grid; place-items: center; flex: none; width: 13mm; height: 13mm; border-radius: 50%; background: var(--canard); color: #fff; font: 700 19pt/1 var(--f-eleve); }
+.developper { margin-top: 10mm; padding: 6mm 8mm 7mm; border: 0.5mm solid var(--graphite); border-radius: 3mm; box-shadow: 2mm 2mm 0 var(--canard-pale); }
+.sens { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; margin-top: 3mm; }
+.sens p { display: flex; flex-direction: column; align-items: center; gap: 2mm; font-size: 20pt; }
+.emotion { margin-top: 6mm !important; font-size: 20pt; }
+.emotion .livre { font: italic 400 21pt/1.4 var(--f-livre); }
+
+.pied { margin-top: auto; }
+
+/* Retouches : titres un peu plus petits et de l'air sous leurs jambages ; les numéros en Andika (le « 1 » de
+   Vollkorn se lit « I ») ; l'affiche des choix resserrée pour tenir au-dessus du pied */
+.affiche h1 { font-size: 36pt; line-height: 1.45; }
+.tete { margin-bottom: 4mm; }
+.tete img { height: 36mm; }
+.scene .numero, .scene b { font-family: var(--f-eleve); font-style: normal; }
+.scene b { font-weight: 700; }
+.pistes { gap: 3.5mm; margin-top: 5mm !important; }
+.pistes li { padding: 2.6mm 6mm; }
+.pistes .question { font-size: 24pt; }
+.pistes .picto { width: 13mm; height: 13mm; }
+.modele { margin-top: 7mm; padding: 5mm 7mm; }
+.cle { margin-top: 3mm !important; }
+.moments { gap: 7mm; margin-top: 6mm !important; }
+.developper { margin-top: 14mm; }
+.insecable { white-space: nowrap; }
+
+/* Reprise du 18 novembre (relecture transmise par le porteur) */
+.scene { padding-right: 22mm; }
+.r-droite { position: absolute; right: -17mm; margin: 0; transform: translateY(-50%); }
+.legende-schema { display: flex; align-items: center; gap: 3mm; margin-top: 3mm !important; font-size: 17pt; color: var(--graphite-2); }
+.legende-schema svg { width: 7mm; height: 7mm; }
+.legende-schema svg + svg, .legende-schema svg:nth-of-type(2) { width: 10mm; margin-left: 6mm; }
+.pistes .nom { font: italic 400 16pt/1.3 var(--f-livre); color: var(--graphite-2); }
+.modele-titre { line-height: 1.3; }
+
+/* Un titre sur deux lignes : de la place pour les jambages du « J » */
+.affiche h1.deux-lignes { line-height: 1.8; }
+.legende li { align-items: flex-start; }
+.legende .r { margin-top: 0.5mm; }

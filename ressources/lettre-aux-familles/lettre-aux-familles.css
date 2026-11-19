@@ -1,0 +1,122 @@
+/* Lettre aux familles : la voix de l'enseignant, en Atkinson, avec des pointillés à remplir à la main. */
+
+.lettre { font: 400 10.8pt/1.45 var(--f-adulte); }
+.lettre p, .lettre ul, .lettre h1, .lettre h2 { margin: 0; }
+.lettre p + p { margin-top: 1.8mm; }
+
+/* Un blanc à remplir : des pointillés d'une largeur donnée, sur la ligne du texte */
+.blanc { display: inline-block; height: 1.1em; vertical-align: -0.3em; border-bottom: 0.3mm dotted var(--graphite); }
+.l14 { width: 14mm; } .l18 { width: 18mm; } .l22 { width: 22mm; } .l30 { width: 30mm; } .l35 { width: 35mm; }
+.l60 { width: 60mm; } .l70 { width: 70mm; } .l90 { width: 90mm; }
+
+/* L'en-tête de la lettre : école, classe, date */
+.entete { display: flex; gap: 6mm; align-items: baseline; font-size: 10pt; color: var(--graphite-2); }
+.entete .date { margin-left: auto; }
+.entete p + p { margin-top: 0; }
+
+.tete { display: flex; align-items: flex-end; gap: 6mm; margin-top: 4mm; }
+.tete-texte { flex: 1; min-width: 0; }
+.sorte { font: 700 8pt/1 var(--f-adulte); letter-spacing: 0.09em; text-transform: uppercase; color: var(--canard); }
+.lettre h1 { font: 400 22pt/1.6 var(--f-main); margin: 3mm 0 1mm; }
+.tete img { height: 30mm; width: auto; }
+
+.appel { margin-top: 3mm !important; }
+
+/* Les parties de la lettre */
+.partie { margin-top: 4mm; }
+.lettre h2 { font: 700 11pt/1.3 var(--f-adulte); color: var(--canard); margin-bottom: 1mm; }
+.points { margin: 0; padding-left: 5mm; }
+.points li { margin-bottom: 0.8mm; }
+.points li::marker { color: var(--canard); }
+/* Une case à cocher, sur la ligne du texte */
+.case { display: inline-block; vertical-align: -0.5mm; margin-right: 1.5mm; flex: none; width: 3.6mm; height: 3.6mm; border: 0.3mm solid var(--graphite); background: #fff; }
+
+.cloture { margin-top: 5mm !important; }
+.signature { margin-top: 6mm !important; margin-left: auto; width: 65mm; text-align: center; line-height: 1.6; }
+.signature .role { font-size: 9pt; color: var(--graphite-3); }
+.signature.courte { margin-top: 4mm !important; }
+
+/* Feuille 2 : les deux formules */
+.formules { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; margin-top: 4mm; }
+.formule { padding: 3mm 4mm 3.5mm; border: 0.35mm solid var(--graphite); border-radius: 2.5mm; box-shadow: 1.2mm 1.2mm 0 var(--canard-pale); }
+.formule p + p { margin-top: 1mm; }
+.formule-nom { font: 400 15pt/1.4 var(--f-main); }
+.formule .prix { margin-top: 2.5mm !important; font-weight: 700; line-height: 1.8; }
+.facultatif { margin-top: 4mm !important; }
+
+/* Le bon à découper, sous un trait de coupe et ses ciseaux */
+.coupon { position: relative; margin-top: auto; padding: 5mm 0 0; border-top: 0.35mm dashed var(--graphite); }
+.coupon + .pied { margin-top: 5mm; }
+.ciseaux { position: absolute; left: 6mm; top: 0; transform: translateY(-50%); padding: 0 1mm; background: #fff; font: 13pt/1 "Apple Symbols", "Segoe UI Symbol", sans-serif; color: var(--graphite-2); }
+.coupon-titre { font-weight: 700; margin-bottom: 2.5mm !important; line-height: 1.8; }
+.coupon p { line-height: 1.9; }
+.commande { border-collapse: collapse; margin: 2mm 0 1.5mm; }
+.commande td { padding: 1.2mm 6mm 1.2mm 0; line-height: 1.6; }
+.commande td:first-child { width: 32mm; font-weight: 700; }
+.commande .total td { border-top: 0.3mm solid var(--graphite); font-weight: 700; padding-top: 2mm; }
+.commande .total td:first-child { text-align: right; padding-right: 6mm; }
+.coupon-signature { margin-top: 2mm !important; height: 14mm; }
+
+/* La signature à droite, comme dans une lettre (la règle .lettre p remettait ses marges à zéro) */
+.lettre .signature { margin: 5mm 0 0 auto; }
+.lettre .signature.courte { margin-top: 4mm; }
+/* Feuille 1 : un peu plus serrée, pour garder de l'air au-dessus du pied */
+.tete { margin-top: 2mm; }
+.tete img { height: 28mm; }
+.partie { margin-top: 3.4mm; }
+.lettre .cloture { margin-top: 4mm; }
+
+
+/* Le coupon d'autorisation, sous la lettre : une seule réponse, accepter ou refuser */
+.autorisation { margin-top: auto; }
+.autorisation p + p { margin-top: 1.6mm; }
+.autorisation p { line-height: 1.6; }
+.autorisation .coupon-titre { line-height: 1.9; margin-bottom: 1.6mm !important; }
+.mention { white-space: nowrap; }
+.accord { margin-top: 3mm !important; }
+.accord strong + .case { margin-left: 6mm; }
+.refus { color: var(--graphite-2); font-size: 10pt; }
+.autorisation .ligne { margin-top: 4mm !important; line-height: 2; padding-bottom: 12mm; }
+.lettre .signature { margin-top: 3mm !important; }
+
+/* Les deux façons de lire en ligne : l enseignant raye celle qui ne sert pas, avant de photocopier */
+.mentions { margin: 0.6mm 0 0; padding-left: 6mm; list-style: "– "; line-height: 1.6; }
+.mentions li::marker { color: var(--graphite-3); }
+.mentions + p { margin-top: 1mm !important; }
+
+/* ————— Feuille 2 : deux bons de précommande en A5, sur une feuille A4 posée en largeur ————— */
+@page paysage { size: A4 landscape; margin: 0; }
+.page.paysage { page: paysage; width: 297mm; height: 210mm; padding: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.l10 { width: 10mm; } .l50 { width: 50mm; }
+.demi { position: relative; display: flex; flex-direction: column; height: 210mm; padding: 8mm 9mm 6mm; font: 400 9.6pt/1.4 var(--f-adulte); }
+.demi + .demi { border-left: 0.3mm dashed var(--trait); }
+.demi p, .demi h1 { margin: 0; }
+.demi p + p { margin-top: 1.6mm; }
+.demi .entete { gap: 3mm; font-size: 8.6pt; }
+.demi h1 { font: 400 17pt/1.6 var(--f-main); margin: 3mm 0 1.5mm; }
+.demi .appel { margin-top: 0 !important; }
+.demi .formules { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; margin: 2.5mm 0; }
+.demi .formule { margin: 0 !important; padding: 2mm 3mm 2.4mm; border: 0.35mm solid var(--graphite); border-radius: 2mm; box-shadow: 0.9mm 0.9mm 0 var(--canard-pale); display: flex; flex-direction: column; gap: 1mm; }
+.demi .formule-nom { font: 400 12.5pt/1.5 var(--f-main); }
+.demi .prix { font-weight: 700; line-height: 1.7; }
+.demi .retour { line-height: 1.75; }
+.demi .signature { margin: 3mm 0 0 auto !important; width: 55mm; text-align: center; line-height: 1.5; }
+.demi .signature .role { font-size: 8pt; }
+.demi .coupon { margin-top: auto; padding-top: 4mm; }
+.demi .coupon-titre { margin-bottom: 1mm !important; line-height: 1.7; }
+.demi .coupon p { line-height: 1.7; }
+.demi .commande { margin: 0.5mm 0 1mm; }
+.demi .commande td { padding: 0.6mm 4mm 0.6mm 0; line-height: 1.5; }
+.demi .commande td:first-child { width: 24mm; }
+.demi .coupon-signature { height: 10mm; margin-top: 1mm !important; }
+.demi .ciseaux { font-size: 11pt; }
+.pied-demi { margin-top: 2mm !important; font: 400 7pt/1 var(--f-adulte); color: var(--graphite-3); text-align: right; }
+.demi h1 { margin-bottom: 3.5mm; }
+.demi .commande td:first-child { width: 27mm; white-space: nowrap; }
+/* Le dragon assis remplit le blanc avant le coupon, la signature à sa droite */
+.bas-de-lettre { display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; padding-top: 3mm; }
+.bas-de-lettre img { height: 34mm; width: auto; }
+.demi .bas-de-lettre .signature { margin: 0 0 2mm !important; }
+.demi .coupon { margin-top: 5mm; }
+/* Le dragon, à gauche, regarde vers la lettre */
+.bas-de-lettre img { transform: scaleX(-1); }

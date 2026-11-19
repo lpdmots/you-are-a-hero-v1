@@ -1,0 +1,107 @@
+/* Leçon 1. Trois pages : le livre et la scène, les chemins et les fins,
+   les règles du jeu. Un texte un peu plus grand que la leçon 2, pour des lecteurs de 8 ans. */
+
+.lecon { font-size: 12pt; line-height: 1.42; }
+.lecon .bloc { margin-top: 7mm; }
+.lecon .bloc.premier { margin-top: 1mm; }
+.lecon .carte p { font-size: 11pt; line-height: 1.4; }
+.lecon .livre { font-size: 11.2pt; }
+
+/* Les mots à placer, sous le titre de la partie (version à compléter seulement) */
+.banque { margin: -0.4mm 0 2.4mm !important; color: var(--canard); font-size: 11pt; }
+.banque em { font-style: italic; color: var(--graphite); letter-spacing: 0.01em; }
+
+/* Les échanges et les conseils se distinguent de la trace écrite. */
+.lecon .oral { margin-top: 6mm; padding: 3mm 4mm; border-left: 0.6mm solid var(--canard); background: var(--canard-pale); font-size: 11pt; }
+.oral strong { color: var(--canard); }
+.conseil { margin-top: 4mm; padding: 2.5mm 3.5mm; border-left: 0.6mm solid var(--canard); background: #f2f7f6; }
+.lecon .conseil-titre { font-weight: 700; font-size: 11pt; color: var(--canard); margin: 0 0 1mm; }
+.conseil p, .conseil .points { font-size: 11pt; line-height: 1.4; }
+.conseil .points { margin-top: 0; }
+.conseil .points li:last-child { margin-bottom: 0; }
+
+/* ————— 2. La scène : la légende à gauche, l'extrait à droite ————— */
+.scene { display: grid; grid-template-columns: 1fr 108mm; gap: 8mm; align-items: center; }
+.legende { list-style: none; margin: 0; padding: 0; }
+.legende li { display: flex; align-items: center; margin-bottom: 2.6mm; }
+.legende .r { margin: 0 2.6mm 0 0; }
+.lecon .r { width: 6mm; height: 6mm; font-size: 9.5pt; }
+.extrait { padding: 4mm 6mm 4.5mm 12mm; font-size: 12pt; line-height: 1.55; }
+.extrait .numero { font-size: 18pt; }
+.extrait .numero .r { margin-left: -7mm; margin-right: 1mm; }
+.r-marge { left: -9.5mm; top: 0.3mm; }
+.choix .r-marge { top: 2.2mm; }
+
+/* À compléter : dans la scène, des ronds blancs assez grands pour y écrire une lettre */
+.a-completer .extrait { line-height: 1.85; padding-left: 13.5mm; }
+.a-completer .extrait .r { width: 8.5mm; height: 8.5mm; background: #fff; border: 0.45mm solid var(--graphite); color: transparent; vertical-align: middle; }
+.a-completer .r-marge { left: -11.5mm; }
+.a-completer .extrait .numero .r { margin-left: -9mm; margin-right: 1.5mm; }
+/* Le numéro et son rond, centrés l'un sur l'autre */
+.extrait .numero { display: flex; align-items: center; justify-content: center; }
+/* Le rond d'un paragraphe, centré sur sa première ligne */
+.a-completer .recit .r-marge { top: 4mm; transform: translateY(-50%); }
+.a-completer .choix .r-marge { top: 6mm; transform: translateY(-50%); }
+
+/* ————— 3. Les chemins : l'arbre d'abord, puis les trois formes ————— */
+.lecon .legende-schema { font-size: 11pt; margin: 0 0 2.5mm; }
+.arbre { display: grid; grid-template-columns: 62mm 1fr; gap: 1mm 7mm; align-items: center; }
+.arbre .carte-titre { grid-column: 2; grid-row: 1; margin: 0 !important; }
+.arbre svg.schema { grid-column: 1; grid-row: 1 / span 2; margin: 0 !important; }
+.arbre > p:last-child { grid-column: 2; }
+.pour-eviter { margin: 4mm 0 0 !important; }
+.cartes.trois { margin-top: 2.5mm; }
+.cartes.trois .carte svg.schema { margin: 1mm 0 2mm; }
+
+/* ————— 4. Les fins, et le schéma de la sauvegarde ————— */
+.fins { display: grid; grid-template-columns: 1fr 74mm; gap: 2mm 7mm; align-items: center; }
+.fins .types-de-fins { grid-column: 1 / -1; }
+.sauvegarde { width: 74mm; height: auto; display: block; }
+.a-completer svg .seul-complet { display: none; }
+
+/* ————— 5. Les règles du jeu ————— */
+.heros { display: grid; grid-template-columns: auto repeat(3, 1fr); gap: 4mm; align-items: center; margin-top: 5mm; }
+.heros-titre { font-weight: 700; color: var(--canard); font-size: 10.5pt; width: 28mm; }
+.heros-carte { display: flex; align-items: center; gap: 2.5mm; border: 0.35mm solid var(--graphite); border-radius: 2.5mm; padding: 2mm 3mm; }
+.heros-carte p { display: flex; flex-direction: column; line-height: 1.25; font-size: 10.8pt; }
+.heros-carte p span { color: var(--graphite-2); font-size: 9.8pt; }
+.portrait { width: 11mm; height: 11mm; flex: none; fill: var(--canard-pale); stroke: var(--canard); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.portrait circle + circle, .portrait path { fill: #fff; }
+
+.aventure { display: grid; grid-template-columns: 68mm 1fr; gap: 8mm; align-items: center; margin-top: 5mm; }
+.aventure .conseil { margin-top: 0; }
+.fiche {
+  border: 0.35mm solid var(--graphite);
+  border-radius: 2mm;
+  padding: 2.6mm 4mm 3mm;
+  background: #fff;
+  box-shadow: 1.2mm 1.2mm 0 var(--canard-pale);
+  transform: rotate(-1.2deg);
+}
+.fiche-titre { font: 700 8pt/1 var(--f-adulte); letter-spacing: 0.09em; text-transform: uppercase; color: var(--canard); margin-bottom: 1.6mm !important; }
+.fiche-ligne { display: flex; align-items: baseline; gap: 2.5mm; border-bottom: 0.25mm solid var(--trait); padding: 1.2mm 0 0; font-size: 9.8pt; line-height: 1.15; }
+.lecon .fiche-ligne + .fiche-ligne { margin-top: 0; }
+.fiche-ligne > span:first-child { width: 14mm; flex: none; color: var(--graphite-2); }
+/* La cursive descend sous la ligne, comme à la main : sa marge négative pose ses lettres sur le trait */
+.main { font: 400 9.8pt/1.15 var(--f-main); margin-bottom: -1.9mm; }
+.fiche-ligne > span:first-child { margin-bottom: 0.4mm; }
+.main s { text-decoration-thickness: 0.3mm; color: var(--graphite-3); margin-right: 2.5mm; }
+
+/* ————— 6. Qui raconte ? À quel temps ? Deux colonnes : la personne à gauche, le temps à droite ————— */
+.lecon .bloc.narration { margin-top: 5mm; }
+.narration-grille { display: grid; grid-template-columns: 1fr 1fr; gap: 0 8mm; }
+.lecon .narration-grille p { margin: 0; }
+.narration-grille .livre { display: inline-block; width: 38mm; }
+.lecon .narration-titre { font-weight: 700; color: var(--canard); font-size: 10.5pt; }
+.lecon .narration-regle { margin-top: 1mm; }
+
+/* ————— Version à compléter : la place d'écrire à la main ————— */
+/* Des lignes hautes là où il y a un blanc, et des blancs assez longs pour une écriture d'enfant */
+.a-completer .lecon :is(p, li):has(.rep) { line-height: 2.5; }
+.a-completer .lecon .carte p:has(.rep) { line-height: 2.3; }
+.a-completer .lecon .rep { min-width: 34mm; height: 1.3em; vertical-align: -0.4em; border-bottom-width: 0.35mm; }
+/* Dans une carte, un blanc un peu plus court, pour rester sur la ligne de ses mots */
+.a-completer .lecon .carte p:not(.carte-titre) .rep { min-width: 27mm; max-width: 31mm; }
+/* Le nom d'une carte : un blanc à la mesure du mot, assez haut pour l'écrire */
+.a-completer .lecon .carte-titre .rep { height: 8mm; vertical-align: baseline; min-width: 28mm; }
+.a-completer .lecon .carte-titre:has(.rep) { min-height: 10mm; line-height: 1; align-items: flex-end; }

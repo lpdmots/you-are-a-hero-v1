@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>J'écris sur le site</title>
+<link rel="stylesheet" href="../commun/feuille.css">
+<link rel="stylesheet" href="sur-le-site.css">
+</head>
+<body>
+
+<!-- Fiche de l'élève « J'écris sur le site », décidée par le porteur le 18 novembre 2026 : tout le parcours de l'élève
+     sur Il était une classe, de l'adresse du site à « Changer d'élève », captures de la vraie application à l'appui,
+     le bouton à cliquer entouré d'un repère. Une ressource propre à l'outil : le petit dragon du logo la signale.
+     Les captures, cadrées et repérées, se refont contre le serveur local (4840) :
+     npx playwright test --config playwright.local.config.ts fiche-eleve (dans app/), qui les écrit dans captures/. -->
+
+<!-- ————— Recto : entrer, trouver sa scène, écrire ————— -->
+<section class="page fiche">
+  <header class="tete">
+    <div class="tete-texte">
+      <p class="sorte"><img src="../commun/images/dragon-petit.svg" alt="">Avec Il était une classe · fiche de l’élève</p>
+      <h1>J’écris sur le site</h1>
+      <p class="chapeau">Le site rassemble les scènes de toute la classe. Voici comment y écrire la tienne.</p>
+    </div>
+    <img class="mascotte" src="../commun/images/dragon-ecrit.webp" alt="">
+  </header>
+
+  <section class="etape">
+    <div class="texte">
+      <h2><span class="n">1</span>J’entre dans la classe</h2>
+      <p>J’ouvre le site <b class="adresse">iletaituneclasse.com/classe</b>. Je tape l’identifiant et le mot de passe de la classe, puis je clique sur <b>Entrer</b>.</p>
+      <p class="aide">Souvent, l’enseignant l’a déjà fait.</p>
+    </div>
+    <figure class="capture etroite"><img src="captures/1-entrer.png" alt="Les champs pour entrer dans la classe et le bouton Entrer"></figure>
+  </section>
+
+  <section class="etape">
+    <div class="texte">
+      <h2><span class="n">2</span>Je dis qui je suis</h2>
+      <p>Je clique sur mon prénom, puis je tape mon code secret de quatre chiffres.</p>
+    </div>
+    <figure class="capture"><img src="captures/2-prenom-et-code.png" alt="Les prénoms de la classe et les quatre cases du code"></figure>
+  </section>
+
+  <section class="etape">
+    <div class="texte">
+      <h2><span class="n">3</span>Je trouve ma scène</h2>
+      <p>Dans <b>Mon travail</b>, je clique sur <b>Écrire</b>, à côté de ma scène.</p>
+    </div>
+    <figure class="capture"><img src="captures/3-mon-travail.png" alt="Mon travail : la scène à écrire et son bouton Écrire"></figure>
+  </section>
+
+  <section class="etape large">
+    <div class="texte">
+      <h2><span class="n">4</span>J’écris ma scène</h2>
+      <p>Je lis <b>la consigne</b>, puis j’écris mon texte&nbsp;: il s’enregistre tout seul. Je coche <b>J’ai pensé à</b> quand c’est fait. En haut, je relis la fin de la scène d’avant.</p>
+    </div>
+    <figure class="capture"><img src="captures/4-ecrire.png" alt="La scène : le texte, la consigne et la liste J’ai pensé à"></figure>
+  </section>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">J’écris sur le site · page 1 sur 2 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+<!-- ————— Verso : remettre, reprendre, tester, laisser la place ————— -->
+<section class="page fiche">
+  <section class="etape premiere">
+    <div class="texte">
+      <h2><span class="n">5</span>Je remets ma scène</h2>
+      <p>Quand j’ai fini, je clique sur <b>Remettre</b>. Pendant que l’enseignant relit, je n’écris plus dedans.</p>
+      <p class="aide">J’ai oublié quelque chose&nbsp;? Je clique sur <b>Modifier encore mon texte</b>.</p>
+    </div>
+    <div class="captures">
+      <figure class="capture"><img src="captures/5-remettre.png" alt="Le bouton Remettre"></figure>
+      <figure class="capture"><img src="captures/5-modifier-encore.png" alt="Le bouton Modifier encore mon texte"></figure>
+    </div>
+  </section>
+
+  <section class="etape">
+    <div class="texte">
+      <h2><span class="n">6</span>Je reprends après une remarque</h2>
+      <p>Je lis la remarque de l’enseignant et je clique sur <b>J’ai lu, j’écris</b>. Je corrige mon texte en suivant la remarque, puis je clique de nouveau sur <b>Remettre</b>.</p>
+    </div>
+    <figure class="capture"><img src="captures/6-remarque.png" alt="La remarque de l’enseignant et le bouton J’ai lu, j’écris"></figure>
+  </section>
+
+  <section class="etape large">
+    <div class="texte">
+      <h2><span class="n">7</span>Je teste mon chapitre</h2>
+      <p>Dans <b>Lire</b>, je clique sur <b>Lire à l’essai</b>, puis <b>Commencer au début</b>. Je joue mon chapitre comme un lecteur. Pour essayer un autre choix, je clique sur <b>Revenir au passage précédent</b>, ou je choisis un passage dans <b>Parcours</b>.</p>
+    </div>
+    <div class="captures cote-a-cote">
+      <figure class="capture"><img src="captures/7-commencer.png" alt="L’onglet Lire et Commencer au début"></figure>
+      <figure class="capture"><img src="captures/7-revenir.png" alt="Revenir au passage précédent et Parcours"></figure>
+    </div>
+  </section>
+
+  <aside class="verifier">
+    <p class="verifier-titre">Je vérifie mon chapitre</p>
+    <ul>
+      <li>J’essaie <b>tous les choix</b>, l’un après l’autre.</li>
+      <li>Si ça ne se raccorde pas, si un nom change ou s’il reste une faute, <b>je corrige ma scène</b>.</li>
+      <li>Si ma scène est déjà validée, ou si je suis bloqué, ou qu’un choix mène au mauvais endroit, <b>je le dis à l’enseignant</b>.</li>
+    </ul>
+  </aside>
+
+  <section class="etape">
+    <div class="texte">
+      <h2><span class="n">8</span>Je laisse la place</h2>
+      <p>Quand j’ai terminé, je clique sur <b>Changer d’élève</b>.</p>
+    </div>
+    <figure class="capture"><img src="captures/8-changer-d-eleve.png" alt="La barre du haut et le bouton Changer d’élève"></figure>
+  </section>
+
+  <footer class="pied">
+    <img src="../commun/images/il-etait-une-classe-horizontal.svg" alt="Il était une classe">
+    <span class="droite">J’écris sur le site · page 2 sur 2 · iletaituneclasse.com</span>
+  </footer>
+</section>
+
+</body>
+</html>

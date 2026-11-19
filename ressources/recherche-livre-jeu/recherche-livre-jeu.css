@@ -1,0 +1,71 @@
+/* Ajustements propres à la fiche générale. Le texte que lit l'élève ne descend
+   pas sous 10 pt, et il écrit sur des lignes de 8 mm (la hauteur commune). */
+
+/* Le schéma : un exemple qui part du 1, où deux chemins se rejoignent, avec sa légende ; le cadre où dessiner */
+.modele-schema { display: flex; align-items: center; gap: 8mm; margin: 2mm 0 1mm; }
+.legende-schema p { font-size: 10.5pt; line-height: 1.5; display: flex; align-items: center; gap: 2mm; margin: 0; }
+.legende-schema .signe { width: 4.2mm; height: 4.2mm; flex: none; }
+.legende-schema .signe circle, .legende-schema .signe path { fill: none; stroke: var(--graphite); stroke-width: 1; }
+.legende-schema .signe path.pointe { fill: var(--graphite); stroke: none; }
+.modele-schema svg:not(.signe) { width: 64mm; height: 20mm; }
+.modele-schema .liens path { fill: none; stroke: var(--graphite); stroke-width: .5; marker-end: url(#fleche-exemple); }
+.modele-schema marker path { fill: var(--graphite); }
+.modele-schema .ronds circle { fill: #fff; stroke: var(--graphite); stroke-width: .5; }
+.modele-schema .noms text { text-anchor: middle; font: 7px var(--f-eleve); }
+.dessin { height: 110mm; }
+html:not(.a-completer) .dessin { height: 86mm; } /* la version enseignant porte une note de plus et des réponses écrites */
+.dessin .note-corrige { padding: 2mm 3mm; }
+
+/* Des choix différents : trois questions tirées des pistes de la leçon 2 ; pour chaque choix trouvé, sa scène,
+   sa phrase et deux rangées de cases */
+.general .page-2 .bloc { margin-top: 3.5mm; }
+.sorte-choix { border-top: .3mm solid var(--trait); margin-top: 2mm; padding-top: 1.5mm; }
+.recherche .tete-sorte.q { display: flex; align-items: baseline; gap: 2mm; padding-left: 0; text-indent: 0; margin: 0; }
+.recherche .tete-sorte.q::before { flex: none; width: 5mm; }
+.tete-sorte .glose { font-size: 10pt; color: var(--graphite-2); }
+.tete-sorte .ou { margin-left: auto; white-space: nowrap; font-size: 10.5pt; }
+.ligne-choix { display: flex; align-items: end; gap: 2mm; padding-left: 7mm; }
+.ligne-choix .etiquette { flex: none; font-size: 10.5pt; padding-bottom: .5mm; }
+.ligne-choix .reponse { flex: 1; min-width: 0; }
+html:not(.a-completer) .recherche .ligne-choix .reponse { margin-top: 0; }
+.recherche .cases.rang { display: flex; margin: 1.2mm 0 0 7mm; gap: 1mm 4mm; font-size: 10pt; }
+.a-completer .recherche .tete-sorte .rep.scene { min-width: 42mm; }
+.general .page-2 .question { margin-top: 1.4mm; }
+/* La version enseignant porte deux notes de plus : les rangées s'y resserrent */
+html:not(.a-completer) .page-2 .sorte-choix { margin-top: 1.2mm; padding-top: 1mm; }
+html:not(.a-completer) .recherche .page-2 .cases.rang { margin-top: .4mm; }
+
+/* Les règles : des cases sur deux rangées, « autre » suivi d'un blanc */
+.regles { margin: 1mm 0 0; gap: 2mm 5mm; font-size: 10.5pt; }
+.regles .autre { display: inline-flex; align-items: center; gap: 1mm; }
+.a-completer .regles .autre .rep { height: 1.05em; position: relative; top: .1em; }
+.a-completer .recherche .regles .rep.large { min-width: 60mm; }
+
+/* Le tableau des fins : le repère de la fin à gauche, trois cases, ce qui arrive */
+.fins-livre td:first-child { width: 28%; text-align: left; }
+.fins-livre td:nth-child(2) { width: 22%; }
+.fins-livre .reponse { font-size: 9pt; }
+.fins-livre .cases { font-size: 10.5pt; }
+.fins-livre th, .fins-livre td { padding: 1.5mm 2mm; }
+
+/* Le blanc d'un repère de scène, sur la ligne de sa question */
+.a-completer .recherche .rep.scene { min-width: 62mm; }
+
+/* Les cases à nombre centrées sur la ligne du texte (la règle commune les pose 1,6 mm trop bas ici) */
+.general .num { vertical-align: middle; position: relative; top: -.4mm; }
+
+/* « autre : » suivi d'un blanc où préciser, dans les deux versions */
+.cases.rang .autre { display: inline-flex; align-items: center; gap: 1mm; }
+/* Le blanc posé sur la ligne d'écriture : un bloc vide de la hauteur du texte, son pointillé au pied des lettres */
+.cases.rang .blanc { height: 1.05em; position: relative; top: .1em; }
+.cases.rang .blanc { display: inline-block; width: 24mm; border-bottom: .3mm dotted var(--graphite-2); }
+.recherche .cases.rang { flex-wrap: nowrap; gap: 1mm 3.2mm; white-space: nowrap; }
+
+/* Page 2 : la partie 4 occupe la place jusqu'au pied de la feuille. Les trois cadres et la question 15
+   se partagent l'espace libre (marges automatiques), sans rien éloigner d'une question de ses lignes. */
+.general .page-2 .bloc:last-of-type { flex: 1; display: flex; flex-direction: column; padding-bottom: 4mm; }
+.general .page-2 .bloc:last-of-type > .sorte-choix,
+.general .page-2 .bloc:last-of-type > .question { margin-top: auto; }
+.general .page-2 .bloc:last-of-type > .sorte-choix:first-of-type { margin-top: max(2mm, auto); }
+.a-completer .recherche .page-2 .cases.rang { margin-top: 2mm; }
+.a-completer .page-2 .ligne-choix { margin-top: 1mm; }
