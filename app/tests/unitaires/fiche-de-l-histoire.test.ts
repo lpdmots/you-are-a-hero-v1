@@ -40,15 +40,16 @@ const complete: Preparation = {
   questions: [{ id: "q1", etape: "univers", texte: "Y a-t-il de la magie ?", origine: "main" }],
   formules: [{ id: "f1", texte: "Note le mot de passe sur ta feuille.", signe: "crayon" }],
 };
-/** Les parties du plan, dans l'ordre du livre : deux décrites, une sans description */
+/** Les parties du plan, dans l'ordre du livre : deux décrites, une sans description ; leur image de repérage */
+const sansImage = { imageId: null, visuelChoisi: null, visuelDefaut: "mer" };
 const parties = [
-  { id: "p1", titre: "Le port", description: "D’où partent les barques, dans l’odeur du goudron." },
-  { id: "p2", titre: "Le départ", description: "" },
-  { id: "p3", titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place." },
+  { id: "p1", titre: "Le port", description: "D’où partent les barques, dans l’odeur du goudron.", imageId: "image-du-port", visuelChoisi: null, visuelDefaut: null },
+  { id: "p2", titre: "Le départ", description: "", ...sansImage },
+  { id: "p3", titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place.", ...sansImage },
 ];
 
 describe("La fiche de l'histoire (F02.1)", () => {
-  it("F02-AC21 — la fiche montre les éléments retenus dans l'ordre de F02.1, remplis, sans les grandes étapes, les idées, les formules ni les règles du jeu", () => {
+  it("F02-AC21 — la fiche montre les éléments retenus dans l'ordre de F02.1, remplis, toutes les parties avec leur image, sans les idées, les formules ni les règles du jeu", () => {
     const fiche = composerLaFiche(classeAChoix, complete, parties);
     expect(fiche.titre).toBe("Les passeurs de brume");
     expect(fiche.vide).toBeNull();
@@ -62,18 +63,19 @@ describe("La fiche de l'histoire (F02.1)", () => {
     ]);
     const autres = fiche.rubriques.find((r) => r.sorte === "autres");
     expect(autres && "personnages" in autres ? autres.personnages.map((p) => p.nom) : []).toEqual(["Maël", "Brindille"]);
-    // Les parties décrites, dans l'ordre du livre ; une partie sans description n'y est pas
-    const decrites = fiche.rubriques.find((r) => r.sorte === "parties");
-    expect(decrites && "parties" in decrites ? decrites.parties : []).toEqual([
-      { id: "p1", titre: "Le port", description: "D’où partent les barques, dans l’odeur du goudron." },
-      { id: "p3", titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place." },
+    // Toutes les parties, dans l'ordre du livre, avec leur image ; une partie sans description garde sa place (19 novembre 2026)
+    const toutes = fiche.rubriques.find((r) => r.sorte === "parties");
+    expect(toutes && "parties" in toutes ? toutes.parties : []).toEqual([
+      { id: "p1", titre: "Le port", description: "D’où partent les barques, dans l’odeur du goudron.", repere: { imageId: "image-du-port", visuelChoisi: null, visuelDefaut: null } },
+      { id: "p2", titre: "Le départ", description: "", repere: sansImage },
+      { id: "p3", titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place.", repere: sansImage },
     ]);
     const objets = fiche.rubriques.find((r) => r.sorte === "objets");
     expect(objets && "objets" in objets ? objets.objets.map((o) => [o.nom, o.imageId]) : []).toEqual([["la lanterne", "image-lanterne"], ["la carte du lac", null]]);
     expect(fiche.rubriques.find((r) => r.sorte === "feuille")).toMatchObject({ lignes: ["Volonté : 5 au départ", "Inventaire", "Un dé"] });
-    // Ni idées, ni questions, ni formules, ni fiche visuelle des images, ni règles du jeu, ni le titre d'une partie sans description
+    // Ni idées, ni questions, ni formules, ni fiche visuelle des images, ni règles du jeu
     const tout = JSON.stringify(fiche);
-    for (const absent of ["Une île volante", "Y a-t-il de la magie", "Note le mot de passe", "Cheveux roux", "Lance le dé", "Le départ"]) expect(tout).not.toContain(absent);
+    for (const absent of ["Une île volante", "Y a-t-il de la magie", "Note le mot de passe", "Cheveux roux", "Lance le dé"]) expect(tout).not.toContain(absent);
   });
 
   it("F02-AC21 — une fiche d'une page ou de deux, recto verso, ne dit rien de sa longueur", () => {
@@ -85,9 +87,9 @@ describe("La fiche de l'histoire (F02.1)", () => {
     expect(messageDeLongueur(2)).toBeNull();
   });
 
-  it("F02-AC23 — sans objets ni partie décrite, ces rubriques n'y figurent pas ; une description longue s'imprime entière ; au-delà de deux pages, un message prévient", () => {
+  it("F02-AC23 — sans objets ni partie, ces rubriques n'y figurent pas ; une description longue s'imprime entière ; au-delà de deux pages, un message prévient", () => {
     const longue = Array.from({ length: 60 }, (_, i) => `Phrase ${i + 1} de la description de Lou, qui ne se résume pas.`).join("\n");
-    const fiche = composerLaFiche(classeAChoix, { ...complete, objets: [], personnagesDeLHistoire: [carte("lou", "Lou", true, longue)] }, [{ id: "p2", titre: "Le départ", description: " " }]);
+    const fiche = composerLaFiche(classeAChoix, { ...complete, objets: [], personnagesDeLHistoire: [carte("lou", "Lou", true, longue)] }, []);
     expect(fiche.rubriques.map((r) => r.sorte)).not.toContain("objets");
     expect(fiche.rubriques.map((r) => r.sorte)).not.toContain("parties");
     const heros = fiche.rubriques.find((r) => r.sorte === "heros");

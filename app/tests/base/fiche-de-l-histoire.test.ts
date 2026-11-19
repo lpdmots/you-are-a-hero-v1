@@ -39,7 +39,7 @@ const decrire = async (partieId: string, description: string) => {
 const partiesDeLaFiche = async (projet: string) => {
   const lue = await ficheDuProjet(enseignantDe(laurent), projet);
   const r = lue?.fiche.rubriques.find((x) => x.sorte === "parties");
-  return r && "parties" in r ? r.parties.map((p) => `${p.titre} : ${p.description}`) : [];
+  return r && "parties" in r ? r.parties.map((p) => (p.description ? `${p.titre} : ${p.description}` : p.titre)) : [];
 };
 const envoye = (espion: { mock: { calls: unknown[][] } }) =>
   espion.mock.calls.map(([e]) => `${consigne.systeme(e as never)}\n${consigne.message(e as never)}`).join("\n");
@@ -60,7 +60,11 @@ describe("La description des parties et la fiche de l'histoire (F02.1)", () => {
       ["Le port", ""],
       ["Le lac", "Couvert de brume ; les chemins y changent de place quand les lanternes s’éteignent."],
     ]);
-    expect(await partiesDeLaFiche(projet)).toEqual(["Le lac : Couvert de brume ; les chemins y changent de place quand les lanternes s’éteignent."]);
+    expect(await partiesDeLaFiche(projet)).toEqual(["Le port", "Le lac : Couvert de brume ; les chemins y changent de place quand les lanternes s’éteignent."]);
+    // Avec son image de repérage, celle que montre sa carte
+    const lue = await ficheDuProjet(enseignantDe(laurent), projet);
+    const r = lue?.fiche.rubriques.find((x) => x.sorte === "parties");
+    expect(r && "parties" in r ? r.parties.map((p) => p.repere?.visuelDefaut) : []).toEqual(["foret", "foret"]);
 
     expect((await lieuDeLaScene(enseignantDe(laurent), surLeLac.id))?.chapitre.partie).toEqual({
       titre: "Le lac", description: "Couvert de brume ; les chemins y changent de place quand les lanternes s’éteignent.",
@@ -74,12 +78,12 @@ describe("La description des parties et la fiche de l'histoire (F02.1)", () => {
     expect(envoye(simuler)).not.toContain("Couvert de brume");
   });
 
-  it("F02-AC22 — une fiche déjà ouverte : la description du « Marais » écrite ensuite y figure à la réouverture, dans l'ordre du livre", async () => {
+  it("F02-AC22 — une fiche déjà ouverte : la description du « Marais » écrite ensuite y figure à la réouverture, toutes les parties dans l'ordre du livre", async () => {
     const projet = await projetDeClasse();
     const port = await creerPartie(laurent, projet, "Le port");
     const marais = await creerPartie(laurent, projet, "Le marais");
     await decrire(port.partieId, "D’où partent les barques.");
-    expect(await partiesDeLaFiche(projet)).toEqual(["Le port : D’où partent les barques."]);
+    expect(await partiesDeLaFiche(projet)).toEqual(["Le port : D’où partent les barques.", "Le marais"]);
     await decrire(marais.partieId, "Des feux follets dansent sur l’eau noire.");
     expect(await partiesDeLaFiche(projet)).toEqual(["Le port : D’où partent les barques.", "Le marais : Des feux follets dansent sur l’eau noire."]);
     // L'ordre du livre : la partie tirée en tête passe en tête

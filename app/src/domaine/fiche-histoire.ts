@@ -2,13 +2,18 @@
  * La fiche de l'histoire à imprimer (F02.1, décidée par le porteur le 18 novembre 2026, revue le
  * 19) : ce que la Préparation retient, dans un ordre fixe, pour que chaque élève ait sous les yeux
  * les mêmes noms d'un chapitre à l'autre. Rien n'est inventé : une rubrique vide n'apparaît pas,
- * aucun texte n'est résumé ni réécrit, et il n'y a pas d'IA. Ne s'y trouvent pas les grandes étapes
- * (seules les parties décrites, pour leur endroit et leur ambiance), les questions, les idées, les
- * formules d'action, les règles du jeu, la fiche visuelle des images ni les scènes.
+ * aucun texte n'est résumé ni réécrit, et il n'y a pas d'IA. Les parties y sont toutes, avec leur
+ * image et leur description (19 novembre 2026), sans leurs chapitres. Ne s'y trouvent pas les
+ * questions, les idées, les formules d'action, les règles du jeu, la fiche visuelle des images ni les
+ * scènes.
  */
 import type { Organisation, Recit } from "./projets";
 import { HEROS_SANS_NOM, type Feuille, type Preparation } from "./preparation";
 import type { Partie } from "./recit";
+
+/** Une partie de l'aventure : son titre, sa description si elle en a une, son image de repérage (F10.1) */
+export type PartieDeFiche = { id: string; titre: string; description: string; repere?: Repere };
+type Repere = { imageId: string | null; visuelChoisi: string | null; visuelDefaut: string | null };
 
 export type PersonnageDeFiche = { id: string; nom: string; autresNoms: string[]; description: string; portraitId: string | null };
 
@@ -17,7 +22,7 @@ export type RubriqueDeFiche =
   | { sorte: "heros" | "autres"; titre: string; personnages: PersonnageDeFiche[] }
   /** Le texte retenu de l'étape « Personnages », quand aucune carte de héros ne le porte */
   | { sorte: "personnages"; titre: string; texte: string }
-  | { sorte: "parties"; titre: string; parties: { id: string; titre: string; description: string }[] }
+  | { sorte: "parties"; titre: string; parties: PartieDeFiche[] }
   | { sorte: "objets"; titre: string; objets: { id: string; nom: string; description: string; imageId: string | null }[] }
   | { sorte: "feuille"; titre: string; lignes: string[] };
 
@@ -57,7 +62,8 @@ export function lignesDeLaFeuille(feuille: Feuille): string[] {
  * feuille d'aventure (F02-AC26).
  */
 export function composerLaFiche(
-  projet: ProjetDeLaFiche, p: Preparation, parties: readonly Pick<Partie, "id" | "titre" | "description">[] = [],
+  projet: ProjetDeLaFiche, p: Preparation,
+  parties: readonly (Pick<Partie, "id" | "titre" | "description"> & Partial<Pick<Partie, "imageId" | "visuelChoisi" | "visuelDefaut">>)[] = [],
 ): FicheDeLHistoire {
   const deClasse = projet.organisation === "classe";
   const r: RubriqueDeFiche[] = [];
@@ -80,9 +86,14 @@ export function composerLaFiche(
   const autres = p.personnagesDeLHistoire.filter((c) => !c.heros).map(versFiche).filter((c) => c.nom !== "");
   if (autres.length) r.push({ sorte: "autres", titre: "Les autres personnages", personnages: autres });
 
-  // Une partie sans description ne dirait que son titre : ce serait le plan, que la fiche ne reprend pas
-  const decrites = parties.filter((x) => plein(x.description)).map((x) => ({ id: x.id, titre: x.titre.trim(), description: plein(x.description) }));
-  if (decrites.length) r.push({ sorte: "parties", titre: "Les parties de l’aventure", parties: decrites });
+  // Toutes les parties, dans l'ordre du livre, avec leur image ; sans leurs chapitres (porteur, 19 novembre 2026)
+  const lesParties = parties.filter((x) => x.titre.trim()).map((x): PartieDeFiche => ({
+    id: x.id, titre: x.titre.trim(), description: plein(x.description),
+    repere: x.imageId !== undefined || x.visuelChoisi !== undefined || x.visuelDefaut !== undefined
+      ? { imageId: x.imageId ?? null, visuelChoisi: x.visuelChoisi ?? null, visuelDefaut: x.visuelDefaut ?? null }
+      : undefined,
+  }));
+  if (lesParties.length) r.push({ sorte: "parties", titre: "Les parties de l’aventure", parties: lesParties });
 
   const objets = p.objets.filter((o) => o.nom.trim()).map((o) => ({ id: o.id, nom: o.nom.trim(), description: plein(o.description), imageId: o.imageId ?? null }));
   if (objets.length) r.push({ sorte: "objets", titre: "Les objets", objets });

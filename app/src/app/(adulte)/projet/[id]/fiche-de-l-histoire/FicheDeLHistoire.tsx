@@ -6,6 +6,7 @@ import { Icone } from "@/composants/Icone";
 import {
   messageDeLongueur, paginer, type FicheDeLHistoire as Fiche, type MorceauMesure, type PersonnageDeFiche, type RubriqueDeFiche,
 } from "@/domaine/fiche-histoire";
+import { adresseRepere } from "@/domaine/visuels";
 import styles from "./fiche.module.css";
 
 /** Un millimètre à l'écran, en points CSS (96 points par pouce) */
@@ -159,9 +160,13 @@ function Rubrique({ rubrique: r }: { rubrique: RubriqueDeFiche }) {
       {r.sorte === "parties" ? (
         <dl className={styles.grille}>
           {r.parties.map((x) => (
-            <div key={x.id} className={styles.element} data-morceau="insecable">
+            <div key={x.id} className={`${styles.element}${x.repere ? ` ${styles.element_image}` : ""}`} data-morceau="insecable">
+              {x.repere ? (
+                // eslint-disable-next-line @next/next/no-img-element -- l'image de repérage de la partie, sa vignette
+                <img className={styles.vignettePartie} src={adresseRepere(x.repere, x.id)} alt="" />
+              ) : null}
               <dt className={styles.nom}>{x.titre}</dt>
-              <dd className={styles.phrase}>{x.description}</dd>
+              {x.description ? <dd className={styles.phrase}>{x.description}</dd> : null}
             </div>
           ))}
         </dl>

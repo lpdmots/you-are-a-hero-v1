@@ -202,6 +202,15 @@
   border-radius: 1mm;
   border: 0.25mm solid #1e2226;
 }
+/* L'image de repérage d'une partie, en vignette de 2,5 cm, comme une photo collée */
+.vignettePartie {
+  display: block;
+  width: 25mm;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 1mm;
+  border: 0.25mm solid #1e2226;
+}
 .vignetteObjet {
   display: block;
   width: 13mm;
