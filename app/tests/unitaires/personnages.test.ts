@@ -64,13 +64,21 @@ describe("Les cartes des personnages (F10.2)", () => {
     };
     const louOnglet = ongletDuHeros(preparation, "lou", "classe", "choix");
     expect(louOnglet.question).toBe("Qui est Lou ?");
-    expect(louOnglet.relances).toEqual(["Que veut Lou, et pourquoi ?", "Quelle force et quelle faiblesse a Lou ?", "Qui aide Lou, qui s’oppose à lui ?", RELANCE_DES_HEROS]);
+    expect(louOnglet.relances).toEqual(["Que veut Lou, et pourquoi ?", "Quelle force et quelle faiblesse a Lou ?", "Qui aide Lou, et qui lui barre la route ?", RELANCE_DES_HEROS]);
     expect(louOnglet.relances).toContain(RELANCE_DES_HEROS);
     expect(louOnglet.questions.map((x) => x.id)).toEqual(["q-lou", "q-sans"]);
     expect(louOnglet.idees.map((x) => x.id)).toEqual(["i-lou", "i-sans"]);
     const minaOnglet = ongletDuHeros(preparation, "mina", "classe", "choix");
     expect(minaOnglet.relances).not.toContain(RELANCE_DES_HEROS);
     expect(minaOnglet.questions.map((x) => x.id)).toEqual(["q-mina"]);
+    // Au prénom, aucune relance ne suppose une fille ou un garçon (19 novembre 2026)
+    for (const recit of ["choix", "classique"] as const) {
+      for (const nom of ["Lila", "Timéo"]) {
+        const relances = ongletDuHeros({ ...preparation, personnagesDeLHistoire: [carte("h", nom)] }, "h", "classe", recit).relances;
+        expect(relances).toContain(`Qui aide ${nom}, et qui lui barre la route ?`);
+        expect(relances.join(" ")).not.toMatch(/\b(il|elle|-t-il|-t-elle)\b|à (lui|elle)\b/);
+      }
+    }
     // Sans carte : « notre héros », et tout ce qui n'a pas de héros
     const vide = ongletDuHeros({ ...preparation, personnagesDeLHistoire: [] }, null, "classe", "choix");
     expect(vide.question).toBe("Qui est notre héros ?");

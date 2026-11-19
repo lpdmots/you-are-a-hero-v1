@@ -338,9 +338,9 @@ export function ongletDuHeros(
   const question = nomme ? `Qui est ${nomme} ?` : "Qui est notre héros ?";
   // Les relances nomment le héros : le prénom ne dit pas si c'est une fille ou un garçon
   const relances = nomme && recit === "choix"
-    ? [`Que veut ${nomme}, et pourquoi ?`, `Quelle force et quelle faiblesse a ${nomme} ?`, `Qui aide ${nomme}, qui s’oppose à lui ?`, RELANCE_DES_HEROS]
+    ? [`Que veut ${nomme}, et pourquoi ?`, `Quelle force et quelle faiblesse a ${nomme} ?`, `Qui aide ${nomme}, et qui lui barre la route ?`, RELANCE_DES_HEROS]
     : nomme
-      ? [`Que veut ${nomme}, et pourquoi ?`, `Quelle force et quelle faiblesse a ${nomme} ?`, `Qui aide ${nomme}, qui s’oppose à lui ?`]
+      ? [`Que veut ${nomme}, et pourquoi ?`, `Quelle force et quelle faiblesse a ${nomme} ?`, `Qui aide ${nomme}, et qui lui barre la route ?`]
       : guide.relances;
   return {
     heros,

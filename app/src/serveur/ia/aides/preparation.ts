@@ -34,7 +34,7 @@ function contexteEtape(e: EntreeEtape): string {
     blocCarnet(e.carnet, e.etape),
     e.etape === "etapes" ? blocPlan(e.plan) : "",
     bloc("etape", `${ETAPES_DU_CARNET[e.etape]} — « ${e.question} »`),
-    e.heros ? bloc("heros_de_cette_page", `Cette page parle de ${e.heros}, l'un des héros, et de lui seul : questions, idées et texte retenu le concernent.`) : "",
+    e.heros ? bloc("heros_de_cette_page", `Cette page parle de ${e.heros}, l'un des héros, et de personne d'autre : questions, idées et texte retenu le concernent.`) : "",
     bloc("questions_deja_posees", e.questions),
     bloc("idees_notees", e.idees.map((i) => `${i.texte} (${NOMS_DES_ETATS[i.etat]})`)),
     bloc("nous_retenons", e.retenu),
