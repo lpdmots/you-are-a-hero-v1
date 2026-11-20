@@ -12937,8 +12937,9 @@ les révisions qui suivent :
     version du premier bouton (la feuille de l'élève passe d'abord), une ligne
     dessous le dit (« Aperçu : corrigé »). Le temps 4 a son document, le bon de
     précommande, et renvoie au guide
-    pour la fabrication ; le déroulé s'ouvre aussi depuis la page de titre
-    (« Commencer par le déroulé du projet »). Écartés : aucune image (un enseignant juge une fiche à son
+    pour la fabrication. Un bouton « Commencer par le déroulé du projet » dans
+    la page de titre, ajouté le même jour, est retiré à sa demande : le
+    déroulé est déjà le premier document de la page. Écartés : aucune image (un enseignant juge une fiche à son
     allure) ; toutes les pages (c'est le rôle du PDF).
   - *Des fichiers fixes, servis par le site* (décidé le même jour) :
     `composer.mjs` écrit les PDF et les vignettes dans

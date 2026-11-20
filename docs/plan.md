@@ -5928,7 +5928,9 @@ peuvent très bien utiliser le site ») ; la lettre aux familles et le bon de
 précommande sont deux PDF (la lettre d'une page avec son coupon, au temps 1 ; le
 bon au temps 4), le déroulé liant le bon à son propre PDF.
 Puis, à sa demande : « Tout est gratuit » retiré du chapeau (« inutile de le
-préciser ») ; la description pour les moteurs garde « Gratuit. ».
+préciser ») ; la description pour les moteurs garde « Gratuit. », son choix. Le
+bouton « Commencer par le déroulé du projet » est retiré à sa demande (« inutile
+puisque c'est le premier doc proposé par la suite ») : ne pas le reproposer.
 
 ## Hors de la première livraison
 

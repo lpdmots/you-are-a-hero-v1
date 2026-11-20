@@ -56,27 +56,6 @@
   line-height: 1.58;
   text-wrap: pretty;
 }
-/* Par où commencer : le déroulé, en bouton cerné (le seul bouton plein reste à la fin de la page) */
-.depart {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 14px;
-  margin-top: 22px;
-}
-.depart :global(.btn) {
-  border-color: var(--canard);
-  color: var(--canard);
-}
-.depart :global(.btn):hover {
-  background: var(--canard-pale);
-  border-color: var(--canard);
-  color: var(--canard-fonce);
-}
-.depart > span {
-  font-size: 0.9rem;
-  color: var(--graphite-3);
-}
 .usage {
   margin-top: 16px;
   max-width: 66ch;
@@ -482,9 +461,6 @@
     margin-top: 14px;
     font-size: 1.02rem;
     line-height: 1.5;
-  }
-  .depart {
-    margin-top: 16px;
   }
   .usage {
     margin-top: 12px;

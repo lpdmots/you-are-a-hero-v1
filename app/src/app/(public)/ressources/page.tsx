@@ -118,15 +118,6 @@ export default function Ressources() {
           <p className={styles.chapeau}>
             Les leçons, les fiches et les affiches d’un projet de production d’écrit&nbsp;: la classe découvre le livre dont vous êtes le héros, puis écrit le sien. Les documents sont à imprimer et servent aussi aux classes qui n’utilisent pas Il était une classe.
           </p>
-          {/* Par où commencer (retour du 20 novembre 2026) : le déroulé, dès le premier écran, téléphone compris */}
-          <p className={styles.depart}>
-            <a className="btn" href="/ressources/deroule-du-projet.pdf" target="_blank" rel="noopener">
-              <Icone nom="telecharger" />
-              Commencer par le déroulé du projet
-              <span className="vh"> (PDF, nouvel onglet)</span>
-            </a>
-            <span>Les quatre temps du projet, sur deux pages</span>
-          </p>
           <p className={styles.usage}>
             Libres de photocopier et de partager pour la classe, sans les vendre, en citant Il était une classe (licence{" "}
             <a href={LICENCE_DES_RESSOURCES.adresse} target="_blank" rel="noopener noreferrer license">
