@@ -7,6 +7,7 @@ import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
 import { enJsonLd } from "@/domaine/presentation";
 import {
   ADRESSE_DES_RESSOURCES,
+  apercuDe,
   DATE_DES_RESSOURCES,
   DESCRIPTION_DES_RESSOURCES,
   donneesDesRessources,
@@ -32,15 +33,27 @@ export const metadata: Metadata = {
 
 const DATE_LISIBLE = new Date(`${DATE_DES_RESSOURCES}T12:00:00Z`).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 
-/** Un document : sa première feuille posée sur la table, qui ouvre la version complète, puis ce qu'il est et ses PDF */
+/**
+ * Un document : sa première feuille posée sur la table, qui ouvre la version complète, puis ce qu'il est et ses PDF.
+ * Sous la feuille, ce qu'elle montre quand il y a plusieurs versions (« Corrigé »…), pour qu'on ne la prenne pas
+ * pour la fiche de l'élève (retour du 20 novembre 2026).
+ */
 function Document({ d }: { d: DocumentAImprimer }) {
+  const apercu = apercuDe(d);
   return (
-    <li className={styles.document} id={d.cle}>
-      <a className={styles.feuille} href={versionCompleteDe(d)} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true">
-        {/* Une vignette déjà à sa taille : sans l'optimisation d'images de Vercel (F14, « Précisions ») */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={vignetteDe(d)} alt="" width={556} height={786} loading="lazy" decoding="async" />
-      </a>
+    <li className={`${styles.document} ${d.tirage?.paysage ? styles.paysage : ""}`} id={d.cle}>
+      <div className={styles.cote}>
+        <a className={styles.feuille} href={versionCompleteDe(d)} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true">
+          {/* Une vignette déjà à sa taille : sans l'optimisation d'images de Vercel (F14, « Précisions ») */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={vignetteDe(d)} alt="" width={d.tirage?.paysage ? 786 : 556} height={d.tirage?.paysage ? 556 : 786} loading="lazy" decoding="async" />
+        </a>
+        {apercu ? (
+          <p className={styles.apercu} aria-hidden="true">
+            Aperçu&nbsp;: {apercu.toLowerCase()}
+          </p>
+        ) : null}
+      </div>
       <div className={styles.fiche}>
         <h3>{d.titre}</h3>
         {d.avecLOutil ? (
@@ -78,16 +91,13 @@ function Document({ d }: { d: DocumentAImprimer }) {
 /** Les programmes en texte (F14-AC58) : ce que le projet travaille et les textes en vigueur ; les citations restent dans le PDF */
 function Programmes() {
   return (
-    <aside className={styles.programmes} id="programmes" aria-labelledby="programmes-t">
-      <h3 id="programmes-t">Les programmes</h3>
+    <aside className={styles.programmes} id="les-programmes" aria-labelledby="les-programmes-t">
+      <h3 id="les-programmes-t">Les programmes, en bref</h3>
       <p>
-        Le projet fait lire, écrire et parler, comme les programmes de français le demandent. Au cycle 3, les élèves produisent des écrits longs, à plusieurs, et améliorent leur texte à partir des pistes de l’enseignant et de leurs camarades. Au cycle 2, la classe lit des livres-jeux ensemble et écrit d’abord à plusieurs, puis chacun ses scènes au CE1 et au CE2.
-      </p>
-      <p>
-        La feuille <a href="/ressources/programmes.pdf" target="_blank" rel="noopener"><cite>Le livre-jeu et les programmes</cite><span className="vh"> (PDF, nouvel onglet)</span></a> met chaque moment du projet en regard des textes, cités mot pour mot.
+        Au cycle 3, des écrits longs et collaboratifs, améliorés à partir des pistes de l’enseignant et des pairs. Au cycle 2, la lecture de livres-jeux en classe, puis une écriture d’abord collective, ensuite personnelle. Le détail, cité mot pour mot, est dans la feuille ci-dessus.
       </p>
       <p className={styles.textes}>
-        Cycle 2 : arrêté du 22 octobre 2024, Bulletin officiel n° 41 du 31 octobre 2024. Cycle 3 : arrêté du 10 avril 2025, Bulletin officiel n° 16 du 17 avril 2025.
+        Cycle 2&nbsp;: arrêté du 22 octobre 2024, Bulletin officiel n° 41 du 31 octobre 2024. Cycle 3&nbsp;: arrêté du 10 avril 2025, Bulletin officiel n° 16 du 17 avril 2025.
       </p>
     </aside>
   );
@@ -108,6 +118,15 @@ export default function Ressources() {
           <p className={styles.chapeau}>
             Les leçons, les fiches et les affiches d’un projet de production d’écrit&nbsp;: la classe découvre le livre dont vous êtes le héros, puis écrit le sien, du CE1 au CM2 (7 à 11&nbsp;ans). Tout est gratuit, à imprimer, et sert aussi aux classes qui n’utilisent pas Il était une classe.
           </p>
+          {/* Par où commencer (retour du 20 novembre 2026) : le déroulé, dès le premier écran, téléphone compris */}
+          <p className={styles.depart}>
+            <a className="btn" href="/ressources/deroule-du-projet.pdf" target="_blank" rel="noopener">
+              <Icone nom="telecharger" />
+              Commencer par le déroulé du projet
+              <span className="vh"> (PDF, nouvel onglet)</span>
+            </a>
+            <span>Les quatre temps du projet, sur deux pages</span>
+          </p>
           <p className={styles.usage}>
             Libres de photocopier et de partager pour la classe, sans les vendre, en citant Il était une classe (licence{" "}
             <a href={LICENCE_DES_RESSOURCES.adresse} target="_blank" rel="noopener noreferrer license">
@@ -122,7 +141,7 @@ export default function Ressources() {
       </header>
 
       <div className={styles.grille}>
-        <nav className={styles.sommaire} aria-label="Sommaire" data-sommaire>
+        <nav className={styles.sommaire} id="sommaire" aria-label="Sommaire" data-sommaire>
           <p className={styles.sommaireTitre}>Sur cette page</p>
           <ol>
             {TEMPS_DU_PROJET.map((t) => (
@@ -155,18 +174,17 @@ export default function Ressources() {
                   <>
                     {" "}
                     {t.renvoi.avant}
-                    <a href={`#${t.renvoi.cle}`}>{t.renvoi.lien}</a>
+                    <Link href={t.renvoi.adresse}>{t.renvoi.lien}</Link>
                     {t.renvoi.apres}
                   </>
                 ) : null}
               </p>
-              {t.documents.length ? (
-                <ul className={styles.documents}>
-                  {t.documents.map((d) => (
-                    <Document key={d.cle} d={d} />
-                  ))}
-                </ul>
-              ) : null}
+              <ul className={styles.documents}>
+                {t.documents.map((d) => (
+                  <Document key={d.cle} d={d} />
+                ))}
+              </ul>
+              {/* Les programmes en texte, sous leur feuille (la dernière du bloc) */}
               {t.cle === "mener-le-projet" ? <Programmes /> : null}
             </section>
           ))}

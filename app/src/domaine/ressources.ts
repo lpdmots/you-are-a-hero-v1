@@ -35,6 +35,11 @@ export type DocumentAImprimer = {
   versions: readonly VersionDuDocument[];
   /** Ne sert qu'avec Il était une classe (F14-AC57) */
   avecLOutil?: true;
+  /**
+   * Un tirage d'un autre document, montré à part (le bon de précommande, seconde feuille de la lettre) : le fichier
+   * sans `.pdf` qui donne la vignette et que la vignette ouvre, et sa feuille posée en largeur.
+   */
+  tirage?: { fichier: string; paysage?: true };
   /** Le livre de la bibliothèque du site sur lequel porte le document */
   livre?: { titre: string; adresse: string };
 };
@@ -45,16 +50,22 @@ export type TempsDuProjet = {
   numero?: number;
   titre: string;
   phrase: string;
-  /** Un renvoi à un document d'un autre temps, dans la phrase qui suit (le bon de précommande, au temps 4) */
-  renvoi?: { avant: string; lien: string; cle: string; apres: string };
+  /** Un renvoi après la phrase, vers une autre page (la partie du guide sur la fabrication, au temps 4) */
+  renvoi?: { avant: string; lien: string; adresse: string; apres: string };
   documents: readonly DocumentAImprimer[];
 };
 
 const pdf = (fichier: string) => `${ADRESSE_DES_RESSOURCES}/${fichier}.pdf`;
 
 /** La vignette d'un document : la première feuille de sa version complète, qu'un clic ouvre (F14-AC56) */
-export const vignetteDe = (d: DocumentAImprimer) => `${ADRESSE_DES_RESSOURCES}/${d.cle}.jpg`;
-export const versionCompleteDe = (d: DocumentAImprimer) => pdf(d.cle);
+export const vignetteDe = (d: DocumentAImprimer) => `${ADRESSE_DES_RESSOURCES}/${d.tirage?.fichier ?? d.cle}.jpg`;
+export const versionCompleteDe = (d: DocumentAImprimer) => pdf(d.tirage?.fichier ?? d.cle);
+
+/**
+ * Ce que montre la vignette, quand ce n'est pas la version du premier bouton (« Corrigé », « Version complète »,
+ * « Exemple rempli ») : la feuille de l'élève passe d'abord, la vignette montre la version complète.
+ */
+export const apercuDe = (d: DocumentAImprimer) => (d.versions[0]?.fichier === versionCompleteDe(d) ? undefined : d.versions.find((v) => v.fichier === versionCompleteDe(d))?.libelle);
 
 /** Le bloc d'ouverture, puis les quatre temps du déroulé, les documents dans l'ordre du déroulé */
 export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
@@ -83,7 +94,7 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
     cle: "decouvrir-le-genre",
     numero: 1,
     titre: "Découvrir le genre",
-    phrase: "La lettre aux familles part dès le début. Puis on lit des livres-jeux, on cherche comment ils marchent, et une leçon range ce qu’on a trouvé.",
+    phrase: "La lettre aux familles part dès le début. Puis on lit des livres-jeux, on cherche comment ils marchent avec la feuille de recherche du livre lu, et une leçon range ce qu’on a trouvé.",
     documents: [
       {
         cle: "lettre-aux-familles",
@@ -99,7 +110,7 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
       {
         cle: "recherche-bouquin",
         titre: "Recherche sur « Bouquin mène l’enquête »",
-        phrase: "L’élève lit et joue ce livre d’exemple, puis cherche comment il est construit : choix, indices, hasard, fins.",
+        phrase: "Si la classe lit ce livre d’exemple, en ligne sur le site, l’élève le joue, puis cherche comment il est construit : choix, indices, hasard, fins.",
         livre: { titre: "Lire le livre en ligne", adresse: "/bibliotheque/bouquin-mene-l-enquete" },
         format: "4 pages A4",
         versions: [
@@ -110,7 +121,7 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
       {
         cle: "recherche-passeurs",
         titre: "Recherche sur « Les passeurs de brume »",
-        phrase: "La même recherche sur un second livre d’exemple, plus long, raconté au passé.",
+        phrase: "La même recherche pour cet autre livre d’exemple, plus long, raconté au passé.",
         livre: { titre: "Lire le livre en ligne", adresse: "/bibliotheque/les-passeurs-de-brume" },
         format: "4 pages A4",
         versions: [
@@ -121,7 +132,7 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
       {
         cle: "recherche-livre-jeu",
         titre: "Recherche pour tout livre-jeu",
-        phrase: "La même recherche pour n’importe quel livre dont vous êtes le héros, de la classe, de l’école ou de la bibliothèque du site.",
+        phrase: "La même recherche pour tout autre livre dont vous êtes le héros, de la classe, de l’école ou de la bibliothèque du site.",
         format: "4 pages A4",
         versions: [
           { libelle: "Fiche de l’élève", fichier: pdf("recherche-livre-jeu-a-completer") },
@@ -207,8 +218,17 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
     numero: 4,
     titre: "Fabriquer le livre et le faire vivre",
     phrase: "On met le livre en page, on l’imprime, on le lit en ligne et on le fait lire, à sa classe ou à une autre.",
-    renvoi: { avant: "Le bon de précommande est la seconde feuille de la ", lien: "lettre aux familles", cle: "lettre-aux-familles", apres: "." },
-    documents: [],
+    renvoi: { avant: "Le guide explique comment ", lien: "illustrer, imprimer et partager le livre", adresse: "/guide/ecrire-un-livre-dont-vous-etes-le-heros#illustrer", apres: "." },
+    documents: [
+      {
+        cle: "bon-de-precommande",
+        titre: "Bon de précommande",
+        phrase: "Quand le livre est prêt et son prix connu : les familles le commandent si elles le souhaitent, l’achat restant facultatif.",
+        format: "A5, deux par feuille A4 posée en largeur ; la seconde feuille de la lettre aux familles",
+        tirage: { fichier: "lettre-aux-familles-bon", paysage: true },
+        versions: [{ libelle: "Ouvrir le PDF", fichier: pdf("lettre-aux-familles-bon") }],
+      },
+    ],
   },
 ];
 

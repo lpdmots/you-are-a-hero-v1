@@ -55,6 +55,27 @@
   line-height: 1.58;
   text-wrap: pretty;
 }
+/* Par où commencer : le déroulé, en bouton cerné (le seul bouton plein reste à la fin de la page) */
+.depart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 14px;
+  margin-top: 22px;
+}
+.depart :global(.btn) {
+  border-color: var(--canard);
+  color: var(--canard);
+}
+.depart :global(.btn):hover {
+  background: var(--canard-pale);
+  border-color: var(--canard);
+  color: var(--canard-fonce);
+}
+.depart > span {
+  font-size: 0.9rem;
+  color: var(--graphite-3);
+}
 .usage {
   margin-top: 16px;
   max-width: 66ch;
@@ -200,6 +221,21 @@
   border-top: 0;
   padding-top: 6px;
 }
+/* La feuille et, dessous, ce qu'elle montre */
+.cote {
+  min-width: 0;
+}
+.apercu {
+  margin-top: 10px;
+  font-size: 0.78rem;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--graphite-3);
+}
+/* Le bon de précommande, feuille posée en largeur */
+.document.paysage {
+  grid-template-columns: 200px minmax(0, 1fr);
+}
 .feuille {
   display: block;
   margin-top: 4px;
@@ -297,8 +333,9 @@
 
 /* ——— Les programmes : une fiche à filet bristol, comme « En bref » dans le guide ——— */
 .programmes {
-  max-width: 720px;
-  margin-top: 30px;
+  /* Sous sa feuille, aligné sur la fiche du document (148 + 34 points) : le détail de la ligne du dessus */
+  max-width: 640px;
+  margin: 0 0 0 182px;
   padding: 22px 30px 24px;
   background: var(--feuille);
   border-radius: 14px;
@@ -400,17 +437,20 @@
 @media (max-width: 720px) {
   .titre {
     grid-template-columns: minmax(0, 1fr);
-    padding: 32px 22px 28px;
+    padding: 26px 20px 24px;
   }
   .dragon {
     position: absolute;
-    right: 8px;
-    top: -30px;
-    width: 92px;
+    right: 6px;
+    top: -26px;
+    width: 76px;
     margin: 0;
   }
   .titre h1 {
-    padding-right: 64px;
+    padding-right: 44px;
+  }
+  .programmes {
+    margin-left: 0;
   }
   .fin {
     grid-template-columns: minmax(0, 1fr);
@@ -432,11 +472,22 @@
   .titre {
     margin: 0 -4px;
   }
+  /* Le premier écran garde le titre, le chapeau et le bouton du déroulé (retour du 20 novembre 2026) */
   .titre h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    line-height: 1.55;
   }
   .chapeau {
-    font-size: 1.1rem;
+    margin-top: 14px;
+    font-size: 1.02rem;
+    line-height: 1.5;
+  }
+  .depart {
+    margin-top: 16px;
+  }
+  .usage {
+    margin-top: 12px;
+    font-size: 0.82rem;
   }
   .temps + .temps {
     margin-top: 60px;
@@ -446,9 +497,15 @@
     grid-template-columns: 76px minmax(0, 1fr);
     gap: 0 16px;
   }
-  .feuille {
+  .cote {
     grid-row: span 6;
     align-self: start;
+  }
+  .apercu {
+    font-size: 0.72rem;
+  }
+  .document.paysage {
+    grid-template-columns: 120px minmax(0, 1fr);
   }
   .fiche {
     display: contents;
@@ -468,6 +525,38 @@
   }
   .programmes {
     padding: 18px 18px 20px;
+  }
+}
+/* Sur tablette et téléphone, une fois le sommaire passé : un bouton pour y revenir (retour du 20 novembre 2026) */
+.versSommaire {
+  display: none;
+}
+@media (max-width: 1040px) {
+  .versSommaire {
+    display: inline-flex;
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 20;
+    align-items: center;
+    min-height: 42px;
+    padding: 0 16px;
+    border-radius: 999px;
+    background: var(--feuille);
+    border: 1px solid var(--trait-fort);
+    box-shadow: var(--ombre-cahier);
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--graphite);
+    text-decoration: none;
+  }
+  .versSommaire[hidden] {
+    display: none;
+  }
+  .ou {
+    margin-left: 0.35em;
+    font-weight: 400;
+    color: var(--graphite-3);
   }
 }
 @media (prefers-reduced-motion: reduce) {

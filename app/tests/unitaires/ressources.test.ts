@@ -1,7 +1,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { DOCUMENTS_A_IMPRIMER, versionCompleteDe, vignetteDe } from "@/domaine/ressources";
+import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
+import { ANCRES } from "@/domaine/guide";
+import { DOCUMENTS_A_IMPRIMER, TEMPS_DU_PROJET, versionCompleteDe, vignetteDe } from "@/domaine/ressources";
 
 // Les fichiers que sert le site, et les sources des documents à la racine du dépôt
 const publics = path.join(process.cwd(), "public");
@@ -20,6 +22,16 @@ describe("Page « Ressources » (F14)", () => {
   it("F14-AC56 — aucun fichier du dossier n'est oublié par la page", () => {
     const annonces = new Set(DOCUMENTS_A_IMPRIMER.flatMap((d) => [vignetteDe(d), ...d.versions.map((v) => v.fichier)]));
     for (const f of fs.readdirSync(path.join(publics, "ressources"))) expect(annonces, f).toContain(`/ressources/${f}`);
+  });
+
+  it("F14-AC55 — chaque ancre de la page est unique, et le renvoi du temps 4 mène à une question du guide", () => {
+    const ancres = [...TEMPS_DU_PROJET.map((t) => t.cle), ...DOCUMENTS_A_IMPRIMER.map((d) => d.cle), "sommaire", "les-programmes"];
+    expect(new Set(ancres).size).toBe(ancres.length);
+    for (const t of TEMPS_DU_PROJET.filter((t) => t.renvoi)) {
+      const [chemin, ancre] = t.renvoi!.adresse.split("#");
+      expect(chemin).toBe(ADRESSE_DU_GUIDE);
+      expect(ANCRES as readonly string[]).toContain(ancre);
+    }
   });
 
   it("F14-AC57 — seule « J'écris sur le site » porte l'étiquette de l'outil", () => {

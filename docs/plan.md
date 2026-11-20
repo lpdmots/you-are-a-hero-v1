@@ -5901,6 +5901,25 @@ lancés. Précisions à lui faire confirmer : les phrases ajoutées à son guide
 l'accueil (« Si vous cherchez des leçons et des fiches à imprimer, ouvrez les
 ressources ») ; la feuille de fin de la page et son bouton « Créer un compte ».
 
+**Repris le 20 novembre 2026, d'après une relecture de GPT qu'il a transmise**
+(« améliore en fonction de ce qui te semble pertinent ») ; tout est retenu, sans
+changement de règle : « Commencer par le déroulé du projet » en bouton cerné sous
+le chapeau, si bien que le premier écran du téléphone a un PDF ; sur téléphone, le
+titre en trois lignes au lieu de six (dragon plus petit, espacements et chapeau
+resserrés) ; le temps 4 reçoit un document, le bon de précommande seul, nouveau
+tirage de la lettre (`lettre-aux-familles-bon.pdf`, avec sa vignette en largeur,
+`data-vignette` dans `composer.mjs`), et sa phrase renvoie à la partie 12 du guide
+au lieu de la lettre ; sous la vignette, « Aperçu : corrigé » (ou « version
+complète », « exemple rempli ») quand elle ne montre pas la version du premier
+bouton ; la phrase du temps 1 dit qu'on prend la feuille de recherche du livre lu,
+et celles des trois recherches le redisent ; « Les programmes, en bref » raccourci
+à deux phrases et les textes, aligné sous sa feuille ; l'ancre en double
+(`programmes`) devient `les-programmes` pour l'encart, un test vérifie que chaque
+ancre est unique ; sur tablette et téléphone, un bouton « Sommaire » fixe une fois
+le sommaire passé, qui dit le temps qu'on lit, comme dans le guide. 509 tests
+unitaires passés. Son constat que `/ressources` n'existe pas en ligne est attendu :
+rien n'est poussé.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

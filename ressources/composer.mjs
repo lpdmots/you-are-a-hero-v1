@@ -34,14 +34,15 @@ async function ouvrir(adresse) {
 }
 
 await ouvrir(source);
-const versions = [{ suffixe: "", adresse: source }];
+const versions = [{ suffixe: "", adresse: source, vignette: true }];
 if (await page.locator(".rep, [data-lignes]").count()) versions.push({ suffixe: "-a-completer", adresse: `${source}?a-completer` });
 // Les autres tirages que la page annonce (une feuille à part, à imprimer en recto verso…)
-for (const { nom: tirage, adresse } of await page.locator('meta[name="tirage"]').evaluateAll((metas) => metas.map((m) => ({ nom: m.content, adresse: m.dataset.adresse })))) {
-  versions.push({ suffixe: `-${tirage}`, adresse: `${source}?${adresse}` });
+// (data-vignette : ce tirage a aussi sa vignette, la page « Ressources » le montrant comme un document à part)
+for (const { nom: tirage, adresse, vignette } of await page.locator('meta[name="tirage"]').evaluateAll((metas) => metas.map((m) => ({ nom: m.content, adresse: m.dataset.adresse, vignette: m.hasAttribute("data-vignette") })))) {
+  versions.push({ suffixe: `-${tirage}`, adresse: `${source}?${adresse}`, vignette });
 }
 
-for (const { suffixe, adresse } of versions) {
+for (const { suffixe, adresse, vignette } of versions) {
   await ouvrir(adresse);
   // Toujours la feuille de style d'impression : en mode écran, chaque feuille garde ses marges grises
   // d'aperçu et déborde sur une seconde page
@@ -54,13 +55,13 @@ for (const { suffixe, adresse } of versions) {
   if (pages !== attendues) console.warn(`  ${pages} pages au lieu de ${attendues} : une feuille déborde`);
   // La vignette de la page « Ressources » : la première feuille de la version complète, assez fine pour une carte
   // de 260 points en double densité, en JPEG (le site la sert sans l'optimisation d'images de Vercel)
-  if (suffixe === "") {
+  if (vignette) {
     const petite = await navigateur.newPage({ viewport: { width: 794, height: 1123 }, deviceScaleFactor: 0.7 });
     await petite.goto(adresse);
     await petite.evaluate(() => document.fonts.ready);
     await petite.waitForFunction(() => !document.querySelector('script[src$="a-completer.js"]') || document.documentElement.dataset.pret === "1");
     await petite.emulateMedia({ media: "print" });
-    await petite.locator(".page").first().screenshot({ path: path.join(sortie, `${nom}.jpg`), type: "jpeg", quality: 80 });
+    await petite.locator(".page").first().screenshot({ path: path.join(sortie, `${nom}${suffixe}.jpg`), type: "jpeg", quality: 80 });
     await petite.close();
   }
   if (!controle) continue;

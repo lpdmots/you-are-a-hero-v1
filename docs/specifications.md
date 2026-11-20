@@ -12933,7 +12933,12 @@ les révisions qui suivent :
   - *Un aperçu par document* (décidé le même jour) : la vignette de la
     première page de la version complète, photographiée par `composer.mjs`
     en même temps que le PDF, légère et chargée au défilement ; un clic ouvre
-    le PDF. Écartés : aucune image (un enseignant juge une fiche à son
+    le PDF. Précisé le 20 novembre 2026 : quand la vignette ne montre pas la
+    version du premier bouton (la feuille de l'élève passe d'abord), une ligne
+    dessous le dit (« Aperçu : corrigé »). Le temps 4 a son document, le bon de
+    précommande seul, tirage de la lettre aux familles, et renvoie au guide
+    pour la fabrication ; le déroulé s'ouvre aussi depuis la page de titre
+    (« Commencer par le déroulé du projet »). Écartés : aucune image (un enseignant juge une fiche à son
     allure) ; toutes les pages (c'est le rôle du PDF).
   - *Des fichiers fixes, servis par le site* (décidé le même jour) :
     `composer.mjs` écrit les PDF et les vignettes dans
