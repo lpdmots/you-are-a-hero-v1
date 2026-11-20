@@ -5927,6 +5927,8 @@ la description, ni dans les données de page ou `llms.txt` (« des collégiens
 peuvent très bien utiliser le site ») ; la lettre aux familles et le bon de
 précommande sont deux PDF (la lettre d'une page avec son coupon, au temps 1 ; le
 bon au temps 4), le déroulé liant le bon à son propre PDF.
+Puis, à sa demande : « Tout est gratuit » retiré du chapeau (« inutile de le
+préciser ») ; la description pour les moteurs garde « Gratuit. ».
 
 ## Hors de la première livraison
 

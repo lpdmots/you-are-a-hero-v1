@@ -116,7 +116,7 @@ export default function Ressources() {
         <div>
           <h1>{GRAND_TITRE_DES_RESSOURCES}</h1>
           <p className={styles.chapeau}>
-            Les leçons, les fiches et les affiches d’un projet de production d’écrit&nbsp;: la classe découvre le livre dont vous êtes le héros, puis écrit le sien. Tout est gratuit, à imprimer, et sert aussi aux classes qui n’utilisent pas Il était une classe.
+            Les leçons, les fiches et les affiches d’un projet de production d’écrit&nbsp;: la classe découvre le livre dont vous êtes le héros, puis écrit le sien. Les documents sont à imprimer et servent aussi aux classes qui n’utilisent pas Il était une classe.
           </p>
           {/* Par où commencer (retour du 20 novembre 2026) : le déroulé, dès le premier écran, téléphone compris */}
           <p className={styles.depart}>
