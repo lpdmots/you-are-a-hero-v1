@@ -12,13 +12,13 @@ export const ADRESSE_DES_RESSOURCES = "/ressources";
 export const DATE_DES_RESSOURCES = "2026-11-20";
 
 /**
- * Titre d'onglet, grand titre et description (F14, « Titre et niveaux ») : le grand titre dit qu'on est sur les
+ * Titre d'onglet, grand titre et description, celle-ci sous 160 signes (Bing, 20 novembre 2026) (F14, « Titre et niveaux ») : le grand titre dit qu'on est sur les
  * ressources, et la page ne borne pas les niveaux (revus par le porteur le 20 novembre 2026).
  */
 export const TITRE_DES_RESSOURCES = "Production d’écrit et projet d’écriture : le livre-jeu en classe";
 export const GRAND_TITRE_DES_RESSOURCES = "Ressources pour un projet d’écriture en classe";
 export const DESCRIPTION_DES_RESSOURCES =
-  "Leçons, fiches de recherche, affiches et lettre aux familles à imprimer pour mener en classe un projet d’écriture de livre dont vous êtes le héros, avec les liens aux programmes. Gratuit.";
+  "Leçons, fiches de recherche, affiches et lettre aux familles à imprimer pour un projet d’écriture de livre dont vous êtes le héros en classe. Gratuit.";
 
 /** La licence des documents (F14, « Accès libre ») */
 export const LICENCE_DES_RESSOURCES = { nom: "CC BY-NC 4.0", adresse: "https://creativecommons.org/licenses/by-nc/4.0/deed.fr" };

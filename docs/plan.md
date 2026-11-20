@@ -5943,6 +5943,10 @@ ouvert aux robots des IA), `llms.txt`, l'adresse canonique et les données de pa
 Le lint signale deux erreurs dans `Livre.tsx`, déjà en ligne, d'une autre
 conversation. À sa charge : demander l'indexation de `/ressources` et du guide dans
 Search Console, et soumettre `/ressources` dans Bing Webmaster Tools.
+Sur l'inspection de Bing le même jour : description ramenée de 187 à 150 signes,
+un texte de remplacement aux treize vignettes et aux deux dragons. Restent au-dessus
+de 160 signes, sans signalement de Bing à ce jour : l'« Aide » (171) et la
+bibliothèque (176).
 
 ## Hors de la première livraison
 

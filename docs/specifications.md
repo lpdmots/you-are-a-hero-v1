@@ -12998,9 +12998,9 @@ les révisions qui suivent :
     projet d'écriture en classe », qui dit d'emblée où l'on est (le premier,
     « Un projet d'écriture en classe : le livre dont vous êtes le héros », ne
     le disait pas) ; description « Leçons, fiches de recherche, affiches et
-    lettre aux familles à imprimer pour mener en classe un projet d'écriture
-    de livre dont vous êtes le héros, avec les liens aux programmes.
-    Gratuit. » La page ne borne pas les niveaux (« des collégiens peuvent très
+    lettre aux familles à imprimer pour un projet d'écriture de livre dont
+    vous êtes le héros en classe. Gratuit. » (150 signes : Bing la voulait
+    sous 160, 20 novembre 2026) La page ne borne pas les niveaux (« des collégiens peuvent très
     bien utiliser le site ») : ni « du CE1 au CM2 », ni âge ; seuls les cycles
     2 et 3 de l'encart des programmes les nomment, puisque ce sont ceux des
     textes cités.

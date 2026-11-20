@@ -44,9 +44,9 @@ function Document({ d }: { d: DocumentAImprimer }) {
     <li className={`${styles.document} ${d.tirage?.paysage ? styles.paysage : ""}`} id={d.cle}>
       <div className={styles.cote}>
         <a className={styles.feuille} href={versionCompleteDe(d)} target="_blank" rel="noopener" tabIndex={-1} aria-hidden="true">
-          {/* Une vignette déjà à sa taille : sans l'optimisation d'images de Vercel (F14, « Précisions ») */}
+          {/* Une vignette déjà à sa taille : sans l'optimisation d'images de Vercel (F14, « Précisions ») ; son texte sert aux moteurs, le lien étant caché aux lecteurs d'écran */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={vignetteDe(d)} alt="" width={d.tirage?.paysage ? 786 : 556} height={d.tirage?.paysage ? 556 : 786} loading="lazy" decoding="async" />
+          <img src={vignetteDe(d)} alt={`Première page : ${d.titre}`} width={d.tirage?.paysage ? 786 : 556} height={d.tirage?.paysage ? 556 : 786} loading="lazy" decoding="async" />
         </a>
         {apercu ? (
           <p className={styles.apercu} aria-hidden="true">
@@ -128,7 +128,7 @@ export default function Ressources() {
           </p>
         </div>
         {/* Bouquin déroule le chemin qui mène au livre : le dessin d'en-tête du déroulé */}
-        <Image className={styles.dragon} src="/accueil/dragon-deroule.webp" alt="" width={588} height={720} sizes="(max-width: 720px) 92px, 210px" loading="eager" />
+        <Image className={styles.dragon} src="/accueil/dragon-deroule.webp" alt="Bouquin, le dragon du site, déroule un parchemin où un chemin mène à un livre" width={588} height={720} sizes="(max-width: 720px) 92px, 210px" loading="eager" />
       </header>
 
       <div className={styles.grille}>
@@ -197,7 +197,7 @@ export default function Ressources() {
           </p>
         </div>
         {/* Le dragon s'est endormi sur son livre, comme à la fin du guide */}
-        <Image className={styles.dragonEndormi} src="/accueil/dragon-endormi.webp" alt="" width={720} height={559} sizes="(max-width: 720px) 150px, 210px" />
+        <Image className={styles.dragonEndormi} src="/accueil/dragon-endormi.webp" alt="Bouquin endormi sur un livre" width={720} height={559} sizes="(max-width: 720px) 150px, 210px" />
       </footer>
       <SuiviDuSommaire />
     </main>
