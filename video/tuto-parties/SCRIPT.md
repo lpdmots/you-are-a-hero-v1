@@ -32,13 +32,20 @@ des élèves » et sélectionnez ceux qui écriront ce chapitre. Chacun aura
 alors accès uniquement aux chapitres qui lui sont attribués.
 
 **6** — Et voilà, vos chapitres sont prêts à accueillir leurs premières
-scènes ! Pour découvrir comment faire écrire vos élèves, rendez-vous dans le
-cinquième tuto !
+scènes ! Pour découvrir comment construire les chemins de votre histoire,
+rendez-vous dans le cinquième tuto !
 
 *(À l'écran, après la dernière phrase, sans voix : la phrase de choix « Pour
-faire écrire vos élèves, rendez-vous au tuto 5 » et sa pastille, puis le
-voile, le logo et « Tuto suivant : faire écrire la classe ·
+construire les chemins, rendez-vous au tuto 5 » et sa pastille, puis le
+voile, le logo et « Tuto suivant : construire les chemins ·
 iletaituneclasse.com ».)*
+
+Fin changée le 19 novembre 2026, à la demande du porteur : « Construire les
+chemins » devient le tuto 5, avant « Faire écrire la classe » (tuto 6). Sa
+prise du passage 6 disait « faire écrire vos élèves » : le passage est
+maintenant généré (prise 3 sur trois, la seule sans pause au milieu d'une
+phrase ; aucun bruit dans sa pause), en attendant une nouvelle prise de sa
+part s'il le souhaite.
 
 Les numéros ne servent qu'à ranger le texte : la vidéo n'en montre aucun.
 
@@ -59,9 +66,8 @@ Deux remarques, sans changer le texte :
 - **« sous la partie de votre choix »** : « Ajouter un chapitre » est la
   dernière carte de la rangée de la partie, sous son titre. La vidéo vise
   cette carte.
-- **La phrase de choix de la fin** suit la nouvelle tournure (« Pour faire
-  écrire vos élèves ») ; la première version disait « faire écrire la
-  classe », que garde le titre du tuto suivant.
+- **La phrase de choix de la fin** dit « Pour construire les chemins »,
+  comme le titre du tuto suivant.
 - Le passage 6 a deux exclamations (la ligne des tutos en conseille une par
   passage) : gardées, c'est sa version.
 
@@ -79,7 +85,7 @@ en place.
 | 3 | La page remonte : « La forêt de la nuit » en haut de la fenêtre, sa carte « Ajouter un chapitre » entière. Cadre et clic sur « Ajouter un chapitre » : « Réglages du chapitre » s'ouvre, « Nouveau chapitre » sélectionné. « La rivière aux reflets » s'écrit ; clic dans « Résumé », le résumé s'écrit en deux lignes ; clic sur « Choisir une image », le panneau des images ; la rivière est en bas de la liste : clic dans « Chercher », « rivière » s'écrit, la liste se réduit à la rivière, clic dessus ; retour aux réglages, l'image posée ; clic sur « Fermer » : la carte du chapitre. Saut : trois chapitres de plus arrivent déjà faits (« La fête des lucioles », « Les grottes chantantes », « Le gardien de la pierre »), la feuille défile sur le plan rempli. | « ajouter », « Ajouter un chapitre », « titre », « résumé », « image » |
 | 4 | La feuille sur la première partie. La carte « La fête des lucioles » se soulève et passe avant « Le vieux coffre ». La feuille descend : « Le gardien de la pierre » quitte « La forêt de la nuit » pour « Le cœur de la forêt » (la page défile pendant qu'on tire, comme dans l'application). | « ordre », « glisser », « déplacer », « autre » |
 | 5 | La feuille sur « La forêt de la nuit ». Cadre et clic sur les trois points de « La rivière aux reflets », puis sur « Attribuer des élèves » : le panneau, sa phrase « Un élève coché lit et écrit dans ce chapitre, tout de suite. » ; Chloé, Emma, Hugo et Inès se cochent un à un, leurs pastilles apparaissent sur la carte ; clic sur « Fermer ». Saut : les autres chapitres attribués. | « répartir », « Attribuer », « sélectionnez », « chacun » |
-| 6 | La feuille défile sur tout le plan, chaque chapitre avec ses élèves ; la caméra recule. La phrase de choix et sa pastille « 5 », le voile, le logo, « Tuto suivant : faire écrire la classe · iletaituneclasse.com ». | « prêts », « scènes », « cinquième » |
+| 6 | La feuille défile sur tout le plan, chaque chapitre avec ses élèves ; la caméra recule. La phrase de choix et sa pastille « 5 », le voile, le logo, « Tuto suivant : construire les chemins · iletaituneclasse.com ». | « prêts », « scènes », « cinquième » |
 
 ## Choix de rédaction
 
@@ -130,10 +136,11 @@ l'écran). `planche.html` les range par passage.
 Clément, vitesse 1, réglages des prises du porteur (`"reglages"` dans
 `texte.json` : stabilité 0,5, similarité 0,75, style 0).
 
-- **Passages 1 et 6 : prises du porteur** (19 novembre 2026), posées par
+- **Passage 1 : prise du porteur** (19 novembre 2026), posée par
   `outils/transcrire.mjs` ; le découpage de l'ouverture générée lui
-  déplaisait. Pour le passage 6, la transcription entend « leur première
-  scène » (même son en français) : le texte garde le pluriel.
+  déplaisait. Le passage 6 était aussi sa prise, jusqu'au changement de la
+  fin : il est généré depuis (`"prise": 3`), 10,9 s contre 9,1 s pour sa
+  prise ; la vidéo passe de 83,8 à 85,9 s.
 - **Passage 5 : deux bruits parasites** de la voix générée, au milieu des
   pauses (à 3,0 s et 10,2 s du fichier, soit vers 0:53 et 1:00), signalés par
   le porteur ; rendus muets dans `voix/…/p5.mp3` (ffmpeg, de 2,9 à 3,55 s et
@@ -164,6 +171,14 @@ une musique muette provisoire, la vraie musique des tutos viendra avec le son.
 
 ## Le son
 
+**Musique régénérée le 19 novembre 2026** après le changement de la fin (le
+passage 6 généré allonge la vidéo à 85,9 s ; le logo arrive à 81,25 s) :
+même prompt, 86,4 s demandées, 88,1 s rendues, dernier accord à 79,2 s ;
+ralentie de 2,4 % sans changer la hauteur (`atempo=0.976`) : l'accord tombe
+à 81,2 s, avec le logo. Le paragraphe suivant décrit la première musique,
+remplacée.
+
+
 La musique des tutos (`son/musique-prompt.txt`, celle des tutos 1 à 3),
 générée à 84,3 s le 19 novembre 2026 : son dernier accord tombait à 77 s,
 avant le clic du renvoi (78,1 s) et le logo (79 s). Une seconde génération,
@@ -176,6 +191,13 @@ recherche, `cartes.mp3` quand une carte se pose, le renvoi et le logo de la
 fin). Mixage par `outils/mixer.mjs` : −16,7 LUFS.
 
 ## Le rendu
+
+**Refait le 19 novembre 2026** après le changement de la fin : même
+commande, `AFFICHE=3.5`, sans GPU ; `rendus/tuto-parties-web.mp4` (85,9 s,
+17,9 Mo, −16,7 LUFS), l'affiche et les sous-titres. Images de la fin
+vérifiées (le renvoi « 5 », le logo, « Tuto suivant : construire les
+chemins »). Le premier rendu, ci-dessous, disait encore « faire écrire vos
+élèves ».
 
 `VIDEO=tuto-parties AFFICHE=4.0 outils/rendre.sh tuto-parties` (sans GPU),
 19 novembre 2026 : `rendus/tuto-parties-web.mp4` (83,8 s, 17,8 Mo),

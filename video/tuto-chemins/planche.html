@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Tuto 5 — les écrans</title>
+<style>
+  body { margin: 0; padding: 32px; background: #f2ede3; font: 15px/1.4 "Atkinson Hyperlegible", system-ui, sans-serif; color: #2b2620; }
+  h1 { font: 600 26px/1.2 Vollkorn, Georgia, serif; margin: 0 0 4px; }
+  p.chapeau { margin: 0 0 24px; color: #6b6156; }
+  .passage { margin: 0 0 28px; }
+  .passage h2 { font: 600 18px/1.2 Vollkorn, Georgia, serif; margin: 0 0 10px; }
+  .grille { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  figure { margin: 0; background: #fff; border-radius: 8px; padding: 6px; box-shadow: 0 1px 3px #0002; }
+  figure img { width: 100%; display: block; border-radius: 4px; }
+  figcaption { font-size: 13px; color: #6b6156; padding: 4px 2px 0; }
+</style>
+</head>
+<body>
+<h1>Tuto 5 — Construire les chemins</h1>
+<p class="chapeau">Les vrais écrans, joués sur la base locale, rangés par passage du script.</p>
+<div id="planche"></div>
+<script>
+  const passages = [
+    ["2 — Ouvrir « Le vieux coffre », « Ajouter une scène », la première carte (et son titre dans le panneau)", ["plan", "chapitre-vide", "survol-ajouter", "premiere-carte", "panneau", "panneau-titre-focus", "panneau-titre", "premiere-carte-titree"]],
+    ["3 — Le « + » : ce que fait le lecteur, puis le titre de la scène suivante", ["choix1-survol", "choix1-bulle", "choix1-action", "choix1-titre-focus", "choix1-titre", "choix1-ajoute"]],
+    ["4 — Un deuxième choix, puis un troisième déjà fait", ["choix2-survol", "choix2-bulle", "choix2-action", "choix2-titre", "choix2-ajoute", "trois-choix"]],
+    ["5 — Le « + » tiré jusqu'à une autre scène : « Relier »", ["lien-survol", "lien-en-route", "lien-sur-la-carte", "lien-bulle", "lien-action", "lien-fait"]],
+    ["6 — Les chemins en place", ["arbre"]],
+  ];
+
+  fetch("captures/boites.json").then((r) => r.json()).then(({ ecrans }) => {
+    const cles = Object.keys(ecrans);
+    const racine = document.getElementById("planche");
+    for (const [titre, noms] of passages) {
+      const s = document.createElement("section");
+      s.className = "passage";
+      s.innerHTML = `<h2>${titre}</h2><div class="grille"></div>`;
+      for (const nom of noms) {
+        const cle = cles.find((c) => c.slice(3) === nom);
+        if (!cle) continue;
+        s.querySelector(".grille").insertAdjacentHTML("beforeend", `<figure><img src="captures/${cle}.png" alt=""><figcaption>${cle}</figcaption></figure>`);
+      }
+      racine.append(s);
+    }
+  });
+</script>
+</body>
+</html>

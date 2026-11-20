@@ -1,5 +1,5 @@
 // Passage 6 — « Et voilà, vos chapitres sont prêts à accueillir leurs premières scènes ! Pour
-// découvrir comment faire écrire vos élèves, rendez-vous dans le cinquième tuto ! » Tout le plan,
+// découvrir comment construire les chemins de votre histoire, rendez-vous dans le cinquième tuto ! » Tout le plan,
 // chaque chapitre avec ses élèves ; puis la phrase de choix vers le tuto 5, le papier qui couvre
 // l'écran, le logo.
 window.SCENES.p6 = (tl, t0) => {
@@ -17,7 +17,7 @@ window.SCENES.p6 = (tl, t0) => {
   U.plan(tl, id, T(0.3), 1.4);
   tous.aller(931, Math.max(m("chapitres") - 0.3, T(0.6)), 3.6, "sine.inOut");
 
-  // « Pour faire écrire vos élèves, rendez-vous au tuto 5 », pendant que la voix le dit
+  // « Pour construire les chemins, rendez-vous au tuto 5 », pendant que la voix le dit
   const tChoix = m("decouvrir") - 0.1;
   tl.fromTo(q("bas"), { opacity: 0 }, { opacity: 1, duration: 0.2 }, tChoix);
   tl.fromTo(q("filet-choix"), { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "power3.out" }, tChoix);

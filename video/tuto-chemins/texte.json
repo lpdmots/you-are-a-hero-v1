@@ -1,0 +1,72 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "Vos chapitres sont prêts ? Voyons maintenant comment construire les différents chemins de votre histoire.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 2.6,
+      "texte": "Pour commencer, ouvrez un chapitre et cliquez sur « Ajouter une scène » : vous voilà dans « Chemins », avec la première carte de votre chapitre ! <break time=\"1.0s\" /> Cliquez dessus pour lui donner un titre.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 2.4,
+      "texte": "Pour créer un choix, cliquez sur le « + » de la carte. <break time=\"1.2s\" /> Indiquez ce que le lecteur peut faire, puis donnez un titre à la scène suivante.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 3,
+      "texte": "Chaque choix apparaît alors sous la carte, avec un lien vers la nouvelle scène. <break time=\"1.6s\" /> Vous pouvez ainsi créer autant de chemins que vous le souhaitez !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 0.6,
+      "texte": "Et si deux chemins doivent se rejoindre ? <break time=\"0.8s\" /> Il suffit de faire glisser le « + » d’une scène vers une autre. <break time=\"2.0s\" /> Les deux sont alors reliées, sans avoir à créer de nouvelle scène.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Et voilà, les chemins de votre histoire sont en place ! <break time=\"1.4s\" /> Pour découvrir comment faire écrire vos élèves, rendez-vous dans le sixième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    }
+  ]
+}

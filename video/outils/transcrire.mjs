@@ -25,7 +25,17 @@ const p = texte.passages.find((x) => x.id === id);
 if (!p) throw new Error(`passage inconnu : ${id}`);
 
 const norm = (s) => s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
-const motsDuTexte = p.texte.replace(/<[^>]*>/g, " ").split(/\s+/).filter((m) => norm(m));
+// La ponctuation seule (« ? », « « », « », ») suit le mot voisin, avec une espace insécable : sans
+// elle, les sous-titres d'une prise fournie perdaient leurs points d'interrogation et leurs guillemets
+const motsDuTexte = [];
+let ouvrant = "";
+for (const b of p.texte.replace(/<[^>]*>/g, " ").split(/\s+/).filter(Boolean)) {
+  if (norm(b)) {
+    motsDuTexte.push(ouvrant + b);
+    ouvrant = "";
+  } else if (/^[«“(]/.test(b) || !motsDuTexte.length) ouvrant += b + " ";
+  else motsDuTexte[motsDuTexte.length - 1] += " " + b;
+}
 
 const fd = new FormData();
 fd.append("file", new Blob([fs.readFileSync(source)], { type: "audio/mpeg" }), "prise.mp3");

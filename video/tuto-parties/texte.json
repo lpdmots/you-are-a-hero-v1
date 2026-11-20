@@ -61,13 +61,13 @@
       "id": "p6",
       "avant": 0.6,
       "apres": 6,
-      "texte": "Et voilà, vos chapitres sont prêts à accueillir leurs premières scènes ! <break time=\"1.4s\" /> Pour découvrir comment faire écrire vos élèves, rendez-vous dans le cinquième tuto !",
+      "texte": "Et voilà, vos chapitres sont prêts à accueillir leurs premières scènes ! <break time=\"1.4s\" /> Pour découvrir comment construire les chemins de votre histoire, rendez-vous dans le cinquième tuto !",
       "reglages": {
         "stability": 0.5,
         "similarity_boost": 0.75,
         "style": 0
       },
-      "fournie": true
+      "prise": 3
     }
   ]
 }

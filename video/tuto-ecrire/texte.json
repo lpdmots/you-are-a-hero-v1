@@ -1,0 +1,75 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "Vous avez créé les chemins de votre histoire ? Voyons maintenant comment faire écrire vos élèves.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 1.8,
+      "texte": "Pour commencer, ouvrez votre chapitre et cliquez sur une scène.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 2,
+      "texte": "Ajoutez une consigne pour expliquer à l’élève ce qu’il devra raconter. <break time=\"2.0s\" /> Juste en dessous, une petite liste de vérification l’aidera à se relire.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 2.0,
+      "texte": "Le jour de l’écriture, chaque élève se rend dans « Mon travail », sur son ordinateur. <break time=\"1.2s\" /> Il choisit une scène dans son chapitre, puis clique sur « Je m’en occupe ». <break time=\"1.2s\" /> Ses camarades voient alors qu’elle est prise.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "prise": 4,
+      "fournie": true
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 2.4,
+      "texte": "Il peut alors écrire son texte en suivant la consigne, puis se relire à l’aide de sa liste de vérification. <break time=\"1.6s\" /> Une fois satisfait, il clique sur « Remettre ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "De votre côté, vous retrouvez sa scène dans le Suivi, marquée « À valider ». <break time=\"1.4s\" /> Et pour découvrir comment la relire, la corriger et la valider, rendez-vous dans le septième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    }
+  ]
+}
