@@ -14,7 +14,7 @@ const [dossier, ...instants] = process.argv.slice(2);
 fs.mkdirSync(dossier, { recursive: true });
 const navigateur = await chromium.launch();
 const page = await navigateur.newPage({ viewport: { width: 1920, height: 1080 } });
-await page.goto(`http://localhost:4850/api/projects/${process.env.VIDEO || "visite"}/preview/comp/index.html`);
+await page.goto(`http://localhost:${process.env.STUDIO_PORT || 4850}/api/projects/${process.env.VIDEO || "visite"}/preview/comp/index.html`);
 await page.waitForFunction(() => window.__playerReady === true, null, { timeout: 30000 });
 await page.evaluate(() => document.fonts.ready);
 const plan = await page.evaluate(() => window.VOIX);

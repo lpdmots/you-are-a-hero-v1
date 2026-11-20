@@ -20,7 +20,7 @@ const require = createRequire(path.join(process.env.HOME, "Projets/you-are-a-her
 const { chromium } = require("playwright");
 const navigateur = await chromium.launch();
 const page = await navigateur.newPage();
-await page.goto(`http://localhost:4850/api/projects/${PROJET}/preview/comp/index.html`);
+await page.goto(`http://localhost:${process.env.STUDIO_PORT || 4850}/api/projects/${PROJET}/preview/comp/index.html`);
 await page.waitForFunction(() => window.__playerReady === true, null, { timeout: 30000 });
 const { voix, bruits } = await page.evaluate(() => ({ voix: window.VOIX, bruits: window.BRUITAGES }));
 await navigateur.close();

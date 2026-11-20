@@ -1,0 +1,74 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "Un élève vous a remis sa scène ? Voyons comment relire son texte et valider son travail.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 1.2,
+      "texte": "Pour commencer, rendez-vous dans « Suivi ». <break time=\"1.0s\" /> Vous y retrouvez sa scène, marquée « À valider ». <break time=\"0.8s\" /> Cliquez sur « Relire ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "prise": 2
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 0.9,
+      "texte": "Son texte s’affiche. <break time=\"1.0s\" /> Vous repérez une faute ou une tournure maladroite ? Vous pouvez la corriger directement.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 2.6,
+      "texte": "Si le texte a besoin d’être retravaillé, cliquez sur « Demander une reprise ». <break time=\"1.2s\" /> Vous pouvez aussi laisser une remarque pour guider l’élève.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 2,
+      "texte": "De son côté, l’élève retrouve votre remarque en ouvrant sa scène. <break time=\"1.4s\" /> Il peut alors améliorer son texte, puis vous le remettre à nouveau.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Cette fois, si le texte vous convient, cliquez sur « Valider le travail élève ». La scène est terminée pour lui, et l’application vous propose directement la suivante à valider. Pour découvrir comment composer votre livre, rendez-vous dans le huitième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    }
+  ]
+}
