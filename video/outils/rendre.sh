@@ -15,7 +15,9 @@ node outils/preparer.mjs --voix "$VOIX" --vitesse 1   # la bande-son a changé d
 # Chrome sans GPU (SwiftShader), comme le studio : le rendu matériel a laissé une bande de la table
 # sur le bas d'une feuille grossie par la caméra (tuto 2, 19 novembre 2026). GPU=1 pour l'essayer.
 GPU_OPTION=$([ "${GPU:-0}" = 1 ] && echo "--browser-gpu" || echo "--no-browser-gpu")
-(cd "$VIDEO" && "$HOME/Projets/hyperframes-shorts/node_modules/.bin/hyperframes" render --quality high "$GPU_OPTION" --output "../rendus/$NOM.mp4" | grep -E "completed|rror" || true)
+# WORKERS=2 : moins de Chrome en parallèle. Au tuto 8 (images lourdes, 6 processus ramenés à 4),
+# deux images rendues avec la caméra à une autre place, absentes du studio (20 novembre 2026).
+(cd "$VIDEO" && "$HOME/Projets/hyperframes-shorts/node_modules/.bin/hyperframes" render --quality high "$GPU_OPTION" --workers "${WORKERS:-auto}" --output "../rendus/$NOM.mp4" | grep -E "completed|rror" || true)
 ffmpeg -hide_banner -loglevel error -y -i "rendus/$NOM.mp4" -c:v libx264 -preset slow -crf 21 -pix_fmt yuv420p -c:a aac -b:a 160k -movflags +faststart "rendus/$NOM-web.mp4"
 cp "$VIDEO/$(basename "$VIDEO")-fr.vtt" rendus/ 2>/dev/null || true
 # l'affiche (image d'attente du lecteur et image du VideoObject) : le titre du passage 1 écrit, rien en mouvement

@@ -168,13 +168,20 @@ changement de durée se rattrape en refaisant le ralenti depuis elle. Bruitages 
 
 ## Le rendu
 
-`STUDIO_PORT=4853 VIDEO=tuto-relire-livre AFFICHE=3.3 outils/rendre.sh tuto-relire-livre`
+`STUDIO_PORT=4853 WORKERS=2 VIDEO=tuto-relire-livre AFFICHE=3.3 outils/rendre.sh tuto-relire-livre`
 (sans GPU), 20 novembre 2026, sur la demande du porteur : `rendus/tuto-relire-livre-web.mp4`
-(72,5 s, 14,9 Mo, −16,7 LUFS), `tuto-relire-livre-fr.vtt` et l'affiche
+(72,5 s, 15,1 Mo, −16,7 LUFS), `tuto-relire-livre-fr.vtt` et l'affiche
 `tuto-relire-livre.webp` à 3,3 s (le titre écrit, les deux morceaux posés, avant les
 mots-repères). La voix est prise du cache, sans régénération (générée dès le début avec
 `--vitesse 1`). Images du rendu comparées au studio, le bas des feuilles grossies compris : les
 mêmes. Le fichier pleine qualité est à la corbeille.
+
+**Premier rendu remplacé** (retour du porteur) : à 33,97 s, deux images montraient la feuille en
+double, décalée vers le bas (l'en-tête des étapes du Livre au bas de l'écran), et à 17,77 s une
+image la décalait de quelques pixels ; le studio ne montrait rien à ces instants. L'outil avait
+ramené ses processus de 6 à 4 (images lentes à capturer). Rendu de nouveau avec 2 processus
+(`WORKERS=2`) : plus aucune image isolée, vérifié sur toute la vidéo (différence de chaque image
+avec ses voisines, en niveaux de gris, l'écran entier puis les bandes du haut et du bas).
 
 ## Le studio
 
