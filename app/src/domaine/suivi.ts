@@ -3,8 +3,8 @@
 import { sEcrit, tamponDe, type Tampon } from "./etats";
 import type { Chapitre, ElevePlan, Partie, Plan, Scene } from "./recit";
 
-/** Dans l'ordre de la rangée des filtres : ce qui attend l'enseignant d'abord. */
-export const TAMPONS_DU_SUIVI: readonly Tampon[] = ["valider", "reprendre", "cours", "vide", "valide", "prete"];
+/** Dans l'ordre du chemin d'une scène, de la page vide au livre : la rangée des filtres, la légende, la vue « Élèves » (révision de novembre 2026). */
+export const TAMPONS_DU_SUIVI: readonly Tampon[] = ["vide", "cours", "valider", "reprendre", "valide", "prete"];
 /** Un projet personnel n'a ni remise ni validation (F06-AC91). */
 export const TAMPONS_PERSONNELS: readonly Tampon[] = ["vide", "cours", "prete"];
 

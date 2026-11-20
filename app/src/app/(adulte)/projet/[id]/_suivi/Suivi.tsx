@@ -7,6 +7,7 @@ import { SigneEncouragement } from "@/composants/Encouragements";
 import { Gommette } from "@/composants/Gommette";
 import { DansLaTete } from "@/composants/DansLaTete";
 import { Icone } from "@/composants/Icone";
+import { Menu } from "@/composants/Menu";
 import { TamponScene } from "@/composants/TamponScene";
 import { nomPourEleves } from "@/domaine/eleves";
 import { CATEGORIES, NOM_CATEGORIE, totauxParEleve, type Encouragement } from "@/domaine/encouragements";
@@ -92,7 +93,12 @@ export function Suivi({
       el.dataset.plus = `${g ? "g" : ""}${d ? "d" : ""}`;
     };
     mesurer();
-    el.querySelector('[aria-pressed="true"]')?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    // Le tampon choisi vient au milieu de la rangée, loin du bord qui s'estompe
+    const choisi = el.querySelector<HTMLElement>('[aria-pressed="true"]');
+    if (choisi && el.scrollWidth > el.clientWidth) {
+      const ecart = choisi.getBoundingClientRect().left - el.getBoundingClientRect().left;
+      el.scrollLeft += ecart - (el.clientWidth - choisi.offsetWidth) / 2;
+    }
     el.addEventListener("scroll", mesurer, { passive: true });
     window.addEventListener("resize", mesurer);
     return () => {
@@ -178,7 +184,7 @@ export function Suivi({
       <p className="suivi-aucun">
         {toutes.length === 0 ? "Ce projet n’a pas encore de scène." : `Aucune scène${actifs.length ? ` pour : ${actifs.join(" · ")}` : ""}.`}{" "}
         {toutes.length === 0 ? (
-          <Link className="lien" href={`/projet/${projet.id}/plan`}>
+          <Link className="btn btn--primaire btn--petit" href={`/projet/${projet.id}/plan`}>
             Ouvrir « Parties et chapitres »
           </Link>
         ) : (
@@ -188,9 +194,89 @@ export function Suivi({
     );
   };
 
+  const coche = (oui: boolean) => (oui ? <Icone nom="coche" /> : <span />);
+  const chapitreChoisi = chapitres.find((c) => c.id === filtres.chapitre) ?? null;
+  const filtreChapitre = (
+    <Menu
+      agauche
+      className="suivi-filtre"
+      libelle={`Chapitre : ${chapitreChoisi?.titre ?? "Tous les chapitres"}. Changer`}
+      bouton={
+        <>
+          <span className="suivi-filtre__valeur">{chapitreChoisi?.titre ?? "Tous les chapitres"}</span>
+          <Icone nom="chevron-bas" />
+        </>
+      }
+    >
+      {(fermer) => (
+        <>
+          <button type="button" className="suivi-filtre__choix" aria-pressed={!filtres.chapitre} onClick={() => { fermer(); montrer({ ...filtres, chapitre: null }); }}>
+            <span>Tous les chapitres</span>
+            {coche(!filtres.chapitre)}
+          </button>
+          {plan.parties.map((p) => {
+            const avecScenes = p.chapitres.filter((c) => c.scenes.length);
+            return avecScenes.length ? (
+              <div key={p.id} className="suivi-filtre__partie">
+                <p className="menu__note">{p.titre}</p>
+                {avecScenes.map((c) => (
+                  <button key={c.id} type="button" className="suivi-filtre__choix" aria-pressed={filtres.chapitre === c.id} style={vars(c.couleur)} onClick={() => { fermer(); montrer({ ...filtres, chapitre: c.id }); }}>
+                    <span className="suivi-filtre__chap">{c.titre}</span>
+                    {coche(filtres.chapitre === c.id)}
+                  </button>
+                ))}
+              </div>
+            ) : null;
+          })}
+        </>
+      )}
+    </Menu>
+  );
+  // Les élèves en colonnes, avec leur gommette : vingt-cinq lignes ne tenaient pas dans la fenêtre
+  const choisirEleve = (id: string | null) => montrer({ ...filtres, eleve: id, mode: "occupe" });
+  const filtreEleve = (
+    <Menu
+      agauche
+      className="suivi-filtre suivi-filtre--eleves"
+      libelle={`Élève : ${eleve ? nom(eleve) : filtres.eleve === "moi" ? "Moi" : "Tous les élèves"}. Changer`}
+      bouton={
+        <>
+          {eleve ? <Gommette prenom={eleve.prenom} couleur={eleve.couleur} taille="s" /> : null}
+          <span className="suivi-filtre__valeur">{eleve ? nom(eleve) : filtres.eleve === "moi" ? "Moi" : "Tous les élèves"}</span>
+          <Icone nom="chevron-bas" />
+        </>
+      }
+    >
+      {(fermer) => (
+        <>
+          <button type="button" className="suivi-filtre__choix" aria-pressed={!filtres.eleve} onClick={() => { fermer(); choisirEleve(null); }}>
+            <span>Tous les élèves</span>
+            {coche(!filtres.eleve)}
+          </button>
+          <hr />
+          <div className="suivi-filtre__grille">
+            {eleves.map((e) => (
+              <button key={e.id} type="button" className="suivi-filtre__eleve" aria-pressed={filtres.eleve === e.id} onClick={() => { fermer(); choisirEleve(e.id); }}>
+                <Gommette prenom={e.prenom} couleur={e.couleur} taille="s" />
+                <span>{nom(e)}</span>
+              </button>
+            ))}
+          </div>
+          <hr />
+          {/* « Moi », après les élèves, comme dans le menu « qui s'en occupe » (F06-AC93) */}
+          <button type="button" className="suivi-filtre__choix" aria-pressed={filtres.eleve === "moi"} onClick={() => { fermer(); choisirEleve("moi"); }}>
+            <span>Moi</span>
+            {coche(filtres.eleve === "moi")}
+          </button>
+        </>
+      )}
+    </Menu>
+  );
+
   const vueScenes = (
     <>
-      {filtres.aFinir ? null : (
+      {/* Un projet sans scène : la seule phrase et son bouton, sans filtres qui ne compteraient rien */}
+      {filtres.aFinir || toutes.length === 0 ? null : (
         <div className="suivi-etats">
         <span className="suivi-etats__lib" aria-hidden="true">
           État
@@ -218,21 +304,6 @@ export function Suivi({
         <Bulle question="Que veulent dire ces états ?">
           <LegendeDesEtats deClasse={projet.deClasse} />
         </Bulle>
-        {/* Les fiches des scènes listées à ce moment-là ; un projet personnel n'en a pas (F06-AC57, F07-AC69) */}
-        {projet.deClasse ? (
-          <div className="suivi-fiches">
-            <Link className="btn" href={`/projet/${projet.id}/fiches${adresse ? `?suivi=${encodeURIComponent(adresse)}` : ""}`}>
-              <Icone nom="imprimer" />
-              Imprimer les fiches de rédaction
-            </Link>
-            <Bulle question="Que sont les fiches de rédaction ?">
-              <span>
-                Une feuille par chapitre ou par élève : les scènes à écrire ou à reprendre, sous leur référence, avec leur consigne. Les élèves écrivent sur leur
-                cahier, puis recopient. Une scène sans consigne n’est pas imprimée. Vous choisirez les scènes avant d’imprimer.
-              </span>
-            </Bulle>
-          </div>
-        ) : null}
       </div>
       )}
       {listees.length === 0 ? (
@@ -269,10 +340,12 @@ export function Suivi({
                     <span className="suivi-groupe__meta">
                       {projet.deClasse ? (
                         duChapitre.length ? (
+                          // Côte à côte, comme dans le bandeau du chapitre : au-delà de cinq, huit au plus et leur nombre
                           <span className="suivi-groupe__eleves" role="img" aria-label={`Élèves du chapitre : ${duChapitre.map(nom).join(", ")}`} title={duChapitre.map(nom).join(", ")}>
-                            {duChapitre.map((e) => (
+                            {duChapitre.slice(0, 8).map((e) => (
                               <Gommette key={e.id} prenom={e.prenom} couleur={e.couleur} taille="s" />
                             ))}
+                            {duChapitre.length > 5 ? <span className="suivi-groupe__nombre">{duChapitre.length} élèves</span> : null}
                           </span>
                         ) : (
                           <span className="suivi-groupe__eleves">Chapitre non attribué</span>
@@ -320,7 +393,7 @@ export function Suivi({
                             <td className="table-suivi__titre">
                               {/* Le titre ouvre la scène, comme le bouton de sa ligne */}
                               <Link className="table-suivi__lien" href={lienScene(s)} tabIndex={-1} onClick={quitter}>
-                                {s.titre ?? <span className="sans-consigne">sans titre</span>}
+                                {s.titre ?? <span className="sans-consigne sans-titre">sans titre</span>}
                               </Link>
                               {!s.consigne.trim() && projet.deClasse ? <span className="sans-consigne">sans consigne</span> : null}
                             </td>
@@ -329,7 +402,7 @@ export function Suivi({
                             </td>
                             {projet.deClasse ? <td>{qui(s, chapitre)}</td> : null}
                             <td>
-                              <Link className={`btn btn--petit${relire ? " btn--primaire" : ""}`} href={lienScene(s)} aria-label={`${relire ? "Relire" : "Ouvrir"} ${ref}`} onClick={quitter}>
+                              <Link className={`btn btn--petit ${relire ? "suivi-relire" : "suivi-ouvrir"}`} href={lienScene(s)} aria-label={`${relire ? "Relire" : "Ouvrir"} ${ref}`} onClick={quitter}>
                                 {relire ? "Relire" : "Ouvrir"}
                               </Link>
                             </td>
@@ -357,7 +430,6 @@ export function Suivi({
           <tr>
             <th scope="col">Élève</th>
             <th scope="col">Chapitres</th>
-            <th scope="col">Tout son chapitre</th>
             <th scope="col">S’en occupe</th>
             <th scope="col">
               Encouragements
@@ -384,23 +456,26 @@ export function Suivi({
                 </span>
               </th>
               <td>
+                {/* Le chapitre ouvre les scènes que l'élève peut ouvrir, camarades compris (« Tout son chapitre ») : la
+                    colonne qui en donnait le nombre répétait le total du chapitre sur chaque ligne (révision de novembre 2026) */}
                 {b.chapitres.length ? (
                   b.chapitres.map((c) => (
-                    <span key={c.id} className="chap-puce" style={vars(c.couleur)}>
-                      {c.titre}
-                    </span>
+                    <button
+                      key={c.id}
+                      type="button"
+                      className="chap-puce"
+                      style={vars(c.couleur)}
+                      title={`${c.titre} : voir les scènes ${b.chapitres.length > 1 ? "de ses chapitres" : "de son chapitre"}`}
+                      aria-label={`${c.titre} : voir les ${b.accessibles} scène${pluriel(b.accessibles)} ${b.chapitres.length > 1 ? "de ses chapitres" : "de son chapitre"}`}
+                      onClick={() => montrer({ ...SANS_FILTRE, eleve: b.eleve.id, mode: "chapitre" }, "scenes")}
+                    >
+                      <span>{c.titre}</span>
+                    </button>
                   ))
                 ) : (
-                  <span className="suivi-qui--libre">Aucun chapitre</span>
-                )}
-              </td>
-              <td data-lib="Tout son chapitre">
-                {b.accessibles ? (
-                  <button type="button" className="lien" onClick={() => montrer({ ...SANS_FILTRE, eleve: b.eleve.id, mode: "chapitre" }, "scenes")}>
-                    {b.accessibles} scène{pluriel(b.accessibles)}
-                  </button>
-                ) : (
-                  <span className="suivi-qui--libre">—</span>
+                  <Link className="lien" href={`/projet/${projet.id}/plan`}>
+                    Attribuer un chapitre
+                  </Link>
                 )}
               </td>
               <td data-lib="S’en occupe">
@@ -412,7 +487,8 @@ export function Suivi({
                   <span className="suivi-qui--libre">Aucune</span>
                 )}{" "}
                 {TAMPONS_DU_SUIVI.filter((t) => b.parEtat[t]).map((t) => (
-                  <span key={t} className="mini-etat">
+                  // « à valider » en ambre, comme dans l'en-tête des chapitres : c'est ce qui vous attend
+                  <span key={t} className="mini-etat" data-e={t}>
                     {b.parEtat[t]} {MINI[t]}
                   </span>
                 ))}
@@ -431,14 +507,9 @@ export function Suivi({
               </td>
               <td>
                 {b.aRegler === "sans-chapitre" ? (
-                  <span className="signal-ligne">
-                    <span className="signal">
-                      <Icone nom="alerte" />
-                      Sans chapitre
-                    </span>
-                    <Link className="lien" href={`/projet/${projet.id}/plan`}>
-                      Attribuer un chapitre
-                    </Link>
+                  <span className="signal">
+                    <Icone nom="alerte" />
+                    Sans chapitre
                   </span>
                 ) : b.aRegler === "aucune-scene-modifiable" ? (
                   <span className="signal">
@@ -482,37 +553,10 @@ export function Suivi({
         </div>
         <div className="suivi-outils">
           <div className="suivi-champs">
-            <label className="suivi-champ">
-              <span>Chapitre</span>
-              <span className="suivi-champ__select">
-                <select aria-label="Chapitre" value={filtres.chapitre ?? ""} onChange={(e) => montrer({ ...filtres, chapitre: e.target.value || null })}>
-                  <option value="">Tous les chapitres</option>
-                  {chapitres.filter((c) => c.scenes.length).map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.titre}
-                    </option>
-                  ))}
-                </select>
-                <Icone nom="chevron-bas" />
-              </span>
-            </label>
-            {projet.deClasse ? (
-              <label className="suivi-champ">
-                <span>Élève</span>
-                <span className="suivi-champ__select">
-                  <select aria-label="Élève" value={filtres.eleve ?? ""} onChange={(e) => montrer({ ...filtres, eleve: e.target.value || null, mode: "occupe" })}>
-                    <option value="">Tous les élèves</option>
-                    {eleves.map((e) => (
-                      <option key={e.id} value={e.id}>
-                        {nom(e)}
-                      </option>
-                    ))}
-                    <option value="moi">Moi</option>
-                  </select>
-                  <Icone nom="chevron-bas" />
-                </span>
-              </label>
-            ) : null}
+            {/* Les menus de l'application, sous le bouton ou au-dessus faute de place : la liste native de macOS
+                s'ouvrait par-dessus le champ, l'option choisie à sa place (révision de novembre 2026) */}
+            {filtreChapitre}
+            {projet.deClasse ? filtreEleve : null}
           </div>
         </div>
         {vueScenes}
@@ -549,40 +593,12 @@ export function Suivi({
             </button>
           </div>
         ) : null}
-        {vue === "scenes" ? (
+        {vue === "scenes" && toutes.length === 0 ? null : vue === "scenes" ? (
           <div className="suivi-champs">
-            <label className="suivi-champ">
-              <span>Chapitre</span>
-              <span className="suivi-champ__select">
-                <select aria-label="Chapitre" value={filtres.chapitre ?? ""} onChange={(e) => montrer({ ...filtres, chapitre: e.target.value || null })}>
-                  <option value="">Tous les chapitres</option>
-                  {chapitres.filter((c) => c.scenes.length).map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.titre}
-                    </option>
-                  ))}
-                </select>
-                <Icone nom="chevron-bas" />
-              </span>
-            </label>
-            {projet.deClasse ? (
-              <label className="suivi-champ">
-                <span>Élève</span>
-                <span className="suivi-champ__select">
-                  <select aria-label="Élève" value={filtres.eleve ?? ""} onChange={(e) => montrer({ ...filtres, eleve: e.target.value || null, mode: "occupe" })}>
-                    <option value="">Tous les élèves</option>
-                    {eleves.map((e) => (
-                      <option key={e.id} value={e.id}>
-                        {nom(e)}
-                      </option>
-                    ))}
-                    {/* « Moi », après les élèves, comme dans le menu « qui s'en occupe » (F06-AC93) */}
-                    <option value="moi">Moi</option>
-                  </select>
-                  <Icone nom="chevron-bas" />
-                </span>
-              </label>
-            ) : null}
+            {/* Les menus de l'application, sous le bouton ou au-dessus faute de place : la liste native de macOS
+                s'ouvrait par-dessus le champ, l'option choisie à sa place (révision de novembre 2026) */}
+            {filtreChapitre}
+            {projet.deClasse ? filtreEleve : null}
             {eleve ? (
               <div className="suivi-selections">
                 <div className="seg-mini" role="group" aria-label={`Scènes ${de(nom(eleve))}`}>
@@ -605,13 +621,33 @@ export function Suivi({
         ) : (
           <Bulle question="Que comptent ces nombres ?">
             <span>
-              « Tout son chapitre » : les scènes que l’élève peut ouvrir, celles de ses camarades comprises. « S’en occupe » : celles à son nom, à écrire ou à corriger.
-              Ces nombres ne mesurent pas ce que l’élève a écrit. Sans chapitre, le travail sur papier reste possible.
+              « S’en occupe » compte les scènes à son nom, à écrire ou à corriger. Ces nombres ne mesurent pas ce que l’élève a écrit. Son chapitre ouvre toutes les
+              scènes qu’il peut lire, celles de ses camarades comprises. Un élève sans chapitre peut toujours travailler sur papier.
             </span>
           </Bulle>
         )}
-        {/* À droite du titre de la page, comme sur chaque onglet (F06.5, 8 novembre 2026) */}
+        {/* À droite du titre de la page, comme sur chaque onglet (F06.5, 8 novembre 2026) : les fiches des scènes
+            listées à ce moment-là (F06-AC57), puis « Aide ». Dans la ligne de titre, le bouton ne prend plus une
+            rangée à lui sous les tampons (révision de novembre 2026) ; un projet personnel n'a pas de fiches (F07-AC69). */}
         <DansLaTete>
+          {projet.deClasse && toutes.length ? (
+            <span className="suivi-fiches">
+              <Link className="btn btn--petit" aria-label="Imprimer les fiches de rédaction" href={`/projet/${projet.id}/fiches${adresse ? `?suivi=${encodeURIComponent(adresse)}` : ""}`}>
+                <Icone nom="imprimer" />
+                <span className="suivi-fiches__long">Imprimer les fiches de rédaction</span>
+                <span className="suivi-fiches__court" aria-hidden="true">
+                  Fiches
+                </span>
+              </Link>
+              <Bulle question="Que sont les fiches de rédaction ?">
+                <span>
+                  Ce sont des feuilles à imprimer, une par élève ou par chapitre. Elles donnent les scènes à écrire ou à reprendre, avec leur consigne. Les
+                  élèves écrivent sur leur cahier, puis recopient leur texte. Une scène sans consigne n’est pas imprimée. Vous choisirez les scènes avant
+                  d’imprimer.
+                </span>
+              </Bulle>
+            </span>
+          ) : null}
           <button type="button" className="aide-bouton" title="Que fait-on ici ?" onClick={() => setAide(true)}>
             <Icone nom="aide" />
             Aide

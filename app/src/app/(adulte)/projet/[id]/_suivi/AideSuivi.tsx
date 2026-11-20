@@ -15,7 +15,16 @@ export const QUI_S_EN_OCCUPE =
  */
 export function LegendeDesEtats({ deClasse }: { deClasse: boolean }) {
   return (
+    // Dans l'ordre du chemin d'une scène, comme la rangée des tampons (révision de novembre 2026)
     <ul className="legende-etats">
+      <li>
+        <TamponScene etat="cours" vide />
+        <span>Rien n’est saisi. Le travail peut être sur papier.</span>
+      </li>
+      <li>
+        <TamponScene etat="cours" vide={false} />
+        <span>{deClasse ? "L’élève écrit, ou vous écrivez." : "Vous écrivez."}</span>
+      </li>
       {deClasse ? (
         <>
           <li>
@@ -30,23 +39,13 @@ export function LegendeDesEtats({ deClasse }: { deClasse: boolean }) {
               Vous avez demandé une reprise. <b>À l’élève</b> de retravailler.
             </span>
           </li>
+          <li>
+            <TamponScene etat="valide" vide={false} />
+            <span>
+              Travail de l’élève terminé. <b>À vous</b> de finir la scène pour le livre.
+            </span>
+          </li>
         </>
-      ) : null}
-      <li>
-        <TamponScene etat="cours" vide={false} />
-        <span>{deClasse ? "L’élève écrit, ou vous écrivez." : "Vous écrivez."}</span>
-      </li>
-      <li>
-        <TamponScene etat="cours" vide />
-        <span>Rien n’est saisi. Le travail peut être sur papier.</span>
-      </li>
-      {deClasse ? (
-        <li>
-          <TamponScene etat="valide" vide={false} />
-          <span>
-            Travail de l’élève terminé. <b>À vous</b> de finir la scène pour le livre.
-          </span>
-        </li>
       ) : null}
       <li>
         <TamponScene etat="prete" vide={false} />

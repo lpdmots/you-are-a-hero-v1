@@ -14,6 +14,12 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
+/** Les filtres Chapitre et Élève du Suivi : le menu de l'application, plus une liste native (révision de novembre 2026) */
+const filtreDuSuivi = (page: Page, nom: "Chapitre" | "Élève") => page.getByLabel(new RegExp(`^${nom} : `));
+async function choisirDansLeSuivi(page: Page, nom: "Chapitre" | "Élève", valeur: string): Promise<void> {
+  await filtreDuSuivi(page, nom).click();
+  await page.locator(".suivi-filtre .menu__liste").getByRole("button", { name: valeur, exact: true }).click();
+}
 const suivi = (projet: string, requete = "") => `/projet/${projet}/suivi${requete ? `?${requete}` : ""}`;
 const filtres = (page: Page) => page.getByRole("group", { name: "Filtrer par état" });
 const tampon = (page: Page, nom: string) => filtres(page).getByRole("button", { name: new RegExp(`^${nom} \\d+$`) });
@@ -114,7 +120,7 @@ test.describe("Vue « Scènes » (F06.5)", () => {
     const rappel = page.locator(".suivi-rappel");
     await expect(rappel).toContainText("1 élève sans chapitre");
     await expect(page.getByText(/scènes? sans consigne/)).toHaveCount(0);
-    await expect(filtres(page).getByRole("button")).toHaveText(["Toutes 6", "À valider 2", "À reprendre 0", "En cours 0", "Texte vide 3", "Validé 0", "Prête 1"]);
+    await expect(filtres(page).getByRole("button")).toHaveText(["Toutes 6", "Texte vide 3", "En cours 0", "À valider 2", "À reprendre 0", "Validé 0", "Prête 1"]);
     // Celui qui ne compte aucune scène est éteint, et garde sa place
     await expect(tampon(page, "À reprendre")).toBeDisabled();
     await expect(lignes(page)).toHaveText([
@@ -126,12 +132,12 @@ test.describe("Vue « Scènes » (F06.5)", () => {
       /S006.*La crypte.*Texte vide.*Aucun élève.*Ouvrir/,
     ]);
     await expect(page.locator(".suivi-groupe > summary")).toHaveText([/La lisière.*4 scènes.*2 à valider/, /Le sanctuaire.*Chapitre non attribué.*2 scènes.*1 prête/]);
-    await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "La lisière" });
-    await expect(filtres(page).getByRole("button")).toHaveText(["Toutes 4", "À valider 2", "À reprendre 0", "En cours 0", "Texte vide 2", "Validé 0", "Prête 0"]);
+    await choisirDansLeSuivi(page, "Chapitre", "La lisière");
+    await expect(filtres(page).getByRole("button")).toHaveText(["Toutes 4", "Texte vide 2", "En cours 0", "À valider 2", "À reprendre 0", "Validé 0", "Prête 0"]);
     // Aucun résultat : les filtres en cause sont nommés
-    await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "Le sanctuaire" });
+    await choisirDansLeSuivi(page, "Chapitre", "Le sanctuaire");
     await tampon(page, "Prête").click();
-    await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "La lisière" });
+    await choisirDansLeSuivi(page, "Chapitre", "La lisière");
     await expect(page.locator(".suivi-aucun")).toContainText("Aucune scène pour : La lisière · Prête.");
     await expect(filtres(page)).toBeVisible();
     await page.locator(".suivi-aucun").getByRole("button", { name: "Tout afficher" }).click();
@@ -145,8 +151,9 @@ test.describe("Vue « Scènes » (F06.5)", () => {
     const c = await classeSuivie(page);
     await c.base.from("scenes").update({ prise_par_enseignant: true }).in("id", [c.lisiere.scenes[3], c.sanctuaire.scenes[1]]);
     await aller(page, suivi(c.projet));
-    await expect(page.getByRole("combobox", { name: "Élève", exact: true }).locator("option")).toHaveText(["Tous les élèves", "Adam", "Alice", "Bilal", "Moi"]);
-    await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Alice" });
+    await filtreDuSuivi(page, "Élève").click();
+    await expect(page.locator(".suivi-filtre .menu__liste button")).toHaveText([/Tous les élèves$/, /Adam$/, /Alice$/, /Bilal$/, /Moi$/]);
+    await page.locator(".suivi-filtre .menu__liste").getByRole("button", { name: "Alice", exact: true }).click();
     const selections = page.getByRole("group", { name: "Scènes d’Alice" });
     await expect(selections.getByRole("button")).toHaveText(["Dont Alice s’occupe 1", "Tout son chapitre 4"]);
     expect(await references(page)).toEqual(["S001"]);
@@ -154,12 +161,12 @@ test.describe("Vue « Scènes » (F06.5)", () => {
     expect(await references(page)).toEqual(["S001", "S002", "S003", "S004"]);
     // Changer de sélection ne change ni attribution ni prise en charge
     expect((await sql("select 1 from scenes where prise_par_eleve = $1", [c.eleves.Alice.id]))).toHaveLength(1);
-    await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Moi" });
+    await choisirDansLeSuivi(page, "Élève", "Moi");
     expect(await references(page)).toEqual(["S004", "S006"]);
     await expect(lignes(page).first()).toContainText("Vous");
     await expect(page.getByRole("group", { name: /^Scènes d/ })).toHaveCount(0);
     // Sans chapitre : la sélection le dit, avec le lien vers l'attribution
-    await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Adam" });
+    await choisirDansLeSuivi(page, "Élève", "Adam");
     await expect(page.locator(".suivi-aucun")).toContainText("Adam n’a aucun chapitre. Le travail sur papier reste possible.");
     await expect(page.locator(".suivi-aucun").getByRole("link", { name: "Attribuer un chapitre" })).toBeVisible();
   });
@@ -169,7 +176,7 @@ test.describe("Vue « Scènes » (F06.5)", () => {
     await semerTexte(c.base, c.sanctuaire.scenes[1], ["Un texte."]);
     await c.base.from("scenes").update({ fin: true }).in("id", c.lisiere.scenes);
     await aller(page, suivi(c.projet));
-    await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "La lisière" });
+    await choisirDansLeSuivi(page, "Chapitre", "La lisière");
     await tampon(page, "À valider").click();
     expect(await references(page)).toEqual(["S001", "S002"]);
     await page.getByRole("link", { name: "Relire S001" }).click();
@@ -184,7 +191,7 @@ test.describe("Vue « Scènes » (F06.5)", () => {
     await page.waitForURL(/\/suivi/);
     // Le filtre est rendu, sans autre geste pour clôturer quoi que ce soit (AC37)
     await expect(tampon(page, "À valider")).toHaveAttribute("aria-pressed", "true");
-    await expect(page.getByRole("combobox", { name: "Chapitre", exact: true })).toHaveValue(c.lisiere.id);
+    await expect(filtreDuSuivi(page, "Chapitre")).toHaveAttribute("aria-label", "Chapitre : La lisière. Changer");
     await expect(page.locator(".suivi-aucun")).toContainText("Aucune scène pour : La lisière · À valider.");
     await expect(tampon(page, "Validé")).toHaveText("Validé 2");
     // Les filtres repartent de « Toutes » à chaque nouvelle entrée dans le Suivi
@@ -218,15 +225,15 @@ test.describe("Vue « Élèves » (F06.5)", () => {
     await aller(page, suivi(c.projet, "vue=eleves"));
     const rangs = page.locator(".table-eleves tbody tr");
     await expect(rangs).toHaveText([
-      /Adam.*Aucun chapitre.*Aucune.*Sans chapitre.*Attribuer un chapitre/,
-      /Alice.*La lisière.*4 scènes.*1 scène.*1 à valider/,
-      /Bilal.*La lisière.*4 scènes.*2 scènes.*1 à valider.*1 texte vide/,
+      /Adam.*Attribuer un chapitre.*Aucune.*Sans chapitre/,
+      /Alice.*La lisière.*1 scène.*1 à valider/,
+      /Bilal.*La lisière.*2 scènes.*1 texte vide.*1 à valider/,
     ]);
     // Ce bilan ne crée aucune attribution
     expect(await sql("select 1 from attributions where eleve_id = $1", [c.eleves.Adam.id])).toHaveLength(0);
     await rangs.nth(2).getByRole("button", { name: "2 scènes" }).click();
     expect(await references(page)).toEqual(["S002", "S003"]);
-    await expect(page.getByRole("combobox", { name: "Élève", exact: true })).toHaveValue(c.eleves.Bilal.id);
+    await expect(filtreDuSuivi(page, "Élève")).toHaveAttribute("aria-label", "Élève : Bilal. Changer");
   });
 });
 
@@ -245,8 +252,8 @@ test.describe("Suivi d'un projet personnel (F06.5)", () => {
     await page.getByRole("navigation", { name: "Sections du projet" }).getByRole("link", { name: "Suivi" }).click();
     await expect(filtres(page).getByRole("button")).toHaveText(["Toutes 5", "Texte vide 2", "En cours 2", "Prête 1"]);
     await expect(page.locator(".suivi-groupe")).toHaveCount(2);
-    await expect(page.getByRole("combobox", { name: "Chapitre", exact: true })).toBeVisible();
-    await expect(page.getByRole("combobox", { name: "Élève", exact: true })).toHaveCount(0);
+    await expect(filtreDuSuivi(page, "Chapitre")).toBeVisible();
+    await expect(filtreDuSuivi(page, "Élève")).toHaveCount(0);
     await expect(page.getByRole("group", { name: "Vue du suivi" })).toHaveCount(0);
     await expect(page.locator(".suivi-colonnes")).not.toContainText("Qui s’en occupe");
     await expect(page.getByRole("button", { name: /fiches de rédaction/ })).toHaveCount(0);

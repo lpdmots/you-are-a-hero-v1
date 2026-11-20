@@ -4109,6 +4109,11 @@ V6, le premier envoi à l'imprimeur.
    ses étapes y sont un peu resserrées (la page 2 dépassait après des
    ajouts), et sa ligne de la fiche de l'histoire dit « personnages,
    parties, objets ».
+   **« Avant d'imprimer », faite puis écartée par lui le 19 novembre 2026**
+   (« pas sûr que cette feuille apporte grand chose ») : une liste à cocher
+   de l'enseignant, de la précommande à la commande finale, qui redisait le
+   guide (partie 12) et l'étape « Imprimer et partager ». Retirée, avec sa
+   ligne dans le déroulé ; ne pas la reproposer.
    **Grille d'évaluation, faite puis écartée par lui le 18 novembre 2026**
    (« pas trop utile ») : une grille de classe, six critères reliés au
    programme du cycle 3. Retirée, avec sa ligne dans le déroulé ; ne pas la

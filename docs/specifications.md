@@ -13062,6 +13062,18 @@ les révisions qui suivent :
   était une classe est fait par un enseignant qui a sa classe : la réponse
   peut prendre quelques jours. » La foire aux questions rappelle que les
   codes des élèves se retrouvent dans « Mes classes ».
+- **Tutos vidéo, décidé par le porteur le 18 novembre 2026.** L'« Aide »
+  reçoit de courts tutos vidéo, un geste chacun, rangés **par étape du
+  projet**, non par moment de l'année, qui change d'un projet à l'autre ; un
+  écran d'aide de l'application montre le tuto de son étape. Premier tuto :
+  « Donner l'accès aux élèves », terminé le 18 novembre 2026 et pas encore
+  posé sur le site (`V1/video/tuto-acces-eleves/SCRIPT.md`,
+  `V1/video/rendus/tuto-acces-eleves-web.mp4`), sur les vrais écrans de
+  l'application, capturés par un script qui se rejoue quand un écran change
+  (pas d'écrans redessinés). Proposé, non décidé : vidéos servies par
+  le site, sans lecteur YouTube intégré (ses témoins demanderaient un
+  bandeau) ; une chaîne YouTube comme vitrine, Instagram plus tard, TikTok
+  écarté pour l'instant.
 - **Ce qu'une école peut demander sur les données.** Le porteur tient
   qu'aucune donnée sensible n'est en jeu ; ce qui est fourni sert à ce qu'une
   école accepte l'outil, non à couvrir un risque. Sont fournis :

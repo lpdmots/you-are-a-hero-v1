@@ -98,7 +98,10 @@
   width: 100%;
   /* La case du chapitre tombe à l'aplomb de celles de ses scènes */
   padding: 8px 14px;
-  background: var(--bandeau);
+  /* Bande neutre, la couleur du chapitre à son seul dos : pleine, elle se lisait comme un état
+     (rouge « à reprendre », vert « validé »), comme le bandeau du chapitre (révision de novembre 2026) */
+  background: var(--feuille-2);
+  border-bottom: 1px solid var(--trait);
   box-shadow: inset 6px 0 0 var(--dos);
   font-size: var(--t-s);
   font-weight: 800;

@@ -419,7 +419,7 @@ export function Fiches({
   // Ce que la barre en dit, en deux mots, et qui mène aux réglages
   const mention = !partageable
     ? ""
-    : [nProp ? `${nProp} proposée${pluriel(nProp)}` : "", aucune.length && lesFeuilles.length ? `${aucune.length} sans élève` : ""].filter(Boolean).join(" · ");
+    : [nProp ? `${nProp} proposée${pluriel(nProp)}` : "", aucune.length && lesFeuilles.length ? `${aucune.length} sans élève, pas imprimée${pluriel(aucune.length)}` : ""].filter(Boolean).join(" · ");
 
   const rien = eleve && liste.length === 0
     ? null
@@ -445,7 +445,8 @@ export function Fiches({
           Retour au Suivi
         </Link>
       </nav>
-      <header className="page-tete hors-impression">
+      {/* La ligne de titre des onglets du projet, à la même taille (révision de novembre 2026) */}
+      <header className="page-tete page-tete--onglet hors-impression">
         <div>
           <h1>Fiches de rédaction</h1>
           <p className="lot-intro">

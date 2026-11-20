@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "tiny-text",
+        "value": "*",
+        "files": [
+          "ressources/recherche-passeurs/recherche-passeurs.html"
+        ],
+        "createdAt": "2026-11-15T16:38:24.428Z",
+        "reason": "Claude, mesure du PDF : les tailles 2.9 et 3.9 sont des unités du viewBox de l'arbre SVG, environ 9 points imprimés ; même exception que la feuille Bouquin"
+      }
+    ]
+  }
+}

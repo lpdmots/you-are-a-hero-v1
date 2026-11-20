@@ -70,7 +70,7 @@ describe("Ce que le Suivi liste (F06.5)", () => {
 
   it("F06-AC91 — projet personnel : trois tampons, « Texte vide », « En cours », « Prête »", () => {
     expect(TAMPONS_PERSONNELS).toEqual(["vide", "cours", "prete"]);
-    expect(TAMPONS_DU_SUIVI).toEqual(["valider", "reprendre", "cours", "vide", "valide", "prete"]);
+    expect(TAMPONS_DU_SUIVI).toEqual(["vide", "cours", "valider", "reprendre", "valide", "prete"]);
   });
 
   it("F06.5 — la liste se groupe par chapitre, dans l'ordre du plan", () => {

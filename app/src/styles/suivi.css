@@ -8,7 +8,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 6px 10px;
-  margin-top: 18px;
+  margin-top: 2px;
   color: var(--e-valider);
   font-size: var(--t-s);
   font-weight: 700;
@@ -23,61 +23,113 @@
 }
 
 /* ——— Outils : la bascule, les deux listes, le bouton « Aide » ——— */
+/* Une seule ligne : la bascule, puis les listes, sans intitulé visible (« Tous les chapitres », « Tous les
+   élèves » disent ce qu'elles filtrent). La bascule est ainsi à la même place dans les deux vues. */
 .suivi-outils {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  gap: 12px 18px;
-  margin: 22px 0 12px;
+  align-items: center;
+  gap: 10px 18px;
+  margin: 14px 0 12px;
 }
 .suivi-rappel + .suivi-outils,
 .rappel + .suivi-outils {
-  margin-top: 14px;
+  margin-top: 12px;
 }
 .suivi-champs {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
+  align-items: center;
   gap: 10px;
 }
-.suivi-champ {
-  display: grid;
-  gap: 4px;
-  font-size: var(--t-xs);
-  font-weight: 700;
-  color: var(--graphite-2);
-}
-.suivi-champ__select {
-  position: relative;
-  display: block;
-}
-.suivi-champ select {
+/* Chapitre et Élève : un bouton à la forme d'un champ, qui ouvre le menu de l'application sous lui */
+.suivi-filtre > summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
   min-width: 190px;
+  max-width: 260px;
   min-height: 38px;
-  padding: 0 34px 0 12px;
+  padding: 0 10px 0 12px;
   border: 1px solid var(--trait-fort);
   border-radius: 9px;
   background: var(--feuille);
   color: var(--graphite);
-  font: inherit;
   font-size: var(--t-s);
   font-weight: 600;
-  appearance: none;
-  cursor: pointer;
+  justify-content: flex-start;
 }
-.suivi-champ select:focus-visible {
-  outline: 3px solid var(--canard);
-  outline-offset: 1px;
+.suivi-filtre > summary:hover,
+.suivi-filtre[open] > summary {
+  border-color: var(--graphite-3);
+  background: var(--feuille);
 }
-.suivi-champ__select .ic {
-  position: absolute;
-  top: 50%;
-  right: 10px;
+.suivi-filtre__valeur {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+.suivi-filtre > summary > .ic {
+  flex: none;
   width: 16px;
   height: 16px;
-  transform: translateY(-50%);
   color: var(--graphite-3);
-  pointer-events: none;
+}
+.suivi-filtre .menu__liste {
+  min-width: 240px;
+}
+.menu__liste button.suivi-filtre__choix {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 18px;
+  align-items: center;
+  gap: 10px;
+}
+.suivi-filtre__choix .ic {
+  width: 16px;
+  height: 16px;
+  color: var(--canard);
+}
+.suivi-filtre__partie .menu__note {
+  margin: 6px 0 0;
+  padding: 4px 10px 2px;
+}
+/* Le dos du chapitre, comme partout ailleurs, sans aplat */
+.suivi-filtre__chap {
+  padding-left: 10px;
+  box-shadow: inset 4px 0 0 var(--dos);
+}
+.suivi-filtre--eleves .menu__liste {
+  max-width: min(540px, calc(100vw - 16px));
+}
+.suivi-filtre__grille {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 2px;
+}
+.menu__liste button.suivi-filtre__eleve {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 38px;
+  padding: 6px 8px;
+}
+.suivi-filtre__eleve span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.menu__liste button[aria-pressed="true"].suivi-filtre__eleve {
+  background: var(--canard-pale);
+  box-shadow: inset 0 0 0 1px var(--canard);
+}
+.suivi-filtre .menu__liste hr {
+  margin: 6px 4px;
+  border: 0;
+  border-top: 1px solid var(--trait);
 }
 .suivi-selections {
   display: inline-flex;
@@ -125,7 +177,7 @@
   margin-left: auto;
 }
 
-/* ——— Les tampons d'état en filtres : le choisi est plein, celui qui ne compte rien est éteint ——— */
+/* ——— Les tampons d'état en filtres : le choisi est cerné, celui qui ne compte rien est éteint ——— */
 .suivi-etats {
   display: flex;
   flex-wrap: wrap;
@@ -160,14 +212,15 @@
 .tampon--filtre:hover:not(:disabled) {
   background: color-mix(in srgb, var(--c) 14%, var(--f));
 }
+/* Le choisi garde son fond pâle et reçoit un second cerne, écarté de la marge du bureau : plein, à sa couleur,
+   il pesait plus que le bouton principal et que la bascule voisine (révision de novembre 2026) */
 .tampon--filtre[aria-pressed="true"],
 .tampon--filtre[aria-pressed="true"]:hover {
-  background: var(--c);
-  color: #fff;
+  background: var(--f);
   box-shadow:
     inset 0 0 0 1.5px var(--c),
-    inset 0 0 0 3px var(--c),
-    inset 0 0 0 3.8px rgba(255, 255, 255, 0.55);
+    0 0 0 2px var(--bureau, #f1f2ee),
+    0 0 0 4px var(--c);
 }
 .tampon--filtre:disabled {
   opacity: 0.45;
@@ -182,11 +235,14 @@
   --f: var(--feuille);
   padding-left: 0.7rem;
 }
+/* Les fiches, dans la ligne de titre, avant « Aide » */
 .suivi-fiches {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin-left: auto;
+  gap: 4px;
+}
+.suivi-fiches__court {
+  display: none;
 }
 
 /* ——— Légende des états : chaque tampon et à qui est le tour ——— */
@@ -296,11 +352,14 @@
   font-size: var(--t-xs);
   color: var(--graphite-2);
 }
-.suivi-groupe__eleves .gommette + .gommette {
-  margin-left: -5px;
+/* Côte à côte, comme dans le bandeau du chapitre : serrées l'une sur l'autre, leurs lettres se cachaient */
+.suivi-groupe__eleves {
+  align-items: center;
+  gap: 2px;
 }
-.suivi-groupe__eleves .gommette {
-  box-shadow: 0 0 0 1.5px var(--feuille-2);
+.suivi-groupe__nombre {
+  margin-left: 6px;
+  white-space: nowrap;
 }
 .suivi-groupe__compte {
   font-size: var(--t-s);
@@ -359,6 +418,33 @@
   margin-left: 8px;
   font-size: var(--t-xs);
   font-weight: 400;
+}
+.table-suivi__titre .sans-titre {
+  margin-left: 0;
+}
+/* Un seul bouton plein par écran : « Relire » cerné de canard, « Ouvrir » discret, cerné au survol de sa ligne */
+.suivi-relire {
+  border-color: var(--canard);
+  color: var(--canard-fonce);
+  font-weight: 700;
+}
+.suivi-relire:hover {
+  border-color: var(--canard-fonce);
+  background: var(--canard-pale);
+  color: var(--canard-fonce);
+}
+@media (hover: hover) {
+  .suivi-ouvrir {
+    border-color: transparent;
+    background: transparent;
+    color: var(--graphite-2);
+  }
+  .table-suivi tbody tr:hover .suivi-ouvrir,
+  .suivi-ouvrir:focus-visible {
+    border-color: var(--trait-fort);
+    background: var(--feuille);
+    color: var(--graphite);
+  }
 }
 .table-scenes {
   table-layout: fixed;
@@ -426,21 +512,52 @@
 .ligne--alerte {
   background: #fffaec;
 }
+/* Le chapitre de l'élève, sur une ligne : il ouvre ses scènes (« Tout son chapitre ») */
 .chap-puce {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   margin: 2px 4px 2px 0;
-  padding: 1px 9px 1px 10px;
+  padding: 2px 9px 2px 10px;
+  border: 0;
   border-radius: 99px;
-  background: var(--bandeau);
-  box-shadow: inset 4px 0 0 var(--dos);
+  /* Neutre, la couleur du chapitre au seul dos, comme l'en-tête des groupes : en aplat pâle, rouge ou vert,
+     elle se lisait à côté des états comme « à reprendre » ou « validé » (révision de novembre 2026) */
+  background: var(--feuille-2);
+  box-shadow:
+    inset 5px 0 0 var(--dos),
+    inset 0 0 0 1px var(--trait);
+  color: var(--graphite);
+  font: inherit;
   font-size: var(--t-xs);
   font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.chap-puce span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.chap-puce:hover span {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.chap-puce:focus-visible {
+  outline: 3px solid var(--canard);
+  outline-offset: 1px;
+}
+.table-eleves td:nth-child(2) {
+  max-width: 240px;
 }
 .mini-etat {
-  margin-left: 4px;
+  margin-left: 6px;
   color: var(--graphite-2);
   font-size: var(--t-xs);
+  white-space: nowrap;
+}
+.mini-etat[data-e="valider"] {
+  color: var(--e-valider);
+  font-weight: 700;
 }
 .signal-ligne {
   display: inline-flex;
@@ -469,9 +586,11 @@
   .suivi-outils {
     margin-top: 16px;
   }
+  /* La même largeur dans les deux vues : la place du « i » de la vue « Élèves » est gardée dans l'autre */
   .suivi-outils > .bascule {
-    flex: 1 1 0;
+    flex: 0 0 calc(100% - 48px);
     width: auto;
+    margin-top: 0;
   }
   .suivi-outils > .aide-bouton {
     order: 1;
@@ -485,17 +604,26 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     width: 100%;
   }
-  .suivi-champ select {
+  .suivi-filtre > summary {
     width: 100%;
     min-width: 0;
+    max-width: none;
     min-height: 44px;
+  }
+  /* Trois colonnes aussi au téléphone : en deux, vingt-cinq élèves passaient sous le bas de l'écran */
+  .suivi-filtre__grille {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .menu__liste button.suivi-filtre__eleve {
+    gap: 6px;
+    padding: 6px 5px;
   }
   .suivi-selections {
     grid-column: 1 / -1;
-    flex-wrap: wrap;
   }
   .seg-mini button {
     min-height: 40px;
+    padding: 6px 10px;
   }
   .suivi-etats {
     gap: 6px;
@@ -513,8 +641,9 @@
     flex-wrap: nowrap;
     gap: 6px;
     min-width: 0;
-    margin: -6px -2px -2px;
-    padding: 2px;
+    /* La place du second cerne du tampon choisi, que la rangée qui défile couperait */
+    margin: -9px -5px -5px;
+    padding: 5px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scrollbar-width: none;
@@ -539,14 +668,11 @@
     gap: 0.3rem;
     font-size: 0.8rem;
   }
-  .suivi-fiches {
-    order: 3;
-    width: 100%;
-    margin-left: 0;
+  .suivi-fiches__long {
+    display: none;
   }
-  .suivi-fiches .btn {
-    flex: 1;
-    justify-content: center;
+  .suivi-fiches__court {
+    display: inline;
   }
   .suivi-colonnes,
   .table-scenes colgroup {
@@ -564,7 +690,12 @@
   .suivi-groupe__meta {
     grid-column: 2;
     grid-row: 2;
+    flex-wrap: wrap;
     justify-content: space-between;
+    gap: 6px 14px;
+  }
+  .suivi-groupe__compte {
+    white-space: nowrap;
   }
   .suivi-groupe__chevron {
     grid-column: 3;
@@ -652,7 +783,9 @@
   margin-bottom: 14px;
   padding: 12px 16px;
   border-radius: var(--r-l);
-  background: var(--canard-pale);
+  /* Une feuille, non le canard pâle, devenu la couleur de ce que propose l'IA (étape 8) */
+  background: var(--feuille);
+  box-shadow: inset 0 0 0 1px var(--trait);
   color: var(--graphite);
 }
 .suivi-finir > .ic {

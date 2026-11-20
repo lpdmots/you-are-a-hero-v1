@@ -79,11 +79,18 @@ async function classeEtFiches(page: Page): Promise<Classe> {
   return { compte, base, projet, bac, lisiere, sommet, eleves: e };
 }
 
+/** Les filtres Chapitre et Élève du Suivi : le menu de l'application, plus une liste native (révision de novembre 2026) */
+const filtreDuSuivi = (page: Page, nom: "Chapitre" | "Élève") => page.getByLabel(new RegExp(`^${nom} : `));
+async function choisirDansLeSuivi(page: Page, nom: "Chapitre" | "Élève", valeur: string): Promise<void> {
+  await filtreDuSuivi(page, nom).click();
+  await page.locator(".suivi-filtre .menu__liste").getByRole("button", { name: valeur, exact: true }).click();
+}
+
 test.describe("Du Suivi aux fiches (F06.5, F07.4)", () => {
   test("F06-AC57, F07-AC54 — fiches des scènes listées : depuis le Suivi filtré sur « La lisière » et « Texte vide », les fiches s'ouvrent avec les scènes qui ont une consigne ; celle qui n'en a pas ne peut pas être choisie, jusqu'à ce qu'on lui en écrive une", async ({ page }) => {
     const c = await classeEtFiches(page);
     await aller(page, `/projet/${c.projet}/suivi`);
-    await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "La lisière" });
+    await choisirDansLeSuivi(page, "Chapitre", "La lisière");
     await page.getByRole("group", { name: "Filtrer par état" }).getByRole("button", { name: /^Texte vide/ }).click();
     await page.getByRole("link", { name: "Imprimer les fiches de rédaction" }).click();
     await page.waitForURL(/\/fiches\?suivi=/);
@@ -103,7 +110,7 @@ test.describe("Du Suivi aux fiches (F06.5, F07.4)", () => {
     await expect(feuille(page)).not.toContainText("S009");
     // « Retour au Suivi » rend les filtres
     await page.getByRole("link", { name: "Retour au Suivi" }).click();
-    await expect(page.getByRole("combobox", { name: "Chapitre", exact: true })).toHaveValue(c.lisiere.id);
+    await expect(page.getByLabel(/^Chapitre : /)).toHaveAttribute("aria-label", "Chapitre : La lisière. Changer");
     // Une consigne ajoutée : la scène peut être choisie
     await c.base.from("scenes").update({ consigne: "Décris la clairière." }).eq("id", c.lisiere.scenes[3]);
     await aller(page, fiches(c.projet));
@@ -220,7 +227,7 @@ test.describe("La feuille de rédaction (F07.4)", () => {
     await expect(page.getByRole("dialog", { name: "Réglages des feuilles" })).toHaveCount(0);
     await expect(page.locator(".lot-apercu").getByRole("checkbox")).toHaveCount(0);
     // S006, sans élève, n'est sur aucune feuille : la barre le dit en deux mots, les réglages en entier (AC53)
-    await expect(mention(page)).toHaveText("1 sans élève");
+    await expect(mention(page)).toHaveText("1 sans élève, pas imprimée");
     await mention(page).click();
     await expect(await note(page)).toContainText("1 des 6 scènes choisies n’a pas d’élève : sur aucune feuille.");
     await page.keyboard.press("Escape");
@@ -423,13 +430,13 @@ test.describe("Partage des scènes sans élève (F07.4)", () => {
   test("F07-AC60 — hors partage : la scène d'un chapitre non attribué reste sur aucune feuille ; la liste réduite à un élève, le partage n'est plus proposé", async ({ page }) => {
     const c = await classeEtFiches(page);
     await aller(page, fiches(c.projet));
-    await expect(mention(page)).toHaveText("2 sans élève");
+    await expect(mention(page)).toHaveText("2 sans élève, pas imprimées");
     await expect(await note(page)).toContainText("2 des 10 scènes choisies n’ont pas d’élève : sur aucune feuille.");
     await repartir(page);
     // S006 est proposée ; S011, du « Sommet », n'a personne à qui aller
     await expect(await note(page)).toContainText("S006 est proposée à Emma");
     await expect(await note(page)).toContainText("1 reste sans élève, sur aucune feuille.");
-    await expect(mention(page)).toHaveText("1 proposée · 1 sans élève");
+    await expect(mention(page)).toHaveText("1 proposée · 1 sans élève, pas imprimée");
     await (await reglages(page)).getByRole("button", { name: "Ne pas répartir" }).click();
     // Le bouton disparaît sous le clic : le panneau, lui, reste ouvert
     await expect(page.getByRole("dialog", { name: "Réglages des feuilles" })).toBeVisible();
@@ -456,7 +463,7 @@ test.describe("Plafond et complément (F07.4)", () => {
     await expect(await note(page)).toContainText("3 scènes sans élève sont réparties entre les élèves de leur chapitre");
     await (await nombre(page)).fill("1");
     await expect(await note(page)).toContainText("S008 est proposée à Bilal : elle sera à son nom à l’impression. 2 restent sans élève, sur aucune feuille : chaque élève du chapitre a déjà 1 scène à écrire.");
-    await expect(mention(page)).toHaveText("1 proposée · 2 sans élève");
+    await expect(mention(page)).toHaveText("1 proposée · 2 sans élève, pas imprimées");
     // La case vidée : aucun nombre, tout est réparti
     await (await nombre(page)).fill("");
     await expect(await note(page)).toContainText("3 scènes sans élève sont réparties");

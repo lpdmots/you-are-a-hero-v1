@@ -35,6 +35,13 @@ const remettre = (scene: string, eleve: string, ilYA = "0 minutes") =>
     [scene, eleve, ilYA],
   );
 
+/** Les filtres Chapitre et Élève du Suivi : le menu de l'application, plus une liste native (révision de novembre 2026) */
+const filtreDuSuivi = (page: Page, nom: "Chapitre" | "Élève") => page.getByLabel(new RegExp(`^${nom} : `));
+async function choisirDansLeSuivi(page: Page, nom: "Chapitre" | "Élève", valeur: string): Promise<void> {
+  await filtreDuSuivi(page, nom).click();
+  await page.locator(".suivi-filtre .menu__liste").getByRole("button", { name: valeur, exact: true }).click();
+}
+
 test("lot 1 : état et relecture, côté enseignant", async ({ page }) => {
   test.setTimeout(300_000);
   n = 400;
@@ -305,12 +312,12 @@ test("lot 4 : le Suivi", async ({ page }) => {
   await page.getByRole("button", { name: "Que veulent dire ces états ?" }).click();
   await capturer(page, "suivi-legende");
   await page.keyboard.press("Escape");
-  await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Bilal" });
+  await choisirDansLeSuivi(page, "Élève", "Bilal");
   await capturer(page, "suivi-eleve-choisi");
-  await page.getByRole("combobox", { name: "Élève", exact: true }).selectOption({ label: "Tous les élèves" });
-  await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "Le sommet" });
+  await choisirDansLeSuivi(page, "Élève", "Tous les élèves");
+  await choisirDansLeSuivi(page, "Chapitre", "Le sommet");
   await page.getByRole("group", { name: "Filtrer par état" }).getByRole("button", { name: /^Texte vide/ }).click();
-  await page.getByRole("combobox", { name: "Chapitre", exact: true }).selectOption({ label: "Le dernier bac" });
+  await choisirDansLeSuivi(page, "Chapitre", "Le dernier bac");
   await page.getByRole("group", { name: "Filtrer par état" }).getByRole("button", { name: /^Toutes/ }).click();
   await page.getByRole("group", { name: "Vue du suivi" }).getByRole("button", { name: "Élèves" }).click();
   await capturer(page, "suivi-eleves", true);

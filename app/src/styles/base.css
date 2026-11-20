@@ -6,6 +6,9 @@
 html {
   -webkit-text-size-adjust: 100%;
   scrollbar-color: var(--trait-fort) transparent;
+  /* La place de la barre de défilement est toujours gardée : une page courte n'en a pas, une longue en a une,
+     et tout se décalait de sa largeur d'un onglet à l'autre (révision de novembre 2026, décidé par le porteur) */
+  scrollbar-gutter: stable;
 }
 body {
   margin: 0;
