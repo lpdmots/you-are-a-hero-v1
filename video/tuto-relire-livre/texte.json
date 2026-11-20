@@ -1,0 +1,72 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "Toutes les scènes de votre histoire sont validées ? Voyons maintenant comment relire votre livre avant de le mettre en page.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 1.4,
+      "texte": "Pour commencer, vérifiez que la présentation de chaque scène vous convient, avec ou sans image, puis cliquez sur « Prête pour le livre ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 0.9,
+      "texte": "Rendez-vous ensuite dans « Livre », puis dans « Relire ». <break time=\"1.0s\" /> L’application vous guide en quatre tâches : elle vérifie d’abord que toutes les scènes sont écrites, puis vous signale les erreurs importantes et les points à confirmer.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 3.6,
+      "texte": "Place maintenant à la lecture ! <break time=\"0.8s\" /> Votre livre s’affiche dans un aperçu, tel qu’il sera imprimé. <break time=\"1.0s\" /> Vous repérez une coquille ? Cliquez sur le passage concerné : la scène s’ouvre juste à côté, et vous pouvez la corriger directement.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 1.4,
+      "texte": "Une fois votre relecture terminée, cliquez sur « J’ai relu le livre ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Et pour vous assurer que tous les chemins de votre histoire mènent bien quelque part, rendez-vous dans le neuvième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    }
+  ]
+}
