@@ -8,7 +8,8 @@
 <!-- Le coupon seul, trois par feuille (décidé par le porteur le 19 novembre 2026, F14) : pour l'enseignant arrivé au
      partage du livre sans avoir distribué la lettre ; l'outil y mène depuis « Imprimer et partager ». -->
 <meta name="tirage" content="coupon" data-adresse="coupon">
-<!-- Le bon de précommande seul (retour du 20 novembre 2026) : le document du temps 4 de la page « Ressources », avec sa vignette -->
+<!-- Le bon de précommande, son propre PDF depuis le 20 novembre 2026 : le document du temps 4 de la page « Ressources », avec sa vignette ;
+     la lettre (le PDF par défaut) n'a plus que sa page -->
 <meta name="tirage" content="bon" data-adresse="bon" data-vignette>
 </head>
 <body>
@@ -141,8 +142,10 @@
     for (const p of document.querySelectorAll(".page")) p.remove();
     document.body.prepend(feuille);
   }
-  // Le bon seul : la seconde feuille
-  if (new URLSearchParams(location.search).has("bon")) document.querySelector(".page.lettre").remove();
+  // La lettre et le bon se donnent à deux moments, en deux PDF (décidé par le porteur le 20 novembre 2026) : par
+  // défaut la lettre seule, le bon par ?bon
+  if (new URLSearchParams(location.search).has("bon")) document.querySelector(".page.lettre")?.remove();
+  else document.querySelector(".page.paysage")?.remove();
 </script>
 </body>
 </html>

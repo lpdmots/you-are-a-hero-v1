@@ -5920,6 +5920,14 @@ le sommaire passé, qui dit le temps qu'on lit, comme dans le guide. 509 tests
 unitaires passés. Son constat que `/ressources` n'existe pas en ligne est attendu :
 rien n'est poussé.
 
+**Revu par lui le même jour :** le grand titre devient « Ressources pour un projet
+d'écriture en classe » (on ne savait pas tout de suite qu'on était sur les
+ressources) ; plus de « du CE1 au CM2 (7 à 11 ans) », ni dans le chapeau, ni dans
+la description, ni dans les données de page ou `llms.txt` (« des collégiens
+peuvent très bien utiliser le site ») ; la lettre aux familles et le bon de
+précommande sont deux PDF (la lettre d'une page avec son coupon, au temps 1 ; le
+bon au temps 4), le déroulé liant le bon à son propre PDF.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

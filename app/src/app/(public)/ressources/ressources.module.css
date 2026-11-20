@@ -48,7 +48,8 @@
   text-wrap: balance;
 }
 .chapeau {
-  margin-top: 22px;
+  /* Les jambes de la cursive du titre descendent loin : de l'air avant le chapeau */
+  margin-top: 30px;
   max-width: 60ch;
   font-family: var(--f-recit);
   font-size: 1.22rem;

@@ -67,7 +67,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres à feuilleter, les prix.`,
     `- [La bibliothèque](${site}/bibliotheque) : des histoires dont vous êtes le héros et des récits écrits par des classes avec l’outil, à lire en ligne gratuitement, sans compte.`,
     `- [Aide](${site}/aide) : les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
-    `- [Production d’écrit et projet d’écriture : le livre-jeu en classe](${site}${ADRESSE_DES_RESSOURCES}) : leçons, fiches de recherche, affiches et lettre aux familles à imprimer, gratuites, du CE1 au CM2, rangées par moment du projet, avec les liens aux programmes de français.`,
+    `- [Production d’écrit et projet d’écriture : le livre-jeu en classe](${site}${ADRESSE_DES_RESSOURCES}) : leçons, fiches de recherche, affiches et lettre aux familles à imprimer, gratuites, rangées par moment du projet, avec les liens aux programmes de français.`,
     `- [Comment écrire un livre dont vous êtes le héros en classe](${site}${ADRESSE_DU_GUIDE}) : la méthode d’un professeur des écoles, en quatorze questions, de la lecture de livres-jeux à l’impression ; avec ses chiffres réels (six ans de livres, deux livres de 213 et 323 scènes).`,
     `- [Confidentialité](${site}/confidentialite) : les données gardées, l’IA, la mesure d’audience.`,
     `- [Conditions d’utilisation](${site}/conditions)`,

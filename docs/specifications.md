@@ -12936,7 +12936,7 @@ les révisions qui suivent :
     le PDF. Précisé le 20 novembre 2026 : quand la vignette ne montre pas la
     version du premier bouton (la feuille de l'élève passe d'abord), une ligne
     dessous le dit (« Aperçu : corrigé »). Le temps 4 a son document, le bon de
-    précommande seul, tirage de la lettre aux familles, et renvoie au guide
+    précommande, et renvoie au guide
     pour la fabrication ; le déroulé s'ouvre aussi depuis la page de titre
     (« Commencer par le déroulé du projet »). Écartés : aucune image (un enseignant juge une fiche à son
     allure) ; toutes les pages (c'est le rôle du PDF).
@@ -12991,16 +12991,18 @@ les révisions qui suivent :
     collègue venu d'un moteur ; l'étiquette « Avec Il était une classe »
     reste aux documents qui ne servent qu'avec l'outil (aujourd'hui « J'écris
     sur le site »).
-  - *Titre et niveaux* (décidé le même jour) : la page nomme les cycles et
-    les niveaux de l'école française, l'âge à côté à la première occurrence,
-    comme le guide (exception du 30 octobre 2026), son mot-clé étant fait de
-    niveaux. Titre d'onglet « Production d'écrit et projet d'écriture : le
-    livre-jeu en classe » ; grand titre « Un projet d'écriture en classe : le
-    livre dont vous êtes le héros » ; description « Leçons, fiches de
-    recherche, affiches et lettre aux familles à imprimer pour mener un
-    projet d'écriture de livre-jeu, du CE1 au CM2 (7 à 11 ans), avec les
-    liens aux programmes. Gratuit. » Le CP reste à la feuille des
-    programmes. Le reste du texte se rédige à la construction.
+  - *Titre et niveaux* (décidé le même jour, revu par le porteur le
+    20 novembre 2026) : titre d'onglet « Production d'écrit et projet
+    d'écriture : le livre-jeu en classe » ; grand titre « Ressources pour un
+    projet d'écriture en classe », qui dit d'emblée où l'on est (le premier,
+    « Un projet d'écriture en classe : le livre dont vous êtes le héros », ne
+    le disait pas) ; description « Leçons, fiches de recherche, affiches et
+    lettre aux familles à imprimer pour mener en classe un projet d'écriture
+    de livre dont vous êtes le héros, avec les liens aux programmes.
+    Gratuit. » La page ne borne pas les niveaux (« des collégiens peuvent très
+    bien utiliser le site ») : ni « du CE1 au CM2 », ni âge ; seuls les cycles
+    2 et 3 de l'encart des programmes les nomment, puisque ce sont ceux des
+    textes cités.
   - *Précisions prises sans lui être soumises* : une date de mise à jour de
     la page, sans date par document ; l'adresse canonique, l'image de
     partage et les données de la page (titre, description, date) comme le

@@ -11,11 +11,14 @@ export const ADRESSE_DES_RESSOURCES = "/ressources";
 /** La date de mise à jour de la page, sans date par document (F14, « Précisions ») */
 export const DATE_DES_RESSOURCES = "2026-11-19";
 
-/** Titre d'onglet, grand titre et description, arrêtés à l'entretien du 19 novembre 2026 (F14, « Titre et niveaux ») */
+/**
+ * Titre d'onglet, grand titre et description (F14, « Titre et niveaux ») : le grand titre dit qu'on est sur les
+ * ressources, et la page ne borne pas les niveaux (revus par le porteur le 20 novembre 2026).
+ */
 export const TITRE_DES_RESSOURCES = "Production d’écrit et projet d’écriture : le livre-jeu en classe";
-export const GRAND_TITRE_DES_RESSOURCES = "Un projet d’écriture en classe : le livre dont vous êtes le héros";
+export const GRAND_TITRE_DES_RESSOURCES = "Ressources pour un projet d’écriture en classe";
 export const DESCRIPTION_DES_RESSOURCES =
-  "Leçons, fiches de recherche, affiches et lettre aux familles à imprimer pour mener un projet d’écriture de livre-jeu, du CE1 au CM2 (7 à 11 ans), avec les liens aux programmes. Gratuit.";
+  "Leçons, fiches de recherche, affiches et lettre aux familles à imprimer pour mener en classe un projet d’écriture de livre dont vous êtes le héros, avec les liens aux programmes. Gratuit.";
 
 /** La licence des documents (F14, « Accès libre ») */
 export const LICENCE_DES_RESSOURCES = { nom: "CC BY-NC 4.0", adresse: "https://creativecommons.org/licenses/by-nc/4.0/deed.fr" };
@@ -36,7 +39,7 @@ export type DocumentAImprimer = {
   /** Ne sert qu'avec Il était une classe (F14-AC57) */
   avecLOutil?: true;
   /**
-   * Un tirage d'un autre document, montré à part (le bon de précommande, seconde feuille de la lettre) : le fichier
+   * Un tirage d'un autre document, montré à part (le bon de précommande, tiré de la source de la lettre) : le fichier
    * sans `.pdf` qui donne la vignette et que la vignette ouvre, et sa feuille posée en largeur.
    */
   tirage?: { fichier: string; paysage?: true };
@@ -99,11 +102,10 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
       {
         cle: "lettre-aux-familles",
         titre: "Lettre aux familles",
-        phrase:
-          "Au début, la lettre qui présente le projet, avec le coupon d’autorisation en bas ; à la fin, le bon de précommande du livre.",
-        format: "Lettre A4 ; bon A5, deux par feuille ; coupon seul, trois par feuille",
+        phrase: "Au début du projet, la lettre qui le présente aux familles, avec le coupon d’autorisation en bas.",
+        format: "A4, une page ; coupon seul, trois par feuille",
         versions: [
-          { libelle: "Lettre et bon de précommande", fichier: pdf("lettre-aux-familles") },
+          { libelle: "Lettre et autorisation", fichier: pdf("lettre-aux-familles") },
           { libelle: "Coupon seul", fichier: pdf("lettre-aux-familles-coupon") },
         ],
       },
@@ -224,7 +226,7 @@ export const TEMPS_DU_PROJET: readonly TempsDuProjet[] = [
         cle: "bon-de-precommande",
         titre: "Bon de précommande",
         phrase: "Quand le livre est prêt et son prix connu : les familles le commandent si elles le souhaitent, l’achat restant facultatif.",
-        format: "A5, deux par feuille A4 posée en largeur ; la seconde feuille de la lettre aux familles",
+        format: "A5, deux par feuille A4 posée en largeur",
         tirage: { fichier: "lettre-aux-familles-bon", paysage: true },
         versions: [{ libelle: "Ouvrir le PDF", fichier: pdf("lettre-aux-familles-bon") }],
       },
@@ -261,7 +263,6 @@ export function donneesDesRessources(site: string) {
       inLanguage: "fr",
       isAccessibleForFree: true,
       license: LICENCE_DES_RESSOURCES.adresse,
-      educationalLevel: ["CE1", "CE2", "CM1", "CM2"],
     })),
   };
 }
