@@ -1,0 +1,73 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "Maintenant que la relecture est terminée, vérifions que tous les chemins de votre histoire fonctionnent.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 1,
+      "texte": "Pour commencer, rendez-vous dans « Livre », puis dans « Vérifier les chemins ». <break time=\"1.0s\" /> L’application analyse automatiquement le départ, les fins et tous les choix de votre histoire.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 4.2,
+      "texte": "Un choix ne mène nulle part ? <break time=\"0.8s\" /> Il suffit d’ouvrir la scène concernée et de le relier à la bonne suite.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 2.4,
+      "texte": "Et si une scène n’est reliée à aucun chemin ? <break time=\"0.8s\" /> C’est peut-être un oubli, ou bien vous l’avez voulu ainsi : cliquez alors sur « C’est voulu ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 1.4,
+      "texte": "Vous pouvez ensuite tester votre histoire en suivant les différents choix, comme un véritable lecteur. <break time=\"2.4s\" /> Une fois les vérifications terminées, cliquez sur « J’ai vérifié les chemins ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Et voilà, tous vos chemins sont vérifiés ! Pour découvrir comment mettre votre livre en page, rendez-vous dans le dixième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    }
+  ]
+}
