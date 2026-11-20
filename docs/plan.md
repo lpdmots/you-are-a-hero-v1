@@ -5932,6 +5932,18 @@ préciser ») ; la description pour les moteurs garde « Gratuit. », son choix.
 bouton « Commencer par le déroulé du projet » est retiré à sa demande (« inutile
 puisque c'est le premier doc proposé par la suite ») : ne pas le reproposer.
 
+**En ligne le 20 novembre 2026, à sa demande** (« tu peux mettre en ligne »), sans
+migration : code poussé jusqu'à `ed8e0bb`, avec quatre commits d'autres
+conversations (tutos 3 et 4, documents de `ressources/`, relance du héros sans
+pronom) ; dates de mise à jour du guide et de la page au 20 novembre 2026 (plan du
+site, données de page). Constaté en ligne : la page, ses PDF et vignettes, le
+renvoi (308) de l'ancien modèle vers la lettre, le plan du site (`/ressources` et
+le guide datés du 20, plus de modèle d'autorisation), `robots.txt` (`/ressources/`
+ouvert aux robots des IA), `llms.txt`, l'adresse canonique et les données de page.
+Le lint signale deux erreurs dans `Livre.tsx`, déjà en ligne, d'une autre
+conversation. À sa charge : demander l'indexation de `/ressources` et du guide dans
+Search Console, et soumettre `/ressources` dans Bing Webmaster Tools.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un
