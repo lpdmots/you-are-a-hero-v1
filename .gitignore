@@ -13,3 +13,9 @@ video/*/son/bande-son.mp3
 video/**/*.rgba
 video/essais/**/*.mp4
 video/essais/**/*.png
+# studio HyperFrames : vignettes et formes d'onde, refaites à l'ouverture
+video/**/.thumbnails/
+video/**/.waveform-cache/
+# prises écoutées puis écartées ; celles que texte.json retient ("prise": n) restent suivies,
+# preparer.mjs les lit : les ajouter par git add -f
+video/**/voix/*/prises/
