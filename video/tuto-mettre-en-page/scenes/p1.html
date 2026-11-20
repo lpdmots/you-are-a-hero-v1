@@ -1,0 +1,29 @@
+        <link rel="stylesheet" href="tuto.css" />
+        <script src="captures/boites.js"></script>
+        <script src="tuto.js"></script>
+        <style>
+          #s-p1 .entete { top: 350px; flex-direction: column; align-items: flex-start; gap: 18px; }
+          #s-p1 .entete .titre { font-size: 92px; line-height: 1.02; max-width: 780px; }
+          #s-p1 .sur { position: absolute; left: 240px; top: 296px; font-size: 30px; font-weight: 700; color: var(--graphite-3); letter-spacing: 0.02em; }
+          #s-p1 .sous { position: absolute; left: 240px; top: 640px; display: flex; gap: 22px; align-items: center; font-size: 34px; color: var(--graphite-2); }
+          #s-p1 .sous i { width: 10px; height: 10px; border-radius: 9px; background: var(--canard); opacity: 0.55; transform: translateY(5px); }
+          /* deux morceaux entiers de vrais écrans, sans rien de coupé : « Le livre en petit » des réglages, la page de titre de l'aperçu */
+          #s-p1 .morceau-app { position: absolute; overflow: hidden; border-radius: 18px; background: #f1f1ee; box-shadow: 0 30px 60px -18px rgba(60,45,20,0.35), 0 0 0 10px #fff; }
+          #s-p1 .morceau-app img { position: absolute; max-width: none; display: block; }
+          #s-p1 .carte-fiche { left: 990px; top: 250px; width: 360px; height: 357px; transform: rotate(-3deg); }
+          #s-p1 .carte-page { left: 1410px; top: 150px; width: 380px; height: 538px; transform: rotate(2deg); }
+          #s-p1 .dragon { position: absolute; left: 860px; top: 700px; width: 330px; height: auto; transform-origin: 50% 100%; filter: drop-shadow(0 16px 18px rgba(40,60,60,0.25)); }
+        </style>
+        <div class="revele" id="p1-revele">
+          <div class="fond"></div>
+          <div class="camera" id="p1-camera">
+            <div class="morceau-app carte-fiche" id="p1-fiche"><img alt="" /></div>
+            <div class="morceau-app carte-page" id="p1-page"><img alt="" /></div>
+            <img class="dragon" id="p1-dragon" src="assets/dragon-regarde.webp" alt="" />
+          </div>
+          <div class="sur" id="p1-sur">Tuto · Livre</div>
+          <div class="entete" id="p1-entete">
+            <div class="titre" id="p1-titre">Mettre en page</div>
+          </div>
+          <div class="sous" id="p1-sous"><span>le texte</span><i></i><span>les premières pages</span><i></i><span>la double page</span></div>
+        </div>

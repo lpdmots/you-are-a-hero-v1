@@ -1,0 +1,71 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "La relecture est terminée et les chemins sont vérifiés ? Il est temps de passer à la mise en page de votre livre !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 0.8,
+      "texte": "Pour commencer, rendez-vous dans « Livre », puis dans « Mettre en page ». <break time=\"1.0s\" /> Vous y trouverez deux volets : « Réglages du livre » et « Aperçu ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 1.2,
+      "texte": "Dans les réglages, choisissez la police, la taille du texte et son alignement. <break time=\"1.2s\" /> Juste à côté, un aperçu miniature du livre vous permet de voir le résultat.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 1.0,
+      "texte": "Plus bas, vous pouvez personnaliser les premières et les dernières pages : la page de titre, celle des auteurs, avec les prénoms de vos élèves, et la page de fin.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 2.6,
+      "texte": "Passez ensuite dans « Aperçu » pour feuilleter votre livre en double page, exactement comme s’il était déjà imprimé !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6,
+      "texte": "Le résultat vous plaît ? <break time=\"0.8s\" /> Cliquez sur « La mise en page me convient ». <break time=\"1.2s\" /> Et pour découvrir comment imprimer et partager votre livre, rendez-vous dans le onzième tuto !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    }
+  ]
+}
