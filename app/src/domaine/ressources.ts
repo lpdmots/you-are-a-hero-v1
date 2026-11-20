@@ -9,7 +9,7 @@
 export const ADRESSE_DES_RESSOURCES = "/ressources";
 
 /** La date de mise à jour de la page, sans date par document (F14, « Précisions ») */
-export const DATE_DES_RESSOURCES = "2026-11-19";
+export const DATE_DES_RESSOURCES = "2026-11-20";
 
 /**
  * Titre d'onglet, grand titre et description (F14, « Titre et niveaux ») : le grand titre dit qu'on est sur les

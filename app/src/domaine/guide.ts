@@ -14,7 +14,7 @@ export { ADRESSE_DU_GUIDE };
 export const DATE_DE_PUBLICATION_DU_GUIDE = "2026-10-30";
 
 /** La date de mise à jour affichée sous le titre, donnée aux moteurs et au plan du site ; à changer à chaque retouche publiée */
-export const DATE_DU_GUIDE = "2026-10-30";
+export const DATE_DU_GUIDE = "2026-11-20";
 
 export const AUTEUR_DU_GUIDE = { nom: "Nicolas Coussot", metier: "Professeur des écoles" };
 
