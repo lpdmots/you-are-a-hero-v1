@@ -183,6 +183,12 @@ ramené ses processus de 6 à 4 (images lentes à capturer). Rendu de nouveau av
 (`WORKERS=2`) : plus aucune image isolée, vérifié sur toute la vidéo (différence de chaque image
 avec ses voisines, en niveaux de gris, l'écran entier puis les bandes du haut et du bas).
 
+**Rendu de nouveau le 21 novembre 2026** (« une bande en bas », vue par le porteur sur le tuto 10) :
+ici, ce n'était pas un défaut du rendu, mais la caméra qui visait assez bas pour montrer le bord de
+la feuille et la table dessous (vers 9 à 15 s et 37 à 46 s, le studio aussi). `viser` de `tuto.js`
+ramène désormais le cadrage sur la feuille, et les grossissements de 1,3 passent à 1,34. Rendu à un
+seul processus, vérifié par `outils/verifier-rendu.py` : aucune image isolée, plus de table en bas.
+
 ## Le studio
 
 `preview_start` « video-studio-tuto-relire-livre » (`.claude/launch.json`),

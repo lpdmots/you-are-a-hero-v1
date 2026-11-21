@@ -23,7 +23,7 @@ window.SCENES.p2 = (tl, t0) => {
   U.montrer(tl, id, "livre", tLivre + 0.15, 0.3);
 
   // l'étape « Mettre en page »
-  U.viser(tl, id, { x: 300, y: 40, l: 1100, h: 600 }, 1.3, tLivre + 0.2, 0.7);
+  U.viser(tl, id, { x: 300, y: 40, l: 1100, h: 600 }, 1.34, tLivre + 0.2, 0.7);
   const etape = U.boite("livre", "enPage");
   const pEtape = U.point(etape, 0.5);
   U.aller(tl, id, pEtape, tLivre + 0.3, 0.6, true);

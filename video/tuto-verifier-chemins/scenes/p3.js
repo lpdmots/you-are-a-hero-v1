@@ -34,7 +34,7 @@ window.SCENES.p3 = (tl, t0) => {
   U.cliquer(tl, id, pOuvrir, tOuvrir);
   U.cacherCurseur(tl, id, tOuvrir + 0.3);
   U.montrer(tl, id, "a-cote", tOuvrir + 0.2, 0.25);
-  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.3, tOuvrir + 0.45, 0.8);
+  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.34, tOuvrir + 0.45, 0.8);
   const panneau = U.boite("a-cote", "panneauChoix");
   U.cadre(tl, id, panneau, tOuvrir + 0.9, 1.1, 4);
 

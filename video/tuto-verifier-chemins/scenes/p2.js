@@ -24,7 +24,7 @@ window.SCENES.p2 = (tl, t0) => {
   U.montrer(tl, id, "livre", tLivre + 0.15, 0.3);
 
   // l'étape « Vérifier les chemins »
-  U.viser(tl, id, { x: 0, y: 40, l: 1100, h: 600 }, 1.3, tLivre + 0.2, 0.7);
+  U.viser(tl, id, { x: 0, y: 40, l: 1100, h: 600 }, 1.34, tLivre + 0.2, 0.7);
   const verifier = U.boite("livre", "verifier");
   const pVerifier = U.point(verifier, 0.5);
   U.aller(tl, id, pVerifier, tLivre + 0.3, 0.6, true);

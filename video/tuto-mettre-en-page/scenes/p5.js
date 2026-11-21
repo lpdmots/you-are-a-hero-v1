@@ -23,7 +23,7 @@ window.SCENES.p5 = (tl, t0) => {
   U.montrer(tl, id, "apercu", tApercu + 0.15, 0.3);
   U.cacherCurseur(tl, id, tApercu + 0.35);
   // la caméra recule juste assez pour que la double page se lise
-  U.viser(tl, id, { x: 250, y: 40, l: 1170, h: 770 }, 1.3, tApercu + 0.3, 0.9);
+  U.viser(tl, id, { x: 250, y: 40, l: 1170, h: 770 }, 1.34, tApercu + 0.3, 0.9);
 
   // on feuillette : une double page après l'autre
   const f = U.fichier("apercu-page").boites;

@@ -12,7 +12,7 @@ window.SCENES.p4 = (tl, t0) => {
   U.reprendre(tl, id, "p3", t0);
 
   // « Fermer » : la scène se referme, la fiche revient
-  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.3, T(0.0), 0.7);
+  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.34, T(0.0), 0.7);
   const fermer = U.boite("relie-apercu", "fermer");
   const pFermer = U.point(fermer, 0.5);
   U.aller(tl, id, pFermer, T(0.2), 0.6);
@@ -37,7 +37,7 @@ window.SCENES.p4 = (tl, t0) => {
   U.montrer(tl, id, "voulu-message", tVoulu + 0.15, 0.2);
   U.cacherCurseur(tl, id, tVoulu + 0.35);
   // le message, en bas de l'écran : la caméra recule pour le montrer
-  U.viser(tl, id, { x: 256, y: 12, l: 620, h: 790 }, 1.25, tVoulu + 0.2, 0.7);
+  U.viser(tl, id, { x: 256, y: 12, l: 620, h: 790 }, 1.34, tVoulu + 0.2, 0.7);
   U.cadre(tl, id, U.boite("voulu-message", "message"), tVoulu + 0.8, 1.1, 5);
   // le message s'efface : « Tout est confirmé. »
   U.montrer(tl, id, "voulu", tVoulu + 2.0, 0.4);

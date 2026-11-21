@@ -10,7 +10,7 @@ window.SCENES.p5 = (tl, t0) => {
   U.reprendre(tl, id, "p4", t0);
 
   // « Fermer » : la scène se referme, la fiche revient
-  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.3, T(0.0), 0.8);
+  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.34, T(0.0), 0.8);
   const fermer = U.boite("apercu-corrige", "fermer");
   const pFermer = U.point(fermer, 0.5);
   U.aller(tl, id, pFermer, T(0.3), 0.6);

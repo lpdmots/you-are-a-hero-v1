@@ -53,9 +53,15 @@ window.TUTO = (() => {
   const noter = (s, etat, fin) => {
     if (!derniere[s] || fin >= derniere[s].fin) derniere[s] = { ...etat, fin };
   };
+  // Le point visé est ramené pour que le cadrage reste sur la feuille : un bord de la table ne
+  // paraît jamais quand la caméra s'approche (une bande en bas de l'écran, retour du porteur, tuto 10).
+  // Sous 1,34 de grossissement, la feuille ne remplit pas l'écran dans ce sens : elle y reste centrée.
+  const dedans = (c, demi, long) => (2 * demi >= long ? long / 2 : Math.min(Math.max(c, demi), long - demi));
   const viser = (tl, s, b, e, t, d = 1.1, cx = 960, cy = 540) => {
-    const x = cx - e * (L + b.x + b.l / 2);
-    const y = cy - e * (H + b.y + b.h / 2);
+    const fx = dedans(b.x + b.l / 2 + (960 - cx) / e, 960 / e, W) - (960 - cx) / e;
+    const fy = dedans(b.y + b.h / 2 + (540 - cy) / e, 540 / e, HT) - (540 - cy) / e;
+    const x = cx - e * (L + fx);
+    const y = cy - e * (H + fy);
     tl.to(`#${s}-camera`, { x, y, scale: e, duration: d, ease: "power2.inOut" }, t);
     noter(s, { x, y, scale: e }, t + d);
   };

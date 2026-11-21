@@ -44,7 +44,7 @@ window.SCENES.p4 = (tl, t0) => {
   U.cacherCurseur(tl, id, tPassage + 0.3);
   // la scène s'ouvre à côté de l'aperçu
   U.montrer(tl, id, "a-cote", tPassage + 0.2, 0.25);
-  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.3, tPassage + 0.45, 0.9);
+  U.viser(tl, id, { x: 250, y: 0, l: 1170, h: 790 }, 1.34, tPassage + 0.45, 0.9);
   const aCote = U.boite("a-cote", "aCote");
   U.cadre(tl, id, { x: aCote.x, y: aCote.y, l: aCote.l, h: 790 - aCote.y }, Math.max(m("cote") - 0.2, tPassage + 1.0), 1.2, 4);
   U.cadre(tl, id, U.boite("a-cote", "choisie"), Math.max(m("cote") - 0.2, tPassage + 1.0), 1.2, 4);

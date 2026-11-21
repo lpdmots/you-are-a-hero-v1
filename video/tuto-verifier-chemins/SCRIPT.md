@@ -179,6 +179,13 @@ mots-repères). Aucune image isolée (chaque image comparée à ses voisines, l'
 les bandes du haut et du bas) ; quelques images comparées au studio : les mêmes. Le fichier
 pleine qualité est à la corbeille.
 
+**Rendu de nouveau le 21 novembre 2026** : le rendu à deux processus (`WORKERS=2`) coupait le bas de
+la feuille grossie, vers 26 à 35 s (à 30 s, « Décider plus tard » manquait sous la liste, que le
+studio montrait) ; et la caméra laissait voir le bord de la feuille vers 49 à 52 s. `viser` de
+`tuto.js` ramène désormais le cadrage sur la feuille (grossissements de 1,25 et 1,3 passés à 1,34) ;
+rendu à un seul processus, vérifié par `outils/verifier-rendu.py` : aucune image isolée, plus de
+table en bas. Le fichier pleine qualité est à la corbeille.
+
 ## Le studio
 
 `preview_start` « video-studio-tuto-verifier-chemins » (`.claude/launch.json`),

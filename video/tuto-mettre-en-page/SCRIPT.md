@@ -161,14 +161,20 @@ ralenti depuis elle. Bruitages des tutos. Mixage par `outils/mixer.mjs`.
 
 ## Le rendu
 
-`STUDIO_PORT=4855 WORKERS=2 VIDEO=tuto-mettre-en-page AFFICHE=3.6 outils/rendre.sh tuto-mettre-en-page`
-(sans GPU), 20 novembre 2026, sur la demande du porteur (« c'est bon, tu peux faire le rendu ») :
-`rendus/tuto-mettre-en-page-web.mp4` (73,5 s, 15,1 Mo, −17,0 LUFS), `tuto-mettre-en-page-fr.vtt`
-et l'affiche `tuto-mettre-en-page.webp` à 3,6 s (le titre écrit, les deux morceaux posés, avant
-les mots-repères). Aucune image isolée (chaque image comparée à ses voisines, l'écran entier puis
-les bandes du haut et du bas) ; quelques images comparées au studio : les mêmes, polices
-comprises (l'avertissement du rendu sur `var(--f-recit)` est sans effet : `polices.css` les
-charge). Le fichier pleine qualité est à la corbeille.
+`STUDIO_PORT=4855 WORKERS=1 VIDEO=tuto-mettre-en-page AFFICHE=3.6 outils/rendre.sh tuto-mettre-en-page`
+(sans GPU, un seul processus), 20 novembre 2026 : `rendus/tuto-mettre-en-page-web.mp4` (73,5 s,
+15,8 Mo), `tuto-mettre-en-page-fr.vtt` et l'affiche `tuto-mettre-en-page.webp` à 3,6 s (le titre
+écrit, les deux morceaux posés, avant les mots-repères).
+
+**Premier rendu remplacé** (retour du porteur : « à 18 s une bande en bas apparaît le long de
+l'écran ») : rendu avec deux processus (`WORKERS=2`), le premier coupait le bas de la feuille
+grossie, de 19 à 37 s, sur les 90 derniers pixels de l'écran (la table à la place) ; le studio, un
+rendu court et un rendu entier à un seul processus ne le font pas. Rendu de nouveau avec un seul
+processus, devenu le défaut de `rendre.sh`. Corrigé en même temps : la caméra laissait voir un bord
+de la table quand elle s'approchait près d'un bord de l'écran (`viser` ramène désormais le cadrage
+sur la feuille ; 1,34 au lieu de 1,3 aux passages 2 et 5). Vérifié sur toute la vidéo : plus de
+bande, plus de bord de table quand la caméra est proche (deux images de transition seulement), aucune
+image isolée. Les fichiers pleine qualité sont à la corbeille.
 
 ## Le studio
 
