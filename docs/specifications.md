@@ -13080,8 +13080,8 @@ les révisions qui suivent :
     3 Préparer son histoire, 4 Parties et chapitres, 5 Construire les
     chemins (récit à choix), 6 Faire écrire la classe, 7 Relire et valider,
     8 Relire le livre, 9 Vérifier les chemins (récit à choix), 10 Mettre en
-    page, 11 Imprimer et partager. Un tuto ne paraît qu'une fois son rendu
-    validé par le porteur.
+    page, 11 Imprimer et partager, les onze posés le 21 novembre 2026. Un
+    tuto ne paraît qu'une fois son rendu validé par le porteur.
   - **La page « Aide », refaite en entier** à sa demande (« n'hésite pas à
     réorganiser complètement cette page ») : les tutos d'abord, rangés en
     quatre temps (Commencer, Préparer l'histoire, Écrire et relire, Faire le

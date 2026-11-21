@@ -58,7 +58,7 @@ export const TUTOS: Tuto[] = [
   { cle: "relire-livre", titre: "Relire le livre", description: "Relire le livre tel qu’il sera imprimé et corriger une coquille dans la scène ouverte à côté de l’aperçu.", secondes: 72, temps: "livre", ecran: "livre-relire", pose: true },
   { cle: "verifier-chemins", titre: "Vérifier les chemins", description: "Dans un livre-jeu, vérifier le départ et les fins, relier un choix oublié et tester la lecture.", secondes: 73, temps: "livre", aChoix: true, ecran: "livre-chemins", pose: true },
   { cle: "mettre-en-page", titre: "Mettre en page", description: "Choisir la police et la taille, les pages de début et de fin, et feuilleter l’aperçu du livre.", secondes: 74, temps: "livre", ecran: "livre-page", pose: true },
-  { cle: "imprimer-partager", titre: "Imprimer et partager", description: "Créer le PDF définitif, partager le livre avec les élèves et les familles, et le proposer à la bibliothèque.", secondes: 70, temps: "livre", ecran: "livre-sortie", pose: false },
+  { cle: "imprimer-partager", titre: "Imprimer et partager", description: "Créer le PDF définitif, partager le livre avec les élèves et les familles, et le proposer à la bibliothèque.", secondes: 70, temps: "livre", ecran: "livre-sortie", pose: true },
 ];
 
 /** Les tutos posés, dans l'ordre de la série */
