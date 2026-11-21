@@ -43,6 +43,13 @@ const TRACES = {
       <circle cx="12" cy="16.2" r=".4" fill="currentColor" />
     </>
   ),
+  // Un tuto vidéo (F14-AC65) : le rond de lecture du bouton de la visite, en trait
+  tuto: (
+    <>
+      <circle cx="12" cy="12" r="8" />
+      <path d="M10.3 8.9v6.2l5-3.1z" fill="currentColor" />
+    </>
+  ),
   alerte: (
     <>
       <path d="M12 4.2L20.8 19.5H3.2L12 4.2z" />

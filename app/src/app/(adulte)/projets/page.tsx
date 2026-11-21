@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { Icone } from "@/composants/Icone";
+import { BoutonTuto } from "@/composants/Tutos";
+import { tutosDeLEcran } from "@/domaine/tutos";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { ImageRepere } from "@/composants/ImageRepere";
 import { libelleRecit } from "@/domaine/projets";
@@ -53,6 +55,10 @@ export default async function MesProjets({ searchParams }: { searchParams: Promi
               <Icone nom="plus" />
               Créer mon premier projet
             </Link>
+            {/* Le tuto de la création d'un projet, pour qui arrive (F14-AC66) */}
+            <div>
+              <BoutonTuto tuto={tutosDeLEcran("projets-vide")[0]} forme="lien" />
+            </div>
             <p className={styles.videPlus}>
               Vous écrivez avec une classe ? Inscrivez-la maintenant ou plus tard : votre histoire peut commencer sans elle.
             </p>

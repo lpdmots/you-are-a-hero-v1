@@ -3841,7 +3841,11 @@ V6, le premier envoi à l'imprimeur.
    une page par parcours, qui tient lieu des guides remis à plus tard pour le
    référencement. Puis un courriel d'accueil après l'inscription, qui y
    renvoie. Écarté le même jour : un projet d'exemple ouvert dans chaque
-   nouveau compte.
+   nouveau compte. *Fait en partie :* la série de onze tutos, un par étape
+   du projet, est posée le 21 novembre 2026 en local sur la page « Aide »,
+   refaite, et dans les écrans d'aide (F14, [« Tutos vidéo »](specifications.md#f14-tutos-poses),
+   F14-AC62 à AC67), sans page par parcours ; restent le courriel d'accueil
+   et les tutos hors série, à la demande.
 5. **Matériel pédagogique :** page « Ressources » (déroulé type d'un projet,
    affiches, grille de relecture, lettre aux familles…), rédigé par Claude
    d'après son expérience et corrigé par lui ; le lien aux programmes

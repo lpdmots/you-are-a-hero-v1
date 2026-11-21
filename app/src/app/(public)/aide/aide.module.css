@@ -1,0 +1,67 @@
+/* La page « Aide » refaite (21 novembre 2026) : les tutos sur toute la largeur, puis les questions et,
+   à côté, ce qui mène plus loin. Les questions gardent la forme de public.module.css. */
+.page {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding-top: 24px;
+}
+.titre {
+  font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+.page h2 {
+  font-size: var(--t-xl);
+  font-weight: 800;
+}
+.tutos {
+  margin-top: 34px;
+}
+.titreQuestions {
+  margin-top: 40px;
+}
+.bas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 36px;
+  align-items: start;
+  margin-top: 16px;
+}
+.bas .questions {
+  margin-top: 0;
+}
+.bas :global(details) p + p {
+  margin-top: 6px;
+}
+.cote {
+  display: grid;
+  gap: 16px;
+}
+.boite {
+  padding: 18px 20px;
+  border-radius: var(--r-l);
+  background: var(--feuille);
+  border: 1px solid var(--trait);
+}
+.boite h2 {
+  font-size: var(--t-l);
+}
+.boite p {
+  margin-top: 8px;
+  font-size: var(--t-s);
+  line-height: 1.5;
+  color: var(--graphite-2);
+}
+.contact {
+  box-shadow: inset 0 3px 0 var(--canard);
+}
+.contact a {
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .bas {
+    grid-template-columns: 1fr;
+  }
+}

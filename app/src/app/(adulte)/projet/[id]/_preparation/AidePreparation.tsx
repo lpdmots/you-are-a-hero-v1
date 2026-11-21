@@ -4,6 +4,7 @@ import { useTransition } from "react";
 import { useAidesIa } from "@/composants/AidesIa";
 import { EcranAide, type QuestionAide } from "@/composants/EcranAide";
 import { Icone } from "@/composants/Icone";
+import { tutosDeLEcran } from "@/domaine/tutos";
 import { reglerAide } from "../../../actions-compte";
 
 /**
@@ -93,6 +94,7 @@ export function AidePreparation({
   return (
     <EcranAide
       titre="Préparation"
+      tutos={tutosDeLEcran("preparation", { aChoix, deClasse })}
       dejaVue={dejaVue}
       masquee={masquee}
       onCommencer={() => {

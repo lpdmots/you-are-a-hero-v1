@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { EcranAide, type QuestionAide } from "@/composants/EcranAide";
+import { tutosDeLEcran } from "@/domaine/tutos";
 import { reglerAide } from "../../../actions-compte";
 
 /** L'aide de « Parties et chapitres », à sa première ouverture puis par « Aide » (F03.1). */
@@ -74,6 +75,7 @@ export function AidePlan({
   return (
     <EcranAide
       titre="Parties et chapitres"
+      tutos={tutosDeLEcran("plan", { aChoix, deClasse })}
       dejaVue={dejaVue}
       masquee={masquee}
       onCommencer={() => {

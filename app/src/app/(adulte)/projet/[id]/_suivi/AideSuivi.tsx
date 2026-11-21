@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import { EcranAide, type QuestionAide } from "@/composants/EcranAide";
 import { TamponScene } from "@/composants/TamponScene";
+import { tutosDeLEcran } from "@/domaine/tutos";
 import { reglerAide } from "../../../actions-compte";
 
 /** Ce que veut dire « Qui s'en occupe », dans l'aide comme dans la bulle de la colonne. */
@@ -96,6 +97,7 @@ export function AideSuivi({ deClasse, dejaVue, masquee, onCommencer }: { deClass
   return (
     <EcranAide
       titre="Suivi"
+      tutos={tutosDeLEcran("suivi", { aChoix: true, deClasse })}
       dejaVue={dejaVue}
       masquee={masquee}
       onCommencer={() => {

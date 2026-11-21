@@ -7,6 +7,8 @@ import { avantDePartir } from "@/composants/copie/sortie";
 import type { Plan } from "@/domaine/recit";
 import type { DonneesDeLaScene } from "@/serveur/scene";
 import { EcranAide } from "@/composants/EcranAide";
+import { BoutonTuto } from "@/composants/Tutos";
+import { tutosDeLEcran } from "@/domaine/tutos";
 import { DansLaTete } from "@/composants/DansLaTete";
 import { Icone } from "@/composants/Icone";
 import { useMessage } from "@/composants/Messages";
@@ -197,6 +199,11 @@ export function Livre({
                 <Icone nom="aide" />
                 Aide
               </button>
+            </DansLaTete>
+          ) : etape === "page" || etape === "sortie" ? (
+            // Une étape sans écran d'aide : son tuto, à la place de « Aide » (F14-AC66)
+            <DansLaTete>
+              <BoutonTuto tuto={tutosDeLEcran(etape === "page" ? "livre-page" : "livre-sortie")[0]} />
             </DansLaTete>
           ) : null}
         </nav>
@@ -541,6 +548,7 @@ function AideEtape({
       }}
       onMasquer={(m) => lancer(() => reglerAide(`livre-${etape}`, m))}
       questions={AIDES[etape].questions(aChoix)}
+      tutos={tutosDeLEcran(etape === "relire" ? "livre-relire" : "livre-chemins", { aChoix, deClasse: true })}
     />
   );
 }

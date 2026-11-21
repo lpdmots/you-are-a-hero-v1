@@ -2,6 +2,7 @@
 
 import { useTransition } from "react";
 import { EcranAide } from "@/composants/EcranAide";
+import { tutosDeLEcran } from "@/domaine/tutos";
 import { reglerAide } from "../actions-compte";
 
 /** L'aide de « Mes classes », rouverte par « Aide » depuis la liste comme depuis une classe. */
@@ -10,6 +11,7 @@ export function AideClasses({ dejaVue, masquee, onCommencer }: { dejaVue: boolea
   return (
     <EcranAide
       titre="Mes classes"
+      tutos={tutosDeLEcran("classes")}
       dejaVue={dejaVue}
       masquee={masquee}
       onCommencer={() => {

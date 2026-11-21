@@ -13070,10 +13070,50 @@ les révisions qui suivent :
   posé sur le site (`V1/video/tuto-acces-eleves/SCRIPT.md`,
   `V1/video/rendus/tuto-acces-eleves-web.mp4`), sur les vrais écrans de
   l'application, capturés par un script qui se rejoue quand un écran change
-  (pas d'écrans redessinés). Proposé, non décidé : vidéos servies par
-  le site, sans lecteur YouTube intégré (ses témoins demanderaient un
-  bandeau) ; une chaîne YouTube comme vitrine, Instagram plus tard, TikTok
-  écarté pour l'instant.
+  (pas d'écrans redessinés). Une chaîne YouTube comme vitrine, Instagram
+  plus tard, TikTok écarté pour l'instant : proposé, non décidé.
+  <a id="f14-tutos-poses"></a>**Posés sur le site, décidé par le porteur le
+  21 novembre 2026** (« oui on va poser la série »), après un entretien court
+  où il retient les trois recommandations :
+  - **La série**, onze tutos par étape du projet (skill `tutos-de-l-aide`,
+    « La série ») : 1 Donner l'accès aux élèves, 2 Créer un projet,
+    3 Préparer son histoire, 4 Parties et chapitres, 5 Construire les
+    chemins (récit à choix), 6 Faire écrire la classe, 7 Relire et valider,
+    8 Relire le livre, 9 Vérifier les chemins (récit à choix), 10 Mettre en
+    page, 11 Imprimer et partager. Un tuto ne paraît qu'une fois son rendu
+    validé par le porteur.
+  - **La page « Aide », refaite en entier** à sa demande (« n'hésite pas à
+    réorganiser complètement cette page ») : les tutos d'abord, rangés en
+    quatre temps (Commencer, Préparer l'histoire, Écrire et relire, Faire le
+    livre), chacun avec son affiche, son numéro, son titre et sa durée ;
+    puis les questions fréquentes et, à côté, le guide, les ressources, les
+    documents pour l'école et l'adresse de contact. Alternative écartée :
+    les onze à la suite, sans les temps.
+  - **Le lecteur du site** : la vidéo s'ouvre dans une fenêtre, ne part
+    qu'au clic, se ferme par « Fermer » ou un clic hors du cadre, qui la
+    mettent en pause ; sous la vidéo, son numéro et son titre et, sur la
+    page « Aide », « Tuto suivant ». Les sous-titres sont proposés par le
+    lecteur, pas affichés d'office, comme ceux de la visite (24 octobre
+    2026).
+  - **Les écrans de l'application** : un écran d'aide qui existe montre le
+    tuto de son étape en petite vignette sous son titre — « Mes classes » :
+    1 ; Préparation : 3 ; Parties et chapitres : 4, et 5 en récit à choix ;
+    Suivi : 6 et 7, en classe seulement ; Livre, « Relire » : 8 ;
+    « Vérifier les chemins » : 9. Sans écran d'aide, aucun n'est créé :
+    « Mes projets » vide porte « Voir le tuto » sous « Créer mon premier
+    projet » (2) ; « Mettre en page » (10) et « Imprimer et partager » (11)
+    ont un bouton « Tuto » à la place de « Aide », dans la ligne du titre.
+  - **L'hébergement** : les vidéos, leurs sous-titres et leurs affiches sont
+    servis par le site (`app/public/tutos/`, environ 155 Mo pour les onze),
+    sans lecteur YouTube, dont les témoins demanderaient un bandeau. Chaque
+    lecture compte dans la bande passante de Vercel (100 Go par mois dans
+    l'offre gratuite, environ 6 000 lectures complètes) ; le seau S3 prend
+    le relais si la mesure approche du plafond, ou si Vercel refusait un
+    déploiement trop lourd (son plafond documenté de 100 Mo ne vise que les
+    envois par sa commande, à constater à la mise en ligne). Chaque nouveau
+    rendu d'un tuto ajoute son poids à l'historique Git.
+  - **Les moteurs** : un `VideoObject` par tuto posé sur la page « Aide »,
+    et `llms.txt` qui les cite.
 - **Ce qu'une école peut demander sur les données.** Le porteur tient
   qu'aucune donnée sensible n'est en jeu ; ce qui est fourni sert à ce qu'une
   école accepte l'outil, non à couvrir un risque. Sont fournis :
@@ -13451,6 +13491,42 @@ découvre l'outil, et le porteur, administrateur.
   l'autorisation mène au coupon seul, trois par feuille, la page
   « Ressources » donnant aussi la lettre entière ; le modèle d'information des
   familles et le contrat de sous-traitance restent dans l'« Aide ».
+
+*Les tutos vidéo posés (21 novembre 2026,
+[règles plus haut](#f14-tutos-poses))*
+
+- **F14-AC62 — La série sur la page « Aide » :** étant donné un visiteur
+  sans compte qui ouvre `/aide`, alors il voit « Les tutos en vidéo » avant
+  les questions, en quatre temps dans l'ordre du projet ; chaque tuto posé a
+  son affiche, son numéro dans la série, son titre et sa durée
+  (« 1 min 22 ») ; « Construire les chemins » et « Vérifier les chemins »
+  portent « Récit à choix » ; en 390 px, deux par ligne, rien ne déborde.
+- **F14-AC63 — Le tuto se regarde sur le site :** étant donné M. Bernard
+  qui clique « Parties et chapitres », alors une fenêtre joue
+  `/tutos/tuto-parties.mp4`, servi par le site, sans lecteur ni témoin
+  d'un autre service ; les sous-titres en français se choisissent dans le
+  lecteur ; « Tuto suivant : Construire les chemins » lance le 5 ;
+  « Fermer » referme la fenêtre et met la vidéo en pause ; un test vérifie
+  que la vidéo, les sous-titres et l'affiche de chaque tuto posé existent.
+- **F14-AC64 — Les moteurs lisent les tutos :** étant donné la page
+  « Aide », alors elle porte un `VideoObject` par tuto posé (nom, phrase,
+  affiche, adresse de la vidéo, durée, date), et `llms.txt` dit que l'Aide
+  a un tuto vidéo pour chaque étape.
+- **F14-AC65 — L'écran d'aide montre le tuto de son étape :** étant donné
+  l'écran d'aide de « Parties et chapitres » d'un récit à choix, alors les
+  vignettes « Parties et chapitres » et « Construire les chemins » sont sous
+  son titre, et un clic ouvre la même fenêtre ; dans un récit classique,
+  seule la première ; l'écran d'aide du Suivi d'un projet personnel n'en
+  montre aucune ; la correspondance des autres écrans est celle des règles.
+- **F14-AC66 — Sans écran d'aide, un tuto quand même :** étant donné
+  « Mettre en page » ouvert, alors « Tuto » est à la place de « Aide » dans
+  la ligne du titre et ouvre le tuto 10 ; de même « Imprimer et partager »
+  et le tuto 11 ; étant donné M. Bernard sans projet, alors « Voir le tuto ·
+  1 min 20 » est sous « Créer mon premier projet ».
+- **F14-AC67 — Un tuto non validé ne paraît pas :** étant donné un tuto
+  dont le rendu attend l'avis du porteur, alors il n'est ni sur la page
+  « Aide », ni dans un écran de l'application, ni dans les données
+  structurées.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

@@ -1,20 +1,25 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { VignettesDeTuto } from "@/composants/Tutos";
+import type { Tuto } from "@/domaine/tutos";
 
 export type QuestionAide = { question: string; reponse: ReactNode };
 
 /**
  * Écran d'aide à l'ouverture d'une page de l'adulte, comme au Suivi et au Livre :
- * quelques questions repliées, « Commencer », « Ne plus afficher ».
+ * quelques questions repliées, « Commencer », « Ne plus afficher ». Le tuto vidéo de l'étape, s'il
+ * y en a un, en tête (F14-AC65).
  */
 export function EcranAide({
-  titre, rang, questions, dejaVue, masquee, onCommencer, onMasquer,
+  titre, rang, questions, tutos = [], dejaVue, masquee, onCommencer, onMasquer,
 }: {
   titre: string;
   /** Au-dessus du titre, pour une étape du Livre : « Étape 2 » */
   rang?: string;
   questions: QuestionAide[];
+  /** Les tutos de l'étape (`tutosDeLEcran`), en petites vignettes sous le titre */
+  tutos?: Tuto[];
   dejaVue: boolean;
   masquee: boolean;
   onCommencer: () => void;
@@ -30,6 +35,7 @@ export function EcranAide({
       <h2 id="aide-t" tabIndex={-1} ref={ref}>
         {titre}
       </h2>
+      <VignettesDeTuto tutos={tutos} />
       <div className="aide-etape__q">
         {questions.map((q, i) => (
           <details key={q.question} open={i === 0}>
