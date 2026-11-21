@@ -1,0 +1,47 @@
+- banner:
+  - link "Il était une classe, accueil du site":
+    - /url: /
+  - text: Le secret de la forêt bleue
+  - navigation "Outils de lecture":
+    - button "Comment lire"
+- main:
+  - article:
+    - heading "Le secret de la forêt bleue" [level=1]
+    - paragraph: La classe de CM2 des Tilleuls de Mme Laurent
+    - paragraph: 2026-2027
+    - button "Commencer la lecture"
+    - button "Comment lire ce livre"
+    - button "Aller à un passage"
+    - paragraph:
+      - link "Écrit avec Il était une classe":
+        - /url: /
+  - region "Les auteurs":
+    - paragraph: Ce livre a été écrit par
+    - list:
+      - listitem: Adam
+      - listitem: Anna
+      - listitem: Chloé
+      - listitem: Elio
+      - listitem: Emma
+      - listitem: Gabin
+      - listitem: Hugo
+      - listitem: Ilyes
+      - listitem: Inès
+      - listitem: Jade
+      - listitem: Léna
+      - listitem: Lina
+      - listitem: Louise
+      - listitem: Maëlys
+      - listitem: Manon
+      - listitem: Mathis
+      - listitem: Noah
+      - listitem: Nolan
+      - listitem: Rayan
+      - listitem: Rose
+      - listitem: Sacha
+      - listitem: Tom
+      - listitem: Yanis
+      - listitem: Zoé
+    - paragraph: avec Mme Laurent
+- status
+- alert

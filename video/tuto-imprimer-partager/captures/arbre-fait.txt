@@ -1,0 +1,106 @@
+- navigation "Espace adulte":
+  - link "Il était une classe":
+    - /url: /projets
+  - 'region "Projet en cours : Le secret de la forêt bleue"':
+    - link "Le secret de la forêt bleue":
+      - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre
+    - paragraph:
+      - link "CM2 des Tilleuls":
+        - /url: /classes/dca04b02-380c-41ce-9e77-eded444f177a
+    - navigation "Sections du projet":
+      - list:
+        - listitem:
+          - link "Préparation":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/preparation
+        - listitem:
+          - link "Parties et chapitres":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/plan
+        - listitem:
+          - link "Suivi":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/suivi
+        - listitem:
+          - link "Livre":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre
+    - list:
+      - listitem:
+        - link "Lire à l’essai":
+          - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/lecture?de=onglet&onglet=livre
+      - listitem:
+        - link "Réglages du projet":
+          - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/reglages
+  - list:
+    - listitem:
+      - link "Mes projets":
+        - /url: /projets
+    - listitem:
+      - link "Mes classes":
+        - /url: /classes
+- group: Mme Laurent
+- button "Replier la colonne" [expanded]: Replier
+- main:
+  - heading "Livre" [level=1]
+  - region "Livre":
+    - navigation "Étapes du livre":
+      - list:
+        - listitem:
+          - link "Relire — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=relire
+        - listitem:
+          - link "Vérifier les chemins — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=chemins
+        - listitem:
+          - link "Mettre en page — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=page
+        - listitem:
+          - link "Imprimer et partager — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=sortie
+    - tablist "Imprimer et partager":
+      - tab "Imprimer" [selected]
+      - tab "Partager"
+    - region "PDF définitif Qu’est-ce que le PDF définitif ?":
+      - heading "PDF définitif Qu’est-ce que le PDF définitif ?" [level=2]:
+        - text: PDF définitif
+        - button "Qu’est-ce que le PDF définitif ?"
+      - paragraph: Le livre est fait. PDF définitif du 20 novembre, 16 h 25.
+      - status
+      - heading "Et maintenant ?" [level=3]
+      - list:
+        - listitem:
+          - text: Préparez la couverture, ici ou chez votre imprimeur.
+          - button "Que fait l’imprimeur de la couverture ?"
+        - listitem: Envoyez-lui le PDF définitif et la face avant.
+    - region "PDF définitifs conservés":
+      - heading "PDF définitifs conservés" [level=2]
+      - list:
+        - listitem:
+          - text: PDF définitif du 20 novembre, 16 h 25 A5 · 21 pages · 3,5 Mo Correspond au livre actuel.
+          - link "Télécharger":
+            - /url: /livre/pdf/355720f7-1aa2-4246-90c1-65680cb5eb9b
+          - button "Supprimer le PDF définitif du 20 novembre, 23 h 25": Supprimer
+      - paragraph: 1 PDF · 3,5 Mo
+    - complementary "La couverture À quoi sert la couverture ?":
+      - heading "La couverture À quoi sert la couverture ?" [level=2]:
+        - text: La couverture
+        - button "À quoi sert la couverture ?"
+      - paragraph: Sans couverture, la bibliothèque montre la page de titre.
+      - button "Importer la mienne"
+      - paragraph: Ce que montre la couverture
+      - textbox "Ce que montre la couverture":
+        - /placeholder: Un lieu, un moment, un objet
+      - button "Dicter"
+      - button "Copier le prompt, pour un autre outil d’images" [disabled]
+      - text: "Dites où placer le texte : en haut, sur le ciel…"
+      - group "Écrire sur la couverture":
+        - text: Écrire sur la couverture
+        - checkbox "Le titre" [checked]
+        - text: Le titre
+        - textbox "Le titre, tel qu’il sera écrit": Le secret de la forêt bleue
+        - checkbox "Les auteurs La classe de CM2 des Tilleuls de Mme Laurent"
+        - text: Les auteurs La classe de CM2 des Tilleuls de Mme Laurent
+        - checkbox "L’année 2026-2027"
+        - text: L’année 2026-2027
+        - checkbox "Autre texte"
+        - text: Autre texte
+      - paragraph: Chez l’imprimeur, préparez aussi le texte du dos du livre, la quatrième de couverture.
+- status
+- alert

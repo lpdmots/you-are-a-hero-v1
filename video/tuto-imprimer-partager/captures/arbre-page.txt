@@ -1,0 +1,147 @@
+- navigation "Espace adulte":
+  - link "Il était une classe":
+    - /url: /projets
+  - 'region "Projet en cours : Le secret de la forêt bleue"':
+    - link "Le secret de la forêt bleue":
+      - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre
+    - paragraph:
+      - link "CM2 des Tilleuls":
+        - /url: /classes/dca04b02-380c-41ce-9e77-eded444f177a
+    - navigation "Sections du projet":
+      - list:
+        - listitem:
+          - link "Préparation":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/preparation
+        - listitem:
+          - link "Parties et chapitres":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/plan
+        - listitem:
+          - link "Suivi":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/suivi
+        - listitem:
+          - link "Livre":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre
+    - list:
+      - listitem:
+        - link "Lire à l’essai":
+          - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/lecture?de=onglet&onglet=livre
+      - listitem:
+        - link "Réglages du projet":
+          - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/reglages
+  - list:
+    - listitem:
+      - link "Mes projets":
+        - /url: /projets
+    - listitem:
+      - link "Mes classes":
+        - /url: /classes
+- group: Mme Laurent
+- button "Replier la colonne" [expanded]: Replier
+- main:
+  - heading "Livre" [level=1]
+  - region "Livre":
+    - navigation "Étapes du livre":
+      - list:
+        - listitem:
+          - link "Relire — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=relire
+        - listitem:
+          - link "Vérifier les chemins — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=chemins
+        - listitem:
+          - link "Mettre en page — terminée":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=page
+        - listitem:
+          - link "4 Imprimer et partager":
+            - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=sortie
+    - tablist "Mettre en page":
+      - tab "Réglages du livre" [selected]
+      - tab "Aperçu"
+      - paragraph:
+        - text: Mise en page terminée
+        - button "Reprendre"
+        - link "Imprimer et partager":
+          - /url: /projet/3a66ef30-8dd0-46e8-a5ca-808e4533a53b/livre?etape=sortie
+    - region "Texte et pages":
+      - heading "Texte et pages" [level=2]
+      - heading "Police" [level=3]
+      - radiogroup "Police":
+        - radio "Vollkorn par défaut Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours." [checked]
+        - text: Vollkorn par défaut Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.
+        - radio "Andika premiers lecteurs Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours."
+        - text: Andika premiers lecteurs Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.
+      - heading "Taille du texte" [level=3]
+      - group "Taille du texte":
+        - button "Petite"
+        - button "Moyenne" [pressed]
+        - button "Grande"
+      - heading "Alignement du récit" [level=3]
+      - radiogroup "Alignement du récit":
+        - radio "Justifié, avec césure par défaut Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours." [checked]
+        - text: Justifié, avec césure par défaut Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.
+        - radio "Aligné à gauche, sans césure Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours."
+        - text: Aligné à gauche, sans césure Plus il avançait, plus la brume s’épaississait autour de lui. La lanterne clignotait toujours.
+      - 'heading "Bas des pages du récit Bas des pages du récit : à quoi sert ce réglage ?" [level=3]':
+        - text: Bas des pages du récit
+        - 'button "Bas des pages du récit : à quoi sert ce réglage ?"'
+      - radiogroup "Bas des pages du récit":
+        - radio "Rien" [checked]
+        - text: Rien
+        - radio "Numéro de page"
+        - text: Numéro de page
+      - heading "Titres et nouvelles pages" [level=3]
+      - switch "Imprimer les titres de partie" [checked]
+      - text: Imprimer les titres de partie
+      - switch "Chaque partie commence sur une nouvelle page" [checked]
+      - text: Chaque partie commence sur une nouvelle page
+      - heading "Marges Pourquoi changer les marges ?" [level=3]:
+        - text: Marges
+        - button "Pourquoi changer les marges ?"
+      - paragraph:
+        - text: Haut 16 · Bas 20 · Extérieur 15 · Intérieur 20 mm
+        - button "Modifier"
+    - region "Ordre des passages Pourquoi mélanger des parties ensemble ?":
+      - heading "Ordre des passages Pourquoi mélanger des parties ensemble ?" [level=2]:
+        - text: Ordre des passages
+        - button "Pourquoi mélanger des parties ensemble ?"
+      - paragraph: "Les passages sont mélangés dans chaque partie : la suite d’un choix n’est pas à côté de lui."
+      - paragraph: Partie 1 · Le village des racines · n° 1 à 6
+      - switch "Mélanger les parties 1 et 2"
+      - text: Mélanger les parties 1 et 2
+      - paragraph: Partie 2 · La forêt de la nuit · n° 7 à 13
+      - switch "Mélanger les parties 2 et 3"
+      - text: Mélanger les parties 2 et 3
+      - paragraph: Partie 3 · Le cœur de la forêt · n° 14 à 17
+      - heading "Moins de blanc" [level=3]
+      - paragraph: Les passages de chaque partie sont rangés pour laisser moins de blanc au bas des pages.
+      - paragraph: Les numéros changent, les renvois suivent.
+      - paragraph:
+        - button "Réordonner les passages"
+        - button "Garder cet ordre"
+    - region "Pages de début et de fin":
+      - heading "Pages de début et de fin" [level=2]
+      - list:
+        - listitem:
+          - text: Page de titre Toujours présente
+          - button "Modifier"
+        - listitem:
+          - text: Page des auteurs 24 prénoms · au début
+          - switch "Page des auteurs dans le livre" [checked]
+          - button "Modifier"
+        - listitem:
+          - text: Comment lire ce livre Proposée par défaut
+          - switch "Comment lire ce livre dans le livre" [checked]
+          - button "Modifier"
+        - listitem:
+          - text: Page de fin Un texte court
+          - switch "Page de fin dans le livre" [checked]
+          - button "Modifier"
+    - complementary "Le livre en petit":
+      - figure "Début du récit · 21 pages en tout":
+        - img "Page 4"
+        - img "Page 5"
+        - status: Début du récit · 21 pages en tout
+      - button "Voir l’aperçu"
+      - status
+- status
+- alert

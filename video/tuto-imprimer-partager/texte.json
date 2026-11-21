@@ -1,0 +1,73 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.6,
+      "texte": "Votre mise en page est terminée ? Il ne reste plus qu’à imprimer et partager votre livre !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p2",
+      "avant": 0.6,
+      "apres": 1,
+      "texte": "Pour commencer, rendez-vous dans « Imprimer et partager », puis cliquez sur « Créer le PDF définitif ». <break time=\"1.4s\" /> En quelques secondes, votre livre est prêt à être envoyé à l’imprimeur !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 1,
+      "texte": "Passez ensuite dans « Partager ». <break time=\"1.0s\" /> D’un simple clic, vous pouvez permettre à vos élèves de lire leur livre depuis leur compte, en classe comme à la maison.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p4",
+      "avant": 0.6,
+      "apres": 1.2,
+      "texte": "Pour que les familles puissent aussi profiter du livre, cliquez sur « Créer le lien », puis transmettez-le simplement par le moyen de votre choix.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 0.6,
+      "apres": 2,
+      "texte": "Et pourquoi ne pas aller plus loin ? <break time=\"0.8s\" /> Vous pouvez aussi proposer votre livre à la bibliothèque du site, pour que d’autres classes puissent le découvrir à leur tour !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "prise": 4
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 6.5,
+      "texte": "Et voilà, votre livre est terminé, et prêt à être lu ! <break time=\"0.8s\" /> Bravo à vous et à tous vos élèves pour cette belle aventure !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    }
+  ]
+}
