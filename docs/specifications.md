@@ -13115,7 +13115,11 @@ les révisions qui suivent :
     envois par sa commande, à constater à la mise en ligne). Chaque nouveau
     rendu d'un tuto ajoute son poids à l'historique Git.
   - **Les moteurs** : un `VideoObject` par tuto posé sur la page « Aide »,
-    et `llms.txt` qui les cite.
+    et `llms.txt` qui les cite ; `/tutos/` ouvert aux robots des IA comme
+    la visite, l'« Aide » datée dans le plan du site, et les vidéos gardées
+    par le navigateur (sans « private, no-store »). Google ne montre une
+    vidéo dans ses résultats que sur une page dont elle est le sujet : une
+    page par tuto le permettrait, non décidé.
 - **Ce qu'une école peut demander sur les données.** Le porteur tient
   qu'aucune donnée sensible n'est en jeu ; ce qui est fourni sert à ce qu'une
   école accepte l'outil, non à couvrir un risque. Sont fournis :
@@ -13513,7 +13517,9 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC64 — Les moteurs lisent les tutos :** étant donné la page
   « Aide », alors elle porte un `VideoObject` par tuto posé (nom, phrase,
   affiche, adresse de la vidéo, durée, date), et `llms.txt` dit que l'Aide
-  a un tuto vidéo pour chaque étape.
+  a un tuto vidéo pour chaque étape ; `/tutos/` est ouvert aux robots des
+  IA, l'« Aide » datée dans le plan du site, ses vidéos gardées par le
+  navigateur.
 - **F14-AC65 — L'écran d'aide montre le tuto de son étape :** étant donné
   l'écran d'aide de « Parties et chapitres » d'un récit à choix, alors les
   vignettes « Parties et chapitres » et « Construire les chemins » sont sous

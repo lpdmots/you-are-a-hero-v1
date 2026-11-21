@@ -37,9 +37,10 @@ export const PAGES_PUBLIQUES: readonly string[] = [
 /**
  * Ce que les robots des IA lisent en plus des pages : `llms.txt`, les fichiers de l'application et les
  * images de l'accueil (les couvertures de ses livres comprises) et du guide, sans lesquels une page ne
- * s'affiche pas, et les documents à imprimer de la page « Ressources », PDF et vignettes (F14-AC59).
+ * s'affiche pas, les documents à imprimer de la page « Ressources », PDF et vignettes (F14-AC59), et les
+ * tutos vidéo de l'« Aide », leurs sous-titres et leurs affiches, comme la visite de l'accueil (F14-AC64).
  */
-export const RESSOURCES_PUBLIQUES: readonly string[] = ["/llms.txt", "/_next/", "/accueil/", "/images/accueil/", "/guide/", `${ADRESSE_DES_RESSOURCES}/`];
+export const RESSOURCES_PUBLIQUES: readonly string[] = ["/llms.txt", "/_next/", "/accueil/", "/images/accueil/", "/guide/", `${ADRESSE_DES_RESSOURCES}/`, "/tutos/"];
 
 /**
  * L'application, fermée à tous les robots : des pages de compte ou d'élève, qui ne mènent à rien sans

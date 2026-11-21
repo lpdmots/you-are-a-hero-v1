@@ -81,9 +81,10 @@ const nextConfig: NextConfig = {
         // les gardent. Les fichiers de l'application, les illustrations et les images de l'accueil,
         // eux, se gardent ; les images de repérage disent elles-mêmes qu'elles ne se gardent que
         // chez la personne. Les pages publiques aussi, les mêmes pour tous : l'adulte connecté et le
-        // poste d'une classe sont renvoyés avant l'accueil, par le proxy (F14-AC47).
+        // poste d'une classe sont renvoyés avant l'accueil, par le proxy (F14-AC47). Les tutos de
+        // l'« Aide » se gardent comme la visite : une vidéo revue ne se télécharge pas deux fois (F14-AC64).
         source:
-          "/((?!_next/static|_next/image|illustrations/|images/|accueil/|(?:vitrine|aide|confidentialite|conditions|mentions-legales|modeles/[^/]+|llms\\.txt)?$).*)",
+          "/((?!_next/static|_next/image|illustrations/|images/|accueil/|tutos/|(?:vitrine|aide|confidentialite|conditions|mentions-legales|modeles/[^/]+|llms\\.txt)?$).*)",
         headers: [{ key: "Cache-Control", value: "private, no-store" }],
       },
     ];

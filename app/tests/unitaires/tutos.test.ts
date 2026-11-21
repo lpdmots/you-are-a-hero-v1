@@ -2,8 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { donneesDesTutos, llmsTxt } from "@/domaine/presentation";
-import { afficheDe, dureeIso, dureeLisible, numeroDe, sousTitresDe, TEMPS_DES_TUTOS, TUTOS, TUTOS_POSES, tutoSuivant, tutosDeLEcran, videoDe } from "@/domaine/tutos";
+import { afficheDe, dureeIso, dureeLisible, numeroDe, sousTitresDe, TEMPS_DES_TUTOS, TUTOS, TUTOS_POSES, TUTOS_POSES_LE, tutoSuivant, tutosDeLEcran, videoDe } from "@/domaine/tutos";
 import type { Offre } from "@/domaine/offre";
+import robots from "@/app/robots";
+import sitemap from "@/app/sitemap";
 
 const publics = path.join(process.cwd(), "public");
 const existe = (adresse: string) => fs.existsSync(path.join(publics, adresse));
@@ -55,6 +57,21 @@ describe("Tutos vidéo de l'« Aide » (F14)", () => {
     expect(dureeIso(TUTOS[3])).toBe("PT1M26S");
     for (const v of graphe) expect(String(v.description).length).toBeGreaterThan(40);
     expect(llmsTxt({ livrePayant: false, paiementOuvert: false, etoilesOffertes: 30 } as Offre, site)).toContain("un tuto vidéo");
+  });
+
+  it("F14-AC64 — les vidéos ouvertes aux moteurs et aux robots des IA, gardées par le navigateur, l'« Aide » datée", async () => {
+    const { rules } = robots();
+    const [tous, ia] = Array.isArray(rules) ? rules : [rules];
+    expect(tous.disallow).not.toEqual(expect.arrayContaining(["/tutos/"]));
+    expect(ia.allow).toContain("/tutos/");
+    expect(sitemap().find((u) => u.url.endsWith("/aide"))?.lastModified).toBe(TUTOS_POSES_LE);
+    // Pas de « private, no-store » sur les tutos, comme sur la visite de l'accueil
+    const { default: config } = await import("../../next.config");
+    const privees = (await config.headers!()).find((h) => h.headers.some((x) => x.value === "private, no-store"))!;
+    const regle = new RegExp(`^${privees.source.replace(/^\//, "\\/")}$`);
+    expect(regle.test("/tutos/tuto-parties.mp4")).toBe(false);
+    expect(regle.test("/accueil/visite-fr.mp4")).toBe(false);
+    expect(regle.test("/projets")).toBe(true);
   });
 
   it("F14-AC65 — chaque écran d'aide montre le tuto de son étape, selon le projet", () => {
