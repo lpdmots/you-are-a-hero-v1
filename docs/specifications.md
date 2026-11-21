@@ -13080,7 +13080,9 @@ les révisions qui suivent :
     3 Préparer son histoire, 4 Parties et chapitres, 5 Construire les
     chemins (récit à choix), 6 Faire écrire la classe, 7 Relire et valider,
     8 Relire le livre, 9 Vérifier les chemins (récit à choix), 10 Mettre en
-    page, 11 Imprimer et partager, les onze posés le 21 novembre 2026. Un
+    page, 11 Imprimer et partager, les onze posés et mis en ligne le
+    21 novembre 2026 à sa demande (code jusqu'à `09e9dda`, sans migration,
+    déploiement de Vercel accepté avec les vidéos). Un
     tuto ne paraît qu'une fois son rendu validé par le porteur.
   - **La page « Aide », refaite en entier** à sa demande (« n'hésite pas à
     réorganiser complètement cette page ») : les tutos d'abord, rangés en
