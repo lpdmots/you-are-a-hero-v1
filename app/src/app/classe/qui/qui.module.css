@@ -65,7 +65,9 @@
   line-height: 1.7;
 }
 .personne {
-  color: var(--graphite-2);
+  grid-column: 1 / -1;
+  font-size: var(--t-l);
+  font-weight: 600;
 }
 .code {
   position: sticky;
@@ -112,12 +114,16 @@
   /* Le code ne se lit pas par-dessus l'épaule, sans que le navigateur propose de le retenir */
   -webkit-text-security: disc;
 }
+.cases input:disabled {
+  opacity: 0.45;
+}
 .cases input[aria-invalid="true"] {
   border-color: #c9482e;
   background: #fdecea;
 }
+/* La place du code est gardée à la hauteur du code : rien ne bouge quand on clique son prénom */
 .codeVide {
-  min-height: 236px;
+  min-height: 296px;
   align-content: center;
   background: transparent;
   box-shadow: inset 0 0 0 1.5px var(--trait-fort);
@@ -150,8 +156,8 @@
 .bulle {
   position: absolute;
   z-index: 6;
-  right: 0;
-  top: calc(100% + 8px);
+  top: 0;
+  left: 0;
   width: min(330px, calc(100vw - 32px));
   padding: 14px 16px;
   border-radius: 12px;
@@ -183,8 +189,5 @@
   }
   .porteManteaux {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .codeVide {
-    display: none;
   }
 }

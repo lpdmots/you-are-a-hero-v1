@@ -11,7 +11,7 @@ import { ELEVES } from "../../scripts/passeurs-de-brume";
  * Un essai par page (`-g copie`, `-g travail`…). Aucun bouton ✦ n'est cliqué. Ce n'est pas un
  * test : rien n'y est vérifié.
  */
-const dossier = "test-results/captures/eleve";
+let dossier = "test-results/captures/eleve";
 let n = 0;
 const capturer = async (page: Page, nom: string, toute = false) => {
   n += 1;
@@ -231,4 +231,98 @@ test("copie : écrire, consigne et liste, remettre, remarque, camarade, validé,
   await scene(sentier);
   await capturer(p, "390-remis");
   await bilal.contexte.close();
+});
+
+test("classe : ouvrir la classe, refus, qui utilise cet ordinateur, code, quitter, classe vide, hors horaires, 390 px", async ({ page, browser }) => {
+  test.setTimeout(600_000);
+  n = 0;
+  dossier = "test-results/captures/eleve/classe";
+  const c = await laClasse(page);
+  const vide = await creerClasse(page, "CE2");
+
+  const { contexte, page: p } = await autrePoste(browser);
+  const remplir = async (identifiant: string, motDePasse: string) => {
+    await p.getByLabel("Identifiant de la classe").fill(identifiant);
+    await p.getByLabel("Mot de passe de la classe").fill(motDePasse);
+  };
+
+  // Ouvrir la classe sur cet ordinateur
+  await aller(p, "/classe");
+  await capturer(p, "classe");
+  await remplir(c.classe.identifiant, c.classe.motDePasse);
+  await capturer(p, "classe-rempli");
+  await remplir(c.classe.identifiant, "mauvais");
+  await p.getByRole("button", { name: "Entrer", exact: true }).click();
+  await p.getByRole("alert").waitFor();
+  await capturer(p, "classe-refus");
+
+  // La classe sans élève
+  await remplir(vide.identifiant, vide.motDePasse);
+  await p.getByRole("button", { name: "Entrer", exact: true }).click();
+  await p.waitForURL(/\/classe\/qui$/);
+  await capturer(p, "qui-classe-sans-eleve");
+  await p.getByRole("button", { name: "Quitter la classe sur cet ordinateur" }).click();
+  await p.getByRole("alertdialog").getByRole("button", { name: "Quitter", exact: true }).click();
+  await p.waitForURL(/\/classe$/);
+
+  // Qui utilise cet ordinateur ?
+  await ouvrirLaClasse(p, c.classe.identifiant, c.classe.motDePasse);
+  await p.waitForURL(/\/classe\/qui$/);
+  await capturer(p, "qui");
+  await p.getByRole("button", { name: "Bilal", exact: true }).click();
+  await capturer(p, "qui-choisi");
+  await p.getByLabel("Chiffre 1").pressSequentially("0000");
+  await p.getByRole("alert").waitFor();
+  await capturer(p, "qui-code-faux");
+  await p.getByRole("button", { name: "Quitter la classe sur cet ordinateur" }).click();
+  await capturer(p, "qui-quitter");
+  await p.getByRole("button", { name: "Rester" }).click();
+
+  // Trop d'essais (Emma)
+  await p.getByRole("button", { name: "Emma", exact: true }).click();
+  for (let i = 0; i < 15; i++) {
+    await p.getByLabel("Chiffre 1").pressSequentially(String(1000 + i).padStart(4, "0") === c.codes.Emma ? "9999" : String(1000 + i));
+    await p.waitForTimeout(700);
+    if (await p.getByText("Trop d’essais").count()) break;
+  }
+  await capturer(p, "qui-attente");
+
+  // Tablette : une seule colonne, le code en tête
+  await p.setViewportSize({ width: 1024, height: 768 });
+  await p.getByRole("button", { name: "Bilal", exact: true }).click();
+  await capturer(p, "1024-qui-choisi");
+  await p.setViewportSize({ width: 1366, height: 768 });
+
+  // Hors des horaires : Bilal entre, le travail est fermé
+  const hier = ((new Date().getDay() + 5) % 7) + 1;
+  await sql("insert into horaires (classe_id, enseignant_id, jours, de, a) select id, enseignant_id, array[$2::smallint], '08:30', '11:30' from classes where id = $1", [c.classe.id, hier]);
+  await sql("update classes set horaires_limites = true where id = $1", [c.classe.id]);
+  await p.getByLabel("Chiffre 1").pressSequentially(c.codes.Bilal);
+  await p.waitForURL(/\/travail$/);
+  await capturer(p, "travail-ferme");
+  await p.setViewportSize({ width: 390, height: 844 });
+  await capturer(p, "390-travail-ferme");
+  await sql("update classes set horaires_limites = false where id = $1", [c.classe.id]);
+  await p.getByRole("button", { name: "Changer d’élève" }).click();
+  await p.waitForURL(/\/classe\/qui$/);
+
+  // 390 px
+  await capturer(p, "390-qui");
+  await capturer(p, "390-qui-toute", true);
+  await p.getByRole("button", { name: "Chloé", exact: true }).click();
+  await capturer(p, "390-qui-choisi");
+  await p.getByLabel("Chiffre 1").pressSequentially("0000");
+  await p.getByRole("alert").waitFor();
+  await capturer(p, "390-qui-code-faux");
+  await p.getByRole("button", { name: "Quitter la classe sur cet ordinateur" }).click();
+  await capturer(p, "390-qui-quitter");
+  await p.getByRole("alertdialog").getByRole("button", { name: "Quitter", exact: true }).click();
+  await p.waitForURL(/\/classe$/);
+  await capturer(p, "390-classe");
+  await capturer(p, "390-classe-toute", true);
+  await remplir(c.classe.identifiant, "mauvais");
+  await p.getByRole("button", { name: "Entrer", exact: true }).click();
+  await p.getByRole("alert").waitFor();
+  await capturer(p, "390-classe-refus");
+  await contexte.close();
 });

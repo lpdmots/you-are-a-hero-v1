@@ -94,6 +94,10 @@
   gap: 7px;
   font-size: var(--t-s);
 }
+/* « 8 h 30 » ne se coupe pas au téléphone */
+.accueil .acces :global(.chiffres) {
+  white-space: nowrap;
+}
 .accueil .ferme {
   font-weight: 700;
   color: var(--e-valider);

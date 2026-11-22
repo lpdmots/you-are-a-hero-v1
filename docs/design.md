@@ -629,7 +629,7 @@ proposé, sans retour de sa part.
 | Retour après une nouvelle remise | Il reste lisible, replié sous la consigne, au lieu de disparaître (F07.3). |
 | Scène sans consigne | Une phrase à la place de trois : « Pas de consigne écrite. Suis celle que Mme Laurent t'a donnée. » |
 | Mon travail | Scènes rangées par urgence : à reprendre, en cours, texte vide, remises, validées. Une seule porte le bouton plein, la première qui attend l'élève. « Texte vide » y remplace « En cours », comme ailleurs. Le chapitre affiché est celui de l'élève. Sans chapitre, proposition pour une question laissée ouverte en F06.1 : « Tu n'as pas encore de chapitre dans cette histoire. Mme Laurent va t'en donner un. » |
-| Connexion | Prénoms dans l'ordre alphabétique. La place du code est réservée à droite, avec « Clique sur ton prénom. » : la grille ne bouge plus quand le code s'affiche. Code refusé : « Ce n'est pas le bon code. Essaie encore, ou demande à Mme Laurent. » « Quitter la classe » ouvre « Quitter la classe ? Pour revenir, il faudra le mot de passe de la classe. », « Quitter », « Rester ». |
+| Connexion | Prénoms dans l'ordre alphabétique. La place du code est réservée à droite, avec « Clique sur ton prénom. » : la grille ne bouge plus quand le code s'affiche (au-dessus des prénoms sous 1060 px, à la hauteur du code, depuis le 22 novembre 2026). Code refusé : « Ce n'est pas le bon code. Essaie encore, ou demande à Mme Laurent. » « Quitter la classe » ouvre « Quitter la classe ? Pour revenir, il faudra le mot de passe de la classe. », « Quitter », « Rester ». |
 | Blocs protégés | La légende ne dit « tu écris avant ou après » que si l'élève peut écrire ; le bloc montre un cadre quand on le touche. Légendes, repères de destination et mention de lecture passent de 12,5 à 14 px. |
 | Chapitre vu par l'élève | Trois retouches de mots seulement : le fil dit « Mon travail », la sélection dit « Je m'en occupe » et « Parle-leur d'abord, ou à Mme Laurent. » |
 
@@ -1083,7 +1083,7 @@ restés sans retour du porteur :**
 | Renommer la classe | Un dialogue : le nom, puis la case « Identifiant », qui suit le nouveau nom quand l'identifiant en était tiré, et « Enregistrer ». Dessous, une phrase : « L'identifiant de la classe ne change pas. », ou « L'affiche sera à réimprimer, et les étiquettes qui portent l'identifiant. » avec le lien « Garder « cm1cm2 » ». Un identifiant déjà pris est refusé sous la case (F06-AC84, AC85, 9 octobre 2026). |
 | Nouvelle classe | Le panneau dessiné, avec une case de plus sous le nom : « Identifiant », remplie d'après le nom au fil de la frappe, et « Les élèves le tapent pour ouvrir la classe. Vous pouvez en écrire un autre. » (F06-AC85). La phrase du bas ne parle plus que du mot de passe. |
 | Accueil de l'élève | « Bonjour Alice », « Mon travail », puis « Tu n'as pas encore de chapitre. Mme Laurent va t'en donner un. », ou « Le travail est fermé jusqu'à demain, 8 h 30. » hors des horaires. L'illustration est générique : celle du projet viendra avec « Mon travail », à l'étape 4. |
-| Erreurs à l'entrée de la classe | « Ce n'est pas le bon identifiant, ou pas le bon mot de passe. Regarde l'affiche, ou demande à ton enseignant(e). » et « Trop d'essais. Attends 5 minutes, ou demande à ton enseignant(e). » |
+| Erreurs à l'entrée de la classe | « Ce n'est pas le bon identifiant ou le bon mot de passe. Regarde bien l'affiche. » et « Trop d'essais. Attends 5 minutes, ou demande de l'aide. » (révisé le 22 novembre 2026, « Entrer dans la classe ») |
 
 **Retouches de l'essai du porteur, 9 octobre 2026.** Demandées sur
 captures et faites le même jour :
@@ -3726,6 +3726,44 @@ blocs protégés (F06-AC50) ; « Remettre quand même » plein (F07-AC103) ; la 
 **Laissé :** « Remettre » reste actif après une remise en échec (un nouveau clic réessaie) ; « Si tu
 hésites, demande une explication en classe. » ; le « S » barré de la barre ; « Juste avant » et
 « Juste après », communs avec l'adulte ; au téléphone, l'état et « Remettre » sur deux rangées.
+
+#### Entrer dans la classe (22 novembre 2026)
+
+Deuxième page du côté élève : `/classe` et `/classe/qui`, et ce que lit l'élève entré hors des horaires.
+Captures : `npx playwright test --config playwright.local.config.ts revision-eleve -g classe` (20 vues,
+dans `captures/eleve/classe` : la classe vide, remplie, refusée ; une classe sans élève ; les
+vingt-cinq prénoms, Bilal choisi, code faux, « Quitter la classe ? », trop d'essais ; 1024 px ; travail
+fermé ; 390 px). **Notes : 29/40 (informée), 28/40 (indépendante).** Points faibles des deux lectures :
+la bulle de sortie coupée au téléphone, la liste qui saute au choix d'un prénom sous 1060 px, l'aide
+face aux erreurs.
+
+**Corrigé :**
+
+- **La bulle « Quitter la classe ? » tient dans la fenêtre** (`poser`) : au téléphone, où le bouton
+  passe à gauche, elle sortait de l'écran (« er la classe ? »).
+- **Rien ne bouge quand on clique son prénom :** la place du code, réservée à la hauteur du code, reste
+  aussi sous 720 px et sous 1060 px, au-dessus des prénoms ; la liste descendait d'environ 300 points
+  et l'enfant perdait son prénom de vue.
+- **Trop d'essais :** les cases du code se ferment le temps de l'attente, puis se rouvrent seules ; on
+  pouvait taper encore, et chaque essai redisait la même chose. Le message est inchangé.
+- **Classe sans élève :** « Aucun élève n'est encore inscrit… » plus grand, sans la place du code ni
+  « Clique sur ton prénom. », qui contredisait la phrase.
+- **Refus de la classe :** « Ce n'est pas le bon identifiant ou le bon mot de passe. Regarde bien
+  l'affiche. » ; « Trop d'essais. Attends deux minutes, ou demande de l'aide. » — plus de
+  « enseignant(e) » ni de « ou » répété (le nom de l'enseignante n'est pas connu avant l'ouverture).
+- **Le curseur dans le premier champ** à l'ouverture de `/classe`.
+- **Travail fermé :** « 8 h 30 » ne se coupe plus en fin de ligne au téléphone.
+
+**Laissé, décidé :** le livre ouvert de l'entrée, son numéro, la phrase du dragon et « Si vous
+enseignez, rendez-vous au 7 » (« Entrées en livre-jeu », 23 octobre 2026) ; les prénoms en cursive
+Playwrite FR Trad (22 octobre), même si une lecture juge le T de « Tom » proche d'un Z : c'est la
+cursive que les élèves apprennent.
+
+**Laissé :** `/classe/qui` sans le livre ni le dragon (écran de la maquette, sobre exprès) ; « Quitter
+la classe sur cet ordinateur » en haut à droite, discret, confirmé par sa bulle ; pas de compte à
+rebours pendant l'attente (un chiffre qui bouge) ; au téléphone, le prénom absent de la barre de
+« Mon travail » (à voir avec cette page) ; rien à faire quand le travail est fermé, « Lire » étant
+fermé aussi (F06-AC27).
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

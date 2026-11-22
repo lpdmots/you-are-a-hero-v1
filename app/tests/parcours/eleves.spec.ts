@@ -68,7 +68,7 @@ test("F06-AC43, F06-AC81 — connexion en deux étapes, saisie tolérante aux ma
 test("F06-AC43 — après un refus, l'identifiant et le mot de passe restent écrits : l'élève corrige sans tout retaper", async ({ browser }) => {
   const poste = await autrePoste(browser);
   await ouvrirLaClasse(poste.page, classe.identifiant, "pas le bon 12");
-  await expect(ALERTE(poste.page)).toContainText("Ce n’est pas le bon identifiant, ou pas le bon mot de passe.");
+  await expect(ALERTE(poste.page)).toContainText("Ce n’est pas le bon identifiant ou le bon mot de passe.");
   await expect(poste.page.getByLabel("Identifiant de la classe")).toHaveValue(classe.identifiant);
   await expect(poste.page.getByLabel("Mot de passe de la classe")).toHaveValue("pas le bon 12");
 
@@ -124,8 +124,10 @@ test("F06-AC73 — cinq codes faux : Bilal attend deux minutes, Alice entre sur 
   await taperCode(poste.page, "Bilal", faux);
   await expect(poste.page.getByText("Trop d’essais. Attends deux minutes, ou demande à Mme Laurent.")).toBeVisible();
 
-  // Le sixième essai, même avec le bon code, est refusé
-  await poste.page.getByLabel("Chiffre 1").pressSequentially(codes.Bilal);
+  // Les cases se ferment le temps de l'attente ; le sixième essai, même avec le bon code, est refusé
+  await expect(poste.page.getByLabel("Chiffre 1")).toBeDisabled();
+  await poste.page.getByRole("button", { name: "Ce n’est pas moi" }).click();
+  await taperCode(poste.page, "Bilal", codes.Bilal);
   await expect(poste.page.getByText(/Trop d’essais\. Attends (deux|une) minutes?/)).toBeVisible();
   await expect(poste.page).toHaveURL(/\/classe\/qui$/);
 
@@ -146,10 +148,10 @@ test("F06-AC74 — dix essais faux à l'entrée de la classe : cinq minutes d'at
   const poste = await autrePoste(browser);
   for (let essai = 1; essai <= 9; essai += 1) {
     await ouvrirLaClasse(poste.page, classe.identifiant, "pas le bon 11");
-    await expect(poste.page.getByText(/Ce n’est pas le bon identifiant, ou pas le bon mot de passe\./)).toBeVisible();
+    await expect(poste.page.getByText(/Ce n’est pas le bon identifiant ou le bon mot de passe\./)).toBeVisible();
   }
   await ouvrirLaClasse(poste.page, "classeinconnue", classe.motDePasse);
-  await expect(poste.page.getByText(/Trop d’essais\. Attends 5 minutes, ou demande à ton enseignant\(e\)\./)).toBeVisible();
+  await expect(poste.page.getByText(/Trop d’essais\. Attends 5 minutes, ou demande de l’aide\./)).toBeVisible();
 
   // Le onzième essai, avec les bonnes informations, est refusé
   await ouvrirLaClasse(poste.page, classe.identifiant, classe.motDePasse);
@@ -187,7 +189,7 @@ test("F06-AC68, F06-AC77 — mot de passe remplacé : les postes ouverts redeman
   }
   // L'ancien mot de passe est refusé, le nouveau ouvre ; les codes n'ont pas changé
   await ouvrirLaClasse(postes[0].page, classe.identifiant, classe.motDePasse);
-  await expect(postes[0].page.getByText(/Ce n’est pas le bon identifiant, ou pas le bon mot de passe\./)).toBeVisible();
+  await expect(postes[0].page.getByText(/Ce n’est pas le bon identifiant ou le bon mot de passe\./)).toBeVisible();
   await ouvrirLaClasse(postes[0].page, classe.identifiant, nouveau);
   await expect(choixDesProfils(postes[0].page)).toBeVisible();
   await taperCode(postes[0].page, "Alice", codes.Alice);
@@ -216,7 +218,7 @@ test("F06-AC84 — identifiant remplacé en renommant la classe : l'ancien est r
   // Sur un autre ordinateur : l'ancien identifiant est refusé, le nouveau ouvre avec le même mot de passe
   const neuf = await autrePoste(browser);
   await ouvrirLaClasse(neuf.page, classe.identifiant, classe.motDePasse);
-  await expect(neuf.page.getByText(/Ce n’est pas le bon identifiant, ou pas le bon mot de passe\./)).toBeVisible();
+  await expect(neuf.page.getByText(/Ce n’est pas le bon identifiant ou le bon mot de passe\./)).toBeVisible();
   await ouvrirLaClasse(neuf.page, nouveau, classe.motDePasse);
   await expect(choixDesProfils(neuf.page)).toBeVisible();
   await expect(neuf.page.getByText("Classe CM2 de Mme Laurent")).toBeVisible();

@@ -18,7 +18,7 @@ export function OuvrirLaClasse() {
       <p className={styles.affiche}>Regarde l’affiche de la classe.</p>
       <label className={`champ champ--plein ${styles.champ}`}>
         <span>Écris l’identifiant de la classe</span>
-        <input type="text" name="identifiant" defaultValue={etat.saisie?.identifiant} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} onKeyDown={envoyerParEntree} required />
+        <input type="text" name="identifiant" defaultValue={etat.saisie?.identifiant} autoComplete="off" autoCapitalize="none" autoCorrect="off" spellCheck={false} onKeyDown={envoyerParEntree} autoFocus required />
       </label>
       <label className={`champ champ--plein ${styles.champ}`}>
         <span>Écris le mot de passe de la classe</span>

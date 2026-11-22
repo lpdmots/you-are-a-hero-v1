@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { BoutonEnvoi } from "@/composants/Attente";
 import { Gommette } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
+import { poser } from "@/composants/flottant";
 import { entrer, quitter } from "../actions";
 import styles from "./qui.module.css";
 
@@ -15,21 +16,34 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
   const [chiffres, setChiffres] = useState(["", "", "", ""]);
   const [erreur, setErreur] = useState<string | null>(null);
   const [quitterOuvert, setQuitterOuvert] = useState(false);
+  // Trop d'essais : les cases se ferment le temps de l'attente, puis se rouvrent seules
+  const [bloque, setBloque] = useState<number | null>(null);
   const [enCours, lancer] = useTransition();
   const cases = useRef<(HTMLInputElement | null)[]>([]);
   const rester = useRef<HTMLButtonElement>(null);
+  const boutonQuitter = useRef<HTMLButtonElement>(null);
+  const bulle = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (choisi) cases.current[0]?.focus();
-  }, [choisi]);
+    if (choisi && !bloque) cases.current[0]?.focus();
+  }, [choisi, bloque]);
   useEffect(() => {
-    if (quitterOuvert) rester.current?.focus();
+    if (!bloque) return;
+    const minuteur = setTimeout(() => { setBloque(null); setErreur(null); }, bloque);
+    return () => clearTimeout(minuteur);
+  }, [bloque]);
+  useEffect(() => {
+    if (!quitterOuvert || !boutonQuitter.current || !bulle.current) return;
+    rester.current?.focus();
+    // La bulle tient dans la fenêtre, au téléphone compris, où le bouton passe à gauche
+    return poser(boutonQuitter.current, bulle.current, { cote: "bottom-end", ecart: 8 });
   }, [quitterOuvert]);
 
   const choisir = (p: Profil | null) => {
     setChoisi(p);
     setChiffres(["", "", "", ""]);
     setErreur(null);
+    setBloque(null);
   };
 
   const valider = (code: string) => {
@@ -40,6 +54,7 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
       setChiffres(["", "", "", ""]);
       cases.current[0]?.focus();
       if (r.raison === "attente") {
+        setBloque(r.minutes * 60_000);
         setErreur(`Trop d’essais. Attends ${r.minutes > 1 ? `${r.minutes === 2 ? "deux" : r.minutes} minutes` : "une minute"}, ou demande à ${enseignant}.`);
       } else if (r.raison === "faux") {
         setErreur(`Ce n’est pas le bon code. Essaie encore, ou demande à ${enseignant}.`);
@@ -74,11 +89,11 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
           <h1>Qui utilise cet ordinateur ?</h1>
         </div>
         <div className={styles.quitter}>
-          <button type="button" className="btn btn--discret" aria-expanded={quitterOuvert} onClick={() => setQuitterOuvert(!quitterOuvert)}>
+          <button type="button" ref={boutonQuitter} className="btn btn--discret" aria-expanded={quitterOuvert} onClick={() => setQuitterOuvert(!quitterOuvert)}>
             Quitter la classe sur cet ordinateur
           </button>
           {quitterOuvert ? (
-            <div className={styles.bulle} role="alertdialog" aria-labelledby="titre-quitter">
+            <div ref={bulle} className={styles.bulle} role="alertdialog" aria-labelledby="titre-quitter">
               <p>
                 <b id="titre-quitter">Quitter la classe ?</b> Pour revenir, il faudra le mot de passe de la classe.
               </p>
@@ -133,7 +148,8 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
                   autoComplete="off"
                   maxLength={4}
                   aria-label={`Chiffre ${i + 1}`}
-                  aria-invalid={erreur ? true : undefined}
+                  aria-invalid={erreur && !bloque ? true : undefined}
+                  disabled={!!bloque}
                   value={c}
                   // Revenir sur une case la sélectionne : le chiffre tapé remplace l'ancien
                   onFocus={(e) => e.target.select()}
@@ -159,7 +175,7 @@ export function ChoixDuProfil({ classe, enseignant, profils }: { classe: string;
               Ce n’est pas moi
             </button>
           </section>
-        ) : (
+        ) : profils.length === 0 ? null : (
           <section className={`${styles.code} ${styles.codeVide}`}>
             <p>
               <Icone nom="main" />

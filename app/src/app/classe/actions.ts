@@ -21,9 +21,9 @@ export async function ouvrir(_avant: EtatOuverture, formulaire: FormData): Promi
   if (resultat.ok) redirect("/classe/qui");
   const saisie = { identifiant: identifiant.slice(0, 100), motDePasse: motDePasse.slice(0, 100) };
   if (resultat.raison === "attente") {
-    return { erreur: `Trop d’essais. Attends ${resultat.minutes > 1 ? `${resultat.minutes} minutes` : "une minute"}, ou demande à ton enseignant(e).`, saisie };
+    return { erreur: `Trop d’essais. Attends ${resultat.minutes > 1 ? `${resultat.minutes === 2 ? "deux" : resultat.minutes} minutes` : "une minute"}, ou demande de l’aide.`, saisie };
   }
-  return { erreur: "Ce n’est pas le bon identifiant, ou pas le bon mot de passe. Regarde l’affiche, ou demande à ton enseignant(e).", saisie };
+  return { erreur: "Ce n’est pas le bon identifiant ou le bon mot de passe. Regarde bien l’affiche.", saisie };
 }
 
 export async function entrer(inscriptionId: string, code: string): Promise<ResultatCode> {
