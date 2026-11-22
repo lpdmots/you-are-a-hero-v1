@@ -3676,9 +3676,9 @@ lire ce livre », jugé long par la lecture indépendante, texte arrêté à l'�
 partagé en icônes seules (étape 7) ; la flèche seule du retour à la bibliothèque, nommée au survol (23 octobre).
 
 **Côté élève (22 novembre 2026) :** cinq pages, la copie, l'entrée dans la classe, « Mon travail », le
-chapitre et « Lire », chacune close par l'« ok » du porteur le même jour. Tout est en local : commits
-`1b8f97e` à `4f79571`, et la migration `recherche_sans_doublon` en base locale seulement, à appliquer à la
-vraie base à la mise en ligne, que le porteur demandera. Captures :
+chapitre et « Lire », chacune close par l'« ok » du porteur le même jour. **En ligne le même jour à sa
+demande** : vraie base sauvegardée, migration `recherche_sans_doublon` appliquée (ne plus la modifier),
+vérification passée, code poussé jusqu'à `0b37970`, déploiement réussi. Captures :
 `app/tests/captures/revision-eleve.spec.ts`, un essai par page (`-g copie`, `-g classe`, `-g travail`,
 `-g "chapitre :"`, `-g "lire :"`).
 
