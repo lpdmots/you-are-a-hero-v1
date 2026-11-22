@@ -325,9 +325,11 @@ image isolée. L'affiche est prise à 8,6 s (le titre, la correction, l'image).
 
 ### Reste à faire
 
-La pose sur le site, étape à part, à sa demande (F14). Deux points qu'il n'a pas
-tranchés, laissés tels quels dans le rendu validé : « aucune
-étoile » au passage 4 (voix générée), et l'image où Timéo est vu de dos.
+Rien pour la vidéo elle-même : elle est posée sur le site et en ligne depuis le
+22 novembre 2026 (F14, ancre `f14-video-ia-posee`, code jusqu'à `f36ce56`). Les deux
+points laissés à son jugement — « aucune étoile » au passage 4 (voix générée) et
+l'image où Timéo est vu de dos — sont confirmés par lui le même jour (« oui c'est
+bon »).
 
 - **Titre :** « Gagner du temps avec l'IA », proposé. Autres pistes :
   « L'IA, pour vous faire gagner du temps », « Les aides de l'IA ».

@@ -13127,7 +13127,7 @@ les révisions qui suivent :
   22 novembre 2026 avec de vraies réponses de l'IA, 0,56 € d'appels sur les
   2 € qu'il a accordés ; rendu `V1/video/rendus/aides-ia-web.mp4`, 2 min 33,
   validé par lui le 22 novembre 2026 ; posée sur le site en local le même
-  jour, [usage révisé](#f14-video-ia-posee), mise en ligne à sa demande). Les onze tutos laissent
+  jour, [usage révisé](#f14-video-ia-posee), en ligne le 22 novembre 2026 à sa demande, code jusqu'à `f36ce56`). Les onze tutos laissent
   l'IA de côté ; une vidéo à part doit donner envie de l'essayer, puisque
   elle seule se vend.
   - **Pour qui et où :** l'enseignant inscrit qui a commencé un livre
@@ -13163,7 +13163,8 @@ les révisions qui suivent :
     porteur le 22 novembre 2026** en demandant la pose : « Trouve un moyen
     de la mettre un peu en avant car c'est ce qui doit rapporter de
     l'argent, mais sans exagérer, ça doit rester pertinent. » Le choix lui
-    est délégué ; ce qui suit est construit, et attend son retour.
+    est délégué ; ce qui suit est construit, et confirmé par lui le même
+    jour, après la mise en ligne (« oui c'est bon »).
     - *Les trois places du 21 novembre, inchangées :* sur la page « Aide »,
       après les onze tutos, une rangée « Avec l'IA » (sa carte sans numéro
       et une phrase : une scène entière, dix étoiles, les étoiles
