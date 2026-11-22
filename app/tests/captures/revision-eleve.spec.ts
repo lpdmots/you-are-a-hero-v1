@@ -333,7 +333,7 @@ test("travail : mes scènes par urgence, encouragements, classement, toute l'his
   dossier = "test-results/captures/eleve/travail";
   const c = await laClasse(page);
   const { e, base } = c;
-  const [sentier, souche, pont, clairiere, gue, chouette, terrier, cascade, lac] = c.lisiere.scenes;
+  const [sentier, souche, pont, clairiere, , chouette, terrier, cascade, lac] = c.lisiere.scenes;
   await sql("update scenes set consigne = $2 where id = any($1)", [c.lisiere.scenes, CONSIGNE]);
   await base.from("scenes").update({ prise_par_eleve: e.Bilal.id }).in("id", [sentier, souche, clairiere, terrier, cascade, lac]);
   await base.from("scenes").update({ prise_par_eleve: e.Alice.id }).in("id", [pont, chouette]);
