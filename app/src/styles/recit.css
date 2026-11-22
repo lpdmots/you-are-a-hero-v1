@@ -648,8 +648,10 @@
   color: var(--graphite-2);
   letter-spacing: 0.02em;
 }
-/* Côté élève, les références se lisent sans zéro barré (F06.4, 7 octobre 2026) */
-.page--eleve .fiche__ref {
+/* Côté élève, les références et les nombres se lisent sans zéro barré (F06.4, 7 octobre 2026) : la police de
+   l'outil barre le zéro ; ces lignes courtes passent en Andika, les messages de l'espace élève aussi */
+.page--eleve :is(.fiche__ref, .chap-meta, .selection__compte),
+body:has(.page--eleve) .message {
   font-family: var(--f-chiffres);
 }
 .fiche__tete .tampon {

@@ -75,6 +75,11 @@ export function ChapitreEleve({
     setAttente(true);
     const fait = await ajouterScene(chapitre.id);
     setAttente(false);
+    // La première scène d'un chapitre à choix : on reste sur « Scènes », où l'on continue d'ajouter, plutôt que
+    // de basculer d'office sur « Chemins », qui n'a pas « Ajouter une scène »
+    if (fait.ok && scenes.length === 0 && chapitre.aChoix) routeur.replace(`/travail/chapitre/${chapitre.id}?vue=scenes`, { scroll: false });
+    // Le titre se demande tout de suite sur la nouvelle fiche, plutôt que dans le menu « ··· »
+    if (fait.ok) setRenomme({ id: fait.id, titre: "" });
     dire({ texte: fait.ok ? `${referenceScene(fait.reference)} est ajoutée à la fin du chapitre.` : fait.erreur });
   };
   const renommer = async () => {
@@ -201,7 +206,7 @@ export function ChapitreEleve({
           <label className="vh" htmlFor={`titre-${s.id}`}>
             Titre de la scène
           </label>
-          <input id={`titre-${s.id}`} className="pchamp" type="text" maxLength={120} autoFocus value={renomme.titre} onChange={(e) => setRenomme({ id: s.id, titre: e.target.value })} />
+          <input id={`titre-${s.id}`} className="pchamp" type="text" maxLength={120} placeholder="Titre de la scène" autoFocus value={renomme.titre} onChange={(e) => setRenomme({ id: s.id, titre: e.target.value })} />
           <button type="submit" className="btn btn--petit btn--primaire">
             Enregistrer
           </button>
@@ -247,7 +252,11 @@ export function ChapitreEleve({
   );
 
   return (
-    <div className="sur-chapitre" style={{ "--dos": c.dos, "--bandeau": c.bandeau, "--teinte": c.teinte } as CSSProperties}>
+    <div
+      className="sur-chapitre"
+      // La barre de sélection, collée en bas, ne recouvre pas les dernières fiches
+      style={{ "--dos": c.dos, "--bandeau": c.bandeau, "--teinte": c.teinte, paddingBottom: cochees.length && vue !== "chemins" ? 140 : undefined } as CSSProperties}
+    >
       <nav className="fil" aria-label="Fil d’Ariane">
         <Link href="/travail">
           <Icone nom="fleche-g" />
@@ -300,7 +309,7 @@ export function ChapitreEleve({
                 {enChemins ? <AideDesChemins pourEleve /> : null}
               </span>
             ) : null}
-            {organise && !enChemins ? (
+            {organise && !enChemins && scenes.length > 0 ? (
               <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void ajouter()}>
                 <Icone nom="plus" />
                 Ajouter une scène
@@ -317,10 +326,17 @@ export function ChapitreEleve({
       ) : null}
 
       {enChemins ? (
-        <Chemins pourEleve {...chemins} />
+        <Chemins pourEleve sansRegard={!chapitre.profil} {...chemins} />
       ) : scenes.length === 0 ? (
         <div className="vide-chap">
           <p>{organise ? "Ce chapitre n’a pas encore de scène. Ajoute la première." : `Ce chapitre n’a pas encore de scène. ${majuscule(prof)} va en ajouter.`}</p>
+          {/* Le bouton sous sa phrase, pas en haut à droite de la page */}
+          {organise ? (
+            <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void ajouter()}>
+              <Icone nom="plus" />
+              Ajouter une scène
+            </button>
+          ) : null}
         </div>
       ) : organise && scenes.length > 1 ? (
         <DndContext
@@ -408,7 +424,7 @@ export function ChapitreEleve({
           titre={`Supprimer ${referenceScene(aSupprimer.reference)} ?`}
           onFermer={() => setASupprimer(null)}
           boutons={
-            <button type="button" className="btn btn--primaire" disabled={attente} aria-busy={attente || undefined} onClick={() => void supprimer(aSupprimer)}>
+            <button type="button" className="btn btn--danger" disabled={attente} aria-busy={attente || undefined} onClick={() => void supprimer(aSupprimer)}>
               Supprimer la scène
             </button>
           }

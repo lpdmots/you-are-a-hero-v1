@@ -416,3 +416,88 @@ test("travail : mes scènes par urgence, encouragements, classement, toute l'his
   await capturer(alice.page, "alice-tout-valide", true);
   await alice.contexte.close();
 });
+
+test("chapitre : Chemins d'abord, Scènes, prendre une scène, celle d'un camarade, un chapitre lu, l'organisation, vide, 390 px", async ({ page, browser }) => {
+  test.setTimeout(600_000);
+  n = 0;
+  dossier = "test-results/captures/eleve/chapitre";
+  const c = await laClasse(page);
+  const { e, base } = c;
+  const [sentier, souche, pont, clairiere, gue, chouette, terrier, cascade, lac, lucioles] = c.lisiere.scenes;
+  await sql("update scenes set consigne = $2 where id = any($1)", [c.lisiere.scenes, CONSIGNE]);
+  // Les chemins du chapitre
+  await semerBlocs(base, sentier, [recit("Le sentier se sépare en deux devant Lou."), choixAuto("Entrer dans la souche creuse", souche), choixAuto("Traverser le pont de brume", pont)]);
+  await semerBlocs(base, souche, [recit("Lou se glissa dans la souche creuse."), choixAuto("Suivre le chant", clairiere), choixAuto("Rester caché", terrier)]);
+  await semerBlocs(base, pont, [recit("Le pont craquait sous ses pas."), choixAuto("Continuer jusqu’à la clairière", clairiere), choixAuto("Descendre vers le gué", gue)]);
+  await semerBlocs(base, clairiere, [recit("Une lumière d’argent tombait entre les arbres."), choixAuto("Appeler la chouette", chouette), choixAuto("Suivre les lucioles", lucioles)]);
+  await semerBlocs(base, gue, [recit("L’eau murmurait des noms oubliés."), choixAuto("Remonter vers le sentier", sentier), choixAuto("Longer la rivière", cascade)]);
+  await semerBlocs(base, chouette, [recit("La chouette tenait un message dans son bec."), choixAuto("Lire le message", lac)]);
+  await semerBlocs(base, cascade, [recit("Derrière l’eau, une lueur bleue."), choixAuto("Entrer dans la grotte", null)]);
+  await base.from("scenes").update({ prise_par_eleve: e.Bilal.id }).in("id", [souche, clairiere, cascade]);
+  await base.from("scenes").update({ prise_par_eleve: e.Alice.id }).in("id", [pont, chouette]);
+  await base.from("scenes").update({ prise_par_eleve: e.Chloé.id }).eq("id", gue);
+  await base.from("scenes").update({ prise_par_enseignant: true }).eq("id", sentier);
+  await etat(c, clairiere, "valider");
+  await etat(c, clairiere, "valide");
+  await remettre(chouette, e.Alice.id, "1 day");
+
+  const bilal = await poste(browser, c, "Bilal");
+  const p = bilal.page;
+  await aller(p, `/travail/chapitre/${c.lisiere.id}`);
+  await p.waitForTimeout(1500);
+  await capturer(p, "chemins");
+  await p.getByRole("button", { name: /Comment lire|aide|Aide/ }).first().click({ timeout: 5000 }).catch(() => {});
+  await capturer(p, "chemins-aide");
+  await p.keyboard.press("Escape");
+  await p.getByText("Le pont de brume").first().click({ timeout: 5000 }).catch(() => {});
+  await p.waitForTimeout(600);
+  await capturer(p, "chemins-clic");
+
+  // Scènes
+  await p.getByRole("button", { name: "Scènes", exact: true }).click();
+  await p.waitForURL(/vue=scenes/);
+  await capturer(p, "scenes");
+  await capturer(p, "scenes-toute", true);
+  await p.getByLabel("Choisir S009 pour m’en occuper").check();
+  await capturer(p, "selection");
+  await p.getByLabel("Choisir S005 pour m’en occuper").check();
+  await capturer(p, "selection-camarade");
+  await p.getByRole("button", { name: "Seulement les libres" }).click();
+  await p.waitForTimeout(800);
+  await capturer(p, "pris");
+
+  // Un chapitre qui n'est pas le sien, la lecture ouverte
+  await sql("update projets set lecture_ouverte = true where id = $1", [c.projet]);
+  await semerTexte(base, c.marais.scenes[0], ["Les roseaux bruissaient."]);
+  await aller(p, `/travail/chapitre/${c.marais.id}`);
+  await capturer(p, "chapitre-lu");
+
+  // 390 px
+  await p.setViewportSize({ width: 390, height: 844 });
+  await aller(p, `/travail/chapitre/${c.lisiere.id}`);
+  await p.waitForTimeout(1200);
+  await capturer(p, "390-chemins");
+  await capturer(p, "390-chemins-toute", true);
+  await aller(p, `/travail/chapitre/${c.lisiere.id}?vue=scenes`);
+  await capturer(p, "390-scenes");
+  await p.getByLabel("Choisir S007 pour m’en occuper").check({ timeout: 5000 }).catch(() => {});
+  await capturer(p, "390-selection");
+  await bilal.contexte.close();
+
+  // Dylan organise le chapitre ; puis un chapitre vide
+  await semerAttribution(base, c.lisiere.id, [{ eleve: e.Alice.id }, { eleve: e.Bilal.id }, { eleve: e.Chloé.id }, { eleve: e.Dylan.id, profil: "organisation" }]);
+  const vide = await semerPartie(base, c.projet, "La montagne", [{ titre: "Le col", scenes: [] }]);
+  await semerAttribution(base, vide.chapitres[0].id, [{ eleve: e.Dylan.id, profil: "organisation" }]);
+  const dylan = await poste(browser, c, "Dylan");
+  await aller(dylan.page, `/travail/chapitre/${c.lisiere.id}?vue=scenes`);
+  await capturer(dylan.page, "organisation");
+  await aller(dylan.page, `/travail/chapitre/${vide.chapitres[0].id}`);
+  await capturer(dylan.page, "vide-organisation");
+  await dylan.page.getByRole("button", { name: "Ajouter une scène" }).click();
+  await dylan.page.waitForTimeout(900);
+  await capturer(dylan.page, "vide-ajoutee");
+  await dylan.page.getByLabel(/Autres commandes de la scène/).first().click({ timeout: 10_000 });
+  await dylan.page.getByRole("button", { name: "Supprimer" }).click({ timeout: 10_000 });
+  await capturer(dylan.page, "supprimer");
+  await dylan.contexte.close();
+});

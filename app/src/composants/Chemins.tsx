@@ -42,9 +42,19 @@ const pasEncoreSu = (): boolean | null => null;
  * schéma, s'y déplacer et, pour l'adulte d'un récit à choix, y construire.
  */
 export function AideDesChemins({ pourEleve = false, construit = false }: { pourEleve?: boolean; construit?: boolean }) {
+  // Pour un enfant : trois phrases courtes, sans le mode d'emploi de l'adulte (révision de novembre 2026)
+  if (pourEleve) {
+    return (
+      <Bulle question="Comment lire ces chemins ?">
+        Chaque carte est une scène. Sous la carte, ses choix : un trait mène à la scène suivante.
+        <span>Clique une scène pour voir ses chemins.</span>
+        <span>Tire le fond pour te déplacer.</span>
+      </Bulle>
+    );
+  }
   return (
     <Bulle question="Comment lire ces chemins ?">
-      Sous chaque scène, ses choix : un trait part de chacun vers la scène où il mène. {pourEleve ? "" : "Un trait en petits points est un lien caché. "}Un choix qui ramène le lecteur
+      Sous chaque scène, ses choix : un trait part de chacun vers la scène où il mène. Un trait en petits points est un lien caché. Un choix qui ramène le lecteur
       en arrière, qui mène dans un autre chapitre ou qui n’a pas encore de destination le dit sous sa phrase.
       <span>Tirer le fond déplace le schéma ; la molette change sa taille.</span>
       {construit ? (
@@ -60,19 +70,24 @@ export function AideDesChemins({ pourEleve = false, construit = false }: { pourE
 }
 
 export function Chemins({
-  noeuds, liens, entrees, designee, pourEleve = false, construire,
+  noeuds, liens, entrees, designee, pourEleve = false, sansRegard = false, construire,
 }: {
   noeuds: NoeudDeChemin[]; liens: LienDeChemin[]; entrees: EntreeDeChemin[];
   /** La scène où mène le choix qu'on vient de suivre depuis un autre chapitre */
   designee?: string;
   pourEleve?: boolean;
+  /** Rien « à regarder » : l'élève lit un chapitre qui n'est pas le sien, ce n'est pas à lui de le compléter */
+  sansRegard?: boolean;
   /** Les gestes de l'adulte en récit à choix : ajouter une scène, relier, titre et consigne, supprimer (F03.1) */
   construire?: Construire;
 }) {
   const etroit = useSyncExternalStore(suivreLaLargeur, estEtroit, pasEncoreSu);
   const chemins = useMemo<DonneesDesChemins>(() => ({ noeuds, liens, entrees }), [noeuds, liens, entrees]);
   // Un élève ne connaît ni les chemins venus d'autres chapitres ni les liens cachés : on ne lui dit que ses choix
-  const regard = useMemo(() => aRegarder(chemins, { rienNyMene: !pourEleve }), [chemins, pourEleve]);
+  const regard = useMemo(
+    () => aRegarder(sansRegard ? { noeuds: [], liens: [], entrees: [] } : chemins, { rienNyMene: !pourEleve }),
+    [chemins, pourEleve, sansRegard],
+  );
   // Tout ce qui est à regarder, à la suite : on le parcourt comme les occurrences d'un mot dans un texte
   const aVoir = useMemo(() => regard.sortes.flatMap(({ sorte, ou }) => ou.map((id) => ({ sorte, id }))), [regard]);
   // Le pas retient le cas désigné, pas son rang : un cas réglé — un choix qu'on vient de relier, une scène qui a

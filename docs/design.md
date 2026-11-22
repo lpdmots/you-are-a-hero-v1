@@ -3810,6 +3810,46 @@ recherche de l'élève répétait chaque paragraphe (« Le lac… deux fois. Le 
 `recherche_sans_doublon` le lit en mode strict (base locale seulement, à appliquer à la vraie base à la
 prochaine mise en ligne ; test F05-AC48 complété). La recherche de l'adulte n'était pas touchée.
 
+#### Le chapitre côté élève (22 novembre 2026)
+
+Quatrième page du côté élève : `/travail/chapitre/[id]`. Captures : `npx playwright test --config
+playwright.local.config.ts revision-eleve -g "chapitre :"` (17 vues, dans `captures/eleve/chapitre` :
+« La lisière » reliée en chemins, l'aide « i », une carte cliquée ; « Scènes », une scène libre cochée,
+puis celle de Chloé, « Seulement les libres », le message ; le chapitre d'une autre lu ; 390 px ; Dylan
+au profil « organisation », un chapitre vide, l'ajout, la suppression). **Notes : 28/40 (informée),
+25/40 (indépendante).** Points faibles des deux lectures : la sobriété (« À regarder » sur un chapitre
+qu'on ne fait que lire, l'aide en mode d'emploi d'adulte) et les petits sauts (la page basculait sur
+« Chemins » après la première scène ajoutée).
+
+**Corrigé :**
+
+- **« À regarder » n'apparaît plus sur le chapitre d'un autre,** lu quand l'enseignant ouvre la lecture :
+  le compléter n'est pas son affaire. Il reste sur son chapitre (F03-AC50).
+- **L'aide « i » des chemins parle à l'enfant :** « Chaque carte est une scène. Sous la carte, ses
+  choix : un trait mène à la scène suivante. Clique une scène pour voir ses chemins. Tire le fond pour te
+  déplacer. » (celle de l'adulte inchangée).
+- **Profil « organisation » :** la première scène ajoutée garde la vue « Scènes », où l'on continue
+  d'ajouter ; la page passait d'elle-même sur « Chemins », sans « Ajouter une scène ». Le titre se
+  demande aussitôt sur la nouvelle fiche (« Titre de la scène »), au lieu du menu « ··· ».
+- **Chapitre vide :** « Ajouter une scène » sous « Ajoute la première », plus en haut à droite.
+- **« Supprimer la scène »** n'est plus un bouton plein (règle de cohérence : jamais plein sur ce qui
+  supprime).
+- **Chiffres sans zéro barré :** « 10 scènes », la barre de sélection et les messages de l'espace élève
+  en Andika (la police de l'outil barre le zéro).
+- **La barre de sélection** ne recouvre plus les dernières fiches : la page garde une marge en bas tant
+  qu'elle est ouverte.
+
+**Laissé, décidé :** « Chemins » ouvert en premier, et la prise d'une scène dans « Scènes » seulement,
+où mènent les liens de « Mon travail » (11 novembre) ; la case à cocher, une ou plusieurs scènes puis
+« Je m'en occupe » (F06-AC38) ; « À regarder » sur son propre chapitre ; « Tu t'en occupes » en ruban
+plein, le même que « Ton chapitre » ; le repère de prise, la case et « ··· » sur la fiche ; les
+références « S009 ».
+
+**Laissé :** les messages qui nomment la scène par sa référence (« Tu t'occupes maintenant de S009. ») :
+le titre aiderait l'enfant, mais cinq parcours citent ces phrases et ne sont pas lancés pendant cette
+révision ; à reprendre avec eux. Le mot « molette » est retiré de l'aide de l'élève, pas de celle de
+l'adulte.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du
