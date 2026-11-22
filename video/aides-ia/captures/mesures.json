@@ -1,0 +1,104 @@
+{
+  "vraieIa": true,
+  "le": "2026-11-22T10:44:37.960Z",
+  "depart": 30,
+  "mesures": [
+    {
+      "aide": "dictee",
+      "ms": 7230,
+      "solde": 30
+    },
+    {
+      "aide": "consigne",
+      "ms": 2411,
+      "solde": 29
+    },
+    {
+      "aide": "bloc",
+      "ms": 7589,
+      "solde": 26
+    },
+    {
+      "aide": "correction",
+      "ms": 2287,
+      "solde": 25
+    },
+    {
+      "aide": "description",
+      "ms": 3496,
+      "solde": 24
+    },
+    {
+      "aide": "image",
+      "ms": 15217,
+      "solde": 20
+    }
+  ],
+  "journal": [
+    {
+      "aide": "consigne",
+      "sorte": "texte",
+      "nombre": 1,
+      "issue": "reussi",
+      "fournisseur": "anthropic",
+      "modele": "claude-sonnet-5-5",
+      "jetons_entree": 1522,
+      "jetons_sortie": 176,
+      "cout_usd": "0.004804",
+      "secondes": "2.4",
+      "etoiles": -1
+    },
+    {
+      "aide": "bloc-scenes",
+      "sorte": "texte",
+      "nombre": 1,
+      "issue": "reussi",
+      "fournisseur": "anthropic",
+      "modele": "claude-opus-5-5",
+      "jetons_entree": 3929,
+      "jetons_sortie": 711,
+      "cout_usd": "0.029936",
+      "secondes": "7.5",
+      "etoiles": -3
+    },
+    {
+      "aide": "correction",
+      "sorte": "texte",
+      "nombre": 1,
+      "issue": "reussi",
+      "fournisseur": "anthropic",
+      "modele": "claude-sonnet-5-5",
+      "jetons_entree": 1646,
+      "jetons_sortie": 127,
+      "cout_usd": "0.004562",
+      "secondes": "2.2",
+      "etoiles": -1
+    },
+    {
+      "aide": "description-image",
+      "sorte": "texte",
+      "nombre": 1,
+      "issue": "reussi",
+      "fournisseur": "anthropic",
+      "modele": "claude-sonnet-5-5",
+      "jetons_entree": 1236,
+      "jetons_sortie": 197,
+      "cout_usd": "0.004442",
+      "secondes": "3.5",
+      "etoiles": -1
+    },
+    {
+      "aide": "image-scene",
+      "sorte": "image",
+      "nombre": 1,
+      "issue": "reussi",
+      "fournisseur": "openai",
+      "modele": "gpt-image-2.5-flare",
+      "jetons_entree": 3536,
+      "jetons_sortie": 343,
+      "cout_usd": "0.037186",
+      "secondes": "12.5",
+      "etoiles": -4
+    }
+  ]
+}

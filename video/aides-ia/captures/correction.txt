@@ -1,0 +1,7 @@
+Changement 1 : « arrive » devient « arrivent ». Gardé.
+Changement 2 : « étoile » devient « étoiles ». Gardé.
+Changement 3 : « tombé » devient « tomber ». Gardé.
+Changement 4 : « s’acroche » devient « s’accroche ». Gardé.
+Changement 5 : « coté » devient « côté ». Gardé.
+Changement 6 : « continu » devient « continue ». Gardé.
+Changement 7 : « traversé » devient « traverser ». Gardé.

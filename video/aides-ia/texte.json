@@ -1,0 +1,99 @@
+{
+  "langue": "fr",
+  "passages": [
+    {
+      "id": "p1",
+      "avant": 0.9,
+      "apres": 0.7,
+      "texte": "Faire écrire un livre à toute une classe, ça demande du temps ! Heureusement, l’IA peut vous aider à plusieurs étapes. Mais ce sont toujours vos élèves qui écrivent leurs textes. Les boutons marqués d’une étoile ? Vous seul les voyez. Prenons une scène en exemple.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p2",
+      "avant": 0.8,
+      "apres": 8.4,
+      "texte": "Cette scène n’a pas encore de consigne. Dictez votre idée comme elle vous vient.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p2b",
+      "avant": 0.3,
+      "apres": 2,
+      "texte": "Puis cliquez sur « Formuler ». L’IA prépare une consigne pour vos élèves, avec sa liste de vérification. Vous pouvez l’ajuster si besoin, puis cliquez sur « Utiliser ».",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p3",
+      "avant": 0.6,
+      "apres": 2.4,
+      "texte": "Pour imaginer la suite, cliquez sur « Construire avec l’IA » et demandez-lui trois choix. Elle connaît déjà votre préparation, vos personnages et votre plan : pas besoin de tout lui réexpliquer ! Les nouvelles scènes apparaissent alors en pointillé, chacune avec sa consigne. Et rien n’est ajouté sans votre accord.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    },
+    {
+      "id": "p4",
+      "avant": 1.2,
+      "apres": 2.8,
+      "texte": "C’est maintenant au tour d’Inès d’écrire. <break time=\"2.2s\" /> Et sur son écran, aucune étoile : l’histoire, c’est elle qui l’écrit !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p5",
+      "avant": 1.2,
+      "apres": 2.6,
+      "texte": "Quand elle vous remet sa scène, cliquez sur « Corriger ». <break time=\"0.8s\" /> Vous choisissez ce que l’IA doit corriger : ici, seulement l’orthographe. <break time=\"2.8s\" /> Les modifications apparaissent directement dans le texte. <break time=\"1.4s\" /> À vous de refuser celles qui ne vous conviennent pas et de garder les autres.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "prise": 2
+    },
+    {
+      "id": "p6",
+      "avant": 0.6,
+      "apres": 2.6,
+      "texte": "Pour finir, place à l’illustration ! <break time=\"3.0s\" /> L’IA propose une description, y joint les portraits de vos personnages et crée une image dans le style de votre livre. <break time=\"3.4s\" /> Et voilà Timéo et Pic, comme la classe les avait imaginés.",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      }
+    },
+    {
+      "id": "p7",
+      "avant": 0.8,
+      "apres": 5.5,
+      "texte": "Toutes ces aides ont utilisé dix étoiles. Pour les essayer, vous avez déjà reçu trente étoiles sur votre compte. Et si vous souhaitez continuer, cent étoiles coûtent cinq euros. Alors, essayez sur votre prochaine scène !",
+      "reglages": {
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0
+      },
+      "fournie": true
+    }
+  ]
+}

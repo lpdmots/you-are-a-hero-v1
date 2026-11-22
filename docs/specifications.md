@@ -13120,6 +13120,44 @@ les révisions qui suivent :
     par le navigateur (sans « private, no-store »). Google ne montre une
     vidéo dans ses résultats que sur une page dont elle est le sujet : une
     page par tuto le permettrait, non décidé.
+- <a id="f14-video-ia"></a>**Vidéo des aides de l'IA, décidé par le porteur
+  le 21 novembre 2026** à l'entretien de son script
+  (`V1/video/aides-ia/SCRIPT.md`, qui fait foi pour le texte et le
+  découpage ; script validé par lui le même jour ; fabriquée les 21 et
+  22 novembre 2026 avec de vraies réponses de l'IA, 0,56 € d'appels sur les
+  2 € qu'il a accordés ; rendu `V1/video/rendus/aides-ia-web.mp4`, 2 min 33,
+  validé par lui le 22 novembre 2026 ; pas encore posée sur le site). Les onze tutos laissent
+  l'IA de côté ; une vidéo à part doit donner envie de l'essayer, puisque
+  elle seule se vend.
+  - **Pour qui et où :** l'enseignant inscrit qui a commencé un livre
+    gratuit, non le visiteur. Elle se pose dans l'« Aide », hors série, sans
+    numéro, et dans « Mon compte », près du solde, avec un lien depuis
+    l'aparté « Et l'IA ? » de l'accueil, qui reste petit. Écartés : la
+    mettre en avant sur l'accueil (l'IA y est en aparté depuis le
+    8 novembre) ; le dialogue de recharge, où l'on est en plein travail ;
+    une vidéo faite pour un réseau social (des extraits pourront en être
+    tirés).
+  - **Son but est de faire essayer** les trente étoiles offertes ; le prix
+    de la recharge vient après.
+  - **Ses arguments :** le temps gagné d'abord, montré par la consigne,
+    l'arbre et la correction, sans chiffre (l'estimation du porteur, plus de
+    la moitié, n'est pas mesurée) ; les idées quand on bloque ; les images,
+    que les élèves adorent ; « elle connaît déjà votre histoire » ; « vous
+    gardez la main ». L'objection « l'IA écrit à la place des élèves » est
+    traitée dès le début : aucun bouton d'IA chez l'élève. « ✦ Écrire »
+    n'est pas montré, et la vidéo ne dit pas que l'IA n'écrit jamais.
+  - **Le prix par la preuve :** le solde réel du compte d'essai descend
+    pendant la vidéo, et la fin dit le total des aides montrées, tiré du
+    journal des appels. Ce total est un élément de la vidéo : l'application
+    ne montre toujours aucun prix par demande. Si les coûts ou le prix de la
+    recharge changent, ce passage se refait.
+  - **Sa forme :** la ligne des tutos (vrais écrans capturés, voix de
+    Clément), une seule scène suivie de sa consigne à son image, de vraies
+    réponses de l'IA ; une réponse faible se règle dans l'aide, non dans
+    son image. Durée d'environ deux minutes, sans plafond.
+  - **Une seule vidéo pour convaincre ;** des tutos par geste sur chaque
+    aide viendront hors série, plus tard. Écarté : plusieurs vidéos par
+    thème (« gagner du temps », « être plus créatif »).
 - **Ce qu'une école peut demander sur les données.** Le porteur tient
   qu'aucune donnée sensible n'est en jeu ; ce qui est fourni sert à ce qu'une
   école accepte l'outil, non à couvrir un risque. Sont fournis :

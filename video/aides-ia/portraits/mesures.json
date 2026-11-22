@@ -1,0 +1,25 @@
+{
+  "vraieIa": true,
+  "le": "2026-11-22T10:38:56.312Z",
+  "depart": 30,
+  "releve": [
+    {
+      "personnage": "Timéo",
+      "ms": 12165,
+      "solde": 28,
+      "largeur": 1024,
+      "hauteur": 1536
+    }
+  ],
+  "journal": [
+    {
+      "aide": "portrait",
+      "sorte": "image",
+      "issue": "reussi",
+      "modele": "gpt-image-2.5-flare",
+      "cout_usd": "0.011595",
+      "secondes": "11.5",
+      "etoiles": -2
+    }
+  ]
+}

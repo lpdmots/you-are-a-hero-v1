@@ -1,0 +1,53 @@
+/* Vidéo des aides de l'IA — ce qui s'ajoute aux formes des tutos : le solde posé sur la table,
+   la phrase dictée, le saut du temps, les notes de l'histoire. Rien de cela n'est un écran de
+   l'application : ce sont des objets de la table. */
+.solde-table {
+  position: absolute; right: 44px; top: 30px; z-index: 45; display: flex; align-items: center; gap: 12px;
+  padding: 13px 24px 13px 18px; background: #fff; border-radius: 18px; transform: rotate(2deg); transform-origin: 50% 50%;
+  box-shadow: 0 2px 3px rgba(40, 32, 15, 0.08), 0 18px 34px -14px rgba(60, 45, 20, 0.4), inset 0 0 0 2.5px var(--ia-trait);
+  font: 800 46px/1 var(--f-ui); color: var(--graphite);
+}
+.solde-table svg { width: 44px; height: 44px; fill: none; stroke: var(--canard); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.solde-table .nombres { position: relative; display: inline-block; width: 58px; height: 46px; }
+.solde-table .nombres b { position: absolute; left: 0; top: 0; width: 100%; text-align: center; font-variant-numeric: tabular-nums; }
+.solde-table .debit { position: absolute; right: 10px; top: 74px; font: 800 34px/1 var(--f-ui); color: var(--e-reprendre); opacity: 0; white-space: nowrap; }
+.dictee-table {
+  position: absolute; left: 240px; width: 1440px; top: 968px; z-index: 45; display: flex; justify-content: center; opacity: 0;
+}
+.dictee-table .bulle {
+  display: flex; align-items: center; gap: 18px; max-width: 1360px; padding: 16px 30px 18px 22px; background: var(--graphite); color: #fff;
+  border-radius: 22px; box-shadow: 0 18px 34px -14px rgba(30, 25, 10, 0.5); font: 400 italic 36px/1.25 var(--f-recit);
+}
+.dictee-table .pastille { flex: none; display: grid; place-items: center; width: 52px; height: 52px; border-radius: 99px; background: #fff; }
+.dictee-table .pastille svg { width: 30px; height: 30px; fill: none; stroke: var(--graphite); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dictee-table .mots span { opacity: 0.22; }
+.saut-table {
+  position: absolute; left: 240px; width: 1440px; top: 986px; z-index: 45; text-align: center; opacity: 0;
+  font: 400 italic 38px/1 var(--f-recit); color: var(--graphite-2);
+}
+.saut-table b { font: 800 34px/1 var(--f-ui); font-style: normal; color: var(--canard); }
+/* Les notes de l'histoire : ce que l'IA connaît déjà (préparation, personnages, plan) */
+.note-table {
+  position: absolute; z-index: 44; padding: 18px 22px 20px; background: #fff; border-radius: 14px; opacity: 0;
+  box-shadow: 0 2px 3px rgba(40, 32, 15, 0.08), 0 22px 40px -16px rgba(60, 45, 20, 0.42); transform-origin: 50% 50%;
+}
+.note-table h4 { font: 800 22px/1 var(--f-ui); letter-spacing: 0.04em; text-transform: uppercase; color: var(--canard); margin-bottom: 12px; }
+.note-table p { font: 400 26px/1.32 var(--f-recit); color: var(--graphite); }
+.note-table ul { list-style: none; font: 600 25px/1.5 var(--f-ui); color: var(--graphite); }
+.note-table ul li::before { content: "· "; color: var(--graphite-3); }
+.note-table .portraits { display: flex; gap: 14px; }
+.note-table .portraits figure { width: 132px; text-align: center; font: 700 24px/1.4 var(--f-ui); }
+.note-table .portraits img { display: block; width: 132px; height: 176px; object-fit: cover; object-position: 50% 12%; border-radius: 10px; background: #fbf7ee; }
+/* Les grandes étiquettes de la fin : 30 ✦ offertes, 100 ✦ · 5 € */
+.prix-table {
+  position: absolute; left: 0; right: 0; top: 400px; z-index: 46; display: flex; justify-content: center; opacity: 0;
+}
+.prix-table .carte {
+  display: flex; align-items: center; gap: 22px; padding: 30px 54px 34px; background: #fff; border-radius: 28px;
+  box-shadow: 0 2px 3px rgba(40, 32, 15, 0.08), 0 40px 80px -24px rgba(60, 45, 20, 0.5), inset 0 0 0 3px var(--ia-trait);
+  font: 800 120px/1 var(--f-ui); color: var(--graphite);
+}
+.prix-table .carte svg { width: 104px; height: 104px; fill: none; stroke: var(--canard); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.prix-table .carte small { font: 700 44px/1.1 var(--f-ui); color: var(--graphite-2); margin-left: 10px; }
+.prix-table .carte i { font-style: normal; color: var(--trait-fort); margin: 0 6px; }
+.ombre-table { position: absolute; inset: 0; z-index: 43; background: rgba(40, 32, 15, 0.38); opacity: 0; }
