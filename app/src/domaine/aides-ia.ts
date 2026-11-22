@@ -219,6 +219,9 @@ export const MESSAGES_IA = {
 } as const;
 
 /** « 34 ✦ » : le solde d'étoiles, seul prix que l'enseignant voit (F14). */
+/** Dit dans le navigateur quand une aide vient de répondre : l'invitation à la vidéo de l'IA s'en va (F14-AC70) */
+export const AIDE_UTILISEE = "aide-utilisee";
+
 export const enEtoiles = (n: number): string => `${Math.max(n, 0)} ✦`;
 
 /**

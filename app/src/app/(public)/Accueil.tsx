@@ -3,10 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
+import { BoutonTuto } from "@/composants/Tutos";
 import { enEuros } from "@/domaine/offre";
 import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { EDITEUR } from "@/domaine/textes-publics";
+import { VIDEO_IA } from "@/domaine/tutos";
 import { livresDeLAccueil, type LivreDeLAccueil } from "@/serveur/accueil";
 import { offreActuelle } from "@/serveur/offre";
 import styles from "./accueil.module.css";
@@ -328,6 +330,12 @@ export async function Accueil() {
             </span>{" "}
             vous permettent de l’essayer{offre.paiementOuvert ? ", d’autres s’achètent" : ""}.
           </p>
+          {/* Un lien, pas plus : la vidéo des aides s'ouvre sur place, l'IA reste en aparté (F14-AC69) */}
+          {VIDEO_IA.pose ? (
+            <div className={styles.aparteVideo}>
+              <BoutonTuto tuto={VIDEO_IA} forme="lien" className={styles.aparteLien} />
+            </div>
+          ) : null}
           <Choix>
             <ChoixCompte phrase="Si vous voulez essayer," />
             <Renvoi vers={52}>Si vous voulez savoir d’où vient cet outil, rendez-vous au</Renvoi>

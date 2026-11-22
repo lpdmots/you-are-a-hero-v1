@@ -831,6 +831,17 @@
   color: var(--graphite);
   white-space: nowrap;
 }
+/* Sous l'aparté, le lien vers la vidéo des aides : de sa taille, sans bouton ni image */
+.aparteVideo {
+  margin-top: 2px;
+}
+.aparteLien {
+  min-height: 36px;
+  margin-top: 0;
+  font-family: var(--f-recit);
+  font-size: 0.94rem;
+  font-weight: 600;
+}
 
 /* Le passage 40 : le feuillet, la mascotte, la fiche aventure, sur trois colonnes */
 .quarante {

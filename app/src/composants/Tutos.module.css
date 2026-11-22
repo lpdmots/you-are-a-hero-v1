@@ -33,6 +33,13 @@
   margin: 0 auto 0 0;
   font: 700 var(--t-s) var(--f-ui);
 }
+/* Sous le titre, où retrouver la vidéo (l'invitation de la colonne) */
+.note {
+  display: block;
+  font-weight: 400;
+  font-size: var(--t-xs);
+  color: #b9b9b2;
+}
 .suite,
 .fermer {
   min-height: 38px;
@@ -182,6 +189,30 @@
   color: var(--graphite-2);
 }
 
+/* ——— Hors série, après les quatre temps : la vidéo des aides de l'IA, sa carte et sa phrase ——— */
+.horsSerie h3 {
+  display: flex;
+  align-items: center;
+  align-self: start;
+  gap: 7px;
+}
+.horsSerie h3 :global(.ic) {
+  width: 18px;
+  height: 18px;
+  color: var(--ia);
+}
+.metaSeule {
+  margin-left: 0;
+}
+.phrase {
+  grid-column: span 3;
+  align-self: center;
+  max-width: 46ch;
+  margin: 0;
+  color: var(--graphite-2);
+  line-height: 1.5;
+}
+
 /* ——— En tête d'un écran d'aide ——— */
 .vignettes {
   list-style: none;
@@ -266,5 +297,9 @@
   .cartes {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px 12px;
+  }
+  .phrase {
+    grid-column: span 1;
+    font-size: var(--t-s);
   }
 }

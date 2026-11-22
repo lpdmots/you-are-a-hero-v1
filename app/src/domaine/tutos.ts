@@ -64,25 +64,64 @@ export const TUTOS: Tuto[] = [
 /** Les tutos posés, dans l'ordre de la série */
 export const TUTOS_POSES = TUTOS.filter((t) => t.pose);
 
-/** Le numéro d'un tuto dans la série (1 à 11), le même partout */
-export const numeroDe = (t: Tuto): number => TUTOS.findIndex((x) => x.cle === t.cle) + 1;
+/**
+ * Une vidéo hors série : servie comme un tuto, jouée par le même lecteur, sans numéro ni temps du
+ * projet ni écran d'aide. Ses fichiers n'ont pas le préfixe « tuto- » (`public/tutos/<cle>.mp4`).
+ */
+export type HorsSerie = Pick<Tuto, "cle" | "titre" | "description" | "secondes" | "pose"> & {
+  horsSerie: true;
+  /** Date de pose sur le site (données structurées, plan du site) */
+  poseeLe: string;
+};
+
+/**
+ * « Gagner du temps avec l'IA » (F14, « Vidéo des aides de l'IA », F14-AC68 à AC72) : une scène suivie
+ * de sa consigne à son image, avec de vraies réponses de l'IA. Sur la page « Aide », dans « Mon
+ * compte », en lien sous l'aparté de l'accueil, et en invitation dans la colonne de l'adulte.
+ */
+export const VIDEO_IA: HorsSerie = {
+  cle: "aides-ia",
+  titre: "Gagner du temps avec l’IA",
+  description: "Une scène de livre-jeu suivie de sa consigne à son image : la dictée, la consigne formulée, les suites proposées, la correction et l’illustration, avec de vraies réponses de l’IA, pour dix étoiles.",
+  secondes: 153,
+  horsSerie: true,
+  pose: true,
+  poseeLe: "2026-11-22",
+};
+
+/** Les vidéos hors série posées */
+export const HORS_SERIE_POSEES: HorsSerie[] = [VIDEO_IA].filter((v) => v.pose);
+
+/** Ce que joue le lecteur : un tuto de la série ou une vidéo hors série */
+export type VideoDeLAide = Tuto | HorsSerie;
+
+const prefixe = (t: VideoDeLAide) => ("horsSerie" in t ? "" : "tuto-");
+
+/** La dernière mise à jour des vidéos de l'« Aide » (plan du site) */
+export const AIDE_MISE_A_JOUR_LE = [TUTOS_POSES_LE, ...HORS_SERIE_POSEES.map((v) => v.poseeLe)].sort().at(-1)!;
+
+/** Le numéro d'un tuto dans la série (1 à 11), le même partout ; 0 pour une vidéo hors série */
+export const numeroDe = (t: VideoDeLAide): number => TUTOS.findIndex((x) => x.cle === t.cle) + 1;
 
 /** Le tuto posé qui suit, dans l'ordre de la série (les tutos passent du serveur au client : par la clé) */
-export const tutoSuivant = (t: Tuto): Tuto | null => TUTOS_POSES[TUTOS_POSES.findIndex((x) => x.cle === t.cle) + 1] ?? null;
+export const tutoSuivant = (t: VideoDeLAide): Tuto | null => {
+  const rang = TUTOS_POSES.findIndex((x) => x.cle === t.cle);
+  return rang < 0 ? null : (TUTOS_POSES[rang + 1] ?? null);
+};
 
-export const videoDe = (t: Tuto) => `/tutos/tuto-${t.cle}.mp4`;
-export const sousTitresDe = (t: Tuto) => `/tutos/tuto-${t.cle}.vtt`;
-export const afficheDe = (t: Tuto) => `/tutos/tuto-${t.cle}.webp`;
+export const videoDe = (t: VideoDeLAide) => `/tutos/${prefixe(t)}${t.cle}.mp4`;
+export const sousTitresDe = (t: VideoDeLAide) => `/tutos/${prefixe(t)}${t.cle}.vtt`;
+export const afficheDe = (t: VideoDeLAide) => `/tutos/${prefixe(t)}${t.cle}.webp`;
 
 /** « 1 min 22 » */
-export const dureeLisible = (t: Tuto): string => {
+export const dureeLisible = (t: VideoDeLAide): string => {
   const m = Math.floor(t.secondes / 60);
   const s = t.secondes % 60;
   return m ? `${m} min${s ? ` ${String(s).padStart(2, "0")}` : ""}` : `${s} s`;
 };
 
 /** « PT1M22S », pour les données structurées */
-export const dureeIso = (t: Tuto): string => `PT${Math.floor(t.secondes / 60)}M${t.secondes % 60}S`;
+export const dureeIso = (t: VideoDeLAide): string => `PT${Math.floor(t.secondes / 60)}M${t.secondes % 60}S`;
 
 /**
  * Les tutos qu'un écran de l'application montre (F14-AC65) : ceux de son étape, posés, sans ceux
@@ -90,4 +129,24 @@ export const dureeIso = (t: Tuto): string => `PT${Math.floor(t.secondes / 60)}M$
  */
 export function tutosDeLEcran(ecran: EcranDuTuto, projet: { aChoix: boolean; deClasse: boolean } = { aChoix: true, deClasse: true }): Tuto[] {
   return TUTOS_POSES.filter((t) => t.ecran === ecran && (!t.aChoix || projet.aChoix) && (!t.deClasse || projet.deClasse));
+}
+
+/** « Ne plus afficher » de l'invitation à la vidéo de l'IA : sa clé dans les aides masquées du compte */
+export const CLE_INVITATION_IA = "video-ia";
+
+/**
+ * L'invitation à la vidéo de l'IA, dans la colonne de l'adulte (F14-AC70) : pour l'enseignant qui a un
+ * projet et n'a encore utilisé aucune aide. Jamais pour le compte du créateur, ni quand les aides sont
+ * éteintes, ni après « Ne plus afficher » ; elle s'en va d'elle-même à la première aide utilisée.
+ */
+export function invitationALaVideoIa(compte: {
+  createur: boolean;
+  /** « Proposer les aides IA », dans « Mon compte » */
+  aidesProposees: boolean;
+  aidesMasquees: string[];
+  aUnProjet: boolean;
+  /** Un appel réussi au journal des aides */
+  aideUtilisee: boolean;
+}): boolean {
+  return VIDEO_IA.pose && !compte.createur && compte.aidesProposees && compte.aUnProjet && !compte.aideUtilisee && !compte.aidesMasquees.includes(CLE_INVITATION_IA);
 }

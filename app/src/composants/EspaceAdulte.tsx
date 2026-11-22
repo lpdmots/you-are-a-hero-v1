@@ -11,6 +11,7 @@ import { monSolde } from "@/app/(adulte)/actions-compte";
 import { BoutonEnvoi } from "./Attente";
 import { Icone, type NomIcone } from "./Icone";
 import { ImageRepere } from "./ImageRepere";
+import { InvitationVideoIa } from "./InvitationVideoIa";
 import { Logo } from "./Logo";
 import { Menu } from "./Menu";
 import { useProjetCourant } from "./ProjetCourant";
@@ -56,6 +57,8 @@ type Props = {
   /** Le compte du porteur : « Administration » dans le menu du nom (F14) */
   admin?: boolean;
   repli: Repli;
+  /** L'invitation à la vidéo de l'IA, au pied de la colonne (F14-AC70) */
+  invitationIa?: boolean;
   children: ReactNode;
 };
 
@@ -74,7 +77,7 @@ export const replierLaColonnePourUnTemps = (oui: boolean): void => {
   window.dispatchEvent(new CustomEvent<boolean>(REPLI_POUR_UN_TEMPS, { detail: oui }));
 };
 
-export function EspaceAdulte({ nomAffiche, courriel, etoiles, admin = false, repli: depart, children }: Props) {
+export function EspaceAdulte({ nomAffiche, courriel, etoiles, admin = false, repli: depart, invitationIa = false, children }: Props) {
   const { projet, actif } = useProjetCourant();
   const chemin = usePathname();
   const [repli, setRepli] = useState<Repli>(depart);
@@ -240,6 +243,7 @@ export function EspaceAdulte({ nomAffiche, courriel, etoiles, admin = false, rep
         </nav>
 
         <div className={styles.pied}>
+          {invitationIa ? <InvitationVideoIa etoiles={etoiles} /> : null}
           <Menu
             className={styles.compteMenu}
             agauche

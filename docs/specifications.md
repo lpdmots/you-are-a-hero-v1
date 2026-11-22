@@ -13126,7 +13126,8 @@ les révisions qui suivent :
   découpage ; script validé par lui le même jour ; fabriquée les 21 et
   22 novembre 2026 avec de vraies réponses de l'IA, 0,56 € d'appels sur les
   2 € qu'il a accordés ; rendu `V1/video/rendus/aides-ia-web.mp4`, 2 min 33,
-  validé par lui le 22 novembre 2026 ; pas encore posée sur le site). Les onze tutos laissent
+  validé par lui le 22 novembre 2026 ; posée sur le site en local le même
+  jour, [usage révisé](#f14-video-ia-posee), mise en ligne à sa demande). Les onze tutos laissent
   l'IA de côté ; une vidéo à part doit donner envie de l'essayer, puisque
   elle seule se vend.
   - **Pour qui et où :** l'enseignant inscrit qui a commencé un livre
@@ -13158,6 +13159,50 @@ les révisions qui suivent :
   - **Une seule vidéo pour convaincre ;** des tutos par geste sur chaque
     aide viendront hors série, plus tard. Écarté : plusieurs vidéos par
     thème (« gagner du temps », « être plus créatif »).
+  - <a id="f14-video-ia-posee"></a>**Posée sur le site, usage révisé par le
+    porteur le 22 novembre 2026** en demandant la pose : « Trouve un moyen
+    de la mettre un peu en avant car c'est ce qui doit rapporter de
+    l'argent, mais sans exagérer, ça doit rester pertinent. » Le choix lui
+    est délégué ; ce qui suit est construit, et attend son retour.
+    - *Les trois places du 21 novembre, inchangées :* sur la page « Aide »,
+      après les onze tutos, une rangée « Avec l'IA » (sa carte sans numéro
+      et une phrase : une scène entière, dix étoiles, les étoiles
+      offertes) ; dans « Mon compte », une vignette sous le solde (en tête
+      des « Aides IA » pour le compte du créateur, qui n'a pas de solde) ;
+      sur l'accueil, un lien « Voir en vidéo · 2 min 33 » sous l'aparté
+      « Et l'IA ? », qui ouvre le lecteur sur place. L'accueil ne reçoit
+      rien d'autre : ni affiche, ni carte.
+    - *Ce qui s'ajoute : une invitation, à un seul endroit,* le pied de la
+      colonne de navigation de l'adulte, au-dessus de son nom (où se lit le
+      solde). Une petite carte dans la forme de l'invitation du partage :
+      l'affiche en petit, le titre, « 2 min 33 · 30 ✦ pour essayer » (son
+      solde), une croix « Ne plus afficher ». Colonne repliée, le signe de
+      l'IA seul ; sur un écran étroit, dans le tiroir.
+    - *Pour qui :* l'enseignant qui a un projet et dont le journal des
+      aides n'a aucun appel réussi. Jamais le compte du créateur, ni quand
+      « Proposer les aides IA » est éteint, ni côté élève ou dans le
+      lecteur. La dictée, comptée à part et gratuite, ne vaut pas une aide
+      utilisée.
+    - *Quand elle s'en va :* à la première aide qui répond, sur place ; par
+      sa croix ; une fois la vidéo ouverte depuis la carte puis refermée
+      (une invitation suivie n'a plus à rester : le lecteur dit « À revoir
+      dans « Mon compte » »). Les deux derniers cas se gardent avec le
+      compte, parmi ses écrans d'aide masqués, sans migration.
+    - *Ce qu'elle ne fait jamais :* s'ouvrir seule, lancer la vidéo sans
+      clic, paraître en bandeau dans une page.
+    - *Gardé écarté :* le dialogue de recharge reste sans vidéo (21 novembre :
+      on y est en plein travail ; et qui y arrive a usé ses étoiles, donc
+      déjà essayé). Un lien près du solde dans le menu du nom n'est pas
+      ajouté : la carte est juste au-dessus, et « Mon compte » la garde.
+    - *Perfectible, dit au porteur :* sur une fenêtre de 768 points de haut,
+      avec un titre de projet sur deux lignes, la carte (environ 70 points)
+      fait défiler la colonne d'une quarantaine de points, « Replier »
+      passant sous le bord tant que l'invitation est là.
+    - *Fichiers :* `app/public/tutos/aides-ia.mp4`, `.vtt` et `.webp`
+      (32 Mo, deux fois un tuto), déclarés dans `app/src/domaine/tutos.ts`
+      (`VIDEO_IA`), avec son `VideoObject` sur la page « Aide ». Captures et
+      vérification : `npx playwright test --config
+      playwright.local.config.ts video-ia`.
 - **Ce qu'une école peut demander sur les données.** Le porteur tient
   qu'aucune donnée sensible n'est en jeu ; ce qui est fourni sert à ce qu'une
   école accepte l'outil, non à couvrir un risque. Sont fournis :
@@ -13573,6 +13618,38 @@ découvre l'outil, et le porteur, administrateur.
   dont le rendu attend l'avis du porteur, alors il n'est ni sur la page
   « Aide », ni dans un écran de l'application, ni dans les données
   structurées.
+
+*La vidéo des aides de l'IA posée (22 novembre 2026,
+[règles plus haut](#f14-video-ia-posee))*
+
+- **F14-AC68 — Hors série sur la page « Aide » :** étant donné un visiteur
+  qui ouvre `/aide`, alors, après les quatre temps, une rangée « Avec
+  l'IA » porte la carte « Gagner du temps avec l'IA », sans numéro, sa
+  durée (« 2 min 33 ») et une phrase ; un clic joue `/tutos/aides-ia.mp4`
+  dans la fenêtre des tutos, sans « Tuto suivant » ; la page porte son
+  `VideoObject`, `llms.txt` la cite ; un test vérifie que sa vidéo, ses
+  sous-titres et son affiche existent.
+- **F14-AC69 — « Mon compte » et l'accueil :** étant donné Mme Laurent sur
+  « Mon compte », alors la vignette « Gagner du temps avec l'IA · Vidéo ·
+  2 min 33 » est sous son solde et ouvre la même fenêtre ; étant donné un
+  visiteur sur l'accueil, alors « Voir en vidéo · 2 min 33 » est sous
+  l'aparté « Et l'IA ? » et ouvre la vidéo sur place, l'accueil ne montrant
+  ni son affiche ni sa carte ; le dialogue de recharge n'a pas de vidéo.
+- **F14-AC70 — L'invitation, pour qui n'a pas essayé :** étant donné
+  M. Bernard, qui a un projet et n'a encore utilisé aucune aide, alors une
+  carte « Gagner du temps avec l'IA · 2 min 33 · 30 ✦ pour essayer » est au
+  pied de la colonne, au-dessus de son nom ; lorsqu'une aide lui répond,
+  elle s'en va sur place et ne revient pas ; lorsqu'il clique sa croix, ou
+  qu'il ouvre la vidéo depuis la carte puis la referme, elle s'en va et ne
+  revient pas après rechargement ; étant donné un compte sans projet, ou
+  dont les aides sont éteintes, ou le compte du créateur, alors aucune
+  carte.
+- **F14-AC71 — Une invitation, pas une réclame :** étant donné
+  l'invitation affichée, alors elle n'est que dans la colonne de l'espace
+  adulte (jamais dans `/classe`, `/travail`, `/lire` ni une page publique),
+  aucune fenêtre ne s'ouvre seule et la vidéo ne part qu'au clic ; colonne
+  repliée, elle se réduit au signe de l'IA ; en 390 px, elle est dans le
+  tiroir, et rien ne déborde.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

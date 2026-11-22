@@ -2,7 +2,7 @@ import { enEuros, type Offre } from "./offre";
 import { ADRESSE_DU_GUIDE } from "./pages-publiques";
 import { ADRESSE_DES_RESSOURCES, DOCUMENTS_A_IMPRIMER } from "./ressources";
 import { EDITEUR, MODELES } from "./textes-publics";
-import { afficheDe, dureeIso, numeroDe, TUTOS_POSES, TUTOS_POSES_LE, videoDe } from "./tutos";
+import { afficheDe, dureeIso, HORS_SERIE_POSEES, numeroDe, TUTOS_POSES, TUTOS_POSES_LE, videoDe } from "./tutos";
 
 /**
  * Ce que les moteurs et les IA lisent du site (F14-AC48) : `llms.txt` et les données structurées. Tout
@@ -67,7 +67,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres à feuilleter, les prix.`,
     `- [La bibliothèque](${site}/bibliotheque) : des histoires dont vous êtes le héros et des récits écrits par des classes avec l’outil, à lire en ligne gratuitement, sans compte.`,
-    `- [Aide](${site}/aide) : un tuto vidéo d’environ une minute pour chaque étape du projet, les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
+    `- [Aide](${site}/aide) : un tuto vidéo d’environ une minute pour chaque étape du projet, une vidéo de deux minutes et demie sur les aides de l’IA, les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
     `- [Production d’écrit et projet d’écriture : le livre-jeu en classe](${site}${ADRESSE_DES_RESSOURCES}) : leçons, fiches de recherche, affiches et lettre aux familles à imprimer, gratuites, rangées par moment du projet, avec les liens aux programmes de français.`,
     `- [Comment écrire un livre dont vous êtes le héros en classe](${site}${ADRESSE_DU_GUIDE}) : la méthode d’un professeur des écoles, en quatorze questions, de la lecture de livres-jeux à l’impression ; avec ses chiffres réels (six ans de livres, deux livres de 213 et 323 scènes).`,
     `- [Confidentialité](${site}/confidentialite) : les données gardées, l’IA, la mesure d’audience.`,
@@ -144,20 +144,20 @@ export function donneesDeLAccueil(offre: Offre, site: string, video: Video | nul
 
 /**
  * L'« Aide » : ses tutos vidéo, un `VideoObject` chacun, sur le modèle de la visite de l'accueil
- * (F14-AC64) ; seuls les tutos posés, dans l'ordre de la page.
+ * (F14-AC64) ; seuls les tutos posés, dans l'ordre de la page, puis la vidéo hors série (F14-AC68).
  */
 export function donneesDesTutos(site: string): Donnee {
   const organisation = `${site}/#organisation`;
   return {
     "@context": "https://schema.org",
-    "@graph": TUTOS_POSES.map((t) => ({
+    "@graph": [...TUTOS_POSES, ...HORS_SERIE_POSEES].map((t) => ({
       "@type": "VideoObject",
-      "@id": `${site}/aide#tuto-${t.cle}`,
-      name: `Tuto ${numeroDe(t)} · ${t.titre}`,
+      "@id": `${site}/aide#${"horsSerie" in t ? "video" : "tuto"}-${t.cle}`,
+      name: "horsSerie" in t ? t.titre : `Tuto ${numeroDe(t)} · ${t.titre}`,
       description: t.description,
       thumbnailUrl: `${site}${afficheDe(t)}`,
       contentUrl: `${site}${videoDe(t)}`,
-      uploadDate: TUTOS_POSES_LE,
+      uploadDate: "horsSerie" in t ? t.poseeLe : TUTOS_POSES_LE,
       duration: dureeIso(t),
       inLanguage: "fr-FR",
       isAccessibleForFree: true,

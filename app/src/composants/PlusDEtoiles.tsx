@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState, useTransition } from "react";
 import { acheterUneRecharge, offreDeRecharge } from "@/app/(adulte)/projet/actions-paiement";
-import { MESSAGES_IA } from "@/domaine/aides-ia";
+import { AIDE_UTILISEE, MESSAGES_IA } from "@/domaine/aides-ia";
 import { enEuros } from "@/domaine/offre";
 import { Dialogue } from "./Dialogue";
 import { Icone } from "./Icone";
@@ -13,7 +13,8 @@ const EVENEMENT = "plus-d-etoiles";
 
 /**
  * L'appel d'une aide depuis le navigateur : `fetch`, et, si l'aide est refusée faute d'étoiles,
- * le dialogue de recharge demandé d'où qu'on soit (F14-AC38). La réponse est rendue intacte :
+ * le dialogue de recharge demandé d'où qu'on soit (F14-AC38) ; si elle répond, l'invitation à la
+ * vidéo de l'IA s'en va (F14-AC70). La réponse est rendue intacte :
  * chaque aide dit son message à sa place, comme avant.
  */
 export async function appelerUneAide(adresse: string, init: RequestInit): Promise<Response> {
@@ -21,8 +22,10 @@ export async function appelerUneAide(adresse: string, init: RequestInit): Promis
   void reponse
     .clone()
     .json()
-    .then((j: { message?: unknown } | null) => {
+    .then((j: { ok?: unknown; message?: unknown } | null) => {
       if (j?.message === MESSAGES_IA.etoiles) window.dispatchEvent(new Event(EVENEMENT));
+      // Une aide a répondu : l'invitation à la vidéo de l'IA n'a plus lieu d'être (F14-AC70)
+      else if (reponse.ok && j?.ok === true) window.dispatchEvent(new Event(AIDE_UTILISEE));
     })
     .catch(() => {});
   return reponse;

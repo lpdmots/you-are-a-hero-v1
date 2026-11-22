@@ -173,6 +173,105 @@
   padding-top: 10px;
   border-top: 1px solid var(--trait);
 }
+
+/* ——— L'invitation à la vidéo de l'IA, au-dessus du nom (F14-AC70) : la forme de l'invitation du
+   partage (canard pâle, une croix), l'affiche en petit ; rien d'autre ne bouge dans la colonne ——— */
+.invitationIa {
+  position: relative;
+  margin-bottom: 6px;
+  border-radius: var(--r-m);
+  background: var(--ia-pale);
+}
+.invVoir {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: 5px 9px;
+  width: 100%;
+  padding: 8px 24px 7px 8px;
+  border: 0;
+  border-radius: inherit;
+  background: none;
+  color: var(--graphite);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.invVoir:hover,
+.invVoir:focus-visible {
+  outline: none;
+  box-shadow: inset 0 0 0 2px var(--ia);
+}
+.invAffiche {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px var(--ia-trait);
+}
+.invAffiche img {
+  object-fit: cover;
+}
+.invRond {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--canard);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+.invRond svg {
+  width: 8px;
+  height: 8px;
+  margin-left: 1px;
+}
+.invSigne {
+  display: none;
+  width: 20px;
+  height: 20px;
+  color: var(--ia-fonce);
+}
+.invTexte {
+  display: contents;
+}
+.invTexte b {
+  font-size: 0.8125rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.invTexte > span {
+  grid-column: 1 / -1;
+  font-size: var(--t-xs);
+  color: var(--graphite-2);
+}
+.invFermer {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 0;
+  border-radius: var(--r-s);
+  background: none;
+  color: var(--graphite-2);
+  cursor: pointer;
+}
+.invFermer:hover {
+  background: var(--feuille);
+}
+.invFermer .ic {
+  width: 14px;
+  height: 14px;
+}
+
 .compteMenu {
   min-width: 0;
 }
@@ -268,6 +367,22 @@
   padding: 0 4px;
   font-size: 10.5px;
 }
+/* L'invitation, repliée : le signe de l'IA seul, dans sa pastille */
+.colonne[data-repliee] .invVoir {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-items: center;
+  min-height: 40px;
+  padding: 0;
+}
+.colonne[data-repliee] .invAffiche,
+.colonne[data-repliee] .invTexte,
+.colonne[data-repliee] .invFermer {
+  display: none;
+}
+.colonne[data-repliee] .invSigne {
+  display: block;
+}
 
 /* Sans choix gardé, la colonne commence repliée sous 1200 px, dès le premier affichage */
 @media (min-width: 900px) and (max-width: 1199px) {
@@ -311,6 +426,22 @@
     min-width: 18px;
     padding: 0 4px;
     font-size: 10.5px;
+  }
+  /* L'invitation, repliée : le signe de l'IA seul, dans sa pastille */
+  .espace:not([data-repli]) .colonne .invVoir {
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    min-height: 40px;
+    padding: 0;
+  }
+  .espace:not([data-repli]) .colonne .invAffiche,
+  .espace:not([data-repli]) .colonne .invTexte,
+  .espace:not([data-repli]) .colonne .invFermer {
+    display: none;
+  }
+  .espace:not([data-repli]) .colonne .invSigne {
+    display: block;
   }
 }
 

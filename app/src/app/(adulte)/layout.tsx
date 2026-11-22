@@ -8,7 +8,8 @@ import { Messages } from "@/composants/Messages";
 import { OffreDuPass } from "@/composants/OffreDuPass";
 import { MerciDeLaRecharge, PlusDEtoiles } from "@/composants/PlusDEtoiles";
 import { ProjetCourant } from "@/composants/ProjetCourant";
-import { exigerEnseignant } from "@/serveur/adulte";
+import { invitationALaVideoIa } from "@/domaine/tutos";
+import { aUtiliseUneAide, exigerEnseignant } from "@/serveur/adulte";
 import { projetDe, projetDeLaColonne } from "@/serveur/lectures";
 
 /**
@@ -21,13 +22,16 @@ export default async function Espace({ children }: { children: ReactNode }) {
   const [colonne, magasin] = await Promise.all([dernier ? projetDeLaColonne(enseignant, dernier) : null, cookies()]);
   const temoin = magasin.get(TEMOIN_COLONNE)?.value;
   const repli: Repli = temoin === "repliee" || temoin === "ouverte" ? temoin : null;
+  // L'invitation à la vidéo de l'IA (F14-AC70) : le journal n'est lu que si tout le reste l'admet
+  const compte = { createur: enseignant.createur, aidesProposees: enseignant.reglagesIa.proposer, aidesMasquees: enseignant.aidesMasquees, aUnProjet: !!colonne };
+  const invitation = invitationALaVideoIa({ ...compte, aideUtilisee: false }) && !(await aUtiliseUneAide(enseignant));
   return (
     <Messages>
       <ProjetCourant depart={colonne}>
         <AidesIa reglages={enseignant.reglagesIa}>
           {/* Le micro de la dictée, dans les champs de l'adulte et sa copie (F07.4) */}
           <DicteeDeLAdulte>
-            <EspaceAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} etoiles={enseignant.etoiles} admin={enseignant.createur} repli={repli}>
+            <EspaceAdulte nomAffiche={enseignant.nomAffiche} courriel={enseignant.courriel} etoiles={enseignant.etoiles} admin={enseignant.createur} repli={repli} invitationIa={invitation}>
               {children}
             </EspaceAdulte>
           </DicteeDeLAdulte>

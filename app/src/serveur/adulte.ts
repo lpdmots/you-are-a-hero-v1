@@ -56,6 +56,15 @@ export async function exigerEnseignant(): Promise<Enseignant> {
   return enseignant;
 }
 
+/**
+ * Le compte a-t-il déjà utilisé une aide IA ? Un appel réussi au journal (F14-AC70). Un journal
+ * illisible vaut « oui » : l'invitation à la vidéo ne s'affiche jamais à tort.
+ */
+export async function aUtiliseUneAide(enseignant: Enseignant): Promise<boolean> {
+  const { data, error } = await enseignant.supabase.from("appels_ia").select("id").eq("enseignant_id", enseignant.id).eq("issue", "reussi").limit(1);
+  return !!error || !!data?.length;
+}
+
 /** Nom que lisent les élèves (F01-AC13). */
 export const nomPourLesEleves = (nomAffiche: string | null | undefined): string =>
   nomAffiche?.trim() || "ton enseignant(e)";

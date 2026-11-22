@@ -8,9 +8,11 @@ import { Bulle } from "@/composants/Bulle";
 import { Dialogue } from "@/composants/Dialogue";
 import { Icone } from "@/composants/Icone";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
+import { VignettesDeTuto } from "@/composants/Tutos";
 import { Connexion } from "./Connexion";
 import { DEGRES, NOMS_DES_DEGRES, QUALITES, enEtoiles, type Degre, type ReglagesIa } from "@/domaine/aides-ia";
 import { EDITEUR } from "@/domaine/textes-publics";
+import { VIDEO_IA } from "@/domaine/tutos";
 import styles from "./compte.module.css";
 
 type Props = {
@@ -97,6 +99,12 @@ export function MonCompte({ nomAffiche, courriel, reglagesIa, etoiles, recharge,
       )}
     </span>
   );
+  // « Gagner du temps avec l'IA », près du solde ; le compte du porteur, sans solde, l'a en tête des aides (F14-AC69)
+  const videoIa = VIDEO_IA.pose ? (
+    <div className={styles.videoIa}>
+      <VignettesDeTuto tutos={[VIDEO_IA]} />
+    </div>
+  ) : null;
   const recharger = () =>
     lancerRecharge(async () => {
       setErreurRecharge(null);
@@ -175,6 +183,7 @@ export function MonCompte({ nomAffiche, courriel, reglagesIa, etoiles, recharge,
               {erreurRecharge}
             </p>
           ) : null}
+          {videoIa}
         </section>
       ) : null}
 
@@ -200,6 +209,7 @@ export function MonCompte({ nomAffiche, courriel, reglagesIa, etoiles, recharge,
           </span>
         </div>
         {ia.proposer ? null : <p className={styles.note}>Aucune aide IA dans vos projets. Tout le reste fonctionne.</p>}
+        {etoiles === null ? videoIa : null}
 
         {ia.proposer ? (
           <>

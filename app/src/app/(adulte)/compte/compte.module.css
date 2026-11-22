@@ -157,6 +157,15 @@
   font-weight: 800;
   font-variant-numeric: tabular-nums lining-nums;
 }
+/* « Gagner du temps avec l'IA », sous le solde : une vignette, de la largeur d'une seule */
+.videoIa {
+  max-width: 340px;
+  margin: -4px 0 16px;
+}
+.videoIa :global(ul) {
+  margin-top: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
 
 /* « Connexion » : la valeur, « Changer », puis un petit formulaire à la place */
 .valeur {

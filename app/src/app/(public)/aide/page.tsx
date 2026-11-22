@@ -5,7 +5,7 @@ import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { donneesDeLAide, donneesDesTutos, enJsonLd } from "@/domaine/presentation";
 import { EDITEUR, MODELES, PHRASE_DU_SUPPORT, QUESTIONS } from "@/domaine/textes-publics";
-import { TEMPS_DES_TUTOS, TUTOS_POSES } from "@/domaine/tutos";
+import { HORS_SERIE_POSEES, TEMPS_DES_TUTOS, TUTOS_POSES, VIDEO_IA } from "@/domaine/tutos";
 import { adresseDuSite } from "@/serveur/env";
 import { offreActuelle } from "@/serveur/offre";
 import styles from "../public.module.css";
@@ -26,19 +26,23 @@ export default async function Aide() {
   const offre = await offreActuelle();
   const questions = QUESTIONS.filter((q) => (!q.pass || offre.livrePayant) && (!q.gratuit || !offre.livrePayant));
   const temps = TEMPS_DES_TUTOS.map((t) => ({ ...t, tutos: TUTOS_POSES.filter((x) => x.temps === t.cle) })).filter((t) => t.tutos.length);
+  // La vidéo des aides de l'IA, hors série, après les onze (F14-AC68)
+  const horsSerie = VIDEO_IA.pose
+    ? { video: VIDEO_IA, phrase: `Une scène entière, de sa consigne à son image, avec de vraies réponses de l’IA. Le tout pour dix étoiles : ${offre.etoilesOffertes} vous sont offertes à l’inscription.` }
+    : null;
   return (
     <main>
       {/* Les questions et les tutos tels qu'affichés, pour les moteurs et les IA (F14-AC48, AC64) */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: enJsonLd(donneesDeLAide(questions)) }} />
-      {TUTOS_POSES.length ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: enJsonLd(donneesDesTutos(adresseDuSite())) }} /> : null}
+      {TUTOS_POSES.length || HORS_SERIE_POSEES.length ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: enJsonLd(donneesDesTutos(adresseDuSite())) }} /> : null}
       <article className={a.page}>
         <h1 className={a.titre}>Aide</h1>
         <p className={styles.chapeau}>Un tuto vidéo pour chaque étape du projet, les réponses aux questions qui reviennent, et le créateur qui vous répond.</p>
 
-        {temps.length ? (
+        {temps.length || horsSerie ? (
           <section className={a.tutos} aria-labelledby="tutos-t">
             <h2 id="tutos-t">Les tutos en vidéo</h2>
-            <TutosParTemps temps={temps} />
+            <TutosParTemps temps={temps} horsSerie={horsSerie} />
           </section>
         ) : null}
 
