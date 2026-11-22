@@ -618,7 +618,7 @@ proposé, sans retour de sa part.
 | Conflit | La copie passe en lecture, le bouton de remise disparaît, le pied dit : « Quelqu'un d'autre a écrit dans cette scène en même temps que toi. Ton texte est gardé. Arrête d'écrire et appelle Mme Laurent. » Aucune promesse sur la récupération. Ce que l'élève lit ensuite — scène qui ne s'écrit plus, retour avant le geste de l'enseignante, « Mon travail » — est dessiné le 7 octobre : voir [Conflit de sauvegarde : écrans de F08.1](#conflit-de-sauvegarde--écrans-de-f081-7-octobre-2026). |
 | Horaires | Fin proche : le bandeau ne promet l'enregistrement automatique que s'il n'y a pas d'échec, et « Mon travail » dit aussi « dans 5 minutes ». Fermé : « Mon travail » dit quand le travail rouvre et ne liste plus les scènes ; le chapitre y ramène. Fermé avec un texte non enregistré : le titre devient « Ton texte n'est pas enregistré », l'alerte « Ne ferme pas cette page et appelle Mme Laurent. », et le bouton qui faisait partir est retiré. |
 | Mots | « Remettre à Mme Laurent » reste un verbe ; le nom « remise » n'est plus montré à l'élève : « Modifier encore mon texte », « Voir mon texte du lundi 28 septembre », « C'est Bilal qui l'a remis ». « Reprendre » ne désigne que la correction après un retour ; prendre une scène se dit « M'occuper de cette scène », « Je m'en occupe », comme « Tu t'en occupes ». Les phrases d'état suivent le tampon : « Mme Laurent relit ce texte. », « Validé par Mme Laurent », sans « En relecture » ni « En cours d'écriture ». |
-| Mention de lecture | « Lecture seule » est remplacé par la raison : « Tu ne peux plus écrire : Mme Laurent relit », « Tu ne peux plus écrire : c'est validé », « Tu peux lire, pas écrire » sur la scène d'un autre. |
+| Mention de lecture | « Lecture seule » est remplacé par la raison : « Tu ne peux plus écrire : Mme Laurent relit », « Tu ne peux plus écrire : c'est validé », « Tu peux lire, pas écrire » sur la scène d'un autre. Depuis la révision de novembre 2026, la mention ne paraît plus quand la note ou le pied disent déjà pourquoi ([La copie de l'élève](#la-copie-de-lélève-22-novembre-2026)). |
 | Scène d'un autre | Elle s'intitule « Le texte de Bilal » et « La consigne ». La note dit : « Bilal s'occupe de cette scène. Tu peux la lire. Pour écrire dedans, parle-lui d'abord, ou à Mme Laurent. » Un seul bouton, discret : « M'occuper de cette scène » ; « Continuer en lecture », qui ne faisait rien, est retiré. |
 | Scène prise ou rendue | Une note reste sur place, sans bulle qui disparaît : « Tu t'occupes maintenant de cette scène, à la place de Bilal. », « Annuler ». « Tu t'en occupes », dans l'en-tête, ouvre « Je ne m'en occupe plus » et « Ton texte reste dans la scène. », en « En cours » et « À reprendre » seulement (F06.3). |
 | Texte remis par un camarade | Le pied dit « Mme Laurent relit ce texte. C'est Bilal qui l'a remis. » avant « Modifier encore ce texte ». |
@@ -3674,6 +3674,58 @@ bandeau de la scène dans la marge gauche — qui gagne moins de hauteur et lais
 blanche, compteur du parcours), qui distinguent l'essai de la lecture publique (« Partage et lecteur en ligne ») ; « Comment
 lire ce livre », jugé long par la lecture indépendante, texte arrêté à l'étape 7 ; au téléphone, les outils du lecteur
 partagé en icônes seules (étape 7) ; la flèche seule du retour à la bibliothèque, nommée au survol (23 octobre).
+
+#### La copie de l'élève (22 novembre 2026)
+
+Première page du côté élève, avant le premier vrai projet en janvier 2027 (CE2-CM1-CM2). Captures
+contre le serveur local : `npx playwright test --config playwright.local.config.ts revision-eleve -g
+copie` (31 vues : « Les passeurs de brume », vingt-cinq élèves, Bilal connecté ; texte vide avec
+consigne et « J'ai pensé à », rappel à la remise, remis, scène longue avec paragraphe protégé, action
+et deux choix, remarque seule puis à côté du texte, texte remis relu, « Je ne m'en occupe plus », scène
+d'une camarade prise puis annulée, scène de l'enseignante, remise par une camarade, validé avec
+encouragements, prête, sans consigne, échec simple puis remise en échec, conflit puis scène arrêtée ;
+390 px). Le fichier a un essai par page (`-g copie`, `-g travail`…). **Notes : 26/40 (informée),
+26/40 (indépendante).** Points faibles des deux lectures : la sobriété et la cohérence (le même état
+dit trois ou quatre fois), la consigne loin du texte au téléphone.
+
+**Corrigé :**
+
+- **Une seule fois pourquoi on ne peut pas écrire :** la mention en tête du texte (« Tu ne peux plus
+  écrire : Mme Laurent relit ») ne paraît plus quand la note ou le pied le disent (remise, validée,
+  prête, camarade, enseignante, arrêt). La ligne « Alice s'en occupe » sous le titre est retirée : la
+  note le dit, avec la gommette de la camarade à la place de la main (F06-AC04). Sur une scène remise
+  par Chloé, on lisait la même chose quatre fois.
+- **« Tu t'en occupes » dans le bandeau du titre,** à côté du tampon (menu « Je ne m'en occupe plus »
+  inchangé) : environ 40 points gagnés à 768 px, la scène longue montre une ligne de plus. Au
+  téléphone, il passe sous le titre, dans le bandeau.
+- **« C'est remis ! » :** « Tu ne peux plus écrire dedans pendant que Mme Laurent le relit. » ; le pied
+  dit « Mme Laurent relit ton texte. » (« ce texte » si c'est un camarade qui l'a remis).
+- **« Ton texte, avec les corrections de Mme Laurent »** seulement quand le texte a changé depuis la
+  remise ; il s'affichait sur toute scène à reprendre, sans correction.
+- **La consigne reste ouverte pendant une reprise,** sous la remarque, avec sa liste : elle se repliait
+  et l'élève reprenait sans la voir. Au téléphone, consigne et remarque passent avant le texte : on les
+  lit, puis on écrit (elles venaient après toute la copie).
+- **Rappel à la remise :** « Tu n'as pas coché 2 cases de « J'ai pensé à ». » (au lieu de « Il te reste
+  2 éléments à vérifier… ») ; la consigne et sa liste se cernent d'ambre pendant le rappel, sans rien
+  déplacer.
+- **Conflit et scène arrêtée en brique,** la couleur de ce qui bloque (l'ambre disait « attends ») ;
+  la scène arrêtée s'intitule « Le texte de la scène », puisque ce n'est plus le sien qui s'y lit.
+- **Texte remis relu dans la remarque :** sans la marge rouge, qui passait au milieu des mots dans la
+  colonne, et sans la hauteur vide de la copie.
+- **Chiffres sans zéro barré** (F06.4) : la référence de la scène et les dates de la remarque en Andika.
+- **Bandeau d'une camarade au téléphone :** « M'occuper de cette scène » passe sous la phrase, qui
+  tombait à un mot par ligne (règle générale des notes à commande, sous 560 px).
+- **Pendant la frappe,** « Enregistrement… » au lieu de « Pas encore enregistré », qui inquiétait ;
+  « · pour toi » retiré sous la date de la remarque.
+
+**Laissé, décidé :** les références « S002 » (gardées « comme actuellement » le 11 octobre) ; « Scènes
+voisines » cochée par défaut, « Juste avant » en tête (F04.3) ; le « + » et le cadenas en marge des
+blocs protégés (F06-AC50) ; « Remettre quand même » plein (F07-AC103) ; la remarque d'abord en grand
+(F07.3, à l'essai).
+
+**Laissé :** « Remettre » reste actif après une remise en échec (un nouveau clic réessaie) ; « Si tu
+hésites, demande une explication en classe. » ; le « S » barré de la barre ; « Juste avant » et
+« Juste après », communs avec l'adulte ; au téléphone, l'état et « Remettre » sur deux rangées.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

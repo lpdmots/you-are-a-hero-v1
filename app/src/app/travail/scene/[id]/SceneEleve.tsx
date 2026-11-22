@@ -87,6 +87,8 @@ export function SceneEleve({
   const mien = scene.prise?.par === "moi";
   const camarade = scene.prise?.par === "eleve" ? scene.prise.eleve : null;
   const sEcritEncore = sEcrit(scene.etat);
+  // « avec les corrections de Mme Laurent » seulement si le texte a changé depuis la remise
+  const corrige = mien && scene.etat === "reprendre" && !!scene.remise && JSON.stringify(scene.remise.texte) !== JSON.stringify(scene.texte);
 
   // Ce que l'enregistrement vient de rendre décide de la suite (F08.2)
   useEffect(() => {
@@ -190,6 +192,9 @@ export function SceneEleve({
             ? "Tu ne peux plus écrire : c’est validé"
             : "Tu peux lire, pas écrire";
 
+  // La note, le pied ou le message de l'arrêt disent déjà pourquoi : la mention ne le redit pas
+  const dejaDit = scene.arrete || !!camarade || scene.prise?.par === "enseignant" || (duChapitre && ["valider", "valide", "prete"].includes(scene.etat));
+
   // La remarque montrée seule, à la première ouverture d'une scène à reprendre, pour l'élève qui s'en occupe
   const remarqueSeule = scene.etat === "reprendre" && mien && !!scene.ecriture && scene.remarque && !scene.remarque.lue && !lue;
 
@@ -215,7 +220,7 @@ export function SceneEleve({
         marques={scene.marques}
         libelle={`Ton texte, scène ${ref}`}
         invite="Écris ici."
-        tete={<span className="copie__titre">{mien && scene.etat === "reprendre" ? `Ton texte, avec les corrections de ${prof}` : "Ton texte"}</span>}
+        tete={<span className="copie__titre">{corrige ? `Ton texte, avec les corrections de ${prof}` : "Ton texte"}</span>}
         onEtat={setEtat}
         onVide={setVide}
         onVersion={(v) => {
@@ -225,7 +230,7 @@ export function SceneEleve({
         pied={({ etat: e, vide: sansTexte }) => {
           if (e.etat === "garde") {
             return (
-              <p className="pied-alerte pied-alerte--attend" role="alert">
+              <p className="pied-alerte" role="alert">
                 <Icone nom="apart" />
                 {e.motif === "scene"
                   ? `Cette scène a changé pendant que tu écrivais : tu ne peux plus y écrire. Ce que tu venais d’écrire est gardé. Appelle ${prof}.`
@@ -285,7 +290,7 @@ export function SceneEleve({
           } else {
             dit = (
               <p className="sauv sauv--attente" role="status">
-                Pas encore enregistré
+                Enregistrement…
               </p>
             );
           }
@@ -307,17 +312,19 @@ export function SceneEleve({
       <div className="copie copie--lecture">
         <div className="copie__barre">
           <span className="copie__titre">
-            {camarade ? `Le texte ${de(nomPourEleves(camarade, eleves))}` : mien ? "Ton texte" : "Le texte de la scène"}
+            {camarade ? `Le texte ${de(nomPourEleves(camarade, eleves))}` : mien && !scene.arrete ? "Ton texte" : "Le texte de la scène"}
           </span>
-          <span className="copie__lecture">
-            <Icone nom="oeil" />
-            {lecture}
-          </span>
+          {dejaDit ? null : (
+            <span className="copie__lecture">
+              <Icone nom="oeil" />
+              {lecture}
+            </span>
+          )}
         </div>
         <TexteLu texte={scene.texte} libelle={`Texte de la scène ${ref}`} livre={scene.livre} pourEleve />
         {scene.arrete ? (
           <div className="copie__pied">
-            <p className="pied-alerte pied-alerte--attend">
+            <p className="pied-alerte">
               <Icone nom="apart" />
               Ton texte est gardé à part. {laProf} doit le regarder avant que tu écrives ici.
             </p>
@@ -329,7 +336,7 @@ export function SceneEleve({
           <div className="copie__pied">
             <p className="copie__etat">
               <Icone nom="sablier" />
-              {laProf} relit ce texte.{remisPar ? ` C’est ${remisPar} qui l’a remis.` : ""}
+              {laProf} relit {mien && !remisPar ? "ton" : "ce"} texte.{remisPar ? ` C’est ${remisPar} qui l’a remis.` : ""}
             </p>
             <button type="button" className="btn" disabled={occupe} onClick={() => void modifierEncore()}>
               <Icone nom="crayon" />
@@ -351,9 +358,8 @@ export function SceneEleve({
     );
   }
 
-  // Qui s'en occupe : « Tu t'en occupes » ouvre « Je ne m'en occupe plus » tant que la scène s'écrit (F06-AC64, AC65)
-  const qui =
-    mien ? "Tu t’en occupes" : scene.prise?.par === "enseignant" ? `${laProf} s’en occupe` : camarade ? `${nomPourEleves(camarade, eleves)} s’en occupe` : null;
+  // « Tu t'en occupes », dans le bandeau du titre, ouvre « Je ne m'en occupe plus » tant que la scène s'écrit (F06-AC64,
+  // AC65) ; pour un camarade ou l'enseignante, la note sous le titre le dit (F06-AC04)
   const peutRendre = mien && duChapitre && sEcritEncore && !scene.arrete;
 
   return (
@@ -367,35 +373,33 @@ export function SceneEleve({
       <header className={styles.sceneTete}>
         <span className="fiche__ref">{ref}</span>
         <h1>{scene.titre ?? "Scène sans titre"}</h1>
+        {mien ? (
+          peutRendre ? (
+            <div className={styles.sceneQui}>
+              <Menu agauche libelle="Tu t’en occupes. Changer" bouton={<><b>Tu t’en occupes</b><Icone nom="chevron-bas" /></>}>
+                {(fermer) => (
+                  <>
+                    <button type="button" disabled={occupe} onClick={() => { fermer(); void rendre(); }}>
+                      Je ne m’en occupe plus
+                    </button>
+                    <p className="menu__note">Ton texte reste dans la scène.</p>
+                  </>
+                )}
+              </Menu>
+            </div>
+          ) : (
+            <p className={styles.sceneQui}>
+              <b>Tu t’en occupes</b>
+            </p>
+          )
+        ) : null}
         <TamponScene etat={scene.etat} vide={vide} />
       </header>
-      {qui ? (
-        peutRendre ? (
-          <div className={styles.sceneQui}>
-            <Menu agauche libelle="Tu t’en occupes. Changer" bouton={<><b>{qui}</b><Icone nom="chevron-bas" /></>}>
-              {(fermer) => (
-                <>
-                  <button type="button" disabled={occupe} onClick={() => { fermer(); void rendre(); }}>
-                    Je ne m’en occupe plus
-                  </button>
-                  <p className="menu__note">Ton texte reste dans la scène.</p>
-                </>
-              )}
-            </Menu>
-          </div>
-        ) : (
-          <p className={styles.sceneQui}>
-            {camarade ? <Gommette prenom={camarade.prenom} couleur={camarade.couleur} taille="s" /> : null}
-            <b>{qui}</b>
-          </p>
-        )
-      ) : null}
-
       {envoi === "fait" && scene.etat === "valider" ? (
         <div className="note note--ok" role="status">
           <Icone nom="coche" />
           <p>
-            <b>C’est remis !</b> {laProf} va relire ton texte. En attendant, tu ne peux plus écrire dedans.
+            <b>C’est remis !</b> Tu ne peux plus écrire dedans pendant que {prof} le relit.
           </p>
         </div>
       ) : null}
@@ -426,7 +430,7 @@ export function SceneEleve({
         </div>
       ) : camarade ? (
         <div className="note note--pec">
-          <Icone nom="main" />
+          <Gommette prenom={camarade.prenom} couleur={camarade.couleur} taille="s" />
           {/* Pendant l'arrêt, rien ne propose de prendre la scène : le bouton promettrait l'écriture (F08-AC31) */}
           {duChapitre && sEcritEncore && !scene.arrete ? (
             <>
@@ -481,30 +485,15 @@ export function SceneEleve({
                   />
                 ) : null}
                 {scene.consigne !== null ? (
-                  scene.etat === "reprendre" && scene.remarque ? (
-                    // Pendant une reprise, la remarque passe devant : la consigne se replie
-                    <details className="carnet-fiche carnet-fiche--pli">
-                      <summary>
-                        <header>
-                          <h2>La consigne</h2>
-                        </header>
-                      </summary>
-                      <div className="carnet-fiche__corps">
-                        {consigne(scene.consigne, prof)}
-                        {elements.length ? <ListeACocher elements={elements} cochees={cochees} modifiable={scene.ecriture !== null} onCocher={(e, c) => void cocher(e, c)} /> : null}
-                      </div>
-                    </details>
-                  ) : (
-                    <section className="carnet-fiche" aria-labelledby="consigne-t">
-                      <header>
-                        <h2 id="consigne-t">La consigne</h2>
-                      </header>
-                      <div className="carnet-fiche__corps">
-                        {consigne(scene.consigne, prof)}
-                        {elements.length ? <ListeACocher elements={elements} cochees={cochees} modifiable={scene.ecriture !== null} onCocher={(e, c) => void cocher(e, c)} /> : null}
-                      </div>
-                    </section>
-                  )
+                  <section className={`carnet-fiche${rappel && aVerifier > 0 ? " carnet-fiche--rappel" : ""}`} aria-labelledby="consigne-t">
+                    <header>
+                      <h2 id="consigne-t">La consigne</h2>
+                    </header>
+                    <div className="carnet-fiche__corps">
+                      {consigne(scene.consigne, prof)}
+                      {elements.length ? <ListeACocher elements={elements} cochees={cochees} modifiable={scene.ecriture !== null} onCocher={(e, c) => void cocher(e, c)} /> : null}
+                    </div>
+                  </section>
                 ) : null}
                 {scene.idee !== null ? <IdeeDImage sceneId={scene.id} idee={scene.idee} modifiable={scene.ecriture !== null} /> : null}
                 {/* Le tampon reçu, et rien quand il n'y en a pas : ni emplacement vide, ni les trois catégories en attente */}

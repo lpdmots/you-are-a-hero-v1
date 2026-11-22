@@ -44,7 +44,7 @@ test.describe("« J'ai pensé à », chez l'élève (F07.2)", () => {
     await ecrire(alice.page, "Lou suit le sentier. Il entend le vent.");
     await jAiPense(alice.page).getByRole("checkbox", { name: "Décrire le sentier." }).check();
     await alice.page.getByRole("button", { name: "Remettre à Mme Laurent" }).click();
-    await expect(alice.page.getByRole("alert").filter({ hasText: "Il te reste 1 élément à vérifier dans « J'ai pensé à »." })).toBeVisible();
+    await expect(alice.page.getByRole("alert").filter({ hasText: "Tu n'as pas coché une case de « J'ai pensé à »." })).toBeVisible();
     await expect(tampon(alice.page)).not.toHaveText("À valider");
     // Alice remet quand même
     await alice.page.getByRole("button", { name: "Remettre quand même" }).click();

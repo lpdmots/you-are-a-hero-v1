@@ -20,8 +20,8 @@ describe("Les coches de l'élève (F07.2)", () => {
   });
 
   it("F07-AC103 — le rappel à la remise dit combien il reste, au singulier comme au pluriel", () => {
-    expect(rappelARemettre(1)).toBe("Il te reste 1 élément à vérifier dans « J'ai pensé à ».");
-    expect(rappelARemettre(2)).toBe("Il te reste 2 éléments à vérifier dans « J'ai pensé à ».");
+    expect(rappelARemettre(1)).toBe("Tu n'as pas coché une case de « J'ai pensé à ».");
+    expect(rappelARemettre(2)).toBe("Tu n'as pas coché 2 cases de « J'ai pensé à ».");
   });
 
   it("F07-AC104 — la consigne repliée dit combien d'éléments sont cochés", () => {

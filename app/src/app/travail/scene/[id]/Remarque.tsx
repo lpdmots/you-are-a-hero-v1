@@ -64,7 +64,7 @@ export function FicheRemarque({
       {remarque.texte ? <p className="remarque__texte">{remarque.texte}</p> : <p className="sans-consigne">Reprise demandée, sans remarque écrite.</p>}
       <p className="retour__meta">
         {jourEnMots(remarque.le)}
-        {pour ? ` · pour ${pour.moi ? "toi" : pour.prenom}` : ""}
+        {pour && !pour.moi ? ` · pour ${pour.prenom}` : ""}
       </p>
       {replie ? null : (
         <>

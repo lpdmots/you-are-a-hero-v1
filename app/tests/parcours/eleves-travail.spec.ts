@@ -66,11 +66,12 @@ test.describe("Remettre et modifier encore (F07.1)", () => {
     await expect(remettre(alice.page)).toBeEnabled();
     expect((await enBase(sentier)).etat).toBe("cours");
     await remettre(alice.page).click();
-    await expect(alice.page.getByRole("status").filter({ hasText: "C’est remis !" })).toContainText("Mme Laurent va relire ton texte. En attendant, tu ne peux plus écrire dedans.");
+    await expect(alice.page.getByRole("status").filter({ hasText: "C’est remis !" })).toContainText("Tu ne peux plus écrire dedans pendant que Mme Laurent le relit.");
     await expect(tampon(alice.page)).toHaveText("À valider");
     await expect(copie(alice.page)).toHaveCount(0);
-    await expect(lecture(alice.page)).toHaveText("Tu ne peux plus écrire : Mme Laurent relit");
-    await expect(alice.page.locator(".copie__etat")).toHaveText("Mme Laurent relit ce texte.");
+    // Le pied dit pourquoi : la mention de lecture ne le redit pas (révision de novembre 2026)
+    await expect(lecture(alice.page)).toHaveCount(0);
+    await expect(alice.page.locator(".copie__etat")).toHaveText("Mme Laurent relit ton texte.");
     expect(await enBase(sentier)).toMatchObject({ etat: "valider", prise_par_eleve: s.eleves.Alice.id });
     expect(await remises(sentier)).toEqual([{ eleve_id: s.eleves.Alice.id, mots: "Lou s’avance sur le sentier." }]);
     await alice.contexte.close();
@@ -158,7 +159,7 @@ test.describe("Remettre et modifier encore (F07.1)", () => {
     const alice = await posteDe(browser, s, "Alice");
     await aller(alice.page, sceneEleve(sentier));
     await expect(tampon(alice.page)).toHaveText("Validé");
-    await expect(lecture(alice.page)).toHaveText("Tu ne peux plus écrire : c’est validé");
+    await expect(lecture(alice.page)).toHaveCount(0);
     await expect(alice.page.locator(".copie__etat")).toHaveText("Validé par Mme Laurent");
     await expect(alice.page.getByText("Pour changer quelque chose, demande à Mme Laurent.")).toBeVisible();
     await expect(copie(alice.page)).toHaveCount(0);
@@ -207,10 +208,9 @@ test.describe("La remarque de l'enseignante (F07.3)", () => {
     await grande.getByRole("button", { name: "J’ai lu, j’écris" }).click();
     await expect(grande).toHaveCount(0);
     await expect(copie(bilal.page)).toBeFocused();
-    await expect(bilal.page.locator(".copie__titre")).toHaveText("Ton texte, avec les corrections de Mme Laurent");
+    await expect(bilal.page.locator(".copie__titre")).toHaveText("Ton texte");
     const remarque = bilal.page.getByRole("region", { name: "Remarque de Mme Laurent" });
     await expect(remarque).toContainText("Ajoute ce que Lou voit à la lueur de la lanterne.");
-    await expect(remarque).toContainText("pour toi");
     await expect(remarque).toContainText("Si tu hésites, demande une explication en classe.");
     // Le texte qu'il avait remis se relit, sans remplacer celui de la scène
     await remarque.getByRole("button", { name: /^Voir mon texte du/ }).click();

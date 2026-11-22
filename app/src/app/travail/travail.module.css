@@ -242,8 +242,12 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 10px;
+  margin: 0;
   font-size: var(--t-s);
+}
+/* Les chiffres que l'élève lit, sans zéro barré (F06.4, 7 octobre 2026) */
+.sceneTete :global(.fiche__ref) {
+  font-family: var(--police-chiffres), var(--f-ui);
 }
 .sceneColonnes {
   display: grid;
@@ -271,6 +275,14 @@
 @media (max-width: 860px) {
   .sceneColonnes {
     grid-template-columns: 1fr;
+  }
+  /* En une colonne, la consigne (ou la remarque) avant le texte : on la lit, puis on écrit */
+  .sceneColonnes > aside {
+    order: -1;
+  }
+  .sceneQui {
+    order: 3;
+    flex-basis: 100%;
   }
   .sceneTete h1 {
     font-size: var(--t-xl);

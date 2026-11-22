@@ -421,8 +421,41 @@
   color: var(--graphite-2);
 }
 .remise-apercu .copie__texte--lu {
+  min-height: 0 !important;
   padding: 0;
   font-size: 1rem;
+}
+/* Sans marge rouge : dans la colonne, elle passait au milieu des mots */
+.remise-apercu .copie__texte--lu::before {
+  content: none;
+}
+/* Les dates que l'élève lit, sans zéro barré (F06.4) */
+.page--eleve :is(.retour__meta, .remise-apercu__tete, .carnet-fiche--retour .btn) {
+  font-family: var(--police-chiffres), var(--f-ui);
+}
+/* « Remettre » a rappelé la liste : elle se désigne, sans bouger */
+.carnet-fiche--rappel {
+  box-shadow: inset 0 0 0 2px #e9c877;
+}
+.carnet-fiche--rappel .verif--eleve {
+  margin-inline: -8px;
+  padding-inline: 8px;
+  border-radius: 8px;
+  background: #fff3dc;
+}
+/* Une note étroite : sa commande passe sous la phrase, qui garde sa largeur */
+@media (max-width: 560px) {
+  .note:has(.note__cmd) {
+    flex-wrap: wrap;
+  }
+  .note:has(.note__cmd) > p {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .note__cmd {
+    flex-basis: 100%;
+    margin-left: 0;
+  }
 }
 @media (max-width: 720px) {
   .copie__apres {

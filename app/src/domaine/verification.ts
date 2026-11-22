@@ -42,7 +42,7 @@ export const cocheesValides = (elements: readonly string[], cochees: readonly st
 export const restants = (elements: readonly string[], cochees: readonly string[]): number => elements.filter((e) => !cochees.includes(e)).length;
 
 /** « Il te reste 2 éléments à vérifier. » : le rappel à la remise (F07.2). */
-export const rappelARemettre = (n: number): string => `Il te reste ${n === 1 ? "1 élément" : `${n} éléments`} à vérifier dans « J'ai pensé à ».`;
+export const rappelARemettre = (n: number): string => `Tu n'as pas coché ${n === 1 ? "une case" : `${n} cases`} de « J'ai pensé à ».`;
 
 /** « 3 sur 4 cochés » : ce que l'adulte lit d'un coup d'œil, la consigne repliée. */
 export const decompteDesCoches = (elements: readonly string[], cochees: readonly string[]): string =>

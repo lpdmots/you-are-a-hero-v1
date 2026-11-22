@@ -11873,9 +11873,10 @@ autre texte reste intact.
   scène, d'une séance à l'autre. Une coche tient au libellé : un élément récrit
   par l'adulte redevient à vérifier.
 - **À la remise :** s'il reste des éléments sans coche, le pied de la copie le
-  rappelle d'abord (« Il te reste 1 élément à vérifier dans « J'ai pensé
-  à ». »), le bouton devient « Remettre quand même », et un second clic remet.
-  Pas de blocage.
+  rappelle d'abord (« Tu n'as pas coché une case de « J'ai pensé à ». »,
+  phrase simplifiée à la révision de novembre 2026, la liste désignée d'un
+  cadre ambre), le bouton devient « Remettre quand même », et un second clic
+  remet. Pas de blocage.
 - **Chez l'adulte, en relisant :** les cases de sa liste montrent en vert ce que
   l'élève a coché (« Coché par Alice ») ; la consigne repliée porte « 1 sur 2
   coché » quand un élève s'occupe de la scène. L'adulte ne coche pas à la place
