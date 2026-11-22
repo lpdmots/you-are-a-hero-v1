@@ -3675,6 +3675,13 @@ blanche, compteur du parcours), qui distinguent l'essai de la lecture publique (
 lire ce livre », jugé long par la lecture indépendante, texte arrêté à l'étape 7 ; au téléphone, les outils du lecteur
 partagé en icônes seules (étape 7) ; la flèche seule du retour à la bibliothèque, nommée au survol (23 octobre).
 
+**Côté élève (22 novembre 2026) :** cinq pages, la copie, l'entrée dans la classe, « Mon travail », le
+chapitre et « Lire », chacune close par l'« ok » du porteur le même jour. Tout est en local : commits
+`1b8f97e` à `4f79571`, et la migration `recherche_sans_doublon` en base locale seulement, à appliquer à la
+vraie base à la mise en ligne, que le porteur demandera. Captures :
+`app/tests/captures/revision-eleve.spec.ts`, un essai par page (`-g copie`, `-g classe`, `-g travail`,
+`-g "chapitre :"`, `-g "lire :"`).
+
 #### La copie de l'élève (22 novembre 2026)
 
 Première page du côté élève, avant le premier vrai projet en janvier 2027 (CE2-CM1-CM2). Captures
