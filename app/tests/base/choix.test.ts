@@ -306,6 +306,8 @@ describe("Ce qu'un poste d'élève lit des choix (F05.2, F05-AC03)", () => {
     expect(lues.map((s) => s.reference)).toEqual([1, 2, 3]);
     expect(JSON.stringify(lues)).not.toMatch(/marais|ponton|noyée/i);
     expect(lues[1].mots).toContain("Une lanterne brille au loin.");
+    // Chaque texte une fois : l'extrait ne répète pas le paragraphe (22 novembre 2026)
+    expect(lues[1].mots.split("Une lanterne brille au loin.")).toHaveLength(2);
     expect(JSON.stringify(lues)).not.toContain("Solution");
     expect(lues[2].consigne).toBe("Décris la lanterne du passeur.");
 

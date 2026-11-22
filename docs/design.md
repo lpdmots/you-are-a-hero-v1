@@ -3802,9 +3802,13 @@ qui s'ouvre sur « Ce chapitre n'est pas le tien. » (F06-AC22).
 
 **Laissé :** le prénom absent de la barre au téléphone (« Bonjour Bilal » est juste dessous) ;
 « Changer d'élève » en mot ; le mot cherché non surligné dans les résultats ; l'extrait en police du
-récit. **Défaut relevé, à régler par une migration :** l'extrait d'une recherche de l'élève répète chaque
-paragraphe (« Le lac… deux fois. Le lac… deux fois. »), parce que `scenes_a_chercher` lit le texte avec un
-chemin JSON en mode souple, qui rend chaque texte deux fois ; la recherche de l'adulte n'est pas touchée.
+récit.
+
+**Défaut corrigé par une migration, accordée par le porteur le 22 novembre 2026 :** l'extrait d'une
+recherche de l'élève répétait chaque paragraphe (« Le lac… deux fois. Le lac… deux fois. »), parce que
+`scenes_a_chercher` lisait le texte avec un chemin JSON en mode souple, qui rend chaque texte deux fois ;
+`recherche_sans_doublon` le lit en mode strict (base locale seulement, à appliquer à la vraie base à la
+prochaine mise en ligne ; test F05-AC48 complété). La recherche de l'adulte n'était pas touchée.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
