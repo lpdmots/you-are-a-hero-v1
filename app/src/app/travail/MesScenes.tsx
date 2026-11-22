@@ -28,7 +28,12 @@ export function MesScenes({ travail, prof, tampons = {} }: { travail: MonTravail
       {scenes.length === 0 ? (
         <p className={styles.aucune}>
           Tu ne t’occupes encore d’aucune scène.{" "}
-          {aPrendre.length ? "Choisis-en une dans ton chapitre." : `Demande à ${prof} laquelle écrire.`}
+          {/* Un seul chapitre : le nombre à prendre se dit ici, et le bouton y mène ; pas de ligne « Voir » de plus */}
+          {!aPrendre.length
+            ? `Demande à ${prof} laquelle écrire.`
+            : !plusieurs
+              ? `${aPrendre[0].nombre > 1 ? `${aPrendre[0].nombre} scènes t’attendent` : "Une scène t’attend"} dans ton chapitre.`
+              : null}
         </p>
       ) : (
         <ul className={styles.scenes}>
@@ -61,13 +66,17 @@ export function MesScenes({ travail, prof, tampons = {} }: { travail: MonTravail
           })}
         </ul>
       )}
-      {aPrendre.map((a) => (
+      {(scenes.length === 0 && !plusieurs ? [] : aPrendre).map((a) => (
         <p key={a.chapitreId} className={styles.aPrendre}>
           <Icone nom="main" />
-          <span>{phraseAPrendre(a.nombre, a.chapitre, !plusieurs)}</span>
+          <span>{phraseAPrendre(a.nombre, a.chapitre, !plusieurs)}{" "}
+          {/* Le bouton « Choisir une scène » mène déjà au seul chapitre : pas deux liens pour le même endroit */}
+          {choisir && !plusieurs ? null : (
           <Link className="lien" href={`/travail/chapitre/${a.chapitreId}?vue=scenes`} aria-label={`Voir les scènes à prendre dans ${a.chapitre}`}>
             Voir
           </Link>
+          )}
+          </span>
         </p>
       ))}
       {choisir && ouChoisir ? (

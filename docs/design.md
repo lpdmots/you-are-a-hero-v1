@@ -3765,6 +3765,47 @@ rebours pendant l'attente (un chiffre qui bouge) ; au téléphone, le prénom ab
 « Mon travail » (à voir avec cette page) ; rien à faire quand le travail est fermé, « Lire » étant
 fermé aussi (F06-AC27).
 
+#### « Mon travail » de l'élève (22 novembre 2026)
+
+Troisième page du côté élève : `/travail`. Captures : `npx playwright test --config
+playwright.local.config.ts revision-eleve -g travail` (15 vues, dans `captures/eleve/travail` : Bilal et
+six scènes dans six états, ses encouragements, « Toute l'histoire », un chapitre qui n'est pas le sien,
+une recherche, un texte gardé à part, le classement montré ; Dylan sans scène prise, Emma sans chapitre,
+Alice dont tout est validé ; 390 px). **Notes : 28/40 (informée), 27/40 (indépendante).** Points faibles
+des deux lectures : la sobriété (Dylan lisait trois fois la même invitation, l'en-tête repoussait la
+liste au téléphone) et la cohérence (une scène prête disait « Validé »).
+
+**Corrigé :**
+
+- **Sans scène prise, une seule phrase et un seul bouton :** « Tu ne t'occupes encore d'aucune scène.
+  2 scènes t'attendent dans ton chapitre. » et « Choisir une scène » (F06-AC97). Il lisait aussi
+  « Choisis-en une dans ton chapitre » et la ligne « 2 scènes ne sont pas encore prises… Voir », qui
+  menait au même endroit. Quand tout est remis ou validé, la ligne reste sans « Voir », le bouton plein y
+  menant ; avec des scènes à écrire, elle garde « Voir » (F06-AC96).
+- **Une scène prête dit « Prête pour le livre. Bravo ! »,** à côté de son tampon « Prête », au lieu de
+  « Validé. Bravo ! ».
+- **L'image d'en-tête est celle de son chapitre** quand il n'en a qu'un (celle de l'histoire sinon) :
+  l'en-tête montrait une image qui n'était pas la sienne.
+- **Au téléphone, l'image en bandeau de 96 points :** la première scène monte d'environ 60 points.
+- **Références sans zéro barré** partout côté élève (`.page--eleve .fiche__ref` en Andika, F06.4) :
+  « S007 » s'écrivait dans la police à chasse fixe de l'adulte.
+- **« Ton texte est gardé à part. »** en ambre gras, comme « Le travail est fermé » : ce message attend
+  l'enseignante, il se lisait en petit gris.
+- **Les tampons d'encouragement d'une ligne** se nomment au survol (« Effort, Fine plume »).
+- **« 2 scènes ne sont pas encore prises… Voir » au téléphone :** la main reste devant la phrase et
+  « Voir » la suit ; la main était seule sur sa ligne et « Voir » sur une troisième.
+
+**Laissé, décidé :** les références « S007 » (gardées « comme actuellement », 11 octobre) ; le classement
+montré aux élèves qui n'ont pas de tampon, à sa place sous les scènes (F07-AC86, si l'enseignant
+l'allume) et sans les gros tampons quand il est montré ; la carte d'un chapitre qui n'est pas le sien,
+qui s'ouvre sur « Ce chapitre n'est pas le tien. » (F06-AC22).
+
+**Laissé :** le prénom absent de la barre au téléphone (« Bonjour Bilal » est juste dessous) ;
+« Changer d'élève » en mot ; le mot cherché non surligné dans les résultats ; l'extrait en police du
+récit. **Défaut relevé, à régler par une migration :** l'extrait d'une recherche de l'élève répète chaque
+paragraphe (« Le lac… deux fois. Le lac… deux fois. »), parce que `scenes_a_chercher` lit le texte avec un
+chemin JSON en mode souple, qui rend chaque texte deux fois ; la recherche de l'adulte n'est pas touchée.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

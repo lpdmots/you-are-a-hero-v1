@@ -40,8 +40,9 @@ export function ceQueDitLaScene(s: Pick<SceneDeTravail, "etat" | "vide" | "arret
     case "valider":
       return { phrase: `${laProf} relit ton texte.`, bouton: "Lire mon texte" };
     case "valide":
-    case "prete":
       return { phrase: "Validé. Bravo !", bouton: "Lire mon texte" };
+    case "prete":
+      return { phrase: "Prête pour le livre. Bravo !", bouton: "Lire mon texte" };
     case "cours":
       return s.vide ? { phrase: "Tu peux préparer ton texte sur papier ou l’écrire ici.", bouton: "Écrire" } : { phrase: "Continue ton texte.", bouton: "Continuer" };
   }

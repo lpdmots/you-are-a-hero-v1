@@ -86,7 +86,7 @@ test.describe("Mon travail (F06.5)", () => {
   test("F06-AC97 — aucune scène à son nom : une phrase le dit et « Choisir une scène » ouvre son chapitre ; rien ne lui dit qu'elle n'a pas de chapitre", async ({ page, browser }) => {
     const s = await classeQuiEcrit(page);
     const alice = await posteDe(browser, s, "Alice");
-    await expect(liste(alice.page)).toContainText("Tu ne t’occupes encore d’aucune scène. Choisis-en une dans ton chapitre.");
+    await expect(liste(alice.page)).toContainText("Tu ne t’occupes encore d’aucune scène.");
     await expect(alice.page.getByText(/Tu n’as pas encore de chapitre/)).toHaveCount(0);
     await liste(alice.page).getByRole("link", { name: "Choisir une scène" }).click();
     await alice.page.waitForURL(new RegExp(`/travail/chapitre/${s.lisiere.id}`));

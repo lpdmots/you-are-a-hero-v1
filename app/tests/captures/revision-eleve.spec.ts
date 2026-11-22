@@ -326,3 +326,93 @@ test("classe : ouvrir la classe, refus, qui utilise cet ordinateur, code, quitte
   await capturer(p, "390-classe-refus");
   await contexte.close();
 });
+
+test("travail : mes scènes par urgence, encouragements, classement, toute l'histoire, sans chapitre, rien de pris, 390 px", async ({ page, browser }) => {
+  test.setTimeout(600_000);
+  n = 0;
+  dossier = "test-results/captures/eleve/travail";
+  const c = await laClasse(page);
+  const { e, base } = c;
+  const [sentier, souche, pont, clairiere, gue, chouette, terrier, cascade, lac] = c.lisiere.scenes;
+  await sql("update scenes set consigne = $2 where id = any($1)", [c.lisiere.scenes, CONSIGNE]);
+  await base.from("scenes").update({ prise_par_eleve: e.Bilal.id }).in("id", [sentier, souche, clairiere, terrier, cascade, lac]);
+  await base.from("scenes").update({ prise_par_eleve: e.Alice.id }).in("id", [pont, chouette]);
+  await semerTexte(base, souche, ["Lou se glissa dans la souche creuse."]);
+  await semerTexte(base, clairiere, ["Les deux chemins se rejoignaient dans la clairière."]);
+  await etat(c, clairiere, "valider");
+  await etat(c, clairiere, "valide");
+  await semerTexte(base, lac, ["Le lac était si calme qu’on y voyait la lune deux fois."]);
+  await etat(c, lac, "valider");
+  await etat(c, lac, "valide");
+  await etat(c, lac, "prete");
+  await semerTexte(base, cascade, ["Derrière l’eau, une lueur bleue."]);
+  await remettre(cascade, e.Bilal.id, "1 day");
+  await semerTexte(base, terrier, ["Lou entra dans le terrier. Il faisait noir."]);
+  await remettre(terrier, e.Bilal.id, "2 days");
+  await etat(c, terrier, "reprendre", "Dis ce que Lou entend dans le noir.");
+  await semerTexte(base, pont, ["Le pont craquait."]);
+  await etat(c, pont, "valider");
+  await etat(c, pont, "valide");
+  await semerTexte(base, chouette, ["La chouette tenait un message."]);
+  await etat(c, chouette, "valider");
+  await etat(c, chouette, "valide");
+  const tampon = (scene: string, eleve: string, categorie: string) =>
+    sql("insert into encouragements (scene_id, projet_id, enseignant_id, eleve_id, categorie) values ($1, $2, $3, $4, $5)", [scene, c.projet, c.compte.id, eleve, categorie]);
+  await tampon(clairiere, e.Bilal.id, "effort");
+  await tampon(clairiere, e.Bilal.id, "plume");
+  await tampon(lac, e.Bilal.id, "creativite");
+  await tampon(chouette, e.Alice.id, "effort");
+  await tampon(chouette, e.Alice.id, "creativite");
+  await tampon(pont, e.Alice.id, "plume");
+
+  const bilal = await poste(browser, c, "Bilal");
+  const p = bilal.page;
+  await capturer(p, "bilal");
+  await capturer(p, "bilal-toute", true);
+  await p.mouse.wheel(0, 700);
+  await capturer(p, "bilal-bas");
+  // Un chapitre qui n'est pas le sien
+  await p.getByRole("button", { name: /ce chapitre n’est pas le tien/ }).first().click();
+  await capturer(p, "chapitre-ferme");
+  await p.getByRole("button", { name: "Fermer" }).click();
+  // Rechercher
+  await p.getByPlaceholder("Rechercher une scène").fill("lune");
+  await p.waitForTimeout(900);
+  await capturer(p, "recherche");
+  await p.getByPlaceholder("Rechercher une scène").fill("");
+  // Texte gardé à part
+  await aller(p, "/travail?texte=garde");
+  await capturer(p, "texte-garde");
+
+  // Le classement montré
+  await sql("update projets set classement_montre = true where id = $1", [c.projet]);
+  await aller(p, "/travail");
+  await p.getByRole("heading", { name: /encouragements/ }).scrollIntoViewIfNeeded();
+  await capturer(p, "classement");
+  await capturer(p, "classement-toute", true);
+
+  // 390 px
+  await p.setViewportSize({ width: 390, height: 844 });
+  await aller(p, "/travail");
+  await capturer(p, "390-bilal");
+  await capturer(p, "390-bilal-toute", true);
+  await bilal.contexte.close();
+
+  // Dylan : un chapitre, rien de pris
+  const dylan = await poste(browser, c, "Dylan");
+  await capturer(dylan.page, "dylan-rien-de-pris");
+  await capturer(dylan.page, "dylan-rien-de-pris-toute", true);
+  await dylan.contexte.close();
+
+  // Emma : sans chapitre
+  const emma = await poste(browser, c, "Emma");
+  await capturer(emma.page, "emma-sans-chapitre");
+  await emma.page.setViewportSize({ width: 390, height: 844 });
+  await capturer(emma.page, "390-emma-sans-chapitre", true);
+  await emma.contexte.close();
+
+  // Alice : tout est validé, le classement en tête
+  const alice = await poste(browser, c, "Alice");
+  await capturer(alice.page, "alice-tout-valide", true);
+  await alice.contexte.close();
+});

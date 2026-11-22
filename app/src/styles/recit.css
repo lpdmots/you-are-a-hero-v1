@@ -648,6 +648,10 @@
   color: var(--graphite-2);
   letter-spacing: 0.02em;
 }
+/* Côté élève, les références se lisent sans zéro barré (F06.4, 7 octobre 2026) */
+.page--eleve .fiche__ref {
+  font-family: var(--f-chiffres);
+}
 .fiche__tete .tampon {
   margin-left: auto;
 }

@@ -35,7 +35,7 @@ describe("Mon travail, par urgence (F06.5)", () => {
     expect(ceQueDitLaScene(scene(1, "cours"), "Mme Laurent").bouton).toBe("Continuer");
     expect(ceQueDitLaScene(scene(1, "cours", { vide: true }), "Mme Laurent").bouton).toBe("Écrire");
     expect(ceQueDitLaScene(scene(1, "valider"), "Mme Laurent")).toEqual({ phrase: "Mme Laurent relit ton texte.", bouton: "Lire mon texte" });
-    expect(ceQueDitLaScene(scene(1, "prete"), "Mme Laurent").phrase).toBe("Validé. Bravo !");
+    expect(ceQueDitLaScene(scene(1, "prete"), "Mme Laurent").phrase).toBe("Prête pour le livre. Bravo !");
   });
 
   it("F06-AC96 — scènes à prendre : « 3 scènes ne sont pas encore prises dans ton chapitre », et le chapitre nommé quand l'élève en a plusieurs", () => {

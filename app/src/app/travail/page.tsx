@@ -36,6 +36,8 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
   const rouvre = contexte.ouvert ? null : prochaineOuverture(contexte.plages, maintenant);
   const fin = contexte.ouvert ? finDePlage(contexte.classe.horairesLimites, contexte.plages, maintenant) : null;
   const premiere = histoires[0];
+  // L'image de son chapitre quand il n'en a qu'un ; sinon celle de l'histoire
+  const repere = miens.length === 1 ? miens[0].chapitre : premiere;
 
   return (
     <>
@@ -43,7 +45,7 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
       <main className="page page--eleve">
         <section className={styles.accueil}>
           <div className={styles.image}>
-            <ImageRepere repere={premiere ?? { imageId: null, visuelChoisi: null, visuelDefaut: "foret" }} graine={premiere?.id ?? "accueil"} grande prioritaire />
+            <ImageRepere repere={repere ?? { imageId: null, visuelChoisi: null, visuelDefaut: "foret" }} graine={repere?.id ?? "accueil"} grande prioritaire />
           </div>
           <div className={styles.texte}>
             <p className={styles.bonjour}>Bonjour {contexte.moi.prenom}</p>
@@ -87,7 +89,7 @@ export default async function MonTravail({ searchParams }: { searchParams: Promi
               </p>
             )}
             {texte === "garde" ? (
-              <p className={styles.acces}>
+              <p className={`${styles.acces} ${styles.ferme}`}>
                 <Icone nom="apart" />
                 Ton texte est gardé à part. {majuscule(contexte.prof)} doit le regarder.
               </p>

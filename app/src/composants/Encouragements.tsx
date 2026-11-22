@@ -28,7 +28,12 @@ export function SigneEncouragement({ categorie }: { categorie: Categorie }) {
 export function TamponsRecus({ categories }: { categories: Categorie[] }) {
   if (categories.length === 0) return null;
   return (
-    <span className="encres" role="img" aria-label={`Encouragement${categories.length > 1 ? "s" : ""} : ${categories.map((c) => NOM_CATEGORIE[c]).join(", ")}`}>
+    <span
+      className="encres"
+      role="img"
+      aria-label={`Encouragement${categories.length > 1 ? "s" : ""} : ${categories.map((c) => NOM_CATEGORIE[c]).join(", ")}`}
+      title={categories.map((c) => NOM_CATEGORIE[c]).join(", ")}
+    >
       {categories.map((c) => (
         <TamponEncouragement key={c} categorie={c} />
       ))}
