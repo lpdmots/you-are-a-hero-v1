@@ -3850,6 +3850,39 @@ le titre aiderait l'enfant, mais cinq parcours citent ces phrases et ne sont pas
 révision ; à reprendre avec eux. Le mot « molette » est retiré de l'aide de l'élève, pas de celle de
 l'adulte.
 
+#### « Lire » côté élève (22 novembre 2026)
+
+Cinquième et dernière page du côté élève : `/travail/lecture`, le départ de la lecture à l'essai et ce
+que l'élève vit dans les deux lecteurs (revus pour l'adulte le 13 novembre : seul ce qui est propre à
+l'élève est repris ici). Captures : `npx playwright test --config playwright.local.config.ts
+revision-eleve -g "lire :"` (10 vues, `captures/eleve/lire-page` : sans livre partagé, départ, recherche,
+lecture ouverte, 390 px, hors des horaires, année finie) et `SEULEMENT=BD
+DOSSIER=test-results/captures/eleve/lire npx playwright test --config playwright.local.config.ts
+revision-lecture` (le livre de la classe partagé, lu par Alice ; l'interrupteur s'appelle désormais
+« Comptes des élèves », script accordé). **Notes : 29/40 (informée), 26/40 (indépendante).**
+
+**Corrigé :**
+
+- **« Retour à Lire »** en tête du départ de la lecture à l'essai, comme « Retour à Mon travail » sur un
+  chapitre : on n'en revenait que par la barre.
+- **Chiffres sans zéro barré :** « 40 passages » sur les livres, et dans la feuille d'aventure de l'élève
+  (lecture à l'essai et livre partagé) les valeurs, le total des dés et le résultat (« Inventaire 0 » se
+  lisait « Ø »).
+- **L'extrait d'une recherche commence à un début de mot** (« …trer dans la souche » ne se lisait pas),
+  sur « Mon travail » comme au départ de la lecture.
+
+**Écarté :** le message « La lecture reprend au début. Annuler », que la lecture indépendante voyait sur
+tous les passages : c'est le script de capture qui recommence la lecture avant chaque vue ; le message
+part seul après huit secondes.
+
+**Laissé, décidé :** le livre de la classe à la fois sous « Notre histoire en cours » (à l'essai, ce qui
+s'écrit) et sous « Les livres de Mme Laurent » (la version partagée, une copie datée, F12.1) ; les deux
+lecteurs, l'essai et le livre partagé, arrêtés et revus le 13 novembre (icônes du téléphone, « Comment
+lire », la fin, la reprise, les choix en italique).
+
+**Laissé :** « Commencer le livre » et « Commencer au début » au départ de l'essai, chacun sous son titre ;
+le cœur des livres de la bibliothèque sans légende ; le mot cherché non surligné.
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

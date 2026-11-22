@@ -501,3 +501,63 @@ test("chapitre : Chemins d'abord, Scènes, prendre une scène, celle d'un camara
   await capturer(dylan.page, "supprimer");
   await dylan.contexte.close();
 });
+
+test("lire : la page « Lire », le départ de la lecture à l'essai, sans chapitre, hors horaires, année finie, 390 px", async ({ page, browser }) => {
+  test.setTimeout(600_000);
+  n = 0;
+  dossier = "test-results/captures/eleve/lire-page";
+  const c = await laClasse(page);
+  const { e, base } = c;
+  const [sentier, souche, pont] = c.lisiere.scenes;
+  await semerBlocs(base, sentier, [recit("Le sentier se sépare en deux devant Lou."), choixAuto("Entrer dans la souche creuse", souche), choixAuto("Traverser le pont de brume", pont)]);
+  await semerBlocs(base, souche, [recit("Lou se glissa dans la souche creuse.")]);
+  await semerBlocs(base, pont, [recit("Le pont craquait sous ses pas.")]);
+  await semerBlocs(base, c.marais.scenes[0], [recit("Les roseaux bruissaient.")]);
+  await base.from("projets").update({ depart_scene_id: sentier }).eq("id", c.projet);
+
+  const bilal = await poste(browser, c, "Bilal");
+  const p = bilal.page;
+  await aller(p, "/travail/lecture");
+  await capturer(p, "lire");
+  await p.getByRole("link", { name: "Lire à l’essai" }).click();
+  await p.waitForURL(/\/travail\/lecture\//);
+  await capturer(p, "depart");
+  await p.getByPlaceholder("Chercher une scène à lire").fill("pont", { timeout: 5000 }).catch(() => {});
+  await p.waitForTimeout(900);
+  await capturer(p, "depart-recherche");
+  await sql("update projets set lecture_ouverte = true where id = $1", [c.projet]);
+  await p.reload();
+  await capturer(p, "depart-lecture-ouverte");
+  await capturer(p, "depart-lecture-ouverte-toute", true);
+  await p.setViewportSize({ width: 390, height: 844 });
+  await capturer(p, "390-depart", true);
+  await aller(p, "/travail/lecture");
+  await capturer(p, "390-lire", true);
+  await p.setViewportSize({ width: 1366, height: 768 });
+
+  // Hors des horaires
+  const hier = ((new Date().getDay() + 5) % 7) + 1;
+  await sql("insert into horaires (classe_id, enseignant_id, jours, de, a) select id, enseignant_id, array[$2::smallint], '08:30', '11:30' from classes where id = $1", [c.classe.id, hier]);
+  await sql("update classes set horaires_limites = true where id = $1", [c.classe.id]);
+  await p.reload();
+  await capturer(p, "lire-ferme");
+  await sql("update classes set horaires_limites = false where id = $1", [c.classe.id]);
+  await bilal.contexte.close();
+
+  // Emma, sans chapitre
+  const emma = await poste(browser, c, "Emma");
+  await aller(emma.page, "/travail/lecture");
+  await capturer(emma.page, "lire-sans-chapitre");
+  await emma.contexte.close();
+
+  // L'année finie
+  await sql("update classes set terminee_le = now() where id = $1", [c.classe.id]);
+  const alice = await autrePoste(browser);
+  await ouvrirLaClasse(alice.page, c.classe.identifiant, c.classe.motDePasse);
+  await taperCode(alice.page, "Alice", c.codes.Alice);
+  await alice.page.waitForURL(/\/travail/, { timeout: 15_000 });
+  await aller(alice.page, "/travail/lecture");
+  await capturer(alice.page, "lire-annee-finie");
+  await alice.contexte.close();
+  void e;
+});

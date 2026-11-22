@@ -59,6 +59,13 @@ export function DepartEleve({
   return (
     <main className={`page page--eleve ${styles.page}`}>
       <header className={styles.tete}>
+        {/* Le même retour que la page d'un chapitre (« Retour à Mon travail ») ; dans l'en-tête, sans l'écart de la page */}
+        <nav className="fil" aria-label="Fil d’Ariane" style={{ padding: "0 0 4px" }}>
+          <Link href="/travail/lecture">
+            <Icone nom="fleche-g" />
+            Retour à Lire
+          </Link>
+        </nav>
         <h1 className={styles.titre}>
           <Icone nom="livre" />
           Lire à l’essai

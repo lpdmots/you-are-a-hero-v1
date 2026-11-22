@@ -428,7 +428,9 @@ export async function chercherPourLePoste(c: ContexteEleve, demande: string): Pr
     if (!mots.every((m) => partout.includes(m))) continue;
     // L'extrait trouvé : dans le texte, sinon dans la consigne
     const ou = [texte, s.consigne ?? ""].find((t) => sansAccent(t).includes(mots[0])) ?? "";
-    const place = Math.max(0, sansAccent(ou).indexOf(mots[0]) - 40);
+    // L'extrait commence à un début de mot : « …trer dans la souche » ne se lisait pas
+    const avant = Math.max(0, sansAccent(ou).indexOf(mots[0]) - 40);
+    const place = avant === 0 ? 0 : ou.indexOf(" ", avant) + 1 || avant;
     const extrait = ou ? `${place > 0 ? "… " : ""}${ou.slice(place, place + 140).trim()}${place + 140 < ou.length ? " …" : ""}` : null;
     const chapitre = trouves.get(s.chapitre_id) ?? { id: s.chapitre_id, titre: s.chapitre, couleur: s.couleur, scenes: [] };
     chapitre.scenes.push({ id: s.id, reference: s.reference, titre: s.titre, extrait });

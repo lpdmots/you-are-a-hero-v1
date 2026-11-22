@@ -398,6 +398,8 @@
 }
 .propose__meta {
   color: var(--graphite-2);
+  /* « 40 passages » : un zéro sans barre (F06.4) */
+  font-family: var(--f-chiffres);
 }
 .propose__lire {
   margin-top: 6px;

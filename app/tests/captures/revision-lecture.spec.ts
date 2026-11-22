@@ -197,7 +197,7 @@ test("Lecture : essai de l'adulte et de l'élève, lecteur en ligne, bibliothèq
   let partage = false;
   await vue("partager", async () => {
     await aller(page, `/projet/${p.projet}/livre?etape=sortie&volet=partager`);
-    await page.locator("label.inter", { has: page.getByRole("switch", { name: /À mes classes/ }) }).click();
+    await page.locator("label.inter", { has: page.getByRole("switch", { name: /Comptes des élèves/ }) }).click();
     const rappel = page.getByRole("group", { name: "À relire avant de partager" });
     await rappel.getByText("J’ai relu le livre sur ces points.").click();
     await rappel.getByRole("button", { name: "Partager" }).click();
