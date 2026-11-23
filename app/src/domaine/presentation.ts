@@ -11,15 +11,32 @@ import { afficheDe, dureeIso, HORS_SERIE_POSEES, numeroDe, TUTOS_POSES, TUTOS_PO
  */
 
 export const NOM = "Il était une classe";
-export const PROMESSE = "Votre classe écrit son livre-jeu.";
+/**
+ * Le premier écran de l'accueil et le pied des pages publiques, pour les deux sortes de récit (F14-AC72,
+ * « Pages publiques pour les deux sortes de récit », 23 novembre 2026) : « livre » porte les titres, mot-clé
+ * « écrire un livre avec sa classe » ; le livre dont vous êtes le héros est nommé d'abord, l'histoire
+ * classique ensuite, dans les mots de « Nouveau projet ».
+ */
+export const PROMESSE = "Votre classe écrit son livre.";
+export const DEUX_RECITS = "Un livre dont vous êtes le héros, où le lecteur choisit la suite, ou une histoire qui se lit du début à la fin.";
+export const TITRE_DE_L_ACCUEIL = "Écrire un livre avec sa classe : livre dont vous êtes le héros ou histoire classique — Il était une classe";
+export const DESCRIPTION_DE_L_ACCUEIL =
+  "Créez gratuitement un livre avec votre classe : livre dont vous êtes le héros ou histoire classique. Écriture des élèves, PDF, lecture en ligne. IA facultative.";
+/** Le troisième temps du passage 12 (F14-AC73) : ce qui vaut toujours, le PDF, puis ce qui est propre au livre-jeu */
+export const LE_LIVRE_PREND_FORME = "L’application compose le PDF. Pour un livre-jeu, elle vérifie aussi les chemins et numérote les passages. Vous relisez et ajustez.";
+
 export const DESCRIPTION =
-  "Application web gratuite pour écrire avec sa classe d’école élémentaire un livre dont vous êtes le héros (un livre-jeu, une histoire interactive à choix) : chaque élève écrit ses scènes, l’application guide l’enseignant à chaque étape, et le livre s’imprime en PDF et se lit en ligne.";
+  "Application web gratuite pour écrire un livre avec sa classe d’école élémentaire : un livre dont vous êtes le héros (un livre-jeu, une histoire interactive à choix) ou une histoire classique, qui se lit du début à la fin. Chaque élève écrit ses scènes, l’application guide l’enseignant à chaque étape, et le livre s’imprime en PDF et se lit en ligne.";
 
 /** La définition du genre, en une phrase qu'un moteur ou une IA peut citer telle quelle. */
 export const DEFINITION =
   "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en passages numérotés : à la fin de chacun, le lecteur choisit la suite et se rend au passage indiqué, si bien que chaque lecture est une aventure différente. On parle aussi d’histoire interactive ou de fiction interactive.";
 
 const prix = (centimes: number) => enEuros(centimes).replace(" ", " ");
+
+/** L'autre sorte de récit, dite pour un moteur ou une IA (F14-AC75) */
+export const HISTOIRE_CLASSIQUE =
+  "L’outil sert aussi à écrire une histoire classique, qui se lit du début à la fin, sans choix ni numéros de passage : un conte, un récit d’aventure, un roman. L’enseignant choisit la sorte de récit en créant le projet ; la préparation, l’écriture des élèves, la relecture, le PDF et la lecture en ligne sont les mêmes.";
 
 /** `llms.txt` (llmstxt.org) : ce qu'est l'outil, pour qui, ce qu'il coûte, et où lire la suite. */
 export function llmsTxt(offre: Offre, site: string): string {
@@ -42,18 +59,22 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     DEFINITION,
     "",
+    "## Histoire classique",
+    "",
+    HISTOIRE_CLASSIQUE,
+    "",
     "## Pour qui",
     "",
     "- Les enseignants d’école élémentaire et leur classe, en français : de jeunes auteurs dès 6 ans, en écriture accompagnée ou sous la dictée à l’adulte ; l’âge des lecteurs se règle pour chaque livre.",
-    "- Un adulte seul peut aussi écrire son propre livre.",
+    "- Un adulte seul peut aussi écrire son propre livre, à choix ou classique, sans classe.",
     "",
     "## Comment se passe un projet",
     "",
     "1. On prépare ensemble, projeté au tableau, étape par étape : le monde, les héros, l’enjeu, puis les chapitres et les scènes.",
     "2. Chaque élève écrit ses scènes, sur son cahier d’après une fiche de rédaction nominative ou directement à l’écran ; l’enseignant suit les textes à écrire, relire ou reprendre, fait retravailler et valide.",
-    "3. Le livre prend forme : l’application vérifie les chemins, numérote les passages et compose le PDF à imprimer, l’enseignant relit et ajuste ; les élèves le lisent en ligne avec leur code, et il peut entrer dans la bibliothèque publique du site.",
+    "3. Le livre prend forme : l’application compose le PDF à imprimer et, pour un livre-jeu, vérifie les chemins et numérote les passages ; l’enseignant relit et ajuste ; les élèves le lisent en ligne avec leur code, et il peut entrer dans la bibliothèque publique du site.",
     "",
-    "Une histoire à choix (livre-jeu) ou un récit classique. Rien à installer ; quelques postes suffisent ; l’enseignant ouvre la classe, et chaque élève entre avec son prénom et son code, sans adresse électronique. Les élèves n’ont accès à aucune IA.",
+    "Deux sortes de récit, au choix pour chaque projet : un livre dont vous êtes le héros ou une histoire classique. Rien à installer ; quelques postes suffisent ; l’enseignant ouvre la classe, et chaque élève entre avec son prénom et son code, sans adresse électronique. Les élèves n’ont accès à aucune IA.",
     "",
     "## Ce que cela coûte",
     "",
@@ -65,7 +86,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     "## Pages",
     "",
-    `- [Accueil](${site}/) : l’outil, un projet en trois temps, deux livres à feuilleter, les prix.`,
+    `- [Accueil](${site}/) : l’outil, les deux sortes de récit, un projet en trois temps, deux livres à feuilleter, les prix.`,
     `- [La bibliothèque](${site}/bibliotheque) : des histoires dont vous êtes le héros et des récits écrits par des classes avec l’outil, à lire en ligne gratuitement, sans compte.`,
     `- [Aide](${site}/aide) : un tuto vidéo d’environ une minute pour chaque étape du projet, une vidéo de deux minutes et demie sur les aides de l’IA, les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
     `- [Production d’écrit et projet d’écriture : le livre-jeu en classe](${site}${ADRESSE_DES_RESSOURCES}) : leçons, fiches de recherche, affiches et lettre aux familles à imprimer, gratuites, rangées par moment du projet, avec les liens aux programmes de français.`,

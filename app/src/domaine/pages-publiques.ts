@@ -3,14 +3,16 @@ import { MODELES } from "./textes-publics";
 
 /**
  * L'image de partage des pages publiques (courriel, messagerie, ENT, réseaux), 1200 × 630 : le premier
- * écran de l'accueil. Déclarée par le pied des pages publiques, et par l'accueil lui-même, dont les réglages
+ * écran de l'accueil, refait le 23 novembre 2026 avec son grand titre (F14-AC72) par la vue « partage » de
+ * tests/captures/accueil.spec.ts, puis mis au format (sips : largeur 1200, complété à 630 dans la couleur de la
+ * table, JPEG). Déclarée par le pied des pages publiques, et par l'accueil lui-même, dont les réglages
  * de partage remplacent ceux qu'il hérite : sans elle, l'accueil n'en donnait aucune (audit du 7 novembre 2026).
  */
 export const IMAGE_DE_PARTAGE = {
   url: "/accueil/partage.jpg",
   width: 1200,
   height: 630,
-  alt: "Un grand livre ouvert : « Votre classe écrit son livre-jeu. », à côté d’élèves qui écrivent sur l’ordinateur, et un petit dragon assis",
+  alt: "Un grand livre ouvert : « Votre classe écrit son livre. », à côté d’élèves qui écrivent sur l’ordinateur, et un petit dragon assis",
 };
 
 /** Le guide « Comment écrire un livre dont vous êtes le héros en classe » (F14-AC52, AC53) */

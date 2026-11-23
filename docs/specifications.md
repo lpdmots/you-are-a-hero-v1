@@ -12799,7 +12799,8 @@ les révisions qui suivent :
   passage numéroté, et ses choix sont les liens de la page (« Si vous voulez
   voir comment se passe un projet, rendez-vous au 12 »), « Créer un compte »
   gardant la forme du bouton principal. Ses passages, dans l'ordre de
-  lecture : la promesse (« Votre classe écrit son livre-jeu. ») ; un projet
+  lecture : la promesse (« Votre classe écrit son livre. », « son livre-jeu »
+  jusqu'au 23 novembre 2026) ; un projet
   en trois temps, de quelques semaines à quelques mois, montré en captures ;
   deux livres écrits par la classe du porteur, à feuilleter dans le
   lecteur en ligne (ses anciennes histoires, importées, autorisations
@@ -12823,6 +12824,9 @@ les révisions qui suivent :
   l'accueil revus le 8 novembre 2026 ». L'âge présenté est celui des auteurs,
   la connexion se fait par prénom et code après ouverture de la classe par
   l'adulte, et le suivi du travail est explicite. La structure reste celle du livre-jeu.
+  Validé le 23 novembre 2026, et ses textes posés en local le même jour :
+  l'accueil nomme les deux sortes de récit ([« Pages publiques pour les deux
+  sortes de récit »](#f14-deux-recits)).
 - **Référencement, réponses des IA et mesure d'audience** (décidé par le
   porteur le 24 octobre 2026, après un audit du même jour). Les pages
   publiques se trouvent et se citent : `robots.txt`, plan du site,
@@ -12868,13 +12872,15 @@ les révisions qui suivent :
   et vaut pour tous les francophones. Hiérarchie des mots sur les pages
   publiques : « livre dont vous êtes le héros » en tête, « livre-jeu » en
   second (même volume, nom du genre dans l'outil ; le grand titre de
-  l'accueil le garde), « histoire interactive » en appui ; « La classe dont
+  l'accueil l'a gardé jusqu'au 23 novembre 2026), « histoire interactive » en
+  appui ; « La classe dont
   tu es le héros », collection de Hatier, n'est pas employé. Un mot-clé
-  principal par page : l'accueil, « écrire un livre dont vous êtes le héros
-  avec sa classe » ; la bibliothèque, « histoires dont vous êtes le héros à
+  principal par page : l'accueil, « écrire un livre avec sa classe » depuis
+  le 23 novembre 2026 (d'abord « écrire un livre dont vous êtes le héros avec
+  sa classe ») ; la bibliothèque, « histoires dont vous êtes le héros à
   lire en ligne » (ses livres restent fermés aux moteurs, F15) ; l'« Aide »,
-  ses questions (définition, âge, durée d'un projet, matériel, différence
-  avec Twine ou Book Creator) ; puis, une page à la fois : un guide, « comment
+  ses questions (définition, histoire classique, âge, durée d'un projet,
+  matériel, auteur seul, différence avec Twine ou Book Creator) ; puis, une page à la fois : un guide, « comment
   écrire un livre dont vous êtes le héros » (la méthode, tirée de sa classe,
   sans documents pédagogiques ; une seule page avec sommaire, sans
   sous-pages tant que la Search Console ne montre pas de recherche propre à
@@ -12889,6 +12895,162 @@ les révisions qui suivent :
   le mot-clé principal d'une autre. La bibliothèque se présente comme
   « écrits par des classes », décidé par lui : ce sera l'essentiel de ses
   livres, et les livres d'exemple du site le disent dans leur tiroir.
+  L'ouverture des pages publiques au récit classique, validée le
+  23 novembre 2026, révise le mot-clé de l'accueil : voir
+  [« Pages publiques pour les deux sortes de récit »](#f14-deux-recits).
+- <a id="f14-deux-recits"></a>**Pages publiques pour les deux sortes de
+  récit** (discussion du 23 novembre 2026, validée dans son ensemble par le
+  porteur le même jour, « Je valide » ; les textes de l'accueil et de
+  l'« Aide » sont posés en local le même jour, à sa demande, « Oui en
+  local » ; le reste attend son instruction).
+  - *Constat.* L'outil propose quatre cas à « Nouveau projet » (seul ou en
+    classe, à choix ou classique). Les pages publiques n'en montrent qu'un :
+    le récit classique tient en une ligne du passage « Dans votre classe » et
+    une demi-phrase de l'« Aide », l'auteur seul en une phrase de `llms.txt`.
+    Le porteur le juge dommage ; il a lui-même écrit un récit classique avec
+    sa classe, livre qu'il n'a plus.
+  - *Volumes relevés par lui le 23 novembre 2026* (même outil, 1er novembre
+    2025 au 31 octobre 2026, fourchettes par mois ; une absence de chiffre
+    vaut moins de 10). En France : « book creator », 1 000 à 10 000 ;
+    « écrire un livre avec sa classe », « écrire un livre avec ses élèves »,
+    « livre de classe », « projet d'écriture », « écriture collaborative »,
+    « écrire un conte cm1 », « créer un livre numérique », « créer un livre
+    dont vous êtes le héros », « créer une histoire interactive », 10 à 100
+    chacun ; rien de mesurable pour « écrire un roman en classe », « roman
+    collectif », « écrire un conte en classe », « recueil de nouvelles
+    classe », « écriture longue », « écrire un livre en classe », « écrire
+    une histoire en classe », « créer » ou « faire un livre avec sa classe »,
+    « créer un livre jeu », « logiciel livre dont vous êtes le héros ». Au
+    Canada, en Belgique et en Suisse, le même tableau, « book creator »
+    montant à 10 000 à 100 000 (nom de marque, sans doute cherché aussi en
+    anglais). En anglais, aux États-Unis : « class book » (terme ambigu),
+    « choose your own adventure template » et « interactive story maker »,
+    100 à 1 000 chacun ; « branching story », « choose your own adventure
+    writing », « classroom book publishing », « collaborative writing
+    project », « gamebook maker », « publish student writing », 10 à 100 ;
+    rien pour « write a book with your class », « write a class novel »,
+    « class book project ». En Angleterre, « class book » seul à 100 à
+    1 000, le reste à 10 à 100 ou sans chiffre.
+  - *Ce qu'on en tire.* La recherche ne départage pas les deux sortes de
+    récit : « écrire un livre avec sa classe » est au même plancher que les
+    termes du livre-jeu. Ouvrir l'accueil se décide donc pour le visiteur qui
+    arrive, non pour un volume. Les enseignants cherchent un outil par son
+    nom plus qu'une activité : le livre classique en classe a déjà le sien,
+    le livre-jeu sur papier non, ce qui garde au livre-jeu sa place de
+    signature. En anglais, ce qui se mesure penche vers le livre-jeu. Non
+    vérifié : qui occupe la première page de Google sur « écrire un livre
+    avec sa classe » ; les variantes que proposerait l'outil.
+  - *Organisation retenue.* L'idée de l'accueil aux deux sortes de récit et
+    de la page à part pour l'auteur seul est du porteur ; le reste, recommandé,
+    est validé avec l'ensemble.
+    - **Accueil :** « écrire un livre avec sa classe » devient son mot-clé
+      principal, les deux sortes de récit nommées, le livre dont vous êtes le
+      héros en premier ; le mot « livre dont vous êtes le héros » reste dans
+      le titre d'onglet, la description et la première phrase. La forme en
+      passages numérotés reste. Six retouches, le reste de la page valant
+      déjà pour les deux : le premier écran (titre d'onglet, description,
+      grand titre « Votre classe écrit son livre. », phrase dessous, image de
+      partage) ; la phrase du troisième temps, qui dit ce qui est propre au
+      livre-jeu (chemins vérifiés, passages numérotés) et ce qui vaut
+      toujours (le PDF composé) ; les deux livres à feuilleter, un livre-jeu
+      (« Électro Nick », celui de sa classe) et un récit classique ; le
+      carton de fin de la vidéo ; la phrase du pied de page ; une phrase de
+      « D'où vient cet outil ». Pas de badge « livre-jeu seulement » sur la
+      page : deux endroits seulement seraient à marquer, une phrase y suffit.
+    - **Mots :** le mot qui se cherche est « livre » ; ni « roman » ni
+      « histoire » ne se mesurent avec la classe (« écrire un roman en
+      classe », « écrire une histoire en classe » : moins de 10). « Livre »
+      porte donc les titres. « Écrire une histoire », seul, relevé par le
+      porteur le même soir : 100 à 1 000 par mois, concurrence faible,
+      recherche large (enfants, adultes, enseignants), qui demande une
+      méthode plus qu'un outil. Recommandé en conséquence : « histoire »
+      plutôt que « roman » pour nommer le récit classique à côté du
+      livre-jeu (« une histoire qui se lit du début à la fin », les mots de
+      « Nouveau projet »), sans en faire le mot-clé principal d'une page ;
+      le libellé se règle à la construction.
+      « Recueil » est écarté par le porteur le 23 novembre 2026 (personne ne
+      le cherche, il complique) : ne pas le reproposer.
+    - **Vidéo de visite :** une seule vidéo, sans badge, décidé par le
+      porteur le 23 novembre 2026 sur recommandation (il proposait un
+      badge) ; trois phrases de la voix se retouchent, pour dire ce qui est
+      propre au livre-jeu (ouverture, écriture, composition du livre), et le
+      carton de fin prend le grand titre de l'accueil. Cela rouvre, à son
+      initiative, la vidéo gardée le 15 novembre 2026, pour sa voix
+      seulement : les images ne changent pas.
+    - **Livre d'exemple classique :** à écrire avec le skill
+      `livres-d-exemple`, présenté comme un exemple du site ; il prend la
+      seconde place à l'accueil, « Bouquin mène l'enquête » restant dans la
+      bibliothèque, qui montre ainsi les deux sortes de récit.
+    - **Guide :** son titre et son adresse restent sur le livre dont vous
+      êtes le héros, qui est son mot-clé. Les parties qui valent pour tout
+      livre le disent, et une partie « Et pour un roman ? » s'ajoute, tirée
+      de la pratique du porteur par un court entretien. Pas de guide séparé
+      du roman : aucun de ses termes ne se mesure. Un guide unique pour les
+      deux, avec le livre-jeu en apartés, idée du porteur, est déconseillé
+      pour cette raison de mot-clé.
+    - **« Aide » :** deux questions de plus (écrire un roman avec sa classe ;
+      écrire seul). **« Ressources » :** inchangée.
+    - **Auteur seul :** jamais mis en avant ; une page au pied du site,
+      limitée au livre-jeu, faite en dernier.
+    - **Autres langues :** la même structure, le poids de chaque sorte de
+      récit réglé par langue ; en anglais, le livre-jeu pèsera plus.
+  - *Remis à la construction, d'accord avec lui.* Le texte des trois phrases
+    de la voix, proposé dans la conversation ; le sujet du roman d'exemple.
+    Les libellés du premier écran et le mot du récit classique sont posés
+    (ci-dessous) : il les affine en les lisant.
+  - *Textes posés en local le 23 novembre 2026* (un commit, sans migration,
+    rien en ligne ; critères F14-AC72 à AC75). Le récit classique se dit
+    « histoire classique », ou « une histoire qui se lit du début à la fin »,
+    les mots de « Nouveau projet ». Ces libellés sont des propositions, que
+    le porteur n'a pas encore lues à l'écran :
+    - **Titre d'onglet :** « Écrire un livre avec sa classe : livre dont vous
+      êtes le héros ou histoire classique — Il était une classe ». Long
+      (106 signes) : un moteur le coupe vers 60, donc après « livre dont vous
+      êtes le héros », les deux mots-clés restant lisibles.
+    - **Description :** « Créez gratuitement un livre avec votre classe :
+      livre dont vous êtes le héros ou histoire classique. Écriture des
+      élèves, PDF, lecture en ligne. IA facultative. » (160 signes).
+    - **Grand titre, titre de partage et pied des pages publiques :**
+      « Votre classe écrit son livre. »
+    - **Sous le grand titre :** « Un livre dont vous êtes le héros, où le
+      lecteur choisit la suite, ou une histoire qui se lit du début à la
+      fin. », suivi de la phrase du 8 novembre 2026, inchangée
+      (« L'application vous guide et vous aide… »).
+    - **Troisième temps du passage 12 :** « L'application compose le PDF.
+      Pour un livre-jeu, elle vérifie aussi les chemins et numérote les
+      passages. Vous relisez et ajustez. » Ce qui vaut toujours vient
+      d'abord ; variante écartée, plus administrative : « Pour un livre-jeu,
+      l'application vérifie les chemins et numérote les passages. Dans tous
+      les cas, elle compose le PDF. »
+    - **Passage 52, « D'où vient cet outil » :** une phrase de plus dans le
+      texte signé du porteur, « Elle a aussi écrit une histoire classique,
+      qui se lit du début à la fin. », entre « …ses livres-jeux avec cet
+      outil. » et « Cette version accompagne… ». **Posée en local, à faire
+      accepter par lui :** c'est sa signature, et la phrase laisse entendre
+      que ce livre s'est écrit avec l'outil, ce qui n'est pas établi.
+    - **« Aide » :** « Peut-on écrire une histoire classique avec sa
+      classe ? », après la définition du livre dont vous êtes le héros, et
+      « Peut-on écrire seul, sans classe ? », plus bas, avant « Est-ce
+      gratuit ? » ; les données structurées de la page les reprennent. La
+      réponse à la définition dit « une histoire classique » (elle disait
+      « un récit classique »).
+    - **`llms.txt` et la description de l'application :** les deux sortes
+      de récit, une rubrique « Histoire classique » après la définition du
+      livre dont vous êtes le héros, l'auteur seul « à choix ou classique,
+      sans classe ».
+    - **Image de partage :** refaite avec le nouveau premier écran, par la
+      vue « partage » des captures de l'accueil ; elle portait encore les
+      textes d'octobre.
+    - Laissés tels quels : la ligne du passage 33 (« Une histoire
+      interactive à choix, ou un récit classique. »), le passage 27 et le
+      carton de fin de la vidéo, qui attendent le roman d'exemple et la
+      voix.
+    - Sur téléphone (390 × 664), la phrase sous le grand titre prend cinq
+      lignes au lieu de quatre : « Créez un compte » et le premier renvoi
+      restent à l'écran, le second, déjà coupé avant, descend de 24 points.
+      Pour rester à quatre lignes, il faudrait raccourcir la phrase du
+      8 novembre (« …de l'idée au livre imprimé ou lu en ligne. ») : non
+      fait, c'est son texte.
 - <a id="f14-ressources"></a>**Page « Ressources »** (entretien du
   19 novembre 2026, validé dans son ensemble par le porteur le même jour,
   « je valide », construit en local le même jour en trois lots ; documents dans
@@ -13652,6 +13814,36 @@ découvre l'outil, et le porteur, administrateur.
   aucune fenêtre ne s'ouvre seule et la vidéo ne part qu'au clic ; colonne
   repliée, elle se réduit au signe de l'IA ; en 390 px, elle est dans le
   tiroir, et rien ne déborde.
+
+*Les deux sortes de récit sur les pages publiques (23 novembre 2026,
+[règles plus haut](#f14-deux-recits))*
+
+- **F14-AC72 — Le premier écran de l'accueil :** étant donné un visiteur
+  sans compte qui ouvre l'accueil, alors le titre d'onglet commence par
+  « Écrire un livre avec sa classe » et finit par le nom du site ; ce titre
+  et la description nomment « livre dont vous êtes le héros » puis
+  « histoire classique », la description en 160 signes au plus ; le grand
+  titre, le titre de partage et le pied des pages publiques disent « Votre
+  classe écrit son livre. » ; la phrase dessous nomme le livre dont vous êtes
+  le héros, puis « une histoire qui se lit du début à la fin » ; l'image de
+  partage montre ce premier écran ; aucun de ces textes ne dit « roman » ni
+  « recueil », et la page ne porte aucun badge « livre-jeu seulement ».
+- **F14-AC73 — Le troisième temps :** étant donné le passage 12, alors « Le
+  livre prend forme » dit que l'application compose le PDF, puis que, pour un
+  livre-jeu, elle vérifie aussi les chemins et numérote les passages.
+- **F14-AC74 — Deux questions de l'« Aide » :** étant donné un visiteur sur
+  `/aide`, alors « Peut-on écrire une histoire classique avec sa classe ? »
+  suit la définition du livre dont vous êtes le héros et répond oui, la sorte
+  de récit se choisissant à la création du projet, sans se changer ensuite ;
+  « Peut-on écrire seul, sans classe ? » est plus bas et répond oui, par
+  « Moi » à « Qui écrit ? », pour l'une ou l'autre sorte de récit ; les deux
+  s'affichent quelle que soit l'offre et sont dans les données structurées
+  de la page.
+- **F14-AC75 — `llms.txt` :** étant donné `/llms.txt`, alors sa première
+  phrase dit « écrire un livre avec sa classe », une rubrique « Histoire
+  classique » suit celle du livre dont vous êtes le héros, la composition du
+  livre dit ce qui est propre au livre-jeu, et l'auteur seul y est, « à choix
+  ou classique, sans classe ».
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

@@ -5957,6 +5957,34 @@ un texte de remplacement aux treize vignettes et aux deux dragons. Restent au-de
 de 160 signes, sans signalement de Bing à ce jour : l'« Aide » (171) et la
 bibliothèque (176).
 
+### Pages publiques pour les deux sortes de récit (F14, 23 novembre 2026)
+
+Organisation validée par le porteur le 23 novembre 2026
+([F14](specifications.md#f14-deux-recits)). Cinq parts, dans cet ordre,
+chacune sur son instruction :
+
+1. **Les textes de l'accueil et de l'« Aide » — posés en local le 23 novembre
+   2026,** un commit, sans migration, rien poussé (F14-AC72 à AC75) : premier
+   écran (titre d'onglet, description, grand titre, phrase dessous), troisième
+   temps du passage 12, une phrase du passage 52, pied des pages publiques,
+   deux questions de l'« Aide », `llms.txt`, image de partage refaite. Les
+   textes sont dans `app/src/domaine/presentation.ts` et
+   `textes-publics.ts`, où leurs tests les lisent. Contrôles : `tsc`, lint,
+   tests unitaires (524), l'accueil et l'« Aide » vus sans compte en
+   1440 × 900 et 390 × 664. Trois parcours qui cherchent le grand titre sont
+   accordés (`pages-publiques`, `lecteur`, `ouverture-de-bout-en-bout`) sans
+   être lancés : aucun parcours Playwright sans sa demande.
+   **À faire accepter par lui :** la phrase du passage 52, dans son texte
+   signé (« Elle a aussi écrit une histoire classique, qui se lit du début à
+   la fin. ») ; les libellés, qu'il affine en les lisant. À lui dire : le
+   titre d'onglet fait 106 signes ; la phrase du premier écran prend une
+   ligne de plus sur téléphone.
+2. Un roman d'exemple (skill `livres-d-exemple`), qui prend la seconde place
+   au passage 27.
+3. La voix de la vidéo de visite, trois phrases, et son carton de fin.
+4. Une partie « Et pour un roman ? » dans le guide.
+5. Une page pour l'auteur seul, au pied du site, en dernier.
+
 ## Hors de la première livraison
 
 - **F01 :** conversion des modes d'un projet ; plusieurs enseignants sur un

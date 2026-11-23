@@ -111,7 +111,7 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
   const lire = await lecteur.newPage();
   await lire.goto(`http://localhost:3100/lire/${code}`);
   await lire.getByRole("link", { name: "Écrit avec Il était une classe" }).click();
-  await expect(lire.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
+  await expect(lire.getByRole("heading", { level: 1, name: "Votre classe écrit son livre." })).toBeVisible();
   await lecteur.close();
 
   // ——— « Paiement ouvert » et « Livre payant » allumés par le porteur : à 40 scènes, le dialogue du pass ———

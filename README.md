@@ -792,6 +792,25 @@ avant de commencer » soient tranchées.
   ([document](docs/guide-ecrire-un-livre-dont-vous-etes-le-heros.md#reste-à-traiter-avant-publication)). À
   venir : la page pédagogique. Skills ajoutés : `content-strategy`, `site-architecture`,
   `copywriting`, `link-building`.
+- **Pages publiques pour les deux sortes de récit, 23 novembre 2026 :**
+  le porteur juge que le site s'enferme dans le livre-jeu en classe. Volumes
+  relevés par lui le même jour (France, Canada, Belgique et Suisse,
+  États-Unis, Angleterre) : le roman en classe ne se cherche pas plus que le
+  livre-jeu, « book creator » pesant plus que tout le reste. Organisation
+  validée dans son ensemble par lui le même jour (« Je valide ») ; les
+  textes de l'accueil et de l'« Aide » sont posés en local le même jour
+  (F14-AC72 à AC75, [plan](docs/plan.md), « Pages publiques pour les deux
+  sortes de récit »), la phrase du passage 52 restant à lui faire accepter ;
+  le reste attend son instruction :
+  accueil autour de « écrire un livre avec sa classe », le livre dont vous
+  êtes le héros nommé en premier, six retouches ; un roman d'exemple à
+  écrire ; guide gardé sur le livre-jeu avec une partie « Et pour un
+  roman ? » ; auteur seul en dernier, au pied du site
+  ([F14](docs/specifications.md#f14-deux-recits)). « Recueil » écarté par
+  lui. Vidéo de visite : une seule, sans badge, trois phrases de la voix à
+  retoucher. Le récit classique se dit « histoire classique » (« écrire une
+  histoire » pèse 100 à 1 000 par mois). Remis à la construction : le sujet
+  du roman d'exemple.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
   le porteur le même jour : le glisser-déposer change l'ordre des parties,
   des chapitres et des scènes, et pose un chapitre dans une autre partie,

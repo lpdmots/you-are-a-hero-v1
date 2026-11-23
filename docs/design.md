@@ -2580,7 +2580,8 @@ ensemble ensuite. Règle de la page : [F14](specifications.md#f14--ouverture-off
 
 **Décidé par le porteur, sur recommandation sauf mention :**
 
-- **Promesse :** « Votre classe écrit son livre-jeu. », puis une phrase :
+- **Promesse :** « Votre classe écrit son livre-jeu. » (devenue « Votre
+  classe écrit son livre. » le 23 novembre 2026, plus bas), puis une phrase :
   chaque élève écrit ses scènes, l'application guide à chaque étape, le livre
   s'imprime et se lit en ligne. Écarté : « dont vous êtes le héros », nom
   d'une collection de Gallimard. Le message à faire ressortir, de sa part :
@@ -2781,7 +2782,7 @@ juste au-dessus, le dragon y dort sur son livre, plus petit, contre le coin droi
 
 **Le pied des pages publiques (repris le 23 octobre 2026, jugé « moche » par le porteur) :** une
 bande blanche dont le filet du haut est le sol de la table de l'accueil ; à gauche le logo et
-« Votre classe écrit son livre-jeu. » en Vollkorn italique ; trois colonnes de liens sans
+« Votre classe écrit son livre. » (« son livre-jeu » jusqu'au 23 novembre 2026) en Vollkorn italique ; trois colonnes de liens sans
 soulignement, coiffées de petits titres en capitales (« Commencer » : créer un compte, entrée
 enseignant, entrée des élèves ; « Besoin d'aide ? » : aide, « Écrire au créateur », l'adresse en
 bulle ; « Informations » : confidentialité, conditions, mentions légales) ; une barre basse,
@@ -2880,6 +2881,23 @@ plus, la fiche le donnant ; « d'images ajoutées » devient « d'images ». La
 description pour les moteurs commence par « Créez gratuitement », `llms.txt` et
 les données structurées (`isAccessibleForFree`) suivent la gratuité, et l'aide
 gagne « Est-ce gratuit ? », tant que « Livre payant » est éteint.
+
+**Textes de l'accueil pour les deux sortes de récit (23 novembre 2026).** Une
+retouche de texte, la page ne change pas de forme
+([F14](specifications.md#f14-deux-recits), où sont les libellés ; F14-AC72 à
+AC75). Le grand titre devient « Votre classe écrit son livre. », sur deux lignes
+comme avant ; la phrase dessous nomme les deux sortes de récit, le livre dont
+vous êtes le héros d'abord, et garde la seconde phrase du 8 novembre. Au 12, le
+troisième temps dit le PDF pour tout livre, puis les chemins et les numéros pour
+le livre-jeu. Au 52, une phrase de plus sur l'histoire classique, à faire
+accepter par le porteur. Le pied reprend le grand titre. Vu à l'écran, sans
+compte, en 1440 × 900 et en 390 × 664 : rien ne déborde ; sur téléphone, la
+phrase du premier écran prend une ligne de plus (cinq), le second renvoi, déjà
+coupé au bas du premier écran, descendant de 24 points. L'image de partage est
+refaite (vue « partage » de `tests/captures/accueil.spec.ts`, puis `sips` :
+largeur 1200, complétée à 630 dans la couleur de la table) : elle montre
+désormais le bouton de la visite en vidéo, posé sur l'illustration depuis
+octobre. Posé en local, non lu par le porteur.
 
 ### Entrées en livre-jeu (23 octobre 2026)
 

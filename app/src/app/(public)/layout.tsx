@@ -3,6 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/composants/Logo";
 import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
+import { PROMESSE } from "@/domaine/presentation";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { EDITEUR } from "@/domaine/textes-publics";
 import { adresseDuSite } from "@/serveur/env";
@@ -65,7 +66,8 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
             <span className={styles.marque}>
               <Logo href="/" />
             </span>
-            <p>Votre classe écrit son livre-jeu.</p>
+            {/* La promesse de l'accueil, la même pour les deux sortes de récit (F14-AC72) */}
+            <p>{PROMESSE}</p>
           </div>
           <nav className={styles.piedPages} aria-label="Pages du site">
             <div>

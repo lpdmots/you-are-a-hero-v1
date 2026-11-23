@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { lireOffre } from "@/domaine/offre";
-import { donneesDeLAccueil, donneesDeLAide, enJsonLd, llmsTxt } from "@/domaine/presentation";
+import {
+  DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS, donneesDeLAccueil, donneesDeLAide, enJsonLd, LE_LIVRE_PREND_FORME, llmsTxt, PROMESSE, TITRE_DE_L_ACCUEIL,
+} from "@/domaine/presentation";
+import { IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { QUESTIONS } from "@/domaine/textes-publics";
 
 const SITE = "https://iletaituneclasse.com";
@@ -45,5 +48,55 @@ describe("ce que lisent les IA", () => {
     const faq = donneesDeLAide(QUESTIONS) as { mainEntity: { name: string; acceptedAnswer: { text: string } }[] };
     expect(faq.mainEntity[0]).toEqual({ "@type": "Question", name: QUESTIONS[0].question, acceptedAnswer: { "@type": "Answer", text: QUESTIONS[0].reponse } });
     expect(enJsonLd({ t: "</script><b>" })).not.toContain("</script>");
+  });
+});
+
+// Les pages publiques pour les deux sortes de récit (F14, 23 novembre 2026) : le livre dont vous êtes le héros d'abord,
+// l'histoire classique ensuite ; « livre » porte les titres
+describe("les deux sortes de récit sur les pages publiques", () => {
+  const avant = (texte: string, premier: string, second: string) => texte.indexOf(premier) >= 0 && texte.indexOf(premier) < texte.indexOf(second);
+
+  it("F14-AC72 — le premier écran de l'accueil : « livre » dans les titres, les deux sortes de récit nommées, le livre dont vous êtes le héros d'abord", () => {
+    expect(PROMESSE).toBe("Votre classe écrit son livre.");
+    expect(TITRE_DE_L_ACCUEIL).toMatch(/^Écrire un livre avec sa classe/);
+    expect(TITRE_DE_L_ACCUEIL).toMatch(/— Il était une classe$/);
+    for (const texte of [TITRE_DE_L_ACCUEIL, DESCRIPTION_DE_L_ACCUEIL]) expect(avant(texte, "livre dont vous êtes le héros", "histoire classique")).toBe(true);
+    expect(DESCRIPTION_DE_L_ACCUEIL).toMatch(/^Créez gratuitement un livre avec votre classe/);
+    expect(DESCRIPTION_DE_L_ACCUEIL.length).toBeLessThanOrEqual(160);
+    expect(avant(DEUX_RECITS, "livre dont vous êtes le héros", "une histoire qui se lit du début à la fin")).toBe(true);
+    // L'image de partage montre ce premier écran : son texte de remplacement cite le même grand titre
+    expect(IMAGE_DE_PARTAGE.alt).toContain(`« ${PROMESSE} »`);
+    for (const texte of [PROMESSE, TITRE_DE_L_ACCUEIL, DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS]) expect(texte).not.toMatch(/recueil|roman/i);
+  });
+
+  it("F14-AC73 — le troisième temps : le PDF pour tout livre, les chemins et les numéros pour le livre-jeu", () => {
+    expect(LE_LIVRE_PREND_FORME).toContain("L’application compose le PDF.");
+    expect(LE_LIVRE_PREND_FORME).toContain("Pour un livre-jeu, elle vérifie aussi les chemins et numérote les passages.");
+  });
+
+  it("F14-AC74 — l'« Aide » répond à l'histoire classique avec sa classe et à l'auteur seul, données structurées comprises", () => {
+    const classique = QUESTIONS.find((q) => q.question === "Peut-on écrire une histoire classique avec sa classe ?");
+    const seul = QUESTIONS.find((q) => q.question === "Peut-on écrire seul, sans classe ?");
+    expect(classique?.reponse).toContain("une histoire qui se lit du début à la fin");
+    expect(classique?.reponse).toContain("Ce choix ne se change pas ensuite.");
+    expect(seul?.reponse).toContain("répondez « Moi »");
+    expect(seul?.reponse).toContain("un livre dont vous êtes le héros ou une histoire classique");
+    // Ni l'une ni l'autre ne dépend de l'offre : elles sont toujours affichées, donc toujours dans les données
+    for (const q of [classique, seul]) expect(q?.pass || q?.gratuit).toBeFalsy();
+    const noms = (donneesDeLAide(QUESTIONS) as { mainEntity: { name: string }[] }).mainEntity.map((q) => q.name);
+    expect(noms).toEqual(expect.arrayContaining([classique!.question, seul!.question]));
+    // L'histoire classique juste après la définition du livre dont vous êtes le héros ; l'auteur seul plus bas
+    expect(noms.indexOf(classique!.question)).toBe(noms.indexOf("Qu’est-ce qu’un livre dont vous êtes le héros ?") + 1);
+    expect(noms.indexOf(seul!.question)).toBeGreaterThan(noms.indexOf(classique!.question));
+  });
+
+  it("F14-AC75 — llms.txt dit les deux sortes de récit, le livre dont vous êtes le héros d'abord, et l'auteur seul", () => {
+    const texte = llmsTxt(livreGratuit, SITE);
+    expect(texte).toMatch(/^# Il était une classe\n\n> Application web gratuite pour écrire un livre avec sa classe/);
+    expect(avant(texte, "## Livre dont vous êtes le héros", "## Histoire classique")).toBe(true);
+    expect(texte).toContain("une histoire classique, qui se lit du début à la fin, sans choix ni numéros de passage");
+    expect(texte).toContain("pour un livre-jeu, vérifie les chemins et numérote les passages");
+    expect(texte).toContain("Un adulte seul peut aussi écrire son propre livre, à choix ou classique, sans classe.");
+    expect(texte).not.toMatch(/recueil/i);
   });
 });

@@ -251,8 +251,13 @@ export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gra
   // Les quatre suivantes répondent à ce que cherchent les enseignants (mots-clés du 28 octobre 2026, F14)
   {
     question: "Qu’est-ce qu’un livre dont vous êtes le héros ?",
-    reponse: "Un livre-jeu : le récit est découpé en passages numérotés, et à la fin de chacun le lecteur choisit la suite (« Si tu ouvres la porte, rendez-vous au 12 »). Chaque lecture est une aventure différente. L’outil permet aussi d’écrire un récit classique.",
+    reponse: "Un livre-jeu : le récit est découpé en passages numérotés, et à la fin de chacun le lecteur choisit la suite (« Si tu ouvres la porte, rendez-vous au 12 »). Chaque lecture est une aventure différente. L’outil permet aussi d’écrire une histoire classique.",
     guide: "",
+  },
+  // Les deux sortes de récit (F14-AC74, 23 novembre 2026) : l'histoire classique ici, l'auteur seul plus bas
+  {
+    question: "Peut-on écrire une histoire classique avec sa classe ?",
+    reponse: "Oui. En créant le projet, vous choisissez entre un récit à choix, le livre dont vous êtes le héros, et un récit classique : une histoire qui se lit du début à la fin, sans choix ni numéros de passage. La préparation, l’écriture des élèves, la relecture, le PDF et la lecture en ligne sont les mêmes. Ce choix ne se change pas ensuite.",
   },
   {
     question: "À partir de quel âge ?",
@@ -276,6 +281,10 @@ export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gra
   {
     question: "Les élèves ont-ils besoin d’une adresse électronique ?",
     reponse: "Non. Vous ouvrez la classe sur un ordinateur avec son identifiant et son mot de passe ; chaque élève choisit son prénom et tape son code.",
+  },
+  {
+    question: "Peut-on écrire seul, sans classe ?",
+    reponse: "Oui. À « Qui écrit ? », en créant le projet, répondez « Moi » : vous écrivez vous-même toutes les scènes, sans élèves, pour un livre dont vous êtes le héros ou une histoire classique. Les étapes sont les mêmes, jusqu’au PDF et à la lecture en ligne.",
   },
   {
     question: "Est-ce gratuit ?",

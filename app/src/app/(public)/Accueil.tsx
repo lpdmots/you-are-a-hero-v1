@@ -17,17 +17,16 @@ import { CapturesEnGrand } from "./CapturesEnGrand";
 import { LivreChoisi } from "./LivreChoisi";
 import { VisiteEnVideo } from "./VisiteEnVideo";
 import { DonneesDeLAccueil } from "./DonneesDeLAccueil";
-import type { Video } from "@/domaine/presentation";
+import { DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS, LE_LIVRE_PREND_FORME, PROMESSE, TITRE_DE_L_ACCUEIL, type Video } from "@/domaine/presentation";
 
-// Le titre et la description visent « écrire un livre dont vous êtes le héros avec sa classe » ; le
-// grand titre garde « livre-jeu », aussi cherché (mots-clés du 28 octobre 2026, F14)
-const DESCRIPTION =
-  "Créez gratuitement avec votre classe un livre dont vous êtes le héros : préparation guidée, écriture des élèves, PDF et lecture en ligne. IA facultative.";
+// Le titre et la description visent « écrire un livre avec sa classe », les deux sortes de récit nommées,
+// le livre dont vous êtes le héros d'abord (F14-AC72, 23 novembre 2026) ; les textes sont dans `presentation.ts`
+const DESCRIPTION = DESCRIPTION_DE_L_ACCUEIL;
 
 // L'aperçu d'un lien partagé (courriel, messagerie, ENT) : le premier écran, déclaré ici, ces réglages
 // remplaçant ceux qu'hérite la page
 export const METADATA_ACCUEIL: Metadata = {
-  title: { absolute: "Écrire un livre dont vous êtes le héros avec sa classe — Il était une classe" },
+  title: { absolute: TITRE_DE_L_ACCUEIL },
   description: DESCRIPTION,
   alternates: { canonical: "/" },
   openGraph: {
@@ -35,7 +34,7 @@ export const METADATA_ACCUEIL: Metadata = {
     locale: "fr_FR",
     siteName: "Il était une classe",
     url: "/",
-    title: "Votre classe écrit son livre-jeu.",
+    title: PROMESSE,
     description: DESCRIPTION,
     images: [IMAGE_DE_PARTAGE],
   },
@@ -91,10 +90,9 @@ export async function Accueil() {
           </figure>
           <div className={styles.droite}>
             <Numero n={1} />
-            <h1 id="p1">Votre classe écrit son livre-jeu.</h1>
+            <h1 id="p1">{PROMESSE}</h1>
             <p className={styles.recit}>
-              Vos élèves écrivent un livre dont vous êtes le héros : le lecteur choisit la suite. L’application vous guide et vous aide,
-              de la première idée au livre à imprimer ou à lire en ligne.
+              {DEUX_RECITS} L’application vous guide et vous aide, de la première idée au livre à imprimer ou à lire en ligne.
             </p>
             <Choix>
               <ChoixCompte phrase="Pour commencer un projet avec votre classe," />
@@ -142,7 +140,7 @@ export async function Accueil() {
               <SigneLivre />
               <div>
                 <b>Le livre prend forme.</b>{" "}
-                <span>L’application vérifie les chemins, numérote les passages et compose le PDF. Vous relisez et ajustez.</span>
+                <span>{LE_LIVRE_PREND_FORME}</span>
               </div>
               </a>
             </li>
@@ -369,7 +367,9 @@ export async function Accueil() {
             élèves écrivent le leur.
           </p>
           <p className={styles.recit}>
-            Depuis quatre ans, ma classe écrit ses livres-jeux avec cet outil. Cette version accompagne tout le projet, de l’idée au livre.
+            {/* « Elle a aussi écrit une histoire classique » : phrase ajoutée le 23 novembre 2026, à faire accepter par le porteur, qui signe */}
+            Depuis quatre ans, ma classe écrit ses livres-jeux avec cet outil. Elle a aussi écrit une histoire classique, qui se lit du
+            début à la fin. Cette version accompagne tout le projet, de l’idée au livre.
           </p>
           <p className={`${styles.recit} ${styles.petit}`}>
             Une question, une idée ? Écrivez-moi : <a href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>

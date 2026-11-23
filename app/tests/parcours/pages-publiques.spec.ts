@@ -13,7 +13,7 @@ test.afterEach(async () => {
 
 test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'inscription, aux deux entrées et aux quatre pages", async ({ page }) => {
   await aller(page, "/");
-  await expect(page.getByRole("heading", { level: 1, name: "Votre classe écrit son livre-jeu." })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Votre classe écrit son livre." })).toBeVisible();
   await expect(page.getByText("L’application vous guide et vous aide")).toBeVisible();
   // Un lien vers l'accueil, partagé, montre son premier écran (audit du 7 novembre 2026)
   await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/accueil\/partage\.jpg$/);
