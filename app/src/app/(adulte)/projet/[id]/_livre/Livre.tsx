@@ -84,7 +84,11 @@ export function Livre({
   const [panneau, setPanneau] = useState<HTMLElement | null>(null);
   const [vue, setVue] = useState<"scene" | "livre">("scene");
   const relecture = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const placer = (sceneId: string) => setAller({ sceneId, jeton: Date.now() });
+  // Un jeton neuf à chaque demande, appelé seulement depuis les gestes (pas pendant le rendu) : un compteur suffit,
+  // l'heure n'y apportait rien
+  const jetons = useRef(0);
+  const nouveauJeton = () => (jetons.current += 1);
+  const placer = (sceneId: string) => setAller({ sceneId, jeton: nouveauJeton() });
 
   const ouvrir = async (sceneId: string, o: { choix?: string; point?: PointAffiche; depuis?: string[] } = {}) => {
     if (!(await avantDePartir())) return dire({ texte: "Vos corrections ne sont pas encore enregistrées : réessayez dans un instant." });
@@ -92,7 +96,7 @@ export function Livre({
     const r = await ouvrirSceneDuLivre(projet.id, sceneId);
     setChargement(false);
     if (!r.ok) return dire({ texte: r.erreur });
-    setOuverte({ sceneId, choix: o.choix, point: o.point, depuis: o.depuis ?? [], plan: r.plan, donnees: r.donnees, jeton: Date.now() });
+    setOuverte({ sceneId, choix: o.choix, point: o.point, depuis: o.depuis ?? [], plan: r.plan, donnees: r.donnees, jeton: nouveauJeton() });
     setVue("scene");
     placer(sceneId);
   };
@@ -325,7 +329,7 @@ export function Livre({
                             sceneId={ouverte.sceneId}
                             numero={numeros[ouverte.sceneId] ?? null}
                             page={source.charge?.apercu.pageDe[ouverte.sceneId] ?? null}
-                            onFait={(f) => setDerniere({ ...f, jeton: Date.now() })}
+                            onFait={(f) => setDerniere({ ...f, jeton: nouveauJeton() })}
                           />
                         ) : null}
                         {ouverte.depuis.length ? (
@@ -374,7 +378,7 @@ export function Livre({
                         placer: async (sceneId, apres) => {
                           const r = await deplacerPassage(projet.id, sceneId, { sorte: "apres", numero: apres });
                           if (!r.ok) return dire({ texte: r.erreur });
-                          setDerniere({ texte: `Passé du n° ${r.avant} au n° ${r.apres} · les renvois suivent.`, annuler: () => annulerPlacement(projet.id, r.annuler), jeton: Date.now() });
+                          setDerniere({ texte: `Passé du n° ${r.avant} au n° ${r.apres} · les renvois suivent.`, annuler: () => annulerPlacement(projet.id, r.annuler), jeton: nouveauJeton() });
                         },
                       }
                     : undefined
