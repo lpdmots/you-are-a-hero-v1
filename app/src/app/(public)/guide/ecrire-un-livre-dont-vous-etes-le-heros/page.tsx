@@ -66,8 +66,8 @@ function LienExterne({ texte, italique }: { texte: string; italique?: boolean })
 
 /**
  * Un texte du guide, ses marques rendues : gras, italique, liens, renvois cerclés vers une question. En
- * renvoi `court` (les erreurs à éviter, partie 14), le numéro cerclé seul, son titre au survol : le gras de
- * chaque erreur dit déjà le sujet.
+ * renvoi `court` (les erreurs à éviter, partie 14, et l'histoire classique, partie 15), le numéro cerclé seul,
+ * son titre au survol : le gras de chaque erreur dit déjà le sujet, et la partie 15 en nomme sept d'un coup.
  */
 function EnLigne({ texte, court }: { texte: string; court?: boolean }) {
   return morceaux(texte, T.parties).map((m, i) => {
@@ -200,7 +200,7 @@ function Corps({ partie }: { partie: Partie }) {
                   </strong>{" "}
                 </>
               ) : null}
-              <EnLigne texte={b.texte} />
+              <EnLigne texte={b.texte} court={ancreDe(partie.numero) === "histoire-classique"} />
             </p>
           </Fragment>
         );

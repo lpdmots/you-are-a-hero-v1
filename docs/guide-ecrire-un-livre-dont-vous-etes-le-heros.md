@@ -68,6 +68,7 @@ demande.
 12. Comment illustrer, imprimer et partager le livre ?
 13. Quelle place donner à l'IA ?
 14. Six erreurs à éviter pour votre premier livre-jeu.
+15. Et pour une histoire classique ? (ajoutée le 24 novembre 2026)
 - Pied : liens vers « Ressources », la bibliothèque et l'accueil.
 
 ## Haut et pied de la page
@@ -179,6 +180,8 @@ Décidé le 30 octobre 2026.
 > pas des règles : chaque classe est différente, et vous trouverez sûrement
 > d'autres façons de faire. Prenez ce qui vous sert. Les leçons, les fiches
 > et les affiches à imprimer sont sur la page [Ressources](/ressources).
+> La plupart des parties valent aussi pour une histoire classique
+> (voir « Et pour une histoire classique ? »).
 >
 > **En bref**
 >
@@ -195,7 +198,7 @@ Décidé le 30 octobre 2026.
 >   trentaine d'images. Décidez du format à l'avance : le prix monte vite.
 >   (partie 12)
 >
-> **Sommaire** : les quatorze questions, chacune avec son ancre.
+> **Sommaire** : les quinze parties, chacune avec son ancre.
 >
 > …
 >
@@ -426,6 +429,9 @@ chaque partie pendant l'entretien et prime sur les sources.
   celles de GPT) : les trois niveaux en cartes côte à côte, chacune avec son
   accroche (« Écrire avec l'adulte », « Chacun écrit ses scènes »,
   « Construire aussi les chemins »).
+- Le 24 novembre 2026, à son accord : le texte à trous de son histoire
+  classique en CP-CE1 (partie 15) s'ajoute à la carte CP-CE1, comme une façon
+  de faire écrire chaque élève, valable aussi pour un livre-jeu.
 
 #### Premier jet
 
@@ -440,7 +446,8 @@ chaque partie pendant l'entretien et prime sur les sources.
 >
 > - **CP et CE1 · 6-8 ans** — *Écrire avec l'adulte.* La classe construit
 >   le cadre de l'histoire, vous écrivez au tableau ; les scènes se rédigent
->   en petits groupes, avec votre aide. Les plus autonomes écrivent quelques
+>   en petits groupes, avec votre aide, ou chacun comble un trou laissé dans
+>   le cadre, plus ou moins grand selon son niveau. Les plus autonomes écrivent quelques
 >   phrases seuls, avec un glossaire de l'histoire : personnages, lieux,
 >   objets, mots utiles. Une aventure courte, aux choix simples.
 > - **CE2 à CM2 · 8-11 ans** — *Chacun écrit ses scènes.* Chaque élève
@@ -1653,6 +1660,76 @@ chaque partie pendant l'entretien et prime sur les sources.
 >   chapitre. De votre côté, jouez le livre entier plusieurs fois avant
 >   l'impression
 >   (voir « Comment vérifier que tous les chemins mènent quelque part ? »).
+
+### 15. Et pour une histoire classique ?
+
+Ajoutée le 24 novembre 2026, quatrième part des
+[pages publiques pour les deux sortes de récit](specifications.md#f14-deux-recits) :
+le guide garde son titre et son adresse sur le livre dont vous êtes le héros,
+et cette partie, en dernier, dit ce qui vaut aussi pour une histoire classique.
+Mot retenu : « histoire classique », comme à l'accueil (« roman » et
+« recueil » écartés). Les parties qui valent pour tout livre sont nommées ici
+seulement, en renvois courts (numéros cerclés), et une phrase de « Avant de
+commencer » y mène ; pas de mention en tête de chaque partie.
+
+#### Expérience du porteur (24 novembre 2026)
+
+- Son premier livre avec une classe : une histoire classique, en CP-CE1, en
+  fin d'année, environ 25 élèves, une histoire courte écrite en un mois. Venue
+  d'abord parce que c'est le projet le plus courant ; devant l'engouement,
+  l'idée a évolué vers ses lectures de jeunesse, le livre à choix.
+- Méthode : une partie de cadrage globale en dictée à l'adulte, avec les idées
+  décidées par les enfants, laissant autant de trous que d'enfants, plus ou
+  moins grands selon le niveau (« écriture gruyère », dite « texte à trous »
+  sur la page) ; la tâche de chacun est précise, sans problème de raccord.
+- La difficulté venait surtout du niveau ; l'écriture classique est un peu plus
+  simple, linéaire ; le livre-jeu ajoute une réelle difficulté, un arbre
+  cohérent et des choix intéressants.
+- Accordés par lui le même jour : « l'année suivante » pour le premier
+  livre-jeu ; le paragraphe sur le raccord, conseil général pour les plus
+  grands, qui ne vient pas de sa pratique ; le texte à trous ajouté à la
+  partie 2.
+- Sans encart de l'outil : le guide en a déjà cinq, son plafond (9 novembre
+  2026) ; le choix du récit à la création est dit dans l'« Aide ».
+
+#### Premier jet
+
+> ## Et pour une histoire classique ?
+>
+> **Une histoire qui se lit du début à la fin.** Sans choix ni numéros, la
+> classe écrit un seul récit, que le lecteur suit dans l'ordre. C'est le
+> projet le plus courant à l'école, et souvent le plus simple pour
+> commencer : il n'y a ni arbre à construire ni choix à trouver.
+>
+> **Ce qui ne change pas.** Ces parties du guide valent aussi pour une
+> histoire classique : l'âge des élèves (voir « À partir de quel âge ? »),
+> l'invention de l'histoire (voir « Comment inventer l'histoire ensemble ? »),
+> la répartition de l'écriture (voir « Comment répartir l'écriture entre les élèves ? »),
+> la relecture (voir « Comment relire et garder la cohérence ? »), le temps à
+> prévoir (voir « Combien de temps faut-il ? »), l'illustration et
+> l'impression (voir « Comment illustrer, imprimer et partager le livre ? »)
+> et la place de l'IA (voir « Quelle place donner à l'IA ? »). Celles sur les
+> scènes, les choix, les objets et les chemins ne la concernent pas.
+>
+> **Le raccord entre les textes.** C'est la principale difficulté : chaque
+> passage doit reprendre là où le précédent s'arrête. Fixez donc toute
+> l'histoire avant d'écrire. Chaque élève sait alors d'où part son passage et
+> où il doit arriver.
+>
+> **Dans ma classe.** Mon premier livre avec des élèves était une histoire
+> classique, en CP-CE1, en fin d'année : une histoire courte, écrite en un
+> mois. Comme ils étaient jeunes, j'ai écrit le cadre sous leur dictée, avec
+> leurs idées, en y laissant autant de trous que d'enfants, plus ou moins
+> grands selon le niveau de chacun. Chacun savait exactement ce qu'il avait à
+> écrire, et les raccords se faisaient d'eux-mêmes. Devant l'enthousiasme de
+> la classe, je me suis souvenu des livres à choix de mon enfance : l'année
+> suivante, nous écrivions notre premier livre-jeu.
+>
+> **Laquelle choisir ?** Pour un premier projet, avec de jeunes élèves ou peu
+> de temps, l'histoire classique est plus simple. Le livre-jeu ajoute une
+> vraie difficulté, construire un arbre cohérent et trouver des choix
+> intéressants, mais aussi le plaisir du jeu
+> (voir « Pourquoi écrire un livre-jeu avec sa classe ? »).
 
 ## Texte de ChatGPT reçu le 28 octobre 2026 : tri
 

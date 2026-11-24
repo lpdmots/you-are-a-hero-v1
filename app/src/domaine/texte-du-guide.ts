@@ -6,7 +6,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
   "titre": "Comment écrire un livre dont vous êtes le héros en classe",
   "definition": "Un livre dont vous êtes le héros, ou livre-jeu, est un récit découpé en scènes numérotées où le lecteur choisit la suite : à la fin d’une scène, il se rend au numéro de son choix. On parle aussi d’histoire interactive ou, au Québec, de fiction interactive. L’écrire avec sa classe, c’est inventer l’aventure ensemble, puis se partager l’écriture des scènes, que l’enseignant relie en un seul livre.",
   "auteur": "Par Nicolas Coussot, professeur des écoles, six ans de livres-jeux avec sa classe.",
-  "avantDeCommencer": "Ce guide rassemble ce que j’ai appris en six ans de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont pas des règles : chaque classe est différente, et vous trouverez sûrement d’autres façons de faire. Prenez ce qui vous sert. Les leçons, les fiches et les affiches à imprimer sont sur la page [Ressources](/ressources).",
+  "avantDeCommencer": "Ce guide rassemble ce que j’ai appris en six ans de livres-jeux avec mes élèves, mes réussites comme mes erreurs. Ce ne sont pas des règles : chaque classe est différente, et vous trouverez sûrement d’autres façons de faire. Prenez ce qui vous sert. Les leçons, les fiches et les affiches à imprimer sont sur la page [Ressources](/ressources). La plupart des parties valent aussi pour une histoire classique (voir « Et pour une histoire classique ? »).",
   "enBref": [
     {
       "chiffre": "1 à 3 mois",
@@ -120,7 +120,7 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
         {
           "sorte": "liste",
           "elements": [
-            "**CP et CE1 · 6-8 ans** — *Écrire avec l’adulte.* La classe construit le cadre de l’histoire, vous écrivez au tableau ; les scènes se rédigent en petits groupes, avec votre aide. Les plus autonomes écrivent quelques phrases seuls, avec un glossaire de l’histoire : personnages, lieux, objets, mots utiles. Une aventure courte, aux choix simples.",
+            "**CP et CE1 · 6-8 ans** — *Écrire avec l’adulte.* La classe construit le cadre de l’histoire, vous écrivez au tableau ; les scènes se rédigent en petits groupes, avec votre aide, ou chacun comble un trou laissé dans le cadre, plus ou moins grand selon son niveau. Les plus autonomes écrivent quelques phrases seuls, avec un glossaire de l’histoire : personnages, lieux, objets, mots utiles. Une aventure courte, aux choix simples.",
             "**CE2 à CM2 · 8-11 ans** — *Chacun écrit ses scènes.* Chaque élève rédige ses propres scènes, avec plus ou moins d’aide selon son autonomie. Avec une classe habituée, le livre peut atteindre deux ou trois cents scènes, avec des objets, une jauge, parfois un dé (voir « Faut-il des objets, des compétences ou un dé ? »).",
             "**Collège · 11-15 ans** — *Construire aussi les chemins.* Les élèves imaginent les embranchements de leur chapitre, organisent les fins et vérifient que tous les chemins mènent quelque part."
           ]
@@ -735,6 +735,36 @@ export const TEXTE_DU_GUIDE: TexteDuGuide = {
             "**Numéroter trop tôt.** Les ajouts et les modifications deviennent vite un casse-tête. Attendez que toutes les scènes soient en place (voir « Comment vérifier que tous les chemins mènent quelque part ? »).",
             "**Négliger les tests.** Chaque élève explore les chemins de son chapitre. De votre côté, jouez le livre entier plusieurs fois avant l’impression (voir « Comment vérifier que tous les chemins mènent quelque part ? »)."
           ]
+        }
+      ]
+    },
+    {
+      "numero": 15,
+      "titre": "Et pour une histoire classique ?",
+      "blocs": [
+        {
+          "sorte": "paragraphe",
+          "tete": "Une histoire qui se lit du début à la fin.",
+          "texte": "Sans choix ni numéros, la classe écrit un seul récit, que le lecteur suit dans l’ordre. C’est le projet le plus courant à l’école, et souvent le plus simple pour commencer : il n’y a ni arbre à construire ni choix à trouver."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Ce qui ne change pas.",
+          "texte": "Ces parties du guide valent aussi pour une histoire classique : l’âge des élèves (voir « À partir de quel âge ? »), l’invention de l’histoire (voir « Comment inventer l’histoire ensemble ? »), la répartition de l’écriture (voir « Comment répartir l’écriture entre les élèves ? »), la relecture (voir « Comment relire et garder la cohérence ? »), le temps à prévoir (voir « Combien de temps faut-il ? »), l’illustration et l’impression (voir « Comment illustrer, imprimer et partager le livre ? ») et la place de l’IA (voir « Quelle place donner à l’IA ? »). Celles sur les scènes, les choix, les objets et les chemins ne la concernent pas."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Le raccord entre les textes.",
+          "texte": "C’est la principale difficulté : chaque passage doit reprendre là où le précédent s’arrête. Fixez donc toute l’histoire avant d’écrire. Chaque élève sait alors d’où part son passage et où il doit arriver."
+        },
+        {
+          "sorte": "classe",
+          "texte": "Mon premier livre avec des élèves était une histoire classique, en CP-CE1, en fin d’année : une histoire courte, écrite en un mois. Comme ils étaient jeunes, j’ai écrit le cadre sous leur dictée, avec leurs idées, en y laissant autant de trous que d’enfants, plus ou moins grands selon le niveau de chacun. Chacun savait exactement ce qu’il avait à écrire, et les raccords se faisaient d’eux-mêmes. Devant l’enthousiasme de la classe, je me suis souvenu des livres à choix de mon enfance : l’année suivante, nous écrivions notre premier livre-jeu."
+        },
+        {
+          "sorte": "paragraphe",
+          "tete": "Laquelle choisir ?",
+          "texte": "Pour un premier projet, avec de jeunes élèves ou peu de temps, l’histoire classique est plus simple. Le livre-jeu ajoute une vraie difficulté, construire un arbre cohérent et trouver des choix intéressants, mais aussi le plaisir du jeu (voir « Pourquoi écrire un livre-jeu avec sa classe ? »)."
         }
       ]
     }

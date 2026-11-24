@@ -1,7 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
-import { ADRESSE_DU_GUIDE, ANCRES, DATE_DE_PUBLICATION_DU_GUIDE, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DES_ENCARTS, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
+import { ADRESSE_DU_GUIDE, ANCRES, ancreDe, DATE_DE_PUBLICATION_DU_GUIDE, DATE_DU_GUIDE, donneesDuGuide, IMAGES_DES_ENCARTS, IMAGES_DU_GUIDE, morceaux } from "@/domaine/guide";
 import { lireOffre } from "@/domaine/offre";
 import { estPageMesuree } from "@/domaine/pages-publiques";
 import { llmsTxt } from "@/domaine/presentation";
@@ -12,14 +12,14 @@ const SITE = "https://iletaituneclasse.com";
 afterEach(() => vi.unstubAllEnvs());
 
 describe("le guide « Comment écrire un livre dont vous êtes le héros en classe »", () => {
-  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quatorze questions, chacune son ancre, cinq encarts au plus, des renvois à « Ressources » (F14-AC59)", () => {
+  it("F14-AC52 — le texte du document : « En bref » en cinq chiffres, quinze parties, chacune son ancre, cinq encarts au plus, des renvois à « Ressources » (F14-AC59)", () => {
     expect(T.titre).toBe("Comment écrire un livre dont vous êtes le héros en classe");
     expect(T.definition).toMatch(/^Un livre dont vous êtes le héros, ou livre-jeu,/);
     expect(T.auteur).toMatch(/^Par Nicolas Coussot, professeur des écoles,/);
     // « En bref » : un chiffre, sa phrase, la question qui le développe
     expect(T.enBref.map((l) => l.chiffre)).toEqual(["1 à 3 mois", "20 h", "4 temps", "80 scènes", "10 €"]);
-    expect(T.enBref.every((l) => l.texte && l.partie >= 1 && l.partie <= 14)).toBe(true);
-    expect(T.parties.map((p) => p.numero)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
+    expect(T.enBref.every((l) => l.texte && l.partie >= 1 && l.partie <= 15)).toBe(true);
+    expect(T.parties.map((p) => p.numero)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
     expect(T.parties.every((p) => p.titre.endsWith("?") || p.numero === 14)).toBe(true);
     expect(new Set(ANCRES).size).toBe(T.parties.length);
     const encarts = T.parties.flatMap((p) => p.blocs).filter((b) => b.sorte === "encart");
@@ -39,6 +39,14 @@ describe("le guide « Comment écrire un livre dont vous êtes le héros en clas
     // Le tableau de la partie 11 et la liste de la partie 14
     expect(T.parties[10].blocs.some((b) => b.sorte === "tableau")).toBe(true);
     expect(T.parties[13].blocs[0].sorte).toBe("liste");
+    // La partie 15, l'histoire classique (24 novembre 2026) : la dernière, sept parties valables pour tout livre
+    // en renvois, et « Avant de commencer » qui y mène
+    expect(ancreDe(15)).toBe("histoire-classique");
+    const classique = T.parties[14];
+    expect(classique.titre).toBe("Et pour une histoire classique\u00a0?");
+    const renvois = classique.blocs.flatMap((b) => (b.sorte === "paragraphe" ? morceaux(b.texte, T.parties) : [])).filter((m) => m.sorte === "renvoi");
+    expect(renvois.map((m) => (m.sorte === "renvoi" ? m.numero : 0))).toEqual([2, 4, 5, 8, 11, 12, 13, 1]);
+    expect(morceaux(T.avantDeCommencer, T.parties).some((m) => m.sorte === "renvoi" && m.numero === 15)).toBe(true);
     // Chaque image se pose sur un paragraphe qui existe
     for (const [ancre, place] of Object.entries(IMAGES_DU_GUIDE)) {
       const partie = T.parties[ANCRES.indexOf(ancre as (typeof ANCRES)[number])];

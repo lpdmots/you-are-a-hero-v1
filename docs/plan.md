@@ -5992,7 +5992,17 @@ chacune sur son instruction :
    (après une virgule ou avant « et », « ou », « puis ») ; rendu v24,
    1 min 28, posé dans `app/public/accueil/` avec sa durée et sa date dans
    `VIDEO_POUR_LES_MOTEURS`. Texte : `video/visite/SCRIPT.md`.
-4. Une partie « Et pour un roman ? » dans le guide.
+4. **La partie « Et pour une histoire classique ? » du guide — posée en local
+   le 24 novembre 2026,** un commit, sans migration, rien poussé, après un
+   court entretien sur son histoire classique (CP-CE1, un mois, texte à
+   trous). Partie 15, en dernier, pour ne pas renuméroter les quatorze
+   premières ; les sept parties valables pour tout livre y sont nommées en
+   renvois courts (numéros cerclés), et « Avant de commencer » y mène ; le
+   texte à trous s'ajoute à la carte CP-CE1 de la partie 2 ; pas d'encart de
+   l'outil, le guide ayant déjà ses cinq. Texte et notes :
+   [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md),
+   partie 15. Contrôles : `tsc`, lint, tests unitaires (525), la page vue en
+   grand et en 390 points.
 5. Une page pour l'auteur seul, au pied du site, en dernier.
 
 ## Hors de la première livraison

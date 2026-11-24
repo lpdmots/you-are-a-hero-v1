@@ -14,7 +14,7 @@ export { ADRESSE_DU_GUIDE };
 export const DATE_DE_PUBLICATION_DU_GUIDE = "2026-10-30";
 
 /** La date de mise à jour affichée sous le titre, donnée aux moteurs et au plan du site ; à changer à chaque retouche publiée */
-export const DATE_DU_GUIDE = "2026-11-20";
+export const DATE_DU_GUIDE = "2026-11-24";
 
 export const AUTEUR_DU_GUIDE = { nom: "Nicolas Coussot", metier: "Professeur des écoles" };
 
@@ -59,7 +59,7 @@ export type TexteDuGuide = {
 };
 
 /** L'ancre de chaque question, courte et stable : le sommaire et les renvois y mènent */
-export const ANCRES = ["pourquoi", "age", "commencer", "inventer", "repartir", "combien", "choix", "relire", "objets", "chemins", "temps", "illustrer", "ia", "erreurs"] as const;
+export const ANCRES = ["pourquoi", "age", "commencer", "inventer", "repartir", "combien", "choix", "relire", "objets", "chemins", "temps", "illustrer", "ia", "erreurs", "histoire-classique"] as const;
 export const ancreDe = (numero: number) => ANCRES[numero - 1];
 
 // ——— Le texte en ligne : gras, italique, liens, renvois aux autres questions ———

@@ -12995,7 +12995,10 @@ les révisions qui suivent :
     - **Guide :** son titre et son adresse restent sur le livre dont vous
       êtes le héros, qui est son mot-clé. Les parties qui valent pour tout
       livre le disent, et une partie « Et pour un roman ? » s'ajoute, tirée
-      de la pratique du porteur par un court entretien. Pas de guide séparé
+      de la pratique du porteur par un court entretien. Posée en local le
+      24 novembre 2026 sous le titre « Et pour une histoire classique ? »
+      (partie 15, en dernier) : elle nomme les parties valables pour tout
+      livre, et « Avant de commencer » y mène. Pas de guide séparé
       du roman : aucun de ses termes ne se mesure. Un guide unique pour les
       deux, avec le livre-jeu en apartés, idée du porteur, est déconseillé
       pour cette raison de mot-clé.
@@ -13700,14 +13703,15 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC52 — Le guide se lit :** étant donné un visiteur qui ouvre
   `/guide/ecrire-un-livre-dont-vous-etes-le-heros`, alors il lit le titre, la
   définition, l'auteur et la date de mise à jour, « En bref », puis un
-  sommaire des quatorze questions dont chaque ligne mène à sa question ; sur
+  sommaire des quinze parties dont chaque ligne mène à sa question ; sur
   grand écran, le sommaire reste à côté du texte et marque la question qu'on
   lit ; sur téléphone, un bouton « Sommaire » paraît une fois le sommaire
   dépassé ; le texte est celui du
   [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md)
   (`npm run guide:texte`), cinq encarts de l'outil au plus, et il ne renvoie à
   aucune page qui n'existe pas encore. *(Révisé le 19 novembre 2026 : il
-  renvoie à la page « Ressources », F14-AC59.)*
+  renvoie à la page « Ressources », F14-AC59 Révisé le 24 novembre 2026 : quinze
+  parties, la dernière pour l'histoire classique.)*
 - **F14-AC53 — Le guide se trouve :** étant donné le plan du site,
   `robots.txt` et `llms.txt`, alors le guide y est, ses images ouvertes aux
   robots des IA ; le pied de chaque page publique y mène ; il porte son titre

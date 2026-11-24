@@ -805,8 +805,9 @@ avant de commencer » soient tranchées.
   le reste attend son instruction :
   accueil autour de « écrire un livre avec sa classe », le livre dont vous
   êtes le héros nommé en premier, six retouches ; un roman d'exemple à
-  écrire ; guide gardé sur le livre-jeu avec une partie « Et pour un
-  roman ? » ; auteur seul en dernier, au pied du site
+  écrire ; guide gardé sur le livre-jeu avec une partie « Et pour une
+  histoire classique ? », posée en local le 24 novembre 2026 (partie 15,
+  tirée de son histoire classique en CP-CE1) ; auteur seul en dernier, au pied du site
   ([F14](docs/specifications.md#f14-deux-recits)). « Recueil » écarté par
   lui. Vidéo de visite : une seule, sans badge ; ses trois phrases et son
   carton de fin retouchés en local le 24 novembre 2026 (version 24, 1 min 28,
