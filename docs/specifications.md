@@ -13059,7 +13059,8 @@ les révisions qui suivent :
         sur recommandation : l'« Entrée enseignant » devient « Se connecter »
         partout (titre de la page, pied des pages publiques, renvoi du mot de
         passe oublié), comme le bouton de la barre du haut ; le dragon et
-        « Si vous êtes élève, rendez-vous au… » restent.
+        « Si vous êtes élève, rendez-vous au… » restent. En ligne le
+        24 novembre 2026 à sa demande (code jusqu'à `600c439`).
       - *Liens :* au pied des pages publiques, dernière ligne de
         « Commencer », « Écrire seul un livre-jeu » ; « Lire la page » sous la
         réponse de l'« Aide » « Peut-on écrire seul, sans classe ? » ; une

@@ -6027,6 +6027,10 @@ chacune sur son instruction :
    « Découvrir le livre-jeu en solo » dans l'« Aide », une phrase sur
    l'histoire classique en solo dans « Pour commencer », ramenée ensuite à
    une seule phrase pour les deux ; la vidéo des aides retirée de la page.
+   « Entrée enseignant » renommée « Se connecter » le même jour. **En ligne
+   le 24 novembre 2026 à sa demande** (« met en ligne ») : sans migration,
+   code poussé jusqu'à `600c439`, déploiement réussi, page, plan du site et
+   `llms.txt` vérifiés sur `iletaituneclasse.com`.
 
 ## Hors de la première livraison
 
