@@ -13043,6 +13043,15 @@ les révisions qui suivent :
         --brouillon --refaire`), avec trois gravures à l'encre faites par le
         porteur d'après les prompts de Claude, dont l'une sur la page de titre.
         Ce livre n'est pas dans la bibliothèque.
+      - *Retouches d'une seconde lecture,* le même jour, transmises par le
+        porteur : « Créer un compte » aussi sous l'introduction (sur
+        téléphone, la feuille de fin venait après plus de quatre écrans) ;
+        dans l'« Aide », « Découvrir le livre-jeu en solo » à la place de
+        « Lire la page » ; dans « Pour commencer », une seule phrase sur
+        l'histoire classique, avec les mots de « Nouveau projet » : « Vous
+        pouvez aussi écrire seul une histoire classique : après « Moi »,
+        choisissez « Classique » à « Quel récit ? ». » La page reste au
+        livre-jeu (adresse, titres, captures) et hors de la barre du haut.
       - *Liens :* au pied des pages publiques, dernière ligne de
         « Commencer », « Écrire seul un livre-jeu » ; « Lire la page » sous la
         réponse de l'« Aide » « Peut-on écrire seul, sans classe ? » ; une
@@ -13912,8 +13921,10 @@ découvre l'outil, et le porteur, administrateur.
   en 160 signes et dit « histoire interactive » ; la page montre trois temps,
   du plan au livre, les aides de l'IA et leur prix en étoiles, dit « Moi » à
   « Qui écrit ? » et le prix lu dans les réglages, sans faire de l'auteur seul
-  un second choix (« pensé d'abord pour la classe »), et ne parle ni
-  d'histoire classique, ni de roman, ni de recueil ;
+  un second choix (« pensé d'abord pour la classe »), propose « Créer un
+  compte » dès l'introduction et à la fin, ne dit l'histoire classique qu'en
+  une phrase de « Pour commencer » (« Moi », puis « Classique »), et ne dit
+  ni roman ni recueil ;
   la page est dans le plan du site, ouverte aux robots des IA, mesurée, et
   `llms.txt` la liste ; elle n'est liée que depuis la colonne « Commencer »
   du pied des pages publiques et la réponse de l'« Aide » « Peut-on écrire

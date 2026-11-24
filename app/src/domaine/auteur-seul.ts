@@ -79,6 +79,13 @@ export const TEMPS_DE_L_AUTEUR_SEUL: readonly { titre: string; phrase: string; i
  * demande du porteur le 24 novembre 2026 (« cela fait second choix »).
  */
 export const POUR_COMMENCER = "En créant le projet, à « Qui écrit ? », répondez « Moi » : vous écrivez toutes les scènes.";
+/**
+ * La seule phrase de la page sur l'histoire classique (relecture du 24 novembre 2026) : la page reste au livre-jeu,
+ * mais l'auteur seul qui préfère une histoire classique sait qu'il le peut, et comment. Les mots de « Nouveau projet ».
+ */
+// Des espaces insécables dans les guillemets : un « seul en fin de ligne, sur téléphone, se lisait mal
+export const HISTOIRE_CLASSIQUE_SEUL =
+  "Vous pouvez aussi écrire seul une histoire classique\u00a0: après «\u00a0Moi\u00a0», choisissez «\u00a0Classique\u00a0» à «\u00a0Quel récit\u00a0?\u00a0».";
 
 /** Ce que cela coûte, lu dans les réglages comme sur l'« Aide » ; l'IA a sa partie à elle */
 export function prixPourLAuteurSeul(offre: Offre): string {

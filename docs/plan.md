@@ -6022,7 +6022,10 @@ chacune sur son instruction :
    gravures du porteur ; le chargeur des livres d'exemple accepte désormais
    un projet personnel et des images déjà faites), prises par
    `tests/captures/auteur-seul.spec.ts` sur l'aperçu dessiné d'après le PDF
-   définitif (sans les marques de la version de travail).
+   définitif (sans les marques de la version de travail). Puis trois
+   retouches d'une seconde lecture : « Créer un compte » sous l'introduction,
+   « Découvrir le livre-jeu en solo » dans l'« Aide », une phrase sur
+   l'histoire classique en solo dans « Pour commencer ».
 
 ## Hors de la première livraison
 

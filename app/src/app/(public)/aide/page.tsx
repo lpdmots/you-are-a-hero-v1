@@ -66,7 +66,7 @@ export default async function Aide() {
                   {q.seul ? (
                     <p>
                       {/* L'auteur seul (F14-AC76) : la page qui le développe, pour un livre-jeu */}
-                      <Link href={ADRESSE_DE_L_AUTEUR_SEUL}>Lire la page</Link>
+                      <Link href={ADRESSE_DE_L_AUTEUR_SEUL}>Découvrir le livre-jeu en solo</Link>
                     </p>
                   ) : null}
                   {q.ressources ? (

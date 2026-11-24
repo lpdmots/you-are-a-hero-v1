@@ -10,6 +10,7 @@ import {
   DESCRIPTION_DE_L_AUTEUR_SEUL,
   etoilesPourLAuteurSeul,
   GRAND_TITRE_DE_L_AUTEUR_SEUL,
+  HISTOIRE_CLASSIQUE_SEUL,
   POUR_COMMENCER,
   prixPourLAuteurSeul,
   TEMPS_DE_L_AUTEUR_SEUL,
@@ -59,6 +60,12 @@ export default async function AuteurSeul() {
         <div>
           <h1>{GRAND_TITRE_DE_L_AUTEUR_SEUL}</h1>
           <p className={s.chapeau}>{CHAPEAU_DE_L_AUTEUR_SEUL}</p>
+          {/* Pour qui est déjà convaincu : sur téléphone, la feuille de fin est à quatre écrans (relecture du 24 novembre 2026) */}
+          <p className={s.commencer}>
+            <Link className="btn btn--primaire" href="/entree/inscription">
+              Créer un compte
+            </Link>
+          </p>
         </div>
         {/* Une gravure du livre d'exemple, posée comme une épreuve : ce que deviennent les images d'un livre pour adultes */}
         <Image className={s.gravure} src={`${ADRESSE_DE_L_AUTEUR_SEUL}/pont-promenade.webp`} alt="Gravure à l’encre : le pont promenade d’un paquebot, la nuit, dans le brouillard, un pardessus abandonné sur une chaise longue" width={840} height={560} sizes="(max-width: 720px) 100vw, 320px" preload />
@@ -107,6 +114,7 @@ export default async function AuteurSeul() {
       <aside className={s.fiche} aria-labelledby="commencer-t">
         <h2 id="commencer-t">Pour commencer</h2>
         <p>{POUR_COMMENCER}</p>
+        <p>{HISTOIRE_CLASSIQUE_SEUL}</p>
         <p>{prixPourLAuteurSeul(offre)}</p>
         <p className={s.classe}>
           Vous écrivez avec une classe&nbsp;? <Link href="/">L’accueil</Link> présente le projet en classe.

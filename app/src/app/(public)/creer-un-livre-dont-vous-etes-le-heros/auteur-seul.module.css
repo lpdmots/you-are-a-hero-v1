@@ -48,6 +48,9 @@
   letter-spacing: 0;
   text-wrap: balance;
 }
+.commencer {
+  margin-top: 26px;
+}
 /* La gravure, posée sur la feuille comme une épreuve, un peu de travers */
 .gravure {
   width: 100%;
