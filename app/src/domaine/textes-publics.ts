@@ -242,8 +242,9 @@ export const MENTIONS_LEGALES: Document = {
 
 /** La foire aux questions de la page « Aide » (F14, « Support »). */
 /** `pass` : la question n'a de sens que « Livre payant » allumé ; `gratuit`, que le livre gratuit. `guide` : la réponse mène au guide, à
- * cette question (son ancre, ou "" pour son début), qui la développe (audit du 7 novembre 2026). */
-export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string; ressources?: boolean }[] = [
+ * cette question (son ancre, ou "" pour son début), qui la développe (audit du 7 novembre 2026). `seul` : la réponse mène à la page
+ * de l'auteur seul, qui la développe pour le livre-jeu (F14-AC76). */
+export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string; ressources?: boolean; seul?: boolean }[] = [
   {
     question: "Comment commencer ?",
     reponse: "Créez un compte, puis votre premier projet : il s’ouvre sur sa préparation. La classe se crée quand les élèves commencent à écrire.",
@@ -285,6 +286,7 @@ export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gra
   {
     question: "Peut-on écrire seul, sans classe ?",
     reponse: "Oui. À « Qui écrit ? », en créant le projet, répondez « Moi » : vous écrivez vous-même toutes les scènes, sans élèves, pour un livre dont vous êtes le héros ou une histoire classique. Les étapes sont les mêmes, jusqu’au PDF et à la lecture en ligne.",
+    seul: true,
   },
   {
     question: "Est-ce gratuit ?",

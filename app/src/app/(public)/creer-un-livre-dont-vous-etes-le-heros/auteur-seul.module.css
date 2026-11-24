@@ -1,0 +1,285 @@
+/* La page de l'auteur seul (F14-AC76) : la sœur discrète des ressources et du guide. La table chaude, une page de
+   titre sur le papier des feuillets où Bouquin tient son livre, trois temps chacun avec sa capture posée sur la
+   table, un peu de travers, puis la fiche « Sans classe » et la feuille de fin. */
+
+:global(div):has(> .page) {
+  background: #f2ede3;
+}
+.page.page {
+  --papier: #fcf9f1;
+  --trait-chaud: #e3dccd;
+  --ombre-feuillet: 0 1px 2px rgba(60, 45, 20, 0.08), 0 14px 30px -14px rgba(60, 45, 20, 0.28);
+  width: min(1080px, 100%);
+  padding-top: 8px;
+  padding-bottom: 96px;
+  font-variant-numeric: lining-nums;
+}
+.page ::selection {
+  background: rgba(11, 106, 115, 0.18);
+}
+.page a {
+  text-underline-offset: 3px;
+}
+.page a:focus-visible {
+  outline: 2px solid var(--canard);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ——— Page de titre ——— */
+.titre {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 32px;
+  align-items: end;
+  padding: 52px 56px 40px 64px;
+  background: url(/accueil/papier.webp) center / cover, var(--papier);
+  border-radius: 2px;
+  box-shadow: var(--ombre-feuillet);
+}
+.titre h1 {
+  margin: 0;
+  max-width: 19ch;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+  line-height: 1.62;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+.chapeau {
+  /* Les jambes de la cursive du titre descendent loin : de l'air avant le chapeau */
+  margin-top: 30px;
+  max-width: 52ch;
+  font-family: var(--f-recit);
+  font-size: 1.22rem;
+  line-height: 1.58;
+  text-wrap: pretty;
+}
+.dragon {
+  width: 190px;
+  height: auto;
+  margin-bottom: -14px;
+  filter: drop-shadow(0 12px 14px rgba(60, 45, 20, 0.22));
+}
+
+/* ——— Les trois temps : la phrase à gauche, la capture posée sur la table à droite ——— */
+.temps {
+  list-style: none;
+  margin: 72px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 72px;
+}
+.un {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 48px;
+  align-items: center;
+}
+.texte h2 {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  margin: 0;
+  font-family: var(--f-recit);
+  font-size: clamp(1.45rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+/* Le numéro cerclé, comme les temps des ressources : il dit l'ordre, du plan au livre */
+.numero {
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 1.5em;
+  height: 1.5em;
+  border: 2px solid var(--canard);
+  border-radius: 50%;
+  font-size: max(0.62em, 0.95rem);
+  line-height: 1;
+  color: var(--canard);
+  transform: translateY(-0.18em);
+}
+.numero > span {
+  display: block;
+  text-box: trim-both cap alphabetic;
+}
+.numero > span::before {
+  content: attr(data-numero);
+}
+.texte p {
+  margin-top: 14px;
+  font-family: var(--f-recit);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--graphite-2);
+  text-wrap: pretty;
+}
+.capture {
+  display: block;
+  rotate: 1.1deg;
+  filter: drop-shadow(0 1px 1px rgba(60, 45, 20, 0.12)) drop-shadow(0 12px 14px rgba(60, 45, 20, 0.16));
+}
+.un:nth-child(even) .capture {
+  rotate: -0.9deg;
+}
+.capture img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  background: var(--feuille);
+}
+
+/* ——— Sans classe : une fiche blanche à filet bristol, comme « Les programmes » des ressources ——— */
+.fiche {
+  max-width: 640px;
+  margin: 88px auto 0;
+  padding: 22px 30px 24px;
+  background: var(--feuille);
+  border-radius: 14px;
+  box-shadow: var(--ombre-cahier);
+  font-family: var(--f-recit);
+  font-size: 1.06rem;
+  line-height: 1.6;
+}
+.fiche h2 {
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--bristol);
+  font-family: var(--f-ui);
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--graphite-2);
+}
+.fiche p + p {
+  margin-top: 0.7em;
+}
+.fiche .classe {
+  font-family: var(--f-ui);
+  font-size: 0.9rem;
+  color: var(--graphite-3);
+}
+.classe a {
+  color: var(--canard);
+  font-weight: 600;
+}
+
+/* ——— La fin : une feuille qui répond à la page de titre ——— */
+.fin {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 190px;
+  gap: 32px;
+  align-items: end;
+  margin-top: 88px;
+  padding: 44px 56px 40px 64px;
+  background: url(/accueil/papier.webp) center / cover, var(--papier);
+  border-radius: 2px;
+  box-shadow: var(--ombre-feuillet);
+}
+.fin h2 {
+  margin: 0;
+  font-family: var(--f-main);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+  line-height: 1.6;
+  letter-spacing: 0;
+}
+.finSuite {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 24px;
+  /* La cursive a de grandes jambes : de l'air avant le bouton */
+  margin-top: 1.6rem;
+}
+.finSuite a:not(:global(.btn)) {
+  color: var(--canard);
+  font-weight: 600;
+}
+.dragonEndormi {
+  width: 190px;
+  height: auto;
+  margin-bottom: -10px;
+}
+
+/* ——— Tablette : la capture passe sous sa phrase ——— */
+@media (max-width: 900px) {
+  .temps {
+    margin-top: 52px;
+    gap: 56px;
+  }
+  .un {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+  .texte p {
+    max-width: 60ch;
+  }
+}
+@media (max-width: 720px) {
+  .titre {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 26px 20px 24px;
+  }
+  .dragon {
+    position: absolute;
+    right: 4px;
+    top: -30px;
+    width: 72px;
+    margin: 0;
+  }
+  .titre h1 {
+    padding-right: 44px;
+  }
+  .fin {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    padding: 0 22px 30px;
+  }
+  /* Le dragon dort au bord de la feuille, au-dessus du titre */
+  .dragonEndormi {
+    order: -1;
+    width: 140px;
+    margin: -58px 0 4px auto;
+  }
+}
+@media (max-width: 560px) {
+  .page.page {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .titre {
+    margin: 0 -4px;
+  }
+  .titre h1 {
+    font-size: 1.45rem;
+    line-height: 1.55;
+  }
+  .chapeau {
+    margin-top: 14px;
+    font-size: 1.04rem;
+    line-height: 1.5;
+  }
+  .texte p {
+    font-size: 1.02rem;
+  }
+  /* Sur téléphone, la capture à plat : de travers, ses bords mordraient la marge */
+  .capture,
+  .un:nth-child(even) .capture {
+    rotate: 0deg;
+  }
+  .fiche {
+    margin-top: 64px;
+    padding: 18px 18px 20px;
+    font-size: 1rem;
+  }
+  .fin {
+    margin-top: 72px;
+  }
+}

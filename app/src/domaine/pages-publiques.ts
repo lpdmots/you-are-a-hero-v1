@@ -1,3 +1,4 @@
+import { ADRESSE_DE_L_AUTEUR_SEUL } from "./auteur-seul";
 import { ADRESSE_DES_RESSOURCES } from "./ressources";
 import { MODELES } from "./textes-publics";
 
@@ -30,6 +31,8 @@ export const PAGES_PUBLIQUES: readonly string[] = [
   "/aide",
   ADRESSE_DU_GUIDE,
   ADRESSE_DES_RESSOURCES,
+  // L'auteur seul (F14-AC76) : au pied du site seulement, mais lisible par les moteurs
+  ADRESSE_DE_L_AUTEUR_SEUL,
   ...MODELES.map((m) => `/modeles/${m.cle}`),
   "/confidentialite",
   "/conditions",

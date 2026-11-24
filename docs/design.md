@@ -3257,6 +3257,18 @@ Sur téléphone, le sommaire en pastilles sous le titre, la vignette à gauche d
 et les boutons dessous, sur toute la largeur. Critiquée en deux lectures (28/40 et
 24/40) et corrigée, sans nouvelle mesure.
 
+### Page de l'auteur seul (24 novembre 2026)
+
+Sans maquette ; règles en [F14](specifications.md#f14-auteur-seul) (F14-AC76).
+La sœur discrète des ressources : la table chaude, une page de titre sur le
+papier des feuillets, le grand titre en cursive et Bouquin qui serre son livre
+contre lui. Trois temps, la phrase à gauche (numéro cerclé, titre en
+Vollkorn) et la capture posée sur la table à droite, un peu de travers ; sur
+téléphone, la capture passe sous sa phrase, à plat, dans sa version recadrée
+(une seule téléchargée, par `<picture>`). Une fiche blanche à filet bristol,
+« Sans classe », comme « Les programmes » ; la feuille de fin, le dragon
+endormi, le seul bouton plein. Sans critique en deux lectures.
+
 ### Colonne de navigation de l'adulte (8 novembre 2026)
 
 Décidée par le porteur après un point sur la navigation une fois connecté ;

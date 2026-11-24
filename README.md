@@ -808,7 +808,10 @@ avant de commencer » soient tranchées.
   écrire ; guide gardé sur le livre-jeu avec une partie « Et pour une
   histoire classique ? », posée en local le 24 novembre 2026 (partie 15,
   tirée de son histoire classique en CP-CE1) ; auteur seul en dernier, au pied du site
-  ([F14](docs/specifications.md#f14-deux-recits)). « Recueil » écarté par
+  ([F14](docs/specifications.md#f14-deux-recits)), page posée en local le
+  24 novembre 2026 à `/creer-un-livre-dont-vous-etes-le-heros`, limitée au
+  livre-jeu, liée du pied (« Commencer ») et de l'« Aide » seulement
+  ([F14](docs/specifications.md#f14-auteur-seul), F14-AC76). « Recueil » écarté par
   lui. Vidéo de visite : une seule, sans badge ; ses trois phrases et son
   carton de fin retouchés en local le 24 novembre 2026 (version 24, 1 min 28,
   prises du porteur ; ouverture qui nomme les deux sortes de récit). Le récit classique se dit « histoire classique » (« écrire une

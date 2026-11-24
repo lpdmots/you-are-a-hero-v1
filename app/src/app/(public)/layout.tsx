@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Logo } from "@/composants/Logo";
+import { ADRESSE_DE_L_AUTEUR_SEUL, LIEN_DE_L_AUTEUR_SEUL } from "@/domaine/auteur-seul";
 import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { PROMESSE } from "@/domaine/presentation";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
@@ -81,6 +82,10 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
                 </li>
                 <li>
                   <Link href="/classe">Entrée des élèves</Link>
+                </li>
+                <li>
+                  {/* L'auteur seul (F14-AC76) : ici seulement, jamais mis en avant */}
+                  <Link href={ADRESSE_DE_L_AUTEUR_SEUL}>{LIEN_DE_L_AUTEUR_SEUL}</Link>
                 </li>
               </ul>
             </div>

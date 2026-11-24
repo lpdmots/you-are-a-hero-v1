@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { ADRESSE_DE_L_AUTEUR_SEUL, DATE_DE_L_AUTEUR_SEUL } from "@/domaine/auteur-seul";
 import { DATE_DU_GUIDE } from "@/domaine/guide";
 import { ADRESSE_DU_GUIDE, PAGES_PUBLIQUES } from "@/domaine/pages-publiques";
 import { ADRESSE_DES_RESSOURCES, DATE_DES_RESSOURCES } from "@/domaine/ressources";
@@ -14,8 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return PAGES_PUBLIQUES.map((page) => ({
     url: `${site}${page === "/" ? "" : page}`,
     changeFrequency: page === "/" || page === "/bibliotheque" ? "weekly" : "monthly",
-    priority: page === "/" ? 1 : page === "/aide" || page === "/bibliotheque" || page === ADRESSE_DU_GUIDE || page === ADRESSE_DES_RESSOURCES ? 0.8 : 0.3,
+    // L'auteur seul (F14-AC76), page de second rang : entre les pages de contenu et les textes légaux
+    priority: page === ADRESSE_DE_L_AUTEUR_SEUL ? 0.5 : page === "/" ? 1 : page === "/aide" || page === "/bibliotheque" || page === ADRESSE_DU_GUIDE || page === ADRESSE_DES_RESSOURCES ? 0.8 : 0.3,
     // L'« Aide » date de ses tutos vidéo (F14-AC64)
-    ...(page === ADRESSE_DU_GUIDE ? { lastModified: DATE_DU_GUIDE } : page === ADRESSE_DES_RESSOURCES ? { lastModified: DATE_DES_RESSOURCES } : page === "/aide" ? { lastModified: AIDE_MISE_A_JOUR_LE } : {}),
+    ...(page === ADRESSE_DU_GUIDE ? { lastModified: DATE_DU_GUIDE } : page === ADRESSE_DES_RESSOURCES ? { lastModified: DATE_DES_RESSOURCES } : page === "/aide" ? { lastModified: AIDE_MISE_A_JOUR_LE } : page === ADRESSE_DE_L_AUTEUR_SEUL ? { lastModified: DATE_DE_L_AUTEUR_SEUL } : {}),
   }));
 }

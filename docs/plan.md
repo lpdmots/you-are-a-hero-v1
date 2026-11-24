@@ -6003,7 +6003,19 @@ chacune sur son instruction :
    [document du guide](guide-ecrire-un-livre-dont-vous-etes-le-heros.md),
    partie 15. Contrôles : `tsc`, lint, tests unitaires (525), la page vue en
    grand et en 390 points.
-5. Une page pour l'auteur seul, au pied du site, en dernier.
+5. **Une page pour l'auteur seul, au pied du site — posée en local le
+   24 novembre 2026,** un commit, sans migration, rien poussé, après un court
+   entretien (« Je valide les trois ») : `/creer-un-livre-dont-vous-etes-le-heros`,
+   mot-clé « créer un livre dont vous êtes le héros », limitée au livre-jeu ;
+   un lien au pied (« Commencer ») et un sous la question de l'« Aide » sur
+   l'auteur seul, rien ailleurs ([F14](specifications.md#f14-auteur-seul),
+   F14-AC76). Écran sans maquette, conçu avec impeccable dans la famille des
+   ressources (page de titre sur papier, Bouquin qui tient son livre, trois
+   captures déjà publiées par le guide, dont une recadrée sur l'écriture de la
+   scène, `public/guide/copie-la-lanterne*.webp`). Contrôles : `tsc`, lint,
+   tests unitaires (528), la page vue sans compte en 1440 × 900 et 390 × 844.
+   Sans critique en deux lectures, le porteur ne l'ayant pas demandée pour
+   cette page.
 
 ## Hors de la première livraison
 

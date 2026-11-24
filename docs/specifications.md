@@ -13005,7 +13005,36 @@ les révisions qui suivent :
     - **« Aide » :** deux questions de plus (écrire un roman avec sa classe ;
       écrire seul). **« Ressources » :** inchangée.
     - **Auteur seul :** jamais mis en avant ; une page au pied du site,
-      limitée au livre-jeu, faite en dernier.
+      limitée au livre-jeu, faite en dernier. <a id="f14-auteur-seul"></a>
+      Entretien court du 24 novembre 2026, ses trois recommandations
+      validées par le porteur (« Je valide les trois ») ; posée en local le
+      même jour, un commit, sans migration, rien en ligne (F14-AC76) :
+      - *Adresse et mot-clé :* `/creer-un-livre-dont-vous-etes-le-heros`,
+        mot-clé « créer un livre dont vous êtes le héros » (10 à 100
+        recherches par mois au relevé du 23 novembre), la recherche d'un
+        outil, distincte du guide (« comment écrire… », la méthode) et de
+        l'accueil (« … avec sa classe ») ; « histoire interactive » en appui.
+        Sur une recherche voisine, le 24 novembre, la première page de Google
+        montrait des articles de méthode, un PDF académique et des outils de
+        fiction à jouer à l'écran (Twine, ChoiceScript, Netstory) ; aucun ne
+        sort un livre papier aux passages numérotés. Conséquence admise :
+        quelques enseignants y arriveront, une ligne les renvoie à l'accueil.
+        Écarté : `/ecrire-seul` et « créer une histoire interactive »
+        (recherche tournée vers des jeux à l'écran).
+      - *Ce que dit la page :* titre d'onglet « Créer un livre dont vous êtes
+        le héros, seul », grand titre « Créer seul son livre dont vous êtes le
+        héros », une phrase dessous ; trois temps, une phrase et une capture
+        chacun (« Dessiner les chemins », « Écrire les scènes », « Composer le
+        livre ») ; une fiche « Sans classe » (« Qui écrit ? » → « Moi », le
+        prix lu dans les réglages, le renvoi des enseignants à l'accueil) ; la
+        feuille de fin, « Créer un compte », le guide et la bibliothèque. Ni
+        l'histoire classique, ni la vidéo, ni d'écran où l'on voit des élèves.
+      - *Liens :* au pied des pages publiques, dernière ligne de
+        « Commencer », « Écrire seul un livre-jeu » ; « Lire la page » sous la
+        réponse de l'« Aide » « Peut-on écrire seul, sans classe ? » ; une
+        ligne dans `llms.txt` ; le plan du site (priorité 0,5) et
+        `robots.txt` par la liste des pages publiques. Rien dans la barre du
+        haut, sur l'accueil ni dans la vidéo.
     - **Autres langues :** la même structure, le poids de chaque sorte de
       récit réglé par langue ; en anglais, le livre-jeu pèsera plus.
   - *Remis à la construction, d'accord avec lui.* Le texte des trois phrases
@@ -13862,6 +13891,17 @@ découvre l'outil, et le porteur, administrateur.
   classique » suit celle du livre dont vous êtes le héros, la composition du
   livre dit ce qui est propre au livre-jeu, et l'auteur seul y est, « à choix
   ou classique, sans classe ».
+- **F14-AC76 — La page de l'auteur seul :** étant donné un visiteur sans
+  compte, lorsqu'il ouvre `/creer-un-livre-dont-vous-etes-le-heros`, alors
+  le titre d'onglet commence par « Créer un livre dont vous êtes le héros »
+  (60 signes au plus, sans « comment » ni « classe »), la description tient
+  en 160 signes et dit « histoire interactive » ; la page montre trois temps,
+  du plan au livre, dit « Moi » à « Qui écrit ? » et le prix lu dans les
+  réglages, et ne parle ni d'histoire classique, ni de roman, ni de recueil ;
+  la page est dans le plan du site, ouverte aux robots des IA, mesurée, et
+  `llms.txt` la liste ; elle n'est liée que depuis la colonne « Commencer »
+  du pied des pages publiques et la réponse de l'« Aide » « Peut-on écrire
+  seul, sans classe ? », jamais depuis la barre du haut ni l'accueil.
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

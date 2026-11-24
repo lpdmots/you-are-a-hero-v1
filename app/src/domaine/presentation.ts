@@ -1,3 +1,4 @@
+import { ADRESSE_DE_L_AUTEUR_SEUL, TITRE_DE_L_AUTEUR_SEUL } from "./auteur-seul";
 import { enEuros, type Offre } from "./offre";
 import { ADRESSE_DU_GUIDE } from "./pages-publiques";
 import { ADRESSE_DES_RESSOURCES, DOCUMENTS_A_IMPRIMER } from "./ressources";
@@ -92,6 +93,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     `- [Aide](${site}/aide) : un tuto vidéo d’environ une minute pour chaque étape du projet, une vidéo de deux minutes et demie sur les aides de l’IA, les questions fréquentes (âge des élèves, durée d’un projet, matériel, prix), les modèles à télécharger.`,
     `- [Production d’écrit et projet d’écriture : le livre-jeu en classe](${site}${ADRESSE_DES_RESSOURCES}) : leçons, fiches de recherche, affiches et lettre aux familles à imprimer, gratuites, rangées par moment du projet, avec les liens aux programmes de français.`,
     `- [Comment écrire un livre dont vous êtes le héros en classe](${site}${ADRESSE_DU_GUIDE}) : la méthode d’un professeur des écoles, en quatorze questions, de la lecture de livres-jeux à l’impression ; avec ses chiffres réels (six ans de livres, deux livres de 213 et 323 scènes).`,
+    `- [${TITRE_DE_L_AUTEUR_SEUL}](${site}${ADRESSE_DE_L_AUTEUR_SEUL}) : pour un adulte qui écrit seul son livre-jeu, sans classe ; les chemins, l’écriture des scènes, le PDF à imprimer.`,
     `- [Confidentialité](${site}/confidentialite) : les données gardées, l’IA, la mesure d’audience.`,
     `- [Conditions d’utilisation](${site}/conditions)`,
     `- [Mentions légales](${site}/mentions-legales)`,

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { TutosParTemps } from "@/composants/Tutos";
+import { ADRESSE_DE_L_AUTEUR_SEUL } from "@/domaine/auteur-seul";
 import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
 import { donneesDeLAide, donneesDesTutos, enJsonLd } from "@/domaine/presentation";
@@ -60,6 +61,12 @@ export default async function Aide() {
                   {q.guide !== undefined ? (
                     <p>
                       <Link href={q.guide ? `${ADRESSE_DU_GUIDE}#${q.guide}` : ADRESSE_DU_GUIDE}>Lire le guide</Link>
+                    </p>
+                  ) : null}
+                  {q.seul ? (
+                    <p>
+                      {/* L'auteur seul (F14-AC76) : la page qui le développe, pour un livre-jeu */}
+                      <Link href={ADRESSE_DE_L_AUTEUR_SEUL}>Lire la page</Link>
                     </p>
                   ) : null}
                   {q.ressources ? (
