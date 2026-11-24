@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { adresseDepuisTitre, adresseLibre, etatDeLaPublication, passagesChanges, peutProposer, presentationPropre, PRESENTATION_MAX, reperesDuLivre, type LignePublication } from "@/domaine/bibliotheque";
 import type { PassagePartage, VersionPartagee } from "@/domaine/partage";
-import { chercheEnAdresse, demandeDepuis, livresDeLaListe, type LivrePublie } from "@/domaine/bibliotheque-publique";
+import { chercheEnAdresse, coeursMontres, demandeDepuis, livresDeLaListe, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { relecture } from "@/serveur/ia/aides/relecture";
 import { CONDITIONS, MODELES } from "@/domaine/textes-publics";
 
@@ -117,5 +117,12 @@ describe("La liste de /bibliotheque (F15, lot 3)", () => {
     // Une valeur inconnue ne filtre rien ; l'adresse ne garde que ce qui diffère du défaut
     expect(liste({ age: "3-5", type: "roman", tri: "x" })).toHaveLength(3);
     expect(chercheEnAdresse(demandeDepuis({ q: " lanterne ", tri: "recents" }))).toBe("?q=lanterne");
+  });
+});
+
+describe("Les cœurs (F15-AC13)", () => {
+  it("F15-AC13 — le nombre ne se montre qu'à partir de 5 cœurs", () => {
+    expect([0, 1, 4].map(coeursMontres)).toEqual([false, false, false]);
+    expect([5, 12].map(coeursMontres)).toEqual([true, true]);
   });
 });

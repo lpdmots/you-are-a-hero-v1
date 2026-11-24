@@ -52,6 +52,14 @@ export type LivrePublie = {
   couvertureId?: string | null;
 };
 
+/**
+ * Le nombre de cœurs ne se montre qu'à partir de ce seuil (F15-AC13) : en dessous, le cœur seul,
+ * qu'on donne comme les autres. Un « 1 » donne l'impression d'une bibliothèque où personne ne passe.
+ * Le tri « Les plus aimés » et l'administration gardent le vrai nombre.
+ */
+export const SEUIL_DES_COEURS = 5;
+export const coeursMontres = (n: number): boolean => n >= SEUIL_DES_COEURS;
+
 export const NOM_DU_TYPE: Record<TypeDeRecit, string> = { choix: "Livre-jeu", classique: "Récit" };
 export const nomDeLAge = (a: AgeDesLecteurs): string => NOMS_DES_AGES[a];
 

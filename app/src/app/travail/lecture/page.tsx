@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Bulle } from "@/composants/Bulle";
 import { Icone } from "@/composants/Icone";
 import { ImageRepere } from "@/composants/ImageRepere";
+import { coeursMontres } from "@/domaine/bibliotheque-publique";
 import { prochaineOuverture } from "@/domaine/horaires";
 import { de, majuscule } from "@/domaine/texte";
 import { bibliothequeDuPoste, livresDuPoste, type LivreDeLaBibliotheque, type LivrePropose } from "@/serveur/livres-eleve";
@@ -197,7 +198,7 @@ function LivrePublie({ livre }: { livre: LivreDeLaBibliotheque }) {
         {livre.ligne ? <span className={`${styles.propose__ligne} recit`}>{majuscule(livre.ligne)}</span> : null}
         <span className={styles.propose__meta}>
           {contenu}
-          {livre.coeurs > 0 ? (
+          {coeursMontres(livre.coeurs) ? (
             <span className={styles.coeurs} aria-label={`${livre.coeurs} cœur${livre.coeurs > 1 ? "s" : ""}`}>
               {" · "}
               <Icone nom="coeur" />

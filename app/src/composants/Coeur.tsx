@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { coeursMontres } from "@/domaine/bibliotheque-publique";
 import { Icone } from "./Icone";
 
 /**
  * Le cœur d'un livre de la bibliothèque (F15, « Les cœurs » ; F15-AC13) : un clic donne, un autre
  * retire, un par livre et par navigateur, sans compte. Le navigateur tire un identifiant au hasard
  * et le garde pour cette seule fonction, que le lecteur demande : pas de bandeau. Le nombre se lit
- * à côté du cœur, sauf à zéro, où l'on voit le seul cœur vide. Un livre sans navigateur qui garde
+ * à côté du cœur à partir d'un seuil ; en dessous, le seul cœur, plein une fois donné. Un livre sans navigateur qui garde
  * (navigation privée stricte) donne quand même son cœur, le temps de la page.
  */
 
@@ -106,7 +107,7 @@ export function Coeur({ adresse, nombre, variante = "tiroir", profil }: { adress
         onClick={() => void basculer()}
       >
         <Icone nom="coeur" />
-        {compte > 0 ? <span className="coeur__nombre">{compte}</span> : null}
+        {coeursMontres(compte) ? <span className="coeur__nombre">{compte}</span> : null}
       </button>
     </div>
   );

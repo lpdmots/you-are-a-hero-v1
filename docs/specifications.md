@@ -14281,8 +14281,11 @@ porteur, administrateur.
 - **F15-AC13 — Cœurs :** étant donné un lecteur sans compte qui finit le
   livre, alors un cœur lui est proposé après la fin, jamais pendant la
   lecture ; un clic le donne, un second le retire, et un autre clic sur le
-  même navigateur ne compte pas deux fois ; un livre sans cœur montre le
-  cœur vide, sans « 0 » ; au-delà d'une quarantaine de cœurs dans la journée
+  même navigateur ne compte pas deux fois ; le nombre ne se montre qu'à
+  partir de 5 cœurs (décidé par le porteur le 24 novembre 2026, plutôt
+  qu'un nombre gonflé : un « 1 » fait une bibliothèque où personne ne
+  passe) — en dessous, le cœur seul, vide ou plein une fois donné, le tri
+  « Les plus aimés » et l'administration gardant le vrai nombre ; au-delà d'une quarantaine de cœurs dans la journée
   depuis une même adresse réseau pour ce livre, les suivants ne comptent
   pas.
 - **F15-AC14 — Signaler :** étant donné le tiroir d'un livre publié,

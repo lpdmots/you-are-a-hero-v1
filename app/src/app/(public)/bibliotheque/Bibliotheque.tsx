@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
-import { chercheEnAdresse, livresDeLaListe, NOM_DU_TYPE, nomDeLAge, type Demande, type LivrePublie } from "@/domaine/bibliotheque-publique";
+import { chercheEnAdresse, coeursMontres, livresDeLaListe, NOM_DU_TYPE, nomDeLAge, type Demande, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { Recherche } from "./Recherche";
 import { Tiroir } from "./Tiroir";
 import accueil from "../accueil.module.css";
@@ -67,8 +67,8 @@ function Carte({ livre, href }: { livre: LivrePublie; href: string }) {
       <span className={styles.carteTitre}>{livre.titre}</span>
       <span className={styles.carteContenu}>
         {contenuDu(livre)}
-        {/* Le nombre de cœurs, sauf à zéro (F15-AC13) */}
-        {livre.coeurs > 0 ? (
+        {/* Le nombre de cœurs, à partir du seuil (F15-AC13) */}
+        {coeursMontres(livre.coeurs) ? (
           <span className={styles.carteCoeurs} aria-label={`${livre.coeurs} cœur${livre.coeurs > 1 ? "s" : ""}`}>
             {" · "}
             <Icone nom="coeur" />

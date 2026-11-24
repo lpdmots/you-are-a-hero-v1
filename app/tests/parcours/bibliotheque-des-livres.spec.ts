@@ -186,12 +186,13 @@ test("F15-AC13 — un cœur dans le tiroir et après la fin, jamais pendant la l
   await expect(coeur).toHaveText("");
   await coeur.click();
   const donne = lecteur.getByRole("dialog").getByRole("button", { name: "Retirer mon cœur" });
-  await expect(donne).toHaveText("1");
+  // Sous le seuil de 5, le cœur plein sans nombre
+  await expect(donne).toHaveText("");
   await expect.poll(async () => (await sql<{ c: number }>("select coeurs as c from publications where projet_id = $1", [l.projet]))[0].c).toBe(1);
   // Le même navigateur ne compte pas deux fois : rechargé, le cœur est donné, toujours 1
   await lecteur.reload();
   await expect(donne).toHaveAttribute("aria-pressed", "true");
-  await expect(donne).toHaveText("1");
+  await expect.poll(async () => (await sql<{ c: number }>("select coeurs as c from publications where projet_id = $1", [l.projet]))[0].c).toBe(1);
   await donne.click();
   await expect(coeur).toHaveText("");
   // Le bouton change aussitôt ; la base suit la réponse du serveur
@@ -204,11 +205,14 @@ test("F15-AC13 — un cœur dans le tiroir et après la fin, jamais pendant la l
   await lecteur.locator(".lecteur__corps").getByRole("button", { name: /Suivre le passeur/ }).click();
   await expect(lecteur.getByText("Ce livre t’a plu ?")).toBeVisible();
   await lecteur.getByRole("button", { name: "Donner un cœur à ce livre" }).click();
-  await expect(lecteur.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("1");
+  await expect(lecteur.getByRole("button", { name: "Retirer mon cœur" })).toHaveAttribute("aria-pressed", "true");
 
-  // La carte le dit, et « Les plus aimés » le range
+  // Sous le seuil, la carte ne dit aucun nombre ; à 5, elle le dit, et « Les plus aimés » le range
   await lecteur.goto(`/bibliotheque?q=${marque}&tri=aimes`);
-  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).toContainText("1");
+  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).not.toContainText("1");
+  await sql("insert into coeurs (projet_id, lecteur, reseau) select $1, 'n:seuil-' || g, 'r:parcours-local' from generate_series(1, 4) g", [l.projet]);
+  await lecteur.reload();
+  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).toContainText("5");
 });
 
 test("F15-AC09 — retiré par l'adulte : son adresse dit « Ce livre n'est plus dans la bibliothèque » ; proposé de nouveau et publié, il retrouve son adresse et ses cœurs", async ({ page }) => {
