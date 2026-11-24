@@ -92,7 +92,8 @@ export async function Accueil() {
             <Numero n={1} />
             <h1 id="p1">{PROMESSE}</h1>
             <p className={styles.recit}>
-              {DEUX_RECITS} L’application vous guide et vous aide, de la première idée au livre à imprimer ou à lire en ligne.
+              {/* Raccourci le 24 novembre 2026, à la demande du porteur : l'impression et la lecture en ligne sont dans la ligne des garanties */}
+              {DEUX_RECITS} L’application vous guide et vous aide, de la première idée au livre.
             </p>
             <Choix>
               <ChoixCompte phrase="Pour commencer un projet avec votre classe," />
@@ -367,9 +368,9 @@ export async function Accueil() {
             élèves écrivent le leur.
           </p>
           <p className={styles.recit}>
-            {/* « Elle a aussi écrit une histoire classique » : phrase ajoutée le 23 novembre 2026, à faire accepter par le porteur, qui signe */}
-            Depuis quatre ans, ma classe écrit ses livres-jeux avec cet outil. Elle a aussi écrit une histoire classique, qui se lit du
-            début à la fin. Cette version accompagne tout le projet, de l’idée au livre.
+            {/* L'histoire classique est venue avant l'outil (porteur, 24 novembre 2026) */}
+            Avec mes élèves, j’ai d’abord écrit une histoire classique. Depuis quatre ans, ma classe écrit ses livres-jeux avec cet outil.
+            Cette version accompagne tout le projet, de l’idée au livre.
           </p>
           <p className={`${styles.recit} ${styles.petit}`}>
             Une question, une idée ? Écrivez-moi : <a href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>

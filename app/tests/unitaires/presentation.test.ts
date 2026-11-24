@@ -59,11 +59,13 @@ describe("les deux sortes de récit sur les pages publiques", () => {
   it("F14-AC72 — le premier écran de l'accueil : « livre » dans les titres, les deux sortes de récit nommées, le livre dont vous êtes le héros d'abord", () => {
     expect(PROMESSE).toBe("Votre classe écrit son livre.");
     expect(TITRE_DE_L_ACCUEIL).toMatch(/^Écrire un livre avec sa classe/);
-    expect(TITRE_DE_L_ACCUEIL).toMatch(/— Il était une classe$/);
-    for (const texte of [TITRE_DE_L_ACCUEIL, DESCRIPTION_DE_L_ACCUEIL]) expect(avant(texte, "livre dont vous êtes le héros", "histoire classique")).toBe(true);
+    // Court, sans le nom du site (porteur, 24 novembre 2026)
+    expect(TITRE_DE_L_ACCUEIL.length).toBeLessThanOrEqual(75);
+    expect(avant(TITRE_DE_L_ACCUEIL, "livre dont vous êtes le héros", "histoire")).toBe(true);
+    expect(avant(DESCRIPTION_DE_L_ACCUEIL, "livre dont vous êtes le héros", "histoire classique")).toBe(true);
     expect(DESCRIPTION_DE_L_ACCUEIL).toMatch(/^Créez gratuitement un livre avec votre classe/);
     expect(DESCRIPTION_DE_L_ACCUEIL.length).toBeLessThanOrEqual(160);
-    expect(avant(DEUX_RECITS, "livre dont vous êtes le héros", "une histoire qui se lit du début à la fin")).toBe(true);
+    expect(DEUX_RECITS).toBe("Un livre dont vous êtes le héros ou une histoire classique.");
     // L'image de partage montre ce premier écran : son texte de remplacement cite le même grand titre
     expect(IMAGE_DE_PARTAGE.alt).toContain(`« ${PROMESSE} »`);
     for (const texte of [PROMESSE, TITRE_DE_L_ACCUEIL, DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS]) expect(texte).not.toMatch(/recueil|roman/i);

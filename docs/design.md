@@ -2887,17 +2887,20 @@ retouche de texte, la page ne change pas de forme
 ([F14](specifications.md#f14-deux-recits), où sont les libellés ; F14-AC72 à
 AC75). Le grand titre devient « Votre classe écrit son livre. », sur deux lignes
 comme avant ; la phrase dessous nomme les deux sortes de récit, le livre dont
-vous êtes le héros d'abord, et garde la seconde phrase du 8 novembre. Au 12, le
+vous êtes le héros d'abord. Au 12, le
 troisième temps dit le PDF pour tout livre, puis les chemins et les numéros pour
-le livre-jeu. Au 52, une phrase de plus sur l'histoire classique, à faire
-accepter par le porteur. Le pied reprend le grand titre. Vu à l'écran, sans
-compte, en 1440 × 900 et en 390 × 664 : rien ne déborde ; sur téléphone, la
-phrase du premier écran prend une ligne de plus (cinq), le second renvoi, déjà
-coupé au bas du premier écran, descendant de 24 points. L'image de partage est
+le livre-jeu. Au 52, une phrase de plus sur l'histoire classique, écrite avant
+l'outil. Le pied reprend le grand titre. Le 24 novembre 2026, le porteur juge
+le premier écran trop chargé : son texte passe à trois lignes (« Un livre dont
+vous êtes le héros ou une histoire classique. L'application vous guide et vous
+aide, de la première idée au livre. »), et le titre d'onglet à 73 signes. Vu à
+l'écran, sans compte, en 1440 × 900 et en 390 × 664 : rien ne déborde, et sur
+téléphone « Créez un compte » et les deux renvois tiennent au premier écran.
+L'image de partage est
 refaite (vue « partage » de `tests/captures/accueil.spec.ts`, puis `sips` :
 largeur 1200, complétée à 630 dans la couleur de la table) : elle montre
 désormais le bouton de la visite en vidéo, posé sur l'illustration depuis
-octobre. Posé en local, non lu par le porteur.
+octobre.
 
 ### Entrées en livre-jeu (23 octobre 2026)
 

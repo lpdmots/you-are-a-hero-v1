@@ -800,7 +800,8 @@ avant de commencer » soient tranchées.
   validée dans son ensemble par lui le même jour (« Je valide ») ; les
   textes de l'accueil et de l'« Aide » sont posés en local le même jour
   (F14-AC72 à AC75, [plan](docs/plan.md), « Pages publiques pour les deux
-  sortes de récit »), la phrase du passage 52 restant à lui faire accepter ;
+  sortes de récit »), repris le 24 novembre sur son premier retour (texte du
+  premier écran et titre d'onglet raccourcis, phrase du passage 52 corrigée) ;
   le reste attend son instruction :
   accueil autour de « écrire un livre avec sa classe », le livre dont vous
   êtes le héros nommé en premier, six retouches ; un roman d'exemple à

@@ -13004,18 +13004,24 @@ les révisions qui suivent :
     les mots de « Nouveau projet ». Ces libellés sont des propositions, que
     le porteur n'a pas encore lues à l'écran :
     - **Titre d'onglet :** « Écrire un livre avec sa classe : livre dont vous
-      êtes le héros ou histoire classique — Il était une classe ». Long
-      (106 signes) : un moteur le coupe vers 60, donc après « livre dont vous
-      êtes le héros », les deux mots-clés restant lisibles.
+      êtes le héros ou histoire » (73 signes), raccourci le 24 novembre 2026
+      à la demande du porteur : la première version, avec « classique » et le
+      nom du site, en faisait 106. Le nom du site n'y est plus, les moteurs
+      l'affichant à part. Variante plus courte, non retenue parce qu'elle sort
+      « livre dont vous êtes le héros » du titre : « Écrire un livre avec sa
+      classe : livre-jeu ou histoire classique » (64).
     - **Description :** « Créez gratuitement un livre avec votre classe :
       livre dont vous êtes le héros ou histoire classique. Écriture des
       élèves, PDF, lecture en ligne. IA facultative. » (160 signes).
     - **Grand titre, titre de partage et pied des pages publiques :**
       « Votre classe écrit son livre. »
-    - **Sous le grand titre :** « Un livre dont vous êtes le héros, où le
-      lecteur choisit la suite, ou une histoire qui se lit du début à la
-      fin. », suivi de la phrase du 8 novembre 2026, inchangée
-      (« L'application vous guide et vous aide… »).
+    - **Sous le grand titre :** « Un livre dont vous êtes le héros ou une
+      histoire classique. L'application vous guide et vous aide, de la
+      première idée au livre. » Raccourci le 24 novembre 2026, le porteur
+      jugeant le premier écran trop chargé : trois lignes, sur grand écran
+      comme sur téléphone, contre quatre et cinq. Retirés : « où le lecteur
+      choisit la suite », « qui se lit du début à la fin », et « à imprimer
+      ou à lire en ligne », que la ligne des garanties dit déjà.
     - **Troisième temps du passage 12 :** « L'application compose le PDF.
       Pour un livre-jeu, elle vérifie aussi les chemins et numérote les
       passages. Vous relisez et ajustez. » Ce qui vaut toujours vient
@@ -13023,11 +13029,12 @@ les révisions qui suivent :
       l'application vérifie les chemins et numérote les passages. Dans tous
       les cas, elle compose le PDF. »
     - **Passage 52, « D'où vient cet outil » :** une phrase de plus dans le
-      texte signé du porteur, « Elle a aussi écrit une histoire classique,
-      qui se lit du début à la fin. », entre « …ses livres-jeux avec cet
-      outil. » et « Cette version accompagne… ». **Posée en local, à faire
-      accepter par lui :** c'est sa signature, et la phrase laisse entendre
-      que ce livre s'est écrit avec l'outil, ce qui n'est pas établi.
+      texte signé du porteur, « Avec mes élèves, j'ai d'abord écrit une
+      histoire classique. », devant « Depuis quatre ans, ma classe écrit ses
+      livres-jeux avec cet outil. » Corrigée le 24 novembre 2026 sur son
+      retour (« c'était plus tôt ») : la première version la plaçait après et
+      laissait entendre que ce livre s'était écrit avec l'outil. Le libellé
+      corrigé reste à lire par lui.
     - **« Aide » :** « Peut-on écrire une histoire classique avec sa
       classe ? », après la définition du livre dont vous êtes le héros, et
       « Peut-on écrire seul, sans classe ? », plus bas, avant « Est-ce
@@ -13040,17 +13047,13 @@ les révisions qui suivent :
       sans classe ».
     - **Image de partage :** refaite avec le nouveau premier écran, par la
       vue « partage » des captures de l'accueil ; elle portait encore les
-      textes d'octobre.
+      textes d'octobre. Refaite le 24 novembre 2026 avec le texte raccourci.
     - Laissés tels quels : la ligne du passage 33 (« Une histoire
       interactive à choix, ou un récit classique. »), le passage 27 et le
       carton de fin de la vidéo, qui attendent le roman d'exemple et la
       voix.
-    - Sur téléphone (390 × 664), la phrase sous le grand titre prend cinq
-      lignes au lieu de quatre : « Créez un compte » et le premier renvoi
-      restent à l'écran, le second, déjà coupé avant, descend de 24 points.
-      Pour rester à quatre lignes, il faudrait raccourcir la phrase du
-      8 novembre (« …de l'idée au livre imprimé ou lu en ligne. ») : non
-      fait, c'est son texte.
+    - Sur téléphone (390 × 664), « Créez un compte » et les deux renvois
+      tiennent de nouveau au premier écran depuis le texte raccourci.
 - <a id="f14-ressources"></a>**Page « Ressources »** (entretien du
   19 novembre 2026, validé dans son ensemble par le porteur le même jour,
   « je valide », construit en local le même jour en trois lots ; documents dans
@@ -13820,12 +13823,12 @@ découvre l'outil, et le porteur, administrateur.
 
 - **F14-AC72 — Le premier écran de l'accueil :** étant donné un visiteur
   sans compte qui ouvre l'accueil, alors le titre d'onglet commence par
-  « Écrire un livre avec sa classe » et finit par le nom du site ; ce titre
+  « Écrire un livre avec sa classe » et tient en 75 signes au plus ; ce titre
   et la description nomment « livre dont vous êtes le héros » puis
-  « histoire classique », la description en 160 signes au plus ; le grand
+  l'histoire, la description en 160 signes au plus ; le grand
   titre, le titre de partage et le pied des pages publiques disent « Votre
-  classe écrit son livre. » ; la phrase dessous nomme le livre dont vous êtes
-  le héros, puis « une histoire qui se lit du début à la fin » ; l'image de
+  classe écrit son livre. » ; la phrase dessous est « Un livre dont vous êtes
+  le héros ou une histoire classique. » ; l'image de
   partage montre ce premier écran ; aucun de ces textes ne dit « roman » ni
   « recueil », et la page ne porte aucun badge « livre-jeu seulement ».
 - **F14-AC73 — Le troisième temps :** étant donné le passage 12, alors « Le

@@ -15,11 +15,12 @@ export const NOM = "Il était une classe";
  * Le premier écran de l'accueil et le pied des pages publiques, pour les deux sortes de récit (F14-AC72,
  * « Pages publiques pour les deux sortes de récit », 23 novembre 2026) : « livre » porte les titres, mot-clé
  * « écrire un livre avec sa classe » ; le livre dont vous êtes le héros est nommé d'abord, l'histoire
- * classique ensuite, dans les mots de « Nouveau projet ».
+ * classique ensuite.
  */
 export const PROMESSE = "Votre classe écrit son livre.";
-export const DEUX_RECITS = "Un livre dont vous êtes le héros, où le lecteur choisit la suite, ou une histoire qui se lit du début à la fin.";
-export const TITRE_DE_L_ACCUEIL = "Écrire un livre avec sa classe : livre dont vous êtes le héros ou histoire classique — Il était une classe";
+export const DEUX_RECITS = "Un livre dont vous êtes le héros ou une histoire classique.";
+// Sans le nom du site, que les moteurs affichent à part : 73 signes, « livre dont vous êtes le héros » avant la coupe
+export const TITRE_DE_L_ACCUEIL = "Écrire un livre avec sa classe : livre dont vous êtes le héros ou histoire";
 export const DESCRIPTION_DE_L_ACCUEIL =
   "Créez gratuitement un livre avec votre classe : livre dont vous êtes le héros ou histoire classique. Écriture des élèves, PDF, lecture en ligne. IA facultative.";
 /** Le troisième temps du passage 12 (F14-AC73) : ce qui vaut toujours, le PDF, puis ce qui est propre au livre-jeu */

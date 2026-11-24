@@ -5974,11 +5974,12 @@ chacune sur son instruction :
    1440 × 900 et 390 × 664. Trois parcours qui cherchent le grand titre sont
    accordés (`pages-publiques`, `lecteur`, `ouverture-de-bout-en-bout`) sans
    être lancés : aucun parcours Playwright sans sa demande.
-   **À faire accepter par lui :** la phrase du passage 52, dans son texte
-   signé (« Elle a aussi écrit une histoire classique, qui se lit du début à
-   la fin. ») ; les libellés, qu'il affine en les lisant. À lui dire : le
-   titre d'onglet fait 106 signes ; la phrase du premier écran prend une
-   ligne de plus sur téléphone.
+   Repris le 24 novembre 2026 sur son premier retour, un commit local : la
+   phrase du passage 52 dit que l'histoire classique est venue avant l'outil
+   (« c'était plus tôt ») ; le texte du premier écran passe à trois lignes
+   (« trop de texte ») ; le titre d'onglet à 73 signes, sans le nom du site
+   (« fais plus court ») ; image de partage refaite. Les libellés restent à
+   lui, qui les affine en les lisant.
 2. Un roman d'exemple (skill `livres-d-exemple`), qui prend la seconde place
    au passage 27.
 3. La voix de la vidéo de visite, trois phrases, et son carton de fin.
