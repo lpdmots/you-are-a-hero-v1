@@ -78,7 +78,7 @@ export default function PagesPubliques({ children }: { children: ReactNode }) {
                   <Link href="/entree/inscription">Créer un compte</Link>
                 </li>
                 <li>
-                  <Link href="/entree">Entrée enseignant</Link>
+                  <Link href="/entree">Se connecter</Link>
                 </li>
                 <li>
                   <Link href="/classe">Entrée des élèves</Link>

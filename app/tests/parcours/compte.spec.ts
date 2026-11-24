@@ -10,9 +10,9 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
-test("F01-AC28 — sans être entré, l'espace adulte ramène à l'entrée enseignant", async ({ page }) => {
+test("F01-AC28 — sans être entré, l'espace adulte ramène à la page « Se connecter »", async ({ page }) => {
   await aller(page, "/entree");
-  await expect(page.getByRole("heading", { level: 1, name: "Entrée enseignant" })).toBeVisible();
+  await expect(page.getByRole("heading", { level: 1, name: "Se connecter" })).toBeVisible();
 
   for (const adresse of ["/projets", "/classes", "/projets/nouveau"]) {
     await page.goto(adresse);

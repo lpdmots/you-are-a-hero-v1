@@ -191,7 +191,9 @@ la réalisation de l'étape 1 du [plan](plan.md), aucune règle n'existant
 jusque-là :
 
 - **Une adresse électronique et un mot de passe.** L'adulte entre par
-  l'« Entrée enseignant », distincte de l'entrée des élèves de
+  la page « Se connecter » (« Entrée enseignant » jusqu'au 24 novembre
+  2026, renommée pour l'auteur seul, qui y entre aussi), distincte de
+  l'entrée des élèves de
   [F06.4](#f064--classe-de-référence-et-postes-partagés). « Mot de passe
   oublié » lui envoie un courriel, dont le lien lui fait choisir un nouveau
   mot de passe.
@@ -219,7 +221,7 @@ jusque-là :
   une adresse ou un mot de passe faux, il lit « L'adresse ou le mot de
   passe n'est pas le bon. », sans savoir lequel des deux.
 - **F01-AC28 — Aucun compte créé depuis l'application :** étant donné une
-  personne sans compte, lorsqu'elle ouvre l'entrée enseignant, alors aucune
+  personne sans compte, lorsqu'elle ouvre la page « Se connecter », alors aucune
   commande ne lui propose de s'inscrire ; lorsqu'elle ouvre l'adresse de
   « Mes projets » sans être connectée, alors elle est ramenée à l'entrée. **Révisé le 20 octobre 2026 (F14-AC01) :** l'entrée
   propose « Créer un compte » ; la seconde moitié tient.
@@ -270,7 +272,7 @@ déconseillé, n'est pas retenu.
   passe (F06-AC53).
 - **F01-AC32 — Compte Google inconnu :** étant donné une personne dont
   l'adresse Google n'est celle d'aucun compte, lorsqu'elle choisit
-  « Continuer avec Google », alors elle revient à l'entrée enseignant, lit
+  « Continuer avec Google », alors elle revient à la page « Se connecter », lit
   « Aucun compte ne correspond à cette adresse Google. », et aucun compte
   n'est créé. **Révisé le 20 octobre 2026 (F14-AC02) :** avec l'inscription
   publique, « Continuer avec Google » crée le compte.
@@ -286,7 +288,7 @@ une page d'accueil et une politique de confidentialité au même domaine.
 « Continuer avec Google » est en tête de la carte, en bouton à contour, puis
 « ou », puis l'adresse et le mot de passe, dont « Entrer » reste le seul
 bouton plein.
-L'entrée enseignant reprend la disposition d'« Ouvrir la classe », image à
+La page « Se connecter » reprend la disposition d'« Ouvrir la classe », image à
 gauche et formulaire à droite ; le mot de passe a huit caractères au moins ;
 il ne se change que par le lien de « Mot de passe oublié », ouvert sur
 l'ordinateur d'où il a été demandé : une session laissée ouverte sur un
@@ -13053,7 +13055,11 @@ les révisions qui suivent :
         les écrans, à la demande du porteur : « En créant le projet, indiquez
         que vous écrivez seul, puis la sorte de récit : livre à choix ou
         histoire classique. » La page reste au livre-jeu (adresse, titres,
-        captures) et hors de la barre du haut.
+        captures) et hors de la barre du haut. Décidé par lui le même jour,
+        sur recommandation : l'« Entrée enseignant » devient « Se connecter »
+        partout (titre de la page, pied des pages publiques, renvoi du mot de
+        passe oublié), comme le bouton de la barre du haut ; le dragon et
+        « Si vous êtes élève, rendez-vous au… » restent.
       - *Liens :* au pied des pages publiques, dernière ligne de
         « Commencer », « Écrire seul un livre-jeu » ; « Lire la page » sous la
         réponse de l'« Aide » « Peut-on écrire seul, sans classe ? » ; une
@@ -13653,11 +13659,11 @@ découvre l'outil, et le porteur, administrateur.
 - **F14-AC39 — Revenir à l'accueil** (demandé par le porteur le 22 octobre
   2026) : étant donné M. Bernard connecté, lorsqu'il choisit « Se
   déconnecter », alors il arrive sur la page d'accueil, et non plus sur
-  l'entrée enseignant ; étant donné l'entrée enseignant, « Créer un compte »
+  la page « Se connecter » ; étant donné cette page, « Créer un compte »
   ou « Mot de passe oublié », alors « Retour à l'accueil », au-dessus du nom,
   et le nom lui-même mènent à l'accueil ; l'entrée des élèves aussi (révisé
   par le porteur le même jour, qui n'y voulait d'abord que le nom). Une page de l'espace adulte ouverte sans être connecté mène
-  toujours à l'entrée enseignant (F01-AC28).
+  toujours à la page « Se connecter » (F01-AC28).
 - **F14-AC40 — Les livres de l'accueil** (décidé par le porteur le 23 octobre 2026, à la
   place d'une variable d'environnement ; révisé le 25 octobre 2026 : la liste est celle des
   livres publiés dans la bibliothèque, de tous les comptes, F15-AC19 ; révisé le 26 octobre

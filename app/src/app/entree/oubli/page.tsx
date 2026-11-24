@@ -17,7 +17,7 @@ export default async function Oubli({ searchParams }: { searchParams: Promise<{ 
           ? "Ce lien n’est plus valable. Demandez-en un nouveau, et ouvrez-le sur cet ordinateur."
           : "Écrivez votre adresse : vous recevrez un lien pour choisir un nouveau mot de passe."
       }
-      choix={[{ phrase: "Pour revenir à l’entrée enseignant, rendez-vous au", ...PASSAGES.enseignant }]}
+      choix={[{ phrase: "Pour revenir à la connexion, rendez-vous au", ...PASSAGES.enseignant }]}
     >
       <FormulaireOubli />
     </EntreeIllustree>

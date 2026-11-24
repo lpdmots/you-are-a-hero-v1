@@ -22,7 +22,7 @@ test("F14-AC32 — l'accueil, un livre-jeu, dit ce qu'est l'outil et mène à l'
   await expect(page).toHaveURL(/#p12$/);
   await expect(page.getByRole("heading", { level: 2, name: "Un projet, en trois temps." })).toBeInViewport();
   for (const [lien, adresse] of [
-    ["Créez un compte", /\/entree\/inscription$/], ["Se connecter", /\/entree$/], ["Entrée enseignant", /\/entree$/], 
+    ["Créez un compte", /\/entree\/inscription$/], ["Se connecter", /\/entree$/], 
     ["Entrée des élèves", /\/classe$/], ["Aide", /\/aide$/], ["Confidentialité", /\/confidentialite$/], ["Conditions d’utilisation", /\/conditions$/],
     ["Mentions légales", /\/mentions-legales$/],
   ] as const) {
@@ -108,7 +108,7 @@ test("F14-AC36 — « Écrire au créateur » dans « Mon compte » et l'adresse
 });
 
 test("F14-AC39 — revenir à l'accueil : après « Se déconnecter », et depuis les écrans d'entrée", async ({ page }) => {
-  // Depuis l'entrée enseignant, l'inscription et le mot de passe oublié : « Retour à l'accueil » et le nom
+  // Depuis « Se connecter », l'inscription et le mot de passe oublié : « Retour à l'accueil » et le nom
   for (const adresse of ["/entree", "/entree/inscription", "/entree/oubli"]) {
     for (const lien of ["Retour à l’accueil", "Il était une classe"]) {
       await aller(page, adresse);

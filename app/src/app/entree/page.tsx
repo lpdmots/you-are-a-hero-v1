@@ -4,7 +4,8 @@ import { EntreeIllustree, PASSAGES } from "@/composants/EntreeIllustree";
 import { enseignantCourant } from "@/serveur/adulte";
 import { FormulaireEntree } from "./FormulaireEntree";
 
-export const metadata: Metadata = { title: "Entrée enseignant" };
+// « Se connecter », comme le bouton de la barre du haut : l'auteur seul y entre aussi (24 novembre 2026, F01-AC27)
+export const metadata: Metadata = { title: "Se connecter" };
 
 /** Entrée de l'enseignant (F01-AC27), passage 7 ; « rendez-vous au 3 » mène à l'inscription (F14). */
 export default async function Entree({ searchParams }: { searchParams: Promise<{ refus?: string; compte?: string }> }) {
@@ -12,7 +13,7 @@ export default async function Entree({ searchParams }: { searchParams: Promise<{
   const { refus, compte } = await searchParams;
   return (
     <EntreeIllustree
-      titre="Entrée enseignant"
+      titre="Se connecter"
       numero={PASSAGES.enseignant.vers}
       illustration="enseignant"
       retourAccueil
