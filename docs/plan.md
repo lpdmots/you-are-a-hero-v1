@@ -5982,7 +5982,16 @@ chacune sur son instruction :
    lui, qui les affine en les lisant.
 2. Un roman d'exemple (skill `livres-d-exemple`), qui prend la seconde place
    au passage 27.
-3. La voix de la vidéo de visite, trois phrases, et son carton de fin.
+3. **La voix de la vidéo de visite, trois phrases, et son carton de fin —
+   faits en local le 24 novembre 2026,** un commit, sans migration, rien
+   poussé. Phrases validées par le porteur (« ok je valide ») et enregistrées
+   par lui chez ElevenLabs (sections 1, 3 et 5 entières), posées par
+   `transcrire.mjs` ; la page du passage 1 écrit la nouvelle phrase (choix
+   descendus de 60 points) ; carton « Votre classe écrit son livre. » ;
+   sous-titres refaits, une coupe trop longue reprise dans `preparer.mjs`
+   (après une virgule ou avant « et », « ou », « puis ») ; rendu v24,
+   1 min 28, posé dans `app/public/accueil/` avec sa durée et sa date dans
+   `VIDEO_POUR_LES_MOTEURS`. Texte : `video/visite/SCRIPT.md`.
 4. Une partie « Et pour un roman ? » dans le guide.
 5. Une page pour l'auteur seul, au pied du site, en dernier.
 

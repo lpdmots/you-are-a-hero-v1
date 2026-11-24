@@ -176,7 +176,16 @@ for (const p of Object.values(plan)) {
   };
   for (const m of p.mots) {
     const longueur = groupe.map((x) => x.m).join(" ").length + m.m.length + 1;
-    if (longueur > 84) pousser();
+    if (longueur > 84) {
+      // trop long : couper après la dernière virgule ou avant le dernier « et », « ou », « puis »
+      // du groupe plutôt qu'au mot qui déborde (« …chaque chemin / mène quelque part », visite v24)
+      const i = groupe.findLastIndex((x, j) => j > 2 && (/,$/.test(groupe[j - 1].m) || /^(et|ou|puis|mais)$/i.test(x.m)));
+      if (i > 0) {
+        const reste = groupe.splice(i);
+        pousser();
+        groupe = reste;
+      } else pousser();
+    }
     groupe.push(m);
     if (/[.?!…]$/.test(m.m) || (/[,:]$/.test(m.m) && groupe.map((x) => x.m).join(" ").length > 42)) pousser();
   }

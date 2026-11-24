@@ -5,7 +5,7 @@
       "id": "p01",
       "avant": 1.2,
       "apres": 1.7,
-      "texte": "Et si, cette année, votre classe écrivait son propre livre ? <break time=\"0.5s\" /> Un vrai livre-jeu, où c'est le lecteur qui choisit son chemin.",
+      "texte": "Et si, cette année, votre classe écrivait son propre livre ? <break time=\"0.5s\" /> Une histoire classique… <break time=\"0.3s\" /> ou un livre-jeu, où c'est le lecteur qui choisit son chemin.",
       "fournie": true
     },
     {
@@ -19,7 +19,7 @@
       "id": "p18",
       "avant": 0.9,
       "apres": 1.5,
-      "texte": "Ensuite, chaque élève reçoit ses scènes, <break time=\"0.4s\" /> et les écrit, d'abord sur son cahier, <break time=\"0.5s\" /> puis sur les ordinateurs de la classe. <break time=\"0.7s\" /> Chaque scène se termine par des choix. <break time=\"0.5s\" /> Suivre la lumière dans la brume ? <break time=\"0.4s\" /> Ou rester immobile.",
+      "texte": "Ensuite, chaque élève reçoit ses scènes, <break time=\"0.4s\" /> et les écrit, d'abord sur son cahier, <break time=\"0.5s\" /> puis sur les ordinateurs de la classe. <break time=\"0.7s\" /> Dans un livre-jeu, chaque scène se termine par des choix. <break time=\"0.5s\" /> Suivre la lumière dans la brume ? <break time=\"0.4s\" /> Ou rester immobile.",
       "prise": 11,
       "fournie": true
     },
@@ -34,7 +34,7 @@
       "id": "p34",
       "avant": 0.9,
       "apres": 1.1,
-      "texte": "Vient le plus beau moment. <break time=\"0.6s\" /> L'application numérote les passages, <break time=\"0.3s\" /> vérifie que chaque chemin mène quelque part, <break time=\"0.4s\" /> et met le livre en page. <break time=\"0.8s\" /> Il ne reste qu'à l'imprimer… <break time=\"0.4s\" /> ou à le lire en ligne, à la maison.",
+      "texte": "Vient le plus beau moment. <break time=\"0.6s\" /> Pour un livre-jeu, l'application numérote les passages <break time=\"0.3s\" /> et vérifie que chaque chemin mène quelque part. <break time=\"0.6s\" /> Puis elle met le livre en page. <break time=\"0.8s\" /> Il ne reste qu'à l'imprimer… <break time=\"0.4s\" /> ou à le lire en ligne, à la maison.",
       "prise": 6,
       "fournie": true
     },

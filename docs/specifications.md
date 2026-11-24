@@ -12976,7 +12976,18 @@ les révisions qui suivent :
       propre au livre-jeu (ouverture, écriture, composition du livre), et le
       carton de fin prend le grand titre de l'accueil. Cela rouvre, à son
       initiative, la vidéo gardée le 15 novembre 2026, pour sa voix
-      seulement : les images ne changent pas.
+      seulement : les images ne changent pas. Fait le 24 novembre 2026
+      (version 24, 1 min 28) : l'ouverture nomme les deux sortes de récit
+      (« Une histoire classique… ou un livre-jeu, où c'est le lecteur qui
+      choisit son chemin »), le porteur voulant une ouverture plus neutre ;
+      « Dans un livre-jeu » (écriture) et « Pour un livre-jeu » (numéros et
+      chemins, avant la mise en page) ; carton « Votre classe écrit son
+      livre. ». Il élargit ce jour-là sa décision aux retouches d'image
+      utiles : seule la page du passage 1 change, pour écrire la nouvelle
+      phrase. Un passage réservé à l'histoire classique, qu'il laissait au
+      jugement de Claude, est écarté sur recommandation (il répéterait les quatre
+      temps, communs aux deux récits, et rien de vrai ne se montre avant le
+      livre d'exemple classique). Texte : `video/visite/SCRIPT.md`.
     - **Livre d'exemple classique :** à écrire avec le skill
       `livres-d-exemple`, présenté comme un exemple du site ; il prend la
       seconde place à l'accueil, « Bouquin mène l'enquête » restant dans la

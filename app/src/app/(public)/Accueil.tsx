@@ -54,7 +54,7 @@ const VIDEO_DE_LA_VISITE: string | null = "/accueil/visite-fr.mp4";
 const SOUS_TITRES_DE_LA_VISITE: string | null = "/accueil/visite-fr.vtt";
 /** Ce que les moteurs en lisent (F14-AC48) : son affiche, sa durée, le jour de sa mise en ligne */
 const VIDEO_POUR_LES_MOTEURS: Video | null = VIDEO_DE_LA_VISITE
-  ? { fichier: VIDEO_DE_LA_VISITE, sousTitres: SOUS_TITRES_DE_LA_VISITE, image: "/accueil/visite-fr.webp", duree: "PT1M24S", publieeLe: "2026-11-22" }
+  ? { fichier: VIDEO_DE_LA_VISITE, sousTitres: SOUS_TITRES_DE_LA_VISITE, image: "/accueil/visite-fr.webp", duree: "PT1M29S", publieeLe: "2026-11-24" }
   : null;
 const EN_DEVELOPPEMENT = process.env.NODE_ENV !== "production";
 

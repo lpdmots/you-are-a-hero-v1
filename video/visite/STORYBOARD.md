@@ -50,13 +50,17 @@ générée (chaque temps commence sur son premier mot).
 
 ## Passage 1 — Ouverture (≈ 0 – 8 s)
 
-*« Et si, cette année, votre classe écrivait son propre livre ? Un vrai
-livre-jeu, où c'est le lecteur qui choisit son chemin. »*
+*« Et si, cette année, votre classe écrivait son propre livre ? Une
+histoire classique… ou un livre-jeu, où c'est le lecteur qui choisit son
+chemin. »*
 
 Le grand livre ouvert de l'accueil, vu d'un peu haut, la caméra qui
 s'approche lentement. Page de gauche : l'illustration de la classe au travail.
-Page de droite : le « 1 » du passage se pose, puis « Votre classe écrit son
-livre-jeu. » s'écrit ligne à ligne. Le dragon se glisse à côté du livre et
+Page de droite : le « 1 » du passage se pose, puis « Et si votre classe
+écrivait son propre livre ? » s'écrit ligne à ligne. Dessous, « Une histoire
+classique, » paraît sur « histoire », puis « ou un livre-jeu, où c'est le
+lecteur qui choisit son chemin. » sur « ou » (24 novembre 2026 : la phrase
+tient sur trois lignes, les choix sont descendus de 60 points). Le dragon se glisse à côté du livre et
 s'assoit. Sur « choisit son chemin », deux phrases de choix glissent sous le
 titre ; le curseur touche le « 2 ».
 
@@ -81,8 +85,9 @@ rendez-vous au 3. »
 ## Passage 3 — Chacun écrit ses scènes (≈ 25 – 39 s)
 
 *« Ensuite, chaque élève reçoit ses scènes, et les écrit, d'abord sur son
-cahier, puis sur les ordinateurs de la classe. Chaque scène se termine par des
-choix. Suivre la lumière dans la brume ? Ou rester immobile. »*
+cahier, puis sur les ordinateurs de la classe. Dans un livre-jeu, chaque
+scène se termine par des choix. Suivre la lumière dans la brume ? Ou rester
+immobile. »*
 
 Sur « chaque élève reçoit ses scènes », la vue « Chemins » du chapitre « La
 clairière aux pierres » : six scènes « Texte vide » reliées par leurs choix en
@@ -113,9 +118,10 @@ Choix : « Pour faire le livre, rendez-vous au 5. »
 
 ## Passage 5 — Le livre se fait (≈ 56 – 76 s)
 
-*« Vient le plus beau moment. L'application numérote les passages, vérifie
-que chaque chemin mène quelque part, et met le livre en page. Il ne reste
-qu'à l'imprimer… ou à le lire en ligne, à la maison. »*
+*« Vient le plus beau moment. Pour un livre-jeu, l'application numérote les
+passages et vérifie que chaque chemin mène quelque part. Puis elle met le
+livre en page. Il ne reste qu'à l'imprimer… ou à le lire en ligne, à la
+maison. »*
 
 Les cartes des scènes s'envolent et s'empilent ; leurs numéros défilent puis
 s'arrêtent, 1, 2, 3… Sur « chaque chemin », la vue « Chemins » se trace,
@@ -134,7 +140,8 @@ ligne, à la maison » : un téléphone glisse à droite, la lecture défile.
 
 « Il était une fois » s'écrit en cursive ; « fois » se barre d'un trait de
 crayon et « classe » s'écrit à sa place. Le dragon-livre du logo se pose à
-gauche du nom. Dessous : « Votre classe écrit son livre-jeu. »,
+gauche du nom. Dessous : « Votre classe écrit son livre. » (le grand titre
+de l'accueil, depuis le 24 novembre 2026),
 « Gratuit · Rien à installer », iletaituneclasse.com. En bas, le dragon dort
 sur son livre, la souris grignote un coin. Fondu au papier.
 

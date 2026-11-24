@@ -31,7 +31,10 @@ window.SCENES.p01 = (tl, t0) => {
   morceaux.forEach((el, i) =>
     tl.fromTo(el, { clipPath: "inset(-100% 110% -100% -10%)", opacity: 1 }, { clipPath: "inset(-100% -10% -100% -10%)", duration: durees[i], ease: "power1.inOut" }, reperes[i] - 0.05),
   );
-  tl.fromTo("#p01-recit", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, m("vrai") - 0.1);
+  // Les deux sortes de récit, chacune sur son mot : « Une histoire classique… », puis « ou un livre-jeu »
+  tl.fromTo("#p01-recit", { y: 18 }, { y: 0, duration: 0.7, ease: "power2.out" }, m("histoire") - 0.2);
+  tl.fromTo("#p01-recit1", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, m("histoire") - 0.2);
+  tl.fromTo("#p01-recit2", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, m("ou") - 0.1);
 
   // Les deux choix glissent sous le texte
   tl.fromTo("#p01-choix1", { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.6, ease: "power3.out" }, m("choisit") - 0.15);
@@ -51,7 +54,7 @@ window.SCENES.p01 = (tl, t0) => {
   if (fin > 9.8) window.fumer(tl, boite, [[33, 196], [72, 212]], T(8.6));
 
   // Le clic sur le « 7 » : sa position à l'écran, la caméra étant arrêtée
-  const local = { x: 210 + 806 + 548 - 2 - 33, y: -30 + 190 + 480 + 2 + 39 };
+  const local = { x: 210 + 806 + 548 - 2 - 33, y: -30 + 190 + 540 + 2 + 39 };
   const x = 960 + (local.x - 960) * S + DX, y = 540 + (local.y - 540) * S + DY;
   window.sortieParRenvoi(tl, id, x, y, T(fin));
 };

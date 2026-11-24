@@ -808,8 +808,9 @@ avant de commencer » soient tranchées.
   écrire ; guide gardé sur le livre-jeu avec une partie « Et pour un
   roman ? » ; auteur seul en dernier, au pied du site
   ([F14](docs/specifications.md#f14-deux-recits)). « Recueil » écarté par
-  lui. Vidéo de visite : une seule, sans badge, trois phrases de la voix à
-  retoucher. Le récit classique se dit « histoire classique » (« écrire une
+  lui. Vidéo de visite : une seule, sans badge ; ses trois phrases et son
+  carton de fin retouchés en local le 24 novembre 2026 (version 24, 1 min 28,
+  prises du porteur ; ouverture qui nomme les deux sortes de récit). Le récit classique se dit « histoire classique » (« écrire une
   histoire » pèse 100 à 1 000 par mois). Remis à la construction : le sujet
   du roman d'exemple.
 - **Étape 2, entretien du 10 octobre 2026,** validé dans son ensemble par
