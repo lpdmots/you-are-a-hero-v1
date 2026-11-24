@@ -1,4 +1,4 @@
-import type { Offre } from "./offre";
+import { enEuros, type Offre } from "./offre";
 
 /**
  * La page de l'auteur seul (F14, « Pages publiques pour les deux sortes de récit », cinquième part, F14-AC76) :
@@ -31,49 +31,77 @@ export type ImageDeLAuteurSeul = {
 };
 
 /** Les trois temps, du plan au livre, chacun avec une capture de l'application déjà publiée par le guide */
+/**
+ * Les trois temps, du plan au livre, chacun avec sa capture. Elles montrent « La dernière traversée du Cormoran »,
+ * un livre-jeu pour adultes écrit pour cette page (`scripts/exemples/cormoran.ts`, images à l'encre du porteur), à la
+ * place des livres de classe, jugés « un peu bébé » pour ce public (24 novembre 2026). Refaites par
+ * `npx playwright test --config playwright.local.config.ts auteur-seul`, puis converties en webp.
+ */
+const IMAGES = ADRESSE_DE_L_AUTEUR_SEUL;
 export const TEMPS_DE_L_AUTEUR_SEUL: readonly { titre: string; phrase: string; image: ImageDeLAuteurSeul }[] = [
   {
     titre: "Dessiner les chemins",
     phrase: "Dans « Chemins », chaque scène est une carte et chaque choix un onglet dessous : vous voyez où mène chaque chemin, et ce qui reste sans suite.",
     image: {
-      src: "/guide/chemins-le-pont-effondre-onglets.webp",
-      largeur: 1200,
-      hauteur: 894,
-      telephone: { src: "/guide/chemins-le-pont-effondre-onglets-telephone.webp", largeur: 1062, hauteur: 957 },
-      alt: "La vue « Chemins » d’un chapitre : une énigme devant un pont effondré et ses quatre choix, chacun en onglet sous la carte ; trois chemins se rejoignent sur la rive.",
+      src: `${IMAGES}/chemins.webp`,
+      largeur: 1440,
+      hauteur: 984,
+      telephone: { src: `${IMAGES}/chemins-telephone.webp`, largeur: 830, hauteur: 340 },
+      alt: "La vue « Chemins » d’un polar en mer : le départ sur le pont promenade et ses trois choix en onglets, qui mènent au commandant, aux poches du pardessus et à la cabine A-24.",
     },
   },
   {
     titre: "Écrire les scènes",
     phrase: "Vous écrivez chaque scène et posez ses choix dans le texte. Objets, feuille d’aventure et jets de dé s’ajoutent si votre livre en a.",
     image: {
-      src: "/guide/copie-la-lanterne.webp",
-      largeur: 1656,
-      hauteur: 750,
-      telephone: { src: "/guide/copie-la-lanterne-telephone.webp", largeur: 714, hauteur: 900 },
-      alt: "Une scène en cours d’écriture : deux paragraphes, puis le choix « La suivre : rends-toi au 5 », qui mène à la cabane du passeur.",
+      src: `${IMAGES}/copie.webp`,
+      largeur: 1486,
+      hauteur: 942,
+      telephone: { src: `${IMAGES}/copie-telephone.webp`, largeur: 686, hauteur: 1158 },
+      alt: "Une scène en cours d’écriture : le passager disparu, retrouvé sous la suie en tenue de chauffeur, puis deux choix, « Le conduire au commandant » et « Garder son secret », chacun avec son numéro.",
     },
   },
   {
     titre: "Composer le livre",
     phrase: "L’application vérifie que chaque chemin mène quelque part, numérote les passages et compose le PDF au format A5. Un lien le donne aussi à lire en ligne.",
     image: {
-      src: "/guide/livre-compose-electro-nick-definitif.webp",
-      largeur: 1597,
-      hauteur: 1130,
-      telephone: { src: "/guide/livre-compose-electro-nick-definitif-telephone.webp", largeur: 798, hauteur: 735 },
-      alt: "Une double page d’un livre composé par le site : les passages 74 à 77, leurs illustrations, une action de jeu et les choix.",
+      src: `${IMAGES}/livre.webp`,
+      largeur: 1600,
+      hauteur: 1133,
+      telephone: { src: `${IMAGES}/livre-telephone.webp`, largeur: 800, hauteur: 1133 },
+      alt: "Une double page du livre composé : les passages 1 à 4, leurs choix numérotés, une fin, et l’illustration à l’encre d’une cabine de paquebot en désordre.",
     },
   },
 ];
 
-/** Sans classe : comment le dire à l'outil, en une phrase */
-export const SANS_CLASSE = "Pensé d’abord pour la classe, l’outil marche aussi sans elle : à « Qui écrit ? », en créant le projet, répondez « Moi ».";
+/**
+ * Pour commencer : comment le dire à l'outil, en une phrase. Sans « pensé d'abord pour la classe », retiré à la
+ * demande du porteur le 24 novembre 2026 (« cela fait second choix »).
+ */
+export const POUR_COMMENCER = "En créant le projet, à « Qui écrit ? », répondez « Moi » : vous écrivez toutes les scènes.";
 
-/** Ce que cela coûte, lu dans les réglages comme sur l'« Aide » */
+/** Ce que cela coûte, lu dans les réglages comme sur l'« Aide » ; l'IA a sa partie à elle */
 export function prixPourLAuteurSeul(offre: Offre): string {
-  const livre = offre.livrePayant
+  return offre.livrePayant
     ? `Gratuit jusqu’à ${offre.scenesGratuites} scènes et ${offre.imagesGratuites} images, sans carte bancaire.`
     : "Gratuit, sans limite de scènes ni d’images, sans carte bancaire.";
-  return `${livre} Les aides de l’IA, facultatives, se paient en étoiles.`;
+}
+
+/**
+ * L'IA, un peu en avant (demandé par le porteur le 24 novembre 2026 : elle peut intéresser qui veut écrire son
+ * histoire avec de l'aide). Les aides que l'adulte a dans un projet personnel (F13), dites par ce qu'elles font.
+ */
+export const TITRE_DE_L_IA = "Avec l’aide de l’IA, si vous le voulez";
+export const AIDES_DE_L_IA: readonly { nom: string; phrase: string }[] = [
+  { nom: "Proposer la suite", phrase: "Dans « Chemins », dites ce qui manque : l’IA dessine plusieurs scènes et leurs choix, en pointillé, et vous gardez ce qui vous plaît." },
+  { nom: "Des idées de choix", phrase: "Pour une scène où vous ne savez pas quoi offrir au lecteur." },
+  { nom: "Une première version", phrase: "D’une scène, d’après ce que vous voulez y raconter, à reprendre à votre main." },
+  { nom: "Relire", phrase: "Orthographe et tournures ; chaque correction s’accepte ou se refuse." },
+  { nom: "Illustrer", phrase: "Les scènes, les portraits des personnages et la couverture." },
+];
+
+/** Ce que coûte l'IA, lu dans les réglages */
+export function etoilesPourLAuteurSeul(offre: Offre): string {
+  const achat = offre.paiementOuvert ? `, puis ${enEuros(offre.prixDeLaRecharge)} les ${offre.etoilesDeLaRecharge}` : "";
+  return `Chaque demande coûte quelques étoiles : ${offre.etoilesOffertes} offertes à l’inscription${achat}. Tout le reste marche sans elles.`;
 }

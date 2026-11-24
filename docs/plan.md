@@ -6015,7 +6015,14 @@ chacune sur son instruction :
    scène, `public/guide/copie-la-lanterne*.webp`). Contrôles : `tsc`, lint,
    tests unitaires (528), la page vue sans compte en 1440 × 900 et 390 × 844.
    Sans critique en deux lectures, le porteur ne l'ayant pas demandée pour
-   cette page.
+   cette page. Reprise le même jour sur sa lecture, avant le commit de la
+   reprise : sans dragon, l'IA un peu en avant, plus de « pensé d'abord pour
+   la classe », et les captures d'un livre-jeu pour adultes écrit pour elle,
+   « La dernière traversée du Cormoran » (`scripts/exemples/cormoran.ts`,
+   gravures du porteur ; le chargeur des livres d'exemple accepte désormais
+   un projet personnel et des images déjà faites), prises par
+   `tests/captures/auteur-seul.spec.ts` sur l'aperçu dessiné d'après le PDF
+   définitif (sans les marques de la version de travail).
 
 ## Hors de la première livraison
 

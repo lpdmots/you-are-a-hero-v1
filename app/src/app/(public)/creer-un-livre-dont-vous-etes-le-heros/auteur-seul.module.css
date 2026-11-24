@@ -1,6 +1,7 @@
-/* La page de l'auteur seul (F14-AC76) : la sœur discrète des ressources et du guide. La table chaude, une page de
-   titre sur le papier des feuillets où Bouquin tient son livre, trois temps chacun avec sa capture posée sur la
-   table, un peu de travers, puis la fiche « Sans classe » et la feuille de fin. */
+/* La page de l'auteur seul (F14-AC76) : la sœur discrète des ressources et du guide, pour un public plus âgé, sans
+   le dragon. La table chaude, une page de titre sur le papier des feuillets, trois temps chacun avec sa capture
+   posée sur la table, un peu de travers, l'IA sur une feuille canard pâle, la fiche « Pour commencer » et la
+   feuille de fin. */
 
 :global(div):has(> .page) {
   background: #f2ede3;
@@ -28,12 +29,11 @@
 
 /* ——— Page de titre ——— */
 .titre {
-  position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px;
-  gap: 32px;
-  align-items: end;
-  padding: 52px 56px 40px 64px;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 40px;
+  align-items: center;
+  padding: 52px 56px 52px 64px;
   background: url(/accueil/papier.webp) center / cover, var(--papier);
   border-radius: 2px;
   box-shadow: var(--ombre-feuillet);
@@ -43,10 +43,18 @@
   max-width: 19ch;
   font-family: var(--f-main);
   font-weight: 400;
-  font-size: clamp(1.9rem, 3.4vw, 2.7rem);
+  font-size: clamp(1.9rem, 3.2vw, 2.5rem);
   line-height: 1.62;
   letter-spacing: 0;
   text-wrap: balance;
+}
+/* La gravure, posée sur la feuille comme une épreuve, un peu de travers */
+.gravure {
+  width: 100%;
+  height: auto;
+  rotate: 1.4deg;
+  border: 6px solid var(--feuille);
+  box-shadow: 0 1px 2px rgba(60, 45, 20, 0.1), 0 12px 22px -10px rgba(60, 45, 20, 0.35);
 }
 .chapeau {
   /* Les jambes de la cursive du titre descendent loin : de l'air avant le chapeau */
@@ -56,12 +64,6 @@
   font-size: 1.22rem;
   line-height: 1.58;
   text-wrap: pretty;
-}
-.dragon {
-  width: 190px;
-  height: auto;
-  margin-bottom: -14px;
-  filter: drop-shadow(0 12px 14px rgba(60, 45, 20, 0.22));
 }
 
 /* ——— Les trois temps : la phrase à gauche, la capture posée sur la table à droite ——— */
@@ -134,10 +136,65 @@
   background: var(--feuille);
 }
 
-/* ——— Sans classe : une fiche blanche à filet bristol, comme « Les programmes » des ressources ——— */
+/* ——— L'IA : une feuille canard pâle, le signe des étincelles ; ses aides en deux colonnes, le nom puis ce qu'elle fait ——— */
+.ia {
+  margin-top: 96px;
+  padding: 34px 44px 32px;
+  background: var(--ia-pale);
+  border: 1px solid var(--ia-trait);
+  border-radius: 14px;
+}
+.ia h2 {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 0;
+  font-family: var(--f-recit);
+  font-size: clamp(1.45rem, 2.4vw, 1.75rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  color: var(--graphite);
+}
+.iaSigne {
+  flex: none;
+  width: 1.1em;
+  height: 1.1em;
+  color: var(--ia);
+}
+.aides {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px 44px;
+  margin: 24px 0 0;
+}
+.aides dt {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: var(--ia-fonce);
+}
+.aides dd {
+  margin: 4px 0 0;
+  font-family: var(--f-recit);
+  font-size: 1.04rem;
+  line-height: 1.55;
+  color: var(--graphite-2);
+}
+.etoiles {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ia-trait);
+  font-size: 0.92rem;
+  color: var(--graphite-2);
+}
+.video {
+  margin-top: 10px;
+}
+
+/* ——— Pour commencer : une fiche blanche à filet bristol, comme « Les programmes » des ressources ——— */
 .fiche {
   max-width: 640px;
-  margin: 88px auto 0;
+  margin: 72px auto 0;
   padding: 22px 30px 24px;
   background: var(--feuille);
   border-radius: 14px;
@@ -172,12 +229,8 @@
 
 /* ——— La fin : une feuille qui répond à la page de titre ——— */
 .fin {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 190px;
-  gap: 32px;
-  align-items: end;
   margin-top: 88px;
-  padding: 44px 56px 40px 64px;
+  padding: 44px 64px 44px;
   background: url(/accueil/papier.webp) center / cover, var(--papier);
   border-radius: 2px;
   box-shadow: var(--ombre-feuillet);
@@ -202,11 +255,6 @@
   color: var(--canard);
   font-weight: 600;
 }
-.dragonEndormi {
-  width: 190px;
-  height: auto;
-  margin-bottom: -10px;
-}
 
 /* ——— Tablette : la capture passe sous sa phrase ——— */
 @media (max-width: 900px) {
@@ -222,31 +270,32 @@
     max-width: 60ch;
   }
 }
-@media (max-width: 720px) {
+@media (max-width: 900px) {
   .titre {
     grid-template-columns: minmax(0, 1fr);
-    padding: 26px 20px 24px;
+    gap: 28px;
   }
-  .dragon {
-    position: absolute;
-    right: 4px;
-    top: -30px;
-    width: 72px;
-    margin: 0;
+  .gravure {
+    max-width: 440px;
   }
-  .titre h1 {
-    padding-right: 44px;
+}
+@media (max-width: 720px) {
+  .titre {
+    padding: 28px 22px 26px;
+  }
+  .gravure {
+    rotate: 0deg;
+    border-width: 4px;
+  }
+  .ia {
+    padding: 26px 22px 24px;
+  }
+  .aides {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
   }
   .fin {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 0;
-    padding: 0 22px 30px;
-  }
-  /* Le dragon dort au bord de la feuille, au-dessus du titre */
-  .dragonEndormi {
-    order: -1;
-    width: 140px;
-    margin: -58px 0 4px auto;
+    padding: 30px 22px 30px;
   }
 }
 @media (max-width: 560px) {
@@ -275,11 +324,14 @@
     rotate: 0deg;
   }
   .fiche {
-    margin-top: 64px;
+    margin-top: 56px;
     padding: 18px 18px 20px;
     font-size: 1rem;
   }
-  .fin {
+  .ia {
     margin-top: 72px;
+  }
+  .fin {
+    margin-top: 64px;
   }
 }

@@ -30,6 +30,8 @@ export type Conception = {
   TITRE: string;
   /** Les titres qu'il a portés : le livre déjà chargé sous l'un d'eux se retrouve, pour être remplacé */
   ANCIENS_TITRES?: string[];
+  /** Un projet personnel (l'auteur seul) ; « classe », sans classe ni élève, sans autre indication */
+  ORGANISATION?: "classe" | "personnel";
   DEPART: number;
   AGE: AgeDesLecteurs;
   VISUEL_DU_PROJET: string;
@@ -67,4 +69,6 @@ export type Conception = {
   MOTS_PAR_DEFAUT?: number;
   /** « page » : pleine page ; « moitie » : 3:2 dans le texte ; « 16:9 » : bandeau dans le texte */
   IMAGES: { ref: number; cadrage: "page" | "moitie" | "16:9"; badges: string[]; idee: string }[];
+  /** Des images déjà faites par le porteur, posées par le brouillon en tête de leur passage, sur toute la largeur */
+  IMAGES_DU_PORTEUR?: { ref: number; fichier: string; alt: string }[];
 };

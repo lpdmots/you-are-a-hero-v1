@@ -9,13 +9,15 @@ import {
   DESCRIPTION_DE_L_AUTEUR_SEUL,
   GRAND_TITRE_DE_L_AUTEUR_SEUL,
   LIEN_DE_L_AUTEUR_SEUL,
+  AIDES_DE_L_IA,
+  etoilesPourLAuteurSeul,
+  POUR_COMMENCER,
   prixPourLAuteurSeul,
-  SANS_CLASSE,
   TEMPS_DE_L_AUTEUR_SEUL,
   TITRE_DE_L_AUTEUR_SEUL,
 } from "@/domaine/auteur-seul";
 import { lireOffre } from "@/domaine/offre";
-import { estPageMesuree, PAGES_PUBLIQUES, RESSOURCES_PUBLIQUES } from "@/domaine/pages-publiques";
+import { estPageMesuree, PAGES_PUBLIQUES } from "@/domaine/pages-publiques";
 import { llmsTxt } from "@/domaine/presentation";
 import { QUESTIONS } from "@/domaine/textes-publics";
 
@@ -37,17 +39,24 @@ describe("la page de l'auteur seul", () => {
     expect(TITRE_DE_L_AUTEUR_SEUL).not.toMatch(/comment|classe/i);
     expect(TEMPS_DE_L_AUTEUR_SEUL.map((t) => t.titre)).toEqual(["Dessiner les chemins", "Écrire les scènes", "Composer le livre"]);
     // Limitée au livre-jeu : rien de l'histoire classique, ni des mots écartés
-    const textes = [TITRE_DE_L_AUTEUR_SEUL, GRAND_TITRE_DE_L_AUTEUR_SEUL, DESCRIPTION_DE_L_AUTEUR_SEUL, CHAPEAU_DE_L_AUTEUR_SEUL, SANS_CLASSE, ...TEMPS_DE_L_AUTEUR_SEUL.map((t) => t.phrase)].join(" ");
+    const textes = [TITRE_DE_L_AUTEUR_SEUL, GRAND_TITRE_DE_L_AUTEUR_SEUL, DESCRIPTION_DE_L_AUTEUR_SEUL, CHAPEAU_DE_L_AUTEUR_SEUL, POUR_COMMENCER, ...TEMPS_DE_L_AUTEUR_SEUL.map((t) => t.phrase)].join(" ");
     expect(textes).not.toMatch(/histoire classique|roman|recueil|étincelle/i);
-    expect(SANS_CLASSE).toContain("répondez « Moi »");
+    expect(POUR_COMMENCER).toContain("répondez « Moi »");
+    // Rien qui fasse de l'auteur seul un second choix (retour du porteur, 24 novembre 2026)
+    expect(POUR_COMMENCER).not.toMatch(/d’abord pour la classe/);
     // Le prix, lu dans les réglages comme sur l'« Aide »
-    expect(prixPourLAuteurSeul(livreGratuit)).toBe("Gratuit, sans limite de scènes ni d’images, sans carte bancaire. Les aides de l’IA, facultatives, se paient en étoiles.");
+    expect(prixPourLAuteurSeul(livreGratuit)).toBe("Gratuit, sans limite de scènes ni d’images, sans carte bancaire.");
     expect(prixPourLAuteurSeul(livrePayant)).toMatch(/^Gratuit jusqu’à \d+ scènes et \d+ images/);
+    // L'IA un peu en avant : ses aides, en étoiles, jamais en « étincelles »
+    expect(AIDES_DE_L_IA.map((a) => a.nom)).toEqual(["Proposer la suite", "Des idées de choix", "Une première version", "Relire", "Illustrer"]);
+    expect(etoilesPourLAuteurSeul(livreGratuit)).toBe("Chaque demande coûte quelques étoiles : 30 offertes à l’inscription, puis 5\u00a0€ les 100. Tout le reste marche sans elles.");
+    expect(AIDES_DE_L_IA.map((a) => a.phrase).join(" ")).not.toMatch(/étincelle|histoire classique/i);
     // Chaque capture existe, et sa version pour le téléphone, dans un dossier que les robots des IA lisent
     for (const { image } of TEMPS_DE_L_AUTEUR_SEUL) {
       for (const src of [image.src, image.telephone?.src].filter(Boolean) as string[]) {
         expect(() => readFileSync(join(process.cwd(), "public", src))).not.toThrow();
-        expect(RESSOURCES_PUBLIQUES.some((r) => src.startsWith(r))).toBe(true);
+        // Sous l'adresse de la page, comme les documents des ressources : les robots des IA lisent l'une et l'autre
+        expect(src.startsWith(`${ADRESSE_DE_L_AUTEUR_SEUL}/`)).toBe(true);
       }
     }
   });

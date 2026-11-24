@@ -1,18 +1,24 @@
 import type { Metadata } from "next";
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
+import { Icone } from "@/composants/Icone";
+import { BoutonTuto } from "@/composants/Tutos";
 import {
   ADRESSE_DE_L_AUTEUR_SEUL,
+  AIDES_DE_L_IA,
   CHAPEAU_DE_L_AUTEUR_SEUL,
   DESCRIPTION_DE_L_AUTEUR_SEUL,
+  etoilesPourLAuteurSeul,
   GRAND_TITRE_DE_L_AUTEUR_SEUL,
+  POUR_COMMENCER,
   prixPourLAuteurSeul,
-  SANS_CLASSE,
   TEMPS_DE_L_AUTEUR_SEUL,
   TITRE_DE_L_AUTEUR_SEUL,
+  TITRE_DE_L_IA,
   type ImageDeLAuteurSeul,
 } from "@/domaine/auteur-seul";
 import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
+import { VIDEO_IA } from "@/domaine/tutos";
 import { offreActuelle } from "@/serveur/offre";
 import s from "./auteur-seul.module.css";
 
@@ -40,9 +46,10 @@ function Capture({ image }: { image: ImageDeLAuteurSeul }) {
 
 /**
  * La page de l'auteur seul (F14, « Pages publiques pour les deux sortes de récit », cinquième part, F14-AC76) :
- * la sœur discrète des ressources. Une page de titre sur papier où Bouquin tient son livre, trois temps du plan au
- * livre, chacun avec sa capture posée sur la table, une fiche « Sans classe », puis la feuille de fin et le seul
- * bouton plein. Limitée au livre dont vous êtes le héros ; jamais mise en avant ailleurs.
+ * la sœur discrète des ressources, pour un public plus âgé (sans le dragon, retiré le 24 novembre 2026). Une page
+ * de titre sur papier avec une gravure du livre d'exemple, trois temps du plan au livre, chacun avec sa capture posée sur la table, l'IA en feuille
+ * canard pâle, une fiche « Pour commencer », puis la feuille de fin et le seul bouton plein. Limitée au livre dont
+ * vous êtes le héros ; jamais mise en avant ailleurs.
  */
 export default async function AuteurSeul() {
   const offre = await offreActuelle();
@@ -53,7 +60,8 @@ export default async function AuteurSeul() {
           <h1>{GRAND_TITRE_DE_L_AUTEUR_SEUL}</h1>
           <p className={s.chapeau}>{CHAPEAU_DE_L_AUTEUR_SEUL}</p>
         </div>
-        <Image className={s.dragon} src="/accueil/dragon-grand-livre.webp" alt="Bouquin, le dragon du site, serre contre lui un grand livre" width={500} height={620} sizes="(max-width: 720px) 84px, 190px" loading="eager" />
+        {/* Une gravure du livre d'exemple, posée comme une épreuve : ce que deviennent les images d'un livre pour adultes */}
+        <Image className={s.gravure} src={`${ADRESSE_DE_L_AUTEUR_SEUL}/pont-promenade.webp`} alt="Gravure à l’encre : le pont promenade d’un paquebot, la nuit, dans le brouillard, un pardessus abandonné sur une chaise longue" width={840} height={560} sizes="(max-width: 720px) 100vw, 320px" preload />
       </header>
 
       <ol className={s.temps}>
@@ -73,9 +81,32 @@ export default async function AuteurSeul() {
         ))}
       </ol>
 
-      <aside className={s.fiche} aria-labelledby="sans-classe-t">
-        <h2 id="sans-classe-t">Sans classe</h2>
-        <p>{SANS_CLASSE}</p>
+      {/* L'IA un peu en avant : une feuille canard pâle, le signe des étincelles, jamais un bouton plein */}
+      <section className={s.ia} aria-labelledby="ia-t">
+        <h2 id="ia-t">
+          <Icone nom="ia" className={s.iaSigne} />
+          {TITRE_DE_L_IA}
+        </h2>
+        <dl className={s.aides}>
+          {AIDES_DE_L_IA.map((a) => (
+            <div key={a.nom}>
+              <dt>{a.nom}</dt>
+              <dd>{a.phrase}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className={s.etoiles}>{etoilesPourLAuteurSeul(offre)}</p>
+        {VIDEO_IA.pose ? (
+          // Un bloc, pas un paragraphe : le lecteur de la vidéo s'ouvre dans une boîte de dialogue à côté du lien
+          <div className={s.video}>
+            <BoutonTuto tuto={VIDEO_IA} forme="lien" />
+          </div>
+        ) : null}
+      </section>
+
+      <aside className={s.fiche} aria-labelledby="commencer-t">
+        <h2 id="commencer-t">Pour commencer</h2>
+        <p>{POUR_COMMENCER}</p>
         <p>{prixPourLAuteurSeul(offre)}</p>
         <p className={s.classe}>
           Vous écrivez avec une classe&nbsp;? <Link href="/">L’accueil</Link> présente le projet en classe.
@@ -83,18 +114,14 @@ export default async function AuteurSeul() {
       </aside>
 
       <footer className={s.fin} aria-labelledby="fin-t">
-        <div>
-          <h2 id="fin-t">À vous d’écrire</h2>
-          <p className={s.finSuite}>
-            <Link className="btn btn--primaire btn--grand" href="/entree/inscription">
-              Créer un compte
-            </Link>
-            <Link href={ADRESSE_DU_GUIDE}>Lire le guide</Link>
-            <Link href="/bibliotheque">Feuilleter la bibliothèque</Link>
-          </p>
-        </div>
-        {/* Le dragon s'est endormi sur son livre, comme à la fin du guide et des ressources */}
-        <Image className={s.dragonEndormi} src="/accueil/dragon-endormi.webp" alt="" width={720} height={559} sizes="(max-width: 720px) 140px, 190px" />
+        <h2 id="fin-t">À vous d’écrire</h2>
+        <p className={s.finSuite}>
+          <Link className="btn btn--primaire btn--grand" href="/entree/inscription">
+            Créer un compte
+          </Link>
+          <Link href={ADRESSE_DU_GUIDE}>Lire le guide</Link>
+          <Link href="/bibliotheque">Feuilleter la bibliothèque</Link>
+        </p>
       </footer>
     </main>
   );

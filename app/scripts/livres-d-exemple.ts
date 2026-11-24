@@ -33,11 +33,14 @@ import { lireImage } from "@/serveur/images";
 import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
 import type { Conception } from "./exemples/conception";
 import { livre as dragon } from "./exemples/dragon";
+import { livre as cormoran } from "./exemples/cormoran";
 import { livre as passeurs } from "./exemples/passeurs-de-brume";
 
 const LIVRES: Record<string, { conception: Conception; dossier: string }> = {
   passeurs: { conception: passeurs, dossier: "passeurs-de-brume" },
   dragon: { conception: dragon, dossier: "bouquin-mene-l-enquete" },
+  // Pour les captures de la page de l'auteur seul (F14-AC76), pas pour la bibliothèque
+  cormoran: { conception: cormoran, dossier: "la-derniere-traversee-du-cormoran" },
 };
 type CleLivre = keyof typeof LIVRES;
 const TYPE_DE: Record<string, string> = { png: "image/png", webp: "image/webp", jpeg: "image/jpeg" };
@@ -106,7 +109,7 @@ type Q = <T = Record<string, unknown>>(texte: string, valeurs?: unknown[]) => Pr
 /** Le livre d'exemple sur ce compte : un projet de classe à ce titre, sans classe. */
 async function existants(q: Q, compte: string): Promise<string[]> {
   const lignes = await q<{ id: string }>(
-    "select id from public.projets where enseignant_id = $1 and titre = any($2) and organisation = 'classe' and classe_id is null",
+    "select id from public.projets where enseignant_id = $1 and titre = any($2) and organisation in ('classe', 'personnel') and classe_id is null",
     [compte, [c.TITRE, ...(c.ANCIENS_TITRES ?? [])]],
   );
   return lignes.map((l) => l.id);
@@ -141,8 +144,8 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
 
   await q(
     `insert into public.projets (id, enseignant_id, organisation, recit, titre, classe_id, visuel_choisi, age_des_lecteurs, heros_absent, style_images, style_autre, consigne_ecriture)
-     values ($1, $2, 'classe', 'choix', $3, null, $4, $5, false, $6, $7, $8)`,
-    [projetId, compte, c.TITRE, c.VISUEL_DU_PROJET, c.AGE, c.STYLE?.style ?? "lumineuse", c.STYLE?.autre ?? "", c.CONSIGNE_ECRITURE ?? ""],
+     values ($1, $2, $9, 'choix', $3, null, $4, $5, false, $6, $7, $8)`,
+    [projetId, compte, c.TITRE, c.VISUEL_DU_PROJET, c.AGE, c.STYLE?.style ?? "lumineuse", c.STYLE?.autre ?? "", c.CONSIGNE_ECRITURE ?? "", c.ORGANISATION ?? "classe"],
   );
   const p = c.PREPARATION;
   await q(
@@ -195,8 +198,9 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
       );
       for (const [rang, s] of chapitre.scenes.entries()) {
         await q(
-          "insert into public.scenes (id, chapitre_id, projet_id, enseignant_id, reference, titre, consigne, rang, fin, prise_par_enseignant) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, true)",
-          [id(s.ref), chapitreId, projetId, compte, s.ref, s.titre, s.consigne, rang, s.fin === true],
+          // Dans un projet personnel, toutes les scènes sont à l'auteur : rien à prendre
+          "insert into public.scenes (id, chapitre_id, projet_id, enseignant_id, reference, titre, consigne, rang, fin, prise_par_enseignant) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+          [id(s.ref), chapitreId, projetId, compte, s.ref, s.titre, s.consigne, rang, s.fin === true, c.ORGANISATION !== "personnel"],
         );
       }
       numerotee.chapitres.push({
@@ -207,10 +211,30 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
   }
   await q("update public.projets set reference_suivante = $2, depart_scene_id = $3 where id = $1", [projetId, Math.max(...scenes.map((s) => s.ref)) + 1, id(c.DEPART)]);
 
+  // Les images faites par le porteur, déposées comme à l'import, puis posées en tête de leur passage
+  const imagesDuPorteur = new Map<number, { id: string; alt: string }>();
+  for (const im of c.IMAGES_DU_PORTEUR ?? []) {
+    const octets = readFileSync(resolve(racine, im.fichier));
+    const lu = lireImage(new Uint8Array(octets));
+    if (!lu) throw new Error(`Image illisible : ${im.fichier}`);
+    const imageId = randomUUID();
+    const chemins = [`${compte}/${projetId}/${imageId}.jpg`, `${compte}/${projetId}/${imageId}-v.jpg`];
+    for (const ch of chemins) {
+      const { error } = await stockage().upload(ch, octets, { contentType: TYPE_DE[lu.format], upsert: true });
+      if (error) throw new Error(`Image non déposée : ${error.message}`);
+    }
+    await q("insert into public.images (id, projet_id, enseignant_id, chemin, chemin_vignette, largeur, hauteur, format) values ($1, $2, $3, $4, $5, $6, $7, $8)", [
+      imageId, projetId, compte, chemins[0], chemins[1], lu.largeur, lu.hauteur, lu.format,
+    ]);
+    imagesDuPorteur.set(im.ref, { id: imageId, alt: im.alt });
+  }
+
   // Les textes : le récit de base, les actions de jeu, puis les choix ; les liens s'en déduisent
   let poses = 0;
   for (const s of scenes) {
     const blocs: unknown[] = [];
+    const image = imagesDuPorteur.get(s.ref);
+    if (image) blocs.push({ type: "image", id: randomUUID(), image: image.id, largeur: 100, alt: image.alt, children: [{ text: "" }] });
     for (const t of c.TEXTES_DE_BASE[s.ref] ?? []) blocs.push({ type: "p", id: randomUUID(), children: [{ text: t }] });
     for (const t of c.ACTIONS[s.ref] ?? []) {
       const signe = SIGNE_DE_L_ACTION(t);

@@ -13025,10 +13025,24 @@ les révisions qui suivent :
         le héros, seul », grand titre « Créer seul son livre dont vous êtes le
         héros », une phrase dessous ; trois temps, une phrase et une capture
         chacun (« Dessiner les chemins », « Écrire les scènes », « Composer le
-        livre ») ; une fiche « Sans classe » (« Qui écrit ? » → « Moi », le
-        prix lu dans les réglages, le renvoi des enseignants à l'accueil) ; la
-        feuille de fin, « Créer un compte », le guide et la bibliothèque. Ni
-        l'histoire classique, ni la vidéo, ni d'écran où l'on voit des élèves.
+        livre ») ; une partie sur l'IA ; une fiche « Pour commencer » (« Qui
+        écrit ? » → « Moi », le prix lu dans les réglages, le renvoi des
+        enseignants à l'accueil) ; la feuille de fin, « Créer un compte », le
+        guide et la bibliothèque. Ni l'histoire classique, ni d'écran où l'on
+        voit des élèves.
+      - *Repris le même jour sur sa lecture,* pour un public plus âgé : les
+        deux dragons retirés (« trop enfant ») ; plus de « pensé d'abord pour
+        la classe » (« cela fait second choix ») ; l'IA un peu en avant, « elle
+        peut intéresser une personne qui veut écrire son histoire avec de
+        l'aide » : cinq aides dites par ce qu'elles font, le prix en étoiles
+        lu dans les réglages et la vidéo des aides en lien ; les captures des
+        livres de classe, « un peu bébé », remplacées par celles d'un livre-jeu
+        pour adultes écrit par Claude, « La dernière traversée du Cormoran »
+        (polar en mer, 1928, au « vous », treize passages), chargé en local
+        comme projet personnel (`npm run livres:exemple -- cormoran
+        --brouillon --refaire`), avec trois gravures à l'encre faites par le
+        porteur d'après les prompts de Claude, dont l'une sur la page de titre.
+        Ce livre n'est pas dans la bibliothèque.
       - *Liens :* au pied des pages publiques, dernière ligne de
         « Commencer », « Écrire seul un livre-jeu » ; « Lire la page » sous la
         réponse de l'« Aide » « Peut-on écrire seul, sans classe ? » ; une
@@ -13896,8 +13910,10 @@ découvre l'outil, et le porteur, administrateur.
   le titre d'onglet commence par « Créer un livre dont vous êtes le héros »
   (60 signes au plus, sans « comment » ni « classe »), la description tient
   en 160 signes et dit « histoire interactive » ; la page montre trois temps,
-  du plan au livre, dit « Moi » à « Qui écrit ? » et le prix lu dans les
-  réglages, et ne parle ni d'histoire classique, ni de roman, ni de recueil ;
+  du plan au livre, les aides de l'IA et leur prix en étoiles, dit « Moi » à
+  « Qui écrit ? » et le prix lu dans les réglages, sans faire de l'auteur seul
+  un second choix (« pensé d'abord pour la classe »), et ne parle ni
+  d'histoire classique, ni de roman, ni de recueil ;
   la page est dans le plan du site, ouverte aux robots des IA, mesurée, et
   `llms.txt` la liste ; elle n'est liée que depuis la colonne « Commencer »
   du pied des pages publiques et la réponse de l'« Aide » « Peut-on écrire

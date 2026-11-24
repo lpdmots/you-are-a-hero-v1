@@ -3260,14 +3260,20 @@ et les boutons dessous, sur toute la largeur. Critiquée en deux lectures (28/40
 ### Page de l'auteur seul (24 novembre 2026)
 
 Sans maquette ; règles en [F14](specifications.md#f14-auteur-seul) (F14-AC76).
-La sœur discrète des ressources : la table chaude, une page de titre sur le
-papier des feuillets, le grand titre en cursive et Bouquin qui serre son livre
-contre lui. Trois temps, la phrase à gauche (numéro cerclé, titre en
-Vollkorn) et la capture posée sur la table à droite, un peu de travers ; sur
-téléphone, la capture passe sous sa phrase, à plat, dans sa version recadrée
-(une seule téléchargée, par `<picture>`). Une fiche blanche à filet bristol,
-« Sans classe », comme « Les programmes » ; la feuille de fin, le dragon
-endormi, le seul bouton plein. Sans critique en deux lectures.
+La sœur discrète des ressources, pour un public plus âgé : la table chaude,
+une page de titre sur le papier des feuillets, le grand titre en cursive et,
+à droite, une gravure à l'encre du livre d'exemple posée comme une épreuve
+(sans le dragon, jugé « trop enfant » ici). Trois temps, la phrase à gauche
+(numéro cerclé, titre en Vollkorn) et la capture posée sur la table à
+droite, un peu de travers ; sur téléphone, la capture passe sous sa phrase,
+à plat, dans sa version recadrée (une seule téléchargée, par `<picture>`).
+Les captures montrent un livre-jeu pour adultes, « La dernière traversée du
+Cormoran ». L'IA sur une feuille canard pâle à filet `--ia-trait`, le signe
+des étincelles devant son titre, ses aides en deux colonnes (nom en canard
+foncé, phrase en Vollkorn), le prix et le lien de la vidéo dessous, jamais
+de bouton plein. Une fiche blanche à filet bristol, « Pour commencer »,
+comme « Les programmes » ; la feuille de fin et le seul bouton plein. Sans
+critique en deux lectures.
 
 ### Colonne de navigation de l'adulte (8 novembre 2026)
 
