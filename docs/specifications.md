@@ -13034,8 +13034,10 @@ les révisions qui suivent :
         deux dragons retirés (« trop enfant ») ; plus de « pensé d'abord pour
         la classe » (« cela fait second choix ») ; l'IA un peu en avant, « elle
         peut intéresser une personne qui veut écrire son histoire avec de
-        l'aide » : cinq aides dites par ce qu'elles font, le prix en étoiles
-        lu dans les réglages et la vidéo des aides en lien ; les captures des
+        l'aide » : cinq aides dites par ce qu'elles font et le prix en étoiles
+        lu dans les réglages (la vidéo des aides, d'abord en lien, est retirée
+        le même jour : elle suit une classe, dans le dessin du site pour les
+        enfants) ; les captures des
         livres de classe, « un peu bébé », remplacées par celles d'un livre-jeu
         pour adultes écrit par Claude, « La dernière traversée du Cormoran »
         (polar en mer, 1928, au « vous », treize passages), chargé en local
@@ -13047,11 +13049,11 @@ les révisions qui suivent :
         porteur : « Créer un compte » aussi sous l'introduction (sur
         téléphone, la feuille de fin venait après plus de quatre écrans) ;
         dans l'« Aide », « Découvrir le livre-jeu en solo » à la place de
-        « Lire la page » ; dans « Pour commencer », une seule phrase sur
-        l'histoire classique, avec les mots de « Nouveau projet » : « Vous
-        pouvez aussi écrire seul une histoire classique : après « Moi »,
-        choisissez « Classique » à « Quel récit ? ». » La page reste au
-        livre-jeu (adresse, titres, captures) et hors de la barre du haut.
+        « Lire la page » ; « Pour commencer » en une phrase, sans détailler
+        les écrans, à la demande du porteur : « En créant le projet, indiquez
+        que vous écrivez seul, puis la sorte de récit : livre à choix ou
+        histoire classique. » La page reste au livre-jeu (adresse, titres,
+        captures) et hors de la barre du haut.
       - *Liens :* au pied des pages publiques, dernière ligne de
         « Commencer », « Écrire seul un livre-jeu » ; « Lire la page » sous la
         réponse de l'« Aide » « Peut-on écrire seul, sans classe ? » ; une
@@ -13922,9 +13924,9 @@ découvre l'outil, et le porteur, administrateur.
   du plan au livre, les aides de l'IA et leur prix en étoiles, dit « Moi » à
   « Qui écrit ? » et le prix lu dans les réglages, sans faire de l'auteur seul
   un second choix (« pensé d'abord pour la classe »), propose « Créer un
-  compte » dès l'introduction et à la fin, ne dit l'histoire classique qu'en
-  une phrase de « Pour commencer » (« Moi », puis « Classique »), et ne dit
-  ni roman ni recueil ;
+  compte » dès l'introduction et à la fin, ne dit l'histoire classique que
+  dans la phrase de « Pour commencer », ne montre aucune vidéo, et ne dit ni
+  roman ni recueil ;
   la page est dans le plan du site, ouverte aux robots des IA, mesurée, et
   `llms.txt` la liste ; elle n'est liée que depuis la colonne « Commencer »
   du pied des pages publiques et la réponse de l'« Aide » « Peut-on écrire

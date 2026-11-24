@@ -3270,8 +3270,8 @@ droite, un peu de travers ; sur téléphone, la capture passe sous sa phrase,
 Les captures montrent un livre-jeu pour adultes, « La dernière traversée du
 Cormoran ». L'IA sur une feuille canard pâle à filet `--ia-trait`, le signe
 des étincelles devant son titre, ses aides en deux colonnes (nom en canard
-foncé, phrase en Vollkorn), le prix et le lien de la vidéo dessous, jamais
-de bouton plein. Une fiche blanche à filet bristol, « Pour commencer »,
+foncé, phrase en Vollkorn), le prix dessous, jamais de bouton plein ; sans
+la vidéo des aides, qui suit une classe. Une fiche blanche à filet bristol, « Pour commencer »,
 comme « Les programmes » ; la feuille de fin et le seul bouton plein. Sans
 critique en deux lectures.
 

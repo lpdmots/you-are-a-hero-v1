@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { Icone } from "@/composants/Icone";
-import { BoutonTuto } from "@/composants/Tutos";
 import {
   ADRESSE_DE_L_AUTEUR_SEUL,
   AIDES_DE_L_IA,
@@ -10,7 +9,6 @@ import {
   DESCRIPTION_DE_L_AUTEUR_SEUL,
   etoilesPourLAuteurSeul,
   GRAND_TITRE_DE_L_AUTEUR_SEUL,
-  HISTOIRE_CLASSIQUE_SEUL,
   POUR_COMMENCER,
   prixPourLAuteurSeul,
   TEMPS_DE_L_AUTEUR_SEUL,
@@ -19,7 +17,6 @@ import {
   type ImageDeLAuteurSeul,
 } from "@/domaine/auteur-seul";
 import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
-import { VIDEO_IA } from "@/domaine/tutos";
 import { offreActuelle } from "@/serveur/offre";
 import s from "./auteur-seul.module.css";
 
@@ -103,18 +100,11 @@ export default async function AuteurSeul() {
           ))}
         </dl>
         <p className={s.etoiles}>{etoilesPourLAuteurSeul(offre)}</p>
-        {VIDEO_IA.pose ? (
-          // Un bloc, pas un paragraphe : le lecteur de la vidéo s'ouvre dans une boîte de dialogue à côté du lien
-          <div className={s.video}>
-            <BoutonTuto tuto={VIDEO_IA} forme="lien" />
-          </div>
-        ) : null}
       </section>
 
       <aside className={s.fiche} aria-labelledby="commencer-t">
         <h2 id="commencer-t">Pour commencer</h2>
         <p>{POUR_COMMENCER}</p>
-        <p>{HISTOIRE_CLASSIQUE_SEUL}</p>
         <p>{prixPourLAuteurSeul(offre)}</p>
         <p className={s.classe}>
           Vous écrivez avec une classe&nbsp;? <Link href="/">L’accueil</Link> présente le projet en classe.

@@ -8,7 +8,6 @@ import {
   CHAPEAU_DE_L_AUTEUR_SEUL,
   DESCRIPTION_DE_L_AUTEUR_SEUL,
   GRAND_TITRE_DE_L_AUTEUR_SEUL,
-  HISTOIRE_CLASSIQUE_SEUL,
   LIEN_DE_L_AUTEUR_SEUL,
   AIDES_DE_L_IA,
   etoilesPourLAuteurSeul,
@@ -39,11 +38,10 @@ describe("la page de l'auteur seul", () => {
     // Ni le mot-clé du guide (« comment écrire… ») ni celui de l'accueil (« … avec sa classe »)
     expect(TITRE_DE_L_AUTEUR_SEUL).not.toMatch(/comment|classe/i);
     expect(TEMPS_DE_L_AUTEUR_SEUL.map((t) => t.titre)).toEqual(["Dessiner les chemins", "Écrire les scènes", "Composer le livre"]);
-    // Limitée au livre-jeu : une seule phrase dit que l'histoire classique s'écrit aussi seul, et comment ; rien d'autre
-    expect(HISTOIRE_CLASSIQUE_SEUL).toMatch(/«\sMoi\s».*«\sClassique\s» à «\sQuel récit\s\?\s»/);
-    const textes = [TITRE_DE_L_AUTEUR_SEUL, GRAND_TITRE_DE_L_AUTEUR_SEUL, DESCRIPTION_DE_L_AUTEUR_SEUL, CHAPEAU_DE_L_AUTEUR_SEUL, POUR_COMMENCER, ...TEMPS_DE_L_AUTEUR_SEUL.map((t) => t.phrase)].join(" ");
+    // Limitée au livre-jeu : « Pour commencer » seul nomme l'histoire classique, sans détailler les écrans
+    expect(POUR_COMMENCER).toBe("En créant le projet, indiquez que vous écrivez seul, puis la sorte de récit\u00a0: livre à choix ou histoire classique.");
+    const textes = [TITRE_DE_L_AUTEUR_SEUL, GRAND_TITRE_DE_L_AUTEUR_SEUL, DESCRIPTION_DE_L_AUTEUR_SEUL, CHAPEAU_DE_L_AUTEUR_SEUL, ...TEMPS_DE_L_AUTEUR_SEUL.map((t) => t.phrase)].join(" ");
     expect(textes).not.toMatch(/histoire classique|roman|recueil|étincelle/i);
-    expect(POUR_COMMENCER).toContain("répondez « Moi »");
     // Rien qui fasse de l'auteur seul un second choix (retour du porteur, 24 novembre 2026)
     expect(POUR_COMMENCER).not.toMatch(/d’abord pour la classe/);
     // Le prix, lu dans les réglages comme sur l'« Aide »

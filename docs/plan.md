@@ -6025,7 +6025,8 @@ chacune sur son instruction :
    définitif (sans les marques de la version de travail). Puis trois
    retouches d'une seconde lecture : « Créer un compte » sous l'introduction,
    « Découvrir le livre-jeu en solo » dans l'« Aide », une phrase sur
-   l'histoire classique en solo dans « Pour commencer ».
+   l'histoire classique en solo dans « Pour commencer », ramenée ensuite à
+   une seule phrase pour les deux ; la vidéo des aides retirée de la page.
 
 ## Hors de la première livraison
 
