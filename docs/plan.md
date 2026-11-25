@@ -3534,8 +3534,14 @@ V6, le premier envoi à l'imprimeur.
      - **Auteurs :** projet de classe sans classe ni élève (les aides
        servent comme pour un enseignant), sans page des auteurs ; ligne de
        la page de titre « Un livre d'exemple d'Il était une classe » ; la
-       page de fin dit qu'il a été écrit par une IA, Claude, avec les aides
-       de l'application, et relu par le porteur.
+       page de fin disait qu'il a été écrit par une IA, Claude, avec les
+       aides de l'application, et relu par le porteur ; mention retirée des
+       trois livres d'exemple le 25 novembre 2026, à sa demande (« c'est pas
+       nécessaire ») : il reste « Ce livre est un livre d'exemple du site Il
+       était une classe. » et la question au lecteur. Fait dans les
+       instantanés et en local ; en ligne, la page de fin et la version
+       publiée de « Bouquin mène l'enquête » et des « Passeurs de brume »
+       se mettent à jour dans l'application, par lui.
      - **Images :** les dix du livre créées par les aides (page de titre,
        trois pleines pages en haute qualité aux 14, 50 et 61, six dans le
        texte), les portraits de Lou, Marius et la chouette en référence ;
