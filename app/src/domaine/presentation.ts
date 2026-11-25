@@ -84,7 +84,7 @@ export function llmsTxt(offre: Offre, site: string): string {
     "",
     "## Qui le fait",
     "",
-    `Conçu par Nicolas Coussot, professeur des écoles : d’abord une histoire classique avec sa classe, puis quatre ans de livres-jeux, avec des outils qu’il a fait évoluer jusqu’à celui-ci. Édité par ${EDITEUR.nom}. Contact : ${EDITEUR.contact}.`,
+    `Conçu par Nicolas Coussot, professeur des écoles : d’abord une histoire classique avec sa classe, puis six ans de livres-jeux, avec des outils qu’il a fait évoluer jusqu’à celui-ci. Édité par ${EDITEUR.nom}. Contact : ${EDITEUR.contact}.`,
     "",
     "## Pages",
     "",

@@ -13116,8 +13116,15 @@ les révisions qui suivent :
       histoire classique. », devant « Depuis quatre ans, ma classe écrit ses
       livres-jeux avec cet outil. » Corrigée le 24 novembre 2026 sur son
       retour (« c'était plus tôt ») : la première version la plaçait après et
-      laissait entendre que ce livre s'était écrit avec l'outil. Le libellé
-      corrigé reste à lire par lui.
+      laissait entendre que ce livre s'était écrit avec l'outil. Repris le
+      même jour dans une autre conversation : des outils successifs, pas
+      celui-ci depuis le début ; puis le 25 novembre 2026, à sa demande, « six
+      ans » de livres-jeux, comme le guide (« quatre ans » s'y était glissé).
+      Texte actuel : « Tout a commencé avec une histoire classique que j'ai
+      écrite avec mes élèves. Depuis six ans, ma classe crée des livres-jeux.
+      Au fil des projets, j'ai fait évoluer mes outils jusqu'à la version
+      actuelle, qui accompagne les élèves de la première idée au livre
+      terminé. » ; `llms.txt` dit de même.
     - **« Aide » :** « Peut-on écrire une histoire classique avec sa
       classe ? », après la définition du livre dont vous êtes le héros, et
       « Peut-on écrire seul, sans classe ? », plus bas, avant « Est-ce

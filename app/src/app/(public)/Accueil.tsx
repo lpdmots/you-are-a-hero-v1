@@ -369,8 +369,8 @@ export async function Accueil() {
           </p>
           <p className={styles.recit}>
             {/* L'histoire classique est venue avant l'outil (porteur, 24 novembre 2026) */}
-            {/* Des outils successifs, pas celui-ci depuis quatre ans (porteur, 24 novembre 2026) */}
-            Tout a commencé avec une histoire classique que j’ai écrite avec mes élèves. Depuis quatre ans, ma classe crée des livres-jeux.
+            {/* Des outils successifs, pas celui-ci depuis le début ; six ans de livres-jeux, comme le guide (porteur, 24 et 25 novembre 2026) */}
+            Tout a commencé avec une histoire classique que j’ai écrite avec mes élèves. Depuis six ans, ma classe crée des livres-jeux.
             Au fil des projets, j’ai fait évoluer mes outils jusqu’à la version actuelle, qui accompagne les élèves de la première idée au
             livre terminé.
           </p>
