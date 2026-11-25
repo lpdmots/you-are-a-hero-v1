@@ -216,7 +216,8 @@ export const EXEMPLES_A_L_ACCUEIL: Record<string, { classe: string; exemple: str
   },
   [HISTOIRE_D_EXEMPLE]: {
     classe: "Électro Nick, un livre dont vous êtes le héros, a été écrit par mes élèves, puis imprimé et lu par leurs familles.",
-    exemple: "Le hérisson qui voulait voir la mer, un exemple du site, est une histoire classique pour les plus jeunes.",
+    // « un exemple du site » retiré par le porteur le 25 novembre 2026
+    exemple: "Le hérisson qui voulait voir la mer est une histoire classique pour les plus jeunes.",
   },
 };
 /** L'exemple du site posé à côté du livre de la classe, s'il y en a un : son adresse ; rien pour toute autre paire. */

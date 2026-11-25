@@ -107,8 +107,7 @@ describe("les deux sortes de récit sur les pages publiques", () => {
     }
     const herisson = EXEMPLES_A_L_ACCUEIL[HISTOIRE_D_EXEMPLE];
     expect(herisson.classe).toContain("un livre dont vous êtes le héros");
-    expect(herisson.exemple).toContain("un exemple du site");
-    expect(herisson.exemple).toContain("histoire classique");
+    expect(herisson.exemple).toBe("Le hérisson qui voulait voir la mer est une histoire classique pour les plus jeunes.");
     // Dans l'« Aide », la seule question sur l'histoire classique mène à l'exemple, ouvert dans le lecteur
     expect(QUESTIONS.filter((q) => q.exemple).map((q) => q.question)).toEqual(["Peut-on écrire une histoire classique avec sa classe ?"]);
     expect(ADRESSE_DE_L_HISTOIRE_D_EXEMPLE).toBe("/lire/bibliotheque/le-herisson-qui-voulait-voir-la-mer");

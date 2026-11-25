@@ -6047,8 +6047,8 @@ chacune sur son instruction :
      élèves… ») et que le lien vers la bibliothèque a disparu : le texte se
      choisissait d'après les nombres de passages, qu'une histoire classique
      n'a pas. Corrigé en local, un commit, sans migration (F14-AC78) : les
-     deux livres nommés, l'exemple dit « un exemple du site », sans dire
-     qu'une IA l'a écrit, à sa demande ; « Histoire classique » sous sa
+     deux livres nommés, sans dire qui a écrit l'exemple, à sa demande
+     (« un exemple du site », proposé, retiré par lui) ; « Histoire classique » sous sa
      couverture ; « Lire un exemple » dans l'« Aide ». Pour le voir en
      local, le livre a été proposé puis publié dans la bibliothèque locale :
      cette proposition a déclenché la relecture par l'IA, un vrai appel de

@@ -14027,9 +14027,10 @@ découvre l'outil, et le porteur, administrateur.
   lorsqu'un visiteur ouvre l'accueil, alors le passage 27 s'intitule « Deux
   livres à feuilleter. », dit « Électro Nick, un livre dont vous êtes le
   héros, a été écrit par mes élèves, puis imprimé et lu par leurs
-  familles. Le hérisson qui voulait voir la mer, un exemple du site, est une
-  histoire classique pour les plus jeunes. Les deux se lisent gratuitement
-  dans la bibliothèque. », avec le lien vers la bibliothèque ; sous les
+  familles. Le hérisson qui voulait voir la mer est une histoire classique
+  pour les plus jeunes. Les deux se lisent gratuitement dans la
+  bibliothèque. », avec le lien vers la bibliothèque (« un exemple du
+  site », d'abord proposé, est retiré par le porteur le même jour) ; sous les
   couvertures, « 323 passages » et « Histoire classique », si bien que les
   deux « Feuilleter » sont à la même hauteur ; rien ne dit que l'exemple a
   été écrit par des élèves, ni par qui. Avec « Bouquin mène l'enquête » en
