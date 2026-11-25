@@ -15,7 +15,7 @@ import { phraseDe, type Gravite, type Probleme } from "./controles";
 import { livrePourLAdulte, type BlocLu, type MotLu } from "./lecture";
 import { groupesDeMelange, numerosDuPlan, ouvertureDe, planNumerote } from "./numeros";
 import type { Feuille, FormuleRenvoi, Section, SigneAction } from "./preparation";
-import { colonnesDesNoms, nomsTries, TEXTE_DES, TEXTE_ENIGMES, type PagesDuLivre, type TexteLeger } from "./pages";
+import { colonnesDesNoms, nomsTries, TEXTE_ENIGMES, texteDes, type PagesDuLivre, type TexteLeger } from "./pages";
 import { referenceScene, type Plan } from "./recit";
 import { largeurImprimee, zoneDeTexte, type ReglagesDuLivre } from "./mise-en-page";
 import type { Texte } from "./copie";
@@ -73,7 +73,7 @@ export type LivreACompose = {
 export type PresentationACompose = {
   titre: { image: string | null; titre: string; sousTitre: string; ligne: string; annee: string; illustration: string | null };
   auteurs: { image: string | null; place: "debut" | "fin"; introduction: string; noms: string[]; conclusion: string } | null;
-  commentLire: { image: string | null; texte: TexteLeger; enigmes: boolean; regles: string; des: boolean } | null;
+  commentLire: { image: string | null; texte: TexteLeger; enigmes: boolean; regles: string; des: boolean; auVous?: boolean } | null;
   feuille: { image: string | null; sections: Section[] } | null;
   fin: { image: string | null; texte: TexteLeger } | null;
 };
@@ -81,7 +81,7 @@ export type PresentationACompose = {
 /** Les pages de présentation à composer, d'après celles du projet et ce que le livre contient. */
 export function presentationDe(
   pages: PagesDuLivre,
-  o: { titre: string; aChoix: boolean; feuille: Feuille | null; regles: string; aDesEnigmes: boolean; desImprimes: boolean },
+  o: { titre: string; aChoix: boolean; feuille: Feuille | null; regles: string; aDesEnigmes: boolean; desImprimes: boolean; auVous?: boolean },
 ): PresentationACompose {
   const image = (p: { forme: string; imageId: string | null }) => (p.forme === "image" ? p.imageId : null);
   const t = pages.titre;
@@ -89,7 +89,7 @@ export function presentationDe(
     titre: { image: image(t), titre: o.titre, sousTitre: t.sousTitre, ligne: t.ligne, annee: t.annee, illustration: t.illustration },
     auteurs: pages.auteurs.presente ? { image: image(pages.auteurs), place: pages.auteurs.place, introduction: pages.auteurs.introduction, noms: nomsTries(pages.auteurs.noms), conclusion: pages.auteurs.conclusion } : null,
     commentLire: o.aChoix && pages.commentLire.presente
-      ? { image: image(pages.commentLire), texte: pages.commentLire.texte, enigmes: pages.commentLire.enigmes ?? o.aDesEnigmes, regles: o.regles.trim(), des: o.desImprimes }
+      ? { image: image(pages.commentLire), texte: pages.commentLire.texte, enigmes: pages.commentLire.enigmes ?? o.aDesEnigmes, regles: o.regles.trim(), des: o.desImprimes, auVous: o.auVous ?? false }
       : null,
     feuille: o.aChoix && o.feuille?.on && o.feuille.sections.length ? { image: image(pages.feuille), sections: o.feuille.sections } : null,
     fin: pages.fin.presente ? { image: image(pages.fin), texte: pages.fin.texte } : null,
@@ -489,7 +489,7 @@ function presentationHtml(livre: LivreACompose, o: Options): { debut: string; fi
     ? ""
     : c.image
       ? pageEnImage("pres--comment", "comment-lire", c.image, livre, o)
-      : `<section class="pres pres--comment" data-page="comment-lire"><h2 class="pres__titre">Comment lire ce livre</h2>${leger(c.texte)}${c.enigmes ? `<p>${html(TEXTE_ENIGMES)}</p>` : ""}${c.des ? `<p>${html(TEXTE_DES)}</p>` : ""}${regles}</section>`;
+      : `<section class="pres pres--comment" data-page="comment-lire"><h2 class="pres__titre">Comment lire ce livre</h2>${leger(c.texte)}${c.enigmes ? `<p>${html(TEXTE_ENIGMES)}</p>` : ""}${c.des ? `<p>${html(texteDes(c.auVous ?? false))}</p>` : ""}${regles}</section>`;
   const feuille = !p.feuille ? "" : p.feuille.image ? pageEnImage("pres--feuille", "feuille", p.feuille.image, livre, o) : feuilleHtml(p.feuille, livre);
   const f = p.fin;
   const fin = !f ? "" : f.image ? pageEnImage("pres--apres-le-recit pres--fin", "fin", f.image, livre, o) : `<section class="pres pres--apres-le-recit pres--fin" data-page="fin">${leger(f.texte)}</section>`;

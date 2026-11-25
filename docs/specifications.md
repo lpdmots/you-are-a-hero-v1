@@ -9942,6 +9942,14 @@ images.
   porteur, alors l'administration ne propose plus de déposer une face avant ;
   la conversion pose chaque face avant déjà déposée en couverture de son
   projet et de sa version publiée.
+- **F11-AC118 — « Comment lire ce livre » au « vous »** (demandé par le
+  porteur le 25 novembre 2026, défaut vu sur un livre au « vous ») : étant
+  donné un livre dont la formule de renvoi est au « vous » (« rendez-vous au
+  12 », « allez au 12 »), alors le texte de départ de « Comment lire ce
+  livre » et la phrase des dés imprimés s'adressent au lecteur au « vous »
+  (« vous choisissez ce que fait le héros », « Ouvrez le livre au hasard ») ;
+  un texte de départ gardé sans retouche suit la formule si elle change ; un
+  texte retouché par l'adulte reste le sien.
 
 **Décision confirmée le 3 octobre 2026 — premier cas réel :** le parcours
 epubli sert de premier cas réel de vérification, sans promettre un fichier

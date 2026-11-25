@@ -3,9 +3,9 @@ import { controler, type Probleme } from "@/domaine/controles";
 import type { Texte } from "@/domaine/copie";
 import { desImprimes } from "@/domaine/des";
 import { largeurImprimee, reglagesDeDepart, reglagesPropres, SEUIL_PPP } from "@/domaine/mise-en-page";
-import { colonnesDesNoms, imagesDesPages, nomsTries, pagesParDefaut, pagesPropres } from "@/domaine/pages";
+import { colonnesDesNoms, imagesDesPages, nomsTries, pagesParDefaut, pagesPropres, TEXTE_COMMENT_LIRE, texteDes, texteSimple } from "@/domaine/pages";
 import { etatRelire } from "@/domaine/livre";
-import { corpsDuLivre } from "@/domaine/composition";
+import { corpsDuLivre, presentationDe } from "@/domaine/composition";
 import { choix, id, image, imageId, liaison, livreDe, p, planDe } from "../livre/fabrique";
 
 /**
@@ -102,6 +102,24 @@ describe("Pages de présentation (F11.4)", () => {
     };
     expect(corps(false)).not.toContain("énigme");
     expect(corps(true)).toContain("en résolvant une énigme");
+  });
+
+  it("F11-AC118 — un livre au « vous » : « Comment lire ce livre » et la phrase des dés s'adressent au lecteur au « vous » ; un texte retouché reste celui de l'adulte", () => {
+    const auVous = pagesParDefaut({ aChoix: true, deClasse: false, adulte: "Léa", classe: null, prenoms: [], annee: 2026, auVous: true });
+    const lu = texteSimple(auVous.commentLire.texte);
+    expect(lu).toContain("vous choisissez ce que fait le héros");
+    expect(lu).toContain("vous dit où continuer votre lecture");
+    expect(lu).not.toMatch(/\btu\b|\bte\b|\bta\b/);
+    // Au « tu » par défaut, comme avant
+    expect(texteSimple(defaut.commentLire.texte)).toContain("tu choisis ce que fait le héros");
+    // Le texte de départ au « tu », gardé sans retouche, suit le livre passé au « vous » ; un texte retouché reste le sien
+    expect(texteSimple(pagesPropres({ commentLire: { texte: TEXTE_COMMENT_LIRE } }, auVous).commentLire.texte)).toBe(lu);
+    const retouche = [[{ text: "Lisez dans l’ordre des numéros." }]];
+    expect(texteSimple(pagesPropres({ commentLire: { texte: retouche } }, auVous).commentLire.texte)).toBe("Lisez dans l’ordre des numéros.");
+    // La phrase des dés imprimés suit aussi la formule
+    expect(texteDes(true)).toMatch(/^Pas de dé sous la main.*Ouvrez le livre/);
+    const presentation = presentationDe(auVous, { titre: "T", aChoix: true, feuille: null, regles: "", aDesEnigmes: false, desImprimes: true, auVous: true });
+    expect(presentation.commentLire).toMatchObject({ des: true, auVous: true });
   });
 
   it("des pages gardées incomplètes ou fausses sont complétées par celles proposées ; une image de page est contrôlée", () => {

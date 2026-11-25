@@ -63,8 +63,16 @@ export const TEXTE_COMMENT_LIRE: TexteLeger = [
   paragraphe("Ce livre ne se lit pas d’une page à l’autre. Chaque passage porte un numéro."),
   paragraphe("À la fin d’un passage, tu choisis ce que fait le héros : le numéro indiqué te dit où continuer ta lecture. Si tu arrives à une fin, tu peux recommencer et essayer un autre chemin."),
 ];
+/** Le même texte pour un livre écrit au « vous » (« rendez-vous au 12 », « allez au 12 ») : F11-AC118 */
+export const TEXTE_COMMENT_LIRE_VOUS: TexteLeger = [
+  paragraphe("Ce livre ne se lit pas d’une page à l’autre. Chaque passage porte un numéro."),
+  paragraphe("À la fin d’un passage, vous choisissez ce que fait le héros : le numéro indiqué vous dit où continuer votre lecture. Si vous arrivez à une fin, vous pouvez recommencer et essayer un autre chemin."),
+];
+export const texteCommentLire = (auVous: boolean): TexteLeger => (auVous ? TEXTE_COMMENT_LIRE_VOUS : TEXTE_COMMENT_LIRE);
 export const TEXTE_ENIGMES = "Parfois, aucun numéro n’est donné : il faut le trouver en résolvant une énigme.";
 export const TEXTE_DES = "Pas de dé sous la main ? Ouvre le livre au hasard : la face imprimée en bas de la page de droite remplace le lancer.";
+export const TEXTE_DES_VOUS = "Pas de dé sous la main ? Ouvrez le livre au hasard : la face imprimée en bas de la page de droite remplace le lancer.";
+export const texteDes = (auVous: boolean): string => (auVous ? TEXTE_DES_VOUS : TEXTE_DES);
 
 /** L'année scolaire d'une classe : « 2026-2027 ». */
 export const anneeScolaire = (anneeDebut: number): string => `${anneeDebut}-${anneeDebut + 1}`;
@@ -81,6 +89,8 @@ export function pagesParDefaut(o: {
   classe: { nom: string; anneeDebut: number } | null;
   prenoms: string[];
   annee: number;
+  /** Un livre écrit au « vous » : « Comment lire ce livre » s'adresse au lecteur de la même façon (F11-AC118) */
+  auVous?: boolean;
 }): PagesDuLivre {
   return {
     titre: {
@@ -93,7 +103,7 @@ export function pagesParDefaut(o: {
       presente: o.deClasse, forme: "modele", imageId: null, place: "debut",
       introduction: "Ce livre a été écrit par", noms: [...o.prenoms], conclusion: o.adulte.trim() ? `avec ${o.adulte.trim()}` : "",
     },
-    commentLire: { presente: o.aChoix, forme: "modele", imageId: null, texte: TEXTE_COMMENT_LIRE, enigmes: null },
+    commentLire: { presente: o.aChoix, forme: "modele", imageId: null, texte: texteCommentLire(o.auVous ?? false), enigmes: null },
     feuille: { forme: "modele", imageId: null },
     fin: { presente: false, forme: "modele", imageId: null, texte: [paragraphe("Fin")] },
   };
@@ -127,6 +137,13 @@ export function texteLegerPropre(v: unknown, defaut: TexteLeger): TexteLeger {
 }
 
 /** Les pages lues dans la base, complétées par celles proposées : ce qui manque prend la valeur par défaut. */
+/**
+ * Un texte de départ gardé sans retouche suit la formule du livre : le texte au « tu » d'un livre passé au « vous »
+ * (ou l'inverse) devient celui de sa formule ; un texte retouché par l'adulte reste le sien (F11-AC118).
+ */
+const texteDeDepart = (garde: TexteLeger, defaut: TexteLeger): TexteLeger =>
+  [TEXTE_COMMENT_LIRE, TEXTE_COMMENT_LIRE_VOUS].some((d) => texteSimple(d) === texteSimple(garde)) ? defaut : garde;
+
 export function pagesPropres(brut: unknown, defaut: PagesDuLivre): PagesDuLivre {
   const r = (brut && typeof brut === "object" ? brut : {}) as Record<string, Record<string, unknown> | undefined>;
   const t = r.titre ?? {};
@@ -147,7 +164,7 @@ export function pagesPropres(brut: unknown, defaut: PagesDuLivre): PagesDuLivre 
     },
     commentLire: {
       presente: presente(c.presente, defaut.commentLire.presente), forme: forme(c.forme), imageId: image(c.imageId),
-      texte: texteLegerPropre(c.texte, defaut.commentLire.texte), enigmes: typeof c.enigmes === "boolean" ? c.enigmes : null,
+      texte: texteDeDepart(texteLegerPropre(c.texte, defaut.commentLire.texte), defaut.commentLire.texte), enigmes: typeof c.enigmes === "boolean" ? c.enigmes : null,
     },
     feuille: { forme: forme(f.forme), imageId: image(f.imageId) },
     fin: { presente: presente(fin.presente, defaut.fin.presente), forme: forme(fin.forme), imageId: image(fin.imageId), texte: texteLegerPropre(fin.texte, defaut.fin.texte) },

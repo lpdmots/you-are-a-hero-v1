@@ -13,7 +13,7 @@ import { textesDemandesPropres } from "@/domaine/couverture";
 import { NOMS_COMME_LE_LIVRE, versionDuLivre, type CouvertureDeLaVersion, type VersionPartagee } from "@/domaine/partage";
 import { reglagesPropres, type ReglagesDuLivre } from "@/domaine/mise-en-page";
 import { imagesDesPages, pagesParDefaut, pagesPropres, type PagesDuLivre } from "@/domaine/pages";
-import type { Preparation } from "@/domaine/preparation";
+import { estAuVous, type Preparation } from "@/domaine/preparation";
 import type { Plan } from "@/domaine/recit";
 import { cheminDeLApercu, SEAU } from "./pdf";
 
@@ -69,6 +69,7 @@ export const contenuDuLivre = cache(async (e: Enseignant, projetId: string): Pro
     pagesParDefaut({
       aChoix, deClasse, adulte: e.nomAffiche ?? "", classe: projet.classe ? { nom: projet.classe.nom, anneeDebut: projet.classe.anneeDebut } : null,
       prenoms: eleves.map((x) => nomPourEleves(x, eleves)), annee: anneeScolaireEnCours(),
+      auVous: estAuVous(preparation?.formuleRenvoi ?? "rends"),
     }),
   );
   const contenu: Omit<ContenuDuLivre, "empreinte"> = {
@@ -99,6 +100,7 @@ export function livreDuContenu(c: Omit<ContenuDuLivre, "empreinte">, problemes: 
     presentation: presentationDe(c.pages, {
       titre: c.projet.titre, aChoix: c.aChoix, feuille, regles: c.preparation?.regles ?? "",
       aDesEnigmes: c.plan.liens.some((l) => l.cache), desImprimes: c.reglages.basDePage === "des",
+      auVous: estAuVous(c.preparation?.formuleRenvoi ?? "rends"),
     }),
   });
 }
