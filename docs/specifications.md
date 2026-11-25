@@ -13058,9 +13058,14 @@ les révisions qui suivent :
         images en 16:9, une par chapitre ; une image en hauteur pour la page
         de titre ; la couverture, avec le titre écrit dans l'image.
       - *Où il paraît :* la seconde place du passage 27 et la bibliothèque,
-        posées par lui quand le livre sera en ligne ; un lien « Lire un
-        exemple » sous la question de l'« Aide » sur l'histoire classique,
-        à poser alors ; rien dans le guide ni sur la page de l'auteur seul ;
+        où il le publie le 25 novembre 2026 ; un lien « Lire un exemple »
+        sous la question de l'« Aide » sur l'histoire classique, posé en
+        local le même jour (F14-AC78). Le passage 27 choisissait son texte
+        d'après les nombres de passages des deux livres : une histoire
+        classique n'en ayant pas, il retombait sur « Deux livres écrits par
+        une classe. Écrits par mes élèves… », faux, et sans lien vers la
+        bibliothèque, ce que le porteur relève ; corrigé le même jour, sans
+        dire qui a écrit l'exemple (F14-AC78) ; rien dans le guide ni sur la page de l'auteur seul ;
         page de titre « Un livre d'exemple d'Il était une classe ». Dans la
         bibliothèque, un récit classique se dit désormais « Histoire
         classique » sur la carte et dans le tiroir, « Histoires classiques »
@@ -14016,6 +14021,22 @@ découvre l'outil, et le porteur, administrateur.
   `llms.txt` la liste ; elle n'est liée que depuis la colonne « Commencer »
   du pied des pages publiques et la réponse de l'« Aide » « Peut-on écrire
   seul, sans classe ? », jamais depuis la barre du haut ni l'accueil.
+- **F14-AC78 — Le passage 27 avec un exemple du site :** étant donné les
+  livres de l'accueil « Électro Nick », écrit par la classe du porteur, et
+  « Le hérisson qui voulait voir la mer », histoire classique d'exemple,
+  lorsqu'un visiteur ouvre l'accueil, alors le passage 27 s'intitule « Deux
+  livres à feuilleter. », dit « Électro Nick, un livre dont vous êtes le
+  héros, a été écrit par mes élèves, puis imprimé et lu par leurs
+  familles. Le hérisson qui voulait voir la mer, un exemple du site, est une
+  histoire classique pour les plus jeunes. Les deux se lisent gratuitement
+  dans la bibliothèque. », avec le lien vers la bibliothèque ; sous les
+  couvertures, « 323 passages » et « Histoire classique », si bien que les
+  deux « Feuilleter » sont à la même hauteur ; rien ne dit que l'exemple a
+  été écrit par des élèves, ni par qui. Avec « Bouquin mène l'enquête » en
+  second, le texte du 26 octobre 2026 reste. Dans l'« Aide », la réponse à
+  « Peut-on écrire une histoire classique avec sa classe ? » porte « Lire un
+  exemple », qui ouvre le hérisson dans le lecteur
+  (`/lire/bibliotheque/le-herisson-qui-voulait-voir-la-mer`).
 - **F14-AC77 — Les mots de la bibliothèque :** étant donné un récit
   classique publié, « Le grand voyage », pour des lecteurs de 8 à 10 ans,
   lorsqu'un visiteur ouvre la bibliothèque, alors sa carte dit « 8 à 10 ans ·

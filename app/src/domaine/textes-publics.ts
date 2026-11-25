@@ -243,8 +243,9 @@ export const MENTIONS_LEGALES: Document = {
 /** La foire aux questions de la page « Aide » (F14, « Support »). */
 /** `pass` : la question n'a de sens que « Livre payant » allumé ; `gratuit`, que le livre gratuit. `guide` : la réponse mène au guide, à
  * cette question (son ancre, ou "" pour son début), qui la développe (audit du 7 novembre 2026). `seul` : la réponse mène à la page
- * de l'auteur seul, qui la développe pour le livre-jeu (F14-AC76). */
-export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string; ressources?: boolean; seul?: boolean }[] = [
+ * de l'auteur seul, qui la développe pour le livre-jeu (F14-AC76). `exemple` : la réponse mène à l'histoire classique d'exemple,
+ * « Lire un exemple », dans le lecteur en ligne (F14-AC78). */
+export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gratuit?: boolean; guide?: string; ressources?: boolean; seul?: boolean; exemple?: boolean }[] = [
   {
     question: "Comment commencer ?",
     reponse: "Créez un compte, puis votre premier projet : il s’ouvre sur sa préparation. La classe se crée quand les élèves commencent à écrire.",
@@ -259,6 +260,7 @@ export const QUESTIONS: { question: string; reponse: string; pass?: boolean; gra
   {
     question: "Peut-on écrire une histoire classique avec sa classe ?",
     reponse: "Oui. En créant le projet, vous choisissez entre un récit à choix, le livre dont vous êtes le héros, et un récit classique : une histoire qui se lit du début à la fin, sans choix ni numéros de passage. La préparation, l’écriture des élèves, la relecture, le PDF et la lecture en ligne sont les mêmes. Ce choix ne se change pas ensuite.",
+    exemple: true,
   },
   {
     question: "À partir de quel âge ?",

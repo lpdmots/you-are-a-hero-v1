@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { lireOffre } from "@/domaine/offre";
 import {
-  DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS, donneesDeLAccueil, donneesDeLAide, enJsonLd, LE_LIVRE_PREND_FORME, llmsTxt, PROMESSE, TITRE_DE_L_ACCUEIL,
+  ADRESSE_DE_L_HISTOIRE_D_EXEMPLE, DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS, donneesDeLAccueil, donneesDeLAide, enJsonLd, exempleALAccueil, EXEMPLES_A_L_ACCUEIL,
+  HISTOIRE_D_EXEMPLE, LE_LIVRE_PREND_FORME, llmsTxt, PROMESSE, TITRE_DE_L_ACCUEIL,
 } from "@/domaine/presentation";
 import { IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { QUESTIONS } from "@/domaine/textes-publics";
@@ -90,6 +91,27 @@ describe("les deux sortes de récit sur les pages publiques", () => {
     // L'histoire classique juste après la définition du livre dont vous êtes le héros ; l'auteur seul plus bas
     expect(noms.indexOf(classique!.question)).toBe(noms.indexOf("Qu’est-ce qu’un livre dont vous êtes le héros ?") + 1);
     expect(noms.indexOf(seul!.question)).toBeGreaterThan(noms.indexOf(classique!.question));
+  });
+
+  it("F14-AC78 — le passage 27 avec un exemple du site : chaque livre nommé, l'exemple sans « mes élèves » ni mention de qui l'a écrit ; « Lire un exemple » dans l'« Aide »", () => {
+    // Le livre de la classe à côté d'un exemple : livre-jeu ou histoire classique, dans un ordre ou dans l'autre
+    expect(exempleALAccueil(["electro-nick", HISTOIRE_D_EXEMPLE])).toBe(HISTOIRE_D_EXEMPLE);
+    expect(exempleALAccueil(["bouquin-mene-l-enquete", "electro-nick"])).toBe("bouquin-mene-l-enquete");
+    // Toute autre paire, ou un seul livre, garde les textes généraux
+    expect(exempleALAccueil(["electro-nick", "le-labyrinthe-oublie"])).toBeNull();
+    expect(exempleALAccueil([HISTOIRE_D_EXEMPLE, "bouquin-mene-l-enquete"])).toBeNull();
+    expect(exempleALAccueil([HISTOIRE_D_EXEMPLE])).toBeNull();
+    for (const t of Object.values(EXEMPLES_A_L_ACCUEIL)) {
+      expect(t.classe).toMatch(/^Électro Nick.* écrit par mes élèves/);
+      expect(t.exemple).not.toMatch(/élèves|classe\b|IA\b|intelligence artificielle|roman|recueil/i);
+    }
+    const herisson = EXEMPLES_A_L_ACCUEIL[HISTOIRE_D_EXEMPLE];
+    expect(herisson.classe).toContain("un livre dont vous êtes le héros");
+    expect(herisson.exemple).toContain("un exemple du site");
+    expect(herisson.exemple).toContain("histoire classique");
+    // Dans l'« Aide », la seule question sur l'histoire classique mène à l'exemple, ouvert dans le lecteur
+    expect(QUESTIONS.filter((q) => q.exemple).map((q) => q.question)).toEqual(["Peut-on écrire une histoire classique avec sa classe ?"]);
+    expect(ADRESSE_DE_L_HISTOIRE_D_EXEMPLE).toBe("/lire/bibliotheque/le-herisson-qui-voulait-voir-la-mer");
   });
 
   it("F14-AC75 — llms.txt dit les deux sortes de récit, le livre dont vous êtes le héros d'abord, et l'auteur seul", () => {

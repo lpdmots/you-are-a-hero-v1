@@ -4,7 +4,7 @@ import { TutosParTemps } from "@/composants/Tutos";
 import { ADRESSE_DE_L_AUTEUR_SEUL } from "@/domaine/auteur-seul";
 import { ADRESSE_DU_GUIDE } from "@/domaine/pages-publiques";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
-import { donneesDeLAide, donneesDesTutos, enJsonLd } from "@/domaine/presentation";
+import { ADRESSE_DE_L_HISTOIRE_D_EXEMPLE, donneesDeLAide, donneesDesTutos, enJsonLd } from "@/domaine/presentation";
 import { EDITEUR, MODELES, PHRASE_DU_SUPPORT, QUESTIONS } from "@/domaine/textes-publics";
 import { HORS_SERIE_POSEES, TEMPS_DES_TUTOS, TUTOS_POSES, VIDEO_IA } from "@/domaine/tutos";
 import { adresseDuSite } from "@/serveur/env";
@@ -61,6 +61,12 @@ export default async function Aide() {
                   {q.guide !== undefined ? (
                     <p>
                       <Link href={q.guide ? `${ADRESSE_DU_GUIDE}#${q.guide}` : ADRESSE_DU_GUIDE}>Lire le guide</Link>
+                    </p>
+                  ) : null}
+                  {q.exemple ? (
+                    <p>
+                      {/* L'histoire classique d'exemple du site, publiée dans la bibliothèque (F14-AC78) */}
+                      <Link href={ADRESSE_DE_L_HISTOIRE_D_EXEMPLE}>Lire un exemple</Link>
                     </p>
                   ) : null}
                   {q.seul ? (

@@ -6041,7 +6041,19 @@ chacune sur son instruction :
      d'une autre conversation (accueil allégé, « Comment lire ce livre » au
      « vous »), déploiement réussi, `verifier:production` passé, la
      bibliothèque en ligne dit « Histoires classiques ».
-   - *Reste :* ses gestes : proposer le livre à la
+   - *Publié par lui le 25 novembre 2026,* dans la bibliothèque et en
+     seconde place du passage 27. Il relève aussitôt que le texte du passage
+     est faux (« Deux livres écrits par une classe. Écrits par mes
+     élèves… ») et que le lien vers la bibliothèque a disparu : le texte se
+     choisissait d'après les nombres de passages, qu'une histoire classique
+     n'a pas. Corrigé en local, un commit, sans migration (F14-AC78) : les
+     deux livres nommés, l'exemple dit « un exemple du site », sans dire
+     qu'une IA l'a écrit, à sa demande ; « Histoire classique » sous sa
+     couverture ; « Lire un exemple » dans l'« Aide ». Pour le voir en
+     local, le livre a été proposé puis publié dans la bibliothèque locale :
+     cette proposition a déclenché la relecture par l'IA, un vrai appel de
+     0,041 dollar, non prévu et dit au porteur.
+   - *Reste, d'avant sa publication :* ses gestes : proposer le livre à la
      bibliothèque depuis « Partager », le publier dans `/admin/livres`, le
      poser en seconde place du passage 27 dans `/admin` ; enfin le lien
      « Lire un exemple » de l'« Aide », quand le livre a son adresse

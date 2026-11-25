@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { Icone } from "@/composants/Icone";
 import { BoutonTuto } from "@/composants/Tutos";
+import { NOM_DU_TYPE } from "@/domaine/bibliotheque-publique";
 import { enEuros } from "@/domaine/offre";
 import { ADRESSE_DU_GUIDE, IMAGE_DE_PARTAGE } from "@/domaine/pages-publiques";
 import { ADRESSE_DES_RESSOURCES } from "@/domaine/ressources";
@@ -17,7 +18,7 @@ import { CapturesEnGrand } from "./CapturesEnGrand";
 import { LivreChoisi } from "./LivreChoisi";
 import { VisiteEnVideo } from "./VisiteEnVideo";
 import { DonneesDeLAccueil } from "./DonneesDeLAccueil";
-import { DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS, LE_LIVRE_PREND_FORME, PROMESSE, TITRE_DE_L_ACCUEIL, type Video } from "@/domaine/presentation";
+import { DESCRIPTION_DE_L_ACCUEIL, DEUX_RECITS, EXEMPLES_A_L_ACCUEIL, exempleALAccueil, LE_LIVRE_PREND_FORME, PROMESSE, TITRE_DE_L_ACCUEIL, type Video } from "@/domaine/presentation";
 
 // Le titre et la description visent « écrire un livre avec sa classe », les deux sortes de récit nommées,
 // le livre dont vous êtes le héros d'abord (F14-AC72, 23 novembre 2026) ; les textes sont dans `presentation.ts`
@@ -76,7 +77,9 @@ export async function Accueil() {
   // que les nombres de passages sous les couvertures désignent
   const tailles = livres.map((l) => l.passages ?? 0);
   const grandEtPetit = livres.length === 2 && livres.every((l) => l.duPorteur) && Math.min(...tailles) > 0 && Math.max(...tailles) >= 3 * Math.min(...tailles);
-  const exemplesNommes = grandEtPetit && livres.some((l) => l.adresse === "electro-nick") && livres.some((l) => l.adresse === "bouquin-mene-l-enquete");
+  // Le livre de sa classe à côté d'un exemple du site, livre-jeu ou histoire classique (qui n'a pas de passages) :
+  // chacun est nommé, l'exemple sans « mes élèves » (F14-AC78)
+  const exemple = EXEMPLES_A_L_ACCUEIL[exempleALAccueil(livres.map((l) => l.adresse)) ?? ""];
 
   return (
     <main className={styles.accueil}>
@@ -191,16 +194,15 @@ export async function Accueil() {
       {/* 27 — Deux livres à feuilleter ; à côté, la photo des livres imprimés */}
       {avecLivres ? (
       <section className={`${styles.rangee} ${styles.aDroite}`}>
-        <Feuillet n={27} titre={grandEtPetit ? "Deux livres à feuilleter." : livres.length === 1 ? "Un livre écrit par une classe." : "Deux livres écrits par une classe."}>
+        <Feuillet n={27} titre={exemple || grandEtPetit ? "Deux livres à feuilleter." : livres.length === 1 ? "Un livre écrit par une classe." : "Deux livres écrits par une classe."}>
           <p className={`${styles.recit} ${styles.petit}`}>
             {/* Les livres de l'accueil viennent de la bibliothèque (F15-AC19) : « mes élèves » pour ceux du porteur seulement.
                 Un grand livre de sa classe et un petit (le 26 octobre 2026, « Bouquin mène l'enquête ») : le petit
                 montre un livre court, sans dire qui l'a écrit */}
-            {exemplesNommes
+            {exemple
               ? (
                   <>
-                    Électro Nick a été écrit par mes élèves, puis imprimé et lu par leurs familles. Bouquin mène l’enquête propose une aventure
-                    plus courte, destinée aux jeunes lecteurs. Les deux se lisent gratuitement dans <Link href="/bibliotheque">la bibliothèque</Link>.
+                    {exemple.classe} {exemple.exemple} Les deux se lisent gratuitement dans <Link href="/bibliotheque">la bibliothèque</Link>.
                   </>
                 )
               : grandEtPetit
@@ -501,7 +503,9 @@ function ChoixCompte({ phrase }: { phrase: string }) {
  * qu'il contient et « Feuilleter ».
  */
 function LivreFerme({ livre }: { livre: LivreDeLAccueil }) {
-  const nom = `Feuilleter « ${livre.titre} »${livre.passages ? `, ${livre.passages} passages` : ""}`;
+  // Sous la couverture : le nombre de passages d'un livre-jeu, « Histoire classique » pour un récit sans numéros
+  const contenu = livre.passages ? `${livre.passages} passages` : NOM_DU_TYPE.classique;
+  const nom = `Feuilleter « ${livre.titre} », ${livre.passages ? contenu : contenu.toLowerCase()}`;
   return (
     <Link href={`/lire/bibliotheque/${livre.adresse}`} className={styles.livreFerme} aria-label={nom}>
       <span className={styles.volume}>
@@ -524,7 +528,7 @@ function LivreFerme({ livre }: { livre: LivreDeLAccueil }) {
           </span>
         )}
       </span>
-      {livre.passages ? <span className={styles.contenu}>{livre.passages} passages</span> : null}
+      <span className={styles.contenu}>{contenu}</span>
       <span className={styles.feuilleter}>
         Feuilleter
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">

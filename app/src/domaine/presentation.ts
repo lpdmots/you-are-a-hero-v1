@@ -201,3 +201,26 @@ export function donneesDeLAide(questions: { question: string; reponse: string }[
 
 /** Le JSON d'une balise `<script type="application/ld+json">`, sans fermeture de balise possible */
 export const enJsonLd = (donnee: Donnee): string => JSON.stringify(donnee).replace(/</g, "\\u003c");
+
+/**
+ * Le passage 27 de l'accueil, quand le livre de la classe du porteur, « Électro Nick », y est à côté d'un livre
+ * d'exemple du site (F14-AC78) : ce que l'accueil dit de chacun. L'exemple n'est jamais dit écrit par des élèves ;
+ * l'accueil ne dit pas non plus qui l'a écrit. Les adresses sont celles des livres dans la bibliothèque.
+ */
+export const LIVRE_DE_LA_CLASSE = "electro-nick";
+export const HISTOIRE_D_EXEMPLE = "le-herisson-qui-voulait-voir-la-mer";
+export const EXEMPLES_A_L_ACCUEIL: Record<string, { classe: string; exemple: string }> = {
+  "bouquin-mene-l-enquete": {
+    classe: "Électro Nick a été écrit par mes élèves, puis imprimé et lu par leurs familles.",
+    exemple: "Bouquin mène l’enquête propose une aventure plus courte, destinée aux jeunes lecteurs.",
+  },
+  [HISTOIRE_D_EXEMPLE]: {
+    classe: "Électro Nick, un livre dont vous êtes le héros, a été écrit par mes élèves, puis imprimé et lu par leurs familles.",
+    exemple: "Le hérisson qui voulait voir la mer, un exemple du site, est une histoire classique pour les plus jeunes.",
+  },
+};
+/** L'exemple du site posé à côté du livre de la classe, s'il y en a un : son adresse ; rien pour toute autre paire. */
+export const exempleALAccueil = (adresses: readonly string[]): string | null =>
+  adresses.length === 2 && adresses.includes(LIVRE_DE_LA_CLASSE) ? (adresses.find((a) => a in EXEMPLES_A_L_ACCUEIL) ?? null) : null;
+/** « Lire un exemple », sous la question de l'« Aide » sur l'histoire classique : le livre s'ouvre dans le lecteur. */
+export const ADRESSE_DE_L_HISTOIRE_D_EXEMPLE = `/lire/bibliotheque/${HISTOIRE_D_EXEMPLE}`;
