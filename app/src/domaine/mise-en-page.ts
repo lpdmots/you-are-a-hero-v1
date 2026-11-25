@@ -22,6 +22,12 @@ export type ReglagesDuLivre = {
   partieNouvellePage: boolean;
   /** Récit classique seulement */
   chapitreNouvellePage: boolean;
+  /**
+   * Récit classique seulement : le filet au losange entre deux scènes d'un chapitre (F11.5). Éteint au départ
+   * depuis le 25 novembre 2026 : les scènes se suivent comme les paragraphes d'un même texte, le filet montrant
+   * le partage du travail plus qu'une rupture du récit.
+   */
+  filetsEntreScenes: boolean;
 };
 
 /** Format unique de la première livraison : A5 portrait, 420 × 595 points une fois imprimé (F11.3). */
@@ -43,6 +49,7 @@ export const reglagesDeDepart = (aChoix: boolean): ReglagesDuLivre => ({
   titresDeChapitre: true,
   partieNouvellePage: true,
   chapitreNouvellePage: false,
+  filetsEntreScenes: false,
 });
 
 /** La zone de texte d'une page, en millimètres. */
@@ -108,5 +115,6 @@ export function reglagesPropres(brut: unknown, o: { aChoix: boolean; des: 0 | 1 
     titresDeChapitre: oui(r.titresDeChapitre, d.titresDeChapitre),
     partieNouvellePage: oui(r.partieNouvellePage, d.partieNouvellePage),
     chapitreNouvellePage: oui(r.chapitreNouvellePage, d.chapitreNouvellePage),
+    filetsEntreScenes: oui(r.filetsEntreScenes, d.filetsEntreScenes),
   };
 }

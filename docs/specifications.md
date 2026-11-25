@@ -9950,6 +9950,14 @@ images.
   (« vous choisissez ce que fait le héros », « Ouvrez le livre au hasard ») ;
   un texte de départ gardé sans retouche suit la formule si elle change ; un
   texte retouché par l'adulte reste le sien.
+- **F11-AC119 — Scènes à la suite :** étant donné « Le hérisson qui voulait
+  voir la mer », récit classique dont le chapitre « Le coquillage » compte
+  trois scènes, et les réglages de départ, alors « Séparer les scènes par un
+  filet » est éteint, aucun filet n'est imprimé ni montré dans la lecture
+  en ligne, et le premier paragraphe de la deuxième scène suit le dernier de
+  la première avec le même alinéa que les autres ; lorsque Mme Laurent
+  allume le réglage, alors les filets de F11-AC102 reviennent dans l'aperçu,
+  et dans la lecture en ligne à la mise à jour suivante du partage.
 
 **Décision confirmée le 3 octobre 2026 — premier cas réel :** le parcours
 epubli sert de premier cas réel de vérification, sans promettre un fichier
@@ -10063,13 +10071,28 @@ selon [F03.1](#f031--histoire-parties-chapitres-et-scènes).
 l'adulte agit sur l'ordre imprimé. Le mélange et la numérotation des passages
 ne s'appliquent pas au récit classique : les titres de partie, et de chapitre
 si l'adulte le souhaite, y sont imprimés à leur place naturelle dans l'ordre du plan,
-et un séparateur discret distingue les scènes, sans renvoi ni numéro.
+et les scènes s'y suivent sans renvoi ni numéro ; un séparateur discret les
+distingue si l'adulte le demande (révisé le 25 novembre 2026, plus bas).
 
 **Décisions confirmées le 15 octobre 2026 — livre en récit classique :**
 arbitré à l'entretien de l'étape 6 du
 [plan](plan.md#étape-6--composer-et-imprimer-le-livre).
 
-- **Séparateur :** le petit filet au losange de la page de titre, centré,
+- **Séparateur (révisé le 25 novembre 2026) :** un réglage de « Mettre en
+  page », « Séparer les scènes par un filet », dans « Titres et nouvelles
+  pages », pour le récit classique seulement, **éteint au départ**. Décidé
+  par le porteur en lisant l'histoire classique d'exemple (« c'est quoi ces
+  traits de séparation partout ? »), sur recommandation : le filet montre le
+  partage du travail, une scène par élève, alors qu'un lecteur le prend pour
+  une rupture du récit, et il tombait douze fois en 1 400 mots, parfois au
+  milieu d'une conversation. Éteint, une scène suit l'autre comme un
+  paragraphe du même texte, alinéa compris ; l'enseignant qui veut marquer
+  le texte de chaque élève l'allume. Il vaut pour le livre imprimé, l'aperçu
+  et la lecture en ligne, dont la version partagée reste une copie datée.
+  Conséquence acceptée : une histoire classique déjà commencée perd ses
+  filets à la composition suivante, sauf à allumer le réglage. Alternative
+  écartée : retirer le filet partout, sans réglage. Allumé, c'est le
+  petit filet au losange de la page de titre, centré,
   une ligne de blanc au-dessus et au-dessous. Il n'y en a pas avant la
   première scène d'un chapitre, dont le titre tient lieu. À une coupure de
   page, il reste avec les deux premières lignes au moins de la scène qui
@@ -10087,9 +10110,10 @@ arbitré à l'entretien de l'étape 6 du
   ouvre une partie ou un chapitre, ni sur les pages de présentation.
   Alternative écartée : aucun en-tête, plus sobre, où l'on se repère moins.
 
-- **F11-AC102 — Séparateur de scènes :** étant donné un récit classique dont
-  le chapitre « Le marais » compte trois scènes, lorsque le livre est
-  composé, alors un filet au losange sépare la première de la deuxième et
+- **F11-AC102 — Séparateur de scènes (révisé le 25 novembre 2026) :** étant
+  donné un récit classique dont le chapitre « Le marais » compte trois
+  scènes et le réglage « Séparer les scènes par un filet » allumé, lorsque
+  le livre est composé, alors un filet au losange sépare la première de la deuxième et
   la deuxième de la troisième, aucun ne précède la première, aucun titre de
   scène n'est imprimé, et aucun filet n'est le dernier élément d'une page.
 - **F11-AC103 — Titres de chapitre :** étant donné ce récit, dont le
@@ -13021,8 +13045,10 @@ les révisions qui suivent :
         trois scènes, dix-huit scènes de 60 à 90 mots, environ 1 400 mots ;
         au présent, à la troisième personne ; Andika, grande taille, aligné
         à gauche, un chapitre par page nouvelle. Vingt-cinq scènes de trois
-        phrases, une par élève, sont écartées : le livre imprime un filet
-        entre deux scènes d'un chapitre, et la page serait hachée.
+        phrases, une par élève, sont écartées à l'entretien, le livre
+        imprimant alors un filet entre deux scènes ; à sa première lecture,
+        le porteur fait de ce filet un réglage, éteint au départ
+        ([F11.5](#f115--ordre-imprimé-et-numérotation-du-récit-à-choix), F11-AC119).
       - *Écriture :* par Claude lui-même, sans les aides de l'application
         et sans aucun appel payant, relue par deux relecteurs (liaisons et
         langue ; une lectrice de 7 ans et son enseignante).

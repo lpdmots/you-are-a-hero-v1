@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { CESURE, corpsDuLivre, couperMot, couperTexte, type LivreACompose } from "@/domaine/composition";
+import { reglagesDeDepart } from "@/domaine/mise-en-page";
 import { action, choix, id, image, imageId, liaison, livreDe, p, recit, type Decrite } from "../livre/fabrique";
 
 /**
@@ -128,22 +129,33 @@ describe("Marques du PDF de travail (F11.2)", () => {
 });
 
 describe("Récit classique (F11.5, 15 octobre 2026)", () => {
-  const classique = (titresDeChapitre = true) => livreDe([
+  const classique = (titresDeChapitre = true, filetsEntreScenes = true) => livreDe([
     { ref: 1, partie: 0, chapitre: "La lisière" },
     { ref: 2, partie: 0, chapitre: "La lisière" },
     { ref: 3, partie: 0, chapitre: "Le marais", hors: true },
     { ref: 4, partie: 0, chapitre: "Le gué" },
     { ref: 5, partie: 0, chapitre: "Le gué" },
     { ref: 6, partie: 0, chapitre: "Le gué" },
-  ], { aChoix: false, parties: ["La forêt"], reglages: { titresDeChapitre } });
+  ], { aChoix: false, parties: ["La forêt"], reglages: { titresDeChapitre, filetsEntreScenes } });
 
-  it("F11-AC102 — un filet entre deux scènes, aucun avant la première d'un chapitre ; ni numéro ni titre de scène", () => {
+  it("F11-AC102 — réglage allumé : un filet entre deux scènes, aucun avant la première d'un chapitre ; ni numéro ni titre de scène", () => {
     const l = classique();
     expect(l.passages.map((x) => x.separateur)).toEqual([false, true, false, true, true]);
     expect(l.passages.every((x) => x.numero === null)).toBe(true);
     const corps = html(l);
     expect(corps).not.toContain("Scène 4");
     expect(corps).not.toContain('class="numero"');
+  });
+
+  it("F11-AC119 — au départ, aucun filet : les scènes d'un chapitre se suivent, l'alinéa du premier paragraphe compris", () => {
+    expect(reglagesDeDepart(false).filetsEntreScenes).toBe(false);
+    const l = classique(true, false);
+    expect(l.passages.some((x) => x.separateur)).toBe(false);
+    const corps = html(l);
+    expect(corps).not.toContain('class="separateur"');
+    // La première scène du livre et celle qu'un titre de chapitre ouvre gardent leur premier paragraphe sans alinéa
+    expect(corps.match(/class="debut-scene suite"/g)).toHaveLength(3);
+    expect(html(classique())).not.toContain("debut-scene suite");
   });
 
   it("F11-AC103 — « Chapitre 2 » pour le troisième chapitre du plan quand le deuxième est hors du livre ; réglage désactivé, aucun titre de chapitre", () => {

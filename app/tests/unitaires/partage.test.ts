@@ -40,11 +40,13 @@ describe("La version partagée (F12.1)", () => {
     expect(JSON.stringify(versionDuLivre(corrige, NOMS_COMME_LE_LIVRE))).not.toBe(avant);
   });
 
-  it("récit classique : un chapitre par écran, numérotés comme dans le livre, filet entre les scènes, aucun numéro de passage", () => {
+  it("récit classique : un chapitre par écran, numérotés comme dans le livre, aucun numéro de passage ; le filet entre les scènes si le livre le demande (F11-AC119)", () => {
     const classique: Decrite[] = [{ ref: 1, chapitre: "Le départ", texte: [p("Un.")] }, { ref: 2, chapitre: "Le départ", texte: [p("Deux.")] }, { ref: 3, chapitre: "Le retour", texte: [p("Trois.")] }];
     const chapitres = new Map(planDe(classique).parties.flatMap((x) => x.chapitres.flatMap((c) => c.scenes.map((s) => [s.id, { id: c.id, titre: c.titre }] as const))));
-    const v = versionDuLivre(livreDe(classique, { aChoix: false }), NOMS_COMME_LE_LIVRE, chapitres);
+    const v = versionDuLivre(livreDe(classique, { aChoix: false, reglages: { filetsEntreScenes: true } }), NOMS_COMME_LE_LIVRE, chapitres);
     expect(v.passages.map((x) => [x.numero, x.chapitre?.numero ?? null, x.separateur])).toEqual([[null, 1, false], [null, null, true], [null, 2, false]]);
+    // Au départ, aucun filet : les scènes d'un chapitre se suivent
+    expect(versionDuLivre(livreDe(classique, { aChoix: false }), NOMS_COMME_LE_LIVRE, chapitres).passages.some((x) => x.separateur)).toBe(false);
     expect(v.passages[2].chapitre).toEqual({ numero: 2, titre: "Le retour", imprime: true });
     expect(v.feuille).toBeNull();
     // Titres de chapitre non imprimés : les chapitres restent, sans titre affiché

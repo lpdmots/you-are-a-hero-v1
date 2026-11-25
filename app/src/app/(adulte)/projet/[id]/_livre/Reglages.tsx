@@ -188,6 +188,9 @@ export function VoletReglages({
                       <Inter oui={r.chapitreNouvellePage} onChange={(v) => regler({ ...r, chapitreNouvellePage: v })}>
                         Chaque chapitre commence sur une nouvelle page
                       </Inter>
+                      <Inter oui={r.filetsEntreScenes} onChange={(v) => regler({ ...r, filetsEntreScenes: v })}>
+                        Séparer les scènes par un filet
+                      </Inter>
                     </>
                   )}
                 </div>

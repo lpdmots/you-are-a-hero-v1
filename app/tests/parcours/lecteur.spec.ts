@@ -284,7 +284,7 @@ test("F12-AC25, F04-AC43, F12-AC10, F12-AC11 — après une mise à jour, la lec
   await contexte.close();
 });
 
-test("F12.1 — récit classique : un chapitre par écran, le filet entre les scènes, le sommaire, sans marque de fin ; la lecture reprend au chapitre", async ({ page, browser }) => {
+test("F12.1 — récit classique : un chapitre par écran, les scènes à la suite sans filet (F11-AC119), le sommaire, sans marque de fin ; la lecture reprend au chapitre", async ({ page, browser }) => {
   const { compte, base } = await adultePret(page);
   const projet = await semerProjet(base, compte, "personnel", "classique", "Le grand voyage");
   const { chapitres } = await semerPartie(base, projet, "Le voyage", [{ titre: "Le départ", scenes: ["", ""] }, { titre: "Le retour", scenes: [""] }]);
@@ -299,7 +299,8 @@ test("F12.1 — récit classique : un chapitre par écran, le filet entre les sc
   await expect(texte(lecteur).getByRole("heading", { name: /Chapitre 1\s*Le départ/ })).toBeVisible();
   await expect(texte(lecteur)).toContainText("Le bateau quitte le port.");
   await expect(texte(lecteur)).toContainText("La mer est calme.");
-  await expect(texte(lecteur).locator(".lecteur__filet")).toHaveCount(1);
+  // Le réglage « Séparer les scènes par un filet » est éteint au départ
+  await expect(texte(lecteur).locator(".lecteur__filet")).toHaveCount(0);
   await expect(texte(lecteur)).not.toContainText("Le port, enfin.");
   await lecteur.getByRole("button", { name: /Sommaire/ }).click();
   await expect(lecteur.getByRole("list", { name: "Sommaire" }).getByRole("button")).toHaveText(["1 Le départ", "2 Le retour"]);

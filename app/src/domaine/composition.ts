@@ -179,8 +179,8 @@ export function livreACompose(e: EntreeDuLivre): LivreACompose {
             chapitresImprimes += 1;
             p.chapitre = { numero: chapitresImprimes, titre: c.titre, nouvellePage: !debutDuLivre && !p.partie && r.chapitreNouvellePage };
           }
-          // Le filet sépare deux scènes ; un titre imprimé au-dessus en tient lieu
-          p.separateur = !debutDuLivre && !p.partie && !p.chapitre;
+          // Le filet sépare deux scènes, si l'adulte le demande ; un titre imprimé au-dessus en tient lieu
+          p.separateur = r.filetsEntreScenes && !debutDuLivre && !p.partie && !p.chapitre;
           passages.push(p);
           premierDeLaPartie = false;
           premierDuChapitre = false;
@@ -362,7 +362,9 @@ function passageHtml(p: PassageACompose, livre: LivreACompose, o: Options): stri
   if (p.numero !== null) {
     morceaux.push(`<h2 class="numero${p.nouvellePage && !p.partie ? " nouvelle-page" : ""}"${debut}${attributs({ "data-numero": p.numero })}>${p.numero}</h2>`);
   } else {
-    morceaux.push(`<span class="debut-scene${p.nouvellePage && !p.partie && !p.chapitre ? " nouvelle-page" : ""}"${debut}></span>`);
+    // Sans filet ni titre au-dessus, la scène continue le texte : son premier paragraphe a l'alinéa des autres
+    const suite = !p.separateur && !p.partie && !p.chapitre && livre.passages[0] !== p;
+    morceaux.push(`<span class="debut-scene${suite ? " suite" : ""}${p.nouvellePage && !p.partie && !p.chapitre ? " nouvelle-page" : ""}"${debut}></span>`);
   }
 
   // Une image pleine page posée avant tout texte partage sa page avec le numéro et les titres

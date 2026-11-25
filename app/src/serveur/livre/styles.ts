@@ -85,7 +85,7 @@ body { font-family: ${police}; font-size: var(--corps); line-height: 1.36; color
 /* ——— Le récit ——— */
 .recit p { margin: 0; }
 .recit p.r { text-align: ${r.alignement === "justifie" ? "justify" : "left"}; widows: 2; orphans: 2; }
-.recit p.r + p.r { text-indent: 1.2em; }
+.recit p.r + p.r, .recit .debut-scene.suite + p.r { text-indent: 1.2em; }
 .recit h1.partie { font-size: 1.75em; line-height: 1.2; font-weight: 600; text-align: center; margin: 0 0 1em; break-after: avoid; break-inside: avoid; }
 .recit h1.partie.nouvelle-page { padding-top: 22mm; }
 .recit h2.chapitre { font-size: 1.32em; line-height: 1.25; font-weight: 600; text-align: center; margin: 1.6em 0 1.1em; break-after: avoid; break-inside: avoid; }

@@ -4658,7 +4658,8 @@ et [F04.2](specifications.md#f042--objets-de-lhistoire).
 - **Lecteur en ligne :** la feuille d'aventure est fermée au départ, ouverte
   par « Ma feuille » ou par une action de jeu (décidé le 16 octobre 2026),
   et non posée en colonne ; en récit classique, le filet au losange entre les
-  scènes et les titres de chapitre numérotés comme dans le livre, sans titre
+  scènes (depuis le 25 novembre 2026, seulement si le réglage « Séparer les
+  scènes par un filet » est allumé, F11-AC119) et les titres de chapitre numérotés comme dans le livre, sans titre
   de scène, « Sommaire » listant les chapitres ; le parcours nomme chaque
   passage lu par son numéro et ses premiers mots ; la page de titre propose
   « Commencer la lecture », ou « Continuer au passage n » et « Recommencer au

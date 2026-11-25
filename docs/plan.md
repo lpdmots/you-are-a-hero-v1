@@ -6002,6 +6002,14 @@ chacune sur son instruction :
      ponctuation, que l'application ne pose pas.
    - *Bibliothèque :* « Histoire classique » sur la carte et dans le tiroir,
      « Histoires classiques » dans le filtre (F14-AC77).
+   - *Filet entre les scènes, à sa première lecture le même jour :* il
+     demande ce que sont « ces traits de séparation partout ». Décidé par
+     lui sur recommandation, construit aussitôt, un commit, sans migration :
+     « Séparer les scènes par un filet », réglage de « Mettre en page » pour
+     le récit classique, éteint au départ (F11.5 révisé, F11-AC102 révisé,
+     F11-AC119) ; le premier paragraphe d'une scène qui en suit une autre
+     prend l'alinéa des autres. Le parcours `lecteur.spec.ts` est accordé
+     sans être lancé.
    - *Précisions prises en écrivant, à lui faire confirmer :* l'image du
      dernier chapitre vient en tête de la scène où Pépin voit la mer, non en
      tête du chapitre, pour ne pas la montrer avant le texte ; la page de fin
