@@ -6036,9 +6036,12 @@ chacune sur son instruction :
      chargé sur son compte par `npm run livres:exemple -- herisson
      --production … --oui` (18 scènes, 8 images) ; le PDF définitif s'y
      refait dans « Imprimer et partager ».
-   - *Reste :* pousser `main`, qui porte aussi trois commits de code d'une
-     autre conversation (accueil allégé, « Comment lire ce livre » au
-     « vous »), sur son accord ; puis ses gestes : proposer le livre à la
+   - *Code en ligne le 25 novembre 2026, sur son accord (« Oui, pousse
+     tout ») :* `main` poussé jusqu'à `c2a69d7`, avec trois commits de code
+     d'une autre conversation (accueil allégé, « Comment lire ce livre » au
+     « vous »), déploiement réussi, `verifier:production` passé, la
+     bibliothèque en ligne dit « Histoires classiques ».
+   - *Reste :* ses gestes : proposer le livre à la
      bibliothèque depuis « Partager », le publier dans `/admin/livres`, le
      poser en seconde place du passage 27 dans `/admin` ; enfin le lien
      « Lire un exemple » de l'« Aide », quand le livre a son adresse
