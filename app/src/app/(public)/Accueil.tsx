@@ -273,9 +273,9 @@ export async function Accueil() {
               Si vous le voulez, un coup de pouce de l’IA : idées, corrections, illustrations.
             </li>
           </ul>
+          {/* Seuls les deux choix vers d'autres pages : le 40 suit juste en dessous et mène au 52
+              (allégé à la demande du porteur le 24 novembre 2026, la page devenant trop haute) */}
           <Choix>
-            <Renvoi vers={40}>Si vous vous demandez ce que cela coûte, rendez-vous au</Renvoi>
-            <Renvoi vers={52}>Si vous voulez savoir d’où vient cet outil, rendez-vous au</Renvoi>
             <ChoixPage href={ADRESSE_DU_GUIDE}>Si vous voulez la méthode pas à pas, lisez le guide</ChoixPage>
             {/* La page « Ressources » (F14-AC59), à côté du guide */}
             <ChoixPage href={ADRESSE_DES_RESSOURCES}>Si vous cherchez des leçons et des fiches à imprimer, ouvrez les ressources</ChoixPage>
@@ -369,8 +369,10 @@ export async function Accueil() {
           </p>
           <p className={styles.recit}>
             {/* L'histoire classique est venue avant l'outil (porteur, 24 novembre 2026) */}
-            Avec mes élèves, j’ai d’abord écrit une histoire classique. Depuis quatre ans, ma classe écrit ses livres-jeux avec cet outil.
-            Cette version accompagne tout le projet, de l’idée au livre.
+            {/* Des outils successifs, pas celui-ci depuis quatre ans (porteur, 24 novembre 2026) */}
+            Tout a commencé avec une histoire classique que j’ai écrite avec mes élèves. Depuis quatre ans, ma classe crée des livres-jeux.
+            Au fil des projets, j’ai fait évoluer mes outils jusqu’à la version actuelle, qui accompagne les élèves de la première idée au
+            livre terminé.
           </p>
           <p className={`${styles.recit} ${styles.petit}`}>
             Une question, une idée ? Écrivez-moi : <a href={`mailto:${EDITEUR.contact}`}>{EDITEUR.contact}</a>
