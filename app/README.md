@@ -906,7 +906,12 @@ appel d'IA, arrivé à « Imprimer et partager » : ordre et numéros fixes, mis
 « C'est voulu » et étapes déclarées compris. Seul le PDF définitif se refait. Deux livres
 à ce jour : `passeurs` (« Les passeurs de brume », cycle 3) et `dragon` (« Bouquin mène l’enquête », d’abord « Qui a pris le
 livre ? », cycle 2, les deux mascottes, dont les planches de référence deviennent les
-portraits au brouillon).
+portraits au brouillon). Un troisième s'écrit depuis le 25 novembre 2026 : `herisson`
+(« Le hérisson qui voulait voir la mer », CP-CE1), une histoire classique (`RECIT:
+"classique"` dans sa conception : ni départ, ni numéros), écrite par Claude sans les
+aides, dont le porteur fait les images (`IMAGES_DU_PORTEUR`) ; il n'a pas encore
+d'instantané et se charge par `--brouillon --refaire`. `cormoran` sert aux captures de la
+page de l'auteur seul, hors de la bibliothèque.
 
 ```bash
 npm run livres:exemple -- passeurs                      # dans la base locale, pour le compte local

@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Icone } from "@/composants/Icone";
 import { AGES } from "@/domaine/aides-ia";
-import { chercheEnAdresse, demandeDepuis, nomDeLAge, type Demande } from "@/domaine/bibliotheque-publique";
+import { chercheEnAdresse, demandeDepuis, NOM_DES_TYPES, nomDeLAge, type Demande } from "@/domaine/bibliotheque-publique";
 import styles from "./bibliotheque.module.css";
 
 /**
@@ -58,8 +58,8 @@ export function Recherche({ demande, trouves, total }: { demande: Demande; trouv
         <span className="vh">Type de récit</span>
         <select name="type" value={demande.type ?? ""} onChange={(e) => aller({ ...courante.current, type: (e.target.value || null) as Demande["type"] })}>
           <option value="">Tous les types</option>
-          <option value="choix">Livres-jeux</option>
-          <option value="classique">Récits</option>
+          <option value="choix">{NOM_DES_TYPES.choix}</option>
+          <option value="classique">{NOM_DES_TYPES.classique}</option>
         </select>
       </label>
       <div className={`bascule ${styles.tri}`} role="group" aria-label="Trier">

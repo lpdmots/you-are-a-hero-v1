@@ -13002,6 +13002,43 @@ les révisions qui suivent :
       `livres-d-exemple`, présenté comme un exemple du site ; il prend la
       seconde place à l'accueil, « Bouquin mène l'enquête » restant dans la
       bibliothèque, qui montre ainsi les deux sortes de récit.
+      <a id="f14-histoire-d-exemple"></a>Entretien du 25 novembre 2026, ses
+      recommandations acceptées par le porteur, sauf le sujet, qui est son
+      choix ; écrit et chargé en local le même jour, rien en ligne :
+      - *Sujet :* « Le hérisson qui voulait voir la mer », pour des lecteurs
+        de CP-CE1 (« 6 à 8 ans »), choisi par lui contre une histoire avec les
+        mascottes, que je recommandais (mêmes héros dans les deux sortes de
+        récit, planches pour les images) : personnages neufs, un voyage en
+        étapes, la forme la plus proche de ce qu'écrit une classe de cet âge.
+        Pépin trouve un coquillage, y entend la mer et part la voir ; chaque
+        animal rencontré ne l'a jamais vue et l'imagine d'après son monde
+        (un trou pour la taupe, une mare pour la grenouille, un bol de
+        poissons pour le chat), puis l'aide à passer un obstacle ; un
+        refrain, « Pépin est petit. Mais Pépin est têtu. », qui cède une
+        fois, sur la dune ; une fin ouverte sur le retour. Le hérisson
+        voyage de jour, pour des images claires.
+      - *Échelle :* une partie sans titre imprimé, six chapitres titrés de
+        trois scènes, dix-huit scènes de 60 à 90 mots, environ 1 400 mots ;
+        au présent, à la troisième personne ; Andika, grande taille, aligné
+        à gauche, un chapitre par page nouvelle. Vingt-cinq scènes de trois
+        phrases, une par élève, sont écartées : le livre imprime un filet
+        entre deux scènes d'un chapitre, et la page serait hachée.
+      - *Écriture :* par Claude lui-même, sans les aides de l'application
+        et sans aucun appel payant, relue par deux relecteurs (liaisons et
+        langue ; une lectrice de 7 ans et son enseignante).
+      - *Images :* faites par le porteur d'après des prompts complets, dans
+        le style par défaut, « Illustration 2D lumineuse » : une planche du
+        héros d'abord, hors du livre, qu'il joint à chaque prompt ; six
+        images en 16:9, une par chapitre ; une image en hauteur pour la page
+        de titre ; la couverture, avec le titre écrit dans l'image.
+      - *Où il paraît :* la seconde place du passage 27 et la bibliothèque,
+        posées par lui quand le livre sera en ligne ; un lien « Lire un
+        exemple » sous la question de l'« Aide » sur l'histoire classique,
+        à poser alors ; rien dans le guide ni sur la page de l'auteur seul ;
+        page de titre « Un livre d'exemple d'Il était une classe ». Dans la
+        bibliothèque, un récit classique se dit désormais « Histoire
+        classique » sur la carte et dans le tiroir, « Histoires classiques »
+        dans le filtre, à la place de « Récit » et « Récits » (F14-AC77).
     - **Guide :** son titre et son adresse restent sur le livre dont vous
       êtes le héros, qui est son mot-clé. Les parties qui valent pour tout
       livre le disent, et une partie « Et pour un roman ? » s'ajoute, tirée
@@ -13953,6 +13990,13 @@ découvre l'outil, et le porteur, administrateur.
   `llms.txt` la liste ; elle n'est liée que depuis la colonne « Commencer »
   du pied des pages publiques et la réponse de l'« Aide » « Peut-on écrire
   seul, sans classe ? », jamais depuis la barre du haut ni l'accueil.
+- **F14-AC77 — Les mots de la bibliothèque :** étant donné un récit
+  classique publié, « Le grand voyage », pour des lecteurs de 8 à 10 ans,
+  lorsqu'un visiteur ouvre la bibliothèque, alors sa carte dit « 8 à 10 ans ·
+  Histoire classique », son tiroir « Histoire classique, qui se lit du début
+  à la fin », et le filtre propose « Livres-jeux » et « Histoires
+  classiques » ; aucun de ces textes ne dit « Récit » seul, « roman » ni
+  « recueil ».
 
 **Questions ouvertes :** le médiateur de la consommation, à la charge du porteur (l'entité qui
 facture est réglée le 21 octobre 2026), reporté par lui le 23 octobre 2026 : le site n'en

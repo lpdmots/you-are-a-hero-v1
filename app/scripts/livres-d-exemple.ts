@@ -33,12 +33,15 @@ import { lireImage } from "@/serveur/images";
 import { adresseDeProduction, lireEnv, masquer, racine } from "./base-de-production";
 import type { Conception } from "./exemples/conception";
 import { livre as dragon } from "./exemples/dragon";
+import { livre as herisson } from "./exemples/herisson";
 import { livre as cormoran } from "./exemples/cormoran";
 import { livre as passeurs } from "./exemples/passeurs-de-brume";
 
 const LIVRES: Record<string, { conception: Conception; dossier: string }> = {
   passeurs: { conception: passeurs, dossier: "passeurs-de-brume" },
   dragon: { conception: dragon, dossier: "bouquin-mene-l-enquete" },
+  // L'histoire classique d'exemple (F14, « Pages publiques pour les deux sortes de récit », 25 novembre 2026)
+  herisson: { conception: herisson, dossier: "le-herisson-qui-voulait-voir-la-mer" },
   // Pour les captures de la page de l'auteur seul (F14-AC76), pas pour la bibliothèque
   cormoran: { conception: cormoran, dossier: "la-derniere-traversee-du-cormoran" },
 };
@@ -141,11 +144,13 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
     return v;
   };
   const instant = (i: number) => `${i} milliseconds`;
+  // Une histoire classique se lit dans l'ordre du plan : ni départ, ni numéros, ni ordre à établir
+  const aChoix = c.RECIT !== "classique";
 
   await q(
     `insert into public.projets (id, enseignant_id, organisation, recit, titre, classe_id, visuel_choisi, age_des_lecteurs, heros_absent, style_images, style_autre, consigne_ecriture)
-     values ($1, $2, $9, 'choix', $3, null, $4, $5, false, $6, $7, $8)`,
-    [projetId, compte, c.TITRE, c.VISUEL_DU_PROJET, c.AGE, c.STYLE?.style ?? "lumineuse", c.STYLE?.autre ?? "", c.CONSIGNE_ECRITURE ?? "", c.ORGANISATION ?? "classe"],
+     values ($1, $2, $9, $10, $3, null, $4, $5, false, $6, $7, $8)`,
+    [projetId, compte, c.TITRE, c.VISUEL_DU_PROJET, c.AGE, c.STYLE?.style ?? "lumineuse", c.STYLE?.autre ?? "", c.CONSIGNE_ECRITURE ?? "", c.ORGANISATION ?? "classe", aChoix ? "choix" : "classique"],
   );
   const p = c.PREPARATION;
   await q(
@@ -182,7 +187,7 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
     await q("insert into public.formules (projet_id, enseignant_id, texte, signe, cree_le) values ($1, $2, $3, $4, now() + $5::interval)", [projetId, compte, texte, signe, instant(i)]);
   }
 
-  const plan: PlanNumerote = { departSceneId: id(c.DEPART), parties: [] };
+  const plan: PlanNumerote = { departSceneId: aChoix ? id(c.DEPART) : null, parties: [] };
   for (const [rangPartie, partie] of c.PARTIES.entries()) {
     const partieId = randomUUID();
     await q("insert into public.parties (id, projet_id, enseignant_id, titre, rang, visuel_choisi) values ($1, $2, $3, $4, $5, $6)", [
@@ -209,7 +214,7 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
       });
     }
   }
-  await q("update public.projets set reference_suivante = $2, depart_scene_id = $3 where id = $1", [projetId, Math.max(...scenes.map((s) => s.ref)) + 1, id(c.DEPART)]);
+  await q("update public.projets set reference_suivante = $2, depart_scene_id = $3 where id = $1", [projetId, Math.max(...scenes.map((s) => s.ref)) + 1, plan.departSceneId]);
 
   // Les images faites par le porteur, déposées comme à l'import, puis posées en tête de leur passage
   const imagesDuPorteur = new Map<number, { id: string; alt: string }>();
@@ -263,6 +268,11 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
   }
   for (const s of scenes) if (s.numero) await q("update public.scenes set numero_fixe = $2 where id = $1", [id(s.ref), s.numero]);
 
+  await q("update public.enseignants set dernier_projet_id = $2 where id = $1", [compte, projetId]);
+  if (!aChoix) {
+    console.log(`Brouillon de « ${c.TITRE} » créé dans ${ou} : une histoire classique, ${scenes.length} scènes, dont ${Object.keys(c.TEXTES_DE_BASE).length} avec leur texte.`);
+    return;
+  }
   // L'ordre du livre, comme l'application l'établit au premier choix (F11.5)
   const liens = await q<{ scene_id: string; cible_id: string | null }>("select scene_id, cible_id from public.liens where projet_id = $1", [projetId]);
   const parOrigine = new Map<string, string[]>();
@@ -271,7 +281,6 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
   await q("select set_config('request.jwt.claims', $1, true)", [JSON.stringify({ role: "service_role" })]);
   const [ordre] = await q<{ fait: boolean }>("select public.etablir_ordre($1, $2) as fait", [projetId, JSON.stringify(Object.fromEntries(rangs))]);
   if (!ordre?.fait) throw new Error("L'ordre du livre n'a pas pu être établi.");
-  await q("update public.enseignants set dernier_projet_id = $2 where id = $1", [compte, projetId]);
   console.log(`Brouillon de « ${c.TITRE} » créé dans ${ou} : ${scenes.length} scènes, dont ${Object.keys(c.TEXTES_DE_BASE).length} avec leur texte de base.`);
 }
 

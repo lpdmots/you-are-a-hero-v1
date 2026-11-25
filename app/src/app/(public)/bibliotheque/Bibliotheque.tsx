@@ -58,7 +58,7 @@ export function Bibliotheque({ livres, demande, ouvert }: { livres: LivrePublie[
 
 /** Ce qu'un livre est, en une ligne : « 8 à 10 ans · Livre-jeu » ; le nombre de passages est dans le tiroir. */
 export const contenuDu = (l: LivrePublie): string =>
-  [nomDeLAge(l.age), l.aChoix ? "Livre-jeu" : NOM_DU_TYPE.classique].join(" · ");
+  [nomDeLAge(l.age), NOM_DU_TYPE[l.aChoix ? "choix" : "classique"]].join(" · ");
 
 function Carte({ livre, href }: { livre: LivrePublie; href: string }) {
   return (

@@ -5980,8 +5980,40 @@ chacune sur son instruction :
    (« trop de texte ») ; le titre d'onglet à 73 signes, sans le nom du site
    (« fais plus court ») ; image de partage refaite. Les libellés restent à
    lui, qui les affine en les lisant.
-2. Un roman d'exemple (skill `livres-d-exemple`), qui prend la seconde place
-   au passage 27.
+2. **Une histoire classique d'exemple — écrite et chargée en local le
+   25 novembre 2026,** un commit, sans migration, rien poussé, rien dans la
+   vraie base, aucun appel payant. Entretien court le même jour
+   ([F14](specifications.md#f14-histoire-d-exemple)) : « Le hérisson qui
+   voulait voir la mer » (clé `herisson`), sujet choisi par le porteur contre
+   une histoire avec les mascottes ; CP-CE1, une partie sans titre imprimé,
+   six chapitres de trois scènes, dix-huit scènes, 1 435 mots, au présent.
+   - *Écriture :* par Claude lui-même, puis deux relecteurs en parallèle
+     (liaisons et langue ; une lectrice de 7 ans et son enseignante), leurs
+     rapports arbitrés en une liste, un dernier passage du premier. Ce
+     qu'ils ont trouvé : le coquillage « contre l'oreille » alors qu'il est
+     attaché sur le dos ; la mouette et le chat qui répondent à ce que Pépin
+     n'a pas dit ; la rivière quittée sans raison au village ; la mare, seule
+     image de la mer sans grandeur ; le refrain absent de la dernière page ;
+     « dune », « dévale », « Allons donc », « en voilà une tête », trop durs
+     à 7 ans.
+   - *Chargeur :* une conception dit sa sorte de récit (`RECIT`), et une
+     histoire classique se crée sans départ, sans numéros ni ordre à
+     établir ; la conception pose elle-même les espaces insécables de la
+     ponctuation, que l'application ne pose pas.
+   - *Bibliothèque :* « Histoire classique » sur la carte et dans le tiroir,
+     « Histoires classiques » dans le filtre (F14-AC77).
+   - *Précisions prises en écrivant, à lui faire confirmer :* l'image du
+     dernier chapitre vient en tête de la scène où Pépin voit la mer, non en
+     tête du chapitre, pour ne pas la montrer avant le texte ; la page de fin
+     dit « écrit par une intelligence artificielle, Claude, puis relu par le
+     créateur du site », sans « avec les aides de l'application », qui n'ont
+     pas servi ; un chapitre par page nouvelle, les pages numérotées.
+   - *Reste :* ses images (une planche du héros, six images en 16:9, la page
+     de titre, la couverture), d'après les prompts donnés dans la
+     conversation, à poser par `IMAGES_DU_PORTEUR` ; sa lecture ; puis
+     l'export de l'instantané, et, à sa demande, la vraie base, la
+     bibliothèque, la seconde place du passage 27 et le lien « Lire un
+     exemple » de l'« Aide ».
 3. **La voix de la vidéo de visite, trois phrases, et son carton de fin —
    faits en local le 24 novembre 2026,** un commit, sans migration, rien
    poussé. Phrases validées par le porteur (« ok je valide ») et enregistrées

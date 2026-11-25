@@ -60,7 +60,13 @@ export type LivrePublie = {
 export const SEUIL_DES_COEURS = 5;
 export const coeursMontres = (n: number): boolean => n >= SEUIL_DES_COEURS;
 
-export const NOM_DU_TYPE: Record<TypeDeRecit, string> = { choix: "Livre-jeu", classique: "Récit" };
+/**
+ * Les deux sortes de récit, comme les nomment les pages publiques (F14, « Pages publiques pour les deux sortes
+ * de récit ») : « histoire classique », jamais « récit » seul ni « roman » (F14-AC77).
+ */
+export const NOM_DU_TYPE: Record<TypeDeRecit, string> = { choix: "Livre-jeu", classique: "Histoire classique" };
+/** Au pluriel, dans le filtre de la bibliothèque */
+export const NOM_DES_TYPES: Record<TypeDeRecit, string> = { choix: "Livres-jeux", classique: "Histoires classiques" };
 export const nomDeLAge = (a: AgeDesLecteurs): string => NOMS_DES_AGES[a];
 
 /** Sans accents ni majuscules : « lanterne » trouve « Lanterne », « reve » trouve « rêve ». */

@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { adresseDepuisTitre, adresseLibre, etatDeLaPublication, passagesChanges, peutProposer, presentationPropre, PRESENTATION_MAX, reperesDuLivre, type LignePublication } from "@/domaine/bibliotheque";
 import type { PassagePartage, VersionPartagee } from "@/domaine/partage";
-import { chercheEnAdresse, coeursMontres, demandeDepuis, livresDeLaListe, type LivrePublie } from "@/domaine/bibliotheque-publique";
+import { chercheEnAdresse, coeursMontres, demandeDepuis, livresDeLaListe, NOM_DES_TYPES, NOM_DU_TYPE, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { relecture } from "@/serveur/ia/aides/relecture";
 import { CONDITIONS, MODELES } from "@/domaine/textes-publics";
 
@@ -117,6 +117,14 @@ describe("La liste de /bibliotheque (F15, lot 3)", () => {
     // Une valeur inconnue ne filtre rien ; l'adresse ne garde que ce qui diffère du défaut
     expect(liste({ age: "3-5", type: "roman", tri: "x" })).toHaveLength(3);
     expect(chercheEnAdresse(demandeDepuis({ q: " lanterne ", tri: "recents" }))).toBe("?q=lanterne");
+  });
+});
+
+describe("Les mots des deux sortes de récit (F14-AC77)", () => {
+  it("F14-AC77 — « Histoire classique » sur la carte et dans le tiroir, « Histoires classiques » dans le filtre ; ni « récit » seul, ni « roman »", () => {
+    expect(NOM_DU_TYPE).toEqual({ choix: "Livre-jeu", classique: "Histoire classique" });
+    expect(NOM_DES_TYPES).toEqual({ choix: "Livres-jeux", classique: "Histoires classiques" });
+    for (const nom of [...Object.values(NOM_DU_TYPE), ...Object.values(NOM_DES_TYPES)]) expect(nom).not.toMatch(/roman|recueil|^Récits?$/i);
   });
 });
 

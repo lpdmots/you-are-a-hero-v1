@@ -32,6 +32,9 @@ export type Conception = {
   ANCIENS_TITRES?: string[];
   /** Un projet personnel (l'auteur seul) ; « classe », sans classe ni élève, sans autre indication */
   ORGANISATION?: "classe" | "personnel";
+  /** « classique » : une histoire qui se lit du début à la fin, sans choix, sans départ ni numéros ; « choix » sans autre indication */
+  RECIT?: "choix" | "classique";
+  /** La scène de départ d'un récit à choix ; sans effet en récit classique */
   DEPART: number;
   AGE: AgeDesLecteurs;
   VISUEL_DU_PROJET: string;

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, type ReactNode } from "react";
 import { Coeur } from "@/composants/Coeur";
 import { Icone } from "@/composants/Icone";
-import { nomDeLAge, type LivrePublie } from "@/domaine/bibliotheque-publique";
+import { NOM_DU_TYPE, nomDeLAge, type LivrePublie } from "@/domaine/bibliotheque-publique";
 import { Couverture } from "./Bibliotheque";
 import { Signaler } from "./Signaler";
 import styles from "./bibliotheque.module.css";
@@ -63,7 +63,7 @@ export function Tiroir({ livre, retour, pied }: { livre: LivrePublie; retour: st
               <div>
                 <dt>Type</dt>
                 <dd>
-                  {livre.aChoix ? `Livre-jeu : tu choisis la suite${livre.passages ? ` (${livre.passages} passages)` : ""}` : "Récit, qui se lit dans l’ordre"}
+                  {livre.aChoix ? `Livre-jeu : tu choisis la suite${livre.passages ? ` (${livre.passages} passages)` : ""}` : `${NOM_DU_TYPE.classique}, qui se lit du début à la fin`}
                 </dd>
               </div>
             </dl>
