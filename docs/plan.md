@@ -6030,9 +6030,19 @@ chacune sur son instruction :
      floue pour l'imprimeur » selon l'application. Livre mené jusqu'au PDF
      définitif (15 pages), instantané exporté puis rechargé avec succès
      (`npm run livres:exemple -- herisson --refaire`).
-   - *Reste :* sa lecture ; puis, à sa demande, la vraie base, la
-     bibliothèque, la seconde place du passage 27 et le lien « Lire un
-     exemple » de l'« Aide ».
+   - *Vraie base, le 25 novembre 2026, à sa demande (« Oui, en ligne ») :*
+     contrôles relancés (types, lint, 531 tests unitaires, 477 tests contre
+     la base), vraie base sauvegardée, aucune migration en attente, livre
+     chargé sur son compte par `npm run livres:exemple -- herisson
+     --production … --oui` (18 scènes, 8 images) ; le PDF définitif s'y
+     refait dans « Imprimer et partager ».
+   - *Reste :* pousser `main`, qui porte aussi trois commits de code d'une
+     autre conversation (accueil allégé, « Comment lire ce livre » au
+     « vous »), sur son accord ; puis ses gestes : proposer le livre à la
+     bibliothèque depuis « Partager », le publier dans `/admin/livres`, le
+     poser en seconde place du passage 27 dans `/admin` ; enfin le lien
+     « Lire un exemple » de l'« Aide », quand le livre a son adresse
+     publique.
 3. **La voix de la vidéo de visite, trois phrases, et son carton de fin —
    faits en local le 24 novembre 2026,** un commit, sans migration, rien
    poussé. Phrases validées par le porteur (« ok je valide ») et enregistrées
