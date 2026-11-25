@@ -807,8 +807,9 @@ avant de commencer » soient tranchées.
   êtes le héros nommé en premier, six retouches ; une histoire classique
   d'exemple, « Le hérisson qui voulait voir la mer » (CP-CE1, dix-huit
   scènes), écrite le 25 novembre 2026, avec les images du porteur, chargée
-  dans la vraie base et code en ligne le même jour (jusqu'à `c2a69d7`), sa
-  publication dans la bibliothèque restant à faire par lui
+  dans la vraie base, publiée par lui dans la bibliothèque et posée en
+  seconde place du passage 27 le même jour, code en ligne jusqu'à `9f20fcd`
+  (passage 27 corrigé, « Lire un exemple » dans l'« Aide », F14-AC78)
   ([F14](docs/specifications.md#f14-histoire-d-exemple), F14-AC77) ; guide gardé sur le livre-jeu avec une partie « Et pour une
   histoire classique ? », posée en local le 24 novembre 2026 (partie 15,
   tirée de son histoire classique en CP-CE1) ; auteur seul en dernier, au pied du site

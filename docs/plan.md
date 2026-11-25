@@ -6052,7 +6052,10 @@ chacune sur son instruction :
      couverture ; « Lire un exemple » dans l'« Aide ». Pour le voir en
      local, le livre a été proposé puis publié dans la bibliothèque locale :
      cette proposition a déclenché la relecture par l'IA, un vrai appel de
-     0,041 dollar, non prévu et dit au porteur.
+     0,041 dollar, non prévu et dit au porteur. **En ligne le 25 novembre
+     2026 à sa demande** (« tu peux ensuite pousser en ligne ») : code
+     poussé jusqu'à `9f20fcd`, déploiement réussi, le passage 27 et le lien
+     de l'« Aide » relus sur `iletaituneclasse.com`.
    - *Reste, d'avant sa publication :* ses gestes : proposer le livre à la
      bibliothèque depuis « Partager », le publier dans `/admin/livres`, le
      poser en seconde place du passage 27 dans `/admin` ; enfin le lien
