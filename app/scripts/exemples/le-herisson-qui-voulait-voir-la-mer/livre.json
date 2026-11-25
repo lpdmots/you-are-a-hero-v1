@@ -1,0 +1,1668 @@
+{
+ "projet": {
+  "id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+  "organisation": "classe",
+  "recit": "classique",
+  "titre": "Le hérisson qui voulait voir la mer",
+  "image_id": null,
+  "visuel_defaut": null,
+  "visuel_choisi": "mer",
+  "depart_scene_id": null,
+  "reference_suivante": 19,
+  "mise_en_forme_eleves": true,
+  "ordre_etabli_le": null,
+  "classement_montre": false,
+  "chemins_verifies_le": null,
+  "livre_relu_le": "2026-11-25T20:54:14.562Z",
+  "derniere_etape_livre": "sortie",
+  "mise_en_page": {
+   "marges": {
+    "bas": 20,
+    "haut": 16,
+    "exterieur": 15,
+    "interieur": 20
+   },
+   "police": "andika",
+   "taille": "grande",
+   "basDePage": "numero",
+   "alignement": "gauche",
+   "titresDePartie": false,
+   "titresDeChapitre": true,
+   "filetsEntreScenes": false,
+   "partieNouvellePage": true,
+   "chapitreNouvellePage": true
+  },
+  "pages_du_livre": {
+   "fin": {
+    "forme": "modele",
+    "texte": [
+     [
+      {
+       "text": "Ce livre est un livre d’exemple du site Il était une classe. Il a été écrit par une intelligence artificielle, Claude, puis relu par le créateur du site. Ses images ont été créées avec une intelligence artificielle."
+      }
+     ],
+     [
+      {
+       "text": "Et toi, avec ta classe, quelle histoire écriras-tu ?"
+      }
+     ]
+    ],
+    "imageId": null,
+    "presente": true
+   },
+   "titre": {
+    "annee": "2026",
+    "forme": "modele",
+    "ligne": "Un livre d’exemple d’Il était une classe",
+    "imageId": null,
+    "sousTitre": "",
+    "illustration": "8349444b-d170-4d9f-abb9-0c8bfb3f2e9e"
+   },
+   "auteurs": {
+    "noms": [],
+    "forme": "modele",
+    "place": "debut",
+    "imageId": null,
+    "presente": false,
+    "conclusion": "",
+    "introduction": "Ce livre a été écrit par"
+   },
+   "feuille": {
+    "forme": "modele",
+    "imageId": null
+   },
+   "commentLire": {
+    "forme": "modele",
+    "texte": [],
+    "enigmes": false,
+    "imageId": null,
+    "presente": false
+   }
+  },
+  "mise_en_page_ouverte_le": "2026-11-25T20:54:14.652Z",
+  "mise_en_page_convient_le": "2026-11-25T20:55:06.016Z",
+  "imprimer_ouvert_le": "2026-11-25T20:55:06.016Z",
+  "ordre_decision": null,
+  "ordre_pages": null,
+  "ordre_retouche_le": null,
+  "ordre_agence_le": null,
+  "style_images": "lumineuse",
+  "style_autre": "",
+  "heros_absent": false,
+  "consigne_ecriture": "Au présent, à la troisième personne. Pour des enfants de 6 à 7 ans : des mots simples, mais des phrases vivantes et variées, sans répéter « il » ; des bruits et de courtes répliques. Le refrain « Pépin est petit. Mais Pépin est têtu. » revient devant chaque obstacle.",
+  "idee_couverture": "",
+  "description_couverture": "",
+  "age_des_lecteurs": "6-8",
+  "couverture_id": "9607ebf2-92d7-4901-9317-7fee10b3e569",
+  "couverture_cases": {},
+  "sans_limite": true,
+  "ouvert_le": "2026-11-25T20:55:09.327Z",
+  "fiche_masquee": []
+ },
+ "preparation": {
+  "univers": "Une forêt, puis tout ce qu’il y a entre elle et la mer : un champ fermé par un grillage, une rivière, un village et sa grande route, une dune. Les animaux parlent ; aucun d’eux n’a vu la mer, sauf la mouette.",
+  "personnages": "Pépin, un petit hérisson têtu, qui porte un coquillage sur son dos.\nLa vieille chouette, qui sait tout.\nLa taupe, qui ne voit rien du tout.\nLa grenouille de la rivière.\nLe gros chat roux du marché.\nLa mouette.",
+  "enjeu": "Dans un coquillage, Pépin a entendu la mer chanter. On lui dit qu’elle est trop loin pour ses petites pattes. Il part quand même.",
+  "rubrique_jeu": true,
+  "feuille": {
+   "on": false,
+   "des": 0,
+   "sections": []
+  },
+  "regles": "",
+  "formule_renvoi": "va",
+  "constructions": [
+   "neutre"
+  ],
+  "marque_fin": "Fin",
+  "orientations": {}
+ },
+ "tables": {
+  "parties": [
+   {
+    "id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "Le voyage de Pépin",
+    "rang": 0,
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "mer",
+    "groupe_avec_precedente": false,
+    "ouverture_scene_id": null,
+    "description": ""
+   }
+  ],
+  "chapitres": [
+   {
+    "id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
+    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "Le coquillage",
+    "rang": 0,
+    "couleur": 2,
+    "resume": "Pépin trouve un coquillage dans la forêt. La chouette lui apprend que c’est la mer qui chante dedans. Il décide d’aller la voir.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "foret",
+    "hors_livre": false
+   },
+   {
+    "id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
+    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "Le grillage",
+    "rang": 1,
+    "couleur": 1,
+    "resume": "Un grillage barre le champ. La taupe, qui croit que la mer est un grand trou plein d’eau, creuse un tunnel pour Pépin.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "jardin",
+    "hors_livre": false
+   },
+   {
+    "id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
+    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "Le bateau d’écorce",
+    "rang": 2,
+    "couleur": 5,
+    "resume": "La rivière est trop large. La grenouille, pour qui la mer est une mare sans roseaux, apprend à Pépin que la rivière y va aussi. Il la descend sur une écorce.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "riviere",
+    "hors_livre": false
+   },
+   {
+    "id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
+    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "La grande route",
+    "rang": 3,
+    "couleur": 3,
+    "resume": "Pépin se réveille dans un village. Le chat du marché, pour qui la mer est un bol plein de poissons, lui fait traverser la grande route.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "village",
+    "hors_livre": false
+   },
+   {
+    "id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
+    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "La montagne de sable",
+    "rang": 4,
+    "couleur": 6,
+    "resume": "Le sable glisse, Pépin n’en peut plus et veut renoncer. Une mouette lui dit de poser son coquillage et d’écouter.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "desert",
+    "hors_livre": false
+   },
+   {
+    "id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
+    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "titre": "La mer",
+    "rang": 5,
+    "couleur": 4,
+    "resume": "En zigzag, Pépin arrive en haut. La mer est plus grande que tout ce qu’on lui a dit. Il ramasse un coquillage pour chacun de ses amis.",
+    "image_id": null,
+    "visuel_defaut": null,
+    "visuel_choisi": "mer",
+    "hors_livre": false
+   }
+  ],
+  "personnages": [
+   {
+    "id": "9d5e3b3d-50b5-420b-8049-5ad65949c4f6",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "Pépin",
+    "autres_noms": [
+     "le hérisson",
+     "le petit hérisson"
+    ],
+    "heros": true,
+    "description": "Un jeune hérisson, petit et rond, au museau pointu, aux yeux noirs et brillants, aux piquants brun doré, au ventre et au visage crème. Il porte sur le dos un coquillage blanc et rose, enroulé en spirale, attaché par un brin d’herbe. Curieux et têtu.",
+    "fiche": "",
+    "portrait_id": null,
+    "rang": 0
+   },
+   {
+    "id": "ca7dcb6d-f2fb-4da2-90c8-e97d1adb15bf",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "la chouette",
+    "autres_noms": [
+     "la vieille chouette"
+    ],
+    "heros": false,
+    "description": "Une vieille chouette rousse, qui dort le jour dans un chêne. Elle sait tout, et bâille beaucoup.",
+    "fiche": "",
+    "portrait_id": null,
+    "rang": 1
+   },
+   {
+    "id": "604b3d23-90cb-4dfd-832c-e2a4795a36fb",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "la taupe",
+    "autres_noms": [],
+    "heros": false,
+    "description": "Une taupe au pelage noir, au museau rose, aux grosses pattes de terrassière. Elle n’y voit rien et croit tout savoir.",
+    "fiche": "",
+    "portrait_id": null,
+    "rang": 2
+   },
+   {
+    "id": "43fc94a7-f209-4036-b553-493d6dc2bda2",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "la grenouille",
+    "autres_noms": [],
+    "heros": false,
+    "description": "Une grenouille verte, assise sur une pierre plate au bord de la rivière. Pour elle, la mer est une mare immense.",
+    "fiche": "",
+    "portrait_id": null,
+    "rang": 3
+   },
+   {
+    "id": "7ac1400b-2dc4-42e8-a865-9c3e52a374d5",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "le chat",
+    "autres_noms": [
+     "le gros chat roux"
+    ],
+    "heros": false,
+    "description": "Un gros chat roux qui vit sous la table du poissonnier, au marché du village. Il appelle Pépin « petite boule ».",
+    "fiche": "",
+    "portrait_id": null,
+    "rang": 4
+   },
+   {
+    "id": "1347bc8d-30b2-4f3f-be09-9d44c770835e",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "la mouette",
+    "autres_noms": [],
+    "heros": false,
+    "description": "Une grande mouette blanche aux ailes grises, moqueuse et gentille. Elle seule connaît la mer.",
+    "fiche": "",
+    "portrait_id": null,
+    "rang": 5
+   }
+  ],
+  "objets": [
+   {
+    "id": "2b8a4778-536f-47e8-9575-7c0676adbbf6",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "nom": "le coquillage",
+    "description": "Blanc et rose, enroulé en spirale, il sent le sel. Contre l’oreille, on y entend la mer : chhh… chhh…",
+    "fiche": "",
+    "image_id": null
+   }
+  ],
+  "formules": [],
+  "scenes": [
+   {
+    "id": "f849281f-3662-4200-b50e-ef55bbefda5f",
+    "chapitre_id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 1,
+    "titre": "Forêt — sous les feuilles",
+    "consigne": "Pépin cherche son déjeuner et trouve une drôle de chose, qui chante quand on l’écoute.",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "c8d1bf00-2f9c-4c6e-af74-ef9272b1e2a2",
+      "alt": "Dans la forêt, Pépin le hérisson écoute un coquillage rose et blanc collé contre son oreille ; une chouette dort sur une branche.",
+      "type": "image",
+      "image": "ab60a285-7106-41bb-9457-18e5046a21f3",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
+      "id": "7e077424-c11d-446b-90fa-da2c780e5c91",
+      "type": "p",
+      "children": [
+       {
+        "text": "Ce matin, Pépin le hérisson fouille les feuilles de la forêt. Il cherche une limace bien dodue pour son petit déjeuner."
+       }
+      ]
+     },
+     {
+      "id": "c4917603-cf56-479a-b612-3b3ff948abcb",
+      "type": "p",
+      "children": [
+       {
+        "text": "Mais ce qu’il trouve n’est pas une limace. C’est une drôle de chose, blanche et rose, enroulée comme un escargot. Pépin la renifle : elle sent le sel. Il la retourne, il la secoue, puis il la colle contre son oreille."
+       }
+      ]
+     },
+     {
+      "id": "25259f9b-b7b8-4b7d-8814-a37ce36544a2",
+      "type": "p",
+      "children": [
+       {
+        "text": "Et là… chhh… chhh… Quelque chose chante, tout au fond."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "7f63d6c2-4eaf-4b82-be90-1ac910aeff6a",
+    "chapitre_id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 2,
+    "titre": "Forêt — la vieille chouette",
+    "consigne": "La chouette explique ce qu’est un coquillage, et ce qu’est la mer. Elle dit que c’est trop loin pour Pépin.",
+    "rang": 1,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "7981913b-099c-4a87-a627-3eab235b1525",
+      "type": "p",
+      "children": [
+       {
+        "text": "Vite, Pépin court réveiller la vieille chouette, qui sait tout."
+       }
+      ]
+     },
+     {
+      "id": "f286a28c-9a4c-4535-8860-b0630aa9b917",
+      "type": "p",
+      "children": [
+       {
+        "text": "— C’est un coquillage, dit-elle en bâillant. Une mouette a dû le laisser tomber. Et ce que tu entends, c’est la mer qui chante."
+       }
+      ]
+     },
+     {
+      "id": "7ebe7dfd-9416-48ae-90a2-7144e1792be1",
+      "type": "p",
+      "children": [
+       {
+        "text": "— La mer ? C’est quoi, la mer ?"
+       }
+      ]
+     },
+     {
+      "id": "961c62b3-0be3-47a9-b796-7c68d5bcdc50",
+      "type": "p",
+      "children": [
+       {
+        "text": "— De l’eau, petit. Tellement d’eau qu’on n’en voit pas le bout."
+       }
+      ]
+     },
+     {
+      "id": "fbf81ea5-7e87-43f2-9377-e67b9aab8569",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin ouvre des yeux tout ronds."
+       }
+      ]
+     },
+     {
+      "id": "c1b0f335-b9e2-4c7a-bd66-df7c1e3f06d4",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Je veux la voir !"
+       }
+      ]
+     },
+     {
+      "id": "d0a2addf-39c2-4787-87b7-75b10abbfedf",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Toi ? Mais non ! La mer est bien trop loin pour tes petites pattes."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "40e2097e-503d-497d-9e42-7765d3f0f8f4",
+    "chapitre_id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 3,
+    "titre": "Forêt — le départ",
+    "consigne": "Pépin attache le coquillage sur son dos et s’en va, du côté où le soleil se couche.",
+    "rang": 2,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "58c0c589-6227-403a-bde0-23d6f3f3e070",
+      "type": "p",
+      "children": [
+       {
+        "text": "Trop loin ? Pépin regarde ses pattes. C’est vrai qu’elles sont petites. Puis il écoute encore le coquillage. Chhh… chhh…"
+       }
+      ]
+     },
+     {
+      "id": "add202bd-3565-48d6-a844-69940202c18e",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin est petit. Mais Pépin est têtu."
+       }
+      ]
+     },
+     {
+      "id": "fa7904ba-d18d-497e-bb46-bf5067498288",
+      "type": "p",
+      "children": [
+       {
+        "text": "Avec un brin d’herbe, il attache le coquillage sur son dos, bien serré entre ses piquants."
+       }
+      ]
+     },
+     {
+      "id": "0bd636a8-fa8f-4c8b-8972-a770702ee504",
+      "type": "p",
+      "children": [
+       {
+        "text": "— C’est par où ?"
+       }
+      ]
+     },
+     {
+      "id": "90f4e78e-fef0-4a86-b12d-71ca22506177",
+      "type": "p",
+      "children": [
+       {
+        "text": "La chouette soupire et tend une aile."
+       }
+      ]
+     },
+     {
+      "id": "c42adfb3-5b3e-4245-8e9a-d631c5792542",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Par là, du côté où le soleil se couche. Tout droit, toujours tout droit."
+       }
+      ]
+     },
+     {
+      "id": "9ce09632-39f0-4cd7-8ea6-922bb3acae3e",
+      "type": "p",
+      "children": [
+       {
+        "text": "Et le petit hérisson s’en va, le nez en avant."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "397f3a69-c9dd-43d7-b314-07712edc34bd",
+    "chapitre_id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 4,
+    "titre": "Champ — le grillage",
+    "consigne": "Un grillage arrête Pépin. La terre se met à trembler.",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "970cec86-1601-418d-8ff5-1e8e1c6732af",
+      "alt": "Devant un haut grillage, Pépin regarde une taupe qui sort de terre, le museau rose et les pattes en avant.",
+      "type": "image",
+      "image": "fc55dd24-3055-4e95-a323-96f0a87464b8",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
+      "id": "e246280a-f5c3-4a4a-8897-7d6f95a8a39c",
+      "type": "p",
+      "children": [
+       {
+        "text": "Au bout de la forêt, il y a un champ. Et au bout du champ, il y a un grillage. Il est haut, il est long, et ses trous sont trop petits, même pour un hérisson."
+       }
+      ]
+     },
+     {
+      "id": "b94f641b-3575-4d2b-a31f-86369b71e30f",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin pousse avec son nez. Le grillage ne bouge pas."
+       }
+      ]
+     },
+     {
+      "id": "1f6e3075-f80b-4b61-a521-a1c8cd861ed0",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin est petit. Mais Pépin est têtu : il pousse de toutes ses forces. Toujours rien."
+       }
+      ]
+     },
+     {
+      "id": "7ac8c88c-c427-45d7-9cfd-b1004cee6615",
+      "type": "p",
+      "children": [
+       {
+        "text": "Soudain, la terre tremble sous ses pattes. Une petite montagne brune sort de l’herbe… et de la montagne sort un museau tout rose."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "db9657eb-86ad-4c9c-b68d-b1a530cabe76",
+    "chapitre_id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 5,
+    "titre": "Champ — la taupe",
+    "consigne": "La taupe dit ce qu’est la mer, d’après elle : un grand trou plein d’eau.",
+    "rang": 1,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "b4a1c2bc-e4bd-434b-809e-5252f4be1b50",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Qui fait tout ce bruit sur mon toit ? grogne la taupe."
+       }
+      ]
+     },
+     {
+      "id": "f080c2c8-cd26-46f6-8360-4e8e4c7af81c",
+      "type": "p",
+      "children": [
+       {
+        "text": "— C’est moi, Pépin. Je vais voir la mer, mais le grillage ne veut pas."
+       }
+      ]
+     },
+     {
+      "id": "d05c441e-28ad-4826-a80c-75aed6a57d84",
+      "type": "p",
+      "children": [
+       {
+        "text": "— La mer ? Je connais ! dit la taupe, qui n’est jamais sortie de son champ. C’est un trou. Un grand trou plein d’eau, si grand que personne n’a fini de le creuser."
+       }
+      ]
+     },
+     {
+      "id": "d060b81f-b3c5-4341-ab96-28a5e3049ef6",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Tu l’as vue ?"
+       }
+      ]
+     },
+     {
+      "id": "f52da6c3-876e-4c31-a056-b336b7ee1fae",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Moi, je ne vois rien du tout, répond-elle fièrement. Mais je le sais."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "a0c19835-6801-4e7b-9bf9-9fcb70e031f0",
+    "chapitre_id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 6,
+    "titre": "Champ — le tunnel",
+    "consigne": "La taupe creuse sous le grillage, et Pépin passe.",
+    "rang": 2,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "b801540c-4271-4ea0-844c-e90b62d44b45",
+      "type": "p",
+      "children": [
+       {
+        "text": "La taupe touche le grillage du bout de ses grosses pattes."
+       }
+      ]
+     },
+     {
+      "id": "3bbb25ce-bf1f-4ad2-8f78-ff90a856c8d5",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Par-dessus, c’est trop haut. Mais par-dessous…"
+       }
+      ]
+     },
+     {
+      "id": "a88f0538-5152-49ac-a676-33194327fb91",
+      "type": "p",
+      "children": [
+       {
+        "text": "Et elle creuse ! La terre vole à droite, la terre vole à gauche. En un rien de temps, un tunnel passe sous le grillage."
+       }
+      ]
+     },
+     {
+      "id": "e5b3e412-9a60-4ae2-992e-4ce426fa7165",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin s’y glisse. Il fait noir, ça sent la racine, et le coquillage frotte contre le plafond. Puis la lumière revient."
+       }
+      ]
+     },
+     {
+      "id": "9ec47e55-51c5-43d9-ae17-2aad64578aa5",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Merci, Madame la taupe !"
+       }
+      ]
+     },
+     {
+      "id": "39084762-dbd7-44db-9ab1-afb4de647eb0",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Si tu trouves le grand trou, crie-t-elle, demande qui le creuse !"
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "d1bfa7d1-e6c4-4e7c-8b77-8ebe88f79c09",
+    "chapitre_id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 7,
+    "titre": "Rivière — l’eau qui court",
+    "consigne": "Pépin arrive devant la rivière, froide et rapide. Une grenouille l’appelle.",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "3340c876-40f2-41a4-8fbe-4ca423090799",
+      "alt": "Pépin descend la rivière dans un morceau d’écorce ; une grenouille verte le regarde depuis une pierre.",
+      "type": "image",
+      "image": "47c9da44-0b95-4f7e-b70b-0de88995006d",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
+      "id": "ece65f82-6b71-4884-b80f-faf43270a10d",
+      "type": "p",
+      "children": [
+       {
+        "text": "Après le grillage, le pré descend jusqu’à une rivière. L’eau court, saute par-dessus les cailloux et rit toute seule."
+       }
+      ]
+     },
+     {
+      "id": "c33fc8b7-6d72-4fde-accd-18477c20a99f",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin y trempe une patte. Brrr ! C’est froid, c’est large, et ça va bien trop vite pour lui."
+       }
+      ]
+     },
+     {
+      "id": "b5361e7f-6010-4002-97f5-963ea68eaadd",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Tu veux passer ? demande une voix dans les roseaux."
+       }
+      ]
+     },
+     {
+      "id": "6880a04d-afd1-40a4-973b-6dd9fa8ddc28",
+      "type": "p",
+      "children": [
+       {
+        "text": "Une grenouille verte le regarde, assise sur une pierre plate."
+       }
+      ]
+     },
+     {
+      "id": "7867ba3d-568f-4d3e-8a18-cb7ea0161846",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Je vais voir la mer, dit Pépin."
+       }
+      ]
+     },
+     {
+      "id": "1a851b59-9860-479b-acd1-bc570d002f2e",
+      "type": "p",
+      "children": [
+       {
+        "text": "— La mer ? Coâ ! Je sais très bien ce que c’est."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "caf89167-93c3-4e0d-9409-1da44c0686fc",
+    "chapitre_id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 8,
+    "titre": "Rivière — la grenouille",
+    "consigne": "La grenouille dit ce qu’est la mer, d’après elle : une mare sans roseaux. Et que la rivière y va.",
+    "rang": 1,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "eb54a1f6-2841-49e8-9282-c7af6309af49",
+      "type": "p",
+      "children": [
+       {
+        "text": "— La mer, explique la grenouille, c’est une mare. Une mare immense, mais sans roseaux, sans nénuphars et sans mouches. Quelle tristesse !"
+       }
+      ]
+     },
+     {
+      "id": "492109d3-0e2c-4fc5-9116-fb2edd16fa63",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Et c’est encore loin ?"
+       }
+      ]
+     },
+     {
+      "id": "1bd20922-b786-4cfc-a9dd-045935e749ac",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Demande à la rivière : c’est là qu’elle va, elle aussi. Elle court vers la mer depuis toujours, et jamais elle ne s’est trompée de chemin."
+       }
+      ]
+     },
+     {
+      "id": "af28b78c-c0a9-4524-bb29-9634479c7722",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin regarde l’eau qui file. La rivière connaît le chemin ? Alors pas besoin de traverser : il va partir avec elle !"
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "f987aada-7e96-483f-a952-d71c69da3ccc",
+    "chapitre_id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 9,
+    "titre": "Rivière — au fil de l’eau",
+    "consigne": "Pépin monte sur une écorce. La rivière l’emporte, et il s’endort.",
+    "rang": 2,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "ff56fb24-384e-47f8-b3c3-2a3814ee3f41",
+      "type": "p",
+      "children": [
+       {
+        "text": "La grenouille pousse vers lui un gros morceau d’écorce."
+       }
+      ]
+     },
+     {
+      "id": "cfd650ed-328c-46a2-a190-6ddb6155538f",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Monte ! Ça flotte mieux qu’un hérisson."
+       }
+      ]
+     },
+     {
+      "id": "48af3a24-f925-44d4-a416-b3ac5d5284ac",
+      "type": "p",
+      "children": [
+       {
+        "text": "L’écorce penche, l’écorce tourne. La rivière est grande. Pépin est petit. Mais Pépin est têtu : il s’accroche, et son bateau s’en va au fil de l’eau."
+       }
+      ]
+     },
+     {
+      "id": "f915e76d-9074-4564-bd9f-0cd02b2ae27d",
+      "type": "p",
+      "children": [
+       {
+        "text": "Les roseaux passent. Un poisson saute. Le ciel devient rose, puis bleu nuit. Sur le dos de Pépin, le coquillage chante tout bas. Chhh… chhh…"
+       }
+      ]
+     },
+     {
+      "id": "85221563-3572-46f6-9a95-93712195c2b2",
+      "type": "p",
+      "children": [
+       {
+        "text": "Toute la nuit, Pépin dort, et la rivière marche pour lui."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "4329cdbd-1916-4a9c-8ca4-98f46aa7cc9b",
+    "chapitre_id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 10,
+    "titre": "Village — le réveil",
+    "consigne": "Le bateau cogne contre un quai. Pépin découvre un village, et une odeur qu’il connaît.",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "b5c1fc6c-acec-45b3-9597-5bd8c840d30f",
+      "alt": "Pépin et le chat roux traversent la grande route sur les bandes blanches ; le petit bonhomme est vert, les voitures sont arrêtées.",
+      "type": "image",
+      "image": "7d3cfa70-4bbd-42ac-924f-ebb935855a7b",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
+      "id": "36a834ae-6e4b-48cc-80b7-fb99e0abee40",
+      "type": "p",
+      "children": [
+       {
+        "text": "Poc ! Pépin se réveille en sursaut. Son bateau vient de cogner contre un mur de pierre, et il reste coincé là."
+       }
+      ]
+     },
+     {
+      "id": "9e590ebb-9246-41a6-83dc-18694b6cce0c",
+      "type": "p",
+      "children": [
+       {
+        "text": "Il fait grand jour. Au-dessus de lui, il y a un pont, des maisons, une cloche qui sonne. La rivière traverse un village !"
+       }
+      ]
+     },
+     {
+      "id": "959733d6-f3fb-4159-a0cf-e562b51b8085",
+      "type": "p",
+      "children": [
+       {
+        "text": "Le hérisson grimpe sur le quai. Ici, tout sent bon : le pain chaud, le linge qui sèche… Et puis il y a une autre odeur, forte et salée. L’odeur de son coquillage ! Est-ce que la mer est ici ?"
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "b3f2e94a-2df4-4e72-8184-e7b726fbe431",
+    "chapitre_id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 11,
+    "titre": "Marché — le chat",
+    "consigne": "Le chat du poissonnier dit ce qu’est la mer, d’après lui : un bol géant plein de poissons.",
+    "rang": 1,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "fe5ab9b9-f182-408e-9566-355f710981e4",
+      "type": "p",
+      "children": [
+       {
+        "text": "L’odeur vient du marché. Sous la table du poissonnier, un gros chat roux se lèche les moustaches."
+       }
+      ]
+     },
+     {
+      "id": "354f2cef-3fc2-4f45-8ccc-982e5c81519c",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Je vais voir la mer, dit Pépin. C’est ici ?"
+       }
+      ]
+     },
+     {
+      "id": "bb693d78-9c17-40be-a96b-bc9b719a2776",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Ici ? Non, petite boule. Mais la mer, je connais ! C’est un bol, comme le mien. Un bol géant, plein de poissons jusqu’au bord. Chaque matin, le camion va en chercher."
+       }
+      ]
+     },
+     {
+      "id": "919cee98-7c00-43fc-a86a-7b9c887ee9b0",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Et il va où, le camion ?"
+       }
+      ]
+     },
+     {
+      "id": "2505e6ab-d9d6-4923-84c6-865c606b8946",
+      "type": "p",
+      "children": [
+       {
+        "text": "— De l’autre côté de la grande route. Mais attention : là-bas, ce sont les voitures qui commandent. Viens, je t’accompagne."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "08579854-367e-48bd-b349-72ae81e4425c",
+    "chapitre_id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 12,
+    "titre": "Route — le petit bonhomme vert",
+    "consigne": "La route fait peur. Le chat apprend à Pépin à attendre le bonhomme vert.",
+    "rang": 2,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "4ccb7acd-df1b-4878-b3ae-83d739fa946b",
+      "type": "p",
+      "children": [
+       {
+        "text": "La grande route est grise, large, et elle gronde. Vroum ! Une voiture. VROUM ! Un camion. Pépin a si peur qu’il se roule en boule, tous ses piquants dehors."
+       }
+      ]
+     },
+     {
+      "id": "bc5ffd37-7a00-45b8-ae8a-0003c66943ca",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Contre les roues, ça ne sert à rien, dit le chat. Regarde plutôt le petit bonhomme, là-haut. Quand il est rouge, on attend."
+       }
+      ]
+     },
+     {
+      "id": "9e50f4fe-73d7-4b3c-87b6-726c3c7e6f1c",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin est petit. Mais Pépin est têtu : il sort le bout de son nez."
+       }
+      ]
+     },
+     {
+      "id": "82d09b7c-9566-4e52-9cc1-b7938bd1e731",
+      "type": "p",
+      "children": [
+       {
+        "text": "Le bonhomme devient vert. Les voitures s’arrêtent, comme par magie."
+       }
+      ]
+     },
+     {
+      "id": "0f3ace74-ec9b-4d9c-83d7-ad85e212231e",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Maintenant !"
+       }
+      ]
+     },
+     {
+      "id": "bbf2a458-87d3-4378-9b83-843f2d9696e3",
+      "type": "p",
+      "children": [
+       {
+        "text": "Et ils traversent sur les bandes blanches, le chat devant, Pépin derrière."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "30ebe122-c86b-4c67-bc85-360602f4e640",
+    "chapitre_id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 13,
+    "titre": "Dune — le sable qui glisse",
+    "consigne": "Pépin essaie de monter la dune, et retombe en bas à chaque fois.",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "18ec6cc3-75ed-48de-a197-045ed5238cf6",
+      "alt": "Au pied d’une immense dune dorée, Pépin glisse dans le sable ; une mouette passe dans le ciel.",
+      "type": "image",
+      "image": "9623b2c1-66f3-4af3-85f6-1e5eebdb070e",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
+      "id": "c7ba84e9-1c95-4105-b5da-1c19e1834043",
+      "type": "p",
+      "children": [
+       {
+        "text": "De l’autre côté, le chat montre un chemin du bout de la queue, puis il retourne à ses poissons."
+       }
+      ]
+     },
+     {
+      "id": "cd11b173-f924-4372-841f-2e6a158ef95b",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin marche longtemps. Il n’y a plus de maisons. Il n’y a plus d’herbe. Quand le soleil commence à descendre, il y a seulement du sable : une montagne de sable, haute comme trois arbres. C’est une dune."
+       }
+      ]
+     },
+     {
+      "id": "9c8a4f58-7eb9-46a9-9638-d600d42bbc37",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin grimpe. Un pas, deux pas, trois pas… et le sable glisse sous ses pattes. Le voilà revenu en bas. Il recommence. Un pas, deux pas… zip ! Encore en bas."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "e67b4375-a4d9-4acc-9571-4c55e70c7b5c",
+    "chapitre_id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 14,
+    "titre": "Dune — trop loin",
+    "consigne": "Pépin s’assoit et renonce. Une mouette se pose.",
+    "rang": 1,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "8485c5e1-5451-465b-91c0-ed465039a049",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin s’assoit. Il a mal aux pattes, il a du sable plein les piquants, et le coquillage pèse lourd sur son dos. Il pense à son lit de feuilles, là-bas, dans la forêt."
+       }
+      ]
+     },
+     {
+      "id": "24578faa-bb48-4041-92d5-f7d0571369c8",
+      "type": "p",
+      "children": [
+       {
+        "text": "— La chouette avait raison, soupire-t-il. La mer est trop loin pour moi."
+       }
+      ]
+     },
+     {
+      "id": "a5f5c5a2-e0e9-43ed-99a4-d12ba31894b1",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin est petit. Et ce soir, Pépin n’est plus têtu du tout."
+       }
+      ]
+     },
+     {
+      "id": "24e909a9-5e10-4bd2-b682-4981509ad38e",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Eh bien, pourquoi tu fais cette tête ? crie quelqu’un dans le ciel."
+       }
+      ]
+     },
+     {
+      "id": "2a4d1000-e5d9-4811-b113-854857edf8e8",
+      "type": "p",
+      "children": [
+       {
+        "text": "Un grand oiseau blanc se pose à côté de lui. C’est une mouette."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "d1baf5f0-6232-423f-aedb-4648f739222b",
+    "chapitre_id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 15,
+    "titre": "Dune — la mouette",
+    "consigne": "La mouette lui fait écouter le vrai chant de la mer, tout près, et lui dit comment monter.",
+    "rang": 2,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "3cd664cd-cafa-429e-b3e0-b4064a293df4",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Tu cherches la mer avec un coquillage sur le dos ? rit la mouette. Pose-le donc, et écoute."
+       }
+      ]
+     },
+     {
+      "id": "77152ae5-4d0c-4862-aa3b-b149970e58ab",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin détache le coquillage. Il tend l’oreille. Chhh… chhh… Mais cette fois, le chant ne sort pas du coquillage. Il vient de derrière la dune. Il est fort, il est grand, il remplit tout le ciel."
+       }
+      ]
+     },
+     {
+      "id": "f6a20953-fc9d-4d93-97f9-3e0565168f24",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Elle est là ? demande Pépin tout bas. Elle est comment ?"
+       }
+      ]
+     },
+     {
+      "id": "7ff7f84b-3fef-4110-a14c-0e12d760c279",
+      "type": "p",
+      "children": [
+       {
+        "text": "— Ah non ! Ça, je ne te le dis pas. Va voir. Et ne monte pas tout droit : monte en zigzag."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "ff22416d-6574-49f0-9044-65c229c49a52",
+    "chapitre_id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 16,
+    "titre": "Dune — en zigzag",
+    "consigne": "Pépin monte en zigzag, jusqu’en haut.",
+    "rang": 0,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "f6752b63-4e95-405e-850f-a3945a9cc493",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin rattache le coquillage sur son dos et repart. À droite, à gauche. À droite, à gauche. Le sable glisse un peu, mais cette fois, le hérisson tient bon."
+       }
+      ]
+     },
+     {
+      "id": "ba4feffa-7a6b-4aa7-a3a9-5f2fdbd67dcb",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin est petit. Mais Pépin est têtu !"
+       }
+      ]
+     },
+     {
+      "id": "1aca4b25-4401-4095-87db-0fa7e66d9c8a",
+      "type": "p",
+      "children": [
+       {
+        "text": "Encore un zig. Encore un zag. Le vent lui décoiffe les piquants, un vent qui chatouille le nez et qui sent le sel."
+       }
+      ]
+     },
+     {
+      "id": "b7f145cd-4bcb-4c50-a687-4b20ccfdcb4f",
+      "type": "p",
+      "children": [
+       {
+        "text": "Et tout à coup, il n’y a plus de sable devant lui. Il n’y a plus rien à monter. Pépin est en haut de la dune."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "77492644-8429-4d8c-b0c7-9fb424e74860",
+    "chapitre_id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 17,
+    "titre": "Plage — la mer",
+    "consigne": "Pépin voit la mer. Elle ne ressemble à rien de ce qu’on lui a dit.",
+    "rang": 1,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "98beea1b-7835-41b9-9695-7b0f98f78da7",
+      "alt": "En haut de la dune, Pépin, de dos, découvre la mer au coucher du soleil ; la mouette vole près de lui.",
+      "type": "image",
+      "image": "089f3fbd-ee59-4458-a630-474946698ded",
+      "largeur": 100,
+      "children": [
+       {
+        "text": ""
+       }
+      ]
+     },
+     {
+      "id": "968e343e-86bf-4eec-9884-988b15e1da91",
+      "type": "p",
+      "children": [
+       {
+        "text": "Alors il la voit."
+       }
+      ]
+     },
+     {
+      "id": "a7eaa31f-05a4-4d88-bc5f-37ee475addc4",
+      "type": "p",
+      "children": [
+       {
+        "text": "Elle est bleue, elle est verte, elle est dorée là où le soleil se couche. Elle bouge tout le temps. Elle va jusqu’au bout du ciel, et peut-être plus loin encore."
+       }
+      ]
+     },
+     {
+      "id": "aeee04e6-ce99-4634-bf00-4c89ccd3eada",
+      "type": "p",
+      "children": [
+       {
+        "text": "Ce n’est pas un trou. Ce n’est pas une mare. Ce n’est pas un bol. C’est bien plus grand que tout ce qu’on lui a dit."
+       }
+      ]
+     },
+     {
+      "id": "d22f1e6b-2709-4929-8664-cd78c0fccdc2",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin descend la dune en courant, jusqu’à la plage. Une vague vient lui lécher les pattes. Elle est froide. Elle est salée. Et elle chante."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   },
+   {
+    "id": "136c5e27-ddb7-46d2-884f-9e6316233a13",
+    "chapitre_id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
+    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "reference": 18,
+    "titre": "Plage — les coquillages",
+    "consigne": "Pépin ramasse un coquillage pour chacun de ses amis, et regarde la mer.",
+    "rang": 2,
+    "fin": false,
+    "hors_livre": false,
+    "prise_par_enseignant": true,
+    "texte": [
+     {
+      "id": "8237d037-095e-46a1-8484-a8fde547a9d3",
+      "type": "p",
+      "children": [
+       {
+        "text": "Sur le sable mouillé, il y a des coquillages. Des dizaines !"
+       }
+      ]
+     },
+     {
+      "id": "43917389-1e47-4087-9f48-5d19df34a56c",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin en choisit un pour la taupe, un pour la grenouille, un pour le chat. Le plus beau sera pour la chouette. Il les coince entre ses piquants, un par un. Demain, il reprendra la route, et chacun pourra écouter la mer chanter."
+       }
+      ]
+     },
+     {
+      "id": "e24c4919-e825-4cf1-954b-d9ffe8e66fcb",
+      "type": "p",
+      "children": [
+       {
+        "text": "Mais ce soir, le hérisson s’assoit devant les vagues, et la mouette vient se poser à côté de lui."
+       }
+      ]
+     },
+     {
+      "id": "68a124e1-fbf9-4559-b1ec-23cea1d01212",
+      "type": "p",
+      "children": [
+       {
+        "text": "Pépin est petit. Mais Pépin est têtu. Et ses petites pattes l’ont porté jusqu’à la mer."
+       }
+      ]
+     }
+    ],
+    "version": 1,
+    "ecrit_le": "2026-11-25T20:53:55.075Z",
+    "rang_livre": null,
+    "numero_fixe": null,
+    "etat": "prete",
+    "tour": 0,
+    "etat_le": null,
+    "nouvelle_page": false,
+    "idee_image": "",
+    "description_image": "",
+    "verification": [],
+    "verification_cochee": []
+   }
+  ],
+  "avertissements_acceptes": []
+ },
+ "images": [
+  {
+   "id": "ab60a285-7106-41bb-9457-18e5046a21f3",
+   "fichier": "01.webp",
+   "largeur": 1672,
+   "hauteur": 941,
+   "format": "webp"
+  },
+  {
+   "id": "fc55dd24-3055-4e95-a323-96f0a87464b8",
+   "fichier": "02.webp",
+   "largeur": 1672,
+   "hauteur": 941,
+   "format": "webp"
+  },
+  {
+   "id": "47c9da44-0b95-4f7e-b70b-0de88995006d",
+   "fichier": "03.webp",
+   "largeur": 1672,
+   "hauteur": 941,
+   "format": "webp"
+  },
+  {
+   "id": "7d3cfa70-4bbd-42ac-924f-ebb935855a7b",
+   "fichier": "04.webp",
+   "largeur": 1672,
+   "hauteur": 941,
+   "format": "webp"
+  },
+  {
+   "id": "9623b2c1-66f3-4af3-85f6-1e5eebdb070e",
+   "fichier": "05.webp",
+   "largeur": 1672,
+   "hauteur": 941,
+   "format": "webp"
+  },
+  {
+   "id": "089f3fbd-ee59-4458-a630-474946698ded",
+   "fichier": "06.webp",
+   "largeur": 1672,
+   "hauteur": 941,
+   "format": "webp"
+  },
+  {
+   "id": "8349444b-d170-4d9f-abb9-0c8bfb3f2e9e",
+   "fichier": "07.webp",
+   "largeur": 1024,
+   "hauteur": 716,
+   "format": "webp"
+  },
+  {
+   "id": "9607ebf2-92d7-4901-9317-7fee10b3e569",
+   "fichier": "08.webp",
+   "largeur": 1024,
+   "hauteur": 1536,
+   "format": "webp"
+  }
+ ]
+}

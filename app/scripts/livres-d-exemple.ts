@@ -217,11 +217,10 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
   await q("update public.projets set reference_suivante = $2, depart_scene_id = $3 where id = $1", [projetId, Math.max(...scenes.map((s) => s.ref)) + 1, plan.departSceneId]);
 
   // Les images faites par le porteur, déposées comme à l'import, puis posées en tête de leur passage
-  const imagesDuPorteur = new Map<number, { id: string; alt: string }>();
-  for (const im of c.IMAGES_DU_PORTEUR ?? []) {
-    const octets = readFileSync(resolve(racine, im.fichier));
+  const deposer = async (fichier: string): Promise<string> => {
+    const octets = readFileSync(resolve(racine, fichier));
     const lu = lireImage(new Uint8Array(octets));
-    if (!lu) throw new Error(`Image illisible : ${im.fichier}`);
+    if (!lu) throw new Error(`Image illisible : ${fichier}`);
     const imageId = randomUUID();
     const chemins = [`${compte}/${projetId}/${imageId}.jpg`, `${compte}/${projetId}/${imageId}-v.jpg`];
     for (const ch of chemins) {
@@ -231,7 +230,17 @@ async function creerLeBrouillon(q: Q, compte: string): Promise<void> {
     await q("insert into public.images (id, projet_id, enseignant_id, chemin, chemin_vignette, largeur, hauteur, format) values ($1, $2, $3, $4, $5, $6, $7, $8)", [
       imageId, projetId, compte, chemins[0], chemins[1], lu.largeur, lu.hauteur, lu.format,
     ]);
-    imagesDuPorteur.set(im.ref, { id: imageId, alt: im.alt });
+    return imageId;
+  };
+  const imagesDuPorteur = new Map<number, { id: string; alt: string }>();
+  for (const im of c.IMAGES_DU_PORTEUR ?? []) imagesDuPorteur.set(im.ref, { id: await deposer(im.fichier), alt: im.alt });
+
+  // Le livre : sa mise en page, ses pages de présentation, l'illustration de sa page de titre et sa couverture
+  if (c.LIVRE) {
+    const titre = { ...(c.LIVRE.pages.titre as Record<string, unknown> | undefined), ...(c.LIVRE.illustrationDuTitre ? { illustration: await deposer(c.LIVRE.illustrationDuTitre) } : {}) };
+    await q("update public.projets set mise_en_page = $2, pages_du_livre = $3, couverture_id = $4 where id = $1", [
+      projetId, JSON.stringify(c.LIVRE.miseEnPage), JSON.stringify({ ...c.LIVRE.pages, titre }), c.LIVRE.couverture ? await deposer(c.LIVRE.couverture) : null,
+    ]);
   }
 
   // Les textes : le récit de base, les actions de jeu, puis les choix ; les liens s'en déduisent

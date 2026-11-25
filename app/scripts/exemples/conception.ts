@@ -74,4 +74,9 @@ export type Conception = {
   IMAGES: { ref: number; cadrage: "page" | "moitie" | "16:9"; badges: string[]; idee: string }[];
   /** Des images déjà faites par le porteur, posées par le brouillon en tête de leur passage, sur toute la largeur */
   IMAGES_DU_PORTEUR?: { ref: number; fichier: string; alt: string }[];
+  /**
+   * Le livre, posé par le brouillon : les réglages de « Mettre en page » et les pages de présentation, tels que la
+   * base les garde, et deux images déjà faites — l'illustration de la page de titre et la couverture (face avant).
+   */
+  LIVRE?: { miseEnPage: Record<string, unknown>; pages: Record<string, unknown>; illustrationDuTitre?: string; couverture?: string };
 };

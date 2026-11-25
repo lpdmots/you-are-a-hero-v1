@@ -13052,7 +13052,7 @@ les révisions qui suivent :
       - *Écriture :* par Claude lui-même, sans les aides de l'application
         et sans aucun appel payant, relue par deux relecteurs (liaisons et
         langue ; une lectrice de 7 ans et son enseignante).
-      - *Images :* faites par le porteur d'après des prompts complets, dans
+      - *Images (posées le 25 novembre 2026) :* faites par le porteur d'après des prompts complets, dans
         le style par défaut, « Illustration 2D lumineuse » : une planche du
         héros d'abord, hors du livre, qu'il joint à chaque prompt ; six
         images en 16:9, une par chapitre ; une image en hauteur pour la page

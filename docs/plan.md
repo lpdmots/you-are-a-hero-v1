@@ -6016,10 +6016,19 @@ chacune sur son instruction :
      dit « écrit par une intelligence artificielle, Claude, puis relu par le
      créateur du site », sans « avec les aides de l'application », qui n'ont
      pas servi ; un chapitre par page nouvelle, les pages numérotées.
-   - *Reste :* ses images (une planche du héros, six images en 16:9, la page
-     de titre, la couverture), d'après les prompts donnés dans la
-     conversation, à poser par `IMAGES_DU_PORTEUR` ; sa lecture ; puis
-     l'export de l'instantané, et, à sa demande, la vraie base, la
+   - *Images, faites par lui le 25 novembre 2026* d'après les neuf prompts
+     de la conversation, et posées le même jour, un commit : six dans le
+     récit (`IMAGES_DU_PORTEUR`), l'illustration de la page de titre et la
+     couverture (`LIVRE`, que le chargeur pose désormais avec la mise en
+     page et les pages de présentation), la planche du héros gardée à côté
+     (`images-du-porteur/`). L'illustration du titre, sur fond crème, faisait
+     un rectangle sur la page blanche : recadrée sur le coquillage, fond
+     blanchi, 1 024 points de large pour rester au-dessus de 200 points par
+     pouce. La couverture fait 1 024 × 1 536 : bonne pour le site, « trop
+     floue pour l'imprimeur » selon l'application. Livre mené jusqu'au PDF
+     définitif (15 pages), instantané exporté puis rechargé avec succès
+     (`npm run livres:exemple -- herisson --refaire`).
+   - *Reste :* sa lecture ; puis, à sa demande, la vraie base, la
      bibliothèque, la seconde place du passage 27 et le lien « Lire un
      exemple » de l'« Aide ».
 3. **La voix de la vidéo de visite, trois phrases, et son carton de fin —

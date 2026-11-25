@@ -806,8 +806,8 @@ avant de commencer » soient tranchées.
   accueil autour de « écrire un livre avec sa classe », le livre dont vous
   êtes le héros nommé en premier, six retouches ; une histoire classique
   d'exemple, « Le hérisson qui voulait voir la mer » (CP-CE1, dix-huit
-  scènes), écrite et chargée en local le 25 novembre 2026, ses images
-  restant à faire par le porteur
+  scènes), écrite et chargée en local le 25 novembre 2026, avec les images
+  du porteur, instantané exporté, rien en ligne
   ([F14](docs/specifications.md#f14-histoire-d-exemple), F14-AC77) ; guide gardé sur le livre-jeu avec une partie « Et pour une
   histoire classique ? », posée en local le 24 novembre 2026 (partie 15,
   tirée de son histoire classique en CP-CE1) ; auteur seul en dernier, au pied du site

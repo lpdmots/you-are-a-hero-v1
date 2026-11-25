@@ -3,7 +3,8 @@
  * les deux sortes de récit », part 2 ; entretien du 25 novembre 2026). Un récit qui se lit du début à la fin,
  * sans choix ni numéros, pour des lecteurs de CP-CE1 : une partie sans titre imprimé, six chapitres de trois
  * scènes, au présent, à la troisième personne. Écrit par Claude, sans les aides de l'application ; les images
- * sont faites par le porteur d'après des prompts (style « Illustration 2D lumineuse », de jour).
+ * sont faites par le porteur d'après des prompts (style « Illustration 2D lumineuse », de jour) : six dans le
+ * récit, l'illustration de la page de titre, la couverture, et la planche du héros qui a servi de référence.
  *
  *   npm run livres:exemple -- herisson --brouillon --refaire
  *
@@ -12,6 +13,8 @@
  * refrain « Pépin est petit. Mais Pépin est têtu. » revient à chaque obstacle, et cède une fois, sur la dune.
  */
 import type { Conception } from "./conception";
+
+const DOSSIER = "scripts/exemples/le-herisson-qui-voulait-voir-la-mer/images-du-porteur";
 
 /**
  * La typographie du livre imprimé : une espace insécable devant « ? ! : ; » et après le tiret d'un dialogue, pour
@@ -242,4 +245,35 @@ export const livre: Conception = {
 
   A_ECRIRE: [],
   IMAGES: [],
+  // Les images du porteur, faites d'après les prompts du 25 novembre 2026 : une en tête de chaque chapitre ; celle de
+  // la mer en tête de la scène où Pépin la voit, pour ne pas la montrer avant le texte
+  IMAGES_DU_PORTEUR: [
+    { ref: 1, fichier: `${DOSSIER}/1-foret.webp`, alt: "Dans la forêt, Pépin le hérisson écoute un coquillage rose et blanc collé contre son oreille ; une chouette dort sur une branche." },
+    { ref: 4, fichier: `${DOSSIER}/2-grillage.webp`, alt: "Devant un haut grillage, Pépin regarde une taupe qui sort de terre, le museau rose et les pattes en avant." },
+    { ref: 7, fichier: `${DOSSIER}/3-bateau.webp`, alt: "Pépin descend la rivière dans un morceau d’écorce ; une grenouille verte le regarde depuis une pierre." },
+    { ref: 10, fichier: `${DOSSIER}/4-route.webp`, alt: "Pépin et le chat roux traversent la grande route sur les bandes blanches ; le petit bonhomme est vert, les voitures sont arrêtées." },
+    { ref: 13, fichier: `${DOSSIER}/5-dune.webp`, alt: "Au pied d’une immense dune dorée, Pépin glisse dans le sable ; une mouette passe dans le ciel." },
+    { ref: 17, fichier: `${DOSSIER}/6-mer.webp`, alt: "En haut de la dune, Pépin, de dos, découvre la mer au coucher du soleil ; la mouette vole près de lui." },
+  ],
+  LIVRE: {
+    miseEnPage: {
+      marges: { bas: 20, haut: 16, exterieur: 15, interieur: 20 }, police: "andika", taille: "grande", basDePage: "numero", alignement: "gauche",
+      titresDePartie: false, titresDeChapitre: true, partieNouvellePage: true, chapitreNouvellePage: true, filetsEntreScenes: false,
+    },
+    pages: {
+      titre: { annee: "2026", forme: "modele", ligne: "Un livre d’exemple d’Il était une classe", imageId: null, sousTitre: "", illustration: null },
+      auteurs: { noms: [], forme: "modele", place: "debut", imageId: null, presente: false, conclusion: "", introduction: "Ce livre a été écrit par" },
+      feuille: { forme: "modele", imageId: null },
+      commentLire: { forme: "modele", texte: [], enigmes: false, imageId: null, presente: false },
+      fin: {
+        forme: "modele", imageId: null, presente: true,
+        texte: [
+          [{ text: "Ce livre est un livre d’exemple du site Il était une classe. Il a été écrit par une intelligence artificielle, Claude, puis relu par le créateur du site. Ses images ont été créées avec une intelligence artificielle." }],
+          [{ text: "Et toi, avec ta classe, quelle histoire écriras-tu ?" }],
+        ],
+      },
+    },
+    illustrationDuTitre: `${DOSSIER}/page-de-titre.webp`,
+    couverture: `${DOSSIER}/couverture.webp`,
+  },
 };
