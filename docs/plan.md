@@ -6012,10 +6012,12 @@ chacune sur son instruction :
      sans être lancé.
    - *Précisions prises en écrivant, à lui faire confirmer :* l'image du
      dernier chapitre vient en tête de la scène où Pépin voit la mer, non en
-     tête du chapitre, pour ne pas la montrer avant le texte ; la page de fin
-     dit « écrit par une intelligence artificielle, Claude, puis relu par le
-     créateur du site », sans « avec les aides de l'application », qui n'ont
-     pas servi ; un chapitre par page nouvelle, les pages numérotées.
+     tête du chapitre, pour ne pas la montrer avant le texte ; un chapitre par
+     page nouvelle, les pages numérotées. La page de fin, à sa demande le
+     25 novembre 2026 (« c'est pas nécessaire »), ne dit plus que le livre a
+     été écrit et illustré par une intelligence artificielle : il reste « Ce
+     livre est un livre d'exemple du site Il était une classe. », puis « Et
+     toi, avec ta classe, quelle histoire écriras-tu ? ».
    - *Images, faites par lui le 25 novembre 2026* d'après les neuf prompts
      de la conversation, et posées le même jour, un commit : six dans le
      récit (`IMAGES_DU_PORTEUR`), l'illustration de la page de titre et la

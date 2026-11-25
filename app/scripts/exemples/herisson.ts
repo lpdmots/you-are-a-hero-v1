@@ -268,7 +268,7 @@ export const livre: Conception = {
       fin: {
         forme: "modele", imageId: null, presente: true,
         texte: [
-          [{ text: "Ce livre est un livre d’exemple du site Il était une classe. Il a été écrit par une intelligence artificielle, Claude, puis relu par le créateur du site. Ses images ont été créées avec une intelligence artificielle." }],
+          [{ text: "Ce livre est un livre d’exemple du site Il était une classe." }],
           [{ text: "Et toi, avec ta classe, quelle histoire écriras-tu ?" }],
         ],
       },

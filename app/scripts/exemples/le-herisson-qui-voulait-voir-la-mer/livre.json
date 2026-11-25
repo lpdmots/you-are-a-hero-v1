@@ -1,6 +1,6 @@
 {
  "projet": {
-  "id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+  "id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
   "organisation": "classe",
   "recit": "classique",
   "titre": "Le hérisson qui voulait voir la mer",
@@ -38,7 +38,7 @@
     "texte": [
      [
       {
-       "text": "Ce livre est un livre d’exemple du site Il était une classe. Il a été écrit par une intelligence artificielle, Claude, puis relu par le créateur du site. Ses images ont été créées avec une intelligence artificielle."
+       "text": "Ce livre est un livre d’exemple du site Il était une classe."
       }
      ],
      [
@@ -56,7 +56,7 @@
     "ligne": "Un livre d’exemple d’Il était une classe",
     "imageId": null,
     "sousTitre": "",
-    "illustration": "8349444b-d170-4d9f-abb9-0c8bfb3f2e9e"
+    "illustration": "76eb57dd-ecf8-4dc9-9475-b880fb3d1c37"
    },
    "auteurs": {
     "noms": [],
@@ -93,10 +93,10 @@
   "idee_couverture": "",
   "description_couverture": "",
   "age_des_lecteurs": "6-8",
-  "couverture_id": "9607ebf2-92d7-4901-9317-7fee10b3e569",
+  "couverture_id": "81c7bf6e-a4bd-417b-986a-ef9c39490739",
   "couverture_cases": {},
   "sans_limite": true,
-  "ouvert_le": "2026-11-25T20:55:09.327Z",
+  "ouvert_le": "2026-11-25T21:00:09.361Z",
   "fiche_masquee": []
  },
  "preparation": {
@@ -120,8 +120,8 @@
  "tables": {
   "parties": [
    {
-    "id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "Le voyage de Pépin",
     "rang": 0,
     "image_id": null,
@@ -134,9 +134,9 @@
   ],
   "chapitres": [
    {
-    "id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
-    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "4afc0791-11aa-4965-bd02-08961bf7826b",
+    "partie_id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "Le coquillage",
     "rang": 0,
     "couleur": 2,
@@ -147,9 +147,9 @@
     "hors_livre": false
    },
    {
-    "id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
-    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "30ef2afc-ad7a-4577-a5b0-dcf1f7f17f46",
+    "partie_id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "Le grillage",
     "rang": 1,
     "couleur": 1,
@@ -160,9 +160,9 @@
     "hors_livre": false
    },
    {
-    "id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
-    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "6bdd9578-e591-480d-ac40-f46fa8ded019",
+    "partie_id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "Le bateau d’écorce",
     "rang": 2,
     "couleur": 5,
@@ -173,9 +173,9 @@
     "hors_livre": false
    },
    {
-    "id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
-    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "89b6d3cc-415b-4bb3-bccd-f27bf1d076f6",
+    "partie_id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "La grande route",
     "rang": 3,
     "couleur": 3,
@@ -186,9 +186,9 @@
     "hors_livre": false
    },
    {
-    "id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
-    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "fec73f99-27b8-4d62-871c-af44c46a80cb",
+    "partie_id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "La montagne de sable",
     "rang": 4,
     "couleur": 6,
@@ -199,9 +199,9 @@
     "hors_livre": false
    },
    {
-    "id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
-    "partie_id": "6c08a252-cc41-4122-bf5f-ab9cef9e6349",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "53dd90b8-daea-4c48-9e23-d3b65b9d35c3",
+    "partie_id": "b267912b-bbcf-4bcf-808e-80c7fe9f2ffd",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "titre": "La mer",
     "rang": 5,
     "couleur": 4,
@@ -214,8 +214,8 @@
   ],
   "personnages": [
    {
-    "id": "9d5e3b3d-50b5-420b-8049-5ad65949c4f6",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "f30092b5-6e0e-4ffc-b3b5-055082a77411",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "Pépin",
     "autres_noms": [
      "le hérisson",
@@ -228,8 +228,8 @@
     "rang": 0
    },
    {
-    "id": "ca7dcb6d-f2fb-4da2-90c8-e97d1adb15bf",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "355441ef-4e86-429d-985c-cf500cd5d3a3",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "la chouette",
     "autres_noms": [
      "la vieille chouette"
@@ -241,8 +241,8 @@
     "rang": 1
    },
    {
-    "id": "604b3d23-90cb-4dfd-832c-e2a4795a36fb",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "13e6c0e2-359e-49fc-a86c-cf93cf7a8386",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "la taupe",
     "autres_noms": [],
     "heros": false,
@@ -252,8 +252,8 @@
     "rang": 2
    },
    {
-    "id": "43fc94a7-f209-4036-b553-493d6dc2bda2",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "b077d3d5-e0c2-411e-a804-6fc27eb53c49",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "la grenouille",
     "autres_noms": [],
     "heros": false,
@@ -263,8 +263,8 @@
     "rang": 3
    },
    {
-    "id": "7ac1400b-2dc4-42e8-a865-9c3e52a374d5",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "6aead482-1a98-4d52-9948-4a0c892529b8",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "le chat",
     "autres_noms": [
      "le gros chat roux"
@@ -276,8 +276,8 @@
     "rang": 4
    },
    {
-    "id": "1347bc8d-30b2-4f3f-be09-9d44c770835e",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "9b00b5e9-bed1-4cee-b277-da3a2d1f0a47",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "la mouette",
     "autres_noms": [],
     "heros": false,
@@ -289,8 +289,8 @@
   ],
   "objets": [
    {
-    "id": "2b8a4778-536f-47e8-9575-7c0676adbbf6",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "0547b971-cdd9-4f58-b803-c796c5693c24",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "nom": "le coquillage",
     "description": "Blanc et rose, enroulé en spirale, il sent le sel. Contre l’oreille, on y entend la mer : chhh… chhh…",
     "fiche": "",
@@ -300,9 +300,9 @@
   "formules": [],
   "scenes": [
    {
-    "id": "f849281f-3662-4200-b50e-ef55bbefda5f",
-    "chapitre_id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "f39eaab7-32ce-4867-afac-bf43c34131b9",
+    "chapitre_id": "4afc0791-11aa-4965-bd02-08961bf7826b",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 1,
     "titre": "Forêt — sous les feuilles",
     "consigne": "Pépin cherche son déjeuner et trouve une drôle de chose, qui chante quand on l’écoute.",
@@ -315,7 +315,7 @@
       "id": "c8d1bf00-2f9c-4c6e-af74-ef9272b1e2a2",
       "alt": "Dans la forêt, Pépin le hérisson écoute un coquillage rose et blanc collé contre son oreille ; une chouette dort sur une branche.",
       "type": "image",
-      "image": "ab60a285-7106-41bb-9457-18e5046a21f3",
+      "image": "b3690a3a-8536-4c55-ac2d-27326f63b64d",
       "largeur": 100,
       "children": [
        {
@@ -365,9 +365,9 @@
     "verification_cochee": []
    },
    {
-    "id": "7f63d6c2-4eaf-4b82-be90-1ac910aeff6a",
-    "chapitre_id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "e19700ef-5a73-4d1e-9d33-d1f015b3069b",
+    "chapitre_id": "4afc0791-11aa-4965-bd02-08961bf7826b",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 2,
     "titre": "Forêt — la vieille chouette",
     "consigne": "La chouette explique ce qu’est un coquillage, et ce qu’est la mer. Elle dit que c’est trop loin pour Pépin.",
@@ -454,9 +454,9 @@
     "verification_cochee": []
    },
    {
-    "id": "40e2097e-503d-497d-9e42-7765d3f0f8f4",
-    "chapitre_id": "c6d92728-ee5f-4f81-a25a-07fb5eeb2be5",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "c116ccfe-79f6-4951-ac92-a7ce7eb8bf5e",
+    "chapitre_id": "4afc0791-11aa-4965-bd02-08961bf7826b",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 3,
     "titre": "Forêt — le départ",
     "consigne": "Pépin attache le coquillage sur son dos et s’en va, du côté où le soleil se couche.",
@@ -543,9 +543,9 @@
     "verification_cochee": []
    },
    {
-    "id": "397f3a69-c9dd-43d7-b314-07712edc34bd",
-    "chapitre_id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "2eca08f9-aa22-4d84-9ad5-e9124a45a615",
+    "chapitre_id": "30ef2afc-ad7a-4577-a5b0-dcf1f7f17f46",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 4,
     "titre": "Champ — le grillage",
     "consigne": "Un grillage arrête Pépin. La terre se met à trembler.",
@@ -558,7 +558,7 @@
       "id": "970cec86-1601-418d-8ff5-1e8e1c6732af",
       "alt": "Devant un haut grillage, Pépin regarde une taupe qui sort de terre, le museau rose et les pattes en avant.",
       "type": "image",
-      "image": "fc55dd24-3055-4e95-a323-96f0a87464b8",
+      "image": "6f4e3095-d1bc-4365-81d2-f87ee81cd176",
       "largeur": 100,
       "children": [
        {
@@ -617,9 +617,9 @@
     "verification_cochee": []
    },
    {
-    "id": "db9657eb-86ad-4c9c-b68d-b1a530cabe76",
-    "chapitre_id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "2118eb0e-de6d-4bb3-95a0-25a6a1592488",
+    "chapitre_id": "30ef2afc-ad7a-4577-a5b0-dcf1f7f17f46",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 5,
     "titre": "Champ — la taupe",
     "consigne": "La taupe dit ce qu’est la mer, d’après elle : un grand trou plein d’eau.",
@@ -688,9 +688,9 @@
     "verification_cochee": []
    },
    {
-    "id": "a0c19835-6801-4e7b-9bf9-9fcb70e031f0",
-    "chapitre_id": "ba2a4b3f-7fd1-4abf-998a-471d6a0cf91d",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "bd9c6bab-f989-4afe-8225-bdafed8cbfad",
+    "chapitre_id": "30ef2afc-ad7a-4577-a5b0-dcf1f7f17f46",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 6,
     "titre": "Champ — le tunnel",
     "consigne": "La taupe creuse sous le grillage, et Pépin passe.",
@@ -768,9 +768,9 @@
     "verification_cochee": []
    },
    {
-    "id": "d1bfa7d1-e6c4-4e7c-8b77-8ebe88f79c09",
-    "chapitre_id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "163fa7f5-09cf-4e57-a885-232f9103f90a",
+    "chapitre_id": "6bdd9578-e591-480d-ac40-f46fa8ded019",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 7,
     "titre": "Rivière — l’eau qui court",
     "consigne": "Pépin arrive devant la rivière, froide et rapide. Une grenouille l’appelle.",
@@ -783,7 +783,7 @@
       "id": "3340c876-40f2-41a4-8fbe-4ca423090799",
       "alt": "Pépin descend la rivière dans un morceau d’écorce ; une grenouille verte le regarde depuis une pierre.",
       "type": "image",
-      "image": "47c9da44-0b95-4f7e-b70b-0de88995006d",
+      "image": "9e9152bf-e7ae-417f-a401-a83abb84ab14",
       "largeur": 100,
       "children": [
        {
@@ -860,9 +860,9 @@
     "verification_cochee": []
    },
    {
-    "id": "caf89167-93c3-4e0d-9409-1da44c0686fc",
-    "chapitre_id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "ab581b3d-a6bb-4c22-a4d8-eaa4c7060eba",
+    "chapitre_id": "6bdd9578-e591-480d-ac40-f46fa8ded019",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 8,
     "titre": "Rivière — la grenouille",
     "consigne": "La grenouille dit ce qu’est la mer, d’après elle : une mare sans roseaux. Et que la rivière y va.",
@@ -922,9 +922,9 @@
     "verification_cochee": []
    },
    {
-    "id": "f987aada-7e96-483f-a952-d71c69da3ccc",
-    "chapitre_id": "3ee05520-3cb0-4c84-82a0-6c0d69726042",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "5b0d70e9-698a-4b16-9167-b48447dd8439",
+    "chapitre_id": "6bdd9578-e591-480d-ac40-f46fa8ded019",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 9,
     "titre": "Rivière — au fil de l’eau",
     "consigne": "Pépin monte sur une écorce. La rivière l’emporte, et il s’endort.",
@@ -993,9 +993,9 @@
     "verification_cochee": []
    },
    {
-    "id": "4329cdbd-1916-4a9c-8ca4-98f46aa7cc9b",
-    "chapitre_id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "645189f4-8a2d-46a2-a053-4768fc1c598c",
+    "chapitre_id": "89b6d3cc-415b-4bb3-bccd-f27bf1d076f6",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 10,
     "titre": "Village — le réveil",
     "consigne": "Le bateau cogne contre un quai. Pépin découvre un village, et une odeur qu’il connaît.",
@@ -1008,7 +1008,7 @@
       "id": "b5c1fc6c-acec-45b3-9597-5bd8c840d30f",
       "alt": "Pépin et le chat roux traversent la grande route sur les bandes blanches ; le petit bonhomme est vert, les voitures sont arrêtées.",
       "type": "image",
-      "image": "7d3cfa70-4bbd-42ac-924f-ebb935855a7b",
+      "image": "736045b3-a2c6-4c88-8b76-e0561b79a6dd",
       "largeur": 100,
       "children": [
        {
@@ -1058,9 +1058,9 @@
     "verification_cochee": []
    },
    {
-    "id": "b3f2e94a-2df4-4e72-8184-e7b726fbe431",
-    "chapitre_id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "8944d6ba-d137-4da5-af81-6a8f7ac167ae",
+    "chapitre_id": "89b6d3cc-415b-4bb3-bccd-f27bf1d076f6",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 11,
     "titre": "Marché — le chat",
     "consigne": "Le chat du poissonnier dit ce qu’est la mer, d’après lui : un bol géant plein de poissons.",
@@ -1129,9 +1129,9 @@
     "verification_cochee": []
    },
    {
-    "id": "08579854-367e-48bd-b349-72ae81e4425c",
-    "chapitre_id": "168646b7-c0f1-47c9-aa1a-9698bb4f7a46",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "03ef8996-4bb5-4e87-8275-7502540c6a77",
+    "chapitre_id": "89b6d3cc-415b-4bb3-bccd-f27bf1d076f6",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 12,
     "titre": "Route — le petit bonhomme vert",
     "consigne": "La route fait peur. Le chat apprend à Pépin à attendre le bonhomme vert.",
@@ -1209,9 +1209,9 @@
     "verification_cochee": []
    },
    {
-    "id": "30ebe122-c86b-4c67-bc85-360602f4e640",
-    "chapitre_id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "5aa27a5d-fc83-45b4-9fe2-270a9a4dbd65",
+    "chapitre_id": "fec73f99-27b8-4d62-871c-af44c46a80cb",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 13,
     "titre": "Dune — le sable qui glisse",
     "consigne": "Pépin essaie de monter la dune, et retombe en bas à chaque fois.",
@@ -1224,7 +1224,7 @@
       "id": "18ec6cc3-75ed-48de-a197-045ed5238cf6",
       "alt": "Au pied d’une immense dune dorée, Pépin glisse dans le sable ; une mouette passe dans le ciel.",
       "type": "image",
-      "image": "9623b2c1-66f3-4af3-85f6-1e5eebdb070e",
+      "image": "7354357f-7f58-493b-b7c4-cd56fb093850",
       "largeur": 100,
       "children": [
        {
@@ -1274,9 +1274,9 @@
     "verification_cochee": []
    },
    {
-    "id": "e67b4375-a4d9-4acc-9571-4c55e70c7b5c",
-    "chapitre_id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "707fb460-36d9-42d3-b3c6-67202d6f60df",
+    "chapitre_id": "fec73f99-27b8-4d62-871c-af44c46a80cb",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 14,
     "titre": "Dune — trop loin",
     "consigne": "Pépin s’assoit et renonce. Une mouette se pose.",
@@ -1345,9 +1345,9 @@
     "verification_cochee": []
    },
    {
-    "id": "d1baf5f0-6232-423f-aedb-4648f739222b",
-    "chapitre_id": "3eb667fe-01e1-49f5-8465-0a0ccf00de7a",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "f408f87d-a433-4521-92fd-b632e449e08c",
+    "chapitre_id": "fec73f99-27b8-4d62-871c-af44c46a80cb",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 15,
     "titre": "Dune — la mouette",
     "consigne": "La mouette lui fait écouter le vrai chant de la mer, tout près, et lui dit comment monter.",
@@ -1407,9 +1407,9 @@
     "verification_cochee": []
    },
    {
-    "id": "ff22416d-6574-49f0-9044-65c229c49a52",
-    "chapitre_id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "25271ac6-fe91-47ec-982a-3d3cbe4f848b",
+    "chapitre_id": "53dd90b8-daea-4c48-9e23-d3b65b9d35c3",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 16,
     "titre": "Dune — en zigzag",
     "consigne": "Pépin monte en zigzag, jusqu’en haut.",
@@ -1469,9 +1469,9 @@
     "verification_cochee": []
    },
    {
-    "id": "77492644-8429-4d8c-b0c7-9fb424e74860",
-    "chapitre_id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "56807a78-f2a5-4d5a-95c8-a208ed903a1b",
+    "chapitre_id": "53dd90b8-daea-4c48-9e23-d3b65b9d35c3",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 17,
     "titre": "Plage — la mer",
     "consigne": "Pépin voit la mer. Elle ne ressemble à rien de ce qu’on lui a dit.",
@@ -1484,7 +1484,7 @@
       "id": "98beea1b-7835-41b9-9695-7b0f98f78da7",
       "alt": "En haut de la dune, Pépin, de dos, découvre la mer au coucher du soleil ; la mouette vole près de lui.",
       "type": "image",
-      "image": "089f3fbd-ee59-4458-a630-474946698ded",
+      "image": "796a613f-cf6b-4f02-883e-82571a0a0d2f",
       "largeur": 100,
       "children": [
        {
@@ -1543,9 +1543,9 @@
     "verification_cochee": []
    },
    {
-    "id": "136c5e27-ddb7-46d2-884f-9e6316233a13",
-    "chapitre_id": "dc9e169e-c0ec-44d6-a71c-e9b0c080fbe0",
-    "projet_id": "9357d0be-d0c8-4cce-a181-8601fbecc9db",
+    "id": "18303fa5-610f-4c42-836c-90a20f3be13b",
+    "chapitre_id": "53dd90b8-daea-4c48-9e23-d3b65b9d35c3",
+    "projet_id": "dac7e8a6-f969-4931-bb6b-617bdae3ee62",
     "reference": 18,
     "titre": "Plage — les coquillages",
     "consigne": "Pépin ramasse un coquillage pour chacun de ses amis, et regarde la mer.",
@@ -1609,56 +1609,56 @@
  },
  "images": [
   {
-   "id": "ab60a285-7106-41bb-9457-18e5046a21f3",
+   "id": "b3690a3a-8536-4c55-ac2d-27326f63b64d",
    "fichier": "01.webp",
    "largeur": 1672,
    "hauteur": 941,
    "format": "webp"
   },
   {
-   "id": "fc55dd24-3055-4e95-a323-96f0a87464b8",
+   "id": "6f4e3095-d1bc-4365-81d2-f87ee81cd176",
    "fichier": "02.webp",
    "largeur": 1672,
    "hauteur": 941,
    "format": "webp"
   },
   {
-   "id": "47c9da44-0b95-4f7e-b70b-0de88995006d",
+   "id": "9e9152bf-e7ae-417f-a401-a83abb84ab14",
    "fichier": "03.webp",
    "largeur": 1672,
    "hauteur": 941,
    "format": "webp"
   },
   {
-   "id": "7d3cfa70-4bbd-42ac-924f-ebb935855a7b",
+   "id": "736045b3-a2c6-4c88-8b76-e0561b79a6dd",
    "fichier": "04.webp",
    "largeur": 1672,
    "hauteur": 941,
    "format": "webp"
   },
   {
-   "id": "9623b2c1-66f3-4af3-85f6-1e5eebdb070e",
+   "id": "7354357f-7f58-493b-b7c4-cd56fb093850",
    "fichier": "05.webp",
    "largeur": 1672,
    "hauteur": 941,
    "format": "webp"
   },
   {
-   "id": "089f3fbd-ee59-4458-a630-474946698ded",
+   "id": "796a613f-cf6b-4f02-883e-82571a0a0d2f",
    "fichier": "06.webp",
    "largeur": 1672,
    "hauteur": 941,
    "format": "webp"
   },
   {
-   "id": "8349444b-d170-4d9f-abb9-0c8bfb3f2e9e",
+   "id": "76eb57dd-ecf8-4dc9-9475-b880fb3d1c37",
    "fichier": "07.webp",
    "largeur": 1024,
    "hauteur": 716,
    "format": "webp"
   },
   {
-   "id": "9607ebf2-92d7-4901-9317-7fee10b3e569",
+   "id": "81c7bf6e-a4bd-417b-986a-ef9c39490739",
    "fichier": "08.webp",
    "largeur": 1024,
    "hauteur": 1536,
