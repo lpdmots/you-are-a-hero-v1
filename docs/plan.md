@@ -6128,9 +6128,12 @@ projet de classe (janvier 2027) : aucun parcours n'avait été joué depuis le
 10 novembre 2026, alors que « Chemins » en atelier, les choix en onglets,
 « Modifier un choix », « La suite », « Aller au passage », la fiche de
 l'histoire, « Ressources », la colonne de navigation et la révision
-d'ergonomie page par page étaient partis en ligne. Fait en local, un commit,
-rien poussé, sans migration ; aucun appel payant (les parcours tournent en IA
-simulée, clés vidées par `playwright.config.ts`).
+d'ergonomie page par page étaient partis en ligne. Fait en local, un commit
+(`5c78994`), sans migration ; aucun appel payant (les parcours tournent en IA
+simulée, clés vidées par `playwright.config.ts`). **En ligne le 27 novembre
+2026 à sa demande** (« Oui, en ligne ») : code poussé jusqu'à `5c78994`, avec
+deux commits d'une autre conversation qui attendaient (documents, et la page
+de fin des deux livres d'exemple dans leurs instantanés), déploiement réussi.
 
 - **Première série, le 26 novembre :** 471 parcours, 439 passés, 32 échoués
   (37 minutes). Chaque échec est trié contre la spécification avant d'être
@@ -6144,8 +6147,8 @@ simulée, clés vidées par `playwright.config.ts`).
   « quatrième », sans jamais atteindre les autres, et le compteur disait
   « 4 / 6 » pour le sixième. Né avec « Choix en onglets » (`ce03b05`), donc
   en ligne depuis le 11 novembre 2026 : le pas retenait le cas par sa seule
-  scène ; il retient maintenant sa sorte et sa scène. La mise en ligne de ce
-  correctif attend sa demande.
+  scène ; il retient maintenant sa sorte et sa scène. Correctif en ligne le
+  27 novembre 2026.
 - **Parcours accordés à une décision du porteur,** sans changer aucune
   règle :
   - *« Chemins »* (`chemins`, `choix`, `images-scene`) : les choix en onglets

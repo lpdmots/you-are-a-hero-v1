@@ -8,7 +8,8 @@ suite complète est rejouée, pour la première fois depuis le 10 novembre, et
 remise au vert en local — 478 parcours passés deux séries de suite, un
 défaut de l'application corrigé (le parcours de « À regarder » dans
 « Chemins »), les parcours accordés aux écrans décidés depuis, sept parcours
-ajoutés ; un commit local, rien poussé. Détail dans le
+ajoutés ; un commit, en ligne le 27 novembre 2026 à sa demande (code jusqu'à
+`5c78994`, sans migration). Détail dans le
 [plan](docs/plan.md#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026).
 
 Accueil, 8 novembre 2026 : les textes courts validés dans l'aperçu comparatif
