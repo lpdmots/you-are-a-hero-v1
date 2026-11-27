@@ -181,7 +181,8 @@ export async function changerMotDePasse(classeId: string, nouveau: string): Prom
 /** Tous les codes de la classe : « Afficher les codes » (F06-AC71). */
 export async function voirCodes(classeId: string): Promise<Fait<{ codes: Record<string, string> }>> {
   const enseignant = await exigerEnseignant();
-  const classe = await classeEnCours(enseignant, classeId);
+  // Une classe passée garde « Lire » : ses codes se relisent, sans se changer (F01-AC26, 27 novembre 2026)
+  const classe = UUID.test(classeId) ? await classeDe(enseignant, classeId) : null;
   if (!classe) return echec("Classe inconnue.");
   const ids = classe.eleves.map((e) => e.id);
   if (!ids.length) return { ok: true, codes: {} };
@@ -195,7 +196,7 @@ export async function voirCodes(classeId: string): Promise<Fait<{ codes: Record<
 /** Le code d'un seul élève : sa fiche ne montre pas ceux des autres (F06-AC69, F06-AC71). */
 export async function voirCode(classeId: string, eleveId: string): Promise<Fait<{ code: string }>> {
   const enseignant = await exigerEnseignant();
-  const classe = await classeEnCours(enseignant, classeId);
+  const classe = UUID.test(classeId) ? await classeDe(enseignant, classeId) : null;
   if (!classe?.eleves.some((e) => e.id === eleveId)) return echec("Élève inconnu.");
   const { data } = await enseignant.supabase.from("eleves_secrets").select("code_chiffre").eq("eleve_id", eleveId).maybeSingle();
   if (!data) return echec("Code introuvable.");

@@ -138,7 +138,7 @@ test("F01-AC21 — deux fois le même prénom : le nom ou son initiale est deman
   await page.getByRole("button", { name: "Continuer" }).click();
   await expect(page.getByRole("heading", { name: "À régler avant d’inscrire" })).toBeVisible();
   await expect(page.getByText("Deux Lucas dans la classe.")).toBeVisible();
-  await expect(page.getByText(/les élèves liront « Lucas B\. »/)).toBeVisible();
+  await expect(page.getByText(/les élèves liront «\sLucas B\.\s»/)).toBeVisible();
   await expect(page.getByRole("button", { name: /^Inscrire 1 élève/ })).toBeDisabled();
   await expect(page.getByRole("button", { name: "1 point à régler" })).toBeVisible();
 
@@ -275,12 +275,22 @@ test("F01-AC18, F01-AC19, F01-AC26 — terminer l'année, consulter la classe en
   await dialogue.getByRole("button", { name: "Terminer l’année" }).click();
   await expect(page.getByText(/Année terminée le \d+ \S+ \d{4}\./)).toBeVisible();
 
-  // F01-AC26 : en lecture, sans commande pour inscrire, retirer, changer un code ou régler les horaires
+  // F01-AC26 : en lecture, sans commande pour inscrire, retirer, changer un code ou régler les horaires ;
+  // les informations de connexion et les codes se relisent et s'impriment, « Lire » restant ouvert (27 novembre 2026)
   await expect(page.getByRole("region", { name: "Élèves" }).getByRole("listitem")).toHaveCount(2);
-  for (const commande of ["Inscrire des élèves", "Afficher les codes", "Imprimer les étiquettes", "Changer les horaires", "Limiter les horaires", "Changer le mot de passe", "Terminer l’année"]) {
+  for (const commande of ["Inscrire des élèves", "Changer les horaires", "Limiter les horaires", "Changer le mot de passe", "Terminer l’année"]) {
     await expect(page.getByRole("button", { name: commande }).or(page.getByRole("link", { name: commande }))).toHaveCount(0);
   }
-  await expect(page.getByRole("region", { name: "Élèves" }).getByRole("button")).toHaveCount(0);
+  const acces = page.getByRole("region", { name: "Pour ouvrir la classe sur un ordinateur" });
+  await expect(acces).toContainText(classe.identifiant);
+  await acces.getByRole("button", { name: "Afficher le mot de passe" }).click();
+  await expect(acces).toContainText(classe.motDePasse);
+  await expect(page.getByRole("link", { name: "Imprimer les étiquettes" })).toBeVisible();
+  await page.getByRole("region", { name: "Élèves" }).getByRole("button", { name: /Alice/ }).click();
+  await expect(page.getByText(codes.Alice.split("").join(" "))).toBeVisible();
+  for (const commande of ["Changer le code", "Retirer de la classe"]) await expect(page.getByRole("button", { name: commande })).toHaveCount(0);
+  await expect(page.getByLabel("Prénom", { exact: true })).toHaveCount(0);
+  await page.keyboard.press("Escape");
   await page.goto(`/classes/${classe.id}/inscrire`);
   await expect(page).toHaveURL(new RegExp(`/classes/${classe.id}$`));
 
@@ -307,7 +317,8 @@ test("F06-AC72 — horaires : des jours cochés et une plage, puis d'autres hora
   await expect(fiche).toContainText("Pas de limite d’horaire");
   await fiche.getByRole("button", { name: "Limiter les horaires" }).click();
   const panneau = page.getByRole("complementary").filter({ hasText: "Ces horaires valent pour tous les projets de la classe." });
-  await panneau.getByText("Limiter les horaires", { exact: true }).click();
+  // Ouvert par « Limiter les horaires », le panneau arrive l'interrupteur allumé, les horaires gardés
+  await expect(panneau.getByRole("switch", { name: "Limiter les horaires" })).toBeChecked();
   await expect(panneau.getByText("Enregistré")).toBeVisible();
   await panneau.getByRole("button", { name: "Ajouter d’autres horaires" }).click();
   await expect(panneau.getByRole("group", { name: "Horaires 2" })).toBeVisible();

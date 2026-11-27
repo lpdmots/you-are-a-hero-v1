@@ -4081,11 +4081,15 @@ sur un ordinateur » ; le message noir et « Enregistré » ensemble après un c
 en police à chasse fixe ; le panneau décalé de la largeur d'une barre de défilement dans les captures en
 390 px (les téléphones n'en ont pas).
 
-**À soumettre au porteur :** une classe passée garde « Lire » pour ses élèves, mais sa page ne montre plus
-l'identifiant ni le mot de passe, ni les codes ; un élève qui les a perdus ne peut plus lire chez lui.
-Recommandé : la fiche « Pour ouvrir la classe sur un ordinateur » et la fiche d'un élève en lecture seule
-(sans « Changer », sans retrait), et l'impression des étiquettes, sur une classe passée (F01-AC26 en
-dirait « consultable », ce qu'elle est déjà en esprit).
+**Décidé par le porteur le même jour, sur recommandation, et construit :** une classe passée garde « Lire »
+pour ses élèves, mais sa page ne montrait plus l'identifiant, le mot de passe ni les codes ; un élève qui
+les avait perdus ne pouvait plus lire chez lui. Elle montre désormais, en lecture, la fiche « Pour ouvrir la
+classe sur un ordinateur » (« Les élèves l'ouvrent encore pour « Lire », à l'école ou chez eux, avec leur
+code. », sans « Changer le mot de passe »), « Afficher les codes » et « Imprimer les étiquettes » (sans
+« Inscrire des élèves »), et la fiche d'un élève avec son code et « Imprimer son étiquette » seulement
+(« L'année est terminée : rouvrez la classe pour changer son code ou son nom. ») ; l'affiche et les
+étiquettes s'impriment (F01-AC26 révisé). Captures : `revision-classes -g "classe passée"`. Le parcours
+F01-AC26, et celui de F06-AC72 pour l'interrupteur déjà allumé, sont accordés sans être joués.
 
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 

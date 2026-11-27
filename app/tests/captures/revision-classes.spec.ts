@@ -1,6 +1,6 @@
 import { test, type Page } from "@playwright/test";
 import { randomBytes } from "node:crypto";
-import { aller, baseDe, collerEleves, connecter, creerCompte, masquerAides, nommer, semerProjet, supprimerComptes } from "../parcours/outils";
+import { aller, baseDe, collerEleves, connecter, creerClasse, creerCompte, inscrire, masquerAides, nommer, semerProjet, supprimerComptes } from "../parcours/outils";
 import { ELEVES } from "../../scripts/passeurs-de-brume";
 
 /**
@@ -299,4 +299,35 @@ test("Mes classes et la page d'une classe : vide, 25 élèves, inscription, impr
   await aller(page, "/classes");
   await page.getByRole("button", { name: "Nouvelle classe" }).click();
   await capturer(page, "390-nouvelle-classe");
+});
+
+test("classe passée en lecture : informations de connexion, codes, fiche d'un élève, étiquettes", async ({ page }) => {
+  test.setTimeout(300_000);
+  page.setDefaultTimeout(30_000);
+  const compte = await creerCompte();
+  const base = await baseDe(compte);
+  await masquerAides(base, compte);
+  await connecter(page, compte);
+  await page.waitForURL(/\/projets$/);
+  await bureau(page);
+  const classe = await creerClasse(page, "CM1-CM2");
+  await inscrire(page, classe.id, ["Alice Martin", "Bilal", "Chloé Petit", "Dylan", "Emma"]);
+  await page.getByRole("button", { name: "Terminer l’année" }).click();
+  await page.getByRole("alertdialog").getByRole("button", { name: "Terminer l’année" }).click();
+  await page.getByText(/Année terminée le/).waitFor();
+  await aller(page, `/classes/${classe.id}`);
+  await capturer(page, "passee-lecture");
+  await page.getByRole("button", { name: "Afficher les codes" }).click();
+  await page.getByRole("button", { name: "Afficher le mot de passe" }).click();
+  await capturer(page, "passee-codes");
+  await page.getByRole("region", { name: "Élèves" }).getByRole("button", { name: /Bilal/ }).click();
+  await page.waitForTimeout(600);
+  await capturer(page, "passee-eleve");
+  await echap(page);
+  await page.getByRole("link", { name: "Imprimer les étiquettes" }).click();
+  await page.waitForURL(/imprimer/);
+  await capturer(page, "passee-etiquettes");
+  await telephone(page);
+  await aller(page, `/classes/${classe.id}`);
+  await capturer(page, "390-passee-lecture");
 });

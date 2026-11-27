@@ -268,10 +268,10 @@ export function PageClasse({
         </div>
       ) : null}
 
-      {enCours && n ? (
+      {n ? (
         <p className={styles.sommaire}>
           Aller à : <a href="#fiche-acces">Connexion</a>
-          <a href="#fiche-horaires">Horaires</a>
+          {enCours ? <a href="#fiche-horaires">Horaires</a> : null}
           <a href="#fiche-projets">Projets</a>
         </p>
       ) : null}
@@ -280,7 +280,7 @@ export function PageClasse({
         <section className={styles.liste} aria-labelledby="titre-eleves">
           <header className={styles.listeTete}>
             <h2 id="titre-eleves">Élèves</h2>
-            {enCours && n ? (
+            {n ? (
               <div className={styles.listeCmd}>
                 <button type="button" className="btn btn--discret" aria-pressed={!!codes} disabled={attente === "codes"} aria-busy={attente === "codes" || undefined} onClick={basculerCodes}>
                   <Icone nom="oeil" />
@@ -293,10 +293,12 @@ export function PageClasse({
                   <Icone nom="imprimer" />
                   Imprimer les étiquettes
                 </Link>
-                <Link className="btn" href={`/classes/${classe.id}/inscrire`}>
-                  <Icone nom="plus" />
-                  Inscrire des élèves
-                </Link>
+                {enCours ? (
+                  <Link className="btn" href={`/classes/${classe.id}/inscrire`}>
+                    <Icone nom="plus" />
+                    Inscrire des élèves
+                  </Link>
+                ) : null}
               </div>
             ) : null}
           </header>
@@ -311,26 +313,20 @@ export function PageClasse({
                 );
                 return (
                   <li key={e.id}>
-                    {enCours ? (
-                      <button
-                        type="button"
-                        className={styles.eleve}
-                        aria-current={eleveOuvert?.id === e.id ? "true" : undefined}
-                        onClick={() => setOuvert({ sorte: "eleve", id: e.id })}
-                      >
-                        <Gommette prenom={e.prenom} couleur={e.couleur} taille="s" />
-                        {identite}
-                        <span className={styles.eleveCode} aria-hidden={codes ? undefined : true}>
-                          {codes ? (codes[e.id] ?? "") : "••••"}
-                        </span>
-                        <Icone nom="chevron" />
-                      </button>
-                    ) : (
-                      <span className={styles.eleve}>
-                        <Gommette prenom={e.prenom} couleur={e.couleur} taille="s" />
-                        {identite}
+                    {/* Une classe passée s'ouvre aussi : la fiche y montre le code, en lecture (F01-AC26) */}
+                    <button
+                      type="button"
+                      className={styles.eleve}
+                      aria-current={eleveOuvert?.id === e.id ? "true" : undefined}
+                      onClick={() => setOuvert({ sorte: "eleve", id: e.id })}
+                    >
+                      <Gommette prenom={e.prenom} couleur={e.couleur} taille="s" />
+                      {identite}
+                      <span className={styles.eleveCode} aria-hidden={codes ? undefined : true}>
+                        {codes ? (codes[e.id] ?? "") : "••••"}
                       </span>
-                    )}
+                      <Icone nom="chevron" />
+                    </button>
                   </li>
                 );
               })}
@@ -355,52 +351,57 @@ export function PageClasse({
         </section>
 
         <aside className={styles.cote} aria-label="Réglages de la classe">
-          {enCours ? (
-            <section className={`carnet-fiche ${styles.fiche}`} aria-labelledby="fiche-acces">
-              <header>
-                <h2 id="fiche-acces">Pour ouvrir la classe sur un ordinateur</h2>
-              </header>
-              <div className="carnet-fiche__corps">
-                <p className={styles.ficheAide}>Une fois par ordinateur. Ensuite, chaque élève clique sur son prénom et tape son code.</p>
-                <dl className={styles.acces}>
-                  <div>
-                    <dt>Adresse</dt>
-                    <dd>{adresse}</dd>
-                  </div>
-                  <div>
-                    <dt>Identifiant</dt>
-                    <dd>{classe.identifiant}</dd>
-                  </div>
-                  <div>
-                    <dt>Mot de passe</dt>
-                    <dd>
-                      <span aria-hidden={motDePasse ? undefined : true}>{motDePasse ?? "••••••••••"}</span>
-                      <button
-                        type="button"
-                        className={styles.oeil}
-                        aria-pressed={!!motDePasse}
-                        aria-label={`${motDePasse ? "Masquer" : "Afficher"} le mot de passe`}
-                        disabled={attente === "voir"}
-                        aria-busy={attente === "voir" || undefined}
-                        onClick={basculerMotDePasse}
-                      >
-                        <Icone nom="oeil" />
-                      </button>
-                    </dd>
-                  </div>
-                </dl>
-                <div className={styles.ficheCmd}>
-                  <Link className="btn" href={`/classes/${classe.id}/imprimer?quoi=affiche`}>
-                    <Icone nom="imprimer" />
-                    Imprimer l’affiche
-                  </Link>
+          {/* Une classe passée garde « Lire » : ses informations se relisent et s'impriment, sans se changer */}
+          <section className={`carnet-fiche ${styles.fiche}`} aria-labelledby="fiche-acces">
+            <header>
+              <h2 id="fiche-acces">Pour ouvrir la classe sur un ordinateur</h2>
+            </header>
+            <div className="carnet-fiche__corps">
+              <p className={styles.ficheAide}>
+                {enCours
+                  ? "Une fois par ordinateur. Ensuite, chaque élève clique sur son prénom et tape son code."
+                  : "Les élèves l’ouvrent encore pour « Lire », à l’école ou chez eux, avec leur code."}
+              </p>
+              <dl className={styles.acces}>
+                <div>
+                  <dt>Adresse</dt>
+                  <dd>{adresse}</dd>
+                </div>
+                <div>
+                  <dt>Identifiant</dt>
+                  <dd>{classe.identifiant}</dd>
+                </div>
+                <div>
+                  <dt>Mot de passe</dt>
+                  <dd>
+                    <span aria-hidden={motDePasse ? undefined : true}>{motDePasse ?? "••••••••••"}</span>
+                    <button
+                      type="button"
+                      className={styles.oeil}
+                      aria-pressed={!!motDePasse}
+                      aria-label={`${motDePasse ? "Masquer" : "Afficher"} le mot de passe`}
+                      disabled={attente === "voir"}
+                      aria-busy={attente === "voir" || undefined}
+                      onClick={basculerMotDePasse}
+                    >
+                      <Icone nom="oeil" />
+                    </button>
+                  </dd>
+                </div>
+              </dl>
+              <div className={styles.ficheCmd}>
+                <Link className="btn" href={`/classes/${classe.id}/imprimer?quoi=affiche`}>
+                  <Icone nom="imprimer" />
+                  Imprimer l’affiche
+                </Link>
+                {enCours ? (
                   <button type="button" className="lien" disabled={attente === "proposer"} aria-busy={attente === "proposer" || undefined} onClick={demanderMotDePasse}>
                     Changer le mot de passe
                   </button>
-                </div>
+                ) : null}
               </div>
-            </section>
-          ) : null}
+            </div>
+          </section>
 
           {enCours ? (
             <section className={`carnet-fiche ${styles.fiche}`} aria-labelledby="fiche-horaires">
@@ -471,6 +472,7 @@ export function PageClasse({
           onCodeChange={(code) => setCodes((c) => (c ? { ...c, [eleveOuvert.id]: code } : c))}
           onRetirer={() => retirer(eleveOuvert.inscriptionId, eleveOuvert.prenom)}
           retraitEnCours={attente === "retirer"}
+          lecture={!enCours}
         />
       ) : null}
       {ouvert?.sorte === "horaires" ? <PanneauHoraires classe={classe} allumer={ouvert.allumer} onFermer={() => setOuvert(null)} /> : null}

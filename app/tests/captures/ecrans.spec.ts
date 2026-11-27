@@ -69,7 +69,6 @@ test("écrans de l'étape 1", async ({ page, browser }) => {
   await capturer(page, "classe-code-change", false);
   await page.keyboard.press("Escape");
   await page.getByRole("button", { name: "Limiter les horaires" }).click();
-  await page.getByRole("complementary").filter({ hasText: "Ces horaires valent" }).getByText("Limiter les horaires", { exact: true }).click();
   await page.getByRole("button", { name: "Ajouter d’autres horaires" }).click();
   await capturer(page, "classe-horaires", false);
   await page.keyboard.press("Escape");

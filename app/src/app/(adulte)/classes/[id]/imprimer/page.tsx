@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { Icone } from "@/composants/Icone";
 import { libelleAnnee } from "@/domaine/annee";
 import { nomPourEleves, trier } from "@/domaine/eleves";
@@ -24,7 +24,7 @@ export default async function PageImprimer({ params, searchParams }: Props) {
   const [{ id }, { quoi, qui }] = await Promise.all([params, searchParams]);
   const classe = await classeDe(enseignant, id);
   if (!classe) notFound();
-  if (!classe.enCours) redirect(`/classes/${classe.id}`);
+  // Une classe passée garde « Lire » : ses étiquettes et son affiche s'impriment encore (F01-AC26, 27 novembre 2026)
 
   const [codes, motDePasse, entetes] = await Promise.all([voirCodes(classe.id), voirMotDePasse(classe.id), headers()]);
   if (!codes.ok || !motDePasse.ok) notFound();

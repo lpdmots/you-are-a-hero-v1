@@ -20,7 +20,7 @@ import styles from "../classes.module.css";
  * code, pas ceux des autres (F06-AC71).
  */
 export function PanneauEleve({
-  classe, eleve, onFermer, onCodeChange, onRetirer, retraitEnCours,
+  classe, eleve, onFermer, onCodeChange, onRetirer, retraitEnCours, lecture = false,
 }: {
   classe: Classe;
   eleve: EleveInscrit;
@@ -28,6 +28,8 @@ export function PanneauEleve({
   onCodeChange: (code: string) => void;
   onRetirer: () => void;
   retraitEnCours: boolean;
+  /** Classe passée : le code et l'étiquette, sans rien changer (F01-AC26, 27 novembre 2026) */
+  lecture?: boolean;
 }) {
   const routeur = useRouter();
   const dire = useMessage();
@@ -141,9 +143,11 @@ export function PanneauEleve({
               {code ? chiffresEspaces(code) : "· · · ·"}
             </p>
             <div className={styles.rang}>
-              <button type="button" className="btn" disabled={attente === "proposer"} aria-busy={attente === "proposer" || undefined} onClick={proposer}>
-                Changer le code
-              </button>
+              {lecture ? null : (
+                <button type="button" className="btn" disabled={attente === "proposer"} aria-busy={attente === "proposer" || undefined} onClick={proposer}>
+                  Changer le code
+                </button>
+              )}
               <Link className="btn" href={`/classes/${classe.id}/imprimer?qui=${eleve.id}`}>
                 <Icone nom="imprimer" />
                 Imprimer son étiquette
@@ -152,25 +156,33 @@ export function PanneauEleve({
           </>
         )}
       </section>
-      <section>
-        <h3>
-          <label htmlFor="eleve-prenom">Prénom</label>
-        </h3>
-        <input className="pchamp" id="eleve-prenom" type="text" value={prenom} maxLength={40} onChange={(e) => { setPrenom(e.target.value); setEnregistre(false); }} onBlur={enregistrerNom} />
-        {erreurNom && !prenom.trim() ? erreurDuNom(erreurNom) : null}
-        <h3 className={styles.champSuivant}>
-          <label htmlFor="eleve-nom">Nom</label> <span className="facultatif">facultatif</span>
-        </h3>
-        <input className="pchamp" id="eleve-nom" type="text" value={nom} maxLength={60} onChange={(e) => { setNom(e.target.value); setEnregistre(false); }} onBlur={enregistrerNom} />
-        {erreurNom && prenom.trim() ? erreurDuNom(erreurNom) : null}
-        <p>Les élèves ne voient que le prénom, et l’initiale du nom si deux élèves portent le même.</p>
-      </section>
-      <section>
-        <button type="button" className="btn btn--danger" disabled={retraitEnCours} aria-busy={retraitEnCours || undefined} onClick={onRetirer}>
-          Retirer de la classe
-        </button>
-        <p>Ses textes restent dans les projets, à son prénom.</p>
-      </section>
+      {lecture ? (
+        <section>
+          <p>L’année est terminée : rouvrez la classe pour changer son code ou son nom.</p>
+        </section>
+      ) : (
+        <>
+        <section>
+          <h3>
+            <label htmlFor="eleve-prenom">Prénom</label>
+          </h3>
+          <input className="pchamp" id="eleve-prenom" type="text" value={prenom} maxLength={40} onChange={(e) => { setPrenom(e.target.value); setEnregistre(false); }} onBlur={enregistrerNom} />
+          {erreurNom && !prenom.trim() ? erreurDuNom(erreurNom) : null}
+          <h3 className={styles.champSuivant}>
+            <label htmlFor="eleve-nom">Nom</label> <span className="facultatif">facultatif</span>
+          </h3>
+          <input className="pchamp" id="eleve-nom" type="text" value={nom} maxLength={60} onChange={(e) => { setNom(e.target.value); setEnregistre(false); }} onBlur={enregistrerNom} />
+          {erreurNom && prenom.trim() ? erreurDuNom(erreurNom) : null}
+          <p>Les élèves ne voient que le prénom, et l’initiale du nom si deux élèves portent le même.</p>
+        </section>
+        <section>
+          <button type="button" className="btn btn--danger" disabled={retraitEnCours} aria-busy={retraitEnCours || undefined} onClick={onRetirer}>
+            Retirer de la classe
+          </button>
+          <p>Ses textes restent dans les projets, à son prénom.</p>
+        </section>
+        </>
+      )}
     </Panneau>
   );
 }

@@ -533,7 +533,11 @@ maquette :
   changent pas.
 - **Classe dont l'année est terminée : en lecture.** Elle se consulte sans
   se modifier — ni élève inscrit ou retiré, ni code, ni horaires. Pour y
-  changer quelque chose, l'enseignant la rouvre.
+  changer quelque chose, l'enseignant la rouvre. **Précisé par le porteur le
+  27 novembre 2026,** puisque ses élèves gardent « Lire » (F15-AC16) : son
+  identifiant, son mot de passe et les codes des élèves s'y relisent, la
+  fiche d'un élève montre son code, et l'affiche et les étiquettes
+  s'impriment encore ; changer le mot de passe ou un code reste fermé.
 
 - **F01-AC25 — Scènes d'un élève retiré :** étant donné Bilal, avec S016 à
   valider et S017 à reprendre, lorsque l'enseignant le retire de la classe,
@@ -542,8 +546,10 @@ maquette :
   alors elle porte « Validé » et garde le prénom de Bilal.
 - **F01-AC26 — Année terminée, classe en lecture :** étant donné une classe
   dont l'année est terminée, lorsque l'enseignant l'ouvre, alors il lit ses
-  élèves et ses projets, sans commande pour inscrire, retirer, changer un
-  code ou régler les horaires ; « Rouvrir la classe » les lui rend.
+  élèves et ses projets, son identifiant, son mot de passe et les codes, et
+  imprime les étiquettes et l'affiche, sans commande pour inscrire, retirer,
+  changer un code, changer le mot de passe ou régler les horaires ;
+  « Rouvrir la classe » les lui rend (révisé le 27 novembre 2026).
 
 **Précisions proposées par la maquette, sans retour du porteur :** le
 retrait d'un élève qui a écrit demande une confirmation qui dit ces effets,
