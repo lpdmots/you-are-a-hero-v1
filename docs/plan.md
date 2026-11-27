@@ -6020,7 +6020,8 @@ chacune sur son instruction :
      F11-AC119) ; le premier paragraphe d'une scène qui en suit une autre
      prend l'alinéa des autres. Le parcours `lecteur.spec.ts` est accordé
      sans être lancé.
-   - *Précisions prises en écrivant, à lui faire confirmer :* l'image du
+   - *Précisions prises en écrivant, confirmées par lui le 27 novembre 2026
+     (« c'est ok ») — ne plus les lui soumettre :* l'image du
      dernier chapitre vient en tête de la scène où Pépin voit la mer, non en
      tête du chapitre, pour ne pas la montrer avant le texte ; un chapitre par
      page nouvelle, les pages numérotées. La page de fin, à sa demande le
