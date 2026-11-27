@@ -456,7 +456,12 @@ export function PanneauDeScene({
                         ) : (
                           <span className="panneau-chemin__vers">
                             <Icone nom={d.ailleurs ? "sortie" : retours.has(d.id) ? "fleche-haut" : "fleche"} />
-                            {d.ailleurs ? `${d.ailleurs.chapitre}${d.ailleurs.nom ? ` · ${d.ailleurs.nom}` : ""}` : cible ? nomScene(cible) : ""}
+                            {/* Près d'un choix, le titre seul, comme dans la copie ; la référence en secours (décidé le 27 novembre 2026) */}
+                            {d.ailleurs
+                              ? [d.ailleurs.chapitre, d.ailleurs.titre ?? d.ailleurs.nom].filter(Boolean).join(" · ")
+                              : cible
+                                ? (cible.titre ?? `${referenceScene(cible.reference)}, sans titre`)
+                                : ""}
                           </span>
                         )}
                         </Fragment>

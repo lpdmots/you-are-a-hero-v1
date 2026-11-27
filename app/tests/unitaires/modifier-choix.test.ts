@@ -24,6 +24,26 @@ const lue = (bloc: Choix): string => morceauxDe(bloc, "rends").map((m) => ("text
 const longer = auto(u(10), "Longer la vieille digue", DIGUE);
 const appeler = auto(u(11), "Appeler à l’aide", PONTON);
 
+describe("Une destination de plus (F05.2)", () => {
+  it("F05-AC66 — la phrase qui finit par sa ponctuation reçoit « ou au » et le numéro avant le point ; « → » prend « ou » seul", () => {
+    const si = avecPhrase(longer, ["Si tu veux suivre la digue, cours au ", " !"], "rends");
+    expect(lue(avecUneDestinationDePlus(si, PONTON, "rends"))).toBe(`Si tu veux suivre la digue, cours au [${DIGUE}] ou au [${PONTON}] !`);
+    // Une troisième destination suit la deuxième, de la même façon
+    const trois = avecUneDestinationDePlus(avecUneDestinationDePlus(longer, PONTON, "rends"), TOURBIERE, "rends");
+    expect(lue(trois)).toBe(`Longer la vieille digue : rends-toi au [${DIGUE}] ou au [${PONTON}] ou au [${TOURBIERE}].`);
+    // La formule « → 12 »
+    const fleche = avecPhrase(longer, ["Longer la digue → ", "."], "fleche");
+    expect(lue(avecUneDestinationDePlus(fleche, PONTON, "fleche"))).toBe(`Longer la digue → [${DIGUE}] ou [${PONTON}].`);
+  });
+
+  it("F05-AC57, F05-AC66 — la phrase qui finit par un mot attend son numéro : il se pose à la fin, et l'on écrit le point après lui", () => {
+    const attend = avecPhrase(longer, ["Si tu as la clé d'argent, ouvre la porte au ", " ; sinon, déchiffre les symboles au"], "rends");
+    expect(lue(avecUneDestinationDePlus(attend, PONTON, "rends"))).toBe(
+      `Si tu as la clé d'argent, ouvre la porte au [${DIGUE}] ; sinon, déchiffre les symboles au [${PONTON}]`,
+    );
+  });
+});
+
 describe("Modifier un choix depuis « Chemins » : ouvrir (F03.1)", () => {
   it("F03-AC70 — l'onglet d'un choix s'ouvre pour l'adulte qui construit ; le choix ouvert garde désignés son onglet et un trait par destination, le lien caché le sien", () => {
     const adulte = peutConstruire({ adulte: true, aChoix: true, etroit: false });
@@ -59,12 +79,12 @@ describe("Modifier un choix depuis « Chemins » : les réglages de la copie, en
     expect(suivre).toEqual({ ...longer, libelle: "Suivre la digue" });
     expect(lue(suivre)).toBe(`Suivre la digue : rends-toi au [${DIGUE}].`);
 
-    // Une destination de plus : la phrase s'écrit dès lors à la main, son numéro à la fin
+    // Une destination de plus : la phrase s'écrit dès lors à la main, le numéro après le dernier (F05-AC66)
     const deux = avecUneDestinationDePlus(longer, PONTON, "rends") as ChoixPerso;
     expect(deux.id).toBe(longer.id);
     expect(deux.auto).toBeUndefined();
     expect(renvoisDe(deux).map((r) => r.cible)).toEqual([DIGUE, PONTON]);
-    expect(lue(deux)).toBe(`${lue(longer)} [${PONTON}]`);
+    expect(lue(deux)).toBe(`Longer la vieille digue : rends-toi au [${DIGUE}] ou au [${PONTON}].`);
 
     // L'ordre : les numéros de la phrase restent à leur place et prennent les destinations une à une
     const inverse = avecDestinationsOrdonnees(deux, [PONTON, DIGUE]);

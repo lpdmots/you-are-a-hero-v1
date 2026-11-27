@@ -5,7 +5,7 @@
 
 import { nomPourEleves } from "./eleves";
 import type { Etat } from "./etats";
-import { chapitresDe, departDe, nomScene, type ElevePlan, type Plan } from "./recit";
+import { chapitresDe, departDe, nomScene, referenceScene, type ElevePlan, type Plan } from "./recit";
 import { pluriel } from "./texte";
 
 export type NoeudDeChemin = {
@@ -36,7 +36,9 @@ export type LienDeChemin = {
   /** La scène d'arrivée, si elle est dans ce chapitre */
   vers: string | null;
   /** Vers un autre chapitre : son titre, et la scène visée si la personne peut la nommer (F03-AC25) */
-  ailleurs?: { chapitre: string; nom?: string; lien?: string };
+  ailleurs?: { chapitre: string; nom?: string; lien?: string;
+    /** Près d'un choix, dans « Ses choix » : le titre seul, la référence en secours (27 novembre 2026) */
+    titre?: string };
   /** Sans destination encore, ou vers une scène supprimée */
   manque?: "sans" | "supprimee";
   /** Un choix du bloc proposé par l'IA, pas encore ajouté (F13.7) */
@@ -88,7 +90,11 @@ export function cheminsDuPlan(plan: Plan, chapitreId: string, projetId: string, 
         // Une destination partie dans la corbeille n'est redirigée nulle part : le choix le dit (F03-AC14)
         if (!cible) return { ...base, vers: null, manque: "supprimee" };
         if (cible.chapitre.id === chapitreId) return { ...base, vers: l.cibleId };
-        return { ...base, vers: null, ailleurs: { chapitre: cible.chapitre.titre, nom: nomScene(cible.scene), lien: vueChemins(cible.chapitre.id, cible.scene.id) } };
+        return { ...base, vers: null, ailleurs: {
+            chapitre: cible.chapitre.titre, nom: nomScene(cible.scene), lien: vueChemins(cible.chapitre.id, cible.scene.id),
+            titre: cible.scene.titre ?? `${referenceScene(cible.scene.reference)}, sans titre`,
+          },
+        };
       }),
     entrees: plan.liens.flatMap((l) => {
       const origine = ou.get(l.sceneId);

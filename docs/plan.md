@@ -5690,9 +5690,13 @@ une conversation à part : 27/40 (lecture informée) et 26/40 (lecture
 indépendante de 25 captures) ; points d'ergonomie corrigés aussitôt, sans
 nouvelle mesure, un commit local, sans migration, rien poussé. Détail, ce
 qui est corrigé et ce qui est laissé :
-[design](design.md#critique-en-deux-lectures-27-novembre-2026). Une
-proposition de règle en sort, non construite, à lui soumettre : la phrase
-qui reçoit une deuxième destination (F05.2, « Destinations »).
+[design](design.md#critique-en-deux-lectures-27-novembre-2026). Deux
+recommandations en sortent, acceptées par le porteur le même jour (« Oui
+pour les deux recommandations, construis-les ») et construites dans un
+second commit local, sans migration, rien poussé : la phrase qui reçoit une
+deuxième destination prend « ou au » avant sa ponctuation (F05.2,
+F05-AC66) ; les lignes de « Ses choix » nomment leurs destinations par le
+titre seul (F03.1).
 
 ### Fiche de l'histoire à imprimer (F02.1, 18 novembre 2026)
 

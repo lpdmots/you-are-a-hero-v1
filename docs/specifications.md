@@ -1672,7 +1672,13 @@ le porteur décide :
     mène à plusieurs scènes garde un seul onglet, d'où part un trait par
     destination, chacun de son propre point de sortie ; dans « Ses choix »,
     il n'a qu'une ligne, ses destinations dessous, et sa corbeille emporte
-    le choix entier. Ne pas reproposer un onglet par destination.
+    le choix entier. Ne pas reproposer un onglet par destination. Les
+    destinations de « Ses choix » se nomment par leur titre seul, comme près
+    des choix dans la copie, la référence en secours d'une scène sans titre
+    (décidé par le porteur le 27 novembre 2026, sur recommandation : l'écran
+    du choix, juste à côté, donne le numéro du livre, et « S009 » à côté de
+    « n° 22 » brouillait) ; les messages et les dialogues gardent
+    « S009 « … » ».
   - *Des onglets rangés pour que les traits ne se croisent pas (révisé par
     le porteur le 11 novembre 2026, après l'essai du lot).* Les onglets
     d'une carte se rangent comme partent leurs traits : deux traits d'une
@@ -3420,9 +3426,14 @@ choix seulement.
   phrase automatique ».
 - **Destinations :** elles sont listées par leur numéro et leur titre.
   Changer une destination propose les issues de la création. Un « + »
-  ajoute une destination : son numéro se pose à la fin de la phrase, qui
-  s'écrit dès lors à la main. Remplace « Insérer un renvoi à l'endroit du
-  curseur ».
+  ajoute une destination, et la phrase s'écrit dès lors à la main. Si elle
+  finit par sa ponctuation, le numéro se pose juste avant, après le dernier,
+  joint par « ou au » (« …rends-toi au 22 ou au 21. » ; « ou » seul avec la
+  formule « → 12 ») ; si elle finit par un mot, elle attend son numéro, qui
+  se pose à la fin (F05-AC57). Révisé le 27 novembre 2026 sur recommandation
+  acceptée par le porteur, après la critique de « Modifier un choix depuis
+  Chemins » : le numéro se posait toujours à la fin (« …au 22. 21 »).
+  Remplace « Insérer un renvoi à l'endroit du curseur ».
 - **Ordre des destinations (F05-AC57) :** à partir de deux, elles se
   déplacent par leur repère de prise ; les numéros de la phrase restent à
   leur place et prennent les destinations dans le nouvel ordre. Qui a choisi
@@ -3503,6 +3514,12 @@ choix seulement.
   et elle écrit le point après lui ; lorsqu'elle tire « La souche »
   au-dessus de « Clairière », alors la phrase devient « …ouvre la porte au
   3 ; sinon, déchiffre les symboles au 2. », sans autre réécriture.
+- **F05-AC66 — Destination ajoutée à une phrase finie (27 novembre
+  2026) :** étant donné « Si tu veux suivre la digue jusqu'au bout, cours au
+  27. », lorsque l'enseignante ajoute par « + » « Ponton — la voix du héron »,
+  n° 16, alors la phrase devient « …cours au 27 ou au 16. », sans rien à
+  réécrire ; une troisième destination se pose de même (« …au 27 ou au 16 ou
+  au 9. ») ; avec la formule « → 12 », « → 27 ou 16. ».
 - **F05-AC26 — Choix caché puis proposé :** étant donné le choix « Déchiffrer
   les symboles » de S055 vers S062, qui porte le n° 38, lorsque l'enseignante
   utilise « Cacher ce choix (énigme) », alors la phrase disparaît du texte, la

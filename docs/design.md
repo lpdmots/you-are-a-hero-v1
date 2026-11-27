@@ -1931,20 +1931,24 @@ critique) :
   n° 16. », une ligne en 1 366 points. Celui de la copie, dans son bandeau,
   ne change pas.
 
-**Laissé, à dire au porteur :**
+**Proposé au porteur, accepté et construit le même jour** (« Oui pour les
+deux recommandations, construis-les ») :
 
 - *La phrase qui reçoit une deuxième destination* (relevé en gravité 3 par
-  la lecture indépendante) : le numéro se pose à la fin de la phrase
-  (« …cours au 22. 21 »), puis on l'écrit à la main — règle de F05.2
-  (« Destinations »), commune à la copie. Recommandation, non construite :
-  poser « ou au 21 » avant la ponctuation finale (« …cours au 22 ou au
-  21. »), la phrase restant modifiable.
-- *Deux repères pour une même scène,* côte à côte : « n° 22 » dans l'écran
-  du choix (le numéro du livre, celui de la phrase), « S009 « … » » dans
-  « Ses choix ». Recommandation : le titre seul dans « Ses choix », comme
-  près des choix dans la copie depuis le 11 octobre ; la ligne vient du
-  lot 2 de « Construire dans Chemins », dont les précisions sont
-  confirmées, d'où la question plutôt que la correction.
+  la lecture indépendante) : le numéro se posait à la fin (« …cours au
+  22. 21 »). Désormais, une phrase qui finit par sa ponctuation reçoit le
+  numéro juste avant, joint par « ou au » (« …cours au 22 ou au 21. ») ; une
+  phrase qui finit par un mot l'attend toujours à la fin (F05.2, F05-AC57,
+  F05-AC66). La copie et l'écran du choix suivent la même règle.
+- *Deux repères pour une même scène,* côte à côte (« n° 22 » dans l'écran du
+  choix, « S009 « … » » dans « Ses choix ») : les lignes de « Ses choix »
+  nomment désormais leurs destinations par le titre seul, la référence en
+  secours, comme près des choix dans la copie ; une scène d'un autre
+  chapitre, « Le moulin noyé · La roue du moulin ». Messages et dialogues
+  gardent la référence suivie du titre (F03.1, « Un choix, un onglet »).
+
+**Laissé :**
+
 - *Repris de la copie, tenu par ses règles :* « Cacher ce choix » absent
   quand le choix mène à plusieurs scènes (un lien caché n'en a qu'une) ;
   le titre de la nouvelle scène prérempli avec ce que fait le lecteur ; le

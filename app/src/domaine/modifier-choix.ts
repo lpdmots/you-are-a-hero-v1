@@ -50,10 +50,23 @@ export function automatisee(bloc: Choix, utiles: Construction[], tirage?: () => 
   return { type: "choix", id: bloc.id, auto: true, libelle: bloc.libelle, construction: tirerConstruction(utiles, tirage), cible: renvoi.cible, children: [{ text: "" }] };
 }
 
-/** Une destination de plus : son numéro s'ajoute à la fin de la phrase, qui s'écrit dès lors à la main. */
+/**
+ * Une destination de plus : la phrase s'écrit dès lors à la main (F05.2, F05-AC57, F05-AC66).
+ * - Si la phrase finit par sa ponctuation, le numéro se pose juste avant, après le dernier, joint par
+ *   « ou au » quand la formule dit « au » (« …rends-toi au 22 ou au 21. »), sinon par « ou » (« → 22 ou 21. »).
+ * - Si elle finit par un mot, elle attend son numéro (« …sinon, déchiffre les symboles au ») : il se pose à la fin.
+ */
 export function avecUneDestinationDePlus(bloc: Choix, cible: string | null, formule: FormuleRenvoi): Choix {
   const perso = enPersonnalisee(bloc, formule) as ChoixPerso;
   const enfants = perso.children;
+  const dernierRenvoi = enfants.findLastIndex((x) => estRenvoi(x));
+  const apres = enfants.slice(dernierRenvoi + 1);
+  const queue = apres.map((x) => ("text" in x ? x.text : "")).join("");
+  if (dernierRenvoi !== -1 && !/\p{L}\s*$/u.test(queue)) {
+    const avant = enfants[dernierRenvoi - 1];
+    const lien = avant && "text" in avant && /(^|\s)au\s*$/i.test(avant.text) ? " ou au " : " ou ";
+    return { ...perso, children: [...enfants.slice(0, dernierRenvoi + 1), { text: lien }, nouveauRenvoi(cible), { text: queue }] };
+  }
   const dernier = enfants[enfants.length - 1];
   const fin = "text" in dernier ? dernier.text : "";
   return {
