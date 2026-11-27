@@ -5632,8 +5632,7 @@ ne plus les lui soumettre :
    choix », ses destinations dessous. Le choix ouvert garde donc son onglet
    cerné et tous ses traits allumés ; vérifié à l'écran avec ce lot. Ne pas
    lui reproposer un onglet par destination. Les règles de « Choix en
-   onglets » (F03-AC62, design) ne le disent pas encore : à accorder par la
-   conversation qui l'a construit.
+   onglets » (F03-AC62, design) le disent depuis le 27 novembre 2026.
 10. *L'enregistrement :* aussitôt pour une destination, l'ordre, la flèche
     ronde ; à la sortie du champ ou à Entrée pour « Ce que fait le lecteur »,
     comme dans la copie ; 0,7 s après la frappe pour « La phrase ». Chaque

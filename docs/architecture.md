@@ -1,28 +1,41 @@
 # Architecture V1 — Orientations et vérifications
 
-Document de référence pour les comparaisons techniques approfondies.
+Document de référence pour les choix techniques et les vérifications.
 Le [brief](../BRIEF-V1.md#5-stack-de-travail) conserve la synthèse de la stack.
-Les [spécifications](specifications.md) définissent les besoins fonctionnels.
-Le développement suit le [plan de réalisation](plan.md), étape par étape, sur
-autorisation du porteur ; l'étape 1 est construite, et ses choix techniques sont
-dans [Réalisation de l'étape 1](#réalisation-de-létape-1-9-octobre-2026). Deux
-prototypes jetables l'ont précédé : celui de l'éditeur, dont les
-[résultats](#résultats-du-prototype-de-léditeur-2-octobre-2026) figurent plus
-bas, et celui de la chaîne PDF, avec ses
-[résultats](#résultats-du-prototype-pdf-3-octobre-2026). Aucun code n'en est
-repris.
+Les [spécifications](specifications.md) définissent les besoins fonctionnels ;
+le [plan de réalisation](plan.md) donne l'ordre de construction et les
+vérifications à lever.
 
-## Statut au 27 septembre 2026
+## Statut au 27 novembre 2026
 
-Le porteur confirme PostgreSQL et indique disposer déjà de Vercel Pro.
-Il demande si l'intégration PostgreSQL de Vercel peut être préférable à
-Supabase. Le forfait existant est une information fournie par le porteur,
-pas une vérification du compte, de ses crédits restants ou de sa consommation.
-L'accord de principe sur Supabase n'est pas annulé par cette question.
-Vercel devient un candidat à examiner pour l'hébergement de l'application ;
-Render était jusqu'ici proposé, sans décision définitive.
-Les orientations de stockage déjà évoquées restent des données métier
-relationnelles et un texte structuré en JSONB ; elles ne fixent aucun schéma SQL.
+L'application est construite et en ligne : les neuf étapes du plan et les
+chantiers qui ont suivi. Les choix de chaque étape sont consignés plus bas,
+sous « Réalisation de l'étape… » et sous les chantiers suivants. Les sections
+« Hébergement applicatif… », « Comparaison pour ce projet » et « Démarrage
+gratuit… » gardent la comparaison qui a mené aux choix ; elles datent de la
+fin septembre 2026.
+
+- **Retenu et en service :** Next.js, React et TypeScript chez Vercel
+  (fonctions à Paris, `cdg1`) ; PostgreSQL, Auth et Storage chez Supabase
+  (Paris, `eu-west-3`), retenus le 8 octobre 2026
+  ([ADR 0004](adr/0004-vercel-et-supabase.md)) — l'intégration PostgreSQL de
+  Vercel, examinée le 27 septembre 2026, n'a pas été retenue ; Plate pour
+  l'éditeur ([ADR 0002](adr/0002-plate-pour-l-editeur.md)) ; Paged.js et
+  Chromium pour le livre, l'aperçu calculé côté serveur
+  ([ADR 0003](adr/0003-pagedjs-chromium-apercu-cote-serveur.md)) ; React Flow
+  et dagre pour « Chemins » ; Floating UI pour les menus ; Amazon SES pour les
+  courriels ; S3 pour la sauvegarde de la nuit ; Stripe Checkout pour le
+  paiement ; Claude, OpenAI et ElevenLabs pour les aides de l'IA et la dictée.
+- **Levé en ligne :** la production du PDF chez Vercel et le délai de l'aperçu
+  (V2 et V3, le 25 octobre 2026) ; la restauration de la vraie base (V18, le
+  15 octobre 2026) ; la sauvegarde de la nuit partie seule (constatée le
+  22 novembre 2026).
+- **Encore non vérifié :** l'éditeur sur tablettes réelles (mis de côté le
+  3 octobre 2026) ; le premier envoi d'un PDF à l'imprimeur (V6). La liste à
+  jour est dans le [plan](plan.md#vérifications-techniques-à-lever).
+- Deux prototypes jetables ont précédé la construction, sans reprise de code :
+  celui de l'éditeur ([résultats](#résultats-du-prototype-de-léditeur-2-octobre-2026))
+  et celui de la chaîne PDF ([résultats](#résultats-du-prototype-pdf-3-octobre-2026)).
 
 ## Hébergement applicatif, base et services associés
 

@@ -1,41 +1,27 @@
 # V1 — Brief produit et technique
 
-Mis à jour le 20 octobre 2026 pour l'offre (F14), le 8 octobre pour l'hébergement, la base et le plan, le reste au 3 octobre · Nom : **Il était une classe**, décidé le 9 octobre 2026.
+Mis à jour le 27 novembre 2026 · Nom : **Il était une classe**, décidé le 9 octobre 2026.
 
-**Synthèse produit et technique pour reprendre le projet.** Les décisions de
-l'entretien `grill-with-docs` sont consolidées et le cadrage d'ensemble est
-clôturé à la demande du porteur. Le premier parcours, de la préparation du
-projet à l'accès effectif des élèves aux scènes, est validé le 28 septembre 2026.
-Sa conception visuelle couvre les quatre situations prévues. Le retour favorable
-sur la planche d'ambiance et l'organisation du récit a autorisé la déclinaison
-du suivi, de l'espace élève et de la préparation projetée, selon le
-[design](docs/design.md). Les détails visuels restent proposés. Le
-deuxième parcours de rédaction et de révision est validé dans son ensemble
-le 28 septembre 2026, selon les
-[spécifications](docs/specifications.md#f07--révision-et-validation), avec ses
-points différés. Sa conception visuelle est autorisée. Le troisième parcours,
-« tester la lecture et composer le livre », de la vérification des chemins au
-PDF définitif, est validé dans son ensemble le 30 septembre 2026 selon
-[F09](docs/specifications.md#f09--test-de-lecture-et-cohérence-du-récit) et
-[F11](docs/specifications.md#f11--composition-et-préparation-du-livre), avec
-ses points différés ; ses écrans sont proposés dans la maquette de synthèse.
-Le quatrième parcours, « partager une version terminée et la lire en ligne »,
-est validé dans son ensemble le 1er octobre 2026 selon
-[F12.1](docs/specifications.md#f121--partager-une-version-du-récit) et
-[F12.3](docs/specifications.md#f123--lecture-des-anciens-livres-par-les-autres-classes),
-avec ses points différés ; ses écrans sont proposés dans la maquette de synthèse.
-Le cinquième parcours, « créer et modifier les choix dans la scène », est
-validé dans son ensemble le 2 octobre 2026 selon
-[F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène)
-et F06.1, avec ses points différés ; ses écrans sont proposés dans la
-maquette de synthèse depuis le même jour, avec un retour favorable d'ensemble.
-Les autres parcours seront approfondis avant leur réalisation.
-Les documents actifs sont référencés dans [l’index V1](README.md).
-La gestion des classes par année depuis le compte enseignant et l'aide IA
-aux embranchements sont retenues, ainsi que la réutilisation des profils élèves,
-la lecture volontaire des livres terminés entre classes et le repérage des
-scènes avec aperçu. Les propositions encore ouvertes conservent leur statut.
-Aucun développement V1 n’est lancé.
+**Synthèse produit et technique pour reprendre le projet.** Elle dit l'essentiel
+et renvoie aux documents qui font foi : les
+[spécifications](docs/specifications.md) pour les règles, le
+[plan](docs/plan.md) pour l'ordre de construction et ce qui reste, le
+[design](docs/design.md) pour les écrans, [l'architecture](docs/architecture.md)
+pour les choix techniques. L'état daté de chaque sujet est dans
+[l'index V1](README.md).
+
+**État au 27 novembre 2026 :** l'application est construite et en ligne à
+`iletaituneclasse.com`. Les neuf étapes du plan sont terminées (du compte à
+l'ouverture à d'autres enseignants), ainsi que les chantiers venus ensuite :
+bibliothèque publique (F15), couverture faite sur le site, colonne de
+navigation de l'adulte, dictée à l'adulte, liste de vérification sous la
+consigne, construire dans « Chemins » et bloc de scènes de l'IA, fiche de
+l'histoire à imprimer, page « Ressources », tutos de l'« Aide » et vidéos,
+pages publiques pour les deux sortes de récit, trois livres d'exemple. Les
+inscriptions sont ouvertes ; le livre est gratuit, l'IA payante en étoiles. La
+révision d'ergonomie page par page est faite sur toute l'application ; la suite
+des parcours Playwright passe en entier. Le premier vrai livre de la classe du
+porteur est prévu pour janvier 2027, la V0 servant de repli.
 
 ## 1. Intention et décisions
 
@@ -58,19 +44,20 @@ Aucun délai, budget chiffré ou objectif de revenus n’est fixé.
 - PDF prêt à imprimer obligatoire ; commande et livraison de livres reportées.
 - Documentation et clarification des besoins avant développement.
 
-**Accord de principe :** Next.js/React/TypeScript, édition des choix dans le
-texte et graphe complémentaire. **Vercel et Supabase sont retenus le
-8 octobre 2026** ([ADR 0004](docs/adr/0004-vercel-et-supabase.md)). **Plate est retenu pour
-l'éditeur le 2 octobre 2026**, après le prototype ([ADR 0002](docs/adr/0002-plate-pour-l-editeur.md)).
-**Paged.js et Chromium sont retenus pour le livre le 3 octobre 2026**, avec un
-aperçu calculé côté serveur ([ADR 0003](docs/adr/0003-pagedjs-chromium-apercu-cote-serveur.md)).
-Les détails de réalisation et le périmètre exact de la première livraison restent ouverts.
+**Choix techniques construits :** Next.js/React/TypeScript, édition des choix
+dans le texte et schéma complémentaire (« Chemins ») ; Vercel et Supabase,
+retenus le 8 octobre 2026 ([ADR 0004](docs/adr/0004-vercel-et-supabase.md)) ;
+Plate pour l'éditeur, retenu le 2 octobre 2026
+([ADR 0002](docs/adr/0002-plate-pour-l-editeur.md)) ; Paged.js et Chromium pour
+le livre, avec un aperçu calculé côté serveur, retenus le 3 octobre 2026
+([ADR 0003](docs/adr/0003-pagedjs-chromium-apercu-cote-serveur.md)). Le détail
+est dans la [stack](#5-stack-de-travail) ci-dessous.
 
 ## 2. Publics et fonctionnement envisagé
 
 Première cible recommandée : **enseignants francophones d’élémentaire**.
-La France et des pays anglophones sont envisagés par le porteur ; ces derniers
-et l'ordre de lancement restent à préciser. Le cas de classe retenu pour concevoir les parcours est décrit dans
+La France et des pays anglophones sont envisagés par le porteur ; la version
+anglaise vient en dernier, quand le français est stabilisé par l'usage. Le cas de classe retenu pour concevoir les parcours est décrit dans
 les [spécifications](docs/specifications.md#f064--classe-de-référence-et-postes-partagés).
 Il ne constitue pas une limite d'effectif ou de niveau. Prévoir l’anglais sans
 imposer un lancement bilingue immédiat.
@@ -135,10 +122,10 @@ sans seconde liste d'étapes à convertir ou à synchroniser, selon
 | F08 | Sauvegarder automatiquement, afficher l’état de sauvegarde et récupérer des versions. |
 | F09 | Tester la lecture ; signaler textes manquants, destinations invalides et scènes inaccessibles, y compris pour les liaisons cachées par énigme. |
 | F10 | Importer et placer des images facultatives, en bloc ou en ligne à la hauteur du texte ; opérations confiées à l'adulte pour la première livraison. Aide discrète à l'illustration par prompts prêts à copier ; images créées par l'IA pour l'adulte, en repérage et dans une scène, depuis le 17 octobre 2026. |
-| F11 | Composer le livre et ses pages de présentation, le prévisualiser, modifier les scènes et régler la composition depuis l'aperçu, réexporter un PDF avec renvois cohérents ; assemblage de couverture reporté. |
+| F11 | Composer le livre et ses pages de présentation, le prévisualiser, modifier les scènes et régler la composition depuis l'aperçu, réexporter un PDF avec renvois cohérents ; face avant de la couverture faite sur le site depuis le 27 octobre 2026. |
 | F12 | Dès la première livraison, partager volontairement un instantané du livre terminé auprès de ses classes, que les élèves lisent avec leur compte, en classe ou chez eux ; mise à jour explicite et retrait par l’adulte. Le lien de lecture seul est remplacé le 25 octobre 2026 par la bibliothèque (F15). |
-| F13 | Proposer une assistance IA facultative, contextualisée et plafonnée. |
-| F14 | Ouvrir l'inscription à d'autres enseignants : outil gratuit avec deux limites par projet, pass par livre et étoiles pour l'IA, paiement prêt derrière un interrupteur, conservation et suppression, sauvegarde nocturne, pages publiques ; décidé le 20 octobre 2026. |
+| F13 | Proposer une assistance IA facultative et contextualisée, côté adulte, payée en étoiles au coût réel : préparation, consignes et liste de vérification, choix, correction, écriture d'une scène vide, bloc de scènes dans « Chemins ». |
+| F14 | Ouvrir l'inscription à d'autres enseignants : étoiles pour l'IA, paiement par Stripe, conservation et suppression, sauvegarde nocturne, pages publiques, « Ressources » et tutos ; décidé le 20 octobre 2026, ouvert le 22, offre révisée le 8 novembre 2026 (livre gratuit). |
 | F15 | Bibliothèque publique : un livre terminé, proposé par l'adulte après les autorisations des familles, relu par l'éditeur avec l'aide de l'IA, lisible par tous, avec des cœurs ; gratuite ; décidé le 25 octobre 2026. |
 
 Cette liste guide la spécification ; elle ne fixe pas la priorité ni tous les détails.
@@ -170,8 +157,8 @@ Créer des liens plus facilement ne garantit pas une histoire cohérente.
 - Copier-coller, déplacer, supprimer et annuler un choix doivent préserver les liens.
 - L’IA s’appuie sur les décisions retenues et le contexte autorisé. L’humain arbitre ;
   aucune validation ou publication automatique. L’app fonctionne sans IA.
-- Pour l’offre élémentaire française envisagée, l’IA générative est orientée côté
-  enseignant. Le pays et le périmètre d’assistance restent à préciser.
+- L’IA générative sert l’adulte seul ; les élèves n’y ont pas accès
+  ([F13](docs/specifications.md#f13--assistance-ia-facultative)).
 - Publication volontaire, sans accès à l'espace de travail de la classe ni aux
   retours privés ; les pages de présentation du livre, prénoms des auteurs
   compris, y figurent par défaut selon F12.1. Un lien non
@@ -190,43 +177,34 @@ Un projet applicatif regroupe site public, espaces adulte/élève et lecteur.
 L’éditeur fonctionne dans le navigateur ; les opérations sensibles restent côté
 serveur. Les exports lourds sont traités en arrière-plan.
 
-| Besoin | Orientation et statut |
+| Besoin | Retenu et construit |
 | --- | --- |
-| Application | **Next.js + React + TypeScript**, serveur Node.js — accord de principe. |
-| Données | **PostgreSQL** via **Supabase**, en souscription directe — retenu le 8 octobre 2026 ; offre gratuite jusqu'à l'ouverture. |
-| Comptes et fichiers | **Supabase Auth + Storage** — retenus le 8 octobre 2026 ; accès scolaires mis en œuvre à l'étape 1 du plan, le 9 octobre 2026 ([architecture](docs/architecture.md#réalisation-de-létape-1-9-octobre-2026)). |
-| Permissions | Contrôles serveur et règles **RLS PostgreSQL** à écrire et tester. |
-| Interface | **Tailwind CSS + shadcn/ui** — proposés. |
-| Éditeur | **Plate** — retenu le 2 octobre 2026 après prototype ; essais sur tablettes réelles mis de côté le 3 octobre 2026, non vérifiés. |
-| Graphe | **React Flow** — proposé comme représentation du récit. |
-| PDF | **Paged.js + HTML/CSS + Chromium** — retenu le 3 octobre 2026 après prototype, avec un aperçu calculé côté serveur ; Chromium de Linux et hébergement encore à éprouver. |
-| Hébergement | **Vercel** décidé le 8 octobre 2026 pour l'application, à son adresse par défaut ; région et lieu d'exécution du PDF selon le [plan](docs/plan.md#décisions-de-fournisseur) ; **Render** reste l'alternative pour le PDF. |
-| Paiement | **Stripe Checkout**, achats uniques par carte — décidé le 20 octobre 2026 (F14), derrière l'interrupteur « Paiement ouvert ». Depuis le 8 novembre 2026, seules les recharges d'étoiles se vendent : le livre est gratuit sans limite, le pass et les limites attendant l'interrupteur « Livre payant », éteint. |
-| IA | API côté serveur ; fournisseur et modèle à choisir sur les tâches réelles. |
-| Vérification | **Vitest + Playwright**, complétés par inspection visuelle des PDF. |
+| Application | **Next.js 16 + React 19 + TypeScript**, serveur Node.js 22, chez **Vercel** (fonctions à Paris, `cdg1`). |
+| Données | **PostgreSQL** via **Supabase** (Paris, `eu-west-3`), offre gratuite tant que l'usage le permet ; sauvegarde chaque nuit vers S3, restauration éprouvée le 15 octobre 2026. |
+| Comptes et fichiers | **Supabase Auth + Storage** ; connexion par Google en plus du mot de passe ; accès de classe sans adresse pour les élèves, codes chiffrés par l'application. |
+| Permissions | Contrôles serveur et règles **RLS PostgreSQL**, testés contre la base. |
+| Interface | Feuilles de style écrites à la main (système « Cahiers d'aventure » du [design](docs/design.md)) ; **Floating UI** pour les menus qui tiennent dans la fenêtre. shadcn et Tailwind écartés. |
+| Éditeur | **Plate**. Les essais sur tablettes réelles sont mis de côté le 3 octobre 2026 : non vérifié. |
+| Schéma « Chemins » | **React Flow + dagre**, versions figées, chargés à l'ouverture de « Chemins ». ELK mesuré et écarté. |
+| PDF | **Paged.js + Chromium**, chez Vercel ; aperçu calculé côté serveur. Levé en ligne le 25 octobre 2026 ; reste le premier envoi à l'imprimeur (V6). |
+| Courriels | **Amazon SES**, domaine d'envoi `envoi.` ; reçus par la messagerie académique (constaté le 27 novembre 2026). |
+| Paiement | **Stripe Checkout**, achats uniques par carte, au nom de la micro-entreprise de l'éditeur ; vente ouverte le 23 octobre 2026. Depuis le 8 novembre 2026, seules les recharges d'étoiles se vendent ; le pass et les limites attendent l'interrupteur « Livre payant », éteint. |
+| IA | **Claude** pour les textes (Opus 5.5 pour ce qui invente ou construit, Sonnet 5.5 pour le reste) ; **OpenAI** pour les images ; **ElevenLabs** (Scribe) pour la dictée. Appels côté serveur seulement. |
+| Mesure | Search Console, Vercel Web Analytics et Speed Insights ; pas de Google Analytics pour l'instant. |
+| Vérification | **Vitest** (tests unitaires et contre la base) et **Playwright** (parcours, lancés à la demande du porteur), complétés par inspection visuelle des PDF. |
 
-PostgreSQL est préféré pour les relations entre projets, élèves, attributions et
-versions. Supabase réduit les tâches d’exploitation sans fournir notre logique
-métier. Next.js réunit pages publiques et application ; garder le rendu et le cache
-simples. Plate fournit les mécanismes d’édition, pas notre bloc narratif ni le livre.
+PostgreSQL tient les relations entre projets, élèves, attributions et
+versions. Supabase réduit les tâches d'exploitation sans fournir la logique
+métier. Next.js réunit pages publiques et application. Plate fournit les
+mécanismes d'édition, pas le bloc narratif ni le livre.
 
-**À vérifier avant de figer l’implémentation :** bloc choix et ses annulations/collages,
-permissions élèves, sauvegarde concurrente et PDF d’un livre représentatif.
-Le prototype jetable de l'éditeur du 2 octobre 2026 a éprouvé les trois
-premiers sujets avec Plate ; ses verdicts et réserves, tablettes réelles
-comprises, sont dans [l'architecture](docs/architecture.md#résultats-du-prototype-de-léditeur-2-octobre-2026).
-Le prototype jetable de la chaîne PDF du 3 octobre 2026 a éprouvé le dernier
-sur un livre d'essai de 145 pages ; ses verdicts et ses mesures sont dans
-[l'architecture](docs/architecture.md#résultats-du-prototype-pdf-3-octobre-2026),
-et le choix qui en découle dans [l'ADR 0003](docs/adr/0003-pagedjs-chromium-apercu-cote-serveur.md).
-Aucun schéma SQL, fournisseur IA, abonnement ou version de dépendance n’est arrêté.
-La comparaison des fournisseurs, les faits vérifiés et les limites à éprouver
-sont dans [l'architecture](docs/architecture.md).
-Le besoin d'identité visuelle durable, la méthode de conception proposée et
-l'éventuel achat de composants sont dans [les intentions de design](docs/design.md).
-La direction du carnet d'aventure illustré et les situations d'écran du
-premier parcours sont retenues dans ce document de design ; leurs déclinaisons
-restent à préciser. Aucun template n'est choisi.
+Deux prototypes jetables ont précédé la construction, sans reprise de code :
+celui de l'éditeur, le 2 octobre 2026, et celui de la chaîne PDF, le
+3 octobre ; leurs verdicts sont dans
+[l'architecture](docs/architecture.md#vérifications-avant-décision-technique).
+Les choix faits à chaque étape et les vérifications encore ouvertes sont dans
+[l'architecture](docs/architecture.md) et dans le
+[plan](docs/plan.md#vérifications-techniques-à-lever).
 
 ## 6. Limites et économie
 
@@ -238,9 +216,10 @@ livraison en [F10.2](docs/specifications.md#f102--aide-à-lillustration-par-prom
 la génération d'illustrations par l'IA, d'abord reportée, y entre le
 17 octobre 2026 pour l'adulte, l'import d'images restant entier selon
 [F10](docs/specifications.md#f10--illustrations).
-L'assemblage de la couverture est reporté ; la première livraison se limite à
-un prompt d'illustration de couverture et à une aide pour l'outil de l'imprimeur,
-selon [F11.4](docs/specifications.md#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
+La face avant de la couverture se fait sur le site depuis le 27 octobre 2026,
+titre compris ; le reste de la couverture se monte dans l'outil de
+l'imprimeur, selon
+[F11.4](docs/specifications.md#f114--intérieur-du-livre-pages-de-présentation-et-couverture).
 **Reports recommandés :** logiciel natif, hors ligne complet, communauté avec
 commentaires, marketplace et moteur de jeu avancé. Import V0 non demandé.
 
@@ -249,65 +228,27 @@ accompagne sans moteur automatique : feuille d'aventure remplie par le
 lecteur, actions de jeu en texte libre et dé non interprété, selon
 [F04.2](docs/specifications.md#f042--objets-de-lhistoire). Les formats du PDF ne sont pas fixés par la V0.
 
-**Offre décidée le 20 octobre 2026**
-([F14](docs/specifications.md#f14--ouverture-offre-et-exploitation)) : l'outil
-est gratuit, lecture comprise, avec deux limites par projet (quarante scènes,
-dix images du livre) ; un pass par livre, payé une fois, les lève et apporte
-des étoiles, le crédit d'IA d'un compte, débité au coût réel et rechargeable ;
-un nouveau compte en reçoit trente. Le paiement est construit mais ne s'ouvre
-que sur décision du porteur ; les prix restent des hypothèses. La conservation,
-la suppression et les coûts d'exploitation sont réglés en F14 et dans le
-[plan](docs/plan.md#coûts). Le bénéfice commercial à démontrer reste le temps
-de préparation et de coordination économisé jusqu'au livre terminé ; la
-demande payante n'est pas vérifiée.
+**Offre** ([F14](docs/specifications.md#f14--ouverture-offre-et-exploitation)) :
+décidée le 20 octobre 2026, révisée le 8 novembre 2026. Le livre est gratuit
+pour l'instant, sans limite, lecture et bibliothèque comprises ; un projet né
+pendant cette gratuité reste sans limite. L'IA est payante en étoiles, le
+crédit d'IA d'un compte, débité au coût réel : trente sont offertes à
+l'inscription, la recharge de 100 étoiles coûte 5 €. Le pass par livre et les
+limites (40 scènes, 10 images) restent dans le code, derrière l'interrupteur
+« Livre payant », éteint. Les coûts d'exploitation sont suivis dans le
+[plan](docs/plan.md#coûts). Le bénéfice à démontrer reste le temps de
+préparation et de coordination économisé jusqu'au livre terminé ; la demande
+payante n'est pas vérifiée.
 
 ## 7. Questions à approfondir
 
-Le cadrage d'ensemble et le premier parcours approfondi sont validés, selon
-les décisions consignées dans les spécifications. Les propositions encore
-ouvertes gardent leur statut.
-Les approfondissements suivants ne rouvrent pas les décisions acquises ;
-leur [point d'entrée](docs/specifications.md#suite-de-lentretien-et-couverture-restante)
-renvoie aux sections de référence.
+Les questions ouvertes sont tenues à un seul endroit, le
+[plan](docs/plan.md#questions-ouvertes), et sous chaque fonctionnalité des
+[spécifications](docs/specifications.md). Les grandes suites, sans décision :
+le premier vrai livre de classe en janvier 2027 et ses retours d'usage, en
+retouches ; le premier envoi à l'imprimeur (V6) ; faire connaître le site ;
+la version anglaise, « Once Upon a Classroom », en dernier ; les idées pour le
+cycle 2. Chaque chantier se construit sur instruction du porteur, après un
+entretien court quand une règle change.
 
-1. **Conditions d'usage :** pays anglophones envisagés et ordre de lancement,
-   caractéristiques des appareils, rythme des
-   séances et taille habituelle du livre ; classe de référence retenue dans les spécifications.
-2. **Collaboration :** le parcours de référence retient plusieurs élèves sur des
-   scènes distinctes. Attributions par chapitre, profils et prises en charge sont
-   précisés progressivement dans les [spécifications](docs/specifications.md).
-   L'inscription initiale en lot, la connexion classe puis élève et le
-   changement d'élève sur poste partagé sont acquis en F01.1/F06.4. Les
-   détails de récupération des accès et de gestion des sessions restent à préciser.
-   L'organisation par enseignant et classe annuelle est retenue ; la
-   réutilisation des profils élèves est également confirmée en
-   [F01.1](docs/specifications.md#f011--classes-années-et-éventuel-espace-école).
-3. **Récit et éditeur :** la structure, l'accès par chapitre et les vues Scènes/Graphe
-   sont acquis en F03/F06 ; la création et la modification des choix dans la
-   scène sont précisées en [F05.2](docs/specifications.md#f052--créer-et-modifier-un-choix-dans-la-scène).
-   Restent notamment les effets des déplacements et suppressions de scènes.
-   Objets, feuille d'aventure, actions de jeu et dé sont décidés en
-   [F04.2](docs/specifications.md#f042--objets-de-lhistoire), sans vérification. Les conversions de
-   modes sont reportées après la première livraison.
-4. **Révision et diffusion :** historique et demandes de changements protégés.
-   Le partage, ses accès et la présentation du lecteur en ligne sont validés en
-   F12.1/F12.3. Le test de lecture, les contrôles bloquants,
-   le format et la composition du PDF sont validés en F09/F11. Les règles
-   de composition laissées ouvertes par le prototype PDF sont décidées et
-   validées dans leur ensemble le 3 octobre 2026 en F10 et F11 ; restent un premier envoi chez l'imprimeur
-   et le délai de l'aperçu calculé côté serveur.
-   La bibliothèque publique est décidée le 25 octobre 2026 (F15).
-5. **Périmètre V1 :** dictée vocale à étudier, détails
-   des aides IA retenues et calendrier de l'anglais ; les quatre combinaisons
-   de modes sont acquises pour la première livraison.
-   L'aide IA aux choix et à leurs destinations est retenue selon
-   [F13.3](docs/specifications.md#f133--aide-à-concevoir-les-choix-et-leurs-destinations).
-6. **Exploitation :** réglée en F14 le 20 octobre 2026 ; restent les prix, l'entité qui facture et la relecture juridique.
-
-Les réponses sont transformées en critères d’acceptation dans les
-spécifications ; l'ordre de construction, les deux seuils « ma classe » et
-« ouverture » et ce qui reste à régler avant chaque étape sont dans le
-[plan de réalisation](docs/plan.md), validé le 8 octobre 2026. Ce plan
-n'autorise pas le développement.
-
-La méthode d’entretien et les règles documentaires sont dans [CLAUDE.md](../CLAUDE.md).
+La méthode d'entretien et les règles documentaires sont dans [CLAUDE.md](../CLAUDE.md).

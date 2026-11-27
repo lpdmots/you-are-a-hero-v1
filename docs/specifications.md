@@ -1,10 +1,19 @@
 # Spécifications fonctionnelles V1
 
 Document de référence pour les règles détaillées. Le [brief](../BRIEF-V1.md)
-conserve la synthèse et les identifiants F01–F14 ; le
+conserve la synthèse et les identifiants F01–F15 ; le
 [glossaire](../CONTEXT.md) définit les termes métier.
 
 ## Statut et périmètre
+
+**État au 27 novembre 2026 :** ces règles décrivent une application construite
+et en ligne. Chaque critère d'acceptation doit avoir son test, nommé par son
+identifiant (règle de la construction) ; ce que le [plan](plan.md) dit construit suit les règles
+ci-dessous, qui font foi. Ce qui reste proposé ou ouvert est signalé comme tel
+à sa place, et les questions qui ne bloquent rien sont rassemblées dans le
+[plan](plan.md#questions-ouvertes). Les paragraphes qui suivent gardent
+l'histoire du cadrage, de septembre et d'octobre 2026 : leurs mentions
+« n'autorise ni développement ni prototype » datent de ces validations.
 
 Au 27 septembre 2026, les décisions du cadrage du parcours principal sont
 consolidées ci-dessous et distinguées des propositions et des questions ouvertes.
@@ -1658,7 +1667,12 @@ le porteur décide :
   ([design](design.md#choix-en-onglets--écrans-construits-11-novembre-2026)).
   - *Un onglet par choix, sous la carte, partout, élève compris.* Les
     phrases de choix quittent les traits, qui redeviennent de simples
-    lignes. Chaque trait part du point de sortie de son onglet.
+    lignes. Chaque trait part du point de sortie de son onglet. *Un choix,
+    un onglet* (décidé par le porteur le 11 novembre 2026) : un choix qui
+    mène à plusieurs scènes garde un seul onglet, d'où part un trait par
+    destination, chacun de son propre point de sortie ; dans « Ses choix »,
+    il n'a qu'une ligne, ses destinations dessous, et sa corbeille emporte
+    le choix entier. Ne pas reproposer un onglet par destination.
   - *Des onglets rangés pour que les traits ne se croisent pas (révisé par
     le porteur le 11 novembre 2026, après l'essai du lot).* Les onglets
     d'une carte se rangent comme partent leurs traits : deux traits d'une
@@ -1942,7 +1956,11 @@ le porteur décide :
   part aucun trait garde la sienne ; dans l'espace de travail de la scène
   cliquée, « Ses choix » restent dans l'ordre du texte. (Le critère disait
   d'abord : les onglets gardent l'ordre du texte et les deux traits se
-  croisent sous la carte.)
+  croisent sous la carte.) **Révisé le 11 novembre 2026 (un choix, un
+  onglet)** : si « Longer la vieille digue » mène à deux scènes, la carte
+  porte deux onglets et non trois ; deux traits partent de l'onglet de la
+  digue, chacun de son point de sortie, et « Ses choix » n'a qu'une ligne
+  pour lui, ses deux destinations dessous.
 - **F03-AC63 — Un onglet borné :** étant donné « Échanger la plume argentée
   contre une barque », l'un des deux choix de « Ponton — le marché du
   héron », lorsque l'adulte regarde le schéma, alors son onglet fait
