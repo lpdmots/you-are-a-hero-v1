@@ -813,6 +813,11 @@
   font-size: var(--t-s);
   color: var(--graphite-2);
 }
+/* Une erreur garde sa brique dans un panneau : la règle précédente la passait en gris
+   (révision de « Mes classes », novembre 2026) */
+.panneau__corps p.erreur {
+  color: var(--e-reprendre);
+}
 .panneau__pied {
   padding: 14px 20px 18px;
   border-top: 1px solid var(--trait);

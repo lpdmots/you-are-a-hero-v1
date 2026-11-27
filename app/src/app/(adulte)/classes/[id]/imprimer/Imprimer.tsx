@@ -111,7 +111,7 @@ export function Imprimer({
                   {feuille.map((e) => (
                     <div key={e.id} className={styles.etiquette}>
                       <Gommette prenom={e.prenom} couleur={e.couleur} />
-                      <span className={styles.prenom}>{e.affiche}</span>
+                      <span className={`${styles.prenom} ${e.affiche.length > 7 ? styles.prenomLong : ""}`}>{e.affiche}</span>
                       <span className={styles.code}>
                         <span>Ton code</span>
                         {chiffresEspaces(e.code)}

@@ -105,6 +105,10 @@
   overflow-y: visible;
   text-overflow: ellipsis;
 }
+/* Un prénom long (« Lucas M. », « Jean-Baptiste ») se resserre au lieu de se couper */
+.prenomLong {
+  font-size: 1.9cqw;
+}
 /* Les chiffres que l'élève lit : un zéro sans barre (F06.4, 7 octobre 2026) */
 .code {
   display: grid;
@@ -125,6 +129,8 @@
 .classe {
   grid-column: 1 / -1;
   align-self: start;
+  /* L'adresse aussi se lit sans zéro barré */
+  font-family: var(--f-chiffres);
   font-size: 1.6cqw;
   line-height: 1.4;
   color: var(--graphite-2);
@@ -138,7 +144,8 @@
 .plancheMaison .etiquette {
   padding: 0 3cqw;
   align-content: center;
-  row-gap: 0.8cqw;
+  /* Les boucles de la cursive (y, g, J) descendent loin : la ligne de la classe se tient dessous */
+  row-gap: 2.2cqw;
 }
 .plancheMaison .etiquette :global(.gommette) {
   width: 5cqw;
@@ -147,6 +154,9 @@
 }
 .plancheMaison .prenom {
   font-size: 2.9cqw;
+}
+.plancheMaison .prenomLong {
+  font-size: 2.4cqw;
 }
 .plancheMaison .code {
   font-size: 3cqw;

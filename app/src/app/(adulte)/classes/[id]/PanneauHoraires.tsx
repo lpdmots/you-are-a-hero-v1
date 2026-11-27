@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { Icone } from "@/composants/Icone";
 import { Panneau, PiedFermer } from "@/composants/Panneau";
 import { libelleAnnee } from "@/domaine/annee";
@@ -16,10 +16,14 @@ type Saisie = { jours: number[]; de: string; a: string }; // heures telles qu'on
 const enSaisie = (p: Plage): Saisie => ({ jours: p.jours, de: ecrireHeure(p.de), a: ecrireHeure(p.a) });
 
 /** Horaires : un interrupteur, des jours en pastilles, « De … à … » (F06.4, 7 octobre 2026). */
-export function PanneauHoraires({ classe, onFermer }: { classe: Classe; onFermer: () => void }) {
+/**
+ * Ouvert par « Limiter les horaires », le panneau arrive l'interrupteur allumé, avec les horaires
+ * proposés déjà gardés : le bouton a dit ce qu'il fait (révision de « Mes classes », novembre 2026).
+ */
+export function PanneauHoraires({ classe, allumer = false, onFermer }: { classe: Classe; allumer?: boolean; onFermer: () => void }) {
   const routeur = useRouter();
   const [enCours, lancer] = useTransition();
-  const [limites, setLimites] = useState(classe.horairesLimites);
+  const [limites, setLimites] = useState(classe.horairesLimites || allumer);
   const [plages, setPlages] = useState<Saisie[]>((classe.plages.length ? classe.plages : [PLAGE_PAR_DEFAUT]).map(enSaisie));
   const [enregistre, setEnregistre] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
@@ -47,6 +51,15 @@ export function PanneauHoraires({ classe, onFermer }: { classe: Classe; onFermer
       routeur.refresh();
     });
   };
+
+  const allume = useRef(false);
+  useEffect(() => {
+    if (!allumer || classe.horairesLimites || allume.current) return;
+    allume.current = true;
+    enregistrer(true, plages);
+    // Une seule fois, à l'ouverture
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const changer = (suivantes: Saisie[], tout_de_suite = true) => {
     setPlages(suivantes);
@@ -99,11 +112,11 @@ export function PanneauHoraires({ classe, onFermer }: { classe: Classe; onFermer
               <div className={styles.heures}>
                 <label>
                   De{" "}
-                  <input className="pchamp" type="text" value={p.de} onChange={(e) => changer(plage(i, { de: e.target.value }), false)} onBlur={() => enregistrer(limites, plages)} />
+                  <input className="pchamp" type="text" value={p.de} aria-invalid={erreur && !lireHeure(p.de) ? true : undefined} onChange={(e) => changer(plage(i, { de: e.target.value }), false)} onBlur={() => enregistrer(limites, plages)} />
                 </label>
                 <label>
                   à{" "}
-                  <input className="pchamp" type="text" value={p.a} onChange={(e) => changer(plage(i, { a: e.target.value }), false)} onBlur={() => enregistrer(limites, plages)} />
+                  <input className="pchamp" type="text" value={p.a} aria-invalid={erreur && !lireHeure(p.a) ? true : undefined} onChange={(e) => changer(plage(i, { a: e.target.value }), false)} onBlur={() => enregistrer(limites, plages)} />
                 </label>
                 {i ? (
                   <button type="button" className="btn btn--discret" aria-label="Retirer ces horaires" onClick={() => changer(plages.filter((_, k) => k !== i))}>

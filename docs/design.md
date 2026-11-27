@@ -3929,6 +3929,73 @@ lire », la fin, la reprise, les choix en italique).
 **Laissé :** « Commencer le livre » et « Commencer au début » au départ de l'essai, chacun sous son titre ;
 le cœur des livres de la bibliothèque sans légende ; le mot cherché non surligné.
 
+#### Mes classes et la page de la classe (27 novembre 2026)
+
+Dernière page de la révision, avant le premier vrai projet de classe en janvier 2027 : « Mes classes »,
+la nouvelle classe, la page d'une classe et ses panneaux (fiche d'un élève, horaires), l'inscription, les
+étiquettes et l'affiche, la fin d'année et la classe passée. Captures contre le serveur local :
+`npx playwright test --config playwright.local.config.ts revision-classes` (70 vues, dans
+`captures/classes` : rien encore, l'aide, la nouvelle classe et ses erreurs ; une liste de vingt-cinq
+élèves collée, une ligne sans prénom, deux Lucas ; la classe, les codes, le mot de passe ; un code changé,
+faux, un prénom vidé, un retrait ; les horaires et leurs erreurs ; le menu, le mot de passe changé,
+« Renommer » ; les étiquettes, pour la maison, d'un élève, l'affiche, et leur rendu d'impression ; la classe
+de l'année suivante, la proposition de terminer l'ancienne, l'inscription avec les élèves connus et un
+homonyme ; trois classes ; la classe passée et sa suppression ; 1024 et 390 px). Une autre conversation
+peut écrire dans `test-results/captures-traces` : `--output` en donne un autre. **Notes : 28/40
+(informée), 28/40 (indépendante).** Points faibles des deux lectures : la cohérence (menu coupé, erreurs
+grises dans les panneaux, horaires en ambre) et l'aide face aux erreurs.
+
+**Corrigé :**
+
+- **Classe passée :** le bandeau disait « Les élèves ne peuvent plus ouvrir cette classe », faux depuis le
+  25 octobre (F15-AC16) ; il dit « Les élèves n'écrivent plus ; ils gardent « Lire ». Rien n'est
+  supprimé. », comme le dialogue de fin d'année.
+- **Le menu « ⋯ » de la classe** sortait de la fenêtre (« Renom… ») : c'est le menu commun (`Menu`,
+  placé par `poser`), qui se ferme aussi par un clic ailleurs et par Échap.
+- **Erreurs des panneaux en brique :** `.panneau__corps p` les passait en gris, dans tous les panneaux de
+  l'application (`formes.css`). « Donnez un nom à la classe. » s'efface dès que le nom est écrit ; « Un
+  élève a un prénom. » vient sous la case du prénom ; une heure mal écrite cerne sa case.
+- **En-tête :** « Aide » et « ⋯ » à la hauteur du titre, l'année et le nombre d'élèves dessous, comme la
+  ligne de titre des autres pages ; ils s'alignaient sur la ligne de l'année.
+- **« Afficher les codes » / « Masquer les codes »** prennent la même place : la barre de la liste passait
+  sur deux lignes et la liste descendait de 30 points. Barre un peu resserrée.
+- **Horaires :** « Limiter les horaires » ouvre le panneau l'interrupteur allumé, les horaires proposés
+  gardés (il fallait l'allumer de nouveau) ; les cases d'heures montrent « 16 h 30 » entier ; une fois
+  réglés, les horaires s'écrivent en graphite et non en ambre (« cela attend »).
+- **Inscription :** « nouveau » et « garde son code » ne s'écrivent que dans une liste qui mêle les deux
+  (vingt-cinq « nouveau » sur une première classe) ; la ligne d'un point à régler se surligne d'ambre dans
+  la liste ; « les élèves liront « Lucas B. » et, par exemple, « Lucas D. » », guillemets insécables.
+- **Étiquettes :** un prénom de plus de sept signes se resserre au lieu de se couper (« Lucas … » perdait
+  l'initiale qui distingue les deux Lucas) ; sur l'étiquette pour la maison, les boucles de la cursive ne
+  touchent plus la ligne de l'adresse, écrite elle aussi sans zéro barré.
+- **Fiche d'un élève :** sous « Retirer de la classe », « Ses textes restent dans les projets, à son
+  prénom. ».
+- **Proposition de terminer l'année :** « CM1-CM2 2026-2027 est encore en cours. Son année est finie ? »
+  (la classe nommée d'abord) ; le titre des dialogues ne coupe plus « CM1- / CM2 ».
+- **« Mes classes » au téléphone :** les gommettes avant « Ouvrir », qui finit la carte ; une classe vide
+  montre une rangée de places, sans une neuvième seule sur sa ligne.
+
+**Écarté, contre des décisions (proposé par la lecture indépendante) :** masquer le code dans la fiche d'un
+élève, le nouveau mot de passe dans son dialogue et les valeurs de l'aperçu d'impression (F06-AC71 : la
+fiche montre le code de l'élève, c'est l'écran du code oublié ; on ne vient à « Imprimer » que pour
+imprimer) ; garder l'identifiant en renommant (F06-AC84 : il suit le nom s'il en était tiré, « Garder »
+rend l'ancien) ; un identifiant « au hasard » (« cm1cm2a8b4 ») vient du script, qui en écrit un libre ; un
+sélecteur d'heures à la place de « 8 h 30 » (forme du 7 octobre).
+
+**Laissé :** le message de création encore visible sur la page d'inscription quand on y va aussitôt ;
+« Ouvrir » plein sur la première carte seulement (un seul bouton plein par écran) ; le retrait d'un élève
+d'un geste avec « Annuler », sans le dialogue qui en dirait les effets (proposé le 6 octobre, sans retour
+du porteur, jamais construit) ; « Connexion » dans « Aller à », pour la fiche « Pour ouvrir la classe
+sur un ordinateur » ; le message noir et « Enregistré » ensemble après un changement de code ; les années
+en police à chasse fixe ; le panneau décalé de la largeur d'une barre de défilement dans les captures en
+390 px (les téléphones n'en ont pas).
+
+**À soumettre au porteur :** une classe passée garde « Lire » pour ses élèves, mais sa page ne montre plus
+l'identifiant ni le mot de passe, ni les codes ; un élève qui les a perdus ne peut plus lire chez lui.
+Recommandé : la fiche « Pour ouvrir la classe sur un ordinateur » et la fiche d'un élève en lecture seule
+(sans « Changer », sans retrait), et l'impression des étiquettes, sur une classe passée (F01-AC26 en
+dirait « consultable », ce qu'elle est déjà en esprit).
+
 ### Étape 8 : écrans arrêtés avant de construire (17 octobre 2026)
 
 Recommandations acceptées par le porteur à l'entretien de l'étape 8 du

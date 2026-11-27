@@ -6,7 +6,7 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 export function Dialogue({
   titre, children, boutons, onFermer, fermer = "Annuler", className,
 }: {
-  titre: string;
+  titre: ReactNode;
   children: ReactNode;
   boutons: ReactNode;
   onFermer: () => void;

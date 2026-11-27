@@ -119,7 +119,7 @@ export function MesClasses({
                 return (
                   <li key={c.id}>
                     <article className={styles.carte}>
-                      <div>
+                      <div className={styles.carteTexte}>
                         <h2>{c.nom}</h2>
                         <p className={styles.annee}>{libelleAnnee(c.anneeDebut)}</p>
                         <ul className={styles.faits}>
@@ -141,17 +141,18 @@ export function MesClasses({
                           </li>
                           <li>{horairesEnTexte(c).join(" ; ")}</li>
                         </ul>
-                        <Link
-                          className={`btn ${i ? "" : "btn--primaire"} ${styles.ouvrir}`}
-                          href={`/classes/${c.id}`}
-                          aria-label={`Ouvrir ${c.nom} ${libelleAnnee(c.anneeDebut)}`}
-                        >
-                          Ouvrir
-                        </Link>
                       </div>
                       <div className={styles.gommettes} aria-hidden="true">
                         {n ? trier(c.eleves).map((e) => <Gommette key={e.id} prenom={e.prenom} couleur={e.couleur} />) : <PlacesVides nombre={9} />}
                       </div>
+                      {/* Après les gommettes dans le code : au téléphone, le bouton finit la carte */}
+                      <Link
+                        className={`btn ${i ? "" : "btn--primaire"} ${styles.ouvrir}`}
+                        href={`/classes/${c.id}`}
+                        aria-label={`Ouvrir ${c.nom} ${libelleAnnee(c.anneeDebut)}`}
+                      >
+                        Ouvrir
+                      </Link>
                     </article>
                   </li>
                 );
@@ -209,6 +210,7 @@ export function MesClasses({
               aria-invalid={erreur ? true : undefined}
               onChange={(e) => {
                 setNom(e.target.value);
+                if (e.target.value.trim()) setErreur(null);
                 if (!identifiantEcrit) setIdentifiant(e.target.value.trim() ? identifiantPourClasse(e.target.value) : "");
               }}
               onKeyDown={(e) => { if (e.key === "Enter") creer(); }}

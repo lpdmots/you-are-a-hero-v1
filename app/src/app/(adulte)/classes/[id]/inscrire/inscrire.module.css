@@ -155,6 +155,12 @@
   min-height: 44px;
   border-bottom: 1px solid var(--trait);
 }
+.recap .recapARegler {
+  margin: 0 -8px;
+  padding: 0 8px;
+  border-radius: 8px;
+  background: var(--e-valider-f);
+}
 .recapNom {
   flex: 1;
   min-width: 0;

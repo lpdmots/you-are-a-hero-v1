@@ -157,23 +157,27 @@ export function PanneauEleve({
           <label htmlFor="eleve-prenom">Prénom</label>
         </h3>
         <input className="pchamp" id="eleve-prenom" type="text" value={prenom} maxLength={40} onChange={(e) => { setPrenom(e.target.value); setEnregistre(false); }} onBlur={enregistrerNom} />
+        {erreurNom && !prenom.trim() ? erreurDuNom(erreurNom) : null}
         <h3 className={styles.champSuivant}>
           <label htmlFor="eleve-nom">Nom</label> <span className="facultatif">facultatif</span>
         </h3>
         <input className="pchamp" id="eleve-nom" type="text" value={nom} maxLength={60} onChange={(e) => { setNom(e.target.value); setEnregistre(false); }} onBlur={enregistrerNom} />
-        {erreurNom ? (
-          <p className="erreur" role="alert">
-            <Icone nom="alerte" />
-            <span>{erreurNom}</span>
-          </p>
-        ) : null}
+        {erreurNom && prenom.trim() ? erreurDuNom(erreurNom) : null}
         <p>Les élèves ne voient que le prénom, et l’initiale du nom si deux élèves portent le même.</p>
       </section>
       <section>
         <button type="button" className="btn btn--danger" disabled={retraitEnCours} aria-busy={retraitEnCours || undefined} onClick={onRetirer}>
           Retirer de la classe
         </button>
+        <p>Ses textes restent dans les projets, à son prénom.</p>
       </section>
     </Panneau>
   );
 }
+
+const erreurDuNom = (texte: string) => (
+  <p className="erreur" role="alert">
+    <Icone nom="alerte" />
+    <span>{texte}</span>
+  </p>
+);

@@ -12,7 +12,10 @@
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 400px);
-  gap: 20px 44px;
+  grid-template-areas:
+    "texte gommettes"
+    "ouvrir gommettes";
+  gap: 0 44px;
   align-items: center;
   padding: 28px 32px 30px;
   border-radius: 16px;
@@ -58,7 +61,12 @@
   position: relative;
   z-index: 1;
 }
+.carteTexte {
+  grid-area: texte;
+}
 .ouvrir {
+  grid-area: ouvrir;
+  justify-self: start;
   margin-top: 20px;
   min-height: 42px;
   padding: 0.5rem 1.2rem;
@@ -73,6 +81,7 @@
   transform: none;
 }
 .gommettes {
+  grid-area: gommettes;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
@@ -179,6 +188,36 @@
 }
 
 /* ——— Une classe ——— */
+/* La ligne de titre des pages de l'adulte : le nom à gauche, « Aide » et « ⋯ » à sa hauteur */
+.entete {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px 16px;
+}
+.entete h1 {
+  font-size: var(--t-3xl);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  overflow-wrap: anywhere;
+}
+.enteteSous {
+  grid-column: 1 / -1;
+  color: var(--graphite-2);
+}
+/* « Afficher les codes » et « Masquer les codes » prennent la même place : la liste ne bouge pas */
+.basculeCodes {
+  display: inline-grid;
+}
+.basculeCodes > span {
+  grid-area: 1 / 1;
+}
+.basculeCodes > [aria-hidden] {
+  visibility: hidden;
+}
+.insecable {
+  white-space: nowrap;
+}
 .bande {
   margin-top: 18px;
   align-items: center;
@@ -219,9 +258,9 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 10px 12px;
+  gap: 10px 8px;
   min-height: 66px;
-  padding: 12px 14px 12px 22px;
+  padding: 12px 12px 12px 22px;
   border-bottom: 1px solid var(--trait);
 }
 .listeTete h2 {
@@ -234,6 +273,10 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 8px;
+}
+/* Le bouton discret des codes, resserré : les trois commandes tiennent sur la ligne de « Élèves » */
+.listeCmd :global(.btn--discret) {
+  padding-inline: 8px;
 }
 .eleves {
   list-style: none;
@@ -387,8 +430,9 @@ button.eleve:hover {
   gap: 2px;
   font-weight: 700;
 }
+/* Des horaires réglés ne sont pas une attente : graphite, sans l'ambre (une couleur, un rôle) */
 .horairesRegles {
-  color: var(--e-valider);
+  color: var(--graphite);
 }
 .projets {
   list-style: none;
@@ -518,7 +562,8 @@ button.eleve:hover {
   gap: 8px;
 }
 .heures input {
-  width: 8ch;
+  /* « 16 h 30 » entier, sans défilement dans la case */
+  width: 10.5ch;
   text-align: center;
   font-weight: 700;
 }
@@ -539,6 +584,13 @@ button.eleve:hover {
   }
   .carte {
     grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      "texte"
+      "gommettes"
+      "ouvrir";
+  }
+  .gommettes {
+    margin-top: 16px;
   }
   .gommettes {
     justify-content: flex-start;
@@ -558,12 +610,18 @@ button.eleve:hover {
   }
 }
 @media (max-width: 720px) {
+  .entete h1 {
+    font-size: 1.75rem;
+  }
   .carte {
     padding: 20px 20px 22px;
-    gap: 16px;
   }
   .gommettes {
     gap: 6px;
+  }
+  /* Une classe vide : une rangée de places, sans une neuvième seule sur sa ligne */
+  .gommettes :global(.gommette--libre):nth-child(n + 8) {
+    display: none;
   }
   .gommettes :global(.gommette) {
     width: 30px;

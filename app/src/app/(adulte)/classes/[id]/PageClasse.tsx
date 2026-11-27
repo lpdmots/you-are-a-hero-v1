@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useAttente } from "@/composants/Attente";
 import { Dialogue } from "@/composants/Dialogue";
 import { Gommette, PlacesVides } from "@/composants/Gommette";
 import { Icone } from "@/composants/Icone";
+import { Menu } from "@/composants/Menu";
 import { MessageAuChargement } from "@/composants/MessageAuChargement";
 import { useMessage } from "@/composants/Messages";
 import { formerIdentifiant, identifiantConvient, identifiantPourClasse } from "@/domaine/acces";
@@ -29,7 +30,7 @@ import { PanneauHoraires } from "./PanneauHoraires";
 type Ancienne = { id: string; nom: string; annee: string; projets: number };
 type Ouvert =
   | { sorte: "eleve"; id: string }
-  | { sorte: "horaires" }
+  | { sorte: "horaires"; allumer?: boolean }
   | { sorte: "terminer"; id: string; nom: string; annee: string; projets: number }
   | { sorte: "motDePasse"; neuf: string }
   | { sorte: "renommer" }
@@ -60,15 +61,11 @@ export function PageClasse({
   const [identifiantEcrit, setIdentifiantEcrit] = useState(false);
   const [erreurIdentifiant, setErreurIdentifiant] = useState<string | null>(null);
   const [erreur, setErreur] = useState<string | null>(null);
-  const menu = useRef<HTMLDetailsElement>(null);
 
   const annee = libelleAnnee(classe.anneeDebut);
   const n = classe.eleves.length;
   const liste = trier(classe.eleves);
   const enCours = classe.enCours;
-  const fermerMenu = () => {
-    if (menu.current) menu.current.open = false;
-  };
   const echec = (texte: string) => dire({ texte });
 
   if (aide) {
@@ -204,37 +201,34 @@ export function PageClasse({
           Retour à Mes classes
         </Link>
       </nav>
-      <header className="entete">
-        <div>
-          <h1>{classe.nom}</h1>
-          <p>
-            {annee}
-            {n ? ` · ${n} élève${pluriel(n)}` : ""}
-          </p>
-        </div>
+      <header className={styles.entete}>
+        <h1>{classe.nom}</h1>
         <div className="page-tete__cmd">
           <button type="button" className="aide-bouton" onClick={() => setAide(true)} title="Que fait-on ici ?">
             <Icone nom="aide" />
             Aide
           </button>
           {enCours ? (
-            <details className="menu" ref={menu}>
-              <summary className="btn" aria-label="Autres commandes de la classe">
-                <Icone nom="points" />
-              </summary>
-              <div className="menu__liste">
-                <button type="button" onClick={() => { fermerMenu(); ouvrirRenommer(); }}>
-                  Renommer la classe
-                </button>
-                {!n && !classe.projets.length ? (
-                  <button type="button" onClick={() => { fermerMenu(); supprimer(); }}>
-                    Supprimer la classe
+            <Menu libelle="Autres commandes de la classe">
+              {(fermer) => (
+                <>
+                  <button type="button" onClick={() => { fermer(); ouvrirRenommer(); }}>
+                    Renommer la classe
                   </button>
-                ) : null}
-              </div>
-            </details>
+                  {!n && !classe.projets.length ? (
+                    <button type="button" onClick={() => { fermer(); supprimer(); }}>
+                      Supprimer la classe
+                    </button>
+                  ) : null}
+                </>
+              )}
+            </Menu>
           ) : null}
         </div>
+        <p className={styles.enteteSous}>
+          {annee}
+          {n ? ` · ${n} élève${pluriel(n)}` : ""}
+        </p>
       </header>
 
       {!enCours && classe.termineeLe ? (
@@ -242,7 +236,7 @@ export function PageClasse({
           <Icone nom="coche" />
           <div>
             <p>
-              <b>Année terminée le {dateLongue(classe.termineeLe)}.</b> Les élèves ne peuvent plus ouvrir cette classe. Rien
+              <b>Année terminée le {dateLongue(classe.termineeLe)}.</b> Les élèves n’écrivent plus&nbsp;; ils gardent «&nbsp;Lire&nbsp;». Rien
               n’est supprimé.
             </p>
           </div>
@@ -260,7 +254,10 @@ export function PageClasse({
         <div className={`alerte ${styles.proposition}`}>
           <Icone nom="horloge" />
           <span>
-            <b>Votre classe {proposition.annee}</b> ({proposition.nom}) est encore en cours. Son année est finie ?
+            <b>
+              {proposition.nom} {proposition.annee}
+            </b>{" "}
+            est encore en cours. Son année est finie ?
           </span>
           <button type="button" className="btn" onClick={() => setOuvert({ sorte: "terminer", ...proposition })}>
             Terminer son année
@@ -287,7 +284,10 @@ export function PageClasse({
               <div className={styles.listeCmd}>
                 <button type="button" className="btn btn--discret" aria-pressed={!!codes} disabled={attente === "codes"} aria-busy={attente === "codes" || undefined} onClick={basculerCodes}>
                   <Icone nom="oeil" />
-                  {codes ? "Masquer les codes" : "Afficher les codes"}
+                  <span className={styles.basculeCodes}>
+                    <span aria-hidden={codes ? true : undefined}>Afficher les codes</span>
+                    <span aria-hidden={codes ? undefined : true}>Masquer les codes</span>
+                  </span>
                 </button>
                 <Link className="btn" href={`/classes/${classe.id}/imprimer`}>
                   <Icone nom="imprimer" />
@@ -417,7 +417,7 @@ export function PageClasse({
                   {classe.horairesLimites ? "Hors de ces horaires, les élèves ne peuvent ni lire ni écrire." : "Les élèves travaillent quand ils veulent."}
                 </p>
                 <div className={styles.ficheCmd}>
-                  <button type="button" className="btn" onClick={() => setOuvert({ sorte: "horaires" })}>
+                  <button type="button" className="btn" onClick={() => setOuvert({ sorte: "horaires", allumer: !classe.horairesLimites })}>
                     {classe.horairesLimites ? "Changer les horaires" : "Limiter les horaires"}
                   </button>
                 </div>
@@ -473,11 +473,11 @@ export function PageClasse({
           retraitEnCours={attente === "retirer"}
         />
       ) : null}
-      {ouvert?.sorte === "horaires" ? <PanneauHoraires classe={classe} onFermer={() => setOuvert(null)} /> : null}
+      {ouvert?.sorte === "horaires" ? <PanneauHoraires classe={classe} allumer={ouvert.allumer} onFermer={() => setOuvert(null)} /> : null}
 
       {ouvert?.sorte === "supprimer-passee" ? (
         <Dialogue
-          titre={`Supprimer ${classe.nom} ${annee} ?`}
+          titre={<>Supprimer <span className={styles.insecable}>{classe.nom} {annee}</span> ?</>}
           onFermer={() => setOuvert(null)}
           boutons={
             <button type="button" className="btn btn--danger" disabled={attente === "supprimer-passee"} aria-busy={attente === "supprimer-passee" || undefined} onClick={supprimerPassee}>
@@ -487,13 +487,13 @@ export function PageClasse({
         >
           <ul className="dialogue__faits">
             <li>Les profils de ses élèves, leurs codes et leurs inscriptions sont effacés, sans retour.</li>
-            <li>Leurs textes restent dans les projets, signés de leur prénom ; les livres ne changent pas.</li>
+            <li>Leurs textes restent dans les projets, signés de leur prénom&nbsp;; les livres ne changent pas.</li>
           </ul>
         </Dialogue>
       ) : null}
       {ouvert?.sorte === "terminer" ? (
         <Dialogue
-          titre={`Terminer l’année de ${ouvert.nom} ${ouvert.annee} ?`}
+          titre={<>Terminer l’année de <span className={styles.insecable}>{ouvert.nom} {ouvert.annee}</span> ?</>}
           onFermer={() => setOuvert(null)}
           boutons={
             <button type="button" className="btn btn--primaire" disabled={attente === "terminer"} aria-busy={attente === "terminer" || undefined} onClick={() => terminer(ouvert.id, ouvert.nom, ouvert.annee)}>
@@ -502,7 +502,7 @@ export function PageClasse({
           }
         >
           <ul className="dialogue__faits">
-            <li>Les élèves ne pourront plus écrire ; ils garderont « Lire », chez eux aussi, jusqu’à ce que vous supprimiez la classe.</li>
+            <li>Les élèves ne pourront plus écrire&nbsp;; ils garderont « Lire », chez eux aussi, jusqu’à ce que vous supprimiez la classe.</li>
             <li>
               Rien n’est supprimé
               {ouvert.projets ? ` : vous gardez ${ouvert.projets > 1 ? `ses ${ouvert.projets} projets` : "son projet"}, les textes et les livres` : ""}.

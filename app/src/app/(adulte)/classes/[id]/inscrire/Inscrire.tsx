@@ -259,6 +259,8 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
     );
   } else {
     const points = pointsARegler(inscrits, lignes);
+    // Les lignes d'un point à régler se repèrent dans la liste (deux Lucas parmi vingt-cinq)
+    const lignesARegler = new Set(points.map((p) => p.rang));
     const nc = lignes.filter((l) => l.type === "connu").length;
     const nn = lignes.length - nc;
     const n = lignes.length;
@@ -298,7 +300,7 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
         <li key={ligne.type === "neuf" ? ligne.cle : ligne.eleve.id} className={styles.point}>
           <p>
             <b>Deux {prenom} dans la classe.</b> Écrivez le nom {neuf ? "du nouveau" : "de l’un des deux"}, ou son initiale : les
-            élèves liront « {lu} » et « {prenom} D. ».
+            élèves liront «&nbsp;{lu}&nbsp;» et, par exemple, «&nbsp;{prenom}&nbsp;D.&nbsp;».
           </p>
           <label className={styles.pointChamp}>
             {neuf ? `Nom du nouveau ${prenom}` : `Nom de ${prenom}, déjà connu`}
@@ -348,13 +350,13 @@ export function Inscrire({ classeId, inscrits, connus }: { classeId: string; ins
                 </button>
               </li>
             ) : (
-              <li key={l.type === "connu" ? l.eleve.id : l.cle}>
+              <li key={l.type === "connu" ? l.eleve.id : l.cle} className={lignesARegler.has(i) ? styles.recapARegler : undefined}>
                 <Gommette prenom={prenomDe(l)} couleur={l.type === "connu" ? l.eleve.couleur : (inscrits.length + i) % 10} taille="s" />
                 <span className={styles.recapNom}>
                   <b>{prenomDe(l)}</b>
                   {nomDe(l) ? ` ${nomDe(l)}` : ""}
                 </span>
-                <span className={styles.recapQuoi}>{l.type === "connu" ? "garde son code" : "nouveau"}</span>
+                {nc && nn ? <span className={styles.recapQuoi}>{l.type === "connu" ? "garde son code" : "nouveau"}</span> : null}
                 {l.type === "neuf" ? (
                   <button type="button" className={styles.recapCmd} aria-label={`Corriger ${l.prenom}`} onClick={() => setEdition({ rang: i, prenom: l.prenom, nom: l.nom })}>
                     <Icone nom="crayon" />
