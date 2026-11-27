@@ -5012,6 +5012,7 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
       (`tests/parcours/chemins.spec.ts`) datent de la vue en lecture seule :
       une attente y est accordée à la main (« Texte vide » pour une scène à
       choix), d'autres peuvent demander une retouche quand il les fera jouer.
+      **Rejoués et accordés les 26 et 27 novembre 2026,** [plus bas](#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026).
 - **Retouches du 10 novembre 2026, à sa demande** (après la construction) :
   cadre des chemins de 480 points au moins ; bulle d'aide plus coupée sous
   l'en-tête ; dans le panneau, « Ses choix » sous le titre, puis la consigne
@@ -5273,7 +5274,8 @@ Ajouté hors de cet ordre, souhaité par le porteur dans un futur proche :
       cartes à l'ouverture d'un chapitre à choix, échoueront tant qu'ils ne
       sont pas repris (`chemins.spec.ts` en entier : il mesure le défilement
       de la page). Aucun n'a été joué, à sa demande ; à faire avant une mise
-      en ligne s'il veut la suite verte.
+      en ligne s'il veut la suite verte. **Fait les 26 et 27 novembre 2026,**
+      [plus bas](#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026).
     - **Relevé par les deux lectures, hors de ce lot :** un choix « Sans
       destination » ou « Scène supprimée » n'offre que sa corbeille dans le
       panneau (pas de geste pour le réparer d'ici) ; le compteur « – / 6 » de
@@ -5393,6 +5395,7 @@ conversation à part, sans prototype, un commit, rien poussé.
 - **Parcours Playwright : non accordés,** comme ceux de l'atelier.
   `tests/parcours/chemins.spec.ts` cherche encore les libellés sur les
   flèches et les étiquettes « Sans destination » ; à reprendre à sa demande.
+  **Repris les 26 et 27 novembre 2026,** [plus bas](#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026).
 - **Un vrai appel d'IA, par erreur.** En prenant les captures contre le
   serveur local, qui n'était pas en IA simulée, la capture de la proposition
   a demandé un vrai bloc de scènes (un tour, 3 à 4 ✦, sur un compte d'essai
@@ -5571,7 +5574,8 @@ sauf un message) ; l'écran dans le navigateur, sur le marais, par
 (seize captures, puis deux pages ouvertes ensemble : la copie de celui qui
 écrit reçoit la phrase modifiée, perd le choix supprimé et le retrouve à sa
 place après « Annuler »). **Aucun parcours Playwright n'est écrit ni
-rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés.
+rejoué** pour ce lot ; ceux de « Chemins » ne sont toujours pas accordés
+(écrits et accordés les 26 et 27 novembre 2026, [plus bas](#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026)).
 
 **Précisions prises en construisant, toutes réglées avec le porteur le
 11 novembre 2026** — onze confirmées, la neuvième remplacée par sa décision ;
@@ -5677,8 +5681,8 @@ réussi chez Vercel, le site répond. Non vérifié en ligne : les écrans de
 « Chemins » une fois connecté, que seul son compte ouvre. Restent en local,
 non commités, seize fichiers de `app/tests/parcours/` d'une autre
 conversation ; les parcours Playwright de « Chemins » ne sont toujours pas
-accordés, et la critique en deux lectures de l'écran du choix n'est pas
-faite.
+accordés (ils le sont depuis les 26 et 27 novembre 2026, [plus bas](#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026)),
+et la critique en deux lectures de l'écran du choix n'est pas faite.
 
 ### Fiche de l'histoire à imprimer (F02.1, 18 novembre 2026)
 
@@ -6116,6 +6120,92 @@ chacune sur son instruction :
    le 24 novembre 2026 à sa demande** (« met en ligne ») : sans migration,
    code poussé jusqu'à `600c439`, déploiement réussi, page, plan du site et
    `llms.txt` vérifiés sur `iletaituneclasse.com`.
+
+### Parcours Playwright rejoués et accordés (26 et 27 novembre 2026)
+
+À la demande du porteur, qui veut la suite verte avant son premier vrai
+projet de classe (janvier 2027) : aucun parcours n'avait été joué depuis le
+10 novembre 2026, alors que « Chemins » en atelier, les choix en onglets,
+« Modifier un choix », « La suite », « Aller au passage », la fiche de
+l'histoire, « Ressources », la colonne de navigation et la révision
+d'ergonomie page par page étaient partis en ligne. Fait en local, un commit,
+rien poussé, sans migration ; aucun appel payant (les parcours tournent en IA
+simulée, clés vidées par `playwright.config.ts`).
+
+- **Première série, le 26 novembre :** 471 parcours, 439 passés, 32 échoués
+  (37 minutes). Chaque échec est trié contre la spécification avant d'être
+  touché : écran changé sur une décision du porteur, ou défaut de
+  l'application.
+- **Un vrai défaut de l'application, corrigé**
+  (`app/src/composants/Chemins.tsx`) : le parcours de « À regarder »
+  (F03-AC46) tournait en rond quand une même scène comptait deux fois — une
+  scène où rien ne mène et qui n'a pas de suite, ce qu'est toute scène neuve
+  pas encore reliée. « Suivant » passait alors du cinquième cas au
+  « quatrième », sans jamais atteindre les autres, et le compteur disait
+  « 4 / 6 » pour le sixième. Né avec « Choix en onglets » (`ce03b05`), donc
+  en ligne depuis le 11 novembre 2026 : le pas retenait le cas par sa seule
+  scène ; il retient maintenant sa sorte et sa scène. La mise en ligne de ce
+  correctif attend sa demande.
+- **Parcours accordés à une décision du porteur,** sans changer aucune
+  règle :
+  - *« Chemins »* (`chemins`, `choix`, `images-scene`) : les choix en onglets
+    sous la carte et plus rien sur les traits (F03-AC62 à AC65, AC68) ;
+    42 traits au repos sur le marais au lieu de 50 — les quatre retours, les
+    deux sorties et les deux choix à regarder s'écrivent dans leur onglet ;
+    la taille lisible à 70 % (F03.1) ; la molette qui change la taille
+    (F03-AC58 révisé) ; « Ouvrir » porté par le panneau de la scène cliquée ;
+    les deux bandes « Rien n'y mène » et « Sans suite » d'une même carte ;
+    l'espace de travail qui s'arrête à la place gardée pour la barre de
+    défilement (`scrollbar-gutter`, révision d'ergonomie de novembre 2026).
+  - *« Partager »* (`partager`, `partage-de-bout-en-bout`, `lecteur`,
+    `lire-eleve`, `ouverture-de-bout-en-bout`, `couverture-de-bout-en-bout`) :
+    l'écran du 17 novembre 2026 — « Public » d'abord, « Comptes des élèves »
+    et « Lien pour les familles », « Changer de lien… », « Retirer le lien »
+    (F15-AC15 révisé, F15-AC22, F12-AC11).
+  - *Bibliothèque* (`bibliotheque-des-livres`,
+    `bibliotheque-de-bout-en-bout`) : le nombre de cœurs montré à partir de 5
+    (F15-AC13, 24 novembre 2026).
+  - *Livre* (`apercu`, `livre`) : « état de 22 h 19 » le jour même ; la ligne
+    à l'horloge au pied de la fiche à la place de « Possible quand… »
+    (F11-AC89, révision d'ergonomie du Livre).
+  - *Lecture d'essai* (`lecture`) : « Recommencer au début » au pied du
+    « Parcours » (révision d'ergonomie de la lecture).
+  - *Étoiles* (`etoiles`) : l'invitation à la vidéo des aides dit « 30 ✦ pour
+    essayer » dans la colonne (F14-AC70) ; « aucun prix » se vérifie dans la
+    page, hors de la colonne.
+  - *Guide* (`pages-publiques`) : quinze questions, et le renvoi vers
+    « Ressources » (F14-AC52 révisé).
+  - *Écrans d'aide* (`plan`, `preparation`, `suivi`, `livre`) : la case « Ne
+    plus afficher » désignée par son rôle, la croix de l'invitation portant
+    « Ne plus afficher cette vidéo ».
+- **Sept parcours ajoutés,** pour ce qui n'en avait aucun :
+  - `chemins.spec.ts`, « Construire dans Chemins » : le « + » cliqué puis
+    tiré, le panneau, les suppressions (F03-AC52, AC53, AC55, AC56) ; l'onglet
+    « Sans destination » tiré, « Annuler », « Relier à… » (F03-AC67) ; le
+    choix ouvert par son onglet, son libellé, sa destination, le retour, la
+    suppression et « Annuler », la vue de loin (F03-AC70 à AC74, AC76) ; la
+    suite en onglet et « Juste la suite » dans la bulle (F03-AC77) ;
+  - `partager.spec.ts` : le lien pour les familles seul et l'invitation à la
+    bibliothèque (F15-AC21, AC23) ;
+  - `lecteur.spec.ts` : « Aller au passage » (F12-AC27) ;
+  - `choix.spec.ts` : la suite dans la copie (F05-AC59, AC62, AC64).
+- **Résultat :** 478 parcours, tous passés, deux séries complètes de suite le
+  27 novembre 2026 (21 minutes chacune) ; `npm run verifier` et
+  `npm run test:base` passent.
+- **Sans parcours à ce jour,** leurs règles étant tenues par les tests
+  unitaires et contre la base : F03-AC54 (l'écran qui ne bouge pas),
+  F03-AC66 (qui écrit), F03-AC69 et F13-AC34 à AC45 (le bloc de scènes),
+  F03-AC75 (pendant qu'un élève écrit la scène), F05-AC60, AC61, AC63 et
+  AC65, F02-AC25 à AC27 (la fiche de l'histoire), F11-AC119 côté « Mettre en
+  page » (le réglage du filet ; le lecteur en ligne est couvert), et, dans
+  F14, la page « Ressources », les tutos, la vidéo des aides et les textes
+  des deux sortes de récit (F14-AC55 à AC78, hors AC61, vérifié avec
+  l'autorisation des familles, et ce que les parcours des pages publiques
+  touchent sans le nommer). Les scripts de `tests/captures/` ne sont pas des tests : ceux d'avant les
+  onglets peuvent chercher d'anciens repères.
+- **Pour rejouer :** Docker lancé, `npm run base:demarrer`, puis
+  `npm run test:parcours` depuis `app/`. Une série interrompue laisse ses
+  comptes d'essai : `npm run base:purger-essais`.
 
 ## Hors de la première livraison
 

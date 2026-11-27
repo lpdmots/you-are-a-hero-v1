@@ -36,7 +36,7 @@ async function phare(page: Page, seul = false): Promise<Livre> {
 const etape = (page: Page, nom: string) => page.getByRole("navigation", { name: "Étapes du livre" }).getByRole("link", { name: new RegExp(nom) });
 /** Un interrupteur se bascule par son étiquette : la case elle-même est cachée sous la piste. */
 const basculer = (page: Page, nom: string) => page.locator("label.inter", { has: page.getByRole("switch", { name: nom }) }).click();
-const classes = (page: Page) => ({ click: () => basculer(page, "À mes classes") });
+const classes = (page: Page) => ({ click: () => basculer(page, "Comptes des élèves") });
 
 test("F12-AC17, F11-AC108, F12-AC08, F12-AC10 — le rappel avant le partage privé ; partagé sans PDF, l'étape est cochée ; le livre change, la mise à jour le rattrape ; couper le dernier canal retire le partage", async ({ page }) => {
   const l = await phare(page);
@@ -46,9 +46,9 @@ test("F12-AC17, F11-AC108, F12-AC08, F12-AC10 — le rappel avant le partage pri
   await classes(page).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await expect(rappel).toBeVisible();
-  await expect(rappel.getByRole("button", { name: "Partager à mes classes" })).toBeDisabled();
+  await expect(rappel.getByRole("button", { name: "Partager aux comptes des élèves" })).toBeDisabled();
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await rappel.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   await expect(etape(page, "Imprimer et partager")).toContainText("terminée");
 
@@ -67,27 +67,76 @@ test("F12-AC17, F11-AC108, F12-AC08, F12-AC10 — le rappel avant le partage pri
 
   // Couper : la confirmation dit ce qui change
   await classes(page).click();
-  const couper = page.getByRole("group", { name: "Ne plus proposer le livre à vos classes ?" });
-  await expect(couper).toContainText("La bibliothèque ne change pas.");
+  const couper = page.getByRole("group", { name: "Ne plus proposer le livre à vos élèves ?" });
+  await expect(couper).toContainText("Ils ne le verront plus dans « Lire ». La bibliothèque non plus.");
   await couper.getByRole("button", { name: "Ne plus le proposer" }).click();
-  await expect(MESSAGE(page)).toContainText("Vos classes ne voient plus le livre.");
+  await expect(MESSAGE(page)).toContainText("Vos élèves ne voient plus le livre.");
   expect((await sql<{ version: unknown }>("select version from partages where projet_id = $1", [l.projet]))[0].version).toBeNull();
 });
 
-test("F15-AC15 — deux façons, privée et publique, sans lien seul", async ({ page }) => {
+test("F15-AC15 — deux façons : « Public » d'abord, avec ses trois avantages et l'adresse que le livre aurait, puis « Privé » et ses deux interrupteurs, rien de coché d'avance", async ({ page }) => {
   const l = await phare(page);
   await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
-  await expect(page.getByRole("heading", { name: /^Privé/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /^Public/ })).toBeVisible();
-  await expect(page.getByRole("switch", { name: "Par un lien" })).toHaveCount(0);
-  await expect(page.getByText(/lien de lecture/i)).toHaveCount(0);
+  // « Public » avant « Privé » (révisé le 17 novembre 2026)
+  await expect(page.locator(".partager__carte.facon h3")).toHaveText([/^Public/, /^Privé/]);
+  const vitrine = page.getByRole("region", { name: /^Public/ });
+  await expect(vitrine.locator(".vitrine__avantages li")).toHaveText([/Lu par d’autres classes/, /Facile à retrouver/, /Des cœurs/]);
+  await expect(vitrine.locator(".vitrine__adresse")).toContainText(/Son adresse : .*\/bibliotheque\/le-phare/);
+  // « Privé » : les comptes des élèves et le lien pour les familles, éteints
+  const prive = page.getByRole("region", { name: /^Privé/ });
+  await expect(prive.getByRole("switch")).toHaveCount(2);
+  await expect(prive.getByRole("switch", { name: "Comptes des élèves" })).not.toBeChecked();
+  await expect(prive.getByRole("switch", { name: "Lien pour les familles" })).not.toBeChecked();
 });
 
-test("F12-AC24 — sans classe en cours, seule la bibliothèque", async ({ page }) => {
+test("F12-AC24, F15-AC22 — sans classe en cours, la voie privée propose le lien pour les familles et pas les comptes des élèves ; la bibliothèque reste proposée", async ({ page }) => {
   const seul = await phare(page, true);
   await aller(page, `/projet/${seul.projet}/livre?etape=sortie&volet=partager`);
-  await expect(page.getByRole("switch", { name: "À mes classes" })).toHaveCount(0);
+  await expect(page.getByRole("switch", { name: "Comptes des élèves" })).toHaveCount(0);
+  await expect(page.getByRole("switch", { name: "Lien pour les familles" })).not.toBeChecked();
   await expect(page.getByRole("heading", { name: /^Public/ })).toBeVisible();
+});
+
+test("F15-AC21, F15-AC23 — le lien pour les familles seul : il lit le livre sans compte, hors de la bibliothèque ; l'invitation à la proposer paraît une fois ; retiré, le lien mène à la page neutre", async ({ page, browser }) => {
+  const l = await phare(page);
+  await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
+  await basculer(page, "Lien pour les familles");
+  const rappel = page.getByRole("group", { name: "À relire avant de partager" });
+  await expect(rappel.getByRole("button", { name: "Créer le lien" })).toBeDisabled();
+  await rappel.getByText("J’ai relu le livre sur ces points.").click();
+  await rappel.getByRole("button", { name: "Créer le lien" }).click();
+  await expect(MESSAGE(page)).toContainText("Le lien est prêt : copiez-le pour les familles.");
+  await expect(page.getByRole("switch", { name: "Lien pour les familles" })).toBeChecked();
+  await expect(page.getByRole("switch", { name: "Comptes des élèves" })).not.toBeChecked();
+  // Premier partage privé d'un livre jamais proposé : l'invitation, une fois ; fermée, elle ne revient pas
+  const invitation = page.locator(".invitation");
+  await expect(invitation).toContainText("Votre livre pourrait aussi être lu par d’autres classes.");
+  await expect(invitation.getByRole("button", { name: "Proposer à la bibliothèque" })).toBeVisible();
+  await invitation.getByRole("button", { name: "Fermer" }).click();
+  await expect(invitation).toHaveCount(0);
+  await page.reload();
+  await expect(page.getByRole("switch", { name: "Lien pour les familles" })).toBeChecked();
+  await expect(invitation).toHaveCount(0);
+
+  // Le lien lit le livre sans compte, et demande aux moteurs de ne pas l'indexer ; le livre n'est pas dans la bibliothèque
+  const adresse = new URL(await page.getByRole("textbox", { name: "Lien pour les familles" }).inputValue()).pathname;
+  expect(adresse).toMatch(/^\/lire\//);
+  const famille = await (await browser.newContext()).newPage();
+  await famille.goto(adresse);
+  await expect(famille.locator('meta[name="robots"]')).toHaveAttribute("content", /noindex/);
+  await famille.getByRole("button", { name: "Commencer la lecture" }).click();
+  await expect(famille.locator(".lecteur__corps")).toContainText("Le phare clignote dans la brume.");
+  expect(await sql("select 1 from publications where projet_id = $1", [l.projet])).toEqual([]);
+
+  // Retiré : la page neutre de F12.1
+  await basculer(page, "Lien pour les familles");
+  const retirer = page.getByRole("group", { name: "Retirer le lien ?" });
+  await expect(retirer).toContainText("Il affichera « Ce livre n’est plus partagé ».");
+  await retirer.getByRole("button", { name: "Retirer le lien" }).click();
+  await expect(MESSAGE(page)).toContainText("Le lien est retiré.");
+  await famille.goto(adresse);
+  await expect(famille.getByText("Ce livre n’est plus partagé.")).toBeVisible();
+  await famille.context().close();
 });
 
 test("F15-AC01, F15-AC17 — proposer à la bibliothèque : la présentation, l'attestation de l'auteur, puis « En attente de relecture »", async ({ page }) => {
@@ -126,7 +175,7 @@ test("F12-AC16, F12-AC15 — les noms du partage : la ligne remplacée, la page 
   await classes(page).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await rappel.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   const [{ version }] = await sql<{ version: { presentation: { titre: { ligne: string }; auteurs: unknown } } }>("select version from partages where projet_id = $1", [l.projet]);
   expect(version.presentation.titre.ligne).toBe("Un auteur de Bretagne");
@@ -146,7 +195,7 @@ test("F12-AC09 — une scène rouverte : « Mise à jour impossible pour l’ins
   await classes(page).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await rappel.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
 
   await semerBlocs(l.base, l.s[1], [recit("La lanterne s’allume enfin.")]);

@@ -52,7 +52,7 @@ test.describe("Destination Livre (F11.6)", () => {
     await expect(aide.getByText("Étape 2")).toBeVisible();
     await expect(aide.locator("details[open] > summary")).toHaveText(["Que fait-on maintenant ?"]);
     await expect(aide.locator("details:not([open]) > summary")).toHaveCount(3);
-    await aide.getByLabel("Ne plus afficher").check();
+    await aide.getByRole("checkbox", { name: "Ne plus afficher" }).check();
     await expect.poll(async () => (await sql<{ a: string[] }>("select aides_masquees as a from enseignants where id = $1", [l.compte.id]))[0].a).toContain("livre-chemins");
     await aide.getByRole("button", { name: "Commencer" }).click();
     await expect(fiche(page)).toBeVisible();
@@ -126,7 +126,9 @@ test.describe("Destination Livre (F11.6)", () => {
     await expect(points(page)).toHaveText([/Aucun chemin n’y mène\./, /Sa seule suite est une énigme\./]);
     await tache(page, "Tester la lecture").click();
     await expect(fiche(page).getByRole("button", { name: "J’ai vérifié les chemins" })).toBeDisabled();
-    await expect(fiche(page)).toContainText("Possible quand toutes les scènes seront prêtes pour le livre.");
+    // La ligne à l'horloge, au pied de la fiche, dit pourquoi : la phrase sous le bouton ne la répète plus (révision de novembre 2026)
+    await expect(fiche(page).locator(".fiche-note")).toHaveText("2 scènes à finir : leurs choix seront vérifiés ensuite.");
+    await expect(fiche(page)).not.toContainText("Possible quand");
   });
 
   test("F09.2 — « Ouvrir la scène » d'un choix à relier : la scène s'ouvre à côté de l'aperçu sur ce choix, son panneau ouvert, et « Fermer » rend la liste", async ({ page }) => {

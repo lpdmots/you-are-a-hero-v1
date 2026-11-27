@@ -109,7 +109,7 @@ test("F02-AC02, F02-AC07 — l'écran d'aide ouvre la Préparation : rien n'est 
   await expect(page.getByText("Et « Les choix », « Le jeu » ?")).toBeVisible();
   await expect(RETENU(page)).toHaveCount(0);
 
-  await page.getByLabel("Ne plus afficher").check();
+  await page.getByRole("checkbox", { name: "Ne plus afficher" }).check();
   await page.getByRole("button", { name: "Commencer" }).click();
   await expect(RETENU(page)).toBeVisible();
   await page.context().clearCookies({ name: "aide-preparation" });

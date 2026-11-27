@@ -141,7 +141,9 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   await expect(page.getByRole("region", { name: "En bref" }).getByText("1 à 3 mois")).toBeVisible();
   // Grand écran : le sommaire collant, à côté du texte
   const sommaire = page.getByRole("navigation", { name: "Sommaire" }).first();
-  await expect(sommaire.getByRole("link")).toHaveCount(14);
+  // Quinze questions depuis le 24 novembre 2026 : la dernière, « Et pour une histoire classique ? » (F14, « deux sortes de récit »)
+  await expect(sommaire.getByRole("link")).toHaveCount(15);
+  await expect(sommaire.getByRole("link").last()).toHaveText(/histoire classique/);
   await sommaire.getByRole("link", { name: /Comment vérifier que tous les chemins/ }).click();
   await expect(page).toHaveURL(/#chemins$/);
   await expect(page.getByRole("heading", { level: 2, name: /Comment vérifier que tous les chemins/ })).toBeInViewport();
@@ -149,8 +151,8 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   // Un renvoi de la partie 14 mène à sa question
   await page.getByRole("region", { name: /erreurs à éviter/ }).getByRole("link", { name: "question 11" }).click();
   await expect(page).toHaveURL(/#temps$/);
-  // Ni « Ressources » ni page à venir
-  await expect(page.getByText("Ressources")).toHaveCount(0);
+  // Aucune page à venir : le guide renvoie à la page « Ressources », qui existe depuis le 19 novembre 2026 (F14-AC59)
+  await expect(page.locator("main").getByRole("link", { name: /Ressources/i }).first()).toHaveAttribute("href", /^\/ressources/);
   // Un lien vers un autre site s'ouvre dans un nouvel onglet, et le dit
   const larousse = page.getByRole("link", { name: /Tu es le héros.*\(nouvel onglet\)/ });
   await expect(larousse).toHaveAttribute("target", "_blank");
@@ -163,7 +165,7 @@ test("F14-AC52 — le guide : le sommaire mène à chaque question et suit la le
   await expect(bouton).toBeHidden();
   await page.locator("#temps").scrollIntoViewIfNeeded();
   await expect(bouton).toBeVisible();
-  await expect(bouton).toContainText("11 / 14");
+  await expect(bouton).toContainText("11 / 15");
   await bouton.click();
   await expect(page).toHaveURL(/#sommaire$/);
 });

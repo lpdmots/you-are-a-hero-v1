@@ -63,9 +63,9 @@ async function phare(page: Page): Promise<Livre> {
 }
 
 /**
- * Un lien de lecture ouvert : il ne se crée plus depuis le 25 octobre 2026 (F15-AC15), mais ceux
- * ouverts avant restent lisibles. Le livre se partage d'abord « À mes classes » depuis le volet,
- * rappel confirmé, puis le lien s'ouvre en base, comme avant ; rend l'adresse du lien.
+ * Un lien de lecture ouvert. Le livre se partage d’abord aux comptes des élèves depuis le volet,
+ * rappel confirmé, puis le lien pour les familles s'ouvre en base (l'écran le crée aussi depuis le
+ * 17 novembre 2026, F15-AC21 : partager.spec.ts) ; rend l'adresse du lien.
  */
 async function partager(page: Page, projet: string): Promise<string> {
   const [{ adulte }] = await sql<{ adulte: string }>("select enseignant_id as adulte from projets where id = $1", [projet]);
@@ -74,10 +74,10 @@ async function partager(page: Page, projet: string): Promise<string> {
     [adulte, `lecteur${Date.now().toString(36)}`],
   );
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Comptes des élèves" }) }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await rappel.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   const [{ code }] = await sql<{ code: string }>("update partages set par_lien = true where projet_id = $1 returning code", [projet]);
   return `http://localhost:3100/lire/${code.slice(0, 4)}-${code.slice(4, 7)}-${code.slice(7)}`;
@@ -272,16 +272,62 @@ test("F12-AC25, F04-AC43, F12-AC10, F12-AC11 — après une mise à jour, la lec
   await expect(lecteur.getByRole("button", { name: /^Continuer/ })).toHaveCount(0);
   await expect(lecteur.getByRole("button", { name: "Commencer la lecture" })).toBeVisible();
 
-  // Le lien coupé : la page neutre, sans titre ni nom, jusque dans l'onglet
+  // Le lien changé : l'ancien mène à la page neutre, sans titre ni nom, jusque dans l'onglet ; le nouveau lit la même version (F12-AC11)
   await aller(page, `/projet/${l.projet}/livre?etape=sortie&volet=partager`);
-  await page.getByRole("button", { name: "Couper le lien…" }).click();
-  await page.getByRole("group", { name: "Couper ce lien ?" }).getByRole("button", { name: "Couper le lien" }).click();
-  await expect(page.getByRole("heading", { name: "Ancien lien de lecture" })).toHaveCount(0);
+  const champ = page.getByRole("textbox", { name: "Lien pour les familles" });
+  const ancien = await champ.inputValue();
+  await page.getByRole("button", { name: "Changer de lien…" }).click();
+  await page.getByRole("group", { name: "Changer de lien ?" }).getByRole("button", { name: "Changer de lien" }).click();
+  await expect(champ).not.toHaveValue(ancien);
   await lecteur.reload();
   await expect(lecteur.getByText("Ce livre n’est plus partagé.")).toBeVisible();
   await expect(lecteur).toHaveTitle("Ce livre n’est plus partagé");
   await expect(lecteur.locator("body")).not.toContainText("phare");
+  const nouveau = new URL(await champ.inputValue()).pathname;
+  await lecteur.goto(nouveau);
+  await expect(lecteur.getByRole("button", { name: "Commencer la lecture" })).toBeVisible();
+  // Le lien retiré : le nouveau mène à son tour à la page neutre (F12-AC10)
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Lien pour les familles" }) }).click();
+  await page.getByRole("group", { name: "Retirer le lien ?" }).getByRole("button", { name: "Retirer le lien" }).click();
+  await expect(page.getByRole("switch", { name: "Lien pour les familles" })).not.toBeChecked();
+  await lecteur.goto(nouveau);
+  await expect(lecteur.getByText("Ce livre n’est plus partagé.")).toBeVisible();
+  await expect(lecteur.locator("body")).not.toContainText("phare");
   await contexte.close();
+});
+
+test("F12-AC27 — « Aller au passage » : depuis « Parcours », le numéro seul mène au passage, « Revenir au passage précédent » en revient ; un numéro absent se dit et l'on reste ; depuis la page de titre, la lecture commence au passage demandé", async ({ page, browser }) => {
+  const l = await phare(page);
+  const adresse = await partager(page, l.projet);
+  const [retour, sommet] = [await numeroDe(l.projet, l.s.retour), await numeroDe(l.projet, l.s.sommet)];
+  const { contexte, lecteur } = await telephone(browser);
+  await lecteur.goto(adresse);
+  await lecteur.getByRole("button", { name: "Commencer la lecture" }).click();
+  await choix(lecteur, "Monter au phare").click();
+  await expect(texte(lecteur)).toContainText("Trois symboles sur la porte.");
+  // « Parcours », puis le seul numéro
+  await lecteur.getByRole("button", { name: /Parcours/ }).click();
+  await lecteur.getByLabel("Aller au passage n°").fill(String(retour));
+  await lecteur.locator(".lecteur__aller").getByRole("button", { name: "Y aller" }).click();
+  await expect(texte(lecteur)).toContainText("Tu rentres chez toi.");
+  await lecteur.getByRole("button", { name: "Revenir au passage précédent" }).click();
+  await expect(texte(lecteur)).toContainText("Trois symboles sur la porte.");
+  // Un numéro qui n'existe pas : une phrase le dit, on reste sur le passage
+  await lecteur.getByRole("button", { name: /Parcours/ }).click();
+  await lecteur.getByLabel("Aller au passage n°").fill("312");
+  await lecteur.locator(".lecteur__aller").getByRole("button", { name: "Y aller" }).click();
+  await expect(lecteur.getByRole("alert").filter({ hasText: "Il n’y a pas de passage 312 dans ce livre." })).toBeVisible();
+  await expect(texte(lecteur)).toContainText("Trois symboles sur la porte.");
+  await contexte.close();
+
+  // Depuis la page de titre, sur un appareil qui n'a rien lu : la lecture commence au passage demandé, même derrière une énigme
+  const autre = await telephone(browser);
+  await autre.lecteur.goto(adresse);
+  await autre.lecteur.getByRole("button", { name: "Aller à un passage" }).click();
+  await autre.lecteur.getByLabel("Aller au passage n°").fill(String(sommet));
+  await autre.lecteur.locator(".lecteur__aller").getByRole("button", { name: "Y aller" }).click();
+  await expect(texte(autre.lecteur)).toContainText("La lanterne s’allume.");
+  await autre.contexte.close();
 });
 
 test("F12.1 — récit classique : un chapitre par écran, les scènes à la suite sans filet (F11-AC119), le sommaire, sans marque de fin ; la lecture reprend au chapitre", async ({ page, browser }) => {

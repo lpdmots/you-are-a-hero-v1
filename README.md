@@ -3,6 +3,14 @@
 Point d'entrée : [brief produit et technique](BRIEF-V1.md).
 Les règles de collaboration et de rédaction sont dans [CLAUDE.md](../CLAUDE.md).
 
+Parcours Playwright, 26 et 27 novembre 2026 : à la demande du porteur, la
+suite complète est rejouée, pour la première fois depuis le 10 novembre, et
+remise au vert en local — 478 parcours passés deux séries de suite, un
+défaut de l'application corrigé (le parcours de « À regarder » dans
+« Chemins »), les parcours accordés aux écrans décidés depuis, sept parcours
+ajoutés ; un commit local, rien poussé. Détail dans le
+[plan](docs/plan.md#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026).
+
 Accueil, 8 novembre 2026 : les textes courts validés dans l'aperçu comparatif
 sont intégrés en local ; décisions dans le [design](docs/design.md#accueil-en-livre-jeu-22-octobre-2026).
 
@@ -44,8 +52,9 @@ et le travail avec son espace à côté du schéma), un en-tête en une bande et
 F03-AC58 à AC61). Construit en local le même jour, sans migration, un commit,
 rien poussé ; écrans critiqués en deux lectures (28/40 et 26/40) et corrigés
 ([design](docs/design.md#-chemins--en-atelier--écrans-construits-11-novembre-2026)) ;
-précisions à confirmer et parcours à accorder dans le
-[plan](docs/plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026) ;
+précisions dans le
+[plan](docs/plan.md#construire-dans--chemins--et-bloc-de-scènes-f031-f137-10-novembre-2026),
+parcours accordés les 26 et 27 novembre 2026 ;
 mode d'emploi dans [`app/README.md`](app/README.md), « Essayer « Chemins » en
 atelier ».
 
@@ -72,8 +81,9 @@ place dans le texte sans arrêter celui qui écrit la scène
 ([F08.1](docs/specifications.md#f08-ajout-du-plan)) ; écrans critiqués en
 deux lectures (24/40 et 24/40) et corrigés
 ([design](docs/design.md#choix-en-onglets--écrans-construits-11-novembre-2026)) ;
-précisions à confirmer et parcours à accorder dans le
-[plan](docs/plan.md#choix-en-onglets-f031-11-novembre-2026) ; mode d'emploi
+précisions dans le
+[plan](docs/plan.md#choix-en-onglets-f031-11-novembre-2026), parcours
+accordés les 26 et 27 novembre 2026 ; mode d'emploi
 dans [`app/README.md`](app/README.md), « Essayer les choix en onglets ».
 
 Modifier un choix depuis « Chemins », 11 novembre 2026 : sur l'idée du

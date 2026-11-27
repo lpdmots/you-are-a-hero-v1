@@ -74,7 +74,7 @@ test.describe("Aide à l'ouverture du Suivi (F06.5)", () => {
     await expect(lignes(page)).toHaveCount(6);
     // « Aide », discret, rouvre l'écran ; il se referme par « Fermer l'aide »
     await page.getByRole("button", { name: "Aide" }).click();
-    await page.getByLabel("Ne plus afficher").check();
+    await page.getByRole("checkbox", { name: "Ne plus afficher" }).check();
     await page.getByRole("button", { name: "Fermer l’aide" }).click();
     await expect(lignes(page)).toHaveCount(6);
     await expect.poll(async () => (await sql<{ a: string[] }>("select aides_masquees as a from enseignants where id = $1", [c.compte.id]))[0].a).toContain("suivi");

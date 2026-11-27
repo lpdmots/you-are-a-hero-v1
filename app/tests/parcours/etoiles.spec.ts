@@ -51,9 +51,12 @@ test("F14-AC07 — « Mon compte » dit le solde ; aucun bouton d'IA ne montre d
   await aller(page, `/projet/${s.projet}/scene/${s.scene}`);
   const titres = page.getByRole("button", { name: "Proposer des titres" });
   await expect(titres).toBeVisible();
-  // Aucun prix sur les boutons de l'IA, ni ailleurs dans la page
+  // Aucun prix sur les boutons de l'IA, ni ailleurs dans la page ; la colonne, elle, porte l'invitation à la vidéo
+  // des aides, qui dit les étoiles offertes pour essayer (F14-AC70)
   await expect(page.locator("body")).not.toContainText("€");
-  await expect(page.locator("body")).not.toContainText(/\d\s*✦/);
+  await expect(page.locator("main")).toBeVisible();
+  await expect(page.locator("main")).not.toContainText(/\d\s*✦/);
+  await expect(page.locator("#colonne-adulte")).toContainText("30 ✦ pour essayer");
   // Au-dessus de « peu », rien ne se dit
   await titres.click();
   await expect(page.getByRole("group", { name: "Titres proposés" })).toBeVisible();

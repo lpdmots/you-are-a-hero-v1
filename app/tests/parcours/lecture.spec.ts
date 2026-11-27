@@ -75,8 +75,9 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     await page.getByRole("button", { name: "Passage précédent" }).click();
     await expect(page_(page)).toContainText("Deux chemins s’ouvrent.");
 
-    // « Recommencer » : le départ, les marques gardées
-    await page.getByRole("button", { name: "Recommencer" }).first().click();
+    // « Recommencer au début », au pied du parcours (révision de novembre 2026) : le départ, les marques gardées
+    await parcours(page).click();
+    await page.getByRole("button", { name: "Recommencer au début" }).click();
     await expect(page_(page)).toContainText("Le phare clignote.");
     await expect(choix(page, "Monter au phare")).toContainText("déjà lu");
     expect(await etatEnBase(l.s.chemins)).toBe("cours");
@@ -140,13 +141,14 @@ test.describe("Lecture d'essai de l'adulte (F09.1)", () => {
     await expect(feuille.locator(".fa-de__resultat")).toHaveText(/^Tu as fait [1-6]$/);
     await choix(page, "Monter au phare").click();
     await expect(page_(page)).toContainText("Deux chemins s’ouvrent.");
-    // La feuille tient d'un passage à l'autre, refermée ou non ; « Recommencer » la remet à ses valeurs de départ
+    // La feuille tient d'un passage à l'autre, refermée ou non ; « Recommencer au début », au pied du parcours, la remet à ses valeurs de départ
     await page.keyboard.press("Escape");
     await expect(feuille).toBeHidden();
     await expect(page.getByRole("button", { name: /Ma feuille · Volonté 0/ })).toBeVisible();
     await page.getByRole("button", { name: /Ma feuille/ }).click();
     await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("0");
-    await page.getByRole("button", { name: "Recommencer" }).first().click();
+    await parcours(page).click();
+    await page.getByRole("button", { name: "Recommencer au début" }).click();
     await expect(feuille.locator(".fa-compteur__valeur")).toHaveText("1");
   });
 

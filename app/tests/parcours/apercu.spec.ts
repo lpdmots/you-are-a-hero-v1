@@ -36,7 +36,8 @@ async function phare(page: Page, o: { aChoix?: boolean; impasse?: boolean } = {}
   return { compte, base, projet, s, debut: DEBUT };
 }
 
-const apercuPret = (page: Page) => expect(page.locator(".apercu__etat")).toHaveText(/\d+ passages? · \d+ pages · état du/, { timeout: 30000 });
+// Le jour même, la ligne dit « état de 17 h 50 » ; un autre jour, « état du 13 novembre, 17 h 50 » (révision d'ergonomie du Livre)
+const apercuPret = (page: Page) => expect(page.locator(".apercu__etat")).toHaveText(/\d+ passages? · \d+ pages · état d[eu] /, { timeout: 30000 });
 /** Les passages et les renvois de l'aperçu se cliquent aussi par des boutons, pour le clavier : on s'en sert ici. */
 const ouvrirPassage = (page: Page, nom: string) => page.getByRole("button", { name: `Ouvrir ${nom}`, exact: true }).first().dispatchEvent("click");
 const scene = (page: Page) => page.locator(".a-cote");

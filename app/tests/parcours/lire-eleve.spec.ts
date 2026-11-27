@@ -13,7 +13,7 @@ test.afterEach(async () => {
   await supprimerComptes();
 });
 
-/** Un livre fini de deux passages, avec une feuille d'aventure, partagé « À mes classes » par l'écran. */
+/** Un livre fini de deux passages, avec une feuille d'aventure, partagé aux comptes des élèves par l’écran. */
 async function livreOuvertAuxClasses(page: Page, base: Parameters<typeof semerBlocs>[0], compte: Parameters<typeof semerProjet>[1], titre: string, classeId: string | null) {
   const projet = await semerProjet(base, compte, classeId ? "classe" : "personnel", "choix", titre, classeId);
   const s = (await semerPartie(base, projet, "La côte", [{ titre: "La plage", scenes: ["Le départ", "La fin"] }])).chapitres[0].scenes;
@@ -29,10 +29,10 @@ async function livreOuvertAuxClasses(page: Page, base: Parameters<typeof semerBl
     [projet],
   );
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Comptes des élèves" }) }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await rappel.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   return projet;
 }

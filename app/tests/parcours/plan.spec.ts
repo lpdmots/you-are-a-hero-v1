@@ -499,7 +499,7 @@ test("F03.1 — l'écran d'aide s'affiche à la première ouverture, dit comment
   await expect(page.getByRole("heading", { level: 2, name: "Parties et chapitres" })).toBeVisible();
   await page.getByText("Comment changer l’ordre ?").click();
   await expect(page.getByText("Tirez une carte pour la déplacer. Un chapitre se pose aussi dans une autre partie.")).toBeVisible();
-  await page.getByLabel("Ne plus afficher").check();
+  await page.getByRole("checkbox", { name: "Ne plus afficher" }).check();
   await page.getByRole("button", { name: "Commencer" }).click();
   await expect(page.getByRole("button", { name: "Ajouter une partie" }).first()).toBeVisible();
   await page.context().clearCookies({ name: "aide-plan" });

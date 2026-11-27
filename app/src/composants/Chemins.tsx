@@ -91,11 +91,16 @@ export function Chemins({
   // Tout ce qui est à regarder, à la suite : on le parcourt comme les occurrences d'un mot dans un texte
   const aVoir = useMemo(() => regard.sortes.flatMap(({ sorte, ou }) => ou.map((id) => ({ sorte, id }))), [regard]);
   // Le pas retient le cas désigné, pas son rang : un cas réglé — un choix qu'on vient de relier, une scène qui a
-  // reçu sa suite — quitte la liste sans que la vue parte d'elle-même vers le suivant
-  const [pas, setPas] = useState<{ id: string; fois: number } | null>(null);
-  const rang = pas ? aVoir.findIndex((x) => x.id === pas.id) : -1;
+  // reçu sa suite — quitte la liste sans que la vue parte d'elle-même vers le suivant. Sa sorte compte : une scène
+  // où rien ne mène et qui n'a pas de suite est deux cas, et le parcours ne doit pas revenir du second au premier
+  const [pas, setPas] = useState<{ sorte: SorteARegarder; id: string; fois: number } | null>(null);
+  const rang = pas ? aVoir.findIndex((x) => x.sorte === pas.sorte && x.id === pas.id) : -1;
   const courant = rang === -1 ? null : aVoir[rang];
-  const aller = (vers: number) => setPas((avant) => ({ id: aVoir[((vers % aVoir.length) + aVoir.length) % aVoir.length].id, fois: (avant?.fois ?? 0) + 1 }));
+  const aller = (vers: number) =>
+    setPas((avant) => {
+      const cas = aVoir[((vers % aVoir.length) + aVoir.length) % aVoir.length];
+      return { sorte: cas.sorte, id: cas.id, fois: (avant?.fois ?? 0) + 1 };
+    });
   // Un compte cliqué mène au premier de sa sorte ; cliqué de nouveau, au suivant de la même sorte
   const allerA = (sorte: SorteARegarder) => {
     const rangs = aVoir.flatMap((x, i) => (x.sorte === sorte ? [i] : []));

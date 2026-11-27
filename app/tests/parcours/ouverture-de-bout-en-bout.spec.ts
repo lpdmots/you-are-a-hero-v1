@@ -98,13 +98,13 @@ test("Étape 9, de bout en bout — s'inscrire, écrire, user ses étoiles, en r
     "update projets set mise_en_page_ouverte_le = now(), livre_relu_le = now(), chemins_verifies_le = now(), mise_en_page_convient_le = now(), imprimer_ouvert_le = now() where id = $1",
     [projet],
   );
-  // Partagé « À mes classes », puis un lien ouvert avant le 25 octobre 2026, qui ne se crée plus (F15-AC15)
+  // Partagé aux comptes des élèves, puis le lien pour les familles, ouvert ici par la base (F15-AC21)
   await sql("insert into classes (enseignant_id, nom, annee_debut, identifiant) values ($1, 'CM1', 2026, $2)", [id, `ouverture${Date.now().toString(36)}`]);
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Comptes des élèves" }) }).click();
   const rappel = page.getByRole("group", { name: "À relire avant de partager" });
   await rappel.getByText("J’ai relu le livre sur ces points.").click();
-  await rappel.getByRole("button", { name: "Partager à mes classes" }).click();
+  await rappel.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   const [{ code }] = await sql<{ code: string }>("update partages set par_lien = true where projet_id = $1 returning code", [projet]);
   const lecteur = await browser.newContext();

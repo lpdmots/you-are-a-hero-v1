@@ -40,12 +40,16 @@ test("Étape 7 — partager le livre de la classe, le lire sur un téléphone sa
   // La déclaration doit être enregistrée avant de changer de page : sinon « Imprimer et partager » reste fermée
   await expect(page.getByText("Mise en page terminée")).toBeVisible();
   await aller(page, `/projet/${projet}/livre?etape=sortie&volet=partager`);
-  await interrupteur(page, "À mes classes").click();
-  await confirmer(page, "Partager à mes classes");
-  await expect(page.getByRole("switch", { name: "À mes classes" })).toBeChecked();
+  await interrupteur(page, "Comptes des élèves").click();
+  await confirmer(page, "Partager aux comptes des élèves");
+  await expect(page.getByRole("switch", { name: "Comptes des élèves" })).toBeChecked();
   await expect(page.getByRole("navigation", { name: "Étapes du livre" }).getByRole("link", { name: /Imprimer et partager — terminée/ })).toBeVisible();
-  // Un lien de lecture ouvert avant le 25 octobre 2026 : il ne se crée plus (F15-AC15), mais reste lisible
-  const [{ code }] = await sql<{ code: string }>("update partages set par_lien = true where projet_id = $1 returning code", [projet]);
+  // Le second canal : le lien pour les familles, créé depuis le même volet (F15-AC15 révisé, F15-AC21)
+  await interrupteur(page, "Lien pour les familles").click();
+  await confirmer(page, "Créer le lien");
+  await expect(page.getByRole("switch", { name: "Lien pour les familles" })).toBeChecked();
+  await expect(page.getByRole("textbox", { name: "Lien pour les familles" })).toHaveValue(/\/lire\//);
+  const [{ code }] = await sql<{ code: string }>("select code from partages where projet_id = $1 and par_lien", [projet]);
   const adresse = `/lire/${code}`;
 
   // Une famille, sur un téléphone, sans compte
@@ -82,11 +86,12 @@ test("Étape 7 — partager le livre de la classe, le lire sur un téléphone sa
   await expect(alice.page.locator(".lecteur__corps")).toContainText("La brume s’épaissit sur la plage.");
 
   // Retiré : le lien mène à la page neutre, le livre quitte « Lire »
-  await page.getByRole("button", { name: "Couper le lien…" }).click();
-  await page.getByRole("group", { name: "Couper ce lien ?" }).getByRole("button", { name: "Couper le lien" }).click();
-  await interrupteur(page, "À mes classes").click();
-  await page.getByRole("group", { name: "Ne plus proposer le livre à vos classes ?" }).getByRole("button", { name: "Ne plus le proposer" }).click();
-  await expect(page.getByRole("switch", { name: "À mes classes" })).not.toBeChecked();
+  await interrupteur(page, "Lien pour les familles").click();
+  await page.getByRole("group", { name: "Retirer le lien ?" }).getByRole("button", { name: "Retirer le lien" }).click();
+  await expect(page.getByRole("switch", { name: "Lien pour les familles" })).not.toBeChecked();
+  await interrupteur(page, "Comptes des élèves").click();
+  await page.getByRole("group", { name: "Ne plus proposer le livre à vos élèves ?" }).getByRole("button", { name: "Ne plus le proposer" }).click();
+  await expect(page.getByRole("switch", { name: "Comptes des élèves" })).not.toBeChecked();
   await tel.goto(adresse);
   await expect(tel.getByText("Ce livre n’est plus partagé.")).toBeVisible();
   await alice.page.goto("/travail/lecture");

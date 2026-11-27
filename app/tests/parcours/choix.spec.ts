@@ -1084,7 +1084,7 @@ test.describe("Numéros et suppression (F11.5, F03.1) — la vue « Chemins » a
     expect((await numerosEnBase(l.projet))[l.lisiere.scenes[1]]).toBeLessThanOrEqual(5);
   });
 
-  test("F03-AC13, AC14 — supprimer une scène où mène un choix annonce d'abord ce lien, qui n'est redirigé nulle part ; la carte du choix dit ensuite « scène supprimée »", async ({ page }) => {
+  test("F03-AC13, AC14 — supprimer une scène où mène un choix annonce d'abord ce lien, qui n'est redirigé nulle part ; l'onglet du choix dit ensuite « Scène supprimée »", async ({ page }) => {
     const l = await auteur(page);
     await semerBlocs(l.base, l.lisiere.scenes[0], [choixAuto("Continuer vers la lumière", l.lisiere.scenes[1])]);
     await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=scenes`);
@@ -1097,7 +1097,9 @@ test.describe("Numéros et suppression (F11.5, F03.1) — la vue « Chemins » a
     await expect(page.locator(".fiches .fiche__ref")).toHaveText(["S001", "S003", "S004"]);
     expect(await liensEnBase(l.projet)).toEqual(["S001 > S002"]);
     await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
-    await expect(page.locator(".etiquette-chemin--manque")).toHaveText("Scène supprimée");
+    // Le choix garde son onglet, en ambre, qui le dit (F03-AC65)
+    await expect(page.locator(".onglet-chemin--manque .onglet-chemin__phrase")).toHaveText("Continuer vers la lumière");
+    await expect(page.locator(".onglet-chemin--manque .onglet-chemin__note")).toHaveText("Scène supprimée");
     await expect(page.locator(".chemins__regarder")).toContainText("1 choix vers une scène supprimée");
   });
 });
@@ -1121,7 +1123,7 @@ test("F08-AC26 — le choix d'un texte gardé à part n'apparaît dans « Chemin
   await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
   const sentier = page.locator(".carte-chemin").filter({ hasText: "Le sentier" });
   await expect(sentier).toContainText(/sans suite/i);
-  await expect(page.locator(".libelle-chemin")).toHaveCount(0);
+  await expect(page.locator(".onglet-chemin")).toHaveCount(0);
 
   await aller(page, sceneAdulte(l.projet, l.lisiere.scenes[0]));
   await page.getByRole("tab", { name: /^Votre texte, gardé à part/ }).click();
@@ -1131,7 +1133,38 @@ test("F08-AC26 — le choix d'un texte gardé à part n'apparaît dans « Chemin
   await expect(PHRASES(page)).toHaveCount(1);
   expect(await liensEnBase(l.projet)).toEqual(["S001 > S003"]);
   await aller(page, `/projet/${l.projet}/chapitre/${l.lisiere.id}?vue=chemins`);
-  await expect(page.locator(".libelle-chemin")).toHaveText("Suivre la lumière");
+  await expect(page.locator(".onglet-chemin .onglet-chemin__phrase")).toHaveText("Suivre la lumière");
   await expect(sentier).not.toContainText(/sans suite/i);
   expect(await motsEnBase(l.lisiere.scenes[0])).toContain("Le texte de départ.");
+});
+
+test("F05-AC59, AC62, AC64 — la suite : « Juste la suite → » insère « Rends-toi au … » sans action, le panneau restant ouvert ; écrire une action en fait un choix, l'effacer refait la suite ; une suite n'a qu'une destination", async ({ page }) => {
+  const l = await auteur(page);
+  await deuxParagraphes(page, l);
+  await selectionner(page, { bloc: 0, offset: "Lou fit un pas, puis un autre.".length });
+  await page.getByRole("button", { name: "Choix", exact: true }).click();
+  await FICHE(page).getByRole("button", { name: /Juste la suite/ }).click();
+  await FICHE(page).getByLabel("Chercher une scène").fill("Clair");
+  await FICHE(page).getByLabel("Chercher une scène").press("Enter");
+  // La phrase est le renvoi seul, après le paragraphe du curseur ; le panneau reste ouvert, son champ d'action vide
+  await expect(PHRASES(page)).toHaveCount(1);
+  expect(await lue(PHRASES(page))).toMatch(/^Rends-toi au \d+\./);
+  await attendreEnregistre(page);
+  expect(await typesEnBase(l.lisiere.scenes[0])).toEqual(["p", "choix", "p"]);
+  expect(await liensEnBase(l.projet)).toEqual(["S001 > S002"]);
+  await expect(FICHE(page).getByLabel("Ce que fait le lecteur")).toHaveValue("");
+  // Une seule destination : aucun « + » tant qu'il n'y a pas d'action (F05-AC64)
+  await expect(FICHE(page).getByRole("button", { name: "Ajouter une destination" })).toHaveCount(0);
+
+  // Une action écrite : une phrase de choix ; effacée : de nouveau la suite (F05-AC62)
+  await FICHE(page).getByLabel("Ce que fait le lecteur").fill("Suivre la lumière");
+  await FICHE(page).getByLabel("Ce que fait le lecteur").press("Enter");
+  await expect.poll(() => lue(PHRASES(page))).toMatch(/suivre la lumière/i);
+  expect(await lue(PHRASES(page))).toMatch(/rends-toi au \d+/i);
+  await expect(FICHE(page).getByRole("button", { name: "Ajouter une destination" })).toBeVisible();
+  await FICHE(page).getByLabel("Ce que fait le lecteur").fill("");
+  await FICHE(page).getByLabel("Ce que fait le lecteur").press("Enter");
+  await expect.poll(() => lue(PHRASES(page))).toMatch(/^Rends-toi au \d+\./);
+  await attendreEnregistre(page);
+  expect(await liensEnBase(l.projet)).toEqual(["S001 > S002"]);
 });

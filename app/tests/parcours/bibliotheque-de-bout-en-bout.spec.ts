@@ -78,7 +78,9 @@ test("F15 — proposer, relire, publier, lire, aimer, trouver dans « Lire », s
   await visiteur.getByRole("button", { name: "Commencer la lecture" }).click();
   await visiteur.locator(".lecteur__corps").getByRole("button", { name: /Monter au phare/ }).click();
   await visiteur.getByRole("button", { name: "Donner un cœur à ce livre" }).click();
-  await expect(visiteur.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("1");
+  // Sous le seuil de 5, le cœur plein sans nombre (F15-AC13) ; la base garde le vrai compte
+  await expect(visiteur.getByRole("button", { name: "Retirer mon cœur" })).toHaveAttribute("aria-pressed", "true");
+  await expect(visiteur.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("");
   await visiteur.goto("/");
   await expect(visiteur.getByRole("link", { name: new RegExp(`Feuilleter « ${titre} »`) })).toBeVisible();
 

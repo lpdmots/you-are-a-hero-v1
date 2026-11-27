@@ -209,10 +209,11 @@ test("F15-AC13 — un cœur dans le tiroir et après la fin, jamais pendant la l
 
   // Sous le seuil, la carte ne dit aucun nombre ; à 5, elle le dit, et « Les plus aimés » le range
   await lecteur.goto(`/bibliotheque?q=${marque}&tri=aimes`);
-  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).not.toContainText("1");
+  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).toBeVisible();
+  await expect(lecteur.getByRole("link", { name: /La lanterne/ }).getByLabel(/cœur/)).toHaveCount(0);
   await sql("insert into coeurs (projet_id, lecteur, reseau) select $1, 'n:seuil-' || g, 'r:parcours-local' from generate_series(1, 4) g", [l.projet]);
   await lecteur.reload();
-  await expect(lecteur.getByRole("link", { name: /La lanterne/ })).toContainText("5");
+  await expect(lecteur.getByRole("link", { name: /La lanterne/ }).getByLabel("5 cœurs")).toBeVisible();
 });
 
 test("F15-AC09 — retiré par l'adulte : son adresse dit « Ce livre n'est plus dans la bibliothèque » ; proposé de nouveau et publié, il retrouve son adresse et ses cœurs", async ({ page }) => {
@@ -305,7 +306,9 @@ test("F15-AC20 — dans « Lire », après les livres de l'enseignante, ceux de 
   await alice.page.getByRole("button", { name: "Commencer la lecture" }).click();
   await alice.page.locator(".lecteur__corps").getByRole("button", { name: /Suivre le passeur/ }).click();
   await alice.page.getByRole("button", { name: "Donner un cœur à ce livre" }).click();
-  await expect(alice.page.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("1");
+  // Sous le seuil de 5, le cœur plein sans nombre (F15-AC13)
+  await expect(alice.page.getByRole("button", { name: "Retirer mon cœur" })).toHaveAttribute("aria-pressed", "true");
+  await expect(alice.page.getByRole("button", { name: "Retirer mon cœur" })).toHaveText("");
   await expect.poll(async () => (await sql<{ lecteur: string }>("select lecteur from coeurs where projet_id = $1", [l.projet])).map((c) => c.lecteur)).toEqual([`e:${s.eleves.Alice.id}`]);
 
   // Mme Laurent l'éteint dans les réglages de la classe

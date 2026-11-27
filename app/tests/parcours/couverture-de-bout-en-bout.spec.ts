@@ -36,11 +36,11 @@ test("Couverture — la décrire sans rien écrire, la créer, la proposer, la p
   await expect(MESSAGE(page)).toContainText("Couverture posée.", { timeout: 30_000 });
   const [{ couverture }] = await sql<{ couverture: string }>("select couverture_id as couverture from projets where id = $1", [projet]);
 
-  // Partagée « À mes classes », proposée à la bibliothèque avec sa vignette
+  // Partagée aux comptes des élèves, proposée à la bibliothèque avec sa vignette
   await page.getByRole("tab", { name: "Partager" }).click();
-  await page.locator("label.inter", { has: page.getByRole("switch", { name: "À mes classes" }) }).click();
+  await page.locator("label.inter", { has: page.getByRole("switch", { name: "Comptes des élèves" }) }).click();
   await page.getByText("J’ai relu le livre sur ces points.").click();
-  await page.getByRole("button", { name: "Partager à mes classes" }).click();
+  await page.getByRole("button", { name: "Partager aux comptes des élèves" }).click();
   await expect(page.getByText(/À jour depuis le/)).toBeVisible();
   await page.getByRole("button", { name: "Proposer à la bibliothèque…" }).click();
   const panneau = page.getByRole("group", { name: "Proposer à la bibliothèque" });
