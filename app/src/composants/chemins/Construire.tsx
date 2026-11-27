@@ -323,8 +323,29 @@ export function PanneauDeScene({
     setEnRetrait(null);
   };
 
+  // Le panneau reparaît quand on quitte un choix : « Supprimer la scène » et « Ouvrir » sont alors juste sous
+  // « Cacher ce choix » et « Supprimer ce choix », l'état de la scène sous « ← ». Un clic dans l'en-tête ou le pied,
+  // juste après, ne fait rien (comme après une validation, F07.1) : un double clic ne touche pas à la scène.
+  const reparu = useRef(0);
+  const etaitCache = useRef(cache);
+  useEffect(() => {
+    if (etaitCache.current && !cache) reparu.current = performance.now();
+    etaitCache.current = cache;
+  }, [cache]);
+
   return (
-    <aside className="panneau-chemin" aria-labelledby={`${id}-nom`} hidden={cache}>
+    <aside
+      className="panneau-chemin"
+      aria-labelledby={`${id}-nom`}
+      hidden={cache}
+      onClickCapture={(ev) => {
+        if (performance.now() - reparu.current > 700) return;
+        // Seuls l'en-tête et le pied sont sous les boutons du choix : une ligne de « Ses choix » se clique aussitôt
+        if (!(ev.target as Element).closest?.(".panneau-chemin__tete, .panneau-chemin__pied")) return;
+        ev.preventDefault();
+        ev.stopPropagation();
+      }}
+    >
       <header className="panneau-chemin__tete">
         <h2 id={`${id}-nom`} className="fiche__ref">
           <span className="vh">Scène </span>

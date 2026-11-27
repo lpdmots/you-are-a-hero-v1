@@ -846,7 +846,19 @@ export function FicheReglagesChoix({
         />
       </div>
 
-      <div className="cx-dests">
+      <div
+        className="cx-dests"
+        // Échap referme d'abord la liste des scènes ouverte par « Changer… » ou « + », et rend la main à son bouton ;
+        // un second Échap ferme la fiche (ou, dans « Chemins », ramène à la scène)
+        onKeyDown={(e) => {
+          if (e.key !== "Escape" || !change || e.defaultPrevented) return;
+          e.preventDefault();
+          e.stopPropagation();
+          const bouton = e.currentTarget.querySelector<HTMLButtonElement>("button[aria-expanded='true']");
+          setChange(null);
+          bouton?.focus();
+        }}
+      >
         <p className="cx-titre cx-entete">
           {plusieurs ? "Destinations" : "Destination"}
           {/* Une suite mène à une scène : qui veut deux destinations écrit d'abord une action (F05-AC64) */}

@@ -22,7 +22,7 @@ import { couleurDeChapitre, referenceScene } from "@/domaine/recit";
 import { de, majuscule } from "@/domaine/texte";
 import type { SceneOuverte } from "@/serveur/recit-eleve";
 import {
-  annulerGeste, cocherElement, creerSceneDepuisChoix, prendreScenes, reglerVoisines, relireNumeros, remarqueLue, remettreScene, rendreScene, retirerRemise, supprimerScene,
+  annulerGeste, cocherElement, creerSceneDepuisChoix, prendreScenes, reglerVoisines, relireNumeros, relireVoisines, remarqueLue, remettreScene, rendreScene, retirerRemise, supprimerScene,
 } from "../../actions";
 import styles from "../../travail.module.css";
 import { ListeACocher } from "@/composants/verification/Liste";
@@ -176,6 +176,7 @@ export function SceneEleve({
     creerScene: (chapitreId, titre) => creerSceneDepuisChoix(chapitreId, titre, scene.projetId),
     supprimerScene: (id) => supprimerScene(id),
     relireNumeros: () => relireNumeros(scene.projetId),
+    relireVoisines: () => relireVoisines(scene.id),
     reglerVoisines: (affiche) => reglerVoisines(affiche),
   };
 

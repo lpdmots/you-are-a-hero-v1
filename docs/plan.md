@@ -5525,7 +5525,8 @@ reposer : le tirage d'un onglet qui a déjà une destination, écarté.
 **Construit en local le 11 novembre 2026** (Fable 5.2), dans une
 conversation à part : un lot, un commit local, rien poussé sur `main` ni
 appliqué à la vraie base. Sans maquette : conçu avec impeccable, regardé sur
-des captures, sans critique en deux lectures (elle se fait à sa demande).
+des captures, sans critique en deux lectures (faite le 27 novembre 2026 :
+voir la fin de cette section).
 
 **La migration, `modifier_un_choix_depuis_le_plan`,** en base locale
 seulement ([architecture](architecture.md#modifier-un-choix-depuis--chemins--11-novembre-2026)) :
@@ -5682,7 +5683,17 @@ réussi chez Vercel, le site répond. Non vérifié en ligne : les écrans de
 non commités, seize fichiers de `app/tests/parcours/` d'une autre
 conversation ; les parcours Playwright de « Chemins » ne sont toujours pas
 accordés (ils le sont depuis les 26 et 27 novembre 2026, [plus bas](#parcours-playwright-rejoués-et-accordés-26-et-27-novembre-2026)),
-et la critique en deux lectures de l'écran du choix n'est pas faite.
+et la critique en deux lectures de l'écran du choix n'est pas faite (faite
+le 27 novembre 2026, ci-dessous).
+
+**Critique en deux lectures, faite le 27 novembre 2026** à sa demande, dans
+une conversation à part : 27/40 (lecture informée) et 26/40 (lecture
+indépendante de 25 captures) ; points d'ergonomie corrigés aussitôt, sans
+nouvelle mesure, un commit local, sans migration, rien poussé. Détail, ce
+qui est corrigé et ce qui est laissé :
+[design](design.md#critique-en-deux-lectures-27-novembre-2026). Une
+proposition de règle en sort, non construite, à lui soumettre : la phrase
+qui reçoit une deuxième destination (F05.2, « Destinations »).
 
 ### Fiche de l'histoire à imprimer (F02.1, 18 novembre 2026)
 

@@ -1,5 +1,7 @@
-import { test, type Page } from "@playwright/test";
-import { adultePret, aller, semerClasse, semerPartie, semerProjet, sql, supprimerComptes } from "../parcours/outils";
+import { test, type Browser, type Page } from "@playwright/test";
+import {
+  adultePret, aller, choixAuto, classeQuiEcrit, copie as copieDe, MESSAGE, posteDe, recit, semerBlocs, semerClasse, semerPartie, semerProjet, sql, supprimerComptes,
+} from "../parcours/outils";
 import { poserLeMarais } from "../../scripts/marais-des-feux-follets";
 import { ELEVES } from "../../scripts/passeurs-de-brume";
 
@@ -70,6 +72,9 @@ test("Modifier un choix depuis Chemins, l'adulte : ouvrir, changer, revenir, sup
   // ——— Changer de destination : la liste des scènes, puis le trait qui mène ailleurs ———
   await choix(page).getByRole("button", { name: "Changer…" }).click();
   await capturer(page, "changer-de-destination");
+  await choix(page).getByRole("radio", { name: "Nouvelle scène" }).check({ force: true });
+  await capturer(page, "changer-nouvelle-scene");
+  await choix(page).getByRole("radio", { name: "Scène existante" }).check({ force: true });
   await choix(page).locator(".cx-liste button", { hasText: "Tourbière — le sol qui tremble" }).first().click();
   await choix(page).getByText("Enregistré").waitFor();
   await capturer(page, "destination-changee");
@@ -99,7 +104,8 @@ test("Modifier un choix depuis Chemins, l'adulte : ouvrir, changer, revenir, sup
   await scene(page).getByRole("button", { name: "Suivre les feux follets", exact: true }).click();
   await choix(page).getByLabel("Ce que fait le lecteur").waitFor();
   await capturer(page, "ouvert-par-sa-ligne");
-  await choix(page).getByRole("button", { name: "Supprimer ce choix" }).click();
+  // Un double clic : le second tombe sur « Ouvrir », juste dessous, qui ne fait rien aussitôt après
+  await choix(page).getByRole("button", { name: "Supprimer ce choix" }).dblclick();
   await page.getByRole("button", { name: "Annuler" }).waitFor();
   await capturer(page, "supprime");
   await page.getByRole("button", { name: "Annuler" }).click();
@@ -108,7 +114,8 @@ test("Modifier un choix depuis Chemins, l'adulte : ouvrir, changer, revenir, sup
 
   // ——— « Cacher ce choix (énigme) », puis le lien caché ouvert par son onglet ———
   await scene(page).getByRole("button", { name: "Appeler à l’aide", exact: true }).click();
-  await choix(page).getByRole("button", { name: "Cacher ce choix (énigme)" }).click();
+  // Un double clic : le second tombe sur « Supprimer la scène », juste dessous, qui ne fait rien aussitôt après
+  await choix(page).getByRole("button", { name: "Cacher ce choix (énigme)" }).dblclick();
   await page.getByRole("button", { name: "Annuler" }).waitFor();
   await capturer(page, "cache");
   await onglet(page, "Lien caché").first().click();
@@ -132,6 +139,8 @@ test("Modifier un choix depuis Chemins, l'adulte : ouvrir, changer, revenir, sup
   await choix(page).getByLabel("Ce que fait le lecteur").waitFor();
   await choix(page).getByRole("button", { name: "Changer…" }).click();
   await capturer(page, "1024-changer-de-destination");
+  await page.keyboard.press("Escape");
+  await capturer(page, "1024-echap-dans-la-liste");
 });
 
 test("Modifier un choix depuis Chemins, la copie ouverte : celui qui écrit la scène reçoit le choix modifié, sans être arrêté", async ({ page, context }) => {
@@ -178,4 +187,50 @@ test("Modifier un choix depuis Chemins, la copie ouverte : celui qui écrit la s
   await copie.waitForTimeout(3500);
   await copie.screenshot({ path: `${dossier}/copie-03-apres-annuler.png` });
   await copie.close();
+});
+
+test("Modifier un choix depuis Chemins, la scène écrite par une élève, et le téléphone", async ({ page, browser }: { page: Page; browser: Browser }) => {
+  test.setTimeout(200_000);
+  await page.setViewportSize({ width: 1366, height: 768 });
+  const s = await classeQuiEcrit(page, ["Alice", "Bilal"]);
+  const [sentier, pont] = s.lisiere.scenes;
+  await semerBlocs(s.base, sentier, [recit("Le sentier s’enfonce sous les arbres."), choixAuto("Traverser le pont", pont), choixAuto("Rebrousser chemin", null)]);
+
+  // Alice prend la scène et l'écrit, sur son poste
+  const alice = await posteDe(browser, s, "Alice");
+  await alice.page.setViewportSize({ width: 1366, height: 768 });
+  await aller(alice.page, `/travail/chapitre/${s.lisiere.id}?vue=scenes`);
+  await alice.page.getByLabel("Choisir S001 pour m’en occuper").check();
+  await alice.page.getByRole("region", { name: "Sélection" }).getByRole("button", { name: "Je m’en occupe" }).click();
+  await MESSAGE(alice.page).waitFor();
+  await aller(alice.page, `/travail/scene/${sentier}`);
+  await copieDe(alice.page).waitFor();
+  await alice.page.waitForTimeout(600);
+  await alice.page.screenshot({ path: `${dossier}/eleve-01-avant.png` });
+
+  // L'adulte, dans « Chemins » : le choix ouvert pendant qu'Alice écrit
+  await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
+  await carte(page, "Le sentier").waitFor();
+  await onglet(page, "Traverser le pont").click();
+  await choix(page).getByLabel("Ce que fait le lecteur").waitFor();
+  await capturer(page, "eleve-ecrit-choix-ouvert");
+  await choix(page).getByLabel("Ce que fait le lecteur").fill("Passer le vieux pont en courant");
+  await choix(page).getByLabel("Ce que fait le lecteur").press("Enter");
+  await choix(page).getByText("Enregistré").waitFor();
+  await capturer(page, "eleve-ecrit-choix-change");
+
+  // Alice continue : sa frappe s'enregistre, sa copie reçoit la phrase modifiée
+  await copieDe(alice.page).locator("p").first().click();
+  await alice.page.keyboard.press("End");
+  await alice.page.keyboard.type(" Un hibou hulule.");
+  await alice.page.getByText("Enregistré").waitFor();
+  await alice.page.waitForTimeout(1500);
+  await alice.page.screenshot({ path: `${dossier}/eleve-02-apres-la-frappe.png` });
+  await alice.contexte.close();
+
+  // Sur téléphone : la liste, rien ne s'ouvre
+  await page.setViewportSize({ width: 390, height: 844 });
+  await aller(page, `/projet/${s.projet}/chapitre/${s.lisiere.id}`);
+  await page.waitForTimeout(800);
+  await capturer(page, "telephone");
 });

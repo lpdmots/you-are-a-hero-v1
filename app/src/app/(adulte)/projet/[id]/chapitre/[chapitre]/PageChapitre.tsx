@@ -188,7 +188,8 @@ export function PageChapitre({
             return fait;
           }
           dire({
-            texte: `Le choix est caché : c’est maintenant un lien caché, hors du récit. ${nomDe(cible)} garde le n° ${fait.numero ?? "…"}.`,
+            // Court : le message passe sur le bas du schéma
+            texte: `Le choix devient un lien caché : ${nomDe(cible)} garde le n° ${fait.numero ?? "…"}.`,
             annuler: () => defaire(remettreChoixDuSchema(sceneId, fait.bloc, fait.place, fait.liaison)),
           });
           return { ok: true };

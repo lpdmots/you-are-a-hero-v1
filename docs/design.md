@@ -1852,19 +1852,20 @@ copie ([« Panneau des réglages, à droite du texte »](#panneau-des-réglages-
 rien n'y est redessiné, seul son habillage change pour tenir dans le volet.
 Regardé sur seize captures du marais en 1 366 × 768 et 1 024 × 768, et trois
 de la copie ouverte à côté (`app/test-results/captures/modifier-un-choix/`) ;
-**pas de critique en deux lectures,** qui se fait à la demande du porteur.
+critique en deux lectures faite le 27 novembre 2026, à sa demande
+([plus bas](#critique-en-deux-lectures-27-novembre-2026)).
 
 | Élément | Forme retenue |
 | --- | --- |
 | Le volet | Le même espace de travail que la scène, au même endroit, à la même largeur : le choix prend la place de la scène, qui attend dessous telle qu'on l'a laissée (titre et consigne en cours de saisie compris). Le contenu entre en glissant de 14 points (0,2 s) ; au retour, la scène est là aussitôt. |
 | L'en-tête | À gauche, un bouton discret : la flèche vers la gauche et le titre de la scène, en gras, coupé par des points de suspension s'il est long (« Revenir à la scène (Échap) » en bulle) ; à droite, « Enregistrement… » puis « ✓ Enregistré », comme dans le panneau de la scène. Pas de croix : un seul niveau, la scène puis l'un de ses choix. |
 | Les réglages | Ceux de la copie, dans le même ordre : le signe du choix et « Choix » en titre (1,2 rem, comme le titre de la scène) ; « Ce que fait le lecteur » ; « Destination(s) » avec son « + », « Changer… », « Retirer » et le repère de prise ; « La phrase », son « i », « modifiée » et la flèche ronde. Dans le volet, la fiche perd son cadre canard, son ombre, ses coins et sa croix : c'est le contenu du volet, pas une fiche posée sur le texte. |
-| Le pied | Celui du volet : à gauche « Cacher ce choix (énigme) », en lien avec la clé ; à droite « Supprimer ce choix », cerné de brique, jamais plein. |
+| Le pied | Celui du volet : à gauche « Cacher ce choix (énigme) », en lien avec la clé ; à droite « Supprimer ce choix », discret, brique au survol, comme « Supprimer la scène » au même pied (depuis le 27 novembre 2026 ; cerné de brique avant). |
 | La liste des scènes | « Changer… » ou « + » l'ouvrent sous les destinations ; le volet défile de lui-même pour qu'elle vienne en vue. |
 | L'onglet du choix ouvert | Fond canard pâle, cerné de canard (2 points), tant que le choix est ouvert. Ses traits sont les seuls en canard foncé — un par destination, tous partis du même onglet (« un choix, un onglet », décidé par le porteur le 11 novembre 2026 et construit dans une conversation parallèle) : les autres chemins de la scène s'effacent comme ceux du reste du schéma. Le lien caché garde son trait en points ronds, plus sombre. |
 | « Ses choix », dans le panneau de la scène | Le libellé de chaque ligne est un bouton : suivi d'un petit chevron gris, il passe en canard au survol, la ligne sur fond de feuille grise, le chevron avançant de 2 points. La corbeille reste au bout de la ligne ; le lien caché n'en a pas, il se retire depuis ses réglages. Un choix qui mène à plusieurs scènes tient sur une seule ligne, ses destinations l'une sous l'autre. Au retour d'un choix, sa ligne est désignée un instant (canard pâle). |
 | Le lien caché ouvert | La fiche « Lien caché · [scène] » de la copie : la phrase d'aide, le numéro que doit donner l'énigme, « Proposer comme choix », et au pied « Retirer ce lien caché ». |
-| Les messages | Au-dessus du schéma, comme les autres gestes de « Chemins », avec « Annuler » : « Le choix « … » est supprimé. » ; « Le choix est caché : c'est maintenant un lien caché, hors du récit. S007 « … » garde le n° 33. » ; « Le lien caché est devenu une phrase de choix, à la fin du texte. » ; « Lien caché retiré. » |
+| Les messages | Au-dessus du schéma, comme les autres gestes de « Chemins », avec « Annuler » : « Le choix « … » est supprimé. » ; « Le choix devient un lien caché : S007 « … » garde le n° 33. » (raccourci le 27 novembre 2026, la copie garde sa phrase) ; « Le lien caché est devenu une phrase de choix, à la fin du texte. » ; « Lien caché retiré. » |
 | L'ouverture qui tarde | L'en-tête est là aussitôt ; « Ouverture du choix… » ne s'écrit que si la lecture dépasse un tiers de seconde. Un choix qui n'est plus dans la scène : « Ce choix n'est plus dans la scène. », en brique, sous l'en-tête. |
 | De loin, l'élève, le téléphone | Rien ne change : l'onglet cliqué choisit sa carte, sans rien ouvrir ; l'élève n'a pas d'espace de travail ; le téléphone garde la liste. |
 
@@ -1874,7 +1875,93 @@ en 768 points de haut : le pied et l'en-tête restent fixes, le milieu défile.
 « Supprimer ce choix » est cerné de brique ici, alors que « Supprimer la
 scène », au même pied du volet, est gris jusqu'au survol : l'un vient de la
 copie, l'autre de « Chemins ». Le message d'un choix caché, long, couvre le
-bas du schéma en 1 366 points.
+bas du schéma en 1 366 points. (Les deux derniers points sont repris par la
+critique du 27 novembre 2026, ci-dessous.)
+
+##### Critique en deux lectures (27 novembre 2026)
+
+Demandée par le porteur, faite dans une conversation à part, sur 25 captures
+du marais (`npx playwright test --config playwright.local.config.ts
+modifier-un-choix`, complété ce jour : « Nouvelle scène », 1 024 points,
+téléphone, une élève qui écrit la scène pendant qu'on modifie son choix,
+double clic sur « Cacher » et « Supprimer », Échap dans la liste des scènes).
+
+| Critère | Lecture informée | Lecture indépendante |
+| --- | --- | --- |
+| Visibilité de l'état | 3 | 3 |
+| Mots de l'enseignant | 3 | 2 |
+| Contrôle et liberté | 3 | 3 |
+| Cohérence | 2 | 2 |
+| Prévention des erreurs | 2 | 2 |
+| Reconnaissance | 3 | 3 |
+| Efficacité | 3 | 3 |
+| Sobriété, hiérarchie | 3 | 3 |
+| Récupération des erreurs | 3 | 2 |
+| Aide et repères | 2 | 3 |
+| **Total** | **27/40** | **26/40** |
+
+**Corrigé aussitôt** (sans nouvelle mesure, comme convenu après une
+critique) :
+
+- *Un double clic qui touchait la scène* (relevé par les deux lectures).
+  « Cacher ce choix » et « Supprimer ce choix » ramènent au panneau de la
+  scène, dont le pied met « Supprimer la scène » et « Ouvrir » exactement
+  sous la souris ; « ← » est au-dessus de l'état de la scène. Pendant
+  0,7 seconde après ce retour, un clic dans l'en-tête ou le pied du panneau
+  ne fait rien, comme le second clic après une validation ; les lignes de
+  « Ses choix » se cliquent aussitôt. Vérifié par un double clic dans les
+  captures.
+- *Échap dans la liste des scènes* (« Changer… » ou « + ») quittait tout
+  l'écran du choix : il referme d'abord la liste et rend la main à son
+  bouton ; un second Échap ramène à la scène. La fiche de la copie, qui est
+  la même, en profite : un second Échap y ferme la fiche.
+- *« Juste après » en retard chez celui qui écrit* : quand une copie
+  ouverte reçoit le choix modifié depuis « Chemins », elle relit ses scènes
+  voisines et ses numéros ; « si le lecteur choisit « … » » suit le nouveau
+  libellé et la nouvelle destination. Le poste de l'élève ne relisait jamais
+  ses voisines (pas même après un choix qu'il ajoutait) : il les relit
+  désormais, comme l'adulte, par la base et ce qu'elle lui permet de lire.
+- *Le milieu du volet qui défile* coupait « Changer… » sous le titre
+  « Choix » sans le dire : une ombre douce paraît en haut ou en bas du
+  milieu quand il défile.
+- *Deux formes pour supprimer au même pied* : « Supprimer ce choix » prend
+  celle de « Supprimer la scène » (discret, brique au survol).
+- *Le message d'un choix caché*, sur deux lignes, couvrait le bas du schéma
+  et ses boutons : « Le choix devient un lien caché : S007 « … » garde le
+  n° 16. », une ligne en 1 366 points. Celui de la copie, dans son bandeau,
+  ne change pas.
+
+**Laissé, à dire au porteur :**
+
+- *La phrase qui reçoit une deuxième destination* (relevé en gravité 3 par
+  la lecture indépendante) : le numéro se pose à la fin de la phrase
+  (« …cours au 22. 21 »), puis on l'écrit à la main — règle de F05.2
+  (« Destinations »), commune à la copie. Recommandation, non construite :
+  poser « ou au 21 » avant la ponctuation finale (« …cours au 22 ou au
+  21. »), la phrase restant modifiable.
+- *Deux repères pour une même scène,* côte à côte : « n° 22 » dans l'écran
+  du choix (le numéro du livre, celui de la phrase), « S009 « … » » dans
+  « Ses choix ». Recommandation : le titre seul dans « Ses choix », comme
+  près des choix dans la copie depuis le 11 octobre ; la ligne vient du
+  lot 2 de « Construire dans Chemins », dont les précisions sont
+  confirmées, d'où la question plutôt que la correction.
+- *Repris de la copie, tenu par ses règles :* « Cacher ce choix » absent
+  quand le choix mène à plusieurs scènes (un lien caché n'en a qu'une) ;
+  le titre de la nouvelle scène prérempli avec ce que fait le lecteur ; le
+  « i » de « Ce que fait le lecteur » qui ne paraît qu'une phrase
+  modifiée ; la fiche du lien caché et ses trois phrases.
+- *Décidé, pas rouvert :* « ← » sans croix (un seul niveau) ; l'onglet
+  « Lien caché » sans le libellé d'origine (« Choix en onglets ») ; le titre
+  « Choix » de la fiche, ce que fait le lecteur venant juste dessous ;
+  rien ne dit à l'adulte qu'un élève écrit la scène (la modification de
+  « Chemins » l'emporte, sans arrêter personne).
+- *Propre à « Chemins »* : un message reste jusqu'au geste suivant et passe
+  sur les boutons de taille ; commun à tous les gestes du schéma.
+
+Écarté après vérification : le texte tapé au milieu d'un mot dans les
+captures de la copie vient du parcours (sur Mac, Fin ne déplace pas le
+curseur), et les numéros qui changent entre les deux premières captures,
+de l'histoire d'essai, chargée sans ordre du livre établi.
 
 ### Étape 4 construite (13 octobre 2026)
 

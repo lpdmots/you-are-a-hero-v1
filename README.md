@@ -100,7 +100,8 @@ arrêter celui qui écrit la scène, rend à sa place un choix supprimé puis
 remis par « Annuler », et fait passer les liens cachés par le plan
 ([F08.1](docs/specifications.md#f08-ajout-du-plan),
 [architecture](docs/architecture.md#modifier-un-choix-depuis--chemins--11-novembre-2026)) ;
-écran sans maquette, sans critique en deux lectures
+écran sans maquette, critiqué en deux lectures le 27 novembre 2026 (27/40 et
+26/40) et corrigé
 ([design](docs/design.md#modifier-un-choix-depuis--chemins---écran-construit-11-novembre-2026)) ;
 l'onglet porte « ce que fait le lecteur », non la phrase réécrite (confirmé
 par le porteur le même jour, F03-AC72 révisé), « Annuler » rend un choix

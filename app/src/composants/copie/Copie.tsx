@@ -451,6 +451,11 @@ export function Copie({
         editor.history.undos = [];
         editor.history.redos = [];
       }
+      // Les destinations ou ce que fait le lecteur ont pu changer : « Juste après » et les numéros se relisent,
+      // sans quoi la copie montrerait encore l'ancienne suite (F03-AC75)
+      ciblesRelues.current = ciblesDe(entier()).sort().join();
+      void services.relireNumeros().then((numeros) => apprendre({ numeros }));
+      void services.relireVoisines?.().then((lues) => lues && setVoisinesRelues({ pour: voisinesRecues, lues }));
     };
   });
 

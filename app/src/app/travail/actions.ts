@@ -4,6 +4,8 @@ import { LIMITE_POUR_L_ELEVE } from "@/domaine/offre";
 import { revalidatePath } from "next/cache";
 import { clientDuPoste, etatDuPoste, noterActivite } from "@/serveur/poste";
 import { estUuid } from "@/serveur/recit";
+import type { Voisines } from "@/composants/copie/contexte";
+import { voisinesDe } from "@/serveur/copie";
 import { chercherPourLePoste, contexteEleve, numerosDuPoste, type ChapitreTrouve } from "@/serveur/recit-eleve";
 
 /**
@@ -101,6 +103,16 @@ export async function reglerVoisines(affiche: boolean): Promise<void> {
 export async function relireNumeros(projetId: string): Promise<Record<string, number>> {
   if (!(await base())) return {};
   return numerosDuPoste(await contexteEleve(), projetId);
+}
+
+/**
+ * Les scènes voisines relues (F04.3), comme pour l'adulte : après un choix ajouté ou retiré, ou
+ * modifié depuis « Chemins » pendant que l'élève écrit (F03-AC75). La base ne rend que ce qu'il peut lire.
+ */
+export async function relireVoisines(sceneId: string): Promise<Voisines | null> {
+  const poste = await base();
+  if (!poste || !estUuid(sceneId)) return null;
+  return voisinesDe(poste, sceneId);
 }
 
 /**

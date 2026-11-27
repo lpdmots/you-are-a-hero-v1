@@ -2339,6 +2339,13 @@ body:has(.page--eleve, .lecteur__bandeau--eleve) :is(.barre-feuille__valeurs, .b
   padding: 14px 22px 22px;
   overflow-y: auto;
   scrollbar-width: thin;
+  /* Une ombre en haut ou en bas quand le milieu défile (la liste des scènes de « Changer… ») : ce qui passe sous
+     « Choix » ou sous le pied se voit coupé exprès, et non par erreur */
+  background:
+    linear-gradient(var(--feuille) 30%, transparent) top / 100% 28px no-repeat local,
+    linear-gradient(transparent, var(--feuille) 70%) bottom / 100% 28px no-repeat local,
+    linear-gradient(color-mix(in srgb, var(--graphite) 14%, transparent), transparent) top / 100% 8px no-repeat scroll,
+    linear-gradient(transparent, color-mix(in srgb, var(--graphite) 14%, transparent)) bottom / 100% 8px no-repeat scroll;
 }
 .panneau-choix .cx__pied {
   padding: 10px 16px 12px 22px;
@@ -2346,6 +2353,17 @@ body:has(.page--eleve, .lecteur__bandeau--eleve) :is(.barre-feuille__valeurs, .b
   border-radius: 0;
   background: none;
   box-shadow: inset 0 1px 0 var(--trait);
+}
+/* Ce qui supprime a la forme de « Supprimer la scène », au même pied du volet : discret, brique au survol */
+.panneau-choix .cx__suppr {
+  border-color: transparent;
+  background: none;
+  color: var(--graphite-2);
+}
+.panneau-choix .cx__suppr:hover {
+  border-color: transparent;
+  background: var(--bloque-f);
+  color: var(--bloque);
 }
 .panneau-choix__corps > .erreur,
 .panneau-choix__corps > .panneau-chemin__aucun {
